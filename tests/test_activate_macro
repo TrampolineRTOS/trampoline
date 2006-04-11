@@ -1,0 +1,73 @@
+begin_system
+C_
+C_ Liste des tâches: 
+C_ Le 1er paramètre de chaque macro task est le nom de la tâche. 
+C_ Le 2e est sa priorité
+C_ Le 3e paramètre est soit AUTOSTART soit SUSPENDED selon que la tâche
+C_ se lance ou pas au démarrage du système.
+C_ Le 4e est le nombre maximum d'activation possible (entre 1 et 255 mais 
+C_ c'est modifiable)
+C_ 
+C_ Les paramètres suivants sont dépendant de l'architecture. Pour le PPC:
+C_ Le 5e paramètre, optionnel, est la taille de la pile
+C_ en octets. Si ce dernier paramètre n'est pas précisé, la taille
+C_ de la pile est celle fixée par défaut.
+C_ Le 6e paramètre est la nature du contexte de la tâche
+C_ INTEGER est toujours présent, certaines architectures permettent
+C_ d'avoir un contexte FLOAT voir plus. Les initialisations dépendantes
+C_ de ce paramètre sont prises en compte via deux macros à définies
+C_ dans le fichier de macros de l'architecture.
+C_
+C_ Pour le C167:
+C_ Le 5e paramètre est la taille de la pile système. (stockée en iram)
+C_ Le 6e est la taille de la pile utilisateur.
+
+tasks_list(
+    task(t11,1,SUSPENDED,3,32768,INTEGER),
+    task(t21,2,SUSPENDED,11,32768,INTEGER),
+    task(t22,2,SUSPENDED,12,32768,INTEGER),
+    task(t23,2,SUSPENDED,13,32768,INTEGER),
+    task(t31,3,SUSPENDED,14,32768,INTEGER),
+    task(t32,3,SUSPENDED,15,32768,INTEGER),
+    task(t41,4,SUSPENDED,16,32768,INTEGER)
+)
+
+C_
+C_ Liste des ressources
+C_ Le premier paramètre est le nom de la ressource
+C_ Le second est sa priorité plafond
+C_
+
+resources_list(
+    resource(resource1,3),
+    resource(resource2,2)
+)
+
+C_
+C_ Liste des compteurs
+C_ Le premier paramètre est le nom du compteur
+C_ Le second est le nombre de ticks avant qu'il ne soit incrémenté
+C_
+
+counter_list(
+    counter(cnt1,100),
+    counter(cnt2,300)
+)
+
+C_
+C_ Liste des alarmes
+C_ Le premier paramètre est le nom de l'alarme
+C_ Le 2e est le nom du compteur auquel l'alarme est associée
+C_ Le 3e le type d'alarm (activate_task, set_event, alarm_callback)
+C_ Le 4e est le nom de la tache (activate_task ou set_event)
+C_ ou bien le nom de la fonction callback (alarm_callback)
+C_ Le 5e est l'eventmask si il s'agit d'un set_event
+C_
+
+alarm_list(
+    alarm(alr1,cnt1,activate_task,t11)
+C_    alarm(alr2,cnt1,set_event,titi,4),
+C_    alarm(alr3,cnt2,alarm_callback,damned)
+C_    alarm(alr4,cnt1,alarm_callback,damned)
+) 
+end_system
