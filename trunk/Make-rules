@@ -1,0 +1,52 @@
+CC=gcc
+
+# Target may be either 
+# * darwin-ppc (MacOsX on PowerPC)
+# * c167 (C167, with the Keil compiler on MS Windows)
+# * linux-x86.
+TARGET=linux-x86
+
+# arch may be either:
+# * ppc for the PowerPC.
+# * c167 
+# * x86
+ARCH=x86
+
+#APP_SRCS = test.c	 
+APP_SRCS = App/tpl_default_tasks.c
+
+EXE    =  trampoline
+
+#M4 definition file
+M4FILE= App/macro_test_ppc
+
+#Compilation flags for all files (asm, c)
+ALLFLAGS = \
+-Wall \
+-pedantic \
+-DOS_EXTENDED \
+-DWITH_ERROR_HOOK \
+-DWITH_TASK_HOOK \
+-DWITH_STARTUP_HOOK \
+-DWITH_SHUTDOWN_HOOK
+
+
+#compilation flags for C files
+CFLAGS = $(ALLFLAGS) -ansi -g
+#compilation flags for asm files (must not have -ansi)
+ifeq ($(strip $(TARGET)),darwin-ppc)
+	#-fasm-blocks is APPLE only.
+	ASMFLAGS = $(ALLFLAGS) -fasm-blocks
+else
+	#run on linux.
+	ASMFLAGS = $(ALLFLAGS) -fasm -g
+endif
+	
+#test library.
+#LIBS  = -lcheck
+
+#***** do not modify below this line *****
+OS_DIR = ./os
+OBJ_DIR = .obj
+APP_DIR = ./App
+OS_MACHINE_DIR = $(OS_DIR)/os_machine/$(TARGET)

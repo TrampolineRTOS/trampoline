@@ -1,0 +1,33 @@
+GENERAL INFORMATION:
+The user application is stored in the App/ directory.
+The application is configured with a macro file (in  App/ directory) that define tasks, resources, alarms and so on.
+
+
+INSTALLATION NOTE FOR MACOSX
+
+You first have to compile VIPER, which is the VIrtual Processor EmulatoR. Use 
+the xcode project file in the viper directory. (th viper application is run automatically from the Trampoline darwin-ppc application).
+
+then run make to compile Trampoline. 
+
+In order to call 'viper', the environment var: VIPER_PATH must be set. With BASH:
+export VIPER_PATH=/Users/mik/programmation/Trampoline/viper/build/viper
+
+That's all folks!
+
+
+INSTALLATION NOTE FOR WINDOWS
+
+First install the m4 preprocessor, which can be found at:
+http://gnuwin32.sourceforge.net/packages/m4.htm
+
+The m4 preprocessoris used to generate the configuration of the application (task descriptors, resources, alarms, ..).
+
+
+INSTALL NOTE FOR THE KEIL/uVision2 - C167 version.
+
+You have to configure the make_macro_c167.bat batch script that generate the configuration files: App/tpl_os_generated_configuration.c and its hearder file.
+
+You can use the .uv2 uVision2 project file in the root of the project as a base project. 2 files contains assembly code and must be compiled with appropriate options to generate the SRC file.
+the generated configuration file: App/tpl_os_generated_configuration.c
+the architecture dependant file: os/os_machine/c167tpl_machine_c167.c
