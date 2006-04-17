@@ -18,7 +18,7 @@ APP_SRCS = App/tpl_default_tasks.c
 EXE    =  trampoline
 
 #M4 definition file
-M4FILE= App/macro_test_ppc
+M4FILE= App/macro_test_workstation
 
 #Compilation flags for all files (asm, c)
 ALLFLAGS = \

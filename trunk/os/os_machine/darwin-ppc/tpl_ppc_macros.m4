@@ -1,17 +1,17 @@
 define(`task_context',`dnl
-x86_integer_context task_$1_integer_context;
+ppc_integer_context task_$1_integer_context;
 ifdef(`WITH_ALTIVEC',`dnl
 ifelse(dnl
 `$6',`FLOAT',`dnl
-x86_float_context   task_$1_float_context;',
+ppc_float_context   task_$1_float_context;',
 `$6',`VECTOR',`dnl
-x86_vector_context  task_$1_vector_context;',
+ppc_vector_context  task_$1_vector_context;',
 `$6',`FLOAT_VECTOR',`dnl
-x86_float_context   task_$1_float_context;
-x86_vector_context  task_$1_vector_context;')',`dnl
+ppc_float_context   task_$1_float_context;
+ppc_vector_context  task_$1_vector_context;')',`dnl
 ifelse(dnl
 `$6',`FLOAT',`dnl
-x86_float_context   task_$1_float_context;')')')
+ppc_float_context   task_$1_float_context;')')')
 
 define(`task_context_ref',`dnl
 { &task_$1_integer_context`'ifdef(`WITH_ALTIVEC',`ifelse(dnl
@@ -40,7 +40,7 @@ define(`AD_isr_def',`dnl
 tpl_stack_word isr2_$1_stack_zone[$5/sizeof(tpl_stack_word)];')
 
 define(`isr_context',`dnl
-x86_integer_context isr2_$1_integer_context;')
+ppc_integer_context isr2_$1_integer_context;')
 
 define(`isr_stack_ref',`dnl
 {isr2_$1_stack_zone`,'$5}')
