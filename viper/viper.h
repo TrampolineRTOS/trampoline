@@ -15,9 +15,9 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-#define DATA_FILE_PATH  "/tmp/viper.data.%d"
-#define R_SEM_FILE_PATH "/tmp/viper.rsem.%d"
-#define W_SEM_FILE_PATH "/tmp/viper.wsem.%d"
+#define DATA_FILE_PATH  "/viper.data.%d"
+#define R_SEM_FILE_PATH "/viper.rsem.%d"
+#define W_SEM_FILE_PATH "/viper.wsem.%d"
 
 #define HELLO   0
 #define TIMER   1

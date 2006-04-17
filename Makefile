@@ -19,7 +19,7 @@
 include Make-rules
 
 ifeq ($(strip $(TARGET)),linux-x86)
-	LDFLAGS = -lpthread -lrt
+	LDFLAGS += -lpthread -lrt
 endif
 
 ALL: $(EXE)
@@ -37,7 +37,7 @@ OBJ:
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir $(OBJ_DIR); fi; 
 
 $(EXE): OS APP
-	$(CC) $(LDFLAGS) -o $@ $(LIBS) $(OBJ_DIR)/*.o 
+	$(CC) $(LDFLAGS) -o $@ $(OBJ_DIR)/*.o 
 			
 clean:
 	@cd $(OS_DIR) && make clean 

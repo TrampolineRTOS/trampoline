@@ -43,13 +43,13 @@ C_ 1) ISR name
 C_ 2) ISR priority
 C_ 3) The max activation count (the max number of nested ISR) 
 C_ next parameters are architecture dependant:
-C_ for Darwin PPC :
-C_ 4) The signal number
+C_ for Darwin PPC or Linux x86:
+C_ 4) The signal number or signal name (typically SIGUSR1 or SIGUSR2).
 C_ 5) stack size
 C_
 
 isr_list(
-    isr(it_trap30,30,3,30,32768)
+    isr(trap_SIGUSR1,30,3,SIGUSR1,32768)
 )
 
 C_

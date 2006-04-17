@@ -43,7 +43,8 @@ else
 endif
 	
 #test library.
-#LIBS  = -lcheck
+#LDFLAGS  = -lcheck
+LDFLAGS  = -g
 
 #***** do not modify below this line *****
 OS_DIR = ./os

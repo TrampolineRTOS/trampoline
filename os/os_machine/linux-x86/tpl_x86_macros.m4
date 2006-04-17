@@ -57,13 +57,16 @@ define(`sig_b',eval(index(`$1',`/*%')+3))dnl
 define(`sig_l',eval(index(`$1',`%*/')-sig_b))dnl
 substr(`$1',sig_b,sig_l)')dnl
 define(`AD_isr_assoc_list',`
-    ifelse($#,`1',`AD_sig($1)',`AD_sig($1)`,'AD_isr_assoc_list(shift($@))')dnl
+    ifelse($#,`1',`AD_sig($1)',`AD_sig($1)`,'AD_isr_assoc_list(shift($@))')
 ')dnl
 
 define(`AD_isr_addon',`dnl
 /*
  * Signal / handler id association
  */
+
+#include <signal.h>
+
 int signal_for_id[ISR_COUNT] =  {dnl
 AD_isr_assoc_list($@)
 };dnl
