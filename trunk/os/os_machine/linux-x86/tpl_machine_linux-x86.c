@@ -47,6 +47,20 @@
 
 
 /*
+	TODO: revoir les lock!! Une tâche démarrée automatique n'est pas préemptable (lock des its).
+*/
+
+
+/*#define __TPL_GET_LINUX_FRAME_OFFSET__ */
+#ifdef __TPL_GET_LINUX_FRAME_OFFSET__
+	unsigned int ebpAfterSignal;
+	#define VAL_EAX 0x12345678
+	/*
+	found EAX at index 50 -> 50 values.
+	corresponding in the tab: gs is at index (base index) 50-11 = 39
+	*/
+#endif
+/*
  * struct used to save the register of a new context before calling
  * tpl_release_task_lock from tpl_switch_context
  */
@@ -84,59 +98,6 @@ typedef struct LX86_LINKAGE_AREA lx86_linkage_area;
 #define LX86_REGISTER_SAVING_AREA_SIZE  56
 #define LX86_LINKAGE_AREA_SIZE          12
 
-/*
- * Offset from the top of the stack to get
- * the saved registers. It is used for
- * context switching while handling a signal
- */
-
-/*
- * SIGNAL_FRAME_SIZE is the size of the stuff the handling
- * off signal put on the stack.
- */
-#define SIGNAL_FRAME_SIZE           0x0670
-
-/*
- * ADDITIONAL_STUFF is the size of the stuff the functions called
- * by the signal handler put on the stack as it is when we reach the
- * tpl_switch_context_from_it function
- */
-#define ADDITIONAL_STUFF            0xD0
-
-/*
- * INTEGER_REGISTERS_OFFSET is the offset, counted from the top
- * of the stack as it is in the handler (no additional stuff),
- * of the integer registers the signal handling saved on the stack
- */
-#define INTEGER_REGISTERS_OFFSET    0x01B0
-
-/*
- * RETURN_ADDRESS_OFFSET is the offset, counted from the top
- * of the stack as it is in the handler (no additional stuff),
- * of the link register the signal handling saved on the stack
- */
-#define RETURN_ADDRESS_OFFSET       0x01A8
-
-/*
- * CONDITION_REGISTER_OFFSET is the offset, counted from the top
- * of the stack as it is in the handler (no additional stuff),
- * of the condition register the signal handling saved on the stack
- */
-#define CONDITION_REGISTER_OFFSET   0x0230
-
-/*
- * EXTENDED_REGISTER_OFFSET is the offset, counted from the top
- * of the stack as it is in the handler (no additional stuff),
- * of the eXtended register the signal handling saved on the stack
- */
-#define EXTENDED_REGISTER_OFFSET    0x0234
-
-/*
- * COUNT_REGISTER_OFFSET is the offset, counted from the top
- * of the stack as it is in the handler (no additional stuff),
- * of the count register the signal handling saved on the stack
- */
-#define COUNT_REGISTER_OFFSET       0x023C
 
 /*
  * table which stores the signals used for interrupt
@@ -156,6 +117,7 @@ void tpl_signal_handler(int sig)
 {
     unsigned int id;
 
+	printf("signal d'IT\n");
     for (id = 0; id < ISR_COUNT; id++) {
         if (signal_for_id[id] == sig) {
             tpl_central_interrupt_handler(id);
@@ -181,6 +143,7 @@ void tpl_get_task_lock(void)
     /*
      * block the handling of signals
      */
+	printf("lock\n");
     if (sigprocmask(SIG_BLOCK,&signal_set,NULL) == -1) {
         perror("tpl_get_lock failed");
         exit(-1);
@@ -193,6 +156,7 @@ void tpl_get_task_lock(void)
  */
 void tpl_release_task_lock(void)
 {
+	printf("unlock\n");
     if (sigprocmask(SIG_UNBLOCK,&signal_set,NULL) == -1) {
         perror("tpl_release_lock failed");
         exit(-1);
@@ -256,10 +220,15 @@ void tpl_switch_context(
 asm("nosave:  \n\t");
 	/*
 	* restore the current context to the new context
-	*/ 
+	*/
 
-	 /* to preserve the stack (same nb of push/pop) */        
+	 /* to preserve the stack (same nb of push/pop) */
 	asm("popl	%eax \n\t");
+
+	 /* to remove ebp and eip from the stack. */
+	asm("popl	%eax \n\t");
+	asm("popl	%eax \n\t");
+
 
 	/* eax is used to save @ of newcontext */
 	asm("movl	12(%ebp), %eax \n\t");
@@ -270,20 +239,27 @@ asm("nosave:  \n\t");
 	/* asm("movw	 4(%eax), %fs  \n\t"); */
 	/* asm("movw	 8(%eax), %es  \n\t"); */
 	/* asm("movw	12(%eax), %ds  \n\t"); */
-	asm("movl	16(%eax), %edi \n\t");
-	asm("movl	20(%eax), %esi \n\t");
-	/*ebp restored later */
+	asm("movl	16(%eax), %edi \n\t"); /*restore edi */
+	asm("movl	20(%eax), %esi \n\t"); /*restore esi */
+	/*ebp restored later (using stack) */
+
 	/************* switch stack ******************/
 	asm("movl	28(%eax), %esp \n\t");
+	/* the stack wil have eip, ebp and eflags in that order */
+	/*restore eip, using ebx, not yet restored*/
+	asm("movl	48(%eax), %ebx \n\t");
+	asm("pushl %ebx \n\t");				/*restore eip on top of stack */
+	asm("movl	24(%eax), %ebx \n\t");
+	asm("pushl %ebx \n\t");				/*then restore ebp on top of stack */
 	/*restore flags now (needs a temp register -> use ebx) */
 	asm("movl	56(%eax), %ebx \n\t");
-	asm("pushf");	/*push flags*/
+	asm("pushl %ebx");	/*push flags*/
 	
 	asm("movl	32(%eax), %ebx \n\t");
 	asm("movl	36(%eax), %edx \n\t");
 	asm("movl	40(%eax), %ecx \n\t");
 	/*eax restored later */
-	/*eip restored later */
+	/*eip restored later (using stack)*/
 	/* asm("movl	52(%eax), %cs  \n\t"); */
 	/*eflags are pushed on the the stack, and restored later */
 	/* asm("movl	60(%eax), %ss  \n\t"); */
@@ -299,25 +275,166 @@ asm("nosave:  \n\t");
 	/* retore flags on top of stack (following instruction will
 	 * not change flags (push and ret)) 
 	 */
-	asm("popf");
-	/* ebp and eip are not restored, as they MUST be on top of the stack
+	asm("popf\n\t");
+	/* ebp and eip are on top of the stack
 	 * the two next instructions generated by gcc update 
 	 * ebp : popl ebp
 	 * eip : ret
-	 */
+	*/
 }
 
 /*
  * tpl_switch_context_from_it
  */
 
-#define SAVINGS 20
-
 void tpl_switch_context_from_it(
-    tpl_context *old_context /* aka r3 */,
-    tpl_context *new_context /* aka r4 */)
+    tpl_context *old_context,
+    tpl_context *new_context)
 {
-    /* not implemented yet */
+	#ifdef __TPL_GET_LINUX_FRAME_OFFSET__
+		int *stack;
+		int i;
+		asm("movl %ebp, ebpAfterSignal\n");
+		stack = (int *)ebpAfterSignal;
+		while(1)
+		{
+			if(stack[i] == VAL_EAX) break; /* found */
+			i++;
+		}
+		printf("found EAX at index %d\n",i);
+		printf("base of the structure must be  at index %d (register gs)\n",i-11);
+		while(1);
+	#else
+		/* the registers are saved on the frame used when taking into account
+		 * the POSIX signal/
+		 * First: store the old context from the values saved in the frame.
+		*/
+
+		/* if no old context is defined, jump the save procedure */
+		/* eax gets @ of oldcontext (first argument) */
+		asm("movl	8(%ebp), %eax \n\t");
+	
+		/* 
+	 	* if eax=0, oldcontext = NULL 
+	 	* no save of the current context in this case
+	 	*/
+		asm("cmpl	$0, %eax \n\t");
+		asm("je	nosaveIT \n\t");
+		
+		/* get ic from oldcontext */
+		asm("movl	(%eax), %eax \n\t");
+
+		/* Save the context stored in the frame in the old context */
+		/* save registers onto oldcontext's structure */
+		/*gs*/
+		asm("movl	39*4(%ebp) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  (%eax) \n\t" ); 
+		/*fs*/
+		asm("movl	40*4(%ebp) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  4(%eax) \n\t" ); 
+		/*es*/
+		asm("movl	41*4(%ebp) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  4*2(%eax) \n\t" ); 
+		/*ds*/
+		asm("movl	42*4(%ebp) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  4*3(%eax) \n\t" ); 
+		/*edi*/
+		asm("movl	43*4(%ebp) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  4*4(%eax) \n\t" ); 
+		/*esi*/
+		asm("movl	44*4(%ebp) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  4*5(%eax) \n\t" ); 
+		/*ebp*/
+		asm("movl	45*4(%ebp) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  4*6(%eax) \n\t" ); 
+		/*esp*/
+		asm("movl	46*4(%ebp) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  4*7(%eax) \n\t" ); 
+		/*ebx*/
+		asm("movl	47*4(%ebp) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  4*8(%eax) \n\t" ); 
+		/*edx*/
+		asm("movl	48*4(%ebp) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  4*9(%eax) \n\t" ); 
+		/*ecx*/
+		asm("movl	49*4(%ebp) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  4*10(%eax) \n\t" ); 
+		/*eax*/
+		asm("movl	50*4(%ebp) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  4*11(%eax) \n\t" ); 
+	/* 2 dummy ints added in the linux signal frame */
+		/*eip*/
+		asm("movl	53*4(%ebp) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  4*12(%eax) \n\t" ); 
+		/*cs*/
+		asm("movl	54*4(%ebp) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  4*13(%eax) \n\t" ); 
+		/*eflags*/
+		asm("movl	55*4(%ebp) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  4*14(%eax) \n\t" ); 
+	/* 1 dummy int added in the linux signal frame */
+		/*ss*/
+		asm("movl	57*4(%ebp) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  4*15(%eax) \n\t" ); 
+
+asm("nosaveIT:  \n\t");
+
+		/* eax is used to save @ of newcontext */
+		asm("movl	12(%ebp), %eax \n\t");
+		/* eax gets ic of new context*/
+		asm("movl	(%eax), %eax \n\t");
+		/*gs*/
+	/*	asm("movl	(%eax) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  39*4(%ebp) \n\t" ); 
+	*/	/*fs*/
+	/*	asm("movl	4*1(%eax) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  40*4(%ebp) \n\t" ); 
+	*/	/*es*/
+	/*	asm("movl	4*2(%eax) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  41*4(%ebp) \n\t" ); 
+	*/	/*ds*/
+	/*	asm("movl	4*3(%eax) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  42*4(%ebp) \n\t" ); 
+	*/	/*edi*/
+		asm("movl	4*4(%eax) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  43*4(%ebp) \n\t" ); 
+		/*esi*/
+		asm("movl	4*5(%eax) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  44*4(%ebp) \n\t" ); 
+		/*ebp*/
+		asm("movl	4*6(%eax) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  45*4(%ebp) \n\t" ); 
+		/*esp*/
+		asm("movl	4*7(%eax) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  46*4(%ebp) \n\t" ); 
+		/*ebx*/
+		asm("movl	4*8(%eax) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  47*4(%ebp) \n\t" ); 
+		/*edx*/
+		asm("movl	4*9(%eax) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  48*4(%ebp) \n\t" ); 
+		/*ecx*/
+		asm("movl	4*10(%eax) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  49*4(%ebp) \n\t" ); 
+		/*eax*/
+		asm("movl	4*11(%eax) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  50*4(%ebp) \n\t" ); 
+	/* 2 dummy ints added in the linux signal frame */
+		/*eip*/
+		asm("movl	4*12(%eax) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  53*4(%ebp) \n\t" ); 
+		/*cs*/
+	/*	asm("movl	4*13(%eax) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  54*4(%ebp) \n\t" ); 
+	*/	/*eflags*/
+		asm("movl	4*14(%eax) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  55*4(%ebp) \n\t" );
+	/* 1 dummy int added in the linux signal frame */
+		/*ss*/
+	/*	asm("movl	4*15(%eax) ,  %ebx \n\t" );
+		asm("movl	%ebx ,  56*4(%ebp) \n\t" ); 
+	*/
+	#endif	
 }
 
 /*
@@ -326,7 +443,7 @@ void tpl_switch_context_from_it(
  */
 void tpl_init_context(tpl_exec_common *exec_obj)
 {
-	int *topStack;
+	/*int *topStack;*/
 	x86_integer_context *ic = exec_obj->static_desc->context.ic;
 	
 	/* init the structure with nul values. */
@@ -350,18 +467,11 @@ void tpl_init_context(tpl_exec_common *exec_obj)
 	/* define the entry point of the function */
 	ic->eip = (unsigned long)exec_obj->static_desc->entry;
 	
-	/* define the stack pointer*/
+	/* define the stack pointer. */
 	ic->esp = ((unsigned long)exec_obj->static_desc->stack.stack_zone)
-	               + exec_obj->static_desc->stack.stack_size - 2*sizeof(int);
+	               + exec_obj->static_desc->stack.stack_size;
 
-	/* the first thing that will be done after the context switch is to pop
-	 * the frame pointer (ebp) and the instruction pointer (eip). So they
-	 * must be pushed on top of the stack (that's why 2 ints are removed from 
-	 * the top of the stack.
-	 */
-	topStack = (int *)(ic->esp);
-	topStack[0] = ic->esp;
-	topStack[1] = ic->eip;
+	ic->ebp=ic->esp;
 }
 
 /*
@@ -370,13 +480,13 @@ void tpl_init_context(tpl_exec_common *exec_obj)
  */
 void tpl_init_machine(void)
 {
-    int id;
-    struct sigaction sa;
-    
-    /* lx86_init_viper(); */
-    
-    sigemptyset(&signal_set);
-    
+	int id;
+	struct sigaction sa;
+	printf("start viper.\n");
+	lx86_init_viper(); 
+
+	sigemptyset(&signal_set);
+
     /*
      * init a signal mask to block all signals (aka interrupts)
      */
@@ -390,7 +500,6 @@ void tpl_init_machine(void)
     sa.sa_handler = tpl_signal_handler;
     sa.sa_mask = signal_set;
     sa.sa_flags = 0;
-    
     /*
      * Install the signal handler used to emulate interruptions
      */
@@ -410,7 +519,7 @@ void tpl_init_machine(void)
      * call viper to program the timer
      * This should be in user code. It is here for testing
      */
-    /*lx86_start_one_shot_timer(SIGUSR1,3000000);*/
+    lx86_start_one_shot_timer(SIGUSR1,1000000);
     
     /*
      * unblock the handling of signals

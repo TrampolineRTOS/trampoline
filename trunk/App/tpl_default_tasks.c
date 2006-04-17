@@ -111,7 +111,7 @@ TASK(tata)
     TerminateTask();
 }
 
-ISR2(it_trap30) {
+ISR2(trap_SIGUSR1) {
     printf("catch\n");
     TerminateISR2();
 }
