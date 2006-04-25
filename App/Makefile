@@ -15,7 +15,7 @@
 include ../Make-rules
 
 #Add your source files here.
-APP_SRCS = tpl_default_tasks.c tpl_os_generated_configuration.c
+APP_SRCS = tpl_default_tasks_workstation.c tpl_os_generated_configuration.c
 
 #################### end of configuration.
 O_DIR = ../$(OBJ_DIR)
