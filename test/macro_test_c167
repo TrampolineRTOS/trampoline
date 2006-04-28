@@ -1,0 +1,79 @@
+begin_system
+C_
+C_ Taille de la pile par défaut (en octets) pour les tâches
+C_ Cette déclaration doit apparaître avant la déclaration des tâches
+C_ En l'absence de déclaration la pile est fixée à 1ko
+C_
+
+
+default_stack_size(64)
+
+
+tasks_list(
+    task(tick,1,SUSPENDED,10,128,512),
+    task(tock,1,SUSPENDED,11,128,512),
+    task(init,2,AUTOSTART,12,128,512)
+)
+
+C_
+C_ ISR list:
+C_ the parameters are:
+C_ 1) ISR name
+C_ 2) ISR priority
+C_ 3) The max activation count (the max number of nested ISR) 
+C_ next parameters are architecture dependant:
+C_ for the Infineon C167 with the Keil compiler:
+C_ 4) The trap number
+C_ 5) System stack (stored in iram)
+C_ 6) User stack
+
+isr_list(
+    isr(it_trap32,30,3,32,128,128)    
+)
+
+/* rajouter */
+/*isr_list(
+     isr(0,30,3,32,128,128)
+)*/
+
+
+C_
+C_ Liste des ressources
+C_ Le premier paramètre est le nom de la ressource
+C_ Le second est sa priorité plafond
+C_
+
+resources_list(
+    resource(resource1,3),
+    resource(resource2,2)
+)
+
+C_
+C_ Liste des compteurs
+C_ Le premier paramètre est le nom du compteur
+C_ Le second est le nombre de ticks avant qu'il ne soit incrémenté
+C_
+
+counter_list(
+    counter(cnt1,100),
+    counter(cnt2,300)
+)
+
+C_
+C_ Liste des alarmes
+C_ Le premier paramètre est le nom de l'alarme
+C_ Le 2e est le nom du compteur auquel l'alarme est associée
+C_ Le 3e le type d'alarm (activate_task, set_event, alarm_callback)
+C_ Le 4e est le nom de la tache (activate_task ou set_event)
+C_ ou bien le nom de la fonction callback (alarm_callback)
+C_ Le 5e est l'eventmask si il s'agit d'un set_event
+C_
+
+alarm_list(
+    alarm(alr1,cnt1,activate_task,tick),
+    alarm(alr2,cnt1,set_event,tick,4),
+    alarm(alr3,cnt2,alarm_callback,damned)
+    alarm(alr4,cnt1,alarm_callback,damned)
+)
+
+end_system
