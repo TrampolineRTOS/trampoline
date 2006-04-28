@@ -1,0 +1,41 @@
+### uVision2 Project, (C) Keil Software
+### Do not modify !
+
+ cExt (*.c)
+ aExt (*.s*; *.src; *.a*)
+ oExt (*.obj)
+ lExt (*.lib)
+ tExt (*.txt; *.h; *.inc)
+ pExt (*.plm)
+ CppX (*.cpp)
+ DaveTm { 0,0,0,0,0,0,0,0 }
+
+Target (phyCORE), 0x0002 // Tools: '166/167'
+GRPOPT 1,(System),0,0,0
+GRPOPT 2,(GPIO),0,0,0
+
+OPTFFF 1,1,1,0,0,0,0,0,<.\Source\main.c><main.c> 
+OPTFFF 2,2,1,0,0,0,0,0,<..\..\..\Source\GPIO\gpio.c><gpio.c> 
+
+
+TARGOPT 1, (phyCORE)
+  OPT166 25000000,0,1,0,1,1
+  OPT166MMM { 1,0,0,0,0,0,64,0,0,0,0,64,0,0,0,96,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+  OPT166ICA { 0,0,232,0,0,0,8,0,0 }
+  OPT166IRO { 0,0,0,0,0,0,0,0,0 }
+  OPT166XRA { 0,0,224,0,0,0,8,0,0 }
+  OPT166IRA { 0,0,242,0,0,0,12,0,0 }
+  OPTTT 0,1,1,0
+  OPTHX 1,65535,0,0,0
+  OPTLX 120,65,8,<.\>
+  OPTOX 16
+  OPTLT 1,1,1,0,1,1,0,1,0,0,0,0
+  OPTXL 1,1,1,1,1,1,1,0,0
+  OPTFL 0,0,1
+  OPTDL (S166.DLL)()(D167.DLL)(-p167CS)(S166.DLL)()(T167.DLL)(-p167CS)
+  OPTDBG 45054,-1,()()()()()()()()()() (MONITOR\MON166.DLL)()()()
+  OPTDF 0x0
+  OPTLE <>
+  OPTLC <>
+EndOpt
+

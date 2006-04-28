@@ -1,0 +1,11 @@
+
+	/* a utiliser si on debug avec le simulateur */
+	#ifndef MCB167          /* do not initialize if you use Monitor-166      */  
+		P3  |= 0x0400;        /* SET PORT 3.10 OUTPUT LATCH (TXD)              */
+	  	DP3 |= 0x0400;        /* SET PORT 3.10 DIRECTION CONTROL (TXD OUTPUT)  */
+	  	DP3 &= 0xF7FF;        /* RESET PORT 3.11 DIRECTION CONTROL (RXD INPUT) */
+	  	S0TIC = 0x80;         /* SET TRANSMIT INTERRUPT FLAG                   */
+	 	S0RIC = 0x00;         /* DELETE RECEIVE INTERRUPT FLAG                 */
+	 	//S0BG  = 0x40;         /* SET BAUDRATE TO 9600 BAUD                     */
+	 	S0CON = 0x8011;       /* SET SERIAL MODE                               */
+	#endif
