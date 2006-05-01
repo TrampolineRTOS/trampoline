@@ -14,24 +14,6 @@
  */
  
 /*
- * tpl_send_static_internal_message sends a message from an internal only
- * sending message object to a set of internal receiving message object.
- * this function is attached to the sending message object.
- */ 
-void tpl_send_static_internal_message(tpl_base_sending_mo *smo, tpl_application_data *data)
-{
-    /*  cast the base mo to the correct type of mo                          */
-    tpl_internal_sending_mo *ismo = (tpl_internal_sending_mo *)smo;
-    /*  get the first of the receiving mo                                   */
-    tpl_base_receiving_mo *rmo = ismo->internal_target;
-    /*  iterate through the receiving mo to copy the data to the receivers  */
-    while (rmo != NULL) {
-        rmo->receiver(rmo, data);
-        rmo = rmo->next_mo;
-    }
-}
-
-/*
  * tpl_send_static_external_message sends a message from an external only
  * sending message object to an IPDU.
  * This function is attached to the sending message object.
