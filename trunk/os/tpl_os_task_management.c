@@ -102,22 +102,37 @@ void tpl_schedule(int from)
         if (tpl_running_obj != NULL) {
             /*  There is a running task
                 get the priorities and compare them     */
-            if (exec_obj->priority > tpl_running_obj->priority) {
-                /*  the running task has not the higher priority
+            if (tpl_running_obj->state != RUNNING ||
+                exec_obj->priority > tpl_running_obj->priority) {
+                /*  the running task is not running (it has been put in
+                    the WAITING state of has not the higher priority).
                     So a task switch will occur. It is time to call
                     the PostTaskHook while the soon descheduled task
-                    is running                                      */
+                    is running                                          */
                 CALL_POST_TASK_HOOK()
-                /*  get the ready task from the ready task list     */
+                /*  get the ready task from the ready task list         */
                 exec_obj = tpl_get_exec_object();
-                /*  the current running task become READY           */
-                tpl_running_obj->state = READY;
-                /*  put the running task in the ready task list     */
-                /*  Bug fix. preempted objects are put at the head
-                    of the set while newly activated objects are
-                    put at the end of the set. So we have to
-                    distinguish them                                */
-                tpl_put_exec_object(tpl_running_obj, PREEMPTED_EXEC_OBJ);
+                
+                /*  test wether the currently "running" task lose
+                    the CPU because it has not the higher priority
+                    or because it has been put in the WAITING state     */
+                if (tpl_running_obj->state == RUNNING) {
+                    /*  the current running task become READY           */
+                    tpl_running_obj->state = READY;
+                    /*  put the running task in the ready task list     */
+                    /*  Bug fix. preempted objects are put at the head
+                        of the set while newly activated objects are
+                        put at the end of the set. So we have to
+                        distinguish them                                */
+                    tpl_put_exec_object(tpl_running_obj, PREEMPTED_EXEC_OBJ);
+                }
+                else {
+                    /*  if the task lose the CPU because it has been
+                        put in the WAITING state, its internal
+                        resource is released                            */
+                    tpl_release_internal_resource(tpl_running_obj);
+                }
+                
                 /*  set the task that have been got from the list
                     as the running task                             */
                 tpl_running_obj = exec_obj;

@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
 
 extern pid_t osek_app_pid;
 

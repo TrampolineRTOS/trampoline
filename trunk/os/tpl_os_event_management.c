@@ -19,6 +19,8 @@
 #include "tpl_os_kernel.h"
 #include "tpl_os_error.h"
 
+
+#include <stdio.h>
 /*
  * Prototypes of external functions
  */
@@ -189,7 +191,7 @@ StatusType WaitEvent(EventMaskType event)
     STORE_EVENT_MASK(event)
     
     LOCK_WHEN_NO_HOOK()
-    /*  ClearEvent cannot be called from ISR level  */
+    /*  WaitEvent cannot be called from ISR level  */
     CHECK_TASK_CALL_LEVEL_ERROR(result)
     /*  checks the calling task is an extended one  */
     CHECK_NOT_EXTENDED_RUNNING_ERROR(result)
@@ -204,10 +206,7 @@ StatusType WaitEvent(EventMaskType event)
     if (!(((tpl_task *)tpl_running_obj)->evt_set & event)) {
         /*  no one is set, the task goes in the WAITING state   */
         tpl_running_obj->state = WAITING;
-        /*  release the internal resource                       */
-        tpl_release_internal_resource(tpl_running_obj);
         /*  and a rescheduling occurs                           */
-        tpl_running_obj = NULL;
         tpl_schedule(FROM_TASK_LEVEL);
     }
     END_IF_NO_EXTENDED_ERROR()
