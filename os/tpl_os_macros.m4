@@ -61,7 +61,7 @@ tpl_exec_static task_static_descriptor_of_$1 = {
     /* task id                  */ $1`,'
     /* task base priority       */ (tpl_priority)$2`,'
     /* max activation count     */ $4`,'
-    /* task type                */ BASIC_TASK
+    /* task type                */ EXTENDED_TASK
 };
 
 /*
