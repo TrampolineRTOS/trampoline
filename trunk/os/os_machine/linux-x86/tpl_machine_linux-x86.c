@@ -131,7 +131,18 @@ void tpl_signal_handler(int sig)
  */
 void tpl_sleep(void)
 {
-    while (1);
+    while (1) sleep(10);
+}
+
+void tpl_shutdown(void)
+{
+	/* remove ITs */
+	if (sigprocmask(SIG_BLOCK,&signal_set,NULL) == -1) {
+        perror("tpl_get_lock failed");
+        exit(-1);
+    }
+    /* sleep forever */
+    while (1) sleep(10);
 }
 
 /*
