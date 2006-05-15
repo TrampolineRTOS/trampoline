@@ -25,6 +25,7 @@ void tpl_schedule(int);
 void tpl_get_task_lock(void);
 void tpl_release_task_lock(void);
 void tpl_sleep(void);
+void tpl_shutdown(void);
 
 #ifdef WITH_STARTUP_HOOK
 void StartupHook(void);
@@ -48,9 +49,8 @@ void StartOS(AppModeType mode)
 void ShutdownOS(StatusType error)
 {
     CALL_SHUTDOWN_HOOK(error)
-    
-    /*  I don't know what to do :P  */
-    tpl_sleep();
+    /* architecture dependant shutdown.*/
+    tpl_shutdown();
 }
 
 /*

@@ -47,6 +47,14 @@ void tpl_sleep(void)
     while (1);
 }
 
+void tpl_shutdown(void)
+{
+	/* remove ITs */
+	IEN = 0;
+	/* TODO: update to set idle mode.*/
+	while (1); 
+}
+
 void tpl_switch_context(tpl_context *old_context, tpl_context *new_context)
 {
 	
