@@ -43,6 +43,27 @@
 .set CTX_eflags_OFFSET,56
 .set CTX_ss_OFFSET,60
 
+/*correspondance between the structure and registers 
+ *in the Linux signal structure
+ */
+.set CTX_LINUX_gs_OFFSET,0
+.set CTX_LINUX_fs_OFFSET,4
+.set CTX_LINUX_es_OFFSET,8
+.set CTX_LINUX_ds_OFFSET,12
+.set CTX_LINUX_edi_OFFSET,16
+.set CTX_LINUX_esi_OFFSET,20
+.set CTX_LINUX_ebp_OFFSET,24
+.set CTX_LINUX_esp_OFFSET,28
+.set CTX_LINUX_ebx_OFFSET,32
+.set CTX_LINUX_edx_OFFSET,36
+.set CTX_LINUX_ecx_OFFSET,40
+.set CTX_LINUX_eax_OFFSET,44
+/*linux inserts here 2 dummy ints.*/
+.set CTX_LINUX_eip_OFFSET,56
+.set CTX_LINUX_cs_OFFSET,60
+.set CTX_LINUX_eflags_OFFSET,64
+/*linux inserts here 1 dummy int.*/
+.set CTX_LINUX_ss_OFFSET,72
 
 /* offset in the Linux POSIX Frame.
  * When a signal is received, registers are save onto the stack frame.
@@ -230,43 +251,37 @@ tpl_switch_context_from_it:
 
 	/* Save the context stored in the frame in the old context */
 	/* save registers onto oldcontext's structure */
-	movl	FRAME_OFFSET*4+CTX_gs_OFFSET(%ebp) ,  %ebx 
+	movl	FRAME_OFFSET*4+CTX_LINUX_gs_OFFSET(%ebp) ,  %ebx 
 	movl	%ebx ,  CTX_gs_OFFSET(%eax) 
-	movl	FRAME_OFFSET*4+CTX_fs_OFFSET(%ebp) ,  %ebx 
+	movl	FRAME_OFFSET*4+CTX_LINUX_fs_OFFSET(%ebp) ,  %ebx 
 	movl	%ebx ,  CTX_fs_OFFSET(%eax) 
-	movl	FRAME_OFFSET*4+CTX_es_OFFSET(%ebp) ,  %ebx 
+	movl	FRAME_OFFSET*4+CTX_LINUX_es_OFFSET(%ebp) ,  %ebx 
 	movl	%ebx ,  CTX_es_OFFSET(%eax) 
-	movl	FRAME_OFFSET*4+CTX_ds_OFFSET(%ebp) ,  %ebx 
+	movl	FRAME_OFFSET*4+CTX_LINUX_ds_OFFSET(%ebp) ,  %ebx 
 	movl	%ebx ,  CTX_ds_OFFSET(%eax) 
-	movl	FRAME_OFFSET*4+CTX_edi_OFFSET(%ebp) ,  %ebx 
+	movl	FRAME_OFFSET*4+CTX_LINUX_edi_OFFSET(%ebp) ,  %ebx 
 	movl	%ebx ,  CTX_edi_OFFSET(%eax) 
-	movl	FRAME_OFFSET*4+CTX_esi_OFFSET(%ebp) ,  %ebx 
+	movl	FRAME_OFFSET*4+CTX_LINUX_esi_OFFSET(%ebp) ,  %ebx 
 	movl	%ebx ,  CTX_esi_OFFSET(%eax) 
-	movl	FRAME_OFFSET*4+CTX_ebp_OFFSET(%ebp) ,  %ebx 
+	movl	FRAME_OFFSET*4+CTX_LINUX_ebp_OFFSET(%ebp) ,  %ebx 
 	movl	%ebx ,  CTX_ebp_OFFSET(%eax) 
-	movl	FRAME_OFFSET*4+CTX_esp_OFFSET(%ebp) ,  %ebx 
+	movl	FRAME_OFFSET*4+CTX_LINUX_esp_OFFSET(%ebp) ,  %ebx 
 	movl	%ebx ,  CTX_esp_OFFSET(%eax) 
-	movl	FRAME_OFFSET*4+CTX_ebx_OFFSET(%ebp) ,  %ebx 
+	movl	FRAME_OFFSET*4+CTX_LINUX_ebx_OFFSET(%ebp) ,  %ebx 
 	movl	%ebx ,  CTX_ebx_OFFSET(%eax) 
-	movl	FRAME_OFFSET*4+CTX_edx_OFFSET(%ebp) ,  %ebx 
+	movl	FRAME_OFFSET*4+CTX_LINUX_edx_OFFSET(%ebp) ,  %ebx 
 	movl	%ebx ,  CTX_edx_OFFSET(%eax) 
-	movl	FRAME_OFFSET*4+CTX_ecx_OFFSET(%ebp) ,  %ebx 
+	movl	FRAME_OFFSET*4+CTX_LINUX_ecx_OFFSET(%ebp) ,  %ebx 
 	movl	%ebx ,  CTX_ecx_OFFSET(%eax) 
-	movl	FRAME_OFFSET*4+CTX_eax_OFFSET(%ebp) ,  %ebx 
+	movl	FRAME_OFFSET*4+CTX_LINUX_eax_OFFSET(%ebp) ,  %ebx 
 	movl	%ebx ,  CTX_eax_OFFSET(%eax) 
-
-	/* 2 dummy ints added in the linux signal frame */
-
-	movl	(FRAME_OFFSET+2)*4+CTX_eip_OFFSET(%ebp) ,  %ebx 
+	movl	FRAME_OFFSET*4+CTX_LINUX_eip_OFFSET(%ebp) ,  %ebx 
 	movl	%ebx ,  CTX_eip_OFFSET(%eax) 
-	movl	(FRAME_OFFSET+2)*4+CTX_cs_OFFSET(%ebp) ,  %ebx 
+	movl	FRAME_OFFSET*4+CTX_LINUX_cs_OFFSET(%ebp) ,  %ebx 
 	movl	%ebx ,  CTX_cs_OFFSET(%eax) 
-	movl	(FRAME_OFFSET+2)*4+CTX_eflags_OFFSET(%ebp) ,  %ebx 
+	movl	FRAME_OFFSET*4+CTX_LINUX_eflags_OFFSET(%ebp) ,  %ebx 
 	movl	%ebx ,  CTX_eflags_OFFSET(%eax) 
-
-	/* 1 dummy int added in the linux signal frame */
-
-	movl	(FRAME_OFFSET+3)*4+CTX_ss_OFFSET(%ebp) ,  %ebx 
+	movl	FRAME_OFFSET*4+CTX_LINUX_ss_OFFSET(%ebp) ,  %ebx 
 	movl	%ebx ,  CTX_ss_OFFSET(%eax) 
 
 nosaveIT:  
