@@ -2,7 +2,7 @@
 # Trampoline OS
 #
 # Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline est protégé par la loi sur la propriété intellectuelle
+# Trampoline est protï¿½ï¿½par la loi sur la propriï¿½ï¿½intellectuelle
 #
 # This software is distributed under the Lesser GNU Public Licence
 #
@@ -17,16 +17,19 @@ include ../Make-rules
 #Add your source files here.
 APP_SRCS = tpl_default_tasks_workstation.c tpl_os_generated_configuration.c
 
+#CFLAGS already defined in ../Make-rules
+APP_FLAGS = $(CFLAGS)
+
 #################### end of configuration.
 O_DIR = ../$(OBJ_DIR)
 APP_OBJS = $(addprefix $(O_DIR)/,$(APP_SRCS:.c=.o))
 
-CFLAGS += -I. -I../$(OS_DIR) -I../$(OS_MACHINE_DIR)
+APPFLAGS += -I. -I../$(OS_DIR) -I../$(OS_MACHINE_DIR)
 
 APP: $(APP_OBJS)
 	
 $(O_DIR)/%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(APPFLAGS) -c $< -o $@
 
 # remove object files and tpl_os_generated_configuration.* 
 clean:
