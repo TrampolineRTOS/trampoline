@@ -54,9 +54,9 @@ TASK(toto)
     int i;
     
     compte++;
-    printf("toto\n");
+    printf("toto (%d)\n", compte);
     fflush(stdout);
-    for (i=0; i<10000000; i++);
+    for (i=0; i<100000000; i++);
     ActivateTask(tata);
 	printf("toto2\n");
 	fflush(stdout);

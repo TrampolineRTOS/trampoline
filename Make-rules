@@ -12,9 +12,6 @@ TARGET=linux-x86
 # * x86
 ARCH=x86
 
-#APP_SRCS = test.c	 
-APP_SRCS = App/tpl_default_tasks.c
-
 EXE    =  trampoline
 
 #M4 definition file
@@ -28,7 +25,8 @@ ALLFLAGS = \
 -DWITH_ERROR_HOOK \
 -DWITH_TASK_HOOK \
 -DWITH_STARTUP_HOOK \
--DWITH_SHUTDOWN_HOOK
+-DWITH_SHUTDOWN_HOOK 
+#-D__TPL_GET_LINUX_FRAME_OFFSET__
 
 
 #compilation flags for C files
@@ -45,6 +43,7 @@ endif
 #test library.
 #LDFLAGS  = -lcheck
 LDFLAGS  = -g
+
 
 #***** do not modify below this line *****
 OS_DIR = ./os
