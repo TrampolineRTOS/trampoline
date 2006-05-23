@@ -27,6 +27,15 @@
 #define CONFORMANCE_CLASS ECC2
 
 /*
+ * Special result code for Trampoline
+ */
+#define NO_SPECIAL_CODE         0
+#define NEED_RESCHEDULING       32
+#define E_OK_AND_SCHEDULE       (E_OK | NEED_RESCHEDULING)
+#define OSEK_STATUS_MASK        0x1F
+#define TRAMPOLINE_STATUS_MASK  0xE0
+
+/*
  * Forward declarations
  */
 struct TPL_TASK;
