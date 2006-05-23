@@ -28,6 +28,7 @@
  */
 tpl_status tpl_activate_task(tpl_task *);
 tpl_status tpl_set_event(tpl_task *, tpl_event_mask);
+void tpl_schedule(int);
 void tpl_get_task_lock(void);
 void tpl_release_task_lock(void);
 
@@ -132,8 +133,10 @@ void tpl_remove_alarm(tpl_alarm *alarm)
  * tpl_raise_alarm is called by tpl_counter_tick
  * when an alarm is raised
  */
-void tpl_raise_alarm(tpl_alarm *alarm)
+tpl_status tpl_raise_alarm(tpl_alarm *alarm)
 {
+    tpl_status result = E_OK;
+    
     /*  check the kind of alarm to do the mandatory action  */
     switch (alarm->kind) {
         case ALARM_CALLBACK:
@@ -142,15 +145,11 @@ void tpl_raise_alarm(tpl_alarm *alarm)
             break;
         case ALARM_TASK_ACTIVATION:
             /*  activate the task   */
-            tpl_get_task_lock();
-            tpl_activate_task(alarm->action.task_or_callback.task);
-            tpl_release_task_lock();
+            result = tpl_activate_task(alarm->action.task_or_callback.task);
             break;
         case ALARM_EVENT_SETTING:
             /*  set the event   */
-            tpl_get_task_lock();
-            tpl_set_event(alarm->action.task_or_callback.task,alarm->action.mask);
-            tpl_release_task_lock();
+            result = tpl_set_event(alarm->action.task_or_callback.task,alarm->action.mask);
             break;
     }
     
@@ -164,6 +163,8 @@ void tpl_raise_alarm(tpl_alarm *alarm)
             of the counter it belongs to                    */
         tpl_insert_alarm(alarm);
     }
+    
+    return result;
 }
 
 /*
@@ -177,8 +178,9 @@ void tpl_raise_alarm(tpl_alarm *alarm)
  */
 void tpl_counter_tick(tpl_counter *counter)
 {
-    tpl_alarm* alarm;
-    tpl_tick date;
+    tpl_alarm*  alarm;
+    tpl_tick    date;
+    tpl_status  need_rescheduling = NO_SPECIAL_CODE;
     
     /*  inc the current tick value of the counter   */
     counter->current_tick++;
@@ -199,9 +201,12 @@ void tpl_counter_tick(tpl_counter *counter)
             /*  get the alarm from the queue    */
             tpl_remove_alarm(alarm);
             /*  raise it    */
-            tpl_raise_alarm(alarm);
+            need_rescheduling |= (TRAMPOLINE_STATUS_MASK & tpl_raise_alarm(alarm));
             /*  get the next alarm to raise     */
             alarm = counter->next_alarm_to_raise;
+        }
+        if (need_rescheduling == NEED_RESCHEDULING) {
+            tpl_schedule(FROM_IT_LEVEL);
         }
     }
 }

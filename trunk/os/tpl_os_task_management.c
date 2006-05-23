@@ -228,11 +228,8 @@ tpl_status tpl_activate_task(tpl_task *task)
             it will dec this count and if not zero it will be reactivated   */
         task->exec_desc.activate_count++;
 
-        result = E_OK;
+        result = E_OK_AND_SCHEDULE;
     }
-
-
-    tpl_schedule(FROM_TASK_LEVEL);
 
     return result;
 }
@@ -262,6 +259,9 @@ StatusType ActivateTask(TaskType task_id)
 #ifndef NO_TASK
     IF_NO_EXTENDED_ERROR(result)
         result = tpl_activate_task(tpl_task_table[task_id]);
+        if (result == E_OK_AND_SCHEDULE) {
+            tpl_schedule(FROM_TASK_LEVEL);
+        }
     END_IF_NO_EXTENDED_ERROR()
 #endif
     
@@ -270,7 +270,7 @@ StatusType ActivateTask(TaskType task_id)
     /*  unlock the task structures  */
     UNLOCK_WHEN_TASK()
     
-    return result;
+    return (result & OSEK_STATUS_MASK);
 }
 
 /*

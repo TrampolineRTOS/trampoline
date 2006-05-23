@@ -19,17 +19,29 @@
 
 #include "tpl_com_types.h"
 
-typedef tpl_status (*tpl_transfer_func)(
+/*
+ * Prototype for sending function
+ */
+typedef tpl_status (*tpl_sending_func)(
     struct TPL_BASE_SENDING_MO *,
-    tpl_appication_data *           );
+    tpl_appication_data *
+);
+
+/*
+ * Prototype for receiving function
+ */
+typedef tpl_status (*tpl_receiving_func)(
+    struct TPL_BASE_RECEIVING_MO *,
+    tpl_application_data *
+);
 
 /*
  * tpl_base_sending_mo is the base datastructure for internal
  * and external communication message objects.
  */
 struct TPL_BASE_SENDING_MO {
-    /*  kind of message, see tpl_com_definitions header file  */
-    tpl_transfer_func    sender;
+    /*  pointer to the sending function  */
+    tpl_sending_func    sender;
 };
 
 typedef struct TPL_BASE_SENDING_MO tpl_base_sending_mo;

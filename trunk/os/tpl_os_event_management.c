@@ -37,6 +37,8 @@ void tpl_release_internal_resource(tpl_exec_common *);
  */
 tpl_status tpl_set_event(tpl_task *task, tpl_event_mask incoming_event)
 {
+    tpl_status result = E_OK;
+
     if (task->exec_desc.state != SUSPENDED) {
         /*  merge the incoming event mask with the old one  */
         task->evt_set = (tpl_event_mask)(task->evt_set | incoming_event);
@@ -47,23 +49,24 @@ tpl_status tpl_set_event(tpl_task *task, tpl_event_mask incoming_event)
                 not sure the wait mask should be clear according to the
                 incoming event. did it                                  */
             task->evt_wait &= (tpl_event_mask)(~incoming_event);
-            /*  anyway check it is in the WAITING state */
+            /*  anyway check it is in the WAITING state     */
             if (task->exec_desc.state == WAITING) {
                 /*  set the state to READY  */
                 task->exec_desc.state = READY;
-                /*  put the task in the READY list  */
+                /*  put the task in the READY list          */
                 tpl_put_exec_object(
                     (tpl_exec_common *)task,
                     NEWLY_ACTIVATED_EXEC_OBJ);
-                /*  call tpl_schedule   */
-                tpl_schedule(FROM_TASK_LEVEL);
+                /*  notify a scheduling needs to be done    */
+                result = E_OK_AND_SCHEDULE;
             }
         }
-        return E_OK;
     }
     else {
-        return E_OS_STATE;
+        result = E_OS_STATE;
     }
+    
+    return result;
 }
 
 /*
@@ -92,6 +95,9 @@ StatusType SetEvent(TaskType task_id, EventMaskType event)
 #ifndef NO_TASK
     IF_NO_EXTENDED_ERROR(result)
         result = tpl_set_event(tpl_task_table[task_id], event);
+        if (result == E_OK_AND_SCHEDULE) {
+            tpl_schedule(FROM_TASK_LEVEL);
+        }
     END_IF_NO_EXTENDED_ERROR()
 #endif
         
@@ -101,7 +107,7 @@ StatusType SetEvent(TaskType task_id, EventMaskType event)
     
     UNLOCK_WHEN_HOOK()
     
-    return result;
+    return (result & OSEK_STATUS_MASK);
 }
 
 
