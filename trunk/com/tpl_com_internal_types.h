@@ -17,14 +17,22 @@
 #ifndef __TPL_COM_INTERNAL_TYPES_H__
 #define __TPL_COM_INTERNAL_TYPES_H__
 
-#include "tpl_com_types.h"
+#include "tpl_com_filtering.h"
+
+typedef unsigned char tpl_com_data;
+
+/*
+ * Forward declarations
+ */
+struct TPL_BASE_SENDING_MO;
+struct TPL_BASE_RECEIVING_MO;
 
 /*
  * Prototype for sending function
  */
 typedef tpl_status (*tpl_sending_func)(
     struct TPL_BASE_SENDING_MO *,
-    tpl_appication_data *
+    tpl_com_data *
 );
 
 /*
@@ -32,7 +40,7 @@ typedef tpl_status (*tpl_sending_func)(
  */
 typedef tpl_status (*tpl_receiving_func)(
     struct TPL_BASE_RECEIVING_MO *,
-    tpl_application_data *
+    tpl_com_data *
 );
 
 /*
@@ -65,9 +73,9 @@ struct TPL_EXTERNAL_SENDING_MO {
     /*  common to all sending mo            */
     tpl_base_sending_mo     base_mo;
     /*  function pointer to the filter      */
-    tpl_filter              filter;
+    tpl_filter_desc         filter;
     /*  pointer to the buffer               */
-    tpl_application_data    *buffer;
+    tpl_com_data            *buffer;
     /*  pointer to the IPDU                 */
     tpl_sending_ipdu        *external_target;
     /*  location of the message in the IPDU */
@@ -81,35 +89,45 @@ typedef struct TPL_EXTERNAL_SENDING_MO tpl_external_sending_mo;
  * sending message object
  */
 struct TPL_INTERNAL_EXTERNAL_SENDING_MO {
-    /*  common to all sending mo    */
-    tpl_base_sending_mo     base_mo;
-    /*  function pointer to the filter  */
-    tpl_filter              filter;
-    /*  pointer to the buffer           */
-    tpl_application_data    *buffer;
+    /*  common to all sending mo                            */
+    tpl_base_sending_mo             base_mo;
+    /*  function pointer to the filter                      */
+    tpl_filter                      filter;
+    /*  pointer to the buffer                               */
+    tpl_com_data                    *buffer;
     /*  pointer to the internal receiving message object    */
     struct TPL_BASE_RECEIVING_MO    *internal_target;
-    /*  pointer to the IPDU         */
-    struct TPL_SENDING_IPDU *external_target;
+    /*  pointer to the IPDU                                 */
+    struct TPL_SENDING_IPDU         *external_target;
 };
 
-typedef struct TPL_INTERNAL_EXTERNAL_SENDING_MO tpl_internal_external_sending_mo;
+typedef struct TPL_INTERNAL_EXTERNAL_SENDING_MO
+tpl_internal_external_sending_mo;
 
-struct TPL_QUEUE {
-    tpl_queue_size  max_size;
-    tpl_queue_size  size;
-    tpl_queue_size  element_size;
-    tpl_queue_index index;
-    char            *buffer;
-    char            *last;
+/*
+ * Structures used for queued receiving message objects
+ */
+struct TPL_QUEUE_DYNAMIC {
+    /*  current size of the queue                                       */
+    tpl_queue_size          size;
+    /*  read index                                                      */
+    tpl_queue_index         index;
+    /*  pointer to the last written element (used for filtering)        */
+    tpl_com_data            *last;
 };
-typedef struct TPL_QUEUE tpl_queue;
 
-struct TPL_NOTIFICATION {
-    char a;
+struct TPL_QUEUE_STATIC {
+    /*  pointer to the dynamic descriptor                               */
+    struct TPL_QUEUE_DYNAMIC *dyn_desc;
+    /*  max_size of the queue (number of tpl_application_data elements) */
+    tpl_queue_size          max_size;
+    /*  size of an element of the queue                                 */
+    tpl_queue_size          element_size;
+    /*  pointer to the beginning of the buffer                          */
+    tpl_com_data            *buffer;
 };
 
-typedef struct TPL_NOTIFICATION tpl_notification;
+typedef struct TPL_QUEUE_STATIC tpl_queue;
 
 /*
  * Receiving message object descriptors
@@ -120,58 +138,40 @@ typedef struct TPL_NOTIFICATION tpl_notification;
  * as long as a common data structure called tpl_base_receiving_mo 
  */
 struct TPL_BASE_RECEIVING_MO {
-    tpl_message_size    size;
-    unsigned char       kind;
-/*    tpl_receive_notification toto; */
+    /*  pointer to the receiving function   */
+    tpl_receiving_func              receiver;
+    /*  notification structure              */
+    tpl_notification                notification;
+    /*  message objects chaining            */
+    struct TPL_BASE_RECEIVING_MO    *next_mo;
 };
 
 typedef struct TPL_BASE_RECEIVING_MO tpl_base_receiving_mo;
 
-struct TPL_UNQUEUED_RECEIVING_MO {
-    /*  more than one unqueued Message Object may receive a message.
-        next_mo is used to build a list of destination message objects. */
-    struct TPL_UNQUEUED_RECEIVING_MO *next_mo;
+struct TPL_INTERNAL_RECEIVING_UNQUEUED_MO {
+    /*  common part of the receiving message objects    */
+    tpl_base_receiving_mo   base_mo;
+    /*  pointer to the receive buffer                   */
+    tpl_com_data            *buffer;
+    /*  filtering                                       */
+    tpl_filter_desc         filter;
+    /*  size of the message object                      */
+    tpl_data_size           size;
 };
 
-typedef struct TPL_UNQUEUED_RECEIVING_MO tpl_unqueued_receiving_mo;
+typedef struct TPL_INTERNAL_RECEIVING_UNQUEUED_MO
+tpl_internal_receiving_unqueued_mo;
 
-/*
-struct TPL_QUEUED_RECEIVING_MO {
+struct TPL_INTERNAL_RECEIVING_QUEUED_MO {
+    /*  common part of the receiving message objects    */
+    tpl_base_receiving_mo   base_mo;
+    /*  queue                                           */
+    tpl_queue               *queue;
+    /*  filtering                                       */
+    tpl_filter_desc         filter;
 };
 
-typedef struct TPL_QUEUED_RECEIVING_MO tpl_queued_receiving_mo;
-*/
-/*
- * Sending message object
- */
-struct TPL_SENDING_MESSAGE_OBJECT {
-    /*  size of the message object in bytes */
-    tpl_message_size        size;
-    /*  first of the receiving messages for internal communication  */
-    /*  tpl_receiving_message   *internal_destination;  */
-#ifdef WITH_EXTERNAL_COM
-    /*  buffer to store the message */
-    tpl_message_atom        *buffer;
-    /*  sending filter              */
-    tpl_filter              filter;
-    /*  destination ipdu            */
-    tpl_sending_ipdu        *ipdu;
-#endif
-};
+typedef struct TPL_INTERNAL_RECEIVING_QUEUED_MO
+tpl_internal_receiving_queued_mo;
 
-typedef struct TPL_SENDING_MESSAGE_OBJECT tpl_sending_mo;
-
-
-
-#ifdef WITH_EXTERNAL_COM
-    //
-#else
-#endif
-
-#ifdef WITH_EXTERNAL_COM
-    // type of the message
-    tpl_message_type  type;
-#endif
-
-        
 #endif
