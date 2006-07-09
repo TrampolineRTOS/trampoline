@@ -18,10 +18,6 @@
 
 include Make-rules
 
-ifeq ($(strip $(TARGET)),linux-x86)
-	LDFLAGS += -lpthread -lrt
-endif
-
 ALL: $(EXE)
 
 #make OS objects.
