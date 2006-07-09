@@ -4,13 +4,15 @@ CC=gcc
 # * darwin-ppc (MacOsX on PowerPC)
 # * c167 (C167, with the Keil compiler on MS Windows)
 # * linux-x86.
-TARGET=linux-x86
+# * posix-libpcl (requires the portable libpcl on your system) WARNING: UNDER TEST
+TARGET=posix-libpcl
 
 # arch may be either:
 # * ppc for the PowerPC.
 # * c167 
 # * x86
-ARCH=x86
+# * libpcl
+ARCH=libpcl
 
 EXE    =  trampoline
 
@@ -43,6 +45,14 @@ endif
 #test library.
 #LDFLAGS  = -lcheck
 LDFLAGS  = -g
+
+ifeq ($(strip $(TARGET)),posix-libpcl)
+	LDFLAGS += -lpcl -lrt
+endif
+
+ifeq ($(strip $(TARGET)),linux-x86)
+	LDFLAGS += -lpthread -lrt
+endif
 
 
 #***** do not modify below this line *****
