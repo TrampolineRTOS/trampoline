@@ -19,8 +19,8 @@
  *
  */
  
-#ifndef __TPL_OS_TYPES_H__
-#define __TPL_OS_TYPES_H__
+#ifndef __TPL_OS_CUSTOM_TYPES_H__
+#define __TPL_OS_CUSTOM_TYPES_H__
 
 /*
  * tpl_task_id is used for task ids.

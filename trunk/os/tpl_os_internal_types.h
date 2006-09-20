@@ -18,6 +18,7 @@
 #ifndef __TPL_OS_INTERNAL_TYPES_H__
 #define __TPL_OS_INTERNAL_TYPES_H__
 
+#include "tpl_os_custom_types.h"
 #include "tpl_os_types.h"
 #include "tpl_machine.h"
 
@@ -40,18 +41,6 @@
  */
 struct TPL_TASK;
 struct TPL_RESOURCE;
-
-/*
- * standard bool declaration
- */
-typedef unsigned char bool;
-
-/*
- * tpl_status_type is used for return
- * status of services (ie one of the result
- * codes specified below).
- */
-typedef unsigned char tpl_status;
 
 /*
  * tpl_exec_obj_type is used to distinguish kind
@@ -170,12 +159,6 @@ struct TPL_INTERNAL_RESOURCE {
 };
 
 typedef struct TPL_INTERNAL_RESOURCE tpl_internal_resource;
-
-/*
- * tpl_callback_func is used for various
- * callback function type in the os
- */
-typedef void (*tpl_callback_func)(void);
 
 
 typedef unsigned char tpl_alarm_state;
