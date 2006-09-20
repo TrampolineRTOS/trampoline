@@ -98,7 +98,7 @@ unsigned char tpl_os_state = OS_INIT;
  */
 tpl_resource_id RES_SCHEDULER = -1;
 
-tpl_resource res_scheduler;
+tpl_resource res_scheduler = { 127, 0, NULL, NULL };
 
 /*
  * various locks in the kernel

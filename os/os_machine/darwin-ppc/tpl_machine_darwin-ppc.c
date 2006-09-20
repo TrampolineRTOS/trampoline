@@ -454,7 +454,7 @@ void tpl_init_machine(void)
      * call viper to program the timer
      * This should be in user code. It is here for testing
      */
-    dppc_start_auto_timer(SIGUSR1,30000000);
+    dppc_start_auto_timer(SIGUSR1,10000000);
     
     /*
      * unblock the handling of signals
