@@ -261,6 +261,7 @@ StatusType ActivateTask(TaskType task_id)
         result = tpl_activate_task(tpl_task_table[task_id]);
         if (result == E_OK_AND_SCHEDULE) {
             tpl_schedule(FROM_TASK_LEVEL);
+            result &= OSEK_STATUS_MASK;
         }
     END_IF_NO_EXTENDED_ERROR()
 #endif
@@ -270,7 +271,7 @@ StatusType ActivateTask(TaskType task_id)
     /*  unlock the task structures  */
     UNLOCK_WHEN_TASK()
     
-    return (result & OSEK_STATUS_MASK);
+    return result;
 }
 
 /*
