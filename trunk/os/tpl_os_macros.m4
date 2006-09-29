@@ -242,7 +242,7 @@ define(`alarm',`dnl
 ifdef(`header',`dnl
 /* define the symbol to use with OS services */
 `#'define $1  currentalarm',`
-ifelse($3,`alarm_callback',ifdef(`callback_function_$4',`',`void $4`('`)';define(`callback_function_$4')'))
+ifelse($3,`alarm_callback',ifdef(`callback_function_$4',`',`void alarm_callback_$4`('`)';define(`callback_function_$4')'))
 /*
  * Alarm descriptor of alarm $1
  */
@@ -251,7 +251,7 @@ tpl_alarm alarm_descriptor_of_$1 = {
     /* kind of the alarm    */  ifelse($3,`activate_task',`ALARM_TASK_ACTIVATION',$3,`set_event',`ALARM_EVENT_SETTING',$3,`alarm_callback',`ALARM_CALLBACK')`,'
                                 {
     /* action of the alarm  */      {
-                                        ifelse($3,`activate_task',`(tpl_callback_func)&task_descriptor_of_$4',$3,`set_event',`(tpl_callback_func)&task_descriptor_of_$4',$3,`alarm_callback',`$4')
+                                        ifelse($3,`activate_task',`(tpl_callback_func)&task_descriptor_of_$4',$3,`set_event',`(tpl_callback_func)&task_descriptor_of_$4',$3,`alarm_callback',`alarm_callback_$4')
                                     }`,'
     /* event if necessary   */      ifelse($3,`activate_task',`0',$3,`set_event',`$5',$3,`alarm_callback',`0')
                                 }`,'
