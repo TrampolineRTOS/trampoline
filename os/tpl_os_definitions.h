@@ -78,12 +78,20 @@
 /*
  * Define the TASK macro
  */
-#define TASK(name)  void task_##name##_function(void)
+#define TASK(name)              \
+    void task_##name##_function(void)
 
 /*
  * Define the ISR2 macro
  */
-#define ISR2(name)  void isr2_##name##_function(void)
+#define ISR2(name)              \
+    void isr2_##name##_function(void)
+
+/*
+ * Define the ALARMCALLBACK macro
+ */
+#define ALARMCALLBACK(name)     \
+    void alarm_callback_##name(void)
 
 /*
  * Define masks to access bits in the type field of
