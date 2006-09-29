@@ -97,6 +97,7 @@ StatusType SetEvent(TaskType task_id, EventMaskType event)
         result = tpl_set_event(tpl_task_table[task_id], event);
         if (result == E_OK_AND_SCHEDULE) {
             tpl_schedule(FROM_TASK_LEVEL);
+            result &= OSEK_STATUS_MASK;
         }
     END_IF_NO_EXTENDED_ERROR()
 #endif
@@ -107,7 +108,7 @@ StatusType SetEvent(TaskType task_id, EventMaskType event)
     
     UNLOCK_WHEN_HOOK()
     
-    return (result & OSEK_STATUS_MASK);
+    return result;
 }
 
 
