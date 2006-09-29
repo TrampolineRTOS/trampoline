@@ -62,7 +62,8 @@ void tpl_insert_alarm(tpl_alarm *alarm)
         prev_alarm = NULL;
         /*  The alarm queue is not empty
             look for the place to insert the alarm  */
-        while ((current_alarm != NULL) && (current_alarm->date < alarm->date)) {
+        while ( (current_alarm != NULL) &&
+                (current_alarm->date <= alarm->date)) {
             prev_alarm = current_alarm;
             current_alarm = current_alarm->next_alarm;
         }
@@ -81,8 +82,16 @@ void tpl_insert_alarm(tpl_alarm *alarm)
         else {
             /*  the condition current_alarm->date < alarm->date was
                 false a the beginning of the while. So the alarm
-                have to be added at the head of the alarm queue     */
+                have to be added at the head of the alarm queue             */
             counter->first_alarm = alarm;
+        }
+        
+        /*  Update the next_alarm_to_raise to point to the newly
+            inserted alarm if the date of the newly inserted alarm
+            is within the current date and the next_alarm_to_raise date.    */
+        if ((alarm->date > counter->current_date) &&
+            (alarm->date < counter->next_alarm_to_raise->date)) {
+            counter->next_alarm_to_raise = alarm;
         }
     }
     
