@@ -32,7 +32,7 @@ list oilDefinitions error message "OIL implementation definition" :
 #
 list objList error message "Object %K" :
     "OS", "TASK", "COUNTER", "ALARM", "RESOURCE", "EVENT",
-    "ISR", "MESSAGE", "COM", "NM", "APPMODE", "IPDU" ;
+    "ISR", "MESSAGE", "COM", "NM", "APPMODE", "IPDU", "CPU" ;
 
 #
 # List of datatypes
@@ -44,7 +44,15 @@ list dataTypes error message "type %K" :
 # Miscellaneous specifiers
 #
 list miscSpecifiers error message "specifier %K" :
-    "WITH_AUTO" ;
+    "WITH_AUTO", "NO_DEFAULT", "AUTO", "TRUE", "FALSE" ;
+
+#
+# Objects Ref Types
+#
+list objectRefType error message "object reference type %K" :
+    "OS_TYPE", "TASK_TYPE", "COUNTER_TYPE", "ALARM_TYPE",
+    "RESOURCE_TYPE", "EVENT_TYPE", "ISR_TYPE", "MESSAGE_TYPE",
+    "COM_TYPE", "NM_TYPE", "APPMODE_TYPE", "IPDU_TYPE" ;
 
 @lstring att_token;
 
@@ -60,13 +68,14 @@ rule 'a'->'z' | 'A'->'Z' :
         default search att_token in objList
         default search att_token in dataTypes
         default search att_token in miscSpecifiers
+        default search att_token in objectRefType
         default $idf$ ;
 end rule ;
 
 #
 # List of delimiters in OIL
 #
-list OILDelimiters error message "'%K' delimiter": ";", ":", "=", "{", "}", "..", "[", "]", "," ;
+list OILDelimiters error message "'%K' delimiter": ";", ":", "=", "{", "}", "..", "[", "]", ",", "." ;
 
 rule list OILDelimiters;
 
