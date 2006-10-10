@@ -1,0 +1,8 @@
+grammar goil_grammar "LL1":
+import lexique goil_lexique in "goil_lexique.ggs" ;
+import option goil_options in "goil_options.ggs" ;
+import syntax goil_syntax in "goil_syntax.ggs" ;
+
+root <file> ;
+
+end grammar ;

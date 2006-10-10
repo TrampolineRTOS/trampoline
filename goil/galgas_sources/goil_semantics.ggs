@@ -1,0 +1,38 @@
+semantics goil_semantics :
+  import option goil_options in "goil_options.ggs" ;
+
+list @number_list {
+    @luint number ;
+}
+
+abstract class @number_set {}
+
+class @uint_range extends @number_set {
+    @luint first ;
+    @luint last ;
+}
+
+class @uint_list extends @number_set {
+    @number_list numbers ;
+}
+
+map @implementationSpec {
+    @lstring type ;
+}
+
+map @implementation {
+    @implementationSpec spec ;
+    insert insertSpec error message "%K is duplicated in %L";
+}
+
+action generateHeader
+    ?@lstring version
+    ?@lstring description
+;
+
+map @os_imp {
+    @lstring type ;
+    
+}
+
+end semantics ;
