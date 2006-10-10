@@ -141,7 +141,7 @@ rule <impl_attr_def> ?!@implementationSpec spec :
         or  $INT64$ ;   type := "INT64" ;
     end select ;
     <auto_specifier> ?auto ;
-    <number_range> ?range ;
+#    <number_range> ?range ;
 #    <attribute_name> ?name ;
 #    <multiple_specifier> ?multiple ;
 #    <default_number> ?default_number ;
@@ -165,24 +165,24 @@ rule <auto_specifier> !@bool auto :
     end select ;
 end rule ;
 
-rule <number_range> !@number_set set :
-    @luint first ;
-    @luint last ;
-    @number_list list ;
-    $[$ ;
-    $uint_number$ ?first ;
-    select
-        $..$ ;
-        $uint_number$ ?last ;
-        @number_set 
-    or
-        repeat
-            
-        while $,$ ; $uint_number$ ?next ;
-        end repeat ;
-    end select ;
-    $]$ ;
-end rule ;
+#rule <number_range> !@number_set set :
+#    @luint first ;
+#    @luint last ;
+#    @number_list numList ;
+#    $[$ ;   
+#    $uint_number$ ?first ;
+#    select  
+#        $..$ ;
+#        $uint_number$ ?last ;
+#        @number_set 
+#    or      
+#        repeat
+#            
+#        while $,$ ; $uint_number$ ?next ;
+#        end repeat ;
+#    end select ;
+#    $]$ ;   
+#end rule ;  
 
 #         or  $ENUM$ ;    type := "ENUM" ;
 #        or  $STRING$ ;  type := "STRING" ;
