@@ -1,0 +1,7 @@
+compile "goil_lexique.ggs" ;
+compile "goil_options.ggs" ;
+compile "goil_semantics.ggs" ;
+compile "goil_syntax.ggs" ;
+compile "goil_grammar.ggs" ;
+compile "goil_program.ggs" ;
+

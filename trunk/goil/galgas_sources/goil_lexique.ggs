@@ -1,0 +1,130 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est protégé par la loi sur la propriété intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL lexer
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+lexique goil_lexique :
+
+#
+# OIL_VERSION keyword
+#
+list oilVersion error message "OIL version" :
+    "OIL_VERSION" ;
+#
+# List of OIL definitions
+#
+list oilDefinitions error message "OIL implementation definition" :
+    "IMPLEMENTATION" ;
+
+#
+# List of objects in OIL implementation
+#
+list objList error message "Object %K" :
+    "OS", "TASK", "COUNTER", "ALARM", "RESOURCE", "EVENT",
+    "ISR", "MESSAGE", "COM", "NM", "APPMODE", "IPDU" ;
+
+#
+# List of datatypes
+#
+list dataTypes error message "type %K" :
+    "UINT32", "INT32", "UINT64", "INT64", "FLOAT", "ENUM", "STRING", "BOOLEAN" ;
+
+#
+# Miscellaneous specifiers
+#
+list miscSpecifiers error message "specifier %K" :
+    "WITH_AUTO" ;
+
+@lstring att_token;
+
+$idf$ !att_token error message "identifier" ;
+
+rule 'a'->'z' | 'A'->'Z' :
+    repeat
+        enterCharacterIntoString (att_token, *);
+    while 'a'->'z' | 'A'->'Z' | '_' | '0'->'9' :
+    end repeat;
+    send search att_token in oilVersion
+        default search att_token in oilDefinitions
+        default search att_token in objList
+        default search att_token in dataTypes
+        default search att_token in miscSpecifiers
+        default $idf$ ;
+end rule ;
+
+#
+# List of delimiters in OIL
+#
+list OILDelimiters error message "'%K' delimiter": ";", ":", "=", "{", "}", "..", "[", "]", "," ;
+
+rule list OILDelimiters;
+
+#
+# Eat whitespaces
+#
+rule '\x1'->' ':
+end rule;
+
+#
+# As usual the litterals
+#
+message internalError : "internal error" ;
+message decimalNumberTooLarge : "decimal number too large" ;
+message unterminatedLitteralString : "Unterminated litteral string" ; 
+message unableToConvertToDouble : "Unable to convert the string to double" ;
+
+@lstring a_string ;
+
+$string$ !a_string error message "litteral string" ;
+
+rule '"' :
+    repeat
+    while '\x20'->'\x21' | '\x23' -> '\xFF' :
+        enterCharacterIntoString ( a_string, * ) ;
+    end repeat ;
+    select
+        when '"' :
+            send $string$ ;
+        default
+            error unterminatedLitteralString ;
+    end select ;
+end rule ;
+
+@luint integerNumber;
+@ldouble floatNumber;
+@lstring number;
+
+$uint_number$ !integerNumber error message "litteral unsigned 32 bits integer" ;
+$float_number$ !floatNumber error message "litteral float" ; 
+
+rule '0'->'9':
+    repeat
+        enterCharacterIntoString (number, *);
+        enterDigitIntoUlong (integerNumber, *) error decimalNumberTooLarge, internalError ;
+    while '0'->'9' :
+    end repeat;
+    select
+        when '.' :
+            repeat
+                enterCharacterIntoString (number, *);
+            while '0'->'9' :
+            end repeat;
+            convertStringToDouble(number,floatNumber) error unableToConvertToDouble;
+            send $float_number$ ;
+        default
+            send $uint_number$ ;
+    end select ;
+end rule ;
+
+end lexique ;

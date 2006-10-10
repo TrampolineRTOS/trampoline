@@ -1,0 +1,198 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est protégé par la loi sur la propriété intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL parser
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax goil_syntax :
+import lexique goil_lexique in "goil_lexique.ggs" ;
+import option goil_options in "goil_options.ggs" ;
+import semantics goil_semantics in "goil_semantics.ggs" ;
+
+
+rule <file> ;
+rule <OIL_version> !@lstring version !@lstring description ;
+rule <description> !@lstring description ;
+rule <implementation_definition> ?!@implementation imp ;
+rule <implementation_spec_list> ?!@implementation imp ;
+rule <implementation_spec> ?!@implementation imp ;
+rule <implementation_list> ?!@implementationSpec spec ;
+rule <impl_attr_def> ?!@implementationSpec spec ;
+rule <auto_specifier> !@bool auto ;
+rule <number_range> !@number_set set ;
+
+#
+# root
+#
+rule <file> :
+    @lstring version ;
+    @lstring description ;
+    @implementation imp [emptyMap] ;
+    <OIL_version> ?version ?description ;
+    <implementation_definition> !?imp ;
+    message [version value] ;
+    message [description value] ;
+    message [imp description] ;
+#    @base_class v := [@version new !version !description] ;
+    action generateHeader !version !description ;
+end rule ;
+
+#
+# Description of an OIL declaration
+#
+rule <description> !@lstring description :
+    select
+        description := [@lstring new !"" !here] ;
+    or
+        $:$ ;
+        $string$ ?description ;
+    end select ;
+end rule ;
+
+#
+# OIL version appears at the beginning of OIL files
+#
+rule <OIL_version> !@lstring version !@lstring description :
+    $OIL_VERSION$ ;
+    $=$ ;
+    $string$ ?version ;
+    <description> ?description ;
+    $;$ ;
+end rule ;
+
+#
+# implementation definition is the part of OIL files
+# that specify the data size used for various types
+#
+rule <implementation_definition> ?!@implementation imp :
+    $IMPLEMENTATION$ ;
+    $idf$ ?* ;
+    ${$ ;
+    <implementation_spec_list> !?imp ;
+    $}$ ;
+    <description> ?* ;
+    $;$ ;
+end rule ;
+
+rule <implementation_spec_list> ?!@implementation imp :
+    repeat
+    while <implementation_spec> !?imp ;
+    end repeat ;
+end rule ;
+
+rule <implementation_spec> ?!@implementation imp :
+    @implementationSpec spec [emptyMap] ;
+    select  $OS$ ;          <implementation_list> !?spec ;
+            [!?imp insertSpec ![@lstring new !"OS" !here] !spec] ;
+        or  $TASK$ ;        <implementation_list> !?spec ;
+            [!?imp insertSpec ![@lstring new !"TASK" !here] !spec] ;
+        or  $COUNTER$ ;     <implementation_list> !?spec ;
+            [!?imp insertSpec ![@lstring new !"COUNTER" !here] !spec] ;
+        or  $ALARM$ ;       <implementation_list> !?spec ;
+            [!?imp insertSpec ![@lstring new !"ALARM" !here] !spec] ;
+        or  $RESOURCE$ ;    <implementation_list> !?spec ;
+            [!?imp insertSpec ![@lstring new !"RESOURCE" !here] !spec] ;
+        or  $EVENT$ ;       <implementation_list> !?spec ;
+            [!?imp insertSpec ![@lstring new !"EVENT" !here] !spec] ;
+        or  $ISR$ ;         <implementation_list> !?spec ;
+            [!?imp insertSpec ![@lstring new !"ISR" !here] !spec] ;
+        or  $MESSAGE$ ;     <implementation_list> !?spec ;
+            [!?imp insertSpec ![@lstring new !"MESSAGE" !here] !spec] ;
+        or  $COM$ ;         <implementation_list> !?spec ;
+            [!?imp insertSpec ![@lstring new !"COM" !here] !spec] ;
+        or  $NM$ ;          <implementation_list> !?spec ;
+            [!?imp insertSpec ![@lstring new !"NM" !here] !spec] ;
+        or  $APPMODE$ ;     <implementation_list> !?spec ;
+            [!?imp insertSpec ![@lstring new !"APPMODE" !here] !spec] ;
+        or  $IPDU$ ;        <implementation_list> !?spec ;
+            [!?imp insertSpec ![@lstring new !"IPDU" !here] !spec] ;
+    end select ;
+    <description> ?* ;
+    $;$ ;
+end rule ;
+
+rule <implementation_list> ?!@implementationSpec spec :
+    ${$ ;
+    repeat
+    while
+        <impl_attr_def> !?spec ;
+        $;$ ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <impl_attr_def> ?!@implementationSpec spec :
+    @string type ;
+    @bool auto ;
+    @number_set range ;
+    select  $UINT32$ ;  type := "UINT32" ;
+        or  $INT32$ ;   type := "INT32" ;
+        or  $UINT64$ ;  type := "UINT64" ;
+        or  $INT64$ ;   type := "INT64" ;
+    end select ;
+    <auto_specifier> ?auto ;
+    <number_range> ?range ;
+#    <attribute_name> ?name ;
+#    <multiple_specifier> ?multiple ;
+#    <default_number> ?default_number ;
+end rule ;
+
+rule <impl_attr_def> ?!@implementationSpec spec :
+    @bool auto ;
+    $FLOAT$ ;
+    <auto_specifier> ?auto ;
+#    <float_range> ?range ;
+#    <attribute_name> ?name ;
+#    <multiple_specifier> ?multiple ;
+#    <default_float> ?default_float ;
+end rule ;
+
+rule <auto_specifier> !@bool auto :
+    select
+        $WITH_AUTO$ ; auto := true ;
+    or
+        auto := false ;
+    end select ;
+end rule ;
+
+rule <number_range> !@number_set set :
+    @luint first ;
+    @luint last ;
+    @number_list list ;
+    $[$ ;
+    $uint_number$ ?first ;
+    select
+        $..$ ;
+        $uint_number$ ?last ;
+        @number_set 
+    or
+        repeat
+            
+        while $,$ ; $uint_number$ ?next ;
+        end repeat ;
+    end select ;
+    $]$ ;
+end rule ;
+
+#         or  $ENUM$ ;    type := "ENUM" ;
+#        or  $STRING$ ;  type := "STRING" ;
+#        or  $BOOLEAN$ ; type := "BOOLEAN" ;
+#    end select ;
+#    <auto_specifier> ?auto ;
+#    <number_range> !type ?range ;
+#    <attribute_name> ?name ;
+#    <multiple_specifier> ?multiple ;
+#    <default_val> !type ?default_val ;
+#end rule ;
+
+end syntax ;
