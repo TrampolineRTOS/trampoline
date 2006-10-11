@@ -86,8 +86,8 @@ C_
 
 alarm_list(
     alarm(alr1,cnt1,activate_task,toto),
-    alarm(alr2,cnt1,set_event,titi,4),
-    alarm(alr3,cnt2,alarm_callback,damned)
-    alarm(alr4,cnt1,alarm_callback,damned)
+    alarm(alr2,cnt1,set_event,titi,4)
+C_    alarm(alr3,cnt2,alarm_callback,damned),
+C_    alarm(alr4,cnt1,alarm_callback,damned)
 )
 end_system
