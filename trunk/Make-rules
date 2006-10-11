@@ -5,14 +5,14 @@ CC=gcc
 # * c167 (C167, with the Keil compiler on MS Windows)
 # * linux-x86.
 # * posix-libpcl (requires the portable libpcl on your system) WARNING: UNDER TEST
-TARGET=posix-libpcl
+TARGET=darwin-ppc
 
 # arch may be either:
 # * ppc for the PowerPC.
 # * c167 
 # * x86
 # * libpcl
-ARCH=libpcl
+ARCH=ppc
 
 EXE    =  trampoline
 

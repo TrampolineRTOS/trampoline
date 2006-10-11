@@ -13,6 +13,7 @@
 /*semaphores are not in the same directory for Mac and Linux.*/
 #ifdef DARWIN
 	#include <sys/semaphore.h>
+	#include <sys/stat.h>
 #elif defined LINUX
 	#include <semaphore.h>
 #else
