@@ -1,0 +1,43 @@
+\documentclass[11pt]{report}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `basename #1 .tif`.png}
+
+\textwidth = 6.5 in
+\textheight = 9 in
+\oddsidemargin = 0.0 in
+\evensidemargin = 0.0 in
+\topmargin = 0.0 in
+\headheight = 0.0 in
+\headsep = 0.0 in
+\parskip = 0.2in
+\parindent = 0.0in
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}{Definition}
+
+\title{\Huge{The Trampoline handbook}}
+\author{Jean-Luc B\'echennec}
+\begin{document}
+\maketitle
+
+\chapter{Compiling Trampoline}
+
+\section{Available flags}
+
+Trampoline can be compiled with various options. These options are controlled by setting the appropriate flags. The following flags are availables:
+\begin{description}
+\item[OS\_EXTENDED] is used to compile Trampoline with extended error support according to the specification.
+\item[WITH\_ERROR\_HOOK] adds the call to the error hook when an error occurs in an os system call.
+\item[WITH\_PRE\_TASK\_HOOK] adds the call to the pre-task hook function.
+\item[WITH\_POST\_TASH\_HOOK]  adds the call to the post-task hook function.
+\item[WITH\_TASK\_HOOK] is the same as selecting the two previous flags.
+\item[WITH\_STARTUP\_HOOK] adds the call to the startup hook function.
+\item[WITH\_SHUTDOWN\_HOOK] adds the call to the shutdown hook function.
+\item[WITH\_INTERNAL\_EXTERNAL\_COM] is used when a same sending message object does an internal \emph{and} an external communication.
+\item[WITH\_COM\_ERROR\_HOOK] adds the call to the communication error hook when an error occurs in a communication system call.
+\end{description}
+
+ \end{document} 
