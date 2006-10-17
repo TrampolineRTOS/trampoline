@@ -30,31 +30,82 @@ list oilDefinitions error message "OIL implementation definition" :
 #
 # List of objects in OIL implementation
 #
-list objList error message "Object %K" :
+list objList error message "Object '%K'" :
     "OS", "TASK", "COUNTER", "ALARM", "RESOURCE", "EVENT",
     "ISR", "MESSAGE", "COM", "NM", "APPMODE", "IPDU", "CPU" ;
+
+@lstring att_token;
 
 #
 # List of datatypes
 #
-list dataTypes error message "type %K" :
+list dataTypes ! att_token error message "type '%K'" :
     "UINT32", "INT32", "UINT64", "INT64", "FLOAT", "ENUM", "STRING", "BOOLEAN" ;
 
 #
 # Miscellaneous specifiers
 #
-list miscSpecifiers error message "specifier %K" :
-    "WITH_AUTO", "NO_DEFAULT", "AUTO", "TRUE", "FALSE" ;
+list miscSpecifiers error message "specifier '%K'" :
+    "WITH_AUTO", "NO_DEFAULT", "AUTO", "MASK", "CATEGORY" ;
 
 #
 # Objects Ref Types
 #
-list objectRefType error message "object reference type %K" :
+list objectRefType error message "object reference type '%K'" :
     "OS_TYPE", "TASK_TYPE", "COUNTER_TYPE", "ALARM_TYPE",
     "RESOURCE_TYPE", "EVENT_TYPE", "ISR_TYPE", "MESSAGE_TYPE",
     "COM_TYPE", "NM_TYPE", "APPMODE_TYPE", "IPDU_TYPE" ;
 
-@lstring att_token;
+#
+# Task object predefined attributes that are not
+# defined elsewhere.
+#
+list task_attributes error message "task attribute '%K'" :
+    "PRIORITY", "SCHEDULE", "ACTIVATION", "AUTOSTART" ;
+
+#
+# Counter object predefined attributes that are not
+# defined elsewhere.
+#
+list counter_attributes error message "counter attribute '%K'" :
+    "MAXALLOWEDVALUE", "TICKSPERBASE", "MINCYCLE" ;
+
+#
+# Alarm object predefined attributes that are not
+# defined elsewhere.
+#
+list alarm_attributes error message "alarm attribute '%K'" :
+    "ACTION", "SETEVENT", "ACTIVATETASK", "ALARMCALLBACK",
+    "ALARMCALLBACKNAME", "ALARMTIME", "CYCLETIME" ;
+
+#
+# Resource object predefined attributes that are not
+# defined elsewhere.
+#
+list resource_attributes error message "resource attribute '%K'" :
+    "RESOURCEPROPERTY", "STANDARD", "LINKED", "LINKEDRESOURCE",
+    "INTERNAL" ;
+
+#
+# Scheduling attribute
+#
+list scheduling error message "scheduling value '%K'" :
+    "NON", "FULL" ;
+
+#
+# Booleans
+#
+list boolean error message "boolean '%K'" :
+	"FALSE", "TRUE" ;
+
+#----------------------- comments -------------------------------
+# They must be defined before delimitors!! 
+# '/' is a delimitor.
+rule "//" :
+	repeat #accept all except 0xA (LF) and 0xD (CR)
+	while '\x1'->'\x9' | '\xB'| '\xC'| '\xE' -> '\xFF' : 
+	end repeat ;
+end rule ;
 
 $idf$ !att_token error message "identifier" ;
 
@@ -69,6 +120,12 @@ rule 'a'->'z' | 'A'->'Z' :
         default search att_token in dataTypes
         default search att_token in miscSpecifiers
         default search att_token in objectRefType
+        default search att_token in task_attributes
+        default search att_token in counter_attributes
+        default search att_token in alarm_attributes
+        default search att_token in resource_attributes
+        default search att_token in scheduling
+        default search att_token in boolean
         default $idf$ ;
 end rule ;
 
@@ -116,6 +173,7 @@ end rule ;
 
 $uint_number$ !integerNumber error message "litteral unsigned 32 bits integer" ;
 $float_number$ !floatNumber error message "litteral float" ; 
+$set_start_uint_number$ !integerNumber error message "litteral unigned 32 bits integer";
 
 rule '0'->'9':
     repeat
@@ -125,12 +183,17 @@ rule '0'->'9':
     end repeat;
     select
         when '.' :
-            repeat
-                enterCharacterIntoString (number, *);
-            while '0'->'9' :
-            end repeat;
-            convertStringToDouble(number,floatNumber) error unableToConvertToDouble;
-            send $float_number$ ;
+			select
+				when '.' :
+					send $set_start_uint_number$ ;
+				default
+		          	repeat
+                		enterCharacterIntoString (number, *);
+            		while '0'->'9' :
+            		end repeat;
+            		convertStringToDouble(number,floatNumber) error unableToConvertToDouble;
+            		send $float_number$ ;
+			end select;
         default
             send $uint_number$ ;
     end select ;
