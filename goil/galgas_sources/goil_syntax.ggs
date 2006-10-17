@@ -29,7 +29,30 @@ rule <implementation_spec> ?!@implementation imp ;
 rule <implementation_list> ?!@implementationSpec spec ;
 rule <impl_attr_def> ?!@implementationSpec spec ;
 rule <auto_specifier> !@bool auto ;
+rule <number_range_or_nil> !@bool has_range !@number_set set ;
 rule <number_range> !@number_set set ;
+rule <attribute_name> !@lstring name ;
+rule <multiple_specifier> !@bool multiple ;
+rule <default_number> !@bool has_default !@luint default_number ;
+rule <default_name> !@bool has_default !@lstring default_name ;
+rule <enumeration> ;
+rule <enumerator> ;
+rule <impl_parameter_list> ;
+rule <implementation_def> ;
+
+rule <application_definition> ;
+rule <object_definition_list> ;
+
+#
+# extern rules
+#
+rule <appmode> ;
+rule <task> ;
+rule <counter> ;
+rule <alarm> ;
+rule <resource> ;
+rule <event> ;
+rule <isr> ;
 
 #
 # root
@@ -38,10 +61,11 @@ rule <file> :
     @lstring version ;
     @lstring description ;
     @implementation imp [emptyMap] ;
-    <OIL_version> ?version ?description ;
+    <OIL_version> ?version ?description ;	 
     <implementation_definition> !?imp ;
-    message [version value] ;
-    message [description value] ;
+    <application_definition> ;
+    message [version string] ;
+    message [description string] ;
     message [imp description] ;
 #    @base_class v := [@version new !version !description] ;
     action generateHeader !version !description ;
@@ -73,6 +97,7 @@ end rule ;
 #
 # implementation definition is the part of OIL files
 # that specify the data size used for various types
+# as well as default values
 #
 rule <implementation_definition> ?!@implementation imp :
     $IMPLEMENTATION$ ;
@@ -132,29 +157,48 @@ rule <implementation_list> ?!@implementationSpec spec :
 end rule ;
 
 rule <impl_attr_def> ?!@implementationSpec spec :
-    @string type ;
-    @bool auto ;
-    @number_set range ;
-    select  $UINT32$ ;  type := "UINT32" ;
-        or  $INT32$ ;   type := "INT32" ;
-        or  $UINT64$ ;  type := "UINT64" ;
-        or  $INT64$ ;   type := "INT64" ;
-    end select ;
-    <auto_specifier> ?auto ;
-#    <number_range> ?range ;
-#    <attribute_name> ?name ;
-#    <multiple_specifier> ?multiple ;
-#    <default_number> ?default_number ;
+  	@lstring type ;
+  	@bool auto ;
+   	@number_set range ;
+   	@bool has_range ;
+	@lstring attr_name ;
+	@bool multiple ;
+	@luint default_number;
+	@bool has_default ;
+
+   	select  $UINT32$ ?type ;
+   	  	or  $INT32$ 	?type ;
+ 	 	or  $UINT64$ ?type ;
+      	or  $INT64$  ?type ;
+  	end select ;
+  	<auto_specifier> ?auto ;
+	<number_range_or_nil> ?has_range ?range ;
+ 	<attribute_name> ?attr_name ;
+	<multiple_specifier> ?multiple ;
+ 	<default_number> ?has_default ?default_number ;
 end rule ;
 
 rule <impl_attr_def> ?!@implementationSpec spec :
-    @bool auto ;
-    $FLOAT$ ;
+	@lstring type ;    
+	@bool auto ;
+    $FLOAT$ ?type ;
     <auto_specifier> ?auto ;
 #    <float_range> ?range ;
 #    <attribute_name> ?name ;
 #    <multiple_specifier> ?multiple ;
 #    <default_float> ?default_float ;
+end rule ;
+
+rule <impl_attr_def> ?!@implementationSpec spec :
+	@lstring type ;
+	@bool auto ;
+
+	$ENUM$ ?type ;
+  	<auto_specifier> ?auto ;
+	<enumeration> ;
+	<attribute_name> ?* ;
+	<multiple_specifier> ?* ;
+	<default_name> ?* ?* ;
 end rule ;
 
 rule <auto_specifier> !@bool auto :
@@ -165,24 +209,119 @@ rule <auto_specifier> !@bool auto :
     end select ;
 end rule ;
 
-#rule <number_range> !@number_set set :
-#    @luint first ;
-#    @luint last ;
-#    @number_list numList ;
-#    $[$ ;   
-#    $uint_number$ ?first ;
-#    select  
-#        $..$ ;
-#        $uint_number$ ?last ;
-#        @number_set 
-#    or      
-#        repeat
-#            
-#        while $,$ ; $uint_number$ ?next ;
-#        end repeat ;
-#    end select ;
-#    $]$ ;   
-#end rule ;  
+rule <number_range_or_nil> !@bool has_range !@number_set set :
+	select
+		<number_range> ?set ;
+		has_range := true ;
+	or
+		@luint zero := [@luint new !0 !here] ;
+		set := [@uint_range new !zero !zero] ;
+		has_range := false ;
+	end select ;
+end rule ;
+
+rule <number_range> !@number_set set :
+	@luint first ;
+	$[$ ;
+	select
+		@luint last ;
+		$set_start_uint_number$ ?first ;
+       $uint_number$ ?last;
+		set := [@uint_range new !first !last] ;
+	or
+		$uint_number$ ?first ;
+		select
+			@luint last ;
+			$..$ ;
+			$uint_number$ ?last ;
+			set := [@uint_range new !first !last] ;
+		or
+			@number_list numList := [@number_list emptyList];
+			numList += !first ;
+	     	repeat
+	     	while
+				$,$ ;
+				$uint_number$ ?first;
+				numList += !first ;
+   		 	end repeat ;
+			set := [@uint_list new !numList];
+		end select ;
+	end select ;
+  	$]$ ;
+end rule ;  
+
+rule <attribute_name> !@lstring name :
+	$idf$ ?name;
+end rule ;
+
+rule <multiple_specifier> !@bool multiple :
+	select
+		$[$ ; $]$ ;
+		multiple := true;
+	or
+		multiple := false;
+	end select ;
+end rule ;
+
+rule <default_number> !@bool has_default !@luint default_number :
+	select
+		$=$ ;
+		$uint_number$ ?default_number ;
+		has_default := true ;
+	or
+		default_number := [@luint new !0 !here] ;
+		has_default := false ;
+	end select ;
+end rule ;
+
+rule <default_name> !@bool has_default !@lstring default_name :
+	select
+		$=$ ;
+		$idf$ ?default_name ;
+		has_default := true ;
+	or
+		default_name := [@lstring new !"" !here] ;
+		has_default := false ;
+	end select ;
+end rule ;
+
+#
+# Enumeration.
+#
+rule <enumeration> :
+	$[$ ;
+	<enumerator> ;
+	repeat
+	while
+		$,$ ;
+		<enumerator> ;
+	end repeat ;
+	$]$ ;
+end rule ;
+
+rule <enumerator> :
+	$idf$ ?* ;
+	<impl_parameter_list> ;
+	<description> ?* ;
+end rule ;
+
+rule <impl_parameter_list> :
+	select
+		${$ ;
+		repeat
+		while
+			<implementation_def> ;
+		end repeat ;
+		$}$ ;
+	or
+	end select ;
+end rule ;
+
+rule <implementation_def> :
+	$idf$ ?* ;
+	$idf$ ?* ;
+	$;$ ;
+end rule ;
 
 #         or  $ENUM$ ;    type := "ENUM" ;
 #        or  $STRING$ ;  type := "STRING" ;
@@ -194,5 +333,33 @@ end rule ;
 #    <multiple_specifier> ?multiple ;
 #    <default_val> !type ?default_val ;
 #end rule ;
+
+#--------------------------------------------------------------------
+# Application definition part
+#--------------------------------------------------------------------
+rule <application_definition> :
+    repeat
+    while
+        $CPU$ ;
+        $idf$ ?* ;
+        ${$ ;
+        <object_definition_list> ;
+        $}$ ;
+        <description> ?* ;
+        $;$ ;
+    end repeat ;
+end rule ;
+
+rule <object_definition_list> :
+    repeat
+    while <appmode> ;    
+    while <task> ;
+    while <counter> ;
+    while <alarm> ;
+    while <resource> ;
+    while <event> ;
+    while <isr> ;
+   end repeat ;
+end rule ;
 
 end syntax ;

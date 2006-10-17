@@ -2,6 +2,19 @@ compile "goil_lexique.ggs" ;
 compile "goil_options.ggs" ;
 compile "goil_semantics.ggs" ;
 compile "goil_syntax.ggs" ;
+
+#
+# Objects of the application definition
+#
+compile "goil_obj_task.ggs" ;
+compile "goil_obj_counter.ggs" ;
+compile "goil_obj_appmode.ggs" ;
+compile "goil_obj_alarm.ggs" ;
+compile "goil_obj_resource.ggs" ;
+compile "goil_obj_event.ggs" ;
+compile "goil_obj_isr.ggs" ;
+
+
 compile "goil_grammar.ggs" ;
 compile "goil_program.ggs" ;
 
