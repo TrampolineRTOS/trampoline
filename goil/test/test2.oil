@@ -1,0 +1,94 @@
+OIL_VERSION = "2.5" : "test" ;
+
+IMPLEMENTATION trampoline {
+};
+
+CPU test {
+    APPMODE std {
+        default_stack_size = 17;
+    };
+    
+    APPMODE debug {
+        defaut_stack_size = 24;
+    };
+
+    TASK MyTask1 {
+        PRIORITY = 17 ;
+    };
+    
+    TASK MyTask1 {
+        StackSize = 64;
+        SCHEDULE = FULL;
+        ACTIVATION = 20;
+        AUTOSTART = TRUE;
+        RESOURCE = res_1;
+        RESOURCE = res_2;
+        EVENT = evt1;
+        MESSAGE = msg_speed;
+        WCET = 10;
+    };
+    
+    COUNTER general_counter {
+        TICKSPERBASE = 20;
+        MAXALLOWEDVALUE = 2048;
+        MINCYCLE = 34;
+    };
+    
+    ALARM wake_task_a {
+        COUNTER = general_counter;
+        ACTION = SETEVENT {
+            TASK = MyTask1;
+            EVENT = event1;
+        };
+        AUTOSTART = FALSE;
+    };
+    
+    ALARM wake_task_b {
+        COUNTER = timer_b;
+        ACTION = ACTIVATETASK {
+            TASK = task_b;
+        };
+        AUTOSTART = TRUE {
+            ALARMTIME = 50;
+            CYCLETIME = 100;
+            APPMODE = std;
+            APPMODE = debug;
+        };
+    };
+    
+    ALARM Run_CallBack_C {
+        COUNTER = general_counter;
+        ACTION = ALARMCALLBACK {
+            ALARMCALLBACKNAME = "CallBackC";
+        };
+        AUTOSTART = FALSE;
+    };
+    
+    RESOURCE res1 {
+        RESOURCEPROPERTY = STANDARD;
+    };
+    
+    RESOURCE res2 {
+        RESOURCEPROPERTY = LINKED {
+            LINKEDRESOURCE = res1;
+        };
+    };
+    
+    RESOURCE res3 {
+        RESOURCEPROPERTY = INTERNAL;
+    };
+    
+    EVENT emergency {
+        MASK = AUTO;
+    };
+    
+    EVENT event1 {
+        MASK = 1;
+    };
+    
+    ISR timerInterrupt {
+       CATEGORY = 2;
+       RESOURCE = res1;
+       MESSAGE = msg1;
+    };
+};
