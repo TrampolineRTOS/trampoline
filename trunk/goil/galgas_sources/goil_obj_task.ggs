@@ -1,0 +1,58 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est prot»g» par la loi sur la propri»t» intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL task object parser
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax goil_obj_task :
+
+import lexique goil_lexique in "goil_lexique.ggs" ;
+import option goil_options in "goil_options.ggs" ;
+import semantics goil_semantics in "goil_semantics.ggs" ;
+
+rule <task> ;
+rule <task_parameters> ;
+
+rule <task> :
+    $TASK$ ;
+    $idf$ ?* ;
+    ${$ ;
+    repeat
+    while
+        <task_parameters> ; $;$ ;
+    end repeat ;
+    $}$ ;
+    $;$ ;
+end rule ;
+
+rule <task_parameters> :
+    select
+        $PRIORITY$ ;   $=$ ; $uint_number$ ?* ;
+    or
+        $SCHEDULE$ ;   $=$ ; select $NON$ ; or $FULL$ ; end select ;
+    or
+        $ACTIVATION$ ; $=$ ; $uint_number$ ?* ;
+    or
+        $AUTOSTART$ ;  $=$ ; select $TRUE$ ; or $FALSE$ ; end select ;
+    or
+        $RESOURCE$ ;   $=$ ; $idf$ ?* ;
+    or
+        $EVENT$ ;      $=$ ; $idf$ ?* ;
+    or
+        $MESSAGE$ ;    $=$ ; $idf$ ?* ;
+    or
+        $idf$ ?* ;     $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ;
+    end select ;
+end rule ;
+
+end syntax ;
