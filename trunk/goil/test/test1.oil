@@ -1,0 +1,21 @@
+OIL_VERSION = "2.5" : "test" ;
+
+IMPLEMENTATION basic {
+    OS {
+        ENUM [EXTENDED] STATUS;
+        UINT32 [1..255] NON_SUSPENDED_TASK = 16;    
+    } : "OS description" ;
+    
+    TASK {
+        UINT32 [1 .. 256]   PRIORITY;   // define range of standard
+                                        // attribute priority
+        INT32   StackSize= 16;          // stacksize in bytes for a task
+    } ;
+    
+    ALARM {
+        ENUM [ACTIVATETASK {TASK_TYPE TASK;}] ACTION;
+        // define possible value(s) of standard attribute ACTION
+        BOOLEAN START = FALSE;  // define implementation-specific
+                                // attribute START of type BOOLEAN
+    };
+} ;
