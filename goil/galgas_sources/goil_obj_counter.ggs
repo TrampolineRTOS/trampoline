@@ -1,0 +1,50 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est prot»g» par la loi sur la propri»t» intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL counter object parser
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax goil_obj_counter :
+
+import lexique goil_lexique in "goil_lexique.ggs" ;
+import option goil_options in "goil_options.ggs" ;
+import semantics goil_semantics in "goil_semantics.ggs" ;
+
+rule <counter> ;
+rule <counter_parameters> ;
+
+rule <counter> :
+    $COUNTER$ ;
+    $idf$ ?* ;
+    ${$ ;
+    repeat
+    while
+        <counter_parameters> ; $;$ ;
+    end repeat ;
+    $}$ ;
+    $;$ ;
+end rule ;
+
+rule < counter_parameters > :
+    select
+        $MAXALLOWEDVALUE$ ;   $=$ ; $uint_number$ ?* ;
+    or
+        $TICKSPERBASE$ ;   $=$ ; $uint_number$ ?* ;
+    or
+        $MINCYCLE$ ; $=$ ; $uint_number$ ?* ;
+    or
+        $idf$ ?* ;     $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ;
+    end select ;
+end rule ;
+
+end syntax ;

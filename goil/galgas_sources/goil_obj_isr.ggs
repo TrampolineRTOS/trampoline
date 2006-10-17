@@ -1,0 +1,46 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est prot»g» par la loi sur la propri»t» intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL task object parser
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax goil_obj_isr :
+
+import lexique goil_lexique in "goil_lexique.ggs" ;
+import option goil_options in "goil_options.ggs" ;
+import semantics goil_semantics in "goil_semantics.ggs" ;
+
+rule <isr> ;
+rule <isr_attributes> ;
+
+rule <isr> :
+    $ISR$ ;
+    $idf$ ?* ;
+    ${$ ;
+    <isr_attributes> ;
+    $}$ ;
+    $;$ ;
+end rule ;
+
+rule <isr_attributes> :
+    repeat
+    while
+        $CATEGORY$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+    while
+        $RESOURCE$ ; $=$ ; $idf$ ?* ; $;$ ;
+    while
+        $MESSAGE$ ; $=$ ; $idf$ ?* ; $;$ ;
+    end repeat;
+end rule ;
+
+end syntax ;

@@ -1,0 +1,98 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est prot»g» par la loi sur la propri»t» intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL task object parser
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax goil_obj_alarm :
+
+import lexique goil_lexique in "goil_lexique.ggs" ;
+import option goil_options in "goil_options.ggs" ;
+import semantics goil_semantics in "goil_semantics.ggs" ;
+
+rule <alarm> ;
+rule <alarm_parameters> ;
+rule <alarm_action_params> ;
+rule <alarm_autostart_params> ;
+
+rule <alarm> :
+    $ALARM$ ;
+    $idf$ ?* ;
+    ${$ ;
+    repeat
+    while
+        <alarm_parameters> ; $;$ ;
+    end repeat ;
+    $}$ ;
+    $;$ ;
+end rule ;
+
+rule <alarm_parameters> :
+    select
+        $COUNTER$ ;   $=$ ; $idf$ ?* ;
+    or
+        $ACTION$ ;    $=$ ; <alarm_action_params> ;
+    or
+        $AUTOSTART$ ;  $=$ ;
+        select
+            $TRUE$ ;
+            ${$ ;
+            <alarm_autostart_params> ;
+            $}$ ;
+        or
+            $FALSE$ ;
+        end select ;
+    or
+        $idf$ ?* ;     $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ;
+    end select ;
+end rule ;
+
+rule <alarm_action_params> :
+    select
+		 $SETEVENT$ ; ${$ ;
+		 repeat
+        while
+            $TASK$ ;
+            $=$ ;
+            $idf$ ?* ;
+            $;$ ;
+        while
+            $EVENT$ ;
+            $=$ ;
+            $idf$ ?* ;
+            $;$ ;
+        end repeat ;
+    or
+        $ACTIVATETASK$ ; ${$ ;
+        $TASK$ ; $=$ ; $idf$ ?* ;
+        $;$ ;
+    or
+        $ALARMCALLBACK$ ; ${$ ;
+        $ALARMCALLBACKNAME$ ; $=$ ; $string$ ?* ;
+        $;$ ;
+    end select ;
+    $}$ ;        
+end rule;
+
+rule <alarm_autostart_params> :
+    repeat
+    while
+        $ALARMTIME$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+    while
+        $CYCLETIME$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+    while
+        $APPMODE$ ; $=$ ; $idf$ ?* ; $;$ ;
+    end repeat ;
+end rule;
+
+end syntax ;
