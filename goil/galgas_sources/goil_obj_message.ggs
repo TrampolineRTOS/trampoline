@@ -1,0 +1,423 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est protégé par la loi sur la propriété intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL message object parser
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax goil_obj_message :
+
+import lexique goil_lexique in "goil_lexique.ggs" ;
+import option goil_options in "goil_options.ggs" ;
+import semantics goil_semantics in "goil_semantics.ggs" ;
+
+rule <mess> ;
+rule <message_parameters> ;
+rule <message_property> ;
+rule <notification_property> ;
+rule <ssi_attributes> ;
+rule <sse_attributes> ;
+rule <sde_attributes> ;
+rule <sze_attributes> ;
+rule <rzi_attributes> ;
+rule <rze_attributes> ;
+rule <rui_attributes> ;
+rule <rqi_attributes> ;
+rule <rue_attributes> ;
+rule <rqe_attributes> ;
+rule <rde_attributes> ;
+rule <rzs_attributes> ;
+rule <cdatatype> ;
+rule <transferproperty> ;
+rule <networkmessage> ;
+rule <filter> ;
+rule <mask_x_attribute> ;
+rule <mask_attribute> ;
+rule <min_max_attribute> ;
+rule <period_offset_attribute> ;
+rule <networkordercallout> ;
+rule <cpuordercallout> ;
+rule <initialvalue> ;
+rule <sendingmessage> ;
+rule <queuesize> ;
+rule <link> ;
+
+rule <mess> :
+    $MESSAGE$ ;
+    $idf$ ?* ;
+    ${$ ;
+    repeat
+    while
+        <message_parameters> ; $;$ ;
+    end repeat ;
+    $}$ ;
+    $;$ ;
+end rule ;
+
+rule <message_parameters> :
+    select
+        $MESSAGEPROPERTY$ ;   $=$ ; <message_property> ;
+    or
+        $NOTIFICATION$ ;      $=$ ; <notification_property> ;
+    or
+        $NOTIFICATIONERROR$ ; $=$ ; <notification_property> ;
+    or
+        $idf$ ?* ;     $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ;
+    end select ;
+end rule ;
+
+rule <message_property> :
+    select
+		 $SEND_STATIC_INTERNAL$ ;      <ssi_attributes> ;
+    or
+        $SEND_STATIC_EXTERNAL$ ;      <sse_attributes> ;
+    or
+        $SEND_DYNAMIC_EXTERNAL$ ;     <sde_attributes> ;
+    or
+        $SEND_ZERO_INTERNAL$ ;
+    or
+        $SEND_ZERO_EXTERNAL$ ;        <sze_attributes> ;
+    or
+        $RECEIVE_ZERO_INTERNAL$ ;     <rzi_attributes> ;
+    or
+        $RECEIVE_ZERO_EXTERNAL$ ;     <rze_attributes> ;
+    or
+        $RECEIVE_UNQUEUED_INTERNAL$ ; <rui_attributes> ;
+    or
+        $RECEIVE_QUEUED_INTERNAL$ ;   <rqi_attributes> ;
+    or
+        $RECEIVE_UNQUEUED_EXTERNAL$ ; <rue_attributes> ;
+    or
+        $RECEIVE_QUEUED_EXTERNAL$ ;   <rqe_attributes> ;
+    or
+        $RECEIVE_DYNAMIC_EXTERNAL$ ;  <rde_attributes> ;
+    or
+        $RECEIVE_ZERO_SENDERS$ ;      <rzs_attributes> ;
+    end select ;
+end rule;
+
+rule <notification_property> :
+    select
+        $NONE$ ; 
+    or
+		 $SETEVENT$ ; ${$ ;
+		 repeat
+        while
+            $TASK$ ;
+            $=$ ;
+            $idf$ ?* ;
+            $;$ ;
+        while
+            $EVENT$ ;
+            $=$ ;
+            $idf$ ?* ;
+            $;$ ;
+        end repeat ;
+        $}$ ;        
+    or
+        $ACTIVATETASK$ ; ${$ ;
+        $TASK$ ; $=$ ; $idf$ ?* ;
+        $;$ ;
+        $}$ ;        
+    or
+        $COMCALLBACK$ ; ${$ ;
+        $COMCALLBACKNAME$ ; $=$ ; $string$ ?* ;
+        $;$ ;
+        $}$ ; 
+    or
+        $INMCALLBACK$ ; ${$ ;
+        repeat
+        while
+            $CALLBACKROUTINENAME$ ; $=$ ; $string$ ?* ; $;$ ;
+        while
+            $MONITOREDIPDU$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+        end repeat ;
+        $}$ ; 
+    end select ;
+end rule;
+
+rule <ssi_attributes> :
+    ${$ ;
+    select <cdatatype> ;
+    or
+    end select ;
+    $}$ ;
+end rule ;
+
+rule <sse_attributes> :
+    ${$ ;
+    repeat
+    while <cdatatype> ;
+    while <transferproperty> ;
+    while <networkmessage> ;
+    while <filter> ;
+    while <networkordercallout> ;
+    while <cpuordercallout> ;
+    while <initialvalue> ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <sde_attributes> :
+    ${$ ;
+    repeat
+    while <transferproperty> ;
+    while <networkmessage> ;
+    while <networkordercallout> ;
+    while <cpuordercallout> ;
+    while <initialvalue> ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <sze_attributes> :
+    ${$ ;
+    repeat
+    while <networkmessage> ;
+    while <networkordercallout> ;
+    while <cpuordercallout> ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <rzi_attributes> :
+    ${$ ;
+    select <sendingmessage> ;
+    or
+    end select ;
+    $}$ ;
+end rule ;
+
+rule <rze_attributes> :
+    ${$ ;
+    repeat
+    while <networkmessage> ;
+    while <networkordercallout> ;
+    while <cpuordercallout> ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <rui_attributes> :
+    ${$ ;
+    repeat
+    while <sendingmessage> ;
+    while <filter> ;
+    while <initialvalue> ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <rqi_attributes> :
+    ${$ ;
+    repeat
+    while <sendingmessage> ;
+    while <filter> ;
+    while <queuesize> ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <rue_attributes> :
+    ${$ ;
+    repeat
+    while <cdatatype> ;
+    while <filter> ;
+    while <link> ;
+    while <initialvalue> ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <rqe_attributes> :
+    ${$ ;
+    repeat
+    while <cdatatype> ;
+    while <filter> ;
+    while <queuesize> ;
+    while <link> ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <rde_attributes> :
+    ${$ ;
+    repeat
+    while <link> ;
+    while <initialvalue> ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <rzs_attributes> :
+    ${$ ;
+    repeat
+    while <cdatatype> ;
+    while <initialvalue> ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <cdatatype> :
+    $CDATATYPE$ ;
+    $=$ ;
+    $string$ ?* ;
+    $;$ ;
+end rule ;
+
+rule <transferproperty> :
+    $TRANSFERPROPERTY$ ;
+    $=$ ;
+    select
+        $TRIGGERED$ ;
+    or
+        $PENDING$ ;
+    or
+        $AUTO$ ;
+    end select ;
+    $;$ ;
+end rule ;
+
+rule <networkmessage> :
+    $NETWORKMESSAGE$ ;
+    $=$ ;
+    $idf$ ?* ;
+    $;$ ;
+end rule ;
+
+rule <filter> :
+    $FILTER$ ;
+    $=$ ;
+    select
+        $ALWAYS$ ;
+    or
+        $NEVER$ ;
+    or
+        $MASKEDNEWEQUALSX$ ;  <mask_x_attribute> ;
+    or
+        $MASKEDNEWDIFFERSX$ ; <mask_x_attribute> ;
+    or
+        $NEWISEQUAL$ ;
+    or
+        $NEWISDIFFERENT$ ;
+    or
+        $MASKEDNEWEQUALSMASKEDOLD$ ;  <mask_attribute> ;
+    or
+        $MASKEDNEWDIFFERSMASKEDOLD$ ; <mask_attribute> ;
+    or
+        $NEWISWITHIN$ ;  <min_max_attribute> ;
+    or
+        $NEWISOUTSIDE$ ; <min_max_attribute> ;
+    or
+        $NEWISGREATER$ ;
+    or
+        $NEWISLESSOREQUAL$ ;
+    or
+        $NEWISLESS$ ;
+    or
+        $NEWISGREATEROREQUAL$ ;
+    or
+        $ONEEVERYN$ ;    <period_offset_attribute> ;
+    end select ;
+    $;$ ;
+end rule ;
+
+rule <mask_x_attribute> :
+    ${$ ;
+    repeat
+    while
+        $MASK$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+    while
+        $X$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <mask_attribute> :
+    ${$ ;
+    select
+        $MASK$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+    or
+    end select ;
+    $}$ ;
+end rule ;
+
+rule <min_max_attribute> :
+    ${$ ;
+    repeat
+    while
+        $MIN$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+    while
+        $MAX$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <period_offset_attribute> :
+    ${$ ;
+    repeat
+    while
+        $PERIOD$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+    while
+        $OFFSET$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <networkordercallout> :
+    $NETWORKORDERCALLOUT$ ;
+    $=$ ;
+    $string$ ?* ;
+    $;$ ;
+end rule ;
+
+rule <cpuordercallout> :
+    $CPUORDERCALLOUT$ ;
+    $=$ ;
+    $string$ ?* ;
+    $;$ ;
+end rule ;
+
+rule <initialvalue> :
+    $INITIALVALUE$ ;
+    $=$ ;
+    $uint_number$ ?* ;
+    $;$ ;
+end rule ;
+
+rule <sendingmessage> :
+    $SENDINGMESSAGE$ ;
+    $=$ ;
+    $idf$ ?* ;
+    $;$ ;
+end rule ;
+
+rule <queuesize> :
+    $QUEUESIZE$ ;
+    $=$ ;
+    $uint_number$ ?* ;
+    $;$ ;
+end rule ;
+
+rule <link> :
+    $LINK$ ;
+    $=$ ;
+    select
+        $TRUE$ ; ${$ ;
+        $RECEIVEMESSAGE$ ; $=$ ; $idf$ ?* ; $;$ ;
+        $}$ ;
+    or
+        $FALSE$ ;
+    end select ;
+end rule ;
+
+end syntax ;
