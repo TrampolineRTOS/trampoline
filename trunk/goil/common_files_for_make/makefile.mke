@@ -54,6 +54,8 @@ SOURCES += goil_obj_event.cpp
 SOURCES += goil_obj_isr.cpp
 SOURCES += goil_obj_message.cpp
 SOURCES += goil_obj_networkmessage.cpp
+SOURCES += goil_obj_com.cpp
+SOURCES += goil_obj_ipdu.cpp
 SOURCES += goil_grammar.cpp
 SOURCES += goil_program.cpp
 

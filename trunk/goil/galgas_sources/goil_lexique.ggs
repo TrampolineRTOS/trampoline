@@ -182,6 +182,7 @@ rule 'a'->'z' | 'A'->'Z' :
         default search att_token in message_attributes
         default search att_token in networkmessage_attribute
         default search att_token in com_attribute
+        default search att_token in ipdu_attribute
         default search att_token in scheduling
         default search att_token in boolean
         default $idf$ ;
@@ -225,18 +226,18 @@ rule '"' :
     end select ;
 end rule ;
 
-@luint integerNumber;
+@luint64 integerNumber;
 @ldouble floatNumber;
 @lstring number;
 
-$uint_number$ !integerNumber error message "litteral unsigned 32 bits integer" ;
+$uint_number$ !integerNumber error message "litteral unsigned 64 bits integer" ;
 $float_number$ !floatNumber error message "litteral float" ; 
-$set_start_uint_number$ !integerNumber error message "litteral unigned 32 bits integer";
+$set_start_uint_number$ !integerNumber error message "litteral unsigned 64 bits integer";
 
 rule '0'->'9':
     repeat
         enterCharacterIntoString (number, *);
-        enterDigitIntoUlong (integerNumber, *) error decimalNumberTooLarge, internalError ;
+        enterDigitIntoUInt64 (*,integerNumber) error decimalNumberTooLarge, internalError ;
     while '0'->'9' :
     end repeat;
     select
