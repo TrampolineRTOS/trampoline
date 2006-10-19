@@ -33,7 +33,7 @@ rule <number_range_or_nil> !@bool has_range !@number_set set ;
 rule <number_range> !@number_set set ;
 rule <attribute_name> !@lstring name ;
 rule <multiple_specifier> !@bool multiple ;
-rule <default_number> !@bool has_default !@luint default_number ;
+rule <default_number> !@bool has_default !@luint64 default_number ;
 rule <default_name> !@bool has_default !@lstring default_name ;
 rule <enumeration> ;
 rule <enumerator> ;
@@ -72,9 +72,9 @@ rule <file> :
     <OIL_version> ?version ?description ;	 
     <implementation_definition> !?imp ;
     <application_definition> ;
-    message [version string] ;
-    message [description string] ;
-    message [imp description] ;
+#    message [version string] ;
+#    message [description string] ;
+#    message [imp description] ;
 #    @base_class v := [@version new !version !description] ;
     action generateHeader !version !description ;
 end rule ;
@@ -171,7 +171,7 @@ rule <impl_attr_def> ?!@implementationSpec spec :
    	@bool has_range ;
 	@lstring attr_name ;
 	@bool multiple ;
-	@luint default_number;
+	@luint64 default_number;
 	@bool has_default ;
 
    	select  $UINT32$ ?type ;
@@ -222,24 +222,24 @@ rule <number_range_or_nil> !@bool has_range !@number_set set :
 		<number_range> ?set ;
 		has_range := true ;
 	or
-		@luint zero := [@luint new !0 !here] ;
+		@luint64 zero := [@luint64 new !0L !here] ;
 		set := [@uint_range new !zero !zero] ;
 		has_range := false ;
 	end select ;
 end rule ;
 
 rule <number_range> !@number_set set :
-	@luint first ;
+	@luint64 first ;
 	$[$ ;
 	select
-		@luint last ;
+		@luint64 last ;
 		$set_start_uint_number$ ?first ;
        $uint_number$ ?last;
 		set := [@uint_range new !first !last] ;
 	or
 		$uint_number$ ?first ;
 		select
-			@luint last ;
+			@luint64 last ;
 			$..$ ;
 			$uint_number$ ?last ;
 			set := [@uint_range new !first !last] ;
@@ -271,13 +271,13 @@ rule <multiple_specifier> !@bool multiple :
 	end select ;
 end rule ;
 
-rule <default_number> !@bool has_default !@luint default_number :
+rule <default_number> !@bool has_default !@luint64 default_number :
 	select
 		$=$ ;
 		$uint_number$ ?default_number ;
 		has_default := true ;
 	or
-		default_number := [@luint new !0 !here] ;
+		default_number := [@luint64 new !0L !here] ;
 		has_default := false ;
 	end select ;
 end rule ;
@@ -360,18 +360,18 @@ end rule ;
 
 rule <object_definition_list> :
     repeat
-    while <appmode> ;    
-    while <task> ;
-    while <counter> ;
-    while <alarm> ;
-    while <resource> ;
-    while <event> ;
-    while <isr> ;
-    while <mess> ;
-    while <networkmess> ;
-    while <com> ;
-    while <ipdu> ;
-    while <nm> ;
+    while <appmode> ; <description> ?* ;
+   while <task> ; <description> ?* ;
+    while <counter> ; <description> ?* ;
+    while <alarm> ; <description> ?* ;
+    while <resource> ; <description> ?* ;
+    while <event> ; <description> ?* ;
+    while <isr> ; <description> ?* ;
+    while <mess> ; <description> ?* ;
+    while <networkmess> ; <description> ?* ;
+    while <com> ; <description> ?* ;
+    while <ipdu> ; <description> ?* ;
+    while <nm> ; <description> ?* ;
     end repeat ;
 end rule ;
 

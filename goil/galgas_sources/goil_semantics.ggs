@@ -2,14 +2,14 @@ semantics goil_semantics :
   import option goil_options in "goil_options.ggs" ;
 
 list @number_list {
-    @luint number ;
+    @luint64 number ;
 }
 
 abstract class @number_set {}
 
 class @uint_range extends @number_set {
-    @luint first ;
-    @luint last ;
+    @luint64 first ;
+    @luint64 last ;
 }
 
 class @uint_list extends @number_set {
