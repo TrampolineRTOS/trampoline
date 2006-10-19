@@ -234,6 +234,10 @@ $uint_number$ !integerNumber error message "litteral unsigned 64 bits integer" ;
 $float_number$ !floatNumber error message "litteral float" ; 
 $set_start_uint_number$ !integerNumber error message "litteral unsigned 64 bits integer";
 
+#
+# Unsigned literal number. This rule scans decimal integers,
+# hexadecimal
+# 
 rule '0'->'9':
     repeat
         enterCharacterIntoString (number, *);
