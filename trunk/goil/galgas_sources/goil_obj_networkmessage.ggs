@@ -1,0 +1,147 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est prot»g» par la loi sur la propri»t» intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL task object parser
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax goil_obj_networkmessage :
+
+import lexique goil_lexique in "goil_lexique.ggs" ;
+import option goil_options in "goil_options.ggs" ;
+import semantics goil_semantics in "goil_semantics.ggs" ;
+
+rule <networkmess> ;
+rule <ipdu_ref> ;
+rule <net_messageproperty> ;
+rule <static_mp> ;
+rule <dynamic_mp> ;
+rule <sizeinbits> ;
+rule <maxsizeinbits> ;
+rule <bitordering> ;
+rule <bitposition> ;
+rule <datainterpretation> ;
+rule <initialvalue> ;
+rule <direction> ;
+rule <transferproperty> ;
+
+rule <networkmess> :
+    $NETWORKMESSAGE$ ;
+    $idf$ ?* ;
+    ${$ ;
+    repeat
+    while <ipdu_ref> ;
+    while <net_messageproperty> ;
+    end repeat ;
+    $}$ ;
+    $;$ ;
+end rule ;
+
+rule <ipdu_ref> :
+    $IPDU$ ;
+    $=$ ;
+    $idf$ ?* ;
+    $;$ ;
+end rule ;
+
+rule <net_messageproperty> :
+    $MESSAGEPROPERTY$ ;
+    $=$ ;
+    select
+        $STATIC$ ; <static_mp> ;
+    or
+        $DYNAMIC$ ; <dynamic_mp> ;
+    end select ;
+    $;$ ;
+end rule ;
+
+rule <static_mp> :
+    ${$ ;
+    repeat
+    while <sizeinbits> ;
+    while <bitordering> ;
+    while <bitposition> ;
+    while <datainterpretation> ;
+    while <initialvalue> ;
+    while <direction> ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <dynamic_mp> :
+    ${$ ;
+    repeat
+    while <maxsizeinbits> ;
+    while <bitordering> ;
+    while <bitposition> ;
+    while <initialvalue> ;
+    while <direction> ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <sizeinbits> :
+    $SIZEINBITS$ ;
+    $=$ ;
+    $uint_number$ ?* ;
+    $;$ ;
+end rule ;
+
+rule <maxsizeinbits> :
+    $MAXSIZEINBITS$ ;
+    $=$ ;
+    $uint_number$ ?* ;
+    $;$ ;
+end rule ;
+
+rule <bitordering> :
+    $BITORDERING$ ;
+    $=$ ;
+    select
+        $BIGENDIAN$ ;
+    or
+        $LITTLEENDIAN$ ;
+    end select ;
+    $;$ ;
+end rule ;
+
+rule <bitposition> :
+    $BITPOSITION$ ;
+    $=$ ;
+    $uint_number$ ?* ;
+    $;$ ;
+end rule ;
+
+rule <datainterpretation> :
+    $DATAINTERPRETATION$ ;
+    $=$ ;
+    select
+        $UNSIGNEDINTEGER$ ;
+    or
+        $BYTEARRAY$ ;
+    end select ;
+    $;$ ;
+end rule ;
+
+rule <direction> :
+    $DIRECTION$ ;
+    $=$ ;
+    select
+        $SENT$ ;
+        select <transferproperty> ; or end select ;
+    or
+        $RECEIVED$ ;
+    end select ;
+    $;$ ;
+end rule;
+
+end syntax ;

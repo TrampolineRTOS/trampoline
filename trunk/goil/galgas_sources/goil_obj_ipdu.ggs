@@ -1,0 +1,175 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est prot»g» par la loi sur la propri»t» intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL com object parser
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax goil_obj_ipdu :
+
+import lexique goil_lexique in "goil_lexique.ggs" ;
+import option goil_options in "goil_options.ggs" ;
+import semantics goil_semantics in "goil_semantics.ggs" ;
+
+rule <ipdu> ;
+rule <ipduproperty> ;
+rule <transmissionmode> ;
+rule <timeperiod> ;
+rule <timeoffset> ;
+rule <minimumdelaytime> ;
+rule <timeout> ;
+rule <firsttimeout> ;
+rule <ipducallout> ;
+rule <layerused> ;
+
+rule <sent_attributes> ;
+rule <received_attributes> ;
+rule <direct_attributes> ;
+rule <periodic_attributes> ;
+rule <mixed_attributes> ;
+
+# external rules
+rule <sizeinbits> ;
+
+rule <ipdu> :
+    $IPDU$ ;
+    $idf$ ?* ;
+    ${$ ;
+    repeat
+        while <sizeinbits> ;
+        while <ipduproperty> ;
+        while <ipducallout> ;
+        while <layerused> ;
+    end repeat ;
+    $}$ ;
+    $;$ ;
+end rule ;
+
+rule <ipduproperty> :
+    $IPDUPROPERTY$ ;
+    $=$ ;
+    select
+        $SENT$ ;     <sent_attributes> ;
+    or
+        $RECEIVED$ ; <received_attributes> ;
+    end select ;
+    $;$ ;
+end rule;
+
+rule <ipducallout> :
+    $IPDUCALLOUT$ ;
+    $=$ ;
+    $string$ ?* ;
+    $;$ ;
+end rule;
+
+rule <layerused> :
+    $LAYERUSED$ ;
+    $=$ ;
+    $string$ ?* ;
+    $;$ ;
+end rule;
+
+rule <sent_attributes> :
+    ${$ ;
+    repeat
+    while <transmissionmode> ;
+    while <timeout> ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <received_attributes> :
+    ${$ ;
+    repeat
+    while <timeout> ;
+    while <firsttimeout> ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <transmissionmode> :
+    $TRANSMISSIONMODE$ ;
+    $=$ ;
+    select
+        $DIRECT$ ;   <direct_attributes> ;
+    or
+        $PERIODIC$ ; <periodic_attributes> ;
+    or
+        $MIXED$ ;    <mixed_attributes> ;
+    end select ;
+    $;$ ;
+end rule ;
+
+rule <timeout> :
+    $TIMEOUT$ ;
+    $=$ ;
+    $uint_number$ ?* ;
+    $;$ ;
+end rule ;
+
+rule <firsttimeout> :
+    $FIRTSTIMEOUT$ ;
+    $=$ ;
+    $uint_number$ ?* ;
+    $;$ ;
+end rule ;
+
+rule <direct_attributes> :
+    ${$ ;
+    repeat
+    while <minimumdelaytime> ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <periodic_attributes> :
+    ${$ ;
+    repeat
+    while <timeperiod> ;
+    while <timeoffset> ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <mixed_attributes> :
+    ${$ ;
+    repeat
+    while <timeperiod> ;
+    while <timeoffset> ;
+    while <minimumdelaytime> ;
+    end repeat ;
+    $}$ ;
+end rule ;
+
+rule <minimumdelaytime> :
+    $MINIMUMDELAYTIME$ ;
+    $=$ ;
+    $uint_number$ ?* ;
+    $;$ ;
+end rule ;
+
+rule <timeperiod> :
+    $TIMEPERIOD$ ;
+    $=$ ;
+    $uint_number$ ?* ;
+    $;$ ;
+end rule ;
+
+rule <timeoffset> :
+    $TIMEOFFSET$ ;
+    $=$ ;
+    $uint_number$ ?* ;
+    $;$ ;
+end rule ;
+
+end syntax ;
