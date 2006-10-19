@@ -361,7 +361,7 @@ end rule ;
 rule <object_definition_list> :
     repeat
     while <appmode> ; <description> ?* ;
-   while <task> ; <description> ?* ;
+    while <task> ; <description> ?* ;
     while <counter> ; <description> ?* ;
     while <alarm> ; <description> ?* ;
     while <resource> ; <description> ?* ;
