@@ -43,6 +43,10 @@ rule <implementation_def> ;
 rule <application_definition> ;
 rule <object_definition_list> ;
 
+rule <nm> ;
+
+rule <boolean> ;
+
 #
 # extern rules
 #
@@ -53,6 +57,10 @@ rule <alarm> ;
 rule <resource> ;
 rule <event> ;
 rule <isr> ;
+rule <mess> ;
+rule <networkmess> ;
+rule <com> ;
+rule <ipdu> ;
 
 #
 # root
@@ -359,7 +367,31 @@ rule <object_definition_list> :
     while <resource> ;
     while <event> ;
     while <isr> ;
-   end repeat ;
+    while <mess> ;
+    while <networkmess> ;
+    while <com> ;
+    while <ipdu> ;
+    while <nm> ;
+    end repeat ;
+end rule ;
+
+rule <nm> :
+   $NM$ ;
+   $idf$ ?* ;
+   ${$ ;
+   $}$ ;
+   $;$ ;
+end rule ;
+
+#--------------------------------------------------------------------
+# Miscellaneous non terminals
+#--------------------------------------------------------------------
+rule <boolean> :
+    select
+        $TRUE$ ;
+    or
+        $FALSE$ ;
+    end select ;
 end rule ;
 
 end syntax ;

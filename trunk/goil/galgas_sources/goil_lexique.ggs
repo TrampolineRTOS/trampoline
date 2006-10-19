@@ -87,6 +87,61 @@ list resource_attributes error message "resource attribute '%K'" :
     "INTERNAL" ;
 
 #
+# Message object predefined attributes that are not
+# defined elsewhere.
+#
+list message_attributes error message "message attribute '%K'" :
+    "MESSAGEPROPERTY", "NOTIFICATION", "NOTIFICATIONERROR",
+    "SEND_STATIC_INTERNAL", "SEND_STATIC_EXTERNAL",
+    "SEND_DYNAMIC_EXTERNAL", "SEND_ZERO_INTERNAL",
+    "SEND_ZERO_EXTERNAL", "RECEIVE_ZERO_INTERNAL",
+    "RECEIVE_ZERO_EXTERNAL", "RECEIVE_UNQUEUED_INTERNAL",
+    "RECEIVE_QUEUED_INTERNAL", "RECEIVE_UNQUEUED_EXTERNAL",
+    "RECEIVE_QUEUED_EXTERNAL", "RECEIVE_DYNAMIC_EXTERNAL",
+    "RECEIVE_ZERO_SENDERS", "CDATATYPE",
+    "SENDINGMESSAGE", "NONE", "COMCALLBACK", "COMCALLBACKNAME",
+    "INMCALLBACK", "CALLBACKROUTINENAME", "MONITOREDIPDU",
+    "TRANSFERPROPERTY", "TRIGGERED", "PENDING", "NETWORKMESSAGE",
+    "FILTER", "ALWAYS", "NEVER", "MASKEDNEWEQUALSX",
+    "MASKEDNEWDIFFERSX", "NEWISEQUAL", "NEWISDIFFERENT",
+    "MASKEDNEWEQUALSMASKEDOLD", "MASKEDNEWDIFFERSMASKEDOLD",
+    "NEWISWITHIN", "NEWISOUTSIDE", "NEWISGREATER",
+    "NEWISLESSOREQUAL", "NEWISLESS", "NEWISGREATEROREQUAL",
+    "ONEEVERYN", "MIN", "MAX", "X", "PERIOD", "OFFSET",
+    "NETWORKORDERCALLOUT", "CPUORDERCALLOUT", "INITIALVALUE",
+    "QUEUESIZE", "LINK", "RECEIVEMESSAGE" ;
+
+#
+# Networkmessage object predefined attributes that are not
+# defined elsewhere.
+#
+list networkmessage_attribute error message "networkmessage attribute '%K'" :
+    "STATIC", "DYNAMIC", "SIZEINBITS", "MAXSIZEINBITS",
+    "BITORDERING", "BIGENDIAN", "LITTLEENDIAN", "BITPOSITION",
+    "DATAINTERPRETATION", "UNSIGNEDINTEGER", "BYTEARRAY",
+    "DIRECTION", "SENT", "RECEIVED" ;
+
+#
+# Com object predefined attributes that are not
+# defined elsewhere.
+#
+list com_attribute error message "com attribute '%K'" :
+    "COMTIMEBASE", "COMERRORHOOK", "COMUSEGETSERVICEID",
+    "COMUSEPARAMETERACCESS", "COMSTARTCOMEXTENSION",
+    "COMAPPMODE", "COMSTATUS", "USE", "COMEXTENDED",
+    "COMSTANDARD" ;
+
+#
+# IPDU object predefined attributes that are not
+# defined elsewhere.
+#
+list ipdu_attribute error message "ipdu attribute '%K'" :
+    "IPDUPROPERTY", "IPDUCALLOUT", "LAYERUSED",
+    "TRANSMISSIONMODE", "DIRECT", "PERIODIC", "MIXED",
+    "TIMEOUT", "FIRTSTIMEOUT", "MINIMUMDELAYTIME",
+    "TIMEPERIOD", "TIMEOFFSET" ;
+
+#
 # Scheduling attribute
 #
 list scheduling error message "scheduling value '%K'" :
@@ -124,6 +179,9 @@ rule 'a'->'z' | 'A'->'Z' :
         default search att_token in counter_attributes
         default search att_token in alarm_attributes
         default search att_token in resource_attributes
+        default search att_token in message_attributes
+        default search att_token in networkmessage_attribute
+        default search att_token in com_attribute
         default search att_token in scheduling
         default search att_token in boolean
         default $idf$ ;

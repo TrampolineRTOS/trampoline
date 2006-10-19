@@ -1,15 +1,20 @@
 grammar goil_grammar "LL1":
-import lexique goil_lexique     in "goil_lexique.ggs" ;
-import option goil_options      in "goil_options.ggs" ;
+import lexique goil_lexique            in "goil_lexique.ggs" ;
+import option goil_options             in "goil_options.ggs" ;
 
-import syntax goil_syntax       in "goil_syntax.ggs" ;
-import syntax goil_obj_task     in "goil_obj_task.ggs" ;
-import syntax goil_obj_counter  in "goil_obj_counter.ggs" ;
-import syntax goil_obj_appmode  in "goil_obj_appmode.ggs" ;
-import syntax goil_obj_alarm    in "goil_obj_alarm.ggs" ;
-import syntax goil_obj_resource in "goil_obj_resource.ggs" ;
-import syntax goil_obj_event    in "goil_obj_event.ggs" ;
-import syntax goil_obj_isr      in "goil_obj_isr.ggs" ;
+import syntax goil_syntax              in "goil_syntax.ggs" ;
+
+import syntax goil_obj_task            in "goil_obj_task.ggs" ;
+import syntax goil_obj_counter         in "goil_obj_counter.ggs" ;
+import syntax goil_obj_appmode         in "goil_obj_appmode.ggs" ;
+import syntax goil_obj_alarm           in "goil_obj_alarm.ggs" ;
+import syntax goil_obj_resource        in "goil_obj_resource.ggs" ;
+import syntax goil_obj_event           in "goil_obj_event.ggs" ;
+import syntax goil_obj_isr             in "goil_obj_isr.ggs" ;
+import syntax goil_obj_message         in "goil_obj_message.ggs" ;
+import syntax goil_obj_networkmessage  in "goil_obj_networkmessage.ggs" ;
+import syntax goil_obj_com             in "goil_obj_com.ggs" ;
+import syntax goil_obj_ipdu            in "goil_obj_ipdu.ggs" ;
 
 root <file> ;
 

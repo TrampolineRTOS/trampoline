@@ -1,6 +1,6 @@
 #---------------------------------------------------------------------------*
 #                                                                           *
-#       MAKEFILE for building "goil" command line tools for Mac OS X        *
+#MAKEFILE for building "goil_galgas" 32-bits command line tools for Mac OS X*
 #                                                                           *
 #---------------------------------------------------------------------------*
 
@@ -12,6 +12,15 @@
 
 EXECUTABLE := goil
 EXECUTABLE_DEBUG := goil_debug
+
+#---------------------------------------------------------------------------*
+#                                                                           *
+#                         Object files directories                          *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+OBJECTS_DIR       := objects
+DEBUG_OBJECTS_DIR := debug_objects
 
 #---------------------------------------------------------------------------*
 #                                                                           *
@@ -31,14 +40,6 @@ PLATFORM_LINKER_OPTIONS :=
 
 #---------------------------------------------------------------------------*
 #                                                                           *
-#                     Release version compile options                       *
-#                                                                           *
-#---------------------------------------------------------------------------*
-
-RELEASE_OPTIONS := -DDO_NOT_GENERATE_CHECKINGS
-
-#---------------------------------------------------------------------------*
-#                                                                           *
 #                        Include Common Definitions                         *
 #                                                                           *
 #---------------------------------------------------------------------------*
@@ -51,7 +52,7 @@ include ../common_files_for_make/makefile.mke
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-include $(LIB_PM_PATH)/included_makefiles/macosx_gcc_tools.mke
+include $(LIB_PM_PATH)/included_makefiles/macosx_gcc_tools_32.mke
 
 #---------------------------------------------------------------------------*
 #                                                                           *
