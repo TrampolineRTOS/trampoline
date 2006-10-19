@@ -30,7 +30,7 @@ routine_generateHeader(
         C_String outFile =
             inLex.sourceFileName().stringByDeletingPathExtension() + ".h" ;
         C_String multiInclude =
-            inLex.sourceFileName().lastPathComponent().stringByDeletingPathExtension().stringWithUpperCase();
+            inLex.sourceFileName().lastPathComponent().stringByDeletingPathExtension();
 //        printf("%s\n",outFile.cString());
         /*  Open the Header File    */
         FILE *hf = fopen(outFile.cString(),"w");

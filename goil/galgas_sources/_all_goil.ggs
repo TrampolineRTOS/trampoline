@@ -13,6 +13,10 @@ compile "goil_obj_alarm.ggs" ;
 compile "goil_obj_resource.ggs" ;
 compile "goil_obj_event.ggs" ;
 compile "goil_obj_isr.ggs" ;
+compile "goil_obj_message.ggs" ;
+compile "goil_obj_networkmessage.ggs" ;
+compile "goil_obj_com.ggs" ;
+compile "goil_obj_ipdu.ggs" ;
 
 
 compile "goil_grammar.ggs" ;

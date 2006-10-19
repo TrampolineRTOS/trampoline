@@ -1,2 +1,2 @@
 #!/bin/sh
-cd `dirname $0` && time make all
+cd `dirname $0` && time make --warn-undefined-variables all

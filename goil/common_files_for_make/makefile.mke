@@ -52,6 +52,8 @@ SOURCES += goil_obj_alarm.cpp
 SOURCES += goil_obj_resource.cpp
 SOURCES += goil_obj_event.cpp
 SOURCES += goil_obj_isr.cpp
+SOURCES += goil_obj_message.cpp
+SOURCES += goil_obj_networkmessage.cpp
 SOURCES += goil_grammar.cpp
 SOURCES += goil_program.cpp
 
