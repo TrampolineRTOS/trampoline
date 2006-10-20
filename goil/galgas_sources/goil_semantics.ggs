@@ -35,4 +35,50 @@ map @os_imp {
     
 }
 
+abstract class @oil_obj {
+    @lstring description ;
+}
+
+#
+# Alarm object
+#
+abstract class @action_obj {}
+abstract class @autostart_obj {}
+
+class @void_action extends @action_obj {
+}
+
+class @setevent_action extends @action_obj {
+    @lstring task_name ;
+    @lstring event_name ;
+}
+
+class @activatetask_action extends @action_obj {
+    @lstring task_name ;
+}
+
+class @callback_action extends @action_obj {
+    @lstring function_name ;
+}
+
+class @autostart_void extends @autostart_obj {
+}
+
+class @autostart_true_params extends @autostart_obj {
+    @luint64   alarm_time ;
+    @luint64   cycle_time ;
+    @stringset app_modes ;
+}
+
+class @alarm_obj extends @oil_obj {
+    @lstring        counter_name ;
+    @action_obj     action_params ;
+    @autostart_obj  autostart_params ;
+}
+
+map @alarm_map {
+    @alarm_obj  alarm ;
+    insert insertAlarm error message "Alarm %K is duplicated in %L";
+}
+
 end semantics ;

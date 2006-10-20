@@ -53,7 +53,9 @@ rule <boolean> ;
 rule <appmode> ;
 rule <task> ;
 rule <counter> ;
-rule <alarm> ;
+rule <alarm>
+    ?!@alarm_map alarms ;
+
 rule <resource> ;
 rule <event> ;
 rule <isr> ;
@@ -359,11 +361,15 @@ rule <application_definition> :
 end rule ;
 
 rule <object_definition_list> :
+
+    @alarm_map alarms := [@alarm_map emptyMap] ;
+    @lstring alarm_name ;
+
     repeat
     while <appmode> ; <description> ?* ;
     while <task> ; <description> ?* ;
     while <counter> ; <description> ?* ;
-    while <alarm> ; <description> ?* ;
+    while <alarm> !?alarms ;
     while <resource> ; <description> ?* ;
     while <event> ; <description> ?* ;
     while <isr> ; <description> ?* ;
@@ -373,6 +379,8 @@ rule <object_definition_list> :
     while <ipdu> ; <description> ?* ;
     while <nm> ; <description> ?* ;
     end repeat ;
+
+    message [alarms description] ;
 end rule ;
 
 rule <nm> :
