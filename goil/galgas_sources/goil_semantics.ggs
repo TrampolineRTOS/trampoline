@@ -81,6 +81,7 @@ map @alarm_map {
     insert insertAlarm error message "Alarm %K is duplicated in %L";
 }
 
+action generateAlarms ?@alarm_map alarms ;
 #
 # ISR classes
 #
