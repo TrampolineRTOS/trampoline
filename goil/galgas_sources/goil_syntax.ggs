@@ -58,7 +58,9 @@ rule <alarm>
 
 rule <resource> ;
 rule <event> ;
-rule <isr> ;
+rule <isr>
+    ?!@isr_map isrs ;
+
 rule <mess> ;
 rule <networkmess> ;
 rule <com> ;
@@ -363,7 +365,7 @@ end rule ;
 rule <object_definition_list> :
 
     @alarm_map alarms := [@alarm_map emptyMap] ;
-    @lstring alarm_name ;
+    @isr_map isrs := [@isr_map emptyMap] ;
 
     repeat
     while <appmode> ; <description> ?* ;
@@ -372,7 +374,7 @@ rule <object_definition_list> :
     while <alarm> !?alarms ;
     while <resource> ; <description> ?* ;
     while <event> ; <description> ?* ;
-    while <isr> ; <description> ?* ;
+    while <isr> !?isrs ;
     while <mess> ; <description> ?* ;
     while <networkmess> ; <description> ?* ;
     while <com> ; <description> ?* ;
@@ -381,6 +383,7 @@ rule <object_definition_list> :
     end repeat ;
 
     message [alarms description] ;
+    message [isrs description] ;
 end rule ;
 
 rule <nm> :

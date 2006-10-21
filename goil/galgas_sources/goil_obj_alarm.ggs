@@ -2,7 +2,7 @@
 # Trampoline OS
 #
 # Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline est protÈgÈ par la loi sur la propriÈtÈ intellectuelle
+# Trampoline est protégé par la loi sur la propriété intellectuelle
 #
 # This software is distributed under the Lesser GNU Public Licence
 #
@@ -20,9 +20,6 @@ import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
-rule <description>
-    !@lstring description ;
-
 rule <alarm>
     ?!@alarm_map alarms ;
 
@@ -37,6 +34,15 @@ rule <alarm_action_params>
 rule <alarm_autostart_params>
     ?!@autostart_obj alarm_autostart ;
 
+#
+# external rules
+#
+rule <description>
+    !@lstring description ;
+
+#
+# alarm rules implementation
+#
 rule <alarm>
     ?!@alarm_map alarms :
 
@@ -44,8 +50,8 @@ rule <alarm>
     @alarm_obj alarm ;
     @action_obj alarm_action := [@void_action new] ;
     @autostart_obj alarm_autostart := [@autostart_void new] ;
-    @lstring counter_name := [@lstring new !"" !here];
-    @lstring description := [@lstring new !"" !here];
+    @lstring counter_name := [@lstring new !"" !here] ;
+    @lstring description := [@lstring new !"" !here] ;
 
     $ALARM$ ;
     $idf$ ?alarm_name ;

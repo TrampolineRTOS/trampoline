@@ -40,7 +40,7 @@ abstract class @oil_obj {
 }
 
 #
-# Alarm object
+# Alarm classes
 #
 abstract class @action_obj {}
 abstract class @autostart_obj {}
@@ -79,6 +79,21 @@ class @alarm_obj extends @oil_obj {
 map @alarm_map {
     @alarm_obj  alarm ;
     insert insertAlarm error message "Alarm %K is duplicated in %L";
+}
+
+#
+# ISR classes
+#
+
+class @isr_obj extends @oil_obj {
+    @luint64   category ;
+    @stringset resources ;
+    @stringset messages ;
+}
+
+map @isr_map {
+    @isr_obj isr ;
+    insert insertISR error message "ISR %K is duplicated in %L" ;
 }
 
 end semantics ;
