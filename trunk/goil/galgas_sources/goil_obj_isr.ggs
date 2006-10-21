@@ -2,7 +2,7 @@
 # Trampoline OS
 #
 # Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline est protÈgÈ par la loi sur la propriÈtÈ intellectuelle
+# Trampoline est protégé par la loi sur la propriété intellectuelle
 #
 # This software is distributed under the Lesser GNU Public Licence
 #
@@ -20,26 +20,69 @@ import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
-rule <isr> ;
-rule <isr_attributes> ;
+rule <isr>
+    ?!@isr_map isrs ;
 
-rule <isr> :
+rule <isr_attributes>
+    ?!@luint64   category
+    ?!@stringset resources
+    ?!@stringset messages ;
+
+#
+# external rules
+#
+rule <description>
+    !@lstring description ;
+
+#
+# isr rules implementation
+#
+rule <isr>
+    ?!@isr_map isrs :
+
+    @lstring isr_name ;
+    @isr_obj isr ;
+    @luint64 category := [@luint64 new !0L !here] ; 
+    @lstring description := [@lstring new !"" !here] ;
+    @stringset resources := [@stringset emptySet] ;
+    @stringset messages := [@stringset emptySet] ;
+
     $ISR$ ;
-    $idf$ ?* ;
+    $idf$ ?isr_name ;
     ${$ ;
-    <isr_attributes> ;
+    <isr_attributes> !?category !?resources !?messages ;
     $}$ ;
     $;$ ;
+    <description> ?description ;
+
+    isr := [@isr_obj new !description !category !resources !messages] ;
+    [!?isrs insertISR !isr_name !isr] ;
 end rule ;
 
-rule <isr_attributes> :
+rule <isr_attributes>
+    ?!@luint64   category
+    ?!@stringset resources
+    ?!@stringset messages :
+
     repeat
     while
-        $CATEGORY$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+        @uint64 cat := [category uint64] ;
+        if cat != 0L then
+            error here : "ISR category attribute already defined for this ISR" ;
+        end if ;
+        $CATEGORY$ ; $=$ ; $uint_number$ ?category ; $;$ ;
+        cat := [category uint64] ;
+        if (cat != 1L) & (cat != 2L) then
+            error here : "ISR category should be 1 ou 2" ;
+        end if ;
     while
-        $RESOURCE$ ; $=$ ; $idf$ ?* ; $;$ ;
+        @lstring rez ;
+        $RESOURCE$ ; $=$ ; $idf$ ?rez ; $;$ ;
+        resources += ![rez string] ;
     while
-        $MESSAGE$ ; $=$ ; $idf$ ?* ; $;$ ;
+        @lstring mess ;
+        $MESSAGE$ ; $=$ ; $idf$ ?mess ; $;$ ;
+        messages += ![mess string] ;
     end repeat;
 end rule ;
 
