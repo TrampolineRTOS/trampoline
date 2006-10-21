@@ -61,8 +61,8 @@ rule <alarm>
         <alarm_parameters> !?counter_name !?alarm_action !?alarm_autostart ; $;$ ;
     end repeat ;
     $}$ ;
-    $;$ ;
     <description> ?description ;
+    $;$ ;
 
     alarm := [@alarm_obj new !description !counter_name !alarm_action !alarm_autostart] ;
     [!?alarms insertAlarm !alarm_name !alarm] ;
@@ -159,13 +159,13 @@ rule <alarm_autostart_params>
     repeat
     while
         if alarm_time_known == true then
-            error here : "Alarm time attribute already defined for this alarm autostart" ;
+            error here : "Alarmtime attribute already defined for this alarm autostart" ;
         end if ;
         $ALARMTIME$ ; $=$ ; $uint_number$ ?alarm_time ; $;$ ;
         alarm_time_known := true ;
     while
         if cycle_time_known == true then
-            error here : "Cycle time attribute already defined for this alarm autostart" ;
+            error here : "Cycletime attribute already defined for this alarm autostart" ;
         end if ;
         $CYCLETIME$ ; $=$ ; $uint_number$ ?cycle_time ; $;$ ;
         cycle_time_known := true ;

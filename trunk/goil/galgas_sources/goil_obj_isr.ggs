@@ -52,8 +52,8 @@ rule <isr>
     ${$ ;
     <isr_attributes> !?category !?resources !?messages ;
     $}$ ;
-    $;$ ;
     <description> ?description ;
+    $;$ ;
 
     isr := [@isr_obj new !description !category !resources !messages] ;
     [!?isrs insertISR !isr_name !isr] ;
