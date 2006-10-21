@@ -52,7 +52,9 @@ rule <boolean> ;
 #
 rule <appmode> ;
 rule <task> ;
-rule <counter> ;
+rule <counter>
+    ?!@counter_map counters ;
+
 rule <alarm>
     ?!@alarm_map alarms ;
 
@@ -366,11 +368,12 @@ rule <object_definition_list> :
 
     @alarm_map alarms := [@alarm_map emptyMap] ;
     @isr_map isrs := [@isr_map emptyMap] ;
+    @counter_map counters := [@counter_map emptyMap] ;
 
     repeat
     while <appmode> ; <description> ?* ;
     while <task> ; <description> ?* ;
-    while <counter> ; <description> ?* ;
+    while <counter> !?counters ;
     while <alarm> !?alarms ;
     while <resource> ; <description> ?* ;
     while <event> ; <description> ?* ;
@@ -384,6 +387,7 @@ rule <object_definition_list> :
 
     message [alarms description] ;
     message [isrs description] ;
+    message [counters description] ;
 end rule ;
 
 rule <nm> :

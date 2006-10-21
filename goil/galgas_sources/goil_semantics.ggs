@@ -96,4 +96,19 @@ map @isr_map {
     insert insertISR error message "ISR %K is duplicated in %L" ;
 }
 
+#
+# Counter classes
+#
+
+class @counter_obj extends @oil_obj {
+    @luint64 max_allowed_value ;
+    @luint64 ticks_per_base ;
+    @luint64 min_cycle ;
+}
+
+map @counter_map {
+    @counter_obj counter ;
+    insert insertCounter error message "Counter %K is duplicated in %L" ;
+}
+
 end semantics ;

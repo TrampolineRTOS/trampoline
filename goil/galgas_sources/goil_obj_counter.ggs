@@ -20,31 +20,76 @@ import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
-rule <counter> ;
-rule <counter_parameters> ;
+rule <counter>
+    ?!@counter_map counters ;
 
-rule <counter> :
+rule <counter_parameters> 
+    ?!@luint64 max_allowed_value
+    ?!@luint64 ticks_per_base
+    ?!@luint64 min_cycle ;
+
+#
+# external rules
+#
+rule <description>
+    !@lstring description ;
+
+#
+# counter rules implementation
+#
+rule <counter>
+    ?!@counter_map counters :
+
+    @lstring counter_name ;
+    @counter_obj counter ;
+    @luint64 max_allowed_value := [@luint64 new !0L !here] ;
+    @luint64 ticks_per_base := [@luint64 new !0L !here] ;
+    @luint64 min_cycle := [@luint64 new !0L !here] ;
+    @lstring description := [@lstring new !"" !here] ;
+
     $COUNTER$ ;
-    $idf$ ?* ;
+    $idf$ ?counter_name ;
     ${$ ;
-    repeat
-    while
-        <counter_parameters> ; $;$ ;
-    end repeat ;
+    <counter_parameters> !?max_allowed_value !?ticks_per_base !?min_cycle ;
     $}$ ;
+    <description> ?description ;
     $;$ ;
+
+    counter := [@counter_obj new !description !max_allowed_value !ticks_per_base !min_cycle] ;
+    [!?counters insertCounter !counter_name !counter] ;
 end rule ;
 
-rule < counter_parameters > :
-    select
-        $MAXALLOWEDVALUE$ ;   $=$ ; $uint_number$ ?* ;
-    or
-        $TICKSPERBASE$ ;   $=$ ; $uint_number$ ?* ;
-    or
-        $MINCYCLE$ ; $=$ ; $uint_number$ ?* ;
-    or
-        $idf$ ?* ;     $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ;
-    end select ;
+rule < counter_parameters > 
+    ?!@luint64 max_allowed_value
+    ?!@luint64 ticks_per_base
+    ?!@luint64 min_cycle :
+
+    @bool max_allowed_value_known := false ;
+    @bool ticks_per_base_known := false ;
+    @bool min_cycle_known := false ;
+
+    repeat
+    while
+        if max_allowed_value_known then
+            error here : "MAXALLOWEDVALUE attribute already defined for this counter" ;
+        end if ;
+        $MAXALLOWEDVALUE$ ;   $=$ ; $uint_number$ ?max_allowed_value ; $;$ ;
+        max_allowed_value_known := true ;
+    while
+        if ticks_per_base_known then
+            error here : "MAXALLOWEDVALUE attribute already defined for this counter" ;
+        end if ;
+        $TICKSPERBASE$ ;   $=$ ; $uint_number$ ?ticks_per_base ; $;$ ;
+        ticks_per_base_known := true ;
+    while
+        if min_cycle_known then
+            error here : "MAXALLOWEDVALUE attribute already defined for this counter" ;
+        end if ;
+        $MINCYCLE$ ; $=$ ; $uint_number$ ?min_cycle ; $;$ ;
+        min_cycle_known := true ;
+    while
+        $idf$ ?* ;     $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ; $;$ ;
+    end repeat ;
 end rule ;
 
 end syntax ;
