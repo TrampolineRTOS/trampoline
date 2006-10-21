@@ -388,6 +388,8 @@ rule <object_definition_list> :
     message [alarms description] ;
     message [isrs description] ;
     message [counters description] ;
+
+    action generateAlarms !alarms ;
 end rule ;
 
 rule <nm> :
