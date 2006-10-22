@@ -27,6 +27,7 @@ rule <task>
 	?!@task_map tasks ;
 
 rule <task_parameters>
+	?@lstring task_name
 	?!@luint64 priority
 	?!@lstring schedule
 	?!@luint64 activation
@@ -36,6 +37,13 @@ rule <task_parameters>
 
 rule <task_autostart_params>
 	?!@task_autostart_obj task_autostart ;
+
+rule <check_task_constraints>
+	?@lstring task_name
+	?@luint64 priority
+	?@lstring schedule
+	?@luint64 activation
+	?@task_autostart_obj autostart ;
 
 #
 # external rules
@@ -54,7 +62,7 @@ rule <task>
 	@luint64 priority := [@luint64 new !4294967296L !here] ;
 	@lstring schedule := [@lstring new !"" !here] ;
 	@luint64 activation := [@luint64 new !4294967296L !here] ;
-	@task_autostart_obj autostart := [@task_autostart_false new] ;
+	@task_autostart_obj autostart := [@task_autostart_void new] ;
 	@stringset resources [emptySet] ;
 	@stringset events [emptySet] ;
 	@lstring description ;
@@ -64,18 +72,20 @@ rule <task>
 	${$ ;
 	repeat
 	while
-		<task_parameters> !?priority !?schedule !?activation !? autostart !?resources !?events ; 
+		<task_parameters> !task_name !?priority !?schedule !?activation !? autostart !?resources !?events ; 
 		$;$ ;	
 	end repeat ;
 	$}$ ;
 	<description> ?description ;
 	$;$ ;
-	
+
+	<check_task_constraints> !task_name !priority !schedule !activation !autostart ;
 	task := [@task_obj new !description !priority !schedule !activation !autostart !resources !events] ;
-	[!?tasks insertTask !task_name !task] ; 
+	[!?tasks insertTask !task_name !task] ;
 end rule ;	
 
 rule <task_parameters>
+	?@lstring task_name
 	?!@luint64 priority
 	?!@lstring schedule
 	?!@luint64 activation
@@ -86,7 +96,7 @@ rule <task_parameters>
 	select
 		#PRIORITY attribute
 		if [priority uint64] != 4294967296L then
-			error here : "PRIORITY attribute already defined for this task" ;
+			error here : "PRIORITY attribute already defined for TASK " . [task_name string] ;
 		end if ;
 		$PRIORITY$ ; $=$ ; $uint_number$ ?priority ;
 		if [priority uint64] > 4294967295L then
@@ -95,7 +105,7 @@ rule <task_parameters>
 	or
 		#SCHEDULE attribute
 		if [schedule string] != "" then
-			error here : "SCHEDULE attribute already defined for this task" ;
+			error here : "SCHEDULE attribute already defined for TASK " . [task_name string] ;
 		end if ;
 		$SCHEDULE$ ; $=$ ; 
 		select
@@ -103,22 +113,22 @@ rule <task_parameters>
 			schedule := [@lstring new !"FULL" !here] ;
 		or
 			$NON$ ;
-			schedule := [@lstring new !"FULL" !here] ;
+			schedule := [@lstring new !"NON" !here] ;
 		end select ;
 	or
 		#ACTIVATION attribute
 		if [activation uint64] != 4294967296L then
-			error here : "PRIORITY attribute already defined for this task" ;
+			error here : "ACTIVATION attribute already defined for TASK " . [task_name string] ;
 		end if ;
 		$ACTIVATION$ ; $=$ ; $uint_number$ ?activation ;
 		if [activation uint64] > 4294967295L then
-			error here : "PRIORITY attribute value out-of-range" ;
+			error here : "ACTIVATION attribute value out of range" ;
 		end if ;
 	or
 		#AUTOSTART attribute
 		extract autostart :
-			when @task_autostart_false () ->
-			else error here : "AUTOSTART attribute already defined for this task" ;
+			when @task_autostart_void () ->
+			else error here : "AUTOSTART attribute already defined for TASK " . [task_name string] ;
 		end extract ;
 		$AUTOSTART$ ; $=$ ;
 		select
@@ -127,13 +137,14 @@ rule <task_parameters>
 			$}$ ;
 		or
 			$FALSE$ ; 
+			autostart := [@task_autostart_false new] ;
 		end select ;
 	or
 		#RESOURCE attribute
 		@lstring  resource ;
 		$RESOURCE$ ; $=$ ; $idf$ ?resource ;
 		if ([resources hasKey ![resource string]]) then
-			warning here : "RESOURCE already defined for this task" ;
+			warning here : "RESOURCE " . [resource string] . " already defined for TASK " . [task_name string] ;
 		end if ;
 		resources += ![resource string] ;
 	or
@@ -141,7 +152,7 @@ rule <task_parameters>
 		@lstring event ;
 		$EVENT$ ; $=$ ; $idf$ ?event ;
 		if ([events hasKey ![event string]]) then
-			warning here : "EVENT already defined for this task" ;
+			warning here : "EVENT " . [event string] . " already defined for TASK " . [task_name string] ;
 		end if ;
 		events += ![event string] ;
 	end select ;
@@ -156,11 +167,34 @@ rule <task_autostart_params>
 	while
 		$APPMODE$ ; $=$ ; $idf$ ?appmode ; $;$ ;
 		if ([appmodes hasKey ![appmode string]]) then
-			warning here : "APPMODE already defined for this task AUTOSTART attribute" ;
+			warning here : "APPMODE " . [appmode string] . " already defined for this task AUTOSTART attribute" ;
 		end if ; 
 		appmodes += ![appmode string] ;
 	end repeat;
 	autostart := [@task_autostart_true new !appmodes] ;
+end rule ;
+
+rule <check_task_constraints>
+	?@lstring task_name
+	?@luint64 priority
+	?@lstring schedule
+	?@luint64 activation
+	?@task_autostart_obj autostart
+:
+	#PRIORITY is defined
+	if [priority uint64] == 4294967296L then
+		error here : "The PRIORITY attribute must be defined for TASK " . [task_name string] ;
+	end if ;
+	if [schedule string] == "" then
+		error here : "The SCHEDULE attribute must be defined for TASK " . [task_name string];
+	end if ;
+	if[activation uint64] == 4294967296L then
+		error here : "The ACTIVATION attribute must be defined for TASK " . [task_name string] ;
+	end if ;
+	extract autostart :
+		when @task_autostart_void () -> error here : "The AUTOSTART attribute must be defined for TASK " . [task_name string] ;
+		else
+	end extract ; 
 end rule ;
 
 end syntax ;

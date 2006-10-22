@@ -45,6 +45,9 @@ abstract class @oil_obj {
 abstract class @task_autostart_obj {
 }
 
+class @task_autostart_void extends @task_autostart_obj {
+}
+
 class @task_autostart_false extends @task_autostart_obj {
 }
 
@@ -63,7 +66,7 @@ class @task_obj extends @oil_obj {
 
 map @task_map {
 	@task_obj task ;
-    insert insertTask error message "Task %K is duplicated in %L" ;
+    insert insertTask error message "Task %K is already defined in %L" ;
 } 
 
 #
@@ -88,7 +91,7 @@ class @resource_obj extends @oil_obj {
 
 map @resource_map {
 	@resource_obj resource ;
-	insert insertResource error message "Resource %K duplicated in %L" ;
+	insert insertResource error message "Resource %K is already defined in %L" ;
 }
 
 #
@@ -110,7 +113,7 @@ class @event_obj extends @oil_obj {
 
 map @event_map {
 	@event_obj event ;
-	insert insertEvent error message "Event %K duplicated in %L" ;
+	insert insertEvent error message "Event %K is already defined in %L" ;
 }
 
 #
