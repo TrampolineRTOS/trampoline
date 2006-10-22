@@ -40,6 +40,80 @@ abstract class @oil_obj {
 }
 
 #
+# Task classes
+#
+abstract class @task_autostart_obj {
+}
+
+class @task_autostart_false extends @task_autostart_obj {
+}
+
+class @task_autostart_true extends @task_autostart_obj {
+	@stringset appmodes ;
+}
+
+class @task_obj extends @oil_obj {
+	@luint64 priority ;
+	@lstring schedule ;
+	@luint64 activation ;
+	@task_autostart_obj autostart ;
+	@stringset resources ;
+	@stringset events;
+}
+
+map @task_map {
+	@task_obj task ;
+    insert insertTask error message "Task %K is duplicated in %L" ;
+} 
+
+#
+# Resource classes
+#
+abstract class @resource_property_obj {
+}
+
+class @resource_property_standard_obj extends @resource_property_obj {
+}
+
+class @resource_property_linked_obj extends @resource_property_obj {
+	@lstring linked_resource ;
+}
+
+class @resource_property_internal_obj extends @resource_property_obj {
+}
+
+class @resource_obj extends @oil_obj {
+	@resource_property_obj resource_property ;
+}
+
+map @resource_map {
+	@resource_obj resource ;
+	insert insertResource error message "Resource %K duplicated in %L" ;
+}
+
+#
+# Event classes
+#
+abstract class @event_mask_obj {
+}
+
+class @event_mask_user_obj extends @event_mask_obj {
+	@luint64 mask ;
+}
+
+class @event_mask_auto_obj extends @event_mask_obj {
+}
+
+class @event_obj extends @oil_obj {
+	@event_mask_obj mask ;
+}
+
+map @event_map {
+	@event_obj event ;
+	insert insertEvent error message "Event %K duplicated in %L" ;
+}
+
+#
 # Alarm classes
 #
 abstract class @action_obj {}

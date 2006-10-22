@@ -2,7 +2,7 @@
 # Trampoline OS
 #
 # Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline est protÈgÈ par la loi sur la propriÈtÈ intellectuelle
+# Trampoline est protªgª par la loi sur la propriªtª intellectuelle
 #
 # This software is distributed under the Lesser GNU Public Licence
 #
@@ -20,39 +20,147 @@ import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
-rule <task> ;
-rule <task_parameters> ;
+#
+# local rules declaration
+#
+rule <task>
+	?!@task_map tasks ;
 
-rule <task> :
-    $TASK$ ;
-    $idf$ ?* ;
-    ${$ ;
-    repeat
-    while
-        <task_parameters> ; $;$ ;
-    end repeat ;
-    $}$ ;
-    $;$ ;
-end rule ;
+rule <task_parameters>
+	?!@luint64 priority
+	?!@lstring schedule
+	?!@luint64 activation
+	?!@task_autostart_obj autostart
+	?!@stringset resources
+	?!@stringset events ;
 
-rule <task_parameters> :
-    select
-        $PRIORITY$ ;   $=$ ; $uint_number$ ?* ;
-    or
-        $SCHEDULE$ ;   $=$ ; select $NON$ ; or $FULL$ ; end select ;
-    or
-        $ACTIVATION$ ; $=$ ; $uint_number$ ?* ;
-    or
-        $AUTOSTART$ ;  $=$ ; select $TRUE$ ; or $FALSE$ ; end select ;
-    or
-        $RESOURCE$ ;   $=$ ; $idf$ ?* ;
-    or
-        $EVENT$ ;      $=$ ; $idf$ ?* ;
-    or
-        $MESSAGE$ ;    $=$ ; $idf$ ?* ;
-    or
-        $idf$ ?* ;     $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ;
-    end select ;
+rule <task_autostart_params>
+	?!@task_autostart_obj task_autostart ;
+
+#
+# external rules
+#
+rule <description>
+	!@lstring description ;
+
+#
+# local rules implementation
+#
+rule <task>
+	?!@task_map tasks 
+:
+	@lstring task_name ;
+	@task_obj task ;
+	@luint64 priority := [@luint64 new !4294967296L !here] ;
+	@lstring schedule := [@lstring new !"" !here] ;
+	@luint64 activation := [@luint64 new !4294967296L !here] ;
+	@task_autostart_obj autostart := [@task_autostart_false new] ;
+	@stringset resources [emptySet] ;
+	@stringset events [emptySet] ;
+	@lstring description ;
+
+	$TASK$ ;
+	$idf$ ?task_name ; 
+	${$ ;
+	repeat
+	while
+		<task_parameters> !?priority !?schedule !?activation !? autostart !?resources !?events ; 
+		$;$ ;	
+	end repeat ;
+	$}$ ;
+	<description> ?description ;
+	$;$ ;
+	
+	task := [@task_obj new !description !priority !schedule !activation !autostart !resources !events] ;
+	[!?tasks insertTask !task_name !task] ; 
+end rule ;	
+
+rule <task_parameters>
+	?!@luint64 priority
+	?!@lstring schedule
+	?!@luint64 activation
+	?!@task_autostart_obj autostart
+	?!@stringset resources
+	?!@stringset events
+:
+	select
+		#PRIORITY attribute
+		if [priority uint64] != 4294967296L then
+			error here : "PRIORITY attribute already defined for this task" ;
+		end if ;
+		$PRIORITY$ ; $=$ ; $uint_number$ ?priority ;
+		if [priority uint64] > 4294967295L then
+			error here : "PRIORITY attribute value out-of-range" ;
+		end if ;
+	or
+		#SCHEDULE attribute
+		if [schedule string] != "" then
+			error here : "SCHEDULE attribute already defined for this task" ;
+		end if ;
+		$SCHEDULE$ ; $=$ ; 
+		select
+			$FULL$ ;
+			schedule := [@lstring new !"FULL" !here] ;
+		or
+			$NON$ ;
+			schedule := [@lstring new !"FULL" !here] ;
+		end select ;
+	or
+		#ACTIVATION attribute
+		if [activation uint64] != 4294967296L then
+			error here : "PRIORITY attribute already defined for this task" ;
+		end if ;
+		$ACTIVATION$ ; $=$ ; $uint_number$ ?activation ;
+		if [activation uint64] > 4294967295L then
+			error here : "PRIORITY attribute value out-of-range" ;
+		end if ;
+	or
+		#AUTOSTART attribute
+		extract autostart :
+			when @task_autostart_false () ->
+			else error here : "AUTOSTART attribute already defined for this task" ;
+		end extract ;
+		$AUTOSTART$ ; $=$ ;
+		select
+			$TRUE$ ; ${$ ;
+			<task_autostart_params> !?autostart ;
+			$}$ ;
+		or
+			$FALSE$ ; 
+		end select ;
+	or
+		#RESOURCE attribute
+		@lstring  resource ;
+		$RESOURCE$ ; $=$ ; $idf$ ?resource ;
+		if ([resources hasKey ![resource string]]) then
+			warning here : "RESOURCE already defined for this task" ;
+		end if ;
+		resources += ![resource string] ;
+	or
+		#EVENT attribute
+		@lstring event ;
+		$EVENT$ ; $=$ ; $idf$ ?event ;
+		if ([events hasKey ![event string]]) then
+			warning here : "EVENT already defined for this task" ;
+		end if ;
+		events += ![event string] ;
+	end select ;
+end rule;
+
+rule <task_autostart_params>
+	?!@task_autostart_obj autostart
+:
+	@lstring appmode := [@lstring new !"" !here];
+	@stringset appmodes [emptySet] ;
+	repeat
+	while
+		$APPMODE$ ; $=$ ; $idf$ ?appmode ; $;$ ;
+		if ([appmodes hasKey ![appmode string]]) then
+			warning here : "APPMODE already defined for this task AUTOSTART attribute" ;
+		end if ; 
+		appmodes += ![appmode string] ;
+	end repeat;
+	autostart := [@task_autostart_true new !appmodes] ;
 end rule ;
 
 end syntax ;

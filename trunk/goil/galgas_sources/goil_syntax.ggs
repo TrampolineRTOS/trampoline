@@ -42,7 +42,6 @@ rule <implementation_def> ;
 
 rule <application_definition> ;
 rule <object_definition_list> ;
-
 rule <nm> ;
 
 rule <boolean> ;
@@ -51,15 +50,21 @@ rule <boolean> ;
 # extern rules
 #
 rule <appmode> ;
-rule <task> ;
+rule <task> 
+	?!@task_map outTask;
+
 rule <counter>
     ?!@counter_map counters ;
 
 rule <alarm>
     ?!@alarm_map alarms ;
 
-rule <resource> ;
-rule <event> ;
+rule <resource>
+	?!@resource_map resources ;
+
+rule <event> 
+	?!@event_map events;
+
 rule <isr>
     ?!@isr_map isrs ;
 
@@ -366,17 +371,20 @@ end rule ;
 
 rule <object_definition_list> :
 
-    @alarm_map alarms := [@alarm_map emptyMap] ;
-    @isr_map isrs := [@isr_map emptyMap] ;
+    @task_map tasks := [@task_map emptyMap] ;
     @counter_map counters := [@counter_map emptyMap] ;
+    @alarm_map alarms := [@alarm_map emptyMap] ;
+    @resource_map resources := [@resource_map emptyMap] ;
+    @event_map events := [@event_map emptyMap] ;
+    @isr_map isrs := [@isr_map emptyMap] ;
 
     repeat
     while <appmode> ; <description> ?* ;
-    while <task> ; <description> ?* ;
+    while <task> !?tasks ;
     while <counter> !?counters ;
     while <alarm> !?alarms ;
-    while <resource> ; <description> ?* ;
-    while <event> ; <description> ?* ;
+    while <resource> !?resources ;
+    while <event> !?events ;
     while <isr> !?isrs ;
     while <mess> ; <description> ?* ;
     while <networkmess> ; <description> ?* ;
