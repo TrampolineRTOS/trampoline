@@ -20,29 +20,51 @@ import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
-rule <resource> ;
+#
+# local rules description
+#
+rule <resource> 
+	?!@resource_map resources;
 
-rule <resource> :
-    $RESOURCE$ ;
-    $idf$ ?* ;
-    ${$ ;
-    select
-        $RESOURCEPROPERTY$ ; $=$ ;
-        select
-            $STANDARD$ ;
-        or
-            $LINKED$ ;
-            ${$ ;
-            $LINKEDRESOURCE$ ; $=$ ; $idf$ ?* ; $;$ ;
-            $}$ ;
-        or
-            $INTERNAL$ ;
-        end select ;
-        $;$ ;
-    or
-    end select ;
-    $}$ ;
-    $;$ ;
+#
+# external rules
+#
+rule <description>
+	!@lstring description ;
+
+#
+# local rules implementation
+#
+rule <resource>
+	?!@resource_map resources 
+:
+	@resource_obj resource ;
+	@lstring resource_name ;
+	@resource_property_obj resource_property ;
+	@lstring description ;
+
+	$RESOURCE$ ;
+	$idf$ ?resource_name ;
+	${$ ;
+	$RESOURCEPROPERTY$ ; $=$ ;
+	select
+		$STANDARD$ ; 
+		resource_property := [@resource_property_standard_obj new] ;
+	or
+		@lstring linked_resource ;
+		$LINKED$ ; ${$ ; $LINKEDRESOURCE$ ; $=$ ; $idf$ ?linked_resource ; $;$ ; $}$ ;
+		resource_property := [@resource_property_linked_obj new !linked_resource] ;
+	or 
+		$INTERNAL$ ; 
+		resource_property := [@resource_property_internal_obj new] ;
+	end select ;
+	$;$ ;
+	$}$ ;
+	<description> ?description ;
+	$;$ ;
+
+	resource := [@resource_obj new !description !resource_property] ;
+	[!?resources insertResource !resource_name !resource] ;
 end rule ;
 
 end syntax ;

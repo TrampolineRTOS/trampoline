@@ -2,7 +2,7 @@
 # Trampoline OS
 #
 # Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline est prot»g» par la loi sur la propri»t» intellectuelle
+# Trampoline est protªgª par la loi sur la propriªtª intellectuelle
 #
 # This software is distributed under the Lesser GNU Public Licence
 #
@@ -20,22 +20,48 @@ import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
-rule <event> ;
+#
+# local rules declaration
+#
+rule <event> 
+	?!@event_map events;
 
-rule <event> :
-    $EVENT$ ;
-    $idf$ ?* ;
-    ${$ ;
-    $MASK$ ;
-    $=$ ;
-    select
-        $uint_number$ ?* ;
-    or
-        $AUTO$ ;
-    end select ;
-    $;$ ;
-    $}$ ;
-    $;$ ;
+#
+# external rules declaration
+#
+rule <description>
+	!@lstring description ;
+
+#
+# local rule definition
+#
+rule <event> 
+	?!@event_map events
+:
+	@event_obj event ;
+	@lstring event_name ;
+	@event_mask_obj mask ;
+	@lstring description ;
+
+	$EVENT$ ;
+	$idf$ ?event_name ;
+	${$ ;
+	$MASK$ ; $=$ ;
+	select
+		$AUTO$ ;
+		mask := [@event_mask_auto_obj new] ;
+	or
+		@luint64 mask_value ;
+		$uint_number$ ?mask_value ;
+		mask := [@event_mask_user_obj new !mask_value] ;
+	end select ;
+	$;$ ;
+	$}$ ;
+	<description> ?description ;
+	$;$ ;
+
+	event := [@event_obj new !description !mask];
+	[!?events insertEvent !event_name !event] ;
 end rule ;
 
 end syntax ;
