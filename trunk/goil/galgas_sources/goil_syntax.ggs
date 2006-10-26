@@ -46,9 +46,16 @@ rule <nm> ;
 
 rule <boolean> ;
 
-#
+#--------------------------------------------------------------------
+# Code generation rules declaration
+#--------------------------------------------------------------------
+rule <target> !@string target_platform ;
+rule <template> !@string template ?@string obj ;
+rule <generate_alarms> ?@alarm_map alarms ;
+
+#--------------------------------------------------------------------
 # extern rules
-#
+#--------------------------------------------------------------------
 rule <appmode> ;
 rule <task> 
 	?!@task_map outTask;
@@ -397,7 +404,7 @@ rule <object_definition_list> :
     message [isrs description] ;
     message [counters description] ;
 
-    action generateAlarms !alarms ;
+    <generate_alarms> !alarms ;
 end rule ;
 
 rule <nm> :
@@ -417,6 +424,27 @@ rule <boolean> :
     or
         $FALSE$ ;
     end select ;
+end rule ;
+
+#--------------------------------------------------------------------
+# Code generation
+#--------------------------------------------------------------------
+rule <target> !@string target_platform :
+    target_platform := [option goil_options.target_platform] ;
+end rule ;
+
+rule <template> !@string template ?@string obj :
+    @string target_platform := "";
+    <target> ?target_platform ;
+    @string targ_tpl := "../templates/".target_platform."/".obj.".tpl" ;
+
+    template := "" ;
+end rule ;
+
+rule <generate_alarms> ?@alarm_map alarms :
+    @string tpl ;
+
+    <template> ?tpl !"alarms" ;
 end rule ;
 
 end syntax ;

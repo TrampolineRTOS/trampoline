@@ -1,5 +1,6 @@
 option goil_options :
 
-# ADD YOUR CODE HERE
+@string target_platform : 't', "target"  -> "Target platform" ;
+@string project_dir     : 'p', "project" -> "Project directory" ;
 
 end option ;
