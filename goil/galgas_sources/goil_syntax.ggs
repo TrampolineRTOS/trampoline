@@ -19,7 +19,6 @@ import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
-
 rule <file> ;
 rule <OIL_version> !@lstring version !@lstring description ;
 rule <description> !@lstring description ;
@@ -403,7 +402,15 @@ rule <object_definition_list> :
     message [alarms description] ;
     message [isrs description] ;
     message [counters description] ;
+	
+	# semantics constraint checking
+	resolve_linked_resources !?resources ;
+	message [resources description] ;
 
+	all_events_and_resources_defined_and_used !tasks !events !resources ;
+	all_event_masks_different !events ;
+
+	# code generation
     <generate_alarms> !alarms ;
 end rule ;
 

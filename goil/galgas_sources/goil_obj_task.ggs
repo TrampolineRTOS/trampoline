@@ -185,12 +185,15 @@ rule <check_task_constraints>
 	if [priority uint64] == 4294967296L then
 		error here : "The PRIORITY attribute must be defined for TASK " . [task_name string] ;
 	end if ;
+	#SCHEDULE is defined
 	if [schedule string] == "" then
 		error here : "The SCHEDULE attribute must be defined for TASK " . [task_name string];
 	end if ;
+	#ACTIVATION is defined
 	if[activation uint64] == 4294967296L then
 		error here : "The ACTIVATION attribute must be defined for TASK " . [task_name string] ;
 	end if ;
+	#AUTOSTART is defined
 	extract autostart :
 		when @task_autostart_void () -> error here : "The AUTOSTART attribute must be defined for TASK " . [task_name string] ;
 		else
