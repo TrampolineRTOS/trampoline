@@ -18,7 +18,6 @@ compile "goil_obj_networkmessage.ggs" ;
 compile "goil_obj_com.ggs" ;
 compile "goil_obj_ipdu.ggs" ;
 
-
 compile "goil_grammar.ggs" ;
 compile "goil_program.ggs" ;
 

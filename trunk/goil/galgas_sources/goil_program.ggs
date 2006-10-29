@@ -1,6 +1,9 @@
-program goil_program "version 1.0.0" . "???":
-import grammar goil_grammar in "goil_grammar.ggs" ;
-#--- max error and warning count
-error 100 ;
-warning 100 ;
+program goil_program "version 1.0.0" :
+	import grammar goil_grammar in "goil_grammar.ggs" ;
+	#--- max error and warning count
+	error 100 ;
+	warning 100 ;
+	when . "oil" :
+		grammar goil_grammar
+	;
 end program ;
