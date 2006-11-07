@@ -403,15 +403,38 @@ rule <object_definition_list> :
     message [isrs description] ;
     message [counters description] ;
 	
-	# semantics constraint checking
-	resolve_linked_resources !?resources ;
-	message [resources description] ;
+    # semantics constraint checking
+    resolve_linked_resources !?resources ;
+    message [resources description] ;
 
-	all_events_and_resources_defined_and_used !tasks !events !resources ;
-	all_event_masks_different !events ;
+    all_events_and_resources_defined_and_used !tasks !events !resources ;
+    all_event_masks_different !events ;
 
-	# code generation
-    <generate_alarms> !alarms ;
+    # code generation
+    @string header ;
+    @string implementation ;
+    template ?header !"app_header" ;
+    template ?implementation !"app_implementation" ;
+    @prefix_map prefix := [@prefix_map emptyMap] ;
+
+    [!?prefix insert_prefix ![@lstring new !"task"     !here] !"task_descriptor_of_"    !"$TASK_NAME$"] ;
+    [!?prefix insert_prefix ![@lstring new !"alarm"    !here] !"alarm_descriptor_of_"   !"$ALARM_NAME$"] ;
+    [!?prefix insert_prefix ![@lstring new !"counter"  !here] !"counter_descriptor_of_" !"$COUNTER_NAME$"] ;
+    [!?prefix insert_prefix ![@lstring new !"event"    !here] !"value_of_"              !"$EVENT_NAME$"] ;
+    [!?prefix insert_prefix ![@lstring new !"callback" !here] !"alarm_callback_"        !"$ALARM_CALLBACK$"] ;
+
+    generate_alarms !alarms !prefix !?header !?implementation;
+
+    # write the result to files
+    @string header_file := [@string stringWithSourceFilePath] ;
+    header_file := [header_file stringByDeletingPathExtension] . ".h" ;
+    @string implementation_file := [@string stringWithSourceFilePath] ;
+    implementation_file := [implementation_file stringByDeletingPathExtension] . ".c" ;
+
+    message "creating " . header_file . "\n" ;
+    [header writeToFile !header_file] ;
+    message "creating " . implementation_file . "\n" ;
+    [implementation writeToFile !implementation_file] ;
 end rule ;
 
 rule <nm> :
@@ -433,25 +456,5 @@ rule <boolean> :
     end select ;
 end rule ;
 
-#--------------------------------------------------------------------
-# Code generation
-#--------------------------------------------------------------------
-rule <target> !@string target_platform :
-    target_platform := [option goil_options.target_platform] ;
-end rule ;
-
-rule <template> !@string template ?@string obj :
-    @string target_platform := "";
-    <target> ?target_platform ;
-    @string targ_tpl := "../templates/".target_platform."/".obj.".tpl" ;
-
-    template := "" ;
-end rule ;
-
-rule <generate_alarms> ?@alarm_map alarms :
-    @string tpl ;
-
-    <template> ?tpl !"alarms" ;
-end rule ;
 
 end syntax ;
