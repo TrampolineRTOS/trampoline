@@ -1,0 +1,241 @@
+semantics goil_semantic_types :
+
+list @number_list {
+    @luint64 number ;
+}
+
+abstract class @number_set {}
+
+class @uint_range extends @number_set {
+    @luint64 first ;
+    @luint64 last ;
+}
+
+class @uint_list extends @number_set {
+    @number_list numbers ;
+}
+
+map @implementationSpec {
+    @lstring type ;
+}
+
+map @implementation {
+    @implementationSpec spec ;
+    insert insertSpec error message "%K is duplicated in %L";
+}
+
+action generateHeader
+    ?@lstring version
+    ?@lstring description
+;
+
+map @os_imp {
+    @lstring type ;
+    
+}
+
+abstract class @oil_obj {
+    @lstring description ;
+	reader get_description !@lstring desc :
+		desc := description ;
+	end reader ;
+}
+
+#
+# Map to store string constants used
+# for code generation
+#
+map @prefix_map {
+    @string prefix ;
+    @string tag_to_rep ;
+    insert insert_prefix error message "prefix %K duplicated %L" ;
+    search prefix error message "prefix %K is not defined" ;
+}
+
+#
+# Task classes
+#
+abstract class @task_autostart_obj {
+}
+
+class @task_autostart_void extends @task_autostart_obj {
+}
+
+class @task_autostart_false extends @task_autostart_obj {
+}
+
+class @task_autostart_true extends @task_autostart_obj {
+	@stringset appmodes ;
+}
+
+class @task_obj extends @oil_obj {
+	@luint64 priority ;
+	@lstring schedule ;
+	@luint64 activation ;
+	@task_autostart_obj autostart ;
+	@stringset resources ;
+	@stringset events;
+	
+	reader get_resources !@stringset out_resources :
+		out_resources := resources ;
+	end reader ;
+
+	reader get_events !@stringset out_events :
+		out_events := events ;
+	end reader ;
+
+}
+
+map @task_map {
+	@task_obj task ;
+    insert insertTask error message "Task %K is already defined in %L" ;
+} 
+
+#
+# Resource classes
+#
+
+abstract class @resource_property_obj {
+}
+
+class @resource_property_standard_obj extends @resource_property_obj {
+}
+
+class @resource_property_linked_obj extends @resource_property_obj {
+	@lstring linked_resource ;
+}
+
+class @resource_property_internal_obj extends @resource_property_obj {
+}
+
+class @resource_obj extends @oil_obj {
+	@resource_property_obj resource_property ;
+	
+	reader get_property !@resource_property_obj out :
+		out := resource_property;
+	end reader ;
+}
+
+map @resource_map {
+	@resource_obj resource ;
+	insert insertResource error message "Resource %K is already defined in %L" ;
+	search getResource error message "Resource %K is not defined" ;
+}
+
+map @linked_resources {
+	@lstring linked_resource ;
+	insert insertLinked error message "Resource %K (%L) is part of a cycle of linked resources" ;
+}
+
+#
+# Event classes
+#
+abstract class @event_mask_obj {
+}
+
+class @event_mask_user_obj extends @event_mask_obj {
+	@luint64 mask ;
+}
+
+class @event_mask_auto_obj extends @event_mask_obj {
+}
+
+class @event_obj extends @oil_obj {
+	@event_mask_obj mask ;
+
+	reader get_mask !@event_mask_obj out_mask :
+		out_mask := mask ;
+	end reader ;
+}
+
+map @event_map {
+	@event_obj event ;
+	insert insertEvent error message "Event %K is already defined in %L" ;
+}
+
+#
+# Alarm classes
+#
+abstract class @action_obj {}
+abstract class @autostart_obj {}
+
+class @void_action extends @action_obj {
+}
+
+class @setevent_action extends @action_obj {
+    @lstring task_name ;
+    @lstring event_name ;
+}
+
+class @activatetask_action extends @action_obj {
+    @lstring task_name ;
+}
+
+class @callback_action extends @action_obj {
+    @lstring function_name ;
+}
+
+class @autostart_void extends @autostart_obj {
+}
+
+class @autostart_true_params extends @autostart_obj {
+    @luint64   alarm_time ;
+    @luint64   cycle_time ;
+    @stringset app_modes ;
+}
+
+class @alarm_obj extends @oil_obj {
+    @lstring        counter_name ;
+    @action_obj     action_params ;
+    @autostart_obj  autostart_params ;
+
+    reader get_action !@action_obj out_action :
+        out_action := action_params ;
+    end reader ;
+
+    reader get_autostart !@autostart_obj out_autostart :
+        out_autostart := autostart_params ;
+    end reader ;
+
+    reader get_counter !@lstring out_counter :
+        out_counter := counter_name ;
+    end reader ;
+}
+
+map @alarm_map {
+    @alarm_obj  alarm ;
+    insert insertAlarm error message "Alarm %K is duplicated in %L";
+}
+
+action generateAlarms ?@alarm_map alarms ;
+#
+# ISR classes
+#
+
+class @isr_obj extends @oil_obj {
+    @luint64   category ;
+    @stringset resources ;
+    @stringset messages ;
+}
+
+map @isr_map {
+    @isr_obj isr ;
+    insert insertISR error message "ISR %K is duplicated in %L" ;
+}
+
+#
+# Counter classes
+#
+
+class @counter_obj extends @oil_obj {
+    @luint64 max_allowed_value ;
+    @luint64 ticks_per_base ;
+    @luint64 min_cycle ;
+}
+
+map @counter_map {
+    @counter_obj counter ;
+    insert insertCounter error message "Counter %K is duplicated in %L" ;
+}
+
+end semantics ;
