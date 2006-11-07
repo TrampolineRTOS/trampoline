@@ -1,0 +1,149 @@
+semantics goil_semantic_verification :
+
+import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
+
+#
+# Semantics routine
+#
+
+# Each linked resource chain must finish with a STANDARD resource
+# Buggy ? : the "Cycle detected" error is printed many times (expected: one)
+routine resolve_linked_resources 
+	?!@resource_map resources
+:
+	@resource_map resolved [emptyMap] ;
+	@resource_map unresolved := resources ;
+	@resource_map unresolved_next [emptyMap] ;
+	@bool first_loop := true ;
+
+	loop [unresolved count] - [unresolved_next count] :
+		if (first_loop) then first_loop := false ;
+		else 
+			unresolved := unresolved_next ;
+			unresolved_next := [@resource_map emptyMap] ;
+		end if ;
+	while ([unresolved count] > 0) do 
+		foreach unresolved (@lstring res_key @resource_obj res) :
+
+			@resource_property_obj res_prop ;
+			[res get_property ?res_prop] ;
+			extract res_prop :
+
+				#current resource is a linked resource : we try to resolve it
+				when @resource_property_linked_obj (@lstring linked_key) ->
+
+					#target is in resolved : we (try to) resolve
+					if( [resolved hasKey ![linked_key string]] ) then
+						@resource_obj target_resource ;
+						@resource_property_obj target_property ;
+						[resolved getResource !linked_key ?target_resource] ;
+						[target_resource get_property ?target_property] ;
+						extract target_property :
+
+							#linked to a standard resource : ok
+							when @resource_property_standard_obj ( ) -> [!?resolved insertResource !res_key !res] ;
+
+							#linked to an internal resource : error
+							when @resource_property_internal_obj ( ) -> 
+								error here : "RESOURCE " . [res_key string] . " is linked to INTERNAL RESOURCE " . [linked_key string];
+
+							#linked to a resolved linked resource : we resolve current resource, with a direct link to the standard resource
+							when @resource_property_linked_obj (@lstring standard_key) ->
+								@resource_property_linked_obj resolved_prop := [@resource_property_linked_obj new !standard_key] ;
+								@lstring resolved_desc ;
+								[res get_description ?resolved_desc] ;
+								@resource_obj resolved_res := [@resource_obj new !resolved_desc !resolved_prop] ;
+								[!?resolved insertResource !res_key !resolved_res] ;
+							else
+						end extract ;
+
+					#target not in resolved : we put current resource in unresolved
+					else
+						[!?unresolved_next insertResource !res_key !res] ;
+					end if ;
+
+				#standard or internal resource : resolved
+				else [!?resolved insertResource !res_key !res] ;
+			end extract ;
+		end foreach ;
+		if ([unresolved count] == [unresolved_next count])
+		then
+			error here : "Cycle detected in linked resource" ;
+			foreach unresolved_next (@lstring unresolved_key *) :
+				error unresolved_key : "Involved in cycle" ;
+			end foreach ;
+		end if;
+	end loop ;
+
+	resources := resolved ;
+end routine ;
+
+routine all_events_and_resources_defined_and_used 
+	?@task_map tasks
+	?@event_map events
+	?@resource_map resources
+:
+	@stringset used_events [emptySet] ;
+	@stringset used_resources [emptySet] ;
+
+	#Events and resources referenced in a task are defined
+	foreach tasks (@lstring task_name @task_obj task) :
+
+		#all referenced events must be defined
+		@stringset task_events ;
+		[task get_events ?task_events] ;
+		foreach task_events (@string event_name) :
+			used_events += !event_name ;
+			if (not [events hasKey !event_name])
+			then error task_name : "EVENT " . event_name . " is not defined" ;
+			end if ;
+		end foreach ;
+
+		#all referenced resources must be defined
+		@stringset task_resources ;
+		[task get_resources ?task_resources] ;
+		foreach task_resources (@string res_name) :
+			used_resources += !res_name ;
+			if (not [resources hasKey !res_name])
+			then error task_name : "RESOURCE " . res_name . " is not defined" ;
+			end if ;
+		end foreach ;
+
+	end foreach ;
+
+	#all defined events should be referenced in a task
+	foreach events (@lstring event_key *) :
+		if (not [used_events hasKey ![event_key string]])
+		then warning event_key : "EVENT " . [event_key string] . " is defined but never used" ;
+		end if ;
+	end foreach ;
+
+	#all defined resources should be referenced in a task
+	foreach resources (@lstring res_key *) :
+		if (not [used_resources hasKey ![res_key string]])
+		then warning res_key : "RESOURCE " . [res_key string] . " is defined but never used" ;
+		end if ;
+	end foreach ;
+
+end routine ;
+
+routine all_event_masks_different
+	?@event_map events 
+:
+	@stringset defined_masks [emptySet] ;
+	foreach events (@lstring event_name @event_obj event) :
+		@event_mask_obj mask ;
+		[event get_mask ?mask] ;
+		extract mask :
+			when @event_mask_user_obj (@luint64 mask_value) -> 
+				@string mask_in_string := [[mask_value uint64] string] ;
+				if [defined_masks hasKey !mask_in_string]
+				then warning event_name : "Mask " . mask_in_string . " already used" ;
+				else defined_masks += !mask_in_string ;
+				end if ;
+			else
+		end extract ;
+	end foreach ;
+end routine ;
+
+end semantics ;
