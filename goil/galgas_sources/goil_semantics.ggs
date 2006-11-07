@@ -1,5 +1,6 @@
 semantics goil_semantics :
-  import option goil_options in "goil_options.ggs" ;
+
+import option goil_options in "goil_options.ggs" ;
 
 list @number_list {
     @luint64 number ;
@@ -40,6 +41,17 @@ abstract class @oil_obj {
 	reader get_description !@lstring desc :
 		desc := description ;
 	end reader ;
+}
+
+#
+# Map to store string constants used
+# for code generation
+#
+map @prefix_map {
+    @string prefix ;
+    @string tag_to_rep ;
+    insert insert_prefix error message "prefix %K duplicated %L" ;
+    search prefix error message "prefix %K is not defined" ;
 }
 
 #
@@ -178,6 +190,18 @@ class @alarm_obj extends @oil_obj {
     @lstring        counter_name ;
     @action_obj     action_params ;
     @autostart_obj  autostart_params ;
+
+    reader get_action !@action_obj out_action :
+        out_action := action_params ;
+    end reader ;
+
+    reader get_autostart !@autostart_obj out_autostart :
+        out_autostart := autostart_params ;
+    end reader ;
+
+    reader get_counter !@lstring out_counter :
+        out_counter := counter_name ;
+    end reader ;
 }
 
 map @alarm_map {
@@ -358,6 +382,125 @@ routine all_event_masks_different
 			else
 		end extract ;
 	end foreach ;
+end routine ;
+
+#--------------------------------------------------------------------
+# Code generation routines
+#--------------------------------------------------------------------
+#routine target !@string target_platform :
+#    target_platform := [option goil_options.target_platform] ;
+#end routine ;
+
+routine template !@string template ?@string obj :
+    @string target_platform := "ppc" ;
+    @string targ_tpl := "" ;
+
+# Get the platform
+#    target ?target_platform ;
+
+# Look for a template in target plateform path
+    targ_tpl := "../templates/".target_platform."/".obj.".tpl" ;
+    if [targ_tpl fileExists]
+    then template := [@string stringWithContentsOfFile !targ_tpl] ;
+    else
+
+# then in the all_targets path
+        targ_tpl := "../templates/all_targets/".obj.".tpl" ;
+        if [targ_tpl fileExists]
+        then template := [@string stringWithContentsOfFile !targ_tpl] ;
+             message "found template in all_targets\n" ;
+        else template := "" ;
+             error here: "No template found" ;
+        end if ;
+    end if;
+end routine ;
+
+routine prefix ?@prefix_map p ?@string key !@string val :
+    @lstring lkey := [@lstring new !key !here] ;
+    [p prefix !lkey ?val ?*] ;
+end routine ;
+
+routine replace ?@prefix_map p ?@string key ?@string name ?!@string res :
+    @lstring lkey := [@lstring new !key !here] ;
+    @string prefix ;
+    @string tag_to_rep ;
+    [p prefix !lkey ?prefix ?tag_to_rep] ;
+    res := [res stringByReplacingStringByString !tag_to_rep !prefix.name] ;
+end routine ;
+
+routine generate_alarms ?@alarm_map alarms ?@prefix_map p ?!@string header ?!@string implementation :
+    @string tpl_alarm_setevent ;
+    @string tpl_alarm_activatetask ;
+    @string tpl_alarm_callback ;
+
+    @string alarms_result := "" ;
+
+    template ?tpl_alarm_setevent     !"alarm_event_set" ;
+    template ?tpl_alarm_activatetask !"alarm_task_act" ;
+    template ?tpl_alarm_callback     !"alarm_callback" ;
+
+    foreach alarms (@lstring alarm_name @alarm_obj alarm) :
+        @string result := "" ;
+
+# sets up the kind of alarm and its action
+        @action_obj alarm_action ;
+        [alarm get_action ?alarm_action] ;
+        extract alarm_action :
+        when @setevent_action (@lstring task_name @lstring event_name) ->
+            result := tpl_alarm_setevent ;
+            replace !p !"task"  ![task_name string] !?result ;
+            replace !p !"event" ![event_name string] !?result ;
+        when @activatetask_action (@lstring task_name) ->
+            result := tpl_alarm_activatetask ;
+            replace !p !"task" ![task_name string] !?result ;
+        when @callback_action (@lstring function_name) ->
+            result := tpl_alarm_callback ;
+            replace !p !"callback" ![function_name string] !?result ;
+        else error alarm_name : "Unknown action found" ;
+        end extract ;
+
+# sets up the autostart params
+        @autostart_obj autostart ;
+        [alarm get_autostart ?autostart] ;
+        extract autostart :
+        when @autostart_void () ->
+            result := [result stringByReplacingStringByString !"$ALARM_STATE$" !"ALARM_SLEEP"] ;
+            result := [result stringByReplacingStringByString !"$ALARM_CYCLE$" !"0"] ;
+            result := [result stringByReplacingStringByString !"$ALARM_DATE$" !"0"] ;
+        when @autostart_true_params (@luint64 alarm_time @luint64 cycle_time *) ->
+            result := [result stringByReplacingStringByString !"$ALARM_STATE$" !"ALARM_AUTOSTART"] ;
+            result := [result stringByReplacingStringByString !"$ALARM_CYCLE$" ![[cycle_time uint64] string]] ;
+            result := [result stringByReplacingStringByString !"$ALARM_DATE$" ![[alarm_time uint64] string]] ;
+        else error alarm_name : "Unknown autostart found" ;
+        end extract ;
+
+# sets up the remaining params
+        @lstring counter_name ;
+        [alarm get_counter ?counter_name] ;
+        replace !p !"alarm"   ![alarm_name string]  !?result ;
+        replace !p !"counter" ![counter_name string] !?result ;
+        alarms_result := alarms_result . "\n" . result ;
+    end foreach ;
+
+# build the alarm table
+    alarms_result := alarms_result . "\n" . "tpl_alarm *tpl_alarm_table[ALARM_COUNT] = {\n" ;
+    @uint n := 0 ;
+    @string alarm_prefix ;
+    @string alarm_ids := "" ;
+    prefix !p !"alarm" ?alarm_prefix ;
+    foreach alarms (@lstring alarm_name *) :
+        alarm_ids := alarm_ids . "#define alarm_id_of_" . [alarm_name string] . "  " . [n string] . "\n" ;
+        alarms_result := alarms_result . "    &" . alarm_prefix  . [alarm_name string] ;
+        n++ ;
+        if n != [alarms count]
+        then alarms_result := alarms_result . ",\n" ;
+        else alarms_result := alarms_result . "\n" ;
+        end if ;
+   end foreach ;
+    alarms_result := alarms_result . "};\n" ;
+
+    header := [header stringByReplacingStringByString !"$ALARMS$" !alarm_ids. "\n#define ALARM_COUNT ".[[alarms count] string]] ;
+    implementation := [implementation stringByReplacingStringByString !"$ALARMS$" !alarms_result] ;
 end routine ;
 
 end semantics ;
