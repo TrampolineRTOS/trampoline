@@ -20,6 +20,9 @@ import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
+# external rules
+rule <boolean> !@bool val ;
+
 #
 # local rules declaration
 #
@@ -57,41 +60,62 @@ rule <description>
 rule <task>
 	?!@task_map tasks 
 :
-	@lstring task_name ;
-	@task_obj task ;
-	@luint64 priority := [@luint64 new !4294967296L !here] ;
-	@lstring schedule := [@lstring new !"" !here] ;
-	@luint64 activation := [@luint64 new !4294967296L !here] ;
-	@task_autostart_obj autostart := [@task_autostart_void new] ;
-	@stringset resources [emptySet] ;
-	@stringset events [emptySet] ;
-	@lstring description ;
+    @lstring task_name ;
+    @task_obj task ;
+    @luint64 priority := [@luint64 new !4294967296L !here] ;
+    @lstring schedule := [@lstring new !"" !here] ;
+    @luint64 activation := [@luint64 new !4294967296L !here] ;
+    @task_autostart_obj autostart := [@task_autostart_void new] ;
+    @stringset resources [emptySet] ;
+    @stringset events [emptySet] ;
+    @lstring description ;
+    @ident_map others := [@ident_map emptyMap];
 
-	$TASK$ ;
-	$idf$ ?task_name ; 
-	${$ ;
-	repeat
-	while
-		<task_parameters> !task_name !?priority !?schedule !?activation !? autostart !?resources !?events ; 
-		$;$ ;	
-	end repeat ;
-	$}$ ;
-	<description> ?description ;
-	$;$ ;
+    $TASK$ ;
+    $idf$ ?task_name ; 
+    ${$ ;
+    repeat
+    while
+        <task_parameters> !task_name !?priority !?schedule !?activation !? autostart !?resources !?events ; 
+        $;$ ;
+    while
+        @lstring idf ;
+        @basic_type val ;
+        $idf$ ?idf ;
+        $=$ ;
+        select
+            @lstring value ;
+            $idf$ ?value ;
+            val := [@string_class new ![value string]] ;
+        or
+            @luint64 value ;
+            $uint_number$ ?value ;
+            val := [@uint_class new ![value uint64]] ;
+        or
+            @bool value ;
+            <boolean> ?value ;
+            val := [@bool_class new !value] ;
+        end select ;
+        [!?others insertIdent !idf !val] ; 
+        $;$ ;
+    end repeat ;
+    $}$ ;
+    <description> ?description ;
+    $;$ ;
 
-	<check_task_constraints> !task_name !priority !schedule !activation !autostart ;
-	task := [@task_obj new !description !priority !schedule !activation !autostart !resources !events] ;
-	[!?tasks insertTask !task_name !task] ;
+    <check_task_constraints> !task_name !priority !schedule !activation !autostart ;
+    task := [@task_obj new !description !priority !schedule !activation !autostart !resources !events !others] ;
+    [!?tasks insertTask !task_name !task] ;
 end rule ;	
 
 rule <task_parameters>
-	?@lstring task_name
-	?!@luint64 priority
-	?!@lstring schedule
-	?!@luint64 activation
-	?!@task_autostart_obj autostart
-	?!@stringset resources
-	?!@stringset events
+    ?@lstring task_name
+    ?!@luint64 priority
+    ?!@lstring schedule
+    ?!@luint64 activation
+    ?!@task_autostart_obj autostart
+    ?!@stringset resources
+    ?!@stringset events
 :
 	select
 		#PRIORITY attribute

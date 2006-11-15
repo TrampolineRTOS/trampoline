@@ -34,11 +34,35 @@ map @os_imp {
     
 }
 
+abstract class @basic_type {}
+
+class @uint_class extends @basic_type {
+    @uint64 value ;
+}
+
+class @sint_class extends @basic_type {
+    @sint64 value ;
+}
+
+class @string_class extends @basic_type {
+    @string value ;
+}
+
+class @bool_class extends @basic_type {
+    @bool value ;
+}
+
+map @ident_map {
+    @basic_type value ;
+    insert insertIdent error message "%K is duplicated in %L";
+    search searchIdent error message "Identifier %K is not defined" ;
+}
+
 abstract class @oil_obj {
     @lstring description ;
-	reader get_description !@lstring desc :
+	method get_description !@lstring desc :
 		desc := description ;
-	end reader ;
+	end method ;
 }
 
 #
@@ -69,20 +93,37 @@ class @task_autostart_true extends @task_autostart_obj {
 }
 
 class @task_obj extends @oil_obj {
-	@luint64 priority ;
-	@lstring schedule ;
-	@luint64 activation ;
-	@task_autostart_obj autostart ;
-	@stringset resources ;
-	@stringset events;
-	
-	reader get_resources !@stringset out_resources :
-		out_resources := resources ;
-	end reader ;
+    @luint64 priority ;
+    @lstring schedule ;
+    @luint64 activation ;
+    @task_autostart_obj autostart ;
+    @stringset resources ;
+    @stringset events;
+    @ident_map other_fields;
 
-	reader get_events !@stringset out_events :
-		out_events := events ;
-	end reader ;
+    method get_priority !@string out_priority :
+        out_priority := [[priority uint64] string] ;
+    end method ;
+
+    method get_activation !@string out_act :
+        out_act := [[activation uint64] string] ;
+    end method ;
+
+    method get_autostart !@task_autostart_obj out_auto :
+        out_auto := autostart ;
+    end method ;
+
+    method get_resources !@stringset out_resources :
+        out_resources := resources ;
+    end method ;
+
+    method get_events !@stringset out_events :
+        out_events := events ;
+    end method ;
+
+    method get_other_fields !@ident_map out_others :
+        out_others := other_fields ;
+    end method ;
 
 }
 
@@ -111,9 +152,9 @@ class @resource_property_internal_obj extends @resource_property_obj {
 class @resource_obj extends @oil_obj {
 	@resource_property_obj resource_property ;
 	
-	reader get_property !@resource_property_obj out :
+	method get_property !@resource_property_obj out :
 		out := resource_property;
-	end reader ;
+	end method ;
 }
 
 map @resource_map {
@@ -143,9 +184,9 @@ class @event_mask_auto_obj extends @event_mask_obj {
 class @event_obj extends @oil_obj {
 	@event_mask_obj mask ;
 
-	reader get_mask !@event_mask_obj out_mask :
+	method get_mask !@event_mask_obj out_mask :
 		out_mask := mask ;
-	end reader ;
+	end method ;
 }
 
 map @event_map {
@@ -189,17 +230,17 @@ class @alarm_obj extends @oil_obj {
     @action_obj     action_params ;
     @autostart_obj  autostart_params ;
 
-    reader get_action !@action_obj out_action :
+    method get_action !@action_obj out_action :
         out_action := action_params ;
-    end reader ;
+    end method ;
 
-    reader get_autostart !@autostart_obj out_autostart :
+    method get_autostart !@autostart_obj out_autostart :
         out_autostart := autostart_params ;
-    end reader ;
+    end method ;
 
-    reader get_counter !@lstring out_counter :
+    method get_counter !@lstring out_counter :
         out_counter := counter_name ;
-    end reader ;
+    end method ;
 }
 
 map @alarm_map {
@@ -207,7 +248,6 @@ map @alarm_map {
     insert insertAlarm error message "Alarm %K is duplicated in %L";
 }
 
-action generateAlarms ?@alarm_map alarms ;
 #
 # ISR classes
 #
@@ -231,6 +271,10 @@ class @counter_obj extends @oil_obj {
     @luint64 max_allowed_value ;
     @luint64 ticks_per_base ;
     @luint64 min_cycle ;
+
+    method get_ticks_per_base !@string out_tpb :
+        out_tpb := [[ticks_per_base uint64] string] ;
+    end method ;
 }
 
 map @counter_map {

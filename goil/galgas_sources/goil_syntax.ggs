@@ -43,7 +43,7 @@ rule <application_definition> ;
 rule <object_definition_list> ;
 rule <nm> ;
 
-rule <boolean> ;
+rule <boolean> !@bool val ;
 
 #--------------------------------------------------------------------
 # Code generation rules declaration
@@ -417,13 +417,11 @@ rule <object_definition_list> :
     template ?implementation !"app_implementation" ;
     @prefix_map prefix := [@prefix_map emptyMap] ;
 
-    [!?prefix insert_prefix ![@lstring new !"task"     !here] !"task_descriptor_of_"    !"$TASK_NAME$"] ;
-    [!?prefix insert_prefix ![@lstring new !"alarm"    !here] !"alarm_descriptor_of_"   !"$ALARM_NAME$"] ;
-    [!?prefix insert_prefix ![@lstring new !"counter"  !here] !"counter_descriptor_of_" !"$COUNTER_NAME$"] ;
-    [!?prefix insert_prefix ![@lstring new !"event"    !here] !"value_of_"              !"$EVENT_NAME$"] ;
-    [!?prefix insert_prefix ![@lstring new !"callback" !here] !"alarm_callback_"        !"$ALARM_CALLBACK$"] ;
+    init_prefixes !?prefix ;
 
-    generate_alarms !alarms !prefix !?header !?implementation;
+    generate_counters !counters !prefix !?header !?implementation ;
+    generate_alarms !alarms !prefix !?header !?implementation ;
+    generate_tasks  !tasks  !prefix !?header !?implementation ;
 
     # write the result to files
     @string header_file := [@string stringWithSourceFilePath] ;
@@ -448,11 +446,13 @@ end rule ;
 #--------------------------------------------------------------------
 # Miscellaneous non terminals
 #--------------------------------------------------------------------
-rule <boolean> :
+rule <boolean> !@bool val :
     select
         $TRUE$ ;
+        val := true ;
     or
         $FALSE$ ;
+        val := false ;
     end select ;
 end rule ;
 

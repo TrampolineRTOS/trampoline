@@ -5,6 +5,9 @@ compile "goil_semantics.ggs" ;
 compile "goil_semantic_types.ggs" ;
 compile "goil_semantic_verification.ggs" ;
 compile "goil_code_generation.ggs" ;
+compile "goil_targets.ggs" ;
+compile "goil_target_ppc.ggs" ;
+compile "goil_routines.ggs" ;
 
 #
 # Objects of the application definition

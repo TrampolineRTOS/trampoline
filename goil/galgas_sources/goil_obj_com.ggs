@@ -31,7 +31,7 @@ rule <comstatus> ;
 rule <use> ;
 
 # external rules
-rule <boolean> ;
+rule <boolean> !@bool val ;
 
 rule <com> :
     $COM$ ;
@@ -61,28 +61,28 @@ end rule;
 rule <comerrorhook> :
     $COMERRORHOOK$ ;
     $=$ ;
-    <boolean> ;
+    <boolean> ?*;
     $;$ ;
 end rule;
 
 rule <comusegetserviceid> :
     $COMUSEGETSERVICEID$ ;
     $=$ ;
-    <boolean> ;
+    <boolean> ?*;
     $;$ ;
 end rule;
 
 rule <comuseparameteraccess> :
     $COMUSEPARAMETERACCESS$ ;
     $=$ ;
-    <boolean> ;
+    <boolean> ?*;
     $;$ ;
 end rule;
 
 rule <comstartcomextension> :
     $COMSTARTCOMEXTENSION$ ;
     $=$ ;
-    <boolean> ;
+    <boolean> ?*;
     $;$ ;
 end rule;
 

@@ -1,52 +1,45 @@
 semantics goil_code_generation :
 
 import option goil_options in "goil_options.ggs" ;
+import semantics goil_routines in "goil_routines.ggs" ;
 import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
+import semantics goil_targets in "goil_targets.ggs" ;
+
+#--------------------------------------------------------------------
+# Initialisation of token found in templates
+#--------------------------------------------------------------------
+routine init_prefixes ?!@prefix_map prefix :
+    [!?prefix insert_prefix ![@lstring new !"task" !here]
+              !"descriptor_of_task_" !"$TASK_NAME$"] ;
+    [!?prefix insert_prefix ![@lstring new !"task_static" !here]
+              !"static_descriptor_of_task_" !"$TASK_STATIC$"] ;
+    [!?prefix insert_prefix ![@lstring new !"alarm" !here]
+              !"descriptor_of_alarm_" !"$ALARM_NAME$"] ;
+    [!?prefix insert_prefix ![@lstring new !"counter" !here]
+              !"descriptor_of_counter_" !"$COUNTER_NAME$"] ;
+    [!?prefix insert_prefix ![@lstring new !"event" !here]
+              !"value_of_" !"$EVENT_NAME$"] ;
+
+    [!?prefix insert_prefix ![@lstring new !"callback" !here]
+              !"alarm_callback_" !"$ALARM_CALLBACK$"] ;
+    [!?prefix insert_prefix ![@lstring new !"task_function" !here]
+              !"function_of_task_" !"$TASK_FUNCTION$"] ;
+    [!?prefix insert_prefix ![@lstring new !"task_context" !here]
+              !"CONTEXT_OF_TASK_" !"$TASK_CONTEXT$"] ;
+    [!?prefix insert_prefix ![@lstring new !"task_stack" !here]
+              !"STACK_OF_TASK_" !"$TASK_STACK$"] ;
+    [!?prefix insert_prefix ![@lstring new !"task_id" !here]
+              !"id_of_task_" !"$TASK_ID$"] ;
+    
+    init_targets_prefixes !?prefix ;
+
+end routine ;
 
 #--------------------------------------------------------------------
 # Code generation routines
 #--------------------------------------------------------------------
-#routine target !@string target_platform :
-#    target_platform := [option goil_options.target_platform] ;
-#end routine ;
-
-routine template !@string template ?@string obj :
-    @string target_platform := "ppc" ;
-    @string targ_tpl := "" ;
-
-# Get the platform
-#    target ?target_platform ;
-
-# Look for a template in target plateform path
-    targ_tpl := "../templates/".target_platform."/".obj.".tpl" ;
-    if [targ_tpl fileExists]
-    then template := [@string stringWithContentsOfFile !targ_tpl] ;
-    else
-
-# then in the all_targets path
-        targ_tpl := "../templates/all_targets/".obj.".tpl" ;
-        if [targ_tpl fileExists]
-        then template := [@string stringWithContentsOfFile !targ_tpl] ;
-             message "found template in all_targets\n" ;
-        else template := "" ;
-             error here: "No template found" ;
-        end if ;
-    end if;
-end routine ;
-
-routine prefix ?@prefix_map p ?@string key !@string val :
-    @lstring lkey := [@lstring new !key !here] ;
-    [p prefix !lkey ?val ?*] ;
-end routine ;
-
-routine replace ?@prefix_map p ?@string key ?@string name ?!@string res :
-    @lstring lkey := [@lstring new !key !here] ;
-    @string prefix ;
-    @string tag_to_rep ;
-    [p prefix !lkey ?prefix ?tag_to_rep] ;
-    res := [res stringByReplacingStringByString !tag_to_rep !prefix.name] ;
-end routine ;
-
+# Alarms generation
+#--------------------------------------------------------------------
 routine generate_alarms ?@alarm_map alarms ?@prefix_map p ?!@string header ?!@string implementation :
     @string tpl_alarm_setevent ;
     @string tpl_alarm_activatetask ;
@@ -102,27 +95,97 @@ routine generate_alarms ?@alarm_map alarms ?@prefix_map p ?!@string header ?!@st
     end foreach ;
 
 # build the alarm table
-    alarms_result := alarms_result . "\n" . "tpl_alarm *tpl_alarm_table[ALARM_COUNT] = {\n" ;
-    @uint n := 0 ;
-    @string alarm_prefix ;
-    @string alarm_ids := "" ;
-    prefix !p !"alarm" ?alarm_prefix ;
-    foreach alarms (@lstring alarm_name *) :
-        alarm_ids := alarm_ids . "#define alarm_id_of_" . [alarm_name string] . "  " . [n string] . "\n" ;
-        alarms_result := alarms_result . "    &" . alarm_prefix  . [alarm_name string] ;
-        n++ ;
-        if n != [alarms count]
-        then alarms_result := alarms_result . ",\n" ;
-        else alarms_result := alarms_result . "\n" ;
-        end if ;
-   end foreach ;
-    alarms_result := alarms_result . "};\n" ;
+    @string alarm_head ;
+    @string alarm_imp ;
+    obj_table !"alarm" !p ![alarms allKeys] ?alarm_head ?alarm_imp ;
+    alarms_result := alarms_result."\n".alarm_imp ;
 
-    header := [header stringByReplacingStringByString !"$ALARMS$" !alarm_ids. "\n#define ALARM_COUNT ".[[alarms count] string]] ;
+    header := [header stringByReplacingStringByString !"$ALARMS$" !alarm_head] ;
     implementation := [implementation stringByReplacingStringByString !"$ALARMS$" !alarms_result] ;
 end routine ;
 
-#routine generate_tasks ?@task_map tasks ?@prefix_map p ?!@string header ?!@string implementation :
-#end routine ;
+#--------------------------------------------------------------------
+# Tasks generation
+#--------------------------------------------------------------------
+routine generate_tasks ?@task_map tasks ?@prefix_map p ?!@string header ?!@string implementation :
+    @string tpl_task ;
+
+    @string tasks_result := "" ;
+
+    template ?tpl_task !"task" ;
+
+    foreach tasks (@lstring task_name @task_obj task) :
+        @string tmp ;
+        @string result := "" ;
+
+        generate_context_and_stack !task_name !task !p !?result ;
+
+        result := result . tpl_task ;
+
+        replace !p !"task_function" ![task_name string] !?result ;
+        replace !p !"task"          ![task_name string] !?result ;
+        replace !p !"task_static"   ![task_name string] !?result ;
+        replace !p !"task_context"  ![task_name string] !?result ;
+        replace !p !"task_stack"    ![task_name string] !?result ;
+        replace !p !"task_id"       ![task_name string] !?result ;
+        [task get_priority ?tmp] ;
+        result := [result stringByReplacingStringByString !"$TASK_PRIORITY$" !tmp] ;
+        [task get_activation ?tmp] ;
+        result := [result stringByReplacingStringByString !"$TASK_MAX_ACT_COUNT$" !tmp] ;
+
+        @task_autostart_obj autostart;
+        [task get_autostart ?autostart];
+        extract autostart :
+        when @task_autostart_true (*) ->
+            result := [result stringByReplacingStringByString !"$TASK_STATE$" !"AUTOSTART"] ;
+        when @task_autostart_false () ->
+            result := [result stringByReplacingStringByString !"$TASK_STATE$" !"SUSPENDED"] ;
+        else error task_name : "Unknown autostart found" ;
+        end extract ;
+
+        tasks_result := tasks_result . "\n" . result ;
+    end foreach ;
+
+# build the task table
+    @string task_head ;
+    @string task_imp ;
+    obj_table !"task" !p ![tasks allKeys] ?task_head ?task_imp ;
+    tasks_result := tasks_result."\n".task_imp ;
+
+    header := [header stringByReplacingStringByString !"$TASKS$" !task_head] ; 
+    implementation := [implementation stringByReplacingStringByString !"$TASKS$" !tasks_result] ; 
+end routine ;
+
+#--------------------------------------------------------------------
+# Counters generation
+#--------------------------------------------------------------------
+routine generate_counters
+    ?@counter_map counters
+    ?@prefix_map p
+    ?!@string header
+    ?!@string implementation :
+
+    @string tpl_counter ;
+    @string counters_result := "" ;
+
+    template ?tpl_counter !"counter" ;
+
+    foreach counters (@lstring counter_name @counter_obj counter) :
+        @string tmp ;
+        @string result := tpl_counter ;
+
+        replace !p !"counter" ![counter_name string] !?result ;
+        [counter get_ticks_per_base ?tmp] ;
+        result := [result stringByReplacingStringByString !"$TICKS_PER_BASE$" !tmp] ;
+
+        counters_result := counters_result . "\n" . result ;
+    end foreach ;
+
+# build the task table
+ 
+    header := [header stringByReplacingStringByString !"$COUNTERS$" !""] ; 
+    implementation := [implementation stringByReplacingStringByString !"$COUNTERS$" !counters_result] ; 
+end routine ;
+
 
 end semantics ;
