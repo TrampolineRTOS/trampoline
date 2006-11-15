@@ -1,0 +1,36 @@
+semantics goil_targets :
+
+import semantics goil_target_ppc in "goil_target_ppc.ggs" ;
+import semantics goil_routines in "goil_routines.ggs" ;
+
+routine init_targets_prefixes ?!@prefix_map prefix :
+    init_ppc_prefixes !?prefix ;
+end routine ;
+
+#--------------------------------------------------------------------
+# Context and Stack generation
+#--------------------------------------------------------------------
+routine generate_context_and_stack
+    ?@lstring name
+    ?@task_obj task
+    ?@prefix_map p
+    ?!@string result :
+
+    @string tpl_context_and_stack ;
+    @string context_and_stack ;
+
+    template ?tpl_context_and_stack !"context_stack" ;
+
+    context_and_stack := tpl_context_and_stack ;
+
+    @string target ;
+    target ?target ;
+
+    if target == "ppc"
+    then generate_target_ppc !name !task !p !?context_and_stack ;
+    end if ;
+
+    result := result . context_and_stack ;
+end routine ;
+
+end semantics ;

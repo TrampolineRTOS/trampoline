@@ -1,0 +1,61 @@
+semantics goil_target_ppc :
+
+import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
+import semantics goil_routines in "goil_routines.ggs" ;
+
+routine init_ppc_prefixes ?!@prefix_map prefix :
+    [!?prefix insert_prefix ![@lstring new !"ppc_stack" !here]
+              !"stack_zone_of_task_" !"$STACK_ZONE$"] ;
+    [!?prefix insert_prefix ![@lstring new !"ppc_int_context" !here]
+              !"integer_context_of_task_" !"$TASK_INTEGER_CONTEXT$"] ;
+    [!?prefix insert_prefix ![@lstring new !"ppc_float_context" !here]
+              !"float_context_of_task_" !"$TASK_FLOAT_CONTEXT$"] ;
+    [!?prefix insert_prefix ![@lstring new !"use_float" !here]
+              !"using_float_for_task_" !"$TASK_USE_FLOAT$"] ;
+end routine ;
+
+routine generate_target_ppc
+    ?@lstring name
+    ?@task_obj task
+    ?@prefix_map p
+    ?!@string result :
+
+    replace !p !"ppc_stack" ![name string] !?result ;
+    replace !p !"ppc_int_context" ![name string] !?result ;
+    replace !p !"ppc_float_context" ![name string] !?result ;
+    replace !p !"use_float" ![name string] !?result ;
+
+    @ident_map others ;
+    [task get_other_fields ?others] ;
+
+    if [others hasKey !"STACKSIZE"]
+    then
+        @basic_type value ;
+        [others searchIdent ![@lstring new !"STACKSIZE" !here] ?value] ;
+        extract value :
+        when @uint_class (@uint64 stack_size) ->
+            result := [result stringByReplacingStringByString !"$STACK_SIZE$" ![stack_size string]] ;
+        else error name : "STACKSIZE should be an integer" ;
+        end extract ;
+    else
+        error name : "no STACKSIZE specified for task %K" ;
+    end if ;
+
+    @string use_float := "0" ;
+    if [others hasKey !"USEFLOAT"]
+    then
+        @basic_type value ;
+        [others searchIdent ![@lstring new !"USEFLOAT" !here] ?value] ;
+        extract value :
+        when @bool_class (@bool task_use_float) ->
+            if task_use_float
+            then use_float := "1" ;
+            end if ;
+        else error name : "USEFLOAT should be a boolean" ;
+        end extract ;
+    end if ;
+   result := [result stringByReplacingStringByString !"$FLAG_USE_FLOAT$" !use_float] ;
+
+end routine ;
+
+end semantics ;

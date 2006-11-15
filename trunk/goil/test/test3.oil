@@ -14,21 +14,25 @@ CPU test {
 
     TASK MyTask1 {
         PRIORITY = 17 ;
+        STACKSIZE = 30 ;
+        USEFLOAT = TRUE ;
+        AUTOSTART = TRUE { APPMODE = all; } ;
     };
     
     TASK MyTask2 {
         SCHEDULE = FULL;
         ACTIVATION = 20;
-        AUTOSTART = TRUE{
-		APPMODE=std;
-	};
-	AUTOSTART = FALSE;
+        AUTOSTART = TRUE
+        {
+            APPMODE=std;
+	    };
+        AUTOSTART = FALSE;
         RESOURCE = res1;
         RESOURCE = res2;
-	RESOURCE = res3;
-	RESOURCE = notDefined;
+        RESOURCE = res3;
+        RESOURCE = notDefined;
         EVENT = event1;
-	EVENT = notDefined;
+        EVENT = notDefined;
     };
     
     COUNTER general_counter {
