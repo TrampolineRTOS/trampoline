@@ -12,3 +12,8 @@ $COUNTERS$
  * Declaration of Alarm related defines and structures
  */
 $ALARMS$
+
+/*
+ * Declaration of Resource related defines and structures
+ */
+$RESOURCES$

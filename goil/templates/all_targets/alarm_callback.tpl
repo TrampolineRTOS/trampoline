@@ -2,7 +2,7 @@
  * Alarm descriptor of alarm $ALARM_NAME$
  */
 void $ALARM_CALLBACK$();
-extern $COUNTER_NAME$;
+extern $COUNTER$;
 
 tpl_alarm $ALARM_NAME$ = {
     /* State of the alarm   */  $ALARM_STATE$,
@@ -13,7 +13,7 @@ tpl_alarm $ALARM_NAME$ = {
                                     },
     /* event if necessary   */      0
                                 },
-    /* pointer to counter   */  &$COUNTER_NAME$,
+    /* pointer to counter   */  &$COUNTER$,
     /* cycle                */  $ALARM_CYCLE$,
     /* date                 */  $ALARM_DATE$,
     /* next alarm           */  NULL,

@@ -10,15 +10,28 @@ import semantics goil_targets in "goil_targets.ggs" ;
 #--------------------------------------------------------------------
 routine init_prefixes ?!@prefix_map prefix :
     [!?prefix insert_prefix ![@lstring new !"task" !here]
-              !"descriptor_of_task_" !"$TASK_NAME$"] ;
+              !"descriptor_of_task_" !"$TASK$"] ;
+    [!?prefix insert_prefix ![@lstring new !"task_name" !here]
+              !"" !"$TASK_NAME$"] ;
     [!?prefix insert_prefix ![@lstring new !"task_static" !here]
               !"static_descriptor_of_task_" !"$TASK_STATIC$"] ;
     [!?prefix insert_prefix ![@lstring new !"alarm" !here]
-              !"descriptor_of_alarm_" !"$ALARM_NAME$"] ;
+              !"descriptor_of_alarm_" !"$ALARM$"] ;
+    [!?prefix insert_prefix ![@lstring new !"alarm_name" !here]
+              !"" !"$ALARM_NAME$"] ;
     [!?prefix insert_prefix ![@lstring new !"counter" !here]
-              !"descriptor_of_counter_" !"$COUNTER_NAME$"] ;
+              !"descriptor_of_counter_" !"$COUNTER$"] ;
+    [!?prefix insert_prefix ![@lstring new !"counter_name" !here]
+              !"" !"$COUNTER_NAME$"] ;
     [!?prefix insert_prefix ![@lstring new !"event" !here]
-              !"value_of_" !"$EVENT_NAME$"] ;
+              !"value_of_" !"$EVENT$"] ;
+    [!?prefix insert_prefix ![@lstring new !"event_name" !here]
+              !"" !"$EVENT_NAME$"] ;
+
+    [!?prefix insert_prefix ![@lstring new !"resource" !here]
+              !"descriptor_of_resource_" !"$RESOURCE$"] ;
+    [!?prefix insert_prefix ![@lstring new !"resource_name" !here]
+              !"" !"$RESOURCE_NAME$"] ;
 
     [!?prefix insert_prefix ![@lstring new !"callback" !here]
               !"alarm_callback_" !"$ALARM_CALLBACK$"] ;
@@ -89,6 +102,7 @@ routine generate_alarms ?@alarm_map alarms ?@prefix_map p ?!@string header ?!@st
 # sets up the remaining params
         @lstring counter_name ;
         [alarm get_counter ?counter_name] ;
+        replace !p !"alarm_name"   ![alarm_name string]  !?result ;
         replace !p !"alarm"   ![alarm_name string]  !?result ;
         replace !p !"counter" ![counter_name string] !?result ;
         alarms_result := alarms_result . "\n" . result ;
@@ -122,13 +136,17 @@ routine generate_tasks ?@task_map tasks ?@prefix_map p ?!@string header ?!@strin
 
         result := result . tpl_task ;
 
+        replace !p !"task_name"     ![task_name string] !?result ;
         replace !p !"task_function" ![task_name string] !?result ;
         replace !p !"task"          ![task_name string] !?result ;
         replace !p !"task_static"   ![task_name string] !?result ;
         replace !p !"task_context"  ![task_name string] !?result ;
         replace !p !"task_stack"    ![task_name string] !?result ;
         replace !p !"task_id"       ![task_name string] !?result ;
-        [task get_priority ?tmp] ;
+        
+        @uint64 prio ;
+        [task get_priority ?prio] ;
+        tmp := [prio string] ;
         result := [result stringByReplacingStringByString !"$TASK_PRIORITY$" !tmp] ;
         [task get_activation ?tmp] ;
         result := [result stringByReplacingStringByString !"$TASK_MAX_ACT_COUNT$" !tmp] ;
@@ -174,18 +192,136 @@ routine generate_counters
         @string tmp ;
         @string result := tpl_counter ;
 
+        replace !p !"counter_name" ![counter_name string] !?result ;
         replace !p !"counter" ![counter_name string] !?result ;
         [counter get_ticks_per_base ?tmp] ;
         result := [result stringByReplacingStringByString !"$TICKS_PER_BASE$" !tmp] ;
 
         counters_result := counters_result . "\n" . result ;
     end foreach ;
-
-# build the task table
  
     header := [header stringByReplacingStringByString !"$COUNTERS$" !""] ; 
     implementation := [implementation stringByReplacingStringByString !"$COUNTERS$" !counters_result] ; 
 end routine ;
 
+#--------------------------------------------------------------------
+# Resources generation
+#--------------------------------------------------------------------
+routine max_task_prio_for_rez
+    ?@task_map tasks
+    ?@string rez_name
+    !@string task_use
+    ?!@uint64 rez_prio
+:
+    task_use := "" ;
+    foreach tasks (@lstring task_name @task_obj task) :
+        @stringset rez ;
+        [task get_resources ?rez] ;
+        if [rez hasKey !rez_name]
+        then 
+            @uint64 prio ;
+            [task get_priority ?prio] ;
+            if prio > rez_prio
+            then rez_prio := prio ;
+            end if ;
+            task_use := task_use.task_name."(".[prio string].") " ;
+        end if ;
+    end foreach ;
+    if task_use == ""
+    then task_use := "none" ;
+    end if ;
+end routine ;
+
+routine max_isr_prio_for_rez
+    ?@isr_map isrs
+    ?@string rez_name
+    !@string isr_use
+    ?!@uint64 rez_prio
+:
+    isr_use := "" ;
+    foreach isrs (@lstring isr_name @isr_obj isr) :
+        @stringset rez ;
+        [isr get_resources ?rez] ;
+        if [rez hasKey !rez_name]
+        then
+            @uint64 prio ;
+            [isr get_priority ?prio] ;
+            if prio > rez_prio
+            then rez_prio := prio ;
+            end if ;
+            isr_use := isr_use.isr_name."(".[prio string].") " ;
+        end if ;
+    end foreach ;
+    if isr_use == ""
+    then isr_use := "none" ;
+    end if ;
+end routine ;
+
+routine generate_resources
+    ?@resource_map resources
+    ?@task_map tasks
+    ?@isr_map isrs
+    ?@prefix_map p
+    ?!@string header
+    ?!@string implementation :
+
+    @string tpl_resource ;
+    @string tpl_internal_resource ;
+    @string resources_result := "" ;
+    @stringset regular_rez [emptySet] ;
+
+    template ?tpl_resource !"resource" ;
+    template ? tpl_internal_resource !"internal_resource" ;
+
+    foreach resources (@lstring resource_name @resource_obj resource) :
+        
+        @string result ;
+        @string name := [resource_name string] ;
+        @uint64 rez_prio := 0L ;
+        @string task_use := "none" ;
+        @string isr_use := "none" ;
+
+        @resource_property_obj rez_prop ;
+        [resource get_property ?rez_prop] ;
+
+        extract rez_prop :
+        when @resource_property_standard_obj () ->
+            result := tpl_resource ;
+            max_task_prio_for_rez !tasks !name ?task_use !?rez_prio ;
+            max_isr_prio_for_rez !isrs !name ?isr_use !?rez_prio ;
+            regular_rez += !name ;
+        when @resource_property_linked_obj (*) ->
+            result := tpl_resource ;
+            max_task_prio_for_rez !tasks !name ?task_use !?rez_prio ;
+            max_isr_prio_for_rez !isrs !name ?isr_use !?rez_prio ;
+            regular_rez += !name ;
+        when @resource_property_internal_obj () ->
+            result := tpl_internal_resource ;
+            max_task_prio_for_rez !tasks !name ?task_use !?rez_prio ;
+        else
+            result := "" ;
+            error resource_name : "Unknown property found" ;
+        end extract ;
+
+        replace !p !"resource_name" ![resource_name string] !?result ;
+        replace !p !"resource"      ![resource_name string] !?result ;
+
+        
+        result := [result stringByReplacingStringByString !"$PRIORITY$" ![rez_prio string]] ;
+        result := [result stringByReplacingStringByString !"$TASKS$" !task_use] ;
+        result := [result stringByReplacingStringByString !"$ISRS$" !isr_use] ;
+
+        resources_result := resources_result . "\n" . result ;
+    end foreach ;
+
+# build the resource table
+    @string rez_head ;
+    @string rez_imp ;
+    obj_table !"resource" !p !regular_rez ?rez_head ?rez_imp ;
+    resources_result := resources_result."\n".rez_imp ;
+ 
+    header := [header stringByReplacingStringByString !"$RESOURCES$" !rez_head] ; 
+    implementation := [implementation stringByReplacingStringByString !"$RESOURCES$" !resources_result] ; 
+end routine ;
 
 end semantics ;
