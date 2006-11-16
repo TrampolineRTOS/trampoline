@@ -129,5 +129,6 @@ CPU test {
        CATEGORY = 2;
        RESOURCE = res1;
        MESSAGE = msg1;
+       STACKSIZE = 40 ;
     };
 };

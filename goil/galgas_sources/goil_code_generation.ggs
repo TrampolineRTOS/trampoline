@@ -12,17 +12,29 @@ routine init_prefixes ?!@prefix_map prefix :
     [!?prefix insert_prefix ![@lstring new !"task" !here]
               !"descriptor_of_task_" !"$TASK$"] ;
     [!?prefix insert_prefix ![@lstring new !"task_name" !here]
-              !"" !"$TASK_NAME$"] ;
+              !"" !"$EXEC_NAME$"] ;
     [!?prefix insert_prefix ![@lstring new !"task_static" !here]
-              !"static_descriptor_of_task_" !"$TASK_STATIC$"] ;
+              !"static_descriptor_of_task_" !"$EXEC_STATIC$"] ;
+
+    [!?prefix insert_prefix ![@lstring new !"isr" !here]
+              !"descriptor_of_isr_" !"$ISR$"] ;
+    [!?prefix insert_prefix ![@lstring new !"isr_name" !here]
+              !"" !"$EXEC_NAME$"] ;
+    [!?prefix insert_prefix ![@lstring new !"isr_static" !here]
+              !"static_descriptor_of_isr_" !"$EXEC_STATIC$"] ;
+    [!?prefix insert_prefix ![@lstring new !"isr_helper" !here]
+              !"static_helper_of_isr_" !"$ISR_HELPER$"] ;
+
     [!?prefix insert_prefix ![@lstring new !"alarm" !here]
               !"descriptor_of_alarm_" !"$ALARM$"] ;
     [!?prefix insert_prefix ![@lstring new !"alarm_name" !here]
               !"" !"$ALARM_NAME$"] ;
+
     [!?prefix insert_prefix ![@lstring new !"counter" !here]
               !"descriptor_of_counter_" !"$COUNTER$"] ;
     [!?prefix insert_prefix ![@lstring new !"counter_name" !here]
               !"" !"$COUNTER_NAME$"] ;
+
     [!?prefix insert_prefix ![@lstring new !"event" !here]
               !"value_of_" !"$EVENT$"] ;
     [!?prefix insert_prefix ![@lstring new !"event_name" !here]
@@ -36,13 +48,19 @@ routine init_prefixes ?!@prefix_map prefix :
     [!?prefix insert_prefix ![@lstring new !"callback" !here]
               !"alarm_callback_" !"$ALARM_CALLBACK$"] ;
     [!?prefix insert_prefix ![@lstring new !"task_function" !here]
-              !"function_of_task_" !"$TASK_FUNCTION$"] ;
+              !"function_of_task_" !"$EXEC_FUNCTION$"] ;
     [!?prefix insert_prefix ![@lstring new !"task_context" !here]
-              !"CONTEXT_OF_TASK_" !"$TASK_CONTEXT$"] ;
+              !"CONTEXT_OF_TASK_" !"$EXEC_CONTEXT$"] ;
     [!?prefix insert_prefix ![@lstring new !"task_stack" !here]
-              !"STACK_OF_TASK_" !"$TASK_STACK$"] ;
+              !"STACK_OF_TASK_" !"$EXEC_STACK$"] ;
     [!?prefix insert_prefix ![@lstring new !"task_id" !here]
               !"id_of_task_" !"$TASK_ID$"] ;
+    [!?prefix insert_prefix ![@lstring new !"isr_function" !here]
+              !"function_of_isr_" !"$EXEC_FUNCTION$"] ;
+    [!?prefix insert_prefix ![@lstring new !"isr_context" !here]
+              !"CONTEXT_OF_ISR_" !"$EXEC_CONTEXT$"] ;
+    [!?prefix insert_prefix ![@lstring new !"isr_stack" !here]
+              !"STACK_OF_ISR_" !"$EXEC_STACK$"] ;
     
     init_targets_prefixes !?prefix ;
 
@@ -172,6 +190,46 @@ routine generate_tasks ?@task_map tasks ?@prefix_map p ?!@string header ?!@strin
 
     header := [header stringByReplacingStringByString !"$TASKS$" !task_head] ; 
     implementation := [implementation stringByReplacingStringByString !"$TASKS$" !tasks_result] ; 
+end routine ;
+
+#--------------------------------------------------------------------
+# ISRs generation
+#--------------------------------------------------------------------
+routine generate_isrs ?@isr_map isrs ?@prefix_map p ?!@string header ?!@string implementation :
+    @string tpl_isr ;
+
+    @string isrs_result := "" ;
+
+    template ?tpl_isr !"isr" ;
+
+    foreach isrs (@lstring isr_name @isr_obj isr) :
+        @string tmp ;
+        @string result := "" ;
+
+        generate_context_and_stack !isr_name !isr !p !?result ;
+
+        result := result . tpl_isr ;
+
+        replace !p !"isr_name"     ![isr_name string] !?result ;
+        replace !p !"isr_function" ![isr_name string] !?result ;
+        replace !p !"isr"          ![isr_name string] !?result ;
+        replace !p !"isr_static"   ![isr_name string] !?result ;
+        replace !p !"isr_context"  ![isr_name string] !?result ;
+        replace !p !"isr_stack"    ![isr_name string] !?result ;
+        replace !p !"isr_helper"   ![isr_name string] !?result ;
+        
+        @uint64 prio ;
+        [isr get_priority ?prio] ;
+        tmp := [prio string] ;
+        result := [result stringByReplacingStringByString !"$ISR_PRIORITY$" !tmp] ;
+        [isr get_activation ?tmp] ;
+        result := [result stringByReplacingStringByString !"$ISR_MAX_ACT_COUNT$" !tmp] ;
+
+        isrs_result := isrs_result . "\n" . result ;
+    end foreach ;
+
+    header := [header stringByReplacingStringByString !"$ISRS$" !""] ; 
+    implementation := [implementation stringByReplacingStringByString !"$ISRS$" !isrs_result] ; 
 end routine ;
 
 #--------------------------------------------------------------------

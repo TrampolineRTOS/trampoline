@@ -44,6 +44,8 @@ rule <object_definition_list> ;
 rule <nm> ;
 
 rule <boolean> !@bool val ;
+rule <free_field> ?!@ident_map ids ;
+
 
 #--------------------------------------------------------------------
 # Code generation rules declaration
@@ -419,10 +421,11 @@ rule <object_definition_list> :
 
     init_prefixes !?prefix ;
 
-    generate_counters !counters !prefix !?header !?implementation ;
-    generate_alarms !alarms !prefix !?header !?implementation ;
-    generate_tasks  !tasks  !prefix !?header !?implementation ;
-    generate_resources !resources !tasks !isrs !prefix !?header !?implementation ;
+    generate_counters  !counters  !prefix               !?header !?implementation ;
+    generate_alarms    !alarms    !prefix               !?header !?implementation ;
+    generate_tasks     !tasks     !prefix               !?header !?implementation ;
+    generate_isrs      !isrs      !prefix               !?header !?implementation ;
+    generate_resources !resources !tasks  !isrs !prefix !?header !?implementation ;
 
     # write the result to files
     @string header_file := [@string stringWithSourceFilePath] ;
@@ -457,5 +460,25 @@ rule <boolean> !@bool val :
     end select ;
 end rule ;
 
+rule <free_field> ?!@ident_map ids :
+    @lstring idf ;
+    @basic_type val ;
+    $idf$ ?idf ;
+    $=$ ;
+    select
+        @lstring value ;
+        $idf$ ?value ;
+        val := [@string_class new ![value string]] ;
+    or
+        @luint64 value ;
+        $uint_number$ ?value ;
+        val := [@uint_class new ![value uint64]] ;
+    or
+        @bool value ;
+        <boolean> ?value ;
+        val := [@bool_class new !value] ;
+    end select ;
+    [!?ids insertIdent !idf !val] ; 
+end rule ;
 
 end syntax ;

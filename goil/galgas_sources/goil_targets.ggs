@@ -12,12 +12,13 @@ end routine ;
 #--------------------------------------------------------------------
 routine generate_context_and_stack
     ?@lstring name
-    ?@task_obj task
+    ?@oil_obj exe
     ?@prefix_map p
     ?!@string result :
 
     @string tpl_context_and_stack ;
     @string context_and_stack ;
+    @ident_map idents [emptyMap] ;
 
     template ?tpl_context_and_stack !"context_stack" ;
 
@@ -26,8 +27,17 @@ routine generate_context_and_stack
     @string target ;
     target ?target ;
 
+    extract exe :
+    when @task_obj (* * * * * * * @ident_map ids) ->
+        idents := ids ;
+    when @isr_obj (* * * * @ident_map ids) ->
+        idents := ids ;
+    else 
+        error name : "Unknown executable object" ;
+    end extract ;
+
     if target == "ppc"
-    then generate_target_ppc !name !task !p !?context_and_stack ;
+    then generate_target_ppc !name !idents !p !?context_and_stack ;
     end if ;
 
     result := result . context_and_stack ;

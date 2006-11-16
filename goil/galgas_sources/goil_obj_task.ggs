@@ -22,6 +22,7 @@ import semantics goil_semantics in "goil_semantics.ggs" ;
 
 # external rules
 rule <boolean> !@bool val ;
+rule <free_field> ?!@ident_map ids ;
 
 #
 # local rules declaration
@@ -79,24 +80,7 @@ rule <task>
         <task_parameters> !task_name !?priority !?schedule !?activation !? autostart !?resources !?events ; 
         $;$ ;
     while
-        @lstring idf ;
-        @basic_type val ;
-        $idf$ ?idf ;
-        $=$ ;
-        select
-            @lstring value ;
-            $idf$ ?value ;
-            val := [@string_class new ![value string]] ;
-        or
-            @luint64 value ;
-            $uint_number$ ?value ;
-            val := [@uint_class new ![value uint64]] ;
-        or
-            @bool value ;
-            <boolean> ?value ;
-            val := [@bool_class new !value] ;
-        end select ;
-        [!?others insertIdent !idf !val] ; 
+        <free_field> !?others ;
         $;$ ;
     end repeat ;
     $}$ ;
