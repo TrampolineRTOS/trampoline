@@ -20,7 +20,7 @@ tpl_exec_static $TASK_STATIC$ = {
 /*
  * Dynamic descriptor of task $TASK_NAME$
  */
-tpl_task $TASK_NAME$ = {
+tpl_task $TASK$ = {
     {       /* beginning of exec_desc part */
     /* static descriptor    */  &$TASK_STATIC$,
     /* resources            */  NULL,

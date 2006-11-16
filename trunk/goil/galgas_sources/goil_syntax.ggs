@@ -181,7 +181,7 @@ rule <implementation_list> ?!@implementationSpec spec :
     $}$ ;
 end rule ;
 
-rule <impl_attr_def> ?!@implementationSpec spec :
+rule <impl_attr_def> ?!@implementationSpec unused spec :
   	@lstring type ;
   	@bool auto ;
    	@number_set range ;
@@ -203,7 +203,7 @@ rule <impl_attr_def> ?!@implementationSpec spec :
  	<default_number> ?has_default ?default_number ;
 end rule ;
 
-rule <impl_attr_def> ?!@implementationSpec spec :
+rule <impl_attr_def> ?!@implementationSpec unused spec :
 	@lstring type ;    
 	@bool auto ;
     $FLOAT$ ?type ;
@@ -214,7 +214,7 @@ rule <impl_attr_def> ?!@implementationSpec spec :
 #    <default_float> ?default_float ;
 end rule ;
 
-rule <impl_attr_def> ?!@implementationSpec spec :
+rule <impl_attr_def> ?!@implementationSpec unused spec :
 	@lstring type ;
 	@bool auto ;
 
@@ -422,6 +422,7 @@ rule <object_definition_list> :
     generate_counters !counters !prefix !?header !?implementation ;
     generate_alarms !alarms !prefix !?header !?implementation ;
     generate_tasks  !tasks  !prefix !?header !?implementation ;
+    generate_resources !resources !tasks !isrs !prefix !?header !?implementation ;
 
     # write the result to files
     @string header_file := [@string stringWithSourceFilePath] ;

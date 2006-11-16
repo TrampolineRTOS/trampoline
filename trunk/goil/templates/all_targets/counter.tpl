@@ -1,7 +1,7 @@
 /*
  * Counter descriptor of counter $COUNTER_NAME$
  */
-tpl_counter $COUNTER_NAME$ = {
+tpl_counter $COUNTER$ = {
     /* ticks per base       */  $TICKS_PER_BASE$,
     /* current tick         */  0,
     /* current date         */  0,

@@ -12,3 +12,8 @@ $COUNTERS$
  * Definition and initialization of Alarm related structures
  */
 $ALARMS$
+
+/*
+ * Definition and initialization of Resource related structures
+ */
+$RESOURCES$
