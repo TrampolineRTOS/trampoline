@@ -4,6 +4,11 @@
 $TASKS$
 
 /*
+ * Declaration of ISR2 related defines and structures
+ */
+$ISRS$
+
+/*
  * Declaration of Counters related defines and structures
  */
 $COUNTERS$

@@ -1,15 +1,15 @@
 /*
- * Task $TASK_NAME$ function prototype
+ * Task $EXEC_NAME$ function prototype
  */
-void $TASK_FUNCTION$(void);
+void $EXEC_FUNCTION$(void);
 
 /*
- * Static descriptor of task $TASK_NAME$
+ * Static descriptor of task $EXEC_NAME$
  */
-tpl_exec_static $TASK_STATIC$ = {
-    /* context                  */ $TASK_CONTEXT$,
-    /* stack                    */ $TASK_STACK$,
-    /* entry point (function)   */ $TASK_FUNCTION$,
+tpl_exec_static $EXEC_STATIC$ = {
+    /* context                  */ $EXEC_CONTEXT$,
+    /* stack                    */ $EXEC_STACK$,
+    /* entry point (function)   */ $EXEC_FUNCTION$,
     /* internal ressource       */ NULL,
     /* task id                  */ $TASK_ID$,
     /* task base priority       */ (tpl_priority)$TASK_PRIORITY$,
@@ -22,7 +22,7 @@ tpl_exec_static $TASK_STATIC$ = {
  */
 tpl_task $TASK$ = {
     {       /* beginning of exec_desc part */
-    /* static descriptor    */  &$TASK_STATIC$,
+    /* static descriptor    */  &$EXEC_STATIC$,
     /* resources            */  NULL,
     /* next task for READY  */  NULL,
     /* next set for READY   */  NULL,

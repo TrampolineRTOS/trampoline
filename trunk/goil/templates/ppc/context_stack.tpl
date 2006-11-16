@@ -1,25 +1,25 @@
 /*
- * Task $TASK_NAME$ stack
+ * $EXEC_NAME$ stack
  */
 tpl_stack_word $STACK_ZONE$[$STACK_SIZE$/sizeof(tpl_stack_word)];
 
-#define $TASK_STACK$ { &$STACK_ZONE$, $STACK_SIZE$ }
+#define $EXEC_STACK$ { &$STACK_ZONE$, $STACK_SIZE$ }
 
 /*
- * Task $TASK_NAME$ context
+ * $EXEC_NAME$ context
  */
-ppc_integer_context $TASK_INTEGER_CONTEXT$;
+ppc_integer_context $EXEC_INTEGER_CONTEXT$;
 
-#define $TASK_USE_FLOAT$ $FLAG_USE_FLOAT$
+#define $EXEC_USE_FLOAT$ $FLAG_USE_FLOAT$
 
-#if $TASK_USE_FLOAT$ == 1
+#if $EXEC_USE_FLOAT$ == 1
 
-ppc_float_context $TASK_FLOAT_CONTEXT$ ;
-#define $TASK_CONTEXT$ { &$TASK_INTEGER_CONTEXT$, &$TASK_FLOAT_CONTEXT$ }
+ppc_float_context $EXEC_FLOAT_CONTEXT$ ;
+#define $EXEC_CONTEXT$ { &$EXEC_INTEGER_CONTEXT$, &$EXEC_FLOAT_CONTEXT$ }
 
 #else
 
-#define $TASK_CONTEXT$ { &$TASK_INTEGER_CONTEXT$, NULL }
+#define $EXEC_CONTEXT$ { &$EXEC_INTEGER_CONTEXT$, NULL }
 
 #endif
 

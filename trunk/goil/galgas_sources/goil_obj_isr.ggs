@@ -26,13 +26,16 @@ rule <isr>
 rule <isr_attributes>
     ?!@luint64   category
     ?!@stringset resources
-    ?!@stringset messages ;
+    ?!@stringset messages
+    ?!@ident_map other_fields ;
 
 #
 # external rules
 #
 rule <description>
     !@lstring description ;
+
+rule <free_field> ?!@ident_map ids ;
 
 #
 # isr rules implementation
@@ -46,23 +49,25 @@ rule <isr>
     @lstring description := [@lstring new !"" !here] ;
     @stringset resources := [@stringset emptySet] ;
     @stringset messages := [@stringset emptySet] ;
+    @ident_map other_fields [emptyMap] ;
 
     $ISR$ ;
     $idf$ ?isr_name ;
     ${$ ;
-    <isr_attributes> !?category !?resources !?messages ;
+    <isr_attributes> !?category !?resources !?messages !?other_fields;
     $}$ ;
     <description> ?description ;
     $;$ ;
 
-    isr := [@isr_obj new !description !category !resources !messages] ;
+    isr := [@isr_obj new !description !category !resources !messages !other_fields] ;
     [!?isrs insertISR !isr_name !isr] ;
 end rule ;
 
 rule <isr_attributes>
     ?!@luint64   category
     ?!@stringset resources
-    ?!@stringset messages :
+    ?!@stringset messages
+    ?!@ident_map other_fields :
 
     repeat
     while
@@ -83,6 +88,9 @@ rule <isr_attributes>
         @lstring mess ;
         $MESSAGE$ ; $=$ ; $idf$ ?mess ; $;$ ;
         messages += ![mess string] ;
+    while
+        <free_field> !?other_fields ;
+        $;$ ;
     end repeat;
 end rule ;
 
