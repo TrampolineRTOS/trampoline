@@ -51,6 +51,7 @@
  */
 #define ALARM_SLEEP     0
 #define ALARM_ACTIVE    1
+#define ALARM_AUTOSTART 2
 
 #define ALARM_CALLBACK          10
 #define ALARM_TASK_ACTIVATION   11
