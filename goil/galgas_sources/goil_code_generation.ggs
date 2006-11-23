@@ -1,6 +1,5 @@
 semantics goil_code_generation :
 
-import option goil_options in "goil_options.ggs" ;
 import semantics goil_routines in "goil_routines.ggs" ;
 import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
 import semantics goil_targets in "goil_targets.ggs" ;
@@ -36,9 +35,11 @@ routine init_prefixes ?!@prefix_map prefix :
               !"" !"$COUNTER_NAME$"] ;
 
     [!?prefix insert_prefix ![@lstring new !"event" !here]
-              !"value_of_" !"$EVENT$"] ;
+              !"mask_of_" !"$EVENT$"] ;
     [!?prefix insert_prefix ![@lstring new !"event_name" !here]
               !"" !"$EVENT_NAME$"] ;
+    [!?prefix insert_prefix ![@lstring new !"event_mask" !here]
+              !"" !"$EVENT_MASK$"] ;
 
     [!?prefix insert_prefix ![@lstring new !"resource" !here]
               !"descriptor_of_resource_" !"$RESOURCE$"] ;
@@ -54,7 +55,7 @@ routine init_prefixes ?!@prefix_map prefix :
     [!?prefix insert_prefix ![@lstring new !"task_stack" !here]
               !"STACK_OF_TASK_" !"$EXEC_STACK$"] ;
     [!?prefix insert_prefix ![@lstring new !"task_id" !here]
-              !"id_of_task_" !"$TASK_ID$"] ;
+              !"task_id_of_" !"$TASK_ID$"] ;
     [!?prefix insert_prefix ![@lstring new !"isr_function" !here]
               !"function_of_isr_" !"$EXEC_FUNCTION$"] ;
     [!?prefix insert_prefix ![@lstring new !"isr_context" !here]
@@ -380,6 +381,176 @@ routine generate_resources
  
     header := [header stringByReplacingStringByString !"$RESOURCES$" !rez_head] ; 
     implementation := [implementation stringByReplacingStringByString !"$RESOURCES$" !resources_result] ; 
+end routine ;
+
+#--------------------------------------------------------------------
+# Events generation
+#--------------------------------------------------------------------
+routine generate_events
+    ?@event_map events
+    ?@task_map tasks
+    ?@prefix_map p
+    ?!@string header
+    ?!@string implementation
+:
+    @string tpl_event ;
+    @string header_result := "" ;
+    @string implementation_result := "" ;
+
+    template ?tpl_event !"event" ;
+
+    #
+    # Iterate through the tasks to get the events used
+    # a Or is done with the user masks of user events
+    # and the result is stored in the task_mask map.
+    # event conflicts are detected when building this Or
+    # Auto events are looked up and for each auto event
+    # the number of referencing tasks is computed and
+    # stored in the evt_usage map.
+    # In addition, a reverse mapping allowing to get all
+    # the task referencing an event is built and stored
+    # in the tasks_for_event map.
+    #
+    @event_usage_map evt_usage [emptyMap] ;
+    @task_mask task_mask [emptyMap] ;
+    @tasks_for_event tasks_for_event [emptyMap] ; 
+
+    foreach tasks (@lstring task_name @task_obj task) :
+        @stringset events_used ;
+        [task get_events ?events_used] ;
+        @uint64 event_mask := 0L ;
+        foreach events_used (@string evt_name) :
+            @event_obj event ;
+            [events get_event ![@lstring new !evt_name !here] ?event] ;
+            @event_mask_obj mask_obj ;
+            [event get_mask ?mask_obj] ;
+            extract mask_obj :
+            when @event_mask_user_obj (@luint64 mask) ->
+                if (event_mask & [mask uint64]) == 0L
+                then
+                    event_mask := event_mask | [mask uint64] ;
+                else
+                    error mask : "Mask %K conflicts with previous declarations" ;
+                end if ;
+            when @event_mask_auto_obj () ->
+                @uint count ;
+                if [evt_usage hasKey !evt_name]
+                then
+                    [!?evt_usage delete ![@lstring new !evt_name !here] ?count] ;
+                    count++ ;
+                else
+                    count := 1 ;
+                end if ;
+                [!?evt_usage insert_count ![@lstring new !evt_name !here] !count] ;
+            else
+            end extract ;
+
+            @stringset ref_tasks [emptySet] ;
+            if [tasks_for_event hasKey !evt_name] 
+            then
+                [!?tasks_for_event delete ![@lstring new !evt_name !here] ?ref_tasks] ;
+            end if ;
+            ref_tasks += ![task_name string] ;
+            [!?tasks_for_event insert_tasks ![@lstring new !evt_name !here] !ref_tasks] ;
+
+        end foreach ;
+        [!?task_mask insert_mask !task_name !event_mask] ;
+    end foreach ;
+
+    #
+    # Output the user events
+    #
+    foreach events (@lstring evt_name @event_obj evt) :
+        @event_mask_obj evt_mask ;
+        [evt get_mask ?evt_mask] ;
+        extract evt_mask :
+        when @event_mask_user_obj (@luint64 mask) ->
+            @string result := tpl_event ;
+            replace !p !"event" ![evt_name string] !?result ;
+            replace !p !"event_name" ![evt_name string] !?result ;
+            replace !p !"event_mask" ![[mask uint64] string] !?result ;
+            header_result .= result."\n" ;
+        else
+        end extract ;
+    end foreach ;
+
+    #
+    # Sort the auto events by reference count
+    # and build a list by ref count
+    #
+    @events ordered_evt [emptyList] ;
+    @uint max := 0 ;
+    @events to_delete [emptyList];
+    @uint evt_count := [evt_usage count] ;
+
+    loop evt_count + 1 :
+    while [evt_usage count] > 0 do
+        max := 0 ;
+        foreach evt_usage (@lstring key @uint count) :
+#            message [key string]." : ".[count string]."\n" ;
+            if count > max
+            then
+                max := count ;
+            end if ;
+        end foreach ;
+
+#        message "max = ".[max string]."\n" ;
+
+        to_delete := [@events emptyList] ;
+        foreach evt_usage (@lstring key @uint count) :
+            if count == max
+            then
+                ordered_evt += !key ;
+                to_delete += !key ;
+#                message "A detruire : ".[key string]."\n" ;
+            end if ;
+        end foreach ;
+
+        foreach to_delete (@lstring key) :
+#            message "destruction de : ".[key string]."\n" ;
+            [!?evt_usage delete !key ?*] ;
+        end foreach ;
+
+#        message "taille de la map = ".[[evt_usage count] string]."\n" ;
+#        foreach evt_usage (@lstring key @uint count) :
+#            message "Il reste : ".[key string].", ".[count string]."\n" ;
+#        end foreach ;
+    end loop ;
+
+#    message "FIN\n" ; 
+    #
+    # Compute the mask for auto events
+    #
+    foreach ordered_evt (@lstring evt) :
+#        message [evt string]."\n" ;
+        # build the user mask
+        @stringset ref_tasks ;
+        [tasks_for_event get_tasks !evt ?ref_tasks] ;
+        @uint64 common_mask := 0L ;
+        foreach ref_tasks (@string task_name) :
+            @uint64 mask ;
+            [task_mask get_mask ![@lstring new !task_name !here] ?mask] ;
+            common_mask := common_mask | mask ;
+        end foreach ;
+        message "mask = ".[common_mask string]."\n" ;
+        # find the first unused bit in the mask
+        @uint64 needle := 1L ;
+        loop 64:
+        while (needle & common_mask) != 0L do
+            needle := needle << 1 ;
+        end loop ;
+        message "found ".[needle string]."\n" ;
+        
+        @string result := tpl_event ;
+        replace !p !"event" ![evt string] !?result ;
+        replace !p !"event_name" ![evt string] !?result ;
+        replace !p !"event_mask" ![needle string] !?result ;
+        header_result .= result."\n" ;
+    end foreach ;
+
+    header := [header stringByReplacingStringByString !"$EVENTS$" !header_result] ; 
+    implementation := [implementation stringByReplacingStringByString !"$EVENTS$" !implementation_result] ; 
+
 end routine ;
 
 end semantics ;

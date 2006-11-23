@@ -1,10 +1,12 @@
 semantics goil_routines :
 
+import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
 
 routine target !@string target_platform :
-#    target_platform := [option goil_options.target_platform] ;
-    target_platform := "ppc";
+    target_platform := [option goil_options.target_platform] ;
+#    message target_platform ;
+#    target_platform := "ppc";
 end routine ;
 
 routine template !@string template ?@string obj :
@@ -24,9 +26,9 @@ routine template !@string template ?@string obj :
         targ_tpl := "../templates/all_targets/".obj.".tpl" ;
         if [targ_tpl fileExists]
         then template := [@string stringWithContentsOfFile !targ_tpl] ;
-             message "found template in all_targets\n" ;
+#             message "found template in all_targets\n" ;
         else template := "" ;
-             error here: "No template found" ;
+             error here: "No template found for ".template ;
         end if ;
     end if;
 end routine ;
@@ -67,6 +69,8 @@ routine obj_table
         end if ;
     end foreach ;
     implementation := implementation . "};\n" ;
+
+    if [names count] == 0 then implementation := "" ; end if ;
 
     header := header."\n#define ".[prefix uppercaseString]."_COUNT ".[[names count] string] ;
 end routine ;

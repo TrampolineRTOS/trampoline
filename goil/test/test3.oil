@@ -16,10 +16,15 @@ CPU test {
         PRIORITY = 17 ;
         STACKSIZE = 30 ;
         USEFLOAT = TRUE ;
+        ACTIVATION = 1 ;
         AUTOSTART = TRUE { APPMODE = all; } ;
+        EVENT = emergency ;
+        EVENT = notUsed ;
     };
     
     TASK MyTask2 {
+        PRIORITY = 10 ;
+        STACKSIZE = 40 ;
         SCHEDULE = FULL;
         ACTIVATION = 20;
         AUTOSTART = TRUE
@@ -33,6 +38,7 @@ CPU test {
         RESOURCE = notDefined;
         EVENT = event1;
         EVENT = notDefined;
+        EVENT = emergency ;
     };
     
     COUNTER general_counter {

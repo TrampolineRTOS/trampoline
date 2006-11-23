@@ -10,7 +10,7 @@
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-LIB_PM_PATH := ../../libpm-svn
+LIB_PM_PATH := ../../libpm
 
 #---------------------------------------------------------------------------*
 #                                                                           *
@@ -66,6 +66,6 @@ SOURCES += goil_grammar.cpp
 SOURCES += goil_program.cpp
 
 # Hand-coded files
-SOURCES += goil_computations.cpp
+#SOURCES += goil_computations.cpp
 
 #---------------------------------------------------------------------------*

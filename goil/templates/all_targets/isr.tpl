@@ -11,26 +11,30 @@ tpl_exec_static $EXEC_STATIC$ = {
     /* stack                    */ $EXEC_STACK$,
     /* entry point (function)   */ $EXEC_FUNCTION$,
     /* internal ressource       */ NULL,
-    /* task id                  */ $TASK_ID$,
-    /* task base priority       */ (tpl_priority)$TASK_PRIORITY$,
-    /* max activation count     */ $TASK_MAX_ACT_COUNT$,
-    /* task type                */ EXTENDED_TASK
+    /* task id                  */ 0,
+    /* task base priority       */ (tpl_priority)$ISR_PRIORITY$,
+    /* max activation count     */ $ISR_MAX_ACT_COUNT$,
+    /* task type                */ IS_ROUTINE
+};
+
+tpl_isr_static $ISR_HELPER$ = {
+	/* helper */ NULL,
+	/* next */   NULL
 };
 
 /*
- * Dynamic descriptor of task $EXEC_NAME$
+ * Dynamic descriptor of task $TASK_NAME$
  */
-tpl_task $TASK$ = {
+tpl_isr $ISR$ = {
     {       /* beginning of exec_desc part */
     /* static descriptor    */  &$EXEC_STATIC$,
     /* resources            */  NULL,
     /* next task for READY  */  NULL,
     /* next set for READY   */  NULL,
     /* activate count       */  0,
-    /* task priority        */  (tpl_priority)$TASK_PRIORITY$,
-    /* task state           */  $TASK_STATE$,
+    /* task priority        */  (tpl_priority)$ISR_PRIORITY$,
+    /* task state           */  SUSPENDED,
     },    /* end of exec_desc part */
-    /* event mask           */  0,
-    /* event wait           */  0
+    /* more static desc     */  &$ISR_HELPER$
 };
 

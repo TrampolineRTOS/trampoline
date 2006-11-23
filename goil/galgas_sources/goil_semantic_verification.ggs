@@ -16,7 +16,7 @@ routine resolve_linked_resources
 	@resource_map unresolved_next [emptyMap] ;
 	@bool first_loop := true ;
 
-	loop [unresolved count] - [unresolved_next count] :
+	loop [unresolved count] - [unresolved_next count] + 1 :
 		if (first_loop) then first_loop := false ;
 		else 
 			unresolved := unresolved_next ;

@@ -1,0 +1,105 @@
+OIL_VERSION = "2.5" : "Default system for Trampoline" ;
+
+IMPLEMENTATION trampoline {
+} ;
+
+CPU default {
+    APPMODE std { default_stack_size = 17 ; } ;
+    APPMODE dbg { default_stack_size = 24 ; } ;
+    
+    TASK t1 {
+        PRIORITY = 1 ;
+        AUTOSTART = TRUE { APPMODE = std ; } ;
+        ACTIVATION = 10 ;
+        STACKSIZE = 32768 ;
+        SCHEDULE = FULL ;
+        RESOURCE = resource1 ;
+        RESOURCE = resource2 ;
+    } ;
+    
+    TASK t2 {
+        PRIORITY = 2 ;
+        AUTOSTART = FALSE ;
+        ACTIVATION = 11 ;
+        STACKSIZE = 32768 ;
+        SCHEDULE = FULL ;
+        RESOURCE = resource1 ;
+    } ;
+
+    TASK t3 {
+        PRIORITY = 3 ;
+        AUTOSTART = FALSE ;
+        ACTIVATION = 12 ;
+        STACKSIZE = 32768 ;
+        SCHEDULE = FULL ;
+        EVENT = evt1 ;
+        EVENT = evt2 ;
+        RESOURCE = resource2 ;
+    } ;
+    
+    ISR sig_usr1 {
+        CATEGORY = 2 ;
+        STACKSIZE = 40 ;
+    } ;
+    
+    RESOURCE resource1 {
+        RESOURCEPROPERTY = STANDARD ;
+    } ;
+    
+    RESOURCE resource2 {
+        RESOURCEPROPERTY = STANDARD ;
+    } ;
+    
+    COUNTER cnt1 {
+        TICKSPERBASE = 100 ;
+        MAXALLOWEDVALUE = 1000 ;
+        MINCYCLE = 2 ;
+    } ;
+    
+    COUNTER cnt2 {
+        TICKSPERBASE = 300 ;
+        MAXALLOWEDVALUE = 1000 ;
+        MINCYCLE = 2 ;
+    } ;
+    
+    EVENT evt1 {
+        MASK = AUTO ;
+    } ;
+    
+    EVENT evt2 {
+        MASK = 1 ;
+    } ;
+    
+    ALARM alr1 {
+        COUNTER = cnt1 ;
+        ACTION = ACTIVATETASK {
+            TASK = t1 ;
+        } ;
+        AUTOSTART = FALSE ;
+    } ;
+    
+    ALARM alr2 {
+        COUNTER = cnt1 ;
+        ACTION = SETEVENT {
+            TASK = t3 ;
+            EVENT = evt1 ;
+        } ;
+        AUTOSTART = FALSE ;
+    } ;
+    
+    ALARM alr3 {
+        COUNTER = cnt2 ;
+        ACTION = ALARMCALLBACK {
+            ALARMCALLBACKNAME = "damned" ;
+        } ;
+        AUTOSTART = FALSE ;
+    } ;
+    
+    ALARM alr4 {
+        COUNTER = cnt1 ;
+        ACTION = ALARMCALLBACK {
+            ALARMCALLBACKNAME = "damned" ;
+        } ;
+        AUTOSTART = FALSE ;
+    } ;
+} ;
