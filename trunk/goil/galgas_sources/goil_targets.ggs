@@ -28,9 +28,9 @@ routine generate_context_and_stack
     target ?target ;
 
     extract exe :
-    when @task_obj (* * * * * * * @ident_map ids) ->
+    when @task_obj (7* @ident_map ids) ->
         idents := ids ;
-    when @isr_obj (* * * * @ident_map ids) ->
+    when @isr_obj (4* @ident_map ids) ->
         idents := ids ;
     else 
         error name : "Unknown executable object" ;

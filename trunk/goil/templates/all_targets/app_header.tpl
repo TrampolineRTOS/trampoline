@@ -1,4 +1,9 @@
 /*
+ * Declaration of event related defines and structures
+ */
+$EVENTS$
+
+/*
  * Declaration of Task related defines and structures
  */
 $TASKS$

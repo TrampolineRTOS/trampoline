@@ -95,7 +95,7 @@ rule <file> :
 #    message [description string] ;
 #    message [imp description] ;
 #    @base_class v := [@version new !version !description] ;
-    action generateHeader !version !description ;
+#    action generateHeader !version !description ;
 end rule ;
 
 #
@@ -401,13 +401,13 @@ rule <object_definition_list> :
     while <nm> ; <description> ?* ;
     end repeat ;
 
-    message [alarms description] ;
-    message [isrs description] ;
-    message [counters description] ;
+#    message [alarms description] ;
+#    message [isrs description] ;
+#    message [counters description] ;
 	
     # semantics constraint checking
     resolve_linked_resources !?resources ;
-    message [resources description] ;
+#    message [resources description] ;
 
     all_events_and_resources_defined_and_used !tasks !events !resources ;
     all_event_masks_different !events ;
@@ -421,10 +421,11 @@ rule <object_definition_list> :
 
     init_prefixes !?prefix ;
 
-    generate_counters  !counters  !prefix               !?header !?implementation ;
-    generate_alarms    !alarms    !prefix               !?header !?implementation ;
-    generate_tasks     !tasks     !prefix               !?header !?implementation ;
-    generate_isrs      !isrs      !prefix               !?header !?implementation ;
+    generate_events    !events    !tasks        !prefix !?header !?implementation ;
+    generate_counters  !counters                !prefix !?header !?implementation ;
+    generate_alarms    !alarms                  !prefix !?header !?implementation ;
+    generate_tasks     !tasks                   !prefix !?header !?implementation ;
+    generate_isrs      !isrs                    !prefix !?header !?implementation ;
     generate_resources !resources !tasks  !isrs !prefix !?header !?implementation ;
 
     # write the result to files
@@ -433,10 +434,19 @@ rule <object_definition_list> :
     @string implementation_file := [@string stringWithSourceFilePath] ;
     implementation_file := [implementation_file stringByDeletingPathExtension] . ".c" ;
 
-    message "creating " . header_file . "\n" ;
-    [header writeToFile !header_file] ;
-    message "creating " . implementation_file . "\n" ;
-    [implementation writeToFile !implementation_file] ;
+    header := [header stringByReplacingStringByString !"$HEADER$" !header_file];
+    header := [header stringByReplacingStringByString !"$IMPLEMENTATION$" !implementation_file];
+    implementation := [implementation stringByReplacingStringByString !"$HEADER$" !header_file];
+    implementation := [implementation stringByReplacingStringByString !"$IMPLEMENTATION$" !implementation_file];
+
+    @uint error_count := [@uint errorCount] ;
+
+    if error_count == 0 then
+        message "creating " . header_file . "\n" ;
+        [header writeToFile !header_file] ;
+        message "creating " . implementation_file . "\n" ;
+        [implementation writeToFile !implementation_file] ;
+    end if ;
 end rule ;
 
 rule <nm> :

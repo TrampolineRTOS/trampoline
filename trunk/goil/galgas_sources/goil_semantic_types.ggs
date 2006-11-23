@@ -24,11 +24,11 @@ map @implementation {
     insert insertSpec error message "%K is duplicated in %L";
 }
 
-action generateHeader
-    ?@lstring version
-    ?@lstring description
-;
-
+#action generateHeader
+#    ?@lstring version
+#    ?@lstring description
+#;
+#
 map @os_imp {
     @lstring type ;
     
@@ -124,13 +124,18 @@ class @task_obj extends @oil_obj {
     method get_other_fields !@ident_map out_others :
         out_others := other_fields ;
     end method ;
-
 }
 
 map @task_map {
-	@task_obj task ;
+    @task_obj task ;
     insert insertTask error message "Task %K is already defined in %L" ;
-} 
+}
+
+map @task_mask {
+    @uint64 mask ;
+    insert insert_mask error message "Task %K has already its mask" ;
+    search get_mask error message "No mask for task %K" ;
+}
 
 #
 # Resource classes
@@ -190,8 +195,27 @@ class @event_obj extends @oil_obj {
 }
 
 map @event_map {
-	@event_obj event ;
-	insert insertEvent error message "Event %K is already defined in %L" ;
+    @event_obj event ;
+    insert insertEvent error message "Event %K is already defined in %L" ;
+    search get_event error message "Event %K is not defined" ;
+}
+
+map @event_usage_map {
+    @uint count ;
+    insert insert_count error message "Key %K is already there" ;
+    search get_count error message "Key %K is not there" ;
+    remove delete error message "Key %K cannot be deleted" ;
+}
+
+list @events {
+    @lstring event_name ;
+}
+
+map @tasks_for_event {
+    @stringset tasks ;
+    insert insert_tasks error message "Key %K is already used there";
+    search get_tasks error message "Key %K is not there" ;
+    remove delete error message "Key %K cannot be deleted" ;
 }
 
 #
