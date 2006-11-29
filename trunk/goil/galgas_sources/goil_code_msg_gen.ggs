@@ -1,0 +1,51 @@
+semantics goil_code_msg_gen :
+
+import semantics goil_routines in "goil_routines.ggs" ;
+import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
+import semantics goil_targets in "goil_targets.ggs" ;
+
+routine init_msg_prefixes ?!@prefix_map p :
+    [!?p insert_prefix ![@lstring new !"msg_name" !here] !"" !"$MESSAGE_NAME$"] ;
+    [!?p insert_prefix ![@lstring new !"msg_name" !here] !"message_object_of" !"$MESSAGE$"] ;
+    [!?p insert_prefix ![@lstring new !"target" !here] !"message_object_of" !"$TARGET$"] ;
+end routine ;
+
+routine generate_ssi
+    ?@lstring name
+    ?@message_obj mess
+    ?@prefix_map p
+    !@string h_res
+    !@string i_res :
+
+    @string tpl_msg ;
+    template ?tpl_msg !"message_ssi" ;
+
+    h_res := "" ;
+    i_res := "" ;
+end routine ;
+
+#--------------------------------------------------------------------
+# Messages generation
+#--------------------------------------------------------------------
+routine generate_messages
+    ?@message_map messages
+    ?!@string header
+    ?!@string implementation :
+
+    @string h_res := "" ;
+    @string i_res := "" ;
+    @prefix_map p [emptyMap] ;
+
+    init_msg_prefixes !?p ;
+
+    foreach messages (@lstring name @message_obj mess) :
+       @mess_prop_obj mp := [mess messageproperty] ;
+       extract mp :
+       when @ssi_mess_prop (...) -> generate_ssi !name !mess !p ?h_res ?i_res ;
+       else
+       end extract ;
+    end foreach ;
+
+end routine ;
+
+end semantics ;

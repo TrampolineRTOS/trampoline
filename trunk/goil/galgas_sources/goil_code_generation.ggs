@@ -4,6 +4,8 @@ import semantics goil_routines in "goil_routines.ggs" ;
 import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
 import semantics goil_targets in "goil_targets.ggs" ;
 
+import semantics goil_code_msg_gen in "goil_code_msg_gen.ggs" ;
+
 #--------------------------------------------------------------------
 # Initialisation of token found in templates
 #--------------------------------------------------------------------
@@ -532,14 +534,14 @@ routine generate_events
             [task_mask get_mask ![@lstring new !task_name !here] ?mask] ;
             common_mask := common_mask | mask ;
         end foreach ;
-        message "mask = ".[common_mask string]."\n" ;
+#        message "mask = ".[common_mask string]."\n" ;
         # find the first unused bit in the mask
         @uint64 needle := 1L ;
         loop 64:
         while (needle & common_mask) != 0L do
             needle := needle << 1 ;
         end loop ;
-        message "found ".[needle string]."\n" ;
+#        message "found ".[needle string]."\n" ;
         
         @string result := tpl_event ;
         replace !p !"event" ![evt string] !?result ;
@@ -552,5 +554,6 @@ routine generate_events
     implementation := [implementation stringByReplacingStringByString !"$EVENTS$" !implementation_result] ; 
 
 end routine ;
+
 
 end semantics ;

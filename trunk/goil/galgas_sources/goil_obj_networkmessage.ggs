@@ -30,9 +30,13 @@ rule <maxsizeinbits> ;
 rule <bitordering> ;
 rule <bitposition> ;
 rule <datainterpretation> ;
-rule <initialvalue> ;
+rule <initialvalue>
+    !@luint64 initial_value ;
+
 rule <direction> ;
-rule <transferproperty> ;
+rule <transferproperty>
+    !@lstring transferproperty ;
+
 
 rule <networkmess> :
     $NETWORKMESSAGE$ ;
@@ -71,7 +75,7 @@ rule <static_mp> :
     while <bitordering> ;
     while <bitposition> ;
     while <datainterpretation> ;
-    while <initialvalue> ;
+    while <initialvalue> ?* ;
     while <direction> ;
     end repeat ;
     $}$ ;
@@ -83,7 +87,7 @@ rule <dynamic_mp> :
     while <maxsizeinbits> ;
     while <bitordering> ;
     while <bitposition> ;
-    while <initialvalue> ;
+    while <initialvalue> ?* ;
     while <direction> ;
     end repeat ;
     $}$ ;
@@ -137,7 +141,7 @@ rule <direction> :
     $=$ ;
     select
         $SENT$ ;
-        select <transferproperty> ; or end select ;
+        select <transferproperty> ?* ; or end select ;
     or
         $RECEIVED$ ;
     end select ;

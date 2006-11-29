@@ -20,9 +20,6 @@ import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
-# external rules
-rule <boolean> !@bool val ;
-rule <free_field> ?!@ident_map ids ;
 
 #
 # local rules declaration
@@ -53,7 +50,11 @@ rule <check_task_constraints>
 # external rules
 #
 rule <description>
-	!@lstring description ;
+    !@lstring description ;
+rule <boolean>
+    !@bool val ;
+rule <free_field>
+    ?!@ident_map ids ;
 
 #
 # local rules implementation
@@ -77,7 +78,7 @@ rule <task>
     ${$ ;
     repeat
     while
-        <task_parameters> !task_name !?priority !?schedule !?activation !? autostart !?resources !?events ; 
+        <task_parameters> !task_name !?priority !?schedule !?activation !?autostart !?resources !?events ; 
         $;$ ;
     while
         <free_field> !?others ;
