@@ -20,403 +20,1115 @@ import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
-rule <mess> ;
-rule <message_parameters> ;
-rule <message_property> ;
-rule <notification_property> ;
-rule <ssi_attributes> ;
-rule <sse_attributes> ;
-rule <sde_attributes> ;
-rule <sze_attributes> ;
-rule <rzi_attributes> ;
-rule <rze_attributes> ;
-rule <rui_attributes> ;
-rule <rqi_attributes> ;
-rule <rue_attributes> ;
-rule <rqe_attributes> ;
-rule <rde_attributes> ;
-rule <rzs_attributes> ;
-rule <cdatatype> ;
-rule <transferproperty> ;
-rule <networkmessage> ;
-rule <filter> ;
-rule <mask_x_attribute> ;
-rule <mask_attribute> ;
-rule <min_max_attribute> ;
-rule <period_offset_attribute> ;
-rule <networkordercallout> ;
-rule <cpuordercallout> ;
-rule <initialvalue> ;
-rule <sendingmessage> ;
-rule <queuesize> ;
-rule <link> ;
+rule <mess>
+    ?!@message_map messages ;
 
-rule <mess> :
+rule <message_property>
+    ?!@mess_prop_obj mess_prop ;
+
+rule <message_property_no_notif>
+    ?!@mess_prop_obj mess_prop ;
+
+rule <message_property_no_error_notif>
+    ?!@mess_prop_obj mess_prop ;
+
+rule <notification_property>
+    !@action_obj notif ;
+
+rule <ssi_attributes>
+    ?!@mess_prop_obj mess_prop ;
+
+rule <sse_attributes>
+    ?!@mess_prop_obj mess_prop ;
+
+rule <sde_attributes>
+    ?!@mess_prop_obj mess_prop ;
+
+rule <sze_attributes>
+    ?!@mess_prop_obj mess_prop ;
+
+rule <rzi_attributes>
+    ?!@mess_prop_obj mess_prop ;
+
+rule <rze_attributes>
+    ?!@mess_prop_obj mess_prop ;
+
+rule <rui_attributes>
+    ?!@mess_prop_obj mess_prop ;
+
+rule <rqi_attributes>
+    ?!@mess_prop_obj mess_prop ;
+
+rule <rue_attributes>
+    ?!@mess_prop_obj mess_prop ;
+
+rule <rqe_attributes>
+    ?!@mess_prop_obj mess_prop ;
+
+rule <rde_attributes>
+    ?!@mess_prop_obj mess_prop ;
+
+rule <rzs_attributes>
+    ?!@mess_prop_obj mess_prop ;
+
+rule <cdatatype>
+    !@lstring cdatatype ;
+
+rule <transferproperty>
+    !@lstring transferproperty ;
+
+rule <networkmessage>
+    !@lstring net_message ;
+
+rule <filter>
+    !@filter_prop_obj filter ;
+
+rule <mask_x_attribute>
+    !@luint64 mask
+    !@luint64 x ;
+
+rule <mask_attribute>
+    !@luint64 mask ;
+
+rule <min_max_attribute>
+    !@luint64 min
+    !@luint64 max ;
+
+rule <period_offset_attribute>
+    !@luint64 period
+    !@luint64 offset ;
+
+rule <networkordercallout>
+    !@lstring net_order_callout ;
+
+rule <cpuordercallout>
+    !@lstring cpu_order_callout ;
+
+rule <initialvalue>
+    !@luint64 initial_value ;
+
+rule <sendingmessage>
+    !@lstring sending_message ;
+
+rule <queuesize>
+    !@luint64 queue_size ;
+
+rule <link>
+    !@link_obj link ;
+
+#
+# external rules
+#
+rule <description>
+	!@lstring description ;
+rule <free_field>
+    ?!@ident_map ids ;
+
+rule <mess>
+    ?!@message_map messages
+:
+    @lstring message_name ;
+    @message_obj mess ;
+    @lstring description ;
+    @mess_prop_obj mess_prop := [@void_mess_prop new] ;
+    @action_obj notif := [@void_action new] ;
+    @action_obj notif_error := [@void_action new] ;
+    @ident_map others := [@ident_map emptyMap];
+
+
     $MESSAGE$ ;
-    $idf$ ?* ;
+    $idf$ ?message_name ;
     ${$ ;
     repeat
     while
-        <message_parameters> ; $;$ ;
+        # MESSAGEPROPERTY attribute
+        extract mess_prop :
+            when @void_mess_prop () ->
+            else error here : "MESSAGEPROPERTY attribute already defined for message ".[message_name string] ;
+        end extract ;
+        $MESSAGEPROPERTY$ ;   $=$ ; <message_property> !?mess_prop ;
+    while
+        extract notif :
+            when @void_action () ->
+            else error here : "NOTIFICATION attribute already defined for message ".[message_name string] ;
+        end extract ;
+        $NOTIFICATION$ ;      $=$ ; <notification_property> ?notif ;
+    while
+        extract notif_error :
+            when @void_action () ->
+            else error here : "NOTIFICATIONERROR attribute already defined for message ".[message_name string] ;
+        end extract ;
+        $NOTIFICATIONERROR$ ; $=$ ; <notification_property> ?notif_error ;
+    while
+        <free_field> !?others ;
     end repeat ;
-    $}$ ;
+
+    extract mess_prop :
+    when @void_mess_prop () ->
+         error here : "MESSAGEPROPERTY attribute missing for message ".[message_name string] ;
+    else
+    end extract ;
     $;$ ;
+    $}$ ;
+    <description> ?description ;
+    $;$ ;
+
+    mess := [@message_obj new !description !mess_prop !notif !notif_error !others] ;
+
+    [!?messages insert_message !message_name !mess] ;
+
 end rule ;
 
-rule <message_parameters> :
+rule <message_property_no_notif>
+    ?!@mess_prop_obj mess_prop
+:
     select
-        $MESSAGEPROPERTY$ ;   $=$ ; <message_property> ;
+		 $SEND_STATIC_INTERNAL$ ;      <ssi_attributes> !?mess_prop ;
     or
-        $NOTIFICATION$ ;      $=$ ; <notification_property> ;
-    or
-        $NOTIFICATIONERROR$ ; $=$ ; <notification_property> ;
-    or
-        $idf$ ?* ;     $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ;
+        $SEND_ZERO_INTERNAL$ ;        mess_prop := [@szi_mess_prop new] ;
     end select ;
 end rule ;
 
-rule <message_property> :
+rule <message_property_no_error_notif>
+    ?!@mess_prop_obj mess_prop
+:
     select
-		 $SEND_STATIC_INTERNAL$ ;      <ssi_attributes> ;
+        $RECEIVE_ZERO_INTERNAL$ ;     <rzi_attributes> !?mess_prop ;
     or
-        $SEND_STATIC_EXTERNAL$ ;      <sse_attributes> ;
+        $RECEIVE_UNQUEUED_INTERNAL$ ; <rui_attributes> !?mess_prop ;
     or
-        $SEND_DYNAMIC_EXTERNAL$ ;     <sde_attributes> ;
+        $RECEIVE_QUEUED_INTERNAL$ ;   <rqi_attributes> !?mess_prop ;
     or
-        $SEND_ZERO_INTERNAL$ ;
+        $RECEIVE_ZERO_SENDERS$ ;      <rzs_attributes> !?mess_prop ;
+    end select ;
+end rule ;
+
+rule <message_property>
+    ?!@mess_prop_obj mess_prop
+:
+    select
+        $SEND_STATIC_EXTERNAL$ ;      <sse_attributes> !?mess_prop ;
     or
-        $SEND_ZERO_EXTERNAL$ ;        <sze_attributes> ;
+        $SEND_DYNAMIC_EXTERNAL$ ;     <sde_attributes> !?mess_prop ;
     or
-        $RECEIVE_ZERO_INTERNAL$ ;     <rzi_attributes> ;
+        $SEND_ZERO_INTERNAL$ ;        mess_prop := [@szi_mess_prop new] ;
     or
-        $RECEIVE_ZERO_EXTERNAL$ ;     <rze_attributes> ;
+        $SEND_ZERO_EXTERNAL$ ;        <sze_attributes> !?mess_prop ;
     or
-        $RECEIVE_UNQUEUED_INTERNAL$ ; <rui_attributes> ;
+        $RECEIVE_ZERO_INTERNAL$ ;     <rzi_attributes> !?mess_prop ;
     or
-        $RECEIVE_QUEUED_INTERNAL$ ;   <rqi_attributes> ;
+        $RECEIVE_ZERO_EXTERNAL$ ;     <rze_attributes> !?mess_prop ;
     or
-        $RECEIVE_UNQUEUED_EXTERNAL$ ; <rue_attributes> ;
+        $RECEIVE_UNQUEUED_INTERNAL$ ; <rui_attributes> !?mess_prop ;
     or
-        $RECEIVE_QUEUED_EXTERNAL$ ;   <rqe_attributes> ;
+        $RECEIVE_QUEUED_INTERNAL$ ;   <rqi_attributes> !?mess_prop ;
     or
-        $RECEIVE_DYNAMIC_EXTERNAL$ ;  <rde_attributes> ;
+        $RECEIVE_UNQUEUED_EXTERNAL$ ; <rue_attributes> !?mess_prop ;
     or
-        $RECEIVE_ZERO_SENDERS$ ;      <rzs_attributes> ;
+        $RECEIVE_QUEUED_EXTERNAL$ ;   <rqe_attributes> !?mess_prop ;
+    or
+        $RECEIVE_DYNAMIC_EXTERNAL$ ;  <rde_attributes> !?mess_prop ;
+    or
+        $RECEIVE_ZERO_SENDERS$ ;      <rzs_attributes> !?mess_prop ;
     end select ;
 end rule;
 
-rule <notification_property> :
+rule <notification_property>
+    !@action_obj notif
+:
     select
-        $NONE$ ; 
+        $NONE$ ;
+        notif := [@void_action new] ;
     or
 		 $SETEVENT$ ; ${$ ;
+        @bool has_task := false ;
+        @lstring task_name := [@lstring new !"" !here] ;
+        @bool has_event := false ;
+        @lstring event_name := [@lstring new !"" !here] ;
 		 repeat
         while
+            if has_task then
+                error here : "TASK already defined for SETEVENT notification" ;
+            end if ;
             $TASK$ ;
             $=$ ;
-            $idf$ ?* ;
+            $idf$ ?task_name ;
             $;$ ;
+            has_task := true ;
         while
+            if has_event then
+                error here : "EVENT already defined for SETEVENT notification" ;
+            end if ;
             $EVENT$ ;
             $=$ ;
             $idf$ ?* ;
             $;$ ;
+            has_event := true ;
         end repeat ;
-        $}$ ;        
+        $}$ ;
+        if not has_task then
+            error here : "Task not defined for SETEVENT notification" ;
+        end if ;
+        if not has_event then
+            error here : "Event not defined for SETEVENT notification" ;
+        end if ;
+        notif := [@setevent_action new !task_name !event_name] ;
     or
+        @lstring task_name ;
         $ACTIVATETASK$ ; ${$ ;
-        $TASK$ ; $=$ ; $idf$ ?* ;
+        $TASK$ ; $=$ ; $idf$ ?task_name ;
         $;$ ;
         $}$ ;        
+        notif := [@activatetask_action new !task_name] ;
     or
+        @lstring function_name ;
         $COMCALLBACK$ ; ${$ ;
-        $COMCALLBACKNAME$ ; $=$ ; $string$ ?* ;
+        $COMCALLBACKNAME$ ; $=$ ; $string$ ?function_name ;
         $;$ ;
         $}$ ; 
+        notif := [@callback_action new !function_name] ;
     or
+        @bool has_function := false ;
+        @lstring function_name := [@lstring new !"" !here] ;
+        @bool has_ipdu := false ;
+        @luint64 ipdu := [@luint64 new !0L !here] ;
         $INMCALLBACK$ ; ${$ ;
         repeat
         while
-            $CALLBACKROUTINENAME$ ; $=$ ; $string$ ?* ; $;$ ;
+            if has_function then
+                error here : "Callback routine already defined for NMCALLBACK notification" ;
+            end if ;
+            $CALLBACKROUTINENAME$ ; $=$ ; $string$ ?function_name ; $;$ ;
+            has_function := true ;
         while
-            $MONITOREDIPDU$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+            if has_ipdu then
+                error here : "Callback routine already defined for NMCALLBACK notification" ;
+            end if ;
+            $MONITOREDIPDU$ ; $=$ ; $uint_number$ ?ipdu ; $;$ ;
+            has_ipdu := true ;
         end repeat ;
         $}$ ; 
+        if not has_function then
+            error here : "Callback not defined for NMCALLBACK notification" ;
+        end if ;
+        if not has_ipdu then
+            error here : "IPDU not defined for NMCALLBACK notification" ;
+        end if ;
+        notif := [@nmcallback_action new !function_name !ipdu] ;
     end select ;
 end rule;
 
-rule <ssi_attributes> :
+rule <ssi_attributes>
+    ?!@mess_prop_obj mess_prop
+:
+    @lstring cdatatype ;
+
     ${$ ;
-    select <cdatatype> ;
-    or
-    end select ;
+    <cdatatype> ?cdatatype ;
     $}$ ;
+    mess_prop := [@ssi_mess_prop new !cdatatype] ;
 end rule ;
 
-rule <sse_attributes> :
-    ${$ ;
-    repeat
-    while <cdatatype> ;
-    while <transferproperty> ;
-    while <networkmessage> ;
-    while <filter> ;
-    while <networkordercallout> ;
-    while <cpuordercallout> ;
-    while <initialvalue> ;
-    end repeat ;
-    $}$ ;
-end rule ;
+rule <sse_attributes>
+    ?!@mess_prop_obj mess_prop
+:
+    @bool has_cdatatype := false;
+    @lstring cdatatype := [@lstring new !"" !here] ;
+    @bool has_transferproperty := false;
+    @lstring transferproperty := [@lstring new !"" !here] ;
+    @bool has_net_message := false ;
+    @lstring net_message := [@lstring new !"" !here] ;
+    @bool has_filter := false ;
+    @filter_prop_obj filter := [@void_filter new] ;
+    @bool has_net_order_callout := false ;
+    @lstring net_order_callout := [@lstring new !"" !here] ;
+    @bool has_cpu_order_callout := false ;
+    @lstring cpu_order_callout := [@lstring new !"" !here] ;
+    @bool has_initial_value := false ;
+    @luint64 initial_value := [@luint64 new !0L !here] ;
 
-rule <sde_attributes> :
-    ${$ ;
-    repeat
-    while <transferproperty> ;
-    while <networkmessage> ;
-    while <networkordercallout> ;
-    while <cpuordercallout> ;
-    while <initialvalue> ;
-    end repeat ;
-    $}$ ;
-end rule ;
-
-rule <sze_attributes> :
     ${$ ;
     repeat
-    while <networkmessage> ;
-    while <networkordercallout> ;
-    while <cpuordercallout> ;
+    while
+        if has_cdatatype
+        then error here : "CDATATYPE subattribute already defined" ;
+        end if ;
+        <cdatatype> ?cdatatype ;
+        has_cdatatype := true ;
+    while
+        if has_transferproperty
+        then error here : "TRANSFERPROPERTY subattribute already defined" ;
+        end if ;
+        <transferproperty> ?transferproperty ;
+        has_transferproperty := true ;
+    while
+        if has_net_message
+        then error here : "NETWORKMESSAGE subattribute already defined" ;
+        end if ;
+        <networkmessage> ?net_message ;
+        has_net_message := true ;
+    while
+        if has_filter
+        then error here : "FILTER subattribute already defined" ;
+        end if ;
+        <filter> ?filter ;
+        has_filter := true ;
+    while
+        if has_net_order_callout
+        then error here : "NETWORKORDERCALLOUT subattribute already defined" ;
+        end if ;
+        <networkordercallout> ?net_order_callout ;
+        has_net_order_callout := true ;
+    while
+        if has_cpu_order_callout
+        then error here : "CPUORDERCALLOUT subattribute already defined" ;
+        end if ;
+        <cpuordercallout> ?cpu_order_callout ;
+        has_cpu_order_callout := true ;
+    while
+        if has_initial_value
+        then error here : "INITIALVALUE subattribute already defined" ;
+        end if ;
+        <initialvalue> ?initial_value ;
+        has_initial_value := true ;
     end repeat ;
     $}$ ;
+    if not has_cdatatype then
+        error here : "CDATATYPE is missing in the message" ;
+    end if ;
+    if not has_transferproperty then
+        error here : "TRANSFERPROPERTY is missing in the message" ;
+    end if ;
+    if not has_net_message then
+        error here : "NETWORKMESSAGE is missing in the message" ;
+    end if ;
+    
+    mess_prop := [@sse_mess_prop new
+        !cdatatype
+        !transferproperty
+        !filter
+        !net_order_callout
+        !cpu_order_callout
+        !initial_value
+        !net_message
+    ] ;
 end rule ;
 
-rule <rzi_attributes> :
-    ${$ ;
-    select <sendingmessage> ;
-    or
-    end select ;
-    $}$ ;
-end rule ;
+rule <sde_attributes>
+    ?!@mess_prop_obj mess_prop
+:
+    @bool has_transferproperty := false;
+    @lstring transferproperty := [@lstring new !"" !here] ;
+    @bool has_net_message := false;
+    @lstring net_message := [@lstring new !"" !here] ;
+    @bool has_net_order_callout := false ;
+    @lstring net_order_callout := [@lstring new !"" !here] ;
+    @bool has_cpu_order_callout := false ;
+    @lstring cpu_order_callout := [@lstring new !"" !here] ;
+    @bool has_initial_value := false ;
+    @luint64 initial_value := [@luint64 new !0L !here] ;
 
-rule <rze_attributes> :
     ${$ ;
     repeat
-    while <networkmessage> ;
-    while <networkordercallout> ;
-    while <cpuordercallout> ;
+    while
+        if has_transferproperty
+        then error here : "TRANSFERPROPERTY subattribute already defined" ;
+        end if ;
+        <transferproperty> ?transferproperty ;
+        has_transferproperty := true ;
+    while
+        if has_net_message
+        then error here : "NETWORKMESSAGE subattribute already defined" ;
+        end if ;
+        <networkmessage> ?net_message ;
+        has_net_message := true ;
+    while
+        if has_net_order_callout
+        then error here : "NETWORKORDERCALLOUT subattribute already defined" ;
+        end if ;
+        <networkordercallout> ?net_order_callout ;
+        has_net_order_callout := true ;
+    while
+        if has_cpu_order_callout
+        then error here : "CPUORDERCALLOUT subattribute already defined" ;
+        end if ;
+        <cpuordercallout> ?cpu_order_callout ;
+        has_cpu_order_callout := true ;
+    while
+        if has_initial_value
+        then error here : "INITIALVALUE subattribute already defined" ;
+        end if ;
+        <initialvalue> ?initial_value ;
+        has_initial_value := true ;
     end repeat ;
     $}$ ;
+    mess_prop := [@sde_mess_prop new
+        !transferproperty
+        !net_order_callout
+        !cpu_order_callout
+        !initial_value
+        !net_message
+    ] ;
 end rule ;
 
-rule <rui_attributes> :
+rule <sze_attributes>
+    ?!@mess_prop_obj mess_prop
+:
+    @bool has_net_message := false;
+    @lstring net_message := [@lstring new !"" !here] ;
+    @bool has_net_order_callout := false ;
+    @lstring net_order_callout := [@lstring new !"" !here] ;
+    @bool has_cpu_order_callout := false ;
+    @lstring cpu_order_callout := [@lstring new !"" !here] ;
+
     ${$ ;
     repeat
-    while <sendingmessage> ;
-    while <filter> ;
-    while <initialvalue> ;
+    while
+        if has_net_message
+        then error here : "NETWORKMESSAGE subattribute already defined" ;
+        end if ;
+        <networkmessage> ?net_message ;
+        has_net_message := true ;
+    while
+        if has_net_order_callout
+        then error here : "NETWORKORDERCALLOUT subattribute already defined" ;
+        end if ;
+        <networkordercallout> ?net_order_callout ;
+        has_net_order_callout := true ;
+    while
+        if has_cpu_order_callout
+        then error here : "CPUORDERCALLOUT subattribute already defined" ;
+        end if ;
+        <cpuordercallout> ?cpu_order_callout ;
+        has_cpu_order_callout := true ;
     end repeat ;
     $}$ ;
+    if not has_net_message
+    then error here : "NETWORKMESSAGE subattribute missing" ;
+    end if ;
+    mess_prop := [@sze_mess_prop new
+        !net_order_callout
+        !cpu_order_callout
+        !net_message
+    ] ;
 end rule ;
 
-rule <rqi_attributes> :
+rule <rzi_attributes>
+    ?!@mess_prop_obj mess_prop
+:
+    @lstring sending_message ;
+    ${$ ;
+    <sendingmessage> ?sending_message ;
+    $}$ ;
+
+    mess_prop := [@rzi_mess_prop new
+        !sending_message
+    ] ;
+end rule ;
+
+rule <rze_attributes>
+    ?!@mess_prop_obj mess_prop
+:
+    @bool has_net_message := false;
+    @lstring net_message := [@lstring new !"" !here] ;
+    @bool has_net_order_callout := false ;
+    @lstring net_order_callout := [@lstring new !"" !here] ;
+    @bool has_cpu_order_callout := false ;
+    @lstring cpu_order_callout := [@lstring new !"" !here] ;
+
     ${$ ;
     repeat
-    while <sendingmessage> ;
-    while <filter> ;
-    while <queuesize> ;
+    while
+        if has_net_message
+        then error here : "NETWORKMESSAGE subattribute already defined" ;
+        end if ;
+        <networkmessage> ?net_message ;
+        has_net_message := true ;
+    while
+        if has_net_order_callout
+        then error here : "NETWORKORDERCALLOUT subattribute already defined" ;
+        end if ;
+        <networkordercallout> ?net_order_callout ;
+        has_net_order_callout := true ;
+    while
+        if has_cpu_order_callout
+        then error here : "CPUORDERCALLOUT subattribute already defined" ;
+        end if ;
+        <cpuordercallout> ?cpu_order_callout ;
+        has_cpu_order_callout := true ;
     end repeat ;
     $}$ ;
+    if not has_net_message
+    then error here : "NETWORKMESSAGE subattribute missing" ;
+    end if ;
+    mess_prop := [@rze_mess_prop new
+        !net_order_callout
+        !cpu_order_callout
+        !net_message
+    ] ;
 end rule ;
 
-rule <rue_attributes> :
+rule <rui_attributes>
+    ?!@mess_prop_obj mess_prop
+:
+    @bool has_sending_message := false ;
+    @lstring sending_message := [@lstring new !"" !here] ;
+    @bool has_filter := false ;
+    @filter_prop_obj filter := [@void_filter new] ;
+    @bool has_initial_value := false ;
+    @luint64 initial_value := [@luint64 new !0L !here] ;
+
     ${$ ;
     repeat
-    while <cdatatype> ;
-    while <filter> ;
-    while <link> ;
-    while <initialvalue> ;
+    while
+        if has_sending_message
+        then error here : "SENDINGMESSAGE subattribute already defined" ;
+        end if ;
+        <sendingmessage> ?sending_message ;
+        has_sending_message := true ;
+    while
+        if has_filter
+        then error here : "FILTER subattribute already defined" ;
+        end if ;
+        <filter> ?filter ;
+        has_filter := true ;
+    while
+        if has_initial_value
+        then error here : "INITIALVALUE subattribute already defined" ;
+        end if ;
+        <initialvalue> ?initial_value ;
+        has_initial_value := true ;
     end repeat ;
     $}$ ;
+    if not has_sending_message
+    then error here : "SENDINGMESSAGE subattribute missing" ;
+    end if ;
+    mess_prop := [@rui_mess_prop new
+        !sending_message
+        !filter
+        !initial_value
+    ] ;
 end rule ;
 
-rule <rqe_attributes> :
+rule <rqi_attributes>
+    ?!@mess_prop_obj mess_prop
+:
+    @bool has_sending_message := false ;
+    @lstring sending_message := [@lstring new !"" !here] ;
+    @bool has_filter := false ;
+    @filter_prop_obj filter := [@void_filter new] ;
+    @bool has_queue_size := false ;
+    @luint64 queue_size := [@luint64 new !0L !here] ;
+    @bool has_initial_value := false ;
+    @luint64 initial_value := [@luint64 new !0L !here] ;
+
     ${$ ;
     repeat
-    while <cdatatype> ;
-    while <filter> ;
-    while <queuesize> ;
-    while <link> ;
+    while
+        if has_sending_message
+        then error here : "SENDINGMESSAGE subattribute already defined" ;
+        end if ;
+        <sendingmessage> ?sending_message ;
+        has_sending_message := true ;
+    while
+        if has_filter
+        then error here : "FILTER subattribute already defined" ;
+        end if ;
+        <filter> ?filter ;
+        has_filter := true ;
+    while
+        if has_queue_size
+        then error here : "QUEUESIZE subattribute already defined" ;
+        end if ;
+        <queuesize> ?queue_size ;
+        has_queue_size := true ;
+    while
+        if has_initial_value
+        then error here : "INITIALVALUE subattribute already defined" ;
+        end if ;
+        <initialvalue> ?initial_value ;
+        has_initial_value := true ;
     end repeat ;
     $}$ ;
+    if not has_sending_message
+    then error here : "SENDINGMESSAGE subattribute missing" ;
+    end if ;
+    if not has_queue_size
+    then error here : "QUEUESIZE subattribute missing" ;
+    end if ;
+    mess_prop := [@rqi_mess_prop new
+        !sending_message
+        !filter
+        !initial_value
+        !queue_size
+    ] ;
 end rule ;
 
-rule <rde_attributes> :
+rule <rue_attributes>
+    ?!@mess_prop_obj mess_prop
+:
+    @bool has_cdatatype := false;
+    @lstring cdatatype := [@lstring new !"" !here] ;
+    @bool has_filter := false ;
+    @filter_prop_obj filter := [@void_filter new] ;
+    @bool has_initial_value := false ;
+    @luint64 initial_value := [@luint64 new !0L !here] ;
+    @link_obj link := [@void_link new] ;
+
     ${$ ;
     repeat
-    while <link> ;
-    while <initialvalue> ;
+    while
+        if has_cdatatype
+        then error here : "CDATATYPE subattribute already defined" ;
+        end if ;
+        <cdatatype> ?cdatatype ;
+        has_cdatatype := true ;
+    while
+        if has_filter
+        then error here : "FILTER subattribute already defined" ;
+        end if ;
+        <filter> ?filter ;
+        has_filter := true ;
+    while
+        extract link :
+        when @void_link () ->
+        else error here : "LINK subattribute already defined" ;
+        end extract ;
+        <link> ?link ;
+    while
+        if has_initial_value
+        then error here : "INITIALVALUE subattribute already defined" ;
+        end if ;
+        <initialvalue> ?initial_value ;
+        has_initial_value := true ;
     end repeat ;
     $}$ ;
+    if not has_cdatatype then
+        error here : "CDATATYPE is missing in the message" ;
+    end if ;
+    extract link :
+    when @void_link () ->
+        error here : "LINK subattribute missing" ;
+    else
+    end extract ;
+
+    mess_prop := [@rue_mess_prop new
+        !cdatatype
+        !filter
+        !link
+        !initial_value
+    ] ;
 end rule ;
 
-rule <rzs_attributes> :
+rule <rqe_attributes>
+    ?!@mess_prop_obj mess_prop
+:
+    @bool has_cdatatype := false;
+    @lstring cdatatype := [@lstring new !"" !here] ;
+    @bool has_filter := false ;
+    @filter_prop_obj filter := [@void_filter new] ;
+    @bool has_queue_size := false ;
+    @luint64 queue_size := [@luint64 new !0L !here] ;
+    @link_obj link := [@void_link new] ;
+    @bool has_initial_value := false ;
+    @luint64 initial_value := [@luint64 new !0L !here] ;
+
     ${$ ;
     repeat
-    while <cdatatype> ;
-    while <initialvalue> ;
+    while
+        if has_cdatatype
+        then error here : "CDATATYPE subattribute already defined" ;
+        end if ;
+        <cdatatype> ?cdatatype ;
+        has_cdatatype := true ;
+    while
+        if has_filter
+        then error here : "FILTER subattribute already defined" ;
+        end if ;
+        <filter> ?filter ;
+        has_filter := true ;
+    while
+        if has_queue_size
+        then error here : "QUEUESIZE subattribute already defined" ;
+        end if ;
+        <queuesize> ?queue_size ;
+        has_queue_size := true ;
+    while
+        extract link :
+        when @void_link () ->
+        else error here : "LINK subattribute already defined" ;
+        end extract ;
+        <link> ?link ;
+    while
+        if has_initial_value
+        then error here : "INITIALVALUE subattribute already defined" ;
+        end if ;
+        <initialvalue> ?initial_value ;
+        has_initial_value := true ;
     end repeat ;
     $}$ ;
+
+    if not has_cdatatype then
+        error here : "CDATATYPE is missing in the message" ;
+    end if ;
+    if not has_queue_size
+    then error here : "QUEUESIZE subattribute missing" ;
+    end if ;
+    extract link :
+    when @void_link () ->
+        error here : "LINK subattribute missing" ;
+    else
+    end extract ;
+
+    mess_prop := [@rqe_mess_prop new
+        !cdatatype
+        !queue_size
+        !filter
+        !link
+        !initial_value
+    ] ;
+
 end rule ;
 
-rule <cdatatype> :
+rule <rde_attributes>
+    ?!@mess_prop_obj mess_prop
+:
+    @link_obj link := [@void_link new] ;
+    @bool has_initial_value := false ;
+    @luint64 initial_value := [@luint64 new !0L !here] ;
+
+    ${$ ;
+    repeat
+    while
+        extract link :
+        when @void_link () ->
+        else error here : "LINK subattribute already defined" ;
+        end extract ;
+        <link> ?link ;
+    while
+        if has_initial_value
+        then error here : "INITIALVALUE subattribute already defined" ;
+        end if ;
+        <initialvalue> ?initial_value ;
+        has_initial_value := true ;
+    end repeat ;
+    $}$ ;
+
+    extract link :
+    when @void_link () ->
+        error here : "LINK subattribute missing" ;
+    else
+    end extract ;
+
+    mess_prop := [@rde_mess_prop new
+        !link
+        !initial_value
+    ] ;
+
+end rule ;
+
+rule <rzs_attributes>
+    ?!@mess_prop_obj mess_prop
+:
+    @bool has_cdatatype := false;
+    @lstring cdatatype := [@lstring new !"" !here] ;
+    @bool has_initial_value := false ;
+    @luint64 initial_value := [@luint64 new !0L !here] ;
+
+    ${$ ;
+    repeat
+    while
+        if has_cdatatype
+        then error here : "CDATATYPE subattribute already defined" ;
+        end if ;
+        <cdatatype> ?cdatatype ;
+        has_cdatatype := true ;
+    while
+        if has_initial_value
+        then error here : "INITIALVALUE subattribute already defined" ;
+        end if ;
+        <initialvalue> ?initial_value ;
+        has_initial_value := true ;
+    end repeat ;
+    $}$ ;
+
+    if not has_cdatatype then
+        error here : "CDATATYPE is missing in the message" ;
+    end if ;
+
+    mess_prop := [@rzs_mess_prop new
+        !cdatatype
+        !initial_value
+    ] ;
+
+end rule ;
+
+rule <cdatatype>
+    !@lstring cdatatype
+:
     $CDATATYPE$ ;
     $=$ ;
-    $string$ ?* ;
+    $string$ ?cdatatype ;
     $;$ ;
 end rule ;
 
-rule <transferproperty> :
+rule <transferproperty>
+    !@lstring transferproperty
+:
+
     $TRANSFERPROPERTY$ ;
     $=$ ;
     select
-        $TRIGGERED$ ;
+        $TRIGGERED$ ; transferproperty := [@lstring new !"triggered" !here] ;
     or
-        $PENDING$ ;
+        $PENDING$ ; transferproperty := [@lstring new !"pending" !here] ;
     or
-        $AUTO$ ;
+        $AUTO$ ; transferproperty := [@lstring new !"auto" !here] ;
     end select ;
     $;$ ;
 end rule ;
 
-rule <networkmessage> :
+rule <networkmessage>
+    !@lstring net_message
+:
     $NETWORKMESSAGE$ ;
     $=$ ;
-    $idf$ ?* ;
+    $idf$ ?net_message ;
     $;$ ;
 end rule ;
 
-rule <filter> :
+rule <filter>
+    !@filter_prop_obj filter
+:
     $FILTER$ ;
     $=$ ;
     select
         $ALWAYS$ ;
+        filter := [@always_filter new] ;
     or
         $NEVER$ ;
+        filter := [@never_filter new] ;
     or
-        $MASKEDNEWEQUALSX$ ;  <mask_x_attribute> ;
+        @luint64 mask ;
+        @luint64 x ;
+        $MASKEDNEWEQUALSX$ ;  <mask_x_attribute> ?mask ?x ;
+        filter := [@makednewequalsx_filter new !mask !x] ;
     or
-        $MASKEDNEWDIFFERSX$ ; <mask_x_attribute> ;
+        @luint64 mask ;
+        @luint64 x ;
+        $MASKEDNEWDIFFERSX$ ; <mask_x_attribute> ?mask ?x ;
+        filter := [@makednewdiffersx_filter new !mask !x] ;
     or
         $NEWISEQUAL$ ;
+        filter := [@newisequal_filter new] ;
     or
         $NEWISDIFFERENT$ ;
+        filter := [@newisdifferent_filter new] ;
     or
-        $MASKEDNEWEQUALSMASKEDOLD$ ;  <mask_attribute> ;
+        @luint64 mask ;
+        $MASKEDNEWEQUALSMASKEDOLD$ ;  <mask_attribute> ?mask ;
+        filter := [@makednewequalsmaskedold_filter new !mask] ;
     or
-        $MASKEDNEWDIFFERSMASKEDOLD$ ; <mask_attribute> ;
+        @luint64 mask ;
+        $MASKEDNEWDIFFERSMASKEDOLD$ ; <mask_attribute> ?mask ;
+        filter := [@makednewdiffersmaskedold_filter new !mask] ;
     or
-        $NEWISWITHIN$ ;  <min_max_attribute> ;
+        @luint64 min ;
+        @luint64 max ;
+        $NEWISWITHIN$ ;  <min_max_attribute> ?min ?max ;
+        filter := [@newiswithin new !min !max] ;
     or
-        $NEWISOUTSIDE$ ; <min_max_attribute> ;
+        @luint64 min ;
+        @luint64 max ;
+        $NEWISOUTSIDE$ ; <min_max_attribute> ?min ?max ;
+        filter := [@newisoutside new !min !max] ;
     or
         $NEWISGREATER$ ;
+        filter := [@newisgreater_filter new] ;
     or
         $NEWISLESSOREQUAL$ ;
+        filter := [@newislessorequal_filter new] ;
     or
         $NEWISLESS$ ;
+        filter := [@newisless_filter new] ;
     or
         $NEWISGREATEROREQUAL$ ;
+        filter := [@newisgreaterorequal_filter new] ;
     or
-        $ONEEVERYN$ ;    <period_offset_attribute> ;
+        @luint64 period ;
+        @luint64 offset ;
+        $ONEEVERYN$ ;    <period_offset_attribute> ?period ?offset;
+        filter := [@oneeveryn_filter new !period !offset] ;
     end select ;
     $;$ ;
 end rule ;
 
-rule <mask_x_attribute> :
+rule <mask_x_attribute>
+    !@luint64 mask
+    !@luint64 x
+:
+    @bool has_mask := false ;
+    @bool has_x := false ;
+    mask := [@luint64 new !0L !here] ;
+    x := [@luint64 new !0L !here] ;
+
     ${$ ;
     repeat
     while
-        $MASK$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+        if has_mask then
+            error here : "MASK is already defined for the filter" ;
+        end if ;
+        $MASK$ ; $=$ ; $uint_number$ ?mask ; $;$ ;
+        has_mask := true ;
     while
-        $X$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+        if has_x then
+            error here : "X is already defined for the filter" ;
+        end if ;
+        $X$ ; $=$ ; $uint_number$ ?x ; $;$ ;
+        has_x := true ;
     end repeat ;
     $}$ ;
+    if not has_mask then
+        error here : "MASK is missing in the filter" ;
+    end if ;
+    if not has_x then
+        error here : "X is missing in the filter" ;
+    end if ;
 end rule ;
 
-rule <mask_attribute> :
+rule <mask_attribute>
+    !@luint64 mask
+:
     ${$ ;
-    select
-        $MASK$ ; $=$ ; $uint_number$ ?* ; $;$ ;
-    or
-    end select ;
+    $MASK$ ; $=$ ; $uint_number$ ?mask ; $;$ ;
     $}$ ;
 end rule ;
 
-rule <min_max_attribute> :
+rule <min_max_attribute>
+    !@luint64 min
+    !@luint64 max
+:
+    @bool has_min := false ;
+    @bool has_max := false ;
+    min := [@luint64 new !0L !here] ;
+    max := [@luint64 new !0L !here] ;
+
     ${$ ;
     repeat
     while
-        $MIN$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+        if has_min then
+            error here : "MIN is already defined for the filter" ;
+        end if ;
+        $MIN$ ; $=$ ; $uint_number$ ?min ; $;$ ;
+        has_min := true ;
     while
-        $MAX$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+        if has_max then
+            error here : "MAX is already defined for the filter" ;
+        end if ;
+        $MAX$ ; $=$ ; $uint_number$ ?max ; $;$ ;
+        has_max := true ;
     end repeat ;
     $}$ ;
+    if not has_min then
+        error here : "MIN is missing in the filter" ;
+    end if ;
+    if not has_max then
+        error here : "MAX is missing in the filter" ;
+    end if ;
 end rule ;
 
-rule <period_offset_attribute> :
+rule <period_offset_attribute>
+    !@luint64 period
+    !@luint64 offset
+:
+    @bool has_period := false ;
+    @bool has_offset := false ;
+    period := [@luint64 new !0L !here] ;
+    offset := [@luint64 new !0L !here] ;
+
     ${$ ;
     repeat
     while
+        if has_period then
+            error here : "PERIOD is already defined for the filter" ;
+        end if ;
         $PERIOD$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+        has_period := true ;
     while
+        if has_offset then
+            error here : "OFFSET is already defined for the filter" ;
+        end if ;
         $OFFSET$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+        has_offset := true ;
     end repeat ;
     $}$ ;
+    if not has_period then
+        error here : "PERIOD is missing in the filter" ;
+    end if ;
+    if not has_offset then
+        error here : "OFFSET is missing in the filter" ;
+    end if ;
 end rule ;
 
-rule <networkordercallout> :
+rule <networkordercallout>
+    !@lstring net_order_callout
+:
     $NETWORKORDERCALLOUT$ ;
     $=$ ;
-    $string$ ?* ;
+    $string$ ?net_order_callout ;
     $;$ ;
 end rule ;
 
-rule <cpuordercallout> :
+rule <cpuordercallout>
+    !@lstring cpu_order_callout
+:
     $CPUORDERCALLOUT$ ;
     $=$ ;
-    $string$ ?* ;
+    $string$ ?cpu_order_callout ;
     $;$ ;
 end rule ;
 
-rule <initialvalue> :
+rule <initialvalue>
+    !@luint64 initial_value
+:
     $INITIALVALUE$ ;
     $=$ ;
-    $uint_number$ ?* ;
+    $uint_number$ ?initial_value ;
     $;$ ;
 end rule ;
 
-rule <sendingmessage> :
-    $SENDINGMESSAGE$ ;
+rule <sendingmessage>
+    !@lstring sending_message
+:
+   $SENDINGMESSAGE$ ;
     $=$ ;
-    $idf$ ?* ;
+    $idf$ ?sending_message ;
     $;$ ;
 end rule ;
 
-rule <queuesize> :
+rule <queuesize>
+    !@luint64 queue_size
+:
     $QUEUESIZE$ ;
     $=$ ;
-    $uint_number$ ?* ;
+    $uint_number$ ?queue_size ;
     $;$ ;
 end rule ;
 
-rule <link> :
+rule <link>
+    !@link_obj link
+:
     $LINK$ ;
     $=$ ;
     select
+        @lstring rcv_mess ;
         $TRUE$ ; ${$ ;
-        $RECEIVEMESSAGE$ ; $=$ ; $idf$ ?* ; $;$ ;
+        $RECEIVEMESSAGE$ ; $=$ ; $idf$ ?rcv_mess ; $;$ ;
         $}$ ;
+        link := [@true_link new !rcv_mess] ;
     or
         $FALSE$ ;
+        link := [@false_link new] ;
     end select ;
 end rule ;
 

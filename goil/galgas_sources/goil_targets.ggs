@@ -1,10 +1,19 @@
 semantics goil_targets :
 
 import semantics goil_target_ppc in "goil_target_ppc.ggs" ;
+import semantics goil_target_c166 in "goil_target_c166.ggs" ;
 import semantics goil_routines in "goil_routines.ggs" ;
 
 routine init_targets_prefixes ?!@prefix_map prefix :
-    init_ppc_prefixes !?prefix ;
+    @string target ;
+    target ?target ;
+
+    if target == "ppc" then
+        init_ppc_prefixes !?prefix ;
+    end if ;
+    if target == "c166" then
+        init_c166_prefixes !?prefix ;
+    end if ;
 end routine ;
 
 #--------------------------------------------------------------------
@@ -38,6 +47,9 @@ routine generate_context_and_stack
 
     if target == "ppc"
     then generate_target_ppc !name !idents !p !?context_and_stack ;
+    end if ;
+    if target == "c166"
+    then generate_target_c166 !name !idents !p !?context_and_stack ;
     end if ;
 
     result := result . context_and_stack ;

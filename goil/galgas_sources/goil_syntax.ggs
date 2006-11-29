@@ -76,7 +76,9 @@ rule <event>
 rule <isr>
     ?!@isr_map isrs ;
 
-rule <mess> ;
+rule <mess>
+    ?!@message_map messages ;
+
 rule <networkmess> ;
 rule <com> ;
 rule <ipdu> ;
@@ -85,6 +87,8 @@ rule <ipdu> ;
 # root
 #
 rule <file> :
+    message [option goil_options.target_platform]."\n" ;
+
     @lstring version ;
     @lstring description ;
     @implementation imp [emptyMap] ;
@@ -385,6 +389,7 @@ rule <object_definition_list> :
     @resource_map resources := [@resource_map emptyMap] ;
     @event_map events := [@event_map emptyMap] ;
     @isr_map isrs := [@isr_map emptyMap] ;
+    @message_map messages [emptyMap] ;
 
     repeat
     while <appmode> ; <description> ?* ;
@@ -394,7 +399,7 @@ rule <object_definition_list> :
     while <resource> !?resources ;
     while <event> !?events ;
     while <isr> !?isrs ;
-    while <mess> ; <description> ?* ;
+    while <mess> !?messages ;
     while <networkmess> ; <description> ?* ;
     while <com> ; <description> ?* ;
     while <ipdu> ; <description> ?* ;
@@ -427,6 +432,7 @@ rule <object_definition_list> :
     generate_tasks     !tasks                   !prefix !?header !?implementation ;
     generate_isrs      !isrs                    !prefix !?header !?implementation ;
     generate_resources !resources !tasks  !isrs !prefix !?header !?implementation ;
+#    generate_messages  !messages                !?header !?implementation ;
 
     # write the result to files
     @string header_file := [@string stringWithSourceFilePath] ;

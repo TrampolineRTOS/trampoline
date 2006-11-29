@@ -323,4 +323,156 @@ map @counter_map {
     insert insertCounter error message "Counter %K is duplicated in %L" ;
 }
 
+#
+# Message classes
+#
+
+abstract class @mess_prop_obj {}
+abstract class @filter_prop_obj {}
+abstract class @link_obj {}
+
+class @void_mess_prop extends @mess_prop_obj {}
+
+class @ssi_mess_prop extends @mess_prop_obj {
+    @lstring cdatatype ;
+}
+
+class @sse_mess_prop extends @mess_prop_obj {
+    @lstring cdatatype ;
+    @lstring tranferproperty ;
+    @filter_prop_obj filter ;
+    @lstring networkordercallout ;
+    @lstring cpuordercallout ;
+    @luint64 initialvalue ;
+    @lstring networkmessage ;
+}
+
+class @sde_mess_prop extends @mess_prop_obj {
+    @lstring tranferproperty ;
+    @lstring networkordercallout ;
+    @lstring cpuordercallout ;
+    @luint64 initialvalue ;
+    @lstring networkmessage ;
+}
+class @szi_mess_prop extends @mess_prop_obj {}
+
+class @sze_mess_prop extends @mess_prop_obj {
+    @lstring networkordercallout ;
+    @lstring cpuordercallout ;
+    @lstring networkmessage ;
+}
+
+class @rzi_mess_prop extends @mess_prop_obj {
+    @lstring sendingmessage ;
+}
+
+class @rze_mess_prop extends @mess_prop_obj {
+    @lstring networkordercallout ;
+    @lstring cpuordercallout ;
+    @lstring networkmessage ;
+}
+
+class @rui_mess_prop extends @mess_prop_obj {
+    @lstring sendingmessage ;
+    @filter_prop_obj filter ;
+    @luint64 initialvalue ;
+}
+
+class @rqi_mess_prop extends @mess_prop_obj {
+    @lstring sendingmessage ;
+    @filter_prop_obj filter ;
+    @luint64 initialvalue ;
+    @luint64 queuesize ;
+}
+
+class @rue_mess_prop extends @mess_prop_obj {
+    @lstring cdatatype ;
+    @filter_prop_obj filter ;
+    @link_obj link ;
+    @luint64 initialvalue ;
+}
+
+class @rqe_mess_prop extends @mess_prop_obj {
+    @lstring cdatatype ;
+    @luint64 queuesize ;
+    @filter_prop_obj filter ;
+    @link_obj link ;
+    @luint64 initialvalue ;
+}
+
+class @rde_mess_prop extends @mess_prop_obj {
+    @link_obj link ;
+    @luint64 initialvalue ;
+}
+
+class @rzs_mess_prop extends @mess_prop_obj {
+    @lstring cdatatype ;
+    @luint64 initialvalue ;
+}
+
+class @void_filter extends @filter_prop_obj {}
+class @always_filter extends @filter_prop_obj {}
+class @never_filter extends @filter_prop_obj {}
+class @makednewequalsx_filter extends @filter_prop_obj {
+    @luint64 mask ;
+    @luint64 x ;
+}
+class @makednewdiffersx_filter extends @filter_prop_obj {
+    @luint64 mask ;
+    @luint64 x ;
+}
+class @newisequal_filter extends @filter_prop_obj {}
+class @newisdifferent_filter extends @filter_prop_obj {}
+class @makednewequalsmaskedold_filter extends @filter_prop_obj {
+    @luint64 mask ;
+}
+class @makednewdiffersmaskedold_filter extends @filter_prop_obj {
+    @luint64 mask ;
+}
+class @newiswithin extends @filter_prop_obj {
+    @luint64 min ;
+    @luint64 max ;
+}
+class @newisoutside extends @filter_prop_obj {
+    @luint64 min ;
+    @luint64 max ;
+}
+class @newisgreater_filter extends @filter_prop_obj {}
+class @newislessorequal_filter extends @filter_prop_obj {}
+class @newisless_filter extends @filter_prop_obj {}
+class @newisgreaterorequal_filter extends @filter_prop_obj {}
+class @oneeveryn_filter extends @filter_prop_obj {
+    @luint64 period ;
+    @luint64 offset ;
+}
+
+#
+# Link attribute management
+#
+class @void_link extends @link_obj {}
+
+class @true_link extends @link_obj {
+    @lstring receivemessage ;
+}
+
+class @false_link extends @link_obj {}
+
+class @nmcallback_action extends @action_obj {
+    @lstring function_name ;
+    @luint64 ipdu ;
+}
+
+
+class @message_obj extends @oil_obj {
+    @mess_prop_obj messageproperty ;
+    @action_obj notification ;
+    @action_obj notificationerror ;
+    @ident_map other_fields;
+}
+
+map @message_map {
+    @message_obj mess ;
+    insert insert_message error message "Message %K is duplicated in %L" ;
+}
+
 end semantics ;
