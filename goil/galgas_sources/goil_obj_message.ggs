@@ -26,12 +26,6 @@ rule <mess>
 rule <message_property>
     ?!@mess_prop_obj mess_prop ;
 
-rule <message_property_no_notif>
-    ?!@mess_prop_obj mess_prop ;
-
-rule <message_property_no_error_notif>
-    ?!@mess_prop_obj mess_prop ;
-
 rule <notification_property>
     !@action_obj notif ;
 
@@ -173,34 +167,24 @@ rule <mess>
     <description> ?description ;
     $;$ ;
 
+    #
+    # check a notification is not defined while it should not be
+    #
+#    extract notif :
+#    when @void_action () ->
+#    else # a notification is declared
+#        extract mess_prop :
+#        when @ssi_mess_prop (...) ->
+#            error here : "NOTIFI
+#        when @szi_mess_prop (...) ->
+#        
+#    end extract ;
+
+
     mess := [@message_obj new !description !mess_prop !notif !notif_error !others] ;
 
     [!?messages insert_message !message_name !mess] ;
 
-end rule ;
-
-rule <message_property_no_notif>
-    ?!@mess_prop_obj mess_prop
-:
-    select
-		 $SEND_STATIC_INTERNAL$ ;      <ssi_attributes> !?mess_prop ;
-    or
-        $SEND_ZERO_INTERNAL$ ;        mess_prop := [@szi_mess_prop new] ;
-    end select ;
-end rule ;
-
-rule <message_property_no_error_notif>
-    ?!@mess_prop_obj mess_prop
-:
-    select
-        $RECEIVE_ZERO_INTERNAL$ ;     <rzi_attributes> !?mess_prop ;
-    or
-        $RECEIVE_UNQUEUED_INTERNAL$ ; <rui_attributes> !?mess_prop ;
-    or
-        $RECEIVE_QUEUED_INTERNAL$ ;   <rqi_attributes> !?mess_prop ;
-    or
-        $RECEIVE_ZERO_SENDERS$ ;      <rzs_attributes> !?mess_prop ;
-    end select ;
 end rule ;
 
 rule <message_property>

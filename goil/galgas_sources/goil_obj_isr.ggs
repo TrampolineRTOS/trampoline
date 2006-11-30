@@ -25,6 +25,7 @@ rule <isr>
 
 rule <isr_attributes>
     ?!@luint64   category
+    ?!@luint64   priority
     ?!@stringset resources
     ?!@stringset messages
     ?!@ident_map other_fields ;
@@ -45,7 +46,8 @@ rule <isr>
 
     @lstring isr_name ;
     @isr_obj isr ;
-    @luint64 category := [@luint64 new !0L !here] ; 
+    @luint64 category := [@luint64 new !0L !here] ;
+    @luint64 priority := [@luint64 new !0L !here] ;
     @lstring description := [@lstring new !"" !here] ;
     @stringset resources := [@stringset emptySet] ;
     @stringset messages := [@stringset emptySet] ;
@@ -54,20 +56,30 @@ rule <isr>
     $ISR$ ;
     $idf$ ?isr_name ;
     ${$ ;
-    <isr_attributes> !?category !?resources !?messages !?other_fields;
+    <isr_attributes> !?category !?priority !?resources !?messages !?other_fields;
     $}$ ;
     <description> ?description ;
     $;$ ;
 
-    isr := [@isr_obj new !description !category !resources !messages !other_fields] ;
+    if [category uint64] == 0L then
+        error here : "CATEGORY missing for ISR ".[isr_name string] ;
+    end if ;
+    if [priority uint64] == 0L then
+        error here : "PRIORITY missing or equal to 0 for ISR ".[isr_name string] ;
+    end if ;
+
+    isr := [@isr_obj new !description !category !priority !resources !messages !other_fields] ;
     [!?isrs insertISR !isr_name !isr] ;
 end rule ;
 
 rule <isr_attributes>
     ?!@luint64   category
+    ?!@luint64   priority
     ?!@stringset resources
     ?!@stringset messages
-    ?!@ident_map other_fields :
+    ?!@ident_map other_fields
+:
+    @bool has_priority := false ;
 
     repeat
     while
@@ -80,6 +92,12 @@ rule <isr_attributes>
         if (cat != 1L) & (cat != 2L) then
             error here : "ISR category should be 1 ou 2" ;
         end if ;
+    while
+        if has_priority then
+            error here : "PRIORITY already defined for this ISR" ;
+        end if ;
+        $PRIORITY$ ; $=$ ; $uint_number$ ?priority ; $;$ ;
+        has_priority := true ;
     while
         @lstring rez ;
         $RESOURCE$ ; $=$ ; $idf$ ?rez ; $;$ ;
