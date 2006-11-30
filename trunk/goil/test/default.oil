@@ -48,6 +48,7 @@ CPU default {
         STACKSIZE = 40 ;
         USRSTACKSIZE = 40 ;
         SYSSTACKSIZE = 40 ;
+        PRIORITY = 40 ;
     } ;
     
     RESOURCE resource1 {
