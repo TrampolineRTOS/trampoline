@@ -25,21 +25,22 @@ routine generate_context_and_stack
     ?@prefix_map p
     ?!@string result :
 
-    @string tpl_context_and_stack ;
-    @string context_and_stack ;
+    @string tpl_context_and_stack := "" ;
+    @string context_and_stack := "" ;
     @ident_map idents [emptyMap] ;
-
-    template ?tpl_context_and_stack !"context_stack" ;
-
-    context_and_stack := tpl_context_and_stack ;
 
     @string target ;
     target ?target ;
 
     extract exe :
     when @task_obj (7* @ident_map ids) ->
+        template ?tpl_context_and_stack !"task_specific" ;
+        context_and_stack := tpl_context_and_stack ;
         idents := ids ;
     when @isr_obj (5* @ident_map ids) ->
+        message "ISR\n" ;
+        template ?tpl_context_and_stack !"isr_specific" ;
+        context_and_stack := tpl_context_and_stack ;
         idents := ids ;
     else 
         error name : "Unknown executable object" ;

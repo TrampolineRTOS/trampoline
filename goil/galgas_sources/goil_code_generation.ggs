@@ -200,6 +200,7 @@ end routine ;
 #--------------------------------------------------------------------
 routine generate_isrs ?@isr_map isrs ?@prefix_map p ?!@string header ?!@string implementation :
     @string tpl_isr ;
+    @string tpl_isr_spec ;
 
     @string isrs_result := "" ;
 
@@ -227,6 +228,8 @@ routine generate_isrs ?@isr_map isrs ?@prefix_map p ?!@string header ?!@string i
         result := [result stringByReplacingStringByString !"$ISR_PRIORITY$" !tmp] ;
         [isr get_activation ?tmp] ;
         result := [result stringByReplacingStringByString !"$ISR_MAX_ACT_COUNT$" !tmp] ;
+
+
 
         isrs_result := isrs_result . "\n" . result ;
     end foreach ;
