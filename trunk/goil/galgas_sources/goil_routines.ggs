@@ -28,7 +28,7 @@ routine template !@string template ?@string obj :
         then template := [@string stringWithContentsOfFile !targ_tpl] ;
 #             message "found template in all_targets\n" ;
         else template := "" ;
-             error here: "No template found for ".template ;
+             error here: "No template found for ".obj;
         end if ;
     end if;
 end routine ;
