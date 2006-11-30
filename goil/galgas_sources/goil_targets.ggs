@@ -38,7 +38,6 @@ routine generate_context_and_stack
         context_and_stack := tpl_context_and_stack ;
         idents := ids ;
     when @isr_obj (5* @ident_map ids) ->
-        message "ISR\n" ;
         template ?tpl_context_and_stack !"isr_specific" ;
         context_and_stack := tpl_context_and_stack ;
         idents := ids ;

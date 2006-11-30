@@ -87,7 +87,7 @@ rule <ipdu> ;
 # root
 #
 rule <file> :
-    message [option goil_options.target_platform]."\n" ;
+#    message [option goil_options.target_platform]."\n" ;
 
     @lstring version ;
     @lstring description ;
