@@ -1,12 +1,18 @@
-/*
- * ISR2 $EXEC_NAME$ stack
- */
 extern unsigned int registers_it[16]; 
-/* system stack */
-tpl_stack_word idata isr2_$EXEC_NAME$_stack_zone[$SYS_STACK_SIZE$/sizeof(tpl_stack_word)];
 
-/* user stack */
-tpl_stack_word isr2_$EXEC_NAME$_ustack_zone[$USR_STACK_SIZE$/sizeof(tpl_stack_word)];
+/*
+ * ISR2 $EXEC_NAME$ stacks
+ *
+ * System stack
+ */
+tpl_stack_word idata $SYS_STACK_ZONE$[$SYS_STACK_SIZE$/sizeof(tpl_stack_word)];
+
+/*
+ * User stack
+ */
+tpl_stack_word $USR_STACK_ZONE$[$USR_STACK_SIZE$/sizeof(tpl_stack_word)];
+
+#define $EXEC_STACK$ { $SYS_STACK_ZONE$, $SYS_STACK_SIZE$, $USR_STACK_ZONE$, $USR_STACK_SIZE$ }
 
 /* 
  * ISR2 $EXEC_NAME$ Handler that calls the central handler
@@ -42,6 +48,7 @@ void $EXEC_NAME$_handler(void) interrupt 32
 /*
  * ISR2 $EXEC_NAME$ context
  */
+c167_context $EXEC_INTEGER_CONTEXT$;
 
-c167_context isr2_$EXEC_NAME$_context;
+#define $EXEC_CONTEXT$ { &$EXEC_INTEGER_CONTEXT$ }
 
