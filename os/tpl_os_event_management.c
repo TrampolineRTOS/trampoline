@@ -43,12 +43,12 @@ tpl_status tpl_set_event(tpl_task *task, tpl_event_mask incoming_event)
         /*  merge the incoming event mask with the old one  */
         task->evt_set = (tpl_event_mask)(task->evt_set | incoming_event);
         /*  cross check the event the task is
-            waiting for and the incoming event  */
+            waiting for and the incoming event              */
         if (task->evt_wait & incoming_event) {
             /*  the task was waiting for at least one of the event set
-                not sure the wait mask should be clear according to the
-                incoming event. did it                                  */
-            task->evt_wait &= (tpl_event_mask)(~incoming_event);
+                the wait mask is reset to 0                 */
+            task->evt_wait = (tpl_event_mask)0;
+/*            task->evt_wait &= (tpl_event_mask)(~incoming_event); */
             /*  anyway check it is in the WAITING state     */
             if (task->exec_desc.state == WAITING) {
                 /*  set the state to READY  */
