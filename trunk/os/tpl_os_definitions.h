@@ -80,13 +80,13 @@
  * Define the TASK macro
  */
 #define TASK(name)              \
-    void task_##name##_function(void)
+    void function_of_task_##name##(void)
 
 /*
  * Define the ISR2 macro
  */
 #define ISR2(name)              \
-    void isr2_##name##_function(void)
+    void function_of_isr_##name##(void)
 
 /*
  * Define the ALARMCALLBACK macro
