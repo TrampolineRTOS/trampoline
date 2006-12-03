@@ -89,7 +89,11 @@ StatusType GetResource(ResourceType res_id)
             res = &res_scheduler;
         }
         else {
-            res = tpl_resource_table[res_id];
+			#ifndef NO_RESOURCE
+            	res = tpl_resource_table[res_id];
+			#else
+				res = NULL; /* error */
+			#endif
         }
         
         LOCK_WHEN_NO_HOOK()
@@ -133,7 +137,11 @@ StatusType ReleaseResource(ResourceType res_id)
             res = &res_scheduler;
         }
         else {
-            res = tpl_resource_table[res_id];
+			#ifndef NO_RESOURCE
+            	res = tpl_resource_table[res_id];
+			#else
+				res = NULL; /* error */
+			#endif
         }
         
         LOCK_WHEN_NO_HOOK()

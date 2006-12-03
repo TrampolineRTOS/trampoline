@@ -16,7 +16,8 @@
  */
 
 #include "tpl_machine.h"
-#include "tpl_application_def.h"
+#include "tpl_os_application_def.h"
+#include "tpl_os_generated_configuration.h"	   /* TASK_COUNT and ISR_COUNT*/
 #include <C167CS.H>
 #include <stdio.h>
 
@@ -24,11 +25,6 @@
 #pragma warning disable = 47 /* disables the "unreferenced parameter" warning */
 							 /* used for the tpl_switch_context function      */
 
-//tpl_stack_word idata idle_task_sys_stack[IDLE_TASK_SYS_STACK_LENGTH];
-
-void InitLCD(void);
-void ClearLCD();
-void setLine(char linesd);
 
 c167_context idle_task_context;
 
@@ -38,6 +34,7 @@ c167_context idle_task_context;
 #ifdef SMALL_MEMORY_MODEL
 /* use a register bank for interrupts and in the context switch function */
 unsigned int idata registers_it[16];
+unsigned int idata registers_c166[TASK_COUNT+ISR_COUNT+1][16];
 
 /*
  * tpl_sleep is used by the idle task
@@ -310,94 +307,6 @@ void tpl_switch_context_from_it(tpl_context * old_context, tpl_context * new_con
 }
 #endif
 
-// #ifdef LARGE_MEMORY_MODEL
-// void tpl_switch_context(tpl_context *old_context, tpl_context *new_context)
-// {
-// 	DPP3=3;
-// 	if(old_context) /*don't store context if pointer is NULL. */
-// 	{
-// 		#pragma asm
-// 			MOV DPP0, R9
-// 			NOP /* next ins must not use DPPs, pipeline effect */
-// 			MOV R5,[R8]
-// 			ADD R8, #2
-// 			MOV DPP0, [R8]
-// 			NOP /* next ins must not use DPPs, pipeline effect */
-// 			MOV [R5],MDC	/* store mdc  */
-// 			ADD R5,#2	
-// 			MOV [R5],PSW	/* store psw  */
-// 			ADD R5,#2
-// 			MOV [R5],DPP0	/* store dpp0 */
-// 			ADD R5,#2
-// 			MOV [R5],DPP1	/* store dpp1 */
-// 			ADD R5,#2
-// 			MOV [R5],DPP2	/* store dpp2 */
-// 			ADD R5,#2
-// 			MOV [R5],DPP3	/* store dpp3 */
-// 			ADD R5,#2
-// 			MOV [R5],MDH	/* store mdh */
-// 			ADD R5,#2
-// 			MOV [R5],MDL	/* store mdl */
-// 			ADD R5,#2
-// 			MOV [R5],SP		/* store sp */
-// 			ADD R5,#2
-// 			MOV [R5],STKOV	/* store stkov */
-// 			ADD R5,#2
-// 			MOV [R5],STKUN	/* store stkun */
-// 			ADD R5,#2
-// 			MOV [R5],CP	/* store cp */
-// 		#pragma endasm
-// 	}
-// 	/* then set the new context */
-// 	#pragma asm
-// 		MOV DPP0, R11
-// 		NOP /* next ins must not use DPPs, pipeline effect */
-// 		MOV R6, [R10]
-// 		ADD R10, #2
-// 		MOV DPP0, [R10]
-// 		NOP /* next ins must not use DPPs, pipeline effect */
-// 		MOV MDC, [R6]	/* restore mdc */
-// 		ADD R6,#2
-// 		MOV PSW, [R6]	/* restore psw */
-// 		ADD R6,#2
-// 		MOV DPP0, [R6]	/* restore dpp0 */
-// 		ADD R6,#2           /* no dpp use allowed after writing in DPPx, pipeline effect */
-// 		MOV DPP1, [R6]	/* restore dpp1 */
-// 		ADD R6,#2
-// 		MOV DPP2, [R6]	/* restore dpp2 */
-// 		ADD R6,#2
-// 		MOV DPP3, [R6]	/* restore dpp3 */
-// 		ADD R6,#2
-// 		MOV MDH, [R6]	/* restore mdh */
-// 		ADD R6,#2
-// 		MOV MDL, [R6]	/* restore mdl */
-// 		/* no exception after a stkov or stkun change.
-// 		 * only after a sp change -> not true with the monitor.
-//  		 */
-// 		PUSH R1			 /*store R1 (may be used)*/
-// 		MOV R1,#0xf200   /*low limit of iram -> stkov. */
-//         MOV STKOV,R1	
-//         MOV R1,#0xfdfe   /*high limit of iram -> stkun */
-//         MOV STKUN,R1
-// 		POP R1			/* get R1 back */
-// 		/* then set the new sp */
-// 		ADD R6,#2
-// 		MOV SP, [R6]	/* restore sp */
-// 		ADD R6,#2
-// 		MOV STKOV, [R6]	/* restore stkov */
-// 		ADD R6,#2
-// 		MOV STKUN, [R6]	/* restore stkun */
-// 		ADD R6,#2
-// 		MOV CP, [R6]	/* restore cp */
-// 		/* Warning next instruction MUST NOT use GPRs!!!
-// 		 * pipeline effect!
-// 		 */
-// 		/* the next "rets" instruction will pop the IP & CSP registers */
-// 		ORB P8, #128
-// 	#pragma endasm
-// }
-// #endif
-
 /*
  * tpl_init_context initialize a context to prepare a task to run.
  * It sets up the stack and lr and init the other registers to 0
@@ -411,7 +320,7 @@ void tpl_init_context(tpl_task *task)
 	tpl_exec_static * static_desc = task->exec_desc.static_desc;
 
 	/* CP init */
-	ic->cp = (unsigned int)&(c167_registers[static_desc->id + 1][0]);
+	ic->cp = (unsigned int)&(registers_c166[static_desc->id + 1][0]);
 	
 	/* Init of the system stack and storage of the task's entry point address on system stack */
 	ic->stkun = ((unsigned int)(static_desc->stack.sys_stack_zone)) + 
@@ -425,26 +334,9 @@ void tpl_init_context(tpl_task *task)
 	ic->psw = 0x0800;
 	ic->csp = (unsigned int)(((unsigned long)(static_desc->entry)) >> 16); 
 	ic->ip = (unsigned int)(static_desc->entry); 
-	//*((unsigned int *)(ic->sp)) = (unsigned int)(static_desc->entry); 
-	/* pushes CSP on stack */
-	//*((unsigned int *)(ic->sp+2)) = (unsigned int)(((unsigned long)(static_desc->entry)) >> 16); 
-	/* pushes PSW on stack (activate IEN). */
-	//*((unsigned int *)(ic->sp+4)) = 0x0800;
-//#ifdef SMALL_MEMORY_MODEL
 	/* Init of the user stack :  R0 = upper address of the user stack zone */
 	ic->ustack = (unsigned int)(static_desc->stack.user_stack_zone) + 
 									static_desc->stack.user_stack_size;  
-//#else //LARGE_MEMORY_MODEL
-//	ic->sp = 	ic->stkun - 2 * sizeof(unsigned int); 
-//	*((unsigned int *)(ic->sp)) = (unsigned int)((unsigned long)(static_desc->entry)) & 0x0000FFFF; /* pushes entry point on stack */
-//	/* Init of the user stack :  R0 = upper address of the user stack zone */
-//	*((unsigned int *)(ic->cp)) = 	(unsigned int)(static_desc->stack.user_stack_zone) + 
-//									static_desc->stack.user_stack_size;
-//	*((unsigned int *)(ic->cp)) |= 0x8000; /* user stack must use DPP2 
-//											  we have to do force its usage because the zones are reserved
-//										  	  as far data by the linker, accessed via DPP0 by default */
-//#endif
-//	*((unsigned int *)((ic->sp)+2)) = (unsigned int)((((unsigned long)(static_desc->entry)) & 0xFFFF0000) >> 16);
 	/* Init Others to 0 */
 	ic->mdh = 0;
 	ic->mdl = 0;
@@ -476,26 +368,6 @@ void tpl_release_task_lock(void)
  */
 void tpl_init_machine(void)
 {
-	DP8 = 0xFF;
-	P8 = 0;
-    //InitLCD();
-}
 
-void testStackOv() interrupt 4
-{
-	P8 |= 128;
-	while(1);
-}
-
-void testStackUn() interrupt 6
-{
-	P8 |= 64;
-	while(1);
-}
-
-void testHardTrap() interrupt 10
-{
-	P8 |= 32;
-	while(1);
 }
 
