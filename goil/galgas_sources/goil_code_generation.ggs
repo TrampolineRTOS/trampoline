@@ -234,6 +234,12 @@ routine generate_isrs ?@isr_map isrs ?@prefix_map p ?!@string header ?!@string i
         isrs_result := isrs_result . "\n" . result ;
     end foreach ;
 
+# build the isr table
+    @string isr_head ;
+    @string isr_imp ;
+    obj_table !"isr" !p ![isrs allKeys] ?isr_head ?isr_imp ;
+    isrs_result := isrs_result."\n".isr_imp ;
+
     header := [header stringByReplacingStringByString !"$ISRS$" !""] ; 
     implementation := [implementation stringByReplacingStringByString !"$ISRS$" !isrs_result] ; 
 end routine ;
