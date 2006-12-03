@@ -11,9 +11,9 @@ routine init_msg_prefixes ?!@prefix_map p :
 end routine ;
 
 routine generate_ssi
-    ?@lstring name
-    ?@message_obj mess
-    ?@prefix_map p
+    ?@lstring unused name
+    ?@message_obj unused mess
+    ?@prefix_map unused p
     !@string h_res
     !@string i_res :
 
@@ -29,8 +29,8 @@ end routine ;
 #--------------------------------------------------------------------
 routine generate_messages
     ?@message_map messages
-    ?!@string header
-    ?!@string implementation :
+    ?!@string unused header
+    ?!@string unused implementation :
 
     @string h_res := "" ;
     @string i_res := "" ;
