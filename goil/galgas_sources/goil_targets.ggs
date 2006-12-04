@@ -46,10 +46,10 @@ routine generate_context_and_stack
     end extract ;
 
     if target == "ppc"
-    then generate_target_ppc !name !idents !p !?context_and_stack ;
+    then generate_target_ppc !name !idents !p !exe !?context_and_stack ;
     end if ;
     if target == "c166"
-    then generate_target_c166 !name !idents !p !?context_and_stack ;
+    then generate_target_c166 !name !idents !p !exe !?context_and_stack ;
     end if ;
 
     result := result . context_and_stack ;

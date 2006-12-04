@@ -18,6 +18,7 @@ routine generate_target_ppc
     ?@lstring name
     ?@ident_map others
     ?@prefix_map p
+    ?@oil_obj unused exe
     ?!@string result :
 
     replace !p !"ppc_stack" ![name string] !?result ;
@@ -25,18 +26,7 @@ routine generate_target_ppc
     replace !p !"ppc_float_context" ![name string] !?result ;
     replace !p !"use_float" ![name string] !?result ;
     
-    if [others hasKey !"STACKSIZE"]
-    then
-        @basic_type value ;
-        [others searchIdent ![@lstring new !"STACKSIZE" !here] ?value] ;
-        extract value :
-        when @uint_class (@uint64 stack_size) ->
-            result := [result stringByReplacingStringByString !"$STACK_SIZE$" ![stack_size string]] ;
-        else error name : "STACKSIZE should be an integer" ;
-        end extract ;
-    else
-        error name : "no STACKSIZE specified for task %K" ;
-    end if ;
+    additional_int_key_required !"STACKSIZE" !"$STACK_SIZE$" !others !name !?result;
 
     @string use_float := "0" ;
     if [others hasKey !"USEFLOAT"]

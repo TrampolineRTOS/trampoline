@@ -19,7 +19,7 @@ tpl_stack_word $USR_STACK_ZONE$[$USR_STACK_SIZE$/sizeof(tpl_stack_word)];
  */
 #pragma NOFRAME
 #pragma warning disable = 138 /* disables the "expression with possibly no effect" warning */
-void $EXEC_NAME$_handler(void) interrupt 32
+void $EXEC_NAME$_handler(void) interrupt $TRAP_NUMBER$
 {
 	#pragma asm
 		BCLR IEN /*disable interrupt */
