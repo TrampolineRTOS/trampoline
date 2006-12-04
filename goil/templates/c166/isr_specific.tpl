@@ -33,7 +33,7 @@ void $EXEC_NAME$_handler(void) interrupt $TRAP_NUMBER$
 		NOP
 		PUSH DPP0
 	#pragma endasm
-	tpl_central_interrupt_handler($EXEC_NAME$);
+	tpl_central_interrupt_handler(isr_id_of_$EXEC_NAME$);
 	/* dummy code to allow the use of registers_it in
 	 * the assembly code
 	 */
