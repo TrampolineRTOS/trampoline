@@ -6,7 +6,7 @@ import semantics goil_targets in "goil_targets.ggs" ;
 
 routine init_msg_prefixes ?!@prefix_map p :
     [!?p insert_prefix ![@lstring new !"msg_name" !here] !"" !"$MESSAGE_NAME$"] ;
-    [!?p insert_prefix ![@lstring new !"msg_name" !here] !"message_object_of" !"$MESSAGE$"] ;
+    [!?p insert_prefix ![@lstring new !"msg" !here] !"message_object_of" !"$MESSAGE$"] ;
     [!?p insert_prefix ![@lstring new !"target" !here] !"message_object_of" !"$TARGET$"] ;
 end routine ;
 
@@ -21,7 +21,7 @@ routine generate_ssi
     template ?tpl_msg !"message_ssi" ;
 
     h_res := "" ;
-    i_res := "" ;
+    i_res := "" ;#replace !p ! ;
 end routine ;
 
 #--------------------------------------------------------------------
@@ -37,6 +37,37 @@ routine generate_messages
     @prefix_map p [emptyMap] ;
 
     init_msg_prefixes !?p ;
+
+    #
+    # first, build a map of destination message list keyed by
+    # source message list.
+    #
+    @message_map mm := messages ;
+   foreach mm (@lstring name @message_obj mess) :
+        @mess_prop_obj mp := [mess messageproperty] ;
+        @string src := "" ;
+        extract mp :
+        when @rzi_mess_prop (@lstring sender) -> src := [sender string] ;
+        when @rui_mess_prop (@lstring sender ...) -> src := [sender string] ;
+        when @rqi_mess_prop (@lstring sender ...) -> src := [sender string] ;
+        else end extract ;
+
+        if not [dests hasKey !src] then
+            @stringset_map dests [emptyMap] ;
+            foreach mm (@lstring same_name @message_obj same_mess) :
+                @mess_prop_obj same_mp := [same_mess messageproperty] ;
+                @string same_src := "" ;
+                extract mp :
+                when @rzi_mess_prop (@lstring sender) -> same_src := [sender string] ;
+                when @rui_mess_prop (@lstring sender ...) -> same_src := [sender string] ;
+                when @rqi_mess_prop (@lstring sender ...) -> same_src := [sender string] ;
+                else end extract ;
+                if src == same_src then
+                    
+                end if ;
+            end foreach ;
+        end if ;
+    end foreach ;
 
     foreach messages (@lstring name @message_obj mess) :
        @mess_prop_obj mp := [mess messageproperty] ;

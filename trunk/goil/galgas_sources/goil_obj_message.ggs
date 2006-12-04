@@ -170,16 +170,38 @@ rule <mess>
     #
     # check a notification is not defined while it should not be
     #
-#    extract notif :
-#    when @void_action () ->
-#    else # a notification is declared
-#        extract mess_prop :
-#        when @ssi_mess_prop (...) ->
-#            error here : "NOTIFI
-#        when @szi_mess_prop (...) ->
-#        
-#    end extract ;
-
+    extract notif :
+    when @void_action () ->
+    else # a notification is declared
+        extract mess_prop :
+        when @ssi_mess_prop (...) ->
+            error here : "NOTIFICATION is not allowed for SEND_STATIC_INTERNAL message" ;
+        when @szi_mess_prop (...) ->
+            error here : "NOTIFICATION is not allowed for SEND_ZERO_INTERNAL message" ;
+        when @rzs_mess_prop (...) ->
+            error here : "NOTIFICATION is not allowed for RECEIVE_ZERO_SENDERS message" ;
+        else
+        end extract ;
+    end extract ;
+    extract notif_error :
+    when @void_action () ->
+    else # an error notification is declared
+        extract mess_prop :
+        when @ssi_mess_prop (...) ->
+            error here : "NOTIFICATIONERROR is not allowed for SEND_STATIC_INTERNAL message" ;
+        when @szi_mess_prop (...) ->
+            error here : "NOTIFICATIONERROR is not allowed for SEND_ZERO_INTERNAL message" ;
+        when @rze_mess_prop (...) ->
+            error here : "NOTIFICATIONERROR is not allowed for RECEIVE_ZERO_INTERNAL message" ;
+        when @rui_mess_prop (...) ->
+            error here : "NOTIFICATIONERROR is not allowed for RECEIVE_UNQUEUED_INTERNAL message" ;
+        when @rqi_mess_prop (...) ->
+            error here : "NOTIFICATIONERROR is not allowed for RECEIVE_QUEUED_INTERNAL message" ;
+        when @rzs_mess_prop (...) ->
+            error here : "NOTIFICATIONERROR is not allowed for RECEIVE_ZERO_SENDERS message" ;
+        else
+        end extract ;
+    end extract ;
 
     mess := [@message_obj new !description !mess_prop !notif !notif_error !others] ;
 
@@ -190,30 +212,19 @@ end rule ;
 rule <message_property>
     ?!@mess_prop_obj mess_prop
 :
-    select
-        $SEND_STATIC_EXTERNAL$ ;      <sse_attributes> !?mess_prop ;
-    or
-        $SEND_DYNAMIC_EXTERNAL$ ;     <sde_attributes> !?mess_prop ;
-    or
-        $SEND_ZERO_INTERNAL$ ;        mess_prop := [@szi_mess_prop new] ;
-    or
-        $SEND_ZERO_EXTERNAL$ ;        <sze_attributes> !?mess_prop ;
-    or
-        $RECEIVE_ZERO_INTERNAL$ ;     <rzi_attributes> !?mess_prop ;
-    or
-        $RECEIVE_ZERO_EXTERNAL$ ;     <rze_attributes> !?mess_prop ;
-    or
-        $RECEIVE_UNQUEUED_INTERNAL$ ; <rui_attributes> !?mess_prop ;
-    or
-        $RECEIVE_QUEUED_INTERNAL$ ;   <rqi_attributes> !?mess_prop ;
-    or
-        $RECEIVE_UNQUEUED_EXTERNAL$ ; <rue_attributes> !?mess_prop ;
-    or
-        $RECEIVE_QUEUED_EXTERNAL$ ;   <rqe_attributes> !?mess_prop ;
-    or
-        $RECEIVE_DYNAMIC_EXTERNAL$ ;  <rde_attributes> !?mess_prop ;
-    or
-        $RECEIVE_ZERO_SENDERS$ ;      <rzs_attributes> !?mess_prop ;
+    select $SEND_STATIC_INTERNAL$ ;      <ssi_attributes> !?mess_prop ;
+    or     $SEND_STATIC_EXTERNAL$ ;      <sse_attributes> !?mess_prop ;
+    or     $SEND_DYNAMIC_EXTERNAL$ ;     <sde_attributes> !?mess_prop ;
+    or     $SEND_ZERO_INTERNAL$ ;        mess_prop := [@szi_mess_prop new] ;
+    or     $SEND_ZERO_EXTERNAL$ ;        <sze_attributes> !?mess_prop ;
+    or     $RECEIVE_ZERO_INTERNAL$ ;     <rzi_attributes> !?mess_prop ;
+    or     $RECEIVE_ZERO_EXTERNAL$ ;     <rze_attributes> !?mess_prop ;
+    or     $RECEIVE_UNQUEUED_INTERNAL$ ; <rui_attributes> !?mess_prop ;
+    or     $RECEIVE_QUEUED_INTERNAL$ ;   <rqi_attributes> !?mess_prop ;
+    or     $RECEIVE_UNQUEUED_EXTERNAL$ ; <rue_attributes> !?mess_prop ;
+    or     $RECEIVE_QUEUED_EXTERNAL$ ;   <rqe_attributes> !?mess_prop ;
+    or     $RECEIVE_DYNAMIC_EXTERNAL$ ;  <rde_attributes> !?mess_prop ;
+    or     $RECEIVE_ZERO_SENDERS$ ;      <rzs_attributes> !?mess_prop ;
     end select ;
 end rule;
 
