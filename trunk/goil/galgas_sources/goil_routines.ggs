@@ -75,4 +75,25 @@ routine obj_table
     header := header."\n#define ".[prefix uppercaseString]."_COUNT ".[[names count] string] ;
 end routine ;
 
+routine additional_int_key_required
+    ?? @string key
+    ?? @string templateName
+    ?? @ident_map others
+    ?? @lstring name
+    ?! @string result :
+
+    if [others hasKey !key]
+    then
+        @basic_type value ;
+        [others searchIdent ![@lstring new !key !here] ?value] ;
+        extract value :
+        when @uint_class (@uint64 uintVal) ->
+            result := [result stringByReplacingStringByString !templateName ![uintVal string]] ;
+        else error name : key." should be an integer" ;
+        end extract ;
+    else
+        error name : "no ".key." specified" ;
+    end if ;
+end routine;
+
 end semantics ;

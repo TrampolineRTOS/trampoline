@@ -12,39 +12,26 @@ routine init_c166_prefixes ?!@prefix_map prefix :
               !"integer_context_of_" !"$EXEC_INTEGER_CONTEXT$"] ;
 end routine ;
 
-routine additional_key_required
-    ?? @string key
-    ?? @string templateName
-    ?? @ident_map others
-    ?? @lstring name
-    ?! @string result :
-
-    if [others hasKey !key]
-    then
-        @basic_type value ;
-        [others searchIdent ![@lstring new !key !here] ?value] ;
-        extract value :
-        when @uint_class (@uint64 uintVal) ->
-            result := [result stringByReplacingStringByString !templateName ![uintVal string]] ;
-        else error name : key." should be an integer" ;
-        end extract ;
-    else
-        error name : "no ".key." specified" ;
-    end if ;
-end routine;
-
 routine generate_target_c166
     ?@lstring name
     ?@ident_map others
     ?@prefix_map p
+    ?@oil_obj exe
     ?!@string result :
 
     replace !p !"c166_sys_stack" ![name string] !?result ;
     replace !p !"c166_usr_stack" ![name string] !?result ;
     replace !p !"c166_int_context" ![name string] !?result ;
     
-    additional_key_required !"USRSTACKSIZE" !"$USR_STACK_SIZE$" !others !name !?result;
-    additional_key_required !"SYSSTACKSIZE" !"$SYS_STACK_SIZE$" !others !name !?result;
+    additional_int_key_required !"USRSTACKSIZE" !"$USR_STACK_SIZE$" !others !name !?result;
+    additional_int_key_required !"SYSSTACKSIZE" !"$SYS_STACK_SIZE$" !others !name !?result;
+    extract exe :
+    when @isr_obj (6*) ->
+      #object is an isr.
+      additional_int_key_required !"TRAP" !"$TRAP_NUMBER$" !others !name !?result;
+    else 
+    end extract ;
+
 
 end routine ;
 
