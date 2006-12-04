@@ -12,6 +12,27 @@ routine init_c166_prefixes ?!@prefix_map prefix :
               !"integer_context_of_" !"$EXEC_INTEGER_CONTEXT$"] ;
 end routine ;
 
+routine additional_key_required
+    ?? @string key
+    ?? @string templateName
+    ?? @ident_map others
+    ?? @lstring name
+    ?! @string result :
+
+    if [others hasKey !key]
+    then
+        @basic_type value ;
+        [others searchIdent ![@lstring new !key !here] ?value] ;
+        extract value :
+        when @uint_class (@uint64 uintVal) ->
+            result := [result stringByReplacingStringByString !templateName ![uintVal string]] ;
+        else error name : key." should be an integer" ;
+        end extract ;
+    else
+        error name : "no ".key." specified" ;
+    end if ;
+end routine;
+
 routine generate_target_c166
     ?@lstring name
     ?@ident_map others
@@ -22,31 +43,8 @@ routine generate_target_c166
     replace !p !"c166_usr_stack" ![name string] !?result ;
     replace !p !"c166_int_context" ![name string] !?result ;
     
-    if [others hasKey !"USRSTACKSIZE"]
-    then
-        @basic_type value ;
-        [others searchIdent ![@lstring new !"USRSTACKSIZE" !here] ?value] ;
-        extract value :
-        when @uint_class (@uint64 stack_size) ->
-            result := [result stringByReplacingStringByString !"$USR_STACK_SIZE$" ![stack_size string]] ;
-        else error name : "USRSTACKSIZE should be an integer" ;
-        end extract ;
-    else
-        error name : "no USRSTACKSIZE specified for task %K" ;
-    end if ;
-    if [others hasKey !"SYSSTACKSIZE"]
-    then
-        @basic_type value ;
-        [others searchIdent ![@lstring new !"SYSSTACKSIZE" !here] ?value] ;
-        extract value :
-        when @uint_class (@uint64 stack_size) ->
-            result := [result stringByReplacingStringByString !"$SYS_STACK_SIZE$" ![stack_size string]] ;
-        else error name : "SYSSTACKSIZE should be an integer" ;
-        end extract ;
-    else
-        error name : "no SYSSTACKSIZE specified for task %K" ;
-    end if ;
-
+    additional_key_required !"USRSTACKSIZE" !"$USR_STACK_SIZE$" !others !name !?result;
+    additional_key_required !"SYSSTACKSIZE" !"$SYS_STACK_SIZE$" !others !name !?result;
 
 end routine ;
 
