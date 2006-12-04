@@ -11,9 +11,9 @@ routine init_msg_prefixes ?!@prefix_map p :
 end routine ;
 
 routine generate_ssi
-    ?@lstring unused name
+    ?@lstring name
     ?@message_obj unused mess
-    ?@prefix_map unused p
+    ?@prefix_map p
     !@string h_res
     !@string i_res :
 
@@ -21,7 +21,9 @@ routine generate_ssi
     template ?tpl_msg !"message_ssi" ;
 
     h_res := "" ;
-    i_res := "" ;#replace !p ! ;
+    i_res := tpl_msg ;
+
+    replace !p !"msg_name" ![name string] !?i_res ;
 end routine ;
 
 #--------------------------------------------------------------------
@@ -42,32 +44,32 @@ routine generate_messages
     # first, build a map of destination message list keyed by
     # source message list.
     #
-    @message_map mm := messages ;
-   foreach mm (@lstring name @message_obj mess) :
-        @mess_prop_obj mp := [mess messageproperty] ;
-        @string src := "" ;
-        extract mp :
-        when @rzi_mess_prop (@lstring sender) -> src := [sender string] ;
-        when @rui_mess_prop (@lstring sender ...) -> src := [sender string] ;
-        when @rqi_mess_prop (@lstring sender ...) -> src := [sender string] ;
-        else end extract ;
-
-        if not [dests hasKey !src] then
-            @stringset_map dests [emptyMap] ;
-            foreach mm (@lstring same_name @message_obj same_mess) :
-                @mess_prop_obj same_mp := [same_mess messageproperty] ;
-                @string same_src := "" ;
-                extract mp :
-                when @rzi_mess_prop (@lstring sender) -> same_src := [sender string] ;
-                when @rui_mess_prop (@lstring sender ...) -> same_src := [sender string] ;
-                when @rqi_mess_prop (@lstring sender ...) -> same_src := [sender string] ;
-                else end extract ;
-                if src == same_src then
-                    
-                end if ;
-            end foreach ;
-        end if ;
-    end foreach ;
+#    @message_map mm := messages ;
+#   foreach mm (@lstring name @message_obj mess) :
+#        @mess_prop_obj mp := [mess messageproperty] ;
+#        @string src := "" ;
+#        extract mp :
+#        when @rzi_mess_prop (@lstring sender) -> src := [sender string] ;
+#        when @rui_mess_prop (@lstring sender ...) -> src := [sender string] ;
+#        when @rqi_mess_prop (@lstring sender ...) -> src := [sender string] ;
+#        else end extract ;
+#
+#        if not [dests hasKey !src] then
+#            @stringset_map dests [emptyMap] ;
+#            foreach mm (@lstring same_name @message_obj same_mess) :
+#                @mess_prop_obj same_mp := [same_mess messageproperty] ;
+#                @string same_src := "" ;
+#                extract mp :
+#                when @rzi_mess_prop (@lstring sender) -> same_src := [sender string] ;
+#                when @rui_mess_prop (@lstring sender ...) -> same_src := [sender string] ;
+#                when @rqi_mess_prop (@lstring sender ...) -> same_src := [sender string] ;
+#                else end extract ;
+#                if src == same_src then
+#                    
+#                end if ;
+#            end foreach ;
+#        end if ;
+#    end foreach ;
 
     foreach messages (@lstring name @message_obj mess) :
        @mess_prop_obj mp := [mess messageproperty] ;
