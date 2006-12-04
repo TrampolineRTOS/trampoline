@@ -435,10 +435,9 @@ rule <object_definition_list> :
 #    generate_messages  !messages                !?header !?implementation ;
 
     # write the result to files
-    @string header_file := [@string stringWithSourceFilePath] ;
-    header_file := [header_file stringByDeletingPathExtension] . ".h" ;
-    @string implementation_file := [@string stringWithSourceFilePath] ;
-    implementation_file := [implementation_file stringByDeletingPathExtension] . ".c" ;
+    @string directory := [[@string stringWithSourceFilePath] stringByDeletingPathExtension];
+    @string header_file := directory . "/tpl_os_generated_configuration.h" ;
+    @string implementation_file  := directory . "/tpl_os_generated_configuration.c" ;
 
     header := [header stringByReplacingStringByString !"$HEADER$" !header_file];
     header := [header stringByReplacingStringByString !"$IMPLEMENTATION$" !implementation_file];
@@ -449,8 +448,10 @@ rule <object_definition_list> :
 
     if error_count == 0 then
         message "creating " . header_file . "\n" ;
+        #[header makeDirectoryAndWriteFile !header_file] ;
         [header writeToFile !header_file] ;
         message "creating " . implementation_file . "\n" ;
+        #[implementation makeDirectoryAndWriteToFile !implementation_file] ;
         [implementation writeToFile !implementation_file] ;
     end if ;
 end rule ;
