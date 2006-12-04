@@ -424,7 +424,7 @@ routine generate_events
     #
     @event_usage_map evt_usage [emptyMap] ;
     @task_mask task_mask [emptyMap] ;
-    @tasks_for_event tasks_for_event [emptyMap] ; 
+    @stringset_map tasks_for_event [emptyMap] ; 
 
     foreach tasks (@lstring task_name @task_obj task) :
         @stringset events_used ;
@@ -462,7 +462,7 @@ routine generate_events
                 [!?tasks_for_event delete ![@lstring new !evt_name !here] ?ref_tasks] ;
             end if ;
             ref_tasks += ![task_name string] ;
-            [!?tasks_for_event insert_tasks ![@lstring new !evt_name !here] !ref_tasks] ;
+            [!?tasks_for_event add ![@lstring new !evt_name !here] !ref_tasks] ;
 
         end foreach ;
         [!?task_mask insert_mask !task_name !event_mask] ;
@@ -536,7 +536,7 @@ routine generate_events
 #        message [evt string]."\n" ;
         # build the user mask
         @stringset ref_tasks ;
-        [tasks_for_event get_tasks !evt ?ref_tasks] ;
+        [tasks_for_event get !evt ?ref_tasks] ;
         @uint64 common_mask := 0L ;
         foreach ref_tasks (@string task_name) :
             @uint64 mask ;

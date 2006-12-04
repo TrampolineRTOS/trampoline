@@ -111,4 +111,10 @@ CPU default {
         } ;
         AUTOSTART = FALSE ;
     } ;
+    
+    MESSAGE ms {
+        MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
+            CDATATYPE = "unsigned char" ;
+        } ;
+    } ;
 } ;

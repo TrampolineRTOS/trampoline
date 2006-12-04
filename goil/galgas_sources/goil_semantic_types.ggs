@@ -211,10 +211,10 @@ list @events {
     @lstring event_name ;
 }
 
-map @tasks_for_event {
-    @stringset tasks ;
-    insert insert_tasks error message "Key %K is already used there";
-    search get_tasks error message "Key %K is not there" ;
+map @stringset_map {
+    @stringset ids ;
+    insert add error message "Key %K is already used there";
+    search get error message "Key %K is not there" ;
     remove delete error message "Key %K cannot be deleted" ;
 }
 
