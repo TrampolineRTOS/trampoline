@@ -436,8 +436,8 @@ rule <object_definition_list> :
 
     # write the result to files
     @string directory := [[@string stringWithSourceFilePath] stringByDeletingPathExtension];
-    @string header_file := directory . "/tpl_os_generated_configuration.h" ;
-    @string implementation_file  := directory . "/tpl_os_generated_configuration.c" ;
+    @string header_file := "tpl_os_generated_configuration.h" ;
+    @string implementation_file  := "tpl_os_generated_configuration.c" ;
 
     header := [header stringByReplacingStringByString !"$HEADER$" !header_file];
     header := [header stringByReplacingStringByString !"$IMPLEMENTATION$" !implementation_file];
@@ -445,6 +445,9 @@ rule <object_definition_list> :
     implementation := [implementation stringByReplacingStringByString !"$IMPLEMENTATION$" !implementation_file];
 
     @uint error_count := [@uint errorCount] ;
+
+    header_file := directory . "/" . header_file;
+    implementation_file := directory . "/" . implementation_file;
 
     if error_count == 0 then
         message "creating " . header_file . "\n" ;
