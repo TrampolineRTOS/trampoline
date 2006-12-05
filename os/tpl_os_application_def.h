@@ -18,22 +18,38 @@
 #ifndef __TPL_OS_APPLICATION_DEF_H__
 #define __TPL_OS_APPLICATION_DEF_H__
 
-#include "../App/tpl_os_generated_configuration.h"
+#include "tpl_os_generated_configuration.h"
 
 #ifndef TASK_COUNT
 #define NO_TASK
+#else
+	#if TASK_COUNT == 0
+		#define NO_TASK
+	#endif
 #endif
 
 #ifndef RES_COUNT
 #define NO_RESOURCE
+#else
+	#if RES_COUNT == 0
+		#define NO_RESOURCE
+	#endif
 #endif
 
 #ifndef ALARM_COUNT
 #define NO_ALARM
+#else
+	#if ALARM_COUNT == 0
+		#define NO_ALARM
+	#endif
 #endif
 
 #ifndef ISR_COUNT
 #define NO_ISR
+#else
+	#if ISR_COUNT == 0
+		#define NO_ISR
+	#endif
 #endif
 
 #endif
