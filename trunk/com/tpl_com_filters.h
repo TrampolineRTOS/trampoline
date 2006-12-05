@@ -17,6 +17,8 @@
 #ifndef __TPL_COM_FILTERS_H__
 #define __TPL_COM_FILTERS_H__
 
+#include "tpl_com_filtering.h"
+
 bool tpl_filter_always(tpl_filter_param *, tpl_com_value, tpl_com_value);
 bool tpl_filter_never(tpl_filter_param *, tpl_com_value, tpl_com_value);
 bool tpl_filter_masked_new_equals_x(tpl_filter_param *, tpl_com_value, tpl_com_value);

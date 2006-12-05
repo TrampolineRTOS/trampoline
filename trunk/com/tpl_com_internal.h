@@ -23,7 +23,7 @@
  * Data types
  */
 typedef tpl_message_id          MessageIdentifier;
-typedef tpl_application_data    *ApplicationDataRef;
+typedef tpl_com_data            *ApplicationDataRef;
 typedef tpl_com_length          COMLengthType;
 typedef tpl_com_length          *LengthRef;
 typedef tpl_flag                FlagValue;

@@ -23,9 +23,15 @@
 #define __TPL_COM_TYPES_H__
 
 /*
- * tpl_message_kind is used to tag a message object
+ * tpl_com_value is the type used by filters. According to the
+ * OSEK-COM specification, it has to be an integer.
  */
-typedef unsigned char tpl_message_kind;
+typedef int tpl_com_value;
+
+/*
+ * tpl_com_count is the type used for the occurence filter
+ */
+typedef unsigned char tpl_com_count;
 
 /*
  * tpl_message_id is used to identify messages
@@ -33,10 +39,11 @@ typedef unsigned char tpl_message_kind;
 typedef short int tpl_message_id;
 
 /*
- * tpl_message_size is the data type used to store
- * the size of a message
+ * tpl_message_size is the data type used to store the size of a message.
+ * This type has to be an unsigned one since > 0 comparisons are done in
+ * Trampoline/COM.
  */
-typedef unsigned char tpl_message_size;
+typedef char tpl_message_size;
 
 /*
  * tpl_queue_size is the datatype used to store the
@@ -49,5 +56,11 @@ typedef unsigned char tpl_queue_size;
  * current read index of message queues
  */
 typedef unsigned char tpl_queue_index;
+
+/*
+ * tpl_flags is the datatype used tu store notification flags
+ * basically, it is a set of bits
+ */
+typedef unsigned char tpl_flag_set;
 
 #endif
