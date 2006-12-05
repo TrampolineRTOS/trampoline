@@ -1,0 +1,117 @@
+/*
+ * Trampoline OS
+ *
+ * Trampoline is copyright (c) IRCCyN 2005+
+ * Trampoline est protégé par la loi sur la propriété intellectuelle
+ *
+ * This software is distributed under the Lesser GNU Public Licence
+ *
+ * Trampoline Base Message Object data structures
+ *
+ * $Date$ - $Rev$
+ * $Author$
+ * $URL$
+ */
+
+#ifndef __TPL_COM_BASE_MO_H__
+#define __TPL_COM_BASE_MO_H__
+
+#include "tpl_os_types.h"
+#include "tpl_com_types.h"
+#include "tpl_com_notification.h"
+#include "tpl_com_filtering.h"
+
+/*
+ * Forward declarations
+ */
+struct TPL_BASE_SENDING_MO;
+struct TPL_BASE_RECEIVING_MO;
+
+/*
+ * Prototype for sending functions
+ */
+typedef tpl_status (*tpl_sending_func)(
+    struct TPL_BASE_SENDING_MO *,
+    tpl_com_data *
+);
+
+/*
+ * Prototype for receiving functions
+ */
+typedef tpl_status (*tpl_receiving_func)(
+    struct TPL_BASE_RECEIVING_MO *,
+    tpl_com_data *
+);
+
+/*
+ * Prototype for copying functions
+ */
+typedef tpl_status (*tpl_data_copy_func)(
+    tpl_com_data *,
+    struct TPL_BASE_RECEIVING_MO *
+);
+
+/*!
+ *  \struct TPL_BASE_SENDING_MO
+ *
+ *  \brief  Sending Message Object base data structure.
+ *
+ *  Internal and external communication base data structure for sending
+ *  Message Objects. Concret sending message objects inherit from this
+ *  structure.
+ */
+struct TPL_BASE_SENDING_MO {
+    /*! pointer to the sending function  */
+    tpl_sending_func    sender;
+};
+
+typedef struct TPL_BASE_SENDING_MO tpl_base_sending_mo;
+
+/*!
+ *  \struct TPL_BASE_RECEIVING_MO
+ *
+ *  \brief  Basic structure for receiving message objects
+ *
+ *  There are 3 kinds of receiving message objects for internal communication:
+ *  - zero length
+ *  - unqueued
+ *  - queued
+ *
+ *  External communication adds receiving IPDU related information to the
+ *  internal receiving message objects.
+ */
+struct TPL_BASE_RECEIVING_MO {
+    /*! pointer to the receiving function   */
+    tpl_receiving_func              receiver;
+    /*! notification structure              */
+    tpl_notification                notification;
+    /*! message objects chaining            */
+    struct TPL_BASE_RECEIVING_MO    *next_mo;
+};
+
+typedef struct TPL_BASE_RECEIVING_MO tpl_base_receiving_mo;
+
+/*!
+ *  \struct TPL_DATA_RECEIVING_MO
+ *
+ *  \brief  Structure for receiving message object that store a data
+ *
+ *  This structure extends the TPL_BASE_RECEIVING_MO by adding a pointer
+ *  a function which is used to copy the message data to the application
+ *  data and a filter descriptor for incoming data filtering. It does not
+ *  include members for storage since two kind of storage are available
+ *  (queued and unqueued).
+ */
+struct TPL_DATA_RECEIVING_MO {
+    /*! common part of the receiving message objects            */
+    tpl_base_receiving_mo   base_mo;
+    /*! pointer to the data copy function                       */
+    tpl_data_copy_func      copier;
+    /*! filter descriptor                                       */
+    tpl_filter_desc         filter;
+};
+
+typedef struct TPL_DATA_RECEIVING_MO tpl_data_receiving_mo;
+
+#endif
+/*  __TPL_COM_BASE_MO_H__   */
