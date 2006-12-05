@@ -18,6 +18,7 @@
 #include "tpl_machine.h"
 #include "tpl_os_application_def.h"
 #include "tpl_os_generated_configuration.h"	   /* TASK_COUNT and ISR_COUNT*/
+#include "tpl_os_definitions.h" /* IS_ROUTINE */
 #include <C167CS.H>
 #include <stdio.h>
 
@@ -309,19 +310,28 @@ void tpl_switch_context_from_it(tpl_context * old_context, tpl_context * new_con
 
 /*
  * tpl_init_context initialize a context to prepare a task to run.
- * It sets up the stack and lr and init the other registers to 0
  */
 void tpl_init_context(tpl_task *task)
 {
 	int i;
-	/* Gets a pointer to the context going to be inited */
-	c167_context *ic = task->exec_desc.static_desc->context.ic;
+	int objId;
+
 	/* Gets a pointer to the static descriptor of the task whose context is going to be inited */
 	tpl_exec_static * static_desc = task->exec_desc.static_desc;
 
+	/* Gets a pointer to the context going to be initialized */
+	c167_context *ic = static_desc->context.ic;
+
+	/* find id of the tpl_exec_obj  */
+	objId = static_desc->id;
+    if (static_desc->type & IS_ROUTINE) objId += TASK_COUNT;
+
 	/* CP init */
-	ic->cp = (unsigned int)&(registers_c166[static_desc->id + 1][0]);
-	
+	ic->cp = (unsigned int)&(registers_c166[objId + 1][0]);
+
+	/*GPRs sets to 0 : for debug mode*/
+	for(i = 0; i < 16; i++) registers_c166[objId + 1][i] = 0;
+
 	/* Init of the system stack and storage of the task's entry point address on system stack */
 	ic->stkun = ((unsigned int)(static_desc->stack.sys_stack_zone)) + 
 				static_desc->stack.sys_stack_size;
