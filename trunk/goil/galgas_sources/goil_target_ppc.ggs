@@ -45,4 +45,12 @@ routine generate_target_ppc
 
 end routine ;
 
+routine generate_counter_ppc
+  ?? @counter_map unused counters
+  ?? @prefix_map p
+  ?!  @string unused code
+:
+    #TODO
+end routine ;
+
 end semantics ;

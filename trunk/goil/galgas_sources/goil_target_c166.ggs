@@ -29,10 +29,25 @@ routine generate_target_c166
     when @isr_obj (6*) ->
       #object is an isr.
       additional_int_key_required !"TRAP" !"$TRAP_NUMBER$" !others !name !?result;
-    else 
+    else
     end extract ;
 
 
+end routine ;
+routine generate_counter_c166
+  ?? @counter_map counters
+  ?? @prefix_map p
+  ?! @string code
+:
+  @string result := "";
+  foreach counters (@lstring counter_name @counter_obj counter) :
+    @string tmp;
+    template ?tmp !"counter_list_specific";
+    replace !p !"counter" ![counter_name string] !?tmp;
+    result .= tmp;
+  end foreach ;
+
+  code := [code stringByReplacingStringByString !"$COUNTER_LIST$" !result] ;
 end routine ;
 
 end semantics ;
