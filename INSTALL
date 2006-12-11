@@ -26,8 +26,8 @@ The m4 preprocessoris used to generate the configuration of the application (tas
 
 INSTALL NOTE FOR THE KEIL/uVision2 - C167 version.
 
-You have to configure the make_macro_c167.bat batch script that generate the configuration files: App/tpl_os_generated_configuration.c and its hearder file.
+You have to configure the make_macro_c166.bat batch script that generate the configuration files: App/tpl_os_generated_configuration.c and its hearder file.
 
 You can use the .uv2 uVision2 project file in the root of the project as a base project. 2 files contains assembly code and must be compiled with appropriate options to generate the SRC file.
 the generated configuration file: App/tpl_os_generated_configuration.c
-the architecture dependant file: os/os_machine/c167tpl_machine_c167.c
+the architecture dependant file: os/os_machine/c166/tpl_machine_c166.c
