@@ -184,8 +184,11 @@ tpl_status tpl_raise_alarm(tpl_alarm *alarm)
  * date and raises alarms at that date.
  *
  * suggested modification by Seb - 2005-02-01
+ *
+ * Update: 2006-12-10: Does not perform the rescheduling. 
+ * It must be called explicitly
  */
-void tpl_counter_tick(tpl_counter *counter)
+tpl_status tpl_counter_tick(tpl_counter *counter)
 {
     tpl_alarm*  alarm;
     tpl_tick    date;
@@ -214,10 +217,8 @@ void tpl_counter_tick(tpl_counter *counter)
             /*  get the next alarm to raise     */
             alarm = counter->next_alarm_to_raise;
         }
-        if (need_rescheduling == NEED_RESCHEDULING) {
-            tpl_schedule(FROM_IT_LEVEL);
-        }
     }
+	return need_rescheduling;
 }
 
 /*

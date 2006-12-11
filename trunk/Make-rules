@@ -2,14 +2,14 @@ CC=gcc
 
 # Target may be either 
 # * darwin-ppc (MacOsX on PowerPC)
-# * c167 (C167, with the Keil compiler on MS Windows)
+# * c166 (c166, with the Keil compiler on MS Windows)
 # * linux-x86.
 # * posix-libpcl (requires the portable libpcl on your system) WARNING: UNDER TEST
 TARGET=darwin-ppc
 
 # arch may be either:
 # * ppc for the PowerPC.
-# * c167 
+# * c166 
 # * x86
 # * libpcl
 ARCH=ppc
