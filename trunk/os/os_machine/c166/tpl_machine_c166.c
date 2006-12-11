@@ -7,7 +7,7 @@
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
- * Trampoline C167 specifics
+ * Trampoline C166 specifics
  *
  * $Date:$
  * $Rev$
@@ -19,7 +19,7 @@
 #include "tpl_os_application_def.h"
 #include "tpl_os_generated_configuration.h"	   /* TASK_COUNT and ISR_COUNT*/
 #include "tpl_os_definitions.h" /* IS_ROUTINE */
-#include <C167CS.H>
+#include <C167CS.H>	/*TODO: update with a more generic standard include file.*/
 #include <stdio.h>
 
 
@@ -27,7 +27,7 @@
 							 /* used for the tpl_switch_context function      */
 
 
-c167_context idle_task_context;
+c166_context idle_task_context;
 
 
 #define SMALL_MEMORY_MODEL
@@ -320,7 +320,7 @@ void tpl_init_context(tpl_task *task)
 	tpl_exec_static * static_desc = task->exec_desc.static_desc;
 
 	/* Gets a pointer to the context going to be initialized */
-	c167_context *ic = static_desc->context.ic;
+	c166_context *ic = static_desc->context.ic;
 
 	/* find id of the tpl_exec_obj  */
 	objId = static_desc->id;

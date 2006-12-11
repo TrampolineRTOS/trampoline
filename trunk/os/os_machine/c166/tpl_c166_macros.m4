@@ -1,8 +1,8 @@
 define(`task_context',`dnl
-c167_context task_$1_context;')
+c166_context task_$1_context;')
 
 define(`isr_context',`dnl
-c167_context isr2_$1_context;')
+c166_context isr2_$1_context;')
 
 define(`task_context_ref',`dnl
 &task_$1_context')
@@ -29,9 +29,9 @@ tpl_stack_word task_$1_ustack_zone[$6/sizeof(tpl_stack_word)];')
 
 define(`AD_Global',`dnl
 ifdef(`header',`dnl
-extern unsigned int idata c167_registers[TASK_COUNT+ISR_COUNT+1][16];
+extern unsigned int idata c166_registers[TASK_COUNT+ISR_COUNT+1][16];
 extern unsigned int idata registers_it[16];',`dnl
-unsigned int idata c167_registers[TASK_COUNT+ISR_COUNT+1][16];')')
+unsigned int idata c166_registers[TASK_COUNT+ISR_COUNT+1][16];')')
 
 define(`AD_isr_def',`dnl
 /*

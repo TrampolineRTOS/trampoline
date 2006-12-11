@@ -6,21 +6,21 @@
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
- * Trampoline C167 specifics
+ * Trampoline C166 specifics
  *
  * $Date$
  * $Rev$
  * $Author$
- * $URL: http://localhost:8888/Trampoline/svn/tpl_machine/c167/tpl_machine_c167.h $
+ * $URL: http://localhost:8888/Trampoline/svn/tpl_machine/c166/tpl_machine_c166.h $
  */
 
 #include "tpl_os_internal_types.h"
 
-#ifndef __TPL_MACHINE_C167_H__
-#define __TPL_MACHINE_C167_H__
+#ifndef __TPL_MACHINE_C166_H__
+#define __TPL_MACHINE_C166_H__
 
 /* in comment for each register: address in memory / sfr number */
-struct C167_CONTEXT {
+struct C166_CONTEXT {
 	unsigned int mdc;   /* FF0E / 87 */
 	unsigned int dpp0;  /* FE00 / 00 */
 	unsigned int dpp1;  /* FE02 / 01 */
@@ -38,17 +38,17 @@ struct C167_CONTEXT {
 	unsigned int ustack;    /* user stack: R0 */
 };
 
-typedef struct C167_CONTEXT c167_context;
+typedef struct C166_CONTEXT c166_context;
 
 
 struct TPL_CONTEXT {
-	c167_context * ic;
+	c166_context * ic;
 };
 
 typedef struct TPL_CONTEXT tpl_context;
 
 
-extern c167_context idle_task_context;
+extern c166_context idle_task_context;
 #define IDLE_CONTEXT &idle_task_context 
 
 
