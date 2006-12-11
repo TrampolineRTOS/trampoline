@@ -55,4 +55,23 @@ routine generate_context_and_stack
     result := result . context_and_stack ;
 end routine ;
 
+routine generate_counter_specific 
+    ??@counter_map counters 
+    ??@prefix_map p
+    !@string code
+:
+
+    @string target ;
+    target ?target ;
+
+    template ?code !"counter_specific" ;
+
+    if target == "ppc" then
+    	generate_counter_ppc !counters !p !?code;
+    end if ;
+    if target == "c166" then
+    	generate_counter_c166 !counters !p !?code;
+    end if ;
+
+end routine ;
 end semantics ;

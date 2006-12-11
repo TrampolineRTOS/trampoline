@@ -270,6 +270,10 @@ routine generate_counters
         counters_result := counters_result . "\n" . result ;
     end foreach ;
  
+    @string specific_code;
+    generate_counter_specific !counters !p ?specific_code;
+    counters_result .=  specific_code;
+
     header := [header stringByReplacingStringByString !"$COUNTERS$" !""] ; 
     implementation := [implementation stringByReplacingStringByString !"$COUNTERS$" !counters_result] ; 
 end routine ;

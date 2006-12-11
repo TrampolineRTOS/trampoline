@@ -450,10 +450,14 @@ rule <object_definition_list> :
     implementation_file := directory . "/" . implementation_file;
 
     if error_count == 0 then
-        message "creating " . header_file . "\n" ;
-        #[header makeDirectoryAndWriteFile !header_file] ;
+        if [option .verbose_output] then
+            message "creating " . header_file . "\n" ;
+        end if;
+        #[header makeDirectoryAndWriteToFile !header_file] ;
         [header writeToFile !header_file] ;
-        message "creating " . implementation_file . "\n" ;
+        if [option .verbose_output] then
+            message "creating " . implementation_file . "\n" ;
+        end if;
         #[implementation makeDirectoryAndWriteToFile !implementation_file] ;
         [implementation writeToFile !implementation_file] ;
     end if ;
