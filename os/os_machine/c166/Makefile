@@ -1,5 +1,5 @@
 include ../../Make-rules
-AD_SRCS = tpl_machine_c167.c
+AD_SRCS = tpl_machine_c166.c
 AD_OBJS = $(AD_SRCS:.c=.o)
 
 ASMFLAGS += -I../.. -I.
