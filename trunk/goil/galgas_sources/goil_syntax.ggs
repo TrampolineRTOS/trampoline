@@ -453,13 +453,11 @@ rule <object_definition_list> :
         if [option .verbose_output] then
             message "creating " . header_file . "\n" ;
         end if;
-        #[header makeDirectoryAndWriteToFile !header_file] ;
-        [header writeToFile !header_file] ;
+        [header makeDirectoryAndWriteToFile !header_file] ;
         if [option .verbose_output] then
             message "creating " . implementation_file . "\n" ;
         end if;
-        #[implementation makeDirectoryAndWriteToFile !implementation_file] ;
-        [implementation writeToFile !implementation_file] ;
+        [implementation makeDirectoryAndWriteToFile !implementation_file] ;
     end if ;
 end rule ;
 

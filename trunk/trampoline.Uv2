@@ -6,8 +6,6 @@ Target (phyCORE), 0x0002 // Tools: '166/167'
 Group (Hard)
 Group (Trampoline)
 Group (App)
-Group (Drivers)
-Group (CAN)
 
 File 2,1,<.\os\tpl_os.c><tpl_os.c> 0x0 
 File 2,1,<.\os\tpl_os_event_management.c><tpl_os_event_management.c> 0x0 
@@ -15,31 +13,21 @@ File 2,1,<.\os\tpl_os_interrupts.c><tpl_os_interrupts.c> 0x0
 File 2,1,<.\os\tpl_os_kernel.c><tpl_os_kernel.c> 0x0 
 File 2,1,<.\os\tpl_os_resources_management.c><tpl_os_resources_management.c> 0x0 
 File 2,1,<.\os\tpl_os_task_management.c><tpl_os_task_management.c> 0x0 
+File 2,1,<.\os\tpl_os_error.c><tpl_os_error.c> 0x0 
+File 2,1,<.\os\tpl_os_alarm_management.c><tpl_os_alarm_management.c> 0x0 
 File 2,1,<.\os\os_machine\c166\tpl_machine_c166.c><tpl_machine_c166.c> 0x0 
-File 3,1,<.\App\initapp.c><initapp.c> 0x0 
-File 3,1,<.\App\tpl_default_tasks.c><tpl_default_tasks.c> 0x0 
-File 3,1,<.\App\tpl_os_generated_configuration.c><tpl_os_generated_configuration.c> 0x0 
-File 4,1,<.\App\GPIO\gpio.c><gpio.c> 0x0 
-File 4,1,<.\App\GPIO\LCD.c><LCD.c> 0x0 
-File 5,1,<.\App\CAN\CHKBO16X.C><CHKBO16X.C> 0x0 
-File 5,1,<.\App\CAN\CHKMO16X.C><CHKMO16X.C> 0x0 
-File 5,1,<.\App\CAN\CHM1516X.C><CHM1516X.C> 0x0 
-File 5,1,<.\App\CAN\DEFMO16X.C><DEFMO16X.C> 0x0 
-File 5,1,<.\App\CAN\INCAN16X.C><INCAN16X.C> 0x0 
-File 5,1,<.\App\CAN\LDMOD16X.C><LDMOD16X.C> 0x0 
-File 5,1,<.\App\CAN\RDM1516X.C><RDM1516X.C> 0x0 
-File 5,1,<.\App\CAN\RDMOD16X.C><RDMOD16X.C> 0x0 
-File 5,1,<.\App\CAN\SNDMO16X.C><SNDMO16X.C> 0x0 
+File 3,1,<.\App\tpl_default_tasks_c167.c><tpl_default_tasks_c167.c> 0x0 
+File 3,1,<.\App\tp2\tpl_os_generated_configuration.c><tpl_os_generated_configuration.c> 0x0 
 
 
 Options 1,0,0  // Target 'phyCORE'
- Device (c166CS-LM)
+ Device (C167CS-LM)
  Vendor (Infineon)
  Cpu (IRAM(0xF200-0xFDFF) XRAM(0xE000-0xE7FF) XRAM2 (0xC000-0xD7FF) ICAN(0xE800-0xEFFF) CLOCK(25000000) MOD167)
  FlashUt ()
  StupF ("LIB\START167.A66" ("C16x/ST10 Startup Code"))
  FlashDR ()
- Rgf (c166CS.H)
+ Rgf (C167CS.H)
  Mem ()
  C ()
  A ()
@@ -102,7 +90,7 @@ Options 1,0,0  // Target 'phyCORE'
  cMisc (MOD167)
  Define ()
  Undefine ()
- INCC6 (D:\Kevin\Prog\Cartes\ctxSw\Trampoline\;D:\Kevin\Prog\Cartes\ctxSw\Trampoline\tpl_machine\c166\)
+ INCC6 (E:\trampoline\trunk\App\;E:\trampoline\trunk\App\tp2\;E:\trampoline\trunk\os\;E:\trampoline\trunk\os\os_machine\c166\)
  EC166 { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
  ECMISC ()
  ECDEFINE ()
@@ -138,18 +126,18 @@ Options 1,0,0  // Target 'phyCORE'
  lDisWarn ()
  lAssign ()
  lRegbank ()
- lReserve (0x8-0xB,0xAC-0xAF,0x6000-0x6200,0x6B00-0x8300)
+ lReserve (8H-0BH, 0ACH-0AFH)
  lMisc ()
  lClasses ()
  lSect ()
   OPTDL (S166.DLL)()(D167.DLL)(-p167CS)(S166.DLL)()(T167.DLL)(-p167CS)
-  OPTDBG 49150,-1,()()()()()()()()()() (MONITOR\MON166.DLL)()()()
+  OPTDBG 49149,-1,()()()()()()()()()() (MONITOR\MON166.DLL)()()()
  FLASH1 { 1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
  FLASH2 (OCDS\OCDSXC.DLL)
  FLASH3 ("" ())
 EndOpt
 
-Options 1,2,7  // File 'tpl_machine_c166.c'
+Options 1,2,9  // File 'tpl_machine_c166.c'
  PropFld { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
  IncBld=2
  AlwaysBuild=2
@@ -177,7 +165,7 @@ Options 1,2,7  // File 'tpl_machine_c166.c'
  INCC6 ()
 EndOpt
 
-Options 1,3,10  // File 'tpl_os_generated_configuration.c'
+Options 1,3,11  // File 'tpl_os_generated_configuration.c'
  PropFld { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
  IncBld=2
  AlwaysBuild=2

@@ -59,7 +59,7 @@ rule <counter>
     [!?counters insertCounter !counter_name !counter] ;
 end rule ;
 
-rule < counter_parameters > 
+rule <counter_parameters> 
     ?!@luint64 max_allowed_value
     ?!@luint64 ticks_per_base
     ?!@luint64 min_cycle :
