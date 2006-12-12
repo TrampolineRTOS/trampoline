@@ -19,6 +19,7 @@
 #include "tpl_os_definitions.h"
 #include "tpl_os.h"
 #include "tpl_os_hooks.h"
+#include "tpl_os_application_def.h"
 
 static int tpl_it_nesting = 0;
 
@@ -60,7 +61,8 @@ void tpl_activate_isr(tpl_isr *isr)
         isr->exec_desc.activate_count++;
     }
 }
-
+ 
+#ifndef NO_ISR
 /*
  * The central interrupt handler is called by the interrupt handler
  * with the id of the interrupt (usually its priority) as parameter
@@ -109,6 +111,7 @@ void tpl_central_interrupt_handler(unsigned int id)
         tpl_schedule(FROM_IT_LEVEL);
     }
 }
+#endif //NO_ISR
 
 /*
  * TerminateISR

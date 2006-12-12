@@ -5,7 +5,7 @@
  * This timer MUST NOT be used elsewhere in the application.
  */
 #include <C167CS.H> /*TODO: C166 */
-void tpl_init_tick_timer
+void tpl_init_tick_timer()
 {
   /* use interrupt mode: 
    * T6IE:1 Interrupt enable
@@ -22,14 +22,26 @@ void tpl_init_tick_timer
    * T6OTL:0 No toggle latch.
    * T6OE :0 Output Function disabled
    * T6UDE:0 No external Up/Down
-   * T6UD :1 Count Up
+   * T6UD :0 Count Up
    * T6R  :1 Run
    * T6M  :0 Timer mode
    * T6I  :0 100ns resolution
    */
-  T6CON = 0x80C0;
+  T6CON = 0x8040;
 }
 
+void tpl_schedule(int from);
+tpl_status tpl_counter_tick(tpl_counter *counter);
+void tpl_call_counter_tick()
+{
+	tpl_status  need_rescheduling = NO_SPECIAL_CODE;
+$COUNTER_LIST$
+	if (need_rescheduling == NEED_RESCHEDULING) {
+		tpl_schedule(FROM_IT_LEVEL);
+    }
+}
+
+extern unsigned int registers_it[16]; 
 
 #pragma NOFRAME
 #pragma warning disable = 138 /* disables the "expression with possibly no effect" warning */
@@ -49,11 +61,9 @@ void tpl_timer6_tick(void) interrupt 38
 		PUSH DPP0
 	#pragma endasm
 	
-	tpl_status  need_rescheduling = NO_SPECIAL_CODE;
-$COUNTER_LIST$
-	if (need_rescheduling == NEED_RESCHEDULING) {
-		tpl_schedule(FROM_IT_LEVEL);
-    }
+	/* We have to call a function, because we can not use any local var here.*/
+	tpl_call_counter_tick();
+	
 	/* dummy code to allow the use of registers_it in
 	 * the assembly code
 	 */

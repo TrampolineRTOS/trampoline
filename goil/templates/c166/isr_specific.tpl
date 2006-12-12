@@ -48,7 +48,7 @@ void $EXEC_NAME$_handler(void) interrupt $TRAP_NUMBER$
 /*
  * ISR2 $EXEC_NAME$ context
  */
-c167_context $EXEC_INTEGER_CONTEXT$;
+c166_context $EXEC_INTEGER_CONTEXT$;
 
 #define $EXEC_CONTEXT$ { &$EXEC_INTEGER_CONTEXT$ }
 

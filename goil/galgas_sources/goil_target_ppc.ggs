@@ -47,7 +47,7 @@ end routine ;
 
 routine generate_counter_ppc
   ?? @counter_map unused counters
-  ?? @prefix_map p
+  ?? @prefix_map unused p
   ?!  @string unused code
 :
     #TODO

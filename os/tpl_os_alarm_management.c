@@ -186,7 +186,7 @@ tpl_status tpl_raise_alarm(tpl_alarm *alarm)
  * suggested modification by Seb - 2005-02-01
  *
  * Update: 2006-12-10: Does not perform the rescheduling. 
- * It must be called explicitly
+ * tpl_schedule must be called explicitly
  */
 tpl_status tpl_counter_tick(tpl_counter *counter)
 {

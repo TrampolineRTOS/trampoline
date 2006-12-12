@@ -15,7 +15,7 @@ tpl_stack_word $USR_STACK_ZONE$[$USR_STACK_SIZE$/sizeof(tpl_stack_word)];
 /*
  * $EXEC_NAME$ context
  */
-c167_context $EXEC_INTEGER_CONTEXT$;
+c166_context $EXEC_INTEGER_CONTEXT$;
 
 #define $EXEC_CONTEXT$ { &$EXEC_INTEGER_CONTEXT$ }
 
