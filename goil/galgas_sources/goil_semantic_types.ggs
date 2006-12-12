@@ -1,5 +1,8 @@
 semantics goil_semantic_types :
 
+import semantics goil_basic_types in "goil_basic_types.ggs" ;
+import semantics goil_routines in "goil_routines.ggs" ;
+
 list @number_list {
     @luint64 number ;
 }
@@ -34,46 +37,11 @@ map @os_imp {
     
 }
 
-abstract class @basic_type {}
-
-class @uint_class extends @basic_type {
-    @uint64 value ;
-}
-
-class @sint_class extends @basic_type {
-    @sint64 value ;
-}
-
-class @string_class extends @basic_type {
-    @string value ;
-}
-
-class @bool_class extends @basic_type {
-    @bool value ;
-}
-
-map @ident_map {
-    @basic_type value ;
-    insert insertIdent error message "%K is duplicated in %L";
-    search searchIdent error message "Identifier %K is not defined" ;
-}
-
 abstract class @oil_obj {
     @lstring description ;
 	method get_description !@lstring desc :
 		desc := description ;
 	end method ;
-}
-
-#
-# Map to store string constants used
-# for code generation
-#
-map @prefix_map {
-    @string prefix ;
-    @string tag_to_rep ;
-    insert insert_prefix error message "prefix %K duplicated %L" ;
-    search prefix error message "prefix %K is not defined" ;
 }
 
 #
@@ -211,13 +179,6 @@ list @events {
     @lstring event_name ;
 }
 
-map @stringset_map {
-    @stringset ids ;
-    insert add error message "Key %K is already used there";
-    search get error message "Key %K is not there" ;
-    remove delete error message "Key %K cannot be deleted" ;
-}
-
 #
 # Alarm classes
 #
@@ -328,14 +289,227 @@ map @counter_map {
 # Message classes
 #
 
-abstract class @mess_prop_obj {}
-abstract class @filter_prop_obj {}
+abstract class @base_mess extends @oil_obj {
+    @action_obj notification ;
+    @action_obj notificationerror ;
+    @ident_map other_fields;
+}
+
+abstract class @mess_prop_obj {
+    abstract method s_mess !@lstring sd ;
+    abstract method generate
+        ?@prefix_map unused p
+        ?@lstring unused name 
+        ?@base_mess unused mess
+        ?@ident_list_map unused dests
+        !@string        h_res
+        !@string        i_res ;
+}
+
+abstract class @filter_prop_obj {
+    abstract method generate
+        ?@lstring name
+        !@string  res ;
+}
+
+class @void_filter extends @filter_prop_obj {
+    override method generate
+        ?@lstring unused name
+        !@string  res :
+
+        res := "" ;
+    end method ;
+}
+
+class @always_filter extends @filter_prop_obj {
+    override method generate
+        ?@lstring unused name
+        !@string  res :
+
+        res := "" ;
+    end method ;
+}
+
+class @never_filter extends @filter_prop_obj {
+    override method generate
+        ?@lstring unused name
+        !@string  res :
+
+        res := "" ;
+    end method ;
+}
+
+class @makednewequalsx_filter extends @filter_prop_obj {
+    @luint64 mask ;
+    @luint64 x ;
+    override method generate
+        ?@lstring unused name
+        !@string  res :
+
+        res := "" ;
+    end method ;
+
+}
+
+class @makednewdiffersx_filter extends @filter_prop_obj {
+    @luint64 mask ;
+    @luint64 x ;
+    override method generate
+        ?@lstring unused name
+        !@string  res :
+
+        res := "" ;
+    end method ;
+
+}
+
+class @newisequal_filter extends @filter_prop_obj {
+    override method generate
+        ?@lstring unused name
+        !@string  res :
+
+        res := "" ;
+    end method ;
+}
+
+class @newisdifferent_filter extends @filter_prop_obj {
+    override method generate
+        ?@lstring unused name
+        !@string  res :
+
+        res := "" ;
+    end method ;
+}
+
+class @makednewequalsmaskedold_filter extends @filter_prop_obj {
+    @luint64 mask ;
+    override method generate
+        ?@lstring unused name
+        !@string  res :
+
+        res := "" ;
+    end method ;
+}
+
+class @makednewdiffersmaskedold_filter extends @filter_prop_obj {
+    @luint64 mask ;
+    override method generate
+        ?@lstring unused name
+        !@string  res :
+
+        res := "" ;
+    end method ;
+}
+
+class @newiswithin extends @filter_prop_obj {
+    @luint64 min ;
+    @luint64 max ;
+    override method generate
+        ?@lstring unused name
+        !@string  res :
+
+        res := "" ;
+    end method ;
+}
+
+class @newisoutside extends @filter_prop_obj {
+    @luint64 min ;
+    @luint64 max ;
+    override method generate
+        ?@lstring unused name
+        !@string  res :
+
+        res := "" ;
+    end method ;
+}
+
+class @newisgreater_filter extends @filter_prop_obj {
+    override method generate
+        ?@lstring unused name
+        !@string  res :
+
+        res := "" ;
+    end method ;
+}
+
+class @newislessorequal_filter extends @filter_prop_obj {
+    override method generate
+        ?@lstring unused name
+        !@string  res :
+
+        res := "" ;
+    end method ;
+}
+
+class @newisless_filter extends @filter_prop_obj {
+    override method generate
+        ?@lstring unused name
+        !@string  res :
+
+        res := "" ;
+    end method ;
+}
+
+class @newisgreaterorequal_filter extends @filter_prop_obj {
+    override method generate
+        ?@lstring unused name
+        !@string  res :
+
+        res := "" ;
+    end method ;
+}
+
+class @oneeveryn_filter extends @filter_prop_obj {
+    @luint64 period ;
+    @luint64 offset ;
+    override method generate
+        ?@lstring unused name
+        !@string  res :
+
+        res := "" ;
+    end method ;
+}
+
 abstract class @link_obj {}
 
-class @void_mess_prop extends @mess_prop_obj {}
+class @void_mess_prop extends @mess_prop_obj {
+    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+    override method generate
+        ?@prefix_map     unused p
+        ?@lstring        unused name 
+        ?@base_mess      unused mess
+        ?@ident_list_map unused dests
+        !@string         h_res
+        !@string         i_res :
+
+        h_res := "" ;
+        i_res := "" ;
+    end method ;
+}
 
 class @ssi_mess_prop extends @mess_prop_obj {
     @lstring cdatatype ;
+    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+    override method generate
+        ?@prefix_map     p
+        ?@lstring        name 
+        ?@base_mess unused mess
+        ?@ident_list_map dests
+        !@string         h_res
+        !@string         i_res :
+
+        h_res := "" ;
+        template ?i_res !"message_ssi" ;
+        replace !p !"msg_name" ![name string] !?i_res ;
+        replace !p !"msg" ![name string] !?i_res ;
+        if [dests hasKey ![name string]] then
+            @ident_list d_mess_list ;
+            [dests get !name ?d_mess_list] ;
+            @lstring target ;
+            [d_mess_list first ?target] ;
+            replace !p !"target" ![target string] !?i_res ;
+        end if ;
+    end method ;
 }
 
 class @sse_mess_prop extends @mess_prop_obj {
@@ -346,6 +520,18 @@ class @sse_mess_prop extends @mess_prop_obj {
     @lstring cpuordercallout ;
     @luint64 initialvalue ;
     @lstring networkmessage ;
+    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+    override method generate
+        ?@prefix_map unused p
+        ?@lstring unused name 
+        ?@base_mess unused mess
+        ?@ident_list_map unused dests
+        !@string        h_res
+        !@string        i_res :
+
+        h_res := "" ;
+        i_res := "" ;
+    end method ;
 }
 
 class @sde_mess_prop extends @mess_prop_obj {
@@ -354,29 +540,135 @@ class @sde_mess_prop extends @mess_prop_obj {
     @lstring cpuordercallout ;
     @luint64 initialvalue ;
     @lstring networkmessage ;
+    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+    override method generate
+        ?@prefix_map unused p
+        ?@lstring unused name 
+        ?@base_mess unused mess
+        ?@ident_list_map unused dests
+        !@string        h_res
+        !@string        i_res :
+
+        h_res := "" ;
+        i_res := "" ;
+    end method ;
 }
-class @szi_mess_prop extends @mess_prop_obj {}
+
+class @szi_mess_prop extends @mess_prop_obj {
+    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+    override method generate
+        ?@prefix_map     p
+        ?@lstring        name 
+        ?@base_mess      unused mess
+        ?@ident_list_map dests
+        !@string         h_res
+        !@string         i_res :
+
+        h_res := "" ;
+        template ?i_res !"message_szi" ;
+        replace !p !"msg_name" ![name string] !?i_res ;
+        replace !p !"msg" ![name string] !?i_res ;
+        if [dests hasKey ![name string]] then
+            @ident_list d_mess_list ;
+            [dests get !name ?d_mess_list] ;
+            @lstring target ;
+            [d_mess_list first ?target] ;
+            replace !p !"target" ![target string] !?i_res ;
+        end if ;
+    end method ;
+}
 
 class @sze_mess_prop extends @mess_prop_obj {
     @lstring networkordercallout ;
     @lstring cpuordercallout ;
     @lstring networkmessage ;
+    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+    override method generate
+        ?@prefix_map unused p
+        ?@lstring unused name 
+        ?@base_mess unused mess
+        ?@ident_list_map unused dests
+        !@string        h_res
+        !@string        i_res :
+
+        h_res := "" ;
+        i_res := "" ;
+    end method ;
 }
 
 class @rzi_mess_prop extends @mess_prop_obj {
     @lstring sendingmessage ;
+    override method s_mess !@lstring sd : sd := sendingmessage ; end method ;
+    override method generate
+        ?@prefix_map     p
+        ?@lstring        name 
+        ?@base_mess unused mess
+        ?@ident_list_map dests
+        !@string         h_res
+        !@string         i_res :
+
+        h_res := "" ;
+        template ?i_res !"message_rzi" ;
+        replace !p !"msg_name" ![name string] !?i_res ;
+        replace !p !"msg" ![name string] !?i_res ;
+        # search the location of this receiving message in the dests
+        @string next_mo ;
+        @ident_list dest_list;
+        @bool notfound := true ;
+        @bool nextone := false ;
+        [dests get !sendingmessage ?dest_list] ;
+        message "On y est\n" ;
+        foreach dest_list (@lstring obj) while notfound :
+            message [obj string]."\n" ;
+            if nextone then
+                replace !p !"target" ![obj string] !?i_res ;
+                notfound := false ;
+            end if ;
+            if [obj string] == [name string] then
+                nextone := true ;
+            end if ; 
+        end foreach ;
+        if notfound then
+            i_res := [i_res stringByReplacingStringByString !"$TARGET$" !"NULL"] ;
+        end if ;
+    end method ;
 }
 
 class @rze_mess_prop extends @mess_prop_obj {
     @lstring networkordercallout ;
     @lstring cpuordercallout ;
     @lstring networkmessage ;
+    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+    override method generate
+        ?@prefix_map unused p
+        ?@lstring unused name 
+        ?@base_mess unused mess
+        ?@ident_list_map unused dests
+        !@string        h_res
+        !@string        i_res :
+
+        h_res := "" ;
+        i_res := "" ;
+    end method ;
 }
 
 class @rui_mess_prop extends @mess_prop_obj {
     @lstring sendingmessage ;
     @filter_prop_obj filter ;
     @luint64 initialvalue ;
+    override method s_mess !@lstring sd : sd := sendingmessage ; end method ;
+    override method generate
+        ?@prefix_map unused p
+        ?@lstring unused name 
+        ?@base_mess unused mess
+        ?@ident_list_map unused dests
+        !@string        h_res
+        !@string        i_res :
+
+        h_res := "" ;
+        i_res := "" ;
+        
+    end method ;
 }
 
 class @rqi_mess_prop extends @mess_prop_obj {
@@ -384,6 +676,18 @@ class @rqi_mess_prop extends @mess_prop_obj {
     @filter_prop_obj filter ;
     @luint64 initialvalue ;
     @luint64 queuesize ;
+    override method s_mess !@lstring sd : sd := sendingmessage ; end method ;
+    override method generate
+        ?@prefix_map unused p
+        ?@lstring unused name 
+        ?@base_mess unused mess
+        ?@ident_list_map unused dests
+        !@string        h_res
+        !@string        i_res :
+
+        h_res := "" ;
+        i_res := "" ;
+    end method ;
 }
 
 class @rue_mess_prop extends @mess_prop_obj {
@@ -391,6 +695,18 @@ class @rue_mess_prop extends @mess_prop_obj {
     @filter_prop_obj filter ;
     @link_obj link ;
     @luint64 initialvalue ;
+    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+    override method generate
+        ?@prefix_map unused p
+        ?@lstring unused name 
+        ?@base_mess unused mess
+        ?@ident_list_map unused dests
+        !@string        h_res
+        !@string        i_res :
+
+        h_res := "" ;
+        i_res := "" ;
+    end method ;
 }
 
 class @rqe_mess_prop extends @mess_prop_obj {
@@ -399,52 +715,52 @@ class @rqe_mess_prop extends @mess_prop_obj {
     @filter_prop_obj filter ;
     @link_obj link ;
     @luint64 initialvalue ;
+    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+    override method generate
+        ?@prefix_map unused p
+        ?@lstring unused name 
+        ?@base_mess unused mess
+        ?@ident_list_map unused dests
+        !@string        h_res
+        !@string        i_res :
+
+        h_res := "" ;
+        i_res := "" ;
+    end method ;
 }
 
 class @rde_mess_prop extends @mess_prop_obj {
     @link_obj link ;
     @luint64 initialvalue ;
+    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+    override method generate
+        ?@prefix_map unused p
+        ?@lstring unused name 
+        ?@base_mess unused mess
+        ?@ident_list_map unused dests
+        !@string        h_res
+        !@string        i_res :
+
+        h_res := "" ;
+        i_res := "" ;
+    end method ;
 }
 
 class @rzs_mess_prop extends @mess_prop_obj {
     @lstring cdatatype ;
     @luint64 initialvalue ;
-}
+    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+    override method generate
+        ?@prefix_map unused p
+        ?@lstring unused name 
+        ?@base_mess unused mess
+        ?@ident_list_map unused dests
+        !@string        h_res
+        !@string        i_res :
 
-class @void_filter extends @filter_prop_obj {}
-class @always_filter extends @filter_prop_obj {}
-class @never_filter extends @filter_prop_obj {}
-class @makednewequalsx_filter extends @filter_prop_obj {
-    @luint64 mask ;
-    @luint64 x ;
-}
-class @makednewdiffersx_filter extends @filter_prop_obj {
-    @luint64 mask ;
-    @luint64 x ;
-}
-class @newisequal_filter extends @filter_prop_obj {}
-class @newisdifferent_filter extends @filter_prop_obj {}
-class @makednewequalsmaskedold_filter extends @filter_prop_obj {
-    @luint64 mask ;
-}
-class @makednewdiffersmaskedold_filter extends @filter_prop_obj {
-    @luint64 mask ;
-}
-class @newiswithin extends @filter_prop_obj {
-    @luint64 min ;
-    @luint64 max ;
-}
-class @newisoutside extends @filter_prop_obj {
-    @luint64 min ;
-    @luint64 max ;
-}
-class @newisgreater_filter extends @filter_prop_obj {}
-class @newislessorequal_filter extends @filter_prop_obj {}
-class @newisless_filter extends @filter_prop_obj {}
-class @newisgreaterorequal_filter extends @filter_prop_obj {}
-class @oneeveryn_filter extends @filter_prop_obj {
-    @luint64 period ;
-    @luint64 offset ;
+        h_res := "" ;
+        i_res := "" ;
+    end method ;
 }
 
 #
@@ -464,11 +780,8 @@ class @nmcallback_action extends @action_obj {
 }
 
 
-class @message_obj extends @oil_obj {
+class @message_obj extends @base_mess {
     @mess_prop_obj messageproperty ;
-    @action_obj notification ;
-    @action_obj notificationerror ;
-    @ident_map other_fields;
 }
 
 map @message_map {

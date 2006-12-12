@@ -203,7 +203,7 @@ rule <mess>
         end extract ;
     end extract ;
 
-    mess := [@message_obj new !description !mess_prop !notif !notif_error !others] ;
+    mess := [@message_obj new !description !notif !notif_error !others !mess_prop] ;
 
     [!?messages insert_message !message_name !mess] ;
 
