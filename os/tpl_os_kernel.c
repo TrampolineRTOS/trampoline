@@ -256,11 +256,15 @@ void tpl_init_exec_object(tpl_exec_common *exec_obj)
 /*
  * OS initialization
  */
+void tpl_insert_alarm(tpl_alarm *alarm);
 void tpl_init_os(void)
 {
-#ifndef NO_TASK
-
     int         i;
+#ifndef NO_ALARM
+    tpl_alarm    *alarm;
+#endif
+
+#ifndef NO_TASK
     tpl_task    *task;
     
     /*  Look for autostart tasks    */
@@ -277,8 +281,19 @@ void tpl_init_os(void)
             /*  Put the task in the ready list  */
             tpl_put_exec_object(&(task->exec_desc), NEWLY_ACTIVATED_EXEC_OBJ);
         }
-    }
+    }  
+#endif
+#ifndef NO_ALARM
+ 
+    /*  Look for autostart tasks    */
         
+    for (i = 0; i < ALARM_COUNT; i++) {
+        alarm = tpl_alarm_table[i];
+        if (alarm->state == ALARM_AUTOSTART) {
+			tpl_insert_alarm(alarm);
+        }
+    }  
+	
 #endif
 }
 
