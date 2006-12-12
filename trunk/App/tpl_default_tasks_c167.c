@@ -10,6 +10,7 @@ sbit LED1=P7^1;
 
 void InitApp(void)
 {
+	DP7 |= 0x0F;
 }
 
 TASK(tick)
@@ -17,11 +18,3 @@ TASK(tick)
 	LED = !LED;
     TerminateTask();
 }
-
-void tpl_init_tick_timer();
-TASK(init)
-{
-	tpl_init_tick_timer();
-	TerminateTask();
-}
-

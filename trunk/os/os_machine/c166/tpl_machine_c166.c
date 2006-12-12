@@ -16,9 +16,9 @@
  */
 
 #include "tpl_machine.h"
-#include "tpl_os_application_def.h"
+#include "tpl_os_application_def.h"   /* NO_ALARM */
 #include "tpl_os_generated_configuration.h"	   /* TASK_COUNT and ISR_COUNT*/
-#include "tpl_os_definitions.h" /* IS_ROUTINE */
+#include "tpl_os_definitions.h" /* IS_ROUTINE  */
 #include <C167CS.H>	/*TODO: update with a more generic standard include file.*/
 #include <stdio.h>
 
@@ -376,8 +376,11 @@ void tpl_release_task_lock(void)
 /*
  * tpl_init_machine 
  */
+void tpl_init_tick_timer();
 void tpl_init_machine(void)
 {
-
+	#ifndef NO_ALARM
+		tpl_init_tick_timer();
+	#endif
 }
 
