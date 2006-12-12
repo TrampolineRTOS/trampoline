@@ -49,6 +49,7 @@ CPU default {
         USRSTACKSIZE = 40 ;
         SYSSTACKSIZE = 40 ;
         PRIORITY = 40 ;
+		TRAP = 32 ;
     } ;
     
     RESOURCE resource1 {
@@ -117,4 +118,21 @@ CPU default {
             CDATATYPE = "unsigned char" ;
         } ;
     } ;
+	
+	MESSAGE mr {
+	    MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+		    SENDINGMESSAGE = ms ;
+        } ;
+	} ;
+	
+	MESSAGE zms {
+	    MESSAGEPROPERTY = SEND_ZERO_INTERNAL ;
+	} ;
+
+	MESSAGE zmr {
+	    MESSAGEPROPERTY = RECEIVE_ZERO_INTERNAL {
+		    SENDINGMESSAGE = zms ;
+		} ;
+	} ;
+
 } ;

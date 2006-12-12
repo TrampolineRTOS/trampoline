@@ -1,7 +1,7 @@
 semantics goil_routines :
 
 import option goil_options in "goil_options.ggs" ;
-import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
+import semantics goil_basic_types in "goil_basic_types.ggs" ;
 
 routine target !@string target_platform :
     target_platform := [option goil_options.target_platform] ;

@@ -2,6 +2,7 @@ compile "goil_lexique.ggs" ;
 compile "goil_options.ggs" ;
 compile "goil_syntax.ggs" ;
 compile "goil_semantics.ggs" ;
+compile "goil_basic_types.ggs" ;
 compile "goil_semantic_types.ggs" ;
 compile "goil_semantic_verification.ggs" ;
 compile "goil_routines.ggs" ;

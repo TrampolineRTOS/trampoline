@@ -6,8 +6,8 @@ import semantics goil_targets in "goil_targets.ggs" ;
 
 routine init_msg_prefixes ?!@prefix_map p :
     [!?p insert_prefix ![@lstring new !"msg_name" !here] !"" !"$MESSAGE_NAME$"] ;
-    [!?p insert_prefix ![@lstring new !"msg" !here] !"message_object_of" !"$MESSAGE$"] ;
-    [!?p insert_prefix ![@lstring new !"target" !here] !"message_object_of" !"$TARGET$"] ;
+    [!?p insert_prefix ![@lstring new !"msg" !here] !"message_object_of_" !"$MESSAGE$"] ;
+    [!?p insert_prefix ![@lstring new !"target" !here] !"&message_object_of_" !"$TARGET$"] ;
 end routine ;
 
 routine generate_ssi
@@ -44,39 +44,40 @@ routine generate_messages
     # first, build a map of destination message list keyed by
     # source message list.
     #
-#    @message_map mm := messages ;
-#   foreach mm (@lstring name @message_obj mess) :
-#        @mess_prop_obj mp := [mess messageproperty] ;
-#        @string src := "" ;
-#        extract mp :
-#        when @rzi_mess_prop (@lstring sender) -> src := [sender string] ;
-#        when @rui_mess_prop (@lstring sender ...) -> src := [sender string] ;
-#        when @rqi_mess_prop (@lstring sender ...) -> src := [sender string] ;
-#        else end extract ;
-#
-#        if not [dests hasKey !src] then
-#            @stringset_map dests [emptyMap] ;
-#            foreach mm (@lstring same_name @message_obj same_mess) :
-#                @mess_prop_obj same_mp := [same_mess messageproperty] ;
-#                @string same_src := "" ;
-#                extract mp :
-#                when @rzi_mess_prop (@lstring sender) -> same_src := [sender string] ;
-#                when @rui_mess_prop (@lstring sender ...) -> same_src := [sender string] ;
-#                when @rqi_mess_prop (@lstring sender ...) -> same_src := [sender string] ;
-#                else end extract ;
-#                if src == same_src then
-#                    
-#                end if ;
-#            end foreach ;
-#        end if ;
-#    end foreach ;
+    @message_map mm := messages ;
+    @ident_list_map dests [emptyMap] ;
+    
+    foreach mm (@lstring name @message_obj mess) :
+        @mess_prop_obj mp := [mess messageproperty] ;
+        @lstring src ;
+        [mp s_mess ?src] ;
+
+        if ([src string] != "") & (not [dests hasKey ![src string]]) then
+           @ident_list dest_list [emptyList] ;
+           foreach mm (@lstring same_name @message_obj same_mess) :
+                @mess_prop_obj same_mp := [same_mess messageproperty] ;
+                @lstring same_src ;
+                [same_mp s_mess ?same_src] ;
+                if [same_src string] == [src string] then
+                    dest_list += !same_name;
+                end if ;
+            end foreach ;
+            [!?dests add !src !dest_list] ;
+        end if ;
+    end foreach ;
+
+    foreach dests (@lstring src @ident_list d_mess) :
+        message [src string].": " ;
+        foreach d_mess (@lstring dst) :
+            message "[".[dst string]."] ";
+        end foreach ;
+        message "\n" ;
+    end foreach ;
 
     foreach messages (@lstring name @message_obj mess) :
        @mess_prop_obj mp := [mess messageproperty] ;
-       extract mp :
-       when @ssi_mess_prop (...) -> generate_ssi !name !mess !p ?h_res ?i_res ;
-       else
-       end extract ;
+       [mp generate !p !name !mess !dests ?h_res ?i_res] ;
+       message i_res ;
     end foreach ;
 
 end routine ;

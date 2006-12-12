@@ -1,5 +1,5 @@
 /*
- * Static internal sending message object of message $MESSAGE_NAME$
+ * Static internal sending message object $MESSAGE_NAME$
  */
 
 tpl_internal_sending_mo $MESSAGE$ = {
