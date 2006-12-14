@@ -140,19 +140,19 @@ rule <mess>
             when @void_mess_prop () ->
             else error here : "MESSAGEPROPERTY attribute already defined for message ".[message_name string] ;
         end extract ;
-        $MESSAGEPROPERTY$ ;   $=$ ; <message_property> !?mess_prop ;
+        $MESSAGEPROPERTY$ ;   $=$ ; <message_property> !?mess_prop ; $;$ ;
     while
         extract notif :
             when @void_action () ->
             else error here : "NOTIFICATION attribute already defined for message ".[message_name string] ;
         end extract ;
-        $NOTIFICATION$ ;      $=$ ; <notification_property> ?notif ;
+        $NOTIFICATION$ ;      $=$ ; <notification_property> ?notif ; $;$ ;
     while
         extract notif_error :
             when @void_action () ->
             else error here : "NOTIFICATIONERROR attribute already defined for message ".[message_name string] ;
         end extract ;
-        $NOTIFICATIONERROR$ ; $=$ ; <notification_property> ?notif_error ;
+        $NOTIFICATIONERROR$ ; $=$ ; <notification_property> ?notif_error ; $;$ ;
     while
         <free_field> !?others ;
     end repeat ;
@@ -162,7 +162,7 @@ rule <mess>
          error here : "MESSAGEPROPERTY attribute missing for message ".[message_name string] ;
     else
     end extract ;
-    $;$ ;
+
     $}$ ;
     <description> ?description ;
     $;$ ;
