@@ -133,6 +133,12 @@ CPU default {
 	    MESSAGEPROPERTY = RECEIVE_ZERO_INTERNAL {
 		    SENDINGMESSAGE = zms ;
 		} ;
+        NOTIFICATION = ACTIVATETASK {
+            TASK = t2 ;
+        } ;
+        NOTIFICATIONERROR = ACTIVATETASK {
+            TASK = t2 ;
+        } ;
 	} ;
 
 } ;

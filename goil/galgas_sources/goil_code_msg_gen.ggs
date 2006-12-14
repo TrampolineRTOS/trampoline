@@ -4,41 +4,17 @@ import semantics goil_routines in "goil_routines.ggs" ;
 import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
 import semantics goil_targets in "goil_targets.ggs" ;
 
-routine init_msg_prefixes ?!@prefix_map p :
-    [!?p insert_prefix ![@lstring new !"msg_name" !here] !"" !"$MESSAGE_NAME$"] ;
-    [!?p insert_prefix ![@lstring new !"msg" !here] !"message_object_of_" !"$MESSAGE$"] ;
-    [!?p insert_prefix ![@lstring new !"target" !here] !"&message_object_of_" !"$TARGET$"] ;
-end routine ;
-
-routine generate_ssi
-    ?@lstring name
-    ?@message_obj unused mess
-    ?@prefix_map p
-    !@string h_res
-    !@string i_res :
-
-    @string tpl_msg ;
-    template ?tpl_msg !"message_ssi" ;
-
-    h_res := "" ;
-    i_res := tpl_msg ;
-
-    replace !p !"msg_name" ![name string] !?i_res ;
-end routine ;
-
 #--------------------------------------------------------------------
 # Messages generation
 #--------------------------------------------------------------------
 routine generate_messages
-    ?@message_map messages
+    ?@message_map    messages
+    ?@prefix_map     p
     ?!@string unused header
     ?!@string unused implementation :
 
     @string h_res := "" ;
     @string i_res := "" ;
-    @prefix_map p [emptyMap] ;
-
-    init_msg_prefixes !?p ;
 
     #
     # first, build a map of destination message list keyed by

@@ -10,61 +10,78 @@ import semantics goil_code_msg_gen in "goil_code_msg_gen.ggs" ;
 # Initialisation of token found in templates
 #--------------------------------------------------------------------
 routine init_prefixes ?!@prefix_map prefix :
-    [!?prefix insert_prefix ![@lstring new !"task" !here]
+    [!?prefix add ![@lstring new !"task" !here]
               !"descriptor_of_task_" !"$TASK$"] ;
-    [!?prefix insert_prefix ![@lstring new !"task_name" !here]
+    [!?prefix add ![@lstring new !"task_name" !here]
               !"" !"$EXEC_NAME$"] ;
-    [!?prefix insert_prefix ![@lstring new !"task_static" !here]
+    [!?prefix add ![@lstring new !"task_static" !here]
               !"static_descriptor_of_task_" !"$EXEC_STATIC$"] ;
 
-    [!?prefix insert_prefix ![@lstring new !"isr" !here]
+    [!?prefix add ![@lstring new !"isr" !here]
               !"descriptor_of_isr_" !"$ISR$"] ;
-    [!?prefix insert_prefix ![@lstring new !"isr_name" !here]
+    [!?prefix add ![@lstring new !"isr_name" !here]
               !"" !"$EXEC_NAME$"] ;
-    [!?prefix insert_prefix ![@lstring new !"isr_static" !here]
+    [!?prefix add ![@lstring new !"isr_static" !here]
               !"static_descriptor_of_isr_" !"$EXEC_STATIC$"] ;
-    [!?prefix insert_prefix ![@lstring new !"isr_helper" !here]
+    [!?prefix add ![@lstring new !"isr_helper" !here]
               !"static_helper_of_isr_" !"$ISR_HELPER$"] ;
 
-    [!?prefix insert_prefix ![@lstring new !"alarm" !here]
+    [!?prefix add ![@lstring new !"alarm" !here]
               !"descriptor_of_alarm_" !"$ALARM$"] ;
-    [!?prefix insert_prefix ![@lstring new !"alarm_name" !here]
+    [!?prefix add ![@lstring new !"alarm_name" !here]
               !"" !"$ALARM_NAME$"] ;
 
-    [!?prefix insert_prefix ![@lstring new !"counter" !here]
+    [!?prefix add ![@lstring new !"counter" !here]
               !"descriptor_of_counter_" !"$COUNTER$"] ;
-    [!?prefix insert_prefix ![@lstring new !"counter_name" !here]
+    [!?prefix add ![@lstring new !"counter_name" !here]
               !"" !"$COUNTER_NAME$"] ;
 
-    [!?prefix insert_prefix ![@lstring new !"event" !here]
+    [!?prefix add ![@lstring new !"event" !here]
               !"mask_of_" !"$EVENT$"] ;
-    [!?prefix insert_prefix ![@lstring new !"event_name" !here]
+    [!?prefix add ![@lstring new !"event_name" !here]
               !"" !"$EVENT_NAME$"] ;
-    [!?prefix insert_prefix ![@lstring new !"event_mask" !here]
+    [!?prefix add ![@lstring new !"event_mask" !here]
               !"" !"$EVENT_MASK$"] ;
 
-    [!?prefix insert_prefix ![@lstring new !"resource" !here]
+    [!?prefix add ![@lstring new !"resource" !here]
               !"descriptor_of_resource_" !"$RESOURCE$"] ;
-    [!?prefix insert_prefix ![@lstring new !"resource_name" !here]
+    [!?prefix add ![@lstring new !"resource_name" !here]
               !"" !"$RESOURCE_NAME$"] ;
 
-    [!?prefix insert_prefix ![@lstring new !"callback" !here]
+    [!?prefix add ![@lstring new !"callback" !here]
               !"alarm_callback_" !"$ALARM_CALLBACK$"] ;
-    [!?prefix insert_prefix ![@lstring new !"task_function" !here]
+    [!?prefix add ![@lstring new !"task_function" !here]
               !"function_of_task_" !"$EXEC_FUNCTION$"] ;
-    [!?prefix insert_prefix ![@lstring new !"task_context" !here]
+    [!?prefix add ![@lstring new !"task_context" !here]
               !"CONTEXT_OF_TASK_" !"$EXEC_CONTEXT$"] ;
-    [!?prefix insert_prefix ![@lstring new !"task_stack" !here]
+    [!?prefix add ![@lstring new !"task_stack" !here]
               !"STACK_OF_TASK_" !"$EXEC_STACK$"] ;
-    [!?prefix insert_prefix ![@lstring new !"task_id" !here]
+    [!?prefix add ![@lstring new !"task_id" !here]
               !"task_id_of_" !"$TASK_ID$"] ;
-    [!?prefix insert_prefix ![@lstring new !"isr_function" !here]
+    [!?prefix add ![@lstring new !"isr_function" !here]
               !"function_of_isr_" !"$EXEC_FUNCTION$"] ;
-    [!?prefix insert_prefix ![@lstring new !"isr_context" !here]
+    [!?prefix add ![@lstring new !"isr_context" !here]
               !"CONTEXT_OF_ISR_" !"$EXEC_CONTEXT$"] ;
-    [!?prefix insert_prefix ![@lstring new !"isr_stack" !here]
+    [!?prefix add ![@lstring new !"isr_stack" !here]
               !"STACK_OF_ISR_" !"$EXEC_STACK$"] ;
     
+    [!?prefix add ![@lstring new !"msg_name" !here] !"" !"$MESSAGE_NAME$"] ;
+    [!?prefix add ![@lstring new !"msg" !here] !"message_object_of_" !"$MESSAGE$"] ;
+    [!?prefix add ![@lstring new !"target" !here] !"&message_object_of_" !"$TARGET$"] ;
+
+    [!?prefix add ![@lstring new !"notif_name" !here]
+              !"of message " !"$NOTIFICATION_NAME$"] ;
+    [!?prefix add ![@lstring new !"error_notif_name" !here]
+              !"error of message " !"$NOTIFICATION_NAME$"] ;
+    [!?prefix add ![@lstring new !"notification" !here]
+              !"notification_of_message_" !"$NOTIFICATION$"] ;
+    [!?prefix add ![@lstring new !"notif_ptr" !here]
+              !"&notification_of_message_" !"$NOTIFICATION_PTR$"] ;
+    [!?prefix add ![@lstring new !"error_notification" !here]
+              !"error_notification_of_message_" !"$NOTIFICATION$"] ;
+    [!?prefix add ![@lstring new !"error_notif_ptr" !here]
+              !"&error_notification_of_message_" !"$NOTIFICATION_PTR$"] ;
+
     init_targets_prefixes !?prefix ;
 
 end routine ;

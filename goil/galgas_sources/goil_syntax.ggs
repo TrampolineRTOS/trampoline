@@ -432,7 +432,7 @@ rule <object_definition_list> :
     generate_tasks     !tasks                   !prefix !?header !?implementation ;
     generate_isrs      !isrs                    !prefix !?header !?implementation ;
     generate_resources !resources !tasks  !isrs !prefix !?header !?implementation ;
-    generate_messages  !messages                !?header !?implementation ;
+    generate_messages  !messages                !prefix !?header !?implementation ;
 
     # write the result to files
     @string directory := [[@string stringWithSourceFilePath] stringByDeletingPathExtension];
