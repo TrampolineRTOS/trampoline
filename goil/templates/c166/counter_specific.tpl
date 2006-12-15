@@ -48,7 +48,7 @@ extern unsigned int registers_it[16];
 /* timer 6 -> trap number 38*/
 void tpl_timer6_tick(void) interrupt 38
 {
-	#pragma asm
+	__asm {
 		BCLR IEN /*disable interrupt */
 		SCXT DPP3, #3
 		NOP
@@ -59,7 +59,7 @@ void tpl_timer6_tick(void) interrupt 38
 		MOV R0,[R0] //get the previous user stack.
 		NOP
 		PUSH DPP0
-	#pragma endasm
+	}
 	
 	/* We have to call a function, because we can not use any local var here.*/
 	tpl_call_counter_tick();
@@ -68,11 +68,11 @@ void tpl_timer6_tick(void) interrupt 38
 	 * the assembly code
 	 */
 	if(registers_it[0]);
-	#pragma asm
+	__asm {
 		POP DPP0
 		POP CP
 		POP DPP3
-	#pragma endasm
+	}
 }
 
 
