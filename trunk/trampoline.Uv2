@@ -3,7 +3,7 @@
 
 Target (phyCORE), 0x0002 // Tools: '166/167'
 
-Group (Hard)
+Group (Drivers)
 Group (Trampoline)
 Group (App)
 
@@ -41,7 +41,7 @@ Options 1,0,0  // Target 'phyCORE'
  OrgReg ()
  TgStat=0
  OutDir (.\)
- OutName (tpl)
+ OutName (trampoline)
  GenApp=1
  GenLib=0
  GenHex=1
@@ -135,61 +135,5 @@ Options 1,0,0  // Target 'phyCORE'
  FLASH1 { 1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
  FLASH2 (OCDS\OCDSXC.DLL)
  FLASH3 ("" ())
-EndOpt
-
-Options 1,2,9  // File 'tpl_machine_c166.c'
- PropFld { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
- IncBld=2
- AlwaysBuild=2
- GenAsm=1
- AsmAsm=1
- PublicsOnly=2
- StopCode=11
- CustArgs ()
- LibMods ()
- Optimize=8
- SpeedSize=2
- RegColor=2
- Static=2
- WarningLev=4
- Alias=2
- Order=2
- UnsignedChar=2
- NoDppSave=2
- Float64=2
- SaveUsr=2
- Reorder=0
- cMisc (MOD167)
- Define ()
- Undefine ()
- INCC6 ()
-EndOpt
-
-Options 1,3,11  // File 'tpl_os_generated_configuration.c'
- PropFld { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
- IncBld=2
- AlwaysBuild=2
- GenAsm=1
- AsmAsm=1
- PublicsOnly=2
- StopCode=11
- CustArgs ()
- LibMods ()
- Optimize=8
- SpeedSize=2
- RegColor=2
- Static=2
- WarningLev=4
- Alias=2
- Order=2
- UnsignedChar=2
- NoDppSave=2
- Float64=2
- SaveUsr=2
- Reorder=0
- cMisc (MOD167)
- Define ()
- Undefine ()
- INCC6 ()
 EndOpt
 

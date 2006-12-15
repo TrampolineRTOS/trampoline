@@ -1,4 +1,3 @@
-#pragma SRC
 /*
  * Trampoline OS
  *
@@ -66,119 +65,119 @@ void tpl_switch_context(tpl_context *old_context, tpl_context *new_context)
 	 * R2 stores intermediate values (IP, stack)
 	 * R3 stores the old CP 
 	 */
-	#pragma asm
+	__asm {
 	PUSH CP /*store the current register bank */
-	MOV CP, #registers_it
+	MOVW CP, #registers_it
 	NOP /* pipeline effect */
 	POP R3 /* the old CP */
 	/* store DPP3 on R1 */
-	MOV R1, DPP3
-	MOV DPP3, #3
+	MOVW R1, DPP3
+	MOVW DPP3, #3
 	NOP
-	MOV R0, [R3] //R0 in user stack.
-	MOV R8, [R3+#16]
-	MOV R9, [R3+#18]
+	MOVW R0, [R3] //R0 in user stack.
+	MOVW R8, [R3+#16]
+	MOVW R9, [R3+#18]
 	#ifdef LARGE_POINTER 
 		/* pointer does not fill in only one 16 bit register*/
-		MOV R10,[R3+#20] 
-		MOV R11,[R3+#22]
+		MOVW R10,[R3+#20] 
+		MOVW R11,[R3+#22]
 	#endif
 	/*ok, now, all the other registers may be changed. */
 	/* if old_context */
-	#pragma endasm
+	}
 	if(old_context) /*don't store context if pointer is NULL. */
 	{
-		#pragma asm
+		__asm {
 			/* R5 get the context */
-			MOV R5,[R8]
+			MOVW R5,[R8]
 		
-			MOV [R5],MDC	/* store mdc  */
+			MOVW [R5],MDC	/* store mdc  */
 			ADD R5,#2	
-			MOV [R5],DPP0	/* store dpp0 */
+			MOVW [R5],DPP0	/* store dpp0 */
 			ADD R5,#2
-			MOV [R5],DPP1	/* store dpp1 */
+			MOVW [R5],DPP1	/* store dpp1 */
 			ADD R5,#2
-			MOV [R5],DPP2	/* store dpp2 */
+			MOVW [R5],DPP2	/* store dpp2 */
 			ADD R5,#2
-			MOV [R5],R1	/* store dpp3 */
+			MOVW [R5],R1	/* store dpp3 */
 			ADD R5,#2
-			MOV [R5],MDH	/* store mdh */
+			MOVW [R5],MDH	/* store mdh */
 			ADD R5,#2
-			MOV [R5],MDL	/* store mdl */
+			MOVW [R5],MDL	/* store mdl */
 			POP R2		/*R2 get return ip*/
 			ADD R5,#2
-			MOV [R5],SP	/* store sp */
+			MOVW [R5],SP	/* store sp */
 			ADD R5,#2
-			MOV [R5],STKOV	/* store stkov */
+			MOVW [R5],STKOV	/* store stkov */
 			ADD R5,#2
-			MOV [R5],STKUN	/* store stkun */
+			MOVW [R5],STKUN	/* store stkun */
 			ADD R5,#2
-			MOV [R5],PSW	/* store psw */
+			MOVW [R5],PSW	/* store psw */
 			ADD R5,#2
-			MOV [R5],CSP	/* store csp */
+			MOVW [R5],CSP	/* store csp */
 			ADD R5,#2
-			MOV [R5],R2	/* store ip */
+			MOVW [R5],R2	/* store ip */
 			ADD R5,#2
-			MOV [R5],R3	/* store cp */
+			MOVW [R5],R3	/* store cp */
 			ADD R5,#2
-			MOV [R5],R0	/* store user stack */
-		#pragma endasm
+			MOVW [R5],R0	/* store user stack */
+		}
 	}
 	/* then set the new context */
-	#pragma asm
-		MOV R5, [R9] /*the new context */
-		MOV MDC, [R5]	/* restore mdc */
+	__asm {
+		MOVW R5, [R9] /*the new context */
+		MOVW MDC, [R5]	/* restore mdc */
 		ADD R5,#2
-		MOV DPP0, [R5]	/* restore dpp0 */
+		MOVW DPP0, [R5]	/* restore dpp0 */
 		ADD R5,#2           /* no dpp use allowed after writing in DPPx, pipeline effect */
-		MOV DPP1, [R5]	/* restore dpp1 */
+		MOVW DPP1, [R5]	/* restore dpp1 */
 		ADD R5,#2
-		MOV DPP2, [R5]	/* restore dpp2 */
+		MOVW DPP2, [R5]	/* restore dpp2 */
 		ADD R5,#2
-		MOV R1, [R5]	/* get the dpp3 to restore at the end.*/
+		MOVW R1, [R5]	/* get the dpp3 to restore at the end.*/
 		ADD R5,#2
-		MOV MDH, [R5]	/* restore mdh */
+		MOVW MDH, [R5]	/* restore mdh */
 		ADD R5,#2
-		MOV MDL, [R5]	/* restore mdl */
+		MOVW MDL, [R5]	/* restore mdl */
 		/* no exception after a stkov or stkun change.
 		 * only after a sp change -> not true with the monitor.
  		 */
 
-		MOV R2,#0xf200   /*low limit of iram -> stkov. */
-        	MOV STKOV,R2	
-	        MOV R2,#0xfdfe   /*high limit of iram -> stkun */
-	        MOV STKUN,R2
+		MOVW R2,#0xf200   /*low limit of iram -> stkov. */
+        	MOVW STKOV,R2	
+	        MOVW R2,#0xfdfe   /*high limit of iram -> stkun */
+	        MOVW STKUN,R2
 
 		/* then set the new sp */
 		ADD R5,#2
-		MOV SP, [R5]	/* restore sp ********* STACK CHANGE **********/
+		MOVW SP, [R5]	/* restore sp ********* STACK CHANGE **********/
 		ADD R5,#2
-		MOV STKOV, [R5]	/* restore stkov */
+		MOVW STKOV, [R5]	/* restore stkov */
 		ADD R5,#2
-		MOV STKUN, [R5]	/* restore stkun */
+		MOVW STKUN, [R5]	/* restore stkun */
 
 		/* store PSW, CSP and IP on top of the stack -> RETI*/
 		ADD R5,#2
-		MOV R2, [R5]	/* get PSW */
+		MOVW R2, [R5]	/* get PSW */
 		PUSH R2		/* store in stack */
 		ADD R5,#2
-		MOV R2, [R5]	/* get CSP */
+		MOVW R2, [R5]	/* get CSP */
 		PUSH R2		/* store in stack */
 		ADD R5,#2
-		MOV R2, [R5]	/* get IP */
+		MOVW R2, [R5]	/* get IP */
 		PUSH R2		/* store in stack */
 
 		ADD R5,#2
-		MOV R2, [R5] //R2 <- CP of the new task
+		MOVW R2, [R5] //R2 <- CP of the new task
 		ADD R5,#2
-		MOV [R2], [R5] //init R0 of the new task.
+		MOVW [R2], [R5] //init R0 of the new task.
 		PUSH R1 		/*store DPP3 on stack */
-		MOV CP, R2	/* restore cp */
+		MOVW CP, R2	/* restore cp */
 		/* Warning next instruction MUST NOT use GPRs!!! (pipeline effect) */
 		POP DPP3		/* restore DPP3 */
 		/* the next "reti" instruction will pop the IP, CSP and PSW registers */
 		RETI
-	#pragma endasm
+	}
 }
 
 void tpl_switch_context_from_it(tpl_context * old_context, tpl_context * new_context)
@@ -194,117 +193,117 @@ void tpl_switch_context_from_it(tpl_context * old_context, tpl_context * new_con
 	{
 		/* R1, R2 used to get values from the stack (see documentation). */
 		/* R5 used to get fields in the context. */
-		#pragma asm
-			MOV R5,[R8]		/* init*/
-			MOV R1,0xfe12   
+		__asm {
+			MOVW R5,[R8]		/* init*/
+			MOVW R1,0xfe12   
 
-			MOV [R5], MDC	/* store mdc  */
+			MOVW [R5], MDC	/* store mdc  */
 			
-			MOV R2, [R1+#14]
+			MOVW R2, [R1+#14]
 			ADD R5,#2
-			MOV [R5],R2		/* store dpp0 */
+			MOVW [R5],R2		/* store dpp0 */
 			
 			ADD R5,#2
-			MOV [R5],DPP1	/* store dpp1 */
+			MOVW [R5],DPP1	/* store dpp1 */
 			ADD R5,#2
-			MOV [R5],DPP2	/* store dpp2 */
+			MOVW [R5],DPP2	/* store dpp2 */
 
-			MOV R2, [R1+#18]
+			MOVW R2, [R1+#18]
 			ADD R5,#2
-			MOV [R5],R2		/* store dpp3 */
+			MOVW [R5],R2		/* store dpp3 */
 			
 			ADD R5,#2
-			MOV [R5],MDH		/* store mdh */
+			MOVW [R5],MDH		/* store mdh */
 
 			ADD R5,#2
-			MOV [R5],MDL		/* store mdl */
+			MOVW [R5],MDL		/* store mdl */
 			
-			MOV R2, R1 		 
+			MOVW R2, R1 		 
 			ADD R2, #26
 			ADD R5,#2
-			MOV [R5],R2		 /* store sp */
+			MOVW [R5],R2		 /* store sp */
 			
 			ADD R5,#2
-			MOV [R5],STKOV	/* store stkov */
+			MOVW [R5],STKOV	/* store stkov */
 			ADD R5,#2
-			MOV [R5],STKUN	/* store stkun */
+			MOVW [R5],STKUN	/* store stkun */
 
-			MOV R2, [R1+#24]
+			MOVW R2, [R1+#24]
 			ADD R5,#2
-			MOV [R5],R2		/* store psw */
+			MOVW [R5],R2		/* store psw */
 
-			MOV R2, [R1+#22]
+			MOVW R2, [R1+#22]
 			ADD R5,#2
-			MOV [R5],R2		/* store csp */
+			MOVW [R5],R2		/* store csp */
 
-			MOV R2, [R1+#20]
+			MOVW R2, [R1+#20]
 			ADD R5,#2
-			MOV [R5],R2		/* store ip */
+			MOVW [R5],R2		/* store ip */
 
-			MOV R2, [R1+#16]
+			MOVW R2, [R1+#16]
 			ADD R5,#2
-			MOV [R5],R2	/* store cp */
+			MOVW [R5],R2	/* store cp */
 		
 			ADD R5,#2
-			MOV [R5],R0	/* store user stack */
+			MOVW [R5],R0	/* store user stack */
 			
-		#pragma endasm
+		}
 	}
 	/* then set the new context */
-	#pragma asm
-		MOV R5, [R9] /*the new context */
-		MOV MDC, [R5]	/* restore mdc */
+	__asm {
+		MOVW R5, [R9] /*the new context */
+		MOVW MDC, [R5]	/* restore mdc */
 		ADD R5,#2
-		MOV DPP0, [R5]	/* restore dpp0 */
+		MOVW DPP0, [R5]	/* restore dpp0 */
 		ADD R5,#2           /* no dpp use allowed after writing in DPPx, pipeline effect */
-		MOV DPP1, [R5]	/* restore dpp1 */
+		MOVW DPP1, [R5]	/* restore dpp1 */
 		ADD R5,#2
-		MOV DPP2, [R5]	/* restore dpp2 */
+		MOVW DPP2, [R5]	/* restore dpp2 */
 		ADD R5,#2
-		MOV R1, [R5]	/* get the dpp3 to restore at the end.*/
+		MOVW R1, [R5]	/* get the dpp3 to restore at the end.*/
 		ADD R5,#2
-		MOV MDH, [R5]	/* restore mdh */
+		MOVW MDH, [R5]	/* restore mdh */
 		ADD R5,#2
-		MOV MDL, [R5]	/* restore mdl */
+		MOVW MDL, [R5]	/* restore mdl */
 		/* no exception after a stkov or stkun change.
 		 * only after a sp change -> not true with the monitor.
  		 */
 
-		MOV R2,#0xf200   /*low limit of iram -> stkov. */
-		MOV STKOV,R2	
-		MOV R2,#0xfdfe   /*high limit of iram -> stkun */
-		MOV STKUN,R2
+		MOVW R2,#0xf200   /*low limit of iram -> stkov. */
+		MOVW STKOV,R2	
+		MOVW R2,#0xfdfe   /*high limit of iram -> stkun */
+		MOVW STKUN,R2
 
 		/* then set the new sp */
 		ADD R5,#2
-		MOV SP, [R5]	/* restore sp ********* STACK CHANGE **********/
+		MOVW SP, [R5]	/* restore sp ********* STACK CHANGE **********/
 		ADD R5,#2
-		MOV STKOV, [R5]	/* restore stkov */
+		MOVW STKOV, [R5]	/* restore stkov */
 		ADD R5,#2
-		MOV STKUN, [R5]	/* restore stkun */
+		MOVW STKUN, [R5]	/* restore stkun */
 
 		/* store PSW, CSP and IP on top of the stack -> RETI*/
 		ADD R5,#2
-		MOV R2, [R5]	/* get PSW */
+		MOVW R2, [R5]	/* get PSW */
 		PUSH R2		/* store in stack */
 		ADD R5,#2
-		MOV R2, [R5]	/* get CSP */
+		MOVW R2, [R5]	/* get CSP */
 		PUSH R2		/* store in stack */
 		ADD R5,#2
-		MOV R2, [R5]	/* get IP */
+		MOVW R2, [R5]	/* get IP */
 		PUSH R2		/* store in stack */
 
 		ADD R5,#2
-		MOV R2, [R5] //R2 <- CP of the new task
+		MOVW R2, [R5] //R2 <- CP of the new task
 		ADD R5,#2
-		MOV [R2], [R5] //init R0 of the new task.
+		MOVW [R2], [R5] //init R0 of the new task.
 		PUSH R1 		/*store DPP3 on stack */
-		MOV CP, R2	/* restore cp */
+		MOVW CP, R2	/* restore cp */
 		/* Warning next instruction MUST NOT use GPRs!!! (pipeline effect) */
 		POP DPP3		/* restore DPP3 */
 		/* the next "reti" instruction will pop the IP, CSP and PSW registers */
 		RETI
-	#pragma endasm
+	}
 }
 #endif
 
