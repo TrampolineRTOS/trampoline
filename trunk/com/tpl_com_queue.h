@@ -65,14 +65,15 @@ struct TPL_QUEUE_STATIC {
     /*! max_size of the queue (number of tpl_com_data elements)         */
     tpl_queue_size          max_size;
     /*! size of an element of the queue                                 */
-    tpl_queue_size          element_size;
+    tpl_message_size        element_size;
     /*! pointer to the beginning of the buffer                          */
     tpl_com_data            *buffer;
 };
 
 /*!
- *  Queue datatype
+ *  Queue datatypes
  */
+typedef struct TPL_QUEUE_DYNAMIC tpl_queue_dyn;
 typedef struct TPL_QUEUE_STATIC tpl_queue;
 
 /*

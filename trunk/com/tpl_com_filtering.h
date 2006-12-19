@@ -23,76 +23,92 @@
 /*
  * Forward declarations
  */
-union TPL_FILTER_PARAM;
-
+struct TPL_FILTER_DESC;
 
 /*
  * filtering function pointer
  */
 typedef bool (*tpl_filter_func)(
-    union TPL_FILTER_PARAM *,
+    struct TPL_FILTER_DESC *,
     tpl_com_value,
     tpl_com_value
 );
 
+/*!
+ *  \struct TPL_FILTER_DESC
+ * 
+ *  \brief  Base structure of filter descriptor
+ *
+ *  This structure contains the pointer to the filter function only. It is
+ *  the common part for the filter descriptor structures and is extended to
+ *  add the filter parameters.
+ */
+struct TPL_FILTER_DESC {
+    /*  filtering function pointer  */
+    tpl_filter_func filter ;
+};
+
+typedef struct TPL_FILTER_DESC tpl_filter_desc ;
+typedef tpl_filter_desc tpl_noparam_filter_desc ;
+
 /*
  * Mask used for filtering
  */
-struct TPL_MASK_FILTER_PARAM {
-    /*  mask                */
-    tpl_com_value   mask;
-    /*  comparison value    */
-    tpl_com_value   x;
+struct TPL_MASK_FILTER_DESC {
+    /*  base filter desc                */
+    tpl_filter_desc     b_desc ;
+    /*  mask                            */
+    tpl_com_value       mask;
 };
 
-typedef struct TPL_MASK_FILTER_PARAM tpl_mask;
+typedef struct TPL_MASK_FILTER_DESC tpl_mask_filter_desc;
+
+/*
+ * Mask and comparison value used for filtering
+ */
+struct TPL_MASK_X_FILTER_DESC {
+    /*  base filter desc                */
+    tpl_filter_desc     b_desc ;
+    /*  mask                            */
+    tpl_com_value       mask;
+    /*  comparison value                */
+    tpl_com_value       x;
+};
+
+typedef struct TPL_MASK_X_FILTER_DESC tpl_mask_x_filter_desc;
 
 /*
  * Interval used for filtering
  */
-struct TPL_INTERVAL_FILTER_PARAM {
-    tpl_com_value   min;
-    tpl_com_value   max;
+struct TPL_INTERVAL_FILTER_DESC {
+    /*  base filter desc                */
+    tpl_filter_desc     b_desc ;
+    /*  minimum value of the interval   */
+    tpl_com_value       min;
+    /*  maximum value of the interval   */
+    tpl_com_value       max;
 };
 
-typedef struct TPL_INTERVAL_FILTER_PARAM tpl_interval;
+typedef struct TPL_INTERVAL_FILTER_DESC tpl_interval_filter_desc;
 
 /*
  * Occurence counting used for filtering
  */
-struct TPL_OCCURENCE_FILTER_PARAM {
+struct TPL_OCCURENCE_FILTER_DESC {
+    /*  base filter desc                        */
+    tpl_filter_desc     b_desc ;
     /*  period of the filter                    */
-    tpl_com_count   period;
+    tpl_com_count       period;
     /*  pointer to the occurence of the data    */
-    tpl_com_count   *occurence;
+    tpl_com_count       *occurence;
 };
 
-typedef struct TPL_OCCURENCE_FILTER_PARAM tpl_occurence;
+typedef struct TPL_OCCURENCE_FILTER_DESC tpl_occurence_filter_desc;
 
-/*
- * Filter params union
- */
-union TPL_FILTER_PARAM {
-    /*  mask                */
-    tpl_mask        mask;
-    /*  interval            */
-    tpl_interval    interval;
-    /*  every               */
-    tpl_occurence   every;
-};
-
-typedef union TPL_FILTER_PARAM tpl_filter_param;
-
-/*
- * Filter descriptor
- */
-struct TPL_FILTER_DESC {
-    /*  pointer to the filter function  */
-    tpl_filter_func     filter;
-    /*  parameters of the filter        */
-    tpl_filter_param    param;
-};
-
-typedef struct TPL_FILTER_DESC tpl_filter_desc;
+bool tpl_filtering(
+    unsigned char *,
+    unsigned char *,
+    tpl_message_size,
+    tpl_filter_desc *);
 
 #endif

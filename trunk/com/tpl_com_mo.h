@@ -2,7 +2,7 @@
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
- * Trampoline est protÃ©gÃ© par la loi sur la propriÃ©tÃ© intellectuelle
+ * Trampoline est protégé par la loi sur la propriété intellectuelle
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -31,6 +31,8 @@ struct TPL_INTERNAL_SENDING_MO {
 
 typedef struct TPL_INTERNAL_SENDING_MO tpl_internal_sending_mo;
 
+typedef tpl_internal_sending_mo tpl_internal_sending_zero_mo;
+
 /*!
  *  \struct tpl_internal_receiving_zero_mo
  *
@@ -55,7 +57,7 @@ typedef struct TPL_BASE_RECEIVING_MO tpl_internal_receiving_zero_mo;
  */
 struct TPL_INTERNAL_RECEIVING_UNQUEUED_MO {
     /*! common part of the receiving message objects            */
-    tpl_base_receiving_mo   base_mo; 
+    tpl_data_receiving_mo   base_mo; 
     /*! pointer to the receive buffer                           */
     tpl_com_data            *buffer;
     /*! size of the message object                              */
@@ -77,11 +79,9 @@ typedef struct TPL_INTERNAL_RECEIVING_UNQUEUED_MO
  */
 struct TPL_INTERNAL_RECEIVING_QUEUED_MO {
     /*! common part of the receiving message objects            */
-    tpl_base_receiving_mo   base_mo;
+    tpl_data_receiving_mo   base_mo;
     /*! queue                                                   */
-    tpl_queue               *queue;
-    /*! filter descriptor                                       */
-    tpl_filter_desc         filter;
+    tpl_queue               queue;
 };
 
 typedef struct TPL_INTERNAL_RECEIVING_QUEUED_MO
@@ -91,7 +91,12 @@ typedef struct TPL_INTERNAL_RECEIVING_QUEUED_MO
 /*!
  *  Table of sending message objects pointers
  */
-extern	tpl_base_sending_mo	*tpl_send_message_table[];
+extern	tpl_base_sending_mo     *tpl_send_message_table[];
+
+/*!
+ *  Table of receiving message objects pointers
+ */
+extern	tpl_base_receiving_mo   *tpl_receive_message_table[];
 
 
 #endif

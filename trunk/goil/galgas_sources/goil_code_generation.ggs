@@ -68,6 +68,10 @@ routine init_prefixes ?!@prefix_map prefix :
     [!?prefix add ![@lstring new !"msg_name" !here] !"" !"$MESSAGE_NAME$"] ;
     [!?prefix add ![@lstring new !"msg" !here] !"message_object_of_" !"$MESSAGE$"] ;
     [!?prefix add ![@lstring new !"target" !here] !"&message_object_of_" !"$TARGET$"] ;
+    [!?prefix add ![@lstring new !"size" !here] !"" !"$SIZE$"] ;
+    [!?prefix add ![@lstring new !"element_size" !here] !"" !"$ELEMENT_SIZE$"] ;
+    [!?prefix add ![@lstring new !"queue_size" !here] !"" !"$QUEUE_SIZE$"] ;
+    [!?prefix add ![@lstring new !"dyn_queue" !here] !"dynamic_queue_of_message_" !"$DYN_QUEUE$"] ;
 
     [!?prefix add ![@lstring new !"notif_name" !here]
               !"of message " !"$NOTIFICATION_NAME$"] ;
@@ -81,6 +85,16 @@ routine init_prefixes ?!@prefix_map prefix :
               !"error_notification_of_message_" !"$NOTIFICATION$"] ;
     [!?prefix add ![@lstring new !"error_notif_ptr" !here]
               !"&error_notification_of_message_" !"$NOTIFICATION_PTR$"] ;
+    [!?prefix add ![@lstring new !"msg_buf" !here]
+              !"buffer_of_message_" !"$BUFFER$"] ;
+    [!?prefix add ![@lstring new !"filter" !here]
+              !"filter_of_message_" !"$FILTER$"] ;
+    [!?prefix add ![@lstring new !"filter_ptr" !here]
+              !"&filter_of_message_" !"$FILTER_PTR$"] ;
+    [!?prefix add ![@lstring new !"filter_func" !here]
+              !"" !"$FILTERING_FUNC$"] ;
+    [!?prefix add ![@lstring new !"filter_kind" !here]
+              !"" !"$FILTER_KIND$"] ;
 
     init_targets_prefixes !?prefix ;
 

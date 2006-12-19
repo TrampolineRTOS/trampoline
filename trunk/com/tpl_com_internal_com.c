@@ -19,6 +19,8 @@
 #include "tpl_os_definitions.h"
 #include "tpl_com_private_types.h"
 #include "tpl_com_mo.h"
+#include "tpl_com_filtering.h"
+#include "tpl_com_definitions.h"
 
 void tpl_notify_receiving_mos(tpl_base_receiving_mo *);
 
@@ -35,11 +37,11 @@ tpl_status tpl_send_static_internal_message(
     /*  cast the base mo to the correct type of mo                          */
     tpl_internal_sending_mo *ismo = (tpl_internal_sending_mo *)smo;
     /*  get the first of the receiving mo                                   */
-    tpl_base_receiving_mo *rmo = ismo->internal_target;
+    tpl_data_receiving_mo *rmo = (tpl_data_receiving_mo *)ismo->internal_target;
     /*  iterate through the receiving mo to copy the data to the receivers  */
     while (rmo != NULL) {
         rmo->receiver(rmo, data);
-        rmo = rmo->next_mo;
+        rmo = (tpl_data_receiving_mo *)rmo->base_mo.next_mo;
     }
     
     /*  notify the receivers    */
@@ -83,11 +85,14 @@ tpl_status tpl_receive_static_internal_unqueued_message(
     tpl_com_data *mo_buf = rum->buffer;
     
     /*  reception filtering                                                 */
-    if (tpl_filtering
-    /*  copy the data from the source (data) to the message object buffer   */
-    int size = rum->size;
-    while (size-- > 0) {
-        *mo_buf++ = *data++;
+    if (tpl_filtering(mo_buf, data, rum->size, rum->base_mo.filter)) {
+        /*  copy the data from the source (data)
+            to the message object buffer
+        */
+        int size = rum->size;
+        while (size-- > 0) {
+            *mo_buf++ = *data++;
+        }
     }
     
     return E_OK;
@@ -100,13 +105,13 @@ tpl_status tpl_receive_static_internal_unqueued_message(
  */
 tpl_status tpl_receive_static_internal_queued_message(
     tpl_base_receiving_mo   *rmo,
-    tpl_application_data    *data
+    tpl_com_data            *data
     )
 {
     /*  destination buffer                                      */
-    tpl_application_data *dst = NULL;
+    tpl_com_data *dst = NULL;
     /*  cast the base receiving mo to the correct type of mo    */
-    tpl_queue *rq = (tpl_internal_receiving_queued_mo *)rmo->queue;
+    tpl_queue *rq = &(((tpl_internal_receiving_queued_mo *)rmo)->queue);
     
     /*  get the buffer to perform the write                     */
     if ((dst = tpl_queue_element_for_write(rq)) != NULL) {

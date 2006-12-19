@@ -36,8 +36,9 @@ bool tpl_filtering(
     /*  two variables to store the old and new value    */
     tpl_com_value   old_value = 0;
     tpl_com_value   new_value = 0;
+    
     /*  Checks there is a filter set */
-    if (filter_desc->filter != NULL) {
+    if ((filter_desc != NULL) && (filter_desc->filter != NULL)) {
         /*  Checks the data is compatible with filter. Size have
             to be less or equal than the tpl_com_value data size    */
         if (size <= sizeof(tpl_com_value)) {
@@ -55,16 +56,9 @@ bool tpl_filtering(
                 --size;
             }
             /*  Call the filter */
-            return filter_desc->filter(&(filter_desc->param),
-                                       old_value,
-                                       new_value);
-        }
-        else {
-            return TRUE;
+            return filter_desc->filter(filter_desc, old_value, new_value);
         }
     }
-    else {
-        return TRUE;
-    }
+    return TRUE;
 }
 

@@ -26,6 +26,7 @@
  */
 struct TPL_BASE_SENDING_MO;
 struct TPL_BASE_RECEIVING_MO;
+struct TPL_DATA_RECEIVING_MO;
 
 /*
  * Prototype for sending functions
@@ -39,7 +40,7 @@ typedef tpl_status (*tpl_sending_func)(
  * Prototype for receiving functions
  */
 typedef tpl_status (*tpl_receiving_func)(
-    struct TPL_BASE_RECEIVING_MO *,
+    struct TPL_DATA_RECEIVING_MO *,
     tpl_com_data *
 );
 
@@ -81,10 +82,8 @@ typedef struct TPL_BASE_SENDING_MO tpl_base_sending_mo;
  *  internal receiving message objects.
  */
 struct TPL_BASE_RECEIVING_MO {
-    /*! pointer to the receiving function   */
-    tpl_receiving_func              receiver;
     /*! notification structure              */
-    tpl_notification                notification;
+    tpl_notification                *notification;
     /*! message objects chaining            */
     struct TPL_BASE_RECEIVING_MO    *next_mo;
 };
@@ -96,8 +95,10 @@ typedef struct TPL_BASE_RECEIVING_MO tpl_base_receiving_mo;
  *
  *  \brief  Structure for receiving message object that store a data
  *
- *  This structure extends the TPL_BASE_RECEIVING_MO by adding a pointer
- *  a function which is used to copy the message data to the application
+ *  This structure extends the TPL_BASE_RECEIVING_MO by adding a pointer to
+ *  the receiving function which is used to copy the data from the sender
+ *  (receiving IPDU or sending message object) to the buffer, a pointer
+ *  to a function which is used to copy the message data to the application
  *  data and a filter descriptor for incoming data filtering. It does not
  *  include members for storage since two kind of storage are available
  *  (queued and unqueued).
@@ -105,10 +106,12 @@ typedef struct TPL_BASE_RECEIVING_MO tpl_base_receiving_mo;
 struct TPL_DATA_RECEIVING_MO {
     /*! common part of the receiving message objects            */
     tpl_base_receiving_mo   base_mo;
+    /*! pointer to the receiving function   */
+    tpl_receiving_func      receiver;
     /*! pointer to the data copy function                       */
     tpl_data_copy_func      copier;
     /*! filter descriptor                                       */
-    tpl_filter_desc         filter;
+    tpl_filter_desc         *filter;
 };
 
 typedef struct TPL_DATA_RECEIVING_MO tpl_data_receiving_mo;
