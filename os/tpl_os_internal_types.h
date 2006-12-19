@@ -30,23 +30,94 @@
 #include "tpl_os_types.h"
 #include "tpl_machine.h"
 
+/**
+ * @def ECC1
+ *
+ * identifies the ECC1 conformance class
+ *
+ * @see #CONFORMANCE_CLASS
+ */
 #define ECC1 1
+
+/**
+ * @def ECC2
+ *
+ * identifies the ECC2 conformance class
+ *
+ * @see #CONFORMANCE_CLASS
+ */
 #define ECC2 2
 
+/**
+ * @def CONFORMANCE_CLASS
+ *
+ * represents the configured conformance class
+ *
+ * @warning at this time, Trampoline only supports ECC2
+ */
 #define CONFORMANCE_CLASS ECC2
 
-/*
- * Special result code for Trampoline
+/**************************************
+ * Special result code for Trampoline *
+ **************************************/
+
+/**
+ * @def NO_SPECIAL_CODE
+ *
+ * Nothing particular to Trampoline in this code.
+ *
+ * @note This is a Trampoline result code, not an OSEK one.
+ *
+ * @see #tpl_status
  */
 #define NO_SPECIAL_CODE         0
+
+/**
+ * @def NEED_RESCHEDULING
+ *
+ * Scheduler have to be called, probably because the ready list
+ * has changed.
+ *
+ * @note This is a Trampoline result code, not an OSEK one.
+ *
+ * @see #tpl_status
+ */
 #define NEED_RESCHEDULING       32
+
+/**
+ * @def E_OK_AND_SCHEDULE
+ *
+ * Combines OSEK-E_OK and Trampoline-NEED_RESCHEDULING result codes
+ *
+ * @see #tpl_status
+ */
 #define E_OK_AND_SCHEDULE       (E_OK | NEED_RESCHEDULING)
+
+/**
+ * @def OSEK_STATUS_MASK
+ *
+ * This AND mask can be used to keep only result code
+ * specific to OSEK in a tpl_status (StatusType)
+ * result code.
+ *
+ * @see #tpl_status
+ */
 #define OSEK_STATUS_MASK        0x1F
+
+/**
+ * @def TRAMPOLINE_STATUS_MASK
+ *
+ * This AND mask can be used to keep only result code
+ * specific to Trampoline in a tpl_status (StatusType)
+ * result code.
+ *
+ * @see #tpl_status
+ */
 #define TRAMPOLINE_STATUS_MASK  0xE0
 
-/*
- * Forward declarations
- */
+/************************
+ * Forward declarations *
+ ************************/
 struct TPL_TASK;
 struct TPL_RESOURCE;
 
@@ -55,123 +126,217 @@ struct TPL_RESOURCE;
  * This type is used to distinguish kind
  * of tasks and ISR
  *
- * see related values in tpl_os_definitions.h
+ * @see #tpl_is_basic
+ * @see #tpl_is_extended
+ * @see #tpl_is_full_preemptable
+ * @see #tpl_is_non_preemptable
+ * @see #tpl_is_isr
  */
 typedef unsigned char tpl_exec_obj_type;
  
-/*
- * tpl_exec_state is the state of a task
+/**
+ * @typedef tpl_exec_state
+ *
+ * This type represents the state of a task.
+ *
  * See page 16+ of the OSEK/VDX spec
+ *
+ * Value can be one of :
+ * - #AUTOSTART
+ * - #RUNNING
+ * - #READY
+ * - #SUSPENDED
+ * - #WAITING (only for ECC1 or ECC2 conformance classes)
+ */
+typedef unsigned char tpl_exec_state;
+
+/**
+ * @def AUTOSTART
+ *
+ * Task is automatically activated at system startup
+ *
+ * @see #tpl_exec_state
  */
 #define AUTOSTART   0
+
+/**
+ * @def RUNNING
+ *
+ * Task is currently running
+ *
+ * @see #tpl_exec_state
+ */
 #define RUNNING     1
+
+/**
+ * @def READY
+ *
+ * Task is ready (to be run, or elected by scheduler)
+ *
+ * @see #tpl_exec_state
+ */
 #define READY       2
+
+/**
+ * @def SUSPENDED
+ *
+ * Task is suspended
+ *
+ * @see #tpl_exec_state
+ */
 #define SUSPENDED   3
 #if CONFORMANCE_CLASS==ECC1 || CONFORMANCE_CLASS==ECC2
+/**
+ * @def WAITING
+ *
+ * Task is waiting
+ *
+ * @see #tpl_exec_state
+ */
 #define WAITING     4
 #endif
 
-typedef unsigned char tpl_exec_state;
-
-/*
- * Function pointer prototype for tasks
+/**
+ * @typedef tpl_exec_function
+ *
+ * This type is used to specify the task entry point (function where the task begins)
+ *
+ * @see #TPL_EXEC_STATIC
  */
 typedef void (*tpl_exec_function)(void);
  
-/*
- * tpl_exec_static is a data structure used
- * to describe the members of task descriptors or 
- * isr2 handlers that may be stored in ROM
+/**
+ * @struct TPL_EXEC_STATIC
+ *
+ * This is a data structure used to describe the members of task descriptors or 
+ * category 2 Interrupt Service Routines. Static means this part of the descriptor
+ * can be stored in ROM.
  */
 struct TPL_EXEC_STATIC {
-    /*  context(s) of the task/isr                                                              */
-    tpl_context                     context;
-    /*  stack(s) of the task/isr                                                                */
-    tpl_stack                       stack;
-    /*  function of the task/isr                                                                */
-    tpl_exec_function               entry;
-    /*  pointer to an internal resource. NULL if the task does not have an internal resource    */
-    struct TPL_INTERNAL_RESOURCE    *internal_resource;
-    /*  id of task/isr                                                                          */
-    tpl_task_id                     id;
-    /*  base priority of the task/isr                                                           */
-    tpl_priority                    base_priority;
-    /*  max activation count of a task/isr                                                      */
-    tpl_activate_counter            max_activate_count;
-    /*  type of the task/isr                                                                    */
-    tpl_exec_obj_type               type;           
+    tpl_context                     context;            /**< context(s) of the task/isr */
+    tpl_stack                       stack;              /**< stack(s) of the task/isr */
+    tpl_exec_function               entry;              /**< function that is the entry point of the task/isr */
+    struct TPL_INTERNAL_RESOURCE    *internal_resource; /**< pointer to an internal resource. NULL if the task does not have an internal resource */
+    tpl_task_id                     id;                 /**< id of task/isr */
+    tpl_priority                    base_priority;      /**< base priority of the task/isr  */
+    tpl_activate_counter            max_activate_count; /**< max activation count of a task/isr */
+    tpl_exec_obj_type               type;               /**< type of the task/isr */
 };
 
+/**
+ * @typedef tpl_exec_static
+ *
+ * This is an alias for the #TPL_EXEC_STATIC structure
+ *
+ * @see #TPL_EXEC_STATIC
+ */
 typedef struct TPL_EXEC_STATIC tpl_exec_static;
 
-/*
- * tpl_exec_common gathers the common members
- * of executable objects dynamic descriptors
+/**
+ * @struct TPL_EXEC_COMMON
+ *
+ * This structure gathers the common members of executable objects dynamic descriptors
  */
 struct TPL_EXEC_COMMON {
-    tpl_exec_static         *static_desc;   /*  pointer to static descriptor    */
-    struct TPL_RESOURCE     *resources;     /*  head of the ressources held     */
-    struct TPL_EXEC_COMMON  *next_exec;     /*  next ready exec with same prio  */
-    struct TPL_EXEC_COMMON  *next_set;      /*  next exec set with lower prio   */
-    tpl_activate_counter    activate_count; /*  current activate count          */
-    tpl_priority            priority;       /*  current priority                */
-    tpl_exec_state          state;          /*  state (READY, RUNNING, ...)     */
+    tpl_exec_static         *static_desc;   /**<  pointer to static descriptor    */
+    struct TPL_RESOURCE     *resources;     /**<  head of the ressources held     */
+    struct TPL_EXEC_COMMON  *next_exec;     /**<  next ready exec with same prio  */
+    struct TPL_EXEC_COMMON  *next_set;      /**<  next exec set with lower prio   */
+    tpl_activate_counter    activate_count; /**<  current activate count          */
+    tpl_priority            priority;       /**<  current priority                */
+    tpl_exec_state          state;          /**<  state (READY, RUNNING, ...)     */
 };
 
+/**
+ * @typedef tpl_exec_common
+ *
+ * This is an alias for the #TPL_EXEC_COMMON structure.
+ *
+ * @see #TPL_EXEC_COMMON
+ */
 typedef struct TPL_EXEC_COMMON tpl_exec_common;
 
-/*
- * tpl_task glues together a common descriptor
+/**
+ * @struct TPL_TASK
+ *
+ * This structure glues together a common descriptor
  * and the dynamic members of the task descriptor.
  */
 struct TPL_TASK {
-    tpl_exec_common         exec_desc;
-    tpl_event_mask          evt_set;
-    tpl_event_mask          evt_wait;
+    tpl_exec_common         exec_desc;  /**< the common descriptor of the task */
+    tpl_event_mask          evt_set;    /**< @todo what's this ? */
+    tpl_event_mask          evt_wait;   /**< @todo what's this ? */
 };
 
+/**
+ * @typedef tpl_task
+ *
+ * This type is an alias for the #TPL_TASK structure.
+ *
+ * @see #TPL_TASK
+ */
 typedef struct TPL_TASK tpl_task;
 
-/*
- * tpl_resource is the resource descriptor
- * structure
+/**
+ * @struct TPL_RESOURCE
+ *
+ * This structure describes all attributes of a resource
  */
 struct TPL_RESOURCE {
-    /*  Ceiling priority as computed at system generation time.         */
-    tpl_priority            ceiling_priority;
-    /*  Priority of the owner prior to the access to the resource.
-        this field is used to restore the priority of the task when
-        the resource is released                                        */
-    tpl_priority            owner_prev_priority;
-    /*  Owner of the resource or NULL if the resource is not owned      */
-    struct TPL_EXEC_COMMON  *owner;
-    /*  Pointer to the next resource used to link them together when
-        a task get more than one resource                               */
-    struct TPL_RESOURCE     *next_res;
+    tpl_priority            ceiling_priority;     /**< Ceiling priority as computed at system generation time. */
+    tpl_priority            owner_prev_priority;  /**< Priority of the owner before accessing to the resource.
+                                                       This field is used to restore the priority of the task when
+                                                       the resource is released */
+    struct TPL_EXEC_COMMON  *owner;               /**< Owner of the resource or NULL if the resource is not owned */
+    struct TPL_RESOURCE     *next_res;            /**< Pointer to the next resource used to link them together when
+                                                       a task get more than one resource */
 };
 
+/**
+ * @typedef tpl_resource
+ *
+ * This type is an alias for the structure #TPL_RESOURCE.
+ *
+ * @see #TPL_RESOURCE
+ */
 typedef struct TPL_RESOURCE tpl_resource;
 
-/*
- * tpl_internal_resource is the internal resource
- * descriptor structure. It is a simpler structure than
- * the tpl_resource one since only one internal resource can
- * be taken and there is no need to store the owner
+/**
+ * @struct TPL_INTERNAL_RESOURCE
+ *
+ * This is is the internal resource descriptor structure. It is a simpler structure than
+ * tpl_resource since only one internal resource can be taken and there is no need to store
+ * the owner
  */
 struct TPL_INTERNAL_RESOURCE {
-    /*  Ceiling priority as computed at system generation time          */
-    tpl_priority            ceiling_priority;
-    /*  Priority of the owner prior to the access to the resource.
-        this field is used to restore the priority of the task when
-        the resource is released                                        */
-    tpl_priority            owner_prev_priority;
-    /*  Flag to state the internal resource is taken or not             */
-    bool                    taken;
+    
+    tpl_priority            ceiling_priority;    /**<  Ceiling priority as computed at system generation time */
+    tpl_priority            owner_prev_priority; /**<  Priority of the owner prior to the access to the resource.
+                                                       this field is used to restore the priority of the task when
+                                                       the resource is released */
+    bool                    taken;               /**<  Flag to tell if the internal resource is taken or not */
 };
 
+/**
+ * @typedef tpl_internal_resource
+ *
+ * This is an alias for the structure #TPL_INTERNAL_RESOURCE
+ *
+ * @see #TPL_INTERNAL_RESOURCE
+ */
 typedef struct TPL_INTERNAL_RESOURCE tpl_internal_resource;
 
-
+/**
+ * @typedef tpl_alarm_state
+ *
+ * Describes an alarm state. Value can be one of :
+ * - #ALARM_SLEEP
+ * - #ALARM_ACTIVE
+ * - #ALARM_AUTOSTART
+ * - #ALARM_CALLBACK
+ * - #ALARM_TASK_ACTIVATION
+ * - #ALARM_EVENT_SETTING
+ */
 typedef unsigned char tpl_alarm_state;
 typedef  int tpl_alarm_kind;
 
