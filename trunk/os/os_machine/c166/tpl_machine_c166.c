@@ -41,7 +41,10 @@ unsigned int idata registers_c166[TASK_COUNT+ISR_COUNT+1][16];
  */
 void tpl_sleep(void)
 {
-    while (1);
+	while(1);
+/*	__asm {
+		IDLE
+	} */
 }
 
 void tpl_shutdown(void)
@@ -84,10 +87,8 @@ void tpl_switch_context(tpl_context *old_context, tpl_context *new_context)
 	#endif
 	/*ok, now, all the other registers may be changed. */
 	/* if old_context */
-	}
-	if(old_context) /*don't store context if pointer is NULL. */
-	{
-		__asm {
+	CMP R8,#0
+	JMPR CC_Z,NO_OLD_CONTEXT_TO_SAVE
 			/* R5 get the context */
 			MOVW R5,[R8]
 		
@@ -121,10 +122,8 @@ void tpl_switch_context(tpl_context *old_context, tpl_context *new_context)
 			MOVW [R5],R3	/* store cp */
 			ADD R5,#2
 			MOVW [R5],R0	/* store user stack */
-		}
-	}
-	/* then set the new context */
-	__asm {
+NO_OLD_CONTEXT_TO_SAVE:
+	 	/* then set the new context */
 		MOVW R5, [R9] /*the new context */
 		MOVW MDC, [R5]	/* restore mdc */
 		ADD R5,#2
@@ -189,11 +188,13 @@ void tpl_switch_context_from_it(tpl_context * old_context, tpl_context * new_con
 	 * DPP3 = 3 (value set in interrupt handler).
 	 * first of all: store the current context in old_context
 	 */
-	if(old_context) /*don't store context if pointer is NULL. */
-	{
+	__asm {
+		/*don't store context if pointer is NULL. */
+	 	CMP R8,#0
+		JMPR CC_Z,NO_OLD_CONTEXT_TO_SAVE_IT
 		/* R1, R2 used to get values from the stack (see documentation). */
 		/* R5 used to get fields in the context. */
-		__asm {
+
 			MOVW R5,[R8]		/* init*/
 			MOVW R1,0xfe12   
 
@@ -246,11 +247,8 @@ void tpl_switch_context_from_it(tpl_context * old_context, tpl_context * new_con
 		
 			ADD R5,#2
 			MOVW [R5],R0	/* store user stack */
-			
-		}
-	}
+NO_OLD_CONTEXT_TO_SAVE_IT:			
 	/* then set the new context */
-	__asm {
 		MOVW R5, [R9] /*the new context */
 		MOVW MDC, [R5]	/* restore mdc */
 		ADD R5,#2
