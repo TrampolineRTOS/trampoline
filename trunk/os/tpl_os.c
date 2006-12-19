@@ -1,4 +1,7 @@
-/*
+/**
+ * @file tpl_os.c
+ *
+ * @section Copyright
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
@@ -6,12 +9,19 @@
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
- * OS startup
+ * @section File informations
  *
  * $Date$
  * $Rev$
  * $Author$
  * $URL$
+ *
+ * @section File description
+ *
+ * Here stands services for :
+ * - hardware and application initialization
+ * - OS startup
+ * - OS shutdown
  */
 
 #include "tpl_os.h"
@@ -19,12 +29,39 @@
 #include "tpl_os_definitions.h"
 #include "tpl_os_hooks.h"
 
+/*
+ * see machine dependent implementation (in related architecture os/os_machine/... directory)
+ */
 void tpl_init_machine(void);
+
+/*
+ * trampoline specific internal initializations (see tpl_os_kernel.c)
+ */
 void tpl_init_os(void);
+
+/*
+ * scheduler call (see tpl_os_task_management.c)
+ */
 void tpl_schedule(int);
+
+/*
+ * see machine dependent implementation
+ */
 void tpl_get_task_lock(void);
+
+/*
+ * see machine dependent implementation
+ */
 void tpl_release_task_lock(void);
+
+/*
+ * see machine dependent implementation
+ */
 void tpl_sleep(void);
+
+/*
+ * see machine dependent implementation
+ */
 void tpl_shutdown(void);
 
 #ifdef WITH_STARTUP_HOOK
@@ -56,7 +93,11 @@ void ShutdownOS(StatusType error)
 /*
  * InitApp is provided by the application
  * Tipycally, it calls StartOS() with the
- * appropriate application mode
+ * appropriate application mode.
+ *
+ * Of course, this function should consider
+ * OS is initializing, especially there is
+ * no multitasking at this stage.
  */
 void InitApp(void);
 

@@ -20,6 +20,9 @@ include Make-rules
 
 ALL: $(EXE)
 
+DOC:
+	doxygen
+
 #make OS objects.
 OS: OBJ
 	@cd $(OS_DIR) && make OS
