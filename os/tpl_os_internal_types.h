@@ -1,4 +1,8 @@
-/*
+/**
+ * @file tpl_os_internal_types.h
+ *
+ * @section copyright Copyright
+ *
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
@@ -6,12 +10,16 @@
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
- * Trampoline internal types
+ * @section infos File informations
  *
  * $Date$
  * $Rev$
  * $Author$
  * $URL$
+ *
+ * @section descr File description
+ *
+ * Trampoline internal types. These types are not intended to be used in an application.
  *
  */
 
@@ -42,9 +50,12 @@
 struct TPL_TASK;
 struct TPL_RESOURCE;
 
-/*
- * tpl_exec_obj_type is used to distinguish kind
- * of tasks and isr
+/**
+ * @typedef tpl_exec_obj_type 
+ * This type is used to distinguish kind
+ * of tasks and ISR
+ *
+ * see related values in tpl_os_definitions.h
  */
 typedef unsigned char tpl_exec_obj_type;
  

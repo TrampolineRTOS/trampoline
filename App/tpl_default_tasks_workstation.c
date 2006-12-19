@@ -53,6 +53,10 @@ TASK(toto)
     static int compte = 0;
     int i;
     
+    SetRelAlarm(alr1,10,0);
+    SetRelAlarm(alr2,20,0);
+    /*SetRelAlarm(alr4,10,0);*/
+    
     compte++;
     printf("toto (%d)\n", compte);
     fflush(stdout);
