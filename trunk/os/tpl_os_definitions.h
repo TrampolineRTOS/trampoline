@@ -29,6 +29,8 @@
  * @def FALSE
  *
  * boolean false value
+ *
+ * @see #bool
  */
 #define FALSE   0
 
@@ -36,6 +38,8 @@
  * @def TRUE
  *
  * boolean true value
+ *
+ * @see #bool
  */
 #define TRUE    1
 
@@ -68,7 +72,7 @@
 #define E_OS_ACCESS     1
 
 /**
- * @def E_OS_CALLLEVEL
+ * @def E_OS_CALLEVEL
  *
  * This error code means : call at interrupt level
  *
@@ -145,6 +149,8 @@
 /**
  * @def BASIC_TASK
  *
+ * identifies a basic task
+ *
  * @see #tpl_exec_obj_type
  * @see #TPL_EXEC_STATIC
  */
@@ -152,6 +158,8 @@
 
 /**
  * @def EXTENDED_TASK
+ *
+ * identifies an extended task
  *
  * @see #tpl_exec_obj_type
  * @see #TPL_EXEC_STATIC
@@ -161,6 +169,8 @@
 /**
  * @def IS_ROUTINE
  *
+ * identifies a category 2 Interrupt Service Routine
+ *
  * @see #tpl_exec_obj_type
  * @see #TPL_EXEC_STATIC
  */
@@ -169,6 +179,8 @@
 /**
  * @def FULL_PREEMTABLE_TASK
  *
+ * exec object characteristic is : fully preemptable
+ *
  * @see #tpl_exec_obj_type
  * @see #TPL_EXEC_STATIC
  */
@@ -176,6 +188,8 @@
 
 /**
  * @def NON_PREEMPTABLE_TASK
+ *
+ * exec object characteristic is : non-preemptable
  *
  * @see #tpl_exec_obj_type
  * @see #TPL_EXEC_STATIC
@@ -189,7 +203,7 @@
 /**
  * @def ALARM_SLEEP
  *
- * This state means the related alarm has not raised
+ * This state means the related alarm is not in use (de-activated)
  *
  * @see #tpl_alarm_state
  * @see #TPL_ALARM
@@ -199,12 +213,21 @@
 /**
  * @def ALARM_ACTIVE
  *
- * This state means the related alarm has raised
+ * This state means the related alarm is in use (activated)
  *
  * @see #tpl_alarm_state
  * @see #TPL_ALARM
  */
 #define ALARM_ACTIVE    1
+
+/**
+ * @def ALARM_AUTOSTART
+ *
+ * This state means alarm should be activated at system startup
+ *
+ * @see #tpl_alarm_state
+ * @see #TPL_ALARM
+ */
 #define ALARM_AUTOSTART 2
 
 /**

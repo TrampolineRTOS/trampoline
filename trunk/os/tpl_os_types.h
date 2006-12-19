@@ -1,4 +1,8 @@
-/*
+/**
+ * @file tpl_os_types.h
+ *
+ * @section copyright Copyright
+ *
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
@@ -6,33 +10,50 @@
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
- * Trampoline general types definitions. This file is included
- * by the communication library
+ * @section infos File informations
  *
  * $Date$
  * $Rev$
  * $Author$
  * $URL$
+ *
+ * @section descr File description
+ *
+ * Trampoline general types definitions. This file is included
+ * by the communication library
  */
 
 #ifndef __TPL_OS_TYPES_H__
 #define __TPL_OS_TYPES_H__
 
-/*
- * standard bool declaration
+/**
+ * @typedef bool
+ *
+ * Standard bool declaration. Values can be #TRUE or #FALSE.
  */
 typedef unsigned char bool;
 
-/*
- * tpl_status_type is used for return
+/**
+ * @typedef tpl_status
+ *
+ * This type is used for return
  * status of services (ie one of the result
- * codes specified below).
+ * codes specified below). 
+ *
+ * It is binary compatible with OSEK StatusType, provided
+ * Trampoline specific codes are removed (via #OSEK_STATUS_MASK
+ * AND-mask). 
+ *
+ * @see #OSEK_STATUS_MASK
+ * @see #StatusType
  */
 typedef unsigned char tpl_status;
 
-/*
- * tpl_callback_func is used for various
- * callback function type in the os
+/**
+ * @typedef tpl_callback_func
+ *
+ * This type is used for various
+ * callback function type in Trampoline.
  */
 typedef void (*tpl_callback_func)(void);
 
