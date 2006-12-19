@@ -19,56 +19,47 @@
 #include "tpl_os_definitions.h"
 #include "tpl_com_definitions.h"
 
+void tpl_schedule(int);
+tpl_status tpl_activate_task(tpl_task *);
+tpl_status tpl_set_event(tpl_task *, tpl_event_mask);
+
 
 /*!
  *  Notification function for notification call back
  */
 void tpl_notify_callback(tpl_notification *notification)
 {
-    notification->task_callback_or_flag.callback();
+    ((tpl_callback_notification *)notification)->callback();
+}
+
+/*!
+ *  Notification function for notification by task activation
+ */
+void tpl_notify_activate_task(tpl_notification *notification)
+{
+    tpl_activate_task(
+        ((tpl_task_activation_notification *)notification)->task
+    );
+}
+
+/*!
+ *  Notification function for notification by task activation
+ */
+void tpl_notify_setevent(tpl_notification *notification)
+{
+    tpl_set_event(
+        ((tpl_setevent_notification *)notification)->task,
+        ((tpl_setevent_notification *)notification)->mask
+    );
 }
 
 /*!
  *  Notification function for flag raising
  */
-void tpl_notify_raise_flag(tpl_notification *notification)
+/*void tpl_notify_raise_flag(tpl_notification *notification)
 {
-    notification->task_callback_or_flag.flags = COM_TRUE;
-}
-
-/*
- * tpl_handle_notification handles the notification according
- * to its kind
- */
-void tpl_handle_notification(tpl_notification *notification)
-{
-    if (notification != NULL) {
-        switch (notification->kind) {
-            case NOTIFICATION_CALLBACK:
-                /*  call the call back function */
-                notification->task_callback_or_flag_ptr.callback();
-                break;
-            case NOTIFICATION_FLAG:
-                /*  set the flag to COM_TRUE    */
-                notification->task_callback_or_flag_ptr->flag = COM_TRUE;
-                break;
-            case NOTIFICATION_TASK:
-            /*  activate the task   */
-                tpl_get_task_lock();
-                tpl_activate_task(notification->task_callback_or_flag_ptr.task);
-                tpl_release_task_lock();
-                break;
-            case NOTIFICATION_EVENT:
-                /*  set the event   */
-                tpl_get_task_lock();
-                tpl_set_event(
-                    notification->task_callback_or_flag_ptr.task,
-                    notification->mask);
-                tpl_release_task_lock();
-                break;
-        }
-    }
-}
+    notification->task_callback_or_flag.flag();
+}*/
 
 /*!
  *  \brief
@@ -81,9 +72,9 @@ void tpl_notify_receiving_mos(tpl_base_receiving_mo *rmo)
      * Walk along the receiving message object chain and call the notification
      * for each one. During that, the rescheduling is locked
      */
-    tpl_lock_scheduling();
-    
     while (rmo != NULL) {
         rmo->notification.notif(&rmo->notification);
     }
+	
+	tpl_schedule(FROM_TASK_LEVEL);
 }

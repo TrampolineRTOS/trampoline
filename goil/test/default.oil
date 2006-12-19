@@ -122,6 +122,14 @@ CPU default {
 	MESSAGE mr {
 	    MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
 		    SENDINGMESSAGE = ms ;
+            FILTER = ALWAYS ;
+        } ;
+	} ;
+	
+	MESSAGE mr2 {
+	    MESSAGEPROPERTY = RECEIVE_QUEUED_INTERNAL {
+		    SENDINGMESSAGE = ms ;
+            QUEUESIZE = 10 ;
         } ;
 	} ;
 	
@@ -136,8 +144,13 @@ CPU default {
         NOTIFICATION = ACTIVATETASK {
             TASK = t2 ;
         } ;
-        NOTIFICATIONERROR = ACTIVATETASK {
-            TASK = t2 ;
+	} ;
+	MESSAGE zmr2 {
+	    MESSAGEPROPERTY = RECEIVE_ZERO_INTERNAL {
+		    SENDINGMESSAGE = zms ;
+		} ;
+        NOTIFICATION = ACTIVATETASK {
+            TASK = t3 ;
         } ;
 	} ;
 

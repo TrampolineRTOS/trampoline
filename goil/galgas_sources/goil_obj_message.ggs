@@ -191,7 +191,7 @@ rule <mess>
             error here : "NOTIFICATIONERROR is not allowed for SEND_STATIC_INTERNAL message" ;
         when @szi_mess_prop (...) ->
             error here : "NOTIFICATIONERROR is not allowed for SEND_ZERO_INTERNAL message" ;
-        when @rze_mess_prop (...) ->
+        when @rzi_mess_prop (...) ->
             error here : "NOTIFICATIONERROR is not allowed for RECEIVE_ZERO_INTERNAL message" ;
         when @rui_mess_prop (...) ->
             error here : "NOTIFICATIONERROR is not allowed for RECEIVE_UNQUEUED_INTERNAL message" ;
@@ -907,12 +907,12 @@ rule <filter>
         @luint64 mask ;
         @luint64 x ;
         $MASKEDNEWEQUALSX$ ;  <mask_x_attribute> ?mask ?x ;
-        filter := [@makednewequalsx_filter new !mask !x] ;
+        filter := [@maskednewequalsx_filter new !mask !x] ;
     or
         @luint64 mask ;
         @luint64 x ;
         $MASKEDNEWDIFFERSX$ ; <mask_x_attribute> ?mask ?x ;
-        filter := [@makednewdiffersx_filter new !mask !x] ;
+        filter := [@maskednewdiffersx_filter new !mask !x] ;
     or
         $NEWISEQUAL$ ;
         filter := [@newisequal_filter new] ;
@@ -922,11 +922,11 @@ rule <filter>
     or
         @luint64 mask ;
         $MASKEDNEWEQUALSMASKEDOLD$ ;  <mask_attribute> ?mask ;
-        filter := [@makednewequalsmaskedold_filter new !mask] ;
+        filter := [@maskednewequalsmaskedold_filter new !mask] ;
     or
         @luint64 mask ;
         $MASKEDNEWDIFFERSMASKEDOLD$ ; <mask_attribute> ?mask ;
-        filter := [@makednewdiffersmaskedold_filter new !mask] ;
+        filter := [@maskednewdiffersmaskedold_filter new !mask] ;
     or
         @luint64 min ;
         @luint64 max ;

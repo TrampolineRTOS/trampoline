@@ -42,18 +42,18 @@ routine generate_messages
         end if ;
     end foreach ;
 
-    foreach dests (@lstring src @ident_list d_mess) :
-        message [src string].": " ;
-        foreach d_mess (@lstring dst) :
-            message "[".[dst string]."] ";
-        end foreach ;
-        message "\n" ;
-    end foreach ;
+#    foreach dests (@lstring src @ident_list d_mess) :
+##        message [src string].": " ;
+#        foreach d_mess (@lstring dst) :
+#            message "[".[dst string]."] ";
+#        end foreach ;
+##        message "\n" ;
+#    end foreach ;
 
     foreach messages (@lstring name @message_obj mess) :
        @mess_prop_obj mp := [mess messageproperty] ;
-       [mp generate !p !name !mess !dests ?h_res ?i_res] ;
-       message i_res ;
+       [mp generate !p !name !mess !messages !dests ?h_res ?i_res] ;
+#       message i_res ;
     end foreach ;
 
 end routine ;
