@@ -332,91 +332,164 @@ typedef struct TPL_INTERNAL_RESOURCE tpl_internal_resource;
  * Describes an alarm state. Value can be one of :
  * - #ALARM_SLEEP
  * - #ALARM_ACTIVE
- * - #ALARM_AUTOSTART
+ * - #ALARM_AUTOSTART (only before startup)
+ */
+typedef unsigned char tpl_alarm_state;
+
+/**
+ * @typedef tpl_alarm_kind
+ *
+ * Sort of alarm. Value can be one of :
  * - #ALARM_CALLBACK
  * - #ALARM_TASK_ACTIVATION
  * - #ALARM_EVENT_SETTING
  */
-typedef unsigned char tpl_alarm_state;
 typedef  int tpl_alarm_kind;
 
+/**
+ * @struct TPL_ALARM_ACTION
+ *
+ * This structure describe what an alarm should do when it raises
+ */
 struct TPL_ALARM_ACTION {
     union {
-        tpl_callback_func   callback;
-        tpl_task            *task;      }   task_or_callback;
-    tpl_event_mask                          mask;
+        tpl_callback_func   callback;  /**< address of function to call */
+        tpl_task            *task;     /**< descriptor of the task to activate */
+    }               task_or_callback;  /**< link to the related task or callback */
+    tpl_event_mask  mask;              /**< event mask related */
 };
 
+/**
+ * @typedef tpl_alarm_action
+ *
+ * This is an alias for the structure #TPL_ALARM_ACTION
+ *
+ * @see #TPL_ALARM_ACTION
+ */
 typedef struct TPL_ALARM_ACTION tpl_alarm_action;
 
 struct TPL_COUNTER;
 
-/*
- * tpl_alarm is the data structure
- * used to describe an alarm.
+/**
+ * @struct TPL_ALARM
+ *
+ * This is the data structure used to describe an alarm.
  */
 struct TPL_ALARM {
-    tpl_alarm_state     state;          /*  state of the alarm. An alarm
-                                            may have 2 states: ALARM_SLEEP
-                                            and ALARM_ACTIVE                */
-    tpl_alarm_kind      kind;           /*  kind of the alarm. An alarm may
-                                            be of 3 kind: ALARM_CALLBACK,
-                                            ALARM_TASK_ACTIVATION and
-                                            ALARM_EVENT_SETTING             */
-    tpl_alarm_action    action;         /*  action to be done when the
-                                            alarm is raised according to
-                                            kind                            */
-    struct TPL_COUNTER  *counter;       /*  a pointer to the counter the
-                                            alarm belongs to                */
-    tpl_tick            cycle;          /*  cycle delay for cyclic alarms   */
-    tpl_tick            date;           /*  absolute date of the alarm      */
-    struct TPL_ALARM    *next_alarm;    /*  next alarm in the active
-                                            alarm list                      */
-    struct TPL_ALARM    *prev_alarm;    /*  previous alarm in the active
-                                            alarm list                      */
+    tpl_alarm_state     state;          /**<  state of the alarm. An alarm
+                                              may have 2 states: ALARM_SLEEP
+                                              and ALARM_ACTIVE.
+                                            
+                                             @see #tpl_alarm_state
+                                         */
+    tpl_alarm_kind      kind;           /**<  kind of the alarm. There is 3 kinds
+                                              of alarms : ALARM_CALLBACK,
+                                              ALARM_TASK_ACTIVATION and
+                                              ALARM_EVENT_SETTING 
+                                         */
+    tpl_alarm_action    action;         /**<  action to be done when the
+                                              alarm is raised (according to
+                                              the kind)
+                                         */
+    struct TPL_COUNTER  *counter;       /**<  a pointer to the counter the
+                                              alarm belongs to 
+                                         */
+    tpl_tick            cycle;          /**< cycle delay for cyclic alarms */
+    tpl_tick            date;           /**< absolute date of the alarm */
+    struct TPL_ALARM    *next_alarm;    /**< next alarm in the active
+                                            alarm list */
+    struct TPL_ALARM    *prev_alarm;    /**< previous alarm in the active
+                                             alarm list */
 };
 
+/**
+ * @typedef tpl_alarm
+ *
+ * This is an alias for the structure #TPL_ALARM
+ *
+ * @see #TPL_ALARM
+ */
 typedef struct TPL_ALARM tpl_alarm;
 
-/*
- * tpl_counter is the data structure
- * used to describe a counter
+/**
+ * @struct TPL_COUNTER
+ *
+ * This is the data structure used to describe a counter
  */
 struct TPL_COUNTER {
-    tpl_tick    ticks_per_base;         /*  number of tick until the
-                                            counter inc                     */
-    tpl_tick    current_tick;           /*  current tick value of the
-                                            counter                         */
-    tpl_tick    current_date;           /*  current value of the counter    */
-    tpl_alarm   *first_alarm;           /*  active alarms list head         */
-    tpl_alarm   *next_alarm_to_raise;   /*  next active alarms              */
+    tpl_tick    ticks_per_base;         /**< number of ticks until the
+                                             counter increments */
+    tpl_tick    current_tick;           /**< current tick value of the
+                                             counter */
+    tpl_tick    current_date;           /**< current value of the counter */
+    tpl_alarm   *first_alarm;           /**< active alarms list head */
+    tpl_alarm   *next_alarm_to_raise;   /**< next active alarms */
 };
 
+/**
+ * @typedef tpl_counter
+ *
+ * This is an alias for the structure #TPL_COUNTER
+ *
+ * @see #TPL_COUNTER
+ */
 typedef struct TPL_COUNTER tpl_counter;
 
-/*
- * OSEK/VDX API definitions and prototypes
+/*******************************************
+ * OSEK/VDX API definitions and prototypes *
+ *******************************************/
+
+/**
+ * @struct ALARM_BASE_TYPE
+ *
+ * This structure is defined as paragraph 13.6.1 of OSEK/VDX spec
+ *
+ * @see AlarmBaseType
  */
 struct ALARM_BASE_TYPE {
-    tpl_tick    maxallowedvalue;    /*  see page 62 of OSEK/VDX os spec */
-    tpl_tick    ticksperbase;
-    tpl_tick    mincycle;
+    tpl_tick    maxallowedvalue; /**< maximum possible allowed count values in tick */
+    tpl_tick    ticksperbase;    /**< number of ticks required to reach a counter-specific (significant) unit */
+    tpl_tick    mincycle;        /**< smallest allowed value for the cycle-parameter of SetRelAlarm/SetAbsAlarm
+                                      (only for systems with extended status)
+                                  */
 };
 
+/**
+ * @typedef tpl_alarm_base
+ *
+ * This is an alias for the structure #ALARM_BASE_TYPE
+ *
+ * @see #ALARM_BASE_TYPE
+ * @see #AlarmBaseType
+ */
 typedef struct ALARM_BASE_TYPE tpl_alarm_base;
 
-/*
- * Locks
+/**
+ * @struct TPL_LOCK
+ *
+ * @todo what's this ? is it deprecated ?
  */
 struct TPL_LOCK {
     tpl_exec_common *taker;
     tpl_exec_common *waiters;
 };
 
+/**
+ * @typedef tpl_lock
+ *
+ * This is an alias for the structure #TPL_LOCK
+ *
+ * @see #TPL_LOCK
+ */
 typedef struct TPL_LOCK tpl_lock;
 
+/**
+ * @typedef tpl_application_mode
+ *
+ * Identifies an application mode
+ *
+ * @see #AppModeType
+ */
 typedef unsigned char tpl_application_mode;
-
-
 
 #endif
