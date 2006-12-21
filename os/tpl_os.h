@@ -142,6 +142,14 @@ StatusType WaitEvent(EventMaskType);
  */
 typedef tpl_tick            TickType;
 typedef tpl_tick            *TickRefType;
+
+/**
+ * @typedef AlarmBaseType
+ *
+ * See paragraph 13.6.1 page 62 of OSEK/VDX 2.2.22 spec
+ *
+ * @see #tpl_alarm_base
+ */
 typedef tpl_alarm_base      AlarmBaseType;
 typedef tpl_alarm_base      *AlarmBaseRefType;
 typedef tpl_alarm_id        AlarmType;

@@ -223,7 +223,7 @@
 /**
  * @def ALARM_AUTOSTART
  *
- * This state means alarm should be activated at system startup
+ * This state means alarm should be automatically activated at system startup.
  *
  * @see #tpl_alarm_state
  * @see #TPL_ALARM
