@@ -85,148 +85,641 @@ struct PARAM_BLOCK {
     TickType                cycle;  /**< cycle set for a relative alarm */
 };
 
-/*
- * struct that gather the os service id and its parameters
+/**
+ * @struct SERVICE_CALL_DESCRIPTOR
+ * 
+ * This structure gathers the os service identifier and its parameters
  */
 struct SERVICE_CALL_DESCRIPTOR {
-    struct PARAM_BLOCK  parameters;
-    unsigned char       service_id;
+    struct PARAM_BLOCK  parameters; /**< information about conditions seen when error has been detected */
+    unsigned char       service_id; /**< identifier of the service which raised the error */
 };
 
+/**
+ * @typedef tpl_service_call_desc
+ *
+ * This is an alias for the structure #SERVICE_CALL_DESCRIPTOR
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ */
 typedef struct SERVICE_CALL_DESCRIPTOR tpl_service_call_desc;
 
-/*
- * the global where parameters are stored before calling the error hook routine
+/**
+ * This global variable is where all informations about the error are store.
+ *
+ * This global variable must not be accessed directly, neither by application
+ * nor by OS services.
+ *
+ * Application (via ErrorHook function) should use some of these macros :
+ * - #OSError_ActivateTask_TaskID
+ * - #OSError_ChainTask_TaskID
+ * - #OSError_GetTaskID_TaskID
+ * - #OSError_GetTaskState_TaskID
+ * - #OSError_GetTaskState_State
+ * - #OSError_GetResource_ResID
+ * - #OSError_ReleaseResource_ResID
+ * - #OSError_SetEvent_TaskID
+ * - #OSError_SetEvent_Mask
+ * - #OSError_ClearEvent_Mask
+ * - #OSError_GetEvent_TaskID
+ * - #OSError_GetEvent_Event
+ * - #OSError_WaitEvent_Mask
+ * - #OSError_GetAlarmBase_AlarmID
+ * - #OSError_GetAlarmBase_Info
+ * - #OSError_GetAlarm_AlarmID
+ * - #OSError_GetAlarm_Tick
+ * - #OSError_SetRelAlarm_AlarmID
+ * - #OSError_SetRelAlarm_increment
+ * - #OSError_SetRelAlarm_cycle
+ * - #OSError_SetAbsAlarm_AlarmID
+ * - #OSError_SetAbsAlarm_start
+ * - #OSError_SetAbsAlarm_cycle
+ * - #OSError_CancelAlarm_AlarmID  
+ *
+ * Within OS services, these macros should be used to modify this variable :
+ * - #STORE_SERVICE
+ * - #STORE_TASK_ID
+ * - #STORE_TASK_ID_REF
+ * - #STORE_TASK_STATE_REF
+ * - #STORE_RESOURCE_ID
+ * - #STORE_ALARM_ID
+ * - #STORE_ALARM_BASE_REF
+ * - #STORE_TICK_REF
+ * - #STORE_TICK_1
+ * - #STORE_TICK_2
+ * - #STORE_EVENT_MASK
+ * - #STORE_EVENT_MASK_REF
  */
 extern tpl_service_call_desc tpl_service;
 
-/*
- * the function that calls error_hook
+/**
+ * this function is used to call the ErrorHook callback
+ * 
+ * @param tpl_status The error code which causes the call back
  */
 void tpl_call_error_hook(tpl_status);
 
-/*
- * Services ids
+/************************
+ * Services identifiers *
+ ************************/
+
+/**
+ * @def OSServiceId_ActivateTask
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #ActivateTask
  */
 #define OSServiceId_ActivateTask                1
+
+/**
+ * @def OSServiceId_TerminateTask
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #TerminateTask
+ */
 #define OSServiceId_TerminateTask               2
+
+/**
+ * @def OSServiceId_ChainTask
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #ChainTask
+ */
 #define OSServiceId_ChainTask                   3
+
+/**
+ * @def OSServiceId_Schedule
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #Schedule
+ */
 #define OSServiceId_Schedule                    4
+
+/**
+ * @def OSServiceId_GetTaskID
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #GetTaskID
+ */
 #define OSServiceId_GetTaskID                   5
+
+/**
+ * @def OSServiceId_GetTaskState
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #GetTaskState
+ */
 #define OSServiceId_GetTaskState                6
 
+/**
+ * @def OSServiceId_EnableAllInterrupts
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #EnableAllInterrupts
+ */
 #define OSServiceId_EnableAllInterrupts         7
+
+/**
+ * @def OSServiceId_DisableAllInterrupts
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #DisableAllInterrupts
+ */
 #define OSServiceId_DisableAllInterrupts        8
+
+/**
+ * @def OSServiceId_ResumeAllInterrupts
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #ResumeAllInterrupts
+ */
 #define OSServiceId_ResumeAllInterrupts         9
+
+/**
+ * @def OSServiceId_SuspendAllInterrupts
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #SuspendAllInterrupts
+ */
 #define OSServiceId_SuspendAllInterrupts        10
+
+/**
+ * @def OSServiceId_ResumeOSInterrupts
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #ResumeOSInterrupts
+ */
 #define OSServiceId_ResumeOSInterrupts          11
+
+/**
+ * @def OSServiceId_SuspendOSInterrupts
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #SuspendOSInterrupts
+ */
 #define OSServiceId_SuspendOSInterrupts         12
 
+
+/**
+ * @def OSServiceId_GetResource
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #GetResource
+ */
 #define OSServiceId_GetResource                 13
+
+/**
+ * @def OSServiceId_ReleaseResource
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #ReleaseResource
+ */
 #define OSServiceId_ReleaseResource             14
 
+/**
+ * @def OSServiceId_SetEvent
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #SetEvent
+ */
 #define OSServiceId_SetEvent                    15
+
+/**
+ * @def OSServiceId_ClearEvent
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #ClearEvent
+ */
 #define OSServiceId_ClearEvent                  16
+
+/**
+ * @def OSServiceId_GetEvent
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #GetEvent
+ */
 #define OSServiceId_GetEvent                    17
+
+/**
+ * @def OSServiceId_WaitEvent
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #WaitEvent
+ */
 #define OSServiceId_WaitEvent                   18
 
+/**
+ * @def OSServiceId_GetAlarmBase
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #GetAlarmBase
+ */
 #define OSServiceId_GetAlarmBase                19
+
+/**
+ * @def OSServiceId_GetAlarm
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #GetAlarm
+ */
 #define OSServiceId_GetAlarm                    20
+
+/**
+ * @def OSServiceId_SetRelAlarm
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #SetRelAlarm
+ */
 #define OSServiceId_SetRelAlarm                 21
+
+/**
+ * @def OSServiceId_SetAbsAlarm
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #SetAbsAlarm
+ */
 #define OSServiceId_SetAbsAlarm                 22
+
+/**
+ * @def OSServiceId_CancelAlarm
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #CancelAlarm
+ */
 #define OSServiceId_CancelAlarm                 23
 
+/**
+ * @def OSServiceId_GetActiveApplicationMode
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #GetActiveApplicationMode
+ */
 #define OSServiceId_GetActiveApplicationMode    24
+
+/**
+ * @def OSServiceId_StartOS
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #StartOS
+ */
 #define OSServiceId_StartOS                     25
+
+/**
+ * @def OSServiceId_ShutdownOS
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #ShutdownOS
+ */
 #define OSServiceId_ShutdownOS                  26
 
-/*
- * macros to access the service id and its parameters from hook routine
+/************************************************************************
+ * macros to access the service id and its parameters from hook routine *
+ ************************************************************************/
+
+/**
+ * @def OSErrorGetServiceId
+ *
+ * Gives identifier of the OS service which raised the error
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
  */
 #define OSErrorGetServiceId()   (tpl_service.service_id)
 
-/*  ActivateTask parameter  */
+/**
+ * @def OSError_ActivateTask_TaskID
+ *
+ * ActivateTask service error parameter
+ *
+ * Returns the identifier (#TaskType) of the task which caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ */
 #define OSError_ActivateTask_TaskID()   \
     (tpl_service.parameters.id.task_id)
     
-/*  ChainTask parameter */
+/**
+ * @def OSError_ChainTask_TaskID
+ *
+ * ChainTask service error parameter
+ *
+ * Returns the identifier (#TaskType) of the task which caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ */
 #define OSError_ChainTask_TaskID()      \
     (tpl_service.parameters.id.task_id)
     
-/*  GetTaskID parameter */
+/**
+ * @def OSError_GetTaskID_TaskID
+ *
+ * GetTaskID service error parameter
+ *
+ * Returns the identifier (#TaskType) of the task which caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ */
 #define OSError_GetTaskID_TaskID()             \
     (tpl_service.parameters.id.task_id_ref)
     
-/*  GetTaskState parameters */
+/**
+ * @def OSError_GetTaskState_TaskID
+ *
+ * One of GetTaskState service error parameters
+ *
+ * Returns the identifier (#TaskType) of the task which caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ *
+ * @see #OSError_GetTaskState_State
+ */
 #define OSError_GetTaskState_TaskID()   \
     (tpl_service.parameters.id.task_id)
+
+/**
+ * @def OSError_GetTaskState_State
+ *
+ * One of GetTaskState service error parameters
+ *
+ * Returns the state (#TaskStateRefType) of the task when the error occured.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ *
+ * @see #OSError_GetTaskState_TaskID
+ */
 #define OSError_GetTaskState_State()    \
     (tpl_service.parameters.param.state)
 
-/*  GetResource parameter   */
+/**
+ * @def OSError_GetResource_ResID
+ *
+ * GetResource service error parameter 
+ *
+ * Returns the identifier (#ResourceType) of the resource which caused the error
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ */
 #define OSError_GetResource_ResID()     \
     (tpl_service.parameters.id.res_id)
 
-/*  ReleaseResource parameter   */
+/**
+ * @def OSError_ReleaseResource_ResID
+ *
+ * ReleaseResource service error parameter 
+ *
+ * Returns the identifier (#ResourceType) of the resource which caused the error
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ */
 #define OSError_ReleaseResource_ResID() \
     (tpl_service.parameters.id.res_id)
 
-/*  SetEvent parameters */
+/**
+ * @def OSError_SetEvent_TaskID
+ *
+ * One of the SetEvent service error parameters
+ *
+ * Returns the identifier (#TaskType) of the task which caused the error
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ *
+ * @see #OSError_SetEvent_Mask
+ */
 #define OSError_SetEvent_TaskID()       \
     (tpl_service.parameters.id.task_id)
+
+/**
+ * @def OSError_SetEvent_Mask
+ *
+ * One of the SetEvent service error parameters
+ *
+ * Returns the mask (#EventMaskType) of the event when error occurred
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ *
+ * @see #OSError_SetEvent_TaskID
+ */
 #define OSError_SetEvent_Mask()         \
     (tpl_service.parameters.param.mask)
 
-/*  ClearEvent parameter    */
+/**
+ * @def OSError_ClearEvent_Mask
+ *
+ * ClearEvent service error parameter
+ *
+ * Returns the mask (#EventMaskType) of the event when error occurred
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ */
 #define OSError_ClearEvent_Mask()       \
     (tpl_service.parameters.param.mask)
     
-/*  GetEvent parameters */
+/**
+ * @def OSError_GetEvent_TaskID
+ *
+ * One of GetEvent service error parameters
+ *
+ * Returns the identifier (#TaskType) of the task which caused the error
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ *
+ * @see #OSError_GetEvent_Event
+ */
 #define OSError_GetEvent_TaskID()       \
     (tpl_service.parameters.id.task_id)
+	
+/**
+ * @def OSError_GetEvent_Event
+ *
+ * One of GetEvent service error parameters
+ *
+ * Returns the mask (#EventMaskType) of the event when error occurred
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ *
+ * @see #OSError_GetEvent_TaskID
+ */
 #define OSError_GetEvent_Event()        \
     (tpl_service.parameters.param.mask)
     
-/*  WaitEvent parameter */
+/**
+ * @def OSError_WaitEvent_Mask
+ *
+ * WaitEvent service error parameter
+ *
+ * Returns the mask (#EventMaskType) of the event when error occurred
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ */
 #define OSError_WaitEvent_Mask()        \
     (tpl_service.parameters.param.mask)
 
-/*  GetAlarmBase parameters */
+/**
+ * @def OSError_GetAlarmBase_AlarmID
+ *
+ * One of GetAlarmBase service error parameters 
+ *
+ * Returns the identifier (#AlarmType) of the alarm which caused error
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ *
+ * @see #OSError_GetAlarmBase_Info
+ */
 #define OSError_GetAlarmBase_AlarmID()  \
     (tpl_service.parameters.id.alarm_id)
+/**
+ * @def OSError_GetAlarmBase_Info
+ *
+ * One of GetAlarmBase service error parameters
+ *
+ * Returns the basic characteristics (#AlarmBaseRefType) of the alarm which caused the error
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ *
+ * @see #AlarmBaseType
+ * @see #AlarmBaseRefType
+ * @see #OSError_GetAlarmBase_AlarmID
+ */
 #define OSError_GetAlarmBase_Info()     \
     (tpl_service.parameters.param.alarm_base_ref)
     
-/*  GetAlarm parameters  */
+/**
+ * @def OSError_GetAlarm_AlarmID
+ *
+ * One of GetAlarm service error parameters
+ *
+ * Returns the identifier (#AlarmType) of the alarm which caused error
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ *
+ * @see OSError_GetAlarm_Tick
+ */
 #define OSError_GetAlarm_AlarmID()      \
     (tpl_service.parameters.id.alarm_id)
+
+/**
+ * @def OSError_GetAlarm_Tick
+ *
+ * One of GetAlarm service error parameters
+ *
+ * Returns the number of ticks (#TickRefType) on which the alarm which caused error should trigger
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ *
+ * @see OSError_GetAlarm_AlarmID
+ */
 #define OSError_GetAlarm_Tick()         \
     (tpl_service.parameters.param.tick_ref)
 
-/*  SetRelAlarm parameters  */
+/**
+ * @def OSError_SetRelAlarm_AlarmID
+ *
+ * One of SetRelAlarm service error parameters 
+ *
+ * Returns the identifier (#AlarmType) of the alarm which caused the error
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ * 
+ * @see #OSError_SetRelAlarm_increment
+ * @see #OSError_SetRelAlarm_cycle
+ */
 #define OSError_SetRelAlarm_AlarmID()   \
     (tpl_service.parameters.id.alarm_id)
+
+/**
+ * @def OSError_SetRelAlarm_increment
+ *
+ * One of SetRelAlarm service error parameters
+ *
+ * Returns the number of ticks (#TickType) on which the alarm which caused error should trigger
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ *
+ * @see OSError_SetRelAlarm_AlarmID
+ * @see OSError_SetRelAlarm_cycle
+ */
 #define OSError_SetRelAlarm_increment() \
     (tpl_service.parameters.param.tick)
+
+/**
+ * @def OSError_SetRelAlarm_cycle
+ *
+ * One of SetRelAlarm service error parameters
+ *
+ * Returns the cycle in ticks (#TickType) of the alarm which caused error
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ *
+ * @see OSError_SetRelAlarm_AlarmID
+ * @see #OSError_SetRelAlarm_increment
+ */
 #define OSError_SetRelAlarm_cycle()     \
     (tpl_service.parameters.cycle)
 
-/*  SetAbsAlarm parameters  */
+/**
+ * @def OSError_SetAbsAlarm_AlarmID
+ *
+ * One of SetAbsAlarm service error parameters
+ *
+ * Returns the identifier (#AlarmType) of the alarm which caused the error
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ *
+ * @see OSError_SetAbsAlarm_start
+ * @see OSError_SetAbsAlarm_cycle
+ */
 #define OSError_SetAbsAlarm_AlarmID()   \
     (tpl_service.parameters.id.alarm_id)
+
+/**
+ * @def OSError_SetAbsAlarm_start
+ *
+ * One of SetAbsAlarm service error parameters
+ *
+ * Returns the ticks (#TickType) of the alarm which caused the error
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ *
+ * @see OSError_SetAbsAlarm_AlarmID
+ * @see OSError_SetAbsAlarm_cycle
+ */
 #define OSError_SetAbsAlarm_start()     \
     (tpl_service.parameters.param.tick)
+
+/**
+ * @def OSError_SetAbsAlarm_cycle
+ *
+ * One of SetAbsAlarm service error parameters
+ *
+ * Returns the cycle (#TickType) of the alarm which caused the error
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ *
+ * @see OSError_SetAbsAlarm_AlarmID
+ * @see OSError_SetAbsAlarm_start
+ */
 #define OSError_SetAbsAlarm_cycle()     \
     (tpl_service.parameters.cycle)
 
-/*  CancelAlarm parameter   */
+/**
+ * @def OSError_CancelAlarm_AlarmID
+ *
+ * CancelAlarm service error parameter 
+ *
+ * Returns the identifier (#AlarmType) of the alarm which caused error
+ *
+ * @warning this macro does only make sense when used within #ErrorHook function
+ */
 #define OSError_CancelAlarm_AlarmID()   \
     (tpl_service.parameters.id.alarm_id)
 
-#endif /* of WITH_ERROR_HOOK  */
+#endif /* defined WITH_ERROR_HOOK  */
 
-/*
- *  STORE_SERVICE
+/**
+ * @def STORE_SERVICE
+ *
+ * Stores the service identifier into service error variable
+ *
+ * @see #tpl_service
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_SERVICE(service)   \
