@@ -1,4 +1,8 @@
-/*
+/**
+ * @file tpl_os_error.h
+ *
+ * @section copyright Copyright
+ *
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
@@ -6,12 +10,16 @@
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
- * Trampoline Errors macros, functions and datatypes header
+ * @section infos File informations
  *
  * $Date$
  * $Rev$
  * $Author$
  * $URL$
+ *
+ * @section descr File description
+ *
+ * Trampoline Errors macros, functions and datatypes header
  *
  */
 
@@ -21,6 +29,7 @@
 #include "tpl_os.h"
 
 /*
+ * Remember (see "The design of Trampoline") :
  * NO_TASK means there is no task defined in the system
  * OS_EXTENDED means extended error checking is done
  * WITH_ERROR_HOOK means an error hook routine is called when
@@ -29,27 +38,51 @@
 
 #ifdef WITH_ERROR_HOOK
 
+/**
+ * @union ID_PARAM_BLOCK
+ *
+ * This union is used in error hook parameter (#PARAM_BLOCK) to specify
+ * the related OS element's identifier. An OS element can be either a task
+ * or a resource or an alarm.
+ *
+ * Of course, it is an union because the kinds of identifier are mutually exclusive.
+ *
+ * @see #PARAM_BLOCK
+ * @see #tpl_service
+ */
 union ID_PARAM_BLOCK {
-        TaskType        task_id;        /* ActivateTask, ChainTask, GetTaskState, SetEvent, GetEvent    */
-        TaskRefType     task_id_ref;    /* GetTaskID    */
-        ResourceType    res_id;         /* GetResource, ReleaseResource */
-        AlarmType       alarm_id;
+        TaskType        task_id;        /**< used by #ActivateTask, #ChainTask, #GetTaskState, #SetEvent, #GetEvent */
+        TaskRefType     task_id_ref;    /**< used by #GetTaskID */
+        ResourceType    res_id;         /**< used by #GetResource, #ReleaseResource */
+        AlarmType       alarm_id;       /**< @todo document this */
 };
 
+/**
+ * @union PARAM_PARAM_BLOCK
+ *
+ * This union describes the parameter of the param block (#PARAM_BLOCK).
+ *
+ * @see #PARAM_BLOCK
+ * @see #tpl_service
+ */
 union PARAM_PARAM_BLOCK {
-        TaskStateRefType    state;          /* GetTaskState                     */
-        TickType            tick;           /* SetRelAlarm, SetAbsAlarm         */
-        TickRefType         tick_ref;       /* GetAlarm                         */
-        AlarmBaseRefType    alarm_base_ref; /* GetAlarmBase                     */
-        EventMaskType       mask;           /* SetEvent, ClearEvent, WaitEvent  */
-        EventMaskRefType    mask_ref;       /* GetEvent                         */
+        TaskStateRefType    state;          /**< used by #GetTaskState */
+        TickType            tick;           /**< used by #SetRelAlarm, #SetAbsAlarm */
+        TickRefType         tick_ref;       /**< used by #GetAlarm */
+        AlarmBaseRefType    alarm_base_ref; /**< used by #GetAlarmBase */
+        EventMaskType       mask;           /**< used by #SetEvent, #ClearEvent, #WaitEvent */
+        EventMaskRefType    mask_ref;       /**< used by #GetEvent */
 };
 
-/* union of parameters for error hook */
+/**
+ * @struct PARAM_BLOCK 
+ *
+ * This structure gathers all parameters for an error hook
+ */
 struct PARAM_BLOCK {
-    union ID_PARAM_BLOCK    id;
-    union PARAM_PARAM_BLOCK param;
-    TickType                cycle;
+    union ID_PARAM_BLOCK    id;     /**< identifies the OS element concerned by the error*/
+    union PARAM_PARAM_BLOCK param;  /**< gives more information about the reason of the error */
+    TickType                cycle;  /**< cycle set for a relative alarm */
 };
 
 /*
@@ -190,8 +223,7 @@ void tpl_call_error_hook(tpl_status);
 #define OSError_CancelAlarm_AlarmID()   \
     (tpl_service.parameters.id.alarm_id)
 
-#endif
-/* of WITH_ERROR_HOOK  */
+#endif /* of WITH_ERROR_HOOK  */
 
 /*
  *  STORE_SERVICE
