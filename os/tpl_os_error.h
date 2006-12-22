@@ -566,6 +566,7 @@ void tpl_call_error_hook(tpl_status);
  */
 #define OSError_GetAlarmBase_AlarmID()  \
     (tpl_service.parameters.id.alarm_id)
+
 /**
  * @def OSError_GetAlarmBase_Info
  *
@@ -719,7 +720,7 @@ void tpl_call_error_hook(tpl_status);
  *
  * Stores the service identifier into service error variable
  *
- * @see #tpl_service
+ * @see #OSErrorGetServiceId
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_SERVICE(service)   \
@@ -728,8 +729,20 @@ void tpl_call_error_hook(tpl_status);
 #   define STORE_SERVICE(service)
 #endif
 
-/*
- * STORE_TASK_ID
+/**
+ * @def STORE_TASK_ID
+ *
+ * Stores a task identifier into service error variable
+ *
+ * @param task_id type is #TaskType
+ *
+ * @see #OSError_ActivateTask_TaskID
+ * @see #OSError_ChainTask_TaskID
+ * @see #OSError_GetTaskID_TaskID
+ * @see #OSError_GetTaskState_TaskID
+ * @see #OSError_SetEvent_TaskID
+ * @see #OSError_GetEvent_TaskID
+ * 
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_TASK_ID(task_id)   \
@@ -738,8 +751,15 @@ void tpl_call_error_hook(tpl_status);
 #   define STORE_TASK_ID(task_id)
 #endif 
 
-/*
- * STORE_TASK_ID_REF
+/**
+ * @def STORE_TASK_ID_REF
+ *
+ * Stores a task identifier reference into service error variable
+ *
+ * @param task_id_ref type is #TaskRefType
+ *
+ * @see #OSError_GetTaskID_TaskID
+ * @see #
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_TASK_ID_REF(task_id_ref)  \
@@ -748,8 +768,14 @@ void tpl_call_error_hook(tpl_status);
 #   define STORE_TASK_ID_REF(task_id_ref)
 #endif
 
-/*
- * STORE_TASK_STATE_REF
+/**
+ * @def STORE_TASK_STATE_REF
+ *
+ * Stores a task state into service error variable
+ *
+ * @param state type is #TaslStateRefType
+ *
+ * @see #OSError_GetTaskState_State
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_TASK_STATE_REF(state)  \
@@ -758,8 +784,15 @@ void tpl_call_error_hook(tpl_status);
 #   define STORE_TASK_STATE_REF(state)
 #endif
 
-/*
- * STORE_RESOURCE_ID
+/**
+ * @def STORE_RESOURCE_ID
+ *
+ * Stores a resource identifier into service error variable
+ *
+ * @param res_id type is #ResourceType
+ *
+ * @see #OSError_GetResource_ResID
+ * @see #OSError_ReleaseResource_ResID
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_RESOURCE_ID(res_id)    \
@@ -768,8 +801,18 @@ void tpl_call_error_hook(tpl_status);
 #   define STORE_RESOURCE_ID(res_id)
 #endif
 
-/*
- * STORE_ALARM_ID
+/**
+ * @def STORE_ALARM_ID
+ OSError_GetTaskState_State
+ * Stores an alarm identifier into service error variable
+ *
+ * @param alarm_id type is #AlarmType
+ *
+ * @see #OSError_GetAlarmBase_AlarmID
+ * @see #OSError_GetAlarm_AlarmID
+ * @see #OSError_SetRelAlarm_AlarmID
+ * @see #OSError_SetAbsAlarm_AlarmID
+ * @see #OSError_CancelAlarm_AlarmID
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_ALARM_ID(alarm_id)     \
@@ -778,8 +821,14 @@ void tpl_call_error_hook(tpl_status);
 #   define STORE_ALARM_ID(alarm_id)
 #endif
 
-/*
- * STORE_ALARM_BASE_REF
+/**
+ * @def STORE_ALARM_BASE_REF
+ *
+ * Stores an alarm base tick into service error variable
+ *
+ * @param ref type is #AlarmBaseRefType 
+ *
+ * @see #OSError_GetAlarmBase_Info
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_ALARM_BASE_REF(ref)     \
@@ -788,8 +837,14 @@ void tpl_call_error_hook(tpl_status);
 #   define STORE_ALARM_BASE_REF(ref)
 #endif
 
-/*
- * STORE_TICK_REF
+/**
+ * @def STORE_TICK_REF
+ *
+ * Stores a tick reference into service error variable
+ * 
+ * @param ref type is #TickRefType
+ * 
+ * @see #OSError_GetAlarm_Tick
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_TICK_REF(ref)     \
@@ -798,8 +853,15 @@ void tpl_call_error_hook(tpl_status);
 #   define STORE_TICK_REF(tick_ref)
 #endif
 
-/*
- * STORE_TICK_1
+/**
+ * @def STORE_TICK_1
+ *
+ * Stores a tick into service error variable
+ *
+ * @param t type is #TickType
+ *
+ * @see OSError_SetRelAlarm_increment
+ * @see OSError_SetAbsAlarm_start
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_TICK_1(t)     \
@@ -808,8 +870,15 @@ void tpl_call_error_hook(tpl_status);
 #   define STORE_TICK_1(t)
 #endif
 
-/*
- * STORE_TICK_2
+/**
+ * @def STORE_TICK_2
+ *
+ * Stores a cycle into service error variable
+ *
+ * @param t type is #TickType
+ *
+ * @see #OSError_SetRelAlarm_cycle
+ * @see #OSError_SetAbsAlarm_cycle
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_TICK_2(t)     \
@@ -818,8 +887,17 @@ void tpl_call_error_hook(tpl_status);
 #   define STORE_TICK_2(t)
 #endif
 
-/*
- * STORE_EVENT_MASK
+/**
+ * @def STORE_EVENT_MASK
+ *
+ * Stores an event mask into service error variable
+ *
+ * @param m type is #EventMaskType
+ *
+ * @see #OSError_SetEvent_Mask
+ * @see #OSError_ClearEvent_Mask
+ * @see #OSError_GetEvent_Event
+ * @see #OSError_WaitEvent_Mask
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_EVENT_MASK(m)     \
@@ -828,8 +906,12 @@ void tpl_call_error_hook(tpl_status);
 #   define STORE_EVENT_MASK(m)
 #endif
 
-/*
- * STORE_EVENT_MASK_REF
+/**
+ * @def STORE_EVENT_MASK_REF
+ *
+ * Stores an event mask into service error variable
+ *
+ * @param ref type is #EventMaskRefType
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_EVENT_MASK_REF(ref)     \
