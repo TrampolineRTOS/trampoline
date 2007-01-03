@@ -17,6 +17,7 @@ tpl_stack_word $USR_STACK_ZONE$[$USR_STACK_SIZE$/sizeof(tpl_stack_word)];
 /* 
  * ISR2 $EXEC_NAME$ Handler that calls the central handler
  */
+#include <C167CS.H> /*TODO: C166 */
 #pragma NOFRAME
 #pragma warning disable = 138 /* disables the "expression with possibly no effect" warning */
 void $EXEC_NAME$_handler(void) interrupt $TRAP_NUMBER$
