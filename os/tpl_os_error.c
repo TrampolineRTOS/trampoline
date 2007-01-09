@@ -1,4 +1,8 @@
-/*
+/**
+ * @file tpl_os_error.c
+ *
+ * @section copyright Copyright
+ *
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
@@ -6,13 +10,16 @@
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
- * Trampoline Errors macros, functions and datatypes header
+ * @section infos File informations
  *
  * $Date$
  * $Rev$
  * $Author$
  * $URL$
  *
+ * @section descr File description
+ *
+ * Trampoline Errors macros, functions and datatypes header
  */
 
 #include "tpl_os_error.h"
@@ -20,23 +27,31 @@
 #include "tpl_os_definitions.h"
 
 /*
- * The function corresponding to this prototype is provided
+ * The function corresponding to this prototype should be provided
  * by the application
  */
-void ErrorHook(StatusType);
+extern void ErrorHook(StatusType);
 
 #ifdef WITH_ERROR_HOOK
 
 tpl_service_call_desc tpl_service;
 
+/**
+ * This flag is used to avoid error hook call recursion
+ */
 static bool in_error_hook = FALSE;
 
+/**
+ * Function used to call the application error hook
+ *
+ * @param error error code which raised the hook call
+ *
+ * Do not call it directly, use #PROCESS_ERROR macro
+ *
+ * @see #PROCESS_ERROR
+ */
 void tpl_call_error_hook(tpl_status error)
 {
-    /*  Since error hook should not be called when an error occurs
-        in a service called by the hook routine, the flag in_error_hook
-        is checked before calling the hook routine
-    */
     if (! in_error_hook) {
         in_error_hook = TRUE;
         ErrorHook(error);

@@ -912,6 +912,8 @@ void tpl_call_error_hook(tpl_status);
  * Stores an event mask into service error variable
  *
  * @param ref type is #EventMaskRefType
+ *
+ * @todo Is this really useful ?
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_EVENT_MASK_REF(ref)     \
@@ -920,11 +922,13 @@ void tpl_call_error_hook(tpl_status);
 #   define STORE_EVENT_MASK_REF(ref)
 #endif
 
-/*-----------------------------------------------------------------------------
- * PROCESS_ERROR
+/**
+ * @def PROCESS_ERROR
+ *
  * This maccro generates the code to call the error hook, when
- * an error occured, if the WITH_ERROR_HOOK flag is on and no
- * code at all if the flag is off.
+ * an error occured, if the #WITH_ERROR_HOOK flag is defined.
+ *
+ * @param error the error code variable to check
  */
 #ifdef WITH_ERROR_HOOK
 #define PROCESS_ERROR(error)        \
@@ -935,10 +939,18 @@ void tpl_call_error_hook(tpl_status);
 #define PROCESS_ERROR(error)
 #endif
 
-/*-----------------------------------------------------------------------------
- * IF_NO_EXTENDED_ERROR
- * This macro generate a if (result == E_OK) {
- * when OS_EXTENDED is on and no code at all if it is off
+/**
+ * @def IF_NO_EXTENDED_ERROR
+ *
+ * In conjonction with #END_IF_NO_EXTENDED_ERROR, this macro
+ * can be used to enclose a section which should not be executed
+ * while there is both :
+ * - OS_EXTENDED defined
+ * - an error occurred
+ * 
+ * @param result the error code variable to check
+ *
+ * @see #END_IF_NO_EXTENDED_ERROR
  */
 #ifdef OS_EXTENDED
 #   define IF_NO_EXTENDED_ERROR(result) \
@@ -947,9 +959,12 @@ void tpl_call_error_hook(tpl_status);
 #   define IF_NO_EXTENDED_ERROR(result)
 #endif
 
-/*-----------------------------------------------------------------------------
- * END_IF_NO_EXTENDED_ERROR
- * See above
+/**
+ * @def END_IF_NO_EXTENDED_ERROR
+ *
+ * Closes a #IF_NO_EXTENDED_ERROR opened section
+ *
+ * @see #IF_NO_EXTENDED_ERROR
  */
 #ifdef OS_EXTENDED
 #   define END_IF_NO_EXTENDED_ERROR() \
@@ -958,11 +973,17 @@ void tpl_call_error_hook(tpl_status);
 #   define END_IF_NO_EXTENDED_ERROR()
 #endif
 
-/*-----------------------------------------------------------------------------
- * LOCK_WHEN_HOOK
- * Lock when WITH_ERROR_HOOK is defined. Used for some services
- * that does not require locking in standard mode since they do not
- * access globals
+/**
+ * @def LOCK_WHEN_HOOK
+ *
+ * Locks preemption only when #WITH_ERROR_HOOK is defined. 
+ *
+ * Used for some services that does not require locking when
+ * #WITH_ERROR_HOOK is not defined while it is needed when
+ * #WITH_ERROR_HOOK is defined.
+ *
+ * @see #UNLOCK_WHEN_HOOK
+ * @see #LOCK_WHEN_NO_HOOK
  */
 #ifdef WITH_ERROR_HOOK
 #   define LOCK_WHEN_HOOK()     \
@@ -974,10 +995,17 @@ void tpl_call_error_hook(tpl_status);
 #   define UNLOCK_WHEN_HOOK()
 #endif
 
-/*-----------------------------------------------------------------------------
- * LOCK_WHEN_NO_HOOK
- * Lock when WITH_ERROR_HOOK is not defined. Used for some services
- * that require a different locking scheme according to hook use
+/**
+ * @def LOCK_WHEN_NO_HOOK
+ *
+ * Locks preemption only if #WITH_ERROR_HOOK is not defined. This is
+ * the opposite of #LOCK_WHEN_HOOK.
+ *
+ * Used for some services that require different locking scheme
+ * according to hook use.
+ *
+ * @see #UNLOCK_WHEN_NO_HOOK
+ * @see #LOCK_WHEN_HOOK
  */
 #ifdef WITH_ERROR_HOOK
 #   define LOCK_WHEN_NO_HOOK()
@@ -989,11 +1017,12 @@ void tpl_call_error_hook(tpl_status);
     tpl_release_task_lock();
 #endif
 
-/*-----------------------------------------------------------------------------
- * LOCK_WHEN_TASK
- * Lock when NO_TASK is not defined. Used for task services
- * that does not require locking in standard mode since there is no
- * task to operate on
+/**
+ * @def LOCK_WHEN_TASK
+ *
+ * Locks only when NO_TASK is not defined.
+ *
+ * @see #UNLOCK_WHEN_TASK
  */
 #ifdef NO_TASK
 #   define LOCK_WHEN_TASK()
@@ -1005,11 +1034,12 @@ void tpl_call_error_hook(tpl_status);
     tpl_release_task_lock();
 #endif
 
-/*-----------------------------------------------------------------------------
- * LOCK_WHEN_RESOURCE
- * Lock when NO_RESOURCE is not defined. Used for resource services
- * that does not require locking in standard mode since there is no
- * resource to operate on
+/**
+ * @def LOCK_WHEN_RESOURCE
+ *
+ * Locks only when NO_RESOURCE is not defined.
+ *
+ * @see #UNLOCK_WHEN_RESOURCE
  */
 #ifdef NO_RESOURCE
 #   define LOCK_WHEN_RESOURCE()
@@ -1021,11 +1051,19 @@ void tpl_call_error_hook(tpl_status);
     tpl_release_task_lock();
 #endif
 
-/*-----------------------------------------------------------------------------
- * CHECK_TASK_ID_ERROR macro definition
- * This macro defines the appropriate error program
- * for out of range task_id. It is used in os services
- * that use task_id as parameter.
+/**
+ * @def CHECK_TASK_ID_ERROR
+ *
+ * This macro checks for out of range task_id error. It 
+ * is used in os services which uses task_id as parameter.
+ *
+ * @param task_id #TaskType (so called task_id) to check
+ * @param result error code variable to set (StatusType)
+ *
+ * @note this checking is disabled if OS_EXTENDED is not set
+ *
+ * @note the error code is set only if there was no
+ * previous error
  */
 
 /* No extended error checking (! OS_EXTENDED)  */
@@ -1052,10 +1090,18 @@ void tpl_call_error_hook(tpl_status);
     }
 #endif
 
-/*-----------------------------------------------------------------------------
- * CHECK_TASK_CALL_LEVEL_ERROR macro definition
- * This macro defines the appropriate error program
- * that check for call level
+/**
+ * @def CHECK_TASK_CALL_LEVEL_ERROR
+ *
+ * This macro checks for inappropriate call level errors.
+ *
+ * @param result error code variable to set (#StatusType)
+ *
+ * @note checking is disabled if OS_EXTENDED is not defined
+ *
+ * @note the error code is set only if there was no previous error
+ *
+ * @see #tpl_os_state
  */
 
 /*  NO_TASK and extended error checking (OS_EXTENDED).
@@ -1080,10 +1126,16 @@ void tpl_call_error_hook(tpl_status);
 #   define CHECK_TASK_CALL_LEVEL_ERROR(result)
 #endif
 
-/*-----------------------------------------------------------------------------
- * CHECK_NOT_EXTENDED_TASK_ERROR macro definition
- * This macro defines the appropriate error program
- * that check the task is an extended one
+/**
+ * @def CHECK_NOT_EXTENDED_TASK_ERROR
+ *
+ * This macro checks if specified task is extended. If it is not, it
+ * sets an error
+ *
+ * @param task_id task identifier (#TaskType) of the task to check
+ * @param result error code to set if check fails (#StatusType)
+ *
+ * @note checking is disabled when OS_EXTENDED is not defined
  */
 #ifdef OS_EXTENDED
 #   define CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)                            \
@@ -1094,10 +1146,14 @@ void tpl_call_error_hook(tpl_status);
 #   define CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)
 #endif
 
-/*-----------------------------------------------------------------------------
- * CHECK_NOT_EXTENDED_RUNNING_ERROR macro definition
- * This macro defines the appropriate error program
- * that check the running task is an extended one
+/**
+ * @def CHECK_NOT_EXTENDED_RUNNING_ERROR
+ *
+ * Does the same checking as #CHECK_NOT_EXTENDED_TASK_ERROR but for the running task.
+ *
+ * @param result error code to set if check fails (#StatusType)
+ *
+ * @note checking is disabled when OS_EXTENDED is not defined
  */
 #ifdef OS_EXTENDED
 #   define CHECK_NOT_EXTENDED_RUNNING_ERROR(result)                                     \
@@ -1108,10 +1164,16 @@ void tpl_call_error_hook(tpl_status);
 #   define CHECK_NOT_EXTENDED_RUNNING_ERROR(result)
 #endif
 
-/*-----------------------------------------------------------------------------
- * CHECK_SUSPENDED_TASK_ERROR macro definition
- * This macro defines the appropriate error program
- * that check the task is not in the suspended state
+/**
+ * @def CHECK_SUSPENDED_TASK_ERROR
+ *
+ * Checks if task is not suspended (check fails if task is suspended) and
+ * sets the error code
+ *
+ * @param task_id task (#TaskType) to check
+ * @param result error code to set if check fails (#StatusType)
+ *
+ * @note checking is disabled when OS_EXTENDED is not defined
  */
 #ifdef OS_EXTENDED
 #   define CHECK_SUSPENDED_TASK_ERROR(task_id,result)                      \
@@ -1123,10 +1185,16 @@ void tpl_call_error_hook(tpl_status);
 #endif
 
 
-/*--------------------------------------------------------------------------------
- * CHECK_RUNNING_OWNS_REZ_ERROR macro definition
- * This macro defines the appropriate error program
- * that check for the running object owning a resource
+/**
+ * @def CHECK_RUNNING_OWNS_REZ_ERROR
+ *
+ * Checks if the running task owns a resource, if not, sets an error.
+ *
+ * @param result error code (#StatusType) to set if check fails
+ *
+ * @note error code is not set if it do not equals E_OK
+ *
+ * @note checking is disable when OS_EXTENDED is not defined
  */
 
 /*  If NO_TASK, this error cannot happen    */
@@ -1148,11 +1216,17 @@ void tpl_call_error_hook(tpl_status);
     }
 #endif
 
-/*-----------------------------------------------------------------------------
- * CHECK_ALARM_ID_ERROR macro definition
- * This macro defines the appropriate error program
- * for out of range alarm_id. It is used in os services
- * that use task_id as parameter.
+/**
+ * @def CHECK_ALARM_ID_ERROR
+ *
+ * Checks if alarm_id is a valid alarm identifier.
+ *
+ * @param alarm_id #AlarmType to check
+ * @param result error code to set if check fails
+ *
+ * @note error code is not set if it do not equals E_OK
+ *
+ * @note checking is disable when OS_EXTENDED is not defined
  */
 
 /* No extended error checking (! OS_EXTENDED)  */
@@ -1179,11 +1253,17 @@ void tpl_call_error_hook(tpl_status);
     }
 #endif
 
-/*-----------------------------------------------------------------------------
- * CHECK_RESOURCE_ID_ERROR macro definition
- * This macro defines the appropriate error program
- * for out of range res_id. It is used in os services
- * that use res_id as parameter.
+/**
+ * @def CHECK_RESOURCE_ID_ERROR
+ *
+ * Checks if the resouce identifier (#ResourceType) is valid.
+ *
+ * @param res_id #ResourceType to check
+ * @param result error code to set if check fails
+ *
+ * @note error code is not set if it do not equals E_OK
+ *
+ * @note checking is disable when OS_EXTENDED is not defined
  */
 
 /* No extended error checking (! OS_EXTENDED)  */
@@ -1210,11 +1290,20 @@ void tpl_call_error_hook(tpl_status);
     }
 #endif
 
-/*-----------------------------------------------------------------------------
- * CHECK_RESOURCE_PRIO_ERROR_ON_GET macro definition
- * This macro defines the appropriate error program
- * for a resource that has a lower priority than the task that
- * attempt to get it. It is used in GetResource.
+/**
+ * @def CHECK_RESOURCE_PRIO_ERROR_ON_GET
+ *
+ * Checks if the running task or interrupt can get the resource. Especially, it checks that :
+ * - the task does not have an higher priority than the ceiling priority of the
+ *   resource it gets. 
+ * - the resource is not owned by another task
+ *
+ * @param res the resource (#ResourceType) the task get
+ * @param result error code to set if check fails
+ *
+ * @note error code is not set if it do not equals E_OK
+ *
+ * @note checking is disable when OS_EXTENDED is not defined
  */
 
 #ifdef OS_EXTENDED
@@ -1227,11 +1316,17 @@ void tpl_call_error_hook(tpl_status);
 #   define CHECK_RESOURCE_PRIO_ERROR_ON_GET(res,result)
 #endif
 
-/*-----------------------------------------------------------------------------
- * CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE macro definition
- * This macro defines the appropriate error program
- * for a resource that has a higher priority than the task that
- * attempt to release it. It is used in ReleaseResource.
+/**
+ * @def CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE
+ *
+ * Checks if the running task or interrupt can release the resource.
+ *
+ * @param res the resource (#ResourceType) the task releases
+ * @param result error code to set if check fails
+ *
+ * @note error code is not set if it do not equals E_OK
+ *
+ * @note checking is disable when OS_EXTENDED is not defined
  */
 
 #ifdef OS_EXTENDED
@@ -1244,11 +1339,17 @@ void tpl_call_error_hook(tpl_status);
 #   define CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(res,result)
 #endif
 
-/*-----------------------------------------------------------------------------
- * CHECK_RESOURCE_ORDER_ON_RELEASE macro definition
- * This macro defines the appropriate error program
- * for a resource that is not released in the correct order.
- * It is used in ReleaseResource.
+/**
+ * @def CHECK_RESOURCE_ORDER_ON_RELEASE
+ *
+ * Checks if a resource is released by the running task or interrupt in the right order
+ *
+ * @param res #ResourceType to check
+ * @param result error code to set if check fails
+ *
+ * @note error code is not set if it do not equals E_OK
+ *
+ * @note checking is disable when OS_EXTENDED is not defined
  */
 
 #ifdef OS_EXTENDED
