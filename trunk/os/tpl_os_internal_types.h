@@ -468,6 +468,8 @@ typedef struct ALARM_BASE_TYPE tpl_alarm_base;
  * @struct TPL_LOCK
  *
  * @todo what's this ? is it deprecated ?
+ *
+ * @see #TASK_LOCK
  */
 struct TPL_LOCK {
     tpl_exec_common *taker;
