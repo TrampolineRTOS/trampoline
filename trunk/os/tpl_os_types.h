@@ -1,6 +1,11 @@
 /**
  * @file tpl_os_types.h
  *
+ * @section descr File description
+ *
+ * Trampoline general types definitions. This file is included
+ * by the communication library
+ *
  * @section copyright Copyright
  *
  * Trampoline OS
@@ -16,11 +21,6 @@
  * $Rev$
  * $Author$
  * $URL$
- *
- * @section descr File description
- *
- * Trampoline general types definitions. This file is included
- * by the communication library
  */
 
 #ifndef __TPL_OS_TYPES_H__

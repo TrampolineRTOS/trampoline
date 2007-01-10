@@ -1,6 +1,11 @@
 /**
  * @file tpl_os_custom_types.h
  *
+ * @section File description
+ *
+ * This file gathers all data types which can be changed by user for the
+ * needs of its application. Please refer to comment of each type for more details.
+ * 
  * @section Copyright
  *
  * Trampoline OS
@@ -16,12 +21,6 @@
  * $Rev$
  * $Author$
  * $URL$
- *
- * @section File description
- *
- * This file gathers all data types which can be changed by user for the
- * needs of its application. Please refer to comment of each type for more details.
- * 
  */
  
 #ifndef __TPL_OS_CUSTOM_TYPES_H__

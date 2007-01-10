@@ -1,6 +1,11 @@
 /**
  * @file tpl_os_wrappers.h
  *
+ * @section descr File description
+ *
+ * Macros in this file are wrappers which gives the ability to call a service
+ * specifying directly a task name (instead of a TaskType value or variable).
+ *
  * @section copyright Copyright
  *
  * Trampoline OS
@@ -16,11 +21,6 @@
  * $Rev: 225 $
  * $Author: mik $
  * $URL: https://trampoline.rts-software.org/svn/trunk/os/tpl_os_definitions.h $
- *
- * @section descr File description
- *
- * Macros in this file are wrappers which gives the ability to call a service
- * specifying directly a task name (instead of a TaskType value or variable).
  */
 
 #ifndef __TPL_OS_WRAPPERS_H__
