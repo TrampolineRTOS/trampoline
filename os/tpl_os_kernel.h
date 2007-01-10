@@ -1,6 +1,10 @@
 /**
  * @file tpl_os_kernel.h
  *
+ * @section desc File description
+ *
+ * Trampoline kernel structures header file
+ *
  * @section copyright Copyright
  *
  * Trampoline OS
@@ -16,11 +20,6 @@
  * $Rev$
  * $Author$
  * $URL$
- *
- * @section desc File description
- *
- * Trampoline kernel structures header file
- *
  */
 
 #ifndef __TPL_OS_KERNEL_H__

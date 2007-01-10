@@ -1,6 +1,10 @@
 /**
  * @file tpl_os_hooks.h
  *
+ * @section descr File description
+ *
+ * Trampoline Hooks related macros, functions and datatypes
+ *
  * @section copyright Copyright
  *
  * Trampoline OS
@@ -16,10 +20,6 @@
  * $Rev$
  * $Author$
  * $URL$
- *
- * @section descr File description
- *
- * Trampoline Hooks related macros, functions and datatypes
  */
 
 #ifndef __TPL_OS_HOOKS_H__

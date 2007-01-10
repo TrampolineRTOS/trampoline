@@ -1,6 +1,11 @@
 /**
  * @file tpl_os_application_def.h
  *
+ * @section File description
+ *
+ * This file wraps user application configuration header. This wrapped file is typically
+ * generated from an OIL source.
+ *
  * @section Copyright
  *
  * Trampoline OS
@@ -16,12 +21,6 @@
  * $Rev$
  * $Author$
  * $URL$
- *
- * @section File description
- *
- * This file wraps user application configuration header. This wrapped file is typically
- * generated from an OIL source.
- *
  */
 
 #ifndef __TPL_OS_APPLICATION_DEF_H__

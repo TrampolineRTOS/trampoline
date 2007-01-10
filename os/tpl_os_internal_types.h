@@ -1,6 +1,10 @@
 /**
  * @file tpl_os_internal_types.h
  *
+ * @section descr File description
+ *
+ * Trampoline internal types. These types are not intended to be used in an application.
+ *
  * @section copyright Copyright
  *
  * Trampoline OS
@@ -16,11 +20,6 @@
  * $Rev$
  * $Author$
  * $URL$
- *
- * @section descr File description
- *
- * Trampoline internal types. These types are not intended to be used in an application.
- *
  */
 
 #ifndef __TPL_OS_INTERNAL_TYPES_H__
@@ -139,7 +138,7 @@ typedef unsigned char tpl_exec_obj_type;
  *
  * This type represents the state of a task.
  *
- * See page 16+ of the OSEK/VDX spec
+ * See page 16+ of the OSEK/VDX 2.2.2 spec
  *
  * Value can be one of :
  * - #AUTOSTART

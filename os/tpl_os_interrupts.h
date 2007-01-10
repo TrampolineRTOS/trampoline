@@ -1,6 +1,10 @@
 /**
  * @file tpl_os_interrupts.h
  *
+ * @section desc File description
+ *
+ * Trampoline interrupt service routines management
+ *
  * @section copyright Copyright
  *
  * Trampoline OS
@@ -16,11 +20,6 @@
  * $Rev$
  * $Author$
  * $URL$
- *
- * @section desc File description
- *
- * Trampoline interrupt service routines management
- *
  */
 
 #ifndef __TPL_OS_INTERRUPTS_H__

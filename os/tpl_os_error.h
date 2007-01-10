@@ -1,6 +1,10 @@
 /**
  * @file tpl_os_error.h
  *
+ * @section descr File description
+ *
+ * Trampoline Errors macros, functions and datatypes header
+ *
  * @section copyright Copyright
  *
  * Trampoline OS
@@ -16,11 +20,6 @@
  * $Rev$
  * $Author$
  * $URL$
- *
- * @section descr File description
- *
- * Trampoline Errors macros, functions and datatypes header
- *
  */
 
 #ifndef __TPL_OS_ERROR_H__

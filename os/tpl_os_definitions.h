@@ -1,6 +1,10 @@
 /**
  * @file tpl_os_definitions.h
  *
+ * @section descr File description
+ *
+ * Here are defined all global symbolic values used in Trampoline.
+ *
  * @section copyright Copyright
  * 
  * Trampoline OS
@@ -16,10 +20,6 @@
  * $Rev$
  * $Author$
  * $URL$
- *
- * @section descr Module description
- *
- * Here are defined all global symbolic values used in Trampoline.
  */
 
 #ifndef __TPL_OS_DEFINITIONS_H__
