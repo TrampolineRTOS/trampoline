@@ -128,8 +128,12 @@ extern tpl_isr			*tpl_isr_table[ISR_COUNT];
 #endif
 
 /**
- * stores the current state of Trampoline
- *
+ * tpl_os_state stores the current state of Trampoline
+ * it is set when the OS go from a state to another one
+ * and used in various services. For instance, if the
+ * OS is in the ISR state, tpl_schedule is not executed
+ * and is postponed at the end of the ISR execution
+
  * Value can be one of :
  * - #OS_INIT
  * - #OS_TASK

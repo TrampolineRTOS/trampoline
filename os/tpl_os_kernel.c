@@ -1,4 +1,12 @@
-/*
+/**
+ * @file tpl_os_kernel.c
+ *
+ * @section descr File description
+ *
+ * Trampoline kernel structures
+ *
+ * @section copyright Copyright
+ *
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
@@ -6,7 +14,7 @@
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
- * Trampoline kernel structures
+ * @section infos File informations
  *
  * $Date$
  * $Rev$
@@ -19,10 +27,10 @@
 #include "tpl_os_definitions.h"
 #include "tpl_machine.h"
 
-void tpl_context_switch(tpl_context *, tpl_context *);
-void tpl_init_context(tpl_exec_common *);
-void tpl_get_task_lock(void);
-void tpl_release_task_lock(void);
+extern void tpl_context_switch(tpl_context *, tpl_context *);
+extern void tpl_init_context(tpl_exec_common *);
+extern void tpl_get_task_lock(void);
+extern void tpl_release_task_lock(void);
 
 /*
  * idle_task is the task descriptor of the kernel task
@@ -31,6 +39,13 @@ void tpl_release_task_lock(void);
  * init code currently being run.
  * It then calls tpl_schedule to start the
  * multitasking and falls back in an infinite loop.
+ */
+/**
+ * @internal
+ *
+ * static part of the idle task descriptor
+ *
+ * @see #idle_task
  */
 tpl_exec_static idle_task_static = {
     /* context              */  IDLE_CONTEXT,
@@ -43,6 +58,11 @@ tpl_exec_static idle_task_static = {
     /* type is BASIC        */  BASIC_TASK
 };
 
+/**
+ * @internal
+ *
+ * idle task descriptor
+ */
 tpl_task idle_task = {
     /*  Common members  */
     {
@@ -59,16 +79,19 @@ tpl_task idle_task = {
     /* event wait           */  0
 };
 
-/*
- * tpl_running_task is the currently running
- * task in the application.
- * At system startup it is set to the
- * idle task
+/**
+ * @internal 
+ *
+ * tpl_running_task is the currently running task in the application.
+ *
+ * At system startup it is set to the idle task
  */
 tpl_exec_common *tpl_running_obj = (tpl_exec_common *)&idle_task;
 
-/*
- * tpl_task_list_head is the head of the task list
+/**
+ * @internal
+ *
+ * tpl_task_list_head is the head of the ready task list
  * it points to the most higher priority task.
  */
 tpl_exec_common *tpl_exec_obj_list_head = NULL;
@@ -82,35 +105,37 @@ tpl_exec_common *tpl_exec_obj_list_head = NULL;
  */
 /* tpl_status tpl_last_result = E_OK; */
 
-/*
- * tpl_os_state stores the current state of Trampoline
- * it is set when the OS go from a state to another one
- * and used in various services. For instance, if the
- * OS is in the ISR state, tpl_schedule is not executed
- * and is postponed at the end of the ISR execution
+unsigned char tpl_os_state = OS_INIT; /* see doc in header file declaration */
+
+tpl_resource_id RES_SCHEDULER = -1;  /* see doc in header file declaration */
+
+/**
+ * The scheduler resource descriptor
+ *
+ * @see #RES_SCHEDULER
  */
-unsigned char tpl_os_state = OS_INIT;
+tpl_resource res_scheduler = {
+  /* ceiling_priority */    127,
+	/* owner_prev_priority */ 0,
+	/* owner */               NULL,
+	/* next_res */            NULL
+};
 
-/*
- * RES_SCHEDULER is used to deny preemption
- * It can be used by a task but is not stored
- * in the resource table.  
- */
-tpl_resource_id RES_SCHEDULER = -1;
-
-tpl_resource res_scheduler = { 127, 0, NULL, NULL };
-
-/*
- * various locks in the kernel
+/**
+ * @deprecated
  */
 tpl_lock tpl_task_lock = { NULL, NULL};
-tpl_lock *TASK_LOCK = &tpl_task_lock;
+tpl_lock *TASK_LOCK = &tpl_task_lock; /* deprecated, see in header file */
 
-/*
+/**
+ * @internal
+ *
  * tpl_get_exec_object get the higher priority ready executable
  * object from the executable objects list and returns it.
  * tpl_get_exec_object returns NULL if no ready executable object
  * is available
+ *
+ * @return highest priority executable object descriptor
  */
 tpl_exec_common *tpl_get_exec_object(void)
 {
@@ -136,9 +161,14 @@ tpl_exec_common *tpl_get_exec_object(void)
     return current;
 }
 
-/*
+/**
+ * @internal
+ *
  * tpl_put_exec_object put an executable object
  * in the ready executable object list
+ *
+ * @param exec_obj address of the executable object descriptor
+ * @param kind can be one of #PREEMPTED_EXEC_OBJ or #NEWLY_ACTIVATED_EXEC_OBJ
  */
 void tpl_put_exec_object(tpl_exec_common *exec_obj, int kind)
 {
@@ -227,11 +257,17 @@ void tpl_put_exec_object(tpl_exec_common *exec_obj, int kind)
 }
 
 
-/*
- * executable object initialization.
+/**
+ * @internal
+ *
+ * Executable object initialization.
+ *
  * This function initialize the common part of task
- * and isr to ready them for execution. If the object is
- * a task it init the event masks too.
+ * or category 2 interrupt service routine to make them ready
+ * for execution. If the object is an task it initializes
+ * the event masks too (this has no effect on basic tasks).
+ *
+ * @param exec_obj address of the executable object descriptor
  */
 void tpl_init_exec_object(tpl_exec_common *exec_obj)
 {
@@ -253,10 +289,13 @@ void tpl_init_exec_object(tpl_exec_common *exec_obj)
     }
 }
 
-/*
- * OS initialization
+extern void tpl_insert_alarm(tpl_alarm *alarm);
+
+/**
+ * @internal 
+ *
+ * Initialization of Trampoline
  */
-void tpl_insert_alarm(tpl_alarm *alarm);
 void tpl_init_os(void)
 {
     int         i;
