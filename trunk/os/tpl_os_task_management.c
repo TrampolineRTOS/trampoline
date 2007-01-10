@@ -1,4 +1,12 @@
-/*
+/**
+ * @file tpl_os_task_management.c
+ *
+ * @section desc File description
+ *
+ * Trampoline Task Management Calls
+ *
+ * @section copyright Copyright
+ *
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
@@ -6,13 +14,12 @@
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
- * Trampoline Task Management Calls
+ * @section infos File informations
  *
  * $Date$
  * $Rev$
  * $Author$
  * $URL$
- *
  */
  
 #include "tpl_os.h"
@@ -23,30 +30,30 @@
 /*
  * Prototypes of kernel fonctions
  */
-tpl_exec_common *tpl_get_exec_object(void);
-void tpl_put_exec_object(tpl_exec_common *, int);
-void tpl_init_exec_object(tpl_exec_common *);
-void tpl_get_task_lock(void);
-void tpl_release_task_lock(void);
+extern tpl_exec_common *tpl_get_exec_object(void);
+extern void tpl_put_exec_object(tpl_exec_common *, int);
+extern void tpl_init_exec_object(tpl_exec_common *);
+extern void tpl_get_task_lock(void);
+extern void tpl_release_task_lock(void);
 
 /*
  * Prototypes of machine dependent functions
  */
-void tpl_switch_context(tpl_context *, tpl_context *);
-void tpl_switch_context_from_it(tpl_context *, tpl_context *);
+extern void tpl_switch_context(tpl_context *, tpl_context *);
+extern void tpl_switch_context_from_it(tpl_context *, tpl_context *);
 
 #ifdef WITH_PRE_TASK_HOOK
 /*
  * Prototype of the pre-task hook routine
  */
-void PreTaskHook(void);
+extern void PreTaskHook(void);
 #endif
 
 #ifdef WITH_POST_TASK_HOOK
 /*
  * Prototype of the post-task hook routine
  */
-void PostTaskHook(void);
+extern void PostTaskHook(void);
 #endif
 
 /*
@@ -54,8 +61,12 @@ void PostTaskHook(void);
  */
 extern tpl_task idle_task;
 
-/*
+/**
+ * @internal
+ *
  * Get an internal resource
+ *
+ * @param task task from which internal resource is got
  */
 void tpl_get_internal_resource(tpl_exec_common *task)
 {
@@ -68,8 +79,12 @@ void tpl_get_internal_resource(tpl_exec_common *task)
     }
 }
 
-/*
+/**
+ * @internal
+ *
  * Release an internal resource
+ *
+ * @param task task from which internal resource is released
  */
 void tpl_release_internal_resource(tpl_exec_common *task)
 {
@@ -81,11 +96,15 @@ void tpl_release_internal_resource(tpl_exec_common *task)
     }
 }
 
-/*
- * Scheduling
+/**
+ * @internal
+ *
+ * Does the scheduling
+ *
  * This function is called by the OSEK/VDX Schedule service
- * and by various function when a rescheduling occurs
+ * and by various function when a rescheduling is needed
  * 
+ * @param from can be one of #FROM_TASK_LEVEL or #FROM_IT_LEVEL
  */
 void tpl_schedule(int from)
 {
@@ -201,15 +220,17 @@ void tpl_schedule(int from)
     }
 }
 
-/*
- * task activation
+/**
+ * @internal
+ *
  * This function is called by OSEK/VDX ActivateTask and by
- * the raise of an alarm
+ * the raise of an alarm.
  *
  * the activation count is incremented
  * if the task is in the SUSPENDED state, it is moved
  * to the task list
  *
+ * @param task reference of the task's identifier
  */
 tpl_status tpl_activate_task(tpl_task *task)
 {
@@ -238,9 +259,9 @@ tpl_status tpl_activate_task(tpl_task *task)
 /*
  * OSEK/VDX API services
  *
- * ActivateTask calls tpl_activate_task after
- * picking the task pointer from the task id
+ * see header file documentation or refer to the OSEK/VDX 2.2.2 specification
  */
+
 StatusType ActivateTask(TaskType task_id)
 {
     /*  init the error to no error  */
@@ -274,12 +295,6 @@ StatusType ActivateTask(TaskType task_id)
     return result;
 }
 
-/*
- * TerminateTask
- *
- * according to §4.7 of the 2.2.2 spec, a task can
- * only terminate itself.
- */
 StatusType TerminateTask(void)
 {
     /*  init the error to no error  */
@@ -341,13 +356,6 @@ StatusType TerminateTask(void)
     return result;
 }
 
-/*
- * ChainTask
- *
- * It does the jobs of TerminateTask then ActivateTask
- * with a little bit optimisation when both tasks
- * are the same.
- */
 StatusType ChainTask(TaskType task_id)
 {
     StatusType result = E_OK;
@@ -441,9 +449,6 @@ StatusType ChainTask(TaskType task_id)
     return result;
 }
 
-/*
- * Schedule
- */
 StatusType Schedule(void)
 {
     StatusType result = E_OK;
@@ -476,11 +481,6 @@ StatusType Schedule(void)
     return result;
 }
 
-/*
- * Getting task id
- * GetTaskID cannot give an error. So there is no code to
- * call the error hook.
- */
 StatusType GetTaskID(TaskRefType task_id)
 {
     /*  get the task id from the task descriptor.
@@ -492,9 +492,6 @@ StatusType GetTaskID(TaskRefType task_id)
     return E_OK;
 }
 
-/*
- * Getting task state
- */
 StatusType GetTaskState(TaskType task_id,TaskStateRefType state)
 {
     StatusType result = E_OK;
