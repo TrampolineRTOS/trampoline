@@ -49,7 +49,7 @@ typedef tpl_status      StatusType;
  *
  * identifies the state of a task
  *
- * See paragraph 13.2.1, page 49 of OSEK/VDX 2.2.2 spec
+ * see §13.2.1, page 49 of OSEK/VDX 2.2.2 spec
  */
 typedef tpl_exec_state  TaskStateType;
 
@@ -58,7 +58,7 @@ typedef tpl_exec_state  TaskStateType;
  *
  * References a #TaskStateType
  *
- * See paragraph 13.2.1, page 49 of OSEK/VDX 2.2.2 spec
+ * see §13.2.1, page 49 of OSEK/VDX 2.2.2 spec
  */
 typedef tpl_exec_state  *TaskStateRefType;
 
@@ -67,7 +67,7 @@ typedef tpl_exec_state  *TaskStateRefType;
  *
  * A task's identifier.
  *
- * See paragraph 13.2.1, page 49 of OSEK/VDX 2.2.2 spec
+ * see §13.2.1, page 49 of OSEK/VDX 2.2.2 spec
  */
 typedef tpl_task_id     TaskType;
 
@@ -76,14 +76,14 @@ typedef tpl_task_id     TaskType;
  *
  * References a #TaskType
  *
- * See paragraph 13.2.1, page 49 of OSEK/VDX 2.2.2 spec
+ * see §13.2.1, page 49 of OSEK/VDX 2.2.2 spec
  */
 typedef tpl_task_id     *TaskRefType;
 
 /*
  * Task Management
  * constructional elements
- * See paragraph 13.2.2,
+ * see §13.2.2,
  * pages 50+ of OSEK/VDX 2.2.2 spec
  */
 
@@ -101,7 +101,7 @@ typedef tpl_task_id     *TaskRefType;
 /*
  * Task Management
  * System services
- * See paragraph 13.2.3,
+ * see §13.2.3,
  * pages 50+ of OSEK/VDX 2.2.2 spec
  */
 
@@ -183,7 +183,7 @@ StatusType GetTaskState(TaskType TaskID, TaskStateRefType State);
 
 /*
  * Interrupt handling
- * See paragraph 13.3,
+ * see §13.3,
  * pages 54+ of OSEK/VDX 2.2.2 spec
  */
 
@@ -243,7 +243,7 @@ void SuspendOSInterrupts(void);
 
 /*
  * Resource Management
- * See paragraph 13.4,
+ * see §13.4,
  * pages 58+ of OSEK/VDX 2.2.2 spec
  */
 
@@ -269,7 +269,7 @@ typedef tpl_resource_id ResourceType;
 
 /*
  * System services
- * See paragraph 13.4.3,
+ * see §13.4.3,
  * pages 58+ of OSEK/VDX 2.2.2 spec
  */
 
@@ -311,7 +311,7 @@ extern ResourceType RES_SCHEDULER;
 
 /*
  * Event Control
- * See paragraph 13.5,
+ * see §13.5,
  * pages 60+ of OSEK/VDX 2.2.2 spec
  */
  
@@ -340,13 +340,13 @@ typedef tpl_event_mask  *EventMaskRefType;
  *
  * @param event_id C identifier of the event
  *
- * see $13.5.2.1 page 60 of OSEK/VDX 2.2.2 spec
+ * see §13.5.2.1 page 60 of OSEK/VDX 2.2.2 spec
  */
 #define DeclareEvent(event_id)
 
 /*
  * System services
- * See paragraph 13.5.3,
+ * see §13.5.3,
  * pages 60+ of OSEK/VDX 2.2.2 spec
  */
 
@@ -408,7 +408,7 @@ StatusType WaitEvent(EventMaskType Mask);
 
 /*
  * Alarms
- * See paragraph 13.6,
+ * see §13.6,
  * pages 62+ of OSEK/VDX 2.2.2 spec
  */
 
@@ -417,7 +417,7 @@ StatusType WaitEvent(EventMaskType Mask);
  *
  * Represents a count value in ticks
  * 
- * See paragraph 13.6.1 page 62 of OSEK/VDX 2.2.2 spec
+ * see §13.6.1 page 62 of OSEK/VDX 2.2.2 spec
  */
 typedef tpl_tick            TickType;
 
@@ -426,14 +426,14 @@ typedef tpl_tick            TickType;
  *
  * References a #TickType
  *
- * See paragraph 13.6.1 page 62 of OSEK/VDX 2.2.2 spec
+ * see §13.6.1 page 62 of OSEK/VDX 2.2.2 spec
  */
 typedef tpl_tick            *TickRefType;
 
 /**
  * @typedef AlarmBaseType
  *
- * See paragraph 13.6.1 page 62 of OSEK/VDX 2.2.2 spec
+ * see §13.6.1 page 62 of OSEK/VDX 2.2.2 spec
  *
  * @see #tpl_alarm_base
  */
@@ -464,13 +464,13 @@ typedef tpl_alarm_id        AlarmType;
  *
  * @param alarm_id alarm C-identifier
  *
- * see $13.6.2.1 page 62 of OSEK/VDX 2.2.2 spec
+ * see §13.6.2.1 page 62 of OSEK/VDX 2.2.2 spec
  */
 #define DeclareAlarm(alarm_id)
 
 /*
  * System services
- * See paragraph 13.6.3,
+ * see §13.6.3,
  * pages 63+ of OSEK/VDX 2.2.2 spec
  */
 
@@ -548,7 +548,7 @@ StatusType CancelAlarm(AlarmType AlarmID);
 
 /*
  * Operating system execution control
- * See paragraph 13.7,
+ * see §13.7,
  * pages 66+ of OSEK/VDX 2.2.2 spec
  */
 
@@ -563,7 +563,7 @@ typedef tpl_application_mode AppModeType;
 
 /*
  * System services
- * See paragraph 13.7.2,
+ * see §13.7.2,
  * pages 66+ of OSEK/VDX 2.2.2 spec
  */
 
