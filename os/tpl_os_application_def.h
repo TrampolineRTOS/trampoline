@@ -41,7 +41,7 @@
 	#endif
 #endif
 
-#ifndef RES_COUNT
+#ifndef RESOURCE_COUNT
 /**
  * @def NO_RESOURCE
  *
@@ -49,7 +49,7 @@
  */
 #define NO_RESOURCE
 #else
-	#if RES_COUNT == 0
+	#if RESOURCE_COUNT == 0
 		#define NO_RESOURCE
 	#endif
 #endif
