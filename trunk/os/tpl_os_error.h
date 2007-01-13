@@ -1284,7 +1284,7 @@ void tpl_call_error_hook(tpl_status);
 #if !defined(NO_RESOURCE) && defined(OS_EXTENDED)
     /* E_OK or E_OS_LIMIT   */
 #   define CHECK_RESOURCE_ID_ERROR(res_id,result)                   \
-    if (result == E_OK && (res_id >= RES_COUNT || res_id < -1)) {   \
+    if (result == E_OK && (res_id >= RESOURCE_COUNT || res_id < -1)) {   \
         result = E_OS_ID;                                           \
     }
 #endif

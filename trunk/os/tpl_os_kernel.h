@@ -106,7 +106,7 @@ extern tpl_task         *tpl_task_table[TASK_COUNT];  /* While it would be less 
  *
  * Index in this array correspond to the #ResourceType of the resource
  */
-extern tpl_resource     *tpl_resource_table[RES_COUNT];
+extern tpl_resource     *tpl_resource_table[RESOURCE_COUNT];
 #endif
 
 #ifndef NO_ALARM
