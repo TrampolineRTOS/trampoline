@@ -2,6 +2,7 @@ semantics goil_targets :
 
 import semantics goil_target_ppc in "goil_target_ppc.ggs" ;
 import semantics goil_target_c166 in "goil_target_c166.ggs" ;
+import semantics goil_target_libpcl in "goil_target_libpcl.ggs" ;
 import semantics goil_routines in "goil_routines.ggs" ;
 
 routine init_targets_prefixes ?!@prefix_map prefix :
@@ -13,6 +14,9 @@ routine init_targets_prefixes ?!@prefix_map prefix :
     end if ;
     if target == "c166" then
         init_c166_prefixes !?prefix ;
+    end if ;
+    if target == "libpcl" then
+        init_libpcl_prefixes !?prefix ;
     end if ;
 end routine ;
 
@@ -51,6 +55,9 @@ routine generate_context_and_stack
     if target == "c166"
     then generate_target_c166 !name !idents !p !exe !?context_and_stack ;
     end if ;
+    if target == "libpcl"
+    then generate_target_libpcl !name !idents !p !exe !?context_and_stack ;
+    end if ;
 
     result := result . context_and_stack ;
 end routine ;
@@ -71,6 +78,9 @@ routine generate_counter_specific
     end if ;
     if target == "c166" then
     	generate_counter_c166 !counters !p !?code;
+    end if ;
+    if target == "libpcl" then
+    	generate_counter_libpcl !counters !p !?code;
     end if ;
 
 end routine ;

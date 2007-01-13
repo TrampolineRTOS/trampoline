@@ -2,8 +2,13 @@
 #include "tpl_os_definitions.h"
 #include "tpl_machine.h"
 #include "tpl_os_interrupts.h"
+#include "tpl_com_mo.h"
+#include "tpl_com_internal_com.h"
+#include "tpl_com_app_copy.h"
+#include "tpl_com_filters.h"
 
 #include "$HEADER$"
+#include "$OBJ_HEADER$"
 
 /*
  * Definition and initialization of event related defines and structures
@@ -34,5 +39,10 @@ $ALARMS$
  * Definition and initialization of Resource related structures
  */
 $RESOURCES$
+
+/*
+ * Definition and initialization of Messages related structures
+ */
+$MESSAGES$
 
 /* End of file $IMPLEMENTATION$ */

@@ -142,7 +142,7 @@ CPU default {
 		    SENDINGMESSAGE = zms ;
 		} ;
         NOTIFICATION = ACTIVATETASK {
-            TASK = t2 ;
+            TASK = t3 ;
         } ;
 	} ;
 	MESSAGE zmr2 {
@@ -150,7 +150,7 @@ CPU default {
 		    SENDINGMESSAGE = zms ;
 		} ;
         NOTIFICATION = ACTIVATETASK {
-            TASK = t3 ;
+            TASK = t1 ;
         } ;
 	} ;
 

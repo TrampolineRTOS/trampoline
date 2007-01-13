@@ -8,17 +8,18 @@ import semantics goil_targets in "goil_targets.ggs" ;
 # Messages generation
 #--------------------------------------------------------------------
 routine generate_messages
-    ?@message_map    messages
-    ?@prefix_map     p
-    ?!@string unused header
-    ?!@string unused implementation :
+    ?@message_map messages
+    ?@prefix_map  p
+    ?!@string     header
+    ?!@string     obj_header
+    ?!@string     implementation :
 
     @string h_res := "" ;
     @string i_res := "" ;
 
     #
-    # first, build a map of destination message list keyed by
-    # source message list.
+    # first, build a map of destination message
+    # list keyed by source messages.
     #
     @message_map mm := messages ;
     @ident_list_map dests [emptyMap] ;
@@ -50,12 +51,81 @@ routine generate_messages
 ##        message "\n" ;
 #    end foreach ;
 
-    foreach messages (@lstring name @message_obj mess) :
-       @mess_prop_obj mp := [mess messageproperty] ;
-       [mp generate !p !name !mess !messages !dests ?h_res ?i_res] ;
+    @string result := "" ;
+
+    # generate the code of the message objects in the
+    # good order.
+    foreach dests (@lstring src @ident_list d_mess) :
+        @ident_list dm := d_mess ;
+
+#        foreach dm (@lstring mn) :
+#            message "[".[mn string]."]" ;
+#        end foreach ;
+
+#        message "\n" ;
+
+        loop [dm length] :
+        while [dm length] > 0 do
+            @lstring mname ;
+            @message_obj mess ;
+            [!?dm popLast ?mname] ;
+            [messages get_message !mname ?mess] ;
+            @mess_prop_obj mp := [mess messageproperty] ;
+            [mp generate !p !mname !mess !messages !dests ?h_res ?i_res] ;
+            result .= i_res ;
+        end loop ;
+
+        @lstring mname ;
+        @message_obj mess ;
+        [messages get_message !src ?mess] ;
+        @mess_prop_obj mp := [mess messageproperty] ;
+        [mp generate !p !src !mess !messages !dests ?h_res ?i_res] ;
+        result .= i_res ;
+   end foreach ;
+
+#    foreach messages (@lstring name @message_obj mess) :
+#       @mess_prop_obj mp := [mess messageproperty] ;
+#       [mp generate !p !name !mess !messages !dests ?h_res ?i_res] ;
 #       message i_res ;
+#       result .= i_res ;
+#    end foreach ;
+
+    @stringset smo [emptySet] ;
+    @stringset rmo [emptySet] ;
+    # Build 2 stringsets, 1 of the sending and 1 of the receiving message objects
+    foreach messages (@lstring name @message_obj mess) :
+        @mess_prop_obj mp := [mess messageproperty] ;
+        extract mp :
+        when @ssi_mess_prop (...) -> smo += ![name string] ;
+        when @sse_mess_prop (...) -> smo += ![name string] ;
+        when @sde_mess_prop (...) -> smo += ![name string] ;
+        when @szi_mess_prop (...) -> smo += ![name string] ;
+        when @sze_mess_prop (...) -> smo += ![name string] ;
+        when @rzi_mess_prop (...) -> # rmo += ![name string] ;
+        when @rze_mess_prop (...) -> # rmo += ![name string] ;
+        when @rui_mess_prop (...) -> rmo += ![name string] ;
+        when @rqi_mess_prop (...) -> rmo += ![name string] ;
+        when @rue_mess_prop (...) -> rmo += ![name string] ;
+        when @rqe_mess_prop (...) -> rmo += ![name string] ;
+        when @rde_mess_prop (...) -> rmo += ![name string] ;
+        when @rzs_mess_prop (...) -> rmo += ![name string] ;
+        else error here : "Internal error, illegal message object type" ;
+        end extract ;
     end foreach ;
 
+    @string h_tab ;
+    @string i_tab ;
+    obj_table !"base_sending_mo" !"send_message" !"msg" !p !smo ?h_tab ?i_tab ;
+    h_res .= "\n".h_tab ;
+    result .= "\n".i_tab ;
+    obj_table !"base_receiving_mo" !"receive_message" !"msg" !p !rmo ?h_tab ?i_tab ;
+    h_res .= "\n".h_tab ;
+    result .= "\n".i_tab ;
+
+    implementation := [implementation stringByReplacingStringByString !"$MESSAGES$" !result] ;
+    header := [header stringByReplacingStringByString !"$MESSAGES$" !h_res] ;
+    obj_header := [obj_header stringByReplacingStringByString !"$SEND_MESSAGE_COUNT$" ![[smo count] string]] ;
+    obj_header := [obj_header stringByReplacingStringByString !"$RECEIVE_MESSAGE_COUNT$" ![[rmo count] string]] ;
 end routine ;
 
 end semantics ;

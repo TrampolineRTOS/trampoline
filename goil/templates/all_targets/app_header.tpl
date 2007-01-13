@@ -27,3 +27,10 @@ $ALARMS$
  * Declaration of Resource related defines and structures
  */
 $RESOURCES$
+
+/*
+ * Declaration of messages identifiers
+ */
+$MESSAGES$
+
+/* End of file $HEADER$ */

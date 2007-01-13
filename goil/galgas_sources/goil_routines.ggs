@@ -47,21 +47,24 @@ routine replace ?@prefix_map p ?@string key ?@string name ?!@string res :
 end routine ;
 
 routine obj_table
-    ?@string prefix
+    ?@string     typename
+    ?@string     varname
+    ?@string     prefix
     ?@prefix_map p
-    ?@stringset names
-    !@string header
-    !@string implementation :
+    ?@stringset  names
+    !@string     header
+    !@string     implementation :
 
-    implementation := "tpl_".prefix." *tpl_".prefix."_table[".[prefix uppercaseString]."_COUNT] = {\n" ;
-    header := "" ;
+    implementation := "tpl_". typename." *tpl_".varname."_table[".[varname uppercaseString]."_COUNT] = {\n" ;
+    header := "\n" ;
     @uint n := 0 ;
     @string obj_prefix ;
     @string obj_ids := "" ;
     prefix !p !prefix ?obj_prefix ;
     foreach names (@string name) :
-        header := header."#define ".prefix."_id_of_".name."  ".[n string]."\n" ;
-        implementation := implementation."    &".obj_prefix.name ;
+        header := header."#define ".varname."_id_of_".name."  ".[n string]."\n" ;
+        header := header."#define ".name."  ".varname."_id_of_".name."\n" ;
+        implementation := implementation."    (tpl_".typename." *)&".obj_prefix.name ;
         n++ ;
         if n != [names count]
         then implementation := implementation . ",\n" ;
@@ -72,7 +75,7 @@ routine obj_table
 
     if [names count] == 0 then implementation := "" ; end if ;
 
-    header := header."\n#define ".[prefix uppercaseString]."_COUNT ".[[names count] string] ;
+#    header := header."\n#define ".[varname uppercaseString]."_COUNT ".[[names count] string] ;
 end routine ;
 
 routine additional_int_key_required
