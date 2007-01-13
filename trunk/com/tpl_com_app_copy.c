@@ -14,6 +14,7 @@
  */
 
 #include "tpl_com_app_copy.h"
+#include "tpl_com_mo.h"
 
 /*!
  *  \file
@@ -44,7 +45,7 @@
  */
 tpl_status tpl_copy_from_unqueued(
     tpl_com_data            *data,
-    tpl_base_receiving_mo   *rmo
+    tpl_data_receiving_mo   *rmo
     )
 {
     /*  get the source buffer. rmo can be an unqueued internal
@@ -82,7 +83,7 @@ tpl_status tpl_copy_from_unqueued(
  */
 tpl_status tpl_copy_from_queued(
     tpl_com_data            *data,
-    tpl_base_receiving_mo   *rmo
+    tpl_data_receiving_mo   *rmo
     )
 {
     /*  Default result status to E_OK                                       */
@@ -92,7 +93,7 @@ tpl_status tpl_copy_from_queued(
         or external message object. rmo is cast to an internal message
         object since the external is an internal with additional members
         at the end of the struct.                                           */
-    tpl_queue   *queue = ((tpl_internal_receiving_queued_mo *)rmo)->queue;
+    tpl_queue   *queue = &((tpl_internal_receiving_queued_mo *)rmo)->queue;
 
     /*  Get a pointer to the source data                                    */
     tpl_com_data    *p = tpl_queue_element_for_read(queue);

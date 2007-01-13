@@ -40,7 +40,7 @@ typedef short int tpl_message_id;
 
 /*
  * tpl_message_size is the data type used to store the size of a message.
- * This type has to be an unsigned one since > 0 comparisons are done in
+ * This type has to be a signed one since signed comparisons are done in
  * Trampoline/COM.
  */
 typedef char tpl_message_size;

@@ -16,7 +16,7 @@
 #ifndef __TPL_COM_H__
 #define __TPL_COM_H__
 
-#include "tpl_com_internal_private_types.h"
+#include "tpl_com_private_types.h"
 
 typedef tpl_message_id	MessageIdentifier;
 typedef tpl_com_data	*ApplicationDataRef;

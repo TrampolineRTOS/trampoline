@@ -31,22 +31,4 @@
  */
 #endif
 
-/*
- * message kind
- */
-#define SEND_STATIC_INTERNAL            1
-#define SEND_STATIC_EXTERNAL            2
-#define SEND_DYNAMIC_EXTERNAL           4
-#define SEND_ZERO_INTERNAL              8
-#define SEND_ZERO_EXTERNAL              16
-
-#define RECEIVE_ZERO_INTERNAL           17
-#define RECEIVE_ZERO_EXTERNAL           18
-#define RECEIVE_UNQUEUED_INTERNAL       19
-#define RECEIVE_QUEUED_INTERNAL         20
-#define RECEIVE_UNQUEUED_EXTERNAL       21
-#define RECEIVE_QUEUED_EXTERNAL         22
-#define RECEIVE_DYNAMIC_EXTERNAL        23
-#define RECEIVE_ZERO_SENDERS            24
-
 #endif

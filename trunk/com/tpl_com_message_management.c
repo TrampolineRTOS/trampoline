@@ -16,14 +16,18 @@
 #include "tpl_os.h"
 #include "tpl_com.h"
 #include "tpl_os_error.h"
+#include "tpl_machine.h"
 #include "tpl_com_error.h"
-#include "tpl_com_kernel.h"
+#include "tpl_com_base_mo.h"
+
+void tpl_get_task_lock(void);
+void tpl_release_task_lock(void);
 
 StatusType SendMessage(MessageIdentifier mess_id, ApplicationDataRef data)
 {
     /*  init the error to no error                  */
     StatusType result = E_OK;
-    tpl_base_sending_mo *smo;
+    tpl_base_sending_mo *smo = NULL;
     
 
     /*  lock the task structures                    */
@@ -36,7 +40,7 @@ StatusType SendMessage(MessageIdentifier mess_id, ApplicationDataRef data)
 
     /*  Check the error                             */
     CHECK_SEND_MESSAGE_ID_ERROR(mess_id,result)
-    CHECK_NOT_ZERO_LENGTH(mess_id,result);
+    CHECK_NOT_ZERO_LENGTH_SEND(mess_id,result);
     
 #ifndef NO_SEND_MESSAGE
     IF_NO_EXTENDED_ERROR(result)
@@ -58,7 +62,7 @@ StatusType ReceiveMessage(MessageIdentifier mess_id, ApplicationDataRef data)
 {
     /*  init the error to no error                  */
     StatusType result = E_OK;
-    tpl_base_receiving_mo	*rmo;
+    tpl_data_receiving_mo	*rmo = NULL;
 
     /*  lock the task structures                    */
     LOCK_WHEN_TASK()
@@ -69,28 +73,28 @@ StatusType ReceiveMessage(MessageIdentifier mess_id, ApplicationDataRef data)
 
     /*  Check the error                             */
     CHECK_RECEIVE_MESSAGE_ID_ERROR(mess_id,result)
+
+#ifndef NO_RECEIVE_MESSAGE
+    IF_NO_EXTENDED_ERROR(result)
+    /*  get the message object from its id          */
+    rmo = (tpl_data_receiving_mo *)tpl_receive_message_table[mess_id];
+    /*  call the sending function                   */
+    rmo->copier(data, rmo);
+    END_IF_NO_EXTENDED_ERROR()
+#endif
+
+    PROCESS_COM_ERROR(result)
+
+    UNLOCK_WHEN_TASK()
     
-    if ((tpl_send_message_table[mess_id]->type != RECEIVE_UNQUEUED_INTERNAL) &&
-        (tpl_send_message_table[mess_id]->type != RECEIVE_QUEUED_INTERNAL)
-#ifdef WITH_EXTERNAL_COM
-        && (tpl_send_message_table[mess_id]->type != RECEIVE_UNQUEUED_EXTERNAL)
-        && (tpl_send_message_table[mess_id]->type != RECEIVE_QUEUED_EXTERNAL)
-#endif
-        ) {
-        return tpl_last_result = E_COM_ID;
-    }
-#endif
-
-    return tpl_last_result = rmo->receiver(rmo, data);
-
+    return result;
 }
 
 StatusType SendZeroMessage(MessageIdentifier mess_id)
 {
     /*  init the error to no error                  */
     StatusType result = E_OK;
-    tpl_base_sending_mo *smo;
-    
+    tpl_base_sending_mo *smo = NULL;
 
     /*  lock the task structures                    */
     LOCK_WHEN_TASK()
@@ -101,7 +105,7 @@ StatusType SendZeroMessage(MessageIdentifier mess_id)
 
     /*  Check the error                             */
     CHECK_SEND_MESSAGE_ID_ERROR(mess_id,result)
-    CHECK_ZERO_LENGTH(mess_id,result)
+    CHECK_ZERO_LENGTH_SEND(mess_id,result)
     
 #ifndef NO_SEND_MESSAGE
     IF_NO_EXTENDED_ERROR(result)

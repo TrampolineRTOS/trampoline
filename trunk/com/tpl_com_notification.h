@@ -98,5 +98,12 @@ struct TPL_SETEVENT_NOTIFICATION {
 typedef struct TPL_SETEVENT_NOTIFICATION
 tpl_setevent_notification;
 
-/*  __TPL_COM_NOTIFICATION_H__  */
+/*
+ * Notification functions prototypes
+ */
+void tpl_notify_callback(tpl_notification*);
+void tpl_notify_activate_task(tpl_notification*);
+void tpl_notify_setevent(tpl_notification*);
+
 #endif
+/*  __TPL_COM_NOTIFICATION_H__  */
