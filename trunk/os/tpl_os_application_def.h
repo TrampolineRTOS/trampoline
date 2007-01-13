@@ -26,7 +26,7 @@
 #ifndef __TPL_OS_APPLICATION_DEF_H__
 #define __TPL_OS_APPLICATION_DEF_H__
 
-#include "tpl_os_generated_configuration.h"
+#include "tpl_app_objects.h"
 
 #ifndef TASK_COUNT
 /**

@@ -2,12 +2,10 @@
 #ifndef TPL_MACHINE_H_
 #define TPL_MACHINE_H_
 
-#include "tpl_os_types.h"
-#include <pcl.h>
+#include "tpl_os_custom_types.h"
 
-
-typedef coroutine_t tpl_context;
-
+/*typedef coroutine_t tpl_context;*/
+typedef void* tpl_context;
 extern tpl_context idle_task_context;
 
 #define IDLE_CONTEXT &idle_task_context

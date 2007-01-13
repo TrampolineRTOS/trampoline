@@ -104,4 +104,10 @@ typedef struct TPL_STACK tpl_stack;
 
 #define IDLE_STACK {NULL,0}
 
+/*
+ * Prototypes
+ */
+void tpl_get_task_lock(void);
+void tpl_release_task_lock(void);
+
 #endif

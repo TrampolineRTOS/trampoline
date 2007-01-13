@@ -36,7 +36,7 @@ M4_OS_SCRIPT= ../$(OS_MACHINE_DIR)/tpl_$(ARCH)_macros.m4 tpl_os_macros.m4
 #File prefix of generated file (.c and .h)
 M4GENERATEDFILEPREFIX = ../$(APP_DIR)/tpl_os_generated_configuration
 
-CFLAGS += -I../$(OS_MACHINE_DIR) -I. -I..
+CFLAGS += -I../$(OS_MACHINE_DIR) -I. -I.. -I../$(APP_DIR)
 OS_OBJS = $(addprefix $(O_DIR)/,$(notdir $(OS_SRCS:.c=.o)))
 
 #this file must be generated directly by the user app.
