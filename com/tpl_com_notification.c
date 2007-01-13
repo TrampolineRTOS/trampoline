@@ -70,10 +70,14 @@ void tpl_notify_receiving_mos(tpl_base_receiving_mo *rmo)
 {
     /*
      * Walk along the receiving message object chain and call the notification
-     * for each one. During that, the rescheduling is locked
+     * for each one when the notication exists.
      */
     while (rmo != NULL) {
-        rmo->notification.notif(&rmo->notification);
+        tpl_notification *notification = rmo->notification;
+        if (notification != NULL) {
+            notification->notif(notification);
+        }
+        rmo = rmo->next_mo;
     }
 	
 	tpl_schedule(FROM_TASK_LEVEL);

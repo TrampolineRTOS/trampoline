@@ -88,16 +88,5 @@ typedef struct TPL_INTERNAL_RECEIVING_QUEUED_MO
     tpl_internal_receiving_queued_mo;
 
 
-/*!
- *  Table of sending message objects pointers
- */
-extern	tpl_base_sending_mo     *tpl_send_message_table[];
-
-/*!
- *  Table of receiving message objects pointers
- */
-extern	tpl_base_receiving_mo   *tpl_receive_message_table[];
-
-
 #endif
 /*  __TPL_COM_MO_H__    */

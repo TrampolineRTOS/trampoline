@@ -39,8 +39,8 @@ bool tpl_filter_masked_new_equals_x(
     tpl_com_value new_value)
 {
     return ((new_value &
-            ((tpl_mask_filter_desc *)fd)->mask)
-            == ((tpl_mask_filter_desc *)fd)->x);
+            ((tpl_mask_x_filter_desc *)fd)->mask)
+            == ((tpl_mask_x_filter_desc *)fd)->x);
 }
 
 bool tpl_filter_masked_new_differs_x(
@@ -49,8 +49,8 @@ bool tpl_filter_masked_new_differs_x(
     tpl_com_value new_value)
 {
     return ((new_value &
-            ((tpl_mask_filter_desc *)fd)->mask)
-            != ((tpl_mask_filter_desc *)fd)->x);
+            ((tpl_mask_x_filter_desc *)fd)->mask)
+            != ((tpl_mask_x_filter_desc *)fd)->x);
 }
 
 bool tpl_filter_new_is_equal(

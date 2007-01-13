@@ -2,19 +2,22 @@
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
- * Trampoline est protÃ©gÃ© par la loi sur la propriÃ©tÃ© intellectuelle
+ * Trampoline est protégé par la loi sur la propriété intellectuelle
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
  * Trampoline communication errors macro, functions and datatypes header
  *
- * $Date$ - $Rev$
+ * $Date$
+ * $Rev$
  * $Author$
  * $URL$
  */
 
 #ifndef __TPL_COM_ERROR_H__
 #define __TPL_COM_ERROR_H__
+
+#include "tpl_com_definitions.h"
 
 #ifdef WITH_COM_ERROR_HOOK
 
@@ -231,7 +234,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
 #endif
 
 /*-----------------------------------------------------------------------------
- * CHECK_NOT_ZERO_LENGTH macro definition
+ * CHECK_NOT_ZERO_LENGTH_SEND macro definition
  * This macro defines the appropriate error program
  * for not zero length mess_id for sending message objects.
  */
@@ -239,10 +242,10 @@ extern tpl_com_service_call_descriptor tpl_com_service;
 /* No extended error checking (! COM_EXTENDED)  */
 #if !defined(COM_EXTENDED)
     /* Does not check the mess_id in this case */
-#   define CHECK_NOT_ZERO_LENGTH(mess_id,result)
+#   define CHECK_NOT_ZERO_LENGTH_SEND(mess_id,result)
 #else
 #ifdef WITH_EXTERNAL_COM
-#   define CHECK_NOT_ZERO_LENGTH(mess_id,result)        \
+#   define CHECK_NOT_ZERO_LENGTH_SEND(mess_id,result)   \
     if (result == E_OK &&                               \
         tpl_send_message_table[mess_id]->sender ==      \
             tpl_send_zero_internal_message ||           \
@@ -251,7 +254,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
         result = E_COM_ID;                              \
     }
 #else
-#   define CHECK_NOT_ZERO_LENGTH(mess_id,result)        \
+#   define CHECK_NOT_ZERO_LENGTH_SEND(mess_id,result)   \
     if (result == E_OK &&                               \
         tpl_send_message_table[mess_id]->sender ==      \
             tpl_send_zero_internal_message) {           \
@@ -261,7 +264,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
 #endif
 
 /*-----------------------------------------------------------------------------
- * CHECK_ZERO_LENGTH macro definition
+ * CHECK_ZERO_LENGTH_SEND macro definition
  * This macro defines the appropriate error program
  * for zero length mess_id for sending message objects.
  */
@@ -269,10 +272,10 @@ extern tpl_com_service_call_descriptor tpl_com_service;
 /* No extended error checking (! COM_EXTENDED)  */
 #if !defined(COM_EXTENDED)
     /* Does not check the mess_id in this case */
-#   define CHECK_ZERO_LENGTH(mess_id,result)
+#   define CHECK_ZERO_LENGTH_SEND(mess_id,result)
 #else
 #ifdef WITH_EXTERNAL_COM
-#   define CHECK_ZERO_LENGTH(mess_id,result)            \
+#   define CHECK_ZERO_LENGTH_SEND(mess_id,result)       \
     if (result == E_OK &&                               \
         tpl_send_message_table[mess_id]->sender !=      \
             tpl_send_zero_internal_message &&           \
@@ -281,7 +284,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
         result = E_COM_ID;                              \
     }
 #else
-#   define CHECK_ZERO_LENGTH(mess_id,result)            \
+#   define CHECK_ZERO_LENGTH_SEND(mess_id,result)       \
     if (result == E_OK &&                               \
         tpl_send_message_table[mess_id]->sender !=      \
             tpl_send_zero_internal_message) {           \
@@ -289,7 +292,6 @@ extern tpl_com_service_call_descriptor tpl_com_service;
     }
 #endif
 #endif
-
 
 /*	__TPL_COM_ERROR_H__	*/
 #endif
