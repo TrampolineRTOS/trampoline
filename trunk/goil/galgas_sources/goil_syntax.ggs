@@ -419,8 +419,11 @@ rule <object_definition_list> :
 
     # code generation
     @string header ;
+    @string obj_header ;
     @string implementation ;
+    @string timestamp := [@string stringWithCurrentDateTime] ;
     template ?header !"app_header" ;
+    template ?obj_header !"obj_header" ;
     template ?implementation !"app_implementation" ;
     @prefix_map prefix := [@prefix_map emptyMap] ;
 
@@ -428,25 +431,32 @@ rule <object_definition_list> :
 
     generate_events    !events    !tasks        !prefix !?header !?implementation ;
     generate_counters  !counters                !prefix !?header !?implementation ;
-    generate_alarms    !alarms                  !prefix !?header !?implementation ;
-    generate_tasks     !tasks                   !prefix !?header !?implementation ;
-    generate_isrs      !isrs                    !prefix !?header !?implementation ;
-    generate_resources !resources !tasks  !isrs !prefix !?header !?implementation ;
-    generate_messages  !messages                !prefix !?header !?implementation ;
+    generate_alarms    !alarms                  !prefix !?header !?obj_header !?implementation ;
+    generate_tasks     !tasks                   !prefix !?header !?obj_header !?implementation ;
+    generate_isrs      !isrs                    !prefix !?header !?obj_header !?implementation ;
+    generate_resources !resources !tasks  !isrs !prefix !?header !?obj_header !?implementation ;
+    generate_messages  !messages                !prefix !?header !?obj_header !?implementation ;
 
     # write the result to files
     @string directory := [[@string stringWithSourceFilePath] stringByDeletingPathExtension];
     @string header_file := "tpl_os_generated_configuration.h" ;
+    @string obj_header_file  := "tpl_app_objects.h" ;
     @string implementation_file  := "tpl_os_generated_configuration.c" ;
 
     header := [header stringByReplacingStringByString !"$HEADER$" !header_file];
     header := [header stringByReplacingStringByString !"$IMPLEMENTATION$" !implementation_file];
+    header := [header stringByReplacingStringByString !"$TIMESTAMP$" !timestamp];
+    obj_header := [obj_header stringByReplacingStringByString !"$OBJ_HEADER$" !obj_header_file];
+    obj_header := [obj_header stringByReplacingStringByString !"$TIMESTAMP$" !timestamp];
     implementation := [implementation stringByReplacingStringByString !"$HEADER$" !header_file];
+    implementation := [implementation stringByReplacingStringByString !"$OBJ_HEADER$" !obj_header_file];
     implementation := [implementation stringByReplacingStringByString !"$IMPLEMENTATION$" !implementation_file];
+    implementation := [implementation stringByReplacingStringByString !"$TIMESTAMP $" !timestamp];
 
     @uint error_count := [@uint errorCount] ;
 
     header_file := directory . "/" . header_file;
+    obj_header_file := directory . "/" . obj_header_file;
     implementation_file := directory . "/" . implementation_file;
 
     if error_count == 0 then
@@ -454,6 +464,10 @@ rule <object_definition_list> :
             message "creating " . header_file . "\n" ;
         end if;
         [header makeDirectoryAndWriteToFile !header_file] ;
+        if [option .verbose_output] then
+            message "creating " . obj_header_file . "\n" ;
+        end if;
+        [obj_header makeDirectoryAndWriteToFile !obj_header_file] ;
         if [option .verbose_output] then
             message "creating " . implementation_file . "\n" ;
         end if;

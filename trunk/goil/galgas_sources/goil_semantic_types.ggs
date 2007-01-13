@@ -406,7 +406,7 @@ abstract class @mess_prop_obj {
         foreach dest_list (@lstring obj) while notfound :
 #            message [obj string]."\n" ;
             if nextone then
-                replace !p !"target" ![obj string] !?res ;
+                replace !p !"target_ptr" ![obj string] !?res ;
                 notfound := false ;
             end if ;
             if [obj string] == [name string] then
@@ -414,7 +414,7 @@ abstract class @mess_prop_obj {
             end if ; 
         end foreach ;
         if notfound then
-            res := [res stringByReplacingStringByString !"$TARGET$" !"NULL"] ;
+            res := [res stringByReplacingStringByString !"$TARGET_PTR$" !"NULL"] ;
         end if ;
     end method ;
 }

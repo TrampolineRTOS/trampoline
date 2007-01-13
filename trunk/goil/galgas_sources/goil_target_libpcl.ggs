@@ -1,0 +1,34 @@
+semantics goil_target_libpcl :
+
+import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
+import semantics goil_routines in "goil_routines.ggs" ;
+
+routine init_libpcl_prefixes ?!@prefix_map prefix :
+    [!?prefix insert_prefix ![@lstring new !"libpcl_stack" !here]
+              !"stack_zone_of_" !"$STACK_ZONE$"] ;
+    [!?prefix insert_prefix ![@lstring new !"libpcl_context" !here]
+              !"integer_context_of_" !"$EXEC_ALL_CONTEXT$"] ;
+end routine ;
+
+routine generate_target_libpcl
+    ?@lstring name
+    ?@ident_map others
+    ?@prefix_map p
+    ?@oil_obj unused exe
+    ?!@string result :
+
+    replace !p !"libpcl_stack" ![name string] !?result ;
+    replace !p !"libpcl_context" ![name string] !?result ;
+
+    additional_int_key_required !"STACKSIZE" !"$STACK_SIZE$" !others !name !?result;
+end routine ;
+
+routine generate_counter_libpcl
+  ?? @counter_map unused counters
+  ?? @prefix_map unused p
+  ?!  @string unused code
+:
+    #TODO
+end routine ;
+
+end semantics ;

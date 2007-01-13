@@ -67,7 +67,8 @@ routine init_prefixes ?!@prefix_map prefix :
     
     [!?prefix add ![@lstring new !"msg_name" !here] !"" !"$MESSAGE_NAME$"] ;
     [!?prefix add ![@lstring new !"msg" !here] !"message_object_of_" !"$MESSAGE$"] ;
-    [!?prefix add ![@lstring new !"target" !here] !"&message_object_of_" !"$TARGET$"] ;
+    [!?prefix add ![@lstring new !"target" !here] !"message_object_of_" !"$TARGET$"] ;
+    [!?prefix add ![@lstring new !"target_ptr" !here] !"&message_object_of_" !"$TARGET_PTR$"] ;
     [!?prefix add ![@lstring new !"size" !here] !"" !"$SIZE$"] ;
     [!?prefix add ![@lstring new !"element_size" !here] !"" !"$ELEMENT_SIZE$"] ;
     [!?prefix add ![@lstring new !"queue_size" !here] !"" !"$QUEUE_SIZE$"] ;
@@ -105,7 +106,13 @@ end routine ;
 #--------------------------------------------------------------------
 # Alarms generation
 #--------------------------------------------------------------------
-routine generate_alarms ?@alarm_map alarms ?@prefix_map p ?!@string header ?!@string implementation :
+routine generate_alarms
+    ?@alarm_map  alarms
+    ?@prefix_map p
+    ?!@string    header
+    ?!@string    obj_header
+    ?!@string    implementation :
+
     @string tpl_alarm_setevent ;
     @string tpl_alarm_activatetask ;
     @string tpl_alarm_callback ;
@@ -163,19 +170,25 @@ routine generate_alarms ?@alarm_map alarms ?@prefix_map p ?!@string header ?!@st
 # build the alarm table
     @string alarm_head ;
     @string alarm_imp ;
-    obj_table !"alarm" !p ![alarms allKeys] ?alarm_head ?alarm_imp ;
+    obj_table !"alarm" !"alarm" !"alarm" !p ![alarms allKeys] ?alarm_head ?alarm_imp ;
     alarms_result := alarms_result."\n".alarm_imp ;
 
     header := [header stringByReplacingStringByString !"$ALARMS$" !alarm_head] ;
     implementation := [implementation stringByReplacingStringByString !"$ALARMS$" !alarms_result] ;
+    obj_header := [obj_header stringByReplacingStringByString !"$ALARM_COUNT$" ![[alarms count] string]] ;
 end routine ;
 
 #--------------------------------------------------------------------
 # Tasks generation
 #--------------------------------------------------------------------
-routine generate_tasks ?@task_map tasks ?@prefix_map p ?!@string header ?!@string implementation :
-    @string tpl_task ;
+routine generate_tasks
+    ?@task_map   tasks
+    ?@prefix_map p
+    ?!@string    header
+    ?!@string    obj_header
+    ?!@string    implementation :
 
+    @string tpl_task ;
     @string tasks_result := "" ;
 
     template ?tpl_task !"task" ;
@@ -219,17 +232,24 @@ routine generate_tasks ?@task_map tasks ?@prefix_map p ?!@string header ?!@strin
 # build the task table
     @string task_head ;
     @string task_imp ;
-    obj_table !"task" !p ![tasks allKeys] ?task_head ?task_imp ;
+    obj_table !"task" !"task" !"task" !p ![tasks allKeys] ?task_head ?task_imp ;
     tasks_result := tasks_result."\n".task_imp ;
 
     header := [header stringByReplacingStringByString !"$TASKS$" !task_head] ; 
     implementation := [implementation stringByReplacingStringByString !"$TASKS$" !tasks_result] ; 
+    obj_header := [obj_header stringByReplacingStringByString !"$TASK_COUNT$" ![[tasks count] string]] ;
 end routine ;
 
 #--------------------------------------------------------------------
 # ISRs generation
 #--------------------------------------------------------------------
-routine generate_isrs ?@isr_map isrs ?@prefix_map p ?!@string header ?!@string implementation :
+routine generate_isrs
+    ?@isr_map    isrs
+    ?@prefix_map p
+    ?!@string    header
+    ?!@string    obj_header
+    ?!@string    implementation :
+
     @string tpl_isr ;
     @string tpl_isr_spec ;
 
@@ -268,10 +288,11 @@ routine generate_isrs ?@isr_map isrs ?@prefix_map p ?!@string header ?!@string i
 # build the isr table
     @string isr_head ;
     @string isr_imp ;
-    obj_table !"isr" !p ![isrs allKeys] ?isr_head ?isr_imp ;
+    obj_table !"isr" !"isr" !"isr" !p ![isrs allKeys] ?isr_head ?isr_imp ;
     isrs_result := isrs_result."\n".isr_imp ;
 
     header := [header stringByReplacingStringByString !"$ISRS$" !isr_head] ; 
+    obj_header := [obj_header stringByReplacingStringByString !"$ISR_COUNT$" ![[isrs count] string]] ;
     implementation := [implementation stringByReplacingStringByString !"$ISRS$" !isrs_result] ; 
 end routine ;
 
@@ -368,6 +389,7 @@ routine generate_resources
     ?@isr_map isrs
     ?@prefix_map p
     ?!@string header
+    ?!@string obj_header
     ?!@string implementation :
 
     @string tpl_resource ;
@@ -422,10 +444,11 @@ routine generate_resources
 # build the resource table
     @string rez_head ;
     @string rez_imp ;
-    obj_table !"resource" !p !regular_rez ?rez_head ?rez_imp ;
+    obj_table !"resource" !"resource" !"resource" !p !regular_rez ?rez_head ?rez_imp ;
     resources_result := resources_result."\n".rez_imp ;
  
-    header := [header stringByReplacingStringByString !"$RESOURCES$" !rez_head] ; 
+    header := [header stringByReplacingStringByString !"$RESOURCES$" !rez_head] ;
+    obj_header := [obj_header stringByReplacingStringByString !"$RESOURCE_COUNT$" ![[regular_rez count] string]] ;
     implementation := [implementation stringByReplacingStringByString !"$RESOURCES$" !resources_result] ; 
 end routine ;
 

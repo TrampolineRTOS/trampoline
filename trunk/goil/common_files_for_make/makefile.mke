@@ -53,6 +53,7 @@ SOURCES += goil_code_msg_gen.cpp
 SOURCES += goil_targets.cpp
 SOURCES += goil_target_c166.cpp
 SOURCES += goil_target_ppc.cpp
+SOURCES += goil_target_libpcl.cpp
 SOURCES += goil_routines.cpp
 SOURCES += goil_obj_task.cpp
 SOURCES += goil_obj_counter.cpp
