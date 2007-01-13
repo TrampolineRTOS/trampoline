@@ -314,7 +314,7 @@
  * @param name the name (C identifier) of the task
  */
 #define TASK(name)              \
-    void function_of_task_##name##(void)
+    void function_of_task_##name(void)
 
 /**
  * @def ISR2
@@ -324,7 +324,7 @@
  * @param name the name (C identifier) of the IRS
  */
 #define ISR2(name)              \
-    void function_of_isr_##name##(void)
+    void function_of_isr_##name(void)
 
 /**
  * @def ALARMCALLBACK

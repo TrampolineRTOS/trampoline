@@ -14,18 +14,21 @@
 
 include ../../../Make-rules
 
+O_DIR = ../../../$(OBJ_DIR)
+
 #kernel OS architecture dependant files
-AD_SRCS = tpl_machine_libpcl.c tpl_viper_interface.c
+AD_SRCS = tpl_machine_libpcl.c tpl_viper_interface.c 
 
 #################### end of configuration.
-AD_OBJS = $(addprefix $(OBJ_DIR)/,$(AD_SRCS:.c=.o))
+AD_OBJS = $(addprefix $(O_DIR)/,$(AD_SRCS:.c=.o))
 
 ASMFLAGS += -I../.. -I. -I../../../viper
 
-$(OBJ_DIR)/%.o: %.c
-	$(CC) $(ASMFLAGS) $(CFLAGS) -c $< -o $@
+$(O_DIR)/%.o: %.c 
+	$(CC) $(ASMFLAGS) $(CFLAGS) $(PAPP) -c $< -o $@
 
-ad:	$(AD_OBJS)
+ad:	$(AD_OBJS) 
+
 
 clean:
 	
