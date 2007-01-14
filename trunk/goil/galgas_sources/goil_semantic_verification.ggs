@@ -80,6 +80,7 @@ end routine ;
 
 routine all_events_and_resources_defined_and_used 
 	?@task_map tasks
+	?@isr_map isrs
 	?@event_map events
 	?@resource_map resources
 :
@@ -111,6 +112,19 @@ routine all_events_and_resources_defined_and_used
 
 	end foreach ;
 
+	# Resources referenced in an ISR are defined
+	foreach isrs (@lstring isr_name @isr_obj isr) :
+
+		@stringset isr_resources ;
+		[isr get_resources ?isr_resources] ;
+		foreach isr_resources (@string res_name) :
+			used_resources+= !res_name ;
+			if (not [resources hasKey !res_name])
+			then error isr_name : "RESOURCE " . res_name . " is not defined" ;
+			end if ;
+		end foreach ;
+	end foreach ;
+
 	#all defined events should be referenced in a task
 	foreach events (@lstring event_key *) :
 		if (not [used_events hasKey ![event_key string]])
@@ -118,7 +132,7 @@ routine all_events_and_resources_defined_and_used
 		end if ;
 	end foreach ;
 
-	#all defined resources should be referenced in a task
+	#all defined resources should be referenced in a task or an ISR
 	foreach resources (@lstring res_key *) :
 		if (not [used_resources hasKey ![res_key string]])
 		then warning res_key : "RESOURCE " . [res_key string] . " is defined but never used" ;

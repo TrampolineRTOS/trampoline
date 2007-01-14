@@ -414,7 +414,7 @@ rule <object_definition_list> :
     resolve_linked_resources !?resources ;
 #    message [resources description] ;
 
-    all_events_and_resources_defined_and_used !tasks !events !resources ;
+    all_events_and_resources_defined_and_used !tasks !isrs !events !resources ;
     all_event_masks_different !events ;
 
     # code generation
