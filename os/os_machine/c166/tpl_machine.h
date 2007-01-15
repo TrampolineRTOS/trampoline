@@ -61,9 +61,6 @@ struct TPL_STACK {
 };
 typedef struct TPL_STACK tpl_stack;
 
-//#define IDLE_TASK_SYS_STACK_LENGTH 10
-//extern tpl_stack_word idata idle_task_sys_stack[IDLE_TASK_SYS_STACK_LENGTH];
-//#define IDLE_STACK {&idle_task_sys_stack,0,NULL,0}
 #define IDLE_STACK {NULL,0,NULL,0}
 
 #endif
