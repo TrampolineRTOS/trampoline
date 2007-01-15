@@ -9,7 +9,7 @@ void tpl_init_tick_timer()
 {
   /* use interrupt mode: 
    * T6IE:1 Interrupt enable
-   * ilvl:8 Interrupt Level
+   * ilvl:13 Interrupt Level
    * glvl:1 Group Level
   */
   T6IC = 0x61;
