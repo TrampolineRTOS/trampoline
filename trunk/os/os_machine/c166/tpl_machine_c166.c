@@ -19,7 +19,6 @@
 #include "tpl_os_generated_configuration.h"	   /* TASK_COUNT and ISR_COUNT*/
 #include "tpl_os_definitions.h" /* IS_ROUTINE  */
 #include <C167CS.H>	/*TODO: update with a more generic standard include file.*/
-#include <stdio.h>
 
 
 #pragma warning disable = 47 /* disables the "unreferenced parameter" warning */
@@ -44,7 +43,8 @@ void tpl_sleep(void)
 	while(1);
 /*	__asm {
 		IDLE
-	} */
+	}
+*/
 }
 
 void tpl_shutdown(void)
@@ -307,6 +307,8 @@ NO_OLD_CONTEXT_TO_SAVE_IT:
 
 /*
  * tpl_init_context initialize a context to prepare a task to run.
+ * WARNING: This function MUST NOT modify GPRs!!! (the task in parameter
+ * can be the running one!!!)
  */
 void tpl_init_context(tpl_task *task)
 {
@@ -325,9 +327,6 @@ void tpl_init_context(tpl_task *task)
 
 	/* CP init */
 	ic->cp = (unsigned int)&(registers_c166[objId + 1][0]);
-
-	/*GPRs sets to 0 : for debug mode*/
-	for(i = 0; i < 16; i++) registers_c166[objId + 1][i] = 0;
 
 	/* Init of the system stack and storage of the task's entry point address on system stack */
 	ic->stkun = ((unsigned int)(static_desc->stack.sys_stack_zone)) + 
