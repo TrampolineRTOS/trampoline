@@ -22,12 +22,12 @@ M4FILE= App/macro_test_workstation
 #Compilation flags for all files (asm, c)
 ALLFLAGS = \
 -Wall \
--pedantic \
--DOS_EXTENDED \
--DWITH_ERROR_HOOK \
--DWITH_TASK_HOOK \
--DWITH_STARTUP_HOOK \
--DWITH_SHUTDOWN_HOOK 
+-pedantic 
+#-DOS_EXTENDED \
+#-DWITH_ERROR_HOOK \
+#-DWITH_TASK_HOOK \
+#-DWITH_STARTUP_HOOK \
+#-DWITH_SHUTDOWN_HOOK 
 #-D__TPL_GET_LINUX_FRAME_OFFSET__
 
 
@@ -47,7 +47,7 @@ endif
 LDFLAGS  = -g
 
 ifeq ($(strip $(TARGET)),posix-libpcl)
-	LDFLAGS += -lpcl -lrt
+	LDFLAGS += -lpcl #-lrt
 endif
 
 ifeq ($(strip $(TARGET)),linux-x86)
@@ -57,6 +57,7 @@ endif
 
 #***** do not modify below this line *****
 OS_DIR = ./os
+COM_DIR = ./com
 OBJ_DIR = .obj
-APP_DIR = ./App
+APP_DIR = ./goil/test/default
 OS_MACHINE_DIR = $(OS_DIR)/os_machine/$(TARGET)
