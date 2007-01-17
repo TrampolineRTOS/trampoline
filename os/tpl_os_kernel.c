@@ -115,10 +115,21 @@ tpl_resource_id RES_SCHEDULER = -1;  /* see doc in header file declaration */
  * @see #RES_SCHEDULER
  */
 tpl_resource res_scheduler = {
-  /* ceiling_priority */    127,
-	/* owner_prev_priority */ 0,
-	/* owner */               NULL,
-	/* next_res */            NULL
+    RES_SCHEDULER_PRIORITY, /**< the ceiling priority is defined as the maximum priority of tasks of the application */
+	0,                      /* owner_prev_priority */
+	NULL,                   /* owner */
+	NULL                    /* next_res */
+};
+
+/**
+ * INTERNAL_RES_SCHEDULER is an internal resource with the higher task priority
+ * in the application. A task is non preemptable when INTERNAL_RES_SCHEDULER
+ * is set as internal resource.
+ */
+tpl_internal_resource INTERNAL_RES_SCHEDULER = {
+    RES_SCHEDULER_PRIORITY, /**< the ceiling priority is defined as the maximum priority of tasks of the application */
+    0,
+    NULL
 };
 
 /**
