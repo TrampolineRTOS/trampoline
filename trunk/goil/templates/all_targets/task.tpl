@@ -10,7 +10,7 @@ tpl_exec_static $EXEC_STATIC$ = {
     /* context                  */ $EXEC_CONTEXT$,
     /* stack                    */ $EXEC_STACK$,
     /* entry point (function)   */ $EXEC_FUNCTION$,
-    /* internal ressource       */ NULL,
+    /* internal ressource       */ $RESOURCE_PTR$,
     /* task id                  */ $TASK_ID$,
     /* task base priority       */ (tpl_priority)$TASK_PRIORITY$,
     /* max activation count     */ $TASK_MAX_ACT_COUNT$,

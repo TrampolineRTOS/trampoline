@@ -39,4 +39,9 @@
  */
 #define RECEIVE_MESSAGE_COUNT   $RECEIVE_MESSAGE_COUNT$
 
+/*
+ * Define of RES_SCHEDULER priority
+ */
+#define RES_SCHEDULER_PRIORITY  $RES_SCHEDULER_PRIORITY$
+
 /* End of file $HEADER$ */
