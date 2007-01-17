@@ -9,21 +9,41 @@ routine target !@string target_platform :
 #    target_platform := "ppc";
 end routine ;
 
+routine templates_directory !@string temp_dir :
+    temp_dir := "" ;
+
+    if [option goil_options.template_dir] != "" then
+        temp_dir := [option goil_options.template_dir] ;
+    else
+        temp_dir := [@string stringWithEnvironmentVariableOrEmpty !"GOIL_TEMPLATES"] ;
+    end if ;
+
+    if temp_dir != "" then
+        if [temp_dir characterAtIndex !([temp_dir length] - 1)] != '/' then
+            temp_dir .= "/" ;
+        end if ;
+    end if ;
+end routine ;
+
 routine template !@string template ?@string obj :
     @string target_platform ;
     @string targ_tpl := "" ;
 
 # Get the platform
     target ?target_platform ;
+    
+# Get the template directory
+    @string temp_dir ;
+    templates_directory ?temp_dir ;
 
 # Look for a template in target plateform path
-    targ_tpl := "../templates/".target_platform."/".obj.".tpl" ;
+    targ_tpl := temp_dir.target_platform."/".obj.".tpl" ;
     if [targ_tpl fileExists]
     then template := [@string stringWithContentsOfFile !targ_tpl] ;
     else
 
 # then in the all_targets path
-        targ_tpl := "../templates/all_targets/".obj.".tpl" ;
+        targ_tpl := temp_dir."all_targets/".obj.".tpl" ;
         if [targ_tpl fileExists]
         then template := [@string stringWithContentsOfFile !targ_tpl] ;
 #             message "found template in all_targets\n" ;
@@ -44,6 +64,14 @@ routine replace ?@prefix_map p ?@string key ?@string name ?!@string res :
     @string tag_to_rep ;
     [p prefix !lkey ?prefix ?tag_to_rep] ;
     res := [res stringByReplacingStringByString !tag_to_rep !prefix.name] ;
+end routine ;
+
+routine replace_no_prefix ?@prefix_map p ?@string key ?@string name ?!@string res :
+    @lstring lkey := [@lstring new !key !here] ;
+#    @string prefix ;
+    @string tag_to_rep ;
+    [p prefix !lkey ?* ?tag_to_rep] ;
+    res := [res stringByReplacingStringByString !tag_to_rep !name] ;
 end routine ;
 
 routine obj_table

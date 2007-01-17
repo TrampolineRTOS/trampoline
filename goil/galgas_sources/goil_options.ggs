@@ -1,6 +1,7 @@
 option goil_options :
 
-@string target_platform : 't', "target"  -> "Target platform" ;
-@string project_dir     : 'p', "project" -> "Project directory" ;
+@string target_platform : '\0', "target"  -> "Target platform" ;
+@string project_dir     : '\0', "project" -> "Project directory" ;
+@string template_dir    : '\0', "templates" -> "Template directory" ;
 
 end option ;

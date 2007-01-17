@@ -4,6 +4,11 @@
 $EVENTS$
 
 /*
+ * Declaration of Resource related defines and structures
+ */
+$RESOURCES$
+
+/*
  * Declaration of Task related defines and structures
  */
 $TASKS$
@@ -22,11 +27,6 @@ $COUNTERS$
  * Declaration of Alarm related defines and structures
  */
 $ALARMS$
-
-/*
- * Declaration of Resource related defines and structures
- */
-$RESOURCES$
 
 /*
  * Declaration of messages identifiers

@@ -16,6 +16,11 @@
 $EVENTS$
 
 /*
+ * Definition and initialization of Resource related structures
+ */
+$RESOURCES$
+
+/*
  * Definition and initialization of Task related defines and structures
  */
 $TASKS$
@@ -34,11 +39,6 @@ $COUNTERS$
  * Definition and initialization of Alarm related structures
  */
 $ALARMS$
-
-/*
- * Definition and initialization of Resource related structures
- */
-$RESOURCES$
 
 /*
  * Definition and initialization of Messages related structures
