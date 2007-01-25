@@ -97,6 +97,7 @@ class @task_obj extends @oil_obj {
 map @task_map {
     @task_obj task ;
     insert insertTask error message "Task %K is already defined in %L" ;
+    search searchTask error message "Task %K is unkown";
 }
 
 map @task_mask {
@@ -206,6 +207,7 @@ class @void_action extends @action_obj {
 class @setevent_action extends @action_obj {
     @lstring task_name ;
     @lstring event_name ;
+
     override method generate
         ?@prefix_map p
         ?@lstring    name
@@ -222,6 +224,7 @@ class @setevent_action extends @action_obj {
 
 class @activatetask_action extends @action_obj {
     @lstring task_name ;
+
     override method generate
         ?@prefix_map p
         ?@lstring    name

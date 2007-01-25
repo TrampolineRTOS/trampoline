@@ -160,4 +160,36 @@ routine all_event_masks_different
 	end foreach ;
 end routine ;
 
+routine all_alarm_actions_correct
+	?@alarm_map alarms
+	?@task_map tasks
+:	
+	@stringset defined_task_names ;
+
+	defined_task_names := [tasks allKeys] ;
+	foreach alarms (@lstring alarm_name @alarm_obj alarm_data) :
+		@action_obj alarm_action ;
+		[alarm_data get_action ?alarm_action] ;
+		extract alarm_action :
+			when @setevent_action (@lstring task_name @lstring event_name) ->
+				if not [defined_task_names hasKey ![task_name string]]
+				then error task_name : "this task is never defined" ;
+				else 
+					@task_obj task_data ;
+					@stringset known_events ;
+					[tasks searchTask !task_name ?task_data] ;
+					[task_data get_events ?known_events ] ;
+					if not [known_events hasKey ![event_name string]]
+					then warning event_name : "this event is not defined for the target task" ;
+					end if ;
+				end if ;
+			when @activatetask_action (@lstring task_name) ->
+				if not [defined_task_names hasKey ![task_name string]]
+				then error task_name : "this task is never defined" ;
+				end if ;
+			else			
+		end extract ;
+	end foreach;
+end routine ;
+
 end semantics ;
