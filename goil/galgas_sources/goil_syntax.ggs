@@ -405,16 +405,11 @@ rule <object_definition_list> :
     while <nm> ; <description> ?* ;
     end repeat ;
 
-#    message [alarms description] ;
-#    message [isrs description] ;
-#    message [counters description] ;
-	
     # semantics constraint checking
     resolve_linked_resources !?resources ;
-#    message [resources description] ;
-
     all_events_and_resources_defined_and_used !tasks !isrs !events !resources ;
     all_event_masks_different !events ;
+    all_alarm_actions_correct !alarms !tasks ;
 
     # code generation
     @string timestamp := [@string stringWithCurrentDateTime] ;
