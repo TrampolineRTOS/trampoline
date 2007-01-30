@@ -77,19 +77,30 @@ rule <counter_parameters>
         max_allowed_value_known := true ;
     while
         if ticks_per_base_known then
-            error here : "MAXALLOWEDVALUE attribute already defined for this counter" ;
+            error here : "TICKSPERBASE attribute already defined for this counter" ;
         end if ;
         $TICKSPERBASE$ ;   $=$ ; $uint_number$ ?ticks_per_base ; $;$ ;
         ticks_per_base_known := true ;
     while
         if min_cycle_known then
-            error here : "MAXALLOWEDVALUE attribute already defined for this counter" ;
+            error here : "MINCYCLE attribute already defined for this counter" ;
         end if ;
         $MINCYCLE$ ; $=$ ; $uint_number$ ?min_cycle ; $;$ ;
         min_cycle_known := true ;
     while
         $idf$ ?* ;     $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ; $;$ ;
     end repeat ;
+    #check that attributes are sets.
+    if not max_allowed_value_known then 
+      error here : "MAXALLOWEDVALUE attribute not defined for this counter" ;
+    end if;
+    if not ticks_per_base_known then 
+      error here : "TICKSPERBASE attribute not defined for this counter" ;
+    end if;
+    if not min_cycle_known then 
+      error here : "MINCYCLE attribute not defined for this counter" ;
+    end if;
+
 end rule ;
 
 end syntax ;

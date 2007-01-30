@@ -101,6 +101,18 @@ rule <alarm_parameters>
     or
         $idf$ ?* ;     $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ;
     end select ;
+    #check constraints (only first level).
+    if [counter_name string] == "" then
+      error here : "no counter defined for this alarm.";
+    end if;
+    extract alarm_action :
+    when @void_action () ->
+        error here : "Action attribute not defined for this alarm." ;
+    end extract ;
+    extract alarm_autostart :
+    when @autostart_void () ->
+        error here : "Autostart attribute not defined for this alarm." ;
+    end extract ;
 end rule ;
 
 rule <alarm_action_params>
