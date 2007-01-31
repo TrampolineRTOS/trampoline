@@ -56,10 +56,7 @@ rule <alarm>
     $ALARM$ ;
     $idf$ ?alarm_name ;
     ${$ ;
-    repeat
-    while
-        <alarm_parameters> !?counter_name !?alarm_action !?alarm_autostart ; $;$ ;
-    end repeat ;
+    <alarm_parameters> !?counter_name !?alarm_action !?alarm_autostart;
     $}$ ;
     <description> ?description ;
     $;$ ;
@@ -73,18 +70,19 @@ rule <alarm_parameters>
     ?!@action_obj    alarm_action
     ?!@autostart_obj alarm_autostart :
 
-    select
+    repeat
+    while
         if [counter_name string] != "" then
             error here : "Counter already defined for this alarm" ;
         end if ;
-        $COUNTER$ ;   $=$ ; $idf$ ?counter_name ;
-    or
+        $COUNTER$ ;   $=$ ; $idf$ ?counter_name ; $;$;
+    while
         extract alarm_action :
         when @void_action () ->
         else error here : "Action attribute already defined for this alarm" ;
         end extract ;
-        $ACTION$ ;    $=$ ; <alarm_action_params> !?alarm_action ;
-    or
+        $ACTION$ ;    $=$ ; <alarm_action_params> !?alarm_action ; $;$;
+    while
         extract alarm_autostart :
         when @autostart_void () ->
         else error here : "Autostart attribute already defined for this alarm" ;
@@ -98,9 +96,10 @@ rule <alarm_parameters>
         or
             $FALSE$ ;
         end select ;
-    or
+        $;$;
+    while
         $idf$ ?* ;     $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ;
-    end select ;
+    end repeat ;
     #check constraints (only first level).
     if [counter_name string] == "" then
       error here : "no counter defined for this alarm.";
