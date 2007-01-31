@@ -108,10 +108,12 @@ rule <alarm_parameters>
     extract alarm_action :
     when @void_action () ->
         error here : "Action attribute not defined for this alarm." ;
+        else
     end extract ;
     extract alarm_autostart :
     when @autostart_void () ->
         error here : "Autostart attribute not defined for this alarm." ;
+        else
     end extract ;
 end rule ;
 
