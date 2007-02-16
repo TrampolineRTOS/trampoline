@@ -7,3 +7,4 @@ program goil_program "version 0.9" :
 		grammar goil_grammar
 	;
 end program ;
+# vim:ft=ggs:ts=4:sw=4

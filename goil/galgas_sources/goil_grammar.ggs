@@ -19,3 +19,4 @@ import syntax goil_obj_ipdu            in "goil_obj_ipdu.ggs" ;
 root <file> ;
 
 end grammar ;
+# vim:ft=ggs:ts=4:sw=4

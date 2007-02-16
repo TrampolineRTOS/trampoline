@@ -39,3 +39,5 @@ compile "goil_target_libpcl.ggs" ;
 compile "goil_grammar.ggs" ;
 compile "goil_program.ggs" ;
 
+# vim:ft=ggs:ts=4:sw=4
+

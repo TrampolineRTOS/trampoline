@@ -24,10 +24,10 @@ import semantics goil_semantics in "goil_semantics.ggs" ;
 #
 # local rules declaration
 #
-rule <task>
+nonterminal <task>
 	?!@task_map tasks ;
 
-rule <task_parameters>
+nonterminal <task_parameters>
 	?@lstring task_name
 	?!@luint64 priority
 	?!@lstring schedule
@@ -36,10 +36,10 @@ rule <task_parameters>
 	?!@stringset resources
 	?!@stringset events ;
 
-rule <task_autostart_params>
+nonterminal <task_autostart_params>
 	?!@task_autostart_obj task_autostart ;
 
-rule <check_task_constraints>
+nonterminal <check_task_constraints>
 	?@lstring task_name
 	?@luint64 priority
 	?@lstring schedule
@@ -47,13 +47,13 @@ rule <check_task_constraints>
 	?@task_autostart_obj autostart ;
 
 #
-# external rules
+# external rules 
 #
-rule <description>
+nonterminal <description>
     !@lstring description ;
-rule <boolean>
+nonterminal <boolean>
     !@bool val ;
-rule <free_field>
+nonterminal <free_field>
     ?!@ident_map ids ;
 
 #
@@ -210,3 +210,4 @@ rule <check_task_constraints>
 end rule ;
 
 end syntax ;
+# vim:ft=ggs:ts=4:sw=4

@@ -19,69 +19,69 @@ import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
-rule <file> ;
-rule <OIL_version> !@lstring version !@lstring description ;
-rule <description> !@lstring description ;
-rule <implementation_definition> ?!@implementation imp ;
-rule <implementation_spec_list> ?!@implementation imp ;
-rule <implementation_spec> ?!@implementation imp ;
-rule <implementation_list> ?!@implementationSpec spec ;
-rule <impl_attr_def> ?!@implementationSpec spec ;
-rule <auto_specifier> !@bool auto ;
-rule <number_range_or_nil> !@bool has_range !@number_set set ;
-rule <number_range> !@number_set set ;
-rule <attribute_name> !@lstring name ;
-rule <multiple_specifier> !@bool multiple ;
-rule <default_number> !@bool has_default !@luint64 default_number ;
-rule <default_name> !@bool has_default !@lstring default_name ;
-rule <enumeration> ;
-rule <enumerator> ;
-rule <impl_parameter_list> ;
-rule <implementation_def> ;
+nonterminal <file> ;
+nonterminal <OIL_version> !@lstring version !@lstring description ;
+nonterminal <description> !@lstring description ;
+nonterminal <implementation_definition> ?!@implementation imp ;
+nonterminal <implementation_spec_list> ?!@implementation imp ;
+nonterminal <implementation_spec> ?!@implementation imp ;
+nonterminal <implementation_list> ?!@implementationSpec spec ;
+nonterminal <impl_attr_def> ?!@implementationSpec spec ;
+nonterminal <auto_specifier> !@bool auto ;
+nonterminal <number_range_or_nil> !@bool has_range !@number_set set ;
+nonterminal <number_range> !@number_set set ;
+nonterminal <attribute_name> !@lstring name ;
+nonterminal <multiple_specifier> !@bool multiple ;
+nonterminal <default_number> !@bool has_default !@luint64 default_number ;
+nonterminal <default_name> !@bool has_default !@lstring default_name ;
+nonterminal <enumeration> ;
+nonterminal <enumerator> ;
+nonterminal <impl_parameter_list> ;
+nonterminal <implementation_def> ;
 
-rule <application_definition> ;
-rule <object_definition_list> ;
-rule <nm> ;
+nonterminal <application_definition> ;
+nonterminal <object_definition_list> ;
+nonterminal <nm> ;
 
-rule <boolean> !@bool val ;
-rule <free_field> ?!@ident_map ids ;
+nonterminal <boolean> !@bool val ;
+nonterminal <free_field> ?!@ident_map ids ;
 
 
 #--------------------------------------------------------------------
 # Code generation rules declaration
 #--------------------------------------------------------------------
-rule <target> !@string target_platform ;
-rule <template> !@string template ?@string obj ;
-rule <generate_alarms> ?@alarm_map alarms ;
+nonterminal <target> !@string target_platform ;
+nonterminal <template> !@string template ?@string obj ;
+nonterminal <generate_alarms> ?@alarm_map alarms ;
 
 #--------------------------------------------------------------------
-# extern rules
+# extern nonterminals
 #--------------------------------------------------------------------
-rule <appmode> ;
-rule <task> 
+nonterminal <appmode> ;
+nonterminal <task> 
 	?!@task_map outTask;
 
-rule <counter>
+nonterminal <counter>
     ?!@counter_map counters ;
 
-rule <alarm>
+nonterminal <alarm>
     ?!@alarm_map alarms ;
 
-rule <resource>
+nonterminal <resource>
 	?!@resource_map resources ;
 
-rule <event> 
+nonterminal <event> 
 	?!@event_map events;
 
-rule <isr>
+nonterminal <isr>
     ?!@isr_map isrs ;
 
-rule <mess>
+nonterminal <mess>
     ?!@message_map messages ;
 
-rule <networkmess> ;
-rule <com> ;
-rule <ipdu> ;
+nonterminal <networkmess> ;
+nonterminal <com> ;
+nonterminal <ipdu> ;
 
 #
 # root
@@ -530,3 +530,4 @@ rule <free_field> ?!@ident_map ids :
 end rule ;
 
 end syntax ;
+# vim:ft=ggs:ts=4:sw=4

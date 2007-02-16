@@ -21,15 +21,15 @@ import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
 #
-# local rules description
+# local nonterminals description
 #
-rule <resource> 
+nonterminal <resource> 
 	?!@resource_map resources;
 
 #
-# external rules
+# external nonterminals
 #
-rule <description>
+nonterminal <description>
 	!@lstring description ;
 
 #
@@ -68,3 +68,4 @@ rule <resource>
 end rule ;
 
 end syntax ;
+# vim:ft=ggs:ts=4:sw=4

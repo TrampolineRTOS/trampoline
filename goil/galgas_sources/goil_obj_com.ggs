@@ -20,18 +20,18 @@ import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
-rule <com> ;
-rule <comtimebase> ;
-rule <comerrorhook> ;
-rule <comusegetserviceid> ;
-rule <comuseparameteraccess> ;
-rule <comstartcomextension> ;
-rule <comappmode> ;
-rule <comstatus> ;
-rule <use> ;
+nonterminal <com> ;
+nonterminal <comtimebase> ;
+nonterminal <comerrorhook> ;
+nonterminal <comusegetserviceid> ;
+nonterminal <comuseparameteraccess> ;
+nonterminal <comstartcomextension> ;
+nonterminal <comappmode> ;
+nonterminal <comstatus> ;
+nonterminal <use> ;
 
 # external rules
-rule <boolean> !@bool val ;
+nonterminal <boolean> !@bool val ;
 
 rule <com> :
     $COM$ ;
@@ -112,3 +112,4 @@ rule <use> :
 end rule;
 
 end syntax ;
+# vim:ft=ggs:ts=4:sw=4

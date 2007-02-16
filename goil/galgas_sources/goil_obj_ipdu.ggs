@@ -20,25 +20,25 @@ import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
-rule <ipdu> ;
-rule <ipduproperty> ;
-rule <transmissionmode> ;
-rule <timeperiod> ;
-rule <timeoffset> ;
-rule <minimumdelaytime> ;
-rule <timeout> ;
-rule <firsttimeout> ;
-rule <ipducallout> ;
-rule <layerused> ;
+nonterminal <ipdu> ;
+nonterminal <ipduproperty> ;
+nonterminal <transmissionmode> ;
+nonterminal <timeperiod> ;
+nonterminal <timeoffset> ;
+nonterminal <minimumdelaytime> ;
+nonterminal <timeout> ;
+nonterminal <firsttimeout> ;
+nonterminal <ipducallout> ;
+nonterminal <layerused> ;
 
-rule <sent_attributes> ;
-rule <received_attributes> ;
-rule <direct_attributes> ;
-rule <periodic_attributes> ;
-rule <mixed_attributes> ;
+nonterminal <sent_attributes> ;
+nonterminal <received_attributes> ;
+nonterminal <direct_attributes> ;
+nonterminal <periodic_attributes> ;
+nonterminal <mixed_attributes> ;
 
-# external rules
-rule <sizeinbits> ;
+# external nonterminals
+nonterminal <sizeinbits> ;
 
 rule <ipdu> :
     $IPDU$ ;
@@ -173,3 +173,4 @@ rule <timeoffset> :
 end rule ;
 
 end syntax ;
+# vim:ft=ggs:ts=4:sw=4
