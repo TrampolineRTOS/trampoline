@@ -1025,3 +1025,4 @@ class @nmcallback_action extends @action_obj {
 
 
 end semantics ;
+# vim:ft=ggs:ts=4:sw=4

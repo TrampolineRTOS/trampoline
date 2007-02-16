@@ -20,18 +20,18 @@ import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
-rule <counter>
+nonterminal <counter>
     ?!@counter_map counters ;
 
-rule <counter_parameters> 
+nonterminal <counter_parameters> 
     ?!@luint64 max_allowed_value
     ?!@luint64 ticks_per_base
     ?!@luint64 min_cycle ;
 
 #
-# external rules
+# external nonterminals
 #
-rule <description>
+nonterminal <description>
     !@lstring description ;
 
 #
@@ -104,3 +104,4 @@ rule <counter_parameters>
 end rule ;
 
 end syntax ;
+# vim:ft=ggs:ts=4:sw=4

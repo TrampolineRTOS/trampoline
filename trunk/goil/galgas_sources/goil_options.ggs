@@ -5,3 +5,4 @@ option goil_options :
 @string template_dir    : '\0', "templates" -> "Template directory" ;
 
 end option ;
+# vim:ft=ggs:ts=4:sw=4

@@ -59,3 +59,4 @@ map @ident_list_map {
 }
 
 end semantics ;
+# vim:ft=ggs:ts=2:sw=2

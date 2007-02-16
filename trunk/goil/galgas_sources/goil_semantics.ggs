@@ -6,3 +6,4 @@ import semantics goil_code_generation in "goil_code_generation.ggs" ;
 
 
 end semantics ;
+# vim:ft=ggs:ts=4:sw=4

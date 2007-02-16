@@ -263,3 +263,4 @@ rule '0'->'9':
 end rule ;
 
 end lexique ;
+# vim:ft=ggs:ts=4:sw=4

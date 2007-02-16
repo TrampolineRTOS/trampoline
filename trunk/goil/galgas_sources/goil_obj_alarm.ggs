@@ -20,24 +20,24 @@ import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
-rule <alarm>
+nonterminal <alarm>
     ?!@alarm_map alarms ;
 
-rule <alarm_parameters>
+nonterminal <alarm_parameters>
     ?!@lstring       counter_name
     ?!@action_obj    alarm_action
     ?!@autostart_obj alarm_autostart ;
 
-rule <alarm_action_params>
+nonterminal <alarm_action_params>
     ?!@action_obj alarm_action ;
 
-rule <alarm_autostart_params>
+nonterminal <alarm_autostart_params>
     ?!@autostart_obj alarm_autostart ;
 
 #
 # external rules
 #
-rule <description>
+nonterminal <description>
     !@lstring description ;
 
 #
@@ -195,3 +195,4 @@ rule <alarm_autostart_params>
 end rule;
 
 end syntax ;
+# vim:ft=ggs:ts=4:sw=4

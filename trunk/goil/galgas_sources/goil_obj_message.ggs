@@ -20,102 +20,102 @@ import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
-rule <mess>
+nonterminal <mess>
     ?!@message_map messages ;
 
-rule <message_property>
+nonterminal <message_property>
     ?!@mess_prop_obj mess_prop ;
 
-rule <notification_property>
+nonterminal <notification_property>
     !@action_obj notif ;
 
-rule <ssi_attributes>
+nonterminal <ssi_attributes>
     ?!@mess_prop_obj mess_prop ;
 
-rule <sse_attributes>
+nonterminal <sse_attributes>
     ?!@mess_prop_obj mess_prop ;
 
-rule <sde_attributes>
+nonterminal <sde_attributes>
     ?!@mess_prop_obj mess_prop ;
 
-rule <sze_attributes>
+nonterminal <sze_attributes>
     ?!@mess_prop_obj mess_prop ;
 
-rule <rzi_attributes>
+nonterminal <rzi_attributes>
     ?!@mess_prop_obj mess_prop ;
 
-rule <rze_attributes>
+nonterminal <rze_attributes>
     ?!@mess_prop_obj mess_prop ;
 
-rule <rui_attributes>
+nonterminal <rui_attributes>
     ?!@mess_prop_obj mess_prop ;
 
-rule <rqi_attributes>
+nonterminal <rqi_attributes>
     ?!@mess_prop_obj mess_prop ;
 
-rule <rue_attributes>
+nonterminal <rue_attributes>
     ?!@mess_prop_obj mess_prop ;
 
-rule <rqe_attributes>
+nonterminal <rqe_attributes>
     ?!@mess_prop_obj mess_prop ;
 
-rule <rde_attributes>
+nonterminal <rde_attributes>
     ?!@mess_prop_obj mess_prop ;
 
-rule <rzs_attributes>
+nonterminal <rzs_attributes>
     ?!@mess_prop_obj mess_prop ;
 
-rule <cdatatype>
+nonterminal <cdatatype>
     !@lstring cdatatype ;
 
-rule <transferproperty>
+nonterminal <transferproperty>
     !@lstring transferproperty ;
 
-rule <networkmessage>
+nonterminal <networkmessage>
     !@lstring net_message ;
 
-rule <filter>
+nonterminal <filter>
     !@filter_prop_obj filter ;
 
-rule <mask_x_attribute>
+nonterminal <mask_x_attribute>
     !@luint64 mask
     !@luint64 x ;
 
-rule <mask_attribute>
+nonterminal <mask_attribute>
     !@luint64 mask ;
 
-rule <min_max_attribute>
+nonterminal <min_max_attribute>
     !@luint64 min
     !@luint64 max ;
 
-rule <period_offset_attribute>
+nonterminal <period_offset_attribute>
     !@luint64 period
     !@luint64 offset ;
 
-rule <networkordercallout>
+nonterminal <networkordercallout>
     !@lstring net_order_callout ;
 
-rule <cpuordercallout>
+nonterminal <cpuordercallout>
     !@lstring cpu_order_callout ;
 
-rule <initialvalue>
+nonterminal <initialvalue>
     !@luint64 initial_value ;
 
-rule <sendingmessage>
+nonterminal <sendingmessage>
     !@lstring sending_message ;
 
-rule <queuesize>
+nonterminal <queuesize>
     !@luint64 queue_size ;
 
-rule <link>
+nonterminal <link>
     !@link_obj link ;
 
 #
-# external rules
+# external nonterminals
 #
-rule <description>
+nonterminal <description>
 	!@lstring description ;
-rule <free_field>
+nonterminal <free_field>
     ?!@ident_map ids ;
 
 rule <mess>
@@ -1128,3 +1128,4 @@ rule <link>
 end rule ;
 
 end syntax ;
+# vim:ft=ggs:ts=4:sw=4

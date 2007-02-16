@@ -20,10 +20,10 @@ import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
-rule <isr>
+nonterminal <isr>
     ?!@isr_map isrs ;
 
-rule <isr_attributes>
+nonterminal <isr_attributes>
     ?!@luint64   category
     ?!@luint64   priority
     ?!@stringset resources
@@ -31,12 +31,12 @@ rule <isr_attributes>
     ?!@ident_map other_fields ;
 
 #
-# external rules
+# external nonterminals
 #
-rule <description>
+nonterminal <description>
     !@lstring description ;
 
-rule <free_field> ?!@ident_map ids ;
+nonterminal <free_field> ?!@ident_map ids ;
 
 #
 # isr rules implementation
@@ -113,3 +113,4 @@ rule <isr_attributes>
 end rule ;
 
 end syntax ;
+# vim:ft=ggs:ts=4:sw=4
