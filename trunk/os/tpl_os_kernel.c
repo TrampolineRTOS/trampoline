@@ -10,6 +10,7 @@
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
+ * Copyright ESEO for function and data structures documentation
  * Trampoline est protégé par la loi sur la propriété intellectuelle
  *
  * This software is distributed under the Lesser GNU Public Licence
@@ -141,7 +142,7 @@ tpl_lock *TASK_LOCK = &tpl_task_lock; /* deprecated, see in header file */
 /**
  * @internal
  *
- * tpl_get_exec_object get the higher priority ready executable
+ * tpl_get_exec_object extracts the highest priority ready executable
  * object from the executable objects list and returns it.
  * tpl_get_exec_object returns NULL if no ready executable object
  * is available
@@ -192,6 +193,7 @@ void tpl_put_exec_object(tpl_exec_common *exec_obj, int kind)
     /*  reset executable object pointers */
     exec_obj->next_set = exec_obj->next_exec = NULL;
     
+    /* first, we poll for the right exec object set (find the right priority level) */
     while (current != NULL && current->priority > exec_obj->priority) {
         previous = current;
         current = current->next_set;

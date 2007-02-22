@@ -10,6 +10,7 @@
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
+ * Copyright ESEO for function and data structures documentation
  * Trampoline est protégé par la loi sur la propriété intellectuelle
  *
  * This software is distributed under the Lesser GNU Public Licence
@@ -113,7 +114,7 @@ void tpl_schedule(int from)
     
     /*  save the old running task for context switching */
     old_running_obj = tpl_running_obj;
-    /*  get the ready task with the higher priority     */
+    /*  get the ready task with the highest priority     */
     exec_obj = tpl_exec_obj_list_head;
     
     if  (exec_obj != NULL) {
