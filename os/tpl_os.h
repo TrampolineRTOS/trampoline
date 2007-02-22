@@ -12,6 +12,7 @@
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
+ * Copyright ESEO for function and data structures documentation
  * Trampoline est protégé par la loi sur la propriété intellectuelle
  *
  * This software is distributed under the Lesser GNU Public Licence
