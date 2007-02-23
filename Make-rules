@@ -1,23 +1,43 @@
 CC=gcc
 
-# Target may be either 
-# * darwin-ppc (MacOsX on PowerPC)
-# * c166 (c166, with the Keil compiler on MS Windows)
-# * linux-x86.
-# * posix-libpcl (requires the portable libpcl on your system) WARNING: UNDER TEST
-TARGET=darwin-ppc
+#############################################################################
+# TARGET CONFIGURATION
+#############################################################################
 
-# arch may be either:
-# * ppc for the PowerPC.
-# * c166 
-# * x86
+# The only target at this date is:
+# * posix-libpcl (requires the portable libpcl on your system) 
+# NOTE: c166 target does not use Makefile (see uVision2 project file)
+TARGET=posix-libpcl
+
+# arch may be only:
 # * libpcl
-ARCH=ppc
+ARCH=libpcl
 
+# name of the generated executable
 EXE    =  trampoline
 
-#M4 definition file
-M4FILE= App/macro_test_workstation
+#############################################################################
+# PATH CONFIGURATION: 
+# all paths must be relatives !!!!
+#############################################################################
+OS_PATH = ./os
+COM_PATH = ./com
+OBJ_PATH = .obj
+APP_PATH = ./App
+VIPER_PATH = ./viper
+OS_MACHINE_PATH = $(OS_PATH)/os_machine/$(TARGET)
+GOIL_TEMPLATE_PATH = ./goil/templates
+
+#############################################################################
+# OIL CONFIGURATION
+#############################################################################
+#OIL file (at this time, goil supports description in only ONE file)
+OIL_FILE  = $(APP_PATH)/defaultAppWorkstation.oil
+GOIL_COMPILER = $(APP_PATH)/goil
+
+#############################################################################
+# COMPILATION AND LINK FLAGS
+#############################################################################
 
 #Compilation flags for all files (asm, c)
 ALLFLAGS = \
@@ -28,36 +48,28 @@ ALLFLAGS = \
 #-DWITH_TASK_HOOK \
 #-DWITH_STARTUP_HOOK \
 #-DWITH_SHUTDOWN_HOOK 
-#-D__TPL_GET_LINUX_FRAME_OFFSET__
 
 
 #compilation flags for C files
 CFLAGS = $(ALLFLAGS) -ansi -g
+
 #compilation flags for asm files (must not have -ansi)
+#only for darwin-ppc at this time.
 ifeq ($(strip $(TARGET)),darwin-ppc)
 	#-fasm-blocks is APPLE only.
 	ASMFLAGS = $(ALLFLAGS) -fasm-blocks
-else
-	#run on linux.
-	ASMFLAGS = $(ALLFLAGS) -fasm -g
 endif
-	
-#test library.
-#LDFLAGS  = -lcheck
-LDFLAGS  = -g
 
+#link flags
+LDFLAGS  = -g
 ifeq ($(strip $(TARGET)),posix-libpcl)
 	LDFLAGS += -lpcl #-lrt
 endif
 
-ifeq ($(strip $(TARGET)),linux-x86)
-	LDFLAGS += -lpthread -lrt
-endif
+#############################################################################
+# end of configuration.
+OIL_OUTPUT_PATH = $(OIL_FILE:.oil=)
+OIL_GENERATED_C_FILE = $(addprefix $(OIL_OUTPUT_PATH)/,tpl_os_generated_configuration.c)
 
 
-#***** do not modify below this line *****
-OS_DIR = ./os
-COM_DIR = ./com
-OBJ_DIR = .obj
-APP_DIR = ./goil/test/default
-OS_MACHINE_DIR = $(OS_DIR)/os_machine/$(TARGET)
+# vim:ft=make

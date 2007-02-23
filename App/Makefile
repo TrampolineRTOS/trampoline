@@ -11,26 +11,40 @@
 # $Author$
 # $URL$
 #
+# Application specific Makefile.
+# This makefile contains files related to the application.
+# The OIL file is compiled using rules in the Makefile of 
+# the root directory.
+#
+# 2 rules may be called for this Makefile from the parent Makefile:
+# * make APP : it must compile all sources related to the
+#   application (except OiL generated files) and put them 
+#   into the object directory (using $(OBJ_PATH))
+# * make clean : it can be used to clean extra files. 
+#   object in $(OBJ_PATH) are already removed
+#
+# 
 
 include ../Make-rules
 
 #Add your source files here.
-APP_SRCS = tpl_default_tasks_workstation.c tpl_os_generated_configuration.c
+APP_SRCS = tpl_default_tasks_workstation.c
 
 #CFLAGS already defined in ../Make-rules
 APP_FLAGS = $(CFLAGS)
 
+# application specific clean (objects are automatically removed)
+clean:
+	
 #################### end of configuration.
-O_DIR = ../$(OBJ_DIR)
-APP_OBJS = $(addprefix $(O_DIR)/,$(APP_SRCS:.c=.o))
+ 
+O_PATH = ../$(OBJ_PATH)
+APP_OBJS = $(addprefix $(O_PATH)/,$(APP_SRCS:.c=.o))
 
-APPFLAGS += -I. -I../$(OS_DIR) -I../$(OS_MACHINE_DIR)
+APPFLAGS += -I. -I../$(OS_PATH) -I../$(OS_MACHINE_PATH) -I../$(OIL_OUTPUT_PATH)
 
 APP: $(APP_OBJS)
 	
-$(O_DIR)/%.o: %.c
+$(O_PATH)/%.o: %.c
 	$(CC) $(APPFLAGS) -c $< -o $@
 
-# remove object files and tpl_os_generated_configuration.* 
-clean:
-	@rm -vf tpl_os_generated_configuration.c tpl_os_generated_configuration.h

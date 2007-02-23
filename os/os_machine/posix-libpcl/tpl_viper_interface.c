@@ -53,10 +53,10 @@ void viper_kill(void)
 
 
 /*
- * lx86_init_viper create the shared objects to communicate with Viper
+ * tpl_viper_init create the shared objects to communicate with Viper
  * and launch the viper process
  */
-void lx86_init_viper(void)
+void tpl_viper_init(void)
 {
     char *viper_args[] = { NULL, NULL };
     char *viper_env[] = { NULL };
@@ -143,7 +143,7 @@ void send_viper_command(vp_command *i_com)
   }
 }
 
-void lx86_start_one_shot_timer(int sig, useconds_t delay)
+void tpl_viper_start_one_shot_timer(int sig, useconds_t delay)
 {
     vp_command command_to_send;
     
@@ -155,7 +155,7 @@ void lx86_start_one_shot_timer(int sig, useconds_t delay)
     send_viper_command(&command_to_send);
 }
 
-void lx86_start_auto_timer(int sig, useconds_t delay)
+void tpl_viper_start_auto_timer(int sig, useconds_t delay)
 {
     vp_command command_to_send;
     

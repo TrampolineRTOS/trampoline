@@ -26,37 +26,19 @@ tpl_os_task_management.c \
 tpl_os.c
 
 #################### end of configuration.
-O_DIR = ../$(OBJ_DIR)
+O_PATH = ../$(OBJ_PATH)
 
-OS_OBJS = $(addprefix $(O_DIR)/,$(OS_SRCS:.c=.o))
-
-#M4 preprocessor file
-M4_OS_SCRIPT= ../$(OS_MACHINE_DIR)/tpl_$(ARCH)_macros.m4 tpl_os_macros.m4
-
-#File prefix of generated file (.c and .h)
-M4GENERATEDFILEPREFIX = ../$(APP_DIR)/tpl_os_generated_configuration
-
-CFLAGS += -I../$(OS_MACHINE_DIR) -I. -I.. -I../$(APP_DIR)
-OS_OBJS = $(addprefix $(O_DIR)/,$(notdir $(OS_SRCS:.c=.o)))
-
-#this file must be generated directly by the user app.
-#OS_SRCS += $(M4GENERATEDFILEPREFIX).c
-
+CFLAGS += -I../$(OS_MACHINE_PATH) -I. -I../$(OIL_OUTPUT_PATH)
+OS_OBJS = $(addprefix $(O_PATH)/,$(notdir $(OS_SRCS:.c=.o)))
 
 OS: $(OS_OBJS) AD
 	
 
-$(O_DIR)/%.o: %.c $(M4GENERATEDFILEPREFIX).c
+$(O_PATH)/%.o: %.c 
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(M4GENERATEDFILEPREFIX).h: $(M4_OS_SCRIPT) ../$(M4FILE)
-	m4 -Dheader $(M4_OS_SCRIPT) ../$(M4FILE) > $(M4GENERATEDFILEPREFIX).h 
-
-$(M4GENERATEDFILEPREFIX).c: $(M4GENERATEDFILEPREFIX).h $(M4_OS_SCRIPT) ../$(M4FILE)
-	m4 $(M4_OS_SCRIPT) ../$(M4FILE) > $(M4GENERATEDFILEPREFIX).c
-
 AD: 
-	@cd ../$(OS_MACHINE_DIR) && make ad
+	@cd ../$(OS_MACHINE_PATH) && make ad
 
 clean:
 	
