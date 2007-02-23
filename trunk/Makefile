@@ -19,27 +19,44 @@
 include Make-rules
 
 ALL: $(EXE)
+	
 
 DOC:
 	doxygen
 
+#compile oil file into c, and then into .o
+OIL_OBJ_OIL_FILE = $(addprefix $(OBJ_PATH)/,$(notdir $(OIL_GENERATED_C_FILE:.c=.o)))
+CFLAGS += -I$(OS_MACHINE_PATH)  -I$(OIL_OUTPUT_PATH) -I$(OS_PATH) -I$(COM_PATH)
+
+OIL: OBJ $(OIL_OBJ_OIL_FILE)
+
+$(OIL_GENERATED_C_FILE): $(OIL_FILE) 
+	$(GOIL_COMPILER) --target=$(ARCH) --templates=$(GOIL_TEMPLATE_PATH) $(OIL_FILE)
+
+$(OIL_OBJ_OIL_FILE) : $(OIL_GENERATED_C_FILE) 
+	$(CC) $(CFLAGS) -c $< -o $@
+
 #make OS objects.
-OS: OBJ
-	@cd $(OS_DIR) && make OS
+OS: OBJ OIL
+	@cd $(OS_PATH) && make OS
 
 #make User Application objects.
-APP: OBJ
-	@cd $(APP_DIR) && make APP
+APP: OBJ OIL
+	@cd $(APP_PATH) && make APP
 
 #make object directory.
 OBJ:
-	@if [ ! -d $(OBJ_DIR) ]; then mkdir $(OBJ_DIR); fi; 
+	@if [ ! -d $(OBJ_PATH) ]; then mkdir $(OBJ_PATH); fi; 
 
 $(EXE): OS APP
-	$(CC) $(LDFLAGS) -o $@ $(OBJ_DIR)/*.o 
-			
-clean:
-	@cd $(OS_DIR) && make clean 
-	@cd $(OS_MACHINE_DIR) && make clean 
-	@cd $(APP_DIR) && make clean 
-	@rm -rf $(OBJ_DIR) $(EXE)
+	$(CC) $(LDFLAGS) -o $@ $(OBJ_PATH)/*.o
+
+clean: cleanOIL
+	@cd $(OS_PATH) && make clean 
+	@cd $(OS_MACHINE_PATH) && make clean 
+	@cd $(APP_PATH) && make clean 
+	@rm -rf $(OBJ_PATH) $(EXE)
+
+cleanOIL:
+	@cd $(OIL_OUTPUT_PATH) && rm tpl_os_generated_configuration.c tpl_os_generated_configuration.h tpl_app_objects.h
+

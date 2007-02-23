@@ -30,55 +30,51 @@
 #include "tpl_app_objects.h"
 
 #ifndef TASK_COUNT
+	#define TASK_COUNT 0
+#endif
+#if TASK_COUNT == 0
 /**
  * @def NO_TASK
  *
  * When this flag is defined, this means there is no task defined in the system.
  */
-#define NO_TASK
-#else
-	#if TASK_COUNT == 0
-		#define NO_TASK
-	#endif
+	#define NO_TASK
 #endif
 
 #ifndef RESOURCE_COUNT
+	#define RESOURCE_COUNT 0
+#endif
+#if RESOURCE_COUNT == 0
 /**
  * @def NO_RESOURCE
  *
  * When this flag is defined, this means there is no resource defined in the system.
  */
-#define NO_RESOURCE
-#else
-	#if RESOURCE_COUNT == 0
-		#define NO_RESOURCE
-	#endif
+	#define NO_RESOURCE
 #endif
 
 #ifndef ALARM_COUNT
+	#define ALARM_COUNT 0
+#endif
+#if ALARM_COUNT == 0
 /**
  * @def NO_ALARM
  *
  * When this flag is defined, this means there is no alarm defined in the system.
  */
-#define NO_ALARM
-#else
-	#if ALARM_COUNT == 0
-		#define NO_ALARM
-	#endif
+	#define NO_ALARM
 #endif
 
 #ifndef ISR_COUNT
+    #define ISR_COUNT 0
+#endif
+#if ISR_COUNT == 0
 /**
  * @def NO_ISR
  *
  * When this flag is defined, this means there is no Interrupt Service Routine defined in the system.
  */
-#define NO_ISR
-#else
-	#if ISR_COUNT == 0
-		#define NO_ISR
-	#endif
+	#define NO_ISR
 #endif
 
 #endif
