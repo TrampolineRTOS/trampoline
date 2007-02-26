@@ -16,7 +16,7 @@
 #  $Id: Makefile 22 2005-10-19 11:23:49Z mik $
 
 #arch may be either LINUX or DARWIN (MacOsX) at this time.
-ARCH = DARWIN
+ARCH = LINUX
 SRCS= com.c exec.c log.c main.c timer.c
 
 ########################################################
