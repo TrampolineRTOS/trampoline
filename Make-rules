@@ -33,7 +33,7 @@ GOIL_TEMPLATE_PATH = ./goil/templates
 #############################################################################
 #OIL file (at this time, goil supports description in only ONE file)
 OIL_FILE  = $(APP_PATH)/defaultAppWorkstation.oil
-GOIL_COMPILER = $(APP_PATH)/goil
+GOIL_COMPILER = ./goil/makefile_macosx/goil
 
 #############################################################################
 # COMPILATION AND LINK FLAGS
@@ -43,11 +43,11 @@ GOIL_COMPILER = $(APP_PATH)/goil
 ALLFLAGS = \
 -Wall \
 -pedantic 
-#-DOS_EXTENDED \
-#-DWITH_ERROR_HOOK \
-#-DWITH_TASK_HOOK \
-#-DWITH_STARTUP_HOOK \
-#-DWITH_SHUTDOWN_HOOK 
+# -DOS_EXTENDED \
+# -DWITH_ERROR_HOOK \
+# -DWITH_TASK_HOOK \
+# -DWITH_STARTUP_HOOK \
+# -DWITH_SHUTDOWN_HOOK 
 
 
 #compilation flags for C files

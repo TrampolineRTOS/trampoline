@@ -1,4 +1,4 @@
-program goil_program "version 0.9" :
+program goil_program "version 0.92" :
 	import grammar goil_grammar in "goil_grammar.ggs" ;
 	#--- max error and warning count
 	error 100 ;

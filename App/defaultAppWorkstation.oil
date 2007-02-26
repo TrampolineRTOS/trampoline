@@ -1,0 +1,50 @@
+OIL_VERSION = "2.5" : "test" ;
+
+IMPLEMENTATION trampoline {
+};
+
+CPU test {
+    APPMODE std {
+    };
+
+    TASK periodicTask {
+        PRIORITY = 1;
+        AUTOSTART = FALSE;
+        ACTIVATION = 10;
+        SCHEDULE = FULL;
+        STACKSIZE = 32768;
+    };
+    
+    ISR trap_SIGUSR1 {
+        CATEGORY  = 2;
+        PRIORITY  = 30;
+    	STACKSIZE = 32768;
+    	SIGNAL    = SIGUSR1;
+    } ;
+    
+    ISR trap_SIGUSR2 {
+        CATEGORY  = 2;
+        PRIORITY  = 40;
+    	STACKSIZE = 32768;
+    	SIGNAL    = SIGUSR2;
+    } ;
+
+    //default tick is 50 ms
+    COUNTER counter100ms {
+        TICKSPERBASE = 2; 
+        MAXALLOWEDVALUE = 255;
+        MINCYCLE = 1;
+    };
+    
+    ALARM alarm1s {
+        COUNTER = counter100ms;
+        ACTION = ACTIVATETASK {
+            TASK = periodicTask;
+        };
+        AUTOSTART = TRUE {
+            ALARMTIME = 1;
+            CYCLETIME = 10; //each 1000 ms.
+            APPMODE = std;
+		};
+    };
+};

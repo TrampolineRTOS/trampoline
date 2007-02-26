@@ -334,6 +334,10 @@ routine generate_isrs
     obj_table !"isr" !"isr" !"isr" !p ![isrs allKeys] ?isr_head ?isr_imp ;
     isrs_result := isrs_result."\n".isr_imp ;
 
+    @string specific_code;
+    generate_isr_specific !isrs !p ?specific_code;
+    isrs_result .=  specific_code;
+
     header := [header stringByReplacingStringByString !"$ISRS$" !isr_head] ; 
     obj_header := [obj_header stringByReplacingStringByString !"$ISR_COUNT$" ![[isrs count] string]] ;
     implementation := [implementation stringByReplacingStringByString !"$ISRS$" !isrs_result] ; 

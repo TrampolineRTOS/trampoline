@@ -108,19 +108,41 @@ end routine ;
 
 routine additional_int_key_required
     ?? @string key
-    ?? @string templateName
     ?? @ident_map others
     ?? @lstring name
-    ?! @string result :
+    !  @uint64 result :
 
+    result := 0L;
     if [others hasKey !key]
     then
         @basic_type value ;
         [others searchIdent ![@lstring new !key !here] ?value] ;
         extract value :
         when @uint_class (@uint64 uintVal) ->
-            result := [result stringByReplacingStringByString !templateName ![uintVal string]] ;
+            result := uintVal;
         else error name : key." should be an integer" ;
+        end extract ;
+    else
+        error name : "no ".key." specified" ;
+    end if ;
+end routine;
+
+routine additional_string_key_required
+    ?? @string key
+    ?? @ident_map others
+    ?? @lstring name
+    !  @string result :
+
+    result := "";
+    if [others hasKey !key]
+    then
+        @basic_type value ;
+        [others searchIdent ![@lstring new !key !here] ?value] ;
+        extract value :
+        when @string_class (@string str) ->
+            result := str;
+        else 
+            error name : key." should be a string" ;
         end extract ;
     else
         error name : "no ".key." specified" ;

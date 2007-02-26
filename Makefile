@@ -58,5 +58,5 @@ clean: cleanOIL
 	@rm -rf $(OBJ_PATH) $(EXE)
 
 cleanOIL:
-	@cd $(OIL_OUTPUT_PATH) && rm tpl_os_generated_configuration.c tpl_os_generated_configuration.h tpl_app_objects.h
+	@cd $(OIL_OUTPUT_PATH) && rm -f tpl_os_generated_configuration.c tpl_os_generated_configuration.h tpl_app_objects.h
 
