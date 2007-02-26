@@ -23,17 +23,30 @@ routine generate_target_c166
     replace !p !"c166_usr_stack" ![name string] !?result ;
     replace !p !"c166_int_context" ![name string] !?result ;
     
-    additional_int_key_required !"USRSTACKSIZE" !"$USR_STACK_SIZE$" !others !name !?result;
-    additional_int_key_required !"SYSSTACKSIZE" !"$SYS_STACK_SIZE$" !others !name !?result;
+    @uint64 usr_stack_size;
+    @uint64 sys_stack_size;
+    additional_int_key_required !"USRSTACKSIZE" !others !name ?usr_stack_size;
+    additional_int_key_required !"SYSSTACKSIZE" !others !name ?sys_stack_size;
+    result := [result stringByReplacingStringByString !"$USR_STACK_SIZE$" ![usr_stack_size string]] ;
+    result := [result stringByReplacingStringByString !"$SYS_STACK_SIZE$" ![sys_stack_size string]] ;
+
     extract exe :
     when @isr_obj (6*) ->
-      #object is an isr.
-      additional_int_key_required !"TRAP" !"$TRAP_NUMBER$" !others !name !?result;
+        #object is an isr.
+        @uint64 trap;
+        additional_int_key_required !"TRAP" !others !name ?trap;
+        result := [result stringByReplacingStringByString !"$TRAP_NUMBER$" ![trap string]] ;
     else
     end extract ;
-
-
 end routine ;
+
+routine generate_isr_c166
+  ?? @isr_map    unused isrs
+  ?? @prefix_map unused p
+  ?! @string     unused code
+:
+end routine ;
+
 routine generate_counter_c166
   ?? @counter_map counters
   ?? @prefix_map p

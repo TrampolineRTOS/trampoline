@@ -14,21 +14,71 @@ routine generate_target_libpcl
     ?@lstring name
     ?@ident_map others
     ?@prefix_map p
-    ?@oil_obj unused exe
+    ?@oil_obj exe
     ?!@string result :
 
     replace !p !"libpcl_stack" ![name string] !?result ;
     replace !p !"libpcl_context" ![name string] !?result ;
+    
+    @uint64 stack_size;
+    additional_int_key_required !"STACKSIZE" !others !name ?stack_size;
+    result := [result stringByReplacingStringByString !"$STACK_SIZE$" ![stack_size string]] ;
 
-    additional_int_key_required !"STACKSIZE" !"$STACK_SIZE$" !others !name !?result;
+    extract exe :
+    when @isr_obj (6*) ->
+        #object is an isr.
+        #check that SIGNAL is present.
+        @string sig;
+        additional_string_key_required !"SIGNAL" !others !name ?sig;
+        result := [result stringByReplacingStringByString !"$STACK_SIZE$" ![stack_size string]] ;
+    else
+    end extract ;
+end routine ;
+
+routine generate_isr_libpcl
+  ?? @isr_map isrs
+  ?? @prefix_map unused p
+  ?!  @string code
+:
+  @string result := "";
+  @bool first := true;
+  foreach isrs (@lstring isr_name @isr_obj isr) :
+    if not first then result .= ",\n";
+    end if;
+    first := false;
+    @string key := "SIGNAL";
+    @ident_map others := [isr other_fields];
+    if [others hasKey !key]
+    then
+        @basic_type value ;
+        [others searchIdent ![@lstring new !key !here] ?value] ;
+        extract value :
+        when @string_class (@string str) ->
+            result := result."\t".str;
+        else 
+            error isr_name : key." should be a string" ;
+        end extract ;
+    else
+        error isr_name : "no ".key." specified" ;
+    end if ;
+  end foreach ;
+  code := [code stringByReplacingStringByString !"$ISR_SIGNAL_LIST$" !result] ;
 end routine ;
 
 routine generate_counter_libpcl
-  ?? @counter_map unused counters
-  ?? @prefix_map unused p
-  ?!  @string unused code
+  ?? @counter_map counters
+  ?? @prefix_map p
+  ?!  @string code
 :
-    #TODO
+  @string result := "";
+  foreach counters (@lstring counter_name @counter_obj counter) :
+    @string tmp;
+    template ?tmp !"counter_list_specific";
+    replace !p !"counter" ![counter_name string] !?tmp;
+    result .= tmp;
+  end foreach ;
+
+  code := [code stringByReplacingStringByString !"$COUNTER_LIST$" !result] ;
 end routine ;
 
 end semantics ;

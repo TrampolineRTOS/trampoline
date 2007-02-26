@@ -32,7 +32,6 @@ compile "goil_code_msg_gen.ggs" ;
 # Target specific code generation
 #
 compile "goil_targets.ggs" ;
-compile "goil_target_ppc.ggs" ;
 compile "goil_target_c166.ggs" ;
 compile "goil_target_libpcl.ggs" ;
 
