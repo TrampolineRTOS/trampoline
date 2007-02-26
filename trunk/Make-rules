@@ -26,14 +26,14 @@ OBJ_PATH = .obj
 APP_PATH = ./App
 VIPER_PATH = ./viper
 OS_MACHINE_PATH = $(OS_PATH)/os_machine/$(TARGET)
-GOIL_TEMPLATE_PATH = ./goil/templates
 
 #############################################################################
 # OIL CONFIGURATION
 #############################################################################
 #OIL file (at this time, goil supports description in only ONE file)
 OIL_FILE  = $(APP_PATH)/defaultAppWorkstation.oil
-GOIL_COMPILER = ./goil/makefile_macosx/goil
+GOIL_COMPILER = ./goil/makefile_unix/goil
+GOIL_TEMPLATE_PATH = ./goil/templates
 
 #############################################################################
 # COMPILATION AND LINK FLAGS
@@ -53,17 +53,15 @@ ALLFLAGS = \
 #compilation flags for C files
 CFLAGS = $(ALLFLAGS) -ansi -g
 
-#compilation flags for asm files (must not have -ansi)
-#only for darwin-ppc at this time.
-ifeq ($(strip $(TARGET)),darwin-ppc)
-	#-fasm-blocks is APPLE only.
-	ASMFLAGS = $(ALLFLAGS) -fasm-blocks
-endif
-
 #link flags
+OS = $(shell uname)
 LDFLAGS  = -g
 ifeq ($(strip $(TARGET)),posix-libpcl)
-	LDFLAGS += -lpcl #-lrt
+	LDFLAGS += -lpcl 
+ 	#Linux requires -lrt, while Darwin does not.
+	ifeq ($(strip $(OS)),Linux)
+		LDFLAGS += -lrt
+	endif
 endif
 
 #############################################################################
