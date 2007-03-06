@@ -11,7 +11,7 @@
  *
  * Trampoline is copyright (c) IRCCyN 2005+
  * Copyright ESEO for function and data structures documentation
- * Trampoline est protégé par la loi sur la propriété intellectuelle
+ * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -23,10 +23,16 @@
  * $URL$
  */
 
-#ifndef __TPL_OS_ERROR_H__
-#define __TPL_OS_ERROR_H__
+#ifndef TPL_OS_ERROR_H
+#define TPL_OS_ERROR_H
 
 #include "tpl_os.h"
+
+/*
+ * The function corresponding to this prototype should be provided
+ * by the application
+ */
+extern void ErrorHook(StatusType);
 
 /*
  * Remember (see "The design of Trampoline") :
@@ -80,9 +86,11 @@ union PARAM_PARAM_BLOCK {
  * This structure gathers all parameters for an error hook
  */
 struct PARAM_BLOCK {
-    union ID_PARAM_BLOCK    id;     /**< identifies the OS element concerned by the error*/
-    union PARAM_PARAM_BLOCK param;  /**< gives more information about the reason of the error */
-    TickType                cycle;  /**< cycle set for a relative alarm */
+    union ID_PARAM_BLOCK    id;     /**< identifies the OS element
+                                         concerned by the error             */
+    union PARAM_PARAM_BLOCK param;  /**< gives more information about the
+                                         reason of the error                */
+    TickType                cycle;  /**< cycle set for a relative alarm     */
 };
 
 /**
@@ -92,7 +100,7 @@ struct PARAM_BLOCK {
  */
 struct SERVICE_CALL_DESCRIPTOR {
     struct PARAM_BLOCK  parameters; /**< information about conditions seen when error has been detected */
-    unsigned char       service_id; /**< identifier of the service which raised the error */
+    u8                  service_id; /**< identifier of the service which raised the error */
 };
 
 /**
@@ -157,7 +165,7 @@ extern tpl_service_call_desc tpl_service;
  * 
  * @param tpl_status The error code which causes the call back
  */
-void tpl_call_error_hook(tpl_status);
+void tpl_call_error_hook(const tpl_status error);
 
 /************************
  * Services identifiers *
@@ -763,7 +771,7 @@ void tpl_call_error_hook(tpl_status);
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_TASK_ID_REF(task_id_ref)  \
-    tpl_service.parameters.id.task_id_ref;
+    tpl_service.parameters.id.task_id_ref = (task_id_ref);
 #else
 #   define STORE_TASK_ID_REF(task_id_ref)
 #endif
@@ -779,7 +787,7 @@ void tpl_call_error_hook(tpl_status);
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_TASK_STATE_REF(state)  \
-    tpl_service.parameters.param.state = state;
+    tpl_service.parameters.param.state = (state);
 #else
 #   define STORE_TASK_STATE_REF(state)
 #endif
@@ -796,7 +804,7 @@ void tpl_call_error_hook(tpl_status);
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_RESOURCE_ID(res_id)    \
-    tpl_service.parameters.id.res_id = res_id;
+    tpl_service.parameters.id.res_id = (res_id);
 #else
 #   define STORE_RESOURCE_ID(res_id)
 #endif
@@ -816,7 +824,7 @@ void tpl_call_error_hook(tpl_status);
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_ALARM_ID(alarm_id)     \
-    tpl_service.parameters.id.alarm_id = alarm_id;
+    tpl_service.parameters.id.alarm_id = (alarm_id);
 #else
 #   define STORE_ALARM_ID(alarm_id)
 #endif
@@ -832,7 +840,7 @@ void tpl_call_error_hook(tpl_status);
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_ALARM_BASE_REF(ref)     \
-    tpl_service.parameters.param.alarm_base_ref = ref;
+    tpl_service.parameters.param.alarm_base_ref = (ref);
 #else
 #   define STORE_ALARM_BASE_REF(ref)
 #endif
@@ -848,7 +856,7 @@ void tpl_call_error_hook(tpl_status);
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_TICK_REF(ref)     \
-    tpl_service.parameters.param.tick_ref = ref;
+    tpl_service.parameters.param.tick_ref = (ref);
 #else
 #   define STORE_TICK_REF(tick_ref)
 #endif
@@ -865,7 +873,7 @@ void tpl_call_error_hook(tpl_status);
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_TICK_1(t)     \
-    tpl_service.parameters.param.tick = t;
+    tpl_service.parameters.param.tick = (t);
 #else
 #   define STORE_TICK_1(t)
 #endif
@@ -882,7 +890,7 @@ void tpl_call_error_hook(tpl_status);
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_TICK_2(t)     \
-    tpl_service.parameters.cycle = t;
+    tpl_service.parameters.cycle = (t);
 #else
 #   define STORE_TICK_2(t)
 #endif
@@ -901,7 +909,7 @@ void tpl_call_error_hook(tpl_status);
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_EVENT_MASK(m)     \
-    tpl_service.parameters.param.mask = m;
+    tpl_service.parameters.param.mask = (m);
 #else
 #   define STORE_EVENT_MASK(m)
 #endif
@@ -917,7 +925,7 @@ void tpl_call_error_hook(tpl_status);
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_EVENT_MASK_REF(ref)     \
-    tpl_service.parameters.param.mask_ref = ref;
+    tpl_service.parameters.param.mask_ref = (ref);
 #else
 #   define STORE_EVENT_MASK_REF(ref)
 #endif
@@ -954,7 +962,7 @@ void tpl_call_error_hook(tpl_status);
  */
 #ifdef OS_EXTENDED
 #   define IF_NO_EXTENDED_ERROR(result) \
-    if (result == E_OK) {
+    if ((result) == E_OK) {
 #else
 #   define IF_NO_EXTENDED_ERROR(result)
 #endif
@@ -1075,18 +1083,20 @@ void tpl_call_error_hook(tpl_status);
 /* NO_TASK and extended error checking (OS_EXTENDED)        */
 #if defined(NO_TASK) && defined(OS_EXTENDED)
     /* E_OS_ID is returned in this case  */
-#   define CHECK_TASK_ID_ERROR(task_id,result) \
-    if (result == E_OK) {                      \
-        result = E_OS_ID;                      \
+#   define CHECK_TASK_ID_ERROR(task_id,result)                  \
+    if (result == E_OK)                                         \
+    {                                                           \
+        result = E_OS_ID;                                       \
     }
 #endif
 
 /* !NO_TASK and extended error checking (OS_EXTENDED)   */
 #if !defined(NO_TASK) && defined(OS_EXTENDED)
     /* E_OK or E_OS_LIMIT   */
-#   define CHECK_TASK_ID_ERROR(task_id,result)      \
-    if (result == E_OK && task_id >= TASK_COUNT) {  \
-        result = E_OS_ID;                           \
+#   define CHECK_TASK_ID_ERROR(task_id,result)                  \
+    if ((result == E_OK) && ((task_id) >= TASK_COUNT))            \
+    {                                                           \
+        result = E_OS_ID;                                       \
     }
 #endif
 
@@ -1107,17 +1117,19 @@ void tpl_call_error_hook(tpl_status);
 /*  NO_TASK and extended error checking (OS_EXTENDED).
     Since there is no task, there is no task level calling  */
 #if defined(NO_TASK) && defined(OS_EXTENDED)
-#   define CHECK_TASK_CALL_LEVEL_ERROR(result)      \
-    if (result == E_OK) {                           \
-        result = E_OS_CALLEVEL;                     \
+#   define CHECK_TASK_CALL_LEVEL_ERROR(result)                  \
+    if (result == E_OK)                                         \
+    {                                                           \
+        result = E_OS_CALLEVEL;                                 \
     }
 #endif
 
 /*  !NO_TASK and extended error checking (OS_EXTENDED). */
 #if !defined(NO_TASK) && defined(OS_EXTENDED)
-#   define CHECK_TASK_CALL_LEVEL_ERROR(result)          \
-    if (result == E_OK && tpl_os_state != OS_TASK) {    \
-        result = E_OS_CALLEVEL;                         \
+#   define CHECK_TASK_CALL_LEVEL_ERROR(result)                  \
+    if ((result == E_OK) && ((tpl_os_state) != OS_TASK))          \
+    {                                                           \
+        result = E_OS_CALLEVEL;                                 \
     }
 #endif
     
@@ -1138,9 +1150,11 @@ void tpl_call_error_hook(tpl_status);
  * @note checking is disabled when OS_EXTENDED is not defined
  */
 #ifdef OS_EXTENDED
-#   define CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)                            \
-    if (tpl_task_table[task_id]->exec_desc.static_desc->type != EXTENDED_TASK) {    \
-        result = E_OS_ACCESS;                                                       \
+#   define CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)        \
+    if (tpl_task_table[task_id]->exec_desc.static_desc->type != \
+        EXTENDED_TASK)                                          \
+    {                                                           \
+        result = E_OS_ACCESS;                                   \
     }
 #else
 #   define CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)
@@ -1156,9 +1170,10 @@ void tpl_call_error_hook(tpl_status);
  * @note checking is disabled when OS_EXTENDED is not defined
  */
 #ifdef OS_EXTENDED
-#   define CHECK_NOT_EXTENDED_RUNNING_ERROR(result)                                     \
-    if (((tpl_task *)tpl_running_obj)->exec_desc.static_desc->type != EXTENDED_TASK) {  \
-        result = E_OS_ACCESS;                                                           \
+#   define CHECK_NOT_EXTENDED_RUNNING_ERROR(result)                     \
+    if (((tpl_task *)tpl_running_obj)->exec_desc.static_desc->type !=   \
+        EXTENDED_TASK) {                                                \
+        result = E_OS_ACCESS;                                           \
     }
 #else
 #   define CHECK_NOT_EXTENDED_RUNNING_ERROR(result)
@@ -1176,9 +1191,10 @@ void tpl_call_error_hook(tpl_status);
  * @note checking is disabled when OS_EXTENDED is not defined
  */
 #ifdef OS_EXTENDED
-#   define CHECK_SUSPENDED_TASK_ERROR(task_id,result)                      \
-    if (tpl_task_table[task_id]->exec_desc.state == SUSPENDED) {    \
-        result = E_OS_STATE;                                        \
+#   define CHECK_SUSPENDED_TASK_ERROR(task_id,result)           \
+    if (tpl_task_table[task_id]->exec_desc.state == SUSPENDED)  \
+    {                                                           \
+        result = E_OS_STATE;                                    \
     }
 #else
 #   define CHECK_SUSPENDED_TASK_ERROR(task_id,result)
@@ -1210,9 +1226,11 @@ void tpl_call_error_hook(tpl_status);
 
 /*  If !NO_TASK and extended error checking (OS_EXTENTED)   */
 #if !defined(NO_TASK) && defined(OS_EXTENDED)
-#   define CHECK_RUNNING_OWNS_REZ_ERROR(result)       \
-    if (result == E_OK && tpl_running_obj->resources != NULL) {   \
-        result = E_OS_RESOURCE;                 \
+#   define CHECK_RUNNING_OWNS_REZ_ERROR(result)                 \
+    if ((result == E_OK) &&                                     \
+        (tpl_running_obj->resources) != NULL)                   \
+    {                                                           \
+        result = E_OS_RESOURCE;                                 \
     }
 #endif
 
@@ -1238,18 +1256,20 @@ void tpl_call_error_hook(tpl_status);
 /* NO_ALARM and extended error checking (OS_EXTENDED)        */
 #if defined(NO_ALARM) && defined(OS_EXTENDED)
     /* E_OS_ID is returned in this case  */
-#   define CHECK_ALARM_ID_ERROR(alarm_id,result) \
-    if (result == E_OK) {                      \
-        result = E_OS_ID;                      \
+#   define CHECK_ALARM_ID_ERROR(alarm_id,result)                \
+    if (result == E_OK)                                         \
+    {                                                           \
+        result = E_OS_ID;                                       \
     }
 #endif
 
 /* !NO_ALARM and extended error checking (OS_EXTENDED)   */
 #if !defined(NO_ALARM) && defined(OS_EXTENDED)
     /* E_OK or E_OS_LIMIT   */
-#   define CHECK_ALARM_ID_ERROR(alarm_id,result)      \
-    if (result == E_OK && alarm_id >= ALARM_COUNT) {  \
-        result = E_OS_ID;                           \
+#   define CHECK_ALARM_ID_ERROR(alarm_id,result)                \
+    if ((result == E_OK) && ((alarm_id) >= ALARM_COUNT))          \
+    {                                                           \
+        result = E_OS_ID;                                       \
     }
 #endif
 
@@ -1275,27 +1295,31 @@ void tpl_call_error_hook(tpl_status);
 /* NO_TASK and extended error checking (OS_EXTENDED)        */
 #if defined(NO_RESOURCE) && defined(OS_EXTENDED)
     /* E_OS_ID is returned in this case  */
-#   define CHECK_RESOURCE_ID_ERROR(res_id,result)   \
-    if (result == E_OK && res_id != -1) {           \
-        result = E_OS_ID;                           \
+#   define CHECK_RESOURCE_ID_ERROR(res_id,result)               \
+    if ((result == E_OK) && ((res_id) != -1))                     \
+    {                                                           \
+        result = E_OS_ID;                                       \
     }
 #endif
 
 /* !NO_TASK and extended error checking (OS_EXTENDED)   */
 #if !defined(NO_RESOURCE) && defined(OS_EXTENDED)
     /* E_OK or E_OS_LIMIT   */
-#   define CHECK_RESOURCE_ID_ERROR(res_id,result)                   \
-    if (result == E_OK && (res_id >= RESOURCE_COUNT || res_id < -1)) {   \
-        result = E_OS_ID;                                           \
+#   define CHECK_RESOURCE_ID_ERROR(res_id,result)               \
+    if ((result == E_OK) &&                                     \
+        (((res_id) >= RESOURCE_COUNT) || ((res_id) < -1)))          \
+    {                                                           \
+        result = E_OS_ID;                                       \
     }
 #endif
 
 /**
  * @def CHECK_RESOURCE_PRIO_ERROR_ON_GET
  *
- * Checks if the running task or interrupt can get the resource. Especially, it checks that :
- * - the task does not have an higher priority than the ceiling priority of the
- *   resource it gets. 
+ * Checks if the running task or interrupt can get the resource. 
+ * Especially, it checks that :
+ * - the task does not have an higher priority than
+ *   the ceiling priority of the resource it gets. 
  * - the resource is not owned by another task
  *
  * @param res the resource (#ResourceType) the task get
@@ -1307,10 +1331,13 @@ void tpl_call_error_hook(tpl_status);
  */
 
 #ifdef OS_EXTENDED
-#   define CHECK_RESOURCE_PRIO_ERROR_ON_GET(res,result)                                                 \
-    if (result == E_OK &&                                                                               \
-        (res->owner != NULL || tpl_running_obj->static_desc->base_priority > res->ceiling_priority)) {  \
-        result = E_OS_ACCESS;                                                                           \
+#   define CHECK_RESOURCE_PRIO_ERROR_ON_GET(res,result)         \
+    if ((result == E_OK) &&                                     \
+        (((res)->owner != NULL) ||                                \
+         (tpl_running_obj->static_desc->base_priority >         \
+          res->ceiling_priority)))                              \
+    {                                                           \
+        result = E_OS_ACCESS;                                   \
     }
 #else
 #   define CHECK_RESOURCE_PRIO_ERROR_ON_GET(res,result)
@@ -1330,10 +1357,12 @@ void tpl_call_error_hook(tpl_status);
  */
 
 #ifdef OS_EXTENDED
-#   define CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(res,result)                         \
-    if (result == E_OK &&                                                           \
-        tpl_running_obj->static_desc->base_priority > res->ceiling_priority) {      \
-        result = E_OS_ACCESS;                                                       \
+#   define CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(res,result)     \
+    if ((result == E_OK) &&                                     \
+        (tpl_running_obj->static_desc->base_priority >          \
+         (res)->ceiling_priority))                                \
+    {                                                           \
+        result = E_OS_ACCESS;                                   \
     }
 #else
 #   define CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(res,result)
@@ -1353,12 +1382,17 @@ void tpl_call_error_hook(tpl_status);
  */
 
 #ifdef OS_EXTENDED
-#   define CHECK_RESOURCE_ORDER_ON_RELEASE(res,result)                                  \
-    if (result == E_OK && (res->owner == NULL || tpl_running_obj->resources != res)) {  \
-        result = E_OS_NOFUNC;                                                           \
+#   define CHECK_RESOURCE_ORDER_ON_RELEASE(res,result)          \
+    if ((result == E_OK) &&                                     \
+        ((res)->owner == NULL ||                                  \
+         tpl_running_obj->resources != (res)))                    \
+    {                                                           \
+        result = E_OS_NOFUNC;                                   \
     }
 #else
 #   define CHECK_RESOURCE_ORDER_ON_RELEASE(res,result)
 #endif
 
-#endif
+#endif /*TPL_OS_ERROR_H */
+
+/* End of file tpl_os_error.h */

@@ -14,8 +14,6 @@
  * $URL: http://localhost:8888/Trampoline/svn/tpl_machine/c166/tpl_machine_c166.h $
  */
 
-#include "tpl_os_internal_types.h"
-
 #ifndef __TPL_MACHINE_C166_H__
 #define __TPL_MACHINE_C166_H__
 

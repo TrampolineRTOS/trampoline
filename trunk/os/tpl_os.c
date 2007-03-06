@@ -6,7 +6,7 @@
  *
  * Trampoline is copyright (c) IRCCyN 2005+
  * Copyright ESEO for function and data structures documentation
- * Trampoline est protégé par la loi sur la propriété intellectuelle
+ * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -29,62 +29,21 @@
 #include "tpl_os_kernel.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os_hooks.h"
-
-/*
- * see machine dependent implementation (in related architecture os/os_machine/... directory)
- */
-void tpl_init_machine(void);
-
-/*
- * trampoline specific internal initializations (see tpl_os_kernel.c)
- */
-void tpl_init_os(void);
-
-/*
- * scheduler call (see tpl_os_task_management.c)
- */
-void tpl_schedule(int);
-
-/*
- * see machine dependent implementation
- */
-void tpl_get_task_lock(void);
-
-/*
- * see machine dependent implementation
- */
-void tpl_release_task_lock(void);
-
-/*
- * see machine dependent implementation
- */
-void tpl_sleep(void);
-
-/*
- * see machine dependent implementation
- */
-void tpl_shutdown(void);
-
-#ifdef WITH_STARTUP_HOOK
-void StartupHook(void);
-#endif
-
-#ifdef WITH_SHUTDOWN_HOOK
-void ShutdownHook(StatusType);
-#endif
+#include "tpl_os_std_types.h"
+#include "tpl_machine_interface.h"
 
 /*
  * StartOS can be called by the app to put the OS
  * in a different mode
  */
-void StartOS(AppModeType mode)
+void StartOS(const /*@unused@*/ AppModeType mode)
 {       
 }
 
 /*
  * ShutdownOS can be called by the app to shutdown it
  */
-void ShutdownOS(StatusType error)
+void ShutdownOS(const /*@unused@*/ StatusType error) 
 {
     CALL_SHUTDOWN_HOOK(error)
     /* architecture dependant shutdown.*/
@@ -109,7 +68,7 @@ void InitApp(void);
 int main(void)
 {
     /*  Set the initial state of the OS */
-    tpl_os_state = OS_INIT;
+    tpl_os_state = (u8)OS_INIT;
     
     tpl_init_machine();
     
@@ -135,3 +94,4 @@ int main(void)
     return 0;
 }
 
+/* End of file tpl_os.c */

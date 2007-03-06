@@ -3,15 +3,15 @@
  *
  * @section descr File description
  *
- * Trampoline Hooks related macros, functions and datatypes
+ * Trampoline Hooks related macros, functions prototypes and datatypes
  *
  * @section copyright Copyright
  *
  * Trampoline OS
  *
- * Trampoline is copyright (c) IRCCyN 2005+
+ * Trampoline is copyright (c) IRCCyN 2005-2007
  * Copyright ESEO for function and data structures documentation
- * Trampoline est protégé par la loi sur la propriété intellectuelle
+ * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -23,8 +23,8 @@
  * $URL$
  */
 
-#ifndef __TPL_OS_HOOKS_H__
-#define __TPL_OS_HOOKS_H__
+#ifndef TPL_OS_HOOKS_H
+#define TPL_OS_HOOKS_H
 
 #ifdef WITH_TASK_HOOK
 #   ifndef WITH_POST_TASK_HOOK
@@ -38,10 +38,11 @@
 /**
  * @def CALL_POST_TASK_HOOK
  *
- * Generates a call to #PostTaskHook only if WITH_POST_TASK_HOOK (or WITH_TASK_HOOK) is defined
+ * Generates a call to #PostTaskHook only if WITH_POST_TASK_HOOK
+ * (or WITH_TASK_HOOK) is defined
  */
 #ifdef WITH_POST_TASK_HOOK
-#   define CALL_POST_TASK_HOOK()    \
+#   define CALL_POST_TASK_HOOK()    \\
     PostTaskHook();
 #else
 #   define CALL_POST_TASK_HOOK()
@@ -50,10 +51,11 @@
 /**
  * @def CALL_PRE_TASK_HOOK
  *
- * Generates a call to #PreTaskHook only if WITH_PRE_TASK_HOOK (or WITH_TASK_HOOK) is defined
+ * Generates a call to #PreTaskHook only if WITH_PRE_TASK_HOOK
+ * (or WITH_TASK_HOOK) is defined
  */
 #ifdef WITH_PRE_TASK_HOOK
-#   define CALL_PRE_TASK_HOOK()    \
+#   define CALL_PRE_TASK_HOOK()    \\
     PreTaskHook();
 #else
 #   define CALL_PRE_TASK_HOOK()
@@ -65,7 +67,7 @@
  * Generates a call to #StartupHook only if WITH_STARTUP_HOOK is defined 
  */
 #ifdef WITH_STARTUP_HOOK
-#   define CALL_STARTUP_HOOK()  \
+#   define CALL_STARTUP_HOOK()  \\
     StartupHook();
 #else
 #   define CALL_STARTUP_HOOK()
@@ -79,10 +81,40 @@
  * @param error error code (#StatusType) to send to shutdown hook
  */
 #ifdef WITH_SHUTDOWN_HOOK
-#   define CALL_SHUTDOWN_HOOK(error)  \
+#   define CALL_SHUTDOWN_HOOK(error)  \\
     ShutdownHook(error);
 #else
 #   define CALL_SHUTDOWN_HOOK(error)
 #endif
 
+#ifdef WITH_PRE_TASK_HOOK
+/**
+ * Prototype of the pre-task hook routine
+ */
+extern void PreTaskHook(void);
 #endif
+
+#ifdef WITH_POST_TASK_HOOK
+/**
+ * Prototype of the post-task hook routine
+ */
+extern void PostTaskHook(void);
+#endif
+
+#ifdef WITH_STARTUP_HOOK
+/**
+ * Prototype of the startup hook routine
+ */
+void StartupHook(void);
+#endif
+
+#ifdef WITH_SHUTDOWN_HOOK
+/**
+ * Prototype of the shutdown hook routine
+ */
+void ShutdownHook(StatusType);
+#endif
+
+#endif /* TPL_OS_HOOKS_H */
+
+/* End of file tpl_os_hooks.h */

@@ -2,7 +2,7 @@
 # Trampoline OS
 #
 # Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline est protégé par la loi sur la propriété intellectuelle
+# Trampoline is protected by the French intellectual property law.
 #
 # This software is distributed under the Lesser GNU Public Licence
 #
@@ -16,14 +16,18 @@ include ../Make-rules
 
 #kernel OS files
 OS_SRCS = \
+tpl_os.c \
 tpl_os_error.c  \
-tpl_os_alarm_management.c  \
-tpl_os_event_management.c \
-tpl_os_interrupts.c \
+tpl_os_event.c \
+tpl_os_task.c \
+tpl_os_alarm.c  \
+tpl_os_it.c  \
+tpl_os_rez.c \
 tpl_os_kernel.c \
-tpl_os_resources_management.c \
-tpl_os_task_management.c \
-tpl_os.c
+tpl_os_alarm_kernel.c \
+tpl_os_it_kernel.c \
+tpl_os_rez_kernel.c \
+tpl_os_notification.h
 
 #################### end of configuration.
 O_PATH = ../$(OBJ_PATH)

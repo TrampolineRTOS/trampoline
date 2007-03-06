@@ -2,7 +2,7 @@
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
- * Trampoline est protégé par la loi sur la propriété intellectuelle
+ * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -14,8 +14,8 @@
  * $URL$
  */
 
-#ifndef __TPL_COM_NOTIFICATION_H__
-#define __TPL_COM_NOTIFICATION_H__
+#ifndef TPL_OS_NOTIFICATION_H
+#define TPL_OS_NOTIFICATION_H
 
 #include "tpl_os_internal_types.h"
 #include "tpl_com_private_types.h"
@@ -92,7 +92,7 @@ struct TPL_SETEVENT_NOTIFICATION {
     /*  task descriptor pointer     */
     tpl_task            *task;
     /*  event mask                  */
-    tpl_event_mask          mask;
+    tpl_event_mask      mask;
 };
 
 typedef struct TPL_SETEVENT_NOTIFICATION
@@ -105,5 +105,6 @@ void tpl_notify_callback(tpl_notification*);
 void tpl_notify_activate_task(tpl_notification*);
 void tpl_notify_setevent(tpl_notification*);
 
-#endif
-/*  __TPL_COM_NOTIFICATION_H__  */
+#endif /*  TPL_OS_NOTIFICATION_H  */
+
+/* End of file tpl_os_notification.h */

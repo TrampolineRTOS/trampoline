@@ -32,7 +32,7 @@ OS_MACHINE_PATH = $(OS_PATH)/os_machine/$(TARGET)
 #############################################################################
 #OIL file (at this time, goil supports description in only ONE file)
 OIL_FILE  = $(APP_PATH)/defaultAppWorkstation.oil
-GOIL_COMPILER = ./goil/makefile_unix/goil
+GOIL_COMPILER = goil
 GOIL_TEMPLATE_PATH = ./goil/templates
 
 #############################################################################

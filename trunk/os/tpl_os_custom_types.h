@@ -12,7 +12,7 @@
  *
  * Trampoline is copyright (c) IRCCyN 2005+
  * Copyright ESEO for function and data structures documentation
- * Trampoline est protégé par la loi sur la propriété intellectuelle
+ * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -27,6 +27,8 @@
 #ifndef __TPL_OS_CUSTOM_TYPES_H__
 #define __TPL_OS_CUSTOM_TYPES_H__
 
+#include "tpl_os_std_types.h"
+
 /**
  * tpl_task_id is used for task identifiers.
  *
@@ -35,7 +37,7 @@
  * @warning This data type must be signed
  * because -1 is used for INVALID_TASK
  */
-typedef short int tpl_task_id;
+typedef s16 tpl_task_id;
 
 /**
  * tpl_priority represents a task's or a resource's priority.
@@ -45,7 +47,7 @@ typedef short int tpl_task_id;
  * @warning This type must be signed as -1 is used for
  * the priority of idle task.
  */
-typedef signed char tpl_priority;
+typedef s8 tpl_priority;
 
 /**
  * tpl_activate_counter is used to count
@@ -54,7 +56,7 @@ typedef signed char tpl_priority;
  *
  * Default aliased type is "unsigned char"
  */
-typedef unsigned char tpl_activate_counter;
+typedef u8 tpl_activate_counter;
 
 /**
  * tpl_event_mask is used for event.
@@ -64,7 +66,7 @@ typedef unsigned char tpl_activate_counter;
  *
  * Default aliased type is "unsigned char"
  */
-typedef unsigned char tpl_event_mask;
+typedef u8 tpl_event_mask;
 
 /**
  * tpl_tick is used for relative and absolute dates.
@@ -72,14 +74,14 @@ typedef unsigned char tpl_event_mask;
  *
  * Default aliased type is "unsigned short int"
  */
-typedef unsigned short int tpl_tick;
+typedef u16 tpl_tick;
 
 /**
  * tpl_alarm_type is used for alarm identifiers.
  *
  * Default aliased type is "unsigned char", so up to 256 alarms are available.
  */
-typedef unsigned char tpl_alarm_id;
+typedef u8 tpl_alarm_id;
 
 /**
  * tpl_resource_id is used for resource identifiers.
@@ -88,22 +90,22 @@ typedef unsigned char tpl_alarm_id;
  *
  * @warning RES_SCHEDULER is -1 so tpl_resource_id have to be signed
  */
-typedef signed char tpl_resource_id;
+typedef s8 tpl_resource_id;
 
 /**
  * tpl_stack_word is the basic element of a stack in order to have a proper
  * data alignement.
  */
-typedef unsigned long tpl_stack_word;
+typedef u32 tpl_stack_word;
 
 /**
  * tpl_stack_size is the data type used to store the stack size
  */
-typedef unsigned short tpl_stack_size;
+typedef u16 tpl_stack_size;
 
 /**
  * tpl_buffer is a pointer to a chunk of data in memory
  */
-typedef char *tpl_buffer;
+typedef u8 *tpl_buffer;
 
 #endif

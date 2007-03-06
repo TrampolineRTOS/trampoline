@@ -12,7 +12,7 @@
  *
  * Trampoline is copyright (c) IRCCyN 2005+
  * Copyright ESEO for function and data structures documentation
- * Trampoline est protégé par la loi sur la propriété intellectuelle
+ * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -24,38 +24,56 @@
  * $URL$
  */
 
-#ifndef __TPL_OS_TYPES_H__
-#define __TPL_OS_TYPES_H__
+#ifndef TPL_OS_TYPES_H
+#define TPL_OS_TYPES_H
+
+#include "tpl_os_internal_types.h"
+/**
+ * @typedef StatusType
+ *
+ * Status information for many services. Values names are usually prefixed by E_OS_*.
+ * Each API service provides more informations about error codes.
+ * 
+ * See paragraph 13.1, page 48 of OSEK/VDX 2.2.2 spec
+ */
+typedef tpl_status      StatusType;
 
 /**
- * @typedef bool
+ * @typedef TaskStateType
  *
- * Standard bool declaration. Values can be #TRUE or #FALSE.
+ * identifies the state of a task
+ *
+ * see paragraph 13.2.1, page 49 of OSEK/VDX 2.2.2 spec
  */
-typedef unsigned char bool;
+typedef tpl_exec_state  TaskStateType;
 
 /**
- * @typedef tpl_status
+ * @typedef TaskStateRefType
  *
- * This type is used for return
- * status of services (ie one of the result
- * codes specified below). 
+ * References a #TaskStateType
  *
- * It is binary compatible with OSEK StatusType, provided
- * Trampoline specific codes are removed (via #OSEK_STATUS_MASK
- * AND-mask). 
- *
- * @see #OSEK_STATUS_MASK
- * @see #StatusType
+ * see paragraph 13.2.1, page 49 of OSEK/VDX 2.2.2 spec
  */
-typedef unsigned char tpl_status;
+typedef tpl_exec_state  *TaskStateRefType;
 
 /**
- * @typedef tpl_callback_func
+ * @typedef TaskType
  *
- * This type is used for various
- * callback function type in Trampoline.
+ * A task's identifier.
+ *
+ * see paragraph 13.2.1, page 49 of OSEK/VDX 2.2.2 spec
  */
-typedef void (*tpl_callback_func)(void);
+typedef tpl_task_id     TaskType;
 
-#endif
+/**
+ * @typedef TaskRefType
+ *
+ * References a #TaskType
+ *
+ * see paragraph 13.2.1, page 49 of OSEK/VDX 2.2.2 spec
+ */
+typedef tpl_task_id     *TaskRefType;
+
+#endif /* TPL_OS_TYPES_H */
+
+/* End of file tpl_os_types.h */
