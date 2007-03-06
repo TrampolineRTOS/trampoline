@@ -2,7 +2,7 @@
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
- * Trampoline est protégé par la loi sur la propriété intellectuelle
+ * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -48,7 +48,7 @@ struct TPL_QUEUE_DYNAMIC {
     /*! The read index                                                  */
     tpl_queue_index         index;
     /*! A flag to notify an overflow of the queue                       */
-    bool                    overflow;
+    tpl_bool                overflow;
 };
 
 /*!

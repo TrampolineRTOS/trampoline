@@ -2,7 +2,7 @@
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
- * Trampoline est protégé par la loi sur la propriété intellectuelle
+ * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -15,62 +15,15 @@
  *
  */
 
-#include "tpl_os.h"
+#include "tpl_machine_interface.h"
 #include "tpl_os_kernel.h"
+#include "tpl_os_rez_kernel.h"
 #include "tpl_os_error.h"
-
-extern tpl_resource res_scheduler;
-
-void tpl_get_task_lock(void);
-void tpl_release_task_lock(void);
-
-/*
- * Prototypes of external functions
- */
-void tpl_schedule(int);
-
-
-/*
- * Getting a resource.
- */
-void tpl_get_resource(tpl_resource *res)
-{
-    /*  set the owner of the resource to the calling task       */
-    res->owner = tpl_running_obj;
-    /*  add the ressource at the beginning of the
-        resource list stored in the task descriptor             */
-    res->next_res = tpl_running_obj->resources;
-    tpl_running_obj->resources = res;
-    /*  save the current priority of the task in the resource   */
-    res->owner_prev_priority = tpl_running_obj->priority;
-   
-    if (tpl_running_obj->priority < res->ceiling_priority) {
-        /*  set the task priority at the ceiling priority of the resource
-            if the ceiling priority is greater than the current priority of the task   */
-        tpl_running_obj->priority = res->ceiling_priority;
-    }
-}
-
-/*
- * Releasing a resource
- */
-void tpl_release_resource(tpl_resource *res)
-{
-    /*  get the saved priority  */
-    tpl_running_obj->priority = res->owner_prev_priority;
-    /*  remove the resource from the resource list  */
-    tpl_running_obj->resources = res->next_res;
-    res->next_res = NULL;
-    /*  remove the owner    */
-    res->owner = NULL;
-
-    tpl_schedule(FROM_TASK_LEVEL);    
-}
 
 /*
  * OSEK/VDX API services
  */
-StatusType GetResource(ResourceType res_id)
+StatusType GetResource(const ResourceType res_id)
 {
     /*  init the error to no error  */
     StatusType result = E_OK;
@@ -85,10 +38,12 @@ StatusType GetResource(ResourceType res_id)
     CHECK_RESOURCE_ID_ERROR(res_id,result)
 
     IF_NO_EXTENDED_ERROR(result)
-        if (res_id == -1) {
-            res = &res_scheduler;
+        if (res_id == -1)
+        {
+            res = &res_sched;
         }
-        else {
+        else
+        {
 			#ifndef NO_RESOURCE
             	res = tpl_resource_table[res_id];
 			#else
@@ -118,7 +73,7 @@ StatusType GetResource(ResourceType res_id)
     return result;
 }
 
-StatusType ReleaseResource(ResourceType res_id)
+StatusType ReleaseResource(const ResourceType res_id)
 {
     /*  init the error to no error  */
     StatusType result = E_OK;
@@ -133,10 +88,12 @@ StatusType ReleaseResource(ResourceType res_id)
     CHECK_RESOURCE_ID_ERROR(res_id,result)
     
     IF_NO_EXTENDED_ERROR(result)
-        if (res_id == -1) {
-            res = &res_scheduler;
+        if (res_id == -1)
+        {
+            res = &res_sched;
         }
-        else {
+        else
+        {
 			#ifndef NO_RESOURCE
             	res = tpl_resource_table[res_id];
 			#else
@@ -168,3 +125,5 @@ StatusType ReleaseResource(ResourceType res_id)
     
     return result;
 }
+
+/* End of file tpl_os_rez.c */

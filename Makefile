@@ -40,6 +40,10 @@ $(OIL_OBJ_OIL_FILE) : $(OIL_GENERATED_C_FILE)
 OS: OBJ OIL
 	@cd $(OS_PATH) && make OS
 
+#make COM objects.
+COM: OBJ
+	@cd $(COM_DIR) && make COM
+
 #make User Application objects.
 APP: OBJ OIL
 	@cd $(APP_PATH) && make APP
@@ -48,7 +52,7 @@ APP: OBJ OIL
 OBJ:
 	@if [ ! -d $(OBJ_PATH) ]; then mkdir $(OBJ_PATH); fi; 
 
-$(EXE): OS APP
+$(EXE): OS APP #COM
 	$(CC) $(LDFLAGS) -o $@ $(OBJ_PATH)/*.o
 
 clean: cleanOIL
@@ -59,4 +63,3 @@ clean: cleanOIL
 
 cleanOIL:
 	@cd $(OIL_OUTPUT_PATH) && rm -f tpl_os_generated_configuration.c tpl_os_generated_configuration.h tpl_app_objects.h
-

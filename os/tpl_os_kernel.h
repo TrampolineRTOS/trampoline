@@ -9,9 +9,9 @@
  *
  * Trampoline OS
  *
- * Trampoline is copyright (c) IRCCyN 2005+
+ * Trampoline is copyright (c) IRCCyN 2005-2007
  * Copyright ESEO for function and data structures documentation
- * Trampoline est protégé par la loi sur la propriété intellectuelle
+ * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -23,11 +23,11 @@
  * $URL$
  */
 
-#ifndef __TPL_OS_KERNEL_H__
-#define __TPL_OS_KERNEL_H__
+#ifndef TPL_OS_KERNEL_H
+#define TPL_OS_KERNEL_H
 
 #include "tpl_os_internal_types.h"
-#include "tpl_os_interrupts.h"
+#include "tpl_os_it_kernel.h"
 #include "tpl_os_application_def.h"
 
 /**
@@ -44,7 +44,7 @@
  *
  * @see #tpl_os_state
  */
-#define OS_INIT 0
+#define OS_INIT 0U
 
 /**
  * @def OS_TASK
@@ -53,26 +53,21 @@
  * 
  * @see #tpl_os_state
  */
-#define OS_TASK 1
+#define OS_TASK 1U
 
 /**
  * @def OS_IDLE
  *
- * State of Trampoline : idle (no task running and, OS have nothing else to do)
+ * State of Trampoline : idle (no task running and OS have nothing else to do)
  */
-#define OS_IDLE 2
+#define OS_IDLE 2U
 
 /**
  * @def OS_ISR2
  *
  * State of Trampoline : running a category 2 interrupt service routine
  */
-#define OS_ISR2 3
-
-/*
- * Globals of the OS
- */
-/*extern tpl_status       tpl_last_result; */
+#define OS_ISR2 3U
 
 /**
  * Currently running executable object. This "executable object" can be a task
@@ -80,25 +75,17 @@
  */
 extern tpl_exec_common  *tpl_running_obj;
 
-/**
- * Head of the list of ready executable objects
- */
-extern tpl_exec_common  *tpl_exec_obj_list_head;
-
 #ifndef NO_TASK
 /**
  * Array of all tasks' full descriptors.
  *
  * Index in this array correspond to the #TaskType of the task.
+ * While it would be less time consuming to refer a task by a pointer
+ * to its descriptor, the OSEK API requires a task to have an identifier.
+ * So a table of pointer is used. The size of this table is static
+ * and known at compile time
  */
-extern tpl_task         *tpl_task_table[TASK_COUNT];  /* While it would be less time consuming to
-                                                       * refer a task by a pointer to its descriptor
-                                                       * the OSEK API requires a task to have an
-                                                       * identifier. So a table of pointer
-                                                       * is used. The size of this table is static
-                                                       * and known at compile time
-                                                       */
-
+extern tpl_task         *tpl_task_table[TASK_COUNT];
 #endif
 
 #ifndef NO_RESOURCE
@@ -141,13 +128,36 @@ extern tpl_isr			*tpl_isr_table[ISR_COUNT];
  * - #OS_IDLE
  * - #OS_ISR2
  */
-extern unsigned char    tpl_os_state;
+extern u8   tpl_os_state;
 
 /**
- * Locking the kernel.
+ * The scheduler resource descriptor
  *
- * unused
+ * @see #RES_SCHEDULER
  */
-extern tpl_lock         *TASK_LOCK;
+extern tpl_resource res_sched;
 
-#endif
+/**
+ * Kernel functions
+ */
+extern void tpl_schedule(const u8 from);
+
+extern tpl_status tpl_activate_task(tpl_task *task);
+
+extern tpl_status tpl_set_event(
+    tpl_task                *task,
+    const tpl_event_mask    incoming_event);
+    
+extern void tpl_init_exec_object(tpl_exec_common *exec_obj);
+
+extern void tpl_put_exec_object(
+    tpl_exec_common *exec_obj,
+    const u8        kind);
+    
+extern void tpl_init_os(void);
+
+extern void tpl_release_internal_resource(tpl_exec_common *task);
+
+#endif /* TPL_OS_KERNEL_H */
+
+/* End of file tpl_os_kernel.h */

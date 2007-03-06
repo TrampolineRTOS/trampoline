@@ -11,7 +11,7 @@
  *
  * Trampoline is copyright (c) IRCCyN 2005+
  * Copyright ESEO for function and data structures documentation
- * Trampoline est protégé par la loi sur la propriété intellectuelle
+ * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -31,18 +31,18 @@
  *
  * boolean false value
  *
- * @see #bool
+ * @see #tpl_bool
  */
-#define FALSE   0
+#define FALSE   ((tpl_bool)0)
 
 /**
  * @def TRUE
  *
  * boolean true value
  *
- * @see #bool
+ * @see #tpl_bool
  */
-#define TRUE    1
+#define TRUE    ((tpl_bool)1)
 
 #ifndef NULL
 #define NULL 0
@@ -60,7 +60,7 @@
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
  */
-#define E_OK            0
+#define E_OK            0U
 
 /**
  * @def E_OS_ACCESS
@@ -70,7 +70,7 @@
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
  */
-#define E_OS_ACCESS     1
+#define E_OS_ACCESS     1U
 
 /**
  * @def E_OS_CALLEVEL
@@ -80,7 +80,7 @@
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
  */
-#define E_OS_CALLEVEL   2
+#define E_OS_CALLEVEL   2U
 
 /**
  * @def E_OS_ID
@@ -90,7 +90,7 @@
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
  */
-#define E_OS_ID         3
+#define E_OS_ID         3U
 
 /**
  * @def E_OS_LIMIT
@@ -101,7 +101,7 @@
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
  */
-#define E_OS_LIMIT      4
+#define E_OS_LIMIT      4U
 
 /**
  * @def E_OS_NOFUNC
@@ -111,7 +111,7 @@
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
  */
-#define E_OS_NOFUNC     5
+#define E_OS_NOFUNC     5U
 
 /**
  * @def E_OS_RESOURCE
@@ -121,7 +121,7 @@
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
  */
-#define E_OS_RESOURCE   6
+#define E_OS_RESOURCE   6U
 
 /**
  * @def E_OS_STATE
@@ -131,7 +131,7 @@
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
  */
-#define E_OS_STATE      7
+#define E_OS_STATE      7U
 
 /**
  * @def E_OS_VALUE
@@ -141,7 +141,7 @@
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
  */
-#define E_OS_VALUE      8
+#define E_OS_VALUE      8U
 
 /*********************************
  * Task flags for the type field *
@@ -209,7 +209,7 @@
  * @see #tpl_alarm_state
  * @see #TPL_ALARM
  */
-#define ALARM_SLEEP     0
+#define ALARM_SLEEP     0U
 
 /**
  * @def ALARM_ACTIVE
@@ -219,7 +219,7 @@
  * @see #tpl_alarm_state
  * @see #TPL_ALARM
  */
-#define ALARM_ACTIVE    1
+#define ALARM_ACTIVE    1U
 
 /**
  * @def ALARM_AUTOSTART
@@ -229,7 +229,7 @@
  * @see #tpl_alarm_state
  * @see #TPL_ALARM
  */
-#define ALARM_AUTOSTART 2
+#define ALARM_AUTOSTART 2U
 
 /**
  * @def ALARM_CALLBACK
@@ -239,7 +239,7 @@
  * @see #tpl_alarm_kind
  * @see #TPL_ALARM
  */
-#define ALARM_CALLBACK          10
+#define ALARM_CALLBACK          10U
 
 /**
  * @def ALARM_TASK_ACTIVATION
@@ -249,7 +249,7 @@
  * @see #tpl_alarm_kind
  * @see #TPL_ALARM
  */
-#define ALARM_TASK_ACTIVATION   11
+#define ALARM_TASK_ACTIVATION   11U
 
 /**
  * @def ALARM_EVENT_SETTING
@@ -259,7 +259,7 @@
  * @see #tpl_alarm_kind
  * @see #TPL_ALARM
  */
-#define ALARM_EVENT_SETTING     12
+#define ALARM_EVENT_SETTING     12U
 
 /***************************************
  * selector for tpl_schedule parameter *
@@ -272,7 +272,7 @@
  *
  * @see #tpl_schedule
  */
-#define FROM_TASK_LEVEL 0
+#define FROM_TASK_LEVEL 0U
 
 /**
  * @def FROM_IT_LEVEL
@@ -281,7 +281,7 @@
  *
  * @see #tpl_schedule
  */
-#define FROM_IT_LEVEL   1
+#define FROM_IT_LEVEL   1U
 
 /**********************************************
  * selector for tpl_put_exec_object parameter *
@@ -295,7 +295,7 @@
  *
  * @see #tpl_put_exec_object
  */
-#define PREEMPTED_EXEC_OBJ          0
+#define PREEMPTED_EXEC_OBJ          0U
 
 /**
  * @def NEWLY_ACTIVATED_EXEC_OBJ
@@ -305,7 +305,7 @@
  *
  * @see #tpl_put_exec_object
  */
-#define NEWLY_ACTIVATED_EXEC_OBJ    1
+#define NEWLY_ACTIVATED_EXEC_OBJ    1U
 
 /**
  * @def TASK

@@ -2,7 +2,7 @@
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
- * Trampoline est protégé par la loi sur la propriété intellectuelle
+ * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -16,64 +16,19 @@
  */
 
 #include "tpl_os.h"
-#include "tpl_os_kernel.h"
 #include "tpl_os_error.h"
+#include "tpl_os_kernel.h"
+#include "tpl_machine_interface.h"
 
-
-#include <stdio.h>
-/*
- * Prototypes of external functions
- */
-void tpl_put_exec_object(tpl_exec_common *, int);
-void tpl_schedule(int);
-void tpl_get_task_lock(void);
-void tpl_release_task_lock(void);
-void tpl_release_internal_resource(tpl_exec_common *);
+#include "tpl_os_event.h"
 
 /*
- * tpl_set_event is called by SetEvent
- * and by tpl_raise_alarm
- * see §13.5.3.1, page 60 of OSEK spec 2.2.2
- */
-tpl_status tpl_set_event(tpl_task *task, tpl_event_mask incoming_event)
-{
-    tpl_status result = E_OK;
-
-    if (task->exec_desc.state != SUSPENDED) {
-        /*  merge the incoming event mask with the old one  */
-        task->evt_set = (tpl_event_mask)(task->evt_set | incoming_event);
-        /*  cross check the event the task is
-            waiting for and the incoming event              */
-        if (task->evt_wait & incoming_event) {
-            /*  the task was waiting for at least one of the event set
-                the wait mask is reset to 0                 */
-            task->evt_wait = (tpl_event_mask)0;
-/*            task->evt_wait &= (tpl_event_mask)(~incoming_event); */
-            /*  anyway check it is in the WAITING state     */
-            if (task->exec_desc.state == WAITING) {
-                /*  set the state to READY  */
-                task->exec_desc.state = READY;
-                /*  put the task in the READY list          */
-                tpl_put_exec_object(
-                    (tpl_exec_common *)task,
-                    NEWLY_ACTIVATED_EXEC_OBJ);
-                /*  notify a scheduling needs to be done    */
-                result = E_OK_AND_SCHEDULE;
-            }
-        }
-    }
-    else {
-        result = E_OS_STATE;
-    }
-    
-    return result;
-}
-
-/*
- * OSEK/VDX services implementation
+ * SetEvent
  */
 
-StatusType SetEvent(TaskType task_id, EventMaskType event)
+StatusType SetEvent(
+    const TaskType      task_id,
+    const EventMaskType event)
 {
     StatusType result = E_OK;
 
@@ -95,7 +50,8 @@ StatusType SetEvent(TaskType task_id, EventMaskType event)
 #ifndef NO_TASK
     IF_NO_EXTENDED_ERROR(result)
         result = tpl_set_event(tpl_task_table[task_id], event);
-        if (result == E_OK_AND_SCHEDULE) {
+        if (result == (tpl_status)E_OK_AND_SCHEDULE)
+        {
             tpl_schedule(FROM_TASK_LEVEL);
             result &= OSEK_STATUS_MASK;
         }
@@ -114,9 +70,9 @@ StatusType SetEvent(TaskType task_id, EventMaskType event)
 
 /*
  * ClearEvent
- * see §13.5.3.2, page 61 of OSEK spec 2.2.2
+ * see paragraph 13.5.3.2, page 61 of OSEK spec 2.2.2
  */
-StatusType ClearEvent(EventMaskType event)
+StatusType ClearEvent(const EventMaskType event)
 {
     StatusType result = E_OK;
 
@@ -148,9 +104,11 @@ StatusType ClearEvent(EventMaskType event)
 
 /*
  * GetEvent
- * see §13.5.3.3, page 61 of OSEK spec 2.2.2
+ * see paragraph 13.5.3.3, page 61 of OSEK spec 2.2.2
  */
-StatusType GetEvent(TaskType task_id, EventMaskRefType event)
+StatusType GetEvent(
+    const TaskType          task_id,
+    const EventMaskRefType  event)
 {
     StatusType result = E_OK;
 
@@ -188,7 +146,7 @@ StatusType GetEvent(TaskType task_id, EventMaskRefType event)
  * WaitEvent
  * see $13.5.3.4, page 61-62 of OSEK spec 2.2.2
  */
-StatusType WaitEvent(EventMaskType event)
+StatusType WaitEvent(const EventMaskType event)
 {
     StatusType result = E_OK;
 
@@ -210,7 +168,8 @@ StatusType WaitEvent(EventMaskType event)
     /*  all the evt_wait is overidden.  */
     ((tpl_task *)tpl_running_obj)->evt_wait = event;
     /*  check one of the event to wait is not already set       */
-    if (!(((tpl_task *)tpl_running_obj)->evt_set & event)) {
+    if ((((tpl_task *)tpl_running_obj)->evt_set & event) == 0)
+    {
         /*  no one is set, the task goes in the WAITING state   */
         tpl_running_obj->state = WAITING;
         /*  and a rescheduling occurs                           */
@@ -227,3 +186,5 @@ StatusType WaitEvent(EventMaskType event)
     
     return result;
 }
+
+/* End of file tpl_os_event.c */

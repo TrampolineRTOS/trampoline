@@ -2,7 +2,7 @@
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
- * Trampoline est protégé par la loi sur la propriété intellectuelle
+ * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -17,7 +17,7 @@
 #ifndef __TPL_COM_FILTERING_H__
 #define __TPL_COM_FILTERING_H__
 
-#include "tpl_os_types.h"
+#include "tpl_os_internal_types.h"
 #include "tpl_com_types.h"
 
 /*
@@ -28,7 +28,7 @@ struct TPL_FILTER_DESC;
 /*
  * filtering function pointer
  */
-typedef bool (*tpl_filter_func)(
+typedef tpl_bool (*tpl_filter_func)(
     struct TPL_FILTER_DESC *,
     tpl_com_value,
     tpl_com_value
@@ -45,7 +45,7 @@ typedef bool (*tpl_filter_func)(
  */
 struct TPL_FILTER_DESC {
     /*  filtering function pointer  */
-    tpl_filter_func filter ;
+    const tpl_filter_func filter ;
 };
 
 typedef struct TPL_FILTER_DESC tpl_filter_desc ;
@@ -70,9 +70,9 @@ struct TPL_MASK_X_FILTER_DESC {
     /*  base filter desc                */
     tpl_filter_desc     b_desc ;
     /*  mask                            */
-    tpl_com_value       mask;
+    const tpl_com_value mask;
     /*  comparison value                */
-    tpl_com_value       x;
+    const tpl_com_value x;
 };
 
 typedef struct TPL_MASK_X_FILTER_DESC tpl_mask_x_filter_desc;
@@ -84,9 +84,9 @@ struct TPL_INTERVAL_FILTER_DESC {
     /*  base filter desc                */
     tpl_filter_desc     b_desc ;
     /*  minimum value of the interval   */
-    tpl_com_value       min;
+    const tpl_com_value min;
     /*  maximum value of the interval   */
-    tpl_com_value       max;
+    const tpl_com_value max;
 };
 
 typedef struct TPL_INTERVAL_FILTER_DESC tpl_interval_filter_desc;
@@ -98,14 +98,14 @@ struct TPL_OCCURENCE_FILTER_DESC {
     /*  base filter desc                        */
     tpl_filter_desc     b_desc ;
     /*  period of the filter                    */
-    tpl_com_count       period;
+    const tpl_com_count period;
     /*  pointer to the occurence of the data    */
     tpl_com_count       *occurence;
 };
 
 typedef struct TPL_OCCURENCE_FILTER_DESC tpl_occurence_filter_desc;
 
-bool tpl_filtering(
+tpl_bool tpl_filtering(
     unsigned char *,
     unsigned char *,
     tpl_message_size,

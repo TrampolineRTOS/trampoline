@@ -2,7 +2,7 @@
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
- * Trampoline est protégé par la loi sur la propriété intellectuelle
+ * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -19,20 +19,20 @@
 
 #include "tpl_com_filtering.h"
 
-bool tpl_filter_always(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-bool tpl_filter_never(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-bool tpl_filter_masked_new_equals_x(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-bool tpl_filter_masked_new_differs_x(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-bool tpl_filter_new_is_equal(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-bool tpl_filter_new_is_different(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-bool tpl_filter_masked_new_equals_masked_old(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-bool tpl_filter_masked_new_differs_masked_old(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-bool tpl_filter_new_is_within(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-bool tpl_filter_new_is_outside(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-bool tpl_filter_new_is_greater(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-bool tpl_filter_new_is_less_or_equal(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-bool tpl_filter_new_is_less(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-bool tpl_filter_new_is_greater_or_equal(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-bool tpl_filter_one_every_n(tpl_filter_desc *, tpl_com_value, tpl_com_value);
+tpl_bool tpl_filter_always(tpl_filter_desc *, tpl_com_value, tpl_com_value);
+tpl_bool tpl_filter_never(tpl_filter_desc *, tpl_com_value, tpl_com_value);
+tpl_bool tpl_filter_masked_new_equals_x(tpl_filter_desc *, tpl_com_value, tpl_com_value);
+tpl_bool tpl_filter_masked_new_differs_x(tpl_filter_desc *, tpl_com_value, tpl_com_value);
+tpl_bool tpl_filter_new_is_equal(tpl_filter_desc *, tpl_com_value, tpl_com_value);
+tpl_bool tpl_filter_new_is_different(tpl_filter_desc *, tpl_com_value, tpl_com_value);
+tpl_bool tpl_filter_masked_new_equals_masked_old(tpl_filter_desc *, tpl_com_value, tpl_com_value);
+tpl_bool tpl_filter_masked_new_differs_masked_old(tpl_filter_desc *, tpl_com_value, tpl_com_value);
+tpl_bool tpl_filter_new_is_within(tpl_filter_desc *, tpl_com_value, tpl_com_value);
+tpl_bool tpl_filter_new_is_outside(tpl_filter_desc *, tpl_com_value, tpl_com_value);
+tpl_bool tpl_filter_new_is_greater(tpl_filter_desc *, tpl_com_value, tpl_com_value);
+tpl_bool tpl_filter_new_is_less_or_equal(tpl_filter_desc *, tpl_com_value, tpl_com_value);
+tpl_bool tpl_filter_new_is_less(tpl_filter_desc *, tpl_com_value, tpl_com_value);
+tpl_bool tpl_filter_new_is_greater_or_equal(tpl_filter_desc *, tpl_com_value, tpl_com_value);
+tpl_bool tpl_filter_one_every_n(tpl_filter_desc *, tpl_com_value, tpl_com_value);
 
 #endif

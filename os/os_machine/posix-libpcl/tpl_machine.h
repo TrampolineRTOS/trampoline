@@ -1,6 +1,6 @@
 
-#ifndef TPL_MACHINE_H_
-#define TPL_MACHINE_H_
+#ifndef TPL_MACHINE_H
+#define TPL_MACHINE_H
 
 #include "tpl_os_custom_types.h"
 
@@ -21,4 +21,5 @@ typedef struct TPL_STACK tpl_stack;
 
 #define IDLE_STACK {NULL,0}
 
-#endif /*TPL_MACHINE_H_*/
+
+#endif /* TPL_MACHINE_H */

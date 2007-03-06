@@ -1,0 +1,25 @@
+-I ./os_machine/posix-libpcl
+-I ../App/defaultAppWorkstation
+-I .
++charint
++internal-name-length 31 # MISRA rule 11
++internal-name-case-insensitive
++internal-name-look-alike
++export-header
+-must-free-only
+-temp-trans
+-kept-trans
+-branch-state
+-comp-mem-pass
+-null-state
+-glob-state
+-immediate-trans
+-null-assign
+-only-trans
+-null-deref
+-null-pass
+-unqualified-trans
+-bool-type tpl_bool
++re-decl
+-null-ret
++ret-val

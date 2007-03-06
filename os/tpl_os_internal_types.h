@@ -3,7 +3,8 @@
  *
  * @section descr File description
  *
- * Trampoline internal types. These types are not intended to be used in an application.
+ * Trampoline internal types. These types are not intended
+ * to be used in an application.
  *
  * @section copyright Copyright
  *
@@ -11,7 +12,7 @@
  *
  * Trampoline is copyright (c) IRCCyN 2005+
  * Copyright ESEO for function and data structures documentation
- * Trampoline est protégé par la loi sur la propriété intellectuelle
+ * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -23,11 +24,10 @@
  * $URL$
  */
 
-#ifndef __TPL_OS_INTERNAL_TYPES_H__
-#define __TPL_OS_INTERNAL_TYPES_H__
+#ifndef TPL_OS_INTERNAL_TYPES_H
+#define TPL_OS_INTERNAL_TYPES_H
 
 #include "tpl_os_custom_types.h"
-#include "tpl_os_types.h"
 #include "tpl_machine.h"
 
 /**
@@ -37,7 +37,7 @@
  *
  * @see #CONFORMANCE_CLASS
  */
-#define ECC1 1
+#define ECC1 1U
 
 /**
  * @def ECC2
@@ -46,7 +46,7 @@
  *
  * @see #CONFORMANCE_CLASS
  */
-#define ECC2 2
+#define ECC2 2U
 
 /**
  * @def CONFORMANCE_CLASS
@@ -70,7 +70,7 @@
  *
  * @see #tpl_status
  */
-#define NO_SPECIAL_CODE         0
+#define NO_SPECIAL_CODE         0U
 
 /**
  * @def NEED_RESCHEDULING
@@ -82,7 +82,7 @@
  *
  * @see #tpl_status
  */
-#define NEED_RESCHEDULING       32
+#define NEED_RESCHEDULING       32U
 
 /**
  * @def E_OK_AND_SCHEDULE
@@ -115,6 +115,37 @@
  */
 #define TRAMPOLINE_STATUS_MASK  0xE0
 
+/**
+ * @typedef tpl_bool
+ *
+ * Standard bool declaration. Values can be #TRUE or #FALSE.
+ */
+typedef u8 tpl_bool;
+
+/**
+ * @typedef tpl_status
+ *
+ * This type is used for return
+ * status of services (ie one of the result
+ * codes specified below). 
+ *
+ * It is binary compatible with OSEK StatusType, provided
+ * Trampoline specific codes are removed (via #OSEK_STATUS_MASK
+ * AND-mask). 
+ *
+ * @see #OSEK_STATUS_MASK
+ * @see #StatusType
+ */
+typedef u8 tpl_status;
+
+/**
+ * @typedef tpl_callback_func
+ *
+ * This type is used for various
+ * callback function type in Trampoline.
+ */
+typedef void (*tpl_callback_func)(void);
+
 /************************
  * Forward declarations *
  ************************/
@@ -132,7 +163,7 @@ struct TPL_RESOURCE;
  * @see #tpl_is_non_preemptable
  * @see #tpl_is_isr
  */
-typedef unsigned char tpl_exec_obj_type;
+typedef u8 tpl_exec_obj_type;
  
 /**
  * @typedef tpl_exec_state
@@ -148,7 +179,7 @@ typedef unsigned char tpl_exec_obj_type;
  * - #SUSPENDED
  * - #WAITING (only for ECC1 or ECC2 conformance classes)
  */
-typedef unsigned char tpl_exec_state;
+typedef u8 tpl_exec_state;
 
 /**
  * @def AUTOSTART
@@ -157,7 +188,7 @@ typedef unsigned char tpl_exec_state;
  *
  * @see #tpl_exec_state
  */
-#define AUTOSTART   0
+#define AUTOSTART   0U
 
 /**
  * @def RUNNING
@@ -166,7 +197,7 @@ typedef unsigned char tpl_exec_state;
  *
  * @see #tpl_exec_state
  */
-#define RUNNING     1
+#define RUNNING     1U
 
 /**
  * @def READY
@@ -175,7 +206,7 @@ typedef unsigned char tpl_exec_state;
  *
  * @see #tpl_exec_state
  */
-#define READY       2
+#define READY       2U
 
 /**
  * @def SUSPENDED
@@ -184,7 +215,7 @@ typedef unsigned char tpl_exec_state;
  *
  * @see #tpl_exec_state
  */
-#define SUSPENDED   3
+#define SUSPENDED   3U
 #if CONFORMANCE_CLASS==ECC1 || CONFORMANCE_CLASS==ECC2
 /**
  * @def WAITING
@@ -193,7 +224,7 @@ typedef unsigned char tpl_exec_state;
  *
  * @see #tpl_exec_state
  */
-#define WAITING     4
+#define WAITING     4U
 #endif
 
 /**
@@ -215,12 +246,12 @@ typedef void (*tpl_exec_function)(void);
 struct TPL_EXEC_STATIC {
     tpl_context                     context;            /**< context(s) of the task/isr */
     tpl_stack                       stack;              /**< stack(s) of the task/isr */
-    tpl_exec_function               entry;              /**< function that is the entry point of the task/isr */
+    const tpl_exec_function         entry;              /**< function that is the entry point of the task/isr */
     struct TPL_INTERNAL_RESOURCE    *internal_resource; /**< pointer to an internal resource. NULL if the task does not have an internal resource */
-    tpl_task_id                     id;                 /**< id of task/isr */
-    tpl_priority                    base_priority;      /**< base priority of the task/isr  */
-    tpl_activate_counter            max_activate_count; /**< max activation count of a task/isr */
-    tpl_exec_obj_type               type;               /**< type of the task/isr */
+    const tpl_task_id               id;                 /**< id of task/isr */
+    const tpl_priority              base_priority;      /**< base priority of the task/isr  */
+    const tpl_activate_counter      max_activate_count; /**< max activation count of a task/isr */
+    const tpl_exec_obj_type         type;               /**< type of the task/isr */
 };
 
 /**
@@ -283,7 +314,7 @@ typedef struct TPL_TASK tpl_task;
  * This structure describes all attributes of a resource
  */
 struct TPL_RESOURCE {
-    tpl_priority            ceiling_priority;     /**< Ceiling priority as computed at system generation time. */
+    const tpl_priority      ceiling_priority;     /**< Ceiling priority as computed at system generation time. */
     tpl_priority            owner_prev_priority;  /**< Priority of the owner before accessing to the resource.
                                                        This field is used to restore the priority of the task when
                                                        the resource is released */
@@ -310,11 +341,11 @@ typedef struct TPL_RESOURCE tpl_resource;
  */
 struct TPL_INTERNAL_RESOURCE {
     
-    tpl_priority            ceiling_priority;    /**<  Ceiling priority as computed at system generation time */
+    const tpl_priority      ceiling_priority;    /**<  Ceiling priority as computed at system generation time */
     tpl_priority            owner_prev_priority; /**<  Priority of the owner prior to the access to the resource.
                                                        this field is used to restore the priority of the task when
                                                        the resource is released */
-    bool                    taken;               /**<  Flag to tell if the internal resource is taken or not */
+    tpl_bool                taken;               /**<  Flag to tell if the internal resource is taken or not */
 };
 
 /**
@@ -334,7 +365,7 @@ typedef struct TPL_INTERNAL_RESOURCE tpl_internal_resource;
  * - #ALARM_ACTIVE
  * - #ALARM_AUTOSTART (only before startup)
  */
-typedef unsigned char tpl_alarm_state;
+typedef u8 tpl_alarm_state;
 
 /**
  * @typedef tpl_alarm_kind
@@ -344,7 +375,7 @@ typedef unsigned char tpl_alarm_state;
  * - #ALARM_TASK_ACTIVATION
  * - #ALARM_EVENT_SETTING
  */
-typedef  int tpl_alarm_kind;
+typedef u8 tpl_alarm_kind;
 
 /**
  * @struct TPL_ALARM_ACTION
@@ -353,10 +384,12 @@ typedef  int tpl_alarm_kind;
  */
 struct TPL_ALARM_ACTION {
     union {
-        tpl_callback_func   callback;  /**< address of function to call */
-        tpl_task            *task;     /**< descriptor of the task to activate */
-    }               task_or_callback;  /**< link to the related task or callback */
-    tpl_event_mask  mask;              /**< event mask related */
+        const tpl_callback_func callback;   /**< address of function to call */
+        tpl_task                *task;      /**< descriptor of the task to
+                                                 activate                    */
+    } task_or_callback;                     /**< link to the related task or
+                                                 callback                    */
+    const tpl_event_mask  mask;             /**< event mask related          */
 };
 
 /**
@@ -376,30 +409,26 @@ struct TPL_COUNTER;
  * This is the data structure used to describe an alarm.
  */
 struct TPL_ALARM {
-    tpl_alarm_state     state;          /**<  state of the alarm. An alarm
-                                              may have 2 states: ALARM_SLEEP
-                                              and ALARM_ACTIVE.
-                                            
-                                             @see #tpl_alarm_state
-                                         */
-    tpl_alarm_kind      kind;           /**<  kind of the alarm. There is 3 kinds
-                                              of alarms : ALARM_CALLBACK,
-                                              ALARM_TASK_ACTIVATION and
-                                              ALARM_EVENT_SETTING 
-                                         */
-    tpl_alarm_action    action;         /**<  action to be done when the
-                                              alarm is raised (according to
-                                              the kind)
-                                         */
-    struct TPL_COUNTER  *counter;       /**<  a pointer to the counter the
-                                              alarm belongs to 
-                                         */
-    tpl_tick            cycle;          /**< cycle delay for cyclic alarms */
-    tpl_tick            date;           /**< absolute date of the alarm */
-    struct TPL_ALARM    *next_alarm;    /**< next alarm in the active
-                                            alarm list */
-    struct TPL_ALARM    *prev_alarm;    /**< previous alarm in the active
-                                             alarm list */
+    tpl_alarm_state         state;      /**< state of the alarm. An alarm
+                                             may have 2 states:
+                                             ALARM_SLEEP and ALARM_ACTIVE.
+                                             @see #tpl_alarm_state          */
+    const tpl_alarm_kind    kind;       /**< kind of the alarm. There is 3
+                                             kinds of alarms :
+                                             ALARM_CALLBACK,
+                                             ALARM_TASK_ACTIVATION and
+                                             ALARM_EVENT_SETTING            */
+    tpl_alarm_action        action;     /**< action to be done when the
+                                             alarm is raised (according to
+                                             the kind)                      */
+    struct TPL_COUNTER      *counter;   /**< a pointer to the counter the
+                                             alarm belongs to               */
+    tpl_tick                cycle;      /**< cycle delay for cyclic alarms  */
+    tpl_tick                date;       /**< absolute date of the alarm     */
+    struct TPL_ALARM        *next_alarm;/**< next alarm in the active
+                                             alarm list                     */
+    struct TPL_ALARM        *prev_alarm;/**< previous alarm in the active
+                                             alarm list                     */
 };
 
 /**
@@ -417,13 +446,14 @@ typedef struct TPL_ALARM tpl_alarm;
  * This is the data structure used to describe a counter
  */
 struct TPL_COUNTER {
-    tpl_tick    ticks_per_base;         /**< number of ticks until the
-                                             counter increments */
-    tpl_tick    current_tick;           /**< current tick value of the
-                                             counter */
-    tpl_tick    current_date;           /**< current value of the counter */
-    tpl_alarm   *first_alarm;           /**< active alarms list head */
-    tpl_alarm   *next_alarm_to_raise;   /**< next active alarms */
+    const tpl_tick  ticks_per_base;         /**< number of ticks until the
+                                                 counter increments         */
+    tpl_tick        current_tick;           /**< current tick value of the
+                                                 counter                    */
+    tpl_tick        current_date;           /**< current value of the
+                                                 counter                    */
+    tpl_alarm       *first_alarm;           /**< active alarms list head    */
+    tpl_alarm       *next_alarm_to_raise;   /**< next active alarms         */
 };
 
 /**
@@ -447,11 +477,15 @@ typedef struct TPL_COUNTER tpl_counter;
  * @see AlarmBaseType
  */
 struct ALARM_BASE_TYPE {
-    tpl_tick    maxallowedvalue; /**< maximum possible allowed count values in tick */
-    tpl_tick    ticksperbase;    /**< number of ticks required to reach a counter-specific (significant) unit */
-    tpl_tick    mincycle;        /**< smallest allowed value for the cycle-parameter of SetRelAlarm/SetAbsAlarm
-                                      (only for systems with extended status)
-                                  */
+    tpl_tick  maxallowedvalue;  /**< maximum possible allowed count values
+                                     in tick                                */
+    tpl_tick  ticksperbase;     /**< number of ticks required to
+                                     reach a counter-specific (significant)
+                                     unit                                   */
+    tpl_tick  mincycle;         /**< smallest allowed value for the
+                                     cycle-parameter of
+                                     SetRelAlarm/SetAbsAlarm (only for
+                                     systems with extended status)          */
 };
 
 /**
@@ -465,33 +499,14 @@ struct ALARM_BASE_TYPE {
 typedef struct ALARM_BASE_TYPE tpl_alarm_base;
 
 /**
- * @struct TPL_LOCK
- *
- * @todo what's this ? is it deprecated ?
- *
- * @see #TASK_LOCK
- */
-struct TPL_LOCK {
-    tpl_exec_common *taker;
-    tpl_exec_common *waiters;
-};
-
-/**
- * @typedef tpl_lock
- *
- * This is an alias for the structure #TPL_LOCK
- *
- * @see #TPL_LOCK
- */
-typedef struct TPL_LOCK tpl_lock;
-
-/**
  * @typedef tpl_application_mode
  *
  * Identifies an application mode
  *
  * @see #AppModeType
  */
-typedef unsigned char tpl_application_mode;
+typedef u8 tpl_application_mode;
 
-#endif
+#endif /* TPL_OS_INTERNAL_TYPES_H */
+
+/* End of file tpl_os_internal_type.h */

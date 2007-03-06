@@ -10,7 +10,7 @@
 #include "tpl_machine.h"
 #include "tpl_os_internal_types.h"
 #include "tpl_viper_interface.h"
-#include "tpl_os_interrupts.h"
+#include "tpl_os_it_kernel.h"
 #include "tpl_os.h"
 #include "tpl_os_application_def.h" //define NO_ISR if needed.
 
@@ -92,9 +92,9 @@ void tpl_shutdown(void)
         exit(-1);
     }
     
-  viper_kill();
+    viper_kill();
     /* sleep forever */
-  exit(0);
+    exit(0);
 }
 
 volatile int x = 0;
