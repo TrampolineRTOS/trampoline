@@ -137,15 +137,17 @@ extern u8   tpl_os_state;
  */
 extern tpl_resource res_sched;
 
+extern tpl_internal_resource INTERNAL_RES_SCHEDULER;
+
 /**
  * Kernel functions
  */
 extern void tpl_schedule(const u8 from);
 
-extern tpl_status tpl_activate_task(tpl_task *task);
+extern tpl_status tpl_activate_task(tpl_task *a_task);
 
 extern tpl_status tpl_set_event(
-    tpl_task                *task,
+    tpl_task                *a_task,
     const tpl_event_mask    incoming_event);
     
 extern void tpl_init_exec_object(tpl_exec_common *exec_obj);
@@ -156,7 +158,7 @@ extern void tpl_put_exec_object(
     
 extern void tpl_init_os(void);
 
-extern void tpl_release_internal_resource(tpl_exec_common *task);
+extern void tpl_release_internal_resource(tpl_exec_common *a_task);
 
 #endif /* TPL_OS_KERNEL_H */
 

@@ -1,17 +1,18 @@
 /*
  * Alarm descriptor of alarm $ALARM_NAME$
  */
-void $ALARM_CALLBACK$(void);
- 
+extern void $ALARM_CALLBACK$(void);
+
+tpl_callback_action callback_action_of_$ALARM_NAME$ = {
+    {
+        /* action function  */  tpl_action_callback
+    },
+    /* callback function    */  $ALARM_CALLBACK$
+};
+
 tpl_alarm $ALARM$ = {
     /* State of the alarm   */  $ALARM_STATE$,
-    /* kind of the alarm    */  ALARM_CALLBACK,
-                                {
-    /* action of the alarm  */      {
-                                        $ALARM_CALLBACK$
-                                    },
-    /* event if necessary   */      (tpl_event_mask)0
-                                },
+    /* action of the alarm  */  (tpl_action *)&callback_action_of_$ALARM_NAME$,
     /* pointer to counter   */  &$COUNTER$,
     /* cycle                */  $ALARM_CYCLE$,
     /* date                 */  $ALARM_DATE$,

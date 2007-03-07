@@ -65,7 +65,7 @@
  *
  * see paragraph 13.2.3.1 page 50 of OSEK/VDX 2.2.3 spec
  */
-StatusType ActivateTask(const TaskType TaskID);
+StatusType ActivateTask(const TaskType task_id);
 
 /**
  * Terminates the execution of a task.
@@ -93,7 +93,7 @@ StatusType TerminateTask(void);
  *
  * see paragraph 13.2.3.3 page 51 of OSEK/VDX 2.2.3 spec
  */
-StatusType ChainTask(const TaskType TaskID);
+StatusType ChainTask(const TaskType task_id);
 
 /**
  * Call to the scheduler.
@@ -116,7 +116,7 @@ StatusType Schedule(void);
  *
  * see paragraph 13.2.3.5 page 53 of OSEK/VDX 2.2.3 spec
  */
-StatusType GetTaskID(TaskRefType TaskID);
+StatusType GetTaskID(TaskRefType task_id);
 
 /**
  * Gives the state of a task
@@ -131,8 +131,8 @@ StatusType GetTaskID(TaskRefType TaskID);
  * see paragraph 13.2.3.6 page 53 of OSEK/VDX 2.2.3 spec
  */
 StatusType GetTaskState(
-    const TaskType      TaskID,
-    TaskStateRefType    State);
+    const TaskType      task_id,
+    TaskStateRefType    state);
 
 #endif /* TPL_OS_TASK_H */
 

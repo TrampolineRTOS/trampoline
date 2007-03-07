@@ -58,7 +58,7 @@ StatusType ActivateTask(const TaskType task_id)
             tpl_schedule(FROM_TASK_LEVEL);
             result &= OSEK_STATUS_MASK;
         }
-    END_IF_NO_EXTENDED_ERROR()
+    IF_NO_EXTENDED_ERROR_END()
 #endif
     
     PROCESS_ERROR(result)
@@ -121,7 +121,7 @@ StatusType TerminateTask(void)
         }
 
         tpl_schedule(FROM_TASK_LEVEL);
-    END_IF_NO_EXTENDED_ERROR()
+    IF_NO_EXTENDED_ERROR_END()
 #endif
 
     PROCESS_ERROR(result)
@@ -220,7 +220,7 @@ StatusType ChainTask(const TaskType task_id)
         }
             
         tpl_schedule(FROM_TASK_LEVEL);
-    END_IF_NO_EXTENDED_ERROR()
+    IF_NO_EXTENDED_ERROR_END()
 #endif
     
     PROCESS_ERROR(result)
@@ -252,7 +252,7 @@ StatusType Schedule(void)
         tpl_release_internal_resource(tpl_running_obj);
         /*  does the rescheduling           */
         tpl_schedule(FROM_TASK_LEVEL);
-    END_IF_NO_EXTENDED_ERROR()
+    IF_NO_EXTENDED_ERROR_END()
 #endif
     
     PROCESS_ERROR(result)
@@ -292,7 +292,7 @@ StatusType GetTaskState(
 #ifndef NO_TASK
     IF_NO_EXTENDED_ERROR(result)
         *state = ((tpl_exec_common *)(tpl_task_table[task_id]))->state;
-    END_IF_NO_EXTENDED_ERROR()
+    IF_NO_EXTENDED_ERROR_END()
 #endif
 
     PROCESS_ERROR(result)

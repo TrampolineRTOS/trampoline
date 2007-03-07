@@ -1,12 +1,21 @@
-/*
+/**
+ * @file tpl_os_action.h
+ *
+ * @section desc File description
+ *
+ * Trampoline Action implementation. Actions are used for alarm action. They are 
+ * also used by COM for actions.
+ *
+ * @section copyright Copyright
+ *
  * Trampoline OS
  *
- * Trampoline is copyright (c) IRCCyN 2005+
+ * Trampoline is copyright (c) IRCCyN 2005-2007
  * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
- * Trampoline notification implementation.
+ * @section infos File informations
  *
  * $Date$
  * $Rev$
@@ -14,71 +23,57 @@
  * $URL$
  */
 
-#include "tpl_os_notification.h"
-#include "tpl_com_base_mo.h"
 #include "tpl_os_definitions.h"
-#include "tpl_com_definitions.h"
-
-void tpl_schedule(int);
-tpl_status tpl_activate_task(tpl_task *);
-tpl_status tpl_set_event(tpl_task *, tpl_event_mask);
-
+#include "tpl_os_kernel.h"
+#include "tpl_os_action.h"
 
 /**
- *  Notification function for notification call back
+ *  action function for action call back
  */
-void tpl_notify_callback(tpl_notification *notification)
-{
-    ((tpl_callback_notification *)notification)->callback();
-}
-
-/**
- *  Notification function for notification by task activation
- */
-void tpl_notify_activate_task(tpl_notification *notification)
-{
-    tpl_activate_task(
-        ((tpl_task_activation_notification *)notification)->task
-    );
-}
-
-/**
- *  Notification function for notification by setting event
- */
-void tpl_notify_setevent(tpl_notification *notification)
-{
-    tpl_set_event(
-        ((tpl_setevent_notification *)notification)->task,
-        ((tpl_setevent_notification *)notification)->mask
-    );
-}
-
-/*!
- *  Notification function for flag raising
- */
-/*void tpl_notify_raise_flag(tpl_notification *notification)
-{
-    notification->task_callback_or_flag.flag();
-}*/
-
-/*!
- *  \brief
- *
- *
- */
-void tpl_notify_receiving_mos(tpl_base_receiving_mo *rmo)
+tpl_status tpl_action_callback(const tpl_action *action)
 {
     /*
-     * Walk along the receiving message object chain and call the notification
-     * for each one when the notication exists.
+     * A tpl_action * is cast to a tpl_callback_action *
+     * This violate MISRA rule 45. However, since the
+     * first member of tpl_callback_action * is a tpl_action *
+     * This cast behaves correctly.
      */
-    while (rmo != NULL) {
-        tpl_notification *notification = rmo->notification;
-        if (notification != NULL) {
-            notification->notif(notification);
-        }
-        rmo = rmo->next_mo;
-    }
-	
-	tpl_schedule(FROM_TASK_LEVEL);
+    ((tpl_callback_action *)action)->callback();
+    
+    return E_OK;
 }
+
+/**
+ *  action function for action by task activation
+ */
+tpl_status tpl_action_activate_task(const tpl_action *action)
+{
+    /*
+     * A tpl_action * is cast to a tpl_task_activation_action *
+     * This violate MISRA rule 45. However, since the
+     * first member of tpl_task_activation_action * is a tpl_action *
+     * This cast behaves correctly.
+     */
+    return tpl_activate_task(
+        ((tpl_task_activation_action *)action)->task
+    );
+}
+
+/**
+ *  action function for action by setting event
+ */
+tpl_status tpl_action_setevent(const tpl_action *action)
+{
+    /*
+     * A tpl_action * is cast to a tpl_setevent_action *
+     * This violate MISRA rule 45. However, since the
+     * first member of tpl_setevent_action * is a tpl_action *
+     * This cast behaves correctly.
+     */
+    return tpl_set_event(
+        ((tpl_setevent_action *)action)->task,
+        ((tpl_setevent_action *)action)->mask
+    );
+}
+
+/* End of file tpl_os_action.c */

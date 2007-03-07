@@ -56,7 +56,7 @@ StatusType GetAlarmBase(
         
         /*  NOT YET IMPLEMENTED FOR mincycle and maxallowedvalue    */
         info->ticksperbase = alarm->counter->ticks_per_base;
-    END_IF_NO_EXTENDED_ERROR()
+    IF_NO_EXTENDED_ERROR_END()
 #endif
     
     PROCESS_ERROR(result)
@@ -98,7 +98,7 @@ StatusType GetAlarm(
         {
             result = E_OS_NOFUNC;
         }
-    END_IF_NO_EXTENDED_ERROR()
+    IF_NO_EXTENDED_ERROR_END()
 #endif
 
     PROCESS_ERROR(result)
@@ -145,7 +145,7 @@ StatusType SetRelAlarm(
             /*  the alarm is in use, return the proper error code   */
             result = E_OS_STATE;
         }
-    END_IF_NO_EXTENDED_ERROR()
+    IF_NO_EXTENDED_ERROR_END()
 #endif
 
     PROCESS_ERROR(result)
@@ -192,7 +192,7 @@ StatusType SetAbsAlarm(
         /*  the alarm is in use, return the proper error code   */
         result = E_OS_STATE;
     }
-    END_IF_NO_EXTENDED_ERROR()
+    IF_NO_EXTENDED_ERROR_END()
 #endif
 
     PROCESS_ERROR(result)
@@ -230,7 +230,7 @@ StatusType CancelAlarm(const AlarmType alarm_id)
     {
         result = E_OS_NOFUNC;
     }
-    END_IF_NO_EXTENDED_ERROR()
+    IF_NO_EXTENDED_ERROR_END()
 #endif
 
     PROCESS_ERROR(result)

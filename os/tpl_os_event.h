@@ -35,7 +35,7 @@
  */
  
 /**
- * @typedef EventMaskType
+ * @typedef EventmaskType
  *
  * identifies an event
  *
@@ -44,9 +44,9 @@
 typedef tpl_event_mask  EventMaskType;
 
 /**
- * @typedef EventMaskRefType
+ * @typedef EventmaskRefType
  *
- * references an #EventMaskType
+ * references an #EventmaskType
  *
  * see paragraph 13.5.1 page 60 of OSEK/VDX 2.2.2 spec
  */
@@ -72,24 +72,24 @@ typedef tpl_event_mask  *EventMaskRefType;
 /**
  * Set events of a task
  *
- * @param TaskID identifier of the task for which events will be set
- * @param Mask mask for selected event bits
+ * @param task_id identifier of the task for which events will be set
+ * @param mask mask for selected event bits
  *
  * @retval E_OK no error
- * @retval E_OS_ID (extended error only) TaskID is invalid
+ * @retval E_OS_ID (extended error only) task_id is invalid
  * @retval E_OS_ACCESS (extended error only) referenced task is not extended task
  * @retval E_OS_STATE (extended error only) referenced task is suspended
  *
  * see paragraph 13.5.3.1 page 60 of OSEK/VDX 2.2.2 spec
  */
 StatusType SetEvent(
-    const TaskType      TaskID,
-    const EventMaskType Mask);
+    const TaskType      task_id,
+    const EventMaskType event);
 
 /**
  * Clear event of current task
  *
- * @param Mask mask for selected event bits
+ * @param mask mask for selected event bits
  *
  * @retval E_OK no error
  * @retval E_OS_ACCESS (extended error only) caller is not an extended task
@@ -97,13 +97,13 @@ StatusType SetEvent(
  *
  * see paragraph 13.5.3.2 page 61 of OSEK/VDX 2.2.2 spec
  */
-StatusType ClearEvent(const EventMaskType Mask);
+StatusType ClearEvent(const EventMaskType event);
 
 /**
  * Get the state of an event
  *
- * @param TaskID identifier of the task
- * @param Event #EventMaskType variable where the event value will be stored
+ * @param task_id identifier of the task
+ * @param Event #EventmaskType variable where the event value will be stored
  *
  * @retval E_OK no error
  * @retval E_OS_ACCESS (extended error only) referenced task is not extended
@@ -112,13 +112,13 @@ StatusType ClearEvent(const EventMaskType Mask);
  * see paragraph 13.5.3.3 page 61 of OSEK/VDX 2.2.2 spec
  */
 StatusType GetEvent(
-    const TaskType          TaskID,
-    const EventMaskRefType  Event);
+    const TaskType          task_id,
+    const EventMaskRefType  event);
 
 /**
  * Waits for some bits in the event
  *
- * @param Mask mask for selected event bits
+ * @param mask mask for selected event bits
  *
  * @retval E_OK no error
  * @retval E_OS_ACCESS (extended error only) calling task is not an extended task
@@ -127,7 +127,7 @@ StatusType GetEvent(
  *
  * see paragraph 13.5.3.4 page 61 of OSEK/VDX 2.2.2 spec
  */
-StatusType WaitEvent(const EventMaskType Mask);
+StatusType WaitEvent(const EventMaskType event);
 
 #endif /* TPL_OS_EVENT */
 

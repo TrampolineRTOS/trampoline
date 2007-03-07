@@ -31,22 +31,22 @@
 #include "tpl_machine.h"
 
 /**
- * @def ECC1
+ * @def CONFORM_ECC1
  *
  * identifies the ECC1 conformance class
  *
  * @see #CONFORMANCE_CLASS
  */
-#define ECC1 1U
+#define CONFORM_ECC1        1U
 
 /**
- * @def ECC2
+ * @def CONFORM_ECC2
  *
  * identifies the ECC2 conformance class
  *
  * @see #CONFORMANCE_CLASS
  */
-#define ECC2 2U
+#define CONFORM_ECC2        2U
 
 /**
  * @def CONFORMANCE_CLASS
@@ -55,7 +55,7 @@
  *
  * @warning at this time, Trampoline only supports ECC2
  */
-#define CONFORMANCE_CLASS ECC2
+#define CONFORMANCE_CLASS   CONFORM_ECC2
 
 /**************************************
  * Special result code for Trampoline *
@@ -151,6 +151,7 @@ typedef void (*tpl_callback_func)(void);
  ************************/
 struct TPL_TASK;
 struct TPL_RESOURCE;
+struct TPL_ACTION;
 
 /**
  * @typedef tpl_exec_obj_type 
@@ -216,7 +217,7 @@ typedef u8 tpl_exec_state;
  * @see #tpl_exec_state
  */
 #define SUSPENDED   3U
-#if CONFORMANCE_CLASS==ECC1 || CONFORMANCE_CLASS==ECC2
+#if CONFORMANCE_CLASS==CONFORM_ECC1 || CONFORMANCE_CLASS==CONFORM_ECC2
 /**
  * @def WAITING
  *
@@ -246,7 +247,7 @@ typedef void (*tpl_exec_function)(void);
 struct TPL_EXEC_STATIC {
     tpl_context                     context;            /**< context(s) of the task/isr */
     tpl_stack                       stack;              /**< stack(s) of the task/isr */
-    const tpl_exec_function         entry;              /**< function that is the entry point of the task/isr */
+    const tpl_exec_function         entry;   /**< function that is the entry point of the task/isr */
     struct TPL_INTERNAL_RESOURCE    *internal_resource; /**< pointer to an internal resource. NULL if the task does not have an internal resource */
     const tpl_task_id               id;                 /**< id of task/isr */
     const tpl_priority              base_priority;      /**< base priority of the task/isr  */
@@ -377,29 +378,38 @@ typedef u8 tpl_alarm_state;
  */
 typedef u8 tpl_alarm_kind;
 
+
 /**
- * @struct TPL_ALARM_ACTION
+ * @typedef tpl_action_func
  *
- * This structure describe what an alarm should do when it raises
+ * Prototype for action functions
  */
-struct TPL_ALARM_ACTION {
-    union {
-        const tpl_callback_func callback;   /**< address of function to call */
-        tpl_task                *task;      /**< descriptor of the task to
-                                                 activate                    */
-    } task_or_callback;                     /**< link to the related task or
-                                                 callback                    */
-    const tpl_event_mask  mask;             /**< event mask related          */
+typedef tpl_status (*tpl_action_func)(
+    const struct TPL_ACTION *
+);
+
+/**
+ * @struct TPL_ACTION
+ *
+ * Action base structure
+ *
+ * This structure contains the pointer to the action function only.
+ * It is the common part for the action descriptor structures and is
+ * extended to add the action parameters.
+ */
+struct TPL_ACTION {
+	tpl_action_func action;    /**<  action function pointer   */
 };
 
 /**
- * @typedef tpl_alarm_action
+ * @typedef tpl_action
  *
- * This is an alias for the structure #TPL_ALARM_ACTION
+ * This is an alias for the structure #TPL_ACTION
  *
- * @see #TPL_ALARM_ACTION
+ * @see #TPL_ACTION
  */
-typedef struct TPL_ALARM_ACTION tpl_alarm_action;
+typedef struct TPL_ACTION tpl_action;
+
 
 struct TPL_COUNTER;
 
@@ -413,12 +423,7 @@ struct TPL_ALARM {
                                              may have 2 states:
                                              ALARM_SLEEP and ALARM_ACTIVE.
                                              @see #tpl_alarm_state          */
-    const tpl_alarm_kind    kind;       /**< kind of the alarm. There is 3
-                                             kinds of alarms :
-                                             ALARM_CALLBACK,
-                                             ALARM_TASK_ACTIVATION and
-                                             ALARM_EVENT_SETTING            */
-    tpl_alarm_action        action;     /**< action to be done when the
+    const tpl_action        *action;    /**< action to be done when the
                                              alarm is raised (according to
                                              the kind)                      */
     struct TPL_COUNTER      *counter;   /**< a pointer to the counter the

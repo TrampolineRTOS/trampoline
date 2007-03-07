@@ -55,7 +55,7 @@ StatusType SetEvent(
             tpl_schedule(FROM_TASK_LEVEL);
             result &= OSEK_STATUS_MASK;
         }
-    END_IF_NO_EXTENDED_ERROR()
+    IF_NO_EXTENDED_ERROR_END()
 #endif
         
     UNLOCK_WHEN_NO_HOOK()
@@ -90,7 +90,7 @@ StatusType ClearEvent(const EventMaskType event)
 #ifndef NO_TASK
     IF_NO_EXTENDED_ERROR(result)
         ((tpl_task *)tpl_running_obj)->evt_set &= (tpl_event_mask)(~event);
-    END_IF_NO_EXTENDED_ERROR()
+    IF_NO_EXTENDED_ERROR_END()
 #endif
 
     UNLOCK_WHEN_NO_HOOK()
@@ -130,7 +130,7 @@ StatusType GetEvent(
 #ifndef NO_TASK
     IF_NO_EXTENDED_ERROR(result)
         *event = tpl_task_table[task_id]->evt_set;
-    END_IF_NO_EXTENDED_ERROR()
+    IF_NO_EXTENDED_ERROR_END()
 #endif
     
     UNLOCK_WHEN_NO_HOOK()
@@ -175,7 +175,7 @@ StatusType WaitEvent(const EventMaskType event)
         /*  and a rescheduling occurs                           */
         tpl_schedule(FROM_TASK_LEVEL);
     }
-    END_IF_NO_EXTENDED_ERROR()
+    IF_NO_EXTENDED_ERROR_END()
 #endif
 
     UNLOCK_WHEN_NO_HOOK()

@@ -23,8 +23,8 @@
  * $URL$
  */
 
-#ifndef __TPL_OS_DEFINITIONS_H__
-#define __TPL_OS_DEFINITIONS_H__
+#ifndef TPL_OS_DEFINITIONS_H
+#define TPL_OS_DEFINITIONS_H
 
 /**
  * @def FALSE
@@ -148,24 +148,24 @@
  *********************************/
 
 /**
- * @def BASIC_TASK
+ * @def TASK_BASIC
  *
  * identifies a basic task
  *
  * @see #tpl_exec_obj_type
  * @see #TPL_EXEC_STATIC
  */
-#define BASIC_TASK              0x0
+#define TASK_BASIC              0x0
 
 /**
- * @def EXTENDED_TASK
+ * @def TASK_EXTENDED
  *
  * identifies an extended task
  *
  * @see #tpl_exec_obj_type
  * @see #TPL_EXEC_STATIC
  */
-#define EXTENDED_TASK           0x1
+#define TASK_EXTENDED           0x1
 
 /**
  * @def IS_ROUTINE
@@ -340,7 +340,7 @@
     void alarm_callback_##name(void)
 
 /**
- * @def EXECTYPE_MASK
+ * @def MASK_EXECTYPE
  *
  * Don't use this macro directly, use one of the following macros instead :
  *
@@ -350,7 +350,7 @@
  * @see #tpl_is_non_preemptable
  * @see #tpl_is_isr
  */
-#define EXECTYPE_MASK       0x3
+#define MASK_EXECTYPE       0x3
 
 /**
  * @def PREEMPTABLE_MASK
@@ -373,7 +373,7 @@
  * true if obj is a basic task
  */
 #define tpl_is_basic(obj)     \
-    ((obj->static_desc->type & EXECTYPE_MASK) == BASIC_TASK)
+    ((obj->static_desc->type & MASK_EXECTYPE) == TASK_BASIC)
 
 /**
  * @def tpl_is_extended
@@ -383,7 +383,7 @@
  * true if obj is an extended task
  */
 #define tpl_is_extended(obj)  \
-    ((obj->static_desc->type & EXECTYPE_MASK) == EXTENDED_TASK)
+    ((obj->static_desc->type & MASK_EXECTYPE) == TASK_EXTENDED)
 
 /**
  * @def tpl_is_full_preemptable
@@ -413,6 +413,8 @@
  * true if obj is an ISR
  */
 #define tpl_is_isr(obj)     \
-    ((obj->static_desc->type & EXECTYPE_MASK) == IS_ROUTINE)
+    ((obj->static_desc->type & MASK_EXECTYPE) == IS_ROUTINE)
     
-#endif
+#endif /* TPL_OS_DEFINITIONS_H */
+
+/* End of file tpl_os_definitions.h */
