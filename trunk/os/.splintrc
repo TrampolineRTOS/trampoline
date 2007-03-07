@@ -1,25 +1,104 @@
 -I ./os_machine/posix-libpcl
 -I ../App/defaultAppWorkstation
 -I .
-+charint
-+internal-name-length 31 # MISRA rule 11
-+internal-name-case-insensitive
-+internal-name-look-alike
-+export-header
--must-free-only
+
+#-hints
+#-forcehints
+ -linelen 80
+ -parenfileformat
+ +quiet
+
+ -booltype  bool
+ -booltrue  true
+ -boolfalse false
+
+ -standard
+ +strictlib
+ +charint
+
+# the flags commented out below are switched on by default or the
+# '-standard' shortcut.
+
+ +ansi89limits
+#+boolops
+#+casebreak
+#-charint
+ +cppnames
+ +declundef
+ +elseifcomplete
+#+evalorder
+ +exportheader
+ +exportheadervar
+#+exportlocal
+ -externalnamelen 31
+ -fcnmacros
+#+firstcase
+#-floatdouble
+ +forblock
+#+gnuextensions
+ +ifblock
+#-ignorequals
+#-ignoresigns
+#+imptype
+#+incompletetype
+#+incondefs
+#+initsize
+ -internalnamelen 31
+ +isoreserved
+ +isoreservedinternal
+#-longintegral
+#-longunsignedintegral
+#+macroassign
+#+macrofcndecl
+#+macroparams
+#+macroparens
+#+macrostmt
+ -maintype
+#-matchanyintegral
+#-modfilesystem
+#+namechecks
+#+nestcomment
+#+noeffect
+ +noparams
+#+noret
+ +oldstyle
+#+predassign
+#+predboolint
+ +protoparammatch
+#-protoparamname
+ +ptrarith
+#+realcompare
+ +redecl
+#+redef
+ -relaxquals
+#-relaxtypes
+ +retval
+#+shadow
+#+shiftimplementation
+#+shiftnegative
+ +slashslashcomment
+#+stackref
+#+sysunrecog
+#+type
+#+unreachable
+#+unrecog
+#+unrecogdirective
+#+usedef
+#+usevarargs
+ +whileblock
+
+# Additional relax
 -temp-trans
 -kept-trans
+-must-free-only
 -branch-state
 -comp-mem-pass
 -null-state
 -glob-state
--immediate-trans
 -null-assign
+-immediate-trans
 -only-trans
+-null-ret
 -null-deref
 -null-pass
 -unqualified-trans
--bool-type tpl_bool
-+re-decl
--null-ret
-+ret-val

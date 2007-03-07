@@ -1,12 +1,21 @@
-/*
+/**
+ * @file tpl_os_action.h
+ *
+ * @section desc File description
+ *
+ * Trampoline Action header. Actions are used for alarm action. They are 
+ * also used by COM for notifications.
+ *
+ * @section copyright Copyright
+ *
  * Trampoline OS
  *
- * Trampoline is copyright (c) IRCCyN 2005+
+ * Trampoline is copyright (c) IRCCyN 2005-2007
  * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
- * Trampoline notification header.
+ * @section infos File informations
  *
  * $Date$
  * $Rev$
@@ -14,97 +23,68 @@
  * $URL$
  */
 
-#ifndef TPL_OS_NOTIFICATION_H
-#define TPL_OS_NOTIFICATION_H
+#ifndef TPL_OS_ACTION_H
+#define TPL_OS_ACTION_H
 
 #include "tpl_os_internal_types.h"
-#include "tpl_com_private_types.h"
-
-#define NOTIFICATION_CALLBACK   0
-#define NOTIFICATION_FLAG       1
-#define NOTIFICATION_TASK       2
-#define NOTIFICATION_EVENT      3
-
-struct TPL_NOTIFICATION;
-
-/*
- * Prototype for notification functions
- */
-typedef void (*tpl_notification_func)(
-    struct TPL_NOTIFICATION *
-);
 
 /*!
- *  \brief  Notification base structure
+ *  \brief  Callback action structure
  *
- *  This structure contains the pointer to the notification function only.
- *  It is the common part for the notification descriptor structures and is
- *  extended to add the notification parameters.
- */
-struct TPL_NOTIFICATION {
-    /*  Notification function pointer   */
-	tpl_notification_func	notif;
-};
-
-typedef struct TPL_NOTIFICATION tpl_notification;
-
-/*!
- *  \brief  Callback notification structure
- *
- *  This structure add a callback function pointer to the notification base
+ *  This structure add a callback function pointer to the action base
  *  structure.
  */
-struct TPL_CALLBACK_NOTIFICATION {
-    /*  base notification           */
-    tpl_notification    b_desc;
+struct TPL_CALLBACK_ACTION {
+    /*  base action           */
+    tpl_action    b_desc;
     /*  callback function pointer   */
     tpl_callback_func   callback;
 };
 
-typedef struct TPL_CALLBACK_NOTIFICATION
-tpl_callback_notification;
+typedef struct TPL_CALLBACK_ACTION
+tpl_callback_action;
 
 /*!
- *  \brief  Task activation notification structure
+ *  \brief  Task activation action structure
  *
- *  This structure add a task descriptor pointer to the notification base
+ *  This structure add a task descriptor pointer to the action base
  *  structure.
  */
-struct TPL_TASK_ACTIVATION_NOTIFICATION {
-    /*  base notification           */
-    tpl_notification    b_desc;
+struct TPL_TASK_ACTIVATION_ACTION {
+    /*  base action           */
+    tpl_action    b_desc;
     /*  task descriptor pointer     */
     tpl_task            *task;
 };
 
-typedef struct TPL_TASK_ACTIVATION_NOTIFICATION
-tpl_task_activation_notification ;
+typedef struct TPL_TASK_ACTIVATION_ACTION
+tpl_task_activation_action ;
 
 /*!
- *  \brief  Set event notification structure
+ *  \brief  Set event action structure
  *
- *  This structure add a task descriptor pointer to the notification base
+ *  This structure add a task descriptor pointer to the action base
  *  structure and an event mask
  */
-struct TPL_SETEVENT_NOTIFICATION {
-    /*  base notification           */
-    tpl_notification    b_desc;
+struct TPL_SETEVENT_ACTION {
+    /*  base action           */
+    tpl_action    b_desc;
     /*  task descriptor pointer     */
     tpl_task            *task;
     /*  event mask                  */
     tpl_event_mask      mask;
 };
 
-typedef struct TPL_SETEVENT_NOTIFICATION
-tpl_setevent_notification;
+typedef struct TPL_SETEVENT_ACTION
+tpl_setevent_action;
 
 /*
  * Notification functions prototypes
  */
-void tpl_notify_callback(tpl_notification*);
-void tpl_notify_activate_task(tpl_notification*);
-void tpl_notify_setevent(tpl_notification*);
+tpl_status tpl_action_callback(const tpl_action *action);
+tpl_status tpl_action_activate_task(const tpl_action *action);
+tpl_status tpl_action_setevent(const tpl_action *action);
 
-#endif /*  TPL_OS_NOTIFICATION_H  */
+#endif /*  TPL_OS_ACTION_H  */
 
-/* End of file tpl_os_notification.h */
+/* End of file tpl_os_action.h */

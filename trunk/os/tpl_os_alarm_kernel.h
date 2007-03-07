@@ -47,7 +47,7 @@ void tpl_insert_alarm(tpl_alarm *alarm);
  *
  * @param alarm     The alarm to remove.
  */
-void tpl_remove_alarm(tpl_alarm *thealarm);
+void tpl_remove_alarm(tpl_alarm *alarm);
 
 /**
  * @internal

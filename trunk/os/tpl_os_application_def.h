@@ -24,8 +24,8 @@
  * $URL$
  */
 
-#ifndef __TPL_OS_APPLICATION_DEF_H__
-#define __TPL_OS_APPLICATION_DEF_H__
+#ifndef TPL_OS_APPLICATION_DEF_H
+#define TPL_OS_APPLICATION_DEF_H
 
 #include "tpl_app_objects.h"
 
@@ -77,4 +77,6 @@
 	#define NO_ISR
 #endif
 
-#endif
+#endif /* TPL_OS_APPLICATION_DEF_H */
+
+/* End of file tpl_os_application_def.h */

@@ -24,10 +24,10 @@ tpl_os_alarm.c  \
 tpl_os_it.c  \
 tpl_os_rez.c \
 tpl_os_kernel.c \
+tpl_os_action.c \
 tpl_os_alarm_kernel.c \
 tpl_os_it_kernel.c \
-tpl_os_rez_kernel.c \
-tpl_os_notification.h
+tpl_os_rez_kernel.c
 
 #################### end of configuration.
 O_PATH = ../$(OBJ_PATH)

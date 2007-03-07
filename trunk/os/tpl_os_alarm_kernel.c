@@ -167,27 +167,11 @@ static tpl_status tpl_raise_alarm(tpl_alarm *alarm)
 {
     tpl_status result = E_OK;
     
-    /*  check the kind of alarm to do the mandatory action  */
-    switch (alarm->kind)
-    {
-        case ALARM_CALLBACK:
-            /*  call the call back function */
-            alarm->action.task_or_callback.callback();
-            break;
-        case ALARM_TASK_ACTIVATION:
-            /*  activate the task   */
-            result = tpl_activate_task(alarm->action.task_or_callback.task);
-            break;
-        case ALARM_EVENT_SETTING:
-            /*  set the event   */
-            result = tpl_set_event(
-                        alarm->action.task_or_callback.task,
-                        alarm->action.mask);
-            break;
-        default:
-            result = E_OS_STATE;
-            break;
-    }
+    /*  Get the action to perform from the alarm descriptor */
+    const tpl_action *action_desc = alarm->action;
+    
+    /*  Call the action                                     */
+    result = (action_desc->action)(action_desc) ;
     
     /*  rearm the alarm if needed   */
     if (alarm->cycle != 0)

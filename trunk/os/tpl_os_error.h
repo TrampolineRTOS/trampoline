@@ -29,12 +29,6 @@
 #include "tpl_os.h"
 
 /*
- * The function corresponding to this prototype should be provided
- * by the application
- */
-extern void ErrorHook(StatusType);
-
-/*
  * Remember (see "The design of Trampoline") :
  * NO_TASK means there is no task defined in the system
  * OS_EXTENDED means extended error checking is done
@@ -43,6 +37,12 @@ extern void ErrorHook(StatusType);
  */
 
 #ifdef WITH_ERROR_HOOK
+
+/*
+ * The function corresponding to this prototype should be provided
+ * by the application
+ */
+extern void ErrorHook(StatusType);
 
 /**
  * @union ID_PARAM_BLOCK
@@ -975,10 +975,10 @@ void tpl_call_error_hook(const tpl_status error);
  * @see #IF_NO_EXTENDED_ERROR
  */
 #ifdef OS_EXTENDED
-#   define END_IF_NO_EXTENDED_ERROR() \
+#   define IF_NO_EXTENDED_ERROR_END() \
     }
 #else
-#   define END_IF_NO_EXTENDED_ERROR()
+#   define IF_NO_EXTENDED_ERROR_END()
 #endif
 
 /**
@@ -1039,6 +1039,23 @@ void tpl_call_error_hook(const tpl_status error);
 #   define LOCK_WHEN_TASK()     \
     tpl_get_task_lock();
 #   define UNLOCK_WHEN_TASK()   \
+    tpl_release_task_lock();
+#endif
+
+/**
+ * @def LOCK_WHEN_ISR
+ *
+ * Locks only when NO_ISR is not defined.
+ *
+ * @see #UNLOCK_WHEN_ISR
+ */
+#ifdef NO_ISR
+#   define LOCK_WHEN_ISR()
+#   define UNLOCK_WHEN_ISR()
+#else
+#   define LOCK_WHEN_ISR()     \
+    tpl_get_task_lock();
+#   define UNLOCK_WHEN_ISR()   \
     tpl_release_task_lock();
 #endif
 
@@ -1136,6 +1153,44 @@ void tpl_call_error_hook(const tpl_status error);
 /*  no extended error checking !(OS_EXTENDED).    */
 #if !defined(OS_EXTENDED)
 #   define CHECK_TASK_CALL_LEVEL_ERROR(result)
+#endif
+
+/**
+ * @def CHECK_ISR2_CALL_LEVEL_ERROR
+ *
+ * This macro checks for inappropriate call level errors.
+ *
+ * @param result error code variable to set (#StatusType)
+ *
+ * @note checking is disabled if OS_EXTENDED is not defined
+ *
+ * @note the error code is set only if there was no previous error
+ *
+ * @see #tpl_os_state
+ */
+
+/*  NO_ISR and extended error checking (OS_EXTENDED).
+    Since there is no ISR2, there is no ISR2 level calling  */
+#if defined(NO_ISR) && defined(OS_EXTENDED)
+#   define CHECK_ISR2_CALL_LEVEL_ERROR(result)                  \
+    if (result == E_OK)                                         \
+    {                                                           \
+        result = E_OS_CALLEVEL;                                 \
+    }
+#endif
+
+/*  !NO_ISR and extended error checking (OS_EXTENDED). */
+#if !defined(NO_ISR) && defined(OS_EXTENDED)
+#   define CHECK_ISR2_CALL_LEVEL_ERROR(result)                  \
+    if ((result == E_OK) && ((tpl_os_state) != OS_TASK))          \
+    {                                                           \
+        result = E_OS_CALLEVEL;                                 \
+    }
+#endif
+    
+/*  no extended error checking !(OS_EXTENDED).    */
+#if !defined(OS_EXTENDED)
+#   define CHECK_ISR2_CALL_LEVEL_ERROR(result)
 #endif
 
 /**

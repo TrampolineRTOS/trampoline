@@ -12,7 +12,8 @@
 #include "tpl_viper_interface.h"
 #include "tpl_os_it_kernel.h"
 #include "tpl_os.h"
-#include "tpl_os_application_def.h" //define NO_ISR if needed.
+#include "tpl_os_application_def.h" /* define NO_ISR if needed. */
+#include "tpl_machine_interface.h"
 
 #include "tpl_os_generated_configuration.h"
 

@@ -14,7 +14,7 @@ tpl_exec_static $EXEC_STATIC$ = {
     /* task id                  */ $TASK_ID$,
     /* task base priority       */ (tpl_priority)$TASK_PRIORITY$,
     /* max activation count     */ $TASK_MAX_ACT_COUNT$,
-    /* task type                */ EXTENDED_TASK
+    /* task type                */ TASK_EXTENDED
 };
 
 /*

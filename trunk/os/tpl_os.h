@@ -86,7 +86,7 @@ AppModeType GetActiveApplicationMode(void);
  *
  * see paragraph 13.7.2.2 page 66 of OSEK/VDX 2.2.2 spec
  */
-void StartOS(const AppModeType Mode);
+void StartOS(const AppModeType mode);
 
 /**
  * Stops Trampoline
@@ -95,7 +95,7 @@ void StartOS(const AppModeType Mode);
  *
  * see paragraph 13.7.2.3 page 67 of OSEK/VDX 2.2.2 spec
  */
-void ShutdownOS(const StatusType Error);
+void ShutdownOS(const StatusType error);
 
 #endif /* TPL_OS_H */
 

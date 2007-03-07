@@ -58,7 +58,7 @@ static tpl_exec_static idle_task_static = {
     /* id is INVALID_TASK   */  INVALID_TASK,
     /* base priority is -1  */  -1,
     /* max activate count   */  1,
-    /* type is BASIC        */  BASIC_TASK
+    /* type is BASIC        */  TASK_BASIC
 };
 
 /**
@@ -110,7 +110,7 @@ static tpl_exec_common *tpl_exec_obj_list_head = NULL;
 
 u8 tpl_os_state = OS_INIT; /* see doc in header file declaration */
 
-tpl_resource_id RES_SCHEDULER = -1;  /* see doc in header file declaration */
+tpl_resource_id RES_SCHEDULER = -1;  /* see doc in header declaration */
 
 /**
  * The scheduler resource descriptor

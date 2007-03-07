@@ -32,12 +32,20 @@
 #include "tpl_os_std_types.h"
 #include "tpl_machine_interface.h"
 
+static AppModeType application_mode;
+
+AppModeType GetActiveApplicationMode(void)
+{
+    return application_mode;
+}
+
 /*
  * StartOS can be called by the app to put the OS
  * in a different mode
  */
-void StartOS(const /*@unused@*/ AppModeType mode)
-{       
+void StartOS(const AppModeType mode)
+{
+    application_mode = mode;
 }
 
 /*
@@ -45,8 +53,8 @@ void StartOS(const /*@unused@*/ AppModeType mode)
  */
 void ShutdownOS(const /*@unused@*/ StatusType error) 
 {
-    CALL_SHUTDOWN_HOOK(error)
-    /* architecture dependant shutdown.*/
+    CALL_SHUTDOWN_HOOK(Error)
+    /* architecture dependant shutdown. */
     tpl_shutdown();
 }
 

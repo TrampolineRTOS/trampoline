@@ -70,7 +70,7 @@ typedef tpl_resource_id ResourceType;
  *
  * see paragraph 13.4.3.1 page 58 of OSEK/VDX 2.2.2 spec
  */
-StatusType GetResource(const ResourceType ResID);
+StatusType GetResource(const ResourceType res_id);
 
 /**
  * Releases the resource
@@ -84,7 +84,7 @@ StatusType GetResource(const ResourceType ResID);
  *
  * see paragraph 13.4.3.2 page 59 of OSEK/VDX 2.2.2 spec
  */
-StatusType ReleaseResource(const ResourceType ResID);
+StatusType ReleaseResource(const ResourceType res_id);
 
 /**
  * This special resource is used to deny preemption.

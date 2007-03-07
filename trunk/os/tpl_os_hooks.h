@@ -42,7 +42,7 @@
  * (or WITH_TASK_HOOK) is defined
  */
 #ifdef WITH_POST_TASK_HOOK
-#   define CALL_POST_TASK_HOOK()    \\
+#   define CALL_POST_TASK_HOOK()    \
     PostTaskHook();
 #else
 #   define CALL_POST_TASK_HOOK()
@@ -55,7 +55,7 @@
  * (or WITH_TASK_HOOK) is defined
  */
 #ifdef WITH_PRE_TASK_HOOK
-#   define CALL_PRE_TASK_HOOK()    \\
+#   define CALL_PRE_TASK_HOOK()         \
     PreTaskHook();
 #else
 #   define CALL_PRE_TASK_HOOK()
@@ -67,7 +67,7 @@
  * Generates a call to #StartupHook only if WITH_STARTUP_HOOK is defined 
  */
 #ifdef WITH_STARTUP_HOOK
-#   define CALL_STARTUP_HOOK()  \\
+#   define CALL_STARTUP_HOOK()          \
     StartupHook();
 #else
 #   define CALL_STARTUP_HOOK()
@@ -81,7 +81,7 @@
  * @param error error code (#StatusType) to send to shutdown hook
  */
 #ifdef WITH_SHUTDOWN_HOOK
-#   define CALL_SHUTDOWN_HOOK(error)  \\
+#   define CALL_SHUTDOWN_HOOK(error)    \
     ShutdownHook(error);
 #else
 #   define CALL_SHUTDOWN_HOOK(error)

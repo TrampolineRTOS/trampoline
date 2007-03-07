@@ -61,10 +61,10 @@ StatusType GetResource(const ResourceType res_id)
             
         IF_NO_EXTENDED_ERROR(result)
             tpl_get_resource(res);
-        END_IF_NO_EXTENDED_ERROR()
+        IF_NO_EXTENDED_ERROR_END()
         
         UNLOCK_WHEN_NO_HOOK()
-    END_IF_NO_EXTENDED_ERROR()
+    IF_NO_EXTENDED_ERROR_END()
     
     PROCESS_ERROR(result)
     
@@ -114,10 +114,10 @@ StatusType ReleaseResource(const ResourceType res_id)
         
         IF_NO_EXTENDED_ERROR(result)
             tpl_release_resource(res);
-        END_IF_NO_EXTENDED_ERROR()
+        IF_NO_EXTENDED_ERROR_END()
     
         UNLOCK_WHEN_NO_HOOK()
-    END_IF_NO_EXTENDED_ERROR()
+    IF_NO_EXTENDED_ERROR_END()
     
     PROCESS_ERROR(result)
     

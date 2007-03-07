@@ -24,8 +24,8 @@
  * $URL$
  */
  
-#ifndef __TPL_OS_CUSTOM_TYPES_H__
-#define __TPL_OS_CUSTOM_TYPES_H__
+#ifndef TPL_OS_CUSTOM_TYPES_H
+#define TPL_OS_CUSTOM_TYPES_H
 
 #include "tpl_os_std_types.h"
 
@@ -108,4 +108,6 @@ typedef u16 tpl_stack_size;
  */
 typedef u8 *tpl_buffer;
 
-#endif
+#endif /* TPL_OS_CUSTOM_TYPES_H */
+
+/* End of file tpl_os_custom_types.h */

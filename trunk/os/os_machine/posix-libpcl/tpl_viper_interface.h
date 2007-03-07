@@ -14,15 +14,15 @@
  * $URL$
  */
 
-#ifndef __TPL_VIPER_INTERFACE_H__
-#define __TPL_VIPER_INTERFACE_H__
+#ifndef TPL_VIPER_INTERFACE_H
+#define TPL_VIPER_INTERFACE_H
 
 
 #define _XOPEN_SOURCE 500
 #include <unistd.h>
 
-void tpl_viper_init(void);
-void tpl_viper_start_one_shot_timer(int sig, useconds_t delay);
-void tpl_viper_start_auto_timer(int sig, useconds_t delay);
+extern void tpl_viper_init(void);
+extern void tpl_viper_start_one_shot_timer(int sig, useconds_t delay);
+extern void tpl_viper_start_auto_timer(int sig, useconds_t delay);
 
 #endif

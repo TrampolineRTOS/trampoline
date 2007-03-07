@@ -98,84 +98,84 @@ typedef tpl_alarm_id        AlarmType;
 /**
  * Get informations about alarm base
  *
- * @param AlarmID identifier of the alarm
- * @param Info #AlarmBaseType variable where will be stored requested informations
+ * @param alarm_id identifier of the alarm
+ * @param info #AlarmBaseType variable where will be stored requested informations
  *
  * @retval E_OK no error
- * @retval E_OS_ID (extended error only) AlarmID is invalid
+ * @retval E_OS_ID (extended error only) alarm_id is invalid
  *
  * see paragraph 13.6.3.1 page 63 of OSEK/VDX 2.2.2 spec
  */
 StatusType GetAlarmBase(
-    const AlarmType     AlarmID,
-    AlarmBaseRefType    Info);
+    const AlarmType     alarm_id,
+    AlarmBaseRefType    info);
 
 /**
  * Get relative ticks count before alarm exprires
  *
- * @param AlarmID identifier of the alarm
- * @param Tick reference to the variable where ticks will be stored
+ * @param alarm_id identifier of the alarm
+ * @param tick reference to the variable where ticks will be stored
  *
  * @retval E_OK no error
- * @retval E_OS_NOFUNC AlarmID is not used
- * @retval E_OS_ID (extended error only) AlarmID is invalid
+ * @retval E_OS_NOFUNC alarm_id is not used
+ * @retval E_OS_ID (extended error only) alarm_id is invalid
  *
  * see paragraph 13.6.3.2 page 63 of OSEK/VDX 2.2.2 spec
  */
 StatusType GetAlarm(
-    const AlarmType AlarmID,
-    TickRefType Tick);
+    const AlarmType alarm_id,
+    TickRefType tick);
 
 /**
  * Changes the alarm trigger relative to the current counter
  *
- * @param AlarmID identifier of the alarm
+ * @param alarm_id identifier of the alarm
  * @param increment relative ticks to set
  * @param cycle number of cycles after next expiration (0 if unused)
  *
  * @retval E_OK no error
  * @retval E_OS_STATE alarm is already in use
- * @retval E_OS_ID (extended error only) AlarmID is invalid
+ * @retval E_OS_ID (extended error only) alarm_id is invalid
  * @retval E_OS_VALUE (extended error only) increment or cycle is outside of limits
  *
  * see paragraph 13.6.3.3 page 63 of OSEK/VDX 2.2.2 spec
  */
 StatusType SetRelAlarm(
-    const AlarmType AlarmID,
+    const AlarmType alarm_id,
     const TickType  increment,
     const TickType  cycle);
 
 /**
  * Changes the alarm trigger relative to the current counter
  *
- * @param AlarmID identifier of the alarm
+ * @param alarm_id identifier of the alarm
  * @param start the number of tick when the alarm will raise
  * @param cycle the number of tick when the alarm will raise after the first expiry
  *
  * @retval E_OK no error
  * @retval E_OS_STATE alarm is already in use
- * @retval E_OS_ID (extended error only) AlarmID is invalid
+ * @retval E_OS_ID (extended error only) alarm_id is invalid
  * @retval E_OS_VALUE (extended error only) start or cycle is outside of limits
  *
  * see paragraph 13.6.3.3 page 63 of OSEK/VDX 2.2.2 spec
  */
 StatusType SetAbsAlarm(
-    const AlarmType AlarmID,
+    const AlarmType alarm_id,
     const TickType  start,
     const TickType  cycle);
 
 /**
  * Cancels the alarm
  * 
- * @param AlarmID identifier of the alarm
+ * @param alarm_id identifier of the alarm
  *
  * @retval E_OK no error
  * @retval E_OS_NOFUNC alarm is not in use
- * @retval E_OS_ID (extended error only) AlarmID is invalid
+ * @retval E_OS_ID (extended error only) alarm_id is invalid
  *
  * see paragraph 13.6.3.3 page 63 of OSEK/VDX 2.2.2 spec
  */
-StatusType CancelAlarm(const AlarmType AlarmID);
+StatusType CancelAlarm(const AlarmType alarm_id);
 
 /*
  * Operating system execution control
