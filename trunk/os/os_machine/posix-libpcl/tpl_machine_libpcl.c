@@ -82,6 +82,8 @@ void tpl_sleep(void)
       sched_yield();
 }
 
+static tpl_exec_static my_tpl_sleep = 
+  { NULL, {0}, tpl_sleep, NULL, 0, 0, 0, 0 };
 
 extern void viper_kill(void);
 
@@ -166,11 +168,10 @@ void tpl_switch_context_from_it(
 
 #define CO_MIN_SIZE (8*(4 * 1024))
 
-typedef void (*funcPtr)();
 
 void tpl_osek_func_stub( void* data )
 {
-    funcPtr func = (funcPtr)data;
+    tpl_exec_function func = ((tpl_exec_static*)data)->entry;
   
     /* Avoid signal blocking due to a previous call to tpl_init_context in a OS_ISR2 context. */
     if (sigprocmask(SIG_UNBLOCK,&signal_set,NULL) == -1) {
@@ -194,7 +195,7 @@ void tpl_init_context(tpl_exec_common *exec_obj)
     tpl_stack* stack = &(exec_obj->static_desc->stack);
 
     /* This is the entry func passed as data */
-    void* data = (void*) exec_obj->static_desc->entry; 
+    void* data = (void*) exec_obj->static_desc; 
     int stacksize = stack->stack_size;
     void* stackaddr = stack->stack_zone;  
   
@@ -280,7 +281,7 @@ void tpl_init_machine(void)
 		sigaction(signal_for_counters,&sa,NULL);
 	#endif
     
-    idle_task_context = co_create( tpl_osek_func_stub, (void*)tpl_sleep, NULL, CO_MIN_SIZE );
+    idle_task_context = co_create( tpl_osek_func_stub, (void*)&my_tpl_sleep, NULL, CO_MIN_SIZE );
     assert( idle_task_context != NULL );
     
     /*
