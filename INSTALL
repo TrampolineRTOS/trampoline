@@ -1,33 +1,75 @@
-GENERAL INFORMATION:
-The user application is stored in the App/ directory.
-The application is configured with a macro file (in  App/ directory) that define tasks, resources, alarms and so on.
+How to run Trampoline on Unix
+=============================
 
+Prerequisite
+============
 
-INSTALLATION NOTE FOR MACOSX
+Trampoline on Unix uses libpcl. PCL stands for Portable Coroutine Library.
+This library is seldom installed from the start on Linux and is surely
+not on Mac OS X. The first thing to do is to install libpcl.
 
-You first have to compile VIPER, which is the VIrtual Processor EmulatoR. Use 
-the xcode project file in the viper directory. (th viper application is run automatically from the Trampoline darwin-ppc application).
+1. Get libpcl
+-------------
 
-then run make to compile Trampoline. 
+Go to http://xmailserver.org/libpcl.html to download it
 
-In order to call 'viper', the environment var: VIPER_PATH must be set. With BASH:
-export VIPER_PATH=/Users/mik/programmation/Trampoline/viper/build/viper
+An alternate way, if you run the Debian or Ubuntu distribution is to
+use apt-get. libpcl packages (libpcl1and libpcl1-dev) are in the testing
+packages set.
 
-That's all folks!
+2. Compile and install it
+-------------------------
 
+libpcl follows the usual compiling and installation procedure.
+Gunzip and untar the file: tar xvzf pcl-1.6.tar.gz
+Then run the following commands:
 
-INSTALLATION NOTE FOR WINDOWS
+./configure
+make
+make install
 
-First install the m4 preprocessor, which can be found at:
-http://gnuwin32.sourceforge.net/packages/m4.htm
+Under Linux Ubuntu, I discovered you’ll have to run ldconfig to make
+the library available for the dynamic linker: sudo /sbin/ldconfig
 
-The m4 preprocessoris used to generate the configuration of the application (task descriptors, resources, alarms, ..).
+4. Get Goil
+-----------
 
+Trampoline includes the source code of Goil but it is easier to get the
+binary of Goil. It can be download from Goil 0.92 executables and templates.
+Put goil somewhere and add its path to the PATH environment variable.
 
-INSTALL NOTE FOR THE KEIL/uVision2 - C167 version.
+How to compile Viper
+====================
 
-You have to configure the make_macro_c166.bat batch script that generate the configuration files: App/tpl_os_generated_configuration.c and its hearder file.
+When run on Unix, Trampoline forks and execve Viper (that can be found in
+the directory viper). Viper stands for VIrtual ProcEssor Emulator. Viper
+is a multithreaded tiny application that implements timers and send signals
+to Trampoline. Commands are sent to Viper by using shared memory segments
+to initialize and start timers. When a timer expires, a signal is sent to
+Trampoline and act as an interrupt.
 
-You can use the .uv2 uVision2 project file in the root of the project as a base project. 2 files contains assembly code and must be compiled with appropriate options to generate the SRC file.
-the generated configuration file: App/tpl_os_generated_configuration.c
-the architecture dependant file: os/os_machine/c166/tpl_machine_c166.c
+Go to the viper subdirectory, then build Viper according to the platform
+you are using: make ARCH=LINUX if you are using Linux or make ARCH=DARWIN
+if you are using Mac OS X.
+
+How to compile the default application
+======================================
+
+A default application is located in the App directory of Trampoline. This
+default application uses an alarm an a task. The former activates the later
+every second. To build this application, simply type make when in the
+Trampoline directory. A trampoline executable file is generated.
+
+How to compile an application
+=============================
+
+The best way is to duplicate the App directory (creating, for instance,
+a MyApp directory). In this directory, the tpl_default_tasks_workstation.c
+file contains the C functions of the application, the defaultAppWorkstation.oil
+file contains the OIL description and the Makefile allows to compile the
+application. If you want to change the name of the C file or add more C files
+to the application, edit the Makefile, locate the line with APP_SRCS = and
+add or modify files here. To build your application, go to the Trampoline
+directory and type: make APP_PATH=MyApp
+
+That’all.
