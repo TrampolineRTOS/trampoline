@@ -392,13 +392,13 @@ rule <object_definition_list> :
 
     repeat
     while <appmode> ; <description> ?* ;
-    while <task> !?tasks ;
-    while <counter> !?counters ;
-    while <alarm> !?alarms ;
-    while <resource> !?resources ;
-    while <event> !?events ;
-    while <isr> !?isrs ;
-    while <mess> !?messages ;
+    while <task> !?tasks ; <description> ?* ;
+    while <counter> !?counters ; <description> ?* ;
+    while <alarm> !?alarms ; <description> ?* ;
+    while <resource> !?resources ; <description> ?* ;
+    while <event> !?events ; <description> ?* ;
+    while <isr> !?isrs ; <description> ?* ;
+    while <mess> !?messages ; <description> ?* ;
     while <networkmess> ; <description> ?* ;
     while <com> ; <description> ?* ;
     while <ipdu> ; <description> ?* ;
