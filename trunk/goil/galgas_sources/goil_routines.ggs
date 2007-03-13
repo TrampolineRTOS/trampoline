@@ -116,7 +116,7 @@ routine additional_int_key_required
     if [others hasKey !key]
     then
         @basic_type value ;
-        [others searchIdent ![@lstring new !key !here] ?value] ;
+        [others get ![@lstring new !key !here] ?value] ;
         extract value :
         when @uint_class (@uint64 uintVal) ->
             result := uintVal;
@@ -137,7 +137,7 @@ routine additional_string_key_required
     if [others hasKey !key]
     then
         @basic_type value ;
-        [others searchIdent ![@lstring new !key !here] ?value] ;
+        [others get ![@lstring new !key !here] ?value] ;
         extract value :
         when @string_class (@string str) ->
             result := str;

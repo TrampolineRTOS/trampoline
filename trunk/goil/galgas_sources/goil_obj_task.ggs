@@ -20,6 +20,109 @@ import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
+routine add_param_to_task
+    ?!@task_map          tasks
+    ?@lstring            task_name
+    ?@lstring            description
+    ?@luint64            priority
+    ?@lstring            schedule
+    ?@luint64            activation
+    ?@task_autostart_obj autostart
+    ?@stringset          resources
+    ?@stringset          events
+    ?@ident_map          others
+:
+    # Get the previous task with the same name if it exists
+   if [tasks hasKey ![task_name string]] then
+        @task_obj task;
+#        @lstring old_desc;
+#        @luint64 old_prio;
+        [!?tasks del !task_name ?task] ;
+        # merge the params
+        # append description
+        if [[task desc] string] != "" & [description string] != "" then
+            description := [@lstring new ![task description] . ", " . [description string] !here] ;
+        end if ;
+        # check no priority conflict
+        if [[task priority] uint64] != 4294967296L & [priority uint64] != 4294967296L then
+            error [priority location]: "Task ".[task_name string]." priority redefined." ;
+            error [[task priority] location]: "Was previously defined here." ;
+        else
+            if [priority uint64] == 4294967296L then
+                priority := [task priority];
+            end if ;
+        end if ;
+
+#        message "Old Priority: ".[[[task priority] uint64] string]."\n";
+#        message "New Priority: ".[[priority uint64] string]."\n";
+
+        # check no schedule conflict
+        if [[task schedule] string] != "" & [schedule string] != "" then
+            error [schedule location]: "Task ".[task_name string]." scheduling redefined." ;
+            error [[task schedule] location]: "Was previously defined here." ;
+        else
+            if [schedule string] == "" then
+                schedule := [task schedule] ;
+            end if ;
+        end if ;
+        # check no activation conflict
+        if [[task activation] uint64] != 4294967296L & [activation uint64] != 4294967296L then
+            error [activation location]: "Task ".[task_name string]." activation redefined." ;
+            error [[task activation] location]: "Was previously defined here." ;
+        else
+            if [activation uint64] == 4294967296L then
+                activation := [task activation] ;
+            end if ;
+        end if ;
+        # check no autostart conflict
+        @task_autostart_obj old_auto := [task autostart] ;
+        extract old_auto :
+        when @task_autostart_void (*) ->
+        else
+            extract autostart :
+            when @task_autostart_void (*) ->
+                autostart := old_auto ;
+            else
+                error [autostart loc]: "Task ".[task_name string]." autostart redefined." ;
+                error [[task autostart] loc]: "Was previously defined here." ;
+            end extract ;
+        end extract ;
+        # emit a warning if old and new resources stringset intersect
+        if [([task resources] & resources) count] != 0  then
+            warning here: "Task ".[task_name string]." resource already set previously." ;
+        end if ;
+        # add previously declared resources to the set
+        resources := resources | [task resources] ;
+        # emit a warning if old and new event stringset intersect
+        if [([task events] & events) count] != 0  then
+            warning here: "Task ".[task_name string]." event already set previously." ;
+        end if ;
+        # add previously declared events to the set
+        events := events | [task events] ;
+		 # check no identifier conflicts in others
+        @ident_map old_others := [task others] ;
+        foreach others (@lstring ident @basic_type val) :
+            [!?old_others put !ident !val] ;
+        end foreach ;
+        others := old_others ;
+    end if ;
+
+    # Build a new object
+    @task_obj bigger_task :=
+        [@task_obj new
+            !description
+            !priority
+            !schedule
+            !activation
+            !autostart
+            !resources
+            !events
+            !others
+        ] ;
+    # put back in the map
+    [!?tasks put !task_name !bigger_task] ;
+end routine ;
+
 
 #
 # local rules declaration
@@ -38,13 +141,6 @@ nonterminal <task_parameters>
 
 nonterminal <task_autostart_params>
 	?!@task_autostart_obj task_autostart ;
-
-nonterminal <check_task_constraints>
-	?@lstring task_name
-	?@luint64 priority
-	?@lstring schedule
-	?@luint64 activation
-	?@task_autostart_obj autostart ;
 
 #
 # external rules 
@@ -67,7 +163,7 @@ rule <task>
     @luint64 priority := [@luint64 new !4294967296L !here] ;
     @lstring schedule := [@lstring new !"" !here] ;
     @luint64 activation := [@luint64 new !4294967296L !here] ;
-    @task_autostart_obj autostart := [@task_autostart_void new] ;
+    @task_autostart_obj autostart := [@task_autostart_void new !here] ;
     @stringset resources [emptySet] ;
     @stringset events [emptySet] ;
     @lstring description ;
@@ -88,9 +184,7 @@ rule <task>
     <description> ?description ;
     $;$ ;
 
-    <check_task_constraints> !task_name !priority !schedule !activation !autostart ;
-    task := [@task_obj new !description !priority !schedule !activation !autostart !resources !events !others] ;
-    [!?tasks insertTask !task_name !task] ;
+    add_param_to_task !?tasks !task_name !description !priority !schedule !activation !autostart !resources !events !others ;
 end rule ;	
 
 rule <task_parameters>
@@ -136,7 +230,7 @@ rule <task_parameters>
 	or
 		#AUTOSTART attribute
 		extract autostart :
-			when @task_autostart_void () ->
+			when @task_autostart_void (*) ->
 			else error here : "AUTOSTART attribute already defined for TASK " . [task_name string] ;
 		end extract ;
 		$AUTOSTART$ ; $=$ ;
@@ -146,7 +240,7 @@ rule <task_parameters>
 			$}$ ;
 		or
 			$FALSE$ ; 
-			autostart := [@task_autostart_false new] ;
+			autostart := [@task_autostart_false new !here] ;
 		end select ;
 	or
 		#RESOURCE attribute
@@ -180,33 +274,7 @@ rule <task_autostart_params>
 		end if ; 
 		appmodes += ![appmode string] ;
 	end repeat;
-	autostart := [@task_autostart_true new !appmodes] ;
-end rule ;
-
-rule <check_task_constraints>
-	?@lstring task_name
-	?@luint64 priority
-	?@lstring schedule
-	?@luint64 activation
-	?@task_autostart_obj autostart
-:
-	#PRIORITY is defined
-	if [priority uint64] == 4294967296L then
-		error here : "The PRIORITY attribute must be defined for TASK " . [task_name string] ;
-	end if ;
-	#SCHEDULE is defined
-	if [schedule string] == "" then
-		error here : "The SCHEDULE attribute must be defined for TASK " . [task_name string];
-	end if ;
-	#ACTIVATION is defined
-	if[activation uint64] == 4294967296L then
-		error here : "The ACTIVATION attribute must be defined for TASK " . [task_name string] ;
-	end if ;
-	#AUTOSTART is defined
-	extract autostart :
-		when @task_autostart_void () -> error here : "The AUTOSTART attribute must be defined for TASK " . [task_name string] ;
-		else
-	end extract ; 
+	autostart := [@task_autostart_true new !here !appmodes] ;
 end rule ;
 
 end syntax ;

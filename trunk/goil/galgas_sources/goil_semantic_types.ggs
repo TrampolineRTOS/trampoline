@@ -29,7 +29,7 @@ map @implementation {
 
 #action generateHeader
 #    ?@lstring version
-#    ?@lstring description
+#    ?@lstring desc
 #;
 #
 map @os_imp {
@@ -38,16 +38,14 @@ map @os_imp {
 }
 
 abstract class @oil_obj {
-    @lstring description ;
-	method get_description !@lstring desc :
-		desc := description ;
-	end method ;
+    @lstring desc ;
 }
 
 #
 # Task classes
 #
 abstract class @task_autostart_obj {
+    @location loc ;
 }
 
 class @task_autostart_void extends @task_autostart_obj {
@@ -67,7 +65,7 @@ class @task_obj extends @oil_obj {
     @task_autostart_obj autostart ;
     @stringset resources ;
     @stringset events;
-    @ident_map other_fields;
+    @ident_map others;
 
     method get_priority !@uint64 out_priority :
         out_priority := [priority uint64] ;
@@ -89,15 +87,16 @@ class @task_obj extends @oil_obj {
         out_events := events ;
     end method ;
 
-    method get_other_fields !@ident_map out_others :
-        out_others := other_fields ;
+    method get_others !@ident_map out_others :
+        out_others := others ;
     end method ;
 }
 
 map @task_map {
     @task_obj task ;
-    insert insertTask error message "Task %K is already defined in %L" ;
-    search searchTask error message "Task %K is unkown";
+    insert put error message "Task %K is already defined in %L" ;
+    search get error message "Task %K is unkown" ;
+    remove del error message "Task %K is unkown" ;
 }
 
 map @task_mask {
@@ -253,10 +252,13 @@ class @callback_action extends @action_obj {
    end method ;
 }
 
-class @autostart_void extends @autostart_obj {
+class @alarm_autostart_void extends @autostart_obj {
 }
 
-class @autostart_true_params extends @autostart_obj {
+class @alarm_autostart_false extends @autostart_obj {
+}
+
+class @alarm_autostart_true extends @autostart_obj {
     @luint64   alarm_time ;
     @luint64   cycle_time ;
     @stringset app_modes ;

@@ -3,8 +3,8 @@ program goil_program "version 0.92" :
 	#--- max error and warning count
 	error 100 ;
 	warning 100 ;
-	when . "oil" :
-		grammar goil_grammar
-	;
+	when . "oil" message "an '.oil' source file" ??@lstring inSourceFile {
+		grammar goil_grammar in inSourceFile ;
+	}
 end program ;
 # vim:ft=ggs:ts=4:sw=4
