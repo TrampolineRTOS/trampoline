@@ -392,7 +392,7 @@ rule <object_definition_list> :
 
     repeat
     while <appmode> ; <description> ?* ;
-    while <task> !?tasks ; <description> ?* ;
+    while <task> !?tasks ;
     while <counter> !?counters ; <description> ?* ;
     while <alarm> !?alarms ; <description> ?* ;
     while <resource> !?resources ; <description> ?* ;
@@ -406,84 +406,87 @@ rule <object_definition_list> :
     end repeat ;
 
     # semantics constraint checking
+    check_tasks !tasks ;
     resolve_linked_resources !?resources ;
     all_events_and_resources_defined_and_used !tasks !isrs !events !resources ;
     all_event_masks_different !events ;
     all_alarm_actions_correct !alarms !tasks ;
 
-    # code generation
-    @string timestamp := [@string stringWithCurrentDateTime] ;
+    if [@uint errorCount] == 0 then
+        # code generation
+        @string timestamp := [@string stringWithCurrentDateTime] ;
 
-    @string temp_dir ;
-    templates_directory ?temp_dir ;
+        @string temp_dir ;
+        templates_directory ?temp_dir ;
 
-    if temp_dir != "" then
-        @string target := [option goil_options.target_platform] ;
-        if target != "" then
-            @string header ;
-            @string obj_header ;
-            @string implementation ;
+        if temp_dir != "" then
+            @string target := [option goil_options.target_platform] ;
+            if target != "" then
+                @string header ;
+                @string obj_header ;
+                @string implementation ;
 
-            template ?header !"app_header" ;
-            template ?obj_header !"obj_header" ;
-            template ?implementation !"app_implementation" ;
-            @prefix_map prefix := [@prefix_map emptyMap] ;
+                template ?header !"app_header" ;
+                template ?obj_header !"obj_header" ;
+                template ?implementation !"app_implementation" ;
+                @prefix_map prefix := [@prefix_map emptyMap] ;
 
-            init_prefixes !?prefix ;
+                init_prefixes !?prefix ;
 
-            generate_events    !events    !tasks        !prefix !?header !?implementation ;
-            generate_counters  !counters                !prefix !?header !?implementation ;
-            generate_alarms    !alarms                  !prefix !?header !?obj_header !?implementation ;
-            generate_tasks     !tasks     !resources    !prefix !?header !?obj_header !?implementation ;
-            generate_isrs      !isrs                    !prefix !?header !?obj_header !?implementation ;
-            generate_resources !resources !tasks  !isrs !prefix !?header !?obj_header !?implementation ;
-            generate_messages  !messages                !prefix !?header !?obj_header !?implementation ;
+                generate_events    !events    !tasks        !prefix !?header !?implementation ;
+                generate_counters  !counters                !prefix !?header !?implementation ;
+                generate_alarms    !alarms                  !prefix !?header !?obj_header !?implementation ;
+                generate_tasks     !tasks     !resources    !prefix !?header !?obj_header !?implementation ;
+                generate_isrs      !isrs                    !prefix !?header !?obj_header !?implementation ;
+                generate_resources !resources !tasks  !isrs !prefix !?header !?obj_header !?implementation ;
+                generate_messages  !messages                !prefix !?header !?obj_header !?implementation ;
 
-            # write the result to files
-            @string directory := [[@string stringWithSourceFilePath] stringByDeletingPathExtension];
-            if [option goil_options.project_dir] != "" then
-                directory := [option goil_options.project_dir] ;
-            end if ;
-            
-            @string header_file := "tpl_os_generated_configuration.h" ;
-            @string obj_header_file  := "tpl_app_objects.h" ;
-            @string implementation_file  := "tpl_os_generated_configuration.c" ;
-
-            header := [header stringByReplacingStringByString !"$HEADER$" !header_file];
-            header := [header stringByReplacingStringByString !"$IMPLEMENTATION$" !implementation_file];
-            header := [header stringByReplacingStringByString !"$TIMESTAMP$" !timestamp];
-            obj_header := [obj_header stringByReplacingStringByString !"$OBJ_HEADER$" !obj_header_file];
-            obj_header := [obj_header stringByReplacingStringByString !"$TIMESTAMP$" !timestamp];
-            implementation := [implementation stringByReplacingStringByString !"$HEADER$" !header_file];
-            implementation := [implementation stringByReplacingStringByString !"$OBJ_HEADER$" !obj_header_file];
-            implementation := [implementation stringByReplacingStringByString !"$IMPLEMENTATION$" !implementation_file];
-            implementation := [implementation stringByReplacingStringByString !"$TIMESTAMP $" !timestamp];
-
-            @uint error_count := [@uint errorCount] ;
-
-            header_file := directory . "/" . header_file;
-            obj_header_file := directory . "/" . obj_header_file;
-            implementation_file := directory . "/" . implementation_file;
-
-            if error_count == 0 then
-                if [option .verbose_output] then
-                    message "creating " . header_file . "\n" ;
-                end if;
-                [header makeDirectoryAndWriteToFile !header_file] ;
-                if [option .verbose_output] then
-                    message "creating " . obj_header_file . "\n" ;
-                end if;
-                [obj_header makeDirectoryAndWriteToFile !obj_header_file] ;
-                if [option .verbose_output] then
-                    message "creating " . implementation_file . "\n" ;
-                end if;
-                [implementation makeDirectoryAndWriteToFile !implementation_file] ;
+                # write the result to files
+                @string directory := [[@string stringWithSourceFilePath] stringByDeletingPathExtension];
+                if [option goil_options.project_dir] != "" then
+                    directory := [option goil_options.project_dir] ;
                 end if ;
+                
+                @string header_file := "tpl_os_generated_configuration.h" ;
+                @string obj_header_file  := "tpl_app_objects.h" ;
+                @string implementation_file  := "tpl_os_generated_configuration.c" ;
+
+                header := [header stringByReplacingStringByString !"$HEADER$" !header_file];
+                header := [header stringByReplacingStringByString !"$IMPLEMENTATION$" !implementation_file];
+                header := [header stringByReplacingStringByString !"$TIMESTAMP$" !timestamp];
+                obj_header := [obj_header stringByReplacingStringByString !"$OBJ_HEADER$" !obj_header_file];
+                obj_header := [obj_header stringByReplacingStringByString !"$TIMESTAMP$" !timestamp];
+                implementation := [implementation stringByReplacingStringByString !"$HEADER$" !header_file];
+                implementation := [implementation stringByReplacingStringByString !"$OBJ_HEADER$" !obj_header_file];
+                implementation := [implementation stringByReplacingStringByString !"$IMPLEMENTATION$" !implementation_file];
+                implementation := [implementation stringByReplacingStringByString !"$TIMESTAMP $" !timestamp];
+
+                @uint error_count := [@uint errorCount] ;
+
+                header_file := directory . "/" . header_file;
+                obj_header_file := directory . "/" . obj_header_file;
+                implementation_file := directory . "/" . implementation_file;
+
+                if error_count == 0 then
+                    if [option .verbose_output] then
+                        message "creating " . header_file . "\n" ;
+                    end if;
+                    [header makeDirectoryAndWriteToFile !header_file] ;
+                    if [option .verbose_output] then
+                        message "creating " . obj_header_file . "\n" ;
+                    end if;
+                    [obj_header makeDirectoryAndWriteToFile !obj_header_file] ;
+                    if [option .verbose_output] then
+                        message "creating " . implementation_file . "\n" ;
+                    end if;
+                    [implementation makeDirectoryAndWriteToFile !implementation_file] ;
+                    end if ;
+            else
+                message "No target platform given, compiling aborted\n" ;
+            end if ;
         else
-            message "No target platform given, compiling aborted\n" ;
+            message "No template directory defined, compiling aborted\n" ;
         end if ;
-    else
-        message "No template directory defined, compiling aborted\n" ;
     end if ;
 end rule ;
 
@@ -526,7 +529,7 @@ rule <free_field> ?!@ident_map ids :
         <boolean> ?value ;
         val := [@bool_class new !value] ;
     end select ;
-    [!?ids insertIdent !idf !val] ; 
+    [!?ids put !idf !val] ; 
 end rule ;
 
 end syntax ;

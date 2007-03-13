@@ -45,8 +45,8 @@ class @bool_class extends @basic_type {
 
 map @ident_map {
     @basic_type value ;
-    insert insertIdent error message "%K is duplicated in %L";
-    search searchIdent error message "Identifier %K is not defined" ;
+    insert put error message "%K is duplicated in %L";
+    search get error message "Identifier %K is not defined" ;
 }
 
 #

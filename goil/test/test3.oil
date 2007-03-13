@@ -13,13 +13,16 @@ CPU test {
     };
 
     TASK MyTask1 {
-        PRIORITY = 17 ;
         STACKSIZE = 30 ;
         USEFLOAT = TRUE ;
         ACTIVATION = 1 ;
         AUTOSTART = TRUE { APPMODE = all; } ;
         EVENT = emergency ;
         EVENT = notUsed ;
+    };
+    
+    TASK MyTask1 {
+        PRIORITY = 17 ;
     };
     
     TASK MyTask2 {

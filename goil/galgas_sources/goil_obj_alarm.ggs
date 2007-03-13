@@ -49,7 +49,7 @@ rule <alarm>
     @lstring alarm_name ;
     @alarm_obj alarm ;
     @action_obj alarm_action := [@void_action new] ;
-    @autostart_obj alarm_autostart := [@autostart_void new] ;
+    @autostart_obj alarm_autostart := [@alarm_autostart_void new] ;
     @lstring counter_name := [@lstring new !"" !here] ;
     @lstring description := [@lstring new !"" !here] ;
 
@@ -84,7 +84,7 @@ rule <alarm_parameters>
         $ACTION$ ;    $=$ ; <alarm_action_params> !?alarm_action ; $;$;
     while
         extract alarm_autostart :
-        when @autostart_void () ->
+        when @alarm_autostart_void () ->
         else error here : "Autostart attribute already defined for this alarm" ;
         end extract ;
         $AUTOSTART$ ;  $=$ ;
@@ -94,7 +94,7 @@ rule <alarm_parameters>
             <alarm_autostart_params> !?alarm_autostart ;
             $}$ ;
         or
-            $FALSE$ ;
+            $FALSE$ ; alarm_autostart := [@alarm_autostart_false new] ;
         end select ;
         $;$;
     while
@@ -110,7 +110,7 @@ rule <alarm_parameters>
         else
     end extract ;
     extract alarm_autostart :
-    when @autostart_void () ->
+    when @alarm_autostart_void () ->
         error here : "Autostart attribute not defined for this alarm." ;
         else
     end extract ;
@@ -191,7 +191,7 @@ rule <alarm_autostart_params>
     if not alarm_time_known then
         error here : "ALARMTIME subattribute is missing" ;
     end if ;
-    alarm_autostart := [@autostart_true_params new !alarm_time !cycle_time !app_modes] ;
+    alarm_autostart := [@alarm_autostart_true new !alarm_time !cycle_time !app_modes] ;
 end rule;
 
 end syntax ;
