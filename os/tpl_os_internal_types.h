@@ -37,7 +37,7 @@
  *
  * @see #CONFORMANCE_CLASS
  */
-#define CONFORM_ECC1        1U
+#define CONFORM_ECC1        1
 
 /**
  * @def CONFORM_ECC2
@@ -46,7 +46,7 @@
  *
  * @see #CONFORMANCE_CLASS
  */
-#define CONFORM_ECC2        2U
+#define CONFORM_ECC2        2
 
 /**
  * @def CONFORMANCE_CLASS
@@ -70,7 +70,7 @@
  *
  * @see #tpl_status
  */
-#define NO_SPECIAL_CODE         0U
+#define NO_SPECIAL_CODE         0
 
 /**
  * @def NEED_RESCHEDULING
@@ -82,7 +82,7 @@
  *
  * @see #tpl_status
  */
-#define NEED_RESCHEDULING       32U
+#define NEED_RESCHEDULING       32
 
 /**
  * @def E_OK_AND_SCHEDULE
@@ -91,7 +91,7 @@
  *
  * @see #tpl_status
  */
-#define E_OK_AND_SCHEDULE       (E_OK | NEED_RESCHEDULING)
+#define E_OK_AND_SCHEDULE   ((tpl_status)E_OK | (tpl_status)NEED_RESCHEDULING)
 
 /**
  * @def OSEK_STATUS_MASK
@@ -189,7 +189,7 @@ typedef u8 tpl_exec_state;
  *
  * @see #tpl_exec_state
  */
-#define AUTOSTART   0U
+#define AUTOSTART   0
 
 /**
  * @def RUNNING
@@ -198,7 +198,7 @@ typedef u8 tpl_exec_state;
  *
  * @see #tpl_exec_state
  */
-#define RUNNING     1U
+#define RUNNING     1
 
 /**
  * @def READY
@@ -207,7 +207,7 @@ typedef u8 tpl_exec_state;
  *
  * @see #tpl_exec_state
  */
-#define READY       2U
+#define READY       2
 
 /**
  * @def SUSPENDED
@@ -216,8 +216,8 @@ typedef u8 tpl_exec_state;
  *
  * @see #tpl_exec_state
  */
-#define SUSPENDED   3U
-#if CONFORMANCE_CLASS==CONFORM_ECC1 || CONFORMANCE_CLASS==CONFORM_ECC2
+#define SUSPENDED   3
+#if (CONFORMANCE_CLASS == CONFORM_ECC1) || (CONFORMANCE_CLASS == CONFORM_ECC2)
 /**
  * @def WAITING
  *
@@ -225,7 +225,7 @@ typedef u8 tpl_exec_state;
  *
  * @see #tpl_exec_state
  */
-#define WAITING     4U
+#define WAITING     4
 #endif
 
 /**

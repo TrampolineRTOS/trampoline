@@ -42,8 +42,8 @@ void tpl_insert_alarm(tpl_alarm *alarm)
     /*  get the counter */
     tpl_counter *counter = alarm->counter;
     /*  initialize the current alarm to the head    */
-    tpl_alarm *current_alarm = counter->first_alarm;
-    tpl_alarm *prev_alarm = NULL;
+    tpl_alarm   *current_alarm = counter->first_alarm;
+    tpl_alarm   *prev_alarm = NULL;
     
     if (current_alarm == NULL)
     {
@@ -165,7 +165,7 @@ void tpl_remove_alarm(tpl_alarm *alarm)
  */
 static tpl_status tpl_raise_alarm(tpl_alarm *alarm)
 {
-    tpl_status result = E_OK;
+    tpl_status  result = E_OK;
     
     /*  Get the action to perform from the alarm descriptor */
     const tpl_action *action_desc = alarm->action;

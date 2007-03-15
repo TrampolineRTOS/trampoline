@@ -90,7 +90,7 @@ StatusType GetAlarm(
         alarm = tpl_alarm_table[alarm_id];
         
         /*  verify the alarm is active  */
-        if (alarm->state == ALARM_ACTIVE)
+        if (alarm->state == (tpl_alarm_state)ALARM_ACTIVE)
         {
             *tick = alarm->date - alarm->counter->current_date;
         }
@@ -133,7 +133,7 @@ StatusType SetRelAlarm(
     IF_NO_EXTENDED_ERROR(result)
         alarm = tpl_alarm_table[alarm_id];
     
-        if (alarm->state == ALARM_SLEEP)
+        if (alarm->state == (tpl_alarm_state)ALARM_SLEEP)
         {
             /*  the alarm is not in use, proceed    */
             alarm->date = alarm->counter->current_date + increment;
@@ -180,7 +180,7 @@ StatusType SetAbsAlarm(
     IF_NO_EXTENDED_ERROR(result)
     alarm = tpl_alarm_table[alarm_id];
     
-    if (alarm->state == ALARM_SLEEP)
+    if (alarm->state == (tpl_alarm_state)ALARM_SLEEP)
     {
         /*  the alarm is not in use, proceed    */
         alarm->date = start;
@@ -222,7 +222,7 @@ StatusType CancelAlarm(const AlarmType alarm_id)
     IF_NO_EXTENDED_ERROR(result)
     alarm = tpl_alarm_table[alarm_id];
 
-    if (alarm->state == ALARM_ACTIVE)
+    if (alarm->state == (tpl_alarm_state)ALARM_ACTIVE)
     {
         tpl_remove_alarm(alarm);
     }

@@ -33,6 +33,7 @@
 #include "tpl_machine_interface.h"
 
 static /*@null@*/ tpl_exec_common *tpl_get_exec_object(void);
+static void tpl_get_internal_resource(tpl_exec_common *a_task);
 
 /*
  * idle_task is the task descriptor of the kernel task
@@ -194,7 +195,6 @@ void tpl_put_exec_object(
         with the same or lower priority         */
     tpl_exec_common *current = tpl_exec_obj_list_head;
     tpl_exec_common *previous = NULL;
-    tpl_exec_common *next = NULL;
 
     /*  reset executable object pointers */
     exec_obj->next_set = exec_obj->next_exec = NULL;
@@ -217,7 +217,8 @@ void tpl_put_exec_object(
             so the executable object is alone (do you feel it ;))   */
         tpl_exec_obj_list_head = exec_obj;
     }
-    else {
+    else
+    {
         if (current == NULL)
         {
             /*  if current is NULL, the executable object has a lower
@@ -231,14 +232,14 @@ void tpl_put_exec_object(
                 existing set or will be added to an empty set               */
             if (current->priority == exec_obj->priority)
             {
-                if (kind == NEWLY_ACTIVATED_EXEC_OBJ)
+                if (kind == (u8)NEWLY_ACTIVATED_EXEC_OBJ)
                 {
                     /*  if a set was found with the same priority.
                         if it is a newly activated executable object,
                         it is added at the end of an existing set           */
-                    while ((next = current->next_exec) != NULL)
+                    while (current->next_exec != NULL)
                     {
-                        current = next;
+                        current = current->next_exec;
                     }
                     current->next_exec = exec_obj;
                 }
@@ -256,7 +257,8 @@ void tpl_put_exec_object(
                     {
                         tpl_exec_obj_list_head = exec_obj;
                     }
-                    else {
+                    else
+                    {
                         previous->next_set = exec_obj;
                     }
                 }
@@ -351,8 +353,8 @@ void tpl_schedule(const u8 from)
         {
             /*  There is a running task
                 get the priorities and compare them     */
-            if (tpl_running_obj->state != RUNNING ||
-                exec_obj->priority > tpl_running_obj->priority)
+            if ((tpl_running_obj->state != (tpl_exec_state)RUNNING) ||
+                (exec_obj->priority > tpl_running_obj->priority))
             {
                 /*  the running task is not running (it has been put in
                     the WAITING state of has not the higher priority).
@@ -366,10 +368,10 @@ void tpl_schedule(const u8 from)
                 /*  test wether the currently "running" task lose
                     the CPU because it has not the higher priority
                     or because it has been put in the WAITING state     */
-                if (tpl_running_obj->state == RUNNING)
+                if (tpl_running_obj->state == (tpl_exec_state)RUNNING)
                 {
                     /*  the current running task become READY           */
-                    tpl_running_obj->state = READY;
+                    tpl_running_obj->state = (tpl_exec_state)READY;
                     /*  put the running task in the ready task list     */
                     /*  Bug fix. preempted objects are put at the head
                         of the set while newly activated objects are
@@ -431,7 +433,7 @@ void tpl_schedule(const u8 from)
             tpl_os_state = OS_TASK;
         }
         /*  Switch the context  */
-        if (from == FROM_TASK_LEVEL)
+        if (from == (u8)FROM_TASK_LEVEL)
         {
             if (old_running_obj != NULL)
             {
@@ -482,14 +484,17 @@ tpl_status tpl_activate_task(tpl_task *a_task)
 
     if (a_task->exec_desc.activate_count <
         a_task->exec_desc.static_desc->max_activate_count)
-        {
+    {
         /*  check the task is in the SUSPENDED state before moving it       */
-        if (a_task->exec_desc.state == SUSPENDED)
+        if (a_task->exec_desc.state == (tpl_exec_state)SUSPENDED)
         {
             /*  init the task       */
             tpl_init_exec_object(&(a_task->exec_desc));
             /*  put it in the list  */
-            tpl_put_exec_object(&(a_task->exec_desc), NEWLY_ACTIVATED_EXEC_OBJ);
+            tpl_put_exec_object(
+                &(a_task->exec_desc),
+                (u8)NEWLY_ACTIVATED_EXEC_OBJ
+            );
         }
         /*  inc the task activation count. When the task will terminate
             it will dec this count and if not zero it will be reactivated   */
@@ -515,7 +520,7 @@ tpl_status tpl_set_event(
 {
     tpl_status result = E_OK;
 
-    if (a_task->exec_desc.state != SUSPENDED)
+    if (a_task->exec_desc.state != (tpl_exec_state)SUSPENDED)
     {
         /*  merge the incoming event mask with the old one  */
         a_task->evt_set = (tpl_event_mask)(a_task->evt_set | incoming_event);
@@ -527,14 +532,14 @@ tpl_status tpl_set_event(
                 the wait mask is reset to 0                 */
             a_task->evt_wait = (tpl_event_mask)0;
             /*  anyway check it is in the WAITING state     */
-            if (a_task->exec_desc.state == WAITING)
+            if (a_task->exec_desc.state == (tpl_exec_state)WAITING)
             {
                 /*  set the state to READY  */
-                a_task->exec_desc.state = READY;
+                a_task->exec_desc.state = (tpl_exec_state)READY;
                 /*  put the task in the READY list          */
                 tpl_put_exec_object(
                     (tpl_exec_common *)a_task,
-                    NEWLY_ACTIVATED_EXEC_OBJ);
+                    (u8)NEWLY_ACTIVATED_EXEC_OBJ);
                 /*  notify a scheduling needs to be done    */
                 result = (tpl_status)E_OK_AND_SCHEDULE;
             }
@@ -601,7 +606,7 @@ void tpl_init_os(void)
     for (i = 0; i < TASK_COUNT; i++)
     {
         auto_task = tpl_task_table[i];
-        if (auto_task->exec_desc.state == AUTOSTART)
+        if (auto_task->exec_desc.state == (tpl_exec_state)AUTOSTART)
         {
             /*  each AUTOSTART task is inserted in the READY list   */
             /*  init the task   */
@@ -612,7 +617,7 @@ void tpl_init_os(void)
             /*  Put the task in the ready list  */
             tpl_put_exec_object(
                 &(auto_task->exec_desc),
-                NEWLY_ACTIVATED_EXEC_OBJ
+                (u8)NEWLY_ACTIVATED_EXEC_OBJ
             );
         }
     }  
@@ -624,7 +629,7 @@ void tpl_init_os(void)
     for (i = 0; i < ALARM_COUNT; i++)
     {
         auto_alarm = tpl_alarm_table[i];
-        if (auto_alarm->state == ALARM_AUTOSTART)
+        if (auto_alarm->state == (tpl_alarm_state)ALARM_AUTOSTART)
         {
 			tpl_insert_alarm(auto_alarm);
         }
