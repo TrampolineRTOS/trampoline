@@ -38,7 +38,7 @@ tpl_status tpl_action_callback(const tpl_action *action)
      * first member of tpl_callback_action * is a tpl_action *
      * This cast behaves correctly.
      */
-    ((tpl_callback_action *)action)->callback();
+    ((const tpl_callback_action *)action)->callback();
     
     return E_OK;
 }
@@ -55,7 +55,7 @@ tpl_status tpl_action_activate_task(const tpl_action *action)
      * This cast behaves correctly.
      */
     return tpl_activate_task(
-        ((tpl_task_activation_action *)action)->task
+        ((const tpl_task_activation_action *)action)->task
     );
 }
 
@@ -71,8 +71,8 @@ tpl_status tpl_action_setevent(const tpl_action *action)
      * This cast behaves correctly.
      */
     return tpl_set_event(
-        ((tpl_setevent_action *)action)->task,
-        ((tpl_setevent_action *)action)->mask
+        ((const tpl_setevent_action *)action)->task,
+        ((const tpl_setevent_action *)action)->mask
     );
 }
 

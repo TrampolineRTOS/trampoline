@@ -203,12 +203,12 @@ StatusType ChainTask(const TaskType task_id)
             {
                 /*  check the task is in the SUSPENDED
                     state before moving it   */
-                if (exec_obj->state == SUSPENDED)
+                if (exec_obj->state == (tpl_exec_state)SUSPENDED)
                 {
                     /*  init the task   */
                     tpl_init_exec_object(exec_obj);
                     /*  put it in the list  */
-                    tpl_put_exec_object(exec_obj, NEWLY_ACTIVATED_EXEC_OBJ);
+                    tpl_put_exec_object(exec_obj, (u8)NEWLY_ACTIVATED_EXEC_OBJ);
                     
                     result = E_OK;
                 }

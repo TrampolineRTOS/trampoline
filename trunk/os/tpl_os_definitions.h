@@ -60,7 +60,7 @@
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
  */
-#define E_OK            0U
+#define E_OK            0
 
 /**
  * @def E_OS_ACCESS
@@ -70,7 +70,7 @@
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
  */
-#define E_OS_ACCESS     1U
+#define E_OS_ACCESS     1
 
 /**
  * @def E_OS_CALLEVEL
@@ -80,7 +80,7 @@
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
  */
-#define E_OS_CALLEVEL   2U
+#define E_OS_CALLEVEL   2
 
 /**
  * @def E_OS_ID
@@ -90,7 +90,7 @@
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
  */
-#define E_OS_ID         3U
+#define E_OS_ID         3
 
 /**
  * @def E_OS_LIMIT
@@ -101,7 +101,7 @@
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
  */
-#define E_OS_LIMIT      4U
+#define E_OS_LIMIT      4
 
 /**
  * @def E_OS_NOFUNC
@@ -111,7 +111,7 @@
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
  */
-#define E_OS_NOFUNC     5U
+#define E_OS_NOFUNC     5
 
 /**
  * @def E_OS_RESOURCE
@@ -121,7 +121,7 @@
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
  */
-#define E_OS_RESOURCE   6U
+#define E_OS_RESOURCE   6
 
 /**
  * @def E_OS_STATE
@@ -131,7 +131,7 @@
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
  */
-#define E_OS_STATE      7U
+#define E_OS_STATE      7
 
 /**
  * @def E_OS_VALUE
@@ -141,7 +141,7 @@
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
  */
-#define E_OS_VALUE      8U
+#define E_OS_VALUE      8
 
 /*********************************
  * Task flags for the type field *
@@ -209,7 +209,7 @@
  * @see #tpl_alarm_state
  * @see #TPL_ALARM
  */
-#define ALARM_SLEEP     0U
+#define ALARM_SLEEP     0
 
 /**
  * @def ALARM_ACTIVE
@@ -219,7 +219,7 @@
  * @see #tpl_alarm_state
  * @see #TPL_ALARM
  */
-#define ALARM_ACTIVE    1U
+#define ALARM_ACTIVE    1
 
 /**
  * @def ALARM_AUTOSTART
@@ -229,7 +229,7 @@
  * @see #tpl_alarm_state
  * @see #TPL_ALARM
  */
-#define ALARM_AUTOSTART 2U
+#define ALARM_AUTOSTART 2
 
 /**
  * @def ALARM_CALLBACK
@@ -239,7 +239,7 @@
  * @see #tpl_alarm_kind
  * @see #TPL_ALARM
  */
-#define ALARM_CALLBACK          10U
+#define ALARM_CALLBACK          10
 
 /**
  * @def ALARM_TASK_ACTIVATION
@@ -249,7 +249,7 @@
  * @see #tpl_alarm_kind
  * @see #TPL_ALARM
  */
-#define ALARM_TASK_ACTIVATION   11U
+#define ALARM_TASK_ACTIVATION   11
 
 /**
  * @def ALARM_EVENT_SETTING
@@ -259,7 +259,7 @@
  * @see #tpl_alarm_kind
  * @see #TPL_ALARM
  */
-#define ALARM_EVENT_SETTING     12U
+#define ALARM_EVENT_SETTING     12
 
 /***************************************
  * selector for tpl_schedule parameter *
@@ -272,7 +272,7 @@
  *
  * @see #tpl_schedule
  */
-#define FROM_TASK_LEVEL 0U
+#define FROM_TASK_LEVEL 0
 
 /**
  * @def FROM_IT_LEVEL
@@ -281,7 +281,7 @@
  *
  * @see #tpl_schedule
  */
-#define FROM_IT_LEVEL   1U
+#define FROM_IT_LEVEL   1
 
 /**********************************************
  * selector for tpl_put_exec_object parameter *
@@ -295,7 +295,7 @@
  *
  * @see #tpl_put_exec_object
  */
-#define PREEMPTED_EXEC_OBJ          0U
+#define PREEMPTED_EXEC_OBJ          0
 
 /**
  * @def NEWLY_ACTIVATED_EXEC_OBJ
@@ -305,7 +305,7 @@
  *
  * @see #tpl_put_exec_object
  */
-#define NEWLY_ACTIVATED_EXEC_OBJ    1U
+#define NEWLY_ACTIVATED_EXEC_OBJ    1
 
 /**
  * @def TASK

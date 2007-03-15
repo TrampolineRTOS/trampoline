@@ -25,9 +25,10 @@
 
 #include "tpl_os_error.h"
 #include "tpl_os_internal_types.h"
-#include "tpl_os_definitions.h"
 
 #ifdef WITH_ERROR_HOOK
+
+#include "tpl_os_definitions.h"
 
 tpl_service_call_desc tpl_service;
 
