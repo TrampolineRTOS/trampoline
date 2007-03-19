@@ -25,10 +25,14 @@
 
 semantics goil_basic_types :
 
-abstract class @basic_type {}
+abstract class @basic_type {
+    @location location ;
+}
+
+class @void extends @basic_type {}
 
 class @uint_class extends @basic_type {
-    @uint64 value ;
+    @uint64   value ;
 }
 
 class @sint_class extends @basic_type {

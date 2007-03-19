@@ -42,13 +42,21 @@ rule <counter>
 
     @lstring counter_name ;
     @counter_obj counter ;
-    @luint64 max_allowed_value := [@luint64 new !0L !here] ;
-    @luint64 ticks_per_base := [@luint64 new !0L !here] ;
-    @luint64 min_cycle := [@luint64 new !0L !here] ;
+    @basic_type max_allowed_value ;
+    @basic_type ticks_per_base ;
+    @basic_type min_cycle ;
     @lstring description := [@lstring new !"" !here] ;
 
     $COUNTER$ ;
     $idf$ ?counter_name ;
+
+    if [counters hasKey ![counter_name string]] then
+        
+    else
+        max_allowed_value := [@void new !here] ;
+        ticks_per_base := [@void new !here] ;
+        min_cycle := [@void new !here] ;
+    end if ;
     ${$ ;
     <counter_parameters> !?max_allowed_value !?ticks_per_base !?min_cycle ;
     $}$ ;

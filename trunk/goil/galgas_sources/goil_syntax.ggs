@@ -393,7 +393,7 @@ rule <object_definition_list> :
     repeat
     while <appmode> ; <description> ?* ;
     while <task> !?tasks ;
-    while <counter> !?counters ; <description> ?* ;
+    while <counter> !?counters ;
     while <alarm> !?alarms ; <description> ?* ;
     while <resource> !?resources ; <description> ?* ;
     while <event> !?events ; <description> ?* ;

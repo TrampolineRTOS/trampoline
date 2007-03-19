@@ -325,18 +325,16 @@ map @isr_map {
 #
 
 class @counter_obj extends @oil_obj {
-    @luint64 max_allowed_value ;
-    @luint64 ticks_per_base ;
-    @luint64 min_cycle ;
-
-    method get_ticks_per_base !@string out_tpb :
-        out_tpb := [[ticks_per_base uint64] string] ;
-    end method ;
+    @uint_class max_allowed_value ;
+    @uint_class ticks_per_base ;
+    @uint_class min_cycle ;
 }
 
 map @counter_map {
     @counter_obj counter ;
-    insert insertCounter error message "Counter %K is duplicated in %L" ;
+    insert put error message "Counter %K is duplicated in %L" ;
+    search get error message "Counter %K is not defined" ;
+    remove del error message "Counter %K is not defined" ;
 }
 
 #
