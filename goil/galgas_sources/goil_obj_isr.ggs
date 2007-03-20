@@ -20,21 +20,24 @@ import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
+#
+# local nonterminals declaration
+#
 nonterminal <isr>
     ?!@isr_map isrs ;
 
 nonterminal <isr_attributes>
-    ?!@luint64   category
-    ?!@luint64   priority
-    ?!@stringset resources
-    ?!@stringset messages
-    ?!@ident_map other_fields ;
+    ?!@basic_type category
+    ?!@basic_type priority
+    ?!@stringset  resources
+    ?!@stringset  messages
+    ?!@ident_map  other_fields ;
 
 #
 # external nonterminals
 #
 nonterminal <description>
-    !@lstring description ;
+    !@lstring desc ;
 
 nonterminal <free_field> ?!@ident_map ids ;
 
@@ -46,58 +49,74 @@ rule <isr>
 
     @lstring isr_name ;
     @isr_obj isr ;
-    @luint64 category := [@luint64 new !0L !here] ;
-    @luint64 priority := [@luint64 new !0L !here] ;
-    @lstring description := [@lstring new !"" !here] ;
-    @stringset resources := [@stringset emptySet] ;
-    @stringset messages := [@stringset emptySet] ;
-    @ident_map other_fields [emptyMap] ;
+    @basic_type category ;
+    @basic_type priority ;
+    @lstring desc ;
+    @stringset resources ;
+    @stringset messages ;
+    @ident_map other_fields ;
 
     $ISR$ ;
     $idf$ ?isr_name ;
+    if [isrs hasKey ![isr_name string]] then
+        [!?isrs del !isr_name ?isr] ;
+        category := [isr category] ;
+        priority := [isr priority] ;
+        desc := [isr desc] ;
+        resources := [isr resources] ;
+        messages := [isr messages] ;
+        other_fields := [isr other_fields] ;
+    else # isr must also be written in this branch to comply with galgas static verification policy
+        category := [@void new !here] ;
+        priority := [@void new !here] ;
+        desc := [@lstring new !"" !here] ;
+        resources := [@stringset emptySet] ;
+        messages := [@stringset emptySet] ;
+        other_fields := [@ident_map emptyMap] ;
+        isr := [@isr_obj new !desc !category !priority !resources !messages !other_fields] ;
+    end if ;
     ${$ ;
     <isr_attributes> !?category !?priority !?resources !?messages !?other_fields;
     $}$ ;
-    <description> ?description ;
+    <description> ?desc ;
     $;$ ;
 
-    if [category uint64] == 0L then
-        error here : "CATEGORY missing for ISR ".[isr_name string] ;
-    end if ;
-    if [priority uint64] == 0L then
-        error here : "PRIORITY missing or equal to 0 for ISR ".[isr_name string] ;
-    end if ;
-
-    isr := [@isr_obj new !description !category !priority !resources !messages !other_fields] ;
-    [!?isrs insertISR !isr_name !isr] ;
+    isr := [@isr_obj new !desc !category !priority !resources !messages !other_fields] ;
+    [!?isrs put !isr_name !isr] ;
 end rule ;
 
 rule <isr_attributes>
-    ?!@luint64   category
-    ?!@luint64   priority
+    ?!@basic_type   category
+    ?!@basic_type   priority
     ?!@stringset resources
     ?!@stringset messages
     ?!@ident_map other_fields
 :
-    @bool has_priority := false ;
 
     repeat
     while
-        @uint64 cat := [category uint64] ;
-        if cat != 0L then
+        @luint64 cat ;
+        $CATEGORY$ ; $=$ ; $uint_number$ ?cat ; $;$ ;
+        extract category :
+        when @uint_class(@location l @uint64 i) ->
             error here : "ISR category attribute already defined for this ISR" ;
-        end if ;
-        $CATEGORY$ ; $=$ ; $uint_number$ ?category ; $;$ ;
-        cat := [category uint64] ;
-        if (cat != 1L) & (cat != 2L) then
+            error l : "was previously defined here" ;
+        else
+        end extract ;
+        if ([cat uint64] != 1L) & ([cat uint64] != 2L) then
             error here : "ISR category should be 1 ou 2" ;
         end if ;
+        category := [@uint_class new !here ![cat uint64]] ;
     while
-        if has_priority then
+        @luint64 prio ;
+        $PRIORITY$ ; $=$ ; $uint_number$ ?prio ; $;$ ;
+        extract priority :
+        when @uint_class(@location l @uint64 i) ->
             error here : "PRIORITY already defined for this ISR" ;
-        end if ;
-        $PRIORITY$ ; $=$ ; $uint_number$ ?priority ; $;$ ;
-        has_priority := true ;
+            error l : "was previouly defined here" ;
+        else
+        end extract ;
+        priority := [@uint_class new !here ![prio uint64]] ;
     while
         @lstring rez ;
         $RESOURCE$ ; $=$ ; $idf$ ?rez ; $;$ ;
@@ -109,7 +128,7 @@ rule <isr_attributes>
     while
         <free_field> !?other_fields ;
         $;$ ;
-    end repeat;
+    end repeat ;
 end rule ;
 
 end syntax ;

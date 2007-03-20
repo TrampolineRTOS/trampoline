@@ -24,15 +24,15 @@ nonterminal <counter>
     ?!@counter_map counters ;
 
 nonterminal <counter_parameters> 
-    ?!@luint64 max_allowed_value
-    ?!@luint64 ticks_per_base
-    ?!@luint64 min_cycle ;
+    ?!@basic_type max_allowed_value
+    ?!@basic_type ticks_per_base
+    ?!@basic_type min_cycle ;
 
 #
 # external nonterminals
 #
 nonterminal <description>
-    !@lstring description ;
+    !@lstring desc ;
 
 #
 # counter rules implementation
@@ -45,70 +45,76 @@ rule <counter>
     @basic_type max_allowed_value ;
     @basic_type ticks_per_base ;
     @basic_type min_cycle ;
-    @lstring description := [@lstring new !"" !here] ;
+    @lstring desc ;
 
     $COUNTER$ ;
     $idf$ ?counter_name ;
 
     if [counters hasKey ![counter_name string]] then
-        
-    else
+        [!?counters del !counter_name ?counter] ;
+        max_allowed_value := [counter max_allowed_value] ;
+        ticks_per_base := [counter ticks_per_base] ;
+        min_cycle := [counter min_cycle] ;
+        desc := [counter desc] ;
+    else # counter must also be written in this branch to comply with galgas static verification policy
         max_allowed_value := [@void new !here] ;
         ticks_per_base := [@void new !here] ;
         min_cycle := [@void new !here] ;
+        desc := [@lstring new !"" !here];
+        counter := [@counter_obj new !desc !max_allowed_value !ticks_per_base !min_cycle] ;
     end if ;
     ${$ ;
     <counter_parameters> !?max_allowed_value !?ticks_per_base !?min_cycle ;
     $}$ ;
-    <description> ?description ;
+    <description> ?desc ;
     $;$ ;
 
-    counter := [@counter_obj new !description !max_allowed_value !ticks_per_base !min_cycle] ;
-    [!?counters insertCounter !counter_name !counter] ;
+    counter := [@counter_obj new !desc !max_allowed_value !ticks_per_base !min_cycle] ;
+    [!?counters put !counter_name !counter] ;
 end rule ;
 
 rule <counter_parameters> 
-    ?!@luint64 max_allowed_value
-    ?!@luint64 ticks_per_base
-    ?!@luint64 min_cycle :
-
-    @bool max_allowed_value_known := false ;
-    @bool ticks_per_base_known := false ;
-    @bool min_cycle_known := false ;
+    ?!@basic_type max_allowed_value
+    ?!@basic_type ticks_per_base
+    ?!@basic_type min_cycle :
 
     repeat
     while
-        if max_allowed_value_known then
+        @luint64 m ;
+        $MAXALLOWEDVALUE$ ;   $=$ ; $uint_number$ ?m ; $;$ ;
+        extract max_allowed_value :
+        when @uint_class(@location l @uint64 i) ->
             error here : "MAXALLOWEDVALUE attribute already defined for this counter" ;
-        end if ;
-        $MAXALLOWEDVALUE$ ;   $=$ ; $uint_number$ ?max_allowed_value ; $;$ ;
-        max_allowed_value_known := true ;
+            error l : "was defined here" ;
+        when @void(@location l) ->
+            max_allowed_value := [@uint_class new !here ![m uint64]] ;
+        else
+        end extract ;
     while
-        if ticks_per_base_known then
+        @luint64 t ;
+        $TICKSPERBASE$ ;   $=$ ; $uint_number$ ?t ; $;$ ;
+        extract ticks_per_base :
+        when @uint_class(@location l @uint64 i) ->
             error here : "TICKSPERBASE attribute already defined for this counter" ;
-        end if ;
-        $TICKSPERBASE$ ;   $=$ ; $uint_number$ ?ticks_per_base ; $;$ ;
-        ticks_per_base_known := true ;
+            error l : "was defined here" ;
+        when @void(@location l) ->
+            ticks_per_base := [@uint_class new !here ![t uint64]] ;
+        else
+        end extract ;
     while
-        if min_cycle_known then
+         @luint64 c ;
+        $MINCYCLE$ ; $=$ ; $uint_number$ ?c ; $;$ ;
+        extract min_cycle :
+        when @uint_class(@location l @uint64 i) ->
             error here : "MINCYCLE attribute already defined for this counter" ;
-        end if ;
-        $MINCYCLE$ ; $=$ ; $uint_number$ ?min_cycle ; $;$ ;
-        min_cycle_known := true ;
+            error l : "was defined here" ;
+        when @void(@location l) ->
+            min_cycle := [@uint_class new !here ![c uint64]] ;
+        else
+        end extract ;
     while
         $idf$ ?* ;     $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ; $;$ ;
     end repeat ;
-    #check that attributes are sets.
-    if not max_allowed_value_known then 
-      error here : "MAXALLOWEDVALUE attribute not defined for this counter" ;
-    end if;
-    if not ticks_per_base_known then 
-      error here : "TICKSPERBASE attribute not defined for this counter" ;
-    end if;
-    if not min_cycle_known then 
-      error here : "MINCYCLE attribute not defined for this counter" ;
-    end if;
-
 end rule ;
 
 end syntax ;

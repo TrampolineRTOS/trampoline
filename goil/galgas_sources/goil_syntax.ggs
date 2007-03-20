@@ -20,8 +20,8 @@ import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
 nonterminal <file> ;
-nonterminal <OIL_version> !@lstring version !@lstring description ;
-nonterminal <description> !@lstring description ;
+nonterminal <OIL_version> !@lstring version !@lstring desc ;
+nonterminal <description> !@lstring desc ;
 nonterminal <implementation_definition> ?!@implementation imp ;
 nonterminal <implementation_spec_list> ?!@implementation imp ;
 nonterminal <implementation_spec> ?!@implementation imp ;
@@ -89,9 +89,9 @@ nonterminal <ipdu> ;
 rule <file> :
 #    message [option goil_options.target_platform]."\n" ;
     @lstring version ;
-    @lstring description ;
+    @lstring desc ;
     @implementation imp [emptyMap] ;
-    <OIL_version> ?version ?description ;	 
+    <OIL_version> ?version ?desc ;	 
     <implementation_definition> !?imp ;
     <application_definition> ;
 #    message [version string] ;
@@ -104,23 +104,23 @@ end rule ;
 #
 # Description of an OIL declaration
 #
-rule <description> !@lstring description :
+rule <description> !@lstring desc :
     select
-        description := [@lstring new !"" !here] ;
+        desc := [@lstring new !"" !here] ;
     or
         $:$ ;
-        $string$ ?description ;
+        $string$ ?desc ;
     end select ;
 end rule ;
 
 #
 # OIL version appears at the beginning of OIL files
 #
-rule <OIL_version> !@lstring version !@lstring description :
+rule <OIL_version> !@lstring version !@lstring desc :
     $OIL_VERSION$ ;
     $=$ ;
     $string$ ?version ;
-    <description> ?description ;
+    <description> ?desc ;
     $;$ ;
 end rule ;
 
@@ -405,8 +405,19 @@ rule <object_definition_list> :
     while <nm> ; <description> ?* ;
     end repeat ;
 
-    # semantics constraint checking
-    check_tasks !tasks ;
+  #
+  # semantics constraint checking
+  #
+
+  # per object static verification
+    tasks_well_formed !tasks ;
+    counters_well_formed !counters ;
+    alarms_well_formed !alarms ;
+    resources_well_formed !resources ;
+    isrs_well_formed !isrs ;
+    events_well_formed !events ;
+
+  # cross-objects static verification 
     resolve_linked_resources !?resources ;
     all_events_and_resources_defined_and_used !tasks !isrs !events !resources ;
     all_event_masks_different !events ;
@@ -519,15 +530,15 @@ rule <free_field> ?!@ident_map ids :
     select
         @lstring value ;
         $idf$ ?value ;
-        val := [@string_class new ![value string]] ;
+        val := [@string_class new  ![value location] ![value string]] ;
     or
         @luint64 value ;
         $uint_number$ ?value ;
-        val := [@uint_class new ![value uint64]] ;
+        val := [@uint_class new  ![value location] ![value uint64]] ;
     or
         @bool value ;
         <boolean> ?value ;
-        val := [@bool_class new !value] ;
+        val := [@bool_class new ![idf location] !value] ;
     end select ;
     [!?ids put !idf !val] ; 
 end rule ;
