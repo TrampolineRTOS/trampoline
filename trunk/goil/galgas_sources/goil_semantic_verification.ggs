@@ -3,32 +3,129 @@ semantics goil_semantic_verification :
 import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
 
 #
-# Semantics routine
+# Per object static verification
 #
+routine tasks_well_formed ?@task_map tasks :
+    @basic_type defined_priority := [@void new !here] ;
+    @basic_type defined_activation := [@void new !here] ;
+    @stringset defined_events [emptySet] ;
+    @lstring defined_schedule := [@lstring new !"" !here] ;
+    @task_autostart_obj defined_autostart := [@task_autostart_void new !here] ;
+    foreach tasks (@lstring task_name @task_obj task) :
+        defined_priority := [task priority] ;
+        extract defined_priority :
+        when @void (@location l) ->
+            error [task_name location] : "PRIORITY attribute not defined for TASK ".[task_name string] ;
+        else
+        end extract ;
+        defined_activation := [task activation] ;
+        extract defined_activation :
+        when @void (@location l) ->
+            error [task_name location] : "ACTIVATION attribute not defined for TASK ".[task_name string] ;
+        when @uint_class (@location l @uint64 i) ->
+            defined_events := [task events] ;
+            if ( [defined_events count] > 0 & [i uint] > 1) then
+                error [task_name location] : "ACTIVATION attribute for extended task ".[task_name string]." should be set to 1" ;
+                error l : "ACTIVATION attribute set to ".[i string]. " here" ;
+            end if ;
+        else
+        end extract ;
+        defined_schedule := [task schedule] ;
+        if [defined_schedule string] == "" then
+            error [task_name location] : "SCHEDULE attribute not defined for TASK ".[task_name string] ;
+        end if;
+        defined_autostart := [task autostart] ;
+        extract defined_autostart :
+        when @task_autostart_void (@location l) ->
+            error [task_name location] : "AUTOSTART attribute not defined for TASK ".[task_name string] ;
+        else
+        end extract ;
+    end foreach ;
+end routine ;
 
-# Task verification. Verify each task has all the required
-# attributes defined
-routine check_tasks
-    ?@task_map tasks
-:
-    foreach tasks (@lstring name @task_obj task) :
-        #PRIORITY is defined
-        if [[task priority] uint64] == 4294967296L then
-            error [name location]: "The PRIORITY attribute must be defined for TASK ".[name string] ;
+routine counters_well_formed ?@counter_map counters :
+    @basic_type defined_value := [@void new !here];
+    foreach counters (@lstring counter_name @counter_obj counter) :
+        defined_value := [counter max_allowed_value] ;
+        extract defined_value :
+            when @void (@location l) -> 
+                error [counter_name location] : "MAXALLOWEDVALUE attribute not defined for COUNTER " . [counter_name string] ;
+            else
+        end extract ;
+        defined_value := [counter ticks_per_base] ;
+        extract defined_value :
+            when @void (@location l) -> 
+                error [counter_name location] : "TICKSPERBASE attribute not defined for COUNTER " . [counter_name string] ;
+            else
+        end extract ;
+        defined_value := [counter min_cycle] ;
+        extract defined_value :
+            when @void (@location l) -> 
+                error [counter_name location] : "MINCYCLE attribute not defined for COUNTER " . [counter_name string] ;
+            else
+        end extract ;
+    end foreach ;
+end routine ;
+
+routine alarms_well_formed ?@alarm_map alarms :
+    @action_obj defined_action := [@void_action new !here] ;
+    @autostart_obj defined_autostart := [@alarm_autostart_void new !here] ;
+    foreach alarms (@lstring alarm_name @alarm_obj alarm) :
+        if [[alarm counter_name] string] == "" then
+            error [alarm_name location] : "COUNTER attribute undefined for ALARM " . [alarm_name string] ;
         end if ;
-        #SCHEDULE is defined
-        if [[task schedule] string] == "" then
-            error [name location]: "The SCHEDULE attribute must be defined for TASK ".[name string];
-        end if ;
-        #ACTIVATION is defined
-        if [[task activation] uint64] == 4294967296L then
-            error [name location]: "The ACTIVATION attribute must be defined for TASK ".[name string] ;
-        end if ;
-        #AUTOSTART is defined
-        @task_autostart_obj autostart := [task autostart] ;
-        extract autostart :
-            when @task_autostart_void (*) ->
-                error [name location]: "The AUTOSTART attribute must be defined for TASK ".[name string] ;
+        defined_action := [alarm action_params] ;
+        extract defined_action :
+        when @void_action (@location l) ->
+            error [alarm_name location] : "ACTION attribute undefined for ALARM " . [alarm_name string] ;
+        else
+        end extract ;
+        defined_autostart := [alarm autostart_params] ;
+        extract defined_autostart :
+        when @alarm_autostart_void (@location l) ->
+            error [alarm_name location] : "AUTOSTART attribute undefined for ALARM " . [alarm_name string] ;
+            else
+        end extract ;
+    end foreach ;
+end routine ;
+
+routine resources_well_formed ?@resource_map resources :
+    @resource_property_obj defined_value := [@resource_property_void_obj new !here] ;
+    foreach resources (@lstring resource_name @resource_obj resource) :
+        defined_value := [resource property] ;
+        extract defined_value :
+            when @resource_property_void_obj (@location l) ->
+                error [resource_name location] : "RESOURCEPROPERTY attribute undefined for RESOURCE ".[resource_name string] ;
+            else
+        end extract ;
+    end foreach;
+end routine ;
+
+routine events_well_formed ?@event_map events :
+    @event_mask_obj defined_value := [@event_mask_void_obj new !here] ;
+    foreach events (@lstring event_name @event_obj event) :
+        defined_value := [event mask] ;
+        extract defined_value :
+            when @event_mask_void_obj (@location l) ->
+                error [event_name location] : "MASK attribute undefined for EVENT ".[event_name string] ;
+                error l : "was previously defined here" ;
+            else
+        end extract ;
+    end foreach ;
+end routine ;
+
+routine isrs_well_formed ?@isr_map isrs :
+    @basic_type defined_value := [@void new !here] ;
+    foreach isrs (@lstring isr_name @isr_obj isr) :
+        defined_value := [isr category] ;
+        extract defined_value :
+            when @void(@location l) -> 
+                error [isr_name location] : "Category attribute undefined for ISR ".[isr_name string] ;
+            else
+        end extract ;
+        defined_value := [isr priority] ;
+        extract defined_value :
+            when @void(@location l) -> error [isr_name location] : "Priority attribute undefined for ISR ".[isr_name string] ;
             else
         end extract ;
     end foreach ;
@@ -55,43 +152,43 @@ routine resolve_linked_resources
         foreach unresolved (@lstring res_key @resource_obj res) :
 
             @resource_property_obj res_prop ;
-            [res get_property ?res_prop] ;
+            res_prop := [res property] ;
             extract res_prop :
 
                 #current resource is a linked resource : we try to resolve it
-                when @resource_property_linked_obj (@lstring linked_key) ->
+                when @resource_property_linked_obj (@location l @lstring linked_key) ->
 
                     #target is in resolved : we (try to) resolve
                     if( [resolved hasKey ![linked_key string]] ) then
                         @resource_obj target_resource ;
                         @resource_property_obj target_property ;
-                        [resolved getResource !linked_key ?target_resource] ;
-                        [target_resource get_property ?target_property] ;
+                        [resolved get !linked_key ?target_resource] ;
+                        target_property := [target_resource property] ;
                         extract target_property :
 
                             #linked to a standard resource : ok
-                            when @resource_property_standard_obj ( ) -> [!?resolved insertResource !res_key !res] ;
+                            when @resource_property_standard_obj (@location l) -> [!?resolved put !res_key !res] ;
 
                             #linked to an internal resource : error
-                            when @resource_property_internal_obj ( ) -> 
+                            when @resource_property_internal_obj (@location l) -> 
                                 error here : "RESOURCE " . [res_key string] . " is linked to INTERNAL RESOURCE " . [linked_key string];
 
                             #linked to a resolved linked resource : we resolve current resource, with a direct link to the standard resource
-                            when @resource_property_linked_obj (@lstring standard_key) ->
-                                @resource_property_linked_obj resolved_prop := [@resource_property_linked_obj new !standard_key] ;
+                            when @resource_property_linked_obj (@location l @lstring standard_key) ->
+                                @resource_property_linked_obj resolved_prop := [@resource_property_linked_obj new !l !standard_key] ;
                                 @lstring resolved_desc := [res desc];
                                 @resource_obj resolved_res := [@resource_obj new !resolved_desc !resolved_prop] ;
-                                [!?resolved insertResource !res_key !resolved_res] ;
+                                [!?resolved put !res_key !resolved_res] ;
                             else
                         end extract ;
 
                     #target not in resolved : we put current resource in unresolved
                     else
-                        [!?unresolved_next insertResource !res_key !res] ;
+                        [!?unresolved_next put !res_key !res] ;
                     end if ;
 
                 #standard or internal resource : resolved
-                else [!?resolved insertResource !res_key !res] ;
+                else [!?resolved put !res_key !res] ;
             end extract ;
         end foreach ;
         if ([unresolved count] == [unresolved_next count])
@@ -120,7 +217,7 @@ routine all_events_and_resources_defined_and_used
 
         #all referenced events must be defined
         @stringset task_events ;
-        [task get_events ?task_events] ;
+        task_events := [task events] ;
         foreach task_events (@string event_name) :
             used_events += !event_name ;
             if (not [events hasKey !event_name])
@@ -130,7 +227,7 @@ routine all_events_and_resources_defined_and_used
 
         #all referenced resources must be defined
         @stringset task_resources ;
-        [task get_resources ?task_resources] ;
+        task_resources := [task resources] ;
         foreach task_resources (@string res_name) :
             used_resources += !res_name ;
             if (not [resources hasKey !res_name])
@@ -143,8 +240,7 @@ routine all_events_and_resources_defined_and_used
     # Resources referenced in an ISR are defined
     foreach isrs (@lstring isr_name @isr_obj isr) :
 
-        @stringset isr_resources ;
-        [isr get_resources ?isr_resources] ;
+        @stringset isr_resources := [isr resources] ;
         foreach isr_resources (@string res_name) :
             used_resources+= !res_name ;
             if (not [resources hasKey !res_name])
@@ -175,9 +271,9 @@ routine all_event_masks_different
     @stringset defined_masks [emptySet] ;
     foreach events (@lstring event_name @event_obj event) :
         @event_mask_obj mask ;
-        [event get_mask ?mask] ;
+        mask := [event mask] ;
         extract mask :
-            when @event_mask_user_obj (@luint64 mask_value) -> 
+            when @event_mask_user_obj (@location l @luint64 mask_value) -> 
                 @string mask_in_string := [[mask_value uint64] string] ;
                 if [defined_masks hasKey !mask_in_string]
                 then warning event_name : "Mask " . mask_in_string . " already used" ;
@@ -197,23 +293,23 @@ routine all_alarm_actions_correct
     defined_task_names := [tasks allKeys] ;
     foreach alarms (@lstring alarm_name @alarm_obj alarm_data) :
         @action_obj alarm_action ;
-        [alarm_data get_action ?alarm_action] ;
+        alarm_action := [alarm_data action_params] ;
         extract alarm_action :
-            when @setevent_action (@lstring task_name @lstring event_name) ->
+            when @setevent_action (@location l @lstring task_name @lstring event_name) ->
                 if not [defined_task_names hasKey ![task_name string]]
-                then error task_name : "this task is never defined" ;
+                then error task_name : "TASK " . [task_name string] . "is never defined" ;
                 else 
                     @task_obj task_data ;
                     @stringset known_events ;
                     [tasks get !task_name ?task_data] ;
-                    [task_data get_events ?known_events ] ;
+                    known_events := [task_data events] ;
                     if not [known_events hasKey ![event_name string]]
-                    then warning event_name : "this event is not defined for the target task" ;
+                    then warning event_name : "EVENT " . [event_name string] . " is not defined for TASK " . [task_name string] ;
                     end if ;
                 end if ;
-            when @activatetask_action (@lstring task_name) ->
+            when @activatetask_action (@location l @lstring task_name) ->
                 if not [defined_task_names hasKey ![task_name string]]
-                then error task_name : "this task is never defined" ;
+                then error task_name : "TASK " . [task_name string] . " is never defined" ;
                 end if ;
             else            
         end extract ;
