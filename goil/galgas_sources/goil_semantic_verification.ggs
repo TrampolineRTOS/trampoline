@@ -131,6 +131,57 @@ routine isrs_well_formed ?@isr_map isrs :
     end foreach ;
 end routine ;
 
+routine messages_well_formed ?@message_map messages :
+    @mess_prop_obj defined_mess_prop := [@void_mess_prop new !here] ;
+    @action_obj defined_notif := [@void_action new !here] ;
+    @action_obj defined_notif_error := [@void_action new !here] ;
+
+    foreach messages (@lstring message_name @message_obj mess) :
+
+        defined_mess_prop := [mess messageproperty] ;
+        extract defined_mess_prop :
+        when @void_mess_prop (...) ->
+            error [message_name location] : "MESSAGEPROPERTY attribute missing for message ".[message_name string] ;
+        else
+        end extract ;
+
+        defined_notif := [mess notification] ;
+        extract defined_notif :
+        when @void_action (...) ->
+        else # a notification is declared
+            extract defined_mess_prop :
+            when @ssi_mess_prop (...) ->
+                error here : "NOTIFICATION is not allowed for SEND_STATIC_INTERNAL message" ;
+            when @szi_mess_prop (...) ->
+                error here : "NOTIFICATION is not allowed for SEND_ZERO_INTERNAL message" ;
+            when @rzs_mess_prop (...) ->
+                error here : "NOTIFICATION is not allowed for RECEIVE_ZERO_SENDERS message" ;
+            else
+            end extract ;
+        end extract ;
+
+        defined_notif_error := [mess notificationerror] ;
+        extract defined_notif_error :
+        when @void_action (...) ->
+            else # an error notification is declared
+            extract defined_mess_prop :
+            when @ssi_mess_prop (...) ->
+                error here : "NOTIFICATIONERROR is not allowed for SEND_STATIC_INTERNAL message" ;
+            when @szi_mess_prop (...) ->
+                error here : "NOTIFICATIONERROR is not allowed for SEND_ZERO_INTERNAL message" ;
+            when @rzi_mess_prop (...) ->
+                error here : "NOTIFICATIONERROR is not allowed for RECEIVE_ZERO_INTERNAL message" ;
+            when @rui_mess_prop (...) ->
+                error here : "NOTIFICATIONERROR is not allowed for RECEIVE_UNQUEUED_INTERNAL message" ;
+            when @rqi_mess_prop (...) ->
+                error here : "NOTIFICATIONERROR is not allowed for RECEIVE_QUEUED_INTERNAL message" ;
+            when @rzs_mess_prop (...) ->
+                error here : "NOTIFICATIONERROR is not allowed for RECEIVE_ZERO_SENDERS message" ;
+            else
+            end extract ;
+        end extract ;
+    end foreach ;
+end routine ;
 
 # Each linked resource chain must finish with a STANDARD resource
 # Buggy ? : the "Cycle detected" error is printed many times (expected: one)
@@ -203,16 +254,18 @@ routine resolve_linked_resources
     resources := resolved ;
 end routine ;
 
-routine all_events_and_resources_defined_and_used 
+routine all_events_and_resources_and_messages_defined_and_used 
     ?@task_map tasks
     ?@isr_map isrs
     ?@event_map events
     ?@resource_map resources
+    ?@message_map messages
 :
     @stringset used_events [emptySet] ;
     @stringset used_resources [emptySet] ;
+    @stringset used_messages [emptySet] ;
 
-    #Events and resources referenced in a task are defined
+    #Events and resources and messages referenced in a task are defined
     foreach tasks (@lstring task_name @task_obj task) :
 
         #all referenced events must be defined
@@ -235,11 +288,21 @@ routine all_events_and_resources_defined_and_used
             end if ;
         end foreach ;
 
+        #all referenced messages must be defined
+        @stringset task_messages ;
+        task_messages := [task messages] ;
+        foreach task_messages (@string mess_name) :
+            used_messages += !mess_name ;
+            if (not [messages hasKey !mess_name]) then
+                error task_name : "MESSAGE " .mess_name . " is not defined" ;
+            end if ;
+        end foreach ;
     end foreach ;
 
-    # Resources referenced in an ISR are defined
+    # Resources and messages referenced in an ISR are defined
     foreach isrs (@lstring isr_name @isr_obj isr) :
 
+        #all referenced resources must be defined
         @stringset isr_resources := [isr resources] ;
         foreach isr_resources (@string res_name) :
             used_resources+= !res_name ;
@@ -247,6 +310,17 @@ routine all_events_and_resources_defined_and_used
             then error isr_name : "RESOURCE " . res_name . " is not defined" ;
             end if ;
         end foreach ;
+
+        #all referenced messages must be defined
+        @stringset isr_messages ;
+        isr_messages := [isr messages] ;
+        foreach isr_messages (@string mess_name) :
+            used_messages += !mess_name ;
+            if (not [messages hasKey !mess_name]) then
+                error isr_name : "MESSAGE " .mess_name . " is not defined" ;
+            end if ;
+        end foreach ;
+
     end foreach ;
 
     #all defined events should be referenced in a task
@@ -263,6 +337,13 @@ routine all_events_and_resources_defined_and_used
         end if ;
     end foreach ;
 
+    #all defined messages should be referenced in a task or an ISR
+    foreach messages (@lstring mess_key *) :
+        if (not [used_messages hasKey ![mess_key string]])
+        then warning mess_key : "MESSAGE " . [mess_key string] . " is defined but never used" ;
+        end if ;
+    end foreach ;
+    
 end routine ;
 
 routine all_event_masks_different

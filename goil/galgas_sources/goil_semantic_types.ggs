@@ -64,7 +64,8 @@ class @task_obj extends @oil_obj {
     @basic_type activation ;
     @task_autostart_obj autostart ;
     @stringset resources ;
-    @stringset events;
+    @stringset events ;
+    @stringset messages ;
     @ident_map others;
 }
 
@@ -267,6 +268,8 @@ class @isr_obj extends @oil_obj {
     @stringset resources ;
     @stringset messages ;
     @ident_map other_fields;
+
+    method get_activation !@string out_act :          out_act := "1" ;      end method ;
 }
 
 map @isr_map {
@@ -306,6 +309,7 @@ abstract class @base_mess extends @oil_obj {
 map @message_map ;
 
 abstract class @mess_prop_obj {
+    @location location ;
     abstract method s_mess !@lstring sd ;
     abstract method generate
         ?@prefix_map     p
@@ -384,8 +388,9 @@ class @message_obj extends @base_mess {
 
 map @message_map {
     @message_obj mess ;
-    insert insert_message error message "Message %K is duplicated in %L" ;
-    search get_message error message "Message %K does not exist" ;
+    insert put error message "Message %K is duplicated in %L" ;
+    search get error message "Message %K does not exist" ;
+    remove del error message "Message %K does not exist" ;
 }
 
 abstract class @filter_prop_obj {
@@ -817,10 +822,10 @@ class @rui_mess_prop extends @mess_prop_obj {
 
         # Add the size of the source message object
         @message_obj sender ;
-        [messages get_message !sendingmessage ?sender] ;
+        [messages get !sendingmessage ?sender] ;
         @mess_prop_obj prop := [sender messageproperty] ;
         extract prop :
-        when @ssi_mess_prop (@lstring cdatatype) ->
+        when @ssi_mess_prop (@location l @lstring cdatatype) ->
             replace !p !"size" !"sizeof(".[cdatatype string].")" !?i_res ;
         else
             error here : "Incompatible sending message object" ;
@@ -860,10 +865,10 @@ class @rqi_mess_prop extends @mess_prop_obj {
 
         # Add the size of the source message object
         @message_obj sender ;
-        [messages get_message !sendingmessage ?sender] ;
+        [messages get !sendingmessage ?sender] ;
         @mess_prop_obj prop := [sender messageproperty] ;
         extract prop :
-        when @ssi_mess_prop (@lstring cdatatype) ->
+        when @ssi_mess_prop (@location l @lstring cdatatype) ->
             replace !p !"element_size" !"sizeof(".[cdatatype string].")" !?i_res ;
         else
             error here : "Incompatible sending message object" ;

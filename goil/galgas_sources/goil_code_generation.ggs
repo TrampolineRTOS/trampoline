@@ -155,16 +155,16 @@ routine generate_alarms
 
 # sets up the kind of alarm and its action
         @action_obj alarm_action ;
-        [alarm get_action ?alarm_action] ;
+        alarm_action := [alarm action_params] ;
         extract alarm_action :
-        when @setevent_action (@lstring task_name @lstring event_name) ->
+        when @setevent_action (@location l @lstring task_name @lstring event_name) ->
             result := tpl_alarm_setevent ;
             replace !p !"task"  ![task_name string] !?result ;
             replace !p !"event" ![event_name string] !?result ;
-        when @activatetask_action (@lstring task_name) ->
+        when @activatetask_action (@location l @lstring task_name) ->
             result := tpl_alarm_activatetask ;
             replace !p !"task" ![task_name string] !?result ;
-        when @callback_action (@lstring function_name) ->
+        when @callback_action (@location l @lstring function_name) ->
             result := tpl_alarm_callback ;
             replace !p !"callback" ![function_name string] !?result ;
         else error alarm_name : "Unknown action found" ;
@@ -172,17 +172,17 @@ routine generate_alarms
 
 # sets up the autostart params
         @autostart_obj autostart ;
-        [alarm get_autostart ?autostart] ;
+        autostart := [alarm autostart_params] ;
         extract autostart :
-        when @alarm_autostart_void () ->
+        when @alarm_autostart_void (...) ->
             result := [result stringByReplacingStringByString !"$ALARM_STATE$" !"ALARM_SLEEP"] ;
             result := [result stringByReplacingStringByString !"$ALARM_CYCLE$" !"0"] ;
             result := [result stringByReplacingStringByString !"$ALARM_DATE$" !"0"] ;
-        when @alarm_autostart_false () ->
+        when @alarm_autostart_false (...) ->
             result := [result stringByReplacingStringByString !"$ALARM_STATE$" !"ALARM_SLEEP"] ;
             result := [result stringByReplacingStringByString !"$ALARM_CYCLE$" !"0"] ;
             result := [result stringByReplacingStringByString !"$ALARM_DATE$" !"0"] ;
-        when @alarm_autostart_true (@luint64 alarm_time @luint64 cycle_time *) ->
+        when @alarm_autostart_true (@location l @luint64 alarm_time @luint64 cycle_time *) ->
             result := [result stringByReplacingStringByString !"$ALARM_STATE$" !"ALARM_AUTOSTART"] ;
             result := [result stringByReplacingStringByString !"$ALARM_CYCLE$" ![[cycle_time uint64] string]] ;
             result := [result stringByReplacingStringByString !"$ALARM_DATE$" ![[alarm_time uint64] string]] ;
@@ -191,7 +191,7 @@ routine generate_alarms
 
 # sets up the remaining params
         @lstring counter_name ;
-        [alarm get_counter ?counter_name] ;
+        counter_name := [alarm counter_name] ;
         replace !p !"alarm_name"   ![alarm_name string]  !?result ;
         replace !p !"alarm"   ![alarm_name string]  !?result ;
         replace !p !"counter" ![counter_name string] !?result ;
@@ -244,8 +244,13 @@ routine generate_tasks
         replace !p !"task_stack"    ![task_name string] !?result ;
         replace !p !"task_id"       ![task_name string] !?result ;
         
-        @uint64 prio ;
-        [task get_priority ?prio] ;
+        @basic_type prio_as_basic ;
+        @uint64 prio := 0L;
+        prio_as_basic := [task priority] ;
+        extract prio_as_basic :
+        when @uint_class (@location l @uint64 i) -> prio := i ;
+        else error [prio_as_basic location] : "Unknown task priority value" ;
+        end extract ;
 
         # Compute the maximum priority of tasks. This maximum priority
         # is used as priority of RES_SCHEDULER and INTERNAL_RES_SCHEDULER
@@ -263,10 +268,10 @@ routine generate_tasks
             foreach used_rez (@string rez_name) :
                 if no_internal_rez_found then
                     @resource_obj rez ;
-                    [resources getResource ![@lstring new !rez_name !here] ?rez] ;
-                    @resource_property_obj rez_prop := [rez resource_property] ;
+                    [resources get ![@lstring new !rez_name !here] ?rez] ;
+                    @resource_property_obj rez_prop := [rez property] ;
                     extract rez_prop :
-                    when @resource_property_internal_obj () ->
+                    when @resource_property_internal_obj (...) ->
                          replace !p !"resource_ptr" !rez_name !?result ;
                          no_internal_rez_found := false ;
                     else
@@ -280,11 +285,17 @@ routine generate_tasks
 
         tmp := [prio string] ;
         result := [result stringByReplacingStringByString !"$TASK_PRIORITY$" !tmp] ;
-        [task get_activation ?tmp] ;
+        
+        @basic_type activation_as_basic ;
+        activation_as_basic := [task activation] ;
+        extract activation_as_basic :
+        when @uint_class (@location l @uint64 i) -> tmp := [i string] ;
+        else error [activation_as_basic location] : "Unknown activation value" ;
+        end extract ;
         result := [result stringByReplacingStringByString !"$TASK_MAX_ACT_COUNT$" !tmp] ;
 
         @task_autostart_obj autostart;
-        [task get_autostart ?autostart];
+        autostart := [task autostart];
         extract autostart :
         when @task_autostart_true (* *) ->
             result := [result stringByReplacingStringByString !"$TASK_STATE$" !"AUTOSTART"] ;
@@ -330,7 +341,7 @@ routine generate_isrs
     template ?tpl_isr !"isr" ;
 
     foreach isrs (@lstring isr_name @isr_obj isr) :
-        @string tmp ;
+        @string tmp := "" ;
         @string result := "" ;
 
         generate_context_and_stack !isr_name !isr !p !?result ;
@@ -345,9 +356,12 @@ routine generate_isrs
         replace !p !"isr_stack"    ![isr_name string] !?result ;
         replace !p !"isr_helper"   ![isr_name string] !?result ;
         
-        @uint64 prio ;
-        [isr get_priority ?prio] ;
-        tmp := [prio string] ;
+        @basic_type prio_as_basic ;
+        prio_as_basic := [isr priority] ;
+        extract prio_as_basic :
+        when @uint_class (@location l @uint64 i) -> tmp := [i string] ;
+        else error [prio_as_basic location] : "Unknown ISR PRIORITY value" ;
+        end extract ;
         result := [result stringByReplacingStringByString !"$ISR_PRIORITY$" !tmp] ;
         [isr get_activation ?tmp] ;
         result := [result stringByReplacingStringByString !"$ISR_MAX_ACT_COUNT$" !tmp] ;
@@ -387,12 +401,18 @@ routine generate_counters
     template ?tpl_counter !"counter" ;
 
     foreach counters (@lstring counter_name @counter_obj counter) :
-        @string tmp ;
+        @string tmp := "";
         @string result := tpl_counter ;
 
         replace !p !"counter_name" ![counter_name string] !?result ;
         replace !p !"counter" ![counter_name string] !?result ;
-        [counter get_ticks_per_base ?tmp] ;
+ 
+        @basic_type ticks_as_basic ;
+        ticks_as_basic := [counter ticks_per_base] ;
+        extract ticks_as_basic :
+        when @uint_class (@location l @uint64 i) -> tmp := [i string] ;
+        else error [ticks_as_basic location] : "Unknown COUNTER TICKSPERBASE value" ;
+        end extract ;
         result := [result stringByReplacingStringByString !"$TICKS_PER_BASE$" !tmp] ;
 
         counters_result := counters_result . "\n" . result ;
@@ -418,11 +438,16 @@ routine max_task_prio_for_rez
     task_use := "" ;
     foreach tasks (@lstring task_name @task_obj task) :
         @stringset rez ;
-        [task get_resources ?rez] ;
+        rez := [task resources] ;
         if [rez hasKey !rez_name]
         then 
-            @uint64 prio ;
-            [task get_priority ?prio] ;
+            @uint64 prio := 0L;
+            @basic_type prio_as_basic ;
+            prio_as_basic := [task priority] ;
+            extract prio_as_basic :
+            when @uint_class (@location l @uint64 i) -> prio := i ;
+            else error [prio_as_basic location] : "Unknown TASK PRIORITY value" ;
+            end extract ;
             if prio > rez_prio
             then rez_prio := prio ;
             end if ;
@@ -443,11 +468,16 @@ routine max_isr_prio_for_rez
     isr_use := "" ;
     foreach isrs (@lstring isr_name @isr_obj isr) :
         @stringset rez ;
-        [isr get_resources ?rez] ;
+        rez := [isr resources] ;
         if [rez hasKey !rez_name]
         then
-            @uint64 prio ;
-            [isr get_priority ?prio] ;
+            @uint64 prio := 0L ;
+            @basic_type prio_as_basic ;
+            prio_as_basic := [isr priority] ;
+            extract prio_as_basic :
+            when @uint_class (@location l @uint64 i) -> prio := i ;
+            else error [prio_as_basic location] : "Unknown ISR PRIORITY value" ;
+            end extract ;
             if prio > rez_prio
             then rez_prio := prio ;
             end if ;
@@ -485,20 +515,20 @@ routine generate_resources
         @string isr_use := "none" ;
 
         @resource_property_obj rez_prop ;
-        [resource get_property ?rez_prop] ;
+        rez_prop := [resource property] ;
 
         extract rez_prop :
-        when @resource_property_standard_obj () ->
+        when @resource_property_standard_obj (...) ->
             result := tpl_resource ;
             max_task_prio_for_rez !tasks !name ?task_use !?rez_prio ;
             max_isr_prio_for_rez !isrs !name ?isr_use !?rez_prio ;
             regular_rez += !name ;
-        when @resource_property_linked_obj (*) ->
+        when @resource_property_linked_obj (...) ->
             result := tpl_resource ;
             max_task_prio_for_rez !tasks !name ?task_use !?rez_prio ;
             max_isr_prio_for_rez !isrs !name ?isr_use !?rez_prio ;
             regular_rez += !name ;
-        when @resource_property_internal_obj () ->
+        when @resource_property_internal_obj (...) ->
             result := tpl_internal_resource ;
             max_task_prio_for_rez !tasks !name ?task_use !?rez_prio ;
         else
@@ -562,22 +592,22 @@ routine generate_events
 
     foreach tasks (@lstring task_name @task_obj task) :
         @stringset events_used ;
-        [task get_events ?events_used] ;
+        events_used := [task events] ;
         @uint64 event_mask := 0L ;
         foreach events_used (@string evt_name) :
             @event_obj event ;
-            [events get_event ![@lstring new !evt_name !here] ?event] ;
+            [events get ![@lstring new !evt_name !here] ?event] ;
             @event_mask_obj mask_obj ;
-            [event get_mask ?mask_obj] ;
+            mask_obj := [event mask] ;
             extract mask_obj :
-            when @event_mask_user_obj (@luint64 mask) ->
+            when @event_mask_user_obj (* @luint64 mask) ->
                 if (event_mask & [mask uint64]) == 0L
                 then
                     event_mask := event_mask | [mask uint64] ;
                 else
                     error mask : "Mask %K conflicts with previous declarations" ;
                 end if ;
-            when @event_mask_auto_obj () ->
+            when @event_mask_auto_obj (...) ->
                 @uint count ;
                 if [evt_usage hasKey !evt_name]
                 then
@@ -607,9 +637,9 @@ routine generate_events
     #
     foreach events (@lstring evt_name @event_obj evt) :
         @event_mask_obj evt_mask ;
-        [evt get_mask ?evt_mask] ;
+        evt_mask := [evt mask] ;
         extract evt_mask :
-        when @event_mask_user_obj (@luint64 mask) ->
+        when @event_mask_user_obj (* @luint64 mask) ->
             @string result := tpl_event ;
             replace !p !"event" ![evt_name string] !?result ;
             replace !p !"event_name" ![evt_name string] !?result ;

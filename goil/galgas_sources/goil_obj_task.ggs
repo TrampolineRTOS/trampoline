@@ -34,6 +34,7 @@ nonterminal <task_attributes>
     ?!@task_autostart_obj autostart
     ?!@stringset resources
     ?!@stringset events
+    ?!@stringset messages
     ?!@ident_map others ;
 
 nonterminal <task_autostart_params>
@@ -63,6 +64,7 @@ rule <task>
     @task_autostart_obj autostart ;
     @stringset resources ;
     @stringset events ;
+    @stringset messages ;
     @lstring desc ;
     @ident_map others ;
 
@@ -76,6 +78,7 @@ rule <task>
         autostart := [task autostart] ;
         resources := [task resources] ;
         events := [task events] ;
+        messages := [task messages] ;
         desc := [task desc] ;
         others := [task others] ;
     else
@@ -85,17 +88,18 @@ rule <task>
         autostart := [@task_autostart_void new !here] ;
         resources := [@stringset emptySet] ;
         events := [@stringset emptySet] ;
+        messages := [@stringset emptySet] ;
         desc := [@lstring new !"" !here] ;
         others := [@ident_map emptyMap] ;
-        task := [@task_obj new !desc !priority !schedule !activation !autostart !resources !events !others] ;
+        task := [@task_obj new !desc !priority !schedule !activation !autostart !resources !events !messages !others] ;
     end if ;
     ${$ ;
-    <task_attributes> !task_name !?priority !?schedule !?activation !?autostart !?resources !?events !?others ;
+    <task_attributes> !task_name !?priority !?schedule !?activation !?autostart !?resources !?events !?messages !?others ;
     $}$ ;
     <description> ?desc ;
     $;$ ;
 
-    task := [@task_obj new !desc !priority !schedule !activation !autostart !resources !events !others] ;
+    task := [@task_obj new !desc !priority !schedule !activation !autostart !resources !events !messages !others] ;
     [!?tasks put !task_name !task] ;
 end rule ;	
 
@@ -107,6 +111,7 @@ rule <task_attributes>
     ?!@task_autostart_obj autostart
     ?!@stringset resources
     ?!@stringset events
+    ?!@stringset messages
     ?!@ident_map others
 :
     repeat
@@ -121,7 +126,7 @@ rule <task_attributes>
                 error [priority location] : "was previously defined here" ;
         end extract ;
     while
-        if [schedule string] == "" then
+        if [schedule string] != "" then
             error here : "SCHEDULE attribute already defined for TASK " . [task_name string] ;
             error [schedule location] : "was previously defined here" ;
         end if ;
@@ -176,8 +181,14 @@ rule <task_attributes>
         end if ;
         events += ![event string] ;
     while
-        <free_field> !?others ;
-        $;$ ;
+        @lstring mess ;
+        $MESSAGE$ ; $=$ ; $idf$ ?mess ; $;$ ;
+        if [messages hasKey ![mess string]] then
+            warning here : "MESSAGE " . [mess string] . " already defined for TASK " . [task_name string] ;
+        end if ;
+        messages += ![mess string] ;
+    while
+        <free_field> !?others ; $;$ ;
     end repeat ;
 end rule;
 
