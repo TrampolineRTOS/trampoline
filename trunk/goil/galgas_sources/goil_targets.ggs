@@ -33,7 +33,7 @@ routine generate_context_and_stack
     target ?target ;
 
     extract exe :
-    when @task_obj (7* @ident_map ids) ->
+    when @task_obj (8* @ident_map ids) ->
         template ?tpl_context_and_stack !"each_task_specific" ;
         context_and_stack := tpl_context_and_stack ;
         idents := ids ;
