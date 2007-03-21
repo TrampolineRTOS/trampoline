@@ -22,15 +22,26 @@ import semantics goil_semantics in "goil_semantics.ggs" ;
 
 nonterminal <appmode> ;
 
+#
+# external rules 
+#
+nonterminal <description>
+    !@lstring desc ;
+nonterminal <free_field>
+    ?!@ident_map ids ;
+
 rule <appmode> :
+    @ident_map others [emptyMap] ;
+
     $APPMODE$ ;
     $idf$ ?* ;
     ${$ ;
     repeat
     while
-        $idf$ ?* ; $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ; $;$ ;
+        <free_field> !?others ; $;$ ;
     end repeat ;
     $}$ ;
+    <description> ?* ;
     $;$ ;
 end rule ;
 

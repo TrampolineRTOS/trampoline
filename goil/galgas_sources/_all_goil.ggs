@@ -35,6 +35,7 @@ compile "goil_routines.ggs" ;
 #
 # Objects of the application definition
 #
+compile "goil_obj_os.ggs" ;
 compile "goil_obj_task.ggs" ;
 compile "goil_obj_counter.ggs" ;
 compile "goil_obj_appmode.ggs" ;
