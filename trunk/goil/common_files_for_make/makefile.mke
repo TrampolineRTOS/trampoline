@@ -67,6 +67,7 @@ SOURCES += goil_obj_com.cpp
 SOURCES += goil_obj_ipdu.cpp
 SOURCES += goil_grammar.cpp
 SOURCES += goil_program.cpp
+SOURCES += goil_cpu_level_include.cpp
 
 # Hand-coded files
 #SOURCES += goil_computations.cpp

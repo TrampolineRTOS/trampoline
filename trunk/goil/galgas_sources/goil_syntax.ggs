@@ -18,6 +18,7 @@ syntax goil_syntax :
 import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
+import grammar goil_cpu_level_include in "goil_grammar.ggs" ;
 
 nonterminal <file> ;
 nonterminal <OIL_version> !@lstring version !@lstring desc ;
@@ -40,12 +41,29 @@ nonterminal <impl_parameter_list> ;
 nonterminal <implementation_def> ;
 
 nonterminal <application_definition> ;
-nonterminal <object_definition_list> ;
+nonterminal <object_definition_list>
+    ?!@task_map     tasks
+    ?!@counter_map  counters
+    ?!@alarm_map    alarms
+    ?!@resource_map resources
+    ?!@event_map    events
+    ?!@isr_map      isrs
+    ?!@message_map  messages
+;
 nonterminal <nm> ;
 
 nonterminal <boolean> !@bool val ;
 nonterminal <free_field> ?!@ident_map ids ;
-
+nonterminal <include_file_level> ;
+nonterminal <include_cpu_level>
+    ?!@task_map     tasks
+    ?!@counter_map  counters
+    ?!@alarm_map    alarms
+    ?!@resource_map resources
+    ?!@event_map    events
+    ?!@isr_map      isrs
+    ?!@message_map  messages
+;
 
 #--------------------------------------------------------------------
 # Code generation rules declaration
@@ -59,7 +77,7 @@ nonterminal <generate_alarms> ?@alarm_map alarms ;
 #--------------------------------------------------------------------
 nonterminal <appmode> ;
 nonterminal <task> 
-	?!@task_map outTask;
+    ?!@task_map outTask;
 
 nonterminal <counter>
     ?!@counter_map counters ;
@@ -68,10 +86,10 @@ nonterminal <alarm>
     ?!@alarm_map alarms ;
 
 nonterminal <resource>
-	?!@resource_map resources ;
+    ?!@resource_map resources ;
 
 nonterminal <event> 
-	?!@event_map events;
+    ?!@event_map events;
 
 nonterminal <isr>
     ?!@isr_map isrs ;
@@ -87,18 +105,19 @@ nonterminal <ipdu> ;
 # root
 #
 rule <file> :
-#    message [option goil_options.target_platform]."\n" ;
-    @lstring version ;
-    @lstring desc ;
+    @lstring version := [@lstring new !"" !here] ;
+    @lstring desc := [@lstring new !"" !here] ;
     @implementation imp [emptyMap] ;
-    <OIL_version> ?version ?desc ;	 
-    <implementation_definition> !?imp ;
-    <application_definition> ;
-#    message [version string] ;
-#    message [description string] ;
-#    message [imp description] ;
-#    @base_class v := [@version new !version !description] ;
-#    action generateHeader !version !description ;
+    repeat
+    while
+        <include_file_level> ;
+    while
+        <OIL_version> ?version ?desc ;
+    while
+        <implementation_definition> !?imp ;
+    while
+        <application_definition> ;
+    end repeat ;
 end rule ;
 
 #
@@ -187,19 +206,19 @@ rule <implementation_list> ?!@implementationSpec spec :
 end rule ;
 
 rule <impl_attr_def> ?!@implementationSpec unused spec :
-  	@lstring type ;
-  	@bool auto ;
-   	@number_set range ;
-   	@bool has_range ;
-	@lstring attr_name ;
-	@bool multiple ;
-	@luint64 default_number;
-	@bool has_default ;
+      @lstring type ;
+      @bool auto ;
+       @number_set range ;
+       @bool has_range ;
+    @lstring attr_name ;
+    @bool multiple ;
+    @luint64 default_number;
+    @bool has_default ;
 
     select  $UINT32$ ?type ;
-        or  $INT32$ 	?type ;
- 	 	 or  $UINT64$ ?type ;
-      	 or  $INT64$  ?type ;
+        or  $INT32$     ?type ;
+           or  $UINT64$ ?type ;
+           or  $INT64$  ?type ;
     end select ;
     <auto_specifier> ?auto ;
     <number_range_or_nil> ?has_range ?range ;
@@ -209,8 +228,8 @@ rule <impl_attr_def> ?!@implementationSpec unused spec :
 end rule ;
 
 rule <impl_attr_def> ?!@implementationSpec unused spec :
-	@lstring type ;    
-	@bool auto ;
+    @lstring type ;    
+    @bool auto ;
     $FLOAT$ ?type ;
     <auto_specifier> ?auto ;
 #    <float_range> ?range ;
@@ -220,15 +239,15 @@ rule <impl_attr_def> ?!@implementationSpec unused spec :
 end rule ;
 
 rule <impl_attr_def> ?!@implementationSpec unused spec :
-	@lstring type ;
-	@bool auto ;
+    @lstring type ;
+    @bool auto ;
 
-	$ENUM$ ?type ;
-  	<auto_specifier> ?auto ;
-	<enumeration> ;
-	<attribute_name> ?* ;
-	<multiple_specifier> ?* ;
-	<default_name> ?* ?* ;
+    $ENUM$ ?type ;
+      <auto_specifier> ?auto ;
+    <enumeration> ;
+    <attribute_name> ?* ;
+    <multiple_specifier> ?* ;
+    <default_name> ?* ?* ;
 end rule ;
 
 rule <auto_specifier> !@bool auto :
@@ -240,117 +259,117 @@ rule <auto_specifier> !@bool auto :
 end rule ;
 
 rule <number_range_or_nil> !@bool has_range !@number_set set :
-	select
-		<number_range> ?set ;
-		has_range := true ;
-	or
-		@luint64 zero := [@luint64 new !0L !here] ;
-		set := [@uint_range new !zero !zero] ;
-		has_range := false ;
-	end select ;
+    select
+        <number_range> ?set ;
+        has_range := true ;
+    or
+        @luint64 zero := [@luint64 new !0L !here] ;
+        set := [@uint_range new !zero !zero] ;
+        has_range := false ;
+    end select ;
 end rule ;
 
 rule <number_range> !@number_set set :
-	@luint64 first ;
-	$[$ ;
-	select
-		@luint64 last ;
-		$set_start_uint_number$ ?first ;
+    @luint64 first ;
+    $[$ ;
+    select
+        @luint64 last ;
+        $set_start_uint_number$ ?first ;
        $uint_number$ ?last;
-		set := [@uint_range new !first !last] ;
-	or
-		$uint_number$ ?first ;
-		select
-			@luint64 last ;
-			$..$ ;
-			$uint_number$ ?last ;
-			set := [@uint_range new !first !last] ;
-		or
-			@number_list numList := [@number_list emptyList];
-			numList += !first ;
-	     	repeat
-	     	while
-				$,$ ;
-				$uint_number$ ?first;
-				numList += !first ;
-   		 	end repeat ;
-			set := [@uint_list new !numList];
-		end select ;
-	end select ;
-  	$]$ ;
+        set := [@uint_range new !first !last] ;
+    or
+        $uint_number$ ?first ;
+        select
+            @luint64 last ;
+            $..$ ;
+            $uint_number$ ?last ;
+            set := [@uint_range new !first !last] ;
+        or
+            @number_list numList := [@number_list emptyList];
+            numList += !first ;
+             repeat
+             while
+                $,$ ;
+                $uint_number$ ?first;
+                numList += !first ;
+                end repeat ;
+            set := [@uint_list new !numList];
+        end select ;
+    end select ;
+      $]$ ;
 end rule ;  
 
 rule <attribute_name> !@lstring name :
-	$idf$ ?name;
+    $idf$ ?name;
 end rule ;
 
 rule <multiple_specifier> !@bool multiple :
-	select
-		$[$ ; $]$ ;
-		multiple := true;
-	or
-		multiple := false;
-	end select ;
+    select
+        $[$ ; $]$ ;
+        multiple := true;
+    or
+        multiple := false;
+    end select ;
 end rule ;
 
 rule <default_number> !@bool has_default !@luint64 default_number :
-	select
-		$=$ ;
-		$uint_number$ ?default_number ;
-		has_default := true ;
-	or
-		default_number := [@luint64 new !0L !here] ;
-		has_default := false ;
-	end select ;
+    select
+        $=$ ;
+        $uint_number$ ?default_number ;
+        has_default := true ;
+    or
+        default_number := [@luint64 new !0L !here] ;
+        has_default := false ;
+    end select ;
 end rule ;
 
 rule <default_name> !@bool has_default !@lstring default_name :
-	select
-		$=$ ;
-		$idf$ ?default_name ;
-		has_default := true ;
-	or
-		default_name := [@lstring new !"" !here] ;
-		has_default := false ;
-	end select ;
+    select
+        $=$ ;
+        $idf$ ?default_name ;
+        has_default := true ;
+    or
+        default_name := [@lstring new !"" !here] ;
+        has_default := false ;
+    end select ;
 end rule ;
 
 #
 # Enumeration.
 #
 rule <enumeration> :
-	$[$ ;
-	<enumerator> ;
-	repeat
-	while
-		$,$ ;
-		<enumerator> ;
-	end repeat ;
-	$]$ ;
+    $[$ ;
+    <enumerator> ;
+    repeat
+    while
+        $,$ ;
+        <enumerator> ;
+    end repeat ;
+    $]$ ;
 end rule ;
 
 rule <enumerator> :
-	$idf$ ?* ;
-	<impl_parameter_list> ;
-	<description> ?* ;
+    $idf$ ?* ;
+    <impl_parameter_list> ;
+    <description> ?* ;
 end rule ;
 
 rule <impl_parameter_list> :
-	select
-		${$ ;
-		repeat
-		while
-			<implementation_def> ;
-		end repeat ;
-		$}$ ;
-	or
-	end select ;
+    select
+        ${$ ;
+        repeat
+        while
+            <implementation_def> ;
+        end repeat ;
+        $}$ ;
+    or
+    end select ;
 end rule ;
 
 rule <implementation_def> :
-	$idf$ ?* ;
-	$idf$ ?* ;
-	$;$ ;
+    $idf$ ?* ;
+    $idf$ ?* ;
+    $;$ ;
 end rule ;
 
 #         or  $ENUM$ ;    type := "ENUM" ;
@@ -368,42 +387,30 @@ end rule ;
 # Application definition part
 #--------------------------------------------------------------------
 rule <application_definition> :
-    repeat
-    while
-        $CPU$ ;
-        $idf$ ?* ;
-        ${$ ;
-        <object_definition_list> ;
-        $}$ ;
-        <description> ?* ;
-        $;$ ;
-    end repeat ;
-end rule ;
 
-rule <object_definition_list> :
+    @task_map     tasks     [emptyMap] ;
+    @counter_map  counters  [emptyMap] ;
+    @alarm_map    alarms    [emptyMap] ;
+    @resource_map resources [emptyMap] ;
+    @event_map    events    [emptyMap] ;
+    @isr_map      isrs      [emptyMap] ;
+    @message_map  messages  [emptyMap] ;
 
-    @task_map tasks := [@task_map emptyMap] ;
-    @counter_map counters := [@counter_map emptyMap] ;
-    @alarm_map alarms := [@alarm_map emptyMap] ;
-    @resource_map resources := [@resource_map emptyMap] ;
-    @event_map events := [@event_map emptyMap] ;
-    @isr_map isrs := [@isr_map emptyMap] ;
-    @message_map messages [emptyMap] ;
-
-    repeat
-    while <appmode> ; <description> ?* ;
-    while <task> !?tasks ;
-    while <counter> !?counters ;
-    while <alarm> !?alarms ; <description> ?* ;
-    while <resource> !?resources ; <description> ?* ;
-    while <event> !?events ; <description> ?* ;
-    while <isr> !?isrs ; <description> ?* ;
-    while <mess> !?messages ; <description> ?* ;
-    while <networkmess> ; <description> ?* ;
-    while <com> ; <description> ?* ;
-    while <ipdu> ; <description> ?* ;
-    while <nm> ; <description> ?* ;
-    end repeat ;
+    $CPU$ ;
+    $idf$ ?* ;
+    ${$ ;
+    <object_definition_list>
+        !?tasks
+        !?counters
+        !?alarms
+        !?resources
+        !?events
+        !?isrs
+        !?messages
+    ;
+    $}$ ;
+    <description> ?* ;
+    $;$ ;
 
   #
   # semantics constraint checking
@@ -470,7 +477,7 @@ rule <object_definition_list> :
                 implementation := [implementation stringByReplacingStringByString !"$HEADER$" !header_file];
                 implementation := [implementation stringByReplacingStringByString !"$OBJ_HEADER$" !obj_header_file];
                 implementation := [implementation stringByReplacingStringByString !"$IMPLEMENTATION$" !implementation_file];
-                implementation := [implementation stringByReplacingStringByString !"$TIMESTAMP $" !timestamp];
+                implementation := [implementation stringByReplacingStringByString !"$TIMESTAMP$" !timestamp];
 
                 @uint error_count := [@uint errorCount] ;
 
@@ -499,6 +506,41 @@ rule <object_definition_list> :
             message "No template directory defined, compiling aborted\n" ;
         end if ;
     end if ;
+end rule ;
+
+rule <object_definition_list>
+    ?!@task_map     tasks
+    ?!@counter_map  counters
+    ?!@alarm_map    alarms
+    ?!@resource_map resources
+    ?!@event_map    events
+    ?!@isr_map      isrs
+    ?!@message_map  messages
+:
+
+   repeat
+    while <appmode> ; <description> ?* ;
+    while <task> !?tasks ;
+    while <counter> !?counters ;
+    while <alarm> !?alarms ; <description> ?* ;
+    while <resource> !?resources ; <description> ?* ;
+    while <event> !?events ; <description> ?* ;
+    while <isr> !?isrs ; <description> ?* ;
+    while <mess> !?messages ; <description> ?* ;
+    while <networkmess> ; <description> ?* ;
+    while <com> ; <description> ?* ;
+    while <ipdu> ; <description> ?* ;
+    while <nm> ; <description> ?* ;
+    while <include_cpu_level>
+        !?tasks
+        !?counters
+        !?alarms
+        !?resources
+        !?events
+        !?isrs
+        !?messages
+    ;
+    end repeat ;
 end rule ;
 
 rule <nm> :
@@ -541,6 +583,45 @@ rule <free_field> ?!@ident_map ids :
         val := [@bool_class new ![idf location] !value] ;
     end select ;
     [!?ids put !idf !val] ; 
+end rule ;
+
+rule <include_file_level> :
+    $include$ ;
+    select
+        $g_string$ ?* ;
+    or
+        $string$ ?* ;
+    end select ;
+end rule ;
+
+rule <include_cpu_level>
+    ?!@task_map     tasks
+    ?!@counter_map  counters
+    ?!@alarm_map    alarms
+    ?!@resource_map resources
+    ?!@event_map    events
+    ?!@isr_map      isrs
+    ?!@message_map  messages
+:
+    $include$ ;
+    @lstring file_name ;
+    select
+        $g_string$ ?file_name ;
+# search the include path for the file.
+        @string include_path := [@string stringWithEnvironmentVariable !"GOIL_INCLUDE_PATH"] ;
+        error here : "Unsupported include" ;
+    or
+        $string$ ?file_name ;
+    end select ;
+    grammar goil_cpu_level_include in file_name
+        !?tasks
+        !?counters
+        !?alarms
+        !?resources
+        !?events
+        !?isrs
+        !?messages
+    ;        
 end rule ;
 
 end syntax ;
