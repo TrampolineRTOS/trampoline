@@ -226,6 +226,21 @@ rule '"' :
     end select ;
 end rule ;
 
+$g_string$ !a_string error message "in search path" ;
+
+rule '<' :
+    repeat
+    while '\x20'->'\x3D' | '\x3F' -> '\xFF' :
+        enterCharacterIntoString ( a_string, * ) ;
+    end repeat ;
+    select
+        when '>' :
+            send $g_string$ ;
+        default
+            error unterminatedLitteralString ;
+    end select ;
+end rule ;
+
 @luint64 integerNumber;
 @ldouble floatNumber;
 @lstring number;
@@ -260,6 +275,23 @@ rule '0'->'9':
         default
             send $uint_number$ ;
     end select ;
+end rule ;
+
+#
+# Include mechanism
+#
+list commands error message "command '%K'" :
+    "include" ;
+
+$command$ !att_token error message "command" ;
+
+rule '#':
+    repeat
+    while 'a'->'z' | 'A'->'Z' :
+        enterCharacterIntoString(att_token, *) ;
+    end repeat ;
+    send search att_token in commands
+        default $command$ ;
 end rule ;
 
 end lexique ;
