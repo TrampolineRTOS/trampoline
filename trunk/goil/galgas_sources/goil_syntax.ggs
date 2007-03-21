@@ -68,13 +68,14 @@ nonterminal <include_cpu_level>
 #--------------------------------------------------------------------
 # Code generation rules declaration
 #--------------------------------------------------------------------
-nonterminal <target> !@string target_platform ;
-nonterminal <template> !@string template ?@string obj ;
-nonterminal <generate_alarms> ?@alarm_map alarms ;
+#nonterminal <target> !@string target_platform ;
+#nonterminal <template> !@string template ?@string obj ;
+#nonterminal <generate_alarms> ?@alarm_map alarms ;
 
 #--------------------------------------------------------------------
 # extern nonterminals
 #--------------------------------------------------------------------
+nonterminal <os> ;
 nonterminal <appmode> ;
 nonterminal <task> 
     ?!@task_map outTask;
@@ -519,6 +520,7 @@ rule <object_definition_list>
 :
 
    repeat
+    while <os> ;
     while <appmode> ; <description> ?* ;
     while <task> !?tasks ;
     while <counter> !?counters ;

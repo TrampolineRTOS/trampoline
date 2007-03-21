@@ -4,6 +4,7 @@ grammar goil_grammar "LL1":
 
     import syntax  goil_syntax             in "goil_syntax.ggs" ;
 
+    import syntax  goil_obj_os             in "goil_obj_os.ggs" ;
     import syntax  goil_obj_task           in "goil_obj_task.ggs" ;
     import syntax  goil_obj_counter        in "goil_obj_counter.ggs" ;
     import syntax  goil_obj_appmode        in "goil_obj_appmode.ggs" ;
@@ -26,6 +27,7 @@ grammar goil_cpu_level_include "LL1":
 
     import syntax  goil_syntax             in "goil_syntax.ggs" ;
 
+    import syntax  goil_obj_os             in "goil_obj_os.ggs" ;
     import syntax  goil_obj_task           in "goil_obj_task.ggs" ;
     import syntax  goil_obj_counter        in "goil_obj_counter.ggs" ;
     import syntax  goil_obj_appmode        in "goil_obj_appmode.ggs" ;

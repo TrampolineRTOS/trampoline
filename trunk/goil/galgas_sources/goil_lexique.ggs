@@ -249,9 +249,20 @@ $uint_number$ !integerNumber error message "litteral unsigned 64 bits integer" ;
 $float_number$ !floatNumber error message "litteral float" ; 
 $set_start_uint_number$ !integerNumber error message "litteral unsigned 64 bits integer";
 
+
 #
-# Unsigned literal number. This rule scans decimal integers,
-# hexadecimal
+# Unsigned literal number. This rule scans hexadecimal integers
+# 
+rule "0x":
+    repeat
+    while '0'->'9' | 'a'->'f' | 'A'->'F':
+         enterHexDigitIntoUInt64(*,integerNumber) error decimalNumberTooLarge, internalError ;
+    end repeat ;
+    send $uint_number$ ;
+end rule ;
+
+#
+# Unsigned literal number. This rule scans decimal integers
 # 
 rule '0'->'9':
     repeat
