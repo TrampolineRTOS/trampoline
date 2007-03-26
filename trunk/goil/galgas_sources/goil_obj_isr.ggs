@@ -96,7 +96,7 @@ rule <isr_attributes>
     repeat
     while
         @luint64 cat ;
-        $CATEGORY$ ; $=$ ; $uint_number$ ?cat ; $;$ ;
+        $CATEGORY$ ; $=$ ; $uint_number$ ?cat ; <description> ?* ; $;$ ;
         extract category :
         when @uint_class(@location l @uint64 i) ->
             error here : "ISR category attribute already defined for this ISR" ;
@@ -109,7 +109,7 @@ rule <isr_attributes>
         category := [@uint_class new !here ![cat uint64]] ;
     while
         @luint64 prio ;
-        $PRIORITY$ ; $=$ ; $uint_number$ ?prio ; $;$ ;
+        $PRIORITY$ ; $=$ ; $uint_number$ ?prio ; <description> ?* ; $;$ ;
         extract priority :
         when @uint_class(@location l @uint64 i) ->
             error here : "PRIORITY already defined for this ISR" ;
@@ -119,15 +119,14 @@ rule <isr_attributes>
         priority := [@uint_class new !here ![prio uint64]] ;
     while
         @lstring rez ;
-        $RESOURCE$ ; $=$ ; $idf$ ?rez ; $;$ ;
+        $RESOURCE$ ; $=$ ; $idf$ ?rez ; <description> ?* ; $;$ ;
         resources += ![rez string] ;
     while
         @lstring mess ;
-        $MESSAGE$ ; $=$ ; $idf$ ?mess ; $;$ ;
+        $MESSAGE$ ; $=$ ; $idf$ ?mess ; <description> ?* ; $;$ ;
         messages += ![mess string] ;
     while
-        <free_field> !?other_fields ;
-        $;$ ;
+        <free_field> !?other_fields ; <description> ?* ; $;$ ;
     end repeat ;
 end rule ;
 

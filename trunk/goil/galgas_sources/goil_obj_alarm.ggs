@@ -90,7 +90,7 @@ rule <alarm_parameters>
             error here : "COUNTER attribute already defined for this alarm" ;
             error [counter_name location] : "was previously defined here" ;
         end if ;
-        $COUNTER$ ;   $=$ ; $idf$ ?counter_name ; $;$;
+        $COUNTER$ ;   $=$ ; $idf$ ?counter_name ; <description> ?* ; $;$;
     while
         extract alarm_action :
         when @void_action (@location l) ->
@@ -98,7 +98,7 @@ rule <alarm_parameters>
             error here : "ACTION attribute already defined for this alarm" ;
             error [alarm_action location] : "was previously defined here" ;
         end extract ;
-        $ACTION$ ;    $=$ ; <alarm_action_params> !?alarm_action ; $;$;
+        $ACTION$ ;    $=$ ; <alarm_action_params> !?alarm_action ; <description> ?* ; $;$;
     while
         extract alarm_autostart :
         when @alarm_autostart_void (@location l) ->
@@ -115,7 +115,7 @@ rule <alarm_parameters>
         or
             $FALSE$ ; alarm_autostart := [@alarm_autostart_false new !here] ;
         end select ;
-        $;$;
+        <description> ?* ; $;$;
     while
         $idf$ ?* ;     $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ;
     end repeat ;
@@ -137,7 +137,7 @@ rule <alarm_action_params>
             $TASK$ ;
             $=$ ;
             $idf$ ?task_name ;
-            $;$ ;
+            <description> ?* ; $;$ ;
         while
             if [event_name string] != "" then
                 error here : "EVENT attribute already defined for this alarm action" ;
@@ -146,20 +146,20 @@ rule <alarm_action_params>
             $EVENT$ ;
             $=$ ;
             $idf$ ?event_name ;
-            $;$ ;
+            <description> ?* ; $;$ ;
         end repeat ;
         alarm_action := [@setevent_action new !here !task_name !event_name] ;
     or
         @lstring task_name ;
         $ACTIVATETASK$ ; ${$ ;
         $TASK$ ; $=$ ; $idf$ ?task_name ;
-        $;$ ;
+        <description> ?* ; $;$ ;
         alarm_action := [@activatetask_action new !here !task_name] ;
     or
         @lstring function_name ;
         $ALARMCALLBACK$ ; ${$ ;
         $ALARMCALLBACKNAME$ ; $=$ ; $string$ ?function_name ;
-        $;$ ;
+        <description> ?* ; $;$ ;
         alarm_action := [@callback_action new !here !function_name] ;
     end select ;
     $}$ ;        
@@ -182,17 +182,17 @@ rule <alarm_autostart_params>
             error here : "ALARMTIME attribute already defined for this alarm autostart" ;
             error [alarm_time location] : "was previously defined here" ;
         end if ;
-        $ALARMTIME$ ; $=$ ; $uint_number$ ?alarm_time ; $;$ ;
+        $ALARMTIME$ ; $=$ ; $uint_number$ ?alarm_time ; <description> ?* ; $;$ ;
         alarm_time_known := true ;
     while
         if cycle_time_known then
             error here : "CYCLETIME attribute already defined for this alarm autostart" ;
             error [cycle_time location] : "was previously defined here" ;
         end if ;
-        $CYCLETIME$ ; $=$ ; $uint_number$ ?cycle_time ; $;$ ;
+        $CYCLETIME$ ; $=$ ; $uint_number$ ?cycle_time ; <description> ?* ; $;$ ;
         cycle_time_known := true ;
     while
-        $APPMODE$ ; $=$ ; $idf$ ?app_mode ; $;$ ;
+        $APPMODE$ ; $=$ ; $idf$ ?app_mode ; <description> ?* ; $;$ ;
         app_modes += ![app_mode string];
     end repeat ;
 

@@ -32,6 +32,8 @@ nonterminal <use> ;
 
 # external rules
 nonterminal <boolean> !@bool val ;
+nonterminal <description>
+    !@lstring desc ;
 
 rule <com> :
     $COM$ ;
@@ -48,49 +50,49 @@ rule <com> :
         while <use> ;
     end repeat ;
     $}$ ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule ;
 
 rule <comtimebase> :
     $COMTIMEBASE$ ;
     $=$ ;
     $float_number$ ?* ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule;
 
 rule <comerrorhook> :
     $COMERRORHOOK$ ;
     $=$ ;
     <boolean> ?*;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule;
 
 rule <comusegetserviceid> :
     $COMUSEGETSERVICEID$ ;
     $=$ ;
     <boolean> ?*;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule;
 
 rule <comuseparameteraccess> :
     $COMUSEPARAMETERACCESS$ ;
     $=$ ;
     <boolean> ?*;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule;
 
 rule <comstartcomextension> :
     $COMSTARTCOMEXTENSION$ ;
     $=$ ;
     <boolean> ?*;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule;
 
 rule <comappmode> :
     $COMAPPMODE$ ;
     $=$ ;
     $string$ ?* ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule;
 
 rule <comstatus> :
@@ -101,14 +103,14 @@ rule <comstatus> :
     or
         $COMSTANDARD$ ;
     end select ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule;
 
 rule <use> :
     $USE$ ;
     $=$ ;
     $string$ ?* ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule;
 
 end syntax ;

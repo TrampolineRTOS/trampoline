@@ -1,12 +1,18 @@
 #
+# @file goil_obj_os.ggs
+#
+# @section File description
+#
+# @section Copyright
+#
 # Trampoline OS
 #
 # Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline est protªgª par la loi sur la propriªtª intellectuelle
+# Trampoline est protégé par la loi sur la propriété intellectuelle
 #
 # This software is distributed under the Lesser GNU Public Licence
 #
-# GOIL counter object parser
+# @section File informations
 #
 # $Date$
 # $Rev$
@@ -14,13 +20,16 @@
 # $URL$
 #
 
-syntax goil_obj_appmode :
+syntax goil_obj_os :
 
 import lexique goil_lexique in "goil_lexique.ggs" ;
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
-nonterminal <appmode> ;
+#
+# local rules declaration
+#
+nonterminal <os> ;
 
 #
 # external rules 
@@ -29,11 +38,14 @@ nonterminal <description>
     !@lstring desc ;
 nonterminal <free_field>
     ?!@ident_map ids ;
+#
+# local rules implementation
+#
+rule <os> :
 
-rule <appmode> :
     @ident_map others [emptyMap] ;
 
-    $APPMODE$ ;
+    $OS$ ;
     $idf$ ?* ;
     ${$ ;
     repeat
@@ -46,4 +58,3 @@ rule <appmode> :
 end rule ;
 
 end syntax ;
-# vim:ft=ggs:ts=4:sw=4

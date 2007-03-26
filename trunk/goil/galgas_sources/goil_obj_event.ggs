@@ -93,7 +93,7 @@ rule <event_attributes>
                 error [mask location] : "was previously defined here" ;
             end extract ;
         end select ;
-        $;$ ;
+        <description> ?* ; $;$ ;
     end repeat ;
 end rule ;
 

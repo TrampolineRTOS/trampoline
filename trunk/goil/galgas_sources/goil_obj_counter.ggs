@@ -81,7 +81,7 @@ rule <counter_parameters>
     repeat
     while
         @luint64 m ;
-        $MAXALLOWEDVALUE$ ;   $=$ ; $uint_number$ ?m ; $;$ ;
+        $MAXALLOWEDVALUE$ ;   $=$ ; $uint_number$ ?m ; <description> ?* ; $;$ ;
         extract max_allowed_value :
         when @uint_class(@location l @uint64 i) ->
             error here : "MAXALLOWEDVALUE attribute already defined for this counter" ;
@@ -92,7 +92,7 @@ rule <counter_parameters>
         end extract ;
     while
         @luint64 t ;
-        $TICKSPERBASE$ ;   $=$ ; $uint_number$ ?t ; $;$ ;
+        $TICKSPERBASE$ ;   $=$ ; $uint_number$ ?t ; <description> ?* ; $;$ ;
         extract ticks_per_base :
         when @uint_class(@location l @uint64 i) ->
             error here : "TICKSPERBASE attribute already defined for this counter" ;
@@ -103,7 +103,7 @@ rule <counter_parameters>
         end extract ;
     while
          @luint64 c ;
-        $MINCYCLE$ ; $=$ ; $uint_number$ ?c ; $;$ ;
+        $MINCYCLE$ ; $=$ ; $uint_number$ ?c ; <description> ?* ; $;$ ;
         extract min_cycle :
         when @uint_class(@location l @uint64 i) ->
             error here : "MINCYCLE attribute already defined for this counter" ;
@@ -113,7 +113,7 @@ rule <counter_parameters>
         else
         end extract ;
     while
-        $idf$ ?* ;     $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ; $;$ ;
+        $idf$ ?* ;     $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ; <description> ?* ; $;$ ;
     end repeat ;
 end rule ;
 
