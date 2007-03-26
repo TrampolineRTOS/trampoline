@@ -179,7 +179,7 @@ rule <message_attributes>
             error here : "MESSAGEPROPERTY attribute already defined for message ".[message_name string] ;
             error [mess_prop location] : "previously defined here" ;
         end extract ;
-        $MESSAGEPROPERTY$ ;   $=$ ; <message_property> !?mess_prop ; $;$ ;
+        $MESSAGEPROPERTY$ ;   $=$ ; <message_property> !?mess_prop ; <description> ?* ; $;$ ;
     while
         extract notif :
         when @void_action (...) ->
@@ -187,7 +187,7 @@ rule <message_attributes>
             error here : "NOTIFICATION attribute already defined for message ".[message_name string] ;
             error [notif location] : "previously defined here" ;
         end extract ;
-        $NOTIFICATION$ ;      $=$ ; <notification_property> ?notif ; $;$ ;
+        $NOTIFICATION$ ;      $=$ ; <notification_property> ?notif ; <description> ?* ; $;$ ;
     while
         extract notif_error :
         when @void_action (...) ->
@@ -195,7 +195,7 @@ rule <message_attributes>
             error here : "NOTIFICATIONERROR attribute already defined for message ".[message_name string] ;
             error [notif_error location] : "was previously defined here" ;
         end extract ;
-        $NOTIFICATIONERROR$ ; $=$ ; <notification_property> ?notif_error ; $;$ ;
+        $NOTIFICATIONERROR$ ; $=$ ; <notification_property> ?notif_error ; <description> ?* ; $;$ ;
     while
         <free_field> !?others ;
     end repeat ;
@@ -240,7 +240,7 @@ rule <notification_property>
             $TASK$ ;
             $=$ ;
             $idf$ ?task_name ;
-            $;$ ;
+            <description> ?* ; $;$ ;
             has_task := true ;
         while
             if has_event then
@@ -249,7 +249,7 @@ rule <notification_property>
             $EVENT$ ;
             $=$ ;
             $idf$ ?* ;
-            $;$ ;
+            <description> ?* ; $;$ ;
             has_event := true ;
         end repeat ;
         $}$ ;
@@ -264,14 +264,14 @@ rule <notification_property>
         @lstring task_name ;
         $ACTIVATETASK$ ; ${$ ;
         $TASK$ ; $=$ ; $idf$ ?task_name ;
-        $;$ ;
+        <description> ?* ; $;$ ;
         $}$ ;        
         notif := [@activatetask_action new !here !task_name] ;
     or
         @lstring function_name ;
         $COMCALLBACK$ ; ${$ ;
         $COMCALLBACKNAME$ ; $=$ ; $string$ ?function_name ;
-        $;$ ;
+        <description> ?* ; $;$ ;
         $}$ ; 
         notif := [@callback_action new !here !function_name] ;
     or
@@ -285,13 +285,13 @@ rule <notification_property>
             if has_function then
                 error here : "Callback routine already defined for NMCALLBACK notification" ;
             end if ;
-            $CALLBACKROUTINENAME$ ; $=$ ; $string$ ?function_name ; $;$ ;
+            $CALLBACKROUTINENAME$ ; $=$ ; $string$ ?function_name ; <description> ?* ; $;$ ;
             has_function := true ;
         while
             if has_ipdu then
                 error here : "Callback routine already defined for NMCALLBACK notification" ;
             end if ;
-            $MONITOREDIPDU$ ; $=$ ; $uint_number$ ?ipdu ; $;$ ;
+            $MONITOREDIPDU$ ; $=$ ; $uint_number$ ?ipdu ; <description> ?* ; $;$ ;
             has_ipdu := true ;
         end repeat ;
         $}$ ; 
@@ -866,7 +866,7 @@ rule <cdatatype>
     $CDATATYPE$ ;
     $=$ ;
     $string$ ?cdatatype ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule ;
 
 rule <transferproperty>
@@ -882,7 +882,7 @@ rule <transferproperty>
     or
         $AUTO$ ; transferproperty := [@lstring new !"auto" !here] ;
     end select ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule ;
 
 rule <networkmessage>
@@ -891,7 +891,7 @@ rule <networkmessage>
     $NETWORKMESSAGE$ ;
     $=$ ;
     $idf$ ?net_message ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule ;
 
 rule <filter>
@@ -957,7 +957,7 @@ rule <filter>
         $ONEEVERYN$ ;    <period_offset_attribute> ?period ?offset;
         filter := [@oneeveryn_filter new !period !offset] ;
     end select ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule ;
 
 rule <mask_x_attribute>
@@ -975,13 +975,13 @@ rule <mask_x_attribute>
         if has_mask then
             error here : "MASK is already defined for the filter" ;
         end if ;
-        $MASK$ ; $=$ ; $uint_number$ ?mask ; $;$ ;
+        $MASK$ ; $=$ ; $uint_number$ ?mask ; <description> ?* ; $;$ ;
         has_mask := true ;
     while
         if has_x then
             error here : "X is already defined for the filter" ;
         end if ;
-        $X$ ; $=$ ; $uint_number$ ?x ; $;$ ;
+        $X$ ; $=$ ; $uint_number$ ?x ; <description> ?* ; $;$ ;
         has_x := true ;
     end repeat ;
     $}$ ;
@@ -997,7 +997,7 @@ rule <mask_attribute>
     !@luint64 mask
 :
     ${$ ;
-    $MASK$ ; $=$ ; $uint_number$ ?mask ; $;$ ;
+    $MASK$ ; $=$ ; $uint_number$ ?mask ; <description> ?* ; $;$ ;
     $}$ ;
 end rule ;
 
@@ -1016,13 +1016,13 @@ rule <min_max_attribute>
         if has_min then
             error here : "MIN is already defined for the filter" ;
         end if ;
-        $MIN$ ; $=$ ; $uint_number$ ?min ; $;$ ;
+        $MIN$ ; $=$ ; $uint_number$ ?min ; <description> ?* ; $;$ ;
         has_min := true ;
     while
         if has_max then
             error here : "MAX is already defined for the filter" ;
         end if ;
-        $MAX$ ; $=$ ; $uint_number$ ?max ; $;$ ;
+        $MAX$ ; $=$ ; $uint_number$ ?max ; <description> ?* ; $;$ ;
         has_max := true ;
     end repeat ;
     $}$ ;
@@ -1049,13 +1049,13 @@ rule <period_offset_attribute>
         if has_period then
             error here : "PERIOD is already defined for the filter" ;
         end if ;
-        $PERIOD$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+        $PERIOD$ ; $=$ ; $uint_number$ ?* ; <description> ?* ; $;$ ;
         has_period := true ;
     while
         if has_offset then
             error here : "OFFSET is already defined for the filter" ;
         end if ;
-        $OFFSET$ ; $=$ ; $uint_number$ ?* ; $;$ ;
+        $OFFSET$ ; $=$ ; $uint_number$ ?* ; <description> ?* ; $;$ ;
         has_offset := true ;
     end repeat ;
     $}$ ;
@@ -1073,7 +1073,7 @@ rule <networkordercallout>
     $NETWORKORDERCALLOUT$ ;
     $=$ ;
     $string$ ?net_order_callout ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule ;
 
 rule <cpuordercallout>
@@ -1082,7 +1082,7 @@ rule <cpuordercallout>
     $CPUORDERCALLOUT$ ;
     $=$ ;
     $string$ ?cpu_order_callout ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule ;
 
 rule <initialvalue>
@@ -1091,16 +1091,16 @@ rule <initialvalue>
     $INITIALVALUE$ ;
     $=$ ;
     $uint_number$ ?initial_value ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule ;
 
 rule <sendingmessage>
     !@lstring sending_message
 :
-   $SENDINGMESSAGE$ ;
+    $SENDINGMESSAGE$ ;
     $=$ ;
     $idf$ ?sending_message ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule ;
 
 rule <queuesize>
@@ -1109,7 +1109,7 @@ rule <queuesize>
     $QUEUESIZE$ ;
     $=$ ;
     $uint_number$ ?queue_size ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule ;
 
 rule <link>
@@ -1120,7 +1120,7 @@ rule <link>
     select
         @lstring rcv_mess ;
         $TRUE$ ; ${$ ;
-        $RECEIVEMESSAGE$ ; $=$ ; $idf$ ?rcv_mess ; $;$ ;
+        $RECEIVEMESSAGE$ ; $=$ ; $idf$ ?rcv_mess ; <description> ?* ; $;$ ;
         $}$ ;
         link := [@true_link new !rcv_mess] ;
     or

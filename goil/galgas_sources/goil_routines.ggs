@@ -18,11 +18,14 @@ routine templates_directory !@string temp_dir :
         temp_dir := [@string stringWithEnvironmentVariableOrEmpty !"GOIL_TEMPLATES"] ;
     end if ;
 
+#    message temp_dir."\n";
+
     if temp_dir != "" then
         if [temp_dir characterAtIndex !([temp_dir length] - 1)] != '/' then
             temp_dir .= "/" ;
         end if ;
     end if ;
+#    message temp_dir."\n";
 end routine ;
 
 routine template !@string template ?@string obj :
@@ -38,6 +41,8 @@ routine template !@string template ?@string obj :
 
 # Look for a template in target plateform path
     targ_tpl := temp_dir.target_platform."/".obj.".tpl" ;
+
+
     if [targ_tpl fileExists]
     then template := [@string stringWithContentsOfFile !targ_tpl] ;
     else

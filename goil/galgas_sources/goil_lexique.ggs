@@ -162,6 +162,14 @@ rule "//" :
 	end repeat ;
 end rule ;
 
+message unterminated_comment_error : "unterminated comment" ;
+
+rule "/*" :
+   repeat
+   while ~ "*/" error unterminated_comment_error :
+   end repeat ;
+end rule ;
+
 $idf$ !att_token error message "identifier" ;
 
 rule 'a'->'z' | 'A'->'Z' :

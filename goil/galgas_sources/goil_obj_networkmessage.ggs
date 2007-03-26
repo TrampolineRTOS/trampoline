@@ -37,6 +37,9 @@ nonterminal <direction> ;
 nonterminal <transferproperty>
     !@lstring transferproperty ;
 
+nonterminal <description>
+    !@lstring desc ;
+
 
 rule <networkmess> :
     $NETWORKMESSAGE$ ;
@@ -47,14 +50,14 @@ rule <networkmess> :
     while <net_messageproperty> ;
     end repeat ;
     $}$ ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule ;
 
 rule <ipdu_ref> :
     $IPDU$ ;
     $=$ ;
     $idf$ ?* ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule ;
 
 rule <net_messageproperty> :
@@ -65,7 +68,7 @@ rule <net_messageproperty> :
     or
         $DYNAMIC$ ; <dynamic_mp> ;
     end select ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule ;
 
 rule <static_mp> :
@@ -97,14 +100,14 @@ rule <sizeinbits> :
     $SIZEINBITS$ ;
     $=$ ;
     $uint_number$ ?* ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule ;
 
 rule <maxsizeinbits> :
     $MAXSIZEINBITS$ ;
     $=$ ;
     $uint_number$ ?* ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule ;
 
 rule <bitordering> :
@@ -115,14 +118,14 @@ rule <bitordering> :
     or
         $LITTLEENDIAN$ ;
     end select ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule ;
 
 rule <bitposition> :
     $BITPOSITION$ ;
     $=$ ;
     $uint_number$ ?* ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule ;
 
 rule <datainterpretation> :
@@ -133,7 +136,7 @@ rule <datainterpretation> :
     or
         $BYTEARRAY$ ;
     end select ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule ;
 
 rule <direction> :
@@ -145,7 +148,7 @@ rule <direction> :
     or
         $RECEIVED$ ;
     end select ;
-    $;$ ;
+    <description> ?* ; $;$ ;
 end rule;
 
 end syntax ;

@@ -94,7 +94,7 @@ rule <task>
         task := [@task_obj new !desc !priority !schedule !activation !autostart !resources !events !messages !others] ;
     end if ;
     ${$ ;
-    <task_attributes> !task_name !?priority !?schedule !?activation !?autostart !?resources !?events !?messages !?others ;
+    <task_attributes> !task_name !?priority !?schedule !?activation !?autostart !?resources !?events !?messages !?others ; 
     $}$ ;
     <description> ?desc ;
     $;$ ;
@@ -117,7 +117,7 @@ rule <task_attributes>
     repeat
     while
         @luint64 prio ;
-        $PRIORITY$ ; $=$ ; $uint_number$ ?prio ; $;$ ;
+        $PRIORITY$ ; $=$ ; $uint_number$ ?prio ;  <description> ?* ; $;$ ;
         extract priority :
             when @void (@location l) ->
                 priority := [@uint_class new !here ![prio uint64]] ;
@@ -138,7 +138,7 @@ rule <task_attributes>
                 $NON$ ;
                 schedule := [@lstring new !"NON" !here] ;
             end select ;
-        $;$ ;
+        <description> ?* ; $;$ ;
     while
         extract autostart :
         when @task_autostart_void (@location l) ->
@@ -154,11 +154,11 @@ rule <task_attributes>
         or
             $FALSE$ ; 
             autostart := [@task_autostart_false new !here] ;
-		end select ;
-       $;$ ;
+		 end select ;
+        <description> ?* ; $;$ ;
     while
         @luint64 act ;
-        $ACTIVATION$ ; $=$ ; $uint_number$ ?act ; $;$ ;
+        $ACTIVATION$ ; $=$ ; $uint_number$ ?act ; <description> ?* ; $;$ ;
         extract activation :
         when @void (@location l) ->
             activation := [@uint_class new !here ![act uint64]] ;
@@ -168,27 +168,27 @@ rule <task_attributes>
         end extract ;
     while
         @lstring  resource ;
-        $RESOURCE$ ; $=$ ; $idf$ ?resource ; $;$ ;
+        $RESOURCE$ ; $=$ ; $idf$ ?resource ; <description> ?* ; $;$ ;
         if ([resources hasKey ![resource string]]) then
             warning here : "RESOURCE " . [resource string] . " already defined for TASK " . [task_name string] ;
         end if ;
         resources += ![resource string] ;
     while
         @lstring event ;
-        $EVENT$ ; $=$ ; $idf$ ?event ; $;$ ;
+        $EVENT$ ; $=$ ; $idf$ ?event ; <description> ?* ; $;$ ;
         if ([events hasKey ![event string]]) then
             warning here : "EVENT " . [event string] . " already defined for TASK " . [task_name string] ;
         end if ;
         events += ![event string] ;
     while
         @lstring mess ;
-        $MESSAGE$ ; $=$ ; $idf$ ?mess ; $;$ ;
+        $MESSAGE$ ; $=$ ; $idf$ ?mess ; <description> ?* ; $;$ ;
         if [messages hasKey ![mess string]] then
             warning here : "MESSAGE " . [mess string] . " already defined for TASK " . [task_name string] ;
         end if ;
         messages += ![mess string] ;
     while
-        <free_field> !?others ; $;$ ;
+        <free_field> !?others ; <description> ?* ; $;$ ;
     end repeat ;
 end rule;
 
@@ -199,7 +199,7 @@ rule <task_autostart_params>
 	@stringset appmodes [emptySet] ;
 	repeat
 	while
-		$APPMODE$ ; $=$ ; $idf$ ?appmode ; $;$ ;
+		$APPMODE$ ; $=$ ; $idf$ ?appmode ; <description> ?* ; $;$ ;
 		if ([appmodes hasKey ![appmode string]]) then
 			warning here : "APPMODE " . [appmode string] . " already defined for this task AUTOSTART attribute" ;
 		end if ; 

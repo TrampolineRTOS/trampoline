@@ -66,13 +66,6 @@ nonterminal <include_cpu_level>
 ;
 
 #--------------------------------------------------------------------
-# Code generation rules declaration
-#--------------------------------------------------------------------
-#nonterminal <target> !@string target_platform ;
-#nonterminal <template> !@string template ?@string obj ;
-#nonterminal <generate_alarms> ?@alarm_map alarms ;
-
-#--------------------------------------------------------------------
 # extern nonterminals
 #--------------------------------------------------------------------
 nonterminal <os> ;
@@ -611,7 +604,21 @@ rule <include_cpu_level>
         $g_string$ ?file_name ;
 # search the include path for the file.
         @string include_path := [@string stringWithEnvironmentVariable !"GOIL_INCLUDE_PATH"] ;
-        error here : "Unsupported include" ;
+        @stringlist path_list := [include_path componentsSeparatedByString !":"] ;
+        @bool not_found := true ;
+        foreach path_list (@string path):
+            @string full_file_path := path ;
+            if full_file_path != "" then
+                if [full_file_path characterAtIndex !([full_file_path length] - 1)] != '/' then
+                    full_file_path .= "/" ;
+                end if ;
+            end if ;
+            full_file_path .= file_name ;
+            if ([full_file_path fileExists] & not_found) then
+                file_name := [@lstring new !full_file_path !here] ;
+                not_found := false ;
+            end if ;
+        end foreach ;
     or
         $string$ ?file_name ;
     end select ;

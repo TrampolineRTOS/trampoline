@@ -99,7 +99,7 @@ rule <resource_attributes>
             error [property location] : "was already defined here" ;
         end extract ;
 	end select ;
-	$;$ ;
+	<description> ?* ; $;$ ;
 end rule ;
 
 end syntax ;
