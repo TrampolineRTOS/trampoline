@@ -156,7 +156,7 @@ extern void tpl_put_exec_object(
     tpl_exec_common *exec_obj,
     const u8        kind);
     
-extern void tpl_init_os(void);
+extern void tpl_init_os(const tpl_application_mode app_mode);
 
 extern void tpl_release_internal_resource(tpl_exec_common *a_task);
 

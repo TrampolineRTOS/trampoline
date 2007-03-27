@@ -83,6 +83,11 @@ static tpl_task idle_task = {
     /* event wait           */  0
 };
 
+/*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
+    that has the same beginning fields as the struct it is casted to
+    This allow object oriented design and polymorphism.
+*/
+
 /**
  * @internal 
  *
@@ -420,6 +425,11 @@ void tpl_schedule(const u8 from)
     if (tpl_running_obj != old_running_obj)
     {
         /*  Set the state of the OS according to the running task   */
+
+        /*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
+            that has the same beginning fields as the struct it is casted to
+            This allow object oriented design and polymorphism.
+        */
         if (tpl_running_obj == (tpl_exec_common *)&idle_task)
         {
             tpl_os_state = OS_IDLE;
@@ -537,6 +547,12 @@ tpl_status tpl_set_event(
                 /*  set the state to READY  */
                 a_task->exec_desc.state = (tpl_exec_state)READY;
                 /*  put the task in the READY list          */
+
+                /*  MISRA RULE 45 VIOLATION: the original pointer points to
+                    a struct that has the same beginning fields as the struct
+                    it is casted to. This allow object oriented design and
+                    polymorphism.
+                */
                 tpl_put_exec_object(
                     (tpl_exec_common *)a_task,
                     (u8)NEWLY_ACTIVATED_EXEC_OBJ);
@@ -582,6 +598,10 @@ void tpl_init_exec_object(tpl_exec_common *exec_obj)
     /*  if the object is a task, init the events    */
     if ((exec_obj->static_desc->type & IS_ROUTINE) == 0)
     {
+        /*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
+            that has the same beginning fields as the struct it is casted to
+            This allow object oriented design and polymorphism.
+        */
         ((tpl_task *)exec_obj)->evt_set = ((tpl_task *)exec_obj)->evt_wait = 0;
     }
 }
@@ -591,7 +611,7 @@ void tpl_init_exec_object(tpl_exec_common *exec_obj)
  *
  * Initialization of Trampoline
  */
-void tpl_init_os(void)
+void tpl_init_os(const tpl_application_mode app_mode)
 {
     u16         i;
 #ifndef NO_ALARM
@@ -610,6 +630,11 @@ void tpl_init_os(void)
         {
             /*  each AUTOSTART task is inserted in the READY list   */
             /*  init the task   */
+
+            /*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
+                that has the same beginning fields as the struct it is casted to
+                This allow object oriented design and polymorphism.
+            */
             tpl_init_exec_object((tpl_exec_common *)auto_task);
             /*  inc the activation count. The max_activate_count
                 is not tested since it should be a last equal to one  */

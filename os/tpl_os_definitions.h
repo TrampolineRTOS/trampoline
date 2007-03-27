@@ -143,6 +143,20 @@
  */
 #define E_OS_VALUE      8
 
+/************************************
+ * Always existing application mode *
+ ************************************/
+
+/**
+ * @def OSDEFAULTAPPMODE
+ *
+ * Default application mode, always a valid parameter to StartOS.
+ *
+ * @see #StartOS
+ * @see #AppModeType
+ */
+#define OSDEFAULTAPPMODE    0
+
 /*********************************
  * Task flags for the type field *
  *********************************/

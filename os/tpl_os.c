@@ -40,51 +40,21 @@ AppModeType GetActiveApplicationMode(void)
 }
 
 /*
- * StartOS can be called by the app to put the OS
- * in a different mode
+ * StartOS can be called by the app to start the OS in
+ * an appropriate mode.
  */
 void StartOS(const AppModeType mode)
 {
     application_mode = mode;
-}
-
-/*
- * ShutdownOS can be called by the app to shutdown it
- */
-void ShutdownOS(const /*@unused@*/ StatusType error) 
-{
-    CALL_SHUTDOWN_HOOK(Error)
-    /* architecture dependant shutdown. */
-    tpl_shutdown();
-}
-
-/*
- * InitApp is provided by the application
- * Tipycally, it calls StartOS() with the
- * appropriate application mode.
- *
- * Of course, this function should consider
- * OS is initializing, especially there is
- * no multitasking at this stage.
- */
-void InitApp(void);
-
-/*
- * The OS startup is done in main. The application does not
- * provide a main function. Instead it provides a StartOS()
- */
-int main(void)
-{
+    
     /*  Set the initial state of the OS */
     tpl_os_state = (u8)OS_INIT;
     
     tpl_init_machine();
-    
-    InitApp();
-    
+        
     tpl_get_task_lock();
 
-    tpl_init_os();
+    tpl_init_os(mode);
     
     /*  Call the startup hook. According to the spec, it should be called
         after the os is initialized and before the scheduler is running         */
@@ -98,8 +68,16 @@ int main(void)
     
     /*  Fall back to the idle loop */
     tpl_sleep();
-    
-    return 0;
+}
+
+/*
+ * ShutdownOS can be called by the app to shutdown it
+ */
+void ShutdownOS(const /*@unused@*/ StatusType error) 
+{
+    CALL_SHUTDOWN_HOOK(Error)
+    /* architecture dependant shutdown. */
+    tpl_shutdown();
 }
 
 /* End of file tpl_os.c */
