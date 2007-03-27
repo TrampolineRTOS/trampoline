@@ -6,8 +6,9 @@
 #define _XOPEN_SOURCE 500
 #include <unistd.h>
 
-void InitApp(void)
+int main(void)
 {
+     StartOS(OSDEFAULTAPPMODE);
 }
 
 void damned(void)
