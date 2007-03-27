@@ -89,6 +89,10 @@ StatusType ClearEvent(const EventMaskType event)
 
 #ifndef NO_TASK
     IF_NO_EXTENDED_ERROR(result)
+        /*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
+            that has the same beginning fields as the struct it is casted to
+            This allow object oriented design and polymorphism.
+        */
         ((tpl_task *)tpl_running_obj)->evt_set &= (tpl_event_mask)(~event);
     IF_NO_EXTENDED_ERROR_END()
 #endif
@@ -166,8 +170,18 @@ StatusType WaitEvent(const EventMaskType event)
 #ifndef NO_TASK
     IF_NO_EXTENDED_ERROR(result)
     /*  all the evt_wait is overidden.  */
+    
+    /*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
+        that has the same beginning fields as the struct it is casted to
+        This allow object oriented design and polymorphism.
+    */
     ((tpl_task *)tpl_running_obj)->evt_wait = event;
     /*  check one of the event to wait is not already set       */
+
+    /*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
+        that has the same beginning fields as the struct it is casted to
+        This allow object oriented design and polymorphism.
+    */
     if ((((tpl_task *)tpl_running_obj)->evt_set & event) == 0)
     {
         /*  no one is set, the task goes in the WAITING state   */

@@ -168,6 +168,10 @@ StatusType ChainTask(const TaskType task_id)
         /*  release the internal resource   */
         tpl_release_internal_resource(r_exec_obj);
         
+        /*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
+            that has the same beginning fields as the struct it is casted to
+            This allow object oriented design and polymorphism.
+        */
         exec_obj = (tpl_exec_common *)(tpl_task_table[task_id]); 
         
         if (r_exec_obj == exec_obj)
@@ -291,6 +295,10 @@ StatusType GetTaskState(
     
 #ifndef NO_TASK
     IF_NO_EXTENDED_ERROR(result)
+        /*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
+            that has the same beginning fields as the struct it is casted to
+            This allow object oriented design and polymorphism.
+        */
         *state = ((tpl_exec_common *)(tpl_task_table[task_id]))->state;
     IF_NO_EXTENDED_ERROR_END()
 #endif
