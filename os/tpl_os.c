@@ -57,11 +57,12 @@ void StartOS(const AppModeType mode)
     tpl_init_os(mode);
     
     /*  Call the startup hook. According to the spec, it should be called
-        after the os is initialized and before the scheduler is running         */
+        after the os is initialized and before the scheduler is running   */
     CALL_STARTUP_HOOK()
     
     /*  Call tpl_schedule to elect the greatest priority task
-        tpl_schedule also set the state of the OS according to the elected task */
+        tpl_schedule also set the state of the OS according to the elected
+				task */
     tpl_schedule(FROM_TASK_LEVEL);
     
     tpl_release_task_lock();

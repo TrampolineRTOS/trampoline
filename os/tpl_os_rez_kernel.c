@@ -45,7 +45,8 @@ void tpl_get_resource(tpl_resource *res)
     if (tpl_running_obj->priority < res->ceiling_priority)
     {
         /*  set the task priority at the ceiling priority of the resource
-            if the ceiling priority is greater than the current priority of the task   */
+            if the ceiling priority is greater than the current priority of
+						the task 	*/
         tpl_running_obj->priority = res->ceiling_priority;
     }
 }

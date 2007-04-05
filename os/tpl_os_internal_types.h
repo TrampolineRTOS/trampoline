@@ -231,7 +231,8 @@ typedef u8 tpl_exec_state;
 /**
  * @typedef tpl_exec_function
  *
- * This type is used to specify the task entry point (function where the task begins)
+ * This type is used to specify the task entry point (function where the task
+ * begins)
  *
  * @see #TPL_EXEC_STATIC
  */
@@ -240,19 +241,32 @@ typedef void (*tpl_exec_function)(void);
 /**
  * @struct TPL_EXEC_STATIC
  *
- * This is a data structure used to describe the members of task descriptors or 
- * category 2 Interrupt Service Routines. Static means this part of the descriptor
- * can be stored in ROM.
+ * This is a data structure used to describe the members of task descriptors
+ * or category 2 Interrupt Service Routines. Static means this part of the
+ * descriptor can be stored in ROM.
  */
 struct TPL_EXEC_STATIC {
-    tpl_context                     context;            /**< context(s) of the task/isr */
-    tpl_stack                       stack;              /**< stack(s) of the task/isr */
-    const tpl_exec_function         entry;   /**< function that is the entry point of the task/isr */
-    struct TPL_INTERNAL_RESOURCE    *internal_resource; /**< pointer to an internal resource. NULL if the task does not have an internal resource */
+    tpl_context                     context;            /**< context(s) of the
+                                                             task/isr */
+    tpl_stack                       stack;              /**< stack(s) of the
+                                                             task/isr */
+    const tpl_exec_function         entry;              /**< function that is
+                                                             the entry point
+                                                             of the task/isr*/
+    struct TPL_INTERNAL_RESOURCE    *internal_resource; /**< pointer to an
+                                                             internal resource.
+                                                             NULL if the task
+                                                             does not have an
+                                                             internal resource
+                                                             */
     const tpl_task_id               id;                 /**< id of task/isr */
-    const tpl_priority              base_priority;      /**< base priority of the task/isr  */
-    const tpl_activate_counter      max_activate_count; /**< max activation count of a task/isr */
-    const tpl_exec_obj_type         type;               /**< type of the task/isr */
+    const tpl_priority              base_priority;      /**< base priority of
+                                                             the task/isr  */
+    const tpl_activate_counter      max_activate_count; /**< max activation
+                                                             count of a 
+                                                             task/isr*/
+    const tpl_exec_obj_type         type;               /**< type of the
+                                                             task/isr */
 };
 
 /**
@@ -267,16 +281,21 @@ typedef struct TPL_EXEC_STATIC tpl_exec_static;
 /**
  * @struct TPL_EXEC_COMMON
  *
- * This structure gathers the common members of executable objects dynamic descriptors
+ * This structure gathers the common members of executable objects dynamic
+ * descriptors
  */
 struct TPL_EXEC_COMMON {
-    tpl_exec_static         *static_desc;   /**<  pointer to static descriptor    */
-    struct TPL_RESOURCE     *resources;     /**<  head of the ressources held     */
-    struct TPL_EXEC_COMMON  *next_exec;     /**<  next ready exec with same prio  */
-    struct TPL_EXEC_COMMON  *next_set;      /**<  next exec set with lower prio   */
-    tpl_activate_counter    activate_count; /**<  current activate count          */
-    tpl_priority            priority;       /**<  current priority                */
-    tpl_exec_state          state;          /**<  state (READY, RUNNING, ...)     */
+    tpl_exec_static         *static_desc;   /**<  pointer to static 
+                                                  descriptor */
+    struct TPL_RESOURCE     *resources;     /**<  head of the ressources 
+                                                  held */
+    struct TPL_EXEC_COMMON  *next_exec;     /**<  next ready exec with same
+                                                  prio */
+    struct TPL_EXEC_COMMON  *next_set;      /**<  next exec set with lower 
+                                                  prio */
+    tpl_activate_counter    activate_count; /**<  current activate count */
+    tpl_priority            priority;       /**<  current priority */
+    tpl_exec_state          state;          /**<  state (READY, RUNING, ...)*/
 };
 
 /**
@@ -295,7 +314,8 @@ typedef struct TPL_EXEC_COMMON tpl_exec_common;
  * and the dynamic members of the task descriptor.
  */
 struct TPL_TASK {
-    tpl_exec_common         exec_desc;  /**< the common descriptor of the task */
+    tpl_exec_common         exec_desc;  /**< the common descriptor of the 
+                                             task */
     tpl_event_mask          evt_set;    /**< @todo what's this ? */
     tpl_event_mask          evt_wait;   /**< @todo what's this ? */
 };
@@ -315,13 +335,24 @@ typedef struct TPL_TASK tpl_task;
  * This structure describes all attributes of a resource
  */
 struct TPL_RESOURCE {
-    const tpl_priority      ceiling_priority;     /**< Ceiling priority as computed at system generation time. */
-    tpl_priority            owner_prev_priority;  /**< Priority of the owner before accessing to the resource.
-                                                       This field is used to restore the priority of the task when
-                                                       the resource is released */
-    struct TPL_EXEC_COMMON  *owner;               /**< Owner of the resource or NULL if the resource is not owned */
-    struct TPL_RESOURCE     *next_res;            /**< Pointer to the next resource used to link them together when
-                                                       a task get more than one resource */
+    const tpl_priority      ceiling_priority;     /**< Ceiling priority as 
+                                                       computed at system 
+                                                       generation time. */
+    tpl_priority            owner_prev_priority;  /**< Priority of the owner
+                                                       before accessing to the
+                                                       resource. This field is
+                                                       used to restore the 
+                                                       priority of the task 
+                                                       when the resource is
+                                                       released */
+    struct TPL_EXEC_COMMON  *owner;               /**< Owner of the resource 
+                                                       or NULL if the resource
+                                                       is not owned */
+    struct TPL_RESOURCE     *next_res;            /**< Pointer to the next
+                                                       resource used to link
+                                                       them together when a
+                                                       task get more than one
+                                                       resource */
 };
 
 /**
@@ -336,17 +367,25 @@ typedef struct TPL_RESOURCE tpl_resource;
 /**
  * @struct TPL_INTERNAL_RESOURCE
  *
- * This is is the internal resource descriptor structure. It is a simpler structure than
- * tpl_resource since only one internal resource can be taken and there is no need to store
- * the owner
+ * This is is the internal resource descriptor structure. It is a simpler
+ * structure than tpl_resource since only one internal resource can be taken
+ * and there is no need to store the owner
  */
 struct TPL_INTERNAL_RESOURCE {
     
-    const tpl_priority      ceiling_priority;    /**<  Ceiling priority as computed at system generation time */
-    tpl_priority            owner_prev_priority; /**<  Priority of the owner prior to the access to the resource.
-                                                       this field is used to restore the priority of the task when
-                                                       the resource is released */
-    tpl_bool                taken;               /**<  Flag to tell if the internal resource is taken or not */
+    const tpl_priority      ceiling_priority;    /**<  Ceiling priority as
+                                                       computed at system
+                                                       generation time */
+    tpl_priority            owner_prev_priority; /**<  Priority of the owner
+                                                       prior to the access to
+                                                       the resource. This field
+                                                       is used to restore the
+                                                       priority of the task
+                                                       when the resource is
+                                                       released */
+    tpl_bool                taken;               /**<  Flag to tell if the
+                                                       internal resource is
+                                                       taken or not */
 };
 
 /**
@@ -398,7 +437,7 @@ typedef tpl_status (*tpl_action_func)(
  * extended to add the action parameters.
  */
 struct TPL_ACTION {
-	tpl_action_func action;    /**<  action function pointer   */
+  tpl_action_func action;    /**<  action function pointer   */
 };
 
 /**

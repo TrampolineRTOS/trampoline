@@ -99,7 +99,8 @@ typedef tpl_alarm_id        AlarmType;
  * Get informations about alarm base
  *
  * @param alarm_id identifier of the alarm
- * @param info #AlarmBaseType variable where will be stored requested informations
+ * @param info #AlarmBaseType variable where will be stored requested
+ * informations
  *
  * @retval E_OK no error
  * @retval E_OS_ID (extended error only) alarm_id is invalid
@@ -136,7 +137,8 @@ StatusType GetAlarm(
  * @retval E_OK no error
  * @retval E_OS_STATE alarm is already in use
  * @retval E_OS_ID (extended error only) alarm_id is invalid
- * @retval E_OS_VALUE (extended error only) increment or cycle is outside of limits
+ * @retval E_OS_VALUE (extended error only) increment or cycle is outside of
+ * limits
  *
  * see paragraph 13.6.3.3 page 63 of OSEK/VDX 2.2.2 spec
  */
@@ -150,12 +152,14 @@ StatusType SetRelAlarm(
  *
  * @param alarm_id identifier of the alarm
  * @param start the number of tick when the alarm will raise
- * @param cycle the number of tick when the alarm will raise after the first expiry
+ * @param cycle the number of tick when the alarm will raise after the first
+ * expiry
  *
  * @retval E_OK no error
  * @retval E_OS_STATE alarm is already in use
  * @retval E_OS_ID (extended error only) alarm_id is invalid
- * @retval E_OS_VALUE (extended error only) start or cycle is outside of limits
+ * @retval E_OS_VALUE (extended error only) start or cycle is outside of
+ * limits
  *
  * see paragraph 13.6.3.3 page 63 of OSEK/VDX 2.2.2 spec
  */

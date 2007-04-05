@@ -81,29 +81,29 @@ void tpl_insert_alarm(tpl_alarm *alarm)
         {
             /*  the condition current_alarm->date < alarm->date was
                 false a the beginning of the while. So the alarm
-                have to be added at the head of the alarm queue             */
+                have to be added at the head of the alarm queue     */
             counter->first_alarm = alarm;
         }
         
         /*  Update the next_alarm_to_raise to point to the newly
             inserted alarm if the date of the newly inserted alarm
             is within the current date and the next_alarm_to_raise date,
-			taking account the modulo                                       */
-		if (counter->next_alarm_to_raise->date < counter->current_date)
-		{
-        	if ((alarm->date > counter->current_date) || 
-			    (alarm->date < counter->next_alarm_to_raise->date))
-            {			
-				counter->next_alarm_to_raise = alarm;
-			}
-		}
+             taking account the modulo                      */
+    if (counter->next_alarm_to_raise->date < counter->current_date)
+    {
+          if ((alarm->date > counter->current_date) || 
+          (alarm->date < counter->next_alarm_to_raise->date))
+            {      
+        counter->next_alarm_to_raise = alarm;
+      }
+    }
         else
         {
-        	if ((alarm->date > counter->current_date) &&
-            	(alarm->date < counter->next_alarm_to_raise->date))
+          if ((alarm->date > counter->current_date) &&
+              (alarm->date < counter->next_alarm_to_raise->date))
             {
-            	counter->next_alarm_to_raise = alarm;
-			}
+              counter->next_alarm_to_raise = alarm;
+      }
         }
     }
     
@@ -233,7 +233,7 @@ tpl_status tpl_counter_tick(tpl_counter *counter)
             alarm = counter->next_alarm_to_raise;
         }
     }
-	return need_resched;
+  return need_resched;
 }
 
 /* End of file tpl_alarm_kernel.c */

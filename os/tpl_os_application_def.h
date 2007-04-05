@@ -3,8 +3,8 @@
  *
  * @section File description
  *
- * This file wraps user application configuration header. This wrapped file is typically
- * generated from an OIL source.
+ * This file wraps user application configuration header. This wrapped file is
+ * typically generated from an OIL source.
  *
  * @section Copyright
  *
@@ -36,7 +36,8 @@
 /**
  * @def NO_TASK
  *
- * When this flag is defined, this means there is no task defined in the system.
+ * When this flag is defined, this means there is no task defined in the
+ * system.
  */
 	#define NO_TASK
 #endif
@@ -48,7 +49,8 @@
 /**
  * @def NO_RESOURCE
  *
- * When this flag is defined, this means there is no resource defined in the system.
+ * When this flag is defined, this means there is no resource defined in the
+ * system.
  */
 	#define NO_RESOURCE
 #endif
@@ -60,7 +62,8 @@
 /**
  * @def NO_ALARM
  *
- * When this flag is defined, this means there is no alarm defined in the system.
+ * When this flag is defined, this means there is no alarm defined in the
+ * system.
  */
 	#define NO_ALARM
 #endif
@@ -72,7 +75,8 @@
 /**
  * @def NO_ISR
  *
- * When this flag is defined, this means there is no Interrupt Service Routine defined in the system.
+ * When this flag is defined, this means there is no Interrupt Service
+ * Routine defined in the system.
  */
 	#define NO_ISR
 #endif

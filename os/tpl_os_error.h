@@ -51,15 +51,19 @@ extern void ErrorHook(StatusType);
  * the related OS element's identifier. An OS element can be either a task
  * or a resource or an alarm.
  *
- * Of course, it is an union because the kinds of identifier are mutually exclusive.
+ * Of course, it is an union because the kinds of identifier are mutually
+ * exclusive.
  *
  * @see #PARAM_BLOCK
  * @see #tpl_service
  */
 union ID_PARAM_BLOCK {
-        TaskType        task_id;        /**< used by #ActivateTask, #ChainTask, #GetTaskState, #SetEvent, #GetEvent */
+        TaskType        task_id;        /**< used by #ActivateTask, #ChainTask,
+                                             #GetTaskState, #SetEvent,
+                                             #GetEvent */
         TaskRefType     task_id_ref;    /**< used by #GetTaskID */
-        ResourceType    res_id;         /**< used by #GetResource, #ReleaseResource */
+        ResourceType    res_id;         /**< used by #GetResource,
+                                             #ReleaseResource */
         AlarmType       alarm_id;       /**< @todo document this */
 };
 
@@ -73,10 +77,12 @@ union ID_PARAM_BLOCK {
  */
 union PARAM_PARAM_BLOCK {
         TaskStateRefType    state;          /**< used by #GetTaskState */
-        TickType            tick;           /**< used by #SetRelAlarm, #SetAbsAlarm */
+        TickType            tick;           /**< used by #SetRelAlarm, 
+                                                 #SetAbsAlarm */
         TickRefType         tick_ref;       /**< used by #GetAlarm */
         AlarmBaseRefType    alarm_base_ref; /**< used by #GetAlarmBase */
-        EventMaskType       mask;           /**< used by #SetEvent, #ClearEvent, #WaitEvent */
+        EventMaskType       mask;           /**< used by #SetEvent,
+                                                 #ClearEvent, #WaitEvent */
         EventMaskRefType    mask_ref;       /**< used by #GetEvent */
 };
 
@@ -87,10 +93,10 @@ union PARAM_PARAM_BLOCK {
  */
 struct PARAM_BLOCK {
     union ID_PARAM_BLOCK    id;     /**< identifies the OS element
-                                         concerned by the error             */
+                                         concerned by the error */
     union PARAM_PARAM_BLOCK param;  /**< gives more information about the
-                                         reason of the error                */
-    TickType                cycle;  /**< cycle set for a relative alarm     */
+                                         reason of the error */
+    TickType                cycle;  /**< cycle set for a relative alarm */
 };
 
 /**
@@ -99,8 +105,10 @@ struct PARAM_BLOCK {
  * This structure gathers the os service identifier and its parameters
  */
 struct SERVICE_CALL_DESCRIPTOR {
-    struct PARAM_BLOCK  parameters; /**< information about conditions seen when error has been detected */
-    u8                  service_id; /**< identifier of the service which raised the error */
+    struct PARAM_BLOCK  parameters; /**< information about conditions seen 
+                                         when error has been detected */
+    u8                  service_id; /**< identifier of the service which
+                                         raised the error */
 };
 
 /**
@@ -389,7 +397,8 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Gives identifier of the OS service which raised the error
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  */
 #define OSErrorGetServiceId()   (tpl_service.service_id)
 
@@ -400,7 +409,8 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Returns the identifier (#TaskType) of the task which caused the error.
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  */
 #define OSError_ActivateTask_TaskID()   \
     (tpl_service.parameters.id.task_id)
@@ -412,7 +422,8 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Returns the identifier (#TaskType) of the task which caused the error.
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  */
 #define OSError_ChainTask_TaskID()      \
     (tpl_service.parameters.id.task_id)
@@ -424,7 +435,8 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Returns the identifier (#TaskType) of the task which caused the error.
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  */
 #define OSError_GetTaskID_TaskID()             \
     (tpl_service.parameters.id.task_id_ref)
@@ -436,7 +448,8 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Returns the identifier (#TaskType) of the task which caused the error.
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  *
  * @see #OSError_GetTaskState_State
  */
@@ -450,7 +463,8 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Returns the state (#TaskStateRefType) of the task when the error occured.
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  *
  * @see #OSError_GetTaskState_TaskID
  */
@@ -462,9 +476,11 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * GetResource service error parameter 
  *
- * Returns the identifier (#ResourceType) of the resource which caused the error
+ * Returns the identifier (#ResourceType) of the resource which caused the
+ * error
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  */
 #define OSError_GetResource_ResID()     \
     (tpl_service.parameters.id.res_id)
@@ -474,9 +490,11 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * ReleaseResource service error parameter 
  *
- * Returns the identifier (#ResourceType) of the resource which caused the error
+ * Returns the identifier (#ResourceType) of the resource which caused the
+ * error
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  */
 #define OSError_ReleaseResource_ResID() \
     (tpl_service.parameters.id.res_id)
@@ -488,7 +506,8 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Returns the identifier (#TaskType) of the task which caused the error
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  *
  * @see #OSError_SetEvent_Mask
  */
@@ -502,7 +521,8 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Returns the mask (#EventMaskType) of the event when error occurred
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  *
  * @see #OSError_SetEvent_TaskID
  */
@@ -516,7 +536,8 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Returns the mask (#EventMaskType) of the event when error occurred
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  */
 #define OSError_ClearEvent_Mask()       \
     (tpl_service.parameters.param.mask)
@@ -528,13 +549,14 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Returns the identifier (#TaskType) of the task which caused the error
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  *
  * @see #OSError_GetEvent_Event
  */
 #define OSError_GetEvent_TaskID()       \
     (tpl_service.parameters.id.task_id)
-	
+  
 /**
  * @def OSError_GetEvent_Event
  *
@@ -542,7 +564,8 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Returns the mask (#EventMaskType) of the event when error occurred
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  *
  * @see #OSError_GetEvent_TaskID
  */
@@ -556,7 +579,8 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Returns the mask (#EventMaskType) of the event when error occurred
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  */
 #define OSError_WaitEvent_Mask()        \
     (tpl_service.parameters.param.mask)
@@ -568,7 +592,8 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Returns the identifier (#AlarmType) of the alarm which caused error
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  *
  * @see #OSError_GetAlarmBase_Info
  */
@@ -580,9 +605,11 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * One of GetAlarmBase service error parameters
  *
- * Returns the basic characteristics (#AlarmBaseRefType) of the alarm which caused the error
+ * Returns the basic characteristics (#AlarmBaseRefType) of the alarm which
+ * caused the error
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  *
  * @see #AlarmBaseType
  * @see #AlarmBaseRefType
@@ -598,7 +625,8 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Returns the identifier (#AlarmType) of the alarm which caused error
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  *
  * @see OSError_GetAlarm_Tick
  */
@@ -610,9 +638,11 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * One of GetAlarm service error parameters
  *
- * Returns the number of ticks (#TickRefType) on which the alarm which caused error should trigger
+ * Returns the number of ticks (#TickRefType) on which the alarm which caused
+ * error should trigger
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  *
  * @see OSError_GetAlarm_AlarmID
  */
@@ -626,7 +656,8 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Returns the identifier (#AlarmType) of the alarm which caused the error
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  * 
  * @see #OSError_SetRelAlarm_increment
  * @see #OSError_SetRelAlarm_cycle
@@ -639,9 +670,11 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * One of SetRelAlarm service error parameters
  *
- * Returns the number of ticks (#TickType) on which the alarm which caused error should trigger
+ * Returns the number of ticks (#TickType) on which the alarm which caused
+ * error should trigger
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  *
  * @see OSError_SetRelAlarm_AlarmID
  * @see OSError_SetRelAlarm_cycle
@@ -656,7 +689,8 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Returns the cycle in ticks (#TickType) of the alarm which caused error
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  *
  * @see OSError_SetRelAlarm_AlarmID
  * @see #OSError_SetRelAlarm_increment
@@ -671,7 +705,8 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Returns the identifier (#AlarmType) of the alarm which caused the error
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  *
  * @see OSError_SetAbsAlarm_start
  * @see OSError_SetAbsAlarm_cycle
@@ -686,7 +721,8 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Returns the ticks (#TickType) of the alarm which caused the error
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  *
  * @see OSError_SetAbsAlarm_AlarmID
  * @see OSError_SetAbsAlarm_cycle
@@ -701,7 +737,8 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Returns the cycle (#TickType) of the alarm which caused the error
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  *
  * @see OSError_SetAbsAlarm_AlarmID
  * @see OSError_SetAbsAlarm_start
@@ -716,7 +753,8 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Returns the identifier (#AlarmType) of the alarm which caused error
  *
- * @warning this macro does only make sense when used within #ErrorHook function
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  */
 #define OSError_CancelAlarm_AlarmID()   \
     (tpl_service.parameters.id.alarm_id)
@@ -1111,7 +1149,7 @@ void tpl_call_error_hook(const tpl_status error);
 #if !defined(NO_TASK) && defined(OS_EXTENDED)
     /* E_OK or E_OS_LIMIT   */
 #   define CHECK_TASK_ID_ERROR(task_id,result)                  \
-    if ((result == (tpl_status)E_OK) && ((task_id) >= (tpl_task_id)TASK_COUNT))          \
+    if((result == (tpl_status)E_OK) && ((task_id) >= (tpl_task_id)TASK_COUNT))\
     {                                                           \
         result = (tpl_status)E_OS_ID;                                       \
     }
@@ -1218,7 +1256,8 @@ void tpl_call_error_hook(const tpl_status error);
 /**
  * @def CHECK_NOT_EXTENDED_RUNNING_ERROR
  *
- * Does the same checking as #CHECK_NOT_EXTENDED_TASK_ERROR but for the running task.
+ * Does the same checking as #CHECK_NOT_EXTENDED_TASK_ERROR but for the
+ * running task.
  *
  * @param result error code to set if check fails (#StatusType)
  *
@@ -1430,7 +1469,8 @@ void tpl_call_error_hook(const tpl_status error);
 /**
  * @def CHECK_RESOURCE_ORDER_ON_RELEASE
  *
- * Checks if a resource is released by the running task or interrupt in the right order
+ * Checks if a resource is released by the running task or interrupt in the
+ * right order
  *
  * @param res #ResourceType to check
  * @param result error code to set if check fails
