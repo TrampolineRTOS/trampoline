@@ -79,8 +79,10 @@ StatusType GetResource(const ResourceType res_id);
  *
  * @retval E_OK no error
  * @retval (extended error only) E_OS_ID ResID is invalid
- * @retval (extended error only) E_OS_NOFUNC the resource is not occupied or another resource shall be released before
- * @retval (extended error only) E_OS_ACCESS the resource has a lower ceiling priority than the static priority of the caller
+ * @retval (extended error only) E_OS_NOFUNC the resource is not occupied or
+ * another resource shall be released before
+ * @retval (extended error only) E_OS_ACCESS the resource has a lower ceiling
+ * priority than the static priority of the caller
  *
  * see paragraph 13.4.3.2 page 59 of OSEK/VDX 2.2.2 spec
  */

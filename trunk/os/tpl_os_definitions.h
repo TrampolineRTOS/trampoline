@@ -95,8 +95,8 @@
 /**
  * @def E_OS_LIMIT
  *
- * This error code means : limit exceeded. The only limit known to raise this error is the number
- * of task activations
+ * This error code means : limit exceeded. The only limit known to raise this
+ * error is the number of task activations
  *
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
@@ -282,7 +282,8 @@
 /**
  * @def FROM_TASK_LEVEL
  *
- * Scheduler is called from a task (either directly or indirectly, but not from an interrupt)
+ * Scheduler is called from a task (either directly or indirectly, but not
+ * from an interrupt)
  *
  * @see #tpl_schedule
  */
@@ -291,7 +292,8 @@
 /**
  * @def FROM_IT_LEVEL
  *
- * Scheduler is called from a task (either directly or indirectly, but not from an interrupt)
+ * Scheduler is called from a task (either directly or indirectly, but not
+ * from an interrupt)
  *
  * @see #tpl_schedule
  */
@@ -304,8 +306,8 @@
 /**
  * @def PREEMPTED_EXEC_OBJ
  *
- * The object (task or interrupt) added to the ready list has been preempted (and have to be
- * added to the front of the list)
+ * The object (task or interrupt) added to the ready list has been preempted 
+ * (and have to be added to the front of the list)
  *
  * @see #tpl_put_exec_object
  */
@@ -314,8 +316,8 @@
 /**
  * @def NEWLY_ACTIVATED_EXEC_OBJ
  *
- * The object (task or interrupt) added to the ready list is newly activated (and have to be
- * added to the back of the list)
+ * The object (task or interrupt) added to the ready list is newly activated
+ * (and have to be added to the back of the list)
  *
  * @see #tpl_put_exec_object
  */

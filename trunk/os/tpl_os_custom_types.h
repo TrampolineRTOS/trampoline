@@ -4,7 +4,8 @@
  * @section File description
  *
  * This file gathers all data types which can be changed by user for the
- * needs of its application. Please refer to comment of each type for more details.
+ * needs of its application. Please refer to comment of each type for more
+ * details.
  * 
  * @section Copyright
  *

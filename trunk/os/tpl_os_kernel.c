@@ -204,7 +204,8 @@ void tpl_put_exec_object(
     /*  reset executable object pointers */
     exec_obj->next_set = exec_obj->next_exec = NULL;
     
-    /* first, we poll for the right exec object set (find the right priority level) */
+    /* first, we poll for the right exec object set (find the right priority
+		 * level) */
     while ((current != NULL) && (current->priority > exec_obj->priority))
     {
         previous = current;

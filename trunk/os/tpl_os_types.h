@@ -31,8 +31,8 @@
 /**
  * @typedef StatusType
  *
- * Status information for many services. Values names are usually prefixed by E_OS_*.
- * Each API service provides more informations about error codes.
+ * Status information for many services. Values names are usually prefixed by
+ * E_OS_*. Each API service provides more informations about error codes.
  * 
  * See paragraph 13.1, page 48 of OSEK/VDX 2.2.2 spec
  */

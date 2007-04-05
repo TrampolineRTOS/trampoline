@@ -3,8 +3,8 @@
  *
  * @section desc File description
  *
- * Trampoline Action implementation. Actions are used for alarm action. They are 
- * also used by COM for actions.
+ * Trampoline Action implementation. Actions are used for alarm action. They
+ * are also used by COM for actions.
  *
  * @section copyright Copyright
  *

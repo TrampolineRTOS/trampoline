@@ -4,7 +4,7 @@
  * @section desc File description
  *
  * This header file provides standard OSEK-VDX API for interrupts management.
-*
+ *
  * @section copyright Copyright
  *
  * Trampoline OS
@@ -89,7 +89,8 @@ void ResumeOSInterrupts(void);
 void SuspendOSInterrupts(void);
 
 /**
- * Additional non-standard system service to terminate a category 2 interrupt routine.
+ * Additional non-standard system service to terminate a category 2 interrupt
+ * routine.
  *
  * This service is equivalent to TerminateTask but for ISR2
  */
