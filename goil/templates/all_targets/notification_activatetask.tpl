@@ -2,9 +2,9 @@
  * Task activation notification $NOTIFICATION_NAME$
  */
 
-tpl_task_activation_notification $NOTIFICATION$ = {
+tpl_task_activation_action $NOTIFICATION$ = {
     {
-    /*  notification function       */  tpl_notify_activate_task
+    /*  notification function       */  tpl_action_activate_task
     },
     /*  task descriptor pointer     */  &$TASK$
 };

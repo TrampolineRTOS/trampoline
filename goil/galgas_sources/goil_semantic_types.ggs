@@ -24,7 +24,7 @@ map @implementationSpec {
 
 map @implementation {
     @implementationSpec spec ;
-    insert insertSpec error message "%K is duplicated in %L";
+    insert put error message "%K is duplicated in %L";
 }
 
 #action generateHeader

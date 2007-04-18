@@ -57,6 +57,13 @@ list objectRefType error message "object reference type '%K'" :
     "COM_TYPE", "NM_TYPE", "APPMODE_TYPE", "IPDU_TYPE" ;
 
 #
+# OS attributes
+#
+list os_attributes error message "os attribute '%K'" :
+    "STATUS", "EXTENDED", "STARTUPHOOK", "ERRORHOOK", "SHUTDOWNHOOK", "PRETASKHOOK",
+    "POSTTASKHOOK", "USEGETSERVICEID", "USEPARAMETERACCESS", "USERESSCHEDULER" ;
+
+#
 # Task object predefined attributes that are not
 # defined elsewhere.
 #
@@ -183,6 +190,7 @@ rule 'a'->'z' | 'A'->'Z' :
         default search att_token in dataTypes
         default search att_token in miscSpecifiers
         default search att_token in objectRefType
+        default search att_token in os_attributes
         default search att_token in task_attributes
         default search att_token in counter_attributes
         default search att_token in alarm_attributes

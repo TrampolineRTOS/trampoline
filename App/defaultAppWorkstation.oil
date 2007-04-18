@@ -4,6 +4,12 @@ IMPLEMENTATION trampoline {
 };
 
 CPU test {
+
+    OS config {
+        ERRORHOOK = TRUE ;
+        PRETASKHOOK = TRUE ;
+    } ;
+
     APPMODE std {
     };
 

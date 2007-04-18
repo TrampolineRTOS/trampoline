@@ -17,7 +17,7 @@
 #include "tpl_com_filters.h"
 #include "tpl_os_definitions.h"
 
-bool tpl_filter_always(
+tpl_bool tpl_filter_always(
     tpl_filter_desc *fd,
     tpl_com_value old_value,
     tpl_com_value new_value)
@@ -25,7 +25,7 @@ bool tpl_filter_always(
     return TRUE;
 }
 
-bool tpl_filter_never(
+tpl_bool tpl_filter_never(
     tpl_filter_desc *fd,
     tpl_com_value old_value,
     tpl_com_value new_value)
@@ -33,7 +33,7 @@ bool tpl_filter_never(
     return FALSE;
 }
 
-bool tpl_filter_masked_new_equals_x(
+tpl_bool tpl_filter_masked_new_equals_x(
     tpl_filter_desc *fd,
     tpl_com_value old_value,
     tpl_com_value new_value)
@@ -43,7 +43,7 @@ bool tpl_filter_masked_new_equals_x(
             == ((tpl_mask_x_filter_desc *)fd)->x);
 }
 
-bool tpl_filter_masked_new_differs_x(
+tpl_bool tpl_filter_masked_new_differs_x(
     tpl_filter_desc *fd,
     tpl_com_value old_value,
     tpl_com_value new_value)
@@ -53,7 +53,7 @@ bool tpl_filter_masked_new_differs_x(
             != ((tpl_mask_x_filter_desc *)fd)->x);
 }
 
-bool tpl_filter_new_is_equal(
+tpl_bool tpl_filter_new_is_equal(
     tpl_filter_desc *fd,
     tpl_com_value old_value,
     tpl_com_value new_value)
@@ -61,7 +61,7 @@ bool tpl_filter_new_is_equal(
     return (new_value == old_value);
 }
 
-bool tpl_filter_new_is_different(
+tpl_bool tpl_filter_new_is_different(
     tpl_filter_desc *fd,
     tpl_com_value old_value,
     tpl_com_value new_value)
@@ -69,7 +69,7 @@ bool tpl_filter_new_is_different(
     return (new_value != old_value);
 }
 
-bool tpl_filter_masked_new_equals_masked_old(
+tpl_bool tpl_filter_masked_new_equals_masked_old(
     tpl_filter_desc *fd,
     tpl_com_value old_value,
     tpl_com_value new_value)
@@ -78,7 +78,7 @@ bool tpl_filter_masked_new_equals_masked_old(
             == (old_value & ((tpl_mask_filter_desc *)fd)->mask));
 }
 
-bool tpl_filter_masked_new_differs_masked_old(
+tpl_bool tpl_filter_masked_new_differs_masked_old(
     tpl_filter_desc *fd,
     tpl_com_value old_value,
     tpl_com_value new_value)
@@ -87,7 +87,7 @@ bool tpl_filter_masked_new_differs_masked_old(
             != (old_value & ((tpl_mask_filter_desc *)fd)->mask));
 }
 
-bool tpl_filter_new_is_within(
+tpl_bool tpl_filter_new_is_within(
     tpl_filter_desc *fd,
     tpl_com_value old_value,
     tpl_com_value new_value)
@@ -96,7 +96,7 @@ bool tpl_filter_new_is_within(
             (new_value <= ((tpl_interval_filter_desc *)fd)->max));
 }
 
-bool tpl_filter_new_is_outside(
+tpl_bool tpl_filter_new_is_outside(
     tpl_filter_desc *fd,
     tpl_com_value old_value,
     tpl_com_value new_value)
@@ -105,7 +105,7 @@ bool tpl_filter_new_is_outside(
             (new_value > ((tpl_interval_filter_desc *)fd)->max));
 }
 
-bool tpl_filter_new_is_greater(
+tpl_bool tpl_filter_new_is_greater(
     tpl_filter_desc *fd,
     tpl_com_value old_value,
     tpl_com_value new_value)
@@ -113,7 +113,7 @@ bool tpl_filter_new_is_greater(
     return (new_value > old_value);
 }
 
-bool tpl_filter_new_is_less_or_equal(
+tpl_bool tpl_filter_new_is_less_or_equal(
     tpl_filter_desc *fd,
     tpl_com_value old_value,
     tpl_com_value new_value)
@@ -121,7 +121,7 @@ bool tpl_filter_new_is_less_or_equal(
     return (new_value <= old_value);
 }
 
-bool tpl_filter_new_is_less(
+tpl_bool tpl_filter_new_is_less(
     tpl_filter_desc *fd,
     tpl_com_value old_value,
     tpl_com_value new_value)
@@ -129,7 +129,7 @@ bool tpl_filter_new_is_less(
     return (new_value < old_value);
 }
 
-bool tpl_filter_new_is_greater_or_equal(
+tpl_bool tpl_filter_new_is_greater_or_equal(
     tpl_filter_desc *fd,
     tpl_com_value old_value,
     tpl_com_value new_value)
@@ -137,7 +137,7 @@ bool tpl_filter_new_is_greater_or_equal(
     return (new_value >= old_value);
 }
 
-bool tpl_filter_one_every_n(
+tpl_bool tpl_filter_one_every_n(
     tpl_filter_desc *fd,
     tpl_com_value old_value,
     tpl_com_value new_value)

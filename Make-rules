@@ -42,8 +42,9 @@ GOIL_TEMPLATE_PATH = ./goil/templates
 #Compilation flags for all files (asm, c)
 ALLFLAGS = \
 -Wall \
--pedantic 
-# -DOS_EXTENDED \
+-pedantic \
+--std=c99 \
+-DOS_EXTENDED 
 # -DWITH_ERROR_HOOK \
 # -DWITH_TASK_HOOK \
 # -DWITH_STARTUP_HOOK \
