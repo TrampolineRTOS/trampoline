@@ -47,6 +47,97 @@ class @bool_class extends @basic_type {
     @bool value ;
 }
 
+#
+# Types used for implementation specific type declaration
+#
+list @list_uint32 {
+    @uint val ;
+}
+
+list @list_int32 {
+    @sint val ;
+}
+
+list @list_uint64 {
+    @uint64 val ;
+}
+
+list @list_int64 {
+    @sint64 val ;
+}
+
+abstract class @uint32_set {}
+abstract class @int32_set {}
+abstract class @uint64_set {}
+abstract class @int64_set {}
+
+class @uint32_range extends @uint32_set {
+    @uint min ;
+    @uint max ;
+}
+
+class @uint32_list extends @uint32_set {
+    @list_uint32 li ;
+}
+
+class @int32_range extends @int32_set {
+    @sint min ;
+    @sint max ;
+}
+
+class @int32_list extends @int32_set {
+    @list_int32 li ;
+}
+
+class @uint64_range extends @uint64_set {
+    @uint64 min ;
+    @uint64 max ;
+}
+
+class @uint64_list extends @uint64_set {
+    @list_uint64 li ;
+}
+
+class @int64_range extends @int64_set {
+    @sint64 min ;
+    @sint64 max ;
+}
+
+class @int64_list extends @int64_set {
+    @list_int64 li ;
+}
+
+abstract class @implementation_type {
+    @location loc ;
+    @bool     with_auto ;
+}
+
+class @uint32_def extends @implementation_type {}
+class @uint32_def_set extends @implementation_type {
+    @uint32_set set ;
+}
+class @uint32_def_val extends @uint32_def {
+    @uint def ;
+}
+class @uint32_def_set_val extends @uint32_def_set {
+    @uint def ;
+}
+
+class @uint64_def extends @implementation_type {}
+class @uint64_def_set extends @implementation_type {
+    @uint64_set set ;
+}
+class @uint64_def_val extends @uint64_def {
+    @uint64 def ;
+}
+class @uint64_def_range_val extends @uint64_def_set {
+    @uint64 def ;
+}
+
+#
+#
+#
+
 map @ident_map {
     @basic_type value ;
     insert put error message "%K is duplicated in %L";

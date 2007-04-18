@@ -27,7 +27,7 @@
  * pointers
  * If the check failed, tpl_filtering returns TRUE
  */
-bool tpl_filtering(
+tpl_bool tpl_filtering(
     unsigned char       *old_data,
     unsigned char       *new_data,
     tpl_message_size    size,

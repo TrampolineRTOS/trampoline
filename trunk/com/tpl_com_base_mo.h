@@ -2,7 +2,7 @@
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
- * Trampoline est protégé par la loi sur la propriété intellectuelle
+ * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -17,8 +17,9 @@
 #define __TPL_COM_BASE_MO_H__
 
 #include "tpl_os_types.h"
+#include "tpl_os_action.h"
 #include "tpl_com_types.h"
-#include "tpl_com_notification.h"
+#include "tpl_com_private_types.h"
 #include "tpl_com_filtering.h"
 
 /*
@@ -83,7 +84,7 @@ typedef struct TPL_BASE_SENDING_MO tpl_base_sending_mo;
  */
 struct TPL_BASE_RECEIVING_MO {
     /*! notification structure              */
-    tpl_notification                *notification;
+    tpl_action                      *notification;
     /*! message objects chaining            */
     struct TPL_BASE_RECEIVING_MO    *next_mo;
 };

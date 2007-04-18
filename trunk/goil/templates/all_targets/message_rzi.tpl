@@ -3,6 +3,6 @@
  */
 
 tpl_internal_receiving_zero_mo $MESSAGE$ = {
-    /* notification struct pointer  */  (tpl_notification *)$NOTIFICATION_PTR$,
+    /* notification struct pointer  */  (tpl_action *)$NOTIFICATION_PTR$,
     /* next mo                      */  (tpl_base_receiving_mo *)$TARGET_PTR$
 };

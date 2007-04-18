@@ -25,7 +25,7 @@ tpl_com_queue.c \
 tpl_com_message_management.c
 
 #################### end of configuration.
-O_DIR = ../$(OBJ_DIR)
+O_PATH = ../$(OBJ_PATH)
 
 #COM_OBJS = $(addprefix $(O_DIR)/,$(COM_SRCS:.c=.o))
 
@@ -35,8 +35,8 @@ O_DIR = ../$(OBJ_DIR)
 #File prefix of generated file (.c and .h)
 #M4GENERATEDFILEPREFIX = ../$(APP_DIR)/tpl_os_generated_configuration
 
-CFLAGS += -I../os -I../$(OS_MACHINE_DIR) -I. -I..
-COM_OBJS = $(addprefix $(O_DIR)/,$(notdir $(COM_SRCS:.c=.o)))
+CFLAGS += -I../os -I../$(OS_MACHINE_PATH) -I../$(OIL_OUTPUT_PATH) -I. 
+COM_OBJS = $(addprefix $(O_PATH)/,$(notdir $(COM_SRCS:.c=.o)))
 
 #this file must be generated directly by the user app.
 #OS_SRCS += $(M4GENERATEDFILEPREFIX).c
@@ -45,7 +45,7 @@ COM_OBJS = $(addprefix $(O_DIR)/,$(notdir $(COM_SRCS:.c=.o)))
 COM: $(COM_OBJS)
 	
 
-$(O_DIR)/%.o: %.c #$(M4GENERATEDFILEPREFIX).c
+$(O_PATH)/%.o: %.c #$(M4GENERATEDFILEPREFIX).c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 #$(M4GENERATEDFILEPREFIX).h: $(M4_OS_SCRIPT) ../$(M4FILE)

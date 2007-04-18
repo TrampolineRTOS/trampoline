@@ -36,7 +36,7 @@
  */
 struct TPL_CALLBACK_ACTION {
     /*  base action           */
-    tpl_action    b_desc;
+    tpl_action          b_desc;
     /*  callback function pointer   */
     tpl_callback_func   callback;
 };
@@ -52,9 +52,9 @@ tpl_callback_action;
  */
 struct TPL_TASK_ACTIVATION_ACTION {
     /*  base action           */
-    tpl_action    b_desc;
+    tpl_action      b_desc;
     /*  task descriptor pointer     */
-    tpl_task            *task;
+    tpl_task        *task;
 };
 
 typedef struct TPL_TASK_ACTIVATION_ACTION
@@ -68,7 +68,7 @@ tpl_task_activation_action ;
  */
 struct TPL_SETEVENT_ACTION {
     /*  base action           */
-    tpl_action    b_desc;
+    tpl_action          b_desc;
     /*  task descriptor pointer     */
     tpl_task            *task;
     /*  event mask                  */

@@ -38,6 +38,8 @@ nonterminal <description>
     !@lstring desc ;
 nonterminal <free_field>
     ?!@ident_map ids ;
+nonterminal <boolean>
+    !@bool val ;
 #
 # local rules implementation
 #
@@ -49,6 +51,42 @@ rule <os> :
     $idf$ ?* ;
     ${$ ;
     repeat
+    while
+        $STATUS$ ; $=$ ;
+        select
+            $EXTENDED$ ;
+        or
+            $STANDARD$ ;
+        end select ;
+        <description> ?* ; $;$ ;
+    while
+        $STARTUPHOOK$ ; $=$ ;
+        <boolean> ?* ;
+        <description> ?* ; $;$ ;
+    while
+        $ERRORHOOK$ ; $=$ ;
+        <boolean> ?* ;
+        <description> ?* ; $;$ ;
+    while
+        $SHUTDOWNHOOK$ ; $=$ ;
+        <boolean> ?* ;
+        <description> ?* ; $;$ ;
+    while
+        $PRETASKHOOK$ ; $=$ ;
+        <boolean> ?* ;
+        <description> ?* ; $;$ ;
+    while
+        $POSTTASKHOOK$ ; $=$ ;
+        <boolean> ?* ;
+        <description> ?* ; $;$ ;
+    while
+        $USEGETSERVICEID$ ; $=$ ;
+        <boolean> ?* ;
+        <description> ?* ; $;$ ;
+    while
+        $USEPARAMETERACCESS$ ; $=$ ;
+        <boolean> ?* ;
+        <description> ?* ; $;$ ;
     while
         <free_field> !?others ; <description> ?* ; $;$ ;
     end repeat ;

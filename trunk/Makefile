@@ -41,8 +41,8 @@ OS: OBJ OIL
 	@cd $(OS_PATH) && make OS
 
 #make COM objects.
-COM: OBJ
-	@cd $(COM_DIR) && make COM
+COM: OBJ OIL
+	@cd $(COM_PATH) && make COM
 
 #make User Application objects.
 APP: OBJ OIL
@@ -52,11 +52,12 @@ APP: OBJ OIL
 OBJ:
 	@if [ ! -d $(OBJ_PATH) ]; then mkdir $(OBJ_PATH); fi; 
 
-$(EXE): OS APP #COM
+$(EXE): OS APP COM
 	$(CC) $(LDFLAGS) -o $@ $(OBJ_PATH)/*.o
 
 clean: cleanOIL
 	@cd $(OS_PATH) && make clean 
+	@cd $(COM_PATH) && make clean 
 	@cd $(OS_MACHINE_PATH) && make clean 
 	@cd $(APP_PATH) && make clean 
 	@rm -rf $(OBJ_PATH) $(EXE)
