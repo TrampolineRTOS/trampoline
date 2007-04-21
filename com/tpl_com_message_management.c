@@ -51,7 +51,7 @@ StatusType SendMessage(MessageIdentifier mess_id, ApplicationDataRef data)
     /*  get the message object from its id          */
     smo = (tpl_base_sending_mo *)tpl_send_message_table[mess_id];
     /*  call the sending function                   */
-    smo->sender(smo, data);
+    result = smo->sender(smo, data);
     IF_NO_EXTENDED_ERROR_END()
 #endif
 
@@ -86,7 +86,7 @@ StatusType ReceiveMessage(MessageIdentifier mess_id, ApplicationDataRef data)
     /*  get the message object from its id          */
     rmo = (tpl_data_receiving_mo *)tpl_receive_message_table[mess_id];
     /*  call the sending function                   */
-    rmo->copier(data, rmo);
+    result = rmo->copier(data, rmo);
     IF_NO_EXTENDED_ERROR_END()
 #endif
 

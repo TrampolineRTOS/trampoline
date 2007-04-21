@@ -3,6 +3,7 @@ grammar goil_grammar "LL1":
     import option  goil_options            in "goil_options.ggs" ;
 
     import syntax  goil_syntax             in "goil_syntax.ggs" ;
+    import syntax  goil_imp_def            in "goil_imp_def.ggs" ;
 
     import syntax  goil_obj_os             in "goil_obj_os.ggs" ;
     import syntax  goil_obj_task           in "goil_obj_task.ggs" ;
@@ -26,6 +27,7 @@ grammar goil_file_level_include "LL1":
     import option  goil_options            in "goil_options.ggs" ;
 
     import syntax  goil_syntax             in "goil_syntax.ggs" ;
+    import syntax  goil_imp_def            in "goil_imp_def.ggs" ;
 
     import syntax  goil_obj_os             in "goil_obj_os.ggs" ;
     import syntax  goil_obj_task           in "goil_obj_task.ggs" ;

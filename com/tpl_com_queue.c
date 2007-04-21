@@ -119,7 +119,7 @@ void tpl_read_queue(
         /*  dec the queue size  */
         dq->size -= queue->element_size;
         /*   adjust the index   */
-        ++(dq->index);
+        dq->index += queue->element_size;
         if (dq->index > queue->max_size) {
             dq->index = 0;
         }

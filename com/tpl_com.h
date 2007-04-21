@@ -17,9 +17,15 @@
 #define __TPL_COM_H__
 
 #include "tpl_com_private_types.h"
+#include "tpl_com_definitions.h"
 
-typedef tpl_message_id	MessageIdentifier;
-typedef tpl_com_data	*ApplicationDataRef;
+typedef tpl_message_id  MessageIdentifier;
+typedef void            *ApplicationDataRef;
+typedef tpl_flag_value  FlagValue;
+
+StatusType SendMessage(MessageIdentifier mess_id, ApplicationDataRef data);
+StatusType ReceiveMessage(MessageIdentifier mess_id, ApplicationDataRef data);
+StatusType SendZeroMessage(MessageIdentifier mess_id);
 
 /*	__TPL_COM_H__	*/
 #endif

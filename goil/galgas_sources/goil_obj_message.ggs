@@ -275,6 +275,13 @@ rule <notification_property>
         $}$ ; 
         notif := [@callback_action new !here !function_name] ;
     or
+        @lstring flag_name ;
+        $FLAG$ ; ${$ ;
+        $FLAGNAME$ ; $=$ ; $string$ ?flag_name ;
+        <description> ?* ; $;$ ;
+        $}$ ;        
+        notif := [@flag_action new !here !flag_name] ;
+    or
         @bool has_function := false ;
         @lstring function_name := [@lstring new !"" !here] ;
         @bool has_ipdu := false ;

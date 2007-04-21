@@ -14,8 +14,11 @@
  * $URL: http://localhost:8888/Trampoline/svn/tpl_com_definitions.h $
  */
 
-#ifndef __TPL_COM_DEFINITIONS_H__
-#define __TPL_COM_DEFINITIONS_H__
+#ifndef TPL_COM_DEFINITIONS_H
+#define TPL_COM_DEFINITIONS_H
+
+#define COM_TRUE        ((tpl_flag_value)1)
+#define COM_FALSE       ((tpl_flag_value)0)
 
 /*
  * Result codes

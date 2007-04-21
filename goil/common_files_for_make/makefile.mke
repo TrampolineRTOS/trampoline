@@ -44,6 +44,7 @@ include $(LIB_PM_PATH)/galgas/galgas_sources_for_makefile.mke
 SOURCES += goil_lexique.cpp
 SOURCES += goil_options.cpp
 SOURCES += goil_syntax.cpp
+SOURCES += goil_imp_def.cpp
 SOURCES += goil_semantics.cpp
 SOURCES += goil_basic_types.cpp
 SOURCES += goil_semantic_types.cpp

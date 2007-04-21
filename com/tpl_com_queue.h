@@ -20,19 +20,6 @@
 #include "tpl_com_base_mo.h"
 
 /*! 
- *  \brief  Buffer structure
- *
- *  The buffer structure gather a pointer to the RAM buffer and a size.
- *  It can be stored in ROM.
- */
-struct TPL_BUFFER {
-    /*! pointer to the buffer   */
-    tpl_com_data    *buffer;
-    /*! size of the buffer      */
-    tpl_com_size    size;
-};
-
-/*! 
  *  \brief  Dynamic part of the queue structure
  *
  *  The dynamic part of the queue structure belong to queue management.
