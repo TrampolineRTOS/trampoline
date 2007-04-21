@@ -13,20 +13,25 @@
  * $URL: http://localhost:8888/Trampoline/svn/tpl_com_internal_types.h $
  */
 
-#ifndef __TPL_COM_PRIVATE_TYPES_H__
-#define __TPL_COM_PRIVATE_TYPES_H__
+#ifndef TPL_COM_PRIVATE_TYPES_H
+#define TPL_COM_PRIVATE_TYPES_H
 
 #include "tpl_com_types.h"
+#include "tpl_os_std_types.h"
 
 /*! 
  *  Datatype for the message of application data atom
  */
-typedef unsigned char tpl_com_data;
+typedef unsigned char       tpl_com_data;
 
 /*!
  *  An alias of the message size datatype
  */
-typedef tpl_message_size tpl_com_size;
+typedef tpl_message_size    tpl_com_size;
 
+/*!
+ *  Used for flags
+ */
+typedef u8                  tpl_flag_value;
 
 #endif

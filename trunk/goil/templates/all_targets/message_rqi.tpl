@@ -17,13 +17,13 @@ tpl_internal_receiving_queued_mo $MESSAGE$ = {
             /* notification pointer     */  (tpl_action *)$NOTIFICATION_PTR$,
             /* next receiving mo        */  (tpl_base_receiving_mo *)$TARGET_PTR$
         },
-        /*  receiving function      */  (tpl_receiving_func)tpl_receive_static_internal_unqueued_message,
-        /*  copy function           */  (tpl_data_copy_func)tpl_copy_from_unqueued,
+        /*  receiving function      */  (tpl_receiving_func)tpl_receive_static_internal_queued_message,
+        /*  copy function           */  (tpl_data_copy_func)tpl_copy_from_queued,
         /*  filter pointer          */  (tpl_filter_desc *)$FILTER_PTR$
     },
     {   /*  queue structure   */
         /*  pointer to the dynamic descriptor   */  &$DYN_QUEUE$,
-        /*  max size of the queue               */  $QUEUE_SIZE$,
+        /*  max size of the queue               */  $QUEUE_SIZE$*$ELEMENT_SIZE$,
         /*  element size of the queue           */  $ELEMENT_SIZE$,
         /*  pointer to the buffer               */  $BUFFER$
     }

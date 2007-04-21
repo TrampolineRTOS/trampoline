@@ -116,7 +116,7 @@ list message_attributes error message "message attribute '%K'" :
     "NEWISLESSOREQUAL", "NEWISLESS", "NEWISGREATEROREQUAL",
     "ONEEVERYN", "MIN", "MAX", "X", "PERIOD", "OFFSET",
     "NETWORKORDERCALLOUT", "CPUORDERCALLOUT", "INITIALVALUE",
-    "QUEUESIZE", "LINK", "RECEIVEMESSAGE" ;
+    "QUEUESIZE", "LINK", "RECEIVEMESSAGE", "FLAG", "FLAGNAME" ;
 
 #
 # Networkmessage object predefined attributes that are not

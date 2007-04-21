@@ -110,8 +110,8 @@ rule <implementation_list>
 end rule ;
 
 rule <impl_attr_def>
-    ?@string          obj_kind
-    ?!@implementation imp
+    ?@string          unused obj_kind
+    ?!@implementation unused imp
 :
     @bool       auto ;
     @number_set set ;
@@ -121,6 +121,9 @@ rule <impl_attr_def>
     @luint64    default_number;
     @bool       has_default ;
 
+    @lstring type ;
+    @bool has_range ;
+    @number_set range ;
     select  $UINT32$ ?type ;
         or  $INT32$  ?type ;
         or  $UINT64$ ?type ;
@@ -133,7 +136,11 @@ rule <impl_attr_def>
     <default_number> ?has_default ?default_number ;
 end rule ;
 
-rule <impl_attr_def> ?!@implementationSpec unused spec :
+rule <impl_attr_def>
+    ?@string          unused obj_kind
+    ?!@implementation unused imp
+:
+
     @lstring type ;    
     @bool auto ;
     $FLOAT$ ?type ;
@@ -144,7 +151,10 @@ rule <impl_attr_def> ?!@implementationSpec unused spec :
 #    <default_float> ?default_float ;
 end rule ;
 
-rule <impl_attr_def> ?!@implementationSpec unused spec :
+rule <impl_attr_def>
+    ?@string          unused obj_kind
+    ?!@implementation unused imp
+:
     @lstring type ;
     @bool auto ;
 

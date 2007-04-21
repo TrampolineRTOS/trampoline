@@ -162,21 +162,33 @@ list @events {
 #
 abstract class @action_obj {
     @location location ;
+
     abstract method generate
         ?@prefix_map unused p
         ?@lstring    unused name
         ?@string     unused err
-        !@string     res ;
+        ?@string     unused key
+        ?!@string    unused h_res
+        ?!@string    unused i_res ;
+
+    method flag ?!@stringset unused f :
+    end method ;
 }
 
 class @void_action extends @action_obj {
     override method generate
-        ?@prefix_map unused p
+        ?@prefix_map p
         ?@lstring    unused name
         ?@string     unused err
-        !@string     res :
+        ?@string     key
+        ?!@string    unused h_res
+        ?!@string    i_res :
 
-        res := "" ;
+        @lstring lkey := [@lstring new !key !here] ;
+        @string prefix ;
+        @string tag_to_rep ;
+        [p prefix !lkey ?prefix ?tag_to_rep] ;
+        i_res := [i_res stringByReplacingStringByString !tag_to_rep !"NULL"] ;
     end method ;
 }
 
@@ -188,13 +200,21 @@ class @setevent_action extends @action_obj {
         ?@prefix_map p
         ?@lstring    name
         ?@string     err
-        !@string     res :
+        ?@string     key
+        ?!@string    unused h_res
+        ?!@string    i_res :
 
+        @string res ;
         template ?res !"notification_setevent" ;
+
         replace !p !err."notif_name"   ![name string] !?res ;
         replace !p !err."notification" ![name string] !?res ;
         replace !p !"task" ![task_name string] !?res ;
         replace !p !"event" ![event_name string] !?res ;
+
+        replace !p !key ![name string] !?i_res ;
+
+        i_res := res."\n".i_res ;
    end method ;
 }
 
@@ -205,12 +225,20 @@ class @activatetask_action extends @action_obj {
         ?@prefix_map p
         ?@lstring    name
         ?@string     err
-        !@string     res :
+        ?@string     key
+        ?!@string    unused h_res
+        ?!@string    i_res :
 
+        @string res ;
         template ?res !"notification_activatetask" ;
+
         replace !p !err."notif_name"   ![name string]      !?res ;
         replace !p !err."notification" ![name string]      !?res ;
         replace !p !"task"         ![task_name string] !?res ;
+
+        replace !p !key ![name string] !?i_res ;
+
+        i_res := res."\n".i_res ;
    end method ;
 }
 
@@ -220,13 +248,48 @@ class @callback_action extends @action_obj {
         ?@prefix_map p
         ?@lstring    name
         ?@string     err
-        !@string     res :
+        ?@string     key
+        ?!@string    unused h_res
+        ?!@string    i_res :
 
+        @string res ;
         template ?res !"notification_activatetask" ;
+
         replace !p !err."notif_name"   ![name string] !?res ;
         replace !p !err."notification" ![name string] !?res ;
         replace !p !"callback" ![function_name string] !?res ;
+
+        replace !p !key ![name string] !?i_res ;
+
+        i_res := res."\n".i_res ;
    end method ;
+}
+
+class @flag_action extends @action_obj {
+    @lstring flag_name ;
+    override method generate
+        ?@prefix_map p
+        ?@lstring    name
+        ?@string     err
+        ?@string     key
+        ?!@string    unused h_res
+        ?!@string    i_res :
+
+        @string res ;
+        template ?res !"notification_flag" ;
+
+        replace !p !err."notif_name"   ![name string] !?res ;
+        replace !p !err."notification" ![name string] !?res ;
+        replace !p !"flag_fct" ![flag_name string] !?res ;
+
+        replace !p !key ![name string] !?i_res ;
+
+        i_res := res."\n".i_res ;
+    end method ;
+
+    override method flag ?!@stringset f :
+        f += ![flag_name string] ;
+    end method ;
 }
 
 abstract class @autostart_obj {
@@ -323,34 +386,18 @@ abstract class @mess_prop_obj {
         ?@prefix_map p
         ?@lstring    name
         ?@base_mess  mess 
-        ?!@string    res :
+        ?!@string    h_res
+        ?!@string    i_res :
 
         @action_obj notif ;
-        @string notif_res ;
 
         # get the notification
         notif := [mess notification] ;
-        [notif generate !p !name !"" ?notif_res] ;
-
-        if notif_res == "" then
-            res := [res stringByReplacingStringByString !"$NOTIFICATION_PTR$" !"NULL"] ;
-        else
-            replace !p !"notif_ptr" ![name string] !?res ;
-        end if ;
-
-        res := notif_res."\n".res ;
+        [notif generate !p !name !"" !"notif_ptr" !?h_res !?i_res] ;
 
         # get the error notification
         notif := [mess notificationerror] ;
-        [notif generate !p !name !"error_" ?notif_res] ;
-
-        if notif_res == "" then
-            res := [res stringByReplacingStringByString !"$ERROR_NOTIFICATION_PTR$" !"NULL"] ;
-        else
-            replace !p !"error_notif_ptr" ![name string] !?res ;
-        end if ;
-
-        res := notif_res."\n".res ;
+        [notif generate !p !name !"error_" !"error_notif_ptr" !?h_res !?i_res] ;
     end method ;
 
     method generate_dest_list
@@ -764,7 +811,7 @@ class @rzi_mess_prop extends @mess_prop_obj {
         replace !p !"msg" ![name string] !?i_res ;
 
         # Add the notification structures if any
-        [self generate_notif !p !name !mess !?i_res] ;
+        [self generate_notif !p !name !mess !?h_res !?i_res] ;
 
         # Add the destination message chaining
         [self generate_dest_list !p !name !sendingmessage !dests !?i_res] ;
@@ -815,7 +862,7 @@ class @rui_mess_prop extends @mess_prop_obj {
         [filter generate !p !name !?i_res] ;
 
         # Add the notification structures if any
-        [self generate_notif !p !name !mess !?i_res] ;
+        [self generate_notif !p !name !mess !?h_res !?i_res] ;
 
         # Add the destination message chaining
         [self generate_dest_list !p !name !sendingmessage !dests !?i_res] ;
@@ -858,7 +905,7 @@ class @rqi_mess_prop extends @mess_prop_obj {
         [filter generate !p !name !?i_res] ;
 
         # Add the notification structures if any
-        [self generate_notif !p !name !mess !?i_res] ;
+        [self generate_notif !p !name !mess !?h_res !?i_res] ;
 
         # Add the destination message chaining
         [self generate_dest_list !p !name !sendingmessage !dests !?i_res] ;
@@ -975,15 +1022,20 @@ class @nmcallback_action extends @action_obj {
     @lstring function_name ;
     @luint64 ipdu ;
     override method generate
-        ?@prefix_map unused p
+        ?@prefix_map p
         ?@lstring    unused name
         ?@string     unused err
-        !@string     res :
+        ?@string     key
+        ?!@string    unused h_res
+        ?!@string    i_res :
 
-        res := "" ;
+        @lstring lkey := [@lstring new !key !here] ;
+        @string prefix ;
+        @string tag_to_rep ;
+        [p prefix !lkey ?prefix ?tag_to_rep] ;
+        i_res := [i_res stringByReplacingStringByString !tag_to_rep !"NULL"] ;
     end method ;
 }
-
 
 end semantics ;
 # vim:ft=ggs:ts=4:sw=4

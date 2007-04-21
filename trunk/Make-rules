@@ -20,11 +20,11 @@ EXE    =  trampoline
 # PATH CONFIGURATION: 
 # all paths must be relatives !!!!
 #############################################################################
-OS_PATH = ./os
-COM_PATH = ./com
+OS_PATH = os
+COM_PATH = com
 OBJ_PATH = .obj
-APP_PATH = ./App
-VIPER_PATH = ./viper
+APP_PATH = App
+VIPER_PATH = viper
 OS_MACHINE_PATH = $(OS_PATH)/os_machine/$(TARGET)
 
 #############################################################################

@@ -34,20 +34,22 @@ tpl_status tpl_send_static_internal_message(
     tpl_com_data        *data
     )
 {
+    tpl_status result = E_OK;
+    
     /*  cast the base mo to the correct type of mo                          */
     tpl_internal_sending_mo *ismo = (tpl_internal_sending_mo *)smo;
     /*  get the first of the receiving mo                                   */
     tpl_data_receiving_mo *rmo = (tpl_data_receiving_mo *)ismo->internal_target;
     /*  iterate through the receiving mo to copy the data to the receivers  */
-    while (rmo != NULL) {
-        rmo->receiver(rmo, data);
+    while ((result == E_OK) && (rmo != NULL)) {
+        result = rmo->receiver(rmo, data);
         rmo = (tpl_data_receiving_mo *)rmo->base_mo.next_mo;
     }
     
     /*  notify the receivers    */
     tpl_notify_receiving_mos(ismo->internal_target);
         
-    return E_OK;
+    return result;
 }
 
 /*
@@ -112,16 +114,27 @@ tpl_status tpl_receive_static_internal_queued_message(
     tpl_com_data *dst = NULL;
     /*  cast the base receiving mo to the correct type of mo    */
     tpl_queue *rq = &(((tpl_internal_receiving_queued_mo *)rmo)->queue);
+    /*  get the dynamic part of the queue                       */
+    struct TPL_QUEUE_DYNAMIC    *dq = rq->dyn_desc;
     
     /*  get the buffer to perform the write                     */
-    if ((dst = tpl_queue_element_for_write(rq)) != NULL) {
+    dst = tpl_queue_element_for_write(rq);
+    if (dst != NULL)
+    {
         int size = rq->element_size;
-        while (size-- > 0) {
+        while (size > 0)
+        {
             *dst++ = *data++;
+            size--;
         }
+        
+        /* update the current size of the queue */
+        dq->size += rq->element_size;
+
         return E_OK;
     }
-    else {
+    else
+    {
         return E_COM_LIMIT;
     }
 }

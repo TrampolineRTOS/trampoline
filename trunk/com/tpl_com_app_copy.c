@@ -95,27 +95,44 @@ tpl_status tpl_copy_from_queued(
         at the end of the struct.                                           */
     tpl_queue   *queue = &((tpl_internal_receiving_queued_mo *)rmo)->queue;
 
+    /*  Get the queue dynamic descriptor                                    */
+    struct TPL_QUEUE_DYNAMIC    *dq = queue->dyn_desc;
+
     /*  Get a pointer to the source data                                    */
     tpl_com_data    *p = tpl_queue_element_for_read(queue);
     
     /*  Do the copy if the pointer is not NULL                              */
-    if (p != NULL) {
+    if (p != NULL)
+    {
         tpl_message_size    size = queue->element_size;
-        while (size-- > 0) {
+        
+        while (size-- > 0)
+        {
             *data++ = *p++;
         }
-        if (queue->dyn_desc->overflow) {
-            queue->dyn_desc->overflow = FALSE;
+        
+        /*  dec the queue size  */
+        dq->size -= queue->element_size;
+        /*   adjust the index   */
+        dq->index += queue->element_size;
+        
+        if (dq->index >= queue->max_size)
+        {
+            dq->index = 0;
+        }
+        
+        if (dq->overflow)
+        {
+            dq->overflow = FALSE;
             result =  E_COM_LIMIT;
         }
     }
-    else {
+    else
+    {
         result = E_COM_NOMSG;
     }
     
     return result;
-    
-    /* TODO reset notification flags    */
 }
 
 /* End of file tpl_com_app_copy.c   */

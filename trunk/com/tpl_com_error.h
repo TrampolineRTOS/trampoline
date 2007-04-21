@@ -28,7 +28,7 @@ union COM_PARAM_BLOCK {
 };
 
 struct COM_PARAM_PARAM_BLOCK {
-    ApplicationDataRef      data_ref;
+    tpl_com_data            *data_ref;
     LengthRef               length_ref;
     union COM_PARAM_BLOCK   id_or_mode;
 };
@@ -167,7 +167,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
  */
 #ifdef WITH_COM_ERROR_HOOK
 #   define STORE_COM_APPLICATION_DATA_REF(data_ref)   \
-    tpl_com_service.parameters.data_ref = (data_ref);
+    tpl_com_service.parameters.data_ref = (tpl_com_data *)(data_ref);
 #else
 #   define STORE_COM_APPLICATION_DATA_REF(data_ref)
 #endif

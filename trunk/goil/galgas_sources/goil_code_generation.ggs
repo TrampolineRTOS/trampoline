@@ -111,6 +111,8 @@ routine init_prefixes ?!@prefix_map prefix :
               !"&notification_of_message_" !"$NOTIFICATION_PTR$"] ;
     [!?prefix add ![@lstring new !"error_notification" !here]
               !"error_notification_of_message_" !"$NOTIFICATION$"] ;
+    [!?prefix add ![@lstring new !"flag_fct" !here]
+              !"tpl_set_flag_" !"$FLAGFUNCTION$"] ;
     [!?prefix add ![@lstring new !"error_notif_ptr" !here]
               !"&error_notification_of_message_" !"$NOTIFICATION_PTR$"] ;
     [!?prefix add ![@lstring new !"msg_buf" !here]
