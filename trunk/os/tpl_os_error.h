@@ -1098,6 +1098,23 @@ void tpl_call_error_hook(const tpl_status error);
 #endif
 
 /**
+ * @def LOCK_WHEN_TASK_OR_ISR
+ *
+ * Locks only when NO_TASK or NO_ISR is not defined.
+ *
+ * @see #UNLOCK_WHEN_TASK_OR_ISR
+ */
+#if defined(NO_ISR) && defined(NO_TASK)
+#   define LOCK_WHEN_TASK_OR_ISR()
+#   define UNLOCK_WHEN_TASK_OR_ISR()
+#else
+#   define LOCK_WHEN_TASK_OR_ISR()     \
+    tpl_get_task_lock();
+#   define UNLOCK_WHEN_TASK_OR_ISR()   \
+    tpl_release_task_lock();
+#endif
+
+/**
  * @def LOCK_WHEN_RESOURCE
  *
  * Locks only when NO_RESOURCE is not defined.
@@ -1148,10 +1165,11 @@ void tpl_call_error_hook(const tpl_status error);
 /* !NO_TASK and extended error checking (OS_EXTENDED)   */
 #if !defined(NO_TASK) && defined(OS_EXTENDED)
     /* E_OK or E_OS_LIMIT   */
-#   define CHECK_TASK_ID_ERROR(task_id,result)                  \
-    if((result == (tpl_status)E_OK) && ((task_id) >= (tpl_task_id)TASK_COUNT))\
-    {                                                           \
-        result = (tpl_status)E_OS_ID;                                       \
+#   define CHECK_TASK_ID_ERROR(task_id,result)      \
+    if  ((result == (tpl_status)E_OK) &&            \
+        ((task_id) >= (tpl_task_id)TASK_COUNT))     \
+    {                                               \
+        result = (tpl_status)E_OS_ID;               \
     }
 #endif
 
