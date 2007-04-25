@@ -233,7 +233,7 @@ tpl_status tpl_counter_tick(tpl_counter *counter)
             alarm = counter->next_alarm_to_raise;
         }
     }
-  return need_resched;
+    return need_resched;
 }
 
 /* End of file tpl_alarm_kernel.c */
