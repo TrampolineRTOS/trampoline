@@ -29,7 +29,7 @@
 #include "tpl_os_it.h"
 //#include "tpl_os_generated_configuration.h"
 
-#define EE_BIT      0x80
+#define EE_BIT      0x8000
 
 #define INT_CONTEXT 0
 #define FP_CONTEXT  4
