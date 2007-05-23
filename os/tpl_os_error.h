@@ -388,6 +388,14 @@ void tpl_call_error_hook(const tpl_status error);
  */
 #define OSServiceId_ShutdownOS                  26
 
+/**
+ * @def OSServiceId_TerminateISR
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #TerminateISR
+ */
+#define OSServiceId_TerminateISR                32
+
 /************************************************************************
  * macros to access the service id and its parameters from hook routine *
  ************************************************************************/
@@ -1165,11 +1173,11 @@ void tpl_call_error_hook(const tpl_status error);
 /* !NO_TASK and extended error checking (OS_EXTENDED)   */
 #if !defined(NO_TASK) && defined(OS_EXTENDED)
     /* E_OK or E_OS_LIMIT   */
-#   define CHECK_TASK_ID_ERROR(task_id,result)      \
-    if  ((result == (tpl_status)E_OK) &&            \
-        ((task_id) >= (tpl_task_id)TASK_COUNT))     \
-    {                                               \
-        result = (tpl_status)E_OS_ID;               \
+#   define CHECK_TASK_ID_ERROR(task_id,result)                          \
+    if  ((result == (tpl_status)E_OK) &&                                \
+        (((task_id) >= (tpl_task_id)TASK_COUNT) || ((task_id) < 0)))    \
+    {                                                                   \
+        result = (tpl_status)E_OS_ID;                                   \
     }
 #endif
 
@@ -1261,11 +1269,12 @@ void tpl_call_error_hook(const tpl_status error);
  * @note checking is disabled when OS_EXTENDED is not defined
  */
 #ifdef OS_EXTENDED
-#   define CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)        \
-    if (tpl_task_table[task_id]->exec_desc.static_desc->type != \
-        (tpl_exec_obj_type)TASK_EXTENDED)                       \
-    {                                                           \
-        result = (tpl_status)E_OS_ACCESS;                       \
+#   define CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)            \
+    if ((result == (tpl_status)E_OK) &&                             \
+        (tpl_task_table[task_id]->exec_desc.static_desc->type !=    \
+        (tpl_exec_obj_type)TASK_EXTENDED))                          \
+    {                                                               \
+        result = (tpl_status)E_OS_ACCESS;                           \
     }
 #else
 #   define CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)
@@ -1283,8 +1292,9 @@ void tpl_call_error_hook(const tpl_status error);
  */
 #ifdef OS_EXTENDED
 #   define CHECK_NOT_EXTENDED_RUNNING_ERROR(result)                     \
-    if (((tpl_task *)tpl_running_obj)->exec_desc.static_desc->type !=   \
-        (tpl_exec_obj_type)TASK_EXTENDED) {                             \
+    if ((result == (tpl_status)E_OK) &&                                 \
+        (((tpl_task *)tpl_running_obj)->exec_desc.static_desc->type !=  \
+        (tpl_exec_obj_type)TASK_EXTENDED)) {                            \
         result = (tpl_status)E_OS_ACCESS;                               \
     }
 #else
@@ -1303,11 +1313,12 @@ void tpl_call_error_hook(const tpl_status error);
  * @note checking is disabled when OS_EXTENDED is not defined
  */
 #ifdef OS_EXTENDED
-#   define CHECK_SUSPENDED_TASK_ERROR(task_id,result)           \
-    if (tpl_task_table[task_id]->exec_desc.state ==             \
-        (tpl_exec_state)SUSPENDED)                              \
-    {                                                           \
-        result = (tpl_status)E_OS_STATE;                        \
+#   define CHECK_SUSPENDED_TASK_ERROR(task_id,result)                   \
+    if ((result == (tpl_status)E_OK) &&                                 \
+        (tpl_task_table[task_id]->exec_desc.state ==                    \
+        (tpl_exec_state)SUSPENDED))                                     \
+    {                                                                   \
+        result = (tpl_status)E_OS_STATE;                                \
     }
 #else
 #   define CHECK_SUSPENDED_TASK_ERROR(task_id,result)
@@ -1406,12 +1417,12 @@ void tpl_call_error_hook(const tpl_status error);
 #   define CHECK_RESOURCE_ID_ERROR(res_id,result)
 #endif
 
-/* NO_TASK and extended error checking (OS_EXTENDED)        */
+/* NO_RESOURCE and extended error checking (OS_EXTENDED)    */
 #if defined(NO_RESOURCE) && defined(OS_EXTENDED)
     /* E_OS_ID is returned in this case  */
 #   define CHECK_RESOURCE_ID_ERROR(res_id,result)               \
     if ((result == (tpl_status)E_OK) &&                         \
-        ((res_id) != (tpl_resource_id)-1))                      \
+        ((res_id) != (tpl_resource_id)RES_SCHEDULER))           \
     {                                                           \
         result = (tpl_status)E_OS_ID;                           \
     }
@@ -1422,8 +1433,8 @@ void tpl_call_error_hook(const tpl_status error);
     /* E_OK or E_OS_LIMIT   */
 #   define CHECK_RESOURCE_ID_ERROR(res_id,result)               \
     if ((result == (tpl_status)E_OK) &&                         \
-        (((res_id) >= (tpl_resource_id)RESOURCE_COUNT) ||       \
-         ((res_id) < (tpl_resource_id)-1)))                     \
+        (((res_id) >= ((tpl_resource_id)RESOURCE_COUNT+1)) ||   \
+         ((res_id) < 0)))                     \
     {                                                           \
         result = (tpl_status)E_OS_ID;                           \
     }

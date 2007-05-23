@@ -116,7 +116,7 @@ static tpl_exec_common *tpl_exec_obj_list_head = NULL;
 
 u8 tpl_os_state = OS_INIT; /* see doc in header file declaration */
 
-tpl_resource_id RES_SCHEDULER = -1;  /* see doc in header declaration */
+tpl_resource_id RES_SCHEDULER = RESOURCE_COUNT; /* see doc in header declaration */
 
 /**
  * The scheduler resource descriptor
