@@ -70,7 +70,7 @@ StatusType ActivateTask(const TaskType task_id)
 }
 
 StatusType TerminateTask(void)
-{
+{    
     /*  init the error to no error  */
     StatusType result = E_OK;
 

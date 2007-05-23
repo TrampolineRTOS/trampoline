@@ -38,7 +38,7 @@ StatusType GetResource(const ResourceType res_id)
     CHECK_RESOURCE_ID_ERROR(res_id,result)
 
     IF_NO_EXTENDED_ERROR(result)
-        if (res_id == -1)
+        if (res_id == RES_SCHEDULER)
         {
             res = &res_sched;
         }
@@ -88,7 +88,7 @@ StatusType ReleaseResource(const ResourceType res_id)
     CHECK_RESOURCE_ID_ERROR(res_id,result)
     
     IF_NO_EXTENDED_ERROR(result)
-        if (res_id == -1)
+        if (res_id == RES_SCHEDULER)
         {
             res = &res_sched;
         }

@@ -76,7 +76,7 @@ void StartOS(const AppModeType mode)
  */
 void ShutdownOS(const /*@unused@*/ StatusType error) 
 {
-    CALL_SHUTDOWN_HOOK(Error)
+    CALL_SHUTDOWN_HOOK(error)
     /* architecture dependant shutdown. */
     tpl_shutdown();
 }
