@@ -1,12 +1,26 @@
 /*
- * Count of the objects used in the application.
- * These informations are used by Trampoline to avoid
- * alloc structures when some os objects are not present.
- *
  * file: $HEADER$
+ *
+ * This file contains various defines used by Trampoline
+ * for conditional compiling.
  *
  * This file has been generated automatically by goil
  * on  $TIMESTAMP$
+ */
+
+#ifndef OJB_HEADER_H
+#define OJB_HEADER_H
+
+/*
+ * Configuration flags
+ */
+$CONFIG_FLAGS$
+
+/*
+ * Count of the objects used in the application.
+ * These informations are used by Trampoline to avoid to
+ * alloc structures when some os objects are not present.
+ *
  */
 
 /*
@@ -43,5 +57,7 @@
  * Define of RES_SCHEDULER priority
  */
 #define RES_SCHEDULER_PRIORITY  $RES_SCHEDULER_PRIORITY$
+
+#endif
 
 /* End of file $HEADER$ */
