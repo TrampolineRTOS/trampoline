@@ -1,3 +1,6 @@
+#ifndef APP_HEADER_H
+#define APP_HEADER_H
+
 /*=============================================================================
  * Declaration of event related defines and structures
  */
@@ -37,5 +40,7 @@ $FLAGSMACROS$
  * Declaration of messages identifiers
  */
 $MESSAGES$
+
+#endif
 
 /* End of file $HEADER$ */
