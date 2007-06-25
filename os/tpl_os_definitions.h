@@ -33,8 +33,9 @@
  *
  * @see #tpl_bool
  */
+#ifndef FALSE
 #define FALSE   ((tpl_bool)0)
-
+#endif
 /**
  * @def TRUE
  *
@@ -42,7 +43,9 @@
  *
  * @see #tpl_bool
  */
+#ifndef TRUE
 #define TRUE    ((tpl_bool)1)
+#endif
 
 #ifndef NULL
 #define NULL 0
@@ -60,8 +63,10 @@
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
  */
+#ifndef STATUSTYPEDEFINED
+#define STATUSTYPEDEFINED
 #define E_OK            0
-
+#endif
 /**
  * @def E_OS_ACCESS
  *

@@ -70,7 +70,11 @@ typedef tpl_resource_id ResourceType;
  *
  * see paragraph 13.4.3.1 page 58 of OSEK/VDX 2.2.2 spec
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType GetResource(const ResourceType res_id);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /**
  * Releases the resource
@@ -86,7 +90,11 @@ StatusType GetResource(const ResourceType res_id);
  *
  * see paragraph 13.4.3.2 page 59 of OSEK/VDX 2.2.2 spec
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType ReleaseResource(const ResourceType res_id);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /**
  * This special resource is used to deny preemption.
@@ -96,7 +104,11 @@ StatusType ReleaseResource(const ResourceType res_id);
  *
  * see paragraph 13.4.4 page 59 of OSEK/VDX 2.2.2 spec
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 extern ResourceType RES_SCHEDULER;
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 #endif /* TPL_OS_REZ_H */
 

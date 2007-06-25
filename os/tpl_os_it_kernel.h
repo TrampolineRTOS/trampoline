@@ -93,7 +93,11 @@ typedef struct TPL_ISR tpl_isr;
  *
  * @param interrupt service routine identifier
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 void tpl_central_interrupt_handler(const u16 id);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 #endif /* TPL_OS_IT_KERNEL_H */
 

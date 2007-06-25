@@ -37,7 +37,11 @@
  *
  * @param alarm     The alarm to insert.
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 void tpl_insert_alarm(tpl_alarm *alarm);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /**
  * @internal
@@ -47,7 +51,11 @@ void tpl_insert_alarm(tpl_alarm *alarm);
  *
  * @param alarm     The alarm to remove.
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 void tpl_remove_alarm(tpl_alarm *alarm);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /**
  * @internal
@@ -60,7 +68,11 @@ void tpl_remove_alarm(tpl_alarm *alarm);
  *
  * @param counter    A pointer to the counter
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 tpl_status tpl_counter_tick(tpl_counter *counter);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 #endif /* TPL_OS_ALARM_KERNEL_H */
 

@@ -82,9 +82,13 @@ typedef tpl_event_mask  *EventMaskRefType;
  *
  * see paragraph 13.5.3.1 page 60 of OSEK/VDX 2.2.2 spec
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType SetEvent(
     const TaskType      task_id,
     const EventMaskType event);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /**
  * Clear event of current task
@@ -97,7 +101,11 @@ StatusType SetEvent(
  *
  * see paragraph 13.5.3.2 page 61 of OSEK/VDX 2.2.2 spec
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType ClearEvent(const EventMaskType event);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /**
  * Get the state of an event
@@ -111,9 +119,13 @@ StatusType ClearEvent(const EventMaskType event);
  *
  * see paragraph 13.5.3.3 page 61 of OSEK/VDX 2.2.2 spec
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType GetEvent(
     const TaskType          task_id,
     const EventMaskRefType  event);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /**
  * Waits for some bits in the event
@@ -127,7 +139,11 @@ StatusType GetEvent(
  *
  * see paragraph 13.5.3.4 page 61 of OSEK/VDX 2.2.2 spec
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType WaitEvent(const EventMaskType event);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 #endif /* TPL_OS_EVENT */
 

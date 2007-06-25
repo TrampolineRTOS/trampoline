@@ -34,6 +34,8 @@
  *
  * See page 63 of the OSEK spec
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType GetAlarmBase(
     const AlarmType     alarm_id,
     AlarmBaseRefType    info)
@@ -63,12 +65,16 @@ StatusType GetAlarmBase(
     
     return result;
 }
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /*
  * GetAlarm
  *
  * See page 63 of the OSEK spec
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType GetAlarm(
     const AlarmType alarm_id,
     TickRefType     tick)
@@ -105,12 +111,16 @@ StatusType GetAlarm(
     
     return result;
 }
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /*
  * SetRelAlarm
  *
  * See page 63 of the OSEK spec
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType SetRelAlarm(
     const AlarmType alarm_id,
     const TickType  increment,
@@ -152,12 +162,16 @@ StatusType SetRelAlarm(
     
     return result;
 }
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /*
  * SetRelAlarm
  *
  * See page 64 of the OSEK spec
  */
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 StatusType SetAbsAlarm(
     const AlarmType alarm_id,
     const TickType  start,
@@ -199,12 +213,16 @@ StatusType SetAbsAlarm(
     
     return result;
 }
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /*
  * CancelAlarm
  *
  * See page 65 of the OSEK spec
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType CancelAlarm(const AlarmType alarm_id)
 {
     StatusType result = E_OK;
@@ -237,5 +255,7 @@ StatusType CancelAlarm(const AlarmType alarm_id)
     
     return result;
 }
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /* End of file tpl_os_alarm.c */

@@ -34,15 +34,21 @@
 
 static AppModeType application_mode;
 
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 AppModeType GetActiveApplicationMode(void)
 {
     return application_mode;
 }
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /*
  * StartOS can be called by the app to start the OS in
  * an appropriate mode.
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 void StartOS(const AppModeType mode)
 {
     application_mode = mode;
@@ -70,15 +76,21 @@ void StartOS(const AppModeType mode)
     /*  Fall back to the idle loop */
     tpl_sleep();
 }
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /*
  * ShutdownOS can be called by the app to shutdown it
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 void ShutdownOS(const /*@unused@*/ StatusType error) 
 {
     CALL_SHUTDOWN_HOOK(error)
     /* architecture dependant shutdown. */
     tpl_shutdown();
 }
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /* End of file tpl_os.c */
