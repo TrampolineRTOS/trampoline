@@ -65,7 +65,11 @@
  *
  * see paragraph 13.2.3.1 page 50 of OSEK/VDX 2.2.3 spec
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType ActivateTask(const TaskType task_id);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /**
  * Terminates the execution of a task.
@@ -78,7 +82,11 @@ StatusType ActivateTask(const TaskType task_id);
  *
  * see paragraph 13.2.3.2 page 51 of OSEK/VDX 2.2.3 spec
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType TerminateTask(void);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /**
  * Chain terminaison of current task with activation of another.
@@ -93,7 +101,11 @@ StatusType TerminateTask(void);
  *
  * see paragraph 13.2.3.3 page 51 of OSEK/VDX 2.2.3 spec
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType ChainTask(const TaskType task_id);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /**
  * Call to the scheduler.
@@ -104,7 +116,11 @@ StatusType ChainTask(const TaskType task_id);
  *
  * see paragraph 13.2.3.4 page 52 of OSEK/VDX 2.2.3 spec
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType Schedule(void);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /**
  * Gives the identifier of the running task
@@ -116,7 +132,11 @@ StatusType Schedule(void);
  *
  * see paragraph 13.2.3.5 page 53 of OSEK/VDX 2.2.3 spec
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType GetTaskID(TaskRefType task_id);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /**
  * Gives the state of a task
@@ -130,9 +150,13 @@ StatusType GetTaskID(TaskRefType task_id);
  *
  * see paragraph 13.2.3.6 page 53 of OSEK/VDX 2.2.3 spec
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType GetTaskState(
     const TaskType      task_id,
     TaskStateRefType    state);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 #endif /* TPL_OS_TASK_H */
 

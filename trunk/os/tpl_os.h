@@ -77,7 +77,11 @@ typedef tpl_application_mode AppModeType;
  *
  * see paragraph 13.7.2.1 page 66 of OSEK/VDX 2.2.2 spec
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 AppModeType GetActiveApplicationMode(void);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /**
  * Starts Trampoline
@@ -86,7 +90,11 @@ AppModeType GetActiveApplicationMode(void);
  *
  * see paragraph 13.7.2.2 page 66 of OSEK/VDX 2.2.2 spec
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 void StartOS(const AppModeType mode);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /**
  * Stops Trampoline
@@ -95,7 +103,11 @@ void StartOS(const AppModeType mode);
  *
  * see paragraph 13.7.2.3 page 67 of OSEK/VDX 2.2.2 spec
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 void ShutdownOS(const StatusType error);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 #endif /* TPL_OS_H */
 

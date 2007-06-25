@@ -31,12 +31,20 @@
 /*
  * Getting a resource.
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 extern void tpl_get_resource(tpl_resource *res);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /*
  * Releasing a resource
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 extern void tpl_release_resource(tpl_resource *res);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 #endif /* tpl_os_rez_kernel.h */
 

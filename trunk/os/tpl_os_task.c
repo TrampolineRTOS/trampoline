@@ -34,7 +34,8 @@
  *
  * see header file documentation or refer to the OSEK/VDX 2.2.2 specification
  */
-
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType ActivateTask(const TaskType task_id)
 {
     /*  init the error to no error  */
@@ -68,9 +69,13 @@ StatusType ActivateTask(const TaskType task_id)
     
     return result;
 }
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType TerminateTask(void)
-{    
+{
     /*  init the error to no error  */
     StatusType result = E_OK;
 
@@ -131,7 +136,11 @@ StatusType TerminateTask(void)
 
     return result;
 }
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType ChainTask(const TaskType task_id)
 {
     StatusType result = E_OK;
@@ -234,7 +243,11 @@ StatusType ChainTask(const TaskType task_id)
     
     return result;
 }
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType Schedule(void)
 {
     StatusType result = E_OK;
@@ -266,7 +279,11 @@ StatusType Schedule(void)
     
     return result;
 }
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType GetTaskID(TaskRefType task_id)
 {
     /*  get the task id from the task descriptor.
@@ -277,7 +294,11 @@ StatusType GetTaskID(TaskRefType task_id)
     
     return E_OK;
 }
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 StatusType GetTaskState(
     const TaskType      task_id,
     TaskStateRefType    state)
@@ -309,5 +330,7 @@ StatusType GetTaskState(
     
     return result;
 }
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /* End of file tpl_os_task.c */

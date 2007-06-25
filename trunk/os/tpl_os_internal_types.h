@@ -29,6 +29,7 @@
 
 #include "tpl_os_custom_types.h"
 #include "tpl_machine.h"
+#include "Compiler.h"
 
 /**
  * @def CONFORM_ECC1
@@ -144,7 +145,13 @@ typedef u8 tpl_status;
  * This type is used for various
  * callback function type in Trampoline.
  */
-typedef void (*tpl_callback_func)(void);
+/**********************************************************************
+**  J.Monsimier  22/05/2007 
+**  PR09: for S12: need to add __near for the compiler or the 
+**        pointer is considered at far and there is a stack pointer 
+**        error during function return in tpl_action_activate_task
+**********************************************************************/
+typedef void (*OS_CBK_CODE tpl_callback_func)(void);
 
 /************************
  * Forward declarations *
@@ -423,7 +430,13 @@ typedef u8 tpl_alarm_kind;
  *
  * Prototype for action functions
  */
-typedef tpl_status (*tpl_action_func)(
+/**********************************************************************
+**  J.Monsimier  22/05/2007 
+**  PR09: for S12: need to add __near for the compiler or the 
+**        pointer is considered at far and there is a stack pointer 
+**        error during function return in tpl_action_activate_task
+**********************************************************************/
+typedef tpl_status (*OS_CBK_CODE tpl_action_func)(
     const struct TPL_ACTION *
 );
 

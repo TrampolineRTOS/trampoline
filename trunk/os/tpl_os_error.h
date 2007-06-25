@@ -27,6 +27,7 @@
 #define TPL_OS_ERROR_H
 
 #include "tpl_os.h"
+#include "Os_Cfg.h"
 
 /*
  * Remember (see "The design of Trampoline") :
@@ -42,7 +43,11 @@
  * The function corresponding to this prototype should be provided
  * by the application
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 extern void ErrorHook(StatusType);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /**
  * @union ID_PARAM_BLOCK
@@ -166,14 +171,22 @@ typedef struct SERVICE_CALL_DESCRIPTOR tpl_service_call_desc;
  * - #STORE_EVENT_MASK
  * - #STORE_EVENT_MASK_REF
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 extern tpl_service_call_desc tpl_service;
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /**
  * this function is used to call the ErrorHook callback
  * 
  * @param tpl_status The error code which causes the call back
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 void tpl_call_error_hook(const tpl_status error);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /************************
  * Services identifiers *

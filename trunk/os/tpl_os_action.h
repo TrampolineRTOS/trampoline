@@ -81,9 +81,13 @@ tpl_setevent_action;
 /*
  * Notification functions prototypes
  */
+#define OS_START_SEC_CODE
+#include "Memmap.h"
 tpl_status tpl_action_callback(const tpl_action *action);
 tpl_status tpl_action_activate_task(const tpl_action *action);
 tpl_status tpl_action_setevent(const tpl_action *action);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 #endif /*  TPL_OS_ACTION_H  */
 
