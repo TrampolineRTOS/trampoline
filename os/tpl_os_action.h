@@ -78,14 +78,17 @@ struct TPL_SETEVENT_ACTION {
 typedef struct TPL_SETEVENT_ACTION
 tpl_setevent_action;
 
+
+#define OS_START_SEC_CODE
+#include "Memmap.h"
+
 /*
  * Notification functions prototypes
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 tpl_status tpl_action_callback(const tpl_action *action);
 tpl_status tpl_action_activate_task(const tpl_action *action);
 tpl_status tpl_action_setevent(const tpl_action *action);
+
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
 

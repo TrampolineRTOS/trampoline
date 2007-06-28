@@ -89,6 +89,10 @@ typedef tpl_alarm_id        AlarmType;
  */
 #define DeclareAlarm(alarm_id)
 
+
+#define OS_START_SEC_CODE
+#include "Memmap.h"
+
 /*
  * System services
  * see paragraph 13.6.3,
@@ -107,13 +111,10 @@ typedef tpl_alarm_id        AlarmType;
  *
  * see paragraph 13.6.3.1 page 63 of OSEK/VDX 2.2.2 spec
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 StatusType GetAlarmBase(
     const AlarmType     alarm_id,
     AlarmBaseRefType    info);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
+
 
 /**
  * Get relative ticks count before alarm exprires
@@ -127,13 +128,10 @@ StatusType GetAlarmBase(
  *
  * see paragraph 13.6.3.2 page 63 of OSEK/VDX 2.2.2 spec
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 StatusType GetAlarm(
     const AlarmType alarm_id,
     TickRefType tick);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
+
 
 /**
  * Changes the alarm trigger relative to the current counter
@@ -150,14 +148,11 @@ StatusType GetAlarm(
  *
  * see paragraph 13.6.3.3 page 63 of OSEK/VDX 2.2.2 spec
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 StatusType SetRelAlarm(
     const AlarmType alarm_id,
     const TickType  increment,
     const TickType  cycle);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
+
 
 /**
  * Changes the alarm trigger relative to the current counter
@@ -175,14 +170,11 @@ StatusType SetRelAlarm(
  *
  * see paragraph 13.6.3.3 page 63 of OSEK/VDX 2.2.2 spec
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 StatusType SetAbsAlarm(
     const AlarmType alarm_id,
     const TickType  start,
     const TickType  cycle);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
+
 
 /**
  * Cancels the alarm
@@ -195,17 +187,17 @@ StatusType SetAbsAlarm(
  *
  * see paragraph 13.6.3.3 page 63 of OSEK/VDX 2.2.2 spec
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 StatusType CancelAlarm(const AlarmType alarm_id);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
+
 
 /*
  * Operating system execution control
  * see paragraph 13.7,
  * pages 66+ of OSEK/VDX 2.2.2 spec
  */
+ 
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 #endif /* TPL_OS_ALARM_H */
 

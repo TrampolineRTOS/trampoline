@@ -33,53 +33,33 @@
 
 #define OS_START_SEC_CODE
 #include "Memmap.h"
+
 void EnableAllInterrupts(void)
 {
   __asm CLI ;
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void DisableAllInterrupts(void)
 {
   __asm SEI ;
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void ResumeAllInterrupts(void)
 {
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void SuspendAllInterrupts(void)
 {
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void ResumeOSInterrupts(void)
 {
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void SuspendOSInterrupts(void)
 {
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
+
 
 /*
  * TerminateISR
@@ -87,8 +67,6 @@ void SuspendOSInterrupts(void)
  * While this function is not part of the OSEK API, it is used
  * to terminate an ISR2 routine
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 StatusType TerminateISR2(void)
 {
     /*  init the error to no error  */
@@ -148,6 +126,7 @@ StatusType TerminateISR2(void)
     
     return result;
 }
+
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
 

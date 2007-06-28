@@ -69,15 +69,16 @@
  */
 #define OS_ISR2 3U
 
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "Memmap.h"
+
 /**
  * Currently running executable object. This "executable object" can be a task
  * or an interrupt service routine
  */
-#define OS_START_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
 extern tpl_exec_common  *tpl_running_obj;
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
+
 
 #ifndef NO_TASK
 /**
@@ -89,13 +90,9 @@ extern tpl_exec_common  *tpl_running_obj;
  * So a table of pointer is used. The size of this table is static
  * and known at compile time
  */
-#define OS_START_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
 extern tpl_task         *tpl_task_table[TASK_COUNT];
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
-
 #endif
+
 
 #ifndef NO_RESOURCE
 /**
@@ -103,13 +100,9 @@ extern tpl_task         *tpl_task_table[TASK_COUNT];
  *
  * Index in this array correspond to the #ResourceType of the resource
  */
-#define OS_START_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
 extern tpl_resource     *tpl_resource_table[RESOURCE_COUNT];
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
-
 #endif
+
 
 #ifndef NO_ALARM
 /**
@@ -117,13 +110,9 @@ extern tpl_resource     *tpl_resource_table[RESOURCE_COUNT];
  *
  * Index in this array correspond to the #AlarmType of the alarm
  */
-#define OS_START_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
 extern tpl_alarm        *tpl_alarm_table[ALARM_COUNT];
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
-
 #endif
+
 
 #ifndef NO_ISR
 /**
@@ -131,13 +120,9 @@ extern tpl_alarm        *tpl_alarm_table[ALARM_COUNT];
  *
  * Index in this array correspond to the Isr identifier
  */
-#define OS_START_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
 extern tpl_isr			*tpl_isr_table[ISR_COUNT];
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
-
 #endif
+
 
 /**
  * tpl_os_state stores the current state of Trampoline
@@ -152,72 +137,52 @@ extern tpl_isr			*tpl_isr_table[ISR_COUNT];
  * - #OS_IDLE
  * - #OS_ISR2
  */
-#define OS_START_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
 extern u8   tpl_os_state;
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
+
 
 /**
  * The scheduler resource descriptor
  *
  * @see #RES_SCHEDULER
  */
-#define OS_START_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
-
 extern tpl_resource res_sched;
 
 extern tpl_internal_resource INTERNAL_RES_SCHEDULER;
 
+
 #define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "Memmap.h"
+
+
+#define OS_START_SEC_CODE
 #include "Memmap.h"
 /**
  * Kernel functions
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 extern void tpl_schedule(const u8 from);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
-#define OS_START_SEC_CODE
-#include "Memmap.h"
+
 extern tpl_status tpl_activate_task(tpl_task *a_task);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
-#define OS_START_SEC_CODE
-#include "Memmap.h"
+
 extern tpl_status tpl_set_event(
     tpl_task                *a_task,
     const tpl_event_mask    incoming_event);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h" 
 
-#define OS_START_SEC_CODE
-#include "Memmap.h"   
 extern void tpl_init_exec_object(tpl_exec_common *exec_obj);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
-#define OS_START_SEC_CODE
-#include "Memmap.h"
+
 extern void tpl_put_exec_object(
     tpl_exec_common *exec_obj,
     const u8        kind);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
-#define OS_START_SEC_CODE
-#include "Memmap.h"    
+   
 extern void tpl_init_os(const tpl_application_mode app_mode);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
-#define OS_START_SEC_CODE
-#include "Memmap.h"
+
 extern void tpl_release_internal_resource(tpl_exec_common *a_task);
+
+
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
 

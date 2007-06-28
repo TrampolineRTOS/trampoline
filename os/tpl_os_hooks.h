@@ -90,15 +90,16 @@
 #   define CALL_SHUTDOWN_HOOK(error)
 #endif
 
+
+#define OS_START_SEC_CODE
+#include "Memmap.h"
+
+
 #ifdef WITH_PRE_TASK_HOOK
 /**
  * Prototype of the pre-task hook routine
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 extern void PreTaskHook(void);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 #endif
 
@@ -106,11 +107,7 @@ extern void PreTaskHook(void);
 /**
  * Prototype of the post-task hook routine
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 extern void PostTaskHook(void);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 #endif
 
@@ -118,11 +115,7 @@ extern void PostTaskHook(void);
 /**
  * Prototype of the startup hook routine
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void StartupHook(void);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 #endif
 
@@ -130,13 +123,13 @@ void StartupHook(void);
 /**
  * Prototype of the shutdown hook routine
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void ShutdownHook(StatusType);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 #endif
+
+
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 #endif /* TPL_OS_HOOKS_H */
 

@@ -27,11 +27,12 @@
 #include "tpl_os_kernel.h"
 #include "tpl_os_action.h"
 
+#define OS_START_SEC_CODE
+#include "Memmap.h"
+
 /**
  *  action function for action call back
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 tpl_status tpl_action_callback(const tpl_action *action)
 {
     /*
@@ -44,14 +45,10 @@ tpl_status tpl_action_callback(const tpl_action *action)
     
     return E_OK;
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 /**
  *  action function for action by task activation
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 tpl_status tpl_action_activate_task(const tpl_action *action)
 {
     /*
@@ -64,14 +61,10 @@ tpl_status tpl_action_activate_task(const tpl_action *action)
         ((const tpl_task_activation_action *)action)->task
     );
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 /**
  *  action function for action by setting event
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 tpl_status tpl_action_setevent(const tpl_action *action)
 {
     /*
@@ -85,6 +78,7 @@ tpl_status tpl_action_setevent(const tpl_action *action)
         ((const tpl_setevent_action *)action)->mask
     );
 }
+
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
 
