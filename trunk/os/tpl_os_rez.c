@@ -20,11 +20,12 @@
 #include "tpl_os_rez_kernel.h"
 #include "tpl_os_error.h"
 
+#define OS_START_SEC_CODE
+#include "Memmap.h"
+
 /*
  * OSEK/VDX API services
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 StatusType GetResource(const ResourceType res_id)
 {
     /*  init the error to no error  */
@@ -74,11 +75,7 @@ StatusType GetResource(const ResourceType res_id)
     
     return result;
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 StatusType ReleaseResource(const ResourceType res_id)
 {
     /*  init the error to no error  */
@@ -131,6 +128,7 @@ StatusType ReleaseResource(const ResourceType res_id)
     
     return result;
 }
+
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
 

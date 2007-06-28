@@ -28,11 +28,12 @@
 #include "tpl_os_kernel.h"
 #include "tpl_os_rez_kernel.h"
 
+#define OS_START_SEC_CODE
+#include "Memmap.h"
+
 /*
  * Getting a resource.
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void tpl_get_resource(tpl_resource *res)
 {
     /*  set the owner of the resource to the calling task       */
@@ -52,14 +53,10 @@ void tpl_get_resource(tpl_resource *res)
         tpl_running_obj->priority = res->ceiling_priority;
     }
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 /*
  * Releasing a resource
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void tpl_release_resource(tpl_resource *res)
 {
     /*  get the saved priority  */
@@ -72,6 +69,7 @@ void tpl_release_resource(tpl_resource *res)
 
     tpl_schedule(FROM_TASK_LEVEL);    
 }
+
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 

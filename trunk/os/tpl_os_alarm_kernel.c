@@ -28,9 +28,8 @@
 
 #define OS_START_SEC_CODE
 #include "Memmap.h"
+
 static tpl_status tpl_raise_alarm(tpl_alarm *alarm);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 /*
  * tpl_insert_alarm
@@ -41,8 +40,6 @@ static tpl_status tpl_raise_alarm(tpl_alarm *alarm);
  * and an alarm is inserted starting from the
  * head of the list
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void tpl_insert_alarm(tpl_alarm *alarm)
 {
     /*  get the counter */
@@ -116,16 +113,12 @@ void tpl_insert_alarm(tpl_alarm *alarm)
     /*  Anyway, the alarm is put in the active state    */
     alarm->state = ALARM_ACTIVE;
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 /*
  * tpl_remove_alarm
  * remove an alarm from the alarm queue of the counter
  * it belongs to.
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void tpl_remove_alarm(tpl_alarm *alarm)
 {
     
@@ -164,8 +157,6 @@ void tpl_remove_alarm(tpl_alarm *alarm)
     /*  The alarm is put in the sleep state */
     alarm->state = ALARM_SLEEP;
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 /**
  * @internal
@@ -175,8 +166,6 @@ void tpl_remove_alarm(tpl_alarm *alarm)
  *
  * @param alarm     The alarm to raise.
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 static tpl_status tpl_raise_alarm(tpl_alarm *alarm)
 {
     tpl_status  result = E_OK;
@@ -201,8 +190,6 @@ static tpl_status tpl_raise_alarm(tpl_alarm *alarm)
     
     return result;
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 /*
  * tpl_counter_tick is called by the IT associated with a counter
@@ -216,8 +203,6 @@ static tpl_status tpl_raise_alarm(tpl_alarm *alarm)
  * Update: 2006-12-10: Does not perform the rescheduling. 
  * tpl_schedule must be called explicitly
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 tpl_status tpl_counter_tick(tpl_counter *counter)
 {
     tpl_alarm*  alarm;
@@ -253,6 +238,7 @@ tpl_status tpl_counter_tick(tpl_counter *counter)
     }
     return need_resched;
 }
+
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
 

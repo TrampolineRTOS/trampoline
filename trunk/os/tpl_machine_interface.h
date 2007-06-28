@@ -28,6 +28,9 @@
 
 #include "tpl_os_internal_types.h"
 
+#define OS_START_SEC_CODE
+#include "Memmap.h"
+
 /**
  * @internal
  *
@@ -38,14 +41,11 @@
  * @param new_context   Pointer to the context of the task that will be
  *                      scheduled.
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 extern void tpl_switch_context(
     tpl_context *old_context,
     tpl_context *new_context
 );
-#define OS_STOP_SEC_CODE
-#include "Memmap.h" 
+
    
 /**
  * @internal
@@ -58,14 +58,11 @@ extern void tpl_switch_context(
  * @param new_context   Pointer to the context of the task that will be
  *                      scheduled.
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 extern void tpl_switch_context_from_it(
     tpl_context *old_context,
     tpl_context *new_context
 );
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
+
     
 /**
  * @internal
@@ -74,33 +71,24 @@ extern void tpl_switch_context_from_it(
  *
  * @param exec_obj      Pointer to the task descriptor
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 extern void tpl_init_context(tpl_exec_common *exec_obj);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
+
 
 /**
  * @internal
  *
  * tpl_get_task_lock locks the kernel
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 extern void tpl_get_task_lock(void);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
+
 
 /**
  * @internal
  *
  * tpl_release_task_lock unlocks the kernel
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 extern void tpl_release_task_lock(void);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
+
 
 /**
  * @internal
@@ -108,11 +96,8 @@ extern void tpl_release_task_lock(void);
  * tpl_init_machine performs machine (hardware of virtual machine)
  * dependant initializations
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 extern void tpl_init_machine(void);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
+
 
 /**
  * @internal
@@ -120,11 +105,8 @@ extern void tpl_init_machine(void);
  * tpl_sleep is called by the idle task. It should put the system in sleep
  * mode of go in an infinite loop if there is no sleep mode available.
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 extern void tpl_sleep(void);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
+
 
 /**
  * @internal
@@ -132,9 +114,8 @@ extern void tpl_sleep(void);
  * tpl_shutdown shutdown trampoline. It is called by ShutdownOS and should
  * perform hardware or virtual machine shutdown.
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 extern void tpl_shutdown(void);
+
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
 

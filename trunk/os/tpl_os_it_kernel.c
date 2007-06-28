@@ -23,14 +23,11 @@
 
 #define OS_START_SEC_CODE
 #include "Memmap.h"
+
 static void tpl_activate_isr(tpl_isr *a_isr);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 /*
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 static void tpl_activate_isr(tpl_isr *a_isr)
 {
     if (a_isr->exec_desc.activate_count <
@@ -52,8 +49,6 @@ static void tpl_activate_isr(tpl_isr *a_isr)
         a_isr->exec_desc.activate_count++;
     }
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
  
 #ifndef NO_ISR
 /*
@@ -63,8 +58,6 @@ static void tpl_activate_isr(tpl_isr *a_isr)
  * task / interrupt handler, switches to the context of the handler
  * and calls the handler
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void tpl_central_interrupt_handler(const u16 id)
 {
     static s32 tpl_it_nesting =  0;
@@ -114,9 +107,10 @@ void tpl_central_interrupt_handler(const u16 id)
     }
 #endif
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 #endif /* NO_ISR */
+
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
 
 /* End of file tpl_os_it_kernel.c */

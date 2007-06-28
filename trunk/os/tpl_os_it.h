@@ -28,6 +28,10 @@
 
 #include "tpl_os_types.h"
 
+
+#define OS_START_SEC_CODE
+#include "Memmap.h"
+
 /*
  * Interrupt handling
  * see paragraph 13.3,
@@ -41,11 +45,8 @@
  *
  * @see #DisableAllInterrupts
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void EnableAllInterrupts(void);     
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
+
 
 /**
  * Disable all interrupts
@@ -54,11 +55,8 @@ void EnableAllInterrupts(void);
  *
  * @see #EnableAllInterrupts
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void DisableAllInterrupts(void);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
+
 
 /** 
  * Resume all interrupts
@@ -67,11 +65,8 @@ void DisableAllInterrupts(void);
  *
  * @see #SuspendAllInterrupts
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void ResumeAllInterrupts(void);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
+
 
 /**
  * Suspend all interrupts
@@ -80,11 +75,8 @@ void ResumeAllInterrupts(void);
  *
  * @see #ResumeAllInterrupts
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void SuspendAllInterrupts(void);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
+
 
 /** 
  * Resume category 2 interrupts
@@ -93,11 +85,8 @@ void SuspendAllInterrupts(void);
  * 
  * @see #SuspendOSInterrupts
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void ResumeOSInterrupts(void);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
+
 
 /**
  * Suspend category 2 interrupts
@@ -106,11 +95,8 @@ void ResumeOSInterrupts(void);
  *
  * @see #ResumeOSInterrupts
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void SuspendOSInterrupts(void);
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
+
 
 /**
  * Additional non-standard system service to terminate a category 2 interrupt
@@ -118,9 +104,9 @@ void SuspendOSInterrupts(void);
  *
  * This service is equivalent to TerminateTask but for ISR2
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 StatusType TerminateISR2(void);
+
+
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
 

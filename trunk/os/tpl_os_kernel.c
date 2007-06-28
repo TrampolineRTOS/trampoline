@@ -158,6 +158,9 @@ tpl_internal_resource INTERNAL_RES_SCHEDULER = {
 #include "Memmap.h"
 
 
+#define OS_START_SEC_CODE
+#include "Memmap.h"
+
 /**
  * @internal
  *
@@ -168,8 +171,6 @@ tpl_internal_resource INTERNAL_RES_SCHEDULER = {
  *
  * @return highest priority executable object descriptor
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 static /*@null@*/ tpl_exec_common *tpl_get_exec_object(void)
 {
     tpl_exec_common *current = tpl_exec_obj_list_head;
@@ -197,8 +198,6 @@ static /*@null@*/ tpl_exec_common *tpl_get_exec_object(void)
     }
     return current; 
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 /**
  * @internal
@@ -209,8 +208,6 @@ static /*@null@*/ tpl_exec_common *tpl_get_exec_object(void)
  * @param exec_obj address of the executable object descriptor
  * @param kind can be one of #PREEMPTED_EXEC_OBJ or #NEWLY_ACTIVATED_EXEC_OBJ
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void tpl_put_exec_object(
     tpl_exec_common *exec_obj,
     const u8        kind)
@@ -313,8 +310,6 @@ void tpl_put_exec_object(
         }
     }
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 /**
  * @internal
@@ -323,8 +318,6 @@ void tpl_put_exec_object(
  *
  * @param task task from which internal resource is got
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 static void tpl_get_internal_resource(tpl_exec_common *a_task)
 {
     tpl_internal_resource *rez = a_task->static_desc->internal_resource;
@@ -336,8 +329,6 @@ static void tpl_get_internal_resource(tpl_exec_common *a_task)
         a_task->priority = rez->ceiling_priority;
     }
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 /**
  * @internal
@@ -346,8 +337,6 @@ static void tpl_get_internal_resource(tpl_exec_common *a_task)
  *
  * @param task task from which internal resource is released
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void tpl_release_internal_resource(tpl_exec_common *a_task)
 {
     tpl_internal_resource *rez = a_task->static_desc->internal_resource;
@@ -358,8 +347,6 @@ void tpl_release_internal_resource(tpl_exec_common *a_task)
         a_task->priority = rez->owner_prev_priority;
     }
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 /**
  * @internal
@@ -371,8 +358,6 @@ void tpl_release_internal_resource(tpl_exec_common *a_task)
  * 
  * @param from can be one of #FROM_TASK_LEVEL or #FROM_IT_LEVEL
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void tpl_schedule(const u8 from)
 {
     tpl_exec_common *old_running_obj;
@@ -507,8 +492,6 @@ void tpl_schedule(const u8 from)
         }
     }
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 /**
  * @internal
@@ -522,8 +505,6 @@ void tpl_schedule(const u8 from)
  *
  * @param task reference of the task's identifier
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 tpl_status tpl_activate_task(tpl_task *a_task)
 {
     tpl_status result = E_OS_LIMIT;
@@ -551,8 +532,6 @@ tpl_status tpl_activate_task(tpl_task *a_task)
 
     return result;
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 /**
  * @internal
@@ -562,8 +541,6 @@ tpl_status tpl_activate_task(tpl_task *a_task)
  * @param task              Pointer to the task descriptor
  * @param incoming_event    Event mask
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 tpl_status tpl_set_event(
     tpl_task                *a_task,
     const tpl_event_mask    incoming_event)
@@ -608,8 +585,6 @@ tpl_status tpl_set_event(
     
     return result;
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 /**
  * @internal
@@ -623,8 +598,6 @@ tpl_status tpl_set_event(
  *
  * @param exec_obj address of the executable object descriptor
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void tpl_init_exec_object(tpl_exec_common *exec_obj)
 {
     /*  The priority is set to the base priority of the executable object    */
@@ -649,16 +622,12 @@ void tpl_init_exec_object(tpl_exec_common *exec_obj)
         ((tpl_task *)exec_obj)->evt_set = ((tpl_task *)exec_obj)->evt_wait = 0;
     }
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 /**
  * @internal 
  *
  * Initialization of Trampoline
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 void tpl_init_os(const tpl_application_mode app_mode)
 {
     u16         i;
@@ -710,6 +679,7 @@ void tpl_init_os(const tpl_application_mode app_mode)
 	
 #endif
 }
+
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
 

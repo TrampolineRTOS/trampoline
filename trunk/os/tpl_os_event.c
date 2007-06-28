@@ -22,11 +22,12 @@
 
 #include "tpl_os_event.h"
 
+#define OS_START_SEC_CODE
+#include "Memmap.h"
+
 /*
  * SetEvent
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 StatusType SetEvent(
     const TaskType      task_id,
     const EventMaskType event)
@@ -67,16 +68,12 @@ StatusType SetEvent(
     
     return result;
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 
 /*
  * ClearEvent
  * see paragraph 13.5.3.2, page 61 of OSEK spec 2.2.2
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 StatusType ClearEvent(const EventMaskType event)
 {
     StatusType result = E_OK;
@@ -110,15 +107,11 @@ StatusType ClearEvent(const EventMaskType event)
 
     return result;
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 /*
  * GetEvent
  * see paragraph 13.5.3.3, page 61 of OSEK spec 2.2.2
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 StatusType GetEvent(
     const TaskType          task_id,
     const EventMaskRefType  event)
@@ -154,15 +147,11 @@ StatusType GetEvent(
     
     return result;
 }
-#define OS_STOP_SEC_CODE
-#include "Memmap.h"
 
 /*
  * WaitEvent
  * see $13.5.3.4, page 61-62 of OSEK spec 2.2.2
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
 StatusType WaitEvent(const EventMaskType event)
 {
     StatusType result = E_OK;
@@ -213,6 +202,7 @@ StatusType WaitEvent(const EventMaskType event)
     
     return result;
 }
+
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
 
