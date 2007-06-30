@@ -30,7 +30,7 @@
 
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 /*
  * Getting a resource.
  */
@@ -44,7 +44,7 @@ extern void tpl_release_resource(tpl_resource *res);
 
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 #endif /* tpl_os_rez_kernel.h */
 

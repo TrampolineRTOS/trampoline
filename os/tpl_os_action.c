@@ -28,7 +28,7 @@
 #include "tpl_os_action.h"
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /**
  *  action function for action call back
@@ -80,6 +80,6 @@ tpl_status tpl_action_setevent(const tpl_action *action)
 }
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /* End of file tpl_os_action.c */

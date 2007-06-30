@@ -56,7 +56,7 @@ typedef tpl_resource_id ResourceType;
 
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /*
  * System services
@@ -106,7 +106,7 @@ extern ResourceType RES_SCHEDULER;
 
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 #endif /* TPL_OS_REZ_H */
 

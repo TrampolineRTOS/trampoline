@@ -32,7 +32,7 @@ tpl_os_rez_kernel.c
 #################### end of configuration.
 O_PATH = ../$(OBJ_PATH)
 
-CFLAGS += -I../$(OS_MACHINE_PATH) -I. -I../$(OIL_OUTPUT_PATH)
+CFLAGS += -I../$(OS_MACHINE_PATH) -I. -I../$(OIL_OUTPUT_PATH) -I../$(DEBUG_PATH)
 OS_OBJS = $(addprefix $(O_PATH)/,$(notdir $(OS_SRCS:.c=.o)))
 
 OS: $(OS_OBJS) AD

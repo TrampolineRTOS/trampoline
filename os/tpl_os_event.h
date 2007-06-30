@@ -65,7 +65,7 @@ typedef tpl_event_mask  *EventMaskRefType;
 
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /*
  * System services
@@ -138,7 +138,7 @@ StatusType WaitEvent(const EventMaskType event);
 
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 #endif /* TPL_OS_EVENT */
 

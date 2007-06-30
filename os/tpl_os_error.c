@@ -31,16 +31,16 @@
 #include "tpl_os_definitions.h"
 
 #define OS_START_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 tpl_service_call_desc tpl_service;
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /**
  * Function used to call the application error hook
@@ -68,7 +68,7 @@ void tpl_call_error_hook(const tpl_status error)
 }
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 #endif /* WITH_ERROR_HOOK */
 

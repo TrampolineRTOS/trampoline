@@ -49,7 +49,7 @@
 
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /*
  * Task Management
@@ -145,7 +145,7 @@ StatusType GetTaskState(
 
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 #endif /* TPL_OS_TASK_H */
 

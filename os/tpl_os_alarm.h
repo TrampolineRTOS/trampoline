@@ -91,7 +91,7 @@ typedef tpl_alarm_id        AlarmType;
 
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /*
  * System services
@@ -197,7 +197,7 @@ StatusType CancelAlarm(const AlarmType alarm_id);
  */
  
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 #endif /* TPL_OS_ALARM_H */
 

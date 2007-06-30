@@ -29,7 +29,7 @@
 #include "tpl_os_rez_kernel.h"
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /*
  * Getting a resource.
@@ -71,6 +71,6 @@ void tpl_release_resource(tpl_resource *res)
 }
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /* End of file tpl_os_rez_kernel.c */

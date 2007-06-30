@@ -30,7 +30,7 @@
 
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /*
  * Interrupt handling
@@ -108,7 +108,7 @@ StatusType TerminateISR2(void);
 
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 #endif /* TPL_OS_IT_H */
 
