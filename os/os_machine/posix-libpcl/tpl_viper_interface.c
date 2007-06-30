@@ -58,76 +58,86 @@ void viper_kill(void)
  */
 void tpl_viper_init(void)
 {
+    int  viper_path_ok = 0;
     char *viper_args[] = { NULL, NULL };
     char *viper_env[] = { NULL };
     
     /*  Check the VIPER_PATH environment variable is defined    */
     char *viper_path = getenv(VIPER_PATH);
     
-    if( viper_path != NULL && strcmp(viper_path,"") && access( viper_path, X_OK ) != 0 )
+    if( viper_path != NULL && access( viper_path, X_OK ) != 0 )
     {
-      fprintf(stderr,"Error: VIPER_PATH points to an unexecutable file. Exiting\n");                
-      exit(1);
+        viper_path_ok = 1;
     }
     else
     {
-      viper_path = "viper/viper";
-      if( access( viper_path, X_OK ) != 0 )
-      {
-        fprintf(stderr,"Error: VIPER_PATH is not defined. Exiting\n");
-        exit(1);
-      }
+        viper_path = "viper/viper";
+        if( access( viper_path, X_OK ) != 0 )
+        {
+            fprintf(stderr,"Error: VIPER_PATH is not defined. Exiting\n");
+            exit(1);
+        }
+        else
+        {
+            viper_path_ok = 1;
+        }
     }
     
-    /*  set up the first and only arg of viper to the path of viper */
-    viper_args[0] = viper_path;
-    
-    /*
-     * Init the shared objects (shared memory and semaphores) used to 
-     * communicate with Viper
-     */
-     
-    /*  build up the paths for the shared objects    */
-    sprintf(data_file_path, DATA_FILE_PATH, getpid());
-    sprintf(r_sem_file_path, R_SEM_FILE_PATH, getpid());
-    sprintf(w_sem_file_path, W_SEM_FILE_PATH, getpid());
-    
-    /*  create the shared memory object */
-  sh_mem = shm_open(data_file_path, (O_CREAT | O_RDWR ), 0600);
-  if (sh_mem < 0) {
-    perror("viper: fail to create the shared memory object");
-    exit(-1);
-  }
-  ftruncate(sh_mem,sizeof(vp_command));
-
-  /*  map it  */
-  command = mmap(0, sizeof(vp_command), ( PROT_WRITE | PROT_READ ), MAP_SHARED, sh_mem, 0);
-  if (command == (void *)-1) {
-    perror("viper: unable to map the shared memory object");
-    exit(-1);
-  }
-  
-  /*  create the reader semaphore */
-  r_com_sem = sem_open(r_sem_file_path, O_CREAT, 0600, 0);
-  if (r_com_sem == (void *)SEM_FAILED) {
-    perror("viper: unable to create the reader semaphore");
-  }
-
-  /*  create the writer semaphore */
-  w_com_sem = sem_open(w_sem_file_path, O_CREAT, 0600, 0);
-  if (w_com_sem == (void *)SEM_FAILED) {
-    perror("viper: unable to create the reading semaphore");
-  }
-
-    /*
-     * Fork the viper process
-     */
-    if ((viper_pid = fork()) == 0) {
-        /*  Launch viper    */
-        if (execve(viper_path, viper_args, viper_env) < 0) {
-            perror("viper: unable to launch viper");
-        }
+    if (viper_path_ok == 1) {
+        /*  set up the first and only arg of viper to the path of viper */
+        viper_args[0] = viper_path;
         
+        /*
+         * Init the shared objects (shared memory and semaphores) used to 
+         * communicate with Viper
+         */
+         
+        /*  build up the paths for the shared objects    */
+        sprintf(data_file_path, DATA_FILE_PATH, getpid());
+        sprintf(r_sem_file_path, R_SEM_FILE_PATH, getpid());
+        sprintf(w_sem_file_path, W_SEM_FILE_PATH, getpid());
+        
+        /*  create the shared memory object */
+        sh_mem = shm_open(data_file_path, (O_CREAT | O_RDWR ), 0600);
+        if (sh_mem < 0) {
+            perror("viper: fail to create the shared memory object");
+            exit(-1);
+        }
+        ftruncate(sh_mem,sizeof(vp_command));
+
+        /*  map it  */
+        command = mmap(0, sizeof(vp_command), ( PROT_WRITE | PROT_READ ), MAP_SHARED, sh_mem, 0);
+        if (command == (void *)-1) {
+            perror("viper: unable to map the shared memory object");
+            exit(-1);
+        }
+
+        /*  create the reader semaphore */
+        r_com_sem = sem_open(r_sem_file_path, O_CREAT, 0600, 0);
+            if (r_com_sem == (void *)SEM_FAILED) {
+            perror("viper: unable to create the reader semaphore");
+        }
+
+        /*  create the writer semaphore */
+        w_com_sem = sem_open(w_sem_file_path, O_CREAT, 0600, 0);
+            if (w_com_sem == (void *)SEM_FAILED) {
+            perror("viper: unable to create the reading semaphore");
+        }
+
+        /*
+         * Fork the viper process
+         */
+        if ((viper_pid = fork()) == 0) {
+            /*  Launch viper    */
+            if (execve(viper_path, viper_args, viper_env) < 0) {
+                printf("%s\n",viper_path);
+                perror("viper: unable to launch viper");
+                exit(1);
+            }
+        }
+    }
+    else
+    {
         exit(1);
     }
 }

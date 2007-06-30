@@ -47,6 +47,32 @@
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 
+void EnableAllInterrupts(void)
+{
+  __asm CLI ;
+}
+
+void DisableAllInterrupts(void)
+{
+  __asm SEI ;
+}
+
+void ResumeAllInterrupts(void)
+{
+}
+
+void SuspendAllInterrupts(void)
+{
+}
+
+void ResumeOSInterrupts(void)
+{
+}
+
+void SuspendOSInterrupts(void)
+{
+}
+
 #pragma NO_ENTRY
 #pragma NO_EXIT
 #pragma NO_RETURN

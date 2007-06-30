@@ -120,6 +120,26 @@ void tpl_shutdown(void)
 }
 
 /*
+ * This handler is called as interrupt routine when a sc is executed
+ * r3 contains what to do. If it contains 0, it is a tpl_get_task_lock
+ * and the interrupt bit (EE) that was saved in SRR1 (also known as SPR27)
+ * as to be cleared. If it is 1, it is a tpl_release_task_lock and EE has
+ * to be set.
+ */
+asm void tpl_sc_handler(void)
+{
+            nofralloc
+            /*  copy SRR1 into r2                                       */
+            mfspr   r4,27
+            /*  compare r3 to 0                                         */
+            cmpwi   r3,0
+            /*  xor r3 and r4 and put the result in r4                  */
+            bne     unlock
+            /*  clear the EE bit                                        */
+            
+}
+
+/*
  * tpl_get_task_lock is used to lock a critical section 
  * around the task management in the os.
  */

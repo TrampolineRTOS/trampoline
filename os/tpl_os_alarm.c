@@ -30,7 +30,7 @@
 #include "tpl_os_alarm.h"
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /*
  * GetAlarmBase
@@ -44,7 +44,7 @@ StatusType GetAlarmBase(
     StatusType result = E_OK;
     
 #ifndef NO_ALARM
-    tpl_alarm *alarm;
+    tpl_time_obj *alarm;
 #endif
 
     STORE_SERVICE(OSServiceId_GetAlarm)
@@ -57,8 +57,9 @@ StatusType GetAlarmBase(
     IF_NO_EXTENDED_ERROR(result)
         alarm = tpl_alarm_table[alarm_id];
         
-        /*  NOT YET IMPLEMENTED FOR mincycle and maxallowedvalue    */
-        info->ticksperbase = alarm->counter->ticks_per_base;
+        info->ticksperbase = alarm->stat_part->counter->ticks_per_base;
+        info->maxallowedvalue = alarm->stat_part->counter->max_allowed_value;
+        info->mincycle = alarm->stat_part->counter->min_cycle;
     IF_NO_EXTENDED_ERROR_END()
 #endif
     
@@ -79,7 +80,7 @@ StatusType GetAlarm(
     StatusType result = E_OK;
     
 #ifndef NO_ALARM
-    tpl_alarm *alarm;
+    tpl_time_obj *alarm;
 #endif
 
     STORE_SERVICE(OSServiceId_GetAlarm)
@@ -93,9 +94,9 @@ StatusType GetAlarm(
         alarm = tpl_alarm_table[alarm_id];
         
         /*  verify the alarm is active  */
-        if (alarm->state == (tpl_alarm_state)ALARM_ACTIVE)
+        if (alarm->state == (tpl_time_obj_state)ALARM_ACTIVE)
         {
-            *tick = alarm->date - alarm->counter->current_date;
+            *tick = alarm->date - alarm->stat_part->counter->current_date;
         }
         else
         {
@@ -122,7 +123,7 @@ StatusType SetRelAlarm(
     StatusType result = E_OK;
     
 #ifndef NO_ALARM
-    tpl_alarm *alarm;
+    tpl_time_obj *alarm;
 #endif
     
     STORE_SERVICE(OSServiceId_SetRelAlarm)
@@ -131,17 +132,19 @@ StatusType SetRelAlarm(
     STORE_TICK_2(cycle)
 
     CHECK_ALARM_ID_ERROR(alarm_id,result)
-
+    CHECK_ALARM_MAX_ALLOWED_VALUE_ERROR(alarm_id,increment,result)
+    CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
+    
 #ifndef NO_ALARM
     IF_NO_EXTENDED_ERROR(result)
         alarm = tpl_alarm_table[alarm_id];
     
-        if (alarm->state == (tpl_alarm_state)ALARM_SLEEP)
+        if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP)
         {
             /*  the alarm is not in use, proceed    */
-            alarm->date = alarm->counter->current_date + increment;
+            alarm->date = alarm->stat_part->counter->current_date + increment;
             alarm->cycle = cycle;
-            tpl_insert_alarm(alarm);
+            tpl_insert_time_obj(alarm);
         }
         else
         {
@@ -157,7 +160,7 @@ StatusType SetRelAlarm(
 }
 
 /*
- * SetRelAlarm
+ * SetAbsAlarm
  *
  * See page 64 of the OSEK spec
  */
@@ -169,7 +172,7 @@ StatusType SetAbsAlarm(
     StatusType result = E_OK;
     
 #ifndef NO_ALARM
-    tpl_alarm *alarm;
+    tpl_time_obj *alarm;
 #endif
     
     STORE_SERVICE(OSServiceId_SetAbsAlarm)
@@ -178,17 +181,19 @@ StatusType SetAbsAlarm(
     STORE_TICK_2(cycle)
 
     CHECK_ALARM_ID_ERROR(alarm_id,result)
+    CHECK_ALARM_MAX_ALLOWED_VALUE_ERROR(alarm_id,start,result)
+    CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
 
 #ifndef NO_ALARM
     IF_NO_EXTENDED_ERROR(result)
     alarm = tpl_alarm_table[alarm_id];
     
-    if (alarm->state == (tpl_alarm_state)ALARM_SLEEP)
+    if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP)
     {
         /*  the alarm is not in use, proceed    */
         alarm->date = start;
         alarm->cycle = cycle;
-        tpl_insert_alarm(alarm);
+        tpl_insert_time_obj(alarm);
     }
     else
     {
@@ -213,7 +218,7 @@ StatusType CancelAlarm(const AlarmType alarm_id)
     StatusType result = E_OK;
     
 #ifndef NO_ALARM
-    tpl_alarm *alarm;
+    tpl_time_obj *alarm;
 #endif
 
     STORE_SERVICE(OSServiceId_CancelAlarm)
@@ -225,9 +230,9 @@ StatusType CancelAlarm(const AlarmType alarm_id)
     IF_NO_EXTENDED_ERROR(result)
     alarm = tpl_alarm_table[alarm_id];
 
-    if (alarm->state == (tpl_alarm_state)ALARM_ACTIVE)
+    if (alarm->state == (tpl_time_obj_state)ALARM_ACTIVE)
     {
-        tpl_remove_alarm(alarm);
+        tpl_remove_time_obj(alarm);
     }
     else
     {
@@ -242,6 +247,6 @@ StatusType CancelAlarm(const AlarmType alarm_id)
 }
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /* End of file tpl_os_alarm.c */

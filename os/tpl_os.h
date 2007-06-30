@@ -29,6 +29,7 @@
 #define TPL_OS_H
 
 #include "tpl_os_definitions.h"
+#include "tpl_os_application_def.h"
 
 /*
  * Inclusion of the header for task related API services
@@ -71,7 +72,7 @@ typedef tpl_application_mode AppModeType;
  */
  
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /**
  * Gives the current application mode
@@ -103,7 +104,7 @@ void StartOS(const AppModeType mode);
 void ShutdownOS(const StatusType error);
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 #endif /* TPL_OS_H */
 

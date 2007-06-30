@@ -23,7 +23,7 @@
 #include "tpl_os_event.h"
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /*
  * SetEvent
@@ -126,8 +126,6 @@ StatusType GetEvent(
     
     CHECK_TASK_ID_ERROR(task_id,result)
 
-    LOCK_WHEN_NO_HOOK()
-    
     /*  checks the task is an extended one  */
     CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)
     /*  checks the task is not in the SUSPENDED state   */
@@ -139,8 +137,6 @@ StatusType GetEvent(
     IF_NO_EXTENDED_ERROR_END()
 #endif
     
-    UNLOCK_WHEN_NO_HOOK()
-
     PROCESS_ERROR(result)
 
     UNLOCK_WHEN_HOOK()
@@ -204,6 +200,6 @@ StatusType WaitEvent(const EventMaskType event)
 }
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /* End of file tpl_os_event.c */

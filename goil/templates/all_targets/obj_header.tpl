@@ -24,6 +24,11 @@ $CONFIG_FLAGS$
  */
 
 /*
+ * Declaration of the priority levels count
+ */
+#define PRIO_LEVEL_COUNT        $PRIO_LEVEL_COUNT$
+
+/*
  * Declaration of Task object count
  */
 #define TASK_COUNT              $TASK_COUNT$

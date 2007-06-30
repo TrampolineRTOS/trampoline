@@ -22,6 +22,7 @@ EXE    =  trampoline
 #############################################################################
 OS_PATH = os
 COM_PATH = com
+DEBUG_PATH = debug
 OBJ_PATH = .obj
 APP_PATH = App
 VIPER_PATH = viper
@@ -43,13 +44,7 @@ GOIL_TEMPLATE_PATH = ./goil/templates
 ALLFLAGS = \
 -Wall \
 -pedantic \
---std=c99 \
--DOS_EXTENDED 
-# -DWITH_ERROR_HOOK \
-# -DWITH_TASK_HOOK \
-# -DWITH_STARTUP_HOOK \
-# -DWITH_SHUTDOWN_HOOK 
-
+--std=c99 
 
 #compilation flags for C files
 CFLAGS = $(ALLFLAGS) -ansi -g

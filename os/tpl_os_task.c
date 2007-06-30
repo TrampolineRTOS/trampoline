@@ -30,7 +30,7 @@
 #include "tpl_os_hooks.h"
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /*
  * OSEK/VDX API services
@@ -77,10 +77,6 @@ StatusType TerminateTask(void)
     /*  init the error to no error  */
     StatusType result = E_OK;
 
-#ifndef NO_TASK
-    tpl_exec_common *exec_obj;
-#endif
-        
     /*  lock the task structures    */
     LOCK_WHEN_TASK()
     
@@ -95,35 +91,12 @@ StatusType TerminateTask(void)
 #ifndef NO_TASK
     IF_NO_EXTENDED_ERROR(result)
     
-        /* Call the post task hook */
-        CALL_POST_TASK_HOOK()
+        /*  set the state of the running task to DYING                  */
+        tpl_running_obj->state = (tpl_exec_state)DYING;
 
-        /*  get the running task to terminate it    */
-        exec_obj = tpl_running_obj;
-        tpl_running_obj = NULL;
-        
-        /*  release the internal resource   */
-        tpl_release_internal_resource(exec_obj);
-        
-        /*  dec the activation count    */
-        exec_obj->activate_count--;
-        
-        if (exec_obj->activate_count > 0)
-        {
-            /*  the task got multiple activations
-                so instead of returning it to the SUSPENDED state
-                it is inited again and put back in the ready task list  */
-            exec_obj->state = READY;
-            tpl_init_exec_object(exec_obj);
-            tpl_put_exec_object(exec_obj, NEWLY_ACTIVATED_EXEC_OBJ);
-        }
-        else
-        {
-            /*  the task is SUSPENDED   */
-            exec_obj->state = SUSPENDED;
-        }
-
+        /*  and let the scheduler do its job                            */
         tpl_schedule(FROM_TASK_LEVEL);
+        
     IF_NO_EXTENDED_ERROR_END()
 #endif
 
@@ -141,7 +114,6 @@ StatusType ChainTask(const TaskType task_id)
     StatusType result = E_OK;
 
 #ifndef NO_TASK
-    tpl_exec_common *r_exec_obj;
     tpl_exec_common *exec_obj;
 #endif
 
@@ -162,72 +134,51 @@ StatusType ChainTask(const TaskType task_id)
 #ifndef NO_TASK
     IF_NO_EXTENDED_ERROR(result)
 
-        /* Call the post task hook */
-        CALL_POST_TASK_HOOK()
-
-        /*  get the running object      */
-        r_exec_obj = tpl_running_obj;
-        tpl_running_obj = NULL;
+        exec_obj = &((tpl_task_table[task_id])->exec_desc); 
         
-        /*  release the internal resource   */
-        tpl_release_internal_resource(r_exec_obj);
-        
-        /*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
-            that has the same beginning fields as the struct it is casted to
-            This allow object oriented design and polymorphism.
-        */
-        exec_obj = (tpl_exec_common *)(tpl_task_table[task_id]); 
-        
-        if (r_exec_obj == exec_obj)
+        if (exec_obj == tpl_running_obj)
         {
-            /*  tasks are the same. So the task is put
-                back in the ready list after init.      */
-            tpl_init_exec_object(exec_obj);
-            tpl_put_exec_object(exec_obj, NEWLY_ACTIVATED_EXEC_OBJ);
+            /*  The activated task and the currentily running object
+                are the same. So the task is put in the RESURRECT state.    */
+            tpl_running_obj->state = RESURRECT;
+
         }
         else
         {
-            /*  terminate the calling task
-                dec the activation count of the calling task    */
-            r_exec_obj->activate_count--;
-            
-            if (r_exec_obj->activate_count > 0)
+            tpl_activate_counter    count = exec_obj->activate_count;
+
+            if (count < exec_obj->static_desc->max_activate_count)
             {
-                /*  the task got multiple activations
-                    so instead of returning it to the SUSPENDED state
-                    it is inited again and put back in the ready task list  */
-                tpl_init_exec_object(r_exec_obj);
-                tpl_put_exec_object(r_exec_obj, NEWLY_ACTIVATED_EXEC_OBJ);
+                if (count == 0)
+                {
+                    /*  init the task       */
+                    exec_obj->state = (tpl_exec_state)READY_AND_NEW;
+                }
+                /*  put it in the list  */
+                tpl_put_exec_object(exec_obj, (u8)NEWLY_ACTIVATED_EXEC_OBJ);
+                
+                /*  inc the task activation count. When the task
+                    will terminate it will dec this count and if
+                    not zero it will be reactivated                         */
+                exec_obj->activate_count++;
+                
+                /*  the object that is currently running is put in
+                    the DYING state                                         */
+                tpl_running_obj->state = DYING;
             }
             else
             {
-                /*  the task is SUSPENDED   */
-                r_exec_obj->state = SUSPENDED;
-            }
-            
-            /*  activate the new task   */
-            if (exec_obj->activate_count <
-                exec_obj->static_desc->max_activate_count)
-            {
-                /*  check the task is in the SUSPENDED
-                    state before moving it   */
-                if (exec_obj->state == (tpl_exec_state)SUSPENDED)
-                {
-                    /*  init the task   */
-                    tpl_init_exec_object(exec_obj);
-                    /*  put it in the list  */
-                    tpl_put_exec_object(exec_obj, (u8)NEWLY_ACTIVATED_EXEC_OBJ);
-                    
-                    result = E_OK;
-                }
-                /*  inc the stack activation count. When the task will
-                    terminate, it will dec this count and if not zero
-                    it will be reactivated                              */
-                exec_obj->activate_count++;
+                /*  The max activation count is reached. So an error occurs */
+                result = E_OS_LIMIT;
             }
         }
-            
-        tpl_schedule(FROM_TASK_LEVEL);
+        
+        if (result == E_OK)
+        {
+            /*  and let the scheduler do its job                            */
+            tpl_schedule(FROM_TASK_LEVEL);
+        }
+        
     IF_NO_EXTENDED_ERROR_END()
 #endif
     
@@ -318,6 +269,6 @@ StatusType GetTaskState(
 }
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /* End of file tpl_os_task.c */

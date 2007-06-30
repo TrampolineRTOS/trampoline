@@ -32,34 +32,7 @@
 #include "tpl_machine_interface.h"
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
-
-void EnableAllInterrupts(void)
-{
-  __asm CLI ;
-}
-
-void DisableAllInterrupts(void)
-{
-  __asm SEI ;
-}
-
-void ResumeAllInterrupts(void)
-{
-}
-
-void SuspendAllInterrupts(void)
-{
-}
-
-void ResumeOSInterrupts(void)
-{
-}
-
-void SuspendOSInterrupts(void)
-{
-}
-
+#include "tpl_memmap.h"
 
 /*
  * TerminateISR
@@ -72,7 +45,7 @@ StatusType TerminateISR2(void)
     /*  init the error to no error  */
     StatusType result = E_OK;
 
-#ifndef NO_TASK
+#ifndef NO_ISR
     tpl_exec_common *exec_obj;
 #endif
     
@@ -128,6 +101,6 @@ StatusType TerminateISR2(void)
 }
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /* End of file tpl_os_it.h */

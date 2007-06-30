@@ -75,7 +75,7 @@ typedef u8 tpl_event_mask;
  *
  * Default aliased type is "unsigned short int"
  */
-typedef u16 tpl_tick;
+typedef u32 tpl_tick;
 
 /**
  * tpl_alarm_type is used for alarm identifiers.
