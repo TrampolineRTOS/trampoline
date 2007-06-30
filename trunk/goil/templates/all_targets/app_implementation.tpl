@@ -3,6 +3,7 @@
 #include "tpl_machine.h"
 #include "tpl_os_it.h"
 #include "tpl_os_it_kernel.h"
+#include "tpl_os_alarm_kernel.h"
 #include "tpl_os_action.h"
 #include "tpl_com_notification.h"
 #include "tpl_com_mo.h"
@@ -52,5 +53,10 @@ $FLAGSFUNCTIONS$
  * Definition and initialization of Messages related structures
  */
 $MESSAGES$
+
+/*=============================================================================
+ * Definition and initialization of Ready List structures
+ */
+$READY_LIST$
 
 /* End of file $IMPLEMENTATION$ */

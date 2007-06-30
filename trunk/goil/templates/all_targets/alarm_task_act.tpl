@@ -8,12 +8,19 @@ tpl_task_activation_action task_act_of_$ALARM_NAME$ = {
     /* task descriptor ptr  */  &$TASK$
 };
 
-tpl_alarm $ALARM$ = {
-    /* State of the alarm   */  $ALARM_STATE$,
-    /* action of the alarm  */  (tpl_action *)&task_act_of_$ALARM_NAME$,
-    /* pointer to counter   */  &$COUNTER$,
-    /* cycle                */  $ALARM_CYCLE$,
-    /* date                 */  $ALARM_DATE$,
-    /* next alarm           */  NULL,
-    /* prev alarm           */  NULL
+tpl_alarm_static stat_$ALARM$ = {
+    {
+        /* pointer to counter           */  &$COUNTER$,
+        /* pointer to the expiration    */  tpl_raise_alarm
+    },
+    /* action of the alarm  */  (tpl_action *)&task_act_of_$ALARM_NAME$
+};
+
+tpl_time_obj $ALARM$ = {
+    /* pointer to the static part   */  (tpl_time_obj_static *)&stat_$ALARM$,
+    /* next alarm                   */  NULL,
+    /* prev alarm                   */  NULL,
+    /* cycle                        */  $ALARM_CYCLE$,
+    /* date                         */  $ALARM_DATE$,
+    /* State of the alarm           */  $ALARM_STATE$
 };

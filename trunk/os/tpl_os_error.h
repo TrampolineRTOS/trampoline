@@ -27,7 +27,6 @@
 #define TPL_OS_ERROR_H
 
 #include "tpl_os.h"
-#include "Os_Cfg.h"
 
 /*
  * Remember (see "The design of Trampoline") :
@@ -40,7 +39,7 @@
 #ifdef WITH_ERROR_HOOK
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 /*
  * The function corresponding to this prototype should be provided
  * by the application
@@ -48,7 +47,7 @@
 extern void ErrorHook(StatusType);
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /**
  * @union ID_PARAM_BLOCK
@@ -172,12 +171,10 @@ typedef struct SERVICE_CALL_DESCRIPTOR tpl_service_call_desc;
  * - #STORE_EVENT_MASK
  * - #STORE_EVENT_MASK_REF
  */
-#define OS_START_SEC_CODE
-#include "Memmap.h"
-
-
 extern tpl_service_call_desc tpl_service;
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 /**
  * this function is used to call the ErrorHook callback
  * 
@@ -185,9 +182,8 @@ extern tpl_service_call_desc tpl_service;
  */
 void tpl_call_error_hook(const tpl_status error);
 
-
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /************************
  * Services identifiers *
@@ -1409,6 +1405,85 @@ void tpl_call_error_hook(const tpl_status error);
         ((alarm_id) >= (tpl_alarm_id)ALARM_COUNT))              \
     {                                                           \
         result = (tpl_status)E_OS_ID;                           \
+    }
+#endif
+
+/**
+ * @def CHECK_ALARM_MAX_ALLOWED_VALUE_ERROR
+ *
+ * Checks if increment is within the range of the maximum
+ * allowed value for the counter used by the alarm
+ *
+ * @param increment #TickType to check
+ * @param result    error code to set if check fails
+ *
+ * @note error code is not set if it does not equal E_OK
+ *
+ * @note checking is disable when OS_EXTENDED is not defined
+ */
+
+/* No extended error checking (! OS_EXTENDED)                   */
+#if !defined(OS_EXTENDED)
+    /* Does not check the task_id in this case                  */
+#   define CHECK_ALARM_MAX_ALLOWED_VALUE_ERROR(alarm_id,increment,result)
+#endif
+
+/* NO_ALARM and extended error checking (OS_EXTENDED)           */
+#if defined(NO_ALARM) && defined(OS_EXTENDED)
+    /* E_OS_ID is returned in this case  */
+#   define CHECK_ALARM_MAX_ALLOWED_VALUE_ERROR(alarm_id,increment,result)
+#endif
+
+/* !NO_ALARM and extended error checking (OS_EXTENDED)          */
+#if !defined(NO_ALARM) && defined(OS_EXTENDED)
+    /* E_OK or E_OS_LIMIT   */
+#   define CHECK_ALARM_MAX_ALLOWED_VALUE_ERROR(alarm_id,increment,result)     \
+    if ((result == (tpl_status)E_OK) &&                                       \
+        ((increment) >                                                        \
+         tpl_alarm_table[(alarm_id)]->stat_part->counter->max_allowed_value)) \
+    {                                                                         \
+        result = (tpl_status)E_OS_VALUE;                                      \
+    }
+#endif
+
+/**
+ * @def CHECK_ALARM_MIN_CYCLE_VALUE_ERROR
+ *
+ * Checks if cycle is within the range of minimum cycle time and
+ * the maximum allowed value for the counter used by the alarm
+ *
+ * @param cycle     #TickType to check
+ * @param result    error code to set if check fails
+ *
+ * @note error code is not set if it does not equal E_OK
+ *
+ * @note checking is disable when OS_EXTENDED is not defined
+ */
+
+/* No extended error checking (! OS_EXTENDED)                   */
+#if !defined(OS_EXTENDED)
+    /* Does not check the task_id in this case                  */
+#   define CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
+#endif
+
+/* NO_ALARM and extended error checking (OS_EXTENDED)           */
+#if defined(NO_ALARM) && defined(OS_EXTENDED)
+    /* E_OS_ID is returned in this case  */
+#   define CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
+#endif
+
+/* !NO_ALARM and extended error checking (OS_EXTENDED)          */
+#if !defined(NO_ALARM) && defined(OS_EXTENDED)
+    /* E_OK or E_OS_LIMIT   */
+#   define CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)                 \
+    if ((result == (tpl_status)E_OK) && ((cycle) != 0) &&                     \
+        (((cycle) >                                                           \
+         tpl_alarm_table[(alarm_id)]->stat_part->counter->max_allowed_value)  \
+         ||                                                                   \
+         ((cycle) <                                                           \
+         tpl_alarm_table[(alarm_id)]->stat_part->counter->min_cycle)))        \
+    {                                                                         \
+        result = (tpl_status)E_OS_VALUE;                                      \
     }
 #endif
 

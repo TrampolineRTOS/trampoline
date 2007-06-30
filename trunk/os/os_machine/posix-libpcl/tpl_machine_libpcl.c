@@ -108,7 +108,6 @@ int cnt = 0;
  */
 void tpl_get_task_lock(void)
 {
-    x++;
     /*
      * block the handling of signals
      */
@@ -117,6 +116,9 @@ void tpl_get_task_lock(void)
         perror("tpl_get_lock failed");
         exit(-1);
     }
+    x++;
+    
+    if (x > 1) printf("** lock ** X=%d\n",x);
     assert( 0 <= x && x <= 1);
 }
 
@@ -126,13 +128,14 @@ void tpl_get_task_lock(void)
  */
 void tpl_release_task_lock(void)
 {
+    x--;
+    if (x < 0) printf("** unlock ** X=%d\n",x);
+    assert(0 <= x && x <= 1);
     /*  fprintf(stderr, "%d-unlock\n", cnt++);*/
     if (sigprocmask(SIG_UNBLOCK,&signal_set,NULL) == -1) {
         perror("tpl_release_lock failed");
         exit(-1);
     }
-    x--;
-    assert(0 <= x && x <= 1);
 }
 
 
@@ -166,7 +169,7 @@ void tpl_switch_context_from_it(
     else co_call( *new_context );
 }
 
-#define CO_MIN_SIZE (8*(4 * 1024))
+#define CO_MIN_SIZE (4*8*(4 * 1024))
 
 
 void tpl_osek_func_stub( void* data )
@@ -177,7 +180,9 @@ void tpl_osek_func_stub( void* data )
     if (sigprocmask(SIG_UNBLOCK,&signal_set,NULL) == -1) {
         perror("tpl_osek_func_stub failed");
         exit(-1);
-    }  
+    }
+    
+    /* printf("** unlock (tpl_osek_func_stub) ** X=%d\n",x) ; */
   
     (*func)();
   
@@ -239,28 +244,31 @@ void quit(int n)
  */
 void tpl_init_machine(void)
 {
+#ifndef NO_ISR
     int id;
+#endif
+    
     struct sigaction sa;
 
     /*printf("start viper.\n");*/
     tpl_viper_init();
   
     signal(SIGINT, quit);
-    signal(SIGHUP, quit); 
+    signal(SIGHUP, quit);
 
     sigemptyset(&signal_set);
 
     /*
      * init a signal mask to block all signals (aka interrupts)
      */
-	#ifndef NO_ISR
-		for (id = 0; id < ISR_COUNT; id++) {
-			sigaddset(&signal_set,signal_for_isr_id[id]);
-		}
-	#endif
-	#ifndef NO_ALARM
-		sigaddset(&signal_set,signal_for_counters);
-	#endif
+#ifndef NO_ISR
+    for (id = 0; id < ISR_COUNT; id++) {
+        sigaddset(&signal_set,signal_for_isr_id[id]);
+    }
+#endif
+#ifndef NO_ALARM
+    sigaddset(&signal_set,signal_for_counters);
+#endif
 
 
     /*
@@ -272,14 +280,14 @@ void tpl_init_machine(void)
     /*
      * Install the signal handler used to emulate interruptions
      */
-	#ifndef NO_ISR
-		for (id = 0; id < ISR_COUNT; id++) {
-			sigaction(signal_for_isr_id[id],&sa,NULL);
-		}
-	#endif
-	#ifndef NO_ALARM
-		sigaction(signal_for_counters,&sa,NULL);
-	#endif
+#ifndef NO_ISR
+    for (id = 0; id < ISR_COUNT; id++) {
+        sigaction(signal_for_isr_id[id],&sa,NULL);
+    }
+#endif
+#ifndef NO_ALARM
+    sigaction(signal_for_counters,&sa,NULL);
+#endif
     
     idle_task_context = co_create( tpl_osek_func_stub, (void*)&my_tpl_sleep, NULL, CO_MIN_SIZE );
     assert( idle_task_context != NULL );
@@ -292,9 +300,9 @@ void tpl_init_machine(void)
         exit(-1);
     }
     */
-	#ifndef NO_ALARM
-		tpl_viper_start_auto_timer(signal_for_counters,50000);  /* 50 ms */
-	#endif
+#ifndef NO_ALARM
+    tpl_viper_start_auto_timer(signal_for_counters,50000);  /* 50 ms */
+#endif
 
     /*
      * unblock the handling of signals

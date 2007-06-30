@@ -29,7 +29,7 @@
 
 #include "tpl_os_custom_types.h"
 #include "tpl_machine.h"
-#include "Compiler.h"
+#include "tpl_compiler.h"
 
 /**
  * @def CONFORM_ECC1
@@ -159,6 +159,9 @@ typedef void (*OS_CBK_CODE tpl_callback_func)(void);
 struct TPL_TASK;
 struct TPL_RESOURCE;
 struct TPL_ACTION;
+struct TPL_COUNTER;
+struct TPL_TIME_OBJ;
+
 
 /**
  * @typedef tpl_exec_obj_type 
@@ -190,40 +193,32 @@ typedef u8 tpl_exec_obj_type;
 typedef u8 tpl_exec_state;
 
 /**
- * @def AUTOSTART
+ * @def SUSPENDED
  *
- * Task is automatically activated at system startup
- *
- * @see #tpl_exec_state
- */
-#define AUTOSTART   0
-
-/**
- * @def RUNNING
- *
- * Task is currently running
+ * Task is suspended.
  *
  * @see #tpl_exec_state
  */
-#define RUNNING     1
+#define SUSPENDED       0x6
 
 /**
  * @def READY
  *
- * Task is ready (to be run, or elected by scheduler)
+ * Task is ready (to be run, or elected by scheduler).
  *
  * @see #tpl_exec_state
  */
-#define READY       2
+#define READY           0x5
 
 /**
- * @def SUSPENDED
+ * @def RUNNING
  *
- * Task is suspended
+ * Task is currently running.
  *
  * @see #tpl_exec_state
  */
-#define SUSPENDED   3
+#define RUNNING         0x4
+
 #if (CONFORMANCE_CLASS == CONFORM_ECC1) || (CONFORMANCE_CLASS == CONFORM_ECC2)
 /**
  * @def WAITING
@@ -232,8 +227,51 @@ typedef u8 tpl_exec_state;
  *
  * @see #tpl_exec_state
  */
-#define WAITING     4
+#define WAITING         0x2
 #endif
+
+/**
+ * @def DYING
+ *
+ * Task is dying. This is an transient state
+ * used to  tell the scheduler the currently
+ * running task relinquishes the CPU and its
+ * context should not be saved
+ *
+ * @see #tpl_exec_state
+ */
+#define DYING           0x1
+
+/**
+ * @def RESURRECT
+ *
+ * Task is resurrecting. This is an transient state
+ * used to  tell the scheduler the currently
+ * running task relinquishes the CPU,
+ * its context should not be saved,
+ * it should be put in the ready list like a new task
+ *
+ * @see #tpl_exec_state
+ */
+#define RESURRECT       0x3
+
+/**
+ * @def AUTOSTART
+ *
+ * Task is automatically activated at system startup
+ *
+ * @see #tpl_exec_state
+ */
+#define AUTOSTART       0x0
+
+/**
+ * @def READY_AND_NEW
+ *
+ * Task is ready and should be initialized when it get the CPU.
+ *
+ * @see #tpl_exec_state
+ */
+#define READY_AND_NEW   0x7
 
 /**
  * @typedef tpl_exec_function
@@ -296,10 +334,6 @@ struct TPL_EXEC_COMMON {
                                                   descriptor */
     struct TPL_RESOURCE     *resources;     /**<  head of the ressources 
                                                   held */
-    struct TPL_EXEC_COMMON  *next_exec;     /**<  next ready exec with same
-                                                  prio */
-    struct TPL_EXEC_COMMON  *next_set;      /**<  next exec set with lower 
-                                                  prio */
     tpl_activate_counter    activate_count; /**<  current activate count */
     tpl_priority            priority;       /**<  current priority */
     tpl_exec_state          state;          /**<  state (READY, RUNING, ...)*/
@@ -335,6 +369,28 @@ struct TPL_TASK {
  * @see #TPL_TASK
  */
 typedef struct TPL_TASK tpl_task;
+
+/**
+ * @typedef tpl_fifo_state
+ *
+ * This type gathers a read index and a size for fifo management
+ */
+typedef struct {
+    u8 read;
+    u8 size;
+} tpl_fifo_state;
+
+/**
+ * @typedef tpl_priority_level
+ *
+ * This type is a structure used to store the information for a priority
+ * level (pointer to a fifo and the size of the fifo.
+ * It is the element od the ready list table.
+ */
+typedef struct {
+    tpl_exec_common **fifo;
+    u8 size;
+} tpl_priority_level;
 
 /**
  * @struct TPL_RESOURCE
@@ -412,7 +468,7 @@ typedef struct TPL_INTERNAL_RESOURCE tpl_internal_resource;
  * - #ALARM_ACTIVE
  * - #ALARM_AUTOSTART (only before startup)
  */
-typedef u8 tpl_alarm_state;
+typedef u8 tpl_time_obj_state;
 
 /**
  * @typedef tpl_alarm_kind
@@ -466,26 +522,84 @@ typedef struct TPL_ACTION tpl_action;
 struct TPL_COUNTER;
 
 /**
- * @struct TPL_ALARM
+ * @typedef tpl_expire_func
  *
- * This is the data structure used to describe an alarm.
+ * Prototype for expire functions
  */
-struct TPL_ALARM {
-    tpl_alarm_state         state;      /**< state of the alarm. An alarm
-                                             may have 2 states:
-                                             ALARM_SLEEP and ALARM_ACTIVE.
-                                             @see #tpl_alarm_state          */
-    const tpl_action        *action;    /**< action to be done when the
-                                             alarm is raised (according to
-                                             the kind)                      */
+typedef tpl_status (*tpl_expire_func)(
+    const struct TPL_TIME_OBJ *
+);
+
+/**
+ * @struct TPL_TIME_OBJ_STATIC
+ *
+ * This is the static data structure used to store the information about
+ * an object that can be put in the queue of a counter with an expiration
+ * date. This structure complement the dynamic part.
+ *
+ * @see #TPL_ALARM
+ */
+struct TPL_TIME_OBJ_STATIC {
     struct TPL_COUNTER      *counter;   /**< a pointer to the counter the
                                              alarm belongs to               */
-    tpl_tick                cycle;      /**< cycle delay for cyclic alarms  */
-    tpl_tick                date;       /**< absolute date of the alarm     */
-    struct TPL_ALARM        *next_alarm;/**< next alarm in the active
-                                             alarm list                     */
-    struct TPL_ALARM        *prev_alarm;/**< previous alarm in the active
-                                             alarm list                     */
+    tpl_expire_func         expire;     /**< expiration processing to be
+                                             done when the time object
+                                             expires                        */
+};
+
+/**
+ * @typedef tpl_time_obj
+ *
+ * This is an alias for the structure #TPL_TIME_OBJ
+ *
+ * @see #TPL_TIME_OBJ
+ */
+typedef struct TPL_TIME_OBJ_STATIC tpl_time_obj_static;
+
+/**
+ * @struct TPL_ALARM_STATIC
+ *
+ * This is the data structure used to describe the static part of an alarm.
+ * It extends the #TPL_TIME_OBJ_STATIC structure by adding an action to be done
+ * when the alarm expires.
+ *
+ * @see #TPL_TIME_OBJ_STATIC
+ */
+struct TPL_ALARM_STATIC {
+    tpl_time_obj_static b_desc;     /**< common part of all objects that
+                                         derive from tpl_time_obj.          */
+    tpl_action          *action;    /**< action to be done when the alarm
+                                         expires                            */
+};
+
+/**
+ * @typedef tpl_alarm_static
+ *
+ * This is an alias for the structure #TPL_ALARM_STATIC
+ *
+ * @see #TPL_ALARM_STATIC
+ */
+typedef struct TPL_ALARM_STATIC tpl_alarm_static;
+
+/**
+ * @struct TPL_TIME_OBJ
+ *
+ * This is the data structure used to describe the dynamic part of,
+ * for instance, an alarm or, in future extensions, any dated object
+ * that is stored in the queue of a counter.
+ */
+struct TPL_TIME_OBJ {
+    tpl_time_obj_static *stat_part; /**< pointer to the static descriptor   */
+    struct TPL_TIME_OBJ *next_to;   /**< next alarm in the active
+                                         alarm list                         */
+    struct TPL_TIME_OBJ *prev_to;   /**< previous alarm in the active
+                                         alarm list                         */
+    tpl_tick            cycle;      /**< cycle delay for cyclic alarms      */
+    tpl_tick            date;       /**< absolute date of the alarm         */
+    tpl_time_obj_state  state;      /**< state of the alarm. An alarm may
+                                         have 2 states: ALARM_SLEEP and
+                                         ALARM_ACTIVE.
+                                         @see #tpl_alarm_state              */
 };
 
 /**
@@ -495,7 +609,7 @@ struct TPL_ALARM {
  *
  * @see #TPL_ALARM
  */
-typedef struct TPL_ALARM tpl_alarm;
+typedef struct TPL_TIME_OBJ tpl_time_obj;
 
 /**
  * @struct TPL_COUNTER
@@ -503,14 +617,16 @@ typedef struct TPL_ALARM tpl_alarm;
  * This is the data structure used to describe a counter
  */
 struct TPL_COUNTER {
-    const tpl_tick  ticks_per_base;         /**< number of ticks until the
-                                                 counter increments         */
-    tpl_tick        current_tick;           /**< current tick value of the
-                                                 counter                    */
-    tpl_tick        current_date;           /**< current value of the
-                                                 counter                    */
-    tpl_alarm       *first_alarm;           /**< active alarms list head    */
-    tpl_alarm       *next_alarm_to_raise;   /**< next active alarms         */
+    const tpl_tick  ticks_per_base;     /**< number of ticks until the
+                                             counter increments             */
+    const tpl_tick  max_allowed_value;  /**< maximum allowed value for
+                                             a counter                      */
+    const tpl_tick  min_cycle;          /**< number of ticks until the
+                                             counter increments             */
+    tpl_tick        current_tick;   /**< current tick value of the counter  */
+    tpl_tick        current_date;   /**< current value of the counter       */
+    tpl_time_obj    *first_to;      /**< active alarms list head            */
+    tpl_time_obj    *next_to;       /**< next active alarms                 */
 };
 
 /**

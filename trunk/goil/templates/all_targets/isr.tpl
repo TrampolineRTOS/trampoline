@@ -29,8 +29,6 @@ tpl_isr $ISR$ = {
     {       /* beginning of exec_desc part */
     /* static descriptor    */  &$EXEC_STATIC$,
     /* resources            */  NULL,
-    /* next exec for READY  */  NULL,
-    /* next set for READY   */  NULL,
     /* activate count       */  0,
     /* isr priority         */  (tpl_priority)$ISR_PRIORITY$,
     /* isr state            */  SUSPENDED,

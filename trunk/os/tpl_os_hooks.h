@@ -27,7 +27,6 @@
 #define TPL_OS_HOOKS_H
 
 #include "tpl_os_types.h"
-#include "Os_Cfg.h"
 
 #ifdef WITH_TASK_HOOK
 #   ifndef WITH_POST_TASK_HOOK
@@ -90,17 +89,14 @@
 #   define CALL_SHUTDOWN_HOOK(error)
 #endif
 
-
 #define OS_START_SEC_CODE
-#include "Memmap.h"
-
+#include "tpl_memmap.h"
 
 #ifdef WITH_PRE_TASK_HOOK
 /**
  * Prototype of the pre-task hook routine
  */
 extern void PreTaskHook(void);
-
 #endif
 
 #ifdef WITH_POST_TASK_HOOK
@@ -108,7 +104,6 @@ extern void PreTaskHook(void);
  * Prototype of the post-task hook routine
  */
 extern void PostTaskHook(void);
-
 #endif
 
 #ifdef WITH_STARTUP_HOOK
@@ -116,7 +111,6 @@ extern void PostTaskHook(void);
  * Prototype of the startup hook routine
  */
 void StartupHook(void);
-
 #endif
 
 #ifdef WITH_SHUTDOWN_HOOK
@@ -124,12 +118,10 @@ void StartupHook(void);
  * Prototype of the shutdown hook routine
  */
 void ShutdownHook(StatusType);
-
 #endif
 
-
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 #endif /* TPL_OS_HOOKS_H */
 

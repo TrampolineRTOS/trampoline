@@ -44,6 +44,8 @@ struct PPC_INTEGER_CONTEXT {
     unsigned long xer;
     unsigned long lr;
     unsigned long ctr;
+    unsigned long srr0;
+    unsigned long srr1;
 };
 
 typedef struct PPC_INTEGER_CONTEXT ppc_integer_context;

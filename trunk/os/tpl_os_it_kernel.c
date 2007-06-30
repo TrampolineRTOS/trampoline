@@ -21,8 +21,10 @@
 #include "tpl_os_application_def.h"
 #include "tpl_machine_interface.h"
 
+#ifndef NO_ISR
+
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 static void tpl_activate_isr(tpl_isr *a_isr);
 
@@ -50,7 +52,6 @@ static void tpl_activate_isr(tpl_isr *a_isr)
     }
 }
  
-#ifndef NO_ISR
 /*
  * The central interrupt handler is called by the interrupt handler
  * with the id of the interrupt (usually its priority) as parameter
@@ -108,9 +109,9 @@ void tpl_central_interrupt_handler(const u16 id)
 #endif
 }
 
-#endif /* NO_ISR */
-
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
+
+#endif /* NO_ISR */
 
 /* End of file tpl_os_it_kernel.c */

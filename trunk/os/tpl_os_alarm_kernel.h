@@ -26,7 +26,7 @@
 #define TPL_OS_ALARM_KERNEL_H
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /**
  * @internal
@@ -40,8 +40,7 @@
  *
  * @param alarm     The alarm to insert.
  */
-void tpl_insert_alarm(tpl_alarm *alarm);
-
+void tpl_insert_time_obj(tpl_time_obj *time_obj);
 
 /**
  * @internal
@@ -51,8 +50,17 @@ void tpl_insert_alarm(tpl_alarm *alarm);
  *
  * @param alarm     The alarm to remove.
  */
-void tpl_remove_alarm(tpl_alarm *alarm);
+void tpl_remove_time_obj(tpl_time_obj *time_obj);
 
+/**
+ * @internal
+ *
+ * tpl_raise_alarm is called by tpl_counter_tick
+ * when an alarm time object is raised.
+ *
+ * @param time_obj  The alarm to raise.
+ */
+tpl_status tpl_raise_alarm(const tpl_time_obj *time_obj);
 
 /**
  * @internal
@@ -67,9 +75,8 @@ void tpl_remove_alarm(tpl_alarm *alarm);
  */
 tpl_status tpl_counter_tick(tpl_counter *counter);
 
-
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 #endif /* TPL_OS_ALARM_KERNEL_H */
 

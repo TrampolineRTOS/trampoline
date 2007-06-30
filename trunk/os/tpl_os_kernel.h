@@ -71,7 +71,7 @@
 
 
 #define OS_START_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /**
  * Currently running executable object. This "executable object" can be a task
@@ -110,7 +110,7 @@ extern tpl_resource     *tpl_resource_table[RESOURCE_COUNT];
  *
  * Index in this array correspond to the #AlarmType of the alarm
  */
-extern tpl_alarm        *tpl_alarm_table[ALARM_COUNT];
+extern tpl_time_obj     *tpl_alarm_table[ALARM_COUNT];
 #endif
 
 
@@ -151,11 +151,11 @@ extern tpl_internal_resource INTERNAL_RES_SCHEDULER;
 
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 /**
  * Kernel functions
  */
@@ -184,7 +184,7 @@ extern void tpl_release_internal_resource(tpl_exec_common *a_task);
 
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 #endif /* TPL_OS_KERNEL_H */
 
