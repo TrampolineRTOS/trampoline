@@ -21,7 +21,7 @@
 #include "tpl_os_error.h"
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /*
  * OSEK/VDX API services
@@ -130,6 +130,6 @@ StatusType ReleaseResource(const ResourceType res_id)
 }
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /* End of file tpl_os_rez.c */

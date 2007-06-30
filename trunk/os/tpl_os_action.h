@@ -80,7 +80,7 @@ tpl_setevent_action;
 
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /*
  * Notification functions prototypes
@@ -90,7 +90,7 @@ tpl_status tpl_action_activate_task(const tpl_action *action);
 tpl_status tpl_action_setevent(const tpl_action *action);
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 #endif /*  TPL_OS_ACTION_H  */
 

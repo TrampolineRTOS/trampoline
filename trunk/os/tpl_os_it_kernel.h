@@ -89,7 +89,7 @@ typedef struct TPL_ISR tpl_isr;
 
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 /**
  * This is the dispatcher of interrupts. It should be called by
  * the root interrupt handler with an ISR identifier (usually the ISR priority)
@@ -99,7 +99,7 @@ typedef struct TPL_ISR tpl_isr;
 void tpl_central_interrupt_handler(const u16 id);
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 #endif /* TPL_OS_IT_KERNEL_H */
 

@@ -29,7 +29,7 @@
 #include "tpl_os_internal_types.h"
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /**
  * @internal
@@ -117,6 +117,6 @@ extern void tpl_sleep(void);
 extern void tpl_shutdown(void);
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 #endif /* TPL_MACHINE_INTERFACE_H */

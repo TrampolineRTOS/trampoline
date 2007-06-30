@@ -35,7 +35,7 @@
 static AppModeType application_mode;
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 AppModeType GetActiveApplicationMode(void)
 {
@@ -85,6 +85,6 @@ void ShutdownOS(const /*@unused@*/ StatusType error)
 }
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 /* End of file tpl_os.c */
