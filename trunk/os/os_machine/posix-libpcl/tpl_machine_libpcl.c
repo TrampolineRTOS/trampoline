@@ -53,6 +53,120 @@ sigset_t    signal_set;
  */
 void tpl_call_counter_tick();
 
+
+volatile static u32 tpl_locking_depth = 0;
+static sigset_t tpl_saved_state;
+/**
+ * Enable all interrupts
+ *
+ * see paragraph 13.3.2.1 page 54 of OSEK/VDX 2.2.2 spec
+ *
+ * @see #DisableAllInterrupts
+ */
+void EnableAllInterrupts(void)
+{
+    if (sigprocmask(SIG_SETMASK,&tpl_saved_state,NULL) == -1)
+    {
+        perror("EnableAllInterrupts failed");
+        exit(-1);
+    }
+}
+
+/**
+ * Disable all interrupts
+ *
+ * see paragraph 13.3.2.2 page 55 of OSEK/VDX 2.2.2 spec
+ *
+ * @see #EnableAllInterrupts
+ */
+void DisableAllInterrupts(void)
+{
+    if (sigprocmask(SIG_BLOCK,&signal_set,&tpl_saved_state) == -1)
+    {
+        perror("DisableAllInterrupts failed");
+        exit(-1);
+    }
+}
+
+/** 
+ * Resume all interrupts
+ *
+ * see paragraph 13.3.2.3 page 55 of OSEK/VDX 2.2.2 spec
+ *
+ * @see #SuspendAllInterrupts
+ */
+void ResumeAllInterrupts(void)
+{
+    tpl_locking_depth--;
+    
+    if (tpl_locking_depth == 0)
+    {
+        if (sigprocmask(SIG_UNBLOCK,&signal_set,NULL) == -1)
+        {
+            perror("ResumeAllInterrupts failed");
+            exit(-1);
+        }
+    }
+}
+
+/**
+ * Suspend all interrupts
+ *
+ * see paragraph 13.3.2.4 page 56 of OSEK/VDX 2.2.2 spec
+ *
+ * @see #ResumeAllInterrupts
+ */
+void SuspendAllInterrupts(void)
+{
+    if (sigprocmask(SIG_BLOCK,&signal_set,NULL) == -1)
+    {
+        perror("SuspendAllInterrupts failed");
+        exit(-1);
+    }
+    
+    
+    tpl_locking_depth++;
+}
+
+/** 
+ * Resume category 2 interrupts
+ *
+ * see paragraph 13.3.2.5 page 56 of OSEK/VDX 2.2.2 spec
+ * 
+ * @see #SuspendOSInterrupts
+ */
+void ResumeOSInterrupts(void)
+{
+    tpl_locking_depth--;
+    
+    if (tpl_locking_depth == 0)
+    {
+        if (sigprocmask(SIG_UNBLOCK,&signal_set,NULL) == -1)
+        {
+            perror("ResumeAllInterrupts failed");
+            exit(-1);
+        }
+    }
+}
+
+/**
+ * Suspend category 2 interrupts
+ *
+ * see paragraph 13.3.2.6 page 57 of OSEK/VDX 2.2.2 spec
+ *
+ * @see #ResumeOSInterrupts
+ */
+void SuspendOSInterrupts(void)
+{
+    if (sigprocmask(SIG_BLOCK,&signal_set,NULL) == -1)
+    {
+        perror("SuspendAllInterrupts failed");
+        exit(-1);
+    }
+    
+    tpl_locking_depth++;
+}
+
 /*
  * The signal handler used when interrupts are enabled
  */
@@ -65,8 +179,10 @@ void tpl_signal_handler(int sig)
 		if(signal_for_counters == sig) tpl_call_counter_tick();
 	#endif
 	#ifndef NO_ISR
-		for (id = 0; id < ISR_COUNT; id++) {
-			if (signal_for_isr_id[id] == sig) {
+		for (id = 0; id < ISR_COUNT; id++)
+        {
+			if (signal_for_isr_id[id] == sig)
+            {
 					tpl_central_interrupt_handler(id);
 			}
 		}
@@ -90,7 +206,8 @@ extern void viper_kill(void);
 void tpl_shutdown(void)
 {
 	/* remove ITs */
-	if (sigprocmask(SIG_BLOCK,&signal_set,NULL) == -1) {
+	if (sigprocmask(SIG_BLOCK,&signal_set,NULL) == -1)
+    {
         perror("tpl_shutdown failed");
         exit(-1);
     }
@@ -112,11 +229,13 @@ void tpl_get_task_lock(void)
      * block the handling of signals
      */
 	/*  fprintf(stderr, "%d-lock\n", cnt++);*/
-    if (sigprocmask(SIG_BLOCK,&signal_set,NULL) == -1) {
+    if (sigprocmask(SIG_BLOCK,&signal_set,NULL) == -1)
+    {
         perror("tpl_get_lock failed");
         exit(-1);
     }
     x++;
+    tpl_locking_depth++;
     
     if (x > 1) printf("** lock ** X=%d\n",x);
     assert( 0 <= x && x <= 1);
@@ -132,9 +251,15 @@ void tpl_release_task_lock(void)
     if (x < 0) printf("** unlock ** X=%d\n",x);
     assert(0 <= x && x <= 1);
     /*  fprintf(stderr, "%d-unlock\n", cnt++);*/
-    if (sigprocmask(SIG_UNBLOCK,&signal_set,NULL) == -1) {
-        perror("tpl_release_lock failed");
-        exit(-1);
+    
+    tpl_locking_depth--;
+
+    if (tpl_locking_depth == 0)
+    {
+        if (sigprocmask(SIG_UNBLOCK,&signal_set,NULL) == -1) {
+            perror("tpl_release_lock failed");
+            exit(-1);
+        }
     }
 }
 
@@ -175,6 +300,7 @@ void tpl_switch_context_from_it(
 void tpl_osek_func_stub( void* data )
 {
     tpl_exec_function func = ((tpl_exec_static*)data)->entry;
+    tpl_exec_obj_type type = ((tpl_exec_static*)data)->type;
   
     /* Avoid signal blocking due to a previous call to tpl_init_context in a OS_ISR2 context. */
     if (sigprocmask(SIG_UNBLOCK,&signal_set,NULL) == -1) {
@@ -185,9 +311,14 @@ void tpl_osek_func_stub( void* data )
     /* printf("** unlock (tpl_osek_func_stub) ** X=%d\n",x) ; */
   
     (*func)();
-  
-    fprintf(stderr, "[OSEK/VDX Spec. 2.2.3 Sec. 4.7] Ending the task without a call to TerminateTask or ChainTask is strictly forbidden and causes undefined behaviour.\n");
-    exit(1);
+    
+    if (type == IS_ROUTINE) {
+        TerminateISR2();
+    }
+    else {
+        fprintf(stderr, "[OSEK/VDX Spec. 2.2.3 Sec. 4.7] Ending the task without a call to TerminateTask or ChainTask is strictly forbidden and causes undefined behaviour.\n");
+        exit(1);
+    }
 }
 
 
@@ -257,7 +388,8 @@ void tpl_init_machine(void)
     signal(SIGHUP, quit);
 
     sigemptyset(&signal_set);
-
+    sigemptyset(&tpl_saved_state);
+    
     /*
      * init a signal mask to block all signals (aka interrupts)
      */
@@ -301,7 +433,7 @@ void tpl_init_machine(void)
     }
     */
 #ifndef NO_ALARM
-    tpl_viper_start_auto_timer(signal_for_counters,50000);  /* 50 ms */
+    tpl_viper_start_auto_timer(signal_for_counters,5000);  /* 50 ms */
 #endif
 
     /*

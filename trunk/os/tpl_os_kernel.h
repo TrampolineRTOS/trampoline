@@ -180,6 +180,8 @@ extern void tpl_put_exec_object(
 extern void tpl_init_os(const tpl_application_mode app_mode);
 
 
+extern void tpl_get_internal_resource(tpl_exec_common *a_task);
+
 extern void tpl_release_internal_resource(tpl_exec_common *a_task);
 
 

@@ -65,12 +65,23 @@ void tpl_viper_init(void)
     /*  Check the VIPER_PATH environment variable is defined    */
     char *viper_path = getenv(VIPER_PATH);
     
-    if( viper_path != NULL && access( viper_path, X_OK ) != 0 )
+    printf("%s\n",viper_path);
+    
+    if (viper_path != NULL)
     {
-        viper_path_ok = 1;
+        if (access(viper_path, X_OK) == 0)
+        {
+            viper_path_ok = 1;
+        }
+        else
+        {
+            printf("VIPER_PATH is defined but viper is not accessible or executable\n");
+        }
     }
     else
     {
+        printf("access %d\n",access( viper_path, X_OK )) ;
+        
         viper_path = "viper/viper";
         if( access( viper_path, X_OK ) != 0 )
         {

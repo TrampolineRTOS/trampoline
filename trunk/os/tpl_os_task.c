@@ -11,6 +11,8 @@
  *
  * Trampoline is copyright (c) IRCCyN 2005+
  * Copyright ESEO for function and data structures documentation
+ * Copyright IRISA - JF Deverge for libpcl port
+ * Copyright AYRTON TECHNOLOGY for hcs12 port
  * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
@@ -151,8 +153,19 @@ StatusType ChainTask(const TaskType task_id)
             {
                 if (count == 0)
                 {
-                    /*  init the task       */
-                    exec_obj->state = (tpl_exec_state)READY_AND_NEW;
+                    if (exec_obj->static_desc->type == TASK_EXTENDED)
+                    {
+                        /*  if the task is an extended one,
+                            it is initialized now                           */
+                        exec_obj->state = (tpl_exec_state)READY;
+                        tpl_init_exec_object(exec_obj);
+                    }
+                    else
+                    {
+                        /*  if it is a basic task, its initialization is
+                            postponed to the time it will get the CPU       */
+                        exec_obj->state = (tpl_exec_state)READY_AND_NEW;
+                    }
                 }
                 /*  put it in the list  */
                 tpl_put_exec_object(exec_obj, (u8)NEWLY_ACTIVATED_EXEC_OBJ);
@@ -212,6 +225,8 @@ StatusType Schedule(void)
         tpl_release_internal_resource(tpl_running_obj);
         /*  does the rescheduling           */
         tpl_schedule(FROM_TASK_LEVEL);
+        /*  get the internal resource       */
+        tpl_get_internal_resource(tpl_running_obj);
     IF_NO_EXTENDED_ERROR_END()
 #endif
     
@@ -257,7 +272,7 @@ StatusType GetTaskState(
             that has the same beginning fields as the struct it is casted to
             This allow object oriented design and polymorphism.
         */
-        *state = ((tpl_exec_common *)(tpl_task_table[task_id]))->state;
+        *state = ((tpl_exec_common *)(tpl_task_table[task_id]))->state & 0x3;
     IF_NO_EXTENDED_ERROR_END()
 #endif
 

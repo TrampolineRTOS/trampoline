@@ -22,14 +22,8 @@
  * $URL$
  */
 
-#ifndef TPL_MEMMAP_H
-#define TPL_MEMMAP_H
-
 #ifdef WITH_MEMMAP
 #include "Memmap.h"
-#endif
-
-/* TPL_MEMMAP_H */
 #endif
 
 /* End of file tpl_memmap.h */

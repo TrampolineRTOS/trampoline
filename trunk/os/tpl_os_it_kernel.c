@@ -35,10 +35,10 @@ static void tpl_activate_isr(tpl_isr *a_isr)
     if (a_isr->exec_desc.activate_count <
         a_isr->exec_desc.static_desc->max_activate_count)
     {
-        /*  check the task is in the SUSPENDED state before moving it       */
+        /*  check the isr is in the SUSPENDED state before moving it        */
         if (a_isr->exec_desc.state == (tpl_exec_state)SUSPENDED)
         {
-            /*  init the task       */
+            /*  init the isr       */
             tpl_init_exec_object(&(a_isr->exec_desc));
             /*  put it in the list  */
             tpl_put_exec_object(
@@ -46,7 +46,7 @@ static void tpl_activate_isr(tpl_isr *a_isr)
                 (u8)NEWLY_ACTIVATED_EXEC_OBJ
             );
         }
-        /*  inc the task activation count. When the task will terminate
+        /*  inc the isr activation count. When the isr will terminate
             it will dec this count and if not zero it will be reactivated   */
         a_isr->exec_desc.activate_count++;
     }
