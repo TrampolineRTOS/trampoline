@@ -65,8 +65,6 @@ void tpl_viper_init(void)
     /*  Check the VIPER_PATH environment variable is defined    */
     char *viper_path = getenv(VIPER_PATH);
     
-    printf("%s\n",viper_path);
-    
     if (viper_path != NULL)
     {
         if (access(viper_path, X_OK) == 0)
@@ -79,9 +77,7 @@ void tpl_viper_init(void)
         }
     }
     else
-    {
-        printf("access %d\n",access( viper_path, X_OK )) ;
-        
+    {        
         viper_path = "viper/viper";
         if( access( viper_path, X_OK ) != 0 )
         {
