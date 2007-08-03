@@ -14,15 +14,19 @@
 ** Summary:   context and task types specific for the target
 **
 **= History ====================================================================
-** 00.01  J.Monsimier	04/11/07 
+** 00.01  J.Monsimier	04/11/07
 ** - creation
+** 00.01  J-L Bechennec 07/05/07
+** - cut line to 80 characters
+** - removed __ before and after multiple inclusion symbol definition
+**   __ should not be used to avoid clash with symbols defined by compilers
 ==============================================================================*/
 #include "tpl_os_internal_types.h"
 #include "Platform_Types.h"
  
 
-#ifndef __TPL_MACHINE_HCS12_H__
-#define __TPL_MACHINE_HCS12_H__
+#ifndef TPL_MACHINE_HCS12_H
+#define TPL_MACHINE_HCS12_H
 
 /******************************************************************************/
 /* INCLUSIONS                                                                 */
@@ -46,12 +50,12 @@ typedef void (*tpl_function_pointer)(void);
 
 typedef struct
 {
-  uint16 ccr;                 /* condition code register */
-  uint16 d;                   /* double accumulator D (or accumulators A and B) */
-  uint16 x;                   /* index register X */
-  uint16 y;                   /* index register Y */
-  tpl_function_pointer pc;    /* program counter */
-  uint16 sp;                  /* stack pointer */
+  uint16 ccr;                 /* condition code register                */
+  uint16 d;                   /* double accumulator D (or acc A and B)  */
+  uint16 x;                   /* index register X                       */
+  uint16 y;                   /* index register Y                       */
+  tpl_function_pointer pc;    /* program counter                        */
+  uint16 sp;                  /* stack pointer                          */
 } hcs12_context;
   
 typedef struct 
@@ -79,7 +83,8 @@ typedef struct
 
 extern hcs12_context idle_task_context;
 
-extern tpl_stack_word stack_zone_of_IdleTask[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
+extern tpl_stack_word
+    stack_zone_of_IdleTask[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "Memmap.h"
@@ -87,5 +92,5 @@ extern tpl_stack_word stack_zone_of_IdleTask[SIZE_OF_IDLE_STACK/sizeof(tpl_stack
 /* DECLARATION OF FUNCTIONS                                                   */
 /******************************************************************************/
 
+/* TPL_MACHINE_HCS12_H */
 #endif
-

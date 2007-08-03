@@ -199,7 +199,7 @@ typedef u8 tpl_exec_state;
  *
  * @see #tpl_exec_state
  */
-#define SUSPENDED       0x6
+#define SUSPENDED       0x0
 
 /**
  * @def READY
@@ -208,7 +208,7 @@ typedef u8 tpl_exec_state;
  *
  * @see #tpl_exec_state
  */
-#define READY           0x5
+#define READY           0x1
 
 /**
  * @def RUNNING
@@ -217,7 +217,7 @@ typedef u8 tpl_exec_state;
  *
  * @see #tpl_exec_state
  */
-#define RUNNING         0x4
+#define RUNNING         0x2
 
 #if (CONFORMANCE_CLASS == CONFORM_ECC1) || (CONFORMANCE_CLASS == CONFORM_ECC2)
 /**
@@ -227,7 +227,7 @@ typedef u8 tpl_exec_state;
  *
  * @see #tpl_exec_state
  */
-#define WAITING         0x2
+#define WAITING         0x3
 #endif
 
 /**
@@ -240,7 +240,7 @@ typedef u8 tpl_exec_state;
  *
  * @see #tpl_exec_state
  */
-#define DYING           0x1
+#define DYING           0x7
 
 /**
  * @def RESURRECT
@@ -253,7 +253,7 @@ typedef u8 tpl_exec_state;
  *
  * @see #tpl_exec_state
  */
-#define RESURRECT       0x3
+#define RESURRECT       0xB
 
 /**
  * @def AUTOSTART
@@ -262,7 +262,7 @@ typedef u8 tpl_exec_state;
  *
  * @see #tpl_exec_state
  */
-#define AUTOSTART       0x0
+#define AUTOSTART       0x4
 
 /**
  * @def READY_AND_NEW
@@ -271,7 +271,7 @@ typedef u8 tpl_exec_state;
  *
  * @see #tpl_exec_state
  */
-#define READY_AND_NEW   0x7
+#define READY_AND_NEW   0x5
 
 /**
  * @typedef tpl_exec_function

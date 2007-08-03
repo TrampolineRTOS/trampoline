@@ -38,7 +38,6 @@
 #include "tpl_memmap.h"
 
 static /*@null@*/ tpl_exec_common *tpl_get_exec_object(void);
-static void tpl_get_internal_resource(tpl_exec_common *a_task);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
@@ -274,22 +273,24 @@ void tpl_put_exec_object(
     const u8        kind)
 {
     /*  Get the current priority of the executable object                   */
-    tpl_priority    prio = exec_obj->priority;
+    tpl_priority    prio;
     tpl_exec_common **fifo;
     u8              write_idx;
     
     DOW_ASSERT((kind == PREEMPTED_EXEC_OBJ) ||
                (kind == NEWLY_ACTIVATED_EXEC_OBJ))
-    DOW_ASSERT((prio >= 0) && (prio < PRIO_LEVEL_COUNT))
     
     DOW_DO(printrl("tpl_put_exec_object - avant");)
-    /*  Get the corresponding fifo                                          */
-    fifo = tpl_ready_list[prio].fifo;
-    
-    DOW_ASSERT(tpl_fifo_rw[prio].size < tpl_ready_list[prio].size)
-    
+
     if (kind == NEWLY_ACTIVATED_EXEC_OBJ)
     {
+        /*  the priority used as level in the ready list
+            for a newly activated object is the base priority               */
+        prio = exec_obj->static_desc->base_priority ;
+        
+        DOW_ASSERT((prio >= 0) && (prio < PRIO_LEVEL_COUNT))
+        DOW_ASSERT(tpl_fifo_rw[prio].size < tpl_ready_list[prio].size)
+    
         /*  a newly activated executable object
             is put at the end of the fifo                                   */
         write_idx = tpl_fifo_rw[prio].read + tpl_fifo_rw[prio].size;
@@ -301,6 +302,13 @@ void tpl_put_exec_object(
         
     }
     else {
+        /*  the priority used as level in the ready list
+            for a preempted object is the current priority                  */
+        prio = exec_obj->priority;
+        
+        DOW_ASSERT((prio >= 0) && (prio < PRIO_LEVEL_COUNT))
+        DOW_ASSERT(tpl_fifo_rw[prio].size < tpl_ready_list[prio].size)
+
         /*  a preempted executable object is put at the head of the fifo    */
         write_idx = tpl_fifo_rw[prio].read - 1 ;
         
@@ -310,6 +318,9 @@ void tpl_put_exec_object(
         }
         tpl_fifo_rw[prio].read = write_idx;
     }
+    
+    /*  Get the corresponding fifo                                          */
+    fifo = tpl_ready_list[prio].fifo;
     
     fifo[write_idx] = exec_obj ;
     
@@ -331,7 +342,7 @@ void tpl_put_exec_object(
  *
  * @param task task from which internal resource is got
  */
-static void tpl_get_internal_resource(tpl_exec_common *a_task)
+void tpl_get_internal_resource(tpl_exec_common *a_task)
 {
     tpl_internal_resource *rez = a_task->static_desc->internal_resource;
     
@@ -390,7 +401,7 @@ void tpl_schedule(const u8 from)
 
     tpl_bool schedule =
         (tpl_h_prio != -1) &&
-        (((state & 0x4) == 0) ||    /*  DYING, WAITING or RESURRECT */
+        (((state & 0x3) == 0x3) ||    /*  DYING, WAITING or RESURRECT */
          (state == (tpl_exec_state)RUNNING &&
           tpl_h_prio > tpl_running_obj->priority));
     
@@ -546,8 +557,18 @@ tpl_status tpl_activate_task(tpl_task *a_task)
     {
         if (count == 0)
         {
-            /*  init the task       */
-            a_task->exec_desc.state = (tpl_exec_state)READY_AND_NEW;
+            if (a_task->exec_desc.static_desc->type == TASK_EXTENDED)
+            {
+                /*  if the task is an extended one, it is inited now        */
+                a_task->exec_desc.state = (tpl_exec_state)READY;
+                tpl_init_exec_object(&a_task->exec_desc);
+            }
+            else
+            {
+                /*  if it is a basic task, its initialization
+                    is postponed to the time it will get the CPU            */
+                a_task->exec_desc.state = (tpl_exec_state)READY_AND_NEW;
+            }
         }
         /*  put it in the list  */
         tpl_put_exec_object(
@@ -577,7 +598,7 @@ tpl_status tpl_set_event(
     const tpl_event_mask    incoming_event)
 {
     tpl_status result = E_OK;
-
+    
     if (a_task->exec_desc.state != (tpl_exec_state)SUSPENDED)
     {
         /*  merge the incoming event mask with the old one  */
@@ -671,22 +692,8 @@ void tpl_init_os(const tpl_application_mode app_mode)
         auto_task = tpl_task_table[i];
         if (auto_task->exec_desc.state == (tpl_exec_state)AUTOSTART)
         {
-            /*  each AUTOSTART task is inserted in the READY list   */
-            /*  init the task   */
-
-            /*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
-                that has the same beginning fields as the struct it is casted to
-                This allow object oriented design and polymorphism.
-            */
-            auto_task->exec_desc.state = READY_AND_NEW;
-            /*  inc the activation count. The max_activate_count
-                is not tested since it should be a last equal to one  */
-            auto_task->exec_desc.activate_count++;
-            /*  Put the task in the ready list  */
-            tpl_put_exec_object(
-                &(auto_task->exec_desc),
-                (u8)NEWLY_ACTIVATED_EXEC_OBJ
-            );
+            /*  each AUTOSTART task is activated   */
+            tpl_activate_task(auto_task);
         }
     }  
 #endif
@@ -699,6 +706,7 @@ void tpl_init_os(const tpl_application_mode app_mode)
         auto_time_obj = tpl_alarm_table[i];
         if (auto_time_obj->state == (tpl_time_obj_state)ALARM_AUTOSTART)
         {
+            auto_time_obj->state = ALARM_SLEEP;
 			tpl_insert_time_obj(auto_time_obj);
         }
     }  
