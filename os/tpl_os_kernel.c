@@ -500,7 +500,7 @@ void tpl_schedule(const u8 from)
         /*  Switch the context  */
         if (from == (u8)FROM_TASK_LEVEL)
         {
-            if ((state & 0x9) != 0x1)
+            if (state < 0x4)
             {
                 DOW_ASSERT(tpl_running_obj != old_running_obj)
                 /*  The old running object is not in a DYING or
@@ -518,7 +518,7 @@ void tpl_schedule(const u8 from)
         }
         else
         { /* FROM_IT_LEVEL */
-            if ((state & 0x9) != 0x1)
+            if (state < 0x4)
             {
                 /*  The old running object is not in a DYING or
                     RESSURECT state */
