@@ -603,11 +603,11 @@ struct TPL_TIME_OBJ {
 };
 
 /**
- * @typedef tpl_alarm
+ * @typedef tpl_time_obj
  *
- * This is an alias for the structure #TPL_ALARM
+ * This is an alias for the structure #TPL_TIME_OBJ
  *
- * @see #TPL_ALARM
+ * @see #TPL_TIME_OBJ
  */
 typedef struct TPL_TIME_OBJ tpl_time_obj;
 

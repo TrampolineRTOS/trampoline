@@ -32,7 +32,8 @@ OS_MACHINE_PATH = $(OS_PATH)/os_machine/$(TARGET)
 # OIL CONFIGURATION
 #############################################################################
 #OIL file (at this time, goil supports description in only ONE file)
-OIL_FILE  = $(APP_PATH)/defaultAppWorkstation.oil
+OIL_FILE_FILE = defaultAppWorkstation.oil
+OIL_FILE  = $(APP_PATH)/$(OIL_FILE_FILE)
 GOIL_COMPILER = goil
 GOIL_TEMPLATE_PATH = ./goil/templates
 

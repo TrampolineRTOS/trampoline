@@ -31,24 +31,24 @@
 /**
  * @internal
  *
- * tpl_insert_alarm inserts an alarm in the alarm queue of the counter
- * it belongs to.
+ * tpl_insert_time_obj inserts a timeobject in the time object queue
+ * of the counter it belongs to.
  *
- * The alarm list of a counter is a double-linked list
- * and an alarm is inserted starting from the
+ * The time object list of a counter is a double-linked list
+ * and a time object is inserted starting from the
  * head of the list
  *
- * @param alarm     The alarm to insert.
+ * @param time_obj  The time object to insert.
  */
 void tpl_insert_time_obj(tpl_time_obj *time_obj);
 
 /**
  * @internal
  *
- * tpl_remove_alarm removes an alarm from the alarm queue of the counter
- * it belongs to.
+ * tpl_remove_time_obj removes a time object from the time object
+ * queue of the counter it belongs to.
  *
- * @param alarm     The alarm to remove.
+ * @param time_obj  The time object to remove.
  */
 void tpl_remove_time_obj(tpl_time_obj *time_obj);
 

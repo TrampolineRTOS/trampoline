@@ -27,6 +27,9 @@
 #ifndef TPL_OS_ALARM_H
 #define TPL_OS_ALARM_H
 
+#include "tpl_os_custom_types.h"
+#include "tpl_os_types.h"
+
 /*
  * Alarms
  * see paragraph 13.6,
