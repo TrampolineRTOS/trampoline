@@ -30,6 +30,9 @@
 #include "tpl_os_custom_types.h"
 #include "tpl_machine.h"
 #include "tpl_compiler.h"
+#ifdef WITH_AUTOSAR
+#include "tpl_as_timing_protec.h"
+#endif
 
 /**
  * @def CONFORM_ECC1
@@ -312,6 +315,14 @@ struct TPL_EXEC_STATIC {
                                                              task/isr*/
     const tpl_exec_obj_type         type;               /**< type of the
                                                              task/isr */
+#ifdef WITH_AUTOSAR
+    const tpl_timing_protection     *timing_protection; /**< timing protection 
+                                                             configuration
+																														 (can be NULL
+																														 if no timing
+																														 protection is
+																														 needed) */
+#endif
 };
 
 /**
@@ -337,6 +348,13 @@ struct TPL_EXEC_COMMON {
     tpl_activate_counter    activate_count; /**<  current activate count */
     tpl_priority            priority;       /**<  current priority */
     tpl_exec_state          state;          /**<  state (READY, RUNING, ...)*/
+#ifdef WITH_AUTOSAR
+    tpl_tick                budget_monitor_start_date; /**< start date of
+                                                            the budget monitor */
+    tpl_tick                budget_monitor_duration;   /**< elapsed running
+                                                            time since start
+                                                            date */
+#endif
 };
 
 /**
