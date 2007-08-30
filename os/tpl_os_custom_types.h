@@ -109,6 +109,16 @@ typedef u16 tpl_stack_size;
  */
 typedef u8 *tpl_buffer;
 
+#ifdef WITH_AUTOSAR
+/**
+ * tpl_locking_monitor_id is the index of a locking monitor in the related
+ * array in structure #TPL_TIMING_PROTECTION
+ *
+ * @see #tpl_timing_protection
+ */
+typedef u8 tpl_locking_monitor_id;
+#endif
+
 #endif /* TPL_OS_CUSTOM_TYPES_H */
 
 /* End of file tpl_os_custom_types.h */
