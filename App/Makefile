@@ -27,6 +27,10 @@
 
 include ../Make-rules
 
+ifeq ($(AUTOSAR),true)
+  CFLAGS += -I../$(AUTOSAR_PATH)
+endif
+
 #Add your source files here.
 APP_SRCS = tpl_default_tasks_workstation.c
 

@@ -26,6 +26,7 @@
 #ifndef TPL_OS_IT_KERNEL_H
 #define TPL_OS_IT_KERNEL_H
 
+#include "tpl_os_application_def.h"
 #include "tpl_os_internal_types.h"
 
 /**

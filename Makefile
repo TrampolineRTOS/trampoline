@@ -18,8 +18,21 @@
 
 include Make-rules
 
+# 
+# configures all autosar dependant variables
+#
+ifeq ($(AUTOSAR),true)
+  AUTOSAR_GOIL_FLAG = --autosar
+  AUTOSAR_DEP = AUTOSAR
+  CFLAGS += -I$(AUTOSAR_PATH)
+	AUTOSAR_MAKE_FLAG = AUTOSAR=true
+else
+  AUTOSAR_GOIL_FLAG =
+  AUTOSAR_DEP =
+	AUTOSAR_MAKE_FLAG =
+endif
+
 ALL: $(EXE)
-	
 
 DOC:
 	doxygen
@@ -31,28 +44,31 @@ CFLAGS += -I$(OS_MACHINE_PATH)  -I$(OIL_OUTPUT_PATH) -I$(OS_PATH) -I$(COM_PATH)
 OIL: OBJ $(OIL_OBJ_OIL_FILE)
 
 $(OIL_GENERATED_C_FILE): $(OIL_FILE) 
-	$(GOIL_COMPILER) --target=$(ARCH) --templates=$(GOIL_TEMPLATE_PATH) $(OIL_FILE)
+	$(GOIL_COMPILER) --target=$(ARCH) --templates=$(GOIL_TEMPLATE_PATH) $(OIL_FILE) $(AUTOSAR_GOIL_FLAG)
 
 $(OIL_OBJ_OIL_FILE) : $(OIL_GENERATED_C_FILE) 
 	$(CC) $(CFLAGS) -c $< -o $@
 
 #make OS objects.
 OS: OBJ OIL
-	@cd $(OS_PATH) && make OS
+	@cd $(OS_PATH) && make OS $(AUTOSAR_MAKE_FLAG)
 
 #make COM objects.
 COM: OBJ OIL
 	@cd $(COM_PATH) && make COM
 
+AUTOSAR: OBJ OIL
+	cd $(AUTOSAR_PATH) && make AUTOSAR
+
 #make User Application objects.
 APP: OBJ OIL
-	@cd $(APP_PATH) && make APP
+	@cd $(APP_PATH) && make APP $(AUTOSAR_MAKE_FLAG)
 
 #make object directory.
 OBJ:
 	@if [ ! -d $(OBJ_PATH) ]; then mkdir $(OBJ_PATH); fi; 
 
-$(EXE): OS APP COM
+$(EXE): OS APP COM $(AUTOSAR_DEP)
 	$(CC) $(LDFLAGS) -o $@ $(OBJ_PATH)/*.o
 
 clean: cleanOIL

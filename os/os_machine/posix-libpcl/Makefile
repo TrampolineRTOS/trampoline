@@ -14,6 +14,10 @@
 
 include ../../../Make-rules
 
+ifeq ($(AUTOSAR),true)
+  CFLAGS += -I../$(AUTOSAR_PATH)
+endif
+
 #kernel OS architecture dependant files
 AD_SRCS = tpl_machine_libpcl.c tpl_viper_interface.c 
 

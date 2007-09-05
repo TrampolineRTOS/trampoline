@@ -7,15 +7,15 @@
  *
  */
 
+#include "tpl_os_application_def.h" /* define NO_ISR if needed. */
 #include "tpl_machine.h"
+#include "tpl_os_generated_configuration.h"
 #include "tpl_os_internal_types.h"
 #include "tpl_viper_interface.h"
 #include "tpl_os_it_kernel.h"
 #include "tpl_os.h"
-#include "tpl_os_application_def.h" /* define NO_ISR if needed. */
 #include "tpl_machine_interface.h"
 
-#include "tpl_os_generated_configuration.h"
 
 #include <stdio.h>
 #include <stdlib.h>

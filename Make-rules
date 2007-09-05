@@ -22,6 +22,7 @@ EXE    =  trampoline
 #############################################################################
 OS_PATH = os
 COM_PATH = com
+AUTOSAR_PATH = autosar
 DEBUG_PATH = debug
 OBJ_PATH = .obj
 APP_PATH = App
