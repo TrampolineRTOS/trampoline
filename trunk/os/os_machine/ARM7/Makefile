@@ -13,6 +13,11 @@
 #
 
 include ../../../Make-rules
+
+ifeq ($(AUTOSAR),true)
+  CFLAGS += -I../$(AUTOSAR_PATH)
+endif
+
 AD_OBJS = tpl_machine_arm7.o tpl_machine_arm7_asm.o
 O_DIR = ../../../$(OBJ_DIR)
 

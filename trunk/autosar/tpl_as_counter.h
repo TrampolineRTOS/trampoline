@@ -23,9 +23,12 @@
  * $Author$
  * $URL$
  */
- 
 #ifndef TPL_AS_COUNTER_H
 #define TPL_AS_COUNTER_H
+
+#include "tpl_os_application_def.h" /* defines WITH_AUTOSAR */
+#include "tpl_os_types.h"
+#include "tpl_os_custom_types.h"
 
 /**
  * @typedef CounterType

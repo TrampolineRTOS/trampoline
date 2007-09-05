@@ -14,6 +14,10 @@
 
 include ../Make-rules
 
+ifeq ($(AUTOSAR),true)
+  CFLAGS += -I../$(AUTOSAR_PATH)
+endif
+
 #kernel OS files
 OS_SRCS = \
 tpl_os.c \
