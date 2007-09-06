@@ -27,6 +27,7 @@
 #define TPL_MACHINE_INTERFACE_H
 
 #include "tpl_os_internal_types.h"
+#include "tpl_os_custom_types.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -115,6 +116,29 @@ extern void tpl_sleep(void);
  * perform hardware or virtual machine shutdown.
  */
 extern void tpl_shutdown(void);
+
+#ifdef WITH_AUTOSAR
+typedef void (*watchdog_expire_function)();
+
+/**
+ * @internal
+ * 
+ * @TODO: document this
+ */
+extern void set_watchdog (tpl_time delay, watchdog_expire_function function);
+/**
+ * @internal
+ * 
+ * @TODO: document this
+ */
+extern void cancel_watchdog ();
+/**
+ * @internal
+ * 
+ * @TODO: document this
+ */
+extern tpl_time tpl_get_local_current_date ();
+#endif
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

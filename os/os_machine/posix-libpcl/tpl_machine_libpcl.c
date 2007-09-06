@@ -30,6 +30,55 @@
 
 tpl_context idle_task_context = 0;
 
+#ifdef WITH_AUTOSAR
+static watchdog_expire_function tpl_watchdog_callback;
+#endif
+
+#ifdef WITH_AUTOSAR
+tpl_time tpl_get_local_current_date ()
+{
+  struct timeval time;
+  tpl_time result;
+  
+  gettimeofday (&time, NULL);
+  result = time.tv_sec + time.tv_usec * (1000 * 1000);
+  
+  return result;
+}
+#endif
+
+#ifdef WITH_AUTOSAR
+void set_watchdog (tpl_time delay, watchdog_expire_function function)
+{
+  struct itimerval timer;
+  
+  /* prepare callback reference */
+  tpl_watchdog_callback = function;
+  
+  /* configure and start the timer */
+  timer.it_value.tv_sec = delay / (1000 * 1000);
+  timer.it_value.tv_usec = delay % (1000 * 1000);
+  timer.it_interval.tv_sec = delay / (1000 * 1000);
+  timer.it_interval.tv_usec = delay % (1000 * 1000);
+  setitimer (ITIMER_REAL, &timer, NULL);
+}
+#endif
+
+#ifdef WITH_AUTOSAR
+void cancel_watchdog ()
+{
+  struct itimerval timer;
+  
+  /* remove the callback */
+  tpl_watchdog_callback = NULL;
+  
+  /* disable the timer */
+  timer.it_value.tv_sec = 0;
+  timer.it_value.tv_usec = 0;
+  setitimer (ITIMER_REAL, &timer, NULL);
+}
+#endif
+
 /*
  * table which stores the signals used for interrupt
  * handlers.
@@ -38,7 +87,10 @@ tpl_context idle_task_context = 0;
 	extern int signal_for_isr_id[ISR_COUNT];
 #endif
 #ifndef NO_ALARM
-	const int signal_for_counters = SIGALRM;
+	const int signal_for_counters = SIGUSR2;
+#endif
+#ifdef WITH_AUTOSAR
+  const int signal_for_watchdog = SIGALRM;
 #endif
 
 /*
@@ -172,12 +224,27 @@ void SuspendOSInterrupts(void)
  */
 void tpl_signal_handler(int sig)
 {
+  #ifdef WITH_AUTOSAR
+  struct itimerval timer;
+  #endif
+  
 	#ifndef NO_ISR
 		unsigned int id;
 	#endif
 	#ifndef NO_ALARM
 		if(signal_for_counters == sig) tpl_call_counter_tick();
 	#endif
+  #ifdef WITH_AUTOSAR
+    if (sig == SIGALRM)
+    {
+      if (tpl_watchdog_callback != NULL)
+        tpl_watchdog_callback ();
+      
+      timer.it_value.tv_sec = 0;
+      timer.it_value.tv_usec = 0;
+      setitimer (ITIMER_REAL, &timer, NULL);
+    }    
+  #endif
 	#ifndef NO_ISR
 		for (id = 0; id < ISR_COUNT; id++)
         {
@@ -401,6 +468,9 @@ void tpl_init_machine(void)
 #ifndef NO_ALARM
     sigaddset(&signal_set,signal_for_counters);
 #endif
+#ifdef WITH_AUTOSAR
+    sigaddset(&signal_set,signal_for_watchdog);
+#endif
 
 
     /*
@@ -419,6 +489,9 @@ void tpl_init_machine(void)
 #endif
 #ifndef NO_ALARM
     sigaction(signal_for_counters,&sa,NULL);
+#endif
+#ifdef WITH_AUTOSAR
+    sigaction(signal_for_watchdog,&sa,NULL);
 #endif
     
     idle_task_context = co_create( tpl_osek_func_stub, (void*)&my_tpl_sleep, NULL, CO_MIN_SIZE );

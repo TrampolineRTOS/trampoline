@@ -64,6 +64,9 @@ StatusType GetResource(const ResourceType res_id)
             
         IF_NO_EXTENDED_ERROR(result)
             tpl_get_resource(res);
+        #ifdef AUTOSAR
+        tpl_start_resource_monitor (tpl_running_obj, res_id);
+        #endif
         IF_NO_EXTENDED_ERROR_END()
         
         UNLOCK_WHEN_NO_HOOK()
@@ -117,6 +120,9 @@ StatusType ReleaseResource(const ResourceType res_id)
         
         IF_NO_EXTENDED_ERROR(result)
             tpl_release_resource(res);
+        #ifdef WITH_AUTOSAR
+        tpl_disable_resource_monitor (tpl_running_obj, res_id);
+        #endif
         IF_NO_EXTENDED_ERROR_END()
     
         UNLOCK_WHEN_NO_HOOK()

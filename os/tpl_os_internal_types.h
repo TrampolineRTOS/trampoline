@@ -30,9 +30,6 @@
 #include "tpl_os_custom_types.h"
 #include "tpl_machine.h"
 #include "tpl_compiler.h"
-#ifdef WITH_AUTOSAR
-#include "tpl_as_timing_protec.h"
-#endif
 
 /**
  * @def CONFORM_ECC1
@@ -285,7 +282,43 @@ typedef u8 tpl_exec_state;
  * @see #TPL_EXEC_STATIC
  */
 typedef void (*tpl_exec_function)(void);
- 
+
+#ifdef WITH_AUTOSAR
+/** 
+ * @struct TPL_TIMING_PROTECTION
+ *
+ * This structure gathers all informations about timing protection
+ * of an executable object (task or isr). See AUTOSAR OS SWS §7.6.2
+ * about timing protection.
+ *
+ * @see #tpl_timing_protection
+ * @see #tpl_exec_static
+ */
+struct TPL_TIMING_PROTECTION
+{
+    tpl_time             execution_budget; /**< maximum duration the task/isr
+                                               can be active within a 
+                                               timeframe */
+    tpl_activate_counter time_limit;      /**< maximum number of activations 
+                                               of the task/isr withing a
+                                               timeframe */
+    tpl_time             timeframe;       /**< configured timeframe for this
+                                               timing protection */
+    tpl_time *resource_lock_time;         /**< array where timing protection
+                                               is specified (or not) for
+                                               each resource (zero if no
+                                               timing protection) */
+    tpl_time os_interrupt_lock_time;
+    tpl_time all_interrupt_lock_time;
+};
+
+/**
+ * @todo document this
+ * TODO
+ */
+typedef struct TPL_TIMING_PROTECTION tpl_timing_protection;
+#endif /* defined WITH_AUTOSAR */
+
 /**
  * @struct TPL_EXEC_STATIC
  *
@@ -349,11 +382,12 @@ struct TPL_EXEC_COMMON {
     tpl_priority            priority;       /**<  current priority */
     tpl_exec_state          state;          /**<  state (READY, RUNING, ...)*/
 #ifdef WITH_AUTOSAR
-    tpl_tick                budget_monitor_start_date; /**< start date of
-                                                            the budget monitor */
-    tpl_tick                budget_monitor_duration;   /**< elapsed running
-                                                            time since start
-                                                            date */
+    tpl_time                budget_monitor_start_date; /**< last start date of
+                                                            the budget monitor
+                                                            */
+    tpl_time                budget_monitor_time_left;  /**< time left before
+                                                            exceeding execution
+                                                            budget */ 
 #endif
 };
 

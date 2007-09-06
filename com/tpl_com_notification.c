@@ -14,6 +14,7 @@
  * $URL$
  */
 
+#include "tpl_os_application_def.h"
 #include "tpl_os_action.h"
 #include "tpl_os_kernel.h"
 #include "tpl_os_definitions.h"

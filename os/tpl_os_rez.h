@@ -26,6 +26,9 @@
 #define TPL_OS_REZ_H
 
 #include "tpl_os_types.h"
+#ifdef WITH_AUTOSAR
+#include "tpl_as_timing_protec.h"
+#endif
 
 /*
  * Resource Management

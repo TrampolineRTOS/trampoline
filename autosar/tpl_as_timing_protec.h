@@ -3,7 +3,12 @@
  *
  * @section desc File description
  *
- * TODO
+ * TODO: finish documentation
+ * 
+ * Explain that the error due to watchdog time resolution
+ * can be cumulated over each task preemption. Provide some elements to
+ * determine the timing protection limit depending on watchdog time resolution
+ * and other parameters (e.g. number of tasks, ...).
  *
  * @section copyright Copyright
  *
@@ -27,30 +32,23 @@
 #ifndef TPL_AS_TIMING_PROTEC_H
 #define TPL_AS_TIMING_PROTEC_H
 
+#include "tpl_os_application_def.h"
 #include "tpl_os_custom_types.h"
+#include "tpl_os_internal_types.h"
+#include "tpl_os_definitions.h"
+#include "tpl_machine_interface.h"
+#include "tpl_as_protec_hook.h"
 
 /**
- * TODO
+ * @define MAXIMUM_SCHEDULED_WATCHDOGS
+ * TODO: document this
+ *
+ * OIL should provide this value, based on
+ * the needed watchdogs. In the worst case,
+ * you can schedule this number of watchdogs :
+ * number of resources + 4 * number of tasks
  */
-struct TPL_RESOURCE_LOCK_MONITOR
-{
-    ResourceType resource;
-    TickType resource_lock_time;
-};
-
-/**
- * TODO
- */
-typedef struct TPL_RESOURCE_LOCK_MONITOR tpl_resource_lock_monitor;
-
-/**
- * TODO
- */
-struct TPL_INTERRUPT_LOCK_MONITOR
-{
-    TickType os_interrupt_lock_time;
-    TypeType all_interrupt_lock_time;
-};
+#define MAXIMUM_SCHEDULED_WATCHDOGS 20
 
 /**
  * TODO
@@ -58,66 +56,40 @@ struct TPL_INTERRUPT_LOCK_MONITOR
 typedef struct TPL_INTERRUPT_LOCK_MONITOR tpl_interrupt_lock_monitor;
 
 /**
- * TODO
+ * @internal
+ *
+ * Call this function to initialize the timing protection module.
  */
-struct TPL_LOCKING_TIME
-{
-    enum {RESOURCE, INTERRUPT} type;
-    union
-    {
-        tpl_resource_lock_monitor resource;
-        tpl_interrupt_lock_monitor interrupt;
-    } monitor;
-};
+void tpl_init_timing_protection ();
 
 /**
- * TODO
- */
-typedef union TPL_LOCKING_TIME tpl_locking_time;
-
-/** 
- * @struct TPL_TIMING_PROTECTION
+ * @internal
  *
- * This structure gathers all informations about timing protection
- * of an executable object (task or isr). See AUTOSAR OS SWS §7.6.2
- * about timing protection.
- *
- * @see #tpl_timing_protection
- * @see #tpl_exec_static
- */
-struct TPL_TIMING_PROTECTION
-{
-    tpl_tick exection_budget; /**< maximum duration the task/isr can be active
-	                               within a timeframe */
-    tpl_tick time_limit;      /**< maximum number of activations of the task/
-                                   isr withing a timeframe */
-    tpl_tick timeframe;       /**< configured timeframe for this timing
-                                   protection */
-    tpl_locking_monitor locking_monitors_count; /**< number of locking
-                                                     monitors */
-    tpl_locking_time *locking_monitors;         /**< list of locking time
-                                                     monitors */
-};
-
-typedef struct tpl_timing_protection
-
-/**
  * function to be called when a task is activated (start the watchdog)
+ * 
+ * @pre all interrupts should be disabled during this function execution
+ * 
  * TODO: improve documentation
  */
 void tpl_start_budget_monitor (tpl_exec_common *this_exec_obj);
 /**
+ * @internal
+ *
  * function to be called when a task is preempted
  * TODO: improve documentation
  */
 void tpl_pause_budget_monitor (tpl_exec_common *this_exec_obj);
 /**
+ * @internal
+ *
  * function to be called when a task get back the processor
  * (opposite of preemption)
  * TODO: improve documentation
  */
 void tpl_continue_budget_monitor (tpl_exec_common *this_exec_obj);
 /**
+ * @internal
+ *
  * function to be called when a task is terminated (cancel the
  * watchdog)
  * TODO: improve documentation
@@ -125,37 +97,51 @@ void tpl_continue_budget_monitor (tpl_exec_common *this_exec_obj);
 void tpl_disable_budget_monitor (tpl_exec_common *this_exec_obj);
 
 /**
+ * @internal
+ *
  * function called when a resource is got
  * TODO: improve documentation
  */
-void tpl_start_resource_monitor (tpl_exec_common *this_exec_obj);
+void tpl_start_resource_monitor (tpl_exec_common *this_exec_obj, 
+   tpl_resource_id this_resource);
 /**
+ * @internal
+ *
  * function called when a resource is released
  * TODO: improve documentation
  */
-void tpl_disable_resource_monitor (tpl_exec_common *this_exec_obj);
+void tpl_disable_resource_monitor (tpl_exec_common *this_exec_obj, 
+   tpl_resource_id this_resource);
 
 /**
+ * @internal
+ *
  * function called when all interrupts are locked
  * TODO: improve documentation
  */
 void tpl_start_all_isr_lock_monitor (tpl_exec_common *this_exec_obj);
 /**
+ * @internal
+ *
  * function called when all interrupts are unlocked
  * TODO: improve documentation
  */
 void tpl_disable_all_isr_lock_monitor (tpl_exec_common *this_exec_obj);
 
 /**
+ * @internal
+ *
  * function called when isr 2 are locked
  * TODO: improve documentation
  */
 void tpl_start_os_isr_lock_monitor (tpl_exec_common *this_exec_obj);
 /**
+ * @internal
+ *
  * function called when isr 2 are unlocked
  * TODO: improve documentation
  */
 void tpl_disable_os_isr_lock_monitor (tpl_exec_common *this_exec_obj);
 
-#endif
+#endif /* TPL_AS_TIMING_PROTEC_H */
 
