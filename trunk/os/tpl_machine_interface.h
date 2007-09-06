@@ -28,6 +28,7 @@
 
 #include "tpl_os_internal_types.h"
 #include "tpl_os_custom_types.h"
+#include "tpl_os_application_def.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -138,6 +139,24 @@ extern void cancel_watchdog ();
  * @TODO: document this
  */
 extern tpl_time tpl_get_local_current_date ();
+/**
+ * @internal
+ * 
+ * @TODO: document this
+ * 
+ * @retval 1 no stack overflow detected
+ * @retval 0 stack overflow deteted
+ */
+u8 tpl_check_stack_pointer (tpl_exec_common *this_exec_obj);
+/**
+ * @internal
+ * 
+ * @TODO: document this
+ * 
+ * @retval 1 no stack overflow detected
+ * @retval 0 stack overflow deteted
+ */
+u8 tpl_check_stack_footprint (tpl_exec_common *this_exec_obj);
 #endif
 
 #define OS_STOP_SEC_CODE

@@ -32,6 +32,7 @@
 #include "tpl_machine.h"
 #include "tpl_machine_interface.h"
 #include "tpl_dow.h"
+#include "tpl_as_stack_monitor.h"
 
 
 #define OS_START_SEC_CODE
@@ -404,6 +405,10 @@ void tpl_schedule(const u8 from)
         (((state & 0x3) == 0x3) ||    /*  DYING, WAITING or RESURRECT */
          (state == (tpl_exec_state)RUNNING &&
           tpl_h_prio > tpl_running_obj->priority));
+    
+#ifdef WITH_AUTOSAR
+   tpl_check_stack (tpl_running_obj);
+#endif
     
     if (schedule == TRUE)
     {

@@ -30,6 +30,7 @@
 #include "tpl_os_custom_types.h"
 #include "tpl_machine.h"
 #include "tpl_compiler.h"
+#include "tpl_os_application_def.h"
 
 /**
  * @def CONFORM_ECC1

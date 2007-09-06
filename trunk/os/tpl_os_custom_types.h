@@ -29,6 +29,7 @@
 #define TPL_OS_CUSTOM_TYPES_H
 
 #include "tpl_os_std_types.h"
+#include "tpl_os_application_def.h"
 
 /**
  * tpl_task_id is used for task identifiers.

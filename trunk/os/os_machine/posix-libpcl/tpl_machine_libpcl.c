@@ -7,7 +7,6 @@
  *
  */
 
-#include "tpl_os_application_def.h" /* define NO_ISR if needed. */
 #include "tpl_machine.h"
 #include "tpl_os_generated_configuration.h"
 #include "tpl_os_internal_types.h"
@@ -15,6 +14,7 @@
 #include "tpl_os_it_kernel.h"
 #include "tpl_os.h"
 #include "tpl_machine_interface.h"
+#include "tpl_os_application_def.h" /* define NO_ISR if needed. */
 
 
 #include <stdio.h>
@@ -76,6 +76,20 @@ void cancel_watchdog ()
   timer.it_value.tv_sec = 0;
   timer.it_value.tv_usec = 0;
   setitimer (ITIMER_REAL, &timer, NULL);
+}
+#endif
+
+#ifdef WITH_AUTOSAR
+u8 tpl_check_stack_pointer (tpl_exec_common *this_exec_obj)
+{
+  return 1;
+}
+#endif
+
+#ifdef WITH_AUTOSAR
+u8 tpl_check_stack_footprint (tpl_exec_common *this_exec_obj)
+{
+  return 1;
 }
 #endif
 
