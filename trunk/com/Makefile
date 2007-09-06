@@ -14,6 +14,10 @@
 
 include ../Make-rules
 
+ifeq ($(AUTOSAR), true)
+CFLAGS += -I../$(AUTOSAR_PATH) -I../$(DEBUG)
+endif
+
 #kernel OS files
 COM_SRCS = \
 tpl_com_app_copy.c  \

@@ -15,7 +15,7 @@
 include ../../../Make-rules
 
 ifeq ($(AUTOSAR),true)
-  CFLAGS += -I../$(AUTOSAR_PATH)
+  CFLAGS += -I../../../$(AUTOSAR_PATH) -I../../../$(DEBUG_PATH)
 endif
 
 #kernel OS architecture dependant files
@@ -25,7 +25,7 @@ AD_SRCS = tpl_machine_libpcl.c tpl_viper_interface.c
 O_PATH = ../../../$(OBJ_PATH)
 AD_OBJS = $(addprefix $(O_PATH)/,$(AD_SRCS:.c=.o))
 
-CFLAGS += -I../.. -I../../../$(OIL_OUTPUT_PATH) -I. -I../../../$(VIPER_PATH)
+CFLAGS += -I../.. -I../../../$(OIL_OUTPUT_PATH) -I. -I../../../$(VIPER_PATH) 
 
 $(O_PATH)/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
