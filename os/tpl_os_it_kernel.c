@@ -20,6 +20,7 @@
 #include "tpl_os.h"
 #include "tpl_os_application_def.h"
 #include "tpl_machine_interface.h"
+#include "tpl_as_stack_monitor.h"
 
 #ifndef NO_ISR
 
@@ -63,6 +64,10 @@ void tpl_central_interrupt_handler(const u16 id)
 {
     static s32 tpl_it_nesting =  0;
     tpl_isr                     *a_isr_desc;
+
+#ifdef WITH_AUTOSAR
+    tpl_check_stack (tpl_running_obj);
+#endif
     
 	/*  Is there a handler for this id ?
 		ie the id has been counted in the table and there

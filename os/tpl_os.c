@@ -31,6 +31,8 @@
 #include "tpl_os_hooks.h"
 #include "tpl_os_std_types.h"
 #include "tpl_machine_interface.h"
+#include "tpl_os_application_def.h"
+
 #ifdef WITH_AUTOSAR
 #include "tpl_as_timing_protec.h"
 #endif
