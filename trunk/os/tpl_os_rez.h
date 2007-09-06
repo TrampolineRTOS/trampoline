@@ -26,6 +26,8 @@
 #define TPL_OS_REZ_H
 
 #include "tpl_os_types.h"
+#include "tpl_os_application_def.h"
+
 #ifdef WITH_AUTOSAR
 #include "tpl_as_timing_protec.h"
 #endif
