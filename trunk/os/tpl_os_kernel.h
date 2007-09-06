@@ -29,6 +29,9 @@
 #include "tpl_os_application_def.h"
 #include "tpl_os_internal_types.h"
 #include "tpl_os_it_kernel.h"
+#ifdef WITH_AUTOSAR
+#include "tpl_as_timing_protec.h"
+#endif
 
 /**
  * @def INVALID_TASK

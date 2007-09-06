@@ -111,12 +111,28 @@ typedef u8 *tpl_buffer;
 
 #ifdef WITH_AUTOSAR
 /**
- * tpl_locking_monitor_id is the index of a locking monitor in the related
- * array in structure #TPL_TIMING_PROTECTION
- *
+ * @internal
+ * 
+ * Used to index the scheduled_watchdog array.
+ * 
  * @see #tpl_timing_protection
  */
-typedef u8 tpl_locking_monitor_id;
+typedef u8 tpl_scheduled_watchdog_id;
+
+/**
+ * Time data (duration or date) used in timing protection. The unit is system
+ * dependant (see #set_watchdog).
+ *
+ * @see #set_watchdog
+ */
+typedef u32 tpl_time;
+
+/**
+ * @internal
+ * 
+ * @TODO: document this
+ */
+typedef u32 tpl_counter_id;
 #endif
 
 #endif /* TPL_OS_CUSTOM_TYPES_H */

@@ -31,6 +31,9 @@
 #include "tpl_os_hooks.h"
 #include "tpl_os_std_types.h"
 #include "tpl_machine_interface.h"
+#ifdef WITH_AUTOSAR
+#include "tpl_as_timing_protec.h"
+#endif
 
 static AppModeType application_mode;
 
@@ -58,6 +61,10 @@ void StartOS(const AppModeType mode)
     tpl_get_task_lock();
 
     tpl_init_os(mode);
+    
+#ifdef WITH_AUTOSAR
+    tpl_init_timing_protection ();
+#endif
     
     /*  Call the startup hook. According to the spec, it should be called
         after the os is initialized and before the scheduler is running   */
