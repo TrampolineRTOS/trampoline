@@ -65,9 +65,9 @@ void tpl_central_interrupt_handler(const u16 id)
     static s32 tpl_it_nesting =  0;
     tpl_isr                     *a_isr_desc;
 
-#ifdef WITH_AUTOSAR
+#ifdef WITH_AUTOSAR_STACK_MONITORING
     tpl_check_stack (tpl_running_obj);
-#endif
+#endif /* WITH_AUTOSAR_STACK_MONITORING */
     
 	/*  Is there a handler for this id ?
 		ie the id has been counted in the table and there

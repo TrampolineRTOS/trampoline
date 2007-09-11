@@ -27,7 +27,8 @@
 #ifndef TPL_AS_ISR_H
 #define TPL_AS_ISR_H
 
-#include "tpl_as_types.h"
+#include "tpl_os_types.h"
+#include "tpl_os_custom_types.h"
 
 /**
  * @typedef ISRType
@@ -49,6 +50,30 @@ typedef tpl_isr_id  ISRType;
  * AUTOSAR/Specification of the Operating System v2.0.1
  */
 ISRType GetISRID(void);
+
+/**
+ * Disables the specified ISR
+ *
+ * @param DisableISR the ISR to disable
+ *
+ * @retval E_OK no error
+ * @retval E_OS_ID DisableISR is not a valid ISR id (only in extended error)
+ *
+ * see §8.4.20 of AUTOSAR/Specification of the Operating System v2.1.0
+ */
+StatusType DisableInterruptSource (ISRType DisableISR);
+
+/**
+ * Enables the specified ISR
+ *
+ * @param EnableISR the ISR to enable
+ *
+ * @retval E_OK no error
+ * @retval E_OS_ID EnableISR is not a valid ISR id (only in extended error)
+ *
+ * see §8.4.21 of AUTOSAR/Specification of the Operating System v2.1.0
+ */
+StatusType EnableInterruptSource (ISRType EnableISR);
 
 /* TPL_AS_ISR_H */
 #endif

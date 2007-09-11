@@ -33,7 +33,7 @@
 #include "tpl_machine_interface.h"
 #include "tpl_os_application_def.h"
 
-#ifdef WITH_AUTOSAR
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
 #include "tpl_as_timing_protec.h"
 #endif
 
@@ -64,7 +64,7 @@ void StartOS(const AppModeType mode)
 
     tpl_init_os(mode);
     
-#ifdef WITH_AUTOSAR
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
     tpl_init_timing_protection ();
 #endif
     

@@ -19,7 +19,9 @@ include ../Make-rules
 AUTOSAR_SRCS = \
 tpl_as_timing_protec.c \
 tpl_as_protec_hook.c \
-tpl_as_stack_monitor.c
+tpl_as_stack_monitor.c \
+tpl_as_isr.c \
+tpl_as_isr_kernel.c
 #tpl_as_counter.c \
 #tpl_as_counter.h \
 #tpl_as_error.h \

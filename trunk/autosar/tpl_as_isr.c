@@ -25,7 +25,7 @@
  */
  
 #include "tpl_as_isr.h"
-#include "tpl_as_defines.h"
+#include "tpl_os_internal_types.h"
 
 /*
  * Get the ID of the currently running ISR.
@@ -38,6 +38,8 @@
  */
 ISRType GetISRID(void)
 {
+/* disabled to be compilable / Jonathan ILIAS - 11 sept 2007 */
+#if 0
     tpl_exec_object_type    type;
     tpl_isr_id              isr_id = INVALID_ISR;
     
@@ -54,6 +56,9 @@ ISRType GetISRID(void)
     tpl_release_task_lock();
     
     return isr_id;
+#else
+  return 0;
+#endif
 }
 
 /* End of file tpl_as_isr.c */

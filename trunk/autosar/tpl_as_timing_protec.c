@@ -26,6 +26,7 @@
  
 #include "tpl_as_timing_protec.h"
 #include "tpl_dow.h"
+#include "tpl_as_isr_kernel.h"
 
 typedef enum
 {
@@ -33,7 +34,8 @@ typedef enum
   TIME_LIMIT,
   ALL_INT_LOCK,
   OS_INT_LOCK,
-  REZ_LOCK
+  REZ_LOCK,
+  TIMEFRAME_BOUNDARY
 } tpl_watchdog_type;
 
 typedef struct
@@ -58,8 +60,27 @@ static tpl_scheduled_watchdog scheduled_watchdogs[MAXIMUM_SCHEDULED_WATCHDOGS];
 
 static tpl_scheduled_watchdog *earliest_watchdog;
 
+/*
+ * forward prototypes
+ */
+static void schedule_watchdog (tpl_watchdog *this_watchdog, 
+   tpl_time expire_delay);
+static void unschedule_watchdog (tpl_watchdog *this_watchdog);
+
+static tpl_time delay_to_next_timeframe (tpl_time timeframe)
+{
+  tpl_time result;
+
+  result = timeframe;
+  result -= tpl_get_local_current_date () % timeframe;
+
+  return result;
+}
+
 static void watchdog_callback ()
 {
+  tpl_exec_common *exec_obj;
+  
   do
   {
     switch (earliest_watchdog->watchdog.type)
@@ -72,6 +93,29 @@ static void watchdog_callback ()
       case ALL_INT_LOCK:
       case OS_INT_LOCK:
         tpl_call_protection_hook (E_OS_PROTECTION_LOCKED);
+        break;
+      case TIMEFRAME_BOUNDARY:
+        exec_obj = earliest_watchdog->watchdog.exec_obj;
+        if (exec_obj->static_desc->type != IS_ROUTINE)
+        {
+          /* reset execution budget for the task */
+          exec_obj->time_left =
+             exec_obj->static_desc->timing_protection->execution_budget;
+        }
+        else
+        {
+          /* unlock this ISR2 if needed */
+          if (exec_obj->static_desc->timing_protection->count_limit == 0)
+            tpl_enable_isr2 (exec_obj);
+          
+          /* reset the activation countdown for the isr */
+          exec_obj->time_left = 
+             exec_obj->static_desc->timing_protection->count_limit;
+        }
+
+        /* reschedule next timeframe end boundary */
+        schedule_watchdog (&(earliest_watchdog->watchdog),
+           exec_obj->static_desc->timing_protection->timeframe);
         break;
       default:
         DOW_ASSERT (0);
@@ -233,6 +277,34 @@ static void unschedule_watchdog (tpl_watchdog *this_watchdog)
   }
 }
 
+static void start_timeframe (tpl_exec_common *this_exec_obj)
+{
+  tpl_watchdog watchdog;
+  tpl_time timeframe;
+  tpl_time delay_to_timeframe;
+
+  /* schedule the timeframe end boundary's watchdog 
+  * (timeframe period is synchronized with the current date
+  * modulo timeframe, see delay_to_next_timeframe function)
+  */
+  timeframe = this_exec_obj->static_desc->timing_protection->timeframe;
+  delay_to_timeframe = delay_to_next_timeframe (timeframe);
+  if (delay_to_timeframe == 0)
+    delay_to_timeframe = timeframe;
+  watchdog.exec_obj = this_exec_obj;
+  watchdog.type = TIMEFRAME_BOUNDARY;
+  schedule_watchdog (&watchdog, delay_to_timeframe);
+}
+
+static void stop_timeframe (tpl_exec_common *this_exec_obj)
+{
+  tpl_watchdog watchdog;
+
+  watchdog.exec_obj = this_exec_obj; 
+  watchdog.type = TIMEFRAME_BOUNDARY;
+  unschedule_watchdog (&watchdog);
+}
+
 void tpl_init_timing_protection ()
 {
   tpl_scheduled_watchdog_id watchdog_id;
@@ -249,13 +321,9 @@ void tpl_init_timing_protection ()
 void tpl_start_budget_monitor (tpl_exec_common *this_exec_obj)
 {
   tpl_watchdog watchdog;
-  tpl_time current_date;
   
   if (this_exec_obj->static_desc->timing_protection != NULL)
   {
-    /* requested one time to be sure to have coherent time base */
-    current_date = tpl_get_local_current_date ();
-  
     /* schedule the watchdog */
     watchdog.exec_obj = this_exec_obj;
     watchdog.type = EXEC_BUDGET;
@@ -263,9 +331,12 @@ void tpl_start_budget_monitor (tpl_exec_common *this_exec_obj)
        this_exec_obj->static_desc->timing_protection->execution_budget);
     
     /* initialize the budget monitor counter */
-    this_exec_obj->budget_monitor_start_date = current_date;
-    this_exec_obj->budget_monitor_time_left = 
+    this_exec_obj->monitor_start_date = tpl_get_local_current_date ();
+    this_exec_obj->time_left = 
        this_exec_obj->static_desc->timing_protection->execution_budget;
+
+    /* start the timeframe */
+    start_timeframe (this_exec_obj);
   }
 }
 
@@ -281,8 +352,8 @@ void tpl_pause_budget_monitor (tpl_exec_common *this_exec_obj)
     unschedule_watchdog (&watchdog);
   
     /* update the budget monitor counter */
-    this_exec_obj->budget_monitor_time_left -= 
-       tpl_get_local_current_date () - this_exec_obj->budget_monitor_start_date;
+    this_exec_obj->time_left -= 
+       tpl_get_local_current_date () - this_exec_obj->monitor_start_date;
   }
 }
 
@@ -299,10 +370,10 @@ void tpl_continue_budget_monitor (tpl_exec_common *this_exec_obj)
     /* reschedule a related watchdog */
     watchdog.exec_obj = this_exec_obj;
     watchdog.type = EXEC_BUDGET;
-    schedule_watchdog (&watchdog, this_exec_obj->budget_monitor_time_left);
+    schedule_watchdog (&watchdog, this_exec_obj->time_left);
   
     /* restart the budget monitor base date */
-    this_exec_obj->budget_monitor_start_date = current_date;
+    this_exec_obj->monitor_start_date = current_date;
   } 
 }
 
@@ -312,10 +383,48 @@ void tpl_disable_budget_monitor (tpl_exec_common *this_exec_obj)
     
   if (this_exec_obj->static_desc->timing_protection != NULL)
   {
-    /* unschedule the related watchdog */
+    /* unschedule the related watchdogs */
     watchdog.exec_obj = this_exec_obj;
     watchdog.type = EXEC_BUDGET;
     unschedule_watchdog (&watchdog);
+
+    /* stops the timeframe watchdog */
+    stop_timeframe (this_exec_obj);
+  }
+}
+
+void tpl_reset_activation_count (tpl_exec_common *this_exec_obj)
+{
+  this_exec_obj->time_left =
+     this_exec_obj->static_desc->timing_protection->count_limit + 1;
+}
+
+void tpl_add_activation_count (tpl_exec_common *this_exec_obj)
+{
+  if (this_exec_obj->time_left > 0)
+    this_exec_obj->time_left -= 1;
+    
+  if (this_exec_obj->time_left == 0)
+  {
+    tpl_disable_isr2 (this_exec_obj);
+  }
+}
+
+void tpl_start_exectime_monitor (tpl_exec_common *this_exec_obj)
+{
+  this_exec_obj->monitor_start_date = tpl_get_local_current_date ();
+}
+
+void tpl_finish_exectime_monitor (tpl_exec_common *this_exec_obj)
+{
+  tpl_time execution_time;
+
+  execution_time = tpl_get_local_current_date () -
+     this_exec_obj->monitor_start_date;
+  if (execution_time > 
+     this_exec_obj->static_desc->timing_protection->execution_budget)
+  {
+    tpl_call_protection_hook (E_OS_PROTECTION_TIME);
   }
 }
 

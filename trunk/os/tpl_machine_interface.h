@@ -118,7 +118,7 @@ extern void tpl_sleep(void);
  */
 extern void tpl_shutdown(void);
 
-#ifdef WITH_AUTOSAR
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
 typedef void (*watchdog_expire_function)();
 
 /**
@@ -139,6 +139,9 @@ extern void cancel_watchdog ();
  * @TODO: document this
  */
 extern tpl_time tpl_get_local_current_date ();
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+
+#ifdef WITH_AUTOSAR_STACK_MONITORING
 /**
  * @internal
  * 
@@ -157,7 +160,7 @@ u8 tpl_check_stack_pointer (tpl_exec_common *this_exec_obj);
  * @retval 0 stack overflow deteted
  */
 u8 tpl_check_stack_footprint (tpl_exec_common *this_exec_obj);
-#endif
+#endif /* WITH_AUTOSAR_STACK_MONITORING */
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
