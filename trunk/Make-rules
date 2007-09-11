@@ -46,7 +46,8 @@ GOIL_TEMPLATE_PATH = ./goil/templates
 ALLFLAGS = \
 -Wall \
 -pedantic \
---std=c99 
+--std=c99 \
+-Wmissing-field-initializers # detect structures not fully initialized
 
 #compilation flags for C files
 CFLAGS = $(ALLFLAGS) -ansi -g
