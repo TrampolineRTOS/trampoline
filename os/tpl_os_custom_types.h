@@ -110,7 +110,7 @@ typedef u16 tpl_stack_size;
  */
 typedef u8 *tpl_buffer;
 
-#ifdef WITH_AUTOSAR
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
 /**
  * @internal
  * 
@@ -127,14 +127,24 @@ typedef u8 tpl_scheduled_watchdog_id;
  * @see #set_watchdog
  */
 typedef u32 tpl_time;
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
+#ifdef WITH_AUTOSAR
 /**
  * @internal
  * 
  * @TODO: document this
  */
 typedef u32 tpl_counter_id;
-#endif
+
+/**
+ * @internal
+ * 
+ * @TODO: document this
+ */
+typedef u8 tpl_isr_id;
+
+#endif /* WITH_AUTOSAR */
 
 #endif /* TPL_OS_CUSTOM_TYPES_H */
 

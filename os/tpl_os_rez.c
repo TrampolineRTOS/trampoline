@@ -120,9 +120,9 @@ StatusType ReleaseResource(const ResourceType res_id)
         
         IF_NO_EXTENDED_ERROR(result)
             tpl_release_resource(res);
-        #ifdef WITH_AUTOSAR
+        #ifdef WITH_AUTOSAR_TIMING_PROTECTION
         tpl_disable_resource_monitor (tpl_running_obj, res_id);
-        #endif
+        #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
         IF_NO_EXTENDED_ERROR_END()
     
         UNLOCK_WHEN_NO_HOOK()

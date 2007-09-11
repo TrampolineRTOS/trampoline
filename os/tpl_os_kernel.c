@@ -406,9 +406,9 @@ void tpl_schedule(const u8 from)
          (state == (tpl_exec_state)RUNNING &&
           tpl_h_prio > tpl_running_obj->priority));
     
-#ifdef WITH_AUTOSAR
+#ifdef WITH_AUTOSAR_STACK_MONITORING
    tpl_check_stack (tpl_running_obj);
-#endif
+#endif /* WITH_AUTOSAR_STACK_MONITORING */
     
     if (schedule == TRUE)
     {
@@ -429,9 +429,9 @@ void tpl_schedule(const u8 from)
                 put at the end of the set. So we have to
                 distinguish them                                        */
             tpl_put_exec_object(tpl_running_obj, PREEMPTED_EXEC_OBJ);
-            #ifdef WITH_AUTOSAR
+            #ifdef WITH_AUTOSAR_TIMING_PROTECTION
             tpl_pause_budget_monitor (tpl_running_obj);
-            #endif
+            #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
         }
         else
         {
@@ -473,9 +473,9 @@ void tpl_schedule(const u8 from)
                 tpl_put_exec_object(tpl_running_obj, NEWLY_ACTIVATED_EXEC_OBJ);
             }
             
-            #ifdef WITH_AUTOSAR
+            #ifdef WITH_AUTOSAR_TIMING_PROTECTION
             tpl_disable_budget_monitor (tpl_running_obj);
-            #endif
+            #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
         }
 
         /*  get the ready task from the ready task list                 */
@@ -486,18 +486,18 @@ void tpl_schedule(const u8 from)
             /*  the object has not be preempted. So its
                 descriptor must be initialized              */
             tpl_init_exec_object(tpl_running_obj);
-            #ifdef WITH_AUTOSAR
+            #ifdef WITH_AUTOSAR_TIMING_PROTECTION
             tpl_start_budget_monitor (tpl_running_obj);
-            #endif
+            #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
         }
         else
         {
-          #ifdef WITH_AUTOSAR
+          #ifdef WITH_AUTOSAR_TIMING_PROTECTION
           if (tpl_running_obj->state == NEWLY_ACTIVATED_EXEC_OBJ)
             tpl_start_budget_monitor (tpl_running_obj);
           else
             tpl_continue_budget_monitor (tpl_running_obj);
-          #endif
+          #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
         }
         /*  the inserted task become RUNNING                */
         tpl_running_obj->state = RUNNING;

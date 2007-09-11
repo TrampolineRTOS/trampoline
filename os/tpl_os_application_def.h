@@ -81,6 +81,11 @@
 	#define NO_ISR
 #endif
 
+#ifdef WITH_AUTOSAR
+  #define WITH_AUTOSAR_TIMING_PROTECTION
+	#define WITH_AUTOSAR_STACK_MONITORING
+#endif
+
 #endif /* TPL_OS_APPLICATION_DEF_H */
 
 /* End of file tpl_os_application_def.h */

@@ -30,9 +30,9 @@
 #include "tpl_os_it_kernel.h"
 #include "tpl_os_application_def.h"
 
-#ifdef WITH_AUTOSAR
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
 #include "tpl_as_timing_protec.h"
-#endif
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
 /**
  * @def INVALID_TASK

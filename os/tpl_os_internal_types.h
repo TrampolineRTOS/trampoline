@@ -30,7 +30,6 @@
 #include "tpl_os_custom_types.h"
 #include "tpl_machine.h"
 #include "tpl_compiler.h"
-#include "tpl_os_application_def.h"
 
 /**
  * @def CONFORM_ECC1
@@ -284,7 +283,7 @@ typedef u8 tpl_exec_state;
  */
 typedef void (*tpl_exec_function)(void);
 
-#ifdef WITH_AUTOSAR
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
 /** 
  * @struct TPL_TIMING_PROTECTION
  *
@@ -297,11 +296,13 @@ typedef void (*tpl_exec_function)(void);
  */
 struct TPL_TIMING_PROTECTION
 {
-    tpl_time             execution_budget; /**< maximum duration the task/isr
+    tpl_time             execution_budget; /**< maximum duration the task
                                                can be active within a 
-                                               timeframe */
-    tpl_activate_counter time_limit;      /**< maximum number of activations 
-                                               of the task/isr withing a
+                                               timeframe or maximum isr
+                                               execution time since last
+                                               activation */
+    tpl_activate_counter count_limit;     /**< maximum number of activations 
+                                               of the isr within a
                                                timeframe */
     tpl_time             timeframe;       /**< configured timeframe for this
                                                timing protection */
@@ -318,7 +319,7 @@ struct TPL_TIMING_PROTECTION
  * TODO
  */
 typedef struct TPL_TIMING_PROTECTION tpl_timing_protection;
-#endif /* defined WITH_AUTOSAR */
+#endif /* defined WITH_AUTOSAR_TIMING_PROTECTION */
 
 /**
  * @struct TPL_EXEC_STATIC
@@ -349,14 +350,14 @@ struct TPL_EXEC_STATIC {
                                                              task/isr*/
     const tpl_exec_obj_type         type;               /**< type of the
                                                              task/isr */
-#ifdef WITH_AUTOSAR
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
     const tpl_timing_protection     *timing_protection; /**< timing protection 
                                                              configuration
-																														 (can be NULL
-																														 if no timing
-																														 protection is
-																														 needed) */
-#endif
+                                                             (can be NULL
+                                                             if no timing
+                                                             protection is
+                                                             needed) */
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 };
 
 /**
@@ -382,14 +383,22 @@ struct TPL_EXEC_COMMON {
     tpl_activate_counter    activate_count; /**<  current activate count */
     tpl_priority            priority;       /**<  current priority */
     tpl_exec_state          state;          /**<  state (READY, RUNING, ...)*/
-#ifdef WITH_AUTOSAR
-    tpl_time                budget_monitor_start_date; /**< last start date of
-                                                            the budget monitor
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    tpl_time                monitor_start_date;        /**< last start date of
+                                                            the task's budget
+                                                            monitor or date
+                                                            of last isr
+                                                            activation
                                                             */
-    tpl_time                budget_monitor_time_left;  /**< time left before
+    tpl_time                time_left;                 /**< time left before
                                                             exceeding execution
-                                                            budget */ 
-#endif
+                                                            budget of the task
+                                                            or activation
+                                                            count left before
+                                                            exceeding max
+                                                            activation count
+                                                            for the isr2 */
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 };
 
 /**
