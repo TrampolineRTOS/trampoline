@@ -64,9 +64,9 @@ StatusType GetResource(const ResourceType res_id)
             
         IF_NO_EXTENDED_ERROR(result)
             tpl_get_resource(res);
-        #ifdef AUTOSAR
+        #ifdef WITH_AUTOSAR_TIMING_PROTECTION
         tpl_start_resource_monitor (tpl_running_obj, res_id);
-        #endif
+        #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
         IF_NO_EXTENDED_ERROR_END()
         
         UNLOCK_WHEN_NO_HOOK()

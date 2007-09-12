@@ -3,7 +3,7 @@
  *
  * @section desc File description
  *
- * TODO: finish documentation
+ * @todo: finish documentation
  * 
  * Explain that the error due to watchdog time resolution
  * can be cumulated over each task preemption. Provide some elements to
@@ -40,18 +40,7 @@
 #include "tpl_as_protec_hook.h"
 
 /**
- * @define MAXIMUM_SCHEDULED_WATCHDOGS
- * TODO: document this
- *
- * OIL should provide this value, based on
- * the needed watchdogs. In the worst case,
- * you can schedule this number of watchdogs :
- * number of resources + 4 * number of tasks
- */
-/* #define MAXIMUM_SCHEDULED_WATCHDOGS 20 */
-
-/**
- * TODO
+ * @todo document this
  */
 typedef struct TPL_INTERRUPT_LOCK_MONITOR tpl_interrupt_lock_monitor;
 
@@ -69,14 +58,14 @@ void tpl_init_timing_protection ();
  * 
  * @pre all interrupts should be disabled during this function execution
  * 
- * TODO: improve documentation
+ * @todo: improve documentation
  */
 void tpl_start_budget_monitor (tpl_exec_common *this_exec_obj);
 /**
  * @internal
  *
  * function to be called when a task is preempted
- * TODO: improve documentation
+ * @todo: improve documentation
  */
 void tpl_pause_budget_monitor (tpl_exec_common *this_exec_obj);
 /**
@@ -84,7 +73,7 @@ void tpl_pause_budget_monitor (tpl_exec_common *this_exec_obj);
  *
  * function to be called when a task get back the processor
  * (opposite of preemption)
- * TODO: improve documentation
+ * @todo: improve documentation
  */
 void tpl_continue_budget_monitor (tpl_exec_common *this_exec_obj);
 /**
@@ -92,15 +81,40 @@ void tpl_continue_budget_monitor (tpl_exec_common *this_exec_obj);
  *
  * function to be called when a task is terminated (cancel the
  * watchdog)
- * TODO: improve documentation
+ * @todo: improve documentation
  */
 void tpl_disable_budget_monitor (tpl_exec_common *this_exec_obj);
 
 /**
  * @internal
  *
+ * @todo: do the documentation
+ */
+void tpl_reset_activation_count (tpl_exec_common *this_exec_obj);
+/**
+ * @internal
+ *
+ * @todo: do the documentation
+ */
+void tpl_add_activation_count (tpl_exec_common *this_exec_obj);
+/**
+ * @internal
+ *
+ * @todo: do the documentation
+ */
+void tpl_start_exectime_monitor (tpl_exec_common *this_exec_obj);
+/**
+ * @internal
+ *
+ * @todo: do the documentation
+ */
+void tpl_finish_exectime_monitor (tpl_exec_common *this_exec_obj);
+
+/**
+ * @internal
+ *
  * function called when a resource is got
- * TODO: improve documentation
+ * @todo: improve documentation
  */
 void tpl_start_resource_monitor (tpl_exec_common *this_exec_obj, 
    tpl_resource_id this_resource);
@@ -108,7 +122,7 @@ void tpl_start_resource_monitor (tpl_exec_common *this_exec_obj,
  * @internal
  *
  * function called when a resource is released
- * TODO: improve documentation
+ * @todo: improve documentation
  */
 void tpl_disable_resource_monitor (tpl_exec_common *this_exec_obj, 
    tpl_resource_id this_resource);
@@ -117,14 +131,14 @@ void tpl_disable_resource_monitor (tpl_exec_common *this_exec_obj,
  * @internal
  *
  * function called when all interrupts are locked
- * TODO: improve documentation
+ * @todo: improve documentation
  */
 void tpl_start_all_isr_lock_monitor (tpl_exec_common *this_exec_obj);
 /**
  * @internal
  *
  * function called when all interrupts are unlocked
- * TODO: improve documentation
+ * @todo: improve documentation
  */
 void tpl_disable_all_isr_lock_monitor (tpl_exec_common *this_exec_obj);
 
@@ -132,14 +146,14 @@ void tpl_disable_all_isr_lock_monitor (tpl_exec_common *this_exec_obj);
  * @internal
  *
  * function called when isr 2 are locked
- * TODO: improve documentation
+ * @todo: improve documentation
  */
 void tpl_start_os_isr_lock_monitor (tpl_exec_common *this_exec_obj);
 /**
  * @internal
  *
  * function called when isr 2 are unlocked
- * TODO: improve documentation
+ * @todo: improve documentation
  */
 void tpl_disable_os_isr_lock_monitor (tpl_exec_common *this_exec_obj);
 

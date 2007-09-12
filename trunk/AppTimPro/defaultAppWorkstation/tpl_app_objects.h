@@ -5,7 +5,7 @@
  * for conditional compiling.
  *
  * This file has been generated automatically by goil
- * on  Thu Sep  6 16:08:32 2007
+ * on  Wed Sep 12 15:40:35 2007 
  */
 
 #ifndef OJB_HEADER_H
@@ -60,6 +60,18 @@
  * Declaration of Receive Message object count
  */
 #define RECEIVE_MESSAGE_COUNT   0
+
+#ifdef WITH_AUTOSAR
+/*
+ * Declaration of Schedule Table object count
+ */
+#define SCHEDTABLE_COUNT        0
+
+/*
+ * Declaration of the number of virtual watchdogs used for timing protection
+ */
+#define MAXIMUM_SCHEDULED_WATCHDOGS     5
+#endif
 
 /*
  * Define of RES_SCHEDULER priority

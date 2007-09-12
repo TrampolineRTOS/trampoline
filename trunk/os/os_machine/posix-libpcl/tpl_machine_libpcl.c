@@ -15,7 +15,13 @@
 #include "tpl_os.h"
 #include "tpl_machine_interface.h"
 #include "tpl_os_application_def.h" /* define NO_ISR if needed. */
-
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#include "tpl_as_timing_protec.h"
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+#ifdef WITH_AUTOSAR
+#include "tpl_as_isr_kernel.h"
+#include "tpl_os_kernel.h" /* for tpl_running_obj */
+#endif /* WITH_AUTOSAR */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,11 +36,9 @@
 
 tpl_context idle_task_context = 0;
 
-#ifdef WITH_AUTOSAR
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
 static watchdog_expire_function tpl_watchdog_callback;
-#endif
 
-#ifdef WITH_AUTOSAR
 tpl_time tpl_get_local_current_date ()
 {
   struct timeval time;
@@ -45,9 +49,7 @@ tpl_time tpl_get_local_current_date ()
   
   return result;
 }
-#endif
 
-#ifdef WITH_AUTOSAR
 void set_watchdog (tpl_time delay, watchdog_expire_function function)
 {
   struct itimerval timer;
@@ -62,9 +64,7 @@ void set_watchdog (tpl_time delay, watchdog_expire_function function)
   timer.it_interval.tv_usec = delay % (1000 * 1000);
   setitimer (ITIMER_REAL, &timer, NULL);
 }
-#endif
 
-#ifdef WITH_AUTOSAR
 void cancel_watchdog ()
 {
   struct itimerval timer;
@@ -77,21 +77,19 @@ void cancel_watchdog ()
   timer.it_value.tv_usec = 0;
   setitimer (ITIMER_REAL, &timer, NULL);
 }
-#endif
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
-#ifdef WITH_AUTOSAR
+#ifdef WITH_AUTOSAR_STACK_MONITORING
 u8 tpl_check_stack_pointer (tpl_exec_common *this_exec_obj)
 {
   return 1;
 }
-#endif
 
-#ifdef WITH_AUTOSAR
 u8 tpl_check_stack_footprint (tpl_exec_common *this_exec_obj)
 {
   return 1;
 }
-#endif
+#endif /* WITH_AUTOSAR_STACK_MONITORING */
 
 /*
  * table which stores the signals used for interrupt
@@ -100,16 +98,11 @@ u8 tpl_check_stack_footprint (tpl_exec_common *this_exec_obj)
 #ifndef NO_ISR
 	extern int signal_for_isr_id[ISR_COUNT];
 #endif
-#ifndef NO_ALARM
-	const int signal_for_counters = SIGUSR2;
-#endif
-#ifdef WITH_AUTOSAR
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
   const int signal_for_watchdog = SIGALRM;
-#ifndef NO_SCHEDTABLE
-    #ifdef NO_ALARM
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+#if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
 	const int signal_for_counters = SIGUSR2;
-    #endif
-#endif
 #endif
 
 /*
@@ -141,6 +134,9 @@ void EnableAllInterrupts(void)
         perror("EnableAllInterrupts failed");
         exit(-1);
     }
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    tpl_disable_all_isr_lock_monitor (tpl_running_obj);
+#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 
 /**
@@ -157,6 +153,9 @@ void DisableAllInterrupts(void)
         perror("DisableAllInterrupts failed");
         exit(-1);
     }
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    tpl_start_all_isr_lock_monitor (tpl_running_obj);
+#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 
 /** 
@@ -177,6 +176,9 @@ void ResumeAllInterrupts(void)
             perror("ResumeAllInterrupts failed");
             exit(-1);
         }
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+        tpl_disable_all_isr_lock_monitor (tpl_running_obj);
+#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
     }
 }
 
@@ -197,6 +199,12 @@ void SuspendAllInterrupts(void)
     
     
     tpl_locking_depth++;
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    if (tpl_locking_depth == 1)
+    {
+      tpl_start_all_isr_lock_monitor (tpl_running_obj);
+    }
+#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 
 /** 
@@ -217,6 +225,9 @@ void ResumeOSInterrupts(void)
             perror("ResumeAllInterrupts failed");
             exit(-1);
         }
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+        tpl_disable_os_isr_lock_monitor (tpl_running_obj);
+#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
     }
 }
 
@@ -236,6 +247,12 @@ void SuspendOSInterrupts(void)
     }
     
     tpl_locking_depth++;
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    if (tpl_locking_depth == 1)
+    {
+      tpl_start_os_isr_lock_monitor (tpl_running_obj); 
+    }
+#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 
 /*
@@ -243,22 +260,20 @@ void SuspendOSInterrupts(void)
  */
 void tpl_signal_handler(int sig)
 {
-#ifdef WITH_AUTOSAR
-    struct itimerval timer;
-#endif
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+  struct itimerval timer;
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   
 #ifndef NO_ISR
     unsigned int id;
-#endif
+#endif /* NO_ISR */
 #ifndef NO_ALARM
     if (signal_for_counters == sig) tpl_call_counter_tick();
-#endif
-#ifdef WITH_AUTOSAR
-#ifndef NO_SCHEDTABLE
-    #ifdef NO_ALARM
+#endif /* NO_ALARM */
+#if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
     if (signal_for_counters == sig) tpl_call_counter_tick();
-    #endif
-#endif
+#endif /*(defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
     if (sig == SIGALRM)
     {
       if (tpl_watchdog_callback != NULL)
@@ -268,7 +283,7 @@ void tpl_signal_handler(int sig)
       timer.it_value.tv_usec = 0;
       setitimer (ITIMER_REAL, &timer, NULL);
     }    
-#endif
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 #ifndef NO_ISR
     for (id = 0; id < ISR_COUNT; id++)
     {
@@ -277,7 +292,7 @@ void tpl_signal_handler(int sig)
                 tpl_central_interrupt_handler(id);
         }
     }
-#endif
+#endif /* NO_ISR */
 }
 
 /*
@@ -504,14 +519,12 @@ void tpl_init_machine(void)
 #ifndef NO_ALARM
     sigaddset(&signal_set,signal_for_counters);
 #endif
-#ifdef WITH_AUTOSAR
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
     sigaddset(&signal_set,signal_for_watchdog);
-#ifndef NO_SCHEDTABLE
-    #ifdef NO_ALARM
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+#if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
     sigaddset(&signal_set,signal_for_counters);
-    #endif
-#endif
-#endif
+#endif /*(defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */
 
 
     /*
@@ -531,14 +544,12 @@ void tpl_init_machine(void)
 #ifndef NO_ALARM
     sigaction(signal_for_counters,&sa,NULL);
 #endif
-#ifdef WITH_AUTOSAR
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
     sigaction(signal_for_watchdog,&sa,NULL);
-#ifndef NO_SCHEDTABLE
-    #ifdef NO_ALARM
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+#if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
     sigaction(signal_for_counters,&sa,NULL);
-    #endif
-#endif
-#endif
+#endif /*(defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */
     
     idle_task_context = co_create( tpl_osek_func_stub, (void*)&my_tpl_sleep, NULL, CO_MIN_SIZE );
     assert( idle_task_context != NULL );

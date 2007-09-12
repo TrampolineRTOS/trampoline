@@ -1,9 +1,6 @@
 #include <stdio.h>
-#include "../os/tpl_os.h"
+#include "Os.h"
 #include "tpl_os_generated_configuration.h"
-
-#include "tpl_os_kernel.h"
-
 
 #define _XOPEN_SOURCE 500
 #include <unistd.h>
@@ -56,8 +53,6 @@ void mon_callback ()
 TASK(periodicTask)
 {
     static int compte = 0;
-    StatusType result;
-    TaskType my_id;
     volatile long bidule1, bidule2;
     
     compte++;

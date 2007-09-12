@@ -133,14 +133,14 @@ typedef u32 tpl_time;
 /**
  * @internal
  * 
- * @TODO: document this
+ * @todo: document this
  */
 typedef u32 tpl_counter_id;
 
 /**
  * @internal
  * 
- * @TODO: document this
+ * @todo: document this
  */
 typedef u8 tpl_isr_id;
 

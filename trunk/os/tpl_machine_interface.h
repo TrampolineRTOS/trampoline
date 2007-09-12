@@ -124,19 +124,19 @@ typedef void (*watchdog_expire_function)();
 /**
  * @internal
  * 
- * @TODO: document this
+ * @todo: document this
  */
 extern void set_watchdog (tpl_time delay, watchdog_expire_function function);
 /**
  * @internal
  * 
- * @TODO: document this
+ * @todo: document this
  */
 extern void cancel_watchdog ();
 /**
  * @internal
  * 
- * @TODO: document this
+ * @todo: document this
  */
 extern tpl_time tpl_get_local_current_date ();
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
@@ -145,7 +145,7 @@ extern tpl_time tpl_get_local_current_date ();
 /**
  * @internal
  * 
- * @TODO: document this
+ * @todo: document this
  * 
  * @retval 1 no stack overflow detected
  * @retval 0 stack overflow deteted
@@ -154,7 +154,7 @@ u8 tpl_check_stack_pointer (tpl_exec_common *this_exec_obj);
 /**
  * @internal
  * 
- * @TODO: document this
+ * @todo: document this
  * 
  * @retval 1 no stack overflow detected
  * @retval 0 stack overflow deteted

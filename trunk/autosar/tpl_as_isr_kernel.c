@@ -1,5 +1,5 @@
 /**
- * @file tpl_as_isr.c
+ * @file tpl_as_isr_kernel.c
  *
  * @section desc File description
  *
@@ -26,12 +26,17 @@
  
 #include "tpl_as_isr_kernel.h"
 
-void tpl_disable_isr2 (tpl_exec_common *isr2)
+void tpl_disable_isr2 (tpl_isr *isr2)
 {
-	/* FIXME: todo */
+	isr2->enabled = FALSE;
 }
 
-void tpl_enable_isr2 (tpl_exec_common *isr2)
+void tpl_enable_isr2 (tpl_isr *isr2)
 {
-  /* FIXME: todo */
+  isr2->enabled = TRUE;
+}
+
+u8 tpl_is_isr2_enabled (tpl_isr *isr2)
+{
+  return isr2->enabled; 
 }
