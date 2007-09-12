@@ -59,7 +59,7 @@ tpl_status tpl_process_schedtable(tpl_time_obj *st)
     
     /*  Prepare the next expiry point                                       */
     index++;
-    ((tpl_schedule_table *)st)->index = index;
+
     /*  Reset the cycle of the time object                                  */
     st->cycle = 0;
     
@@ -71,6 +71,7 @@ tpl_status tpl_process_schedtable(tpl_time_obj *st)
             (offsets are not relative to the start of the schedule table
             but to the previous expiry point                                */
         st->cycle = (schedtable->expiry)[index]->offset;
+        ((tpl_schedule_table *)st)->index = index;
     }
     else {
         /*  The schedule table is finished                                  */

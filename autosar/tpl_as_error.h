@@ -62,6 +62,14 @@
 #define OSServiceId_NextScheduleTable       67
 
 /**
+ * @def OSServiceId_IncrementCounter
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #IncrementCounter
+ */
+#define OSServiceId_IncrementCounter        68
+
+/**
  * @def STORE_SCHEDTABLE_ID
  *
  * Stores a schedule table identifier into service error variable
@@ -105,6 +113,22 @@
 #   define STORE_SCHEDTABLE_ID2(sched_table_id)
 #endif 
 
+/**
+ * @def STORE_COUNTER_ID
+ *
+ * Stores the id of a counter
+ *
+ * @param counter_id type is #CounterType
+ *
+ * @see #OSError_IncrementCounter_CounterID
+ * 
+ */
+#ifdef WITH_ERROR_HOOK
+#   define STORE_COUNTER_ID(cnt_id)   \
+    tpl_service.parameters.id.counter_id = (cnt_id);
+#else
+#   define STORE_COUNTER_ID(cnt_id)
+#endif 
 
 /**
  * @def CHECK_SCHEDTABLE_ID_ERROR
