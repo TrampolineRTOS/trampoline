@@ -24,8 +24,8 @@
  * $URL$
  */
  
-#ifndef TPL_AS_SERVICES_IDS
-#define TPL_AS_SERVICES_IDS
+#ifndef TPL_AS_ERROR
+#define TPL_AS_ERROR
 
 #include "tpl_os_error.h"
 
@@ -44,6 +44,66 @@
  * @see #StartScheduleTableAbs
  */
 #define OSServiceId_StartScheduleTableAbs   65
+
+/**
+ * @def OSServiceId_StopScheduleTable
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #StopScheduleTable
+ */
+#define OSServiceId_StopScheduleTable       66
+
+/**
+ * @def OSServiceId_NextScheduleTable
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #NextScheduleTable
+ */
+#define OSServiceId_NextScheduleTable       67
+
+/**
+ * @def STORE_SCHEDTABLE_ID
+ *
+ * Stores a schedule table identifier into service error variable
+ *
+ * @param sched_table_id type is #ScheduleTableType
+ *
+ * @see #OSError_ActivateTask_TaskID
+ * @see #OSError_ChainTask_TaskID
+ * @see #OSError_GetTaskID_TaskID
+ * @see #OSError_GetTaskState_TaskID
+ * @see #OSError_SetEvent_TaskID
+ * @see #OSError_GetEvent_TaskID
+ * 
+ */
+#ifdef WITH_ERROR_HOOK
+#   define STORE_SCHEDTABLE_ID(sched_table_id)   \
+    tpl_service.parameters.id.schedtable_id = (sched_table_id);
+#else
+#   define STORE_SCHEDTABLE_ID(sched_table_id)
+#endif 
+
+/**
+ * @def STORE_SCHEDTABLE_ID2
+ *
+ * Stores the second schedule table identifier into service error variable
+ *
+ * @param schedtable_id type is #ScheduleTableType
+ *
+ * @see #OSError_ActivateTask_TaskID
+ * @see #OSError_ChainTask_TaskID
+ * @see #OSError_GetTaskID_TaskID
+ * @see #OSError_GetTaskState_TaskID
+ * @see #OSError_SetEvent_TaskID
+ * @see #OSError_GetEvent_TaskID
+ * 
+ */
+#ifdef WITH_ERROR_HOOK
+#   define STORE_SCHEDTABLE_ID2(sched_table_id)   \
+    tpl_service.parameters.param.next_st_id = (sched_table_id);
+#else
+#   define STORE_SCHEDTABLE_ID2(sched_table_id)
+#endif 
 
 
 /**
@@ -86,6 +146,8 @@
     }
 #endif
 
+#define CHECK_SCHEDTABLE_COUNTERS(current_st, next_st, result)
+#define CHECK_SCHEDTABLE_NEXT(next_st, result)
 
-/* TPL_AS_SERVICES_IDS */
+/* TPL_AS_ERROR_H */
 #endif

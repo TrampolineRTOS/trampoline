@@ -28,10 +28,12 @@
 #define TPL_AS_ST_KERNEL_H
 
 #include "tpl_os_internal_types.h"
+#include "tpl_os_alarm_kernel.h"
 
 
 /* Schedule tables states */
 
+#define SCHEDULETABLE_AUTOSTART                 ALARM_AUTOSTART
 #define SCHEDULETABLE_NOT_STARTED               ALARM_SLEEP
 #define SCHEDULETABLE_RUNNING                   ALARM_ACTIVE
 #define SCHEDULETABLE_NEXT                      ALARM_ACTIVE | 0x02
@@ -41,9 +43,9 @@
 typedef u8  tpl_schedtable_state;
 
 /* Synchronization strategies */
-
-#define SMOOTH_SYNC     0
-#define HARD_SYNC       1
+#define SCHEDTABLE_NO_SYNC      0
+#define SCHEDTABLE_SMOOTH_SYNC  1
+#define SCHEDTABLE_HARD_SYNC    2
 
 typedef u8  tpl_sync_strategy;
 typedef u16 tpl_action_count ;
@@ -60,15 +62,6 @@ struct TPL_SCHEDTABLE_SYNC {
                                          smooth)                            */
     
 };
-
-/**
- * @typedef tpl_schedule_table
- *
- * This is an alias for the structure #TPL_TIME_OBJ
- *
- * @see #TPL_TIME_OBJ
- */
-typedef struct TPL_TIME_OBJ tpl_schedule_table;
 
 /**
  * @struct TPL_EXPIRY_POINT
@@ -99,46 +92,53 @@ struct TPL_EXPIRY_POINT {
 typedef struct TPL_EXPIRY_POINT tpl_expiry_point;
 
 /**
- * @struct TPL_SCHEDTABLE_DYNAMIC
+ * @struct TPL_SCHEDULE_TABLE
  *
- * Additionnal data structure to store dynamic informations about
- * a schedule table.
+ * Data structure to store dynamic informations about a schedule table.
+ * This structure inherit from the TPL_TIME_OBJ structure
  */
-struct TPL_SCHEDTABLE_DYNAMIC {
-    tpl_schedule_table  *next;      /**< next schedule table to start       */
-    tpl_expiry_count    index;      /**< next expiry point to process in
-                                         the schedule table                 */
-    tpl_bool            gt_sync;    /**< The schedule table has been started
-                                         synchronous to global time         */
-    tpl_tick            gt_offset;  /**< offset to the global time          */
-    tpl_tick            cur_offset; /**< offset to reduce to be synchronous */
+struct TPL_SCHEDULE_TABLE {
+    tpl_time_obj                b_desc;     /**< common part for all
+                                                 objects that derive
+                                                 from tpl_time_obj          */
+    struct TPL_SCHEDULE_TABLE   *next;      /**< next schedule table to
+                                                 start                      */
+    tpl_expiry_count            index;      /**< next expiry point to
+                                                 process in the schedule
+                                                 table                      */
+    tpl_bool                    gt_sync;    /**< the schedule table has
+                                                 been started synchronous
+                                                 to global time             */
+    tpl_tick                    gt_offset;  /**< offset to the global time  */
+    tpl_tick                    cur_offset; /**< offset to reduce to be
+                                                 synchronous                */
 };
 
 /**
- * @typedef tpl_schedtable_dyn
+ * @typedef tpl_schedule_table
  *
- * This is an alias for the structure #TPL_SCHEDTABLE_DYNAMIC
+ * This is an alias for the structure #TPL_SCHEDULE_TABLE
  *
- * @see #TPL_SCHEDTABLE_DYNAMIC
+ * @see #TPL_SCHEDULE_TABLE
  */
-typedef struct TPL_SCHEDTABLE_DYNAMIC tpl_schedtable_dyn;
+typedef struct TPL_SCHEDULE_TABLE tpl_schedule_table;
 
 /**
  * @struct TPL_SCHEDTABLE_STATIC
  *
  * This is the data structure used to describe the static part of a
  * schedule table.
- * It extends the #TPL_TIME_OBJ structure by adding an action to be done
- * when the alarm expires.
+ * It extends the #TPL_TIME_OBJ_STATIC structure by adding a pointer to
+ * an array of expiry points, the number of expiry points, the sync
+ * strategy of the schedule table and a boolean to specify whether the
+ * schedule table is periodic or not.
  *
- * @see #TPL_TIME_OBJ
+ * @see #TPL_TIME_OBJ_STATIC
  */
 struct TPL_SCHEDTABLE_STATIC {
     tpl_time_obj_static b_desc;     /**< common part of all objects that
                                          derive from tpl_time_obj.          */
-    tpl_schedtable_dyn  *dyn_part;  /**< pointer to the dynamic part of the
-                                         schedule table                     */
-    tpl_expiry_point    *expiry;   /**<  pointer to an array of expiry
+    tpl_expiry_point    **expiry;   /**<  pointer to an array of expiry
                                          points                             */
     tpl_expiry_count    count;      /**< number of expiry points in the
                                          schedule table                     */
@@ -163,10 +163,10 @@ typedef struct TPL_SCHEDTABLE_STATIC tpl_schedtable_static;
  * @internal
  *
  * This function is called when the time object wrapped to the schedule table
- * is raised. After getting the static part of the alarm (that in this case is
- * a TPL_SCHEDTABLE_STATIC structure, this function get the next expiry point
- * and execute the corresponding actions. Then the alarm is updated to match
- * the offset of the next expiry point.
+ * is raised. After getting the static part of the time object (that in this
+ * case is a TPL_SCHEDTABLE_STATIC structure, this function get the next expiry
+ * point and execute the corresponding actions. Then the alarm is updated to
+ * match the offset of the next expiry point.
  */
 tpl_status tpl_process_schedtable(tpl_time_obj *t_obj);
 

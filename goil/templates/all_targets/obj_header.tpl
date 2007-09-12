@@ -58,6 +58,18 @@ $CONFIG_FLAGS$
  */
 #define RECEIVE_MESSAGE_COUNT   $RECEIVE_MESSAGE_COUNT$
 
+#ifdef WITH_AUTOSAR
+/*
+ * Declaration of Schedule Table object count
+ */
+#define SCHEDTABLE_COUNT        $SCHEDTABLE_COUNT$
+
+/*
+ * Declaration of the number of virtual watchdogs used for timing protection
+ */
+#define MAXIMUM_SCHEDULED_WATCHDOGS     $MAX_WATCH_DOG$
+#endif
+
 /*
  * Define of RES_SCHEDULER priority
  */

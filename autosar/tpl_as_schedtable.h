@@ -125,8 +125,8 @@ StatusType StopScheduleTable(
  * AUTOSAR/Specification of the Operating System v2.0.1
  */
 StatusType NextScheduleTable(
-    ScheduleTableType   current_sd_id,
-    ScheduleTableType   next_sd_id
+    ScheduleTableType   current_st_id,
+    ScheduleTableType   next_st_id
 );
 
 #endif /*  TPL_AS_SCHEDTABLE_H */

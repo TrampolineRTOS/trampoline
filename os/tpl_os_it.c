@@ -45,10 +45,6 @@ StatusType TerminateISR2(void)
     /*  init the error to no error  */
     StatusType result = E_OK;
 
-#ifndef NO_ISR
-    tpl_exec_common *exec_obj;
-#endif
-    
     /*  lock the task structures    */
     LOCK_WHEN_ISR()
     

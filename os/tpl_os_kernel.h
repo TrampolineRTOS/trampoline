@@ -32,6 +32,7 @@
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 #include "tpl_as_timing_protec.h"
+#include "tpl_as_st_kernel.h"
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
 /**
@@ -81,7 +82,7 @@
  * Currently running executable object. This "executable object" can be a task
  * or an interrupt service routine
  */
-extern tpl_exec_common  *tpl_running_obj;
+extern tpl_exec_common      *tpl_running_obj;
 
 
 #ifndef NO_TASK
@@ -94,7 +95,7 @@ extern tpl_exec_common  *tpl_running_obj;
  * So a table of pointer is used. The size of this table is static
  * and known at compile time
  */
-extern tpl_task         *tpl_task_table[TASK_COUNT];
+extern tpl_task             *tpl_task_table[TASK_COUNT];
 #endif
 
 
@@ -104,7 +105,7 @@ extern tpl_task         *tpl_task_table[TASK_COUNT];
  *
  * Index in this array correspond to the #ResourceType of the resource
  */
-extern tpl_resource     *tpl_resource_table[RESOURCE_COUNT];
+extern tpl_resource         *tpl_resource_table[RESOURCE_COUNT];
 #endif
 
 
@@ -114,19 +115,29 @@ extern tpl_resource     *tpl_resource_table[RESOURCE_COUNT];
  *
  * Index in this array correspond to the #AlarmType of the alarm
  */
-extern tpl_time_obj     *tpl_alarm_table[ALARM_COUNT];
+extern tpl_time_obj         *tpl_alarm_table[ALARM_COUNT];
 #endif
 
 
 #ifndef NO_ISR
 /**
- * Array of all category 2 interrupt service routine descriptor
+ * Array of all category 2 interrupt service routine descriptors
  *
  * Index in this array correspond to the Isr identifier
  */
-extern tpl_isr			*tpl_isr_table[ISR_COUNT];
+extern tpl_isr              *tpl_isr_table[ISR_COUNT];
 #endif
 
+#ifdef WITH_AUTOSAR
+#ifndef NO_SCHEDTABLE
+/**
+ * Array of all schedule table descriptors
+ *
+ * Index in this array correspond to the schedule table identifier
+ */
+extern tpl_schedule_table   *tpl_schedtable_table[SCHEDTABLE_COUNT];
+#endif
+#endif
 
 /**
  * tpl_os_state stores the current state of Trampoline

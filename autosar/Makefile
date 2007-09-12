@@ -15,22 +15,19 @@
 
 include ../Make-rules
 
-#kernel OS files
-AUTOSAR_SRCS = \
-tpl_as_timing_protec.c \
-tpl_as_protec_hook.c \
-tpl_as_stack_monitor.c \
-tpl_as_isr.c \
-tpl_as_isr_kernel.c
+#kernel AUTOSAR files
+AUTOSAR_SRCS += tpl_as_schedtable.c
+AUTOSAR_SRCS += tpl_as_timing_protec.c
+AUTOSAR_SRCS += tpl_as_protec_hook.c
+AUTOSAR_SRCS += tpl_as_stack_monitor.c
+AUTOSAR_SRCS += tpl_as_st_kernel.c
+AUTOSAR_SRCS += tpl_as_isr.c
+AUTOSAR_SRCS += tpl_as_isr_kernel.c
 #tpl_as_counter.c \
 #tpl_as_counter.h \
 #tpl_as_error.h \
 #tpl_as_isr.c \
 #tpl_as_isr.h \
-#tpl_as_schedtable.c \
-#tpl_as_schedtable.h \
-#tpl_as_st_kernel.c \
-#tpl_as_st_kernel.h \
 
 
 #################### end of configuration.

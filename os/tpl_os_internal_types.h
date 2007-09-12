@@ -523,9 +523,9 @@ struct TPL_INTERNAL_RESOURCE {
 typedef struct TPL_INTERNAL_RESOURCE tpl_internal_resource;
 
 /**
- * @typedef tpl_alarm_state
+ * @typedef tpl_time_obj_state
  *
- * Describes an alarm state. Value can be one of :
+ * Describes an time object state. Value can be one of :
  * - #ALARM_SLEEP
  * - #ALARM_ACTIVE
  * - #ALARM_AUTOSTART (only before startup)
@@ -589,7 +589,7 @@ struct TPL_COUNTER;
  * Prototype for expire functions
  */
 typedef tpl_status (*tpl_expire_func)(
-    const struct TPL_TIME_OBJ *
+    struct TPL_TIME_OBJ *
 );
 
 /**

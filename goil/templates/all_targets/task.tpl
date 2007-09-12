@@ -3,18 +3,26 @@
  */
 void $EXEC_FUNCTION$(void);
 
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+$TIMING_PROT_STRUCT$
+#endif
+
 /*
  * Static descriptor of task $EXEC_NAME$
  */
 tpl_exec_static $EXEC_STATIC$ = {
-    /* context                  */ $EXEC_CONTEXT$,
-    /* stack                    */ $EXEC_STACK$,
-    /* entry point (function)   */ $EXEC_FUNCTION$,
-    /* internal ressource       */ $RESOURCE_PTR$,
-    /* task id                  */ $TASK_ID$,
-    /* task base priority       */ (tpl_priority)$TASK_PRIORITY$,
-    /* max activation count     */ $TASK_MAX_ACT_COUNT$,
-    /* task type                */ $TASK_TYPE$
+    /* context                  */  $EXEC_CONTEXT$,
+    /* stack                    */  $EXEC_STACK$,
+    /* entry point (function)   */  $EXEC_FUNCTION$,
+    /* internal ressource       */  $RESOURCE_PTR$,
+    /* task id                  */  $TASK_ID$,
+    /* task base priority       */  (tpl_priority)$TASK_PRIORITY$,
+    /* max activation count     */  $TASK_MAX_ACT_COUNT$,
+    /* task type                */  $TASK_TYPE$,
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    /* pointer to the timing
+       protection descriptor    */  $TIMING_PROT_REF$
+#endif
 };
 
 /*
@@ -27,6 +35,10 @@ tpl_task $TASK$ = {
     /* activate count       */  0,
     /* task priority        */  (tpl_priority)$TASK_PRIORITY$,
     /* task state           */  $TASK_STATE$,
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    /* start date           */  0,
+    /* time left            */  0,
+#endif
     },    /* end of exec_desc part */
     /* event mask           */  0,
     /* event wait           */  0

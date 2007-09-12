@@ -3,6 +3,10 @@
  */
 void $EXEC_FUNCTION$(void);
 
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+$TIMING_PROT_STRUCT$
+#endif
+
 /*
  * Static descriptor of ISR $EXEC_NAME$
  */
@@ -14,7 +18,11 @@ tpl_exec_static $EXEC_STATIC$ = {
     /* isr id                   */ 0,
     /* isr base priority        */ (tpl_priority)$ISR_PRIORITY$,
     /* max activation count     */ $ISR_MAX_ACT_COUNT$,
-    /* isr type                 */ IS_ROUTINE
+    /* isr type                 */ IS_ROUTINE,
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    /* pointer to the timing
+       protection descriptor    */  $TIMING_PROT_REF$
+#endif
 };
 
 tpl_isr_static $ISR_HELPER$ = {
@@ -32,6 +40,10 @@ tpl_isr $ISR$ = {
     /* activate count       */  0,
     /* isr priority         */  (tpl_priority)$ISR_PRIORITY$,
     /* isr state            */  SUSPENDED,
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    /* start date           */  0,
+    /* time left            */  0,
+#endif
     },    /* end of exec_desc part */
     /* more static desc     */  &$ISR_HELPER$
 };
