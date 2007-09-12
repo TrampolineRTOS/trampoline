@@ -1,6 +1,8 @@
 #ifndef APP_HEADER_H
 #define APP_HEADER_H
 
+#include "tpl_app_objects.h"
+
 /*=============================================================================
  * Declaration of event related defines and structures
  */
@@ -66,6 +68,13 @@
 
 
 
+
+#ifdef WITH_AUTOSAR
+/*=============================================================================
+ * Declaration of schedule tables related defines and structures
+ */
+
+#endif
 
 #endif
 

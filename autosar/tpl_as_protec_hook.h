@@ -3,7 +3,7 @@
  *
  * @section desc File description
  *
- * @TODO: finish documentation
+ * @todo: finish documentation
  *
  * @section copyright Copyright
  *
@@ -61,7 +61,7 @@ typedef enum
 /**
  * User protection hook callback function.
  * 
- * @TODO finish documentation
+ * @todo finish documentation
  * 
  * see §8.5.1 of AUTOSAR OS SWS 2.1.0
  */
@@ -69,7 +69,7 @@ extern ProtectionReturnType ProtectionHook (tpl_status FatalError);
 #endif /* WITH_PROTECTION_HOOK */
 
 /**
- * @TODO
+ * @todo
  */
 extern void tpl_call_protection_hook (tpl_status error);
 

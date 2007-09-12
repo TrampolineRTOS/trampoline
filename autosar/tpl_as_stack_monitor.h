@@ -3,7 +3,7 @@
  *
  * @section desc File description
  *
- * TODO: finish documentation
+ * @todo: finish documentation
  * 
  * @section copyright Copyright
  *
@@ -39,7 +39,7 @@
 /**
  * @def SCALABILITY_CLASS
  * 
- * @TODO to be defined by GOIL
+ * @todo to be defined by GOIL
  */
 #define SCALABILITY_CLASS 2
 

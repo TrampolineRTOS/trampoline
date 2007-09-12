@@ -77,6 +77,9 @@ struct TPL_ISR {
     tpl_exec_common exec_desc;      /**<  common descriptor                 */
     tpl_isr_static  *static_desc;   /**<  pointer to the static desc of the
                                           isr                               */
+#ifdef WITH_AUTOSAR
+    u8              enabled;        /**< FALSE if disabled, TRUE if enabled        */    
+#endif                                          
 };
 
 /**

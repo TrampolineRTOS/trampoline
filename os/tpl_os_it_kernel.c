@@ -20,7 +20,9 @@
 #include "tpl_os.h"
 #include "tpl_os_application_def.h"
 #include "tpl_machine_interface.h"
+#ifdef WITH_AUTOSAR_STACK_MONITORING
 #include "tpl_as_stack_monitor.h"
+#endif /* WITH_AUTOSAR_STACK_MONITORING */
 
 #ifndef NO_ISR
 
@@ -33,8 +35,13 @@ static void tpl_activate_isr(tpl_isr *a_isr);
  */
 static void tpl_activate_isr(tpl_isr *a_isr)
 {
-    if (a_isr->exec_desc.activate_count <
+    if ((a_isr->exec_desc.activate_count <
         a_isr->exec_desc.static_desc->max_activate_count)
+#ifdef WITH_AUTOSAR
+        && (tpl_is_isr2_enabled (a_isr))
+#endif        
+        
+        )
     {
         /*  check the isr is in the SUSPENDED state before moving it        */
         if (a_isr->exec_desc.state == (tpl_exec_state)SUSPENDED)

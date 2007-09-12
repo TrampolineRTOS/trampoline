@@ -27,25 +27,36 @@
 #ifndef TPL_AS_ISR__KERNEL_H
 #define TPL_AS_ISR__KERNEL_H
 
-#include "tpl_os_internal_types.h"
+#include "tpl_os_definitions.h"
+#include "tpl_os_it_kernel.h"
 
 /**
  * @internal 
  *
- * @TODO : document this
+ * @todo : document this
  *
  * @see #DisableInterruptSource
  */
-extern void tpl_disable_isr2 (tpl_exec_common *isr2);
+extern void tpl_disable_isr2 (tpl_isr *isr2);
 
 /**
  * @internal
  *
- * @TODO : document this 
+ * @todo : document this 
  *
  * @see #EnableInterruptSource
  */
-extern void tpl_enable_isr2 (tpl_exec_common *isr2);
+extern void tpl_enable_isr2 (tpl_isr *isr2);
+
+/**
+ * @internal
+ * 
+ * @todo document this
+ *
+ * @retval FALSE this ISR2 is disabled
+ * @retval TRUE this ISR2 is enabled 
+ */
+u8 tpl_is_isr2_enabled (tpl_isr *isr2);
 
 #endif /* TPL_AS_ISR__KERNEL_H */
 

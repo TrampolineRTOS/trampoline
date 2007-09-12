@@ -1,5 +1,3 @@
-#include "tpl_app_objects.h" /* must be in pole position to define 
-                                WITH_AUTOSAR */
 #include "tpl_os_internal_types.h"
 #include "tpl_os_definitions.h"
 #include "tpl_machine.h"
@@ -14,6 +12,11 @@
 #include "tpl_com_filters.h"
 
 #include "tpl_os_generated_configuration.h"
+#include "tpl_app_objects.h"
+
+#ifdef WITH_AUTOSAR
+#include "tpl_as_st_kernel.h"
+#endif
 
 /*=============================================================================
  * Definition and initialization of event related defines and structures
@@ -68,30 +71,42 @@ tpl_context integer_context_of_periodicTask;
  */
 void function_of_task_periodicTask(void);
 
-tpl_time resource_lock_time_of_periodicTask [] = {0, 0};
-
-tpl_timing_protection tp_of_task_periodicTask = {
-      10000, 
-      10000, 
-      1000000, 
-      resource_lock_time_of_periodicTask, 
-      0, 
-      0
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+/*
+ * Timing protection descriptor for $NAME$
+ */
+tpl_time task_periodicTask_rez_lock_time[1] = {
+    1000000
 };
+ 
+tpl_timing_protection task_periodicTask_timing_prot = {
+    /* execution budget/time    */  10,
+    /* time limit               */  0,
+    /* time frame               */  100,
+    /* resource lock time       */  task_periodicTask_rez_lock_time,
+    /* os interrupt lock time   */  1000000,
+    /* all interrupt lock time  */  1000000
+};
+
+
+#endif
 
 /*
  * Static descriptor of task periodicTask
  */
 tpl_exec_static static_descriptor_of_task_periodicTask = {
-    /* context                  */ CONTEXT_OF_TASK_periodicTask,
-    /* stack                    */ STACK_OF_TASK_periodicTask,
-    /* entry point (function)   */ function_of_task_periodicTask,
-    /* internal ressource       */ NULL,
-    /* task id                  */ task_id_of_periodicTask,
-    /* task base priority       */ (tpl_priority)1,
-    /* max activation count     */ 1,
-    /* task type                */ TASK_EXTENDED,
-    /* timing protection        */ &tp_of_task_periodicTask
+    /* context                  */  CONTEXT_OF_TASK_periodicTask,
+    /* stack                    */  STACK_OF_TASK_periodicTask,
+    /* entry point (function)   */  function_of_task_periodicTask,
+    /* internal ressource       */  NULL,
+    /* task id                  */  task_id_of_periodicTask,
+    /* task base priority       */  (tpl_priority)1,
+    /* max activation count     */  1,
+    /* task type                */  TASK_EXTENDED,
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    /* pointer to the timing
+       protection descriptor    */  &task_periodicTask_timing_prot
+#endif
 };
 
 /*
@@ -104,6 +119,10 @@ tpl_task descriptor_of_task_periodicTask = {
     /* activate count       */  0,
     /* task priority        */  (tpl_priority)1,
     /* task state           */  SUSPENDED,
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    /* start date           */  0,
+    /* time left            */  0,
+#endif
     },    /* end of exec_desc part */
     /* event mask           */  0,
     /* event wait           */  0
@@ -238,6 +257,15 @@ tpl_time_obj *tpl_alarm_table[ALARM_COUNT] = {
 
 
 
+
+#ifdef WITH_AUTOSAR
+/*=============================================================================
+ * Declaration of schedule tables related defines and structures
+ */
+tpl_schedule_table *tpl_schedtable_table[0] = {
+};
+
+#endif
 
 /*=============================================================================
  * Definition and initialization of Ready List structures

@@ -3,7 +3,7 @@
  *
  * @section desc File description
  *
- * TODO
+ * @todo document this
  *
  * @section copyright Copyright
  *
@@ -46,14 +46,12 @@ void tpl_call_protection_hook (tpl_status error)
       killtaskisr ();
       break;
     case PRO_KILLAPPL:
-    /* FIXME: check this behavior */
-      tpl_running_obj->state = (tpl_exec_state)DYING;
-      tpl_schedule((u8)FROM_IT_LEVEL);
+      /* FIXME: check this behavior conformity with AUTOSAR */
+      tpl_shutdown ();
       break;
     case PRO_KILLAPPL_RESTART:
-    /* FIXME: check this behavior */
-      tpl_running_obj->state = (tpl_exec_state)RESURRECT;
-      tpl_schedule((u8)FROM_IT_LEVEL);
+      /* FIXME: check this behavior conformity with AUTOSAR */
+      tpl_shutdown ();
       break;
     case PRO_SHUTDOWN:
       tpl_shutdown ();

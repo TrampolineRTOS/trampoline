@@ -33,8 +33,11 @@
 #include "tpl_machine_interface.h"
 #include "tpl_dow.h"
 
-#ifdef WITH_AUTOSAR
+#ifdef WITH_AUTOSAR_STACK_MONITORING
 #include "tpl_as_stack_monitor.h"
+#endif
+#ifdef WITH_AUTOSAR
+#include "tpl_as_st_kernel.h"
 #endif
 
 #define OS_START_SEC_CODE
@@ -91,10 +94,10 @@ static tpl_task idle_task = {
     /* resources            */  NULL,
     /* activation count     */  0,
     /* priority             */  0,
-    /* state                */  RUNNING,
+    /* state                */  RUNNING
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    /* start date           */  0,
-    /* time left            */  0,
+    /* monitor_start_date   */  ,0, 
+    /* time_left            */  0
 #endif
     },
     /* task members */
@@ -440,7 +443,11 @@ void tpl_schedule(const u8 from)
                 distinguish them                                        */
             tpl_put_exec_object(tpl_running_obj, PREEMPTED_EXEC_OBJ);
             #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-            tpl_pause_budget_monitor (tpl_running_obj);
+            /*
+             * pause the budget monitor for a task
+             */
+            if (tpl_running_obj->static_desc->type != IS_ROUTINE)
+              tpl_pause_budget_monitor (tpl_running_obj);
             #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
         }
         else
@@ -484,7 +491,20 @@ void tpl_schedule(const u8 from)
             }
             
             #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-            tpl_disable_budget_monitor (tpl_running_obj);
+            if (tpl_running_obj->static_desc->type != IS_ROUTINE)
+            {
+              /* pause the budget monitoring when a task has ended 
+               * FIXME : should we pause or finish the budget
+               * monitor in the case a task terminates before
+               * the end of the timeframe ?  
+               */
+              tpl_pause_budget_monitor (tpl_running_obj);
+            }
+            else
+            {
+              /* when an ISR2 ends, check for execution time */
+              tpl_finish_exectime_monitor (tpl_running_obj); 
+            }
             #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
         }
 
@@ -497,16 +517,43 @@ void tpl_schedule(const u8 from)
                 descriptor must be initialized              */
             tpl_init_exec_object(tpl_running_obj);
             #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-            tpl_start_budget_monitor (tpl_running_obj);
+            if (tpl_running_obj->static_desc->type != IS_ROUTINE)
+            {
+              /* start the budget monitor for the activated task */
+              tpl_start_budget_monitor (tpl_running_obj);
+            }
+            else
+            {
+              /* add an activation count for the ISR2 and starts the
+               * execution time monitor */
+              tpl_add_activation_count (tpl_running_obj);
+              tpl_start_exectime_monitor (tpl_running_obj); 
+            }
             #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
         }
         else
         {
           #ifdef WITH_AUTOSAR_TIMING_PROTECTION
           if (tpl_running_obj->state == NEWLY_ACTIVATED_EXEC_OBJ)
-            tpl_start_budget_monitor (tpl_running_obj);
+          {
+            if (tpl_running_obj->static_desc->type != IS_ROUTINE)
+            {
+              /* start the budget monitor for the activated task */
+              tpl_start_budget_monitor (tpl_running_obj);
+            }
+            else
+            {
+              /* add an activation count for the ISR2 and starts the
+               * execution time monitor */
+              tpl_add_activation_count (tpl_running_obj);
+              tpl_start_exectime_monitor (tpl_running_obj); 
+            }
+          }
           else
-            tpl_continue_budget_monitor (tpl_running_obj);
+          {
+            if (tpl_running_obj->static_desc->type != IS_ROUTINE)
+              tpl_continue_budget_monitor (tpl_running_obj);
+          }
           #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
         }
         /*  the inserted task become RUNNING                */
@@ -755,8 +802,7 @@ void tpl_init_os(const tpl_application_mode app_mode)
     }  
 	
 #endif
-#ifdef WITH_AUTOSAR
-
+#if defined WITH_AUTOSAR && !defined NO_SCHEDTABLE
     /*  Look for autostart schedule tables  */
     
     for (i = 0; i < SCHEDTABLE_COUNT; i++)

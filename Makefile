@@ -34,8 +34,13 @@ endif
 
 ALL: $(EXE)
 
-DOC:
-	doxygen
+DOC: DOC-DEV
+
+DOC-DEV:
+	doxygen Doxyfile-dev
+
+DOC-USER:
+	doxygen Doxyfile-user
 
 #compile oil file into c, and then into .o
 OIL_OBJ_OIL_FILE = $(addprefix $(OBJ_PATH)/,$(notdir $(OIL_GENERATED_C_FILE:.c=.o)))
