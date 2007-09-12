@@ -105,6 +105,11 @@ u8 tpl_check_stack_footprint (tpl_exec_common *this_exec_obj)
 #endif
 #ifdef WITH_AUTOSAR
   const int signal_for_watchdog = SIGALRM;
+#ifndef NO_SCHEDTABLE
+    #ifdef NO_ALARM
+	const int signal_for_counters = SIGUSR2;
+    #endif
+#endif
 #endif
 
 /*
@@ -238,17 +243,22 @@ void SuspendOSInterrupts(void)
  */
 void tpl_signal_handler(int sig)
 {
-  #ifdef WITH_AUTOSAR
-  struct itimerval timer;
-  #endif
+#ifdef WITH_AUTOSAR
+    struct itimerval timer;
+#endif
   
-	#ifndef NO_ISR
-		unsigned int id;
-	#endif
-	#ifndef NO_ALARM
-		if(signal_for_counters == sig) tpl_call_counter_tick();
-	#endif
-  #ifdef WITH_AUTOSAR
+#ifndef NO_ISR
+    unsigned int id;
+#endif
+#ifndef NO_ALARM
+    if (signal_for_counters == sig) tpl_call_counter_tick();
+#endif
+#ifdef WITH_AUTOSAR
+#ifndef NO_SCHEDTABLE
+    #ifdef NO_ALARM
+    if (signal_for_counters == sig) tpl_call_counter_tick();
+    #endif
+#endif
     if (sig == SIGALRM)
     {
       if (tpl_watchdog_callback != NULL)
@@ -258,16 +268,16 @@ void tpl_signal_handler(int sig)
       timer.it_value.tv_usec = 0;
       setitimer (ITIMER_REAL, &timer, NULL);
     }    
-  #endif
-	#ifndef NO_ISR
-		for (id = 0; id < ISR_COUNT; id++)
+#endif
+#ifndef NO_ISR
+    for (id = 0; id < ISR_COUNT; id++)
+    {
+        if (signal_for_isr_id[id] == sig)
         {
-			if (signal_for_isr_id[id] == sig)
-            {
-					tpl_central_interrupt_handler(id);
-			}
-		}
-	#endif
+                tpl_central_interrupt_handler(id);
+        }
+    }
+#endif
 }
 
 /*
@@ -496,6 +506,11 @@ void tpl_init_machine(void)
 #endif
 #ifdef WITH_AUTOSAR
     sigaddset(&signal_set,signal_for_watchdog);
+#ifndef NO_SCHEDTABLE
+    #ifdef NO_ALARM
+    sigaddset(&signal_set,signal_for_counters);
+    #endif
+#endif
 #endif
 
 
@@ -518,6 +533,11 @@ void tpl_init_machine(void)
 #endif
 #ifdef WITH_AUTOSAR
     sigaction(signal_for_watchdog,&sa,NULL);
+#ifndef NO_SCHEDTABLE
+    #ifdef NO_ALARM
+    sigaction(signal_for_counters,&sa,NULL);
+    #endif
+#endif
 #endif
     
     idle_task_context = co_create( tpl_osek_func_stub, (void*)&my_tpl_sleep, NULL, CO_MIN_SIZE );
@@ -533,6 +553,13 @@ void tpl_init_machine(void)
     */
 #ifndef NO_ALARM
     tpl_viper_start_auto_timer(signal_for_counters,5000);  /* 5 ms */
+#endif
+#ifdef WITH_AUTOSAR
+#ifndef NO_SCHEDTABLE
+    #ifdef NO_ALARM
+    tpl_viper_start_auto_timer(signal_for_counters,5000);  /* 5 ms */
+    #endif
+#endif
 #endif
 
     /*

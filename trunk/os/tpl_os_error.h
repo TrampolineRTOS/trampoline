@@ -75,6 +75,7 @@ union ID_PARAM_BLOCK {
         AlarmType           alarm_id;       /**< @todo document this        */
 #ifdef WITH_AUTOSAR
         ScheduleTableType   schedtable_id;  /**< @todo document this        */
+        CounterType         counter_id;     /**< @todo document this        */
 #endif
 };
 

@@ -765,6 +765,7 @@ void tpl_init_os(const tpl_application_mode app_mode)
         if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART)
         {
             auto_time_obj->state = SCHEDULETABLE_NOT_STARTED;
+			tpl_insert_time_obj(auto_time_obj);
         }
     }
 #endif
