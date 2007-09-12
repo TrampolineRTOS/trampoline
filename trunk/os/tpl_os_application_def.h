@@ -82,8 +82,25 @@
 #endif
 
 #ifdef WITH_AUTOSAR
-  #define WITH_AUTOSAR_TIMING_PROTECTION
-	#define WITH_AUTOSAR_STACK_MONITORING
+#ifndef SCHEDTABLE_COUNT
+    #define SCHEDTABLE_COUNT 0
+#endif
+#if SCHEDTABLE_COUNT == 0
+/**
+ * @def NO_SCHEDTABLE
+ *
+ * When this flag is defined, this means there is no schedule table defined
+ * in the system
+ */
+    #define NO_SCHEDTABLE
+#endif
+/* WITH_AUTOSAR */
+#endif
+
+#ifdef WITH_AUTOSAR
+#define WITH_AUTOSAR_TIMING_PROTECTION
+#define WITH_AUTOSAR_STACK_MONITORING
+/* WITH_AUTOSAR */
 #endif
 
 #endif /* TPL_OS_APPLICATION_DEF_H */

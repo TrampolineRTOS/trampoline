@@ -48,7 +48,7 @@
  * you can schedule this number of watchdogs :
  * number of resources + 4 * number of tasks
  */
-#define MAXIMUM_SCHEDULED_WATCHDOGS 20
+/* #define MAXIMUM_SCHEDULED_WATCHDOGS 20 */
 
 /**
  * TODO

@@ -165,7 +165,7 @@ void tpl_remove_time_obj(tpl_time_obj *time_obj)
  *
  * @param time_obj  The alarm to raise.
  */
-tpl_status tpl_raise_alarm(const tpl_time_obj *time_obj)
+tpl_status tpl_raise_alarm(tpl_time_obj *time_obj)
 {
     tpl_status  result = E_OK;
     

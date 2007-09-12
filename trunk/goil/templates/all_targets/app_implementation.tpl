@@ -14,6 +14,10 @@
 #include "$HEADER$"
 #include "$OBJ_HEADER$"
 
+#ifdef WITH_AUTOSAR
+#include "tpl_as_st_kernel.h"
+#endif
+
 /*=============================================================================
  * Definition and initialization of event related defines and structures
  */
@@ -53,6 +57,13 @@ $FLAGSFUNCTIONS$
  * Definition and initialization of Messages related structures
  */
 $MESSAGES$
+
+#ifdef WITH_AUTOSAR
+/*=============================================================================
+ * Declaration of schedule tables related defines and structures
+ */
+$SCHEDULETABLES$
+#endif
 
 /*=============================================================================
  * Definition and initialization of Ready List structures

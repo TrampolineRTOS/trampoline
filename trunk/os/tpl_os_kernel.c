@@ -32,8 +32,10 @@
 #include "tpl_machine.h"
 #include "tpl_machine_interface.h"
 #include "tpl_dow.h"
-#include "tpl_as_stack_monitor.h"
 
+#ifdef WITH_AUTOSAR
+#include "tpl_as_stack_monitor.h"
+#endif
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -70,7 +72,11 @@ static tpl_exec_static idle_task_static = {
     /* id is INVALID_TASK   */  INVALID_TASK,
     /* base priority is 0   */  0,
     /* max activate count   */  1,
-    /* type is BASIC        */  TASK_BASIC
+    /* type is BASIC        */  TASK_BASIC,
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    /* no timing protection
+       for the idle task :D */  NULL
+#endif
 };
 
 /**
@@ -85,7 +91,11 @@ static tpl_task idle_task = {
     /* resources            */  NULL,
     /* activation count     */  0,
     /* priority             */  0,
-    /* state                */  RUNNING
+    /* state                */  RUNNING,
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    /* start date           */  0,
+    /* time left            */  0,
+#endif
     },
     /* task members */
     /* event set            */  0,
@@ -707,6 +717,14 @@ void tpl_init_os(const tpl_application_mode app_mode)
     tpl_time_obj   *auto_time_obj;
 #endif
 
+#ifdef WITH_AUTOSAR
+    #ifdef NO_ALARM
+        #ifndef NO_SCHEDTABLE
+    tpl_time_obj   *auto_time_obj;
+        #endif
+    #endif
+#endif
+
 #ifndef NO_TASK
     tpl_task    *auto_task;
     
@@ -728,7 +746,7 @@ void tpl_init_os(const tpl_application_mode app_mode)
         
     for (i = 0; i < ALARM_COUNT; i++)
     {
-        auto_time_obj = tpl_alarm_table[i];
+        auto_time_obj = (tpl_time_obj *)tpl_alarm_table[i];
         if (auto_time_obj->state == (tpl_time_obj_state)ALARM_AUTOSTART)
         {
             auto_time_obj->state = ALARM_SLEEP;
@@ -736,6 +754,19 @@ void tpl_init_os(const tpl_application_mode app_mode)
         }
     }  
 	
+#endif
+#ifdef WITH_AUTOSAR
+
+    /*  Look for autostart schedule tables  */
+    
+    for (i = 0; i < SCHEDTABLE_COUNT; i++)
+    {
+        auto_time_obj = (tpl_time_obj *)tpl_schedtable_table[i];
+        if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART)
+        {
+            auto_time_obj->state = SCHEDULETABLE_NOT_STARTED;
+        }
+    }
 #endif
 }
 

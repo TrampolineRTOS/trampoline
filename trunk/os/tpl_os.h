@@ -56,6 +56,16 @@
  */
 #include "tpl_os_it.h"
 
+#ifdef WITH_AUTOSAR
+/*
+ * Inclusion of the header for schedule table related API services
+ * Only for AUTOSAR extension
+ */
+#include "tpl_as_schedtable.h"
+
+/* WITH_AUTOSAR */
+#endif
+
 /**
  * @typedef AppModeType
  *

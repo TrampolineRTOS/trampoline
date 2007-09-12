@@ -63,13 +63,19 @@ extern void ErrorHook(StatusType);
  * @see #tpl_service
  */
 union ID_PARAM_BLOCK {
-        TaskType        task_id;        /**< used by #ActivateTask, #ChainTask,
-                                             #GetTaskState, #SetEvent,
-                                             #GetEvent */
-        TaskRefType     task_id_ref;    /**< used by #GetTaskID */
-        ResourceType    res_id;         /**< used by #GetResource,
-                                             #ReleaseResource */
-        AlarmType       alarm_id;       /**< @todo document this */
+        TaskType            task_id;        /**< used by
+                                                 #ActivateTask,
+                                                 #ChainTask,
+                                                 #GetTaskState,
+                                                 #SetEvent,
+                                                 #GetEvent                  */
+        TaskRefType         task_id_ref;    /**< used by #GetTaskID         */
+        ResourceType        res_id;         /**< used by #GetResource,
+                                                 #ReleaseResource           */
+        AlarmType           alarm_id;       /**< @todo document this        */
+#ifdef WITH_AUTOSAR
+        ScheduleTableType   schedtable_id;  /**< @todo document this        */
+#endif
 };
 
 /**
@@ -89,6 +95,9 @@ union PARAM_PARAM_BLOCK {
         EventMaskType       mask;           /**< used by #SetEvent,
                                                  #ClearEvent, #WaitEvent */
         EventMaskRefType    mask_ref;       /**< used by #GetEvent */
+#ifdef WITH_AUTOSAR
+        ScheduleTableType   next_st_id;     /**< @todo document this        */
+#endif
 };
 
 /**
