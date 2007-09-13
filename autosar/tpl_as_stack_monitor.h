@@ -30,13 +30,6 @@
 #include "tpl_as_protec_hook.h"
 
 /**
- * @def E_OS_STACKFAULT
- * 
- * A stackfault occurred (see §7.4 of AUTOSAR OS SWS 2.1)
- */
-#define E_OS_STACKFAULT 34
-
-/**
  * @def SCALABILITY_CLASS
  * 
  * @todo to be defined by GOIL

@@ -29,6 +29,7 @@
 #include "tpl_os_application_def.h"
 #include "tpl_os_internal_types.h"
 #include "tpl_os_custom_types.h"
+#include "tpl_os_types.h"
 
 /**
  * @def E_OS_PROTECTION_TIME
@@ -38,7 +39,7 @@
  * 
  * see §7.10 of autosar OS SWS 2.1
  */
-#define E_OS_PROTECTION_TIME 32 /* FIXME: how values are allocated ? */
+#define E_OS_PROTECTION_TIME 32
 
 /**
  * @def E_OS_PROTECTION_LOCKED
@@ -47,7 +48,14 @@
  * 
  * see §7.10 of autosar OS SWS 2.1 
  */
-#define E_OS_PROTECTION_LOCKED 33 /* FIXME: how values are allocated ? */
+#define E_OS_PROTECTION_LOCKED 33
+
+/**
+ * @def E_OS_STACKFAULT
+ * 
+ * A stackfault occurred (see §7.4 of AUTOSAR OS SWS 2.1)
+ */
+#define E_OS_STACKFAULT 34
 
 typedef enum 
 {
@@ -65,7 +73,7 @@ typedef enum
  * 
  * see §8.5.1 of AUTOSAR OS SWS 2.1.0
  */
-extern ProtectionReturnType ProtectionHook (tpl_status FatalError);
+extern ProtectionReturnType ProtectionHook (StatusType FatalError);
 #endif /* WITH_PROTECTION_HOOK */
 
 /**

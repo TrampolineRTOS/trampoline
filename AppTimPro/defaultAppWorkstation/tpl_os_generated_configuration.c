@@ -37,7 +37,7 @@
  * $ISRS$
  */
 tpl_resource descriptor_of_resource_r1 = {
-    /* ceiling priority of the resource */  (tpl_priority)1,
+    /* ceiling priority of the resource */  (tpl_priority)2,
     /* owner previous priority          */  (tpl_priority)0,
     /* owner of the resource            */  NULL,
     /* next resource in the list        */  NULL
@@ -129,8 +129,85 @@ tpl_task descriptor_of_task_periodicTask = {
 };
 
 
+/*
+ * r1_squatter stack
+ */
+tpl_stack_word stack_zone_of_r1_squatter[32768/sizeof(tpl_stack_word)];
+
+#define STACK_OF_TASK_r1_squatter { stack_zone_of_r1_squatter, 32768 }
+
+/*
+ * r1_squatter context
+ */
+tpl_context integer_context_of_r1_squatter;
+
+#define CONTEXT_OF_TASK_r1_squatter &integer_context_of_r1_squatter
+/*
+ * Task r1_squatter function prototype
+ */
+void function_of_task_r1_squatter(void);
+
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+/*
+ * Timing protection descriptor for $NAME$
+ */
+tpl_time task_r1_squatter_rez_lock_time[1] = {
+    100000
+};
+ 
+tpl_timing_protection task_r1_squatter_timing_prot = {
+    /* execution budget/time    */  1000000,
+    /* time limit               */  0,
+    /* time frame               */  10000000,
+    /* resource lock time       */  task_r1_squatter_rez_lock_time,
+    /* os interrupt lock time   */  1000000,
+    /* all interrupt lock time  */  1000000
+};
+
+
+#endif
+
+/*
+ * Static descriptor of task r1_squatter
+ */
+tpl_exec_static static_descriptor_of_task_r1_squatter = {
+    /* context                  */  CONTEXT_OF_TASK_r1_squatter,
+    /* stack                    */  STACK_OF_TASK_r1_squatter,
+    /* entry point (function)   */  function_of_task_r1_squatter,
+    /* internal ressource       */  NULL,
+    /* task id                  */  task_id_of_r1_squatter,
+    /* task base priority       */  (tpl_priority)2,
+    /* max activation count     */  1,
+    /* task type                */  TASK_BASIC,
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    /* pointer to the timing
+       protection descriptor    */  &task_r1_squatter_timing_prot
+#endif
+};
+
+/*
+ * Dynamic descriptor of task r1_squatter
+ */
+tpl_task descriptor_of_task_r1_squatter = {
+    {       /* beginning of exec_desc part */
+    /* static descriptor    */  &static_descriptor_of_task_r1_squatter,
+    /* resources            */  NULL,
+    /* activate count       */  0,
+    /* task priority        */  (tpl_priority)2,
+    /* task state           */  SUSPENDED,
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    /* start date           */  0,
+    /* time left            */  0,
+#endif
+    },    /* end of exec_desc part */
+    /* event mask           */  0,
+    /* event wait           */  0
+};
+
+
 tpl_task *tpl_task_table[TASK_COUNT] = {
-    (tpl_task *)&descriptor_of_task_periodicTask
+    (tpl_task *)&descriptor_of_task_periodicTask,
+    (tpl_task *)&descriptor_of_task_r1_squatter
 };
 
 
@@ -212,6 +289,33 @@ tpl_time_obj descriptor_of_alarm_alarm1s = {
 };
 
 /*
+ * Alarm descriptor of alarm alarm200ms
+ */
+tpl_task_activation_action task_act_of_alarm200ms = {
+    {
+        /* action function  */  tpl_action_activate_task
+    },
+    /* task descriptor ptr  */  &descriptor_of_task_r1_squatter
+};
+
+tpl_alarm_static stat_descriptor_of_alarm_alarm200ms = {
+    {
+        /* pointer to counter           */  &descriptor_of_counter_counter100ms,
+        /* pointer to the expiration    */  tpl_raise_alarm
+    },
+    /* action of the alarm  */  (tpl_action *)&task_act_of_alarm200ms
+};
+
+tpl_time_obj descriptor_of_alarm_alarm200ms = {
+    /* pointer to the static part   */  (tpl_time_obj_static *)&stat_descriptor_of_alarm_alarm200ms,
+    /* next alarm                   */  NULL,
+    /* prev alarm                   */  NULL,
+    /* cycle                        */  4,
+    /* date                         */  1,
+    /* State of the alarm           */  ALARM_AUTOSTART
+};
+
+/*
  * Alarm descriptor of alarm alarmevent
  */
  
@@ -242,6 +346,7 @@ tpl_time_obj descriptor_of_alarm_alarmevent = {
 
 tpl_time_obj *tpl_alarm_table[ALARM_COUNT] = {
     (tpl_time_obj *)&descriptor_of_alarm_alarm1s,
+    (tpl_time_obj *)&descriptor_of_alarm_alarm200ms,
     (tpl_time_obj *)&descriptor_of_alarm_alarmevent
 };
 
@@ -271,16 +376,19 @@ tpl_schedule_table *tpl_schedtable_table[0] = {
  * Definition and initialization of Ready List structures
  */
 tpl_exec_common *tpl_priority_0_fifo[1];
-tpl_exec_common *tpl_priority_1_fifo[2];
+tpl_exec_common *tpl_priority_1_fifo[1];
+tpl_exec_common *tpl_priority_2_fifo[3];
 
-tpl_fifo_state tpl_fifo_rw[2] = {
+tpl_fifo_state tpl_fifo_rw[3] = {
+    { 0 , 0 },
     { 0 , 0 },
     { 0 , 0 }
 };
 
-tpl_priority_level tpl_ready_list[2] = {
+tpl_priority_level tpl_ready_list[3] = {
     { tpl_priority_0_fifo , 1 },
-    { tpl_priority_1_fifo , 2 }
+    { tpl_priority_1_fifo , 1 },
+    { tpl_priority_2_fifo , 3 }
 };
 
 
