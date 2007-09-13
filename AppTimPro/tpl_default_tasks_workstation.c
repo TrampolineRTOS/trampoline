@@ -11,10 +11,6 @@ int main(void)
     return 0;
 }
 
-void damned(void)
-{
-}
-
 void ErrorHook(StatusType error)
 {
   printf ("ERROR HOOK = %d\n", error);
@@ -44,34 +40,30 @@ void ShutdownHook(StatusType error)
     printf("Au revoir et a bientot :)\n");
 }
 
-void mon_callback ()
-{
-  printf ("WATCHDOG !!!\n");
-  fflush (stdout);
-}
-
 TASK(periodicTask)
 {
     static int compte = 0;
     volatile long bidule1, bidule2;
     
     compte++;
-    printf("periodicTask (%d)\n", compte);
+    printf("periodicTask (activation %d)\n", compte);
     fflush(stdout);
-    if (compte == 10) 
+    if (compte == 10)
       ShutdownOS(E_OK);
   
   
     printf ("TRAVAIL EN COURS...");
+    fflush(stdout);
     bidule1 = 50 * 1000;
     while (bidule1--)
     {
-      bidule2 = 10000;
+      bidule2 = 100;
       while (bidule2--); 
     }
     printf ("TERMINE\n");
     
   
 	TerminateTask();
+  printf ("should never come here\n");
 }
 

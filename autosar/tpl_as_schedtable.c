@@ -29,7 +29,7 @@
 #include "tpl_as_error.h"
 #include "tpl_os_definitions.h"
 
-#ifndef NO_SCHEDULETABLE
+#ifndef NO_SCHEDTABLE
 /**
  * Array of all schedule tables' full descriptors.
  *

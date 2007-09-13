@@ -39,13 +39,16 @@ tpl_context idle_task_context = 0;
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 static watchdog_expire_function tpl_watchdog_callback;
 
+static struct timeval startup_time;
+
 tpl_time tpl_get_local_current_date ()
 {
   struct timeval time;
   tpl_time result;
   
   gettimeofday (&time, NULL);
-  result = time.tv_sec + time.tv_usec * (1000 * 1000);
+  result = ((time.tv_sec - startup_time.tv_sec) % 2000) * (1000 * 1000) + 
+     (time.tv_usec - startup_time.tv_usec);
   
   return result;
 }
@@ -75,6 +78,8 @@ void cancel_watchdog ()
   /* disable the timer */
   timer.it_value.tv_sec = 0;
   timer.it_value.tv_usec = 0;
+  timer.it_interval.tv_sec = 1;
+  timer.it_interval.tv_usec = 0;
   setitimer (ITIMER_REAL, &timer, NULL);
 }
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
@@ -276,12 +281,18 @@ void tpl_signal_handler(int sig)
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     if (sig == SIGALRM)
     {
-      if (tpl_watchdog_callback != NULL)
-        tpl_watchdog_callback ();
-      
+      /* disable the interval timer (one shot) */
       timer.it_value.tv_sec = 0;
       timer.it_value.tv_usec = 0;
+      timer.it_interval.tv_sec = 1;
+      timer.it_interval.tv_usec = 0;
       setitimer (ITIMER_REAL, &timer, NULL);
+      
+      if (tpl_watchdog_callback != NULL)
+      {
+        if (tpl_watchdog_callback ())
+          tpl_schedule((u8)FROM_IT_LEVEL);
+      }
     }    
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 #ifndef NO_ISR
@@ -581,6 +592,9 @@ void tpl_init_machine(void)
         exit(-1);
     }
 	*/
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    gettimeofday (&startup_time, NULL);  
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 }
 
 

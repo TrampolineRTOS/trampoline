@@ -452,6 +452,23 @@ void tpl_schedule(const u8 from)
         }
         else
         {
+            #ifdef WITH_AUTOSAR_TIMING_PROTECTION
+            if (tpl_running_obj->static_desc->type != IS_ROUTINE)
+            {
+              /* pause the budget monitoring when a task has ended 
+               * FIXME : should we pause or finish the budget
+               * monitor in the case a task terminates before
+               * the end of the timeframe ?  
+               */
+              tpl_pause_budget_monitor (tpl_running_obj);
+            }
+            else
+            {
+              /* when an ISR2 ends, check for execution time */
+              tpl_finish_exectime_monitor (tpl_running_obj); 
+            }
+            #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+
             /*  the task loses the CPU because it has been put in the
                 WAITING or in the DYING state, its internal resource
                 is released.                                            */
@@ -490,22 +507,6 @@ void tpl_schedule(const u8 from)
                 tpl_put_exec_object(tpl_running_obj, NEWLY_ACTIVATED_EXEC_OBJ);
             }
             
-            #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-            if (tpl_running_obj->static_desc->type != IS_ROUTINE)
-            {
-              /* pause the budget monitoring when a task has ended 
-               * FIXME : should we pause or finish the budget
-               * monitor in the case a task terminates before
-               * the end of the timeframe ?  
-               */
-              tpl_pause_budget_monitor (tpl_running_obj);
-            }
-            else
-            {
-              /* when an ISR2 ends, check for execution time */
-              tpl_finish_exectime_monitor (tpl_running_obj); 
-            }
-            #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
         }
 
         /*  get the ready task from the ready task list                 */
@@ -527,7 +528,7 @@ void tpl_schedule(const u8 from)
               /* add an activation count for the ISR2 and starts the
                * execution time monitor */
               tpl_add_activation_count (tpl_running_obj);
-              tpl_start_exectime_monitor (tpl_running_obj); 
+              tpl_start_exectime_monitor (tpl_running_obj);
             }
             #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
         }
@@ -546,7 +547,7 @@ void tpl_schedule(const u8 from)
               /* add an activation count for the ISR2 and starts the
                * execution time monitor */
               tpl_add_activation_count (tpl_running_obj);
-              tpl_start_exectime_monitor (tpl_running_obj); 
+              tpl_start_exectime_monitor (tpl_running_obj);
             }
           }
           else
