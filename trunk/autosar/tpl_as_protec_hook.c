@@ -30,7 +30,6 @@
 static void killtaskisr ()
 {
   tpl_running_obj->state = (tpl_exec_state)DYING;
-  tpl_schedule((u8)FROM_IT_LEVEL);
 }
  
 void tpl_call_protection_hook (tpl_status error)

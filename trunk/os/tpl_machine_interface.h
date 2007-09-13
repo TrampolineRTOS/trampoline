@@ -119,7 +119,13 @@ extern void tpl_sleep(void);
 extern void tpl_shutdown(void);
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-typedef void (*watchdog_expire_function)();
+
+/**
+ * @todo document this
+ * 
+ * returns TRUE if reschedule is required
+ */
+typedef u8 (*watchdog_expire_function)();
 
 /**
  * @internal

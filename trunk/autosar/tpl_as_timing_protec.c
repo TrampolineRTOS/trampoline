@@ -27,254 +27,116 @@
 #include "tpl_as_timing_protec.h"
 #include "tpl_dow.h"
 #include "tpl_as_isr_kernel.h"
+#include "tpl_as_watchdog_kernel.h"
 
-typedef enum
-{
-  EXEC_BUDGET,
-  TIME_LIMIT,
-  ALL_INT_LOCK,
-  OS_INT_LOCK,
-  REZ_LOCK,
-  TIMEFRAME_BOUNDARY
-} tpl_watchdog_type;
-
-typedef struct
-{
-  tpl_exec_common   *exec_obj;
-  tpl_watchdog_type type;
-  tpl_resource_id   resource;
-} tpl_watchdog;
-
-struct TPL_SCHEDULED_WATCHDOG
-{
-  tpl_watchdog                   watchdog;
-  struct TPL_SCHEDULED_WATCHDOG  *next;
-  tpl_time                       delay_from_previous;
-  tpl_time                       scheduled_date;
-  u8                             allocated;
-};
-
-typedef struct TPL_SCHEDULED_WATCHDOG tpl_scheduled_watchdog;
-
-static tpl_scheduled_watchdog scheduled_watchdogs[MAXIMUM_SCHEDULED_WATCHDOGS];
-
-static tpl_scheduled_watchdog *earliest_watchdog;
-
-/*
- * forward prototypes
- */
-static void schedule_watchdog (tpl_watchdog *this_watchdog, 
-   tpl_time expire_delay);
-static void unschedule_watchdog (tpl_watchdog *this_watchdog);
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
 
 static tpl_time delay_to_next_timeframe (tpl_time timeframe)
 {
   tpl_time result;
 
   result = timeframe;
-  result -= tpl_get_local_current_date () % timeframe;
+  /*result -= tpl_get_local_current_date () % timeframe;*/
 
   return result;
 }
 
-static void watchdog_callback ()
+static u8 watchdog_callback (tpl_watchdog *this_watchdog)
 {
   tpl_exec_common *exec_obj;
-  
-  do
-  {
-    switch (earliest_watchdog->watchdog.type)
-    {
-      case EXEC_BUDGET:
-      case TIME_LIMIT:
-        tpl_call_protection_hook (E_OS_PROTECTION_TIME);
-        break;
-      case REZ_LOCK:
-      case ALL_INT_LOCK:
-      case OS_INT_LOCK:
-        tpl_call_protection_hook (E_OS_PROTECTION_LOCKED);
-        break;
-      case TIMEFRAME_BOUNDARY:
-        exec_obj = earliest_watchdog->watchdog.exec_obj;
-        if (exec_obj->static_desc->type != IS_ROUTINE)
-        {
-          /* reset execution budget for the task */
-          exec_obj->time_left =
-             exec_obj->static_desc->timing_protection->execution_budget;
-        }
-        else
-        {
-          /* unlock this ISR2 if needed */
-          if (exec_obj->static_desc->timing_protection->count_limit == 0)
-            tpl_enable_isr2 ((tpl_isr*)exec_obj);
-          
-          /* reset the activation countdown for the isr */
-          exec_obj->time_left = 
-             exec_obj->static_desc->timing_protection->count_limit;
-        }
-
-        /* reschedule next timeframe end boundary */
-        schedule_watchdog (&(earliest_watchdog->watchdog),
-           exec_obj->static_desc->timing_protection->timeframe);
-        break;
-      default:
-        DOW_ASSERT (0);
-        break;
-    }
-    
-    /* jump to next watchdog */
-    earliest_watchdog = earliest_watchdog->next;
-  } while ((earliest_watchdog != NULL) && 
-     (earliest_watchdog->delay_from_previous == 0));
-  
-  /* schedule the next earliest watchdog */
-  if (earliest_watchdog != NULL)
-    set_watchdog (earliest_watchdog->delay_from_previous, watchdog_callback);   
-}
-
-/**
- * Schedule a watchdog at specified date
- * 
- * @param this_watchdog watchdog to schedule (data are copied)
- * @param expire_date date when the watchdog should expire
- */
-static void schedule_watchdog (tpl_watchdog *this_watchdog, 
-   tpl_time expire_delay)
-{  
+  tpl_watchdog watchdog;
+  u8 need_resched = FALSE;
+  tpl_scheduled_watchdog *found_watchdog;
+  tpl_scheduled_watchdog *previous_watchdog;
   tpl_scheduled_watchdog *new_watchdog;
-  tpl_scheduled_watchdog *watchdog_cursor;
-  tpl_scheduled_watchdog *previous_cursor;
-  tpl_scheduled_watchdog_id watchdog_id;
-  tpl_time expire_date;
   tpl_time current_date;
   
-  /* find a free watchdog */
-  watchdog_id = 0;
-  while (scheduled_watchdogs[watchdog_id].allocated)
-  {
-    watchdog_id++;
-    DOW_ASSERT (watchdog_id < MAXIMUM_SCHEDULED_WATCHDOGS);
-  }
-  new_watchdog = &scheduled_watchdogs[watchdog_id];
-  
-  /* prepare the watchdog scheduling */
-  new_watchdog->watchdog.exec_obj = this_watchdog->exec_obj;
-  new_watchdog->watchdog.type = this_watchdog->type;
-  new_watchdog->watchdog.resource = this_watchdog->resource;
-  new_watchdog->scheduled_date = expire_date;
-  new_watchdog->allocated = TRUE;
-  
-  /* get the time reference */
+  /* get the date one time to avoid offset while 
+   * we make assumption everything is done atomically
+   * here
+   */
   current_date = tpl_get_local_current_date ();
-  expire_date = current_date + expire_delay;
   
-  /* insert the watchdog in the list */
-  if ((earliest_watchdog != 0) &&
-     (expire_date >= earliest_watchdog->scheduled_date))
+  switch (this_watchdog->type)
   {
-    /* look for the position in the list, FIFO policy is used
-     * if expire date matches an existing watchdog */
-    watchdog_cursor = earliest_watchdog;
-    while ((watchdog_cursor != NULL) &&
-       (new_watchdog->scheduled_date <= watchdog_cursor->scheduled_date))
-    {
-      previous_cursor = watchdog_cursor; /* only used for queue insert */
-      watchdog_cursor = watchdog_cursor->next;
-    }
-    
-    /* insert at the end of the list ? */
-    if ((watchdog_cursor == NULL) || (earliest_watchdog->next == NULL))
-    {
-      new_watchdog->next = NULL;
-      new_watchdog->delay_from_previous =
-         expire_date - previous_cursor->scheduled_date;
-      previous_cursor->next = new_watchdog; 
-    }
-    else
-    {
-      new_watchdog->next = watchdog_cursor->next;
-      new_watchdog->delay_from_previous =
-         expire_date - watchdog_cursor->scheduled_date;
-      watchdog_cursor->next = new_watchdog;
-      new_watchdog->next->delay_from_previous -=
-         new_watchdog->delay_from_previous;
-    }
-  }
-  else
-  {
-    /* insert at the head of the list */
-    new_watchdog->next = earliest_watchdog;
-    new_watchdog->delay_from_previous = 0;
-    if (new_watchdog->next != NULL)
-    {
-      new_watchdog->next->delay_from_previous -=
-         new_watchdog->scheduled_date; 
-    }
-    earliest_watchdog = new_watchdog;
-    
-    /* we need to set the low level watchdog
-     * as the earliest changed */
-    set_watchdog (expire_delay, watchdog_callback);
-  }
-}
-
-/**
- * Cancels a watchdog to avoid its expiration.
- */
-static void unschedule_watchdog (tpl_watchdog *this_watchdog)
-{
-  tpl_scheduled_watchdog *watchdog_cursor;
-  tpl_scheduled_watchdog *previous_cursor;
-  u8 found;
-  
-  /* look for an similar watchdog */
-  watchdog_cursor = earliest_watchdog;
-  previous_cursor = watchdog_cursor;
-  do
-  {
-    if (this_watchdog->exec_obj == watchdog_cursor->watchdog.exec_obj)
-    {
-      if (this_watchdog->type == watchdog_cursor->watchdog.type)
+    case EXEC_BUDGET:
+    case TIME_LIMIT:
+      /* remove timeframe watchdog for the task before killing it */
+      watchdog.exec_obj = this_watchdog->exec_obj;
+      watchdog.type = TIMEFRAME_BOUNDARY;
+      if (find_scheduled_watchdog(&watchdog, &found_watchdog, 
+          &previous_watchdog))
       {
-        if (this_watchdog->type == REZ_LOCK)
+        remove_scheduled_watchdog(found_watchdog, previous_watchdog);
+      }
+      else
+      {
+        DOW_ASSERT (0); /* the timeframe must exist) */
+      }
+      /* call protection hook */
+      tpl_call_protection_hook (E_OS_PROTECTION_TIME);
+      need_resched = TRUE;
+      break;
+    case REZ_LOCK:
+    case ALL_INT_LOCK:
+    case OS_INT_LOCK:
+      tpl_call_protection_hook (E_OS_PROTECTION_LOCKED);
+      need_resched = TRUE;
+      break;
+    case TIMEFRAME_BOUNDARY:
+      exec_obj = this_watchdog->exec_obj;
+      if (exec_obj->static_desc->type != IS_ROUTINE)
+      {
+        /* remove budget monitor watchdog if any */
+        watchdog.exec_obj = exec_obj;
+        watchdog.type = EXEC_BUDGET;
+        if (find_scheduled_watchdog(&watchdog, &found_watchdog, 
+            &previous_watchdog))
         {
-          if (this_watchdog->resource == watchdog_cursor->watchdog.resource)
-            found = TRUE;
+          remove_scheduled_watchdog(found_watchdog, previous_watchdog);
         }
-        else
-          found = TRUE;
-      } 
-    }
-    if (!found)
-    {
-      previous_cursor = watchdog_cursor;
-      watchdog_cursor = watchdog_cursor->next;
-    }
+        /* reset the budget of the task */
+        exec_obj->time_left =
+             exec_obj->static_desc->timing_protection->execution_budget;
+        exec_obj->monitor_start_date = tpl_get_local_current_date ();
+        /* if the task is running, we need to schedule a 
+         * budget monitor watchdog immediatly
+         */
+        if (exec_obj->state == RUNNING)
+        {
+          new_watchdog = new_scheduled_watchdog();
+          new_watchdog->scheduled_date = exec_obj->time_left +
+             current_date;
+          new_watchdog->watchdog.exec_obj = exec_obj;
+          new_watchdog->watchdog.type = EXEC_BUDGET;
+          insert_scheduled_watchdog(new_watchdog);
+        }
+      }
+      else
+      {
+        /* unlock this ISR2 if needed */
+        if (exec_obj->static_desc->timing_protection->count_limit == 0)
+          tpl_enable_isr2 ((tpl_isr*)exec_obj);
+        
+        /* reset the activation countdown for the isr */
+        exec_obj->time_left = 
+           exec_obj->static_desc->timing_protection->count_limit;
+      }
+
+      /* reschedule next timeframe end boundary */
+      new_watchdog = new_scheduled_watchdog();
+      new_watchdog->scheduled_date = current_date +
+        exec_obj->static_desc->timing_protection->timeframe;
+      new_watchdog->watchdog.exec_obj = exec_obj;
+      new_watchdog->watchdog.type = TIMEFRAME_BOUNDARY;
+      insert_scheduled_watchdog(new_watchdog);
+      break;
+    default:
+      DOW_ASSERT (0);
+      break;
   }
-  while ((!found) && (watchdog_cursor != NULL));
   
-  if (found)
-  {
-    /* do we delete the earliest cursor ? */
-    if (watchdog_cursor == previous_cursor)
-    {
-      /* restart underlying watchdog */
-      cancel_watchdog ();
-      if (earliest_watchdog->next != NULL)
-        set_watchdog (earliest_watchdog->next->delay_from_previous, 
-           watchdog_callback);
-      /* update the list */
-      earliest_watchdog = earliest_watchdog->next;
-      if (earliest_watchdog != NULL)
-        earliest_watchdog->delay_from_previous = 0;
-      watchdog_cursor->allocated = FALSE;
-    }
-    else
-    {
-      previous_cursor->next = watchdog_cursor->next;
-      watchdog_cursor->allocated = 0; 
-    }
-  }
+  return need_resched;
 }
 
 static void start_timeframe (tpl_exec_common *this_exec_obj)
@@ -282,6 +144,8 @@ static void start_timeframe (tpl_exec_common *this_exec_obj)
   tpl_watchdog watchdog;
   tpl_time timeframe;
   tpl_time delay_to_timeframe;
+
+  DOW_ASSERT (this_exec_obj != NULL);
 
   /* schedule the timeframe end boundary's watchdog 
   * (timeframe period is synchronized with the current date
@@ -300,6 +164,8 @@ static void stop_timeframe (tpl_exec_common *this_exec_obj)
 {
   tpl_watchdog watchdog;
 
+  DOW_ASSERT (this_exec_obj != NULL);
+
   watchdog.exec_obj = this_exec_obj; 
   watchdog.type = TIMEFRAME_BOUNDARY;
   unschedule_watchdog (&watchdog);
@@ -307,20 +173,15 @@ static void stop_timeframe (tpl_exec_common *this_exec_obj)
 
 void tpl_init_timing_protection ()
 {
-  tpl_scheduled_watchdog_id watchdog_id;
-   
-  earliest_watchdog = NULL;
-  for (watchdog_id = 0 ; 
-     watchdog_id < MAXIMUM_SCHEDULED_WATCHDOGS ; 
-     watchdog_id++)
-  {
-    scheduled_watchdogs[watchdog_id].allocated = 0;
-  }
+  init_watchdog_kernel (watchdog_callback);
 }
 
 void tpl_start_budget_monitor (tpl_exec_common *this_exec_obj)
 {
   tpl_watchdog watchdog;
+  tpl_scheduled_watchdog *temp;
+  
+  DOW_ASSERT (this_exec_obj != NULL);
   
   if (this_exec_obj->static_desc->timing_protection != NULL)
   {
@@ -336,13 +197,16 @@ void tpl_start_budget_monitor (tpl_exec_common *this_exec_obj)
        this_exec_obj->static_desc->timing_protection->execution_budget;
 
     /* start the timeframe */
+    stop_timeframe (this_exec_obj);
     start_timeframe (this_exec_obj);
   }
 }
 
 void tpl_pause_budget_monitor (tpl_exec_common *this_exec_obj)
 {
-  tpl_watchdog watchdog; 
+  tpl_watchdog watchdog;
+  
+  DOW_ASSERT (this_exec_obj != NULL);
     
   if (this_exec_obj->static_desc->timing_protection != NULL)
   {
@@ -361,6 +225,8 @@ void tpl_continue_budget_monitor (tpl_exec_common *this_exec_obj)
 {
   tpl_watchdog watchdog;
   tpl_time current_date;
+  
+  DOW_ASSERT (this_exec_obj != NULL);
 
   if (this_exec_obj->static_desc->timing_protection != NULL)
   {
@@ -379,7 +245,9 @@ void tpl_continue_budget_monitor (tpl_exec_common *this_exec_obj)
 
 void tpl_disable_budget_monitor (tpl_exec_common *this_exec_obj)
 {
-  tpl_watchdog watchdog; 
+  tpl_watchdog watchdog;
+  
+  DOW_ASSERT (this_exec_obj != NULL);
     
   if (this_exec_obj->static_desc->timing_protection != NULL)
   {
@@ -395,12 +263,16 @@ void tpl_disable_budget_monitor (tpl_exec_common *this_exec_obj)
 
 void tpl_reset_activation_count (tpl_exec_common *this_exec_obj)
 {
+  DOW_ASSERT (this_exec_obj != NULL);
+  
   this_exec_obj->time_left =
      this_exec_obj->static_desc->timing_protection->count_limit + 1;
 }
 
 void tpl_add_activation_count (tpl_exec_common *this_exec_obj)
 {
+  DOW_ASSERT (this_exec_obj != NULL);
+  
   if (this_exec_obj->time_left > 0)
     this_exec_obj->time_left -= 1;
     
@@ -412,12 +284,16 @@ void tpl_add_activation_count (tpl_exec_common *this_exec_obj)
 
 void tpl_start_exectime_monitor (tpl_exec_common *this_exec_obj)
 {
+  DOW_ASSERT (this_exec_obj != NULL);
+  
   this_exec_obj->monitor_start_date = tpl_get_local_current_date ();
 }
 
 void tpl_finish_exectime_monitor (tpl_exec_common *this_exec_obj)
 {
   tpl_time execution_time;
+  
+  DOW_ASSERT (this_exec_obj != NULL);
 
   execution_time = tpl_get_local_current_date () -
      this_exec_obj->monitor_start_date;
@@ -433,6 +309,9 @@ void tpl_start_resource_monitor (tpl_exec_common *this_exec_obj,
 {
   tpl_watchdog watchdog;
   tpl_time resource_lock_time;
+  
+  DOW_ASSERT (this_exec_obj != NULL);
+  DOW_ASSERT (this_resource < RESOURCE_COUNT);
 
   /* nothing to do if no timing protection specified */
   if ((this_exec_obj->static_desc->timing_protection != NULL) &&
@@ -458,6 +337,9 @@ void tpl_disable_resource_monitor (tpl_exec_common *this_exec_obj,
    tpl_resource_id this_resource)
 {
   tpl_watchdog watchdog;
+ 
+  DOW_ASSERT (this_exec_obj != NULL);
+  DOW_ASSERT (this_resource < RESOURCE_COUNT);
   
   watchdog.exec_obj = this_exec_obj;
   watchdog.type = REZ_LOCK;
@@ -469,6 +351,8 @@ void tpl_start_all_isr_lock_monitor (tpl_exec_common *this_exec_obj)
 {
   tpl_watchdog watchdog;
   tpl_time int_lock_time;
+  
+  DOW_ASSERT (this_exec_obj != NULL);
 
   /* nothing to do if no timing protection specified */
   if ((this_exec_obj->static_desc->timing_protection != NULL) &&
@@ -490,6 +374,8 @@ void tpl_disable_all_isr_lock_monitor (tpl_exec_common *this_exec_obj)
 {
   tpl_watchdog watchdog;
   
+  DOW_ASSERT (this_exec_obj != NULL);
+  
   watchdog.exec_obj = this_exec_obj;
   watchdog.type = ALL_INT_LOCK;
   unschedule_watchdog (&watchdog);
@@ -499,6 +385,8 @@ void tpl_start_os_isr_lock_monitor (tpl_exec_common *this_exec_obj)
 {
   tpl_watchdog watchdog;
   tpl_time int_lock_time;
+
+  DOW_ASSERT (this_exec_obj != NULL);
 
   /* nothing to do if no timing protection specified */
   if ((this_exec_obj->static_desc->timing_protection != NULL) &&
@@ -520,7 +408,11 @@ void tpl_disable_os_isr_lock_monitor (tpl_exec_common *this_exec_obj)
 {
   tpl_watchdog watchdog;
   
+  DOW_ASSERT (this_exec_obj != NULL);
+  
   watchdog.exec_obj = this_exec_obj;
   watchdog.type = OS_INT_LOCK;
   unschedule_watchdog (&watchdog);
 }
+
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */

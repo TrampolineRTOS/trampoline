@@ -80,9 +80,9 @@ tpl_time task_periodicTask_rez_lock_time[1] = {
 };
  
 tpl_timing_protection task_periodicTask_timing_prot = {
-    /* execution budget/time    */  10,
+    /* execution budget/time    */  100000,
     /* time limit               */  0,
-    /* time frame               */  100,
+    /* time frame               */  1000000,
     /* resource lock time       */  task_periodicTask_rez_lock_time,
     /* os interrupt lock time   */  1000000,
     /* all interrupt lock time  */  1000000
