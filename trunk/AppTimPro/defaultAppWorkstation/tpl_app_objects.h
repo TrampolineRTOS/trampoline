@@ -5,7 +5,7 @@
  * for conditional compiling.
  *
  * This file has been generated automatically by goil
- * on  Thu Sep 13 11:22:56 2007+
+ * on  Thu Sep 13 17:19:45 2007t
  */
 
 #ifndef OJB_HEADER_H
@@ -17,6 +17,7 @@
 #define    WITH_ERROR_HOOK
 #define    WITH_PRE_TASK_HOOK
 #define    WITH_AUTOSAR
+#define    WITH_PROTECTION_HOOK
 
 
 /*
@@ -29,12 +30,12 @@
 /*
  * Declaration of the priority levels count
  */
-#define PRIO_LEVEL_COUNT        2
+#define PRIO_LEVEL_COUNT        3
 
 /*
  * Declaration of Task object count
  */
-#define TASK_COUNT              1
+#define TASK_COUNT              2
 
 /*
  * Declaration of ISR2 object count
@@ -44,7 +45,7 @@
 /*
  * Declaration of Alarm object count
  */
-#define ALARM_COUNT             2
+#define ALARM_COUNT             3
 
 /*
  * Declaration of Resource object count
@@ -70,13 +71,13 @@
 /*
  * Declaration of the number of virtual watchdogs used for timing protection
  */
-#define MAXIMUM_SCHEDULED_WATCHDOGS     5
+#define MAXIMUM_SCHEDULED_WATCHDOGS     9
 #endif
 
 /*
  * Define of RES_SCHEDULER priority
  */
-#define RES_SCHEDULER_PRIORITY  1
+#define RES_SCHEDULER_PRIORITY  2
 
 #endif
 

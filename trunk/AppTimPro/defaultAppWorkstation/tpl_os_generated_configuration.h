@@ -28,6 +28,8 @@
 
 #define task_id_of_periodicTask  0
 #define periodicTask  task_id_of_periodicTask
+#define task_id_of_r1_squatter  1
+#define r1_squatter  task_id_of_r1_squatter
 
 
 /*=============================================================================
@@ -51,7 +53,9 @@
 
 #define alarm_id_of_alarm1s  0
 #define alarm1s  alarm_id_of_alarm1s
-#define alarm_id_of_alarmevent  1
+#define alarm_id_of_alarm200ms  1
+#define alarm200ms  alarm_id_of_alarm200ms
+#define alarm_id_of_alarmevent  2
 #define alarmevent  alarm_id_of_alarmevent
 
 

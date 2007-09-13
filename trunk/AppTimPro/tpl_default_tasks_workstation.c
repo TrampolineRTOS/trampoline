@@ -1,7 +1,6 @@
-#include <stdio.h>
 #include "Os.h"
 #include "tpl_os_generated_configuration.h"
-
+#include <stdio.h>
 #define _XOPEN_SOURCE 500
 #include <unistd.h>
 
@@ -18,16 +17,12 @@ void ErrorHook(StatusType error)
 
 void PreTaskHook(void)
 {
-    TaskType id;
-    GetTaskID(&id);
-    printf("Avant %d\n",id);
+    printf("PreTaskHook\n");
 }
 
 void PostTaskHook(void)
 {
-    TaskType id;
-    GetTaskID(&id);
-    printf("Apres %d\n",id);
+    printf("PostTaskHook\n");
 }
 
 void StartupHook(void)
@@ -40,6 +35,54 @@ void ShutdownHook(StatusType error)
     printf("Au revoir et a bientot :)\n");
 }
 
+extern ProtectionReturnType ProtectionHook (StatusType FatalError)
+{
+  TaskType id;
+  
+  switch (FatalError)
+  {
+    case E_OS_PROTECTION_TIME:
+      printf ("**Protection hook (E_OS_PROTECTION_TIME)");
+      break;
+    case E_OS_PROTECTION_LOCKED:
+      printf ("**Protection hook (E_OS_PROTECTION_LOCKED)");
+      break;
+    case E_OS_STACKFAULT:
+      printf ("**Protection hook (E_OS_STACKFAULT)");
+      break;
+    default:
+      printf ("**Protection hook (unknown error code)");
+      break; 
+  }
+  
+  GetTaskID (&id);
+  printf (" with task %d\n", id);
+  
+  return PRO_KILLTASKISR;  
+}
+
+TASK(r1_squatter)
+{
+    volatile long bidule1, bidule2;
+    int i;
+  
+    for (i = 0 ; i < 10 ; i++)
+    {
+      GetResource (r1);
+      bidule1 = 50 * 1000;
+      while (bidule1--)
+      {
+       
+        bidule2 = 1 << (i * 2);
+        while (bidule2--);
+         
+      }
+      ReleaseResource(r1);
+    }
+    
+    TerminateTask ();
+}
+
 TASK(periodicTask)
 {
     static int compte = 0;
@@ -48,22 +91,24 @@ TASK(periodicTask)
     compte++;
     printf("periodicTask (activation %d)\n", compte);
     fflush(stdout);
-    if (compte == 10)
+    if (compte == 6)
       ShutdownOS(E_OK);
-  
   
     printf ("TRAVAIL EN COURS...");
     fflush(stdout);
     bidule1 = 50 * 1000;
+    GetResource (r1);
     while (bidule1--)
     {
-      bidule2 = 100;
-      while (bidule2--); 
+     
+      bidule2 = 0x1 << (3 * compte);
+      while (bidule2--);
+       
     }
+    ReleaseResource(r1);
     printf ("TERMINE\n");
     
   
 	TerminateTask();
   printf ("should never come here\n");
 }
-
