@@ -88,16 +88,18 @@ union ID_PARAM_BLOCK {
  * @see #tpl_service
  */
 union PARAM_PARAM_BLOCK {
-        TaskStateRefType    state;          /**< used by #GetTaskState */
-        TickType            tick;           /**< used by #SetRelAlarm, 
-                                                 #SetAbsAlarm */
-        TickRefType         tick_ref;       /**< used by #GetAlarm */
-        AlarmBaseRefType    alarm_base_ref; /**< used by #GetAlarmBase */
-        EventMaskType       mask;           /**< used by #SetEvent,
-                                                 #ClearEvent, #WaitEvent */
-        EventMaskRefType    mask_ref;       /**< used by #GetEvent */
+    TaskStateRefType            state;          /**< used by #GetTaskState  */
+    TickType                    tick;           /**< used by #SetRelAlarm, 
+                                                         #SetAbsAlarm       */
+    TickRefType                 tick_ref;       /**< used by #GetAlarm      */
+    AlarmBaseRefType            alarm_base_ref; /**< used by #GetAlarmBase  */
+    EventMaskType               mask;           /**< used by #SetEvent,
+                                                     #ClearEvent,
+                                                     #WaitEvent             */
+    EventMaskRefType            mask_ref;       /**< used by #GetEvent      */
 #ifdef WITH_AUTOSAR
-        ScheduleTableType   next_st_id;     /**< @todo document this        */
+    ScheduleTableType           next_st_id;     /**< @todo document this    */
+    ScheduleTableStatusRefType  st_stat;        /**< @todo document this    */
 #endif
 };
 
@@ -1446,7 +1448,7 @@ void tpl_call_error_hook(const tpl_status error);
 
 /* !NO_ALARM and extended error checking (OS_EXTENDED)          */
 #if !defined(NO_ALARM) && defined(OS_EXTENDED)
-    /* E_OK or E_OS_LIMIT   */
+    /* E_OK or E_OS_VALUE   */
 #   define CHECK_ALARM_MAX_ALLOWED_VALUE_ERROR(alarm_id,increment,result)     \
     if ((result == (tpl_status)E_OK) &&                                       \
         ((increment) >                                                        \

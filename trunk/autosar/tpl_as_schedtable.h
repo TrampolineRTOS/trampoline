@@ -28,8 +28,10 @@
 #define TPL_AS_SCHEDTABLE_H
 
 #include "tpl_os_alarm.h"
+#include "tpl_os_internal_types.h"
 
 typedef u8  ScheduleTableType;
+typedef tpl_time_obj_state *ScheduleTableStatusRefType;
 
 /**
  * Start a schedule table at a relative date.
@@ -129,4 +131,22 @@ StatusType NextScheduleTable(
     ScheduleTableType   next_st_id
 );
 
+/**
+ * Get the status of a schedule table
+ *
+ * @param   sched_table_id  identifier of the schedule table
+ * @param   status          reference to a variable where the status is returned
+ *
+ * @retval  E_OK        no error
+ *                      requirements OS289, OS353, OS354, OS290 and OS291
+ * @retval  E_OS_ID     sched_table_id is not valid (EXTENDED status only)
+ *                      requirement OS293
+ *
+ * see paragraph 8.4.18 page 73 of
+ * AUTOSAR/Specification of the Operating System v2.1.0
+ */
+StatusType GetScheduleTableStatus(
+    ScheduleTableType           sched_table_id,
+    ScheduleTableStatusRefType  status
+);
 #endif /*  TPL_AS_SCHEDTABLE_H */

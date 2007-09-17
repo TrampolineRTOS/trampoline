@@ -59,6 +59,8 @@ StatusType  StartScheduleTableRel(
     tpl_schedule_table *st;
 #endif
     
+    LOCK_WHEN_TASK()
+
     STORE_SERVICE(OSServiceId_StartScheduleTableRel)
     STORE_SCHEDTABLE_ID(sched_table_id)
     STORE_TICK_1(offset)
@@ -87,6 +89,8 @@ StatusType  StartScheduleTableRel(
 
     PROCESS_ERROR(result)
     
+    UNLOCK_WHEN_TASK()
+
     return result;
 }
 
@@ -107,6 +111,8 @@ StatusType  StartScheduleTableAbs(
     tpl_schedule_table *st;
 #endif
     
+    LOCK_WHEN_TASK()
+
     STORE_SERVICE(OSServiceId_StartScheduleTableAbs)
     STORE_SCHEDTABLE_ID(sched_table_id)
     STORE_TICK_1(tick_val)
@@ -135,6 +141,8 @@ StatusType  StartScheduleTableAbs(
 
     PROCESS_ERROR(result)
     
+    UNLOCK_WHEN_TASK()
+
     return result;    
 }
 
@@ -153,6 +161,8 @@ StatusType StopScheduleTable(
 #ifndef NO_SCHEDTABLE
     tpl_schedule_table *st;
 #endif
+
+    LOCK_WHEN_TASK()
 
     STORE_SERVICE(OSServiceId_StopScheduleTable)
     STORE_SCHEDTABLE_ID(sched_table_id)
@@ -177,6 +187,8 @@ StatusType StopScheduleTable(
 
     PROCESS_ERROR(result)
     
+    UNLOCK_WHEN_TASK()
+
     return result;
 }
 
@@ -197,6 +209,8 @@ StatusType NextScheduleTable(
     tpl_schedule_table *current_st;
     tpl_schedule_table *next_st;
 #endif
+
+    LOCK_WHEN_TASK()
 
     STORE_SERVICE(OSServiceId_NextScheduleTable)
     STORE_SCHEDTABLE_ID(current_st_id)
@@ -231,7 +245,48 @@ StatusType NextScheduleTable(
 
     PROCESS_ERROR(result)
     
+    UNLOCK_WHEN_TASK()
+
     return result;
 }
+
+
+/**
+ * Get the status of a schedule table
+ *
+ * see paragraph 8.4.18 page 73 of
+ * AUTOSAR/Specification of the Operating System v2.1.0
+ */
+StatusType GetScheduleTableStatus(
+    ScheduleTableType           sched_table_id,
+    ScheduleTableStatusRefType  status)
+{
+    StatusType  result = E_OK;
+
+#ifndef NO_SCHEDTABLE
+    tpl_schedule_table *st;
+#endif
+
+    LOCK_WHEN_HOOK()
+    
+    /*  store information for error hook routine    */
+    STORE_SERVICE(OSServiceId_GetScheduleTableStatus)
+    STORE_SCHEDTABLE_ID(sched_table_id)
+    STORE_ST_STATUS_REF(status)
+
+    CHECK_SCHEDTABLE_ID_ERROR(sched_table_id, result)
+
+#ifndef NO_SCHEDTABLE
+    IF_NO_EXTENDED_ERROR(result)
+        st = tpl_schedtable_table[sched_table_id];
+        *status = st->b_desc.state;
+    IF_NO_EXTENDED_ERROR_END()
+#endif
+    
+    UNLOCK_WHEN_HOOK()
+    
+    return result;
+}
+
 
 /* End of file tpl_as_schedtable.c */

@@ -78,7 +78,7 @@ struct TPL_ISR {
     tpl_isr_static  *static_desc;   /**<  pointer to the static desc of the
                                           isr                               */
 #ifdef WITH_AUTOSAR
-    u8              enabled;        /**< FALSE if disabled, TRUE if enabled        */    
+    tpl_bool        enabled;        /**< FALSE if disabled, TRUE if enabled */    
 #endif                                          
 };
 
@@ -96,7 +96,7 @@ typedef struct TPL_ISR tpl_isr;
 #include "tpl_memmap.h"
 /**
  * This is the dispatcher of interrupts. It should be called by
- * the root interrupt handler with an ISR identifier (usually the ISR priority)
+ * the root interrupt handler with an ISR identifier
  *
  * @param interrupt service routine identifier
  */

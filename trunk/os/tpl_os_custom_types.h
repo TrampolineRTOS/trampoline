@@ -127,6 +127,7 @@ typedef u8 tpl_scheduled_watchdog_id;
  * @see #set_watchdog
  */
 typedef u32 tpl_time;
+
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
 #ifdef WITH_AUTOSAR
