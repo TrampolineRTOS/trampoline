@@ -5,7 +5,7 @@
  * for conditional compiling.
  *
  * This file has been generated automatically by goil
- * on  Thu Sep 13 17:19:45 2007t
+ * on  Mon Sep 17 18:04:14 2007t
  */
 
 #ifndef OJB_HEADER_H

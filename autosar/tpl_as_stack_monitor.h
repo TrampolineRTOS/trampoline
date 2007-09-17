@@ -3,7 +3,8 @@
  *
  * @section desc File description
  *
- * @todo: finish documentation
+ * Trampoline stack monitoring. This is an AUTOSAR specific module.
+ * See paragraph 7.4 of AUTOSAR OS Specifications v2.1.
  * 
  * @section copyright Copyright
  *
@@ -34,8 +35,20 @@
  * 
  * @todo to be defined by GOIL
  */
+#ifndef SCALABILITY_CLASS
 #define SCALABILITY_CLASS 2
+#endif /* !defined SCALABILITY_CLASS */
 
+/**
+ * @internal
+ *
+ * Do the stack monitoring checkings for the specified executable object and
+ * call the #ProtectionHook if required.
+ *
+ * @param this_exec_obj the executable object to monitor
+ *
+ * @see #ProtectionHook
+ */
 void tpl_check_stack (tpl_exec_common *this_exec_obj);
 
 #endif /* TPL_AS_STACK_MONITOR_H */

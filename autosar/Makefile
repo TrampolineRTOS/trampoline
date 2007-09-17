@@ -24,6 +24,7 @@ AUTOSAR_SRCS += tpl_as_st_kernel.c
 AUTOSAR_SRCS += tpl_as_isr.c
 AUTOSAR_SRCS += tpl_as_isr_kernel.c
 AUTOSAR_SRCS += tpl_as_watchdog_kernel.c
+AUTOSAR_SRCS += tpl_as_isr.c
 AUTOSAR_SRCS += tpl_as_counter.c
 
 

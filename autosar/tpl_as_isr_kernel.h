@@ -30,23 +30,51 @@
 #include "tpl_os_definitions.h"
 #include "tpl_os_it_kernel.h"
 
+typedef enum
+{
+  DISABLED_BY_TIMING_PROTECTION, /**< disabled only by timing protection */
+  DISABLED_BY_USER,              /**< disabled from API */
+  DISABLED_BY_BOTH,              /**< disabled by timing protection then
+                                      by user */
+  ENABLED                        /**< ISR is enabled */
+} tpl_isr2_enable_state;
+
 /**
  * @internal 
  *
- * @todo : document this
+ * called directly by DisableInterruptSource
+ *
+ * @param isr2 the isr to disable
  *
  * @see #DisableInterruptSource
  */
-extern void tpl_disable_isr2 (tpl_isr *isr2);
+extern void tpl_disable_isr2_by_user (tpl_isr *isr2);
+
+/**
+ * @internal 
+ *
+ * called by timing protection when an ISR2 reaches its
+ * count limit
+ *
+ * @param isr2 the isr to disable
+ */
+extern void tpl_disable_isr2_by_timing_protection (tpl_isr *isr2);
 
 /**
  * @internal
  *
- * @todo : document this 
+ * called directly by EnableInterruptSource
  *
  * @see #EnableInterruptSource
  */
-extern void tpl_enable_isr2 (tpl_isr *isr2);
+extern void tpl_enable_isr2_by_user (tpl_isr *isr2);
+
+/**
+ * @internal 
+ *
+ * called when a timeframe is reached
+ */
+extern void tpl_enable_isr2_by_timing_protection (tpl_isr *isr2);
 
 /**
  * @internal

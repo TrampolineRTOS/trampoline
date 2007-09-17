@@ -72,7 +72,7 @@ StatusType DisableInterruptSource (ISRType isr_id)
     IF_NO_EXTENDED_ERROR(result)
         /* get the isr */
         isr = tpl_isr_table[isr_id];
-        isr->enabled = FALSE ;
+        tpl_disable_isr2_by_user (isr);
     IF_NO_EXTENDED_ERROR_END()
 #endif    
 
@@ -98,7 +98,7 @@ StatusType EnableInterruptSource (ISRType isr_id)
     IF_NO_EXTENDED_ERROR(result)
         /* get the isr */
         isr = tpl_isr_table[isr_id];
-        isr->enabled = TRUE ;
+        tpl_enable_isr2_by_user (isr);
     IF_NO_EXTENDED_ERROR_END()
 #endif    
 

@@ -116,7 +116,7 @@ static u8 watchdog_callback (tpl_watchdog *this_watchdog)
       {
         /* unlock this ISR2 if needed */
         if (exec_obj->static_desc->timing_protection->count_limit == 0)
-          tpl_enable_isr2 ((tpl_isr*)exec_obj);
+          tpl_enable_isr2_by_timing_protection ((tpl_isr*)exec_obj);
         
         /* reset the activation countdown for the isr */
         exec_obj->time_left = 
@@ -278,7 +278,7 @@ void tpl_add_activation_count (tpl_exec_common *this_exec_obj)
     
   if (this_exec_obj->time_left == 0)
   {
-    tpl_disable_isr2 ((tpl_isr*)this_exec_obj);
+    tpl_disable_isr2_by_timing_protection ((tpl_isr*)this_exec_obj);
   }
 }
 

@@ -26,17 +26,49 @@
  
 #include "tpl_as_isr_kernel.h"
 
-void tpl_disable_isr2 (tpl_isr *isr2)
+void tpl_disable_isr2_by_user (tpl_isr *isr2)
 {
-	isr2->enabled = FALSE;
+  if (isr2->enabled == DISABLED_BY_TIMING_PROTECTION)
+    isr2->enabled = DISABLED_BY_BOTH;
+  else
+    isr2->enabled = DISABLED_BY_USER;
 }
 
-void tpl_enable_isr2 (tpl_isr *isr2)
+void tpl_disable_isr2_by_timing_protection (tpl_isr *isr2)
 {
-  isr2->enabled = TRUE;
+  if (isr2->enabled == DISABLED_BY_USER)
+  {
+    /* this case cannot happen but it is logically valid */
+    isr2->enabled = DISABLED_BY_BOTH;
+  }
+  else
+    isr2->enabled = DISABLED_BY_TIMING_PROTECTION;
+}
+
+void tpl_enable_isr2_by_user (tpl_isr *isr2)
+{
+  if (isr2->enabled == DISABLED_BY_USER)
+    isr2->enabled = ENABLED;
+  if (isr2->enabled == DISABLED_BY_BOTH)
+    isr2->enabled = DISABLED_BY_TIMING_PROTECTION;
+}
+
+void tpl_enable_isr2_by_timing_protection (tpl_isr *isr2)
+{
+  if (isr2->enabled == DISABLED_BY_BOTH)
+    isr2->enabled = DISABLED_BY_USER;
+  if (isr2->enabled == DISABLED_BY_TIMING_PROTECTION)
+    isr2->enabled = ENABLED;
 }
 
 u8 tpl_is_isr2_enabled (tpl_isr *isr2)
 {
-  return isr2->enabled; 
+  u8 result;
+
+  if (isr2->enabled == ENABLED)
+    result = TRUE;
+  else
+    result = FALSE;
+
+  return result;
 }
