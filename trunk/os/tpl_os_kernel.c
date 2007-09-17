@@ -797,7 +797,7 @@ void tpl_init_os(const tpl_application_mode app_mode)
         auto_time_obj = (tpl_time_obj *)tpl_alarm_table[i];
         if (auto_time_obj->state == (tpl_time_obj_state)ALARM_AUTOSTART)
         {
-            auto_time_obj->state = ALARM_SLEEP;
+            auto_time_obj->state = ALARM_ACTIVE;
 			tpl_insert_time_obj(auto_time_obj);
         }
     }  
@@ -811,7 +811,7 @@ void tpl_init_os(const tpl_application_mode app_mode)
         auto_time_obj = (tpl_time_obj *)tpl_schedtable_table[i];
         if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART)
         {
-            auto_time_obj->state = SCHEDULETABLE_NOT_STARTED;
+            auto_time_obj->state = SCHEDULETABLE_RUNNING;
 			tpl_insert_time_obj(auto_time_obj);
         }
     }

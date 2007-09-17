@@ -26,6 +26,7 @@
  
 #include "tpl_as_counter.h"
 #include "tpl_os_alarm_kernel.h"
+#include "tpl_os_kernel.h"
 #include "tpl_as_error.h"
 
 extern tpl_counter *tpl_counter_table[COUNTER_COUNT];
@@ -164,7 +165,7 @@ StatusType GetElapsedCounterValue(
         if (cpt_val < previous_value) {
             cpt_val += tpl_counter_table[counter_id]->max_allowed_value + 1;
         }
-        *value = previous_value - cpt_val;
+        *value = cpt_val - previous_value;
 
     IF_NO_EXTENDED_ERROR_END()
 
