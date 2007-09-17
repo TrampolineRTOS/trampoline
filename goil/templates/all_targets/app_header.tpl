@@ -48,6 +48,12 @@ $MESSAGES$
  * Declaration of schedule tables related defines and structures
  */
 $SCHEDULETABLES$
+
+/*=============================================================================
+ * Declaration of counters ids
+ */
+$COUNTERSIDS$
+
 #endif
 
 #endif

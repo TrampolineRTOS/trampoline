@@ -33,12 +33,12 @@
 
 /* Schedule tables states */
 
-#define SCHEDULETABLE_AUTOSTART                 ALARM_AUTOSTART
-#define SCHEDULETABLE_NOT_STARTED               ALARM_SLEEP
-#define SCHEDULETABLE_RUNNING                   ALARM_ACTIVE
-#define SCHEDULETABLE_NEXT                      ALARM_ACTIVE | 0x02
-#define SCHEDULETABLE_WAITING                   ALARM_ACTIVE | 0x04
-#define SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS   ALARM_ACTIVE | 0x06
+#define SCHEDULETABLE_AUTOSTART                 TIME_OBJ_AUTOSTART
+#define SCHEDULETABLE_NOT_STARTED               TIME_OBJ_SLEEP
+#define SCHEDULETABLE_RUNNING                   TIME_OBJ_ACTIVE
+#define SCHEDULETABLE_NEXT                      (TIME_OBJ_ACTIVE | 0x04)
+#define SCHEDULETABLE_WAITING                   (TIME_OBJ_ACTIVE | 0x08)
+#define SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS   (TIME_OBJ_ACTIVE | 0x0C)
 
 typedef u8  tpl_schedtable_state;
 

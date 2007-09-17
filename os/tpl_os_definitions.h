@@ -219,7 +219,9 @@
 /*****************************
  * Alarms states and actions *
  *****************************/
-
+#define TIME_OBJ_SLEEP      0
+#define TIME_OBJ_ACTIVE     1
+#define TIME_OBJ_AUTOSTART  2
 /**
  * @def ALARM_SLEEP
  *
@@ -228,7 +230,7 @@
  * @see #tpl_alarm_state
  * @see #TPL_ALARM
  */
-#define ALARM_SLEEP     0
+#define ALARM_SLEEP     TIME_OBJ_SLEEP
 
 /**
  * @def ALARM_ACTIVE
@@ -238,7 +240,7 @@
  * @see #tpl_alarm_state
  * @see #TPL_ALARM
  */
-#define ALARM_ACTIVE    1
+#define ALARM_ACTIVE    TIME_OBJ_ACTIVE
 
 /**
  * @def ALARM_AUTOSTART
@@ -248,7 +250,7 @@
  * @see #tpl_alarm_state
  * @see #TPL_ALARM
  */
-#define ALARM_AUTOSTART 2
+#define ALARM_AUTOSTART TIME_OBJ_AUTOSTART
 
 /**
  * @def ALARM_CALLBACK

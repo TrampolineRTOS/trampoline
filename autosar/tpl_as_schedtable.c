@@ -74,8 +74,14 @@ StatusType  StartScheduleTableRel(
         if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_NOT_STARTED)
         {
             /*  the schedule table is not already started, proceed  */
-            st->b_desc.date =
-                st->b_desc.stat_part->counter->current_date + offset;
+            tpl_counter *cnt = st->b_desc.stat_part->counter;
+            tpl_tick date = cnt->current_date + offset;
+            if (date > cnt->max_allowed_value)
+            {
+                date -= cnt->max_allowed_value;
+            }
+            st->b_desc.date = date;
+            st->b_desc.state = SCHEDULETABLE_RUNNING;
             tpl_insert_time_obj((tpl_time_obj *)st);
         }
         else
@@ -127,8 +133,8 @@ StatusType  StartScheduleTableAbs(
         {
             /*  the schedule table is not already started, proceed  */
             st->b_desc.date = tick_val;
+            st->b_desc.state = SCHEDULETABLE_RUNNING;
             tpl_insert_time_obj((tpl_time_obj *)st);
-           /* st->state = */
         }
         else
         {
@@ -177,6 +183,7 @@ StatusType StopScheduleTable(
         if (st->b_desc.state != (tpl_schedtable_state)SCHEDULETABLE_NOT_STARTED)
         {
             tpl_remove_time_obj((tpl_time_obj *)st);
+            st->b_desc.state = SCHEDULETABLE_NOT_STARTED;
         }
         else
         {
@@ -229,11 +236,13 @@ StatusType NextScheduleTable(
         
         IF_NO_EXTENDED_ERROR(result)
             /*  Check the current schedule table is started         */
-            if (current_st->b_desc.state !=
-                (tpl_schedtable_state)SCHEDULETABLE_NOT_STARTED)
+            if ((current_st->b_desc.state != SCHEDULETABLE_NOT_STARTED) &&
+                (current_st->b_desc.state != SCHEDULETABLE_NEXT))
             {
                 /*  Set the next pointer                            */
                 current_st->next = next_st;
+                /*  And the state of the schedule table             */
+                current_st->b_desc.state = SCHEDULETABLE_NEXT;
             }
             else
             {

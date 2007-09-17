@@ -108,9 +108,6 @@ void tpl_insert_time_obj(tpl_time_obj *time_obj)
             }
         }
     }
-    
-    /*  Anyway, the alarm is put in the active state    */
-    time_obj->state |= ALARM_ACTIVE;
 }
 
 /*
@@ -152,9 +149,6 @@ void tpl_remove_time_obj(tpl_time_obj *time_obj)
     {
         counter->next_to = counter->first_to;
     }
-    
-    /*  The alarm is put in the sleep state */
-    time_obj->state = ALARM_SLEEP;
 }
 
 /**
@@ -205,9 +199,18 @@ tpl_status tpl_counter_tick(tpl_counter *counter)
     /*  if tickperbase is reached, the counter is inc   */
     if (counter->current_tick == counter->ticks_per_base)
     {
-        counter->current_tick = 0;
-        counter->current_date++;
         date = counter->current_date;
+        if (date == counter->max_allowed_value)
+        {
+            date = 0;
+        }
+        else
+        {
+            date++;
+        }
+        counter->current_date = date;
+        counter->current_tick = 0;
+        
         /*  check if the counter has reached the
             next alarm activation date  */
         t_obj = counter->next_to;
@@ -220,6 +223,7 @@ tpl_status tpl_counter_tick(tpl_counter *counter)
             
             /*  get the time object from the queue                  */
             tpl_remove_time_obj(t_obj);
+
             /*  raise it    */
             expire = t_obj->stat_part->expire;
             need_resched |=
@@ -235,6 +239,9 @@ tpl_status tpl_counter_tick(tpl_counter *counter)
                 /*  and the alarm is put back in the alarm queue
                     of the counter it belongs to                    */
                 tpl_insert_time_obj(t_obj);
+            }
+            else {
+                t_obj->state = TIME_OBJ_SLEEP;
             }
     
             /*  get the next alarm to raise     */

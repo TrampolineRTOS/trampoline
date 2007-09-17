@@ -65,6 +65,11 @@ $CONFIG_FLAGS$
 #define SCHEDTABLE_COUNT        $SCHEDTABLE_COUNT$
 
 /*
+ * Declaration of Software Counters object count
+ */
+#define COUNTER_COUNT           $COUNTER_COUNT$
+
+/*
  * Declaration of the number of virtual watchdogs used for timing protection
  */
 #define MAXIMUM_SCHEDULED_WATCHDOGS     $MAX_WATCH_DOG$

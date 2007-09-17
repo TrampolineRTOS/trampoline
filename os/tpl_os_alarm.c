@@ -141,9 +141,16 @@ StatusType SetRelAlarm(
     
         if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP)
         {
+            tpl_counter *cnt = alarm->stat_part->counter;
             /*  the alarm is not in use, proceed    */
-            alarm->date = alarm->stat_part->counter->current_date + increment;
+            tpl_tick date = cnt->current_date + increment;
+            if (date > cnt->max_allowed_value)
+            {
+                date -= cnt->max_allowed_value;
+            }
+            alarm->date = date;
             alarm->cycle = cycle;
+            alarm->state = ALARM_ACTIVE;
             tpl_insert_time_obj(alarm);
         }
         else
@@ -193,6 +200,7 @@ StatusType SetAbsAlarm(
         /*  the alarm is not in use, proceed    */
         alarm->date = start;
         alarm->cycle = cycle;
+        alarm->state = ALARM_ACTIVE;
         tpl_insert_time_obj(alarm);
     }
     else

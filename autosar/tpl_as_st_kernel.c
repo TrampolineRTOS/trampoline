@@ -72,6 +72,7 @@ tpl_status tpl_process_schedtable(tpl_time_obj *st)
             but to the previous expiry point                                */
         st->cycle = (schedtable->expiry)[index]->offset;
         ((tpl_schedule_table *)st)->index = index;
+        
     }
     else {
         /*  The schedule table is finished                                  */
@@ -82,15 +83,20 @@ tpl_status tpl_process_schedtable(tpl_time_obj *st)
             point                                                           */
         tpl_tick before = (schedtable->expiry)[0]->offset;
         if (next != NULL) {
+            /*  reset the state of the current schedule table               */
+            st->state = SCHEDULETABLE_NOT_STARTED;
             /*  There is a next schedule table set, start it                */
             next->b_desc.date =
                 next->b_desc.stat_part->counter->current_date + before;
+            ((tpl_time_obj *)next)->state = SCHEDULETABLE_RUNNING;
             tpl_insert_time_obj((tpl_time_obj *)next);
         }
         else if (schedtable->periodic == TRUE) {
             /*  No next schedule table but the current table is periodic    */
             st->cycle = before;
         }
+        /*  Reset the index                                                 */
+        ((tpl_schedule_table *)st)->index = 0;
     }
 
     return need_resched;
