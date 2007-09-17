@@ -31,6 +31,14 @@
 #include "tpl_os_custom_types.h"
 
 /**
+ * @def INVALID_ISR
+ *
+ * value returned by GetISRID when the currently running object
+ * is not an ISR 2
+ */
+#define INVALID_ISR (-1)
+
+/**
  * @typedef ISRType
  *
  * An ISR identifier.
@@ -54,26 +62,26 @@ ISRType GetISRID(void);
 /**
  * Disables the specified ISR
  *
- * @param DisableISR the ISR to disable
+ * @param   DisableISR the ISR to disable
  *
- * @retval E_OK no error
- * @retval E_OS_ID DisableISR is not a valid ISR id (only in extended error)
+ * @retval  E_OK no error
+ * @retval  E_OS_ID isr_id is not a valid ISR id (only in extended error)
  *
  * see §8.4.20 of AUTOSAR/Specification of the Operating System v2.1.0
  */
-StatusType DisableInterruptSource (ISRType DisableISR);
+StatusType DisableInterruptSource (ISRType isr_id);
 
 /**
  * Enables the specified ISR
  *
- * @param EnableISR the ISR to enable
+ * @param   EnableISR the ISR to enable
  *
- * @retval E_OK no error
- * @retval E_OS_ID EnableISR is not a valid ISR id (only in extended error)
+ * @retval  E_OK no error
+ * @retval  E_OS_ID isr_id is not a valid ISR id (only in extended error)
  *
  * see §8.4.21 of AUTOSAR/Specification of the Operating System v2.1.0
  */
-StatusType EnableInterruptSource (ISRType EnableISR);
+StatusType EnableInterruptSource (ISRType isr_id);
 
 /* TPL_AS_ISR_H */
 #endif

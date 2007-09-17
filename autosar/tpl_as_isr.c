@@ -26,6 +26,10 @@
  
 #include "tpl_as_isr.h"
 #include "tpl_os_internal_types.h"
+#include "tpl_os_kernel.h"
+#include "tpl_as_error.h"
+#include "tpl_os_definitions.h"
+
 
 /*
  * Get the ID of the currently running ISR.
@@ -38,27 +42,68 @@
  */
 ISRType GetISRID(void)
 {
-/* disabled to be compilable / Jonathan ILIAS - 11 sept 2007 */
-#if 0
-    tpl_exec_object_type    type;
-    tpl_isr_id              isr_id = INVALID_ISR;
-    
-    /* critical section */
-    tpl_get_task_lock();
-    
-    type = tpl_running_obj->static_desc->type;
-    
-    if (type != IS_ROUTINE)
+    tpl_exec_common     *ro = tpl_running_obj;
+    tpl_isr_id          isr_id = (tpl_isr_id)INVALID_ISR;
+        
+    if (tpl_running_obj->static_desc->type != IS_ROUTINE)
     {
-        isr_id = tpl_running_obj->static_desc->id;
+        isr_id = ro->static_desc->id;
     }
     
-    tpl_release_task_lock();
-    
     return isr_id;
-#else
-  return 0;
-#endif
 }
+
+/**
+ * Disables the specified ISR
+ *
+ * see §8.4.20 of AUTOSAR/Specification of the Operating System v2.1.0
+ */
+StatusType DisableInterruptSource (ISRType isr_id)
+{
+    StatusType  result = E_OK;
+
+#ifndef NO_ISR
+    tpl_isr *isr;
+#endif
+
+    CHECK_ISR_ID_ERROR(isr_id,result)
+
+#ifndef NO_ISR
+    IF_NO_EXTENDED_ERROR(result)
+        /* get the isr */
+        isr = tpl_isr_table[isr_id];
+        isr->enabled = FALSE ;
+    IF_NO_EXTENDED_ERROR_END()
+#endif    
+
+    return result;
+}
+
+/**
+ * Enables the specified ISR
+ *
+ * see §8.4.21 of AUTOSAR/Specification of the Operating System v2.1.0
+ */
+StatusType EnableInterruptSource (ISRType isr_id)
+{
+    StatusType  result = E_OK;
+
+#ifndef NO_ISR
+    tpl_isr *isr;
+#endif
+
+    CHECK_ISR_ID_ERROR(isr_id,result)
+
+#ifndef NO_ISR
+    IF_NO_EXTENDED_ERROR(result)
+        /* get the isr */
+        isr = tpl_isr_table[isr_id];
+        isr->enabled = TRUE ;
+    IF_NO_EXTENDED_ERROR_END()
+#endif    
+
+    return result;
+}
+
 
 /* End of file tpl_as_isr.c */
