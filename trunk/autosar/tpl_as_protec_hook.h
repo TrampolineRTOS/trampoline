@@ -3,7 +3,7 @@
  *
  * @section desc File description
  *
- * @todo: finish documentation
+ * Trampoline AUTOSAR's protection hook module
  *
  * @section copyright Copyright
  *
@@ -38,6 +38,8 @@
  * exection time.
  * 
  * see §7.10 of autosar OS SWS 2.1
+ *
+ * @see #ProtectionHook
  */
 #define E_OS_PROTECTION_TIME 32
 
@@ -47,6 +49,8 @@
  * A Task/Category 2 ISR blocks for too long
  * 
  * see §7.10 of autosar OS SWS 2.1 
+ *
+ * @see #ProtectionHook
  */
 #define E_OS_PROTECTION_LOCKED 33
 
@@ -54,30 +58,52 @@
  * @def E_OS_STACKFAULT
  * 
  * A stackfault occurred (see §7.4 of AUTOSAR OS SWS 2.1)
+ *
+ * @see #ProtectionHook
  */
 #define E_OS_STACKFAULT 34
 
+/**
+ * @typedef ProtectionReturnType
+ *
+ * Defines what to do after returning from ProtectionHook.
+ *
+ * See paragraph 8.3.15 of AUTOSAR OS SWS 2.1
+ */
 typedef enum 
 {
-  PRO_KILLTASKISR,
-  PRO_KILLAPPL,
-  PRO_KILLAPPL_RESTART,
-  PRO_SHUTDOWN
+  PRO_KILLTASKISR,      /**< kill the faulty task or ISR2 */
+  PRO_KILLAPPL,         /**< kill the faulty application */
+  PRO_KILLAPPL_RESTART, /**< kill and restart the faulty application */
+  PRO_SHUTDOWN          /**< shutdown the OS */
 } ProtectionReturnType;
 
 #ifdef WITH_PROTECTION_HOOK
 /**
  * User protection hook callback function.
- * 
- * @todo finish documentation
- * 
+ *
+ * @param FatalError the kind of error
+ *
+ * @return what to do after this error
+ *
  * see §8.5.1 of AUTOSAR OS SWS 2.1.0
  */
 extern ProtectionReturnType ProtectionHook (StatusType FatalError);
 #endif /* WITH_PROTECTION_HOOK */
 
 /**
- * @todo
+ * @internal
+ *
+ * This function wraps the call to the protection hook (if it exists). Also,
+ * it does what is required to do according to what the ProtectionHook
+ * returns.
+ *
+ * If no ProtectionHook function is defined, the default action is to kill
+ * the current task or ISR2
+ *
+ * @param error the error to send to the ProtectionHook function
+ *
+ * @see #ProtectionHook
  */
 extern void tpl_call_protection_hook (tpl_status error);
 

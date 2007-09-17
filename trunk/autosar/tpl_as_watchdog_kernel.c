@@ -76,53 +76,6 @@ static u8 internal_watchdog_callback ()
   return result;
 }
 
-char *typename (tpl_watchdog_type type)
-{
-  switch (type)
-  {
-    case EXEC_BUDGET:
-      return ("EXEC_BUDGET");
-      break;
-    case TIME_LIMIT:
-      return ("TIME_LIMIT");
-      break;
-    case ALL_INT_LOCK:
-      return ("ALL_INT_LOCK");
-      break;
-    case OS_INT_LOCK:
-      return ("OS_INT_LOCK");
-      break;
-    case REZ_LOCK:
-      return ("REZ_LOCK");
-      break;
-    case TIMEFRAME_BOUNDARY:
-      return ("TIMEFRAME_BOUNDARY");
-      break;
-  }
-}
-
-void print_sw_list ()
-{
-  tpl_scheduled_watchdog *current;
-  
-  if (earliest_watchdog == NULL)
-  {
-    printf ("liste de watchdogs vide\n");  
-  }
-  else
-  {
-    current = earliest_watchdog;
-    do
-    {
-      printf ("->");
-      printf ("%s",  typename (current->watchdog.type));
-      printf (" at %d", current->scheduled_date);
-      printf (" (dfp = %d)\n", current->delay_from_previous);
-      current = current->next;
-    } while (current != NULL);
-  }
-}
-
 void init_watchdog_kernel (watchdog_callback_function callback)
 {
   tpl_scheduled_watchdog_id watchdog_id;

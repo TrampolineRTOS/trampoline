@@ -1,10 +1,6 @@
 /**
  * @file tpl_as_stack_monitor.c
  *
- * @section desc File description
- *
- * @todo document this
- *
  * @section copyright Copyright
  *
  * Trampoline OS
