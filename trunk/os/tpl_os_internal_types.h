@@ -285,6 +285,8 @@ typedef void (*tpl_exec_function)(void);
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 /** 
+ * @internal
+ *
  * @struct TPL_TIMING_PROTECTION
  *
  * This structure gathers all informations about timing protection
@@ -315,8 +317,11 @@ struct TPL_TIMING_PROTECTION
 };
 
 /**
- * @todo document this
- * TODO
+ * @internal
+ *
+ * this is an alias for the type #TPL_TIMING_PROTECTION
+ *
+ * @see #TPL_TIMING_PROTECTION
  */
 typedef struct TPL_TIMING_PROTECTION tpl_timing_protection;
 #endif /* defined WITH_AUTOSAR_TIMING_PROTECTION */
@@ -388,8 +393,7 @@ struct TPL_EXEC_COMMON {
                                                             the task's budget
                                                             monitor or date
                                                             of last isr
-                                                            activation
-                                                            */
+                                                            activation */
     tpl_time                time_left;                 /**< time left before
                                                             exceeding execution
                                                             budget of the task
@@ -397,7 +401,7 @@ struct TPL_EXEC_COMMON {
                                                             count left before
                                                             exceeding max
                                                             activation count
-                                                            for the isr2 */
+                                                            in case of isr2 */
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 };
 

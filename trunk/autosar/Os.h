@@ -3,7 +3,9 @@
  *
  * @section desc File description
  *
- * Trampoline AUTOSAR standard API
+ * Trampoline AUTOSAR standard API. This file should be included in every
+ * AUTOSAR application. This file includes all necessary into AUTOSAR, so
+ * any other AUTOSAR/OSEK include is superfluous.
  *
  * @section copyright Copyright
  *

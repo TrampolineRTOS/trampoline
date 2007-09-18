@@ -37,7 +37,7 @@
  * A task exeeded its execution budget or an ISR2 exeeded its
  * exection time.
  * 
- * see §7.10 of autosar OS SWS 2.1
+ * see paragraph 7.10 of autosar OS SWS 2.1
  *
  * @see #ProtectionHook
  */
@@ -48,7 +48,7 @@
  * 
  * A Task/Category 2 ISR blocks for too long
  * 
- * see §7.10 of autosar OS SWS 2.1 
+ * see paragraph 7.10 of autosar OS SWS 2.1 
  *
  * @see #ProtectionHook
  */
@@ -57,7 +57,7 @@
 /**
  * @def E_OS_STACKFAULT
  * 
- * A stackfault occurred (see §7.4 of AUTOSAR OS SWS 2.1)
+ * A stackfault occurred (see paragraph 7.4 of AUTOSAR OS SWS 2.1)
  *
  * @see #ProtectionHook
  */
@@ -86,7 +86,7 @@ typedef enum
  *
  * @return what to do after this error
  *
- * see §8.5.1 of AUTOSAR OS SWS 2.1.0
+ * see paragraph 8.5.1 of AUTOSAR OS SWS 2.1.0
  */
 extern ProtectionReturnType ProtectionHook (StatusType FatalError);
 #endif /* WITH_PROTECTION_HOOK */

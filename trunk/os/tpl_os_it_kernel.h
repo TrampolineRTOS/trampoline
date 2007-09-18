@@ -78,7 +78,8 @@ struct TPL_ISR {
     tpl_isr_static  *static_desc;   /**<  pointer to the static desc of the
                                           isr                               */
 #ifdef WITH_AUTOSAR
-    tpl_bool        enabled;        /**< FALSE if disabled, TRUE if enabled */    
+    tpl_bool        enabled;        /**< FALSE if disabled, TRUE if enabled 
+		                                     (see #tpl_isr2_enable_state) */
 #endif                                          
 };
 

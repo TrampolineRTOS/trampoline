@@ -30,6 +30,13 @@
 #include "tpl_os_definitions.h"
 #include "tpl_os_it_kernel.h"
 
+/**
+ * @internal
+ *
+ * ISR2 enabled state.
+ *
+ * @see #tpl_isr
+ */
 typedef enum
 {
   DISABLED_BY_TIMING_PROTECTION, /**< disabled only by timing protection */

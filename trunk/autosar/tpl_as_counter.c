@@ -1,6 +1,8 @@
 /**
  * @file tpl_as_counter.c
  *
+ * @internal
+ *
  * @section desc File description
  *
  * Trampoline autosar extension software counters functions

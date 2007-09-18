@@ -37,7 +37,7 @@
 tpl_context idle_task_context = 0;
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-static watchdog_expire_function tpl_watchdog_callback;
+static tpl_watchdog_expire_function tpl_watchdog_callback;
 
 static struct timeval startup_time;
 
@@ -53,7 +53,7 @@ tpl_time tpl_get_local_current_date ()
   return result;
 }
 
-void set_watchdog (tpl_time delay, watchdog_expire_function function)
+void tpl_set_watchdog (tpl_time delay, tpl_watchdog_expire_function function)
 {
   struct itimerval timer;
   
@@ -68,7 +68,7 @@ void set_watchdog (tpl_time delay, watchdog_expire_function function)
   setitimer (ITIMER_REAL, &timer, NULL);
 }
 
-void cancel_watchdog ()
+void tpl_cancel_watchdog ()
 {
   struct itimerval timer;
   

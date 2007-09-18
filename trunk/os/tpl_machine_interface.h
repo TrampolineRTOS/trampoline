@@ -121,28 +121,51 @@ extern void tpl_shutdown(void);
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 
 /**
- * @todo document this
+ * @internal
+ *
+ * This is the prototype of a function to be called by the
+ * watchdog
  * 
- * returns TRUE if reschedule is required
+ * @retval TRUE tells that a rescheduling is required
+ * @retval FALSE tells that we don't need a rescheduling
+ *
+ * @see #tpl_set_watchdog
+ * @see #tpl_cancel_watchdog
  */
-typedef u8 (*watchdog_expire_function)();
+typedef u8 (*tpl_watchdog_expire_function)();
 
 /**
  * @internal
  * 
- * @todo: document this
+ * Start the watchdog to call function when delay expires. The watchdog
+ * can be canceled before expiration
+ *
+ * @param delay time (in tpl_time unit) since now the expire function will be
+ * called (cannot be zero)
+ * @param function function to be called into "delay" (cannot be null)
+ *
+ * @see #tpl_cancel_watchdog
+ * @see #tpl_get_local_current_date
  */
-extern void set_watchdog (tpl_time delay, watchdog_expire_function function);
+extern void tpl_set_watchdog (tpl_time delay, tpl_watchdog_expire_function function);
+
 /**
  * @internal
  * 
- * @todo: document this
+ * Cancels the watchdog before its expiration. This has no effet if the
+ * watchdog has not been started before.
+ *
+ * @see #tpl_set_watchdog
  */
-extern void cancel_watchdog ();
+extern void tpl_cancel_watchdog ();
+
 /**
  * @internal
  * 
- * @todo: document this
+ * Gives the current date in tpl_time unit. See the os machine specifications
+ * to know what is the unit of tpl_time.
+ *
+ * @return the current date when called
  */
 extern tpl_time tpl_get_local_current_date ();
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
@@ -151,16 +174,35 @@ extern tpl_time tpl_get_local_current_date ();
 /**
  * @internal
  * 
- * @todo: document this
+ * This function tells if the saved stack pointer (into saved context) is
+ * located into the stack boundaries or not.
  * 
+ * Depending on what the hardware is able to do, this function may not be
+ * able to detect an error. Only undoubted errors are reported.
+ *
+ * @param this_exec_obj the exec object to check
+ *
  * @retval 1 no stack overflow detected
  * @retval 0 stack overflow deteted
+ *
+ * @see #tpl_check_stack_footprint
  */
 u8 tpl_check_stack_pointer (tpl_exec_common *this_exec_obj);
+
 /**
  * @internal
  * 
- * @todo: document this
+ * This functions checks the stack did not overflowed by looking if the stack
+ * tagging has not been completly erased.
+ *
+ * @param this_exec_obj the executable object (task or ISR) to check
+ *
+ * @note This function needs a stack tagging which should be done at system
+ * initialization (#tpl_init_machine). The stack tagging consists in filling
+ * stack with known unique and unusual values (e.g. not zero). When the stack
+ * will be used, these values will be overriden and we will be able to know
+ * how high the stack have been. Of course, it is intended for debug stage,
+ * then we suggest you oversize the stack.
  * 
  * @retval 1 no stack overflow detected
  * @retval 0 stack overflow deteted

@@ -1,6 +1,8 @@
 /**
  * @file tpl_as_protec_hook.c
  *
+ * @internal
+ *
  * @section desc File description
  *
  * @todo document this
