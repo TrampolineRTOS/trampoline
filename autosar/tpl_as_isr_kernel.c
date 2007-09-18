@@ -1,6 +1,8 @@
 /**
  * @file tpl_as_isr_kernel.c
  *
+ * @internal
+ *
  * @section desc File description
  *
  * Trampoline autosar extension software ISR internals implementation

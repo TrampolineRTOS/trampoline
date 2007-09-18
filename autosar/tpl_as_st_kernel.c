@@ -1,6 +1,8 @@
 /**
  * @file tpl_as_st_kernel.c
  *
+ * @internal
+ *
  * @section desc File description
  *
  * Trampoline autosar extension software schedule tables machinery

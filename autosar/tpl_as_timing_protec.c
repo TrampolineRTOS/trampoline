@@ -1,6 +1,8 @@
 /**
  * @file tpl_as_timing_protec.c
  *
+ * @internal
+ *
  * @section desc File description
  *
  * @todo document this
@@ -241,24 +243,6 @@ void tpl_continue_budget_monitor (tpl_exec_common *this_exec_obj)
     /* restart the budget monitor base date */
     this_exec_obj->monitor_start_date = current_date;
   } 
-}
-
-void tpl_disable_budget_monitor (tpl_exec_common *this_exec_obj)
-{
-  tpl_watchdog watchdog;
-  
-  DOW_ASSERT (this_exec_obj != NULL);
-    
-  if (this_exec_obj->static_desc->timing_protection != NULL)
-  {
-    /* unschedule the related watchdogs */
-    watchdog.exec_obj = this_exec_obj;
-    watchdog.type = EXEC_BUDGET;
-    unschedule_watchdog (&watchdog);
-
-    /* stops the timeframe watchdog */
-    stop_timeframe (this_exec_obj);
-  }
 }
 
 void tpl_reset_activation_count (tpl_exec_common *this_exec_obj)

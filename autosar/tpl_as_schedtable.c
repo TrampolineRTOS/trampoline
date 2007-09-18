@@ -1,6 +1,8 @@
 /**
  * @file tpl_as_schedtable.c
  *
+ * @internal
+ *
  * @section desc File description
  *
  * Trampoline autosar extension software schedule tables API implementation

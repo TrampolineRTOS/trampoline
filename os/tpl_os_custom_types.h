@@ -122,9 +122,9 @@ typedef u8 tpl_scheduled_watchdog_id;
 
 /**
  * Time data (duration or date) used in timing protection. The unit is system
- * dependant (see #set_watchdog).
+ * dependant (see #tpl_get_local_current_date)).
  *
- * @see #set_watchdog
+ * @see #tpl_get_local_current_date
  */
 typedef u32 tpl_time;
 

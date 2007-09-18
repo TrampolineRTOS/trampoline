@@ -1,6 +1,8 @@
 /**
  * @file tpl_as_watchdog_kernel.c
  *
+ * @internal
+ *
  * @section desc File description
  *
  * @todo document this
@@ -68,7 +70,7 @@ static u8 internal_watchdog_callback ()
    */
   if (earliest_watchdog != NULL)
   {
-    set_watchdog (earliest_watchdog->delay_from_previous, 
+    tpl_set_watchdog (earliest_watchdog->delay_from_previous, 
        internal_watchdog_callback);
     earliest_watchdog->delay_from_previous = 0;
   }
@@ -276,8 +278,8 @@ void schedule_watchdog (tpl_watchdog *this_watchdog,
   if (insert_scheduled_watchdog(new_watchdog))
   {
     /* reschedule the real watchdog only if head of list changed */
-    cancel_watchdog ();
-    set_watchdog (expire_delay, internal_watchdog_callback);
+    tpl_cancel_watchdog ();
+    tpl_set_watchdog (expire_delay, internal_watchdog_callback);
   }
 }
 
@@ -297,10 +299,10 @@ void unschedule_watchdog (tpl_watchdog *this_watchdog)
   {
     if (remove_scheduled_watchdog(watchdog_cursor, previous_cursor))
     {
-      cancel_watchdog ();
+      tpl_cancel_watchdog ();
       if (earliest_watchdog != NULL)
       {
-        set_watchdog (tpl_get_local_current_date() - 
+        tpl_set_watchdog (tpl_get_local_current_date() - 
            earliest_watchdog->scheduled_date, internal_watchdog_callback);
       }
     }
