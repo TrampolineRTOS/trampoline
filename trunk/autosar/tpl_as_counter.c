@@ -31,7 +31,9 @@
 #include "tpl_os_kernel.h"
 #include "tpl_as_error.h"
 
+#ifndef NO_COUNTER
 extern tpl_counter *tpl_counter_table[COUNTER_COUNT];
+#endif
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -49,8 +51,11 @@ extern tpl_counter *tpl_counter_table[COUNTER_COUNT];
 StatusType IncrementCounter(CounterType counter_id)
 {
     StatusType  result = E_OK;
+
+#ifndef NO_COUNTER
     tpl_counter *counter = NULL;
     tpl_status  need_rescheduling = NO_SPECIAL_CODE;
+#endif
     
     /*  lock the task structures                    */
     LOCK_WHEN_TASK_OR_ISR()
@@ -62,6 +67,7 @@ StatusType IncrementCounter(CounterType counter_id)
     /*  check a counter_id error                    */
     CHECK_COUNTER_ID_ERROR(counter_id,result)
     
+#ifndef NO_COUNTER
     IF_NO_EXTENDED_ERROR(result)
     
         /*  get the counter descriptor              */
@@ -75,6 +81,7 @@ StatusType IncrementCounter(CounterType counter_id)
         }
         
     IF_NO_EXTENDED_ERROR_END()
+#endif
 
     PROCESS_ERROR(result)
 
@@ -97,7 +104,10 @@ StatusType IncrementCounter(CounterType counter_id)
 StatusType GetCounterValue(CounterType counter_id, TickRefType value)
 {
     StatusType  result = E_OK;
+
+#ifndef NO_COUNTER
     tpl_counter *counter = NULL;
+#endif
     
     LOCK_WHEN_HOOK()
 
@@ -109,6 +119,7 @@ StatusType GetCounterValue(CounterType counter_id, TickRefType value)
     /*  check a counter_id error                    */
     CHECK_COUNTER_ID_ERROR(counter_id,result)
     
+#ifndef NO_COUNTER
     IF_NO_EXTENDED_ERROR(result)
     
         /*  get the counter descriptor              */
@@ -118,6 +129,7 @@ StatusType GetCounterValue(CounterType counter_id, TickRefType value)
         *value = counter->current_date;
 
     IF_NO_EXTENDED_ERROR_END()
+#endif
 
     PROCESS_ERROR(result)
 
@@ -143,8 +155,11 @@ StatusType GetElapsedCounterValue(
     TickRefType value)
 {
     StatusType  result = E_OK;
+
+#ifndef NO_COUNTER
     tpl_counter *counter = NULL;
     TickType    cpt_val;
+#endif
     
     LOCK_WHEN_HOOK()
 
@@ -160,6 +175,7 @@ StatusType GetElapsedCounterValue(
         the maxallowedvalue of the counter          */
     CHECK_COUNTER_MAX_ALLOWED_VALUE_ERROR(counter_id,previous_value,result)
 
+#ifndef NO_COUNTER
     IF_NO_EXTENDED_ERROR(result)
     
         /*  get the counter descriptor              */
@@ -173,6 +189,7 @@ StatusType GetElapsedCounterValue(
         *value = cpt_val - previous_value;
 
     IF_NO_EXTENDED_ERROR_END()
+#endif
 
     PROCESS_ERROR(result)
 

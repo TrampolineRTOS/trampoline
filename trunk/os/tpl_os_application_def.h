@@ -82,6 +82,7 @@
 #endif
 
 #ifdef WITH_AUTOSAR
+
 #ifndef SCHEDTABLE_COUNT
     #define SCHEDTABLE_COUNT 0
 #endif
@@ -94,6 +95,20 @@
  */
     #define NO_SCHEDTABLE
 #endif
+
+#ifndef COUNTER_COUNT
+    #define COUNTER_COUNT 0
+#endif
+#if COUNTER_COUNT == 0
+/**
+ * @def NO_COUNTER
+ *
+ * When this flag is defined, this means there is no software counter defined
+ * in the system
+ */
+    #define NO_COUNTER
+#endif
+
 /* WITH_AUTOSAR */
 #endif
 

@@ -184,7 +184,6 @@ void tpl_init_timing_protection ()
 void tpl_start_budget_monitor (tpl_exec_common *this_exec_obj)
 {
   tpl_watchdog watchdog;
-  tpl_scheduled_watchdog *temp;
   
   DOW_ASSERT (this_exec_obj != NULL);
   
