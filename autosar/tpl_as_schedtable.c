@@ -44,6 +44,9 @@
 extern tpl_schedule_table   *tpl_schedtable_table[SCHEDTABLE_COUNT];
 #endif
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
 /*
  * Start a schedule table at a relative date.
  *
@@ -298,6 +301,9 @@ StatusType GetScheduleTableStatus(
     
     return result;
 }
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 
 /* End of file tpl_as_schedtable.c */

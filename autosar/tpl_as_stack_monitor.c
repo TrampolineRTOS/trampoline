@@ -24,6 +24,9 @@
 #include "tpl_as_stack_monitor.h"
 #include "tpl_os.h"
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
 #ifdef WITH_AUTOSAR_STACK_MONITORING
 void tpl_check_stack (tpl_exec_common *this_exec_obj)
 {  
@@ -41,5 +44,8 @@ void tpl_check_stack (tpl_exec_common *this_exec_obj)
 #endif
   }
 }
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 #endif /* WITH_AUTOSAR_STACK_MONITORING */

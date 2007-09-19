@@ -33,6 +33,9 @@
 #include "tpl_os_definitions.h"
 
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
 /*
  * Get the ID of the currently running ISR.
  *
@@ -107,5 +110,7 @@ StatusType EnableInterruptSource (ISRType isr_id)
     return result;
 }
 
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 /* End of file tpl_as_isr.c */

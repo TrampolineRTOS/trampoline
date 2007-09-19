@@ -33,6 +33,9 @@
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
 static tpl_time delay_to_next_timeframe (tpl_time timeframe)
 {
   tpl_time result;
@@ -398,5 +401,8 @@ void tpl_disable_os_isr_lock_monitor (tpl_exec_common *this_exec_obj)
   watchdog.type = OS_INT_LOCK;
   unschedule_watchdog (&watchdog);
 }
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */

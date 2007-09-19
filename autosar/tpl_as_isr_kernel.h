@@ -46,6 +46,9 @@ typedef enum
   ENABLED                        /**< ISR is enabled */
 } tpl_isr2_enable_state;
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
 /**
  * @internal 
  *
@@ -92,6 +95,9 @@ extern void tpl_enable_isr2_by_timing_protection (tpl_isr *isr2);
  * @retval TRUE this ISR2 is enabled 
  */
 u8 tpl_is_isr2_enabled (tpl_isr *isr2);
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 #endif /* TPL_AS_ISR__KERNEL_H */
 

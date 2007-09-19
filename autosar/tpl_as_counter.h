@@ -41,6 +41,9 @@
  */
 typedef tpl_counter_id  CounterType;
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
 /**
  * Increment a counter.
  *
@@ -102,5 +105,10 @@ StatusType GetElapsedCounterValue(
     TickRefType value
 );
 
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
 /* TPL_AS_COUNTER_H */
 #endif
+
+/* End of file tpl_as_counter.h */

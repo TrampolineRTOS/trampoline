@@ -28,6 +28,9 @@
  
 #include "tpl_as_isr_kernel.h"
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
 void tpl_disable_isr2_by_user (tpl_isr *isr2)
 {
   if (isr2->enabled == DISABLED_BY_TIMING_PROTECTION)
@@ -74,3 +77,8 @@ u8 tpl_is_isr2_enabled (tpl_isr *isr2)
 
   return result;
 }
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+/* End of file tpl_as_isr_kernel.c  */

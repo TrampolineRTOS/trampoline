@@ -48,6 +48,9 @@
  */
 typedef tpl_isr_id  ISRType;
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
 /**
  * Get the ID of the currently running ISR.
  *
@@ -82,6 +85,9 @@ StatusType DisableInterruptSource (ISRType isr_id);
  * see §8.4.21 of AUTOSAR/Specification of the Operating System v2.1.0
  */
 StatusType EnableInterruptSource (ISRType isr_id);
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 /* TPL_AS_ISR_H */
 #endif
