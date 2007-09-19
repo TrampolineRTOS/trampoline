@@ -159,6 +159,9 @@ struct TPL_SCHEDTABLE_STATIC {
  */
 typedef struct TPL_SCHEDTABLE_STATIC tpl_schedtable_static;
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
 /**
  * @internal
  *
@@ -169,6 +172,9 @@ typedef struct TPL_SCHEDTABLE_STATIC tpl_schedtable_static;
  * match the offset of the next expiry point.
  */
 tpl_status tpl_process_schedtable(tpl_time_obj *t_obj);
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 #endif /* TPL_AS_ST_KERNEL_H */
 

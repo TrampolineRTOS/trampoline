@@ -33,6 +33,9 @@
 typedef u8  ScheduleTableType;
 typedef tpl_time_obj_state *ScheduleTableStatusRefType;
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
 /**
  * Start a schedule table at a relative date.
  *
@@ -149,4 +152,8 @@ StatusType GetScheduleTableStatus(
     ScheduleTableType           sched_table_id,
     ScheduleTableStatusRefType  status
 );
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
 #endif /*  TPL_AS_SCHEDTABLE_H */

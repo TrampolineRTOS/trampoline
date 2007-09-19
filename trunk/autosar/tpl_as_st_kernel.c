@@ -30,6 +30,9 @@
 #include "tpl_as_st_kernel.h"
 #include "tpl_os_definitions.h"
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
 /*
  * This function is called when the alarm wrapped to the schedule table is
  * raised. After getting the static part of the alarm (that in this case is
@@ -103,5 +106,8 @@ tpl_status tpl_process_schedtable(tpl_time_obj *st)
 
     return need_resched;
 }
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 /* End of file tpl_as_st_kernel.c */

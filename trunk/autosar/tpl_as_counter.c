@@ -33,6 +33,9 @@
 
 extern tpl_counter *tpl_counter_table[COUNTER_COUNT];
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
 /*
  * Increment a counter.
  *
@@ -179,4 +182,7 @@ StatusType GetElapsedCounterValue(
     return result;
 }
 
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
+/* End of file tpl_as_counter.c */

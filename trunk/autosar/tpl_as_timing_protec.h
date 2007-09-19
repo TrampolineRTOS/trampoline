@@ -52,6 +52,9 @@
 #include "tpl_machine_interface.h"
 #include "tpl_as_protec_hook.h"
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
 /**
  * @internal
  *
@@ -216,6 +219,9 @@ extern void tpl_start_os_isr_lock_monitor (tpl_exec_common *this_exec_obj);
  * @param this_exec_obj the executable object which locked ISRs
  */
 extern void tpl_disable_os_isr_lock_monitor (tpl_exec_common *this_exec_obj);
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 #endif /* TPL_AS_TIMING_PROTEC_H */
 

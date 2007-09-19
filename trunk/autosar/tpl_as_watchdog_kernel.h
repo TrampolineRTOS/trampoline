@@ -132,6 +132,9 @@ typedef struct TPL_SCHEDULED_WATCHDOG tpl_scheduled_watchdog;
  */
 typedef u8 (*watchdog_callback_function)(tpl_watchdog *watchdog);
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
 /**
  * @internal
  *
@@ -226,5 +229,8 @@ void schedule_watchdog (tpl_watchdog *this_watchdog,
  * @param this_watchdog watchdog to unschedule
  */
 void unschedule_watchdog (tpl_watchdog *this_watchdog);
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 #endif /*TPL_AS_WATCHDOG_KERNEL_H*/

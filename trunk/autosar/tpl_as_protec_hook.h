@@ -78,6 +78,9 @@ typedef enum
   PRO_SHUTDOWN          /**< shutdown the OS */
 } ProtectionReturnType;
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
 #ifdef WITH_PROTECTION_HOOK
 /**
  * User protection hook callback function.
@@ -106,5 +109,8 @@ extern ProtectionReturnType ProtectionHook (StatusType FatalError);
  * @see #ProtectionHook
  */
 extern void tpl_call_protection_hook (tpl_status error);
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 #endif /* TPL_AS_PROTEC_HOOK_H */

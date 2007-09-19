@@ -29,6 +29,9 @@
 #include "tpl_dow.h"
 #include "tpl_os_kernel.h"
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
 static void killtaskisr ()
 {
   tpl_running_obj->state = (tpl_exec_state)DYING;
@@ -65,4 +68,7 @@ void tpl_call_protection_hook (tpl_status error)
   killtaskisr ();
 #endif /* WITH_PROTECTION_HOOK */
 }
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 

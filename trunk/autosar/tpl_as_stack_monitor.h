@@ -39,6 +39,9 @@
 #define SCALABILITY_CLASS 2
 #endif /* !defined SCALABILITY_CLASS */
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
 /**
  * @internal
  *
@@ -50,5 +53,8 @@
  * @see #ProtectionHook
  */
 void tpl_check_stack (tpl_exec_common *this_exec_obj);
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 #endif /* TPL_AS_STACK_MONITOR_H */

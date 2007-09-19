@@ -34,6 +34,9 @@ static tpl_scheduled_watchdog *earliest_watchdog = NULL;
 
 static watchdog_callback_function external_watchdog_callback = NULL;
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
 static u8 internal_watchdog_callback ()
 {
   tpl_scheduled_watchdog *current_scheduled_watchdog;
@@ -308,3 +311,7 @@ void unschedule_watchdog (tpl_watchdog *this_watchdog)
     }
   }
 }
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
