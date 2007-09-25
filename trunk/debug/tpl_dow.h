@@ -27,7 +27,7 @@
 #ifndef TPL_DOW_H
 #define TPL_DOW_H
 
-#ifdef __unix__
+#if defined(__unix__) || defined(__APPLE__)
 
 #ifdef WITH_DEBUG
 #include <stdio.h>

@@ -235,7 +235,12 @@ tpl_status tpl_counter_tick(tpl_counter *counter)
                 /*  if the cycle is not 0,
                     the new date is computed
                     by adding the cycle to the current date         */
-                t_obj->date += t_obj->cycle;
+                tpl_tick date = t_obj->date + t_obj->cycle;
+                if (date > counter->max_allowed_value)
+                {
+                    date -= counter->max_allowed_value;
+                }
+                t_obj->date = date;
                 /*  and the alarm is put back in the alarm queue
                     of the counter it belongs to                    */
                 tpl_insert_time_obj(t_obj);
