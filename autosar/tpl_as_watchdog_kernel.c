@@ -146,8 +146,8 @@ u8 insert_scheduled_watchdog (
      * if expire date matches an existing watchdog */
     watchdog_cursor = earliest_watchdog;
     DOW_ASSERT (watchdog_cursor != NULL);
-    DOW_ASSERT (new_watchdog->scheduled_date >= 
-       watchdog_cursor->scheduled_date);
+/*    DOW_ASSERT (new_watchdog->scheduled_date >= 
+       watchdog_cursor->scheduled_date); */
     while ((watchdog_cursor != NULL) &&
        (this_scheduled_watchdog->scheduled_date >= 
        watchdog_cursor->scheduled_date))
