@@ -23,10 +23,10 @@
  * $URL$
  */
 
-#include "tpl_os_internal_types.h"
-
 #ifndef TPL_MACHINE_PPC_H
 #define TPL_MACHINE_PPC_H
+
+#include "tpl_os_custom_types.h"
 
 /*
  * Integer context of the PowerPC

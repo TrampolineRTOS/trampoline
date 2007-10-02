@@ -78,12 +78,8 @@ tpl_status tpl_process_schedtable(tpl_time_obj *st)
             but to the previous expiry point                                */
         st->cycle = (schedtable->expiry)[index]->offset;
         ((tpl_schedule_table *)st)->index = index;
-        
-        DOW_DO(printf("next expiry point : %d\n",st->cycle);)
-        
     }
     else {
-        DOW_DO(printf("End of schedule table\n");)
         /*  The schedule table is finished                                  */
         /*  Test whether a schedule table has been « nextified » or not     */
         tpl_schedule_table *next = ((tpl_schedule_table *)st)->next;
