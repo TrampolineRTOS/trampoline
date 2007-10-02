@@ -241,6 +241,7 @@ StatusType CancelAlarm(const AlarmType alarm_id)
     if (alarm->state == (tpl_time_obj_state)ALARM_ACTIVE)
     {
         tpl_remove_time_obj(alarm);
+        alarm->state = ALARM_SLEEP;
     }
     else
     {
