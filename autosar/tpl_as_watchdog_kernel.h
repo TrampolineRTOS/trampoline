@@ -130,7 +130,7 @@ typedef struct TPL_SCHEDULED_WATCHDOG tpl_scheduled_watchdog;
  * @see #find_scheduled_watchdog
  * @see #remove_scheduled_watchdog
  */
-typedef u8 (*watchdog_callback_function)(tpl_watchdog *watchdog);
+typedef u8 (*OS_CBK_CODE watchdog_callback_function)(tpl_watchdog *watchdog);
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
