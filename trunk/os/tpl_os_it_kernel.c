@@ -20,9 +20,14 @@
 #include "tpl_os.h"
 #include "tpl_os_application_def.h"
 #include "tpl_machine_interface.h"
+
 #ifdef WITH_AUTOSAR_STACK_MONITORING
 #include "tpl_as_stack_monitor.h"
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
+
+#ifdef WITH_AUTOSAR
+#include "tpl_as_isr_kernel.h"
+#endif
 
 #ifndef NO_ISR
 

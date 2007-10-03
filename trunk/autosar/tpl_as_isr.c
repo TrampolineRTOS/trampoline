@@ -31,6 +31,7 @@
 #include "tpl_os_kernel.h"
 #include "tpl_as_error.h"
 #include "tpl_os_definitions.h"
+#include "tpl_as_isr_kernel.h"
 
 
 #define OS_START_SEC_CODE
