@@ -26,6 +26,7 @@ AUTOSAR_SRCS += tpl_as_isr_kernel.c
 AUTOSAR_SRCS += tpl_as_watchdog_kernel.c
 AUTOSAR_SRCS += tpl_as_isr.c
 AUTOSAR_SRCS += tpl_as_counter.c
+AUTOSAR_SRCS += tpl_as_action.c
 
 
 #################### end of configuration.

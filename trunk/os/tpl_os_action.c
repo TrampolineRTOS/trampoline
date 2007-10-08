@@ -38,7 +38,7 @@ tpl_status tpl_action_callback(const tpl_action *action)
     /*
      * A tpl_action * is cast to a tpl_callback_action *
      * This violate MISRA rule 45. However, since the
-     * first member of tpl_callback_action * is a tpl_action *
+     * first member of tpl_callback_action is a tpl_action
      * This cast behaves correctly.
      */
     ((const tpl_callback_action *)action)->callback();
@@ -54,7 +54,7 @@ tpl_status tpl_action_activate_task(const tpl_action *action)
     /*
      * A tpl_action * is cast to a tpl_task_activation_action *
      * This violate MISRA rule 45. However, since the
-     * first member of tpl_task_activation_action * is a tpl_action *
+     * first member of tpl_task_activation_action is a tpl_action
      * This cast behaves correctly.
      */
     return tpl_activate_task(
@@ -70,7 +70,7 @@ tpl_status tpl_action_setevent(const tpl_action *action)
     /*
      * A tpl_action * is cast to a tpl_setevent_action *
      * This violate MISRA rule 45. However, since the
-     * first member of tpl_setevent_action * is a tpl_action *
+     * first member of tpl_setevent_action is a tpl_action
      * This cast behaves correctly.
      */
     return tpl_set_event(
