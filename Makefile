@@ -12,8 +12,8 @@
 # $URL$
 #
 
-#Warning, this Makefile must not be modified directly!
-#Please define your configuration in the Make-rules file.
+# Warning, this Makefile must not be modified directly!
+# Please define your configuration in the Make-rules file.
 #
 
 include Make-rules
@@ -37,10 +37,10 @@ ALL: $(EXE)
 DOC: DOC-DEV
 
 DOC-DEV:
-	doxygen Doxyfile-dev
+	$(DOXY) Doxyfile-dev
 
 DOC-USER:
-	doxygen Doxyfile-user
+	$(DOXY) Doxyfile-user
 
 #compile oil file into c, and then into .o
 OIL_OBJ_OIL_FILE = $(addprefix $(OBJ_PATH)/,$(notdir $(OIL_GENERATED_C_FILE:.c=.o)))

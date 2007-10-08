@@ -10,9 +10,10 @@
  *
  * Trampoline OS
  *
- * Trampoline is copyright (c) IRCCyN 2005+
- * Copyright ESEO for function and data structures documentation
- * Trampoline is protected by the French intellectual property law.
+ * Trampoline is copyright (c) IRCCyN 2005-2007
+ * Autosar extension is copyright (c) IRCCyN and ESEO 2007
+ * Trampoline and its Autosar extension are protected by the
+ * French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -208,7 +209,6 @@ void printrl(char *msg)
             {
                 idx -= tpl_ready_list[i].size;
             }
-            assert(level[idx]->priority == i);
             printf(" %d",level[idx]->static_desc->id);
         }
         printf("\n");
