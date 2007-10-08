@@ -46,5 +46,9 @@ tpl_isr $ISR$ = {
 #endif
     },    /* end of exec_desc part */
     /* more static desc     */  &$ISR_HELPER$
+#ifdef WITH_AUTOSAR
+    ,
+    /* enabled field        */  TRUE
+#endif
 };
 
