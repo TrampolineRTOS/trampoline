@@ -27,9 +27,12 @@
 #include "tpl_machine_interface.h"
 #include "tpl_os_internal_types.h"
 #include "tpl_os_it.h"
+#include "tpl_os_it_kernel.h"
+
 /*#include "tpl_os_generated_configuration.h"*/
 
 extern tpl_exec_common *tpl_running_obj;
+ppc_integer_context idle_task_context;
 
 #define EE_BIT      0x8000
 
