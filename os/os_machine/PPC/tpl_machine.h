@@ -89,7 +89,7 @@ struct TPL_CONTEXT {
 
 typedef struct TPL_CONTEXT tpl_context;
 
-ppc_integer_context idle_task_context;
+extern ppc_integer_context idle_task_context;
 
 #ifdef WITH_ALTIVEC
 #define IDLE_CONTEXT { &idle_task_context, NULL, NULL }
