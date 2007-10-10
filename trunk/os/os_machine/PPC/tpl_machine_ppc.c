@@ -577,35 +577,60 @@ no_new_fp:
 }
 
 /*
- * tpl_interrupt_handler_wrapper saves the integer registers
- * to the context of the currently running object, then it
- * calls tpl_central_interrupt_handler, restores the context
- * of the currently running object (that could have changed
- * since tpl_central_interrupt_handler may switch the context
- * and returns from interrupt. a jump (not a call) to 
- * tpl_interrupt_handler_wrapper should be done in the interrupt
- * vector.
+ * tpl_interrupt_handler_save saves the integer registers
+ * to the context of the currently running object
+ * It should be called from an interrupt vector entry
+ * with this kind of code :
+ *
+ * Code of the interrupt vector
  * 
- * When entering tpl_interrupt_handler_wrapper, r3 should contain
- * the id of the ISR2 that is passed to tpl_central_interrupt_handler.
- * The interrupt vector entry code should save r3 on the stack, load
- * it with the corresponding ISR id and jump to tpl_interrupt_handler_wrapper
+ * subi r1,r1,12
+ * stw  r3,4(r1)
+ * mflr r3
+ * stw  r3,8(r1)
+ * lis  r3,0x1000
+ * ori  r3,r3,offset_of_handler
+ * mtlr r3
+ * blrl
+ * lwz  r3,8(r1)
+ * mtlr r3
+ * lwz  r3,4(r1)
+ * addi r1,r1,12
+ * rfi
  *
- * subi r1,r1,4
+ * Code of the handler:
+ * save lr in the lr' stack space
+ * call the tpl_interrupt_handler_save
+ * do some other work
+ * restore lr
+ * return
+ 
+ * mflr r3
  * stw  r3,0(r1)
- * li   r3,isr_id
- * bl   tpl_interrupt_handler_wrapper
+ * lis  r3,ho16(tpl_interrupt_handler_save)
+ * ori  r3,r3,lo16(tpl_interrupt_handler_save)
+ * mtlr r3
+ * blrl
+ * ...
+ * lwz  r3,0(r1)
+ * mtlr r3
+ * blr
  *
- * tpl_interrupt_handler_wrapper restore r3 from the stack before
- * returning from interrupt.
- */
-asm void tpl_interrupt_handler_wrapper(void)
+ * So, at start of tpl_interrupt_handler_save the stack
+ * is the following one and saved r3 and lr will be taken
+ * from the stack.
+ *
+ * +--------+
+ * |   lr'  |
+ * +--------+
+ * |   r3   |
+ * +--------+
+ * |   lr   |
+ * +--------+
+ */ 
+asm void tpl_interrupt_handler_save(void)
 {
             nofralloc
-/*  Save working register                           */
-            subi    r1,r1,8
-            stw     r2,0(r1)
-            stw     r3,4(r1)
 /*  Get a pointer to the tpl_running_object         */
             lis     r3,ha16(tpl_running_obj)
             lwz     r3,lo16(tpl_running_obj)(r3)
@@ -614,73 +639,86 @@ asm void tpl_interrupt_handler_wrapper(void)
     static descriptor struct, it is also the
     context pointer                                 */
             lwz     r3,0(r3)
-/*  Get the pointer to the integer context in r2    */
-            lwz     r2,INT_CONTEXT(r3)
+/*  Get the pointer to the integer context in r3    */
+            lwz     r3,INT_CONTEXT(r3)
 /*  Save the registers in the context               */
 /*  Save the GPRs                                   */
-            stw     r0,GPR0(r2)
-            stw     r1,GPR1(r2)
-/*  Get back r2                                     */
-            lwz     r0,0(r1)
-            stw     r0,GPR2(r2)
+            stw     r0,GPR0(r3)
+            stw     r1,GPR1(r3)
+            stw     r2,GPR2(r3)
 /*  Get back r3 (the real one that was saved by the
-    interrupt vector wrapper                        */
-            lwz     r0,8(r1)
-            stw     r0,GPR3(r2)
-            stw     r4,GPR4(r2)
-            stw     r5,GPR5(r2)
-            stw     r6,GPR6(r2)
-            stw     r7,GPR7(r2)
-            stw     r8,GPR8(r2)
-            stw     r9,GPR9(r2)
-            stw     r10,GPR10(r2)
-            stw     r11,GPR11(r2)
-            stw     r12,GPR12(r2)
-            stw     r13,GPR13(r2)
-            stw     r14,GPR14(r2)
-            stw     r15,GPR15(r2)
-            stw     r16,GPR16(r2)
-            stw     r17,GPR17(r2)
-            stw     r18,GPR18(r2)
-            stw     r19,GPR19(r2)
-            stw     r20,GPR20(r2)
-            stw     r21,GPR21(r2)
-            stw     r22,GPR22(r2)
-            stw     r23,GPR23(r2)
-            stw     r24,GPR24(r2)
-            stw     r25,GPR25(r2)
-            stw     r26,GPR26(r2)
-            stw     r27,GPR27(r2)
-            stw     r28,GPR28(r2)
-            stw     r29,GPR29(r2)
-            stw     r30,GPR30(r2)
-            stw     r31,GPR31(r2)
+    interrupt vector wrapper)                       */
+            lwz     r0,4(r1)
+            stw     r0,GPR3(r3)
+            stw     r4,GPR4(r3)
+            stw     r5,GPR5(r3)
+            stw     r6,GPR6(r3)
+            stw     r7,GPR7(r3)
+            stw     r8,GPR8(r3)
+            stw     r9,GPR9(r3)
+            stw     r10,GPR10(r3)
+            stw     r11,GPR11(r3)
+            stw     r12,GPR12(r3)
+            stw     r13,GPR13(r3)
+            stw     r14,GPR14(r3)
+            stw     r15,GPR15(r3)
+            stw     r16,GPR16(r3)
+            stw     r17,GPR17(r3)
+            stw     r18,GPR18(r3)
+            stw     r19,GPR19(r3)
+            stw     r20,GPR20(r3)
+            stw     r21,GPR21(r3)
+            stw     r22,GPR22(r3)
+            stw     r23,GPR23(r3)
+            stw     r24,GPR24(r3)
+            stw     r25,GPR25(r3)
+            stw     r26,GPR26(r3)
+            stw     r27,GPR27(r3)
+            stw     r28,GPR28(r3)
+            stw     r29,GPR29(r3)
+            stw     r30,GPR30(r3)
+            stw     r31,GPR31(r3)
 /*  Save the CR                                     */
             mfcr    r0
-            stw     r0,CR(r2)
+            stw     r0,CR(r3)
 /*  Save the XER                                    */
             mfxer   r0
-            stw     r0,XER(r2)
+            stw     r0,XER(r3)
 /*  Save the LR                                     */
-            mflr    r0
-            stw     r0,LR(r2)
+            lwz     r0,8(r1)
+            stw     r0,LR(r3)
 /*  Save the CTR                                    */
             mfctr   r0
-            stw     r0,CTR(r2)
+            stw     r0,CTR(r3)
 /*  Save SRR0 and SRR1                              */
             mfspr   r0,spr_SRR0
-            stw     r0,SRR0(r2)
+            stw     r0,SRR0(r3)
             mfspr   r0,spr_SRR1
-            stw     r0,SRR1(r2)
-            
-            
-/*  Get back the r3 that was
-    set to the id of the ISR2                       */
-            lwz     r3,4(r1)
-/*  Call tpl_central_interrupt_handler              */
-            bl      tpl_central_interrupt_handler
+            stw     r0,SRR1(r3)
+/*  return to the interrupt vector wrapper          */
+            blr
+}
 
-
+/*
+ * tpl_interrupt_handler_restore restores the context
+ * of the currently running object (that could have changed
+ * since tpl_central_interrupt_handler or tpl_counter_tick
+ * may switch the context) and returns from interrupt.
+ * So, at end of tpl_interrupt_handler_save the stack
+ * is the following one and restored r3 and lr will be put
+ * on the stack.
+ *
+ * +--------+
+ * |   lr'  |
+ * +--------+
+ * |   r3   |
+ * +--------+
+ * |   lr   |
+ * +--------+
+ */
+asm void tpl_interrupt_handler_restore(void)
+{
+            nofralloc
 /*  Restore the registers from the context.
     This has to be redone since the context may
     be changed by tpl_central_interrupt_handler.
@@ -692,47 +730,63 @@ asm void tpl_interrupt_handler_wrapper(void)
     static descriptor struct, it is also the
     context pointer                                 */
             lwz     r3,0(r3)
-/*  Get the pointer to the integer context in r2    */
-            lwz     r2,INT_CONTEXT(r3)
+/*  Get the pointer to the integer context in r3    */
+            lwz     r3,INT_CONTEXT(r3)
 /*  Get back the registers of the context           */
-            lwz     r31,GPR31(r2)
-            lwz     r30,GPR30(r2)
-            lwz     r29,GPR29(r2)
-            lwz     r28,GPR28(r2)
-            lwz     r27,GPR27(r2)
-            lwz     r26,GPR26(r2)
-            lwz     r25,GPR25(r2)
-            lwz     r24,GPR24(r2)
-            lwz     r23,GPR23(r2)
-            lwz     r22,GPR22(r2)
-            lwz     r21,GPR21(r2)
-            lwz     r20,GPR20(r2)
-            lwz     r19,GPR19(r2)
-            lwz     r18,GPR18(r2)
-            lwz     r17,GPR17(r2)
-            lwz     r16,GPR16(r2)
-            lwz     r15,GPR15(r2)
-            lwz     r14,GPR14(r2)
-            lwz     r13,GPR13(r2)
-            lwz     r12,GPR12(r2)
-            lwz     r11,GPR11(r2)
-            lwz     r10,GPR10(r2)
-            lwz     r9,GPR9(r2)
-            lwz     r8,GPR8(r2)
-            lwz     r7,GPR7(r2)
-            lwz     r6,GPR6(r2)
-            lwz     r5,GPR5(r2)
-            lwz     r4,GPR4(r2)
-            lwz     r1,GPR1(r2)
-            lwz     r0,GPR0(r2)
-            lwz     r2,GPR2(r2)
-/*  Restore working register
-    This part restore the r3 that was saved by the
-    interrupt vector entry wrapper                  */
-            lwz     r2,0(r1)
-            lwz     r3,8(r1)
-            addi    r1,r1,12
-            rfi
+/*	Get back the stack								*/
+            lwz     r1,GPR1(r3)
+/*  Get back the CTR                                */
+            lwz     r0,CTR(r3)
+            mtctr   r0
+/*  Get back the LR to the stack                    */
+            lwz     r0,LR(r3)
+            stw     r0,8(r1)
+/*  Get back the XER                                */
+            lwz     r0,XER(r3)
+            mtxer   r0
+/*  Get back the CR to the stack                    */
+            lwz     r0,CR(r3)
+            mtcr    r0
+/*  Get bask SRR0 and SRR1                          */
+            lwz     r0,SRR0(r3)
+            mtspr   spr_SRR0,r0
+            lwz     r0,SRR1(r3)
+            mtspr   spr_SRR1,r0
+/*  Get back the general purpose registers          */
+            lwz     r31,GPR31(r3)
+            lwz     r30,GPR30(r3)
+            lwz     r29,GPR29(r3)
+            lwz     r28,GPR28(r3)
+            lwz     r27,GPR27(r3)
+            lwz     r26,GPR26(r3)
+            lwz     r25,GPR25(r3)
+            lwz     r24,GPR24(r3)
+            lwz     r23,GPR23(r3)
+            lwz     r22,GPR22(r3)
+            lwz     r21,GPR21(r3)
+            lwz     r20,GPR20(r3)
+            lwz     r19,GPR19(r3)
+            lwz     r18,GPR18(r3)
+            lwz     r17,GPR17(r3)
+            lwz     r16,GPR16(r3)
+            lwz     r15,GPR15(r3)
+            lwz     r14,GPR14(r3)
+            lwz     r13,GPR13(r3)
+            lwz     r12,GPR12(r3)
+            lwz     r11,GPR11(r3)
+            lwz     r10,GPR10(r3)
+            lwz     r9,GPR9(r3)
+            lwz     r8,GPR8(r3)
+            lwz     r7,GPR7(r3)
+            lwz     r6,GPR6(r3)
+            lwz     r5,GPR5(r3)
+            lwz     r4,GPR4(r3)
+            lwz     r0,GPR3(r3)
+            stw     r0,4(r1)
+            lwz     r2,GPR2(r3)
+            lwz     r0,GPR0(r3)
+
+            blr
 }
 
 /*
@@ -749,84 +803,84 @@ asm void tpl_switch_context_from_it(
             nofralloc
 /*  Get the FP context of the old_context   */
 /*  Check if the task has a floating point context  */
-            lwz     r2,FP_CONTEXT(old_context)
-            cmpwi   r2,0
+            lwz     r5,FP_CONTEXT(old_context)
+            cmpwi   r5,0
             beq     no_old
 /*  Store non volatile floating point registers     */
-            stfd    f1,FPR1(r2)
-            stfd    f2,FPR2(r2)
-            stfd    f3,FPR3(r2)
-            stfd    f4,FPR4(r2)
-            stfd    f5,FPR5(r2)
-            stfd    f6,FPR6(r2)
-            stfd    f7,FPR7(r2)
-            stfd    f8,FPR8(r2)
-            stfd    f9,FPR9(r2)
-            stfd    f10,FPR10(r2)
-            stfd    f11,FPR11(r2)
-            stfd    f12,FPR12(r2)
-            stfd    f13,FPR13(r2)
-            stfd    f14,FPR14(r2)
-            stfd    f15,FPR15(r2)
-            stfd    f16,FPR16(r2)
-            stfd    f17,FPR17(r2)
-            stfd    f18,FPR18(r2)
-            stfd    f19,FPR19(r2)
-            stfd    f20,FPR20(r2)
-            stfd    f21,FPR21(r2)
-            stfd    f22,FPR22(r2)
-            stfd    f23,FPR23(r2)
-            stfd    f24,FPR24(r2)
-            stfd    f25,FPR25(r2)
-            stfd    f26,FPR26(r2)
-            stfd    f27,FPR27(r2)
-            stfd    f28,FPR28(r2)
-            stfd    f29,FPR29(r2)
-            stfd    f30,FPR30(r2)
-            stfd    f31,FPR31(r2)
+            stfd    f1,FPR1(r5)
+            stfd    f2,FPR2(r5)
+            stfd    f3,FPR3(r5)
+            stfd    f4,FPR4(r5)
+            stfd    f5,FPR5(r5)
+            stfd    f6,FPR6(r5)
+            stfd    f7,FPR7(r5)
+            stfd    f8,FPR8(r5)
+            stfd    f9,FPR9(r5)
+            stfd    f10,FPR10(r5)
+            stfd    f11,FPR11(r5)
+            stfd    f12,FPR12(r5)
+            stfd    f13,FPR13(r5)
+            stfd    f14,FPR14(r5)
+            stfd    f15,FPR15(r5)
+            stfd    f16,FPR16(r5)
+            stfd    f17,FPR17(r5)
+            stfd    f18,FPR18(r5)
+            stfd    f19,FPR19(r5)
+            stfd    f20,FPR20(r5)
+            stfd    f21,FPR21(r5)
+            stfd    f22,FPR22(r5)
+            stfd    f23,FPR23(r5)
+            stfd    f24,FPR24(r5)
+            stfd    f25,FPR25(r5)
+            stfd    f26,FPR26(r5)
+            stfd    f27,FPR27(r5)
+            stfd    f28,FPR28(r5)
+            stfd    f29,FPR29(r5)
+            stfd    f30,FPR30(r5)
+            stfd    f31,FPR31(r5)
 /*  Store the floating point condition register     */
             mffs    f14
-            stfd    f14,FPSCR(r2)
+            stfd    f14,FPSCR(r5)
 no_old:
 /*  Check if the task has a floating point context  */
-            lwz     r2,FP_CONTEXT(r4)
-            cmpwi   r2,0
+            lwz     r5,FP_CONTEXT(r4)
+            cmpwi   r5,0
             beq     no_new
 /*  Get back the floating point condition register  */
-            lfd     f14,FPSCR(r2)
+            lfd     f14,FPSCR(r5)
             mtfsf   0xff,f14
 /*  Get back the floating point registers           */
-            lfd     f1,FPR1(r2)
-            lfd     f2,FPR2(r2)
-            lfd     f3,FPR3(r2)
-            lfd     f4,FPR4(r2)
-            lfd     f5,FPR5(r2)
-            lfd     f6,FPR6(r2)
-            lfd     f7,FPR7(r2)
-            lfd     f8,FPR8(r2)
-            lfd     f9,FPR9(r2)
-            lfd     f10,FPR10(r2)
-            lfd     f11,FPR11(r2)
-            lfd     f12,FPR12(r2)
-            lfd     f13,FPR13(r2)
-            lfd     f14,FPR14(r2)
-            lfd     f15,FPR15(r2)
-            lfd     f16,FPR16(r2)
-            lfd     f17,FPR17(r2)
-            lfd     f18,FPR18(r2)
-            lfd     f19,FPR19(r2)
-            lfd     f20,FPR20(r2)
-            lfd     f21,FPR21(r2)
-            lfd     f22,FPR22(r2)
-            lfd     f23,FPR23(r2)
-            lfd     f24,FPR24(r2)
-            lfd     f25,FPR25(r2)
-            lfd     f26,FPR26(r2)
-            lfd     f27,FPR27(r2)
-            lfd     f28,FPR28(r2)
-            lfd     f29,FPR29(r2)
-            lfd     f30,FPR30(r2)
-            lfd     f31,FPR31(r2)
+            lfd     f1,FPR1(r5)
+            lfd     f2,FPR2(r5)
+            lfd     f3,FPR3(r5)
+            lfd     f4,FPR4(r5)
+            lfd     f5,FPR5(r5)
+            lfd     f6,FPR6(r5)
+            lfd     f7,FPR7(r5)
+            lfd     f8,FPR8(r5)
+            lfd     f9,FPR9(r5)
+            lfd     f10,FPR10(r5)
+            lfd     f11,FPR11(r5)
+            lfd     f12,FPR12(r5)
+            lfd     f13,FPR13(r5)
+            lfd     f14,FPR14(r5)
+            lfd     f15,FPR15(r5)
+            lfd     f16,FPR16(r5)
+            lfd     f17,FPR17(r5)
+            lfd     f18,FPR18(r5)
+            lfd     f19,FPR19(r5)
+            lfd     f20,FPR20(r5)
+            lfd     f21,FPR21(r5)
+            lfd     f22,FPR22(r5)
+            lfd     f23,FPR23(r5)
+            lfd     f24,FPR24(r5)
+            lfd     f25,FPR25(r5)
+            lfd     f26,FPR26(r5)
+            lfd     f27,FPR27(r5)
+            lfd     f28,FPR28(r5)
+            lfd     f29,FPR29(r5)
+            lfd     f30,FPR30(r5)
+            lfd     f31,FPR31(r5)
 no_new:
             blr
 }
