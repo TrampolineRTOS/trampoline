@@ -34,6 +34,10 @@
 extern tpl_exec_common *tpl_running_obj;
 ppc_integer_context idle_task_context;
 
+static u32 tpl_msr_start_value;
+static u32 tpl_register_r2;
+static u32 tpl_register_r13;
+
 #define EE_BIT      0x8000
 
 #define INT_CONTEXT 0
@@ -190,15 +194,15 @@ asm void tpl_sc_handler(void)
 {
             nofralloc
 /*  save r2 and lr on the stack                             */
-            subi    r1,r1,12
-            stw     r2,8(r1)
-            mflr    r2
+/*          subi    r1,r1,8
             stw     r2,4(r1)
+            mflr    r2
+            stw     r2,4(r1) */
             mfcr    r2
             stw     r2,0(r1)
 /*  get the system call function                            */
             lis     r2,hi16(tpl_sc)
-            li      r2,lo16(tpl_sc)
+            ori     r2,r2,lo16(tpl_sc)
             lwzx    r2,r2,r3
             mtlr    r2
 /*  call it                                                 */
@@ -513,6 +517,8 @@ no_save:
 no_new_fp:
 /*  Get the integer context pointer                 */
             lwz     r2,INT_CONTEXT(r4)
+/*	Get back the stack								*/
+            lwz     r1,GPR1(r2)
 /*  Get back the CTR                                */
             lwz     r0,CTR(r2)
             mtctr   r0
@@ -560,7 +566,6 @@ no_new_fp:
             lwz     r5,GPR5(r2)
             lwz     r4,GPR4(r2)
             lwz     r3,GPR3(r2)
-            lwz     r1,GPR1(r2)
             lwz     r0,GPR0(r2)
             lwz     r2,GPR2(r2)
 /*  Restore the stack as wanted for a cooperative context switching */
@@ -843,17 +848,36 @@ void tpl_init_context(tpl_exec_common *exec_obj)
 	ic->xer = 0;
 	ic->ctr = 0;
 	
-	ic->lr = (unsigned long)exec_obj->static_desc->entry;
+	/* address of the instruction to excute when returning
+	   from the system call. So it is set to the entry point of the task
+	*/
+	ic->srr0 = (unsigned long)exec_obj->static_desc->entry;
+	ic->srr1 = tpl_msr_start_value;
+	/*  The stack pointer is computed by addind the base address of
+	    the stack to its size and by substracting the space needed
+	    for the linkage area and 12 bytes that are pushed by the 
+	    context switch function */
 	ic->gpr[1] = ((unsigned long)exec_obj->static_desc->stack.stack_zone)
-	               + exec_obj->static_desc->stack.stack_size;
-	/*  Size of the linkage area used to store (among others)
-        the link register if the task calls a function          */
+	               + exec_obj->static_desc->stack.stack_size - 20;
+    ic->gpr[2] = tpl_register_r2;
+    ic->gpr[13] = tpl_register_r13;
 }
 
 /*
- * tpl_init_machine init the virtual processor hosted in
- * a Unix process
  */
-void tpl_init_machine(void)
+asm void tpl_init_machine(void)
 {
+			nofralloc
+			subi	r1,r1,4
+			stw		r3,0(r1)
+			lis		r3,ha16(tpl_register_r2)
+			stw     r2,lo16(tpl_register_r2)(r3)
+			lis		r3,ha16(tpl_register_r13)
+			stw     r13,lo16(tpl_register_r13)(r3)
+			mfmsr	r0
+            lis     r3,ha16(tpl_msr_start_value)
+            stw     r0,lo16(tpl_msr_start_value)(r3)
+			lwz		r3,0(r1)
+			addi	r1,r1,4
+			blr
 }
