@@ -71,7 +71,7 @@ void tpl_release_resource(tpl_resource *res)
     tpl_schedule(FROM_TASK_LEVEL);    
 }
 
-#define OS_START_SEC_CODE
+#define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 /* End of file tpl_os_rez_kernel.c */
