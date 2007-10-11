@@ -30,7 +30,7 @@
 #include "Compiler.h"
 #else
 
-#define OS_CBK_CODE
+#define OS_APPL_CODE
 
 #endif
 

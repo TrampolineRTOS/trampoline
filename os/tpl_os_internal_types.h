@@ -151,7 +151,7 @@ typedef u8 tpl_status;
 **        pointer is considered at far and there is a stack pointer 
 **        error during function return in tpl_action_activate_task
 **********************************************************************/
-typedef void (*OS_CBK_CODE tpl_callback_func)(void);
+typedef void (*OS_APPL_CODE tpl_callback_func)(void);
 
 /************************
  * Forward declarations *
@@ -281,7 +281,7 @@ typedef u8 tpl_exec_state;
  *
  * @see #TPL_EXEC_STATIC
  */
-typedef void (*tpl_exec_function)(void);
+typedef void (*OS_APPL_CODE tpl_exec_function)(void);
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 /** 
@@ -558,7 +558,7 @@ typedef u8 tpl_alarm_kind;
 **        pointer is considered at far and there is a stack pointer 
 **        error during function return in tpl_action_activate_task
 **********************************************************************/
-typedef tpl_status (*OS_CBK_CODE tpl_action_func)(
+typedef tpl_status (*OS_APPL_CODE tpl_action_func)(
     const struct TPL_ACTION *
 );
 
@@ -592,7 +592,7 @@ struct TPL_COUNTER;
  *
  * Prototype for expire functions
  */
-typedef tpl_status (*tpl_expire_func)(
+typedef tpl_status (*OS_APPL_CODE tpl_expire_func)(
     struct TPL_TIME_OBJ *
 );
 
