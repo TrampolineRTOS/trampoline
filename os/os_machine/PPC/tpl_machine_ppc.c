@@ -233,14 +233,14 @@ asm void tpl_sc_suspend_all_interrupts(void)
 {
             nofralloc
 /*  copy SRR1 into r2                                       */
-            mfspr   r2,spr_SRR1
+            mfsrr1  r2
 /*  set r3 to EE_BIT constant                               */
             li      r3,0
             ori     r3,r3,EE_BIT
 /*  clear the EE_BIT in SRR1 copy                           */
             andc    r2,r2,r3
 /*  put back r2 in SRR1                                     */
-            mtspr   spr_SRR1,r2
+            mtsrr1  r2
 /*  increment the locking depth                             */
             lis     r3,ha16(tpl_locking_depth)
             lwz     r2,lo16(tpl_locking_depth)(r3)
@@ -269,14 +269,14 @@ asm void tpl_sc_resume_all_interrupts(void)
             cmpwi   r2,0
             bne     no_enable
 /*  copy SRR1 into r2                                       */
-            mfspr   r2,spr_SRR1
+            mfsrr1  r2
 /*  set r3 to EE_BIT constant                               */
             li      r3,0
             ori     r3,r3,EE_BIT
 /*  set the EE_BIT in SRR1 copy                           */
             or      r2,r2,r3
 /*  put back r2 in SRR1                                     */
-            mtspr   spr_SRR1,r2
+            mtsrr1  r2
 no_enable:  blr
 }
 
@@ -289,14 +289,14 @@ asm void tpl_sc_disable_all_interrupts(void)
 {
             nofralloc
 /*  copy SRR1 into r2                                       */
-            mfspr   r2,spr_SRR1
+            mfsrr1  r2
 /*  set r3 to EE_BIT constant                               */
             li      r3,0
             ori     r3,r3,EE_BIT
 /*  clear the EE_BIT in SRR1 copy                           */
             andc    r2,r2,r3
 /*  put back r2 in SRR1                                     */
-            mtspr   spr_SRR1,r2
+            mtsrr1  r2
             blr
 }
 
@@ -312,14 +312,14 @@ asm void tpl_sc_enable_all_interrupts(void)
 {
             nofralloc
 /*  copy SRR1 into r2                                       */
-            mfspr   r2,spr_SRR1
+            mfsrr1  r2
 /*  set r3 to EE_BIT constant                               */
             li      r3,0
             ori     r3,r3,EE_BIT
 /*  set the EE_BIT in SRR1 copy                           */
             or      r2,r2,r3
 /*  put back r2 in SRR1                                     */
-            mtspr   spr_SRR1,r2
+            mtsrr1  r2
             blr
 }
 
@@ -443,10 +443,10 @@ asm void tpl_sc_switch_context(void)
             mfctr   r0
             stw     r0,CTR(r2)
 /*  Save SRR0 and SRR1                              */
-            mfspr   r0,spr_SRR0
+            mfsrr0  r0
             stw     r0,SRR0(r2)
-            mfspr   r0,spr_SRR1
-            stw     r0,SRR1(r2)
+/*            mfspr   r0,spr_SRR1
+            stw     r0,SRR1(r2) */
 /*  Check if the task has a floating point context  */
             lwz     r2,FP_CONTEXT(r3)
             cmpwi   r2,0
@@ -533,9 +533,9 @@ no_new_fp:
             stw     r0,0(r1)
 /*  Get bask SRR0 and SRR1                          */
             lwz     r0,SRR0(r2)
-            mtspr   spr_SRR0,r0
-            lwz     r0,SRR1(r2)
-            mtspr   spr_SRR1,r0
+            mtsrr0  r0
+/*            lwz     r0,SRR1(r2)
+            mtspr   spr_SRR1,r0 */
 /*  Get back the integer registers                  */
             lwz     r31,GPR31(r2)
             lwz     r30,GPR30(r2)
@@ -691,10 +691,10 @@ asm void tpl_interrupt_handler_save(void)
             mfctr   r0
             stw     r0,CTR(r3)
 /*  Save SRR0 and SRR1                              */
-            mfspr   r0,spr_SRR0
+            mfsrr0  r0
             stw     r0,SRR0(r3)
-            mfspr   r0,spr_SRR1
-            stw     r0,SRR1(r3)
+/*            mfspr   r0,spr_SRR1
+            stw     r0,SRR1(r3) */
 /*  return to the interrupt vector wrapper          */
             blr
 }
@@ -749,9 +749,9 @@ asm void tpl_interrupt_handler_restore(void)
             mtcr    r0
 /*  Get bask SRR0 and SRR1                          */
             lwz     r0,SRR0(r3)
-            mtspr   spr_SRR0,r0
-            lwz     r0,SRR1(r3)
-            mtspr   spr_SRR1,r0
+            mtsrr0  r0
+/*            lwz     r0,SRR1(r3)
+            mtspr   spr_SRR1,r0 */
 /*  Get back the general purpose registers          */
             lwz     r31,GPR31(r3)
             lwz     r30,GPR30(r3)
@@ -886,6 +886,34 @@ no_new:
 }
 
 /*
+ * tpl_osek_func_stub is used to launch a new task. Its goal is
+ * to call tpl_release_task_lock to unlock the task system
+ * before calling the function.
+ */
+asm void tpl_osek_func_stub(void)
+{
+/*  decrement the locking depth                             */
+            lis     r3,ha16(tpl_locking_depth)
+            lwz     r4,lo16(tpl_locking_depth)(r3)
+            subi    r4,r4,1
+            stw     r4,lo16(tpl_locking_depth)(r3)
+/*  check whether the interrupts should be enabled          */
+            cmpwi   r4,0
+            bne     no_enable
+/*  copy SRR1 into r2                                       */
+            mfsrr1  r4
+/*  set r3 to EE_BIT constant                               */
+            li      r3,0
+            ori     r3,r3,EE_BIT
+/*  set the EE_BIT in SRR1 copy                             */
+            or      r4,r4,r3
+/*  put back r2 in SRR1                                     */
+            mtsrr1  r4
+/*  jump to the function                                    */
+            rfi
+}
+
+/*
  * tpl_init_context initialize a context to prepare a task to run.
  * It sets up the stack and lr and init the other registers to 0
  */
@@ -901,12 +929,13 @@ void tpl_init_context(tpl_exec_common *exec_obj)
 	ic->cr = 0;
 	ic->xer = 0;
 	ic->ctr = 0;
+    ic->lr = tpl_osek_func_stub;
 	
 	/* address of the instruction to excute when returning
 	   from the system call. So it is set to the entry point of the task
 	*/
 	ic->srr0 = (unsigned long)exec_obj->static_desc->entry;
-	ic->srr1 = tpl_msr_start_value;
+/*	ic->srr1 = tpl_msr_start_value; */
 	/*  The stack pointer is computed by addind the base address of
 	    the stack to its size and by substracting the space needed
 	    for the linkage area and 12 bytes that are pushed by the 
