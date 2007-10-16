@@ -174,9 +174,27 @@ volatile static u32 tpl_locking_depth = 0;
  * tpl_sc_handler is called as interrupt routine when a sc is executed
  * r3 contains the system call (actually the offset in the sc table).
  *
- * tpl_sc_handler saves r2, cr and lr to use them but does not reuse
- * them after the program return from the system call. So r2 can be
- * used without saving it.
+ * Part of the sc_handler is implemented in the interrupt vector
+ * entry corresponding to the system call.
+ *
+ * It should be like that:
+ *
+ * subi    r1,r1,12
+ * stw     r2,8(r1)
+ * mflr    r2
+ * stw     r2,4(r1)
+ * lis     r2,0x1000
+ * mtlr    r2
+ * blr
+ *
+ * And in 0x1000000
+ *
+ * b	tpl_sc_handler
+ *
+ * So r2 and lr are saved before executing the handler.
+ * tpl_sc_handler saves cr.
+ *
+ * Before returning tpl_sc_handler restores r2, lr and cr.
  *
  * stack is like that before the system call
  *
@@ -193,11 +211,7 @@ volatile static u32 tpl_locking_depth = 0;
 asm void tpl_sc_handler(void)
 {
             nofralloc
-/*  save r2 and lr on the stack                             */
-/*          subi    r1,r1,8
-            stw     r2,4(r1)
-            mflr    r2
-            stw     r2,4(r1) */
+/*  save cr on the stack                             */
             mfcr    r2
             stw     r2,0(r1)
 /*  get the system call function                            */
@@ -910,6 +924,7 @@ asm void tpl_osek_func_stub(void)
 /*  put back r2 in SRR1                                     */
             mtsrr1  r4
 /*  jump to the function                                    */
+no_enable:
             rfi
 }
 
@@ -929,7 +944,7 @@ void tpl_init_context(tpl_exec_common *exec_obj)
 	ic->cr = 0;
 	ic->xer = 0;
 	ic->ctr = 0;
-    ic->lr = tpl_osek_func_stub;
+    ic->lr = (unsigned long)tpl_osek_func_stub;
 	
 	/* address of the instruction to excute when returning
 	   from the system call. So it is set to the entry point of the task
