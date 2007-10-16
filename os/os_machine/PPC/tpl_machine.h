@@ -46,6 +46,8 @@ struct PPC_INTEGER_CONTEXT {
     unsigned long ctr;
     unsigned long srr0;
     unsigned long srr1;
+    unsigned long fresh;
+    /* fresh is used to know if the task is a new one. 
 };
 
 typedef struct PPC_INTEGER_CONTEXT ppc_integer_context;
