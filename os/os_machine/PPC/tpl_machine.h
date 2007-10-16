@@ -48,6 +48,8 @@ struct PPC_INTEGER_CONTEXT {
     unsigned long srr1;
     unsigned long fresh;
     /* fresh is used to know if the task is a new one. 
+       fresh equal to 1 means the task has just be prapared
+       to run. fresh equal to 0 means the task has run already	*/
 };
 
 typedef struct PPC_INTEGER_CONTEXT ppc_integer_context;

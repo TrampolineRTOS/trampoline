@@ -738,8 +738,8 @@ asm void tpl_interrupt_handler_save(void)
 /*  Save SRR0 and SRR1                              */
             mfsrr0  r0
             stw     r0,SRR0(r3)
-/*            mfspr   r0,spr_SRR1
-            stw     r0,SRR1(r3) */
+            mfspr   r0,spr_SRR1
+            stw     r0,SRR1(r3)
 /*  return to the interrupt vector wrapper          */
             blr
 }
@@ -778,8 +778,15 @@ asm void tpl_interrupt_handler_restore(void)
 /*  Get the pointer to the integer context in r3    */
             lwz     r3,INT_CONTEXT(r3)
 /*  Get back the registers of the context           */
+
+/*  WARNING. before changing the stack lr' is from
+    the current stack since it is the return
+    address to the interrupt vector code            */
+            lwz     r0,0(r1)
 /*	Get back the stack								*/
             lwz     r1,GPR1(r3)
+/*  Put back lr'									*/
+            stw     r0,0(r1)
 /*  Get back the CTR                                */
             lwz     r0,CTR(r3)
             mtctr   r0
@@ -888,7 +895,7 @@ asm void tpl_switch_context_from_it(
             stfd    f14,FPSCR(r5)
 no_old:
 /*  Check if the task has a floating point context  */
-            lwz     r5,FP_CONTEXT(r4)
+            lwz     r5,FP_CONTEXT(new_context)
             cmpwi   r5,0
             beq     no_new
 /*  Get back the floating point condition register  */
@@ -931,37 +938,8 @@ no_new:
 }
 
 /*
- * tpl_osek_func_stub is used to launch a new task. Its goal is
- * to call tpl_release_task_lock to unlock the task system
- * before calling the function.
- */
-asm void tpl_osek_func_stub(void)
-{
-/*  decrement the locking depth                             */
-            lis     r3,ha16(tpl_locking_depth)
-            lwz     r4,lo16(tpl_locking_depth)(r3)
-            subi    r4,r4,1
-            stw     r4,lo16(tpl_locking_depth)(r3)
-/*  check whether the interrupts should be enabled          */
-            cmpwi   r4,0
-            bne     no_enable
-/*  copy SRR1 into r2                                       */
-            mfsrr1  r4
-/*  set r3 to EE_BIT constant                               */
-            li      r3,0
-            ori     r3,r3,EE_BIT
-/*  set the EE_BIT in SRR1 copy                             */
-            or      r4,r4,r3
-/*  put back r2 in SRR1                                     */
-            mtsrr1  r4
-/*  jump to the function                                    */
-no_enable:
-            rfi
-}
-
-/*
  * tpl_init_context initialize a context to prepare a task to run.
- * It sets up the stack and lr and init the other registers to 0
+ * It sets up the stack and srr0 and init the other registers to 0
  */
 void tpl_init_context(tpl_exec_common *exec_obj)
 {
@@ -975,7 +953,6 @@ void tpl_init_context(tpl_exec_common *exec_obj)
 	ic->cr = 0;
 	ic->xer = 0;
 	ic->ctr = 0;
-    ic->lr = (unsigned long)tpl_osek_func_stub;
     ic->fresh = 1;
 	
 	/* address of the instruction to excute when returning
