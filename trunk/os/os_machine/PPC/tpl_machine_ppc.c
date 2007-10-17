@@ -29,6 +29,8 @@
 #include "tpl_os_it.h"
 #include "tpl_os_it_kernel.h"
 
+#include <MPC565.h>
+
 /*#include "tpl_os_generated_configuration.h"*/
 
 extern tpl_exec_common *tpl_running_obj;
@@ -349,7 +351,7 @@ asm void tpl_get_task_lock(void)
             subi    r1,r1,4
             stw     r3,0(r1)
 /*  call the SC_SUSPEND_ALL_INTERRUPTS system service       */
-            li      r3,SC_SUSPEND_ALL_INTERRUPTS
+            li      r3,SC_DISABLE_ALL_INTERRUPTS
             sc
 /*  restore r3 and the stack                                */
             lwz     r3,0(r1)
@@ -368,7 +370,7 @@ asm void tpl_release_task_lock(void)
             subi    r1,r1,4
             stw     r3,0(r1)
 /*  call the SC_RESUME_ALL_INTERRUPTS system service        */
-            li      r3,SC_RESUME_ALL_INTERRUPTS
+            li      r3,SC_ENABLE_ALL_INTERRUPTS
             sc
 /*  restore r3 and the stack                                */
             lwz     r3,0(r1)
@@ -460,8 +462,8 @@ asm void tpl_sc_switch_context(void)
 /*  Save SRR0 and SRR1                              */
             mfsrr0  r0
             stw     r0,SRR0(r2)
-/*            mfspr   r0,spr_SRR1
-            stw     r0,SRR1(r2) */
+            mfspr   r0,spr_SRR1
+            stw     r0,SRR1(r2)
 /*  Check if the task has a floating point context  */
             lwz     r2,FP_CONTEXT(r3)
             cmpwi   r2,0
@@ -532,35 +534,6 @@ no_save:
 no_new_fp:
 /*  Get the integer context pointer                 */
             lwz     r2,INT_CONTEXT(r4)
-/*  Check if the runnable that will get the CPU
-    get it for the first time. If it is the case,
-    the interrupt are resumed since a tpl_get_task_lock
-    has been called before getting here                     */
-            lwz     r3,FRESH(r2)
-            cmpwi   r3,0
-            beq     no_fresh
-/*  if fresh, the fresh flag is reset                       */
-            li      r3,0
-            stw     r3,FRESH(r2)
-/*  decrement the locking depth                             */
-            lis     r3,ha16(tpl_locking_depth)
-            lwz     r4,lo16(tpl_locking_depth)(r3)
-            subi    r4,r4,1
-            stw     r4,lo16(tpl_locking_depth)(r3)
-/*  check whether the interrupts should be enabled          */
-            cmpwi   r4,0
-            bne     no_enable
-/*  copy SRR1 into r4                                       */
-            mfsrr1  r4
-/*  set r3 to EE_BIT constant                               */
-            li      r3,0
-            ori     r3,r3,EE_BIT
-/*  set the EE_BIT in SRR1 copy                           */
-            or      r4,r4,r3
-/*  put back r4 in SRR1                                     */
-            mtsrr1  r4
-no_enable:
-no_fresh:
 /*	Get back the stack								*/
             lwz     r1,GPR1(r2)
 /*  Get back the CTR                                */
@@ -579,8 +552,8 @@ no_fresh:
             lwz     r0,SRR0(r2)
             mtsrr0  r0
             
-/*            lwz     r0,SRR1(r2)
-            mtspr   spr_SRR1,r0 */
+            lwz     r0,SRR1(r2)
+            mtspr   spr_SRR1,r0
 /*  Get back the integer registers                  */
             lwz     r31,GPR31(r2)
             lwz     r30,GPR30(r2)
@@ -953,19 +926,19 @@ void tpl_init_context(tpl_exec_common *exec_obj)
 	ic->cr = 0;
 	ic->xer = 0;
 	ic->ctr = 0;
-    ic->fresh = 1;
 	
 	/* address of the instruction to excute when returning
 	   from the system call. So it is set to the entry point of the task
 	*/
 	ic->srr0 = (unsigned long)exec_obj->static_desc->entry;
-/*	ic->srr1 = tpl_msr_start_value; */
-	/*  The stack pointer is computed by addind the base address of
+	ic->srr1 = tpl_msr_start_value;
+	/*  The stack pointer is computed by adding the base address of
 	    the stack to its size and by substracting the space needed
 	    for the linkage area and 12 bytes that are pushed by the 
 	    context switch function */
 	ic->gpr[1] = ((unsigned long)exec_obj->static_desc->stack.stack_zone)
-	               + exec_obj->static_desc->stack.stack_size - 20;
+	               + exec_obj->static_desc->stack.stack_size
+	               - 20;
     ic->gpr[2] = tpl_register_r2;
     ic->gpr[13] = tpl_register_r13;
 }
@@ -987,4 +960,12 @@ asm void tpl_init_machine(void)
 			lwz		r3,0(r1)
 			addi	r1,r1,4
 			blr
+}
+
+void tpl_ack_timer(void)
+{
+	if(USIU.PISCR.B.PS) // Interruption de Timer
+	{
+		USIU.PISCR.B.PS = 1;
+	}
 }
