@@ -535,26 +535,8 @@ void tpl_schedule(const u8 from)
         else
         {
           #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-          if (tpl_running_obj->state == NEWLY_ACTIVATED_EXEC_OBJ)
-          {
-            if (tpl_running_obj->static_desc->type != IS_ROUTINE)
-            {
-              /* start the budget monitor for the activated task */
-              tpl_start_budget_monitor (tpl_running_obj);
-            }
-            else
-            {
-              /* add an activation count for the ISR2 and starts the
-               * execution time monitor */
-              tpl_add_activation_count (tpl_running_obj);
-              tpl_start_exectime_monitor (tpl_running_obj);
-            }
-          }
-          else
-          {
-            if (tpl_running_obj->static_desc->type != IS_ROUTINE)
-              tpl_continue_budget_monitor (tpl_running_obj);
-          }
+          if (tpl_running_obj->static_desc->type != IS_ROUTINE)
+            tpl_continue_budget_monitor (tpl_running_obj);
           #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
         }
         /*  the inserted task become RUNNING                */
