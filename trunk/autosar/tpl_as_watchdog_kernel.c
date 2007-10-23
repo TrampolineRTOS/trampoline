@@ -28,6 +28,7 @@
 #include "tpl_as_watchdog_kernel.h"
 #include "tpl_dow.h"
 
+#if defined WITH_AUTOSAR_TIMING_PROTECTION
 static tpl_scheduled_watchdog scheduled_watchdogs[MAXIMUM_SCHEDULED_WATCHDOGS];
 
 static tpl_scheduled_watchdog *earliest_watchdog = NULL;
@@ -314,4 +315,9 @@ void unschedule_watchdog (tpl_watchdog *this_watchdog)
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
+
+#else
+/* some compiler do not work with empty source files */
+static char nothing;
+#endif /* !defined WITH_AUTOSAR_TIMING_PROTECTION */
 

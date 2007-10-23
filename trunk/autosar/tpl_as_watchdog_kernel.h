@@ -34,6 +34,8 @@
 #include "tpl_os_internal_types.h"
 #include "tpl_machine_interface.h"
 
+#if defined WITH_AUTOSAR_TIMING_PROTECTION
+
 /**
  * @internal
  *
@@ -130,7 +132,7 @@ typedef struct TPL_SCHEDULED_WATCHDOG tpl_scheduled_watchdog;
  * @see #find_scheduled_watchdog
  * @see #remove_scheduled_watchdog
  */
-typedef u8 (*OS_CBK_CODE watchdog_callback_function)(tpl_watchdog *watchdog);
+typedef u8 (*OS_APPL_CODE watchdog_callback_function)(tpl_watchdog *watchdog);
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -138,7 +140,7 @@ typedef u8 (*OS_CBK_CODE watchdog_callback_function)(tpl_watchdog *watchdog);
 /**
  * @internal
  *
- * This function must be called berfore any other in this module.
+ * This function must be called before any other in this module.
  */
 void init_watchdog_kernel (watchdog_callback_function callback);
 
@@ -232,5 +234,7 @@ void unschedule_watchdog (tpl_watchdog *this_watchdog);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
+
+#endif /* defined WITH_AUTOSAR_TIMING_PROTECTION */
 
 #endif /*TPL_AS_WATCHDOG_KERNEL_H*/

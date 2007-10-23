@@ -25,7 +25,6 @@
  * $Author$
  * $URL$
  */
- 
 #include "tpl_as_timing_protec.h"
 #include "tpl_dow.h"
 #include "tpl_as_isr_kernel.h"
@@ -404,4 +403,6 @@ void tpl_disable_os_isr_lock_monitor (tpl_exec_common *this_exec_obj)
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+#else /* defined WITH_AUTOSAR_TIMING_PROTECTION */
+static char nothing;
+#endif /* !defined WITH_AUTOSAR_TIMING_PROTECTION */
