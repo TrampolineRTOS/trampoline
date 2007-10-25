@@ -274,7 +274,7 @@ static u8 remove_all_exec_obj_watchdogs (tpl_exec_common *this_exec_obj)
 
   watchdog_cursor = earliest_watchdog;
   previous_cursor = NULL;
-  do
+  while (watchdog_cursor != NULL)
   {
     if (watchdog_cursor->watchdog.exec_obj == this_exec_obj)
     {
@@ -284,7 +284,6 @@ static u8 remove_all_exec_obj_watchdogs (tpl_exec_common *this_exec_obj)
     previous_cursor = watchdog_cursor;
     watchdog_cursor = watchdog_cursor->next;
   }
-  while (watchdog_cursor != NULL);
 
   return result;
 }
