@@ -19,6 +19,7 @@ CPU test {
         STATUS = STANDARD;
         ERRORHOOK = TRUE;
         PRETASKHOOK = TRUE;
+        POSTTASKHOOK = TRUE;
         PROTECTIONHOOK = TRUE;
     } ;
 

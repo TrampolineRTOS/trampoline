@@ -61,7 +61,8 @@
  * This error code means : no error
  *
  * @warning OSEK error code meanings are not globally defined. Refer to each
- * standard service definition to know the exact meaning.
+ * standard service definition to know the exact meaning in this specific
+ * context.
  */
 #ifndef STATUSTYPEDEFINED
 #define STATUSTYPEDEFINED

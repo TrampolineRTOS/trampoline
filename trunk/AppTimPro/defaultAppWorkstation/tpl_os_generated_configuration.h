@@ -78,6 +78,12 @@
  * Declaration of schedule tables related defines and structures
  */
 
+
+/*=============================================================================
+ * Declaration of counters ids
+ */
+
+
 #endif
 
 #endif
