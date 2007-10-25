@@ -251,6 +251,44 @@ u8 remove_scheduled_watchdog (tpl_scheduled_watchdog *watchdog_cursor,
   return result;
 }
 
+/**
+ * @internal
+ *
+ * removes all scheduled watchdogs related to a task/isr from the list
+ * 
+ * @note this function is intended to be called by the watchdog callback
+ * (or internally in this module)
+ *
+ * @param this_exec_obj the task/isr which watchdog will be removed
+ * 
+ * @retval FALSE the scheduled watchdog is not the earliest in the list
+ * @retval TRUE the scheduled watchdog is the earliest in the list
+ */
+static u8 remove_all_exec_obj_watchdogs (tpl_exec_common *this_exec_obj)
+{
+  u8 result;
+  tpl_scheduled_watchdog *watchdog_cursor;
+  tpl_scheduled_watchdog *previous_cursor;
+
+  result = FALSE;
+
+  watchdog_cursor = earliest_watchdog;
+  previous_cursor = NULL;
+  do
+  {
+    if (watchdog_cursor->watchdog.exec_obj == this_exec_obj)
+    {
+      if (remove_scheduled_watchdog (watchdog_cursor, previous_cursor) == TRUE)
+        result = TRUE;
+    }
+    previous_cursor = watchdog_cursor;
+    watchdog_cursor = watchdog_cursor->next;
+  }
+  while (watchdog_cursor != NULL);
+
+  return result;
+}
+
 void schedule_watchdog (tpl_watchdog *this_watchdog, 
    tpl_time expire_delay)
 {  
@@ -309,6 +347,25 @@ void unschedule_watchdog (tpl_watchdog *this_watchdog)
         tpl_set_watchdog (tpl_get_local_current_date() - 
            earliest_watchdog->scheduled_date, internal_watchdog_callback);
       }
+    }
+  }
+}
+
+void unschedule_exec_obj_watchdogs (tpl_exec_common *this_exec_obj)
+{
+  u8 need_to_reschedule;
+
+  DOW_ASSERT (this_exec_obj != NULL);
+
+  need_to_reschedule = remove_all_exec_obj_watchdogs (this_exec_obj);
+
+  if (need_to_reschedule)
+  {
+    tpl_cancel_watchdog ();
+    if (earliest_watchdog != NULL)
+    {
+      tpl_set_watchdog (tpl_get_local_current_date() -
+         earliest_watchdog->scheduled_date, internal_watchdog_callback);
     }
   }
 }

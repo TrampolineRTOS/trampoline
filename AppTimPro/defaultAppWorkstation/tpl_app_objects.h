@@ -5,7 +5,7 @@
  * for conditional compiling.
  *
  * This file has been generated automatically by goil
- * on  Mon Sep 17 18:04:14 2007t
+ * on  Thu Oct 25 10:28:04 20078
  */
 
 #ifndef OJB_HEADER_H
@@ -16,6 +16,7 @@
  */
 #define    WITH_ERROR_HOOK
 #define    WITH_PRE_TASK_HOOK
+#define    WITH_POST_TASK_HOOK
 #define    WITH_AUTOSAR
 #define    WITH_PROTECTION_HOOK
 
@@ -67,6 +68,11 @@
  * Declaration of Schedule Table object count
  */
 #define SCHEDTABLE_COUNT        0
+
+/*
+ * Declaration of Software Counters object count
+ */
+#define COUNTER_COUNT           0
 
 /*
  * Declaration of the number of virtual watchdogs used for timing protection

@@ -232,6 +232,17 @@ void schedule_watchdog (tpl_watchdog *this_watchdog,
  */
 void unschedule_watchdog (tpl_watchdog *this_watchdog);
 
+/**
+ * @internal
+ *
+ * Cancels all watchdogs related to a task/isr.
+ *
+ * @warning should not be called in watchdog callback !
+ *
+ * @param this_exec_obj the task/isr concerned
+ */
+void unschedule_exec_obj_watchdogs (tpl_exec_common *this_exec_obj);
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

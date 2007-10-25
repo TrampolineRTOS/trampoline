@@ -5,17 +5,21 @@
 #include "tpl_os_it_kernel.h"
 #include "tpl_os_alarm_kernel.h"
 #include "tpl_os_action.h"
+
+#ifndef WITH_AUTOSAR
 #include "tpl_com_notification.h"
 #include "tpl_com_mo.h"
 #include "tpl_com_internal_com.h"
 #include "tpl_com_app_copy.h"
 #include "tpl_com_filters.h"
+#endif
 
 #include "tpl_os_generated_configuration.h"
 #include "tpl_app_objects.h"
 
 #ifdef WITH_AUTOSAR
 #include "tpl_as_st_kernel.h"
+#include "tpl_as_action.h"
 #endif
 
 /*=============================================================================
@@ -76,16 +80,16 @@ void function_of_task_periodicTask(void);
  * Timing protection descriptor for $NAME$
  */
 tpl_time task_periodicTask_rez_lock_time[1] = {
-    1000000
+    1000
 };
  
 tpl_timing_protection task_periodicTask_timing_prot = {
-    /* execution budget/time    */  100000,
+    /* execution budget/time    */  100,
     /* time limit               */  0,
-    /* time frame               */  1000000,
+    /* time frame               */  1000,
     /* resource lock time       */  task_periodicTask_rez_lock_time,
-    /* os interrupt lock time   */  1000000,
-    /* all interrupt lock time  */  1000000
+    /* os interrupt lock time   */  1000,
+    /* all interrupt lock time  */  1000
 };
 
 
@@ -152,16 +156,16 @@ void function_of_task_r1_squatter(void);
  * Timing protection descriptor for $NAME$
  */
 tpl_time task_r1_squatter_rez_lock_time[1] = {
-    100000
+    100
 };
  
 tpl_timing_protection task_r1_squatter_timing_prot = {
-    /* execution budget/time    */  1000000,
+    /* execution budget/time    */  1000,
     /* time limit               */  0,
-    /* time frame               */  10000000,
+    /* time frame               */  10000,
     /* resource lock time       */  task_r1_squatter_rez_lock_time,
-    /* os interrupt lock time   */  1000000,
-    /* all interrupt lock time  */  1000000
+    /* os interrupt lock time   */  1000,
+    /* all interrupt lock time  */  1000
 };
 
 
@@ -367,8 +371,6 @@ tpl_time_obj *tpl_alarm_table[ALARM_COUNT] = {
 /*=============================================================================
  * Declaration of schedule tables related defines and structures
  */
-tpl_schedule_table *tpl_schedtable_table[0] = {
-};
 
 #endif
 

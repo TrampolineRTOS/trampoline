@@ -17,12 +17,18 @@ void ErrorHook(StatusType error)
 
 void PreTaskHook(void)
 {
-    printf("PreTaskHook\n");
+    TaskType id;
+
+    GetTaskID (&id);
+    printf("PreTaskHook (newly active task is #%d)\n",id);
 }
 
 void PostTaskHook(void)
 {
-    printf("PostTaskHook\n");
+    TaskType id;
+
+    GetTaskID (&id);
+    printf("PostTaskHook (last active task was #%d)\n", id);
 }
 
 void StartupHook(void)
@@ -66,8 +72,11 @@ TASK(r1_squatter)
     volatile long bidule1, bidule2;
     int i;
   
+    printf ("starting r1squatter\n");
     for (i = 0 ; i < 10 ; i++)
     {
+			printf ("GETR squatter\n");
+    fflush(stdout);
       GetResource (r1);
       bidule1 = 50 * 1000;
       while (bidule1--)
@@ -78,6 +87,8 @@ TASK(r1_squatter)
          
       }
       ReleaseResource(r1);
+			printf ("RELEASER squatter\n");
+    fflush(stdout);
     }
     
     TerminateTask ();
@@ -87,9 +98,13 @@ TASK(periodicTask)
 {
     static int compte = 0;
     volatile long bidule1, bidule2;
+    TaskType id;
+		StatusType error;
     
     compte++;
     printf("periodicTask (activation %d)\n", compte);
+    GetTaskID (&id);
+    printf ("periodicTask is #%d\n", id);
     fflush(stdout);
     if (compte == 6)
       ShutdownOS(E_OK);
@@ -109,6 +124,8 @@ TASK(periodicTask)
     printf ("TERMINE\n");
     
   
-	TerminateTask();
+  error = TerminateTask();
+
+  printf ("error terminate = %d\n", error);
   printf ("should never come here\n");
 }
