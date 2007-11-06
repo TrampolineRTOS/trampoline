@@ -32,7 +32,7 @@ ifeq ($(AUTOSAR),true)
 endif
 
 #Add your source files here.
-APP_SRCS = tpl_default_tasks_workstation.c
+APPSRCS = tpl_default_tasks_workstation.c
 
 #CFLAGS already defined in ../Make-rules
 APPFLAGS = $(CFLAGS)
@@ -43,11 +43,11 @@ clean:
 #################### end of configuration.
  
 O_PATH = ../$(OBJ_PATH)
-APP_OBJS = $(addprefix $(O_PATH)/,$(APP_SRCS:.c=.o))
+APPOBJS = $(addprefix $(O_PATH)/,$(APPSRCS:.c=.o))
 
 APPFLAGS += -I. -I../$(OS_PATH) -I../$(OS_MACHINE_PATH) -I../$(OIL_OUTPUT_PATH)
 
-APP: $(APP_OBJS)
+APP: $(APPOBJS)
 	
 $(O_PATH)/%.o: %.c
 	$(CC) $(APPFLAGS) -c $< -o $@
