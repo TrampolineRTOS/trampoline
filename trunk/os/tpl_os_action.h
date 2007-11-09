@@ -3,7 +3,7 @@
  *
  * @section desc File description
  *
- * Trampoline Action header. Actions are used for alarm action. They are 
+ * Trampoline Action header. Actions are used for alarm action. They are
  * also used by COM for notifications.
  *
  * @section copyright Copyright
@@ -36,9 +36,9 @@
  */
 struct TPL_CALLBACK_ACTION {
     /*  base action           */
-    tpl_action          b_desc;
+    VAR(tpl_action, AUTOMATIC)        b_desc;
     /*  callback function pointer   */
-    tpl_callback_func   callback;
+    VAR(tpl_callback_func, AUTOMATIC) callback;
 };
 
 typedef struct TPL_CALLBACK_ACTION
@@ -52,9 +52,9 @@ tpl_callback_action;
  */
 struct TPL_TASK_ACTIVATION_ACTION {
     /*  base action           */
-    tpl_action      b_desc;
+    VAR(tpl_action, AUTOMATIC)              b_desc;
     /*  task descriptor pointer     */
-    tpl_task        *task;
+    P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC) task;
 };
 
 typedef struct TPL_TASK_ACTIVATION_ACTION
@@ -68,11 +68,11 @@ tpl_task_activation_action ;
  */
 struct TPL_SETEVENT_ACTION {
     /*  base action           */
-    tpl_action          b_desc;
+    VAR(tpl_action, AUTOMATIC)              b_desc;
     /*  task descriptor pointer     */
-    tpl_task            *task;
+    P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC)  task;
     /*  event mask                  */
-    tpl_event_mask      mask;
+    VAR(tpl_event_mask, AUTOMATIC)          mask;
 };
 
 typedef struct TPL_SETEVENT_ACTION
@@ -85,9 +85,15 @@ tpl_setevent_action;
 /*
  * Notification functions prototypes
  */
-tpl_status tpl_action_callback(const tpl_action *action);
-tpl_status tpl_action_activate_task(const tpl_action *action);
-tpl_status tpl_action_setevent(const tpl_action *action);
+FUNC(tpl_status, OS_CODE) tpl_action_callback(
+    P2CONST(tpl_action, OS_APPL_CONST, AUTOMATIC) action
+);
+FUNC(tpl_status, OS_CODE) tpl_action_activate_task(
+    P2CONST(tpl_action, OS_APPL_CONST, AUTOMATIC) action
+);
+FUNC(tpl_status, OS_CODE) tpl_action_setevent(
+    P2CONST(tpl_action, OS_APPL_CONST, AUTOMATIC) action
+);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

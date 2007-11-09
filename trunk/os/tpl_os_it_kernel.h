@@ -37,25 +37,25 @@
  *
  * @see #TPL_ISR_STATIC
  */
-typedef tpl_bool (*tpl_isr_helper)(void);
+typedef P2FUNC(tpl_bool, OS_APPL_CODE, tpl_isr_helper)(void);
 
 struct TPL_ISR;
 
 /**
  * @struct TPL_ISR_STATIC
  *
- * Static descriptor of a category 2 interrupt service routine 
+ * Static descriptor of a category 2 interrupt service routine
  */
 struct TPL_ISR_STATIC {
-    const tpl_isr_helper  helper; /**<  pointer to a helper function used
-                                        to search for hardware that
-                                        launched the interrupt              */
-    struct TPL_ISR  *next;        /**<  when there is several handler for
-                                        the same interrupt priority, the
-                                        tpl_isr are chained. In this case.
-                                        Trampoline uses the helper to check
-                                        what handler will be called for the
-                                        interrupt.                          */
+    CONST(tpl_isr_helper, AUTOMATIC)  helper;             /**<  pointer to a helper function used
+                                                                to search for hardware that
+                                                                launched the interrupt              */
+    struct P2VAR(TPL_ISR, OS_APPL_DATA, AUTOMATIC) next;  /**<  when there is several handler for
+                                                                the same interrupt priority, the
+                                                                tpl_isr are chained. In this case.
+                                                                Trampoline uses the helper to check
+                                                                what handler will be called for the
+                                                                interrupt.                          */
 };
 
 /**
@@ -74,13 +74,13 @@ typedef struct TPL_ISR_STATIC tpl_isr_static;
  * descriptor (#tpl_exec_common) and a pointer to a tpl_isr_static
  */
 struct TPL_ISR {
-    tpl_exec_common exec_desc;      /**<  common descriptor                 */
-    tpl_isr_static  *static_desc;   /**<  pointer to the static desc of the
-                                          isr                               */
+    VAR(tpl_exec_common, AUTOMATIC)                 exec_desc;    /**<  common descriptor                 */
+    P2VAR(tpl_isr_static, OS_APPL_DATA, AUTOMATIC)  static_desc;  /**<  pointer to the static desc of the
+                                                                        isr                               */
 #ifdef WITH_AUTOSAR
-    tpl_bool        enabled;        /**< FALSE if disabled, TRUE if enabled 
-		                                     (see #tpl_isr2_enable_state) */
-#endif                                          
+    VAR(tpl_bool, AUTOMATIC)                        enabled;      /**< FALSE if disabled, TRUE if enabled
+                                                                       (see #tpl_isr2_enable_state) */
+#endif
 };
 
 /**
@@ -101,7 +101,7 @@ typedef struct TPL_ISR tpl_isr;
  *
  * @param interrupt service routine identifier
  */
-void tpl_central_interrupt_handler(const u16 id);
+FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) id);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

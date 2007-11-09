@@ -45,7 +45,7 @@
  *
  * @see #DisableAllInterrupts
  */
-void EnableAllInterrupts(void);     
+FUNC(void, OS_CODE) EnableAllInterrupts(void);
 
 
 /**
@@ -55,17 +55,17 @@ void EnableAllInterrupts(void);
  *
  * @see #EnableAllInterrupts
  */
-void DisableAllInterrupts(void);
+FUNC(void, OS_CODE) DisableAllInterrupts(void);
 
 
-/** 
+/**
  * Resume all interrupts
  *
  * see paragraph 13.3.2.3 page 55 of OSEK/VDX 2.2.2 spec
  *
  * @see #SuspendAllInterrupts
  */
-void ResumeAllInterrupts(void);
+FUNC(void, OS_CODE) ResumeAllInterrupts(void);
 
 
 /**
@@ -75,17 +75,17 @@ void ResumeAllInterrupts(void);
  *
  * @see #ResumeAllInterrupts
  */
-void SuspendAllInterrupts(void);
+FUNC(void, OS_CODE) SuspendAllInterrupts(void);
 
 
-/** 
+/**
  * Resume category 2 interrupts
  *
  * see paragraph 13.3.2.5 page 56 of OSEK/VDX 2.2.2 spec
- * 
+ *
  * @see #SuspendOSInterrupts
  */
-void ResumeOSInterrupts(void);
+FUNC(void, OS_CODE) ResumeOSInterrupts(void);
 
 
 /**
@@ -95,7 +95,7 @@ void ResumeOSInterrupts(void);
  *
  * @see #ResumeOSInterrupts
  */
-void SuspendOSInterrupts(void);
+FUNC(void, OS_CODE) SuspendOSInterrupts(void);
 
 
 /**
@@ -104,7 +104,7 @@ void SuspendOSInterrupts(void);
  *
  * This service is equivalent to TerminateTask but for ISR2
  */
-StatusType TerminateISR2(void);
+FUNC(StatusType, OS_CODE) TerminateISR2(void);
 
 
 #define OS_STOP_SEC_CODE

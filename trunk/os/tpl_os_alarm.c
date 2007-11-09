@@ -37,34 +37,35 @@
  *
  * See page 63 of the OSEK spec
  */
-StatusType GetAlarmBase(
-    const AlarmType     alarm_id,
-    AlarmBaseRefType    info)
+FUNC(StatusType, OS_CODE) GetAlarmBase(
+    CONST(AlarmType, AUTOMATIC)       alarm_id,
+    VAR(AlarmBaseRefType, AUTOMATIC)  info
+)
 {
-    StatusType result = E_OK;
-    
+    VAR(StatusType, AUTOMATIC) result = E_OK;
+
 #ifndef NO_ALARM
-    tpl_time_obj *alarm;
+    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) alarm;
 #endif
 
     STORE_SERVICE(OSServiceId_GetAlarm)
     STORE_ALARM_ID(alarm_id)
     STORE_ALARM_BASE_REF(info)
-    
+
     CHECK_ALARM_ID_ERROR(alarm_id,result)
-    
+
 #ifndef NO_ALARM
     IF_NO_EXTENDED_ERROR(result)
         alarm = tpl_alarm_table[alarm_id];
-        
+
         info->ticksperbase = alarm->stat_part->counter->ticks_per_base;
         info->maxallowedvalue = alarm->stat_part->counter->max_allowed_value;
         info->mincycle = alarm->stat_part->counter->min_cycle;
     IF_NO_EXTENDED_ERROR_END()
 #endif
-    
+
     PROCESS_ERROR(result)
-    
+
     return result;
 }
 
@@ -73,14 +74,14 @@ StatusType GetAlarmBase(
  *
  * See page 63 of the OSEK spec
  */
-StatusType GetAlarm(
-    const AlarmType alarm_id,
-    TickRefType     tick)
+FUNC(StatusType, OS_CODE) GetAlarm(
+    CONST(AlarmType, AUTOMATIC) alarm_id,
+    VAR(TickRefType, AUTOMATIC) tick)
 {
-    StatusType result = E_OK;
-    
+    VAR(StatusType, AUTOMATIC) result = E_OK;
+
 #ifndef NO_ALARM
-    tpl_time_obj *alarm;
+    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) alarm;
 #endif
 
     STORE_SERVICE(OSServiceId_GetAlarm)
@@ -92,7 +93,7 @@ StatusType GetAlarm(
 #ifndef NO_ALARM
     IF_NO_EXTENDED_ERROR(result)
         alarm = tpl_alarm_table[alarm_id];
-        
+
         /*  verify the alarm is active  */
         if (alarm->state == (tpl_time_obj_state)ALARM_ACTIVE)
         {
@@ -106,7 +107,7 @@ StatusType GetAlarm(
 #endif
 
     PROCESS_ERROR(result)
-    
+
     return result;
 }
 
@@ -115,17 +116,18 @@ StatusType GetAlarm(
  *
  * See page 63 of the OSEK spec
  */
-StatusType SetRelAlarm(
-    const AlarmType alarm_id,
-    const TickType  increment,
-    const TickType  cycle)
+FUNC(StatusType, OS_CODE) SetRelAlarm(
+    CONST(AlarmType, AUTOMATIC) alarm_id,
+    CONST(TickType, AUTOMATIC)  increment,
+    CONST(TickType, AUTOMATIC)  cycle
+)
 {
-    StatusType result = E_OK;
-    
+    VAR(StatusType, AUTOMATIC) result = E_OK;
+
 #ifndef NO_ALARM
-    tpl_time_obj *alarm;
+    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) alarm;
 #endif
-    
+
     STORE_SERVICE(OSServiceId_SetRelAlarm)
     STORE_ALARM_ID(alarm_id)
     STORE_TICK_1(increment)
@@ -134,11 +136,11 @@ StatusType SetRelAlarm(
     CHECK_ALARM_ID_ERROR(alarm_id,result)
     CHECK_ALARM_MAX_ALLOWED_VALUE_ERROR(alarm_id,increment,result)
     CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
-    
+
 #ifndef NO_ALARM
     IF_NO_EXTENDED_ERROR(result)
         alarm = tpl_alarm_table[alarm_id];
-    
+
         if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP)
         {
             tpl_counter *cnt = alarm->stat_part->counter;
@@ -162,7 +164,7 @@ StatusType SetRelAlarm(
 #endif
 
     PROCESS_ERROR(result)
-    
+
     return result;
 }
 
@@ -171,17 +173,18 @@ StatusType SetRelAlarm(
  *
  * See page 64 of the OSEK spec
  */
-StatusType SetAbsAlarm(
-    const AlarmType alarm_id,
-    const TickType  start,
-    const TickType  cycle)
+FUNC(StatusType, OS_CODE) SetAbsAlarm(
+    CONST(AlarmType, AUTOMATIC) alarm_id,
+    CONST(TickType, AUTOMATIC)  start,
+    CONST(TickType, AUTOMATIC)  cycle
+)
 {
-    StatusType result = E_OK;
-    
+    VAR(StatusType, AUTOMATIC) result = E_OK;
+
 #ifndef NO_ALARM
-    tpl_time_obj *alarm;
+    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) alarm;
 #endif
-    
+
     STORE_SERVICE(OSServiceId_SetAbsAlarm)
     STORE_ALARM_ID(alarm_id)
     STORE_TICK_1(start)
@@ -194,7 +197,7 @@ StatusType SetAbsAlarm(
 #ifndef NO_ALARM
     IF_NO_EXTENDED_ERROR(result)
     alarm = tpl_alarm_table[alarm_id];
-    
+
     if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP)
     {
         /*  the alarm is not in use, proceed    */
@@ -212,7 +215,7 @@ StatusType SetAbsAlarm(
 #endif
 
     PROCESS_ERROR(result)
-    
+
     return result;
 }
 
@@ -221,17 +224,19 @@ StatusType SetAbsAlarm(
  *
  * See page 65 of the OSEK spec
  */
-StatusType CancelAlarm(const AlarmType alarm_id)
+FUNC(StatusType, OS_CODE) CancelAlarm(
+    CONST(AlarmType, AUTOMATIC) alarm_id
+)
 {
-    StatusType result = E_OK;
-    
+    VAR(StatusType, AUTOMATIC) result = E_OK;
+
 #ifndef NO_ALARM
-    tpl_time_obj *alarm;
+    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) alarm;
 #endif
 
     STORE_SERVICE(OSServiceId_CancelAlarm)
     STORE_ALARM_ID(alarm_id)
-    
+
     CHECK_ALARM_ID_ERROR(alarm_id,result)
 
 #ifndef NO_ALARM
@@ -251,7 +256,7 @@ StatusType CancelAlarm(const AlarmType alarm_id)
 #endif
 
     PROCESS_ERROR(result)
-    
+
     return result;
 }
 

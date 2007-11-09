@@ -128,11 +128,11 @@ typedef u8 tpl_bool;
  *
  * This type is used for return
  * status of services (ie one of the result
- * codes specified below). 
+ * codes specified below).
  *
  * It is binary compatible with OSEK StatusType, provided
  * Trampoline specific codes are removed (via #OSEK_STATUS_MASK
- * AND-mask). 
+ * AND-mask).
  *
  * @see #OSEK_STATUS_MASK
  * @see #StatusType
@@ -145,13 +145,7 @@ typedef u8 tpl_status;
  * This type is used for various
  * callback function type in Trampoline.
  */
-/**********************************************************************
-**  J.Monsimier  22/05/2007 
-**  PR09: for S12: need to add __near for the compiler or the 
-**        pointer is considered at far and there is a stack pointer 
-**        error during function return in tpl_action_activate_task
-**********************************************************************/
-typedef void (*OS_APPL_CODE tpl_callback_func)(void);
+typedef P2FUNC(void, OS_APPL_CODE, tpl_callback_func)(void);
 
 /************************
  * Forward declarations *
@@ -164,7 +158,7 @@ struct TPL_TIME_OBJ;
 
 
 /**
- * @typedef tpl_exec_obj_type 
+ * @typedef tpl_exec_obj_type
  * This type is used to distinguish kind
  * of tasks and ISR
  *
@@ -175,7 +169,7 @@ struct TPL_TIME_OBJ;
  * @see #tpl_is_isr
  */
 typedef u8 tpl_exec_obj_type;
- 
+
 /**
  * @typedef tpl_exec_state
  *
@@ -281,10 +275,10 @@ typedef u8 tpl_exec_state;
  *
  * @see #TPL_EXEC_STATIC
  */
-typedef void (*OS_APPL_CODE tpl_exec_function)(void);
+typedef P2FUNC(void, OS_APPL_CODE, tpl_exec_function)(void);
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-/** 
+/**
  * @internal
  *
  * @struct TPL_TIMING_PROTECTION
@@ -298,22 +292,22 @@ typedef void (*OS_APPL_CODE tpl_exec_function)(void);
  */
 struct TPL_TIMING_PROTECTION
 {
-    tpl_time             execution_budget; /**< maximum duration the task
-                                               can be active within a 
-                                               timeframe or maximum isr
-                                               execution time since last
-                                               activation */
-    tpl_activate_counter count_limit;     /**< maximum number of activations 
-                                               of the isr within a
-                                               timeframe */
-    tpl_time             timeframe;       /**< configured timeframe for this
-                                               timing protection */
-    tpl_time *resource_lock_time;         /**< array where timing protection
-                                               is specified (or not) for
-                                               each resource (zero if no
-                                               timing protection) */
-    tpl_time os_interrupt_lock_time;
-    tpl_time all_interrupt_lock_time;
+    VAR(tpl_time, AUTOMATIC)                  execution_budget;   /**< maximum duration the task
+                                                                       can be active within a
+                                                                       timeframe or maximum isr
+                                                                       execution time since last
+                                                                       activation */
+    VAR(tpl_activate_counter, AUTOMATIC)      count_limit;        /**< maximum number of activations
+                                                                       of the isr within a
+                                                                       timeframe */
+    VAR(tpl_time, AUTOMATIC)                  timeframe;          /**< configured timeframe for this
+                                                                       timing protection */
+    P2VAR(tpl_time, OS_APPL_DATA, AUTOMATIC)  resource_lock_time; /**< array where timing protection
+                                                                       is specified (or not) for
+                                                                       each resource (zero if no
+                                                                       timing protection) */
+    VAR(tpl_time, AUTOMATIC)                  os_interrupt_lock_time;
+    VAR(tpl_time, AUTOMATIC)                  all_interrupt_lock_time;
 };
 
 /**
@@ -334,34 +328,34 @@ typedef struct TPL_TIMING_PROTECTION tpl_timing_protection;
  * descriptor can be stored in ROM.
  */
 struct TPL_EXEC_STATIC {
-    tpl_context                     context;            /**< context(s) of the
-                                                             task/isr */
-    tpl_stack                       stack;              /**< stack(s) of the
-                                                             task/isr */
-    const tpl_exec_function         entry;              /**< function that is
-                                                             the entry point
-                                                             of the task/isr*/
-    struct TPL_INTERNAL_RESOURCE    *internal_resource; /**< pointer to an
-                                                             internal resource.
-                                                             NULL if the task
-                                                             does not have an
-                                                             internal resource
-                                                             */
-    const tpl_task_id               id;                 /**< id of task/isr */
-    const tpl_priority              base_priority;      /**< base priority of
-                                                             the task/isr  */
-    const tpl_activate_counter      max_activate_count; /**< max activation
-                                                             count of a 
-                                                             task/isr*/
-    const tpl_exec_obj_type         type;               /**< type of the
-                                                             task/isr */
+    VAR(tpl_context, AUTOMATIC)                                   context;            /**< context(s) of the
+                                                                                           task/isr */
+    VAR(tpl_stack, AUTOMATIC)                                     stack;              /**< stack(s) of the
+                                                                                           task/isr */
+    CONST(tpl_exec_function, AUTOMATIC)                           entry;              /**< function that is
+                                                                                           the entry point
+                                                                                           of the task/isr*/
+    struct P2VAR(TPL_INTERNAL_RESOURCE, OS_APPL_DATA, AUTOMATIC)  internal_resource;  /**< pointer to an
+                                                                                           internal resource.
+                                                                                           NULL if the task
+                                                                                           does not have an
+                                                                                           internal resource
+                                                                                           */
+    CONST(tpl_task_id, AUTOMATIC)                                 id;                 /**< id of task/isr */
+    CONST(tpl_priority, AUTOMATIC)                                base_priority;      /**< base priority of
+                                                                                           the task/isr  */
+    CONST(tpl_activate_counter, AUTOMATIC)                        max_activate_count; /**< max activation
+                                                                                           count of a
+                                                                                           task/isr*/
+    CONST(tpl_exec_obj_type, AUTOMATIC)                           type;               /**< type of the
+                                                                                           task/isr */
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    const tpl_timing_protection     *timing_protection; /**< timing protection 
-                                                             configuration
-                                                             (can be NULL
-                                                             if no timing
-                                                             protection is
-                                                             needed) */
+    P2CONST(tpl_timing_protection, OS_APPL_CONST, AUTOMATIC)      timing_protection;  /**< timing protection
+                                                                                           configuration
+                                                                                           (can be NULL
+                                                                                           if no timing
+                                                                                           protection is
+                                                                                           needed) */
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 };
 
@@ -381,27 +375,27 @@ typedef struct TPL_EXEC_STATIC tpl_exec_static;
  * descriptors
  */
 struct TPL_EXEC_COMMON {
-    tpl_exec_static         *static_desc;   /**<  pointer to static 
-                                                  descriptor */
-    struct TPL_RESOURCE     *resources;     /**<  head of the ressources 
-                                                  held */
-    tpl_activate_counter    activate_count; /**<  current activate count */
-    tpl_priority            priority;       /**<  current priority */
-    tpl_exec_state          state;          /**<  state (READY, RUNING, ...)*/
+    P2VAR(tpl_exec_static, OS_APPL_DATA, AUTOMATIC)     static_desc;/**<  pointer to static
+                                                                          descriptor */
+    struct P2VAR(TPL_RESOURCE, OS_APPL_DATA, AUTOMATIC) resources;  /**<  head of the ressources
+                                                                          held */
+    VAR(tpl_activate_counter, AUTOMATIC)            activate_count; /**<  current activate count */
+    VAR(tpl_priority, AUTOMATIC)                    priority;       /**<  current priority */
+    VAR(tpl_exec_state, AUTOMATIC)                  state;          /**<  state (READY, RUNING, ...)*/
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    tpl_time                monitor_start_date;        /**< last start date of
-                                                            the task's budget
-                                                            monitor or date
-                                                            of last isr
-                                                            activation */
-    tpl_time                time_left;                 /**< time left before
-                                                            exceeding execution
-                                                            budget of the task
-                                                            or activation
-                                                            count left before
-                                                            exceeding max
-                                                            activation count
-                                                            in case of isr2 */
+    VAR(tpl_time, AUTOMATIC)                        monitor_start_date; /**<  last start date of
+                                                                              the task's budget
+                                                                              monitor or date
+                                                                              of last isr
+                                                                              activation */
+    VAR(tpl_time, AUTOMATIC)                        time_left;          /**<  time left before
+                                                                              exceeding execution
+                                                                              budget of the task
+                                                                              or activation
+                                                                              count left before
+                                                                              exceeding max
+                                                                              activation count
+                                                                              in case of isr2 */
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 };
 
@@ -421,10 +415,10 @@ typedef struct TPL_EXEC_COMMON tpl_exec_common;
  * and the dynamic members of the task descriptor.
  */
 struct TPL_TASK {
-    tpl_exec_common         exec_desc;  /**< the common descriptor of the 
-                                             task */
-    tpl_event_mask          evt_set;    /**< @todo what's this ? */
-    tpl_event_mask          evt_wait;   /**< @todo what's this ? */
+    VAR(tpl_exec_common, AUTOMATIC) exec_desc;  /**< the common descriptor of the
+                                                     task */
+    VAR(tpl_event_mask, AUTOMATIC)  evt_set;    /**< @todo what's this ? */
+    VAR(tpl_event_mask, AUTOMATIC)  evt_wait;   /**< @todo what's this ? */
 };
 
 /**
@@ -442,8 +436,8 @@ typedef struct TPL_TASK tpl_task;
  * This type gathers a read index and a size for fifo management
  */
 typedef struct {
-    u8 read;
-    u8 size;
+    VAR(u8, AUTOMATIC) read;
+    VAR(u8, AUTOMATIC) size;
 } tpl_fifo_state;
 
 /**
@@ -454,8 +448,8 @@ typedef struct {
  * It is the element od the ready list table.
  */
 typedef struct {
-    tpl_exec_common **fifo;
-    u8 size;
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) *fifo;
+    VAR(u8, AUTOMATIC) size;
 } tpl_priority_level;
 
 /**
@@ -464,24 +458,24 @@ typedef struct {
  * This structure describes all attributes of a resource
  */
 struct TPL_RESOURCE {
-    const tpl_priority      ceiling_priority;     /**< Ceiling priority as 
-                                                       computed at system 
-                                                       generation time. */
-    tpl_priority            owner_prev_priority;  /**< Priority of the owner
-                                                       before accessing to the
-                                                       resource. This field is
-                                                       used to restore the 
-                                                       priority of the task 
-                                                       when the resource is
-                                                       released */
-    struct TPL_EXEC_COMMON  *owner;               /**< Owner of the resource 
-                                                       or NULL if the resource
-                                                       is not owned */
-    struct TPL_RESOURCE     *next_res;            /**< Pointer to the next
-                                                       resource used to link
-                                                       them together when a
-                                                       task get more than one
-                                                       resource */
+    CONST(tpl_priority, AUTOMATIC)                          ceiling_priority;     /**< Ceiling priority as
+                                                                                       computed at system
+                                                                                       generation time. */
+    VAR(tpl_priority, AUTOMATIC)                            owner_prev_priority;  /**< Priority of the owner
+                                                                                       before accessing to the
+                                                                                       resource. This field is
+                                                                                       used to restore the
+                                                                                       priority of the task
+                                                                                       when the resource is
+                                                                                       released */
+    struct P2VAR(TPL_EXEC_COMMON, OS_APPL_DATA, AUTOMATIC)  owner;                /**< Owner of the resource
+                                                                                       or NULL if the resource
+                                                                                       is not owned */
+    struct P2VAR(TPL_RESOURCE, OS_APPL_DATA, AUTOMATIC)     next_res;             /**< Pointer to the next
+                                                                                       resource used to link
+                                                                                       them together when a
+                                                                                       task get more than one
+                                                                                       resource */
 };
 
 /**
@@ -501,20 +495,20 @@ typedef struct TPL_RESOURCE tpl_resource;
  * and there is no need to store the owner
  */
 struct TPL_INTERNAL_RESOURCE {
-    
-    const tpl_priority      ceiling_priority;    /**<  Ceiling priority as
-                                                       computed at system
-                                                       generation time */
-    tpl_priority            owner_prev_priority; /**<  Priority of the owner
-                                                       prior to the access to
-                                                       the resource. This field
-                                                       is used to restore the
-                                                       priority of the task
-                                                       when the resource is
-                                                       released */
-    tpl_bool                taken;               /**<  Flag to tell if the
-                                                       internal resource is
-                                                       taken or not */
+
+    CONST(tpl_priority, AUTOMATIC)  ceiling_priority;    /**<  Ceiling priority as
+                                                               computed at system
+                                                               generation time */
+    VAR(tpl_priority, AUTOMATIC)    owner_prev_priority; /**<  Priority of the owner
+                                                               prior to the access to
+                                                               the resource. This field
+                                                               is used to restore the
+                                                               priority of the task
+                                                               when the resource is
+                                                               released */
+    VAR(tpl_bool, AUTOMATIC)        taken;               /**<  Flag to tell if the
+                                                               internal resource is
+                                                               taken or not */
 };
 
 /**
@@ -553,13 +547,13 @@ typedef u8 tpl_alarm_kind;
  * Prototype for action functions
  */
 /**********************************************************************
-**  J.Monsimier  22/05/2007 
-**  PR09: for S12: need to add __near for the compiler or the 
-**        pointer is considered at far and there is a stack pointer 
+**  J.Monsimier  22/05/2007
+**  PR09: for S12: need to add __near for the compiler or the
+**        pointer is considered at far and there is a stack pointer
 **        error during function return in tpl_action_activate_task
 **********************************************************************/
-typedef tpl_status (*OS_APPL_CODE tpl_action_func)(
-    const struct TPL_ACTION *
+typedef P2FUNC(tpl_status, OS_APPL_CODE, tpl_action_func)(
+    P2CONST(struct TPL_ACTION, OS_APPL_CONST, AUTOMATIC)
 );
 
 /**
@@ -572,7 +566,7 @@ typedef tpl_status (*OS_APPL_CODE tpl_action_func)(
  * extended to add the action parameters.
  */
 struct TPL_ACTION {
-  tpl_action_func action;    /**<  action function pointer   */
+  VAR(tpl_action_func, AUTOMATIC) action;    /**<  action function pointer   */
 };
 
 /**
@@ -592,8 +586,8 @@ struct TPL_COUNTER;
  *
  * Prototype for expire functions
  */
-typedef tpl_status (*OS_APPL_CODE tpl_expire_func)(
-    struct TPL_TIME_OBJ *
+typedef P2FUNC(tpl_status, OS_APPL_CODE, tpl_expire_func)(
+    struct P2VAR(TPL_TIME_OBJ, OS_APPL_DATA, AUTOMATIC)
 );
 
 /**
@@ -606,11 +600,11 @@ typedef tpl_status (*OS_APPL_CODE tpl_expire_func)(
  * @see #TPL_ALARM
  */
 struct TPL_TIME_OBJ_STATIC {
-    struct TPL_COUNTER      *counter;   /**< a pointer to the counter the
-                                             alarm belongs to               */
-    tpl_expire_func         expire;     /**< expiration processing to be
-                                             done when the time object
-                                             expires                        */
+    struct P2VAR(TPL_COUNTER, OS_APPL_DATA, AUTOMATIC)  counter;  /**< a pointer to the counter the
+                                                                       alarm belongs to               */
+    VAR(tpl_expire_func, AUTOMATIC)                     expire;   /**< expiration processing to be
+                                                                       done when the time object
+                                                                       expires                        */
 };
 
 /**
@@ -632,10 +626,10 @@ typedef struct TPL_TIME_OBJ_STATIC tpl_time_obj_static;
  * @see #TPL_TIME_OBJ_STATIC
  */
 struct TPL_ALARM_STATIC {
-    tpl_time_obj_static b_desc;     /**< common part of all objects that
-                                         derive from tpl_time_obj.          */
-    tpl_action          *action;    /**< action to be done when the alarm
-                                         expires                            */
+    VAR(tpl_time_obj_static, AUTOMATIC)         b_desc;   /**< common part of all objects that
+                                                               derive from tpl_time_obj.          */
+    P2VAR(tpl_action, OS_APPL_DATA, AUTOMATIC)  action;   /**< action to be done when the alarm
+                                                               expires                            */
 };
 
 /**
@@ -655,17 +649,17 @@ typedef struct TPL_ALARM_STATIC tpl_alarm_static;
  * that is stored in the queue of a counter.
  */
 struct TPL_TIME_OBJ {
-    tpl_time_obj_static *stat_part; /**< pointer to the static descriptor   */
-    struct TPL_TIME_OBJ *next_to;   /**< next alarm in the active
-                                         alarm list                         */
-    struct TPL_TIME_OBJ *prev_to;   /**< previous alarm in the active
-                                         alarm list                         */
-    tpl_tick            cycle;      /**< cycle delay for cyclic alarms      */
-    tpl_tick            date;       /**< absolute date of the alarm         */
-    tpl_time_obj_state  state;      /**< state of the alarm. An alarm may
-                                         have 2 states: ALARM_SLEEP and
-                                         ALARM_ACTIVE.
-                                         @see #tpl_alarm_state              */
+    P2VAR(tpl_time_obj_static, OS_APPL_DATA, AUTOMATIC) stat_part;  /**< pointer to the static descriptor   */
+    struct P2VAR(TPL_TIME_OBJ, OS_APPL_DATA, AUTOMATIC) next_to;    /**< next alarm in the active
+                                                                         alarm list                         */
+    struct P2VAR(TPL_TIME_OBJ, OS_APPL_DATA, AUTOMATIC) prev_to;    /**< previous alarm in the active
+                                                                         alarm list                         */
+    VAR(tpl_tick, AUTOMATIC)                            cycle;      /**< cycle delay for cyclic alarms      */
+    VAR(tpl_tick, AUTOMATIC)                            date;       /**< absolute date of the alarm         */
+    VAR(tpl_time_obj_state, AUTOMATIC)                  state;      /**< state of the alarm. An alarm may
+                                                                         have 2 states: ALARM_SLEEP and
+                                                                         ALARM_ACTIVE.
+                                                                         @see #tpl_alarm_state              */
 };
 
 /**
@@ -683,16 +677,16 @@ typedef struct TPL_TIME_OBJ tpl_time_obj;
  * This is the data structure used to describe a counter
  */
 struct TPL_COUNTER {
-    const tpl_tick  ticks_per_base;     /**< number of ticks until the
-                                             counter increments             */
-    const tpl_tick  max_allowed_value;  /**< maximum allowed value for
-                                             a counter                      */
-    const tpl_tick  min_cycle;          /**< number of ticks until the
-                                             counter increments             */
-    tpl_tick        current_tick;   /**< current tick value of the counter  */
-    tpl_tick        current_date;   /**< current value of the counter       */
-    tpl_time_obj    *first_to;      /**< active alarms list head            */
-    tpl_time_obj    *next_to;       /**< next active alarms                 */
+    CONST(tpl_tick, AUTOMATIC)                    ticks_per_base;     /**< number of ticks until the
+                                                                           counter increments             */
+    CONST(tpl_tick, AUTOMATIC)                    max_allowed_value;  /**< maximum allowed value for
+                                                                           a counter                      */
+    CONST(tpl_tick, AUTOMATIC)                    min_cycle;          /**< number of ticks until the
+                                                                           counter increments             */
+    VAR(tpl_tick, AUTOMATIC)                      current_tick;   /**< current tick value of the counter  */
+    VAR(tpl_tick, AUTOMATIC)                      current_date;   /**< current value of the counter       */
+    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC)  first_to;       /**< active alarms list head            */
+    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC)  next_to;        /**< next active alarms                 */
 };
 
 /**
@@ -716,15 +710,15 @@ typedef struct TPL_COUNTER tpl_counter;
  * @see AlarmBaseType
  */
 struct ALARM_BASE_TYPE {
-    tpl_tick  maxallowedvalue;  /**< maximum possible allowed count values
-                                     in tick                                */
-    tpl_tick  ticksperbase;     /**< number of ticks required to
-                                     reach a counter-specific (significant)
-                                     unit                                   */
-    tpl_tick  mincycle;         /**< smallest allowed value for the
-                                     cycle-parameter of
-                                     SetRelAlarm/SetAbsAlarm (only for
-                                     systems with extended status)          */
+    VAR(tpl_tick, AUTOMATIC)  maxallowedvalue;  /**< maximum possible allowed count values
+                                                     in tick                                */
+    VAR(tpl_tick, AUTOMATIC)  ticksperbase;     /**< number of ticks required to
+                                                     reach a counter-specific (significant)
+                                                     unit                                   */
+    VAR(tpl_tick, AUTOMATIC)  mincycle;         /**< smallest allowed value for the
+                                                     cycle-parameter of
+                                                     SetRelAlarm/SetAbsAlarm (only for
+                                                     systems with extended status)          */
 };
 
 /**

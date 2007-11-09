@@ -44,7 +44,8 @@
  * The function corresponding to this prototype should be provided
  * by the application
  */
-extern void ErrorHook(StatusType);
+extern FUNC(void, OS_CODE) ErrorHook(
+    VAR(StatusType, AUTOMATIC) error);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
@@ -63,19 +64,19 @@ extern void ErrorHook(StatusType);
  * @see #tpl_service
  */
 union ID_PARAM_BLOCK {
-        TaskType            task_id;        /**< used by
-                                                 #ActivateTask,
-                                                 #ChainTask,
-                                                 #GetTaskState,
-                                                 #SetEvent,
-                                                 #GetEvent                  */
-        TaskRefType         task_id_ref;    /**< used by #GetTaskID         */
-        ResourceType        res_id;         /**< used by #GetResource,
-                                                 #ReleaseResource           */
-        AlarmType           alarm_id;       /**< @todo document this        */
+    VAR(TaskType, AUTOMATIC)            task_id;        /**< used by
+                                                             #ActivateTask,
+                                                             #ChainTask,
+                                                             #GetTaskState,
+                                                             #SetEvent,
+                                                             #GetEvent                  */
+    VAR(TaskRefType, AUTOMATIC)         task_id_ref;    /**< used by #GetTaskID         */
+    VAR(ResourceType, AUTOMATIC)        res_id;         /**< used by #GetResource,
+                                                             #ReleaseResource           */
+    VAR(AlarmType, AUTOMATIC)           alarm_id;       /**< @todo document this        */
 #ifdef WITH_AUTOSAR
-        ScheduleTableType   schedtable_id;  /**< @todo document this        */
-        CounterType         counter_id;     /**< @todo document this        */
+    VAR(ScheduleTableType, AUTOMATIC)   schedtable_id;  /**< @todo document this        */
+    VAR(CounterType, AUTOMATIC)         counter_id;     /**< @todo document this        */
 #endif
 };
 
@@ -88,43 +89,43 @@ union ID_PARAM_BLOCK {
  * @see #tpl_service
  */
 union PARAM_PARAM_BLOCK {
-    TaskStateRefType            state;          /**< used by #GetTaskState  */
-    TickType                    tick;           /**< used by #SetRelAlarm, 
-                                                         #SetAbsAlarm       */
-    TickRefType                 tick_ref;       /**< used by #GetAlarm      */
-    AlarmBaseRefType            alarm_base_ref; /**< used by #GetAlarmBase  */
-    EventMaskType               mask;           /**< used by #SetEvent,
-                                                     #ClearEvent,
-                                                     #WaitEvent             */
-    EventMaskRefType            mask_ref;       /**< used by #GetEvent      */
+    VAR(TaskStateRefType, AUTOMATIC)            state;          /**< used by #GetTaskState  */
+    VAR(TickType, AUTOMATIC)                    tick;           /**< used by #SetRelAlarm,
+                                                                     #SetAbsAlarm       */
+    VAR(TickRefType, AUTOMATIC)                 tick_ref;       /**< used by #GetAlarm      */
+    VAR(AlarmBaseRefType, AUTOMATIC)            alarm_base_ref; /**< used by #GetAlarmBase  */
+    VAR(EventMaskType, AUTOMATIC)               mask;           /**< used by #SetEvent,
+                                                                     #ClearEvent,
+                                                                     #WaitEvent             */
+    VAR(EventMaskRefType, AUTOMATIC)            mask_ref;       /**< used by #GetEvent      */
 #ifdef WITH_AUTOSAR
-    ScheduleTableType           next_st_id;     /**< @todo document this    */
-    ScheduleTableStatusRefType  st_stat;        /**< @todo document this    */
+    VAR(ScheduleTableType, AUTOMATIC)           next_st_id;     /**< @todo document this    */
+    VAR(ScheduleTableStatusRefType, AUTOMATIC)  st_stat;        /**< @todo document this    */
 #endif
 };
 
 /**
- * @struct PARAM_BLOCK 
+ * @struct PARAM_BLOCK
  *
  * This structure gathers all parameters for an error hook
  */
 struct PARAM_BLOCK {
-    union ID_PARAM_BLOCK    id;     /**< identifies the OS element
-                                         concerned by the error */
-    union PARAM_PARAM_BLOCK param;  /**< gives more information about the
-                                         reason of the error */
-    TickType                cycle;  /**< cycle set for a relative alarm */
+    union ID_PARAM_BLOCK      id;     /**< identifies the OS element
+                                            concerned by the error */
+    union PARAM_PARAM_BLOCK   param;  /**< gives more information about the
+                                            reason of the error */
+    VAR(TickType, AUTOMATIC)  cycle;  /**< cycle set for a relative alarm */
 };
 
 /**
  * @struct SERVICE_CALL_DESCRIPTOR
- * 
+ *
  * This structure gathers the os service identifier and its parameters
  */
 struct SERVICE_CALL_DESCRIPTOR {
-    struct PARAM_BLOCK  parameters; /**< information about conditions seen 
+    struct PARAM_BLOCK  parameters; /**< information about conditions seen
                                          when error has been detected */
-    u8                  service_id; /**< identifier of the service which
+    VAR(u8, AUTOMATIC)  service_id; /**< identifier of the service which
                                          raised the error */
 };
 
@@ -167,7 +168,7 @@ typedef struct SERVICE_CALL_DESCRIPTOR tpl_service_call_desc;
  * - #OSError_SetAbsAlarm_AlarmID
  * - #OSError_SetAbsAlarm_start
  * - #OSError_SetAbsAlarm_cycle
- * - #OSError_CancelAlarm_AlarmID  
+ * - #OSError_CancelAlarm_AlarmID
  *
  * Within OS services, these macros should be used to modify this variable :
  * - #STORE_SERVICE
@@ -183,16 +184,25 @@ typedef struct SERVICE_CALL_DESCRIPTOR tpl_service_call_desc;
  * - #STORE_EVENT_MASK
  * - #STORE_EVENT_MASK_REF
  */
-extern tpl_service_call_desc tpl_service;
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 /**
  * this function is used to call the ErrorHook callback
- * 
+ *
  * @param tpl_status The error code which causes the call back
  */
-void tpl_call_error_hook(const tpl_status error);
+FUNC(void, OS_CODE) tpl_call_error_hook(
+    CONST(tpl_status, AUTOMATIC) error);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
@@ -444,7 +454,7 @@ void tpl_call_error_hook(const tpl_status error);
  */
 #define OSError_ActivateTask_TaskID()   \
     (tpl_service.parameters.id.task_id)
-    
+
 /**
  * @def OSError_ChainTask_TaskID
  *
@@ -457,7 +467,7 @@ void tpl_call_error_hook(const tpl_status error);
  */
 #define OSError_ChainTask_TaskID()      \
     (tpl_service.parameters.id.task_id)
-    
+
 /**
  * @def OSError_GetTaskID_TaskID
  *
@@ -470,7 +480,7 @@ void tpl_call_error_hook(const tpl_status error);
  */
 #define OSError_GetTaskID_TaskID()             \
     (tpl_service.parameters.id.task_id_ref)
-    
+
 /**
  * @def OSError_GetTaskState_TaskID
  *
@@ -504,7 +514,7 @@ void tpl_call_error_hook(const tpl_status error);
 /**
  * @def OSError_GetResource_ResID
  *
- * GetResource service error parameter 
+ * GetResource service error parameter
  *
  * Returns the identifier (#ResourceType) of the resource which caused the
  * error
@@ -518,7 +528,7 @@ void tpl_call_error_hook(const tpl_status error);
 /**
  * @def OSError_ReleaseResource_ResID
  *
- * ReleaseResource service error parameter 
+ * ReleaseResource service error parameter
  *
  * Returns the identifier (#ResourceType) of the resource which caused the
  * error
@@ -571,7 +581,7 @@ void tpl_call_error_hook(const tpl_status error);
  */
 #define OSError_ClearEvent_Mask()       \
     (tpl_service.parameters.param.mask)
-    
+
 /**
  * @def OSError_GetEvent_TaskID
  *
@@ -586,7 +596,7 @@ void tpl_call_error_hook(const tpl_status error);
  */
 #define OSError_GetEvent_TaskID()       \
     (tpl_service.parameters.id.task_id)
-  
+
 /**
  * @def OSError_GetEvent_Event
  *
@@ -601,7 +611,7 @@ void tpl_call_error_hook(const tpl_status error);
  */
 #define OSError_GetEvent_Event()        \
     (tpl_service.parameters.param.mask)
-    
+
 /**
  * @def OSError_WaitEvent_Mask
  *
@@ -618,7 +628,7 @@ void tpl_call_error_hook(const tpl_status error);
 /**
  * @def OSError_GetAlarmBase_AlarmID
  *
- * One of GetAlarmBase service error parameters 
+ * One of GetAlarmBase service error parameters
  *
  * Returns the identifier (#AlarmType) of the alarm which caused error
  *
@@ -647,7 +657,7 @@ void tpl_call_error_hook(const tpl_status error);
  */
 #define OSError_GetAlarmBase_Info()     \
     (tpl_service.parameters.param.alarm_base_ref)
-    
+
 /**
  * @def OSError_GetAlarm_AlarmID
  *
@@ -682,13 +692,13 @@ void tpl_call_error_hook(const tpl_status error);
 /**
  * @def OSError_SetRelAlarm_AlarmID
  *
- * One of SetRelAlarm service error parameters 
+ * One of SetRelAlarm service error parameters
  *
  * Returns the identifier (#AlarmType) of the alarm which caused the error
  *
  * @warning this macro does only make sense when used within #ErrorHook
  * function
- * 
+ *
  * @see #OSError_SetRelAlarm_increment
  * @see #OSError_SetRelAlarm_cycle
  */
@@ -779,7 +789,7 @@ void tpl_call_error_hook(const tpl_status error);
 /**
  * @def OSError_CancelAlarm_AlarmID
  *
- * CancelAlarm service error parameter 
+ * CancelAlarm service error parameter
  *
  * Returns the identifier (#AlarmType) of the alarm which caused error
  *
@@ -818,14 +828,14 @@ void tpl_call_error_hook(const tpl_status error);
  * @see #OSError_GetTaskState_TaskID
  * @see #OSError_SetEvent_TaskID
  * @see #OSError_GetEvent_TaskID
- * 
+ *
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_TASK_ID(task_id)   \
     tpl_service.parameters.id.task_id = (task_id);
 #else
 #   define STORE_TASK_ID(task_id)
-#endif 
+#endif
 
 /**
  * @def STORE_TASK_ID_REF
@@ -902,7 +912,7 @@ void tpl_call_error_hook(const tpl_status error);
  *
  * Stores an alarm base tick into service error variable
  *
- * @param ref type is #AlarmBaseRefType 
+ * @param ref type is #AlarmBaseRefType
  *
  * @see #OSError_GetAlarmBase_Info
  */
@@ -917,9 +927,9 @@ void tpl_call_error_hook(const tpl_status error);
  * @def STORE_TICK_REF
  *
  * Stores a tick reference into service error variable
- * 
+ *
  * @param ref type is #TickRefType
- * 
+ *
  * @see #OSError_GetAlarm_Tick
  */
 #ifdef WITH_ERROR_HOOK
@@ -1010,7 +1020,7 @@ void tpl_call_error_hook(const tpl_status error);
 #define PROCESS_ERROR(error)        \
     if (error != E_OK) {            \
         tpl_call_error_hook(error); \
-    }                               
+    }
 #else
 #define PROCESS_ERROR(error)
 #endif
@@ -1023,7 +1033,7 @@ void tpl_call_error_hook(const tpl_status error);
  * while there is both :
  * - OS_EXTENDED defined
  * - an error occurred
- * 
+ *
  * @param result the error code variable to check
  *
  * @see #END_IF_NO_EXTENDED_ERROR
@@ -1052,7 +1062,7 @@ void tpl_call_error_hook(const tpl_status error);
 /**
  * @def LOCK_WHEN_HOOK
  *
- * Locks preemption only when #WITH_ERROR_HOOK is defined. 
+ * Locks preemption only when #WITH_ERROR_HOOK is defined.
  *
  * Used for some services that does not require locking when
  * #WITH_ERROR_HOOK is not defined while it is needed when
@@ -1164,7 +1174,7 @@ void tpl_call_error_hook(const tpl_status error);
 /**
  * @def CHECK_TASK_ID_ERROR
  *
- * This macro checks for out of range task_id error. It 
+ * This macro checks for out of range task_id error. It
  * is used in os services which uses task_id as parameter.
  *
  * @param task_id #TaskType (so called task_id) to check
@@ -1235,7 +1245,7 @@ void tpl_call_error_hook(const tpl_status error);
         result = (tpl_status)E_OS_CALLEVEL;                             \
     }
 #endif
-    
+
 /*  no extended error checking !(OS_EXTENDED).    */
 #if !defined(OS_EXTENDED)
 #   define CHECK_TASK_CALL_LEVEL_ERROR(result)
@@ -1273,7 +1283,7 @@ void tpl_call_error_hook(const tpl_status error);
         result = (tpl_status)E_OS_CALLEVEL;                             \
     }
 #endif
-    
+
 /*  no extended error checking !(OS_EXTENDED).    */
 #if !defined(OS_EXTENDED)
 #   define CHECK_ISR2_CALL_LEVEL_ERROR(result)
@@ -1544,10 +1554,10 @@ void tpl_call_error_hook(const tpl_status error);
 /**
  * @def CHECK_RESOURCE_PRIO_ERROR_ON_GET
  *
- * Checks if the running task or interrupt can get the resource. 
+ * Checks if the running task or interrupt can get the resource.
  * Especially, it checks that :
  * - the task does not have an higher priority than
- *   the ceiling priority of the resource it gets. 
+ *   the ceiling priority of the resource it gets.
  * - the resource is not owned by another task
  *
  * @param res the resource (#ResourceType) the task get

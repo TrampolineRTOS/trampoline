@@ -3,7 +3,7 @@
  *
  * @section desc File description
  *
- * This header file provides standard OSEK-VDX API. We do not give detailed 
+ * This header file provides standard OSEK-VDX API. We do not give detailed
  * documentation here, you just have to follow the specification reference for
  * each element you need more informations.
  *
@@ -24,7 +24,7 @@
  * $Author$
  * $URL$
  */
- 
+
 #ifndef TPL_OS_H
 #define TPL_OS_H
 
@@ -86,7 +86,7 @@ typedef tpl_application_mode AppModeType;
  * see paragraph 13.7.2,
  * pages 66+ of OSEK/VDX 2.2.2 spec
  */
- 
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -97,7 +97,7 @@ typedef tpl_application_mode AppModeType;
  *
  * see paragraph 13.7.2.1 page 66 of OSEK/VDX 2.2.2 spec
  */
-AppModeType GetActiveApplicationMode(void);
+FUNC(AppModeType, OS_CODE) GetActiveApplicationMode(void);
 
 
 /**
@@ -107,7 +107,9 @@ AppModeType GetActiveApplicationMode(void);
  *
  * see paragraph 13.7.2.2 page 66 of OSEK/VDX 2.2.2 spec
  */
-void StartOS(const AppModeType mode);
+FUNC(void, OS_CODE) StartOS(
+    CONST(AppModeType, AUTOMATIC) mode
+);
 
 
 /**
@@ -117,7 +119,9 @@ void StartOS(const AppModeType mode);
  *
  * see paragraph 13.7.2.3 page 67 of OSEK/VDX 2.2.2 spec
  */
-void ShutdownOS(const StatusType error);
+FUNC(void, OS_CODE) ShutdownOS(
+    CONST(StatusType, AUTOMATIC) error
+);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

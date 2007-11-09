@@ -40,7 +40,7 @@
  * @typedef TickType
  *
  * Represents a count value in ticks
- * 
+ *
  * see paragraph 13.6.1 page 62 of OSEK/VDX 2.2.2 spec
  */
 typedef tpl_tick            TickType;
@@ -52,7 +52,7 @@ typedef tpl_tick            TickType;
  *
  * see paragraph 13.6.1 page 62 of OSEK/VDX 2.2.2 spec
  */
-typedef tpl_tick            *TickRefType;
+typedef P2VAR(tpl_tick, OS_APPL_DATA, AUTOMATIC)  TickRefType;
 
 /**
  * @typedef AlarmBaseType
@@ -70,7 +70,7 @@ typedef tpl_alarm_base      AlarmBaseType;
  *
  * See paragraph 13.6.1 page 62 of OSEK/VDX 2.2.2 spec
  */
-typedef tpl_alarm_base      *AlarmBaseRefType;
+typedef P2VAR(tpl_alarm_base, OS_APPL_DATA, AUTOMATIC)  AlarmBaseRefType;
 
 /**
  * @typedef AlarmType
@@ -114,9 +114,9 @@ typedef tpl_alarm_id        AlarmType;
  *
  * see paragraph 13.6.3.1 page 63 of OSEK/VDX 2.2.2 spec
  */
-StatusType GetAlarmBase(
-    const AlarmType     alarm_id,
-    AlarmBaseRefType    info);
+FUNC(StatusType, OS_CODE) GetAlarmBase(
+    CONST(AlarmType, AUTOMATIC)       alarm_id,
+    VAR(AlarmBaseRefType, AUTOMATIC)  info);
 
 
 /**
@@ -131,9 +131,9 @@ StatusType GetAlarmBase(
  *
  * see paragraph 13.6.3.2 page 63 of OSEK/VDX 2.2.2 spec
  */
-StatusType GetAlarm(
-    const AlarmType alarm_id,
-    TickRefType tick);
+FUNC(StatusType, OS_CODE) GetAlarm(
+    CONST(AlarmType, AUTOMATIC) alarm_id,
+    VAR(TickRefType, AUTOMATIC) tick);
 
 
 /**
@@ -151,10 +151,10 @@ StatusType GetAlarm(
  *
  * see paragraph 13.6.3.3 page 63 of OSEK/VDX 2.2.2 spec
  */
-StatusType SetRelAlarm(
-    const AlarmType alarm_id,
-    const TickType  increment,
-    const TickType  cycle);
+FUNC(StatusType, OS_CODE) SetRelAlarm(
+    CONST(AlarmType, AUTOMATIC) alarm_id,
+    CONST(TickType, AUTOMATIC)  increment,
+    CONST(TickType, AUTOMATIC)  cycle);
 
 
 /**
@@ -173,15 +173,15 @@ StatusType SetRelAlarm(
  *
  * see paragraph 13.6.3.3 page 63 of OSEK/VDX 2.2.2 spec
  */
-StatusType SetAbsAlarm(
-    const AlarmType alarm_id,
-    const TickType  start,
-    const TickType  cycle);
+FUNC(StatusType, OS_CODE) SetAbsAlarm(
+    CONST(AlarmType, AUTOMATIC) alarm_id,
+    CONST(TickType, AUTOMATIC)  start,
+    CONST(TickType, AUTOMATIC)  cycle);
 
 
 /**
  * Cancels the alarm
- * 
+ *
  * @param alarm_id identifier of the alarm
  *
  * @retval E_OK no error
@@ -190,7 +190,8 @@ StatusType SetAbsAlarm(
  *
  * see paragraph 13.6.3.3 page 63 of OSEK/VDX 2.2.2 spec
  */
-StatusType CancelAlarm(const AlarmType alarm_id);
+FUNC(StatusType, OS_CODE) CancelAlarm(
+  CONST(AlarmType, AUTOMATIC) alarm_id);
 
 
 /*
@@ -198,7 +199,7 @@ StatusType CancelAlarm(const AlarmType alarm_id);
  * see paragraph 13.7,
  * pages 66+ of OSEK/VDX 2.2.2 spec
  */
- 
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

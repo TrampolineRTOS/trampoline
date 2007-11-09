@@ -25,13 +25,14 @@
  * $Author$
  * $URL$
  */
- 
+
 #include "tpl_as_isr_kernel.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-void tpl_disable_isr2_by_user (tpl_isr *isr2)
+FUNC(void, OS_CODE) tpl_disable_isr2_by_user (
+    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr2)
 {
   if (isr2->enabled == DISABLED_BY_TIMING_PROTECTION)
     isr2->enabled = DISABLED_BY_BOTH;
@@ -39,7 +40,8 @@ void tpl_disable_isr2_by_user (tpl_isr *isr2)
     isr2->enabled = DISABLED_BY_USER;
 }
 
-void tpl_disable_isr2_by_timing_protection (tpl_isr *isr2)
+FUNC(void, OS_CODE) tpl_disable_isr2_by_timing_protection (
+    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr2)
 {
   if (isr2->enabled == DISABLED_BY_USER)
   {
@@ -50,7 +52,8 @@ void tpl_disable_isr2_by_timing_protection (tpl_isr *isr2)
     isr2->enabled = DISABLED_BY_TIMING_PROTECTION;
 }
 
-void tpl_enable_isr2_by_user (tpl_isr *isr2)
+FUNC(void, OS_CODE) tpl_enable_isr2_by_user (
+    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr2)
 {
   if (isr2->enabled == DISABLED_BY_USER)
     isr2->enabled = ENABLED;
@@ -58,7 +61,8 @@ void tpl_enable_isr2_by_user (tpl_isr *isr2)
     isr2->enabled = DISABLED_BY_TIMING_PROTECTION;
 }
 
-void tpl_enable_isr2_by_timing_protection (tpl_isr *isr2)
+FUNC(void, OS_CODE) tpl_enable_isr2_by_timing_protection (
+    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr2)
 {
   if (isr2->enabled == DISABLED_BY_BOTH)
     isr2->enabled = DISABLED_BY_USER;
@@ -66,9 +70,10 @@ void tpl_enable_isr2_by_timing_protection (tpl_isr *isr2)
     isr2->enabled = ENABLED;
 }
 
-u8 tpl_is_isr2_enabled (tpl_isr *isr2)
+FUNC(u8, OS_CODE) tpl_is_isr2_enabled (
+    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr2)
 {
-  u8 result;
+  VAR(u8, AUTOMATIC) result;
 
   if (isr2->enabled == ENABLED)
     result = TRUE;

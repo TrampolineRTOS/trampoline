@@ -69,7 +69,8 @@
  *
  * see paragraph 13.2.3.1 page 50 of OSEK/VDX 2.2.3 spec
  */
-StatusType ActivateTask(const TaskType task_id);
+FUNC(StatusType, OS_CODE) ActivateTask(
+    CONST(TaskType, AUTOMATIC) task_id);
 
 
 /**
@@ -83,7 +84,7 @@ StatusType ActivateTask(const TaskType task_id);
  *
  * see paragraph 13.2.3.2 page 51 of OSEK/VDX 2.2.3 spec
  */
-StatusType TerminateTask(void);
+FUNC(StatusType, OS_CODE) TerminateTask(void);
 
 
 /**
@@ -99,7 +100,8 @@ StatusType TerminateTask(void);
  *
  * see paragraph 13.2.3.3 page 51 of OSEK/VDX 2.2.3 spec
  */
-StatusType ChainTask(const TaskType task_id);
+FUNC(StatusType, OS_CODE) ChainTask(
+    CONST(TaskType, AUTOMATIC) task_id);
 
 
 /**
@@ -111,7 +113,7 @@ StatusType ChainTask(const TaskType task_id);
  *
  * see paragraph 13.2.3.4 page 52 of OSEK/VDX 2.2.3 spec
  */
-StatusType Schedule(void);
+FUNC(StatusType, OS_CODE) Schedule(void);
 
 
 /**
@@ -124,7 +126,8 @@ StatusType Schedule(void);
  *
  * see paragraph 13.2.3.5 page 53 of OSEK/VDX 2.2.3 spec
  */
-StatusType GetTaskID(TaskRefType task_id);
+FUNC(StatusType, OS_CODE) GetTaskID(
+    VAR(TaskRefType, AUTOMATIC) task_id);
 
 
 /**
@@ -139,9 +142,9 @@ StatusType GetTaskID(TaskRefType task_id);
  *
  * see paragraph 13.2.3.6 page 53 of OSEK/VDX 2.2.3 spec
  */
-StatusType GetTaskState(
-    const TaskType      task_id,
-    TaskStateRefType    state);
+FUNC(StatusType, OS_CODE) GetTaskState(
+    CONST(TaskType, AUTOMATIC)        task_id,
+    VAR(TaskStateRefType, AUTOMATIC)  state);
 
 
 #define OS_STOP_SEC_CODE

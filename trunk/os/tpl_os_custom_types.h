@@ -6,7 +6,7 @@
  * This file gathers all data types which can be changed by user for the
  * needs of its application. Please refer to comment of each type for more
  * details.
- * 
+ *
  * @section Copyright
  *
  * Trampoline OS
@@ -24,7 +24,7 @@
  * $Author$
  * $URL$
  */
- 
+
 #ifndef TPL_OS_CUSTOM_TYPES_H
 #define TPL_OS_CUSTOM_TYPES_H
 
@@ -108,14 +108,14 @@ typedef u16 tpl_stack_size;
 /**
  * tpl_buffer is a pointer to a chunk of data in memory
  */
-typedef u8 *tpl_buffer;
+typedef P2VAR(u8, OS_APPL_DATA, AUTOMATIC) tpl_buffer;
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 /**
  * @internal
- * 
+ *
  * Used to index the scheduled_watchdog array.
- * 
+ *
  * @see #tpl_timing_protection
  */
 typedef u8 tpl_scheduled_watchdog_id;
@@ -133,14 +133,14 @@ typedef u32 tpl_time;
 #ifdef WITH_AUTOSAR
 /**
  * @internal
- * 
+ *
  * @todo: document this
  */
 typedef u32 tpl_counter_id;
 
 /**
  * @internal
- * 
+ *
  * @todo: document this
  */
 typedef u8 tpl_isr_id;

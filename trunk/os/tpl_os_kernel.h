@@ -55,7 +55,7 @@
  * @def OS_TASK
  *
  * State of trampoline : running a task
- * 
+ *
  * @see #tpl_os_state
  */
 #define OS_TASK 1U
@@ -82,7 +82,7 @@
  * Currently running executable object. This "executable object" can be a task
  * or an interrupt service routine
  */
-extern tpl_exec_common      *tpl_running_obj;
+extern P2VAR(tpl_exec_common, OS_APPL_DATA, OS_VAR) tpl_running_obj;
 
 
 #ifndef NO_TASK
@@ -95,7 +95,7 @@ extern tpl_exec_common      *tpl_running_obj;
  * So a table of pointer is used. The size of this table is static
  * and known at compile time
  */
-extern tpl_task             *tpl_task_table[TASK_COUNT];
+extern P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC) tpl_task_table[TASK_COUNT];
 #endif
 
 
@@ -105,7 +105,7 @@ extern tpl_task             *tpl_task_table[TASK_COUNT];
  *
  * Index in this array correspond to the #ResourceType of the resource
  */
-extern tpl_resource         *tpl_resource_table[RESOURCE_COUNT];
+extern P2VAR(tpl_resource, OS_APPL_DATA, AUTOMATIC) tpl_resource_table[RESOURCE_COUNT];
 #endif
 
 
@@ -115,7 +115,7 @@ extern tpl_resource         *tpl_resource_table[RESOURCE_COUNT];
  *
  * Index in this array correspond to the #AlarmType of the alarm
  */
-extern tpl_time_obj         *tpl_alarm_table[ALARM_COUNT];
+extern P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) tpl_alarm_table[ALARM_COUNT];
 #endif
 
 
@@ -125,7 +125,7 @@ extern tpl_time_obj         *tpl_alarm_table[ALARM_COUNT];
  *
  * Index in this array correspond to the Isr identifier
  */
-extern tpl_isr              *tpl_isr_table[ISR_COUNT];
+extern P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) tpl_isr_table[ISR_COUNT];
 #endif
 
 #ifdef WITH_AUTOSAR
@@ -135,7 +135,7 @@ extern tpl_isr              *tpl_isr_table[ISR_COUNT];
  *
  * Index in this array correspond to the schedule table identifier
  */
-extern tpl_schedule_table   *tpl_schedtable_table[SCHEDTABLE_COUNT];
+extern P2VAR(tpl_schedule_table, OS_APPL_DATA, AUTOMATIC) tpl_schedtable_table[SCHEDTABLE_COUNT];
 #endif
 #endif
 
@@ -152,7 +152,7 @@ extern tpl_schedule_table   *tpl_schedtable_table[SCHEDTABLE_COUNT];
  * - #OS_IDLE
  * - #OS_ISR2
  */
-extern u8   tpl_os_state;
+extern VAR(u8, OS_VAR)  tpl_os_state;
 
 
 /**
@@ -160,9 +160,9 @@ extern u8   tpl_os_state;
  *
  * @see #RES_SCHEDULER
  */
-extern tpl_resource res_sched;
+extern VAR(tpl_resource, OS_VAR) res_sched;
 
-extern tpl_internal_resource INTERNAL_RES_SCHEDULER;
+extern VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER;
 
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
@@ -174,30 +174,36 @@ extern tpl_internal_resource INTERNAL_RES_SCHEDULER;
 /**
  * Kernel functions
  */
-extern void tpl_schedule(const u8 from);
+extern FUNC(void, OS_CODE) tpl_schedule(
+    CONST(u8, AUTOMATIC) from);
 
 
-extern tpl_status tpl_activate_task(tpl_task *a_task);
+extern FUNC(tpl_status, OS_CODE) tpl_activate_task(
+    P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC) a_task);
 
 
-extern tpl_status tpl_set_event(
-    tpl_task                *a_task,
-    const tpl_event_mask    incoming_event);
+extern FUNC(tpl_status, OS_CODE) tpl_set_event(
+    P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC)  a_task,
+    CONST(tpl_event_mask, AUTOMATIC)          incoming_event);
 
-extern void tpl_init_exec_object(tpl_exec_common *exec_obj);
-
-
-extern void tpl_put_exec_object(
-    tpl_exec_common *exec_obj,
-    const u8        kind);
-
-   
-extern void tpl_init_os(const tpl_application_mode app_mode);
+extern FUNC(void, OS_CODE) tpl_init_exec_object(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj);
 
 
-extern void tpl_get_internal_resource(tpl_exec_common *a_task);
+extern FUNC(void, OS_CODE) tpl_put_exec_object(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj,
+    CONST(u8, AUTOMATIC)                            kind);
 
-extern void tpl_release_internal_resource(tpl_exec_common *a_task);
+
+extern FUNC(void, OS_CODE) tpl_init_os(
+    CONST(tpl_application_mode, AUTOMATIC) app_mode);
+
+
+extern FUNC(void, OS_CODE) tpl_get_internal_resource(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) a_task);
+
+extern FUNC(void, OS_CODE) tpl_release_internal_resource(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) a_task);
 
 
 #define OS_STOP_SEC_CODE

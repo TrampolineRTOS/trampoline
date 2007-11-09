@@ -5,7 +5,7 @@
  *
  * Trampoline stack monitoring. This is an AUTOSAR specific module.
  * See paragraph 7.4 of AUTOSAR OS Specifications v2.1.
- * 
+ *
  * @section copyright Copyright
  *
  * Trampoline OS
@@ -32,7 +32,7 @@
 
 /**
  * @def SCALABILITY_CLASS
- * 
+ *
  * @todo to be defined by GOIL
  */
 #ifndef SCALABILITY_CLASS
@@ -52,7 +52,8 @@
  *
  * @see #ProtectionHook
  */
-void tpl_check_stack (tpl_exec_common *this_exec_obj);
+FUNC(void, OS_CODE) tpl_check_stack (
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

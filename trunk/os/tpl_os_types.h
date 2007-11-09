@@ -33,7 +33,7 @@
  *
  * Status information for many services. Values names are usually prefixed by
  * E_OS_*. Each API service provides more informations about error codes.
- * 
+ *
  * See paragraph 13.1, page 48 of OSEK/VDX 2.2.2 spec
  */
 typedef tpl_status      StatusType;
@@ -54,7 +54,7 @@ typedef tpl_exec_state  TaskStateType;
  *
  * see paragraph 13.2.1, page 49 of OSEK/VDX 2.2.2 spec
  */
-typedef tpl_exec_state  *TaskStateRefType;
+typedef P2VAR(tpl_exec_state, OS_APPL_DATA, AUTOMATIC)  TaskStateRefType;
 
 /**
  * @typedef TaskType
@@ -72,7 +72,7 @@ typedef tpl_task_id     TaskType;
  *
  * see paragraph 13.2.1, page 49 of OSEK/VDX 2.2.2 spec
  */
-typedef tpl_task_id     *TaskRefType;
+typedef P2VAR(tpl_task_id, OS_APPL_DATA, AUTOMATIC) TaskRefType;
 
 #endif /* TPL_OS_TYPES_H */
 

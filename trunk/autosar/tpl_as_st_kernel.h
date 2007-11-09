@@ -23,7 +23,7 @@
  * $Author$
  * $URL$
  */
- 
+
 #ifndef TPL_AS_ST_KERNEL_H
 #define TPL_AS_ST_KERNEL_H
 
@@ -40,16 +40,16 @@
 #define SCHEDULETABLE_WAITING                   (TIME_OBJ_ACTIVE | 0x08)
 #define SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS   (TIME_OBJ_ACTIVE | 0x0C)
 
-typedef u8  tpl_schedtable_state;
+typedef VAR(u8, AUTOMATIC)  tpl_schedtable_state;
 
 /* Synchronization strategies */
 #define SCHEDTABLE_NO_SYNC      0
 #define SCHEDTABLE_SMOOTH_SYNC  1
 #define SCHEDTABLE_HARD_SYNC    2
 
-typedef u8  tpl_sync_strategy;
-typedef u16 tpl_action_count ;
-typedef u16 tpl_expiry_count ;
+typedef VAR(u8, AUTOMATIC)  tpl_sync_strategy;
+typedef VAR(u16, AUTOMATIC) tpl_action_count ;
+typedef VAR(u16, AUTOMATIC) tpl_expiry_count ;
 
 /**
  * @struct TPL_SCHEDTABLE_SYNC
@@ -58,9 +58,8 @@ typedef u16 tpl_expiry_count ;
  * scheme of a schedule table.
  */
 struct TPL_SCHEDTABLE_SYNC {
-    tpl_sync_strategy   sync_strat; /**< Synchronization strategy (hard or
-                                         smooth)                            */
-    
+    VAR(tpl_sync_strategy, AUTOMATIC) sync_strat; /**< Synchronization strategy (hard or
+                                                       smooth)                            */
 };
 
 /**
@@ -74,12 +73,12 @@ struct TPL_SCHEDTABLE_SYNC {
  * period of the schedule table.
  */
 struct TPL_EXPIRY_POINT {
-    tpl_tick            offset;     /**< offset of the actions from the
-                                         start time of the schedule table   */
-    tpl_action_count    count;      /**< number of actions associated with
-                                         the expiry point                   */
-    tpl_action          **actions;  /**< pointer to an array of actions to
-                                         be done at that offset.            */
+    VAR(tpl_tick, AUTOMATIC)                    offset;   /**< offset of the actions from the
+                                                               start time of the schedule table   */
+    VAR(tpl_action_count, AUTOMATIC)            count;    /**< number of actions associated with
+                                                               the expiry point                   */
+    P2VAR(tpl_action, OS_APPL_DATA, AUTOMATIC) *actions;  /**< pointer to an array of actions to
+                                                               be done at that offset.            */
 };
 
 /**
@@ -98,20 +97,20 @@ typedef struct TPL_EXPIRY_POINT tpl_expiry_point;
  * This structure inherit from the TPL_TIME_OBJ structure
  */
 struct TPL_SCHEDULE_TABLE {
-    tpl_time_obj                b_desc;     /**< common part for all
-                                                 objects that derive
-                                                 from tpl_time_obj          */
-    struct TPL_SCHEDULE_TABLE   *next;      /**< next schedule table to
-                                                 start                      */
-    tpl_expiry_count            index;      /**< next expiry point to
-                                                 process in the schedule
-                                                 table                      */
-    tpl_bool                    gt_sync;    /**< the schedule table has
-                                                 been started synchronous
-                                                 to global time             */
-    tpl_tick                    gt_offset;  /**< offset to the global time  */
-    tpl_tick                    cur_offset; /**< offset to reduce to be
-                                                 synchronous                */
+    VAR(tpl_time_obj, AUTOMATIC)                              b_desc;     /**< common part for all
+                                                                               objects that derive
+                                                                               from tpl_time_obj          */
+    struct P2VAR(TPL_SCHEDULE_TABLE, OS_APPL_DATA, AUTOMATIC) next;       /**< next schedule table to
+                                                                               start                      */
+    VAR(tpl_expiry_count, AUTOMATIC)                          index;      /**< next expiry point to
+                                                                               process in the schedule
+                                                                               table                      */
+    VAR(tpl_bool, AUTOMATIC)                                  gt_sync;    /**< the schedule table has
+                                                                               been started synchronous
+                                                                               to global time             */
+    VAR(tpl_tick, AUTOMATIC)                                  gt_offset;  /**< offset to the global time  */
+    VAR(tpl_tick, AUTOMATIC)                                  cur_offset; /**< offset to reduce to be
+                                                                               synchronous                */
 };
 
 /**
@@ -136,18 +135,18 @@ typedef struct TPL_SCHEDULE_TABLE tpl_schedule_table;
  * @see #TPL_TIME_OBJ_STATIC
  */
 struct TPL_SCHEDTABLE_STATIC {
-    tpl_time_obj_static b_desc;     /**< common part of all objects that
-                                         derive from tpl_time_obj.          */
-    tpl_expiry_point    **expiry;   /**<  pointer to an array of expiry
-                                         points                             */
-    tpl_expiry_count    count;      /**< number of expiry points in the
-                                         schedule table                     */
-    tpl_sync_strategy   sync_strat; /**< schedule table synchronization
-                                         strategy.
-                                         @see #tpl_sync_strategy            */
-    tpl_bool            periodic;   /**< TRUE if the schedule table is a
-                                         periodic schedule table, FALSE
-                                         otherwise                          */
+    VAR(tpl_time_obj_static, AUTOMATIC)               b_desc;     /**< common part of all objects that
+                                                                       derive from tpl_time_obj.          */
+    P2VAR(tpl_expiry_point, OS_APPL_DATA, AUTOMATIC) *expiry;     /**< pointer to an array of expiry
+                                                                       points                             */
+    VAR(tpl_expiry_count, AUTOMATIC)                  count;      /**< number of expiry points in the
+                                                                       schedule table                     */
+    VAR(tpl_sync_strategy, AUTOMATIC)                 sync_strat; /**< schedule table synchronization
+                                                                       strategy.
+                                                                       @see #tpl_sync_strategy            */
+    VAR(tpl_bool, AUTOMATIC)                          periodic;   /**< TRUE if the schedule table is a
+                                                                       periodic schedule table, FALSE
+                                                                       otherwise                          */
 };
 
 /**
@@ -171,7 +170,8 @@ typedef struct TPL_SCHEDTABLE_STATIC tpl_schedtable_static;
  * point and execute the corresponding actions. Then the alarm is updated to
  * match the offset of the next expiry point.
  */
-tpl_status tpl_process_schedtable(tpl_time_obj *t_obj);
+FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
+    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) t_obj);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

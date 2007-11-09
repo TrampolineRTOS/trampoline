@@ -39,9 +39,10 @@
 
 #define ON_TIMING_PROTECTION_END() }
 
-static tpl_time delay_to_next_timeframe (tpl_time timeframe)
+_STATIC_ FUNC(tpl_time, OS_CODE) delay_to_next_timeframe (
+    VAR(tpl_time, AUTOMATIC) timeframe)
 {
-  tpl_time result;
+  VAR(tpl_time, AUTOMATIC) result;
 
   result = timeframe;
   /*result -= tpl_get_local_current_date () % timeframe;*/
@@ -49,22 +50,23 @@ static tpl_time delay_to_next_timeframe (tpl_time timeframe)
   return result;
 }
 
-static u8 watchdog_callback (tpl_watchdog *this_watchdog)
+_STATIC_ FUNC(u8, OS_CODE) watchdog_callback (
+    P2VAR(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) this_watchdog)
 {
-  tpl_exec_common *exec_obj;
-  tpl_watchdog watchdog;
-  u8 need_resched = FALSE;
-  tpl_scheduled_watchdog *found_watchdog;
-  tpl_scheduled_watchdog *previous_watchdog;
-  tpl_scheduled_watchdog *new_watchdog;
-  tpl_time current_date;
-  
-  /* get the date one time to avoid offset while 
+  P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj;
+  VAR(tpl_watchdog, AUTOMATIC) watchdog;
+  VAR(u8, AUTOMATIC) need_resched = FALSE;
+  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) found_watchdog;
+  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) previous_watchdog;
+  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) new_watchdog;
+  VAR(tpl_time, AUTOMATIC) current_date;
+
+  /* get the date one time to avoid offset while
    * we make assumption everything is done atomically
    * here
    */
   current_date = tpl_get_local_current_date ();
-  
+
   switch (this_watchdog->type)
   {
     case EXEC_BUDGET:
@@ -72,7 +74,7 @@ static u8 watchdog_callback (tpl_watchdog *this_watchdog)
       /* remove timeframe watchdog for the task before killing it */
       watchdog.exec_obj = this_watchdog->exec_obj;
       watchdog.type = TIMEFRAME_BOUNDARY;
-      if (find_scheduled_watchdog(&watchdog, &found_watchdog, 
+      if (find_scheduled_watchdog(&watchdog, &found_watchdog,
           &previous_watchdog))
       {
         remove_scheduled_watchdog(found_watchdog, previous_watchdog);
@@ -82,7 +84,7 @@ static u8 watchdog_callback (tpl_watchdog *this_watchdog)
         DOW_ASSERT (0); /* the timeframe must exist) */
       }
       /* as the task will be killed in any case of ProtectionHook return,
-       * we have to remove any scheduled timing protection about 
+       * we have to remove any scheduled timing protection about
        * locks/resources the ISR2 can get */
       unschedule_exec_obj_watchdogs (this_watchdog->exec_obj);
 
@@ -93,7 +95,7 @@ static u8 watchdog_callback (tpl_watchdog *this_watchdog)
     case ALL_INT_LOCK:
     case OS_INT_LOCK:
       /* as the task will be killed in any case of ProtectionHook return,
-       * we have to remove any scheduled timing protection about 
+       * we have to remove any scheduled timing protection about
        * locks/resources the ISR2 can get */
       unschedule_exec_obj_watchdogs (this_watchdog->exec_obj);
 
@@ -107,7 +109,7 @@ static u8 watchdog_callback (tpl_watchdog *this_watchdog)
         /* remove budget monitor watchdog if any */
         watchdog.exec_obj = exec_obj;
         watchdog.type = EXEC_BUDGET;
-        if (find_scheduled_watchdog(&watchdog, &found_watchdog, 
+        if (find_scheduled_watchdog(&watchdog, &found_watchdog,
             &previous_watchdog))
         {
           remove_scheduled_watchdog(found_watchdog, previous_watchdog);
@@ -116,7 +118,7 @@ static u8 watchdog_callback (tpl_watchdog *this_watchdog)
         exec_obj->time_left =
              exec_obj->static_desc->timing_protection->execution_budget;
         exec_obj->monitor_start_date = tpl_get_local_current_date ();
-        /* if the task is running, we need to schedule a 
+        /* if the task is running, we need to schedule a
          * budget monitor watchdog immediatly
          */
         if (exec_obj->state == RUNNING)
@@ -134,9 +136,9 @@ static u8 watchdog_callback (tpl_watchdog *this_watchdog)
         /* unlock this ISR2 if needed */
         if (exec_obj->static_desc->timing_protection->count_limit == 0)
           tpl_enable_isr2_by_timing_protection ((tpl_isr*)exec_obj);
-        
+
         /* reset the activation countdown for the isr */
-        exec_obj->time_left = 
+        exec_obj->time_left =
            exec_obj->static_desc->timing_protection->count_limit;
       }
 
@@ -152,19 +154,20 @@ static u8 watchdog_callback (tpl_watchdog *this_watchdog)
       DOW_ASSERT (0);
       break;
   }
-  
+
   return need_resched;
 }
 
-static void start_timeframe (tpl_exec_common *this_exec_obj)
+_STATIC_ FUNC(void, OS_CODE) start_timeframe (
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
-  tpl_watchdog watchdog;
-  tpl_time timeframe;
-  tpl_time delay_to_timeframe;
+  VAR(tpl_watchdog, AUTOMATIC) watchdog;
+  VAR(tpl_time, AUTOMATIC) timeframe;
+  VAR(tpl_time, AUTOMATIC) delay_to_timeframe;
 
   DOW_ASSERT (this_exec_obj != NULL);
 
-  /* schedule the timeframe end boundary's watchdog 
+  /* schedule the timeframe end boundary's watchdog
   * (timeframe period is synchronized with the current date
   * modulo timeframe, see delay_to_next_timeframe function)
   */
@@ -177,38 +180,40 @@ static void start_timeframe (tpl_exec_common *this_exec_obj)
   schedule_watchdog (&watchdog, delay_to_timeframe);
 }
 
-static void stop_timeframe (tpl_exec_common *this_exec_obj)
+_STATIC_ FUNC(void, OS_CODE) stop_timeframe (
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
-  tpl_watchdog watchdog;
+  VAR(tpl_watchdog, AUTOMATIC) watchdog;
 
   DOW_ASSERT (this_exec_obj != NULL);
 
-  watchdog.exec_obj = this_exec_obj; 
+  watchdog.exec_obj = this_exec_obj;
   watchdog.type = TIMEFRAME_BOUNDARY;
   unschedule_watchdog (&watchdog);
 }
 
-void tpl_init_timing_protection ()
+FUNC(void, OS_CODE) tpl_init_timing_protection(void)
 {
   init_watchdog_kernel (watchdog_callback);
 }
 
-void tpl_start_budget_monitor (tpl_exec_common *this_exec_obj)
+FUNC(void, OS_CODE) tpl_start_budget_monitor (
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
-  tpl_watchdog watchdog;
-  
+  VAR(tpl_watchdog, AUTOMATIC) watchdog;
+
   DOW_ASSERT (this_exec_obj != NULL);
 
   ON_TIMING_PROTECTION_BEGIN(this_exec_obj)
     /* schedule the watchdog */
     watchdog.exec_obj = this_exec_obj;
     watchdog.type = EXEC_BUDGET;
-    schedule_watchdog (&watchdog, 
+    schedule_watchdog (&watchdog,
        this_exec_obj->static_desc->timing_protection->execution_budget);
-    
+
     /* initialize the budget monitor counter */
     this_exec_obj->monitor_start_date = tpl_get_local_current_date ();
-    this_exec_obj->time_left = 
+    this_exec_obj->time_left =
        this_exec_obj->static_desc->timing_protection->execution_budget;
 
     /* start the timeframe */
@@ -217,63 +222,67 @@ void tpl_start_budget_monitor (tpl_exec_common *this_exec_obj)
   ON_TIMING_PROTECTION_END()
 }
 
-void tpl_pause_budget_monitor (tpl_exec_common *this_exec_obj)
+FUNC(void, OS_CODE) tpl_pause_budget_monitor (
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
-  tpl_watchdog watchdog;
-  
+  VAR(tpl_watchdog, AUTOMATIC) watchdog;
+
   DOW_ASSERT (this_exec_obj != NULL);
-    
+
   ON_TIMING_PROTECTION_BEGIN(this_exec_obj)
     /* unschedule the related watchdog */
     watchdog.exec_obj = this_exec_obj;
     watchdog.type = EXEC_BUDGET;
     unschedule_watchdog (&watchdog);
-  
+
     /* update the budget monitor counter */
-    this_exec_obj->time_left -= 
+    this_exec_obj->time_left -=
        tpl_get_local_current_date () - this_exec_obj->monitor_start_date;
   ON_TIMING_PROTECTION_END()
 }
 
-void tpl_continue_budget_monitor (tpl_exec_common *this_exec_obj)
+FUNC(void, OS_CODE) tpl_continue_budget_monitor (
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
-  tpl_watchdog watchdog;
-  tpl_time current_date;
-  
+  VAR(tpl_watchdog, AUTOMATIC) watchdog;
+  VAR(tpl_time, AUTOMATIC) current_date;
+
   DOW_ASSERT (this_exec_obj != NULL);
 
   ON_TIMING_PROTECTION_BEGIN(this_exec_obj)
     /* request date only one time */
     current_date = tpl_get_local_current_date ();
-  
+
     /* reschedule a related watchdog */
     watchdog.exec_obj = this_exec_obj;
     watchdog.type = EXEC_BUDGET;
     schedule_watchdog (&watchdog, this_exec_obj->time_left);
-  
+
     /* restart the budget monitor base date */
     this_exec_obj->monitor_start_date = current_date;
   ON_TIMING_PROTECTION_END()
 }
 
-void tpl_reset_activation_count (tpl_exec_common *this_exec_obj)
+FUNC(void, OS_CODE) tpl_reset_activation_count (
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
   DOW_ASSERT (this_exec_obj != NULL);
-  
+
   ON_TIMING_PROTECTION_BEGIN(this_exec_obj)
     this_exec_obj->time_left =
        this_exec_obj->static_desc->timing_protection->count_limit + 1;
   ON_TIMING_PROTECTION_END()
 }
 
-void tpl_add_activation_count (tpl_exec_common *this_exec_obj)
+FUNC(void, OS_CODE) tpl_add_activation_count (
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
   DOW_ASSERT (this_exec_obj != NULL);
-  
+
   ON_TIMING_PROTECTION_BEGIN(this_exec_obj)
     if (this_exec_obj->time_left > 0)
       this_exec_obj->time_left -= 1;
-    
+
     if (this_exec_obj->time_left == 0)
     {
       tpl_disable_isr2_by_timing_protection ((tpl_isr*)this_exec_obj);
@@ -281,29 +290,31 @@ void tpl_add_activation_count (tpl_exec_common *this_exec_obj)
   ON_TIMING_PROTECTION_END()
 }
 
-void tpl_start_exectime_monitor (tpl_exec_common *this_exec_obj)
+FUNC(void, OS_CODE) tpl_start_exectime_monitor (
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
   DOW_ASSERT (this_exec_obj != NULL);
-  
+
   ON_TIMING_PROTECTION_BEGIN(this_exec_obj)
     this_exec_obj->monitor_start_date = tpl_get_local_current_date ();
   ON_TIMING_PROTECTION_END()
 }
 
-void tpl_finish_exectime_monitor (tpl_exec_common *this_exec_obj)
+FUNC(void, OS_CODE) tpl_finish_exectime_monitor (
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
-  tpl_time execution_time;
-  
+  VAR(tpl_time, AUTOMATIC) execution_time;
+
   DOW_ASSERT (this_exec_obj != NULL);
 
   ON_TIMING_PROTECTION_BEGIN(this_exec_obj)
     execution_time = tpl_get_local_current_date () -
        this_exec_obj->monitor_start_date;
-    if (execution_time > 
+    if (execution_time >
        this_exec_obj->static_desc->timing_protection->execution_budget)
     {
       /* as the task will be killed in any case of ProtectionHook return,
-       * we have to remove any scheduled timing protection about 
+       * we have to remove any scheduled timing protection about
        * locks/resources the ISR2 can get */
       unschedule_exec_obj_watchdogs (this_exec_obj);
 
@@ -312,28 +323,29 @@ void tpl_finish_exectime_monitor (tpl_exec_common *this_exec_obj)
   ON_TIMING_PROTECTION_END()
 }
 
-void tpl_start_resource_monitor (tpl_exec_common *this_exec_obj, 
-   tpl_resource_id this_resource)
+FUNC(void, OS_CODE) tpl_start_resource_monitor (
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj,
+    VAR(tpl_resource_id, AUTOMATIC) this_resource)
 {
-  tpl_watchdog watchdog;
-  tpl_time resource_lock_time;
-  
+  VAR(tpl_watchdog, AUTOMATIC)  watchdog;
+  VAR(tpl_time, AUTOMATIC)      resource_lock_time;
+
   DOW_ASSERT (this_exec_obj != NULL);
   DOW_ASSERT (this_resource < RESOURCE_COUNT);
 
   /* nothing to do if no timing protection specified */
   ON_TIMING_PROTECTION_BEGIN(this_exec_obj)
-    if (this_exec_obj->static_desc->timing_protection->resource_lock_time != 
+    if (this_exec_obj->static_desc->timing_protection->resource_lock_time !=
         NULL)
     {
       /* get the maximum time the resource can be taken */
       resource_lock_time = this_exec_obj->static_desc->timing_protection->
          resource_lock_time[this_resource];
-         
-      /* if a related timing protection is found, schedule a watchdog */  
+
+      /* if a related timing protection is found, schedule a watchdog */
       if (resource_lock_time > 0)
       {
-        watchdog.exec_obj = this_exec_obj;  
+        watchdog.exec_obj = this_exec_obj;
         watchdog.type = REZ_LOCK;
         watchdog.resource = this_resource;
         schedule_watchdog (&watchdog, resource_lock_time);
@@ -342,14 +354,15 @@ void tpl_start_resource_monitor (tpl_exec_common *this_exec_obj,
   ON_TIMING_PROTECTION_END()
 }
 
-void tpl_disable_resource_monitor (tpl_exec_common *this_exec_obj, 
-   tpl_resource_id this_resource)
+FUNC(void, OS_CODE) tpl_disable_resource_monitor (
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj,
+    VAR(tpl_resource_id, AUTOMATIC) this_resource)
 {
-  tpl_watchdog watchdog;
- 
+  VAR(tpl_watchdog, AUTOMATIC) watchdog;
+
   DOW_ASSERT (this_exec_obj != NULL);
   DOW_ASSERT (this_resource < RESOURCE_COUNT);
-  
+
   ON_TIMING_PROTECTION_BEGIN(this_exec_obj)
     watchdog.exec_obj = this_exec_obj;
     watchdog.type = REZ_LOCK;
@@ -358,36 +371,38 @@ void tpl_disable_resource_monitor (tpl_exec_common *this_exec_obj,
   ON_TIMING_PROTECTION_END()
 }
 
-void tpl_start_all_isr_lock_monitor (tpl_exec_common *this_exec_obj)
+FUNC(void, OS_CODE) tpl_start_all_isr_lock_monitor (
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
-  tpl_watchdog watchdog;
-  tpl_time int_lock_time;
-  
+  VAR(tpl_watchdog, AUTOMATIC)  watchdog;
+  VAR(tpl_time, AUTOMATIC)      int_lock_time;
+
   DOW_ASSERT (this_exec_obj != NULL);
 
   /* nothing to do if no timing protection specified */
   ON_TIMING_PROTECTION_BEGIN(this_exec_obj)
-    if (this_exec_obj->static_desc->timing_protection-> all_interrupt_lock_time 
+    if (this_exec_obj->static_desc->timing_protection-> all_interrupt_lock_time
         > 0)
     {
       /* get the maximum time the interrupts can be locked */
-      int_lock_time = 
+      int_lock_time =
          this_exec_obj->static_desc->timing_protection->all_interrupt_lock_time;
-       
+
       /* schedule a watchdog */
-      watchdog.exec_obj = this_exec_obj;  
+      watchdog.exec_obj = this_exec_obj;
       watchdog.type = ALL_INT_LOCK;
       schedule_watchdog (&watchdog, int_lock_time);
     }
   ON_TIMING_PROTECTION_END()
 }
 
-void tpl_disable_all_isr_lock_monitor (tpl_exec_common *this_exec_obj)
+FUNC(void, OS_CODE) tpl_disable_all_isr_lock_monitor (
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
-  tpl_watchdog watchdog;
-  
+  VAR(tpl_watchdog, AUTOMATIC) watchdog;
+
   DOW_ASSERT (this_exec_obj != NULL);
-  
+
   ON_TIMING_PROTECTION_BEGIN(this_exec_obj)
     watchdog.exec_obj = this_exec_obj;
     watchdog.type = ALL_INT_LOCK;
@@ -395,36 +410,38 @@ void tpl_disable_all_isr_lock_monitor (tpl_exec_common *this_exec_obj)
   ON_TIMING_PROTECTION_END()
 }
 
-void tpl_start_os_isr_lock_monitor (tpl_exec_common *this_exec_obj)
+FUNC(void, OS_CODE) tpl_start_os_isr_lock_monitor (
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
-  tpl_watchdog watchdog;
-  tpl_time int_lock_time;
+  VAR(tpl_watchdog, AUTOMATIC)  watchdog;
+  VAR(tpl_time, AUTOMATIC)      int_lock_time;
 
   DOW_ASSERT (this_exec_obj != NULL);
 
   /* nothing to do if no timing protection specified */
   ON_TIMING_PROTECTION_BEGIN(this_exec_obj)
-    if (this_exec_obj->static_desc->timing_protection-> all_interrupt_lock_time 
+    if (this_exec_obj->static_desc->timing_protection-> all_interrupt_lock_time
         > 0)
     {
       /* get the maximum time the interrupts can be locked */
-      int_lock_time = 
+      int_lock_time =
          this_exec_obj->static_desc->timing_protection->all_interrupt_lock_time;
-       
+
       /* schedule a watchdog */
-      watchdog.exec_obj = this_exec_obj;  
+      watchdog.exec_obj = this_exec_obj;
       watchdog.type = OS_INT_LOCK;
       schedule_watchdog (&watchdog, int_lock_time);
     }
   ON_TIMING_PROTECTION_END()
 }
 
-void tpl_disable_os_isr_lock_monitor (tpl_exec_common *this_exec_obj)
+FUNC(void, OS_CODE) tpl_disable_os_isr_lock_monitor (
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
-  tpl_watchdog watchdog;
-  
+  VAR(tpl_watchdog, AUTOMATIC) watchdog;
+
   DOW_ASSERT (this_exec_obj != NULL);
-  
+
   ON_TIMING_PROTECTION_BEGIN(this_exec_obj)
     watchdog.exec_obj = this_exec_obj;
     watchdog.type = OS_INT_LOCK;

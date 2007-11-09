@@ -26,7 +26,7 @@
  * $Author$
  * $URL$
  */
- 
+
 #include "tpl_as_st_kernel.h"
 #include "tpl_os_definitions.h"
 #include "tpl_dow.h"
@@ -41,34 +41,37 @@
  * and execute the corresponding actions. Then the alarm is updated to match
  * the offset of the next expiry point.
  */
-tpl_status tpl_process_schedtable(tpl_time_obj *st)
+FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
+    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) st)
 {
     /*  Get the TPL_SCHEDTABLE_STATIC structure                             */
-    tpl_schedtable_static   *schedtable =
-        (tpl_schedtable_static *)st->stat_part;
+    P2VAR(tpl_schedtable_static, OS_APPL_DATA, AUTOMATIC) schedtable =
+        (P2VAR(tpl_schedtable_static, OS_APPL_DATA, AUTOMATIC))st->stat_part;
     /*  Get the current index                                               */
-    tpl_expiry_count        index = ((tpl_schedule_table *)st)->index;
+    VAR(tpl_expiry_count, AUTOMATIC)  index =
+        ((P2VAR(tpl_schedule_table, OS_APPL_DATA, AUTOMATIC))st)->index;
     /*  Get the current expiry point                                        */
-    tpl_expiry_point        *next_ep = (schedtable->expiry)[index];
+    P2VAR(tpl_expiry_point, OS_APPL_DATA, AUTOMATIC) next_ep =
+        (schedtable->expiry)[index];
 
     /*  Process the current expiry point                                    */
-    tpl_status              need_resched = NO_SPECIAL_CODE;
+    VAR(tpl_status, AUTOMATIC)              need_resched = NO_SPECIAL_CODE;
 
-    tpl_action              *action_desc;
-    tpl_action_count        i;
-    
+    P2VAR(tpl_action, OS_APPL_DATA, AUTOMATIC)  action_desc;
+    VAR(tpl_action_count, AUTOMATIC)  i;
+
     for (i = 0; i < next_ep->count; i++)
     {
         action_desc = (next_ep->actions)[i];
         need_resched |= (action_desc->action)(action_desc);
     }
-    
+
     /*  Prepare the next expiry point                                       */
     index++;
 
     /*  Reset the cycle of the time object                                  */
     st->cycle = 0;
-    
+
     /*  Test whether the schedule table is finished or not                  */
     if (index < schedtable->count)
     {

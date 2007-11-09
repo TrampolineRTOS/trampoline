@@ -25,7 +25,7 @@
  * $Author$
  * $URL$
  */
- 
+
 #include "tpl_as_isr.h"
 #include "tpl_os_internal_types.h"
 #include "tpl_os_kernel.h"
@@ -46,16 +46,16 @@
  * see paragraph 8.4.2 page 51 of
  * AUTOSAR/Specification of the Operating System v2.0.1
  */
-ISRType GetISRID(void)
+FUNC(ISRType, OS_CODE) GetISRID(void)
 {
-    tpl_exec_common     *ro = tpl_running_obj;
-    tpl_isr_id          isr_id = (tpl_isr_id)INVALID_ISR;
-        
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) ro = tpl_running_obj;
+    VAR(tpl_isr_id, AUTOMATIC)  isr_id = (tpl_isr_id)INVALID_ISR;
+
     if (tpl_running_obj->static_desc->type != IS_ROUTINE)
     {
         isr_id = ro->static_desc->id;
     }
-    
+
     return isr_id;
 }
 
@@ -64,12 +64,12 @@ ISRType GetISRID(void)
  *
  * see §8.4.20 of AUTOSAR/Specification of the Operating System v2.1.0
  */
-StatusType DisableInterruptSource (ISRType isr_id)
+FUNC(StatusType, OS_CODE) DisableInterruptSource (VAR(ISRType, AUTOMATIC) isr_id)
 {
-    StatusType  result = E_OK;
+    VAR(StatusType, AUTOMATIC)  result = E_OK;
 
 #ifndef NO_ISR
-    tpl_isr *isr;
+    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr;
 #endif
 
     CHECK_ISR_ID_ERROR(isr_id,result)
@@ -80,7 +80,7 @@ StatusType DisableInterruptSource (ISRType isr_id)
         isr = tpl_isr_table[isr_id];
         tpl_disable_isr2_by_user (isr);
     IF_NO_EXTENDED_ERROR_END()
-#endif    
+#endif
 
     return result;
 }
@@ -90,12 +90,12 @@ StatusType DisableInterruptSource (ISRType isr_id)
  *
  * see §8.4.21 of AUTOSAR/Specification of the Operating System v2.1.0
  */
-StatusType EnableInterruptSource (ISRType isr_id)
+FUNC(StatusType, OS_CODE) EnableInterruptSource (VAR(ISRType, AUTOMATIC) isr_id)
 {
-    StatusType  result = E_OK;
+    VAR(StatusType, AUTOMATIC)  result = E_OK;
 
 #ifndef NO_ISR
-    tpl_isr *isr;
+    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr;
 #endif
 
     CHECK_ISR_ID_ERROR(isr_id,result)
@@ -106,7 +106,7 @@ StatusType EnableInterruptSource (ISRType isr_id)
         isr = tpl_isr_table[isr_id];
         tpl_enable_isr2_by_user (isr);
     IF_NO_EXTENDED_ERROR_END()
-#endif    
+#endif
 
     return result;
 }

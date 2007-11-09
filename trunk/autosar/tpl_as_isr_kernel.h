@@ -23,7 +23,7 @@
  * $Author$
  * $URL$
  */
- 
+
 #ifndef TPL_AS_ISR__KERNEL_H
 #define TPL_AS_ISR__KERNEL_H
 
@@ -50,7 +50,7 @@ typedef enum
 #include "tpl_memmap.h"
 
 /**
- * @internal 
+ * @internal
  *
  * called directly by DisableInterruptSource
  *
@@ -58,17 +58,19 @@ typedef enum
  *
  * @see #DisableInterruptSource
  */
-extern void tpl_disable_isr2_by_user (tpl_isr *isr2);
+extern FUNC(void, OS_CODE) tpl_disable_isr2_by_user (
+    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr2);
 
 /**
- * @internal 
+ * @internal
  *
  * called by timing protection when an ISR2 reaches its
  * count limit
  *
  * @param isr2 the isr to disable
  */
-extern void tpl_disable_isr2_by_timing_protection (tpl_isr *isr2);
+extern FUNC(void, OS_CODE) tpl_disable_isr2_by_timing_protection (
+    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr2);
 
 /**
  * @internal
@@ -77,24 +79,27 @@ extern void tpl_disable_isr2_by_timing_protection (tpl_isr *isr2);
  *
  * @see #EnableInterruptSource
  */
-extern void tpl_enable_isr2_by_user (tpl_isr *isr2);
-
-/**
- * @internal 
- *
- * called when a timeframe is reached
- */
-extern void tpl_enable_isr2_by_timing_protection (tpl_isr *isr2);
+extern FUNC(void, OS_CODE) tpl_enable_isr2_by_user (
+    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr2);
 
 /**
  * @internal
- * 
+ *
+ * called when a timeframe is reached
+ */
+extern FUNC(void, OS_CODE) tpl_enable_isr2_by_timing_protection (
+    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr2);
+
+/**
+ * @internal
+ *
  * @todo document this
  *
  * @retval FALSE this ISR2 is disabled
- * @retval TRUE this ISR2 is enabled 
+ * @retval TRUE this ISR2 is enabled
  */
-u8 tpl_is_isr2_enabled (tpl_isr *isr2);
+FUNC(u8, OS_CODE) tpl_is_isr2_enabled (
+    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr2);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

@@ -33,7 +33,8 @@
 /**
  *  action function for action call back
  */
-tpl_status tpl_action_callback(const tpl_action *action)
+FUNC(tpl_status, OS_CODE) tpl_action_callback(
+    P2CONST(tpl_action, OS_APPL_CONST, AUTOMATIC) action)
 {
     /*
      * A tpl_action * is cast to a tpl_callback_action *
@@ -41,15 +42,17 @@ tpl_status tpl_action_callback(const tpl_action *action)
      * first member of tpl_callback_action is a tpl_action
      * This cast behaves correctly.
      */
-    ((const tpl_callback_action *)action)->callback();
-    
+    ((P2CONST(tpl_callback_action, OS_APPL_CONST, AUTOMATIC))action)->callback();
+
     return E_OK;
 }
 
 /**
  *  action function for action by task activation
  */
-tpl_status tpl_action_activate_task(const tpl_action *action)
+FUNC(tpl_status, OS_CODE) tpl_action_activate_task(
+    P2CONST(tpl_action, OS_APPL_CONST, AUTOMATIC) action
+)
 {
     /*
      * A tpl_action * is cast to a tpl_task_activation_action *
@@ -58,14 +61,15 @@ tpl_status tpl_action_activate_task(const tpl_action *action)
      * This cast behaves correctly.
      */
     return tpl_activate_task(
-        ((const tpl_task_activation_action *)action)->task
+        ((P2CONST(tpl_task_activation_action, OS_APPL_CONST, AUTOMATIC))action)->task
     );
 }
 
 /**
  *  action function for action by setting event
  */
-tpl_status tpl_action_setevent(const tpl_action *action)
+FUNC(tpl_status, OS_CODE) tpl_action_setevent(
+    P2CONST(tpl_action, OS_APPL_CONST, AUTOMATIC) action)
 {
     /*
      * A tpl_action * is cast to a tpl_setevent_action *
@@ -74,8 +78,8 @@ tpl_status tpl_action_setevent(const tpl_action *action)
      * This cast behaves correctly.
      */
     return tpl_set_event(
-        ((const tpl_setevent_action *)action)->task,
-        ((const tpl_setevent_action *)action)->mask
+        ((P2CONST(tpl_setevent_action, OS_APPL_CONST, AUTOMATIC))action)->task,
+        ((P2CONST(tpl_setevent_action, OS_APPL_CONST, AUTOMATIC))action)->mask
     );
 }
 
