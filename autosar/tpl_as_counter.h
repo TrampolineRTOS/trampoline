@@ -57,8 +57,8 @@ typedef tpl_counter_id  CounterType;
  * see paragraph 8.4.12, page 70 of
  * AUTOSAR/Specification of the Operating System v2.1.0
  */
-StatusType IncrementCounter(
-    CounterType counter_id
+FUNC(StatusType, OS_CODE) IncrementCounter(
+    VAR(CounterType, AUTOMATIC) counter_id
 );
 
 /**
@@ -75,9 +75,9 @@ StatusType IncrementCounter(
  * see paragraph 8.4.12, page 70 of
  * AUTOSAR/Specification of the Operating System v2.1.0
  */
-StatusType GetCounterValue(
-    CounterType counter_id,
-    TickRefType value
+FUNC(StatusType, OS_CODE) GetCounterValue(
+    VAR(CounterType, AUTOMATIC) counter_id,
+    VAR(TickRefType, AUTOMATIC) value
 );
 
 /**
@@ -99,10 +99,10 @@ StatusType GetCounterValue(
  * see paragraph 8.4.12, page 71 of
  * AUTOSAR/Specification of the Operating System v2.1.0
  */
-StatusType GetElapsedCounterValue(
-    CounterType counter_id,
-    TickType    previous_value,
-    TickRefType value
+FUNC(StatusType, OS_CODE) GetElapsedCounterValue(
+    VAR(CounterType, AUTOMATIC) counter_id,
+    VAR(TickType, AUTOMATIC)    previous_value,
+    VAR(TickRefType, AUTOMATIC) value
 );
 
 #define OS_STOP_SEC_CODE

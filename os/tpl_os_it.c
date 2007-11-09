@@ -40,17 +40,17 @@
  * While this function is not part of the OSEK API, it is used
  * to terminate an ISR2 routine
  */
-StatusType TerminateISR2(void)
+FUNC(StatusType, OS_CODE) TerminateISR2(void)
 {
     /*  init the error to no error  */
-    StatusType result = E_OK;
+    VAR(StatusType, AUTOMATIC) result = E_OK;
 
     /*  lock the task structures    */
     LOCK_WHEN_ISR()
-    
+
     /*  store information for error hook routine    */
     STORE_SERVICE(OSServiceId_TerminateISR)
-    
+
     /*  check we are at the ISR2 level  */
     CHECK_ISR2_CALL_LEVEL_ERROR(result)
     /*  check the ISR2 does not own a resource  */
@@ -67,12 +67,12 @@ StatusType TerminateISR2(void)
 
     IF_NO_EXTENDED_ERROR_END()
 #endif
-    
+
     PROCESS_ERROR(result)
-    
+
     /*  unlock the task structures  */
     UNLOCK_WHEN_ISR()
-    
+
     return result;
 }
 

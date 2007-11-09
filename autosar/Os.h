@@ -48,4 +48,17 @@
 #include "tpl_as_stack_monitor.h"
 #include "tpl_as_timing_protec.h"
 
+/* Configuration includes */
+#include "tpl_os_generated_configuration.h"
+
+/* Common Published Information */
+#define OS_VENDOR_ID         48
+#define OS_MODULE_ID         1
+#define OS_AR_MAJOR_VERSION  2
+#define OS_AR_MINOR_VERSION  1
+#define OS_AR_PATCH_VERSION  0
+#define OS_SW_MAJOR_VERSION  1
+#define OS_SW_MINOR_VERSION  0
+#define OS_SW_PATCH_VERSION  0
+
 #endif /*OS_H_*/

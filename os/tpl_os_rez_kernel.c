@@ -35,7 +35,8 @@
 /*
  * Getting a resource.
  */
-void tpl_get_resource(tpl_resource *res)
+FUNC(void, OS_CODE) tpl_get_resource(
+    P2VAR(tpl_resource, OS_APPL_DATA, AUTOMATIC) res)
 {
     /*  set the owner of the resource to the calling task       */
     res->owner = tpl_running_obj;
@@ -45,12 +46,12 @@ void tpl_get_resource(tpl_resource *res)
     tpl_running_obj->resources = res;
     /*  save the current priority of the task in the resource   */
     res->owner_prev_priority = tpl_running_obj->priority;
-   
+
     if (tpl_running_obj->priority < res->ceiling_priority)
     {
         /*  set the task priority at the ceiling priority of the resource
             if the ceiling priority is greater than the current priority of
-						the task 	*/
+            the task  */
         tpl_running_obj->priority = res->ceiling_priority;
     }
 }
@@ -58,7 +59,8 @@ void tpl_get_resource(tpl_resource *res)
 /*
  * Releasing a resource
  */
-void tpl_release_resource(tpl_resource *res)
+FUNC(void, OS_CODE) tpl_release_resource(
+    P2VAR(tpl_resource, OS_APPL_DATA, AUTOMATIC) res)
 {
     /*  get the saved priority  */
     tpl_running_obj->priority = res->owner_prev_priority;
@@ -68,7 +70,7 @@ void tpl_release_resource(tpl_resource *res)
     /*  remove the owner    */
     res->owner = NULL;
 
-    tpl_schedule(FROM_TASK_LEVEL);    
+    tpl_schedule(FROM_TASK_LEVEL);
 }
 
 #define OS_STOP_SEC_CODE

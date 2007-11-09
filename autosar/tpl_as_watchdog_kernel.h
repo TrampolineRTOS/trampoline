@@ -6,7 +6,7 @@
  * This module gives a way to use multiple virtual watchdogs while
  * underlying hardware only provides one (see #tpl_set_watchdog and
  * #tpl_cancel_watchdog).
- * 
+ *
  * @section copyright Copyright
  *
  * Trampoline OS
@@ -63,9 +63,9 @@ typedef enum
  */
 struct TPL_WATCHDOG
 {
-  tpl_exec_common   *exec_obj;  /**< the executable object implied */
-  tpl_watchdog_type type;       /**< the watchdog type */
-  tpl_resource_id   resource;   /**< the resource implied if any */
+  P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj; /**< the executable object implied */
+  VAR(tpl_watchdog_type, AUTOMATIC)               type;     /**< the watchdog type */
+  VAR(tpl_resource_id, AUTOMATIC)                 resource; /**< the resource implied if any */
 };
 
 /**
@@ -86,23 +86,23 @@ typedef struct TPL_WATCHDOG tpl_watchdog;
  */
 struct TPL_SCHEDULED_WATCHDOG
 {
-  tpl_watchdog                   watchdog;             /**< the watchdog */
-  struct TPL_SCHEDULED_WATCHDOG  *next;                /**< the next watchdog
-                                                            in the list */
-  tpl_time                       delay_from_previous;  /**< delay (in tpl_time
-                                                            unit after
-                                                            previous scheduled
-                                                            watchdog */
-  tpl_time                       scheduled_date;       /**< absolute scheduled
-                                                            date in tpl_time
-                                                            unit (useful to
-                                                            compute relative
-                                                            delays) */
-  u8                             allocated;            /**< indicates that
-                                                            this scheduled
-                                                            watchdog is free
-                                                            (or not) for
-                                                            allocation */
+  VAR(tpl_watchdog, AUTOMATIC)                                  watchdog;             /**< the watchdog */
+  struct P2VAR(TPL_SCHEDULED_WATCHDOG, OS_APPL_DATA, AUTOMATIC) next;                 /**< the next watchdog
+                                                                                           in the list */
+  VAR(tpl_time, AUTOMATIC)                                      delay_from_previous;  /**< delay (in tpl_time
+                                                                                           unit after
+                                                                                           previous scheduled
+                                                                                           watchdog */
+  VAR(tpl_time, AUTOMATIC)                                      scheduled_date;       /**< absolute scheduled
+                                                                                           date in tpl_time
+                                                                                           unit (useful to
+                                                                                           compute relative
+                                                                                           delays) */
+  VAR(u8, AUTOMATIC)                                            allocated;            /**< indicates that
+                                                                                           this scheduled
+                                                                                           watchdog is free
+                                                                                           (or not) for
+                                                                                           allocation */
 };
 
 /**
@@ -132,7 +132,8 @@ typedef struct TPL_SCHEDULED_WATCHDOG tpl_scheduled_watchdog;
  * @see #find_scheduled_watchdog
  * @see #remove_scheduled_watchdog
  */
-typedef u8 (*OS_APPL_CODE watchdog_callback_function)(tpl_watchdog *watchdog);
+typedef P2FUNC(u8, OS_APPL_CODE, watchdog_callback_function)(
+  P2VAR(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) watchdog);
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -142,16 +143,17 @@ typedef u8 (*OS_APPL_CODE watchdog_callback_function)(tpl_watchdog *watchdog);
  *
  * This function must be called before any other in this module.
  */
-void init_watchdog_kernel (watchdog_callback_function callback);
+FUNC(void, OS_CODE) init_watchdog_kernel(
+  VAR(watchdog_callback_function, AUTOMATIC) callback);
 
 /**
  * @internal
  *
  * Allocate a new watchdog
- * 
+ *
  * @return the new watchdog allocated
  */
-tpl_scheduled_watchdog *new_scheduled_watchdog ();
+FUNC(P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC), OS_CODE) new_scheduled_watchdog(void);
 
 /**
  * @internal
@@ -161,19 +163,19 @@ tpl_scheduled_watchdog *new_scheduled_watchdog ();
  *
  * @note this function is intended to be called by the watchdog callback
  * (or internally in this module)
- * 
+ *
  * @retval FALSE the head of the list did not changed
  * @retval TRUE the head of the list has changed (need to reschedule the
  * real underlying watchdog)
  */
-u8 insert_scheduled_watchdog (
-   tpl_scheduled_watchdog *this_scheduled_watchdog);
+FUNC(u8, OS_CODE) insert_scheduled_watchdog(
+   P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) this_scheduled_watchdog);
 
 /**
  * @internal
  *
  * finds a similar watchdog in the list
- * 
+ *
  * @note this function is intended to be called by the watchdog callback
  * (or internally in this module)
  *
@@ -182,55 +184,59 @@ u8 insert_scheduled_watchdog (
  * @param watchdog_cursor address of a pointer on the found watchdog
  * @param previous_cursor address of a pointer on the watchdog that
  * preceeds the found watchdog
- * 
+ *
  * @retval FALSE no similar watchdog found
  * @retval TRUE a similar watchdog was found (see output parameters)
  */
-u8 find_scheduled_watchdog (tpl_watchdog *like_this_watchdog,
-   tpl_scheduled_watchdog **watchdog_cursor,
-   tpl_scheduled_watchdog **previous_cursor);
+FUNC(u8, OS_CODE) find_scheduled_watchdog(
+  P2VAR(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) like_this_watchdog,
+  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) *watchdog_cursor,
+  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) *previous_cursor);
 
 /**
  * @internal
  *
  * removes the specified scheduled watchdog from the list
- * 
+ *
  * @note this function is intended to be called by the watchdog callback
  * (or internally in this module)
  *
  * @param watchdog_cursor the watchdog to remove from the list
- * @param previous_cursor the watchdog that preceeds the one to remove 
+ * @param previous_cursor the watchdog that preceeds the one to remove
  * (required)
- * 
+ *
  * @retval FALSE the scheduled watchdog is not the earliest in the list
  * @retval TRUE the scheduled watchdog is the earliest in the list
  */
-u8 remove_scheduled_watchdog (tpl_scheduled_watchdog *watchdog_cursor,
-   tpl_scheduled_watchdog *previous_cursor);
+FUNC(u8, OS_CODE) remove_scheduled_watchdog(
+  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) watchdog_cursor,
+  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) previous_cursor);
 
 /**
  * @internal
  *
  * Schedule a watchdog at specified date
- * 
+ *
  * @warning should not be called in watchdog callback !
- * 
+ *
  * @param this_watchdog watchdog to schedule (data are copied)
  * @param expire_date date when the watchdog should expire
  */
-void schedule_watchdog (tpl_watchdog *this_watchdog, 
-   tpl_time expire_delay);
+FUNC(void, OS_CODE) schedule_watchdog(
+  P2VAR(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) this_watchdog,
+  VAR(tpl_time, AUTOMATIC) expire_delay);
 
 /**
  * @internal
  *
  * Cancels a watchdog to avoid its expiration.
- * 
+ *
  * @warning should not be called in watchdog callback !
- * 
+ *
  * @param this_watchdog watchdog to unschedule
  */
-void unschedule_watchdog (tpl_watchdog *this_watchdog);
+FUNC(void, OS_CODE) unschedule_watchdog(
+  P2VAR(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) this_watchdog);
 
 /**
  * @internal
@@ -241,7 +247,8 @@ void unschedule_watchdog (tpl_watchdog *this_watchdog);
  *
  * @param this_exec_obj the task/isr concerned
  */
-void unschedule_exec_obj_watchdogs (tpl_exec_common *this_exec_obj);
+FUNC(void, OS_CODE) unschedule_exec_obj_watchdogs(
+  P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

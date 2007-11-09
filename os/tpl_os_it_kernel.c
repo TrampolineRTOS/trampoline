@@ -34,18 +34,20 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-static void tpl_activate_isr(tpl_isr *a_isr);
+_STATIC_ FUNC(void, OS_CODE) tpl_activate_isr(
+    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) a_isr);
 
 /*
  */
-static void tpl_activate_isr(tpl_isr *a_isr)
+_STATIC_ FUNC(void, OS_CODE) tpl_activate_isr(
+    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) a_isr)
 {
     if ((a_isr->exec_desc.activate_count <
         a_isr->exec_desc.static_desc->max_activate_count)
 #ifdef WITH_AUTOSAR
         && (tpl_is_isr2_enabled (a_isr))
-#endif        
-        
+#endif
+
         )
     {
         /*  check the isr is in the SUSPENDED state before moving it        */
@@ -64,7 +66,7 @@ static void tpl_activate_isr(tpl_isr *a_isr)
         a_isr->exec_desc.activate_count++;
     }
 }
- 
+
 /*
  * The central interrupt handler is called by the interrupt handler
  * with the id of the interrupt (usually its priority) as parameter
@@ -72,25 +74,25 @@ static void tpl_activate_isr(tpl_isr *a_isr)
  * task / interrupt handler, switches to the context of the handler
  * and calls the handler
  */
-void tpl_central_interrupt_handler(const u16 id)
+FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) id)
 {
-    static s32 tpl_it_nesting =  0;
-    tpl_isr                     *a_isr_desc;
+    _STATIC_ VAR(s32, AUTOMATIC) tpl_it_nesting =  0;
+    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) a_isr_desc;
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
     tpl_check_stack (tpl_running_obj);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
-    
-	/*  Is there a handler for this id ?
-		ie the id has been counted in the table and there
-		is a tpl_isr available
+
+  /*  Is there a handler for this id ?
+    ie the id has been counted in the table and there
+    is a tpl_isr available
     */
 #ifdef OS_EXTENDED
     if (id < ISR_COUNT)
     {
 #endif
         tpl_it_nesting++;
-            
+
         a_isr_desc = tpl_isr_table[id];
 
         if (a_isr_desc != NULL)
@@ -114,9 +116,9 @@ void tpl_central_interrupt_handler(const u16 id)
                 }
             }
         }
-        
+
         tpl_it_nesting--;
-        
+
         if (tpl_it_nesting == 0)
         {
             tpl_schedule((u8)FROM_IT_LEVEL);

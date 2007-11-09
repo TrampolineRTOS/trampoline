@@ -26,18 +26,19 @@
 /*
  * OSEK/VDX API services
  */
-StatusType GetResource(const ResourceType res_id)
+FUNC(StatusType, OS_CODE) GetResource(
+    CONST(ResourceType, AUTOMATIC) res_id)
 {
     /*  init the error to no error  */
-    StatusType result = E_OK;
+    VAR(StatusType, AUTOMATIC) result = E_OK;
 
-    tpl_resource *res;
+    P2VAR(tpl_resource, OS_APPL_DATA, AUTOMATIC) res;
 
     LOCK_WHEN_HOOK()
-    
+
     STORE_SERVICE(OSServiceId_GetResource)
     STORE_RESOURCE_ID(res_id)
-    
+
     CHECK_RESOURCE_ID_ERROR(res_id,result)
 
     IF_NO_EXTENDED_ERROR(result)
@@ -47,52 +48,53 @@ StatusType GetResource(const ResourceType res_id)
         }
         else
         {
-			#ifndef NO_RESOURCE
-            	res = tpl_resource_table[res_id];
-			#else
-				res = NULL; /* error */
-			#endif
+      #ifndef NO_RESOURCE
+              res = tpl_resource_table[res_id];
+      #else
+        res = NULL; /* error */
+      #endif
         }
-        
+
         LOCK_WHEN_NO_HOOK()
-        
+
         /*  Return an error if the task that attempt to get
             the resource has a higher priority than the resource
             or the resource is already owned by another task
             By using PCP, this situation should no occur.           */
         CHECK_RESOURCE_PRIO_ERROR_ON_GET(res,result)
-            
+
         IF_NO_EXTENDED_ERROR(result)
             tpl_get_resource(res);
         #ifdef WITH_AUTOSAR_TIMING_PROTECTION
         tpl_start_resource_monitor (tpl_running_obj, res_id);
         #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
         IF_NO_EXTENDED_ERROR_END()
-        
+
         UNLOCK_WHEN_NO_HOOK()
     IF_NO_EXTENDED_ERROR_END()
-    
+
     PROCESS_ERROR(result)
-    
+
     UNLOCK_WHEN_HOOK()
-    
+
     return result;
 }
 
-StatusType ReleaseResource(const ResourceType res_id)
+FUNC(StatusType, OS_CODE) ReleaseResource(
+    CONST(ResourceType, AUTOMATIC) res_id)
 {
     /*  init the error to no error  */
-    StatusType result = E_OK;
-    
-    tpl_resource *res;
-    
+    VAR(StatusType, AUTOMATIC) result = E_OK;
+
+    P2VAR(tpl_resource, OS_APPL_DATA, AUTOMATIC) res;
+
     LOCK_WHEN_HOOK()
-    
+
     STORE_SERVICE(OSServiceId_GetResource)
     STORE_RESOURCE_ID(res_id)
-    
+
     CHECK_RESOURCE_ID_ERROR(res_id,result)
-    
+
     IF_NO_EXTENDED_ERROR(result)
         if (res_id == RES_SCHEDULER)
         {
@@ -100,38 +102,38 @@ StatusType ReleaseResource(const ResourceType res_id)
         }
         else
         {
-			#ifndef NO_RESOURCE
-            	res = tpl_resource_table[res_id];
-			#else
-				res = NULL; /* error */
-			#endif
+      #ifndef NO_RESOURCE
+              res = tpl_resource_table[res_id];
+      #else
+        res = NULL; /* error */
+      #endif
         }
-        
+
         LOCK_WHEN_NO_HOOK()
-    
+
         /*  Return an error if the task that attempt to get
             the resource has a higher priority than the resource    */
         CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(res,result)
-        
+
         /*  the spec requires resources to be released in
             the reverse order of the getting. if the resource
             is not owned or not release in the good order       */
         CHECK_RESOURCE_ORDER_ON_RELEASE(res,result)
-        
+
         IF_NO_EXTENDED_ERROR(result)
             tpl_release_resource(res);
         #ifdef WITH_AUTOSAR_TIMING_PROTECTION
         tpl_disable_resource_monitor (tpl_running_obj, res_id);
         #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
         IF_NO_EXTENDED_ERROR_END()
-    
+
         UNLOCK_WHEN_NO_HOOK()
     IF_NO_EXTENDED_ERROR_END()
-    
+
     PROCESS_ERROR(result)
-    
+
     UNLOCK_WHEN_HOOK()
-    
+
     return result;
 }
 

@@ -34,13 +34,15 @@
 /*
  * Getting a resource.
  */
-extern void tpl_get_resource(tpl_resource *res);
+extern FUNC(void, OS_CODE) tpl_get_resource(
+    P2VAR(tpl_resource, OS_APPL_DATA, AUTOMATIC) res);
 
 
 /*
  * Releasing a resource
  */
-extern void tpl_release_resource(tpl_resource *res);
+extern FUNC(void, OS_CODE) tpl_release_resource(
+    P2VAR(tpl_resource, OS_APPL_DATA, AUTOMATIC) res);
 
 
 #define OS_STOP_SEC_CODE

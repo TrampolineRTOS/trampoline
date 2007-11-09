@@ -23,7 +23,7 @@
  * $Author$
  * $URL$
  */
- 
+
 #ifndef TPL_AS_ISR_H
 #define TPL_AS_ISR_H
 
@@ -60,7 +60,7 @@ typedef tpl_isr_id  ISRType;
  * see paragraph 8.4.2 page 51 of
  * AUTOSAR/Specification of the Operating System v2.0.1
  */
-ISRType GetISRID(void);
+FUNC(ISRType, OS_CODE) GetISRID(void);
 
 /**
  * Disables the specified ISR
@@ -72,7 +72,7 @@ ISRType GetISRID(void);
  *
  * see §8.4.20 of AUTOSAR/Specification of the Operating System v2.1.0
  */
-StatusType DisableInterruptSource (ISRType isr_id);
+FUNC(StatusType, OS_CODE) DisableInterruptSource (VAR(ISRType, AUTOMATIC) isr_id);
 
 /**
  * Enables the specified ISR
@@ -84,7 +84,7 @@ StatusType DisableInterruptSource (ISRType isr_id);
  *
  * see §8.4.21 of AUTOSAR/Specification of the Operating System v2.1.0
  */
-StatusType EnableInterruptSource (ISRType isr_id);
+FUNC(StatusType, OS_CODE) EnableInterruptSource (VAR(ISRType, AUTOMATIC) isr_id);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

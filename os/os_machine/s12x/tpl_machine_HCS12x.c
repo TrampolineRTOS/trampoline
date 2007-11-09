@@ -42,6 +42,9 @@
 **  - Addition of functions needed for Autosar
 **  - Improvement of the support of Gpt driver
 **  - Improvement of the switch_context functions
+** 01.02  J.Monsimier 08/11/07
+**  - from Trampoline Rev399
+**  - Modifications to be compliant to Autosar implementation rules
 =============================================================================*/
 
 /******************************************************************************/
@@ -106,7 +109,8 @@ _STATIC_ VAR(uint16, OS_VAR) Os_CptTaskLock;
 ******************************************************************************/
 #define OS_START_SEC_CODE
 #include "Memmap.h"
-FUNC(void, OS_CODE) tpl_init_context(tpl_exec_common *exec_obj)
+FUNC(void, OS_CODE) tpl_init_context(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj)
 {
   P2VAR(hcs12_context, OS_APPL_DATA, AUTOMATIC) ic = exec_obj->static_desc->context.ic;
 
@@ -121,7 +125,7 @@ FUNC(void, OS_CODE) tpl_init_context(tpl_exec_common *exec_obj)
                 + exec_obj->static_desc->stack.stack_size);
       ic->sp++)
   {
-    *(uint8 *)(ic->sp) = OS_S12X_STACK_PATERN;
+    *(P2VAR(uint8, OS_APPL_DATA, AUTOMATIC))(ic->sp) = OS_S12X_STACK_PATERN;
   }
   ic->sp--; /* re-adjust stack-pointer that has been incremented once more that needed */
   #else
@@ -180,7 +184,7 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
                               + SIZE_OF_IDLE_STACK);
       idle_task_context.sp++)
   {
-    *(uint8 *)(idle_task_context.sp) = OS_S12X_STACK_PATERN;
+    *(P2VAR(uint8, OS_APPL_DATA, AUTOMATIC))(idle_task_context.sp) = OS_S12X_STACK_PATERN;
   }
   idle_task_context.sp--; /* re-adjust stack-pointer that has been incremented once more that needed */
 #else
@@ -195,9 +199,9 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
   idle_task_context.pc = tpl_sleep;
 
   Os_S12X_StartBaseTimer();
-  
+
   EnableInterruptSource(Gpt_Isr2Channel0);
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION  
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
   EnableInterruptSource(Gpt_Isr2Channel1);
 #endif
 }
@@ -219,8 +223,8 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
 #pragma NO_EXIT
 #pragma NO_RETURN
 FUNC(void, OS_CODE) tpl_switch_context(
-  tpl_context *old_context,
-  tpl_context *new_context)
+  P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
+  P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
 {
     __asm PSHY                      ;/* save the current registers on stack */
     __asm PSHX                      ;
@@ -285,8 +289,8 @@ FUNC(void, OS_CODE) tpl_switch_context(
 #pragma NO_EXIT
 #pragma NO_RETURN
 FUNC(void, OS_CODE) tpl_switch_context_from_it(
-  tpl_context * old_context,
-  tpl_context * new_context)
+  P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
+  P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
 {
     __asm PSHY                      ;/* save the current registers on stack */
     __asm PSHX                      ;
@@ -551,10 +555,10 @@ FUNC(void, OS_CODE) SuspendOSInterrupts(void)
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) tpl_set_watchdog(
-  tpl_time delay,
-  tpl_watchdog_expire_function function)
+  VAR(tpl_time, AUTOMATIC) delay,
+  VAR(tpl_watchdog_expire_function, AUTOMATIC) function)
 {
-  Gpt_ValueType NbTicks = ((delay*BUS_CLK)>>1)-1;
+  VAR(Gpt_ValueType, AUTOMATIC) NbTicks = ((delay*BUS_CLK)>>1)-1;
   WatchdogExpireCallback = function;
   Gpt_StartTimer(OS_GPTCHANNEL_WATCHDOG, NbTicks);
 
@@ -616,7 +620,7 @@ FUNC(tpl_time, OS_CODE) tpl_get_local_current_date(void)
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(u8, OS_CODE) tpl_check_stack_pointer(
-  tpl_exec_common *this_exec_obj)
+  P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
   VAR(uint16, AUTOMATIC) StackPointer = this_exec_obj->static_desc->context.ic->sp;
 
@@ -647,7 +651,7 @@ FUNC(u8, OS_CODE) tpl_check_stack_pointer(
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(u8, OS_CODE) tpl_check_stack_footprint(
-  tpl_exec_common *this_exec_obj)
+  P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
   if( OS_S12X_STACK_PATERN == (*(uint8 *)(this_exec_obj->static_desc->stack.stack_zone)) )
   {
@@ -681,7 +685,7 @@ FUNC(void, GPT_CODE) Os_WatchdogCallback(void)
   Gpt_DisableNotification(OS_GPTCHANNEL_WATCHDOG);
 
   Gpt_StopTimer(OS_GPTCHANNEL_WATCHDOG);
-  
+
   if( NULL_PTR != WatchdogExpireCallback )
   {
     WatchdogExpireCallback();
@@ -712,7 +716,7 @@ FUNC(void, OS_CODE) Os_S12X_StartBaseTimer(void)
 
 /*******************************************************************************
 ** Function name: tpl_s12x_inc_time
-** Description: This function increments the global time of the Os by the 
+** Description: This function increments the global time of the Os by the
 **              tick value of the Os
 ** Parameter : None
 ** Return value:  None

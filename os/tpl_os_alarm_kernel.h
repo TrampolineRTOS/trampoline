@@ -40,7 +40,8 @@
  *
  * @param time_obj  The time object to insert.
  */
-void tpl_insert_time_obj(tpl_time_obj *time_obj);
+FUNC(void, OS_CODE) tpl_insert_time_obj(
+    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) time_obj);
 
 /**
  * @internal
@@ -50,7 +51,8 @@ void tpl_insert_time_obj(tpl_time_obj *time_obj);
  *
  * @param time_obj  The time object to remove.
  */
-void tpl_remove_time_obj(tpl_time_obj *time_obj);
+FUNC(void, OS_CODE) tpl_remove_time_obj(
+    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) time_obj);
 
 /**
  * @internal
@@ -60,7 +62,8 @@ void tpl_remove_time_obj(tpl_time_obj *time_obj);
  *
  * @param time_obj  The alarm to raise.
  */
-tpl_status tpl_raise_alarm(tpl_time_obj *time_obj);
+FUNC(tpl_status, OS_CODE) tpl_raise_alarm(
+    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) time_obj);
 
 /**
  * @internal
@@ -68,12 +71,13 @@ tpl_status tpl_raise_alarm(tpl_time_obj *time_obj);
  * tpl_counter_tick is called by the IT associated with a counter
  * It increment the counter tick and the counter value if needed
  * If the counter value is incremented, it checks the next alarm
- * date and raises alarms at that date. It does not perform the rescheduling, 
+ * date and raises alarms at that date. It does not perform the rescheduling,
  * tpl_schedule must be called explicitly.
  *
  * @param counter    A pointer to the counter
  */
-tpl_status tpl_counter_tick(tpl_counter *counter);
+FUNC(tpl_status, OS_CODE) tpl_counter_tick(
+    P2VAR(tpl_counter, OS_APPL_DATA, AUTOMATIC) counter);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

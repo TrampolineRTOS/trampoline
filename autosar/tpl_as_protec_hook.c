@@ -32,18 +32,19 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-static void killtaskisr ()
+_STATIC_ FUNC(void, OS_CODE) killtaskisr(void)
 {
   tpl_running_obj->state = (tpl_exec_state)DYING;
 }
- 
-void tpl_call_protection_hook (tpl_status error)
+
+FUNC(void, OS_CODE) tpl_call_protection_hook (
+    VAR(tpl_status, AUTOMATIC) error)
 {
 #ifdef WITH_PROTECTION_HOOK
-  ProtectionReturnType result;
-  
+  VAR(ProtectionReturnType, AUTOMATIC) result;
+
   result = ProtectionHook (error);
-  
+
   switch (result)
   {
     case PRO_KILLTASKISR:

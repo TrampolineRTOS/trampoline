@@ -29,6 +29,10 @@
 **  - from Trampoline  Rev 377
 **  - Addition of functions needed for Autosar
 **  - Improvement of the support of Gpt driver
+**  - Improvement of the switch_context functions
+** 01.02  J.Monsimier 08/11/07
+**  - from Trampoline Rev399
+**  - Modifications to be compliant to Autosar implementation rules
 ==============================================================================*/
 
 #ifndef TPL_MACHINE_HCS12_H
@@ -57,27 +61,27 @@
 /******************************************************************************/
 /* DEFINITION OF TYPES                                                        */
 /******************************************************************************/
-typedef void (*OS_APPL_CODE tpl_function_pointer)(void);
+typedef P2FUNC(void, OS_APPL_CODE, tpl_function_pointer)(void);
 
 typedef struct
 {
-  uint16 ccr;                 /* condition code register                */
-  uint16 d;                   /* double accumulator D (or acc A and B)  */
-  uint16 x;                   /* index register X                       */
-  uint16 y;                   /* index register Y                       */
-  tpl_function_pointer pc;    /* program counter                        */
-  uint16 sp;                  /* stack pointer                          */
+  VAR(uint16, AUTOMATIC) ccr;                 /* condition code register                */
+  VAR(uint16, AUTOMATIC) d;                   /* double accumulator D (or acc A and B)  */
+  VAR(uint16, AUTOMATIC) x;                   /* index register X                       */
+  VAR(uint16, AUTOMATIC) y;                   /* index register Y                       */
+  VAR(tpl_function_pointer, AUTOMATIC) pc;    /* program counter                        */
+  VAR(uint16, AUTOMATIC) sp;                  /* stack pointer                          */
 } hcs12_context;
 
 typedef struct
 {
-  hcs12_context * ic;
+  P2VAR(hcs12_context, OS_APPL_DATA, AUTOMATIC) ic;
 } tpl_context;
 
 typedef struct
 {
-  tpl_stack_word  *stack_zone;
-  tpl_stack_size  stack_size;
+  P2VAR(tpl_stack_word, OS_APPL_DATA, AUTOMATIC)  stack_zone;
+  VAR(tpl_stack_size, AUTOMATIC)                  stack_size;
 } tpl_stack;
 
 
@@ -92,9 +96,9 @@ typedef struct
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "Memmap.h"
 
-extern hcs12_context idle_task_context;
+extern VAR(hcs12_context, OS_VAR) idle_task_context;
 
-extern tpl_stack_word
+extern VAR(tpl_stack_word, OS_VAR)
     stack_zone_of_IdleTask[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED

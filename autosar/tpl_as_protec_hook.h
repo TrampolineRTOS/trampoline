@@ -33,10 +33,10 @@
 
 /**
  * @def E_OS_PROTECTION_TIME
- * 
+ *
  * A task exeeded its execution budget or an ISR2 exeeded its
  * exection time.
- * 
+ *
  * see paragraph 7.10 of autosar OS SWS 2.1
  *
  * @see #ProtectionHook
@@ -45,10 +45,10 @@
 
 /**
  * @def E_OS_PROTECTION_LOCKED
- * 
+ *
  * A Task/Category 2 ISR blocks for too long
- * 
- * see paragraph 7.10 of autosar OS SWS 2.1 
+ *
+ * see paragraph 7.10 of autosar OS SWS 2.1
  *
  * @see #ProtectionHook
  */
@@ -56,7 +56,7 @@
 
 /**
  * @def E_OS_STACKFAULT
- * 
+ *
  * A stackfault occurred (see paragraph 7.4 of AUTOSAR OS SWS 2.1)
  *
  * @see #ProtectionHook
@@ -70,7 +70,7 @@
  *
  * See paragraph 8.3.15 of AUTOSAR OS SWS 2.1
  */
-typedef enum 
+typedef enum
 {
   PRO_KILLTASKISR,      /**< kill the faulty task or ISR2 */
   PRO_KILLAPPL,         /**< kill the faulty application */
@@ -91,7 +91,8 @@ typedef enum
  *
  * see paragraph 8.5.1 of AUTOSAR OS SWS 2.1.0
  */
-extern ProtectionReturnType ProtectionHook (StatusType FatalError);
+extern FUNC(ProtectionReturnType, OS_CODE) ProtectionHook (
+    VAR(StatusType, AUTOMATIC) FatalError);
 #endif /* WITH_PROTECTION_HOOK */
 
 /**
@@ -108,7 +109,8 @@ extern ProtectionReturnType ProtectionHook (StatusType FatalError);
  *
  * @see #ProtectionHook
  */
-extern void tpl_call_protection_hook (tpl_status error);
+extern FUNC(void, OS_CODE) tpl_call_protection_hook (
+    VAR(tpl_status, AUTOMATIC) error);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

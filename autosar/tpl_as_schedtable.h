@@ -23,15 +23,15 @@
  * $Author$
  * $URL$
  */
- 
+
 #ifndef TPL_AS_SCHEDTABLE_H
 #define TPL_AS_SCHEDTABLE_H
 
 #include "tpl_os_alarm.h"
 #include "tpl_os_internal_types.h"
 
-typedef u8  ScheduleTableType;
-typedef tpl_time_obj_state *ScheduleTableStatusRefType;
+typedef VAR(u8, AUTOMATIC)  ScheduleTableType;
+typedef P2VAR(tpl_time_obj_state, OS_APPL_DATA, AUTOMATIC) ScheduleTableStatusRefType;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -57,9 +57,9 @@ typedef tpl_time_obj_state *ScheduleTableStatusRefType;
  * see paragraph 8.4.8 page 55 of
  * AUTOSAR/Specification of the Operating System v2.0.1
  */
-StatusType  StartScheduleTableRel(
-    ScheduleTableType   sched_table_id,
-    TickType            offset
+FUNC(StatusType, OS_CODE)  StartScheduleTableRel(
+    VAR(ScheduleTableType, AUTOMATIC)   sched_table_id,
+    VAR(TickType, AUTOMATIC)            offset
 );
 
 /**
@@ -83,9 +83,9 @@ StatusType  StartScheduleTableRel(
  * see paragraph 8.4.9 page 55 of
  * AUTOSAR/Specification of the Operating System v2.0.1
  */
-StatusType  StartScheduleTableAbs(
-    ScheduleTableType   sched_table_id,
-    TickType            tick_val
+FUNC(StatusType, OS_CODE)  StartScheduleTableAbs(
+    VAR(ScheduleTableType, AUTOMATIC)   sched_table_id,
+    VAR(TickType, AUTOMATIC)            tick_val
 );
 
 /**
@@ -103,8 +103,8 @@ StatusType  StartScheduleTableAbs(
  * see paragraph 8.4.10 page 56 of
  * AUTOSAR/Specification of the Operating System v2.0.1
  */
-StatusType StopScheduleTable(
-    ScheduleTableType   sched_table_id
+FUNC(StatusType, OS_CODE) StopScheduleTable(
+    VAR(ScheduleTableType, AUTOMATIC)   sched_table_id
 );
 
 /**
@@ -129,9 +129,9 @@ StatusType StopScheduleTable(
  * see paragraph 8.4.11 page 57 of
  * AUTOSAR/Specification of the Operating System v2.0.1
  */
-StatusType NextScheduleTable(
-    ScheduleTableType   current_st_id,
-    ScheduleTableType   next_st_id
+FUNC(StatusType, OS_CODE) NextScheduleTable(
+    VAR(ScheduleTableType, AUTOMATIC)   current_st_id,
+    VAR(ScheduleTableType, AUTOMATIC)   next_st_id
 );
 
 /**
@@ -148,9 +148,9 @@ StatusType NextScheduleTable(
  * see paragraph 8.4.18 page 73 of
  * AUTOSAR/Specification of the Operating System v2.1.0
  */
-StatusType GetScheduleTableStatus(
-    ScheduleTableType           sched_table_id,
-    ScheduleTableStatusRefType  status
+FUNC(StatusType, OS_CODE) GetScheduleTableStatus(
+    VAR(ScheduleTableType, AUTOMATIC)           sched_table_id,
+    VAR(ScheduleTableStatusRefType, AUTOMATIC)  status
 );
 
 #define OS_STOP_SEC_CODE

@@ -28,8 +28,9 @@
 #include "tpl_memmap.h"
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
-void tpl_check_stack (tpl_exec_common *this_exec_obj)
-{  
+FUNC(void, OS_CODE) tpl_check_stack (
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
+{
   if ((!tpl_check_stack_pointer (this_exec_obj)) ||
      (!tpl_check_stack_footprint (this_exec_obj)))
   {

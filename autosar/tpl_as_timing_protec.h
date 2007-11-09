@@ -18,7 +18,7 @@
  *   ISR2 interrupts by a task or ISR2
  * - resource lock time, which controls the maximum time a resource is
  *   handled by a task or ISR2
- * 
+ *
  * Of course, timing protection takes time itself. Refer to the machine
  * specific documentation to have an idea of the time resolution for
  * which the timing protection can be accurate.
@@ -41,7 +41,7 @@
  * $Author$
  * $URL$
  */
- 
+
 #ifndef TPL_AS_TIMING_PROTEC_H
 #define TPL_AS_TIMING_PROTEC_H
 
@@ -61,22 +61,23 @@
  * Call this function to initialize the timing protection module.
  * This is a prerequisite to all other functions in this module.
  */
-extern void tpl_init_timing_protection ();
+extern FUNC(void, OS_CODE) tpl_init_timing_protection(void);
 
 /**
  * @internal
  *
  * Function to be called when a task is activated. This starts the budget
  * monitoring.
- * 
+ *
  * @pre all interrupts should be disabled during this function execution
- * 
+ *
  * @param this_exec_obj the task to monitor
  *
  * @see #tpl_pause_budget_monitor
  * @see #tpl_continue_budget_monitor
  */
-extern void tpl_start_budget_monitor (tpl_exec_common *this_exec_obj);
+extern FUNC(void, OS_CODE) tpl_start_budget_monitor (
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
 
 /**
  * @internal
@@ -85,13 +86,14 @@ extern void tpl_start_budget_monitor (tpl_exec_common *this_exec_obj);
  * monitor until #tpl_continue_budget_monitor is called
  *
  * @pre all interrupts should be disabled during this function execution
- * 
+ *
  * @param this_exec_obj the task to monitor
  *
  * @see #tpl_start_budget_monitor
  * @see #tpl_continue_budget_monitor
  */
-extern void tpl_pause_budget_monitor (tpl_exec_common *this_exec_obj);
+extern FUNC(void, OS_CODE) tpl_pause_budget_monitor(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
 
 /**
  * @internal
@@ -100,13 +102,14 @@ extern void tpl_pause_budget_monitor (tpl_exec_common *this_exec_obj);
  * of preemption)
  *
  * @pre all interrupts should be disabled during this function execution
- * 
+ *
  * @param this_exec_obj the task to monitor
  *
  * @see #tpl_start_budget_monitor
  * @see #tpl_pause_budget_monitor
  */
-extern void tpl_continue_budget_monitor (tpl_exec_common *this_exec_obj);
+extern FUNC(void, OS_CODE) tpl_continue_budget_monitor(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
 
 /**
  * @internal
@@ -115,10 +118,11 @@ extern void tpl_continue_budget_monitor (tpl_exec_common *this_exec_obj);
  * If necessary, re-enable the disabled ISR.
  *
  * @pre all interrupts should be disabled during this function execution
- * 
+ *
  * @param this_exec_obj the ISR to monitor
  */
-extern void tpl_reset_activation_count (tpl_exec_common *this_exec_obj);
+extern FUNC(void, OS_CODE) tpl_reset_activation_count(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
 
 /**
  * @internal
@@ -128,10 +132,11 @@ extern void tpl_reset_activation_count (tpl_exec_common *this_exec_obj);
  * is disabled.
  *
  * @pre all interrupts should be disabled during this function execution
- * 
+ *
  * @param this_exec_obj the ISR to monitor
  */
-extern void tpl_add_activation_count (tpl_exec_common *this_exec_obj);
+extern FUNC(void, OS_CODE) tpl_add_activation_count(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
 
 /**
  * @internal
@@ -141,10 +146,11 @@ extern void tpl_add_activation_count (tpl_exec_common *this_exec_obj);
  * If the ISR exceeds it execution time, the #ProtectionHook is called
  *
  * @pre all interrupts should be disabled during this function execution
- * 
+ *
  * @param this_exec_obj the ISR to monitor
  */
-extern void tpl_start_exectime_monitor (tpl_exec_common *this_exec_obj);
+extern FUNC(void, OS_CODE) tpl_start_exectime_monitor(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
 
 /**
  * @internal
@@ -153,10 +159,11 @@ extern void tpl_start_exectime_monitor (tpl_exec_common *this_exec_obj);
  * that the ISR finished its execution in time.
  *
  * @pre all interrupts should be disabled during this function execution
- * 
+ *
  * @param this_exec_obj the ISR to monitor
  */
-extern void tpl_finish_exectime_monitor (tpl_exec_common *this_exec_obj);
+extern FUNC(void, OS_CODE) tpl_finish_exectime_monitor(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
 
 /**
  * @internal
@@ -168,8 +175,9 @@ extern void tpl_finish_exectime_monitor (tpl_exec_common *this_exec_obj);
  *
  * @pre all interrupts should be disabled during this function execution
  */
-extern void tpl_start_resource_monitor (tpl_exec_common *this_exec_obj, 
-   tpl_resource_id this_resource);
+extern FUNC(void, OS_CODE) tpl_start_resource_monitor(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj,
+    VAR(tpl_resource_id, AUTOMATIC) this_resource);
 
 /**
  * @internal
@@ -181,8 +189,9 @@ extern void tpl_start_resource_monitor (tpl_exec_common *this_exec_obj,
  *
  * @pre all interrupts should be disabled during this function execution
  */
-extern void tpl_disable_resource_monitor (tpl_exec_common *this_exec_obj, 
-   tpl_resource_id this_resource);
+extern FUNC(void, OS_CODE) tpl_disable_resource_monitor(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj,
+    VAR(tpl_resource_id, AUTOMATIC) this_resource);
 
 /**
  * @internal
@@ -191,8 +200,8 @@ extern void tpl_disable_resource_monitor (tpl_exec_common *this_exec_obj,
  *
  * @param this_exec_obj the executable object which locked interrupts
  */
-extern void tpl_start_all_isr_lock_monitor (tpl_exec_common *this_exec_obj);
-
+extern FUNC(void, OS_CODE) tpl_start_all_isr_lock_monitor(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
 /**
  * @internal
  *
@@ -200,7 +209,8 @@ extern void tpl_start_all_isr_lock_monitor (tpl_exec_common *this_exec_obj);
  *
  * @param this_exec_obj the executable object which unlocked interrupts
  */
-extern void tpl_disable_all_isr_lock_monitor (tpl_exec_common *this_exec_obj);
+extern FUNC(void, OS_CODE) tpl_disable_all_isr_lock_monitor(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
 
 /**
  * @internal
@@ -209,7 +219,8 @@ extern void tpl_disable_all_isr_lock_monitor (tpl_exec_common *this_exec_obj);
  *
  * @param this_exec_obj the executable object which locked ISRs
  */
-extern void tpl_start_os_isr_lock_monitor (tpl_exec_common *this_exec_obj);
+extern FUNC(void, OS_CODE) tpl_start_os_isr_lock_monitor(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
 
 /**
  * @internal
@@ -218,7 +229,8 @@ extern void tpl_start_os_isr_lock_monitor (tpl_exec_common *this_exec_obj);
  *
  * @param this_exec_obj the executable object which locked ISRs
  */
-extern void tpl_disable_os_isr_lock_monitor (tpl_exec_common *this_exec_obj);
+extern FUNC(void, OS_CODE) tpl_disable_os_isr_lock_monitor(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

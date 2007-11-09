@@ -38,15 +38,16 @@
  * and a time object is inserted starting from the
  * head of the list
  */
-void tpl_insert_time_obj(tpl_time_obj *time_obj)
+FUNC(void, OS_CODE) tpl_insert_time_obj(
+    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) time_obj)
 {
     /*  get the counter                                                     */
-    tpl_counter     *counter = time_obj->stat_part->counter;
+    P2VAR(tpl_counter, OS_APPL_DATA, AUTOMATIC)   counter = time_obj->stat_part->counter;
     /*  initialize the current time object to the head                      */
-    tpl_time_obj    *current_to = counter->first_to;
+    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC)  current_to = counter->first_to;
     /*  initialize the time object that precede the current one to NULL     */
-    tpl_time_obj    *prev_to = NULL;
-    
+    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC)  prev_to = NULL;
+
     if (current_to == NULL)
     {
         /*  The time object queue is empty
@@ -65,10 +66,10 @@ void tpl_insert_time_obj(tpl_time_obj *time_obj)
             prev_to = current_to;
             current_to = current_to->next_to;
         }
-    
+
         time_obj->next_to = current_to;
         time_obj->prev_to = prev_to;
-    
+
         /*  insert the alarm    */
         if (current_to != NULL)
         {
@@ -86,16 +87,16 @@ void tpl_insert_time_obj(tpl_time_obj *time_obj)
                 have to be added at the head of the time object queue       */
             counter->first_to = time_obj;
         }
-        
+
         /*  Update the next_to to point to the newly
             inserted time_object if the date of the newly inserted time
             object is within the current date and the next_alarm_to_raise
             date, taking account the modulo                                 */
         if (counter->next_to->date < counter->current_date)
         {
-            if ((time_obj->date > counter->current_date) || 
+            if ((time_obj->date > counter->current_date) ||
                 (time_obj->date < counter->next_to->date))
-            {      
+            {
                 counter->next_to = time_obj;
             }
         }
@@ -115,12 +116,13 @@ void tpl_insert_time_obj(tpl_time_obj *time_obj)
  * remove an alarm from the alarm queue of the counter
  * it belongs to.
  */
-void tpl_remove_time_obj(tpl_time_obj *time_obj)
+FUNC(void, OS_CODE) tpl_remove_time_obj(
+    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) time_obj)
 {
-    
-    tpl_counter *counter = time_obj->stat_part->counter;
-    
-    /*  adjust the head of the queue if the 
+
+    P2VAR(tpl_counter, OS_APPL_DATA, AUTOMATIC) counter = time_obj->stat_part->counter;
+
+    /*  adjust the head of the queue if the
         removed alarm is at the head            */
     if (time_obj == counter->first_to)
     {
@@ -159,18 +161,19 @@ void tpl_remove_time_obj(tpl_time_obj *time_obj)
  *
  * @param time_obj  The alarm to raise.
  */
-tpl_status tpl_raise_alarm(tpl_time_obj *time_obj)
+FUNC(tpl_status, OS_CODE) tpl_raise_alarm(
+    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) time_obj)
 {
-    tpl_status  result = E_OK;
-    
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
+
     /*  Get the alarm descriptor                            */
-    tpl_alarm_static    *stat_alarm = (tpl_alarm_static *)time_obj->stat_part;
+    P2VAR(tpl_alarm_static, OS_APPL_DATA, AUTOMATIC) stat_alarm = (tpl_alarm_static *)time_obj->stat_part;
     /*  Get the action to perform from the alarm descriptor */
-    const tpl_action    *action_desc = stat_alarm->action;
-    
+    P2CONST(tpl_action, OS_APPL_CONST, AUTOMATIC) action_desc = stat_alarm->action;
+
     /*  Call the action                                     */
     result = (action_desc->action)(action_desc) ;
-    
+
     return result;
 }
 
@@ -184,16 +187,17 @@ tpl_status tpl_raise_alarm(tpl_time_obj *time_obj)
  *
  * suggested modification by Seb - 2005-02-01
  *
- * Update: 2006-12-10: Does not perform the rescheduling. 
+ * Update: 2006-12-10: Does not perform the rescheduling.
  * tpl_schedule must be called explicitly
  */
-tpl_status tpl_counter_tick(tpl_counter *counter)
+FUNC(tpl_status, OS_CODE) tpl_counter_tick(
+    P2VAR(tpl_counter, OS_APPL_DATA, AUTOMATIC) counter)
 {
-    tpl_time_obj*   t_obj;
-    tpl_expire_func expire;
-    tpl_tick        date;
-    tpl_status      need_resched = NO_SPECIAL_CODE;
-    
+    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC)  t_obj;
+    VAR(tpl_expire_func, AUTOMATIC)               expire;
+    VAR(tpl_tick, AUTOMATIC)                      date;
+    VAR(tpl_status, AUTOMATIC)                    need_resched = NO_SPECIAL_CODE;
+
     /*  inc the current tick value of the counter   */
     counter->current_tick++;
     /*  if tickperbase is reached, the counter is inc   */
@@ -210,7 +214,7 @@ tpl_status tpl_counter_tick(tpl_counter *counter)
         }
         counter->current_date = date;
         counter->current_tick = 0;
-        
+
         /*  check if the counter has reached the
             next alarm activation date  */
         t_obj = counter->next_to;
@@ -220,7 +224,7 @@ tpl_status tpl_counter_tick(tpl_counter *counter)
             /*  note : time_obj is always the next_to
                 since removing the time object from the queue will
                 advance next_to along the queue                     */
-            
+
             /*  get the time object from the queue                  */
             tpl_remove_time_obj(t_obj);
 
@@ -248,7 +252,7 @@ tpl_status tpl_counter_tick(tpl_counter *counter)
             else {
                 t_obj->state = TIME_OBJ_SLEEP;
             }
-    
+
             /*  get the next alarm to raise     */
             t_obj = counter->next_to;
         }

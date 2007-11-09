@@ -35,7 +35,8 @@
 /**
  *  action function for action by incrementing counter
  */
-tpl_status tpl_action_increment_counter(const tpl_action *action)
+FUNC(tpl_status, OS_CODE) tpl_action_increment_counter(
+    P2CONST(tpl_action, OS_APPL_CONST, AUTOMATIC) action)
 {
     /*
      * A tpl_action * is cast to a tpl_increment_counter_action *

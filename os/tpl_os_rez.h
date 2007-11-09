@@ -40,7 +40,7 @@
 
 /**
  * @typedef ResourceType
- * 
+ *
  * identifies a resource
  *
  * see paragraph 13.4.1 page 58 of OSEK/VDX 2.2.2 spec
@@ -79,7 +79,8 @@ typedef tpl_resource_id ResourceType;
  *
  * see paragraph 13.4.3.1 page 58 of OSEK/VDX 2.2.2 spec
  */
-StatusType GetResource(const ResourceType res_id);
+FUNC(StatusType, OS_CODE) GetResource(
+    CONST(ResourceType, AUTOMATIC) res_id);
 
 
 /**
@@ -96,22 +97,30 @@ StatusType GetResource(const ResourceType res_id);
  *
  * see paragraph 13.4.3.2 page 59 of OSEK/VDX 2.2.2 spec
  */
-StatusType ReleaseResource(const ResourceType res_id);
+FUNC(StatusType, OS_CODE) ReleaseResource(
+    CONST(ResourceType, AUTOMATIC) res_id);
 
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 
 /**
  * This special resource is used to deny preemption.
  *
  * @note It can be used by a task but is not stored
- * in the general resource table.  
+ * in the general resource table.
  *
  * see paragraph 13.4.4 page 59 of OSEK/VDX 2.2.2 spec
  */
-extern ResourceType RES_SCHEDULER;
+extern VAR(ResourceType, OS_VAR) RES_SCHEDULER;
 
-
-#define OS_STOP_SEC_CODE
+#define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
+
 
 #endif /* TPL_OS_REZ_H */
 

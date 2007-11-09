@@ -33,7 +33,7 @@
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-tpl_service_call_desc tpl_service;
+VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -51,13 +51,14 @@ tpl_service_call_desc tpl_service;
  *
  * @see #PROCESS_ERROR
  */
-void tpl_call_error_hook(const tpl_status error)
+FUNC(void, OS_CODE) tpl_call_error_hook(
+    CONST(tpl_status, AUTOMATIC) error)
 {
 
 /**
  * This flag is used to avoid error hook call recursion
  */
-    static tpl_bool in_error_hook = FALSE;
+    _STATIC_ VAR(tpl_bool, AUTOMATIC) in_error_hook = FALSE;
 
     if (!in_error_hook)
     {

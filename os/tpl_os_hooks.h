@@ -66,7 +66,7 @@
 /**
  * @def CALL_STARTUP_HOOK
  *
- * Generates a call to #StartupHook only if WITH_STARTUP_HOOK is defined 
+ * Generates a call to #StartupHook only if WITH_STARTUP_HOOK is defined
  */
 #ifdef WITH_STARTUP_HOOK
 #   define CALL_STARTUP_HOOK()          \
@@ -96,28 +96,28 @@
 /**
  * Prototype of the pre-task hook routine
  */
-extern void PreTaskHook(void);
+extern FUNC(void, OS_CODE) PreTaskHook(void);
 #endif
 
 #ifdef WITH_POST_TASK_HOOK
 /**
  * Prototype of the post-task hook routine
  */
-extern void PostTaskHook(void);
+extern FUNC(void, OS_CODE) PostTaskHook(void);
 #endif
 
 #ifdef WITH_STARTUP_HOOK
 /**
  * Prototype of the startup hook routine
  */
-void StartupHook(void);
+FUNC(void, OS_CODE) StartupHook(void);
 #endif
 
 #ifdef WITH_SHUTDOWN_HOOK
 /**
  * Prototype of the shutdown hook routine
  */
-void ShutdownHook(StatusType);
+FUNC(void, OS_CODE) ShutdownHook(VAR(StatusType, AUTOMATIC) error);
 #endif
 
 #define OS_STOP_SEC_CODE

@@ -37,12 +37,19 @@
 #include "tpl_as_timing_protec.h"
 #endif
 
-static AppModeType application_mode;
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+_STATIC_ VAR(AppModeType, OS_VAR) application_mode;
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-AppModeType GetActiveApplicationMode(void)
+FUNC(AppModeType, OS_CODE) GetActiveApplicationMode(void)
 {
     return application_mode;
 }
@@ -51,34 +58,36 @@ AppModeType GetActiveApplicationMode(void)
  * StartOS can be called by the app to start the OS in
  * an appropriate mode.
  */
-void StartOS(const AppModeType mode)
+FUNC(void, OS_CODE) StartOS(
+    CONST(AppModeType, AUTOMATIC) mode
+)
 {
     application_mode = mode;
-    
+
     /*  Set the initial state of the OS */
     tpl_os_state = (u8)OS_INIT;
-    
+
     tpl_init_machine();
-        
+
     tpl_get_task_lock();
 
     tpl_init_os(mode);
-    
+
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     tpl_init_timing_protection ();
 #endif
-    
+
     /*  Call the startup hook. According to the spec, it should be called
         after the os is initialized and before the scheduler is running   */
     CALL_STARTUP_HOOK()
-    
+
     /*  Call tpl_schedule to elect the greatest priority task
         tpl_schedule also set the state of the OS according to the elected
-				task */
+        task */
     tpl_schedule(FROM_TASK_LEVEL);
-    
+
     tpl_release_task_lock();
-    
+
     /*  Fall back to the idle loop */
     tpl_sleep();
 }
@@ -86,7 +95,9 @@ void StartOS(const AppModeType mode)
 /*
  * ShutdownOS can be called by the app to shutdown it
  */
-void ShutdownOS(const /*@unused@*/ StatusType error) 
+void ShutdownOS(
+    CONST(StatusType, AUTOMATIC) error  /*@unused@*/
+)
 {
     CALL_SHUTDOWN_HOOK(error)
     /* architecture dependant shutdown. */

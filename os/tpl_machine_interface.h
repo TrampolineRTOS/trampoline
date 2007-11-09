@@ -43,12 +43,12 @@
  * @param new_context   Pointer to the context of the task that will be
  *                      scheduled.
  */
-extern void tpl_switch_context(
-    tpl_context *old_context,
-    tpl_context *new_context
+extern FUNC(void, OS_CODE) tpl_switch_context(
+    P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
+    P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context
 );
 
-   
+
 /**
  * @internal
  *
@@ -60,12 +60,12 @@ extern void tpl_switch_context(
  * @param new_context   Pointer to the context of the task that will be
  *                      scheduled.
  */
-extern void tpl_switch_context_from_it(
-    tpl_context *old_context,
-    tpl_context *new_context
+extern FUNC(void, OS_CODE) tpl_switch_context_from_it(
+    P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
+    P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context
 );
 
-    
+
 /**
  * @internal
  *
@@ -73,7 +73,9 @@ extern void tpl_switch_context_from_it(
  *
  * @param exec_obj      Pointer to the task descriptor
  */
-extern void tpl_init_context(tpl_exec_common *exec_obj);
+extern FUNC(void, OS_CODE) tpl_init_context(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj
+);
 
 
 /**
@@ -81,7 +83,7 @@ extern void tpl_init_context(tpl_exec_common *exec_obj);
  *
  * tpl_get_task_lock locks the kernel
  */
-extern void tpl_get_task_lock(void);
+extern FUNC(void, OS_CODE) tpl_get_task_lock(void);
 
 
 /**
@@ -89,7 +91,7 @@ extern void tpl_get_task_lock(void);
  *
  * tpl_release_task_lock unlocks the kernel
  */
-extern void tpl_release_task_lock(void);
+extern FUNC(void, OS_CODE) tpl_release_task_lock(void);
 
 
 /**
@@ -98,7 +100,7 @@ extern void tpl_release_task_lock(void);
  * tpl_init_machine performs machine (hardware of virtual machine)
  * dependant initializations
  */
-extern void tpl_init_machine(void);
+extern FUNC(void, OS_CODE) tpl_init_machine(void);
 
 
 /**
@@ -107,7 +109,7 @@ extern void tpl_init_machine(void);
  * tpl_sleep is called by the idle task. It should put the system in sleep
  * mode of go in an infinite loop if there is no sleep mode available.
  */
-extern void tpl_sleep(void);
+extern FUNC(void, OS_CODE) tpl_sleep(void);
 
 
 /**
@@ -116,7 +118,7 @@ extern void tpl_sleep(void);
  * tpl_shutdown shutdown trampoline. It is called by ShutdownOS and should
  * perform hardware or virtual machine shutdown.
  */
-extern void tpl_shutdown(void);
+extern FUNC(void, OS_CODE) tpl_shutdown(void);
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 
@@ -125,18 +127,18 @@ extern void tpl_shutdown(void);
  *
  * This is the prototype of a function to be called by the
  * watchdog
- * 
+ *
  * @retval TRUE tells that a rescheduling is required
  * @retval FALSE tells that we don't need a rescheduling
  *
  * @see #tpl_set_watchdog
  * @see #tpl_cancel_watchdog
  */
-typedef u8 (*tpl_watchdog_expire_function)();
+typedef P2FUNC(u8, OS_APPL_CODE, tpl_watchdog_expire_function)(void);
 
 /**
  * @internal
- * 
+ *
  * Start the watchdog to call function when delay expires. The watchdog
  * can be canceled before expiration
  *
@@ -147,36 +149,39 @@ typedef u8 (*tpl_watchdog_expire_function)();
  * @see #tpl_cancel_watchdog
  * @see #tpl_get_local_current_date
  */
-extern void tpl_set_watchdog (tpl_time delay, tpl_watchdog_expire_function function);
+extern FUNC(void, OS_CODE) tpl_set_watchdog (
+    VAR(tpl_time, AUTOMATIC) delay,
+    VAR(tpl_watchdog_expire_function, AUTOMATIC) function
+);
 
 /**
  * @internal
- * 
+ *
  * Cancels the watchdog before its expiration. This has no effet if the
  * watchdog has not been started before.
  *
  * @see #tpl_set_watchdog
  */
-extern void tpl_cancel_watchdog ();
+extern FUNC(void, OS_CODE) tpl_cancel_watchdog (void);
 
 /**
  * @internal
- * 
+ *
  * Gives the current date in tpl_time unit. See the os machine specifications
  * to know what is the unit of tpl_time.
  *
  * @return the current date when called
  */
-extern tpl_time tpl_get_local_current_date ();
+extern FUNC(tpl_time, OS_CODE) tpl_get_local_current_date (void);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
 /**
  * @internal
- * 
+ *
  * This function tells if the saved stack pointer (into saved context) is
  * located into the stack boundaries or not.
- * 
+ *
  * Depending on what the hardware is able to do, this function may not be
  * able to detect an error. Only undoubted errors are reported.
  *
@@ -187,11 +192,13 @@ extern tpl_time tpl_get_local_current_date ();
  *
  * @see #tpl_check_stack_footprint
  */
-u8 tpl_check_stack_pointer (tpl_exec_common *this_exec_obj);
+FUNC(u8, OS_CODE) tpl_check_stack_pointer(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj
+);
 
 /**
  * @internal
- * 
+ *
  * This functions checks the stack did not overflowed by looking if the stack
  * tagging has not been completly erased.
  *
@@ -203,11 +210,13 @@ u8 tpl_check_stack_pointer (tpl_exec_common *this_exec_obj);
  * will be used, these values will be overriden and we will be able to know
  * how high the stack have been. Of course, it is intended for debug stage,
  * then we suggest you oversize the stack.
- * 
+ *
  * @retval 1 no stack overflow detected
  * @retval 0 stack overflow deteted
  */
-u8 tpl_check_stack_footprint (tpl_exec_common *this_exec_obj);
+FUNC(u8, OS_CODE) tpl_check_stack_footprint(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj
+);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
 #define OS_STOP_SEC_CODE

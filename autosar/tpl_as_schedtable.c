@@ -25,11 +25,14 @@
  * $Author$
  * $URL$
  */
- 
+
 #include "tpl_as_schedtable.h"
 #include "tpl_as_st_kernel.h"
 #include "tpl_as_error.h"
 #include "tpl_os_definitions.h"
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 
 #ifndef NO_SCHEDTABLE
 /**
@@ -41,8 +44,12 @@
  * to have an identifier. So a table of pointer is used. The size of this table
  * is static and known at compile time
  */
-extern tpl_schedule_table   *tpl_schedtable_table[SCHEDTABLE_COUNT];
+extern P2VAR(tpl_schedule_table, OS_APPL_DATA, OS_VAR)  tpl_schedtable_table[SCHEDTABLE_COUNT];
 #endif
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -53,17 +60,17 @@ extern tpl_schedule_table   *tpl_schedtable_table[SCHEDTABLE_COUNT];
  * see paragraph 8.4.8 page 55 of
  * AUTOSAR/Specification of the Operating System v2.0.1
  */
-StatusType  StartScheduleTableRel(
-    ScheduleTableType   sched_table_id,
-    TickType            offset
+FUNC(StatusType, OS_CODE)  StartScheduleTableRel(
+    VAR(ScheduleTableType, AUTOMATIC) sched_table_id,
+    VAR(TickType, AUTOMATIC)          offset
 )
 {
-    StatusType result = E_OK;
-    
+    VAR(StatusType, AUTOMATIC) result = E_OK;
+
 #ifndef NO_SCHEDTABLE
-    tpl_schedule_table *st;
+    P2VAR(tpl_schedule_table, OS_APPL_DATA, AUTOMATIC) st;
 #endif
-    
+
     LOCK_WHEN_TASK()
 
     STORE_SERVICE(OSServiceId_StartScheduleTableRel)
@@ -75,7 +82,7 @@ StatusType  StartScheduleTableRel(
 #ifndef NO_SCHEDTABLE
     IF_NO_EXTENDED_ERROR(result)
         st = tpl_schedtable_table[sched_table_id];
-    
+
         if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_NOT_STARTED)
         {
             /*  the schedule table is not already started, proceed  */
@@ -99,7 +106,7 @@ StatusType  StartScheduleTableRel(
 #endif
 
     PROCESS_ERROR(result)
-    
+
     UNLOCK_WHEN_TASK()
 
     return result;
@@ -111,17 +118,17 @@ StatusType  StartScheduleTableRel(
  * see paragraph 8.4.9 page 55 of
  * AUTOSAR/Specification of the Operating System v2.0.1
  */
-StatusType  StartScheduleTableAbs(
-    ScheduleTableType   sched_table_id,
-    TickType            tick_val
+FUNC(StatusType, OS_CODE)  StartScheduleTableAbs(
+    VAR(ScheduleTableType, AUTOMATIC)   sched_table_id,
+    VAR(TickType, AUTOMATIC)            tick_val
 )
 {
-    StatusType result = E_OK;
-    
+    VAR(StatusType, AUTOMATIC) result = E_OK;
+
 #ifndef NO_SCHEDTABLE
-    tpl_schedule_table *st;
+    P2VAR(tpl_schedule_table, OS_APPL_DATA, AUTOMATIC) st;
 #endif
-    
+
     LOCK_WHEN_TASK()
 
     STORE_SERVICE(OSServiceId_StartScheduleTableAbs)
@@ -133,7 +140,7 @@ StatusType  StartScheduleTableAbs(
 #ifndef NO_SCHEDTABLE
     IF_NO_EXTENDED_ERROR(result)
         st = tpl_schedtable_table[sched_table_id];
-    
+
         if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_NOT_STARTED)
         {
             /*  the schedule table is not already started, proceed  */
@@ -151,10 +158,10 @@ StatusType  StartScheduleTableAbs(
 #endif
 
     PROCESS_ERROR(result)
-    
+
     UNLOCK_WHEN_TASK()
 
-    return result;    
+    return result;
 }
 
 /*
@@ -163,21 +170,21 @@ StatusType  StartScheduleTableAbs(
  * see paragraph 8.4.10 page 56 of
  * AUTOSAR/Specification of the Operating System v2.0.1
  */
-StatusType StopScheduleTable(
-    ScheduleTableType   sched_table_id
+FUNC(StatusType, OS_CODE) StopScheduleTable(
+    VAR(ScheduleTableType, AUTOMATIC)   sched_table_id
 )
 {
-    StatusType result = E_OK;
-    
+    VAR(StatusType, AUTOMATIC) result = E_OK;
+
 #ifndef NO_SCHEDTABLE
-    tpl_schedule_table *st;
+    P2VAR(tpl_schedule_table, OS_APPL_DATA, AUTOMATIC) st;
 #endif
 
     LOCK_WHEN_TASK()
 
     STORE_SERVICE(OSServiceId_StopScheduleTable)
     STORE_SCHEDTABLE_ID(sched_table_id)
-    
+
     CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
 
 #ifndef NO_SCHEDTABLE
@@ -198,7 +205,7 @@ StatusType StopScheduleTable(
 #endif
 
     PROCESS_ERROR(result)
-    
+
     UNLOCK_WHEN_TASK()
 
     return result;
@@ -210,16 +217,16 @@ StatusType StopScheduleTable(
  * see paragraph 8.4.11 page 57 of
  * AUTOSAR/Specification of the Operating System v2.0.1
  */
-StatusType NextScheduleTable(
-    ScheduleTableType   current_st_id,
-    ScheduleTableType   next_st_id
+FUNC(StatusType, OS_CODE) NextScheduleTable(
+    VAR(ScheduleTableType, AUTOMATIC)   current_st_id,
+    VAR(ScheduleTableType, AUTOMATIC)   next_st_id
 )
 {
-    StatusType result = E_OK;
-    
+    VAR(StatusType, AUTOMATIC) result = E_OK;
+
 #ifndef NO_SCHEDTABLE
-    tpl_schedule_table *current_st;
-    tpl_schedule_table *next_st;
+    P2VAR(tpl_schedule_table, OS_APPL_DATA, AUTOMATIC) current_st;
+    P2VAR(tpl_schedule_table, OS_APPL_DATA, AUTOMATIC) next_st;
 #endif
 
     LOCK_WHEN_TASK()
@@ -227,7 +234,7 @@ StatusType NextScheduleTable(
     STORE_SERVICE(OSServiceId_NextScheduleTable)
     STORE_SCHEDTABLE_ID(current_st_id)
     STORE_SCHEDTABLE_ID2(next_st_id)
-    
+
     CHECK_SCHEDTABLE_ID_ERROR(current_st_id, result)
     CHECK_SCHEDTABLE_ID_ERROR(next_st_id, result)
 
@@ -238,7 +245,7 @@ StatusType NextScheduleTable(
 
         CHECK_SCHEDTABLE_COUNTERS(current_st, next_st, result)
         CHECK_SCHEDTABLE_NEXT(next_st, result)
-        
+
         IF_NO_EXTENDED_ERROR(result)
             /*  Check the current schedule table is started         */
             if ((current_st->b_desc.state != SCHEDULETABLE_NOT_STARTED) &&
@@ -258,7 +265,7 @@ StatusType NextScheduleTable(
 #endif
 
     PROCESS_ERROR(result)
-    
+
     UNLOCK_WHEN_TASK()
 
     return result;
@@ -271,18 +278,18 @@ StatusType NextScheduleTable(
  * see paragraph 8.4.18 page 73 of
  * AUTOSAR/Specification of the Operating System v2.1.0
  */
-StatusType GetScheduleTableStatus(
-    ScheduleTableType           sched_table_id,
-    ScheduleTableStatusRefType  status)
+FUNC(StatusType, OS_CODE) GetScheduleTableStatus(
+    VAR(ScheduleTableType, AUTOMATIC)           sched_table_id,
+    VAR(ScheduleTableStatusRefType, AUTOMATIC)  status)
 {
-    StatusType  result = E_OK;
+    VAR(StatusType, AUTOMATIC)  result = E_OK;
 
 #ifndef NO_SCHEDTABLE
-    tpl_schedule_table *st;
+    P2VAR(tpl_schedule_table, OS_APPL_DATA, AUTOMATIC) st;
 #endif
 
     LOCK_WHEN_HOOK()
-    
+
     /*  store information for error hook routine    */
     STORE_SERVICE(OSServiceId_GetScheduleTableStatus)
     STORE_SCHEDTABLE_ID(sched_table_id)
@@ -296,9 +303,9 @@ StatusType GetScheduleTableStatus(
         *status = st->b_desc.state;
     IF_NO_EXTENDED_ERROR_END()
 #endif
-    
+
     UNLOCK_WHEN_HOOK()
-    
+
     return result;
 }
 

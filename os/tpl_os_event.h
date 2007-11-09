@@ -33,7 +33,7 @@
  * see paragraph 13.5,
  * pages 60+ of OSEK/VDX 2.2.2 spec
  */
- 
+
 /**
  * @typedef EventmaskType
  *
@@ -50,7 +50,7 @@ typedef tpl_event_mask  EventMaskType;
  *
  * see paragraph 13.5.1 page 60 of OSEK/VDX 2.2.2 spec
  */
-typedef tpl_event_mask  *EventMaskRefType;
+typedef P2VAR(tpl_event_mask, OS_APPL_DATA, AUTOMATIC)  EventMaskRefType;
 
 /**
  * @def DeclareEvent
@@ -86,9 +86,9 @@ typedef tpl_event_mask  *EventMaskRefType;
  *
  * see paragraph 13.5.3.1 page 60 of OSEK/VDX 2.2.2 spec
  */
-StatusType SetEvent(
-    const TaskType      task_id,
-    const EventMaskType event);
+FUNC(StatusType, OS_CODE) SetEvent(
+    CONST(TaskType, AUTOMATIC)      task_id,
+    CONST(EventMaskType, AUTOMATIC) event);
 
 
 /**
@@ -102,7 +102,8 @@ StatusType SetEvent(
  *
  * see paragraph 13.5.3.2 page 61 of OSEK/VDX 2.2.2 spec
  */
-StatusType ClearEvent(const EventMaskType event);
+FUNC(StatusType, OS_CODE) ClearEvent(
+    CONST(EventMaskType, AUTOMATIC) event);
 
 
 /**
@@ -117,9 +118,9 @@ StatusType ClearEvent(const EventMaskType event);
  *
  * see paragraph 13.5.3.3 page 61 of OSEK/VDX 2.2.2 spec
  */
-StatusType GetEvent(
-    const TaskType          task_id,
-    const EventMaskRefType  event);
+FUNC(StatusType, OS_CODE) GetEvent(
+    CONST(TaskType, AUTOMATIC)          task_id,
+    CONST(EventMaskRefType, AUTOMATIC)  event);
 
 
 /**
@@ -134,7 +135,8 @@ StatusType GetEvent(
  *
  * see paragraph 13.5.3.4 page 61 of OSEK/VDX 2.2.2 spec
  */
-StatusType WaitEvent(const EventMaskType event);
+FUNC(StatusType, OS_CODE) WaitEvent(
+    CONST(EventMaskType, AUTOMATIC) event);
 
 
 #define OS_STOP_SEC_CODE
