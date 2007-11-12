@@ -27,6 +27,7 @@
 #define TPL_OS_STD_TYPES_H
 
 #include "tpl_app_objects.h"
+#include "tpl_compiler.h"
 
 #ifdef WITH_AUTOSAR
 
