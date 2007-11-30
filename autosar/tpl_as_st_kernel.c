@@ -103,6 +103,10 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
             /*  No next schedule table but the current table is periodic    */
             st->cycle = before;
         }
+        else {
+            /*  reset the state of the current schedule table               */
+            st->state = SCHEDULETABLE_NOT_STARTED;
+        }
         /*  Reset the index                                                 */
         ((tpl_schedule_table *)st)->index = 0;
     }

@@ -307,30 +307,6 @@
  */
 #define FROM_IT_LEVEL   1
 
-/**********************************************
- * selector for tpl_put_exec_object parameter *
- **********************************************/
-
-/**
- * @def PREEMPTED_EXEC_OBJ
- *
- * The object (task or interrupt) added to the ready list has been preempted 
- * (and have to be added to the front of the list)
- *
- * @see #tpl_put_exec_object
- */
-#define PREEMPTED_EXEC_OBJ          0
-
-/**
- * @def NEWLY_ACTIVATED_EXEC_OBJ
- *
- * The object (task or interrupt) added to the ready list is newly activated
- * (and have to be added to the back of the list)
- *
- * @see #tpl_put_exec_object
- */
-#define NEWLY_ACTIVATED_EXEC_OBJ    1
-
 /**
  * @def TASK
  *

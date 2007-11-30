@@ -211,8 +211,121 @@
     }
 #endif
 
-#define CHECK_SCHEDTABLE_COUNTERS(current_st, next_st, result)
-#define CHECK_SCHEDTABLE_NEXT(next_st, result)
+/**
+ * @def CHECK_SCHEDTABLE_OFFSET_VALUE
+ *
+ * Checks if the value is > 0 and <= MAXALLOWEDVALUE of the counter
+ * the schedule sched_table_id belongs to.
+ *
+ * @param sched_table_id #ScheduleTableType
+ * @param offset #TickType to check
+ * @param result error code to set if check fails
+ *
+ * @note error code is not set if it do not equals E_OK
+ * @note checking is disable when OS_EXTENDED is not defined
+ * @note sched_table_id should be checked before doing this check
+ */
+
+/* No extended error checking (! OS_EXTENDED)  */
+#if !defined(OS_EXTENDED)
+#   define CHECK_SCHEDTABLE_OFFSET_VALUE(sched_table_id,offset,result)
+#elif !defined(NO_SCHEDTABLE)
+#   define CHECK_SCHEDTABLE_OFFSET_VALUE(sched_table_id,offset,result)  \
+    if ((result == (tpl_status)E_OK) &&                                 \
+        ((offset >                                                      \
+         tpl_schedtable_table[sched_table_id]->                         \
+         b_desc.stat_part->counter->max_allowed_value) ||               \
+         (offset == (TickType)0)))                                      \
+    {                                                                   \
+        result = (tpl_status)E_OS_VALUE;                                \
+    }
+#else
+#   define CHECK_SCHEDTABLE_OFFSET_VALUE(sched_table_id,offset,result)  \
+    if (result == (tpl_status)E_OK)                                     \
+    {                                                                   \
+        result = (tpl_status)E_OS_ID;                                   \
+    }
+#endif
+
+
+/**
+ * @def CHECK_SCHEDTABLE_TICK_VALUE
+ *
+ * Checks if the value <= MAXALLOWEDVALUE of the counter
+ * the schedule sched_table_id belongs to.
+ *
+ * @param sched_table_id #ScheduleTableType
+ * @param tick #TickType to check
+ * @param result error code to set if check fails
+ *
+ * @note error code is not set if it do not equals E_OK
+ * @note checking is disable when OS_EXTENDED is not defined
+ * @note sched_table_id should be checked before doing this check
+ */
+
+/* No extended error checking (! OS_EXTENDED)  */
+#if !defined(OS_EXTENDED)
+#   define CHECK_SCHEDTABLE_TICK_VALUE(sched_table_id,tick,result)
+#elif !defined(NO_SCHEDTABLE)
+#   define CHECK_SCHEDTABLE_TICK_VALUE(sched_table_id,tick,result)      \
+    if ((result == (tpl_status)E_OK) &&                                 \
+        ((tick >                                                        \
+         tpl_schedtable_table[sched_table_id]->                         \
+         b_desc.stat_part->counter->max_allowed_value)))                \
+    {                                                                   \
+        result = (tpl_status)E_OS_VALUE;                                \
+    }
+#else
+#   define CHECK_SCHEDTABLE_TICK_VALUE(sched_table_id,tick,result)      \
+    if (result == (tpl_status)E_OK)                                     \
+    {                                                                   \
+        result = (tpl_status)E_OS_ID;                                   \
+    }
+#endif
+
+
+/**
+ * @def CHECK_SCHEDTABLE_COUNTERS
+ *
+ * Checks two schedule tables have the same counter. This is used
+ * in NextScheduleTable service.
+ *
+ * @param current_st #ScheduleTableType the current schedule table
+ * @param next_st #ScheduleTableType the next schedule table
+ * @param result error code to set if check fails
+ *
+ * @note error code is not set if it does not equal E_OK at start
+ * @note checking is disable when OS_EXTENDED is not defined
+ * @note sched_table_id should be checked before doing this check
+ */
+
+/* No extended error checking (! OS_EXTENDED)  */
+#if !defined(OS_EXTENDED)
+    /* Does not check the schedule table counters in this case */
+#   define CHECK_SCHEDTABLE_COUNTERS(current_st, next_st, result)
+#endif
+
+/* NO_SCHEDTABLE and extended error checking (OS_EXTENDED)      */
+#if defined(NO_SCHEDTABLE) && defined(OS_EXTENDED)
+    /* E_OS_ID is returned in this case  */
+#   define CHECK_SCHEDTABLE_COUNTERS(current_st, next_st, result)   \
+    if (result == (tpl_status)E_OK)                                 \
+    {                                                               \
+        result = (tpl_status)E_OS_ID;                               \
+    }
+#endif
+
+/* !NO_SCHEDTABLE and extended error checking (OS_EXTENDED)     */
+#if !defined(NO_SCHEDTABLE) && defined(OS_EXTENDED)
+    /* E_OK or E_OS_ID when counters are different  */
+#   define CHECK_SCHEDTABLE_COUNTERS(current_st, next_st, result)   \
+    if ((result == (tpl_status)E_OK) &&                             \
+        ((current_st->b_desc.stat_part->counter) !=                 \
+         (next_st->b_desc.stat_part->counter)))                     \
+    {                                                               \
+        result = (tpl_status)E_OS_ID;                               \
+    }
+#endif
 
 /**
  * @def CHECK_COUNTER_ID_ERROR
@@ -225,6 +338,7 @@
  * @note error code is not set if it do not equals E_OK
  *
  * @note checking is disable when OS_EXTENDED is not defined
+ *
  */
 
 /* No extended error checking (! OS_EXTENDED)  */
@@ -243,7 +357,7 @@
     }
 #endif
 
-/* !NO_SCHEDTABLE and extended error checking (OS_EXTENDED)     */
+/* !NO_COUNTER and extended error checking (OS_EXTENDED)     */
 #if !defined(NO_COUNTER) && defined(OS_EXTENDED)
     /* E_OK or E_OS_LIMIT   */
 #   define CHECK_COUNTER_ID_ERROR(cnt_id,result)     \

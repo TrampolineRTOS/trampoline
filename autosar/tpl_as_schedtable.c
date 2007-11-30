@@ -78,7 +78,8 @@ FUNC(StatusType, OS_CODE)  StartScheduleTableRel(
     STORE_TICK_1(offset)
 
     CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
-
+    CHECK_SCHEDTABLE_OFFSET_VALUE(sched_table_id,offset,result)
+    
 #ifndef NO_SCHEDTABLE
     IF_NO_EXTENDED_ERROR(result)
         st = tpl_schedtable_table[sched_table_id];
@@ -136,7 +137,8 @@ FUNC(StatusType, OS_CODE)  StartScheduleTableAbs(
     STORE_TICK_1(tick_val)
 
     CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
-
+    CHECK_SCHEDTABLE_TICK_VALUE(sched_table_id,tick_val,result)
+    
 #ifndef NO_SCHEDTABLE
     IF_NO_EXTENDED_ERROR(result)
         st = tpl_schedtable_table[sched_table_id];
@@ -244,7 +246,6 @@ FUNC(StatusType, OS_CODE) NextScheduleTable(
         next_st = tpl_schedtable_table[next_st_id];
 
         CHECK_SCHEDTABLE_COUNTERS(current_st, next_st, result)
-        CHECK_SCHEDTABLE_NEXT(next_st, result)
 
         IF_NO_EXTENDED_ERROR(result)
             /*  Check the current schedule table is started         */
@@ -252,9 +253,13 @@ FUNC(StatusType, OS_CODE) NextScheduleTable(
                 (current_st->b_desc.state != SCHEDULETABLE_NEXT))
             {
                 /*  Set the next pointer                            */
+                if (current_st->next != NULL)
+                {
+                    current_st->next->b_desc.state = SCHEDULETABLE_NOT_STARTED;
+                }
                 current_st->next = next_st;
-                /*  And the state of the schedule table             */
-                current_st->b_desc.state = SCHEDULETABLE_NEXT;
+                /*  And the state of the next schedule table        */
+                next_st->b_desc.state = SCHEDULETABLE_NEXT;
             }
             else
             {

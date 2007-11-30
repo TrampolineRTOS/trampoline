@@ -61,8 +61,8 @@ FUNC(StatusType, OS_CODE) ActivateTask(
         if (result == (tpl_status)E_OK_AND_SCHEDULE)
         {
             tpl_schedule(FROM_TASK_LEVEL);
-            result &= OSEK_STATUS_MASK;
         }
+        result &= OSEK_STATUS_MASK;
     IF_NO_EXTENDED_ERROR_END()
 #endif
 
@@ -170,7 +170,7 @@ FUNC(StatusType, OS_CODE) ChainTask(
                     }
                 }
                 /*  put it in the list  */
-                tpl_put_exec_object(exec_obj, (u8)NEWLY_ACTIVATED_EXEC_OBJ);
+                tpl_put_new_exec_object(exec_obj);
 
                 /*  inc the task activation count. When the task
                     will terminate it will dec this count and if

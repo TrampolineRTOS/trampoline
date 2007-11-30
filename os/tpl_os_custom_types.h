@@ -28,6 +28,7 @@
 #ifndef TPL_OS_CUSTOM_TYPES_H
 #define TPL_OS_CUSTOM_TYPES_H
 
+#include "tpl_compiler.h"
 #include "tpl_os_std_types.h"
 #include "tpl_os_application_def.h"
 

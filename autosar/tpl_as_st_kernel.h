@@ -29,16 +29,7 @@
 
 #include "tpl_os_internal_types.h"
 #include "tpl_os_alarm_kernel.h"
-
-
-/* Schedule tables states */
-
-#define SCHEDULETABLE_AUTOSTART                 TIME_OBJ_AUTOSTART
-#define SCHEDULETABLE_NOT_STARTED               TIME_OBJ_SLEEP
-#define SCHEDULETABLE_RUNNING                   TIME_OBJ_ACTIVE
-#define SCHEDULETABLE_NEXT                      (TIME_OBJ_ACTIVE | 0x04)
-#define SCHEDULETABLE_WAITING                   (TIME_OBJ_ACTIVE | 0x08)
-#define SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS   (TIME_OBJ_ACTIVE | 0x0C)
+#include "tpl_as_st_definitions.h"
 
 typedef VAR(u8, AUTOMATIC)  tpl_schedtable_state;
 

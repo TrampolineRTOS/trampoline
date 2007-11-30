@@ -56,10 +56,7 @@ _STATIC_ FUNC(void, OS_CODE) tpl_activate_isr(
             /*  init the isr       */
             tpl_init_exec_object(&(a_isr->exec_desc));
             /*  put it in the list  */
-            tpl_put_exec_object(
-                &(a_isr->exec_desc),
-                (u8)NEWLY_ACTIVATED_EXEC_OBJ
-            );
+            tpl_put_new_exec_object(&(a_isr->exec_desc));
         }
         /*  inc the isr activation count. When the isr will terminate
             it will dec this count and if not zero it will be reactivated   */
