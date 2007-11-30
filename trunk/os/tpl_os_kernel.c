@@ -44,7 +44,9 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-_STATIC_ /*@null@*/ FUNC(P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC), OS_CODE) tpl_get_exec_object(void);
+_STATIC_ /*@null@*/
+FUNC(P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC), OS_CODE)
+tpl_get_exec_object(void);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
@@ -166,7 +168,8 @@ VAR(s8, OS_VAR) tpl_h_prio = -1;
 
 VAR(u8, OS_VAR) tpl_os_state = OS_INIT; /* see doc in header file declaration */
 
-VAR(tpl_resource_id, OS_VAR) RES_SCHEDULER = RESOURCE_COUNT; /* see doc in header declaration */
+VAR(tpl_resource_id, OS_VAR) RES_SCHEDULER = RESOURCE_COUNT;
+/* see doc in header declaration */
 
 #define OS_STOP_SEC_VAR_8BITS
 #include "tpl_memmap.h"
@@ -248,7 +251,9 @@ FUNC(void, OS_CODE) printrl(
  *
  * @return highest priority executable object descriptor
  */
- _STATIC_ /*@null@*/ FUNC(P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC), OS_CODE) tpl_get_exec_object(void)
+_STATIC_ /*@null@*/
+FUNC(P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC), OS_CODE)
+tpl_get_exec_object(void)
 {
     P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) elected = NULL ;
     P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) *highest;
@@ -291,66 +296,42 @@ FUNC(void, OS_CODE) printrl(
 /**
  * @internal
  *
- * tpl_put_exec_object put an executable object
+ * tpl_put_preempted_exec_object put a preempted executable object
  * in the ready executable object list
  *
  * @param exec_obj address of the executable object descriptor
- * @param kind can be one of #PREEMPTED_EXEC_OBJ or #NEWLY_ACTIVATED_EXEC_OBJ
  */
-FUNC(void, OS_CODE) tpl_put_exec_object(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj,
-    CONST(u8, AUTOMATIC)                            kind)
+FUNC(void, OS_CODE)
+tpl_put_preempted_exec_object(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj)
 {
     /*  Get the current priority of the executable object                   */
-    VAR(tpl_priority, AUTOMATIC)    prio;
+    VAR(tpl_priority, AUTOMATIC)                    prio;
     P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) *fifo;
-    VAR(u8, AUTOMATIC)              write_idx;
+    VAR(u8, AUTOMATIC)                              write_idx;
 
-    DOW_ASSERT((kind == PREEMPTED_EXEC_OBJ) ||
-               (kind == NEWLY_ACTIVATED_EXEC_OBJ))
+    DOW_DO(printrl("tpl_put_prempted_exec_object - avant");)
 
-    DOW_DO(printrl("tpl_put_exec_object - avant");)
+    /*  the priority used as level in the ready list
+        for a preempted object is the current priority                  */
+    prio = exec_obj->priority;
 
-    if (kind == NEWLY_ACTIVATED_EXEC_OBJ)
-    {
-        /*  the priority used as level in the ready list
-            for a newly activated object is the base priority               */
-        prio = exec_obj->static_desc->base_priority ;
+    DOW_ASSERT((prio >= 0) && (prio < PRIO_LEVEL_COUNT))
+    DOW_ASSERT(tpl_fifo_rw[prio].size < tpl_ready_list[prio].size)
 
-        DOW_ASSERT((prio >= 0) && (prio < PRIO_LEVEL_COUNT))
-        DOW_ASSERT(tpl_fifo_rw[prio].size < tpl_ready_list[prio].size)
+    /*  a preempted executable object is put at the head of the fifo    */
+    write_idx = tpl_fifo_rw[prio].read - 1 ;
 
-        /*  a newly activated executable object
-            is put at the end of the fifo                                   */
-        write_idx = tpl_fifo_rw[prio].read + tpl_fifo_rw[prio].size;
-
-        /*  adjust the write index                                          */
-        if (write_idx >= tpl_ready_list[prio].size) {
-             write_idx -= tpl_ready_list[prio].size;
-        }
-
+    /*  since write_idx is unsigned, an overflow could occur            */
+    if (write_idx >= tpl_ready_list[prio].size) {
+        write_idx = tpl_ready_list[prio].size - 1;
     }
-    else {
-        /*  the priority used as level in the ready list
-            for a preempted object is the current priority                  */
-        prio = exec_obj->priority;
-
-        DOW_ASSERT((prio >= 0) && (prio < PRIO_LEVEL_COUNT))
-        DOW_ASSERT(tpl_fifo_rw[prio].size < tpl_ready_list[prio].size)
-
-        /*  a preempted executable object is put at the head of the fifo    */
-        write_idx = tpl_fifo_rw[prio].read - 1 ;
-
-        /*  since write_idx is unsigned, an overflow could occur            */
-        if (write_idx >= tpl_ready_list[prio].size) {
-            write_idx = tpl_ready_list[prio].size - 1;
-        }
-        tpl_fifo_rw[prio].read = write_idx;
-    }
+    tpl_fifo_rw[prio].read = write_idx;
 
     /*  Get the corresponding fifo                                          */
     fifo = tpl_ready_list[prio].fifo;
 
+    /*  put the executable object in it */
     fifo[write_idx] = exec_obj ;
 
     /* adjust the size                                                      */
@@ -361,7 +342,58 @@ FUNC(void, OS_CODE) tpl_put_exec_object(
         tpl_h_prio = prio;
     }
 
-    DOW_DO(printrl("tpl_put_exec_object - apres");)
+    DOW_DO(printrl("tpl_put_preempted_exec_object - apres");)
+}
+
+/**
+ * @internal
+ *
+ * tpl_put_new_exec_object put a newly activated executable object
+ * in the ready executable object list
+ *
+ * @param exec_obj address of the executable object descriptor
+ */
+FUNC(void, OS_CODE) tpl_put_new_exec_object(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj)
+{
+    /*  Get the current priority of the executable object                   */
+    VAR(tpl_priority, AUTOMATIC)    prio;
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) *fifo;
+    VAR(u8, AUTOMATIC)              write_idx;
+
+    DOW_DO(printrl("tpl_put_new_exec_object - avant");)
+
+    /*  the priority used as level in the ready list
+        for a newly activated object is the base priority               */
+    prio = exec_obj->static_desc->base_priority ;
+
+    DOW_ASSERT((prio >= 0) && (prio < PRIO_LEVEL_COUNT))
+    DOW_ASSERT(tpl_fifo_rw[prio].size < tpl_ready_list[prio].size)
+
+    /*  a newly activated executable object
+        is put at the end of the fifo                                   */
+    write_idx = tpl_fifo_rw[prio].read + tpl_fifo_rw[prio].size;
+
+    /*  adjust the write index                                          */
+    if (write_idx >= tpl_ready_list[prio].size) {
+         write_idx -= tpl_ready_list[prio].size;
+    }
+
+    /*  Get the corresponding fifo                                          */
+    fifo = tpl_ready_list[prio].fifo;
+
+    /*  put the executable object in it */
+    fifo[write_idx] = exec_obj ;
+
+    /* adjust the size                                                      */
+    tpl_fifo_rw[prio].size++;
+
+    /* adjust the highest priority non empty fifo                           */
+    if (prio > tpl_h_prio) {
+        tpl_h_prio = prio;
+    }
+
+    DOW_DO(printrl("tpl_put_new_exec_object - apres");)
 }
 
 /**
@@ -460,7 +492,7 @@ FUNC(void, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
                 of the set while newly activated objects are
                 put at the end of the set. So we have to
                 distinguish them                                        */
-            tpl_put_exec_object(tpl_running_obj, PREEMPTED_EXEC_OBJ);
+            tpl_put_preempted_exec_object(tpl_running_obj);
             #ifdef WITH_AUTOSAR_TIMING_PROTECTION
             /*
              * pause the budget monitor for a task
@@ -523,7 +555,7 @@ FUNC(void, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
                 /*  This case happens when a task chains to itself
                     by calling ChainTask                                */
                 tpl_running_obj->state = READY_AND_NEW;
-                tpl_put_exec_object(tpl_running_obj, NEWLY_ACTIVATED_EXEC_OBJ);
+                tpl_put_new_exec_object(tpl_running_obj);
             }
 
         }
@@ -569,7 +601,8 @@ FUNC(void, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
             rescheduled task is running                     */
         CALL_PRE_TASK_HOOK()
 
-        if (tpl_running_obj == (P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC))&idle_task)
+        if (tpl_running_obj ==
+            (P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC))&idle_task)
         {
             tpl_os_state = OS_IDLE;
         }
@@ -623,6 +656,120 @@ FUNC(void, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
 /**
  * @internal
  *
+ * Does the scheduling when called from a running object.
+ *
+ * This function is called by the OSEK/VDX Schedule
+ * and ActivateTask services 
+ * 
+ */
+FUNC(void, OS_CODE) tpl_schedule_from_running(void)
+{
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) old_running_obj = NULL;
+    
+    /*  the tpl_running_obj is never NULL and is in the state RUNNING  */
+    DOW_ASSERT(tpl_running_obj != NULL);
+    DOW_ASSERT(tpl_running_obj->state == RUNNING);
+    DOW_ASSERT(tpl_h_prio != -1);
+
+#ifdef WITH_AUTOSAR_STACK_MONITORING
+    tpl_check_stack (tpl_running_obj);
+#endif /* WITH_AUTOSAR_STACK_MONITORING */
+    
+    if (tpl_h_prio > tpl_running_obj->priority)
+    {
+        /*  save the old running task for context switching */
+        old_running_obj = tpl_running_obj;
+
+        /*  a task switch will occur. It is time to call the
+            PostTaskHook while the soon descheduled task is running     */
+        CALL_POST_TASK_HOOK()
+            
+            /*  the current running task become READY                   */
+        tpl_running_obj->state = (tpl_exec_state)READY;
+        /*  put the running task in the ready task list             */
+        /*  Bug fix. preempted objects are put at the head
+            of the set while newly activated objects are
+            put at the end of the set. So we have to
+            distinguish them                                        */
+        tpl_put_preempted_exec_object(tpl_running_obj);
+
+        #ifdef WITH_AUTOSAR_TIMING_PROTECTION
+        /*
+         * pause the budget monitor for a task
+         */
+        if (tpl_running_obj->static_desc->type != IS_ROUTINE)
+          tpl_pause_budget_monitor (tpl_running_obj);
+        #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+        
+
+        /*  get the ready task from the ready task list                 */
+        tpl_running_obj = tpl_get_exec_object();
+
+        if (tpl_running_obj->state == READY_AND_NEW)
+        {
+            /*  the object has not be preempted. So its
+                descriptor must be initialized              */
+            tpl_init_exec_object(tpl_running_obj);
+            #ifdef WITH_AUTOSAR_TIMING_PROTECTION
+            if (tpl_running_obj->static_desc->type != IS_ROUTINE)
+            {
+              /* start the budget monitor for the activated task */
+              tpl_start_budget_monitor (tpl_running_obj);
+            }
+            else
+            {
+              /* add an activation count for the ISR2 and starts the
+               * execution time monitor */
+              tpl_add_activation_count (tpl_running_obj);
+              tpl_start_exectime_monitor (tpl_running_obj);
+            }
+            #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+        }
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+        else
+        {
+            if (tpl_running_obj->static_desc->type != IS_ROUTINE)
+            {
+                tpl_continue_budget_monitor (tpl_running_obj);
+            }
+        }
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+
+        /*  the inserted task become RUNNING                */
+        tpl_running_obj->state = RUNNING;
+        /*  If an internal resource is assigned to the task
+            and it is not already taken by it, take it      */
+        tpl_get_internal_resource(tpl_running_obj); 
+        
+        /*  A new task has been elected
+            It is time to call PreTaskHook while the
+            rescheduled task is running                     */
+        CALL_PRE_TASK_HOOK()
+    
+        if (tpl_running_obj == (tpl_exec_common *)&idle_task)
+        {
+            tpl_os_state = OS_IDLE;
+        }
+        else if (tpl_running_obj->static_desc->type == IS_ROUTINE)
+        {
+            tpl_os_state = OS_ISR2;
+        }
+        else
+        {
+            tpl_os_state = OS_TASK;
+        }
+        DOW_ASSERT(tpl_running_obj != old_running_obj)
+        /*  The old running object is not in a DYING or
+            RESSURECT state */
+        tpl_switch_context(
+            &(old_running_obj->static_desc->context),
+            &(tpl_running_obj->static_desc->context));
+    }
+}
+
+/**
+ * @internal
+ *
  * This function is called by OSEK/VDX ActivateTask and by
  * the raise of an alarm.
  *
@@ -656,10 +803,7 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
             }
         }
         /*  put it in the list  */
-        tpl_put_exec_object(
-            &(a_task->exec_desc),
-            (u8)NEWLY_ACTIVATED_EXEC_OBJ
-        );
+        tpl_put_new_exec_object(&(a_task->exec_desc));
         /*  inc the task activation count. When the task will terminate
             it will dec this count and if not zero it will be reactivated   */
         a_task->exec_desc.activate_count++;
@@ -707,9 +851,8 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
                     it is casted to. This allow object oriented design and
                     polymorphism.
                 */
-                tpl_put_exec_object(
-                    (P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC))a_task,
-                    (u8)NEWLY_ACTIVATED_EXEC_OBJ);
+                tpl_put_new_exec_object(
+                    (P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC))a_task);
                 /*  notify a scheduling needs to be done    */
                 result = (tpl_status)E_OK_AND_SCHEDULE;
             }
@@ -802,7 +945,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
         if (auto_time_obj->state == (tpl_time_obj_state)ALARM_AUTOSTART)
         {
             auto_time_obj->state = ALARM_ACTIVE;
-      tpl_insert_time_obj(auto_time_obj);
+            tpl_insert_time_obj(auto_time_obj);
         }
     }
 
@@ -816,7 +959,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
         if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART)
         {
             auto_time_obj->state = SCHEDULETABLE_RUNNING;
-      tpl_insert_time_obj(auto_time_obj);
+            tpl_insert_time_obj(auto_time_obj);
         }
     }
 #endif

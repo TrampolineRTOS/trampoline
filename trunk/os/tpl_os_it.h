@@ -27,7 +27,7 @@
 #define TPL_OS_IT_H
 
 #include "tpl_os_types.h"
-
+#include "tpl_compiler.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"

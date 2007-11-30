@@ -29,8 +29,10 @@
 
 #include "tpl_os_alarm.h"
 #include "tpl_os_internal_types.h"
+#include "tpl_as_st_definitions.h"
 
 typedef VAR(u8, AUTOMATIC)  ScheduleTableType;
+typedef VAR(tpl_time_obj_state, AUTOMATIC) ScheduleTableStatusType;
 typedef P2VAR(tpl_time_obj_state, OS_APPL_DATA, AUTOMATIC) ScheduleTableStatusRefType;
 
 #define OS_START_SEC_CODE

@@ -190,10 +190,11 @@ extern FUNC(void, OS_CODE) tpl_init_exec_object(
     P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj);
 
 
-extern FUNC(void, OS_CODE) tpl_put_exec_object(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj,
-    CONST(u8, AUTOMATIC)                            kind);
-
+extern FUNC(void, OS_CODE) tpl_put_preempted_exec_object(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj);
+    
+extern FUNC(void, OS_CODE) tpl_put_new_exec_object(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj);
 
 extern FUNC(void, OS_CODE) tpl_init_os(
     CONST(tpl_application_mode, AUTOMATIC) app_mode);
