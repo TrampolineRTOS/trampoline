@@ -1278,7 +1278,7 @@ FUNC(void, OS_CODE) tpl_call_error_hook(
 /*  !NO_ISR and extended error checking (OS_EXTENDED). */
 #if !defined(NO_ISR) && defined(OS_EXTENDED)
 #   define CHECK_ISR2_CALL_LEVEL_ERROR(result)                          \
-    if ((result == (tpl_status)E_OK) && (tpl_os_state != (u8)OS_TASK))  \
+    if ((result == (tpl_status)E_OK) && (tpl_os_state != (u8)OS_ISR2))  \
     {                                                                   \
         result = (tpl_status)E_OS_CALLEVEL;                             \
     }

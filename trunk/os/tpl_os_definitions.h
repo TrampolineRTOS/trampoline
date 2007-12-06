@@ -324,7 +324,7 @@
  *
  * @param name the name (C identifier) of the IRS
  */
-#define ISR2(name)              \
+#define ISR(name)               \
     void function_of_isr_##name(void)
 
 /**
