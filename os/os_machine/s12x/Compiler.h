@@ -1,9 +1,14 @@
 /*=============================================================================
-**                                 GEENSYS
-**                      Proprietary - Copyright (C) 2007
+** Trampoline OS
+**
+** Trampoline is copyright (c) IRCCyN 2005+
+** Copyright ESEO for function and data structures documentation
+** Trampoline is protected by the French intellectual property law.
+**
+** This software is distributed under the Lesser GNU Public Licence
 **-----------------------------------------------------------------------------
-** Supported MCUs      : MCU independent
-** Supported Compilers : Compiler independent
+** Supported MCUs      : Freescale MC9S12XEP100
+** Supported Compilers : Code Warrior V4.6
 **-----------------------------------------------------------------------------
 ** File name         : Compiler.h
 **
@@ -36,15 +41,16 @@
 #define _INLINE_ (#pragma INLINE)
 
 #define FUNC(rettype, memclass) rettype memclass
-#define P2VAR(ptrtype, memclass, ptrclass) ptrtype memclass * ptrclass
-#define P2CONST(ptrtype, memclass, ptrclass) const ptrtype memclass * ptrclass
+#define P2VAR(ptrtype, memclass, ptrclass) ptrtype ptrclass * memclass
+#define P2CONST(ptrtype, memclass, ptrclass) const ptrtype ptrclass * memclass
 #define CONSTP2VAR(ptrtype, memclass, ptrclass) \
-                     ptrtype memclass * const ptrclass
+                     ptrtype ptrclass * const memclass
 #define CONSTP2CONST(ptrtype, memclass, ptrclass) \
-                     const ptrtype memclass * const ptrclass
+                     const ptrtype ptrclass * const memclass
 #define P2FUNC(rettype, ptrclass, fctname) rettype (*ptrclass fctname)
 #define CONST(consttype, memclass) const consttype memclass
 #define VAR(vartype, memclass) vartype memclass
+
 
 /******************************************************************************/
 /* PUBLISHED INFORMATION                                                      */
