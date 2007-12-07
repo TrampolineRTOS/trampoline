@@ -1,4 +1,4 @@
-/*==============================================================================
+/*=============================================================================
 ** Trampoline OS
 **
 ** Trampoline is copyright (c) IRCCyN 2005+
@@ -6,9 +6,10 @@
 ** Trampoline is protected by the French intellectual property law.
 **
 ** This software is distributed under the Lesser GNU Public Licence
-**------------------------------------------------------------------------------
-** Supported MCUs    : Freescale MC9S12XEP100
-**------------------------------------------------------------------------------
+**-----------------------------------------------------------------------------
+** Supported MCUs      : Freescale MC9S12XEP100
+** Supported Compilers : Code Warrior V4.6
+**-----------------------------------------------------------------------------
 ** File name         : tpl_machine_HCS12X.c
 **
 ** Module name       : OS
@@ -45,6 +46,10 @@
 ** 01.02  J.Monsimier 08/11/07
 **  - from Trampoline Rev399
 **  - Modifications to be compliant to Autosar implementation rules
+** 01.03  J.Monsimier 28/11/07
+**  - bug fixed in tpl_release_task_lock().
+**    The deshibition of interrutps was not done as soon as CptTaskLock=0,
+**    this was avoiding the OS to work with no autostart task configured
 =============================================================================*/
 
 /******************************************************************************/
@@ -408,7 +413,7 @@ FUNC(void, OS_CODE) tpl_release_task_lock(void)
   {
     Os_CptTaskLock--;
   }
-  else if( Os_CptTaskLock == 0)
+  if( Os_CptTaskLock == 0)
   {
     __asm CLI     ;/* clear the I bit of CCR, re-allows interrupts */
   }

@@ -1,9 +1,14 @@
 /*=============================================================================
-**                                 GEENSYS
-**                      Proprietary - Copyright (C) 2007
+** Trampoline OS
+**
+** Trampoline is copyright (c) IRCCyN 2005+
+** Copyright ESEO for function and data structures documentation
+** Trampoline is protected by the French intellectual property law.
+**
+** This software is distributed under the Lesser GNU Public Licence
 **-----------------------------------------------------------------------------
-** Supported MCUs      : MCU independent
-** Supported Compilers : Compiler independent
+** Supported MCUs      : Freescale MC9S12XEP100
+** Supported Compilers : Code Warrior V4.6
 **-----------------------------------------------------------------------------
 ** File name         : Compiler_Cfg.h
 **
@@ -54,6 +59,20 @@
 #define OS_APPL_DATA          __near
 #define OS_APPL_CONST         __near
 #define OS_APPL_CODE          __near
+
+
+/******************************************************************************/
+/* CAN_00_S12X                                                                         */
+/******************************************************************************/
+#define CAN_00_S12X_CODE               AUTOMATIC
+#define CAN_00_S12X_VAR_NOINIT         AUTOMATIC
+#define CAN_00_S12X_VAR_POWER_ON_INIT  AUTOMATIC
+#define CAN_00_S12X_VAR_FAST           AUTOMATIC
+#define CAN_00_S12X_VAR                AUTOMATIC
+#define CAN_00_S12X_CONST              AUTOMATIC
+#define CAN_00_S12X_APPL_DATA          __near
+#define CAN_00_S12X_APPL_CONST         __near
+#define CAN_00_S12X_APPL_CODE          __near
 
 #endif /* COMPILER_CFG_H */
 

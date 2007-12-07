@@ -1,12 +1,15 @@
-/*==============================================================================
-**                             AYRTON TECHNOLOGY
-**                      Proprietary - Copyright (C) 2007
-**------------------------------------------------------------------------------
-** Customer          : Internal
-** Project           : O4A (06-01-BEE-055)
-**------------------------------------------------------------------------------
-** Supported MCUs    : S12X
-**------------------------------------------------------------------------------
+/*=============================================================================
+** Trampoline OS
+**
+** Trampoline is copyright (c) IRCCyN 2005+
+** Copyright ESEO for function and data structures documentation
+** Trampoline is protected by the French intellectual property law.
+**
+** This software is distributed under the Lesser GNU Public Licence
+**-----------------------------------------------------------------------------
+** Supported MCUs      : Freescale MC9S12XEP100
+** Supported Compilers : Code Warrior V4.6
+**-----------------------------------------------------------------------------
 ** File name         : Platform_Types.h
 **
 ** Module name       : All AUTOSAR modules
