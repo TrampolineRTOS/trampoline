@@ -1,0 +1,32 @@
+#
+# Galgas OIL compile aka goil
+#
+# goil is part of Trampoline
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline is protected by the French intellectual property law
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# config files syntax for targets description
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax cfg_syntax :
+
+import lexique cfg_lexique in "cfg_lexique.ggs" ;
+
+nonterminal <cfg_start>
+    !@luint64 tpn
+;
+
+rule <cfg_start>
+    !@luint64 tpn
+:
+	$tp_ns_per_counter_tick$ ; $=$ ; $uint$ ?tpn ; $;$ ;
+end rule ;
+
+end syntax ;

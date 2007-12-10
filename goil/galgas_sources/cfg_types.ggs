@@ -1,0 +1,12 @@
+semantics cfg_types :
+
+import semantics goil_basic_types in "goil_basic_types.ggs" ;
+
+map @config {
+	@basic_type value;
+    insert put error message "Counter %K is duplicated in %L" ;
+    search get error message "Counter %K is not defined" ;
+    remove del error message "Counter %K is not defined" ;
+}
+
+end semantics ;

@@ -1,0 +1,127 @@
+semantics goil_targets :
+
+import semantics goil_target_c166 in "goil_target_c166.ggs" ;
+import semantics goil_target_libpcl in "goil_target_libpcl.ggs" ;
+import semantics goil_target_hcs12 in "goil_target_hcs12.ggs" ;
+import semantics goil_target_ppc in "goil_target_ppc.ggs" ;
+import semantics goil_routines in "goil_routines.ggs" ;
+import semantics goil_types_task in "goil_types_task.ggs" ;
+import semantics goil_types_isr in "goil_types_isr.ggs" ;
+
+routine init_targets_prefixes ?!@prefix_map prefix :
+    @string target ;
+    target ?target ;
+
+    if target == "c166" then
+        init_c166_prefixes !?prefix ;
+    end if ;
+    if target == "libpcl" then
+        init_libpcl_prefixes !?prefix ;
+    end if ;
+    if target == "hcs12" then
+        init_hcs12_prefixes !?prefix ;
+    end if ;
+    if target == "ppc" then
+        init_ppc_prefixes !?prefix ;
+    end if ;
+end routine ;
+
+#--------------------------------------------------------------------
+# Context and Stack generation
+#--------------------------------------------------------------------
+routine generate_context_and_stack
+    ?@lstring         name
+    ?@oil_obj         exe
+    ?@prefix_map      p
+    ?!@string         result :
+
+    @string tpl_context_and_stack := "" ;
+    @string context_and_stack := "" ;
+    @ident_map idents [emptyMap] ;
+
+    @string target ;
+    target ?target ;
+
+    cast exe :
+    when == @task_obj tk do
+        template ?tpl_context_and_stack !"each_task_specific" ;
+        context_and_stack := tpl_context_and_stack ;
+        idents := [tk others] ;
+    when == @isr_obj isr do
+        template ?tpl_context_and_stack !"each_isr_specific" ;
+        context_and_stack := tpl_context_and_stack ;
+        idents := [isr other_fields] ;
+    else 
+        error name : "Unknown executable object" ;
+    end cast ;
+
+    if target == "c166"
+    then generate_target_c166   !name !idents !p !exe !?context_and_stack ;
+    end if ;
+
+    if target == "libpcl"
+    then generate_target_libpcl !name !idents !p !exe !?context_and_stack ;
+    end if ;
+
+    if target == "hcs12"
+    then generate_target_hcs12  !name !idents !p !exe !?context_and_stack ;
+    end if ;
+
+    if target == "ppc"
+    then generate_target_ppc  !name !idents !p !exe !?context_and_stack ;
+    end if ;
+
+    result := result . context_and_stack ;
+end routine ;
+
+routine generate_isr_specific 
+    ??@isr_map        isrs 
+    ??@prefix_map     p
+    !@string          code
+:
+    @string target ;
+    target ?target ;
+
+    template ?code !"isr_specific" ;
+
+    if target == "c166" then
+    	generate_isr_c166   !isrs !p !?code;
+    end if ;
+    if target == "libpcl" then
+    	generate_isr_libpcl !isrs !p !?code;
+    end if ;
+    if target == "hcs12" then
+    	generate_isr_hcs12  !isrs !p !?code;
+    end if ;
+    if target == "ppc" then
+    	generate_isr_ppc  !isrs !p !?code;
+    end if ;
+end routine;
+
+routine generate_counter_specific 
+    ??@counter_map counters 
+    ??@prefix_map p
+    !@string code
+:
+
+    @string target ;
+    target ?target ;
+
+    template ?code !"counter_specific" ;
+
+    if target == "c166" then
+    	generate_counter_c166 !counters !p !?code;
+    end if ;
+    if target == "libpcl" then
+    	generate_counter_libpcl !counters !p !?code;
+    end if ;
+    if target == "hcs12" then
+    	generate_counter_hcs12 !counters !p !?code;
+    end if ;
+    if target == "ppc" then
+    	generate_counter_ppc !counters !p !?code;
+    end if ;
+
+end routine ;
+end semantics ;
+# vim:ft=ggs:ts=4:sw=4

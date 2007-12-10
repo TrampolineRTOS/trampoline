@@ -1,0 +1,223 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline and its Autosar extension are protected by the
+# French intellectual property law.
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL scheduletable object parser
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics goil_types_scheduletable :
+
+import semantics goil_basic_types in "goil_basic_types.ggs" ;
+import semantics goil_types_action in "goil_types_action.ggs" ;
+
+class @sd_autostart_false extends @autostart_obj {}
+class @sd_autostart_true extends @autostart_obj {
+    @luint64   offset ;
+    @stringset app_modes ;
+}
+
+abstract class @ltgt_sync_obj {
+    @location	loc ;
+
+    abstract method strategy !@string sync_strat ;
+}
+
+class @ltgt_sync_void extends @ltgt_sync_obj {
+    override method strategy !@string sync_strat :
+        sync_strat := "SCHEDTABLE_NO_SYNC" ;
+    end method ;
+}
+class @ltgt_sync_false extends @ltgt_sync_obj {
+    override method strategy !@string sync_strat :
+        sync_strat := "SCHEDTABLE_NO_SYNC" ;
+    end method ;
+}
+class @ltgt_sync_true extends @ltgt_sync_obj {
+    @lstring strategy ;
+    @uint64  max_correction_sync ;
+    @uint64  max_correction_async ;
+    @uint64  precision ;
+
+    override method strategy !@string sync_strat :
+        sync_strat := "SCHEDTABLE_".[strategy string]."_SYNC" ;
+    end method ;
+}
+
+sortedlist @action_list {
+    @uint64 offset ;
+    @action_obj act ;
+}{
+    offset <
+}
+
+
+routine expiry_point
+    ?@lstring name
+    ?@uint64  expiry
+    ?@uint64  previous_expiry
+    ?@uint    index
+    ?!@string i_res
+:
+    # compute the expiry point descriptor
+    @string exp_st ;
+    template ?exp_st !"expiry_point" ;
+    exp_st := [exp_st stringByReplacingStringByString !"$EXPIRY_POINT$" ![name string]."_".[expiry string]."_expirypoint"] ;
+    if expiry != 0L then
+        exp_st := [exp_st stringByReplacingStringByString !"$OFFSET$" ![expiry-previous_expiry string]] ;
+    end if ;
+    exp_st := [exp_st stringByReplacingStringByString !"$ACTION_COUNT$" ![index string]] ;
+    exp_st := [exp_st stringByReplacingStringByString !"$ACTION_ARRAY$" ![name string]."_".[expiry string]] ;
+
+    # output the table of actions for the expiry point
+    @string res := "\ntpl_action *".[name string]."_".[expiry string]."[".[index string]."] = {\n";
+    @uint i := 0 ;
+    loop index :
+    while i < index do
+        res .= "    (tpl_action *)&".[name string]."_".[i string]."_".[expiry string]."_expirypoint_action" ;
+        if i < index - 1 then
+            res .= ",\n" ;
+        else
+            res .= "\n" ;
+        end if ;
+        i++ ;
+    end loop ;
+    res .= "};\n";
+
+    i_res .= [exp_st stringByReplacingStringByString !"$EXPIRY_POINT_ACTIONS$" !res] ;
+end routine ;
+
+
+class @scheduletable_obj extends @oil_obj {
+    @lstring         counter ;
+    @autostart_obj	autostart ;
+    @ltgt_sync_obj	ltgt_sync ;
+    @basic_type      periodic ;
+    @basic_type      length ;
+    @action_list     actions ;
+
+    method generate
+        ?@lstring name   # name of the schedule table
+        ?!@string i_res  # implementation template
+    :
+        @string stres ;
+        template ?stres !"schedule_table" ;
+
+        stres := [stres stringByReplacingStringByString !"$SCHEDTABLE_NAME$" ![name string]] ;
+        stres := [stres stringByReplacingStringByString !"$SCHEDTABLE$" ![name string]."_sched_table"] ;
+        stres := [stres stringByReplacingStringByString !"$COUNTER$" !"&descriptor_of_counter_".[counter string]] ;
+        stres := [stres stringByReplacingStringByString !"$EXPIRY_TABLE$" ![name string]."_expiry_table"] ;
+
+        @string sync_strat ;
+        [ltgt_sync strategy ?sync_strat] ;
+        @string perio := "" ;
+
+        stres := [stres stringByReplacingStringByString !"$SYNC_STRATEGY$" !sync_strat] ;
+
+        cast periodic :
+        when == @bool_class b do
+            if [b value] == true then 
+                perio := "TRUE";
+            else
+                perio := "FALSE";
+        end if ;
+        else error name : "Internal error, unexpected type for PERIODIC attribute of schedule table ".[name string] ;
+        end cast ;
+
+        stres := [stres stringByReplacingStringByString !"$PERIODIC$" !perio] ;
+
+        cast autostart :
+        when == @sd_autostart_false do
+            stres := [stres stringByReplacingStringByString !"$SCHEDTABLE_DATE$" !"0"] ;
+            stres := [stres stringByReplacingStringByString !"$SCHEDTABLE_STATE$" !"SCHEDULETABLE_NOT_STARTED"] ;
+        when == @sd_autostart_true sa do
+            stres := [stres stringByReplacingStringByString !"$SCHEDTABLE_DATE$" ![[[sa offset] uint64] string]] ;
+            stres := [stres stringByReplacingStringByString !"$SCHEDTABLE_STATE$" !"SCHEDULETABLE_AUTOSTART"] ;
+        else error name : "Internal error, unexpected type for AUTOSTART attribute of schedule table ".[name string] ;
+        end cast ;
+
+        # Generate the expiry points and actions for each expiry point
+        @string expiry_tpl ;
+        template ?expiry_tpl !"expiry_point" ;
+        @string setevent_tpl ;
+        template ?setevent_tpl !"notification_setevent" ;
+        @string activatetask_tpl ;
+        template ?activatetask_tpl !"notification_activatetask" ;
+
+        @uint64 cur_offset := 0L ;
+        @uint64 previous_offset := 0L ;
+        @uint index := 0 ;
+        @uint expiry_count := 0 ;
+        @string act_table := "" ;
+        @string act_structs := "" ;
+        @string expiry_table := "tpl_expiry_point *".[name string]."_expiry_table[$EXPIRY_TABLE_SIZE$] = {\n" ;
+
+        foreach actions (@uint64 offset @action_obj action) :
+            if offset != cur_offset then
+                # output the table of actions for the previous expiry point
+                expiry_point !name !cur_offset !previous_offset !index !?act_table ;
+                expiry_table .= "    &".[name string]."_".[cur_offset string]."_expirypoint,\n" ;
+                previous_offset := cur_offset ;
+                cur_offset := offset ;
+                index := 0 ;
+                expiry_count++ ;
+           end if ;
+
+            @string res := "" ;
+            cast action :
+            when == @activatetask_action ata do
+                res := [activatetask_tpl stringByReplacingStringByString !"$TASK$" !"descriptor_of_task_".[ata task_name]] ;
+            when == @setevent_action sea do
+                res := [setevent_tpl stringByReplacingStringByString !"$TASK$" !"descriptor_of_task_".[sea task_name]] ;
+                res := [res stringByReplacingStringByString !"$EVENT$" !"mask_of_".[sea event_name]] ;
+            else error name : "Internal error, unexpected type for ACTION attribute of schedule table ".[name string] ;
+            end cast ;
+            res := [res stringByReplacingStringByString
+                    !"$NOTIFICATION_NAME$"
+                    !"expiry point at offset ".[offset string]." of schedule table ".[name string]] ;
+            res := [res stringByReplacingStringByString
+                    !"$NOTIFICATION$"
+                    ![name string]."_".[index string]."_".[offset string]."_expirypoint_action"] ;
+
+            index ++ ;
+            act_structs .= res."\n" ;
+        end foreach ;
+        expiry_point !name !cur_offset !previous_offset !index !?act_table ;
+        expiry_table .= "    &".[name string]."_".[cur_offset string]."_expirypoint\n};" ;
+
+        # compute the remaining time from the last expiry point to the beginning
+        # of the next execution of the schedule table (for periodic schedule tables)
+        @uint64 lastOffset ;
+        [actions greatest ?lastOffset ?*] ;
+        cast length :
+        when == @uint64_class len do
+            @uint64 delay := [len value] - lastOffset ;
+            act_table := [act_table stringByReplacingStringByString !"$OFFSET$" ![delay string]] ;
+        else
+            error name : "Internal error, unexpected type for LENGTH attribute of schedule table ".[name string] ;
+        end cast ;
+
+        stres := [stres stringByReplacingStringByString !"$EXPIRY_POINTS$" !act_structs.act_table.expiry_table] ;
+        stres := [stres stringByReplacingStringByString !"$EXPIRY_TABLE_SIZE$" ![(expiry_count + 1) string]] ;
+
+        i_res .= stres."\n";
+    end method ;
+}
+
+map @scheduletable_map {
+    @scheduletable_obj st ;
+    insert put error message "Schedule table %K is already defined in %L" ;
+    search get error message "Schedule table %K is unkown" ;
+    remove del error message "Schedule table %K is unkown" ;
+}
+
+end semantics ;

@@ -1,0 +1,42 @@
+semantics goil_code_schedtable_gen :
+
+import semantics goil_routines in "goil_routines.ggs" ;
+import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
+import semantics goil_types_scheduletable in "goil_types_scheduletable.ggs" ;
+
+#--------------------------------------------------------------------
+# Schedule tables generation
+#--------------------------------------------------------------------
+routine generate_schedule_tables
+    ?@scheduletable_map sts
+    ?!@string header
+    ?!@string obj_header
+    ?!@string implementation
+:
+    @string h_result := "" ;
+    @string i_result := "" ;
+    @string st_table := "tpl_schedule_table *tpl_schedtable_table[SCHEDTABLE_COUNT] = {\n" ;
+    @uint i := 0 ;
+    foreach sts (@lstring name @scheduletable_obj st) :
+        [st generate !name !?i_result] ;
+        h_result .= "#define ".[name string]."    ".[i string]."\n" ;
+        st_table .= "    &".[name string]."_sched_table" ;
+        i++ ;
+        if i < [sts count] then
+            st_table .= ",\n" ;
+        else
+            st_table .= "\n" ;
+        end if ;
+    end foreach ;
+    st_table .= "};\n" ;
+
+    if [sts count] != 0 then
+        i_result .= st_table ;
+    end if ;
+
+    obj_header := [obj_header stringByReplacingStringByString !"$SCHEDTABLE_COUNT$" ![[sts count] string]] ;
+    header := [header stringByReplacingStringByString !"$SCHEDULETABLES$" !h_result] ;
+    implementation := [implementation stringByReplacingStringByString !"$SCHEDULETABLES$" !i_result] ;
+end routine ;
+
+end semantics ;

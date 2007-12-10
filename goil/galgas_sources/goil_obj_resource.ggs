@@ -1,0 +1,106 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est protege par la loi sur la propriete intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL resource object parser
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax goil_obj_resource :
+
+import lexique goil_lexique in "goil_lexique.ggs" ;
+import option goil_options in "goil_options.ggs" ;
+import semantics goil_semantics in "goil_semantics.ggs" ;
+
+#
+# local nonterminals description
+#
+nonterminal <resource> 
+    ?!@resource_map resources ;
+nonterminal <resource_attributes>
+    ?!@resource_property_obj property ;
+
+#
+# external nonterminals
+#
+nonterminal <description>
+	!@lstring desc ;
+
+#
+# local rules implementation
+#
+rule <resource>
+    ?!@resource_map resources 
+:
+    @resource_obj resource ;
+    @lstring resource_name ;
+    @resource_property_obj property ;
+    @lstring desc ;
+
+    $RESOURCE$ ;
+    $idf$ ?resource_name ;
+    ${$ ;
+    if [resources hasKey ![resource_name string]] then
+        [!?resources del !resource_name ?resource] ;
+        property := [resource property] ;
+        desc := [resource desc] ;
+    else
+        property := [@resource_property_void_obj new !here] ;
+        desc := [@lstring new !"" !here] ;
+        resource := [@resource_obj new !desc !property] ;
+    end if ;
+    <resource_attributes> !?property ;
+	$}$ ;
+	<description> ?desc ;
+	$;$ ;
+
+	resource := [@resource_obj new !desc !property] ;
+	[!?resources put !resource_name !resource] ;
+end rule ;
+
+rule <resource_attributes>
+    ?!@resource_property_obj property
+:
+    $RESOURCEPROPERTY$ ; $=$ ;
+    select
+        $STANDARD$ ;
+        cast property :
+        when == @resource_property_void_obj do 
+            property := [@resource_property_standard_obj new !here] ;
+        else
+            error here : "RESOURCEPROPERTY attribute already defined for this resource" ;
+            error [property location] : "was already defined here" ;
+        end cast ;
+    or
+        @lstring linked_resource ;
+        $LINKED$ ; ${$ ; $LINKEDRESOURCE$ ; $=$ ; $idf$ ?linked_resource ; $;$ ; $}$ ;
+        cast property :
+        when == @resource_property_void_obj do
+            property := [@resource_property_linked_obj new !here !linked_resource] ;
+        else
+            error here : "RESOURCEPROPERTY attribute already defined for this resource" ;
+            error [property location] : "was already defined here" ;
+        end cast ;
+	or 
+		$INTERNAL$ ;
+        cast property :
+        when == @resource_property_void_obj do
+            property := [@resource_property_internal_obj new !here] ;
+        else
+            error here : "RESOURCEPROPERTY attribute already defined for this resource" ;
+            error [property location] : "was already defined here" ;
+        end cast ;
+	end select ;
+	<description> ?* ; $;$ ;
+end rule ;
+
+end syntax ;
+# vim:ft=ggs:ts=4:sw=4

@@ -1,0 +1,285 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est protªgª par la loi sur la propriªtª intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL task object parser
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax goil_obj_task :
+
+import lexique goil_lexique in "goil_lexique.ggs" ;
+import option goil_options in "goil_options.ggs" ;
+import semantics goil_semantics in "goil_semantics.ggs" ;
+import semantics goil_types_timing_prot in "goil_types_timing_prot.ggs" ;
+
+#
+# local rules declaration
+#
+nonterminal <task>
+	?!@task_map tasks ;
+
+nonterminal <task_attributes>
+    ?@lstring task_name
+    ?!@basic_type priority
+    ?!@lstring schedule
+    ?!@basic_type activation
+    ?!@task_autostart_obj autostart
+    ?!@stringset resources
+    ?!@stringset events
+    ?!@stringset messages
+    ?!@timing_prot timing_prot
+    ?!@ident_map others ;
+
+nonterminal <task_autostart_params>
+	?!@task_autostart_obj task_autostart ;
+
+#
+# external rules 
+#
+nonterminal <description>
+    !@lstring desc ;
+nonterminal <boolean>
+    !@bool val ;
+nonterminal <free_field>
+    ?!@ident_map ids ;
+nonterminal <timing_prot_attrs>
+    !@basic_type  exe_budget
+    !@basic_type  exe_time
+    !@basic_type  count_limit
+    !@basic_type  time_frame
+    !@basic_type  os_it_lock
+    !@basic_type  all_it_lock
+    !@rezlock_map rezlocks ;
+
+#
+# local rules implementation
+#
+rule <task>
+	?!@task_map tasks 
+:
+    @lstring            task_name ;
+    @task_obj           task ;
+    @basic_type         priority ;
+    @lstring            schedule ;
+    @basic_type         activation ;
+    @task_autostart_obj autostart ;
+    @stringset          resources ;
+    @stringset          events ;
+    @stringset          messages ;
+    @timing_prot        timing_prot ;
+    @lstring            desc ;
+    @ident_map          others ;
+
+    $TASK$ ;
+    $idf$ ?task_name ;
+    if [tasks hasKey ![task_name string]] then
+        [!?tasks del !task_name ?task] ;
+        priority    := [task priority];
+        schedule    := [task schedule] ;
+        activation  := [task activation] ;
+        autostart   := [task autostart] ;
+        resources   := [task resources] ;
+        events      := [task events] ;
+        messages    := [task messages] ;
+        timing_prot := [task timing_prot] ;
+        desc        := [task desc] ;
+        others      := [task others] ;
+    else
+        priority := [@void new !here] ;
+        schedule := [@lstring new !"" !here] ;
+        activation := [@void new !here] ;
+        autostart := [@task_autostart_void new !here] ;
+        resources := [@stringset emptySet] ;
+        events := [@stringset emptySet] ;
+        messages := [@stringset emptySet] ;
+        timing_prot := [@void_timing_prot new !here] ;
+        desc := [@lstring new !"" !here] ;
+        others := [@ident_map emptyMap] ;
+        task := [@task_obj new
+            !desc
+            !priority
+            !schedule
+            !activation
+            !autostart
+            !resources
+            !events
+            !messages
+            !timing_prot
+            !others] ;
+    end if ;
+    ${$ ;
+    <task_attributes>
+        !task_name
+        !?priority
+        !?schedule
+        !?activation
+        !?autostart
+        !?resources
+        !?events
+        !?messages
+        !?timing_prot
+        !?others ; 
+    $}$ ;
+    <description> ?desc ;
+    $;$ ;
+
+    task := [@task_obj new !desc !priority !schedule !activation !autostart !resources !events !messages !timing_prot !others] ;
+    [!?tasks put !task_name !task] ;
+end rule ;	
+
+rule <task_attributes>
+    ?@lstring task_name
+    ?!@basic_type priority
+    ?!@lstring schedule
+    ?!@basic_type activation
+    ?!@task_autostart_obj autostart
+    ?!@stringset resources
+    ?!@stringset events
+    ?!@stringset messages
+    ?!@timing_prot timing_prot
+    ?!@ident_map others
+:
+    repeat
+    while
+        @luint64 prio ;
+        $PRIORITY$ ; $=$ ; $uint_number$ ?prio ;  <description> ?* ; $;$ ;
+        cast priority :
+        when == @void do
+            priority := [@uint32_class new !here ![[prio uint64] uint]] ;
+        else
+            error here : "PRIORITY attribute already defined for TASK " . [task_name string] ;
+            error [priority location] : "was previously defined here" ;
+        end cast ;
+    while
+        if [schedule string] != "" then
+            error here : "SCHEDULE attribute already defined for TASK " . [task_name string] ;
+            error [schedule location] : "was previously defined here" ;
+        end if ;
+        $SCHEDULE$ ; $=$ ; 
+            select
+                $FULL$ ;
+                schedule := [@lstring new !"FULL" !here] ;
+            or
+                $NON$ ;
+                schedule := [@lstring new !"NON" !here] ;
+            end select ;
+        <description> ?* ; $;$ ;
+    while
+        cast autostart :
+        when == @task_autostart_void do
+        else 
+            error here : "AUTOSTART attribute already defined for TASK " . [task_name string] ;
+            error [autostart location] : "was previously defined here" ;
+        end cast ;
+		 $AUTOSTART$ ; $=$ ;
+        select
+            $TRUE$ ; ${$ ;
+            <task_autostart_params> !?autostart ;
+            $}$ ;
+        or
+            $FALSE$ ; 
+            autostart := [@task_autostart_false new !here] ;
+		 end select ;
+        <description> ?* ; $;$ ;
+    while
+        @luint64 act ;
+        $ACTIVATION$ ; $=$ ; $uint_number$ ?act ; <description> ?* ; $;$ ;
+        cast activation :
+        when == @void do
+            activation := [@uint32_class new !here ![[act uint64] uint]] ;
+        else
+            error here : "ACTIVATION attribute already defined for TASK " . [task_name string] ;
+            error [activation location] : "was previously defined here" ;
+        end cast ;
+    while
+        @lstring  resource ;
+        $RESOURCE$ ; $=$ ; $idf$ ?resource ; <description> ?* ; $;$ ;
+        if ([resources hasKey ![resource string]]) then
+            warning here : "RESOURCE " . [resource string] . " already defined for TASK " . [task_name string] ;
+        end if ;
+        resources += ![resource string] ;
+    while
+        @lstring event ;
+        $EVENT$ ; $=$ ; $idf$ ?event ; <description> ?* ; $;$ ;
+        if ([events hasKey ![event string]]) then
+            warning here : "EVENT " . [event string] . " already defined for TASK " . [task_name string] ;
+        end if ;
+        events += ![event string] ;
+    while
+        @lstring mess ;
+        $MESSAGE$ ; $=$ ; $idf$ ?mess ; <description> ?* ; $;$ ;
+        if [messages hasKey ![mess string]] then
+            warning here : "MESSAGE " . [mess string] . " already defined for TASK " . [task_name string] ;
+        end if ;
+        messages += ![mess string] ;
+    while
+        if [option goil_options.autosar_on] == false then
+            error here : "AUTOSAR flag is off, turn it on to use TIMINGPROTECTION attribute in TASK object" ;
+        end if ;
+        $TIMING_PROTECTION$ ; $=$ ;
+        select
+            $FALSE$ ;
+            timing_prot := [@false_timing_prot new !here] ;
+        or
+            $TRUE$ ; ${$ ;
+            @basic_type  exe_budget ;
+            @basic_type  exe_time ;
+            @basic_type  count_limit ;
+            @basic_type  time_frame ;
+            @basic_type  os_it_lock ;
+            @basic_type  all_it_lock ;
+            @rezlock_map rezlocks ;
+            <timing_prot_attrs> ?exe_budget ?exe_time ?count_limit ?time_frame ?os_it_lock ?all_it_lock ?rezlocks ;
+            cast count_limit :
+            when == @uint32_class uc do
+                error [uc location] : "COUNTLIMIT is not an attribute of task timing protection" ;
+            else end cast ;
+            cast exe_budget :
+            when == @void do error here : "EXECUTIONBUDGET not declared" ;
+            else end cast ;
+            cast exe_time :
+            when == @uint64_class et do
+                error [et location] : "EXECUTIONTIME is not an attribute of task timing protection";
+            else end cast ;
+            timing_prot := [@timing_prot_task new
+                !here
+                !exe_budget
+                !time_frame
+                !os_it_lock
+                !all_it_lock
+                !rezlocks] ;
+            $}$ ;
+        end select ;
+        $;$ ;
+    while
+        <free_field> !?others ; <description> ?* ; $;$ ;
+    end repeat ;
+end rule;
+
+rule <task_autostart_params>
+	?!@task_autostart_obj autostart
+:
+	@lstring appmode := [@lstring new !"" !here];
+	@stringset appmodes [emptySet] ;
+	repeat
+	while
+		$APPMODE$ ; $=$ ; $idf$ ?appmode ; <description> ?* ; $;$ ;
+		if ([appmodes hasKey ![appmode string]]) then
+			warning here : "APPMODE " . [appmode string] . " already defined for this task AUTOSTART attribute" ;
+		end if ; 
+		appmodes += ![appmode string] ;
+	end repeat;
+	autostart := [@task_autostart_true new !here !appmodes] ;
+end rule ;
+
+end syntax ;
+# vim:ft=ggs:ts=4:sw=4

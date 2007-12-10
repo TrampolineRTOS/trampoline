@@ -1,0 +1,45 @@
+#
+# @file goil_types_os.ggs
+#
+# @section File description
+#
+# Semantic types for os object.
+#
+# @section Copyright
+#
+# Goil OIL compiler for Trampoline
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est protégé par la loi sur la propriété intellectuelle
+#
+# This software is distributed under the GNU Public Licence v2
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics goil_types_os :
+
+import semantics goil_basic_types in "goil_basic_types.ggs" ;
+
+class @os_obj extends @oil_obj {
+    @lstring	  status ;
+    @basic_type startuphook ;
+    @basic_type shutdownhook ;
+    @basic_type errorhook ;
+    @basic_type pretaskhook ;
+    @basic_type posttaskhook ;
+    @basic_type protectionhook ;   # AUTOSAR
+    @lstring    scalabilityclass ; # AUTOSAR
+    @basic_type stackmonitoring ;  # AUTOSAR
+    @basic_type usegetserviceid ;
+    @basic_type useparameteraccess ;
+    @basic_type useresscheduler ;
+    @ident_map  others ;
+}
+
+end semantics ;

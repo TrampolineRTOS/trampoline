@@ -1,0 +1,303 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline and its Autosar extension are protected by the
+# French intellectual property law.
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL scheduletable object parser
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax goil_obj_scheduletable :
+
+import lexique goil_lexique in "goil_lexique.ggs" ;
+import option goil_options in "goil_options.ggs" ;
+import semantics goil_semantics in "goil_semantics.ggs" ;
+import semantics goil_basic_types in "goil_basic_types.ggs" ;
+import semantics goil_types_action in "goil_types_action.ggs" ;
+import semantics goil_types_scheduletable in "goil_types_scheduletable.ggs" ;
+
+nonterminal <scheduletable>
+    ?!@scheduletable_map stm ;
+nonterminal <scheduletable_parameters>
+    ?!@scheduletable_obj st
+    ?@lstring name ;
+nonterminal <st_autostart_params>
+    !@autostart_obj autostart ;
+nonterminal <ltgt_sync_params> ;
+
+# external non terminal
+nonterminal <description>
+    !@lstring desc ;
+nonterminal <boolean>
+    !@bool bool ;
+nonterminal <st_action_params>
+    ?!@action_list actions ;
+
+rule <scheduletable>
+    ?!@scheduletable_map stm
+:
+    $SCHEDULETABLE$ ;
+    @lstring name ;
+    $idf$ ?name ;
+    ${$ ;
+
+    # get the object in the table if previously declared
+    @scheduletable_obj st ;
+    if [stm hasKey ![name string]] then
+        [!?stm del !name ?st];
+    else
+		st := [@scheduletable_obj new
+            ![@lstring new !"" !here]    # description
+            ![@lstring new !"" !here]    # counter
+            ![@autostart_void new !here] # autostart
+            ![@ltgt_sync_void new !here] # sync to global time
+            ![@void new !here]           # periodic
+            ![@void new !here]           # length
+            ![@action_list emptySortedList]    # actions
+        ] ;
+    end if ;
+
+    <scheduletable_parameters> !?st !name ;
+    $}$ ;
+    @lstring desc ;
+    <description> ?desc ;
+    $;$ ;
+
+    [!?stm put !name !st] ;
+end rule ;
+
+rule <scheduletable_parameters>
+    ?!@scheduletable_obj st
+    ?@lstring name
+:
+    @lstring       st_description := [st desc] ;
+    @lstring       st_counter     := [st counter] ;
+    @autostart_obj st_autostart   := [st autostart] ;
+    @ltgt_sync_obj st_ltgt_sync   := [st ltgt_sync] ;
+    @basic_type    st_periodic    := [st periodic] ;
+    @basic_type    st_length      := [st length] ;
+    @action_list   st_actions     := [st actions] ;
+
+    repeat
+
+    while
+        @lstring counter ;
+        $COUNTER$ ;  $=$ ; $idf$ ?counter ; <description> ?* ; $;$ ;
+        
+        if [st_counter string] != "" then
+            error here : "COUNTER attribute already defined for Schedule Table ".[name string] ;
+            error [st_counter location] : "Was previously define here" ;
+        else
+            st_counter := counter ;
+        end if ;
+
+    while
+        @autostart_obj autostart ;
+        $AUTOSTART$ ;  $=$ ;
+        select
+            $TRUE$ ;
+            ${$ ;
+            <st_autostart_params> ?autostart ;
+            $}$ ;
+        or
+            $FALSE$ ; autostart := [@sd_autostart_false new !here] ;
+        end select ;
+        <description> ?* ; $;$ ;
+
+        cast st_autostart :
+        when == @autostart_void do
+            st_autostart := autostart ;
+        else
+            error here : "AUTOSTART attribute already defined for Schedule Table ".[name string] ;
+            error [st_autostart location] : "Was previously define here" ;
+        end cast ;
+
+    while
+        $LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION$ ; $=$ ; $FALSE$ ;
+#        select
+#            $TRUE$ ;
+#            ${$ ;
+#            <ltgt_sync_params> ;
+#            $}$ ;
+#        or
+#            $FALSE$ ; 
+#        end select ;
+        <description> ?* ; $;$ ;
+
+    while
+        @bool periodic ;
+        $PERIODIC$ ; $=$ ; <boolean> ?periodic ; <description> ?* ; $;$ ;
+
+        cast st_periodic :
+        when == @void do
+            st_periodic := [@bool_class new !here !periodic] ;
+        else
+            error here : "PERIODIC attribute already defined for Schedule Table ".[name string] ;
+            error [st_periodic location] : "Was previously define here" ;
+        end cast ;
+
+    while
+        @luint64 length ;
+        $LENGTH$ ; $=$ ; $uint_number$ ?length ; <description> ?* ; $;$ ;
+
+        cast st_length :
+        when == @void do
+            st_length := [@uint64_class new !here ![length uint64]] ;
+        else
+            error here : "LENGTH attribute already defined for Schedule Table ".[name string] ;
+            error [st_periodic location] : "Was previously define here" ;
+        end cast ;
+
+    while
+        $ACTION$ ; $=$ ; <st_action_params> !?st_actions ; <description> ?* ; $;$;
+
+    while
+        $idf$ ?* ;     $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ;
+        <description> ?* ; $;$ ;
+    end repeat ;
+
+    st := [@scheduletable_obj new
+            !st_description
+            !st_counter
+            !st_autostart
+            !st_ltgt_sync
+            !st_periodic
+            !st_length
+            !st_actions
+        ] ;
+end rule ;
+
+rule <st_autostart_params>
+    !@autostart_obj autostart
+:
+    @bool offset_known := false ;
+
+    @luint64 offset := [@luint64 new !0L !here] ;
+    @lstring app_mode := [@lstring new !"" !here] ;
+    @stringset app_modes := [@stringset emptySet] ;
+
+    repeat
+    while
+        if offset_known then
+            error here : "OFFSET attribute already defined for this schedule table autostart" ;
+            error [offset location] : "was previously defined here" ;
+        end if ; 
+        $OFFSET$ ; $=$ ; $uint_number$ ?offset ; <description> ?* ; $;$ ;
+        offset_known := true ;
+
+    while
+        $APPMODE$ ; $=$ ; $idf$ ?app_mode ; <description> ?* ; $;$ ;
+        app_modes += ![app_mode string];
+   end repeat ;
+
+    # signal an error when the OFFSET parameter is missing
+    if not offset_known then
+        error here : "OFFSET attribute is missing" ;
+    end if ;
+
+    autostart := [@sd_autostart_true new !here !offset !app_modes] ;
+end rule ;
+
+rule <ltgt_sync_params> :
+end rule ;
+
+rule <st_action_params>
+    ?!@action_list actions
+:
+    select
+        $ACTIVATETASK$ ;
+        ${$ ;
+        @bool    offset_known := false ;
+        @bool    task_known := false ;
+        @luint64 offset := [@luint64 new !0L !here] ;
+        @lstring task := [@lstring new !"" !here] ;
+        repeat
+        while
+            @luint64 new_offset ;
+            $OFFSET$ ; $=$ ; $uint_number$ ? new_offset ; $;$ ;
+            if offset_known then
+                error here : "OFFSET attribute already defined for this schedule table ACTIVATETASK action" ;
+                error [offset location] : "was previously defined here" ;
+            else
+                offset := new_offset ;
+                offset_known := true ;
+            end if ;
+        while
+            @lstring new_task ;
+            $TASK$ ; $=$ ; $idf$ ?new_task ; $;$ ;
+            if task_known then
+                error here : "TASK attribute already defined for this schedule table ACTIVATETASK action" ;
+                error [task location] : "was previously defined here" ;
+            else
+               task := new_task ;
+               task_known := true ;
+            end if ;
+        end repeat ;
+        if task_known & offset_known then
+            @activatetask_action sdata := [@activatetask_action new !here !task] ;
+            actions += ![offset uint64] !sdata ;
+        else
+            error here : "incomplete expiry point" ;
+        end if ;
+        $}$ ;
+    or
+        @bool    offset_known := false ;
+        @bool    task_known := false ;
+        @bool    event_known := false ;
+        @luint64 offset := [@luint64 new !0L !here] ;
+        @lstring task := [@lstring new !"" !here] ;
+        @lstring event := [@lstring new !"" !here] ;
+        $SETEVENT$ ;
+        ${$ ;
+        repeat
+        while
+            @luint64 new_offset ;
+            $OFFSET$ ; $=$ ; $uint_number$ ? new_offset ; $;$ ;
+            if offset_known then
+                error here : "OFFSET attribute already defined for this schedule table ACTIVATETASK action" ;
+                error [offset location] : "was previously defined here" ;
+            else
+                offset := new_offset ;
+                offset_known := true ;
+            end if ;
+        while
+            @lstring new_task ;
+            $TASK$ ; $=$ ; $idf$ ?new_task ; $;$ ;
+            if task_known then
+                error here : "TASK attribute already defined for this schedule table ACTIVATETASK action" ;
+                error [task location] : "was previously defined here" ;
+            else
+               task := new_task ;
+               task_known := true ;
+            end if ;
+        while
+            @lstring new_event ;
+            $EVENT$ ; $=$ ; $idf$ ?new_event ; $;$ ;
+            if event_known then
+                error here : "EVENT attribute already defined for this schedule table ACTIVATETASK action" ;
+                error [event location] : "was previously defined here" ;
+            else
+               event := new_event ;
+               event_known := true ;
+            end if ;
+        end repeat ;
+        if task_known & offset_known & event_known then
+            @setevent_action sdata := [@setevent_action new !here !task !event] ;
+            actions += ![offset uint64] !sdata ;
+        else
+            error here : "incomplete expiry point" ;
+        end if ;
+        $}$ ;
+    end select ;
+end rule ;
+
+end syntax ;
+# vim:ft=ggs:ts=4:sw=4

@@ -1,0 +1,411 @@
+semantics goil_semantic_verification :
+
+import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
+import semantics goil_types_scheduletable in "goil_types_scheduletable.ggs" ;
+import semantics goil_types_task in "goil_types_task.ggs" ;
+import semantics goil_types_isr in "goil_types_isr.ggs" ;
+import semantics goil_types_counter in "goil_types_counter.ggs" ;
+
+#
+# Per object static verification
+#
+routine tasks_well_formed ?@task_map tasks :
+    @basic_type defined_priority := [@void new !here] ;
+    @basic_type defined_activation := [@void new !here] ;
+    @stringset defined_events [emptySet] ;
+    @lstring defined_schedule := [@lstring new !"" !here] ;
+    @task_autostart_obj defined_autostart := [@task_autostart_void new !here] ;
+    foreach tasks (@lstring task_name @task_obj task) :
+        defined_priority := [task priority] ;
+        cast defined_priority :
+        when == @void do
+            error [task_name location] : "PRIORITY attribute not defined for TASK ".[task_name string] ;
+        else
+        end cast ;
+        defined_activation := [task activation] ;
+        cast defined_activation :
+        when == @void do
+            error [task_name location] : "ACTIVATION attribute not defined for TASK ".[task_name string] ;
+        when == @uint64_class ui do
+            defined_events := [task events] ;
+            if ( [defined_events count] > 0 & [[ui value] uint] > 1) then
+                error [task_name location] : "ACTIVATION attribute for extended task ".[task_name string]." should be set to 1" ;
+                error [ui location] : "ACTIVATION attribute set to ".[[ui value] string]. " here" ;
+            end if ;
+        else
+        end cast ;
+        defined_schedule := [task schedule] ;
+        if [defined_schedule string] == "" then
+            error [task_name location] : "SCHEDULE attribute not defined for TASK ".[task_name string] ;
+        end if;
+        defined_autostart := [task autostart] ;
+        cast defined_autostart :
+        when == @task_autostart_void do
+            error [task_name location] : "AUTOSTART attribute not defined for TASK ".[task_name string] ;
+        else end cast ;
+    end foreach ;
+end routine ;
+
+routine counters_well_formed ?@counter_map counters :
+    @basic_type defined_value := [@void new !here];
+    foreach counters (@lstring counter_name @counter_obj counter) :
+        defined_value := [counter max_allowed_value] ;
+        cast defined_value :
+            when == @void do 
+                error [counter_name location] : "MAXALLOWEDVALUE attribute not defined for COUNTER " . [counter_name string] ;
+            else
+        end cast ;
+        defined_value := [counter ticks_per_base] ;
+        cast defined_value :
+            when == @void do 
+                error [counter_name location] : "TICKSPERBASE attribute not defined for COUNTER " . [counter_name string] ;
+            else
+        end cast ;
+        defined_value := [counter min_cycle] ;
+        cast defined_value :
+            when == @void do 
+                error [counter_name location] : "MINCYCLE attribute not defined for COUNTER " . [counter_name string] ;
+            else
+        end cast ;
+    end foreach ;
+end routine ;
+
+routine alarms_well_formed ?@alarm_map alarms :
+    @action_obj defined_action := [@void_action new !here] ;
+    @autostart_obj defined_autostart := [@autostart_void new !here] ;
+    foreach alarms (@lstring alarm_name @alarm_obj alarm) :
+        if [[alarm counter_name] string] == "" then
+            error [alarm_name location] : "COUNTER attribute undefined for ALARM " . [alarm_name string] ;
+        end if ;
+        defined_action := [alarm action_params] ;
+        cast defined_action :
+        when == @void_action do
+            error [alarm_name location] : "ACTION attribute undefined for ALARM " . [alarm_name string] ;
+        else end cast ;
+        defined_autostart := [alarm autostart_params] ;
+        cast defined_autostart :
+        when == @autostart_void do
+            error [alarm_name location] : "AUTOSTART attribute undefined for ALARM " . [alarm_name string] ;
+        else end cast ;
+    end foreach ;
+end routine ;
+
+routine resources_well_formed ?@resource_map resources :
+    @resource_property_obj defined_value := [@resource_property_void_obj new !here] ;
+    foreach resources (@lstring resource_name @resource_obj resource) :
+        defined_value := [resource property] ;
+        cast defined_value :
+        when == @resource_property_void_obj do
+                error [resource_name location] : "RESOURCEPROPERTY attribute undefined for RESOURCE ".[resource_name string] ;
+        else end cast ;
+    end foreach;
+end routine ;
+
+routine events_well_formed ?@event_map events :
+    @event_mask_obj defined_value := [@event_mask_void_obj new !here] ;
+    foreach events (@lstring event_name @event_obj event) :
+        defined_value := [event mask] ;
+        cast defined_value :
+        when == @event_mask_void_obj mask do
+            error [event_name location] : "MASK attribute undefined for EVENT ".[event_name string] ;
+            error [mask location] : "was previously defined here" ;
+        else end cast ;
+    end foreach ;
+end routine ;
+
+routine isrs_well_formed ?@isr_map isrs :
+    @basic_type defined_value := [@void new !here] ;
+    foreach isrs (@lstring isr_name @isr_obj isr) :
+        defined_value := [isr category] ;
+        cast defined_value :
+        when == @void do 
+            error [isr_name location] : "Category attribute undefined for ISR ".[isr_name string] ;
+        else end cast ;
+        defined_value := [isr priority] ;
+        cast defined_value :
+        when == @void do
+            error [isr_name location] : "Priority attribute undefined for ISR ".[isr_name string] ;
+        else end cast ;
+    end foreach ;
+end routine ;
+
+routine messages_well_formed ?@message_map messages :
+    @mess_prop_obj defined_mess_prop := [@void_mess_prop new !here] ;
+    @action_obj defined_notif := [@void_action new !here] ;
+    @action_obj defined_notif_error := [@void_action new !here] ;
+
+    foreach messages (@lstring message_name @message_obj mess) :
+
+        defined_mess_prop := [mess messageproperty] ;
+        cast defined_mess_prop :
+        when == @void_mess_prop do
+            error [message_name location] : "MESSAGEPROPERTY attribute missing for message ".[message_name string] ;
+        else end cast ;
+
+        defined_notif := [mess notification] ;
+        cast defined_notif :
+        when == @void_action do
+        else # a notification is declared
+            cast defined_mess_prop :
+            when == @ssi_mess_prop do
+                error here : "NOTIFICATION is not allowed for SEND_STATIC_INTERNAL message" ;
+            when == @szi_mess_prop do
+                error here : "NOTIFICATION is not allowed for SEND_ZERO_INTERNAL message" ;
+            when == @rzs_mess_prop do
+                error here : "NOTIFICATION is not allowed for RECEIVE_ZERO_SENDERS message" ;
+            else end cast ;
+        end cast ;
+
+        defined_notif_error := [mess notificationerror] ;
+        cast defined_notif_error :
+        when == @void_action do
+        else # an error notification is declared
+            cast defined_mess_prop :
+            when == @ssi_mess_prop do
+                error here : "NOTIFICATIONERROR is not allowed for SEND_STATIC_INTERNAL message" ;
+            when == @szi_mess_prop do
+                error here : "NOTIFICATIONERROR is not allowed for SEND_ZERO_INTERNAL message" ;
+            when == @rzi_mess_prop do
+                error here : "NOTIFICATIONERROR is not allowed for RECEIVE_ZERO_INTERNAL message" ;
+            when == @rui_mess_prop do
+                error here : "NOTIFICATIONERROR is not allowed for RECEIVE_UNQUEUED_INTERNAL message" ;
+            when == @rqi_mess_prop do
+                error here : "NOTIFICATIONERROR is not allowed for RECEIVE_QUEUED_INTERNAL message" ;
+            when == @rzs_mess_prop do
+                error here : "NOTIFICATIONERROR is not allowed for RECEIVE_ZERO_SENDERS message" ;
+            else end cast ;
+        end cast ;
+    end foreach ;
+end routine ;
+
+# Each linked resource chain must finish with a STANDARD resource
+# Buggy ? : the "Cycle detected" error is printed many times (expected: one)
+routine resolve_linked_resources 
+    ?!@resource_map resources
+:
+    @resource_map resolved [emptyMap] ;
+    @resource_map unresolved := resources ;
+    @resource_map unresolved_next [emptyMap] ;
+    @bool first_loop := true ;
+
+    loop [unresolved count] - [unresolved_next count] + 1 :
+        if (first_loop) then first_loop := false ;
+        else 
+            unresolved := unresolved_next ;
+            unresolved_next := [@resource_map emptyMap] ;
+        end if ;
+    while ([unresolved count] > 0) do 
+        foreach unresolved (@lstring res_key @resource_obj res) :
+
+            @resource_property_obj res_prop ;
+            res_prop := [res property] ;
+
+            cast res_prop :
+
+                #current resource is a linked resource : we try to resolve it
+                when == @resource_property_linked_obj rplo do
+
+                    #target is in resolved : we (try to) resolve
+                    if( [resolved hasKey ![[rplo linked_resource] string]] ) then
+                        @resource_obj target_resource ;
+                        @resource_property_obj target_property ;
+                        [resolved get ![rplo linked_resource] ?target_resource] ;
+                        target_property := [target_resource property] ;
+                        cast target_property :
+
+                            #linked to a standard resource : ok
+                            when == @resource_property_standard_obj do [!?resolved put !res_key !res] ;
+
+                            #linked to an internal resource : error
+                            when == @resource_property_internal_obj do 
+                                error here : "RESOURCE " . [res_key string] . " is linked to INTERNAL RESOURCE " . [[rplo linked_resource] string];
+
+                            #linked to a resolved linked resource : we resolve current resource, with a direct link to the standard resource
+                            when == @resource_property_linked_obj nrplo do
+                                @resource_property_linked_obj resolved_prop :=
+                                    [@resource_property_linked_obj new ![nrplo location] ![nrplo linked_resource]] ;
+                                @lstring resolved_desc := [res desc];
+                                @resource_obj resolved_res := [@resource_obj new !resolved_desc !resolved_prop] ;
+                                [!?resolved put !res_key !resolved_res] ;
+                            else
+                        end cast ;
+
+                    #target not in resolved : we put current resource in unresolved
+                    else
+                        [!?unresolved_next put !res_key !res] ;
+                    end if ;
+
+                #standard or internal resource : resolved
+                else [!?resolved put !res_key !res] ;
+            end cast ;
+        end foreach ;
+        if ([unresolved count] == [unresolved_next count])
+        then
+            error here : "Cycle detected in linked resource" ;
+            foreach unresolved_next (@lstring unresolved_key *) :
+                error unresolved_key : "Involved in cycle" ;
+            end foreach ;
+        end if;
+    end loop ;
+
+    resources := resolved ;
+end routine ;
+
+routine all_events_and_resources_and_messages_defined_and_used 
+    ?@task_map tasks
+    ?@isr_map isrs
+    ?@event_map events
+    ?@resource_map resources
+    ?@message_map messages
+:
+    @stringset used_events [emptySet] ;
+    @stringset used_resources [emptySet] ;
+    @stringset used_messages [emptySet] ;
+
+    #Events and resources and messages referenced in a task are defined
+    foreach tasks (@lstring task_name @task_obj task) :
+
+        #all referenced events must be defined
+        @stringset task_events ;
+        task_events := [task events] ;
+        foreach task_events (@string event_name) :
+            used_events += !event_name ;
+            if (not [events hasKey !event_name])
+            then error task_name : "EVENT " . event_name . " is not defined" ;
+            end if ;
+        end foreach ;
+
+        #all referenced resources must be defined
+        @stringset task_resources ;
+        task_resources := [task resources] ;
+        foreach task_resources (@string res_name) :
+            used_resources += !res_name ;
+            if (not [resources hasKey !res_name])
+            then error task_name : "RESOURCE " . res_name . " is not defined" ;
+            end if ;
+        end foreach ;
+
+        #all referenced messages must be defined
+        @stringset task_messages ;
+        task_messages := [task messages] ;
+        foreach task_messages (@string mess_name) :
+            used_messages += !mess_name ;
+            if (not [messages hasKey !mess_name]) then
+                error task_name : "MESSAGE " .mess_name . " is not defined" ;
+            end if ;
+        end foreach ;
+    end foreach ;
+
+    # Resources and messages referenced in an ISR are defined
+    foreach isrs (@lstring isr_name @isr_obj isr) :
+
+        #all referenced resources must be defined
+        @stringset isr_resources := [isr resources] ;
+        foreach isr_resources (@string res_name) :
+            used_resources+= !res_name ;
+            if (not [resources hasKey !res_name])
+            then error isr_name : "RESOURCE " . res_name . " is not defined" ;
+            end if ;
+        end foreach ;
+
+        #all referenced messages must be defined
+        @stringset isr_messages ;
+        isr_messages := [isr messages] ;
+        foreach isr_messages (@string mess_name) :
+            used_messages += !mess_name ;
+            if (not [messages hasKey !mess_name]) then
+                error isr_name : "MESSAGE " .mess_name . " is not defined" ;
+            end if ;
+        end foreach ;
+
+    end foreach ;
+
+    #all defined events should be referenced in a task
+    foreach events (@lstring event_key *) :
+        if (not [used_events hasKey ![event_key string]])
+        then warning event_key : "EVENT " . [event_key string] . " is defined but never used" ;
+        end if ;
+    end foreach ;
+
+    #all defined resources should be referenced in a task or an ISR
+    foreach resources (@lstring res_key *) :
+        if (not [used_resources hasKey ![res_key string]])
+        then warning res_key : "RESOURCE " . [res_key string] . " is defined but never used" ;
+        end if ;
+    end foreach ;
+
+    #all defined messages should be referenced in a task or an ISR
+    foreach messages (@lstring mess_key *) :
+        if (not [used_messages hasKey ![mess_key string]])
+        then warning mess_key : "MESSAGE " . [mess_key string] . " is defined but never used" ;
+        end if ;
+    end foreach ;
+    
+end routine ;
+
+routine all_event_masks_different
+    ?@event_map events 
+:
+    @stringset defined_masks [emptySet] ;
+    foreach events (@lstring event_name @event_obj event) :
+        @event_mask_obj mask ;
+        mask := [event mask] ;
+        cast mask :
+            when == @event_mask_user_obj m do 
+                @string mask_in_string := [[[m mask] uint64] string] ;
+                if [defined_masks hasKey !mask_in_string]
+                then warning event_name : "Mask " . mask_in_string . " already used" ;
+                else defined_masks += !mask_in_string ;
+                end if ;
+            else
+        end cast ;
+    end foreach ;
+end routine ;
+
+routine all_alarm_actions_correct
+    ?@alarm_map   alarms
+    ?@task_map    tasks
+    ?@counter_map counters
+:    
+    @stringset defined_task_names ;
+
+    defined_task_names := [tasks allKeys] ;
+    foreach alarms (@lstring alarm_name @alarm_obj alarm_data) :
+        @action_obj alarm_action ;
+        alarm_action := [alarm_data action_params] ;
+        cast alarm_action :
+            when == @setevent_action act do
+                if not [defined_task_names hasKey ![[act task_name] string]]
+                then error [act task_name] : "TASK " . [[act task_name] string] . " is never defined" ;
+                else 
+                    @task_obj task_data ;
+                    @stringset known_events ;
+                    [tasks get ![act task_name] ?task_data] ;
+                    known_events := [task_data events] ;
+                    if not [known_events hasKey ![[act event_name] string]]
+                    then warning [act event_name] : "EVENT " . [[act event_name] string] . " is not defined for TASK " . [[act task_name] string] ;
+                    end if ;
+                end if ;
+            when == @activatetask_action act do
+                if not [defined_task_names hasKey ![[act task_name] string]]
+                then error [act task_name] : "TASK " . [[act task_name] string] . " is never defined" ;
+                end if ;
+            when == @incrementcounter_action act do
+                if [counters hasKey ![[act counter_name] string]] then
+                    @counter_obj cnt ;
+                    [counters get ![act counter_name] ?cnt] ;
+                    cast [cnt type] :
+                    when == @software_counter do
+                    else
+                        error [act counter_name] : "COUNTER " . [[act counter_name] string] . " is not a software counter" ;
+                    end cast ;
+                else
+                    error [act counter_name] : "COUNTER " . [[act counter_name] string] . " is never defined" ;
+                end if ;
+            else            
+        end cast ;
+    end foreach;
+end routine ;
+
+end semantics ;
+# vim:ft=ggs:ts=4:sw=4

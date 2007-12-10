@@ -1,0 +1,28 @@
+semantics goil_types_isr :
+
+import semantics goil_basic_types in "goil_basic_types.ggs" ;
+import semantics goil_types_timing_prot in "goil_types_timing_prot.ggs" ;
+
+#
+# ISR classes
+#
+
+class @isr_obj extends @oil_obj {
+    @basic_type  category ;
+    @basic_type  priority ;
+    @stringset   resources ;
+    @stringset   messages ;
+    @timing_prot timing_prot ;
+    @ident_map   other_fields;
+
+    method get_activation !@uint out_act :          out_act := 1 ;      end method ;
+}
+
+map @isr_map {
+    @isr_obj isr ;
+    insert put error message "ISR %K is duplicated in %L" ;
+    search get error message "IRS %K is not defined" ;
+    remove del error message "ISR %K is not defined" ;
+}
+
+end semantics ;

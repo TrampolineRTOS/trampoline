@@ -1,0 +1,239 @@
+semantics goil_routines :
+
+import option goil_options in "goil_options.ggs" ;
+import semantics goil_basic_types in "goil_basic_types.ggs" ;
+
+routine target !@string target_platform :
+    target_platform := [option goil_options.target_platform] ;
+#    message target_platform ;
+#    target_platform := "ppc";
+end routine ;
+
+routine templates_directory !@string temp_dir :
+    temp_dir := "" ;
+
+    if [option goil_options.template_dir] != "" then
+        temp_dir := [option goil_options.template_dir] ;
+    else
+        temp_dir := [@string stringWithEnvironmentVariableOrEmpty !"GOIL_TEMPLATES"] ;
+    end if ;
+
+    if temp_dir != "" then
+        temp_dir := [temp_dir unixPathWithNativePath] ;
+        # check the path is an absolute one
+        if [temp_dir characterAtIndex !0] != '/' then
+            @string curdir := [@string stringWithCurrentDirectory] ;
+            if [temp_dir characterAtIndex !0] == '.' & [temp_dir characterAtIndex !1] == '/' then
+                temp_dir := [[temp_dir stringByRemovingCharacterAtIndex !0] stringByRemovingCharacterAtIndex !0];
+            end if ;
+            temp_dir := curdir . "/" . temp_dir ;
+        end if ;
+        if [temp_dir characterAtIndex !([temp_dir length] - 1)] != '/' then
+            temp_dir .= "/" ;
+        end if ;
+    end if ;
+#    message "templates = ".temp_dir."\n";
+end routine ;
+
+routine template !@string template ?@string obj :
+    @string target_platform ;
+    @string targ_tpl := "" ;
+
+# Get the platform
+    target ?target_platform ;
+    
+# Get the template directory
+    @string temp_dir ;
+    templates_directory ?temp_dir ;
+
+# Look for a template in target plateform path
+    targ_tpl := temp_dir.target_platform."/".obj.".tpl" ;
+
+
+    if [targ_tpl fileExists]
+    then template := [@string stringWithContentsOfFile !targ_tpl] ;
+    else
+
+# then in the all_targets path
+        targ_tpl := temp_dir."all_targets/".obj.".tpl" ;
+        if [targ_tpl fileExists]
+        then template := [@string stringWithContentsOfFile !targ_tpl] ;
+#             message "found template in all_targets\n" ;
+        else template := "" ;
+             error here: "No template found for ".obj;
+        end if ;
+    end if;
+end routine ;
+
+routine config_file
+    !@lstring cfg_file
+:
+    @string template_dir ;
+    templates_directory ?template_dir ;
+    @string target_platform ;
+    target ?target_platform ;
+    @string cfg := template_dir.target_platform."/target.cfg" ;
+    if not [cfg fileExists] then
+        cfg := "" ;
+    end if ;
+    cfg_file := [@lstring new !cfg !here] ;
+end routine ;
+
+routine prefix ?@prefix_map p ?@string key !@string val :
+    @lstring lkey := [@lstring new !key !here] ;
+    [p prefix !lkey ?val ?*] ;
+end routine ;
+
+routine replace ?@prefix_map p ?@string key ?@string name ?!@string res :
+    @lstring lkey := [@lstring new !key !here] ;
+    @string prefix ;
+    @string tag_to_rep ;
+    [p prefix !lkey ?prefix ?tag_to_rep] ;
+    res := [res stringByReplacingStringByString !tag_to_rep !prefix.name] ;
+end routine ;
+
+routine replace_no_prefix ?@prefix_map p ?@string key ?@string name ?!@string res :
+    @lstring lkey := [@lstring new !key !here] ;
+#    @string prefix ;
+    @string tag_to_rep ;
+    [p prefix !lkey ?* ?tag_to_rep] ;
+    res := [res stringByReplacingStringByString !tag_to_rep !name] ;
+end routine ;
+
+routine obj_table
+    ?@string     typename
+    ?@string     varname
+    ?@string     prefix
+    ?@prefix_map p
+    ?@stringset  names
+    !@string     header
+    !@string     implementation :
+
+    implementation := "tpl_". typename." *tpl_".varname."_table[".[varname uppercaseString]."_COUNT] = {\n" ;
+    header := "\n" ;
+    @uint n := 0 ;
+    @string obj_prefix ;
+    @string obj_ids := "" ;
+    prefix !p !prefix ?obj_prefix ;
+    foreach names (@string name) :
+        header := header."#define ".varname."_id_of_".name."  ".[n string]."\n" ;
+        header := header."#define ".name."  ".varname."_id_of_".name."\n" ;
+        implementation := implementation."    (tpl_".typename." *)&".obj_prefix.name ;
+        n++ ;
+        if n != [names count]
+        then implementation := implementation . ",\n" ;
+        else implementation := implementation . "\n" ;
+        end if ;
+    end foreach ;
+    implementation := implementation . "};\n" ;
+
+    if [names count] == 0 then implementation := "" ; end if ;
+
+#    header := header."\n#define ".[varname uppercaseString]."_COUNT ".[[names count] string] ;
+end routine ;
+
+routine additional_int_key_required
+    ?? @string    key
+    ?? @ident_map others
+    ?? @lstring   name
+    !  @uint      result 
+:
+    result := 0 ;
+    if [others hasKey !key] then
+        @basic_type value ;
+        [others get ![@lstring new !key !here] ?value] ;
+        cast value :
+        when == @uint64_class v do
+            result := [[v value] uint] ;
+        when == @uint32_class v do
+            result := [v value] ;
+        when == @void_uint32_class do
+            error name : key." should have a default value" ;
+        when == @auto_uint32_class do
+            error name : key." should not be an auto attribute" ;
+        else
+            error name : key." should be an integer" ;
+        end cast ;
+    else
+        error name : key." not defined" ;
+    end if ;
+end routine;
+
+routine additional_string_key_required
+    ?? @string key
+    ?? @ident_map others
+    ?? @lstring name
+    !  @string result :
+
+    result := "";
+    if [others hasKey !key]
+    then
+        @basic_type value ;
+        [others get ![@lstring new !key !here] ?value] ;
+        cast value :
+        when == @string_class s do
+            result := [s value];
+        else 
+            error name : key." should be a string" ;
+        end cast ;
+    else
+        error name : "no ".key." specified" ;
+    end if ;
+end routine;
+
+routine additional_bool_key_required
+    ?? @string    key
+    ?? @ident_map others
+    ?? @lstring   name
+    !  @bool      result :
+
+    result := false;
+    if [others hasKey !key]
+    then
+        @basic_type value ;
+        [others get ![@lstring new !key !here] ?value] ;
+        cast value :
+        when == @bool_class b do
+            result := [b value];
+        else 
+            error name : key." should be a boolean" ;
+        end cast ;
+    else
+        error name : "no ".key." specified" ;
+    end if ;
+end routine;
+
+routine add_to_stringset
+    ?!@stringset ss
+    ?@string new
+:
+    if [ss hasKey !new] then
+        error here : "'".new."' is already declared before" ;
+    else
+        ss += !new ;
+    end if ;
+end routine ;
+
+routine file_in_path
+    ?!@lstring file_name
+:
+    @string include_path := [@string stringWithEnvironmentVariable !"GOIL_INCLUDE_PATH"] ;
+    @stringlist path_list := [include_path componentsSeparatedByString !":"] ;
+    @bool not_found := true ;
+    foreach path_list (@string path):
+        @string full_file_path := path ;
+        if full_file_path != "" then
+            if [full_file_path characterAtIndex !([full_file_path length] - 1)] != '/' then
+                full_file_path .= "/" ;
+            end if ;
+        end if ;
+        full_file_path .= file_name ;
+        if ([full_file_path fileExists] & not_found) then
+            file_name := [@lstring new !full_file_path !here] ;
+            not_found := false ;
+        end if ;
+    end foreach ;
+end routine ;
+
+end semantics ;
+# vim:ft=ggs:ts=4:sw=4
