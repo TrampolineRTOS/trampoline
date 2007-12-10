@@ -1,9 +1,0 @@
-semantics goil_semantics :
-
-import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
-import semantics goil_semantic_verification in "goil_semantic_verification.ggs" ;
-import semantics goil_code_generation in "goil_code_generation.ggs" ;
-
-
-end semantics ;
-# vim:ft=ggs:ts=4:sw=4
