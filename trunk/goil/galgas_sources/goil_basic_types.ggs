@@ -1,0 +1,185 @@
+#
+# @file goil_basic_types.ggs
+#
+# @section File description
+#
+# This file wraps user application configuration header. This wrapped file is typically
+# generated from an OIL source.
+#
+# @section Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est protégé par la loi sur la propriété intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics goil_basic_types :
+
+abstract class @basic_type { @location location ; }
+
+class @void            extends @basic_type {                 }
+class @uint32_class    extends @basic_type { @uint   value ; }
+class @sint32_class    extends @basic_type { @sint   value ; }
+class @uint64_class    extends @basic_type { @uint64 value ; }
+class @sint64_class    extends @basic_type { @sint64 value ; }
+class @float_class     extends @basic_type { @double value ; }
+class @string_class    extends @basic_type { @string value ; }
+class @bool_class      extends @basic_type { @bool   value ; }
+
+class @void_uint32_class extends @uint32_class {}
+class @void_sint32_class extends @sint32_class {}
+class @void_uint64_class extends @uint64_class {}
+class @void_sint64_class extends @sint64_class {}
+class @void_float_class  extends @float_class  {}
+class @void_string_class extends @string_class {}
+class @void_bool_class   extends @bool_class   {}
+
+class @auto_uint32_class extends @uint32_class {}
+class @auto_sint32_class extends @sint32_class {}
+class @auto_uint64_class extends @uint64_class {}
+class @auto_sint64_class extends @sint64_class {}
+class @auto_string_class extends @string_class {}
+class @auto_bool_class   extends @bool_class   {}
+
+#
+# Types used for implementation specific type declaration
+#
+list @list_uint32 { @uint val ;   }
+list @list_sint32  { @sint val ;   }
+list @list_uint64 { @uint64 val ; }
+list @list_sint64  { @sint64 val ; }
+
+abstract class @number_set { @location loc ; }
+abstract class @uint32_set extends @number_set {}
+abstract class @sint32_set extends @number_set {}
+abstract class @uint64_set extends @number_set {}
+abstract class @sint64_set extends @number_set {}
+abstract class @float_set  extends @number_set {}
+
+class @uint32_empty_set extends @uint32_set {}
+class @sint32_empty_set extends @sint32_set {}
+class @uint64_empty_set extends @uint64_set {}
+class @sint64_empty_set extends @sint64_set {}
+class @float_empty_set  extends @float_set {}
+
+class @uint32_range extends @uint32_set { @uint min ; @uint max ;     }
+class @uint32_list  extends @uint32_set { @list_uint32 li ;           }
+class @sint32_range extends @sint32_set { @sint min ; @sint max ;     }
+class @sint32_list  extends @sint32_set { @list_sint32 li ;            }
+class @uint64_range extends @uint64_set { @uint64 min ; @uint64 max ; }
+class @uint64_list  extends @uint64_set { @list_uint64 li ;           }
+class @sint64_range extends @sint64_set { @sint64 min ; @sint64 max ; }
+class @sint64_list  extends @sint64_set { @list_sint64 li ;            }
+
+abstract class @imp_type {
+    @location loc ;
+    @lstring  desc ;
+    @bool     multiple ;
+}
+
+abstract class @imp_sca_type extends @imp_type {
+    @bool       with_auto ;
+}
+
+abstract class @imp_obj_ref extends @imp_type {
+}
+
+class @void_type   extends @imp_type     {}
+
+class @uint32_type extends @imp_sca_type {
+    @uint32_class def_val ;
+    @uint32_set   set ;
+}
+
+class @sint32_type extends @imp_sca_type {
+    @sint32_class def_val ;
+    @sint32_set   set ;
+}
+
+class @uint64_type extends @imp_sca_type {
+    @uint64_class def_val ;
+    @uint64_set   set ;
+}
+
+class @sint64_type extends @imp_sca_type {
+    @sint64_class def_val ;
+    @sint64_set   set ;
+}
+
+#
+#
+#
+
+map @ident_map {
+    @basic_type value ;
+    insert put error message "%K is duplicated in %L";
+    search get error message "Identifier %K is not defined" ;
+}
+
+map @string_map {
+    @string value ;
+    insert put error message "%K is duplicated in %L";
+    search get error message "Key %K is not defined" ;
+}
+
+#
+# Map to store string constants used
+# for code generation
+#
+map @prefix_map {
+    @string prefix ;
+    @string tag_to_rep ;
+    insert add error message "prefix %K duplicated %L" ;
+    insert insert_prefix error message "prefix %K duplicated %L" ;
+    search prefix error message "prefix %K is not defined" ;
+}
+
+map @stringset_map {
+    @stringset ids ;
+    insert add error message "Key %K is already used there";
+    search get error message "Key %K is not there" ;
+    remove delete error message "Key %K cannot be deleted" ;
+}
+
+#
+# list of strings to store chained objects
+#
+
+list @ident_list {
+    @lstring obj_name ;
+}
+
+map @ident_list_map {
+    @ident_list objs ;
+    insert add error message "Key %K is already used there";
+    search get error message "Key %K is not there" ;
+    remove delete error message "Key %K cannot be deleted" ;
+}
+
+abstract class @oil_obj {
+    @lstring desc ;
+}
+
+
+abstract class @autostart_obj {
+    @location location ;
+}
+
+class @autostart_void extends @autostart_obj {
+}
+
+class @autostart_false extends @autostart_obj {
+}
+
+end semantics ;
+# vim:ft=ggs:ts=2:sw=2

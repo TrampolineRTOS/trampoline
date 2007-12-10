@@ -1,0 +1,9 @@
+option goil_options :
+
+@string target_platform : '\0', "target"    -> "Target platform" ;
+@string project_dir     : '\0', "project"   -> "Project directory" ;
+@string template_dir    : '\0', "templates" -> "Template directory" ;
+@bool   autosar_on      : 'a',  "autosar"   -> "Parse Autosar objects and attributes" ;
+
+end option ;
+# vim:ft=ggs:ts=4:sw=4

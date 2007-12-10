@@ -1,0 +1,152 @@
+#
+# @file goil_defaults.ggs
+#
+# @section File description
+#
+# Default value copy in defined objects.
+#
+# @section Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est protégé par la loi sur la propriété intellectuelle
+#
+# OIL compiler for Trampoline
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics goil_defaults :
+
+import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
+import semantics goil_check in "goil_check.ggs" ;
+import semantics goil_types_task in "goil_types_task.ggs" ;
+import semantics goil_types_isr in "goil_types_isr.ggs" ;
+
+routine check_custom_field
+    ?!@ident_map others
+    ?@lstring    field
+    ?@imp_type   f_def
+:
+    if not [others hasKey ![field string]] then
+        # No attribute defined, copy the default
+        cast f_def :
+        when == @uint32_type f do [!?others put !field ![f def_val]] ;
+        when == @sint32_type f do [!?others put !field ![f def_val]] ;
+        when == @uint64_type f do [!?others put !field ![f def_val]] ;
+        when == @sint64_type f do [!?others put !field ![f def_val]] ;
+        else end cast ;
+    else
+        # Attribute defined. Check it has the good type
+        # todo
+    end if ;
+    
+end routine ;
+
+routine check_range
+    ?@basic_type var
+    ?@imp_type   def
+:
+    cast var :
+    when == @uint32_class ui do
+        cast def :
+        when == @uint32_type d do
+            check_uint32_range ![d set] ![ui location] ![ui value] ;
+        else
+            error [def loc] : "Internal error" ; 
+        end cast ;
+    else
+        error [var location] : "Internal error" ;
+    end cast ;
+end routine ;
+
+#
+# look for default values for tasks and update task objects
+# according to these default values.
+#
+routine verify_and_set_tasks_defaults
+    ?!@task_map           tasks
+    ?@implementation_spec spec
+:
+    @task_map tp := tasks ;
+
+    foreach tp (@lstring key @task_obj task) :
+        [!?tasks del !key ?*] ;
+        @ident_map others := [task others] ;
+        foreach spec (@lstring field @imp_type f_def) :
+            if    [field string] == "PRIORITY"  then
+                check_range ![task priority] !f_def ;
+            elsif [field string] == "" then
+            elsif [field string] == "" then
+            elsif [field string] == "" then
+            elsif [field string] == "" then
+            elsif [field string] == "" then
+            elsif [field string] == "" then
+            else
+               check_custom_field !?others !field !f_def ;
+            end if ;
+        end foreach ;
+        @task_obj updated_task := [@task_obj new
+            ![task desc]
+            ![task priority]
+            ![task schedule]
+            ![task activation]
+            ![task autostart]
+            ![task resources]
+            ![task events]
+            ![task messages]
+            ![task timing_prot]
+            !others
+        ] ;
+        [!?tasks put !key !updated_task] ;
+    end foreach ;
+end routine ;
+
+#
+# look for default values for isrs and update isr objects
+# according to these default values.
+#
+routine verify_and_set_isrs_defaults
+    ?!@isr_map            isrs
+    ?@implementation_spec spec
+:
+    @isr_map ip := isrs ;
+
+    foreach ip (@lstring key @isr_obj isr) :
+        [!?isrs del !key ?*] ;
+        @ident_map others := [isr other_fields] ;
+        foreach spec (@lstring field @imp_type f_def) :
+            if    [field string] == "PRIORITY"  then
+message "PRIORITY!\n";
+            elsif [field string] == "" then
+            elsif [field string] == "" then
+            elsif [field string] == "" then
+            elsif [field string] == "" then
+            elsif [field string] == "" then
+            elsif [field string] == "" then
+            else
+               check_custom_field !?others !field !f_def ;
+            end if ;
+        end foreach ;
+        @isr_obj updated_isr := [@isr_obj new
+            ![isr desc]
+            ![isr category]
+            ![isr priority]
+            ![isr resources]
+            ![isr messages]
+            ![isr timing_prot]
+            !others
+        ] ;
+        [!?isrs put !key !updated_isr] ;
+    end foreach ;
+end routine ;
+
+end semantics ;

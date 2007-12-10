@@ -1,0 +1,22 @@
+semantics goil_types_root :
+
+import semantics goil_types_os in "goil_types_os.ggs" ;
+import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
+import semantics goil_types_task in "goil_types_task.ggs" ;
+import semantics goil_types_isr in "goil_types_isr.ggs" ;
+import semantics goil_types_counter in "goil_types_counter.ggs" ;
+import semantics goil_types_scheduletable in "goil_types_scheduletable.ggs" ;
+
+class @root_obj {
+    @os_obj            os ;
+    @task_map          tasks ;
+    @counter_map       counters ;
+    @alarm_map         alarms ;
+    @resource_map      resources ;
+    @event_map         events ;
+    @isr_map           isrs ;
+    @message_map       messages ;
+    @scheduletable_map scheduletables ;
+}
+
+end semantics ;

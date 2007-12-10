@@ -1,0 +1,273 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est prot»g» par la loi sur la propri»t» intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL counter object parser
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax goil_obj_counter :
+
+import lexique goil_lexique in "goil_lexique.ggs" ;
+import option goil_options in "goil_options.ggs" ;
+import semantics goil_semantics in "goil_semantics.ggs" ;
+
+nonterminal <counter>
+    ?!@counter_map counters ;
+
+nonterminal <counter_parameters> 
+    ?!@basic_type   max_allowed_value
+    ?!@basic_type   ticks_per_base
+    ?!@basic_type   min_cycle
+    ?!@counter_type type
+    ?!@lstring      unit ;
+
+nonterminal <counter_type_attrs>
+    !@counter_type type ;
+#
+# external nonterminals
+#
+nonterminal <description>
+    !@lstring desc ;
+
+#
+# counter rules implementation
+#
+rule <counter>
+    ?!@counter_map counters :
+
+    @lstring      counter_name ;
+    @counter_obj  counter ;
+    @basic_type   max_allowed_value ;
+    @basic_type   ticks_per_base ;
+    @basic_type   min_cycle ;
+    @counter_type type ;
+    @lstring      unit ;
+    @lstring      desc ;
+
+    $COUNTER$ ;
+    $idf$ ?counter_name ;
+
+    if [counters hasKey ![counter_name string]] then
+        [!?counters del !counter_name ?counter] ;
+        max_allowed_value := [counter max_allowed_value] ;
+        ticks_per_base    := [counter ticks_per_base] ;
+        min_cycle         := [counter min_cycle] ;
+        type              := [counter type] ;
+        unit              := [counter unit] ;
+        desc              := [counter desc] ;
+    else # counter must also be written in this branch to comply with galgas static verification policy
+        max_allowed_value := [@void new !here] ;
+        ticks_per_base    := [@void new !here] ;
+        min_cycle         := [@void new !here] ;
+        type              := [@void_counter new !here] ;
+        unit              := [@lstring new !"" !here] ;
+        desc              := [@lstring new !"" !here];
+        counter := [@counter_obj new
+            !desc
+            !max_allowed_value
+            !ticks_per_base
+            !min_cycle
+            !type
+            !unit] ;
+    end if ;
+    ${$ ;
+    <counter_parameters> !?max_allowed_value !?ticks_per_base !?min_cycle !?type !?unit ;
+    $}$ ;
+    <description> ?desc ;
+    $;$ ;
+
+    counter := [@counter_obj new
+        !desc
+        !max_allowed_value
+        !ticks_per_base
+        !min_cycle
+        !type
+        !unit] ;
+    [!?counters put !counter_name !counter] ;
+end rule ;
+
+rule <counter_parameters> 
+    ?!@basic_type   max_allowed_value
+    ?!@basic_type   ticks_per_base
+    ?!@basic_type   min_cycle
+    ?!@counter_type type
+    ?!@lstring      unit
+:
+
+    repeat
+    while
+        @luint64 m ;
+        $MAXALLOWEDVALUE$ ;   $=$ ; $uint_number$ ?m ; <description> ?* ; $;$ ;
+        cast max_allowed_value :
+        when == @uint32_class do
+            error here : "MAXALLOWEDVALUE attribute already defined for this counter" ;
+            error [max_allowed_value location] : "was defined here" ;
+        when == @void do
+            max_allowed_value := [@uint32_class new !here ![[m uint64] uint]] ;
+        else
+        end cast ;
+    while
+        @luint64 t ;
+        $TICKSPERBASE$ ;   $=$ ; $uint_number$ ?t ; <description> ?* ; $;$ ;
+        cast ticks_per_base :
+        when == @uint32_class do
+            error here : "TICKSPERBASE attribute already defined for this counter" ;
+            error [ticks_per_base location] : "was defined here" ;
+        when == @void do
+            ticks_per_base := [@uint32_class new !here ![[t uint64] uint]] ;
+        else end cast ;
+    while
+        @luint64 c ;
+        $MINCYCLE$ ; $=$ ; $uint_number$ ?c ; <description> ?* ; $;$ ;
+        cast min_cycle :
+        when == @uint32_class do
+            error here : "MINCYCLE attribute already defined for this counter" ;
+            error [min_cycle location] : "was defined here" ;
+        when == @void do
+            min_cycle := [@uint32_class new !here ![[c uint64] uint]] ;
+        else end cast ;
+    while
+        if [option goil_options.autosar_on] == false then
+            error here : "AUTOSAR flag is off, turn it on to use TYPE attribute in COUNTER object" ;
+        end if ;
+        @counter_type cpt_type ;
+        $TYPE$ ; $=$ ; <counter_type_attrs> ?cpt_type ; $;$ ;
+        cast type :
+        when == @software_counter do
+            error here : "TYPE attribute already defined for this counter" ;
+            error [type location] : "was defined here" ;
+        when == @hardware_counter do
+            error here : "TYPE attribute already defined for this counter" ;
+            error [type location] : "was defined here" ;
+        when == @void_counter do
+            type := cpt_type ;
+        else end cast ;
+        
+    while
+        if [option goil_options.autosar_on] == false then
+            error here : "AUTOSAR flag is off, turn it on to use UNIT attribute in COUNTER object" ;
+        end if ;
+        @lstring cpt_unit ;
+        $UNIT$ ; $=$ ;
+        select
+            $TICKS$ ?cpt_unit ;
+        or
+            $NANOSECONDS$ ?cpt_unit ;
+        end select ;
+        $;$ ;
+        if [unit string] == "" then
+            unit := cpt_unit ;
+        else
+            error here : "UNIT attribute already defined for this counter" ;
+            error unit : "was defined here" ;
+        end if ;
+
+    while
+        $idf$ ?* ; $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ; <description> ?* ; $;$ ;
+    end repeat ;
+end rule ;
+
+rule <counter_type_attrs>
+    !@counter_type type
+:
+    select
+        $SOFTWARE$ ;
+        type := [@software_counter new !here] ;
+    or
+        @time_constants tc [emptyList] ;
+        @counter_driver cd := [@void_driver new !here] ;
+        $HARDWARE$ ; ${$ ;
+        repeat
+        while
+            $DRIVER$ ; $=$ ;
+            @counter_driver cpt_cd ;
+            select
+                $OSINTERNAL$ ;
+                cpt_cd := [@os_internal_driver new !here] ;
+            or
+                $GPT$ ; ${$ ;
+                @basic_type npht := [@void new !here] ;
+                @lstring gcn := [@lstring new !"" !here] ;
+                repeat
+                while
+                    @luint64 ui ;
+                    $NS_PER_HW_TICK$ ; $=$ ; $uint_number$ ?ui ;
+                    cast npht :
+                    when == @void do
+                        npht := [@uint64_class new !here ![ui uint64]] ;
+                    else
+                        error here : "NS_PER_HW_TICK subattribute already defined for this hardware counter GPT" ;
+                        error [npht location] : "was defined here" ;
+                    end cast ;
+                while
+                    @lstring cn ;
+                    $GPTCHANNELNAME$ ; $=$ ; $string$ ?cn ;
+                    if [gcn string] == "" then
+                        gcn := cn ;
+                    else
+                        error here : "GPTCHANNELNAME subattribute already defined for this hardware counter GPT" ;
+                        error gcn : "was defined here" ;
+                    end if ;
+                end repeat ;
+                $}$ ;
+                cast npht :
+                when == @void do
+                    error here : "NS_PER_HW_TICK subattribute not defined for this hardware counter GPT" ;
+                else end cast ;
+                if [gcn string] == "" then
+                    error here : "GPTCHANNELNAME subattribute not defined for this hardware counter GPT" ;
+                end if ;
+                cpt_cd := [@gpt_driver new !here !npht !gcn] ;
+            end select ;
+            $;$ ;
+            cast cd :
+            when == @void_driver do
+                cd := cpt_cd ;
+            else
+                error here : "DRIVER subattribute already defined for this hardware counter" ;
+                error [cd location] : "was defined here" ;
+            end cast ;
+        while
+            $TIMECONSTANTS$ ; $=$ ; $TIMECONSTANT$ ; ${$ ;
+            @basic_type ns := [@void new !here] ;
+            @lstring cn := [@lstring new !"" !here] ;
+            repeat
+            while
+                @luint64 ui ;
+                $NS$ ; $=$ ; $uint_number$ ?ui ; $;$ ;
+                cast ns :
+                when == @void do
+                    ns := [@uint64_class new !here ![ui uint64]] ;
+                else
+                    error here : "NS subattribute already defined for this hardware counter time constant" ;
+                    error [ns location] : "was defined here" ;
+                end cast ;
+            while
+                @lstring c ;
+                $CONSTNAME$ ; $=$ ; $string$ ?c ; $;$ ;
+                if [cn string] == "" then
+                    cn := c ;
+                else
+                    error here : "CONSTNAME subattribute already defined for this hardware time constant" ;
+                    error cn : "was defined here" ;
+                end if ;
+            end repeat ;
+            $}$ ; $;$ ;
+            tc += !ns !cn ;
+        end repeat ;
+        $}$ ;
+        type := [@hardware_counter new !here !cd !tc] ;
+    end select ;
+end rule ;
+
+end syntax ;
+# vim:ft=ggs:ts=4:sw=4

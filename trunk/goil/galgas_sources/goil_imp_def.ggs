@@ -1,0 +1,629 @@
+#
+# GOIL oil parser
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline is protected by
+# the french law on intellectuel property
+#
+# This software is distributed under the GNU Public Licence
+#
+# GOIL parser
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax goil_imp_def :
+
+import lexique goil_lexique in "goil_lexique.ggs" ;
+import option goil_options in "goil_options.ggs" ;
+import semantics goil_semantics in "goil_semantics.ggs" ;
+import semantics goil_routines in "goil_routines.ggs" ;
+import semantics goil_check in "goil_check.ggs" ;
+
+#
+# Local rules declarations
+#
+nonterminal <implementation_definition> ?!@implementation imp ;
+nonterminal <implementation_spec_list> ?!@implementation imp ;
+nonterminal <implementation_spec> ?!@implementation imp ;
+nonterminal <implementation_list>
+    ?@string          obj_kind
+    ?!@implementation imp
+;
+nonterminal <impl_attr_def> !@lstring attr_name !@imp_type attr ;
+nonterminal <auto_specifier> !@bool auto ;
+nonterminal <uint32_attribute_name> !@lstring name ;
+nonterminal <attribute_name> !@lstring name ;
+nonterminal <multiple_specifier> !@bool multiple ;
+nonterminal <default_number> !@bool has_default !@luint64 default_number ;
+nonterminal <default_name> !@bool has_default !@lstring default_name ;
+nonterminal <enumeration>
+    !@stringset en ;
+nonterminal <enumerator>
+    ?!@stringset en ;
+nonterminal <impl_parameter_list> ;
+nonterminal <implementation_def> ;
+
+
+#
+# Different kind of number set
+#
+nonterminal <uint32_number_set> !@uint32_set set ;
+nonterminal <sint32_number_set> !@sint32_set set ;
+nonterminal <uint64_number_set> !@uint64_set set ;
+nonterminal <sint64_number_set> !@sint64_set set ;
+nonterminal <float_number_set>  !@float_set  set ;
+
+#
+# Different kind of default number
+#
+nonterminal <default_uint32_number> !@uint32_class def ;
+nonterminal <default_sint32_number> !@sint32_class def ;
+nonterminal <default_uint64_number> !@uint64_class def ;
+nonterminal <default_sint64_number> !@sint64_class def ;
+nonterminal <default_float_number>  !@float_class  def ;
+nonterminal <default_string>        !@string_class def ;
+nonterminal <default_enum>          !@basic_type   def ;
+nonterminal <default_bool>          !@bool_class   def ;
+
+nonterminal <signed_number> !@sint64 num ;
+
+#
+#
+# External rules
+#
+nonterminal <description> !@lstring desc ;
+
+#
+# implementation definition is the part of OIL files
+# that specify the data size used for various types
+# as well as default values
+#
+rule <implementation_definition>
+    ?!@implementation imp
+:
+    @lstring imp_name ;
+    $IMPLEMENTATION$ ;
+    $idf$ ?imp_name ;
+#    message "IMPLEMENTATION\n";
+    ${$ ;
+    <implementation_spec_list> !?imp ;
+    $}$ ;
+    <description> ?* ;
+    $;$ ;
+end rule ;
+
+rule <implementation_spec_list> ?!@implementation imp :
+    repeat
+    while <implementation_spec> !?imp ;
+    end repeat ;
+end rule ;
+
+rule <implementation_spec>
+    ?!@implementation imp
+:
+    select  $OS$ ;       <implementation_list> !"os"       !?imp ;
+        or  $TASK$ ;     <implementation_list> !"task"     !?imp ; # message "TASK\n" ;
+        or  $COUNTER$ ;  <implementation_list> !"counter"  !?imp ;
+        or  $ALARM$ ;    <implementation_list> !"alarm"    !?imp ;
+        or  $RESOURCE$ ; <implementation_list> !"resource" !?imp ;
+        or  $EVENT$ ;    <implementation_list> !"event"    !?imp ;
+        or  $ISR$ ;      <implementation_list> !"isr"      !?imp ;
+        or  $MESSAGE$ ;  <implementation_list> !"message"  !?imp ;
+        or  $COM$ ;      <implementation_list> !"com"      !?imp ;
+        or  $NM$ ;       <implementation_list> !"nm"       !?imp ;
+        or  $APPMODE$ ;  <implementation_list> !"appmode"  !?imp ;
+        or  $IPDU$ ;     <implementation_list> !"ipdu"     !?imp ;
+    end select ;
+    <description> ?* ;
+    $;$ ;
+end rule ;
+
+rule <implementation_list>
+    ?@string          obj_kind
+    ?!@implementation imp
+:
+    @implementation_spec spec ;
+    @lstring key := [@lstring new !obj_kind !here] ;
+    if [imp hasKey !obj_kind] then
+        [!?imp del ![@lstring new !obj_kind !here] ?spec] ;
+    else
+        spec := [@implementation_spec emptyMap] ;
+    end if ;
+
+    ${$ ;
+    repeat
+    while
+        @lstring attr_name ;
+        @imp_type attr ;
+        <impl_attr_def> ?attr_name ?attr ;
+        [!?spec put !attr_name !attr] ;
+        $;$ ;
+    end repeat ;
+    $}$ ;
+
+    [!?imp put !key !spec] ;
+end rule ;
+
+rule <impl_attr_def> !@lstring attr_name !@imp_type attr :
+
+    @bool         with_auto ;
+    @uint32_set   set ;
+    @bool         multiple ;
+    @uint32_class default_number;
+    @lstring      desc ;
+
+    $UINT32$ ?* ;
+#    message "UINT32\n" ;
+    <auto_specifier>        ?with_auto ;
+    <uint32_number_set>     ?set ;
+    <uint32_attribute_name> ?attr_name ;
+    <multiple_specifier>    ?multiple ;
+    <default_uint32_number> ?default_number ;
+    <description>           ?desc ;
+
+    #
+    # Check the default is in the set
+    #
+    cast default_number :
+    when == @uint32_class dn do
+        check_uint32_range !set ![dn location] ![dn value] ;
+    else end cast ;
+
+    attr :=
+        [@uint32_type new
+            !here
+            !desc
+            !multiple
+            !with_auto
+            !default_number
+            !set
+        ] ;
+    
+end rule ;
+
+rule <impl_attr_def> !@lstring attr_name !@imp_type attr :
+
+    @bool         with_auto ;
+    @sint32_set   set ;
+    @bool         multiple ;
+    @sint32_class default_number;
+    @lstring      desc ;
+
+    @lstring type ;
+    @bool has_range ;
+    @number_set range ;
+    $INT32$  ?* ;
+    <auto_specifier>        ?with_auto ;
+    <sint32_number_set>     ?set ;
+    <attribute_name>        ?attr_name ;
+    <multiple_specifier>    ?multiple ;
+    <default_sint32_number> ?default_number ;
+    <description>           ?desc ;
+    attr :=
+        [@sint32_type new
+            !here
+            !desc
+            !multiple
+            !with_auto
+            !default_number
+            !set
+        ] ;
+    
+end rule ;
+
+rule <impl_attr_def> !@lstring attr_name !@imp_type attr :
+
+    @bool       auto ;
+    @bool       multiple ;
+    @luint64    default_number;
+    @bool       has_default ;
+
+    @lstring type ;
+#    @bool has_range ;
+#    @number_set range ;
+    $UINT64$ ?type ;
+    <auto_specifier> ?auto ;
+#    <number_range_or_nil> ?has_range ?range ;
+    <attribute_name> ?attr_name ;
+    <multiple_specifier> ?multiple ;
+    <default_number> ?has_default ?default_number ;
+
+    attr := [@void_type new !here ![@lstring new !"" !here] !false] ;
+end rule ;
+
+rule <impl_attr_def> !@lstring attr_name !@imp_type attr :
+
+    @bool       auto ;
+    @bool       multiple ;
+    @luint64    default_number;
+    @bool       has_default ;
+
+    @lstring type ;
+#    @bool has_range ;
+#    @number_set range ;
+    $INT64$  ?type ;
+    <auto_specifier> ?auto ;
+#    <number_range_or_nil> ?has_range ?range ;
+    <attribute_name> ?attr_name ;
+    <multiple_specifier> ?multiple ;
+    <default_number> ?has_default ?default_number ;
+    attr := [@void_type new !here ![@lstring new !"" !here] !false] ;
+end rule ;
+
+rule <impl_attr_def> !@lstring attr_name !@imp_type attr :
+
+    @lstring type ;    
+    @bool auto ;
+    $FLOAT$ ?type ;
+    <auto_specifier> ?auto ;
+#    <float_range> ?range ;
+#    <attribute_name> ?name ;
+#    <multiple_specifier> ?multiple ;
+#    <default_float> ?default_float ;
+    attr_name := [@lstring new !"" !here] ;
+    attr := [@void_type new !here ![@lstring new !"" !here] !false] ;
+end rule ;
+
+rule <impl_attr_def> !@lstring attr_name !@imp_type attr :
+
+    @lstring type ;
+    @bool auto ;
+    @stringset en ;
+
+    $ENUM$ ?type ;
+    <auto_specifier> ?auto ;
+    <enumeration> ?en ;
+    <attribute_name> ?* ;
+    <multiple_specifier> ?* ;
+    <default_name> ?* ?* ;
+    attr_name := [@lstring new !"" !here] ;
+    attr := [@void_type new !here ![@lstring new !"" !here] !false] ;
+end rule ;
+
+rule <auto_specifier> !@bool auto :
+    select
+        $WITH_AUTO$ ; auto := true ;
+    or
+        auto := false ;
+    end select ;
+end rule ;
+
+#
+# Different kind of number set
+#
+rule <uint32_number_set> !@uint32_set set :
+
+    select
+        @luint64 first ;
+        $[$ ;
+        select
+            @luint64 last ;
+            $set_start_uint_number$ ?first ;
+            $uint_number$           ?last  ;
+
+           set := [@uint32_range new
+                    !here
+                    ![[first uint64] uint]
+                    ![[last uint64] uint]
+            ] ;
+        or
+            $uint_number$ ?first ;
+            select
+                @luint64 last ;
+                $..$ ;
+                $uint_number$ ?last ;
+
+                if [first uint64] > [last uint64] then
+                   warning here : "Empty range" ;
+                end if ;
+
+                set := [@uint32_range new
+                        !here
+                        ![[first uint64] uint]
+                        ![[last uint64] uint]
+                ] ;
+            or
+                @list_uint32 numList [emptyList];
+                numList += ![[first uint64] uint] ;
+                repeat
+                while
+                    $,$ ;
+                    $uint_number$ ?first;
+                    numList += ![[first uint64] uint] ;
+                end repeat ;
+                set := [@uint32_list new !here !numList];
+            end select ;
+        end select ;
+        $]$ ;
+    or
+            set := [@uint32_empty_set new !here] ;
+    end select ;
+end rule ;
+
+rule <sint32_number_set> !@sint32_set set :
+    select
+        @luint64 ssfirst ;
+        @sint64  first ;
+        @sint64  fs ;
+        $[$ ;
+        select $-$ ; fs := -1LS ; or fs := 1LS ; end select ;
+        select
+           @sint64 last ;
+            $set_start_uint_number$ ?ssfirst ;
+            first := fs * [[ssfirst uint64] sint64] ;
+            <signed_number> ?last  ;
+            set := [@sint32_range new
+                    !here
+                    ![first sint]
+                    ![last  sint]
+            ] ;
+        or
+            $uint_number$ ?ssfirst ;
+            first := fs * [[ssfirst uint64] sint64] ;
+            select
+                @sint64 last ;
+                $..$ ;
+                <signed_number> ?last ;
+                set := [@sint32_range new
+                        !here
+                        ![first sint]
+                        ![last  sint]
+                ] ;
+            or
+                @list_sint32 numList [emptyList];
+                numList += ![first sint] ;
+                repeat
+                while
+                    $,$ ;
+                    <signed_number> ?first;
+                    numList += ![first sint] ;
+                end repeat ;
+                set := [@sint32_list new !here !numList];
+            end select ;
+        end select ;
+        $]$ ;
+    or
+            set := [@sint32_empty_set new !here] ;
+    end select ;
+end rule ;
+
+rule <uint64_number_set> !@uint64_set set :
+    set := [@uint64_empty_set new !here] ;
+end rule ;
+
+rule <sint64_number_set> !@sint64_set set :
+    set := [@sint64_empty_set new !here] ;
+end rule ;
+
+rule <float_number_set>  !@float_set set :
+    set := [@float_empty_set new !here] ;
+end rule ;
+
+#
+rule <default_uint32_number> !@uint32_class def :
+    select
+        $=$ ;
+        select
+            @luint64 default_number ;
+            $uint_number$ ?default_number ;
+            def := [@uint32_class new !here ![[default_number uint64] uint]] ;
+#            message "default value = ".[[[default_number uint64] uint] string]."\n" ;
+        or
+            $NO_DEFAULT$ ;
+            def := [@void_uint32_class new !here !0] ;
+        or
+            $AUTO$ ;
+            def := [@auto_uint32_class new !here !0] ;
+        end select ;
+    or
+        def := [@void_uint32_class new !here !0] ;
+    end select ;
+end rule ;
+
+rule <default_sint32_number> !@sint32_class def :
+    select
+        $=$ ;
+        select
+            @sint64 default_number ;
+            <signed_number> ?default_number ;
+            def := [@sint32_class new !here ![default_number sint]] ;
+#            message "default value = ".[[[default_number uint64] uint] string]."\n" ;
+        or
+            $NO_DEFAULT$ ;
+            def := [@void_sint32_class new !here !0S] ;
+        or
+            $AUTO$ ;
+            def := [@auto_sint32_class new !here !0S] ;
+        end select ;
+    or
+        def := [@void_sint32_class new !here !0S] ;
+    end select ;
+end rule ;
+
+rule <default_uint64_number> !@uint64_class def :
+    def := [@void_uint64_class new !here !0L] ;
+end rule ;
+
+rule <default_sint64_number> !@sint64_class def :
+    def := [@void_sint64_class new !here !0LS] ;
+end rule ;
+
+rule <default_float_number>  !@float_class def :
+    def := [@void_float_class new !here !0.0] ;
+end rule ;
+
+rule <default_string>        !@string_class def :
+    def := [@void_string_class new !here !""] ;
+end rule ;
+
+rule <default_enum>          !@basic_type def :
+    def := [@void new !here] ;
+end rule ;
+
+rule <default_bool>          !@bool_class def :
+    def := [@void_bool_class new !here !false] ;
+end rule ;
+
+rule <signed_number> !@sint64 num :
+    @luint64 number ;
+    @sint64 sign := 1LS ;
+    select $-$ ; sign := -1LS ; or end select ;
+    $uint_number$ ?number ;
+    num := sign * [[number uint64] sint64] ;
+end rule ;
+
+#
+# Attribute names of type UINT32
+#
+rule <uint32_attribute_name> !@lstring name :
+    select
+        $PRIORITY$ ;        name := [@lstring new !"PRIORITY" !here] ;
+    or
+        $ACTIVATION$ ;      name := [@lstring new !"ACTIVATION" !here] ;
+    or
+        $MAXALLOWEDVALUE$ ; name := [@lstring new !"MAXALLOWEDVALUE" !here] ;
+    or
+        $TICKSPERBASE$ ;    name := [@lstring new !"TICKSPERBASE" !here] ;
+    or
+        $MINCYCLE$ ;        name := [@lstring new !"MINCYCLE" !here] ;
+    or
+        $CATEGORY$ ;        name := [@lstring new !"CATEGORY" !here] ;
+    or
+        $QUEUESIZE$ ;       name := [@lstring new !"QUEUESIZE" !here] ;
+    or
+        $idf$ ?name ;
+    end select ;
+end rule ;
+
+rule <attribute_name> !@lstring name :
+    select
+        $STATUS$ ; name := [@lstring new !"STATUS" !here] ;
+    or   
+        $idf$ ?name ;
+    end select ;
+end rule ;
+
+rule <multiple_specifier> !@bool multiple :
+    select
+        $[$ ; $]$ ;
+        multiple := true;
+    or
+        multiple := false;
+    end select ;
+end rule ;
+
+rule <default_number> !@bool has_default !@luint64 default_number :
+    select
+        $=$ ;
+        $uint_number$ ?default_number ;
+        has_default := true ;
+    or
+        default_number := [@luint64 new !0L !here] ;
+        has_default := false ;
+    end select ;
+end rule ;
+
+rule <default_name> !@bool has_default !@lstring default_name :
+    select
+        $=$ ;
+        $idf$ ?default_name ;
+        has_default := true ;
+    or
+        default_name := [@lstring new !"" !here] ;
+        has_default := false ;
+    end select ;
+end rule ;
+
+#
+# Enumeration.
+#
+rule <enumeration>
+    !@stringset en
+:
+    en := [@stringset emptySet] ;
+    $[$ ;
+    <enumerator>  !?en ;
+    repeat
+    while
+        $,$ ;
+        <enumerator> !?en ;
+    end repeat ;
+    $]$ ;
+end rule ;
+
+rule <enumerator>
+    ?!@stringset en
+:
+    select $EXTENDED$ ;                   add_to_stringset !?en !"EXTENDED" ;
+    or     $STANDARD$ ;                   add_to_stringset !?en !"STANDARD" ;
+    or     $NON$ ;                        add_to_stringset !?en !"NON" ;
+    or     $FULL$ ;                       add_to_stringset !?en !"FULL" ;
+    or     $SEND_STATIC_INTERNAL$ ;       add_to_stringset !?en !"SEND_STATIC_INTERNAL" ;
+    or     $SEND_STATIC_EXTERNAL$ ;       add_to_stringset !?en !"SEND_STATIC_EXTERNAL" ;
+    or     $SEND_DYNAMIC_EXTERNAL$ ;      add_to_stringset !?en !"SEND_DYNAMIC_EXTERNAL" ;
+    or     $SEND_ZERO_INTERNAL$ ;         add_to_stringset !?en !"SEND_ZERO_INTERNAL" ;
+    or     $SEND_ZERO_EXTERNAL$ ;         add_to_stringset !?en !"SEND_ZERO_EXTERNAL" ;
+    or     $RECEIVE_ZERO_INTERNAL$ ;      add_to_stringset !?en !"RECEIVE_ZERO_INTERNAL" ;
+    or     $RECEIVE_ZERO_EXTERNAL$ ;      add_to_stringset !?en !"RECEIVE_ZERO_EXTERNAL" ;
+    or     $RECEIVE_UNQUEUED_INTERNAL$ ;  add_to_stringset !?en !"RECEIVE_UNQUEUED_INTERNAL" ;
+    or     $ALWAYS$ ;                     add_to_stringset !?en !"ALWAYS" ;
+    or     $NEVER$ ;                      add_to_stringset !?en !"NEVER" ;
+    or     $MASKEDNEWEQUALSX$ ;           add_to_stringset !?en !"MASKEDNEWEQUALSX" ;
+    or     $MASKEDNEWDIFFERSX$ ;          add_to_stringset !?en !"MASKEDNEWDIFFERSX" ;
+    or     $NEWISEQUAL$ ;                 add_to_stringset !?en !"NEWISEQUAL" ;
+    or     $NEWISDIFFERENT$ ;             add_to_stringset !?en !"NEWISDIFFERENT" ;
+    or     $MASKEDNEWEQUALSMASKEDOLD$ ;   add_to_stringset !?en !"MASKEDNEWEQUALSMASKEDOLD" ;
+    or     $MASKEDNEWDIFFERSMASKEDOLD$ ;  add_to_stringset !?en !"MASKEDNEWDIFFERSMASKEDOLD" ;
+    or     $NEWISWITHIN$ ;                add_to_stringset !?en !"NEWISWITHIN" ;
+    or     $NEWISOUTSIDE$ ;               add_to_stringset !?en !"NEWISOUTSIDE" ;
+    or     $NEWISGREATER$ ;               add_to_stringset !?en !"NEWISGREATER" ;
+    or     $NEWISLESSOREQUAL$ ;           add_to_stringset !?en !"NEWISLESSOREQUAL" ;
+    or     $NEWISLESS$ ;                  add_to_stringset !?en !"NEWISLESS" ;
+    or     $NEWISGREATEROREQUAL$ ;        add_to_stringset !?en !"NEWISGREATEROREQUAL" ;
+    or     $ONEEVERYN$ ;                  add_to_stringset !?en !"ONEEVERYN" ;
+    or     $NONE$ ;                       add_to_stringset !?en !"NONE" ;
+    or     $ACTIVATETASK$ ;               add_to_stringset !?en !"ACTIVATETASK" ;
+    or     $SETEVENT$ ;                   add_to_stringset !?en !"SETEVENT" ;
+    or     $COMCALLBACK$ ;                add_to_stringset !?en !"COMCALLBACK" ;
+    or     $FLAG$ ;                       add_to_stringset !?en !"FLAG" ;
+    or     $INMCALLBACK$ ;                add_to_stringset !?en !"INMCALLBACK" ;
+    or     $STATIC$ ;                     add_to_stringset !?en !"STATIC" ;
+    or     $DYNAMIC$ ;                    add_to_stringset !?en !"DYNAMIC" ;
+#    or     $ZERO$ ;                       add_to_stringset !?en !"" ;
+    or     $COMSTANDARD$ ;                add_to_stringset !?en !"COMSTANDARD" ;
+    or     $COMEXTENDED$ ;                add_to_stringset !?en !"COMEXTENDED" ;
+    or     $SENT$ ;                       add_to_stringset !?en !"SENT" ;
+    or     $RECEIVED$ ;                   add_to_stringset !?en !"RECEIVED" ;
+    or     $DIRECT$ ;                     add_to_stringset !?en !"DIRECT" ;
+    or     $PERIODIC$ ;                   add_to_stringset !?en !"PERIODIC" ;
+    or     $MIXED$ ;                      add_to_stringset !?en !"MIXED" ;
+    or     @lstring idf ; $idf$ ?idf ;    add_to_stringset !?en ![idf string] ;
+    end select ;
+    <impl_parameter_list> ;
+    <description> ?* ;
+end rule ;
+
+rule <impl_parameter_list> :
+    select
+        ${$ ;
+        repeat
+        while
+            <implementation_def> ;
+        end repeat ;
+        $}$ ;
+    or
+    end select ;
+end rule ;
+
+rule <implementation_def> :
+    $idf$ ?* ;
+    $idf$ ?* ;
+    $;$ ;
+end rule ;
+
+end syntax ;
+

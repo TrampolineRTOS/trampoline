@@ -1,0 +1,22 @@
+map @task_map {
+    @lstring task_name ;
+    @
+}
+
+class @cpu {
+    @appmode_map appmodes ;
+    @task_map tasks ;
+    @counter_map counters ;
+    @alarm_map alarms ;
+    @resource_map resources ;
+    @event_map events ;
+    @isr_map isrs;
+    @message_map messages ;
+    @networkmessage_map networkmessages ;
+    @ipdu_map ipdus ;
+
+    @os_obj os ;
+    @com_obj com ;
+    @nm_obj nm ;
+}
+# vim:ft=ggs:ts=4:sw=4

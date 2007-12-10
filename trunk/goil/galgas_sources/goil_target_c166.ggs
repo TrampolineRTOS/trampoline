@@ -1,0 +1,69 @@
+semantics goil_target_c166 :
+
+import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
+import semantics goil_routines in "goil_routines.ggs" ;
+import semantics goil_types_isr in "goil_types_isr.ggs" ;
+import semantics goil_types_counter in "goil_types_counter.ggs" ;
+
+routine init_c166_prefixes ?!@prefix_map prefix :
+    [!?prefix insert_prefix ![@lstring new !"c166_sys_stack" !here]
+              !"sys_stack_zone_of_" !"$SYS_STACK_ZONE$"] ;
+    [!?prefix insert_prefix ![@lstring new !"c166_usr_stack" !here]
+              !"usr_stack_zone_of_" !"$USR_STACK_ZONE$"] ;
+    [!?prefix insert_prefix ![@lstring new !"c166_int_context" !here]
+              !"integer_context_of_" !"$EXEC_INTEGER_CONTEXT$"] ;
+end routine ;
+
+routine generate_target_c166
+    ?@lstring         name
+    ?@ident_map       others
+    ?@prefix_map      p
+    ?@oil_obj         exe
+    ?!@string         result :
+
+    replace !p !"c166_sys_stack" ![name string] !?result ;
+    replace !p !"c166_usr_stack" ![name string] !?result ;
+    replace !p !"c166_int_context" ![name string] !?result ;
+    
+    @uint usr_stack_size ;
+    @uint sys_stack_size ;
+    additional_int_key_required !"USRSTACKSIZE" !others !name ?usr_stack_size ;
+    additional_int_key_required !"SYSSTACKSIZE" !others !name ?sys_stack_size ;
+    result := [result stringByReplacingStringByString !"$USR_STACK_SIZE$" ![usr_stack_size string]] ;
+    result := [result stringByReplacingStringByString !"$SYS_STACK_SIZE$" ![sys_stack_size string]] ;
+
+    cast exe :
+    when == @isr_obj do
+        #object is an isr.
+        @uint trap ;
+        additional_int_key_required !"TRAP" !others !name ?trap ;
+        result := [result stringByReplacingStringByString !"$TRAP_NUMBER$" ![trap string]] ;
+    else
+    end cast ;
+end routine ;
+
+routine generate_isr_c166
+  ?? @isr_map    unused isrs
+  ?? @prefix_map unused p
+  ?! @string     unused code
+:
+end routine ;
+
+routine generate_counter_c166
+  ?? @counter_map counters
+  ?? @prefix_map p
+  ?! @string code
+:
+  @string result := "";
+  foreach counters (@lstring counter_name @counter_obj counter) :
+    @string tmp;
+    template ?tmp !"counter_list_specific";
+    replace !p !"counter" ![counter_name string] !?tmp;
+    result .= tmp;
+  end foreach ;
+
+  code := [code stringByReplacingStringByString !"$COUNTER_LIST$" !result] ;
+end routine ;
+
+end semantics ;
+# vim:ft=ggs:ts=4:sw=4

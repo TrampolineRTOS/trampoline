@@ -1,0 +1,56 @@
+semantics goil_types_counter :
+
+import semantics goil_basic_types in "goil_basic_types.ggs" ;
+ 
+#
+# Counter classes
+#
+
+abstract class @counter_driver {
+    @location location ;
+}
+
+class @void_driver extends @counter_driver {}
+
+class @os_internal_driver extends @counter_driver {}
+
+class @gpt_driver extends @counter_driver {
+    @basic_type ns_per_hw_tick ;
+    @lstring    gpt_channel_name ;
+}
+
+list @time_constants {
+    @basic_type     ns ;
+    @lstring        const_name ; 
+}    
+
+abstract class @counter_type {
+    @location location ;
+}
+
+class @void_counter extends @counter_type {}
+
+class @software_counter extends @counter_type {}
+
+class @hardware_counter extends @counter_type {
+    @counter_driver driver ;
+    @time_constants time_consts ; 
+}
+
+class @counter_obj extends @oil_obj {
+    @basic_type   max_allowed_value ;
+    @basic_type   ticks_per_base ;
+    @basic_type   min_cycle ;
+# AUTOSAR fields
+    @counter_type type ;
+    @lstring      unit ;
+}
+
+map @counter_map {
+    @counter_obj counter ;
+    insert put error message "Counter %K is duplicated in %L" ;
+    search get error message "Counter %K is not defined" ;
+    remove del error message "Counter %K is not defined" ;
+}
+
+end semantics ;

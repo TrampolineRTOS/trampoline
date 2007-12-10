@@ -1,0 +1,92 @@
+#
+# Galgas OIL compile aka goil
+#
+# goil is part of Trampoline
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline is protected by the French intellectual property law
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# config files lexer for targets description
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+lexique cfg_lexique :
+
+list cfg_keywords error message "Config file keyword '%K'" :
+    "tp_ns_per_counter_tick" ;
+
+rule "//" :
+	repeat #accept all except 0xA (LF) and 0xD (CR)
+	while '\x1'->'\x9' | '\xB'| '\xC'| '\xE' -> '\xFF' : 
+	end repeat ;
+end rule ;
+
+message unterminated_comment_error : "unterminated comment" ;
+message unterminatedLitteralString : "unterminated litteral string" ; 
+message decimalNumberTooLarge : "decimal number too large" ;
+message internalError : "internal error" ;
+
+rule "/*" :
+   repeat
+   while ~ "*/" error unterminated_comment_error :
+   end repeat ;
+end rule ;
+
+@lstring keyword;
+@lstring string;
+@luint64 integer;
+
+$idf$    !keyword error message "identifier" ;
+$string$ !string  error message "litteral string" ;
+$uint$   !integer error message "litteral unsigned 64 bits integer" ;
+
+rule 'a'->'z' | 'A'->'Z' :
+    repeat
+        enterCharacterIntoString (keyword, *);
+    while 'a'->'z' | 'A'->'Z' | '_' | '0'->'9' :
+    end repeat;
+    send
+        search keyword in cfg_keywords
+        default $idf$ ;
+end rule ;
+
+rule '"' :
+    repeat
+    while '\x20'->'\x21' | '\x23' -> '\xFF' :
+        enterCharacterIntoString ( string, * ) ;
+    end repeat ;
+    select
+        when '"' :
+            send $string$ ;
+        default
+            error unterminatedLitteralString ;
+    end select ;
+end rule ;
+
+@lstring number;
+
+rule '0'->'9':
+    repeat
+        enterCharacterIntoString (number, *);
+        enterDigitIntoUInt64 (*,integer) error decimalNumberTooLarge, internalError ;
+    while '0'->'9' :
+    end repeat;
+    send $uint$ ;
+end rule ;
+
+list cfg_delimiters error message "'%K' delimiter": ";", "=" ;
+
+rule list cfg_delimiters;
+
+#
+# Eat whitespaces
+#
+rule '\x1'->' ':
+end rule;
+
+end lexique ;

@@ -1,0 +1,254 @@
+#
+# @file goil_obj_os.ggs
+#
+# @section File description
+#
+# @section Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est protégé par la loi sur la propriété intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax goil_obj_os :
+
+import lexique goil_lexique in "goil_lexique.ggs" ;
+import option goil_options in "goil_options.ggs" ;
+import semantics goil_semantics in "goil_semantics.ggs" ;
+import semantics goil_types_os in "goil_types_os.ggs" ;
+
+#
+# local rules declaration
+#
+nonterminal <os> ?!@os_obj os ;
+
+#
+# external rules 
+#
+nonterminal <description>
+    !@lstring desc ;
+nonterminal <free_field>
+    ?!@ident_map ids ;
+nonterminal <boolean>
+    !@bool val ;
+#
+# local rules implementation
+#
+rule <os> 
+    ?!@os_obj os
+:
+    @lstring	  status  := [os status] ;
+    @basic_type startuphook := [os startuphook] ;
+    @basic_type shutdownhook := [os shutdownhook] ;
+    @basic_type errorhook := [os errorhook] ;
+    @basic_type pretaskhook := [os pretaskhook] ;
+    @basic_type posttaskhook := [os posttaskhook] ;
+    @basic_type protectionhook := [os protectionhook] ;     # AUTOSAR
+    @lstring    scalabilityclass := [os scalabilityclass] ; # AUTOSAR
+    @basic_type stackmonitoring := [os stackmonitoring] ;   # AUTOSAR
+    @basic_type usegetserviceid := [os usegetserviceid] ;
+    @basic_type useparameteraccess := [os useparameteraccess] ;
+    @basic_type useresscheduler := [os useresscheduler] ;
+    @ident_map  others := [os others] ;
+
+    $OS$ ;
+    $idf$ ?* ;
+    ${$ ;
+    repeat
+    while
+        $STATUS$ ; $=$ ;
+        if [status string] != "" then
+           error here : "STATUS already defined for OS object" ;
+        end if ;
+        select
+            $EXTENDED$ ; status := [@lstring new !"extended" !here] ;
+        or
+            $STANDARD$ ; status := [@lstring new !"standard" !here] ;
+        end select ;
+        <description> ?* ; $;$ ;
+    while
+        $STARTUPHOOK$ ; $=$ ;
+        @bool suh ;
+        <boolean> ?suh ;
+        <description> ?* ; $;$ ;
+        cast startuphook :
+        when == @void do 
+            startuphook := [@bool_class new !here !suh] ;
+        else
+            error here : "STARTUPHOOK already defined for OS object" ;
+            error [startuphook location] : "was previously defined here" ;
+        end cast ;
+   while
+        $SHUTDOWNHOOK$ ; $=$ ;
+        @bool sdh ;
+        <boolean> ?sdh ;
+        <description> ?* ; $;$ ;
+        cast shutdownhook :
+        when == @void do
+            shutdownhook := [@bool_class new !here !sdh] ;
+        else
+            error here : "SHUTDOWNHOOK already defined for OS object" ;
+            error [shutdownhook location] : "was previously defined here" ;
+        end cast ;
+   while
+        $ERRORHOOK$ ; $=$ ;
+        @bool eh ;
+        <boolean> ?eh ;
+        <description> ?* ; $;$ ;
+        cast errorhook :
+        when == @void do
+            errorhook := [@bool_class new !here !eh] ;
+        else
+            error here : "ERRORHOOK already defined for OS object" ;
+            error [errorhook location] : "was previously defined here" ;
+        end cast ;
+   while
+        $PRETASKHOOK$ ; $=$ ;
+        @bool preth ;
+        <boolean> ?preth ;
+        <description> ?* ; $;$ ;
+        cast pretaskhook :
+        when == @void do
+            pretaskhook := [@bool_class new !here !preth] ;
+        else
+            error here : "PRETASKHOOK already defined for OS object" ;
+            error [pretaskhook location] : "was previously defined here" ;
+        end cast ;
+   while
+        cast posttaskhook :
+        when == @void do
+        else
+            error here : "POSTTASKHOOK already defined for OS object" ;
+            error [posttaskhook location] : "was previously defined here" ;
+        end cast ;
+        $POSTTASKHOOK$ ; $=$ ;
+        @bool posth ;
+        <boolean> ?posth ;
+        posttaskhook := [@bool_class new !here !posth] ;
+        <description> ?* ; $;$ ;
+
+   while
+        @bool proth ;
+        $PROTECTIONHOOK$ ; $=$ ; <boolean> ?proth ; <description> ?* ; $;$ ;
+
+        if [option goil_options.autosar_on] == FALSE then
+            error here : "AUTOSAR flag is off, turn it on to use PROTECTIONHOOK attribute in OS object" ;
+        end if ;
+        cast protectionhook :
+        when == @void do
+            protectionhook := [@bool_class new !here !proth] ;
+        else
+            error here : "PROTECTIONHOOK already defined for OS object" ;
+            error [protectionhook location] : "was previously defined here" ;
+        end cast ;
+
+    while
+        if [option goil_options.autosar_on] == FALSE then
+            error here : "AUTOSAR flag is off, turn it on to use SCALABILITYCLASS attribute in OS object" ;
+        end if ;
+        $SCALABILITYCLASS$ ; $=$ ;
+        if [scalabilityclass string] != "" then
+           error here : "SCALABILITYCLASS already defined for OS object" ;
+        end if ;
+        select
+            $SC1$ ; scalabilityclass := [@lstring new !"sc1" !here] ;
+        or
+            $SC2$ ; scalabilityclass := [@lstring new !"sc2" !here] ;
+        or
+            $SC3$ ; scalabilityclass := [@lstring new !"sc3" !here] ;
+        or
+            $SC4$ ; scalabilityclass := [@lstring new !"sc4" !here] ;
+        or
+            $AUTO$ ; scalabilityclass := [@lstring new !"auto" !here] ;
+        end select ;
+        <description> ?* ; $;$ ;
+
+   while
+        if [option goil_options.autosar_on] == FALSE then
+            error here : "AUTOSAR flag is off, turn it on to use STACKMONITORING attribute in OS object" ;
+        end if ;
+        cast stackmonitoring :
+        when == @void do
+        else
+            error here : "STACKMONITORING already defined for OS object" ;
+            error [stackmonitoring location] : "was previously defined here" ;
+        end cast ;
+        $STACKMONITORING$ ; $=$ ;
+        @bool stackmon ;
+        <boolean> ?stackmon ;
+        stackmonitoring := [@bool_class new !here !stackmon] ;
+        <description> ?* ; $;$ ;
+
+    while
+        cast usegetserviceid :
+        when == @void do
+        else
+            error here : "USEGETSERVICEID already defined for OS object" ;
+            error [usegetserviceid location] : "was previously defined here" ;
+        end cast ;
+        $USEGETSERVICEID$ ; $=$ ;
+        @bool ugsi ;
+        <boolean> ?ugsi ;
+        usegetserviceid := [@bool_class new !here !ugsi] ;
+        <description> ?* ; $;$ ;
+    while
+        cast useparameteraccess :
+        when == @void do
+        else
+            error here : "USEPARAMETERACCESS already defined for OS object" ;
+            error [useparameteraccess location] : "was previously defined here" ;
+        end cast ;
+        $USEPARAMETERACCESS$ ; $=$ ;
+        @bool upa ;
+        <boolean> ?upa ;
+        useparameteraccess := [@bool_class new !here !upa] ;
+        <description> ?* ; $;$ ;
+    while
+        cast useresscheduler :
+        when == @void do
+        else
+            error here : "USERESSCHEDULER already defined for OS object" ;
+            error [useresscheduler location] : "was previously defined here" ;
+        end cast ;
+        $USERESSCHEDULER$ ; $=$ ;
+        @bool urs ;
+        <boolean> ?urs ;
+        useresscheduler := [@bool_class new !here !urs] ;
+        <description> ?* ; $;$ ;
+    while
+        <free_field> !?others ; <description> ?* ; $;$ ;
+    end repeat ;
+    $}$ ;
+    @lstring desc ;
+    <description> ?desc ;
+    $;$ ;
+
+    os := [@os_obj new
+        !desc
+        !status
+        !startuphook
+        !shutdownhook
+        !errorhook
+        !pretaskhook
+        !posttaskhook
+        !protectionhook
+        !scalabilityclass
+        !stackmonitoring
+        !usegetserviceid
+        !useparameteraccess
+        !useresscheduler
+        !others
+    ];
+end rule ;
+
+end syntax ;
