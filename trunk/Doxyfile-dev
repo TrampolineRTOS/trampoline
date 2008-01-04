@@ -984,7 +984,7 @@ MACRO_EXPANSION        = YES
 # then the macro expansion is limited to the macros specified with the 
 # PREDEFINED and EXPAND_AS_DEFINED tags.
 
-EXPAND_ONLY_PREDEF     = YES
+EXPAND_ONLY_PREDEF     = NO
 
 # If the SEARCH_INCLUDES tag is set to YES (the default) the includes files 
 # in the INCLUDE_PATH (see below) will be search if a #include is found.
