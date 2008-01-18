@@ -1,0 +1,18 @@
+semantics goil_alarm_verif :
+
+import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
+import semantics goil_types_counter in "goil_types_counter.ggs" ;
+
+routine counters_of_alarms_defined
+    ?@alarm_map   alarms
+    ?@counter_map counters
+:
+  foreach alarms (@lstring name @alarm_obj alarm) :
+    @lstring counter := [alarm counter_name] ;
+    if not [counters hasKey ![counter string]] then
+      error counter : "counter ".[counter string]." is not defined";
+    end if ;
+  end foreach ;
+end routine ;
+
+end semantics ;
