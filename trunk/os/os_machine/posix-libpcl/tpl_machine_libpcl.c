@@ -488,7 +488,7 @@ void tpl_init_context(tpl_exec_common *exec_obj)
     if( old_co != NULL )
     {
         if( previous_old_co != NULL )
-        co_delete( previous_old_co );
+/*        co_delete( previous_old_co ); */
         previous_old_co = old_co;
     }
 }
@@ -574,12 +574,12 @@ void tpl_init_machine(void)
     }
     */
 #ifndef NO_ALARM
-    tpl_viper_start_auto_timer(signal_for_counters,5000);  /* 5 ms */
+    tpl_viper_start_auto_timer(signal_for_counters,50000);  /* 5 ms */
 #endif
 #ifdef WITH_AUTOSAR
 #ifndef NO_SCHEDTABLE
     #ifdef NO_ALARM
-    tpl_viper_start_auto_timer(signal_for_counters,5000);  /* 5 ms */
+    tpl_viper_start_auto_timer(signal_for_counters,50000);  /* 5 ms */
     #endif
 #endif
 #endif
