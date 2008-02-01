@@ -1,15 +1,12 @@
 OIL_VERSION = "2.5" : "test" ;
 
 IMPLEMENTATION trampoline {
-    OS { 
-        ENUM [EXTENDED] STATUS;
-    } ;
     TASK {
         UINT32 STACKSIZE = 32768 ;
-        UINT32 [1..10] PRIORITY = 1 ;
+        UINT32 PRIORITY = 1 ;
     } ;
     ISR {
-        UINT32 STACKSIZE = 1000 ;
+        UINT32 STACKSIZE = 32768 ;
     } ;
 };
 
@@ -34,21 +31,6 @@ CPU test {
         RESOURCE  = r1;
     };
     
-    ISR trap_SIGUSR1 {
-        CATEGORY  = 2;
-        PRIORITY  = 30;
-    	SIGNAL    = SIGUSR1;
-        RESOURCE  = r1;
-    } ;
-    
-    ISR trap_SIGUSR2 {
-        CATEGORY  = 2;
-        PRIORITY  = 40;
-    	STACKSIZE = 32768;
-    	SIGNAL    = SIGUSR2;
-        RESOURCE  = r2;
-    } ;
-
     //default tick is 50 ms
     COUNTER counter100ms {
         TICKSPERBASE = 2; 
