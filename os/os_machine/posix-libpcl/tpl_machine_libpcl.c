@@ -300,7 +300,7 @@ void tpl_signal_handler(int sig)
     {
         if (signal_for_isr_id[id] == sig)
         {
-                tpl_central_interrupt_handler(id);
+            tpl_central_interrupt_handler(id);
         }
     }
 #endif /* NO_ISR */
@@ -574,12 +574,12 @@ void tpl_init_machine(void)
     }
     */
 #ifndef NO_ALARM
-    tpl_viper_start_auto_timer(signal_for_counters,50000);  /* 5 ms */
+    tpl_viper_start_auto_timer(signal_for_counters,50000);  /* 50 ms */
 #endif
 #ifdef WITH_AUTOSAR
 #ifndef NO_SCHEDTABLE
     #ifdef NO_ALARM
-    tpl_viper_start_auto_timer(signal_for_counters,50000);  /* 5 ms */
+    tpl_viper_start_auto_timer(signal_for_counters,50000);  /* 50 ms */
     #endif
 #endif
 #endif
