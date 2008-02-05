@@ -3,17 +3,16 @@
 #
 # @section File description
 #
-# This file wraps user application configuration header. This wrapped file is typically
-# generated from an OIL source.
+# This file compile all the galgas sources of Goil.
 #
 # @section Copyright
 #
-# Trampoline OS
+# Goil OIL compiler for Trampoline
 #
-# Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline est protégé par la loi sur la propriété intellectuelle
+# Goil is copyright (c) IRCCyN 2005+
+# Goil is protected by the french law of intellectual property
 #
-# This software is distributed under the Lesser GNU Public Licence
+# This software is distributed under the GNU Public Licence V2
 #
 # @section File informations
 #
