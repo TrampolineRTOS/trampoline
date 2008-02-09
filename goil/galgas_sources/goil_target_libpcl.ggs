@@ -45,7 +45,16 @@ routine generate_isr_libpcl
 :
   @string result := "";
   @bool first := true;
-  foreach isrs (@lstring isr_name @isr_obj isr) :
+
+  @isr_list list_isr [emptySortedList];
+
+  foreach isrs (@lstring isr_name *) :
+    list_isr += !isr_name ![isr_name string];
+  end foreach;
+    
+  foreach list_isr (@lstring isr_name *) :
+    @isr_obj isr;
+    [isrs get !isr_name ?isr];
     if not first then result .= ",\n";
     end if;
     first := false;

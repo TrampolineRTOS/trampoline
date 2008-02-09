@@ -25,4 +25,10 @@ map @isr_map {
     remove del error message "ISR %K is not defined" ;
 }
 
+sortedlist @isr_list {
+	@lstring 	key;
+	@string 	sort;
+}{
+	sort <
+}
 end semantics ;
