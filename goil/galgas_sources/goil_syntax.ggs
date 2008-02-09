@@ -258,6 +258,8 @@ rule <start> :
 
                 generate_flags
                     !os
+                    !tasks
+                    !isrs
                     !?obj_header ;
 
                 generate_events
