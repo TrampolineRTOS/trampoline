@@ -141,13 +141,15 @@ end routine ;
 # Code generation routines
 #--------------------------------------------------------------------
 routine generate_flags
-    ?@os_obj  os
-    ?!@string obj_header
+    ?@os_obj   os
+    ?@task_map tasks
+    ?@isr_map  isrs
+    ?!@string  obj_header
 :
     @string flags := "" ;
 
     # Check the STATUS field
-    if [[os status] string] == "extended" then
+    if [[os status] string] == "EXTENDED" then
         flags .= "#define    OS_EXTENDED\n" ;
     end if ;
 
@@ -221,6 +223,32 @@ routine generate_flags
         when == @bool_class b do
             if [b value] then flags .= "#define    WITH_STACK_MONITORING\n" ; end if ;
         else end cast ;
+
+        # check if timing protection must be turned on. This is done
+        # by scanning tasks and isrs. If at least one task or one isr
+        # uses timing protection, WITH_AUTOSAR_TIMING_PROTECTION is
+        # set. Otherwise, it is not set
+        @bool use_tp := false;
+
+        foreach tasks (* @task_obj task) :
+            cast [task timing_prot] :
+            when == @void_timing_prot do
+            else
+                if use_tp == false then use_tp := true; end if;
+            end cast;
+        end foreach;
+
+        foreach isrs (* @isr_obj isr) :
+            cast [isr timing_prot] :
+            when == @void_timing_prot do
+            else
+                if use_tp == false then use_tp := true; end if;
+            end cast;
+        end foreach;
+
+        if use_tp == true then
+            flags .= "#define    WITH_AUTOSAR_TIMING_PROTECTION\n";
+        end if;
     end if ;
 
     # Output the boolean free flags
