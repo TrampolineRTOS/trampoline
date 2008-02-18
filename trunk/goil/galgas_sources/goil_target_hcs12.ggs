@@ -13,7 +13,7 @@
 # Jean-Luc Bechennec and Mikael Briday
 # Copyright ESEO for function and data structures documentation
 # Copyright IRISA - JF Deverge for libpcl port
-# Copyright AYRTON TECHNOLOGY for hcs12 port
+# Copyright GEENSYS for Freescale s12x and NEC V850E port
 # Trampoline is protected by the French intellectual property law.
 #
 # This software is distributed under the Lesser GNU Public Licence

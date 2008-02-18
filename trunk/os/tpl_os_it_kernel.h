@@ -75,7 +75,7 @@ typedef struct TPL_ISR_STATIC tpl_isr_static;
  */
 struct TPL_ISR {
     VAR(tpl_exec_common, AUTOMATIC)                 exec_desc;    /**<  common descriptor                 */
-    P2VAR(tpl_isr_static, OS_APPL_DATA, AUTOMATIC)  static_desc;  /**<  pointer to the static desc of the
+    P2CONST(tpl_isr_static, OS_CONST, AUTOMATIC)    static_desc;  /**<  pointer to the static desc of the
                                                                         isr                               */
 #ifdef WITH_AUTOSAR
     VAR(tpl_bool, AUTOMATIC)                        enabled;      /**< FALSE if disabled, TRUE if enabled

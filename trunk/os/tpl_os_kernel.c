@@ -437,6 +437,7 @@ FUNC(void, OS_CODE) tpl_release_internal_resource(
     }
 }
 
+
 /**
  * @internal
  *
@@ -659,13 +660,13 @@ FUNC(void, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
  * Does the scheduling when called from a running object.
  *
  * This function is called by the OSEK/VDX Schedule
- * and ActivateTask services 
- * 
+ * and ActivateTask services
+ *
  */
 FUNC(void, OS_CODE) tpl_schedule_from_running(void)
 {
     P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) old_running_obj = NULL;
-    
+
     /*  the tpl_running_obj is never NULL and is in the state RUNNING  */
     DOW_ASSERT(tpl_running_obj != NULL);
     DOW_ASSERT(tpl_running_obj->state == RUNNING);
@@ -674,7 +675,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
 #ifdef WITH_AUTOSAR_STACK_MONITORING
     tpl_check_stack (tpl_running_obj);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
-    
+
     if (tpl_h_prio > tpl_running_obj->priority)
     {
         /*  save the old running task for context switching */
@@ -683,7 +684,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
         /*  a task switch will occur. It is time to call the
             PostTaskHook while the soon descheduled task is running     */
         CALL_POST_TASK_HOOK()
-            
+
             /*  the current running task become READY                   */
         tpl_running_obj->state = (tpl_exec_state)READY;
         /*  put the running task in the ready task list             */
@@ -700,7 +701,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
         if (tpl_running_obj->static_desc->type != IS_ROUTINE)
           tpl_pause_budget_monitor (tpl_running_obj);
         #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-        
+
 
         /*  get the ready task from the ready task list                 */
         tpl_running_obj = tpl_get_exec_object();
@@ -739,13 +740,13 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
         tpl_running_obj->state = RUNNING;
         /*  If an internal resource is assigned to the task
             and it is not already taken by it, take it      */
-        tpl_get_internal_resource(tpl_running_obj); 
-        
+        tpl_get_internal_resource(tpl_running_obj);
+
         /*  A new task has been elected
             It is time to call PreTaskHook while the
             rescheduled task is running                     */
         CALL_PRE_TASK_HOOK()
-    
+
         if (tpl_running_obj == (tpl_exec_common *)&idle_task)
         {
             tpl_os_state = OS_IDLE;
@@ -823,7 +824,7 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
  * @param incoming_event    Event mask
  */
 FUNC(tpl_status, OS_CODE) tpl_set_event(
-    P2VAR(tpl_task, OS_APPL_CODE, AUTOMATIC)  a_task,
+    P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC)  a_task,
     CONST(tpl_event_mask, AUTOMATIC)          incoming_event)
 {
     VAR(tpl_status, AUTOMATIC) result = E_OK;
@@ -879,7 +880,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
  * @param exec_obj address of the executable object descriptor
  */
 FUNC(void, OS_CODE) tpl_init_exec_object(
-    P2VAR(tpl_exec_common, OS_APPL_CODE, AUTOMATIC) exec_obj)
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj)
 {
     /*  The priority is set to the base priority of the executable object    */
     exec_obj->priority = exec_obj->static_desc->base_priority;

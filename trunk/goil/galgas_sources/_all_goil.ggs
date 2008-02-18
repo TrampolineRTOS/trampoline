@@ -83,6 +83,7 @@ compile "goil_targets.ggs" ;
 compile "goil_target_c166.ggs" ;
 compile "goil_target_libpcl.ggs" ;
 compile "goil_target_hcs12.ggs" ;
+compile "goil_target_v850e.ggs" ;
 compile "goil_target_ppc.ggs" ;
 
 compile "goil_grammar.ggs" ;

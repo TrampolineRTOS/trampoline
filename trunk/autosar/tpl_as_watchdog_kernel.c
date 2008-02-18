@@ -30,14 +30,22 @@
 
 #if defined WITH_AUTOSAR_TIMING_PROTECTION
 
+
+#define OS_START_SEC_VAR_NOINIT_UNSPECIFIED
+#include "tpl_memmap.h"
+
+_STATIC_ VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT) scheduled_watchdogs[MAXIMUM_SCHEDULED_WATCHDOGS];
+
+_STATIC_ P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, OS_VAR_NOINIT) earliest_watchdog;
+
+#define OS_STOP_SEC_VAR_NOINIT_UNSPECIFIED
+#include "tpl_memmap.h"
+
+
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-_STATIC_ VAR(tpl_scheduled_watchdog, OS_VAR) scheduled_watchdogs[MAXIMUM_SCHEDULED_WATCHDOGS];
-
-_STATIC_ P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, OS_VAR) earliest_watchdog = NULL;
-
-_STATIC_ VAR(watchdog_callback_function, AUTOMATIC) external_watchdog_callback = NULL;
+_STATIC_ VAR(watchdog_callback_function, OS_VAR) external_watchdog_callback;
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -48,7 +56,7 @@ _STATIC_ VAR(watchdog_callback_function, AUTOMATIC) external_watchdog_callback =
 
 _STATIC_ FUNC(u8, OS_CODE) internal_watchdog_callback(void)
 {
-  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) current_scheduled_watchdog;
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) current_scheduled_watchdog;
   VAR(u8, AUTOMATIC) result;
   VAR(u8, AUTOMATIC) continue_loop;
 
@@ -72,6 +80,7 @@ _STATIC_ FUNC(u8, OS_CODE) internal_watchdog_callback(void)
        (earliest_watchdog->delay_from_previous == 0);
 
     DOW_ASSERT (external_watchdog_callback != NULL);
+
     if (external_watchdog_callback (&(current_scheduled_watchdog->watchdog)))
         result = TRUE;
   }
@@ -106,7 +115,7 @@ FUNC(void, OS_CODE) init_watchdog_kernel(
   external_watchdog_callback = callback;
 }
 
-FUNC(P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC), OS_CODE) new_scheduled_watchdog(void)
+FUNC(P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC), OS_CODE) new_scheduled_watchdog(void)
 {
   VAR(tpl_scheduled_watchdog_id, AUTOMATIC) watchdog_id;
 
@@ -123,10 +132,10 @@ FUNC(P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC), OS_CODE) new_schedu
 }
 
 FUNC(u8, OS_CODE) insert_scheduled_watchdog(
-  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) this_scheduled_watchdog)
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) this_scheduled_watchdog)
 {
-  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) watchdog_cursor;
-  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) previous_cursor;
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) watchdog_cursor;
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) previous_cursor;
   VAR(u8, AUTOMATIC) result;
 
   result = FALSE;
@@ -195,9 +204,9 @@ FUNC(u8, OS_CODE) insert_scheduled_watchdog(
 }
 
 FUNC(u8, OS_CODE) find_scheduled_watchdog(
-  P2VAR(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) like_this_watchdog,
-  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) *watchdog_cursor,
-  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) *previous_cursor)
+  P2VAR(tpl_watchdog, OS_VAR, AUTOMATIC) like_this_watchdog,
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) *watchdog_cursor,
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) *previous_cursor)
 {
   VAR(u8, AUTOMATIC) result;
 
@@ -231,8 +240,8 @@ FUNC(u8, OS_CODE) find_scheduled_watchdog(
 }
 
 FUNC(u8, OS_CODE) remove_scheduled_watchdog(
-  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) watchdog_cursor,
-  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) previous_cursor)
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) watchdog_cursor,
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) previous_cursor)
 {
   VAR(u8, AUTOMATIC) result;
 
@@ -279,8 +288,8 @@ _STATIC_ FUNC(u8, OS_CODE) remove_all_exec_obj_watchdogs(
   P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
   VAR(u8, AUTOMATIC) result;
-  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) watchdog_cursor;
-  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) previous_cursor;
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) watchdog_cursor;
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) previous_cursor;
 
   result = FALSE;
 
@@ -304,7 +313,7 @@ FUNC(void, OS_CODE) schedule_watchdog(
   P2VAR(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) this_watchdog,
   VAR(tpl_time, AUTOMATIC) expire_delay)
 {
-  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) new_watchdog;
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) new_watchdog;
   VAR(tpl_time, AUTOMATIC) expire_date;
   VAR(tpl_time, AUTOMATIC) current_date;
 
@@ -340,8 +349,8 @@ FUNC(void, OS_CODE) schedule_watchdog(
 FUNC(void, OS_CODE) unschedule_watchdog(
   P2VAR(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) this_watchdog)
 {
-  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) watchdog_cursor;
-  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) previous_cursor;
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) watchdog_cursor;
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) previous_cursor;
   VAR(u8, AUTOMATIC) found;
 
   DOW_ASSERT (this_watchdog != NULL);

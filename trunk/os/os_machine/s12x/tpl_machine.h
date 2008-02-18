@@ -38,6 +38,9 @@
 **  - bug fixed in tpl_release_task_lock().
 **    The deshibition of interrutps was not done as soon as CptTaskLock=0,
 **    this was avoiding the OS to work with no autostart task configured
+** 01.05  J.Monsimier 12/02/2008
+**  - the way to initialize the stack for stack monitoring is changed
+**  - some minor changes in the memory mapping
 ==============================================================================*/
 
 #ifndef TPL_MACHINE_HCS12_H
@@ -57,11 +60,6 @@
 #define SIZE_OF_IDLE_STACK  100
 
 #define IDLE_STACK { &stack_zone_of_IdleTask, SIZE_OF_IDLE_STACK }
-
-#define OS_S12X_STACK_PATERN 0xAA
-
-#define OS_GPTCHANNEL_WATCHDOG 1
-#define OS_GPTCHANNEL_TICK     0
 
 /******************************************************************************/
 /* DEFINITION OF TYPES                                                        */
