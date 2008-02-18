@@ -1,3 +1,6 @@
+#define OS_START_SEC_CODE
+#include "Memmap.h"
+
 void tpl_s12x_inc_time(void);
 void tpl_schedule(int from);
 tpl_status tpl_counter_tick(tpl_counter *counter);
@@ -13,3 +16,5 @@ $COUNTER_LIST$
     }
 }
 
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"

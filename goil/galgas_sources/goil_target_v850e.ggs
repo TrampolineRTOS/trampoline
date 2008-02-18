@@ -1,9 +1,9 @@
 #
-# @file goil_target_ppc.ggs
+# @file goil_target_v850e.ggs
 #
 # @section desc File description
 #
-# Trampoline/goil code generation for Star12x target
+# Trampoline/goil code generation for NEC V850 target
 #
 # @section copyright Copyright
 #
@@ -26,27 +26,23 @@
 # $URL$
 #
 
-semantics goil_target_ppc :
+semantics goil_target_v850e :
 
 import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
 import semantics goil_routines in "goil_routines.ggs" ;
 import semantics goil_types_isr in "goil_types_isr.ggs" ;
 import semantics goil_types_counter in "goil_types_counter.ggs" ;
 
-routine init_ppc_prefixes
+routine init_v850e_prefixes
     ?!@prefix_map prefix
 :
-    [!?prefix insert_prefix ![@lstring new !"ppc_stack" !here]
+    [!?prefix insert_prefix ![@lstring new !"v850e_stack" !here]
               !"stack_zone_of_" !"$STACK_ZONE$"] ;
-    [!?prefix insert_prefix ![@lstring new !"ppc_int_context" !here]
+    [!?prefix insert_prefix ![@lstring new !"v850e_int_context" !here]
               !"integer_context_of_" !"$EXEC_INTEGER_CONTEXT$"] ;
-    [!?prefix insert_prefix ![@lstring new !"ppc_float_context" !here]
-              !"float_context_of_" !"$EXEC_FLOAT_CONTEXT$"] ;
-    [!?prefix insert_prefix ![@lstring new !"exec_use_float" !here]
-              !"float_used_" !"$EXEC_USE_FLOAT$"] ;
 end routine ;
 
-routine generate_target_ppc
+routine generate_target_v850e
     ?@lstring         name
     ?@ident_map       others
     ?@prefix_map      p
@@ -54,38 +50,26 @@ routine generate_target_ppc
     ?!@string         result
 :
 
-    replace !p !"ppc_stack" ![name string] !?result ;
-    replace !p !"ppc_int_context" ![name string] !?result ;
-    replace !p !"ppc_float_context" ![name string] !?result ;
-    replace !p !"exec_use_float" ![name string] !?result ;
+    replace !p !"v850e_stack" ![name string] !?result ;
+    replace !p !"v850e_int_context" ![name string] !?result ;
 
     @uint stack_size ;
     additional_int_key_required !"STACKSIZE" !others !name ?stack_size ;
     result := [result stringByReplacingStringByString !"$STACK_SIZE$" ![stack_size string]] ;
 
-    @bool use_float ;
-    additional_bool_key_required !"USEFLOAT" !others !name ?use_float ;
-    @uint use_float_as_int ;
-    if use_float == true then
-        use_float_as_int := 1 ;
-    else
-        use_float_as_int := 0 ;
-    end if ;
-    result := [result stringByReplacingStringByString !"$FLAG_USE_FLOAT$" ![use_float_as_int string]] ;
-
 end routine ;
 
-routine generate_isr_ppc
+routine generate_isr_v850e
   ?? @isr_map    unused isrs
   ?? @prefix_map unused p
   ?! @string     unused code
 :
 end routine ;
 
-routine generate_counter_ppc
+routine generate_counter_v850e
   ?? @counter_map counters
-  ?? @prefix_map  p
-  ?! @string      code
+  ?? @prefix_map p
+  ?!  @string code
 :
   @string result := "";
   foreach counters (@lstring counter_name @counter_obj counter) :

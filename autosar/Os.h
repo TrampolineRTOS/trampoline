@@ -39,6 +39,7 @@
 #include "tpl_os_event.h"
 #include "tpl_os_it.h"
 #include "tpl_os_rez.h"
+#include "tpl_os_it_kernel.h"
 
 /* AUTOSAR includes */
 #include "tpl_as_error.h"

@@ -51,14 +51,14 @@ _STATIC_ FUNC(tpl_time, OS_CODE) delay_to_next_timeframe (
 }
 
 _STATIC_ FUNC(u8, OS_CODE) watchdog_callback (
-    P2VAR(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) this_watchdog)
+    P2VAR(tpl_watchdog, OS_VAR_NOINIT, AUTOMATIC) this_watchdog)
 {
   P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj;
   VAR(tpl_watchdog, AUTOMATIC) watchdog;
   VAR(u8, AUTOMATIC) need_resched = FALSE;
-  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) found_watchdog;
-  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) previous_watchdog;
-  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) new_watchdog;
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) found_watchdog;
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) previous_watchdog;
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) new_watchdog;
   VAR(tpl_time, AUTOMATIC) current_date;
 
   /* get the date one time to avoid offset while

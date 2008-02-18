@@ -375,7 +375,7 @@ typedef struct TPL_EXEC_STATIC tpl_exec_static;
  * descriptors
  */
 struct TPL_EXEC_COMMON {
-    P2VAR(tpl_exec_static, OS_APPL_DATA, AUTOMATIC)     static_desc;/**<  pointer to static
+    P2CONST(tpl_exec_static, OS_CONST, AUTOMATIC)     static_desc;/**<  pointer to static
                                                                           descriptor */
     struct P2VAR(TPL_RESOURCE, OS_APPL_DATA, AUTOMATIC) resources;  /**<  head of the ressources
                                                                           held */

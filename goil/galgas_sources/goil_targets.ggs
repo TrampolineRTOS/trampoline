@@ -3,6 +3,7 @@ semantics goil_targets :
 import semantics goil_target_c166 in "goil_target_c166.ggs" ;
 import semantics goil_target_libpcl in "goil_target_libpcl.ggs" ;
 import semantics goil_target_hcs12 in "goil_target_hcs12.ggs" ;
+import semantics goil_target_v850e in "goil_target_v850e.ggs" ;
 import semantics goil_target_ppc in "goil_target_ppc.ggs" ;
 import semantics goil_routines in "goil_routines.ggs" ;
 import semantics goil_types_task in "goil_types_task.ggs" ;
@@ -24,6 +25,9 @@ routine init_targets_prefixes ?!@prefix_map prefix :
     if target == "ppc" then
         init_ppc_prefixes !?prefix ;
     end if ;
+    if target == "v850e" then
+        init_v850e_prefixes !?prefix ;
+    end if ;    
 end routine ;
 
 #--------------------------------------------------------------------
@@ -71,6 +75,10 @@ routine generate_context_and_stack
     then generate_target_ppc  !name !idents !p !exe !?context_and_stack ;
     end if ;
 
+    if target == "v850e"
+    then generate_target_v850e  !name !idents !p !exe !?context_and_stack ;
+    end if ;
+    
     result := result . context_and_stack ;
 end routine ;
 
@@ -85,17 +93,20 @@ routine generate_isr_specific
     template ?code !"isr_specific" ;
 
     if target == "c166" then
-    	generate_isr_c166   !isrs !p !?code;
+      generate_isr_c166   !isrs !p !?code;
     end if ;
     if target == "libpcl" then
-    	generate_isr_libpcl !isrs !p !?code;
+      generate_isr_libpcl !isrs !p !?code;
     end if ;
     if target == "hcs12" then
-    	generate_isr_hcs12  !isrs !p !?code;
+      generate_isr_hcs12  !isrs !p !?code;
     end if ;
     if target == "ppc" then
-    	generate_isr_ppc  !isrs !p !?code;
+      generate_isr_ppc  !isrs !p !?code;
     end if ;
+    if target == "v850e" then
+      generate_isr_v850e  !isrs !p !?code;
+    end if ;    
 end routine;
 
 routine generate_counter_specific 
@@ -110,18 +121,20 @@ routine generate_counter_specific
     template ?code !"counter_specific" ;
 
     if target == "c166" then
-    	generate_counter_c166 !counters !p !?code;
+      generate_counter_c166 !counters !p !?code;
     end if ;
     if target == "libpcl" then
-    	generate_counter_libpcl !counters !p !?code;
+      generate_counter_libpcl !counters !p !?code;
     end if ;
     if target == "hcs12" then
-    	generate_counter_hcs12 !counters !p !?code;
+      generate_counter_hcs12 !counters !p !?code;
     end if ;
     if target == "ppc" then
-    	generate_counter_ppc !counters !p !?code;
+      generate_counter_ppc !counters !p !?code;
     end if ;
-
+    if target == "v850e" then
+      generate_counter_v850e !counters !p !?code;
+    end if ;
 end routine ;
 end semantics ;
 # vim:ft=ggs:ts=4:sw=4

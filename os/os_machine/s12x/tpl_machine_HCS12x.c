@@ -50,6 +50,9 @@
 **  - bug fixed in tpl_release_task_lock().
 **    The deshibition of interrutps was not done as soon as CptTaskLock=0,
 **    this was avoiding the OS to work with no autostart task configured
+** 01.05  J.Monsimier 12/02/2008
+**  - the way to initialize the stack for stack monitoring is changed
+**  - some minor changes in the memory mapping
 =============================================================================*/
 
 /******************************************************************************/
@@ -57,6 +60,7 @@
 /******************************************************************************/
 #include "tpl_machine.h"
 #include "tpl_machine_interface.h"
+#include "tpl_as_isr.h"
 #include "tpl_os_it.h"
 #include "tpl_os_it_kernel.h"
 #include "tpl_os_generated_configuration.h"
@@ -73,6 +77,12 @@
 #define TIMER_GLOBALTIME_PERIOD 1  /* timeout period in ms, can be changed */
 #define TIMER_GLOBALTIME_LOADVALUE ( ((TIMER_GLOBALTIME_PERIOD*BUS_CLK)/2)-1 )
 
+#define OS_STACK_PATERN 0xAA
+
+#define OS_GPTCHANNEL_WATCHDOG 1
+#define OS_GPTCHANNEL_TICK     0
+
+
 /******************************************************************************/
 /* DECLARATION OF GLOBAL VARIABLES                                            */
 /******************************************************************************/
@@ -85,19 +95,19 @@ VAR(hcs12_context, OS_VAR) idle_task_context;
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 _STATIC_ VAR(tpl_watchdog_expire_function, OS_VAR) WatchdogExpireCallback;
-_STATIC_ VAR(tpl_time, OS_VAR) tpl_s12x_GlobalTime;
+_STATIC_ VAR(tpl_time, OS_VAR) tpl_GlobalTime;
 #endif
 
 #define   OS_STOP_SEC_VAR_UNSPECIFIED
 #include  "Memmap.h"
 
 
-#define OS_START_SEC_VAR_8BITS
+#define OS_START_SEC_VAR_16BITS
 #include  "Memmap.h"
 
 _STATIC_ VAR(uint16, OS_VAR) Os_CptTaskLock;
 
-#define   OS_STOP_SEC_VAR_8BITS
+#define   OS_STOP_SEC_VAR_16BITS
 #include  "Memmap.h"
 
 /******************************************************************************/
@@ -125,14 +135,9 @@ FUNC(void, OS_CODE) tpl_init_context(
   ic->y = 0;
 
   #ifdef WITH_AUTOSAR_STACK_MONITORING
-  for(ic->sp = (uint16)exec_obj->static_desc->stack.stack_zone;
-      ic->sp <= ((uint16)exec_obj->static_desc->stack.stack_zone
-                + exec_obj->static_desc->stack.stack_size);
-      ic->sp++)
-  {
-    *(P2VAR(uint8, OS_APPL_DATA, AUTOMATIC))(ic->sp) = OS_S12X_STACK_PATERN;
-  }
-  ic->sp--; /* re-adjust stack-pointer that has been incremented once more that needed */
+  ic->sp = (uint16)exec_obj->static_desc->stack.stack_zone + exec_obj->static_desc->stack.stack_size;
+
+  *(P2VAR(uint8, OS_APPL_DATA, AUTOMATIC))exec_obj->static_desc->stack.stack_zone = OS_STACK_PATERN;
   #else
   /* initialises the stack pointer of the task to
     start address + stack size = end of stack zone */
@@ -168,7 +173,7 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
   /* initializes the Watchdog expire function */
   WatchdogExpireCallback = NULL_PTR;
-  tpl_s12x_GlobalTime = 0;
+  tpl_GlobalTime = 0;
 #endif
 
   /* initialises the CCR with 0: all flags reset */
@@ -184,15 +189,10 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
   /* if Stack Monitoring is enabled, fill the stack with a pattern in
     order to check later if the pattern was erased */
 #ifdef WITH_AUTOSAR_STACK_MONITORING
-  for(idle_task_context.sp = (uint16)(&stack_zone_of_IdleTask);
-      idle_task_context.sp <= ((uint16)(&stack_zone_of_IdleTask)
-                              + SIZE_OF_IDLE_STACK);
-      idle_task_context.sp++)
-  {
-    *(P2VAR(uint8, OS_APPL_DATA, AUTOMATIC))(idle_task_context.sp) = OS_S12X_STACK_PATERN;
-  }
-  idle_task_context.sp--; /* re-adjust stack-pointer that has been incremented once more that needed */
-#else
+  idle_task_context.sp = (uint16)(&stack_zone_of_IdleTask);
+  idle_task_context.sp = idle_task_context.sp + SIZE_OF_IDLE_STACK;
+  *(P2VAR(uint8, OS_APPL_DATA, AUTOMATIC))(idle_task_context.sp) = OS_STACK_PATERN;
+  #else
   /* initialises the stack pointer of the task to
     start address + stack size = end of stack zone */
   idle_task_context.sp = (uint16)(&stack_zone_of_IdleTask);
@@ -205,9 +205,9 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
 
   Os_S12X_StartBaseTimer();
 
-  EnableInterruptSource(Gpt_Isr2Channel0);
+  //EnableInterruptSource(Gpt_Isr2Channel0);
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-  EnableInterruptSource(Gpt_Isr2Channel1);
+  //EnableInterruptSource(Gpt_Isr2Channel1);
 #endif
 }
 #define OS_STOP_SEC_CODE
@@ -224,9 +224,9 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
 *******************************************************************************/
 #define OS_START_SEC_CODE
 #include "Memmap.h"
-#pragma NO_ENTRY
+/*#pragma NO_ENTRY
 #pragma NO_EXIT
-#pragma NO_RETURN
+#pragma NO_RETURN */
 FUNC(void, OS_CODE) tpl_switch_context(
   P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
   P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
@@ -274,6 +274,8 @@ FUNC(void, OS_CODE) tpl_switch_context(
     __asm TFR   Y,CCR               ;/* Transfert in CCR */
     __asm PULX                      ;/* pull X */
     __asm PULY                      ;/* pull Y */
+    tpl_release_task_lock();
+    __asm CLI                       ;
     __asm RTS                       ;/* pull all register and PC, return */
 }
 #define OS_STOP_SEC_CODE
@@ -338,6 +340,7 @@ FUNC(void, OS_CODE) tpl_switch_context_from_it(
     __asm TFR   Y,CCR               ;/* Transfert in CCR */
     __asm PULX                      ;/* pull X */
     __asm PULY                      ;/* pull Y */
+    __asm CLI                       ;
     __asm RTS                       ;/* pull all register and PC, return */
 }
 #define OS_STOP_SEC_CODE
@@ -475,11 +478,17 @@ FUNC(void, OS_CODE) DisableAllInterrupts(void)
 #include "Memmap.h"
 FUNC(void, OS_CODE) ResumeAllInterrupts(void)
 {
-  tpl_release_task_lock();
-
+  if( Os_CptTaskLock > 0)
+  {
+    Os_CptTaskLock--;
+  }
+  if( Os_CptTaskLock == 0)
+  {
+    __asm("CLI");/* re-allows interrupts */
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
   tpl_disable_all_isr_lock_monitor (tpl_running_obj);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
+  }
 }
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
@@ -496,10 +505,14 @@ FUNC(void, OS_CODE) ResumeAllInterrupts(void)
 #include "Memmap.h"
 FUNC(void, OS_CODE) SuspendAllInterrupts(void)
 {
-  tpl_get_task_lock();
+  __asm("SEI");  /* inhibits interrupts */
+  Os_CptTaskLock++;
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-  tpl_start_all_isr_lock_monitor (tpl_running_obj);
+  if( Os_CptTaskLock == 1)
+  {
+    tpl_start_all_isr_lock_monitor (tpl_running_obj);
+  }
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 #define OS_STOP_SEC_CODE
@@ -517,11 +530,17 @@ FUNC(void, OS_CODE) SuspendAllInterrupts(void)
 #include "Memmap.h"
 FUNC(void, OS_CODE) ResumeOSInterrupts(void)
 {
-  tpl_release_task_lock();
-
+  if( Os_CptTaskLock > 0)
+  {
+    Os_CptTaskLock--;
+  }
+  if( Os_CptTaskLock == 0)
+  {
+    __asm("CLI");/* re-allows interrupts */
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-  tpl_disable_all_isr_lock_monitor (tpl_running_obj);
+    tpl_disable_os_isr_lock_monitor (tpl_running_obj);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
+  }
 }
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
@@ -538,10 +557,11 @@ FUNC(void, OS_CODE) ResumeOSInterrupts(void)
 #include "Memmap.h"
 FUNC(void, OS_CODE) SuspendOSInterrupts(void)
 {
-  tpl_get_task_lock();
+  __asm("SEI");  /* inhibits interrupts */
+  Os_CptTaskLock++;
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-  tpl_start_all_isr_lock_monitor (tpl_running_obj);
+    tpl_start_os_isr_lock_monitor (tpl_running_obj);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 #define OS_STOP_SEC_CODE
@@ -603,7 +623,7 @@ FUNC(void, OS_CODE) tpl_cancel_watchdog(void)
 #include "Memmap.h"
 FUNC(tpl_time, OS_CODE) tpl_get_local_current_date(void)
 {
-  return tpl_s12x_GlobalTime;
+  return tpl_GlobalTime;
 }
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
@@ -629,15 +649,22 @@ FUNC(u8, OS_CODE) tpl_check_stack_pointer(
 {
   VAR(uint16, AUTOMATIC) StackPointer = this_exec_obj->static_desc->context.ic->sp;
 
-  if( (StackPointer < (uint16)this_exec_obj->static_desc->stack.stack_zone)
-    ||(StackPointer > ((uint16)this_exec_obj->static_desc->stack.stack_zone
-                      + this_exec_obj->static_desc->stack.stack_size)) )
+  if( (this_exec_obj->static_desc->context.ic) != (&idle_task_context) )
   {
-    return 0;
+    if( (StackPointer < (uint16)this_exec_obj->static_desc->stack.stack_zone)
+      ||(StackPointer > ((uint16)this_exec_obj->static_desc->stack.stack_zone
+                        + this_exec_obj->static_desc->stack.stack_size)) )
+    {
+      return 0;
+    }
+    else
+    {
+      return 1;
+    }
   }
   else
   {
-    return 1;
+    return 1; /* if idle task, we do not check the stack pointer */
   }
 }
 #define OS_STOP_SEC_CODE
@@ -658,13 +685,21 @@ FUNC(u8, OS_CODE) tpl_check_stack_pointer(
 FUNC(u8, OS_CODE) tpl_check_stack_footprint(
   P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
-  if( OS_S12X_STACK_PATERN == (*(uint8 *)(this_exec_obj->static_desc->stack.stack_zone)) )
+
+  if( (this_exec_obj->static_desc->context.ic) != (&idle_task_context) )
   {
-    return 1;
+    if( OS_STACK_PATERN == (*(uint8 *)(this_exec_obj->static_desc->stack.stack_zone)) )
+    {
+      return 1;
+    }
+    else
+    {
+      return 0;
+    }
   }
   else
   {
-    return 0;
+    return 1;
   }
 }
 #define OS_STOP_SEC_CODE
@@ -731,7 +766,7 @@ FUNC(void, OS_CODE) Os_S12X_StartBaseTimer(void)
 #include "Memmap.h"
 FUNC(void, OS_CODE) tpl_s12x_inc_time(void)
 {
-  tpl_s12x_GlobalTime = (tpl_s12x_GlobalTime+(TIMER_GLOBALTIME_PERIOD));
+  tpl_GlobalTime = (tpl_GlobalTime+(TIMER_GLOBALTIME_PERIOD));
 }
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"

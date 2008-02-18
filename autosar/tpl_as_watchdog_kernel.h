@@ -87,7 +87,7 @@ typedef struct TPL_WATCHDOG tpl_watchdog;
 struct TPL_SCHEDULED_WATCHDOG
 {
   VAR(tpl_watchdog, AUTOMATIC)                                  watchdog;             /**< the watchdog */
-  struct P2VAR(TPL_SCHEDULED_WATCHDOG, OS_APPL_DATA, AUTOMATIC) next;                 /**< the next watchdog
+  struct P2VAR(TPL_SCHEDULED_WATCHDOG, OS_VAR_NOINIT, AUTOMATIC) next;                 /**< the next watchdog
                                                                                            in the list */
   VAR(tpl_time, AUTOMATIC)                                      delay_from_previous;  /**< delay (in tpl_time
                                                                                            unit after
@@ -133,7 +133,7 @@ typedef struct TPL_SCHEDULED_WATCHDOG tpl_scheduled_watchdog;
  * @see #remove_scheduled_watchdog
  */
 typedef P2FUNC(u8, OS_APPL_CODE, watchdog_callback_function)(
-  P2VAR(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) watchdog);
+  P2VAR(tpl_watchdog, OS_VAR_NOINIT, AUTOMATIC) watchdog);
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -153,8 +153,7 @@ FUNC(void, OS_CODE) init_watchdog_kernel(
  *
  * @return the new watchdog allocated
  */
-FUNC(P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC), OS_CODE) new_scheduled_watchdog(void);
-
+FUNC(P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC), OS_CODE) new_scheduled_watchdog(void);
 /**
  * @internal
  *
@@ -169,7 +168,7 @@ FUNC(P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC), OS_CODE) new_schedu
  * real underlying watchdog)
  */
 FUNC(u8, OS_CODE) insert_scheduled_watchdog(
-   P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) this_scheduled_watchdog);
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) this_scheduled_watchdog);
 
 /**
  * @internal
@@ -190,8 +189,8 @@ FUNC(u8, OS_CODE) insert_scheduled_watchdog(
  */
 FUNC(u8, OS_CODE) find_scheduled_watchdog(
   P2VAR(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) like_this_watchdog,
-  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) *watchdog_cursor,
-  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) *previous_cursor);
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) *watchdog_cursor,
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) *previous_cursor);
 
 /**
  * @internal
@@ -209,8 +208,8 @@ FUNC(u8, OS_CODE) find_scheduled_watchdog(
  * @retval TRUE the scheduled watchdog is the earliest in the list
  */
 FUNC(u8, OS_CODE) remove_scheduled_watchdog(
-  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) watchdog_cursor,
-  P2VAR(tpl_scheduled_watchdog, OS_APPL_DATA, AUTOMATIC) previous_cursor);
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) watchdog_cursor,
+  P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) previous_cursor);
 
 /**
  * @internal
