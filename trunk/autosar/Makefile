@@ -33,12 +33,13 @@ AUTOSAR_SRCS += tpl_as_action.c
 O_PATH = ../$(OBJ_PATH)
 
 CFLAGS += -I../$(OS_PATH) -I../$(OS_MACHINE_PATH) -I../$(OIL_OUTPUT_PATH) -I../$(DEBUG_PATH) -I.
-AUTOSAR_OBJS = $(addprefix $(O_PATH)/,$(notdir $(AUTOSAR_SRCS:.c=.o)))
+AUTOSAR_OBJS = $(patsubst %, $(O_PATH)/%.o, $(notdir $(AUTOSAR_SRCS)))
+#AUTOSAR_OBJS = $(addprefix $(O_PATH)/,$(notdir $(AUTOSAR_SRCS:.c=.o)))
 
 AUTOSAR: $(AUTOSAR_OBJS)
 	
 
-$(O_PATH)/%.o: %.c #$(M4GENERATEDFILEPREFIX).c
+$(O_PATH)/%.c.o: %.c #$(M4GENERATEDFILEPREFIX).c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:

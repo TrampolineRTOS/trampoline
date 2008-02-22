@@ -18,15 +18,15 @@ ifeq ($(AUTOSAR),true)
   CFLAGS += -I../$(AUTOSAR_PATH)
 endif
 
-AD_OBJS = tpl_machine_arm7.o tpl_machine_arm7_asm.o
+AD_OBJS = tpl_machine_arm7.c.o tpl_machine_arm7_asm.s.o
 O_DIR = ../../../$(OBJ_DIR)
 
 ASMFLAGS += -I../.. -I.
 
-$(O_DIR)/%.o: %.c
+$(O_DIR)/%.c.o: %.c
 	$(CC) $(ASMFLAGS) -c $< -o $@
 
-$(O_DIR)/%.o: %.s
+$(O_DIR)/%.s.o: %.s
 	$(AS) $(ASMFLAGS) $< -o $@	
 	
 ad:	$(AD_OBJS)

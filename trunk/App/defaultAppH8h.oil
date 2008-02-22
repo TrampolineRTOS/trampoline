@@ -1,0 +1,34 @@
+OIL_VERSION = "2.5" : "test" ;
+
+IMPLEMENTATION trampoline {
+};
+
+CPU test {
+
+    OS config {
+        STATUS = STANDARD;
+        ERRORHOOK = TRUE;
+        PRETASKHOOK = TRUE;
+    } ;
+
+
+    APPMODE std {
+    };
+
+    TASK maTask {
+        PRIORITY = 5;
+        AUTOSTART = TRUE {APPMODE = STD;};
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        STACKSIZE = 512;
+    };
+
+    TASK maTask2 {
+        PRIORITY = 5;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        STACKSIZE = 512;
+    };
+        
+};

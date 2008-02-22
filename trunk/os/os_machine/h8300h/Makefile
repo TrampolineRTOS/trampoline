@@ -19,17 +19,20 @@ ifeq ($(AUTOSAR),true)
 endif
 
 #kernel OS architecture dependant files
-AD_SRCS = tpl_machine_libpcl.c tpl_viper_interface.c 
+AD_SRCS = tpl_machine_h8300h.c  tpl_machine.h8h
 
 #################### end of configuration.
 O_PATH = ../../../$(OBJ_PATH)
-#AD_OBJS = $(addprefix $(O_PATH)/,$(AD_SRCS:.c=.o))
 AD_OBJS = $(patsubst %, $(O_PATH)/%.o, $(AD_SRCS))
+#AD_OBJS = $(addprefix $(O_PATH)/,$(AD_SRCS:.c=.o))
 
-CFLAGS += -I../.. -I../../../$(OIL_OUTPUT_PATH) -I. -I../../../$(VIPER_PATH) 
+CFLAGS += -I../.. -I../../../$(OIL_OUTPUT_PATH) -I.
 
 $(O_PATH)/%.c.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
+
+$(O_PATH)/%.h8h.o: %.h8h
+	$(AS) $< -o $@
 
 ad:	$(AD_OBJS)
 

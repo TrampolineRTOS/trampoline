@@ -33,33 +33,17 @@ O_PATH = ../$(OBJ_PATH)
 
 #COM_OBJS = $(addprefix $(O_DIR)/,$(COM_SRCS:.c=.o))
 
-#M4 preprocessor file
-#M4_OS_SCRIPT= ../$(OS_MACHINE_DIR)/tpl_$(ARCH)_macros.m4 tpl_os_macros.m4
-
-#File prefix of generated file (.c and .h)
-#M4GENERATEDFILEPREFIX = ../$(APP_DIR)/tpl_os_generated_configuration
 
 CFLAGS += -I../os -I../$(OS_MACHINE_PATH) -I../$(OIL_OUTPUT_PATH) -I. 
-COM_OBJS = $(addprefix $(O_PATH)/,$(notdir $(COM_SRCS:.c=.o)))
-
-#this file must be generated directly by the user app.
-#OS_SRCS += $(M4GENERATEDFILEPREFIX).c
+#COM_OBJS = $(addprefix $(O_PATH)/,$(notdir $(COM_SRCS:.c=.o)))
+COM_OBJS = $(patsubst %, $(O_PATH)/%.o, $(COM_SRCS))
 
 
 COM: $(COM_OBJS)
 	
 
-$(O_PATH)/%.o: %.c #$(M4GENERATEDFILEPREFIX).c
+$(O_PATH)/%.c.o: %.c #$(M4GENERATEDFILEPREFIX).c
 	$(CC) $(CFLAGS) -c $< -o $@
-
-#$(M4GENERATEDFILEPREFIX).h: $(M4_OS_SCRIPT) ../$(M4FILE)
-#	m4 -Dheader $(M4_OS_SCRIPT) ../$(M4FILE) > $(M4GENERATEDFILEPREFIX).h 
-
-#$(M4GENERATEDFILEPREFIX).c: $(M4GENERATEDFILEPREFIX).h $(M4_OS_SCRIPT) ../$(M4FILE)
-#	m4 $(M4_OS_SCRIPT) ../$(M4FILE) > $(M4GENERATEDFILEPREFIX).c
-
-#AD: 
-#	@cd ../$(OS_MACHINE_DIR) && make ad
 
 clean:
 	
