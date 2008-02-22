@@ -32,7 +32,7 @@ ifeq ($(AUTOSAR),true)
 endif
 
 #Add your source files here.
-APPSRCS = tpl_default_tasks_h8300h.c
+APPSRCS = tpl_default_tasks_workstation.c
 
 #CFLAGS already defined in ../Make-rules
 APPFLAGS = $(CFLAGS)
