@@ -37,12 +37,13 @@ tpl_os_rez_kernel.c
 O_PATH = ../$(OBJ_PATH)
 
 CFLAGS += -I../$(OS_MACHINE_PATH) -I. -I../$(OIL_OUTPUT_PATH) -I../$(DEBUG_PATH)
-OS_OBJS = $(addprefix $(O_PATH)/,$(notdir $(OS_SRCS:.c=.o)))
+OS_OBJS = $(patsubst %, $(O_PATH)/%.o, $(OS_SRCS))
+#OS_OBJS = $(addprefix $(O_PATH)/,$(notdir $(OS_SRCS:.c=.o)))
 
 OS: $(OS_OBJS) AD
 	
 
-$(O_PATH)/%.o: %.c 
+$(O_PATH)/%.c.o: %.c 
 	$(CC) $(CFLAGS) -c $< -o $@
 
 AD: 

@@ -315,7 +315,7 @@ void tpl_init_context(tpl_task *task)
 	int i;
 	int objId;
 
-	/* Gets a pointer to the static descriptor of the task whose context is going to be inited */
+	/* Gets a pointer to the static descriptor of the task whose context is going to be initialized */
 	tpl_exec_static * static_desc = task->exec_desc.static_desc;
 
 	/* Gets a pointer to the context going to be initialized */
