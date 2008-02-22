@@ -1,0 +1,37 @@
+#---------------------------------------------------------------------------*
+#                                                                           *
+#  Cocoa component for GOIL                                                 *
+#                                                                           *
+#  Copyright (C) 2008 Pierre Molinaro.                                      *
+#  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
+#                                                                           *
+#  This program is free software; you can redistribute it and/or modify it  *
+#  under the terms of the GNU General Public License as published by the    *
+#  Free Software Foundation.                                                *
+#                                                                           *
+#  This program is distributed in the hope it will be useful, but WITHOUT   *
+#  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
+#  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
+#   more details.                                                           *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+gui cocoaGOIL "cocoa" grammar goil_grammar :
+import grammar goil_grammar in "goil_grammar.ggs" ;
+import__ "goil_lexique.ggs" ;
+
+#blockComment : "#" ;
+
+#label $map$, $type_name$ ;
+#label $list$, $type_name$ ;
+#label $sortedlist$, $type_name$ ;
+#label $enum$, $type_name$ ;
+#label $class$, $type_name$ ;
+#label $entity$, $type_name$ ;
+#label $nonterminal$, $non_terminal_symbol$ ;
+#label $rule$, $non_terminal_symbol$ ;
+#label $routine$, $identifier$ ;
+
+end gui ;
+
+#--------------------------------------------------------------------------------*

@@ -98,5 +98,9 @@ compile "cfg_syntax.ggs" ;
 compile "cfg_grammar.ggs" ;
 compile "cfg_types.ggs" ;
 
+#
+# Cocoa GOIL
+#
+compile "goil_cocoa.ggs" ;
 # vim:ft=ggs:ts=4:sw=4
 
