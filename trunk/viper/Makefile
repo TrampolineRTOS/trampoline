@@ -16,18 +16,18 @@
 #  $Id: Makefile 22 2005-10-19 11:23:49Z mik $
 
 #arch may be either LINUX or DARWIN (MacOsX) at this time.
-ARCH = LINUX
+ARCH = $(shell uname -s)
 SRCS= com.c exec.c log.c main.c timer.c
 
 ########################################################
 # ARCH dependant stuff
 ########################################################
 #Darwin does not require to be linked to these libraries 
-ifeq ($(strip $(ARCH)),LINUX)
+ifeq ($(strip $(ARCH)),Linux)
 	LDFLAGS = -lpthread -lrt
 	CFLAGS += -DLINUX
 endif
-ifeq ($(strip $(ARCH)),DARWIN)
+ifeq ($(strip $(ARCH)),Darwin)
 	CFLAGS += -DDARWIN
 endif
 
