@@ -11,6 +11,8 @@
 			<array>
 				<string>oil</string>
 			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>oil_source</string>
 			<key>CFBundleTypeName</key>
 			<string>goil Source</string>
 			<key>CFBundleTypeOSTypes</key>
@@ -28,9 +30,9 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
-	<string></string>
+	<string>oil</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.yourcompany.goil</string>
+	<string>fr.irccyn.str.goil</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

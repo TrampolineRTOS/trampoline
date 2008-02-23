@@ -21,6 +21,8 @@
 		AF2A8856058CDF56003EF2FF /* GGS_lsint64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AFF53897057D558F00854C8F /* GGS_lsint64.cpp */; };
 		AF2A8857058CCF57003EFFFF /* GGS_lsint64.h in Headers */ = {isa = PBXBuildFile; fileRef = AF3FF0CB05877B62000D2FEF /* GGS_lsint64.h */; };
 		AF2A8857058CCF57003FFFFF /* GGS_lsint64.h in Headers */ = {isa = PBXBuildFile; fileRef = AF3FF0CB05877B62000D2FEF /* GGS_lsint64.h */; };
+		CF19D0D50D706991006B0EBD /* oil.icns in Resources */ = {isa = PBXBuildFile; fileRef = CF19D0D40D706991006B0EBD /* oil.icns */; };
+		CF19D0E30D706B57006B0EBD /* oil_source.icns in Resources */ = {isa = PBXBuildFile; fileRef = CF19D0E20D706B57006B0EBD /* oil_source.icns */; };
 		CF2A8827058CCF12003EF2F4 /* predefined_types.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CF86361A0586289600B23462 /* predefined_types.cpp */; };
 		CF2A8828058CCF2B003EF2F4 /* predefined_types.h in Headers */ = {isa = PBXBuildFile; fileRef = CF86361B0586289600B23462 /* predefined_types.h */; };
 		CF2A882D058CCF2F003EF2F4 /* GGS_binaryset.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CF86365005862B0600B23462 /* GGS_binaryset.cpp */; };
@@ -827,6 +829,8 @@
 		8D15AC370486D014006FF6A4 /* cocoaGoil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cocoaGoil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF3FF0CB05877B62000D2FEF /* GGS_lsint64.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = GGS_lsint64.h; sourceTree = "<group>"; };
 		AFF53897057D558F00854C8F /* GGS_lsint64.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = GGS_lsint64.cpp; sourceTree = "<group>"; };
+		CF19D0D40D706991006B0EBD /* oil.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = oil.icns; sourceTree = "<group>"; };
+		CF19D0E20D706B57006B0EBD /* oil_source.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = oil_source.icns; sourceTree = "<group>"; };
 		CF337A2A09EFAED600EC41F6 /* C_SourceTextForCoca.mm */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.objcpp; path = C_SourceTextForCoca.mm; sourceTree = "<group>"; };
 		CF337A2B09EFAED600EC41F6 /* C_SourceTextForCocoa.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = C_SourceTextForCocoa.h; sourceTree = "<group>"; };
 		CF3B8A9B058CD21900D682D2 /* libstdc++.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libstdc++.a"; path = "/usr/lib/gcc/darwin/3.3/libstdc++.a"; sourceTree = "<absolute>"; };
@@ -1293,6 +1297,8 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CF19D0E20D706B57006B0EBD /* oil_source.icns */,
+				CF19D0D40D706991006B0EBD /* oil.icns */,
 				2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */,
 				CFC30F92058A225E003D0386 /* Info.plist */,
 				089C165FFE840EACC02AAC07 /* InfoPlist.strings */,
@@ -2423,6 +2429,8 @@
 				CF825D57085386810077AEAF /* I_Window.png in Resources */,
 				CF825D610853868A0077AEAF /* MainMenu.nib in Resources */,
 				CF825D620853868A0077AEAF /* OC_GGS_Document.nib in Resources */,
+				CF19D0D50D706991006B0EBD /* oil.icns in Resources */,
+				CF19D0E30D706B57006B0EBD /* oil_source.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
