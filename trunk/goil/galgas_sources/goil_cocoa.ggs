@@ -20,7 +20,7 @@ gui cocoaGOIL "cocoa" grammar goil_grammar :
 import grammar goil_grammar in "goil_grammar.ggs" ;
 import__ "goil_lexique.ggs" ;
 
-#blockComment : "#" ;
+blockComment : "//" ;
 
 #label $map$, $type_name$ ;
 #label $list$, $type_name$ ;
