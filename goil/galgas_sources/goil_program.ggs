@@ -3,10 +3,10 @@ program goil_program "version 1.2" :
   #--- max error and warning count
   error 100 ;
   warning 100 ;
-  when . "oil" message "a '.oil' source file" ??@lstring inSourceFile {
+  when . "oil" message "an '.oil' source file" ??@lstring inSourceFile {
     grammar goil_grammar in inSourceFile ;
   }
-  when . "OIL" message "a '.OIL' source file" ??@lstring inSourceFile {
+  when . "OIL" message "an '.OIL' source file" ??@lstring inSourceFile {
     grammar goil_grammar in inSourceFile ;
   }
 end program ;
