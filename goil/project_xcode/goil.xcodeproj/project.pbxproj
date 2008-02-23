@@ -1206,7 +1206,7 @@
 		CFEA9FBD0D6F1FFF0044E08E /* GGS_ldouble.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GGS_ldouble.cpp; sourceTree = "<group>"; };
 		CFEA9FBE0D6F1FFF0044E08E /* GGS_ldouble.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GGS_ldouble.h; sourceTree = "<group>"; };
 		CFEA9FF20D6F49BA0044E08E /* cocoaGOIL.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = cocoaGOIL.mm; sourceTree = "<group>"; };
-		CFEAA0040D6F4AF10044E08E /* F_main-fake.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "F_main-fake.cpp"; path = "../../../../libpm/command_line_interface/F_main-fake.cpp"; sourceTree = SOURCE_ROOT; };
+		CFEAA0040D6F4AF10044E08E /* F_main-fake.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "F_main-fake.cpp"; sourceTree = "<group>"; };
 		CFF53872057A558F00854C83 /* C_galgas_io.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = C_galgas_io.cpp; sourceTree = "<group>"; };
 		CFF53881057A558F00854C83 /* GGS_bool.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = GGS_bool.cpp; sourceTree = "<group>"; };
 		CFF53883057A558F00854C83 /* GGS_char.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = GGS_char.cpp; sourceTree = "<group>"; };
