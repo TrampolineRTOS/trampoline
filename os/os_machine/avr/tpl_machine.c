@@ -55,15 +55,152 @@ void tpl_shutdown(void)
 	while (1); 
 }
 
-void tpl_switch_context(tpl_context *old_context, tpl_context *new_context)
+void tpl_switch_context(tpl_context *old_context, tpl_context *new_context) // a traduire en assembleur
 {
-     //mettre PC sur la pile du old
-     //mettre SREG sur la pile du old
-     //mettre registre 0-31 sur la pile du old
-     //sortir registre 0-31 de la pile du new
-     //sortir SREG de la pile du new
-     //faire RET (ne pas dépiler le PC)
-   
+    //mettre PC sur la pile du old
+    old_context-=2;
+    old_context->sp=PCMSB; /* see the page 335 of the datasheet */
+    //mettre SREG sur la pile du old
+    old_context--;
+    old_context->sp=SREG;
+    /* put the register R00 to R31 on the stack of old_context */
+    old_context--;
+    old_context->sp=R00;
+    old_context--;
+    old_context->sp=R01;
+    old_context--;
+    old_context->sp=R02;
+    old_context--;
+    old_context->sp=R03;
+    old_context--;
+    old_context->sp=R04;
+    old_context--;
+    old_context->sp=R05;
+    old_context--;
+    old_context->sp=R06;
+    old_context--;
+    old_context->sp=R07;
+    old_context--;
+    old_context->sp=R08;
+    old_context--;
+    old_context->sp=R09;
+    old_context--;
+    old_context->sp=R10;
+    old_context--;
+    old_context->sp=R11;
+    old_context--;
+    old_context->sp=R12;
+    old_context--;
+    old_context->sp=R13;
+    old_context--;
+    old_context->sp=R14;
+    old_context--;
+    old_context->sp=R15;
+    old_context--;
+    old_context->sp=R16;
+    old_context--;
+    old_context->sp=R17;
+    old_context--;
+    old_context->sp=R18;
+    old_context--;
+    old_context->sp=R19;
+    old_context--;
+    old_context->sp=R20;
+    old_context--;
+    old_context->sp=R21;
+    old_context--;
+    old_context->sp=R22;
+    old_context--;
+    old_context->sp=R23;
+    old_context--;
+    old_context->sp=R24;
+    old_context--;
+    old_context->sp=R25;
+    old_context--;
+    old_context->sp=R26;
+    old_context--;
+    old_context->sp=R27;
+    old_context--;
+    old_context->sp=R28;
+    old_context--;
+    old_context->sp=R29;
+    old_context--;
+    old_context->sp=R30;
+    old_context--;
+    old_context->sp=R31;
+    //sortir registre 0-31 de la pile du new
+    R31=new_context->sp;
+    new_context++;
+    R30=new_context->sp;
+    new_context++;
+    R29=new_context->sp;
+    new_context++;
+    R28=new_context->sp;
+    new_context++;
+    R27=new_context->sp;
+    new_context++;
+    R26=new_context->sp;
+    new_context++;
+    R25=new_context->sp;
+    new_context++;
+    R24=new_context->sp;
+    new_context++;
+    R23=new_context->sp;
+    new_context++;
+    R22=new_context->sp;
+    new_context++;
+    R21=new_context->sp;
+    new_context++;
+    R20=new_context->sp;
+    new_context++;
+    R19=new_context->sp;
+    new_context++;
+    R18=new_context->sp;
+    new_context++;
+    R17=new_context->sp;
+    new_context++;
+    R16=new_context->sp;
+    new_context++;
+    R15=new_context->sp;
+    new_context++;
+    R14=new_context->sp;
+    new_context++;
+    R13=new_context->sp;
+    new_context++;
+    R12=new_context->sp;
+    new_context++;
+    R11=new_context->sp;
+    new_context++;
+    R10=new_context->sp;
+    new_context++;
+    R09=new_context->sp;
+    new_context++;
+    R08=new_context->sp;
+    new_context++;
+    R07=new_context->sp;
+    new_context++;
+    R06=new_context->sp;
+    new_context++;
+    R05=new_context->sp;
+    new_context++;
+    R04=new_context->sp;
+    new_context++;
+    R03=new_context->sp;
+    new_context++;
+    R02=new_context->sp;
+    new_context++;
+    R01=new_context->sp;
+    new_context++;
+    R00=new_context->sp;
+    new_context++;
+    //sortir SREG de la pile du new
+    SREG=new_context->sp;
+    new_context++;
+    //faire RET (ne pas dépiler le PC)
+   __asm
+   {
+       ret
+   }
 }
 
 void tpl_switch_context_from_it(tpl_context * old_context, tpl_context * new_context)
@@ -78,6 +215,7 @@ void tpl_switch_context_from_it(tpl_context * old_context, tpl_context * new_con
  */
 void tpl_init_context(tpl_task *task)
 {
+    int a=0; /*internal variable, used to put the register R00 to R31 on the stack*/
   	/* Gets a pointer to the static descriptor of the task whose context is going to be initialized */
 	const tpl_exec_static *static_desc = task->static_desc;
 	/* Gets a pointer to the context going to be initialized */
@@ -87,76 +225,16 @@ void tpl_init_context(tpl_task *task)
 	
     /* put the Program Counter on the stack */
     ic-=2; /* decrement ic */
-    *ic->sp=static_desc->entry; /* put the entry function (pointer) on the stack */
+    ic->sp=static_desc->entry; /* put the entry function (pointer) on the stack */
     /* put the register SREG on the stack */
     ic--; /* decrement ic */
-    *ic->sp=0x00; /* put the system register on the stack (system register at startup time) */
-    /* put the register R00 to R31 on the stack */
-    /* if someone criticizes my code, i will broke his face <-- just a joke */
-    ic--;
-    *ic->sp=R00;
-    ic--;
-    *ic->sp=R01;
-    ic--;
-    *ic->sp=R02;
-    ic--;
-    *ic->sp=R03;
-    ic--;
-    *ic->sp=R04;
-    ic--;
-    *ic->sp=R05;
-    ic--;
-    *ic->sp=R06;
-    ic--;
-    *ic->sp=R07;
-    ic--;
-    *ic->sp=R08;
-    ic--;
-    *ic->sp=R09;
-    ic--;
-    *ic->sp=R10;
-    ic--;
-    *ic->sp=R11;
-    ic--;
-    *ic->sp=R12;
-    ic--;
-    *ic->sp=R13;
-    ic--;
-    *ic->sp=R14;
-    ic--;
-    *ic->sp=R15;
-    ic--;
-    *ic->sp=R16;
-    ic--;
-    *ic->sp=R17;
-    ic--;
-    *ic->sp=R18;
-    ic--;
-    *ic->sp=R19;
-    ic--;
-    *ic->sp=R20;
-    ic--;
-    *ic->sp=R21;
-    ic--;
-    *ic->sp=R22;
-    ic--;
-    *ic->sp=R23;
-    ic--;
-    *ic->sp=R24;
-    ic--;
-    *ic->sp=R25;
-    ic--;
-    *ic->sp=R26;
-    ic--;
-    *ic->sp=R27;
-    ic--;
-    *ic->sp=R28;
-    ic--;
-    *ic->sp=R29;
-    ic--;
-    *ic->sp=R30;
-    ic--;
-    *ic->sp=R31;
+    ic->sp=0x00; /* the SREG register without interrupt */
+    /* initializes system register on the stack (system register at startup time) */
+    for (a=0;a<32;a++)
+    {
+        ic--;
+        ic->sp=0x00;
+    }
 }
 
 
