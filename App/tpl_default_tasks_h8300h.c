@@ -6,6 +6,11 @@ int main(void)
 {
     orPxDDR (11, 0xFF) ;
     PBDR = 1;
+	
+	/* button connected to P8.1 -> generate an IT : EXCEPTION_HANDLER = 13 */
+	ISCR=2; /*IRQ Sense Control Register: falling edge. */
+	IER=2;  /*IRQ Enable Register */
+
     StartOS(OSDEFAULTAPPMODE);
     return 0;
 }
@@ -37,7 +42,7 @@ void StartupHook(void)
 void ShutdownHook(StatusType error)
 {
 }
-
+/*
 TASK(maTask2)
 {
 	volatile long i ;
@@ -54,4 +59,11 @@ TASK(maTask)
 	PBDR = 0xFF ;
 	for (i=0 ; i<500000 ; i++);
 	ChainTask(maTask2);
+}
+*/
+
+ISR(it)
+{
+  PBDR ^= 0xC0;
+  TerminateISR2(); 
 }

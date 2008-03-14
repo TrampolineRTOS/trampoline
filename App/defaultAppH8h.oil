@@ -15,20 +15,44 @@ CPU test {
     APPMODE std {
     };
 
-    TASK maTask {
-        PRIORITY = 5;
-        AUTOSTART = TRUE {APPMODE = STD;};
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
+//    TASK maTask {
+//        PRIORITY = 5;
+//        AUTOSTART = TRUE {APPMODE = STD;};
+//        ACTIVATION = 1;
+//        SCHEDULE = FULL;
+//        STACKSIZE = 512;
+//    };
+
+//    TASK maTask2 {
+//        PRIORITY = 5;
+//        AUTOSTART = FALSE;
+//        ACTIVATION = 1;
+//        SCHEDULE = FULL;
+//        STACKSIZE = 512;
+//    };
+
+    ISR it {
+        CATEGORY = 2;
+        PRIORITY = 30;
         STACKSIZE = 512;
+        EXCEPTION_HANDLER = 13;
     };
 
-    TASK maTask2 {
-        PRIORITY = 5;
-        AUTOSTART = FALSE;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-        STACKSIZE = 512;
-    };
-        
+//    COUNTER compteur {
+//      TICKSPERBASE = 1;
+//      MAXALLOWEDVALUE = 65535;
+//      MINCYCLE = 1;
+//    };
+//
+//    ALARM ZeAlarm {
+//      COUNTER = compteur;
+//      ACTION = ACTIVATETASK {
+//        TASK = maTask2;
+//      };
+//      AUTOSTART = TRUE {
+//        ALARMTIME = 1;
+//        CYCLETIME = 500;
+//        APPMODE = std;
+//      };
+//    };
 };

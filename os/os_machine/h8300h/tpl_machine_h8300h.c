@@ -51,9 +51,10 @@ void tpl_init_context(tpl_exec_common *task)
 	/* Init stack pointer */
 	* ic = ((u32 *)(static_desc->stack.stack_zone)) + static_desc->stack.stack_size;
 	createContext (ic, (u32) static_desc->entry) ;
-	PBDR |=8 ;
+	/*PBDR |=8 ;
     printChar (' ') ;
 	printHex8((u32)*ic);
+	*/
 }
 
 void h8300h_switch_context(u32 * * old_context,
@@ -77,5 +78,6 @@ void tpl_switch_context_from_it (tpl_context *old_context,
 
 void tpl_init_machine(void)
 {
+	initInterrupt();
 }
 
