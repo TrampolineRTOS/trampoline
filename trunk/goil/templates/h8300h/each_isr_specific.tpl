@@ -12,9 +12,14 @@ tpl_stack_word $STACK_ZONE$[$STACK_SIZE$/sizeof(tpl_stack_word)];
 /*
  * isr2 $EXEC_NAME$ context
  */
-hcs12_context $EXEC_INTEGER_CONTEXT$;
+h8300h_context $EXEC_INTEGER_CONTEXT$;
 
 #define $EXEC_CONTEXT$ { &$EXEC_INTEGER_CONTEXT$ }
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
+
+void $EXEC_NAME$_handler()
+{
+  tpl_central_interrupt_handler(isr_id_of_$EXEC_NAME$);
+}

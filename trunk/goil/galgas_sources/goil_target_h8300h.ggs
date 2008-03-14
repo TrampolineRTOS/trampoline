@@ -37,13 +37,17 @@ routine init_h8300h_prefixes
               !"stack_zone_of_" !"$STACK_ZONE$"] ;
     [!?prefix insert_prefix ![@lstring new !"h8300h_int_context" !here]
               !"integer_context_of_" !"$EXEC_INTEGER_CONTEXT$"] ;
+#    [!?prefix insert_prefix ![@lstring new !"h8300h_isr_handler" !here]
+#              !"isr2_handler_of" !"$ISR_HANDLER_NAME$"] ;
+
+
 end routine ;
 
 routine generate_target_h8300h
     ?@lstring         name
     ?@ident_map       others
     ?@prefix_map      p
-    ?@oil_obj         unused exe
+    ?@oil_obj         exe
     ?!@string         result
 :
 
@@ -54,13 +58,38 @@ routine generate_target_h8300h
     additional_int_key_required !"STACKSIZE" !others !name ?stack_size ;
     result := [result stringByReplacingStringByString !"$STACK_SIZE$" ![stack_size string]] ;
 
+    cast exe :
+    when == @isr_obj do
+        #object is an isr.
+        @uint trap ;
+        additional_int_key_required !"EXCEPTION_HANDLER" !others !name ?trap ;
+        result := [result stringByReplacingStringByString !"$EXCEPTION_HANDLER$" ![trap string]] ;
+    else
+    end cast ;
+
 end routine ;
 
 routine generate_isr_h8300h
-  ?? @isr_map    unused isrs
-  ?? @prefix_map unused p
-  ?! @string     unused code
+  ?? @isr_map    isrs
+  ?? @prefix_map p
+  ?! @string     code
 :
+  @string result := "";
+  foreach isrs (@lstring isr_name @isr_obj isr) :
+    @ident_map others := [isr other_fields];
+    @uint trap ;
+    additional_int_key_required !"EXCEPTION_HANDLER" !others !isr_name ?trap ;
+
+    #first, get the template
+    @string tmp;
+    template ?tmp !"isr_list_specific";
+    #then replace $EXCEPTION_HANDLER$
+    tmp := [tmp stringByReplacingStringByString !"$EXCEPTION_HANDLER$" ![trap string]] ;
+    #then, replace the interruptHandler name.
+    replace !p !"task_name" ![isr_name string] !?tmp;
+    result .= tmp;
+  end foreach ;
+  code := [code stringByReplacingStringByString !"$ISR_LIST$" !result] ;
 end routine ;
 
 routine generate_counter_h8300h
