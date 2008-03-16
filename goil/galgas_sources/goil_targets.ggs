@@ -50,11 +50,11 @@ routine generate_context_and_stack
 
     cast exe :
     when == @task_obj tk do
-        template ?tpl_context_and_stack !"each_task_specific" ;
+        retrieveTemplateString ?tpl_context_and_stack !"each_task_specific" ;
         context_and_stack := tpl_context_and_stack ;
         idents := [tk others] ;
     when == @isr_obj isr do
-        template ?tpl_context_and_stack !"each_isr_specific" ;
+        retrieveTemplateString ?tpl_context_and_stack !"each_isr_specific" ;
         context_and_stack := tpl_context_and_stack ;
         idents := [isr other_fields] ;
     else 
@@ -88,7 +88,7 @@ routine generate_isr_specific
     @string target ;
     target ?target ;
 
-    template ?code !"isr_specific" ;
+    retrieveTemplateString ?code !"isr_specific" ;
 
     if target == "c166" then
       generate_isr_c166   !isrs !p !?code;
@@ -116,7 +116,7 @@ routine generate_counter_specific
     @string target ;
     target ?target ;
 
-    template ?code !"counter_specific" ;
+    retrieveTemplateString ?code !"counter_specific" ;
 
     if target == "c166" then
       generate_counter_c166 !counters !p !?code;

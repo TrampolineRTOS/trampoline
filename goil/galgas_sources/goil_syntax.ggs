@@ -214,9 +214,9 @@ rule <start> :
                 end if ;
 
 
-                template ?header !"app_header" ;
-                template ?obj_header !"obj_header" ;
-                template ?implementation !"app_implementation" ;
+                retrieveTemplateString ?header !"app_header" ;
+                retrieveTemplateString ?obj_header !"obj_header" ;
+                retrieveTemplateString ?implementation !"app_implementation" ;
                 @prefix_map prefix := [@prefix_map emptyMap] ;
 
                 init_prefixes !?prefix ;

@@ -96,7 +96,7 @@ class @timing_prot_task extends @timing_prot {
             else end cast ;
         end if ;
 
-        template ?result !"timing_protection" ;
+        retrieveTemplateString ?result !"timing_protection" ;
 
         cast exe_budget :
         when == @uint64_class eb do
@@ -163,7 +163,7 @@ class @timing_prot_isr extends @timing_prot {
             else end cast ;
         end if ;
 
-        template ?result !"timing_protection" ;
+        retrieveTemplateString ?result !"timing_protection" ;
 
         cast exe_time :
         when == @uint64_class et do
