@@ -48,7 +48,7 @@ class @setevent_action extends @action_obj {
         ?!@string    i_res :
 
         @string res ;
-        template ?res !"notification_setevent" ;
+        retrieveTemplateString ?res !"notification_setevent" ;
 
         replace !p !err."notif_name"   ![name string] !?res ;
         replace !p !err."notification" ![name string] !?res ;
@@ -73,7 +73,7 @@ class @activatetask_action extends @action_obj {
         ?!@string    i_res :
 
         @string res ;
-        template ?res !"notification_activatetask" ;
+        retrieveTemplateString ?res !"notification_activatetask" ;
 
         replace !p !err."notif_name"   ![name string]      !?res ;
         replace !p !err."notification" ![name string]      !?res ;
@@ -96,7 +96,7 @@ class @callback_action extends @action_obj {
         ?!@string    i_res :
 
         @string res ;
-        template ?res !"notification_activatetask" ;
+        retrieveTemplateString ?res !"notification_activatetask" ;
 
         replace !p !err."notif_name"   ![name string] !?res ;
         replace !p !err."notification" ![name string] !?res ;
@@ -119,7 +119,7 @@ class @flag_action extends @action_obj {
         ?!@string    i_res :
 
         @string res ;
-        template ?res !"notification_flag" ;
+        retrieveTemplateString ?res !"notification_flag" ;
 
         replace !p !err."notif_name"   ![name string] !?res ;
         replace !p !err."notification" ![name string] !?res ;

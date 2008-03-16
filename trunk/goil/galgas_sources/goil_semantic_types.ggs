@@ -204,7 +204,7 @@ class @always_filter extends @filter_prop_obj {
         ?!@string    res :
 
         @string f_res ;
-        template ?f_res !"filter_noparam" ;
+        retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
         [self base_generate !p !name !?res] ;
         replace !p !"filter_func" !"tpl_filter_always" !?res ;
@@ -219,7 +219,7 @@ class @never_filter extends @filter_prop_obj {
         ?!@string    res :
 
         @string f_res ;
-        template ?f_res !"filter_noparam" ;
+        retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
         [self base_generate !p !name !?res] ;
         replace !p !"filter_func" !"tpl_filter_never" !?res ;
@@ -256,7 +256,7 @@ class @newisequal_filter extends @filter_prop_obj {
         ?!@string    res :
 
         @string f_res ;
-        template ?f_res !"filter_noparam" ;
+        retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
         [self base_generate !p !name !?res] ;
         replace !p !"filter_func" !"tpl_filter_new_is_equal" !?res ;
@@ -271,7 +271,7 @@ class @newisdifferent_filter extends @filter_prop_obj {
         ?!@string    res :
 
         @string f_res ;
-        template ?f_res !"filter_noparam" ;
+        retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
         [self base_generate !p !name !?res] ;
         replace !p !"filter_func" !"tpl_filter_new_is_different" !?res ;
@@ -328,7 +328,7 @@ class @newisgreater_filter extends @filter_prop_obj {
         ?!@string    res :
 
         @string f_res ;
-        template ?f_res !"filter_noparam" ;
+        retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
         [self base_generate !p !name !?res] ;
         replace !p !"filter_func" !"tpl_filter_new_is_greater" !?res ;
@@ -343,7 +343,7 @@ class @newislessorequal_filter extends @filter_prop_obj {
         ?!@string    res :
 
         @string f_res ;
-        template ?f_res !"filter_noparam" ;
+        retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
         [self base_generate !p !name !?res] ;
         replace !p !"filter_func" !"tpl_filter_new_is_less_or_equal" !?res ;
@@ -358,7 +358,7 @@ class @newisless_filter extends @filter_prop_obj {
         ?!@string    res :
 
         @string f_res ;
-        template ?f_res !"filter_noparam" ;
+        retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
         [self base_generate !p !name !?res] ;
         replace !p !"filter_func" !"tpl_filter_new_is_less" !?res ;
@@ -373,7 +373,7 @@ class @newisgreaterorequal_filter extends @filter_prop_obj {
         ?!@string    res :
 
         @string f_res ;
-        template ?f_res !"filter_noparam" ;
+        retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
         [self base_generate !p !name !?res] ;
         replace !p !"filter_func" !"tpl_filter_new_is_greater_or_equal" !?res ;
@@ -423,7 +423,7 @@ class @ssi_mess_prop extends @mess_prop_obj {
         !@string         i_res :
 
         h_res := "" ;
-        template ?i_res !"message_ssi" ;
+        retrieveTemplateString ?i_res !"message_ssi" ;
         replace !p !"msg_name" ![name string] !?i_res ;
         replace !p !"msg" ![name string] !?i_res ;
         if [dests hasKey ![name string]] then
@@ -492,7 +492,7 @@ class @szi_mess_prop extends @mess_prop_obj {
         !@string         i_res :
 
         h_res := "" ;
-        template ?i_res !"message_szi" ;
+        retrieveTemplateString ?i_res !"message_szi" ;
         replace !p !"msg_name" ![name string] !?i_res ;
         replace !p !"msg" ![name string] !?i_res ;
         if [dests hasKey ![name string]] then
@@ -537,7 +537,7 @@ class @rzi_mess_prop extends @mess_prop_obj {
         !@string         i_res :
 
         h_res := "" ;
-        template ?i_res !"message_rzi" ;
+        retrieveTemplateString ?i_res !"message_rzi" ;
         replace !p !"msg_name" ![name string] !?i_res ;
         replace !p !"msg" ![name string] !?i_res ;
 
@@ -584,7 +584,7 @@ class @rui_mess_prop extends @mess_prop_obj {
         !@string         i_res :
 
         h_res := "" ;
-        template ?i_res !"message_rui" ;
+        retrieveTemplateString ?i_res !"message_rui" ;
         replace !p !"msg_name" ![name string] !?i_res ;
         replace !p !"msg"      ![name string] !?i_res ;
         replace !p !"msg_buf"  ![name string] !?i_res ;
@@ -627,7 +627,7 @@ class @rqi_mess_prop extends @mess_prop_obj {
         !@string         i_res :
 
         h_res := "" ;
-        template ?i_res !"message_rqi" ;
+        retrieveTemplateString ?i_res !"message_rqi" ;
         replace !p !"msg_name" ![name string] !?i_res ;
         replace !p !"msg"      ![name string] !?i_res ;
         replace !p !"msg_buf"  ![name string] !?i_res ;

@@ -292,10 +292,10 @@ routine generate_alarms
 
     @string alarms_result := "" ;
 
-    template ?tpl_alarm_setevent         !"alarm_event_set" ;
-    template ?tpl_alarm_activatetask     !"alarm_task_act" ;
-    template ?tpl_alarm_callback         !"alarm_callback" ;
-    template ?tpl_alarm_incrementcounter !"alarm_inc_counter" ;
+    retrieveTemplateString ?tpl_alarm_setevent         !"alarm_event_set" ;
+    retrieveTemplateString ?tpl_alarm_activatetask     !"alarm_task_act" ;
+    retrieveTemplateString ?tpl_alarm_callback         !"alarm_callback" ;
+    retrieveTemplateString ?tpl_alarm_incrementcounter !"alarm_inc_counter" ;
 
     foreach alarms (@lstring alarm_name @alarm_obj alarm) :
         @string result := "" ;
@@ -644,7 +644,7 @@ routine generate_tasks
     @string tpl_task ;
     @string tasks_result := "" ;
 
-    template ?tpl_task !"task" ;
+    retrieveTemplateString ?tpl_task !"task" ;
 
     @uint max_prio := 0 ;
     @bool non_preemptable_exists := false ;
@@ -776,7 +776,7 @@ routine generate_isrs
 
     @string isrs_result := "" ;
 
-    template ?tpl_isr !"isr" ;
+    retrieveTemplateString ?tpl_isr !"isr" ;
 
     foreach isrs (@lstring isr_name @isr_obj isr) :
         @string tmp := "" ;
@@ -842,7 +842,7 @@ routine generate_counters
     @string counters_result := "" ;
     @string counters_cst := "" ;
 
-    template ?tpl_counter !"counter" ;
+    retrieveTemplateString ?tpl_counter !"counter" ;
 
     foreach counters (@lstring counter_name @counter_obj counter) :
         @string tmp := "";
@@ -939,8 +939,8 @@ routine generate_resources
     @string resources_result := "" ;
     @stringset regular_rez [emptySet] ;
 
-    template ?tpl_resource !"resource" ;
-    template ?tpl_internal_resource !"internal_resource" ;
+    retrieveTemplateString ?tpl_resource !"resource" ;
+    retrieveTemplateString ?tpl_internal_resource !"internal_resource" ;
 
     foreach resources (@lstring resource_name @resource_obj resource) :
         
@@ -1003,7 +1003,7 @@ routine generate_events
     @string header_result := "" ;
     @string implementation_result := "" ;
 
-    template ?tpl_event !"event" ;
+    retrieveTemplateString ?tpl_event !"event" ;
 
     #
     # Iterate through the tasks to get the events used.

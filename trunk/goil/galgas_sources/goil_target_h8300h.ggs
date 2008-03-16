@@ -82,7 +82,7 @@ routine generate_isr_h8300h
 
     #first, get the template
     @string tmp;
-    template ?tmp !"isr_list_specific";
+    retrieveTemplateString ?tmp !"isr_list_specific";
     #then replace $EXCEPTION_HANDLER$
     tmp := [tmp stringByReplacingStringByString !"$EXCEPTION_HANDLER$" ![trap string]] ;
     #then, replace the interruptHandler name.
@@ -103,7 +103,7 @@ routine generate_counter_h8300h
     when == @software_counter do
     else
         @string tmp;
-        template ?tmp !"counter_list_specific";
+        retrieveTemplateString ?tmp !"counter_list_specific";
         replace !p !"counter" ![counter_name string] !?tmp;
         result .= tmp;
     end cast ;

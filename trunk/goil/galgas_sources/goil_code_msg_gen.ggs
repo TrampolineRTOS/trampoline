@@ -165,8 +165,8 @@ routine generate_messages
         @uint flag_order := 0 ;
         @string flag_macros ;
         @string flag_function ;
-        template ?flag_macros !"flag_macros" ;
-        template ?flag_function !"flag_function" ;
+        retrieveTemplateString ?flag_macros !"flag_macros" ;
+        retrieveTemplateString ?flag_function !"flag_function" ;
 
         foreach flags (@string flag) :
            @string fm := flag_macros ;

@@ -35,7 +35,7 @@ routine templates_directory !@string temp_dir :
 #    message "templates = ".temp_dir."\n";
 end routine ;
 
-routine template !@string template ?@string obj :
+routine retrieveTemplateString !@string templateString ?@string obj :
     @string target_platform ;
     @string targ_tpl := "" ;
 
@@ -51,15 +51,15 @@ routine template !@string template ?@string obj :
 
 
     if [targ_tpl fileExists]
-    then template := [@string stringWithContentsOfFile !targ_tpl] ;
+    then templateString := [@string stringWithContentsOfFile !targ_tpl] ;
     else
 
 # then in the all_targets path
         targ_tpl := temp_dir."all_targets/".obj.".tpl" ;
         if [targ_tpl fileExists]
-        then template := [@string stringWithContentsOfFile !targ_tpl] ;
+        then templateString := [@string stringWithContentsOfFile !targ_tpl] ;
 #             message "found template in all_targets\n" ;
-        else template := "" ;
+        else templateString := "" ;
              error here: "No template found for ".obj;
         end if ;
     end if;

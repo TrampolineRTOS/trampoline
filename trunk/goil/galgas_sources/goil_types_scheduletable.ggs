@@ -70,7 +70,7 @@ routine expiry_point
 :
     # compute the expiry point descriptor
     @string exp_st ;
-    template ?exp_st !"expiry_point" ;
+    retrieveTemplateString ?exp_st !"expiry_point" ;
     exp_st := [exp_st stringByReplacingStringByString !"$EXPIRY_POINT$" ![name string]."_".[expiry string]."_expirypoint"] ;
     if expiry != 0L then
         exp_st := [exp_st stringByReplacingStringByString !"$OFFSET$" ![expiry-previous_expiry string]] ;
@@ -110,7 +110,7 @@ class @scheduletable_obj extends @oil_obj {
         ?!@string i_res  # implementation template
     :
         @string stres ;
-        template ?stres !"schedule_table" ;
+        retrieveTemplateString ?stres !"schedule_table" ;
 
         stres := [stres stringByReplacingStringByString !"$SCHEDTABLE_NAME$" ![name string]] ;
         stres := [stres stringByReplacingStringByString !"$SCHEDTABLE$" ![name string]."_sched_table"] ;
@@ -147,11 +147,11 @@ class @scheduletable_obj extends @oil_obj {
 
         # Generate the expiry points and actions for each expiry point
         @string expiry_tpl ;
-        template ?expiry_tpl !"expiry_point" ;
+        retrieveTemplateString ?expiry_tpl !"expiry_point" ;
         @string setevent_tpl ;
-        template ?setevent_tpl !"notification_setevent" ;
+        retrieveTemplateString ?setevent_tpl !"notification_setevent" ;
         @string activatetask_tpl ;
-        template ?activatetask_tpl !"notification_activatetask" ;
+        retrieveTemplateString ?activatetask_tpl !"notification_activatetask" ;
 
         @uint64 cur_offset := 0L ;
         @uint64 previous_offset := 0L ;
