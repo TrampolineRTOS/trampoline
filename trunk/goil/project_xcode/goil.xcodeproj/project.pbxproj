@@ -826,7 +826,7 @@
 		4F3FF0CB05877B62000D2F8F /* GGS_lsint.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = GGS_lsint.h; sourceTree = "<group>"; };
 		4FF53897057A558F00854C84 /* GGS_luint64.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = GGS_luint64.cpp; sourceTree = "<group>"; };
 		4FF53897057D558F00854C83 /* GGS_lsint.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = GGS_lsint.cpp; sourceTree = "<group>"; };
-		8D15AC370486D014006FF6A4 /* cocoaGoil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cocoaGoil.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D15AC370486D014006FF6A4 /* cocoaGoil.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = cocoaGoil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF3FF0CB05877B62000D2FEF /* GGS_lsint64.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = GGS_lsint64.h; sourceTree = "<group>"; };
 		AFF53897057D558F00854C8F /* GGS_lsint64.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = GGS_lsint64.cpp; sourceTree = "<group>"; };
 		CF19D0D40D706991006B0EBD /* oil.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = oil.icns; sourceTree = "<group>"; };
@@ -2400,7 +2400,6 @@
 		2A37F4A9FDCFA73011CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = CF32C9570856F9220042CEEB /* Build configuration list for PBXProject "goil" */;
-			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 2A37F4AAFDCFA73011CA2CEA /* goil_cocoa */;
 			projectDirPath = "";

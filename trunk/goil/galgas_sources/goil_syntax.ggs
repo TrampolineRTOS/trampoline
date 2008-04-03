@@ -208,9 +208,7 @@ rule <start> :
                 @lstring cfg_file ;
                 config_file ?cfg_file ;
                 if [cfg_file string] != "" then
-                    @luint64 tic ;
-                    grammar cfg_grammar in cfg_file ?tic ;
-                    [!?cfg put ![@lstring new !"wd_ticks_per_ns" !here] ![@uint64_class new ![tic location] ![tic uint64]]] ;
+                    grammar cfg_grammar in cfg_file ?cfg ;
                 end if ;
 
 
@@ -332,6 +330,7 @@ rule <start> :
                 end if ;
 
                 generate_ready_list
+                    !os
                     !max_prio
                     !ready_list
                     !?obj_header

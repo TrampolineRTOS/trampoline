@@ -14,7 +14,7 @@
 # Trampoline is copyright (c) IRCCyN 2005+
 # Trampoline is protected by the french intellectual property law.
 #
-# This software is distributed under the Lesser GNU Public Licence
+# This software is distributed under the GNU Public Licence V2
 #
 # @section File informations
 #
@@ -149,7 +149,7 @@ routine generate_flags
     @string flags := "" ;
 
     # Check the STATUS field
-    if [[os status] string] == "EXTENDED" then
+    if [[os status] string] == "extended" then
         flags .= "#define    OS_EXTENDED\n" ;
     end if ;
 
@@ -653,7 +653,7 @@ routine generate_tasks
         @string tmp ;
         @string result := "" ;
 
-        generate_context_and_stack !task_name !task !p !?result ;
+        generate_context_and_stack !cfg !task_name !task !p !?result ;
 
         result := result . tpl_task ;
 
@@ -782,7 +782,7 @@ routine generate_isrs
         @string tmp := "" ;
         @string result := "" ;
 
-        generate_context_and_stack !isr_name !isr !p !?result ;
+        generate_context_and_stack !cfg !isr_name !isr !p !?result ;
 
         result := result . tpl_isr ;
 
@@ -1165,6 +1165,7 @@ end routine ;
 # Ready list structure generation
 #--------------------------------------------------------------------
 routine generate_ready_list
+    ?@os_obj    os
     ?@uint      max_prio
     ?@prio_list ready_list
     ?!@string   obj_header
@@ -1174,8 +1175,32 @@ routine generate_ready_list
     @string fifo := "" ;
     @uint prio := 0 ;
 
+    @bool powerof2 := false ;
+    @ident_map config := [os others];
+    # check if the POWER_OF_2_PRIORITY_QUEUE bool is declared
+    if [config hasKey !"POWEROF2QUEUE"] then
+        @basic_type pw ;
+        [config get ![@lstring new !"POWEROF2QUEUE" !here] ?pw] ;
+        cast pw :
+        when == @bool_class b do
+            powerof2 := [b value];
+        else
+            error [pw location] : "POWEROF2QUEUE should be a boolean" ;
+        end cast ;
+    end if ;
+
     foreach ready_list (@uint size) :
-        fifo .= "tpl_exec_common *tpl_priority_".[prio string]."_fifo[".[size string]."];\n" ;
+        @uint max_size ;
+        if powerof2 then
+            max_size := 1 ;
+            loop 32 :
+            while size > max_size do
+                max_size := max_size << 1 ;
+            end loop ;
+        else
+            max_size := size ;
+        end if ;
+        fifo .= "tpl_exec_common *tpl_priority_".[prio string]."_fifo[".[max_size string]."];\n" ;
         prio++ ;
     end foreach ;
 
@@ -1195,7 +1220,18 @@ routine generate_ready_list
     prio := 0 ;
     fifo .= "tpl_priority_level tpl_ready_list[".[(max_prio + 1) string]."] = {\n" ;
     foreach ready_list (@uint size) :
-        fifo .= "    { tpl_priority_".[prio string]."_fifo , ".[size string]." }" ;
+        @uint max_size ;
+        if powerof2 then
+            max_size := 1 ;
+            loop 32 :
+            while size > max_size do
+                max_size := max_size << 1 ;
+            end loop ;
+            max_size-- ;
+        else
+            max_size := size ;
+        end if ;
+        fifo .= "    { tpl_priority_".[prio string]."_fifo , ".[max_size string]." }" ;
         if prio < max_prio then fifo .= "," ; end if ;
         fifo .= "\n" ;
         prio++ ;

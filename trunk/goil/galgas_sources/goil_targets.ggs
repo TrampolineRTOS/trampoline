@@ -11,6 +11,8 @@ import semantics goil_routines in "goil_routines.ggs" ;
 import semantics goil_types_task in "goil_types_task.ggs" ;
 import semantics goil_types_isr in "goil_types_isr.ggs" ;
 
+import semantics cfg_types in "cfg_types.ggs" ;
+
 routine init_targets_prefixes ?!@prefix_map prefix :
     @string target ;
     target ?target ;
@@ -36,6 +38,7 @@ end routine ;
 # Context and Stack generation
 #--------------------------------------------------------------------
 routine generate_context_and_stack
+    ?@config          cfg
     ?@lstring         name
     ?@oil_obj         exe
     ?@prefix_map      p
@@ -44,8 +47,9 @@ routine generate_context_and_stack
     @string tpl_context_and_stack := "" ;
     @string context_and_stack := "" ;
     @ident_map idents [emptyMap] ;
+    @attrs attrs := [@attrs new !here ![@cfg_attrs emptyMap]] ;
 
-    @string target ;
+   @string target ;
     target ?target ;
 
     cast exe :
@@ -53,11 +57,23 @@ routine generate_context_and_stack
         retrieveTemplateString ?tpl_context_and_stack !"each_task_specific" ;
         context_and_stack := tpl_context_and_stack ;
         idents := [tk others] ;
+        @basic_type b_attrs ;
+        [cfg get ![@lstring new !"task_attrs" !here] ?b_attrs] ;
+        cast b_attrs :
+        when == @attrs at do attrs := at ;
+        else error here : "Internal error, unknown config task attributes" ;
+        end cast ;
     when == @isr_obj isr do
         retrieveTemplateString ?tpl_context_and_stack !"each_isr_specific" ;
         context_and_stack := tpl_context_and_stack ;
         idents := [isr other_fields] ;
-    else 
+        @basic_type b_attrs ;
+        [cfg get ![@lstring new !"isr_attrs" !here] ?b_attrs] ;
+        cast b_attrs :
+        when == @attrs at do attrs := at ;
+        else error here : "Internal error, unknown config isr attributes" ;
+        end cast ;
+    else
         error name : "Unknown executable object" ;
     end cast ;
 

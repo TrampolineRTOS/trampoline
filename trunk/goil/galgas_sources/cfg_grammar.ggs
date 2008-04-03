@@ -20,6 +20,6 @@ grammar cfg_grammar "LL1" :
     import syntax  cfg_syntax  in "cfg_syntax.ggs" ;
 
     root <cfg_start>
-        !@luint64 tpn
+        !@config cfg
     ;
 end grammar ;

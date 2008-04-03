@@ -76,6 +76,7 @@ compile "goil_timing_prot_attrs.ggs" ;
 compile "goil_code_generation.ggs" ;
 compile "goil_code_msg_gen.ggs" ;
 compile "goil_code_schedtable_gen.ggs" ;
+#compile "goil_orti_gen.ggs";
 #
 # Target specific code generation
 #
