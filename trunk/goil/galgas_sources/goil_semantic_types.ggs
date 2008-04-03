@@ -147,7 +147,7 @@ abstract class @mess_prop_obj {
         foreach dest_list (@lstring obj) while notfound :
 #            message [obj string]."\n" ;
             if nextone then
-                replace !p !"target_ptr" ![obj string] !?res ;
+                performReplace !p !"target_ptr" ![obj string] !?res ;
                 notfound := false ;
             end if ;
             if [obj string] == [name string] then
@@ -181,9 +181,9 @@ abstract class @filter_prop_obj {
         ?@lstring    name
         ?!@string    res :
 
-        replace !p !"msg_name"    ![name string]       !?res ;
-        replace !p !"filter"      ![name string]       !?res ;
-        replace !p !"filter_ptr"  ![name string]       !?res ;
+        performReplace !p !"msg_name"    ![name string]       !?res ;
+        performReplace !p !"filter"      ![name string]       !?res ;
+        performReplace !p !"filter_ptr"  ![name string]       !?res ;
     end method ;        
 }
 
@@ -207,8 +207,8 @@ class @always_filter extends @filter_prop_obj {
         retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
         [self base_generate !p !name !?res] ;
-        replace !p !"filter_func" !"tpl_filter_always" !?res ;
-        replace !p !"filter_kind" !"Always"            !?res ;
+        performReplace !p !"filter_func" !"tpl_filter_always" !?res ;
+        performReplace !p !"filter_kind" !"Always"            !?res ;
     end method ;
 }
 
@@ -222,8 +222,8 @@ class @never_filter extends @filter_prop_obj {
         retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
         [self base_generate !p !name !?res] ;
-        replace !p !"filter_func" !"tpl_filter_never" !?res ;
-        replace !p !"filter_kind" !"Never"            !?res ;
+        performReplace !p !"filter_func" !"tpl_filter_never" !?res ;
+        performReplace !p !"filter_kind" !"Never"            !?res ;
     end method ;
 }
 
@@ -259,8 +259,8 @@ class @newisequal_filter extends @filter_prop_obj {
         retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
         [self base_generate !p !name !?res] ;
-        replace !p !"filter_func" !"tpl_filter_new_is_equal" !?res ;
-        replace !p !"filter_kind" !"New is Equal"            !?res ;
+        performReplace !p !"filter_func" !"tpl_filter_new_is_equal" !?res ;
+        performReplace !p !"filter_kind" !"New is Equal"            !?res ;
     end method ;
 }
 
@@ -274,8 +274,8 @@ class @newisdifferent_filter extends @filter_prop_obj {
         retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
         [self base_generate !p !name !?res] ;
-        replace !p !"filter_func" !"tpl_filter_new_is_different" !?res ;
-        replace !p !"filter_kind" !"New is Different"            !?res ;
+        performReplace !p !"filter_func" !"tpl_filter_new_is_different" !?res ;
+        performReplace !p !"filter_kind" !"New is Different"            !?res ;
     end method ;
 }
 
@@ -331,8 +331,8 @@ class @newisgreater_filter extends @filter_prop_obj {
         retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
         [self base_generate !p !name !?res] ;
-        replace !p !"filter_func" !"tpl_filter_new_is_greater" !?res ;
-        replace !p !"filter_kind" !"New is Greater"            !?res ;
+        performReplace !p !"filter_func" !"tpl_filter_new_is_greater" !?res ;
+        performReplace !p !"filter_kind" !"New is Greater"            !?res ;
     end method ;
 }
 
@@ -346,8 +346,8 @@ class @newislessorequal_filter extends @filter_prop_obj {
         retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
         [self base_generate !p !name !?res] ;
-        replace !p !"filter_func" !"tpl_filter_new_is_less_or_equal" !?res ;
-        replace !p !"filter_kind" !"New is Less or Equal"            !?res ;
+        performReplace !p !"filter_func" !"tpl_filter_new_is_less_or_equal" !?res ;
+        performReplace !p !"filter_kind" !"New is Less or Equal"            !?res ;
     end method ;
 }
 
@@ -361,8 +361,8 @@ class @newisless_filter extends @filter_prop_obj {
         retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
         [self base_generate !p !name !?res] ;
-        replace !p !"filter_func" !"tpl_filter_new_is_less" !?res ;
-        replace !p !"filter_kind" !"New is Less"            !?res ;
+        performReplace !p !"filter_func" !"tpl_filter_new_is_less" !?res ;
+        performReplace !p !"filter_kind" !"New is Less"            !?res ;
     end method ;
 }
 
@@ -376,8 +376,8 @@ class @newisgreaterorequal_filter extends @filter_prop_obj {
         retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
         [self base_generate !p !name !?res] ;
-        replace !p !"filter_func" !"tpl_filter_new_is_greater_or_equal" !?res ;
-        replace !p !"filter_kind" !"New is Greater or Equal"            !?res ;
+        performReplace !p !"filter_func" !"tpl_filter_new_is_greater_or_equal" !?res ;
+        performReplace !p !"filter_kind" !"New is Greater or Equal"            !?res ;
     end method ;
 }
 
@@ -424,14 +424,14 @@ class @ssi_mess_prop extends @mess_prop_obj {
 
         h_res := "" ;
         retrieveTemplateString ?i_res !"message_ssi" ;
-        replace !p !"msg_name" ![name string] !?i_res ;
-        replace !p !"msg" ![name string] !?i_res ;
+        performReplace !p !"msg_name" ![name string] !?i_res ;
+        performReplace !p !"msg" ![name string] !?i_res ;
         if [dests hasKey ![name string]] then
             @ident_list d_mess_list ;
             [dests get !name ?d_mess_list] ;
             @lstring target ;
             [d_mess_list first ?target] ;
-            replace !p !"target" ![target string] !?i_res ;
+            performReplace !p !"target" ![target string] !?i_res ;
         end if ;
     end method ;
 }
@@ -493,14 +493,14 @@ class @szi_mess_prop extends @mess_prop_obj {
 
         h_res := "" ;
         retrieveTemplateString ?i_res !"message_szi" ;
-        replace !p !"msg_name" ![name string] !?i_res ;
-        replace !p !"msg" ![name string] !?i_res ;
+        performReplace !p !"msg_name" ![name string] !?i_res ;
+        performReplace !p !"msg" ![name string] !?i_res ;
         if [dests hasKey ![name string]] then
             @ident_list d_mess_list ;
             [dests get !name ?d_mess_list] ;
             @lstring target ;
             [d_mess_list first ?target] ;
-            replace !p !"target" ![target string] !?i_res ;
+            performReplace !p !"target" ![target string] !?i_res ;
         end if ;
     end method ;
 }
@@ -538,8 +538,8 @@ class @rzi_mess_prop extends @mess_prop_obj {
 
         h_res := "" ;
         retrieveTemplateString ?i_res !"message_rzi" ;
-        replace !p !"msg_name" ![name string] !?i_res ;
-        replace !p !"msg" ![name string] !?i_res ;
+        performReplace !p !"msg_name" ![name string] !?i_res ;
+        performReplace !p !"msg" ![name string] !?i_res ;
 
         # Add the notification structures if any
         [self generate_notif !p !name !mess !?h_res !?i_res] ;
@@ -585,9 +585,9 @@ class @rui_mess_prop extends @mess_prop_obj {
 
         h_res := "" ;
         retrieveTemplateString ?i_res !"message_rui" ;
-        replace !p !"msg_name" ![name string] !?i_res ;
-        replace !p !"msg"      ![name string] !?i_res ;
-        replace !p !"msg_buf"  ![name string] !?i_res ;
+        performReplace !p !"msg_name" ![name string] !?i_res ;
+        performReplace !p !"msg"      ![name string] !?i_res ;
+        performReplace !p !"msg_buf"  ![name string] !?i_res ;
 
         # Add the filter structures if any
         [filter generate !p !name !?i_res] ;
@@ -604,7 +604,7 @@ class @rui_mess_prop extends @mess_prop_obj {
         @mess_prop_obj prop := [sender messageproperty] ;
         cast prop :
         when == @ssi_mess_prop ssi do
-            replace !p !"size" !"sizeof(".[[ssi cdatatype] string].")" !?i_res ;
+            performReplace !p !"size" !"sizeof(".[[ssi cdatatype] string].")" !?i_res ;
         else
             error here : "Incompatible sending message object" ;
         end cast ;
@@ -628,9 +628,9 @@ class @rqi_mess_prop extends @mess_prop_obj {
 
         h_res := "" ;
         retrieveTemplateString ?i_res !"message_rqi" ;
-        replace !p !"msg_name" ![name string] !?i_res ;
-        replace !p !"msg"      ![name string] !?i_res ;
-        replace !p !"msg_buf"  ![name string] !?i_res ;
+        performReplace !p !"msg_name" ![name string] !?i_res ;
+        performReplace !p !"msg"      ![name string] !?i_res ;
+        performReplace !p !"msg_buf"  ![name string] !?i_res ;
 
        # Add the filter structures if any
         [filter generate !p !name !?i_res] ;
@@ -647,16 +647,16 @@ class @rqi_mess_prop extends @mess_prop_obj {
         @mess_prop_obj prop := [sender messageproperty] ;
         cast prop :
         when == @ssi_mess_prop ssi do
-            replace !p !"element_size" !"sizeof(".[[ssi cdatatype] string].")" !?i_res ;
+            performReplace !p !"element_size" !"sizeof(".[[ssi cdatatype] string].")" !?i_res ;
         else
             error here : "Incompatible sending message object" ;
         end cast ;
 
         # Add the size of the queue
-        replace !p !"queue_size"  ![[queuesize uint64] string] !?i_res ;
+        performReplace !p !"queue_size"  ![[queuesize uint64] string] !?i_res ;
 
         # Add the dynamic queue
-        replace !p !"dyn_queue"  ![name string] !?i_res ;
+        performReplace !p !"dyn_queue"  ![name string] !?i_res ;
 
     end method ;
 }

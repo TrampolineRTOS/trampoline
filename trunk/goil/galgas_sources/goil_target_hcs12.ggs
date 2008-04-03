@@ -50,8 +50,8 @@ routine generate_target_hcs12
     ?!@string         result
 :
 
-    replace !p !"hcs12_stack" ![name string] !?result ;
-    replace !p !"hcs12_int_context" ![name string] !?result ;
+    performReplace !p !"hcs12_stack" ![name string] !?result ;
+    performReplace !p !"hcs12_int_context" ![name string] !?result ;
 
     @uint stack_size ;
     additional_int_key_required !"STACKSIZE" !others !name ?stack_size ;
@@ -78,7 +78,7 @@ routine generate_counter_hcs12
     else
         @string tmp;
         retrieveTemplateString ?tmp !"counter_list_specific";
-        replace !p !"counter" ![counter_name string] !?tmp;
+        performReplace !p !"counter" ![counter_name string] !?tmp;
         result .= tmp;
     end cast ;
   end foreach ;

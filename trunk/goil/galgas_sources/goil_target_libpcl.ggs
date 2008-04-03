@@ -19,8 +19,8 @@ routine generate_target_libpcl
     ?@oil_obj         exe
     ?!@string         result :
 
-    replace !p !"libpcl_stack" ![name string] !?result ;
-    replace !p !"libpcl_context" ![name string] !?result ;
+    performReplace !p !"libpcl_stack" ![name string] !?result ;
+    performReplace !p !"libpcl_context" ![name string] !?result ;
     
 
     @uint stack_size;
@@ -89,7 +89,7 @@ routine generate_counter_libpcl
     else
         @string tmp;
         retrieveTemplateString ?tmp !"counter_list_specific";
-        replace !p !"counter" ![counter_name string] !?tmp;
+        performReplace !p !"counter" ![counter_name string] !?tmp;
         result .= tmp;
     end cast ;
   end foreach ;

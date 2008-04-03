@@ -51,8 +51,8 @@ routine generate_target_h8300h
     ?!@string         result
 :
 
-    replace !p !"h8300h_stack" ![name string] !?result ;
-    replace !p !"h8300h_int_context" ![name string] !?result ;
+    performReplace !p !"h8300h_stack" ![name string] !?result ;
+    performReplace !p !"h8300h_int_context" ![name string] !?result ;
 
     @uint stack_size ;
     additional_int_key_required !"STACKSIZE" !others !name ?stack_size ;
@@ -86,7 +86,7 @@ routine generate_isr_h8300h
     #then replace $EXCEPTION_HANDLER$
     tmp := [tmp stringByReplacingStringByString !"$EXCEPTION_HANDLER$" ![trap string]] ;
     #then, replace the interruptHandler name.
-    replace !p !"task_name" ![isr_name string] !?tmp;
+    performReplace !p !"task_name" ![isr_name string] !?tmp;
     result .= tmp;
   end foreach ;
   code := [code stringByReplacingStringByString !"$ISR_LIST$" !result] ;
@@ -104,7 +104,7 @@ routine generate_counter_h8300h
     else
         @string tmp;
         retrieveTemplateString ?tmp !"counter_list_specific";
-        replace !p !"counter" ![counter_name string] !?tmp;
+        performReplace !p !"counter" ![counter_name string] !?tmp;
         result .= tmp;
     end cast ;
   end foreach ;

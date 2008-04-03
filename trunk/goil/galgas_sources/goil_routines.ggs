@@ -84,7 +84,7 @@ routine prefix ?@prefix_map p ?@string key !@string val :
     [p prefix !lkey ?val ?*] ;
 end routine ;
 
-routine replace ?@prefix_map p ?@string key ?@string name ?!@string res :
+routine performReplace ?@prefix_map p ?@string key ?@string name ?!@string res :
     @lstring lkey := [@lstring new !key !here] ;
     @string prefix ;
     @string tag_to_rep ;

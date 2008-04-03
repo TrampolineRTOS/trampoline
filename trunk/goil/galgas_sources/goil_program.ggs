@@ -1,13 +1,22 @@
 program goil_program "version 1.2" :
   import grammar goil_grammar in "goil_grammar.ggs" ;
-  #--- max error and warning count
-  error 100 ;
-  warning 100 ;
+
+#--- Prologue routine
+  routine {
+  }
+
+#---
   when . "oil" message "an '.oil' source file" ??@lstring inSourceFile {
     grammar goil_grammar in inSourceFile ;
   }
+
   when . "OIL" message "an '.OIL' source file" ??@lstring inSourceFile {
     grammar goil_grammar in inSourceFile ;
   }
+
+#--- Epilogue routine
+  routine {
+  }
+
 end program ;
 # vim:ft=ggs:ts=4:sw=4

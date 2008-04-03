@@ -50,12 +50,12 @@ class @setevent_action extends @action_obj {
         @string res ;
         retrieveTemplateString ?res !"notification_setevent" ;
 
-        replace !p !err."notif_name"   ![name string] !?res ;
-        replace !p !err."notification" ![name string] !?res ;
-        replace !p !"task" ![task_name string] !?res ;
-        replace !p !"event" ![event_name string] !?res ;
+        performReplace !p !err."notif_name"   ![name string] !?res ;
+        performReplace !p !err."notification" ![name string] !?res ;
+        performReplace !p !"task" ![task_name string] !?res ;
+        performReplace !p !"event" ![event_name string] !?res ;
 
-        replace !p !key ![name string] !?i_res ;
+        performReplace !p !key ![name string] !?i_res ;
 
         i_res := res."\n".i_res ;
    end method ;
@@ -75,11 +75,11 @@ class @activatetask_action extends @action_obj {
         @string res ;
         retrieveTemplateString ?res !"notification_activatetask" ;
 
-        replace !p !err."notif_name"   ![name string]      !?res ;
-        replace !p !err."notification" ![name string]      !?res ;
-        replace !p !"task"         ![task_name string] !?res ;
+        performReplace !p !err."notif_name"   ![name string]      !?res ;
+        performReplace !p !err."notification" ![name string]      !?res ;
+        performReplace !p !"task"         ![task_name string] !?res ;
 
-        replace !p !key ![name string] !?i_res ;
+        performReplace !p !key ![name string] !?i_res ;
 
         i_res := res."\n".i_res ;
    end method ;
@@ -98,11 +98,11 @@ class @callback_action extends @action_obj {
         @string res ;
         retrieveTemplateString ?res !"notification_activatetask" ;
 
-        replace !p !err."notif_name"   ![name string] !?res ;
-        replace !p !err."notification" ![name string] !?res ;
-        replace !p !"callback" ![function_name string] !?res ;
+        performReplace !p !err."notif_name"   ![name string] !?res ;
+        performReplace !p !err."notification" ![name string] !?res ;
+        performReplace !p !"callback" ![function_name string] !?res ;
 
-        replace !p !key ![name string] !?i_res ;
+        performReplace !p !key ![name string] !?i_res ;
 
         i_res := res."\n".i_res ;
    end method ;
@@ -121,11 +121,11 @@ class @flag_action extends @action_obj {
         @string res ;
         retrieveTemplateString ?res !"notification_flag" ;
 
-        replace !p !err."notif_name"   ![name string] !?res ;
-        replace !p !err."notification" ![name string] !?res ;
-        replace !p !"flag_fct" ![flag_name string] !?res ;
+        performReplace !p !err."notif_name"   ![name string] !?res ;
+        performReplace !p !err."notification" ![name string] !?res ;
+        performReplace !p !"flag_fct" ![flag_name string] !?res ;
 
-        replace !p !key ![name string] !?i_res ;
+        performReplace !p !key ![name string] !?i_res ;
 
         i_res := res."\n".i_res ;
     end method ;
