@@ -18,15 +18,96 @@
 syntax cfg_syntax :
 
 import lexique cfg_lexique in "cfg_lexique.ggs" ;
+import semantics cfg_types in "cfg_types.ggs" ;
 
 nonterminal <cfg_start>
-    !@luint64 tpn
+    !@config cfg
+;
+
+nonterminal <cfg_attrs>
+    ?!@cfg_attrs attrs
 ;
 
 rule <cfg_start>
-    !@luint64 tpn
+    !@config cfg
 :
-	$tp_ns_per_counter_tick$ ; $=$ ; $uint$ ?tpn ; $;$ ;
+    cfg := [@config emptyMap] ;
+
+    @cfg_attrs task_attrs [emptyMap] ;
+    @cfg_attrs isr_attrs [emptyMap] ;
+    @cfg_attrs isr_code_attrs [emptyMap] ;
+    @cfg_attrs counter_code_attrs [emptyMap] ;
+
+    repeat
+    while
+        @luint64 tpn ;
+        $tp_ns_per_counter_tick$ ; $=$ ; $uint$ ?tpn ; $;$ ;
+        if [cfg hasKey !"wd_ticks_per_ns"] then
+            error here : "Redefinition of tp_ns_per_counter_tick" ;
+        else
+            [!?cfg put
+                ![@lstring new !"wd_ticks_per_ns" !here]
+                ![@uint64_class new ![tpn location] ![tpn uint64]]
+            ] ;
+        end if ;
+    while
+        @luint64 s_align ;
+        $stack_alignment$ ; $=$ ; $uint$ ?s_align ; $;$ ;
+        if [cfg hasKey ! "stack_align"] then
+            error here : "Redefinition of stack_alignment" ;
+        else
+            [!?cfg put
+                ![@lstring new !"stack_align" !here]
+                ![@uint64_class new ![s_align location] ![s_align uint64]]
+            ] ;
+        end if ;
+    while
+        @lstring oil_attr ;
+        @lstring tpl_attr ;
+        $task$ ; ${$ ; <cfg_attrs> !?task_attrs ; $}$ ; $;$ ;
+    while
+        @lstring oil_attr ;
+        @lstring tpl_attr ;
+        $isr$ ; ${$ ; <cfg_attrs> !?isr_attrs ; $}$ ; $;$ ;
+    while
+        @lstring oil_attr ;
+        @lstring tpl_attr ;
+        $isr_code$ ; ${$ ; <cfg_attrs> !?isr_code_attrs ; $}$ ; $;$ ;
+    while
+        @lstring oil_attr ;
+        @lstring tpl_attr ;
+        $counter_code$ ; ${$ ; <cfg_attrs> !?counter_code_attrs ; $}$ ; $;$ ;
+    end repeat ;
+
+    [!?cfg put
+        ![@lstring new !"task_attrs" !here]
+        ![@attrs new !here !task_attrs]
+    ] ;
+    [!?cfg put
+        ![@lstring new !"isr_attrs" !here]
+        ![@attrs new !here !isr_attrs]
+    ] ;
+    [!?cfg put
+        ![@lstring new !"isr_code_attrs" !here]
+        ![@attrs new !here !isr_code_attrs]
+    ] ;
+    [!?cfg put
+        ![@lstring new !"counter_code_attrs" !here]
+        ![@attrs new !here !counter_code_attrs]
+    ] ;
+end rule ;
+
+
+rule <cfg_attrs>
+    ?!@cfg_attrs attrs
+:
+    repeat
+    while
+        @lstring oil_attr ;
+        @lstring tpl_attr ;
+        $idf$ ?oil_attr ; $=$ ; $idf$ ?tpl_attr ; $;$ ;
+        [!?attrs put !oil_attr !tpl_attr] ;
+    end repeat ;
 end rule ;
 
 end syntax ;
