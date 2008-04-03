@@ -306,14 +306,14 @@ routine generate_alarms
         cast alarm_action :
         when == @setevent_action sea do
             result := tpl_alarm_setevent ;
-            replace !p !"task"  ![[sea task_name] string] !?result ;
-            replace !p !"event" ![[sea event_name] string] !?result ;
+            performReplace !p !"task"  ![[sea task_name] string] !?result ;
+            performReplace !p !"event" ![[sea event_name] string] !?result ;
         when == @activatetask_action ata do
             result := tpl_alarm_activatetask ;
-            replace !p !"task" ![[ata task_name] string] !?result ;
+            performReplace !p !"task" ![[ata task_name] string] !?result ;
         when == @callback_action cba do
             result := tpl_alarm_callback ;
-            replace !p !"callback" ![[cba function_name] string] !?result ;
+            performReplace !p !"callback" ![[cba function_name] string] !?result ;
         when == @incrementcounter_action ica do
             result := tpl_alarm_incrementcounter ;
             result := [result stringByReplacingStringByString !"$TARGET_COUNTER$" !"descriptor_of_counter_".[[ica counter_name] string]] ;
@@ -342,9 +342,9 @@ routine generate_alarms
 # sets up the remaining params
         @lstring counter_name ;
         counter_name := [alarm counter_name] ;
-        replace !p !"alarm_name"   ![alarm_name string]  !?result ;
-        replace !p !"alarm"   ![alarm_name string]  !?result ;
-        replace !p !"counter" ![counter_name string] !?result ;
+        performReplace !p !"alarm_name"   ![alarm_name string]  !?result ;
+        performReplace !p !"alarm"   ![alarm_name string]  !?result ;
+        performReplace !p !"counter" ![counter_name string] !?result ;
         alarms_result := alarms_result . "\n" . result ;
     end foreach ;
 
@@ -657,13 +657,13 @@ routine generate_tasks
 
         result := result . tpl_task ;
 
-        replace !p !"task_name"     ![task_name string] !?result ;
-        replace !p !"task_function" ![task_name string] !?result ;
-        replace !p !"task"          ![task_name string] !?result ;
-        replace !p !"task_static"   ![task_name string] !?result ;
-        replace !p !"task_context"  ![task_name string] !?result ;
-        replace !p !"task_stack"    ![task_name string] !?result ;
-        replace !p !"task_id"       ![task_name string] !?result ;
+        performReplace !p !"task_name"     ![task_name string] !?result ;
+        performReplace !p !"task_function" ![task_name string] !?result ;
+        performReplace !p !"task"          ![task_name string] !?result ;
+        performReplace !p !"task_static"   ![task_name string] !?result ;
+        performReplace !p !"task_context"  ![task_name string] !?result ;
+        performReplace !p !"task_stack"    ![task_name string] !?result ;
+        performReplace !p !"task_id"       ![task_name string] !?result ;
         
         # compute the type of the task (basic or extended) according to
         # the events the task uses. If the task does not use any event,
@@ -699,7 +699,7 @@ routine generate_tasks
                     @resource_property_obj rez_prop := [rez property] ;
                     cast rez_prop :
                     when == @resource_property_internal_obj do
-                         replace !p !"resource_ptr" !rez_name !?result ;
+                         performReplace !p !"resource_ptr" !rez_name !?result ;
                          no_internal_rez_found := false ;
                     else
                     end cast ;
@@ -786,13 +786,13 @@ routine generate_isrs
 
         result := result . tpl_isr ;
 
-        replace !p !"isr_name"     ![isr_name string] !?result ;
-        replace !p !"isr_function" ![isr_name string] !?result ;
-        replace !p !"isr"          ![isr_name string] !?result ;
-        replace !p !"isr_static"   ![isr_name string] !?result ;
-        replace !p !"isr_context"  ![isr_name string] !?result ;
-        replace !p !"isr_stack"    ![isr_name string] !?result ;
-        replace !p !"isr_helper"   ![isr_name string] !?result ;
+        performReplace !p !"isr_name"     ![isr_name string] !?result ;
+        performReplace !p !"isr_function" ![isr_name string] !?result ;
+        performReplace !p !"isr"          ![isr_name string] !?result ;
+        performReplace !p !"isr_static"   ![isr_name string] !?result ;
+        performReplace !p !"isr_context"  ![isr_name string] !?result ;
+        performReplace !p !"isr_stack"    ![isr_name string] !?result ;
+        performReplace !p !"isr_helper"   ![isr_name string] !?result ;
         
         @uint actual_prio ;
         [actual_priorities get !isr_name ?actual_prio ?*] ;
@@ -848,8 +848,8 @@ routine generate_counters
         @string tmp := "";
         @string result := tpl_counter ;
 
-        replace !p !"counter_name" ![counter_name string] !?result ;
-        replace !p !"counter" ![counter_name string] !?result ;
+        performReplace !p !"counter_name" ![counter_name string] !?result ;
+        performReplace !p !"counter" ![counter_name string] !?result ;
  
         @basic_type ticks_as_basic ;
         ticks_as_basic := [counter ticks_per_base] ;
@@ -969,8 +969,8 @@ routine generate_resources
             error resource_name : "Unknown property found" ;
         end cast ;
 
-        replace !p !"resource_name" ![resource_name string] !?result ;
-        replace !p !"resource"      ![resource_name string] !?result ;
+        performReplace !p !"resource_name" ![resource_name string] !?result ;
+        performReplace !p !"resource"      ![resource_name string] !?result ;
 
         result := [result stringByReplacingStringByString !"$PRIORITY$" ![prio string]] ;
         result := [result stringByReplacingStringByString !"$USAGE$" !usage] ;
@@ -1072,9 +1072,9 @@ routine generate_events
         cast evt_mask :
         when == @event_mask_user_obj emu do
             @string result := tpl_event ;
-            replace !p !"event" ![evt_name string] !?result ;
-            replace !p !"event_name" ![evt_name string] !?result ;
-            replace !p !"event_mask" ![[[emu mask] uint64] string] !?result ;
+            performReplace !p !"event" ![evt_name string] !?result ;
+            performReplace !p !"event_name" ![evt_name string] !?result ;
+            performReplace !p !"event_mask" ![[[emu mask] uint64] string] !?result ;
             header_result .= result."\n" ;
         else
         end cast ;
@@ -1150,9 +1150,9 @@ routine generate_events
 #        message "found ".[needle string]."\n" ;
         common_mask := common_mask | needle ;
         @string result := tpl_event ;
-        replace !p !"event" ![evt string] !?result ;
-        replace !p !"event_name" ![evt string] !?result ;
-        replace !p !"event_mask" ![needle string] !?result ;
+        performReplace !p !"event" ![evt string] !?result ;
+        performReplace !p !"event_name" ![evt string] !?result ;
+        performReplace !p !"event_mask" ![needle string] !?result ;
         header_result .= result."\n" ;
     end foreach ;
 
