@@ -161,7 +161,7 @@ class @scheduletable_obj extends @oil_obj {
         @string act_structs := "" ;
         @string expiry_table := "tpl_expiry_point *".[name string]."_expiry_table[$EXPIRY_TABLE_SIZE$] = {\n" ;
 
-        foreach actions (@uint64 offset @action_obj action) :
+        foreach actions (@uint64 offset @action_obj action) do
             if offset != cur_offset then
                 # output the table of actions for the previous expiry point
                 expiry_point !name !cur_offset !previous_offset !index !?act_table ;

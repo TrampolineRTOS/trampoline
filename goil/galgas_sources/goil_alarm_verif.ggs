@@ -7,7 +7,7 @@ routine counters_of_alarms_defined
     ?@alarm_map   alarms
     ?@counter_map counters
 :
-  foreach alarms (@lstring name @alarm_obj alarm) :
+  foreach alarms (@lstring name @alarm_obj alarm) do
     @lstring counter := [alarm counter_name] ;
     if not [counters hasKey ![counter string]] then
       error counter : "counter ".[counter string]." is not defined";

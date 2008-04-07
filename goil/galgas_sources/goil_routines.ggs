@@ -115,7 +115,7 @@ routine obj_table
     @string obj_prefix ;
     @string obj_ids := "" ;
     prefix !p !prefix ?obj_prefix ;
-    foreach names (@string name) :
+    foreach names (@string name) do
         header := header."#define ".varname."_id_of_".name."  ".[n string]."\n" ;
         header := header."#define ".name."  ".varname."_id_of_".name."\n" ;
         implementation := implementation."    (tpl_".typename." *)&".obj_prefix.name ;
@@ -220,7 +220,7 @@ routine file_in_path
     @string include_path := [@string stringWithEnvironmentVariable !"GOIL_INCLUDE_PATH"] ;
     @stringlist path_list := [include_path componentsSeparatedByString !":"] ;
     @bool not_found := true ;
-    foreach path_list (@string path):
+    foreach path_list (@string path) do
         @string full_file_path := path ;
         if full_file_path != "" then
             if [full_file_path characterAtIndex !([full_file_path length] - 1)] != '/' then

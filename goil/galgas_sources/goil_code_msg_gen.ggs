@@ -24,14 +24,14 @@ routine generate_messages
     @message_map mm := messages ;
     @ident_list_map dests [emptyMap] ;
     
-    foreach mm (@lstring name @message_obj mess) :
+    foreach mm (@lstring name @message_obj mess) do
         @mess_prop_obj mp := [mess messageproperty] ;
         @lstring src ;
         [mp s_mess ?src] ;
 
         if ([src string] != "") & (not [dests hasKey ![src string]]) then
            @ident_list dest_list [emptyList] ;
-           foreach mm (@lstring same_name @message_obj same_mess) :
+           foreach mm (@lstring same_name @message_obj same_mess) do
                 @mess_prop_obj same_mp := [same_mess messageproperty] ;
                 @lstring same_src ;
                 [same_mp s_mess ?same_src] ;
@@ -43,9 +43,9 @@ routine generate_messages
         end if ;
     end foreach ;
 
-#    foreach dests (@lstring src @ident_list d_mess) :
+#    foreach dests (@lstring src @ident_list d_mess) do
 ##        message [src string].": " ;
-#        foreach d_mess (@lstring dst) :
+#        foreach d_mess (@lstring dst) do
 #            message "[".[dst string]."] ";
 #        end foreach ;
 ##        message "\n" ;
@@ -55,10 +55,10 @@ routine generate_messages
 
     # generate the code of the message objects in the
     # good order.
-    foreach dests (@lstring src @ident_list d_mess) :
+    foreach dests (@lstring src @ident_list d_mess) do
         @ident_list dm := d_mess ;
 
-#        foreach dm (@lstring mn) :
+#        foreach dm (@lstring mn) do
 #            message "[".[mn string]."]" ;
 #        end foreach ;
 
@@ -83,7 +83,7 @@ routine generate_messages
         result .= i_res ;
    end foreach ;
 
-#    foreach messages (@lstring name @message_obj mess) :
+#    foreach messages (@lstring name @message_obj mess) do
 #       @mess_prop_obj mp := [mess messageproperty] ;
 #       [mp generate !p !name !mess !messages !dests ?h_res ?i_res] ;
 #       message i_res ;
@@ -97,7 +97,7 @@ routine generate_messages
     # Build 2 stringsets, 1 of the sending and 1 of the receiving message objects
     # Build also a stringset of flag notification used (both normal and error)
     #
-    foreach messages (@lstring name @message_obj mess) :
+    foreach messages (@lstring name @message_obj mess) do
         @mess_prop_obj mp := [mess messageproperty] ;
         cast mp :
         when == @ssi_mess_prop do smo += ![name string] ;
@@ -168,7 +168,7 @@ routine generate_messages
         retrieveTemplateString ?flag_macros !"flag_macros" ;
         retrieveTemplateString ?flag_function !"flag_function" ;
 
-        foreach flags (@string flag) :
+        foreach flags (@string flag) do
            @string fm := flag_macros ;
            fm := [fm stringByReplacingStringByString !"$FLAGNAME$" !flag] ;
            @uint flag_elem := flag_order / 8 ;

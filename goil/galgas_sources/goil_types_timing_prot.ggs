@@ -20,7 +20,7 @@ routine gen_rez_table
 :
     table := "" ;
     @uint i := 0;
-    foreach rez (@lstring rez_name *) :
+    foreach rez (@lstring rez_name *) do
         if [rezlocks hasKey ![rez_name string]] then
             @uint64 time ;
             [rezlocks get !rez_name ?time] ;

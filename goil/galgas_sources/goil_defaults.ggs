@@ -78,10 +78,10 @@ routine verify_and_set_tasks_defaults
 :
     @task_map tp := tasks ;
 
-    foreach tp (@lstring key @task_obj task) :
+    foreach tp (@lstring key @task_obj task) do
         [!?tasks del !key ?*] ;
         @ident_map others := [task others] ;
-        foreach spec (@lstring field @imp_type f_def) :
+        foreach spec (@lstring field @imp_type f_def) do
             if    [field string] == "PRIORITY"  then
                 check_range ![task priority] !f_def ;
             elsif [field string] == "" then
@@ -120,10 +120,10 @@ routine verify_and_set_isrs_defaults
 :
     @isr_map ip := isrs ;
 
-    foreach ip (@lstring key @isr_obj isr) :
+    foreach ip (@lstring key @isr_obj isr) do
         [!?isrs del !key ?*] ;
         @ident_map others := [isr other_fields] ;
-        foreach spec (@lstring field @imp_type f_def) :
+        foreach spec (@lstring field @imp_type f_def) do
             if    [field string] == "PRIORITY"  then
 message "PRIORITY!\n";
             elsif [field string] == "" then
