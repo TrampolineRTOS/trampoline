@@ -15,7 +15,7 @@ routine tasks_well_formed ?@task_map tasks :
     @stringset defined_events [emptySet] ;
     @lstring defined_schedule := [@lstring new !"" !here] ;
     @task_autostart_obj defined_autostart := [@task_autostart_void new !here] ;
-    foreach tasks (@lstring task_name @task_obj task) :
+    foreach tasks (@lstring task_name @task_obj task) do
         defined_priority := [task priority] ;
         cast defined_priority :
         when == @void do
@@ -48,7 +48,7 @@ end routine ;
 
 routine counters_well_formed ?@counter_map counters :
     @basic_type defined_value := [@void new !here];
-    foreach counters (@lstring counter_name @counter_obj counter) :
+    foreach counters (@lstring counter_name @counter_obj counter) do
         defined_value := [counter max_allowed_value] ;
         cast defined_value :
             when == @void do 
@@ -73,7 +73,7 @@ end routine ;
 routine alarms_well_formed ?@alarm_map alarms :
     @action_obj defined_action := [@void_action new !here] ;
     @autostart_obj defined_autostart := [@autostart_void new !here] ;
-    foreach alarms (@lstring alarm_name @alarm_obj alarm) :
+    foreach alarms (@lstring alarm_name @alarm_obj alarm) do
         if [[alarm counter_name] string] == "" then
             error [alarm_name location] : "COUNTER attribute undefined for ALARM " . [alarm_name string] ;
         end if ;
@@ -92,7 +92,7 @@ end routine ;
 
 routine resources_well_formed ?@resource_map resources :
     @resource_property_obj defined_value := [@resource_property_void_obj new !here] ;
-    foreach resources (@lstring resource_name @resource_obj resource) :
+    foreach resources (@lstring resource_name @resource_obj resource) do
         defined_value := [resource property] ;
         cast defined_value :
         when == @resource_property_void_obj do
@@ -103,7 +103,7 @@ end routine ;
 
 routine events_well_formed ?@event_map events :
     @event_mask_obj defined_value := [@event_mask_void_obj new !here] ;
-    foreach events (@lstring event_name @event_obj event) :
+    foreach events (@lstring event_name @event_obj event) do
         defined_value := [event mask] ;
         cast defined_value :
         when == @event_mask_void_obj mask do
@@ -115,7 +115,7 @@ end routine ;
 
 routine isrs_well_formed ?@isr_map isrs :
     @basic_type defined_value := [@void new !here] ;
-    foreach isrs (@lstring isr_name @isr_obj isr) :
+    foreach isrs (@lstring isr_name @isr_obj isr) do
         defined_value := [isr category] ;
         cast defined_value :
         when == @void do 
@@ -134,7 +134,7 @@ routine messages_well_formed ?@message_map messages :
     @action_obj defined_notif := [@void_action new !here] ;
     @action_obj defined_notif_error := [@void_action new !here] ;
 
-    foreach messages (@lstring message_name @message_obj mess) :
+    foreach messages (@lstring message_name @message_obj mess) do
 
         defined_mess_prop := [mess messageproperty] ;
         cast defined_mess_prop :
@@ -195,7 +195,7 @@ routine resolve_linked_resources
             unresolved_next := [@resource_map emptyMap] ;
         end if ;
     while ([unresolved count] > 0) do 
-        foreach unresolved (@lstring res_key @resource_obj res) :
+        foreach unresolved (@lstring res_key @resource_obj res) do
 
             @resource_property_obj res_prop ;
             res_prop := [res property] ;
@@ -242,7 +242,7 @@ routine resolve_linked_resources
         if ([unresolved count] == [unresolved_next count])
         then
             error here : "Cycle detected in linked resource" ;
-            foreach unresolved_next (@lstring unresolved_key *) :
+            foreach unresolved_next (@lstring unresolved_key *) do
                 error unresolved_key : "Involved in cycle" ;
             end foreach ;
         end if;
@@ -263,12 +263,12 @@ routine all_events_and_resources_and_messages_defined_and_used
     @stringset used_messages [emptySet] ;
 
     #Events and resources and messages referenced in a task are defined
-    foreach tasks (@lstring task_name @task_obj task) :
+    foreach tasks (@lstring task_name @task_obj task) do
 
         #all referenced events must be defined
         @stringset task_events ;
         task_events := [task events] ;
-        foreach task_events (@string event_name) :
+        foreach task_events (@string event_name) do
             used_events += !event_name ;
             if (not [events hasKey !event_name])
             then error task_name : "EVENT " . event_name . " is not defined" ;
@@ -278,7 +278,7 @@ routine all_events_and_resources_and_messages_defined_and_used
         #all referenced resources must be defined
         @stringset task_resources ;
         task_resources := [task resources] ;
-        foreach task_resources (@string res_name) :
+        foreach task_resources (@string res_name) do
             used_resources += !res_name ;
             if (not [resources hasKey !res_name])
             then error task_name : "RESOURCE " . res_name . " is not defined" ;
@@ -288,7 +288,7 @@ routine all_events_and_resources_and_messages_defined_and_used
         #all referenced messages must be defined
         @stringset task_messages ;
         task_messages := [task messages] ;
-        foreach task_messages (@string mess_name) :
+        foreach task_messages (@string mess_name) do
             used_messages += !mess_name ;
             if (not [messages hasKey !mess_name]) then
                 error task_name : "MESSAGE " .mess_name . " is not defined" ;
@@ -297,11 +297,11 @@ routine all_events_and_resources_and_messages_defined_and_used
     end foreach ;
 
     # Resources and messages referenced in an ISR are defined
-    foreach isrs (@lstring isr_name @isr_obj isr) :
+    foreach isrs (@lstring isr_name @isr_obj isr) do
 
         #all referenced resources must be defined
         @stringset isr_resources := [isr resources] ;
-        foreach isr_resources (@string res_name) :
+        foreach isr_resources (@string res_name) do
             used_resources+= !res_name ;
             if (not [resources hasKey !res_name])
             then error isr_name : "RESOURCE " . res_name . " is not defined" ;
@@ -311,7 +311,7 @@ routine all_events_and_resources_and_messages_defined_and_used
         #all referenced messages must be defined
         @stringset isr_messages ;
         isr_messages := [isr messages] ;
-        foreach isr_messages (@string mess_name) :
+        foreach isr_messages (@string mess_name) do
             used_messages += !mess_name ;
             if (not [messages hasKey !mess_name]) then
                 error isr_name : "MESSAGE " .mess_name . " is not defined" ;
@@ -321,21 +321,21 @@ routine all_events_and_resources_and_messages_defined_and_used
     end foreach ;
 
     #all defined events should be referenced in a task
-    foreach events (@lstring event_key *) :
+    foreach events (@lstring event_key *) do
         if (not [used_events hasKey ![event_key string]])
         then warning event_key : "EVENT " . [event_key string] . " is defined but never used" ;
         end if ;
     end foreach ;
 
     #all defined resources should be referenced in a task or an ISR
-    foreach resources (@lstring res_key *) :
+    foreach resources (@lstring res_key *) do
         if (not [used_resources hasKey ![res_key string]])
         then warning res_key : "RESOURCE " . [res_key string] . " is defined but never used" ;
         end if ;
     end foreach ;
 
     #all defined messages should be referenced in a task or an ISR
-    foreach messages (@lstring mess_key *) :
+    foreach messages (@lstring mess_key *) do
         if (not [used_messages hasKey ![mess_key string]])
         then warning mess_key : "MESSAGE " . [mess_key string] . " is defined but never used" ;
         end if ;
@@ -347,7 +347,7 @@ routine all_event_masks_different
     ?@event_map events 
 :
     @stringset defined_masks [emptySet] ;
-    foreach events (@lstring event_name @event_obj event) :
+    foreach events (@lstring event_name @event_obj event) do
         @event_mask_obj mask ;
         mask := [event mask] ;
         cast mask :
@@ -370,7 +370,7 @@ routine all_alarm_actions_correct
     @stringset defined_task_names ;
 
     defined_task_names := [tasks allKeys] ;
-    foreach alarms (@lstring alarm_name @alarm_obj alarm_data) :
+    foreach alarms (@lstring alarm_name @alarm_obj alarm_data) do
         @action_obj alarm_action ;
         alarm_action := [alarm_data action_params] ;
         cast alarm_action :

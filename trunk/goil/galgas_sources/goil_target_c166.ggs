@@ -55,7 +55,7 @@ routine generate_counter_c166
   ?! @string code
 :
   @string result := "";
-  foreach counters (@lstring counter_name @counter_obj counter) :
+  foreach counters (@lstring counter_name @counter_obj counter) do
     @string tmp;
     retrieveTemplateString ?tmp !"counter_list_specific";
     performReplace !p !"counter" ![counter_name string] !?tmp;

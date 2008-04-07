@@ -230,7 +230,7 @@ routine generate_flags
         # set. Otherwise, it is not set
         @bool use_tp := false;
 
-        foreach tasks (* @task_obj task) :
+        foreach tasks (* @task_obj task) do
             cast [task timing_prot] :
             when == @void_timing_prot do
             else
@@ -238,7 +238,7 @@ routine generate_flags
             end cast;
         end foreach;
 
-        foreach isrs (* @isr_obj isr) :
+        foreach isrs (* @isr_obj isr) do
             cast [isr timing_prot] :
             when == @void_timing_prot do
             else
@@ -252,7 +252,7 @@ routine generate_flags
     end if ;
 
     # Output the boolean free flags
-    foreach [os others] (@lstring key @basic_type f_obj) :
+    foreach [os others] (@lstring key @basic_type f_obj) do
         cast f_obj :
         when == @bool_class b do
             if [b value] then
@@ -297,7 +297,7 @@ routine generate_alarms
     retrieveTemplateString ?tpl_alarm_callback         !"alarm_callback" ;
     retrieveTemplateString ?tpl_alarm_incrementcounter !"alarm_inc_counter" ;
 
-    foreach alarms (@lstring alarm_name @alarm_obj alarm) :
+    foreach alarms (@lstring alarm_name @alarm_obj alarm) do
         @string result := "" ;
 
 # sets up the kind of alarm and its action
@@ -375,7 +375,7 @@ routine compute_actual_task_priority
     # This list is sorted from the lower priority task
     # to the higher priority task
     #
-    foreach tasks (@lstring task_name @task_obj task) :
+    foreach tasks (@lstring task_name @task_obj task) do
         @basic_type prio_as_basic ;
         @basic_type act_as_basic ;
         @uint prio := 0 ;
@@ -408,7 +408,7 @@ routine compute_actual_task_priority
     #
     # Compute the actual priority of the tasks starting from 1
     #
-    foreach tl (@uint relative_prio @uint act @lstring tn) :
+    foreach tl (@uint relative_prio @uint act @lstring tn) do
 #        message "Prio = ".[relative_prio string].", nom = ".[tn string]."\n" ;
         if (relative_prio > cur_rel_prio) then
             cur_rel_prio := relative_prio ;
@@ -440,7 +440,7 @@ routine compute_actual_isr_priority
         # This list is sorted from the lower priority isr
         # to the higher priority isr
         #
-        foreach isrs (@lstring isr_name @isr_obj isr) :
+        foreach isrs (@lstring isr_name @isr_obj isr) do
             @basic_type prio_as_basic ;
             @basic_type act_as_basic ;
             @uint prio := 0 ;
@@ -474,7 +474,7 @@ routine compute_actual_isr_priority
         #
         # Compute the actual priority of the isrs starting from floor + 1
         #
-        foreach il (@uint relative_prio @uint a @lstring isn) :
+        foreach il (@uint relative_prio @uint a @lstring isn) do
 #            message "Prio = ".[relative_prio string].", nom = ".[isn string]."\n" ;
             if (relative_prio > cur_rel_prio) then
                 cur_rel_prio := relative_prio ;
@@ -515,11 +515,11 @@ routine compute_rez_priority
     # computed priority to that priority
     #
 
-    foreach rez (@lstring rez_name ...) :
+    foreach rez (@lstring rez_name ...) do
         @uint rez_prio := 0 ;
         @uint rez_act := 0 ;
         @string rez_comment := "" ;
-        foreach tasks (@lstring tn @task_obj t) :
+        foreach tasks (@lstring tn @task_obj t) do
             @stringset owned_rez := [t resources] ;
             if [owned_rez hasKey ![rez_name string]] then
                 @uint prio ;
@@ -532,7 +532,7 @@ routine compute_rez_priority
                 rez_comment .= " used by task ".[tn string]." (".[prio string].")\n" ;
             end if ;
         end foreach ;
-        foreach isrs (@lstring isn @isr_obj i) :
+        foreach isrs (@lstring isn @isr_obj i) do
             @stringset owned_rez := [i resources] ;
             if [owned_rez hasKey ![rez_name string]] then
                 @uint prio;
@@ -554,7 +554,7 @@ routine compute_rez_priority
         # The higher priority task/isr that may own a resource had its activation
         # count added but it should not be. So substract it
         #
-        foreach tasks (@lstring tn @task_obj t) :
+        foreach tasks (@lstring tn @task_obj t) do
             @stringset owned_rez := [t resources] ;
             if [owned_rez hasKey ![rez_name string]] then
                 @uint prio ;
@@ -565,7 +565,7 @@ routine compute_rez_priority
                 end if ;
             end if ;
         end foreach ;
-        foreach isrs (@lstring isn @isr_obj i) :
+        foreach isrs (@lstring isn @isr_obj i) do
             @stringset owned_rez := [i resources] ;
             if [owned_rez hasKey ![rez_name string]] then
                 @uint prio;
@@ -607,13 +607,13 @@ routine compute_ready_list
     while prio <= max_prio do
         # look for objects with the same priority
         @uint fifosize := 0 ;
-        foreach prio_for_task (@lstring n @uint p @uint a) :
+        foreach prio_for_task (@lstring n @uint p @uint a) do
             if p == prio then fifosize := fifosize + a ; end if ;
         end foreach ;
-        foreach prio_for_isr (@lstring n @uint p @uint a) :
+        foreach prio_for_isr (@lstring n @uint p @uint a) do
             if p == prio then fifosize := fifosize + a ; end if ;
         end foreach ;
-        foreach prio_for_rez (@lstring n @uint p @uint a) :
+        foreach prio_for_rez (@lstring n @uint p @uint a) do
             if p == prio then fifosize := fifosize + a ; end if ;
         end foreach ;
 
@@ -649,7 +649,7 @@ routine generate_tasks
     @uint max_prio := 0 ;
     @bool non_preemptable_exists := false ;
 
-    foreach tasks (@lstring task_name @task_obj task) :
+    foreach tasks (@lstring task_name @task_obj task) do
         @string tmp ;
         @string result := "" ;
 
@@ -692,7 +692,7 @@ routine generate_tasks
             # Schedule is FULL. Look for the usage of an internal resource
             @stringset used_rez := [task resources] ;
             @bool no_internal_rez_found := true ;
-            foreach used_rez (@string rez_name) :
+            foreach used_rez (@string rez_name) do
                 if no_internal_rez_found then
                     @resource_obj rez ;
                     [resources get ![@lstring new !rez_name !here] ?rez] ;
@@ -778,7 +778,7 @@ routine generate_isrs
 
     retrieveTemplateString ?tpl_isr !"isr" ;
 
-    foreach isrs (@lstring isr_name @isr_obj isr) :
+    foreach isrs (@lstring isr_name @isr_obj isr) do
         @string tmp := "" ;
         @string result := "" ;
 
@@ -844,7 +844,7 @@ routine generate_counters
 
     retrieveTemplateString ?tpl_counter !"counter" ;
 
-    foreach counters (@lstring counter_name @counter_obj counter) :
+    foreach counters (@lstring counter_name @counter_obj counter) do
         @string tmp := "";
         @string result := tpl_counter ;
 
@@ -890,7 +890,7 @@ routine generate_counters
     # IncrementCounter, GetCounterValue and GetElapsedCounterValue
     if [option goil_options.autosar_on] then
         @ident_list soft_counters [emptyList] ;
-        foreach counters (@lstring counter_name @counter_obj counter) :
+        foreach counters (@lstring counter_name @counter_obj counter) do
             cast [counter type] :
             when == @software_counter do
                 soft_counters += !counter_name ;
@@ -901,7 +901,7 @@ routine generate_counters
         if [soft_counters length] > 0 then
             @uint i := 0 ;
             @string counter_table := "tpl_counter *tpl_counter_table[".[[soft_counters length] string]."] = {\n" ;
-            foreach soft_counters (@lstring counter_name) :
+            foreach soft_counters (@lstring counter_name) do
                 counter_table .= "    &descriptor_of_counter_".[counter_name string] ;
                 counter_ids .= "#define ".[counter_name string]." ".[i string]."\n" ;
                 i++ ;
@@ -942,7 +942,7 @@ routine generate_resources
     retrieveTemplateString ?tpl_resource !"resource" ;
     retrieveTemplateString ?tpl_internal_resource !"internal_resource" ;
 
-    foreach resources (@lstring resource_name @resource_obj resource) :
+    foreach resources (@lstring resource_name @resource_obj resource) do
         
         @string result ;
         @string name := [resource_name string] ;
@@ -1021,11 +1021,11 @@ routine generate_events
     @task_mask task_mask [emptyMap] ;
     @stringset_map tasks_for_event [emptyMap] ; 
 
-    foreach tasks (@lstring task_name @task_obj task) :
+    foreach tasks (@lstring task_name @task_obj task) do
         @stringset events_used ;
         events_used := [task events] ;
         @uint64 event_mask := 0L ;
-        foreach events_used (@string evt_name) :
+        foreach events_used (@string evt_name) do
             @event_obj event ;
             [events get ![@lstring new !evt_name !here] ?event] ;
             @event_mask_obj mask_obj ;
@@ -1066,7 +1066,7 @@ routine generate_events
     #
     # Output the user events
     #
-    foreach events (@lstring evt_name @event_obj evt) :
+    foreach events (@lstring evt_name @event_obj evt) do
         @event_mask_obj evt_mask ;
         evt_mask := [evt mask] ;
         cast evt_mask :
@@ -1092,7 +1092,7 @@ routine generate_events
     loop evt_count + 1 :
     while [evt_usage count] > 0 do
         max := 0 ;
-        foreach evt_usage (@lstring key @uint count) :
+        foreach evt_usage (@lstring key @uint count) do
 #            message [key string]." : ".[count string]."\n" ;
             if count > max
             then
@@ -1103,7 +1103,7 @@ routine generate_events
 #        message "max = ".[max string]."\n" ;
 
         to_delete := [@events emptyList] ;
-        foreach evt_usage (@lstring key @uint count) :
+        foreach evt_usage (@lstring key @uint count) do
             if count == max
             then
                 ordered_evt += !key ;
@@ -1112,13 +1112,13 @@ routine generate_events
             end if ;
         end foreach ;
 
-        foreach to_delete (@lstring key) :
+        foreach to_delete (@lstring key) do
 #            message "destruction de : ".[key string]."\n" ;
             [!?evt_usage delete !key ?*] ;
         end foreach ;
 
 #        message "taille de la map = ".[[evt_usage count] string]."\n" ;
-#        foreach evt_usage (@lstring key @uint count) :
+#        foreach evt_usage (@lstring key @uint count) do
 #            message "Il reste : ".[key string].", ".[count string]."\n" ;
 #        end foreach ;
     end loop ;
@@ -1130,12 +1130,12 @@ routine generate_events
 
 #    log task_mask ;
     @uint64 common_mask := 0L ;
-    foreach ordered_evt (@lstring evt) :
+    foreach ordered_evt (@lstring evt) do
 #        message [evt string]."\n" ;
         # build the user mask
         @stringset ref_tasks ;
         [tasks_for_event get !evt ?ref_tasks] ;
-        foreach ref_tasks (@string task_name) :
+        foreach ref_tasks (@string task_name) do
             @uint64 mask ;
             [task_mask get_mask ![@lstring new !task_name !here] ?mask] ;
             common_mask := common_mask | mask ;
@@ -1189,7 +1189,7 @@ routine generate_ready_list
         end cast ;
     end if ;
 
-    foreach ready_list (@uint size) :
+    foreach ready_list (@uint size) do
         @uint max_size ;
         if powerof2 then
             max_size := 1 ;
@@ -1219,7 +1219,7 @@ routine generate_ready_list
 
     prio := 0 ;
     fifo .= "tpl_priority_level tpl_ready_list[".[(max_prio + 1) string]."] = {\n" ;
-    foreach ready_list (@uint size) :
+    foreach ready_list (@uint size) do
         @uint max_size ;
         if powerof2 then
             max_size := 1 ;

@@ -48,11 +48,11 @@ routine generate_isr_libpcl
 
   @isr_list list_isr [emptySortedList];
 
-  foreach isrs (@lstring isr_name *) :
+  foreach isrs (@lstring isr_name *) do
     list_isr += !isr_name ![isr_name string];
   end foreach;
     
-  foreach list_isr (@lstring isr_name *) :
+  foreach list_isr (@lstring isr_name *) do
     @isr_obj isr;
     [isrs get !isr_name ?isr];
     if not first then result .= ",\n";
@@ -83,7 +83,7 @@ routine generate_counter_libpcl
   ?!  @string code
 :
   @string result := "";
-  foreach counters (@lstring counter_name @counter_obj counter) :
+  foreach counters (@lstring counter_name @counter_obj counter) do
     cast [counter type] :
     when == @software_counter do
     else

@@ -144,7 +144,7 @@ abstract class @mess_prop_obj {
         @bool nextone := false ;
         [dests get !sendingmessage ?dest_list] ;
 
-        foreach dest_list (@lstring obj) while notfound :
+        foreach dest_list (@lstring obj) while notfound do
 #            message [obj string]."\n" ;
             if nextone then
                 performReplace !p !"target_ptr" ![obj string] !?res ;

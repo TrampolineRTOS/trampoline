@@ -17,7 +17,7 @@ routine generate_schedule_tables
     @string i_result := "" ;
     @string st_table := "tpl_schedule_table *tpl_schedtable_table[SCHEDTABLE_COUNT] = {\n" ;
     @uint i := 0 ;
-    foreach sts (@lstring name @scheduletable_obj st) :
+    foreach sts (@lstring name @scheduletable_obj st) do
         [st generate !name !?i_result] ;
         h_result .= "#define ".[name string]."    ".[i string]."\n" ;
         st_table .= "    &".[name string]."_sched_table" ;

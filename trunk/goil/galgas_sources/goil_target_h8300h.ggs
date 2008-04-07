@@ -75,7 +75,7 @@ routine generate_isr_h8300h
   ?! @string     code
 :
   @string result := "";
-  foreach isrs (@lstring isr_name @isr_obj isr) :
+  foreach isrs (@lstring isr_name @isr_obj isr) do
     @ident_map others := [isr other_fields];
     @uint trap ;
     additional_int_key_required !"EXCEPTION_HANDLER" !others !isr_name ?trap ;
@@ -98,7 +98,7 @@ routine generate_counter_h8300h
   ?!  @string code
 :
   @string result := "";
-  foreach counters (@lstring counter_name @counter_obj counter) :
+  foreach counters (@lstring counter_name @counter_obj counter) do
     cast [counter type] :
     when == @software_counter do
     else

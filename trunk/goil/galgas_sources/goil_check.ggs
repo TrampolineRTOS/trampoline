@@ -41,7 +41,7 @@ routine check_uint32_range
         end if ;
     when == @uint32_list l do
         @bool not_matched := true ;
-        foreach [l li] (@uint good_val) :
+        foreach [l li] (@uint good_val) do
             if val == good_val then
                 not_matched := false ;
             end if ;

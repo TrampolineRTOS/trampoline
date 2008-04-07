@@ -88,7 +88,7 @@ routine generate_counter_ppc
   ?! @string      code
 :
   @string result := "";
-  foreach counters (@lstring counter_name @counter_obj counter) :
+  foreach counters (@lstring counter_name @counter_obj counter) do
     cast [counter type] :
     when == @software_counter do
     else
