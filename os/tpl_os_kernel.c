@@ -211,6 +211,9 @@ VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER = {
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
+
+#ifdef WITH_POWEROF2QUEUE
+
 #ifdef WITH_DOW
 /*
  */
@@ -219,7 +222,184 @@ FUNC(void, OS_CODE) printrl(
 {
     int i,j;
     tpl_exec_common **level;
-    int size;
+    u8 mask;
+
+    printf("%s - Highest: %d\n",msg,tpl_h_prio);
+    for (i = 0; i < PRIO_LEVEL_COUNT; i++)
+    {
+        printf("P%2d: ",i);
+        level = tpl_ready_list[i].fifo;
+        mask = tpl_ready_list[i].mask;
+        for (j = 0; j < tpl_fifo_rw[i].size; j++)
+        {
+            int idx = mask & (tpl_fifo_rw[i].read + j);
+            printf(" %d",level[idx]->static_desc->id);
+        }
+        printf("\n");
+    }
+}
+#endif
+
+/**
+ * @internal
+ *
+ * tpl_get_exec_object extracts the highest priority ready executable
+ * object from the executable objects list and returns it.
+ * tpl_get_exec_object returns NULL if no ready executable object
+ * is available
+ *
+ * This version of the function works for a power of 2 priority queue size
+ *
+ * @return highest priority executable object descriptor
+ */
+_STATIC_ /*@null@*/
+FUNC(P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC), OS_CODE)
+tpl_get_exec_object(void)
+{
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) elected = NULL ;
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) *highest;
+    VAR(u8, AUTOMATIC)  read_idx;
+
+    DOW_ASSERT((tpl_h_prio >= 0) && (tpl_h_prio < PRIO_LEVEL_COUNT))
+    DOW_ASSERT(tpl_fifo_rw[tpl_h_prio].size > 0)
+
+    DOW_DO(printrl("tpl_get_exec_object - avant");)
+
+    /*  Get the highest priority non empty fifo                         */
+    highest = tpl_ready_list[tpl_h_prio].fifo;
+
+    /*  Get the read index                                              */
+    read_idx = tpl_fifo_rw[tpl_h_prio].read;
+
+    /*  The fifo is not empty, get the descriptor                       */
+    elected = highest[read_idx];
+
+    /*  Adjust the read index and the size                              */
+    read_idx = (read_idx + 1) & tpl_ready_list[tpl_h_prio].mask;
+    tpl_fifo_rw[tpl_h_prio].read = read_idx;
+    tpl_fifo_rw[tpl_h_prio].size--;
+
+    /*  Adjust the highest priority non empty fifo index                */
+    while ((tpl_h_prio >= 0) && (tpl_fifo_rw[tpl_h_prio].size == 0))
+    {
+        tpl_h_prio--;
+    }
+
+    DOW_DO(printrl("tpl_get_exec_object - apres");)
+
+    return elected;
+}
+
+/**
+ * @internal
+ *
+ * tpl_put_preempted_exec_object put a preempted executable object
+ * in the ready executable object list
+ *
+ * This version of the function works for a power of 2 priority queue size
+ *
+ * @param exec_obj address of the executable object descriptor
+ */
+FUNC(void, OS_CODE)
+tpl_put_preempted_exec_object(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj)
+{
+    /*  Get the current priority of the executable object                   */
+    VAR(tpl_priority, AUTOMATIC)                    prio;
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) *fifo;
+    VAR(u8, AUTOMATIC)                              write_idx;
+
+    DOW_DO(printrl("tpl_put_prempted_exec_object - avant");)
+
+    /*  the priority used as level in the ready list
+        for a preempted object is the current priority                  */
+    prio = exec_obj->priority;
+
+    DOW_ASSERT((prio >= 0) && (prio < PRIO_LEVEL_COUNT))
+    DOW_ASSERT(tpl_fifo_rw[prio].size < tpl_ready_list[prio].size)
+
+    /*  a preempted executable object is put at the head of the fifo    */
+    write_idx = (tpl_fifo_rw[prio].read - 1) & tpl_ready_list[prio].mask ;
+
+    tpl_fifo_rw[prio].read = write_idx;
+
+    /*  Get the corresponding fifo                                          */
+    fifo = tpl_ready_list[prio].fifo;
+
+    /*  put the executable object in it */
+    fifo[write_idx] = exec_obj ;
+
+    /* adjust the size                                                      */
+    tpl_fifo_rw[prio].size++;
+
+    /* adjust the highest priority non empty fifo                           */
+    if (prio > tpl_h_prio) {
+        tpl_h_prio = prio;
+    }
+
+    DOW_DO(printrl("tpl_put_preempted_exec_object - apres");)
+}
+
+/**
+ * @internal
+ *
+ * tpl_put_new_exec_object put a newly activated executable object
+ * in the ready executable object list
+ *
+ * This version of the function works for a power of 2 priority queue size
+ *
+ * @param exec_obj address of the executable object descriptor
+ */
+FUNC(void, OS_CODE) tpl_put_new_exec_object(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj)
+{
+    /*  Get the current priority of the executable object                   */
+    VAR(tpl_priority, AUTOMATIC)    prio;
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) *fifo;
+    VAR(u8, AUTOMATIC)              write_idx;
+
+    DOW_DO(printrl("tpl_put_new_exec_object - avant");)
+
+    /*  the priority used as level in the ready list
+        for a newly activated object is the base priority               */
+    prio = exec_obj->static_desc->base_priority;
+
+    DOW_ASSERT((prio >= 0) && (prio < PRIO_LEVEL_COUNT))
+    DOW_ASSERT(tpl_fifo_rw[prio].size < tpl_ready_list[prio].size)
+
+    /*  a newly activated executable object
+        is put at the end of the fifo                                   */
+    write_idx = (tpl_fifo_rw[prio].read + tpl_fifo_rw[prio].size) &
+                tpl_ready_list[prio].mask;
+
+    /*  Get the corresponding fifo                                          */
+    fifo = tpl_ready_list[prio].fifo;
+
+    /*  put the executable object in it */
+    fifo[write_idx] = exec_obj ;
+
+    /* adjust the size                                                      */
+    tpl_fifo_rw[prio].size++;
+
+    /* adjust the highest priority non empty fifo                           */
+    if (prio > tpl_h_prio) {
+        tpl_h_prio = prio;
+    }
+
+    DOW_DO(printrl("tpl_put_new_exec_object - apres");)
+}
+
+#else /* WITH_POWEROF2QUEUE */
+
+#ifdef WITH_DOW
+/*
+ */
+FUNC(void, OS_CODE) printrl(
+    P2VAR(char, OS_APPL_DATA, AUTOMATIC) msg)
+{
+    int i,j;
+    tpl_exec_common **level;
+    u8 size;
 
     printf("%s - Highest: %d\n",msg,tpl_h_prio);
     for (i = 0; i < PRIO_LEVEL_COUNT; i++)
@@ -248,6 +428,8 @@ FUNC(void, OS_CODE) printrl(
  * object from the executable objects list and returns it.
  * tpl_get_exec_object returns NULL if no ready executable object
  * is available
+ *
+ * This version of the function works for a priority queue of any size
  *
  * @return highest priority executable object descriptor
  */
@@ -298,6 +480,8 @@ tpl_get_exec_object(void)
  *
  * tpl_put_preempted_exec_object put a preempted executable object
  * in the ready executable object list
+ *
+ * This version of the function works for a priority queue of any size
  *
  * @param exec_obj address of the executable object descriptor
  */
@@ -351,6 +535,8 @@ tpl_put_preempted_exec_object(
  * tpl_put_new_exec_object put a newly activated executable object
  * in the ready executable object list
  *
+ * This version of the function works for a priority queue of any size
+ *
  * @param exec_obj address of the executable object descriptor
  */
 FUNC(void, OS_CODE) tpl_put_new_exec_object(
@@ -395,6 +581,8 @@ FUNC(void, OS_CODE) tpl_put_new_exec_object(
 
     DOW_DO(printrl("tpl_put_new_exec_object - apres");)
 }
+
+#endif /* WITH_POWEROF2QUEUE */
 
 /**
  * @internal

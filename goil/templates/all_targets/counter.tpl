@@ -7,6 +7,9 @@ tpl_counter $COUNTER$ = {
     /* minimum cycle        */  $MIN_CYCLE$,
     /* current tick         */  0,
     /* current date         */  0,
+#ifdef WITH_AUTOSAR
+    /* kind the counter     */  $COUNTER_KIND$,
+#endif
     /* first alarm          */  NULL,
     /* next alarm to raise  */  NULL
 };

@@ -94,6 +94,30 @@
 #define OSServiceId_GetScheduleTableStatus  71
 
 /**
+ * @def OSServiceId_SetScheduleTableAsync
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #SetScheduleTableAsync
+ */
+#define OSServiceId_SetScheduleTableAsync   72
+
+/**
+ * @def OSServiceId_StartScheduleTableSynchron
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #StartScheduleTableSynchron
+ */
+#define OSServiceId_StartScheduleTableSynchron  73
+
+/**
+ * @def OSServiceId_SyncScheduleTable
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #SyncScheduleTable
+ */
+#define OSServiceId_SyncScheduleTable           74
+
+/**
  * @def STORE_SCHEDTABLE_ID
  *
  * Stores a schedule table identifier into service error variable
@@ -283,6 +307,47 @@
     }
 #endif
 
+/**
+ * @def CHECK_SCHEDTABLE_SYNC
+ *
+ * Checks a schedule table is synchronizable with global time. This is
+ * used in StartScheduleTableSynchron service
+ *
+ * @param sched_table_id #ScheduleTableType the schedule table
+ * @param result error code to set if check fails
+ *
+ * @note error code is not set if it does not equal E_OK at start
+ * @note checking is disable when OS_EXTENDED is not defined
+ * @note sched_table_id should be checked before doing this check
+ */
+ 
+/* No extended error checking (! OS_EXTENDED)  */
+#if !defined(OS_EXTENDED)
+    /* Does not check the schedule table sync in this case  */
+#   define CHECK_SCHEDTABLE_SYNC(sched_table_id, result)
+#endif
+
+/* NO_SCHEDTABLE and extended error checking (OS_EXTENDED)  */
+#if defined(NO_SCHEDTABLE) && defined(OS_EXTENDED)
+    /* E_OS_ID is returned in this case  */
+#   define CHECK_SCHEDTABLE_SYNC(sched_table_id, result)    \
+    if (result == (tpl_status)E_OK)                         \
+    {                                                       \
+        result = (tpl_status)E_OS_ID;                       \
+    }
+#endif
+
+/* !NO_SCHEDTABLE and extended error checking (OS_EXTENDED)             */
+#if !defined(NO_SCHEDTABLE) && defined(OS_EXTENDED)
+    /* E_OK or E_OS_ID when the schedule table cannot be synchronized   */
+#   define CHECK_SCHEDTABLE_SYNC(sched_table_id, result)                    \
+    if ((result == (tpl_status)E_OK) &&                                     \
+        ((((tpl_schedtable_static *)(tpl_schedtable_table[sched_table_id]-> \
+            b_desc.stat_part))->sync_strat) == NULL))                       \
+    {                                                                       \
+        result = (tpl_status)E_OS_ID;                                       \
+    }
+#endif
 
 /**
  * @def CHECK_SCHEDTABLE_COUNTERS
@@ -350,21 +415,62 @@
 /* NO_COUNTER and extended error checking (OS_EXTENDED)      */
 #if defined(NO_COUNTER) && defined(OS_EXTENDED)
     /* E_OS_ID is returned in this case  */
-#   define CHECK_COUNTER_ID_ERROR(cnt_id,result)     \
-    if (result == (tpl_status)E_OK)                             \
-    {                                                           \
-        result = (tpl_status)E_OS_ID;                           \
+#   define CHECK_COUNTER_ID_ERROR(cnt_id,result)    \
+    if (result == (tpl_status)E_OK)                 \
+    {                                               \
+        result = (tpl_status)E_OS_ID;               \
     }
 #endif
 
 /* !NO_COUNTER and extended error checking (OS_EXTENDED)     */
 #if !defined(NO_COUNTER) && defined(OS_EXTENDED)
     /* E_OK or E_OS_LIMIT   */
-#   define CHECK_COUNTER_ID_ERROR(cnt_id,result)     \
-    if ((result == (tpl_status)E_OK) &&                         \
-        ((cnt_id) >= (tpl_counter_id)COUNTER_COUNT)) \
-    {                                                           \
-        result = (tpl_status)E_OS_ID;                           \
+#   define CHECK_COUNTER_ID_ERROR(cnt_id,result)        \
+    if ((result == (tpl_status)E_OK) &&                 \
+        ((cnt_id) >= (tpl_counter_id)COUNTER_COUNT))    \
+    {                                                   \
+        result = (tpl_status)E_OS_ID;                   \
+    }
+#endif
+
+/**
+ * @def CHECK_COUNTER_KIND_ERROR
+ *
+ * Checks if cnt_id the identifier of a software counter.
+ *
+ * @param cnt_id #CounterType to check
+ * @param result error code to set if check fails
+ *
+ * @note error code is not set if it do not equals E_OK
+ *
+ * @note checking is disable when OS_EXTENDED is not defined
+ *
+ */
+
+/* No extended error checking (! OS_EXTENDED)  */
+#if !defined(OS_EXTENDED)
+    /* Does not check the sched_table_id in this case */
+#   define CHECK_COUNTER_KIND_ERROR(cnt_id,result)
+#endif
+
+/* NO_COUNTER and extended error checking (OS_EXTENDED)      */
+#if defined(NO_COUNTER) && defined(OS_EXTENDED)
+    /* E_OS_ID is returned in this case  */
+#   define CHECK_COUNTER_KIND_ERROR(cnt_id,result)  \
+    if (result == (tpl_status)E_OK)                 \
+    {                                               \
+        result = (tpl_status)E_OS_ID;               \
+    }
+#endif
+
+/* !NO_COUNTER and extended error checking (OS_EXTENDED)     */
+#if !defined(NO_COUNTER) && defined(OS_EXTENDED)
+    /* E_OK or E_OS_LIMIT   */
+#   define CHECK_COUNTER_KIND_ERROR(cnt_id,result)                  \
+    if ((result == (tpl_status)E_OK) &&                             \
+        ((tpl_counter_table[cnt_id]->kind) != SOFTWARE_COUNTER))    \
+    {                                                               \
+        result = (tpl_status)E_OS_ID;                               \
     }
 #endif
 

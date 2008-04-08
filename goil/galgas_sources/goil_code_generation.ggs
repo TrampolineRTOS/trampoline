@@ -67,6 +67,8 @@ routine init_prefixes ?!@prefix_map prefix :
               !"descriptor_of_counter_" !"$COUNTER$"] ;
     [!?prefix add ![@lstring new !"counter_name" !here]
               !"" !"$COUNTER_NAME$"] ;
+    [!?prefix add ![@lstring new !"counter_kind" !here]
+              !"" !"$COUNTER_KIND$"] ;
 
     [!?prefix add ![@lstring new !"event" !here]
               !"mask_of_" !"$EVENT$"] ;
@@ -876,6 +878,20 @@ routine generate_counters
         result := [result stringByReplacingStringByString !"$MIN_CYCLE$" !tmp] ;
         counters_cst .= "#define OSMINCYCLE_".[counter_name string]." ".tmp."\n\n" ;
 
+        #
+        # The COUNTER TYPE is specific to the AUTOSAR extension.
+        # There is no software counter in OSEK.
+        #
+        if [option goil_options.autosar_on] then
+            @counter_type type := [counter type];
+            cast type :
+            when == @software_counter do tmp := "SOFTWARE_COUNTER" ;
+            when == @hardware_counter do tmp := "HARDWARE_COUNTER" ;
+            else error [type location] : "Unknown COUNTER TYPE value" ;
+            end cast ;
+            result := [result stringByReplacingStringByString !"$COUNTER_KIND$" !tmp] ;
+        end if ;
+
         counters_result := counters_result . "\n" . result ;
     end foreach ;
  
@@ -886,34 +902,23 @@ routine generate_counters
     @string counter_ids := "";
 
     # For AUTOSAR extension, generate a counter table
-    # of software counters to allow access by API functions
+    # of counters to allow access by API functions
     # IncrementCounter, GetCounterValue and GetElapsedCounterValue
     if [option goil_options.autosar_on] then
-        @ident_list soft_counters [emptyList] ;
-        foreach counters (@lstring counter_name @counter_obj counter) do
-            cast [counter type] :
-            when == @software_counter do
-                soft_counters += !counter_name ;
-            else end cast ;
+        obj_header := [obj_header stringByReplacingStringByString !"$COUNTER_COUNT$" ![[counters count] string]] ;
+        @uint i := 0 ;
+        @string counter_table := "";
+        foreach counters (@lstring counter_name @counter_obj counter)
+        before counter_table := "tpl_counter *tpl_counter_table[".[[counters count] string]."] = {\n" ;
+        do
+            counter_table .= "    &descriptor_of_counter_".[counter_name string] ;
+            counter_ids .= "#define ".[counter_name string]." ".[i string]."\n" ;
+            i++ ;
+        between counter_table .= ",\n";
+        after counter_table .= "\n";    
         end foreach ;
-        obj_header := [obj_header stringByReplacingStringByString !"$COUNTER_COUNT$" ![[soft_counters length] string]] ;
-
-        if [soft_counters length] > 0 then
-            @uint i := 0 ;
-            @string counter_table := "tpl_counter *tpl_counter_table[".[[soft_counters length] string]."] = {\n" ;
-            foreach soft_counters (@lstring counter_name) do
-                counter_table .= "    &descriptor_of_counter_".[counter_name string] ;
-                counter_ids .= "#define ".[counter_name string]." ".[i string]."\n" ;
-                i++ ;
-                if i < [soft_counters length] then
-                    counter_table .= ",\n" ;
-                else
-                    counter_table .= "\n" ;
-                end if ;
-            end foreach ;
-            counter_table .= "};\n" ;
-            counters_result .= counter_table ;
-        end if ;
+        counter_table .= "};\n" ;
+        counters_result .= counter_table ;
     end if ;
 
 

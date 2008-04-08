@@ -74,7 +74,7 @@ FUNC(void, OS_CODE) StartOS(
     tpl_init_os(mode);
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    tpl_init_timing_protection ();
+    tpl_init_timing_protection();
 #endif
 
     /*  Call the startup hook. According to the spec, it should be called
