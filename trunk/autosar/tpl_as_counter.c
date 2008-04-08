@@ -66,6 +66,7 @@ FUNC(StatusType, OS_CODE) IncrementCounter(VAR(CounterType, AUTOMATIC) counter_i
 
     /*  check a counter_id error                    */
     CHECK_COUNTER_ID_ERROR(counter_id,result)
+    CHECK_COUNTER_KIND_ERROR(counter_id,result)
 
 #ifndef NO_COUNTER
     IF_NO_EXTENDED_ERROR(result)

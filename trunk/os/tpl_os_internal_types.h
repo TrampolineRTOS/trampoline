@@ -116,6 +116,34 @@
  */
 #define TRAMPOLINE_STATUS_MASK  0xE0
 
+#ifdef WITH_AUTOSAR
+/**
+ * @def HARDWARE_COUNTER
+ *
+ * Identifies a hardware counter
+ *
+ * @see #tpl_counter_kind
+ */
+#define HARDWARE_COUNTER    0
+
+/**
+ * @def SOFTWARE_COUNTER
+ *
+ * Identifies a software counter
+ *
+ * @see #tpl_counter_kind
+ */
+#define SOFTWARE_COUNTER    1
+
+/**
+ * @typedef tpl_counter_kind
+ *
+ * Kind (hardware or software) of a counter
+ */
+typedef u8 tpl_counter_kind;
+
+#endif
+
 /**
  * @typedef tpl_bool
  *
@@ -430,6 +458,7 @@ struct TPL_TASK {
  */
 typedef struct TPL_TASK tpl_task;
 
+
 /**
  * @typedef tpl_fifo_state
  *
@@ -440,17 +469,36 @@ typedef struct {
     VAR(u8, AUTOMATIC) size;
 } tpl_fifo_state;
 
+#ifdef WITH_POWEROF2QUEUE
+
+/**
+ * @typedef tpl_priority_level
+ *
+ * This type is a structure used to store the information for a priority
+ * level (pointer to a fifo and the mask of the fifo. The mask is used
+ * to keep read and write index within the fifo.
+ * It is the element of the ready list table.
+ */
+typedef struct {
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) *fifo;
+    VAR(u8, AUTOMATIC) mask;
+} tpl_priority_level;
+
+#else /* WITH_POWEROF2QUEUE */
+
 /**
  * @typedef tpl_priority_level
  *
  * This type is a structure used to store the information for a priority
  * level (pointer to a fifo and the size of the fifo.
- * It is the element od the ready list table.
+ * It is the element of the ready list table.
  */
 typedef struct {
     P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) *fifo;
     VAR(u8, AUTOMATIC) size;
 } tpl_priority_level;
+
+#endif /* WITH_POWEROF2QUEUE */
 
 /**
  * @struct TPL_RESOURCE
@@ -529,17 +577,6 @@ typedef struct TPL_INTERNAL_RESOURCE tpl_internal_resource;
  * - #ALARM_AUTOSTART (only before startup)
  */
 typedef u8 tpl_time_obj_state;
-
-/**
- * @typedef tpl_alarm_kind
- *
- * Sort of alarm. Value can be one of :
- * - #ALARM_CALLBACK
- * - #ALARM_TASK_ACTIVATION
- * - #ALARM_EVENT_SETTING
- */
-typedef u8 tpl_alarm_kind;
-
 
 /**
  * @typedef tpl_action_func
@@ -685,6 +722,10 @@ struct TPL_COUNTER {
                                                                            counter increments             */
     VAR(tpl_tick, AUTOMATIC)                      current_tick;   /**< current tick value of the counter  */
     VAR(tpl_tick, AUTOMATIC)                      current_date;   /**< current value of the counter       */
+#ifdef WITH_AUTOSAR
+    CONST(tpl_counter_kind, AUTOMATIC)            kind;           /**< kind (hardware or software) of the
+                                                                       counter                            */
+#endif
     P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC)  first_to;       /**< active alarms list head            */
     P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC)  next_to;        /**< next active alarms                 */
 };
