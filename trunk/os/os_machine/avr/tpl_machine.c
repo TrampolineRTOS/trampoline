@@ -18,22 +18,10 @@
 #include "tpl_os_application_def.h"   /* NO_ALARM */
 #include "tpl_os_generated_configuration.h"	   /* TASK_COUNT and ISR_COUNT*/
 #include "tpl_os_definitions.h" /* IS_ROUTINE  */
-#include <AVRCS.H>	/*TODO: update with a more generic standard include file.*/
-
-
-#pragma warning disable = 47 /* disables the "unreferenced parameter" warning */
-							 /* used for the tpl_switch_context function      */
-
+#include "tpl_os_internal_types.h"
 
 avr_context idle_task_context;
 
-
-#define SMALL_MEMORY_MODEL
-
-#ifdef SMALL_MEMORY_MODEL
-/* use a register bank for interrupts and in the context switch function */
-unsigned int registers_it[16];
-unsigned int registers_avr[TASK_COUNT+ISR_COUNT+1][16];
 
 /*
  * tpl_sleep is used by the idle task
@@ -41,172 +29,110 @@ unsigned int registers_avr[TASK_COUNT+ISR_COUNT+1][16];
 void tpl_sleep(void)
 {
 	while(1);
-/*	__asm {
-		IDLE
-	}
-*/
 }
 
 void tpl_shutdown(void)
 {
 	/* remove ITs */
-	IEN = 0;
 	/* TODO: update to set idle mode.*/
 	while (1); 
 }
 
-void tpl_switch_context(tpl_context *old_context, tpl_context *new_context) // a traduire en assembleur
+void tpl_switch_context(tpl_context *old_context, tpl_context *new_context)
 {
-    //mettre PC sur la pile du old
-    old_context-=2;
-    old_context->sp=PCMSB; /* see the page 335 of the datasheet */
-    //mettre SREG sur la pile du old
-    old_context--;
-    old_context->sp=SREG;
-    /* put the register R00 to R31 on the stack of old_context */
-    old_context--;
-    old_context->sp=R00;
-    old_context--;
-    old_context->sp=R01;
-    old_context--;
-    old_context->sp=R02;
-    old_context--;
-    old_context->sp=R03;
-    old_context--;
-    old_context->sp=R04;
-    old_context--;
-    old_context->sp=R05;
-    old_context--;
-    old_context->sp=R06;
-    old_context--;
-    old_context->sp=R07;
-    old_context--;
-    old_context->sp=R08;
-    old_context--;
-    old_context->sp=R09;
-    old_context--;
-    old_context->sp=R10;
-    old_context--;
-    old_context->sp=R11;
-    old_context--;
-    old_context->sp=R12;
-    old_context--;
-    old_context->sp=R13;
-    old_context--;
-    old_context->sp=R14;
-    old_context--;
-    old_context->sp=R15;
-    old_context--;
-    old_context->sp=R16;
-    old_context--;
-    old_context->sp=R17;
-    old_context--;
-    old_context->sp=R18;
-    old_context--;
-    old_context->sp=R19;
-    old_context--;
-    old_context->sp=R20;
-    old_context--;
-    old_context->sp=R21;
-    old_context--;
-    old_context->sp=R22;
-    old_context--;
-    old_context->sp=R23;
-    old_context--;
-    old_context->sp=R24;
-    old_context--;
-    old_context->sp=R25;
-    old_context--;
-    old_context->sp=R26;
-    old_context--;
-    old_context->sp=R27;
-    old_context--;
-    old_context->sp=R28;
-    old_context--;
-    old_context->sp=R29;
-    old_context--;
-    old_context->sp=R30;
-    old_context--;
-    old_context->sp=R31;
-    //sortir registre 0-31 de la pile du new
-    R31=new_context->sp;
-    new_context++;
-    R30=new_context->sp;
-    new_context++;
-    R29=new_context->sp;
-    new_context++;
-    R28=new_context->sp;
-    new_context++;
-    R27=new_context->sp;
-    new_context++;
-    R26=new_context->sp;
-    new_context++;
-    R25=new_context->sp;
-    new_context++;
-    R24=new_context->sp;
-    new_context++;
-    R23=new_context->sp;
-    new_context++;
-    R22=new_context->sp;
-    new_context++;
-    R21=new_context->sp;
-    new_context++;
-    R20=new_context->sp;
-    new_context++;
-    R19=new_context->sp;
-    new_context++;
-    R18=new_context->sp;
-    new_context++;
-    R17=new_context->sp;
-    new_context++;
-    R16=new_context->sp;
-    new_context++;
-    R15=new_context->sp;
-    new_context++;
-    R14=new_context->sp;
-    new_context++;
-    R13=new_context->sp;
-    new_context++;
-    R12=new_context->sp;
-    new_context++;
-    R11=new_context->sp;
-    new_context++;
-    R10=new_context->sp;
-    new_context++;
-    R09=new_context->sp;
-    new_context++;
-    R08=new_context->sp;
-    new_context++;
-    R07=new_context->sp;
-    new_context++;
-    R06=new_context->sp;
-    new_context++;
-    R05=new_context->sp;
-    new_context++;
-    R04=new_context->sp;
-    new_context++;
-    R03=new_context->sp;
-    new_context++;
-    R02=new_context->sp;
-    new_context++;
-    R01=new_context->sp;
-    new_context++;
-    R00=new_context->sp;
-    new_context++;
-    //sortir SREG de la pile du new
-    SREG=new_context->sp;
-    new_context++;
-    //faire RET (ne pas dépiler le PC)
    __asm
    {
-       ret
+    
+    
+	SPSE ?,#0                   //if there is no context
+	JMP RESTORE_NEW_CONTEXT     //jump directly to RESTORE_NEW_CONTEXT
+	
+    // We are on the old context stack and the PCMSB is allready saved.
+    // So, we can now save the system registers (on the old context stack)	
+    PUSH SREG
+    PUSH R00
+    PUSH R01
+    PUSH R02
+    PUSH R03
+    PUSH R04
+    PUSH R05
+    PUSH R06
+    PUSH R07
+    PUSH R08
+    PUSH R09
+    PUSH R10
+    PUSH R11
+    PUSH R12
+    PUSH R13
+    PUSH R14
+    PUSH R15
+    PUSH R16
+    PUSH R17
+    PUSH R18
+    PUSH R19
+    PUSH R20
+    PUSH R21
+    PUSH R22
+    PUSH R23
+    PUSH R24
+    PUSH R25
+    PUSH R26
+    PUSH R27
+    PUSH R28
+    PUSH R29
+    PUSH R30
+    PUSH R31
+    
+    
+RESTORE_NEW_CONTEXT:     
+    
+    //Now, we go to the new context stack
+    out SPH, ?
+    out SPL, ?
+       
+    //And we can restore the system registers.
+    POP R31
+    POP R30
+    POP R29
+    POP R28
+    POP R27
+    POP R26
+    POP R25    
+    POP R24
+    POP R23
+    POP R22
+    POP R21
+    POP R20
+    POP R19
+    POP R18    
+    POP R17
+    POP R16
+    POP R15
+    POP R14
+    POP R13
+    POP R12
+    POP R11    
+    POP R10
+    POP R09
+    POP R08
+    POP R07
+    POP R06
+    POP R05
+    POP R04        
+    POP R03
+    POP R02
+    POP R01
+    POP R00
+    POP SREG
+    // We must NOT "POP" the PSMSB, Just RET !        
+    ret
    }
 }
 
 void tpl_switch_context_from_it(tpl_context * old_context, tpl_context * new_context)
 {
 }
-#endif
+
 
 /*
  * tpl_init_context initialize a context to prepare a task to run.
@@ -217,36 +143,36 @@ void tpl_init_context(tpl_task *task)
 {
     int a=0; /*internal variable, used to put the register R00 to R31 on the stack*/
   	/* Gets a pointer to the static descriptor of the task whose context is going to be initialized */
-	const tpl_exec_static *static_desc = task->static_desc;
-	/* Gets a pointer to the context going to be initialized */
-	avr_context *ic = static_desc->context.ic;
+	const tpl_exec_static *static_desc = task->exec_desc.static_desc;
 	/* Init stack pointer */
-	*ic=(static_desc->stack.stack_zone) + static_desc->stack.stack_size;
-	
+	u16 *sp=(void *)((u16)(static_desc->stack.stack_zone) + static_desc->stack.stack_size);
+
     /* put the Program Counter on the stack */
-    ic-=2; /* decrement ic */
-    ic->sp=static_desc->entry; /* put the entry function (pointer) on the stack */
+    sp-=2;
+    *sp=(u16)static_desc->entry;
     /* put the register SREG on the stack */
-    ic--; /* decrement ic */
-    ic->sp=0x00; /* the SREG register without interrupt */
+    sp--;
+    *sp=0x80; /* the system register with interrupt activated */
     /* initializes system register on the stack (system register at startup time) */
     for (a=0;a<32;a++)
     {
-        ic--;
-        ic->sp=0x00;
+        sp--;
+        *sp=0x00;
     }
+	/* I'm not sure of the line is under !!!  */
+	static_desc->context.ic=sp;
 }
 
 
 
 void tpl_get_task_lock(void)
 {
-	IEN = 0;
+	//IEN = 0;
 }
 
 void tpl_release_task_lock(void)
 {
-	IEN = 1;
+	//IEN = 1;
 }
 
 /*
