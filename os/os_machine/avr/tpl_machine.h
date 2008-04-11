@@ -17,12 +17,17 @@
 #ifndef __TPL_MACHINE_AVR_H__
 #define __TPL_MACHINE_AVR_H__
 
+#include "tpl_os_custom_types.h"
+
+/*
 struct AVR_CONTEXT {
-	unsigned int sp;   /* stack pointer */
+	u16 sp;   
 };
 
 typedef struct AVR_CONTEXT avr_context;
+*/
 
+typedef u16 * avr_context;
 
 struct TPL_CONTEXT {
 	avr_context * ic;
@@ -32,7 +37,7 @@ typedef struct TPL_CONTEXT tpl_context;
 
 
 extern avr_context idle_task_context;
-#define IDLE_CONTEXT &idle_task_context 
+#define IDLE_CONTEXT {&idle_task_context} 
 
 
 
