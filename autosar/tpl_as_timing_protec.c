@@ -420,12 +420,12 @@ FUNC(void, OS_CODE) tpl_start_os_isr_lock_monitor (
 
   /* nothing to do if no timing protection specified */
   ON_TIMING_PROTECTION_BEGIN(this_exec_obj)
-    if (this_exec_obj->static_desc->timing_protection-> all_interrupt_lock_time
+    if (this_exec_obj->static_desc->timing_protection->os_interrupt_lock_time
         > 0)
     {
       /* get the maximum time the interrupts can be locked */
       int_lock_time =
-         this_exec_obj->static_desc->timing_protection->all_interrupt_lock_time;
+         this_exec_obj->static_desc->timing_protection->os_interrupt_lock_time;
 
       /* schedule a watchdog */
       watchdog.exec_obj = this_exec_obj;
