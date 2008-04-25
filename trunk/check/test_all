@@ -1,0 +1,16 @@
+current=`pwd`
+# echo $current
+for file in `ls -d */`
+do
+    test_case=`basename $file`
+#    echo $test_case
+    cd $test_case && make clean && cd ..
+    cd ..
+    rm -f trampoline
+    echo ""
+    rm -f .obj/tpl_os_generated_configuration.o
+    
+    make APP_PATH=check/$test_case OIL_FILE_FILE=$test_case.oil > /dev/null && ./trampoline
+    cd $current
+    cd $test_case && make clean && cd ..
+done
