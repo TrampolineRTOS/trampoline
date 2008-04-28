@@ -45,7 +45,7 @@
  *
  * see paragraph 8.3.9, page 49 of
  * AUTOSAR/Specification of the Operating System v2.0.1
- */
+ */ 
 typedef tpl_isr_id  ISRType;
 
 #define OS_START_SEC_CODE

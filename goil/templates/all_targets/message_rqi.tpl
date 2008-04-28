@@ -5,7 +5,7 @@
 tpl_com_data $BUFFER$[$QUEUE_SIZE$*$ELEMENT_SIZE$];
 
 tpl_queue_dyn $DYN_QUEUE$ = {
-    /*  pointer to the last written element */  NULL,
+    /*  pointer to the last written element */  NULL_PTR,
     /*  current size of the queue           */  0,
     /*  read index                          */  0,
     /*  overflow flag                       */  FALSE

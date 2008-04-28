@@ -44,6 +44,9 @@
  * to have an identifier. So a table of pointer is used. The size of this table
  * is static and known at compile time
  */
+ /* MISRA RULE 27 VIOLATION: This variable is used only in this file
+    but decalred in the configuration file, this is why it does not need
+    to be declared as external in a header file */
 extern P2VAR(tpl_schedule_table, OS_APPL_DATA, OS_VAR)  tpl_schedtable_table[SCHEDTABLE_COUNT];
 #endif
 
@@ -69,6 +72,8 @@ FUNC(StatusType, OS_CODE)  StartScheduleTableRel(
 
 #ifndef NO_SCHEDTABLE
     P2VAR(tpl_schedule_table, OS_APPL_DATA, AUTOMATIC) st;
+    P2VAR(tpl_counter, OS_APPL_DATA, AUTOMATIC) cnt;
+    VAR(tpl_tick, AUTOMATIC) date;
 #endif
 
     LOCK_WHEN_TASK()
@@ -79,7 +84,7 @@ FUNC(StatusType, OS_CODE)  StartScheduleTableRel(
 
     CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
     CHECK_SCHEDTABLE_OFFSET_VALUE(sched_table_id,offset,result)
-    
+
 #ifndef NO_SCHEDTABLE
     IF_NO_EXTENDED_ERROR(result)
         st = tpl_schedtable_table[sched_table_id];
@@ -87,14 +92,17 @@ FUNC(StatusType, OS_CODE)  StartScheduleTableRel(
         if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_NOT_STARTED)
         {
             /*  the schedule table is not already started, proceed  */
-            tpl_counter *cnt = st->b_desc.stat_part->counter;
-            tpl_tick date = cnt->current_date + offset;
+            cnt = st->b_desc.stat_part->counter;
+            date = cnt->current_date + offset;
             if (date > cnt->max_allowed_value)
             {
                 date -= cnt->max_allowed_value;
             }
             st->b_desc.date = date;
             st->b_desc.state = SCHEDULETABLE_RUNNING;
+            /* MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
+               tpl_time_obj*. This cast behaves correctly because the first memeber
+               of tpl_schedula_table is a tpl_time_obj */
             tpl_insert_time_obj((tpl_time_obj *)st);
         }
         else
@@ -138,7 +146,7 @@ FUNC(StatusType, OS_CODE)  StartScheduleTableAbs(
 
     CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
     CHECK_SCHEDTABLE_TICK_VALUE(sched_table_id,tick_val,result)
-    
+
 #ifndef NO_SCHEDTABLE
     IF_NO_EXTENDED_ERROR(result)
         st = tpl_schedtable_table[sched_table_id];
@@ -148,6 +156,9 @@ FUNC(StatusType, OS_CODE)  StartScheduleTableAbs(
             /*  the schedule table is not already started, proceed  */
             st->b_desc.date = tick_val;
             st->b_desc.state = SCHEDULETABLE_RUNNING;
+            /* MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
+               tpl_time_obj*. This cast behaves correctly because the first memeber
+               of tpl_schedula_table is a tpl_time_obj */
             tpl_insert_time_obj((tpl_time_obj *)st);
         }
         else
@@ -196,6 +207,9 @@ FUNC(StatusType, OS_CODE) StopScheduleTable(
         /*  Check the schedule table is started */
         if (st->b_desc.state != (tpl_schedtable_state)SCHEDULETABLE_NOT_STARTED)
         {
+            /* MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
+               tpl_time_obj*. This cast behaves correctly because the first memeber
+               of tpl_schedula_table is a tpl_time_obj */
             tpl_remove_time_obj((tpl_time_obj *)st);
             st->b_desc.state = SCHEDULETABLE_NOT_STARTED;
         }

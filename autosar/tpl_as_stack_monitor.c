@@ -29,8 +29,10 @@
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
 FUNC(void, OS_CODE) tpl_check_stack (
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
+    P2CONST(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
+  /* MISRA RULE 33 VIOLATION: tpl_check_stack_footprint does not need
+    to be evaluated if tpl_check_stack_pointer fails */
   if ((!tpl_check_stack_pointer (this_exec_obj)) ||
      (!tpl_check_stack_footprint (this_exec_obj)))
   {

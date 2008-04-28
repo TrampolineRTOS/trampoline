@@ -193,7 +193,7 @@ extern FUNC(tpl_time, OS_CODE) tpl_get_local_current_date (void);
  * @see #tpl_check_stack_footprint
  */
 FUNC(u8, OS_CODE) tpl_check_stack_pointer(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj
+    P2CONST(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj
 );
 
 /**
@@ -215,7 +215,7 @@ FUNC(u8, OS_CODE) tpl_check_stack_pointer(
  * @retval 0 stack overflow deteted
  */
 FUNC(u8, OS_CODE) tpl_check_stack_footprint(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj
+    P2CONST(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj
 );
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 

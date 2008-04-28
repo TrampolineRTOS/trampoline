@@ -41,6 +41,9 @@
 #include "tpl_memmap.h"
 
 _STATIC_ VAR(AppModeType, OS_VAR) application_mode;
+/* MISRA RULE 27 VIOLATION: This object has external linkage
+  but is only used in this file and in tpl_os_kernel.c where it is defined. */
+extern VAR(s8, OS_VAR) tpl_h_prio;
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -74,7 +77,7 @@ FUNC(void, OS_CODE) StartOS(
     tpl_init_os(mode);
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    tpl_init_timing_protection();
+    tpl_init_timing_protection ();
 #endif
 
     /*  Call the startup hook. According to the spec, it should be called
@@ -84,7 +87,10 @@ FUNC(void, OS_CODE) StartOS(
     /*  Call tpl_schedule to elect the greatest priority task
         tpl_schedule also set the state of the OS according to the elected
         task */
-    tpl_schedule(FROM_TASK_LEVEL);
+    if(tpl_h_prio != -1)
+    {
+      tpl_schedule_from_running(FROM_TASK_LEVEL);
+    }
 
     tpl_release_task_lock();
 

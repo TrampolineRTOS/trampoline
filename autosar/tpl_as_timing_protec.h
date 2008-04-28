@@ -163,7 +163,7 @@ extern FUNC(void, OS_CODE) tpl_start_exectime_monitor(
  * @param this_exec_obj the ISR to monitor
  */
 extern FUNC(void, OS_CODE) tpl_finish_exectime_monitor(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
+    P2CONST(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
 
 /**
  * @internal

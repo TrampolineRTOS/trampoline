@@ -50,7 +50,7 @@ CONST(tpl_exec_static, OS_CONST) $EXEC_STATIC$ = {
 tpl_task $TASK$ = {
     {       /* beginning of exec_desc part */
     /* static descriptor    */  &$EXEC_STATIC$,
-    /* resources            */  NULL,
+    /* resources            */  NULL_PTR,
     /* activate count       */  0,
     /* task priority        */  (tpl_priority)$TASK_PRIORITY$,
     /* task state           */  $TASK_STATE$,

@@ -26,7 +26,7 @@ CONST(tpl_exec_static, OS_CONST) $EXEC_STATIC$ = {
     /* context                  */ $EXEC_CONTEXT$,
     /* stack                    */ $EXEC_STACK$,
     /* entry point (function)   */ $EXEC_FUNCTION$,
-    /* internal ressource       */ NULL,
+    /* internal ressource       */ NULL_PTR,
     /* isr id                   */ 0,
     /* isr base priority        */ (tpl_priority)$ISR_PRIORITY$,
     /* max activation count     */ $ISR_MAX_ACT_COUNT$,
@@ -45,8 +45,8 @@ CONST(tpl_exec_static, OS_CONST) $EXEC_STATIC$ = {
 #include "Memmap.h"
 
 tpl_isr_static $ISR_HELPER$ = {
-  /* helper */ NULL,
-  /* next */   NULL
+  /* helper */ NULL_PTR,
+  /* next */   NULL_PTR
 };
 
 /*
@@ -55,7 +55,7 @@ tpl_isr_static $ISR_HELPER$ = {
 tpl_isr $ISR$ = {
     {       /* beginning of exec_desc part */
     /* static descriptor    */  &$EXEC_STATIC$,
-    /* resources            */  NULL,
+    /* resources            */  NULL_PTR,
     /* activate count       */  0,
     /* isr priority         */  (tpl_priority)$ISR_PRIORITY$,
     /* isr state            */  SUSPENDED,

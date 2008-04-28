@@ -17,13 +17,13 @@ tpl_schedtable_static stat_$SCHEDTABLE$ = {
 tpl_schedule_table $SCHEDTABLE$ = {
     {   /* dynamic time object part */
         /* ptr to the static part   */  (tpl_time_obj_static *)&stat_$SCHEDTABLE$,
-        /* next time object         */  NULL,
-        /* prev time object         */  NULL,
+        /* next time object         */  NULL_PTR,
+        /* prev time object         */  NULL_PTR,
         /* cycle                    */  0,
         /* date                     */  $SCHEDTABLE_DATE$,
         /* state of the time object */  $SCHEDTABLE_STATE$
     },
-    /* next schedule table          */  NULL,
+    /* next schedule table          */  NULL_PTR,
     /* current expiry point         */  0,
     /* sync to global time          */  FALSE,
     /* offset to global time        */  0,

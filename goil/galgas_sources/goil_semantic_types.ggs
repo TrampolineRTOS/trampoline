@@ -40,14 +40,14 @@ class @event_mask_void_obj extends @event_mask_obj {
 }
 
 class @event_mask_user_obj extends @event_mask_obj {
-	@luint64 mask ;
+  @luint64 mask ;
 }
 
 class @event_mask_auto_obj extends @event_mask_obj {
 }
 
 class @event_obj extends @oil_obj {
-	@event_mask_obj mask ;
+  @event_mask_obj mask ;
 }
 
 map @event_map {
@@ -155,7 +155,7 @@ abstract class @mess_prop_obj {
             end if ; 
         end foreach ;
         if notfound then
-            res := [res stringByReplacingStringByString !"$TARGET_PTR$" !"NULL"] ;
+            res := [res stringByReplacingStringByString !"$TARGET_PTR$" !"NULL_PTR"] ;
         end if ;
     end method ;
 }
@@ -193,7 +193,7 @@ class @void_filter extends @filter_prop_obj {
         ?@lstring    unused name
         ?!@string    res :
 
-        res := [res stringByReplacingStringByString !"$FILTER_PTR$" !"NULL"] ;
+        res := [res stringByReplacingStringByString !"$FILTER_PTR$" !"NULL_PTR"] ;
     end method ;
 }
 
@@ -764,7 +764,7 @@ class @nmcallback_action extends @action_obj {
         @string prefix ;
         @string tag_to_rep ;
         [p prefix !lkey ?prefix ?tag_to_rep] ;
-        i_res := [i_res stringByReplacingStringByString !tag_to_rep !"NULL"] ;
+        i_res := [i_res stringByReplacingStringByString !tag_to_rep !"NULL_PTR"] ;
     end method ;
 }
 

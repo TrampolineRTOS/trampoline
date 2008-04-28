@@ -60,7 +60,7 @@ FUNC(StatusType, OS_CODE) ActivateTask(
         result = tpl_activate_task(tpl_task_table[task_id]);
         if (result == (tpl_status)E_OK_AND_SCHEDULE)
         {
-            tpl_schedule(FROM_TASK_LEVEL);
+            tpl_schedule_from_running(FROM_TASK_LEVEL);
         }
         result &= OSEK_STATUS_MASK;
     IF_NO_EXTENDED_ERROR_END()
@@ -98,7 +98,7 @@ FUNC(StatusType, OS_CODE) TerminateTask(void)
         tpl_running_obj->state = (tpl_exec_state)DYING;
 
         /*  and let the scheduler do its job                            */
-        tpl_schedule(FROM_TASK_LEVEL);
+        tpl_schedule_from_dying();
 
     IF_NO_EXTENDED_ERROR_END()
 #endif
@@ -119,6 +119,7 @@ FUNC(StatusType, OS_CODE) ChainTask(
 
 #ifndef NO_TASK
     P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj;
+    VAR(tpl_activate_counter, AUTOMATIC)            count;
 #endif
 
     /*  lock the task system    */
@@ -149,7 +150,7 @@ FUNC(StatusType, OS_CODE) ChainTask(
         }
         else
         {
-            tpl_activate_counter    count = exec_obj->activate_count;
+            count = exec_obj->activate_count;
 
             if (count < exec_obj->static_desc->max_activate_count)
             {
@@ -191,7 +192,7 @@ FUNC(StatusType, OS_CODE) ChainTask(
         if (result == E_OK)
         {
             /*  and let the scheduler do its job                            */
-            tpl_schedule(FROM_TASK_LEVEL);
+            tpl_schedule_from_dying();
         }
 
     IF_NO_EXTENDED_ERROR_END()
@@ -226,7 +227,7 @@ FUNC(StatusType, OS_CODE) Schedule(void)
         /*  release the internal resource   */
         tpl_release_internal_resource(tpl_running_obj);
         /*  does the rescheduling           */
-        tpl_schedule(FROM_TASK_LEVEL);
+        tpl_schedule_from_running(FROM_TASK_LEVEL);
         /*  get the internal resource       */
         tpl_get_internal_resource(tpl_running_obj);
     IF_NO_EXTENDED_ERROR_END()

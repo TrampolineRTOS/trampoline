@@ -5,13 +5,16 @@
 #include "tpl_os_it_kernel.h"
 #include "tpl_os_alarm_kernel.h"
 #include "tpl_os_action.h"
+#include "tpl_os_kernel.h"
 
 #ifndef WITH_AUTOSAR
+#ifndef WITH_NOCOM
 #include "tpl_com_notification.h"
 #include "tpl_com_mo.h"
 #include "tpl_com_internal_com.h"
 #include "tpl_com_app_copy.h"
 #include "tpl_com_filters.h"
+#endif
 #endif
 
 #include "$HEADER$"

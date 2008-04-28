@@ -70,7 +70,7 @@ FUNC(void, OS_CODE) tpl_release_resource(
     /*  remove the owner    */
     res->owner = NULL;
 
-    tpl_schedule(FROM_TASK_LEVEL);
+    tpl_schedule_from_running(FROM_TASK_LEVEL);
 }
 
 #define OS_STOP_SEC_CODE

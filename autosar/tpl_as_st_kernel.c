@@ -45,9 +45,15 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
     P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) st)
 {
     /*  Get the TPL_SCHEDTABLE_STATIC structure                             */
+    /* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
+      tpl_schedtable_static*. This cast behaves correctly because st is a
+      tpl_schedtable */
     P2VAR(tpl_schedtable_static, OS_APPL_DATA, AUTOMATIC) schedtable =
         (P2VAR(tpl_schedtable_static, OS_APPL_DATA, AUTOMATIC))st->stat_part;
     /*  Get the current index                                               */
+    /* MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
+      tpl_schedtable*. This cast behaves correctly because the first memeber
+      of tpl_schedula_table is a tpl_time_obj */
     VAR(tpl_expiry_count, AUTOMATIC)  index =
         ((P2VAR(tpl_schedule_table, OS_APPL_DATA, AUTOMATIC))st)->index;
     /*  Get the current expiry point                                        */
@@ -59,6 +65,8 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
 
     P2VAR(tpl_action, OS_APPL_DATA, AUTOMATIC)  action_desc;
     VAR(tpl_action_count, AUTOMATIC)  i;
+
+    VAR(tpl_tick, AUTOMATIC) before;
 
     for (i = 0; i < next_ep->count; i++)
     {
@@ -79,23 +87,32 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
         /*  Set the next cycle to the offset of the next expiry point
             (offsets are not relative to the start of the schedule table
             but to the previous expiry point                                */
+        /* MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
+          tpl_schedtable*. This cast behaves correctly because the first memeber
+          of tpl_schedula_table is a tpl_time_obj */
         st->cycle = (schedtable->expiry)[index]->offset;
         ((tpl_schedule_table *)st)->index = index;
     }
     else {
         /*  The schedule table is finished                                  */
         /*  Test whether a schedule table has been « nextified » or not     */
+        /* MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
+          tpl_schedtable*. This cast behaves correctly because the first memeber
+          of tpl_schedula_table is a tpl_time_obj */
         tpl_schedule_table *next = ((tpl_schedule_table *)st)->next;
         /*  Get the remaining time to fill the current schedule table
             period. This time is stored in the offset of the first expiry
             point                                                           */
-        tpl_tick before = (schedtable->expiry)[0]->offset;
+        before = (schedtable->expiry)[0]->offset;
         if (next != NULL) {
             /*  reset the state of the current schedule table               */
             st->state = SCHEDULETABLE_NOT_STARTED;
             /*  There is a next schedule table set, start it                */
             next->b_desc.date =
                 next->b_desc.stat_part->counter->current_date + before;
+        /* MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
+          tpl_time_obj*. This cast behaves correctly because the first memeber
+          of tpl_schedule_table is a tpl_time_obj */
             ((tpl_time_obj *)next)->state = SCHEDULETABLE_RUNNING;
             tpl_insert_time_obj((tpl_time_obj *)next);
         }
@@ -108,6 +125,9 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
             st->state = SCHEDULETABLE_NOT_STARTED;
         }
         /*  Reset the index                                                 */
+        /* MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
+          tpl_schedtable*. This cast behaves correctly because the first member
+          of tpl_schedule_table is a tpl_time_obj */
         ((tpl_schedule_table *)st)->index = 0;
     }
 

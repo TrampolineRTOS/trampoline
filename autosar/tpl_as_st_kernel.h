@@ -162,7 +162,7 @@ typedef struct TPL_SCHEDTABLE_STATIC tpl_schedtable_static;
  * match the offset of the next expiry point.
  */
 FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
-    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) t_obj);
+    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) st);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
