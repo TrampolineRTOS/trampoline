@@ -312,7 +312,7 @@ typedef P2FUNC(void, OS_APPL_CODE, tpl_exec_function)(void);
  * @struct TPL_TIMING_PROTECTION
  *
  * This structure gathers all informations about timing protection
- * of an executable object (task or isr). See AUTOSAR OS SWS §7.6.2
+ * of an executable object (task or isr). See AUTOSAR OS SWS 7.6.2
  * about timing protection.
  *
  * @see #tpl_timing_protection

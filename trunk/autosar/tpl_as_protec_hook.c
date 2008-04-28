@@ -31,6 +31,13 @@
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
+_STATIC_ FUNC(void, OS_CODE) killtaskisr(void);
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 
 _STATIC_ FUNC(void, OS_CODE) killtaskisr(void)
 {
@@ -62,6 +69,8 @@ FUNC(void, OS_CODE) tpl_call_protection_hook (
       tpl_shutdown ();
       break;
     default:
+    /* MISRA RULE 52 VIOLATION: This statement is unreachable,
+      but a default case must exist */
       killtaskisr ();
       break;
   }

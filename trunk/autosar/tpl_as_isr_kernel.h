@@ -99,7 +99,7 @@ extern FUNC(void, OS_CODE) tpl_enable_isr2_by_timing_protection (
  * @retval TRUE this ISR2 is enabled
  */
 FUNC(u8, OS_CODE) tpl_is_isr2_enabled (
-    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr2);
+    P2CONST(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr2);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

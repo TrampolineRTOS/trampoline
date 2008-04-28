@@ -708,7 +708,7 @@ routine generate_tasks
                end if ;
             end foreach ;
             if no_internal_rez_found then
-                replace_no_prefix !p !"resource_ptr" !"NULL" !?result ;
+                replace_no_prefix !p !"resource_ptr" !"NULL_PTR" !?result ;
             end if ;
         end if ;
 

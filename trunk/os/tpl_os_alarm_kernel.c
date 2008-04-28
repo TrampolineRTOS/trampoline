@@ -162,10 +162,16 @@ FUNC(void, OS_CODE) tpl_remove_time_obj(
  * @param time_obj  The alarm to raise.
  */
 FUNC(tpl_status, OS_CODE) tpl_raise_alarm(
-    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) time_obj)
+    P2CONST(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) time_obj)
 {
     VAR(tpl_status, AUTOMATIC) result = E_OK;
 
+    /*
+     * A tpl_time_obj_static * is cast to a tpl_alarm_static *
+     * This violate MISRA rule 45. However, since the
+     * first member of tpl_alarm_static is a tpl_time_obj_static
+     * This cast behaves correctly.
+     */
     /*  Get the alarm descriptor                            */
     P2VAR(tpl_alarm_static, OS_APPL_DATA, AUTOMATIC) stat_alarm = (tpl_alarm_static *)time_obj->stat_part;
     /*  Get the action to perform from the alarm descriptor */
@@ -194,8 +200,17 @@ FUNC(tpl_status, OS_CODE) tpl_counter_tick(
     P2VAR(tpl_counter, OS_APPL_DATA, AUTOMATIC) counter)
 {
     P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC)  t_obj;
+    /*
+     * A non constant function pointer is used
+     * This violate MISRA rule 104. This is used to call
+     * the action on each alarm. The function pointed is know at conception time,
+     * because only 3 function can be pointed to.
+     */
     VAR(tpl_expire_func, AUTOMATIC)               expire;
     VAR(tpl_tick, AUTOMATIC)                      date;
+    /* this variable is added because the same name was used twice in this function for
+      2 different variables, this behavior was dependent on the compiler */
+    VAR(tpl_tick, AUTOMATIC)                      new_date;
     VAR(tpl_status, AUTOMATIC)                    need_resched = NO_SPECIAL_CODE;
 
     /*  inc the current tick value of the counter   */
@@ -239,12 +254,12 @@ FUNC(tpl_status, OS_CODE) tpl_counter_tick(
                 /*  if the cycle is not 0,
                     the new date is computed
                     by adding the cycle to the current date         */
-                tpl_tick date = t_obj->date + t_obj->cycle;
-                if (date > counter->max_allowed_value)
+                new_date = t_obj->date + t_obj->cycle;
+                if (new_date > counter->max_allowed_value)
                 {
-                    date -= counter->max_allowed_value;
+                    new_date -= counter->max_allowed_value;
                 }
-                t_obj->date = date;
+                t_obj->date = new_date;
                 /*  and the alarm is put back in the alarm queue
                     of the counter it belongs to                    */
                 tpl_insert_time_obj(t_obj);

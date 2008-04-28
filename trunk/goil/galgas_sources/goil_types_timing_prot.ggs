@@ -56,7 +56,7 @@ class @void_timing_prot extends @timing_prot {
         ?@resource_map unused rez
     :
         result := "" ;
-        st_name := "NULL" ;
+        st_name := "NULL_PTR" ;
     end method ;
 }
 
@@ -69,7 +69,7 @@ class @false_timing_prot extends @timing_prot {
         ?@resource_map unused rez
     :
         result := "" ;
-        st_name := "NULL" ;
+        st_name := "NULL_PTR" ;
     end method ;
 }
 
@@ -86,7 +86,7 @@ class @timing_prot_task extends @timing_prot {
         !@string       st_name
         ?@string       name
         ?@resource_map rez
-	:
+  :
         @uint64 tpn := 1L ;
         if [cfg hasKey !"wd_ticks_per_ns"] then
             @basic_type val ;
@@ -132,7 +132,7 @@ class @timing_prot_task extends @timing_prot {
         if [rez count] > 0 then
             result := [result stringByReplacingStringByString !"$REZ_LOCK_TIME$" !table_name] ;
         else
-            result := [result stringByReplacingStringByString !"$REZ_LOCK_TIME$" !"NULL"] ;
+            result := [result stringByReplacingStringByString !"$REZ_LOCK_TIME$" !"NULL_PTR"] ;
         end if ;
 
         st_name := "&".st_name ;
@@ -153,7 +153,7 @@ class @timing_prot_isr extends @timing_prot {
         !@string       st_name
         ?@string       name
         ?@resource_map rez
-	:
+  :
         @uint64 tpn := 1L ;
         if [cfg hasKey !"wd_ticks_per_ns"] then
             @basic_type val ;
@@ -202,7 +202,7 @@ class @timing_prot_isr extends @timing_prot {
         if [rez count] > 0 then
             result := [result stringByReplacingStringByString !"$REZ_LOCK_TIME$" !table_name] ;
         else
-            result := [result stringByReplacingStringByString !"$REZ_LOCK_TIME$" !"NULL"] ;
+            result := [result stringByReplacingStringByString !"$REZ_LOCK_TIME$" !"NULL_PTR"] ;
         end if ;
 
         st_name := "&".st_name ;

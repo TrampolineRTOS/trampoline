@@ -42,6 +42,9 @@ _STATIC_ FUNC(void, OS_CODE) tpl_activate_isr(
 _STATIC_ FUNC(void, OS_CODE) tpl_activate_isr(
     P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) a_isr)
 {
+    /*  MISRA RULE 33 VIOLATION: the right statement does
+        not need to be executed if the first test fails
+    */
     if ((a_isr->exec_desc.activate_count <
         a_isr->exec_desc.static_desc->max_activate_count)
 #ifdef WITH_AUTOSAR
@@ -118,7 +121,15 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) id)
 
         if (tpl_it_nesting == 0)
         {
-            tpl_schedule((u8)FROM_IT_LEVEL);
+            if( (u8)OS_IDLE == tpl_os_state )
+            {
+                tpl_schedule_from_idle();
+            }
+            else
+            {
+                tpl_schedule_from_running(FROM_IT_LEVEL);
+            }
+
         }
 #ifdef OS_EXTENDED
     }

@@ -1,4 +1,4 @@
-program goil_program "version 1.3" :
+program goil_program "version 1.4" :
   import grammar goil_grammar in "goil_grammar.ggs" ;
 
 #--- Prologue routine

@@ -63,7 +63,7 @@ FUNC(StatusType, OS_CODE) TerminateISR2(void)
         tpl_running_obj->state = (tpl_exec_state)DYING;
 
         /*  and let the scheduler do its job                            */
-        tpl_schedule(FROM_TASK_LEVEL);
+        tpl_schedule_from_dying();
 
     IF_NO_EXTENDED_ERROR_END()
 #endif

@@ -35,9 +35,13 @@ FUNC(void, OS_CODE) tpl_disable_isr2_by_user (
     P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr2)
 {
   if (isr2->enabled == DISABLED_BY_TIMING_PROTECTION)
+  {
     isr2->enabled = DISABLED_BY_BOTH;
+  }
   else
+  {
     isr2->enabled = DISABLED_BY_USER;
+  }
 }
 
 FUNC(void, OS_CODE) tpl_disable_isr2_by_timing_protection (
@@ -49,36 +53,50 @@ FUNC(void, OS_CODE) tpl_disable_isr2_by_timing_protection (
     isr2->enabled = DISABLED_BY_BOTH;
   }
   else
+  {
     isr2->enabled = DISABLED_BY_TIMING_PROTECTION;
+  }
 }
 
 FUNC(void, OS_CODE) tpl_enable_isr2_by_user (
     P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr2)
 {
   if (isr2->enabled == DISABLED_BY_USER)
+  {
     isr2->enabled = ENABLED;
+  }
   if (isr2->enabled == DISABLED_BY_BOTH)
+  {
     isr2->enabled = DISABLED_BY_TIMING_PROTECTION;
+  }
 }
 
 FUNC(void, OS_CODE) tpl_enable_isr2_by_timing_protection (
     P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr2)
 {
   if (isr2->enabled == DISABLED_BY_BOTH)
+  {
     isr2->enabled = DISABLED_BY_USER;
+  }
   if (isr2->enabled == DISABLED_BY_TIMING_PROTECTION)
+  {
     isr2->enabled = ENABLED;
+  }
 }
 
 FUNC(u8, OS_CODE) tpl_is_isr2_enabled (
-    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr2)
+    P2CONST(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr2)
 {
   VAR(u8, AUTOMATIC) result;
 
   if (isr2->enabled == ENABLED)
+  {
     result = TRUE;
+  }
   else
+  {
     result = FALSE;
+  }
 
   return result;
 }

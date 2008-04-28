@@ -32,6 +32,9 @@
 #include "tpl_as_error.h"
 
 #ifndef NO_COUNTER
+/*  MISRA RULE 27 VIOLATION: This object is not declared as external in a header file
+    because it is only used in this file but declared in the configuration file
+*/
 extern P2VAR(tpl_counter, OS_APPL_DATA, OS_VAR) tpl_counter_table[COUNTER_COUNT];
 #endif
 
@@ -78,7 +81,7 @@ FUNC(StatusType, OS_CODE) IncrementCounter(VAR(CounterType, AUTOMATIC) counter_i
         need_rescheduling |= tpl_counter_tick(counter);
 
         if (need_rescheduling == NEED_RESCHEDULING) {
-            tpl_schedule(FROM_TASK_LEVEL);
+            tpl_schedule_from_running(FROM_TASK_LEVEL);
         }
 
     IF_NO_EXTENDED_ERROR_END()
@@ -109,7 +112,7 @@ FUNC(StatusType, OS_CODE) GetCounterValue(
     VAR(StatusType, AUTOMATIC)  result = E_OK;
 
 #ifndef NO_COUNTER
-    P2VAR(tpl_counter, OS_APPL_DATA, AUTOMATIC) counter = NULL;
+    P2VAR(tpl_counter, OS_APPL_DATA, AUTOMATIC) counter = NULL_PTR;
 #endif
 
     LOCK_WHEN_HOOK()

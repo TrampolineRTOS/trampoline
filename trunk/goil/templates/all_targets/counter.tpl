@@ -10,7 +10,7 @@ tpl_counter $COUNTER$ = {
 #ifdef WITH_AUTOSAR
     /* kind the counter     */  $COUNTER_KIND$,
 #endif
-    /* first alarm          */  NULL,
-    /* next alarm to raise  */  NULL
+    /* first alarm          */  NULL_PTR,
+    /* next alarm to raise  */  NULL_PTR
 };
 

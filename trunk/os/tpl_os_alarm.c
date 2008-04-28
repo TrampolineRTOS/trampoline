@@ -48,6 +48,8 @@ FUNC(StatusType, OS_CODE) GetAlarmBase(
     P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) alarm;
 #endif
 
+    LOCK_WHEN_HOOK()
+
     STORE_SERVICE(OSServiceId_GetAlarm)
     STORE_ALARM_ID(alarm_id)
     STORE_ALARM_BASE_REF(info)
@@ -66,6 +68,8 @@ FUNC(StatusType, OS_CODE) GetAlarmBase(
 
     PROCESS_ERROR(result)
 
+    UNLOCK_WHEN_HOOK()
+
     return result;
 }
 
@@ -83,6 +87,8 @@ FUNC(StatusType, OS_CODE) GetAlarm(
 #ifndef NO_ALARM
     P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) alarm;
 #endif
+
+    LOCK_WHEN_HOOK()
 
     STORE_SERVICE(OSServiceId_GetAlarm)
     STORE_ALARM_ID(alarm_id)
@@ -108,6 +114,8 @@ FUNC(StatusType, OS_CODE) GetAlarm(
 
     PROCESS_ERROR(result)
 
+    UNLOCK_WHEN_HOOK()
+
     return result;
 }
 
@@ -126,7 +134,11 @@ FUNC(StatusType, OS_CODE) SetRelAlarm(
 
 #ifndef NO_ALARM
     P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) alarm;
+    P2VAR(tpl_counter, OS_APPL_DATA, AUTOMATIC) cnt;
+    VAR(tpl_tick, AUTOMATIC) date;
 #endif
+
+    LOCK_WHEN_HOOK()
 
     STORE_SERVICE(OSServiceId_SetRelAlarm)
     STORE_ALARM_ID(alarm_id)
@@ -143,9 +155,9 @@ FUNC(StatusType, OS_CODE) SetRelAlarm(
 
         if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP)
         {
-            tpl_counter *cnt = alarm->stat_part->counter;
+            cnt = alarm->stat_part->counter;
             /*  the alarm is not in use, proceed    */
-            tpl_tick date = cnt->current_date + increment;
+            date = cnt->current_date + increment;
             if (date > cnt->max_allowed_value)
             {
                 date -= cnt->max_allowed_value;
@@ -164,6 +176,8 @@ FUNC(StatusType, OS_CODE) SetRelAlarm(
 #endif
 
     PROCESS_ERROR(result)
+
+    UNLOCK_WHEN_HOOK()
 
     return result;
 }
@@ -184,6 +198,8 @@ FUNC(StatusType, OS_CODE) SetAbsAlarm(
 #ifndef NO_ALARM
     P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) alarm;
 #endif
+
+    LOCK_WHEN_HOOK()
 
     STORE_SERVICE(OSServiceId_SetAbsAlarm)
     STORE_ALARM_ID(alarm_id)
@@ -216,6 +232,8 @@ FUNC(StatusType, OS_CODE) SetAbsAlarm(
 
     PROCESS_ERROR(result)
 
+    UNLOCK_WHEN_HOOK()
+
     return result;
 }
 
@@ -233,6 +251,8 @@ FUNC(StatusType, OS_CODE) CancelAlarm(
 #ifndef NO_ALARM
     P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) alarm;
 #endif
+
+    LOCK_WHEN_HOOK()
 
     STORE_SERVICE(OSServiceId_CancelAlarm)
     STORE_ALARM_ID(alarm_id)
@@ -256,6 +276,8 @@ FUNC(StatusType, OS_CODE) CancelAlarm(
 #endif
 
     PROCESS_ERROR(result)
+
+    UNLOCK_WHEN_HOOK()
 
     return result;
 }

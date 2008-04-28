@@ -177,6 +177,14 @@ extern VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER;
 extern FUNC(void, OS_CODE) tpl_schedule(
     CONST(u8, AUTOMATIC) from);
 
+extern FUNC(void, OS_CODE) tpl_schedule_from_running(
+    CONST(u8, AUTOMATIC) from);
+
+extern FUNC(void, OS_CODE) tpl_schedule_from_dying(void);
+
+extern FUNC(void, OS_CODE) tpl_schedule_from_idle(void);
+
+extern FUNC(void, OS_CODE) tpl_schedule_from_waiting(void);
 
 extern FUNC(tpl_status, OS_CODE) tpl_activate_task(
     P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC) a_task);
@@ -192,7 +200,7 @@ extern FUNC(void, OS_CODE) tpl_init_exec_object(
 
 extern FUNC(void, OS_CODE) tpl_put_preempted_exec_object(
     P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj);
-    
+
 extern FUNC(void, OS_CODE) tpl_put_new_exec_object(
     P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj);
 

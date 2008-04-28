@@ -38,9 +38,15 @@
 **  - bug fixed in tpl_release_task_lock().
 **    The deshibition of interrutps was not done as soon as CptTaskLock=0,
 **    this was avoiding the OS to work with no autostart task configured
-** 01.05  J.Monsimier 12/02/2008
-**  - the way to initialize the stack for stack monitoring is changed
-**  - some minor changes in the memory mapping
+** 01.07  J.Monsimier 03/03/2008
+**  - PR 172: stack pointer initialisation modification:
+**    it was initialised 1 byte too far, a soustraction was missing
+** 01.08  J.Monsimier 17/03/2008
+**  - check of error E_OS_MISSINGEND added when TerminateTask is not called
+**  - IPL register is now reset to 0 in tpl_switch_context_from_it
+** 01.10  J.Monsimier 26/04/2008
+**  - impreovements on timing in kernel: tpl_scheudle function
+**    separeted in 4 functions
 ==============================================================================*/
 
 #ifndef TPL_MACHINE_HCS12_H
@@ -49,17 +55,16 @@
 /******************************************************************************/
 /* INCLUSIONS                                                                 */
 /******************************************************************************/
-#include "Std_Types.h"
 #include "tpl_os_custom_types.h"
 
 /******************************************************************************/
 /* DEFINITION OF CONSTANTS                                                    */
 /******************************************************************************/
-#define IDLE_CONTEXT &idle_task_context
+#define IDLE_CONTEXT { &idle_task_context }
 
 #define SIZE_OF_IDLE_STACK  100
 
-#define IDLE_STACK { &stack_zone_of_IdleTask, SIZE_OF_IDLE_STACK }
+#define IDLE_STACK { stack_zone_of_IdleTask, SIZE_OF_IDLE_STACK }
 
 /******************************************************************************/
 /* DEFINITION OF TYPES                                                        */
@@ -68,12 +73,12 @@ typedef P2FUNC(void, OS_APPL_CODE, tpl_function_pointer)(void);
 
 typedef struct
 {
-  VAR(uint16, AUTOMATIC) ccr;                 /* condition code register                */
-  VAR(uint16, AUTOMATIC) d;                   /* double accumulator D (or acc A and B)  */
-  VAR(uint16, AUTOMATIC) x;                   /* index register X                       */
-  VAR(uint16, AUTOMATIC) y;                   /* index register Y                       */
+  VAR(u16, AUTOMATIC) ccr;                 /* condition code register                */
+  VAR(u16, AUTOMATIC) d;                   /* double accumulator D (or acc A and B)  */
+  VAR(u16, AUTOMATIC) x;                   /* index register X                       */
+  VAR(u16, AUTOMATIC) y;                   /* index register Y                       */
   VAR(tpl_function_pointer, AUTOMATIC) pc;    /* program counter                        */
-  VAR(uint16, AUTOMATIC) sp;                  /* stack pointer                          */
+  VAR(u16, AUTOMATIC) sp;                  /* stack pointer                          */
 } hcs12_context;
 
 typedef struct
@@ -113,14 +118,9 @@ extern VAR(tpl_stack_word, OS_VAR)
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 
-/*******************************************************************************
-** Function name: Os_CounterBaseTickCallback
-** Description: This function can be called to start thebase timer of the Os
-** Parameter : None
-** Return value:  None
-** Remarks:
-*******************************************************************************/
-extern FUNC(void, OS_CODE) Os_S12X_StartBaseTimer(void);
+extern FUNC(void, OS_CODE)  Os_S12X_StartBaseTimer(void);
+extern FUNC(void, GPT_CODE) Os_WatchdogCallback(void);
+extern FUNC(void, OS_CODE)  tpl_s12x_inc_time(void);
 
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"

@@ -64,6 +64,16 @@
 #define E_OS_STACKFAULT 34
 
 /**
+ * @def E_OS_MISSINGEND
+ *
+ * Task returned without call to TerminateTask
+ * (see paragraph 7.6.3.3.2 of AUTOSAR OS SWS 2.1)
+ *
+ * @see #ErrorHook
+ */
+#define E_OS_MISSINGEND 35
+
+/**
  * @typedef ProtectionReturnType
  *
  * Defines what to do after returning from ProtectionHook.

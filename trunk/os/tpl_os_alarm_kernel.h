@@ -63,7 +63,7 @@ FUNC(void, OS_CODE) tpl_remove_time_obj(
  * @param time_obj  The alarm to raise.
  */
 FUNC(tpl_status, OS_CODE) tpl_raise_alarm(
-    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) time_obj);
+    P2CONST(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) time_obj);
 
 /**
  * @internal

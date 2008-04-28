@@ -188,7 +188,7 @@ FUNC(u8, OS_CODE) insert_scheduled_watchdog(
  * @retval TRUE a similar watchdog was found (see output parameters)
  */
 FUNC(u8, OS_CODE) find_scheduled_watchdog(
-  P2VAR(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) like_this_watchdog,
+  P2CONST(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) like_this_watchdog,
   P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) *watchdog_cursor,
   P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) *previous_cursor);
 
@@ -222,7 +222,7 @@ FUNC(u8, OS_CODE) remove_scheduled_watchdog(
  * @param expire_date date when the watchdog should expire
  */
 FUNC(void, OS_CODE) schedule_watchdog(
-  P2VAR(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) this_watchdog,
+  P2CONST(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) this_watchdog,
   VAR(tpl_time, AUTOMATIC) expire_delay);
 
 /**
@@ -235,7 +235,7 @@ FUNC(void, OS_CODE) schedule_watchdog(
  * @param this_watchdog watchdog to unschedule
  */
 FUNC(void, OS_CODE) unschedule_watchdog(
-  P2VAR(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) this_watchdog);
+  P2CONST(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) this_watchdog);
 
 /**
  * @internal
@@ -247,7 +247,7 @@ FUNC(void, OS_CODE) unschedule_watchdog(
  * @param this_exec_obj the task/isr concerned
  */
 FUNC(void, OS_CODE) unschedule_exec_obj_watchdogs(
-  P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
+  P2CONST(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

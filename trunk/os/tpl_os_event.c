@@ -54,7 +54,7 @@ FUNC(StatusType, OS_CODE) SetEvent(
         result = tpl_set_event(tpl_task_table[task_id], event);
         if (result == (tpl_status)E_OK_AND_SCHEDULE)
         {
-            tpl_schedule(FROM_TASK_LEVEL);
+            tpl_schedule_from_running(FROM_TASK_LEVEL);
             result &= OSEK_STATUS_MASK;
         }
     IF_NO_EXTENDED_ERROR_END()
@@ -187,7 +187,7 @@ FUNC(StatusType, OS_CODE) WaitEvent(
         /*  no one is set, the task goes in the WAITING state   */
         tpl_running_obj->state = WAITING;
         /*  and a rescheduling occurs                           */
-        tpl_schedule(FROM_TASK_LEVEL);
+        tpl_schedule_from_waiting();
     }
     IF_NO_EXTENDED_ERROR_END()
 #endif

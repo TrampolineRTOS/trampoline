@@ -53,7 +53,7 @@ FUNC(ISRType, OS_CODE) GetISRID(void)
 
     if (tpl_running_obj->static_desc->type != IS_ROUTINE)
     {
-        isr_id = ro->static_desc->id;
+        isr_id = (tpl_isr_id)(ro->static_desc->id);
     }
 
     return isr_id;

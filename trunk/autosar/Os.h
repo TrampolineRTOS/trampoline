@@ -42,12 +42,14 @@
 #include "tpl_os_it_kernel.h"
 
 /* AUTOSAR includes */
+#ifdef WITH_AUTOSAR
 #include "tpl_as_error.h"
 #include "tpl_as_isr.h"
 #include "tpl_as_protec_hook.h"
 #include "tpl_as_schedtable.h"
 #include "tpl_as_stack_monitor.h"
 #include "tpl_as_timing_protec.h"
+#endif
 
 /* Configuration includes */
 #include "tpl_os_generated_configuration.h"
@@ -59,7 +61,7 @@
 #define OS_AR_MINOR_VERSION  1
 #define OS_AR_PATCH_VERSION  0
 #define OS_SW_MAJOR_VERSION  1
-#define OS_SW_MINOR_VERSION  0
+#define OS_SW_MINOR_VERSION  8
 #define OS_SW_PATCH_VERSION  0
 
 #endif /*OS_H_*/

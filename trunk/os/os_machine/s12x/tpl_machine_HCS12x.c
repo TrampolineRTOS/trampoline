@@ -17,10 +17,9 @@
 **
 ** Summary: functions of the OS specifics for the MCU S12X that can only be
 **          implemented in assembly
-**              .
-**             / \     works only in near context
-**            / | \    because parameters are not passed in the same way in far context
-**           /__o__\
+**          works only in near context
+**          because parameters are not passed in the same way in far context
+**
 **
 **= History ===================================================================
 ** 00.01  J.Monsimier 04/11/07
@@ -50,9 +49,18 @@
 **  - bug fixed in tpl_release_task_lock().
 **    The deshibition of interrutps was not done as soon as CptTaskLock=0,
 **    this was avoiding the OS to work with no autostart task configured
-** 01.05  J.Monsimier 12/02/2008
+** 01.04  J.Monsimier 12/02/2008
 **  - the way to initialize the stack for stack monitoring is changed
 **  - some minor changes in the memory mapping
+** 01.07  J.Monsimier 03/03/2008
+**  - PR 172: stack pointer initialisation modification:
+**    it was initialised 1 byte too far, a soustraction was missing
+** 01.08  J.Monsimier 17/03/2008
+**  - check of error E_OS_MISSINGEND added when TerminateTask is not called
+**  - IPL register is now reset to 0 in tpl_switch_context_from_it
+** 01.10  J.Monsimier 26/04/2008
+**  - impreovements on timing in kernel: tpl_scheudle function
+**    separeted in 4 functions
 =============================================================================*/
 
 /******************************************************************************/
@@ -60,13 +68,18 @@
 /******************************************************************************/
 #include "tpl_machine.h"
 #include "tpl_machine_interface.h"
-#include "tpl_as_isr.h"
 #include "tpl_os_it.h"
 #include "tpl_os_it_kernel.h"
 #include "tpl_os_generated_configuration.h"
 #include "tpl_os_alarm_kernel.h"
 #include "tpl_os_kernel.h"
+#include "tpl_os_error.h"
+#ifdef WITH_AUTOSAR
+#include "tpl_as_protec_hook.h"
+#include "tpl_as_isr.h"
 #include "Std_Types.h"
+#endif
+
 #include "Gpt.h"
 
 
@@ -77,10 +90,11 @@
 #define TIMER_GLOBALTIME_PERIOD 1  /* timeout period in ms, can be changed */
 #define TIMER_GLOBALTIME_LOADVALUE ( ((TIMER_GLOBALTIME_PERIOD*BUS_CLK)/2)-1 )
 
-#define OS_STACK_PATERN 0xAA
+#define OS_STACK_PATTERN 0xAA
 
-#define OS_GPTCHANNEL_WATCHDOG 1
 #define OS_GPTCHANNEL_TICK     0
+#define OS_GPTCHANNEL_WATCHDOG 1
+
 
 
 /******************************************************************************/
@@ -90,10 +104,10 @@
 #include  "Memmap.h"
 
 VAR(tpl_stack_word, OS_VAR) stack_zone_of_IdleTask[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
-
 VAR(hcs12_context, OS_VAR) idle_task_context;
-
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
+/* MISRA RULE 104 VIOLATION: using non-const pointer to function:
+  to be justified in timing protection implementation */
 _STATIC_ VAR(tpl_watchdog_expire_function, OS_VAR) WatchdogExpireCallback;
 _STATIC_ VAR(tpl_time, OS_VAR) tpl_GlobalTime;
 #endif
@@ -110,6 +124,16 @@ _STATIC_ VAR(uint16, OS_VAR) Os_CptTaskLock;
 #define   OS_STOP_SEC_VAR_16BITS
 #include  "Memmap.h"
 
+
+/******************************************************************************/
+/* DECLARATION OF LOCAL FUNCTIONS                                             */
+/******************************************************************************/
+#define OS_START_SEC_CODE
+#include "Memmap.h"
+_STATIC_ FUNC(void, OS_CODE) tpl_call_missing_end(void);
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
+
 /******************************************************************************/
 /* DEFINITION OF GLOBAL FUNCTIONS                                            */
 /******************************************************************************/
@@ -117,7 +141,6 @@ _STATIC_ VAR(uint16, OS_VAR) Os_CptTaskLock;
 /******************************************************************************
 ** Function name: tpl_init_context(tpl_exec_common *exec_obj)
 ** Description: initialize a context to prepare a task to run.
-**              It sets up the stack and lr and init the other registers to 0
 ** Parameter exec_obj : object to be initialized
 ** Return value: None
 ** Remarks: None
@@ -135,14 +158,24 @@ FUNC(void, OS_CODE) tpl_init_context(
   ic->y = 0;
 
   #ifdef WITH_AUTOSAR_STACK_MONITORING
-  ic->sp = (uint16)exec_obj->static_desc->stack.stack_zone + exec_obj->static_desc->stack.stack_size;
-
-  *(P2VAR(uint8, OS_APPL_DATA, AUTOMATIC))exec_obj->static_desc->stack.stack_zone = OS_STACK_PATERN;
+  /* MISRA RULE 1 VIOLATION: cast from integer to pointer type is
+    implemenation defined, but this part of OS is implementation specific,
+    and the pointer size is controlled */
+  ic->sp = (uint16)(exec_obj->static_desc->stack.stack_zone);
+  ic->sp = (ic->sp) + (exec_obj->static_desc->stack.stack_size);
+  ic->sp = (ic->sp) - 4;
+  /* MISRA RULE 45 VIOLATION: a uint8 pattern is written in a uint32 pointer.
+     We only need to write one byte */
+  *(P2VAR(uint8, OS_APPL_DATA, AUTOMATIC))exec_obj->static_desc->stack.stack_zone = OS_STACK_PATTERN;
   #else
   /* initialises the stack pointer of the task to
     start address + stack size = end of stack zone */
-  ic->sp = ((uint16)exec_obj->static_desc->stack.stack_zone)
-                 + exec_obj->static_desc->stack.stack_size;
+  /* MISRA RULE 1 VIOLATION: cast from integer to pointer type is
+    implemenation defined, but this part of OS is implementation specific,
+    and the pointer size is controlled */
+  ic->sp = (uint16)(exec_obj->static_desc->stack.stack_zone);
+  ic->sp = (ic->sp) + (exec_obj->static_desc->stack.stack_size);
+  ic->sp = (ic->sp) - 4;
   #endif
   /* initialises the CCR with 0: all flags reset */
   ic->ccr = 0;
@@ -189,14 +222,22 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
   /* if Stack Monitoring is enabled, fill the stack with a pattern in
     order to check later if the pattern was erased */
 #ifdef WITH_AUTOSAR_STACK_MONITORING
+  /* MISRA RULE 1 VIOLATION: cast from integer to pointer type is
+    implemenation defined, but this part of OS is implementation specific,
+    and the pointer size is controlled */
   idle_task_context.sp = (uint16)(&stack_zone_of_IdleTask);
   idle_task_context.sp = idle_task_context.sp + SIZE_OF_IDLE_STACK;
-  *(P2VAR(uint8, OS_APPL_DATA, AUTOMATIC))(idle_task_context.sp) = OS_STACK_PATERN;
+  idle_task_context.sp = idle_task_context.sp - 4;
+  *(P2VAR(uint8, OS_APPL_DATA, AUTOMATIC))(idle_task_context.sp) = OS_STACK_PATTERN;
   #else
   /* initialises the stack pointer of the task to
     start address + stack size = end of stack zone */
+  /* MISRA RULE 1 VIOLATION: cast from integer to pointer type is
+    implemenation defined, but this part of OS is implementation specific,
+    and the pointer size is controlled */
   idle_task_context.sp = (uint16)(&stack_zone_of_IdleTask);
   idle_task_context.sp = idle_task_context.sp + SIZE_OF_IDLE_STACK;
+  idle_task_context.sp = idle_task_context.sp - 4;
 #endif
 
   /* initialises the programm counter to the
@@ -205,10 +246,6 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
 
   Os_S12X_StartBaseTimer();
 
-  //EnableInterruptSource(Gpt_Isr2Channel0);
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-  //EnableInterruptSource(Gpt_Isr2Channel1);
-#endif
 }
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
@@ -222,11 +259,11 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
 ** Return value: None
 ** Remarks: assembly function
 *******************************************************************************/
+/* MISRA RULE 1 VIOLATION: assembly instruction is implementation specific,
+  but this part of OS is implementation specific and controlled.
+  There is no other way than assembly to access core registers */
 #define OS_START_SEC_CODE
 #include "Memmap.h"
-/*#pragma NO_ENTRY
-#pragma NO_EXIT
-#pragma NO_RETURN */
 FUNC(void, OS_CODE) tpl_switch_context(
   P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
   P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
@@ -251,9 +288,9 @@ FUNC(void, OS_CODE) tpl_switch_context(
     __asm STY   2,X+                ;/* copy X in old_context */
     __asm PULY                      ;/* pull Y in Y */
     __asm STY   2,X+                ;/* copy Y in old_context */
-    __asm TFR   Y,D                 ;/* copy Y in D (save new_context*) */
     __asm PULY                      ;/* pull the return PC */
     __asm STY   2,X+                ;/* save the return PC in old_context */
+    __asm LEAS  2,SP                ;
     __asm TFR   SP,Y                ;
     __asm STY   2,X+                ;/* save the SP in old_context */
     __asm nosave:                   ;/* here we go, the old context is saved */
@@ -275,26 +312,27 @@ FUNC(void, OS_CODE) tpl_switch_context(
     __asm PULX                      ;/* pull X */
     __asm PULY                      ;/* pull Y */
     tpl_release_task_lock();
+    __asm LEAS  2,SP                ;
     __asm CLI                       ;
-    __asm RTS                       ;/* pull all register and PC, return */
+    __asm JSR   [-2,SP]             ;/* call the entry point of the task */
+    __asm JSR   tpl_call_missing_end;
 }
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
 
 /*******************************************************************************
-** Function name: tpl_switch_context(tpl_context *old_context, tpl_context *new_context)
-** Description: function to switch context from It
+** Function name: tpl_switch_context_from_it(tpl_context *old_context, tpl_context *new_context)
+** Description: function to switch context from interrupt
 ** Parameter old_context: context to be saved / stored in the stack
 ** Parameter new_context: context to be loaded / stored in D register
 ** Return value: None
 ** Remarks: assembly function
 *******************************************************************************/
+/* MISRA RULE 1 VIOLATION: assembly instruction is implementation specific,
+  but this part of OS is implementation specific and controlled.
+  There is no other way than assembly to access core registers */
 #define OS_START_SEC_CODE
 #include "Memmap.h"
-
-#pragma NO_ENTRY
-#pragma NO_EXIT
-#pragma NO_RETURN
 FUNC(void, OS_CODE) tpl_switch_context_from_it(
   P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
   P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
@@ -310,6 +348,7 @@ FUNC(void, OS_CODE) tpl_switch_context_from_it(
     __asm BEQ   nosave              ;/* do not save the old_context */
     __asm LDX   0,X                 ;/* charge X avec l'adresse pointé par X+0, soit charge x avec old_context->ic */
     __asm PULY                      ;/* pull the CCR in Y */
+    __asm ANDY  #$00FF               ;/* reset the current interrupt priority level to 0 */
     __asm STY   2,X+                ;/* copy the CCR in old_context */
     __asm PULY                      ;/* pull D in Y */
     __asm STY   2,X+                ;/* copy D in old_context */
@@ -317,14 +356,14 @@ FUNC(void, OS_CODE) tpl_switch_context_from_it(
     __asm STY   2,X+                ;/* copy X in old_context */
     __asm PULY                      ;/* pull Y in Y */
     __asm STY   2,X+                ;/* copy Y in old_context */
-    __asm TFR   Y,D                 ;/* copy Y in D (save new_context*) */
     __asm PULY                      ;/* pull the return PC */
     __asm STY   2,X+                ;/* save the return PC in old_context */
+    __asm LEAS  2,SP                ;
     __asm TFR   SP,Y                ;
     __asm STY   2,X+                ;/* save the SP in old_context */
     __asm nosave:                   ;/* here we go, the old context is saved */
     __asm TFR   D,X                 ;/* copy D in X (new_context*) */
-    __asm LDX   0,X                 ;
+    __asm LDX   0,X                 ;/* load new_context->context */
     __asm LEAX  10,X                ;/* point to the SP field in new_context struct */
     __asm LDY   2,X-                ;/* copy the SP in the old_context */
     __asm TYS                       ;/* adjust the SP from the new_context */
@@ -337,11 +376,14 @@ FUNC(void, OS_CODE) tpl_switch_context_from_it(
     __asm LDY   2,X-                ;/* copy D register in Y */
     __asm TFR   Y,D                 ;/* Transfert in D */
     __asm LDY   0,X                 ;/* copy CCR in Y */
-    __asm TFR   Y,CCR               ;/* Transfert in CCR */
+    __asm ANDY  #$00FF              ;/* reset the current interrupt priority level to 0 */
+    __asm TFR   Y,CCRW              ;/* Transfert in CCR */
     __asm PULX                      ;/* pull X */
     __asm PULY                      ;/* pull Y */
+    __asm LEAS  2,SP                ;
     __asm CLI                       ;
-    __asm RTS                       ;/* pull all register and PC, return */
+    __asm JSR   [-2,SP]             ;/* call the entry point of the task */
+    __asm JSR   tpl_call_missing_end;
 }
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
@@ -354,11 +396,17 @@ FUNC(void, OS_CODE) tpl_switch_context_from_it(
 ** Return value: None
 ** Remarks:
 *******************************************************************************/
+/* MISRA RULE 1 VIOLATION: assembly instruction is implementation specific,
+  but this part of OS is implementation specific and controlled.
+  There is no other way than assembly to access core registers */
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) tpl_sleep(void)
 {
-  while(1);
+  while(1)
+  {
+    __asm CLI ;
+  }
 }
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
@@ -371,6 +419,9 @@ FUNC(void, OS_CODE) tpl_sleep(void)
 ** Return value: None
 ** Remarks:
 *******************************************************************************/
+/* MISRA RULE 1 VIOLATION: assembly instruction is implementation specific,
+  but this part of OS is implementation specific and controlled.
+  There is no other way than assembly to access core registers */
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) tpl_shutdown(void)
@@ -390,6 +441,9 @@ FUNC(void, OS_CODE) tpl_shutdown(void)
 ** Return value: None
 ** Remarks: assembly function
 *******************************************************************************/
+/* MISRA RULE 1 VIOLATION: assembly instruction is implementation specific,
+  but this part of OS is implementation specific and controlled.
+  There is no other way than assembly to access core registers */
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) tpl_get_task_lock(void)
@@ -408,6 +462,9 @@ FUNC(void, OS_CODE) tpl_get_task_lock(void)
 ** Return value: None
 ** Remarks: assembly function
 *******************************************************************************/
+/* MISRA RULE 1 VIOLATION: assembly instruction is implementation specific,
+  but this part of OS is implementation specific and controlled.
+  There is no other way than assembly to access core registers */
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) tpl_release_task_lock(void)
@@ -432,6 +489,9 @@ FUNC(void, OS_CODE) tpl_release_task_lock(void)
 ** Return value: None
 ** Remarks:
 *******************************************************************************/
+/* MISRA RULE 1 VIOLATION: assembly instruction is implementation specific,
+  but this part of OS is implementation specific and controlled.
+  There is no other way than assembly to access core registers */
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) EnableAllInterrupts(void)
@@ -453,6 +513,9 @@ FUNC(void, OS_CODE) EnableAllInterrupts(void)
 ** Return value: None
 ** Remarks:
 *******************************************************************************/
+/* MISRA RULE 1 VIOLATION: assembly instruction is implementation specific,
+  but this part of OS is implementation specific and controlled.
+  There is no other way than assembly to access core registers */
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) DisableAllInterrupts(void)
@@ -474,6 +537,9 @@ FUNC(void, OS_CODE) DisableAllInterrupts(void)
 ** Return value: None
 ** Remarks:
 *******************************************************************************/
+/* MISRA RULE 1 VIOLATION: assembly instruction is implementation specific,
+  but this part of OS is implementation specific and controlled.
+  There is no other way than assembly to access core registers */
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) ResumeAllInterrupts(void)
@@ -501,6 +567,9 @@ FUNC(void, OS_CODE) ResumeAllInterrupts(void)
 ** Return value: None
 ** Remarks:
 *******************************************************************************/
+/* MISRA RULE 1 VIOLATION: assembly instruction is implementation specific,
+  but this part of OS is implementation specific and controlled.
+  There is no other way than assembly to access core registers */
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) SuspendAllInterrupts(void)
@@ -526,6 +595,9 @@ FUNC(void, OS_CODE) SuspendAllInterrupts(void)
 ** Return value: None
 ** Remarks:
 *******************************************************************************/
+/* MISRA RULE 1 VIOLATION: assembly instruction is implementation specific,
+  but this part of OS is implementation specific and controlled.
+  There is no other way than assembly to access core registers */
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) ResumeOSInterrupts(void)
@@ -553,6 +625,9 @@ FUNC(void, OS_CODE) ResumeOSInterrupts(void)
 ** Return value: None
 ** Remarks:
 *******************************************************************************/
+/* MISRA RULE 1 VIOLATION: assembly instruction is implementation specific,
+  but this part of OS is implementation specific and controlled.
+  There is no other way than assembly to access core registers */
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) SuspendOSInterrupts(void)
@@ -577,13 +652,15 @@ FUNC(void, OS_CODE) SuspendOSInterrupts(void)
 ** Return value: None
 ** Remarks:
 *******************************************************************************/
+/* MISRA RULE 104 VIOLATION: using non-const pointer to function:
+  to be justified in timing protection implementation */
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) tpl_set_watchdog(
   VAR(tpl_time, AUTOMATIC) delay,
   VAR(tpl_watchdog_expire_function, AUTOMATIC) function)
 {
-  VAR(Gpt_ValueType, AUTOMATIC) NbTicks = ((delay*BUS_CLK)>>1)-1;
+  VAR(Gpt_ValueType, AUTOMATIC) NbTicks = (Gpt_ValueType)((delay*BUS_CLK)>>1)-1;
   WatchdogExpireCallback = function;
   Gpt_StartTimer(OS_GPTCHANNEL_WATCHDOG, NbTicks);
 
@@ -645,12 +722,15 @@ FUNC(tpl_time, OS_CODE) tpl_get_local_current_date(void)
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(u8, OS_CODE) tpl_check_stack_pointer(
-  P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
+  P2CONST(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
   VAR(uint16, AUTOMATIC) StackPointer = this_exec_obj->static_desc->context.ic->sp;
 
   if( (this_exec_obj->static_desc->context.ic) != (&idle_task_context) )
   {
+    /* MISRA RULE 1 VIOLATION: cast from integer to pointer type is
+      implemenation defined, but this part of OS is implementation specific,
+      and the pointer size is controlled */
     if( (StackPointer < (uint16)this_exec_obj->static_desc->stack.stack_zone)
       ||(StackPointer > ((uint16)this_exec_obj->static_desc->stack.stack_zone
                         + this_exec_obj->static_desc->stack.stack_size)) )
@@ -683,12 +763,14 @@ FUNC(u8, OS_CODE) tpl_check_stack_pointer(
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(u8, OS_CODE) tpl_check_stack_footprint(
-  P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
+  P2CONST(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
 
   if( (this_exec_obj->static_desc->context.ic) != (&idle_task_context) )
   {
-    if( OS_STACK_PATERN == (*(uint8 *)(this_exec_obj->static_desc->stack.stack_zone)) )
+    /* MISRA RULE 45 VIOLATION: a uint8 pattern is read from a uint32 pointer.
+       We only need to read one byte */
+    if( OS_STACK_PATTERN == (*(uint8 *)(this_exec_obj->static_desc->stack.stack_zone)) )
     {
       return 1;
     }
@@ -723,7 +805,6 @@ FUNC(u8, OS_CODE) tpl_check_stack_footprint(
 FUNC(void, GPT_CODE) Os_WatchdogCallback(void)
 {
   Gpt_DisableNotification(OS_GPTCHANNEL_WATCHDOG);
-
   Gpt_StopTimer(OS_GPTCHANNEL_WATCHDOG);
 
   if( NULL_PTR != WatchdogExpireCallback )
@@ -762,6 +843,7 @@ FUNC(void, OS_CODE) Os_S12X_StartBaseTimer(void)
 ** Return value:  None
 ** Remarks:
 *******************************************************************************/
+#ifdef WITH_AUTOSAR
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) tpl_s12x_inc_time(void)
@@ -770,3 +852,36 @@ FUNC(void, OS_CODE) tpl_s12x_inc_time(void)
 }
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
+#endif
+
+/******************************************************************************/
+/* DEFINITION OF LOCAL FUNCTIONS                                              */
+/******************************************************************************/
+
+/*******************************************************************************
+** Function name: tpl_call_missing_end(void)
+** Description: this function is called by tpl_switch_context when a task
+**              returns without call to TerminateTask or an isr without
+**              call to TerminateISR2
+** Parameter context: pointer to the context of the faulty object
+** Return value: None
+** Remarks:
+*******************************************************************************/
+/* MISRA RULE 52 VIOLATION: the MISRA rule checker cannot see that this
+  function is used because it is called only in assembly parts of code */
+_STATIC_ FUNC(void, OS_CODE) tpl_call_missing_end(void)
+{
+    VAR(StatusType, AUTOMATIC) result = E_OK;
+
+    if( IS_ROUTINE == (tpl_running_obj->static_desc->type) )
+    {
+        result = TerminateISR2();
+    }
+    else
+    {
+#if defined(WITH_ERROR_HOOK) && defined(WITH_AUTOSAR)
+        tpl_call_error_hook(E_OS_MISSINGEND);
+#endif
+        result = TerminateTask();
+    }
+}

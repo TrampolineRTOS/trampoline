@@ -44,10 +44,22 @@ _STATIC_ P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, OS_VAR_NOINIT) earliest_wa
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-
+/* MISRA RULE 104 VIOLATION: Using non-const pointer to function
+  this must be changed or justified */
 _STATIC_ VAR(watchdog_callback_function, OS_VAR) external_watchdog_callback;
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
+_STATIC_ FUNC(u8, OS_CODE) internal_watchdog_callback(void);
+_STATIC_ FUNC(u8, OS_CODE) remove_all_exec_obj_watchdogs(
+  P2CONST(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
+
+#define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 
@@ -58,7 +70,7 @@ _STATIC_ FUNC(u8, OS_CODE) internal_watchdog_callback(void)
 {
   P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) current_scheduled_watchdog;
   VAR(u8, AUTOMATIC) result;
-  VAR(u8, AUTOMATIC) continue_loop;
+  VAR(tpl_bool, AUTOMATIC) continue_loop;
 
   result = FALSE;
 
@@ -76,13 +88,15 @@ _STATIC_ FUNC(u8, OS_CODE) internal_watchdog_callback(void)
      * if we need to exit the loop (this is really useful when
      * the list is emptied here and refilled by the callback
      */
-    continue_loop = (earliest_watchdog != NULL) &&
-       (earliest_watchdog->delay_from_previous == 0);
+    continue_loop = (tpl_bool)((earliest_watchdog != NULL) &&
+       (earliest_watchdog->delay_from_previous == 0));
 
-    DOW_ASSERT (external_watchdog_callback != NULL);
+    DOW_ASSERT (external_watchdog_callback != NULL)
 
     if (external_watchdog_callback (&(current_scheduled_watchdog->watchdog)))
+    {
         result = TRUE;
+    }
   }
   while (continue_loop);
 
@@ -99,6 +113,8 @@ _STATIC_ FUNC(u8, OS_CODE) internal_watchdog_callback(void)
   return result;
 }
 
+/* MISRA RULE 104 VIOLATION: Using non-const pointer to function
+  this must be changed or justified */
 FUNC(void, OS_CODE) init_watchdog_kernel(
   VAR(watchdog_callback_function, AUTOMATIC) callback)
 {
@@ -123,7 +139,7 @@ FUNC(P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC), OS_CODE) new_sched
   while (scheduled_watchdogs[watchdog_id].allocated)
   {
     watchdog_id++;
-    DOW_ASSERT (watchdog_id < MAXIMUM_SCHEDULED_WATCHDOGS);
+    DOW_ASSERT (watchdog_id < MAXIMUM_SCHEDULED_WATCHDOGS)
   }
 
   scheduled_watchdogs[watchdog_id].allocated = TRUE;
@@ -164,7 +180,10 @@ FUNC(u8, OS_CODE) insert_scheduled_watchdog(
     /* look for the position in the list, FIFO policy is used
      * if expire date matches an existing watchdog */
     watchdog_cursor = earliest_watchdog;
-    DOW_ASSERT (watchdog_cursor != NULL);
+    /* this watchdog is initialized by default here in order
+       to avoid unexpected behavior and MISRA rule 30 violation */
+    previous_cursor = watchdog_cursor;
+    DOW_ASSERT (watchdog_cursor != NULL)
 /*    DOW_ASSERT (new_watchdog->scheduled_date >=
        watchdog_cursor->scheduled_date); */
     while ((watchdog_cursor != NULL) &&
@@ -181,7 +200,7 @@ FUNC(u8, OS_CODE) insert_scheduled_watchdog(
     /* insert at the end of the list ? */
     if (watchdog_cursor == NULL)
     {
-      DOW_ASSERT (previous_cursor->next == NULL);
+      DOW_ASSERT (previous_cursor->next == NULL)
       this_scheduled_watchdog->next = NULL;
       this_scheduled_watchdog->delay_from_previous =
          this_scheduled_watchdog->scheduled_date -
@@ -204,7 +223,7 @@ FUNC(u8, OS_CODE) insert_scheduled_watchdog(
 }
 
 FUNC(u8, OS_CODE) find_scheduled_watchdog(
-  P2VAR(tpl_watchdog, OS_VAR, AUTOMATIC) like_this_watchdog,
+  P2CONST(tpl_watchdog, OS_VAR, AUTOMATIC) like_this_watchdog,
   P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) *watchdog_cursor,
   P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) *previous_cursor)
 {
@@ -223,10 +242,14 @@ FUNC(u8, OS_CODE) find_scheduled_watchdog(
         {
           if (like_this_watchdog->resource ==
               (*watchdog_cursor)->watchdog.resource)
+          {
             result = TRUE;
+          }
         }
         else
+        {
           result = TRUE;
+        }
       }
     }
     if (!result)
@@ -285,7 +308,7 @@ FUNC(u8, OS_CODE) remove_scheduled_watchdog(
  * @retval TRUE the scheduled watchdog is the earliest in the list
  */
 _STATIC_ FUNC(u8, OS_CODE) remove_all_exec_obj_watchdogs(
-  P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
+  P2CONST(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
   VAR(u8, AUTOMATIC) result;
   P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) watchdog_cursor;
@@ -300,7 +323,9 @@ _STATIC_ FUNC(u8, OS_CODE) remove_all_exec_obj_watchdogs(
     if (watchdog_cursor->watchdog.exec_obj == this_exec_obj)
     {
       if (remove_scheduled_watchdog (watchdog_cursor, previous_cursor) == TRUE)
+      {
         result = TRUE;
+      }
     }
     previous_cursor = watchdog_cursor;
     watchdog_cursor = watchdog_cursor->next;
@@ -310,15 +335,15 @@ _STATIC_ FUNC(u8, OS_CODE) remove_all_exec_obj_watchdogs(
 }
 
 FUNC(void, OS_CODE) schedule_watchdog(
-  P2VAR(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) this_watchdog,
+  P2CONST(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) this_watchdog,
   VAR(tpl_time, AUTOMATIC) expire_delay)
 {
   P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) new_watchdog;
   VAR(tpl_time, AUTOMATIC) expire_date;
   VAR(tpl_time, AUTOMATIC) current_date;
 
-  DOW_ASSERT (this_watchdog != NULL);
-  DOW_ASSERT (expire_delay > 0);
+  DOW_ASSERT (this_watchdog != NULL)
+  DOW_ASSERT (expire_delay > 0)
 
   /* get only one time reference */
   current_date = tpl_get_local_current_date ();
@@ -347,13 +372,13 @@ FUNC(void, OS_CODE) schedule_watchdog(
 }
 
 FUNC(void, OS_CODE) unschedule_watchdog(
-  P2VAR(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) this_watchdog)
+  P2CONST(tpl_watchdog, OS_APPL_DATA, AUTOMATIC) this_watchdog)
 {
   P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) watchdog_cursor;
   P2VAR(tpl_scheduled_watchdog, OS_VAR_NOINIT, AUTOMATIC) previous_cursor;
   VAR(u8, AUTOMATIC) found;
 
-  DOW_ASSERT (this_watchdog != NULL);
+  DOW_ASSERT (this_watchdog != NULL)
 
   /* look for an similar watchdog */
   found = find_scheduled_watchdog (this_watchdog,
@@ -374,11 +399,11 @@ FUNC(void, OS_CODE) unschedule_watchdog(
 }
 
 FUNC(void, OS_CODE) unschedule_exec_obj_watchdogs (
-  P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
+  P2CONST(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
   VAR(u8, AUTOMATIC) need_to_reschedule;
 
-  DOW_ASSERT (this_exec_obj != NULL);
+  DOW_ASSERT (this_exec_obj != NULL)
 
   need_to_reschedule = remove_all_exec_obj_watchdogs (this_exec_obj);
 
@@ -398,6 +423,6 @@ FUNC(void, OS_CODE) unschedule_exec_obj_watchdogs (
 
 #else
 /* some compiler do not work with empty source files */
-static char nothing;
+static u8 nothing;
 #endif /* !defined WITH_AUTOSAR_TIMING_PROTECTION */
 

@@ -31,7 +31,7 @@ class @void_action extends @action_obj {
         @string prefix ;
         @string tag_to_rep ;
         [p prefix !lkey ?prefix ?tag_to_rep] ;
-        i_res := [i_res stringByReplacingStringByString !tag_to_rep !"NULL"] ;
+        i_res := [i_res stringByReplacingStringByString !tag_to_rep !"NULL_PTR"] ;
     end method ;
 }
 

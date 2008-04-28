@@ -53,7 +53,7 @@
  * @see #ProtectionHook
  */
 FUNC(void, OS_CODE) tpl_check_stack (
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
+    P2CONST(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
