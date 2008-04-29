@@ -1,6 +1,5 @@
-
-void tpl_schedule(int from);
-tpl_status tpl_counter_tick(tpl_counter *counter);
+#include <tpl_os_kernel.h>        //tpl_schedule
+#include <tpl_os_alarm_kernel.h> //tpl_counter_tick
 
 void tpl_call_counter_tick()
 {
