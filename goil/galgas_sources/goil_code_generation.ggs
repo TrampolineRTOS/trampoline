@@ -273,6 +273,7 @@ end routine ;
 routine generate_makefile
     ?@os_obj unused os
     ?@string unused directory
+    ?@string unused app
 :
 end routine ;
 
