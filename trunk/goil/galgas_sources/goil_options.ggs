@@ -1,10 +1,11 @@
 option goil_options :
 
-@string target_platform : '\0', "target"    -> "Specifies target platform" ;
-@string project_dir     : '\0', "project"   -> "Specifies project directory" ;
-@string template_dir    : '\0', "templates" -> "Specifies template directory" ;
-@bool   autosar_on      : 'a',  "autosar"   -> "Parse Autosar objects and attributes" ;
-@bool   orti_on         : '\0', "orti"      -> "Generate an ORTI file" ;
+@string target_platform   : '\0', "target"            -> "Specifies target platform" ;
+@string project_dir       : '\0', "project"           -> "Specifies project directory" ;
+@string template_dir      : '\0', "templates"         -> "Specifies template directory" ;
+@bool   autosar_on        : 'a',  "autosar"           -> "Parse Autosar objects and attributes" ;
+@bool   orti_on           : '\0', "orti"              -> "Generate an ORTI file" ;
+@bool   generate_makefile : '\0', "generate-makefile" -> "Generate a Makefile from OS extra attributes" ;
 end option ;
 
 # vim:ft=ggs:ts=4:sw=4

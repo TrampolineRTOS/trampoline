@@ -267,6 +267,16 @@ routine generate_flags
     obj_header := [obj_header stringByReplacingStringByString !"$CONFIG_FLAGS$" !flags] ;
 end routine ;
 
+#--------------------------------------------------------------------
+# Makefile generation
+#--------------------------------------------------------------------
+routine generate_makefile
+    ?@os_obj unused os
+    ?@string unused directory
+:
+end routine ;
+
+#--------------------------------------------------------------------
 routine generate_timing_prot
     ?@task_map     tasks
     ?@resource_map rez

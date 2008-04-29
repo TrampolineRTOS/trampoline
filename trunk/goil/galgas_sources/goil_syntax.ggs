@@ -121,6 +121,10 @@ rule <start> :
             !void_obj
             !void_obj
             !void_obj
+            ![@lstringlist emptyList]
+            ![@lstringlist emptyList]
+            ![@lstringlist emptyList]
+            ![@lstringlist emptyList]
             ![@ident_map emptyMap]
          ]
         ![@task_map          emptyMap]
@@ -375,7 +379,15 @@ rule <start> :
                         message "creating " . implementation_file . "\n" ;
                     end if;
                     [implementation makeDirectoryAndWriteToFile !implementation_file] ;
+                
+                    if [option goil_options.generate_makefile] then
+                        @string makefile_dir := [directory stringByDeletingLastPathComponent] ;
+                        if [option .verbose_output] then
+                            message "creating ".makefile_dir."/makefile\n" ;
+                        end if;
+                        generate_makefile !os !makefile_dir;
                     end if ;
+                end if ;
             else
                 message "No target platform given, compiling aborted\n" ;
             end if ;

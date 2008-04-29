@@ -47,19 +47,23 @@ nonterminal <boolean>
 rule <os> 
     ?!@os_obj os
 :
-    @lstring	  status  := [os status] ;
-    @basic_type startuphook := [os startuphook] ;
-    @basic_type shutdownhook := [os shutdownhook] ;
-    @basic_type errorhook := [os errorhook] ;
-    @basic_type pretaskhook := [os pretaskhook] ;
-    @basic_type posttaskhook := [os posttaskhook] ;
-    @basic_type protectionhook := [os protectionhook] ;     # AUTOSAR
-    @lstring    scalabilityclass := [os scalabilityclass] ; # AUTOSAR
-    @basic_type stackmonitoring := [os stackmonitoring] ;   # AUTOSAR
-    @basic_type usegetserviceid := [os usegetserviceid] ;
-    @basic_type useparameteraccess := [os useparameteraccess] ;
-    @basic_type useresscheduler := [os useresscheduler] ;
-    @ident_map  others := [os others] ;
+    @lstring	   status  := [os status] ;
+    @basic_type  startuphook := [os startuphook] ;
+    @basic_type  shutdownhook := [os shutdownhook] ;
+    @basic_type  errorhook := [os errorhook] ;
+    @basic_type  pretaskhook := [os pretaskhook] ;
+    @basic_type  posttaskhook := [os posttaskhook] ;
+    @basic_type  protectionhook := [os protectionhook] ;     # AUTOSAR
+    @lstring     scalabilityclass := [os scalabilityclass] ; # AUTOSAR
+    @basic_type  stackmonitoring := [os stackmonitoring] ;   # AUTOSAR
+    @basic_type  usegetserviceid := [os usegetserviceid] ;
+    @basic_type  useparameteraccess := [os useparameteraccess] ;
+    @basic_type  useresscheduler := [os useresscheduler] ;
+    @lstringlist app_src := [os app_src] ;  
+    @lstringlist cflags := [os cflags] ;  
+    @lstringlist asflags := [os asflags] ;  
+    @lstringlist ldflags := [os ldflags] ;  
+    @ident_map   others := [os others] ;
 
     $OS$ ;
     $idf$ ?* ;
@@ -226,6 +230,22 @@ rule <os>
         useresscheduler := [@bool_class new !here !urs] ;
         <description> ?* ; $;$ ;
     while
+        @lstring src ;
+        $APP_SRC$ ; $=$ ; $string$ ?src ; <description> ?* ; $;$ ;
+        app_src += !src ;
+    while
+        @lstring flag ;
+        $CFLAGS$ ; $=$ ; $string$ ?flag ; <description> ?* ; $;$ ;
+        cflags += !flag ;
+    while
+        @lstring flag ;
+        $ASFLAGS$ ; $=$ ; $string$ ?flag ; <description> ?* ; $;$ ;
+        asflags += !flag ;
+    while
+        @lstring flag ;
+        $LDFLAGS$ ; $=$ ; $string$ ?flag ; <description> ?* ; $;$ ;
+        ldflags += !flag ;
+    while
         <free_field> !?others ; <description> ?* ; $;$ ;
     end repeat ;
     $}$ ;
@@ -247,6 +267,10 @@ rule <os>
         !usegetserviceid
         !useparameteraccess
         !useresscheduler
+        !app_src
+        !cflags
+        !asflags
+        !ldflags
         !others
     ];
 end rule ;
