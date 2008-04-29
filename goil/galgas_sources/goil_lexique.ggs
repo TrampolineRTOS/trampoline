@@ -17,7 +17,7 @@
 lexique goil_lexique :
 
 #
-# Styles kor Galgas GOIL
+# Styles for Galgas GOIL
 #
 
 style keywordsStyle -> "Keywords:" ;
@@ -30,6 +30,11 @@ style floatStyle -> "Floating Point Literals:" ;
 style commandStyle -> "Commands:" ;
 style commentStyle -> "Comments:" ;
 
+#
+# Extra keywords for makefile generation
+#
+list makefileKeywords error message "Makefile attribute" style keywordsStyle :
+    "APP_SRC", "CFLAGS", "ASFLAGS", "LDFLAGS" ;
 
 #
 # OIL_VERSION keyword
@@ -281,6 +286,7 @@ rule 'a'->'z' | 'A'->'Z' :
     while 'a'->'z' | 'A'->'Z' | '_' | '0'->'9' :
     end repeat;
     send search att_token in oilVersion
+        default search att_token in makefileKeywords
         default search att_token in oilDefinitions
         default search att_token in objList
         default search att_token in dataTypes

@@ -27,19 +27,23 @@ semantics goil_types_os :
 import semantics goil_basic_types in "goil_basic_types.ggs" ;
 
 class @os_obj extends @oil_obj {
-    @lstring	  status ;
-    @basic_type startuphook ;
-    @basic_type shutdownhook ;
-    @basic_type errorhook ;
-    @basic_type pretaskhook ;
-    @basic_type posttaskhook ;
-    @basic_type protectionhook ;   # AUTOSAR
-    @lstring    scalabilityclass ; # AUTOSAR
-    @basic_type stackmonitoring ;  # AUTOSAR
-    @basic_type usegetserviceid ;
-    @basic_type useparameteraccess ;
-    @basic_type useresscheduler ;
-    @ident_map  others ;
+    @lstring	   status ;
+    @basic_type  startuphook ;
+    @basic_type  shutdownhook ;
+    @basic_type  errorhook ;
+    @basic_type  pretaskhook ;
+    @basic_type  posttaskhook ;
+    @basic_type  protectionhook ;   # AUTOSAR
+    @lstring     scalabilityclass ; # AUTOSAR
+    @basic_type  stackmonitoring ;  # AUTOSAR
+    @basic_type  usegetserviceid ;
+    @basic_type  useparameteraccess ;
+    @basic_type  useresscheduler ;
+    @lstringlist app_src ;
+    @lstringlist cflags ;
+    @lstringlist asflags ;
+    @lstringlist ldflags ;
+    @ident_map   others ;
 }
 
 end semantics ;
