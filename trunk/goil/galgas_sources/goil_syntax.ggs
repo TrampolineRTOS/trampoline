@@ -382,10 +382,17 @@ rule <start> :
                 
                     if [option goil_options.generate_makefile] then
                         @string makefile_dir := [directory stringByDeletingLastPathComponent] ;
+                        if makefile_dir == "" then
+                            makefile_dir := "." ;
+                        end if ; 
                         if [option .verbose_output] then
                             message "creating ".makefile_dir."/makefile\n" ;
                         end if;
-                        generate_makefile !os !makefile_dir;
+                        generate_makefile
+                            !os
+                            !makefile_dir
+                            ![[[@string stringWithSourceFilePath]
+                                       stringByDeletingPathExtension] lastPathComponent];
                     end if ;
                 end if ;
             else
