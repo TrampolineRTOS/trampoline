@@ -1,0 +1,55 @@
+L166 LINKER/LOCATER V5.25                                                               04/09/2008  11:07:51  PAGE 1
+
+
+L166 LINKER/LOCATER V5.25, INVOKED BY:
+..\..\BIN\L166 BOOT167.OBJ
+
+
+CPU TYPE:     C167 or derivative
+CPU MODE:     NONSEGMENTED
+
+
+INPUT MODULES INCLUDED:
+  BOOT167.OBJ (BOOT167)
+         COMMENT TYPE 128: A166 V5.30
+
+
+MEMORY MAP OF MODULE:  BOOT167 (BOOT167)
+
+
+START     STOP      LENGTH    TYPE  RTYP  ALIGN  TGR  GRP  COMB  CLASS   SECTION NAME
+=====================================================================================
+00FA40H   00FBA7H   000168H   CODE  ABS   AT..   ---  ---  PRIV  ---     BOOTSTRAP
+
+
+
+PUBLIC SYMBOLS OF MODULE:  BOOT167 (BOOT167)
+
+
+      VALUE       PUBLIC SYMBOL NAME               REP   TGR  CLASS   SECTION
+      =======================================================================
+
+
+
+SYMBOL TABLE OF MODULE:  BOOT167 (BOOT167)
+
+      VALUE       TYPE      REP       LENGTH  TGR   SYMBOL NAME
+      =========================================================
+      00FA40H     BLOCK     LVL=0     0168H   ---   BOOT
+      ---         BLOCKEND  LVL=0     ---     ---   
+
+
+
+FUNCTION REGISTER MASKS
+
+
+FUNCTION . . . REG MASK
+=======================
+
+
+******************************************************************************
+* RESTRICTED VERSION WITH 1000H BYTE CODE SIZE LIMIT; USED: 0168H BYTE ( 8%) *
+******************************************************************************
+
+Program Size: data=0(near=0) const=0(near=0) code=360
+L166 RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,602 @@
+$TITLE ('Configuration for MONITOR-167   (C) 1993 KEIL')
+$SEGMENTED
+$MOD167
+$INCLUDE(REG167.INC)
+ASSUME	DPP3:SYSTEM
+;***********************************************************************
+;*                                                                     *
+;* MONITOR C167  Configuration                                         *
+;* COPYRIGHT KEIL ELEKTRONIK GmbH 1993 - 1999                          *
+;*                                                                     *
+;***********************************************************************
+;***********************************************************************
+; Definitions for MONITOR 167  Configuration:
+; 
+%SET(BRK_T_ADR,2)		; Trap which is used for Breakpoints
+;				; 2 = NMI Trap (default)
+;
+;
+;
+$IF BOOTSTRAP
+$SET (SERIAL0)
+$ENDIF
+
+; Definitions for SYSCON and BUSCON0 Register:
+; --------------------------------------------
+
+$INCLUDE(CONFIG.INC)
+
+INT_ADR_SEG EQU %VECTAB >> 16	    ; Interrupt Vector offset if MONITOR 166
+INT_ADR_OFF EQU	%VECTAB AND 0FFFFH  ; is installed at address 0000H
+
+%*DEFINE (ADDR (Val, Start, Range)) (
+%SET (adr, %SUBSTR(%Start,1,(%LEN(%Start)- 3))%SUBSTR(%Start,%LEN(%Start),1))
+%IF (%EQS (%Range,4K))     THEN (%SET (adr, (%adr AND 0FFF0H) + 0)) FI
+%IF (%EQS (%Range,8K))     THEN (%SET (adr, (%adr AND 0FFE0H) + 1)) FI
+%IF (%EQS (%Range,16K))    THEN (%SET (adr, (%adr AND 0FFC0H) + 2)) FI
+%IF (%EQS (%Range,32K))    THEN (%SET (adr, (%adr AND 0FF80H) + 3)) FI
+%IF (%EQS (%Range,64K))    THEN (%SET (adr, (%adr AND 0FF00H) + 4)) FI
+%IF (%EQS (%Range,128K))   THEN (%SET (adr, (%adr AND 0FE00H) + 5)) FI
+%IF (%EQS (%Range,256K))   THEN (%SET (adr, (%adr AND 0FC00H) + 6)) FI
+%IF (%EQS (%Range,512K))   THEN (%SET (adr, (%adr AND 0F800H) + 7)) FI
+%IF (%EQS (%Range,1024K))  THEN (%SET (adr, (%adr AND 0F000H) + 8)) FI
+%IF (%EQS (%Range,1M))     THEN (%SET (adr, (%adr AND 0F000H) + 8)) FI
+%IF (%EQS (%Range,2048K))  THEN (%SET (adr, (%adr AND 0E000H) + 9)) FI
+%IF (%EQS (%Range,2M))     THEN (%SET (adr, (%adr AND 0E000H) + 9)) FI
+%IF (%EQS (%Range,4096K))  THEN (%SET (adr, (%adr AND 0C000H) +10)) FI
+%IF (%EQS (%Range,4M))     THEN (%SET (adr, (%adr AND 0C000H) +10)) FI
+%IF (%EQS (%Range,8192K))  THEN (%SET (adr, (%adr AND 08000H) +11)) FI
+%IF (%EQS (%Range,8M))     THEN (%SET (adr, (%adr AND 08000H) +11)) FI
+%Val	EQU 	%adr
+)
+
+_STKSZ		SET	0
+_STKSZ1		SET	0		; size is 512 Words
+$IF (STK_SIZE = 0)
+_STKSZ1		SET	1		; size is 256 Words
+$ENDIF
+$IF (STK_SIZE = 1)
+_STKSZ		SET	1
+_STKSZ1		SET	2		; size is 128 Words
+$ENDIF
+$IF (STK_SIZE = 2)
+_STKSZ		SET	2
+_STKSZ1		SET	3		; size is  64 Words
+$ENDIF
+$IF (STK_SIZE = 3)
+_STKSZ		SET	3
+_STKSZ1		SET	4		; size is  32 Words
+$ENDIF
+$IF (STK_SIZE = 4)
+_STKSZ		SET	4
+$ENDIF
+$IF (STK_SIZE = 5)
+_STKSZ		SET	5
+$ENDIF
+$IF (STK_SIZE = 6)
+_STKSZ		SET	6
+$ENDIF
+$IF (STK_SIZE = 7)
+_STKSZ		SET	7
+$ENDIF
+
+
+; Public Functions
+PUBLIC	INCHAR		; CHARACTER INPUT-ROUTINE 
+PUBLIC	OUTCHAR		; CHARACTER OUTPUT-ROUTINE 
+PUBLIC	INSTAT		; INPUT STATUS OF SERIAL INTERFACE
+PUBLIC	OUTSTAT		; OUTPUT STATUS OF SERIAL INTERFACE
+PUBLIC  CLR_TI		; CLEAR SERIAL TRANSMIT INTERRUPT FLAG
+PUBLIC  SET_TI		; SET SERIAL TRANSMIT INTERRUPT FLAG
+PUBLIC  CLR_RI		; CLEAR SERIAL RECEIVE INTERRUPT FLAG
+PUBLIC  CLR_SER_IE	; CLEAR SERIAL INTERRUPT ENABLE FLAG
+PUBLIC  SET_SER_IE	; SET SERIAL INTERRUPT ENABLE FLAG
+PUBLIC  RD_RIE		; READ RECEIVE INTERRUPT ENABLE FLAG
+PUBLIC  RD_TIE		; READ TRANSMIT INTERRUPT ENABLE FLAG
+PUBLIC  WR_RIE		; WRITE RECEIVE INTERRUPT ENABLE FLAG
+PUBLIC  WR_TIE		; WRITE TRANSMIT INTERRUPT ENABLE FLAG
+PUBLIC  WR_RIR		; WRITE RECEIVE INTERRUPT REQUEST FLAG
+PUBLIC  WR_TIR		; WRITE TRANSMIT INTERRUPT REQUEST FLAG
+PUBLIC  BEFORE_GO	; THIS FUNCTION IS CALLED BEFORE A GO COMMAND
+PUBLIC  AFTER_GO	; THIS FUNCTION IS CALLED AFTER A GO COMMAND
+PUBLIC  CODE_START_ADR  ; Code Start Address
+PUBLIC  DATA_START_ADR  ; Data Start Address
+PUBLIC  RESET_ADR       ; Reset IP value
+
+; Public data and numbers
+PUBLIC	BRK_TRAP	; TRAP WHICH IS USED FOR BREAKPOINTS
+PUBLIC	SER_INT_TRAP	; TRAP WHICH IS USED FOR SERIAL RECEPTION
+PUBLIC	SER_INT_JMP
+
+EXTERN MON166 :NEAR	; START OF MONITOR-166
+EXTERN BRKP   :NEAR	; JUMP TO MONITOR AFTER A BREAKPOINT IS REACHED
+EXTERN SER_ISR:NEAR	; SERIAL INTERRUPT SERVICE ROUTINE
+
+$IF (SERIAL0)  
+SER_INT_TRAP	EQU	2BH    ; Trap which is used for serial reception
+$ENDIF
+
+$IF (SERIAL1)
+SER_INT_TRAP	EQU	2EH    ; Trap which is used for serial reception
+$ENDIF
+
+$IF (SERIAL2)
+SER_INT_TRAP	EQU	00H    ; Trap which is used for serial reception
+$ENDIF
+
+BRK_TRAP	EQU	%BRK_T_ADR  ; Trap which is used for Breakpoints
+CODE_START_ADR  EQU     %CODE_START ; Code Start Address
+DATA_START_ADR  EQU     %DATA_START ; Data Start Address
+IF (%CODE_START = 0)
+RESET_ADR      EQU     %VECTAB      ; RESET IP value
+ELSE
+RESET_ADR      EQU     0
+ENDIF
+
+MON166_DATA_START SECTION DATA AT %DATA_START 'M_DATA' 
+MON166_DATA_START ENDS
+
+$IF SERIAL2
+MON166_W_DATA	SECTION DATA WORD PUBLIC 'M_DATA' 
+
+C_VAR1     DSW     1
+C_VAR2     DSW     1
+C_VAR3     DSW     1
+MON166_W_DATA ENDS
+$ENDIF
+
+
+INIT_CODE	SECTION CODE AT %CODE_START
+INITSEC		PROC	NEAR
+
+		JMP	FAR InitSerial
+$IF (SERIAL0)
+%IF (%CODE_START EQ 0) THEN (
+%SET(COUNT,4)	; SET UP INTERRUPT TABLE
+%WHILE(%COUNT LE 01FCH)
+(%IF (%COUNT EQ (%BRK_T_ADR*4)) THEN (JMP	FAR BRKP
+  ) ELSE (%IF (%COUNT EQ (2BH*4)) THEN (JMP	FAR SER_ISR
+    ) ELSE (JMPS	INT_ADR_SEG,INT_ADR_OFF + %COUNT ) FI ) FI
+  %SET(COUNT,%COUNT + 4)
+)
+) FI
+$ENDIF
+
+$IF (SERIAL1)
+%IF (%CODE_START EQ 0) THEN (
+%SET(COUNT,4)	; SET UP INTERRUPT TABLE
+%WHILE(%COUNT LE 01FCH)
+(%IF (%COUNT EQ (%BRK_T_ADR*4)) THEN (JMP	FAR BRKP
+  ) ELSE (%IF (%COUNT EQ (2EH*4)) THEN (JMP	FAR SER_ISR
+    ) ELSE (JMPS	INT_ADR_SEG,INT_ADR_OFF + %COUNT ) FI ) FI
+  %SET(COUNT,%COUNT + 4)
+)
+) FI
+$ENDIF
+
+$IF (SERIAL2)
+%IF (%CODE_START EQ 0) THEN (
+%SET(COUNT,4)	; SET UP INTERRUPT TABLE
+%WHILE(%COUNT LE 01FCH)
+(%IF (%COUNT EQ (%BRK_T_ADR*4)) THEN (JMP	FAR BRKP
+  ) ELSE (JMPS	INT_ADR_SEG,INT_ADR_OFF + %COUNT ) FI 
+  %SET(COUNT,%COUNT + 4)
+)
+) FI
+$ENDIF
+
+
+SER_INT_JMP:	JMPS	INT_ADR_SEG,(INT_ADR_OFF + SER_INT_TRAP*4)
+
+INITSEC		ENDP
+
+
+
+INSTALLCODE	PROC	NEAR
+
+InitSerial:	
+
+$IF NOT (BOOTSTRAP)	; skip initialization when using bootstrap loader
+
+$IF PROMCHECK
+;********************************************************************
+;* Check whether a PROM or a RAM is at Address 0.                   *
+;* If a PROM is detected -> Jump to Program in PROM (Address 0)     *
+;* If a RAM  is detected -> Jump to Monitor                         *
+;********************************************************************
+	MOV	DPP0,#0		; Check if PROM in System
+	MOV	R0,#0
+	MOV	R1,[R0]
+	CPL	R1
+	MOV	[R0],R1
+	CMP	R1,[R0]
+	JMP	CC_EQ,Ram
+	JMPS	0,0
+Ram:	CPL	R1
+	MOV	[R0],R1
+$ENDIF
+
+	DISWDT
+
+$IF (INIT_XPERCON = 1)
+; Improtant XPERCON must be set before SYSCON.XPEN is enabled
+XPERCON  DEFR 0F024H
+_V_XPERCON       SET     _V_CAN1 OR (_V_CAN2 << 1) OR (_V_XRAM2 << 10)
+_V_XPERCON	SET	_V_XPERCON OR (_V_XRAM6 << 11) OR (_V_XFLASH << 14)
+		EXTR	#1
+		MOV	XPERCON,#_V_XPERCON
+$ENDIF
+
+BCON0L		SET     (_MTTC0 << 5) OR (_RWDC0 << 4)
+BCON0L		SET	BCON0L OR ((NOT _MCTC0) AND 0FH)
+BCON0L		SET	BCON0L AND (NOT (_RDYEN0 << 3))
+BCON0L		SET	BCON0L OR (_RDY_AS0 << 3)
+BCON0H		SET	(_ALECTL0 << 1) OR (_RDYEN0 << 4)
+BCON0H		SET	BCON0H OR (_CSREN0 << 6) OR (_CSWEN0 << 7)
+$IF (BTYP_ENABLE == 1)
+BCON0L		SET	BCON0L OR (_BTYP0 << 6)
+BCON0H		SET	BCON0H OR (_BUSACT0 << 2)
+$ENDIF
+
+$IF (BTYP_ENABLE == 0)
+		BFLDL	BUSCON0,#03FH,#BCON0L
+		BFLDH	BUSCON0,#0D2H,#BCON0H
+$ELSE
+		BFLDL	BUSCON0,#0FFH,#BCON0L
+		BFLDH	BUSCON0,#0D6H,#BCON0H
+$ENDIF
+SYS_BITS	SET	0FF6FH
+
+SYS_H		SET	(_STKSZ << 5) OR (_ROMS1 << 4) OR (_SGTDIS << 3)
+SYS_H		SET	SYS_H OR (_ROMEN << 2) OR (_BYTDIS << 1) OR _CLKEN
+SYS_L		SET	_XPERSHARE OR (_VISIBLE << 1) OR (_XPEN << 2)
+SYS_L           SET     SYS_L OR (_BDRSTEN << 3)
+SYS_L           SET     SYS_L OR (_PWDCFG << 5) OR (_CSCFG << 6)
+$IF (WRCFG_ENABLE == 1)
+SYS_L		SET	SYS_L OR (_WRCFG << 7)
+SYS_BITS	SET	SYS_BITS OR 00080H
+$ENDIF
+$IF (OWDDIS_ENABLE == 1)
+SYS_L		SET	SYS_L OR (_OWDDIS << 4)
+SYS_BITS	SET	SYS_BITS OR 00010H
+$ENDIF
+; Setup SYSCON Register
+
+ 		BFLDH	SYSCON,#HIGH SYS_BITS,#SYS_H
+		BFLDL	SYSCON,#LOW  SYS_BITS,#SYS_L
+;
+$IF (ADVANCED_SYSCON = 1)
+SYS_2           SET     (_PDCON << 4) OR (_RTS << 6) OR (_SCS << 7)
+SYS_2           SET     SYS_2 OR (_CLKCON << 8) OR (_CLKREL << 10)
+
+SYS_3           SET     _ADCDIS OR (_ASC0DIS << 1) OR (_SSCDIS << 2)
+SYS_3           SET     SYS_3 OR (_GPTDIS << 3)
+SYS_3           SET     SYS_3 OR (_FMDIS << 5) OR (_CC1DIS << 6) OR (_CC2DIS << 7)
+SYS_3           SET     SYS_3 OR (_CC6DIS << 8) OR (_PWMDIS << 9)
+SYS_3           SET     SYS_3 OR (_ASC1DIS << 10) OR (_I2CDIS << 11)
+SYS_3           SET     SYS_3 OR (_CAN1DIS << 13) OR (_CAN2DIS << 14)
+SYS_3           SET     SYS_3 OR (_PCDDIS << 15)
+
+		EXTR	#2
+		MOV	SYSCON2,#SYS_2
+		MOV	SYSCON3,#SYS_3
+$ENDIF
+;
+
+$IF (BUSCON1 = 1)
+BCON1		SET     (_MTTC1 << 5) OR (_RWDC1 << 4)
+BCON1		SET	BCON1 OR ((NOT _MCTC1) AND 0FH)
+BCON1		SET	BCON1 AND (NOT (_RDYEN1 << 3))
+BCON1 		SET	BCON1 OR (_RDY_AS1 << 3)  OR (_BTYP1 << 6)
+BCON1 		SET	BCON1 OR (_ALECTL1 << 9) OR (_BUSACT1 << 10)
+BCON1		SET	BCON1 OR (_RDYEN1 << 12) OR (_CSREN1 << 14)
+BCON1           SET     BCON1 OR (_CSWEN1 << 15)
+
+%ADDR (ADDR1,%ADDRESS1,%RANGE1)
+		MOV	ADDRSEL1,#ADDR1 
+		MOV	BUSCON1,#BCON1
+$ENDIF
+
+$IF (BUSCON2 = 1)
+BCON2		SET     (_MTTC2 << 5) OR (_RWDC2 << 4)
+BCON2		SET	BCON2 OR ((NOT _MCTC2) AND 0FH)
+BCON2		SET	BCON2 AND (NOT (_RDYEN2 << 3))
+BCON2 		SET	BCON2 OR (_RDY_AS2 << 3)  OR (_BTYP2 << 6)
+BCON2 		SET	BCON2 OR (_ALECTL2 << 9) OR (_BUSACT2 << 10)
+BCON2		SET	BCON2 OR (_RDYEN2 << 12) OR (_CSREN2 << 14)
+BCON2           SET     BCON2 OR (_CSWEN2 << 15)
+
+%ADDR (ADDR2,%ADDRESS2,%RANGE2)
+		MOV	ADDRSEL2,#ADDR2 
+		MOV	BUSCON2,#BCON2
+$ENDIF
+
+$IF (BUSCON3 = 1)
+BCON3		SET     (_MTTC3 << 5) OR (_RWDC3 << 4)
+BCON3		SET	BCON3 OR ((NOT _MCTC3) AND 0FH)
+BCON3		SET	BCON3 AND (NOT (_RDYEN3 << 3))
+BCON3 		SET	BCON3 OR (_RDY_AS3 << 3)  OR (_BTYP3 << 6)
+BCON3 		SET	BCON3 OR (_ALECTL3 << 9) OR (_BUSACT3 << 10)
+BCON3		SET	BCON3 OR (_RDYEN3 << 12) OR (_CSREN3 << 14)
+BCON3           SET     BCON3 OR (_CSWEN3 << 15)
+
+%ADDR (ADDR3,%ADDRESS3,%RANGE3)
+		MOV	ADDRSEL3,#ADDR3 
+		MOV	BUSCON3,#BCON3
+$ENDIF
+
+$IF (BUSCON4 = 1)
+BCON4		SET     (_MTTC4 << 5) OR (_RWDC4 << 4)
+BCON4		SET	BCON4 OR ((NOT _MCTC4) AND 0FH)
+BCON4		SET	BCON4 AND (NOT (_RDYEN4 << 3))
+BCON4 		SET	BCON4 OR (_RDY_AS4 << 3)  OR (_BTYP4 << 6)
+BCON4 		SET	BCON4 OR (_ALECTL4 << 9) OR (_BUSACT4 << 10)
+BCON4		SET	BCON4 OR (_RDYEN4 << 12) OR (_CSREN4 << 14)
+BCON4           SET     BCON4 OR (_CSWEN4 << 15)
+
+%ADDR (ADDR4,%ADDRESS4,%RANGE4)
+		MOV	ADDRSEL4,#ADDR4 
+		MOV	BUSCON4,#BCON4
+$ENDIF
+$IF (STK_SIZE = 7)
+		MOV	STKUN,#0FFFEH		; AVOID STKUN TRAP
+		MOV	STKOV,#0H		; AVOID STKOV TRAP
+$ENDIF
+                EINIT
+$ENDIF
+
+$IF SERIAL0
+;********************************************************************
+;*  Initialization of Serial Interface 0                            *
+;********************************************************************
+
+
+$IF NOT (BOOTSTRAP)	        ; skip initialization when using bootstrap loader
+	BSET	P3.10		; SET PORT 3.10 OUTPUT LATCH (TXD)
+	BSET	DP3.10		; SET PORT 3.10 DIRECTION CONTROL (TXD OUTPUT)
+	BCLR	DP3.11		; RESET PORT 3.11 DIRECTION CONTROL (RXD INPUT)
+	MOVB	S0TIC,#080H	; SET TRANSMIT INTERRUPT FLAG
+	MOVB	S0RIC,#000H	; DELETE RECEIVE INTERRUPT FLAG
+IF (BAUDRATE = 0)
+; Auto adjust Baudrate
+WStrtB:
+        JB	P3.11,WStrtB    ; wait for start bit at RXD0
+        BSET	T3R		; start timer T3
+WStpB:  JNB	P3.11,WStpB	; wait for stop bit at RXD0
+        BCLR	T3R		; stop timer T3
+        MOV	MDL,T3
+        SUB	MDL,#18		; rounding & adjustment
+        MOV	R1,#36		; baudrate = (T3 / 36) - 1
+        DIVU	R1
+        MOV	S0BG,MDL	; load baudrate generator
+	MOV	S0CON,#8011H	; SET SERIAL MODE
+        MOV	T3,#0		; Clear timer 3 register
+        MOV	S0TBUF,#0FFH    ; Send acknoledge byte for monitor
+ELSE 
+; Fixed Baudrate
+BG_RLOAD EQU (CPU_CLOCK / (32 * BAUDRATE)) - 1 
+	MOV	S0BG ,#BG_RLOAD	; SET BAUDRATE
+        MOV	S0CON,#8011H	; SET SERIAL MODE
+ENDIF
+$ENDIF
+	JMP	CC_UC,MON166
+
+
+;********************************************************************
+;*  Basic Input Output Functions for serial Interface 0             *
+;********************************************************************
+
+INSTAT:		BMOV	R4.0,S0RIR	; INPUT STATUS OF SERIAL INTERFACE
+		RET
+
+OUTSTAT:	BMOV	R4.0,S0TIR	; OUTPUT STATUS OF SERIAL INTERFACE
+		RET
+
+INCHAR:		MOV	R4,S0RBUF	; CHARACTER INPUT-ROUTINE 
+		RET
+
+OUTCHAR:	MOV	S0TBUF,R4	; CHARACTER OUTPUT-ROUTINE 
+		RET
+
+CLR_TI:		BCLR	S0TIR		; CLEAR SERIAL TRANSMIT INTERRUPT FLAG
+		RET
+
+SET_TI:		BSET	S0TIR		; SET SERIAL TRANSMIT INTERRUPT FLAG
+		RET
+
+CLR_RI:		BCLR	S0RIR		; CLEAR SERIAL RECEIVE INTERRUPT FLAG
+		RET
+
+CLR_SER_IE:	MOV	S0RIC,#0000	; CLR S0RIE AND ILVL=0
+		RET
+
+SET_SER_IE:	MOV	S0RIC,#007CH	; SET S0RIE AND ILVL=15
+		RET
+
+RD_RIE:		BMOV	R4.0,S0RIE	; READ RECEIVE INTERRUPT ENABLE FLAG
+		RET
+
+RD_TIE:		BMOV	R4.0,S0TIE	; READ TRANSMIT INTERRUPT ENABLE FLAG
+		RET
+
+WR_RIE:		BMOV	S0RIE,R4.0	; WRITE RECEIVE INTERRUPT ENABLE FLAG
+		RET
+
+WR_TIE:		BMOV	S0TIE,R4.0	; WRITE TRANSMIT INTERRUPT ENABLE FLAG
+		RET
+
+WR_RIR:		BMOV	S0RIR,R4.0	; WRITE RECEIVE INTERRUPT ENABLE FLAG
+		RET
+
+WR_TIR:		BMOV	S0TIR,R4.0	; WRITE TRANSMIT INTERRUPT ENABLE FLAG
+		RET
+
+BEFORE_GO:				; IS NOT USED
+		RET
+
+AFTER_GO:				; IS NOT USED
+		RET
+$ENDIF
+
+
+$IF (SERIAL2)
+;********************************************************************
+;*  Initialization of simulated Serial Interface 2                  *
+;********************************************************************
+
+T_LINE          BIT     P3.9            ; Transmit Data Line TxD
+T_OUT           BIT     DP3.9           ; Port direction register for TxD
+R_LINE          BIT     P3.8            ; Receive Data Line RxD
+R_IN            BIT     DP3.8           ; Port direction register for RxD
+
+
+STATES_PER_BIT	EQU	(CPU_CLOCK / BAUDRATE)
+
+         	BSET    T_LINE          ;          
+        	BSET    T_OUT           ; set TxD to output
+        	BCLR    R_IN            ; set RxD to input
+		CALL    AFTER_GO
+
+		JMP	CC_UC,MON166
+
+
+INSTAT:		BSET	R4.0		; INPUT STATUS OF SERIAL INTERFACE
+		RET
+
+OUTSTAT:	BSET	R4.0		; OUTPUT STATUS OF SERIAL INTERFACE
+		RET
+
+
+
+
+;*************** CHARACTER INPUT-ROUTINE ************************
+
+INCHAR:		PUSH	R2		
+                PUSH    R3
+                MOV     R3,#8           ; Bit counter
+                MOV     R4,#00H
+              
+STARTBIT:       JNB     R_LINE,STARTBIT ; Wait until last data bit is over
+STARTBIT1:      JB      R_LINE,STARTBIT1; Wait for startbit
+		MOV	R2,DPP0:C_VAR1	; Startbit valid, begin sampling !
+WAIT1:   	SUB	R2,#1           ;
+		JMPR	CC_NZ,WAIT1     ;  
+RECEIVE:	BMOV	R4.8,R_LINE     ; Bit input
+		SHR	R4,#1
+		SUB	R3,#1
+		JMPR	CC_Z,LASTBIT    ; Last bit ?
+
+		MOV     R2,DPP0:C_VAR2  ; Sample period generation
+WAIT2:		SUB	R2,#1
+		JMPR	CC_NZ,WAIT2
+		JMPR	CC_UC,RECEIVE
+
+LASTBIT:        POP     R3              
+		POP	R2
+		RET
+
+
+
+;*************** CHARACTER OUTPUT-ROUTINE *******************
+
+OUTCHAR:	PUSH	R2
+                PUSH    R3
+                PUSH    R4
+		OR	R4,#0100H	; Insert stopbit 
+		SHL	R4,#1           ; Insert startbit
+                MOV     R3,#10          ; Bit counter
+
+NEXTBIT:	ASHR	R4,#1
+		BMOV	T_LINE,C	; Bit output
+
+		MOV	R2,DPP0:C_VAR3
+WAIT:		SUB	R2,#1
+		JMPR	CC_NZ,WAIT	; Baud rate generation
+
+                SUB     R3,#1
+                JMPR    CC_NZ,NEXTBIT   ; Last bit ? 
+
+                POP     R4              ; Yes  
+                POP     R3
+		POP	R2
+		RET
+
+CLR_TI:		RET			; IS NOT USED
+
+SET_TI:		RET			; IS NOT USED
+
+CLR_RI:		RET			; IS NOT USED
+
+CLR_SER_IE:	RET			; IS NOT USED
+
+SET_SER_IE:	RET			; IS NOT USED
+
+RD_RIE:		RET			; IS NOT USED
+
+RD_TIE:		RET			; IS NOT USED
+
+WR_RIE:		RET			; IS NOT USED
+
+WR_TIE:		RET			; IS NOT USED
+
+WR_RIR:		RET			; IS NOT USED
+
+WR_TIR:		RET			; IS NOT USED
+
+BEFORE_GO:	RET			; IS NOT USED
+
+
+AFTER_GO:	MOV	DPP0,#PAG MON166_W_DATA
+ 		MOV	R1,DPP3:BUSCON0       ; Programmed number of waitstates
+		AND	R1,#000FH         
+		MOV	R2,#15
+		SUB	R2,R1                 ; ACT = State times for one
+		ADD	R2,#3                 ; external memory access
+		MOV	R1,DPP3:BUSCON0
+		SHR	R1,#5
+		AND	R1,#0001H
+		SUB	R2,R1
+		JNB	BUSCON0.6,NMBUS
+		ADD	R2,#1                 ; Multiplexed bus
+ 
+NMBUS:		MOV	R3,#14                ; Non-multiplexed bus 
+		JB	BUSCON0.7,BIT_16_1
+		ADD	R3,#13                ; 8-Bit bus    (16 ACTs)
+BIT_16_1:	MOV	R13,#STATES_PER_BIT   ; 16-Bit bus   (8  ACTs) 
+		MUL	R3,R2                 ;
+		SUB	R13,MDL
+		SUB	R13,#4     
+		SHR	R13,#2                ; Remaining states for loop
+		MOV	DPP0:C_VAR2,R13
+
+		MOV	R13,#STATES_PER_BIT   ; Multiply by 1.5
+		MOV	R3,R13
+		SHR	R3,#1
+		ADD	R13,R3
+
+		MOV	R3,#11
+		JB	BUSCON0.7,BIT_16_2
+		ADD	R3,#14;               ; 8-Bit Bus
+BIT_16_2:	MUL	R3,R2
+		SUB	R13,MDL
+		SUB	R13,#2
+		SHR	R13,#2
+		MOV	DPP0:C_VAR1,R13
+
+		MOV	R13,#STATES_PER_BIT
+		MOV	R3,#13
+		JB	BUSCON0.7,BIT_16_3
+		ADD	R3,#10                ; 8-Bit Bus
+BIT_16_3:	MUL	R3,R2
+		SUB	R13,MDL
+		SUB	R13,#4
+		SHR	R13,#2
+		MOV	DPP0:C_VAR3,R13		
+		RET
+
+$ENDIF
+
+INSTALLCODE	ENDP
+INIT_CODE	ENDS
+
+		END

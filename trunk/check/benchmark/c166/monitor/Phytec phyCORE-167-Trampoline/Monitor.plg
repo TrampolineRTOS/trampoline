@@ -1,0 +1,43 @@
+<html>
+<body>
+<pre>
+<h1>µVision3 Build Log</h1>
+<h2>Project:</h2>
+C:\Keil\C166\Monitor\Phytec phyCORE-167-Trampoline\MONITOR.uv2
+Project File Date:  04/09/2008
+
+<h2>Output:</h2>
+Build target 'Bootstrap'
+Custom: boot.bat
+custom translating boot.bat...
+C:\Keil\C166\Monitor\Phytec phyCORE-167-Trampoline>ECHO OFF 
+ 
+*** GENERATE BOOTSTRAP LOADER ***
+ 
+Assembling Boot167.A66...
+A166 MACRO ASSEMBLER V5.30 - SN: Eval Version
+COPYRIGHT KEIL ELEKTRONIK GmbH 1991 - 2007
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
+ 
+Linking Bootstrap Loader...
+L166 LINKER/LOCATER V5.25 - SN: Eval Version
+COPYRIGHT KEIL ELEKTRONIK GmbH 1991 - 2007
+******************************************************************************
+* RESTRICTED VERSION WITH 1000H BYTE CODE SIZE LIMIT; USED: 0168H BYTE ( 8%) *
+******************************************************************************
+Program Size: data=0(near=0) const=0(near=0) code=360
+L166 RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
+assembling Inst167.a66...
+linking...
+Program Size: data=428(near=428) const=0(near=0) code=4660
+User command #1: BOOTCOPY.BAT
+C:\Keil\C166\Monitor\Phytec phyCORE-167-Trampoline>REM COPY and RENAME Monitor Files 
+C:\Keil\C166\Monitor\Phytec phyCORE-167-Trampoline>REM
+C:\Keil\C166\Monitor\Phytec phyCORE-167-Trampoline>REM set name of target system to "Phytec phyCORE-167" 
+C:\Keil\C166\Monitor\Phytec phyCORE-167-Trampoline>COPY abstract.txt "..\Phytec phyCORE-167-trampoline.TXT" 
+        1 fichier(s) copi‚(s).
+C:\Keil\C166\Monitor\Phytec phyCORE-167-Trampoline>COPY boot167      "..\Phytec phyCORE-167-trampoline.BOT" 
+        1 fichier(s) copi‚(s).
+C:\Keil\C166\Monitor\Phytec phyCORE-167-Trampoline>COPY monitor      "..\Phytec phyCORE-167-trampoline.MON" 
+        1 fichier(s) copi‚(s).
+"Monitor" - 0 Error(s), 0 Warning(s).

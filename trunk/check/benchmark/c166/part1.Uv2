@@ -1,0 +1,154 @@
+### uVision2 Project, (C) Keil Software
+### Do not modify !
+
+Target (Target 1), 0x0002 // Tools: '166/167'
+
+Group (app)
+Group (oil)
+Group (os)
+
+File 1,1,<..\part1\default_task1.c><default_task1.c>
+File 1,1,<..\part1\test1\tpl_os_generated_configuration.c><tpl_os_generated_configuration.c>
+File 1,1,<.\tpl_benchmarkC166.c><tpl_benchmarkC166.c>
+File 2,5,<..\part1\test1.oil><test1.oil>
+File 3,1,<..\..\..\os\tpl_os.c><tpl_os.c>
+File 3,1,<..\..\..\os\tpl_os_action.c><tpl_os_action.c>
+File 3,1,<..\..\..\os\tpl_os_alarm.c><tpl_os_alarm.c>
+File 3,1,<..\..\..\os\tpl_os_alarm_kernel.c><tpl_os_alarm_kernel.c>
+File 3,1,<..\..\..\os\tpl_os_error.c><tpl_os_error.c>
+File 3,1,<..\..\..\os\tpl_os_event.c><tpl_os_event.c>
+File 3,1,<..\..\..\os\tpl_os_it.c><tpl_os_it.c>
+File 3,1,<..\..\..\os\tpl_os_it_kernel.c><tpl_os_it_kernel.c>
+File 3,1,<..\..\..\os\tpl_os_kernel.c><tpl_os_kernel.c>
+File 3,1,<..\..\..\os\tpl_os_rez.c><tpl_os_rez.c>
+File 3,1,<..\..\..\os\tpl_os_rez_kernel.c><tpl_os_rez_kernel.c>
+File 3,1,<..\..\..\os\tpl_os_task.c><tpl_os_task.c>
+File 3,1,<..\..\..\os\os_machine\c166\tpl_machine_c166.c><tpl_machine_c166.c>
+
+
+Options 1,0,0  // Target 'Target 1'
+ Device (C167CR-LM)
+ Vendor (Infineon)
+ Cpu (IRAM(0xF600-0xFDFF) XRAM(0xE000-0xE7FF) ICAN(0xE800-0xEFFF) CLOCK(20000000) MOD167)
+ FlashUt ()
+ StupF ("LIB\START167.A66" ("C16x/ST10 Startup Code"))
+ FlashDR ()
+ DevID (2914)
+ Rgf (REG167.H)
+ Mem ()
+ C ()
+ A ()
+ RL ()
+ OH ()
+ DBC_IFX ()
+ DBC_CMS ()
+ DBC_AMS ()
+ DBC_LMS ()
+ UseEnv=0
+ EnvBin ()
+ EnvInc ()
+ EnvLib ()
+ EnvReg ()
+ OrgReg ()
+ TgStat=16
+ OutDir (.\part1Obj\)
+ OutName (part1)
+ GenApp=1
+ GenLib=0
+ GenHex=1
+ Debug=1
+ Browse=1
+ LstDir (.\part1Obj\)
+ HexSel=1
+ MG32K=0
+ TGMORE=0
+ RunUsr 0 0 <>
+ RunUsr 1 0 <>
+ BrunUsr 0 0 <>
+ BrunUsr 1 0 <>
+ CrunUsr 0 0 <>
+ CrunUsr 1 0 <>
+ SVCSID <>
+ Model=0
+ RTOS=0
+ nHold=6
+ iHold=65535
+ sHold=65535
+ bHold=65535
+ MOD167=1
+ MODV2=0
+ UseOnChipRom=0
+ UseOnchipXCAN=1
+ UseOnchipXRAM2=0
+ NearRam=0
+ NearRom=0
+ UseOnChipIROM2=0
+ ExtMem 0 1,0,16384
+ ExtMem 1 0,16384,16384
+ ExtMem 2 0,0,0
+ ExtMem 3 0,0,0
+ ExtMem 4 0,0,0
+ ExtMem 5 0,0,0
+ Optimize=6
+ SpeedSize=1
+ RegColor=0
+ Static=0
+ WarningLev=2
+ Alias=1
+ Order=0
+ UnsignedChar=0
+ NoDppSave=1
+ Float64=0
+ SaveUsr=0
+ Reorder=0
+ cMisc (MOD167)
+ Define (BENCHMARK)
+ Undefine ()
+ INCC6 (..\..\..\os;..\..\..\os\os_machine\c166;.;..\part1\test1;..\..\..\debug)
+ EC166 { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ ECMISC ()
+ ECDEFINE ()
+ ECUNDEF ()
+ ECINC ()
+ MPL=1
+ CASE=0
+ aMisc (MOD167)
+ aSet ()
+ aReset ()
+ INCA6 ()
+ PropFld { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+ IncBld=1
+ AlwaysBuild=0
+ GenAsm=0
+ AsmAsm=0
+ PublicsOnly=0
+ StopCode=3
+ CustArgs ()
+ LibMods ()
+ useLinkFile=0
+ LnkFile ()
+ LinkOnly=0
+ UseTargSet=1
+ DppUse=0
+ nDataSel=2
+ nConstSel=1
+ NearDataStr ()
+ NearConstStr ()
+ CinitTab (0x000000 - 0x003FFF)
+ IntVectAddr ()
+ lWarnLev=2
+ lDisWarn ()
+ lAssign ()
+ lRegbank ()
+ lReserve (8H-0BH, 0ACH-0AFH)
+ lMisc ()
+ lClasses ()
+ lSect ()
+  OPTDL (S166.DLL)()(D167.DLL)(-p167CR)(S166.DLL)()(T167.DLL)(-p167CR)
+  OPTDBG 49150,0,()()()()()()()()()() (MONITOR\MON166.DLL)()()()
+ FLASH1 { 1,0,0,0,1,0,0,0,0,16,0,0,0,0,0,0,0,0,0,0 }
+ FLASH2 (BIN\UL2OCDS.DLL)
+ FLASH3 ("" ())
+ FLASH4 ()
+EndOpt
+
