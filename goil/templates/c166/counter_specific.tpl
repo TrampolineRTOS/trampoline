@@ -30,6 +30,7 @@ void tpl_init_tick_timer()
   T6CON = 0x8040;
 }
 
+
 void tpl_schedule(int from);
 tpl_status tpl_counter_tick(tpl_counter *counter);
 void tpl_call_counter_tick()
@@ -48,6 +49,12 @@ extern unsigned int registers_it[16];
 /* timer 6 -> trap number 38*/
 void tpl_timer6_tick(void) interrupt 38
 {
+
+	/* Benchmark GF 04/08*/
+	#ifdef BENCHMARK
+	tpl_benchmark_tick = tpl_benchmark_timer;
+	#endif
+
 	__asm {
 		BCLR IEN /*disable interrupt */
 		SCXT DPP3, #3
@@ -60,7 +67,7 @@ void tpl_timer6_tick(void) interrupt 38
 		NOP
 		PUSH DPP0
 	}
-	
+
 	/* We have to call a function, because we can not use any local var here.*/
 	tpl_call_counter_tick();
 	

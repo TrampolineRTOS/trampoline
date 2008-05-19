@@ -14,6 +14,7 @@
  * $URL$
  */
 
+#include "tpl_os_internal_types.h"
 #include "tpl_machine.h"
 #include "tpl_os_application_def.h"   /* NO_ALARM */
 #include "tpl_os_generated_configuration.h"	   /* TASK_COUNT and ISR_COUNT*/
@@ -21,11 +22,14 @@
 #include <C167CS.H>	/*TODO: update with a more generic standard include file.*/
 
 
+
 #pragma warning disable = 47 /* disables the "unreferenced parameter" warning */
 							 /* used for the tpl_switch_context function      */
 
 
 c166_context idle_task_context;
+
+_STATIC_ VAR(u16, OS_VAR) Os_CptTaskLock;
 
 
 #define SMALL_MEMORY_MODEL
@@ -373,10 +377,112 @@ void tpl_release_task_lock(void)
  * tpl_init_machine 
  */
 void tpl_init_tick_timer();
+void tpl_init_benchmark_timer();
 void tpl_init_machine(void)
 {
 	#ifndef NO_ALARM
 		tpl_init_tick_timer();
 	#endif
+	
 }
 
+/*******************************************************************************
+** Function name: EnableAllInterrupts(void)
+** Description: enable interrupts
+** Parameter : None
+** Return value: None
+** Remarks:
+*******************************************************************************/
+
+FUNC(void, OS_CODE) EnableAllInterrupts(void)
+{
+  IEN = 1;/* re-allows interrupts */
+}
+
+
+/*******************************************************************************
+** Function name: DisableAllInterrupts(void)
+** Description: disable interrupts
+** Parameter : None
+** Return value: None
+** Remarks:
+*******************************************************************************/
+
+FUNC(void, OS_CODE) DisableAllInterrupts(void)
+{
+  IEN = 0;/* inhibits interrupts */
+
+}
+
+
+/*******************************************************************************
+** Function name: ResumeAllInterrupts(void)
+** Description:
+** Parameter : None
+** Return value: None
+** Remarks:
+*******************************************************************************/
+
+FUNC(void, OS_CODE) ResumeAllInterrupts(void)
+{
+  if( Os_CptTaskLock > 0)
+  {
+    Os_CptTaskLock--;
+  }
+  if( Os_CptTaskLock == 0)
+  {
+    IEN = 1;/* re-allows interrupts */
+  }
+}
+
+
+/*******************************************************************************
+** Function name: SuspendAllInterrupts(void)
+** Description:
+** Parameter : None
+** Return value: None
+** Remarks:
+*******************************************************************************/
+
+FUNC(void, OS_CODE) SuspendAllInterrupts(void)
+{
+  IEN = 0;  /* inhibits interrupts */
+  Os_CptTaskLock++;
+
+}
+
+
+/*******************************************************************************
+** Function name: ResumeOSInterrupts(void)
+** Description:
+** Parameter : None
+** Return value: None
+** Remarks:
+*******************************************************************************/
+
+FUNC(void, OS_CODE) ResumeOSInterrupts(void)
+{
+  if( Os_CptTaskLock > 0)
+  {
+    Os_CptTaskLock--;
+  }
+  if( Os_CptTaskLock == 0)
+  {
+    IEN = 1;/* re-allows interrupts */
+  }
+}
+
+
+/*******************************************************************************
+** Function name: SuspendOSInterrupts(void)
+** Description:
+** Parameter : None
+** Return value: None
+** Remarks:
+*******************************************************************************/
+
+FUNC(void, OS_CODE) SuspendOSInterrupts(void)
+{
+  IEN = 0;  /* inhibits interrupts */
+  Os_CptTaskLock++;
+}

@@ -17,6 +17,9 @@
 #ifndef __TPL_MACHINE_C166_H__
 #define __TPL_MACHINE_C166_H__
 
+#include "tpl_os_custom_types.h"
+
+
 /* in comment for each register: address in memory / sfr number */
 struct C166_CONTEXT {
 	unsigned int mdc;   /* FF0E / 87 */
