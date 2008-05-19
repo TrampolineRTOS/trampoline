@@ -1,0 +1,2643 @@
+A166 MACRO ASSEMBLER  INST167                                                             04/09/2008 11:07:51 PAGE     1
+
+
+MACRO ASSEMBLER A166 V5.30
+OBJECT MODULE PLACED IN Inst167.OBJ
+ASSEMBLER INVOKED BY: C:\Keil\C166\BIN\A166.EXE Inst167.a66 SEGMENTED MOD167 SET(SMALL,BOOTSTRAP) DEBUG PAGELENGTH(18) EP
+
+LOC      OBJ             LINE     SOURCE
+
+                            1     $TITLE ('Configuration for MONITOR-167   (C) 1993 KEIL')
+                            2     $SEGMENTED
+                            3     $MOD167
+                            4     $INCLUDE(REG167.INC)
+                      +1    5     ; (c) Copyright KEIL ELEKTRONIK GmbH.  1993-1999, All rights reserved.
+                      +1    6     ; Register Declarations for C167 Processor
+                      +1    7     
+                      +1    8     ;* A/D Converter *
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE     2
+
+ FF98                 +1    9     ADCIC    DEFR   0FF98H
+ FFA0                 +1   10     ADCON    DEFR   0FFA0H
+ FEA0                 +1   11     ADDAT    DEFR   0FEA0H
+ FF9A                 +1   12     ADEIC    DEFR   0FF9AH
+ F0A0                 +1   13     ADDAT2   DEFR   0F0A0H
+ FFA0.7               +1   14     ADST     BIT    ADCON.7
+ FFA0.8               +1   15     ADBSY    BIT    ADCON.8
+ FFA0.9               +1   16     ADWR     BIT    ADCON.9
+ FFA0.10              +1   17     ADCIN    BIT    ADCON.10
+ FFA0.11              +1   18     ADCRQ    BIT    ADCON.11
+ FF98.6               +1   19     ADCIE    BIT    ADCIC.6
+ FF98.7               +1   20     ADCIR    BIT    ADCIC.7
+ FF9A.6               +1   21     ADEIE    BIT    ADEIC.6
+ FF9A.7               +1   22     ADEIR    BIT    ADEIC.7
+                      +1   23     
+                      +1   24     ;* Timer 0, Timer 1, Timer 7, Timer 8 *
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE     3
+
+ FE80                 +1   25     CC0      DEFR   0FE80H
+ FF78                 +1   26     CC0IC    DEFR   0FF78H
+ FE82                 +1   27     CC1      DEFR   0FE82H
+ FF7A                 +1   28     CC1IC    DEFR   0FF7AH
+ FE84                 +1   29     CC2      DEFR   0FE84H
+ FF7C                 +1   30     CC2IC    DEFR   0FF7CH
+ FE86                 +1   31     CC3      DEFR   0FE86H
+ FF7E                 +1   32     CC3IC    DEFR   0FF7EH
+ FE88                 +1   33     CC4      DEFR   0FE88H
+ FF80                 +1   34     CC4IC    DEFR   0FF80H
+ FE8A                 +1   35     CC5      DEFR   0FE8AH
+ FF82                 +1   36     CC5IC    DEFR   0FF82H
+ FE8C                 +1   37     CC6      DEFR   0FE8CH
+ FF84                 +1   38     CC6IC    DEFR   0FF84H
+ FE8E                 +1   39     CC7      DEFR   0FE8EH
+ FF86                 +1   40     CC7IC    DEFR   0FF86H
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE     4
+
+ FE90                 +1   41     CC8      DEFR   0FE90H
+ FF88                 +1   42     CC8IC    DEFR   0FF88H
+ FE92                 +1   43     CC9      DEFR   0FE92H
+ FF8A                 +1   44     CC9IC    DEFR   0FF8AH
+ FE94                 +1   45     CC10     DEFR   0FE94H
+ FF8C                 +1   46     CC10IC   DEFR   0FF8CH
+ FE96                 +1   47     CC11     DEFR   0FE96H
+ FF8E                 +1   48     CC11IC   DEFR   0FF8EH
+ FE98                 +1   49     CC12     DEFR   0FE98H
+ FF90                 +1   50     CC12IC   DEFR   0FF90H
+ FE9A                 +1   51     CC13     DEFR   0FE9AH
+ FF92                 +1   52     CC13IC   DEFR   0FF92H
+ FE9C                 +1   53     CC14     DEFR   0FE9CH
+ FF94                 +1   54     CC14IC   DEFR   0FF94H
+ FE9E                 +1   55     CC15     DEFR   0FE9EH
+ FF96                 +1   56     CC15IC   DEFR   0FF96H
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE     5
+
+ FE60                 +1   57     CC16     DEFR   0FE60H
+ F160                 +1   58     CC16IC   DEFR   0F160H
+ FE62                 +1   59     CC17     DEFR   0FE62H
+ F162                 +1   60     CC17IC   DEFR   0F162H
+ FE64                 +1   61     CC18     DEFR   0FE64H
+ F164                 +1   62     CC18IC   DEFR   0F164H
+ FE66                 +1   63     CC19     DEFR   0FE66H
+ F166                 +1   64     CC19IC   DEFR   0F166H
+ FE68                 +1   65     CC20     DEFR   0FE68H
+ F168                 +1   66     CC20IC   DEFR   0F168H
+ FE6A                 +1   67     CC21     DEFR   0FE6AH
+ F16A                 +1   68     CC21IC   DEFR   0F16AH
+ FE6C                 +1   69     CC22     DEFR   0FE6CH
+ F16C                 +1   70     CC22IC   DEFR   0F16CH
+ FE6E                 +1   71     CC23     DEFR   0FE6EH
+ F16E                 +1   72     CC23IC   DEFR   0F16EH
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE     6
+
+ FE70                 +1   73     CC24     DEFR   0FE70H
+ F170                 +1   74     CC24IC   DEFR   0F170H
+ FE72                 +1   75     CC25     DEFR   0FE72H
+ F172                 +1   76     CC25IC   DEFR   0F172H
+ FE74                 +1   77     CC26     DEFR   0FE74H
+ F174                 +1   78     CC26IC   DEFR   0F174H
+ FE76                 +1   79     CC27     DEFR   0FE76H
+ F176                 +1   80     CC27IC   DEFR   0F176H
+ FE78                 +1   81     CC28     DEFR   0FE78H
+ F178                 +1   82     CC28IC   DEFR   0F178H
+ FE7A                 +1   83     CC29     DEFR   0FE7AH
+ F184                 +1   84     CC29IC   DEFR   0F184H
+ FE7C                 +1   85     CC30     DEFR   0FE7CH
+ F18C                 +1   86     CC30IC   DEFR   0F18CH
+ FE7E                 +1   87     CC31     DEFR   0FE7EH
+ F194                 +1   88     CC31IC   DEFR   0F194H
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE     7
+
+ FF52                 +1   89     CCM0     DEFR   0FF52H
+ FF54                 +1   90     CCM1     DEFR   0FF54H
+ FF56                 +1   91     CCM2     DEFR   0FF56H
+ FF58                 +1   92     CCM3     DEFR   0FF58H
+ FF22                 +1   93     CCM4     DEFR   0FF22H
+ FF24                 +1   94     CCM5     DEFR   0FF24H
+ FF26                 +1   95     CCM6     DEFR   0FF26H
+ FF28                 +1   96     CCM7     DEFR   0FF28H
+ FE50                 +1   97     T0       DEFR   0FE50H
+ FF50                 +1   98     T01CON   DEFR   0FF50H
+ FF9C                 +1   99     T0IC     DEFR   0FF9CH
+ FE54                 +1  100     T0REL    DEFR   0FE54H
+ FE52                 +1  101     T1       DEFR   0FE52H
+ FF9E                 +1  102     T1IC     DEFR   0FF9EH
+ FE56                 +1  103     T1REL    DEFR   0FE56H
+ F050                 +1  104     T7       DEFR   0F050H
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE     8
+
+ FF20                 +1  105     T78CON   DEFR   0FF20H
+ F17A                 +1  106     T7IC     DEFR   0F17AH
+ F054                 +1  107     T7REL    DEFR   0F054H
+ F052                 +1  108     T8       DEFR   0F052H
+ F17C                 +1  109     T8IC     DEFR   0F17CH
+ F056                 +1  110     T8REL    DEFR   0F056H
+ FF78.7               +1  111     CC0IR    BIT    CC0IC.7
+ FF78.6               +1  112     CC0IE    BIT    CC0IC.6
+ FF7A.7               +1  113     CC1IR    BIT    CC1IC.7
+ FF7A.6               +1  114     CC1IE    BIT    CC1IC.6
+ FF7C.7               +1  115     CC2IR    BIT    CC2IC.7
+ FF7C.6               +1  116     CC2IE    BIT    CC2IC.6
+ FF7E.7               +1  117     CC3IR    BIT    CC3IC.7
+ FF7E.6               +1  118     CC3IE    BIT    CC3IC.6
+ FF80.7               +1  119     CC4IR    BIT    CC4IC.7
+ FF80.6               +1  120     CC4IE    BIT    CC4IC.6
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE     9
+
+ FF82.7               +1  121     CC5IR    BIT    CC5IC.7
+ FF82.6               +1  122     CC5IE    BIT    CC5IC.6
+ FF84.7               +1  123     CC6IR    BIT    CC6IC.7
+ FF84.6               +1  124     CC6IE    BIT    CC6IC.6
+ FF86.7               +1  125     CC7IR    BIT    CC7IC.7
+ FF86.6               +1  126     CC7IE    BIT    CC7IC.6
+ FF88.7               +1  127     CC8IR    BIT    CC8IC.7
+ FF88.6               +1  128     CC8IE    BIT    CC8IC.6
+ FF8A.7               +1  129     CC9IR    BIT    CC9IC.7
+ FF8A.6               +1  130     CC9IE    BIT    CC9IC.6
+ FF8C.7               +1  131     CC10IR   BIT    CC10IC.7
+ FF8C.6               +1  132     CC10IE   BIT    CC10IC.6
+ FF8E.7               +1  133     CC11IR   BIT    CC11IC.7
+ FF8E.6               +1  134     CC11IE   BIT    CC11IC.6
+ FF90.7               +1  135     CC12IR   BIT    CC12IC.7
+ FF90.6               +1  136     CC12IE   BIT    CC12IC.6
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    10
+
+ FF92.7               +1  137     CC13IR   BIT    CC13IC.7
+ FF92.6               +1  138     CC13IE   BIT    CC13IC.6
+ FF94.7               +1  139     CC14IR   BIT    CC14IC.7
+ FF94.6               +1  140     CC14IE   BIT    CC14IC.6
+ FF96.7               +1  141     CC15IR   BIT    CC15IC.7
+ FF96.6               +1  142     CC15IE   BIT    CC15IC.6
+ F160.7               +1  143     CC16IR   BIT    CC16IC.7
+ F160.6               +1  144     CC16IE   BIT    CC16IC.6
+ F162.7               +1  145     CC17IR   BIT    CC17IC.7
+ F162.6               +1  146     CC17IE   BIT    CC17IC.6
+ F164.7               +1  147     CC18IR   BIT    CC18IC.7
+ F164.6               +1  148     CC18IE   BIT    CC18IC.6
+ F166.7               +1  149     CC19IR   BIT    CC19IC.7
+ F166.6               +1  150     CC19IE   BIT    CC19IC.6
+ F168.7               +1  151     CC20IR   BIT    CC20IC.7
+ F168.6               +1  152     CC20IE   BIT    CC20IC.6
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    11
+
+ F16A.7               +1  153     CC21IR   BIT    CC21IC.7
+ F16A.6               +1  154     CC21IE   BIT    CC21IC.6
+ F16C.7               +1  155     CC22IR   BIT    CC22IC.7
+ F16C.6               +1  156     CC22IE   BIT    CC22IC.6
+ F16E.7               +1  157     CC23IR   BIT    CC23IC.7
+ F16E.6               +1  158     CC23IE   BIT    CC23IC.6
+ F170.7               +1  159     CC24IR   BIT    CC24IC.7
+ F170.6               +1  160     CC24IE   BIT    CC24IC.6
+ F172.7               +1  161     CC25IR   BIT    CC25IC.7
+ F172.6               +1  162     CC25IE   BIT    CC25IC.6
+ F174.7               +1  163     CC26IR   BIT    CC26IC.7
+ F174.6               +1  164     CC26IE   BIT    CC26IC.6
+ F176.7               +1  165     CC27IR   BIT    CC27IC.7
+ F176.6               +1  166     CC27IE   BIT    CC27IC.6
+ F178.7               +1  167     CC28IR   BIT    CC28IC.7
+ F178.6               +1  168     CC28IE   BIT    CC28IC.6
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    12
+
+ F184.7               +1  169     CC29IR   BIT    CC29IC.7
+ F184.6               +1  170     CC29IE   BIT    CC29IC.6
+ F18C.7               +1  171     CC30IR   BIT    CC30IC.7
+ F18C.6               +1  172     CC30IE   BIT    CC30IC.6
+ F194.7               +1  173     CC31IR   BIT    CC31IC.7
+ F194.6               +1  174     CC31IE   BIT    CC31IC.6
+ FF52.3               +1  175     ACC0     BIT    CCM0.3
+ FF52.7               +1  176     ACC1     BIT    CCM0.7
+ FF52.11              +1  177     ACC2     BIT    CCM0.11
+ FF52.15              +1  178     ACC3     BIT    CCM0.15
+ FF54.3               +1  179     ACC4     BIT    CCM1.3
+ FF54.7               +1  180     ACC5     BIT    CCM1.7
+ FF54.11              +1  181     ACC6     BIT    CCM1.11
+ FF54.15              +1  182     ACC7     BIT    CCM1.15
+ FF56.3               +1  183     ACC8     BIT    CCM2.3
+ FF56.7               +1  184     ACC9     BIT    CCM2.7
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    13
+
+ FF56.11              +1  185     ACC10    BIT    CCM2.11
+ FF56.15              +1  186     ACC11    BIT    CCM2.15
+ FF58.3               +1  187     ACC12    BIT    CCM3.3
+ FF58.7               +1  188     ACC13    BIT    CCM3.7
+ FF58.11              +1  189     ACC14    BIT    CCM3.11
+ FF58.15              +1  190     ACC15    BIT    CCM3.15
+ FF22.3               +1  191     ACC16    BIT    CCM4.3
+ FF22.7               +1  192     ACC17    BIT    CCM4.7
+ FF22.11              +1  193     ACC18    BIT    CCM4.11
+ FF22.15              +1  194     ACC19    BIT    CCM4.15
+ FF24.3               +1  195     ACC20    BIT    CCM5.3
+ FF24.7               +1  196     ACC21    BIT    CCM5.7
+ FF24.11              +1  197     ACC22    BIT    CCM5.11
+ FF24.15              +1  198     ACC23    BIT    CCM5.15
+ FF26.3               +1  199     ACC24    BIT    CCM6.3
+ FF26.7               +1  200     ACC25    BIT    CCM6.7
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    14
+
+ FF26.11              +1  201     ACC26    BIT    CCM6.11
+ FF26.15              +1  202     ACC27    BIT    CCM6.15
+ FF28.3               +1  203     ACC28    BIT    CCM7.3
+ FF28.7               +1  204     ACC29    BIT    CCM7.7
+ FF28.11              +1  205     ACC30    BIT    CCM7.11
+ FF28.15              +1  206     ACC31    BIT    CCM7.15
+ FF9C.6               +1  207     T0IE     BIT    T0IC.6
+ FF9C.7               +1  208     T0IR     BIT    T0IC.7
+ FF50.3               +1  209     T0M      BIT    T01CON.3
+ FF50.6               +1  210     T0R      BIT    T01CON.6
+ FF9E.6               +1  211     T1IE     BIT    T1IC.6
+ FF9E.7               +1  212     T1IR     BIT    T1IC.7
+ FF50.11              +1  213     T1M      BIT    T01CON.11
+ FF50.14              +1  214     T1R      BIT    T01CON.14
+ F17A.6               +1  215     T7IE     BIT    T7IC.6
+ F17A.7               +1  216     T7IR     BIT    T7IC.7
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    15
+
+ FF20.3               +1  217     T7M      BIT    T78CON.3
+ FF20.6               +1  218     T7R      BIT    T78CON.6
+ F17C.6               +1  219     T8IE     BIT    T8IC.6
+ F17C.7               +1  220     T8IR     BIT    T8IC.7
+ FF20.11              +1  221     T8M      BIT    T78CON.11
+ FF20.14              +1  222     T8R      BIT    T78CON.14
+                      +1  223     
+                      +1  224     ;* CPU *
+ FE08                 +1  225     CSP      DEFR   0FE08H
+ FF0E                 +1  226     MDC      DEFR   0FF0EH
+ FF1E                 +1  227     ONES     DEFR   0FF1EH
+ FF10                 +1  228     PSW      DEFR   0FF10H
+ FE12                 +1  229     SP       DEFR   0FE12H
+ FE14                 +1  230     STKOV    DEFR   0FE14H
+ FE16                 +1  231     STKUN    DEFR   0FE16H
+ FF12                 +1  232     SYSCON   DEFR   0FF12H
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    16
+
+ FFAC                 +1  233     TFR      DEFR   0FFACH
+ FF1C                 +1  234     ZEROS    DEFR   0FF1CH
+ FF0C                 +1  235     BUSCON0  DEFR   0FF0CH
+ FF14                 +1  236     BUSCON1  DEFR   0FF14H
+ FF16                 +1  237     BUSCON2  DEFR   0FF16H
+ FF18                 +1  238     BUSCON3  DEFR   0FF18H
+ FF1A                 +1  239     BUSCON4  DEFR   0FF1AH
+ FE18                 +1  240     ADDRSEL1 DEFR   0FE18H
+ FE1A                 +1  241     ADDRSEL2 DEFR   0FE1AH
+ FE1C                 +1  242     ADDRSEL3 DEFR   0FE1CH
+ FE1E                 +1  243     ADDRSEL4 DEFR   0FE1EH
+ FF12.7               +1  244     WRCFG    BIT    SYSCON.7
+ FF12.8               +1  245     CLKEN    BIT    SYSCON.8
+ FF12.9               +1  246     BYTDIS   BIT    SYSCON.9
+ FF12.10              +1  247     ROMEN    BIT    SYSCON.10
+ FF12.11              +1  248     SGTEN    BIT    SYSCON.11
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    17
+
+ FF12.12              +1  249     ROMS1    BIT    SYSCON.12
+ FF0E.4               +1  250     MDRIU    BIT    MDC.4
+ FF10.0               +1  251     N        BIT    PSW.0
+ FF10.1               +1  252     C        BIT    PSW.1
+ FF10.2               +1  253     V        BIT    PSW.2
+ FF10.3               +1  254     Z        BIT    PSW.3
+ FF10.4               +1  255     E        BIT    PSW.4
+ FF10.5               +1  256     MULIP    BIT    PSW.5
+ FF10.6               +1  257     USR0     BIT    PSW.6
+ FF10.10              +1  258     HLDEN    BIT    PSW.10
+ FF10.11              +1  259     IEN      BIT    PSW.11
+ FF0C.4               +1  260     RWDC0    BIT    BUSCON0.4
+ FF0C.5               +1  261     MTTC0    BIT    BUSCON0.5
+ FF0C.9               +1  262     ALECTL0  BIT    BUSCON0.9
+ FF0C.10              +1  263     BUSACT0  BIT    BUSCON0.10
+ FF0C.12              +1  264     RDYEN0   BIT    BUSCON0.12
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    18
+
+ FF14.4               +1  265     RWDC1    BIT    BUSCON1.4
+ FF14.5               +1  266     MTTC1    BIT    BUSCON1.5
+ FF14.9               +1  267     ALECTL1  BIT    BUSCON1.9
+ FF14.10              +1  268     BUSACT1  BIT    BUSCON1.10
+ FF14.12              +1  269     RDYEN1   BIT    BUSCON1.12
+ FF14.14              +1  270     CSREN1   BIT    BUSCON1.14
+ FF14.15              +1  271     CSWEN1   BIT    BUSCON1.15
+ FF16.4               +1  272     RWDC2    BIT    BUSCON2.4
+ FF16.5               +1  273     MTTC2    BIT    BUSCON2.5
+ FF16.9               +1  274     ALECTL2  BIT    BUSCON2.9
+ FF16.10              +1  275     BUSACT2  BIT    BUSCON2.10
+ FF16.12              +1  276     RDYEN2   BIT    BUSCON2.12
+ FF16.14              +1  277     CSREN2   BIT    BUSCON2.14
+ FF16.15              +1  278     CSWEN2   BIT    BUSCON2.15
+ FF18.4               +1  279     RWDC3    BIT    BUSCON3.4
+ FF18.5               +1  280     MTTC3    BIT    BUSCON3.5
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    19
+
+ FF18.9               +1  281     ALECTL3  BIT    BUSCON3.9
+ FF18.10              +1  282     BUSACT3  BIT    BUSCON3.10
+ FF18.12              +1  283     RDYEN3   BIT    BUSCON3.12
+ FF18.14              +1  284     CSREN3   BIT    BUSCON3.14
+ FF18.15              +1  285     CSWEN3   BIT    BUSCON3.15
+ FF1A.4               +1  286     RWDC4    BIT    BUSCON4.4
+ FF1A.5               +1  287     MTTC4    BIT    BUSCON4.5
+ FF1A.9               +1  288     ALECTL4  BIT    BUSCON4.9
+ FF1A.10              +1  289     BUSACT4  BIT    BUSCON4.10
+ FF1A.12              +1  290     RDYEN4   BIT    BUSCON4.12
+ FF1A.14              +1  291     CSREN4   BIT    BUSCON4.14
+ FF1A.15              +1  292     CSWEN4   BIT    BUSCON4.15
+ FFAC.0               +1  293     ILLBUS   BIT    TFR.0
+ FFAC.1               +1  294     ILLINA   BIT    TFR.1
+ FFAC.2               +1  295     ILLOPA   BIT    TFR.2
+ FFAC.3               +1  296     PRTFLT   BIT    TFR.3
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    20
+
+ FFAC.7               +1  297     UNDOPC   BIT    TFR.7
+ FFAC.13              +1  298     STKUF    BIT    TFR.13
+ FFAC.14              +1  299     STKOF    BIT    TFR.14
+ FFAC.15              +1  300     NMI      BIT    TFR.15
+                      +1  301     
+ F1C0                 +1  302     EXICON   DEFR   0F1C0H
+                      +1  303     
+ F1DE                 +1  304     ISNC     DEFR   0F1DEH
+ F1DE.0               +1  305     RTCIR    BIT    ISNC.0
+ F1DE.1               +1  306     RTCIE    BIT    ISNC.1
+ F1DE.2               +1  307     PLLIR    BIT    ISNC.2
+ F1DE.3               +1  308     PLLIE    BIT    ISNC.3
+                      +1  309     
+                      +1  310     
+                      +1  311     ;* PEC *
+ FEC0                 +1  312     PECC0    DEFR   0FEC0H
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    21
+
+ FEC2                 +1  313     PECC1    DEFR   0FEC2H
+ FEC4                 +1  314     PECC2    DEFR   0FEC4H
+ FEC6                 +1  315     PECC3    DEFR   0FEC6H
+ FEC8                 +1  316     PECC4    DEFR   0FEC8H
+ FECA                 +1  317     PECC5    DEFR   0FECAH
+ FECC                 +1  318     PECC6    DEFR   0FECCH
+ FECE                 +1  319     PECC7    DEFR   0FECEH
+                      +1  320     
+                      +1  321     ;* I/O Ports *
+ F100                 +1  322     DP0L     DEFR   0F100H
+ F102                 +1  323     DP0H     DEFR   0F102H
+ F104                 +1  324     DP1L     DEFR   0F104H
+ F106                 +1  325     DP1H     DEFR   0F106H
+ FFC2                 +1  326     DP2      DEFR   0FFC2H
+ FFC6                 +1  327     DP3      DEFR   0FFC6H
+ FFCA                 +1  328     DP4      DEFR   0FFCAH
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    22
+
+ FFCE                 +1  329     DP6      DEFR   0FFCEH
+ FFD2                 +1  330     DP7      DEFR   0FFD2H
+ FFD6                 +1  331     DP8      DEFR   0FFD6H
+ FF00                 +1  332     P0L      DEFR   0FF00H
+ FF02                 +1  333     P0H      DEFR   0FF02H
+ FF04                 +1  334     P1L      DEFR   0FF04H
+ FF06                 +1  335     P1H      DEFR   0FF06H
+ FFC0                 +1  336     P2       DEFR   0FFC0H
+ FFC4                 +1  337     P3       DEFR   0FFC4H
+ FFC8                 +1  338     P4       DEFR   0FFC8H
+ FFA2                 +1  339     P5       DEFR   0FFA2H
+ FFCC                 +1  340     P6       DEFR   0FFCCH
+ FFD0                 +1  341     P7       DEFR   0FFD0H
+ FFD4                 +1  342     P8       DEFR   0FFD4H
+ F1C2                 +1  343     ODP2     DEFR   0F1C2H
+ F1C6                 +1  344     ODP3     DEFR   0F1C6H
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    23
+
+ F1CE                 +1  345     ODP6     DEFR   0F1CEH
+ F1D2                 +1  346     ODP7     DEFR   0F1D2H
+ F1D6                 +1  347     ODP8     DEFR   0F1D6H
+ F108                 +1  348     RP0H     DEFR   0F108H
+                      +1  349     
+                      +1  350     ;* Serial Interface *
+ FEB4                 +1  351     S0BG     DEFR   0FEB4H
+ FFB0                 +1  352     S0CON    DEFR   0FFB0H
+ FF70                 +1  353     S0EIC    DEFR   0FF70H
+ FEB2                 +1  354     S0RBUF   DEFR   0FEB2H
+ FF6E                 +1  355     S0RIC    DEFR   0FF6EH
+ FEB0                 +1  356     S0TBUF   DEFR   0FEB0H
+ F19C                 +1  357     S0TBIC   DEFR   0F19CH
+ FF6C                 +1  358     S0TIC    DEFR   0FF6CH
+ FFB0.3               +1  359     S0STP    BIT    S0CON.3
+ FFB0.4               +1  360     S0REN    BIT    S0CON.4
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    24
+
+ FFB0.5               +1  361     S0PEN    BIT    S0CON.5
+ FFB0.6               +1  362     S0FEN    BIT    S0CON.6
+ FFB0.7               +1  363     S0OEN    BIT    S0CON.7
+ FFB0.8               +1  364     S0PE     BIT    S0CON.8
+ FFB0.9               +1  365     S0FE     BIT    S0CON.9
+ FFB0.10              +1  366     S0OE     BIT    S0CON.10
+ FFB0.12              +1  367     S0ODD    BIT    S0CON.12
+ FFB0.13              +1  368     S0BRS    BIT    S0CON.13
+ FFB0.14              +1  369     S0LB     BIT    S0CON.14
+ FFB0.15              +1  370     S0R      BIT    S0CON.15
+ FF6C.6               +1  371     S0TIE    BIT    S0TIC.6
+ FF6C.7               +1  372     S0TIR    BIT    S0TIC.7
+ F19C.6               +1  373     S0TBIE   BIT    S0TBIC.6
+ F19C.7               +1  374     S0TBIR   BIT    S0TBIC.7
+ FF6E.6               +1  375     S0RIE    BIT    S0RIC.6
+ FF6E.7               +1  376     S0RIR    BIT    S0RIC.7
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    25
+
+ FF70.6               +1  377     S0EIE    BIT    S0EIC.6
+ FF70.7               +1  378     S0EIR    BIT    S0EIC.7
+                      +1  379     
+ FF72                 +1  380     SSCTIC   DEFR   0FF72H
+ FF74                 +1  381     SSCRIC   DEFR   0FF74H
+ FF76                 +1  382     SSCEIC   DEFR   0FF76H
+ F0B0                 +1  383     SSCTB    DEFR   0F0B0H
+ F0B2                 +1  384     SSCRB    DEFR   0F0B2H
+ F0B4                 +1  385     SSCBR    DEFR   0F0B4H
+ FFB2                 +1  386     SSCCON   DEFR   0FFB2H
+ FFB2.4               +1  387     SSCHB    BIT    SSCCON.4
+ FFB2.5               +1  388     SSCPH    BIT    SSCCON.5
+ FFB2.6               +1  389     SSCP0    BIT    SSCCON.6
+ FFB2.8               +1  390     SSCTE    BIT    SSCCON.8
+ FFB2.8               +1  391     SSCTEN   BIT    SSCCON.8
+ FFB2.9               +1  392     SSCRE    BIT    SSCCON.9
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    26
+
+ FFB2.9               +1  393     SSCREN   BIT    SSCCON.9
+ FFB2.10              +1  394     SSCPE    BIT    SSCCON.10
+ FFB2.10              +1  395     SSCPEN   BIT    SSCCON.10
+ FFB2.11              +1  396     SSCBE    BIT    SSCCON.11
+ FFB2.11              +1  397     SSCBEN   BIT    SSCCON.11
+ FFB2.12              +1  398     SSCBSY   BIT    SSCCON.12
+ FFB2.14              +1  399     SSCMS    BIT    SSCCON.14
+ FFB2.15              +1  400     SSCEN    BIT    SSCCON.15
+ FF72.7               +1  401     SSCTIR   BIT    SSCTIC.7
+ FF72.6               +1  402     SSCTIE   BIT    SSCTIC.6
+ FF74.7               +1  403     SSCRIR   BIT    SSCRIC.7
+ FF74.6               +1  404     SSCRIE   BIT    SSCRIC.6
+ FF76.7               +1  405     SSCEIR   BIT    SSCEIC.7
+ FF76.6               +1  406     SSCEIE   BIT    SSCEIC.6
+                      +1  407     
+                      +1  408     ;* GPT1, GPT2 *
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    27
+
+ FE4A                 +1  409     CAPREL   DEFR   0FE4AH
+ FF6A                 +1  410     CRIC     DEFR   0FF6AH
+ FE40                 +1  411     T2       DEFR   0FE40H
+ FF40                 +1  412     T2CON    DEFR   0FF40H
+ FF60                 +1  413     T2IC     DEFR   0FF60H
+ FE42                 +1  414     T3       DEFR   0FE42H
+ FF42                 +1  415     T3CON    DEFR   0FF42H
+ FF62                 +1  416     T3IC     DEFR   0FF62H
+ FE44                 +1  417     T4       DEFR   0FE44H
+ FF44                 +1  418     T4CON    DEFR   0FF44H
+ FF64                 +1  419     T4IC     DEFR   0FF64H
+ FE46                 +1  420     T5       DEFR   0FE46H
+ FF46                 +1  421     T5CON    DEFR   0FF46H
+ FF66                 +1  422     T5IC     DEFR   0FF66H
+ FE48                 +1  423     T6       DEFR   0FE48H
+ FF48                 +1  424     T6CON    DEFR   0FF48H
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    28
+
+ FF68                 +1  425     T6IC     DEFR   0FF68H
+ FEAE                 +1  426     WDT      DEFR   0FEAEH
+ FFAE                 +1  427     WDTCON   DEFR   0FFAEH
+ FF6A.6               +1  428     CRIE     BIT    CRIC.6
+ FF6A.7               +1  429     CRIR     BIT    CRIC.7
+ FF40.6               +1  430     T2R      BIT    T2CON.6
+ FF40.7               +1  431     T2UD     BIT    T2CON.7
+ FF40.8               +1  432     T2UDE    BIT    T2CON.8
+ FF60.6               +1  433     T2IE     BIT    T2IC.6
+ FF60.7               +1  434     T2IR     BIT    T2IC.7
+ FF42.6               +1  435     T3R      BIT    T3CON.6
+ FF42.7               +1  436     T3UD     BIT    T3CON.7
+ FF42.8               +1  437     T3UDE    BIT    T3CON.8
+ FF42.9               +1  438     T3OE     BIT    T3CON.9
+ FF42.10              +1  439     T3OTL    BIT    T3CON.10
+ FF62.6               +1  440     T3IE     BIT    T3IC.6
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    29
+
+ FF62.7               +1  441     T3IR     BIT    T3IC.7
+ FF44.6               +1  442     T4R      BIT    T4CON.6
+ FF44.7               +1  443     T4UD     BIT    T4CON.7
+ FF44.8               +1  444     T4UDE    BIT    T4CON.8
+ FF64.6               +1  445     T4IE     BIT    T4IC.6
+ FF64.7               +1  446     T4IR     BIT    T4IC.7
+ FF46.6               +1  447     T5R      BIT    T5CON.6
+ FF46.7               +1  448     T5UD     BIT    T5CON.7
+ FF46.8               +1  449     T5UDE    BIT    T5CON.8
+ FF46.14              +1  450     T5CLR    BIT    T5CON.14
+ FF46.15              +1  451     T5SC     BIT    T5CON.15
+ FF66.6               +1  452     T5IE     BIT    T5IC.6
+ FF66.7               +1  453     T5IR     BIT    T5IC.7
+ FF48.6               +1  454     T6R      BIT    T6CON.6
+ FF48.7               +1  455     T6UD     BIT    T6CON.7
+ FF48.8               +1  456     T6UDE    BIT    T6CON.8
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    30
+
+ FF48.9               +1  457     T6OE     BIT    T6CON.9
+ FF48.10              +1  458     T6OTL    BIT    T6CON.10
+ FF48.15              +1  459     T6SR     BIT    T6CON.15
+ FF68.6               +1  460     T6IE     BIT    T6IC.6
+ FF68.7               +1  461     T6IR     BIT    T6IC.7
+ FFC4.0               +1  462     T0IN     BIT    P3.0
+ FFC4.7               +1  463     T2IN     BIT    P3.7
+ FFC4.6               +1  464     T3IN     BIT    P3.6
+ FFC4.5               +1  465     T4IN     BIT    P3.5
+ FFA2.13              +1  466     T5IN     BIT    P5.13;
+ FFA2.12              +1  467     T6IN     BIT    P5.12;
+ FFA2.15              +1  468     T2EUD    BIT    P5.15;
+ FFC4.4               +1  469     T3EUD    BIT    P3.4;
+ FFA2.14              +1  470     T4EUD    BIT    P5.14
+ FFA2.11              +1  471     T5EUD    BIT    P5.11
+ FFC4.4               +1  472     T3EUD    BIT    P3.4
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    31
+
+ FFC4.3               +1  473     T3OUT    BIT    P3.3
+ FFC4.2               +1  474     CAPIN    BIT    P3.2
+ FFC4.1               +1  475     T6OUT    BIT    P3.1
+ FFAE.0               +1  476     WDTIN    BIT    WDTCON.0
+ FFAE.1               +1  477     WDTR     BIT    WDTCON.1
+                      +1  478     
+                      +1  479     ;* PWM Module *
+ FF30                 +1  480     PWMCON0  DEFR   0FF30H
+ FF32                 +1  481     PWMCON1  DEFR   0FF32H
+ FE30                 +1  482     PW0      DEFR   0FE30H
+ FE32                 +1  483     PW1      DEFR   0FE32H
+ FE34                 +1  484     PW2      DEFR   0FE34H
+ FE36                 +1  485     PW3      DEFR   0FE36H
+ F17E                 +1  486     PWMIC    DEFR   0F17EH
+ F030                 +1  487     PT0      DEFR   0F030H
+ F032                 +1  488     PT1      DEFR   0F032H
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    32
+
+ F034                 +1  489     PT2      DEFR   0F034H
+ F036                 +1  490     PT3      DEFR   0F036H
+ F038                 +1  491     PP0      DEFR   0F038H
+ F03A                 +1  492     PP1      DEFR   0F03AH
+ F03C                 +1  493     PP2      DEFR   0F03CH
+ F03E                 +1  494     PP3      DEFR   0F03EH
+ FF30.0               +1  495     PTR0     BIT    PWMCON0.0
+ FF30.1               +1  496     PTR1     BIT    PWMCON0.1
+ FF30.2               +1  497     PTR2     BIT    PWMCON0.2
+ FF30.3               +1  498     PTR3     BIT    PWMCON0.3
+ FF30.4               +1  499     PTI0     BIT    PWMCON0.4
+ FF30.5               +1  500     PTI1     BIT    PWMCON0.5
+ FF30.6               +1  501     PTI2     BIT    PWMCON0.6
+ FF30.7               +1  502     PTI3     BIT    PWMCON0.7
+ FF30.8               +1  503     PIE0     BIT    PWMCON0.8
+ FF30.9               +1  504     PIE1     BIT    PWMCON0.9
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    33
+
+ FF30.10              +1  505     PIE2     BIT    PWMCON0.10
+ FF30.11              +1  506     PIE3     BIT    PWMCON0.11
+ FF30.12              +1  507     PIR0     BIT    PWMCON0.12
+ FF30.13              +1  508     PIR1     BIT    PWMCON0.13
+ FF30.14              +1  509     PIR2     BIT    PWMCON0.14
+ FF30.15              +1  510     PIR3     BIT    PWMCON0.15
+ FF32.0               +1  511     PEN0     BIT    PWMCON1.0
+ FF32.1               +1  512     PEN1     BIT    PWMCON1.1
+ FF32.2               +1  513     PEN2     BIT    PWMCON1.2
+ FF32.3               +1  514     PEN3     BIT    PWMCON1.3
+ FF32.4               +1  515     PM0      BIT    PWMCON1.4
+ FF32.5               +1  516     PM1      BIT    PWMCON1.5
+ FF32.6               +1  517     PM2      BIT    PWMCON1.6
+ FF32.7               +1  518     PM3      BIT    PWMCON1.7
+ FF32.12              +1  519     PB01     BIT    PWMCON1.12
+ FF32.14              +1  520     PS2      BIT    PWMCON1.14
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    34
+
+ FF32.15              +1  521     PS3      BIT    PWMCON1.15
+ F17E.7               +1  522     PWMIR    BIT    PWMIC.7
+ F17E.6               +1  523     PWMIE    BIT    PWMIC.6
+                      +1  524     
+                      +1  525     ; SYSCON2 and SYSCON3 (only in some devices)
+ F1D0                 +1  526     SYSCON2  DEFR   0F1D0H
+ F1D0.6               +1  527     RCS      BIT    SYSCON2.6
+ F1D0.7               +1  528     SCS      BIT    SYSCON2.7
+ F1D0.15              +1  529     CLKLOCK  BIT    SYSCON2.15
+ F1D4                 +1  530     SYSCON3  DEFR   0F1D4H
+ F1D4.0               +1  531     ADCDIS   BIT    SYSCON3.0
+ F1D4.1               +1  532     ASC0DIS  BIT    SYSCON3.1
+ F1D4.2               +1  533     SSCDIS   BIT    SYSCON3.2
+ F1D4.3               +1  534     GPT1DIS  BIT    SYSCON3.3
+ F1D4.4               +1  535     GPT2DIS  BIT    SYSCON3.4
+ F1D4.5               +1  536     FMDIS    BIT    SYSCON3.5
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    35
+
+ F1D4.6               +1  537     CC1DIS   BIT    SYSCON3.6
+ F1D4.7               +1  538     CC2DIS   BIT    SYSCON3.7
+ F1D4.9               +1  539     PWMDIS   BIT    SYSCON3.9
+ F1D4.10              +1  540     ASC1DIS  BIT    SYSCON3.10
+ F1D4.11              +1  541     I2CDIS   BIT    SYSCON3.11
+ F1D4.13              +1  542     CAN1DIS  BIT    SYSCON3.13
+ F1D4.14              +1  543     CAN2DIS  BIT    SYSCON3.14
+ F1D4.15              +1  544     PCDDIS   BIT    SYSCON3.15
+                      +1  545     
+                      +1  546     ;* X-Peripherals *
+ F186                 +1  547     XP0IC    DEFR   0F186H
+ F18E                 +1  548     XP1IC    DEFR   0F18EH
+ F196                 +1  549     XP2IC    DEFR   0F196H
+ F19E                 +1  550     XP3IC    DEFR   0F19EH
+ F186.7               +1  551     XP0IR    BIT    XP0IC.7
+ F186.6               +1  552     XP0IE    BIT    XP0IC.6
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    36
+
+ F18E.7               +1  553     XP1IR    BIT    XP1IC.7
+ F18E.6               +1  554     XP1IE    BIT    XP1IC.6
+ F196.7               +1  555     XP2IR    BIT    XP2IC.7
+ F196.6               +1  556     XP2IE    BIT    XP2IC.6
+ F19E.7               +1  557     XP3IR    BIT    XP3IC.7
+ F19E.6               +1  558     XP3IE    BIT    XP3IC.6
+                      +1  559     
+                          560     ASSUME  DPP3:SYSTEM
+                          561     ;***********************************************************************
+                          562     ;*                                                                     *
+                          563     ;* MONITOR C167  Configuration                                         *
+                          564     ;* COPYRIGHT KEIL ELEKTRONIK GmbH 1993 - 1999                          *
+                          565     ;*                                                                     *
+                          566     ;***********************************************************************
+                          567     ;***********************************************************************
+                          568     ; Definitions for MONITOR 167  Configuration:
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    37
+
+                          569     ; 
+                          570                     ; Trap which is used for Breakpoints
+                          571     ;                               ; 2 = NMI Trap (default)
+                          572     ;
+                          573     ;
+                          574     ;
+                          575     $IF BOOTSTRAP
+                          576     $SET (SERIAL0)
+                          577     $ENDIF
+                          578     
+                          579     ; Definitions for SYSCON and BUSCON0 Register:
+                          580     ; --------------------------------------------
+                          581     
+                          582     $INCLUDE(CONFIG.INC)
+                      +1  583     ;------------------------------------------------------------------------------
+                      +1  584     ;  This file defines the Monitor Configuration Parameters
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    38
+
+                      +1  585     ;  Copyright KEIL ELEKTRONIK GmbH 1993 - 1999
+                      +1  586     ;  Version 4.00
+                      +1  587     ;------------------------------------------------------------------------------
+                      +1  588     ;
+                      +1  589     ; Definitions of Monitor Parameters
+                      +1  590     ; ---------------------------------
+                      +1  591     ;
+                      +1  592     ; DATA_START: Defines the Start Address for the Monitor Data Area
+                      +1  593     ;             Monitor uses 512 Bytes RAM starting at this location.
+                      +1  594      ; set to 0FEA00H for Target "Bootstrap" 
+                      +1  595     ;                              ; set to 0FFE00H for Targets "UART ASC0" and "Simulated
+                                   Serial"
+                      +1  596     ;
+                      +1  597     ; CODE_START: Defines the Start Address for the Monitor Code Area
+                      +1  598     ;             Monitor requires 6KB for program code starting at this location.
+                      +1  599      ; set to 0FEC00H for Target "Bootstrap" 
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    39
+
+                      +1  600     ;                              ; set to 0200000H for Targets "UART ASC0" and "Simulate
+                                  d Serial"
+                      +1  601     ;
+                      +1  602     ; VECTAB: Defines the Interrupt Vector Address relocation 
+                      +1  603     ; Notes: This setting is ONLY relevant, if CODE_START is 0.  Locate interrupts
+                      +1  604     ;        in your target application to the same address with uVision2
+                      +1  605     ;        Project-Options for Target-L166 Misc-Interrupt Vector Table Address
+                      +1  606     ;        (generates the L166 VECTAB directive).
+                      +1  607              ; default Address 0x8000
+                      +1  608     ;
+                      +1  609     ; BAUDRATE: Defines the communication Baudrate for NON-BOOTSTRAP Mode.
+                      +1  610     ; Notes: For SIMULATED SERIAL MODE the max. Baudrate is 38400bps @20MHz Clock.
+                      +1  611     ;        Use the default baudrate first, before you check higher baudrates.
+                      +1  612     ;        This setting is not relevant when you are using BOOTSTRAP Mode.
+                      +1  613     ;        You may set BAUDRATE to 0 to enable automatic baudrate detection.
+                      +1  614     ;        Automatic baudrate detection does not work for the SIMULATED SERIAL MODE.
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    40
+
+ 4B00                 +1  615     BAUDRATE     EQU   19200     ; default Baudrate is 9600 bps.
+                      +1  616     ;
+                      +1  617     ; CPU_CLOCK: Defines the internal CPU Clock frequency
+                      +1  618     ; Notes: The internal Clock might be different from the XTAL frequency, due
+                      +1  619     ;        to on-chip PLL.  This setting is not relevant for BOOTSTRAP Mode.
+ 01312D00             +1  620     CPU_CLOCK    EQU   20000000 ; default clock for most chips is 20MHz
+                      +1  621     ;
+                      +1  622     ;------------------------------------------------------------------------------
+                      +1  623     ;
+                      +1  624     ; Definitions for SYSCON and BUSCON0 Register:
+                      +1  625     ; --------------------------------------------
+                      +1  626     ;
+                      +1  627     ; MCTC0: Memory Cycle Time (BUSCON0.0 .. BUSCON0.3):
+                      +1  628     ; Note: if RDYEN0 == 1 a maximum number of 7 waitstates can be selected
+ 0001                 +1  629     _MCTC0   EQU    1       ; Memory wait states is 1 (MCTC0 field = 0EH).
+                      +1  630     ;                       ; (Reset Value = 15 additional state times)
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    41
+
+                      +1  631     ;
+                      +1  632     ; RWDC0: Read/Write Signal Delay (BUSCON0.4):
+ 0000                 +1  633     _RWDC0   EQU    0       ; 0 = Delay Time     0.5 States (Reset Value)  
+                      +1  634     ;                       ; 1 = No Delay Time  0   States
+                      +1  635     ;
+                      +1  636     ; MTTC0: Memory Tri-state Time (BUSCON0.5):
+ 0001                 +1  637     _MTTC0   EQU    1       ; 0 = Delay Time     0.5 States (Reset Value)
+                      +1  638     ;                       ; 1 = No Delay Time  0   States
+                      +1  639     ;
+                      +1  640     $SET (BTYP_ENABLE = 0)  ; 0 = BTYP0 and BUSACT0 is set according to the level
+                      +1  641                             ;     at pins P0L.6 and P0L.7 during reset.
+                      +1  642                             ; 1 = the following _BTYP0 and _BUSACT0 values are
+                      +1  643                             ;     written to BTYP0 and BUSACT0
+                      +1  644     
+                      +1  645     ; BTYP0: External Bus Configuration Control (BUSCON0.6 .. BUSCON0.7):
+ 0002                 +1  646     _BTYP0   EQU    2       ; 0 = 8 Bit Non Multiplexed
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    42
+
+                      +1  647     ;                       ; 1 = 8 Bit Multiplexed
+                      +1  648     ;                       ; 2 = 16 Bit Non Multiplexed
+                      +1  649     ;                       ; 3 = 16 Bit Multiplexed
+                      +1  650     ;
+                      +1  651     ; ALECTL0: ALE Lengthening Control Bit (BUSCON0.9):
+ 0000                 +1  652     _ALECTL0 EQU    0       ; see data sheet for description
+                      +1  653     ;
+                      +1  654     ; BUSACT0: Bus Active Control Bit (BUSCON0.10):
+ 0001                 +1  655     _BUSACT0 EQU    1       ; = 0 external bus disabled
+                      +1  656                             ; = 1 external bus enabled
+                      +1  657     ;
+                      +1  658     ; RDYEN0: READY# Input Enable control bit (BUSCON0.12):
+ 0000                 +1  659     _RDYEN0  EQU    0       ; 0 = READY# function disabled  (Reset Value)
+                      +1  660     ;                       ; 1 = READY# function enabled
+                      +1  661     ;
+                      +1  662     ; RDY_AS0: Synchronous / Asynchronous READY# Input (BUSCON0.3):
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    43
+
+                      +1  663     ; Note: This bit is only valid if _RDYEN0 == 1.
+ 0000                 +1  664     _RDY_AS0 EQU    0       ; 0 = synchronous READY# input
+                      +1  665     ;                       ; 1 = asynchronous READY# input
+                      +1  666     ;
+                      +1  667     ; CSREN0: Read Chip Select Enable bit (BUSCON0.14, only in some devices):
+ 0000                 +1  668     _CSREN0  EQU    0       ; 0 = CS0# is independent of read command (RD#)
+                      +1  669     ;                       ; 1 = CS0# is generated for the duration of read
+                      +1  670     ;
+                      +1  671     ; CSWEN0: Write Chip Select Enable bit (BUSCON0.15, only in some devices):
+ 0000                 +1  672     _CSWEN0  EQU    0       ; 0 = CS0# is independent of write command (WR#)
+                      +1  673     ;                       ; 1 = CS0# is generated for the duration of write
+                      +1  674     ;
+                      +1  675     ; XPERSHARE: XBUS Peripheral Share Mode Control (SYSCON.0)
+ 0000                 +1  676     _XPERSHARE EQU 0        ; 0 = External accesses to XBUS peripherals disabled
+                      +1  677     ;                       ; 1 = XBUS accessible via external BUS in hold mode
+                      +1  678     ;
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    44
+
+                      +1  679     ; VISIBLE: Visible Mode Control (SYSCON.1)
+ 0000                 +1  680     _VISIBLE EQU 0          ; 0 = Accesses to XBUS are done internally
+                      +1  681     ;                       ; 1 = XBUS accesses are made visible on external pins
+                      +1  682     ;
+                      +1  683     ; XPEN: XRAM & XBUS Peripheral Enable Control Bit (SYSCON.2)
+ 0001                 +1  684     _XPEN   EQU     1       ; 0 = access to on-chip XRAM & XBUS disable => EXT.BUS
+                      +1  685     ;                       ; 1 = on-chip XRAM & XBUS is accessed
+                      +1  686     ;
+                      +1  687     ; BDRSTEN: Bidirectional Reset Enable Bit (SYSCON.3, only in some devices)
+ 0000                 +1  688     _BDRSTEN EQU    0       ; 0 = Pin RSTIN# is an input only
+                      +1  689     ;                       ; 1 = RSTIN# is pulled low during internal reset
+                      +1  690     ;
+                      +1  691     $SET (OWDDIS_ENABLE = 0); 0 = OWDDIS is set according to the inverted level
+                      +1  692     ;                       ;     at pin RD\ duirng reset.
+                      +1  693     ;                       ; 1 = the following _OWDDIS value is
+                      +1  694     ;                       ;     written to OWDDIS in the SYSCON register
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    45
+
+                      +1  695     ; OWDDIS: Oscillator Watchdog Disable Bit (SYSCON.4, only in some devices)
+ 0000                 +1  696     _OWDDIS EQU     0       ; 0 = the on-chip oscillator watchdog is enabled 
+                      +1  697     ;                       ; 1 = the on-chip oscillator watchdog is disabled
+                      +1  698     ;
+                      +1  699     ; PWDCFG: Power Down Mode Configuration Bit (SYSCON.5, only in some devices)
+ 0000                 +1  700     _PWDCFG EQU     0       ; 0 = Power Down mode can be left via reset
+                      +1  701     ;                       ; 1 = Power Down mode left via ext. or RTC interrupt
+                      +1  702     ;
+                      +1  703     ; CSCFG: Chip Select Configuration Control (SYSCON.6, only in some devices)
+ 0000                 +1  704     _CSCFG  EQU     0       ; 0 = Latched CS mode; CS signals are latch internally
+                      +1  705     ;                       ; 1 = Unlatched CS mode
+                      +1  706     ; 
+                      +1  707     $SET (WRCFG_ENABLE = 0) ; 0 = WRCFG is set according to the level at
+                      +1  708     ;                       ;     pin P0H.0 during reset.
+                      +1  709     ;                       ; 1 = the following _WRCFG value is
+                      +1  710     ;                       ;     written to WRCFG in the SYSCON register
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    46
+
+                      +1  711     ; WRCFG: Write Configuration Control Bit (SYSCON.7):
+ 0001                 +1  712     _WRCFG   EQU    1       ; 0 = Normal configuration of WR# and BHE#
+                      +1  713     ;                       ; 1 = WR# pin acts as WRL#, BHE# pin acts as WRH#
+                      +1  714     ;
+                      +1  715     ; CLKEN: System Clock Output Enable bit (SYSCON.8):
+ 0000                 +1  716     _CLKEN  EQU     0       ; 0 = disabled    (Reset Value)
+                      +1  717     ;                       ; 1 = enabled
+                      +1  718     ;
+                      +1  719     ; BYTDIS: Byte High Enable pin control bit (SYSCON.9):
+ 0000                 +1  720     _BYTDIS EQU     0       ; 0 = enabled     (Reset Value)
+                      +1  721     ;                       ; 1 = disabled
+                      +1  722     ;
+                      +1  723     ; ROMEN: Internal ROM Access Enable is read only (SYSCON.10):
+ 0000                 +1  724     _ROMEN  EQU     0       ; 0 = Internal ROM disabled
+                      +1  725                             ; 1 = Internal ROM enabled
+                      +1  726     ;
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    47
+
+                      +1  727     ; SGTDIS: Segmentation Disable control bit (SYSCON.11):
+ 0000                 +1  728     _SGTDIS EQU     0       ; 0 = Segmentation enabled (Reset Value)
+                      +1  729                             ; 1 = Segmentation disabled
+                      +1  730     ;
+                      +1  731     ; ROMS1: ROM Segment Mapping Control Bit (SYSCON.12):
+ 0000                 +1  732     _ROMS1  EQU     0       ; _ROMS1 = 0 Internal ROM mapped to segment 0
+                      +1  733     ;                       ; _ROMS1 = 1 Internal ROM mapped to segment 1
+                      +1  734     ;
+                      +1  735     ; STKSZ: Maximum System Stack Size selection  (SYSCON.13 .. SYSCON.15)
+                      +1  736     ;  Defines the system stack space which is used by CALL/RET and PUSH/POP
+                      +1  737     ;  instructions.  This system stack selectino must be identical with
+                      +1  738     ;  the selection in your START167.A66 file.
+                      +1  739     $SET (STK_SIZE = 7)
+                      +1  740     ;     System stack sizes:
+                      +1  741     ;       0 = 256 words (Reset Value)
+                      +1  742     ;       1 = 128 words
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    48
+
+                      +1  743     ;       2 =  64 words
+                      +1  744     ;       3 =  32 words
+                      +1  745     ;       4 = 512 words
+                      +1  746     ;       5 = not implemented
+                      +1  747     ;       6 = not implemented
+                      +1  748     ;       7 = no wrapping (entire internal RAM use as STACK)
+                      +1  749     ;-----------------------------------------------------------------------------
+                      +1  750     ; Initialization for XPERCON register (available on some derivatives only)
+                      +1  751     ;
+                      +1  752     ; INIT_XPERCON: Init XPERCON register available on some devices
+                      +1  753     ; --- Set INIT_XPERCON = 1 to initilize the XPERCON register
+                      +1  754     $SET (INIT_XPERCON = 0)
+                      +1  755     ;
+                      +1  756     ; --- XPERCON values
+                      +1  757     ;
+                      +1  758     ; V_CAN1: make CAN1 address range 0xEF00 .. 0xEFFF visible (XPERCON.0)
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    49
+
+ 0001                 +1  759     _V_CAN1    EQU     1       ; 0 = CAN1 is not visible on the XBUS
+                      +1  760     ;                          ; 1 = CAN1 is visible on the XBUS (default)
+                      +1  761     ;
+                      +1  762     ; V_CAN2: make CAN2 address range 0xEE00 .. 0xEEFF visible (XPERCON.1)
+ 0000                 +1  763     _V_CAN2    EQU     0       ; 0 = CAN2 is not visible on the XBUS (default)
+                      +1  764     ;                          ; 1 = CAN2 is visible on the XBUS
+                      +1  765     ;
+                      +1  766     ; V_XRAM2: make 2KB XRAM address range 0xE000 .. 0xE7FF visible (XPERCON.10)
+ 0001                 +1  767     _V_XRAM2   EQU     1       ; 0 = 2KB XRAM is not visible on the XBUS
+                      +1  768     ;                          ; 1 = 2KB XRAM is visible on the XBUS (default)
+                      +1  769     ;
+                      +1  770     ; V_XRAM6: make 6KB XRAM address range 0xC000 .. 0xD7FF visible (XPERCON.11)
+ 0000                 +1  771     _V_XRAM6   EQU     0       ; 0 = 6KB XRAM is not visible on the XBUS (default)
+                      +1  772     ;                          ; 1 = 6KB XRAM is visible on the XBUS
+                      +1  773     ;
+                      +1  774     ; V_XFLASH: make 4KB XFLASH address range 0x8000 .. 0x8FFF visible (XPERCON.14)
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    50
+
+ 0000                 +1  775     _V_XFLASH  EQU     0       ; 0 = 4KB XFLASH is not visible on the XBUS (default)
+                      +1  776     ;                          ; 1 = 4KB XFLASH is visible on the XBUS
+                      +1  777     ;
+                      +1  778     ;------------------------------------------------------------------------------
+                      +1  779     ;
+                      +1  780     ; Initialization for SYSCON2 and SYSCON3 (available on some derivatives only)
+                      +1  781     ; Note: The SYSCON2 and SYSCON3 bits may be different in some derivatives.
+                      +1  782     ;       Check the values carefully!
+                      +1  783     ;
+                      +1  784     ; ADVANCED_SYSCON: Init SYSCON2 and SYSCON3 register available on some devices
+                      +1  785     ; --- Set ADVANCE_SYSCON = 1 to initilize SYSCON2 and SYSCON3
+                      +1  786     $SET (ADVANCED_SYSCON = 0)
+                      +1  787     ;
+                      +1  788     ; --- SYSCON2 values
+                      +1  789     ;
+                      +1  790     ; PDCON: Power Down Control (during power down mode) (SYSCON2.4 .. SYSCON2.5)
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    51
+
+ 0000                 +1  791     _PDCON  EQU     0       ; 0 = RTC On,  Ports On  (default after Reset)
+                      +1  792     ;                       ; 1 = RTC On,  Ports Off
+                      +1  793     ;                       ; 2 = RTC Off, Ports On
+                      +1  794     ;                       ; 3 = RTC Off, Ports Off
+                      +1  795     ;
+                      +1  796     ; RTS: RTC Clock Source (not affected by a reset) (SYSCON2.6)
+ 0000                 +1  797     _RTS    EQU     0       ; 0 = Main oscillator
+                      +1  798     ;                       ; 1 = Auxiliary oscillator (if available)
+                      +1  799     ;
+                      +1  800     ; SCS: SDD Clock Source (not affected by a reset) (SYSCON2.7)
+ 0000                 +1  801     _SCS    EQU     0       ; 0 = Main oscillator
+                      +1  802     ;                       ; 1 = Auxiliary oscillator (if available)
+                      +1  803     ;
+                      +1  804     ; CLKCON: Clock State Control (SYSCON2.8 .. SYSCON2.9)
+ 0000                 +1  805     _CLKCON EQU     0       ; 0 = Running on configured basic frequency
+                      +1  806     ;                       ; 1 = Running on slow down frequency, PLL ON
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    52
+
+                      +1  807     ;                       ; 2 = Running on slow down frequency, PLL OFF
+                      +1  808     ;                       ; 3 = reserved
+                      +1  809     ;
+                      +1  810     ; CLKREL: Reload Counter Value for Slowdown Devider (SYSCON2.10 .. SYSCON2.14)
+ 0000                 +1  811     _CLKREL EQU     0       ; possible values are 0 .. 31
+                      +1  812     ;
+                      +1  813     ;
+                      +1  814     ; --- SYSCON3 values: disable on-chip peripherals
+                      +1  815     ;
+ 0000                 +1  816     _ADCDIS  EQU    0       ; 1 = disable Analog/Digital Converter    (SYSCON3.0)
+ 0000                 +1  817     _ASC0DIS EQU    0       ; 1 = disable UART ASC0                   (SYSCON3.1)
+ 0000                 +1  818     _SSCDIS  EQU    0       ; 1 = disable Synchronus Serial Cnl SSC   (SYSCON3.2)
+ 0000                 +1  819     _GPTDIS  EQU    0       ; 1 = disable Timer Block GPT             (SYSCON3.3)
+                      +1  820                             ; reserved                                (SYSCON3.4)
+ 0000                 +1  821     _FMDIS   EQU    0       ; 1 = disable on-chip Flash Memory Module (SYSCON3.5)
+ 0000                 +1  822     _CC1DIS  EQU    0       ; 1 = disable CAPCOM Unit 1               (SYSCON3.6)
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    53
+
+ 0000                 +1  823     _CC2DIS  EQU    0       ; 1 = disable CAPCOM Unit 2               (SYSCON3.7)
+ 0000                 +1  824     _CC6DIS  EQU    0       ; 1 = disable CAPCOM Unit 6               (SYSCON3.8)
+ 0000                 +1  825     _PWMDIS  EQU    0       ; 1 = disable Pulse Width Modulation Unit (SYSCON3.9)
+ 0000                 +1  826     _ASC1DIS EQU    0       ; 1 = disable UART ASC1                   (SYSCON3.10)
+ 0000                 +1  827     _I2CDIS  EQU    0       ; 1 = disable I2C Bus Module              (SYSCON3.11)
+                      +1  828     ;                       ; reserved                                (SYSCON3.12)
+ 0000                 +1  829     _CAN1DIS EQU    0       ; 1 = disable on-chip CAN Module 1        (SYSCON3.13)
+ 0000                 +1  830     _CAN2DIS EQU    0       ; 1 = disable on-chip CAN Module 2        (SYSCON3.14)
+ 0000                 +1  831     _PCDDIS  EQU    0       ; 1 = disable Peripheral Clock Driver     (SYSCON3.15)
+                      +1  832     ;
+                      +1  833     ;------------------------------------------------------------------------------
+                      +1  834     ;
+                      +1  835     ; BUSCON1/ADDRSEL1 .. BUSCON4/ADDRSEL4 Initialization
+                      +1  836     ; ===================================================
+                      +1  837     ;
+                      +1  838     ;
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    54
+
+                      +1  839     ; BUSCON1/ADDRSEL1
+                      +1  840     ; --- Set BUSCON1 = 1 to initialize the BUSCON1/ADDRSEL1 registers
+                      +1  841     $SET (BUSCON1 = 1)
+                      +1  842     ;
+                      +1  843     ; Define the start address and the address range of Chip Select 1 (CS1#) 
+                      +1  844     ; This values are used to set the ADDRSEL1 register
+                      +1  845          ; Set CS1# Start Address (default 100000H)
+                      +1  846            ; Set CS1# Range (default 1024K = 1MB)
+                      +1  847     ;  
+                      +1  848     ; MCTC1: Memory Cycle Time (BUSCON1.0 .. BUSCON1.3):
+                      +1  849     ; Note: if RDYEN1 == 1 a maximum number of 7 waitstates can be selected
+ 0001                 +1  850     _MCTC1   EQU    1       ; Memory wait states is 1 (MCTC1 field = 0EH).
+                      +1  851     ;
+                      +1  852     ; RWDC1: Read/Write Signal Delay (BUSCON1.4):
+ 0000                 +1  853     _RWDC1   EQU    0       ; 0 = Delay Time     0.5 States
+                      +1  854     ;                       ; 1 = No Delay Time  0   States
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    55
+
+                      +1  855     ;
+                      +1  856     ; MTTC1: Memory Tri-state Time (BUSCON1.5):
+ 0001                 +1  857     _MTTC1   EQU    1       ; 0 = Delay Time     0.5 States
+                      +1  858     ;                       ; 1 = No Delay Time  0   States
+                      +1  859     ;
+                      +1  860     ; BTYP1: External Bus Configuration Control (BUSCON1.6 .. BUSCON1.7):
+ 0002                 +1  861     _BTYP1   EQU    2       ; 0 = 8 Bit Non Multiplexed
+                      +1  862     ;                       ; 1 = 8 Bit Multiplexed
+                      +1  863     ;                       ; 2 = 16 Bit Non Multiplexed
+                      +1  864     ;                       ; 3 = 16 Bit Multiplexed
+                      +1  865     ;
+                      +1  866     ; ALECTL1: ALE Lengthening Control Bit (BUSCON1.9):
+ 0000                 +1  867     _ALECTL1 EQU    0       ; see data sheet for description
+                      +1  868     ;
+                      +1  869     ; BUSACT1: Bus Active Control Bit (BUSCON1.10):
+ 0001                 +1  870     _BUSACT1 EQU    1       ; = 0 external (ADDRSEL1) bus disabled
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    56
+
+                      +1  871                             ; = 1 external (ADDRSEL1) bus enabled
+                      +1  872     ;
+                      +1  873     ; RDYEN1: READY# Input Enable control bit (BUSCON1.12):
+ 0000                 +1  874     _RDYEN1  EQU    0       ; 0 = READY# function disabled
+                      +1  875     ;                       ; 1 = READY# function enabled
+                      +1  876     ;
+                      +1  877     ; RDY_AS1: Synchronous / Asynchronous READY# Input (BUSCON1.3):
+                      +1  878     ; Note: This bit is only valid if _RDYEN1 == 1.
+ 0000                 +1  879     _RDY_AS1 EQU    0       ; 0 = synchronous READY# input
+                      +1  880     ;                       ; 1 = asynchronous READY# input
+                      +1  881     ;
+                      +1  882     ; CSREN1: Read Chip Select Enable bit (BUSCON1.14):
+ 0000                 +1  883     _CSREN1  EQU    0       ; 0 = CS1# is independent of read command (RD#)
+                      +1  884     ;                       ; 1 = CS1# is generated for the duration of read
+                      +1  885     ;
+                      +1  886     ; CSWEN1: Write Chip Select Enable bit (BUSCON1.15):
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    57
+
+ 0000                 +1  887     _CSWEN1  EQU    0       ; 0 = CS1# is independent of write command (WR#)
+                      +1  888     ;                       ; 1 = CS1# is generated for the duration of write
+                      +1  889     ;
+                      +1  890     ;
+                      +1  891     ; BUSCON2/ADDRSEL2
+                      +1  892     ; --- Set BUSCON2 = 1 to initialize the BUSCON2/ADDRSEL2 registers
+                      +1  893     $SET (BUSCON2 = 1)
+                      +1  894     ;
+                      +1  895     ; Define the start address and the address range of Chip Select 2 (CS2#) 
+                      +1  896     ; This values are used to set the ADDRSEL2 register
+                      +1  897          ; Set CS2# Start Address (default 200000H)
+                      +1  898            ; Set CS2# Range (default 1024K = 1MB)
+                      +1  899     ;  
+                      +1  900     ; MCTC2: Memory Cycle Time (BUSCON2.0 .. BUSCON2.3):
+                      +1  901     ; Note: if RDYEN2 == 1 a maximum number of 7 waitstates can be selected
+ 0001                 +1  902     _MCTC2   EQU    1       ; Memory wait states is 1 (MCTC2 field = 0EH).
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    58
+
+                      +1  903     ;
+                      +1  904     ; RWDC2: Read/Write Signal Delay (BUSCON2.4):
+ 0000                 +1  905     _RWDC2   EQU    0       ; 0 = Delay Time     0.5 States
+                      +1  906     ;                       ; 1 = No Delay Time  0   States
+                      +1  907     ;
+                      +1  908     ; MTTC2: Memory Tri-state Time (BUSCON2.5):
+ 0001                 +1  909     _MTTC2   EQU    1       ; 0 = Delay Time     0.5 States
+                      +1  910     ;                       ; 1 = No Delay Time  0   States
+                      +1  911     ;
+                      +1  912     ; BTYP2: External Bus Configuration Control (BUSCON2.6 .. BUSCON2.7):
+ 0000                 +1  913     _BTYP2   EQU    0       ; 0 = 8 Bit Non Multiplexed                     ;Achtung !!! w
+                                  ar auf 2
+                      +1  914     ;                       ; 1 = 8 Bit Multiplexed
+                      +1  915     ;                       ; 2 = 16 Bit Non Multiplexed
+                      +1  916     ;                       ; 3 = 16 Bit Multiplexed
+                      +1  917     ;
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    59
+
+                      +1  918     ; ALECTL2: ALE Lengthening Control Bit (BUSCON2.9):
+ 0000                 +1  919     _ALECTL2 EQU    0       ; see data sheet for description
+                      +1  920     ;
+                      +1  921     ; BUSACT2: Bus Active Control Bit (BUSCON2.10):
+ 0001                 +1  922     _BUSACT2 EQU    1       ; = 0 external (ADDRSEL2) bus disabled
+                      +1  923                             ; = 1 external (ADDRSEL2) bus enabled
+                      +1  924     ;
+                      +1  925     ; RDYEN2: READY# Input Enable control bit (BUSCON2.12):
+ 0000                 +1  926     _RDYEN2  EQU    0       ; 0 = READY# function disabled
+                      +1  927     ;                       ; 1 = READY# function enabled
+                      +1  928     ;
+                      +1  929     ; RDY_AS2: Synchronous / Asynchronous READY# Input (BUSCON2.3):
+                      +1  930     ; Note: This bit is only valid if _RDYEN2 == 1.
+ 0000                 +1  931     _RDY_AS2 EQU    0       ; 0 = synchronous READY# input
+                      +1  932     ;                       ; 1 = asynchronous READY# input
+                      +1  933     ;
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    60
+
+                      +1  934     ; CSREN2: Read Chip Select Enable bit (BUSCON2.14):
+ 0000                 +1  935     _CSREN2  EQU    0       ; 0 = CS2# is independent of read command (RD#)
+                      +1  936     ;                       ; 1 = CS2# is generated for the duration of read
+                      +1  937     ;
+                      +1  938     ; CSWEN2: Write Chip Select Enable bit (BUSCON2.15):
+ 0000                 +1  939     _CSWEN2  EQU    0       ; 0 = CS2# is independent of write command (WR#)
+                      +1  940     ;                       ; 1 = CS2# is generated for the duration of write
+                      +1  941     ;
+                      +1  942     ;
+                      +1  943     ; BUSCON3/ADDRSEL3
+                      +1  944     ; --- Set BUSCON3 = 1 to initialize the BUSCON3/ADDRSEL3 registers
+                      +1  945     $SET (BUSCON3 = 0)
+                      +1  946     ;
+                      +1  947     ; Define the start address and the address range of Chip Select 3 (CS3#) 
+                      +1  948     ; This values are used to set the ADDRSEL3 register
+                      +1  949          ; Set CS3# Start Address (default 300000H)
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    61
+
+                      +1  950            ; Set CS3# Range (default 1024K = 1MB)
+                      +1  951     ;  
+                      +1  952     ; MCTC3: Memory Cycle Time (BUSCON3.0 .. BUSCON3.3):
+                      +1  953     ; Note: if RDYEN3 == 1 a maximum number of 7 waitstates can be selected
+ 0001                 +1  954     _MCTC3   EQU    1       ; Memory wait states is 1 (MCTC3 field = 0EH).
+                      +1  955     ;
+                      +1  956     ; RWDC3: Read/Write Signal Delay (BUSCON3.4):
+ 0000                 +1  957     _RWDC3   EQU    0       ; 0 = Delay Time     0.5 States
+                      +1  958     ;                       ; 1 = No Delay Time  0   States
+                      +1  959     ;
+                      +1  960     ; MTTC3: Memory Tri-state Time (BUSCON3.5):
+ 0001                 +1  961     _MTTC3   EQU    1       ; 0 = Delay Time     0.5 States
+                      +1  962     ;                       ; 1 = No Delay Time  0   States
+                      +1  963     ;
+                      +1  964     ; BTYP3: External Bus Configuration Control (BUSCON3.6 .. BUSCON3.7):
+ 0002                 +1  965     _BTYP3   EQU    2       ; 0 = 8 Bit Non Multiplexed
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    62
+
+                      +1  966     ;                       ; 1 = 8 Bit Multiplexed
+                      +1  967     ;                       ; 2 = 16 Bit Non Multiplexed
+                      +1  968     ;                       ; 3 = 16 Bit Multiplexed
+                      +1  969     ;
+                      +1  970     ; ALECTL3: ALE Lengthening Control Bit (BUSCON3.9):
+ 0000                 +1  971     _ALECTL3 EQU    0       ; see data sheet for description
+                      +1  972     ;
+                      +1  973     ; BUSACT3: Bus Active Control Bit (BUSCON3.10):
+ 0001                 +1  974     _BUSACT3 EQU    1       ; = 0 external (ADDRSEL3) bus disabled
+                      +1  975                             ; = 1 external (ADDRSEL3) bus enabled
+                      +1  976     ;
+                      +1  977     ; RDYEN3: READY# Input Enable control bit (BUSCON3.12):
+ 0000                 +1  978     _RDYEN3  EQU    0       ; 0 = READY# function disabled
+                      +1  979     ;                       ; 1 = READY# function enabled
+                      +1  980     ;
+                      +1  981     ; RDY_AS3: Synchronous / Asynchronous READY# Input (BUSCON3.3):
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    63
+
+                      +1  982     ; Note: This bit is only valid if _RDYEN3 == 1.
+ 0000                 +1  983     _RDY_AS3 EQU    0       ; 0 = synchronous READY# input
+                      +1  984     ;                       ; 1 = asynchronous READY# input
+                      +1  985     ;
+                      +1  986     ; CSREN3: Read Chip Select Enable bit (BUSCON3.14):
+ 0000                 +1  987     _CSREN3  EQU    0       ; 0 = CS3# is independent of read command (RD#)
+                      +1  988     ;                       ; 1 = CS3# is generated for the duration of read
+                      +1  989     ;
+                      +1  990     ; CSWEN3: Write Chip Select Enable bit (BUSCON3.15):
+ 0000                 +1  991     _CSWEN3  EQU    0       ; 0 = CS3# is independent of write command (WR#)
+                      +1  992     ;                       ; 1 = CS3# is generated for the duration of write
+                      +1  993     ;
+                      +1  994     ;
+                      +1  995     ; BUSCON4/ADDRSEL4
+                      +1  996     ; --- Set BUSCON4 = 1 to initialize the BUSCON4/ADDRSEL4 registers
+                      +1  997     $SET (BUSCON4 = 0)
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    64
+
+                      +1  998     ;
+                      +1  999     ; Define the start address and the address range of Chip Select 4 (CS4#) 
+                      +1 1000     ; This values are used to set the ADDRSEL4 register
+                      +1 1001          ; Set CS4# Start Address (default 400000H)
+                      +1 1002            ; Set CS4# Range (default 1024K = 1MB)
+                      +1 1003     ;  
+                      +1 1004     ; MCTC4: Memory Cycle Time (BUSCON4.0 .. BUSCON4.3):
+                      +1 1005     ; Note: if RDYEN4 == 1 a maximum number of 7 waitstates can be selected
+ 0001                 +1 1006     _MCTC4   EQU    1       ; Memory wait states is 1 (MCTC4 field = 0EH).
+                      +1 1007     ;
+                      +1 1008     ; RWDC4: Read/Write Signal Delay (BUSCON4.4):
+ 0000                 +1 1009     _RWDC4   EQU    0       ; 0 = Delay Time     0.5 States
+                      +1 1010     ;                       ; 1 = No Delay Time  0   States
+                      +1 1011     ;
+                      +1 1012     ; MTTC4: Memory Tri-state Time (BUSCON4.5):
+ 0001                 +1 1013     _MTTC4   EQU    1       ; 0 = Delay Time     0.5 States
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    65
+
+                      +1 1014     ;                       ; 1 = No Delay Time  0   States
+                      +1 1015     ;
+                      +1 1016     ; BTYP4: External Bus Configuration Control (BUSCON4.6 .. BUSCON4.7):
+ 0002                 +1 1017     _BTYP4   EQU    2       ; 0 = 8 Bit Non Multiplexed
+                      +1 1018     ;                       ; 1 = 8 Bit Multiplexed
+                      +1 1019     ;                       ; 2 = 16 Bit Non Multiplexed
+                      +1 1020     ;                       ; 3 = 16 Bit Multiplexed
+                      +1 1021     ;
+                      +1 1022     ; ALECTL4: ALE Lengthening Control Bit (BUSCON4.9):
+ 0000                 +1 1023     _ALECTL4 EQU    0       ; see data sheet for description
+                      +1 1024     ;
+                      +1 1025     ; BUSACT4: Bus Active Control Bit (BUSCON4.10):
+ 0001                 +1 1026     _BUSACT4 EQU    1       ; = 0 external (ADDRSEL4) bus disabled
+                      +1 1027                             ; = 1 external (ADDRSEL4) bus enabled
+                      +1 1028     ;
+                      +1 1029     ; RDYEN4: READY# Input Enable control bit (BUSCON4.12):
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    66
+
+ 0000                 +1 1030     _RDYEN4  EQU    0       ; 0 = READY# function disabled
+                      +1 1031     ;                       ; 1 = READY# function enabled
+                      +1 1032     ;
+                      +1 1033     ; RDY_AS4: Synchronous / Asynchronous READY# Input (BUSCON4.3):
+                      +1 1034     ; Note: This bit is only valid if _RDYEN4 == 1.
+ 0000                 +1 1035     _RDY_AS4 EQU    0       ; 0 = synchronous READY# input
+                      +1 1036     ;                       ; 1 = asynchronous READY# input
+                      +1 1037     ;
+                      +1 1038     ; CSREN4: Read Chip Select Enable bit (BUSCON4.14):
+ 0000                 +1 1039     _CSREN4  EQU    0       ; 0 = CS4# is independent of read command (RD#)
+                      +1 1040     ;                       ; 1 = CS4# is generated for the duration of read
+                      +1 1041     ;
+                      +1 1042     ; CSWEN4: Write Chip Select Enable bit (BUSCON4.15):
+ 0000                 +1 1043     _CSWEN4  EQU    0       ; 0 = CS4# is independent of write command (WR#)
+                      +1 1044     ;                       ; 1 = CS4# is generated for the duration of write
+                      +1 1045     ;
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    67
+
+                      +1 1046     ;------------------------------------------------------------------------------
+                      +1 1047     
+                         1048     
+ 0000                    1049     INT_ADR_SEG EQU 08000H >> 16        ; Interrupt Vector offset if MONITOR 166
+ 8000                    1050     INT_ADR_OFF EQU 08000H AND 0FFFFH  ; is installed at address 0000H
+                         1051     
+                         1052     
+                         1053     
+                         1054     
+                         1055     
+                         1056     
+                         1057     
+                         1058     
+                         1059     
+                         1060     
+                         1061     
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    68
+
+                         1062     
+                         1063     
+                         1064     
+                         1065     
+                         1066     
+                         1067     
+                         1068     
+                         1069     
+                         1070     
+                         1071     
+                         1072     
+ 0000                    1073     _STKSZ          SET     0
+ 0000                    1074     _STKSZ1         SET     0               ; size is 512 Words
+                                  $IF (STK_SIZE = 0)
+                                  _STKSZ1         SET     1               ; size is 256 Words
+                         1077     $ENDIF
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    69
+
+                                  $IF (STK_SIZE = 1)
+                                  _STKSZ          SET     1
+                                  _STKSZ1         SET     2               ; size is 128 Words
+                         1081     $ENDIF
+                                  $IF (STK_SIZE = 2)
+                                  _STKSZ          SET     2
+                                  _STKSZ1         SET     3               ; size is  64 Words
+                         1085     $ENDIF
+                                  $IF (STK_SIZE = 3)
+                                  _STKSZ          SET     3
+                                  _STKSZ1         SET     4               ; size is  32 Words
+                         1089     $ENDIF
+                                  $IF (STK_SIZE = 4)
+                                  _STKSZ          SET     4
+                         1092     $ENDIF
+                                  $IF (STK_SIZE = 5)
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    70
+
+                                  _STKSZ          SET     5
+                         1095     $ENDIF
+                                  $IF (STK_SIZE = 6)
+                                  _STKSZ          SET     6
+                         1098     $ENDIF
+                         1099     $IF (STK_SIZE = 7)
+ 0007                    1100     _STKSZ          SET     7
+                         1101     $ENDIF
+                         1102     
+                         1103     
+                         1104     ; Public Functions
+                         1105     PUBLIC  INCHAR          ; CHARACTER INPUT-ROUTINE 
+                         1106     PUBLIC  OUTCHAR         ; CHARACTER OUTPUT-ROUTINE 
+                         1107     PUBLIC  INSTAT          ; INPUT STATUS OF SERIAL INTERFACE
+                         1108     PUBLIC  OUTSTAT         ; OUTPUT STATUS OF SERIAL INTERFACE
+                         1109     PUBLIC  CLR_TI          ; CLEAR SERIAL TRANSMIT INTERRUPT FLAG
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    71
+
+                         1110     PUBLIC  SET_TI          ; SET SERIAL TRANSMIT INTERRUPT FLAG
+                         1111     PUBLIC  CLR_RI          ; CLEAR SERIAL RECEIVE INTERRUPT FLAG
+                         1112     PUBLIC  CLR_SER_IE      ; CLEAR SERIAL INTERRUPT ENABLE FLAG
+                         1113     PUBLIC  SET_SER_IE      ; SET SERIAL INTERRUPT ENABLE FLAG
+                         1114     PUBLIC  RD_RIE          ; READ RECEIVE INTERRUPT ENABLE FLAG
+                         1115     PUBLIC  RD_TIE          ; READ TRANSMIT INTERRUPT ENABLE FLAG
+                         1116     PUBLIC  WR_RIE          ; WRITE RECEIVE INTERRUPT ENABLE FLAG
+                         1117     PUBLIC  WR_TIE          ; WRITE TRANSMIT INTERRUPT ENABLE FLAG
+                         1118     PUBLIC  WR_RIR          ; WRITE RECEIVE INTERRUPT REQUEST FLAG
+                         1119     PUBLIC  WR_TIR          ; WRITE TRANSMIT INTERRUPT REQUEST FLAG
+                         1120     PUBLIC  BEFORE_GO       ; THIS FUNCTION IS CALLED BEFORE A GO COMMAND
+                         1121     PUBLIC  AFTER_GO        ; THIS FUNCTION IS CALLED AFTER A GO COMMAND
+                         1122     PUBLIC  CODE_START_ADR  ; Code Start Address
+                         1123     PUBLIC  DATA_START_ADR  ; Data Start Address
+                         1124     PUBLIC  RESET_ADR       ; Reset IP value
+                         1125     
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    72
+
+                         1126     ; Public data and numbers
+                         1127     PUBLIC  BRK_TRAP        ; TRAP WHICH IS USED FOR BREAKPOINTS
+                         1128     PUBLIC  SER_INT_TRAP    ; TRAP WHICH IS USED FOR SERIAL RECEPTION
+                         1129     PUBLIC  SER_INT_JMP
+                         1130     
+                         1131     EXTERN MON166 :NEAR     ; START OF MONITOR-166
+                         1132     EXTERN BRKP   :NEAR     ; JUMP TO MONITOR AFTER A BREAKPOINT IS REACHED
+                         1133     EXTERN SER_ISR:NEAR     ; SERIAL INTERRUPT SERVICE ROUTINE
+                         1134     
+                         1135     $IF (SERIAL0)  
+ 002B                    1136     SER_INT_TRAP    EQU     2BH    ; Trap which is used for serial reception
+                         1137     $ENDIF
+                         1138     
+                                  $IF (SERIAL1)
+                                  SER_INT_TRAP    EQU     2EH    ; Trap which is used for serial reception
+                         1141     $ENDIF
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    73
+
+                         1142     
+                                  $IF (SERIAL2)
+                                  SER_INT_TRAP    EQU     00H    ; Trap which is used for serial reception
+                         1145     $ENDIF
+                         1146     
+ 0002                    1147     BRK_TRAP        EQU     02H  ; Trap which is used for Breakpoints
+ 000FEC00                1148     CODE_START_ADR  EQU     0FEC00H ; Code Start Address
+ 000FEA00                1149     DATA_START_ADR  EQU     0FEA00H ; Data Start Address
+                         1150     IF (0FEC00H = 0)
+                                  RESET_ADR      EQU     08000H      ; RESET IP value
+                                  ELSE
+ 0000                    1153     RESET_ADR      EQU     0
+                         1154     ENDIF
+                         1155     
+--------                 1156     MON166_DATA_START SECTION DATA AT 0FEA00H 'M_DATA' 
+--------                 1157     MON166_DATA_START ENDS
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    74
+
+                         1158     
+                                  $IF SERIAL2
+                                  MON166_W_DATA   SECTION DATA WORD PUBLIC 'M_DATA' 
+                                  
+                                  C_VAR1     DSW     1
+                                  C_VAR2     DSW     1
+                                  C_VAR3     DSW     1
+                                  MON166_W_DATA ENDS
+                         1166     $ENDIF
+                         1167     
+                         1168     
+--------                 1169     INIT_CODE       SECTION CODE AT 0FEC00H
+                         1170     INITSEC         PROC    NEAR
+                         1171     
+000FEC00 FA0F08EC        1172                     JMP     FAR InitSerial
+                         1173     $IF (SERIAL0)
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    75
+
+                         1174     
+                         1175     $ENDIF
+                         1176     
+                                  $IF (SERIAL1)
+                                  
+                         1179     $ENDIF
+                         1180     
+                                  $IF (SERIAL2)
+                                  
+                         1183     $ENDIF
+                         1184     
+                         1185     
+000FEC04 FA00AC80        1186     SER_INT_JMP:    JMPS    INT_ADR_SEG,(INT_ADR_OFF + SER_INT_TRAP*4)
+                         1187     
+                         1188     INITSEC         ENDP
+                         1189     
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    76
+
+                         1190     
+                         1191     
+                         1192     INSTALLCODE     PROC    NEAR
+                         1193     
+                         1194     InitSerial:     
+                         1195     
+                                  $IF NOT (BOOTSTRAP)     ; skip initialization when using bootstrap loader
+                                  
+                                  $IF PROMCHECK
+                                  ;********************************************************************
+                                  ;* Check whether a PROM or a RAM is at Address 0.                   *
+                                  ;* If a PROM is detected -> Jump to Program in PROM (Address 0)     *
+                                  ;* If a RAM  is detected -> Jump to Monitor                         *
+                                  ;********************************************************************
+                                          MOV     DPP0,#0         ; Check if PROM in System
+                                          MOV     R0,#0
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    77
+
+                                          MOV     R1,[R0]
+                                          CPL     R1
+                                          MOV     [R0],R1
+                                          CMP     R1,[R0]
+                                          JMP     CC_EQ,Ram
+                                          JMPS    0,0
+                                  Ram:    CPL     R1
+                                          MOV     [R0],R1
+                                  $ENDIF
+                                  
+                                          DISWDT
+                                  
+                                  $IF (INIT_XPERCON = 1)
+                                  ; Improtant XPERCON must be set before SYSCON.XPEN is enabled
+                                  XPERCON  DEFR 0F024H
+                                  _V_XPERCON       SET     _V_CAN1 OR (_V_CAN2 << 1) OR (_V_XRAM2 << 10)
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    78
+
+                                  _V_XPERCON      SET     _V_XPERCON OR (_V_XRAM6 << 11) OR (_V_XFLASH << 14)
+                                                  EXTR    #1
+                                                  MOV     XPERCON,#_V_XPERCON
+                                  $ENDIF
+                                  
+                                  BCON0L          SET     (_MTTC0 << 5) OR (_RWDC0 << 4)
+                                  BCON0L          SET     BCON0L OR ((NOT _MCTC0) AND 0FH)
+                                  BCON0L          SET     BCON0L AND (NOT (_RDYEN0 << 3))
+                                  BCON0L          SET     BCON0L OR (_RDY_AS0 << 3)
+                                  BCON0H          SET     (_ALECTL0 << 1) OR (_RDYEN0 << 4)
+                                  BCON0H          SET     BCON0H OR (_CSREN0 << 6) OR (_CSWEN0 << 7)
+                                  $IF (BTYP_ENABLE == 1)
+                                  BCON0L          SET     BCON0L OR (_BTYP0 << 6)
+                                  BCON0H          SET     BCON0H OR (_BUSACT0 << 2)
+                                  $ENDIF
+                                  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    79
+
+                                  $IF (BTYP_ENABLE == 0)
+                                                  BFLDL   BUSCON0,#03FH,#BCON0L
+                                                  BFLDH   BUSCON0,#0D2H,#BCON0H
+                                  $ELSE
+                                                  BFLDL   BUSCON0,#0FFH,#BCON0L
+                                                  BFLDH   BUSCON0,#0D6H,#BCON0H
+                                  $ENDIF
+                                  SYS_BITS        SET     0FF6FH
+                                  
+                                  SYS_H           SET     (_STKSZ << 5) OR (_ROMS1 << 4) OR (_SGTDIS << 3)
+                                  SYS_H           SET     SYS_H OR (_ROMEN << 2) OR (_BYTDIS << 1) OR _CLKEN
+                                  SYS_L           SET     _XPERSHARE OR (_VISIBLE << 1) OR (_XPEN << 2)
+                                  SYS_L           SET     SYS_L OR (_BDRSTEN << 3)
+                                  SYS_L           SET     SYS_L OR (_PWDCFG << 5) OR (_CSCFG << 6)
+                                  $IF (WRCFG_ENABLE == 1)
+                                  SYS_L           SET     SYS_L OR (_WRCFG << 7)
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    80
+
+                                  SYS_BITS        SET     SYS_BITS OR 00080H
+                                  $ENDIF
+                                  $IF (OWDDIS_ENABLE == 1)
+                                  SYS_L           SET     SYS_L OR (_OWDDIS << 4)
+                                  SYS_BITS        SET     SYS_BITS OR 00010H
+                                  $ENDIF
+                                  ; Setup SYSCON Register
+                                  
+                                                  BFLDH   SYSCON,#HIGH SYS_BITS,#SYS_H
+                                                  BFLDL   SYSCON,#LOW  SYS_BITS,#SYS_L
+                                  ;
+                                  $IF (ADVANCED_SYSCON = 1)
+                                  SYS_2           SET     (_PDCON << 4) OR (_RTS << 6) OR (_SCS << 7)
+                                  SYS_2           SET     SYS_2 OR (_CLKCON << 8) OR (_CLKREL << 10)
+                                  
+                                  SYS_3           SET     _ADCDIS OR (_ASC0DIS << 1) OR (_SSCDIS << 2)
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    81
+
+                                  SYS_3           SET     SYS_3 OR (_GPTDIS << 3)
+                                  SYS_3           SET     SYS_3 OR (_FMDIS << 5) OR (_CC1DIS << 6) OR (_CC2DIS << 7)
+                                  SYS_3           SET     SYS_3 OR (_CC6DIS << 8) OR (_PWMDIS << 9)
+                                  SYS_3           SET     SYS_3 OR (_ASC1DIS << 10) OR (_I2CDIS << 11)
+                                  SYS_3           SET     SYS_3 OR (_CAN1DIS << 13) OR (_CAN2DIS << 14)
+                                  SYS_3           SET     SYS_3 OR (_PCDDIS << 15)
+                                  
+                                                  EXTR    #2
+                                                  MOV     SYSCON2,#SYS_2
+                                                  MOV     SYSCON3,#SYS_3
+                                  $ENDIF
+                                  ;
+                                  
+                                  $IF (BUSCON1 = 1)
+                                  BCON1           SET     (_MTTC1 << 5) OR (_RWDC1 << 4)
+                                  BCON1           SET     BCON1 OR ((NOT _MCTC1) AND 0FH)
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    82
+
+                                  BCON1           SET     BCON1 AND (NOT (_RDYEN1 << 3))
+                                  BCON1           SET     BCON1 OR (_RDY_AS1 << 3)  OR (_BTYP1 << 6)
+                                  BCON1           SET     BCON1 OR (_ALECTL1 << 9) OR (_BUSACT1 << 10)
+                                  BCON1           SET     BCON1 OR (_RDYEN1 << 12) OR (_CSREN1 << 14)
+                                  BCON1           SET     BCON1 OR (_CSWEN1 << 15)
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    83
+
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  ADDR1   EQU     08H
+                                  
+                                                  MOV     ADDRSEL1,#ADDR1 
+                                                  MOV     BUSCON1,#BCON1
+                                  $ENDIF
+                                  
+                                  $IF (BUSCON2 = 1)
+                                  BCON2           SET     (_MTTC2 << 5) OR (_RWDC2 << 4)
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    84
+
+                                  BCON2           SET     BCON2 OR ((NOT _MCTC2) AND 0FH)
+                                  BCON2           SET     BCON2 AND (NOT (_RDYEN2 << 3))
+                                  BCON2           SET     BCON2 OR (_RDY_AS2 << 3)  OR (_BTYP2 << 6)
+                                  BCON2           SET     BCON2 OR (_ALECTL2 << 9) OR (_BUSACT2 << 10)
+                                  BCON2           SET     BCON2 OR (_RDYEN2 << 12) OR (_CSREN2 << 14)
+                                  BCON2           SET     BCON2 OR (_CSWEN2 << 15)
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    85
+
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  ADDR2   EQU     2008H
+                                  
+                                                  MOV     ADDRSEL2,#ADDR2 
+                                                  MOV     BUSCON2,#BCON2
+                                  $ENDIF
+                                  
+                                  $IF (BUSCON3 = 1)
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    86
+
+                                  BCON3           SET     (_MTTC3 << 5) OR (_RWDC3 << 4)
+                                  BCON3           SET     BCON3 OR ((NOT _MCTC3) AND 0FH)
+                                  BCON3           SET     BCON3 AND (NOT (_RDYEN3 << 3))
+                                  BCON3           SET     BCON3 OR (_RDY_AS3 << 3)  OR (_BTYP3 << 6)
+                                  BCON3           SET     BCON3 OR (_ALECTL3 << 9) OR (_BUSACT3 << 10)
+                                  BCON3           SET     BCON3 OR (_RDYEN3 << 12) OR (_CSREN3 << 14)
+                                  BCON3           SET     BCON3 OR (_CSWEN3 << 15)
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    87
+
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  ADDR3   EQU     3008H
+                                  
+                                                  MOV     ADDRSEL3,#ADDR3 
+                                                  MOV     BUSCON3,#BCON3
+                                  $ENDIF
+                                  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    88
+
+                                  $IF (BUSCON4 = 1)
+                                  BCON4           SET     (_MTTC4 << 5) OR (_RWDC4 << 4)
+                                  BCON4           SET     BCON4 OR ((NOT _MCTC4) AND 0FH)
+                                  BCON4           SET     BCON4 AND (NOT (_RDYEN4 << 3))
+                                  BCON4           SET     BCON4 OR (_RDY_AS4 << 3)  OR (_BTYP4 << 6)
+                                  BCON4           SET     BCON4 OR (_ALECTL4 << 9) OR (_BUSACT4 << 10)
+                                  BCON4           SET     BCON4 OR (_RDYEN4 << 12) OR (_CSREN4 << 14)
+                                  BCON4           SET     BCON4 OR (_CSWEN4 << 15)
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    89
+
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  ADDR4   EQU     4008H
+                                  
+                                                  MOV     ADDRSEL4,#ADDR4 
+                                                  MOV     BUSCON4,#BCON4
+                                  $ENDIF
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    90
+
+                                  $IF (STK_SIZE = 7)
+                                                  MOV     STKUN,#0FFFEH           ; AVOID STKUN TRAP
+                                                  MOV     STKOV,#0H               ; AVOID STKOV TRAP
+                                  $ENDIF
+                                                  EINIT
+                         1419     $ENDIF
+                         1420     
+                         1421     $IF SERIAL0
+                         1422     ;********************************************************************
+                         1423     ;*  Initialization of Serial Interface 0                            *
+                         1424     ;********************************************************************
+                         1425     
+                         1426     
+                                  $IF NOT (BOOTSTRAP)             ; skip initialization when using bootstrap loader
+                                          BSET    P3.10           ; SET PORT 3.10 OUTPUT LATCH (TXD)
+                                          BSET    DP3.10          ; SET PORT 3.10 DIRECTION CONTROL (TXD OUTPUT)
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    91
+
+                                          BCLR    DP3.11          ; RESET PORT 3.11 DIRECTION CONTROL (RXD INPUT)
+                                          MOVB    S0TIC,#080H     ; SET TRANSMIT INTERRUPT FLAG
+                                          MOVB    S0RIC,#000H     ; DELETE RECEIVE INTERRUPT FLAG
+                                  IF (BAUDRATE = 0)
+                                  ; Auto adjust Baudrate
+                                  WStrtB:
+                                          JB      P3.11,WStrtB    ; wait for start bit at RXD0
+                                          BSET    T3R             ; start timer T3
+                                  WStpB:  JNB     P3.11,WStpB     ; wait for stop bit at RXD0
+                                          BCLR    T3R             ; stop timer T3
+                                          MOV     MDL,T3
+                                          SUB     MDL,#18         ; rounding & adjustment
+                                          MOV     R1,#36          ; baudrate = (T3 / 36) - 1
+                                          DIVU    R1
+                                          MOV     S0BG,MDL        ; load baudrate generator
+                                          MOV     S0CON,#8011H    ; SET SERIAL MODE
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    92
+
+                                          MOV     T3,#0           ; Clear timer 3 register
+                                          MOV     S0TBUF,#0FFH    ; Send acknoledge byte for monitor
+                                  ELSE 
+                                  ; Fixed Baudrate
+                                  BG_RLOAD EQU (CPU_CLOCK / (32 * BAUDRATE)) - 1 
+                                          MOV     S0BG ,#BG_RLOAD ; SET BAUDRATE
+                                          MOV     S0CON,#8011H    ; SET SERIAL MODE
+                                  ENDIF
+                         1454     $ENDIF
+000FEC08 EA00???? E      1455             JMP     CC_UC,MON166
+                         1456     
+                         1457     
+                         1458     ;********************************************************************
+                         1459     ;*  Basic Input Output Functions for serial Interface 0             *
+                         1460     ;********************************************************************
+                         1461     
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    93
+
+000FEC0C 4AB7F470        1462     INSTAT:         BMOV    R4.0,S0RIR      ; INPUT STATUS OF SERIAL INTERFACE
+000FEC10 CB00            1463                     RET
+                         1464     
+000FEC12 4AB6F470        1465     OUTSTAT:        BMOV    R4.0,S0TIR      ; OUTPUT STATUS OF SERIAL INTERFACE
+000FEC16 CB00            1466                     RET
+                         1467     
+000FEC18 F2F4B2FE        1468     INCHAR:         MOV     R4,S0RBUF       ; CHARACTER INPUT-ROUTINE 
+000FEC1C CB00            1469                     RET
+                         1470     
+000FEC1E F6F4B0FE        1471     OUTCHAR:        MOV     S0TBUF,R4       ; CHARACTER OUTPUT-ROUTINE 
+000FEC22 CB00            1472                     RET
+                         1473     
+000FEC24 7EB6            1474     CLR_TI:         BCLR    S0TIR           ; CLEAR SERIAL TRANSMIT INTERRUPT FLAG
+000FEC26 CB00            1475                     RET
+                         1476     
+000FEC28 7FB6            1477     SET_TI:         BSET    S0TIR           ; SET SERIAL TRANSMIT INTERRUPT FLAG
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    94
+
+000FEC2A CB00            1478                     RET
+                         1479     
+000FEC2C 7EB7            1480     CLR_RI:         BCLR    S0RIR           ; CLEAR SERIAL RECEIVE INTERRUPT FLAG
+000FEC2E CB00            1481                     RET
+                         1482     
+000FEC30 E6B70000        1483     CLR_SER_IE:     MOV     S0RIC,#0000     ; CLR S0RIE AND ILVL=0
+000FEC34 CB00            1484                     RET
+                         1485     
+000FEC36 E6B77C00        1486     SET_SER_IE:     MOV     S0RIC,#007CH    ; SET S0RIE AND ILVL=15
+000FEC3A CB00            1487                     RET
+                         1488     
+000FEC3C 4AB7F460        1489     RD_RIE:         BMOV    R4.0,S0RIE      ; READ RECEIVE INTERRUPT ENABLE FLAG
+000FEC40 CB00            1490                     RET
+                         1491     
+000FEC42 4AB6F460        1492     RD_TIE:         BMOV    R4.0,S0TIE      ; READ TRANSMIT INTERRUPT ENABLE FLAG
+000FEC46 CB00            1493                     RET
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    95
+
+                         1494     
+000FEC48 4AF4B706        1495     WR_RIE:         BMOV    S0RIE,R4.0      ; WRITE RECEIVE INTERRUPT ENABLE FLAG
+000FEC4C CB00            1496                     RET
+                         1497     
+000FEC4E 4AF4B606        1498     WR_TIE:         BMOV    S0TIE,R4.0      ; WRITE TRANSMIT INTERRUPT ENABLE FLAG
+000FEC52 CB00            1499                     RET
+                         1500     
+000FEC54 4AF4B707        1501     WR_RIR:         BMOV    S0RIR,R4.0      ; WRITE RECEIVE INTERRUPT ENABLE FLAG
+000FEC58 CB00            1502                     RET
+                         1503     
+000FEC5A 4AF4B607        1504     WR_TIR:         BMOV    S0TIR,R4.0      ; WRITE TRANSMIT INTERRUPT ENABLE FLAG
+000FEC5E CB00            1505                     RET
+                         1506     
+                         1507     BEFORE_GO:                              ; IS NOT USED
+000FEC60 CB00            1508                     RET
+                         1509     
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    96
+
+                         1510     AFTER_GO:                               ; IS NOT USED
+000FEC62 CB00            1511                     RET
+                         1512     $ENDIF
+                         1513     
+                         1514     
+                                  $IF (SERIAL2)
+                                  ;********************************************************************
+                                  ;*  Initialization of simulated Serial Interface 2                  *
+                                  ;********************************************************************
+                                  
+                                  T_LINE          BIT     P3.9            ; Transmit Data Line TxD
+                                  T_OUT           BIT     DP3.9           ; Port direction register for TxD
+                                  R_LINE          BIT     P3.8            ; Receive Data Line RxD
+                                  R_IN            BIT     DP3.8           ; Port direction register for RxD
+                                  
+                                  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    97
+
+                                  STATES_PER_BIT  EQU     (CPU_CLOCK / BAUDRATE)
+                                  
+                                                  BSET    T_LINE          ;          
+                                                  BSET    T_OUT           ; set TxD to output
+                                                  BCLR    R_IN            ; set RxD to input
+                                                  CALL    AFTER_GO
+                                  
+                                                  JMP     CC_UC,MON166
+                                  
+                                  
+                                  INSTAT:         BSET    R4.0            ; INPUT STATUS OF SERIAL INTERFACE
+                                                  RET
+                                  
+                                  OUTSTAT:        BSET    R4.0            ; OUTPUT STATUS OF SERIAL INTERFACE
+                                                  RET
+                                  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    98
+
+                                  
+                                  
+                                  
+                                  ;*************** CHARACTER INPUT-ROUTINE ************************
+                                  
+                                  INCHAR:         PUSH    R2              
+                                                  PUSH    R3
+                                                  MOV     R3,#8           ; Bit counter
+                                                  MOV     R4,#00H
+                                                
+                                  STARTBIT:       JNB     R_LINE,STARTBIT ; Wait until last data bit is over
+                                  STARTBIT1:      JB      R_LINE,STARTBIT1; Wait for startbit
+                                                  MOV     R2,DPP0:C_VAR1  ; Startbit valid, begin sampling !
+                                  WAIT1:          SUB     R2,#1           ;
+                                                  JMPR    CC_NZ,WAIT1     ;  
+                                  RECEIVE:        BMOV    R4.8,R_LINE     ; Bit input
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE    99
+
+                                                  SHR     R4,#1
+                                                  SUB     R3,#1
+                                                  JMPR    CC_Z,LASTBIT    ; Last bit ?
+                                  
+                                                  MOV     R2,DPP0:C_VAR2  ; Sample period generation
+                                  WAIT2:          SUB     R2,#1
+                                                  JMPR    CC_NZ,WAIT2
+                                                  JMPR    CC_UC,RECEIVE
+                                  
+                                  LASTBIT:        POP     R3              
+                                                  POP     R2
+                                                  RET
+                                  
+                                  
+                                  
+                                  ;*************** CHARACTER OUTPUT-ROUTINE *******************
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   100
+
+                                  
+                                  OUTCHAR:        PUSH    R2
+                                                  PUSH    R3
+                                                  PUSH    R4
+                                                  OR      R4,#0100H       ; Insert stopbit 
+                                                  SHL     R4,#1           ; Insert startbit
+                                                  MOV     R3,#10          ; Bit counter
+                                  
+                                  NEXTBIT:        ASHR    R4,#1
+                                                  BMOV    T_LINE,C        ; Bit output
+                                  
+                                                  MOV     R2,DPP0:C_VAR3
+                                  WAIT:           SUB     R2,#1
+                                                  JMPR    CC_NZ,WAIT      ; Baud rate generation
+                                  
+                                                  SUB     R3,#1
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   101
+
+                                                  JMPR    CC_NZ,NEXTBIT   ; Last bit ? 
+                                  
+                                                  POP     R4              ; Yes  
+                                                  POP     R3
+                                                  POP     R2
+                                                  RET
+                                  
+                                  CLR_TI:         RET                     ; IS NOT USED
+                                  
+                                  SET_TI:         RET                     ; IS NOT USED
+                                  
+                                  CLR_RI:         RET                     ; IS NOT USED
+                                  
+                                  CLR_SER_IE:     RET                     ; IS NOT USED
+                                  
+                                  SET_SER_IE:     RET                     ; IS NOT USED
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   102
+
+                                  
+                                  RD_RIE:         RET                     ; IS NOT USED
+                                  
+                                  RD_TIE:         RET                     ; IS NOT USED
+                                  
+                                  WR_RIE:         RET                     ; IS NOT USED
+                                  
+                                  WR_TIE:         RET                     ; IS NOT USED
+                                  
+                                  WR_RIR:         RET                     ; IS NOT USED
+                                  
+                                  WR_TIR:         RET                     ; IS NOT USED
+                                  
+                                  BEFORE_GO:      RET                     ; IS NOT USED
+                                  
+                                  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   103
+
+                                  AFTER_GO:       MOV     DPP0,#PAG MON166_W_DATA
+                                                  MOV     R1,DPP3:BUSCON0       ; Programmed number of waitstates
+                                                  AND     R1,#000FH         
+                                                  MOV     R2,#15
+                                                  SUB     R2,R1                 ; ACT = State times for one
+                                                  ADD     R2,#3                 ; external memory access
+                                                  MOV     R1,DPP3:BUSCON0
+                                                  SHR     R1,#5
+                                                  AND     R1,#0001H
+                                                  SUB     R2,R1
+                                                  JNB     BUSCON0.6,NMBUS
+                                                  ADD     R2,#1                 ; Multiplexed bus
+                                   
+                                  NMBUS:          MOV     R3,#14                ; Non-multiplexed bus 
+                                                  JB      BUSCON0.7,BIT_16_1
+                                                  ADD     R3,#13                ; 8-Bit bus    (16 ACTs)
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   104
+
+                                  BIT_16_1:       MOV     R13,#STATES_PER_BIT   ; 16-Bit bus   (8  ACTs) 
+                                                  MUL     R3,R2                 ;
+                                                  SUB     R13,MDL
+                                                  SUB     R13,#4     
+                                                  SHR     R13,#2                ; Remaining states for loop
+                                                  MOV     DPP0:C_VAR2,R13
+                                  
+                                                  MOV     R13,#STATES_PER_BIT   ; Multiply by 1.5
+                                                  MOV     R3,R13
+                                                  SHR     R3,#1
+                                                  ADD     R13,R3
+                                  
+                                                  MOV     R3,#11
+                                                  JB      BUSCON0.7,BIT_16_2
+                                                  ADD     R3,#14;               ; 8-Bit Bus
+                                  BIT_16_2:       MUL     R3,R2
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   105
+
+                                                  SUB     R13,MDL
+                                                  SUB     R13,#2
+                                                  SHR     R13,#2
+                                                  MOV     DPP0:C_VAR1,R13
+                                  
+                                                  MOV     R13,#STATES_PER_BIT
+                                                  MOV     R3,#13
+                                                  JB      BUSCON0.7,BIT_16_3
+                                                  ADD     R3,#10                ; 8-Bit Bus
+                                  BIT_16_3:       MUL     R3,R2
+                                                  SUB     R13,MDL
+                                                  SUB     R13,#4
+                                                  SHR     R13,#2
+                                                  MOV     DPP0:C_VAR3,R13         
+                                                  RET
+                                  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   106
+
+                         1670     $ENDIF
+                         1671     
+                         1672     INSTALLCODE     ENDP
+--------                 1673     INIT_CODE       ENDS
+                         1674     
+                         1675                     END
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   107
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             TYPE   VALUE             I  ATTRIBUTES
+
+ACC0 . . . . . . .  BIT    FF52H.3           A  
+ACC1 . . . . . . .  BIT    FF52H.7           A  
+ACC10. . . . . . .  BIT    FF56H.11          A  
+ACC11. . . . . . .  BIT    FF56H.15          A  
+ACC12. . . . . . .  BIT    FF58H.3           A  
+ACC13. . . . . . .  BIT    FF58H.7           A  
+ACC14. . . . . . .  BIT    FF58H.11          A  
+ACC15. . . . . . .  BIT    FF58H.15          A  
+ACC16. . . . . . .  BIT    FF22H.3           A  
+ACC17. . . . . . .  BIT    FF22H.7           A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   108
+
+ACC18. . . . . . .  BIT    FF22H.11          A  
+ACC19. . . . . . .  BIT    FF22H.15          A  
+ACC2 . . . . . . .  BIT    FF52H.11          A  
+ACC20. . . . . . .  BIT    FF24H.3           A  
+ACC21. . . . . . .  BIT    FF24H.7           A  
+ACC22. . . . . . .  BIT    FF24H.11          A  
+ACC23. . . . . . .  BIT    FF24H.15          A  
+ACC24. . . . . . .  BIT    FF26H.3           A  
+ACC25. . . . . . .  BIT    FF26H.7           A  
+ACC26. . . . . . .  BIT    FF26H.11          A  
+ACC27. . . . . . .  BIT    FF26H.15          A  
+ACC28. . . . . . .  BIT    FF28H.3           A  
+ACC29. . . . . . .  BIT    FF28H.7           A  
+ACC3 . . . . . . .  BIT    FF52H.15          A  
+ACC30. . . . . . .  BIT    FF28H.11          A  
+ACC31. . . . . . .  BIT    FF28H.15          A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   109
+
+ACC4 . . . . . . .  BIT    FF54H.3           A  
+ACC5 . . . . . . .  BIT    FF54H.7           A  
+ACC6 . . . . . . .  BIT    FF54H.11          A  
+ACC7 . . . . . . .  BIT    FF54H.15          A  
+ACC8 . . . . . . .  BIT    FF56H.3           A  
+ACC9 . . . . . . .  BIT    FF56H.7           A  
+ADBSY. . . . . . .  BIT    FFA0H.8           A  
+ADCDIS . . . . . .  BIT    F1D4H.0           A  
+ADCIC. . . . . . .  WORD   FF98H             A  SFR
+ADCIE. . . . . . .  BIT    FF98H.6           A  
+ADCIN. . . . . . .  BIT    FFA0H.10          A  
+ADCIR. . . . . . .  BIT    FF98H.7           A  
+ADCON. . . . . . .  WORD   FFA0H             A  SFR
+ADCRQ. . . . . . .  BIT    FFA0H.11          A  
+ADDAT. . . . . . .  WORD   FEA0H             A  SFR
+ADDAT2 . . . . . .  WORD   F0A0H             A  ESFR
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   110
+
+ADDRSEL1 . . . . .  WORD   FE18H             A  SFR
+ADDRSEL2 . . . . .  WORD   FE1AH             A  SFR
+ADDRSEL3 . . . . .  WORD   FE1CH             A  SFR
+ADDRSEL4 . . . . .  WORD   FE1EH             A  SFR
+ADEIC. . . . . . .  WORD   FF9AH             A  SFR
+ADEIE. . . . . . .  BIT    FF9AH.6           A  
+ADEIR. . . . . . .  BIT    FF9AH.7           A  
+ADST . . . . . . .  BIT    FFA0H.7           A  
+ADWR . . . . . . .  BIT    FFA0H.9           A  
+AFTER_GO . . . . .  NEAR   FEC62H            A  PUB SEC=INIT_CODE
+ALECTL0. . . . . .  BIT    FF0CH.9           A  
+ALECTL1. . . . . .  BIT    FF14H.9           A  
+ALECTL2. . . . . .  BIT    FF16H.9           A  
+ALECTL3. . . . . .  BIT    FF18H.9           A  
+ALECTL4. . . . . .  BIT    FF1AH.9           A  
+ASC0DIS. . . . . .  BIT    F1D4H.1           A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   111
+
+ASC1DIS. . . . . .  BIT    F1D4H.10          A  
+BAUDRATE . . . . .  DATA16 4B00H             A  
+BEFORE_GO. . . . .  NEAR   FEC60H            A  PUB SEC=INIT_CODE
+BRKP . . . . . . .  NEAR   ----                 EXT 
+BRK_TRAP . . . . .  DATA3  2H                A  PUB 
+BUSACT0. . . . . .  BIT    FF0CH.10          A  
+BUSACT1. . . . . .  BIT    FF14H.10          A  
+BUSACT2. . . . . .  BIT    FF16H.10          A  
+BUSACT3. . . . . .  BIT    FF18H.10          A  
+BUSACT4. . . . . .  BIT    FF1AH.10          A  
+BUSCON0. . . . . .  WORD   FF0CH             A  SFR
+BUSCON1. . . . . .  WORD   FF14H             A  SFR
+BUSCON2. . . . . .  WORD   FF16H             A  SFR
+BUSCON3. . . . . .  WORD   FF18H             A  SFR
+BUSCON4. . . . . .  WORD   FF1AH             A  SFR
+BYTDIS . . . . . .  BIT    FF12H.9           A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   112
+
+C. . . . . . . . .  BIT    FF10H.1           A  
+CAN1DIS. . . . . .  BIT    F1D4H.13          A  
+CAN2DIS. . . . . .  BIT    F1D4H.14          A  
+CAPIN. . . . . . .  BIT    FFC4H.2           A  
+CAPREL . . . . . .  WORD   FE4AH             A  SFR
+CC0. . . . . . . .  WORD   FE80H             A  SFR
+CC0IC. . . . . . .  WORD   FF78H             A  SFR
+CC0IE. . . . . . .  BIT    FF78H.6           A  
+CC0IR. . . . . . .  BIT    FF78H.7           A  
+CC1. . . . . . . .  WORD   FE82H             A  SFR
+CC10 . . . . . . .  WORD   FE94H             A  SFR
+CC10IC . . . . . .  WORD   FF8CH             A  SFR
+CC10IE . . . . . .  BIT    FF8CH.6           A  
+CC10IR . . . . . .  BIT    FF8CH.7           A  
+CC11 . . . . . . .  WORD   FE96H             A  SFR
+CC11IC . . . . . .  WORD   FF8EH             A  SFR
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   113
+
+CC11IE . . . . . .  BIT    FF8EH.6           A  
+CC11IR . . . . . .  BIT    FF8EH.7           A  
+CC12 . . . . . . .  WORD   FE98H             A  SFR
+CC12IC . . . . . .  WORD   FF90H             A  SFR
+CC12IE . . . . . .  BIT    FF90H.6           A  
+CC12IR . . . . . .  BIT    FF90H.7           A  
+CC13 . . . . . . .  WORD   FE9AH             A  SFR
+CC13IC . . . . . .  WORD   FF92H             A  SFR
+CC13IE . . . . . .  BIT    FF92H.6           A  
+CC13IR . . . . . .  BIT    FF92H.7           A  
+CC14 . . . . . . .  WORD   FE9CH             A  SFR
+CC14IC . . . . . .  WORD   FF94H             A  SFR
+CC14IE . . . . . .  BIT    FF94H.6           A  
+CC14IR . . . . . .  BIT    FF94H.7           A  
+CC15 . . . . . . .  WORD   FE9EH             A  SFR
+CC15IC . . . . . .  WORD   FF96H             A  SFR
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   114
+
+CC15IE . . . . . .  BIT    FF96H.6           A  
+CC15IR . . . . . .  BIT    FF96H.7           A  
+CC16 . . . . . . .  WORD   FE60H             A  SFR
+CC16IC . . . . . .  WORD   F160H             A  ESFR
+CC16IE . . . . . .  BIT    F160H.6           A  
+CC16IR . . . . . .  BIT    F160H.7           A  
+CC17 . . . . . . .  WORD   FE62H             A  SFR
+CC17IC . . . . . .  WORD   F162H             A  ESFR
+CC17IE . . . . . .  BIT    F162H.6           A  
+CC17IR . . . . . .  BIT    F162H.7           A  
+CC18 . . . . . . .  WORD   FE64H             A  SFR
+CC18IC . . . . . .  WORD   F164H             A  ESFR
+CC18IE . . . . . .  BIT    F164H.6           A  
+CC18IR . . . . . .  BIT    F164H.7           A  
+CC19 . . . . . . .  WORD   FE66H             A  SFR
+CC19IC . . . . . .  WORD   F166H             A  ESFR
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   115
+
+CC19IE . . . . . .  BIT    F166H.6           A  
+CC19IR . . . . . .  BIT    F166H.7           A  
+CC1DIS . . . . . .  BIT    F1D4H.6           A  
+CC1IC. . . . . . .  WORD   FF7AH             A  SFR
+CC1IE. . . . . . .  BIT    FF7AH.6           A  
+CC1IR. . . . . . .  BIT    FF7AH.7           A  
+CC2. . . . . . . .  WORD   FE84H             A  SFR
+CC20 . . . . . . .  WORD   FE68H             A  SFR
+CC20IC . . . . . .  WORD   F168H             A  ESFR
+CC20IE . . . . . .  BIT    F168H.6           A  
+CC20IR . . . . . .  BIT    F168H.7           A  
+CC21 . . . . . . .  WORD   FE6AH             A  SFR
+CC21IC . . . . . .  WORD   F16AH             A  ESFR
+CC21IE . . . . . .  BIT    F16AH.6           A  
+CC21IR . . . . . .  BIT    F16AH.7           A  
+CC22 . . . . . . .  WORD   FE6CH             A  SFR
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   116
+
+CC22IC . . . . . .  WORD   F16CH             A  ESFR
+CC22IE . . . . . .  BIT    F16CH.6           A  
+CC22IR . . . . . .  BIT    F16CH.7           A  
+CC23 . . . . . . .  WORD   FE6EH             A  SFR
+CC23IC . . . . . .  WORD   F16EH             A  ESFR
+CC23IE . . . . . .  BIT    F16EH.6           A  
+CC23IR . . . . . .  BIT    F16EH.7           A  
+CC24 . . . . . . .  WORD   FE70H             A  SFR
+CC24IC . . . . . .  WORD   F170H             A  ESFR
+CC24IE . . . . . .  BIT    F170H.6           A  
+CC24IR . . . . . .  BIT    F170H.7           A  
+CC25 . . . . . . .  WORD   FE72H             A  SFR
+CC25IC . . . . . .  WORD   F172H             A  ESFR
+CC25IE . . . . . .  BIT    F172H.6           A  
+CC25IR . . . . . .  BIT    F172H.7           A  
+CC26 . . . . . . .  WORD   FE74H             A  SFR
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   117
+
+CC26IC . . . . . .  WORD   F174H             A  ESFR
+CC26IE . . . . . .  BIT    F174H.6           A  
+CC26IR . . . . . .  BIT    F174H.7           A  
+CC27 . . . . . . .  WORD   FE76H             A  SFR
+CC27IC . . . . . .  WORD   F176H             A  ESFR
+CC27IE . . . . . .  BIT    F176H.6           A  
+CC27IR . . . . . .  BIT    F176H.7           A  
+CC28 . . . . . . .  WORD   FE78H             A  SFR
+CC28IC . . . . . .  WORD   F178H             A  ESFR
+CC28IE . . . . . .  BIT    F178H.6           A  
+CC28IR . . . . . .  BIT    F178H.7           A  
+CC29 . . . . . . .  WORD   FE7AH             A  SFR
+CC29IC . . . . . .  WORD   F184H             A  ESFR
+CC29IE . . . . . .  BIT    F184H.6           A  
+CC29IR . . . . . .  BIT    F184H.7           A  
+CC2DIS . . . . . .  BIT    F1D4H.7           A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   118
+
+CC2IC. . . . . . .  WORD   FF7CH             A  SFR
+CC2IE. . . . . . .  BIT    FF7CH.6           A  
+CC2IR. . . . . . .  BIT    FF7CH.7           A  
+CC3. . . . . . . .  WORD   FE86H             A  SFR
+CC30 . . . . . . .  WORD   FE7CH             A  SFR
+CC30IC . . . . . .  WORD   F18CH             A  ESFR
+CC30IE . . . . . .  BIT    F18CH.6           A  
+CC30IR . . . . . .  BIT    F18CH.7           A  
+CC31 . . . . . . .  WORD   FE7EH             A  SFR
+CC31IC . . . . . .  WORD   F194H             A  ESFR
+CC31IE . . . . . .  BIT    F194H.6           A  
+CC31IR . . . . . .  BIT    F194H.7           A  
+CC3IC. . . . . . .  WORD   FF7EH             A  SFR
+CC3IE. . . . . . .  BIT    FF7EH.6           A  
+CC3IR. . . . . . .  BIT    FF7EH.7           A  
+CC4. . . . . . . .  WORD   FE88H             A  SFR
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   119
+
+CC4IC. . . . . . .  WORD   FF80H             A  SFR
+CC4IE. . . . . . .  BIT    FF80H.6           A  
+CC4IR. . . . . . .  BIT    FF80H.7           A  
+CC5. . . . . . . .  WORD   FE8AH             A  SFR
+CC5IC. . . . . . .  WORD   FF82H             A  SFR
+CC5IE. . . . . . .  BIT    FF82H.6           A  
+CC5IR. . . . . . .  BIT    FF82H.7           A  
+CC6. . . . . . . .  WORD   FE8CH             A  SFR
+CC6IC. . . . . . .  WORD   FF84H             A  SFR
+CC6IE. . . . . . .  BIT    FF84H.6           A  
+CC6IR. . . . . . .  BIT    FF84H.7           A  
+CC7. . . . . . . .  WORD   FE8EH             A  SFR
+CC7IC. . . . . . .  WORD   FF86H             A  SFR
+CC7IE. . . . . . .  BIT    FF86H.6           A  
+CC7IR. . . . . . .  BIT    FF86H.7           A  
+CC8. . . . . . . .  WORD   FE90H             A  SFR
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   120
+
+CC8IC. . . . . . .  WORD   FF88H             A  SFR
+CC8IE. . . . . . .  BIT    FF88H.6           A  
+CC8IR. . . . . . .  BIT    FF88H.7           A  
+CC9. . . . . . . .  WORD   FE92H             A  SFR
+CC9IC. . . . . . .  WORD   FF8AH             A  SFR
+CC9IE. . . . . . .  BIT    FF8AH.6           A  
+CC9IR. . . . . . .  BIT    FF8AH.7           A  
+CCM0 . . . . . . .  WORD   FF52H             A  SFR
+CCM1 . . . . . . .  WORD   FF54H             A  SFR
+CCM2 . . . . . . .  WORD   FF56H             A  SFR
+CCM3 . . . . . . .  WORD   FF58H             A  SFR
+CCM4 . . . . . . .  WORD   FF22H             A  SFR
+CCM5 . . . . . . .  WORD   FF24H             A  SFR
+CCM6 . . . . . . .  WORD   FF26H             A  SFR
+CCM7 . . . . . . .  WORD   FF28H             A  SFR
+CLKEN. . . . . . .  BIT    FF12H.8           A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   121
+
+CLKLOCK. . . . . .  BIT    F1D0H.15          A  
+CLR_RI . . . . . .  NEAR   FEC2CH            A  PUB SEC=INIT_CODE
+CLR_SER_IE . . . .  NEAR   FEC30H            A  PUB SEC=INIT_CODE
+CLR_TI . . . . . .  NEAR   FEC24H            A  PUB SEC=INIT_CODE
+CODE_START_ADR . .  DATA32 FEC00H            A  PUB 
+CPU_CLOCK. . . . .  DATA32 1312D00H          A  
+CRIC . . . . . . .  WORD   FF6AH             A  SFR
+CRIE . . . . . . .  BIT    FF6AH.6           A  
+CRIR . . . . . . .  BIT    FF6AH.7           A  
+CSP. . . . . . . .  WORD   FE08H             A  SFR
+CSREN1 . . . . . .  BIT    FF14H.14          A  
+CSREN2 . . . . . .  BIT    FF16H.14          A  
+CSREN3 . . . . . .  BIT    FF18H.14          A  
+CSREN4 . . . . . .  BIT    FF1AH.14          A  
+CSWEN1 . . . . . .  BIT    FF14H.15          A  
+CSWEN2 . . . . . .  BIT    FF16H.15          A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   122
+
+CSWEN3 . . . . . .  BIT    FF18H.15          A  
+CSWEN4 . . . . . .  BIT    FF1AH.15          A  
+DATA_START_ADR . .  DATA32 FEA00H            A  PUB 
+DP0H . . . . . . .  WORD   F102H             A  ESFR
+DP0L . . . . . . .  WORD   F100H             A  ESFR
+DP1H . . . . . . .  WORD   F106H             A  ESFR
+DP1L . . . . . . .  WORD   F104H             A  ESFR
+DP2. . . . . . . .  WORD   FFC2H             A  SFR
+DP3. . . . . . . .  WORD   FFC6H             A  SFR
+DP4. . . . . . . .  WORD   FFCAH             A  SFR
+DP6. . . . . . . .  WORD   FFCEH             A  SFR
+DP7. . . . . . . .  WORD   FFD2H             A  SFR
+DP8. . . . . . . .  WORD   FFD6H             A  SFR
+DPP3 . . . . . . .  WORD   1FC0H             A  SFR
+E. . . . . . . . .  BIT    FF10H.4           A  
+EXICON . . . . . .  WORD   F1C0H             A  ESFR
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   123
+
+FMDIS. . . . . . .  BIT    F1D4H.5           A  
+GPT1DIS. . . . . .  BIT    F1D4H.3           A  
+GPT2DIS. . . . . .  BIT    F1D4H.4           A  
+HLDEN. . . . . . .  BIT    FF10H.10          A  
+I2CDIS . . . . . .  BIT    F1D4H.11          A  
+IEN. . . . . . . .  BIT    FF10H.11          A  
+ILLBUS . . . . . .  BIT    FFACH.0           A  
+ILLINA . . . . . .  BIT    FFACH.1           A  
+ILLOPA . . . . . .  BIT    FFACH.2           A  
+INCHAR . . . . . .  NEAR   FEC18H            A  PUB SEC=INIT_CODE
+INITSEC. . . . . .  NEAR   FEC00H            A  SEC=INIT_CODE
+INITSERIAL . . . .  NEAR   FEC08H            A  SEC=INIT_CODE
+INIT_CODE. . . . .  ----   FEC00H            A  SECTION
+INSTALLCODE. . . .  NEAR   FEC08H            A  SEC=INIT_CODE
+INSTAT . . . . . .  NEAR   FEC0CH            A  PUB SEC=INIT_CODE
+INT_ADR_OFF. . . .  DATA16 8000H             A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   124
+
+INT_ADR_SEG. . . .  DATA3  0H                A  
+ISNC . . . . . . .  WORD   F1DEH             A  ESFR
+MDC. . . . . . . .  WORD   FF0EH             A  SFR
+MDRIU. . . . . . .  BIT    FF0EH.4           A  
+MON166 . . . . . .  NEAR   ----                 EXT 
+MON166_DATA_START.  ----   FEA00H            A  SECTION
+MTTC0. . . . . . .  BIT    FF0CH.5           A  
+MTTC1. . . . . . .  BIT    FF14H.5           A  
+MTTC2. . . . . . .  BIT    FF16H.5           A  
+MTTC3. . . . . . .  BIT    FF18H.5           A  
+MTTC4. . . . . . .  BIT    FF1AH.5           A  
+MULIP. . . . . . .  BIT    FF10H.5           A  
+N. . . . . . . . .  BIT    FF10H.0           A  
+NMI. . . . . . . .  BIT    FFACH.15          A  
+ODP2 . . . . . . .  WORD   F1C2H             A  ESFR
+ODP3 . . . . . . .  WORD   F1C6H             A  ESFR
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   125
+
+ODP6 . . . . . . .  WORD   F1CEH             A  ESFR
+ODP7 . . . . . . .  WORD   F1D2H             A  ESFR
+ODP8 . . . . . . .  WORD   F1D6H             A  ESFR
+ONES . . . . . . .  WORD   FF1EH             A  SFR
+OUTCHAR. . . . . .  NEAR   FEC1EH            A  PUB SEC=INIT_CODE
+OUTSTAT. . . . . .  NEAR   FEC12H            A  PUB SEC=INIT_CODE
+P0H. . . . . . . .  WORD   FF02H             A  SFR
+P0L. . . . . . . .  WORD   FF00H             A  SFR
+P1H. . . . . . . .  WORD   FF06H             A  SFR
+P1L. . . . . . . .  WORD   FF04H             A  SFR
+P2 . . . . . . . .  WORD   FFC0H             A  SFR
+P3 . . . . . . . .  WORD   FFC4H             A  SFR
+P4 . . . . . . . .  WORD   FFC8H             A  SFR
+P5 . . . . . . . .  WORD   FFA2H             A  SFR
+P6 . . . . . . . .  WORD   FFCCH             A  SFR
+P7 . . . . . . . .  WORD   FFD0H             A  SFR
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   126
+
+P8 . . . . . . . .  WORD   FFD4H             A  SFR
+PB01 . . . . . . .  BIT    FF32H.12          A  
+PCDDIS . . . . . .  BIT    F1D4H.15          A  
+PECC0. . . . . . .  WORD   FEC0H             A  SFR
+PECC1. . . . . . .  WORD   FEC2H             A  SFR
+PECC2. . . . . . .  WORD   FEC4H             A  SFR
+PECC3. . . . . . .  WORD   FEC6H             A  SFR
+PECC4. . . . . . .  WORD   FEC8H             A  SFR
+PECC5. . . . . . .  WORD   FECAH             A  SFR
+PECC6. . . . . . .  WORD   FECCH             A  SFR
+PECC7. . . . . . .  WORD   FECEH             A  SFR
+PEN0 . . . . . . .  BIT    FF32H.0           A  
+PEN1 . . . . . . .  BIT    FF32H.1           A  
+PEN2 . . . . . . .  BIT    FF32H.2           A  
+PEN3 . . . . . . .  BIT    FF32H.3           A  
+PIE0 . . . . . . .  BIT    FF30H.8           A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   127
+
+PIE1 . . . . . . .  BIT    FF30H.9           A  
+PIE2 . . . . . . .  BIT    FF30H.10          A  
+PIE3 . . . . . . .  BIT    FF30H.11          A  
+PIR0 . . . . . . .  BIT    FF30H.12          A  
+PIR1 . . . . . . .  BIT    FF30H.13          A  
+PIR2 . . . . . . .  BIT    FF30H.14          A  
+PIR3 . . . . . . .  BIT    FF30H.15          A  
+PLLIE. . . . . . .  BIT    F1DEH.3           A  
+PLLIR. . . . . . .  BIT    F1DEH.2           A  
+PM0. . . . . . . .  BIT    FF32H.4           A  
+PM1. . . . . . . .  BIT    FF32H.5           A  
+PM2. . . . . . . .  BIT    FF32H.6           A  
+PM3. . . . . . . .  BIT    FF32H.7           A  
+PP0. . . . . . . .  WORD   F038H             A  ESFR
+PP1. . . . . . . .  WORD   F03AH             A  ESFR
+PP2. . . . . . . .  WORD   F03CH             A  ESFR
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   128
+
+PP3. . . . . . . .  WORD   F03EH             A  ESFR
+PRTFLT . . . . . .  BIT    FFACH.3           A  
+PS2. . . . . . . .  BIT    FF32H.14          A  
+PS3. . . . . . . .  BIT    FF32H.15          A  
+PSW. . . . . . . .  WORD   FF10H             A  SFR
+PT0. . . . . . . .  WORD   F030H             A  ESFR
+PT1. . . . . . . .  WORD   F032H             A  ESFR
+PT2. . . . . . . .  WORD   F034H             A  ESFR
+PT3. . . . . . . .  WORD   F036H             A  ESFR
+PTI0 . . . . . . .  BIT    FF30H.4           A  
+PTI1 . . . . . . .  BIT    FF30H.5           A  
+PTI2 . . . . . . .  BIT    FF30H.6           A  
+PTI3 . . . . . . .  BIT    FF30H.7           A  
+PTR0 . . . . . . .  BIT    FF30H.0           A  
+PTR1 . . . . . . .  BIT    FF30H.1           A  
+PTR2 . . . . . . .  BIT    FF30H.2           A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   129
+
+PTR3 . . . . . . .  BIT    FF30H.3           A  
+PW0. . . . . . . .  WORD   FE30H             A  SFR
+PW1. . . . . . . .  WORD   FE32H             A  SFR
+PW2. . . . . . . .  WORD   FE34H             A  SFR
+PW3. . . . . . . .  WORD   FE36H             A  SFR
+PWMCON0. . . . . .  WORD   FF30H             A  SFR
+PWMCON1. . . . . .  WORD   FF32H             A  SFR
+PWMDIS . . . . . .  BIT    F1D4H.9           A  
+PWMIC. . . . . . .  WORD   F17EH             A  ESFR
+PWMIE. . . . . . .  BIT    F17EH.6           A  
+PWMIR. . . . . . .  BIT    F17EH.7           A  
+RCS. . . . . . . .  BIT    F1D0H.6           A  
+RDYEN0 . . . . . .  BIT    FF0CH.12          A  
+RDYEN1 . . . . . .  BIT    FF14H.12          A  
+RDYEN2 . . . . . .  BIT    FF16H.12          A  
+RDYEN3 . . . . . .  BIT    FF18H.12          A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   130
+
+RDYEN4 . . . . . .  BIT    FF1AH.12          A  
+RD_RIE . . . . . .  NEAR   FEC3CH            A  PUB SEC=INIT_CODE
+RD_TIE . . . . . .  NEAR   FEC42H            A  PUB SEC=INIT_CODE
+RESET_ADR. . . . .  DATA3  0H                A  PUB 
+ROMEN. . . . . . .  BIT    FF12H.10          A  
+ROMS1. . . . . . .  BIT    FF12H.12          A  
+RP0H . . . . . . .  WORD   F108H             A  ESFR
+RTCIE. . . . . . .  BIT    F1DEH.1           A  
+RTCIR. . . . . . .  BIT    F1DEH.0           A  
+RWDC0. . . . . . .  BIT    FF0CH.4           A  
+RWDC1. . . . . . .  BIT    FF14H.4           A  
+RWDC2. . . . . . .  BIT    FF16H.4           A  
+RWDC3. . . . . . .  BIT    FF18H.4           A  
+RWDC4. . . . . . .  BIT    FF1AH.4           A  
+S0BG . . . . . . .  WORD   FEB4H             A  SFR
+S0BRS. . . . . . .  BIT    FFB0H.13          A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   131
+
+S0CON. . . . . . .  WORD   FFB0H             A  SFR
+S0EIC. . . . . . .  WORD   FF70H             A  SFR
+S0EIE. . . . . . .  BIT    FF70H.6           A  
+S0EIR. . . . . . .  BIT    FF70H.7           A  
+S0FE . . . . . . .  BIT    FFB0H.9           A  
+S0FEN. . . . . . .  BIT    FFB0H.6           A  
+S0LB . . . . . . .  BIT    FFB0H.14          A  
+S0ODD. . . . . . .  BIT    FFB0H.12          A  
+S0OE . . . . . . .  BIT    FFB0H.10          A  
+S0OEN. . . . . . .  BIT    FFB0H.7           A  
+S0PE . . . . . . .  BIT    FFB0H.8           A  
+S0PEN. . . . . . .  BIT    FFB0H.5           A  
+S0R. . . . . . . .  BIT    FFB0H.15          A  
+S0RBUF . . . . . .  WORD   FEB2H             A  SFR
+S0REN. . . . . . .  BIT    FFB0H.4           A  
+S0RIC. . . . . . .  WORD   FF6EH             A  SFR
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   132
+
+S0RIE. . . . . . .  BIT    FF6EH.6           A  
+S0RIR. . . . . . .  BIT    FF6EH.7           A  
+S0STP. . . . . . .  BIT    FFB0H.3           A  
+S0TBIC . . . . . .  WORD   F19CH             A  ESFR
+S0TBIE . . . . . .  BIT    F19CH.6           A  
+S0TBIR . . . . . .  BIT    F19CH.7           A  
+S0TBUF . . . . . .  WORD   FEB0H             A  SFR
+S0TIC. . . . . . .  WORD   FF6CH             A  SFR
+S0TIE. . . . . . .  BIT    FF6CH.6           A  
+S0TIR. . . . . . .  BIT    FF6CH.7           A  
+SCS. . . . . . . .  BIT    F1D0H.7           A  
+SER_INT_JMP. . . .  NEAR   FEC04H            A  PUB SEC=INIT_CODE
+SER_INT_TRAP . . .  DATA8  2BH               A  PUB 
+SER_ISR. . . . . .  NEAR   ----                 EXT 
+SET_SER_IE . . . .  NEAR   FEC36H            A  PUB SEC=INIT_CODE
+SET_TI . . . . . .  NEAR   FEC28H            A  PUB SEC=INIT_CODE
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   133
+
+SGTEN. . . . . . .  BIT    FF12H.11          A  
+SP . . . . . . . .  WORD   FE12H             A  SFR
+SSCBE. . . . . . .  BIT    FFB2H.11          A  
+SSCBEN . . . . . .  BIT    FFB2H.11          A  
+SSCBR. . . . . . .  WORD   F0B4H             A  ESFR
+SSCBSY . . . . . .  BIT    FFB2H.12          A  
+SSCCON . . . . . .  WORD   FFB2H             A  SFR
+SSCDIS . . . . . .  BIT    F1D4H.2           A  
+SSCEIC . . . . . .  WORD   FF76H             A  SFR
+SSCEIE . . . . . .  BIT    FF76H.6           A  
+SSCEIR . . . . . .  BIT    FF76H.7           A  
+SSCEN. . . . . . .  BIT    FFB2H.15          A  
+SSCHB. . . . . . .  BIT    FFB2H.4           A  
+SSCMS. . . . . . .  BIT    FFB2H.14          A  
+SSCP0. . . . . . .  BIT    FFB2H.6           A  
+SSCPE. . . . . . .  BIT    FFB2H.10          A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   134
+
+SSCPEN . . . . . .  BIT    FFB2H.10          A  
+SSCPH. . . . . . .  BIT    FFB2H.5           A  
+SSCRB. . . . . . .  WORD   F0B2H             A  ESFR
+SSCRE. . . . . . .  BIT    FFB2H.9           A  
+SSCREN . . . . . .  BIT    FFB2H.9           A  
+SSCRIC . . . . . .  WORD   FF74H             A  SFR
+SSCRIE . . . . . .  BIT    FF74H.6           A  
+SSCRIR . . . . . .  BIT    FF74H.7           A  
+SSCTB. . . . . . .  WORD   F0B0H             A  ESFR
+SSCTE. . . . . . .  BIT    FFB2H.8           A  
+SSCTEN . . . . . .  BIT    FFB2H.8           A  
+SSCTIC . . . . . .  WORD   FF72H             A  SFR
+SSCTIE . . . . . .  BIT    FF72H.6           A  
+SSCTIR . . . . . .  BIT    FF72H.7           A  
+STKOF. . . . . . .  BIT    FFACH.14          A  
+STKOV. . . . . . .  WORD   FE14H             A  SFR
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   135
+
+STKUF. . . . . . .  BIT    FFACH.13          A  
+STKUN. . . . . . .  WORD   FE16H             A  SFR
+SYSCON . . . . . .  WORD   FF12H             A  SFR
+SYSCON2. . . . . .  WORD   F1D0H             A  ESFR
+SYSCON3. . . . . .  WORD   F1D4H             A  ESFR
+T0 . . . . . . . .  WORD   FE50H             A  SFR
+T01CON . . . . . .  WORD   FF50H             A  SFR
+T0IC . . . . . . .  WORD   FF9CH             A  SFR
+T0IE . . . . . . .  BIT    FF9CH.6           A  
+T0IN . . . . . . .  BIT    FFC4H.0           A  
+T0IR . . . . . . .  BIT    FF9CH.7           A  
+T0M. . . . . . . .  BIT    FF50H.3           A  
+T0R. . . . . . . .  BIT    FF50H.6           A  
+T0REL. . . . . . .  WORD   FE54H             A  SFR
+T1 . . . . . . . .  WORD   FE52H             A  SFR
+T1IC . . . . . . .  WORD   FF9EH             A  SFR
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   136
+
+T1IE . . . . . . .  BIT    FF9EH.6           A  
+T1IR . . . . . . .  BIT    FF9EH.7           A  
+T1M. . . . . . . .  BIT    FF50H.11          A  
+T1R. . . . . . . .  BIT    FF50H.14          A  
+T1REL. . . . . . .  WORD   FE56H             A  SFR
+T2 . . . . . . . .  WORD   FE40H             A  SFR
+T2CON. . . . . . .  WORD   FF40H             A  SFR
+T2EUD. . . . . . .  BIT    FFA2H.15          A  
+T2IC . . . . . . .  WORD   FF60H             A  SFR
+T2IE . . . . . . .  BIT    FF60H.6           A  
+T2IN . . . . . . .  BIT    FFC4H.7           A  
+T2IR . . . . . . .  BIT    FF60H.7           A  
+T2R. . . . . . . .  BIT    FF40H.6           A  
+T2UD . . . . . . .  BIT    FF40H.7           A  
+T2UDE. . . . . . .  BIT    FF40H.8           A  
+T3 . . . . . . . .  WORD   FE42H             A  SFR
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   137
+
+T3CON. . . . . . .  WORD   FF42H             A  SFR
+T3EUD. . . . . . .  BIT    FFC4H.4           A  
+T3IC . . . . . . .  WORD   FF62H             A  SFR
+T3IE . . . . . . .  BIT    FF62H.6           A  
+T3IN . . . . . . .  BIT    FFC4H.6           A  
+T3IR . . . . . . .  BIT    FF62H.7           A  
+T3OE . . . . . . .  BIT    FF42H.9           A  
+T3OTL. . . . . . .  BIT    FF42H.10          A  
+T3OUT. . . . . . .  BIT    FFC4H.3           A  
+T3R. . . . . . . .  BIT    FF42H.6           A  
+T3UD . . . . . . .  BIT    FF42H.7           A  
+T3UDE. . . . . . .  BIT    FF42H.8           A  
+T4 . . . . . . . .  WORD   FE44H             A  SFR
+T4CON. . . . . . .  WORD   FF44H             A  SFR
+T4EUD. . . . . . .  BIT    FFA2H.14          A  
+T4IC . . . . . . .  WORD   FF64H             A  SFR
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   138
+
+T4IE . . . . . . .  BIT    FF64H.6           A  
+T4IN . . . . . . .  BIT    FFC4H.5           A  
+T4IR . . . . . . .  BIT    FF64H.7           A  
+T4R. . . . . . . .  BIT    FF44H.6           A  
+T4UD . . . . . . .  BIT    FF44H.7           A  
+T4UDE. . . . . . .  BIT    FF44H.8           A  
+T5 . . . . . . . .  WORD   FE46H             A  SFR
+T5CLR. . . . . . .  BIT    FF46H.14          A  
+T5CON. . . . . . .  WORD   FF46H             A  SFR
+T5EUD. . . . . . .  BIT    FFA2H.11          A  
+T5IC . . . . . . .  WORD   FF66H             A  SFR
+T5IE . . . . . . .  BIT    FF66H.6           A  
+T5IN . . . . . . .  BIT    FFA2H.13          A  
+T5IR . . . . . . .  BIT    FF66H.7           A  
+T5R. . . . . . . .  BIT    FF46H.6           A  
+T5SC . . . . . . .  BIT    FF46H.15          A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   139
+
+T5UD . . . . . . .  BIT    FF46H.7           A  
+T5UDE. . . . . . .  BIT    FF46H.8           A  
+T6 . . . . . . . .  WORD   FE48H             A  SFR
+T6CON. . . . . . .  WORD   FF48H             A  SFR
+T6IC . . . . . . .  WORD   FF68H             A  SFR
+T6IE . . . . . . .  BIT    FF68H.6           A  
+T6IN . . . . . . .  BIT    FFA2H.12          A  
+T6IR . . . . . . .  BIT    FF68H.7           A  
+T6OE . . . . . . .  BIT    FF48H.9           A  
+T6OTL. . . . . . .  BIT    FF48H.10          A  
+T6OUT. . . . . . .  BIT    FFC4H.1           A  
+T6R. . . . . . . .  BIT    FF48H.6           A  
+T6SR . . . . . . .  BIT    FF48H.15          A  
+T6UD . . . . . . .  BIT    FF48H.7           A  
+T6UDE. . . . . . .  BIT    FF48H.8           A  
+T7 . . . . . . . .  WORD   F050H             A  ESFR
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   140
+
+T78CON . . . . . .  WORD   FF20H             A  SFR
+T7IC . . . . . . .  WORD   F17AH             A  ESFR
+T7IE . . . . . . .  BIT    F17AH.6           A  
+T7IR . . . . . . .  BIT    F17AH.7           A  
+T7M. . . . . . . .  BIT    FF20H.3           A  
+T7R. . . . . . . .  BIT    FF20H.6           A  
+T7REL. . . . . . .  WORD   F054H             A  ESFR
+T8 . . . . . . . .  WORD   F052H             A  ESFR
+T8IC . . . . . . .  WORD   F17CH             A  ESFR
+T8IE . . . . . . .  BIT    F17CH.6           A  
+T8IR . . . . . . .  BIT    F17CH.7           A  
+T8M. . . . . . . .  BIT    FF20H.11          A  
+T8R. . . . . . . .  BIT    FF20H.14          A  
+T8REL. . . . . . .  WORD   F056H             A  ESFR
+TFR. . . . . . . .  WORD   FFACH             A  SFR
+UNDOPC . . . . . .  BIT    FFACH.7           A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   141
+
+USR0 . . . . . . .  BIT    FF10H.6           A  
+V. . . . . . . . .  BIT    FF10H.2           A  
+WDT. . . . . . . .  WORD   FEAEH             A  SFR
+WDTCON . . . . . .  WORD   FFAEH             A  SFR
+WDTIN. . . . . . .  BIT    FFAEH.0           A  
+WDTR . . . . . . .  BIT    FFAEH.1           A  
+WRCFG. . . . . . .  BIT    FF12H.7           A  
+WR_RIE . . . . . .  NEAR   FEC48H            A  PUB SEC=INIT_CODE
+WR_RIR . . . . . .  NEAR   FEC54H            A  PUB SEC=INIT_CODE
+WR_TIE . . . . . .  NEAR   FEC4EH            A  PUB SEC=INIT_CODE
+WR_TIR . . . . . .  NEAR   FEC5AH            A  PUB SEC=INIT_CODE
+XP0IC. . . . . . .  WORD   F186H             A  ESFR
+XP0IE. . . . . . .  BIT    F186H.6           A  
+XP0IR. . . . . . .  BIT    F186H.7           A  
+XP1IC. . . . . . .  WORD   F18EH             A  ESFR
+XP1IE. . . . . . .  BIT    F18EH.6           A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   142
+
+XP1IR. . . . . . .  BIT    F18EH.7           A  
+XP2IC. . . . . . .  WORD   F196H             A  ESFR
+XP2IE. . . . . . .  BIT    F196H.6           A  
+XP2IR. . . . . . .  BIT    F196H.7           A  
+XP3IC. . . . . . .  WORD   F19EH             A  ESFR
+XP3IE. . . . . . .  BIT    F19EH.6           A  
+XP3IR. . . . . . .  BIT    F19EH.7           A  
+Z. . . . . . . . .  BIT    FF10H.3           A  
+ZEROS. . . . . . .  WORD   FF1CH             A  SFR
+_ADCDIS. . . . . .  DATA3  0H                A  
+_ALECTL0 . . . . .  DATA3  0H                A  
+_ALECTL1 . . . . .  DATA3  0H                A  
+_ALECTL2 . . . . .  DATA3  0H                A  
+_ALECTL3 . . . . .  DATA3  0H                A  
+_ALECTL4 . . . . .  DATA3  0H                A  
+_ASC0DIS . . . . .  DATA3  0H                A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   143
+
+_ASC1DIS . . . . .  DATA3  0H                A  
+_BDRSTEN . . . . .  DATA3  0H                A  
+_BTYP0 . . . . . .  DATA3  2H                A  
+_BTYP1 . . . . . .  DATA3  2H                A  
+_BTYP2 . . . . . .  DATA3  0H                A  
+_BTYP3 . . . . . .  DATA3  2H                A  
+_BTYP4 . . . . . .  DATA3  2H                A  
+_BUSACT0 . . . . .  DATA3  1H                A  
+_BUSACT1 . . . . .  DATA3  1H                A  
+_BUSACT2 . . . . .  DATA3  1H                A  
+_BUSACT3 . . . . .  DATA3  1H                A  
+_BUSACT4 . . . . .  DATA3  1H                A  
+_BYTDIS. . . . . .  DATA3  0H                A  
+_CAN1DIS . . . . .  DATA3  0H                A  
+_CAN2DIS . . . . .  DATA3  0H                A  
+_CC1DIS. . . . . .  DATA3  0H                A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   144
+
+_CC2DIS. . . . . .  DATA3  0H                A  
+_CC6DIS. . . . . .  DATA3  0H                A  
+_CLKCON. . . . . .  DATA3  0H                A  
+_CLKEN . . . . . .  DATA3  0H                A  
+_CLKREL. . . . . .  DATA3  0H                A  
+_CSCFG . . . . . .  DATA3  0H                A  
+_CSREN0. . . . . .  DATA3  0H                A  
+_CSREN1. . . . . .  DATA3  0H                A  
+_CSREN2. . . . . .  DATA3  0H                A  
+_CSREN3. . . . . .  DATA3  0H                A  
+_CSREN4. . . . . .  DATA3  0H                A  
+_CSWEN0. . . . . .  DATA3  0H                A  
+_CSWEN1. . . . . .  DATA3  0H                A  
+_CSWEN2. . . . . .  DATA3  0H                A  
+_CSWEN3. . . . . .  DATA3  0H                A  
+_CSWEN4. . . . . .  DATA3  0H                A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   145
+
+_FMDIS . . . . . .  DATA3  0H                A  
+_GPTDIS. . . . . .  DATA3  0H                A  
+_I2CDIS. . . . . .  DATA3  0H                A  
+_MCTC0 . . . . . .  DATA3  1H                A  
+_MCTC1 . . . . . .  DATA3  1H                A  
+_MCTC2 . . . . . .  DATA3  1H                A  
+_MCTC3 . . . . . .  DATA3  1H                A  
+_MCTC4 . . . . . .  DATA3  1H                A  
+_MTTC0 . . . . . .  DATA3  1H                A  
+_MTTC1 . . . . . .  DATA3  1H                A  
+_MTTC2 . . . . . .  DATA3  1H                A  
+_MTTC3 . . . . . .  DATA3  1H                A  
+_MTTC4 . . . . . .  DATA3  1H                A  
+_OWDDIS. . . . . .  DATA3  0H                A  
+_PCDDIS. . . . . .  DATA3  0H                A  
+_PDCON . . . . . .  DATA3  0H                A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   146
+
+_PWDCFG. . . . . .  DATA3  0H                A  
+_PWMDIS. . . . . .  DATA3  0H                A  
+_RDYEN0. . . . . .  DATA3  0H                A  
+_RDYEN1. . . . . .  DATA3  0H                A  
+_RDYEN2. . . . . .  DATA3  0H                A  
+_RDYEN3. . . . . .  DATA3  0H                A  
+_RDYEN4. . . . . .  DATA3  0H                A  
+_RDY_AS0 . . . . .  DATA3  0H                A  
+_RDY_AS1 . . . . .  DATA3  0H                A  
+_RDY_AS2 . . . . .  DATA3  0H                A  
+_RDY_AS3 . . . . .  DATA3  0H                A  
+_RDY_AS4 . . . . .  DATA3  0H                A  
+_ROMEN . . . . . .  DATA3  0H                A  
+_ROMS1 . . . . . .  DATA3  0H                A  
+_RTS . . . . . . .  DATA3  0H                A  
+_RWDC0 . . . . . .  DATA3  0H                A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   147
+
+_RWDC1 . . . . . .  DATA3  0H                A  
+_RWDC2 . . . . . .  DATA3  0H                A  
+_RWDC3 . . . . . .  DATA3  0H                A  
+_RWDC4 . . . . . .  DATA3  0H                A  
+_SCS . . . . . . .  DATA3  0H                A  
+_SGTDIS. . . . . .  DATA3  0H                A  
+_SSCDIS. . . . . .  DATA3  0H                A  
+_STKSZ . . . . . .  DATA3  7H                A  
+_STKSZ1. . . . . .  DATA3  0H                A  
+_VISIBLE . . . . .  DATA3  0H                A  
+_V_CAN1. . . . . .  DATA3  1H                A  
+_V_CAN2. . . . . .  DATA3  0H                A  
+_V_XFLASH. . . . .  DATA3  0H                A  
+_V_XRAM2 . . . . .  DATA3  1H                A  
+_V_XRAM6 . . . . .  DATA3  0H                A  
+_WRCFG . . . . . .  DATA3  1H                A  
+A166 MACRO ASSEMBLER  Configuration for MONITOR-167   (C) 1993 KEIL                       04/09/2008 11:07:51 PAGE   148
+
+_XPEN. . . . . . .  DATA3  1H                A  
+_XPERSHARE . . . .  DATA3  0H                A  
+
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

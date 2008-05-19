@@ -1,0 +1,564 @@
+L166 LINKER/LOCATER V5.25                                                               04/09/2008  11:07:51  PAGE 1
+
+
+L166 LINKER/LOCATER V5.25, INVOKED BY:
+C:\KEIL\C166\BIN\L166.EXE Inst167.obj, ..\Mon.lib TO Monitor PAGELENGTH (18) PRINTCONTROLS (NOCOMMENTS) SECTIONS (INIT_C
+>> ODE, MON166_CODE, MON166_CONST, MON166_DATA_START%M_DATA, MON166_W_DATA%M_DATA, MON166_EXEC%M_DATA, MON166_B_DATA%M_D
+>> ATA)
+
+
+CPU TYPE:     C167 or derivative
+CPU MODE:     SEGMENTED
+
+
+INPUT MODULES INCLUDED:
+  Inst167.obj (INST167)
+  ..\Mon.lib (MON166)
+  ..\Mon.lib (GO)
+
+
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 2
+
+
+MEMORY MAP OF MODULE:  Monitor (INST167)
+
+
+START     STOP      LENGTH    TYPE  RTYP  ALIGN  TGR  GRP  COMB  CLASS   SECTION NAME
+=====================================================================================
+0FEA00H   ---       000000H   DATA  ABS   AT..   ---  ---  PRIV  M_DATA  MON166_DATA_START
+0FEA00H   0FEAA1H   0000A2H   DATA  REL   WORD   ---  ---  PUBL  M_DATA  MON166_W_DATA
+0FEAA2H   0FEAADH   00000CH   CODE  REL   WORD   ---  ---  PRIV  M_DATA  MON166_EXEC
+0FEAAEH   0FEBB7H   00010AH   DATA  REL   BYTE   ---  ---  PUBL  M_DATA  MON166_B_DATA
+0FEC00H   0FEC63H   000064H   CODE  ABS   AT..   ---  ---  PRIV  ---     INIT_CODE
+0FEC64H   0FFCA5H   001042H   CODE  REL   WORD   ---  ---  PUBL  ---     MON166_CODE
+0FFCA6H   0FFE27H   000182H   CODE  REL   WORD   ---  ---  PUBL  ---     MON166_CONST
+
+
+
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 3
+
+
+PUBLIC SYMBOLS OF MODULE:  Monitor (INST167)
+
+
+      VALUE       PUBLIC SYMBOL NAME               REP   TGR  CLASS   SECTION
+      =======================================================================
+      0FEC62H     AFTER_GO                         LABEL ---  ---     INIT_CODE
+      0000FFH     ALLBREAKS                        CONST ---  ---     ---
+      0FFCBAH     A_CP                             VAR   ---  ---     MON166_CONST
+      0FFCCAH     A_STKUN                          VAR   ---  ---     MON166_CONST
+      0FEC60H     BEFORE_GO                        LABEL ---  ---     INIT_CODE
+      000002H     BPDISABLE                        CONST ---  ---     ---
+      000001H     BPSET                            CONST ---  ---     ---
+      0FF8F2H     BREAK_MODIFY                     LABEL ---  ---     MON166_CODE
+      0FF95AH     BREAK_SET                        LABEL ---  ---     MON166_CODE
+      0FFAE2H     BRKP                             LABEL ---  ---     MON166_CODE
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 4
+
+
+      000002H     BRK_TRAP                         CONST ---  ---     ---
+      0FEC2CH     CLR_RI                           LABEL ---  ---     INIT_CODE
+      0FEC30H     CLR_SER_IE                       LABEL ---  ---     INIT_CODE
+      0FEC24H     CLR_TI                           LABEL ---  ---     INIT_CODE
+      0FEC00H     CODE_START_ADR                   CONST ---  ---     ---
+      0FEA00H     DATA_START_ADR                   CONST ---  ---     ---
+      000007H     E_BRK_CONFL                      CONST ---  ---     ---
+      000008H     E_BRK_DDEF                       CONST ---  ---     ---
+      000004H     E_BRK_NOTAVAIL                   CONST ---  ---     ---
+      000005H     E_BRK_NOT_EX                     CONST ---  ---     ---
+      000009H     E_BRK_VEC                        CONST ---  ---     ---
+      000006H     E_BRK_WRT                        CONST ---  ---     ---
+      000002H     E_CHECKSUM                       CONST ---  ---     ---
+      000000H     E_NOERROR                        CONST ---  ---     ---
+      000003H     E_NORAM                          CONST ---  ---     ---
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 5
+
+
+      000001H     E_UNKNOWN                        CONST ---  ---     ---
+      0FF822H     GET_MEM                          LABEL ---  ---     MON166_CODE
+      0FEAB6H     GO_MODE                          VAR   ---  M_DATA  MON166_B_DATA
+      0FEC18H     INCHAR                           LABEL ---  ---     INIT_CODE
+      000003H     INPROGRAM                        CONST ---  ---     ---
+      0FEC0CH     INSTAT                           LABEL ---  ---     INIT_CODE
+      0FEAB5H     MIN_PRI                          VAR   ---  M_DATA  MON166_B_DATA
+      0FEC6EH     MON166                           LABEL ---  ---     MON166_CODE
+      0FEA14H     MON_PSW                          VAR   ---  M_DATA  MON166_W_DATA
+      0FEC1EH     OUTCHAR                          LABEL ---  ---     INIT_CODE
+      0FEC12H     OUTSTAT                          LABEL ---  ---     INIT_CODE
+      0FF9B0H     PUT_BREAK                        LABEL ---  ---     MON166_CODE
+      0FF9AAH     PUT_T_BREAK                      LABEL ---  ---     MON166_CODE
+      0FEC3CH     RD_RIE                           LABEL ---  ---     INIT_CODE
+      0FEC42H     RD_TIE                           LABEL ---  ---     INIT_CODE
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 6
+
+
+      0FF91CH     READ_BREAK                       LABEL ---  ---     MON166_CODE
+      0FF7AEH     READ_MEM                         LABEL ---  ---     MON166_CODE
+      0FEA36H     REG_SAVE_END                     VAR   ---  M_DATA  MON166_W_DATA
+      0FEA16H     REG_SAVE_START                   VAR   ---  M_DATA  MON166_W_DATA
+      000000H     RESET_ADR                        CONST ---  ---     ---
+      0FFA0CH     RESTORE_BREAK                    LABEL ---  ---     MON166_CODE
+      0FF114H     RETURN_GO                        LABEL ---  ---     MON166_CODE
+      0FEAB2H     SER_FLAGS                        VAR   ---  M_DATA  MON166_B_DATA
+      0FEC04H     SER_INT_JMP                      LABEL ---  ---     INIT_CODE
+      00002BH     SER_INT_TRAP                     CONST ---  ---     ---
+      0FFBCEH     SER_ISR                          LABEL ---  ---     MON166_CODE
+      0FEAB4H     SER_MODE                         VAR   ---  M_DATA  MON166_B_DATA
+      0FEC36H     SET_SER_IE                       LABEL ---  ---     INIT_CODE
+      0FEC28H     SET_TI                           LABEL ---  ---     INIT_CODE
+      0FFA44H     START_GO                         LABEL ---  ---     MON166_CODE
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 7
+
+
+      0FEA00H     S_CP                             VAR   ---  M_DATA  MON166_W_DATA
+      0FEA02H     S_CSP                            VAR   ---  M_DATA  MON166_W_DATA
+      0FEA08H     S_DPP0                           VAR   ---  M_DATA  MON166_W_DATA
+      0FEA0AH     S_DPP3                           VAR   ---  M_DATA  MON166_W_DATA
+      0FEA12H     S_IP                             VAR   ---  M_DATA  MON166_W_DATA
+      0FEA04H     S_PSW                            VAR   ---  M_DATA  MON166_W_DATA
+      0FEA06H     S_PSW_APP                        VAR   ---  M_DATA  MON166_W_DATA
+      0FEA16H     S_R0                             VAR   ---  M_DATA  MON166_W_DATA
+      0FEA18H     S_R1                             VAR   ---  M_DATA  MON166_W_DATA
+      0FEA2AH     S_R10                            VAR   ---  M_DATA  MON166_W_DATA
+      0FEA2CH     S_R11                            VAR   ---  M_DATA  MON166_W_DATA
+      0FEA2EH     S_R12                            VAR   ---  M_DATA  MON166_W_DATA
+      0FEA30H     S_R13                            VAR   ---  M_DATA  MON166_W_DATA
+      0FEA32H     S_R14                            VAR   ---  M_DATA  MON166_W_DATA
+      0FEA34H     S_R15                            VAR   ---  M_DATA  MON166_W_DATA
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 8
+
+
+      0FEA1AH     S_R2                             VAR   ---  M_DATA  MON166_W_DATA
+      0FEA1CH     S_R3                             VAR   ---  M_DATA  MON166_W_DATA
+      0FEA1EH     S_R4                             VAR   ---  M_DATA  MON166_W_DATA
+      0FEA20H     S_R5                             VAR   ---  M_DATA  MON166_W_DATA
+      0FEA22H     S_R6                             VAR   ---  M_DATA  MON166_W_DATA
+      0FEA24H     S_R7                             VAR   ---  M_DATA  MON166_W_DATA
+      0FEA26H     S_R8                             VAR   ---  M_DATA  MON166_W_DATA
+      0FEA28H     S_R9                             VAR   ---  M_DATA  MON166_W_DATA
+      0FEA0CH     S_SP                             VAR   ---  M_DATA  MON166_W_DATA
+      0FEA0EH     S_STKOV                          VAR   ---  M_DATA  MON166_W_DATA
+      0FEA10H     S_STKUN                          VAR   ---  M_DATA  MON166_W_DATA
+      0FEAB7H     TEMP                             VAR   ---  M_DATA  MON166_B_DATA
+      0FF99CH     TMP_BRK_DEL                      LABEL ---  ---     MON166_CODE
+      0FF984H     TMP_BRK_SET                      LABEL ---  ---     MON166_CODE
+      000000H     UNUSED                           CONST ---  ---     ---
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 9
+
+
+      0FF83EH     WRITE_MEM                        LABEL ---  ---     MON166_CODE
+      0FFC30H     WR_BTRAP_VEC                     LABEL ---  ---     MON166_CODE
+      0FEC48H     WR_RIE                           LABEL ---  ---     INIT_CODE
+      0FEC54H     WR_RIR                           LABEL ---  ---     INIT_CODE
+      0FFC68H     WR_STRAP_VEC                     LABEL ---  ---     MON166_CODE
+      0FEC4EH     WR_TIE                           LABEL ---  ---     INIT_CODE
+      0FEC5AH     WR_TIR                           LABEL ---  ---     INIT_CODE
+
+
+
+SYMBOL TABLE OF MODULE:  Monitor (INST167)
+
+      VALUE       TYPE      REP       LENGTH  TGR   SYMBOL NAME
+      =========================================================
+      0FEC18H     PUBLIC    LABEL     ---     ---   INCHAR
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 10
+
+
+      0FEC1EH     PUBLIC    LABEL     ---     ---   OUTCHAR
+      0FEC0CH     PUBLIC    LABEL     ---     ---   INSTAT
+      0FEC12H     PUBLIC    LABEL     ---     ---   OUTSTAT
+      0FEC24H     PUBLIC    LABEL     ---     ---   CLR_TI
+      0FEC28H     PUBLIC    LABEL     ---     ---   SET_TI
+      0FEC2CH     PUBLIC    LABEL     ---     ---   CLR_RI
+      0FEC30H     PUBLIC    LABEL     ---     ---   CLR_SER_IE
+      0FEC36H     PUBLIC    LABEL     ---     ---   SET_SER_IE
+      0FEC3CH     PUBLIC    LABEL     ---     ---   RD_RIE
+      0FEC42H     PUBLIC    LABEL     ---     ---   RD_TIE
+      0FEC48H     PUBLIC    LABEL     ---     ---   WR_RIE
+      0FEC4EH     PUBLIC    LABEL     ---     ---   WR_TIE
+      0FEC54H     PUBLIC    LABEL     ---     ---   WR_RIR
+      0FEC5AH     PUBLIC    LABEL     ---     ---   WR_TIR
+      0FEC60H     PUBLIC    LABEL     ---     ---   BEFORE_GO
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 11
+
+
+      0FEC62H     PUBLIC    LABEL     ---     ---   AFTER_GO
+      0FEC00H     PUBLIC    CONST     ---     ---   CODE_START_ADR
+      0FEA00H     PUBLIC    CONST     ---     ---   DATA_START_ADR
+      000000H     PUBLIC    CONST     ---     ---   RESET_ADR
+      000002H     PUBLIC    CONST     ---     ---   BRK_TRAP
+      00002BH     PUBLIC    CONST     ---     ---   SER_INT_TRAP
+      0FEC04H     PUBLIC    LABEL     ---     ---   SER_INT_JMP
+      00FF98H     SYMBOL    SFR       ---     ---   ADCIC
+      00FFA0H     SYMBOL    SFR       ---     ---   ADCON
+      00FF9AH     SYMBOL    SFR       ---     ---   ADEIC
+      004B00H     SYMBOL    CONST     ---     ---   BAUDRATE
+      00FF0CH     SYMBOL    SFR       ---     ---   BUSCON0
+      00FF14H     SYMBOL    SFR       ---     ---   BUSCON1
+      00FF16H     SYMBOL    SFR       ---     ---   BUSCON2
+      00FF18H     SYMBOL    SFR       ---     ---   BUSCON3
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 12
+
+
+      00FF1AH     SYMBOL    SFR       ---     ---   BUSCON4
+      00FF10H.1   SYMBOL    SBIT      ---     ---   C
+      00FF78H     SYMBOL    SFR       ---     ---   CC0IC
+      00FF8CH     SYMBOL    SFR       ---     ---   CC10IC
+      00FF8EH     SYMBOL    SFR       ---     ---   CC11IC
+      00FF90H     SYMBOL    SFR       ---     ---   CC12IC
+      00FF92H     SYMBOL    SFR       ---     ---   CC13IC
+      00FF94H     SYMBOL    SFR       ---     ---   CC14IC
+      00FF96H     SYMBOL    SFR       ---     ---   CC15IC
+      00F160H     SYMBOL    ESFR      ---     ---   CC16IC
+      00F162H     SYMBOL    ESFR      ---     ---   CC17IC
+      00F164H     SYMBOL    ESFR      ---     ---   CC18IC
+      00F166H     SYMBOL    ESFR      ---     ---   CC19IC
+      00FF7AH     SYMBOL    SFR       ---     ---   CC1IC
+      00F168H     SYMBOL    ESFR      ---     ---   CC20IC
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 13
+
+
+      00F16AH     SYMBOL    ESFR      ---     ---   CC21IC
+      00F16CH     SYMBOL    ESFR      ---     ---   CC22IC
+      00F16EH     SYMBOL    ESFR      ---     ---   CC23IC
+      00F170H     SYMBOL    ESFR      ---     ---   CC24IC
+      00F172H     SYMBOL    ESFR      ---     ---   CC25IC
+      00F174H     SYMBOL    ESFR      ---     ---   CC26IC
+      00F176H     SYMBOL    ESFR      ---     ---   CC27IC
+      00F178H     SYMBOL    ESFR      ---     ---   CC28IC
+      00F184H     SYMBOL    ESFR      ---     ---   CC29IC
+      00FF7CH     SYMBOL    SFR       ---     ---   CC2IC
+      00F18CH     SYMBOL    ESFR      ---     ---   CC30IC
+      00F194H     SYMBOL    ESFR      ---     ---   CC31IC
+      00FF7EH     SYMBOL    SFR       ---     ---   CC3IC
+      00FF80H     SYMBOL    SFR       ---     ---   CC4IC
+      00FF82H     SYMBOL    SFR       ---     ---   CC5IC
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 14
+
+
+      00FF84H     SYMBOL    SFR       ---     ---   CC6IC
+      00FF86H     SYMBOL    SFR       ---     ---   CC7IC
+      00FF88H     SYMBOL    SFR       ---     ---   CC8IC
+      00FF8AH     SYMBOL    SFR       ---     ---   CC9IC
+      00FF52H     SYMBOL    SFR       ---     ---   CCM0
+      00FF54H     SYMBOL    SFR       ---     ---   CCM1
+      00FF56H     SYMBOL    SFR       ---     ---   CCM2
+      00FF58H     SYMBOL    SFR       ---     ---   CCM3
+      00FF22H     SYMBOL    SFR       ---     ---   CCM4
+      00FF24H     SYMBOL    SFR       ---     ---   CCM5
+      00FF26H     SYMBOL    SFR       ---     ---   CCM6
+      00FF28H     SYMBOL    SFR       ---     ---   CCM7
+      00FF6AH     SYMBOL    SFR       ---     ---   CRIC
+      00FE06H     SYMBOL    SFR       ---     ---   DPP3
+      00FF10H.4   SYMBOL    SBIT      ---     ---   E
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 15
+
+
+      00FF11H.2   SYMBOL    SBIT      ---     ---   HLDEN
+      00FF11H.3   SYMBOL    SBIT      ---     ---   IEN
+      008000H     SYMBOL    CONST     ---     ---   INT_ADR_OFF
+      000000H     SYMBOL    CONST     ---     ---   INT_ADR_SEG
+      00F1DEH     SYMBOL    ESFR      ---     ---   ISNC
+      00FF0EH     SYMBOL    SFR       ---     ---   MDC
+      00FF0EH.4   SYMBOL    SBIT      ---     ---   MDRIU
+      00FF10H.5   SYMBOL    SBIT      ---     ---   MULIP
+      00FF10H     SYMBOL    SBIT      ---     ---   N
+      00FF1EH     SYMBOL    SFR       ---     ---   ONES
+      00FFC4H     SYMBOL    SFR       ---     ---   P3
+      00FFA2H     SYMBOL    SFR       ---     ---   P5
+      00FEC0H     SYMBOL    SFR       ---     ---   PECC0
+      00FEC2H     SYMBOL    SFR       ---     ---   PECC1
+      00FEC4H     SYMBOL    SFR       ---     ---   PECC2
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 16
+
+
+      00FEC6H     SYMBOL    SFR       ---     ---   PECC3
+      00FEC8H     SYMBOL    SFR       ---     ---   PECC4
+      00FECAH     SYMBOL    SFR       ---     ---   PECC5
+      00FECCH     SYMBOL    SFR       ---     ---   PECC6
+      00FECEH     SYMBOL    SFR       ---     ---   PECC7
+      00FF10H     SYMBOL    SFR       ---     ---   PSW
+      00FF30H     SYMBOL    SFR       ---     ---   PWMCON0
+      00FF32H     SYMBOL    SFR       ---     ---   PWMCON1
+      00F17EH     SYMBOL    ESFR      ---     ---   PWMIC
+      00FFB0H     SYMBOL    SFR       ---     ---   S0CON
+      00FF70H     SYMBOL    SFR       ---     ---   S0EIC
+      00FEB2H     SYMBOL    SFR       ---     ---   S0RBUF
+      00FF6EH     SYMBOL    SFR       ---     ---   S0RIC
+      00FF6EH.6   SYMBOL    SBIT      ---     ---   S0RIE
+      00FF6EH.7   SYMBOL    SBIT      ---     ---   S0RIR
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 17
+
+
+      00F19CH     SYMBOL    ESFR      ---     ---   S0TBIC
+      00FEB0H     SYMBOL    SFR       ---     ---   S0TBUF
+      00FF6CH     SYMBOL    SFR       ---     ---   S0TIC
+      00FF6CH.6   SYMBOL    SBIT      ---     ---   S0TIE
+      00FF6CH.7   SYMBOL    SBIT      ---     ---   S0TIR
+      00FFB2H     SYMBOL    SFR       ---     ---   SSCCON
+      00FF76H     SYMBOL    SFR       ---     ---   SSCEIC
+      00FF74H     SYMBOL    SFR       ---     ---   SSCRIC
+      00FF72H     SYMBOL    SFR       ---     ---   SSCTIC
+      00FF12H     SYMBOL    SFR       ---     ---   SYSCON
+      00F1D0H     SYMBOL    ESFR      ---     ---   SYSCON2
+      00F1D4H     SYMBOL    ESFR      ---     ---   SYSCON3
+      00FF50H     SYMBOL    SFR       ---     ---   T01CON
+      00FF9CH     SYMBOL    SFR       ---     ---   T0IC
+      00FF9EH     SYMBOL    SFR       ---     ---   T1IC
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 18
+
+
+      00FF40H     SYMBOL    SFR       ---     ---   T2CON
+      00FF60H     SYMBOL    SFR       ---     ---   T2IC
+      00FF42H     SYMBOL    SFR       ---     ---   T3CON
+      00FFC4H.4   SYMBOL    SBIT      ---     ---   T3EUD
+      00FF62H     SYMBOL    SFR       ---     ---   T3IC
+      00FF44H     SYMBOL    SFR       ---     ---   T4CON
+      00FF64H     SYMBOL    SFR       ---     ---   T4IC
+      00FF46H     SYMBOL    SFR       ---     ---   T5CON
+      00FF66H     SYMBOL    SFR       ---     ---   T5IC
+      00FF48H     SYMBOL    SFR       ---     ---   T6CON
+      00FF68H     SYMBOL    SFR       ---     ---   T6IC
+      00FF20H     SYMBOL    SFR       ---     ---   T78CON
+      00F17AH     SYMBOL    ESFR      ---     ---   T7IC
+      00F17CH     SYMBOL    ESFR      ---     ---   T8IC
+      00FFACH     SYMBOL    SFR       ---     ---   TFR
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 19
+
+
+      00FF10H.6   SYMBOL    SBIT      ---     ---   USR0
+      00FF10H.2   SYMBOL    SBIT      ---     ---   V
+      00FFAEH     SYMBOL    SFR       ---     ---   WDTCON
+      00F186H     SYMBOL    ESFR      ---     ---   XP0IC
+      00F18EH     SYMBOL    ESFR      ---     ---   XP1IC
+      00F196H     SYMBOL    ESFR      ---     ---   XP2IC
+      00F19EH     SYMBOL    ESFR      ---     ---   XP3IC
+      00FF10H.3   SYMBOL    SBIT      ---     ---   Z
+      00FF1CH     SYMBOL    SFR       ---     ---   ZEROS
+      000007H     SYMBOL    CONST     ---     ---   _STKSZ
+
+      0FEC00H     BLOCK     LVL=0     0008H   ---   INITSEC
+      0FEC00H     LINE      ---       ---     ---   #152
+      0FEC04H     LINE      ---       ---     ---   #189
+      ---         BLOCKEND  LVL=0     ---     ---   
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 20
+
+
+
+      0FEC08H     BLOCK     LVL=0     005CH   ---   INSTALLCODE
+      0FEC08H     LINE      ---       ---     ---   #382
+      0FEC0CH     LINE      ---       ---     ---   #389
+      0FEC10H     LINE      ---       ---     ---   #390
+      0FEC12H     LINE      ---       ---     ---   #392
+      0FEC16H     LINE      ---       ---     ---   #393
+      0FEC18H     LINE      ---       ---     ---   #395
+      0FEC1CH     LINE      ---       ---     ---   #396
+      0FEC1EH     LINE      ---       ---     ---   #398
+      0FEC22H     LINE      ---       ---     ---   #399
+      0FEC24H     LINE      ---       ---     ---   #401
+      0FEC26H     LINE      ---       ---     ---   #402
+      0FEC28H     LINE      ---       ---     ---   #404
+      0FEC2AH     LINE      ---       ---     ---   #405
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 21
+
+
+      0FEC2CH     LINE      ---       ---     ---   #407
+      0FEC2EH     LINE      ---       ---     ---   #408
+      0FEC30H     LINE      ---       ---     ---   #410
+      0FEC34H     LINE      ---       ---     ---   #411
+      0FEC36H     LINE      ---       ---     ---   #413
+      0FEC3AH     LINE      ---       ---     ---   #414
+      0FEC3CH     LINE      ---       ---     ---   #416
+      0FEC40H     LINE      ---       ---     ---   #417
+      0FEC42H     LINE      ---       ---     ---   #419
+      0FEC46H     LINE      ---       ---     ---   #420
+      0FEC48H     LINE      ---       ---     ---   #422
+      0FEC4CH     LINE      ---       ---     ---   #423
+      0FEC4EH     LINE      ---       ---     ---   #425
+      0FEC52H     LINE      ---       ---     ---   #426
+      0FEC54H     LINE      ---       ---     ---   #428
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 22
+
+
+      0FEC58H     LINE      ---       ---     ---   #429
+      0FEC5AH     LINE      ---       ---     ---   #431
+      0FEC5EH     LINE      ---       ---     ---   #432
+      0FEC60H     LINE      ---       ---     ---   #435
+      0FEC62H     LINE      ---       ---     ---   #438
+      0FEC08H     SYMBOL    LABEL     ---     ---   INITSERIAL
+      ---         BLOCKEND  LVL=0     ---     ---   
+      0FEC6EH     PUBLIC    LABEL     ---     ---   MON166
+      0FF114H     PUBLIC    LABEL     ---     ---   RETURN_GO
+      000000H     PUBLIC    CONST     ---     ---   E_NOERROR
+      000002H     PUBLIC    CONST     ---     ---   E_CHECKSUM
+      000003H     PUBLIC    CONST     ---     ---   E_NORAM
+      000004H     PUBLIC    CONST     ---     ---   E_BRK_NOTAVAIL
+      000005H     PUBLIC    CONST     ---     ---   E_BRK_NOT_EX
+      000006H     PUBLIC    CONST     ---     ---   E_BRK_WRT
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 23
+
+
+      000007H     PUBLIC    CONST     ---     ---   E_BRK_CONFL
+      000008H     PUBLIC    CONST     ---     ---   E_BRK_DDEF
+      000001H     PUBLIC    CONST     ---     ---   E_UNKNOWN
+      000009H     PUBLIC    CONST     ---     ---   E_BRK_VEC
+      0FEA16H     PUBLIC    VAR       ---     ---   REG_SAVE_START
+      0FEA36H     PUBLIC    VAR       ---     ---   REG_SAVE_END
+      0FEA16H     PUBLIC    VAR       ---     ---   S_R0
+      0FEA18H     PUBLIC    VAR       ---     ---   S_R1
+      0FEA1AH     PUBLIC    VAR       ---     ---   S_R2
+      0FEA1CH     PUBLIC    VAR       ---     ---   S_R3
+      0FEA1EH     PUBLIC    VAR       ---     ---   S_R4
+      0FEA20H     PUBLIC    VAR       ---     ---   S_R5
+      0FEA22H     PUBLIC    VAR       ---     ---   S_R6
+      0FEA24H     PUBLIC    VAR       ---     ---   S_R7
+      0FEA26H     PUBLIC    VAR       ---     ---   S_R8
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 24
+
+
+      0FEA28H     PUBLIC    VAR       ---     ---   S_R9
+      0FEA2AH     PUBLIC    VAR       ---     ---   S_R10
+      0FEA2CH     PUBLIC    VAR       ---     ---   S_R11
+      0FEA2EH     PUBLIC    VAR       ---     ---   S_R12
+      0FEA30H     PUBLIC    VAR       ---     ---   S_R13
+      0FEA32H     PUBLIC    VAR       ---     ---   S_R14
+      0FEA34H     PUBLIC    VAR       ---     ---   S_R15
+      0FEA00H     PUBLIC    VAR       ---     ---   S_CP
+      0FEA02H     PUBLIC    VAR       ---     ---   S_CSP
+      0FEA04H     PUBLIC    VAR       ---     ---   S_PSW
+      0FEA06H     PUBLIC    VAR       ---     ---   S_PSW_APP
+      0FEA08H     PUBLIC    VAR       ---     ---   S_DPP0
+      0FEA0AH     PUBLIC    VAR       ---     ---   S_DPP3
+      0FEA0CH     PUBLIC    VAR       ---     ---   S_SP
+      0FEA0EH     PUBLIC    VAR       ---     ---   S_STKOV
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 25
+
+
+      0FEA10H     PUBLIC    VAR       ---     ---   S_STKUN
+      0FEA12H     PUBLIC    VAR       ---     ---   S_IP
+      0FEA14H     PUBLIC    VAR       ---     ---   MON_PSW
+      0FEAB5H     PUBLIC    VAR       ---     ---   MIN_PRI
+      0FEAB4H     PUBLIC    VAR       ---     ---   SER_MODE
+      0FEAB2H     PUBLIC    VAR       ---     ---   SER_FLAGS
+      0FEAB6H     PUBLIC    VAR       ---     ---   GO_MODE
+      0FEAB7H     PUBLIC    VAR       ---     ---   TEMP
+      0FFCBAH     PUBLIC    VAR       ---     ---   A_CP
+      0FFCCAH     PUBLIC    VAR       ---     ---   A_STKUN
+
+      0FEAA2H     BLOCK     LVL=0     000CH   ---   EXEC_CONDCODE
+      ---         BLOCKEND  LVL=0     ---     ---   
+
+      0FEC64H     BLOCK     LVL=0     000AH   ---   MON_EXEC
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 26
+
+
+      ---         BLOCKEND  LVL=0     ---     ---   
+
+      0FEC6EH     BLOCK     LVL=0     0B40H   ---   MONSEC
+      ---         BLOCKEND  LVL=0     ---     ---   
+      0FF8F2H     PUBLIC    LABEL     ---     ---   BREAK_MODIFY
+      0FF95AH     PUBLIC    LABEL     ---     ---   BREAK_SET
+      0FF984H     PUBLIC    LABEL     ---     ---   TMP_BRK_SET
+      0FF99CH     PUBLIC    LABEL     ---     ---   TMP_BRK_DEL
+      0FFA0CH     PUBLIC    LABEL     ---     ---   RESTORE_BREAK
+      0FF9B0H     PUBLIC    LABEL     ---     ---   PUT_BREAK
+      0FF9AAH     PUBLIC    LABEL     ---     ---   PUT_T_BREAK
+      0FFC30H     PUBLIC    LABEL     ---     ---   WR_BTRAP_VEC
+      0FFC68H     PUBLIC    LABEL     ---     ---   WR_STRAP_VEC
+      0FF91CH     PUBLIC    LABEL     ---     ---   READ_BREAK
+      0FF7AEH     PUBLIC    LABEL     ---     ---   READ_MEM
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 27
+
+
+      0FF822H     PUBLIC    LABEL     ---     ---   GET_MEM
+      0FF83EH     PUBLIC    LABEL     ---     ---   WRITE_MEM
+      0FFA44H     PUBLIC    LABEL     ---     ---   START_GO
+      0FFAE2H     PUBLIC    LABEL     ---     ---   BRKP
+      0FFBCEH     PUBLIC    LABEL     ---     ---   SER_ISR
+      000000H     PUBLIC    CONST     ---     ---   UNUSED
+      000001H     PUBLIC    CONST     ---     ---   BPSET
+      000002H     PUBLIC    CONST     ---     ---   BPDISABLE
+      000003H     PUBLIC    CONST     ---     ---   INPROGRAM
+      0000FFH     PUBLIC    CONST     ---     ---   ALLBREAKS
+
+      0FF7AEH     BLOCK     LVL=0     0074H   ---   P_READ_MEM
+      ---         BLOCKEND  LVL=0     ---     ---   
+
+      0FF822H     BLOCK     LVL=0     001CH   ---   P_GET_MEM
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 28
+
+
+      ---         BLOCKEND  LVL=0     ---     ---   
+
+      0FF83EH     BLOCK     LVL=0     00B4H   ---   P_WRITE_MEM
+      ---         BLOCKEND  LVL=0     ---     ---   
+
+      0FF8F2H     BLOCK     LVL=0     002AH   ---   P_BREAK_MODIFY
+      ---         BLOCKEND  LVL=0     ---     ---   
+
+      0FF91CH     BLOCK     LVL=0     001AH   ---   P_READ_BREAK
+      ---         BLOCKEND  LVL=0     ---     ---   
+
+      0FF936H     BLOCK     LVL=0     0024H   ---   P_BREAK_CONFL
+      ---         BLOCKEND  LVL=0     ---     ---   
+
+      0FF95AH     BLOCK     LVL=0     002AH   ---   P_BREAK_SET
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 29
+
+
+      ---         BLOCKEND  LVL=0     ---     ---   
+
+      0FF984H     BLOCK     LVL=0     0018H   ---   P_TMP_BRK_SET
+      ---         BLOCKEND  LVL=0     ---     ---   
+
+      0FF99CH     BLOCK     LVL=0     000EH   ---   P_TMP_BRK_DEL
+      ---         BLOCKEND  LVL=0     ---     ---   
+
+      0FF9AAH     BLOCK     LVL=0     0062H   ---   P_PUT_BREAK
+      ---         BLOCKEND  LVL=0     ---     ---   
+
+      0FFA0CH     BLOCK     LVL=0     0038H   ---   P_RESTORE_BREAK
+      ---         BLOCKEND  LVL=0     ---     ---   
+
+      0FFA44H     BLOCK     LVL=0     009AH   ---   P_START_GO
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 30
+
+
+      ---         BLOCKEND  LVL=0     ---     ---   
+
+      0FFADEH     BLOCK     LVL=0     0004H   ---   P_RETI
+      ---         BLOCKEND  LVL=0     ---     ---   
+
+      0FFAE2H     BLOCK     LVL=0     00ECH   ---   P_BRKP
+      ---         BLOCKEND  LVL=0     ---     ---   
+
+      0FFBCEH     BLOCK     LVL=0     0062H   ---   P_SER_ISR
+      ---         BLOCKEND  LVL=0     ---     ---   
+
+      0FFC30H     BLOCK     LVL=0     0038H   ---   P_WR_BTV
+      ---         BLOCKEND  LVL=0     ---     ---   
+
+      0FFC68H     BLOCK     LVL=0     003EH   ---   P_WR_STV
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 31
+
+
+      ---         BLOCKEND  LVL=0     ---     ---   
+
+
+
+FUNCTION REGISTER MASKS
+
+
+FUNCTION . . . . . REG MASK
+===========================
+
+
+******************************************************************************
+* RESTRICTED VERSION WITH 1000H BYTE CODE SIZE LIMIT; USED: 0064H BYTE ( 2%) *
+******************************************************************************
+
+L166 LINKER/LOCATER V5.25                                                             04/09/2008  11:07:51  PAGE 32
+
+
+Program Size: data=428(near=428) const=0(near=0) code=4660
+L166 RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

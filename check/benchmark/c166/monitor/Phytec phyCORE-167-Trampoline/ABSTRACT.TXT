@@ -1,0 +1,42 @@
+Monitor for Phytec phyCORE-161CS Board 
+
+You need under Options - L166 Misc RESERVE:
+  8H-0BH, 0ACH-0AFH
+
+For correct using the Monitor with a Phytec 
+developent board:
+connect the PC COM port to P1A connector
+
+Jumper Settings of the development board:
+
+Jumper Settings:
+
+ JP 9:  (2+3)
+
+ JP28:  (6+8) and (3+4)
+
+ JP20:  (1+2) DB9 plug P1A for TXD0 
+ JP27:  (1+2) DB9 plug P1A for RXD0 
+
+ JP1:   (1+2) DB9 plug P1B for TXD1
+ JP8:   (1+2) DB9 plug P1B for RXD1
+ 
+Simultaneously press the Reset (S1) and Boot (S2) switches on the
+Development Board, first releasing the Reset (S1) and then, two or
+three seconds later, release the Boot (S2) switch.
+This sequence of pressing and releasing the Reset (S1) and Boot (S2)
+switches renders the phyCORE-167 into the Bootstrap mode.
+
+
+BOOTSTRAP MODE
+==============
+
+Memory map:
+ 00:0000h - 00:EFFFh  free RAM
+ 00:F000h - 00:FFFFh  internal RAM and SFR's
+ 01:0000h - 0F:E9FFh  free RAM (optional)
+ 0F:EA00h - 0F:EBFFh  RAM used by Monitor (Data Area)
+ 0F:EC00h - 0F:FFFFh  RAM used by Monitor (Code Area)
+ 20:0000h - 2F:FFFFh  external UART (optional)
+ 30:0000h - 3F:FFFFh  Flash ROM
+
