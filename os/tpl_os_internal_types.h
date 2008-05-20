@@ -624,7 +624,7 @@ struct TPL_COUNTER;
  * Prototype for expire functions
  */
 typedef P2FUNC(tpl_status, OS_APPL_CODE, tpl_expire_func)(
-    struct P2VAR(TPL_TIME_OBJ, OS_APPL_DATA, AUTOMATIC)
+    P2CONST(struct TPL_TIME_OBJ, OS_APPL_DATA, AUTOMATIC)
 );
 
 /**

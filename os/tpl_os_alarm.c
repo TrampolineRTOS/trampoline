@@ -28,6 +28,7 @@
 #include "tpl_os_kernel.h"
 #include "tpl_os_alarm_kernel.h"
 #include "tpl_os_alarm.h"
+#include "tpl_machine_interface.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
