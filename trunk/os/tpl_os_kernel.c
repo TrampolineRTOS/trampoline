@@ -176,7 +176,7 @@ VAR(s8, OS_VAR) tpl_h_prio = -1;
 
 VAR(u8, OS_VAR) tpl_os_state = OS_INIT; /* see doc in header file declaration */
 
-VAR(tpl_resource_id, OS_VAR) RES_SCHEDULER = RESOURCE_COUNT;
+CONST(tpl_resource_id, OS_VAR) RES_SCHEDULER = RESOURCE_COUNT;
 /* see doc in header declaration */
 
 #define OS_STOP_SEC_VAR_8BITS
@@ -894,7 +894,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CONST(u8, AUTOMATIC) from)
             PostTaskHook while the soon descheduled task is running     */
         CALL_POST_TASK_HOOK()
 
-            /*  the current running task become READY                   */
+        /*  the current running task become READY                   */
         tpl_running_obj->state = (tpl_exec_state)READY;
         /*  put the running task in the ready task list             */
         /*  Bug fix. preempted objects are put at the head
@@ -1402,14 +1402,16 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
                     is postponed to the time it will get the CPU            */
                 a_task->exec_desc.state = (tpl_exec_state)READY_AND_NEW;
             }
+            result = (tpl_status)E_OK_AND_SCHEDULE;
         }
-        /*  put it in the list  */
+        else
+        {
+            result = (tpl_status)E_OK;
+        }
+        /*  put it in the list                                              */
         tpl_put_new_exec_object(&(a_task->exec_desc));
-        /*  inc the task activation count. When the task will terminate
-            it will dec this count and if not zero it will be reactivated   */
+        /*  inc the task activation count.                                  */
         a_task->exec_desc.activate_count++;
-
-        result = (tpl_status)E_OK_AND_SCHEDULE;
     }
 
     return result;

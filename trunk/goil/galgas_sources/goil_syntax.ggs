@@ -206,7 +206,7 @@ rule <start> :
                 @string header ;
                 @string obj_header ;
                 @string implementation ;
-
+                @string types ;
 
                 @config cfg [emptyMap] ;
                 @lstring cfg_file ;
@@ -219,6 +219,7 @@ rule <start> :
                 retrieveTemplateString ?header !"app_header" ;
                 retrieveTemplateString ?obj_header !"obj_header" ;
                 retrieveTemplateString ?implementation !"app_implementation" ;
+                retrieveTemplateString ?types !"types" ;
                 @prefix_map prefix := [@prefix_map emptyMap] ;
 
                 init_prefixes !?prefix ;
@@ -340,6 +341,15 @@ rule <start> :
                     !?obj_header
                     !?implementation ;
 
+                generate_types
+                    !tasks
+                    !isrs
+                    !alarms
+                    !counters
+                    !resources
+                    !max_prio
+                    !?types ;
+
                 # write the result to files
                 @string directory := [[@string stringWithSourceFilePath] stringByDeletingPathExtension];
                 if [option goil_options.project_dir] != "" then
@@ -349,6 +359,7 @@ rule <start> :
                 @string header_file := "tpl_os_generated_configuration.h" ;
                 @string obj_header_file  := "tpl_app_objects.h" ;
                 @string implementation_file  := "tpl_os_generated_configuration.c" ;
+                @string types_file := "tpl_app_custom_types.h" ;
 
                 header := [header stringByReplacingStringByString !"$HEADER$" !header_file];
                 header := [header stringByReplacingStringByString !"$IMPLEMENTATION$" !implementation_file];
@@ -362,9 +373,10 @@ rule <start> :
 
                 @uint error_count := [@uint errorCount] ;
 
-                header_file := directory . "/" . header_file;
-                obj_header_file := directory . "/" . obj_header_file;
-                implementation_file := directory . "/" . implementation_file;
+                header_file := directory . "/" . header_file ;
+                obj_header_file := directory . "/" . obj_header_file ;
+                implementation_file := directory . "/" . implementation_file ;
+                types_file := directory . "/" . types_file ;
 
                 if error_count == 0 then
                     if [option .verbose_output] then
@@ -379,6 +391,10 @@ rule <start> :
                         message "creating " . implementation_file . "\n" ;
                     end if;
                     [implementation makeDirectoryAndWriteToFile !implementation_file] ;
+                    if [option .verbose_output] then
+                        message "creating " . types_file . "\n" ;
+                    end if ;
+                    [types makeDirectoryAndWriteToFile !types_file] ;
                 
                     if [option goil_options.generate_makefile] then
                         @string makefile_dir := [directory stringByDeletingLastPathComponent] ;

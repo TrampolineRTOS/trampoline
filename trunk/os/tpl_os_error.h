@@ -1544,8 +1544,7 @@ FUNC(void, OS_CODE) tpl_call_error_hook(
     /* E_OK or E_OS_LIMIT   */
 #   define CHECK_RESOURCE_ID_ERROR(res_id,result)               \
     if ((result == (tpl_status)E_OK) &&                         \
-        (((res_id) >= ((tpl_resource_id)RESOURCE_COUNT+1)) ||   \
-         ((res_id) < 0)))                     \
+        ((res_id) >= ((tpl_resource_id)RESOURCE_COUNT+1)))     \
     {                                                           \
         result = (tpl_status)E_OS_ID;                           \
     }

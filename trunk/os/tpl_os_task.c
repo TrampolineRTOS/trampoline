@@ -143,7 +143,7 @@ FUNC(StatusType, OS_CODE) ChainTask(
 
         if (exec_obj == tpl_running_obj)
         {
-            /*  The activated task and the currentily running object
+            /*  The activated task and the currently running object
                 are the same. So the task is put in the RESURRECT state.    */
             tpl_running_obj->state = RESURRECT;
 
