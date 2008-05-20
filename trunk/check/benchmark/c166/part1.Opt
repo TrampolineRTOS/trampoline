@@ -1,0 +1,61 @@
+### uVision2 Project, (C) Keil Software
+### Do not modify !
+
+ cExt (*.c)
+ aExt (*.s*; *.src; *.a*)
+ oExt (*.obj)
+ lExt (*.lib)
+ tExt (*.txt; *.h; *.inc)
+ pExt (*.plm)
+ CppX (*.cpp)
+ DaveTm { 0,0,0,0,0,0,0,0 }
+
+Target (Target 1), 0x0002 // Tools: '166/167'
+GRPOPT 1,(app),0,0,0
+GRPOPT 2,(oil),0,0,0
+GRPOPT 3,(os),0,0,0
+
+OPTFFF 1,1,1,2,0,54,63,0,<..\part1\default_task1.c><default_task1.c> { 44,0,0,0,2,0,0,0,3,0,0,0,255,255,255,255,255,255,255,255,252,255,255,255,226,255,255,255,0,0,0,0,0,0,0,0,197,2,0,0,54,1,0,0 }
+OPTFFF 1,2,1,0,0,0,0,0,<..\part1\test1\tpl_os_generated_configuration.c><tpl_os_generated_configuration.c> 
+OPTFFF 1,3,1,0,0,0,0,0,<.\tpl_benchmarkC166.c><tpl_benchmarkC166.c> 
+OPTFFF 2,4,5,0,0,0,0,0,<..\part1\test1.oil><test1.oil> 
+OPTFFF 3,5,1,0,0,0,0,0,<..\..\..\os\tpl_os.c><tpl_os.c> 
+OPTFFF 3,6,1,0,0,0,0,0,<..\..\..\os\tpl_os_action.c><tpl_os_action.c> 
+OPTFFF 3,7,1,0,0,0,0,0,<..\..\..\os\tpl_os_alarm.c><tpl_os_alarm.c> 
+OPTFFF 3,8,1,0,0,0,0,0,<..\..\..\os\tpl_os_alarm_kernel.c><tpl_os_alarm_kernel.c> 
+OPTFFF 3,9,1,0,0,0,0,0,<..\..\..\os\tpl_os_error.c><tpl_os_error.c> 
+OPTFFF 3,10,1,0,0,0,0,0,<..\..\..\os\tpl_os_event.c><tpl_os_event.c> 
+OPTFFF 3,11,1,0,0,0,0,0,<..\..\..\os\tpl_os_it.c><tpl_os_it.c> 
+OPTFFF 3,12,1,0,0,0,0,0,<..\..\..\os\tpl_os_it_kernel.c><tpl_os_it_kernel.c> 
+OPTFFF 3,13,1,0,0,0,0,0,<..\..\..\os\tpl_os_kernel.c><tpl_os_kernel.c> 
+OPTFFF 3,14,1,0,0,0,0,0,<..\..\..\os\tpl_os_rez.c><tpl_os_rez.c> 
+OPTFFF 3,15,1,0,0,0,0,0,<..\..\..\os\tpl_os_rez_kernel.c><tpl_os_rez_kernel.c> 
+OPTFFF 3,16,1,0,0,0,0,0,<..\..\..\os\tpl_os_task.c><tpl_os_task.c> 
+OPTFFF 3,17,1,0,0,0,0,0,<..\..\..\os\os_machine\c166\tpl_machine_c166.c><tpl_machine_c166.c> 
+
+
+TARGOPT 1, (Target 1)
+  OPT166 20000000,0,1,0,1,1,0
+  OPT166MMM { 1,0,0,0,0,0,64,0,0,0,0,64,0,0,0,64,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
+  OPT166ICA { 0,0,232,0,0,0,8,0,0 }
+  OPT166IRO { 0,0,0,0,0,0,0,0,0 }
+  OPT166XRA { 0,0,224,0,0,0,8,0,0 }
+  OPT166IRA { 0,0,246,0,0,0,8,0,0 }
+  OPT166IR2 { 0,0,0,0,0,0,0,0,0 }
+  OPTTT 1,1,1,0
+  OPTHX 1,65535,0,0,0
+  OPTLX 120,65,8,<.\part1Obj\>
+  OPTOX 16
+  OPTLT 1,1,1,0,1,1,0,1,0,0,0,0
+  OPTXL 1,1,1,1,1,1,1,0,0
+  OPTFL 0,0,1
+  OPTAX 0
+  OPTDL (S166.DLL)()(D167.DLL)(-p167CR)(S166.DLL)()(T167.DLL)(-p167CR)
+  OPTDBG 49150,0,()()()()()()()()()() (MONITOR\MON166.DLL)()()()
+  OPTKEY 0,(DLGT167)((103=-1,-1,-1,-1,0)(3005=-1,-1,-1,-1,0)(108=-1,-1,-1,-1,0)(3004=-1,-1,-1,-1,0)(100=-1,-1,-1,-1,0)(102=-1,-1,-1,-1,0)(106=-1,-1,-1,-1,0)(82=-1,-1,-1,-1,0)(83=-1,-1,-1,-1,0)(84=-1,-1,-1,-1,0)(85=-1,-1,-1,-1,0)(86=-1,-1,-1,-1,0)(3009=-1,-1,-1,-1,0)(88=-1,-1,-1,-1,0)(89=-1,-1,-1,-1,0)(90=-1,-1,-1,-1,0)(93=-1,-1,-1,-1,0)(94=-1,-1,-1,-1,0)(95=-1,-1,-1,-1,0)(96=-1,-1,-1,-1,0)(97=-1,-1,-1,-1,0)(91=-1,-1,-1,-1,0)(92=-1,-1,-1,-1,0)(101=-1,-1,-1,-1,0)(98=-1,-1,-1,-1,0)(105=-1,-1,-1,-1,0)(104=-1,-1,-1,-1,0)(80=-1,-1,-1,-1,0)(3007=-1,-1,-1,-1,0)(3000=-1,-1,-1,-1,0)(3012=-1,-1,-1,-1,0))
+  OPTKEY 0,(MON166)(-S1 -B38400 -C7 -M"Phytec phyCORE-167-trampoline")
+  OPTDF 0x80
+  OPTLE <>
+  OPTLC <>
+EndOpt
+
