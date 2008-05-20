@@ -74,7 +74,8 @@ char cible = 0;
 
 int main (int argc, char *argv[])
 {
-    FILE *pfile;  // fichier   
+    FILE *pfile;  // fichier  
+    char new_line = 0;
 	// vérification que le benchmark se fait au moin une fois
     char reussi = 0;
 	while (reussi!=1)
@@ -86,8 +87,13 @@ int main (int argc, char *argv[])
        
     if(argc > 1)
         {
+        nom = argv[1];
         if (argv[2][0] == '1')
             {
+            // On regarde si le fichier éxiste
+            if((pfile = fopen(nom,"r")) != NULL) new_line=1;
+            fclose(pfile);
+            
             part = 1;
             }
         
@@ -101,8 +107,6 @@ int main (int argc, char *argv[])
             cible = C166;
             }
         Init();
-        nom = argv[1];
-        
         }
     else
         {
@@ -118,7 +122,7 @@ int main (int argc, char *argv[])
         {
                                                                                                          
         //on ouvre le fichier et verifie si on y arrive
-        if(part == 2) pfile = fopen(nom, "a");
+        if((part == 2)|(new_line == 1)) pfile = fopen(nom, "a");
         else pfile = fopen(nom, "w");  
         
         
@@ -127,7 +131,7 @@ int main (int argc, char *argv[])
             reussi=1;
             int i, j;
             
-            if (part != 2)
+            if((part != 2) & (new_line!=1))
             {
             for (i=0;i<37;i++)
                 {
@@ -169,9 +173,9 @@ int main (int argc, char *argv[])
             if (part != 1)
             {
             printf("\n\n********************************************************************************");
-            printf("\n\n                               Fin du Benchmark\n\n\n");
-            printf("           Les resultats sont enregistres dans le fichier ");
-            for(i=0;i<nb_caractere;i++) putchar(nom[i]);
+            printf("\n\n                               End of Benchmark\n\n\n");
+            printf("                    Results are saved in file ");
+            for(i=0;i<=nb_caractere;i++) putchar(nom[i]);
             printf("\n\n\n\n********************************************************************************\n");
             }
             }
@@ -181,10 +185,13 @@ int main (int argc, char *argv[])
     }
     // fermeture du port
     SioDone(Port);
-    if(part != 1)
-    {
+    if(part == 1)
+        {
+        printf("Put Back the card in programation mode\n\n");
+        }        
+    
     system("Pause");
-    }
+    
     
 	return 0;
 }
@@ -213,7 +220,7 @@ void Init(void)
     if(part != 2)
         {
         printf("\n\n********************************************************************************");
-        printf("\n\n                               Debut du Benchmark\n");
+        printf("\n\n                               Start of Benchmark\n");
         printf("\n\n********************************************************************************");
         }
     init_carte();
