@@ -49,7 +49,7 @@ int main(void)
 
 void StartupHook(void)
 {
-    printf("Starting task_6 checking\n");
+    printf("Starting event_1 checking\n");
     tc_init_buffer(w,g,l,20);
 }
 
