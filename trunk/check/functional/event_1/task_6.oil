@@ -46,8 +46,8 @@ CPU test {
         PRIORITY = 8;
         AUTOSTART = FALSE;
         ACTIVATION = 1;
-		EVENT = EV1;
-		EVENT = EV2;
+	  EVENT = EV1;
+	  EVENT = EV2;
         SCHEDULE = FULL;
         USRSTACKSIZE = 256;
 	  SYSSTACKSIZE = 128;

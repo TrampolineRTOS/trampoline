@@ -1,5 +1,5 @@
 /*
- *     t0, t1, t2 et t3 sont extended,
+ *     t2 is extended, another are basic
  *
 */
 
@@ -55,19 +55,21 @@ void ShutdownHook(StatusType _error)
 
 StatusType result;
 
-TASK(t0)  /* Au d√©marage de l'OS, t0 est running */
+TASK(t0)  /* in the start of the OS, t0 is in running state */
 {
 
-/* t0, non pr√©emptive, active t0, tache basic.
+/* t0, Call ActivateTask() from non-preemptive task on running basic task
+which has not reached max. number of activations
     Test case 17 */
     result = ActivateTask(t0);
     if (result != E_OK) tc_report_error(-17,result,file,__LINE__);
     else tc_report(17,file,__LINE__);
 
-/* Call terminate task
-    Test case 23 */
+
 	ActivateTask(t1);
 
+/* Call TerminateTask()
+    Test case 23 */
 	TerminateTask();
 }
 
@@ -75,7 +77,8 @@ TASK(t1) {
 
     tc_report(23,file,__LINE__);
 	
-/* t1, pr√©emptive, active t1, tache basic.
+/* t1, Call ActivateTask() from preemptive task on running basic task
+which has not reached max. number of activations
     Test case 18 */
     result = ActivateTask(t1);
     if (result == E_OK) tc_report(18,file,__LINE__);
@@ -83,13 +86,14 @@ TASK(t1) {
 
 	ActivateTask(t2);
 
-/* t1, active t2, tache extended waiting qui ‡ atteint son nombre max d'activation.
+/* t1, Call ActivateTask() on waiting extended task and has reached
+max. number of activations
     Test case 19 */
     result = ActivateTask(t2);
     if (result == E_OS_LIMIT) tc_report_error(19,result,file,__LINE__);
     else tc_report_error(-19,result,file,__LINE__);
 
-/* t1, chaintask t2, tache extended waiting qui ‡ atteint son nombre max d'activation.
+/* t1, Call ChainTask() on waiting extended task
     Test case 33 */
     result = ChainTask(t2);
     if (result == E_OS_LIMIT) tc_report_error(33,result,file,__LINE__);
@@ -109,7 +113,7 @@ TASK(t2) {
 	tc_report(103,file,__LINE__);
 
 	tc_check(10);
-	/* t3 ferme l'OS */
+	/* t3 close the OS */
     ShutdownOS(E_OK);
 }
 
@@ -117,6 +121,6 @@ TASK(t2) {
 TASK(time_error)
 {	
 	tc_check(10);
-	/* t3 ferme l'OS */
+	/* time_error close the OS */
     ShutdownOS(E_OK);	
 }

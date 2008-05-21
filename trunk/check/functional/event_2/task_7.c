@@ -153,6 +153,6 @@ lower priority than running task
 TASK(time_error)
 {	
 	tc_check(10);
-	/* time_error close the OS  */
+	/* time_error close the OS */
     ShutdownOS(E_OK);	
 }

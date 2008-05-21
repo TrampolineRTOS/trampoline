@@ -1,5 +1,5 @@
 /*
- *     t0, t1, t2 et t3 sont extended,
+ *     all task are basic
  *
 */
 
@@ -54,9 +54,10 @@ void ShutdownHook(StatusType _error)
 StatusType result;
 
 
-TASK(t0) {		/* Au démarage de l'OS, t0 est running */
+TASK(t0) {		/* in the start of the OS, t0 is in running state */
 
-/* t1, chaintask t3.
+/* t0, Call ChainTask() from non-preemptive task on ready basic task
+which has not reached max. number of activations
     Test case 32 */
 	ChainTask(t1);
 
@@ -68,33 +69,33 @@ TASK(t1) {
 
 	tc_report(32,file,__LINE__);
 
-/* Schedule
+/* t1, Call Schedule() from task.
     Test case 34 */
     result = Schedule();
     if (result == E_OK) tc_report(34,file,__LINE__);
     else tc_report_error(-34,result,file,__LINE__);
 
 
-/* get task id
+/* t1, Call GetTaskID() from task
     Test case 39 */
     result = GetTaskID(id4);
     if (result == E_OK) tc_report(39,file,__LINE__);
     else tc_report_error(-39,result,file,__LINE__);
 
-/* get task state d'un id invalid
+/* t1, Call GetTaskState() with invalid task ID
     Test case 40 */
     result = GetTaskState(invalidtaskid,&state4);
     if (result == E_OS_ID) tc_report_error(40,result,file,__LINE__);
     else tc_report_error(-40,result,file,__LINE__);
 
-/* get task state 
+/* t1, Call GetTaskState()
     Test case 41 */
     result = GetTaskState(t0,&state4);
     if (result == E_OK) tc_report(41,file,__LINE__);
     else tc_report_error(-41,result,file,__LINE__);
 
 	tc_check(10);
-	/* t3 ferme l'OS */
+	/* t3 close the OS */
     ShutdownOS(E_OK);
 
 }
@@ -102,6 +103,6 @@ TASK(t1) {
 TASK(time_error)
 {	
 	tc_check(10);
-	/* t3 ferme l'OS */
+	/* time_error close the OS */
     ShutdownOS(E_OK);	
 }

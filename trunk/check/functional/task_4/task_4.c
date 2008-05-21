@@ -1,5 +1,5 @@
 /*
- *     t0, t1, t2 et t3 sont extended,
+ *     t1 is extended, another are basic
  *
 */
 
@@ -56,24 +56,24 @@ void ShutdownHook(StatusType _error)
 StatusType result;
 
 
-TASK(t0) {		/* Au dÃ©marage de l'OS, t0 est running */
+TASK(t0) {	/* in the start of the OS, t0 is in running state */
 
 	result = GetResource(res);
 
 
-/* t0, Terminatetask t0, tache qui n'a pas libérée la ressource.
+/* t0, Call TerminateTask() while still occupying a resource
     Test case 22 */
     result = TerminateTask();
     if (result == E_OS_RESOURCE) tc_report_error(22,result,file,__LINE__);
     else tc_report_error(-22,result,file,__LINE__);
 
-/* t0, chaintask d'un id invalid.
+/* t0, Call ChainTask() from tasklevel. Task-ID is invalid
     Test case 24 */
     result = ChainTask(invalidtaskid);
     if (result == E_OS_ID) tc_report_error(24,result,file,__LINE__);
     else tc_report_error(-24,result,file,__LINE__);
 
-/* t0, chaintask t1, tache qui n'a pas libérée la ressource.
+/* t0, Call ChainTask() while still occupying a resource
     Test case 27 */
     result = ChainTask(t1);
     if (result == E_OS_RESOURCE) tc_report_error(27,result,file,__LINE__);
@@ -81,28 +81,36 @@ TASK(t0) {		/* Au dÃ©marage de l'OS, t0 est running */
 
 	ReleaseResource(res);
 
+/* t0, Call ChainTask() on suspended task
+    Test case 28 */
    	ChainTask(t1);
 
 }
 
 
 TASK(t1) {
-    tc_report(CT,file,__LINE__); // CT = 28 puis 29
+         
+    tc_report(CT,file,__LINE__); // CT = 28 then 29
     
 	CT++;
 
-	if (CT == 29) ChainTask(t1);
+	if (CT == 29)
+        {
+/* t1, Call ChainTask() on running task
+    Test case 29 */
+    ChainTask(t1);
+        }
 
 	ActivateTask(t0);
 
-	/* t0, chaintask t0, tâche qui a atteint son nombre max d'activation.
+/* t1, Call ChainTask() on ready extended task
     Test case 31 */
     result = ChainTask(t0);
     if (result == E_OS_LIMIT) tc_report_error(31,result,file,__LINE__);
     else tc_report_error(-31,result,file,__LINE__);
 
 	tc_check(10);
-	/* t3 ferme l'OS */
+	/* t1 close the OS */
     ShutdownOS(E_OK);
 
 }
@@ -110,6 +118,6 @@ TASK(t1) {
 TASK(time_error)
 {	
 	tc_check(10);
-	/* t3 ferme l'OS */
+	/* time_error close the OS */
     ShutdownOS(E_OK);	
 }
