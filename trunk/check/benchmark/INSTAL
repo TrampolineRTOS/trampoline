@@ -25,4 +25,4 @@ In serial\ build the project serie.dev
 
 You just have to put your card in programmation mode and launch the file c166\Start_benchmark.bat
 after the first part put back the card in programmation mode.
-A file benchmark.csv was created in c166\ file spreadsheet
+A file benchmark.csv was created in c166\. This file can be open by a spreadsheet

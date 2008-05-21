@@ -1,5 +1,5 @@
 /*
- *      t0 est preemptive, les autres sont basic
+ *      t0 is preemptive, another are basic
  *
 */
 
@@ -58,63 +58,73 @@ void ShutdownHook(StatusType error)
     tc_check(10);
 }
 
-TASK(t0)  /* Au démarage de l'OS, t0 est running. */
+TASK(t0)  /* in the start of the OS, t0 is in running state */
 {
     StatusType result;
     TaskStateType state;
 
-/* Activation d'une tache dont l'identifiant est invalide : case 1 */
+/* t0, Call ActivateTask() from tasklevel with invalid task ID
+    Test case 1 */
     result = ActivateTask(100);
     if (result == E_OS_ID) tc_report_error(1,result,file,__LINE__);
     else tc_report_error(-1,result,file,__LINE__);
 
-/* t0, préemptive, active t3, tache basique de priorité plus grande.
-   test case */
-    result = ActivateTask(t3);   /* T3 devient running et renvoie OK*/
-    if (result == E_OK) tc_report_error(3,result,file,__LINE__);
+/* t0, Call ActivateTask() from preemptive task on suspended basic
+task which has higher priority than running task.
+    Test case 3*/
+    result = ActivateTask(t3);
+    if (result == E_OK) tc_report(3,file,__LINE__);
     else tc_report_error(-3,result,file,__LINE__);
-/* t3 se termine */
 
-/* t0, préemptive, active t2, tache basique de priorité plus faible
-   Test case 4 */
-    result = ActivateTask(t2);      /* Pas de préemption */
-    GetTaskState(t2,&state);        /* t2 est ready */
+
+/* t0, Call ActivateTask() from preemptive task on suspended basic
+task which has lower priority than running task.
+    Test case 4 */
+    result = ActivateTask(t2); 
+    GetTaskState(t2,&state);
     if (result == E_OK && state == READY) tc_report(4,file,__LINE__);
     else tc_report(-4,file,__LINE__);
     
-/* t0, préemptive, active t1, tache basique de priorité égale.
-   Test case 5 */
-    result = ActivateTask(t1);  /* Pas de préemption */
-    GetTaskState(t1,&state);        /* t1 est ready */
+/* t0, Call ActivateTask() from preemptive task on suspended basic
+task which has equal priority as running task.
+    Test case 5 */
+    result = ActivateTask(t1); 
+    GetTaskState(t1,&state);
     if (result == E_OK && state == READY) tc_report(5,file,__LINE__);
     else tc_report(-5,file,__LINE__);
 
-/* t0 active de nouveau t2, de max d'activation 1.
-   Test case 10 */
+/* t0, Call ActivateTask() on ready basic task which has reached
+max. number of activations
+    Test case 10 */
     result = ActivateTask(t2);
     if (result == E_OS_LIMIT) tc_report_error(10,result,file,__LINE__);
     else tc_report_error(-10,result,file,__LINE__);
 
-/* Chain de la tache t2 : case 30 */
+/* t0, Call ChainTask() on ready basic task which has reached
+max. number of activations
+    Test case 30 */
     result = ChainTask(t2);
     if (result == E_OS_LIMIT) tc_report_error(30,result,file,__LINE__);
     else tc_report_error(-30,result,file,__LINE__);
 
-/* t0, préemptive, active t4, tache basic ready, qui n'a pas dépassé son max. d'activation.
-   Test case 13 */
+/* t0, Call ActivateTask() from preemptive task on ready basic task
+which has not reached max. number of activations and has lower priority
+than running task
+    Test case 13 */
     result = ActivateTask(t4);
-    GetTaskState(t4,&state);        /* t4 est ready */
+    GetTaskState(t4,&state);
     if (result == E_OK && state == 1) tc_report_error(13,result,file,__LINE__);
     else tc_report_error(-13,result,file,__LINE__);
 
-/* t0, préemptive, active de nouveau t1, tache basic ready, qui n'a pas dépassé son max. d'activation.
-   Test case 14 */
+/* t0, Call ActivateTask() from preemptive task on ready basic task
+which has not reached max. number of activations and has equal priority
+as running task
+    Test case 14 */
     result = ActivateTask(t1);
-    GetTaskState(t1,&state);        /* t1 est ready */
+    GetTaskState(t1,&state);
     if (result == E_OK && state == 1) tc_report_error(14,result,file,__LINE__);
     else tc_report_error(-14,result,file,__LINE__);
 
-/*t0 se termine.*/
 	TerminateTask();
 }
 
@@ -128,13 +138,14 @@ TASK(t2) {
     
     tc_report(102,file,__LINE__);
 
-/* t2 active t2, de même priorité et dont le nombre max. d'activation est de 1.
-   Test case 15 */
+/* t2 Call ActivateTask() on running basic task which has reached
+max. number of activations
+    Test case 15 */
     result2 = ActivateTask(t2);
     if (result2 == E_OS_LIMIT) tc_report_error(15,result2,file,__LINE__);
     else tc_report_error(-15,result2,file,__LINE__);
 
-/* t2 ferme l'OS */
+/* t2 close the OS */
     ShutdownOS(E_OK);
 	TerminateTask();
 }
@@ -145,8 +156,8 @@ TASK(t3) {
 
     tc_report(103,file,__LINE__);
     
-/* t3, non préemptive, active t4, tache basique suspended */
-/* test case 2 */
+/* t3, Call ActivateTask() from non-preemptive task on suspended basic task
+    Test case 2 */
     result3 = ActivateTask(t4);
     if (result3 == E_OK) tc_report_error(2,result3,file,__LINE__);
     else tc_report_error(-2,result3,file,__LINE__);
@@ -154,9 +165,9 @@ TASK(t3) {
     GetTaskState(t4,&state3);   /* t4 est ready */
     tc_report(state3,file,__LINE__);
     
-/* t3, non préemptive, active de nouveau t4, tache basique ready,
-   qui n'a pas dépassé son max. d'activation. */
-/* test case 12 */
+/* t3, Call ActivateTask() from non-preemptive task on ready basic task
+which has not reached max. number of activations.
+    Test case 12 */
     result3 = ActivateTask(t4);
     if (result3 == E_OK) tc_report_error(12,result3,file,__LINE__);
     else tc_report_error(-12,result3,file,__LINE__);

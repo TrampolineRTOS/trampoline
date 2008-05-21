@@ -1,5 +1,5 @@
 /*
- *     t0, t1, t2 et t3 sont extended,
+ *     t0 is basic, another are extended
  *
 */
 
@@ -53,11 +53,11 @@ void ShutdownHook(StatusType _error)
     tc_check(10);
 }
 
-TASK(t0)  /* Au d√©marage de l'OS, t0 est running */
+TASK(t0)  /* in the start of the OS, t0 is in running state */
 {
     StatusType result;
 
-/* t0, non pr√©emptive, active t1, tache extended.
+/* t0, Call ActivateTask() from non-preemptive task on suspended extended task
 	Test case 6 */
     result = ActivateTask(t1);
     if (result != E_OK) tc_report_error(-6,result,file,__LINE__);
@@ -72,7 +72,8 @@ TASK(t1) {
 
     tc_report(101,file,__LINE__);
 	
-/* t1, pr√©emptive, active t2, tache extended suspended, qui a une priorit√© plus grande.
+/* t1, Call ActivateTask() from preemptive task on suspended extended task
+which has higher priority than running task.
     Test case 7 */
     result1 = ActivateTask(t2);
     if (result1 == E_OK) tc_report_error(7,result1,file,__LINE__);
@@ -88,7 +89,8 @@ TASK(t2) {
 
     tc_report(102,file,__LINE__);
 
-/* t2, pr√©emptive, active t3, tache extended suspended, qui a une priorit√© plus petite.
+/* t2, Call ActivateTask() from preemptive task on suspended extended task
+which has lower priority than running task.
     Test case 8 */
     result2 = ActivateTask(t3);
 	GetTaskState(t3,&state2);
@@ -105,21 +107,23 @@ TASK(t3) {
 
     tc_report(103,file,__LINE__);
     
-/* t3, pr√©emptive, active t1, tache extended suspended de mÍme prioritÈ.
+/* t3, Call ActivateTask() from preemptive task on suspended extended task
+which has equal priority as running task.
     Test case 9 */
     result3 = ActivateTask(t1);
     GetTaskState(t1,&state3);
     if (result3 == E_OK && state3 == READY) tc_report_error(9,result3,file,__LINE__);
     else tc_report_error(-9,result3,file,__LINE__);
 
-/* t3, active t1, tache extended ready qui ‡ atteint son nombre max d'activation.
+/* t3, Call ActivateTask() on ready extended task
     Test case 11 */
     result3 = ActivateTask(t1);
     GetTaskState(t1,&state3);
     if (result3 == E_OS_LIMIT && state3 == READY) tc_report_error(11,result3,file,__LINE__);
     else tc_report_error(-11,result3,file,__LINE__);
 	
-/* t3, active t3, tache extended ready qui ‡ atteint son nombre max d'activation.
+/* t3, Call ActivateTask() on running extended task and has reached
+max. number of activations
     Test case 16 */
     result3 = ActivateTask(t3);
     if (result3 == E_OS_LIMIT) tc_report_error(16,result3,file,__LINE__);
@@ -128,7 +132,7 @@ TASK(t3) {
 
 
 	tc_check(10);
-	/* t3 ferme l'OS */
+	/* t3 close the OS */
     ShutdownOS(E_OK);
 
 	TerminateTask();
