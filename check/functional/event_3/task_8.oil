@@ -13,13 +13,14 @@ CPU test {
     APPMODE std {
     };
 
-	RESOURCE res {
-		RESOURCEPROPERTY = STANDARD; 
-	};
-
 	EVENT EV1 {
 		MASK = AUTO;
 	};
+
+	EVENT EV2 {
+		MASK = AUTO;
+	};
+
 
     TASK t0 {
         PRIORITY = 5;
@@ -27,27 +28,37 @@ CPU test {
 		APPMODE = std;
         };
         ACTIVATION = 1;
+	  EVENT = EV1;
+	  EVENT = EV2;
         SCHEDULE = FULL;
         USRSTACKSIZE = 256;
-	  SYSSTACKSIZE = 64;
+	    SYSSTACKSIZE = 64;
     };
 
 	TASK t1 {
         PRIORITY = 6;
         AUTOSTART = FALSE;
         ACTIVATION = 1;
-		RESOURCE = res;
-		EVENT = EV1;
+	  EVENT = EV1;
         SCHEDULE = NON;
+        USRSTACKSIZE = 256;
+	    SYSSTACKSIZE = 128;
+    };
+
+	TASK t2 {
+        PRIORITY = 4;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
         USRSTACKSIZE = 256;
 	  SYSSTACKSIZE = 128;
     };
 
-	TASK t2 {
-        PRIORITY = 8;
+	TASK t3 {
+        PRIORITY = 2;
         AUTOSTART = FALSE;
         ACTIVATION = 1;
-		EVENT = EV1;
+	  EVENT = EV1;
         SCHEDULE = FULL;
         USRSTACKSIZE = 256;
 	  SYSSTACKSIZE = 128;
@@ -72,7 +83,7 @@ CPU test {
     ALARM ZeAlarm {
       COUNTER = compteur;
       ACTION = ACTIVATETASK {
-        TASK = time_error;
+          TASK = time_error;
       };
       AUTOSTART = TRUE {
         ALARMTIME = 1000;

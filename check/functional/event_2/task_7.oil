@@ -21,11 +21,6 @@ CPU test {
 		MASK = AUTO;
 	};
 
-	EVENT EV2 {
-		MASK = AUTO;
-	};
-
-
     TASK t0 {
         PRIORITY = 5;
         AUTOSTART = TRUE {
@@ -41,8 +36,8 @@ CPU test {
         PRIORITY = 6;
         AUTOSTART = FALSE;
         ACTIVATION = 1;
-		RESOURCE = res;
-		EVENT = EV1;
+	  RESOURCE = res;
+	  EVENT = EV1;
         SCHEDULE = NON;
         USRSTACKSIZE = 256;
 	  SYSSTACKSIZE = 128;
@@ -52,8 +47,7 @@ CPU test {
         PRIORITY = 8;
         AUTOSTART = FALSE;
         ACTIVATION = 1;
-		EVENT = EV1;
-		EVENT = EV2;
+	  EVENT = EV1;
         SCHEDULE = FULL;
         USRSTACKSIZE = 256;
 	  SYSSTACKSIZE = 128;
@@ -78,7 +72,7 @@ CPU test {
     ALARM ZeAlarm {
       COUNTER = compteur;
       ACTION = ACTIVATETASK {
-        TASK = time_error;
+          TASK = time_error;
       };
       AUTOSTART = TRUE {
         ALARMTIME = 1000;

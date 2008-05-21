@@ -1,5 +1,5 @@
 /*
- *     t0, t1, t2 et t3 sont extended,
+ *     t2 is extended, another are basic
  *
 */
 
@@ -61,21 +61,21 @@ void ShutdownHook(StatusType _error)
 StatusType result;
 
 
-TASK(t0) {		/* Au dÃ©marage de l'OS, t0 est running */
+TASK(t0) {		/* in the start of the OS, t0 is in running state */
 
-/* t0, set event avec un task id invalid
+/* t0, Call SetEvent() with invalid Task ID
     Test case 1 */
 	result = SetEvent(invalidtaskid,EV1);
     if (result == E_OS_ID) tc_report_error(1,result,file,__LINE__);
     else tc_report_error(-1,result,file,__LINE__);
 
-/* t0, set event avec une tâche basic
+/* t0, Call SetEvent() for basic task
     Test case 2 */
 	result = SetEvent(t0,EV1);
     if (result == E_OS_ACCESS) tc_report_error(2,result,file,__LINE__);
     else tc_report_error(-2,result,file,__LINE__);
 
-/* t0, set event avec une tâche en suspended
+/* t0, Call SetEvent() for suspended extended task
     Test case 3 */
 	result = SetEvent(t2,EV1);
     if (result == E_OS_STATE) tc_report_error(3,result,file,__LINE__);
@@ -85,20 +85,23 @@ TASK(t0) {		/* Au dÃ©marage de l'OS, t0 est running */
 	ActivateTask(t2);
 	ActivateTask(t1);
 
-/* t0, set event avec le mauvais évènement
+/* t0, Call SetEvent() from preemptive task on waiting extended
+task which is not waiting for any of the requested events
     Test case 8 */
 	result = SetEvent(t2,EV2);
     if (result == E_OK) tc_report(8,file,__LINE__);
     else tc_report_error(-8,result,file,__LINE__);
 
-/* t0, set event avec une tâche de priorité supérieur
+/* t0, Call SetEvent() from
+preemptive task on waiting extended task which is waiting for at least one
+of the requested events and has higher priority than running task
     Test case 6 */
 	result = SetEvent(t2,EV1);
     if (result == E_OK) tc_report(6,file,__LINE__);
     else tc_report_error(-6,result,file,__LINE__);
 
 	tc_check(10);
-	/* t3 ferme l'OS */
+	/* t0 close the OS */
     ShutdownOS(E_OK);
 
 	
@@ -106,13 +109,15 @@ TASK(t0) {		/* Au dÃ©marage de l'OS, t0 est running */
 }
 
 TASK(t1) {
-/* t1, set event avec une tâche en suspended
+/* t1, Call SetEvent() from nonpreemptive task on waiting extended task
+which is not waiting for any of the requested events
     Test case 5 */
 	result = SetEvent(t2,EV2);
     if (result == E_OK) tc_report(5,file,__LINE__);
     else tc_report_error(-5,result,file,__LINE__);
 
-/* t1, set event avec une tâche en suspended
+/* t1, Call SetEvent() from nonpreemptive task on waiting extended
+task which is waiting for at least one of the requested events
     Test case 4 */
 	result = SetEvent(t2,EV1);
     if (result == E_OK) tc_report(4,file,__LINE__);
@@ -134,7 +139,7 @@ TASK(t2) {
 	
 	tc_report(101,file,__LINE__);
 
-	/* t1, tâche étendue clear un évènement.
+	/* t1, Call ClearEvent() from extended task
     Test case 14 */
 	result = ClearEvent(EV1);
     if (result == E_OK) tc_report(14,file,__LINE__);
@@ -150,6 +155,6 @@ TASK(t2) {
 TASK(time_error)
 {	
 	tc_check(10);
-	/* t3 ferme l'OS */
+	/* time_error close the OS */
     ShutdownOS(E_OK);	
 }

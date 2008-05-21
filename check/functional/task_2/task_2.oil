@@ -32,7 +32,7 @@ CPU test {
         PRIORITY = 3;
         AUTOSTART = FALSE;
         ACTIVATION = 1;
-	    EVENT = EV1;
+	  EVENT = EV1;
         SCHEDULE = FULL;
         USRSTACKSIZE = 256;
 	  SYSSTACKSIZE = 128;
@@ -42,7 +42,7 @@ CPU test {
         PRIORITY = 5;
         AUTOSTART = FALSE;
         ACTIVATION = 1;
-	    EVENT = EV1;
+	  EVENT = EV1;
         SCHEDULE = FULL;
         USRSTACKSIZE = 256;
 	  SYSSTACKSIZE = 128;
@@ -52,7 +52,7 @@ CPU test {
         PRIORITY = 3;
         AUTOSTART = FALSE;
         ACTIVATION = 1;
-	    EVENT = EV1;
+	  EVENT = EV1;
         SCHEDULE = FULL;
         USRSTACKSIZE = 256;
 	  SYSSTACKSIZE = 128;
@@ -62,7 +62,6 @@ CPU test {
         PRIORITY = 15;
         AUTOSTART = FALSE;
         ACTIVATION = 1;
-	  EVENT = EV1;
         SCHEDULE = FULL;
         USRSTACKSIZE = 256;
 	  SYSSTACKSIZE = 128;

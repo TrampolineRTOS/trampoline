@@ -26,7 +26,7 @@ CPU test {
         AUTOSTART = TRUE {
 		APPMODE = std;
         };
-		RESOURCE = res;
+	  RESOURCE = res;
         ACTIVATION = 1;
         SCHEDULE = NON;
         USRSTACKSIZE = 256;
@@ -37,7 +37,7 @@ CPU test {
         PRIORITY = 8;
         AUTOSTART = FALSE;
         ACTIVATION = 2;
-		EVENT = EV1;
+	  EVENT = EV1;
         SCHEDULE = FULL;
         USRSTACKSIZE = 256;
 	  SYSSTACKSIZE = 128;
