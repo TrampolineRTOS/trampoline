@@ -10,7 +10,7 @@
 
 char* file = __FILE__;
 
-#define invalidtaskid 1000
+#define invalidtaskid 100
 /*
  * Define the buffers
  */

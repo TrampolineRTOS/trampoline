@@ -12,7 +12,13 @@ int ErrorCheck(int Code);
 int lecture (int *fin, FILE *pfile); // retourne la variable fin
 int verification_extension(char *nomfic, int *nb_caractere); //retourne 3 si OK 
                                                              //4 si erreur
+char param0 [] = "6--help // print all parameter";
+char param1 [] = "7--file=string // string contain the name of the file";
+char param2 [] = "7--part=nb // nb contain the part (1 or 2)";
+char param3 [] = "9--target=string // string contain the target (C166)";
+char param4 [] = "5--run // disable the automatic run";
 
+char* param[] = { param0 , param1 , param2 , param3 , param4 };
 
 char n0 [] =  "Alarm :                     ";
 char n1 [] =  "ActivateTask_NEX_1 :        ";
@@ -58,11 +64,17 @@ char n40 [] = "ActivateTask_FIFO_5 :       ";
 char n41 [] = "call_function :             ";
 
 
-char* tab[37] = { n0 , n1 , n2 , n3 , n4 , n5 , n6 , n7 , n8 , n9 , n10 , n11 , n12 , n13 , n14 , n15 , n16 , n17 , n18 , n19 , n20 , n21 , n22 , n23 , n24 , n25 , n26 , n27	, n28 , n29 , n30 , n31 , n32 , n33 , n34 , n35 ,/* n36 , n37 , n38 , n39 , n40 , */n41 };
+char* tab[] = { n0 , n1 , n2 , n3 , n4 , n5 , n6 , n7 , n8 , n9 , n10 , n11 , n12 , n13 , n14 , n15 , n16 , n17 , n18 , n19 , n20 , n21 , n22 , n23 , n24 , n25 , n26 , n27	, n28 , n29 , n30 , n31 , n32 , n33 , n34 , n35 ,/* n36 , n37 , n38 , n39 , n40 , */n41 };
 
 
-char part = 0;
-char cible = 0;
+char part = -1;
+char target = -1;
+char nomfic[26]="                        ";// nom du fichier
+char *nom = nomfic;
+char new_line = 0;
+char run_card = 1;
+FILE *pfile;  // fichier  
+
 
 /* Présentation des données: commence par + ,  A : 56 us@, fini par *
  * début de l'émission, détection d'une + état = 0
@@ -71,56 +83,96 @@ char cible = 0;
  * détection d'un @, état = 0
  * détection d'une * -> fin, état = 0
 */
+void parametre (int nb,char *tab[])
+{
+    char valid = 0;
+    char i,j,k;
+    for(i=1;i<nb;i++)
+        {
+        k=0;
+        valid = 0;
+        while(valid != 1)
+            {
+            valid = 1;
+            for(j=0;j<(param[k][0]-'0');j++)
+                {
+                if(tab[i][j] != param[k][j+1]) valid = 0 ;
+                }
+            if ((k==4) & (valid == 0)) {valid = 1; k++;}
+            k++;
+            }
+        
+        char l=0;
+        switch(k-1)
+                {
+                case 0 : // all parameter
+                     for(j=0;j<5;j++)
+                         {
+                         putchar('\n');
+                         putchar('\t');
+                         l=0;
+                         while(param[j][l+1]!=0)
+                             {
+                             putchar(param[j][l+1]);
+                             l++;
+                             }
+                         putchar('\n');
+                         } 
+                     while(1);            
+                case 1 : // name of the file
+                     while ((tab[i][j+l]!= 0)&(l!=22))
+                           {
+                           nomfic[l] = tab[i][j+l];
+                           l++;
+                           }
+                     break;
+                
+                case 2 :
+                     part = tab[i][j]-'0';
+                     break;
+                case 3 :
+                     if(tab[i][j] == 'C') target = C166;
+                     break;
+                case 4 :
+                     run_card = 0;
+                     break;
+                case 5 :
+                     printf("\n\tthe parameter %d is invalid",i);
+                     while(1);  
+                }
+        
+        }
+    if (part==1)
+            {
+            // On regarde si le fichier éxiste
+            if((pfile = fopen(nom,"r")) != NULL){ new_line=1;fclose(pfile);}
+            }  
+}
+
+
 
 int main (int argc, char *argv[])
-{
-    FILE *pfile;  // fichier  
-    char new_line = 0;
+{    
 	// vérification que le benchmark se fait au moin une fois
     char reussi = 0;
 	while (reussi!=1)
-    {
-    // Variables pour le fichier
-    char nomfic[26]="                        ";// nom du fichier
-    char *nom = nomfic;
+    {   
     int nb_caractere;   // nombre de caractère du nom  
-       
-    if(argc > 1)
+    
+    if(argc>1)
         {
-        nom = argv[1];
-        if (argv[2][0] == '1')
-            {
-            // On regarde si le fichier éxiste
-            if((pfile = fopen(nom,"r")) != NULL) new_line=1;
-            fclose(pfile);
-            
-            part = 1;
-            }
-        
-        if (argv[2][0] == '2')
-            {
-            part = 2;
-            }
-        
-        if (argv[3][0] == 'C')
-            {
-            cible = C166;
-            }
-        Init();
+        parametre(argc,argv);
         }
     else
         {
-        Init();
         printf("\n\nEntrer un nom de fichier pour enregistrer les donnees :\n\n           ");
         scanf("%20s", nomfic);
         }
-        
-    
+    Init();
     
     // vérification et modification (si besoin) de l'extension du fichier      
     if(verification_extension(nom,&nb_caractere)!= 4)
-        {
-                                                                                                         
+        {                                                                                               
         //on ouvre le fichier et verifie si on y arrive
         if((part == 2)|(new_line == 1)) pfile = fopen(nom, "a");
         else pfile = fopen(nom, "w");  
@@ -223,7 +275,7 @@ void Init(void)
         printf("\n\n                               Start of Benchmark\n");
         printf("\n\n********************************************************************************");
         }
-    init_carte();
+    if(run_card) init_carte();
 }
 
 
@@ -231,7 +283,7 @@ void Init(void)
 
 void init_carte (void)
 { 
-     if (cible == C166)
+     if (target == C166)
      {              
          int y = 0;
          /*mise en run de la carte*/
