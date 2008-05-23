@@ -12,11 +12,11 @@ int ErrorCheck(int Code);
 int lecture (int *fin, FILE *pfile); // retourne la variable fin
 int verification_extension(char *nomfic, int *nb_caractere); //retourne 3 si OK 
                                                              //4 si erreur
-char param0 [] = "6--help // print all parameter";
-char param1 [] = "7--file=string // string contain the name of the file";
-char param2 [] = "7--part=nb // nb contain the part (1 or 2)";
-char param3 [] = "9--target=string // string contain the target (C166)";
-char param4 [] = "5--run // disable the automatic run";
+char param0 [] = "6--help            // print all parameter";
+char param1 [] = "7--file=string     // string contain the name of the file";
+char param2 [] = "7--part=nb         // nb contain the part (1 or 2)";
+char param3 [] = "9--target=string   // string contain the target (C166)";
+char param4 [] = "5--run             // disable the automatic run";
 
 char* param[] = { param0 , param1 , param2 , param3 , param4 };
 
@@ -211,14 +211,14 @@ int main (int argc, char *argv[])
                 // on lis les donnée tant que l'on a pas détecté une *
                 while(!lecture(&fin, pfile));
             
-                if (part == 0)
+                if (part == -1)
                 { 
                 // demande pour redémarrer le benchmark
                 printf("\nAppuyer sur Q pour Quitter ou une autre touche pour recommencer :\n\n");
                 c=getch();
                 }
                 else c = 'q';
-                }
+            }
             // on referme le fichier
             fclose(pfile);  
             
@@ -296,11 +296,11 @@ void init_carte (void)
              SioPutc(Port,0x06);
              SioPutc(Port,0x00);
              SioPutc(Port,0x08);
-             SioPutc(Port,0xD6);
+             SioPutc(Port,0xBC);
              SioPutc(Port,0xFF);
              SioPutc(Port,0xFF);
              SioPutc(Port,0xFF);
-             SioPutc(Port,0x1F);
+             SioPutc(Port,0x39);
              y=0;
              while(y==0){y = SioRxQue(Port); if(y>0){SioGetc(Port);}}
              }
@@ -310,11 +310,11 @@ void init_carte (void)
              SioPutc(Port,0x06);
              SioPutc(Port,0x00);
              SioPutc(Port,0x0A);
-             SioPutc(Port,0x58);
+             SioPutc(Port,0x3E);
              SioPutc(Port,0xFF);
              SioPutc(Port,0xFF);
              SioPutc(Port,0xFF);
-             SioPutc(Port,0x9B);
+             SioPutc(Port,0xB5);
              y=0;
              while(y==0){y = SioRxQue(Port); if(y>0){SioGetc(Port);}}
              }

@@ -15,8 +15,8 @@ GRPOPT 1,(app),0,0,0
 GRPOPT 2,(oil),0,0,0
 GRPOPT 3,(os),0,0,0
 
-OPTFFF 1,1,1,2,0,54,63,0,<..\part1\default_task1.c><default_task1.c> { 44,0,0,0,2,0,0,0,3,0,0,0,255,255,255,255,255,255,255,255,252,255,255,255,226,255,255,255,0,0,0,0,0,0,0,0,197,2,0,0,54,1,0,0 }
-OPTFFF 1,2,1,0,0,0,0,0,<..\part1\test1\tpl_os_generated_configuration.c><tpl_os_generated_configuration.c> 
+OPTFFF 1,1,1,2,0,58,63,0,<..\part1\default_task1.c><default_task1.c> { 44,0,0,0,2,0,0,0,3,0,0,0,255,255,255,255,255,255,255,255,252,255,255,255,226,255,255,255,0,0,0,0,0,0,0,0,197,2,0,0,54,1,0,0 }
+OPTFFF 1,2,1,855638016,0,13,13,0,<..\part1\test1\tpl_os_generated_configuration.c><tpl_os_generated_configuration.c> { 44,0,0,0,0,0,0,0,1,0,0,0,255,255,255,255,255,255,255,255,252,255,255,255,226,255,255,255,22,0,0,0,29,0,0,0,193,2,0,0,9,1,0,0 }
 OPTFFF 1,3,1,0,0,0,0,0,<.\tpl_benchmarkC166.c><tpl_benchmarkC166.c> 
 OPTFFF 2,4,5,0,0,0,0,0,<..\part1\test1.oil><test1.oil> 
 OPTFFF 3,5,1,0,0,0,0,0,<..\..\..\os\tpl_os.c><tpl_os.c> 
