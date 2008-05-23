@@ -104,7 +104,7 @@ Options 1,0,0  // Target 'Target 1'
  cMisc (MOD167)
  Define (BENCHMARK)
  Undefine ()
- INCC6 (..\..\..\os;..\..\..\os\os_machine\c166;.;..\part1\test1;..\..\..\debug)
+ INCC6 (..\..\..\os;..\..\..\os\os_machine\c166;.;..\part1\test1;..\..\..\debug;..\..\..\com)
  EC166 { 2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 }
  ECMISC ()
  ECDEFINE ()
