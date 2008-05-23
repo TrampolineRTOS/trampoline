@@ -378,7 +378,7 @@ routine generate_types
   types := [types stringByReplacingStringByString !"$TASK_ID_T$" !type] ;
 
   # compute the type for tpl_priority
-  generate_unsigned_type ![max_priority uint64] !"Maximum priority too high" ?type ;
+  generate_signed_type ![max_priority uint64] !"Maximum priority too high" ?type ;
   message "tpl_priority:         ".type."\n" ;
   types := [types stringByReplacingStringByString !"$PRIORITY_T$" !type] ;
 
