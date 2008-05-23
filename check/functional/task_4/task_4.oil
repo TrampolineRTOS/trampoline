@@ -26,21 +26,21 @@ CPU test {
         AUTOSTART = TRUE {
 		APPMODE = std;
         };
-	  RESOURCE = res;
+	    RESOURCE = res;
         ACTIVATION = 1;
         SCHEDULE = NON;
         USRSTACKSIZE = 256;
-	  SYSSTACKSIZE = 64;
+	    SYSSTACKSIZE = 64;
     };
 
 	TASK t1 {
         PRIORITY = 8;
         AUTOSTART = FALSE;
         ACTIVATION = 2;
-	  EVENT = EV1;
+	    EVENT = EV1;
         SCHEDULE = FULL;
         USRSTACKSIZE = 256;
-	  SYSSTACKSIZE = 128;
+	    SYSSTACKSIZE = 128;
     };
 
 
@@ -50,7 +50,7 @@ CPU test {
         ACTIVATION = 1;
         SCHEDULE = FULL;
         USRSTACKSIZE = 256;
-	  SYSSTACKSIZE = 128;
+	    SYSSTACKSIZE = 128;
     };
 
     COUNTER compteur {
@@ -63,7 +63,7 @@ CPU test {
     ALARM ZeAlarm {
       COUNTER = compteur;
       ACTION = ACTIVATETASK {
-        TASK = time_error;
+      TASK = time_error;
       };
       AUTOSTART = TRUE {
         ALARMTIME = 1000;
