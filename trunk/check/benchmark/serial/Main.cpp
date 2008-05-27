@@ -16,7 +16,7 @@ char param0 [] = "6--help            // print all parameter";
 char param1 [] = "7--file=string     // string contain the name of the file";
 char param2 [] = "7--part=nb         // nb contain the part (1 or 2)";
 char param3 [] = "9--target=string   // string contain the target (C166)";
-char param4 [] = "5--run             // disable the automatic run";
+char param4 [] = "8--no_run          // disable the automatic run";
 
 char* param[] = { param0 , param1 , param2 , param3 , param4 };
 
@@ -136,7 +136,7 @@ void parametre (int nb,char *tab[])
                 case 4 :
                      run_card = 0;
                      break;
-                case 5 :
+                default :
                      printf("\n\tthe parameter %d is invalid",i);
                      while(1);  
                 }
