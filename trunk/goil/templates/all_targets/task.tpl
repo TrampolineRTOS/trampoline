@@ -1,25 +1,25 @@
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 /*
  * Task $EXEC_NAME$ function prototype
  */
 void $EXEC_FUNCTION$(void);
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 #define OS_START_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
+#include "tpl_memmap.h"
 $TIMING_PROT_STRUCT$
 #define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
+#include "tpl_memmap.h"
 #endif
 
 
 #define OS_START_SEC_CONFIGDATA_UNSPECIFIED
-#include "Memmap.h"
+#include "tpl_memmap.h"
 /*
  * Static descriptor of task $EXEC_NAME$
  */
@@ -39,11 +39,11 @@ CONST(tpl_exec_static, OS_CONST) $EXEC_STATIC$ = {
 };
 
 #define OS_STOP_SEC_CONFIGDATA_UNSPECIFIED
-#include "Memmap.h"
+#include "tpl_memmap.h"
 
 
 #define OS_START_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
+#include "tpl_memmap.h"
 /*
  * Dynamic descriptor of task $EXEC_NAME$
  */
@@ -64,4 +64,4 @@ tpl_task $TASK$ = {
 };
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
+#include "tpl_memmap.h"
