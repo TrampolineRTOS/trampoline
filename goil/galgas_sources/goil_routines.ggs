@@ -35,7 +35,9 @@ routine templates_directory !@string temp_dir :
 #    message "templates = ".temp_dir."\n";
 end routine ;
 
-routine retrieveTemplateString !@string templateString ?@string obj :
+#if the template does not exist, templateString is an empty string.
+# no error is generated.
+routine retrieveTemplateStringIfExist !@string templateString ?@string obj :
     @string target_platform ;
     @string targ_tpl := "" ;
 
@@ -49,21 +51,26 @@ routine retrieveTemplateString !@string templateString ?@string obj :
 # Look for a template in target plateform path
     targ_tpl := temp_dir.target_platform."/".obj.".tpl" ;
 
-
     if [targ_tpl fileExists]
     then templateString := [@string stringWithContentsOfFile !targ_tpl] ;
     else
-
-# then in the all_targets path
+			# then in the all_targets path
         targ_tpl := temp_dir."all_targets/".obj.".tpl" ;
         if [targ_tpl fileExists]
         then templateString := [@string stringWithContentsOfFile !targ_tpl] ;
 #             message "found template in all_targets\n" ;
-        else templateString := "" ;
-             error here: "No template found for ".obj;
+        else 
+				templateString := "" ;
         end if ;
     end if;
 end routine ;
+
+routine retrieveTemplateString !@string templateString ?@string obj :
+    retrieveTemplateStringIfExist ?templateString !obj;
+    if templateString == "" then
+        error here: "No template found for ".obj;
+    end if;
+end routine;
 
 routine config_file
     !@lstring cfg_file

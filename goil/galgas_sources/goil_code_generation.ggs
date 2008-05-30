@@ -270,12 +270,62 @@ end routine ;
 #--------------------------------------------------------------------
 # Makefile generation
 #--------------------------------------------------------------------
+
+routine getStringList
+  ?? @lstringlist strList
+  ?? @string templateKey
+  ?! @string templateStringToUpdate
+:
+    @string fullStr := "";
+    @bool first := true;
+    foreach strList (@lstring str) do 
+        if not first then fullStr .= " "; end if;
+        fullStr .= [str string]; 
+        first := false;
+    end foreach;
+    templateStringToUpdate := [templateStringToUpdate stringByReplacingStringByString !templateKey ! fullStr];
+end routine;
+
 routine generate_makefile
     ?@os_obj os
-    ?@string unused directory
-    ?@string unused app
+    ?@string directory
+    ?@string app
 :
-    log os ;
+    @string makefileSpecStr;
+    @string makefileStr;
+    retrieveTemplateStringIfExist ?makefileSpecStr !"Makefile_specific";
+    retrieveTemplateString ?makefileStr !"Makefile";
+    makefileStr := [makefileStr stringByReplacingStringByString !"$MAKEFILE_SPEC$" !makefileSpecStr];
+    getStringList ![os app_src] !"$APP_SRC$" !?makefileStr;
+    getStringList ![os cflags]  !"$CFLAGS$"  !?makefileStr;
+    getStringList ![os ldflags] !"$LDFLAGS$" !?makefileStr;
+    getStringList ![os asflags] !"$ASFLAGS$" !?makefileStr;
+    makefileStr := [makefileStr stringByReplacingStringByString !"$OIL_FILE$" !app.".oil"];
+    @string autosarStr;
+    if [option goil_options.autosar_on] then autosarStr := "true";
+    else autosarStr := "false"; end if;
+    makefileStr := [makefileStr stringByReplacingStringByString !"$AUTOSAR_ON$" !autosarStr];
+    [makefileStr writeToFile ! directory."/Makefile"];
+
+    #build Make-rules only the first time.
+    @string makerulesStr;
+    retrieveTemplateString ?makerulesStr !"Make-rules";
+    @string filename := directory."/Make-rules";
+    makerulesStr := [makerulesStr stringByReplacingStringByString !"$GOIL_TARGET$"![option goil_options.target_platform]];
+    #template
+    @string templatePathStr := [option goil_options.template_dir];
+    @string templateStr;
+    if templatePathStr != "" then
+        templateStr := "GOIL_TEMPLATE_PATH = ".templatePathStr;
+    else
+        templateStr := "#GOIL_TEMPLATE_PATH = ";
+    end if;
+    makerulesStr := [makerulesStr stringByReplacingStringByString !"$GOIL_TEMPLATE_PATH$"!templateStr];
+    if not [filename fileExists] then #does not overwrite.
+        [makerulesStr writeToFile !filename];
+    end if;
+
+
 end routine ;
 
 #--------------------------------------------------------------------
@@ -374,12 +424,12 @@ routine generate_types
 
   # compute the type for tpl_task_id
   generate_signed_type ![[tasks count] uint64] !"Too many tasks" ?type ;
-  message "tpl_task_id:          ".type."\n" ;
+  #message "tpl_task_id:          ".type."\n" ;
   types := [types stringByReplacingStringByString !"$TASK_ID_T$" !type] ;
 
   # compute the type for tpl_priority
   generate_signed_type ![max_priority uint64] !"Maximum priority too high" ?type ;
-  message "tpl_priority:         ".type."\n" ;
+  #message "tpl_priority:         ".type."\n" ;
   types := [types stringByReplacingStringByString !"$PRIORITY_T$" !type] ;
 
   # compute the type for the activation count
@@ -392,7 +442,7 @@ routine generate_types
     end cast ;
   end foreach ;
   generate_unsigned_type ![max_act uint64] !"Maximum ACTIVATION too high" ?type ;
-  message "tpl_activate_counter: ".type."\n" ;
+  #message "tpl_activate_counter: ".type."\n" ;
   types := [types stringByReplacingStringByString !"$ACTIVATION_T$" !type] ;
 
   # compute the type for the event mask
@@ -407,22 +457,22 @@ routine generate_types
 
   # compute the type for tpl_alarm_id
   generate_unsigned_type ![[alarms count] uint64] !"too many alarms" ?type ;
-  message "tpl_alarm_id:         ".type."\n" ;
+  #message "tpl_alarm_id:         ".type."\n" ;
   types := [types stringByReplacingStringByString !"$ALARM_ID_T$" !type] ;
 
   # compute the type for tpl_resource_id
   generate_unsigned_type ![[resources count] uint64] !"too many resources" ?type ;
-  message "tpl_resource_id:      ".type."\n" ;
+  #message "tpl_resource_id:      ".type."\n" ;
   types := [types stringByReplacingStringByString !"$RESOURCE_ID_T$" !type] ;
 
   # compute the type for tpl_counter_id
   generate_unsigned_type ![[counters count] uint64] !"too many counters" ?type ;
-  message "tpl_counter_id:       ".type."\n" ;
+  #message "tpl_counter_id:       ".type."\n" ;
   types := [types stringByReplacingStringByString !"$COUNTER_ID_T$" !type] ;
 
   # compute the type for tpl_isr_id
   generate_unsigned_type ![[isrs count] uint64] !"too many isrs" ?type ;
-  message "tpl_isr_id:           ".type."\n" ;
+  #message "tpl_isr_id:           ".type."\n" ;
   types := [types stringByReplacingStringByString !"$ISR_ID_T$" !type] ;
 
 end routine ;
