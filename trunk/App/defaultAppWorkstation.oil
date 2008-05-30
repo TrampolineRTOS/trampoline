@@ -16,6 +16,13 @@ CPU test {
         STATUS = STANDARD;
         ERRORHOOK = TRUE;
         PRETASKHOOK = TRUE;
+        APP_SRC = "tpl_default_tasks_workstation.c";
+
+        CFLAGS  = "-g";
+        CFLAGS  = "-Wall -pedantic --std=c99";
+        CFLAGS  = "-Wmissing-field-initializers -ansi";
+        ASFLAGS = "";
+        LDFLAGS = "-g";
     } ;
 
 

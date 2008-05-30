@@ -48,17 +48,29 @@ to Trampoline. Commands are sent to Viper by using shared memory segments
 to initialize and start timers. When a timer expires, a signal is sent to
 Trampoline and act as an interrupt.
 
-Go to the viper subdirectory, then build Viper according to the platform
-you are using: make ARCH=LINUX if you are using Linux or make ARCH=DARWIN
-if you are using Mac OS X.
+Go to the viper subdirectory, then build Viper:
+make
 
 How to compile the default application
 ======================================
 
 A default application is located in the App directory of Trampoline. This
-default application uses an alarm an a task. The former activates the later
-every second. To build this application, simply type make when in the
-Trampoline directory. A trampoline executable file is generated.
+default application uses an alarm and a task. The former activates the later
+every second. To build this application, you have to call goil a first time:
+
+goil --target=libpcl --generate-makefile --templates=path/to/templates 
+     defaultAppWorkstation.oil
+ 
+goil will generate a Makefile and a Make-rules files (and obviously application
+related structures). The Makefile should not be modified directly because it
+will be overwritten each time the goil compiler is used. Instead, you can
+use the Make-rules files to set appropriate configuration paths.
+
+In the OIL file, some compilation information can be given in the OS section. 
+These new keywords are: APP_SRC, CFLAGS, ASFLAGS and LDFLAGS. An example is 
+given in App/defaultAppWorkstation.oil.
+
+Then simply type make. A trampoline executable file is generated.
 
 How to compile an application
 =============================
@@ -66,10 +78,14 @@ How to compile an application
 The best way is to duplicate the App directory (creating, for instance,
 a MyApp directory). In this directory, the tpl_default_tasks_workstation.c
 file contains the C functions of the application, the defaultAppWorkstation.oil
-file contains the OIL description and the Makefile allows to compile the
-application. If you want to change the name of the C file or add more C files
-to the application, edit the Makefile, locate the line with APP_SRCS = and
-add or modify files here. To build your application, go to the Trampoline
-directory and type: make APP_PATH=MyApp
+file contains the OIL description.
+Then update the oil file and give source files in the OS section. Then call
+goil explicitely the first time:
 
-That’all.
+goil --target=libpcl --generate-makefile --templates=path/to/templates 
+     defaultAppWorkstation.oil
+
+It generate the Makefile. Now, only the 'make' command is necessary when 
+updating the application.
+
+That's all.

@@ -31,8 +31,7 @@ typedef $TASK_ID_T$ tpl_task_id;
 /**
  * tpl_priority represents a task's or a resource's priority.
  *
- * @warning This type must be unsigned as 0 is used for
- * the priority of idle task.
+ * @warning This type must be signed.
  */
 typedef $PRIORITY_T$ tpl_priority;
 
