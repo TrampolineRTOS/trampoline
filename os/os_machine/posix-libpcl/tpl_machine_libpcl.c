@@ -395,8 +395,8 @@ void tpl_release_task_lock(void)
 
 
 void tpl_switch_context(
-    tpl_context *old_context,
-    tpl_context *new_context)
+    const tpl_context *old_context,
+    const tpl_context *new_context)
 {
 	assert( *new_context != co_current() );
     tpl_release_task_lock();  
@@ -411,8 +411,8 @@ void tpl_switch_context(
 
 
 void tpl_switch_context_from_it(
-    tpl_context *old_context,
-    tpl_context *new_context)
+    const tpl_context *old_context,
+    const tpl_context *new_context)
 {
     assert( *new_context != co_current() );
     if( *new_context == &idle_task_context )
