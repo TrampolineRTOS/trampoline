@@ -379,8 +379,8 @@ asm void tpl_release_task_lock(void)
 }
 
 asm void tpl_switch_context(
-    register tpl_context *old_context, /* r3 */
-    register tpl_context *new_context  /* r4 */
+    register const tpl_context *old_context, /* r3 */
+    register const tpl_context *new_context  /* r4 */
 )
 {
             nofralloc
@@ -822,8 +822,8 @@ asm void tpl_interrupt_handler_restore(void)
  * the floating point context only. 
  */
 asm void tpl_switch_context_from_it(
-    register tpl_context *old_context /* aka r3 */,
-    register tpl_context *new_context /* aka r4 */)
+    register const tpl_context *old_context /* aka r3 */,
+    register const tpl_context *new_context /* aka r4 */)
 {
             nofralloc
 /*  Get the FP context of the old_context   */

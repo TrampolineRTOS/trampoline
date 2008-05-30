@@ -1,5 +1,4 @@
 
-void tpl_schedule(int from);
 tpl_status tpl_counter_tick(tpl_counter *counter);
 
 void tpl_call_counter_tick()

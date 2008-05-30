@@ -44,8 +44,8 @@
  *                      scheduled.
  */
 extern FUNC(void, OS_CODE) tpl_switch_context(
-    P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
-    P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context
+    P2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
+    P2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context
 );
 
 
@@ -61,8 +61,8 @@ extern FUNC(void, OS_CODE) tpl_switch_context(
  *                      scheduled.
  */
 extern FUNC(void, OS_CODE) tpl_switch_context_from_it(
-    P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
-    P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context
+    P2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
+    P2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context
 );
 
 
