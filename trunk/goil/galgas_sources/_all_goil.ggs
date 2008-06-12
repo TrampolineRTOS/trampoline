@@ -89,6 +89,8 @@ compile "goil_target_ppc.ggs" ;
 compile "goil_target_h8300h.ggs" ;
 
 compile "goil_grammar.ggs" ;
+compile "goil_file_level_include.ggs" ;
+compile "goil_cpu_level_include.ggs" ;
 compile "goil_program.ggs" ;
 
 #
@@ -102,6 +104,6 @@ compile "cfg_types.ggs" ;
 #
 # Cocoa GOIL
 #
-compile "goil_cocoa.ggs" ;
+compile "cocoaGOIL.ggs" ;
 # vim:ft=ggs:ts=4:sw=4
 

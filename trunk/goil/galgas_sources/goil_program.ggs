@@ -2,7 +2,7 @@ program goil_program "version 1.3.0" :
   import grammar goil_grammar in "goil_grammar.ggs" ;
 
 #--- Prologue routine
-  routine {
+  before {
   }
 
 #---
@@ -15,7 +15,7 @@ program goil_program "version 1.3.0" :
   }
 
 #--- Epilogue routine
-  routine {
+  after {
   }
 
 end program ;

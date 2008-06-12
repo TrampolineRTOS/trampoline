@@ -1,9 +1,8 @@
-grammar goil_grammar "LL1":
+grammar goil_cpu_level_include "LL1":
     import lexique goil_lexique            in "goil_lexique.ggs" ;
     import option  goil_options            in "goil_options.ggs" ;
 
     import syntax  goil_syntax             in "goil_syntax.ggs" ;
-    import syntax  goil_imp_def            in "goil_imp_def.ggs" ;
 
     import syntax  goil_obj_os             in "goil_obj_os.ggs" ;
     import syntax  goil_obj_task           in "goil_obj_task.ggs" ;
@@ -20,12 +19,24 @@ grammar goil_grammar "LL1":
     import syntax  goil_obj_scheduletable  in "goil_obj_scheduletable.ggs" ;
     import syntax  goil_timing_prot_attrs  in "goil_timing_prot_attrs.ggs" ;
 
-    root <start> ;
-
-    unused <default_bool>, <default_enum>, <default_float_number> ;
-    unused <default_sint64_number>, <default_string>, <default_uint64_number> ;
-    unused <float_number_set>, <sint64_number_set> ;
-    unused <ltgt_sync_params>, <uint64_number_set> ;
+    root <object_definition_list>
+        ?!@os_obj            os
+        ?!@task_map          tasks
+        ?!@counter_map       counters
+        ?!@alarm_map         alarms
+        ?!@resource_map      resources
+        ?!@event_map         events
+        ?!@isr_map           isrs
+        ?!@message_map       messages
+        ?!@scheduletable_map scheduletables
+    ;
+    unused <OIL_version> ;
+    unused <application_definition> ;
+    unused <file> ;
+    unused <implementation_definition> ;
+    unused <include_file_level> ;
+    unused <start> ;
+    unused <ltgt_sync_params> ;
 end grammar ;
 
 # vim:ft=ggs:ts=4:sw=4
