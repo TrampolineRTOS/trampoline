@@ -21,8 +21,8 @@ import semantics goil_semantics in "goil_semantics.ggs" ;
 import semantics goil_scheduletable_verif in "goil_scheduletable_verif.ggs" ;
 import semantics goil_alarm_verif in "goil_alarm_verif.ggs" ;
 import semantics cfg_types in "cfg_types.ggs" ;
-import grammar goil_cpu_level_include in "goil_grammar.ggs" ;
-import grammar goil_file_level_include in "goil_grammar.ggs" ;
+import grammar goil_cpu_level_include in "goil_cpu_level_include.ggs" ;
+import grammar goil_file_level_include in "goil_file_level_include.ggs" ;
 import grammar cfg_grammar in "cfg_grammar.ggs" ;
 
 nonterminal <start> ;

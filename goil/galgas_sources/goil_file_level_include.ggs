@@ -1,4 +1,4 @@
-grammar goil_grammar "LL1":
+grammar goil_file_level_include "LL1":
     import lexique goil_lexique            in "goil_lexique.ggs" ;
     import option  goil_options            in "goil_options.ggs" ;
 
@@ -20,12 +20,15 @@ grammar goil_grammar "LL1":
     import syntax  goil_obj_scheduletable  in "goil_obj_scheduletable.ggs" ;
     import syntax  goil_timing_prot_attrs  in "goil_timing_prot_attrs.ggs" ;
 
-    root <start> ;
+    root <file>
+        ?!@implementation imp
+        ?!@root_obj cpu
+    ;
 
     unused <default_bool>, <default_enum>, <default_float_number> ;
     unused <default_sint64_number>, <default_string>, <default_uint64_number> ;
     unused <float_number_set>, <sint64_number_set> ;
-    unused <ltgt_sync_params>, <uint64_number_set> ;
+    unused <start>, <uint64_number_set>, <ltgt_sync_params> ;
 end grammar ;
 
 # vim:ft=ggs:ts=4:sw=4
