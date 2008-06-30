@@ -2,8 +2,9 @@
 
 // Benchmark GF 04/08
 #ifdef BENCHMARK
-#define tpl_benchmark_timer T7
-extern u16 tpl_benchmark_tick;
+void set_tb();
+int get_tb();
+extern unsigned int tpl_benchmark_tick;
 
 #define TPL_BENCHMARK_MULTIPLIER 4
 #define TPL_BENCHMARK_DIVISOR 10

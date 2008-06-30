@@ -13,7 +13,7 @@
 
 
 // Definition of the pointeur
-u16 tpl_benchmark_tick = 0;
+unsigned int tpl_benchmark_tick = 0;
 
 // Definition of the structure
 
@@ -37,7 +37,8 @@ VAR(u16, AUTOMATIC) time;  // intermediate variable to memorize the time
 
 VAR(u8, AUTOMATIC) i;
 
- 
+int get_tb();
+void set_tb(); 
 
 void tpl_init_benchmark_timer();
 
@@ -52,12 +53,6 @@ void InitApp(void)
 		} 
 }
 
-
-void main (void)
-{
-InitApp();
-StartOS(OSDEFAULTAPPMODE);
-}
 
 void tpl_load_value(int number)
 {
@@ -89,7 +84,7 @@ else{time -= tpl_benchmark_tick;}
 
 void alarm_callback_testCallBack (void)
 {
-	time = tpl_benchmark_timer;	  // Memorization of time
+	time = get_tb();	  // Memorization of time
 	time_alarm();
 
 	/*Function n10 : Alarm_CallBack => Result*/
@@ -99,7 +94,7 @@ void alarm_callback_testCallBack (void)
 
 void result_edition (void)
 {
-time = tpl_benchmark_timer;	  // Memorization of time
+time = get_tb();	  // Memorization of time
 
 /*Function n15 : call_function => Result*/
 tpl_load_value(15);
@@ -152,10 +147,10 @@ TASK(pool1)
 	CancelAlarm(ZeAlarm);
 
 	/*Function n8.11 : SetRelAlarm1 => Start*/
-	tpl_benchmark_timer = 0;
+	set_tb();
 	SetRelAlarm(Alarm1,50,1);
 
-	time = tpl_benchmark_timer;     // Memorization of time
+	time = get_tb();     // Memorization of time
 
 	/*Function n8.11 : SetRelAlarm1 => Result*/
 	tpl_load_value(0);
@@ -166,10 +161,10 @@ TASK(pool1)
 		SetRelAlarm(Alarm4,50,1);
 
 	/*Function n8.12 : SetRelAlarm2 => Start*/
-	tpl_benchmark_timer = 0;
+	set_tb();
 	SetRelAlarm(Alarm5,50,1);
   
-	time = tpl_benchmark_timer;     // Memorization of time
+	time = get_tb();     // Memorization of time
 
 	/*Function n8.12 : SetRelAlarm2 => Result*/
 	tpl_load_value(1);
@@ -181,20 +176,20 @@ TASK(pool1)
  	    SetRelAlarm(Alarm10,50,1);
 
 	/*Function n8.13 : SetRelAlarm3 => Start*/
-	tpl_benchmark_timer = 0;
+	set_tb();
 	SetRelAlarm(Alarm9,55,1);
   
-	time = tpl_benchmark_timer;     // Memorization of time
+	time = get_tb();     // Memorization of time
 
 	/*Function n8.13 : SetRelAlarm3 => Result*/
 	tpl_load_value(2);
 
 
 	/*Function n8.21 : CancelAlarm1 => Start*/
-	tpl_benchmark_timer = 0;
+	set_tb();
 	CancelAlarm(Alarm10);
   
-	time = tpl_benchmark_timer;     // Memorization of time
+	time = get_tb();     // Memorization of time
 
 	/*Function n8.21 : CancelAlarm1 => Result*/
 	tpl_load_value(3);
@@ -210,10 +205,10 @@ TASK(pool1)
 		CancelAlarm(Alarm9);
 
 	/*Function n8.22 : CancelAlarm2 => Start*/
-	tpl_benchmark_timer = 0;
+	set_tb();
 	CancelAlarm(Alarm1);
 
-	time = tpl_benchmark_timer;     // Memorization of time
+	time = get_tb();     // Memorization of time
 
 	/*Function n8.22 : CancelAlarm2 => Result*/
 	tpl_load_value(4);
@@ -222,10 +217,10 @@ TASK(pool1)
 
 	/*Function n9 : Alarm_SetEvent => Start*/
 	SetRelAlarm(Alarm3,2,1);
-	tpl_benchmark_timer = 0;
+	set_tb();
 	WaitEvent(EV3);
 
-	time = tpl_benchmark_timer;	  // Memorization of time
+	time = get_tb();	  // Memorization of time
 	time_alarm();
 
 	/*Function n9 : Alarm_SetEvent => Result*/
@@ -248,12 +243,12 @@ TASK(pool1)
 	SetRelAlarm(Alarm5,1,1);
 
 	i=0;
-	tpl_benchmark_timer = 0;
+	set_tb();
 	while (i!=1)
 		{
 		if(tpl_task_table[pool4]->exec_desc.activate_count==1)
 			{
-			time = tpl_benchmark_timer;
+			time = get_tb();
 			time_alarm();
 
 			/*Function n11.1 : Alarm_ActivateTask_EX_1 => Result*/
@@ -261,12 +256,12 @@ TASK(pool1)
 			i=1;
 			}
 		}
-	tpl_benchmark_timer = 0;
+	set_tb();
 	while (i!=2)
 		{
 		if(tpl_task_table[pool4]->exec_desc.activate_count==2)
 			{
-			time = tpl_benchmark_timer;
+			time = get_tb();
 			time_alarm();
 
 			/*Function n11.2 : Alarm_ActivateTask_EX_2 => Result*/
@@ -275,12 +270,12 @@ TASK(pool1)
 			}
 		}
 	tpl_benchmark_tick=0;
-	tpl_benchmark_timer = 0;
+	set_tb();
 	while (i!=3)
 		{
 		if(tpl_benchmark_tick!=0)
 			{
-			time = tpl_benchmark_timer;
+			time = get_tb();
 			time_alarm();
 
 			/*Function n11.3 : Alarm_ActivateTask_EX_3 => Result*/
@@ -295,12 +290,12 @@ TASK(pool1)
 	/*Function n12 : Alarm_ActivateTask_NEX => Start*/				  
 	SetRelAlarm(Alarm6,1,1);
 	i=0;
-	tpl_benchmark_timer = 0;
+	set_tb();
 	while (i!=1)
 		{
 		if(tpl_task_table[pool5]->exec_desc.activate_count==1)
 			{
-			time = tpl_benchmark_timer;
+			time = get_tb();
 			time_alarm();
 
 			/*Function n12.1 : Alarm_ActivateTask_NEX_1 => Result*/
@@ -308,12 +303,12 @@ TASK(pool1)
 			i=1;
 			}
 		}
-   tpl_benchmark_timer = 0;
+   set_tb();
 	while (i!=2)
 		{
 		if(tpl_task_table[pool5]->exec_desc.activate_count==2)
 			{
-			time = tpl_benchmark_timer;
+			time = get_tb();
 			time_alarm();
 
 			/*Function n12.2 : Alarm_ActivateTask_NEX_2 => Result*/
@@ -322,12 +317,12 @@ TASK(pool1)
 			tpl_benchmark_tick=0;
 			}
 		}
-	tpl_benchmark_timer = 0;
+	set_tb();
 	while (i!=3)
 		{
 		if(tpl_benchmark_tick!=0)
 			{
-			time = tpl_benchmark_timer;
+			time = get_tb();
 			time_alarm();
 
 			/*Function n12.2 : Alarm_ActivateTask_NEX_2 => Result*/
@@ -348,7 +343,7 @@ TASK(pool1)
 
 TASK (pool2)
 {
-	time = tpl_benchmark_timer;	   // Memorization of time
+	time = get_tb();	   // Memorization of time
 		
 //********************************************************************************
 	
@@ -366,7 +361,7 @@ TASK (pool2)
 
  TASK(pool4)
 {
-	time = tpl_benchmark_timer;
+	time = get_tb();
 
 	if(tpl_measure_state(13) == UNUSED){TerminateTask();}
 	
@@ -378,7 +373,7 @@ TASK (pool2)
 	tpl_change_state(14,ONGOING);
 
 	/*Function n13.2 : Alarm_ActivateTask_P>_NEX => Start*/
-	tpl_benchmark_timer = 0;
+	set_tb();
 	SetRelAlarm(Alarm7,1,1);
 	while(tpl_measure_state(14)!=USED);
 	CancelAlarm(Alarm7);
@@ -396,7 +391,7 @@ TASK (pool2)
 
 		/*Function n13.1 : Alarm_ActivateTask_P>_EX => Start*/
 		tpl_change_state(13,ONGOING);
-		tpl_benchmark_timer = 0;
+		set_tb();
 		SetRelAlarm(Alarm5,1,1);
 		while(tpl_measure_state(13)!=USED);
 
@@ -405,7 +400,7 @@ TASK (pool2)
 	else
 		{
 		/*Function n15 : call_function => Start*/
-		tpl_benchmark_timer = 0;
+		set_tb();
 		result_edition();
 		}
 
