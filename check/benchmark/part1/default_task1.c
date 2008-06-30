@@ -18,7 +18,7 @@
 
 
 // Definition of the pointeur
-u16 tpl_benchmark_tick = 0;
+unsigned int tpl_benchmark_tick = 0;
 
 // Definition of the structure
 
@@ -47,6 +47,7 @@ VAR(u8, AUTOMATIC) i;
 void tpl_init_benchmark_timer();
 
 
+
 void InitApp(void)
 {
 	tpl_init_benchmark_timer();
@@ -57,12 +58,6 @@ void InitApp(void)
 		} 
 }
 
-
-void main (void)
-	{
-	InitApp();
-	StartOS(OSDEFAULTAPPMODE);
-	}
 
 void tpl_load_value(int number)
 	{
@@ -93,7 +88,7 @@ else{time -= tpl_benchmark_tick;}
 
 void result_edition (void)
 {
-time = tpl_benchmark_timer;	  // Memorization of time
+time = get_tb();	  // Memorization of time
 
 //********************************************************************************
 
@@ -125,7 +120,7 @@ EnableAllInterrupts();
 
 TASK(step1)
 {
-	time = tpl_benchmark_timer;	  // Memorization of time
+	time = get_tb();	  // Memorization of time
 	time_alarm();
 	if(tpl_measure_state(1) == UNUSED)
 	{
@@ -139,54 +134,54 @@ TASK(step1)
 
 //********************************************************************************
 	/*Function n1.1 : ActivateTask_NEX_1 => Start*/
-	tpl_benchmark_timer = 0;
+	set_tb();
 	ActivateTask(step2);
-	time = tpl_benchmark_timer;	   // Memorization of time
+	time = get_tb();	   // Memorization of time
 
 	/*Function n1.1 : ActivateTask_NEX_1 => Result*/
 	tpl_load_value(1);
 
 	/*Function n1.2 : ActivateTask_NEX_2 => Start*/
-	tpl_benchmark_timer = 0;
+	set_tb();
 	ActivateTask(step2);
 
-	time = tpl_benchmark_timer;	   // Memorization of time
+	time = get_tb();	   // Memorization of time
 
 	/*Function n1.2 : ActivateTask_NEX_2 => Result*/
 	tpl_load_value(2);
 
 	/*Function n1.3 : ActivateTask_NEX_3 => Start*/
-	tpl_benchmark_timer = 0;
+	set_tb();
 	ActivateTask(step2);
 
-	time = tpl_benchmark_timer;	   // Memorization of time
+	time = get_tb();	   // Memorization of time
 
 	/*Function n1.3 : ActivateTask_NEX_3 => Result*/
 	tpl_load_value(3);
 //********************************************************************************
 	/*Function n2.1 : ActivateTask_EX_1 => Start*/
-	tpl_benchmark_timer = 0;
+	set_tb();
 	ActivateTask(pool);
 
-	time = tpl_benchmark_timer;	   // Memorization of time
+	time = get_tb();	   // Memorization of time
 
 	/*Function n2.1 : ActivateTask_EX_1 => Result*/
 	tpl_load_value(4);
 
 	/*Function n2.2 : ActivateTask_EX_2 => Start*/
-	tpl_benchmark_timer = 0;
+	set_tb();
 	ActivateTask(pool);
 
-	time = tpl_benchmark_timer;	   // Memorization of time
+	time = get_tb();	   // Memorization of time
 
 	/*Function n2.2 : ActivateTask_EX_2 => Result*/
 	tpl_load_value(5);
 
 	/*Function n2.3 : ActivateTask_EX_3 => Start*/
-	tpl_benchmark_timer = 0;
+	set_tb();
 	ActivateTask(pool);
 
-	time = tpl_benchmark_timer;	   // Memorization of time
+	time = get_tb();	   // Memorization of time
 
 	/*Function n2.3 : ActivateTask_EX_3 => Result*/
 	tpl_load_value(6);
@@ -194,7 +189,7 @@ TASK(step1)
 //********************************************************************************
 	
 	/*Function n3.1 : ActivateTask_P>_NEX => Start*/
-	tpl_benchmark_timer = 0;
+	set_tb();
 	ActivateTask(pool2);
 
 //********************************************************************************
@@ -206,7 +201,7 @@ TASK(step1)
   
 TASK(step2)
 {
-	time = tpl_benchmark_timer;	   // Memorization of time
+	time = get_tb();	   // Memorization of time
 
 		if(tpl_measure_state(17) == UNUSED)
 			{
@@ -221,10 +216,10 @@ TASK(step2)
 			
 			
 			/*Function n7.2 : WaitEvent2 => Start*/
-			tpl_benchmark_timer = 0;
+			set_tb();
 			SetEvent(pool,EV1);
 
-			time = tpl_benchmark_timer;	   // Memorization of time
+			time = get_tb();	   // Memorization of time
 
 			if(tpl_measure_state(19) == ONGOING)
 			{
@@ -243,19 +238,19 @@ TASK(pool)
 	if(i == 0){i++;TerminateTask();}
 	
 	/*Function n6.1 : GetResource => Start*/
-	tpl_benchmark_timer = 0;
+	set_tb();
 	GetResource(test);
 
-	time = tpl_benchmark_timer;		 // Memorization of time
+	time = get_tb();		 // Memorization of time
 
 	/*Function n6.1 : GetResource => Result*/
 	tpl_load_value(15);
 
 	/*Function n6.2 : ReleaseResource => Start*/
-	tpl_benchmark_timer = 0;
+	set_tb();
 	ReleaseResource(test);
   
-	time = tpl_benchmark_timer;		 // Memorization of time
+	time = get_tb();		 // Memorization of time
 
 	/*Function n6.2 : ReleaseResource => Result*/
 	tpl_load_value(16);
@@ -263,20 +258,20 @@ TASK(pool)
 //********************************************************************************
 
 	/*Function n7.1 : WaitEvent1 => Start*/
-	tpl_benchmark_timer = 0;
+	set_tb();
 	WaitEvent(EV1);
 	
 
-	time = tpl_benchmark_timer;     // Memorization of time
+	time = get_tb();     // Memorization of time
 		
 	/*Function n7.2 : WaitEvent2 => Result*/
 	tpl_load_value(18);
 
 	/*Function n7.4 : ClearEvent => Start*/
-    tpl_benchmark_timer = 0;
+    set_tb();
 	ClearEvent(EV1);
 
-	time = tpl_benchmark_timer;     // Memorization of time
+	time = get_tb();     // Memorization of time
 
 	/*Function n7.4 : ClearEvent => Result*/
 	tpl_load_value(20);
@@ -286,7 +281,7 @@ TASK(pool)
 
 TASK (pool2)
 {
-	time = tpl_benchmark_timer;	   // Memorization of time
+	time = get_tb();	   // Memorization of time
 		
 
 	if (tpl_measure_state(7) == UNUSED)
@@ -294,17 +289,17 @@ TASK (pool2)
 		/*Function n3.1 : ActivateTask_P>_NEX => Result*/
 		tpl_load_value(7);
 		/*Function n3.2 : ActivateTask_P>_EX => Start*/
-		tpl_benchmark_timer = 0;
+		set_tb();
 		ActivateTask(pool3);
 
 //********************************************************************************
 
-		time = tpl_benchmark_timer;	   // Memorization of time
+		time = get_tb();	   // Memorization of time
 
 		/*Function n4.1 : TerminateTask1 => Result*/
 		tpl_load_value(9);
 		/*Function n4.2 : TerminateTask2 => Start*/
-		tpl_benchmark_timer = 0;
+		set_tb();
 		TerminateTask();
 		}
 	else
@@ -317,7 +312,7 @@ TASK (pool2)
 //********************************************************************************
 
 			/*Function n5.1 : ChainTask1 => Start*/
-			tpl_benchmark_timer = 0;
+			set_tb();
 			ChainTask(pool3);
 			}
 		else
@@ -329,13 +324,13 @@ TASK (pool2)
 
 				ActivateTask(pool3);
 
-				time = tpl_benchmark_timer;	   // Memorization of time
+				time = get_tb();	   // Memorization of time
 
 				/*Function n5.3 : ChaineTask3 => Result*/
 				tpl_load_value(13);
 
 				/*Function n5.4 : ChainTask4 => Start*/
-				tpl_benchmark_timer = 0;
+				set_tb();
 				ChainTask(pool2);
 				}
 			else
@@ -355,7 +350,7 @@ TASK (pool2)
 
 TASK (pool3)
 {
-	time = tpl_benchmark_timer;	   // Memorization of time
+	time = get_tb();	   // Memorization of time
 
 	if(tpl_measure_state(8) == UNUSED)
 		{
@@ -367,7 +362,7 @@ TASK (pool3)
 //********************************************************************************
 
 		/*Function n4.1 : TerminateTask1 => Start*/
-		tpl_benchmark_timer = 0;
+		set_tb();
 		TerminateTask();
 
 //********************************************************************************
@@ -380,7 +375,7 @@ TASK (pool3)
 			/*Function n5.1 : ChaineTask1 => Result*/
 			tpl_load_value(11);
 			/*Function n5.2 : ChainTask2 => Start*/
-			tpl_benchmark_timer = 0;
+			set_tb();
 			ChainTask(pool2);
 			}
 		else
@@ -388,7 +383,7 @@ TASK (pool3)
 			if(tpl_measure_state(13) == UNUSED)
 				{
 				/*Function n5.3 : ChainTask3 => Start*/
-				tpl_benchmark_timer = 0;
+				set_tb();
 				ChainTask(pool2);
 				}
 			 else

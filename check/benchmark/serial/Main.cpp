@@ -16,7 +16,7 @@ char param0 [] = "6--help            // print all parameter";
 char param1 [] = "7--file=string     // string contain the name of the file";
 char param2 [] = "7--part=nb         // nb contain the part (1 or 2)";
 char param3 [] = "9--target=string   // string contain the target (C166)";
-char param4 [] = "8--no_run          // disable the automatic run";
+char param4 [] = "5--run             // active the automatic run";
 
 char* param[] = { param0 , param1 , param2 , param3 , param4 };
 
@@ -72,7 +72,7 @@ char target = -1;
 char nomfic[26]="                        ";// nom du fichier
 char *nom = nomfic;
 char new_line = 0;
-char run_card = 1;
+char run_card = 0;
 FILE *pfile;  // fichier  
 
 
@@ -134,7 +134,7 @@ void parametre (int nb,char *tab[])
                      if(tab[i][j] == 'C') target = C166;
                      break;
                 case 4 :
-                     run_card = 0;
+                     run_card = 1;
                      break;
                 default :
                      printf("\n\tthe parameter %d is invalid",i);

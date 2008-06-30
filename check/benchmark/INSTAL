@@ -5,8 +5,8 @@ Prerequisite
 ============
 
 You need to install keil uVision3, an evaluation version is available on keil website.
-After install keil copy files of c166\monitor\ into C:\Keil\C166\Monitor\.
-
+After open keil project and configure the monitor in keil "Project" "Options for Target" "Debug" "Settings"
+ 
 1. Compilation
 --------------
 

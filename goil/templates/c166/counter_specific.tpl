@@ -1,3 +1,8 @@
+#ifdef BENCHMARK
+#include "tpl_benchmark.h"
+#endif
+
+
 /*
  * Tick for counters. 
  * There is a tick each 1ms for a 40 MHz microcontroller
@@ -52,7 +57,7 @@ void tpl_timer6_tick(void) interrupt 38
 
 	/* Benchmark GF 04/08*/
 	#ifdef BENCHMARK
-	tpl_benchmark_tick = tpl_benchmark_timer;
+	tpl_benchmark_tick = get_tb();
 	#endif
 
 	__asm {
