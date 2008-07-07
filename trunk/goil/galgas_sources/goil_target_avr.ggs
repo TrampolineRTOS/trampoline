@@ -1,0 +1,115 @@
+#
+# @file goil_target_avr.ggs
+#
+# @section desc File description
+#
+# Trampoline/goil code generation for Atmel AVR target
+#
+# @section copyright Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Mikael Briday for AVR port of goil
+# Trampoline is protected by the French intellectual property law.
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# @section infos File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics goil_target_avr :
+
+import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
+import semantics goil_routines in "goil_routines.ggs" ;
+import semantics goil_types_isr in "goil_types_isr.ggs" ;
+import semantics goil_types_counter in "goil_types_counter.ggs" ;
+
+routine init_avr_prefixes
+    ?!@prefix_map prefix
+:
+    [!?prefix insert_prefix ![@lstring new !"avr_stack" !here]
+              !"stack_zone_of_" !"$STACK_ZONE$"] ;
+    [!?prefix insert_prefix ![@lstring new !"avr_int_context" !here]
+              !"integer_context_of_" !"$EXEC_INTEGER_CONTEXT$"] ;
+#    [!?prefix insert_prefix ![@lstring new !"avr_isr_handler" !here]
+#              !"isr2_handler_of" !"$ISR_HANDLER_NAME$"] ;
+
+
+end routine ;
+
+routine generate_target_avr
+    ?@lstring         name
+    ?@ident_map       others
+    ?@prefix_map      p
+    ?@oil_obj         exe
+    ?!@string         result
+:
+
+    performReplace !p !"avr_stack" ![name string] !?result ;
+    performReplace !p !"avr_int_context" ![name string] !?result ;
+
+    @uint stack_size ;
+    additional_int_key_required !"STACKSIZE" !others !name ?stack_size ;
+    result := [result stringByReplacingStringByString !"$STACK_SIZE$" ![stack_size string]] ;
+
+    cast exe :
+    when == @isr_obj do
+        #object is an isr.
+        @uint trap ;
+        additional_int_key_required !"EXCEPTION_HANDLER" !others !name ?trap ;
+        result := [result stringByReplacingStringByString !"$EXCEPTION_HANDLER$" ![trap string]] ;
+    else
+    end cast ;
+
+end routine ;
+
+routine generate_isr_avr
+  ?? @isr_map    isrs
+  ?? @prefix_map p
+  ?! @string     code
+:
+  @string result := "";
+  foreach isrs (@lstring isr_name @isr_obj isr) do
+    @ident_map others := [isr other_fields];
+    @uint trap ;
+    additional_int_key_required !"EXCEPTION_HANDLER" !others !isr_name ?trap ;
+
+    #first, get the template
+    @string tmp;
+    retrieveTemplateString ?tmp !"isr_list_specific";
+    #then replace $EXCEPTION_HANDLER$
+    tmp := [tmp stringByReplacingStringByString !"$EXCEPTION_HANDLER$" ![trap string]] ;
+    #then, replace the interruptHandler name.
+    performReplace !p !"task_name" ![isr_name string] !?tmp;
+    result .= tmp;
+  end foreach ;
+  code := [code stringByReplacingStringByString !"$ISR_LIST$" !result] ;
+end routine ;
+
+routine generate_counter_avr
+  ?? @counter_map counters
+  ?? @prefix_map p
+  ?!  @string code
+:
+  @string result := "";
+  foreach counters (@lstring counter_name @counter_obj counter) do
+    cast [counter type] :
+    when == @software_counter do
+    else
+        @string tmp;
+        retrieveTemplateString ?tmp !"counter_list_specific";
+        performReplace !p !"counter" ![counter_name string] !?tmp;
+        result .= tmp;
+    end cast ;
+  end foreach ;
+
+  code := [code stringByReplacingStringByString !"$COUNTER_LIST$" !result] ;
+end routine ;
+
+end semantics ;
