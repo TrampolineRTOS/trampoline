@@ -68,7 +68,12 @@ end routine ;
 routine retrieveTemplateString !@string templateString ?@string obj :
     retrieveTemplateStringIfExist ?templateString !obj;
     if templateString == "" then
-        error here: "No template found for ".obj;
+        @string target_platform ;
+        target ?target_platform ;
+        @string temp_dir ;
+        templates_directory ?temp_dir ;
+        error here: "No template found for ".obj." (searched in ". temp_dir.target_platform
+              ." and in ".temp_dir."all_targets)";
     end if;
 end routine;
 

@@ -61,6 +61,7 @@ SOURCES += goil_target_libpcl.cpp
 SOURCES += goil_target_ppc.cpp
 SOURCES += goil_target_v850e.cpp
 SOURCES += goil_target_h8300h.cpp
+SOURCES += goil_target_avr.cpp
 SOURCES += goil_routines.cpp
 SOURCES += goil_obj_os.cpp
 SOURCES += goil_obj_task.cpp
