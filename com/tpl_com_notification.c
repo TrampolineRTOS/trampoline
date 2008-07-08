@@ -43,7 +43,7 @@ tpl_status tpl_action_setflag(const tpl_action *action)
  *
  *
  */
-void tpl_notify_receiving_mos(tpl_base_receiving_mo *rmo)
+void tpl_notify_receiving_mos(tpl_base_receiving_mo *rmo, u8 from)
 {
     tpl_status result = E_OK ;
     /*
@@ -59,6 +59,6 @@ void tpl_notify_receiving_mos(tpl_base_receiving_mo *rmo)
     }
 	
     if ((result & NEED_RESCHEDULING) != 0) {
-        tpl_schedule(FROM_TASK_LEVEL);
+        tpl_schedule(from);
     }
 }

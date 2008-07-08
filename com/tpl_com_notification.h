@@ -44,7 +44,7 @@ typedef struct TPL_FLAG_ACTION
 tpl_flag_action;
 
 tpl_status tpl_action_setflag(const tpl_action *action);
-void tpl_notify_receiving_mos(tpl_base_receiving_mo *rmo);
+void tpl_notify_receiving_mos(tpl_base_receiving_mo *rmo, u8 from);
 
 #endif /*  TPL_OS_NOTIFICATION_H  */
 

@@ -15,14 +15,10 @@
  * $URL$
  */
 
-#include "tpl_os_types.h"
+#include "tpl_com_internal_com.h"
 #include "tpl_os_definitions.h"
-#include "tpl_com_private_types.h"
-#include "tpl_com_mo.h"
-#include "tpl_com_filtering.h"
 #include "tpl_com_definitions.h"
-
-void tpl_notify_receiving_mos(tpl_base_receiving_mo *);
+#include "tpl_com_notification.h"
 
 /*
  * tpl_send_static_internal_message sends a message from an internal only
@@ -47,7 +43,7 @@ tpl_status tpl_send_static_internal_message(
     }
     
     /*  notify the receivers    */
-    tpl_notify_receiving_mos(ismo->internal_target);
+    tpl_notify_receiving_mos(ismo->internal_target, FROM_TASK_LEVEL);
         
     return result;
 }
@@ -65,7 +61,7 @@ tpl_status tpl_send_zero_internal_message(
     /*  cast the base mo to the correct type of mo  */
     tpl_internal_sending_mo *ismo = (tpl_internal_sending_mo *)smo;
     /*  notify the receivers                        */
-    tpl_notify_receiving_mos(ismo->internal_target);
+    tpl_notify_receiving_mos(ismo->internal_target, FROM_TASK_LEVEL);
     
     return E_OK;
 }
@@ -84,14 +80,15 @@ tpl_status tpl_receive_static_internal_unqueued_message(
     tpl_internal_receiving_unqueued_mo *rum =
         (tpl_internal_receiving_unqueued_mo *)rmo;
     /*  get the destination buffer                                          */
-    tpl_com_data *mo_buf = rum->buffer;
+    tpl_com_data *mo_buf = rum->buffer.buffer;
+    /*  get the size of the buffer                                          */
+    int size = rum->buffer.size;
     
     /*  reception filtering                                                 */
-    if (tpl_filtering(mo_buf, data, rum->size, rum->base_mo.filter)) {
+    if (tpl_filtering(mo_buf, data, size, rum->base_mo.filter)) {
         /*  copy the data from the source (data)
             to the message object buffer
         */
-        int size = rum->size;
         while (size-- > 0) {
             *mo_buf++ = *data++;
         }

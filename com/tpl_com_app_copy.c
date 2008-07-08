@@ -52,11 +52,11 @@ tpl_status tpl_copy_from_unqueued(
         or external message object. rmo is cast to an internal message
         object since the external is an internal with additional members
         at the end of the struct                                            */
-    tpl_com_data *mo_buf = ((tpl_internal_receiving_unqueued_mo *)rmo)->buffer;
+    tpl_com_data *mo_buf = ((tpl_internal_receiving_unqueued_mo *)rmo)->buffer.buffer;
 
     /*  copy the data from the source message object buffer
         to the application data                                             */
-    int size = ((tpl_internal_receiving_unqueued_mo *)rmo)->size;
+    int size = ((tpl_internal_receiving_unqueued_mo *)rmo)->buffer.size;
     while (size-- > 0) {
          *data++ = *mo_buf++;
     }
