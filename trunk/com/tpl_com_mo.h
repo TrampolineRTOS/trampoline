@@ -18,6 +18,7 @@
 
 #include "tpl_com_base_mo.h"
 #include "tpl_com_queue.h"
+#include "tpl_com_buffer.h"
 
 /*
  * tpl_internal_sending_mo is internal only sending message object
@@ -46,7 +47,7 @@ typedef tpl_internal_sending_mo tpl_internal_sending_zero_mo;
 typedef struct TPL_BASE_RECEIVING_MO tpl_internal_receiving_zero_mo;
  
 /*!
- *  \struct TPL_INTERNAL_RECEIVING_UNQUEUED_MO
+ *  \struct TPL_RECEIVING_UNQUEUED_MO
  *
  *  \brief  Structure for internal communication unqueued receiving
  *          message objects
@@ -55,20 +56,21 @@ typedef struct TPL_BASE_RECEIVING_MO tpl_internal_receiving_zero_mo;
  *  adds members to manage a buffer to store the data of the messages
  *  and a filter descriptor.
  */
-struct TPL_INTERNAL_RECEIVING_UNQUEUED_MO {
+struct TPL_RECEIVING_UNQUEUED_MO {
     /*! common part of the receiving message objects            */
     tpl_data_receiving_mo   base_mo; 
-    /*! pointer to the receive buffer                           */
-    tpl_com_data            *buffer;
-    /*! size of the message object                              */
-    tpl_message_size        size;
+    /*! receive buffer                                          */
+    tpl_com_buffer          buffer;
 };
 
-typedef struct TPL_INTERNAL_RECEIVING_UNQUEUED_MO
+typedef struct TPL_RECEIVING_UNQUEUED_MO
+    tpl_receiving_unqueued_mo;
+
+typedef struct TPL_RECEIVING_UNQUEUED_MO
     tpl_internal_receiving_unqueued_mo;
 
 /*!
- *  \struct TPL_INTERNAL_RECEIVING_QUEUED_MO
+ *  \struct TPL_RECEIVING_QUEUED_MO
  *
  *  \brief  Structure for internal communication queued receiving
  *          message objects
@@ -77,16 +79,31 @@ typedef struct TPL_INTERNAL_RECEIVING_UNQUEUED_MO
  *  adds members to manage a queue to store the data of the messages
  *  and a filter descriptor.
  */
-struct TPL_INTERNAL_RECEIVING_QUEUED_MO {
-    /*! common part of the receiving message objects            */
+struct TPL_RECEIVING_QUEUED_MO {
+    /*! common part of the data receiving message objects       */
     tpl_data_receiving_mo   base_mo;
     /*! queue                                                   */
     tpl_queue               queue;
 };
 
-typedef struct TPL_INTERNAL_RECEIVING_QUEUED_MO
+typedef struct TPL_RECEIVING_QUEUED_MO
+    tpl_receiving_queued_mo;
+    
+typedef struct TPL_RECEIVING_QUEUED_MO
     tpl_internal_receiving_queued_mo;
 
-
+/**
+ *  @typedef    TPL_EXTERNAL_RECEIVING_UNQUEUED_MO
+ *
+ *  @brief  Structure for external communication unqueued receiving
+ *          message objects
+ *
+ *  External communication unqueued receiving message objects structure
+ *  adds members to manage a buffer to store the data of the messages
+ *  and a filter descriptor.
+ */
+typedef struct TPL_RECEIVING_UNQUEUED_MO
+    tpl_external_receiving_unqueued_mo;
+ 
 #endif
 /*  __TPL_COM_MO_H__    */
