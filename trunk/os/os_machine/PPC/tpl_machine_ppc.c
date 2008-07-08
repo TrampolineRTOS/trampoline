@@ -468,6 +468,10 @@ asm void tpl_sc_switch_context(void)
             lwz     r2,FP_CONTEXT(r3)
             cmpwi   r2,0
             beq     no_old_fp
+/* 	enable the use of floating point				*/
+     		mfmsr   r3
+     		ori     r3,r3,0x2000
+     		mtmsr   r3
 /*  Store non volatile floating point registers     */
             stfd    f14,FPR14(r2)
             stfd    f15,FPR15(r2)
@@ -496,6 +500,10 @@ no_save:
             lwz     r2,FP_CONTEXT(r4)
             cmpwi   r2,0
             beq     no_new_fp
+/* 	enable the use of floating point				*/
+     		mfmsr   r3
+     		ori     r3,r3,0x2000
+     		mtmsr   r3
 /*  Get back the floating point condition register  */
             lfd     f14,FPSCR(r2)
             mtfsf   0xff,f14
@@ -831,6 +839,10 @@ asm void tpl_switch_context_from_it(
             lwz     r5,FP_CONTEXT(old_context)
             cmpwi   r5,0
             beq     no_old
+/* 	enable the use of floating point				*/
+     		mfmsr   r3
+     		ori     r3,r3,0x2000
+     		mtmsr   r3
 /*  Store non volatile floating point registers     */
             stfd    f1,FPR1(r5)
             stfd    f2,FPR2(r5)
@@ -871,6 +883,10 @@ no_old:
             lwz     r5,FP_CONTEXT(new_context)
             cmpwi   r5,0
             beq     no_new
+/* 	enable the use of floating point				*/
+     		mfmsr   r3
+     		ori     r3,r3,0x2000
+     		mtmsr   r3
 /*  Get back the floating point condition register  */
             lfd     f14,FPSCR(r5)
             mtfsf   0xff,f14
