@@ -42,6 +42,7 @@ void tpl_switch_context(tpl_context *old_context, tpl_context *new_context);
 
 void tpl_switch_context_from_it(tpl_context * old_context, tpl_context * new_context)
 {
+tpl_switch_context(old_context,new_context);
 }
 
 
@@ -63,7 +64,7 @@ void tpl_init_context(tpl_task *task)
     sp--;
     *sp=(u16)static_desc->entry;
 	sp--;
-	*sp=((u16)static_desc->entry<<8);
+	*sp=((u16)static_desc->entry>>8);
 
 	/* put register 16 on the stack */
 	sp--;
