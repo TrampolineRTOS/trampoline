@@ -31,7 +31,8 @@ CPU test {
         ACTIVATION = 1;
         SCHEDULE = FULL;
         USRSTACKSIZE = 256;
-		SYSSTACKSIZE = 64;
+	  SYSSTACKSIZE = 64;
+	  STACKSIZE = 256;
     };
 
 	TASK step2 {
@@ -40,18 +41,20 @@ CPU test {
         ACTIVATION = 2;
         SCHEDULE = FULL;
         USRSTACKSIZE = 256;
-		SYSSTACKSIZE = 128;
+	  SYSSTACKSIZE = 128;
+	  STACKSIZE = 256;
     };
 
 	TASK pool {
         PRIORITY = 10;
         AUTOSTART = FALSE;
         ACTIVATION = 2;
-		RESOURCE = test;
-		EVENT = EV1;
+	  RESOURCE = test;
+	  EVENT = EV1;
         SCHEDULE = FULL;
         USRSTACKSIZE = 256;
-		SYSSTACKSIZE = 128;
+	  SYSSTACKSIZE = 128;
+	  STACKSIZE = 256;
     };
 
 	TASK pool2 {
@@ -60,7 +63,8 @@ CPU test {
         ACTIVATION = 2;
         SCHEDULE = FULL;
         USRSTACKSIZE = 256;
-		SYSSTACKSIZE = 128;
+	  SYSSTACKSIZE = 128;
+	  STACKSIZE = 256;
     };
 
 
@@ -68,10 +72,11 @@ CPU test {
         PRIORITY = 15;
         AUTOSTART = FALSE;
         ACTIVATION = 2;
-		EVENT = EV2;
+	  EVENT = EV2;
         SCHEDULE = FULL;
         USRSTACKSIZE = 256;
-		SYSSTACKSIZE = 128;
+	  SYSSTACKSIZE = 128;
+	  STACKSIZE = 256;
     };
 
     COUNTER compteur {

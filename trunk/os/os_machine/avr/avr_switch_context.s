@@ -39,7 +39,9 @@
 */
 
 .global tpl_switch_context
+.global tpl_switch_context_from_it 
 tpl_switch_context:
+tpl_switch_context_from_it:
 
 	/* put r16 and the sreg register on the stack */
 	push r16

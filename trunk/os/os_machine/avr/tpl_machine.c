@@ -38,13 +38,10 @@ void tpl_shutdown(void)
 	while (1); 
 }
 
+
 void tpl_switch_context(tpl_context *old_context, tpl_context *new_context);
 
-void tpl_switch_context_from_it(tpl_context * old_context, tpl_context * new_context)
-{
-tpl_switch_context(old_context,new_context);
-}
-
+void tpl_switch_context_from_it(tpl_context * old_context, tpl_context * new_context);
 
 /*
  * tpl_init_context initialize a context to prepare a task to run.
@@ -73,6 +70,7 @@ void tpl_init_context(tpl_task *task)
     /* put the register SREG on the stack */
     sp--;
     *sp=0x80; /* the system register with interrupt activated */
+
     /* initializes system register on the stack (system register at startup time) */
     for (a=0;a<31;a++)
     {
