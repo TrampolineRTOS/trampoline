@@ -10,12 +10,12 @@
 #include "tpl_benchmark.h"
 #include "tpl_os_it.h"
 
-# define UNUSED 0
-# define USED 1
-# define ONGOING 2
+#define UNUSED 0
+#define USED 1
+#define ONGOING 2
+
 
 #include "tpl_os_kernel.h"
-
 
 // Definition of the pointeur
 unsigned int tpl_benchmark_tick = 0;
@@ -92,7 +92,7 @@ time = get_tb();	  // Memorization of time
 
 //********************************************************************************
 
-SuspendAllInterrupts();
+//SuspendAllInterrupts();
 /*edition of result*/
 	putchar('+'); // point out the beginning of send data
 	
@@ -103,7 +103,7 @@ SuspendAllInterrupts();
 
 			// if the measure is do, his value is send
 			if (tpl_measure_state(i) == USED)
-				{printf("%d %cs@\n", (tpl_take_value(i)*TPL_BENCHMARK_MULTIPLIER/TPL_BENCHMARK_DIVISOR),TPL_BENCHMARK_UNIT);
+				{printf("%d %cs@\n", (tpl_take_value(i)* TPL_BENCHMARK_MULTIPLIER / TPL_BENCHMARK_DIVISOR ), TPL_BENCHMARK_UNIT );
 				}
 
 			// else, send unused
@@ -114,7 +114,7 @@ SuspendAllInterrupts();
 		}
 	
 	putchar('*'); // point out the end of send data
-EnableAllInterrupts();
+//EnableAllInterrupts();
 }
 
 

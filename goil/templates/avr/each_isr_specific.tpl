@@ -1,3 +1,5 @@
+#include <avr/io.h>
+#include <avr/interrupt.h>
 /*
  * isr2 $EXEC_NAME$ stacks
  *
@@ -19,7 +21,7 @@ avr_context $EXEC_INTEGER_CONTEXT$;
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-void $EXEC_NAME$_handler()
+ISR ($EXEC_NAME$_vect)
 {
   tpl_central_interrupt_handler(isr_id_of_$EXEC_NAME$);
 }
