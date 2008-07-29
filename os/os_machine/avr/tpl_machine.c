@@ -52,35 +52,45 @@ void tpl_init_context(tpl_task *task)
 {
     int a=0; /*internal variable, used to put the register R00 to R31 on the stack*/
 	avr_context * ic;
+	u8 *pointer;
   	/* Gets a pointer to the static descriptor of the task whose context is going to be initialized */
 	const tpl_exec_static *static_desc = task->exec_desc.static_desc;
 	/* Init stack pointer */
-	u8 *sp=(void *)((u16)(static_desc->stack.stack_zone) + static_desc->stack.stack_size);
+	u8 *sp=(void *)((u16)(static_desc->stack.stack_zone) + static_desc->stack.stack_size - 1);
 
 	/* put the Program Counter on the stack */
-    sp--;
+    
     *sp=(u16)static_desc->entry;
 	sp--;
 	*sp=((u16)static_desc->entry>>8);
-
-	/* put register 16 on the stack */
-	sp--;
-	*sp=0x00;
-
-    /* put the register SREG on the stack */
-    sp--;
-    *sp=0x80; /* the system register with interrupt activated */
-
-    /* initializes system register on the stack (system register at startup time) */
-    for (a=0;a<31;a++)
-    {
-        sp--;
-        *sp=0x00;
-    }
 	sp--;
 	/* save the stack pointer */ 
 	ic = static_desc->context.ic;
 	*ic=(avr_context)sp;
+	
+	pointer = &static_desc->context.ic;
+
+
+	pointer++;
+  /* initializes system register on the stack (system register at startup time) */
+    for (a=0;a<31;a++)
+    {
+        pointer++;
+        *pointer=0x00;
+    }
+
+    /* put the register SREG on the stack */
+    pointer++;
+    *pointer=0x80; /* the system register with interrupt activated */
+
+	/* put register 16 on the stack */
+	pointer++;
+	*pointer=0x00;
+
+
+
+  
+
 
 }
 

@@ -28,9 +28,13 @@ typedef struct AVR_CONTEXT avr_context;
 */
 
 typedef u16 * avr_context;
+typedef u8 avr_register;
+typedef u8 avr_sreg;
 
 struct TPL_CONTEXT {
 	avr_context * ic;
+	avr_register regist[32];
+	avr_sreg sreg;
 };
 
 typedef struct TPL_CONTEXT tpl_context;
