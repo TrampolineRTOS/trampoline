@@ -2,41 +2,17 @@
 
 .section .text
 
-/*
-	organization of the stack
-
-	 __ __ __ __
-	|           |
-	| Program   |
-	| Counter   |
-	|__ __ __ __|
-	|           |
-	| Program   |
-	| Counter   |
-	|__ __ __ __|
-	|           |
-	|   r16     |
-	|           |
-	|__ __ __ __|
-	|           |
-	|   SREG    |
-	|           |
-	|__ __ __ __|
-	|           |
-	| register  |
-	| r0 to r15 |
-	|__ __ __ __|
-	|           |
-	| register  |
-	|r17 to r31 |
-	|__ __ __ __|
-	|           |
-	|           |
-	|           |
-
-	the stack pointer is save in the task structure
-
-*/
+/**
+ * @file avr_switch_context.s
+ *
+ * @section File informations
+ *
+ * $Date: 2008-07-29 11:06:28 +0200 (lun., 28 avr. 2008) $
+ * $Rev: 500 $
+ * $Author: gforget $
+ * $URL: https://trampoline.rts-software.org/svn/trunk/os/os_machine/avr/avr_switch_context.s $
+ *
+ */
 
 .global tpl_switch_context
 .global tpl_switch_context_from_it 
@@ -45,18 +21,21 @@ tpl_switch_context_from_it:
 
 	/* put r16 and the sreg register on the stack */
 	push r16
-	in r16, _SFR_IO_ADDR(SREG)
+	in   r16, _SFR_IO_ADDR(SREG)
 	push r16
 
 	/* verification if the first parameter is equal to 0 (Old_context == NULL)*/
 	ldi r16, 0
 	cp r16, r24
-	breq equal1
-	rjmp not_equal
-	equal1 : nop
+	breq first_part_equal // if the first 8 bits are null jump to first_part_equal
+	rjmp save_context // else jump to save_context
+
+	first_part_equal :
 	cp r16, r25
-	breq equal
-	not_equal : nop
+	breq unsave_context // if the second part is null Old_context == NULL then jump to unsave_context
+	
+	/* we have to save the old context*/
+	save_context :
 
 	/* put all register on the stack */
 	push r31
@@ -74,7 +53,7 @@ tpl_switch_context_from_it:
 	push r19
 	push r18
 	push r17
-
+	// r16 is push at the start of the function
 	push r15
 	push r14
 	push r13
@@ -94,60 +73,67 @@ tpl_switch_context_from_it:
 
 
 	/* save the old stack pointer */
-	movw r28,r24
-	ldd r30,Y+0
-	ldd r31,Y+1
-	in r26, _SFR_IO_ADDR(SPL)
-	in r27, _SFR_IO_ADDR(SPH)
-	ADIW r26,0x21
-	std Z+0, r26
-	std Z+1, r27
+	movw r28,r24 // the adress for put the old stack pointeur is in r24,r25
+	ldd  r30,Y+0
+	ldd  r31,Y+1
+	in   r26, _SFR_IO_ADDR(SPL)
+	in   r27, _SFR_IO_ADDR(SPH)
 
-	movw    r30,r24
-	LDI		r24,0x00
-	LDI		r25,0x21
+	adiw r26,0x21 // we add 21 to the old stack pointer because we have do 21 push 
+
+	std  Z+0, r26
+	std  Z+1, r27
+
+	/* then we save all register in a chart */
+	movw r30,r24 //the address of old stack pointer is followed by that of the chart
+
+	// we make a "for" loops for(r24=0;r24<=r25;r24++)
+	ldi  r24,0x00
+	ldi  r25,0x21
 	
-	ADIW    R30,0x01
+	adiw r30,0x01
 
 less1 :
-	pop		r26
-	inc     R24
-	ADIW    R30,0x01 	
-	STD     Z+0,r26
+	pop  r26 // we take a register
+	adiw r30,0x01 // we increment the address
+	std  Z+0,r26 // we put the register on the chart
 
-	CP      r24,r25
-	BRLT    less1
-   
+	inc  r24 // r24++
+	cp   r24,r25 
+	brlt less1 // if r24<=r25 jump to less1
+
 	push r16
 	push r16
-equal :
+unsave_context : // we have put 2 register on the stack, we have to pop it
 	pop r16
 	pop r16
 
 	/* Get the new stack pointer */
-    movw r28,r22
-	ldd r30,Y+0
-	ldd r31,Y+1
-    ldd r28,Z+0
-	ldd r29,Z+1
+    movw r28,r22 // the adress of the new stack pointeur is in r22,r23
+	// we have to dereference it
+	ldd  r30,Y+0
+	ldd  r31,Y+1
+    ldd  r28,Z+0
+	ldd  r29,Z+1
 
+	/* put the new stack pointer */
 	out _SFR_IO_ADDR(SPL), r28
 	out _SFR_IO_ADDR(SPH), r29 
 
-
-	LDI		r24,0x00
-	LDI		r25,0x21
-	movw    r30,r22
-	ADIW    R30,0x23
+	// we make a "for" loops for(r24=0;r24<=r25;r24++)
+	ldi  r24,0x00
+	ldi  r25,0x21
+	movw r30,r22 
+	adiw r30,0x23 // here we complete the chart by the end
 
 less2 :
-	inc     R24
-	SBIW    R30,0x01 
-	LDD		r26,Z+0	
-	push    r26
+	sbiw r30,0x01 
+	ldd  r26,Z+0 // get the old value of the register from the chart
+	push r26 // push the register
 
-	CP      r24,r25
-	BRLT    less2
+	inc  r24 // r24++
+	cp   r24,r25
+	brlt less2 // if r24<=r25 jump to less2
 
 	/* Get all register from the stack */
 	pop r0
@@ -166,7 +152,7 @@ less2 :
 	pop r13
 	pop r14
 	pop r15
-
+	// r16 is pop at the end of the function
 	pop r17
 	pop r18
 	pop r19
