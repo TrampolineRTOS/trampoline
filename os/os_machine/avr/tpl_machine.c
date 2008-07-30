@@ -38,11 +38,6 @@ void tpl_shutdown(void)
 	while (1); 
 }
 
-
-void tpl_switch_context(tpl_context *old_context, tpl_context *new_context);
-
-void tpl_switch_context_from_it(tpl_context * old_context, tpl_context * new_context);
-
 /*
  * tpl_init_context initialize a context to prepare a task to run.
  * WARNING: This function MUST NOT modify GPRs!!! (the task in parameter
@@ -50,7 +45,7 @@ void tpl_switch_context_from_it(tpl_context * old_context, tpl_context * new_con
  */
 void tpl_init_context(tpl_task *task)
 {
-    int a=0; /*internal variable, used to put the register R00 to R31 on the stack*/
+    int a=0; /*internal variable, used to put the register R00 to R31 on the chart*/
 	avr_context * ic;
 	u8 *pointer;
   	/* Gets a pointer to the static descriptor of the task whose context is going to be initialized */
@@ -72,18 +67,18 @@ void tpl_init_context(tpl_task *task)
 
 
 	pointer++;
-  /* initializes system register on the stack (system register at startup time) */
+  /* initializes system register on the chart (system register at startup time) */
     for (a=0;a<31;a++)
     {
         pointer++;
         *pointer=0x00;
     }
 
-    /* put the register SREG on the stack */
+    /* put the register SREG on the chart */
     pointer++;
     *pointer=0x80; /* the system register with interrupt activated */
 
-	/* put register 16 on the stack */
+	/* put register 16 on the chart */
 	pointer++;
 	*pointer=0x00;
 
