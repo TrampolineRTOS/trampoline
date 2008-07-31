@@ -36,7 +36,7 @@ void tpl_init_tick_timer()
 }
 
 
-void tpl_schedule(int from);
+void tpl_schedule(u8 from);
 tpl_status tpl_counter_tick(tpl_counter *counter);
 void tpl_call_counter_tick()
 {

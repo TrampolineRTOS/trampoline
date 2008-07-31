@@ -45,8 +45,7 @@ void tpl_shutdown(void)
  */
 void tpl_init_context(tpl_task *task)
 {
-    int a=0; /*internal variable, used to put the register R00 to R31 on the chart*/
-	avr_context * ic;
+    int a=0; /*internal variable, used to put the register R00 to R31 on the tabular*/
 	u8 *pointer;
   	/* Gets a pointer to the static descriptor of the task whose context is going to be initialized */
 	const tpl_exec_static *static_desc = task->exec_desc.static_desc;
@@ -60,13 +59,11 @@ void tpl_init_context(tpl_task *task)
 	*sp=((u16)static_desc->entry>>8);
 	sp--;
 	/* save the stack pointer */ 
-	ic = static_desc->context.ic;
-	*ic=(avr_context)sp;
-	
-	pointer = &static_desc->context.ic;
-
-
+	pointer = (u8*)(&(static_desc->context.ic->sp));
+	*pointer = (u8)((u16)sp & 0xFF);
 	pointer++;
+	*pointer = (u8)((u16)sp >> 8);
+
   /* initializes system register on the chart (system register at startup time) */
     for (a=0;a<31;a++)
     {

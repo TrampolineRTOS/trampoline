@@ -19,13 +19,19 @@
 
 #include "tpl_os_custom_types.h"
 
+struct AVR_CONTEXT {
+	u8 *sp;
+	u8 regist[33];  //registers: R0-R15,R17-R31,SREG,R16
+} ;
 
-typedef u16 * avr_context;
-typedef u8 avr_register;
+typedef struct AVR_CONTEXT avr_context;
+
+
+//typedef u16 * avr_context;
+//typedef u8 avr_register;
 
 struct TPL_CONTEXT {
 	avr_context * ic;
-	avr_register regist[33];
 };
 
 typedef struct TPL_CONTEXT tpl_context;
