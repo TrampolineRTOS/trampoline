@@ -1,0 +1,102 @@
+OIL_VERSION = "2.5" : "test" ;
+
+IMPLEMENTATION trampoline {
+};
+
+CPU test {
+
+    OS config {
+        STATUS = STANDARD;
+    } ;
+
+
+    APPMODE std {
+    };
+
+	EVENT EV1 {
+		MASK = AUTO;
+	};
+
+	ALARM alarm1 {
+      COUNTER = compteur;
+      ACTION = ACTIVATETASK {
+          TASK = t1;
+      };
+      AUTOSTART = TRUE {
+        ALARMTIME = 10;
+        CYCLETIME = 10;
+        APPMODE = std;
+      };
+    };
+
+	ALARM alarm2 {
+      COUNTER = compteur;
+      ACTION = ACTIVATETASK {
+          TASK = t0;
+      };
+      AUTOSTART = FALSE;
+    };
+
+    TASK t0 {
+        PRIORITY = 5;
+		AUTOSTART = TRUE {
+		  APPMODE = std;
+          };
+		EVENT = EV1;
+        ACTIVATION = 1;
+        SCHEDULE = NON;
+        USRSTACKSIZE = 256;
+	    SYSSTACKSIZE = 64;
+    };
+
+	TASK t1 {
+        PRIORITY = 6;
+        AUTOSTART = FALSE;
+		EVENT = EV1;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        USRSTACKSIZE = 256;
+	    SYSSTACKSIZE = 64;
+    };
+
+	TASK t2 {
+        PRIORITY = 8;
+        AUTOSTART = FALSE;
+		EVENT = EV1;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        USRSTACKSIZE = 256;
+	    SYSSTACKSIZE = 64;
+    };
+
+	
+	TASK time_error {
+        PRIORITY = 15;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        USRSTACKSIZE = 256;
+	  SYSSTACKSIZE = 128;
+    };
+
+    COUNTER compteur {
+      TICKSPERBASE = 1;
+      MAXALLOWEDVALUE = 65530;
+      MINCYCLE = 1;
+    };
+	 
+	
+    ALARM ZeAlarm {
+      COUNTER = compteur;
+      ACTION = ACTIVATETASK {
+          TASK = time_error;
+      };
+      AUTOSTART = TRUE {
+        ALARMTIME = 1000;
+        CYCLETIME = 1000;
+        APPMODE = std;
+      };
+    };
+
+};
+
