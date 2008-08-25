@@ -394,9 +394,11 @@ void tpl_release_task_lock(void)
 
 
 
-void tpl_switch_context(
-    const tpl_context *old_context,
-    const tpl_context *new_context)
+#define OS_START_SEC_CODE
+#include "Memmap.h"
+FUNC(void, OS_CODE) tpl_switch_context(
+    P2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
+    P2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
 {
 	assert( *new_context != co_current() );
     tpl_release_task_lock();  
@@ -410,9 +412,9 @@ void tpl_switch_context(
 }
 
 
-void tpl_switch_context_from_it(
-    const tpl_context *old_context,
-    const tpl_context *new_context)
+FUNC(void, OS_CODE) tpl_switch_context_from_it(
+    P2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
+    P2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
 {
     assert( *new_context != co_current() );
     if( *new_context == &idle_task_context )
@@ -453,11 +455,14 @@ void tpl_osek_func_stub( void* data )
 
 static coroutine_t previous_old_co = NULL;
 
-void tpl_init_context(tpl_exec_common *exec_obj)
+#define OS_START_SEC_CODE
+#include "Memmap.h"
+FUNC(void, OS_CODE) tpl_init_context(
+    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj)
 {
     coroutine_t old_co;
-    coroutine_t* co = &(exec_obj->static_desc->context);
-    tpl_stack* stack = &(exec_obj->static_desc->stack);
+    coroutine_t *co = (coroutine_t *)&(exec_obj->static_desc->context);
+    tpl_stack *stack = (tpl_stack *)&(exec_obj->static_desc->stack);
 
     /* This is the entry func passed as data */
     void* data = (void*) exec_obj->static_desc; 
@@ -488,7 +493,7 @@ void tpl_init_context(tpl_exec_common *exec_obj)
     if( old_co != NULL )
     {
         if( previous_old_co != NULL )
-/*        co_delete( previous_old_co ); */
+        co_delete( previous_old_co );
         previous_old_co = old_co;
     }
 }

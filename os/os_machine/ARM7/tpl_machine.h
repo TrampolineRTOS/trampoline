@@ -41,8 +41,8 @@ extern arm7_context idle_task_context;
 
 
 struct TPL_STACK {
-    tpl_stack_word 	*stack_zone;
-    tpl_stack_size       stack_size;
+    tpl_stack_word  *stack_zone;
+    tpl_stack_size  stack_size;
 };
 typedef struct TPL_STACK tpl_stack;
 
