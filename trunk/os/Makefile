@@ -17,17 +17,15 @@
 #
 
 #kernel OS files
-SOURCES += \
-tpl_os.c \
-tpl_os_error.c  \
-tpl_os_event.c \
-tpl_os_task.c \
-tpl_os_alarm.c  \
-tpl_os_it.c  \
-tpl_os_rez.c \
-tpl_os_kernel.c \
-tpl_os_action.c \
-tpl_os_alarm_kernel.c \
-tpl_os_it_kernel.c \
-tpl_os_rez_kernel.c
-
+SOURCES += tpl_os.c
+SOURCES += tpl_os_error.c
+SOURCES += tpl_os_event.c
+SOURCES += tpl_os_task.c
+SOURCES += tpl_os_alarm.c
+SOURCES += tpl_os_it.c
+SOURCES += tpl_os_rez.c
+SOURCES += tpl_os_kernel.c
+SOURCES += tpl_os_action.c
+SOURCES += tpl_os_alarm_kernel.c
+SOURCES += tpl_os_it_kernel.c
+SOURCES += tpl_os_rez_kernel.c
