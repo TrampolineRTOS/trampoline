@@ -4,8 +4,9 @@ option goil_options :
 @string project_dir       : '\0', "project"           -> "Specifies project directory" ;
 @string template_dir      : '\0', "templates"         -> "Specifies template directory" ;
 @bool   autosar_on        : 'a',  "autosar"           -> "Parse Autosar objects and attributes" ;
-@bool   orti_on           : '\0', "orti"              -> "Generate an ORTI file" ;
+#@bool   orti_on           : '\0', "orti"              -> "Generate an ORTI file" ;
 @bool   generate_makefile : '\0', "generate-makefile" -> "Generate a Makefile from OS extra attributes" ;
+#@uint   corrected_bits    : '\0', "crc"               -> "Generate correcting code" default 0 ;
 end option ;
 
 # vim:ft=ggs:ts=4:sw=4

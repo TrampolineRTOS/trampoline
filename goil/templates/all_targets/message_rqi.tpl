@@ -2,7 +2,7 @@
  * Static internal receiving queued message object $MESSAGE_NAME$
  */
 
-tpl_com_data $BUFFER$[$QUEUE_SIZE$*$ELEMENT_SIZE$];
+$CTYPE$ $BUFFER$[$QUEUE_SIZE$];
 
 tpl_queue_dyn $DYN_QUEUE$ = {
     /*  pointer to the last written element */  NULL_PTR,
@@ -25,6 +25,6 @@ tpl_internal_receiving_queued_mo $MESSAGE$ = {
         /*  pointer to the dynamic descriptor   */  &$DYN_QUEUE$,
         /*  max size of the queue               */  $QUEUE_SIZE$*$ELEMENT_SIZE$,
         /*  element size of the queue           */  $ELEMENT_SIZE$,
-        /*  pointer to the buffer               */  $BUFFER$
+        /*  pointer to the buffer               */  (tpl_com_data *)$BUFFER$
     }
 };

@@ -2,7 +2,7 @@
  * Static internal receiving unqueued message object $MESSAGE_NAME$
  */
 
-tpl_com_data $BUFFER$[$SIZE$];
+$CTYPE$ $BUFFER$$INITIALVALUE$;
 
 tpl_internal_receiving_unqueued_mo $MESSAGE$ = {
     {   /* data receiving mo struct     */
@@ -14,6 +14,8 @@ tpl_internal_receiving_unqueued_mo $MESSAGE$ = {
         /*  copy function           */  (tpl_data_copy_func)tpl_copy_from_unqueued,
         /*  filter pointer          */  (tpl_filter_desc *)$FILTER_PTR$
     },
-    /*  buffer  */  $BUFFER$,
-    /*  size    */  $SIZE$
+    {   /* buffer struct    */
+        /*  buffer  */  (tpl_com_data *)&$BUFFER$,
+        /*  size    */  $SIZE$
+    }
 };

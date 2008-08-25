@@ -31,7 +31,7 @@ nonterminal <bitordering> ;
 nonterminal <bitposition> ;
 nonterminal <datainterpretation> ;
 nonterminal <initialvalue>
-    !@luint64 initial_value ;
+    !@basic_type initial_value ;
 
 nonterminal <direction> ;
 nonterminal <transferproperty>

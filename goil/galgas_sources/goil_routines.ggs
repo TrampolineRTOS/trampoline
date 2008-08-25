@@ -112,6 +112,14 @@ routine replace_no_prefix ?@prefix_map p ?@string key ?@string name ?!@string re
     res := [res stringByReplacingStringByString !tag_to_rep !name] ;
 end routine ;
 
+#--- Declaration added by Ibrahim
+#extern routine computeRedundantCode
+#  ??@uint inBitCount
+#  ??@uint inIndex
+#  ??@uint inCorrectedBitCount
+#  !@uint outCode
+#;
+
 routine obj_table
     ?@string     typename
     ?@string     varname
@@ -121,6 +129,9 @@ routine obj_table
     !@string     header
     !@string     implementation :
 
+#    @uint taskCount := [names count] ;
+#    @uint bitCount := [taskCount significantBitCount] ;
+#    @uint correctedBits := [option goil_options. corrected_bits] ;
     implementation := "tpl_". typename." *tpl_".varname."_table[".[varname uppercaseString]."_COUNT] = {\n" ;
     header := "\n" ;
     @uint n := 0 ;
@@ -129,6 +140,13 @@ routine obj_table
     prefix !p !prefix ?obj_prefix ;
     foreach names (@string name) do
         header := header."#define ".varname."_id_of_".name."  ".[n string]."\n" ;
+#        @uint taskID ;
+#        if correctedBits == 0 then
+#          taskID := n ;
+#        else
+#          computeRedundantCode !bitCount !n !correctedBits ?taskID ;
+#        end if ;
+#        header := header."#define ".varname."_id_of_".name."  ".[taskID string]."\n" ;
         header := header."#define ".name."  ".varname."_id_of_".name."\n" ;
         implementation := implementation."    (tpl_".typename." *)&".obj_prefix.name ;
         n++ ;
