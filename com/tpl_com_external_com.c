@@ -51,18 +51,18 @@ tpl_status tpl_receive_static_external_unqueued_message(
 
 /*
  * tpl_send_static_external_message sends a message from an external only
- * sending message object to an IPDU.
+ * sending message object to an IPDU (not yet :)).
  * This function is attached to the sending message object.
  */
-/*tpl_status tpl_send_static_external_message(
-    tpl_base_sending_mo *smo,
-    tpl_com_data        *data
+tpl_status tpl_send_static_external_message(
+    void            *smo,
+    tpl_com_data    *data
     )
-{*/
+{
     /*  cast the base mo to the correct typo of mo      */
-/*    tpl_external_sending_mo *esmo = (tpl_external_sending_mo *)smo; */
+    tpl_external_sending_mo *esmo = smo;
     /*  filter the message                                  */
-/*    if (tpl_filtering(esmo, data)) { */
+    if (tpl_filtering(esmo, data)) {
         /*  get the target ipdu                             */
 /*        tpl_sending_ipdu *ipdu = esmo->external_target;
     }
