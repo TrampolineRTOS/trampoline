@@ -106,7 +106,7 @@ nonterminal <cpuordercallout>
     !@lstring cpu_order_callout ;
 
 nonterminal <initialvalue>
-    !@luint64 initial_value ;
+    !@basic_type initial_value ;
 
 nonterminal <sendingmessage>
     !@lstring sending_message ;
@@ -248,7 +248,7 @@ rule <notification_property>
             end if ;
             $EVENT$ ;
             $=$ ;
-            $idf$ ?* ;
+            $idf$ ?event_name ;
             <description> ?* ; $;$ ;
             has_event := true ;
         end repeat ;
@@ -339,7 +339,7 @@ rule <sse_attributes>
     @bool has_cpu_order_callout := false ;
     @lstring cpu_order_callout := [@lstring new !"" !here] ;
     @bool has_initial_value := false ;
-    @luint64 initial_value := [@luint64 new !0L !here] ;
+    @basic_type initial_value := [@void new !here] ;
 
     ${$ ;
     repeat
@@ -421,7 +421,7 @@ rule <sde_attributes>
     @bool has_cpu_order_callout := false ;
     @lstring cpu_order_callout := [@lstring new !"" !here] ;
     @bool has_initial_value := false ;
-    @luint64 initial_value := [@luint64 new !0L !here] ;
+    @basic_type initial_value := [@void new !here] ;
 
     ${$ ;
     repeat
@@ -575,7 +575,7 @@ rule <rui_attributes>
     @bool has_filter := false ;
     @filter_prop_obj filter := [@void_filter new] ;
     @bool has_initial_value := false ;
-    @luint64 initial_value := [@luint64 new !0L !here] ;
+    @basic_type initial_value := [@void new !here] ;
 
     ${$ ;
     repeat
@@ -620,7 +620,7 @@ rule <rqi_attributes>
     @bool has_queue_size := false ;
     @luint64 queue_size := [@luint64 new !0L !here] ;
     @bool has_initial_value := false ;
-    @luint64 initial_value := [@luint64 new !0L !here] ;
+    @basic_type initial_value := [@void new !here] ;
 
     ${$ ;
     repeat
@@ -673,7 +673,7 @@ rule <rue_attributes>
     @bool has_filter := false ;
     @filter_prop_obj filter := [@void_filter new] ;
     @bool has_initial_value := false ;
-    @luint64 initial_value := [@luint64 new !0L !here] ;
+    @basic_type initial_value := [@void new !here] ;
     @link_obj link := [@void_link new] ;
 
     ${$ ;
@@ -733,7 +733,7 @@ rule <rqe_attributes>
     @luint64 queue_size := [@luint64 new !0L !here] ;
     @link_obj link := [@void_link new] ;
     @bool has_initial_value := false ;
-    @luint64 initial_value := [@luint64 new !0L !here] ;
+    @basic_type initial_value := [@void new !here] ;
 
     ${$ ;
     repeat
@@ -798,7 +798,7 @@ rule <rde_attributes>
 :
     @link_obj link := [@void_link new] ;
     @bool has_initial_value := false ;
-    @luint64 initial_value := [@luint64 new !0L !here] ;
+    @basic_type initial_value := [@void new !here] ;
 
     ${$ ;
     repeat
@@ -837,7 +837,7 @@ rule <rzs_attributes>
     @bool has_cdatatype := false;
     @lstring cdatatype := [@lstring new !"" !here] ;
     @bool has_initial_value := false ;
-    @luint64 initial_value := [@luint64 new !0L !here] ;
+    @basic_type initial_value := [@void new !here] ;
 
     ${$ ;
     repeat
@@ -1093,11 +1093,23 @@ rule <cpuordercallout>
 end rule ;
 
 rule <initialvalue>
-    !@luint64 initial_value
+    !@basic_type initial_value
 :
     $INITIALVALUE$ ;
     $=$ ;
-    $uint_number$ ?initial_value ;
+    select
+        @luint64 ival ;
+        $uint_number$ ?ival ;
+        initial_value := [@uint64_class new ![ival location] ![ival uint64]] ;
+    or
+        @ldouble dval ;
+        $float_number$ ?dval ;
+        initial_value := [@float_class new ![dval location] ![dval double]] ;
+    or
+        @lstring sval ;
+        $string$ ?sval ;
+        initial_value := [@string_class new ![sval location] ![sval string]] ;
+    end select ;
     <description> ?* ; $;$ ;
 end rule ;
 
@@ -1134,6 +1146,7 @@ rule <link>
         $FALSE$ ;
         link := [@false_link new] ;
     end select ;
+    <description> ?* ; $;$ ;
 end rule ;
 
 end syntax ;

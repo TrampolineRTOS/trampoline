@@ -25,16 +25,70 @@
 
 semantics goil_basic_types :
 
-abstract class @basic_type { @location location ; }
+abstract class @basic_type {
+  @location location ;
 
-class @void            extends @basic_type {                 }
-class @uint32_class    extends @basic_type { @uint   value ; }
-class @sint32_class    extends @basic_type { @sint   value ; }
-class @uint64_class    extends @basic_type { @uint64 value ; }
-class @sint64_class    extends @basic_type { @sint64 value ; }
-class @float_class     extends @basic_type { @double value ; }
-class @string_class    extends @basic_type { @string value ; }
-class @bool_class      extends @basic_type { @bool   value ; }
+  abstract method string !@string s ;
+}
+
+class @void            extends @basic_type {
+  override method string !@string s :
+    s := "" ;
+  end method ;
+}
+
+class @uint32_class    extends @basic_type {
+  @uint   value ;
+  override method string !@string s :
+    s := [value string] ;
+  end method ;
+}
+
+class @sint32_class    extends @basic_type {
+  @sint   value ;
+  override method string !@string s :
+    s := [value string] ;
+  end method ;
+}
+
+class @uint64_class    extends @basic_type {
+  @uint64 value ;
+  override method string !@string s :
+    s := [value string] ;
+  end method ;
+}
+
+class @sint64_class    extends @basic_type {
+  @sint64 value ;
+  override method string !@string s :
+    s := [value string] ;
+  end method ;
+}
+
+class @float_class     extends @basic_type {
+  @double value ;
+  override method string !@string s :
+    s := "" ;
+  end method ;
+}
+
+class @string_class    extends @basic_type {
+  @string value ;
+  override method string !@string s :
+    s := value ;
+  end method ;
+}
+
+class @bool_class      extends @basic_type {
+  @bool   value ;
+  override method string !@string s :
+    if value then
+      s := "true" ;
+    else
+      s := "false" ;
+    end if ;
+  end method ;
+}
 
 class @void_uint32_class extends @uint32_class {}
 class @void_sint32_class extends @sint32_class {}

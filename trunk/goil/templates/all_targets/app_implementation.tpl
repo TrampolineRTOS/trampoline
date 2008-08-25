@@ -12,6 +12,7 @@
 #include "tpl_com_notification.h"
 #include "tpl_com_mo.h"
 #include "tpl_com_internal_com.h"
+#include "tpl_com_external_com.h"
 #include "tpl_com_app_copy.h"
 #include "tpl_com_filters.h"
 #endif
@@ -25,6 +26,8 @@
 #include "tpl_as_action.h"
 #include "tpl_as_isr_kernel.h"
 #endif
+
+/* #include "Application_types.h" */
 
 /*=============================================================================
  * Definition and initialization of event related defines and structures
@@ -77,5 +80,11 @@ $SCHEDULETABLES$
  * Definition and initialization of Ready List structures
  */
 $READY_LIST$
+
+/*
+#if CRC_LEVEL > 0
+$CRC_TABLE$
+#endif
+*/
 
 /* End of file $IMPLEMENTATION$ */

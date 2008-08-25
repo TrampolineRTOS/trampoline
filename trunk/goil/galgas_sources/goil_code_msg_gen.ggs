@@ -53,6 +53,8 @@ routine generate_messages
 
     @string result := "" ;
 
+    @message_map extern_mess := messages ;
+
     # generate the code of the message objects in the
     # good order.
     foreach dests (@lstring src @ident_list d_mess) do
@@ -70,10 +72,15 @@ routine generate_messages
             @message_obj mess ;
             [!?dm popLast ?mname] ;
             [messages get !mname ?mess] ;
+            # remove from the extern message map
+            [!?extern_mess del !mname ?*] ;
             @mess_prop_obj mp := [mess messageproperty] ;
             [mp generate !p !mname !mess !messages !dests ?h_res ?i_res] ;
             result .= i_res ;
         end loop ;
+
+        # remove from the extern message map
+        [!?extern_mess del !src ?*] ;
 
         @lstring mname ;
         @message_obj mess ;
@@ -81,7 +88,14 @@ routine generate_messages
         @mess_prop_obj mp := [mess messageproperty] ;
         [mp generate !p !src !mess !messages !dests ?h_res ?i_res] ;
         result .= i_res ;
-   end foreach ;
+    end foreach ;
+
+    # generate the external messages
+    foreach extern_mess (@lstring name @message_obj mess) do
+        @mess_prop_obj mp := [mess messageproperty] ;
+        [mp generate !p !name !mess !messages !dests ?h_res ?i_res] ;
+        result .= i_res ;
+    end foreach ;
 
 #    foreach messages (@lstring name @message_obj mess) do
 #       @mess_prop_obj mp := [mess messageproperty] ;

@@ -264,6 +264,8 @@ routine generate_flags
         end cast ;
     end foreach ;
 
+#    flags .= "#define    CRC_LEVEL " . [[option goil_options. corrected_bits] string] . "\n" ;
+
     obj_header := [obj_header stringByReplacingStringByString !"$CONFIG_FLAGS$" !flags] ;
 end routine ;
 

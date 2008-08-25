@@ -236,7 +236,7 @@ list sync_strategy error message "Synchronization strategy '%K'" style keywordsS
 #
 # units for counters
 #
-list unit ! att_token error message "Unit '%K'" style keywordsStyle :
+list unit !att_token error message "Unit '%K'" style keywordsStyle :
     "TICKS",
     "NANOSECONDS" ;
 
@@ -277,7 +277,6 @@ rule "/*" :
 end rule ;
 
 #--------------------- Identifiers --------------------------
-
 $idf$ !att_token error message "identifier" style identifierStyle ;
 
 rule 'a'->'z' | 'A'->'Z' :

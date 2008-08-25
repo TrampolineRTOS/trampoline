@@ -33,6 +33,13 @@ compile "goil_routines.ggs" ;
 compile "goil_check.ggs" ;
 
 #
+# Parsing of xml files
+#
+#compile "xgoil_lexique.ggs" ;
+#compile "xgoil_syntax.ggs" ; 
+#compile "xgoil_grammar.ggs" ;
+
+#
 # Post-processing and verification
 #
 compile "goil_defaults.ggs" ;
@@ -87,6 +94,7 @@ compile "goil_target_hcs12.ggs" ;
 compile "goil_target_v850e.ggs" ;
 compile "goil_target_ppc.ggs" ;
 compile "goil_target_h8300h.ggs" ;
+compile "goil_target_arm7.ggs" ;
 compile "goil_target_avr.ggs" ;
 
 compile "goil_grammar.ggs" ;

@@ -5,6 +5,7 @@ import semantics goil_target_libpcl in "goil_target_libpcl.ggs" ;
 import semantics goil_target_hcs12 in "goil_target_hcs12.ggs" ;
 import semantics goil_target_v850e in "goil_target_v850e.ggs" ;
 import semantics goil_target_h8300h in "goil_target_h8300h.ggs" ;
+import semantics goil_target_arm7 in "goil_target_arm7.ggs" ;
 import semantics goil_target_avr in "goil_target_avr.ggs" ;
 import semantics goil_target_ppc in "goil_target_ppc.ggs" ;
 
@@ -30,6 +31,8 @@ routine init_targets_prefixes ?!@prefix_map prefix :
         init_v850e_prefixes !?prefix ;
     elsif target == "h8300h" then
         init_h8300h_prefixes !?prefix ;
+    elsif target == "arm7" then
+        init_arm7_prefixes !?prefix ;
     elsif target == "avr" then
         init_avr_prefixes !?prefix ;
     else 
@@ -92,6 +95,8 @@ routine generate_context_and_stack
       generate_target_v850e  !name !idents !p !exe !?context_and_stack ;
     elsif target == "h8300h" then
       generate_target_h8300h  !name !idents !p !exe !?context_and_stack ;
+    elsif target == "arm7" then
+      generate_target_arm7  !name !idents !p !exe !?context_and_stack ;
     elsif target == "avr" then
       generate_target_avr  !name !idents !p !exe !?context_and_stack ;
     else 
@@ -123,6 +128,8 @@ routine generate_isr_specific
       generate_isr_v850e  !isrs !p !?code;
     elsif target == "h8300h" then
       generate_isr_h8300h  !isrs !p !?code;
+    elsif target == "arm7" then
+      generate_isr_arm7  !isrs !p !?code;
     elsif target == "avr" then
       generate_isr_avr  !isrs !p !?code;
     else 
@@ -153,6 +160,8 @@ routine generate_counter_specific
       generate_counter_v850e !counters !p !?code;
     elsif target == "h8300h" then
       generate_counter_h8300h !counters !p !?code;
+    elsif target == "arm7" then
+      generate_counter_arm7 !counters !p !?code;
     elsif target == "avr" then
       generate_counter_avr !counters !p !?code;
     else 
