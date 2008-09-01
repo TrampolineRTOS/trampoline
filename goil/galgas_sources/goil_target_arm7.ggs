@@ -1,0 +1,88 @@
+#
+# @file goil_target_arm7.ggs
+#
+# @section desc File description
+#
+# Trampoline/goil code generation for Star12x target
+#
+# @section copyright Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Jean-Luc Bechennec and Mikael Briday
+# Copyright ESEO for function and data structures documentation
+# Copyright IRISA - JF Deverge for libpcl port
+# Copyright GEENSYS for Freescale s12x and NEC V850E port
+# Trampoline is protected by the French intellectual property law.
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# @section infos File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics goil_target_arm7 :
+
+import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
+import semantics goil_routines in "goil_routines.ggs" ;
+import semantics goil_types_isr in "goil_types_isr.ggs" ;
+import semantics goil_types_counter in "goil_types_counter.ggs" ;
+
+routine init_arm7_prefixes
+    ?!@prefix_map prefix
+:
+    [!?prefix insert_prefix ![@lstring new !"arm7_stack" !here]
+              !"stack_zone_of_" !"$STACK_ZONE$"] ;
+    [!?prefix insert_prefix ![@lstring new !"arm7_context" !here]
+              !"context_of_" !"$EXEC_INTEGER_CONTEXT$"] ;
+end routine ;
+
+routine generate_target_arm7
+    ?@lstring         name
+    ?@ident_map       others
+    ?@prefix_map      p
+    ?@oil_obj         unused exe
+    ?!@string         result
+:
+
+    performReplace !p !"arm7_stack" ![name string] !?result ;
+    performReplace !p !"arm7_context" ![name string] !?result ;
+
+    @uint stack_size ;
+    additional_int_key_required !"STACKSIZE" !others !name ?stack_size ;
+    result := [result stringByReplacingStringByString !"$STACK_SIZE$" ![stack_size string]] ;
+end routine ;
+
+routine generate_isr_arm7
+  ?? @isr_map    unused isrs
+  ?? @prefix_map unused p
+  ?! @string     unused code
+:
+end routine ;
+
+routine generate_counter_arm7
+  ?? @counter_map counters
+  ?? @prefix_map  p
+  ?! @string      code
+:
+  @string result := "";
+  foreach counters (@lstring counter_name @counter_obj counter) do
+    cast [counter type] :
+    when == @software_counter do
+    else
+        @string tmp;
+        retrieveTemplateString ?tmp !"counter_list_specific";
+        performReplace !p !"counter" ![counter_name string] !?tmp;
+        result .= tmp;
+    end cast ;
+  end foreach ;
+
+  code := [code stringByReplacingStringByString !"$COUNTER_LIST$" !result] ;
+end routine ;
+
+end semantics ;
