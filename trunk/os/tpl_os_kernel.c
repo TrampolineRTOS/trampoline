@@ -40,12 +40,15 @@
 #ifdef WITH_AUTOSAR
 #include "tpl_as_st_kernel.h"
 #endif
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#include "tpl_as_protec_hook.h"
+#endif
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-_STATIC_ /*@null@*/
-FUNC(P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC), OS_CODE)
+STATIC /*@null@*/
+FUNC(P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA), OS_CODE)
 tpl_get_exec_object(void);
 
 #define OS_STOP_SEC_CODE
@@ -70,7 +73,7 @@ tpl_get_exec_object(void);
  *
  * @see #idle_task
  */
-_STATIC_ VAR(tpl_exec_static, OS_VAR) idle_task_static = {
+STATIC VAR(tpl_exec_static, OS_VAR) idle_task_static = {
     /* context              */  IDLE_CONTEXT,
     /* no stack             */  IDLE_STACK,
     /* no entry point       */  NULL_PTR,
@@ -90,7 +93,7 @@ _STATIC_ VAR(tpl_exec_static, OS_VAR) idle_task_static = {
  *
  * idle task descriptor
  */
-_STATIC_ VAR(tpl_task, OS_VAR) idle_task = {
+STATIC VAR(tpl_task, OS_VAR) idle_task = {
     /*  Common members  */
     {
     /* static descriptor    */  &idle_task_static,
@@ -99,8 +102,7 @@ _STATIC_ VAR(tpl_task, OS_VAR) idle_task = {
     /* priority             */  0,
     /* state                */  RUNNING
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    /* monitor_start_date   */  ,0,
-    /* time_left            */  0
+    /* activation_allowed   */  ,TRUE
 #endif
     },
     /* task members */
@@ -124,8 +126,8 @@ _STATIC_ VAR(tpl_task, OS_VAR) idle_task = {
     that has the same beginning fields as the struct it is casted to
     This allow object oriented design and polymorphism.
 */
-P2VAR(tpl_exec_common, OS_APPL_DATA, OS_VAR) tpl_running_obj =
-    (P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC))&idle_task;
+P2VAR(tpl_exec_common, OS_VAR, OS_APPL_DATA) tpl_running_obj =
+    (P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA))&idle_task;
 
 /*  MISRA RULE 27 VIOLATION: These 2 variables are used only in this file
     but decalred in the configuration file, this is why they do not need
@@ -158,6 +160,11 @@ extern VAR(tpl_fifo_state, OS_VAR) tpl_fifo_rw[];
 #include "tpl_memmap.h"
 
 /**
+ * MISRA RULE 27 VIOLATION: This object is declared in this file but is
+ * used as external only in the file tpl_os.c
+ */
+
+/**
  * @internal
  *
  * tpl_h_prio is the index of the highest priority non empty fifo
@@ -176,7 +183,7 @@ VAR(s8, OS_VAR) tpl_h_prio = -1;
 
 VAR(u8, OS_VAR) tpl_os_state = OS_INIT; /* see doc in header file declaration */
 
-CONST(tpl_resource_id, OS_VAR) RES_SCHEDULER = RESOURCE_COUNT;
+VAR(tpl_resource_id, OS_VAR) RES_SCHEDULER = RESOURCE_COUNT;
 /* see doc in header declaration */
 
 #define OS_STOP_SEC_VAR_8BITS
@@ -262,8 +269,8 @@ FUNC(void, OS_CODE) printrl(
  *
  * @return highest priority executable object descriptor
  */
-_STATIC_ /*@null@*/
-FUNC(P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC), OS_CODE)
+STATIC /*@null@*/
+FUNC(P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA), OS_CODE)
 tpl_get_exec_object(void)
 {
     P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) elected = NULL_PTR ;
@@ -312,7 +319,7 @@ tpl_get_exec_object(void)
  */
 FUNC(void, OS_CODE)
 tpl_put_preempted_exec_object(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj)
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) exec_obj)
 {
     /*  Get the current priority of the executable object                   */
     VAR(tpl_priority, AUTOMATIC)                    prio;
@@ -361,7 +368,7 @@ tpl_put_preempted_exec_object(
  * @param exec_obj address of the executable object descriptor
  */
 FUNC(void, OS_CODE) tpl_put_new_exec_object(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj)
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) exec_obj)
 {
     /*  Get the current priority of the executable object                   */
     VAR(tpl_priority, AUTOMATIC)    prio;
@@ -402,14 +409,16 @@ FUNC(void, OS_CODE) tpl_put_new_exec_object(
 #else /* WITH_POWEROF2QUEUE */
 
 #ifdef WITH_DOW
-/*
- */
+/* MISRA RULE 13 VIOLATION: this function is only used for debug purpose,
+   so production release is not impacted by MISRA rules violated
+   in this function
+*/
 FUNC(void, OS_CODE) printrl(
-    P2VAR(char, OS_APPL_DATA, AUTOMATIC) msg)
+    P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
 {
     int i,j;
     tpl_exec_common **level;
-    u8 size;
+    int size;
 
     printf("%s - Highest: %d\n",msg,tpl_h_prio);
     for (i = 0; i < PRIO_LEVEL_COUNT; i++)
@@ -443,8 +452,8 @@ FUNC(void, OS_CODE) printrl(
  *
  * @return highest priority executable object descriptor
  */
-_STATIC_ /*@null@*/
-FUNC(P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC), OS_CODE)
+STATIC /*@null@*/
+FUNC(P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA), OS_CODE)
 tpl_get_exec_object(void)
 {
     P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) elected = NULL_PTR ;
@@ -497,11 +506,11 @@ tpl_get_exec_object(void)
  */
 FUNC(void, OS_CODE)
 tpl_put_preempted_exec_object(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj)
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) exec_obj)
 {
     /*  Get the current priority of the executable object                   */
     VAR(tpl_priority, AUTOMATIC)                    prio;
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) *fifo;
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) *fifo;
     VAR(u8, AUTOMATIC)                              write_idx;
 
     DOW_DO(printrl("tpl_put_prempted_exec_object - avant");)
@@ -554,7 +563,7 @@ FUNC(void, OS_CODE) tpl_put_new_exec_object(
 {
     /*  Get the current priority of the executable object                   */
     VAR(tpl_priority, AUTOMATIC)    prio;
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) *fifo;
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) *fifo;
     VAR(u8, AUTOMATIC)              write_idx;
 
     DOW_DO(printrl("tpl_put_new_exec_object - avant");)
@@ -602,9 +611,9 @@ FUNC(void, OS_CODE) tpl_put_new_exec_object(
  * @param task task from which internal resource is got
  */
 FUNC(void, OS_CODE) tpl_get_internal_resource(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) a_task)
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) a_task)
 {
-    P2VAR(tpl_internal_resource, OS_APPL_DATA, AUTOMATIC) rez =
+    P2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
         a_task->static_desc->internal_resource;
 
     if ((rez != NULL_PTR) && (rez->taken == FALSE))
@@ -623,9 +632,9 @@ FUNC(void, OS_CODE) tpl_get_internal_resource(
  * @param task task from which internal resource is released
  */
 FUNC(void, OS_CODE) tpl_release_internal_resource(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) a_task)
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) a_task)
 {
-    P2VAR(tpl_internal_resource, OS_APPL_DATA, AUTOMATIC) rez =
+    P2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
         a_task->static_desc->internal_resource;
 
     if ((rez != NULL_PTR) && (rez->taken == TRUE))
@@ -648,7 +657,7 @@ FUNC(void, OS_CODE) tpl_release_internal_resource(
  */
 FUNC(void, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
 {
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) old_running_obj;
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) old_running_obj;
 
     /*  the tpl_running_obj is never NULL and may be in 3 states
         - RUNNING:      if the running object is in the RUNNING state and
@@ -665,9 +674,9 @@ FUNC(void, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
 
     tpl_bool schedule =
         (tpl_h_prio != -1) &&
-        (((state & 0x3) == 0x3) ||    /*  DYING, WAITING or RESURRECT */
-         (state == (tpl_exec_state)RUNNING &&
-          tpl_h_prio > tpl_running_obj->priority));
+            (((state & 0x3) == 0x3) ||    /*  DYING, WAITING or RESURRECT */
+            (state == (tpl_exec_state)RUNNING &&
+            tpl_h_prio > tpl_running_obj->priority));
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
    tpl_check_stack (tpl_running_obj);
@@ -694,31 +703,16 @@ FUNC(void, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
             tpl_put_preempted_exec_object(tpl_running_obj);
             #ifdef WITH_AUTOSAR_TIMING_PROTECTION
             /*
-             * pause the budget monitor for a task
+             * pause the budget monitor
              */
-            if (tpl_running_obj->static_desc->type != IS_ROUTINE)
-            {
-              tpl_pause_budget_monitor (tpl_running_obj);
-            }
+            tpl_pause_budget_monitor(tpl_running_obj);
             #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
         }
         else
         {
             #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-            if (tpl_running_obj->static_desc->type != IS_ROUTINE)
-            {
-              /* pause the budget monitoring when a task has ended
-               * FIXME : should we pause or finish the budget
-               * monitor in the case a task terminates before
-               * the end of the timeframe ?
-               */
-              tpl_pause_budget_monitor (tpl_running_obj);
-            }
-            else
-            {
-              /* when an ISR2 ends, check for execution time */
-              tpl_finish_exectime_monitor (tpl_running_obj);
-            }
+            /* pause the budget monitoring when a task has ended        */
+            tpl_stop_budget_monitor(tpl_running_obj);
             #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
             /*  the task loses the CPU because it has been put in the
@@ -767,31 +761,18 @@ FUNC(void, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
         if (tpl_running_obj->state == READY_AND_NEW)
         {
             /*  the object has not be preempted. So its
-                descriptor must be initialized              */
+                descriptor must be initialized                          */
             tpl_init_exec_object(tpl_running_obj);
             #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-            if (tpl_running_obj->static_desc->type != IS_ROUTINE)
-            {
-              /* start the budget monitor for the activated task */
-              tpl_start_budget_monitor (tpl_running_obj);
-            }
-            else
-            {
-              /* add an activation count for the ISR2 and starts the
-               * execution time monitor */
-              tpl_add_activation_count (tpl_running_obj);
-              tpl_start_exectime_monitor (tpl_running_obj);
-            }
+            /* start the budget monitor for the activated task          */
+            tpl_start_budget_monitor(tpl_running_obj);
             #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
         }
         else
         {
-          #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-          if (tpl_running_obj->static_desc->type != IS_ROUTINE)
-          {
+            #ifdef WITH_AUTOSAR_TIMING_PROTECTION
             tpl_continue_budget_monitor (tpl_running_obj);
-          }
-          #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+            #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
         }
         /*  the inserted task become RUNNING                */
         tpl_running_obj->state = RUNNING;
@@ -809,7 +790,7 @@ FUNC(void, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
             This allow object oriented design and polymorphism.
         */
         if (tpl_running_obj ==
-            (P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC))&idle_task)
+            (P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA))&idle_task)
         {
             tpl_os_state = OS_IDLE;
         }
@@ -830,14 +811,14 @@ FUNC(void, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
                 /*  The old running object is not in a DYING or
                     RESSURECT state */
                 tpl_switch_context(
-                    &(old_running_obj->static_desc->context),
-                    &(tpl_running_obj->static_desc->context));
+                    (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(old_running_obj->static_desc->context),
+                    (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(tpl_running_obj->static_desc->context));
             }
             else
             {
                 tpl_switch_context(
                     NULL_PTR,
-                    &(tpl_running_obj->static_desc->context));
+                    (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(tpl_running_obj->static_desc->context));
             }
         }
         else
@@ -847,14 +828,14 @@ FUNC(void, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
                 /*  The old running object is not in a DYING or
                     RESSURECT state */
                 tpl_switch_context_from_it(
-                    &(old_running_obj->static_desc->context),
-                    &(tpl_running_obj->static_desc->context));
+                    (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(old_running_obj->static_desc->context),
+                    (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(tpl_running_obj->static_desc->context));
             }
             else
             {
                 tpl_switch_context_from_it(
                     NULL_PTR,
-                    &(tpl_running_obj->static_desc->context));
+                    (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(tpl_running_obj->static_desc->context));
             }
         }
     }
@@ -874,10 +855,10 @@ FUNC(void, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
  */
 FUNC(void, OS_CODE) tpl_schedule_from_running(CONST(u8, AUTOMATIC) from)
 {
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) old_running_obj = NULL;
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) old_running_obj = NULL_PTR;
 
     /*  the tpl_running_obj is never NULL and is in the state RUNNING  */
-    DOW_ASSERT(tpl_running_obj != NULL)
+    DOW_ASSERT(tpl_running_obj != NULL_PTR)
     DOW_ASSERT(tpl_running_obj->state == RUNNING)
     DOW_ASSERT(tpl_h_prio != -1)
 
@@ -905,12 +886,9 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CONST(u8, AUTOMATIC) from)
 
         #ifdef WITH_AUTOSAR_TIMING_PROTECTION
         /*
-         * pause the budget monitor for a task
+         * pause the budget monitor
          */
-        if (tpl_running_obj->static_desc->type != IS_ROUTINE)
-        {
-          tpl_pause_budget_monitor (tpl_running_obj);
-        }
+        tpl_pause_budget_monitor (tpl_running_obj);
         #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
 
@@ -923,27 +901,14 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CONST(u8, AUTOMATIC) from)
                 descriptor must be initialized              */
             tpl_init_exec_object(tpl_running_obj);
             #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-            if (tpl_running_obj->static_desc->type != IS_ROUTINE)
-            {
-              /* start the budget monitor for the activated task */
-              tpl_start_budget_monitor (tpl_running_obj);
-            }
-            else
-            {
-              /* add an activation count for the ISR2 and starts the
-               * execution time monitor */
-              tpl_add_activation_count (tpl_running_obj);
-              tpl_start_exectime_monitor (tpl_running_obj);
-            }
+            /* start the budget monitor for the activated task or isr */
+            tpl_start_budget_monitor(tpl_running_obj);
             #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
         }
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
         else
         {
-            if (tpl_running_obj->static_desc->type != IS_ROUTINE)
-            {
-                tpl_continue_budget_monitor (tpl_running_obj);
-            }
+            tpl_continue_budget_monitor(tpl_running_obj);
         }
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
@@ -973,14 +938,14 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CONST(u8, AUTOMATIC) from)
         if( from == FROM_TASK_LEVEL )
         {
             tpl_switch_context(
-                &(old_running_obj->static_desc->context),
-                &(tpl_running_obj->static_desc->context));
+                (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(old_running_obj->static_desc->context),
+                (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(tpl_running_obj->static_desc->context));
         }
         else
         {
             tpl_switch_context_from_it(
-                &(old_running_obj->static_desc->context),
-                &(tpl_running_obj->static_desc->context));
+                (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(old_running_obj->static_desc->context),
+                (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(tpl_running_obj->static_desc->context));
         }
     }
 }
@@ -1005,7 +970,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
     tpl_exec_state state = tpl_running_obj->state;
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
-    tpl_check_stack (tpl_running_obj);
+    tpl_check_stack(tpl_running_obj);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
     /*  a task switch will occur. It is time to call the
@@ -1013,29 +978,14 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
     CALL_POST_TASK_HOOK()
 
     #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    if (tpl_running_obj->static_desc->type != IS_ROUTINE)
-    {
-      /* pause the budget monitoring when a task has ended
-       * FIXME : should we pause or finish the budget
-       * monitor in the case a task terminates before
-       * the end of the timeframe ?
-       */
-      tpl_pause_budget_monitor (tpl_running_obj);
-    }
-    else
-    {
-      /* when an ISR2 ends, check for execution time */
-      tpl_finish_exectime_monitor (tpl_running_obj);
-    }
+    /* pause the budget monitoring when a running obj has ended */
+    tpl_stop_budget_monitor (tpl_running_obj);
     #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
     /*  the task loses the CPU because it has been put in the
         WAITING or in the DYING state, its internal resource
         is released.                                            */
     tpl_release_internal_resource(tpl_running_obj);
-
-
-
 
     if (state == (tpl_exec_state)RESURRECT)
     {
@@ -1091,35 +1041,21 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
 
 
 
-    if( (tpl_running_obj->state == READY_AND_NEW)
-      ||(tpl_running_obj->state == RESURRECT) )
+    if (tpl_running_obj->state == READY_AND_NEW)
     {
         /*  the object has not be preempted. So its
             descriptor must be initialized              */
         tpl_init_exec_object(tpl_running_obj);
         #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-        if (tpl_running_obj->static_desc->type != IS_ROUTINE)
-        {
-          /* start the budget monitor for the activated task */
-          tpl_start_budget_monitor (tpl_running_obj);
-        }
-        else
-        {
-          /* add an activation count for the ISR2 and starts the
-           * execution time monitor */
-          tpl_add_activation_count (tpl_running_obj);
-          tpl_start_exectime_monitor (tpl_running_obj);
-        }
+        /* start the budget monitor for the activated task or isr */
+        tpl_start_budget_monitor(tpl_running_obj);
         #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
     }
     else
     {
-      #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-      if (tpl_running_obj->static_desc->type != IS_ROUTINE)
-      {
-        tpl_continue_budget_monitor (tpl_running_obj);
-      }
-      #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+        #ifdef WITH_AUTOSAR_TIMING_PROTECTION
+        tpl_continue_budget_monitor(tpl_running_obj);
+        #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
     }
     /*  the inserted task become RUNNING                */
     tpl_running_obj->state = RUNNING;
@@ -1137,7 +1073,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
         This allow object oriented design and polymorphism.
     */
     if (tpl_running_obj ==
-        (P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC))&idle_task)
+        (P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA))&idle_task)
     {
         tpl_os_state = OS_IDLE;
     }
@@ -1153,8 +1089,8 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
 
     /*  Switch the context  */
     tpl_switch_context(
-        NULL,
-        &(tpl_running_obj->static_desc->context));
+        NULL_PTR,
+        (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(tpl_running_obj->static_desc->context));
 
 }
 
@@ -1170,10 +1106,10 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
  */
 FUNC(void, OS_CODE) tpl_schedule_from_idle(void)
 {
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) old_running_obj;
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) old_running_obj;
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
-    tpl_check_stack (tpl_running_obj);
+    tpl_check_stack(tpl_running_obj);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
     /*  save the old running task for context switching */
@@ -1187,15 +1123,6 @@ FUNC(void, OS_CODE) tpl_schedule_from_idle(void)
     tpl_running_obj->state = (tpl_exec_state)READY;
 
     tpl_put_preempted_exec_object(tpl_running_obj);
-    #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    /*
-     * pause the budget monitor for a task
-     */
-    if (tpl_running_obj->static_desc->type != IS_ROUTINE)
-    {
-      tpl_pause_budget_monitor (tpl_running_obj);
-    }
-    #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
     /*  get the ready task from the ready task list                 */
     tpl_running_obj = tpl_get_exec_object();
@@ -1208,28 +1135,15 @@ FUNC(void, OS_CODE) tpl_schedule_from_idle(void)
             descriptor must be initialized              */
         tpl_init_exec_object(tpl_running_obj);
         #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-        if (tpl_running_obj->static_desc->type != IS_ROUTINE)
-        {
-          /* start the budget monitor for the activated task */
-          tpl_start_budget_monitor (tpl_running_obj);
-        }
-        else
-        {
-          /* add an activation count for the ISR2 and starts the
-           * execution time monitor */
-          tpl_add_activation_count (tpl_running_obj);
-          tpl_start_exectime_monitor (tpl_running_obj);
-        }
+        /* start the budget monitor for the activated task */
+        tpl_start_budget_monitor(tpl_running_obj);
         #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
     }
     else
     {
-      #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-      if (tpl_running_obj->static_desc->type != IS_ROUTINE)
-      {
+        #ifdef WITH_AUTOSAR_TIMING_PROTECTION
         tpl_continue_budget_monitor (tpl_running_obj);
-      }
-      #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+        #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
     }
 
     /*  the inserted task become RUNNING                */
@@ -1255,8 +1169,8 @@ FUNC(void, OS_CODE) tpl_schedule_from_idle(void)
 
     /*  Switch the context  */
     tpl_switch_context_from_it(
-        &(old_running_obj->static_desc->context),
-        &(tpl_running_obj->static_desc->context));
+        (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(old_running_obj->static_desc->context),
+        (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(tpl_running_obj->static_desc->context));
 
 }
 
@@ -1271,10 +1185,10 @@ FUNC(void, OS_CODE) tpl_schedule_from_idle(void)
  */
 FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
 {
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) old_running_obj;
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) old_running_obj;
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
-   tpl_check_stack (tpl_running_obj);
+   tpl_check_stack(tpl_running_obj);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
     /*  save the old running task for context switching */
@@ -1285,12 +1199,8 @@ FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
     CALL_POST_TASK_HOOK()
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    /* pause the budget monitoring when a task has ended
-     * FIXME : should we pause or finish the budget
-     * monitor in the case a task terminates before
-     * the end of the timeframe ?
-     */
-    tpl_pause_budget_monitor (tpl_running_obj);
+    /* pause the budget monitoring when a task has ended */
+    tpl_pause_budget_monitor(tpl_running_obj);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
     /*  the task loses the CPU because it has been put in the
@@ -1307,29 +1217,17 @@ FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
         /*  the object has not be preempted. So its
             descriptor must be initialized              */
         tpl_init_exec_object(tpl_running_obj);
+        
         #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-        if (tpl_running_obj->static_desc->type != IS_ROUTINE)
-        {
-          /* start the budget monitor for the activated task */
-          tpl_start_budget_monitor (tpl_running_obj);
-        }
-        else
-        {
-          /* add an activation count for the ISR2 and starts the
-           * execution time monitor */
-          tpl_add_activation_count (tpl_running_obj);
-          tpl_start_exectime_monitor (tpl_running_obj);
-        }
+        /* start the budget monitor for the activated task */
+        tpl_start_budget_monitor (tpl_running_obj);
         #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
     }
     else
     {
-      #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-      if (tpl_running_obj->static_desc->type != IS_ROUTINE)
-      {
+        #ifdef WITH_AUTOSAR_TIMING_PROTECTION
         tpl_continue_budget_monitor (tpl_running_obj);
-      }
-      #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+        #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
     }
     /*  the inserted task become RUNNING                */
     tpl_running_obj->state = RUNNING;
@@ -1347,7 +1245,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
         This allow object oriented design and polymorphism.
     */
     if (tpl_running_obj ==
-        (P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC))&idle_task)
+        (P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA))&idle_task)
     {
         tpl_os_state = OS_IDLE;
     }
@@ -1362,8 +1260,8 @@ FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
     /*  Switch the context  */
 
     tpl_switch_context(
-        &(old_running_obj->static_desc->context),
-        &(tpl_running_obj->static_desc->context));
+        (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(old_running_obj->static_desc->context),
+        (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(tpl_running_obj->static_desc->context));
 
 }
 
@@ -1381,39 +1279,53 @@ FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
  * @param task reference of the task's identifier
  */
 FUNC(tpl_status, OS_CODE) tpl_activate_task(
-    P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC) a_task)
+    P2VAR(tpl_task, AUTOMATIC, OS_APPL_DATA) a_task)
 {
     VAR(tpl_status, AUTOMATIC)              result = E_OS_LIMIT;
     VAR(tpl_activate_counter, AUTOMATIC)    count = a_task->exec_desc.activate_count;
 
-    if (count < a_task->exec_desc.static_desc->max_activate_count)
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    /* if this is the first activation in the time frame */
+    if(a_task->exec_desc.activation_allowed == TRUE)
     {
-        if (count == 0)
+#endif
+        if (count < a_task->exec_desc.static_desc->max_activate_count)
         {
-            if (a_task->exec_desc.static_desc->type == TASK_EXTENDED)
+            if (count == 0)
             {
-                /*  if the task is an extended one, it is inited now        */
-                a_task->exec_desc.state = (tpl_exec_state)READY;
-                tpl_init_exec_object(&a_task->exec_desc);
+                if (a_task->exec_desc.static_desc->type == TASK_EXTENDED)
+                {
+                    /*  if the task is an extended one, it is inited now        */
+                    a_task->exec_desc.state = (tpl_exec_state)READY;
+                    tpl_init_exec_object(&a_task->exec_desc);
+                }
+                else
+                {
+                    /*  if it is a basic task, its initialization
+                        is postponed to the time it will get the CPU            */
+                    a_task->exec_desc.state = (tpl_exec_state)READY_AND_NEW;
+                }
             }
-            else
-            {
-                /*  if it is a basic task, its initialization
-                    is postponed to the time it will get the CPU            */
-                a_task->exec_desc.state = (tpl_exec_state)READY_AND_NEW;
-            }
+            /*  put it in the list  */
+            tpl_put_new_exec_object(&(a_task->exec_desc));
+            /*  inc the task activation count. When the task will terminate
+                it will dec this count and if not zero it will be reactivated   */
+            a_task->exec_desc.activate_count++;
+
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+            tpl_start_timeframe(&(a_task->exec_desc));
+#endif
+
             result = (tpl_status)E_OK_AND_SCHEDULE;
         }
-        else
-        {
-            result = (tpl_status)E_OK;
-        }
-        /*  put it in the list                                              */
-        tpl_put_new_exec_object(&(a_task->exec_desc));
-        /*  inc the task activation count.                                  */
-        a_task->exec_desc.activate_count++;
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
     }
-
+    else
+    {
+        result = (tpl_status)E_OS_PROTECTION_TIME;
+        tpl_call_protection_hook(E_OS_PROTECTION_TIME);
+    }
+#endif
     return result;
 }
 
@@ -1426,7 +1338,7 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
  * @param incoming_event    Event mask
  */
 FUNC(tpl_status, OS_CODE) tpl_set_event(
-    P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC)  a_task,
+    P2VAR(tpl_task, AUTOMATIC, OS_APPL_DATA)  a_task,
     CONST(tpl_event_mask, AUTOMATIC)          incoming_event)
 {
     VAR(tpl_status, AUTOMATIC) result = E_OK;
@@ -1445,19 +1357,36 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
             /*  anyway check it is in the WAITING state     */
             if (a_task->exec_desc.state == (tpl_exec_state)WAITING)
             {
-                /*  set the state to READY  */
-                a_task->exec_desc.state = (tpl_exec_state)READY;
-                /*  put the task in the READY list          */
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+                if(a_task->exec_desc.activation_allowed==TRUE)
+                {
+#endif
+                    /*  set the state to READY  */
+                    a_task->exec_desc.state = (tpl_exec_state)READY;
+                    /*  put the task in the READY list          */
 
-                /*  MISRA RULE 45 VIOLATION: the original pointer points to
-                    a struct that has the same beginning fields as the struct
-                    it is casted to. This allow object oriented design and
-                    polymorphism.
-                */
-                tpl_put_new_exec_object(
-                    (P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC))a_task);
-                /*  notify a scheduling needs to be done    */
-                result = (tpl_status)E_OK_AND_SCHEDULE;
+                    /*  MISRA RULE 45 VIOLATION: the original pointer points to
+                        a struct that has the same beginning fields as the
+                        struct it is casted to. This allow object oriented
+                        design and polymorphism.
+                    */
+                    tpl_put_new_exec_object(
+                        (P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC))a_task);
+
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+                    tpl_start_timeframe(&(a_task->exec_desc));
+#endif
+
+                    /*  notify a scheduling needs to be done    */
+                    result = (tpl_status)E_OK_AND_SCHEDULE;
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+                }
+                else
+                {
+                    tpl_call_protection_hook(E_OS_PROTECTION_TIME);
+                    result = (tpl_status)E_OS_PROTECTION_TIME;
+                }
+#endif
             }
         }
     }
@@ -1482,7 +1411,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
  * @param exec_obj address of the executable object descriptor
  */
 FUNC(void, OS_CODE) tpl_init_exec_object(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj)
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) exec_obj)
 {
     /*  The priority is set to the base priority of the executable object    */
     exec_obj->priority = exec_obj->static_desc->base_priority;
@@ -1498,8 +1427,8 @@ FUNC(void, OS_CODE) tpl_init_exec_object(
             that has the same beginning fields as the struct it is casted to
             This allow object oriented design and polymorphism.
         */
-        ((P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC))exec_obj)->evt_set =
-            ((P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC))exec_obj)->evt_wait = 0;
+        ((P2VAR(tpl_task, AUTOMATIC, OS_APPL_DATA))exec_obj)->evt_set =
+            ((P2VAR(tpl_task, AUTOMATIC, OS_APPL_DATA))exec_obj)->evt_wait = 0;
     }
 }
 
@@ -1513,19 +1442,19 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
     VAR(u16, AUTOMATIC) i;
     VAR(tpl_status, AUTOMATIC) result;
 #ifndef NO_ALARM
-    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) auto_time_obj;
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
 #endif
 
 #ifdef WITH_AUTOSAR
     #ifdef NO_ALARM
         #ifndef NO_SCHEDTABLE
-    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) auto_time_obj;
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
         #endif
     #endif
 #endif
 
 #ifndef NO_TASK
-    P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC) auto_task;
+    P2VAR(tpl_task, AUTOMATIC, OS_APPL_DATA) auto_task;
 
     /*  Look for autostart tasks    */
 
@@ -1545,7 +1474,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 
     for (i = 0; i < ALARM_COUNT; i++)
     {
-        auto_time_obj = (P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC))tpl_alarm_table[i];
+        auto_time_obj = (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_alarm_table[i];
         if (auto_time_obj->state == (tpl_time_obj_state)ALARM_AUTOSTART)
         {
             auto_time_obj->state = ALARM_ACTIVE;
@@ -1559,7 +1488,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 
     for (i = 0; i < SCHEDTABLE_COUNT; i++)
     {
-        auto_time_obj = (P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC))tpl_schedtable_table[i];
+        auto_time_obj = (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_schedtable_table[i];
         if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART)
         {
             auto_time_obj->state = SCHEDULETABLE_RUNNING;

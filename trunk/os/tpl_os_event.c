@@ -1,24 +1,36 @@
-/*
+/**
+ * @file tpl_os_event.c
+ *
+ * @section desc File description
+ *
+ * Trampoline Event Management implementation file
+ *
+ * @section copyright Copyright
+ *
  * Trampoline OS
  *
- * Trampoline is copyright (c) IRCCyN 2005+
+ * Trampoline is copyright (c) IRCCyN 2005-2007
+ * Copyright ESEO for function and data structures documentation
  * Trampoline is protected by the French intellectual property law.
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
- * Trampoline Event Management implementation file
+ * @section infos File informations
  *
  * $Date$
  * $Rev$
  * $Author$
  * $URL$
- *
  */
 
 #include "tpl_os.h"
 #include "tpl_os_error.h"
 #include "tpl_os_kernel.h"
 #include "tpl_machine_interface.h"
+
+#ifdef WITH_AUTOSAR
+#include "tpl_as_isr.h"
+#endif
 
 #include "tpl_os_event.h"
 
@@ -33,6 +45,9 @@ FUNC(StatusType, OS_CODE) SetEvent(
     CONST(EventMaskType, AUTOMATIC) event)
 {
     VAR(StatusType, AUTOMATIC) result = E_OK;
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
 
     LOCK_WHEN_HOOK()
 
@@ -79,6 +94,9 @@ FUNC(StatusType, OS_CODE) ClearEvent(
 {
     VAR(StatusType, AUTOMATIC) result = E_OK;
 
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
+
     LOCK_WHEN_HOOK()
 
     STORE_SERVICE(OSServiceId_ClearEvent)
@@ -119,6 +137,9 @@ FUNC(StatusType, OS_CODE) GetEvent(
 {
     VAR(StatusType, AUTOMATIC) result = E_OK;
 
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
+
     LOCK_WHEN_HOOK()
 
     STORE_SERVICE(OSServiceId_GetEvent)
@@ -154,6 +175,9 @@ FUNC(StatusType, OS_CODE) WaitEvent(
 {
     VAR(StatusType, AUTOMATIC) result = E_OK;
 
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
+
     LOCK_WHEN_HOOK()
 
     STORE_SERVICE(OSServiceId_WaitEvent)
@@ -175,14 +199,14 @@ FUNC(StatusType, OS_CODE) WaitEvent(
         that has the same beginning fields as the struct it is casted to
         This allow object oriented design and polymorphism.
     */
-    ((P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC))tpl_running_obj)->evt_wait = event;
+    ((P2VAR(tpl_task, AUTOMATIC, OS_APPL_DATA))tpl_running_obj)->evt_wait = event;
     /*  check one of the event to wait is not already set       */
 
     /*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
         that has the same beginning fields as the struct it is casted to
         This allow object oriented design and polymorphism.
     */
-    if ((((P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC))tpl_running_obj)->evt_set & event) == 0)
+    if ((((P2VAR(tpl_task, AUTOMATIC, OS_APPL_DATA))tpl_running_obj)->evt_set & event) == 0)
     {
         /*  no one is set, the task goes in the WAITING state   */
         tpl_running_obj->state = WAITING;

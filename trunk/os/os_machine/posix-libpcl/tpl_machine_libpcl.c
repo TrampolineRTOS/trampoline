@@ -36,63 +36,113 @@
 
 tpl_context idle_task_context = 0;
 
+
+volatile static u32 tpl_locking_depth = 0;
+
+#ifdef WITH_AUTOSAR
+STATIC VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;
+STATIC VAR(u32, OS_VAR) tpl_cpt_user_task_lock = 0;
+STATIC VAR(u32, OS_VAR) tpl_cpt_os_task_lock = 0;
+#endif
+
+#ifdef WITH_AUTOSAR
+#define OS_START_SEC_CODE
+#include "Memmap.h"
+FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
+{
+    VAR(tpl_bool, AUTOMATIC) result;
+
+    if( (TRUE == tpl_user_task_lock) || (tpl_cpt_user_task_lock > 0) )
+    {
+        result = TRUE;
+    }
+    else
+    {
+        result = FALSE;
+    }
+
+    return result;
+}
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
+#endif
+
+/*******************************************************************************
+** Function name: tpl_reset_interrupt_lock_status
+** Description: this function reset the status of interrupt lock by user
+** Parameter : None
+** Return value:  None
+** Remarks:
+*******************************************************************************/
+#ifdef WITH_AUTOSAR
+#define OS_START_SEC_CODE
+#include "Memmap.h"
+FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
+{
+  tpl_user_task_lock = FALSE;
+
+  tpl_cpt_user_task_lock = 0;
+
+  tpl_locking_depth = tpl_cpt_os_task_lock;
+}
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
+#endif
+
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-static tpl_watchdog_expire_function tpl_watchdog_callback;
+
+FUNC(void, OS_CODE) tpl_watchdog_callback(void)
+{
+}
 
 static struct timeval startup_time;
 
 tpl_time tpl_get_local_current_date ()
 {
-  struct timeval time;
-  tpl_time result;
+    struct timeval time;
+    tpl_time result;
   
-  gettimeofday (&time, NULL);
-  result = ((time.tv_sec - startup_time.tv_sec) % 2000) * (1000 * 1000) + 
-     (time.tv_usec - startup_time.tv_usec);
+    gettimeofday (&time, NULL);
+    result = ((time.tv_sec - startup_time.tv_sec) % 2000) * (1000 * 1000) + 
+        (time.tv_usec - startup_time.tv_usec);
   
-  return result;
+    return result;
 }
 
-void tpl_set_watchdog (tpl_time delay, tpl_watchdog_expire_function function)
+void tpl_set_watchdog (tpl_time delay)
 {
-  struct itimerval timer;
+    struct itimerval timer;
   
-  /* prepare callback reference */
-  tpl_watchdog_callback = function;
-  
-  /* configure and start the timer */
-  timer.it_value.tv_sec = delay / (1000 * 1000);
-  timer.it_value.tv_usec = delay % (1000 * 1000);
-  timer.it_interval.tv_sec = delay / (1000 * 1000);
-  timer.it_interval.tv_usec = delay % (1000 * 1000);
-  setitimer (ITIMER_REAL, &timer, NULL);
+    /* configure and start the timer */
+    timer.it_value.tv_sec = delay / (1000 * 1000);
+    timer.it_value.tv_usec = delay % (1000 * 1000);
+    timer.it_interval.tv_sec = delay / (1000 * 1000);
+    timer.it_interval.tv_usec = delay % (1000 * 1000);
+    setitimer (ITIMER_REAL, &timer, NULL);
 }
 
-void tpl_cancel_watchdog ()
+void tpl_cancel_watchdog(void)
 {
-  struct itimerval timer;
+    struct itimerval timer;
   
-  /* remove the callback */
-  tpl_watchdog_callback = NULL;
-  
-  /* disable the timer */
-  timer.it_value.tv_sec = 0;
-  timer.it_value.tv_usec = 0;
-  timer.it_interval.tv_sec = 1;
-  timer.it_interval.tv_usec = 0;
-  setitimer (ITIMER_REAL, &timer, NULL);
+    /* disable the timer */
+    timer.it_value.tv_sec = 0;
+    timer.it_value.tv_usec = 0;
+    timer.it_interval.tv_sec = 1;
+    timer.it_interval.tv_usec = 0;
+    setitimer (ITIMER_REAL, &timer, NULL);
 }
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
-u8 tpl_check_stack_pointer (tpl_exec_common *this_exec_obj)
+u8 tpl_check_stack_pointer(const tpl_exec_common *this_exec_obj)
 {
-  return 1;
+    return 1;
 }
 
-u8 tpl_check_stack_footprint (tpl_exec_common *this_exec_obj)
+u8 tpl_check_stack_footprint(const tpl_exec_common *this_exec_obj)
 {
-  return 1;
+    return 1;
 }
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
@@ -104,7 +154,7 @@ u8 tpl_check_stack_footprint (tpl_exec_common *this_exec_obj)
 	extern int signal_for_isr_id[ISR_COUNT];
 #endif
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-  const int signal_for_watchdog = SIGALRM;
+    const int signal_for_watchdog = SIGALRM;
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 #if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
 	const int signal_for_counters = SIGUSR2;
@@ -123,7 +173,6 @@ sigset_t    signal_set;
 void tpl_call_counter_tick();
 
 
-volatile static u32 tpl_locking_depth = 0;
 static sigset_t tpl_saved_state;
 /**
  * Enable all interrupts
@@ -139,8 +188,13 @@ void EnableAllInterrupts(void)
         perror("EnableAllInterrupts failed");
         exit(-1);
     }
+
+#ifdef WITH_AUTOSAR
+    tpl_user_task_lock = FALSE;
+#endif
+
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    tpl_disable_all_isr_lock_monitor (tpl_running_obj);
+    tpl_stop_all_isr_lock_monitor (tpl_running_obj);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 
@@ -158,6 +212,11 @@ void DisableAllInterrupts(void)
         perror("DisableAllInterrupts failed");
         exit(-1);
     }
+
+#ifdef WITH_AUTOSAR
+    tpl_user_task_lock = TRUE;
+#endif
+
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     tpl_start_all_isr_lock_monitor (tpl_running_obj);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
@@ -172,8 +231,15 @@ void DisableAllInterrupts(void)
  */
 void ResumeAllInterrupts(void)
 {
-    tpl_locking_depth--;
+    if (tpl_locking_depth > 0)
+    {
+        tpl_locking_depth--;
     
+#ifdef WITH_AUTOSAR
+        tpl_cpt_user_task_lock--;
+#endif
+    }
+
     if (tpl_locking_depth == 0)
     {
         if (sigprocmask(SIG_UNBLOCK,&signal_set,NULL) == -1)
@@ -182,7 +248,7 @@ void ResumeAllInterrupts(void)
             exit(-1);
         }
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-        tpl_disable_all_isr_lock_monitor (tpl_running_obj);
+        tpl_stop_all_isr_lock_monitor (tpl_running_obj);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
     }
 }
@@ -204,10 +270,15 @@ void SuspendAllInterrupts(void)
     
     
     tpl_locking_depth++;
+
+#ifdef WITH_AUTOSAR
+    tpl_cpt_user_task_lock++;
+#endif
+
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     if (tpl_locking_depth == 1)
     {
-      tpl_start_all_isr_lock_monitor (tpl_running_obj);
+        tpl_start_all_isr_lock_monitor (tpl_running_obj);
     }
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
@@ -221,7 +292,14 @@ void SuspendAllInterrupts(void)
  */
 void ResumeOSInterrupts(void)
 {
-    tpl_locking_depth--;
+    if (tpl_locking_depth > 0)
+    {
+        tpl_locking_depth--;
+
+#ifdef WITH_AUTOSAR
+        tpl_cpt_user_task_lock--;
+#endif
+    }
     
     if (tpl_locking_depth == 0)
     {
@@ -231,7 +309,7 @@ void ResumeOSInterrupts(void)
             exit(-1);
         }
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-        tpl_disable_os_isr_lock_monitor (tpl_running_obj);
+        tpl_stop_os_isr_lock_monitor(tpl_running_obj);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
     }
 }
@@ -252,6 +330,11 @@ void SuspendOSInterrupts(void)
     }
     
     tpl_locking_depth++;
+
+#ifdef WITH_AUTOSAR
+    tpl_cpt_user_task_lock++;
+#endif
+
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     if (tpl_locking_depth == 1)
     {
@@ -281,18 +364,14 @@ void tpl_signal_handler(int sig)
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     if (sig == SIGALRM)
     {
-      /* disable the interval timer (one shot) */
-      timer.it_value.tv_sec = 0;
-      timer.it_value.tv_usec = 0;
-      timer.it_interval.tv_sec = 1;
-      timer.it_interval.tv_usec = 0;
-      setitimer (ITIMER_REAL, &timer, NULL);
+        /* disable the interval timer (one shot) */
+        timer.it_value.tv_sec = 0;
+        timer.it_value.tv_usec = 0;
+        timer.it_interval.tv_sec = 1;
+        timer.it_interval.tv_usec = 0;
+        setitimer (ITIMER_REAL, &timer, NULL);
       
-      if (tpl_watchdog_callback != NULL)
-      {
-        if (tpl_watchdog_callback ())
-          tpl_schedule((u8)FROM_IT_LEVEL);
-      }
+        tpl_watchdog_callback();
     }    
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 #ifndef NO_ISR
@@ -365,6 +444,10 @@ void tpl_get_task_lock(void)
     }
     x++;
     tpl_locking_depth++;
+
+#ifdef WITH_AUTOSAR
+    tpl_cpt_os_task_lock++;
+#endif
     
     if (x > 1) printf("** lock ** X=%d\n",x);
     assert( 0 <= x && x <= 1);
@@ -383,6 +466,10 @@ void tpl_release_task_lock(void)
     
     tpl_locking_depth--;
 
+#ifdef WITH_AUTOSAR
+    tpl_cpt_os_task_lock--;
+#endif
+
     if (tpl_locking_depth == 0)
     {
         if (sigprocmask(SIG_UNBLOCK,&signal_set,NULL) == -1) {
@@ -397,8 +484,8 @@ void tpl_release_task_lock(void)
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) tpl_switch_context(
-    P2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
-    P2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
+    P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
+    P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
 {
 	assert( *new_context != co_current() );
     tpl_release_task_lock();  
@@ -413,8 +500,8 @@ FUNC(void, OS_CODE) tpl_switch_context(
 
 
 FUNC(void, OS_CODE) tpl_switch_context_from_it(
-    P2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
-    P2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
+    P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
+    P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
 {
     assert( *new_context != co_current() );
     if( *new_context == &idle_task_context )

@@ -55,8 +55,7 @@ tpl_task $TASK$ = {
     /* task priority        */  (tpl_priority)$TASK_PRIORITY$,
     /* task state           */  $TASK_STATE$,
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    /* start date           */  0,
-    /* time left            */  0,
+    /* activation allowed   */  TRUE,
 #endif
     },    /* end of exec_desc part */
     /* event mask           */  0,

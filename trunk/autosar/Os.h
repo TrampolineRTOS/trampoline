@@ -57,11 +57,11 @@
 /* Common Published Information */
 #define OS_VENDOR_ID         48
 #define OS_MODULE_ID         1
-#define OS_AR_MAJOR_VERSION  2
-#define OS_AR_MINOR_VERSION  1
+#define OS_AR_MAJOR_VERSION  3
+#define OS_AR_MINOR_VERSION  0
 #define OS_AR_PATCH_VERSION  0
 #define OS_SW_MAJOR_VERSION  1
-#define OS_SW_MINOR_VERSION  8
+#define OS_SW_MINOR_VERSION  0
 #define OS_SW_PATCH_VERSION  0
 
 #endif /*OS_H_*/

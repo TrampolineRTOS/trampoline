@@ -32,7 +32,7 @@
 #include "tpl_as_error.h"
 #include "tpl_os_definitions.h"
 #include "tpl_as_isr_kernel.h"
-
+#include "tpl_machine_interface.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -48,7 +48,7 @@
  */
 FUNC(ISRType, OS_CODE) GetISRID(void)
 {
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) ro = tpl_running_obj;
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) ro = tpl_running_obj;
     VAR(tpl_isr_id, AUTOMATIC)  isr_id = (tpl_isr_id)INVALID_ISR;
 
     if (tpl_running_obj->static_desc->type != IS_ROUTINE)
@@ -78,7 +78,7 @@ FUNC(StatusType, OS_CODE) DisableInterruptSource (VAR(ISRType, AUTOMATIC) isr_id
     IF_NO_EXTENDED_ERROR(result)
         /* get the isr */
         isr = tpl_isr_table[isr_id];
-        tpl_disable_isr2_by_user (isr);
+        tpl_disable_isr2_by_user(isr);
     IF_NO_EXTENDED_ERROR_END()
 #endif
 
@@ -104,7 +104,7 @@ FUNC(StatusType, OS_CODE) EnableInterruptSource (VAR(ISRType, AUTOMATIC) isr_id)
     IF_NO_EXTENDED_ERROR(result)
         /* get the isr */
         isr = tpl_isr_table[isr_id];
-        tpl_enable_isr2_by_user (isr);
+        tpl_enable_isr2_by_user(isr);
     IF_NO_EXTENDED_ERROR_END()
 #endif
 

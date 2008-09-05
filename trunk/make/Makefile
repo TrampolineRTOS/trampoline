@@ -31,8 +31,11 @@ OS_MACHINE_PATH = $(OS_PATH)/os_machine/$(TARGET)
 # Add Trampoline source files.
 #############################################################################
 include $(OS_PATH)/Makefile
-include $(OS_MACHINE_PATH)/Makefile
+ifeq ($(strip $(AUTOSAR)),true)
+  include $(AUTOSAR_PATH)/Makefile
+endif
 include $(COM_PATH)/Makefile
+include $(OS_MACHINE_PATH)/Makefile
 
 #add trampoline paths in the include path. 
 CFLAGS += -I$(OS_MACHINE_PATH)  -I$(OIL_OUTPUT_PATH) 

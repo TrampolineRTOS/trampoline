@@ -31,7 +31,7 @@
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
-_STATIC_ FUNC(void, OS_CODE) killtaskisr(void);
+STATIC FUNC(void, OS_CODE) killtaskisr(void);
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -39,7 +39,7 @@ _STATIC_ FUNC(void, OS_CODE) killtaskisr(void);
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-_STATIC_ FUNC(void, OS_CODE) killtaskisr(void)
+STATIC FUNC(void, OS_CODE) killtaskisr(void)
 {
   tpl_running_obj->state = (tpl_exec_state)DYING;
 }
@@ -54,19 +54,21 @@ FUNC(void, OS_CODE) tpl_call_protection_hook (
 
   switch (result)
   {
-    case PRO_KILLTASKISR:
+    case PRO_TERMINATETASKISR:
       killtaskisr ();
       break;
-    case PRO_KILLAPPL:
+    case PRO_TERMINATEAPPL:
       /* FIXME: check this behavior conformity with AUTOSAR */
       tpl_shutdown ();
       break;
-    case PRO_KILLAPPL_RESTART:
+    case PRO_TERMINATEAPPL_RESTART:
       /* FIXME: check this behavior conformity with AUTOSAR */
       tpl_shutdown ();
       break;
     case PRO_SHUTDOWN:
       tpl_shutdown ();
+      break;
+    case PRO_IGNORE:
       break;
     default:
     /* MISRA RULE 52 VIOLATION: This statement is unreachable,
@@ -75,7 +77,7 @@ FUNC(void, OS_CODE) tpl_call_protection_hook (
       break;
   }
 #else /* WITH_PROTECTION_HOOK */
-  killtaskisr ();
+  ShutdownOS ();
 #endif /* WITH_PROTECTION_HOOK */
 }
 

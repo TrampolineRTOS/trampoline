@@ -30,6 +30,9 @@
 #include "tpl_os_hooks.h"
 #include "tpl_os_definitions.h"
 #include "tpl_machine_interface.h"
+#ifdef WITH_AUTOSAR
+#include "tpl_as_isr.h"
+#endif
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -44,6 +47,8 @@ FUNC(StatusType, OS_CODE) TerminateISR2(void)
 {
     /*  init the error to no error  */
     VAR(StatusType, AUTOMATIC) result = E_OK;
+
+    CHECK_INTERRUPT_LOCK(result)
 
     /*  lock the task structures    */
     LOCK_WHEN_ISR()

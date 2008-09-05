@@ -6,7 +6,7 @@
  * Here are defined all global symbolic values used in Trampoline.
  *
  * @section copyright Copyright
- * 
+ *
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
@@ -404,7 +404,7 @@
  */
 #define tpl_is_non_preemptable(obj)    \
     ((obj->static_desc->type & PREEMPTABLE_MASK) == NON_PREEMPTABLE_TASK)
-    
+
 /**
  * @def tpl_is_isr
  *
@@ -414,7 +414,7 @@
  */
 #define tpl_is_isr(obj)     \
     ((obj->static_desc->type & MASK_EXECTYPE) == IS_ROUTINE)
-    
+
 #endif /* TPL_OS_DEFINITIONS_H */
 
 /* End of file tpl_os_definitions.h */

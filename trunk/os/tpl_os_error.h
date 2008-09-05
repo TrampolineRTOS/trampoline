@@ -64,19 +64,19 @@ extern FUNC(void, OS_CODE) ErrorHook(
  * @see #tpl_service
  */
 union ID_PARAM_BLOCK {
-    VAR(TaskType, AUTOMATIC)            task_id;        /**< used by
-                                                             #ActivateTask,
-                                                             #ChainTask,
-                                                             #GetTaskState,
-                                                             #SetEvent,
-                                                             #GetEvent                  */
-    VAR(TaskRefType, AUTOMATIC)         task_id_ref;    /**< used by #GetTaskID         */
-    VAR(ResourceType, AUTOMATIC)        res_id;         /**< used by #GetResource,
-                                                             #ReleaseResource           */
-    VAR(AlarmType, AUTOMATIC)           alarm_id;       /**< @todo document this        */
+    VAR(TaskType, TYPEDEF)            task_id;        /**< used by
+                                                           #ActivateTask,
+                                                           #ChainTask,
+                                                           #GetTaskState,
+                                                           #SetEvent,
+                                                           #GetEvent                  */
+    VAR(TaskRefType, TYPEDEF)         task_id_ref;    /**< used by #GetTaskID         */
+    VAR(ResourceType, TYPEDEF)        res_id;         /**< used by #GetResource,
+                                                           #ReleaseResource           */
+    VAR(AlarmType, TYPEDEF)           alarm_id;       /**< @todo document this        */
 #ifdef WITH_AUTOSAR
-    VAR(ScheduleTableType, AUTOMATIC)   schedtable_id;  /**< @todo document this        */
-    VAR(CounterType, AUTOMATIC)         counter_id;     /**< @todo document this        */
+    VAR(ScheduleTableType, TYPEDEF)   schedtable_id;  /**< @todo document this        */
+    VAR(CounterType, TYPEDEF)         counter_id;     /**< @todo document this        */
 #endif
 };
 
@@ -89,18 +89,18 @@ union ID_PARAM_BLOCK {
  * @see #tpl_service
  */
 union PARAM_PARAM_BLOCK {
-    VAR(TaskStateRefType, AUTOMATIC)            state;          /**< used by #GetTaskState  */
-    VAR(TickType, AUTOMATIC)                    tick;           /**< used by #SetRelAlarm,
-                                                                     #SetAbsAlarm       */
-    VAR(TickRefType, AUTOMATIC)                 tick_ref;       /**< used by #GetAlarm      */
-    VAR(AlarmBaseRefType, AUTOMATIC)            alarm_base_ref; /**< used by #GetAlarmBase  */
-    VAR(EventMaskType, AUTOMATIC)               mask;           /**< used by #SetEvent,
-                                                                     #ClearEvent,
-                                                                     #WaitEvent             */
-    VAR(EventMaskRefType, AUTOMATIC)            mask_ref;       /**< used by #GetEvent      */
+    VAR(TaskStateRefType, TYPEDEF)            state;          /**< used by #GetTaskState  */
+    VAR(TickType, TYPEDEF)                    tick;           /**< used by #SetRelAlarm,
+                                                                   #SetAbsAlarm       */
+    VAR(TickRefType, TYPEDEF)                 tick_ref;       /**< used by #GetAlarm      */
+    VAR(AlarmBaseRefType, TYPEDEF)            alarm_base_ref; /**< used by #GetAlarmBase  */
+    VAR(EventMaskType, TYPEDEF)               mask;           /**< used by #SetEvent,
+                                                                   #ClearEvent,
+                                                                   #WaitEvent             */
+    VAR(EventMaskRefType, TYPEDEF)            mask_ref;       /**< used by #GetEvent      */
 #ifdef WITH_AUTOSAR
-    VAR(ScheduleTableType, AUTOMATIC)           next_st_id;     /**< @todo document this    */
-    VAR(ScheduleTableStatusRefType, AUTOMATIC)  st_stat;        /**< @todo document this    */
+    VAR(ScheduleTableType, TYPEDEF)           next_st_id;     /**< @todo document this    */
+    VAR(ScheduleTableStatusRefType, TYPEDEF)  st_stat;        /**< @todo document this    */
 #endif
 };
 
@@ -110,11 +110,11 @@ union PARAM_PARAM_BLOCK {
  * This structure gathers all parameters for an error hook
  */
 struct PARAM_BLOCK {
-    union ID_PARAM_BLOCK      id;     /**< identifies the OS element
-                                            concerned by the error */
-    union PARAM_PARAM_BLOCK   param;  /**< gives more information about the
-                                            reason of the error */
-    VAR(TickType, AUTOMATIC)  cycle;  /**< cycle set for a relative alarm */
+    union ID_PARAM_BLOCK    id;     /**< identifies the OS element
+                                           concerned by the error */
+    union PARAM_PARAM_BLOCK param;  /**< gives more information about the
+                                           reason of the error */
+    VAR(TickType, TYPEDEF)  cycle;  /**< cycle set for a relative alarm */
 };
 
 /**
@@ -125,7 +125,7 @@ struct PARAM_BLOCK {
 struct SERVICE_CALL_DESCRIPTOR {
     struct PARAM_BLOCK  parameters; /**< information about conditions seen
                                          when error has been detected */
-    VAR(u8, AUTOMATIC)  service_id; /**< identifier of the service which
+    VAR(u8, TYPEDEF)    service_id; /**< identifier of the service which
                                          raised the error */
 };
 
@@ -1629,6 +1629,26 @@ FUNC(void, OS_CODE) tpl_call_error_hook(
     }
 #else
 #   define CHECK_RESOURCE_ORDER_ON_RELEASE(res,result)
+#endif
+
+/**
+ * @def CHECK_INTERRUPT_LOCK
+ *
+ * Checks if the interrutps are not disabled by user
+ * when calling an api, and release the locking if needed
+ *
+ * @param result: error code returned
+ */
+#ifndef WITH_AUTOSAR
+#define CHECK_INTERRUPT_LOCK(result)
+#else
+#define CHECK_INTERRUPT_LOCK(result)            \
+    if(FALSE!=tpl_get_interrupt_lock_status())  \
+    {                                           \
+        tpl_reset_interrupt_lock_status();      \
+        tpl_call_error_hook(E_OS_DISABLEDINT);  \
+        result = E_OS_DISABLEDINT;              \
+    }
 #endif
 
 #endif /*TPL_OS_ERROR_H */

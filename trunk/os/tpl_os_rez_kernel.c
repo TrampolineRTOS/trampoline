@@ -36,7 +36,7 @@
  * Getting a resource.
  */
 FUNC(void, OS_CODE) tpl_get_resource(
-    P2VAR(tpl_resource, OS_APPL_DATA, AUTOMATIC) res)
+    P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res)
 {
     /*  set the owner of the resource to the calling task       */
     res->owner = tpl_running_obj;
@@ -60,7 +60,7 @@ FUNC(void, OS_CODE) tpl_get_resource(
  * Releasing a resource
  */
 FUNC(void, OS_CODE) tpl_release_resource(
-    P2VAR(tpl_resource, OS_APPL_DATA, AUTOMATIC) res)
+    P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res)
 {
     /*  get the saved priority  */
     tpl_running_obj->priority = res->owner_prev_priority;

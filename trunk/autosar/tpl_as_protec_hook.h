@@ -74,6 +74,24 @@
 #define E_OS_MISSINGEND 35
 
 /**
+ * @def E_OS_DISABLEINT
+ *
+ * An API is called while the interrupt are disabled by user
+ *
+ * @see #ErrorHook
+ */
+#define E_OS_DISABLEDINT 36
+
+/**
+ * @def E_OS_PROTECTION_EXCEPTION
+ *
+ * called when a core excpetion occured, like wrong op code
+ *
+ * @see #ErrorHook
+ */
+#define E_OS_PROTECTION_EXCEPTION 37
+
+/**
  * @typedef ProtectionReturnType
  *
  * Defines what to do after returning from ProtectionHook.
@@ -82,10 +100,11 @@
  */
 typedef enum
 {
-  PRO_KILLTASKISR,      /**< kill the faulty task or ISR2 */
-  PRO_KILLAPPL,         /**< kill the faulty application */
-  PRO_KILLAPPL_RESTART, /**< kill and restart the faulty application */
-  PRO_SHUTDOWN          /**< shutdown the OS */
+  PRO_IGNORE,                 /**< do nothing */
+  PRO_TERMINATETASKISR,       /**< terminate the faulty task or ISR2 */
+  PRO_TERMINATEAPPL,          /**< terminate the faulty application */
+  PRO_TERMINATEAPPL_RESTART,  /**< terminate and restart the faulty application */
+  PRO_SHUTDOWN                /**< shutdown the OS */
 } ProtectionReturnType;
 
 #define OS_START_SEC_CODE

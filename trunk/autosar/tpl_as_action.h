@@ -41,7 +41,7 @@ struct TPL_INCREMENT_COUNTER_ACTION {
     /*  base action           */
     VAR(tpl_action, AUTOMATIC)                  b_desc;
     /*  callback function pointer   */
-    P2VAR(tpl_counter, OS_APPL_DATA, AUTOMATIC) counter;
+    P2VAR(tpl_counter, TYPEDEF, OS_APPL_DATA) counter;
 };
 
 typedef struct TPL_INCREMENT_COUNTER_ACTION
@@ -54,7 +54,7 @@ tpl_increment_counter_action;
  * Notification function prototype
  */
 FUNC(tpl_status, OS_CODE) tpl_action_increment_counter(
-    P2CONST(tpl_action, OS_APPL_CONST, AUTOMATIC) action);
+    P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

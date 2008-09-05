@@ -44,8 +44,8 @@
  *                      scheduled.
  */
 extern FUNC(void, OS_CODE) tpl_switch_context(
-    P2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
-    P2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context
+    P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA) old_context,
+    P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA) new_context
 );
 
 
@@ -61,8 +61,8 @@ extern FUNC(void, OS_CODE) tpl_switch_context(
  *                      scheduled.
  */
 extern FUNC(void, OS_CODE) tpl_switch_context_from_it(
-    P2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
-    P2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context
+    P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA) old_context,
+    P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA) new_context
 );
 
 
@@ -74,7 +74,7 @@ extern FUNC(void, OS_CODE) tpl_switch_context_from_it(
  * @param exec_obj      Pointer to the task descriptor
  */
 extern FUNC(void, OS_CODE) tpl_init_context(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) exec_obj
 );
 
 
@@ -120,22 +120,27 @@ extern FUNC(void, OS_CODE) tpl_sleep(void);
  */
 extern FUNC(void, OS_CODE) tpl_shutdown(void);
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#ifdef WITH_AUTOSAR
+/**
+ * @internal
+ *
+ * tpl_get_interrupt_lock_status checks if the user has released any call to
+ * DisableAllInterrupt/SuspendAllInterrupt/SuspendOsInterrupt
+ *
+ */
+extern FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void);
 
 /**
  * @internal
  *
- * This is the prototype of a function to be called by the
- * watchdog
+ * tpl_reset_interrupt_lock_status reset the status of interrupt lock by user
  *
- * @retval TRUE tells that a rescheduling is required
- * @retval FALSE tells that we don't need a rescheduling
- *
- * @see #tpl_set_watchdog
- * @see #tpl_cancel_watchdog
  */
-typedef P2FUNC(u8, OS_APPL_CODE, tpl_watchdog_expire_function)(void);
+extern FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void);
 
+#endif
+
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
 /**
  * @internal
  *
@@ -144,14 +149,12 @@ typedef P2FUNC(u8, OS_APPL_CODE, tpl_watchdog_expire_function)(void);
  *
  * @param delay time (in tpl_time unit) since now the expire function will be
  * called (cannot be zero)
- * @param function function to be called into "delay" (cannot be null)
  *
  * @see #tpl_cancel_watchdog
  * @see #tpl_get_local_current_date
  */
-extern FUNC(void, OS_CODE) tpl_set_watchdog (
-    VAR(tpl_time, AUTOMATIC) delay,
-    VAR(tpl_watchdog_expire_function, AUTOMATIC) function
+extern FUNC(void, OS_CODE) tpl_set_watchdog(
+    VAR(tpl_time, AUTOMATIC) delay
 );
 
 /**
@@ -162,7 +165,7 @@ extern FUNC(void, OS_CODE) tpl_set_watchdog (
  *
  * @see #tpl_set_watchdog
  */
-extern FUNC(void, OS_CODE) tpl_cancel_watchdog (void);
+extern FUNC(void, OS_CODE) tpl_cancel_watchdog(void);
 
 /**
  * @internal
@@ -172,7 +175,7 @@ extern FUNC(void, OS_CODE) tpl_cancel_watchdog (void);
  *
  * @return the current date when called
  */
-extern FUNC(tpl_time, OS_CODE) tpl_get_local_current_date (void);
+extern FUNC(tpl_time, OS_CODE) tpl_get_local_current_date(void);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
@@ -193,7 +196,7 @@ extern FUNC(tpl_time, OS_CODE) tpl_get_local_current_date (void);
  * @see #tpl_check_stack_footprint
  */
 FUNC(u8, OS_CODE) tpl_check_stack_pointer(
-    P2CONST(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj
+    P2CONST(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj
 );
 
 /**
@@ -215,7 +218,7 @@ FUNC(u8, OS_CODE) tpl_check_stack_pointer(
  * @retval 0 stack overflow deteted
  */
 FUNC(u8, OS_CODE) tpl_check_stack_footprint(
-    P2CONST(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj
+    P2CONST(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj
 );
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 

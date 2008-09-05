@@ -30,12 +30,13 @@
 #include "tpl_os_alarm_kernel.h"
 #include "tpl_os_kernel.h"
 #include "tpl_as_error.h"
+#include "tpl_as_isr.h"
 
 #ifndef NO_COUNTER
 /*  MISRA RULE 27 VIOLATION: This object is not declared as external in a header file
     because it is only used in this file but declared in the configuration file
 */
-extern P2VAR(tpl_counter, OS_APPL_DATA, OS_VAR) tpl_counter_table[COUNTER_COUNT];
+extern P2VAR(tpl_counter, OS_VAR, OS_APPL_DATA) tpl_counter_table[COUNTER_COUNT];
 #endif
 
 #define OS_START_SEC_CODE
@@ -56,9 +57,12 @@ FUNC(StatusType, OS_CODE) IncrementCounter(VAR(CounterType, AUTOMATIC) counter_i
     VAR(StatusType, AUTOMATIC)  result = E_OK;
 
 #ifndef NO_COUNTER
-    P2VAR(tpl_counter, OS_APPL_DATA, AUTOMATIC) counter = NULL;
+    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = NULL;
     VAR(tpl_status, AUTOMATIC)  need_rescheduling = NO_SPECIAL_CODE;
 #endif
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
 
     /*  lock the task structures                    */
     LOCK_WHEN_TASK_OR_ISR()
@@ -90,7 +94,7 @@ FUNC(StatusType, OS_CODE) IncrementCounter(VAR(CounterType, AUTOMATIC) counter_i
     PROCESS_ERROR(result)
 
     /*  unlock the task structures                  */
-    UNLOCK_WHEN_TASK_OR_ISR();
+    UNLOCK_WHEN_TASK_OR_ISR()
 
     return result;
 }
@@ -112,8 +116,11 @@ FUNC(StatusType, OS_CODE) GetCounterValue(
     VAR(StatusType, AUTOMATIC)  result = E_OK;
 
 #ifndef NO_COUNTER
-    P2VAR(tpl_counter, OS_APPL_DATA, AUTOMATIC) counter = NULL_PTR;
+    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = NULL;
 #endif
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
 
     LOCK_WHEN_HOOK()
 
@@ -163,9 +170,12 @@ FUNC(StatusType, OS_CODE) GetElapsedCounterValue(
     VAR(StatusType, AUTOMATIC)  result = E_OK;
 
 #ifndef NO_COUNTER
-    P2VAR(tpl_counter, OS_APPL_DATA, AUTOMATIC) counter = NULL;
+    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = NULL;
     VAR(TickType, AUTOMATIC)                    cpt_val;
 #endif
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
 
     LOCK_WHEN_HOOK()
 

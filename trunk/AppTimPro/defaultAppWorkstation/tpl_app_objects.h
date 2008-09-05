@@ -5,7 +5,7 @@
  * for conditional compiling.
  *
  * This file has been generated automatically by goil
- * on  Thu Oct 25 10:28:04 20078
+ * on  Fri Sep  5 15:18:10 2008
  */
 
 #ifndef OJB_HEADER_H
@@ -19,6 +19,7 @@
 #define    WITH_POST_TASK_HOOK
 #define    WITH_AUTOSAR
 #define    WITH_PROTECTION_HOOK
+#define    WITH_AUTOSAR_TIMING_PROTECTION
 
 
 /*
@@ -72,7 +73,7 @@
 /*
  * Declaration of Software Counters object count
  */
-#define COUNTER_COUNT           0
+#define COUNTER_COUNT           1
 
 /*
  * Declaration of the number of virtual watchdogs used for timing protection

@@ -35,9 +35,10 @@
 #else
 
 #define AUTOMATIC
-#define _STATIC_ static
+#define TYPEDEF
+#define STATIC static
 #define NULL_PTR ((void *)0)
-#define _INLINE_ (#pragma INLINE)
+#define INLINE (#pragma INLINE)
 
 #define FUNC(rettype, memclass) rettype memclass
 #define P2VAR(ptrtype, memclass, ptrclass) ptrtype memclass * ptrclass

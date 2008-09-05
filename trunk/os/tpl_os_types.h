@@ -54,7 +54,7 @@ typedef tpl_exec_state  TaskStateType;
  *
  * see paragraph 13.2.1, page 49 of OSEK/VDX 2.2.2 spec
  */
-typedef P2VAR(tpl_exec_state, OS_APPL_DATA, AUTOMATIC)  TaskStateRefType;
+typedef P2VAR(tpl_exec_state, TYPEDEF, OS_APPL_DATA)  TaskStateRefType;
 
 /**
  * @typedef TaskType
@@ -72,7 +72,7 @@ typedef tpl_task_id     TaskType;
  *
  * see paragraph 13.2.1, page 49 of OSEK/VDX 2.2.2 spec
  */
-typedef P2VAR(tpl_task_id, OS_APPL_DATA, AUTOMATIC) TaskRefType;
+typedef P2VAR(tpl_task_id, TYPEDEF, OS_APPL_DATA) TaskRefType;
 
 #endif /* TPL_OS_TYPES_H */
 

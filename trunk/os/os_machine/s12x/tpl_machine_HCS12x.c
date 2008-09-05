@@ -1,68 +1,27 @@
-/*=============================================================================
-** Trampoline OS
-**
-** Trampoline is copyright (c) IRCCyN 2005+
-** Copyright ESEO for function and data structures documentation
-** Trampoline is protected by the French intellectual property law.
-**
-** This software is distributed under the Lesser GNU Public Licence
-**-----------------------------------------------------------------------------
-** Supported MCUs      : Freescale MC9S12XEP100
-** Supported Compilers : Code Warrior V4.6
-**-----------------------------------------------------------------------------
-** File name         : tpl_machine_HCS12X.c
-**
-** Module name       : OS
-**
-**
-** Summary: functions of the OS specifics for the MCU S12X that can only be
-**          implemented in assembly
-**          works only in near context
-**          because parameters are not passed in the same way in far context
-**
-**
-**= History ===================================================================
-** 00.01  J.Monsimier 04/11/07
-**  - creation
-** 00.02  J.Monsimier 05/21/07
-**  - for Tranmpoline Rev333
-**  - modifications for the S12X MCU,
-**    the S12X is different from the S12 by the size of the CCR register
-** 00.03  J.Monsimier 23/08/07
-**  - for Tranmpoline Rev346
-**  - modifications for new Trampoline Rev
-**    tpl_switch_context_from_it modified: stack pointer is now shifted of 12
-**  - modification of TaskLock behavior, addition of a counter
-**  - merge of files tpl_machine_HCS12X.c and tpl_machine_HCS12X_asm.c in 1 file
-** 01.00  J.Monsimier 08/30/07
-**  - from Tranmpoline Rev346
-**  - OSEK compliant, tested and released version
-** 01.01  J.Monsimier 10/04/07
-**  - from Trampoline  Rev 377
-**  - Addition of functions needed for Autosar
-**  - Improvement of the support of Gpt driver
-**  - Improvement of the switch_context functions
-** 01.02  J.Monsimier 08/11/07
-**  - from Trampoline Rev399
-**  - Modifications to be compliant to Autosar implementation rules
-** 01.03  J.Monsimier 28/11/07
-**  - bug fixed in tpl_release_task_lock().
-**    The deshibition of interrutps was not done as soon as CptTaskLock=0,
-**    this was avoiding the OS to work with no autostart task configured
-** 01.04  J.Monsimier 12/02/2008
-**  - the way to initialize the stack for stack monitoring is changed
-**  - some minor changes in the memory mapping
-** 01.07  J.Monsimier 03/03/2008
-**  - PR 172: stack pointer initialisation modification:
-**    it was initialised 1 byte too far, a soustraction was missing
-** 01.08  J.Monsimier 17/03/2008
-**  - check of error E_OS_MISSINGEND added when TerminateTask is not called
-**  - IPL register is now reset to 0 in tpl_switch_context_from_it
-** 01.10  J.Monsimier 26/04/2008
-**  - impreovements on timing in kernel: tpl_scheudle function
-**    separeted in 4 functions
-=============================================================================*/
-
+/**
+ * @file tpl_machine_HCS12x.c
+ *
+ * @section desc File description
+ *
+ * functions of the OS specifics for the MCU S12X. Some of them need to be implemented in assembly.
+ * Works only in near context because parameters are not passed in the same way in far context
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline OS
+ *
+ * Trampoline is copyright (c) IRCCyN 2005-2007
+ * Trampoline is protected by the French intellectual property law.
+ *
+ * This software is distributed under the Lesser GNU Public Licence
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
 /******************************************************************************/
 /* INCLUSIONS                                                                 */
 /******************************************************************************/
@@ -74,10 +33,11 @@
 #include "tpl_os_alarm_kernel.h"
 #include "tpl_os_kernel.h"
 #include "tpl_os_error.h"
+#include "tpl_os_std_types.h"
 #ifdef WITH_AUTOSAR
 #include "tpl_as_protec_hook.h"
+#include "tpl_as_timing_protec.h"
 #include "tpl_as_isr.h"
-#include "Std_Types.h"
 #endif
 
 #include "Gpt.h"
@@ -86,16 +46,19 @@
 /******************************************************************************/
 /* DECLARATION OF CONSTANTS                                                   */
 /******************************************************************************/
-#define BUS_CLK 16000   /* bus clock frequency in MHz*/
+
 #define TIMER_GLOBALTIME_PERIOD 1  /* timeout period in ms, can be changed */
 #define TIMER_GLOBALTIME_LOADVALUE ( ((TIMER_GLOBALTIME_PERIOD*BUS_CLK)/2)-1 )
 
 #define OS_STACK_PATTERN 0xAA
 
-#define OS_GPTCHANNEL_TICK     0
-#define OS_GPTCHANNEL_WATCHDOG 1
-
-
+/* maximum value corresponding to Gpt_ValueType (0xFFFF for a uint16) */
+/* MISRA RULE 90 VIOLATION: this macro indirectly contains '{''}' by the
+   sizeof() macro, but this macro is needed because the size of Gpt_ValueType
+   is dependent on the MCAL, and connot be known before compilation */
+#define MAX_TIMER_VALUE (((u32)(1)<<(u32)(sizeof(Gpt_ValueType)*8))-1)
+/* maximum value in ms that can be loaded in Gpt_StartTimer, before conversion into number of ticks */
+#define MAX_TIMER_LOAD_VALUE ((((u32)MAX_TIMER_VALUE+1)*2)/(u32)BUS_CLK)
 
 /******************************************************************************/
 /* DECLARATION OF GLOBAL VARIABLES                                            */
@@ -106,12 +69,10 @@
 VAR(tpl_stack_word, OS_VAR) stack_zone_of_IdleTask[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
 VAR(hcs12_context, OS_VAR) idle_task_context;
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-/* MISRA RULE 104 VIOLATION: using non-const pointer to function:
-  to be justified in timing protection implementation */
-_STATIC_ VAR(tpl_watchdog_expire_function, OS_VAR) WatchdogExpireCallback;
-_STATIC_ VAR(tpl_time, OS_VAR) tpl_GlobalTime;
+STATIC VAR(tpl_time, OS_VAR) tpl_global_time;
 #endif
 
+STATIC VAR(tpl_time, AUTOMATIC) tpl_remaining_watchdog_time;
 #define   OS_STOP_SEC_VAR_UNSPECIFIED
 #include  "Memmap.h"
 
@@ -119,7 +80,10 @@ _STATIC_ VAR(tpl_time, OS_VAR) tpl_GlobalTime;
 #define OS_START_SEC_VAR_16BITS
 #include  "Memmap.h"
 
-_STATIC_ VAR(uint16, OS_VAR) Os_CptTaskLock;
+STATIC VAR(uint16, OS_VAR) tpl_cpt_task_lock;
+STATIC VAR(uint16, OS_VAR) tpl_cpt_user_task_lock;
+STATIC VAR(uint16, OS_VAR) tpl_cpt_os_task_lock;
+STATIC VAR(uint16, OS_VAR) tpl_user_task_lock;
 
 #define   OS_STOP_SEC_VAR_16BITS
 #include  "Memmap.h"
@@ -130,7 +94,8 @@ _STATIC_ VAR(uint16, OS_VAR) Os_CptTaskLock;
 /******************************************************************************/
 #define OS_START_SEC_CODE
 #include "Memmap.h"
-_STATIC_ FUNC(void, OS_CODE) tpl_call_missing_end(void);
+STATIC FUNC(void, OS_CODE) tpl_call_missing_end(void);
+STATIC FUNC(void, OS_CODE)  tpl_start_base_timer(void);
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
 
@@ -148,9 +113,9 @@ _STATIC_ FUNC(void, OS_CODE) tpl_call_missing_end(void);
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) tpl_init_context(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj)
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) exec_obj)
 {
-  P2VAR(hcs12_context, OS_APPL_DATA, AUTOMATIC) ic = exec_obj->static_desc->context.ic;
+  P2VAR(hcs12_context, AUTOMATIC, OS_APPL_DATA) ic = exec_obj->static_desc->context.ic;
 
   /* initialises the registers to 0 */
   ic->d = 0;
@@ -166,7 +131,7 @@ FUNC(void, OS_CODE) tpl_init_context(
   ic->sp = (ic->sp) - 4;
   /* MISRA RULE 45 VIOLATION: a uint8 pattern is written in a uint32 pointer.
      We only need to write one byte */
-  *(P2VAR(uint8, OS_APPL_DATA, AUTOMATIC))exec_obj->static_desc->stack.stack_zone = OS_STACK_PATTERN;
+  *(P2VAR(uint8, AUTOMATIC, OS_APPL_DATA))exec_obj->static_desc->stack.stack_zone = OS_STACK_PATTERN;
   #else
   /* initialises the stack pointer of the task to
     start address + stack size = end of stack zone */
@@ -201,12 +166,13 @@ FUNC(void, OS_CODE) tpl_init_context(
 FUNC(void, OS_CODE) tpl_init_machine(void)
 {
   /* initializes the TaskLock counter */
-  Os_CptTaskLock = 0;
+  tpl_cpt_task_lock = 0;
+  tpl_user_task_lock = FALSE;
+  tpl_cpt_user_task_lock = 0;
+  tpl_cpt_os_task_lock = 0;
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-  /* initializes the Watchdog expire function */
-  WatchdogExpireCallback = NULL_PTR;
-  tpl_GlobalTime = 0;
+  tpl_global_time = 0;
 #endif
 
   /* initialises the CCR with 0: all flags reset */
@@ -228,7 +194,7 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
   idle_task_context.sp = (uint16)(&stack_zone_of_IdleTask);
   idle_task_context.sp = idle_task_context.sp + SIZE_OF_IDLE_STACK;
   idle_task_context.sp = idle_task_context.sp - 4;
-  *(P2VAR(uint8, OS_APPL_DATA, AUTOMATIC))(idle_task_context.sp) = OS_STACK_PATTERN;
+  *(P2VAR(uint8, AUTOMATIC, OS_APPL_DATA))(idle_task_context.sp) = OS_STACK_PATTERN;
   #else
   /* initialises the stack pointer of the task to
     start address + stack size = end of stack zone */
@@ -244,7 +210,7 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
     sleep function base address */
   idle_task_context.pc = tpl_sleep;
 
-  Os_S12X_StartBaseTimer();
+  tpl_start_base_timer();
 
 }
 #define OS_STOP_SEC_CODE
@@ -265,8 +231,8 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) tpl_switch_context(
-  P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
-  P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
+  P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA) old_context,
+  P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA) new_context)
 {
     __asm PSHY                      ;/* save the current registers on stack */
     __asm PSHX                      ;
@@ -288,6 +254,7 @@ FUNC(void, OS_CODE) tpl_switch_context(
     __asm STY   2,X+                ;/* copy X in old_context */
     __asm PULY                      ;/* pull Y in Y */
     __asm STY   2,X+                ;/* copy Y in old_context */
+    __asm TFR   Y,D                 ;/* copy Y in D (save new_context*) */
     __asm PULY                      ;/* pull the return PC */
     __asm STY   2,X+                ;/* save the return PC in old_context */
     __asm LEAS  2,SP                ;
@@ -334,8 +301,8 @@ FUNC(void, OS_CODE) tpl_switch_context(
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) tpl_switch_context_from_it(
-  P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
-  P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
+  P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA) old_context,
+  P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA) new_context)
 {
     __asm PSHY                      ;/* save the current registers on stack */
     __asm PSHX                      ;
@@ -356,6 +323,7 @@ FUNC(void, OS_CODE) tpl_switch_context_from_it(
     __asm STY   2,X+                ;/* copy X in old_context */
     __asm PULY                      ;/* pull Y in Y */
     __asm STY   2,X+                ;/* copy Y in old_context */
+    __asm TFR   Y,D                 ;/* copy Y in D (save new_context*) */
     __asm PULY                      ;/* pull the return PC */
     __asm STY   2,X+                ;/* save the return PC in old_context */
     __asm LEAS  2,SP                ;
@@ -449,7 +417,11 @@ FUNC(void, OS_CODE) tpl_shutdown(void)
 FUNC(void, OS_CODE) tpl_get_task_lock(void)
 {
   __asm SEI     ;/* set the I bit of CCR, inhibits interrupts */
-  Os_CptTaskLock++;
+  tpl_cpt_task_lock++;
+
+#ifdef WITH_AUTOSAR
+    tpl_cpt_os_task_lock++;
+#endif
 }
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
@@ -463,17 +435,21 @@ FUNC(void, OS_CODE) tpl_get_task_lock(void)
 ** Remarks: assembly function
 *******************************************************************************/
 /* MISRA RULE 1 VIOLATION: assembly instruction is implementation specific,
-  but this part of OS is implementation specific and controlled.
+  but this part of OS is implementation specific.
   There is no other way than assembly to access core registers */
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) tpl_release_task_lock(void)
 {
-  if( Os_CptTaskLock > 0)
+  if( tpl_cpt_task_lock > 0)
   {
-    Os_CptTaskLock--;
+    tpl_cpt_task_lock--;
+
+#ifdef WITH_AUTOSAR
+    tpl_cpt_os_task_lock--;
+#endif
   }
-  if( Os_CptTaskLock == 0)
+  if( tpl_cpt_task_lock == 0)
   {
     __asm CLI     ;/* clear the I bit of CCR, re-allows interrupts */
   }
@@ -490,7 +466,7 @@ FUNC(void, OS_CODE) tpl_release_task_lock(void)
 ** Remarks:
 *******************************************************************************/
 /* MISRA RULE 1 VIOLATION: assembly instruction is implementation specific,
-  but this part of OS is implementation specific and controlled.
+  but this part of OS is implementation specific.
   There is no other way than assembly to access core registers */
 #define OS_START_SEC_CODE
 #include "Memmap.h"
@@ -498,8 +474,12 @@ FUNC(void, OS_CODE) EnableAllInterrupts(void)
 {
   __asm CLI     ;/* clear the I bit of CCR, re-allows interrupts */
 
+#ifdef WITH_AUTOSAR
+  tpl_user_task_lock = FALSE;
+#endif
+
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-  tpl_disable_all_isr_lock_monitor (tpl_running_obj);
+  tpl_stop_all_isr_lock_monitor(tpl_running_obj);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 #define OS_STOP_SEC_CODE
@@ -514,7 +494,7 @@ FUNC(void, OS_CODE) EnableAllInterrupts(void)
 ** Remarks:
 *******************************************************************************/
 /* MISRA RULE 1 VIOLATION: assembly instruction is implementation specific,
-  but this part of OS is implementation specific and controlled.
+  but this part of OS is implementation specific.
   There is no other way than assembly to access core registers */
 #define OS_START_SEC_CODE
 #include "Memmap.h"
@@ -522,8 +502,12 @@ FUNC(void, OS_CODE) DisableAllInterrupts(void)
 {
   __asm SEI     ;/* set the I bit of CCR, inhibits interrupts */
 
+#ifdef WITH_AUTOSAR
+  tpl_user_task_lock = TRUE;
+#endif
+
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-  tpl_start_all_isr_lock_monitor (tpl_running_obj);
+  tpl_start_all_isr_lock_monitor(tpl_running_obj);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 #define OS_STOP_SEC_CODE
@@ -538,21 +522,25 @@ FUNC(void, OS_CODE) DisableAllInterrupts(void)
 ** Remarks:
 *******************************************************************************/
 /* MISRA RULE 1 VIOLATION: assembly instruction is implementation specific,
-  but this part of OS is implementation specific and controlled.
+  but this part of OS is implementation specific.
   There is no other way than assembly to access core registers */
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) ResumeAllInterrupts(void)
 {
-  if( Os_CptTaskLock > 0)
+  if( tpl_cpt_task_lock > 0)
   {
-    Os_CptTaskLock--;
+    tpl_cpt_task_lock--;
+
+#ifdef WITH_AUTOSAR
+    tpl_cpt_user_task_lock--;
+#endif
   }
-  if( Os_CptTaskLock == 0)
+  if( tpl_cpt_task_lock == 0)
   {
     __asm("CLI");/* re-allows interrupts */
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-  tpl_disable_all_isr_lock_monitor (tpl_running_obj);
+  tpl_stop_all_isr_lock_monitor(tpl_running_obj);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
   }
 }
@@ -568,19 +556,22 @@ FUNC(void, OS_CODE) ResumeAllInterrupts(void)
 ** Remarks:
 *******************************************************************************/
 /* MISRA RULE 1 VIOLATION: assembly instruction is implementation specific,
-  but this part of OS is implementation specific and controlled.
+  but this part of OS is implementation specific.
   There is no other way than assembly to access core registers */
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) SuspendAllInterrupts(void)
 {
   __asm("SEI");  /* inhibits interrupts */
-  Os_CptTaskLock++;
+  tpl_cpt_task_lock++;
 
+#ifdef WITH_AUTOSAR
+  tpl_cpt_user_task_lock++;
+#endif
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-  if( Os_CptTaskLock == 1)
+  if( tpl_cpt_task_lock == 1)
   {
-    tpl_start_all_isr_lock_monitor (tpl_running_obj);
+    tpl_start_all_isr_lock_monitor(tpl_running_obj);
   }
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
@@ -596,21 +587,25 @@ FUNC(void, OS_CODE) SuspendAllInterrupts(void)
 ** Remarks:
 *******************************************************************************/
 /* MISRA RULE 1 VIOLATION: assembly instruction is implementation specific,
-  but this part of OS is implementation specific and controlled.
+  but this part of OS is implementation specific.
   There is no other way than assembly to access core registers */
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) ResumeOSInterrupts(void)
 {
-  if( Os_CptTaskLock > 0)
+  if( tpl_cpt_task_lock > 0)
   {
-    Os_CptTaskLock--;
+    tpl_cpt_task_lock--;
+
+#ifdef WITH_AUTOSAR
+    tpl_cpt_user_task_lock--;
+#endif
   }
-  if( Os_CptTaskLock == 0)
+  if( tpl_cpt_task_lock == 0)
   {
     __asm("CLI");/* re-allows interrupts */
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    tpl_disable_os_isr_lock_monitor (tpl_running_obj);
+    tpl_stop_os_isr_lock_monitor(tpl_running_obj);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
   }
 }
@@ -626,17 +621,21 @@ FUNC(void, OS_CODE) ResumeOSInterrupts(void)
 ** Remarks:
 *******************************************************************************/
 /* MISRA RULE 1 VIOLATION: assembly instruction is implementation specific,
-  but this part of OS is implementation specific and controlled.
+  but this part of OS is implementation specific.
   There is no other way than assembly to access core registers */
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) SuspendOSInterrupts(void)
 {
   __asm("SEI");  /* inhibits interrupts */
-  Os_CptTaskLock++;
+  tpl_cpt_task_lock++;
+
+#ifdef WITH_AUTOSAR
+    tpl_cpt_user_task_lock--;
+#endif
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    tpl_start_os_isr_lock_monitor (tpl_running_obj);
+    tpl_start_os_isr_lock_monitor(tpl_running_obj);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 #define OS_STOP_SEC_CODE
@@ -657,13 +656,35 @@ FUNC(void, OS_CODE) SuspendOSInterrupts(void)
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) tpl_set_watchdog(
-  VAR(tpl_time, AUTOMATIC) delay,
-  VAR(tpl_watchdog_expire_function, AUTOMATIC) function)
+  VAR(tpl_time, AUTOMATIC) delay)
 {
-  VAR(Gpt_ValueType, AUTOMATIC) NbTicks = (Gpt_ValueType)((delay*BUS_CLK)>>1)-1;
-  WatchdogExpireCallback = function;
-  Gpt_StartTimer(OS_GPTCHANNEL_WATCHDOG, NbTicks);
+  VAR(tpl_time, AUTOMATIC) NbTicks;
 
+  tpl_remaining_watchdog_time = delay;
+
+  /* as the given time is a uint32 and the Gpt_ValueType can be lower,
+     we have to programm sub counters */
+  if( tpl_remaining_watchdog_time > (tpl_time)(MAX_TIMER_LOAD_VALUE) )
+  {
+    /* if the remaining time is greater than the maximum loadable value,
+       we load the max value and decrement the remaining time */
+    tpl_remaining_watchdog_time = tpl_remaining_watchdog_time - (tpl_time)(MAX_TIMER_LOAD_VALUE);
+    /* MISRA RULE 48 VIOLATION: the result of the mutlication operation could
+       be wider than the original type, but this is controlled because the result
+       of this operation is known to be under the max value of the type */
+    NbTicks = (Gpt_ValueType)(((MAX_TIMER_LOAD_VALUE*BUS_CLK)>>1)-1);
+  }
+  else
+  {
+    /* if the remaining time is lower than the maximum loadable value,
+       we can load the remaining time, next callback call
+       will correspond to the watchdog expiration */
+    tpl_remaining_watchdog_time = 0;
+    NbTicks = (Gpt_ValueType)((tpl_remaining_watchdog_time*BUS_CLK)>>1)-1;
+  }
+
+  /* start the timer with the calculated value */
+  Gpt_StartTimer(OS_GPTCHANNEL_WATCHDOG, (Gpt_ValueType)NbTicks);
   Gpt_EnableNotification(OS_GPTCHANNEL_WATCHDOG);
 }
 #define OS_STOP_SEC_CODE
@@ -672,7 +693,7 @@ FUNC(void, OS_CODE) tpl_set_watchdog(
 
 /*******************************************************************************
 ** Function name: tpl_cancel_watchdog
-** Description:
+** Description: Cancel the current running timer for the watchdog
 ** Parameter : None
 ** Return value: None
 ** Remarks:
@@ -681,8 +702,8 @@ FUNC(void, OS_CODE) tpl_set_watchdog(
 #include "Memmap.h"
 FUNC(void, OS_CODE) tpl_cancel_watchdog(void)
 {
+  /* stop the timer */
   Gpt_DisableNotification(OS_GPTCHANNEL_WATCHDOG);
-
   Gpt_StopTimer(OS_GPTCHANNEL_WATCHDOG);
 }
 #define OS_STOP_SEC_CODE
@@ -690,8 +711,61 @@ FUNC(void, OS_CODE) tpl_cancel_watchdog(void)
 
 
 /*******************************************************************************
+** Function name: tpl_watchdog_callback
+** Description: This function is called by the Gpt when the timer of the
+**              watchdog expires. if there is some time remaining for
+                this watchdog, the timer is restarted, until the remaining time
+                is null, then the watchdog expiration callback is called
+** Parameter : None
+** Return value:  None
+** Remarks:
+*******************************************************************************/
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#define GPT_START_SEC_CODE
+#include "Memmap.h"
+FUNC(void, GPT_CODE) tpl_watchdog_callback(void)
+{
+  VAR(Gpt_ValueType, AUTOMATIC) NbTicks;
+
+  /* stop the timer */
+  Gpt_DisableNotification(OS_GPTCHANNEL_WATCHDOG);
+  Gpt_StopTimer(OS_GPTCHANNEL_WATCHDOG);
+
+  if( tpl_remaining_watchdog_time > 0 )
+  {
+      if( tpl_remaining_watchdog_time > MAX_TIMER_LOAD_VALUE )
+      {
+          /* if the remaining time is greater than the maximum loadable value,
+             we load the max value and decrement the remaining time */
+          tpl_remaining_watchdog_time = tpl_remaining_watchdog_time - MAX_TIMER_LOAD_VALUE;
+          NbTicks = (Gpt_ValueType)((MAX_TIMER_LOAD_VALUE*BUS_CLK)>>1)-1;
+      }
+      else
+      {
+          /* if the remaining time is lower than the maximum loadable value,
+             we can load the remaining time, next callback call
+             will correspond to the watchdog expiration */
+          NbTicks = (Gpt_ValueType)((tpl_remaining_watchdog_time*BUS_CLK)>>1)-1;
+          tpl_remaining_watchdog_time = 0;
+      }
+
+      /* restart the timer with the calculated value */
+      Gpt_StartTimer(OS_GPTCHANNEL_WATCHDOG, NbTicks);
+      Gpt_EnableNotification(OS_GPTCHANNEL_WATCHDOG);
+  }
+  else
+  {
+      tpl_watchdog_expiration();
+  }
+}
+#define GPT_STOP_SEC_CODE
+#include "Memmap.h"
+#endif
+
+
+/*******************************************************************************
 ** Function name: tpl_get_local_current_date
-** Description:
+** Description: return the local current date of the ECU
 ** Parameter : None
 ** Return value: None
 ** Remarks:
@@ -700,7 +774,7 @@ FUNC(void, OS_CODE) tpl_cancel_watchdog(void)
 #include "Memmap.h"
 FUNC(tpl_time, OS_CODE) tpl_get_local_current_date(void)
 {
-  return tpl_GlobalTime;
+  return tpl_global_time;
 }
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
@@ -722,7 +796,7 @@ FUNC(tpl_time, OS_CODE) tpl_get_local_current_date(void)
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(u8, OS_CODE) tpl_check_stack_pointer(
-  P2CONST(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
+  P2CONST(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj)
 {
   VAR(uint16, AUTOMATIC) StackPointer = this_exec_obj->static_desc->context.ic->sp;
 
@@ -763,7 +837,7 @@ FUNC(u8, OS_CODE) tpl_check_stack_pointer(
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(u8, OS_CODE) tpl_check_stack_footprint(
-  P2CONST(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
+  P2CONST(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj)
 {
 
   if( (this_exec_obj->static_desc->context.ic) != (&idle_task_context) )
@@ -791,33 +865,7 @@ FUNC(u8, OS_CODE) tpl_check_stack_footprint(
 
 
 /*******************************************************************************
-** Function name: Os_WatchdogCallback
-** Description: This function is called by the Gpt when the timer of the
-**              watchdog expires. it calls the function given in parameter of
-**              the function tpl_set_watchdog.
-** Parameter : None
-** Return value:  None
-** Remarks:
-*******************************************************************************/
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-#define GPT_START_SEC_CODE
-#include "Memmap.h"
-FUNC(void, GPT_CODE) Os_WatchdogCallback(void)
-{
-  Gpt_DisableNotification(OS_GPTCHANNEL_WATCHDOG);
-  Gpt_StopTimer(OS_GPTCHANNEL_WATCHDOG);
-
-  if( NULL_PTR != WatchdogExpireCallback )
-  {
-    WatchdogExpireCallback();
-  }
-}
-#define GPT_STOP_SEC_CODE
-#include "Memmap.h"
-#endif
-
-/*******************************************************************************
-** Function name: Os_S12X_StartBaseTimer
+** Function name: tpl_start_base_timer
 ** Description: This function can be called to start thebase timer of the Os
 ** Parameter : None
 ** Return value:  None
@@ -825,7 +873,7 @@ FUNC(void, GPT_CODE) Os_WatchdogCallback(void)
 *******************************************************************************/
 #define OS_START_SEC_CODE
 #include "Memmap.h"
-FUNC(void, OS_CODE) Os_S12X_StartBaseTimer(void)
+FUNC(void, OS_CODE) tpl_start_base_timer(void)
 {
   Gpt_StartTimer(OS_GPTCHANNEL_TICK,TIMER_GLOBALTIME_LOADVALUE);
   Gpt_EnableNotification(OS_GPTCHANNEL_TICK);
@@ -836,7 +884,7 @@ FUNC(void, OS_CODE) Os_S12X_StartBaseTimer(void)
 
 
 /*******************************************************************************
-** Function name: tpl_s12x_inc_time
+** Function name: tpl_inc_time
 ** Description: This function increments the global time of the Os by the
 **              tick value of the Os
 ** Parameter : None
@@ -846,13 +894,92 @@ FUNC(void, OS_CODE) Os_S12X_StartBaseTimer(void)
 #ifdef WITH_AUTOSAR
 #define OS_START_SEC_CODE
 #include "Memmap.h"
-FUNC(void, OS_CODE) tpl_s12x_inc_time(void)
+FUNC(void, OS_CODE) tpl_inc_time(void)
 {
-  tpl_GlobalTime = (tpl_GlobalTime+(TIMER_GLOBALTIME_PERIOD));
+  tpl_global_time = (tpl_global_time+(TIMER_GLOBALTIME_PERIOD));
 }
 #define OS_STOP_SEC_CODE
 #include "Memmap.h"
 #endif
+
+
+/*******************************************************************************
+** Function name: tpl_get_interrupt_lock_status
+** Description: this function checks if the user has released any call to
+**              DisableAllInterrupt/SuspendAllInterrupt/SuspendOsInterrupt
+** Parameter : None
+** Return value:  tpl_bool: status of the interrupt inhibition
+** Remarks:
+*******************************************************************************/
+#ifdef WITH_AUTOSAR
+#define OS_START_SEC_CODE
+#include "Memmap.h"
+FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
+{
+  VAR(tpl_bool, AUTOMATIC) return_value;
+
+  if( (TRUE==tpl_user_task_lock) || (tpl_cpt_user_task_lock > 0) )
+  {
+    return_value = TRUE;
+  }
+  else
+  {
+    return_value = FALSE;
+  }
+
+  return return_value;
+}
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
+#endif
+
+
+/*******************************************************************************
+** Function name: tpl_reset_interrupt_lock_status
+** Description: this function reset the status of interrupt lock by user
+** Parameter : None
+** Return value:  None
+** Remarks:
+*******************************************************************************/
+#ifdef WITH_AUTOSAR
+#define OS_START_SEC_CODE
+#include "Memmap.h"
+FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
+{
+  tpl_user_task_lock = FALSE;
+
+  tpl_cpt_user_task_lock = 0;
+
+  tpl_cpt_task_lock = tpl_cpt_os_task_lock;
+}
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
+#endif
+
+
+/*******************************************************************************
+** Function name: tpl_exception_occured
+** Description: This function is called when a exception occured in the µP
+**              (e.g. a wrong op code)
+** Parameter : None
+** Return value:  None
+** Remarks:
+*******************************************************************************/
+#ifdef WITH_AUTOSAR
+#define OS_START_SEC_CODE
+#include "Memmap.h"
+/* MISRA RULE 27 VIOLATION: this function has an external linkage, but does
+   not need to be declared as external in a header file because it is only
+   called when the interrupt vector is reached */
+__interrupt FUNC(void, OS_CODE) tpl_exception_occured(void)
+{
+  tpl_call_protection_hook(E_OS_PROTECTION_EXCEPTION);
+}
+#define OS_STOP_SEC_CODE
+#include "Memmap.h"
+#endif
+
+
 
 /******************************************************************************/
 /* DEFINITION OF LOCAL FUNCTIONS                                              */
@@ -869,7 +996,7 @@ FUNC(void, OS_CODE) tpl_s12x_inc_time(void)
 *******************************************************************************/
 /* MISRA RULE 52 VIOLATION: the MISRA rule checker cannot see that this
   function is used because it is called only in assembly parts of code */
-_STATIC_ FUNC(void, OS_CODE) tpl_call_missing_end(void)
+STATIC FUNC(void, OS_CODE) tpl_call_missing_end(void)
 {
     VAR(StatusType, AUTOMATIC) result = E_OK;
 

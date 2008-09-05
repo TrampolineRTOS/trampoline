@@ -393,6 +393,31 @@
 #endif
 
 /**
+ * @def CHECK_SCHEDTABLE_SYNC_STRATEGY_ERROR
+ *
+ * Checks
+ *
+ * @param schedtable #ScheduleTableType
+ * @param result error code to set if check fails
+ *
+ * @note error code is not set if it do not equals E_OK
+ * @note checking is disable when OS_EXTENDED is not defined
+ * @note sched_table_id should be checked before doing this check
+ */
+
+/* No extended error checking (! OS_EXTENDED)  */
+#if !defined(OS_EXTENDED)
+#   define CHECK_SCHEDTABLE_SYNC_STRATEGY_ERROR(schedtable,result)
+#else
+#   define CHECK_SCHEDTABLE_SYNC_STRATEGY_ERROR(schedtable,result)            \
+    if ( (result == (tpl_status)E_OK) &&                                      \
+         ((schedtable->sync_strat) == SCHEDTABLE_EXPLICIT_SYNC))                \
+    {                                                                         \
+        result = (tpl_status)E_OS_ID;                                         \
+    }
+#endif
+
+/**
  * @def CHECK_COUNTER_ID_ERROR
  *
  * Checks if cnt_id is a valid counter identifier.
@@ -515,7 +540,7 @@
 /**
  * @def CHECK_ISR_ID_ERROR
  *
- * This macro checks for out of range isr_id error. It 
+ * This macro checks for out of range isr_id error. It
  * is used in os services which uses isr_id as parameter.
  *
  * @param isr_id #ISRType (so called isr_id) to check
