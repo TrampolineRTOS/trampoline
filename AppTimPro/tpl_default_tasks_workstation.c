@@ -64,7 +64,7 @@ extern ProtectionReturnType ProtectionHook (StatusType FatalError)
   GetTaskID (&id);
   printf (" with task %d\n", id);
   
-  return PRO_KILLTASKISR;  
+  return PRO_TERMINATETASKISR;  
 }
 
 TASK(r1_squatter)

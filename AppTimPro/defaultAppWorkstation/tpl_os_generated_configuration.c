@@ -5,13 +5,17 @@
 #include "tpl_os_it_kernel.h"
 #include "tpl_os_alarm_kernel.h"
 #include "tpl_os_action.h"
+#include "tpl_os_kernel.h"
 
 #ifndef WITH_AUTOSAR
+#ifndef WITH_NOCOM
 #include "tpl_com_notification.h"
 #include "tpl_com_mo.h"
 #include "tpl_com_internal_com.h"
+#include "tpl_com_external_com.h"
 #include "tpl_com_app_copy.h"
 #include "tpl_com_filters.h"
+#endif
 #endif
 
 #include "tpl_os_generated_configuration.h"
@@ -20,7 +24,10 @@
 #ifdef WITH_AUTOSAR
 #include "tpl_as_st_kernel.h"
 #include "tpl_as_action.h"
+#include "tpl_as_isr_kernel.h"
 #endif
+
+/* #include "Application_types.h" */
 
 /*=============================================================================
  * Definition and initialization of event related defines and structures
@@ -43,8 +50,8 @@
 tpl_resource descriptor_of_resource_r1 = {
     /* ceiling priority of the resource */  (tpl_priority)2,
     /* owner previous priority          */  (tpl_priority)0,
-    /* owner of the resource            */  NULL,
-    /* next resource in the list        */  NULL
+    /* owner of the resource            */  NULL_PTR,
+    /* next resource in the list        */  NULL_PTR
 };
 
 
@@ -70,12 +77,20 @@ tpl_stack_word stack_zone_of_periodicTask[32768/sizeof(tpl_stack_word)];
 tpl_context integer_context_of_periodicTask;
 
 #define CONTEXT_OF_TASK_periodicTask &integer_context_of_periodicTask
+
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 /*
  * Task periodicTask function prototype
  */
 void function_of_task_periodicTask(void);
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 /*
  * Timing protection descriptor for $NAME$
  */
@@ -85,7 +100,6 @@ tpl_time task_periodicTask_rez_lock_time[1] = {
  
 tpl_timing_protection task_periodicTask_timing_prot = {
     /* execution budget/time    */  100,
-    /* time limit               */  0,
     /* time frame               */  1000,
     /* resource lock time       */  task_periodicTask_rez_lock_time,
     /* os interrupt lock time   */  1000,
@@ -93,16 +107,21 @@ tpl_timing_protection task_periodicTask_timing_prot = {
 };
 
 
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 #endif
 
+
+#define OS_START_SEC_CONFIGDATA_UNSPECIFIED
+#include "tpl_memmap.h"
 /*
  * Static descriptor of task periodicTask
  */
-tpl_exec_static static_descriptor_of_task_periodicTask = {
+CONST(tpl_exec_static, OS_CONST) static_descriptor_of_task_periodicTask = {
     /* context                  */  CONTEXT_OF_TASK_periodicTask,
     /* stack                    */  STACK_OF_TASK_periodicTask,
     /* entry point (function)   */  function_of_task_periodicTask,
-    /* internal ressource       */  NULL,
+    /* internal ressource       */  NULL_PTR,
     /* task id                  */  task_id_of_periodicTask,
     /* task base priority       */  (tpl_priority)1,
     /* max activation count     */  1,
@@ -113,26 +132,32 @@ tpl_exec_static static_descriptor_of_task_periodicTask = {
 #endif
 };
 
+#define OS_STOP_SEC_CONFIGDATA_UNSPECIFIED
+#include "tpl_memmap.h"
+
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 /*
  * Dynamic descriptor of task periodicTask
  */
 tpl_task descriptor_of_task_periodicTask = {
     {       /* beginning of exec_desc part */
     /* static descriptor    */  &static_descriptor_of_task_periodicTask,
-    /* resources            */  NULL,
+    /* resources            */  NULL_PTR,
     /* activate count       */  0,
     /* task priority        */  (tpl_priority)1,
     /* task state           */  SUSPENDED,
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    /* start date           */  0,
-    /* time left            */  0,
+    /* activation allowed   */  TRUE,
 #endif
     },    /* end of exec_desc part */
     /* event mask           */  0,
     /* event wait           */  0
 };
 
-
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 /*
  * r1_squatter stack
  */
@@ -146,12 +171,20 @@ tpl_stack_word stack_zone_of_r1_squatter[32768/sizeof(tpl_stack_word)];
 tpl_context integer_context_of_r1_squatter;
 
 #define CONTEXT_OF_TASK_r1_squatter &integer_context_of_r1_squatter
+
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 /*
  * Task r1_squatter function prototype
  */
 void function_of_task_r1_squatter(void);
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 /*
  * Timing protection descriptor for $NAME$
  */
@@ -161,7 +194,6 @@ tpl_time task_r1_squatter_rez_lock_time[1] = {
  
 tpl_timing_protection task_r1_squatter_timing_prot = {
     /* execution budget/time    */  1000,
-    /* time limit               */  0,
     /* time frame               */  10000,
     /* resource lock time       */  task_r1_squatter_rez_lock_time,
     /* os interrupt lock time   */  1000,
@@ -169,16 +201,21 @@ tpl_timing_protection task_r1_squatter_timing_prot = {
 };
 
 
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 #endif
 
+
+#define OS_START_SEC_CONFIGDATA_UNSPECIFIED
+#include "tpl_memmap.h"
 /*
  * Static descriptor of task r1_squatter
  */
-tpl_exec_static static_descriptor_of_task_r1_squatter = {
+CONST(tpl_exec_static, OS_CONST) static_descriptor_of_task_r1_squatter = {
     /* context                  */  CONTEXT_OF_TASK_r1_squatter,
     /* stack                    */  STACK_OF_TASK_r1_squatter,
     /* entry point (function)   */  function_of_task_r1_squatter,
-    /* internal ressource       */  NULL,
+    /* internal ressource       */  NULL_PTR,
     /* task id                  */  task_id_of_r1_squatter,
     /* task base priority       */  (tpl_priority)2,
     /* max activation count     */  1,
@@ -189,26 +226,32 @@ tpl_exec_static static_descriptor_of_task_r1_squatter = {
 #endif
 };
 
+#define OS_STOP_SEC_CONFIGDATA_UNSPECIFIED
+#include "tpl_memmap.h"
+
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 /*
  * Dynamic descriptor of task r1_squatter
  */
 tpl_task descriptor_of_task_r1_squatter = {
     {       /* beginning of exec_desc part */
     /* static descriptor    */  &static_descriptor_of_task_r1_squatter,
-    /* resources            */  NULL,
+    /* resources            */  NULL_PTR,
     /* activate count       */  0,
     /* task priority        */  (tpl_priority)2,
     /* task state           */  SUSPENDED,
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    /* start date           */  0,
-    /* time left            */  0,
+    /* activation allowed   */  TRUE,
 #endif
     },    /* end of exec_desc part */
     /* event mask           */  0,
     /* event wait           */  0
 };
 
-
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 tpl_task *tpl_task_table[TASK_COUNT] = {
     (tpl_task *)&descriptor_of_task_periodicTask,
     (tpl_task *)&descriptor_of_task_r1_squatter
@@ -241,13 +284,15 @@ tpl_counter descriptor_of_counter_counter100ms = {
     /* minimum cycle        */  1,
     /* current tick         */  0,
     /* current date         */  0,
-    /* first alarm          */  NULL,
-    /* next alarm to raise  */  NULL
+#ifdef WITH_AUTOSAR
+    /* kind the counter     */  HARDWARE_COUNTER,
+#endif
+    /* first alarm          */  NULL_PTR,
+    /* next alarm to raise  */  NULL_PTR
 };
 
-
-void tpl_schedule(int from);
-tpl_status tpl_counter_tick(tpl_counter *counter);
+#include <tpl_os_kernel.h>        //tpl_schedule
+#include <tpl_os_alarm_kernel.h> //tpl_counter_tick
 
 void tpl_call_counter_tick()
 {
@@ -259,6 +304,9 @@ void tpl_call_counter_tick()
     }
 }
 
+tpl_counter *tpl_counter_table[1] = {
+    &descriptor_of_counter_counter100ms
+};
 
 
 /*=============================================================================
@@ -285,8 +333,8 @@ tpl_alarm_static stat_descriptor_of_alarm_alarm1s = {
 
 tpl_time_obj descriptor_of_alarm_alarm1s = {
     /* pointer to the static part   */  (tpl_time_obj_static *)&stat_descriptor_of_alarm_alarm1s,
-    /* next alarm                   */  NULL,
-    /* prev alarm                   */  NULL,
+    /* next alarm                   */  NULL_PTR,
+    /* prev alarm                   */  NULL_PTR,
     /* cycle                        */  20,
     /* date                         */  1,
     /* State of the alarm           */  ALARM_AUTOSTART
@@ -312,8 +360,8 @@ tpl_alarm_static stat_descriptor_of_alarm_alarm200ms = {
 
 tpl_time_obj descriptor_of_alarm_alarm200ms = {
     /* pointer to the static part   */  (tpl_time_obj_static *)&stat_descriptor_of_alarm_alarm200ms,
-    /* next alarm                   */  NULL,
-    /* prev alarm                   */  NULL,
+    /* next alarm                   */  NULL_PTR,
+    /* prev alarm                   */  NULL_PTR,
     /* cycle                        */  4,
     /* date                         */  1,
     /* State of the alarm           */  ALARM_AUTOSTART
@@ -341,8 +389,8 @@ tpl_alarm_static stat_descriptor_of_alarm_alarmevent = {
 
 tpl_time_obj descriptor_of_alarm_alarmevent = {
     /* pointer to the static part   */  (tpl_time_obj_static *)&stat_descriptor_of_alarm_alarmevent,
-    /* next alarm                   */  NULL,
-    /* prev alarm                   */  NULL,
+    /* next alarm                   */  NULL_PTR,
+    /* prev alarm                   */  NULL_PTR,
     /* cycle                        */  10,
     /* date                         */  1,
     /* State of the alarm           */  ALARM_AUTOSTART
@@ -394,5 +442,11 @@ tpl_priority_level tpl_ready_list[3] = {
 };
 
 
+
+/*
+#if CRC_LEVEL > 0
+$CRC_TABLE$
+#endif
+*/
 
 /* End of file tpl_os_generated_configuration.c */

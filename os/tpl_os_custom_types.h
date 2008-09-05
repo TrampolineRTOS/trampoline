@@ -53,7 +53,7 @@ typedef u16 tpl_stack_size;
 /**
  * tpl_buffer is a pointer to a chunk of data in memory
  */
-typedef P2VAR(u8, OS_APPL_DATA, AUTOMATIC) tpl_buffer;
+typedef P2VAR(u8, TYPEDEF, OS_APPL_DATA) tpl_buffer;
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 /**

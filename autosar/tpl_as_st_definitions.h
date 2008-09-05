@@ -10,10 +10,12 @@
 #ifndef TPL_AS_ST_DEFINITIONS_H
 #define TPL_AS_ST_DEFINITIONS_H
 
+#include "tpl_os_alarm.h"
+
 /* Schedule tables states */
 
 #define SCHEDULETABLE_AUTOSTART                 TIME_OBJ_AUTOSTART
-#define SCHEDULETABLE_NOT_STARTED               TIME_OBJ_SLEEP
+#define SCHEDULETABLE_STOPPED                   TIME_OBJ_SLEEP
 #define SCHEDULETABLE_RUNNING                   TIME_OBJ_ACTIVE
 #define SCHEDULETABLE_NEXT                      (TIME_OBJ_ACTIVE | 0x04)
 #define SCHEDULETABLE_WAITING                   (TIME_OBJ_ACTIVE | 0x08)

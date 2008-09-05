@@ -22,5 +22,9 @@ tpl_status tpl_receive_static_external_unqueued_message(
     tpl_base_receiving_mo*,
     tpl_com_data*);
 
+tpl_status tpl_send_static_external_message(
+    void            *smo,
+    tpl_com_data    *data);
+
 #endif
 /* TPL_COM_EXTERNAL_COM */

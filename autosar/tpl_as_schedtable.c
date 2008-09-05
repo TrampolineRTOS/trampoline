@@ -30,6 +30,7 @@
 #include "tpl_as_st_kernel.h"
 #include "tpl_as_error.h"
 #include "tpl_os_definitions.h"
+#include "tpl_as_isr.h"
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -60,8 +61,8 @@ extern P2VAR(tpl_schedule_table, OS_APPL_DATA, OS_VAR)  tpl_schedtable_table[SCH
 /*
  * Start a schedule table at a relative date.
  *
- * see paragraph 8.4.8 page 55 of
- * AUTOSAR/Specification of the Operating System v2.0.1
+ * see paragraph 8.4.8 page 80 of
+ * AUTOSAR/Specification of the Operating System v3.0
  */
 FUNC(StatusType, OS_CODE)  StartScheduleTableRel(
     VAR(ScheduleTableType, AUTOMATIC) sched_table_id,
@@ -71,10 +72,14 @@ FUNC(StatusType, OS_CODE)  StartScheduleTableRel(
     VAR(StatusType, AUTOMATIC) result = E_OK;
 
 #ifndef NO_SCHEDTABLE
-    P2VAR(tpl_schedule_table, OS_APPL_DATA, AUTOMATIC) st;
-    P2VAR(tpl_counter, OS_APPL_DATA, AUTOMATIC) cnt;
+    P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
+    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) cnt;
     VAR(tpl_tick, AUTOMATIC) date;
+    P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA) schedtable;
 #endif
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
 
     LOCK_WHEN_TASK()
 
@@ -88,12 +93,95 @@ FUNC(StatusType, OS_CODE)  StartScheduleTableRel(
 #ifndef NO_SCHEDTABLE
     IF_NO_EXTENDED_ERROR(result)
         st = tpl_schedtable_table[sched_table_id];
+        /* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
+           tpl_schedtable_static*. This cast behaves correctly because the first memeber
+           of tpl_schedula_table_static is a tpl_time_obj_static */
+        schedtable = (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))(st->b_desc.stat_part);
 
-        if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_NOT_STARTED)
+        if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
+        {
+            if(schedtable->sync_strat != SCHEDTABLE_IMPLICIT_SYNC)
+            {
+                /*  the schedule table is not already started, proceed  */
+                cnt = st->b_desc.stat_part->counter;
+                date = cnt->current_date + offset + (schedtable->expiry[0])->offset;
+                if (date > cnt->max_allowed_value)
+                {
+                    date -= cnt->max_allowed_value;
+                }
+                st->b_desc.date = date;
+                st->b_desc.state = SCHEDULETABLE_RUNNING;
+                /* MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
+                   tpl_time_obj*. This cast behaves correctly because the first memeber
+                   of tpl_schedula_table is a tpl_time_obj */
+                tpl_insert_time_obj((tpl_time_obj *)st);
+            }
+            else
+            {
+              result = E_OS_ID;
+            }
+        }
+        else
+        {
+            /*  the schedule table is already started,
+                return the proper error code                        */
+            result = E_OS_STATE;
+        }
+    IF_NO_EXTENDED_ERROR_END()
+#endif
+
+    PROCESS_ERROR(result)
+
+    UNLOCK_WHEN_TASK()
+
+    return result;
+}
+
+/*
+ * Start a schedule table at an absolute date.
+ *
+ * see paragraph 8.4.9 page 80 of
+ * AUTOSAR/Specification of the Operating System v3.0
+ */
+FUNC(StatusType, OS_CODE)  StartScheduleTableAbs(
+    VAR(ScheduleTableType, AUTOMATIC)   sched_table_id,
+    VAR(TickType, AUTOMATIC)            tick_val
+)
+{
+    VAR(StatusType, AUTOMATIC) result = E_OK;
+
+#ifndef NO_SCHEDTABLE
+    P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
+    P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA) schedtable;
+    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) cnt;
+    VAR(tpl_tick, AUTOMATIC) date;
+#endif
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
+
+    LOCK_WHEN_TASK()
+
+    STORE_SERVICE(OSServiceId_StartScheduleTableAbs)
+    STORE_SCHEDTABLE_ID(sched_table_id)
+    STORE_TICK_1(tick_val)
+
+    CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
+    CHECK_SCHEDTABLE_TICK_VALUE(sched_table_id,tick_val,result)
+
+#ifndef NO_SCHEDTABLE
+    IF_NO_EXTENDED_ERROR(result)
+        st = tpl_schedtable_table[sched_table_id];
+        /* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
+           tpl_schedtable_static*. This cast behaves correctly because the first memeber
+           of tpl_schedula_table_static is a tpl_time_obj_static */
+        schedtable = (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))(st->b_desc.stat_part);
+
+        if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
         {
             /*  the schedule table is not already started, proceed  */
             cnt = st->b_desc.stat_part->counter;
-            date = cnt->current_date + offset;
+            date = tick_val + (schedtable->expiry[0])->offset;
             if (date > cnt->max_allowed_value)
             {
                 date -= cnt->max_allowed_value;
@@ -121,51 +209,48 @@ FUNC(StatusType, OS_CODE)  StartScheduleTableRel(
     return result;
 }
 
+
 /*
- * Start a schedule table at an absolute date.
+ * Start a schedule table synchronized with global time
  *
- * see paragraph 8.4.9 page 55 of
- * AUTOSAR/Specification of the Operating System v2.0.1
+ * see paragraph 8.4.12 page 84 of
+ * AUTOSAR/Specification of the Operating System v3.0
  */
-FUNC(StatusType, OS_CODE)  StartScheduleTableAbs(
-    VAR(ScheduleTableType, AUTOMATIC)   sched_table_id,
-    VAR(TickType, AUTOMATIC)            tick_val
+FUNC(StatusType, OS_CODE)  StartScheduleTableSynchron(
+    VAR(ScheduleTableType, AUTOMATIC)   sched_table_id
 )
 {
     VAR(StatusType, AUTOMATIC) result = E_OK;
 
 #ifndef NO_SCHEDTABLE
-    P2VAR(tpl_schedule_table, OS_APPL_DATA, AUTOMATIC) st;
+    P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
 #endif
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
 
     LOCK_WHEN_TASK()
 
-    STORE_SERVICE(OSServiceId_StartScheduleTableAbs)
+    STORE_SERVICE(OSServiceId_StartScheduleTableSynchron)
     STORE_SCHEDTABLE_ID(sched_table_id)
-    STORE_TICK_1(tick_val)
 
     CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
-    CHECK_SCHEDTABLE_TICK_VALUE(sched_table_id,tick_val,result)
 
 #ifndef NO_SCHEDTABLE
     IF_NO_EXTENDED_ERROR(result)
         st = tpl_schedtable_table[sched_table_id];
 
-        if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_NOT_STARTED)
+        if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
         {
-            /*  the schedule table is not already started, proceed  */
-            st->b_desc.date = tick_val;
-            st->b_desc.state = SCHEDULETABLE_RUNNING;
-            /* MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
-               tpl_time_obj*. This cast behaves correctly because the first memeber
-               of tpl_schedula_table is a tpl_time_obj */
-            tpl_insert_time_obj((tpl_time_obj *)st);
+            /*  the schedule table is not already started,
+                it is put in the waiting state until the global time is provided */
+            st->b_desc.state = SCHEDULETABLE_WAITING;
         }
         else
         {
             /*  the schedule table is already started,
                 return the proper error code                        */
-            result = E_OS_NOFUNC;
+            result = E_OS_STATE;
         }
     IF_NO_EXTENDED_ERROR_END()
 #endif
@@ -177,11 +262,12 @@ FUNC(StatusType, OS_CODE)  StartScheduleTableAbs(
     return result;
 }
 
+
 /*
  * Stop a schedule table.
  *
- * see paragraph 8.4.10 page 56 of
- * AUTOSAR/Specification of the Operating System v2.0.1
+ * see paragraph 8.4.10 page 81 of
+ * AUTOSAR/Specification of the Operating System v3.0
  */
 FUNC(StatusType, OS_CODE) StopScheduleTable(
     VAR(ScheduleTableType, AUTOMATIC)   sched_table_id
@@ -190,8 +276,11 @@ FUNC(StatusType, OS_CODE) StopScheduleTable(
     VAR(StatusType, AUTOMATIC) result = E_OK;
 
 #ifndef NO_SCHEDTABLE
-    P2VAR(tpl_schedule_table, OS_APPL_DATA, AUTOMATIC) st;
+    P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
 #endif
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
 
     LOCK_WHEN_TASK()
 
@@ -205,13 +294,14 @@ FUNC(StatusType, OS_CODE) StopScheduleTable(
         st = tpl_schedtable_table[sched_table_id];
 
         /*  Check the schedule table is started */
-        if (st->b_desc.state != (tpl_schedtable_state)SCHEDULETABLE_NOT_STARTED)
+        if (st->b_desc.state != (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
         {
             /* MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
                tpl_time_obj*. This cast behaves correctly because the first memeber
                of tpl_schedula_table is a tpl_time_obj */
             tpl_remove_time_obj((tpl_time_obj *)st);
-            st->b_desc.state = SCHEDULETABLE_NOT_STARTED;
+            st->b_desc.state = SCHEDULETABLE_STOPPED;
+            st->index = 0; /* reset the expiry point index to 0 */
         }
         else
         {
@@ -230,8 +320,8 @@ FUNC(StatusType, OS_CODE) StopScheduleTable(
 /*
  * Switch the processing from one schedule table to another.
  *
- * see paragraph 8.4.11 page 57 of
- * AUTOSAR/Specification of the Operating System v2.0.1
+ * see paragraph 8.4.11 page 83 of
+ * AUTOSAR/Specification of the Operating System v3.0
  */
 FUNC(StatusType, OS_CODE) NextScheduleTable(
     VAR(ScheduleTableType, AUTOMATIC)   current_st_id,
@@ -241,9 +331,12 @@ FUNC(StatusType, OS_CODE) NextScheduleTable(
     VAR(StatusType, AUTOMATIC) result = E_OK;
 
 #ifndef NO_SCHEDTABLE
-    P2VAR(tpl_schedule_table, OS_APPL_DATA, AUTOMATIC) current_st;
-    P2VAR(tpl_schedule_table, OS_APPL_DATA, AUTOMATIC) next_st;
+    P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) current_st;
+    P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) next_st;
 #endif
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
 
     LOCK_WHEN_TASK()
 
@@ -263,13 +356,13 @@ FUNC(StatusType, OS_CODE) NextScheduleTable(
 
         IF_NO_EXTENDED_ERROR(result)
             /*  Check the current schedule table is started         */
-            if ((current_st->b_desc.state != SCHEDULETABLE_NOT_STARTED) &&
+            if ((current_st->b_desc.state != SCHEDULETABLE_STOPPED) &&
                 (current_st->b_desc.state != SCHEDULETABLE_NEXT))
             {
                 /*  Set the next pointer                            */
                 if (current_st->next != NULL)
                 {
-                    current_st->next->b_desc.state = SCHEDULETABLE_NOT_STARTED;
+                    current_st->next->b_desc.state = SCHEDULETABLE_STOPPED;
                 }
                 current_st->next = next_st;
                 /*  And the state of the next schedule table        */
@@ -294,8 +387,8 @@ FUNC(StatusType, OS_CODE) NextScheduleTable(
 /**
  * Get the status of a schedule table
  *
- * see paragraph 8.4.18 page 73 of
- * AUTOSAR/Specification of the Operating System v2.1.0
+ * see paragraph 8.4.15 page 86 of
+ * AUTOSAR/Specification of the Operating System v3.0
  */
 FUNC(StatusType, OS_CODE) GetScheduleTableStatus(
     VAR(ScheduleTableType, AUTOMATIC)           sched_table_id,
@@ -304,8 +397,11 @@ FUNC(StatusType, OS_CODE) GetScheduleTableStatus(
     VAR(StatusType, AUTOMATIC)  result = E_OK;
 
 #ifndef NO_SCHEDTABLE
-    P2VAR(tpl_schedule_table, OS_APPL_DATA, AUTOMATIC) st;
+    P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
 #endif
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
 
     LOCK_WHEN_HOOK()
 
@@ -328,6 +424,130 @@ FUNC(StatusType, OS_CODE) GetScheduleTableStatus(
     return result;
 }
 
+
+
+/**
+ *  Synchronize a schedule table with global time
+ *
+ * see paragraph 8.4.13 page 84 of
+ * AUTOSAR/Specification of the Operating System v3.0
+ */
+FUNC(StatusType, OS_CODE) SyncScheduleTable(
+    VAR(ScheduleTableType, AUTOMATIC)           sched_table_id,
+    VAR(TickType, AUTOMATIC)  value)
+{
+    VAR(StatusType, AUTOMATIC)  result = E_OK;
+
+#ifndef NO_SCHEDTABLE
+    P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
+#endif
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
+
+    LOCK_WHEN_HOOK()
+
+    /*  store information for error hook routine    */
+    STORE_SERVICE(OSServiceId_SyncScheduleTable)
+    STORE_SCHEDTABLE_ID(sched_table_id)
+    STORE_TICK_1(value)
+
+    CHECK_SCHEDTABLE_ID_ERROR(sched_table_id, result)
+
+#ifndef NO_SCHEDTABLE
+    IF_NO_EXTENDED_ERROR(result)
+        st = tpl_schedtable_table[sched_table_id];
+
+        /* check the state of the schedude table */
+        if( (SCHEDULETABLE_STOPPED == st->b_desc.state)
+         || (SCHEDULETABLE_NEXT == st->b_desc.state) )
+        {
+          result=E_OS_STATE;
+        }
+        else
+        {
+            /* if schedule table is waiting, start it,
+               else if running synchronize it */
+            if( st->b_desc.state == SCHEDULETABLE_WAITING )
+            {
+                tpl_start_sched_table_sync(st, value);
+            }
+            else
+            {
+                tpl_sync_sched_table(st, value);
+            }
+        }
+
+    IF_NO_EXTENDED_ERROR_END()
+#endif
+
+    UNLOCK_WHEN_HOOK()
+
+    return result;
+}
+
+
+/**
+ *  Set a schedule table asynchrone to global time
+ *
+ * see paragraph 8.4.14 page 85 of
+ * AUTOSAR/Specification of the Operating System v3.0
+ */
+FUNC(StatusType, OS_CODE) SetScheduleTableAsync(
+    VAR(ScheduleTableType, AUTOMATIC) sched_table_id
+)
+{
+    VAR(StatusType, AUTOMATIC)  result = E_OK;
+
+#ifndef NO_SCHEDTABLE
+    P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
+    P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA) schedtable;
+    VAR(u16, AUTOMATIC) index;
+
+
+#endif
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
+
+    LOCK_WHEN_HOOK()
+
+    /*  store information for error hook routine    */
+    STORE_SERVICE(OSServiceId_SyncScheduleTable)
+    STORE_SCHEDTABLE_ID(sched_table_id)
+
+    CHECK_SCHEDTABLE_ID_ERROR(sched_table_id, result)
+
+#ifndef NO_SCHEDTABLE
+    st = tpl_schedtable_table[sched_table_id];
+        /* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
+           tpl_schedtable_static*. This cast behaves correctly because the first memeber
+           of tpl_schedula_table_static is a tpl_time_obj_static */
+    schedtable = (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))st->b_desc.stat_part;
+
+    CHECK_SCHEDTABLE_SYNC_STRATEGY_ERROR(schedtable, result)
+
+    IF_NO_EXTENDED_ERROR(result)
+
+        /* check the state of the schedule table */
+        if( (SCHEDULETABLE_RUNNING == st->b_desc.state)
+         || (SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS == st->b_desc.state) )
+        {
+            st->b_desc.state = SCHEDULETABLE_RUNNING;
+
+            for(index = 0; index < schedtable->count; index++)
+            {
+                (schedtable->expiry)[index]->sync_offset = (schedtable->expiry)[index]->offset;
+            }
+        }
+
+    IF_NO_EXTENDED_ERROR_END()
+#endif
+
+    UNLOCK_WHEN_HOOK()
+
+    return result;
+}
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

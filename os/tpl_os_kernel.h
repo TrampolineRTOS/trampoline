@@ -82,7 +82,7 @@
  * Currently running executable object. This "executable object" can be a task
  * or an interrupt service routine
  */
-extern P2VAR(tpl_exec_common, OS_APPL_DATA, OS_VAR) tpl_running_obj;
+extern P2VAR(tpl_exec_common, OS_VAR, OS_APPL_DATA) tpl_running_obj;
 
 
 #ifndef NO_TASK
@@ -95,7 +95,7 @@ extern P2VAR(tpl_exec_common, OS_APPL_DATA, OS_VAR) tpl_running_obj;
  * So a table of pointer is used. The size of this table is static
  * and known at compile time
  */
-extern P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC) tpl_task_table[TASK_COUNT];
+extern P2VAR(tpl_task, AUTOMATIC, OS_APPL_DATA) tpl_task_table[TASK_COUNT];
 #endif
 
 
@@ -105,7 +105,7 @@ extern P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC) tpl_task_table[TASK_COUNT];
  *
  * Index in this array correspond to the #ResourceType of the resource
  */
-extern P2VAR(tpl_resource, OS_APPL_DATA, AUTOMATIC) tpl_resource_table[RESOURCE_COUNT];
+extern P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) tpl_resource_table[RESOURCE_COUNT];
 #endif
 
 
@@ -115,7 +115,7 @@ extern P2VAR(tpl_resource, OS_APPL_DATA, AUTOMATIC) tpl_resource_table[RESOURCE_
  *
  * Index in this array correspond to the #AlarmType of the alarm
  */
-extern P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) tpl_alarm_table[ALARM_COUNT];
+extern P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) tpl_alarm_table[ALARM_COUNT];
 #endif
 
 
@@ -125,7 +125,7 @@ extern P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) tpl_alarm_table[ALARM_COUNT]
  *
  * Index in this array correspond to the Isr identifier
  */
-extern P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) tpl_isr_table[ISR_COUNT];
+extern P2VAR(tpl_isr, AUTOMATIC, OS_APPL_DATA) tpl_isr_table[ISR_COUNT];
 #endif
 
 #ifdef WITH_AUTOSAR
@@ -135,7 +135,7 @@ extern P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) tpl_isr_table[ISR_COUNT];
  *
  * Index in this array correspond to the schedule table identifier
  */
-extern P2VAR(tpl_schedule_table, OS_APPL_DATA, AUTOMATIC) tpl_schedtable_table[SCHEDTABLE_COUNT];
+extern P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) tpl_schedtable_table[SCHEDTABLE_COUNT];
 #endif
 #endif
 
@@ -187,32 +187,29 @@ extern FUNC(void, OS_CODE) tpl_schedule_from_idle(void);
 extern FUNC(void, OS_CODE) tpl_schedule_from_waiting(void);
 
 extern FUNC(tpl_status, OS_CODE) tpl_activate_task(
-    P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC) a_task);
-
+    P2VAR(tpl_task, AUTOMATIC, OS_APPL_DATA) a_task);
 
 extern FUNC(tpl_status, OS_CODE) tpl_set_event(
-    P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC)  a_task,
+    P2VAR(tpl_task, AUTOMATIC, OS_APPL_DATA)  a_task,
     CONST(tpl_event_mask, AUTOMATIC)          incoming_event);
 
 extern FUNC(void, OS_CODE) tpl_init_exec_object(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj);
-
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) exec_obj);
 
 extern FUNC(void, OS_CODE) tpl_put_preempted_exec_object(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj);
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) exec_obj);
 
 extern FUNC(void, OS_CODE) tpl_put_new_exec_object(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj);
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) exec_obj);
 
 extern FUNC(void, OS_CODE) tpl_init_os(
     CONST(tpl_application_mode, AUTOMATIC) app_mode);
 
-
 extern FUNC(void, OS_CODE) tpl_get_internal_resource(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) a_task);
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) a_task);
 
 extern FUNC(void, OS_CODE) tpl_release_internal_resource(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) a_task);
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) a_task);
 
 
 #define OS_STOP_SEC_CODE

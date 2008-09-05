@@ -25,8 +25,7 @@
  */
 tpl_status tpl_receive_static_external_unqueued_message(
     tpl_base_receiving_mo   *rmo,
-    tpl_com_data            *data
-    )
+    tpl_com_data            *data)
 {
     /*  cast the base receiving mo to the correct type of mo                */
     tpl_external_receiving_unqueued_mo *rum =
@@ -56,8 +55,7 @@ tpl_status tpl_receive_static_external_unqueued_message(
  */
 tpl_status tpl_send_static_external_message(
     void            *smo,
-    tpl_com_data    *data
-    )
+    tpl_com_data    *data)
 {
     /*  cast the base mo to the correct typo of mo      */
     tpl_external_sending_mo *esmo = smo;

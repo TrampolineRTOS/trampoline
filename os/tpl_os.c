@@ -40,7 +40,7 @@
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-_STATIC_ VAR(AppModeType, OS_VAR) application_mode;
+STATIC VAR(AppModeType, OS_VAR) application_mode;
 /* MISRA RULE 27 VIOLATION: This object has external linkage
   but is only used in this file and in tpl_os_kernel.c where it is defined. */
 extern VAR(s8, OS_VAR) tpl_h_prio;
@@ -74,11 +74,11 @@ FUNC(void, OS_CODE) StartOS(
 
     tpl_get_task_lock();
 
-    tpl_init_os(mode);
-
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     tpl_init_timing_protection ();
 #endif
+
+    tpl_init_os(mode);
 
     /*  Call the startup hook. According to the spec, it should be called
         after the os is initialized and before the scheduler is running   */

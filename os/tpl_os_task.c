@@ -1,5 +1,5 @@
 /**
- * @file tpl_os_task_management.c
+ * @file tpl_os_task.c
  *
  * @section desc File description
  *
@@ -31,6 +31,10 @@
 #include "tpl_os_error.h"
 #include "tpl_os_hooks.h"
 
+#ifdef WITH_AUTOSAR
+#include "tpl_as_isr.h"
+#endif
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -44,6 +48,9 @@ FUNC(StatusType, OS_CODE) ActivateTask(
 {
     /*  init the error to no error  */
     VAR(StatusType, AUTOMATIC) result = E_OK;
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
 
     /*  lock the task structures    */
     LOCK_WHEN_TASK()
@@ -79,6 +86,9 @@ FUNC(StatusType, OS_CODE) TerminateTask(void)
 {
     /*  init the error to no error  */
     VAR(StatusType, AUTOMATIC) result = E_OK;
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
 
     /*  lock the task structures    */
     LOCK_WHEN_TASK()
@@ -118,9 +128,12 @@ FUNC(StatusType, OS_CODE) ChainTask(
     VAR(StatusType, AUTOMATIC) result = E_OK;
 
 #ifndef NO_TASK
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj;
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) exec_obj;
     VAR(tpl_activate_counter, AUTOMATIC)            count;
 #endif
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
 
     /*  lock the task system    */
     LOCK_WHEN_TASK()
@@ -211,6 +224,9 @@ FUNC(StatusType, OS_CODE) Schedule(void)
 {
     VAR(StatusType, AUTOMATIC) result = E_OK;
 
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
+
     /*  lock the task system    */
     LOCK_WHEN_TASK()
 
@@ -261,6 +277,9 @@ FUNC(StatusType, OS_CODE) GetTaskState(
 {
     VAR(StatusType, AUTOMATIC) result = E_OK;
 
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
+
     LOCK_WHEN_HOOK()
 
     /*  store information for error hook routine    */
@@ -276,7 +295,7 @@ FUNC(StatusType, OS_CODE) GetTaskState(
             that has the same beginning fields as the struct it is casted to
             This allow object oriented design and polymorphism.
         */
-        *state = ((P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC))(tpl_task_table[task_id]))->state & 0x3;
+        *state = ((P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA))(tpl_task_table[task_id]))->state & 0x3;
     IF_NO_EXTENDED_ERROR_END()
 #endif
 

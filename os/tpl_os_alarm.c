@@ -30,6 +30,10 @@
 #include "tpl_os_alarm.h"
 #include "tpl_machine_interface.h"
 
+#ifdef WITH_AUTOSAR
+#include "tpl_as_isr.h"
+#endif
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -46,8 +50,11 @@ FUNC(StatusType, OS_CODE) GetAlarmBase(
     VAR(StatusType, AUTOMATIC) result = E_OK;
 
 #ifndef NO_ALARM
-    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) alarm;
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
 #endif
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
 
     LOCK_WHEN_HOOK()
 
@@ -86,8 +93,11 @@ FUNC(StatusType, OS_CODE) GetAlarm(
     VAR(StatusType, AUTOMATIC) result = E_OK;
 
 #ifndef NO_ALARM
-    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) alarm;
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
 #endif
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
 
     LOCK_WHEN_HOOK()
 
@@ -134,10 +144,13 @@ FUNC(StatusType, OS_CODE) SetRelAlarm(
     VAR(StatusType, AUTOMATIC) result = E_OK;
 
 #ifndef NO_ALARM
-    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) alarm;
-    P2VAR(tpl_counter, OS_APPL_DATA, AUTOMATIC) cnt;
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) cnt;
     VAR(tpl_tick, AUTOMATIC) date;
 #endif
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
 
     LOCK_WHEN_HOOK()
 
@@ -197,8 +210,11 @@ FUNC(StatusType, OS_CODE) SetAbsAlarm(
     VAR(StatusType, AUTOMATIC) result = E_OK;
 
 #ifndef NO_ALARM
-    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) alarm;
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
 #endif
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
 
     LOCK_WHEN_HOOK()
 
@@ -250,8 +266,11 @@ FUNC(StatusType, OS_CODE) CancelAlarm(
     VAR(StatusType, AUTOMATIC) result = E_OK;
 
 #ifndef NO_ALARM
-    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) alarm;
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
 #endif
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
 
     LOCK_WHEN_HOOK()
 

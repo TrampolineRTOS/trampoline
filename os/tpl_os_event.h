@@ -1,5 +1,5 @@
 /*
- * @file tpl_os_kernel.h
+ * @file tpl_os_event.h
  *
  * @section desc File description
  *
@@ -50,7 +50,7 @@ typedef tpl_event_mask  EventMaskType;
  *
  * see paragraph 13.5.1 page 60 of OSEK/VDX 2.2.2 spec
  */
-typedef P2VAR(tpl_event_mask, OS_APPL_DATA, AUTOMATIC)  EventMaskRefType;
+typedef P2VAR(tpl_event_mask, TYPEDEF, OS_APPL_DATA)  EventMaskRefType;
 
 /**
  * @def DeclareEvent

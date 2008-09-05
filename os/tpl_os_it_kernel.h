@@ -74,11 +74,11 @@ typedef struct TPL_ISR_STATIC tpl_isr_static;
  * descriptor (#tpl_exec_common) and a pointer to a tpl_isr_static
  */
 struct TPL_ISR {
-    VAR(tpl_exec_common, AUTOMATIC)                 exec_desc;    /**<  common descriptor                 */
-    P2CONST(tpl_isr_static, OS_CONST, AUTOMATIC)    static_desc;  /**<  pointer to the static desc of the
+    VAR(tpl_exec_common, TYPEDEF)               exec_desc;    /**<  common descriptor                 */
+    P2CONST(tpl_isr_static, TYPEDEF, OS_CONST)  static_desc;  /**<  pointer to the static desc of the
                                                                         isr                               */
 #ifdef WITH_AUTOSAR
-    VAR(tpl_bool, AUTOMATIC)                        enabled;      /**< FALSE if disabled, TRUE if enabled
+    VAR(tpl_bool, TYPEDEF)                      enabled;      /**< FALSE if disabled, TRUE if enabled
                                                                        (see #tpl_isr2_enable_state) */
 #endif
 };

@@ -33,7 +33,7 @@
 
 typedef VAR(u8, AUTOMATIC)  ScheduleTableType;
 typedef VAR(tpl_time_obj_state, AUTOMATIC) ScheduleTableStatusType;
-typedef P2VAR(tpl_time_obj_state, OS_APPL_DATA, AUTOMATIC) ScheduleTableStatusRefType;
+typedef P2VAR(tpl_time_obj_state, AUTOMATIC, OS_APPL_DATA) ScheduleTableStatusRefType;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -88,6 +88,23 @@ FUNC(StatusType, OS_CODE)  StartScheduleTableRel(
 FUNC(StatusType, OS_CODE)  StartScheduleTableAbs(
     VAR(ScheduleTableType, AUTOMATIC)   sched_table_id,
     VAR(TickType, AUTOMATIC)            tick_val
+);
+
+/*
+ * Start a schedule table synchronized with global time
+ *
+ * @param   sched_table_id  identifier of the schedule table to be started
+ *
+ * @retval  E_OS_STATE  the schedule table is already started
+ *
+ * @retval  E_OS_ID     invalid schedule table id, or the schedule table
+ *                      is not configured as explicit synchronized
+ *
+ * @retval  E_OK        no error
+ *
+ */
+FUNC(StatusType, OS_CODE)  StartScheduleTableSynchron(
+    VAR(ScheduleTableType, AUTOMATIC)   sched_table_id
 );
 
 /**
@@ -153,6 +170,37 @@ FUNC(StatusType, OS_CODE) NextScheduleTable(
 FUNC(StatusType, OS_CODE) GetScheduleTableStatus(
     VAR(ScheduleTableType, AUTOMATIC)           sched_table_id,
     VAR(ScheduleTableStatusRefType, AUTOMATIC)  status
+);
+
+/**
+ * Synchronize a schedule table with global time
+ *
+ * @param   sched_table_id  identifier of the schedule table
+ *
+ * @retval  E_OK        no error
+ *
+ * @retval  E_OS_STATE  the schedule table is not waiting or running
+ *
+ * @retval  E_OS_ID     invalid schedule table id, or the schedule table
+ *                      is not configured as explicit synchronized
+ *
+ */
+FUNC(StatusType, OS_CODE) SyncScheduleTable(
+    VAR(ScheduleTableType, AUTOMATIC)           sched_table_id,
+    VAR(TickType, AUTOMATIC)  value);
+
+/**
+ * Set a schedule table asynchrone to global time
+ *
+ * @param   sched_table_id  identifier of the schedule table
+ *
+ * @retval  E_OK        no error
+ *
+ * @retval  E_OS_ID     invalid schedule table id, or the schedule table
+ *                      is not configured as explicit synchronized
+ */
+FUNC(StatusType, OS_CODE) SetScheduleTableAsync(
+    VAR(ScheduleTableType, AUTOMATIC) sched_table_id
 );
 
 #define OS_STOP_SEC_CODE

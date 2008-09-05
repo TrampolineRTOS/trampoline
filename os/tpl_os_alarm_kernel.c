@@ -39,14 +39,14 @@
  * head of the list
  */
 FUNC(void, OS_CODE) tpl_insert_time_obj(
-    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) time_obj)
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj)
 {
     /*  get the counter                                                     */
-    P2VAR(tpl_counter, OS_APPL_DATA, AUTOMATIC)   counter = time_obj->stat_part->counter;
+    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA)   counter = time_obj->stat_part->counter;
     /*  initialize the current time object to the head                      */
-    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC)  current_to = counter->first_to;
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)  current_to = counter->first_to;
     /*  initialize the time object that precede the current one to NULL     */
-    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC)  prev_to = NULL;
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)  prev_to = NULL_PTR;
 
     if (current_to == NULL)
     {
@@ -112,15 +112,15 @@ FUNC(void, OS_CODE) tpl_insert_time_obj(
 }
 
 /*
- * tpl_remove_alarm
- * remove an alarm from the alarm queue of the counter
+ * tpl_remove_time_obj
+ * remove a time object from the time object queue of the counter
  * it belongs to.
  */
 FUNC(void, OS_CODE) tpl_remove_time_obj(
-    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) time_obj)
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj)
 {
 
-    P2VAR(tpl_counter, OS_APPL_DATA, AUTOMATIC) counter = time_obj->stat_part->counter;
+    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = time_obj->stat_part->counter;
 
     /*  adjust the head of the queue if the
         removed alarm is at the head            */
@@ -162,7 +162,7 @@ FUNC(void, OS_CODE) tpl_remove_time_obj(
  * @param time_obj  The alarm to raise.
  */
 FUNC(tpl_status, OS_CODE) tpl_raise_alarm(
-    P2CONST(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) time_obj)
+    P2CONST(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj)
 {
     VAR(tpl_status, AUTOMATIC) result = E_OK;
 
@@ -173,9 +173,9 @@ FUNC(tpl_status, OS_CODE) tpl_raise_alarm(
      * This cast behaves correctly.
      */
     /*  Get the alarm descriptor                            */
-    P2VAR(tpl_alarm_static, OS_APPL_DATA, AUTOMATIC) stat_alarm = (tpl_alarm_static *)time_obj->stat_part;
+    P2VAR(tpl_alarm_static, AUTOMATIC, OS_APPL_DATA) stat_alarm = (tpl_alarm_static *)time_obj->stat_part;
     /*  Get the action to perform from the alarm descriptor */
-    P2CONST(tpl_action, OS_APPL_CONST, AUTOMATIC) action_desc = stat_alarm->action;
+    P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action_desc = stat_alarm->action;
 
     /*  Call the action                                     */
     result = (action_desc->action)(action_desc) ;
@@ -197,9 +197,9 @@ FUNC(tpl_status, OS_CODE) tpl_raise_alarm(
  * tpl_schedule must be called explicitly
  */
 FUNC(tpl_status, OS_CODE) tpl_counter_tick(
-    P2VAR(tpl_counter, OS_APPL_DATA, AUTOMATIC) counter)
+    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
 {
-    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC)  t_obj;
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)  t_obj;
     /*
      * A non constant function pointer is used
      * This violate MISRA rule 104. This is used to call

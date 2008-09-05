@@ -35,14 +35,14 @@
  * Getting a resource.
  */
 extern FUNC(void, OS_CODE) tpl_get_resource(
-    P2VAR(tpl_resource, OS_APPL_DATA, AUTOMATIC) res);
+    P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res);
 
 
 /*
  * Releasing a resource
  */
 extern FUNC(void, OS_CODE) tpl_release_resource(
-    P2VAR(tpl_resource, OS_APPL_DATA, AUTOMATIC) res);
+    P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res);
 
 
 #define OS_STOP_SEC_CODE

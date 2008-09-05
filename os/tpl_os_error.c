@@ -58,7 +58,7 @@ FUNC(void, OS_CODE) tpl_call_error_hook(
 /**
  * This flag is used to avoid error hook call recursion
  */
-    _STATIC_ VAR(tpl_bool, AUTOMATIC) in_error_hook = FALSE;
+    STATIC VAR(tpl_bool, AUTOMATIC) in_error_hook = FALSE;
 
     if (!in_error_hook)
     {

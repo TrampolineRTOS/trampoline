@@ -35,10 +35,10 @@
  *  structure.
  */
 struct TPL_CALLBACK_ACTION {
-    /*  base action           */
-    VAR(tpl_action, AUTOMATIC)        b_desc;
+    /*  base action                 */
+    VAR(tpl_action, TYPEDEF)        b_desc;
     /*  callback function pointer   */
-    VAR(tpl_callback_func, AUTOMATIC) callback;
+    VAR(tpl_callback_func, TYPEDEF) callback;
 };
 
 typedef struct TPL_CALLBACK_ACTION
@@ -51,10 +51,10 @@ tpl_callback_action;
  *  structure.
  */
 struct TPL_TASK_ACTIVATION_ACTION {
-    /*  base action           */
-    VAR(tpl_action, AUTOMATIC)              b_desc;
+    /*  base action                 */
+    VAR(tpl_action, TYPEDEF)                b_desc;
     /*  task descriptor pointer     */
-    P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC) task;
+    P2VAR(tpl_task, TYPEDEF, OS_APPL_DATA)  task;
 };
 
 typedef struct TPL_TASK_ACTIVATION_ACTION
@@ -67,12 +67,12 @@ tpl_task_activation_action ;
  *  structure and an event mask
  */
 struct TPL_SETEVENT_ACTION {
-    /*  base action           */
-    VAR(tpl_action, AUTOMATIC)              b_desc;
+    /*  base action                 */
+    VAR(tpl_action, TYPEDEF)                b_desc;
     /*  task descriptor pointer     */
-    P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC)  task;
+    P2VAR(tpl_task, TYPEDEF, OS_APPL_DATA)  task;
     /*  event mask                  */
-    VAR(tpl_event_mask, AUTOMATIC)          mask;
+    VAR(tpl_event_mask, TYPEDEF)            mask;
 };
 
 typedef struct TPL_SETEVENT_ACTION
@@ -86,13 +86,13 @@ tpl_setevent_action;
  * Notification functions prototypes
  */
 FUNC(tpl_status, OS_CODE) tpl_action_callback(
-    P2CONST(tpl_action, OS_APPL_CONST, AUTOMATIC) action
+    P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action
 );
 FUNC(tpl_status, OS_CODE) tpl_action_activate_task(
-    P2CONST(tpl_action, OS_APPL_CONST, AUTOMATIC) action
+    P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action
 );
 FUNC(tpl_status, OS_CODE) tpl_action_setevent(
-    P2CONST(tpl_action, OS_APPL_CONST, AUTOMATIC) action
+    P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action
 );
 
 #define OS_STOP_SEC_CODE

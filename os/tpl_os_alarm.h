@@ -52,7 +52,7 @@ typedef tpl_tick            TickType;
  *
  * see paragraph 13.6.1 page 62 of OSEK/VDX 2.2.2 spec
  */
-typedef P2VAR(tpl_tick, OS_APPL_DATA, AUTOMATIC)  TickRefType;
+typedef P2VAR(tpl_tick, TYPEDEF, OS_APPL_DATA)  TickRefType;
 
 /**
  * @typedef AlarmBaseType
@@ -70,7 +70,7 @@ typedef tpl_alarm_base      AlarmBaseType;
  *
  * See paragraph 13.6.1 page 62 of OSEK/VDX 2.2.2 spec
  */
-typedef P2VAR(tpl_alarm_base, OS_APPL_DATA, AUTOMATIC)  AlarmBaseRefType;
+typedef P2VAR(tpl_alarm_base, TYPEDEF, OS_APPL_DATA)  AlarmBaseRefType;
 
 /**
  * @typedef AlarmType

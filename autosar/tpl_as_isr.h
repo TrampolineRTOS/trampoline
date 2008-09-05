@@ -29,6 +29,7 @@
 
 #include "tpl_os_types.h"
 #include "tpl_os_custom_types.h"
+#include "tpl_as_protec_hook.h"
 
 /**
  * @def INVALID_ISR
@@ -45,7 +46,7 @@
  *
  * see paragraph 8.3.9, page 49 of
  * AUTOSAR/Specification of the Operating System v2.0.1
- */ 
+ */
 typedef tpl_isr_id  ISRType;
 
 #define OS_START_SEC_CODE

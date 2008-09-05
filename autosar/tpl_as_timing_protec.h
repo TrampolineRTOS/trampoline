@@ -6,12 +6,8 @@
  * This module includes all what is needed for AUTOSAR timing protection.
  *
  * The timing protection is done with these tools :
- * - budget monitor, which controls for task execution time withing a
- *   timeframe
- * - execution time monitor, which controls execution time since last
- *   activation of an ISR2
- * - activation count monitor, which limit activation count in one timeframe
- *   for an ISR2
+ * - budget monitor, which controls the execution time of a task or isr
+ * - time frame, which controls time between two activations of a task or isr
  * - all interrupt lock monitor, which controls the maximum lock time of
  *   all interrupts by a task or ISR2
  * - OS interrupt lock monitor, which controls the maximum lock time of
@@ -41,7 +37,6 @@
  * $Author$
  * $URL$
  */
-
 #ifndef TPL_AS_TIMING_PROTEC_H
 #define TPL_AS_TIMING_PROTEC_H
 
@@ -52,8 +47,72 @@
 #include "tpl_machine_interface.h"
 #include "tpl_as_protec_hook.h"
 
+/**
+ * @internal
+ *
+ * This is the watchdog type.
+ *
+ * @see #tpl_watchdog
+ */
+typedef enum
+{
+  EXEC_BUDGET,         /**< watchdog for an execution budget */
+  TIME_FRAME,          /**< watchdog for a count limit */
+  ALL_INT_LOCK,        /**< watchdog for all interrupts lock */
+  OS_INT_LOCK,         /**< watchdog for ISR2 lock */
+  REZ_LOCK,            /**< watchdog for a resource lock (see resource
+                            field in #tpl_watchdog to know which
+                            resource is implied */
+} tpl_watchdog_type;
+
+/**
+ * @internal
+ *
+ * This describes a watchdog associated informations. Attributes
+ * here describe what to do when the watchdog raises.
+ */
+struct TPL_WATCHDOG
+{
+  P2VAR(tpl_exec_common, TYPEDEF, OS_APPL_DATA)         exec_obj;             /**< the executable object implied  */
+  struct P2VAR(TPL_WATCHDOG, AUTOMATIC, OS_VAR_NOINIT)  next;                 /**< the next watchdog
+                                                                                   in the list                    */
+  struct P2VAR(TPL_WATCHDOG, AUTOMATIC, OS_VAR_NOINIT)  previous;             /**< the previous watchdog
+                                                                                   in the list                    */
+  VAR(tpl_time, TYPEDEF)                                scheduled_date;       /**< absolute scheduled
+                                                                                   date in tpl_time
+                                                                                   unit (useful to
+                                                                                   compute relative
+                                                                                   delays)                        */
+  VAR(tpl_time, TYPEDEF)                                start_date;           /**< absolute scheduled
+                                                                                   date in tpl_time
+                                                                                   unit (useful to
+                                                                                   compute relative
+                                                                                   delays)                        */
+  VAR(tpl_time, TYPEDEF)                                time_left;            /**< remaining time of execution
+                                                                                   for the conecerned object      */
+  VAR(tpl_watchdog_type, TYPEDEF)                       type;                 /**< the watchdog type              */
+  VAR(tpl_resource_id, TYPEDEF)                         resource;             /**< the resource implied if any    */
+};
+
+/**
+ * @internal
+ *
+ * this is an alias for #TPL_WATCHDOG structure
+ *
+ * @see #TPL_WATCHDOG
+ */
+typedef struct TPL_WATCHDOG tpl_watchdog;
+
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
+
+/**
+ * @internal
+ *
+ * This function is called when a watchdog is expired
+ */
+extern FUNC(void, OS_CODE) tpl_watchdog_expiration(void);
 
 /**
  * @internal
@@ -62,6 +121,24 @@
  * This is a prerequisite to all other functions in this module.
  */
 extern FUNC(void, OS_CODE) tpl_init_timing_protection(void);
+
+/**
+ * Function used to start the measure of a time frame for a task/isr2
+ *
+ * @param this_exec_obj: object owner of the time frame to start
+ *
+ */
+extern FUNC(void, OS_CODE) tpl_start_timeframe (
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+
+/**
+ * Function used to stop the measure of a time frame for a task/isr2
+ *
+ * @param this_exec_obj: object owner of the time frame to stop
+ *
+ */
+extern FUNC(void, OS_CODE) tpl_stop_timeframe (
+    P2CONST(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
 
 /**
  * @internal
@@ -77,7 +154,7 @@ extern FUNC(void, OS_CODE) tpl_init_timing_protection(void);
  * @see #tpl_continue_budget_monitor
  */
 extern FUNC(void, OS_CODE) tpl_start_budget_monitor (
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
 
 /**
  * @internal
@@ -93,7 +170,7 @@ extern FUNC(void, OS_CODE) tpl_start_budget_monitor (
  * @see #tpl_continue_budget_monitor
  */
 extern FUNC(void, OS_CODE) tpl_pause_budget_monitor(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
+    P2CONST(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
 
 /**
  * @internal
@@ -109,61 +186,14 @@ extern FUNC(void, OS_CODE) tpl_pause_budget_monitor(
  * @see #tpl_pause_budget_monitor
  */
 extern FUNC(void, OS_CODE) tpl_continue_budget_monitor(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
 
 /**
  * @internal
  *
- * Function to zero activation count of an ISR at a new timeframe start.
- * If necessary, re-enable the disabled ISR.
- *
- * @pre all interrupts should be disabled during this function execution
- *
- * @param this_exec_obj the ISR to monitor
  */
-extern FUNC(void, OS_CODE) tpl_reset_activation_count(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
-
-/**
- * @internal
- *
- * Function to increment the activation count for an ISR. If the ISR
- * activation count is reached for the current timeframe, the ISR
- * is disabled.
- *
- * @pre all interrupts should be disabled during this function execution
- *
- * @param this_exec_obj the ISR to monitor
- */
-extern FUNC(void, OS_CODE) tpl_add_activation_count(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
-
-/**
- * @internal
- *
- * Function to start the execution time monitor for an ISR.
- *
- * If the ISR exceeds it execution time, the #ProtectionHook is called
- *
- * @pre all interrupts should be disabled during this function execution
- *
- * @param this_exec_obj the ISR to monitor
- */
-extern FUNC(void, OS_CODE) tpl_start_exectime_monitor(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
-
-/**
- * @internal
- *
- * Function to stop the execution time monitor for an ISR. It indicates
- * that the ISR finished its execution in time.
- *
- * @pre all interrupts should be disabled during this function execution
- *
- * @param this_exec_obj the ISR to monitor
- */
-extern FUNC(void, OS_CODE) tpl_finish_exectime_monitor(
-    P2CONST(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
+extern FUNC(void, OS_CODE) tpl_stop_budget_monitor(
+    P2CONST(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
 
 /**
  * @internal
@@ -176,7 +206,7 @@ extern FUNC(void, OS_CODE) tpl_finish_exectime_monitor(
  * @pre all interrupts should be disabled during this function execution
  */
 extern FUNC(void, OS_CODE) tpl_start_resource_monitor(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj,
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj,
     VAR(tpl_resource_id, AUTOMATIC) this_resource);
 
 /**
@@ -189,8 +219,8 @@ extern FUNC(void, OS_CODE) tpl_start_resource_monitor(
  *
  * @pre all interrupts should be disabled during this function execution
  */
-extern FUNC(void, OS_CODE) tpl_disable_resource_monitor(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj,
+extern FUNC(void, OS_CODE) tpl_stop_resource_monitor(
+    P2CONST(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj,
     VAR(tpl_resource_id, AUTOMATIC) this_resource);
 
 /**
@@ -201,7 +231,7 @@ extern FUNC(void, OS_CODE) tpl_disable_resource_monitor(
  * @param this_exec_obj the executable object which locked interrupts
  */
 extern FUNC(void, OS_CODE) tpl_start_all_isr_lock_monitor(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
 /**
  * @internal
  *
@@ -209,8 +239,8 @@ extern FUNC(void, OS_CODE) tpl_start_all_isr_lock_monitor(
  *
  * @param this_exec_obj the executable object which unlocked interrupts
  */
-extern FUNC(void, OS_CODE) tpl_disable_all_isr_lock_monitor(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
+extern FUNC(void, OS_CODE) tpl_stop_all_isr_lock_monitor(
+    P2CONST(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
 
 /**
  * @internal
@@ -220,7 +250,7 @@ extern FUNC(void, OS_CODE) tpl_disable_all_isr_lock_monitor(
  * @param this_exec_obj the executable object which locked ISRs
  */
 extern FUNC(void, OS_CODE) tpl_start_os_isr_lock_monitor(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
 
 /**
  * @internal
@@ -229,8 +259,8 @@ extern FUNC(void, OS_CODE) tpl_start_os_isr_lock_monitor(
  *
  * @param this_exec_obj the executable object which locked ISRs
  */
-extern FUNC(void, OS_CODE) tpl_disable_os_isr_lock_monitor(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj);
+extern FUNC(void, OS_CODE) tpl_stop_os_isr_lock_monitor(
+    P2CONST(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

@@ -1,4 +1,12 @@
-/*
+/**
+ * @file tpl_os_rez.c
+ *
+ * @section desc File description
+ *
+ * Trampoline Resource Management
+ *
+ * @section copyright Copyright
+ *
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
@@ -6,19 +14,21 @@
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
- * Trampoline Resource Management
+ * @section infos File informations
  *
  * $Date$
  * $Rev$
  * $Author$
  * $URL$
- *
  */
-
 #include "tpl_machine_interface.h"
 #include "tpl_os_kernel.h"
 #include "tpl_os_rez_kernel.h"
 #include "tpl_os_error.h"
+
+#ifdef WITH_AUTOSAR
+#include "tpl_as_isr.h"
+#endif
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -32,7 +42,10 @@ FUNC(StatusType, OS_CODE) GetResource(
     /*  init the error to no error  */
     VAR(StatusType, AUTOMATIC) result = E_OK;
 
-    P2VAR(tpl_resource, OS_APPL_DATA, AUTOMATIC) res;
+    P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
 
     LOCK_WHEN_HOOK()
 
@@ -49,9 +62,9 @@ FUNC(StatusType, OS_CODE) GetResource(
         else
         {
       #ifndef NO_RESOURCE
-              res = tpl_resource_table[res_id];
+            res = tpl_resource_table[res_id];
       #else
-        res = NULL; /* error */
+            res = NULL_PTR; /* error */
       #endif
         }
 
@@ -86,7 +99,10 @@ FUNC(StatusType, OS_CODE) ReleaseResource(
     /*  init the error to no error  */
     VAR(StatusType, AUTOMATIC) result = E_OK;
 
-    P2VAR(tpl_resource, OS_APPL_DATA, AUTOMATIC) res;
+    P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
+
+    /* check interrupts are not disabled by user    */
+    CHECK_INTERRUPT_LOCK(result)
 
     LOCK_WHEN_HOOK()
 
@@ -123,7 +139,7 @@ FUNC(StatusType, OS_CODE) ReleaseResource(
         IF_NO_EXTENDED_ERROR(result)
             tpl_release_resource(res);
         #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-        tpl_disable_resource_monitor (tpl_running_obj, res_id);
+            tpl_stop_resource_monitor(tpl_running_obj, res_id);
         #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
         IF_NO_EXTENDED_ERROR_END()
 

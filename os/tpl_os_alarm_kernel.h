@@ -41,7 +41,7 @@
  * @param time_obj  The time object to insert.
  */
 FUNC(void, OS_CODE) tpl_insert_time_obj(
-    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) time_obj);
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj);
 
 /**
  * @internal
@@ -52,7 +52,7 @@ FUNC(void, OS_CODE) tpl_insert_time_obj(
  * @param time_obj  The time object to remove.
  */
 FUNC(void, OS_CODE) tpl_remove_time_obj(
-    P2VAR(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) time_obj);
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj);
 
 /**
  * @internal
@@ -63,7 +63,7 @@ FUNC(void, OS_CODE) tpl_remove_time_obj(
  * @param time_obj  The alarm to raise.
  */
 FUNC(tpl_status, OS_CODE) tpl_raise_alarm(
-    P2CONST(tpl_time_obj, OS_APPL_DATA, AUTOMATIC) time_obj);
+    P2CONST(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj);
 
 /**
  * @internal
@@ -77,7 +77,7 @@ FUNC(tpl_status, OS_CODE) tpl_raise_alarm(
  * @param counter    A pointer to the counter
  */
 FUNC(tpl_status, OS_CODE) tpl_counter_tick(
-    P2VAR(tpl_counter, OS_APPL_DATA, AUTOMATIC) counter);
+    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

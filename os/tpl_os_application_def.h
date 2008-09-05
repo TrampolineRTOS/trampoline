@@ -30,7 +30,7 @@
 #include "tpl_app_objects.h"
 
 #ifndef TASK_COUNT
-	#define TASK_COUNT 0
+#define TASK_COUNT 0
 #endif
 #if TASK_COUNT == 0
 /**
@@ -39,11 +39,11 @@
  * When this flag is defined, this means there is no task defined in the
  * system.
  */
-	#define NO_TASK
+#define NO_TASK
 #endif
 
 #ifndef RESOURCE_COUNT
-	#define RESOURCE_COUNT 0
+#define RESOURCE_COUNT 0
 #endif
 #if RESOURCE_COUNT == 0
 /**
@@ -52,11 +52,11 @@
  * When this flag is defined, this means there is no resource defined in the
  * system.
  */
-	#define NO_RESOURCE
+#define NO_RESOURCE
 #endif
 
 #ifndef ALARM_COUNT
-	#define ALARM_COUNT 0
+#define ALARM_COUNT 0
 #endif
 #if ALARM_COUNT == 0
 /**
@@ -65,11 +65,11 @@
  * When this flag is defined, this means there is no alarm defined in the
  * system.
  */
-	#define NO_ALARM
+#define NO_ALARM
 #endif
 
 #ifndef ISR_COUNT
-    #define ISR_COUNT 0
+#define ISR_COUNT 0
 #endif
 #if ISR_COUNT == 0
 /**
@@ -78,13 +78,13 @@
  * When this flag is defined, this means there is no Interrupt Service
  * Routine defined in the system.
  */
-	#define NO_ISR
+#define NO_ISR
 #endif
 
 #ifdef WITH_AUTOSAR
 
 #ifndef SCHEDTABLE_COUNT
-    #define SCHEDTABLE_COUNT 0
+#define SCHEDTABLE_COUNT 0
 #endif
 #if SCHEDTABLE_COUNT == 0
 /**
@@ -93,11 +93,11 @@
  * When this flag is defined, this means there is no schedule table defined
  * in the system
  */
-    #define NO_SCHEDTABLE
+#define NO_SCHEDTABLE
 #endif
 
 #ifndef COUNTER_COUNT
-    #define COUNTER_COUNT 0
+#define COUNTER_COUNT 0
 #endif
 #if COUNTER_COUNT == 0
 /**
@@ -106,7 +106,7 @@
  * When this flag is defined, this means there is no software counter defined
  * in the system
  */
-    #define NO_COUNTER
+#define NO_COUNTER
 #endif
 
 /* WITH_AUTOSAR */
