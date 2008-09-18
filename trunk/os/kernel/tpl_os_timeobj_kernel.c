@@ -24,7 +24,7 @@
 
 #include "tpl_os_definitions.h"
 #include "tpl_os_kernel.h"
-#include "tpl_os_alarm_kernel.h"
+#include "tpl_os_timeobj_kernel.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -151,36 +151,6 @@ FUNC(void, OS_CODE) tpl_remove_time_obj(
     {
         counter->next_to = counter->first_to;
     }
-}
-
-/**
- * @internal
- *
- * tpl_raise_alarm is called by tpl_counter_tick
- * when an alarm time object is raised.
- *
- * @param time_obj  The alarm to raise.
- */
-FUNC(tpl_status, OS_CODE) tpl_raise_alarm(
-    P2CONST(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj)
-{
-    VAR(tpl_status, AUTOMATIC) result = E_OK;
-
-    /*
-     * A tpl_time_obj_static * is cast to a tpl_alarm_static *
-     * This violate MISRA rule 45. However, since the
-     * first member of tpl_alarm_static is a tpl_time_obj_static
-     * This cast behaves correctly.
-     */
-    /*  Get the alarm descriptor                            */
-    P2VAR(tpl_alarm_static, AUTOMATIC, OS_APPL_DATA) stat_alarm = (tpl_alarm_static *)time_obj->stat_part;
-    /*  Get the action to perform from the alarm descriptor */
-    P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action_desc = stat_alarm->action;
-
-    /*  Call the action                                     */
-    result = (action_desc->action)(action_desc) ;
-
-    return result;
 }
 
 

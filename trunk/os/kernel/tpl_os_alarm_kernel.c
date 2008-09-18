@@ -1,11 +1,9 @@
 /**
- * @file tpl_os_alarm.c
+ * @file tpl_os_alarm_kernel.c
  *
  * @section desc File description
  *
- * Trampoline Alarm Management Services implementation file
- * See paragraph 13.6,
- * pages 62+ of OSEK/VDX 2.2.2 spec
+ * Trampoline Alarm Kernel implementation file
  *
  * @section copyright Copyright
  *
@@ -24,25 +22,45 @@
  * $URL$
  */
 
-#include "tpl_os_error.h"
+#include "tpl_os_definitions.h"
 #include "tpl_os_kernel.h"
 #include "tpl_os_alarm_kernel.h"
-#include "tpl_os_alarm.h"
-#include "tpl_machine_interface.h"
-
-#ifdef WITH_AUTOSAR
-#include "tpl_as_isr.h"
-#endif
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-/*
- * GetAlarmBase
+/**
+ * @internal
  *
- * See page 63 of the OSEK spec
+ * tpl_raise_alarm is called by tpl_counter_tick
+ * when an alarm time object is raised.
+ *
+ * @param time_obj  The alarm to raise.
  */
-FUNC(StatusType, OS_CODE) GetAlarmBase(
+FUNC(tpl_status, OS_CODE) tpl_raise_alarm(
+    P2CONST(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj)
+{
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
+
+    /*
+     * A tpl_time_obj_static * is cast to a tpl_alarm_static *
+     * This violate MISRA rule 45. However, since the
+     * first member of tpl_alarm_static is a tpl_time_obj_static
+     * This cast behaves correctly.
+     */
+    /*  Get the alarm descriptor                            */
+    P2VAR(tpl_alarm_static, AUTOMATIC, OS_APPL_DATA) stat_alarm = (tpl_alarm_static *)time_obj->stat_part;
+    /*  Get the action to perform from the alarm descriptor */
+    P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action_desc = stat_alarm->action;
+
+    /*  Call the action                                     */
+    result = (action_desc->action)(action_desc) ;
+
+    return result;
+}
+
+
+FUNC(StatusType, OS_CODE) tpl_get_alarm_base_service(
     CONST(AlarmType, AUTOMATIC)       alarm_id,
     VAR(AlarmBaseRefType, AUTOMATIC)  info
 )
@@ -81,12 +99,7 @@ FUNC(StatusType, OS_CODE) GetAlarmBase(
     return result;
 }
 
-/*
- * GetAlarm
- *
- * See page 63 of the OSEK spec
- */
-FUNC(StatusType, OS_CODE) GetAlarm(
+FUNC(StatusType, OS_CODE) tpl_get_alarm_service(
     CONST(AlarmType, AUTOMATIC) alarm_id,
     VAR(TickRefType, AUTOMATIC) tick)
 {
@@ -130,12 +143,7 @@ FUNC(StatusType, OS_CODE) GetAlarm(
     return result;
 }
 
-/*
- * SetRelAlarm
- *
- * See page 63 of the OSEK spec
- */
-FUNC(StatusType, OS_CODE) SetRelAlarm(
+FUNC(StatusType, OS_CODE) tpl_set_rel_alarm_service(
     CONST(AlarmType, AUTOMATIC) alarm_id,
     CONST(TickType, AUTOMATIC)  increment,
     CONST(TickType, AUTOMATIC)  cycle
@@ -201,7 +209,7 @@ FUNC(StatusType, OS_CODE) SetRelAlarm(
  *
  * See page 64 of the OSEK spec
  */
-FUNC(StatusType, OS_CODE) SetAbsAlarm(
+FUNC(StatusType, OS_CODE) tpl_set_abs_alarm_service(
     CONST(AlarmType, AUTOMATIC) alarm_id,
     CONST(TickType, AUTOMATIC)  start,
     CONST(TickType, AUTOMATIC)  cycle
@@ -259,7 +267,7 @@ FUNC(StatusType, OS_CODE) SetAbsAlarm(
  *
  * See page 65 of the OSEK spec
  */
-FUNC(StatusType, OS_CODE) CancelAlarm(
+FUNC(StatusType, OS_CODE) tpl_cancel_alarm_servide(
     CONST(AlarmType, AUTOMATIC) alarm_id
 )
 {
@@ -305,4 +313,4 @@ FUNC(StatusType, OS_CODE) CancelAlarm(
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-/* End of file tpl_os_alarm.c */
+/* End of file tpl_alarm_kernel.c */
