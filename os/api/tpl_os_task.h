@@ -61,11 +61,11 @@
 /**
  * (re)activates a task.
  *
- * @param TaskID identifier of the task to be activated
+ * @param   task_id     identifier of the task to be activated
  *
- * @retval E_OK no error
- * @retval E_OS_LIMIT too many task activations
- * @retval E_OS_ID (extended error only) TaskID is invalid
+ * @retval  E_OK        no error
+ * @retval  E_OS_LIMIT  too many task activations
+ * @retval  E_OS_ID     (extended error only) task_id is invalid
  *
  * see paragraph 13.2.3.1 page 50 of OSEK/VDX 2.2.3 spec
  */
@@ -90,13 +90,13 @@ FUNC(StatusType, OS_CODE) TerminateTask(void);
 /**
  * Chain terminaison of current task with activation of another.
  *
- * @param TaskID identifier of the task to activate
+ * @param   task_id     identifier of the task to activate
  *
  * @note if this function succeeds, it does not returns (as the current
  * task is then finished)
  *
- * @retval E_OS_LIMIT too many task activations
- * @retval E_OS_ID (extended error only) TaskID is invalid
+ * @retval  E_OS_LIMIT  too many task activations
+ * @retval  E_OS_ID     (extended error only) task_id is invalid
  *
  * see paragraph 13.2.3.3 page 51 of OSEK/VDX 2.2.3 spec
  */
@@ -119,10 +119,10 @@ FUNC(StatusType, OS_CODE) Schedule(void);
 /**
  * Gives the identifier of the running task
  *
- * @param TaskID reference of the variable where
- *               the identifier will be returned
+ * @param   task_id reference of the variable where
+ *                  the identifier will be returned
  *
- * @retval E_OK  no error
+ * @retval  E_OK    no error
  *
  * see paragraph 13.2.3.5 page 53 of OSEK/VDX 2.2.3 spec
  */
@@ -133,12 +133,12 @@ FUNC(StatusType, OS_CODE) GetTaskID(
 /**
  * Gives the state of a task
  *
- * @param TaskID identifier of the task
- * @param State  reference of the variable where the state
- *               of the specified task will be stored
+ * @param   task_id     identifier of the task
+ * @param   state       reference of the variable where the state
+ *                      of the specified task will be stored
  *
- * @retval E_OK    no error
- * @retval E_OS_ID (extended error only) TaskID is invalid
+ * @retval  E_OK        no error
+ * @retval  E_OS_ID     (extended error only) task_id is invalid
  *
  * see paragraph 13.2.3.6 page 53 of OSEK/VDX 2.2.3 spec
  */

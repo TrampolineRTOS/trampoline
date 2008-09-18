@@ -27,9 +27,47 @@
 #define TPL_OS_ACTION_H
 
 #include "tpl_os_internal_types.h"
+struct TPL_ACTION;
 
-/*!
- *  \brief  Callback action structure
+/**
+ * @typedef tpl_action_func
+ *
+ * Prototype for action functions
+ */
+/**********************************************************************
+**  J.Monsimier  22/05/2007
+**  PR09: for S12: need to add __near for the compiler or the
+**        pointer is considered at far and there is a stack pointer
+**        error during function return in tpl_action_activate_task
+**********************************************************************/
+typedef P2FUNC(tpl_status, OS_APPL_CODE, tpl_action_func)(
+    P2CONST(struct TPL_ACTION, AUTOMATIC, OS_APPL_CONST)
+);
+
+/**
+ * @struct TPL_ACTION
+ *
+ * Action base structure
+ *
+ * This structure contains the pointer to the action function only.
+ * It is the common part for the action descriptor structures and is
+ * extended to add the action parameters.
+ */
+struct TPL_ACTION {
+  VAR(tpl_action_func, TYPEDEF) action;    /**<  action function pointer   */
+};
+
+/**
+ * @typedef tpl_action
+ *
+ * This is an alias for the structure #TPL_ACTION
+ *
+ * @see #TPL_ACTION
+ */
+typedef struct TPL_ACTION tpl_action;
+
+/**
+ *  @struct TPL_ACTION_CALLBACK
  *
  *  This structure add a callback function pointer to the action base
  *  structure.
@@ -44,8 +82,8 @@ struct TPL_CALLBACK_ACTION {
 typedef struct TPL_CALLBACK_ACTION
 tpl_callback_action;
 
-/*!
- *  \brief  Task activation action structure
+/**
+ *  @struct TPL_TASK_ACTIVATION_ACTION
  *
  *  This structure add a task descriptor pointer to the action base
  *  structure.
@@ -61,7 +99,7 @@ typedef struct TPL_TASK_ACTIVATION_ACTION
 tpl_task_activation_action ;
 
 /*!
- *  \brief  Set event action structure
+ *  @struct TPL_SETEVENT_ACTION
  *
  *  This structure add a task descriptor pointer to the action base
  *  structure and an event mask

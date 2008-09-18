@@ -19,10 +19,10 @@
  *
  * @section infos File informations
  *
- * $Date$
- * $Rev$
- * $Author$
- * $URL$
+ * $Date: 2008-09-05 15:24:48 +0200 (Fri, 05 Sep 2008) $
+ * $Rev: 509 $
+ * $Author: jlb $
+ * $URL: https://trampoline.rts-software.org/svn/trunk/os/tpl_os_task.c $
  */
 
 #include "tpl_os.h"
@@ -39,11 +39,9 @@
 #include "tpl_memmap.h"
 
 /*
- * OSEK/VDX API services
- *
- * see header file documentation or refer to the OSEK/VDX 2.2.2 specification
+ * Kernel service for task activation
  */
-FUNC(StatusType, OS_CODE) ActivateTask(
+FUNC(StatusType, OS_CODE) tpl_activate_task_service(
     CONST(TaskType, AUTOMATIC) task_id)
 {
     /*  init the error to no error  */
@@ -82,7 +80,7 @@ FUNC(StatusType, OS_CODE) ActivateTask(
 }
 
 
-FUNC(StatusType, OS_CODE) TerminateTask(void)
+FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 {
     /*  init the error to no error  */
     VAR(StatusType, AUTOMATIC) result = E_OK;
@@ -122,7 +120,7 @@ FUNC(StatusType, OS_CODE) TerminateTask(void)
 }
 
 
-FUNC(StatusType, OS_CODE) ChainTask(
+FUNC(StatusType, OS_CODE) tpl_chain_task_service(
     CONST(TaskType, AUTOMATIC) task_id)
 {
     VAR(StatusType, AUTOMATIC) result = E_OK;
@@ -220,7 +218,7 @@ FUNC(StatusType, OS_CODE) ChainTask(
 }
 
 
-FUNC(StatusType, OS_CODE) Schedule(void)
+FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 {
     VAR(StatusType, AUTOMATIC) result = E_OK;
 

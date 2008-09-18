@@ -25,6 +25,57 @@
 #ifndef TPL_OS_ALARM_KERNEL_H
 #define TPL_OS_ALARM_KERNEL_H
 
+/**
+ * @typedef tpl_time_obj_state
+ *
+ * Describes an time object state. Value can be one of :
+ * - #ALARM_SLEEP
+ * - #ALARM_ACTIVE
+ * - #ALARM_AUTOSTART (only before startup)
+ */
+typedef u8 tpl_time_obj_state;
+
+/* Forward declaration */
+struct TPL_COUNTER;
+
+/**
+ * @struct TPL_TIME_OBJ_STATIC
+ *
+ * This is the static data structure used to store the information about
+ * an object that can be put in the queue of a counter with an expiration
+ * date. This structure complement the dynamic part.
+ *
+ * @see #TPL_ALARM
+ */
+struct TPL_TIME_OBJ_STATIC {
+    struct P2VAR(TPL_COUNTER, TYPEDEF, OS_APPL_DATA)  counter;  /**< a pointer to the counter the
+                                                                     alarm belongs to               */
+    VAR(tpl_expire_func, TYPEDEF)                     expire;   /**< expiration processing to be
+                                                                     done when the time object
+                                                                     expires                        */
+};
+
+/**
+ * @typedef tpl_time_obj
+ *
+ * This is an alias for the structure #TPL_TIME_OBJ
+ *
+ * @see #TPL_TIME_OBJ
+ */
+typedef struct TPL_TIME_OBJ_STATIC tpl_time_obj_static;
+
+struct TPL_TIME_OBJ;
+
+/**
+ * @typedef tpl_expire_func
+ *
+ * Prototype for expire functions
+ */
+typedef P2FUNC(tpl_status, OS_APPL_CODE, tpl_expire_func)(
+    P2CONST(struct TPL_TIME_OBJ, AUTOMATIC, OS_APPL_CONST)
+);
+
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -53,17 +104,6 @@ FUNC(void, OS_CODE) tpl_insert_time_obj(
  */
 FUNC(void, OS_CODE) tpl_remove_time_obj(
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj);
-
-/**
- * @internal
- *
- * tpl_raise_alarm is called by tpl_counter_tick
- * when an alarm time object is raised.
- *
- * @param time_obj  The alarm to raise.
- */
-FUNC(tpl_status, OS_CODE) tpl_raise_alarm(
-    P2CONST(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj);
 
 /**
  * @internal
