@@ -25,7 +25,7 @@ COM_PATH = $(TPL_BASE_PATH)/com
 AUTOSAR_PATH = $(TPL_BASE_PATH)/autosar
 DEBUG_PATH = $(TPL_BASE_PATH)/debug
 VIPER_PATH = $(TPL_BASE_PATH)/viper
-OS_MACHINE_PATH = $(OS_PATH)/os_machine/$(TARGET)
+MACHINE_PATH = $(TPL_BASE_PATH)/machines/$(TARGET)
 
 #############################################################################
 # Add Trampoline source files.
@@ -35,10 +35,10 @@ ifeq ($(strip $(AUTOSAR)),true)
   include $(AUTOSAR_PATH)/Makefile
 endif
 include $(COM_PATH)/Makefile
-include $(OS_MACHINE_PATH)/Makefile
+include $(MACHINE_PATH)/Makefile
 
 #add trampoline paths in the include path. 
-CFLAGS += -I$(OS_MACHINE_PATH)  -I$(OIL_OUTPUT_PATH) 
+CFLAGS += -I$(MACHINE_PATH)  -I$(OIL_OUTPUT_PATH) 
 CFLAGS += -I$(OS_PATH) -I$(COM_PATH) -I$(DEBUG_PATH)
 
 #############################################################################
@@ -88,7 +88,7 @@ ALL: | $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE) $(EXEC)
 # paths, by including recursively the compiler_rules
 # makefile.
 TEMP_SOURCE_DIRS   = $(OS_PATH) $(COM_PATH) $(AUTOSAR_PATH) 
-TEMP_SOURCE_DIRS += $(DEBUG_PATH) $(OS_MACHINE_PATH) $(OIL_OUTPUT_PATH) .
+TEMP_SOURCE_DIRS += $(DEBUG_PATH) $(MACHINE_PATH) $(OIL_OUTPUT_PATH) .
 include $(OS_MAKE_PATH)/compiler_rules.mk
 
 # exe rule -> Link

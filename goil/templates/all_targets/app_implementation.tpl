@@ -4,6 +4,8 @@
 #include "tpl_os_it.h"
 #include "tpl_os_it_kernel.h"
 #include "tpl_os_alarm_kernel.h"
+#include "tpl_os_rez_kernel.h"
+#include "tpl_os_event_kernel.h"
 #include "tpl_os_action.h"
 #include "tpl_os_kernel.h"
 

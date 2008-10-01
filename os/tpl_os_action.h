@@ -27,6 +27,8 @@
 #define TPL_OS_ACTION_H
 
 #include "tpl_os_internal_types.h"
+#include "tpl_os_task_kernel.h"
+
 struct TPL_ACTION;
 
 /**

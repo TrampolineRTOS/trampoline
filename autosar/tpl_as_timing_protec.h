@@ -40,12 +40,10 @@
 #ifndef TPL_AS_TIMING_PROTEC_H
 #define TPL_AS_TIMING_PROTEC_H
 
+#include "tpl_os_internal_types.h"
 #include "tpl_os_application_def.h"
 #include "tpl_os_custom_types.h"
-#include "tpl_os_internal_types.h"
 #include "tpl_os_definitions.h"
-#include "tpl_machine_interface.h"
-#include "tpl_as_protec_hook.h"
 
 /**
  * @internal
@@ -56,14 +54,54 @@
  */
 typedef enum
 {
-  EXEC_BUDGET,         /**< watchdog for an execution budget */
-  TIME_FRAME,          /**< watchdog for a count limit */
-  ALL_INT_LOCK,        /**< watchdog for all interrupts lock */
-  OS_INT_LOCK,         /**< watchdog for ISR2 lock */
-  REZ_LOCK,            /**< watchdog for a resource lock (see resource
-                            field in #tpl_watchdog to know which
-                            resource is implied */
+  EXEC_BUDGET,      /**< watchdog for an execution budget   */
+  TIME_FRAME,       /**< watchdog for a count limit         */
+  ALL_INT_LOCK,     /**< watchdog for all interrupts lock   */
+  OS_INT_LOCK,      /**< watchdog for ISR2 lock             */
+  REZ_LOCK          /**< watchdog for a resource lock (see resource field
+                         in #tpl_watchdog to know which resource is implied */
 } tpl_watchdog_type;
+
+/**
+ * @internal
+ *
+ * @struct TPL_TIMING_PROTECTION
+ *
+ * This structure gathers all informations about timing protection
+ * of an executable object (task or isr). See AUTOSAR OS SWS §7.6.2
+ * about timing protection.
+ *
+ * @see #tpl_timing_protection
+ * @see #tpl_exec_static
+ */
+struct TPL_TIMING_PROTECTION
+{
+    VAR(tpl_time, TYPEDEF)                  execution_budget;   /**< maximum duration the task
+                                                                     can be active within a
+                                                                     timeframe or maximum isr
+                                                                     execution time since last
+                                                                     activation */
+    VAR(tpl_time, TYPEDEF)                  timeframe;          /**< configured timeframe for this
+                                                                     timing protection */
+    P2VAR(tpl_time, TYPEDEF, OS_APPL_DATA)  resource_lock_time; /**< array where timing protection
+                                                                     is specified (or not) for
+                                                                     each resource (zero if no
+                                                                     timing protection) */
+    VAR(tpl_time, TYPEDEF)                  os_interrupt_lock_time;
+    VAR(tpl_time, TYPEDEF)                  all_interrupt_lock_time;
+};
+
+/**
+ * @internal
+ *
+ * this is an alias for the type #TPL_TIMING_PROTECTION
+ *
+ * @see #TPL_TIMING_PROTECTION
+ */
+typedef struct TPL_TIMING_PROTECTION tpl_timing_protection;
+
+/* Forward declaration  */
+struct TPL_EXEC_COMMON;
 
 /**
  * @internal
@@ -73,7 +111,7 @@ typedef enum
  */
 struct TPL_WATCHDOG
 {
-  P2VAR(tpl_exec_common, TYPEDEF, OS_APPL_DATA)         exec_obj;             /**< the executable object implied  */
+  struct P2VAR( TPL_EXEC_COMMON, TYPEDEF, OS_APPL_DATA) exec_obj;             /**< the executable object implied  */
   struct P2VAR(TPL_WATCHDOG, AUTOMATIC, OS_VAR_NOINIT)  next;                 /**< the next watchdog
                                                                                    in the list                    */
   struct P2VAR(TPL_WATCHDOG, AUTOMATIC, OS_VAR_NOINIT)  previous;             /**< the previous watchdog
@@ -129,7 +167,7 @@ extern FUNC(void, OS_CODE) tpl_init_timing_protection(void);
  *
  */
 extern FUNC(void, OS_CODE) tpl_start_timeframe (
-    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+    struct P2VAR(TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
 
 /**
  * Function used to stop the measure of a time frame for a task/isr2
@@ -138,7 +176,7 @@ extern FUNC(void, OS_CODE) tpl_start_timeframe (
  *
  */
 extern FUNC(void, OS_CODE) tpl_stop_timeframe (
-    P2CONST(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+    P2CONST(struct TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
 
 /**
  * @internal
@@ -154,7 +192,7 @@ extern FUNC(void, OS_CODE) tpl_stop_timeframe (
  * @see #tpl_continue_budget_monitor
  */
 extern FUNC(void, OS_CODE) tpl_start_budget_monitor (
-    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+    struct P2VAR(TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
 
 /**
  * @internal
@@ -170,7 +208,7 @@ extern FUNC(void, OS_CODE) tpl_start_budget_monitor (
  * @see #tpl_continue_budget_monitor
  */
 extern FUNC(void, OS_CODE) tpl_pause_budget_monitor(
-    P2CONST(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+    P2CONST(struct TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
 
 /**
  * @internal
@@ -186,14 +224,14 @@ extern FUNC(void, OS_CODE) tpl_pause_budget_monitor(
  * @see #tpl_pause_budget_monitor
  */
 extern FUNC(void, OS_CODE) tpl_continue_budget_monitor(
-    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+    struct P2VAR(TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
 
 /**
  * @internal
  *
  */
 extern FUNC(void, OS_CODE) tpl_stop_budget_monitor(
-    P2CONST(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+    P2CONST(struct TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
 
 /**
  * @internal
@@ -206,8 +244,8 @@ extern FUNC(void, OS_CODE) tpl_stop_budget_monitor(
  * @pre all interrupts should be disabled during this function execution
  */
 extern FUNC(void, OS_CODE) tpl_start_resource_monitor(
-    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj,
-    VAR(tpl_resource_id, AUTOMATIC) this_resource);
+    struct P2VAR(TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA)  this_exec_obj,
+    VAR(tpl_resource_id, AUTOMATIC)                         this_resource);
 
 /**
  * @internal
@@ -220,8 +258,8 @@ extern FUNC(void, OS_CODE) tpl_start_resource_monitor(
  * @pre all interrupts should be disabled during this function execution
  */
 extern FUNC(void, OS_CODE) tpl_stop_resource_monitor(
-    P2CONST(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj,
-    VAR(tpl_resource_id, AUTOMATIC) this_resource);
+    P2CONST(struct TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA)    this_exec_obj,
+    VAR(tpl_resource_id, AUTOMATIC)                             this_resource);
 
 /**
  * @internal
@@ -231,7 +269,7 @@ extern FUNC(void, OS_CODE) tpl_stop_resource_monitor(
  * @param this_exec_obj the executable object which locked interrupts
  */
 extern FUNC(void, OS_CODE) tpl_start_all_isr_lock_monitor(
-    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+    struct P2VAR(TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
 /**
  * @internal
  *
@@ -240,7 +278,7 @@ extern FUNC(void, OS_CODE) tpl_start_all_isr_lock_monitor(
  * @param this_exec_obj the executable object which unlocked interrupts
  */
 extern FUNC(void, OS_CODE) tpl_stop_all_isr_lock_monitor(
-    P2CONST(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+    P2CONST(struct TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
 
 /**
  * @internal
@@ -250,7 +288,7 @@ extern FUNC(void, OS_CODE) tpl_stop_all_isr_lock_monitor(
  * @param this_exec_obj the executable object which locked ISRs
  */
 extern FUNC(void, OS_CODE) tpl_start_os_isr_lock_monitor(
-    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+    P2VAR(struct TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
 
 /**
  * @internal
@@ -260,7 +298,7 @@ extern FUNC(void, OS_CODE) tpl_start_os_isr_lock_monitor(
  * @param this_exec_obj the executable object which locked ISRs
  */
 extern FUNC(void, OS_CODE) tpl_stop_os_isr_lock_monitor(
-    P2CONST(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+    P2CONST(struct TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

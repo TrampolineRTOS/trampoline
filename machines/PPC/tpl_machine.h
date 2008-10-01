@@ -23,8 +23,8 @@
  * $URL$
  */
 
-#ifndef TPL_MACHINE_PPC_H
-#define TPL_MACHINE_PPC_H
+#ifndef TPL_MACHINE_H
+#define TPL_MACHINE_H
 
 #include "tpl_os_custom_types.h"
 

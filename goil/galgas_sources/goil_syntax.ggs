@@ -348,6 +348,7 @@ rule <start> :
                     !alarms
                     !counters
                     !resources
+                    !scheduletables
                     !max_prio
                     !?types ;
 

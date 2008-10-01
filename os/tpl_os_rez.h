@@ -47,6 +47,22 @@
  */
 typedef tpl_resource_id ResourceType;
 
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+/**
+ * This special resource is used to deny preemption.
+ *
+ * @note    It can be used by a task but is not stored
+ *          in the general resource table.
+ *
+ * see paragraph 13.4.4 page 59 of OSEK/VDX 2.2.2 spec
+ */
+extern CONST(ResourceType, OS_CONST) RES_SCHEDULER;
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
 /**
  * @def DeclareResource
  *
@@ -88,12 +104,12 @@ FUNC(StatusType, OS_CODE) GetResource(
  *
  * @param ResID identifier of the resource
  *
- * @retval E_OK no error
- * @retval (extended error only) E_OS_ID ResID is invalid
- * @retval (extended error only) E_OS_NOFUNC the resource is not occupied or
- * another resource shall be released before
- * @retval (extended error only) E_OS_ACCESS the resource has a lower ceiling
- * priority than the static priority of the caller
+ * @retval  E_OK no error
+ * @retval  (extended error only) E_OS_ID ResID is invalid
+ * @retval  (extended error only) E_OS_NOFUNC the resource is not occupied or
+ *          another resource shall be released before
+ * @retval  (extended error only) E_OS_ACCESS the resource has a lower ceiling
+ *          priority than the static priority of the caller
  *
  * see paragraph 13.4.3.2 page 59 of OSEK/VDX 2.2.2 spec
  */
@@ -103,24 +119,6 @@ FUNC(StatusType, OS_CODE) ReleaseResource(
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
-
-
-#define OS_START_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
-/**
- * This special resource is used to deny preemption.
- *
- * @note It can be used by a task but is not stored
- * in the general resource table.
- *
- * see paragraph 13.4.4 page 59 of OSEK/VDX 2.2.2 spec
- */
-extern VAR(ResourceType, OS_VAR) RES_SCHEDULER;
-
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
 
 #endif /* TPL_OS_REZ_H */
 

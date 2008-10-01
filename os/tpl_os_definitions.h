@@ -363,7 +363,7 @@
  * @see #tpl_is_non_preemptable
  * @see #tpl_is_isr
  */
-#define PREEMPTABLE_MASK    0x2
+#define PREEMPTABLE_MASK    0x4
 
 /**
  * @def tpl_is_basic

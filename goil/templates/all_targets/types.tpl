@@ -77,6 +77,13 @@ typedef $COUNTER_ID_T$ tpl_counter_id;
  */
 typedef $ISR_ID_T$ tpl_isr_id;
 
+/**
+ * @internal
+ *
+ * @todo: document this
+ */
+typedef $SCHEDTABLE_ID_T$ tpl_schedtable_id;
+
 #endif /* WITH_AUTOSAR */
 
 #endif /* TPL_APP_CUSTOM_TYPES_H */

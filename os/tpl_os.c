@@ -27,11 +27,6 @@
 
 #include "tpl_os.h"
 #include "tpl_os_kernel.h"
-#include "tpl_os_definitions.h"
-#include "tpl_os_hooks.h"
-#include "tpl_os_std_types.h"
-#include "tpl_machine_interface.h"
-#include "tpl_os_application_def.h"
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 #include "tpl_as_timing_protec.h"
@@ -40,10 +35,8 @@
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-STATIC VAR(AppModeType, OS_VAR) application_mode;
 /* MISRA RULE 27 VIOLATION: This object has external linkage
   but is only used in this file and in tpl_os_kernel.c where it is defined. */
-extern VAR(s8, OS_VAR) tpl_h_prio;
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -54,7 +47,7 @@ extern VAR(s8, OS_VAR) tpl_h_prio;
 
 FUNC(AppModeType, OS_CODE) GetActiveApplicationMode(void)
 {
-    return application_mode;
+    return tpl_get_active_application_mode_service();
 }
 
 /*
@@ -62,52 +55,19 @@ FUNC(AppModeType, OS_CODE) GetActiveApplicationMode(void)
  * an appropriate mode.
  */
 FUNC(void, OS_CODE) StartOS(
-    CONST(AppModeType, AUTOMATIC) mode
-)
+    CONST(AppModeType, AUTOMATIC) mode)
 {
-    application_mode = mode;
-
-    /*  Set the initial state of the OS */
-    tpl_os_state = (u8)OS_INIT;
-
-    tpl_init_machine();
-
-    tpl_get_task_lock();
-
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    tpl_init_timing_protection ();
-#endif
-
-    tpl_init_os(mode);
-
-    /*  Call the startup hook. According to the spec, it should be called
-        after the os is initialized and before the scheduler is running   */
-    CALL_STARTUP_HOOK()
-
-    /*  Call tpl_schedule to elect the greatest priority task
-        tpl_schedule also set the state of the OS according to the elected
-        task */
-    if(tpl_h_prio != -1)
-    {
-      tpl_schedule_from_running(FROM_TASK_LEVEL);
-    }
-
-    tpl_release_task_lock();
-
-    /*  Fall back to the idle loop */
-    tpl_sleep();
+    tpl_start_os_service(mode);
 }
 
 /*
  * ShutdownOS can be called by the app to shutdown it
  */
-void ShutdownOS(
+FUNC(void, OS_CODE) ShutdownOS(
     CONST(StatusType, AUTOMATIC) error  /*@unused@*/
 )
 {
-    CALL_SHUTDOWN_HOOK(error)
-    /* architecture dependant shutdown. */
-    tpl_shutdown();
+    tpl_shutdown_os_service(error);
 }
 
 #define OS_STOP_SEC_CODE

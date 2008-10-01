@@ -22,7 +22,7 @@
  * $URL$
  */
 #include "tpl_as_stack_monitor.h"
-#include "tpl_os.h"
+#include "tpl_os_kernel.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -33,17 +33,17 @@ FUNC(void, OS_CODE) tpl_check_stack (
 {
   /* MISRA RULE 33 VIOLATION: tpl_check_stack_footprint does not need
     to be evaluated if tpl_check_stack_pointer fails */
-  if ((!tpl_check_stack_pointer (this_exec_obj)) ||
-     (!tpl_check_stack_footprint (this_exec_obj)))
+  if ((!tpl_check_stack_pointer(this_exec_obj)) ||
+     (!tpl_check_stack_footprint(this_exec_obj)))
   {
 /*
  * see §7.4.2 of AUTOSAR SWS OS 2.1, related to requirements
  * OS068 and OS396
  */
 #if (SCALABILITY_CLASS == 1) || (SCALABILITY_CLASS == 2)
-    ShutdownOS (E_OS_STACKFAULT);
+    tpl_shutdown_os_service(E_OS_STACKFAULT);
 #else
-    tpl_call_protection_hook (E_OS_STACKFAULT);
+    tpl_call_protection_hook(E_OS_STACKFAULT);
 #endif
   }
 }

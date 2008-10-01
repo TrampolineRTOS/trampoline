@@ -414,13 +414,14 @@ routine generate_mask_type
 end routine ;
 
 routine generate_types
-  ?@task_map     tasks
-  ?@isr_map      isrs
-  ?@alarm_map    alarms
-  ?@counter_map  counters
-  ?@resource_map resources
-  ?@uint         max_priority
-  ?!@string      types
+  ?@task_map          tasks
+  ?@isr_map           isrs
+  ?@alarm_map         alarms
+  ?@counter_map       counters
+  ?@resource_map      resources
+  ?@scheduletable_map schedtables
+  ?@uint              max_priority
+  ?!@string           types
 :
   @string type ;
 
@@ -476,6 +477,11 @@ routine generate_types
   generate_unsigned_type ![[isrs count] uint64] !"too many isrs" ?type ;
   #message "tpl_isr_id:           ".type."\n" ;
   types := [types stringByReplacingStringByString !"$ISR_ID_T$" !type] ;
+
+  # compute the type for tpl_schedtable_id
+  generate_unsigned_type ![[schedtables count] uint64] !"too many schedule tables" ?type ;
+  #message "tpl_schedtable_id:           ".type."\n" ;
+  types := [types stringByReplacingStringByString !"$SCHEDTABLE_ID_T$" !type] ;
 
 end routine ;
 
@@ -1195,6 +1201,8 @@ routine generate_resources
 
         resources_result := resources_result . "\n" . result ;
     end foreach ;
+
+    regular_rez += !"res_sched";
 
 # build the resource table
     @string rez_head ;

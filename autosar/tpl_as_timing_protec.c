@@ -29,6 +29,8 @@
 #include "tpl_dow.h"
 #include "tpl_as_isr_kernel.h"
 #include "tpl_os_kernel.h"
+#include "tpl_machine_interface.h"
+#include "tpl_as_protec_hook.h"
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 

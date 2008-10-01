@@ -27,8 +27,8 @@
 #ifndef TPL_AS_SCHEDTABLE_H
 #define TPL_AS_SCHEDTABLE_H
 
-#include "tpl_os_alarm.h"
-#include "tpl_os_internal_types.h"
+#include "tpl_os_timeobj_kernel.h"
+#include "tpl_os_types.h"
 #include "tpl_as_st_definitions.h"
 
 typedef VAR(u8, AUTOMATIC)  ScheduleTableType;

@@ -24,12 +24,9 @@
  * $URL$
  */
 
-#include "tpl_os_error.h"
 #include "tpl_os_it.h"
-#include "tpl_os_kernel.h"
-#include "tpl_os_hooks.h"
-#include "tpl_os_definitions.h"
-#include "tpl_machine_interface.h"
+#include "tpl_os_it_kernel.h"
+
 #ifdef WITH_AUTOSAR
 #include "tpl_as_isr.h"
 #endif
@@ -45,40 +42,7 @@
  */
 FUNC(StatusType, OS_CODE) TerminateISR2(void)
 {
-    /*  init the error to no error  */
-    VAR(StatusType, AUTOMATIC) result = E_OK;
-
-    CHECK_INTERRUPT_LOCK(result)
-
-    /*  lock the task structures    */
-    LOCK_WHEN_ISR()
-
-    /*  store information for error hook routine    */
-    STORE_SERVICE(OSServiceId_TerminateISR)
-
-    /*  check we are at the ISR2 level  */
-    CHECK_ISR2_CALL_LEVEL_ERROR(result)
-    /*  check the ISR2 does not own a resource  */
-    CHECK_RUNNING_OWNS_REZ_ERROR(result)
-
-#ifndef NO_ISR
-    IF_NO_EXTENDED_ERROR(result)
-
-        /*  set the state of the running task to DYING                  */
-        tpl_running_obj->state = (tpl_exec_state)DYING;
-
-        /*  and let the scheduler do its job                            */
-        tpl_schedule_from_dying();
-
-    IF_NO_EXTENDED_ERROR_END()
-#endif
-
-    PROCESS_ERROR(result)
-
-    /*  unlock the task structures  */
-    UNLOCK_WHEN_ISR()
-
-    return result;
+    return tpl_terminate_isr2_service();
 }
 
 #define OS_STOP_SEC_CODE

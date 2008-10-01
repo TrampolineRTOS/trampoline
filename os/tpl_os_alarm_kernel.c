@@ -22,9 +22,16 @@
  * $URL$
  */
 
+#include "tpl_os_alarm_kernel.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os_kernel.h"
-#include "tpl_os_alarm_kernel.h"
+#include "tpl_os_error.h"
+#include "tpl_os_errorhook.h"
+#include "tpl_machine_interface.h"
+
+#ifdef WITH_AUTOSAR
+#include "tpl_as_protec_hook.h"
+#endif
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -60,12 +67,11 @@ FUNC(tpl_status, OS_CODE) tpl_raise_alarm(
 }
 
 
-FUNC(StatusType, OS_CODE) tpl_get_alarm_base_service(
-    CONST(AlarmType, AUTOMATIC)       alarm_id,
-    VAR(AlarmBaseRefType, AUTOMATIC)  info
-)
+FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
+    CONST(tpl_alarm_id, AUTOMATIC)                  alarm_id,
+    P2VAR(tpl_alarm_base, AUTOMATIC, OS_APPL_DATA)  info)
 {
-    VAR(StatusType, AUTOMATIC) result = E_OK;
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
 
 #ifndef NO_ALARM
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
@@ -99,11 +105,11 @@ FUNC(StatusType, OS_CODE) tpl_get_alarm_base_service(
     return result;
 }
 
-FUNC(StatusType, OS_CODE) tpl_get_alarm_service(
-    CONST(AlarmType, AUTOMATIC) alarm_id,
-    VAR(TickRefType, AUTOMATIC) tick)
+FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
+    CONST(tpl_alarm_id, AUTOMATIC)              alarm_id,
+    P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA)    tick)
 {
-    VAR(StatusType, AUTOMATIC) result = E_OK;
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
 
 #ifndef NO_ALARM
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
@@ -143,13 +149,12 @@ FUNC(StatusType, OS_CODE) tpl_get_alarm_service(
     return result;
 }
 
-FUNC(StatusType, OS_CODE) tpl_set_rel_alarm_service(
-    CONST(AlarmType, AUTOMATIC) alarm_id,
-    CONST(TickType, AUTOMATIC)  increment,
-    CONST(TickType, AUTOMATIC)  cycle
-)
+FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
+    CONST(tpl_alarm_id, AUTOMATIC)  alarm_id,
+    CONST(tpl_tick, AUTOMATIC)      increment,
+    CONST(tpl_tick, AUTOMATIC)      cycle)
 {
-    VAR(StatusType, AUTOMATIC) result = E_OK;
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
 
 #ifndef NO_ALARM
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
@@ -209,13 +214,12 @@ FUNC(StatusType, OS_CODE) tpl_set_rel_alarm_service(
  *
  * See page 64 of the OSEK spec
  */
-FUNC(StatusType, OS_CODE) tpl_set_abs_alarm_service(
-    CONST(AlarmType, AUTOMATIC) alarm_id,
-    CONST(TickType, AUTOMATIC)  start,
-    CONST(TickType, AUTOMATIC)  cycle
-)
+FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
+    CONST(tpl_alarm_id, AUTOMATIC)  alarm_id,
+    CONST(tpl_tick, AUTOMATIC)      start,
+    CONST(tpl_tick, AUTOMATIC)      cycle)
 {
-    VAR(StatusType, AUTOMATIC) result = E_OK;
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
 
 #ifndef NO_ALARM
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
@@ -267,11 +271,10 @@ FUNC(StatusType, OS_CODE) tpl_set_abs_alarm_service(
  *
  * See page 65 of the OSEK spec
  */
-FUNC(StatusType, OS_CODE) tpl_cancel_alarm_servide(
-    CONST(AlarmType, AUTOMATIC) alarm_id
-)
+FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
+    CONST(tpl_alarm_id, AUTOMATIC) alarm_id)
 {
-    VAR(StatusType, AUTOMATIC) result = E_OK;
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
 
 #ifndef NO_ALARM
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;

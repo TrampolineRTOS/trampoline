@@ -37,24 +37,6 @@
  */
 
 /**
- * @typedef TickType
- *
- * Represents a count value in ticks
- *
- * see paragraph 13.6.1 page 62 of OSEK/VDX 2.2.2 spec
- */
-typedef tpl_tick            TickType;
-
-/**
- * @typedef TickRefType
- *
- * References a #TickType
- *
- * see paragraph 13.6.1 page 62 of OSEK/VDX 2.2.2 spec
- */
-typedef P2VAR(tpl_tick, TYPEDEF, OS_APPL_DATA)  TickRefType;
-
-/**
  * @typedef AlarmBaseType
  *
  * see paragraph 13.6.1 page 62 of OSEK/VDX 2.2.2 spec
