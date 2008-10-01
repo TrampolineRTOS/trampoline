@@ -9,6 +9,7 @@
 #include "com.h"
 #include "exec.h"
 #include "log.h"
+#include "control.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -33,11 +34,16 @@ int main (int argc, const char *argv[]) {
 		communication with the osek application executable  */
 	init_com();
     
+    /*  init motors */
+    init_motors();
+    
     do {
         read_command(&command);
         exec_command(&command);
     } while (command.command != PWROF);
 
+    close_motors();
+    
 	close_com();
     
     viper_log("Leaving");
