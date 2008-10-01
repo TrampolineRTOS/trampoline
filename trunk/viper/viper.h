@@ -16,6 +16,8 @@
 #include <sys/types.h>
 
 #define DATA_FILE_PATH  "/viper.data.%d"
+#define CTRL_FILE_PATH  "/viper.ctrl.%d"
+#define STAT_FILE_PATH  "/viper.stat.%d"
 #define R_SEM_FILE_PATH "/viper.rsem.%d"
 #define W_SEM_FILE_PATH "/viper.wsem.%d"
 
@@ -50,5 +52,24 @@ struct VP_COMMAND
 };
 
 typedef struct VP_COMMAND vp_command;
+
+#define MOTOR_CSG_STOP 0
+#define MOTOR_CSG_LEFT 1
+#define MOTOR_CSG_RGHT 2
+
+struct VP_CTRL
+{
+    int motor_csg[2];
+};
+
+typedef struct VP_CTRL vp_ctrl;
+
+struct VP_STAT
+{
+    int motor_pos[2];
+};
+
+typedef struct VP_STAT vp_stat;
+
 
 #endif

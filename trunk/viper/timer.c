@@ -29,7 +29,7 @@ void *timer_thread(void *args)
 			break;
 		}
 		kill(osek_app_pid,sig);
-        viper_log("Sending interrupt");
+/*        viper_log("Sending interrupt"); */
 		if (type == ONE_SHOT) {
 			break;
 		}
