@@ -10,7 +10,7 @@
 #ifndef TPL_AS_ST_DEFINITIONS_H
 #define TPL_AS_ST_DEFINITIONS_H
 
-#include "tpl_os_alarm.h"
+#include "tpl_os_definitions.h"
 
 /* Schedule tables states */
 

@@ -28,6 +28,7 @@
 #define TPL_OS_TYPES_H
 
 #include "tpl_os_internal_types.h"
+
 /**
  * @typedef StatusType
  *
@@ -73,6 +74,24 @@ typedef tpl_task_id     TaskType;
  * see paragraph 13.2.1, page 49 of OSEK/VDX 2.2.2 spec
  */
 typedef P2VAR(tpl_task_id, TYPEDEF, OS_APPL_DATA) TaskRefType;
+
+/**
+ * @typedef TickType
+ *
+ * Represents a count value in ticks
+ *
+ * see paragraph 13.6.1 page 62 of OSEK/VDX 2.2.2 spec
+ */
+typedef tpl_tick            TickType;
+
+/**
+ * @typedef TickRefType
+ *
+ * References a #TickType
+ *
+ * see paragraph 13.6.1 page 62 of OSEK/VDX 2.2.2 spec
+ */
+typedef P2VAR(tpl_tick, TYPEDEF, OS_APPL_DATA)  TickRefType;
 
 #endif /* TPL_OS_TYPES_H */
 

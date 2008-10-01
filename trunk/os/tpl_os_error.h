@@ -26,7 +26,11 @@
 #ifndef TPL_OS_ERROR_H
 #define TPL_OS_ERROR_H
 
-#include "tpl_os.h"
+#include "tpl_os_types.h"
+
+#ifdef WITH_AUTOSAR
+#include "tpl_os_timeobj_kernel.h"
+#endif
 
 /*
  * Remember (see "The design of Trampoline") :
@@ -37,18 +41,6 @@
  */
 
 #ifdef WITH_ERROR_HOOK
-
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
-/*
- * The function corresponding to this prototype should be provided
- * by the application
- */
-extern FUNC(void, OS_CODE) ErrorHook(
-    VAR(StatusType, AUTOMATIC) error);
-
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
 
 /**
  * @union ID_PARAM_BLOCK
@@ -64,19 +56,26 @@ extern FUNC(void, OS_CODE) ErrorHook(
  * @see #tpl_service
  */
 union ID_PARAM_BLOCK {
-    VAR(TaskType, TYPEDEF)            task_id;        /**< used by
+    VAR(tpl_task_id, TYPEDEF)       task_id;        /**< used by
                                                            #ActivateTask,
                                                            #ChainTask,
                                                            #GetTaskState,
                                                            #SetEvent,
-                                                           #GetEvent                  */
-    VAR(TaskRefType, TYPEDEF)         task_id_ref;    /**< used by #GetTaskID         */
-    VAR(ResourceType, TYPEDEF)        res_id;         /**< used by #GetResource,
-                                                           #ReleaseResource           */
-    VAR(AlarmType, TYPEDEF)           alarm_id;       /**< @todo document this        */
+                                                           #GetEvent
+                                                    */
+    P2VAR(tpl_task_id, AUTOMATIC, TYPEDEF)
+                                    task_id_ref;    /**< used by #GetTaskID
+                                                    */
+    VAR(tpl_resource_id, TYPEDEF)   res_id;         /**< used by #GetResource,
+                                                           #ReleaseResource
+                                                    */
+    VAR(tpl_alarm_id, TYPEDEF)      alarm_id;       /**< @todo document this
+                                                    */
 #ifdef WITH_AUTOSAR
-    VAR(ScheduleTableType, TYPEDEF)   schedtable_id;  /**< @todo document this        */
-    VAR(CounterType, TYPEDEF)         counter_id;     /**< @todo document this        */
+    VAR(tpl_schedtable_id, TYPEDEF) schedtable_id;  /**< @todo document this
+                                                    */
+    VAR(tpl_counter_id, TYPEDEF)    counter_id;     /**< @todo document this
+                                                    */
 #endif
 };
 
@@ -89,18 +88,31 @@ union ID_PARAM_BLOCK {
  * @see #tpl_service
  */
 union PARAM_PARAM_BLOCK {
-    VAR(TaskStateRefType, TYPEDEF)            state;          /**< used by #GetTaskState  */
-    VAR(TickType, TYPEDEF)                    tick;           /**< used by #SetRelAlarm,
-                                                                   #SetAbsAlarm       */
-    VAR(TickRefType, TYPEDEF)                 tick_ref;       /**< used by #GetAlarm      */
-    VAR(AlarmBaseRefType, TYPEDEF)            alarm_base_ref; /**< used by #GetAlarmBase  */
-    VAR(EventMaskType, TYPEDEF)               mask;           /**< used by #SetEvent,
-                                                                   #ClearEvent,
-                                                                   #WaitEvent             */
-    VAR(EventMaskRefType, TYPEDEF)            mask_ref;       /**< used by #GetEvent      */
+    P2VAR(tpl_exec_state, AUTOMATIC, TYPEDEF)
+                                    state;          /**< used by #GetTaskState
+                                                    */
+    VAR(tpl_tick, TYPEDEF)          tick;           /**< used by #SetRelAlarm,
+                                                            #SetAbsAlarm
+                                                    */
+    P2VAR(tpl_tick, AUTOMATIC, TYPEDEF)
+                                    tick_ref;       /**< used by #GetAlarm
+                                                    */
+    P2VAR(tpl_alarm_base, AUTOMATIC, TYPEDEF)
+                                    alarm_base_ref; /**< used by #GetAlarmBase
+                                                    */
+    VAR(tpl_event_mask, TYPEDEF)    mask;           /**< used by #SetEvent,
+                                                            #ClearEvent,
+                                                            #WaitEvent
+                                                    */
+    P2VAR(tpl_event_mask, AUTOMATIC, TYPEDEF)
+                                    mask_ref;       /**< used by #GetEvent
+                                                    */
 #ifdef WITH_AUTOSAR
-    VAR(ScheduleTableType, TYPEDEF)           next_st_id;     /**< @todo document this    */
-    VAR(ScheduleTableStatusRefType, TYPEDEF)  st_stat;        /**< @todo document this    */
+    VAR(tpl_schedtable_id, TYPEDEF) next_st_id;     /**< @todo document this
+                                                    */
+    P2VAR(tpl_time_obj_state, AUTOMATIC, TYPEDEF)
+                                    st_stat;        /**< @todo document this
+                                                    */
 #endif
 };
 
@@ -114,7 +126,7 @@ struct PARAM_BLOCK {
                                            concerned by the error */
     union PARAM_PARAM_BLOCK param;  /**< gives more information about the
                                            reason of the error */
-    VAR(TickType, TYPEDEF)  cycle;  /**< cycle set for a relative alarm */
+    VAR(tpl_tick, TYPEDEF)  cycle;  /**< cycle set for a relative alarm */
 };
 
 /**
@@ -193,19 +205,6 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
-/**
- * this function is used to call the ErrorHook callback
- *
- * @param tpl_status The error code which causes the call back
- */
-FUNC(void, OS_CODE) tpl_call_error_hook(
-    CONST(tpl_status, AUTOMATIC) error);
-
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
 
 /************************
  * Services identifiers *
@@ -1240,7 +1239,8 @@ FUNC(void, OS_CODE) tpl_call_error_hook(
 /*  !NO_TASK and extended error checking (OS_EXTENDED). */
 #if !defined(NO_TASK) && defined(OS_EXTENDED)
 #   define CHECK_TASK_CALL_LEVEL_ERROR(result)                          \
-    if ((result == (tpl_status)E_OK) && (tpl_os_state != (u8)OS_TASK))  \
+    if ((result == (tpl_status)E_OK) &&                                 \
+        (tpl_current_os_state() != (tpl_os_state)OS_TASK))              \
     {                                                                   \
         result = (tpl_status)E_OS_CALLEVEL;                             \
     }
@@ -1278,7 +1278,8 @@ FUNC(void, OS_CODE) tpl_call_error_hook(
 /*  !NO_ISR and extended error checking (OS_EXTENDED). */
 #if !defined(NO_ISR) && defined(OS_EXTENDED)
 #   define CHECK_ISR2_CALL_LEVEL_ERROR(result)                          \
-    if ((result == (tpl_status)E_OK) && (tpl_os_state != (u8)OS_ISR2))  \
+    if ((result == (tpl_status)E_OK) &&                                 \
+        (tpl_current_os_state() != (tpl_os_state)OS_ISR2))  \
     {                                                                   \
         result = (tpl_status)E_OS_CALLEVEL;                             \
     }

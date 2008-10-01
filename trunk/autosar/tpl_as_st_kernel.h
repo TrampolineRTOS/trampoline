@@ -51,8 +51,8 @@ typedef VAR(u16, TYPEDEF) tpl_expiry_count ;
  * scheme of a schedule table.
  */
 struct TPL_SCHEDTABLE_SYNC {
-    VAR(tpl_sync_strategy, TYPEDEF) sync_strat; /**< Synchronization strategy (hard or
-                                                       smooth)                            */
+    VAR(tpl_sync_strategy, TYPEDEF) sync_strat; /**< Synchronization strategy
+                                                     (hard or smooth)         */
 };
 
 /**
@@ -190,6 +190,173 @@ extern FUNC(void, OS_CODE) tpl_start_sched_table_sync(
 extern FUNC(void, OS_CODE) tpl_sync_sched_table(
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) st,
     VAR(tpl_time, AUTOMATIC) sync_date);
+    
+/**
+ * Start a schedule table at a relative date system service.
+ *
+ * @param   sched_table_id  identifier of the schedule table to be started
+ * @param   offset          relative tick value between now and the first
+ *                          alarm expiry
+ *
+ * @retval  E_OK        no error
+ *                      requirement OS278
+ * @retval  E_OS_ID     sched_table_id is not valid (EXTENDED status only)
+ *                      requirement OS275
+ * @retval  E_OS_VALUE  offset was set to 0 or is greater than the
+ *                      MAXALLOWEDVALUE of the counter (EXTENDED status only)
+ *                      requirement OS276 and OS332
+ * @retval  E_OS_STATE  the schedule table is already started or currently in
+ *                      state SCHEDULETABLE_NEXT
+ *                      requirement OS277
+ *
+ * see paragraph 8.4.8 page 55 of
+ * AUTOSAR/Specification of the Operating System v2.0.1
+ */
+FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel_service(
+    VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id,
+    VAR(tpl_tick, AUTOMATIC)            offset
+);
+
+/**
+ * Start a schedule table at an absolute date system service.
+ *
+ * @param   sched_table_id  identifier of the schedule table to be started
+ * @param   tick_val        absolute tick value between of the first
+ *                          alarm expiry
+ *
+ * @retval  E_OK        no error
+ *                      requirement OS351
+ * @retval  E_OS_ID     sched_table_id is not valid (EXTENDED status only)
+ *                      requirement OS348
+ * @retval  E_OS_VALUE  tick_val is greater than the
+ *                      MAXALLOWEDVALUE of the counter
+ *                      requirement OS349
+ * @retval  E_OS_STATE  the schedule table is already started or currently in
+ *                      state SCHEDULETABLE_NEXT
+ *                      requirement OS350
+ *
+ * see paragraph 8.4.9 page 55 of
+ * AUTOSAR/Specification of the Operating System v2.0.1
+ */
+FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs_service(
+    VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id,
+    VAR(tpl_tick, AUTOMATIC)            tick_val
+);
+
+/*
+ * Start a schedule table synchronized with global time system service
+ *
+ * @param   sched_table_id  identifier of the schedule table to be started
+ *
+ * @retval  E_OS_STATE  the schedule table is already started
+ *
+ * @retval  E_OS_ID     invalid schedule table id, or the schedule table
+ *                      is not configured as explicit synchronized
+ *
+ * @retval  E_OK        no error
+ *
+ */
+FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_synchron_service(
+    VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id
+);
+
+/**
+ * Stop a schedule table system service.
+ *
+ * @param   sched_table_id  identifier of the schedule table to be started
+ *
+ * @retval  E_OK        no error
+ *                      requirement OS281
+ * @retval  E_OS_ID     sched_table_id is not valid (EXTENDED status only)
+ *                      requirement OS279
+ * @retval  E_OS_NOFUNC the schedule table was not started
+ *                      requirement OS280
+ *
+ * see paragraph 8.4.10 page 56 of
+ * AUTOSAR/Specification of the Operating System v2.0.1
+ */
+FUNC(tpl_status, OS_CODE) tpl_stop_schedule_table_service(
+    VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id
+);
+
+/**
+ * Switch the processing from one schedule table to another (system service).
+ *
+ * @param   current_sd_id   identifier of the schedule table currently in use
+ * @param   next_sd_id      identifier of the next schedule table to process
+ *
+ * @retval  E_OK        no error
+ *                      requirement OS284
+ * @retval  E_OS_ID     current_sd_id or next_sd_id are not valid
+ *                      (EXTENDED status only).
+ *                      requirement OS282
+ * @retval  E_OS_NOFUNC the schedule table current_sd_id is not started or
+ *                      currently in state SCHEDULETABLE_NEXT.
+ *                      requirement OS283
+ * @retval  E_OS_STATE  the schedule table next_sd_id is already started or
+ *                      already the next schedule table to switch to
+ *                      (EXTENDED status only).
+ *                      requirement OS309
+ *
+ * see paragraph 8.4.11 page 57 of
+ * AUTOSAR/Specification of the Operating System v2.0.1
+ */
+FUNC(tpl_status, OS_CODE) tpl_next_schedule_table_service(
+    VAR(tpl_schedtable_id, AUTOMATIC)   current_st_id,
+    VAR(tpl_schedtable_id, AUTOMATIC)   next_st_id
+);
+
+/**
+ * Get the status of a schedule table system service
+ *
+ * @param   sched_table_id  identifier of the schedule table
+ * @param   status          reference to a variable where the status is returned
+ *
+ * @retval  E_OK        no error
+ *                      requirements OS289, OS353, OS354, OS290 and OS291
+ * @retval  E_OS_ID     sched_table_id is not valid (EXTENDED status only)
+ *                      requirement OS293
+ *
+ * see paragraph 8.4.18 page 73 of
+ * AUTOSAR/Specification of the Operating System v2.1.0
+ */
+FUNC(tpl_status, OS_CODE) tpl_get_schedule_table_status_service(
+    VAR(tpl_schedtable_id, AUTOMATIC)                       sched_table_id,
+    P2VAR(tpl_schedtable_state, AUTOMATIC, OS_APPL_DATA)    status
+);
+
+/**
+ * Synchronize a schedule table with global time system service
+ *
+ * @param   sched_table_id  identifier of the schedule table
+ *
+ * @retval  E_OK        no error
+ *
+ * @retval  E_OS_STATE  the schedule table is not waiting or running
+ *
+ * @retval  E_OS_ID     invalid schedule table id, or the schedule table
+ *                      is not configured as explicit synchronized
+ *
+ */
+FUNC(tpl_status, OS_CODE) tpl_sync_schedule_table_service(
+    VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id,
+    VAR(tpl_tick, AUTOMATIC)            value
+);
+
+/**
+ * Set a schedule table asynchrone to global time system service
+ *
+ * @param   sched_table_id  identifier of the schedule table
+ *
+ * @retval  E_OK        no error
+ *
+ * @retval  E_OS_ID     invalid schedule table id, or the schedule table
+ *                      is not configured as explicit synchronized
+ */
+FUNC(tpl_status, OS_CODE) tpl_set_schedule_table_async(
+    VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id
+);
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 #endif /* TPL_AS_ST_KERNEL_H */

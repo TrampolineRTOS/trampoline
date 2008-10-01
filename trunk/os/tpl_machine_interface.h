@@ -26,6 +26,7 @@
 #ifndef TPL_MACHINE_INTERFACE_H
 #define TPL_MACHINE_INTERFACE_H
 
+#include "tpl_os_kernel.h"
 #include "tpl_os_internal_types.h"
 #include "tpl_os_custom_types.h"
 #include "tpl_os_application_def.h"

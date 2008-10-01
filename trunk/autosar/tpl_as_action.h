@@ -29,7 +29,8 @@
 #ifndef TPL_AS_ACTION_H
 #define TPL_AS_ACTION_H
 
-#include "tpl_os_internal_types.h"
+#include "tpl_os_action.h"
+#include "tpl_os_timeobj_kernel.h"
 
 /*!
  *  \brief  Increment counter action structure

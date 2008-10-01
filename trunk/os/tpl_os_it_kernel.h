@@ -26,8 +26,16 @@
 #ifndef TPL_OS_IT_KERNEL_H
 #define TPL_OS_IT_KERNEL_H
 
-#include "tpl_os_application_def.h"
-#include "tpl_os_internal_types.h"
+#include "tpl_os_kernel.h"
+
+#ifndef NO_ISR
+/**
+ * Array of all category 2 interrupt service routine descriptors
+ *
+ * Index in this array correspond to the Isr identifier
+ */
+extern P2VAR(tpl_isr, AUTOMATIC, OS_APPL_DATA) tpl_isr_table[ISR_COUNT];
+#endif
 
 /**
  * An ISR helper is a function which should return true
@@ -95,6 +103,15 @@ typedef struct TPL_ISR tpl_isr;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
+
+/**
+ * Additional non-standard system service to terminate a category 2 interrupt
+ * routine.
+ *
+ * This service is equivalent to TerminateTask but for ISR2
+ */
+FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void);
+
 /**
  * This is the dispatcher of interrupts. It should be called by
  * the root interrupt handler with an ISR identifier

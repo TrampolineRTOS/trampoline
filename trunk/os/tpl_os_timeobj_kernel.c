@@ -1,9 +1,10 @@
 /**
- * @file tpl_os_alarm_kernel.c
+ * @file tpl_os_timeobj_kernel.c
  *
  * @section desc File description
  *
- * Trampoline Alarm Kernel implementation file
+ * Trampoline time object Kernel implementation file. A time object is the
+ * parent object of alarms and schedule tables.
  *
  * @section copyright Copyright
  *
@@ -22,9 +23,10 @@
  * $URL$
  */
 
-#include "tpl_os_definitions.h"
-#include "tpl_os_kernel.h"
+/*#include "tpl_os_definitions.h"*/
 #include "tpl_os_timeobj_kernel.h"
+#include "tpl_os_kernel.h"
+#include "tpl_os_definitions.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -42,11 +44,14 @@ FUNC(void, OS_CODE) tpl_insert_time_obj(
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj)
 {
     /*  get the counter                                                     */
-    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA)   counter = time_obj->stat_part->counter;
+    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA)
+        counter = time_obj->stat_part->counter;
     /*  initialize the current time object to the head                      */
-    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)  current_to = counter->first_to;
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)
+        current_to = counter->first_to;
     /*  initialize the time object that precede the current one to NULL     */
-    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)  prev_to = NULL_PTR;
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)
+        prev_to = NULL_PTR;
 
     if (current_to == NULL)
     {
@@ -112,9 +117,8 @@ FUNC(void, OS_CODE) tpl_insert_time_obj(
 }
 
 /*
- * tpl_remove_time_obj
- * remove a time object from the time object queue of the counter
- * it belongs to.
+ * tpl_remove_time_obj removes a time object from the time object queue
+ * of the counter it belongs to.
  */
 FUNC(void, OS_CODE) tpl_remove_time_obj(
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj)
@@ -153,6 +157,54 @@ FUNC(void, OS_CODE) tpl_remove_time_obj(
     }
 }
 
+/*
+ * tpl_remove_timeobj_set removes a consecutive set of time object with
+ * the same date starting with the next_to of the counter given as parameter.
+ * Added:jlb:2008-09-25. 
+ */
+STATIC FUNC(void, OS_CODE) tpl_remove_timeobj_set(
+    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
+{
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) first_to = counter->next_to;
+    
+    if (first_to != NULL)
+    {
+        P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)    last_to;
+        P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)    t_obj = first_to;
+        P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)    af_to;
+        VAR(tpl_tick, AUTOMATIC)                        date = first_to->date;
+        
+        /*  look for the last time object with the same date as the first one   */
+        do
+        {
+            last_to = t_obj;
+            t_obj = t_obj->next_to;
+        }
+        while ((t_obj != NULL) && (t_obj->date == date));
+        
+        /*  disconnect the chain of object(s). */
+        t_obj = first_to->prev_to;
+        af_to = last_to->next_to;
+        if (t_obj != NULL)
+        {
+            t_obj->next_to = af_to;
+        }
+        if (af_to != NULL)
+        {
+            af_to->prev_to = t_obj;
+        }
+        /*  if first_to is also the first_to of the queue, update the
+            first_to of the counter                     */
+        if (counter->first_to == first_to)
+        {
+            counter->first_to = af_to;
+        }
+        /*  update the next_to of the counter           */
+        counter->next_to = af_to;
+        /*  update the end of the chain of object(s)    */
+        last_to->next_to = NULL;
+    }
+}
 
 /*
  * tpl_counter_tick is called by the IT associated with a counter
@@ -164,7 +216,13 @@ FUNC(void, OS_CODE) tpl_remove_time_obj(
  * suggested modification by Seb - 2005-02-01
  *
  * Update: 2006-12-10: Does not perform the rescheduling.
- * tpl_schedule must be called explicitly
+ *  tpl_schedule must be called explicitly
+ * Bug fix:jlb:2008-09-25 
+ *  When 2 alarms or more were scheduled at the same date and their cycle
+ *  was also the same, tpl_counter_tick went into an infinite loop because
+ *  alarms were put back in the queue at the same date modulo the
+ *  max_allowed_value. Now, the alarms at the same date are removed
+ *  from the queue by tpl_remove_timeobj_set before being processed.
  */
 FUNC(tpl_status, OS_CODE) tpl_counter_tick(
     P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
@@ -183,63 +241,59 @@ FUNC(tpl_status, OS_CODE) tpl_counter_tick(
     VAR(tpl_tick, AUTOMATIC)                      new_date;
     VAR(tpl_status, AUTOMATIC)                    need_resched = NO_SPECIAL_CODE;
 
-    /*  inc the current tick value of the counter   */
+    /*  inc the current tick value of the counter       */
     counter->current_tick++;
     /*  if tickperbase is reached, the counter is inc   */
     if (counter->current_tick == counter->ticks_per_base)
     {
         date = counter->current_date;
-        if (date == counter->max_allowed_value)
+        date++;
+        if (date > counter->max_allowed_value)
         {
             date = 0;
-        }
-        else
-        {
-            date++;
         }
         counter->current_date = date;
         counter->current_tick = 0;
 
         /*  check if the counter has reached the
-            next alarm activation date  */
+            next alarm activation date                  */
         t_obj = counter->next_to;
-
-        while ((t_obj != NULL) && (t_obj->date == date))
+        
+        if ((t_obj != NULL) && (t_obj->date == date))
         {
-            /*  note : time_obj is always the next_to
-                since removing the time object from the queue will
-                advance next_to along the queue                     */
-
-            /*  get the time object from the queue                  */
-            tpl_remove_time_obj(t_obj);
-
-            /*  raise it    */
-            expire = t_obj->stat_part->expire;
-            need_resched |=
-                (TRAMPOLINE_STATUS_MASK & expire(t_obj));
-
-            /*  rearm the alarm if needed   */
-            if (t_obj->cycle != 0)
+            /*  the date of the counter has reached
+                the date of the next time obj.
+                extract the time object with this date
+                from the list                           */
+            tpl_remove_timeobj_set(counter);
+            
+            do
             {
-                /*  if the cycle is not 0,
-                    the new date is computed
-                    by adding the cycle to the current date         */
-                new_date = t_obj->date + t_obj->cycle;
-                if (new_date > counter->max_allowed_value)
+                expire = t_obj->stat_part->expire;
+                need_resched |=
+                    (TRAMPOLINE_STATUS_MASK & expire(t_obj));
+                /*  rearm the alarm if needed   */
+                if (t_obj->cycle != 0)
                 {
-                    new_date -= counter->max_allowed_value;
+                    /*  if the cycle is not 0,
+                        the new date is computed
+                        by adding the cycle to the current date         */
+                    new_date = t_obj->date + t_obj->cycle;
+                    if (new_date > counter->max_allowed_value)
+                    {
+                        new_date -= counter->max_allowed_value;
+                    }
+                    t_obj->date = new_date;
+                    /*  and the alarm is put back in the alarm queue
+                        of the counter it belongs to                    */
+                    tpl_insert_time_obj(t_obj);
                 }
-                t_obj->date = new_date;
-                /*  and the alarm is put back in the alarm queue
-                    of the counter it belongs to                    */
-                tpl_insert_time_obj(t_obj);
-            }
-            else {
-                t_obj->state = TIME_OBJ_SLEEP;
-            }
-
-            /*  get the next alarm to raise     */
-            t_obj = counter->next_to;
+                else {
+                    t_obj->state = TIME_OBJ_SLEEP;
+                }
+                /*  get the next one     */
+                t_obj = t_obj->next_to;
+            } while (t_obj != NULL);
         }
     }
     return need_resched;
@@ -248,4 +302,4 @@ FUNC(tpl_status, OS_CODE) tpl_counter_tick(
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-/* End of file tpl_alarm_kernel.c */
+/* End of file tpl_os_timeobj_kernel.c */

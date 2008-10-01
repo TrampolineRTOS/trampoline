@@ -25,6 +25,7 @@
  * $URL$
  */
 
+#include "tpl_os_task.h"
 #include "tpl_os_task_kernel.h"
 
 #define OS_START_SEC_CODE
@@ -38,20 +39,23 @@
 FUNC(StatusType, OS_CODE) ActivateTask(
     CONST(TaskType, AUTOMATIC) task_id)
 {
-    return tpl_activate_task_service(task_id);
+    StatusType result = tpl_activate_task_service(task_id);
+    return result & OSEK_STATUS_MASK;
 }
 
 
 FUNC(StatusType, OS_CODE) TerminateTask(void)
 {
-    return tpl_terminate_task_service();
+    StatusType result = tpl_terminate_task_service();
+    return result & OSEK_STATUS_MASK;
 }
 
 
 FUNC(StatusType, OS_CODE) ChainTask(
     CONST(TaskType, AUTOMATIC) task_id)
 {
-    return tpl_chain_task_service(task_id);
+    StatusType result = tpl_chain_task_service(task_id);
+    return result & OSEK_STATUS_MASK;
 }
 
 
@@ -72,7 +76,7 @@ FUNC(StatusType, OS_CODE) GetTaskState(
     CONST(TaskType, AUTOMATIC)        task_id,
     VAR(TaskStateRefType, AUTOMATIC)  state)
 {
-    return tpl_get_task_state(task_id, state);
+    return tpl_get_task_state_service(task_id, state);
 }
 
 #define OS_STOP_SEC_CODE

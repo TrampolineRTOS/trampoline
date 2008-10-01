@@ -57,6 +57,18 @@ tpl_get_exec_object(void);
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
+
+
+/*
+ * @internal
+ *
+ * The Application Mode that was used to start the OS.
+ *
+ * @see #tpl_start_os_service
+ * @see #tpl_shutdown_os_service
+ */
+STATIC VAR(tpl_application_mode, OS_VAR) application_mode;
+
 /*
  * idle_task is the task descriptor of the kernel task
  * used when no other task is ready. The OS starts
@@ -120,14 +132,21 @@ STATIC VAR(tpl_task, OS_VAR) idle_task = {
  *
  * tpl_running_obj is the currently running task in the application.
  *
- * At system startup it is set to the idle task
+ * At system startup it is set to NULL
  */
 /*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
     that has the same beginning fields as the struct it is casted to
     This allow object oriented design and polymorphism.
 */
-P2VAR(tpl_exec_common, OS_VAR, OS_APPL_DATA) tpl_running_obj =
-    (P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA))&idle_task;
+P2VAR(tpl_exec_common, OS_VAR, OS_APPL_DATA) tpl_running_obj = NULL;
+
+/**
+ * @internal
+ *
+ * tpl_old_running_obj is the object that has just lost the CPU.
+ * it is used to postpone the context switch
+ */
+P2VAR(tpl_exec_common, OS_VAR, OS_APPL_DATA) tpl_old_running_obj = NULL;
 
 /*  MISRA RULE 27 VIOLATION: These 2 variables are used only in this file
     but decalred in the configuration file, this is why they do not need
@@ -172,39 +191,12 @@ extern VAR(tpl_fifo_state, OS_VAR) tpl_fifo_rw[];
  */
 VAR(s8, OS_VAR) tpl_h_prio = -1;
 
-/*
- * tpl_last_result store the last error
- * encountered by Trampoline.
- * It is used has a return value
- * for some OS services and for the
- * ErrorHook routine
- */
-/* tpl_status tpl_last_result = E_OK; */
-
-VAR(u8, OS_VAR) tpl_os_state = OS_INIT; /* see doc in header file declaration */
-
-VAR(tpl_resource_id, OS_VAR) RES_SCHEDULER = RESOURCE_COUNT;
-/* see doc in header declaration */
-
 #define OS_STOP_SEC_VAR_8BITS
 #include "tpl_memmap.h"
 
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-/**
- * The scheduler resource descriptor
- *
- * @see #RES_SCHEDULER
- */
-VAR(tpl_resource, OS_VAR) res_sched = {
-    RES_SCHEDULER_PRIORITY, /**< the ceiling priority is defined as the
-                                 maximum priority of the tasks of the
-                                 application                                */
-    0,                      /*   owner_prev_priority                        */
-    NULL_PTR,               /*   owner                                      */
-    NULL_PTR                /*   next_res                                   */
-};
 
 /**
  * INTERNAL_RES_SCHEDULER is an internal resource with the higher task priority
@@ -606,6 +598,41 @@ FUNC(void, OS_CODE) tpl_put_new_exec_object(
 /**
  * @internal
  *
+ * tpl_current_os_state returns the current state of the OS.
+ *
+ * @see #tpl_os_state
+ */
+FUNC(VAR(tpl_os_state, AUTOMATIC), OS_CODE) tpl_current_os_state(
+    void)
+{
+    VAR(tpl_os_state, OS_APPL_DATA) state = OS_UNKNOWN;
+    if (tpl_running_obj == NULL) {
+        state = OS_INIT;
+    }
+    /*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
+        that has the same beginning fields as the struct it is casted to
+        This allow object oriented design and polymorphism.
+    */
+    else if (tpl_running_obj ==
+        (P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA))&idle_task)
+    {
+        state = OS_IDLE;
+    }
+    else if (tpl_running_obj->static_desc->type == IS_ROUTINE)
+    {
+        state = OS_ISR2;
+    }
+    else
+    {
+        state = OS_TASK;
+    }
+    
+    return state;
+}
+
+/**
+ * @internal
+ *
  * Get an internal resource
  *
  * @param task task from which internal resource is got
@@ -614,7 +641,7 @@ FUNC(void, OS_CODE) tpl_get_internal_resource(
     P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) a_task)
 {
     P2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
-        a_task->static_desc->internal_resource;
+        (tpl_internal_resource *)(a_task->static_desc->internal_resource);
 
     if ((rez != NULL_PTR) && (rez->taken == FALSE))
     {
@@ -635,7 +662,7 @@ FUNC(void, OS_CODE) tpl_release_internal_resource(
     P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) a_task)
 {
     P2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
-        a_task->static_desc->internal_resource;
+        (tpl_internal_resource *)a_task->static_desc->internal_resource;
 
     if ((rez != NULL_PTR) && (rez->taken == TRUE))
     {
@@ -655,10 +682,8 @@ FUNC(void, OS_CODE) tpl_release_internal_resource(
  *
  * @param from can be one of #FROM_TASK_LEVEL or #FROM_IT_LEVEL
  */
-FUNC(void, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
+FUNC(tpl_status, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
 {
-    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) old_running_obj;
-
     /*  the tpl_running_obj is never NULL and may be in 3 states
         - RUNNING:      if the running object is in the RUNNING state and
                         loses the CPU because a higher priority task is in
@@ -671,6 +696,7 @@ FUNC(void, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
         - DYING:        if the running object is in the DYING state, its
                         context is not saved and it loses the CPU.          */
     tpl_exec_state state = tpl_running_obj->state;
+    tpl_status result = NO_SPECIAL_CODE;
 
     tpl_bool schedule =
         (tpl_h_prio != -1) &&
@@ -685,7 +711,7 @@ FUNC(void, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
     if (schedule == TRUE)
     {
         /*  save the old running task for context switching */
-        old_running_obj = tpl_running_obj;
+        tpl_old_running_obj = tpl_running_obj;
 
         /*  a task switch will occur. It is time to call the
             PostTaskHook while the soon descheduled task is running     */
@@ -785,60 +811,10 @@ FUNC(void, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
             rescheduled task is running                     */
         CALL_PRE_TASK_HOOK()
 
-        /*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
-            that has the same beginning fields as the struct it is casted to
-            This allow object oriented design and polymorphism.
-        */
-        if (tpl_running_obj ==
-            (P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA))&idle_task)
-        {
-            tpl_os_state = OS_IDLE;
-        }
-        else if (tpl_running_obj->static_desc->type == IS_ROUTINE)
-        {
-            tpl_os_state = OS_ISR2;
-        }
-        else
-        {
-            tpl_os_state = OS_TASK;
-        }
-        /*  Switch the context  */
-        if (from == (u8)FROM_TASK_LEVEL)
-        {
-            if (state < 0x4)
-            {
-                DOW_ASSERT(tpl_running_obj != old_running_obj)
-                /*  The old running object is not in a DYING or
-                    RESSURECT state */
-                tpl_switch_context(
-                    (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(old_running_obj->static_desc->context),
-                    (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(tpl_running_obj->static_desc->context));
-            }
-            else
-            {
-                tpl_switch_context(
-                    NULL_PTR,
-                    (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(tpl_running_obj->static_desc->context));
-            }
-        }
-        else
-        { /* FROM_IT_LEVEL */
-            if (state < 0x4)
-            {
-                /*  The old running object is not in a DYING or
-                    RESSURECT state */
-                tpl_switch_context_from_it(
-                    (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(old_running_obj->static_desc->context),
-                    (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(tpl_running_obj->static_desc->context));
-            }
-            else
-            {
-                tpl_switch_context_from_it(
-                    NULL_PTR,
-                    (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(tpl_running_obj->static_desc->context));
-            }
-        }
+        result = NEED_CONTEXT_SWITCH;
     }
+    
+    return result;
 }
 
 
@@ -853,10 +829,11 @@ FUNC(void, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
  * @param from can be one of #FROM_TASK_LEVEL or #FROM_IT_LEVEL
  *
  */
-FUNC(void, OS_CODE) tpl_schedule_from_running(CONST(u8, AUTOMATIC) from)
+FUNC(tpl_status, OS_CODE) tpl_schedule_from_running(CONST(u8, AUTOMATIC) from)
 {
-    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) old_running_obj = NULL_PTR;
-
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) tpl_old_running_obj = NULL;
+    VAR(tpl_status, AUTOMATIC) result = NO_SPECIAL_CODE;
+    
     /*  the tpl_running_obj is never NULL and is in the state RUNNING  */
     DOW_ASSERT(tpl_running_obj != NULL_PTR)
     DOW_ASSERT(tpl_running_obj->state == RUNNING)
@@ -869,7 +846,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CONST(u8, AUTOMATIC) from)
     if (tpl_h_prio > tpl_running_obj->priority)
     {
         /*  save the old running task for context switching */
-        old_running_obj = tpl_running_obj;
+        tpl_old_running_obj = tpl_running_obj;
 
         /*  a task switch will occur. It is time to call the
             PostTaskHook while the soon descheduled task is running     */
@@ -923,31 +900,14 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CONST(u8, AUTOMATIC) from)
             rescheduled task is running                     */
         CALL_PRE_TASK_HOOK()
 
-        if (tpl_running_obj->static_desc->type == IS_ROUTINE)
-        {
-            tpl_os_state = OS_ISR2;
-        }
-        else
-        {
-            tpl_os_state = OS_TASK;
-        }
-        DOW_ASSERT(tpl_running_obj != old_running_obj)
+        DOW_ASSERT(tpl_running_obj != tpl_old_running_obj)
         /*  The old running object is not in a DYING or
             RESSURECT state */
 
-        if( from == FROM_TASK_LEVEL )
-        {
-            tpl_switch_context(
-                (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(old_running_obj->static_desc->context),
-                (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(tpl_running_obj->static_desc->context));
-        }
-        else
-        {
-            tpl_switch_context_from_it(
-                (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(old_running_obj->static_desc->context),
-                (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(tpl_running_obj->static_desc->context));
-        }
+        result = NEED_CONTEXT_SWITCH;
     }
+    
+    return result;
 }
 
 /**
@@ -959,7 +919,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CONST(u8, AUTOMATIC) from)
  * and by the function TerminateISR2
  *
  */
-FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
+FUNC(tpl_status, OS_CODE) tpl_schedule_from_dying(void)
 {
     /*  the tpl_running_obj is never NULL and may be in 2 states
         - RESURRECT:    if the running object is in the RESURRECT state,
@@ -968,6 +928,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
         - DYING:        if the running object is in the DYING state, its
                         context is not saved and it loses the CPU.          */
     tpl_exec_state state = tpl_running_obj->state;
+    VAR(tpl_status, AUTOMATIC) result = NO_SPECIAL_CODE;
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
     tpl_check_stack(tpl_running_obj);
@@ -1068,30 +1029,9 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
         rescheduled task is running                     */
     CALL_PRE_TASK_HOOK()
 
-    /*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
-        that has the same beginning fields as the struct it is casted to
-        This allow object oriented design and polymorphism.
-    */
-    if (tpl_running_obj ==
-        (P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA))&idle_task)
-    {
-        tpl_os_state = OS_IDLE;
-    }
-    else if (tpl_running_obj->static_desc->type == IS_ROUTINE)
-    {
-        tpl_os_state = OS_ISR2;
-    }
-    else
-    {
-        tpl_os_state = OS_TASK;
-    }
-
-
-    /*  Switch the context  */
-    tpl_switch_context(
-        NULL_PTR,
-        (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(tpl_running_obj->static_desc->context));
-
+    result = NEED_CONTEXT_SWITCH;
+    
+    return result;
 }
 
 
@@ -1104,16 +1044,16 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
  * tpl_central_interrupt_handler, always from IT context
  *
  */
-FUNC(void, OS_CODE) tpl_schedule_from_idle(void)
+FUNC(tpl_status, OS_CODE) tpl_schedule_from_idle(void)
 {
-    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) old_running_obj;
+    VAR(tpl_status, AUTOMATIC) result = NO_SPECIAL_CODE;
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
     tpl_check_stack(tpl_running_obj);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
     /*  save the old running task for context switching */
-    old_running_obj = tpl_running_obj;
+    tpl_old_running_obj = tpl_running_obj;
 
     /*  a task switch will occur. It is time to call the
         PostTaskHook while the soon descheduled task is running     */
@@ -1157,21 +1097,10 @@ FUNC(void, OS_CODE) tpl_schedule_from_idle(void)
         rescheduled task is running                     */
     CALL_PRE_TASK_HOOK()
 
-    if (tpl_running_obj->static_desc->type == IS_ROUTINE)
-    {
-        tpl_os_state = OS_ISR2;
-    }
-    else
-    {
-        tpl_os_state = OS_TASK;
-    }
-
-
     /*  Switch the context  */
-    tpl_switch_context_from_it(
-        (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(old_running_obj->static_desc->context),
-        (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(tpl_running_obj->static_desc->context));
+    result = NEED_CONTEXT_SWITCH;
 
+    return result;
 }
 
 
@@ -1183,16 +1112,16 @@ FUNC(void, OS_CODE) tpl_schedule_from_idle(void)
  * This function is called by the OSEK/VDX WaitEvent
  *
  */
-FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
+FUNC(tpl_status, OS_CODE) tpl_schedule_from_waiting(void)
 {
-    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) old_running_obj;
-
+    VAR(tpl_status, AUTOMATIC) result = NO_SPECIAL_CODE;
+    
 #ifdef WITH_AUTOSAR_STACK_MONITORING
    tpl_check_stack(tpl_running_obj);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
     /*  save the old running task for context switching */
-    old_running_obj = tpl_running_obj;
+    tpl_old_running_obj = tpl_running_obj;
 
     /*  a task switch will occur. It is time to call the
         PostTaskHook while the soon descheduled task is running     */
@@ -1240,29 +1169,11 @@ FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
         rescheduled task is running                     */
     CALL_PRE_TASK_HOOK()
 
-    /*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
-        that has the same beginning fields as the struct it is casted to
-        This allow object oriented design and polymorphism.
-    */
-    if (tpl_running_obj ==
-        (P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA))&idle_task)
-    {
-        tpl_os_state = OS_IDLE;
-    }
-    else if (tpl_running_obj->static_desc->type == IS_ROUTINE)
-    {
-        tpl_os_state = OS_ISR2;
-    }
-    else
-    {
-        tpl_os_state = OS_TASK;
-    }
     /*  Switch the context  */
 
-    tpl_switch_context(
-        (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(old_running_obj->static_desc->context),
-        (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))&(tpl_running_obj->static_desc->context));
-
+    result = NEED_CONTEXT_SWITCH;
+    
+    return result;
 }
 
 
@@ -1496,6 +1407,67 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
         }
     }
 #endif
+}
+
+FUNC(tpl_application_mode, OS_CODE) tpl_get_active_application_mode_service(
+    void)
+{
+    return application_mode;
+}
+
+FUNC(void, OS_CODE) tpl_start_os_service(
+    CONST(tpl_application_mode, AUTOMATIC) mode)
+{
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
+
+    application_mode = mode;
+
+    tpl_init_machine();
+
+    tpl_get_task_lock();
+
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    tpl_init_timing_protection();
+#endif
+
+    tpl_init_os(mode);
+
+    /*  Call the startup hook. According to the spec, it should be called
+        after the os is initialized and before the scheduler is running   */
+    CALL_STARTUP_HOOK()
+    
+    tpl_running_obj =
+        (P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA))&idle_task;
+
+    /*  Call tpl_schedule to elect the greatest priority task
+        tpl_schedule also set the state of the OS according to the elected
+        task */
+    if(tpl_h_prio != -1)
+    {
+        result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
+        
+        if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH) {
+            tpl_switch_context(
+                (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
+                    &(tpl_old_running_obj->static_desc->context),
+                (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
+                    &(tpl_running_obj->static_desc->context)
+            );
+        }
+    }
+
+    tpl_release_task_lock();
+
+    /*  Fall back to the idle loop */
+    tpl_sleep();
+}
+
+FUNC(void, OS_CODE) tpl_shutdown_os_service(
+    CONST(tpl_status, AUTOMATIC) error  /*@unused@*/)
+{
+    CALL_SHUTDOWN_HOOK(error)
+    /* architecture dependant shutdown. */
+    tpl_shutdown();
 }
 
 #define OS_STOP_SEC_CODE

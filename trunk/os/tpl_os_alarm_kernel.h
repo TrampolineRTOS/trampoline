@@ -25,8 +25,45 @@
 #ifndef TPL_OS_ALARM_KERNEL_H
 #define TPL_OS_ALARM_KERNEL_H
 
+#include "tpl_os_timeobj_kernel.h"
+#include "tpl_os_action.h"
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
+
+#ifndef NO_ALARM
+/**
+ * Array of all alarms descriptors
+ *
+ * Index in this array correspond to the #AlarmType of the alarm
+ */
+extern P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) tpl_alarm_table[ALARM_COUNT];
+#endif
+
+/**
+ * @struct TPL_ALARM_STATIC
+ *
+ * This is the data structure used to describe the static part of an alarm.
+ * It extends the #TPL_TIME_OBJ_STATIC structure by adding an action to be done
+ * when the alarm expires.
+ *
+ * @see #TPL_TIME_OBJ_STATIC
+ */
+struct TPL_ALARM_STATIC {
+    VAR(tpl_time_obj_static, TYPEDEF)         b_desc;   /**< common part of all objects that
+                                                             derive from tpl_time_obj.          */
+    P2VAR(tpl_action, TYPEDEF, OS_APPL_DATA)  action;   /**< action to be done when the alarm
+                                                             expires                            */
+};
+
+/**
+ * @typedef tpl_alarm_static
+ *
+ * This is an alias for the structure #TPL_ALARM_STATIC
+ *
+ * @see #TPL_ALARM_STATIC
+ */
+typedef struct TPL_ALARM_STATIC tpl_alarm_static;
 
 /**
  * @internal
@@ -51,9 +88,9 @@ FUNC(tpl_status, OS_CODE) tpl_raise_alarm(
  * @retval E_OK no error
  * @retval E_OS_ID (extended error only) alarm_id is invalid
  */
-FUNC(StatusType, OS_CODE) tpl_get_alarm_base_service(
-    CONST(AlarmType, AUTOMATIC)       alarm_id,
-    VAR(AlarmBaseRefType, AUTOMATIC)  info);
+FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
+    CONST(tpl_alarm_id, AUTOMATIC)                  alarm_id,
+    P2VAR(tpl_alarm_base, AUTOMATIC, OS_APPL_DATA)  info);
 
 
 /**
@@ -68,9 +105,9 @@ FUNC(StatusType, OS_CODE) tpl_get_alarm_base_service(
  * @retval E_OS_NOFUNC alarm_id is not used
  * @retval E_OS_ID (extended error only) alarm_id is invalid
  */
-FUNC(StatusType, OS_CODE) tpl_get_alarm_service(
-    CONST(AlarmType, AUTOMATIC) alarm_id,
-    VAR(TickRefType, AUTOMATIC) tick);
+FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
+    CONST(tpl_alarm_id, AUTOMATIC)              alarm_id,
+    P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA)    tick);
 
 
 /**
@@ -88,10 +125,10 @@ FUNC(StatusType, OS_CODE) tpl_get_alarm_service(
  * @retval E_OS_VALUE (extended error only) increment or cycle is outside of
  * limits
  */
-FUNC(StatusType, OS_CODE) tpl_set_rel_alarm(
-    CONST(AlarmType, AUTOMATIC) alarm_id,
-    CONST(TickType, AUTOMATIC)  increment,
-    CONST(TickType, AUTOMATIC)  cycle);
+FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
+    CONST(tpl_alarm_id, AUTOMATIC)  alarm_id,
+    CONST(tpl_tick, AUTOMATIC)      increment,
+    CONST(tpl_tick, AUTOMATIC)      cycle);
 
 
 /**
@@ -110,10 +147,10 @@ FUNC(StatusType, OS_CODE) tpl_set_rel_alarm(
  * @retval E_OS_VALUE (extended error only) start or cycle is outside of
  * limits
  */
-FUNC(StatusType, OS_CODE) tpl_set_abs_alarm(
-    CONST(AlarmType, AUTOMATIC) alarm_id,
-    CONST(TickType, AUTOMATIC)  start,
-    CONST(TickType, AUTOMATIC)  cycle);
+FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
+    CONST(tpl_alarm_id, AUTOMATIC)  alarm_id,
+    CONST(tpl_tick, AUTOMATIC)      start,
+    CONST(tpl_tick, AUTOMATIC)      cycle);
 
 
 /**
@@ -125,8 +162,8 @@ FUNC(StatusType, OS_CODE) tpl_set_abs_alarm(
  * @retval E_OS_NOFUNC alarm is not in use
  * @retval E_OS_ID (extended error only) alarm_id is invalid
  */
-FUNC(StatusType, OS_CODE) tpl_cancel_alarm_service(
-  CONST(AlarmType, AUTOMATIC) alarm_id);
+FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
+    CONST(tpl_alarm_id, AUTOMATIC) alarm_id);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

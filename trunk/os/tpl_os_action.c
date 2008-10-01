@@ -24,7 +24,8 @@
  */
 
 #include "tpl_os_definitions.h"
-#include "tpl_os_kernel.h"
+#include "tpl_os_task_kernel.h"
+#include "tpl_os_event_kernel.h"
 #include "tpl_os_action.h"
 
 #define OS_START_SEC_CODE

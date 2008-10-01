@@ -47,6 +47,9 @@ rule <resource>
 
     $RESOURCE$ ;
     $idf$ ?resource_name ;
+    if [resource_name string] == "res_sched" then
+        error here : "'res_sched' is a reserved name of the schedule resource";
+    end if;
     ${$ ;
     if [resources hasKey ![resource_name string]] then
         [!?resources del !resource_name ?resource] ;

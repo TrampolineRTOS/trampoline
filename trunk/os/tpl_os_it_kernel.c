@@ -22,12 +22,14 @@
  * $Author$
  * $URL$
  */
-#include "tpl_os_it_kernel.h"
-#include "tpl_os_kernel.h"
+
 #include "tpl_os_definitions.h"
-#include "tpl_os.h"
-#include "tpl_os_application_def.h"
+#include "tpl_os_kernel.h"
+#include "tpl_os_error.h"
+#include "tpl_os_errorhook.h"
 #include "tpl_machine_interface.h"
+
+#include "tpl_os_it_kernel.h"
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
 #include "tpl_as_stack_monitor.h"
@@ -37,13 +39,68 @@
 #include "tpl_as_isr_kernel.h"
 #endif
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
+/*
+ * tpl_terminate_isr2_service
+ *
+ * While this function is not part of the OSEK API, it is used
+ * to terminate an ISR2 routine
+ */
+FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
+{
+    /*  init the error to no error  */
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
+
+    CHECK_INTERRUPT_LOCK(result)
+
+    /*  lock the task structures    */
+    LOCK_WHEN_ISR()
+
+    /*  store information for error hook routine    */
+    STORE_SERVICE(OSServiceId_TerminateISR)
+
+    /*  check we are at the ISR2 level  */
+    CHECK_ISR2_CALL_LEVEL_ERROR(result)
+    /*  check the ISR2 does not own a resource  */
+    CHECK_RUNNING_OWNS_REZ_ERROR(result)
+
+#ifndef NO_ISR
+    IF_NO_EXTENDED_ERROR(result)
+
+        /*  set the state of the running task to DYING                  */
+        tpl_running_obj->state = (tpl_exec_state)DYING;
+
+        /*  and let the scheduler do its job                            */
+        result |= tpl_schedule_from_dying();
+
+    IF_NO_EXTENDED_ERROR_END()
+#endif
+
+    if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH) {
+        tpl_switch_context(
+            NULL,
+            (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
+                &(tpl_running_obj->static_desc->context)
+        );
+    }
+
+    PROCESS_ERROR(result)
+
+    /*  unlock the task structures  */
+    UNLOCK_WHEN_ISR()
+
+    return result;
+}
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
 #ifndef NO_ISR
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
-
-STATIC FUNC(void, OS_CODE) tpl_activate_isr(
-    P2VAR(tpl_isr, AUTOMATIC, OS_APPL_DATA) a_isr);
 
 /*
  */
@@ -84,8 +141,9 @@ STATIC FUNC(void, OS_CODE) tpl_activate_isr(
  */
 FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) id)
 {
-    _STATIC_ VAR(s32, AUTOMATIC) tpl_it_nesting =  0;
+    STATIC VAR(s32, AUTOMATIC) tpl_it_nesting =  0;
     P2VAR(tpl_isr, AUTOMATIC, OS_APPL_DATA) a_isr_desc;
+    VAR(tpl_status, AUTOMATIC) result = E_OK;
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
     tpl_check_stack(tpl_running_obj);
@@ -131,13 +189,20 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) id)
         {
             if( (u8)OS_IDLE == tpl_os_state )
             {
-                tpl_schedule_from_idle();
+                result |= tpl_schedule_from_idle();
             }
             else
             {
-                tpl_schedule_from_running(FROM_IT_LEVEL);
+                result |= tpl_schedule_from_running(FROM_IT_LEVEL);
             }
-
+            if ((result & NEED_CONTEXT_SWITCH == NEED_CONTEXT_SWITCH)) {
+                tpl_switch_context_from_it(
+                    (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
+                        &(tpl_old_running_obj->static_desc->context),
+                    (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
+                        &(tpl_running_obj->static_desc->context)
+                );
+            }
         }
 #ifdef OS_EXTENDED
     }

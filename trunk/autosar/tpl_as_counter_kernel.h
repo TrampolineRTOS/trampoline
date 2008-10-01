@@ -1,5 +1,5 @@
 /**
- * @file tpl_as_counter.h
+ * @file tpl_as_counter_kernel.h
  *
  * @section desc File description
  *
@@ -23,22 +23,11 @@
  * $Author$
  * $URL$
  */
-#ifndef TPL_AS_COUNTER_H
-#define TPL_AS_COUNTER_H
+#ifndef TPL_AS_COUNTER_KERNEL_H
+#define TPL_AS_COUNTER_KERNEL_H
 
 #include "tpl_os_internal_types.h"
 #include "tpl_os_custom_types.h"
-#include "tpl_os_types.h"
-
-/**
- * @typedef CounterType
- *
- * A counter identifier.
- *
- * see paragraph 8.3.13, page 50 of
- * AUTOSAR/Specification of the Operating System v2.0.1
- */
-typedef tpl_counter_id  CounterType;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -56,8 +45,8 @@ typedef tpl_counter_id  CounterType;
  * see paragraph 8.4.12, page 70 of
  * AUTOSAR/Specification of the Operating System v2.1.0
  */
-FUNC(StatusType, OS_CODE) IncrementCounter(
-    VAR(CounterType, AUTOMATIC) counter_id
+FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
+    VAR(tpl_counter_id, AUTOMATIC) counter_id
 );
 
 /**
@@ -74,9 +63,9 @@ FUNC(StatusType, OS_CODE) IncrementCounter(
  * see paragraph 8.4.12, page 70 of
  * AUTOSAR/Specification of the Operating System v2.1.0
  */
-FUNC(StatusType, OS_CODE) GetCounterValue(
-    VAR(CounterType, AUTOMATIC) counter_id,
-    VAR(TickRefType, AUTOMATIC) value
+FUNC(tpl_status, OS_CODE) tpl_get_counter_value_service(
+    VAR(tpl_counter_id, AUTOMATIC)              counter_id,
+    P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA)    value
 );
 
 /**
@@ -98,16 +87,16 @@ FUNC(StatusType, OS_CODE) GetCounterValue(
  * see paragraph 8.4.12, page 71 of
  * AUTOSAR/Specification of the Operating System v2.1.0
  */
-FUNC(StatusType, OS_CODE) GetElapsedCounterValue(
-    VAR(CounterType, AUTOMATIC) counter_id,
-    VAR(TickType, AUTOMATIC)    previous_value,
-    VAR(TickRefType, AUTOMATIC) value
+FUNC(tpl_status, OS_CODE) tpl_get_elapsed_counter_value_service(
+    VAR(tpl_counter_id, AUTOMATIC)              counter_id,
+    VAR(tpl_tick, AUTOMATIC)                    previous_value,
+    P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA)    value
 );
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-/* TPL_AS_COUNTER_H */
+/* TPL_AS_COUNTER_KERNEL_H */
 #endif
 
-/* End of file tpl_as_counter.h */
+/* End of file tpl_as_counter_kernel.h */

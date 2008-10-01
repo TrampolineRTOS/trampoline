@@ -25,11 +25,12 @@
  * $URL: https://trampoline.rts-software.org/svn/trunk/os/tpl_os_task.c $
  */
 
-#include "tpl_os.h"
-#include "tpl_os_kernel.h"
 #include "tpl_machine_interface.h"
+#include "tpl_os_definitions.h"
 #include "tpl_os_error.h"
 #include "tpl_os_hooks.h"
+#include "tpl_os_errorhook.h"
+#include "tpl_os_task_kernel.h"
 
 #ifdef WITH_AUTOSAR
 #include "tpl_as_isr.h"
@@ -65,12 +66,20 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
         result = tpl_activate_task(tpl_task_table[task_id]);
         if (result == (tpl_status)E_OK_AND_SCHEDULE)
         {
-            tpl_schedule_from_running(FROM_TASK_LEVEL);
+            result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
         }
-        result &= OSEK_STATUS_MASK;
     IF_NO_EXTENDED_ERROR_END()
 #endif
 
+    if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH) {
+        tpl_switch_context(
+            (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
+                &(tpl_old_running_obj->static_desc->context),
+            (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
+                &(tpl_running_obj->static_desc->context)
+        );
+    }
+    
     PROCESS_ERROR(result)
 
     /*  unlock the task structures  */
@@ -106,10 +115,19 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
         tpl_running_obj->state = (tpl_exec_state)DYING;
 
         /*  and let the scheduler do its job                            */
-        tpl_schedule_from_dying();
+        result |= tpl_schedule_from_dying();
 
     IF_NO_EXTENDED_ERROR_END()
 #endif
+
+    if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH) {
+        tpl_switch_context(
+            (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
+                &(tpl_old_running_obj->static_desc->context),
+            (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
+                &(tpl_running_obj->static_desc->context)
+        );
+    }
 
     PROCESS_ERROR(result)
 
@@ -203,8 +221,17 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
         if (result == E_OK)
         {
             /*  and let the scheduler do its job                            */
-            tpl_schedule_from_dying();
+            result |= tpl_schedule_from_dying();
         }
+        
+        if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH) {
+            tpl_switch_context(
+                NULL,
+                (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
+                    &(tpl_running_obj->static_desc->context)
+            );
+        }
+
 
     IF_NO_EXTENDED_ERROR_END()
 #endif
@@ -241,11 +268,20 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
         /*  release the internal resource   */
         tpl_release_internal_resource(tpl_running_obj);
         /*  does the rescheduling           */
-        tpl_schedule_from_running(FROM_TASK_LEVEL);
+        result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
         /*  get the internal resource       */
         tpl_get_internal_resource(tpl_running_obj);
     IF_NO_EXTENDED_ERROR_END()
 #endif
+
+    if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH) {
+        tpl_switch_context(
+            (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
+                &(tpl_old_running_obj->static_desc->context),
+            (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
+                &(tpl_running_obj->static_desc->context)
+        );
+    }
 
     PROCESS_ERROR(result)
 
@@ -256,7 +292,7 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 }
 
 
-FUNC(StatusType, OS_CODE) GetTaskID(
+FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
     VAR(TaskRefType, AUTOMATIC) task_id)
 {
     /*  get the task id from the task descriptor.
@@ -269,7 +305,7 @@ FUNC(StatusType, OS_CODE) GetTaskID(
 }
 
 
-FUNC(StatusType, OS_CODE) GetTaskState(
+FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
     CONST(TaskType, AUTOMATIC)        task_id,
     VAR(TaskStateRefType, AUTOMATIC)  state)
 {

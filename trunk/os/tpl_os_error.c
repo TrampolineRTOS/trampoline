@@ -23,6 +23,7 @@
  * Trampoline Errors macros, functions and datatypes header
  */
 
+#include "tpl_os_errorhook.h"
 #include "tpl_os_error.h"
 #include "tpl_os_internal_types.h"
 

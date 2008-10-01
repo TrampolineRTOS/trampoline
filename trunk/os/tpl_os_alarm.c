@@ -24,11 +24,8 @@
  * $URL$
  */
 
-#include "tpl_os_error.h"
-#include "tpl_os_kernel.h"
-#include "tpl_os_alarm_kernel.h"
 #include "tpl_os_alarm.h"
-#include "tpl_machine_interface.h"
+#include "tpl_os_alarm_kernel.h"
 
 #ifdef WITH_AUTOSAR
 #include "tpl_as_isr.h"
