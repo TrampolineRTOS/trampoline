@@ -831,7 +831,6 @@ FUNC(tpl_status, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
  */
 FUNC(tpl_status, OS_CODE) tpl_schedule_from_running(CONST(u8, AUTOMATIC) from)
 {
-    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) tpl_old_running_obj = NULL;
     VAR(tpl_status, AUTOMATIC) result = NO_SPECIAL_CODE;
     
     /*  the tpl_running_obj is never NULL and is in the state RUNNING  */

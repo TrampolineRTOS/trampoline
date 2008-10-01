@@ -35,13 +35,12 @@ tc_buf_loc l[20];
 char CT = 19;
 
 #define _XOPEN_SOURCE 500
-//#include <unistd.h>
+#include <unistd.h>
 
 void StartupHook(void);
 
 int main(void)
 {
-	StartupHook();
     StartOS(OSDEFAULTAPPMODE);
 	
     return 0;
@@ -63,30 +62,30 @@ StatusType result;
 
 TASK(t0) {		/* in the start of the OS, t0 is in running state */
 
-    AlarmBaseRefType base;
-	TickRefType tick;
+    AlarmBaseType base;
+	TickType tick;
 
 /* t0, Call SetEvent() from preemptive task on ready extended task
     Test case 1*/
-	result = GetAlarmBase(invalid_alarm,base);
+	result = GetAlarmBase(invalid_alarm,&base);
     if (result == E_OS_ID) tc_report_error(1,result,file,__LINE__);
     else tc_report_error(-1,result,file,__LINE__);
 
 /* t0, Call SetEvent() from preemptive task on ready extended task
     Test case 2*/
-	result = GetAlarmBase(alarm1,base);
+	result = GetAlarmBase(alarm1,&base);
     if (result == E_OK) tc_report_error(2,result,file,__LINE__);
     else tc_report_error(-2,result,file,__LINE__);
 
 /* t0, Call SetEvent() from preemptive task on ready extended task
     Test case 3*/
-	result = GetAlarm(invalid_alarm,tick);
+	result = GetAlarm(invalid_alarm,&tick);
     if (result == E_OS_ID) tc_report_error(3,result,file,__LINE__);
     else tc_report_error(-3,result,file,__LINE__);
 
 /* t0, Call SetEvent() from preemptive task on ready extended task
     Test case 4*/
-	result = GetAlarm(alarm1,tick);
+	result = GetAlarm(alarm1,&tick);
     if (result == E_OS_NOFUNC) tc_report_error(4,result,file,__LINE__);
     else tc_report_error(-4,result,file,__LINE__);
 
@@ -104,13 +103,13 @@ TASK(t0) {		/* in the start of the OS, t0 is in running state */
 
 /* t0, Call SetEvent() from preemptive task on ready extended task
     Test case 5*/
-	result = GetAlarm(alarm1,tick);
+	result = GetAlarm(alarm1,&tick);
     if (result == E_OK) tc_report(5,file,__LINE__);
     else tc_report_error(-5,result,file,__LINE__);
 
 /* t0, Call SetEvent() from preemptive task on ready extended task
     Test case 6*/
-	result = GetAlarm(alarm2,tick);
+	result = GetAlarm(alarm2,&tick);
     if (result == E_OK) tc_report(6,file,__LINE__);
     else tc_report_error(-6,result,file,__LINE__);
 
