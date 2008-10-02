@@ -125,8 +125,8 @@ TASK(t0) {		/* in the start of the OS, t0 is in running state */
     if (result == E_OS_STATE) tc_report_error(9,result,file,__LINE__);
     else tc_report_error(-9,result,file,__LINE__);
 	
-	tc_check(10);
 	/* t0 close the OS */
+    CancelAlarm(alarm1);
     ShutdownOS(E_OK);	
 
 }
@@ -134,7 +134,6 @@ TASK(t0) {		/* in the start of the OS, t0 is in running state */
 
 TASK(time_error)
 {	
-	tc_check(10);
 	/* time_error close the OS */
     ShutdownOS(E_OK);	
 }
