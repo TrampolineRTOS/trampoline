@@ -31,7 +31,8 @@
 #include "tpl_machine_interface.h"
 
 #ifdef WITH_AUTOSAR
-#include "tpl_as_isr.h"
+#include "tpl_as_isr_kernel.h"
+#include "tpl_as_protec_hook.h"
 #endif
 
 #include "tpl_os_event_kernel.h"

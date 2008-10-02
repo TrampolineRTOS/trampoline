@@ -44,8 +44,11 @@
  */
 FUNC(StatusType, OS_CODE) IncrementCounter(VAR(CounterType, AUTOMATIC) counter_id)
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     StatusType result = tpl_increment_counter_service(counter_id);
     return result & OSEK_STATUS_MASK;
+#endif
 }
 
 
@@ -62,7 +65,10 @@ FUNC(StatusType, OS_CODE) GetCounterValue(
     VAR(CounterType, AUTOMATIC) counter_id,
     VAR(TickRefType, AUTOMATIC) value)
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     return tpl_get_counter_value_service(counter_id, value);
+#endif
 }
 
 
@@ -80,11 +86,14 @@ FUNC(StatusType, OS_CODE) GetElapsedCounterValue(
     VAR(TickType, AUTOMATIC)    previous_value,
     VAR(TickRefType, AUTOMATIC) value)
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     return tpl_get_elapsed_counter_value_service(
         counter_id,
         previous_value,
         value
     );
+#endif
 }
 
 #define OS_STOP_SEC_CODE

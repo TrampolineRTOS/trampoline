@@ -44,7 +44,10 @@ FUNC(StatusType, OS_CODE) GetAlarmBase(
     VAR(AlarmBaseRefType, AUTOMATIC)  info
 )
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     return tpl_get_alarm_base_service(alarm_id, info);
+#endif
 }
 
 /*
@@ -56,7 +59,10 @@ FUNC(StatusType, OS_CODE) GetAlarm(
     CONST(AlarmType, AUTOMATIC) alarm_id,
     VAR(TickRefType, AUTOMATIC) tick)
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     return tpl_get_alarm_service(alarm_id, tick);
+#endif
 }
 
 /*
@@ -70,7 +76,10 @@ FUNC(StatusType, OS_CODE) SetRelAlarm(
     CONST(TickType, AUTOMATIC)  cycle
 )
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     return tpl_set_rel_alarm_service(alarm_id, increment, cycle);
+#endif
 }
 
 /*
@@ -84,7 +93,10 @@ FUNC(StatusType, OS_CODE) SetAbsAlarm(
     CONST(TickType, AUTOMATIC)  cycle
 )
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     return tpl_set_abs_alarm_service(alarm_id, start, cycle);
+#endif
 }
 
 /*
@@ -96,7 +108,10 @@ FUNC(StatusType, OS_CODE) CancelAlarm(
     CONST(AlarmType, AUTOMATIC) alarm_id
 )
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     return tpl_cancel_alarm_service(alarm_id);
+#endif
 }
 
 #define OS_STOP_SEC_CODE

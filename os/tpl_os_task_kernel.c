@@ -33,7 +33,8 @@
 #include "tpl_os_task_kernel.h"
 
 #ifdef WITH_AUTOSAR
-#include "tpl_as_isr.h"
+#include "tpl_as_isr_kernel.h"
+#include "tpl_as_protec_hook.h"
 #endif
 
 #define OS_START_SEC_CODE

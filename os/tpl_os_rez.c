@@ -54,13 +54,19 @@ CONST(ResourceType, OS_CONST) RES_SCHEDULER = RESOURCE_COUNT;
 FUNC(StatusType, OS_CODE) GetResource(
     CONST(ResourceType, AUTOMATIC) res_id)
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     return tpl_get_resource_service(res_id);
+#endif
 }
 
 FUNC(StatusType, OS_CODE) ReleaseResource(
     CONST(ResourceType, AUTOMATIC) res_id)
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     return tpl_release_resource_service(res_id);
+#endif
 }
 
 #define OS_STOP_SEC_CODE

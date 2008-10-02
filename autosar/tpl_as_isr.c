@@ -48,15 +48,10 @@
  */
 FUNC(ISRType, OS_CODE) GetISRID(void)
 {
-    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) ro = tpl_running_obj;
-    VAR(tpl_isr_id, AUTOMATIC)  isr_id = (tpl_isr_id)INVALID_ISR;
-
-    if (tpl_running_obj->static_desc->type != IS_ROUTINE)
-    {
-        isr_id = (tpl_isr_id)(ro->static_desc->id);
-    }
-
-    return isr_id;
+#ifdef WITH_SYSTEM_CALL
+#else
+    return tpl_get_isr_id_service();
+#endif
 }
 
 /**
@@ -66,23 +61,10 @@ FUNC(ISRType, OS_CODE) GetISRID(void)
  */
 FUNC(StatusType, OS_CODE) DisableInterruptSource (VAR(ISRType, AUTOMATIC) isr_id)
 {
-    VAR(StatusType, AUTOMATIC)  result = E_OK;
-
-#ifndef NO_ISR
-    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr;
+#ifdef WITH_SYSTEM_CALL
+#else
+    return tpl_disable_interrupt_source_service(isr_id);
 #endif
-
-    CHECK_ISR_ID_ERROR(isr_id,result)
-
-#ifndef NO_ISR
-    IF_NO_EXTENDED_ERROR(result)
-        /* get the isr */
-        isr = tpl_isr_table[isr_id];
-        tpl_disable_isr2_by_user(isr);
-    IF_NO_EXTENDED_ERROR_END()
-#endif
-
-    return result;
 }
 
 /**
@@ -92,23 +74,10 @@ FUNC(StatusType, OS_CODE) DisableInterruptSource (VAR(ISRType, AUTOMATIC) isr_id
  */
 FUNC(StatusType, OS_CODE) EnableInterruptSource (VAR(ISRType, AUTOMATIC) isr_id)
 {
-    VAR(StatusType, AUTOMATIC)  result = E_OK;
-
-#ifndef NO_ISR
-    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr;
+#ifdef WITH_SYSTEM_CALL
+#else
+    return tpl_enable_interrupt_source_service(isr_id);
 #endif
-
-    CHECK_ISR_ID_ERROR(isr_id,result)
-
-#ifndef NO_ISR
-    IF_NO_EXTENDED_ERROR(result)
-        /* get the isr */
-        isr = tpl_isr_table[isr_id];
-        tpl_enable_isr2_by_user(isr);
-    IF_NO_EXTENDED_ERROR_END()
-#endif
-
-    return result;
 }
 
 #define OS_STOP_SEC_CODE

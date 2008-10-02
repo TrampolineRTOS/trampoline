@@ -29,15 +29,8 @@
 
 #include "tpl_os_types.h"
 #include "tpl_os_custom_types.h"
-#include "tpl_as_protec_hook.h"
-
-/**
- * @def INVALID_ISR
- *
- * value returned by GetISRID when the currently running object
- * is not an ISR 2
- */
-#define INVALID_ISR (-1)
+#include "tpl_as_isr_definitions.h"
+/*#include "tpl_as_protec_hook.h"*/
 
 /**
  * @typedef ISRType

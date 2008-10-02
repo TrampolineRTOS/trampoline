@@ -24,8 +24,8 @@
  * $URL$
  */
 
-#ifndef TPL_AS_ISR__KERNEL_H
-#define TPL_AS_ISR__KERNEL_H
+#ifndef TPL_AS_ISR_KERNEL_H
+#define TPL_AS_ISR_KERNEL_H
 
 #include "tpl_os_definitions.h"
 #include "tpl_os_it_kernel.h"
@@ -101,8 +101,35 @@ extern FUNC(void, OS_CODE) tpl_enable_isr2_by_timing_protection (
 FUNC(u8, OS_CODE) tpl_is_isr2_enabled (
     P2CONST(tpl_isr, AUTOMATIC, OS_APPL_DATA) isr2);
 
+/*
+ * Get the ID of the currently running ISR.
+ *
+ * It returns the identifier of the currently running ISR
+ * or INVALID_ISR when called from outside a running ISR.
+ *
+ * see paragraph 8.4.2 page 51 of
+ * AUTOSAR/Specification of the Operating System v2.0.1
+ */
+FUNC(tpl_isr_id, OS_CODE) tpl_get_isr_id_service(void);
+
+/**
+ * Disables the specified ISR
+ *
+ * see §8.4.20 of AUTOSAR/Specification of the Operating System v2.1.0
+ */
+FUNC(tpl_status, OS_CODE) tpl_disable_interrupt_source_service(
+    VAR(tpl_isr_id, AUTOMATIC) isr_id);
+
+/**
+ * Enables the specified ISR
+ *
+ * see §8.4.21 of AUTOSAR/Specification of the Operating System v2.1.0
+ */
+FUNC(tpl_status, OS_CODE) tpl_enable_interrupt_source_service(
+    VAR(tpl_isr_id, AUTOMATIC) isr_id);
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-#endif /* TPL_AS_ISR__KERNEL_H */
+#endif /* TPL_AS_ISR_KERNEL_H */
 
