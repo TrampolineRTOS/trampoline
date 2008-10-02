@@ -162,7 +162,7 @@ void tc_check(int max_count)
             error_count++;
             if ((max_count == 0) || (error_count <= max_count))
             {
-                printf("[%d] Error (%s:%d): waiting[code %d, error %s] got[code %d, error %s] \n",
+                printf("\n[%d] Error (%s:%d): waiting[code %d, error %s] got[code %d, error %s]",
                         i,
                         tc_loc[i].file,
                         tc_loc[i].line,
@@ -178,10 +178,10 @@ void tc_check(int max_count)
     }
     if (error_count > 0)
     {
-        printf("Test failed!\n");
+        printf("\nTest failed!\n");
     }
     else
     {
-        printf("Test passed\n");
+        printf(" passed\n");
     }
 }

@@ -53,7 +53,7 @@ void viper_kill(void)
 {
   if( viper_pid != - 1 )
   {
-    fprintf(stderr, "kill viper\n");
+    /* fprintf(stderr, "kill viper\n"); */
     if( kill(viper_pid, SIGHUP) != 0 )
       perror("error viper: ");
   }
