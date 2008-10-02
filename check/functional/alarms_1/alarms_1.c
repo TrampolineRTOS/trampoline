@@ -48,7 +48,7 @@ int main(void)
 
 void StartupHook(void)
 {
-    printf("Starting alarm_1 checking\n");
+    printf("Starting alarm_1 checking...");
     tc_init_buffer(w,g,l,20);
 }
 
