@@ -39,36 +39,51 @@
 FUNC(StatusType, OS_CODE) ActivateTask(
     CONST(TaskType, AUTOMATIC) task_id)
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     StatusType result = tpl_activate_task_service(task_id);
     return result & OSEK_STATUS_MASK;
+#endif
 }
 
 
 FUNC(StatusType, OS_CODE) TerminateTask(void)
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     StatusType result = tpl_terminate_task_service();
     return result & OSEK_STATUS_MASK;
+#endif
 }
 
 
 FUNC(StatusType, OS_CODE) ChainTask(
     CONST(TaskType, AUTOMATIC) task_id)
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     StatusType result = tpl_chain_task_service(task_id);
     return result & OSEK_STATUS_MASK;
+#endif
 }
 
 
 FUNC(StatusType, OS_CODE) Schedule(void)
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     return tpl_schedule_service();
+#endif
 }
 
 
 FUNC(StatusType, OS_CODE) GetTaskID(
     VAR(TaskRefType, AUTOMATIC) task_id)
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     return tpl_get_task_id_service(task_id);
+#endif
 }
 
 
@@ -76,7 +91,10 @@ FUNC(StatusType, OS_CODE) GetTaskState(
     CONST(TaskType, AUTOMATIC)        task_id,
     VAR(TaskStateRefType, AUTOMATIC)  state)
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     return tpl_get_task_state_service(task_id, state);
+#endif
 }
 
 #define OS_STOP_SEC_CODE

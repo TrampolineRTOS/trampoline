@@ -27,6 +27,8 @@
  */
 
 #include "tpl_as_isr_kernel.h"
+#include "tpl_as_isr_definitions.h"
+#include "tpl_as_error.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -100,6 +102,83 @@ FUNC(u8, OS_CODE) tpl_is_isr2_enabled (
 
   return result;
 }
+
+/*
+ * Get the ID of the currently running ISR.
+ *
+ * It returns the identifier of the currently running ISR
+ * or INVALID_ISR when called from outside a running ISR.
+ *
+ * see paragraph 8.4.2 page 51 of
+ * AUTOSAR/Specification of the Operating System v2.0.1
+ */
+FUNC(tpl_isr_id, OS_CODE) tpl_get_isr_id_service(void)
+{
+    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) ro = tpl_running_obj;
+    VAR(tpl_isr_id, AUTOMATIC)  isr_id = (tpl_isr_id)INVALID_ISR;
+
+    if (tpl_running_obj->static_desc->type != IS_ROUTINE)
+    {
+        isr_id = (tpl_isr_id)(ro->static_desc->id);
+    }
+
+    return isr_id;
+}
+
+/**
+ * Disables the specified ISR
+ *
+ * see §8.4.20 of AUTOSAR/Specification of the Operating System v2.1.0
+ */
+FUNC(tpl_status, OS_CODE) tpl_disable_interrupt_source_service(
+    VAR(tpl_isr_id, AUTOMATIC) isr_id)
+{
+    VAR(tpl_status, AUTOMATIC)  result = E_OK;
+
+#ifndef NO_ISR
+    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr;
+#endif
+
+    CHECK_ISR_ID_ERROR(isr_id,result)
+
+#ifndef NO_ISR
+    IF_NO_EXTENDED_ERROR(result)
+        /* get the isr */
+        isr = tpl_isr_table[isr_id];
+        tpl_disable_isr2_by_user(isr);
+    IF_NO_EXTENDED_ERROR_END()
+#endif
+
+    return result;
+}
+
+/**
+ * Enables the specified ISR
+ *
+ * see §8.4.21 of AUTOSAR/Specification of the Operating System v2.1.0
+ */
+FUNC(tpl_status, OS_CODE) tpl_enable_interrupt_source_service(
+    VAR(tpl_isr_id, AUTOMATIC) isr_id)
+{
+    VAR(tpl_status, AUTOMATIC)  result = E_OK;
+
+#ifndef NO_ISR
+    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr;
+#endif
+
+    CHECK_ISR_ID_ERROR(isr_id,result)
+
+#ifndef NO_ISR
+    IF_NO_EXTENDED_ERROR(result)
+        /* get the isr */
+        isr = tpl_isr_table[isr_id];
+        tpl_enable_isr2_by_user(isr);
+    IF_NO_EXTENDED_ERROR_END()
+#endif
+
+    return result;
+}
+
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

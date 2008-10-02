@@ -32,7 +32,8 @@
 #include "tpl_os_errorhook.h"
 #include "tpl_machine_interface.h"
 #include "tpl_as_error.h"
-#include "tpl_as_isr.h"
+#include "tpl_as_isr_kernel.h"
+#include "tpl_as_protec_hook.h"
 
 #ifndef NO_COUNTER
 /*  MISRA RULE 27 VIOLATION: This object is not declared as external

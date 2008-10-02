@@ -42,7 +42,10 @@
  */
 FUNC(StatusType, OS_CODE) TerminateISR2(void)
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     return tpl_terminate_isr2_service();
+#endif
 }
 
 #define OS_STOP_SEC_CODE

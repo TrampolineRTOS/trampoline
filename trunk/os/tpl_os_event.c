@@ -36,8 +36,11 @@ FUNC(StatusType, OS_CODE) SetEvent(
     CONST(TaskType, AUTOMATIC)      task_id,
     CONST(EventMaskType, AUTOMATIC) event)
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     StatusType result = tpl_set_event_service(task_id, event);
     return result & OSEK_STATUS_MASK;
+#endif
 }
 
 
@@ -48,7 +51,10 @@ FUNC(StatusType, OS_CODE) SetEvent(
 FUNC(StatusType, OS_CODE) ClearEvent(
     CONST(EventMaskType, AUTOMATIC) event)
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     return tpl_clear_event_service(event);
+#endif
 }
 
 /*
@@ -59,7 +65,10 @@ FUNC(StatusType, OS_CODE) GetEvent(
     CONST(TaskType, AUTOMATIC)          task_id,
     CONST(EventMaskRefType, AUTOMATIC)  event)
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     return tpl_get_event_service(task_id, event);
+#endif
 }
 
 /*
@@ -69,8 +78,11 @@ FUNC(StatusType, OS_CODE) GetEvent(
 FUNC(StatusType, OS_CODE) WaitEvent(
     CONST(EventMaskType, AUTOMATIC) event)
 {
+#ifdef WITH_SYSTEM_CALL
+#else
     StatusType result = tpl_wait_event_service(event);
     return result & OSEK_STATUS_MASK;
+#endif
 }
 
 #define OS_STOP_SEC_CODE
