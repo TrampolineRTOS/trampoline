@@ -44,7 +44,7 @@ static int  ctrl_sh_mem = -1;
 static int  stat_sh_mem = -1;
 
 static vp_ctrl *ctrl = NULL;
-static vp_stat *stat = NULL;
+static vp_stat *status = NULL;
 
 #define VIPER_PATH "VIPER_PATH"
 
@@ -149,8 +149,8 @@ void tpl_viper_init(void)
             exit(-1);
         }
 
-        stat = mmap(0, sizeof(vp_stat), ( PROT_WRITE | PROT_READ ), MAP_SHARED, stat_sh_mem, 0);
-        if (stat == (void *)-1) {
+        status = mmap(0, sizeof(vp_stat), ( PROT_WRITE | PROT_READ ), MAP_SHARED, stat_sh_mem, 0);
+        if (status == (void *)-1) {
             perror("viper: unable to map the status shared memory object");
             exit(-1);
         }
@@ -226,7 +226,7 @@ void tpl_viper_start_auto_timer(int sig, useconds_t delay)
 int tpl_viper_get_motor_pos(int motor)
 {
     if (motor >= 0 && motor < 2) {
-        return stat->motor_pos[motor];
+        return status->motor_pos[motor];
     }
     else {
         return 0;
