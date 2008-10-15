@@ -29,7 +29,7 @@ static int motor_1_idx = 0;
 static int motor_2_idx = 1;
 
 vp_ctrl *ctrl = NULL;
-vp_stat *stat = NULL;
+vp_stat *status = NULL;
 
 pid_t osek_app_pid;
 
@@ -67,15 +67,15 @@ void init_motors(void)
 		exit(-1);
 	}
 
-    stat = mmap(0, sizeof(vp_stat), (PROT_WRITE|PROT_READ), MAP_SHARED, stat_sh_mem, 0);
-    if (stat == (void *)-1) {
+    status = mmap(0, sizeof(vp_stat), (PROT_WRITE|PROT_READ), MAP_SHARED, stat_sh_mem, 0);
+    if (status == (void *)-1) {
 		perror("viper: unable to map the status shared memory object");
 		exit(-1);
 	}
     
     /*  Set the position to 0   */
-    stat->motor_pos[0] = 0;
-    stat->motor_pos[1] = 0;
+    status->motor_pos[0] = 0;
+    status->motor_pos[1] = 0;
     
     /*  start the motors        */
     pthread_create(&motor_1,NULL,motor_thread,&motor_1_idx);
@@ -89,7 +89,7 @@ void close_motors(void)
 		perror("viper: fail to unmap the control shared memory object");
 	}
 
-	if (munmap(stat,sizeof(stat)) < 0) {
+	if (munmap(status,sizeof(status)) < 0) {
 		perror("viper: fail to unmap the status shared memory object");
 	}
 }
@@ -107,7 +107,7 @@ void *motor_thread(void *index)
             csg = (97 + (rand() % 7)) * csg / 100 ;
         }
         
-        int pos = stat->motor_pos[idx];
+        int pos = status->motor_pos[idx];
         pos += csg;
         if (pos > 16383) {
             pos = 16383;
@@ -115,7 +115,7 @@ void *motor_thread(void *index)
         if (pos < 0) {
             pos = 0;
         }
-        stat->motor_pos[idx] = pos;
+        status->motor_pos[idx] = pos;
         usleep(50000);
     }
 	pthread_exit(NULL);
