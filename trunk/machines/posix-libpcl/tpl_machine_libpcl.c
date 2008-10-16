@@ -34,7 +34,7 @@
 #include <sched.h>
 #include <pcl.h>
 
-tpl_context idle_task_context = 0;
+coroutine_t idle_task_context = 0;
 
 
 volatile static u32 tpl_locking_depth = 0;
@@ -390,8 +390,8 @@ void tpl_signal_handler(int sig)
  */
 void tpl_sleep(void)
 {
-    while (1) 
-      sched_yield();
+    while (1);
+/*      sched_yield();*/
 }
 
 static tpl_exec_static my_tpl_sleep = {
@@ -487,14 +487,14 @@ FUNC(void, OS_CODE) tpl_switch_context(
     P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
     P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
 {
-	assert( *new_context != co_current() );
+	assert( **new_context != co_current() );
     tpl_release_task_lock();  
     if( *new_context == &idle_task_context )
     {
         /* idle_task activation */
         co_call( idle_task_context );
     }
-    else co_call( *new_context );
+    else co_call( **new_context );
     tpl_get_task_lock(); 
 }
 
@@ -503,13 +503,13 @@ FUNC(void, OS_CODE) tpl_switch_context_from_it(
     P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
     P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
 {
-    assert( *new_context != co_current() );
+    assert( **new_context != co_current() );
     if( *new_context == &idle_task_context )
     {
         /* idle_task activation */
         co_call( idle_task_context );
     }
-    else co_call( *new_context );
+    else co_call( **new_context );
 }
 
 #define CO_MIN_SIZE (4*8*(4 * 1024))
@@ -548,7 +548,7 @@ FUNC(void, OS_CODE) tpl_init_context(
     P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj)
 {
     coroutine_t old_co;
-    coroutine_t *co = (coroutine_t *)&(exec_obj->static_desc->context);
+    coroutine_t *co = (exec_obj->static_desc->context);
     tpl_stack *stack = (tpl_stack *)&(exec_obj->static_desc->stack);
 
     /* This is the entry func passed as data */

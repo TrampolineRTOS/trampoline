@@ -42,7 +42,7 @@ CPU test {
         TICKSPERBASE = 2; 
         MAXALLOWEDVALUE = 10;
         MINCYCLE = 1;
-        TYPE = HARDWARE {};
+/*        TYPE = HARDWARE {}; */
     };
     
     ALARM alarm1s {
