@@ -362,7 +362,7 @@ void tpl_signal_handler(int sig)
     if (signal_for_counters == sig) tpl_call_counter_tick();
 #endif /*(defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    if (sig == SIGALRM)
+    if (sig == signal_for_watchdog)
     {
         /* disable the interval timer (one shot) */
         timer.it_value.tv_sec = 0;
@@ -371,7 +371,7 @@ void tpl_signal_handler(int sig)
         timer.it_interval.tv_usec = 0;
         setitimer (ITIMER_REAL, &timer, NULL);
       
-        tpl_watchdog_callback();
+        tpl_watchdog_expiration();
     }    
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 #ifndef NO_ISR

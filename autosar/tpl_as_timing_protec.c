@@ -661,8 +661,9 @@ STATIC FUNC(void, OS_CODE) tpl_schedule_watchdog(
     else
     {
         /* continue until the watchdog scheduled date is lower than the current */
-        while( ((watchdog->scheduled_date) >= (next_watchdog->scheduled_date))
-            && (next_watchdog!=NULL_PTR) )
+        while( (next_watchdog!=NULL_PTR) && 
+						   ((watchdog->scheduled_date) >= (next_watchdog->scheduled_date))
+             )
         {
             previous_watchdog = next_watchdog;
             next_watchdog=next_watchdog->next;

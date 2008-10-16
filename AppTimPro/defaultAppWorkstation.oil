@@ -21,7 +21,7 @@ CPU test {
         PRETASKHOOK = TRUE;
         POSTTASKHOOK = TRUE;
         PROTECTIONHOOK = TRUE;
-        CFLAGS = "-Wall -pedantic --std=c99 -Wmissing-field-initializers";
+        CFLAGS = "-g -Wall -pedantic --std=c99 -Wmissing-field-initializers";
         APP_SRC = "tpl_default_tasks_workstation.c";
     } ;
 
