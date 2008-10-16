@@ -16,7 +16,7 @@
 OIL_FILE = defaultAppWorkstation.oil
 
 SOURCES  = tpl_default_tasks_workstation.c
-CFLAGS   = -Wall -pedantic --std=c99 -Wmissing-field-initializers
+CFLAGS   = -g -Wall -pedantic --std=c99 -Wmissing-field-initializers
 LDFLAGS  = 
 ASFLAGS  = 
 #default build directory
