@@ -47,7 +47,7 @@ routine generate_target_avr
     ?@lstring         name
     ?@ident_map       others
     ?@prefix_map      p
-    ?@oil_obj         exe
+    ?@oil_obj         unused exe
     ?!@string         result
 :
 
@@ -57,15 +57,6 @@ routine generate_target_avr
     @uint stack_size ;
     additional_int_key_required !"STACKSIZE" !others !name ?stack_size ;
     result := [result stringByReplacingStringByString !"$STACK_SIZE$" ![stack_size string]] ;
-
-    cast exe :
-    when == @isr_obj do
-        #object is an isr.
-        @uint trap ;
-        additional_int_key_required !"EXCEPTION_HANDLER" !others !name ?trap ;
-        result := [result stringByReplacingStringByString !"$EXCEPTION_HANDLER$" ![trap string]] ;
-    else
-    end cast ;
 
 end routine ;
 
@@ -77,14 +68,10 @@ routine generate_isr_avr
   @string result := "";
   foreach isrs (@lstring isr_name @isr_obj isr) do
     @ident_map others := [isr other_fields];
-    @uint trap ;
-    additional_int_key_required !"EXCEPTION_HANDLER" !others !isr_name ?trap ;
 
     #first, get the template
     @string tmp;
     retrieveTemplateString ?tmp !"isr_list_specific";
-    #then replace $EXCEPTION_HANDLER$
-    tmp := [tmp stringByReplacingStringByString !"$EXCEPTION_HANDLER$" ![trap string]] ;
     #then, replace the interruptHandler name.
     performReplace !p !"task_name" ![isr_name string] !?tmp;
     result .= tmp;

@@ -43,6 +43,8 @@ class @os_obj extends @oil_obj {
     @lstringlist cflags ;
     @lstringlist asflags ;
     @lstringlist ldflags ;
+    @lstring     app_name;
+    @lstring     tpl_base_path;
     @ident_map   others ;
 }
 

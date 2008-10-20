@@ -33,6 +33,7 @@ import semantics goil_types_os in "goil_types_os.ggs" ;
 import semantics goil_types_task in "goil_types_task.ggs" ;
 import semantics goil_code_msg_gen in "goil_code_msg_gen.ggs" ;
 import semantics goil_code_schedtable_gen in "goil_code_schedtable_gen.ggs" ;
+import semantics goil_env_verification in "goil_env_verification.ggs" ;
 
 import semantics cfg_types in "cfg_types.ggs" ;
 
@@ -273,7 +274,7 @@ end routine ;
 # Makefile generation
 #--------------------------------------------------------------------
 
-routine getStringList
+routine updateTemplateWithStringList
   ?? @lstringlist strList
   ?? @string templateKey
   ?! @string templateStringToUpdate
@@ -298,10 +299,23 @@ routine generate_makefile
     retrieveTemplateStringIfExist ?makefileSpecStr !"Makefile_specific";
     retrieveTemplateString ?makefileStr !"Makefile";
     makefileStr := [makefileStr stringByReplacingStringByString !"$MAKEFILE_SPEC$" !makefileSpecStr];
-    getStringList ![os app_src] !"$APP_SRC$" !?makefileStr;
-    getStringList ![os cflags]  !"$CFLAGS$"  !?makefileStr;
-    getStringList ![os ldflags] !"$LDFLAGS$" !?makefileStr;
-    getStringList ![os asflags] !"$ASFLAGS$" !?makefileStr;
+    updateTemplateWithStringList ![os app_src] !"$APP_SRC$" !?makefileStr;
+    updateTemplateWithStringList ![os cflags]  !"$CFLAGS$"  !?makefileStr;
+    updateTemplateWithStringList ![os ldflags] !"$LDFLAGS$" !?makefileStr;
+    updateTemplateWithStringList ![os asflags] !"$ASFLAGS$" !?makefileStr;
+
+    #executable name.
+    @string app_name_str := [[os app_name] string];
+    if app_name_str == "" then app_name_str := "trampoline"; end if;
+    checkFileDoesNotExists ![@lstring new !app_name_str ![[os app_name] location]];
+    makefileStr := [makefileStr stringByReplacingStringByString !"$APP_NAME$" !app_name_str];
+
+    #trampoline base path.
+    @string tpl_base_path_str := [[os tpl_base_path] string];
+    if tpl_base_path_str == "" then tpl_base_path_str := ".."; end if;
+    checkTrampolinePath ![@lstring new !tpl_base_path_str ![[os tpl_base_path] location]];
+    makefileStr := [makefileStr stringByReplacingStringByString !"$TRAMPOLINE_BASE_PATH$" !tpl_base_path_str];
+
     makefileStr := [makefileStr stringByReplacingStringByString !"$OIL_FILE$" !app.".oil"];
     @string autosarStr;
     if [option goil_options.autosar_on] then autosarStr := "true";

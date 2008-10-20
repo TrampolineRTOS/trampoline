@@ -20,6 +20,7 @@ CPU test {
         CFLAGS  = "-Wmissing-field-initializers -ansi";
         ASFLAGS = "";
         LDFLAGS = "-g";
+        TRAMPOLINE_BASE_PATH = "../../..";
     } ;
 
 

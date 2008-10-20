@@ -7,6 +7,7 @@ CPU test {
 
     OS config {
         STATUS = STANDARD;
+        TRAMPOLINE_BASE_PATH = "../../..";
     } ;
 
 

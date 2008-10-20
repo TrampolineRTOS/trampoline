@@ -8,12 +8,6 @@ CC=gcc
 LD=gcc
 
 #############################################################################
-# PATH CONFIGURATION: 
-#############################################################################
-# Trampoline root path to source code.
-TPL_BASE_PATH = ..
-
-#############################################################################
 # OIL CONFIGURATION
 #############################################################################
 # Goil OIL compiler tool configuration.
@@ -36,9 +30,6 @@ TARGET=posix-libpcl
 # * libpcl
 # * h8300h
 GOIL_TARGET =$GOIL_TARGET$
-
-# name of the generated executable
-EXEC    =  trampoline
 
 #############################################################################
 # DOXYGEN tool
