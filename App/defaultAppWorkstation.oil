@@ -23,6 +23,8 @@ CPU test {
         CFLAGS  = "-Wmissing-field-initializers -ansi";
         ASFLAGS = "";
         LDFLAGS = "-g";
+        APP_NAME = "trampoline";
+        TRAMPOLINE_BASE_PATH = "..";
     } ;
 
 

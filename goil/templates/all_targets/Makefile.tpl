@@ -13,12 +13,32 @@
 #       use the NODEP symbol, i.e. : make clean NODEP=1
 #
 
+# Trampoline root path to source code.
+# it should be declared as TRAMPOLINE_BASE_PATH in the OS section of the .oil file.
+TPL_BASE_PATH = $TRAMPOLINE_BASE_PATH$
+
+# name of the generated executable
+# it should be declared as APP_NAME in the OS section of the .oil file.
+EXEC    =  $APP_NAME$
+
+
 OIL_FILE = $OIL_FILE$
 
+#sources of the application.
+# it should be declared as APP_SRC in the OS section of the .oil file (many times allowed).
 SOURCES  = $APP_SRC$
+
+#CFLAGS: flags used for the compilation process
+# it should be declared as CFLAGS in the OS section of the .oil file (many times allowed).
 CFLAGS   = $CFLAGS$
+# it should be declared as LDFLAGS in the OS section of the .oil file (many times allowed).
+#LDLAGS: flags used for the link process
+# it should be declared as CFLAGS in the OS section of the .oil file (many times allowed).
 LDFLAGS  = $LDFLAGS$
+#ASLAGS: flags used for the assembly process (if required)
+# it should be declared as AS_FLAGS in the OS section of the .oil file (many times allowed).
 ASFLAGS  = $ASFLAGS$
+
 #default build directory
 BUILD_DIR = build
 

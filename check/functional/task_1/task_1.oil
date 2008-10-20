@@ -16,6 +16,7 @@ CPU test {
         STATUS = EXTENDED;
         STARTUPHOOK = TRUE;
         SHUTDOWNHOOK = TRUE;
+        TRAMPOLINE_BASE_PATH = "../../..";
     } ;
 
     APPMODE std {

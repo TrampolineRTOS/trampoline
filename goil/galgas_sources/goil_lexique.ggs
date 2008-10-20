@@ -33,8 +33,8 @@ style commentStyle -> "Comments:" ;
 #
 # Extra keywords for makefile generation
 #
-list makefileKeywords error message "Makefile attribute" style keywordsStyle :
-    "APP_SRC", "CFLAGS", "ASFLAGS", "LDFLAGS" ;
+list makefileKeywords error message "Makefile attribute  '%K'" style keywordsStyle :
+    "APP_SRC", "CFLAGS", "ASFLAGS", "LDFLAGS", "APP_NAME", "TRAMPOLINE_BASE_PATH" ;
 
 #
 # OIL_VERSION keyword

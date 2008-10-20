@@ -59,11 +59,13 @@ rule <os>
     @basic_type  usegetserviceid := [os usegetserviceid] ;
     @basic_type  useparameteraccess := [os useparameteraccess] ;
     @basic_type  useresscheduler := [os useresscheduler] ;
-    @lstringlist app_src := [os app_src] ;  
-    @lstringlist cflags := [os cflags] ;  
-    @lstringlist asflags := [os asflags] ;  
-    @lstringlist ldflags := [os ldflags] ;  
-    @ident_map   others := [os others] ;
+    @lstringlist app_src := [os app_src] ;                   # Makefile
+    @lstringlist cflags := [os cflags] ;                     # Makefile
+    @lstringlist asflags := [os asflags] ;                   # Makefile
+    @lstringlist ldflags := [os ldflags] ;                   # Makefile
+    @lstring     app_name := [os app_name] ;                 # Makefile
+    @lstring     tpl_base_path := [os tpl_base_path];        # Makefile
+    @ident_map   others := [os others] ;                     # Makefile
 
     $OS$ ;
     $idf$ ?* ;
@@ -232,6 +234,7 @@ rule <os>
     while
         @lstring src ;
         $APP_SRC$ ; $=$ ; $string$ ?src ; <description> ?* ; $;$ ;
+        checkFileExists !src;
         app_src += !src ;
     while
         @lstring flag ;
@@ -245,6 +248,18 @@ rule <os>
         @lstring flag ;
         $LDFLAGS$ ; $=$ ; $string$ ?flag ; <description> ?* ; $;$ ;
         ldflags += !flag ;
+    while
+        if [app_name string] != "" then
+          error here: "The generated executable is already defined.";
+          error [app_name location]: "was previously defined here.";
+        end if;
+        $APP_NAME$ ; $=$ ; $string$ ?app_name; <description> ?* ; $;$ ;
+    while
+        if [tpl_base_path string] != "" then
+          error here: "The trampoline base path is already defined.";
+          error [tpl_base_path location]: "was previously defined here.";
+        end if;
+        $TRAMPOLINE_BASE_PATH$ ; $=$ ; $string$ ?tpl_base_path ; <description> ?* ; $;$ ;
     while
         <free_field> !?others ; <description> ?* ; $;$ ;
     end repeat ;
@@ -271,6 +286,8 @@ rule <os>
         !cflags
         !asflags
         !ldflags
+        !app_name
+        !tpl_base_path
         !others
     ];
 end rule ;

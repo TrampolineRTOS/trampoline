@@ -100,6 +100,7 @@ SOURCES += cfg_lexique.cpp
 SOURCES += cfg_syntax.cpp
 SOURCES += cfg_types.cpp
 SOURCES += cfg_grammar.cpp
+SOURCES += goil_env_verification.cpp
 
 #SOURCES += codage.cpp
 #SOURCES += goil_crc_table.cpp
