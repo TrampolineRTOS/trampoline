@@ -36,12 +36,25 @@ routine getProjectName
   end if ;
 end routine;
 
+routine getAbsoluteSourceFilePath
+  ?? @lstring fileName
+  !  @string absoluteFilePath
+:
+  @string sourceFilePath := [[@string stringWithSourceFilePath] stringByDeletingLastPathComponent];
+  if sourceFilePath == "" then
+    if [[@string stringWithSourceFilePath] firstCharacterOrNul] != '/' then
+      sourceFilePath := ".";
+    end if;
+  end if;
+  absoluteFilePath := [fileName absolutePathFromPath !sourceFilePath];
+end routine;
+
 #This routine checks that a file exists. If not, a Warning is generated.
 routine checkFileExists
   ?? @lstring fileName
 :
-  @string sourceFilePath := [[@string stringWithSourceFilePath] stringByDeletingLastPathComponent];
-  @string absoluteFilePath := [fileName absolutePathFromPath !sourceFilePath];
+  @string absoluteFilePath;
+  getAbsoluteSourceFilePath !fileName ?absoluteFilePath;
   if not [absoluteFilePath fileExists] then
     warning [fileName location]: "The file \'".absoluteFilePath."\' does not exists!";
   end if;
@@ -55,8 +68,8 @@ end routine;
 routine checkFileDoesNotExists
   ?? @lstring fileName
 :
-  @string sourceFilePath := [[@string stringWithSourceFilePath] stringByDeletingLastPathComponent];
-  @string absoluteFilePath := [fileName absolutePathFromPath !sourceFilePath];
+  @string absoluteFilePath;
+  getAbsoluteSourceFilePath !fileName ?absoluteFilePath;
   if [[fileName string] directoryExists] then
     error [fileName location]: "The file \'".absoluteFilePath."\' already exists and is a directory. It will not be overwritten.";
 #  elsif [[fileName string] fileExists] then
@@ -80,8 +93,8 @@ end routine;
 routine checkTrampolinePath
   ?? @lstring path
 :
-  @string sourceFilePath := [[@string stringWithSourceFilePath] stringByDeletingLastPathComponent];
-  @string absolutePath := [path absolutePathFromPath !sourceFilePath];
+  @string absolutePath;
+  getAbsoluteSourceFilePath !path ?absolutePath;
   #first check that os paht is ok
   @string osPath := absolutePath."/os";
   if not [osPath directoryExists] then
