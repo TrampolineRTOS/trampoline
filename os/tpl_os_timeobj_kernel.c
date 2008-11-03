@@ -200,7 +200,14 @@ STATIC FUNC(void, OS_CODE) tpl_remove_timeobj_set(
             counter->first_to = af_to;
         }
         /*  update the next_to of the counter           */
-        counter->next_to = af_to;
+        if (af_to != NULL) 
+        {
+            counter->next_to = af_to;
+        }
+        else
+        {
+            counter->next_to = counter->first_to;
+        }
         /*  update the end of the chain of object(s)    */
         last_to->next_to = NULL;
     }
@@ -269,6 +276,7 @@ FUNC(tpl_status, OS_CODE) tpl_counter_tick(
             
             do
             {
+                tpl_time_obj *next_to = t_obj->next_to; 
                 expire = t_obj->stat_part->expire;
                 need_resched |=
                     (TRAMPOLINE_STATUS_MASK & expire(t_obj));
@@ -292,7 +300,7 @@ FUNC(tpl_status, OS_CODE) tpl_counter_tick(
                     t_obj->state = TIME_OBJ_SLEEP;
                 }
                 /*  get the next one     */
-                t_obj = t_obj->next_to;
+                t_obj = next_to;
             } while (t_obj != NULL);
         }
     }
