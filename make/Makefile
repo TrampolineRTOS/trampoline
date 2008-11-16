@@ -93,7 +93,7 @@ include $(OS_MAKE_PATH)/compiler_rules.mk
 
 # exe rule -> Link
 $(EXEC): $(OBJ)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $(EXEC) $(OBJ) 
+	$(CC) -o $(EXEC) $(OBJ) $(CFLAGS) $(LDFLAGS) 
 
 #clean
 .PHONY: clean mrproper
