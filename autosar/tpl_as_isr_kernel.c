@@ -34,64 +34,73 @@
 #include "tpl_memmap.h"
 
 FUNC(void, OS_CODE) tpl_disable_isr2_by_user (
-    P2VAR(tpl_isr, AUTOMATIC, OS_APPL_DATA) isr2)
+  CONST(tpl_isr_id, AUTOMATIC) isr_id)
 {
-  if (isr2->enabled == DISABLED_BY_TIMING_PROTECTION)
+#ifndef NO_ISR
+  if (tpl_isr2_enable_table[isr_id] == DISABLED_BY_TIMING_PROTECTION)
   {
-    isr2->enabled = DISABLED_BY_BOTH;
+    tpl_isr2_enable_table[isr_id] = DISABLED_BY_BOTH;
   }
   else
   {
-    isr2->enabled = DISABLED_BY_USER;
+    tpl_isr2_enable_table[isr_id] = DISABLED_BY_USER;
   }
+#endif
 }
 
 FUNC(void, OS_CODE) tpl_disable_isr2_by_timing_protection (
-    P2VAR(tpl_isr, AUTOMATIC, OS_APPL_DATA) isr2)
+  CONST(tpl_isr_id, AUTOMATIC) isr_id)
 {
-  if (isr2->enabled == DISABLED_BY_USER)
+#ifndef NO_ISR
+  if (tpl_isr2_enable_table[isr_id] == DISABLED_BY_USER)
   {
     /* this case cannot happen but it is logically valid */
-    isr2->enabled = DISABLED_BY_BOTH;
+    tpl_isr2_enable_table[isr_id] = DISABLED_BY_BOTH;
   }
   else
   {
-    isr2->enabled = DISABLED_BY_TIMING_PROTECTION;
+    tpl_isr2_enable_table[isr_id] = DISABLED_BY_TIMING_PROTECTION;
   }
+#endif
 }
 
 FUNC(void, OS_CODE) tpl_enable_isr2_by_user (
-    P2VAR(tpl_isr, AUTOMATIC, OS_APPL_DATA) isr2)
+  CONST(tpl_isr_id, AUTOMATIC) isr_id)
 {
-  if (isr2->enabled == DISABLED_BY_USER)
+#ifndef NO_ISR
+  if (tpl_isr2_enable_table[isr_id] == DISABLED_BY_USER)
   {
-    isr2->enabled = ENABLED;
+    tpl_isr2_enable_table[isr_id] = ENABLED;
   }
-  if (isr2->enabled == DISABLED_BY_BOTH)
+  if (tpl_isr2_enable_table[isr_id] == DISABLED_BY_BOTH)
   {
-    isr2->enabled = DISABLED_BY_TIMING_PROTECTION;
+    tpl_isr2_enable_table[isr_id] = DISABLED_BY_TIMING_PROTECTION;
   }
+#endif
 }
 
 FUNC(void, OS_CODE) tpl_enable_isr2_by_timing_protection (
-    P2VAR(tpl_isr, AUTOMATIC, OS_APPL_DATA) isr2)
+  CONST(tpl_isr_id, AUTOMATIC) isr_id)
 {
-  if (isr2->enabled == DISABLED_BY_BOTH)
+#ifndef NO_ISR
+  if (tpl_isr2_enable_table[isr_id] == DISABLED_BY_BOTH)
   {
-    isr2->enabled = DISABLED_BY_USER;
+    tpl_isr2_enable_table[isr_id] = DISABLED_BY_USER;
   }
-  if (isr2->enabled == DISABLED_BY_TIMING_PROTECTION)
+  if (tpl_isr2_enable_table[isr_id] == DISABLED_BY_TIMING_PROTECTION)
   {
-    isr2->enabled = ENABLED;
+    tpl_isr2_enable_table[isr_id] = ENABLED;
   }
+#endif
 }
 
-FUNC(u8, OS_CODE) tpl_is_isr2_enabled (
-    P2CONST(tpl_isr, AUTOMATIC, OS_APPL_DATA) isr2)
+FUNC(tpl_bool, OS_CODE) tpl_is_isr2_enabled (
+  CONST(tpl_isr_id, AUTOMATIC) isr_id)
 {
-  VAR(u8, AUTOMATIC) result;
+  VAR(tpl_bool, AUTOMATIC) result = FALSE;
 
-  if (isr2->enabled == ENABLED)
+#ifndef NO_ISR
+  if (tpl_isr2_enable_table[isr_id] == ENABLED)
   {
     result = TRUE;
   }
@@ -99,7 +108,8 @@ FUNC(u8, OS_CODE) tpl_is_isr2_enabled (
   {
     result = FALSE;
   }
-
+#endif
+  
   return result;
 }
 
@@ -114,15 +124,14 @@ FUNC(u8, OS_CODE) tpl_is_isr2_enabled (
  */
 FUNC(tpl_isr_id, OS_CODE) tpl_get_isr_id_service(void)
 {
-    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) ro = tpl_running_obj;
-    VAR(tpl_isr_id, AUTOMATIC)  isr_id = (tpl_isr_id)INVALID_ISR;
-
-    if (tpl_running_obj->static_desc->type != IS_ROUTINE)
-    {
-        isr_id = (tpl_isr_id)(ro->static_desc->id);
-    }
-
-    return isr_id;
+  if ((tpl_running_id >= TASK_COUNT) && tpl_running_id < ISR_COUNT)
+  {
+    return tpl_running_id;
+  }
+  else
+  {
+    return INVALID_ISR;
+  }
 }
 
 /**
@@ -131,25 +140,19 @@ FUNC(tpl_isr_id, OS_CODE) tpl_get_isr_id_service(void)
  * see §8.4.20 of AUTOSAR/Specification of the Operating System v2.1.0
  */
 FUNC(tpl_status, OS_CODE) tpl_disable_interrupt_source_service(
-    VAR(tpl_isr_id, AUTOMATIC) isr_id)
+  CONST(tpl_isr_id, AUTOMATIC) isr_id)
 {
-    VAR(tpl_status, AUTOMATIC)  result = E_OK;
+  VAR(tpl_status, AUTOMATIC)  result = E_OK;
+
+  CHECK_ISR_ID_ERROR(isr_id,result)
 
 #ifndef NO_ISR
-    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr;
+  IF_NO_EXTENDED_ERROR(result)
+    tpl_disable_isr2_by_user(isr_id);
+  IF_NO_EXTENDED_ERROR_END()
 #endif
 
-    CHECK_ISR_ID_ERROR(isr_id,result)
-
-#ifndef NO_ISR
-    IF_NO_EXTENDED_ERROR(result)
-        /* get the isr */
-        isr = tpl_isr_table[isr_id];
-        tpl_disable_isr2_by_user(isr);
-    IF_NO_EXTENDED_ERROR_END()
-#endif
-
-    return result;
+  return result;
 }
 
 /**

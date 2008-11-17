@@ -2,15 +2,64 @@ semantics goil_alarm_verif :
 
 import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
 import semantics goil_types_counter in "goil_types_counter.ggs" ;
+import option goil_options in "goil_options.ggs" ;
 
 routine counters_of_alarms_defined
     ?@alarm_map   alarms
     ?@counter_map counters
 :
   foreach alarms (@lstring name @alarm_obj alarm) do
+
+#
+# Check the counter exists or is SystemCounter
+#
+  
     @lstring counter := [alarm counter_name] ;
-    if not [counters hasKey ![counter string]] then
-      error counter : "counter ".[counter string]." is not defined";
+    if not ([counters hasKey ![counter string]]) & ([counter string] != "SystemCounter") then
+      error counter : "counter ".[counter string]." is not defined !";
+    else
+#
+# If the alarm is AUTOSTART, check the ALARMTIME and CYCLETIME are
+# within allowed range
+#
+
+      cast [alarm autostart_params] :
+      when == @alarm_autostart_true a do
+        @location alarm_loc := [a location] ;
+        @uint alarm_time := [[[a alarm_time] uint64] uint] ;
+        @uint cycle_time := [[[a cycle_time] uint64] uint] ;
+        # An ALARMTIME equal to 0 is forbidden in AUTOSAR and 
+        # discouraged in OSEK
+        if alarm_time == 0 then
+          if [option goil_options.autosar_on] == true then
+            error [a alarm_time] : "ALARMTIME must be > 0" ;
+          else
+            warning [a alarm_time] : "ALARMTIME equal to 0 has an undefined behavior" ;
+          end if ;
+        end if ;
+
+
+        if [counter string] == "SystemCounter" then
+          if alarm_time > 32767 then
+            error [a location] : "ALARMTIME is greater than counter MAXALLOWEDVALUE" ;
+          end if ;
+          if cycle_time > 32767 then
+            error [a location] : "CYCLETIME is greater than counter MAXALLOWEDVALUE" ;
+          end if ;
+        else
+          @counter_obj ct ;
+          [counters get !counter ?ct] ;
+          cast [ct max_allowed_value] :
+          when == @uint32_class mc do
+            if alarm_time > [mc value] then
+              error [a location] : "ALARMTIME is greater than counter MAXALLOWEDVALUE" ;
+            end if ;
+            if cycle_time > [mc value] then
+              error [a location] : "CYCLETIME is greater than counter MAXALLOWEDVALUE" ;
+            end if ;
+          else end cast ;
+        end if ;
+      else end cast ;
     end if ;
   end foreach ;
 end routine ;

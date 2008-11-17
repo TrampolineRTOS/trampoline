@@ -27,6 +27,7 @@ nonterminal <message_attributes>
     ?@lstring message_name
     ?!@action_obj notif
     ?!@action_obj notif_error
+    ?!@stringset acc_apps
     ?!@ident_map others
     ?!@mess_prop_obj mess_prop ;
 
@@ -134,6 +135,7 @@ rule <mess>
     @mess_prop_obj mess_prop ;
     @action_obj notif ;
     @action_obj notif_error ;
+    @stringset acc_apps ;
     @ident_map others ;
 
 
@@ -145,22 +147,24 @@ rule <mess>
         mess_prop := [mess messageproperty] ;
         notif := [mess notification] ;
         notif_error := [mess notificationerror] ;
+        acc_apps := [mess acc_apps] ;
         others := [mess other_fields] ;
         desc := [mess desc] ;
     else
         mess_prop := [@void_mess_prop new !here] ;
         notif := [@void_action new !here] ;
         notif_error := [@void_action new !here] ;
+        acc_apps := [@stringset emptySet] ;
         others := [@ident_map emptyMap] ;
         desc := [@lstring new !"" !here] ;
-        mess := [@message_obj new !desc !notif !notif_error !others !mess_prop] ;
+        mess := [@message_obj new !desc !notif !notif_error !acc_apps !others !mess_prop] ;
     end if ;
 
-    <message_attributes> !message_name !?notif !?notif_error !?others !?mess_prop ;
+    <message_attributes> !message_name !?notif !?notif_error !?acc_apps !?others !?mess_prop ;
     $}$ ;
     <description> ?desc ;
     $;$ ;
-    mess := [@message_obj new !desc !notif !notif_error !others !mess_prop] ;
+    mess := [@message_obj new !desc !notif !notif_error !acc_apps !others !mess_prop] ;
     [!?messages put !message_name !mess] ;
 end rule ;
 
@@ -168,6 +172,7 @@ rule <message_attributes>
     ?@lstring message_name
     ?!@action_obj notif
     ?!@action_obj notif_error
+    ?!@stringset acc_apps
     ?!@ident_map others
     ?!@mess_prop_obj mess_prop
 :
@@ -196,6 +201,13 @@ rule <message_attributes>
             error [notif_error location] : "was previously defined here" ;
         end cast ;
         $NOTIFICATIONERROR$ ; $=$ ; <notification_property> ?notif_error ; <description> ?* ; $;$ ;
+    while
+        @lstring app ;
+        $ACCESSING_APPLICATION$ ; $=$ ; $idf$ ?app ; <description> ?* ; $;$ ;
+        if [acc_apps hasKey ![app string]] then
+            warning here : "ACCESSING_APPLICATION " . [app string] . " already defined for MESSAGE " . [message_name string] ;
+        end if ;
+        acc_apps += ![app string] ;
     while
         <free_field> !?others ;
     end repeat ;

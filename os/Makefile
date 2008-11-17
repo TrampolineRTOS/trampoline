@@ -32,3 +32,4 @@ SOURCES += tpl_os_it.c
 SOURCES += tpl_os_rez.c
 SOURCES += tpl_os_task.c
 SOURCES += tpl_os.c
+SOURCES += tpl_os_dispatch_table.c

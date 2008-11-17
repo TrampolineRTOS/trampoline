@@ -24,9 +24,11 @@ nonterminal <alarm>
     ?!@alarm_map alarms ;
 
 nonterminal <alarm_parameters>
+    ?@lstring        alarm_name
     ?!@lstring       counter_name
     ?!@action_obj    alarm_action
-    ?!@autostart_obj alarm_autostart ;
+    ?!@autostart_obj alarm_autostart
+    ?!@stringset     acc_apps ;
 
 nonterminal <alarm_action_params>
     ?!@action_obj alarm_action ;
@@ -51,6 +53,7 @@ rule <alarm>
     @action_obj alarm_action ;
     @autostart_obj alarm_autostart ;
     @lstring counter_name ;
+    @stringset acc_apps ;
     @lstring desc ;
 
     $ALARM$ ;
@@ -60,30 +63,34 @@ rule <alarm>
         alarm_action := [alarm action_params] ;
         alarm_autostart := [alarm autostart_params] ;
         counter_name := [alarm counter_name] ;
+        acc_apps := [alarm acc_apps] ;
         desc := [alarm desc] ;
     else
         alarm_action := [@void_action new !here] ;
         alarm_autostart := [@autostart_void new !here] ;
         counter_name := [@lstring new !"" !here] ;
+        acc_apps := [@stringset emptySet] ;
         desc := [@lstring new !"" !here] ;
-        alarm := [@alarm_obj new !desc !counter_name !alarm_action !alarm_autostart] ;    
+        alarm := [@alarm_obj new !desc !counter_name !alarm_action !alarm_autostart !acc_apps] ;    
     end if ;
 
     ${$ ;
-    <alarm_parameters> !?counter_name !?alarm_action !?alarm_autostart;
+    <alarm_parameters> !alarm_name !?counter_name !?alarm_action !?alarm_autostart !?acc_apps ;
     $}$ ;
     <description> ?desc ;
     $;$ ;
 
-    alarm := [@alarm_obj new !desc !counter_name !alarm_action !alarm_autostart] ;
+    alarm := [@alarm_obj new !desc !counter_name !alarm_action !alarm_autostart !acc_apps] ;
     [!?alarms put !alarm_name !alarm] ;
 end rule ;
 
 rule <alarm_parameters>
+    ?@lstring        alarm_name
     ?!@lstring       counter_name
     ?!@action_obj    alarm_action
-    ?!@autostart_obj alarm_autostart :
-
+    ?!@autostart_obj alarm_autostart
+    ?!@stringset     acc_apps 
+:
     repeat
     while
         if [counter_name string] != "" then
@@ -116,6 +123,13 @@ rule <alarm_parameters>
             $FALSE$ ; alarm_autostart := [@autostart_false new !here] ;
         end select ;
         <description> ?* ; $;$;
+    while
+        @lstring app ;
+        $ACCESSING_APPLICATION$ ; $=$ ; $idf$ ?app ; <description> ?* ; $;$ ;
+        if [acc_apps hasKey ![app string]] then
+            warning here : "ACCESSING_APPLICATION " . [app string] . " already defined for ALARM " . [alarm_name string] ;
+        end if ;
+        acc_apps += ![app string] ;
     while
         $idf$ ?* ;     $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ;
     end repeat ;

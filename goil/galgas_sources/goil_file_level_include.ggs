@@ -18,6 +18,7 @@ grammar goil_file_level_include "LL1":
     import syntax  goil_obj_com            in "goil_obj_com.ggs" ;
     import syntax  goil_obj_ipdu           in "goil_obj_ipdu.ggs" ;
     import syntax  goil_obj_scheduletable  in "goil_obj_scheduletable.ggs" ;
+    import syntax  goil_obj_application    in "goil_obj_application.ggs" ;
     import syntax  goil_timing_prot_attrs  in "goil_timing_prot_attrs.ggs" ;
 
     root <file>

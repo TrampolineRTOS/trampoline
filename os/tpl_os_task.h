@@ -45,7 +45,7 @@
  *
  * see paragraph 13.2.2.1 page 50 of OSEK/VDX 2.2.3 spec
  */
-#define DeclareTask(task_id)
+#define DeclareTask(task_id) extern CONST(TaskType, AUTOMATIC) task_id
 
 
 #define OS_START_SEC_CODE

@@ -18,24 +18,31 @@
 #define __TPL_INTERNAL_COM_H__
 
 #include "tpl_com_types.h"
+#include "tpl_os_types.h"
 
 /*
  * Data types
  */
 typedef tpl_message_id          MessageIdentifier;
 typedef tpl_com_data            *ApplicationDataRef;
-typedef tpl_com_length          COMLengthType;
-typedef tpl_com_length          *LengthRef;
-typedef tpl_flag                FlagValue;
+typedef tpl_message_size        COMLengthType;
+typedef tpl_message_size        *LengthRef;
+typedef tpl_flag_set            FlagValue;
 typedef tpl_com_app_mode        COMApplicationModeType;
 typedef tpl_com_shut_mode       COMShutdownModeType;
 typedef tpl_callout_ret         CalloutReturnType;
 typedef tpl_com_srv_id          COMServiceIdType;
 
 /*
+ * Declaration
+ */
+#define DeclareMessage(mess_id) \
+  extern CONST(MessageIdentifier, AUTOMATIC) mess_id
+
+/*
  * Start-up services
  */
-StatusType StartCOM(COMAppicationModeType);
+StatusType StartCOM(COMApplicationModeType);
 StatusType StopCOM(COMShutdownModeType);
 COMApplicationModeType GetCOMApplicationMode(void);
 StatusType InitMessage(MessageIdentifier, ApplicationDataRef);

@@ -61,7 +61,8 @@ typedef P2VAR(tpl_event_mask, TYPEDEF, OS_APPL_DATA)  EventMaskRefType;
  *
  * see paragraph 13.5.2.1 page 60 of OSEK/VDX 2.2.2 spec
  */
-#define DeclareEvent(event_id)
+#define DeclareEvent(event_id)  \
+extern CONST(EventMaskType, AUTOMATIC) event_id
 
 
 #define OS_START_SEC_CODE

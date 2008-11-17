@@ -28,6 +28,11 @@
 #include "tpl_os.h"
 #include "tpl_os_kernel.h"
 
+#ifdef WITH_SYSTEM_CALL
+#include "tpl_os_service_ids.h"
+#include "tpl_dispatch.h"
+#endif
+
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 #include "tpl_as_timing_protec.h"
 #endif
@@ -45,9 +50,10 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-FUNC(AppModeType, OS_CODE) GetActiveApplicationMode(void)
+ASM FUNC(AppModeType, OS_CODE) GetActiveApplicationMode(void)
 {
 #ifdef WITH_SYSTEM_CALL
+    TPL_SYSCALL(OSServiceId_GetActiveApplicationMode)
 #else
     return tpl_get_active_application_mode_service();
 #endif
@@ -57,10 +63,11 @@ FUNC(AppModeType, OS_CODE) GetActiveApplicationMode(void)
  * StartOS can be called by the app to start the OS in
  * an appropriate mode.
  */
-FUNC(void, OS_CODE) StartOS(
+ASM FUNC(void, OS_CODE) StartOS(
     CONST(AppModeType, AUTOMATIC) mode)
 {
 #ifdef WITH_SYSTEM_CALL
+    TPL_SYSCALL(OSServiceId_StartOS)
 #else
     tpl_start_os_service(mode);
 #endif
@@ -69,11 +76,12 @@ FUNC(void, OS_CODE) StartOS(
 /*
  * ShutdownOS can be called by the app to shutdown it
  */
-FUNC(void, OS_CODE) ShutdownOS(
+ASM FUNC(void, OS_CODE) ShutdownOS(
     CONST(StatusType, AUTOMATIC) error  /*@unused@*/
 )
 {
 #ifdef WITH_SYSTEM_CALL
+    TPL_SYSCALL(OSServiceId_ShutdownOS)
 #else
     tpl_shutdown_os_service(error);
 #endif

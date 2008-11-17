@@ -27,6 +27,7 @@
 #define TPL_OS_ERROR_H
 
 #include "tpl_os_types.h"
+#include "tpl_os_service_ids.h"
 
 #ifdef WITH_AUTOSAR
 #include "tpl_os_timeobj_kernel.h"
@@ -88,7 +89,7 @@ union ID_PARAM_BLOCK {
  * @see #tpl_service
  */
 union PARAM_PARAM_BLOCK {
-    P2VAR(tpl_exec_state, AUTOMATIC, TYPEDEF)
+    P2VAR(tpl_proc_state, AUTOMATIC, TYPEDEF)
                                     state;          /**< used by #GetTaskState
                                                     */
     VAR(tpl_tick, TYPEDEF)          tick;           /**< used by #SetRelAlarm,
@@ -205,227 +206,6 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-
-/************************
- * Services identifiers *
- ************************/
-
-/**
- * @def OSServiceId_ActivateTask
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #ActivateTask
- */
-#define OSServiceId_ActivateTask                1
-
-/**
- * @def OSServiceId_TerminateTask
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #TerminateTask
- */
-#define OSServiceId_TerminateTask               2
-
-/**
- * @def OSServiceId_ChainTask
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #ChainTask
- */
-#define OSServiceId_ChainTask                   3
-
-/**
- * @def OSServiceId_Schedule
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #Schedule
- */
-#define OSServiceId_Schedule                    4
-
-/**
- * @def OSServiceId_GetTaskID
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #GetTaskID
- */
-#define OSServiceId_GetTaskID                   5
-
-/**
- * @def OSServiceId_GetTaskState
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #GetTaskState
- */
-#define OSServiceId_GetTaskState                6
-
-/**
- * @def OSServiceId_EnableAllInterrupts
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #EnableAllInterrupts
- */
-#define OSServiceId_EnableAllInterrupts         7
-
-/**
- * @def OSServiceId_DisableAllInterrupts
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #DisableAllInterrupts
- */
-#define OSServiceId_DisableAllInterrupts        8
-
-/**
- * @def OSServiceId_ResumeAllInterrupts
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #ResumeAllInterrupts
- */
-#define OSServiceId_ResumeAllInterrupts         9
-
-/**
- * @def OSServiceId_SuspendAllInterrupts
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #SuspendAllInterrupts
- */
-#define OSServiceId_SuspendAllInterrupts        10
-
-/**
- * @def OSServiceId_ResumeOSInterrupts
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #ResumeOSInterrupts
- */
-#define OSServiceId_ResumeOSInterrupts          11
-
-/**
- * @def OSServiceId_SuspendOSInterrupts
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #SuspendOSInterrupts
- */
-#define OSServiceId_SuspendOSInterrupts         12
-
-
-/**
- * @def OSServiceId_GetResource
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #GetResource
- */
-#define OSServiceId_GetResource                 13
-
-/**
- * @def OSServiceId_ReleaseResource
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #ReleaseResource
- */
-#define OSServiceId_ReleaseResource             14
-
-/**
- * @def OSServiceId_SetEvent
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #SetEvent
- */
-#define OSServiceId_SetEvent                    15
-
-/**
- * @def OSServiceId_ClearEvent
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #ClearEvent
- */
-#define OSServiceId_ClearEvent                  16
-
-/**
- * @def OSServiceId_GetEvent
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #GetEvent
- */
-#define OSServiceId_GetEvent                    17
-
-/**
- * @def OSServiceId_WaitEvent
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #WaitEvent
- */
-#define OSServiceId_WaitEvent                   18
-
-/**
- * @def OSServiceId_GetAlarmBase
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #GetAlarmBase
- */
-#define OSServiceId_GetAlarmBase                19
-
-/**
- * @def OSServiceId_GetAlarm
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #GetAlarm
- */
-#define OSServiceId_GetAlarm                    20
-
-/**
- * @def OSServiceId_SetRelAlarm
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #SetRelAlarm
- */
-#define OSServiceId_SetRelAlarm                 21
-
-/**
- * @def OSServiceId_SetAbsAlarm
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #SetAbsAlarm
- */
-#define OSServiceId_SetAbsAlarm                 22
-
-/**
- * @def OSServiceId_CancelAlarm
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #CancelAlarm
- */
-#define OSServiceId_CancelAlarm                 23
-
-/**
- * @def OSServiceId_GetActiveApplicationMode
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #GetActiveApplicationMode
- */
-#define OSServiceId_GetActiveApplicationMode    24
-
-/**
- * @def OSServiceId_StartOS
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #StartOS
- */
-#define OSServiceId_StartOS                     25
-
-/**
- * @def OSServiceId_ShutdownOS
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #ShutdownOS
- */
-#define OSServiceId_ShutdownOS                  26
-
-/**
- * @def OSServiceId_TerminateISR
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #TerminateISR
- */
-#define OSServiceId_TerminateISR                32
 
 /************************************************************************
  * macros to access the service id and its parameters from hook routine *
@@ -1016,9 +796,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @param error the error code variable to check
  */
 #ifdef WITH_ERROR_HOOK
-#define PROCESS_ERROR(error)        \
-    if (error != E_OK) {            \
-        tpl_call_error_hook(error); \
+#define PROCESS_ERROR(error)                    \
+    if ((OSEK_STATUS_MASK & (error)) != E_OK) { \
+        tpl_call_error_hook(error);             \
     }
 #else
 #define PROCESS_ERROR(error)
@@ -1304,8 +1084,8 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #ifdef OS_EXTENDED
 #   define CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)            \
     if ((result == (tpl_status)E_OK) &&                             \
-        (tpl_task_table[task_id]->exec_desc.static_desc->type !=    \
-        (tpl_exec_obj_type)TASK_EXTENDED))                          \
+        (tpl_stat_proc_table[task_id]->type !=                      \
+        (tpl_proc_type)TASK_EXTENDED))                              \
     {                                                               \
         result = (tpl_status)E_OS_ACCESS;                           \
     }
@@ -1324,14 +1104,15 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @note checking is disabled when OS_EXTENDED is not defined
  */
 #ifdef OS_EXTENDED
-#   define CHECK_NOT_EXTENDED_RUNNING_ERROR(result)                     \
-    if ((result == (tpl_status)E_OK) &&                                 \
-        (((tpl_task *)tpl_running_obj)->exec_desc.static_desc->type !=  \
-        (tpl_exec_obj_type)TASK_EXTENDED)) {                            \
-        result = (tpl_status)E_OS_ACCESS;                               \
-    }
+# define CHECK_NOT_EXTENDED_RUNNING_ERROR(result)   \
+  if ((result == (tpl_status)E_OK) &&               \
+      (tpl_stat_proc_table[tpl_running_id]->type != \
+      (tpl_proc_type)TASK_EXTENDED))                \
+  {                                                 \
+    result = (tpl_status)E_OS_ACCESS;               \
+  }
 #else
-#   define CHECK_NOT_EXTENDED_RUNNING_ERROR(result)
+# define CHECK_NOT_EXTENDED_RUNNING_ERROR(result)
 #endif
 
 /**
@@ -1346,15 +1127,14 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @note checking is disabled when OS_EXTENDED is not defined
  */
 #ifdef OS_EXTENDED
-#   define CHECK_SUSPENDED_TASK_ERROR(task_id,result)                   \
-    if ((result == (tpl_status)E_OK) &&                                 \
-        (tpl_task_table[task_id]->exec_desc.state ==                    \
-        (tpl_exec_state)SUSPENDED))                                     \
-    {                                                                   \
-        result = (tpl_status)E_OS_STATE;                                \
-    }
+# define CHECK_SUSPENDED_TASK_ERROR(task_id,result)                       \
+  if ((result == (tpl_status)E_OK) &&                                     \
+      (tpl_dyn_proc_table[task_id]->state == (tpl_proc_state)SUSPENDED))  \
+  {                                                                       \
+    result = (tpl_status)E_OS_STATE;                                      \
+  }
 #else
-#   define CHECK_SUSPENDED_TASK_ERROR(task_id,result)
+# define CHECK_SUSPENDED_TASK_ERROR(task_id,result)
 #endif
 
 
@@ -1372,22 +1152,22 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 
 /*  If NO_TASK, this error cannot happen    */
 #if defined(NO_TASK)
-#   define CHECK_RUNNING_OWNS_REZ_ERROR(result)
+# define CHECK_RUNNING_OWNS_REZ_ERROR(result)
 #endif
 
 /*  If !NO_TASK and not extended error checking !(OS_EXTENDED)
     the occurence is not tested                                 */
 #if !defined(NO_TASK) && !defined(OS_EXTENDED)
-#   define CHECK_RUNNING_OWNS_REZ_ERROR(result)
+# define CHECK_RUNNING_OWNS_REZ_ERROR(result)
 #endif
 
 /*  If !NO_TASK and extended error checking (OS_EXTENTED)   */
 #if !defined(NO_TASK) && defined(OS_EXTENDED)
-#   define CHECK_RUNNING_OWNS_REZ_ERROR(result)                 \
-    if ((result == (tpl_status)E_OK) &&                         \
-        ((tpl_running_obj->resources) != NULL))                 \
-    {                                                           \
-        result = (tpl_status)E_OS_RESOURCE;                     \
+#   define CHECK_RUNNING_OWNS_REZ_ERROR(result)                     \
+    if ((result == (tpl_status)E_OK) &&                             \
+        ((tpl_dyn_proc_table[tpl_running_id]->resources) != NULL))  \
+    {                                                               \
+        result = (tpl_status)E_OS_RESOURCE;                         \
     }
 #endif
 
@@ -1545,7 +1325,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
     /* E_OK or E_OS_LIMIT   */
 #   define CHECK_RESOURCE_ID_ERROR(res_id,result)               \
     if ((result == (tpl_status)E_OK) &&                         \
-        ((res_id) >= ((tpl_resource_id)RESOURCE_COUNT+1)))     \
+        ((res_id) >= ((tpl_resource_id)RESOURCE_COUNT)))     \
     {                                                           \
         result = (tpl_status)E_OS_ID;                           \
     }
@@ -1571,8 +1351,8 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #ifdef OS_EXTENDED
 #   define CHECK_RESOURCE_PRIO_ERROR_ON_GET(res,result)         \
     if ((result == (tpl_status)E_OK) &&                         \
-        (((res)->owner != NULL) ||                              \
-         (tpl_running_obj->static_desc->base_priority >         \
+        (((res)->owner != INVALID_TASK) ||                      \
+         (tpl_stat_proc_table[tpl_running_id]->base_priority >  \
           res->ceiling_priority)))                              \
     {                                                           \
         result = (tpl_status)E_OS_ACCESS;                       \
@@ -1597,7 +1377,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #ifdef OS_EXTENDED
 #   define CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(res,result)     \
     if ((result == (tpl_status)E_OK) &&                         \
-        (tpl_running_obj->static_desc->base_priority >          \
+        (tpl_stat_proc_table[tpl_running_id]->base_priority >   \
          (res)->ceiling_priority))                              \
     {                                                           \
         result = (tpl_status)E_OS_ACCESS;                       \
@@ -1621,12 +1401,11 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  */
 
 #ifdef OS_EXTENDED
-#   define CHECK_RESOURCE_ORDER_ON_RELEASE(res,result)          \
-    if ((result == (tpl_status)E_OK) &&                         \
-        (((res)->owner == NULL) ||                              \
-         (tpl_running_obj->resources != (res))))                \
-    {                                                           \
-        result = (tpl_status)E_OS_NOFUNC;                       \
+#   define CHECK_RESOURCE_ORDER_ON_RELEASE(res,result)              \
+    if ((result == (tpl_status)E_OK) &&                             \
+         (tpl_dyn_proc_table[tpl_running_id]->resources != (res)))  \
+    {                                                               \
+        result = (tpl_status)E_OS_NOFUNC;                           \
     }
 #else
 #   define CHECK_RESOURCE_ORDER_ON_RELEASE(res,result)

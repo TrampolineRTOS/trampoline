@@ -33,41 +33,38 @@ import semantics goil_routines in "goil_routines.ggs" ;
 import semantics goil_types_isr in "goil_types_isr.ggs" ;
 import semantics goil_types_counter in "goil_types_counter.ggs" ;
 
-routine init_arm7_prefixes
-    ?!@prefix_map prefix
-:
-    [!?prefix insert_prefix ![@lstring new !"arm7_stack" !here]
-              !"stack_zone_of_" !"$STACK_ZONE$"] ;
-    [!?prefix insert_prefix ![@lstring new !"arm7_context" !here]
-              !"context_of_" !"$EXEC_INTEGER_CONTEXT$"] ;
-end routine ;
+#routine init_arm7_prefixes
+#    ?!@prefix_map prefix
+#:
+#    [!?prefix insert_prefix ![@lstring new !"arm7_stack" !here]
+#              !"stack_zone_of_" !"$STACK_ZONE$"] ;
+#    [!?prefix insert_prefix ![@lstring new !"arm7_context" !here]
+#              !"context_of_" !"$EXEC_INTEGER_CONTEXT$"] ;
+#end routine ;
 
 routine generate_target_arm7
     ?@lstring         name
     ?@ident_map       others
-    ?@prefix_map      p
     ?@oil_obj         unused exe
     ?!@string         result
 :
 
-    performReplace !p !"arm7_stack" ![name string] !?result ;
-    performReplace !p !"arm7_context" ![name string] !?result ;
+    doReplace !?result !"$STACK_ZONE$" ![name string]."_stack" ;
+    doReplace !?result !"$EXEC_INTEGER_CONTEXT$" ![name string]."_int_context" ;
 
     @uint stack_size ;
     additional_int_key_required !"STACKSIZE" !others !name ?stack_size ;
-    result := [result stringByReplacingStringByString !"$STACK_SIZE$" ![stack_size string]] ;
+    doReplace !?result !"$STACK_SIZE$" ![stack_size string] ;
 end routine ;
 
 routine generate_isr_arm7
   ?? @isr_map    unused isrs
-  ?? @prefix_map unused p
   ?! @string     unused code
 :
 end routine ;
 
 routine generate_counter_arm7
   ?? @counter_map counters
-  ?? @prefix_map  p
   ?! @string      code
 :
   @string result := "";
@@ -75,14 +72,14 @@ routine generate_counter_arm7
     cast [counter type] :
     when == @software_counter do
     else
-        @string tmp;
-        retrieveTemplateString ?tmp !"counter_list_specific";
-        performReplace !p !"counter" ![counter_name string] !?tmp;
-        result .= tmp;
+      @string tmp;
+      retrieveTemplateString ?tmp !"counter_list_specific";
+      doReplace !?tmp !"$COUNTER$" ![counter_name string]."_counter_desc" ;
+      result .= tmp;
     end cast ;
   end foreach ;
 
-  code := [code stringByReplacingStringByString !"$COUNTER_LIST$" !result] ;
+  doReplace !?code !"$COUNTER_LIST$" !result ;
 end routine ;
 
 end semantics ;

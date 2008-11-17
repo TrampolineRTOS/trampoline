@@ -22,11 +22,17 @@
 #ifndef __TPL_COM_TYPES_H__
 #define __TPL_COM_TYPES_H__
 
+#include "tpl_os_std_types.h"
 /*
  * tpl_com_value is the type used by filters. According to the
  * OSEK-COM specification, it has to be an integer.
  */
 typedef int tpl_com_value;
+
+/*! 
+ *  Datatype for the message of application data atom
+ */
+typedef unsigned char       tpl_com_data;
 
 /*
  * tpl_com_count is the type used for the occurence filter
@@ -62,5 +68,25 @@ typedef unsigned char tpl_queue_index;
  * basically, it is a set of bits
  */
 typedef unsigned char tpl_flag_set;
+
+/*
+ * tpl_com_app_mode is the datatype used for COM Application Mode
+ */
+typedef u8 tpl_com_app_mode;
+
+/*
+ * tpl_com_shut_mode is the datatype used for COM Shutdown Mode
+ */
+typedef u8 tpl_com_shut_mode;
+
+/*
+ * tpl_callout_ret
+ */
+typedef u8 tpl_callout_ret;
+
+/*
+ * tpl_com_srv_id
+ */
+typedef u8 tpl_com_srv_id;
 
 #endif

@@ -46,6 +46,23 @@ typedef enum
   ENABLED                        /**< ISR is enabled */
 } tpl_isr2_enable_state;
 
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+/**
+ * @internal
+ *
+ * Table of state of ISR2
+ *
+ * @see #tpl_isr2_enable_state
+ */
+
+#if ISR_COUNT > 0
+extern VAR(tpl_isr2_enable_state, OS_VAR) tpl_isr2_enable_table[ISR_COUNT];
+#endif
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -58,8 +75,8 @@ typedef enum
  *
  * @see #DisableInterruptSource
  */
-extern FUNC(void, OS_CODE) tpl_disable_isr2_by_user (
-    P2VAR(tpl_isr, AUTOMATIC, OS_APPL_DATA) isr2);
+extern FUNC(void, OS_CODE) tpl_disable_isr2_by_user(
+  CONST(tpl_isr_id, AUTOMATIC) isr_id);
 
 /**
  * @internal
@@ -70,7 +87,7 @@ extern FUNC(void, OS_CODE) tpl_disable_isr2_by_user (
  * @param isr2 the isr to disable
  */
 extern FUNC(void, OS_CODE) tpl_disable_isr2_by_timing_protection (
-    P2VAR(tpl_isr, AUTOMATIC, OS_APPL_DATA) isr2);
+  CONST(tpl_isr_id, AUTOMATIC) isr_id);
 
 /**
  * @internal
@@ -80,7 +97,7 @@ extern FUNC(void, OS_CODE) tpl_disable_isr2_by_timing_protection (
  * @see #EnableInterruptSource
  */
 extern FUNC(void, OS_CODE) tpl_enable_isr2_by_user (
-    P2VAR(tpl_isr, AUTOMATIC, OS_APPL_DATA) isr2);
+  CONST(tpl_isr_id, AUTOMATIC) isr_id);
 
 /**
  * @internal
@@ -88,7 +105,7 @@ extern FUNC(void, OS_CODE) tpl_enable_isr2_by_user (
  * called when a timeframe is reached
  */
 extern FUNC(void, OS_CODE) tpl_enable_isr2_by_timing_protection (
-    P2VAR(tpl_isr, AUTOMATIC, OS_APPL_DATA) isr2);
+  CONST(tpl_isr_id, AUTOMATIC) isr_id);
 
 /**
  * @internal
@@ -98,8 +115,8 @@ extern FUNC(void, OS_CODE) tpl_enable_isr2_by_timing_protection (
  * @retval FALSE this ISR2 is disabled
  * @retval TRUE this ISR2 is enabled
  */
-FUNC(u8, OS_CODE) tpl_is_isr2_enabled (
-    P2CONST(tpl_isr, AUTOMATIC, OS_APPL_DATA) isr2);
+FUNC(tpl_bool, OS_CODE) tpl_is_isr2_enabled (
+  CONST(tpl_isr_id, AUTOMATIC) isr_id);
 
 /*
  * Get the ID of the currently running ISR.

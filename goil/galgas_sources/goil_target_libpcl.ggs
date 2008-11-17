@@ -5,42 +5,39 @@ import semantics goil_routines in "goil_routines.ggs" ;
 import semantics goil_types_isr in "goil_types_isr.ggs" ;
 import semantics goil_types_counter in "goil_types_counter.ggs" ;
 
-routine init_libpcl_prefixes ?!@prefix_map prefix :
-    [!?prefix insert_prefix ![@lstring new !"libpcl_stack" !here]
-              !"stack_zone_of_" !"$STACK_ZONE$"] ;
-    [!?prefix insert_prefix ![@lstring new !"libpcl_context" !here]
-              !"integer_context_of_" !"$EXEC_ALL_CONTEXT$"] ;
-end routine ;
+#routine init_libpcl_prefixes ?!@prefix_map prefix :
+#    [!?prefix insert_prefix ![@lstring new !"libpcl_stack" !here]
+#              !"stack_zone_of_" !"$STACK_ZONE$"] ;
+#    [!?prefix insert_prefix ![@lstring new !"libpcl_context" !here]
+#              !"integer_context_of_" !"$EXEC_ALL_CONTEXT$"] ;
+#end routine ;
 
 routine generate_target_libpcl
-    ?@lstring         name
-    ?@ident_map       others
-    ?@prefix_map      p
-    ?@oil_obj         exe
-    ?!@string         result :
+  ?@lstring   name
+  ?@ident_map others
+  ?@oil_obj   exe
+  ?!@string   result
+:
+#    performReplace !p !"libpcl_stack" ![name string] !?result ;
+  doReplace !?result !"$STACK_ZONE$" ![name string]."_stack" ;
+#    performReplace !p !"libpcl_context" ![name string] !?result ;
+  doReplace !?result !"$EXEC_ALL_CONTEXT$" ![name string]."_int_context" ;
 
-    performReplace !p !"libpcl_stack" ![name string] !?result ;
-    performReplace !p !"libpcl_context" ![name string] !?result ;
-    
+  @uint stack_size;
+  additional_int_key_required !"STACKSIZE" !others !name ?stack_size ;
+  doReplace !?result !"$STACK_SIZE$" ![stack_size string] ;
 
-    @uint stack_size;
-    additional_int_key_required !"STACKSIZE" !others !name ?stack_size ;
-    result := [result stringByReplacingStringByString !"$STACK_SIZE$" ![stack_size string]] ;
-
-    cast exe :
-    when == @isr_obj do
-        #object is an isr.
-        #check that SIGNAL is present.
-        @string sig;
-        additional_string_key_required !"SIGNAL" !others !name ?sig;
-        result := [result stringByReplacingStringByString !"$STACK_SIZE$" ![stack_size string]] ;
-    else
-    end cast ;
+  cast exe :
+  when == @isr_obj do
+    #object is an isr.
+    #check that SIGNAL is present.
+    @string sig;
+    additional_string_key_required !"SOURCE" !others !name ?sig;
+  else end cast ;
 end routine ;
 
 routine generate_isr_libpcl
   ??@isr_map           isrs
-  ??@prefix_map unused p
   ?!@string            code
 :
   @string result := "";
@@ -58,7 +55,7 @@ routine generate_isr_libpcl
     if not first then result .= ",\n";
     end if;
     first := false;
-    @string key := "SIGNAL";
+    @string key := "SOURCE";
     @ident_map others := [isr other_fields];
     if [others hasKey !key]
     then
@@ -78,23 +75,22 @@ routine generate_isr_libpcl
 end routine ;
 
 routine generate_counter_libpcl
-  ?? @counter_map counters
-  ?? @prefix_map p
-  ?!  @string code
+  ??@counter_map counters
+  ?!@string code
 :
   @string result := "";
   foreach counters (@lstring counter_name @counter_obj counter) do
     cast [counter type] :
     when == @software_counter do
     else
-        @string tmp;
-        retrieveTemplateString ?tmp !"counter_list_specific";
-        performReplace !p !"counter" ![counter_name string] !?tmp;
-        result .= tmp;
+      @string tmp;
+      retrieveTemplateString ?tmp !"counter_list_specific";
+      doReplace !?tmp !"$COUNTER$" ![counter_name string]."_counter_desc" ;
+      result .= tmp;
     end cast ;
   end foreach ;
 
-  code := [code stringByReplacingStringByString !"$COUNTER_LIST$" !result] ;
+  doReplace !?code !"$COUNTER_LIST$" !result ;
 end routine ;
 
 end semantics ;

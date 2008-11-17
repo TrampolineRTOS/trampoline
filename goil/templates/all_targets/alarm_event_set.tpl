@@ -6,7 +6,7 @@ tpl_setevent_action set_event_of_$ALARM_NAME$ = {
     {
         /* action function  */  tpl_action_setevent
     },
-    /* task descriptor ptr  */  &$TASK$,
+    /* task id              */  $TASK$,
     /* event mask           */  $EVENT$
 };
 
@@ -20,8 +20,8 @@ tpl_alarm_static stat_$ALARM$ = {
 
 tpl_time_obj $ALARM$ = {
     /* pointer to the static part   */  (tpl_time_obj_static *)&stat_$ALARM$,
-    /* next alarm                   */  NULL_PTR,
-    /* prev alarm                   */  NULL_PTR,
+    /* next alarm                   */  NULL,
+    /* prev alarm                   */  NULL,
     /* cycle                        */  $ALARM_CYCLE$,
     /* date                         */  $ALARM_DATE$,
     /* State of the alarm           */  $ALARM_STATE$

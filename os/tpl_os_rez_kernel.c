@@ -42,13 +42,13 @@
  *
  * @see #RES_SCHEDULER
  */
-VAR(tpl_resource, OS_VAR) descriptor_of_resource_res_sched = {
-    RES_SCHEDULER_PRIORITY, /**< the ceiling priority is defined as the
-                                 maximum priority of the tasks of the
-                                 application                                */
-    0,                      /*   owner_prev_priority                        */
-    NULL,                   /*   owner                                      */
-    NULL                    /*   next_res                                   */
+VAR(tpl_resource, OS_VAR) res_sched_rez_desc = {
+  RES_SCHEDULER_PRIORITY, /**<  the ceiling priority is defined as the
+                                maximum priority of the tasks of the
+                                application                               */
+  0,                      /*   owner_prev_priority                        */
+  INVALID_TASK,           /*   owner                                      */
+  NULL                    /*   next_res                                   */
 };
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
@@ -67,68 +67,70 @@ VAR(tpl_resource, OS_VAR) descriptor_of_resource_res_sched = {
 FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
     CONST(tpl_resource_id, AUTOMATIC) res_id)
 {
-    /*  init the error to no error  */
-    VAR(tpl_status, AUTOMATIC) result = E_OK;
+  /*  init the error to no error  */
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
+  P2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) running =
+    tpl_dyn_proc_table[tpl_running_id];
 
 #ifndef NO_RESOURCE
-    P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
+  P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
 #endif
-
-    /* check interrupts are not disabled by user    */
-    CHECK_INTERRUPT_LOCK(result)
-
-    LOCK_WHEN_HOOK()
-
-    STORE_SERVICE(OSServiceId_GetResource)
-    STORE_RESOURCE_ID(res_id)
-
-    CHECK_RESOURCE_ID_ERROR(res_id,result)
-
-    IF_NO_EXTENDED_ERROR(result)
-    #ifndef NO_RESOURCE
-        res = tpl_resource_table[res_id];
-    #else
-        res = NULL; /* error */
-    #endif
-
-        LOCK_WHEN_NO_HOOK()
-
-        /*  Return an error if the task that attempt to get
-            the resource has a higher priority than the resource
-            or the resource is already owned by another task
-            By using PCP, this situation should no occur.           */
-        CHECK_RESOURCE_PRIO_ERROR_ON_GET(res,result)
-
-        IF_NO_EXTENDED_ERROR(result)
-            /*  set the owner of the resource to the calling task       */
-            res->owner = tpl_running_obj;
-            /*  add the ressource at the beginning of the
-                resource list stored in the task descriptor             */
-            res->next_res = tpl_running_obj->resources;
-            tpl_running_obj->resources = res;
-            /*  save the current priority of the task in the resource   */
-            res->owner_prev_priority = tpl_running_obj->priority;
-
-            if (tpl_running_obj->priority < res->ceiling_priority)
-            {
-                /*  set the task priority at the ceiling priority of the resource
-                    if the ceiling priority is greater than the current priority of
-                    the task  */
-                tpl_running_obj->priority = res->ceiling_priority;
-            }
-        #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-            tpl_start_resource_monitor (tpl_running_obj, res_id);
-        #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-        IF_NO_EXTENDED_ERROR_END()
-
-        UNLOCK_WHEN_NO_HOOK()
-    IF_NO_EXTENDED_ERROR_END()
-
-    PROCESS_ERROR(result)
-
-    UNLOCK_WHEN_HOOK()
-
-    return result;
+  
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
+  
+  LOCK_WHEN_HOOK()
+  
+  STORE_SERVICE(OSServiceId_GetResource)
+  STORE_RESOURCE_ID(res_id)
+  
+  CHECK_RESOURCE_ID_ERROR(res_id,result)
+  
+  IF_NO_EXTENDED_ERROR(result)
+#ifndef NO_RESOURCE
+  res = tpl_resource_table[res_id];
+#else
+  res = NULL; /* error */
+#endif
+  
+  LOCK_WHEN_NO_HOOK()
+  
+  /*  Return an error if the task that attempt to get
+      the resource has a higher priority than the resource
+      or the resource is already owned by another task
+      By using PCP, this situation should no occur.         */
+  CHECK_RESOURCE_PRIO_ERROR_ON_GET(res,result)
+  
+  IF_NO_EXTENDED_ERROR(result)
+    /*  set the owner of the resource to the calling task     */
+    res->owner = tpl_running_id;
+    /*  add the ressource at the beginning of the
+        resource list stored in the task descriptor              */
+    res->next_res = running->resources;
+    running->resources = res;
+    /*  save the current priority of the task in the resource */
+    res->owner_prev_priority = running->priority;
+  
+    if (running->priority < res->ceiling_priority)
+    {
+      /*  set the task priority at the ceiling priority of the resource
+          if the ceiling priority is greater than the current priority of
+          the task  */
+      running->priority = res->ceiling_priority;
+    }
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    tpl_start_resource_monitor(tpl_running_id, res_id);
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+  IF_NO_EXTENDED_ERROR_END()
+  
+  UNLOCK_WHEN_NO_HOOK()
+  IF_NO_EXTENDED_ERROR_END()
+  
+  PROCESS_ERROR(result)
+  
+  UNLOCK_WHEN_HOOK()
+  
+  return result;
 }
 
 /*
@@ -139,74 +141,82 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
  *  as the last item. This simplify tpl_get_resource_service.
  */
 FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
-    CONST(tpl_resource_id, AUTOMATIC) res_id)
+  CONST(tpl_resource_id, AUTOMATIC) res_id)
 {
-    /*  init the error to no error  */
-    VAR(tpl_status, AUTOMATIC) result = E_OK;
+  /*  init the error to no error  */
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
+  VAR(tpl_proc_id, AUTOMATIC) old_running_id;
+  P2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) running =
+    tpl_dyn_proc_table[tpl_running_id];
 
-    P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
+  P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
 
-    /* check interrupts are not disabled by user    */
-    CHECK_INTERRUPT_LOCK(result)
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
 
-    LOCK_WHEN_HOOK()
+  LOCK_WHEN_HOOK()
 
-    STORE_SERVICE(OSServiceId_GetResource)
-    STORE_RESOURCE_ID(res_id)
+  STORE_SERVICE(OSServiceId_ReleaseResource)
+  STORE_RESOURCE_ID(res_id)
 
-    CHECK_RESOURCE_ID_ERROR(res_id,result)
+  CHECK_RESOURCE_ID_ERROR(res_id,result)
+
+  IF_NO_EXTENDED_ERROR(result)
+  #ifndef NO_RESOURCE
+    res = tpl_resource_table[res_id];
+  #else
+    res = NULL; /* error */
+  #endif
+  
+    LOCK_WHEN_NO_HOOK()
+
+    /*  the spec requires resources to be released in
+        the reverse order of the getting. if the resource
+        is not owned or not release in the good order.
+        This test has to be done before CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE
+        because CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE assumes the
+        resource is gotten
+    */
+    CHECK_RESOURCE_ORDER_ON_RELEASE(res,result)
+  
+    /*  Return an error if the task that attempt to get
+        the resource has a higher priority than the resource    */
+    CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(res,result)
 
     IF_NO_EXTENDED_ERROR(result)
-    #ifndef NO_RESOURCE
-        res = tpl_resource_table[res_id];
-    #else
-        res = NULL; /* error */
-    #endif
-    
-        LOCK_WHEN_NO_HOOK()
+        /*  get the saved priority  */
+      running->priority = res->owner_prev_priority;
+      /*  remove the resource from the resource list  */
+      running->resources = res->next_res;
+      res->next_res = NULL;
+      /*  remove the owner    */
+      res->owner = INVALID_TASK;
 
-        /*  Return an error if the task that attempt to get
-            the resource has a higher priority than the resource    */
-        CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(res,result)
-
-        /*  the spec requires resources to be released in
-            the reverse order of the getting. if the resource
-            is not owned or not release in the good order       */
-        CHECK_RESOURCE_ORDER_ON_RELEASE(res,result)
-
-        IF_NO_EXTENDED_ERROR(result)
-            /*  get the saved priority  */
-            tpl_running_obj->priority = res->owner_prev_priority;
-            /*  remove the resource from the resource list  */
-            tpl_running_obj->resources = res->next_res;
-            res->next_res = NULL;
-            /*  remove the owner    */
-            res->owner = NULL;
-
-/* FIX */
-            result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
-        #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-            tpl_stop_resource_monitor(tpl_running_obj, res_id);
-        #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-        IF_NO_EXTENDED_ERROR_END()
-
-        if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH) {
-            tpl_switch_context(
-                (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
-                    &(tpl_old_running_obj->static_desc->context),
-                (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
-                    &(tpl_running_obj->static_desc->context)
-            );
-        }
-
-        UNLOCK_WHEN_NO_HOOK()
+      old_running_id = tpl_running_id;
+      result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
+  #ifdef WITH_AUTOSAR_TIMING_PROTECTION
+      tpl_stop_resource_monitor(tpl_running_id, res_id);
+  #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
     IF_NO_EXTENDED_ERROR_END()
 
-    PROCESS_ERROR(result)
+#ifndef WITH_SYSTEM_CALL
+    if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH)
+    {
+      tpl_switch_context(
+        &(tpl_stat_proc_table[old_running_id]->context),
+        &(tpl_stat_proc_table[tpl_running_id]->context)
+      );
+    }
+#endif
 
-    UNLOCK_WHEN_HOOK()
+    UNLOCK_WHEN_NO_HOOK()
+  IF_NO_EXTENDED_ERROR_END()
 
-    return result;
+  PROCESS_ERROR(result)
+
+  UNLOCK_WHEN_HOOK()
+
+  return result;
 }
 
 #define OS_STOP_SEC_CODE

@@ -156,6 +156,32 @@ struct TPL_SCHEDTABLE_STATIC {
  */
 typedef struct TPL_SCHEDTABLE_STATIC tpl_schedtable_static;
 
+#ifndef NO_SCHEDTABLE
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+/**
+ * Array of all schedule tables' full descriptors.
+ *
+ * Index in this array correspond to the #ScheduleTableType of the schedule
+ * table. While it would be less time consuming to refer a schedule table
+ * by a pointer to its descriptor, the AUTOSAR API requires a schedule table
+ * to have an identifier. So a table of pointer is used. The size of this table
+ * is static and known at compile time
+ */
+/* MISRA RULE 27 VIOLATION: This variable is used only in this file
+ but decalred in the configuration file, this is why it does not need
+ to be declared as external in a header file */
+
+extern CONSTP2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA)
+  tpl_schedtable_table[SCHEDTABLE_COUNT];
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#endif
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 

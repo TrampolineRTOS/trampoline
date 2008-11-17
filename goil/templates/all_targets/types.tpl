@@ -21,12 +21,12 @@
 #include "tpl_os_std_types.h"
 
 /**
- * tpl_task_id is used for task identifiers.
+ * tpl_proc_id is used for task and isrs identifiers.
  *
  * @warning This data type must be signed
- * because -1 is used for INVALID_TASK
+ * because -1 is used for INVALID_TASK and INVALID_ISR
  */
-typedef $TASK_ID_T$ tpl_task_id;
+typedef $PROC_ID_T$ tpl_proc_id;
 
 /**
  * tpl_priority represents a task's or a resource's priority.
@@ -69,13 +69,6 @@ typedef $RESOURCE_ID_T$ tpl_resource_id;
  * @todo: document this
  */
 typedef $COUNTER_ID_T$ tpl_counter_id;
-
-/**
- * @internal
- *
- * @todo: document this
- */
-typedef $ISR_ID_T$ tpl_isr_id;
 
 /**
  * @internal

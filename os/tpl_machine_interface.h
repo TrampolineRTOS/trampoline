@@ -45,8 +45,8 @@
  *                      scheduled.
  */
 extern FUNC(void, OS_CODE) tpl_switch_context(
-    P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA) old_context,
-    P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA) new_context
+  CONSTP2CONST(tpl_context, AUTOMATIC, OS_APPL_DATA) old_context,
+  CONSTP2CONST(tpl_context, AUTOMATIC, OS_APPL_DATA) new_context
 );
 
 
@@ -62,8 +62,8 @@ extern FUNC(void, OS_CODE) tpl_switch_context(
  *                      scheduled.
  */
 extern FUNC(void, OS_CODE) tpl_switch_context_from_it(
-    P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA) old_context,
-    P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA) new_context
+  CONSTP2CONST(tpl_context, AUTOMATIC, OS_APPL_DATA) old_context,
+  CONSTP2CONST(tpl_context, AUTOMATIC, OS_APPL_DATA) new_context
 );
 
 
@@ -75,8 +75,7 @@ extern FUNC(void, OS_CODE) tpl_switch_context_from_it(
  * @param exec_obj      Pointer to the task descriptor
  */
 extern FUNC(void, OS_CODE) tpl_init_context(
-    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) exec_obj
-);
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 
 /**
@@ -189,15 +188,16 @@ extern FUNC(tpl_time, OS_CODE) tpl_get_local_current_date(void);
  * Depending on what the hardware is able to do, this function may not be
  * able to detect an error. Only undoubted errors are reported.
  *
- * @param this_exec_obj the exec object to check
+ * @param stack a pointeur to the stack section of the object (task or ISR)
+ *        to check
  *
  * @retval 1 no stack overflow detected
  * @retval 0 stack overflow deteted
  *
  * @see #tpl_check_stack_footprint
  */
-FUNC(u8, OS_CODE) tpl_check_stack_pointer(
-    P2CONST(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj
+FUNC(tpl_bool, OS_CODE) tpl_check_stack_pointer(
+  CONSTP2CONST(tpl_stack, AUTOMATIC, OS_APPL_DATA) stack
 );
 
 /**
@@ -206,7 +206,8 @@ FUNC(u8, OS_CODE) tpl_check_stack_pointer(
  * This functions checks the stack did not overflowed by looking if the stack
  * tagging has not been completly erased.
  *
- * @param this_exec_obj the executable object (task or ISR) to check
+ * @param stack a pointeur to the stack section of the object (task or ISR)
+ *        to check
  *
  * @note This function needs a stack tagging which should be done at system
  * initialization (#tpl_init_machine). The stack tagging consists in filling
@@ -219,7 +220,7 @@ FUNC(u8, OS_CODE) tpl_check_stack_pointer(
  * @retval 0 stack overflow deteted
  */
 FUNC(u8, OS_CODE) tpl_check_stack_footprint(
-    P2CONST(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj
+  CONSTP2CONST(tpl_stack, AUTOMATIC, OS_APPL_DATA) stack
 );
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 

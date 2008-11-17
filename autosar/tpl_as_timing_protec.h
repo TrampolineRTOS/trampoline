@@ -111,7 +111,7 @@ struct TPL_EXEC_COMMON;
  */
 struct TPL_WATCHDOG
 {
-  struct P2VAR( TPL_EXEC_COMMON, TYPEDEF, OS_APPL_DATA) exec_obj;             /**< the executable object implied  */
+  VAR(tpl_proc_id, TYPEDEF)                             proc_id;              /**< the executable object implied  */
   struct P2VAR(TPL_WATCHDOG, AUTOMATIC, OS_VAR_NOINIT)  next;                 /**< the next watchdog
                                                                                    in the list                    */
   struct P2VAR(TPL_WATCHDOG, AUTOMATIC, OS_VAR_NOINIT)  previous;             /**< the previous watchdog
@@ -166,8 +166,8 @@ extern FUNC(void, OS_CODE) tpl_init_timing_protection(void);
  * @param this_exec_obj: object owner of the time frame to start
  *
  */
-extern FUNC(void, OS_CODE) tpl_start_timeframe (
-    struct P2VAR(TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+extern FUNC(void, OS_CODE) tpl_start_timeframe(
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 /**
  * Function used to stop the measure of a time frame for a task/isr2
@@ -175,8 +175,8 @@ extern FUNC(void, OS_CODE) tpl_start_timeframe (
  * @param this_exec_obj: object owner of the time frame to stop
  *
  */
-extern FUNC(void, OS_CODE) tpl_stop_timeframe (
-    P2CONST(struct TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+extern FUNC(void, OS_CODE) tpl_stop_timeframe(
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 /**
  * @internal
@@ -192,7 +192,7 @@ extern FUNC(void, OS_CODE) tpl_stop_timeframe (
  * @see #tpl_continue_budget_monitor
  */
 extern FUNC(void, OS_CODE) tpl_start_budget_monitor (
-    struct P2VAR(TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 /**
  * @internal
@@ -208,7 +208,7 @@ extern FUNC(void, OS_CODE) tpl_start_budget_monitor (
  * @see #tpl_continue_budget_monitor
  */
 extern FUNC(void, OS_CODE) tpl_pause_budget_monitor(
-    P2CONST(struct TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 /**
  * @internal
@@ -224,14 +224,14 @@ extern FUNC(void, OS_CODE) tpl_pause_budget_monitor(
  * @see #tpl_pause_budget_monitor
  */
 extern FUNC(void, OS_CODE) tpl_continue_budget_monitor(
-    struct P2VAR(TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 /**
  * @internal
  *
  */
 extern FUNC(void, OS_CODE) tpl_stop_budget_monitor(
-    P2CONST(struct TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 /**
  * @internal
@@ -244,8 +244,8 @@ extern FUNC(void, OS_CODE) tpl_stop_budget_monitor(
  * @pre all interrupts should be disabled during this function execution
  */
 extern FUNC(void, OS_CODE) tpl_start_resource_monitor(
-    struct P2VAR(TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA)  this_exec_obj,
-    VAR(tpl_resource_id, AUTOMATIC)                         this_resource);
+  CONST(tpl_proc_id, AUTOMATIC)     proc_id,
+  CONST(tpl_resource_id, AUTOMATIC) rez_id);
 
 /**
  * @internal
@@ -258,8 +258,8 @@ extern FUNC(void, OS_CODE) tpl_start_resource_monitor(
  * @pre all interrupts should be disabled during this function execution
  */
 extern FUNC(void, OS_CODE) tpl_stop_resource_monitor(
-    P2CONST(struct TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA)    this_exec_obj,
-    VAR(tpl_resource_id, AUTOMATIC)                             this_resource);
+  CONST(tpl_proc_id, AUTOMATIC)     proc_id,
+  CONST(tpl_resource_id, AUTOMATIC) rez_id);
 
 /**
  * @internal
@@ -269,7 +269,7 @@ extern FUNC(void, OS_CODE) tpl_stop_resource_monitor(
  * @param this_exec_obj the executable object which locked interrupts
  */
 extern FUNC(void, OS_CODE) tpl_start_all_isr_lock_monitor(
-    struct P2VAR(TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
 /**
  * @internal
  *
@@ -278,7 +278,7 @@ extern FUNC(void, OS_CODE) tpl_start_all_isr_lock_monitor(
  * @param this_exec_obj the executable object which unlocked interrupts
  */
 extern FUNC(void, OS_CODE) tpl_stop_all_isr_lock_monitor(
-    P2CONST(struct TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 /**
  * @internal
@@ -288,7 +288,7 @@ extern FUNC(void, OS_CODE) tpl_stop_all_isr_lock_monitor(
  * @param this_exec_obj the executable object which locked ISRs
  */
 extern FUNC(void, OS_CODE) tpl_start_os_isr_lock_monitor(
-    P2VAR(struct TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 /**
  * @internal
@@ -298,7 +298,7 @@ extern FUNC(void, OS_CODE) tpl_start_os_isr_lock_monitor(
  * @param this_exec_obj the executable object which locked ISRs
  */
 extern FUNC(void, OS_CODE) tpl_stop_os_isr_lock_monitor(
-    P2CONST(struct TPL_EXEC_COMMON, AUTOMATIC, OS_APPL_DATA) this_exec_obj);
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

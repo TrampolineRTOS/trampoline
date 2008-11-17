@@ -9,8 +9,8 @@ import semantics goil_targets in "goil_targets.ggs" ;
 #--------------------------------------------------------------------
 routine generate_messages
     ?@message_map messages
-    ?@prefix_map  p
-    ?!@string     header
+    ?@prefix_map  unused p
+    ?!@string     unused header
     ?!@string     obj_header
     ?!@string     implementation :
 
@@ -75,7 +75,7 @@ routine generate_messages
             # remove from the extern message map
             [!?extern_mess del !mname ?*] ;
             @mess_prop_obj mp := [mess messageproperty] ;
-            [mp generate !p !mname !mess !messages !dests ?h_res ?i_res] ;
+            [mp generate !mname !mess !messages !dests ?h_res ?i_res] ;
             result .= i_res ;
         end loop ;
 
@@ -86,14 +86,14 @@ routine generate_messages
         @message_obj mess ;
         [messages get !src ?mess] ;
         @mess_prop_obj mp := [mess messageproperty] ;
-        [mp generate !p !src !mess !messages !dests ?h_res ?i_res] ;
+        [mp generate !src !mess !messages !dests ?h_res ?i_res] ;
         result .= i_res ;
     end foreach ;
 
     # generate the external messages
     foreach extern_mess (@lstring name @message_obj mess) do
         @mess_prop_obj mp := [mess messageproperty] ;
-        [mp generate !p !name !mess !messages !dests ?h_res ?i_res] ;
+        [mp generate !name !mess !messages !dests ?h_res ?i_res] ;
         result .= i_res ;
     end foreach ;
 
@@ -138,19 +138,47 @@ routine generate_messages
 
     
 
-    @string h_tab ;
-    @string i_tab ;
-    obj_table !"base_sending_mo" !"send_message" !"msg" !p !smo ?h_tab ?i_tab ;
-    h_res .= "\n".h_tab ;
-    result .= "\n".i_tab ;
-    obj_table !"base_receiving_mo" !"receive_message" !"msg" !p !rmo ?h_tab ?i_tab ;
+    @string h_tab := "" ;
+    @string i_tab := "" ;
+
+    foreach smo (@string name) :n
+    before
+      i_tab := "CONSTP2VAR(tpl_base_sending_mo, AUTOMATIC, OS_APPL_DATA)\n" ;
+      i_tab .= "  tpl_send_message_table[SEND_MESSAGE_COUNT] = {\n" ;
+    do
+      i_tab .= "  (tpl_base_sending_mo *)&".name."_message" ;
+      h_tab .= "#define ".name."_id ".[n string]."\n" ;
+      h_tab .= "CONST(MessageIdentifier, AUTOMATIC) ".name." = ".name."_id;\n" ;
+    between
+      i_tab .= ",\n" ;
+    after
+      i_tab .= "\n};\n" ;
+    end foreach ;
+
     h_res .= "\n".h_tab ;
     result .= "\n".i_tab ;
 
-    implementation := [implementation stringByReplacingStringByString !"$MESSAGES$" !result] ;
-    header := [header stringByReplacingStringByString !"$MESSAGES$" !h_res] ;
-    obj_header := [obj_header stringByReplacingStringByString !"$SEND_MESSAGE_COUNT$" ![[smo count] string]] ;
-    obj_header := [obj_header stringByReplacingStringByString !"$RECEIVE_MESSAGE_COUNT$" ![[rmo count] string]] ;
+    foreach rmo (@string name) :n
+    before
+      i_tab := "CONSTP2VAR(tpl_base_receiving_mo, AUTOMATIC, OS_APPL_DATA)\n" ;
+      i_tab .= "  tpl_receive_message_table[RECEIVE_MESSAGE_COUNT] = {\n" ;
+      h_tab := "" ;
+    do
+      i_tab .= "  (tpl_base_receiving_mo *)&".name."_message" ;
+      h_tab .= "#define ".name."_id ".[n string]."\n" ;
+      h_tab .= "CONST(MessageIdentifier, AUTOMATIC) ".name." = ".name."_id;\n" ;
+    between
+      i_tab .= ",\n" ;
+    after
+      i_tab .= "\n};\n" ;
+    end foreach ;
+    h_res .= "\n".h_tab ;
+    result .= "\n".i_tab ;
+
+    doReplace !?implementation !"$MESSAGES$" !result ;
+    doReplace !?implementation !"$MESSAGEIDS$" !h_res ;
+    doReplace !?obj_header !"$SEND_MESSAGE_COUNT$" ![[smo count] string] ;
+    doReplace !?obj_header !"$RECEIVE_MESSAGE_COUNT$" ![[rmo count] string] ;
 
     # Add the macros to Read and Reset the flags
     # and the functions to set them (internal use)
@@ -184,7 +212,7 @@ routine generate_messages
 
         foreach flags (@string flag) do
            @string fm := flag_macros ;
-           fm := [fm stringByReplacingStringByString !"$FLAGNAME$" !flag] ;
+           doReplace !?fm !"$FLAGNAME$" !flag ;
            @uint flag_elem := flag_order / 8 ;
            @uint flag_bit := flag_order mod 8 ;
            @uint flag_mask := 1 << flag_bit ;
@@ -197,15 +225,15 @@ routine generate_messages
               flag_read := "((tpl_notification_flags[".[flag_elem string]."] & ".[flag_mask hexString].") >> ".[flag_bit string].")"  ;
            end if ;
            flag_reset := "tpl_notification_flags[".[flag_elem string]."] &= ".[invert_flag_mask hexString];
-           fm := [fm stringByReplacingStringByString !"$FLAG_READ_EXP$" !flag_read] ;
-           fm := [fm stringByReplacingStringByString !"$FLAG_RESET_EXP$" !flag_reset] ;
+           doReplace !?fm !"$FLAG_READ_EXP$" !flag_read ;
+           doReplace !?fm !"$FLAG_RESET_EXP$" !flag_reset ;
 
            @string ff := flag_function ;
-           ff := [ff stringByReplacingStringByString !"$FLAGNAME$" !flag] ;
+           doReplace !?ff !"$FLAGNAME$" !flag ;
            @string flag_set ;
 
            flag_set := "tpl_notification_flags[".[flag_elem string]."] |= ".[flag_mask hexString] ;
-           ff := [ff stringByReplacingStringByString !"$FLAG_SET_EXP$" !flag_set] ;
+           doReplace !?ff !"$FLAG_SET_EXP$" !flag_set ;
 
            flag_order++ ;
 
@@ -214,8 +242,8 @@ routine generate_messages
         end foreach ;
     end if ;
 
-    header := [header stringByReplacingStringByString !"$FLAGSMACROS$" !h_res] ;
-    implementation := [implementation stringByReplacingStringByString !"$FLAGSFUNCTIONS$" !result] ;
+    doReplace !?header !"$FLAGSMACROS$" !h_res ;
+    doReplace !?implementation !"$FLAGSFUNCTIONS$" !result ;
 
 end routine ;
 

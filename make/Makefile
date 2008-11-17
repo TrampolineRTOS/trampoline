@@ -30,6 +30,7 @@ MACHINE_PATH = $(TPL_BASE_PATH)/machines/$(TARGET)
 #############################################################################
 # Add Trampoline source files.
 #############################################################################
+include $(DEBUG_PATH)/Makefile
 include $(OS_PATH)/Makefile
 ifeq ($(strip $(AUTOSAR)),true)
   include $(AUTOSAR_PATH)/Makefile

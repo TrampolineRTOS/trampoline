@@ -23,7 +23,7 @@ $TIMING_PROT_STRUCT$
 /*
  * Static descriptor of task $EXEC_NAME$
  */
-CONST(tpl_exec_static, OS_CONST) $EXEC_STATIC$ = {
+CONST(tpl_proc_static, OS_CONST) $EXEC_STATIC$ = {
     /* context                  */  $EXEC_CONTEXT$,
     /* stack                    */  $EXEC_STACK$,
     /* entry point (function)   */  $EXEC_FUNCTION$,
@@ -47,20 +47,17 @@ CONST(tpl_exec_static, OS_CONST) $EXEC_STATIC$ = {
 /*
  * Dynamic descriptor of task $EXEC_NAME$
  */
-tpl_task $TASK$ = {
-    {       /* beginning of exec_desc part */
-    /* static descriptor    */  &$EXEC_STATIC$,
-    /* resources            */  NULL_PTR,
+VAR(tpl_proc, OS_VAR) $TASK$ = {
+    /* resources            */  NULL,
     /* activate count       */  0,
     /* task priority        */  (tpl_priority)$TASK_PRIORITY$,
-    /* task state           */  $TASK_STATE$,
+    /* task state           */  $TASK_STATE$
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    /* activation allowed   */  TRUE,
+    /* activation allowed   */  ,TRUE
 #endif
-    },    /* end of exec_desc part */
-    /* event mask           */  0,
-    /* event wait           */  0
 };
+
+$TASK_EVTS$
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"

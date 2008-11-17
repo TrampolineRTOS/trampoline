@@ -44,7 +44,11 @@ nonterminal <st_action_params>
 rule <scheduletable>
     ?!@scheduletable_map stm
 :
+
     $SCHEDULETABLE$ ;
+    if [option goil_options.autosar_on] == false then
+      error here : "AUTOSAR flag is off, turn it on to use SCHEDULETABLE objects" ;
+    end if ;
     @lstring name ;
     $idf$ ?name ;
     ${$ ;
@@ -62,6 +66,7 @@ rule <scheduletable>
             ![@void new !here]           # periodic
             ![@void new !here]           # length
             ![@action_list emptySortedList]    # actions
+            ![@stringset emptySet]       # accessing applications
         ] ;
     end if ;
 
@@ -85,6 +90,7 @@ rule <scheduletable_parameters>
     @basic_type    st_periodic    := [st periodic] ;
     @basic_type    st_length      := [st length] ;
     @action_list   st_actions     := [st actions] ;
+    @stringset     st_acc_apps    := [st acc_apps] ;
 
     repeat
 
@@ -160,6 +166,13 @@ rule <scheduletable_parameters>
         $ACTION$ ; $=$ ; <st_action_params> !?st_actions ; <description> ?* ; $;$;
 
     while
+        @lstring app ;
+        $ACCESSING_APPLICATION$ ; $=$ ; $idf$ ?app ; <description> ?* ; $;$ ;
+        if [st_acc_apps hasKey ![app string]] then
+            warning here : "ACCESSING_APPLICATION " . [app string] . " already defined for SCHEDULETABLE " . [name string] ;
+        end if ;
+        st_acc_apps += ![app string] ;
+    while
         $idf$ ?* ;     $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ;
         <description> ?* ; $;$ ;
     end repeat ;
@@ -172,6 +185,7 @@ rule <scheduletable_parameters>
             !st_periodic
             !st_length
             !st_actions
+            !st_acc_apps
         ] ;
 end rule ;
 

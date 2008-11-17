@@ -225,7 +225,7 @@ routine resolve_linked_resources
                                 @resource_property_linked_obj resolved_prop :=
                                     [@resource_property_linked_obj new ![nrplo location] ![nrplo linked_resource]] ;
                                 @lstring resolved_desc := [res desc];
-                                @resource_obj resolved_res := [@resource_obj new !resolved_desc !resolved_prop] ;
+                                @resource_obj resolved_res := [@resource_obj new !resolved_desc !resolved_prop ![res acc_apps]] ;
                                 [!?resolved put !res_key !resolved_res] ;
                             else
                         end cast ;

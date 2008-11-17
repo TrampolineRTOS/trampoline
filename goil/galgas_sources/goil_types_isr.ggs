@@ -12,6 +12,7 @@ class @isr_obj extends @oil_obj {
     @basic_type  priority ;
     @stringset   resources ;
     @stringset   messages ;
+    @stringset   acc_apps ;
     @timing_prot timing_prot ;
     @ident_map   other_fields;
 

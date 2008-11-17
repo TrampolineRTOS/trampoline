@@ -18,8 +18,12 @@ syntax goil_syntax :
 import lexique goil_lexique in "goil_lexique.ggs" ;
 #import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
+import semantics goil_proc_generation in "goil_proc_generation.ggs" ;
+import semantics goil_app_generation in "goil_app_generation.ggs" ;
+import semantics goil_types_app in "goil_types_app.ggs" ;
 import semantics goil_scheduletable_verif in "goil_scheduletable_verif.ggs" ;
 import semantics goil_alarm_verif in "goil_alarm_verif.ggs" ;
+import semantics goil_app_verif in "goil_app_verif.ggs" ;
 import semantics cfg_types in "cfg_types.ggs" ;
 import semantics goil_env_verification in "goil_env_verification.ggs" ;
 
@@ -44,6 +48,7 @@ nonterminal <object_definition_list>
     ?!@isr_map           isrs
     ?!@message_map       messages
     ?!@scheduletable_map scheduletables
+    ?!@app_map           applis
 ;
 nonterminal <nm> ;
 
@@ -54,15 +59,16 @@ nonterminal <include_file_level>
     ?!@root_obj cpu
 ;
 nonterminal <include_cpu_level>
-    ?!@os_obj       os
-    ?!@task_map     tasks
-    ?!@counter_map  counters
-    ?!@alarm_map    alarms
-    ?!@resource_map resources
-    ?!@event_map    events
-    ?!@isr_map      isrs
-    ?!@message_map  messages
+    ?!@os_obj            os
+    ?!@task_map          tasks
+    ?!@counter_map       counters
+    ?!@alarm_map         alarms
+    ?!@resource_map      resources
+    ?!@event_map         events
+    ?!@isr_map           isrs
+    ?!@message_map       messages
     ?!@scheduletable_map scheduletables
+    ?!@app_map           applis
 ;
 
 #--------------------------------------------------------------------
@@ -97,6 +103,9 @@ nonterminal <mess>
 
 nonterminal <scheduletable>
     ?!@scheduletable_map stm ;
+
+nonterminal <appli>
+    ?!@app_map applis;
 
 nonterminal <networkmess> ;
 nonterminal <com> ;
@@ -140,6 +149,7 @@ rule <start> :
         ![@isr_map           emptyMap]
         ![@message_map       emptyMap]
         ![@scheduletable_map emptyMap]
+        ![@app_map           emptyMap]
     ] ;
     <file> !?imp !?cpu ;
 
@@ -158,6 +168,7 @@ rule <start> :
     @isr_map           isrs           := [cpu isrs] ;
     @message_map       messages       := [cpu messages] ;
     @scheduletable_map scheduletables := [cpu scheduletables] ;
+    @app_map           applis         := [cpu applis] ;
 
     if [imp hasKey !"task"] then
         @implementation_spec spec ;
@@ -196,6 +207,7 @@ rule <start> :
     if [option goil_options.autosar_on] then
         schedule_tables_counters_exist_and_compatible !scheduletables !counters ;
         schedule_tables_tasks_and_events_exist !scheduletables !tasks !events ;
+        apps_well_formed !applis !tasks !isrs !alarms !scheduletables !counters !resources !messages ;
     end if ;
 
     if [@uint errorCount] == 0 then
@@ -279,7 +291,6 @@ rule <start> :
 
                 generate_counters
                     !counters
-                    !prefix
                     !?header
                     !?obj_header
                     !?implementation ;
@@ -296,7 +307,6 @@ rule <start> :
                     !tasks
                     !resources
                     !tasks_actual_prio
-                    !prefix
                     !?header
                     !?obj_header
                     !?implementation ;
@@ -306,16 +316,23 @@ rule <start> :
                     !isrs
                     !resources
                     !isrs_actual_prio
-                    !prefix
                     !?header
                     !?obj_header
                     !?implementation ;
+
+# Generate the process ids and table
+
+                generate_proc_table
+                    !tasks
+                    !isrs
+                    !?header
+                    !?implementation
+                    !?obj_header ;
 
                 generate_resources
                     !resources
                     !rez_actual_prio
                     !rez_comments
-                    !prefix
                     !?header
                     !?obj_header
                     !?implementation ;
@@ -337,6 +354,17 @@ rule <start> :
                         !tasks
                         !resources
                         !?obj_header ;
+                    generate_apps
+                        !applis
+                        !tasks
+                        !isrs
+                        !alarms
+                        !resources
+                        !scheduletables
+                        !counters
+                        !?header
+                        !?obj_header
+                        !?implementation ;
                 end if ;
 
                 generate_ready_list
@@ -486,6 +514,7 @@ rule <application_definition>
     @isr_map           isrs           := [file isrs] ;
     @message_map       messages       := [file messages] ;
     @scheduletable_map scheduletables := [file scheduletables] ;
+    @app_map           applis         := [file applis] ;
 
     $CPU$ ;
     $idf$ ?* ;
@@ -500,6 +529,7 @@ rule <application_definition>
         !?isrs
         !?messages
         !?scheduletables
+        !?applis
     ;
     $}$ ;
     <description> ?* ;
@@ -515,19 +545,21 @@ rule <application_definition>
         !isrs
         !messages
         !scheduletables
+        !applis
     ] ;
 end rule ;
 
 rule <object_definition_list>
-    ?!@os_obj       os
-    ?!@task_map     tasks
-    ?!@counter_map  counters
-    ?!@alarm_map    alarms
-    ?!@resource_map resources
-    ?!@event_map    events
-    ?!@isr_map      isrs
-    ?!@message_map  messages
+    ?!@os_obj            os
+    ?!@task_map          tasks
+    ?!@counter_map       counters
+    ?!@alarm_map         alarms
+    ?!@resource_map      resources
+    ?!@event_map         events
+    ?!@isr_map           isrs
+    ?!@message_map       messages
     ?!@scheduletable_map scheduletables
+    ?!@app_map           applis
 :
 
    repeat
@@ -545,6 +577,7 @@ rule <object_definition_list>
     while <ipdu> ; <description> ?* ;
     while <nm> ; <description> ?* ;
     while <scheduletable> !?scheduletables ; <description> ?* ;
+    while <appli> !?applis ; <description> ?* ;
     while <include_cpu_level>
         !?os
         !?tasks
@@ -555,6 +588,7 @@ rule <object_definition_list>
         !?isrs
         !?messages
         !?scheduletables
+        !?applis
     ;
     end repeat ;
 end rule ;
@@ -620,15 +654,16 @@ rule <include_file_level>
 end rule ;
 
 rule <include_cpu_level>
-    ?!@os_obj       os
-    ?!@task_map     tasks
-    ?!@counter_map  counters
-    ?!@alarm_map    alarms
-    ?!@resource_map resources
-    ?!@event_map    events
-    ?!@isr_map      isrs
-    ?!@message_map  messages
+    ?!@os_obj            os
+    ?!@task_map          tasks
+    ?!@counter_map       counters
+    ?!@alarm_map         alarms
+    ?!@resource_map      resources
+    ?!@event_map         events
+    ?!@isr_map           isrs
+    ?!@message_map       messages
     ?!@scheduletable_map scheduletables
+    ?!@app_map           applis
 :
     $include$ ;
     @lstring file_name ;
@@ -648,6 +683,7 @@ rule <include_cpu_level>
         !?isrs
         !?messages
         !?scheduletables
+        !?applis
     ;
 end rule ;
 

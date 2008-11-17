@@ -26,7 +26,9 @@ import semantics goil_semantics in "goil_semantics.ggs" ;
 nonterminal <resource> 
     ?!@resource_map resources ;
 nonterminal <resource_attributes>
-    ?!@resource_property_obj property ;
+    ?@lstring                rez_name
+    ?!@resource_property_obj property
+    ?!@stringset             acc_apps ;
 
 #
 # external nonterminals
@@ -43,6 +45,7 @@ rule <resource>
     @resource_obj resource ;
     @lstring resource_name ;
     @resource_property_obj property ;
+    @stringset acc_apps ;
     @lstring desc ;
 
     $RESOURCE$ ;
@@ -54,24 +57,31 @@ rule <resource>
     if [resources hasKey ![resource_name string]] then
         [!?resources del !resource_name ?resource] ;
         property := [resource property] ;
+        acc_apps := [resource acc_apps] ;
         desc := [resource desc] ;
     else
         property := [@resource_property_void_obj new !here] ;
+        acc_apps := [@stringset emptySet] ;
         desc := [@lstring new !"" !here] ;
-        resource := [@resource_obj new !desc !property] ;
-    end if ;
-    <resource_attributes> !?property ;
+        resource := [@resource_obj new !desc !property !acc_apps] ;
+   end if ;
+    <resource_attributes> !resource_name !?property !?acc_apps ;
 	$}$ ;
 	<description> ?desc ;
 	$;$ ;
 
-	resource := [@resource_obj new !desc !property] ;
+	resource := [@resource_obj new !desc !property !acc_apps] ;
 	[!?resources put !resource_name !resource] ;
 end rule ;
 
 rule <resource_attributes>
+    ?@lstring                rez_name
     ?!@resource_property_obj property
+    ?!@stringset             acc_apps
 :
+
+  repeat
+  while  
     $RESOURCEPROPERTY$ ; $=$ ;
     select
         $STANDARD$ ;
@@ -102,7 +112,15 @@ rule <resource_attributes>
             error [property location] : "was already defined here" ;
         end cast ;
 	end select ;
-	<description> ?* ; $;$ ;
+  while
+    @lstring app ;
+    $ACCESSING_APPLICATION$ ; $=$ ; $idf$ ?app ; <description> ?* ; $;$ ;
+    if [acc_apps hasKey ![app string]] then
+      warning here : "ACCESSING_APPLICATION " . [app string] . " already defined for RESOURCE " . [rez_name string] ;
+    end if ;
+    acc_apps += ![app string] ;
+  end repeat ;
+  <description> ?* ; $;$ ;
 end rule ;
 
 end syntax ;

@@ -103,8 +103,9 @@ routine verify_and_set_tasks_defaults
             ![task resources]
             ![task events]
             ![task messages]
+            ![task acc_apps]
             ![task timing_prot]
-            !others
+           !others
         ] ;
         [!?tasks put !key !updated_task] ;
     end foreach ;
@@ -142,8 +143,9 @@ message "PRIORITY!\n";
             ![isr priority]
             ![isr resources]
             ![isr messages]
+            ![isr acc_apps]
             ![isr timing_prot]
-            !others
+           !others
         ] ;
         [!?isrs put !key !updated_isr] ;
     end foreach ;

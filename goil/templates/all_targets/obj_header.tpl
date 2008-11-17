@@ -34,6 +34,10 @@ $CONFIG_FLAGS$
 #define TASK_COUNT              $TASK_COUNT$
 
 /*
+ * Declaration of Extended task count
+ */
+#define EXTENDED_TASK_COUNT     $EXTENDED_TASK_COUNT$
+/*
  * Declaration of ISR2 object count
  */
 #define ISR_COUNT               $ISR_COUNT$

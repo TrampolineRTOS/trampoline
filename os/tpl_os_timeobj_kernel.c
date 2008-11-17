@@ -27,6 +27,39 @@
 #include "tpl_os_timeobj_kernel.h"
 #include "tpl_os_kernel.h"
 #include "tpl_os_definitions.h"
+#include "tpl_debug.h"
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#define val_OSMAXALLOWEDVALUE 32767
+#define val_OSTICKSPERBASE    1
+#define val_OSMINCYCLE        1
+
+CONST(tpl_tick, OS_CONST) OSMAXALLOWEDVALUE;
+CONST(tpl_tick, OS_CONST) OSTICKSPERBASE;
+CONST(tpl_tick, OS_CONST) OSMINCYCLE;
+
+/**
+ * @internal
+ *
+ * SystemCounter descriptor
+ */
+VAR(tpl_counter, OS_VAR) SystemCounter_counter_desc = {
+  /* ticks per base       */  val_OSTICKSPERBASE,
+  /* max allowed value    */  val_OSMAXALLOWEDVALUE,
+  /* min cycle            */  val_OSMINCYCLE,
+  /* current tick         */  0,
+  /* current date         */  0,
+#ifdef WITH_AUTOSAR
+  /* kind                 */  HARDWARE_COUNTER,
+#endif
+  /* first alarm          */  NULL_PTR,
+  /* next alarm to raise  */  NULL_PTR
+};
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -231,80 +264,84 @@ STATIC FUNC(void, OS_CODE) tpl_remove_timeobj_set(
  *  max_allowed_value. Now, the alarms at the same date are removed
  *  from the queue by tpl_remove_timeobj_set before being processed.
  */
+extern FUNC(void, OS_CODE) printrl(
+                                   P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg);
+
 FUNC(tpl_status, OS_CODE) tpl_counter_tick(
-    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
+  P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
 {
-    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)  t_obj;
-    /*
-     * A non constant function pointer is used
-     * This violate MISRA rule 104. This is used to call
-     * the action on each alarm. The function pointed is know at conception time,
-     * because only 3 function can be pointed to.
-     */
-    VAR(tpl_expire_func, AUTOMATIC)               expire;
-    VAR(tpl_tick, AUTOMATIC)                      date;
-    /* this variable is added because the same name was used twice in this function for
-      2 different variables, this behavior was dependent on the compiler */
-    VAR(tpl_tick, AUTOMATIC)                      new_date;
-    VAR(tpl_status, AUTOMATIC)                    need_resched = NO_SPECIAL_CODE;
-
-    /*  inc the current tick value of the counter       */
-    counter->current_tick++;
-    /*  if tickperbase is reached, the counter is inc   */
-    if (counter->current_tick == counter->ticks_per_base)
+  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)  t_obj;
+  /*
+   * A non constant function pointer is used
+   * This violate MISRA rule 104. This is used to call
+   * the action on each alarm. The function pointed is know at conception time,
+   * because only 3 function can be pointed to.
+   */
+  VAR(tpl_expire_func, AUTOMATIC)               expire;
+  VAR(tpl_tick, AUTOMATIC)                      date;
+  /* this variable is added because the same name was used twice in this function for
+   2 different variables, this behavior was dependent on the compiler */
+  VAR(tpl_tick, AUTOMATIC)                      new_date;
+  VAR(tpl_status, AUTOMATIC)                    need_resched = NO_SPECIAL_CODE;
+  
+  /*  inc the current tick value of the counter     */
+  counter->current_tick++;
+  /*  if tickperbase is reached, the counter is inc */
+  if (counter->current_tick == counter->ticks_per_base)
+  {
+    date = counter->current_date;
+    date++;
+    if (date > counter->max_allowed_value)
     {
-        date = counter->current_date;
-        date++;
-        if (date > counter->max_allowed_value)
-        {
-            date = 0;
-        }
-        counter->current_date = date;
-        counter->current_tick = 0;
-
-        /*  check if the counter has reached the
-            next alarm activation date                  */
-        t_obj = counter->next_to;
-        
-        if ((t_obj != NULL) && (t_obj->date == date))
-        {
-            /*  the date of the counter has reached
-                the date of the next time obj.
-                extract the time object with this date
-                from the list                           */
-            tpl_remove_timeobj_set(counter);
-            
-            do
-            {
-                tpl_time_obj *next_to = t_obj->next_to; 
-                expire = t_obj->stat_part->expire;
-                need_resched |=
-                    (TRAMPOLINE_STATUS_MASK & expire(t_obj));
-                /*  rearm the alarm if needed   */
-                if (t_obj->cycle != 0)
-                {
-                    /*  if the cycle is not 0,
-                        the new date is computed
-                        by adding the cycle to the current date         */
-                    new_date = t_obj->date + t_obj->cycle;
-                    if (new_date > counter->max_allowed_value)
-                    {
-                        new_date -= counter->max_allowed_value;
-                    }
-                    t_obj->date = new_date;
-                    /*  and the alarm is put back in the alarm queue
-                        of the counter it belongs to                    */
-                    tpl_insert_time_obj(t_obj);
-                }
-                else {
-                    t_obj->state = TIME_OBJ_SLEEP;
-                }
-                /*  get the next one     */
-                t_obj = next_to;
-            } while (t_obj != NULL);
-        }
+      date = 0;
     }
-    return need_resched;
+    counter->current_date = date;
+    counter->current_tick = 0;
+    
+    /*  check if the counter has reached the
+        next alarm activation date                  */
+    t_obj = counter->next_to;
+    
+    if ((t_obj != NULL) && (t_obj->date == date))
+    {
+      /*  the date of the counter has reached
+          the date of the next time obj.
+          extract the time object with this date
+          from the list                             */
+      tpl_remove_timeobj_set(counter);
+      
+      do
+      {
+        /*  get the next one                        */
+        tpl_time_obj *next_to = t_obj->next_to;
+        expire = t_obj->stat_part->expire;
+        need_resched |=
+        (TRAMPOLINE_STATUS_MASK & expire(t_obj));
+        
+        /*  rearm the alarm if needed               */
+        if (t_obj->cycle != 0)
+        {
+          /*  if the cycle is not 0, the new date
+              is computed by adding the cycle to
+              the current date                      */
+          new_date = t_obj->date + t_obj->cycle;
+          if (new_date > counter->max_allowed_value)
+          {
+            new_date -= counter->max_allowed_value;
+          }
+          t_obj->date = new_date;
+          /*  and the alarm is put back in the alarm
+              queue of the counter it belongs to    */
+          tpl_insert_time_obj(t_obj);
+        }
+        else {
+          t_obj->state = TIME_OBJ_SLEEP;
+        }
+        t_obj = next_to;
+      } while (t_obj != NULL);
+    }
+  }
+  return need_resched;
 }
 
 #define OS_STOP_SEC_CODE

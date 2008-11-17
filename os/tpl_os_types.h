@@ -37,7 +37,10 @@
  *
  * See paragraph 13.1, page 48 of OSEK/VDX 2.2.2 spec
  */
+#ifndef STATUSTYPEDEFINED
+#define STATUSTYPEDEFINED
 typedef tpl_status      StatusType;
+#endif
 
 /**
  * @typedef TaskStateType
@@ -46,7 +49,7 @@ typedef tpl_status      StatusType;
  *
  * see paragraph 13.2.1, page 49 of OSEK/VDX 2.2.2 spec
  */
-typedef tpl_exec_state  TaskStateType;
+typedef tpl_proc_state  TaskStateType;
 
 /**
  * @typedef TaskStateRefType
@@ -55,7 +58,7 @@ typedef tpl_exec_state  TaskStateType;
  *
  * see paragraph 13.2.1, page 49 of OSEK/VDX 2.2.2 spec
  */
-typedef P2VAR(tpl_exec_state, TYPEDEF, OS_APPL_DATA)  TaskStateRefType;
+typedef P2VAR(tpl_proc_state, TYPEDEF, OS_APPL_DATA)  TaskStateRefType;
 
 /**
  * @typedef TaskType
