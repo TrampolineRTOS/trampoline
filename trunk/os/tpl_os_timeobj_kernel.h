@@ -137,6 +137,15 @@ struct TPL_COUNTER {
  */
 typedef struct TPL_COUNTER tpl_counter;
 
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+extern VAR(tpl_counter, OS_VAR) SystemCounter_counter_desc;
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 

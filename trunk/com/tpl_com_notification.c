@@ -17,6 +17,7 @@
 #include "tpl_os_application_def.h"
 #include "tpl_os_action.h"
 #include "tpl_os_kernel.h"
+#include "tpl_machine_interface.h"
 #include "tpl_os_definitions.h"
 #include "tpl_com_base_mo.h"
 #include "tpl_com_definitions.h"
@@ -46,6 +47,8 @@ tpl_status tpl_action_setflag(const tpl_action *action)
 void tpl_notify_receiving_mos(tpl_base_receiving_mo *rmo, u8 from)
 {
     tpl_status result = E_OK ;
+    VAR(tpl_proc_id, AUTOMATIC) old_running_id;
+  
     /*
      * Walk along the receiving message object chain and call the notification
      * for each one when the notication exists.
@@ -59,6 +62,15 @@ void tpl_notify_receiving_mos(tpl_base_receiving_mo *rmo, u8 from)
     }
 	
     if ((result & NEED_RESCHEDULING) != 0) {
-        tpl_schedule(from);
+      old_running_id = tpl_running_id;
+        result |= tpl_schedule(from);
     }
+  
+#ifndef WITH_SYSTEM_CALL
+  tpl_switch_context(
+    &(tpl_stat_proc_table[old_running_id]->context),
+    &(tpl_stat_proc_table[tpl_running_id]->context)
+  );
+#endif
+
 }

@@ -1,4 +1,4 @@
-program goil_program "version 1.2.1" :
+program goil_program "version 2.0b" :
   import grammar goil_grammar in "goil_grammar.ggs" ;
 #  import grammar xgoil_grammar in "xgoil_grammar.ggs" ;
 

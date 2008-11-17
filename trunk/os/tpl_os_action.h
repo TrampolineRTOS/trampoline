@@ -43,7 +43,7 @@ struct TPL_ACTION;
 **        error during function return in tpl_action_activate_task
 **********************************************************************/
 typedef P2FUNC(tpl_status, OS_APPL_CODE, tpl_action_func)(
-    P2CONST(struct TPL_ACTION, AUTOMATIC, OS_APPL_CONST)
+  P2CONST(struct TPL_ACTION, AUTOMATIC, OS_APPL_CONST)
 );
 
 /**
@@ -75,10 +75,10 @@ typedef struct TPL_ACTION tpl_action;
  *  structure.
  */
 struct TPL_CALLBACK_ACTION {
-    /*  base action                 */
-    VAR(tpl_action, TYPEDEF)        b_desc;
-    /*  callback function pointer   */
-    VAR(tpl_callback_func, TYPEDEF) callback;
+  /*  base action                 */
+  VAR(tpl_action, TYPEDEF)        b_desc;
+  /*  callback function pointer   */
+  VAR(tpl_callback_func, TYPEDEF) callback;
 };
 
 typedef struct TPL_CALLBACK_ACTION
@@ -91,10 +91,10 @@ tpl_callback_action;
  *  structure.
  */
 struct TPL_TASK_ACTIVATION_ACTION {
-    /*  base action                 */
-    VAR(tpl_action, TYPEDEF)                b_desc;
-    /*  task descriptor pointer     */
-    P2VAR(tpl_task, TYPEDEF, OS_APPL_DATA)  task;
+  /*  base action                 */
+  VAR(tpl_action, TYPEDEF)  b_desc;
+  /*  task descriptor pointer     */
+  VAR(tpl_task_id, TYPEDEF) task_id;
 };
 
 typedef struct TPL_TASK_ACTIVATION_ACTION
@@ -107,12 +107,12 @@ tpl_task_activation_action ;
  *  structure and an event mask
  */
 struct TPL_SETEVENT_ACTION {
-    /*  base action                 */
-    VAR(tpl_action, TYPEDEF)                b_desc;
-    /*  task descriptor pointer     */
-    P2VAR(tpl_task, TYPEDEF, OS_APPL_DATA)  task;
-    /*  event mask                  */
-    VAR(tpl_event_mask, TYPEDEF)            mask;
+  /*  base action                 */
+  VAR(tpl_action, TYPEDEF)      b_desc;
+  /*  task descriptor pointer     */
+  VAR(tpl_task_id, TYPEDEF)     task_id;
+  /*  event mask                  */
+  VAR(tpl_event_mask, TYPEDEF)  mask;
 };
 
 typedef struct TPL_SETEVENT_ACTION
@@ -126,13 +126,13 @@ tpl_setevent_action;
  * Notification functions prototypes
  */
 FUNC(tpl_status, OS_CODE) tpl_action_callback(
-    P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action
+  P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action
 );
 FUNC(tpl_status, OS_CODE) tpl_action_activate_task(
-    P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action
+  P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action
 );
 FUNC(tpl_status, OS_CODE) tpl_action_setevent(
-    P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action
+  P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action
 );
 
 #define OS_STOP_SEC_CODE

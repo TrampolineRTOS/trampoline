@@ -36,6 +36,7 @@ nonterminal <task_attributes>
     ?!@stringset resources
     ?!@stringset events
     ?!@stringset messages
+    ?!@stringset acc_apps
     ?!@timing_prot timing_prot
     ?!@ident_map others ;
 
@@ -75,6 +76,7 @@ rule <task>
     @stringset          resources ;
     @stringset          events ;
     @stringset          messages ;
+    @stringset          acc_apps ;
     @timing_prot        timing_prot ;
     @lstring            desc ;
     @ident_map          others ;
@@ -90,6 +92,7 @@ rule <task>
         resources   := [task resources] ;
         events      := [task events] ;
         messages    := [task messages] ;
+        acc_apps    := [task acc_apps] ;
         timing_prot := [task timing_prot] ;
         desc        := [task desc] ;
         others      := [task others] ;
@@ -101,6 +104,7 @@ rule <task>
         resources := [@stringset emptySet] ;
         events := [@stringset emptySet] ;
         messages := [@stringset emptySet] ;
+        acc_apps := [@stringset emptySet] ;
         timing_prot := [@void_timing_prot new !here] ;
         desc := [@lstring new !"" !here] ;
         others := [@ident_map emptyMap] ;
@@ -113,6 +117,7 @@ rule <task>
             !resources
             !events
             !messages
+            !acc_apps
             !timing_prot
             !others] ;
     end if ;
@@ -126,14 +131,27 @@ rule <task>
         !?resources
         !?events
         !?messages
+        !?acc_apps
         !?timing_prot
         !?others ; 
     $}$ ;
     <description> ?desc ;
     $;$ ;
 
-    task := [@task_obj new !desc !priority !schedule !activation !autostart !resources !events !messages !timing_prot !others] ;
-    [!?tasks put !task_name !task] ;
+  task := [@task_obj new
+    !desc
+    !priority
+    !schedule
+    !activation
+    !autostart
+    !resources
+    !events
+    !messages
+    !acc_apps
+    !timing_prot
+    !others
+  ] ;
+  [!?tasks put !task_name !task] ;
 end rule ;	
 
 rule <task_attributes>
@@ -145,6 +163,7 @@ rule <task_attributes>
     ?!@stringset resources
     ?!@stringset events
     ?!@stringset messages
+    ?!@stringset acc_apps
     ?!@timing_prot timing_prot
     ?!@ident_map others
 :
@@ -260,6 +279,13 @@ rule <task_attributes>
             $}$ ;
         end select ;
         $;$ ;
+    while
+        @lstring app ;
+        $ACCESSING_APPLICATION$ ; $=$ ; $idf$ ?app ; <description> ?* ; $;$ ;
+        if [acc_apps hasKey ![app string]] then
+            warning here : "ACCESSING_APPLICATION " . [app string] . " already defined for TASK " . [task_name string] ;
+        end if ;
+        acc_apps += ![app string] ;
     while
         <free_field> !?others ; <description> ?* ; $;$ ;
     end repeat ;

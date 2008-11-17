@@ -30,40 +30,36 @@ import semantics goil_routines in "goil_routines.ggs" ;
 import semantics goil_types_isr in "goil_types_isr.ggs" ;
 import semantics goil_types_counter in "goil_types_counter.ggs" ;
 
-routine init_avr_prefixes
-    ?!@prefix_map prefix
-:
-    [!?prefix insert_prefix ![@lstring new !"avr_stack" !here]
-              !"stack_zone_of_" !"$STACK_ZONE$"] ;
-    [!?prefix insert_prefix ![@lstring new !"avr_int_context" !here]
-              !"integer_context_of_" !"$EXEC_INTEGER_CONTEXT$"] ;
-#    [!?prefix insert_prefix ![@lstring new !"avr_isr_handler" !here]
-#              !"isr2_handler_of" !"$ISR_HANDLER_NAME$"] ;
-
-
-end routine ;
+#routine init_avr_prefixes
+#    ?!@prefix_map prefix
+#:
+#    [!?prefix insert_prefix ![@lstring new !"avr_stack" !here]
+#              !"stack_zone_of_" !"$STACK_ZONE$"] ;
+#    [!?prefix insert_prefix ![@lstring new !"avr_int_context" !here]
+#              !"integer_context_of_" !"$EXEC_INTEGER_CONTEXT$"] ;
+##    [!?prefix insert_prefix ![@lstring new !"avr_isr_handler" !here]
+##              !"isr2_handler_of" !"$ISR_HANDLER_NAME$"] ;
+#
+#
+#end routine ;
 
 routine generate_target_avr
-    ?@lstring         name
-    ?@ident_map       others
-    ?@prefix_map      p
-    ?@oil_obj         unused exe
-    ?!@string         result
+  ??@lstring   name
+  ??@ident_map others
+  ??@oil_obj   unused exe
+  ?!@string    result
 :
+  doReplace !?result !"$STACK_ZONE$" ![name string]."_stack" ;
+  doReplace !?result !"$EXEC_INTEGER_CONTEXT$" ![name string]."_int_context" ;
 
-    performReplace !p !"avr_stack" ![name string] !?result ;
-    performReplace !p !"avr_int_context" ![name string] !?result ;
-
-    @uint stack_size ;
-    additional_int_key_required !"STACKSIZE" !others !name ?stack_size ;
-    result := [result stringByReplacingStringByString !"$STACK_SIZE$" ![stack_size string]] ;
-
+  @uint stack_size ;
+  additional_int_key_required !"STACKSIZE" !others !name ?stack_size ;
+  doReplace !?result !"$STACK_SIZE$" ![stack_size string] ;
 end routine ;
 
 routine generate_isr_avr
-  ?? @isr_map    isrs
-  ?? @prefix_map p
-  ?! @string     code
+  ??@isr_map isrs
+  ?!@string  code
 :
   @string result := "";
   foreach isrs (@lstring isr_name @isr_obj isr) do
@@ -73,16 +69,15 @@ routine generate_isr_avr
     @string tmp;
     retrieveTemplateString ?tmp !"isr_list_specific";
     #then, replace the interruptHandler name.
-    performReplace !p !"task_name" ![isr_name string] !?tmp;
+    doReplace !?tmp !"$EXEC_NAME$" ![isr_name string] ;
     result .= tmp;
   end foreach ;
-  code := [code stringByReplacingStringByString !"$ISR_LIST$" !result] ;
+  doReplace !?code !"$ISR_LIST$" !result ;
 end routine ;
 
 routine generate_counter_avr
-  ?? @counter_map counters
-  ?? @prefix_map p
-  ?!  @string code
+  ??@counter_map counters
+  ?!@string      code
 :
   @string result := "";
   foreach counters (@lstring counter_name @counter_obj counter) do
@@ -91,12 +86,12 @@ routine generate_counter_avr
     else
         @string tmp;
         retrieveTemplateString ?tmp !"counter_list_specific";
-        performReplace !p !"counter" ![counter_name string] !?tmp;
+        doReplace !?tmp !"$COUNTER$" ![counter_name string]."_counter_desc" ;
         result .= tmp;
     end cast ;
   end foreach ;
 
-  code := [code stringByReplacingStringByString !"$COUNTER_LIST$" !result] ;
+  doReplace !?code !"$COUNTER_LIST$" !result ;
 end routine ;
 
 end semantics ;

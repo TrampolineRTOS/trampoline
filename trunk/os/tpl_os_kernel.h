@@ -90,45 +90,6 @@ typedef u8 tpl_os_state;
  */
 #define OS_UNKNOWN  4
 
-
-/**
- * @def SUSPENDED
- *
- * Task is suspended.
- *
- * @see #tpl_exec_state
- */
-#define SUSPENDED       0x0
-
-/**
- * @def READY
- *
- * Task is ready (to be run, or elected by scheduler).
- *
- * @see #tpl_exec_state
- */
-#define READY           0x1
-
-/**
- * @def RUNNING
- *
- * Task is currently running.
- *
- * @see #tpl_exec_state
- */
-#define RUNNING         0x2
-
-#if (CONFORMANCE_CLASS == CONFORM_ECC1) || (CONFORMANCE_CLASS == CONFORM_ECC2)
-/**
- * @def WAITING
- *
- * Task is waiting
- *
- * @see #tpl_exec_state
- */
-#define WAITING         0x3
-#endif
-
 /**
  * @def DYING
  *
@@ -183,7 +144,7 @@ typedef u8 tpl_os_state;
  *
  * @see #TPL_EXEC_STATIC
  */
-typedef u8 tpl_exec_obj_type;
+typedef u8 tpl_proc_type;
 
 /**
  * @typedef tpl_exec_function
@@ -193,106 +154,7 @@ typedef u8 tpl_exec_obj_type;
  *
  * @see #TPL_EXEC_STATIC
  */
-typedef P2FUNC(void, OS_APPL_CODE, tpl_exec_function)(void);
-
-/**
- * @struct TPL_EXEC_STATIC
- *
- * This is a data structure used to describe the static members of task
- * descriptors or category 2 Interrupt Service Routines. Static means this
- * part of the descriptor can be stored in ROM.
- */
-struct TPL_EXEC_STATIC {
-    VAR(tpl_context, TYPEDEF)       context;            /**< context(s) of
-                                                             the task/isr
-                                                             */
-    VAR(tpl_stack, TYPEDEF)         stack;              /**< stack(s) of the
-                                                             task/isr
-                                                             */
-    CONST(tpl_exec_function, TYPEDEF)
-                                    entry;              /**< function that is
-                                                             the entry point
-                                                             of the task/isr
-                                                             */
-    struct P2VAR(TPL_INTERNAL_RESOURCE, TYPEDEF, OS_APPL_DATA)
-                                    internal_resource;  /**< pointer to an
-                                                             internal resource.
-                                                             NULL if the task
-                                                             does not have an
-                                                             internal resource
-                                                             */
-    CONST(tpl_task_id, TYPEDEF)     id;                 /**< id of task/isr
-                                                             */
-    CONST(tpl_priority, TYPEDEF)    base_priority;      /**< base priority of
-                                                             the task/isr
-                                                             */
-    CONST(tpl_activate_counter, TYPEDEF)
-                                    max_activate_count; /**< max activation
-                                                             count of a
-                                                             task/isr
-                                                             */
-    CONST(tpl_exec_obj_type, TYPEDEF)
-                                    type;               /**< type of the
-                                                             task/isr
-                                                             */
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    P2CONST(tpl_timing_protection, TYPEDEF, OS_APPL_CONST)
-                                    timing_protection;  /**< timing protection
-                                                             configuration
-                                                             (can be NULL
-                                                             if no timing
-                                                             protection is
-                                                             needed)
-                                                             */
-#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-};
-
-/**
- * @typedef tpl_exec_static
- *
- * This is an alias for the #TPL_EXEC_STATIC structure
- *
- * @see #TPL_EXEC_STATIC
- */
-typedef struct TPL_EXEC_STATIC tpl_exec_static;
-
-/**
- * @struct TPL_EXEC_COMMON
- *
- * This structure gathers the common members of executable objects dynamic
- * descriptors
- */
-struct TPL_EXEC_COMMON {
-    P2CONST(tpl_exec_static, TYPEDEF, OS_CONST)
-                                    static_desc;        /**< pointer to static
-                                                             descriptor
-                                                             */
-    struct P2VAR(TPL_RESOURCE, TYPEDEF, OS_APPL_DATA)
-                                    resources;          /**< head of the
-                                                             ressources held
-                                                             */
-    VAR(tpl_activate_counter, TYPEDEF)
-                                    activate_count;     /**< current activate
-                                                             count
-                                                             */
-    VAR(tpl_priority, TYPEDEF)      priority;           /**< current priority
-                                                             */
-    VAR(tpl_exec_state, TYPEDEF)    state;              /**< state (READY,
-                                                             RUNING, ...)
-                                                             */
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    VAR(tpl_bool, TYPEDEF)          activation_allowed;
-#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-};
-
-/**
- * @typedef tpl_exec_common
- *
- * This is an alias for the #TPL_EXEC_COMMON structure.
- *
- * @see #TPL_EXEC_COMMON
- */
-typedef struct TPL_EXEC_COMMON tpl_exec_common;
+typedef P2FUNC(void, OS_APPL_CODE, tpl_proc_function)(void);
 
 /**
  * @typedef tpl_internal_resource
@@ -321,6 +183,100 @@ typedef struct {
 } tpl_internal_resource;
 
 /**
+ * @struct TPL_EXEC_STATIC
+ *
+ * This is a data structure used to describe the static members of task
+ * descriptors or category 2 Interrupt Service Routines. Static means this
+ * part of the descriptor can be stored in ROM.
+ */
+struct TPL_PROC_STATIC {
+    VAR(tpl_context, TYPEDEF)       context;            /**< context(s) of
+                                                             the task/isr
+                                                             */
+    VAR(tpl_stack, TYPEDEF)         stack;              /**< stack(s) of the
+                                                             task/isr
+                                                             */
+    CONST(tpl_proc_function, TYPEDEF)
+                                    entry;              /**< function that is
+                                                             the entry point
+                                                             of the task/isr
+                                                             */
+    CONSTP2VAR(tpl_internal_resource, TYPEDEF, OS_APPL_DATA)
+                                    internal_resource;  /**< pointer to an
+                                                             internal resource.
+                                                             NULL if the task
+                                                             does not have an
+                                                             internal resource
+                                                             */
+    CONST(tpl_task_id, TYPEDEF)     id;                 /**< id of task/isr
+                                                             */
+    CONST(tpl_priority, TYPEDEF)    base_priority;      /**< base priority of
+                                                             the task/isr
+                                                             */
+    CONST(tpl_activate_counter, TYPEDEF)
+                                    max_activate_count; /**< max activation
+                                                             count of a
+                                                             task/isr
+                                                             */
+    CONST(tpl_proc_type, TYPEDEF)   type;               /**< type of the
+                                                             task/isr
+                                                             */
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    P2CONST(tpl_timing_protection, TYPEDEF, OS_APPL_CONST)
+                                    timing_protection;  /**< timing protection
+                                                             configuration
+                                                             (can be NULL
+                                                             if no timing
+                                                             protection is
+                                                             needed)
+                                                             */
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+};
+
+/**
+ * @typedef tpl_exec_static
+ *
+ * This is an alias for the #TPL_EXEC_STATIC structure
+ *
+ * @see #TPL_EXEC_STATIC
+ */
+typedef struct TPL_PROC_STATIC tpl_proc_static;
+
+/**
+ * @struct TPL_PROC
+ *
+ * This structure gathers the common members of executable objects dynamic
+ * descriptors
+ */
+struct TPL_PROC {
+    struct P2VAR(TPL_RESOURCE, TYPEDEF, OS_APPL_DATA)
+                                    resources;          /**< head of the
+                                                             ressources held
+                                                             */
+    VAR(tpl_activate_counter, TYPEDEF)
+                                    activate_count;     /**< current activate
+                                                             count
+                                                             */
+    VAR(tpl_priority, TYPEDEF)      priority;           /**< current priority
+                                                             */
+    VAR(tpl_proc_state, TYPEDEF)    state;              /**< state (READY,
+                                                             RUNNING, ...)
+                                                             */
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    VAR(tpl_bool, TYPEDEF)          activation_allowed;
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+};
+
+/**
+ * @typedef tpl_exec_common
+ *
+ * This is an alias for the #TPL_EXEC_COMMON structure.
+ *
+ * @see #TPL_EXEC_COMMON
+ */
+typedef struct TPL_PROC tpl_proc;
+
+/**
  * @typedef tpl_fifo_state
  *
  * This type gathers a read index and a size for fifo management
@@ -341,7 +297,7 @@ typedef struct {
  * It is the element of the ready list table.
  */
 typedef struct {
-    P2VAR(tpl_exec_common, TYPEDEF, OS_APPL_DATA) *fifo;
+    P2VAR(tpl_proc_id, TYPEDEF, OS_APPL_DATA) fifo;
     VAR(u8, AUTOMATIC) mask;
 } tpl_priority_level;
 
@@ -355,7 +311,7 @@ typedef struct {
  * It is the element of the ready list table.
  */
 typedef struct {
-    P2VAR(tpl_exec_common, TYPEDEF, OS_APPL_DATA) *fifo;
+    P2VAR(tpl_proc_id, TYPEDEF, OS_APPL_DATA) fifo;
     VAR(u8, AUTOMATIC) size;
 } tpl_priority_level;
 
@@ -365,22 +321,46 @@ typedef struct {
 #include "tpl_memmap.h"
 
 /**
- * Currently running executable object. This "executable object" can be a task
- * or an interrupt service routine
+ * Currently running executable object id. This "executable object" can be
+ * a task or an interrupt service routine
  */
-extern P2VAR(tpl_exec_common, OS_VAR, OS_APPL_DATA) tpl_running_obj;
+extern VAR(tpl_proc_id, OS_VAR) tpl_running_id;
 
 /**
- * the exec object that just lost the CPU
- */
-extern P2VAR(tpl_exec_common, OS_VAR, OS_APPL_DATA) tpl_old_running_obj;
-
-/*
  * Internal RES_SCHEDULER resource
  */
 extern VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER;
 
+/**
+ * Static descriptor of the idle task
+ */
+extern CONST(tpl_proc_static, OS_VAR) idle_task_static;
 
+/**
+ * Dynamic descriptor of the idle task
+ */
+extern VAR(tpl_proc, OS_VAR) idle_task;
+
+/**
+ * @def IDLE_TASK_ID
+ *
+ * Id of the Idle task
+ */
+#define IDLE_TASK_ID  (TASK_COUNT+ISR_COUNT)
+
+/**
+ * Arrays of all processes static and dynamic descriptors.
+ *
+ * Index in this array correspond to the #TaskType of the task.
+ * The size of these tables are static and known at compile time
+ * The last element of these arrays is the idle task descriptor.
+ */
+extern CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)
+  tpl_stat_proc_table[TASK_COUNT+ISR_COUNT+1];
+            
+extern CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)
+  tpl_dyn_proc_table[TASK_COUNT+ISR_COUNT+1];
+            
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -414,23 +394,51 @@ FUNC(tpl_status, OS_CODE) tpl_schedule_from_idle(void);
 
 FUNC(tpl_status, OS_CODE) tpl_schedule_from_waiting(void);
 
-FUNC(void, OS_CODE) tpl_init_exec_object(
-    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) exec_obj);
+FUNC(void, OS_CODE) tpl_init_proc(
+    CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
-FUNC(void, OS_CODE) tpl_put_preempted_exec_object(
-    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) exec_obj);
+FUNC(void, OS_CODE) tpl_put_preempted_proc(
+    CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
-FUNC(void, OS_CODE) tpl_put_new_exec_object(
-    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) exec_obj);
+FUNC(void, OS_CODE) tpl_put_new_proc(
+    CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 FUNC(void, OS_CODE) tpl_init_os(
     CONST(tpl_application_mode, AUTOMATIC) app_mode);
 
 FUNC(void, OS_CODE) tpl_get_internal_resource(
-    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) a_task);
+    CONST(tpl_proc_id, AUTOMATIC) task_id);
 
 FUNC(void, OS_CODE) tpl_release_internal_resource(
-    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) a_task);
+    CONST(tpl_proc_id, AUTOMATIC) task_id);
+
+/**
+ * @internal
+ *
+ * Low level fonction for task activation. This functions is used
+ * internally by tpl_activate_task_service and by occurences that
+ * will lead to task activation, ie alarm, schedule table expiry
+ * point (if Autosar is on), message and so on.
+ *
+ * @param   a_task  pointer to the task structure of the task to activate.
+ */
+FUNC(tpl_status, OS_CODE) tpl_activate_task(
+    CONST(tpl_task_id, AUTOMATIC) task_id);
+
+/**
+ * @internal
+ *
+ * Low level fontion for event setting. This functions is used
+ * internally by tpl_set_event_service and by occurences that
+ * will lead to event settings ie alarm, schedule table expiry
+ * point (if Autosar is on), message and so on.
+ *
+ * @param   a_task          pointer to the task structure of the target task.
+ * @param   incoming_event  the event mask.
+ */
+FUNC(tpl_status, OS_CODE) tpl_set_event(
+    CONST(tpl_task_id, AUTOMATIC)     task_id,
+    CONST(tpl_event_mask, AUTOMATIC)  incoming_event);
 
 
 #define OS_STOP_SEC_CODE

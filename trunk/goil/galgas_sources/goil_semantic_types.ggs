@@ -81,6 +81,7 @@ class @alarm_obj extends @oil_obj {
     @lstring        counter_name ;
     @action_obj     action_params ;
     @autostart_obj  autostart_params ;
+    @stringset      acc_apps ;
 }
 
 map @alarm_map {
@@ -97,6 +98,7 @@ map @alarm_map {
 abstract class @base_mess extends @oil_obj {
     @action_obj notification ;
     @action_obj notificationerror ;
+    @stringset  acc_apps ;
     @ident_map other_fields;
 }
 
@@ -106,7 +108,7 @@ abstract class @mess_prop_obj {
     @location location ;
     abstract method s_mess !@lstring sd ;
     abstract method generate
-        ?@prefix_map     p
+#        ?@prefix_map     p
         ?@lstring        name 
         ?@base_mess      mess
         ?@message_map    messages
@@ -114,7 +116,7 @@ abstract class @mess_prop_obj {
         !@string         h_res
         !@string         i_res ;
     method generate_notif
-        ?@prefix_map p
+#        ?@prefix_map p
         ?@lstring    name
         ?@base_mess  mess 
         ?!@string    h_res
@@ -124,15 +126,15 @@ abstract class @mess_prop_obj {
 
         # get the notification
         notif := [mess notification] ;
-        [notif generate !p !name !"" !"notif_ptr" !?h_res !?i_res] ;
+        [notif generate !name !"" !"$NOTIFICATION_PTR$" !?h_res !?i_res] ;
 
         # get the error notification
         notif := [mess notificationerror] ;
-        [notif generate !p !name !"error_" !"error_notif_ptr" !?h_res !?i_res] ;
+        [notif generate !name !"_error" !"$NOTIFICATION_PTR$" !?h_res !?i_res] ;
     end method ;
 
     method generate_dest_list
-        ?@prefix_map     p
+#        ?@prefix_map     p
         ?@lstring        name
         ?@lstring        sendingmessage
         ?@ident_list_map dests
@@ -147,7 +149,7 @@ abstract class @mess_prop_obj {
         foreach dest_list (@lstring obj) while notfound do
 #            message [obj string]."\n" ;
             if nextone then
-                performReplace !p !"target_ptr" ![obj string] !?res ;
+                doReplace !?res !"$TARGET_PTR$" ![obj string]."_message" ;
                 notfound := false ;
             end if ;
             if [obj string] == [name string] then
@@ -155,7 +157,7 @@ abstract class @mess_prop_obj {
             end if ; 
         end foreach ;
         if notfound then
-            res := [res stringByReplacingStringByString !"$TARGET_PTR$" !"NULL_PTR"] ;
+            doReplace !?res !"$TARGET_PTR$" !"NULL_PTR" ;
         end if ;
     end method ;
 }
@@ -173,57 +175,53 @@ map @message_map {
 
 abstract class @filter_prop_obj {
     abstract method generate
-        ?@prefix_map p
         ?@lstring    name
         ?!@string    res ;
     method base_generate
-        ?@prefix_map p
         ?@lstring    name
         ?!@string    res :
 
-        performReplace !p !"msg_name"    ![name string]       !?res ;
-        performReplace !p !"filter"      ![name string]       !?res ;
-        performReplace !p !"filter_ptr"  ![name string]       !?res ;
+        doReplace !?res !"$MESSAGE_NAME$" ![name string] ;
+        doReplace !?res !"$FILTER$" ![name string]."_filter" ;
+        doReplace !?res !"$FILTER_PTR$" !"&".[name string]."_filter" ;
     end method ;        
 }
 
 class @void_filter extends @filter_prop_obj {
     override method generate
-        ?@prefix_map unused p
-        ?@lstring    unused name
+        ?@lstring    name
         ?!@string    res :
 
-        res := [res stringByReplacingStringByString !"$FILTER_PTR$" !"NULL_PTR"] ;
-    end method ;
+        doReplace !?res !"$FILTER_PTR$" !"NULL_PTR" ;
+        [self base_generate !name !?res] ;
+   end method ;
 }
 
 class @always_filter extends @filter_prop_obj {
     override method generate
-        ?@prefix_map p
         ?@lstring    name
         ?!@string    res :
 
         @string f_res ;
         retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
-        [self base_generate !p !name !?res] ;
-        performReplace !p !"filter_func" !"tpl_filter_always" !?res ;
-        performReplace !p !"filter_kind" !"Always"            !?res ;
+        [self base_generate !name !?res] ;
+        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_always" ;
+        doReplace !?res !"$FILTER_KIND$" !"Always" ;
     end method ;
 }
 
 class @never_filter extends @filter_prop_obj {
     override method generate
-        ?@prefix_map p
         ?@lstring    name
         ?!@string    res :
 
         @string f_res ;
         retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
-        [self base_generate !p !name !?res] ;
-        performReplace !p !"filter_func" !"tpl_filter_never" !?res ;
-        performReplace !p !"filter_kind" !"Never"            !?res ;
+        [self base_generate !name !?res] ;
+        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_never" ;
+        doReplace !?res !"$FILTER_KIND$" !"Never" ;
     end method ;
 }
 
@@ -231,7 +229,6 @@ class @maskednewequalsx_filter extends @filter_prop_obj {
     @luint64 mask ;
     @luint64 x ;
     override method generate
-        ?@prefix_map unused p
         ?@lstring    unused name
         ?!@string    unused res :
 
@@ -242,7 +239,6 @@ class @maskednewdiffersx_filter extends @filter_prop_obj {
     @luint64 mask ;
     @luint64 x ;
     override method generate
-        ?@prefix_map unused p
         ?@lstring    unused name
         ?!@string    unused res :
 
@@ -251,38 +247,35 @@ class @maskednewdiffersx_filter extends @filter_prop_obj {
 
 class @newisequal_filter extends @filter_prop_obj {
     override method generate
-        ?@prefix_map p
         ?@lstring    name
         ?!@string    res :
 
         @string f_res ;
         retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
-        [self base_generate !p !name !?res] ;
-        performReplace !p !"filter_func" !"tpl_filter_new_is_equal" !?res ;
-        performReplace !p !"filter_kind" !"New is Equal"            !?res ;
+        [self base_generate !name !?res] ;
+        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_new_is_equal" ;
+        doReplace !?res !"$FILTER_KIND$" !"New is Equal" ;
     end method ;
 }
 
 class @newisdifferent_filter extends @filter_prop_obj {
     override method generate
-        ?@prefix_map p
         ?@lstring    name
         ?!@string    res :
 
         @string f_res ;
         retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
-        [self base_generate !p !name !?res] ;
-        performReplace !p !"filter_func" !"tpl_filter_new_is_different" !?res ;
-        performReplace !p !"filter_kind" !"New is Different"            !?res ;
+        [self base_generate !name !?res] ;
+        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_new_is_different" ;
+        doReplace !?res !"$FILTER_KIND$" !"New is Different" ;
     end method ;
 }
 
 class @maskednewequalsmaskedold_filter extends @filter_prop_obj {
     @luint64 mask ;
     override method generate
-        ?@prefix_map unused p
         ?@lstring    unused name
         ?!@string    unused res :
 
@@ -292,7 +285,6 @@ class @maskednewequalsmaskedold_filter extends @filter_prop_obj {
 class @maskednewdiffersmaskedold_filter extends @filter_prop_obj {
     @luint64 mask ;
     override method generate
-        ?@prefix_map unused p
         ?@lstring    unused name
         ?!@string    unused res :
 
@@ -303,7 +295,6 @@ class @newiswithin extends @filter_prop_obj {
     @luint64 min ;
     @luint64 max ;
     override method generate
-        ?@prefix_map unused p
         ?@lstring    unused name
         ?!@string    unused res :
 
@@ -314,7 +305,6 @@ class @newisoutside extends @filter_prop_obj {
     @luint64 min ;
     @luint64 max ;
     override method generate
-        ?@prefix_map unused p
         ?@lstring    unused name
         ?!@string    unused res :
 
@@ -323,61 +313,57 @@ class @newisoutside extends @filter_prop_obj {
 
 class @newisgreater_filter extends @filter_prop_obj {
     override method generate
-        ?@prefix_map p
         ?@lstring    name
         ?!@string    res :
 
         @string f_res ;
         retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
-        [self base_generate !p !name !?res] ;
-        performReplace !p !"filter_func" !"tpl_filter_new_is_greater" !?res ;
-        performReplace !p !"filter_kind" !"New is Greater"            !?res ;
+        [self base_generate !name !?res] ;
+        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_new_is_greater" ;
+        doReplace !?res !"$FILTER_KIND$" !"New is Greater" ;
     end method ;
 }
 
 class @newislessorequal_filter extends @filter_prop_obj {
     override method generate
-        ?@prefix_map p
         ?@lstring    name
         ?!@string    res :
 
         @string f_res ;
         retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
-        [self base_generate !p !name !?res] ;
-        performReplace !p !"filter_func" !"tpl_filter_new_is_less_or_equal" !?res ;
-        performReplace !p !"filter_kind" !"New is Less or Equal"            !?res ;
+        [self base_generate !name !?res] ;
+        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_new_is_less_or_equal" ;
+        doReplace !?res !"$FILTER_KIND$" !"New is Less or Equal" ;
     end method ;
 }
 
 class @newisless_filter extends @filter_prop_obj {
     override method generate
-        ?@prefix_map p
         ?@lstring    name
         ?!@string    res :
 
         @string f_res ;
         retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
-        [self base_generate !p !name !?res] ;
-        performReplace !p !"filter_func" !"tpl_filter_new_is_less" !?res ;
-        performReplace !p !"filter_kind" !"New is Less"            !?res ;
+        [self base_generate !name !?res] ;
+        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_new_is_less" ;
+        doReplace !?res !"$FILTER_KIND$" !"New is Less" ;
     end method ;
 }
 
 class @newisgreaterorequal_filter extends @filter_prop_obj {
     override method generate
-        ?@prefix_map p
         ?@lstring    name
         ?!@string    res :
 
         @string f_res ;
         retrieveTemplateString ?f_res !"filter_noparam" ;
         res := f_res . res ;
-        [self base_generate !p !name !?res] ;
-        performReplace !p !"filter_func" !"tpl_filter_new_is_greater_or_equal" !?res ;
-        performReplace !p !"filter_kind" !"New is Greater or Equal"            !?res ;
+        [self base_generate !name !?res] ;
+        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_new_is_greater_or_equal" ;
+        doReplace !?res !"$FILTER_KIND$" !"New is Greater or Equal" ;
     end method ;
 }
 
@@ -385,7 +371,6 @@ class @oneeveryn_filter extends @filter_prop_obj {
     @luint64 period ;
     @luint64 offset ;
     override method generate
-        ?@prefix_map unused p
         ?@lstring    unused name
         ?!@string    unused res :
 
@@ -397,7 +382,6 @@ abstract class @link_obj {}
 class @void_mess_prop extends @mess_prop_obj {
     override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
     override method generate
-        ?@prefix_map     unused p
         ?@lstring        unused name 
         ?@base_mess      unused mess
         ?@message_map    unused messages
@@ -414,7 +398,6 @@ class @ssi_mess_prop extends @mess_prop_obj {
     @lstring cdatatype ;
     override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
     override method generate
-        ?@prefix_map     p
         ?@lstring        name 
         ?@base_mess      unused mess
         ?@message_map    unused messages
@@ -424,14 +407,14 @@ class @ssi_mess_prop extends @mess_prop_obj {
 
         h_res := "" ;
         retrieveTemplateString ?i_res !"message_ssi" ;
-        performReplace !p !"msg_name" ![name string] !?i_res ;
-        performReplace !p !"msg" ![name string] !?i_res ;
+        doReplace !?i_res !"$MESSAGE_NAME$" ![name string] ;
+        doReplace !?i_res !"$MESSAGE$" ![name string]."_message" ;
         if [dests hasKey ![name string]] then
             @ident_list d_mess_list ;
             [dests get !name ?d_mess_list] ;
             @lstring target ;
             [d_mess_list first ?target] ;
-            performReplace !p !"target" ![target string] !?i_res ;
+            doReplace !?i_res !"$TARGET$" ![target string]."_message" ;
         end if ;
     end method ;
 }
@@ -446,7 +429,6 @@ class @sse_mess_prop extends @mess_prop_obj {
     @lstring networkmessage ;
     override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
     override method generate
-        ?@prefix_map     unused p
         ?@lstring        unused name 
         ?@base_mess      unused mess
         ?@message_map    unused messages
@@ -467,7 +449,6 @@ class @sde_mess_prop extends @mess_prop_obj {
     @lstring networkmessage ;
     override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
     override method generate
-        ?@prefix_map     unused p
         ?@lstring        unused name 
         ?@base_mess      unused mess
         ?@message_map    unused messages
@@ -483,7 +464,6 @@ class @sde_mess_prop extends @mess_prop_obj {
 class @szi_mess_prop extends @mess_prop_obj {
     override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
     override method generate
-        ?@prefix_map     p
         ?@lstring        name 
         ?@base_mess      unused mess
         ?@message_map    unused messages
@@ -493,14 +473,14 @@ class @szi_mess_prop extends @mess_prop_obj {
 
         h_res := "" ;
         retrieveTemplateString ?i_res !"message_szi" ;
-        performReplace !p !"msg_name" ![name string] !?i_res ;
-        performReplace !p !"msg" ![name string] !?i_res ;
+        doReplace !?i_res !"$MESSAGE_NAME$" ![name string] ;
+        doReplace !?i_res !"$MESSAGE$" ![name string]."_message" ;
         if [dests hasKey ![name string]] then
             @ident_list d_mess_list ;
             [dests get !name ?d_mess_list] ;
             @lstring target ;
             [d_mess_list first ?target] ;
-            performReplace !p !"target" ![target string] !?i_res ;
+            doReplace !?i_res !"$TARGET$" ![target string]."_message" ;
         end if ;
     end method ;
 }
@@ -511,7 +491,6 @@ class @sze_mess_prop extends @mess_prop_obj {
     @lstring networkmessage ;
     override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
     override method generate
-        ?@prefix_map     unused p
         ?@lstring        unused name 
         ?@base_mess      unused mess
         ?@message_map    unused messages
@@ -528,7 +507,6 @@ class @rzi_mess_prop extends @mess_prop_obj {
     @lstring sendingmessage ;
     override method s_mess !@lstring sd : sd := sendingmessage ; end method ;
     override method generate
-        ?@prefix_map     p
         ?@lstring        name 
         ?@base_mess      mess
         ?@message_map    unused messages
@@ -538,14 +516,14 @@ class @rzi_mess_prop extends @mess_prop_obj {
 
         h_res := "" ;
         retrieveTemplateString ?i_res !"message_rzi" ;
-        performReplace !p !"msg_name" ![name string] !?i_res ;
-        performReplace !p !"msg" ![name string] !?i_res ;
+        doReplace !?i_res !"$MESSAGE_NAME$" ![name string] ;
+        doReplace !?i_res !"$MESSAGE$" ![name string]."_message" ;
 
         # Add the notification structures if any
-        [self generate_notif !p !name !mess !?h_res !?i_res] ;
+        [self generate_notif !name !mess !?h_res !?i_res] ;
 
         # Add the destination message chaining
-        [self generate_dest_list !p !name !sendingmessage !dests !?i_res] ;
+        [self generate_dest_list !name !sendingmessage !dests !?i_res] ;
 
     end method ;
 }
@@ -556,7 +534,6 @@ class @rze_mess_prop extends @mess_prop_obj {
     @lstring networkmessage ;
     override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
     override method generate
-        ?@prefix_map unused p
         ?@lstring        unused name 
         ?@base_mess      unused mess
         ?@message_map    unused messages
@@ -575,7 +552,6 @@ class @rui_mess_prop extends @mess_prop_obj {
     @basic_type initialvalue ;
     override method s_mess !@lstring sd : sd := sendingmessage ; end method ;
     override method generate
-        ?@prefix_map     p
         ?@lstring        name 
         ?@base_mess      mess
         ?@message_map    messages
@@ -585,18 +561,18 @@ class @rui_mess_prop extends @mess_prop_obj {
 
         h_res := "" ;
         retrieveTemplateString ?i_res !"message_rui" ;
-        performReplace !p !"msg_name" ![name string] !?i_res ;
-        performReplace !p !"msg"      ![name string] !?i_res ;
-        performReplace !p !"msg_buf"  ![name string] !?i_res ;
+        doReplace !?i_res !"$MESSAGE_NAME$" ![name string] ;
+        doReplace !?i_res !"$MESSAGE$" ![name string]."_message" ;
+        doReplace !?i_res !"$BUFFER$"  ![name string]."_buffer" ;
 
         # Add the filter structures if any
-        [filter generate !p !name !?i_res] ;
+        [filter generate !name !?i_res] ;
 
         # Add the notification structures if any
-        [self generate_notif !p !name !mess !?h_res !?i_res] ;
+        [self generate_notif !name !mess !?h_res !?i_res] ;
 
         # Add the destination message chaining
-        [self generate_dest_list !p !name !sendingmessage !dests !?i_res] ;
+        [self generate_dest_list !name !sendingmessage !dests !?i_res] ;
 
         # Add the size of the source message object
         @message_obj sender ;
@@ -604,12 +580,12 @@ class @rui_mess_prop extends @mess_prop_obj {
         @mess_prop_obj prop := [sender messageproperty] ;
         cast prop :
         when == @ssi_mess_prop ssi do
-            i_res := [i_res stringByReplacingStringByString !"$CTYPE$" ![[ssi cdatatype] string]] ;
-            i_res := [i_res stringByReplacingStringByString !"$SIZE$" !"sizeof(".[[ssi cdatatype] string].")"];
+            doReplace !?i_res !"$CTYPE$" ![[ssi cdatatype] string] ;
+            doReplace !?i_res !"$SIZE$" !"sizeof(".[[ssi cdatatype] string].")";
             @string iv ;
             [initialvalue string ?iv] ;
             if iv != "" then iv := " = ".iv ; end if ;
-            i_res := [i_res stringByReplacingStringByString !"$INITIALVALUE$" !iv] ;
+            doReplace !?i_res !"$INITIALVALUE$" !iv ;
         else
             error here : "Incompatible sending message object" ;
         end cast ;
@@ -623,7 +599,6 @@ class @rqi_mess_prop extends @mess_prop_obj {
     @luint64 queuesize ;
     override method s_mess !@lstring sd : sd := sendingmessage ; end method ;
     override method generate
-        ?@prefix_map     p
         ?@lstring        name 
         ?@base_mess      mess
         ?@message_map    messages
@@ -633,18 +608,18 @@ class @rqi_mess_prop extends @mess_prop_obj {
 
         h_res := "" ;
         retrieveTemplateString ?i_res !"message_rqi" ;
-        performReplace !p !"msg_name" ![name string] !?i_res ;
-        performReplace !p !"msg"      ![name string] !?i_res ;
-        performReplace !p !"msg_buf"  ![name string] !?i_res ;
+        doReplace !?i_res !"$MESSAGE_NAME$" ![name string] ;
+        doReplace !?i_res !"$MESSAGE$" ![name string]."_message" ;
+        doReplace !?i_res !"$BUFFER$"  ![name string]."_buffer" ;
 
        # Add the filter structures if any
-        [filter generate !p !name !?i_res] ;
+        [filter generate !name !?i_res] ;
 
         # Add the notification structures if any
-        [self generate_notif !p !name !mess !?h_res !?i_res] ;
+        [self generate_notif !name !mess !?h_res !?i_res] ;
 
         # Add the destination message chaining
-        [self generate_dest_list !p !name !sendingmessage !dests !?i_res] ;
+        [self generate_dest_list !name !sendingmessage !dests !?i_res] ;
 
         # Add the size of the source message object
         @message_obj sender ;
@@ -652,16 +627,16 @@ class @rqi_mess_prop extends @mess_prop_obj {
         @mess_prop_obj prop := [sender messageproperty] ;
         cast prop :
         when == @ssi_mess_prop ssi do
-            i_res := [i_res stringByReplacingStringByString !"$CTYPE$" ![[ssi cdatatype] string]] ;
+            doReplace !?i_res !"$CTYPE$" ![[ssi cdatatype] string] ;
         else
             error here : "Incompatible sending message object" ;
         end cast ;
 
         # Add the size of the queue
-        performReplace !p !"queue_size"  ![[queuesize uint64] string] !?i_res ;
+        doReplace !?i_res !"$QUEUE_SIZE$"  ![[queuesize uint64] string] ;
 
         # Add the dynamic queue
-        performReplace !p !"dyn_queue"  ![name string] !?i_res ;
+        doReplace !?i_res !"$DYN_QUEUE$"  ![name string]."_dyn_queue" ;
 
     end method ;
 }
@@ -673,7 +648,6 @@ class @rue_mess_prop extends @mess_prop_obj {
     @basic_type initialvalue ;
     override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
     override method generate
-        ?@prefix_map     p
         ?@lstring        name 
         ?@base_mess      mess
         ?@message_map    unused messages
@@ -683,27 +657,27 @@ class @rue_mess_prop extends @mess_prop_obj {
 
         h_res := "" ;
         retrieveTemplateString ?i_res !"message_rue" ;
-        performReplace !p !"msg_name" ![name string] !?i_res ;
-        performReplace !p !"msg"      ![name string] !?i_res ;
-        performReplace !p !"msg_buf"  ![name string] !?i_res ;
+        doReplace !?i_res !"$MESSAGE_NAME$" ![name string] ;
+        doReplace !?i_res !"$MESSAGE$" ![name string]."_message" ;
+        doReplace !?i_res !"$BUFFER$"  ![name string]."_buffer" ;
 
         # Add the filter structures if any
-        [filter generate !p !name !?i_res] ;
+        [filter generate !name !?i_res] ;
 
         # Add the notification structures if any
-        [self generate_notif !p !name !mess !?h_res !?i_res] ;
+        [self generate_notif !name !mess !?h_res !?i_res] ;
 
         # Add the destination message chaining
         #[self generate_dest_list !p !name !sendingmessage !dests !?i_res] ;
 
         # Add the size and the C type of the message object
-        i_res := [i_res stringByReplacingStringByString !"$CTYPE$" ![cdatatype string]] ;
-        i_res := [i_res stringByReplacingStringByString !"$SIZE$" !"sizeof(".[cdatatype string].")"];
+        doReplace !?i_res !"$CTYPE$" ![cdatatype string] ;
+        doReplace !?i_res !"$SIZE$" !"sizeof(".[cdatatype string].")" ;
         @string iv ;
         [initialvalue string ?iv] ;
         if iv != "" then iv := " = ".iv ; end if ;
-        i_res := [i_res stringByReplacingStringByString !"$INITIALVALUE$" !iv] ;
-        i_res := [i_res stringByReplacingStringByString !"$TARGET_PTR$" !"NULL_PTR"] ;
+        doReplace !?i_res !"$INITIALVALUE$" !iv ;
+        doReplace !?i_res !"$TARGET_PTR$" !"NULL_PTR" ;
     end method ;
 }
 
@@ -715,7 +689,6 @@ class @rqe_mess_prop extends @mess_prop_obj {
     @basic_type initialvalue ;
     override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
     override method generate
-        ?@prefix_map     unused p
         ?@lstring        unused name 
         ?@base_mess      unused mess
         ?@message_map    unused messages
@@ -733,7 +706,6 @@ class @rde_mess_prop extends @mess_prop_obj {
     @basic_type initialvalue ;
     override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
     override method generate
-        ?@prefix_map     unused p
         ?@lstring        unused name 
         ?@base_mess      unused mess
         ?@message_map    unused messages
@@ -751,7 +723,6 @@ class @rzs_mess_prop extends @mess_prop_obj {
     @basic_type initialvalue ;
     override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
     override method generate
-        ?@prefix_map     unused p
         ?@lstring        unused name 
         ?@base_mess      unused mess
         ?@message_map    unused messages
@@ -779,18 +750,13 @@ class @nmcallback_action extends @action_obj {
     @lstring function_name ;
     @luint64 ipdu ;
     override method generate
-        ?@prefix_map p
         ?@lstring    unused name
         ?@string     unused err
         ?@string     key
         ?!@string    unused h_res
         ?!@string    i_res :
 
-        @lstring lkey := [@lstring new !key !here] ;
-        @string prefix ;
-        @string tag_to_rep ;
-        [p prefix !lkey ?prefix ?tag_to_rep] ;
-        i_res := [i_res stringByReplacingStringByString !tag_to_rep !"NULL_PTR"] ;
+        doReplace !?i_res !key !"NULL_PTR" ;
     end method ;
 }
 

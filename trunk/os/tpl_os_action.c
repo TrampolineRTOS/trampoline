@@ -37,15 +37,15 @@
 FUNC(tpl_status, OS_CODE) tpl_action_callback(
     P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action)
 {
-    /*
-     * A tpl_action * is cast to a tpl_callback_action *
-     * This violate MISRA rule 45. However, since the
-     * first member of tpl_callback_action is a tpl_action
-     * This cast behaves correctly.
-     */
-    ((P2CONST(tpl_callback_action, AUTOMATIC, OS_APPL_CONST))action)->callback();
+  /*
+   * A tpl_action * is cast to a tpl_callback_action *
+   * This violate MISRA rule 45. However, since the
+   * first member of tpl_callback_action is a tpl_action
+   * This cast behaves correctly.
+   */
+  ((P2CONST(tpl_callback_action, AUTOMATIC, OS_APPL_CONST))action)->callback();
 
-    return E_OK;
+  return E_OK;
 }
 
 /**
@@ -55,15 +55,15 @@ FUNC(tpl_status, OS_CODE) tpl_action_activate_task(
     P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action
 )
 {
-    /*
-     * A tpl_action * is cast to a tpl_task_activation_action *
-     * This violate MISRA rule 45. However, since the
-     * first member of tpl_task_activation_action is a tpl_action
-     * This cast behaves correctly.
-     */
-    return tpl_activate_task(
-        ((P2CONST(tpl_task_activation_action, AUTOMATIC, OS_APPL_CONST))action)->task
-    );
+  /*
+   * A tpl_action * is cast to a tpl_task_activation_action *
+   * This violate MISRA rule 45. However, since the
+   * first member of tpl_task_activation_action is a tpl_action
+   * This cast behaves correctly.
+   */
+  return tpl_activate_task(
+      ((P2CONST(tpl_task_activation_action, AUTOMATIC, OS_APPL_CONST))action)->task_id
+  );
 }
 
 /**
@@ -72,16 +72,16 @@ FUNC(tpl_status, OS_CODE) tpl_action_activate_task(
 FUNC(tpl_status, OS_CODE) tpl_action_setevent(
     P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action)
 {
-    /*
-     * A tpl_action * is cast to a tpl_setevent_action *
-     * This violate MISRA rule 45. However, since the
-     * first member of tpl_setevent_action is a tpl_action
-     * This cast behaves correctly.
-     */
-    return tpl_set_event(
-        ((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->task,
-        ((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->mask
-    );
+  /*
+   * A tpl_action * is cast to a tpl_setevent_action *
+   * This violate MISRA rule 45. However, since the
+   * first member of tpl_setevent_action is a tpl_action
+   * This cast behaves correctly.
+   */
+  return tpl_set_event(
+      ((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->task_id,
+      ((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->mask
+  );
 }
 
 #define OS_STOP_SEC_CODE

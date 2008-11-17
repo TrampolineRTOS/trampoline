@@ -56,7 +56,7 @@ class @void_timing_prot extends @timing_prot {
         ?@resource_map unused rez
     :
         result := "" ;
-        st_name := "NULL_PTR" ;
+        st_name := "NULL" ;
     end method ;
 }
 
@@ -69,7 +69,7 @@ class @false_timing_prot extends @timing_prot {
         ?@resource_map unused rez
     :
         result := "" ;
-        st_name := "NULL_PTR" ;
+        st_name := "NULL" ;
     end method ;
 }
 
@@ -132,7 +132,7 @@ class @timing_prot_task extends @timing_prot {
         if [rez count] > 0 then
             result := [result stringByReplacingStringByString !"$REZ_LOCK_TIME$" !table_name] ;
         else
-            result := [result stringByReplacingStringByString !"$REZ_LOCK_TIME$" !"NULL_PTR"] ;
+            result := [result stringByReplacingStringByString !"$REZ_LOCK_TIME$" !"NULL"] ;
         end if ;
 
         st_name := "&".st_name ;
@@ -202,7 +202,7 @@ class @timing_prot_isr extends @timing_prot {
         if [rez count] > 0 then
             result := [result stringByReplacingStringByString !"$REZ_LOCK_TIME$" !table_name] ;
         else
-            result := [result stringByReplacingStringByString !"$REZ_LOCK_TIME$" !"NULL_PTR"] ;
+            result := [result stringByReplacingStringByString !"$REZ_LOCK_TIME$" !"NULL"] ;
         end if ;
 
         st_name := "&".st_name ;

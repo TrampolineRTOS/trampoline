@@ -24,6 +24,12 @@
 
 #include "tpl_os_rez.h"
 #include "tpl_os_rez_kernel.h"
+#include "tpl_os_definitions.h"
+
+#ifdef WITH_SYSTEM_CALL
+#include "tpl_os_service_ids.h"
+#include "tpl_dispatch.h"
+#endif
 
 #ifdef WITH_AUTOSAR
 #include "tpl_as_isr.h"
@@ -40,7 +46,7 @@
  *
  * see paragraph 13.4.4 page 59 of OSEK/VDX 2.2.2 spec
  */
-CONST(ResourceType, OS_CONST) RES_SCHEDULER = RESOURCE_COUNT;
+CONST(ResourceType, OS_CONST) RES_SCHEDULER = RESOURCE_COUNT - 1;
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -51,21 +57,23 @@ CONST(ResourceType, OS_CONST) RES_SCHEDULER = RESOURCE_COUNT;
 /*
  * OSEK/VDX API services
  */
-FUNC(StatusType, OS_CODE) GetResource(
+ASM FUNC(StatusType, OS_CODE) GetResource(
     CONST(ResourceType, AUTOMATIC) res_id)
 {
 #ifdef WITH_SYSTEM_CALL
+    TPL_SYSCALL(OSServiceId_GetResource)
 #else
     return tpl_get_resource_service(res_id);
 #endif
 }
 
-FUNC(StatusType, OS_CODE) ReleaseResource(
+ASM FUNC(StatusType, OS_CODE) ReleaseResource(
     CONST(ResourceType, AUTOMATIC) res_id)
 {
 #ifdef WITH_SYSTEM_CALL
+    TPL_SYSCALL(OSServiceId_ReleaseResource)
 #else
-    return tpl_release_resource_service(res_id);
+    return OSEK_STATUS_MASK & tpl_release_resource_service(res_id);
 #endif
 }
 

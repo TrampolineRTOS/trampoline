@@ -44,55 +44,60 @@
  * tpl_set_event_service.
  */
 FUNC(tpl_status, OS_CODE) tpl_set_event_service(
-    CONST(tpl_task_id, AUTOMATIC)       task_id,
-    CONST(tpl_event_mask, AUTOMATIC)    event)
+  CONST(tpl_task_id, AUTOMATIC)       task_id,
+  CONST(tpl_event_mask, AUTOMATIC)    event)
 {
-    VAR(tpl_status, AUTOMATIC) result = E_OK;
-
-    /* check interrupts are not disabled by user    */
-    CHECK_INTERRUPT_LOCK(result)
-
-    LOCK_WHEN_HOOK()
-
-    STORE_SERVICE(OSServiceId_SetEvent)
-    STORE_TASK_ID(task_id)
-    STORE_EVENT_MASK(event)
-
-    CHECK_TASK_ID_ERROR(task_id,result)
-
-    LOCK_WHEN_NO_HOOK()
-
-    /*  checks the task is an extended one  */
-    CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)
-    /*  checks the task is not in the SUSPENDED state   */
-    CHECK_SUSPENDED_TASK_ERROR(task_id,result)
-
-#ifndef NO_TASK
-    IF_NO_EXTENDED_ERROR(result)
-        result = tpl_set_event(tpl_task_table[task_id], event);
-        if (result == (tpl_status)E_OK_AND_SCHEDULE)
-        {
-            result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
-/*            result &= OSEK_STATUS_MASK; */
-        }
-    IF_NO_EXTENDED_ERROR_END()
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
+  VAR(tpl_proc_id, AUTOMATIC) old_running_id = tpl_running_id;
+  
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
+  
+  LOCK_WHEN_HOOK()
+  
+  STORE_SERVICE(OSServiceId_SetEvent)
+  STORE_TASK_ID(task_id)
+  STORE_EVENT_MASK(event)
+  
+  CHECK_TASK_ID_ERROR(task_id,result)
+  
+  LOCK_WHEN_NO_HOOK()
+  
+  /*  checks the task is an extended one  */
+  CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)
+  /*  checks the task is not in the SUSPENDED state   */
+  CHECK_SUSPENDED_TASK_ERROR(task_id,result)
+  
+#ifndef NO_EXTENDED_TASK
+  IF_NO_EXTENDED_ERROR(result)
+  result = tpl_set_event(task_id, event);
+  if (result == (tpl_status)E_OK_AND_SCHEDULE)
+  {
+    result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
+    /*            result &= OSEK_STATUS_MASK; */
+  }
+  IF_NO_EXTENDED_ERROR_END()
 #endif
-    if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH) {
-        tpl_switch_context(
-            (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
-                &(tpl_old_running_obj->static_desc->context),
-            (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
-                &(tpl_running_obj->static_desc->context)
-        );
-    }
 
-    UNLOCK_WHEN_NO_HOOK()
-
-    PROCESS_ERROR(result)
-
-    UNLOCK_WHEN_HOOK()
-
-    return result;
+#ifndef WITH_SYSTEM_CALL
+  if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH)
+  {
+    tpl_switch_context(
+      (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
+        &(tpl_stat_proc_table[old_running_id]->context),
+      (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
+        &(tpl_stat_proc_table[tpl_running_id]->context)
+    );
+  }
+#endif
+  
+  UNLOCK_WHEN_NO_HOOK()
+  
+  PROCESS_ERROR(result)
+  
+  UNLOCK_WHEN_HOOK()
+  
+  return result;
 }
 
 
@@ -100,149 +105,136 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
  * tpl_clear_event_service
  */
 FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
-    CONST(tpl_event_mask, AUTOMATIC) event)
+  CONST(tpl_event_mask, AUTOMATIC) event)
 {
-    VAR(tpl_status, AUTOMATIC) result = E_OK;
-
-    /* check interrupts are not disabled by user    */
-    CHECK_INTERRUPT_LOCK(result)
-
-    LOCK_WHEN_HOOK()
-
-    STORE_SERVICE(OSServiceId_ClearEvent)
-    STORE_EVENT_MASK(event)
-
-    LOCK_WHEN_NO_HOOK()
-    /*  ClearEvent cannot be called from ISR level  */
-    CHECK_TASK_CALL_LEVEL_ERROR(result)
-    /*  checks the calling task is an extended one  */
-    CHECK_NOT_EXTENDED_RUNNING_ERROR(result)
-
-#ifndef NO_TASK
-    IF_NO_EXTENDED_ERROR(result)
-        /*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
-            that has the same beginning fields as the struct it is casted to
-            This allow object oriented design and polymorphism.
-        */
-        ((P2VAR(tpl_task, OS_APPL_DATA, AUTOMATIC))tpl_running_obj)->evt_set &=
-            (tpl_event_mask)(~event);
-    IF_NO_EXTENDED_ERROR_END()
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
+  
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
+  
+  LOCK_WHEN_HOOK()
+  
+  STORE_SERVICE(OSServiceId_ClearEvent)
+  STORE_EVENT_MASK(event)
+  
+  LOCK_WHEN_NO_HOOK()
+  /*  ClearEvent cannot be called from ISR level  */
+  CHECK_TASK_CALL_LEVEL_ERROR(result)
+  /*  checks the calling task is an extended one  */
+  CHECK_NOT_EXTENDED_RUNNING_ERROR(result)
+  
+#ifndef NO_EXTENDED_TASK
+  IF_NO_EXTENDED_ERROR(result)
+    tpl_task_events_table[tpl_running_id]->evt_set &= (tpl_event_mask)(~event);
+  IF_NO_EXTENDED_ERROR_END()
 #endif
-
-    UNLOCK_WHEN_NO_HOOK()
-
-    PROCESS_ERROR(result)
-
-    UNLOCK_WHEN_HOOK()
-
-    return result;
+  
+  UNLOCK_WHEN_NO_HOOK()
+  
+  PROCESS_ERROR(result)
+  
+  UNLOCK_WHEN_HOOK()
+  
+  return result;
 }
 
 /*
  * tpl_get_event_service
  */
 FUNC(tpl_status, OS_CODE) tpl_get_event_service(
-    CONST(tpl_task_id, AUTOMATIC)                       task_id,
-    CONSTP2VAR(tpl_event_mask, AUTOMATIC, OS_APPL_DATA) event)
+  CONST(tpl_task_id, AUTOMATIC)                       task_id,
+  CONSTP2VAR(tpl_event_mask, AUTOMATIC, OS_APPL_DATA) event)
 {
-    VAR(tpl_status, AUTOMATIC) result = E_OK;
-
-    /* check interrupts are not disabled by user    */
-    CHECK_INTERRUPT_LOCK(result)
-
-    LOCK_WHEN_HOOK()
-
-    STORE_SERVICE(OSServiceId_GetEvent)
-    STORE_TASK_ID(task_id)
-    STORE_EVENT_MASK_REF(event)
-
-    CHECK_TASK_ID_ERROR(task_id,result)
-
-    /*  checks the task is an extended one  */
-    CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)
-    /*  checks the task is not in the SUSPENDED state   */
-    CHECK_SUSPENDED_TASK_ERROR(task_id,result)
-
-#ifndef NO_TASK
-    IF_NO_EXTENDED_ERROR(result)
-        *event = tpl_task_table[task_id]->evt_set;
-    IF_NO_EXTENDED_ERROR_END()
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
+  
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
+  
+  LOCK_WHEN_HOOK()
+  
+  STORE_SERVICE(OSServiceId_GetEvent)
+  STORE_TASK_ID(task_id)
+  STORE_EVENT_MASK_REF(event)
+  
+  CHECK_TASK_ID_ERROR(task_id,result)
+  
+  /*  checks the task is an extended one  */
+  CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)
+  /*  checks the task is not in the SUSPENDED state   */
+  CHECK_SUSPENDED_TASK_ERROR(task_id,result)
+  
+#ifndef NO_EXTENDED_TASK
+  IF_NO_EXTENDED_ERROR(result)
+  *event = tpl_task_events_table[task_id]->evt_set;
+  IF_NO_EXTENDED_ERROR_END()
 #endif
-
-    PROCESS_ERROR(result)
-
-    UNLOCK_WHEN_HOOK()
-
-    return result;
+  
+  PROCESS_ERROR(result)
+  
+  UNLOCK_WHEN_HOOK()
+  
+  return result;
 }
 
 /*
  * tpl_wait_event_service
  */
 FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
-    CONST(tpl_event_mask, AUTOMATIC) event)
+  CONST(tpl_event_mask, AUTOMATIC) event)
 {
-    VAR(tpl_status, AUTOMATIC) result = E_OK;
-
-    /* check interrupts are not disabled by user    */
-    CHECK_INTERRUPT_LOCK(result)
-
-    LOCK_WHEN_HOOK()
-
-    STORE_SERVICE(OSServiceId_WaitEvent)
-    STORE_EVENT_MASK(event)
-
-    LOCK_WHEN_NO_HOOK()
-    /*  WaitEvent cannot be called from ISR level  */
-    CHECK_TASK_CALL_LEVEL_ERROR(result)
-    /*  checks the calling task is an extended one  */
-    CHECK_NOT_EXTENDED_RUNNING_ERROR(result)
-    /*  checks the task does not occupied resource(s)   */
-    CHECK_RUNNING_OWNS_REZ_ERROR(result)
-
-#ifndef NO_TASK
-    IF_NO_EXTENDED_ERROR(result)
-    /*  all the evt_wait is overidden.  */
-
-    /*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
-        that has the same beginning fields as the struct it is casted to
-        This allow object oriented design and polymorphism.
-    */
-    ((P2VAR(tpl_task, AUTOMATIC, OS_APPL_DATA))tpl_running_obj)->evt_wait =
-        event;
-    /*  check one of the event to wait is not already set       */
-
-    /*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
-        that has the same beginning fields as the struct it is casted to
-        This allow object oriented design and polymorphism.
-    */
-    if ((((P2VAR(tpl_task, AUTOMATIC, OS_APPL_DATA))tpl_running_obj)->evt_set &
-        event) == 0)
-    {
-        /*  no one is set, the task goes in the WAITING state   */
-        tpl_running_obj->state = WAITING;
-        /*  and a rescheduling occurs                           */
-        result |= tpl_schedule_from_waiting();
-    }
-    IF_NO_EXTENDED_ERROR_END()
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
+  VAR(tpl_task_id, AUTOMATIC) old_running_id;
+  
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
+  
+  LOCK_WHEN_HOOK()
+  
+  STORE_SERVICE(OSServiceId_WaitEvent)
+  STORE_EVENT_MASK(event)
+  
+  LOCK_WHEN_NO_HOOK()
+  /*  WaitEvent cannot be called from ISR level  */
+  CHECK_TASK_CALL_LEVEL_ERROR(result)
+  /*  checks the calling task is an extended one  */
+  CHECK_NOT_EXTENDED_RUNNING_ERROR(result)
+  /*  checks the task does not occupied resource(s)   */
+  CHECK_RUNNING_OWNS_REZ_ERROR(result)
+  
+#ifndef NO_EXTENDED_TASK
+  IF_NO_EXTENDED_ERROR(result)
+  /*  all the evt_wait is overidden.  */
+  tpl_task_events_table[tpl_running_id]->evt_wait = event;
+  /*  check one of the event to wait is not already set       */
+  if ((tpl_task_events_table[tpl_running_id]->evt_set & event) == 0)
+  {
+    /*  no one is set, the task goes in the WAITING state   */
+    tpl_dyn_proc_table[tpl_running_id]->state = WAITING;
+    /*  save the current running process                    */
+    old_running_id = tpl_running_id;
+    /*  and a rescheduling occurs                           */
+    result |= tpl_schedule_from_waiting();
+  }
+  IF_NO_EXTENDED_ERROR_END()
 #endif
-
-    if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH) {
-        tpl_switch_context(
-            (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
-                &(tpl_old_running_obj->static_desc->context),
-            (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
-                &(tpl_running_obj->static_desc->context)
-        );
-    }
-
-    UNLOCK_WHEN_NO_HOOK()
-
-    PROCESS_ERROR(result)
-
-    UNLOCK_WHEN_HOOK()
-
-    return result;
+  
+#ifndef WITH_SYSTEM_CALL
+  if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH)
+  {
+    tpl_switch_context(
+      &(tpl_stat_proc_table[old_running_id]->context),
+      &(tpl_stat_proc_table[tpl_running_id]->context)
+    );
+  }
+#endif
+  
+  UNLOCK_WHEN_NO_HOOK()
+  
+  PROCESS_ERROR(result)
+  
+  UNLOCK_WHEN_HOOK()
+  
+  return result;
 }
 
 #define OS_STOP_SEC_CODE

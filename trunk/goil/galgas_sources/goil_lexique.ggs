@@ -194,7 +194,8 @@ list autosar_attr error message "AUTOSAR attribute '%K'" style keywordsStyle :
     "PROTECTIONHOOK",
     "SCALABILITYCLASS",
     "STACKMONITORING",
-    "TIMING_PROTECTION" ;
+    "TIMING_PROTECTION",
+    "ACCESSING_APPLICATION" ;
 
 list autosar_key error message "AUTOSAR value '%K'" style keywordsStyle :
     "SC1",
@@ -203,7 +204,8 @@ list autosar_key error message "AUTOSAR value '%K'" style keywordsStyle :
     "SC4" ;
 
 list autosar_objs error message "AUTOSAR object '%K'" style keywordsStyle :
-    "SCHEDULETABLE" ;
+    "SCHEDULETABLE",
+    "APPLICATION" ;
 
 #
 # Schedule tables attributes
@@ -212,6 +214,12 @@ list schedtable_attrs error message "SCHEDULETABLE attribute '%K'" style keyword
     "LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION", "SYNC_STRATEGY",
     "MAX_INCREASE", "MAX_DECREASE", "MAX_INCREASE_ASYNC",
     "MAX_DECREASE_ASYNC", "PRECISION", "LENGTH" ;
+
+#
+# Applications attributes
+#
+list application_attrs error message "APPLICATION attribute '%K'" style keywordsStyle :
+    "TRUSTED", "HAS_RESTARTTASK", "RESTARTTASK", "TRUSTED_FUNCTION" ;
 
 #
 # timing protection attributes
@@ -307,6 +315,7 @@ rule 'a'->'z' | 'A'->'Z' :
         default search att_token in autosar_key
         default search att_token in autosar_objs
         default search att_token in schedtable_attrs
+        default search att_token in application_attrs
         default search att_token in sync_strategy
         default search att_token in timing_prot_attribs
         default search att_token in unit

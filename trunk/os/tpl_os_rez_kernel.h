@@ -48,10 +48,10 @@ struct TPL_RESOURCE {
                                                          when the resource is
                                                          released
                                                     */
-    struct P2VAR(TPL_EXEC_COMMON, TYPEDEF, OS_APPL_DATA)
-                            owner;                  /**< Owner of the resource
-                                                         or NULL if the resource
-                                                         is not owned
+    VAR(tpl_proc_id, TYPEDEF)
+                            owner;                  /**< Id of the owner of the
+                                                         resource or -1 if the
+                                                         resource is not owned
                                                     */
     struct P2VAR(TPL_RESOURCE, TYPEDEF, OS_APPL_DATA)
                             next_res;               /**< Pointer to the next
@@ -77,8 +77,8 @@ typedef struct TPL_RESOURCE tpl_resource;
  *
  * Index in this array correspond to the #ResourceType of the resource
  */
-extern P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA)
-                                    tpl_resource_table[RESOURCE_COUNT];
+extern CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA)
+  tpl_resource_table[RESOURCE_COUNT];
 #endif
 
 /**
@@ -86,7 +86,7 @@ extern P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA)
  *
  * @see #RES_SCHEDULER
  */
-extern VAR(tpl_resource, OS_VAR) descriptor_of_resource_res_sched;
+extern VAR(tpl_resource, OS_VAR) res_sched_rez_desc;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"

@@ -40,17 +40,6 @@
 typedef u32 tpl_tick;
 
 /**
- * tpl_stack_word is the basic element of a stack in order to have a proper
- * data alignement.
- */
-typedef u32 tpl_stack_word;
-
-/**
- * tpl_stack_size is the data type used to store the stack size
- */
-typedef u16 tpl_stack_size;
-
-/**
  * tpl_buffer is a pointer to a chunk of data in memory
  */
 typedef P2VAR(u8, TYPEDEF, OS_APPL_DATA) tpl_buffer;

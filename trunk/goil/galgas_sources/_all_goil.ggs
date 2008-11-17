@@ -46,12 +46,15 @@ compile "goil_defaults.ggs" ;
 compile "goil_semantic_verification.ggs" ;
 compile "goil_scheduletable_verif.ggs" ;
 compile "goil_alarm_verif.ggs" ;
+compile "goil_app_verif.ggs" ;
+compile "goil_env_verification.ggs" ;
 
 #
 # Datatypes
 #
 compile "goil_types_os.ggs" ;
 compile "goil_types_scheduletable.ggs" ;
+compile "goil_types_app.ggs" ;
 compile "goil_types_action.ggs" ;
 compile "goil_types_root.ggs" ;
 compile "goil_types_timing_prot.ggs" ;
@@ -76,12 +79,14 @@ compile "goil_obj_networkmessage.ggs" ;
 compile "goil_obj_com.ggs" ;
 compile "goil_obj_ipdu.ggs" ;
 compile "goil_obj_scheduletable.ggs" ;
+compile "goil_obj_application.ggs" ;
 compile "goil_timing_prot_attrs.ggs" ;
 #
 # Code generation
 #
 compile "goil_code_generation.ggs" ;
-compile "goil_env_verification.ggs" ;
+compile "goil_proc_generation.ggs" ;
+compile "goil_app_generation.ggs" ;
 compile "goil_code_msg_gen.ggs" ;
 compile "goil_code_schedtable_gen.ggs" ;
 #compile "goil_orti_gen.ggs";
@@ -92,8 +97,8 @@ compile "goil_targets.ggs" ;
 compile "goil_target_c166.ggs" ;
 compile "goil_target_libpcl.ggs" ;
 compile "goil_target_hcs12.ggs" ;
-compile "goil_target_v850e.ggs" ;
 compile "goil_target_ppc.ggs" ;
+compile "goil_target_v850e.ggs" ;
 compile "goil_target_h8300h.ggs" ;
 compile "goil_target_arm7.ggs" ;
 compile "goil_target_avr.ggs" ;

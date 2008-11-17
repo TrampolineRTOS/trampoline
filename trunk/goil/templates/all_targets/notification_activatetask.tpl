@@ -4,7 +4,7 @@
 
 tpl_task_activation_action $NOTIFICATION$ = {
     {
-    /*  notification function       */  tpl_action_activate_task
+    /*  notification function */  tpl_action_activate_task
     },
-    /*  task descriptor pointer     */  &$TASK$
+    /*  task id               */  $TASK$
 };

@@ -28,10 +28,12 @@ nonterminal <isr>
     ?!@isr_map isrs ;
 
 nonterminal <isr_attributes>
+    ?@lstring     isr_name
     ?!@basic_type category
     ?!@basic_type priority
     ?!@stringset  resources
     ?!@stringset  messages
+    ?!@stringset  acc_apps
     ?!@timing_prot timing_prot
     ?!@ident_map  other_fields ;
 
@@ -63,6 +65,7 @@ rule <isr>
     @lstring     desc ;
     @stringset   resources ;
     @stringset   messages ;
+    @stringset   acc_apps ;
     @timing_prot timing_prot ;
     @ident_map   other_fields ;
 
@@ -75,6 +78,7 @@ rule <isr>
         desc         := [isr desc] ;
         resources    := [isr resources] ;
         messages     := [isr messages] ;
+        acc_apps     := [isr acc_apps] ;
         timing_prot  := [isr timing_prot] ;
         other_fields := [isr other_fields] ;
     else # isr must also be written in this branch to comply with galgas static verification policy
@@ -83,25 +87,28 @@ rule <isr>
         desc         := [@lstring new !"" !here] ;
         resources    := [@stringset emptySet] ;
         messages     := [@stringset emptySet] ;
+        acc_apps     := [@stringset emptySet] ;
         timing_prot  := [@void_timing_prot new !here] ;
         other_fields := [@ident_map emptyMap] ;
-        isr := [@isr_obj new !desc !category !priority !resources !messages !timing_prot !other_fields] ;
+        isr := [@isr_obj new !desc !category !priority !resources !messages !acc_apps !timing_prot !other_fields] ;
     end if ;
     ${$ ;
-    <isr_attributes> !?category !?priority !?resources !?messages !?timing_prot !?other_fields;
+    <isr_attributes> !isr_name !?category !?priority !?resources !?messages !?acc_apps !?timing_prot !?other_fields;
     $}$ ;
     <description> ?desc ;
     $;$ ;
 
-    isr := [@isr_obj new !desc !category !priority !resources !messages !timing_prot !other_fields] ;
+    isr := [@isr_obj new !desc !category !priority !resources !messages !acc_apps !timing_prot !other_fields] ;
     [!?isrs put !isr_name !isr] ;
 end rule ;
 
 rule <isr_attributes>
+    ?@lstring       isr_name
     ?!@basic_type   category
     ?!@basic_type   priority
     ?!@stringset    resources
     ?!@stringset    messages
+    ?!@stringset    acc_apps
     ?!@timing_prot  timing_prot
     ?!@ident_map    other_fields
 :
@@ -178,6 +185,13 @@ rule <isr_attributes>
             $}$ ;
         end select ;
         $;$ ;
+    while
+        @lstring app ;
+        $ACCESSING_APPLICATION$ ; $=$ ; $idf$ ?app ; <description> ?* ; $;$ ;
+        if [acc_apps hasKey ![app string]] then
+            warning here : "ACCESSING_APPLICATION " . [app string] . " already defined for ISR " . [isr_name string] ;
+        end if ;
+        acc_apps += ![app string] ;
     while
         <free_field> !?other_fields ; <description> ?* ; $;$ ;
     end repeat ;

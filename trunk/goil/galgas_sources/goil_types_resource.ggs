@@ -16,14 +16,15 @@ class @resource_property_standard_obj extends @resource_property_obj {
 }
 
 class @resource_property_linked_obj extends @resource_property_obj {
-	@lstring linked_resource ;
+    @lstring linked_resource ;
 }
 
 class @resource_property_internal_obj extends @resource_property_obj {
 }
 
 class @resource_obj extends @oil_obj {
-	@resource_property_obj property ;
+    @resource_property_obj property ;
+    @stringset             acc_apps ;
 }
 
 map @resource_map {

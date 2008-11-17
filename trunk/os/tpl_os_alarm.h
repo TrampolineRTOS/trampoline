@@ -72,7 +72,29 @@ typedef tpl_alarm_id        AlarmType;
  *
  * see paragraph 13.6.2.1 page 62 of OSEK/VDX 2.2.2 spec
  */
-#define DeclareAlarm(alarm_id)
+#define DeclareAlarm(alarm_id)  \
+  extern CONST(AlarmType, AUTOMATIC) alarm_id
+
+/**
+ * @def OSMAXALLOWEDVALUE
+ *
+ * Maximum value of the System Counter in tick
+ */
+extern CONST(tpl_tick, OS_CONST) OSMAXALLOWEDVALUE;
+
+/**
+ * @def OSTICKSPERBASE
+ *
+ * number of timer tick for 1 counter tick
+ */
+extern CONST(tpl_tick, OS_CONST) OSTICKSPERBASE;
+
+/**
+ * @def OSMINCYCLE
+ *
+ * minimum tick value for a cyclic alarm
+ */
+extern CONST(tpl_tick, OS_CONST) OSMINCYCLE;
 
 
 #define OS_START_SEC_CODE

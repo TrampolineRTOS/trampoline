@@ -51,6 +51,38 @@
 #define NULL 0
 #endif
 
+/***********************
+ * Conformance classes *
+ ***********************/
+
+/**
+ * @def CONFORM_ECC1
+ *
+ * identifies the ECC1 conformance class
+ *
+ * @see #CONFORMANCE_CLASS
+ */
+#define CONFORM_ECC1        1
+
+/**
+ * @def CONFORM_ECC2
+ *
+ * identifies the ECC2 conformance class
+ *
+ * @see #CONFORMANCE_CLASS
+ */
+#define CONFORM_ECC2        2
+
+/**
+ * @def CONFORMANCE_CLASS
+ *
+ * represents the configured conformance class
+ *
+ * @warning at this time, Trampoline only supports ECC2
+ */
+#define CONFORMANCE_CLASS   CONFORM_ECC2
+
+
 /****************
  * Result codes *
  ****************/
@@ -64,8 +96,8 @@
  * standard service definition to know the exact meaning in this specific
  * context.
  */
-#ifndef STATUSTYPEDEFINED
-#define STATUSTYPEDEFINED
+#ifndef E_OK_DEFINED
+#define E_OK_DEFINED
 #define E_OK            0
 #endif
 /**
@@ -148,6 +180,119 @@
  * standard service definition to know the exact meaning.
  */
 #define E_OS_VALUE      8
+
+/**************************************
+ * Special result code for Trampoline *
+ * as long as associated masks        *
+ **************************************/
+
+/**
+ * @def NO_SPECIAL_CODE
+ *
+ * Nothing particular to Trampoline in this code.
+ *
+ * @note This is a Trampoline result code, not an OSEK one.
+ *
+ * @see #tpl_status
+ */
+#define NO_SPECIAL_CODE         0
+
+/**
+ * @def NEED_RESCHEDULING
+ *
+ * Scheduler have to be called, probably because the ready list
+ * has changed.
+ *
+ * @note This is a Trampoline result code, not an OSEK one.
+ *
+ * @see #tpl_status
+ */
+#define NEED_RESCHEDULING       32
+
+/**
+ * @def NEED_CONTEXT_SWITCH
+ *
+ * Context switch has to be made.
+ *
+ * @note This is a Trampoline result code, not an OSEK one.
+ *
+ * @see #tpl_status
+ */
+#define NEED_CONTEXT_SWITCH     64
+
+/**
+ * @def E_OK_AND_SCHEDULE
+ *
+ * Combines OSEK-E_OK and Trampoline-NEED_RESCHEDULING result codes
+ *
+ * @see #tpl_status
+ */
+#define E_OK_AND_SCHEDULE   ((tpl_status)E_OK | (tpl_status)NEED_RESCHEDULING)
+
+/**
+ * @def OSEK_STATUS_MASK
+ *
+ * This AND mask can be used to keep only result code
+ * specific to OSEK in a tpl_status (StatusType)
+ * result code.
+ *
+ * @see #tpl_status
+ */
+#define OSEK_STATUS_MASK        0x1F
+
+/**
+ * @def TRAMPOLINE_STATUS_MASK
+ *
+ * This AND mask can be used to keep only result code
+ * specific to Trampoline in a tpl_status (StatusType)
+ * result code.
+ *
+ * @see #tpl_status
+ */
+#define TRAMPOLINE_STATUS_MASK  0xE0
+
+
+/************************************
+ * Public states of a task or ISR2  *
+ ************************************/
+/**
+ * @def SUSPENDED
+ *
+ * Task is suspended.
+ *
+ * @see #tpl_exec_state
+ */
+#define SUSPENDED       0x0
+
+/**
+ * @def READY
+ *
+ * Task is ready (to be run, or elected by scheduler).
+ *
+ * @see #tpl_exec_state
+ */
+#define READY           0x1
+
+/**
+ * @def RUNNING
+ *
+ * Task is currently running.
+ *
+ * @see #tpl_exec_state
+ */
+#define RUNNING         0x2
+
+#if (CONFORMANCE_CLASS == CONFORM_ECC1) || (CONFORMANCE_CLASS == CONFORM_ECC2)
+/**
+ * @def WAITING
+ *
+ * Task is waiting
+ *
+ * @see #tpl_exec_state
+ */
+#define WAITING         0x3
+#endif
+
 
 /************************************
  * Always existing application mode *
@@ -315,7 +460,7 @@
  * @param name the name (C identifier) of the task
  */
 #define TASK(name)              \
-    void function_of_task_##name(void)
+    void name##_function(void)
 
 /**
  * @def ISR2
@@ -325,7 +470,7 @@
  * @param name the name (C identifier) of the IRS
  */
 #define ISR(name)               \
-    void function_of_isr_##name(void)
+    void name##_function(void)
 
 /**
  * @def ALARMCALLBACK
@@ -337,7 +482,7 @@
  * @warning don't be confused with ALARM_CALLBACK
  */
 #define ALARMCALLBACK(name)     \
-    void alarm_callback_##name(void)
+    void name##_callback(void)
 
 /**
  * @def MASK_EXECTYPE
@@ -414,6 +559,34 @@
  */
 #define tpl_is_isr(obj)     \
     ((obj->static_desc->type & MASK_EXECTYPE) == IS_ROUTINE)
+
+
+
+/*****************************************
+ * Type of counter for AUTOSAR extension *
+ *****************************************/
+
+#ifdef WITH_AUTOSAR
+/**
+ * @def HARDWARE_COUNTER
+ *
+ * Identifies a hardware counter
+ *
+ * @see #tpl_counter_kind
+ */
+#define HARDWARE_COUNTER    0
+
+/**
+ * @def SOFTWARE_COUNTER
+ *
+ * Identifies a software counter
+ *
+ * @see #tpl_counter_kind
+ */
+#define SOFTWARE_COUNTER    1
+
+#endif
+
 
 #endif /* TPL_OS_DEFINITIONS_H */
 

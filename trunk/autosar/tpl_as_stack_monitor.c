@@ -29,12 +29,17 @@
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
 FUNC(void, OS_CODE) tpl_check_stack (
-    P2CONST(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) this_exec_obj)
+  CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
-  /* MISRA RULE 33 VIOLATION: tpl_check_stack_footprint does not need
-    to be evaluated if tpl_check_stack_pointer fails */
-  if ((!tpl_check_stack_pointer(this_exec_obj)) ||
-     (!tpl_check_stack_footprint(this_exec_obj)))
+  CONSTP2CONST(tpl_stack, AUTOMATIC, OS_APPL_DATA) stack =
+    &(tpl_stat_proc_table[proc_id]->stack);
+  /* MISRA RULE 33 VIOLATION: MISRA rule 33 says the right hand of
+     a && or || operator shall not contain side effects (function call
+     for instance). However this is intended here because
+     tpl_check_stack_footprint does not need to be evaluated if
+     tpl_check_stack_pointer fails                                        */
+  if ((!tpl_check_stack_pointer(stack)) ||
+      (!tpl_check_stack_footprint(stack)))
   {
 /*
  * see §7.4.2 of AUTOSAR SWS OS 2.1, related to requirements

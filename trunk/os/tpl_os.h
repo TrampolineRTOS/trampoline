@@ -30,6 +30,7 @@
 
 #include "tpl_os_definitions.h"
 #include "tpl_os_application_def.h"
+#include "tpl_os_error.h"
 
 /*
  * Inclusion of the header for task related API services

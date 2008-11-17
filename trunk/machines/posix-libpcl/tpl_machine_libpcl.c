@@ -135,12 +135,12 @@ void tpl_cancel_watchdog(void)
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
-u8 tpl_check_stack_pointer(const tpl_exec_common *this_exec_obj)
+tpl_bool tpl_check_stack_pointer(const tpl_stack *stack)
 {
     return 1;
 }
 
-u8 tpl_check_stack_footprint(const tpl_exec_common *this_exec_obj)
+tpl_bool tpl_check_stack_footprint(const tpl_stack *stack)
 {
     return 1;
 }
@@ -172,16 +172,14 @@ sigset_t    signal_set;
  */
 void tpl_call_counter_tick();
 
-
 static sigset_t tpl_saved_state;
+
 /**
  * Enable all interrupts
  *
- * see paragraph 13.3.2.1 page 54 of OSEK/VDX 2.2.2 spec
- *
- * @see #DisableAllInterrupts
+ * @see #EnableAllInterrupts
  */
-void EnableAllInterrupts(void)
+void tpl_enable_all_interrupts_service(void)
 {
     if (sigprocmask(SIG_SETMASK,&tpl_saved_state,NULL) == -1)
     {
@@ -194,18 +192,16 @@ void EnableAllInterrupts(void)
 #endif
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    tpl_stop_all_isr_lock_monitor (tpl_running_obj);
+    tpl_stop_all_isr_lock_monitor(tpl_running_id);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 
 /**
  * Disable all interrupts
  *
- * see paragraph 13.3.2.2 page 55 of OSEK/VDX 2.2.2 spec
- *
- * @see #EnableAllInterrupts
+ * @see #DisableAllInterrupts
  */
-void DisableAllInterrupts(void)
+void tpl_disable_all_interrupts_service(void)
 {
     if (sigprocmask(SIG_BLOCK,&signal_set,&tpl_saved_state) == -1)
     {
@@ -218,18 +214,16 @@ void DisableAllInterrupts(void)
 #endif
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    tpl_start_all_isr_lock_monitor (tpl_running_obj);
+    tpl_start_all_isr_lock_monitor(tpl_running_id);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 
 /** 
  * Resume all interrupts
  *
- * see paragraph 13.3.2.3 page 55 of OSEK/VDX 2.2.2 spec
- *
- * @see #SuspendAllInterrupts
+ * @see #ResumeAllInterrupts
  */
-void ResumeAllInterrupts(void)
+void tpl_resume_all_interrupts_service(void)
 {
     if (tpl_locking_depth > 0)
     {
@@ -248,7 +242,7 @@ void ResumeAllInterrupts(void)
             exit(-1);
         }
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-        tpl_stop_all_isr_lock_monitor (tpl_running_obj);
+        tpl_stop_all_isr_lock_monitor(tpl_running_id);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
     }
 }
@@ -256,11 +250,9 @@ void ResumeAllInterrupts(void)
 /**
  * Suspend all interrupts
  *
- * see paragraph 13.3.2.4 page 56 of OSEK/VDX 2.2.2 spec
- *
- * @see #ResumeAllInterrupts
+ * @see #SuspendAllInterrupts
  */
-void SuspendAllInterrupts(void)
+void tpl_suspend_all_interrupts_service(void)
 {
     if (sigprocmask(SIG_BLOCK,&signal_set,NULL) == -1)
     {
@@ -278,7 +270,7 @@ void SuspendAllInterrupts(void)
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     if (tpl_locking_depth == 1)
     {
-        tpl_start_all_isr_lock_monitor (tpl_running_obj);
+        tpl_start_all_isr_lock_monitor(tpl_running_id);
     }
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
@@ -286,11 +278,9 @@ void SuspendAllInterrupts(void)
 /** 
  * Resume category 2 interrupts
  *
- * see paragraph 13.3.2.5 page 56 of OSEK/VDX 2.2.2 spec
- * 
- * @see #SuspendOSInterrupts
+ * @see #ResumeOSInterrupts
  */
-void ResumeOSInterrupts(void)
+void tpl_resume_os_interrupts_service(void)
 {
     if (tpl_locking_depth > 0)
     {
@@ -309,7 +299,7 @@ void ResumeOSInterrupts(void)
             exit(-1);
         }
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-        tpl_stop_os_isr_lock_monitor(tpl_running_obj);
+        tpl_stop_os_isr_lock_monitor(tpl_running_id);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
     }
 }
@@ -317,11 +307,9 @@ void ResumeOSInterrupts(void)
 /**
  * Suspend category 2 interrupts
  *
- * see paragraph 13.3.2.6 page 57 of OSEK/VDX 2.2.2 spec
- *
- * @see #ResumeOSInterrupts
+ * @see #SuspendOSInterrupts
  */
-void SuspendOSInterrupts(void)
+void tpl_suspend_os_interrupts_service(void)
 {
     if (sigprocmask(SIG_BLOCK,&signal_set,NULL) == -1)
     {
@@ -338,7 +326,7 @@ void SuspendOSInterrupts(void)
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     if (tpl_locking_depth == 1)
     {
-      tpl_start_os_isr_lock_monitor (tpl_running_obj); 
+      tpl_start_os_isr_lock_monitor(tpl_running_id); 
     }
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
@@ -394,7 +382,7 @@ void tpl_sleep(void)
 /*      sched_yield();*/
 }
 
-static tpl_exec_static my_tpl_sleep = {
+static tpl_proc_static my_tpl_sleep = {
     NULL,
     {NULL, 0},
     tpl_sleep,
@@ -436,21 +424,21 @@ void tpl_get_task_lock(void)
     /*
      * block the handling of signals
      */
-	/*  fprintf(stderr, "%d-lock\n", cnt++);*/
+    /*  fprintf(stderr, "%d-lock\n", cnt++);*/
     if (sigprocmask(SIG_BLOCK,&signal_set,NULL) == -1)
     {
         perror("tpl_get_lock failed");
         exit(-1);
     }
-    x++;
+/*    x++; */
     tpl_locking_depth++;
 
 #ifdef WITH_AUTOSAR
     tpl_cpt_os_task_lock++;
 #endif
     
-    if (x > 1) printf("** lock ** X=%d\n",x);
-    assert( 0 <= x && x <= 1);
+/*    if (x > 1) printf("** lock ** X=%d\n",x);
+    assert( 0 <= x && x <= 1); */
 }
 
 /*
@@ -459,9 +447,9 @@ void tpl_get_task_lock(void)
  */
 void tpl_release_task_lock(void)
 {
-    x--;
+/*     x--;
     if (x < 0) printf("** unlock ** X=%d\n",x);
-    assert(0 <= x && x <= 1);
+    assert(0 <= x && x <= 1); */
     /*  fprintf(stderr, "%d-unlock\n", cnt++);*/
     
     tpl_locking_depth--;
@@ -484,10 +472,10 @@ void tpl_release_task_lock(void)
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) tpl_switch_context(
-    P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
-    P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
+    CONSTP2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
+    CONSTP2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
 {
-	assert( **new_context != co_current() );
+    /* assert( **new_context != co_current() ); */
     tpl_release_task_lock();  
     if( *new_context == &idle_task_context )
     {
@@ -500,8 +488,8 @@ FUNC(void, OS_CODE) tpl_switch_context(
 
 
 FUNC(void, OS_CODE) tpl_switch_context_from_it(
-    P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
-    P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
+    CONSTP2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
+    CONSTP2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
 {
     assert( **new_context != co_current() );
     if( *new_context == &idle_task_context )
@@ -517,8 +505,8 @@ FUNC(void, OS_CODE) tpl_switch_context_from_it(
 
 void tpl_osek_func_stub( void* data )
 {
-    tpl_exec_function func = ((tpl_exec_static*)data)->entry;
-    tpl_exec_obj_type type = ((tpl_exec_static*)data)->type;
+    tpl_proc_function func = ((tpl_proc_static*)data)->entry;
+    tpl_proc_type     type = ((tpl_proc_static*)data)->type;
   
     /* Avoid signal blocking due to a previous call to tpl_init_context in a OS_ISR2 context. */
     if (sigprocmask(SIG_UNBLOCK,&signal_set,NULL) == -1) {
@@ -545,14 +533,14 @@ static coroutine_t previous_old_co = NULL;
 #define OS_START_SEC_CODE
 #include "Memmap.h"
 FUNC(void, OS_CODE) tpl_init_context(
-    P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj)
+    CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
 {
     coroutine_t old_co;
-    coroutine_t *co = (exec_obj->static_desc->context);
-    tpl_stack *stack = (tpl_stack *)&(exec_obj->static_desc->stack);
+    coroutine_t *co = tpl_stat_proc_table[proc_id]->context;
+    const tpl_stack *stack = &(tpl_stat_proc_table[proc_id]->stack);
 
     /* This is the entry func passed as data */
-    void* data = (void*) exec_obj->static_desc; 
+    void* data = (void*)tpl_stat_proc_table[proc_id]; 
     int stacksize = stack->stack_size;
     void* stackaddr = stack->stack_zone;  
   
@@ -666,12 +654,12 @@ void tpl_init_machine(void)
     }
     */
 #ifndef NO_ALARM
-    tpl_viper_start_auto_timer(signal_for_counters,50000);  /* 50 ms */
+    tpl_viper_start_auto_timer(signal_for_counters,10000);  /* 10 ms */
 #endif
 #ifdef WITH_AUTOSAR
 #ifndef NO_SCHEDTABLE
     #ifdef NO_ALARM
-    tpl_viper_start_auto_timer(signal_for_counters,50000);  /* 50 ms */
+    tpl_viper_start_auto_timer(signal_for_counters,10000);  /* 10 ms */
     #endif
 #endif
 #endif

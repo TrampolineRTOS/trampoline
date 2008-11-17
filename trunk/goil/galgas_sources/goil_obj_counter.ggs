@@ -24,9 +24,11 @@ nonterminal <counter>
     ?!@counter_map counters ;
 
 nonterminal <counter_parameters> 
+    ?@lstring       counter_name
     ?!@basic_type   max_allowed_value
     ?!@basic_type   ticks_per_base
     ?!@basic_type   min_cycle
+    ?!@stringset    acc_apps
     ?!@counter_type type
     ?!@lstring      unit ;
 
@@ -49,6 +51,7 @@ rule <counter>
     @basic_type   max_allowed_value ;
     @basic_type   ticks_per_base ;
     @basic_type   min_cycle ;
+    @stringset    acc_apps ;
     @counter_type type ;
     @lstring      unit ;
     @lstring      desc ;
@@ -61,6 +64,7 @@ rule <counter>
         max_allowed_value := [counter max_allowed_value] ;
         ticks_per_base    := [counter ticks_per_base] ;
         min_cycle         := [counter min_cycle] ;
+        acc_apps          := [counter acc_apps] ;
         type              := [counter type] ;
         unit              := [counter unit] ;
         desc              := [counter desc] ;
@@ -68,6 +72,7 @@ rule <counter>
         max_allowed_value := [@void new !here] ;
         ticks_per_base    := [@void new !here] ;
         min_cycle         := [@void new !here] ;
+        acc_apps          := [@stringset emptySet] ;
         type              := [@void_counter new !here] ;
         unit              := [@lstring new !"" !here] ;
         desc              := [@lstring new !"" !here];
@@ -76,11 +81,12 @@ rule <counter>
             !max_allowed_value
             !ticks_per_base
             !min_cycle
+            !acc_apps
             !type
             !unit] ;
     end if ;
     ${$ ;
-    <counter_parameters> !?max_allowed_value !?ticks_per_base !?min_cycle !?type !?unit ;
+    <counter_parameters> !counter_name !?max_allowed_value !?ticks_per_base !?min_cycle !?acc_apps !?type !?unit ;
     $}$ ;
     <description> ?desc ;
     $;$ ;
@@ -90,15 +96,18 @@ rule <counter>
         !max_allowed_value
         !ticks_per_base
         !min_cycle
+        !acc_apps
         !type
         !unit] ;
     [!?counters put !counter_name !counter] ;
 end rule ;
 
-rule <counter_parameters> 
+rule <counter_parameters>
+    ?@lstring       counter_name
     ?!@basic_type   max_allowed_value
     ?!@basic_type   ticks_per_base
     ?!@basic_type   min_cycle
+    ?!@stringset    acc_apps
     ?!@counter_type type
     ?!@lstring      unit
 :
@@ -170,6 +179,14 @@ rule <counter_parameters>
             error here : "UNIT attribute already defined for this counter" ;
             error unit : "was defined here" ;
         end if ;
+
+    while
+        @lstring app ;
+        $ACCESSING_APPLICATION$ ; $=$ ; $idf$ ?app ; <description> ?* ; $;$ ;
+        if [acc_apps hasKey ![app string]] then
+            warning here : "ACCESSING_APPLICATION " . [app string] . " already defined for COUNTER " . [counter_name string] ;
+        end if ;
+        acc_apps += ![app string] ;
 
     while
         $idf$ ?* ; $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ; <description> ?* ; $;$ ;

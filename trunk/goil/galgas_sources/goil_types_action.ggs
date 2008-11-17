@@ -7,7 +7,6 @@ abstract class @action_obj {
     @location location ;
 
     abstract method generate
-        ?@prefix_map unused p
         ?@lstring    unused name
         ?@string     unused err
         ?@string     unused key
@@ -20,18 +19,13 @@ abstract class @action_obj {
 
 class @void_action extends @action_obj {
     override method generate
-        ?@prefix_map p
         ?@lstring    unused name
         ?@string     unused err
         ?@string     key
         ?!@string    unused h_res
         ?!@string    i_res :
 
-        @lstring lkey := [@lstring new !key !here] ;
-        @string prefix ;
-        @string tag_to_rep ;
-        [p prefix !lkey ?prefix ?tag_to_rep] ;
-        i_res := [i_res stringByReplacingStringByString !tag_to_rep !"NULL_PTR"] ;
+        doReplace !?i_res !key !"NULL_PTR" ;
     end method ;
 }
 
@@ -40,7 +34,6 @@ class @setevent_action extends @action_obj {
     @lstring event_name ;
 
     override method generate
-        ?@prefix_map p
         ?@lstring    name
         ?@string     err
         ?@string     key
@@ -50,12 +43,12 @@ class @setevent_action extends @action_obj {
         @string res ;
         retrieveTemplateString ?res !"notification_setevent" ;
 
-        performReplace !p !err."notif_name"   ![name string] !?res ;
-        performReplace !p !err."notification" ![name string] !?res ;
-        performReplace !p !"task" ![task_name string] !?res ;
-        performReplace !p !"event" ![event_name string] !?res ;
+        doReplace !?res !"$NOTIFICATION_NAME$"   !err." of message ".[name string] ;
+        doReplace !?res !"$NOTIFICATION$" ![name string]."_notification" ;
+        doReplace !?res !"$TASK$" ![task_name string]."_id" ;
+        doReplace !?res !"$EVENT$" ![event_name string]."_mask" ;
 
-        performReplace !p !key ![name string] !?i_res ;
+        doReplace !?i_res !key ![name string] ;
 
         i_res := res."\n".i_res ;
    end method ;
@@ -65,7 +58,6 @@ class @activatetask_action extends @action_obj {
     @lstring task_name ;
 
     override method generate
-        ?@prefix_map p
         ?@lstring    name
         ?@string     err
         ?@string     key
@@ -75,11 +67,11 @@ class @activatetask_action extends @action_obj {
         @string res ;
         retrieveTemplateString ?res !"notification_activatetask" ;
 
-        performReplace !p !err."notif_name"   ![name string]      !?res ;
-        performReplace !p !err."notification" ![name string]      !?res ;
-        performReplace !p !"task"         ![task_name string] !?res ;
+        doReplace !?res !"$NOTIFICATION_NAME$"   !err." of message ".[name string] ;
+        doReplace !?res !"$NOTIFICATION$" ![name string]."_notification" ;
+        doReplace !?res !"$TASK$" ![task_name string]."_id" ;
 
-        performReplace !p !key ![name string] !?i_res ;
+        doReplace !?i_res !key !"&".[name string]."_notification" ;
 
         i_res := res."\n".i_res ;
    end method ;
@@ -88,7 +80,6 @@ class @activatetask_action extends @action_obj {
 class @callback_action extends @action_obj {
     @lstring function_name ;
     override method generate
-        ?@prefix_map p
         ?@lstring    name
         ?@string     err
         ?@string     key
@@ -98,11 +89,11 @@ class @callback_action extends @action_obj {
         @string res ;
         retrieveTemplateString ?res !"notification_activatetask" ;
 
-        performReplace !p !err."notif_name"   ![name string] !?res ;
-        performReplace !p !err."notification" ![name string] !?res ;
-        performReplace !p !"callback" ![function_name string] !?res ;
+        doReplace !?res !"$NOTIFICATION_NAME$"   !err." of message ".[name string] ;
+        doReplace !?res !"$NOTIFICATION$" ![name string]."_notification" ;
+        doReplace !?res !"$CALLBACK$" ![function_name string]."_callback" ;
 
-        performReplace !p !key ![name string] !?i_res ;
+        doReplace !?i_res !key ![name string] ;
 
         i_res := res."\n".i_res ;
    end method ;
@@ -111,7 +102,6 @@ class @callback_action extends @action_obj {
 class @flag_action extends @action_obj {
     @lstring flag_name ;
     override method generate
-        ?@prefix_map p
         ?@lstring    name
         ?@string     err
         ?@string     key
@@ -121,11 +111,11 @@ class @flag_action extends @action_obj {
         @string res ;
         retrieveTemplateString ?res !"notification_flag" ;
 
-        performReplace !p !err."notif_name"   ![name string] !?res ;
-        performReplace !p !err."notification" ![name string] !?res ;
-        performReplace !p !"flag_fct" ![flag_name string] !?res ;
+        doReplace !?res !"$NOTIFICATION_NAME$"   !err." of message ".[name string] ;
+        doReplace !?res !"$NOTIFICATION$" ![name string]."_notification" ;
+        doReplace !?res !"$FLAGFUNCTION$" !"tpl_set_flag_".[flag_name string] ;
 
-        performReplace !p !key ![name string] !?i_res ;
+        doReplace !?i_res !key ![name string] ;
 
         i_res := res."\n".i_res ;
     end method ;
@@ -138,7 +128,6 @@ class @flag_action extends @action_obj {
 class @incrementcounter_action extends @action_obj {
     @lstring counter_name ;
     override method generate
-        ?@prefix_map unused p
         ?@lstring    unused name
         ?@string     unused err
         ?@string     unused key

@@ -37,7 +37,7 @@
  *
  * Index in this array correspond to the #AlarmType of the alarm
  */
-extern P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) tpl_alarm_table[ALARM_COUNT];
+extern CONSTP2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) tpl_alarm_table[ALARM_COUNT];
 #endif
 
 /**

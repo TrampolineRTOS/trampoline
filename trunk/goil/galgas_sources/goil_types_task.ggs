@@ -28,6 +28,7 @@ class @task_obj extends @oil_obj {
     @stringset          resources ;
     @stringset          events ;
     @stringset          messages ;
+    @stringset          acc_apps ;
     @timing_prot        timing_prot ;
     @ident_map          others;
 }
@@ -50,6 +51,15 @@ sortedlist @objs_by_prio {
     @uint    act ;
     @lstring name ;
 }{  prio < }
+
+#
+# This sorted list type is used to sort tasks with the extended ones before
+# the basic ones.
+#
+sortedlist @tasks_by_type {
+    @uint    type ;
+    @string  name ;
+}{  type < }
 
 list @prio_list {
     @uint    fifosize ;

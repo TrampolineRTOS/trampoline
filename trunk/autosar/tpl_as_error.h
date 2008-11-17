@@ -229,7 +229,7 @@
     /* E_OK or E_OS_LIMIT   */
 #   define CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)         \
     if ((result == (tpl_status)E_OK) &&                             \
-        ((sched_table_id) >= (ScheduleTableType)SCHEDTABLE_COUNT))  \
+        ((sched_table_id) >= (tpl_schedtable_id)SCHEDTABLE_COUNT))  \
     {                                                               \
         result = (tpl_status)E_OS_ID;                               \
     }
@@ -573,7 +573,8 @@
     /* E_OK or E_OS_ID   */
 #   define CHECK_ISR_ID_ERROR(isr_id,result)                        \
     if  ((result == (tpl_status)E_OK) &&                            \
-        (((isr_id) >= (tpl_isr_id)ISR_COUNT) || ((isr_id) < 0)))    \
+        (((isr_id) >= (tpl_isr_id)(ISR_COUNT+TASK_COUNT)) ||        \
+        ((isr_id) < TASK_COUNT)))                                   \
     {                                                               \
         result = (tpl_status)E_OS_ID;                               \
     }

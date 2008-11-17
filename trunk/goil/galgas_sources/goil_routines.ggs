@@ -104,6 +104,10 @@ routine performReplace ?@prefix_map p ?@string key ?@string name ?!@string res :
     res := [res stringByReplacingStringByString !tag_to_rep !prefix.name] ;
 end routine ;
 
+routine doReplace ?!@string s ?@string o ?@string n :
+  s := [s stringByReplacingStringByString !o !n] ;
+end routine ;
+
 routine replace_no_prefix ?@prefix_map p ?@string key ?@string name ?!@string res :
     @lstring lkey := [@lstring new !key !here] ;
 #    @string prefix ;
@@ -119,25 +123,15 @@ end routine ;
 #  ??@uint inCorrectedBitCount
 #  !@uint outCode
 #;
-
-routine obj_table
-    ?@string     typename
-    ?@string     varname
-    ?@string     prefix
-    ?@prefix_map p
-    ?@stringset  names
-    !@string     header
-    !@string     implementation :
-
-#    @uint taskCount := [names count] ;
-#    @uint bitCount := [taskCount significantBitCount] ;
-#    @uint correctedBits := [option goil_options. corrected_bits] ;
-    implementation := "tpl_". typename." *tpl_".varname."_table[".[varname uppercaseString]."_COUNT] = {\n" ;
-    header := "\n" ;
+routine table_core
+    ?@string    typename
+    ?@string    varname
+    ?@string    obj_prefix
+    ?@stringset names
+    ?!@string   header
+    ?!@string   implementation
+:
     @uint n := 0 ;
-    @string obj_prefix ;
-    @string obj_ids := "" ;
-    prefix !p !prefix ?obj_prefix ;
     foreach names (@string name) do
         header := header."#define ".varname."_id_of_".name."  ".[n string]."\n" ;
 #        @uint taskID ;
@@ -155,6 +149,27 @@ routine obj_table
         else implementation := implementation . "\n" ;
         end if ;
     end foreach ;
+end routine ;
+
+routine obj_table
+    ?@string     typename
+    ?@string     varname
+    ?@string     prefix
+    ?@prefix_map p
+    ?@stringset  names
+    !@string     header
+    !@string     implementation
+:
+#    @uint taskCount := [names count] ;
+#    @uint bitCount := [taskCount significantBitCount] ;
+#    @uint correctedBits := [option goil_options. corrected_bits] ;
+    implementation := "tpl_".typename." *tpl_".varname."_table[".[varname uppercaseString]."_COUNT] = {\n" ;
+    header := "\n" ;
+#    @uint n := 0 ;
+    @string obj_prefix ;
+    @string obj_ids := "" ;
+    prefix !p !prefix ?obj_prefix ;
+    table_core !typename !varname !obj_prefix !names !?header !?implementation ;
     implementation := implementation . "};\n" ;
 
     if [names count] == 0 then implementation := "" ; end if ;

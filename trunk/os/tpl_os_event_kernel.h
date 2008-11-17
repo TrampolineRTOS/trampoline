@@ -102,22 +102,6 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
 FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
     CONST(tpl_event_mask, AUTOMATIC) event);
 
-/**
- * @internal
- *
- * Low level fontion for event setting. This functions is used
- * internally by tpl_set_event_service and by occurences that
- * will lead to event settings ie alarm, schedule table expiry
- * point (if Autosar is on), message and so on.
- *
- * @param   a_task          pointer to the task structure of the target task.
- * @param   incoming_event  the event mask.
- */
-FUNC(tpl_status, OS_CODE) tpl_set_event(
-    P2VAR(tpl_task, AUTOMATIC, OS_APPL_DATA)  a_task,
-    CONST(tpl_event_mask, AUTOMATIC)          incoming_event);
-
-
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

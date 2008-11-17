@@ -44,301 +44,312 @@
  * Kernel service for task activation
  */
 FUNC(StatusType, OS_CODE) tpl_activate_task_service(
-    CONST(TaskType, AUTOMATIC) task_id)
+  CONST(TaskType, AUTOMATIC) task_id)
 {
-    /*  init the error to no error  */
-    VAR(StatusType, AUTOMATIC) result = E_OK;
+  /*  init the error to no error  */
+  VAR(StatusType, AUTOMATIC) result = E_OK;
+  VAR(tpl_proc_id, AUTOMATIC) old_running_id;
 
-    /* check interrupts are not disabled by user    */
-    CHECK_INTERRUPT_LOCK(result)
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
 
-    /*  lock the task structures    */
-    LOCK_WHEN_TASK()
+  /*  lock the task structures    */
+  LOCK_WHEN_TASK()
 
-    /*  store information for error hook routine    */
-    STORE_SERVICE(OSServiceId_ActivateTask)
-    STORE_TASK_ID(task_id)
+  /*  store information for error hook routine    */
+  STORE_SERVICE(OSServiceId_ActivateTask)
+  STORE_TASK_ID(task_id)
 
-    /*  Check a task_id error   */
-    CHECK_TASK_ID_ERROR(task_id,result)
+  /*  Check a task_id error   */
+  CHECK_TASK_ID_ERROR(task_id,result)
 
 #ifndef NO_TASK
-    IF_NO_EXTENDED_ERROR(result)
-        result = tpl_activate_task(tpl_task_table[task_id]);
-        if (result == (tpl_status)E_OK_AND_SCHEDULE)
-        {
-            result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
-        }
-    IF_NO_EXTENDED_ERROR_END()
+  IF_NO_EXTENDED_ERROR(result)
+    result = tpl_activate_task(task_id);
+    if (result == (tpl_status)E_OK_AND_SCHEDULE)
+    {
+      old_running_id = tpl_running_id;
+      result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
+    }
+  IF_NO_EXTENDED_ERROR_END()
 #endif
 
-    if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH) {
-        tpl_switch_context(
-            (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
-                &(tpl_old_running_obj->static_desc->context),
-            (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
-                &(tpl_running_obj->static_desc->context)
-        );
-    }
-    
-    PROCESS_ERROR(result)
+#ifndef WITH_SYSTEM_CALL
+  if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH)
+  {
+    tpl_switch_context(
+      &(tpl_stat_proc_table[old_running_id]->context),
+      &(tpl_stat_proc_table[tpl_running_id]->context)
+    );
+  }
+#endif
+  
+  PROCESS_ERROR(result)
 
-    /*  unlock the task structures  */
-    UNLOCK_WHEN_TASK()
+  /*  unlock the task structures  */
+  UNLOCK_WHEN_TASK()
 
-    return result;
+  return result;
 }
 
 
 FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 {
-    /*  init the error to no error  */
-    VAR(StatusType, AUTOMATIC) result = E_OK;
+  /*  init the error to no error  */
+  VAR(StatusType, AUTOMATIC) result = E_OK;
 
-    /* check interrupts are not disabled by user    */
-    CHECK_INTERRUPT_LOCK(result)
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
 
-    /*  lock the task structures    */
-    LOCK_WHEN_TASK()
+  /*  lock the task structures    */
+  LOCK_WHEN_TASK()
 
-    /*  store information for error hook routine    */
-    STORE_SERVICE(OSServiceId_TerminateTask)
+  /*  store information for error hook routine    */
+  STORE_SERVICE(OSServiceId_TerminateTask)
 
-    /*  check we are at the task level  */
-    CHECK_TASK_CALL_LEVEL_ERROR(result)
-    /*  check the task does not own a resource  */
-    CHECK_RUNNING_OWNS_REZ_ERROR(result)
+  /*  check we are at the task level  */
+  CHECK_TASK_CALL_LEVEL_ERROR(result)
+  /*  check the task does not own a resource  */
+  CHECK_RUNNING_OWNS_REZ_ERROR(result)
 
 #ifndef NO_TASK
-    IF_NO_EXTENDED_ERROR(result)
+  IF_NO_EXTENDED_ERROR(result)
 
-        /*  set the state of the running task to DYING                  */
-        tpl_running_obj->state = (tpl_exec_state)DYING;
+    /*  set the state of the running task to DYING                  */
+    tpl_dyn_proc_table[tpl_running_id]->state = (tpl_proc_state)DYING;
 
-        /*  and let the scheduler do its job                            */
-        result |= tpl_schedule_from_dying();
+    /*  and let the scheduler do its job                            */
+    result |= tpl_schedule_from_dying();
 
-    IF_NO_EXTENDED_ERROR_END()
+  IF_NO_EXTENDED_ERROR_END()
 #endif
 
-    if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH) {
-        tpl_switch_context(
-            (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
-                &(tpl_old_running_obj->static_desc->context),
-            (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
-                &(tpl_running_obj->static_desc->context)
-        );
-    }
+#ifndef WITH_SYSTEM_CALL
+  if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH)
+  {
+    tpl_switch_context(
+      NULL,
+      &(tpl_stat_proc_table[tpl_running_id]->context)
+    );
+  }
+#endif
 
-    PROCESS_ERROR(result)
+  PROCESS_ERROR(result)
 
-    /*  unlock the task structures  */
-    UNLOCK_WHEN_TASK()
+  /*  unlock the task structures  */
+  UNLOCK_WHEN_TASK()
 
-    return result;
+  return result;
 }
 
 
 FUNC(StatusType, OS_CODE) tpl_chain_task_service(
-    CONST(TaskType, AUTOMATIC) task_id)
+  CONST(TaskType, AUTOMATIC) task_id)
 {
-    VAR(StatusType, AUTOMATIC) result = E_OK;
-
+  VAR(StatusType, AUTOMATIC) result = E_OK;
+  
 #ifndef NO_TASK
-    P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA) exec_obj;
-    VAR(tpl_activate_counter, AUTOMATIC)            count;
+  P2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) dyn_proc;
+  P2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) stat_proc;
+  VAR(tpl_activate_counter, AUTOMATIC)            count;
 #endif
-
-    /* check interrupts are not disabled by user    */
-    CHECK_INTERRUPT_LOCK(result)
-
-    /*  lock the task system    */
-    LOCK_WHEN_TASK()
-
-    /*  store information for error hook routine    */
-    STORE_SERVICE(OSServiceId_ChainTask)
-    STORE_TASK_ID(task_id)
-
-    /*  Check a call level error    */
-    CHECK_TASK_CALL_LEVEL_ERROR(result)
-    /*  Check a task_id error       */
-    CHECK_TASK_ID_ERROR(task_id,result)
-    /*  Check no resource is held by the terminating task   */
-    CHECK_RUNNING_OWNS_REZ_ERROR(result)
-
+  
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
+  
+  /*  lock the task system    */
+  LOCK_WHEN_TASK()
+  
+  /*  store information for error hook routine    */
+  STORE_SERVICE(OSServiceId_ChainTask)
+  STORE_TASK_ID(task_id)
+  
+  /*  Check a call level error    */
+  CHECK_TASK_CALL_LEVEL_ERROR(result)
+  /*  Check a task_id error       */
+  CHECK_TASK_ID_ERROR(task_id,result)
+  /*  Check no resource is held by the terminating task   */
+  CHECK_RUNNING_OWNS_REZ_ERROR(result)
+  
 #ifndef NO_TASK
-    IF_NO_EXTENDED_ERROR(result)
-
-        exec_obj = &((tpl_task_table[task_id])->exec_desc);
-
-        if (exec_obj == tpl_running_obj)
+  IF_NO_EXTENDED_ERROR(result)
+  
+    dyn_proc = tpl_dyn_proc_table[task_id];
+    stat_proc = tpl_stat_proc_table[task_id];
+    
+    if (task_id == tpl_running_id)
+    {
+      /*  The activated task and the currently running object
+          are the same. So the task is put in the RESURRECT state.    */
+      tpl_dyn_proc_table[tpl_running_id]->state = RESURRECT;
+      
+    }
+    else
+    {
+      count = dyn_proc->activate_count;
+      
+      if (count < stat_proc->max_activate_count)
+      {
+        if (count == 0)
         {
-            /*  The activated task and the currently running object
-                are the same. So the task is put in the RESURRECT state.    */
-            tpl_running_obj->state = RESURRECT;
-
+          if (stat_proc->type == TASK_EXTENDED)
+          {
+            /*  if the task is an extended one, it is initialized now */
+            dyn_proc->state = (tpl_proc_state)READY;
+            tpl_init_proc(task_id);
+          }
+          else
+          {
+            /*  if it is a basic task, its initialization is
+                postponed to the time it will get the CPU             */
+            dyn_proc->state = (tpl_proc_state)READY_AND_NEW;
+          }
         }
-        else
-        {
-            count = exec_obj->activate_count;
-
-            if (count < exec_obj->static_desc->max_activate_count)
-            {
-                if (count == 0)
-                {
-                    if (exec_obj->static_desc->type == TASK_EXTENDED)
-                    {
-                        /*  if the task is an extended one,
-                            it is initialized now                           */
-                        exec_obj->state = (tpl_exec_state)READY;
-                        tpl_init_exec_object(exec_obj);
-                    }
-                    else
-                    {
-                        /*  if it is a basic task, its initialization is
-                            postponed to the time it will get the CPU       */
-                        exec_obj->state = (tpl_exec_state)READY_AND_NEW;
-                    }
-                }
-                /*  put it in the list  */
-                tpl_put_new_exec_object(exec_obj);
-
-                /*  inc the task activation count. When the task
-                    will terminate it will dec this count and if
-                    not zero it will be reactivated                         */
-                exec_obj->activate_count++;
-
-                /*  the object that is currently running is put in
-                    the DYING state                                         */
-                tpl_running_obj->state = DYING;
-            }
-            else
-            {
-                /*  The max activation count is reached. So an error occurs */
-                result = E_OS_LIMIT;
-            }
-        }
-
-        if (result == E_OK)
-        {
-            /*  and let the scheduler do its job                            */
-            result |= tpl_schedule_from_dying();
-        }
+        /*  put it in the list  */
+        tpl_put_new_proc(task_id);
         
-        if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH) {
-            tpl_switch_context(
-                NULL,
-                (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
-                    &(tpl_running_obj->static_desc->context)
-            );
-        }
-
-
-    IF_NO_EXTENDED_ERROR_END()
+        /*  inc the task activation count. When the task
+            will terminate it will dec this count and if
+            not zero it will be reactivated                           */
+        dyn_proc->activate_count++;
+        
+        /*  the object that is currently running is put in
+            the DYING state                                           */
+        tpl_dyn_proc_table[tpl_running_id]->state = DYING;
+      }
+      else
+      {
+        /*  The max activation count is reached. So an error occurs   */
+        result = E_OS_LIMIT;
+      }
+    }
+    
+    if (result == E_OK)
+    {
+      /*  and let the scheduler do its job                            */
+      result |= tpl_schedule_from_dying();
+    }
+    
+#ifndef WITH_SYSTEM_CALL
+    if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH)
+    {
+      stat_proc = tpl_stat_proc_table[tpl_running_id];
+      tpl_switch_context(
+        NULL,
+        &(stat_proc->context)
+      );
+    }
 #endif
-
-    PROCESS_ERROR(result)
-
-    /*  unlock the task structures  */
-    UNLOCK_WHEN_TASK()
-
-    return result;
+    
+    
+  IF_NO_EXTENDED_ERROR_END()
+#endif
+  
+  PROCESS_ERROR(result)
+  
+  /*  unlock the task structures  */
+  UNLOCK_WHEN_TASK()
+  
+  return result;
 }
 
 
 FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 {
-    VAR(StatusType, AUTOMATIC) result = E_OK;
-
-    /* check interrupts are not disabled by user    */
-    CHECK_INTERRUPT_LOCK(result)
-
-    /*  lock the task system    */
-    LOCK_WHEN_TASK()
-
-    /*  store information for error hook routine    */
-    STORE_SERVICE(OSServiceId_Schedule)
-
-    /*  Check a call level error    */
-    CHECK_TASK_CALL_LEVEL_ERROR(result)
-    /*  Check no resource is held by the calling task   */
-    CHECK_RUNNING_OWNS_REZ_ERROR(result)
-
+  VAR(StatusType, AUTOMATIC) result = E_OK;
+  VAR(tpl_proc_id, AUTOMATIC) old_running_id;
+  
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
+  
+  /*  lock the task system    */
+  LOCK_WHEN_TASK()
+  
+  /*  store information for error hook routine    */
+  STORE_SERVICE(OSServiceId_Schedule)
+  
+  /*  Check a call level error    */
+  CHECK_TASK_CALL_LEVEL_ERROR(result)
+  /*  Check no resource is held by the calling task   */
+  CHECK_RUNNING_OWNS_REZ_ERROR(result)
+  
 #ifndef NO_TASK
-    IF_NO_EXTENDED_ERROR(result)
-        /*  release the internal resource   */
-        tpl_release_internal_resource(tpl_running_obj);
-        /*  does the rescheduling           */
-        result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
-        /*  get the internal resource       */
-        tpl_get_internal_resource(tpl_running_obj);
-    IF_NO_EXTENDED_ERROR_END()
+  IF_NO_EXTENDED_ERROR(result)
+    /*  release the internal resource   */
+    tpl_release_internal_resource(tpl_running_id);
+    /*  does the rescheduling           */
+    old_running_id = tpl_running_id;
+    result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
+    /*  get the internal resource       */
+    tpl_get_internal_resource(tpl_running_id);
+  IF_NO_EXTENDED_ERROR_END()
 #endif
-
-    if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH) {
-        tpl_switch_context(
-            (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
-                &(tpl_old_running_obj->static_desc->context),
-            (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
-                &(tpl_running_obj->static_desc->context)
-        );
-    }
-
-    PROCESS_ERROR(result)
-
-    /*  unlock the task structures  */
-    UNLOCK_WHEN_TASK()
-
-    return result;
+  
+#ifndef WITH_SYSTEM_CALL
+  if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH)
+  {
+    tpl_switch_context(
+      &(tpl_stat_proc_table[old_running_id]->context),
+      &(tpl_stat_proc_table[tpl_running_id]->context)
+    );
+  }
+#endif
+  
+  PROCESS_ERROR(result)
+  
+  /*  unlock the task structures  */
+  UNLOCK_WHEN_TASK()
+  
+  return result;
 }
 
 
 FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
-    VAR(TaskRefType, AUTOMATIC) task_id)
+  VAR(TaskRefType, AUTOMATIC) task_id)
 {
-    /*  get the task id from the task descriptor.
-        note : the idle task has an id set to INVALID_TASK
-        Done when the idle task is running, tpl_get_task_id
-        returns naturally INVALID_TASK in task_id   */
-    *task_id = tpl_running_obj->static_desc->id;
-
-    return E_OK;
+  /*  get the task id from the task descriptor. If the id is not
+      within 0 and TASK_COUNT-1, INVALID_TASK is returned         */
+  if (tpl_running_id >= 0 && tpl_running_id < TASK_COUNT)
+  {
+    *task_id = tpl_running_id;
+  }
+  else
+  {
+    *task_id = INVALID_TASK;
+  }
+  return E_OK;
 }
 
 
 FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
-    CONST(TaskType, AUTOMATIC)        task_id,
-    VAR(TaskStateRefType, AUTOMATIC)  state)
+  CONST(TaskType, AUTOMATIC)        task_id,
+  VAR(TaskStateRefType, AUTOMATIC)  state)
 {
-    VAR(StatusType, AUTOMATIC) result = E_OK;
+  VAR(StatusType, AUTOMATIC) result = E_OK;
 
-    /* check interrupts are not disabled by user    */
-    CHECK_INTERRUPT_LOCK(result)
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
 
-    LOCK_WHEN_HOOK()
+  LOCK_WHEN_HOOK()
 
-    /*  store information for error hook routine    */
-    STORE_SERVICE(OSServiceId_GetTaskState)
-    STORE_TASK_STATE_REF(state)
+  /*  store information for error hook routine    */
+  STORE_SERVICE(OSServiceId_GetTaskState)
+  STORE_TASK_STATE_REF(state)
 
-    /*  Check a task_id error       */
-    CHECK_TASK_ID_ERROR(task_id,result)
+  /*  Check a task_id error       */
+  CHECK_TASK_ID_ERROR(task_id,result)
 
 #ifndef NO_TASK
-    IF_NO_EXTENDED_ERROR(result)
-        /*  MISRA RULE 45 VIOLATION: the original pointer points to a struct
-            that has the same beginning fields as the struct it is casted to
-            This allow object oriented design and polymorphism.
-        */
-        *state = ((P2VAR(tpl_exec_common, AUTOMATIC, OS_APPL_DATA))(tpl_task_table[task_id]))->state & 0x3;
-    IF_NO_EXTENDED_ERROR_END()
+  IF_NO_EXTENDED_ERROR(result)
+    *state = (tpl_dyn_proc_table[task_id]->state) & 0x3;
+  IF_NO_EXTENDED_ERROR_END()
 #endif
 
-    PROCESS_ERROR(result)
+  PROCESS_ERROR(result)
 
-    UNLOCK_WHEN_HOOK()
+  UNLOCK_WHEN_HOOK()
 
-    return result;
+  return result;
 }
 
 #define OS_STOP_SEC_CODE

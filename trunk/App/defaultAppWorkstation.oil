@@ -13,18 +13,19 @@ IMPLEMENTATION trampoline {
 CPU test {
 
     OS config {
+//        SYSTEM_CALL = TRUE;
+//        POWEROF2QUEUE = TRUE;
         STATUS = EXTENDED;
         ERRORHOOK = TRUE;
         PRETASKHOOK = TRUE;
         APP_SRC = "tpl_default_tasks_workstation.c";
-
+        TRAMPOLINE_BASE_PATH = "..";
+        DOW=TRUE;
         CFLAGS  = "-g";
-        CFLAGS  = "-Wall -pedantic --std=c99";
-        CFLAGS  = "-Wmissing-field-initializers -ansi";
+        CFLAGS  = "-Wall -pedantic -Wformat -Werror -std=c99";
+        CFLAGS  = "-Wmissing-field-initializers"; // -arch ppc";
         ASFLAGS = "";
         LDFLAGS = "-g";
-        APP_NAME = "trampoline";
-        TRAMPOLINE_BASE_PATH = "..";
     } ;
 
 

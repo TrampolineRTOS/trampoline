@@ -42,6 +42,19 @@
 #define NO_TASK
 #endif
 
+#ifndef EXTENDED_TASK_COUNT
+#define EXTENDED_TASK_COUNT 0
+#endif
+#if EXTENDED_TASK_COUNT == 0
+/**
+ * @def NO_EXTENDED_TASK
+ *
+ * When this flag is defined, this means there is no extended task
+ * defined in the system.
+ */
+#define NO_EXTENDED_TASK
+#endif
+
 #ifndef RESOURCE_COUNT
 #define RESOURCE_COUNT 0
 #endif
@@ -110,6 +123,20 @@
 #endif
 
 /* WITH_AUTOSAR */
+#endif
+
+
+/**
+ * @def ASM
+ *
+ * When using system calls, API functions are written in assembly code
+ * ASM expands in the appropriate keyword for the target platform or
+ * to an empty string
+ */
+#ifdef WITH_SYSTEM_CALL
+#define ASM TC_ASM
+#else
+#define ASM
 #endif
 
 #ifdef WITH_AUTOSAR

@@ -43,64 +43,67 @@ import option goil_options in "goil_options.ggs" ;
 # Initialisation of token found in templates
 #--------------------------------------------------------------------
 routine init_prefixes ?!@prefix_map prefix :
-    [!?prefix add ![@lstring new !"task" !here]
-              !"descriptor_of_task_" !"$TASK$"] ;
-    [!?prefix add ![@lstring new !"task_name" !here]
-              !"" !"$EXEC_NAME$"] ;
-    [!?prefix add ![@lstring new !"task_static" !here]
-              !"static_descriptor_of_task_" !"$EXEC_STATIC$"] ;
+#    [!?prefix add ![@lstring new !"task" !here]
+#              !"descriptor_of_task_" !"$TASK$"] ;
+#    [!?prefix add ![@lstring new !"task_name" !here]
+#              !"" !"$EXEC_NAME$"] ;
+#    [!?prefix add ![@lstring new !"task_static" !here]
+#              !"static_descriptor_of_task_" !"$EXEC_STATIC$"] ;
+#
+#    [!?prefix add ![@lstring new !"isr" !here]
+#              !"descriptor_of_isr_" !"$ISR$"] ;
+#    [!?prefix add ![@lstring new !"isr_name" !here]
+#              !"" !"$EXEC_NAME$"] ;
+#    [!?prefix add ![@lstring new !"isr_static" !here]
+#              !"static_descriptor_of_isr_" !"$EXEC_STATIC$"] ;
+#    [!?prefix add ![@lstring new !"isr_helper" !here]
+#              !"static_helper_of_isr_" !"$ISR_HELPER$"] ;
 
-    [!?prefix add ![@lstring new !"isr" !here]
-              !"descriptor_of_isr_" !"$ISR$"] ;
-    [!?prefix add ![@lstring new !"isr_name" !here]
-              !"" !"$EXEC_NAME$"] ;
-    [!?prefix add ![@lstring new !"isr_static" !here]
-              !"static_descriptor_of_isr_" !"$EXEC_STATIC$"] ;
-    [!?prefix add ![@lstring new !"isr_helper" !here]
-              !"static_helper_of_isr_" !"$ISR_HELPER$"] ;
+    [!?prefix add ![@lstring new !"proc" !here]
+              !"_descriptor" !""] ;
 
-    [!?prefix add ![@lstring new !"alarm" !here]
-              !"descriptor_of_alarm_" !"$ALARM$"] ;
-    [!?prefix add ![@lstring new !"alarm_name" !here]
-              !"" !"$ALARM_NAME$"] ;
+#    [!?prefix add ![@lstring new !"alarm" !here]
+#              !"descriptor_of_alarm_" !"$ALARM$"] ;
+#    [!?prefix add ![@lstring new !"alarm_name" !here]
+#              !"" !"$ALARM_NAME$"] ;
 
-    [!?prefix add ![@lstring new !"counter" !here]
-              !"descriptor_of_counter_" !"$COUNTER$"] ;
+#    [!?prefix add ![@lstring new !"counter" !here]
+#              !"descriptor_of_counter_" !"$COUNTER$"] ;
     [!?prefix add ![@lstring new !"counter_name" !here]
               !"" !"$COUNTER_NAME$"] ;
     [!?prefix add ![@lstring new !"counter_kind" !here]
               !"" !"$COUNTER_KIND$"] ;
 
-    [!?prefix add ![@lstring new !"event" !here]
-              !"mask_of_" !"$EVENT$"] ;
-    [!?prefix add ![@lstring new !"event_name" !here]
-              !"" !"$EVENT_NAME$"] ;
-    [!?prefix add ![@lstring new !"event_mask" !here]
-              !"" !"$EVENT_MASK$"] ;
+#    [!?prefix add ![@lstring new !"event" !here]
+#              !"mask_of_" !"$EVENT$"] ;
+#    [!?prefix add ![@lstring new !"event_name" !here]
+#              !"" !"$EVENT_NAME$"] ;
+#    [!?prefix add ![@lstring new !"event_mask" !here]
+#              !"" !"$EVENT_MASK$"] ;
 
-    [!?prefix add ![@lstring new !"resource" !here]
-              !"descriptor_of_resource_" !"$RESOURCE$"] ;
-    [!?prefix add ![@lstring new !"resource_ptr" !here]
-              !"&descriptor_of_resource_" !"$RESOURCE_PTR$"] ;
-    [!?prefix add ![@lstring new !"resource_name" !here]
-              !"" !"$RESOURCE_NAME$"] ;
+#    [!?prefix add ![@lstring new !"resource" !here]
+#             !"descriptor_of_resource_" !"$RESOURCE$"] ;
+#    [!?prefix add ![@lstring new !"resource_ptr" !here]
+#              !"&descriptor_of_resource_" !"$RESOURCE_PTR$"] ;
+#    [!?prefix add ![@lstring new !"resource_name" !here]
+#              !"" !"$RESOURCE_NAME$"] ;
 
-    [!?prefix add ![@lstring new !"callback" !here]
-              !"alarm_callback_" !"$ALARM_CALLBACK$"] ;
-    [!?prefix add ![@lstring new !"task_function" !here]
-              !"function_of_task_" !"$EXEC_FUNCTION$"] ;
-    [!?prefix add ![@lstring new !"task_context" !here]
-              !"CONTEXT_OF_TASK_" !"$EXEC_CONTEXT$"] ;
-    [!?prefix add ![@lstring new !"task_stack" !here]
-              !"STACK_OF_TASK_" !"$EXEC_STACK$"] ;
-    [!?prefix add ![@lstring new !"task_id" !here]
-              !"task_id_of_" !"$TASK_ID$"] ;
-    [!?prefix add ![@lstring new !"isr_function" !here]
-              !"function_of_isr_" !"$EXEC_FUNCTION$"] ;
-    [!?prefix add ![@lstring new !"isr_context" !here]
-              !"CONTEXT_OF_ISR_" !"$EXEC_CONTEXT$"] ;
-    [!?prefix add ![@lstring new !"isr_stack" !here]
-              !"STACK_OF_ISR_" !"$EXEC_STACK$"] ;
+#    [!?prefix add ![@lstring new !"callback" !here]
+#              !"alarm_callback_" !"$ALARM_CALLBACK$"] ;
+#    [!?prefix add ![@lstring new !"task_function" !here]
+#              !"function_of_task_" !"$EXEC_FUNCTION$"] ;
+#    [!?prefix add ![@lstring new !"task_context" !here]
+#              !"CONTEXT_OF_TASK_" !"$EXEC_CONTEXT$"] ;
+#    [!?prefix add ![@lstring new !"task_stack" !here]
+#             !"STACK_OF_TASK_" !"$EXEC_STACK$"] ;
+#    [!?prefix add ![@lstring new !"task_id" !here]
+#              !"task_id_of_" !"$TASK_ID$"] ;
+#    [!?prefix add ![@lstring new !"isr_function" !here]
+#              !"function_of_isr_" !"$EXEC_FUNCTION$"] ;
+#    [!?prefix add ![@lstring new !"isr_context" !here]
+#              !"CONTEXT_OF_ISR_" !"$EXEC_CONTEXT$"] ;
+#    [!?prefix add ![@lstring new !"isr_stack" !here]
+#              !"STACK_OF_ISR_" !"$EXEC_STACK$"] ;
     
     [!?prefix add ![@lstring new !"msg_name" !here] !"" !"$MESSAGE_NAME$"] ;
     [!?prefix add ![@lstring new !"msg" !here] !"message_object_of_" !"$MESSAGE$"] ;
@@ -136,7 +139,7 @@ routine init_prefixes ?!@prefix_map prefix :
     [!?prefix add ![@lstring new !"filter_kind" !here]
               !"" !"$FILTER_KIND$"] ;
 
-    init_targets_prefixes !?prefix ;
+#    init_targets_prefixes !?prefix ;
 
 end routine ;
 
@@ -439,10 +442,9 @@ routine generate_types
 :
   @string type ;
 
-  # compute the type for tpl_task_id
-  generate_signed_type ![[tasks count] uint64] !"Too many tasks" ?type ;
-  #message "tpl_task_id:          ".type."\n" ;
-  types := [types stringByReplacingStringByString !"$TASK_ID_T$" !type] ;
+  # compute the type for tpl_proc_id
+  generate_signed_type ![[tasks count] uint64]+[[isrs count] uint64] !"Too many processes (tasks and ISRs)" ?type ;
+  types := [types stringByReplacingStringByString !"$PROC_ID_T$" !type] ;
 
   # compute the type for tpl_priority
   generate_signed_type ![max_priority uint64] !"Maximum priority too high" ?type ;
@@ -487,11 +489,6 @@ routine generate_types
   #message "tpl_counter_id:       ".type."\n" ;
   types := [types stringByReplacingStringByString !"$COUNTER_ID_T$" !type] ;
 
-  # compute the type for tpl_isr_id
-  generate_unsigned_type ![[isrs count] uint64] !"too many isrs" ?type ;
-  #message "tpl_isr_id:           ".type."\n" ;
-  types := [types stringByReplacingStringByString !"$ISR_ID_T$" !type] ;
-
   # compute the type for tpl_schedtable_id
   generate_unsigned_type ![[schedtables count] uint64] !"too many schedule tables" ?type ;
   #message "tpl_schedtable_id:           ".type."\n" ;
@@ -515,8 +512,8 @@ end routine ;
 #--------------------------------------------------------------------
 routine generate_alarms
     ?@alarm_map  alarms
-    ?@prefix_map p
-    ?!@string    header
+    ?@prefix_map unused p
+    ?!@string    unused header
     ?!@string    obj_header
     ?!@string    implementation :
 
@@ -541,17 +538,17 @@ routine generate_alarms
         cast alarm_action :
         when == @setevent_action sea do
             result := tpl_alarm_setevent ;
-            performReplace !p !"task"  ![[sea task_name] string] !?result ;
-            performReplace !p !"event" ![[sea event_name] string] !?result ;
+            doReplace !?result !"$TASK$"  ![[sea task_name] string]."_id" ;
+            doReplace !?result !"$EVENT$" ![[sea event_name] string]."_mask" ;
         when == @activatetask_action ata do
             result := tpl_alarm_activatetask ;
-            performReplace !p !"task" ![[ata task_name] string] !?result ;
+            doReplace !?result !"$TASK$" ![[ata task_name] string]."_id" ;
         when == @callback_action cba do
             result := tpl_alarm_callback ;
-            performReplace !p !"callback" ![[cba function_name] string] !?result ;
+            doReplace !?result !"$ALARM_CALLBACK$" ![[cba function_name] string]."_callback" ;
         when == @incrementcounter_action ica do
             result := tpl_alarm_incrementcounter ;
-            result := [result stringByReplacingStringByString !"$TARGET_COUNTER$" !"descriptor_of_counter_".[[ica counter_name] string]] ;
+            doReplace !?result !"$TARGET_COUNTER$" ![[ica counter_name] string]."_counter_desc" ;
         else error alarm_name : "Unknown action found" ;
         end cast ;
 
@@ -560,38 +557,51 @@ routine generate_alarms
         autostart := [alarm autostart_params] ;
         cast autostart :
         when == @autostart_void do
-            result := [result stringByReplacingStringByString !"$ALARM_STATE$" !"ALARM_SLEEP"] ;
-            result := [result stringByReplacingStringByString !"$ALARM_CYCLE$" !"0"] ;
-            result := [result stringByReplacingStringByString !"$ALARM_DATE$" !"0"] ;
+            doReplace !?result !"$ALARM_STATE$" !"ALARM_SLEEP" ;
+            doReplace !?result !"$ALARM_CYCLE$" !"0" ;
+            doReplace !?result !"$ALARM_DATE$" !"0" ;
         when == @autostart_false do
-            result := [result stringByReplacingStringByString !"$ALARM_STATE$" !"ALARM_SLEEP"] ;
-            result := [result stringByReplacingStringByString !"$ALARM_CYCLE$" !"0"] ;
-            result := [result stringByReplacingStringByString !"$ALARM_DATE$" !"0"] ;
+            doReplace !?result !"$ALARM_STATE$" !"ALARM_SLEEP" ;
+            doReplace !?result !"$ALARM_CYCLE$" !"0" ;
+            doReplace !?result !"$ALARM_DATE$" !"0" ;
         when == @alarm_autostart_true aat do
-            result := [result stringByReplacingStringByString !"$ALARM_STATE$" !"ALARM_AUTOSTART"] ;
-            result := [result stringByReplacingStringByString !"$ALARM_CYCLE$" ![[[aat cycle_time] uint64] string]] ;
-            result := [result stringByReplacingStringByString !"$ALARM_DATE$" ![[[aat alarm_time] uint64] string]] ;
+            doReplace !?result !"$ALARM_STATE$" !"ALARM_AUTOSTART" ;
+            doReplace !?result !"$ALARM_CYCLE$" ![[[aat cycle_time] uint64] string] ;
+            doReplace !?result !"$ALARM_DATE$" ![[[aat alarm_time] uint64] string] ;
         else error alarm_name : "Unknown autostart found" ;
         end cast ;
 
 # sets up the remaining params
         @lstring counter_name ;
         counter_name := [alarm counter_name] ;
-        performReplace !p !"alarm_name"   ![alarm_name string]  !?result ;
-        performReplace !p !"alarm"   ![alarm_name string]  !?result ;
-        performReplace !p !"counter" ![counter_name string] !?result ;
+        doReplace !?result !"$ALARM_NAME$" ![alarm_name string] ;
+        doReplace !?result !"$ALARM$"   ![alarm_name string]."_alarm_desc" ;
+        doReplace !?result !"$COUNTER$" ![counter_name string]."_counter_desc" ;
         alarms_result := alarms_result . "\n" . result ;
     end foreach ;
 
 # build the alarm table
-    @string alarm_head ;
-    @string alarm_imp ;
-    obj_table !"time_obj" !"alarm" !"alarm" !p ![alarms allKeys] ?alarm_head ?alarm_imp ;
+    @string alarm_ids := "" ;
+    @string alarm_imp := "";
+    foreach [alarms allKeys] (@string name) :n
+    before
+      alarm_imp := "CONSTP2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)\n" ;
+      alarm_imp .= "  tpl_alarm_table[ALARM_COUNT] = {\n" ;
+    do
+      alarm_imp .= "  &".name."_alarm_desc" ;
+      alarm_ids .= "#define ".name."_id ".[n string]."\n" ;
+      alarm_ids .= "CONST(AlarmType, AUTOMATIC) ".name." = ".name."_id;\n" ;
+    between
+      alarm_imp .= ",\n" ;
+    after
+      alarm_imp .= "\n};\n" ;
+    end  foreach ;
+
     alarms_result := alarms_result."\n".alarm_imp ;
 
-    header := [header stringByReplacingStringByString !"$ALARMS$" !alarm_head] ;
-    implementation := [implementation stringByReplacingStringByString !"$ALARMS$" !alarms_result] ;
-    obj_header := [obj_header stringByReplacingStringByString !"$ALARM_COUNT$" ![[alarms count] string]] ;
+    doReplace !?implementation !"$ALARMIDS$" !alarm_ids ;
+    doReplace !?implementation !"$ALARMS$" !alarms_result ;
+    doReplace !?obj_header !"$ALARM_COUNT$" ![[alarms count] string] ;
 end routine ;
 
 #--------------------------------------------------------------------
@@ -871,8 +881,7 @@ routine generate_tasks
     ?@task_map        tasks
     ?@resource_map    resources
     ?@prio_map        actual_priorities
-    ?@prefix_map      p
-    ?!@string         header
+    ?!@string         unused header
     ?!@string         obj_header
     ?!@string         implementation :
 
@@ -888,28 +897,35 @@ routine generate_tasks
         @string tmp ;
         @string result := "" ;
 
-        generate_context_and_stack !cfg !task_name !task !p !?result ;
+        generate_context_and_stack !cfg !task_name !task !?result ;
 
         result := result . tpl_task ;
 
-        performReplace !p !"task_name"     ![task_name string] !?result ;
-        performReplace !p !"task_function" ![task_name string] !?result ;
-        performReplace !p !"task"          ![task_name string] !?result ;
-        performReplace !p !"task_static"   ![task_name string] !?result ;
-        performReplace !p !"task_context"  ![task_name string] !?result ;
-        performReplace !p !"task_stack"    ![task_name string] !?result ;
-        performReplace !p !"task_id"       ![task_name string] !?result ;
-        
+        doReplace !?result !"$EXEC_NAME$"     ![task_name string] ;
+        doReplace !?result !"$EXEC_FUNCTION$" ![task_name string]."_function" ;
+        doReplace !?result !"$TASK$" ![task_name string]."_task_desc" ;
+        doReplace !?result !"$EXEC_STATIC$"   ![task_name string]."_task_stat_desc" ;
+        doReplace !?result !"$EXEC_CONTEXT$"  ![task_name string]."_CONTEXT" ;
+        doReplace !?result !"$EXEC_STACK$"    ![task_name string]."_STACK" ;
+        doReplace !?result !"$TASK_ID$"       ![task_name string]."_id" ;
+
         # compute the type of the task (basic or extended) according to
         # the events the task uses. If the task does not use any event,
         # it is a basic task. It the task uses at least one event it is
         # an extended task.
+        @string tpl_evt := "" ;
         if [[task events] count] == 0 then
             # basic task
             result := [result stringByReplacingStringByString !"$TASK_TYPE$" !"TASK_BASIC"] ;
         else
             result := [result stringByReplacingStringByString !"$TASK_TYPE$" !"TASK_EXTENDED"] ;
+            # setup the event structure
+            retrieveTemplateString ?tpl_evt !"event_masks" ;
+            doReplace !?tpl_evt !"$EXEC_NAME$" ![task_name string] ;
+            doReplace !?tpl_evt !"$TASK_EVENT_STRUCT$" ![task_name string]."_task_evts" ;
         end if ;
+
+        doReplace !?result !"$TASK_EVTS$" !tpl_evt ;
 
         @uint actual_prio ;
         [actual_priorities get !task_name ?actual_prio ?*] ;
@@ -922,7 +938,7 @@ routine generate_tasks
 
         if [[task schedule] string] == "NON" then
             non_preemptable_exists := true ;
-            replace_no_prefix !p !"resource_ptr" !"&INTERNAL_RES_SCHEDULER" !?result ;
+            doReplace !?result !"$RESOURCE_PTR$" !"&INTERNAL_RES_SCHEDULER" ;
         else
             # Schedule is FULL. Look for the usage of an internal resource
             @stringset used_rez := [task resources] ;
@@ -934,14 +950,14 @@ routine generate_tasks
                     @resource_property_obj rez_prop := [rez property] ;
                     cast rez_prop :
                     when == @resource_property_internal_obj do
-                         performReplace !p !"resource_ptr" !rez_name !?result ;
+                         doReplace !?result !"$RESOURCE_PTR$" !"&".rez_name."_rez_desc" ;
                          no_internal_rez_found := false ;
                     else
                     end cast ;
                end if ;
             end foreach ;
             if no_internal_rez_found then
-                replace_no_prefix !p !"resource_ptr" !"NULL_PTR" !?result ;
+                doReplace !?result !"$RESOURCE_PTR$" !"NULL" ;
             end if ;
         end if ;
 
@@ -978,16 +994,16 @@ routine generate_tasks
     end foreach ;
 
 # build the task table
-    @string task_head ;
-    @string task_imp ;
-    obj_table !"task" !"task" !"task" !p ![tasks allKeys] ?task_head ?task_imp ;
-    tasks_result := tasks_result."\n".task_imp ;
+#    @string task_head ;
+#    @string task_imp ;
+#    obj_table !"task" !"task" !"task" !p ![tasks allKeys] ?task_head ?task_imp ;
+#    tasks_result := tasks_result."\n".task_imp ;
 
     if non_preemptable_exists then
         tasks_result := "extern tpl_internal_resource INTERNAL_RES_SCHEDULER;\n\n".tasks_result ;
     end if ;
 
-    header := [header stringByReplacingStringByString !"$TASKS$" !task_head] ; 
+#    header := [header stringByReplacingStringByString !"$TASKS$" !task_head] ; 
     implementation := [implementation stringByReplacingStringByString !"$TASKS$" !tasks_result] ; 
     obj_header := [obj_header stringByReplacingStringByString !"$TASK_COUNT$" ![[tasks count] string]] ;
     obj_header := [obj_header stringByReplacingStringByString !"$RES_SCHEDULER_PRIORITY$" ![max_prio string]] ;
@@ -1001,8 +1017,7 @@ routine generate_isrs
     ?@isr_map         isrs
     ?@resource_map    resources
     ?@prio_map        actual_priorities
-    ?@prefix_map      p
-    ?!@string         header
+    ?!@string         unused header
     ?!@string         obj_header
     ?!@string         implementation :
 
@@ -1017,50 +1032,52 @@ routine generate_isrs
         @string tmp := "" ;
         @string result := "" ;
 
-        generate_context_and_stack !cfg !isr_name !isr !p !?result ;
+        generate_context_and_stack !cfg !isr_name !isr !?result ;
 
         result := result . tpl_isr ;
 
-        performReplace !p !"isr_name"     ![isr_name string] !?result ;
-        performReplace !p !"isr_function" ![isr_name string] !?result ;
-        performReplace !p !"isr"          ![isr_name string] !?result ;
-        performReplace !p !"isr_static"   ![isr_name string] !?result ;
-        performReplace !p !"isr_context"  ![isr_name string] !?result ;
-        performReplace !p !"isr_stack"    ![isr_name string] !?result ;
-        performReplace !p !"isr_helper"   ![isr_name string] !?result ;
+    doReplace !?result !"$EXEC_NAME$" ![isr_name string] ;
+    doReplace !?result !"$EXEC_FUNCTION$" ![isr_name string]."_function" ;
+    doReplace !?result !"$ISR$" ![isr_name string]."_isr_desc" ;
+    doReplace !?result !"$EXEC_STATIC$" ![isr_name string]."_isr_stat_desc" ;
+    doReplace !?result !"$EXEC_CONTEXT$" ![isr_name string]."_CONTEXT" ;
+    doReplace !?result !"$EXEC_STACK$" ![isr_name string]."_STACK" ;
+    doReplace !?result !"$ISR_HELPER$" ![isr_name string]."_isr_helper" ;
+    
+    doReplace !?result !"$ISR_ID$"       ![isr_name string]."_id" ;
         
         @uint actual_prio ;
         [actual_priorities get !isr_name ?actual_prio ?*] ;
         tmp := [actual_prio string] ;
-        result := [result stringByReplacingStringByString !"$ISR_PRIORITY$" !tmp] ;
+        doReplace !?result !"$ISR_PRIORITY$" !tmp ;
         @uint act ;
         [isr get_activation ?act] ;
-        result := [result stringByReplacingStringByString !"$ISR_MAX_ACT_COUNT$" ![act string]] ;
+        doReplace !?result !"$ISR_MAX_ACT_COUNT$" ![act string] ;
 
         # AUTOSAR timing protection part
         @timing_prot timing_prot := [isr timing_prot] ;
         @string tp ;
         @string tp_ref ;
         [timing_prot generate !cfg ?tp ?tp_ref ![isr_name string] !resources] ;
-        result := [result stringByReplacingStringByString !"$TIMING_PROT_STRUCT$" !tp] ;
-        result := [result stringByReplacingStringByString !"$TIMING_PROT_REF$" !tp_ref] ;
+        doReplace !?result !"$TIMING_PROT_STRUCT$" !tp ;
+        doReplace !?result !"$TIMING_PROT_REF$" !tp_ref ;
 
         isrs_result := isrs_result . "\n" . result ;
     end foreach ;
 
 # build the isr table
-    @string isr_head ;
-    @string isr_imp ;
-    obj_table !"isr" !"isr" !"isr" !p ![isrs allKeys] ?isr_head ?isr_imp ;
-    isrs_result := isrs_result."\n".isr_imp ;
+#    @string isr_head ;
+#    @string isr_imp ;
+#    obj_table !"isr" !"isr" !"isr" !p ![isrs allKeys] ?isr_head ?isr_imp ;
+#    isrs_result := isrs_result."\n".isr_imp ;
 
     @string specific_code;
-    generate_isr_specific !isrs !p ?specific_code;
+    generate_isr_specific !isrs ?specific_code;
     isrs_result .=  specific_code;
 
-    header := [header stringByReplacingStringByString !"$ISRS$" !isr_head] ; 
-    obj_header := [obj_header stringByReplacingStringByString !"$ISR_COUNT$" ![[isrs count] string]] ;
-    implementation := [implementation stringByReplacingStringByString !"$ISRS$" !isrs_result] ; 
+ #   header := [header stringByReplacingStringByString !"$ISRS$" !isr_head] ; 
+    doReplace !?obj_header !"$ISR_COUNT$" ![[isrs count] string] ;
+    doReplace !?implementation !"$ISRS$" !isrs_result ; 
 end routine ;
 
 #--------------------------------------------------------------------
@@ -1068,7 +1085,6 @@ end routine ;
 #--------------------------------------------------------------------
 routine generate_counters
     ?@counter_map counters
-    ?@prefix_map  p
     ?!@string     header
     ?!@string     obj_header
     ?!@string     implementation :
@@ -1083,8 +1099,8 @@ routine generate_counters
         @string tmp := "";
         @string result := tpl_counter ;
 
-        performReplace !p !"counter_name" ![counter_name string] !?result ;
-        performReplace !p !"counter" ![counter_name string] !?result ;
+        doReplace !?result !"$COUNTER_NAME$" ![counter_name string] ;
+        doReplace !?result !"$COUNTER$" ![counter_name string]."_counter_desc" ;
  
         @basic_type ticks_as_basic ;
         ticks_as_basic := [counter ticks_per_base] ;
@@ -1092,7 +1108,7 @@ routine generate_counters
         when == @uint32_class ui do tmp := [[ui value] string] ;
         else error [ticks_as_basic location] : "Unknown COUNTER TICKSPERBASE value" ;
         end cast ;
-        result := [result stringByReplacingStringByString !"$TICKS_PER_BASE$" !tmp] ;
+        doReplace !?result !"$TICKS_PER_BASE$" !tmp ;
         counters_cst .= "#define OSTICKSPERBASE_".[counter_name string]." ".tmp."\n" ;
 
         @basic_type max_as_basic := [counter max_allowed_value] ;
@@ -1100,7 +1116,7 @@ routine generate_counters
         when == @uint32_class ui do tmp := [[ui value] string] ;
         else error [max_as_basic location] : "Unknown COUNTER MAXALLOWEDVALUE value" ;
         end cast ;
-        result := [result stringByReplacingStringByString !"$MAX_ALLOWED_VALUE$" !tmp] ;
+        doReplace !?result !"$MAX_ALLOWED_VALUE$" !tmp ;
         counters_cst .= "#define OSMAXALLOWEDVALUE_".[counter_name string]." ".tmp."\n" ;
 
         @basic_type min_as_basic := [counter min_cycle] ;
@@ -1108,7 +1124,7 @@ routine generate_counters
         when == @uint32_class ui do tmp := [[ui value] string] ;
         else error [min_as_basic location] : "Unknown COUNTER MINCYCLE value" ;
         end cast ;
-        result := [result stringByReplacingStringByString !"$MIN_CYCLE$" !tmp] ;
+        doReplace !?result !"$MIN_CYCLE$" !tmp ;
         counters_cst .= "#define OSMINCYCLE_".[counter_name string]." ".tmp."\n\n" ;
 
         #
@@ -1122,14 +1138,14 @@ routine generate_counters
             when == @hardware_counter do tmp := "HARDWARE_COUNTER" ;
             else error [type location] : "Unknown COUNTER TYPE value" ;
             end cast ;
-            result := [result stringByReplacingStringByString !"$COUNTER_KIND$" !tmp] ;
+            doReplace !?result !"$COUNTER_KIND$" !tmp ;
         end if ;
 
         counters_result := counters_result . "\n" . result ;
     end foreach ;
  
     @string specific_code ;
-    generate_counter_specific !counters !p ?specific_code ;
+    generate_counter_specific !counters ?specific_code ;
     counters_result .=  specific_code ;
 
     @string counter_ids := "";
@@ -1138,26 +1154,27 @@ routine generate_counters
     # of counters to allow access by API functions
     # IncrementCounter, GetCounterValue and GetElapsedCounterValue
     if [option goil_options.autosar_on] then
-        obj_header := [obj_header stringByReplacingStringByString !"$COUNTER_COUNT$" ![[counters count] string]] ;
-        @uint i := 0 ;
-        @string counter_table := "";
-        foreach counters (@lstring counter_name @counter_obj counter)
-        before counter_table := "tpl_counter *tpl_counter_table[".[[counters count] string]."] = {\n" ;
+       @string counter_table := "";
+        foreach counters (@lstring counter_name @counter_obj counter) :n
+        before
+          counter_table := "#ifdef WITH_AUTOSAR\n" ;
+          counter_table .= "CONSTP2VAR(tpl_counter, OS_VAR, OS_APPL_DATA)\n" ;
+          counter_table .= "  tpl_counter_table[COUNTER_COUNT] = {\n" ;
         do
-            counter_table .= "    &descriptor_of_counter_".[counter_name string] ;
-            counter_ids .= "#define ".[counter_name string]." ".[i string]."\n" ;
-            i++ ;
-        between counter_table .= ",\n";
-        after counter_table .= "\n";    
+            counter_table .= "    &".[counter_name string]."_counter_desc" ;
+            counter_ids .= "#define ".[counter_name string]."_id ".[n string]."\n" ;
+            counter_ids .= "CONST(CounterType, AUTOMATIC) ".[counter_name string]." = ".[counter_name string]."_id;" ;
+        between counter_table .= ",\n"; counter_ids := "\n" ;
+        after counter_table .= "\n};\n#endif\n";    
         end foreach ;
-        counter_table .= "};\n" ;
         counters_result .= counter_table ;
     end if ;
 
 
-    header := [header stringByReplacingStringByString !"$COUNTERS$" !counters_cst] ; 
-    header := [header stringByReplacingStringByString !"$COUNTERSIDS$" !counter_ids] ; 
-    implementation := [implementation stringByReplacingStringByString !"$COUNTERS$" !counters_result] ; 
+    doReplace !?obj_header !"$COUNTER_COUNT$" ![[counters count] string] ;
+    doReplace !?header !"$COUNTERS$" !counters_cst ; 
+    doReplace !?implementation !"$COUNTERIDS$" !counter_ids ; 
+    doReplace !?implementation !"$COUNTERS$" !counters_result ; 
 end routine ;
 
 #--------------------------------------------------------------------
@@ -1167,8 +1184,8 @@ routine generate_resources
     ?@resource_map resources
     ?@prio_map     rez_prio
     ?@string_map   rez_comments
-    ?@prefix_map   p
-    ?!@string      header
+#    ?@prefix_map   p
+    ?!@string      unused header
     ?!@string      obj_header
     ?!@string      implementation :
 
@@ -1207,26 +1224,42 @@ routine generate_resources
             error resource_name : "Unknown property found" ;
         end cast ;
 
-        performReplace !p !"resource_name" ![resource_name string] !?result ;
-        performReplace !p !"resource"      ![resource_name string] !?result ;
+        doReplace !?result !"$RESOURCE_NAME$" ![resource_name string] ;
+        doReplace !?result !"$RESOURCE$"      ![resource_name string]."_rez_desc" ;
 
-        result := [result stringByReplacingStringByString !"$PRIORITY$" ![prio string]] ;
-        result := [result stringByReplacingStringByString !"$USAGE$" !usage] ;
+        doReplace !?result !"$PRIORITY$" ![prio string] ;
+        doReplace !?result !"$USAGE$" !usage ;
 
         resources_result := resources_result . "\n" . result ;
     end foreach ;
 
+# build the resource table
+    @string rez_ids := "";
+    @string rez_imp := "";
+
+    foreach regular_rez (@string name) :n do
+      rez_ids .= "#define ".name."_id ".[n string]."\n" ;
+      rez_ids .= "CONST(ResourceType, AUTOMATIC) ".name." = ".name."_id;\n" ;
+    end foreach ;
+
     regular_rez += !"res_sched";
 
-# build the resource table
-    @string rez_head ;
-    @string rez_imp ;
-    obj_table !"resource" !"resource" !"resource" !p !regular_rez ?rez_head ?rez_imp ;
+    foreach regular_rez (@string name) :n
+    before
+      rez_imp := "CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA)\n  tpl_resource_table[RESOURCE_COUNT] = {\n" ;
+    do
+       rez_imp .= "  &".name."_rez_desc" ;
+    between
+      rez_imp .= ",\n" ;
+    after
+      rez_imp .= "\n};\n" ;
+    end foreach ;
+#    desc_table !"tpl_resource" !"resource" !"_rez_desc" !regular_rez ?rez_head ?rez_imp ;
     resources_result := resources_result."\n".rez_imp ;
  
-    header := [header stringByReplacingStringByString !"$RESOURCES$" !rez_head] ;
-    obj_header := [obj_header stringByReplacingStringByString !"$RESOURCE_COUNT$" ![[regular_rez count] string]] ;
-    implementation := [implementation stringByReplacingStringByString !"$RESOURCES$" !resources_result] ; 
+    doReplace !?implementation !"$REZIDS$" !rez_ids ;
+    doReplace !?obj_header !"$RESOURCE_COUNT$" ![[regular_rez count] string] ;
+    doReplace !?implementation !"$RESOURCES$" !resources_result ; 
 end routine ;
 
 #--------------------------------------------------------------------
@@ -1235,13 +1268,13 @@ end routine ;
 routine generate_events
     ?@event_map events
     ?@task_map tasks
-    ?@prefix_map p
-    ?!@string header
+    ?@prefix_map unused p
+    ?!@string unused header
     ?!@string implementation
 :
     @string tpl_event ;
-    @string header_result := "" ;
-    @string implementation_result := "" ;
+    @string imp_result := "" ;
+#    @string implementation_result := "" ;
 
     retrieveTemplateString ?tpl_event !"event" ;
 
@@ -1312,10 +1345,10 @@ routine generate_events
         cast evt_mask :
         when == @event_mask_user_obj emu do
             @string result := tpl_event ;
-            performReplace !p !"event" ![evt_name string] !?result ;
-            performReplace !p !"event_name" ![evt_name string] !?result ;
-            performReplace !p !"event_mask" ![[[emu mask] uint64] string] !?result ;
-            header_result .= result."\n" ;
+            doReplace !?result !"$EVENT$" ![evt_name string]."_mask" ;
+            doReplace !?result !"$EVENT_NAME$" ![evt_name string] ;
+            doReplace !?result !"$EVENT_MASK$" ![[[emu mask] uint64] string] ;
+            imp_result .= result."\n" ;
         else
         end cast ;
     end foreach ;
@@ -1390,14 +1423,14 @@ routine generate_events
 #        message "found ".[needle string]."\n" ;
         common_mask := common_mask | needle ;
         @string result := tpl_event ;
-        performReplace !p !"event" ![evt string] !?result ;
-        performReplace !p !"event_name" ![evt string] !?result ;
-        performReplace !p !"event_mask" ![needle string] !?result ;
-        header_result .= result."\n" ;
+        doReplace !?result !"$EVENT$" ![evt string]."_mask" ;
+        doReplace !?result !"$EVENT_NAME$" ![evt string] ;
+        doReplace !?result !"$EVENT_MASK$" ![needle string] ;
+        imp_result .= result."\n" ;
     end foreach ;
 
-    header := [header stringByReplacingStringByString !"$EVENTS$" !header_result] ; 
-    implementation := [implementation stringByReplacingStringByString !"$EVENTS$" !implementation_result] ; 
+#    header := [header stringByReplacingStringByString !"$EVENTS$" !imp_result] ; 
+    doReplace !?implementation !"$EVENTS$" !imp_result ; 
 
 end routine ;
 
@@ -1440,7 +1473,7 @@ routine generate_ready_list
         else
             max_size := size ;
         end if ;
-        fifo .= "tpl_exec_common *tpl_priority_".[prio string]."_fifo[".[max_size string]."];\n" ;
+        fifo .= "tpl_proc_id tpl_priority_".[prio string]."_fifo[".[max_size string]."];\n" ;
         prio++ ;
     end foreach ;
 

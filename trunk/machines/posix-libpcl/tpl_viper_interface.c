@@ -75,6 +75,8 @@ void tpl_viper_init(void)
     
     if (viper_path != NULL)
     {
+        viper_path = strcat(viper_path,"/viper");
+        
         if (access(viper_path, X_OK) == 0)
         {
             viper_path_ok = 1;

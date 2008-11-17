@@ -10,7 +10,7 @@
 tpl_resource $RESOURCE$ = {
     /* ceiling priority of the resource */  (tpl_priority)$PRIORITY$,
     /* owner previous priority          */  (tpl_priority)0,
-    /* owner of the resource            */  NULL_PTR,
-    /* next resource in the list        */  NULL_PTR
+    /* owner of the resource            */  -1,
+    /* next resource in the list        */  NULL
 };
 

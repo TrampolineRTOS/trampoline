@@ -28,6 +28,7 @@
 
 #include "tpl_as_counter.h"
 #include "tpl_as_counter_kernel.h"
+#include "tpl_os_definitions.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -46,8 +47,7 @@ FUNC(StatusType, OS_CODE) IncrementCounter(VAR(CounterType, AUTOMATIC) counter_i
 {
 #ifdef WITH_SYSTEM_CALL
 #else
-    StatusType result = tpl_increment_counter_service(counter_id);
-    return result & OSEK_STATUS_MASK;
+    return OSEK_STATUS_MASK & tpl_increment_counter_service(counter_id);
 #endif
 }
 

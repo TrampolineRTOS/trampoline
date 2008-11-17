@@ -22,12 +22,12 @@ $TIMING_PROT_STRUCT$
 /*
  * Static descriptor of ISR $EXEC_NAME$
  */
-CONST(tpl_exec_static, OS_CONST) $EXEC_STATIC$ = {
+CONST(tpl_proc_static, OS_CONST) $EXEC_STATIC$ = {
     /* context                  */ $EXEC_CONTEXT$,
     /* stack                    */ $EXEC_STACK$,
     /* entry point (function)   */ $EXEC_FUNCTION$,
-    /* internal ressource       */ NULL_PTR,
-    /* isr id                   */ 0,
+    /* internal ressource       */ NULL,
+    /* isr id                   */ $ISR_ID$,
     /* isr base priority        */ (tpl_priority)$ISR_PRIORITY$,
     /* max activation count     */ $ISR_MAX_ACT_COUNT$,
     /* isr type                 */ IS_ROUTINE,
@@ -45,29 +45,21 @@ CONST(tpl_exec_static, OS_CONST) $EXEC_STATIC$ = {
 #include "tpl_memmap.h"
 
 tpl_isr_static $ISR_HELPER$ = {
-  /* helper */ NULL_PTR,
-  /* next */   NULL_PTR
+  /* helper */ NULL,
+  /* next */   NULL,
+  /* id */     $ISR_ID$
 };
 
 /*
  * Dynamic descriptor of ISR $EXEC_NAME$
  */
-tpl_isr $ISR$ = {
-    {       /* beginning of exec_desc part */
-    /* static descriptor    */  &$EXEC_STATIC$,
-    /* resources            */  NULL_PTR,
+VAR(tpl_proc, OS_VAR) $ISR$ = {
+    /* resources            */  NULL,
     /* activate count       */  0,
     /* isr priority         */  (tpl_priority)$ISR_PRIORITY$,
-    /* isr state            */  SUSPENDED,
+    /* isr state            */  SUSPENDED
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    /* start date           */  0,
-    /* time left            */  0,
-#endif
-    },    /* end of exec_desc part */
-    /* more static desc     */  &$ISR_HELPER$
-#ifdef WITH_AUTOSAR
-    ,
-    /* enabled field        */  (tpl_isr2_enable_state)ENABLED
+    /* activation allowed   */  ,TRUE
 #endif
 };
 

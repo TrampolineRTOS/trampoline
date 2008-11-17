@@ -28,39 +28,39 @@
 #include "tpl_os_kernel.h"
 
 /**
- * @struct TPL_TASK
+ * @struct TPL_TASK_EVENTS
  *
- * This structure glues together a common descriptor
- * and the dynamic members of the task descriptor.
+ * This structure is used to store the event masks of the events
+ * that have been set and the events a task waits for.
  */
-struct TPL_TASK {
-    VAR(tpl_exec_common, TYPEDEF) exec_desc;  /**< the common descriptor
-                                                    of the task              */
+struct TPL_TASK_EVENTS {
     VAR(tpl_event_mask, TYPEDEF)  evt_set;    /**< events received           */
     VAR(tpl_event_mask, TYPEDEF)  evt_wait;   /**< events the task waits for */
 };
 
 /**
- * @typedef tpl_task
+ * @typedef tpl_task_events
  *
- * This type is an alias for the #TPL_TASK structure.
+ * This type is an alias for the #TPL_TASK_EVENTS structure.
  *
- * @see #TPL_TASK
+ * @see #TPL_TASK_EVENTS
  */
-typedef struct TPL_TASK tpl_task;
+typedef struct TPL_TASK_EVENTS tpl_task_events;
 
-#ifndef NO_TASK
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#ifndef NO_EXTENDED_TASK
 /**
- * Array of all tasks' full descriptors.
- *
- * Index in this array correspond to the #TaskType of the task.
- * While it would be less time consuming to refer a task by a pointer
- * to its descriptor, the OSEK API requires a task to have an identifier.
- * So a table of pointer is used. The size of this table is static
- * and known at compile time
+ * Alias to the tpl_task_events_table table
  */
-extern P2VAR(tpl_task, AUTOMATIC, OS_APPL_DATA) tpl_task_table[TASK_COUNT];
+extern CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA)
+        tpl_task_events_table[EXTENDED_TASK_COUNT];
 #endif
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -148,21 +148,8 @@ FUNC(tpl_status, OS_CODE) tpl_get_task_id_service(
  */
 FUNC(tpl_status, OS_CODE) tpl_get_task_state_service(
     CONST(tpl_task_id, AUTOMATIC)                   task_id,
-    P2VAR(tpl_exec_state, AUTOMATIC, OS_APPL_DATA)  state);
+    P2VAR(tpl_proc_state, AUTOMATIC, OS_APPL_DATA)  state);
 
-
-/**
- * @internal
- *
- * Low level fonction for task activation. This functions is used
- * internally by tpl_activate_task_service and by occurences that
- * will lead to task activation, ie alarm, schedule table expiry
- * point (if Autosar is on), message and so on.
- *
- * @param   a_task  pointer to the task structure of the task to activate.
- */
-FUNC(tpl_status, OS_CODE) tpl_activate_task(
-    P2VAR(tpl_task, AUTOMATIC, OS_APPL_DATA) a_task);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

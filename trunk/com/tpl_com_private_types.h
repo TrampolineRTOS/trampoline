@@ -19,11 +19,6 @@
 #include "tpl_com_types.h"
 #include "tpl_os_std_types.h"
 
-/*! 
- *  Datatype for the message of application data atom
- */
-typedef unsigned char       tpl_com_data;
-
 /*!
  *  An alias of the message size datatype
  */

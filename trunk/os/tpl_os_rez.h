@@ -73,7 +73,8 @@ extern CONST(ResourceType, OS_CONST) RES_SCHEDULER;
  * see "Constructional elements"
  * paragraph 13.4.2 page 58 of OSEK/VDX 2.2.2 spec
  */
-#define DeclareResource(resource_id)
+#define DeclareResource(resource_id)  \
+  extern CONST(ResourceType, AUTOMATIC) resource_id
 
 
 #define OS_START_SEC_CODE

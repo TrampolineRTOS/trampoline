@@ -55,10 +55,10 @@ extern c166_context idle_task_context;
 
 
 struct TPL_STACK {
-    tpl_stack_word idata *sys_stack_zone;
-    tpl_stack_size       sys_stack_size; 
-    tpl_stack_word       *user_stack_zone;
-    tpl_stack_size       user_stack_size;
+  tpl_stack_word idata *sys_stack_zone;
+  tpl_stack_size       sys_stack_size; 
+  tpl_stack_word       *user_stack_zone;
+  tpl_stack_size       user_stack_size;
 };
 typedef struct TPL_STACK tpl_stack;
 

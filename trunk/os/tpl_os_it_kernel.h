@@ -27,15 +27,7 @@
 #define TPL_OS_IT_KERNEL_H
 
 #include "tpl_os_kernel.h"
-
-#ifndef NO_ISR
-/**
- * Array of all category 2 interrupt service routine descriptors
- *
- * Index in this array correspond to the Isr identifier
- */
-extern P2VAR(tpl_isr, AUTOMATIC, OS_APPL_DATA) tpl_isr_table[ISR_COUNT];
-#endif
+#include "tpl_machine.h"
 
 /**
  * An ISR helper is a function which should return true
@@ -47,23 +39,28 @@ extern P2VAR(tpl_isr, AUTOMATIC, OS_APPL_DATA) tpl_isr_table[ISR_COUNT];
  */
 typedef P2FUNC(tpl_bool, OS_APPL_CODE, tpl_isr_helper)(void);
 
-struct TPL_ISR;
-
 /**
  * @struct TPL_ISR_STATIC
  *
  * Static descriptor of a category 2 interrupt service routine
  */
 struct TPL_ISR_STATIC {
-    CONST(tpl_isr_helper, AUTOMATIC)  helper;             /**<  pointer to a helper function used
-                                                                to search for hardware that
-                                                                launched the interrupt              */
-    struct P2VAR(TPL_ISR, OS_APPL_DATA, AUTOMATIC) next;  /**<  when there is several handler for
-                                                                the same interrupt priority, the
-                                                                tpl_isr are chained. In this case.
-                                                                Trampoline uses the helper to check
-                                                                what handler will be called for the
-                                                                interrupt.                          */
+    CONST(tpl_isr_helper, AUTOMATIC)
+                              helper; /**<  pointer to a helper function used
+                                            to search for hardware that
+                                            launched the interrupt
+                                      */
+    struct P2VAR(TPL_ISR_STATIC, OS_APPL_DATA, AUTOMATIC)
+                              next;   /**<  when there is several handler for
+                                            the same interrupt priority, the
+                                            tpl_isr are chained. In this case.
+                                            Trampoline uses the helper to check
+                                            what handler will be called for the
+                                            interrupt.
+                                      */
+    CONST(tpl_isr_id, AUTOMATIC)
+                              isr_id; /**<  The id of the ISR
+                                      */
 };
 
 /**
@@ -75,31 +72,18 @@ struct TPL_ISR_STATIC {
  */
 typedef struct TPL_ISR_STATIC tpl_isr_static;
 
-/**
- * @struct TPL_ISR
- *
- * This structure glues together a common executable
- * descriptor (#tpl_exec_common) and a pointer to a tpl_isr_static
- */
-struct TPL_ISR {
-    VAR(tpl_exec_common, TYPEDEF)               exec_desc;    /**<  common descriptor                 */
-    P2CONST(tpl_isr_static, TYPEDEF, OS_CONST)  static_desc;  /**<  pointer to the static desc of the
-                                                                        isr                               */
-#ifdef WITH_AUTOSAR
-    VAR(tpl_bool, TYPEDEF)                      enabled;      /**< FALSE if disabled, TRUE if enabled
-                                                                       (see #tpl_isr2_enable_state) */
+#ifndef NO_ISR
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+extern CONSTP2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA)
+  tpl_isr_stat_table[ISR_COUNT];
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
 #endif
-};
-
-/**
- * @typedef tpl_isr
- *
- * This is an alias for #TPL_ISR structure
- *
- * @see #TPL_ISR
- */
-typedef struct TPL_ISR tpl_isr;
-
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -119,6 +103,53 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void);
  * @param interrupt service routine identifier
  */
 FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) id);
+
+/**
+ * Enable all interrupts service
+*
+ * @see #EnableAllInterrupts
+ */
+FUNC(void, OS_CODE) tpl_enable_all_interrupts_service(void);
+
+
+/**
+ * Disable all interrupts
+*
+ * @see #DisableAllInterrupts
+ */
+FUNC(void, OS_CODE) tpl_disable_all_interrupts_service(void);
+
+
+/**
+ * Resume all interrupts
+ *
+ * @see #ResumeAllInterrupts
+ */
+FUNC(void, OS_CODE) tpl_resume_all_interrupts_service(void);
+
+
+/**
+ * Suspend all interrupts
+ *
+ * @see #SuspendAllInterrupts
+ */
+FUNC(void, OS_CODE) tpl_suspend_all_interrupts_service(void);
+
+
+/**
+ * Resume category 2 interrupts
+ *
+ * @see #ResumeOSInterrupts
+ */
+FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void);
+
+
+/**
+ * Suspend category 2 interrupts
+ *
+ * @see #SuspendOSInterrupts
+ */
+FUNC(void, OS_CODE) tpl_suspend_os_interrupts_service(void);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
