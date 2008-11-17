@@ -29,28 +29,26 @@ class @sd_autostart_true extends @autostart_obj {
 abstract class @ltgt_sync_obj {
     @location	loc ;
 
-    abstract method strategy !@string sync_strat ;
+#    abstract method strategy !@string sync_strat ;
 }
 
 class @ltgt_sync_void extends @ltgt_sync_obj {
-    override method strategy !@string sync_strat :
-        sync_strat := "SCHEDTABLE_NO_SYNC" ;
-    end method ;
+#    override method strategy !@string sync_strat :
+#        sync_strat := "SCHEDTABLE_NO_SYNC" ;
+#    end method ;
 }
 class @ltgt_sync_false extends @ltgt_sync_obj {
-    override method strategy !@string sync_strat :
-        sync_strat := "SCHEDTABLE_NO_SYNC" ;
-    end method ;
+#    override method strategy !@string sync_strat :
+#        sync_strat := "SCHEDTABLE_NO_SYNC" ;
+#    end method ;
 }
 class @ltgt_sync_true extends @ltgt_sync_obj {
-    @lstring strategy ;
-    @uint64  max_correction_sync ;
-    @uint64  max_correction_async ;
-    @uint64  precision ;
+    @lstring    strategy ;
+    @basic_type precision ;
 
-    override method strategy !@string sync_strat :
-        sync_strat := "SCHEDTABLE_".[strategy string]."_SYNC" ;
-    end method ;
+#    override method strategy !@string sync_strat :
+#        sync_strat := "SCHEDTABLE_".[strategy string]."_SYNC" ;
+#    end method ;
 }
 
 sortedlist @action_list {
@@ -118,11 +116,11 @@ class @scheduletable_obj extends @oil_obj {
         doReplace !?stres !"$COUNTER$" !"&".[counter string]."_counter_desc" ;
         doReplace !?stres !"$EXPIRY_TABLE$" ![name string]."_expiry_table" ;
 
-        @string sync_strat ;
-        [ltgt_sync strategy ?sync_strat] ;
+#        @string sync_strat ;
+#        [ltgt_sync strategy ?sync_strat] ;
         @string perio := "" ;
 
-        doReplace !?stres !"$SYNC_STRATEGY$" !sync_strat ;
+#        doReplace !?stres !"$SYNC_STRATEGY$" !sync_strat ;
 
         cast periodic :
         when == @bool_class b do
@@ -161,18 +159,22 @@ class @scheduletable_obj extends @oil_obj {
         @string act_table := "" ;
         @string act_structs := "" ;
         @string expiry_table := "tpl_expiry_point *".[name string]."_expiry_table[$EXPIRY_TABLE_SIZE$] = {\n" ;
-        @bool something_to_do := false ;
+        @bool first_time := true ;
 
         foreach actions (@uint64 offset @action_obj action) do
             message [offset string]."\n" ;
-            if offset != cur_offset & something_to_do then
+            if offset != cur_offset then
+              if not first_time then
                 # output the table of actions for the previous expiry point
                 expiry_point !name !cur_offset !previous_offset !index !?act_table ;
                 expiry_table .= "    &".[name string]."_".[cur_offset string]."_expirypoint,\n" ;
-                previous_offset := cur_offset ;
-                cur_offset := offset ;
-                index := 0 ;
-                expiry_count++ ;
+              else
+                first_time := false ;
+              end if ;
+              previous_offset := cur_offset ;
+              cur_offset := offset ;
+              index := 0 ;
+              expiry_count++ ;
            end if ;
 
             @string res := "" ;
@@ -193,7 +195,6 @@ class @scheduletable_obj extends @oil_obj {
 
             index ++ ;
             act_structs .= res."\n" ;
-            something_to_do := true ;
         end foreach ;
         expiry_point !name !cur_offset !previous_offset !index !?act_table ;
         expiry_table .= "    &".[name string]."_".[cur_offset string]."_expirypoint\n};" ;
@@ -206,12 +207,32 @@ class @scheduletable_obj extends @oil_obj {
         when == @uint64_class len do
             @uint64 delay := [len value] - lastOffset ;
             act_table := [act_table stringByReplacingStringByString !"$OFFSET$" ![delay string]] ;
+            # put the length too
+            doReplace !?stres !"$LENGTH$" ![[len value] string] ;
         else
             error name : "Internal error, unexpected type for LENGTH attribute of schedule table ".[name string] ;
         end cast ;
 
+        # set the synchronization strategy and parameters
+        cast ltgt_sync :
+        when == @ltgt_sync_void do
+          doReplace !?stres !"$SYNC_STRATEGY$" !"SCHEDTABLE_NO_SYNC" ;
+          doReplace !?stres !"$PRECISION$" !"0" ;
+        when == @ltgt_sync_false do
+          doReplace !?stres !"$SYNC_STRATEGY$" !"SCHEDTABLE_NO_SYNC" ;
+          doReplace !?stres !"$PRECISION$" !"0" ;
+        when == @ltgt_sync_true sst do
+          doReplace !?stres !"$SYNC_STRATEGY$" !"SCHEDTABLE_".[[sst strategy] string]."_SYNC" ;
+          cast [sst precision] :
+          when == @uint64_class p do
+            doReplace !?stres !"$PRECISION$" ![[p value] string] ;
+          else
+            error [sst loc] : "Internal error, wrong type for PRECISION" ;
+          end cast ;
+        else end cast ;
+
         doReplace !?stres !"$EXPIRY_POINTS$" !act_structs.act_table.expiry_table ;
-        doReplace !?stres !"$EXPIRY_TABLE_SIZE$" ![(expiry_count + 1) string] ;
+        doReplace !?stres !"$EXPIRY_TABLE_SIZE$" ![expiry_count string] ;
 
         i_res .= stres."\n";
     end method ;

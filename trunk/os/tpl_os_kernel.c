@@ -1144,10 +1144,10 @@ FUNC(tpl_status, OS_CODE) tpl_schedule_from_waiting(void)
 FUNC(tpl_status, OS_CODE) tpl_activate_task(
   CONST(tpl_task_id, AUTOMATIC) task_id)
 {
-  VAR(tpl_status, AUTOMATIC)            result = E_OS_LIMIT;
-  CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task =
+  VAR(tpl_status, AUTOMATIC)                              result = E_OS_LIMIT;
+  CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)           task =
     tpl_dyn_proc_table[task_id];
-  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) s_task =
+  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task =
     tpl_stat_proc_table[task_id];
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
