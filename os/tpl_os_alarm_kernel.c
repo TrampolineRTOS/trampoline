@@ -45,7 +45,7 @@
  * @param time_obj  The alarm to raise.
  */
 FUNC(tpl_status, OS_CODE) tpl_raise_alarm(
-    P2CONST(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj)
+    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj)
 {
     VAR(tpl_status, AUTOMATIC) result = E_OK;
 

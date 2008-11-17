@@ -88,7 +88,7 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
         (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))st->stat_part;
     /*  Get the current index                                               */
     /* MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
-      tpl_schedtable*. This cast behaves correctly because the first memeber
+      tpl_schedtable*. This cast behaves correctly because the first member
       of tpl_schedula_table is a tpl_time_obj */
     VAR(tpl_expiry_count, AUTOMATIC)  index =
         ((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index;
@@ -149,7 +149,7 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
 
         /* if deviation is less than the configured precision,
            the schedule table is considered synchronized */
-        if( deviation <= (schedtable->precision) )
+        if (deviation <= (schedtable->precision))
         {
             st->state = SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS;
         }
@@ -210,24 +210,24 @@ FUNC(void, OS_CODE) tpl_start_sched_table_sync(
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) st,
     VAR(tpl_time, AUTOMATIC) sync_date)
 {
-    /*  MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
-        tpl_schedtable_static*. This cast behaves correctly because the
-        first member of tpl_schedtable_static is a tpl_time_obj_static      */
-    P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA) schedtable =
-          (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))st->stat_part;
+  /*  MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
+      tpl_schedtable_static*. This cast behaves correctly because the
+      first member of tpl_schedtable_static is a tpl_time_obj_static      */
+  P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA) schedtable =
+        (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))st->stat_part;
 
-    /* compute the start date of the synchronized schedule table:
-     * start date = drive_cnt.now + (duration - sync_date)
-     */
-    st->date = (st->stat_part->counter->current_date)
-               + (st->date) + ((schedtable->length) - sync_date);
+  /* compute the start date of the synchronized schedule table:
+   * start date = drive_cnt.now + (duration - sync_date)
+   */
+  st->date = (st->stat_part->counter->current_date)
+             + (st->date) + ((schedtable->length) - sync_date);
 
-    /* as the schdule table is started synchronously, it is synchronous     */
-    st->state = SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS;
+  /* as the schdule table is started synchronously, it is synchronous     */
+  st->state = SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS;
 
-    /* insert the schedule table in the queue */
-    tpl_insert_time_obj(st);
-  }
+  /* insert the schedule table in the queue */
+  tpl_insert_time_obj(st);
+}
 
 
 
@@ -235,120 +235,120 @@ FUNC(void, OS_CODE) tpl_start_sched_table_sync(
    * This function is called when a schedule table has been started
    * asynchronously and the synchronized time is provided to the OS
    */
-  FUNC(void, OS_CODE) tpl_sync_sched_table(
-      P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) st,
-      VAR(tpl_time, AUTOMATIC) sync_date)
+FUNC(void, OS_CODE) tpl_sync_sched_table(
+  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)  st,
+  VAR(tpl_time, AUTOMATIC)                      sync_date)
+{
+  /*  Get the TPL_SCHEDTABLE_STATIC structure                             */
+  P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA) schedtable;
+  /*  Get the current index                                               */
+  VAR(tpl_expiry_count, AUTOMATIC)  index;
+  VAR(tpl_expiry_count, AUTOMATIC)  j;
+  /*  Get the current expiry point                                        */
+  P2VAR(tpl_expiry_point, AUTOMATIC, OS_APPL_DATA) next_ep;
+
+  VAR(tpl_tick, AUTOMATIC)  drive_cnt_now;
+  VAR(tpl_tick, AUTOMATIC)  drive_cnt_match;
+  VAR(tpl_tick, AUTOMATIC)  position_on_tbl;
+  VAR(tpl_tick, AUTOMATIC)  adjustment;
+  VAR(tpl_tick, AUTOMATIC)  next_ep_offset=0;
+  VAR(tpl_tick, AUTOMATIC)  deviation;
+
+  /* remove the next expiry point, because its date is going to be changed */
+  tpl_remove_time_obj(st);
+
+  /* get the current date of the counter which drives the schedule table  */
+  drive_cnt_now = st->stat_part->counter->current_date;
+
+  /* get the date of expiration of the next expiry point */
+  drive_cnt_match = st->date;
+
+  /* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
+     tpl_schedtable_static*. This cast behaves correctly because st is a
+     tpl_schedtable */
+  schedtable =
+      (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))(st->stat_part);
+  /* MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
+     tpl_schedtable*. This cast behaves correctly because the first memeber
+     of tpl_schedule_table is a tpl_time_obj */
+  index = ((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index;
+
+  /* this loop calculates the offset of the next_expiry point
+     from the start of the schedule table */
+  for(j = 0; j <= index; j++)
   {
-    /*  Get the TPL_SCHEDTABLE_STATIC structure                             */
-    P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA) schedtable;
-    /*  Get the current index                                               */
-    VAR(tpl_expiry_count, AUTOMATIC)  index;
-    VAR(tpl_expiry_count, AUTOMATIC)  j;
-    /*  Get the current expiry point                                        */
-    P2VAR(tpl_expiry_point, AUTOMATIC, OS_APPL_DATA) next_ep;
+    next_ep_offset = next_ep_offset +
+                     (((schedtable->expiry)[j])->sync_offset);
+  }
 
-    VAR(tpl_tick, AUTOMATIC)  drive_cnt_now;
-    VAR(tpl_tick, AUTOMATIC)  drive_cnt_match;
-    VAR(tpl_tick, AUTOMATIC)  position_on_tbl;
-    VAR(tpl_tick, AUTOMATIC)  adjustment;
-    VAR(tpl_tick, AUTOMATIC) next_ep_offset=0;
-    VAR(tpl_tick, AUTOMATIC)       deviation;
+  /* calculate the current position in the schedule table */
+  position_on_tbl = next_ep_offset;
+  position_on_tbl = position_on_tbl - (drive_cnt_match - drive_cnt_now);
 
-    /* remove the next expiry point, because its date is going to be changed */
-    tpl_remove_time_obj(st);
+  /* compute resynchronization for each expiry point until
+   * the end of the schedule table or the schedule table is synchronized
+   */
+  do
+  {
+    /* get the new next expiry point to compute */
+    next_ep = ((schedtable->expiry)[index]);
 
-    /* get the current date of the counter which drives the schedule table  */
-    drive_cnt_now = st->stat_part->counter->current_date;
-
-    /* get the date of expiration of the next expiry point */
-    drive_cnt_match = st->date;
-
-    /* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
-       tpl_schedtable_static*. This cast behaves correctly because st is a
-       tpl_schedtable */
-    schedtable =
-        (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))(st->stat_part);
-    /* MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
-       tpl_schedtable*. This cast behaves correctly because the first memeber
-       of tpl_schedula_table is a tpl_time_obj */
-    index = ((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index;
-
-    /* this loop calculates the offset of the next_expiry point
-       from the start of the schedule table */
-    for(j=0; j <= index; j++)
+    /* the algorithm is quite different if deviation is advance or overdue */
+    if( position_on_tbl >= sync_date) /* advance */
     {
-      next_ep_offset = next_ep_offset +
-                       (((schedtable->expiry)[j])->sync_offset);
+      /*  from the current date, calculate the deviation with the
+          synchronisation time                                        */
+      deviation = position_on_tbl - sync_date;
+      /*  calculate offset adjustment for this expiry point,
+       *  refer to OS420 of Autosar spec
+       */
+      adjustment = tpl_min(deviation, (next_ep->max_advance));
+      next_ep->sync_offset = next_ep->offset + adjustment;
+    }
+    else /* overdue */
+    {
+      /*  from the current date, calculate the deviation with the
+          synchronisation time                                        */
+      deviation = sync_date - position_on_tbl;
+      /* calculate offset adjustment for this expiry point,
+       * refer to OS421 of Autosar spec
+       */
+      adjustment = tpl_min(deviation, (next_ep->max_retard));
+
+      /* if this is the next expiry point, we have to take care that the
+       * adjustment will not set the date before the current date
+       */
+      /*  MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
+          tpl_schedule_table*. This cast behaves correctly because the
+          first member of tpl_schedule_table is a tpl_time_obj        */
+      if (index ==
+          ((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index)
+      {
+        if (adjustment >= ((st->date) - drive_cnt_now))
+        {
+            adjustment = ((st->date) - drive_cnt_now - 1);
+        }
+      }
+      next_ep->sync_offset = next_ep->offset - adjustment;
     }
 
-    /* calculate the current position in the scheduel table */
-    position_on_tbl = next_ep_offset;
-    position_on_tbl = position_on_tbl - (drive_cnt_match - drive_cnt_now);
+    /* calculate the remaining deviation to adjust */
+    deviation = deviation - adjustment;
 
-    /* compute resynchronization for each expiry point until
-     * the end of the schedule table or the schedule table is synchronized
-     */
-    do
-    {
-        /* get the new next expiry point to compute */
-        next_ep = ((schedtable->expiry)[index]);
+    /* next expiry point of the schedule table */
+    index++;
 
-        /* the algorith is quite different if deviation is advance or overdue */
-        if( position_on_tbl >= sync_date) /* advance */
-        {
-            /*  from the current date, calculate the deviation with the
-                synchronisation time                                        */
-            deviation = position_on_tbl - sync_date;
-            /*  calculate offset adjustment for this expiry point,
-             *  refer to OS420 of Autosar spec
-             */
-            adjustment = tpl_min(deviation, (next_ep->max_advance));
-            next_ep->sync_offset = next_ep->offset + adjustment;
-        }
-        else /* overdue */
-        {
-            /*  from the current date, calculate the deviation with the
-                synchronisation time                                        */
-            deviation = sync_date - position_on_tbl;
-            /* calculate offset adjustment for this expiry point,
-             * refer to OS421 of Autosar spec
-             */
-            adjustment = tpl_min(deviation, (next_ep->max_retard));
+  } while( (index < schedtable->count) && (deviation != 0) );
 
-            /* if this is the next expiry point, we have to take care that the
-             * adjustment will not set the date before the current date
-             */
-            /*  MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
-                tpl_schedule_table*. This cast behaves correctly because the
-                first member of tpl_schedule_table is a tpl_time_obj        */
-            if(index == ((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index)
-            {
-                if(adjustment >= ((st->date)- drive_cnt_now))
-                {
-                    adjustment = ((st->date)- drive_cnt_now -1);
-                }
-            }
-            next_ep->sync_offset = next_ep->offset - adjustment;
-        }
-
-        /* calculate the remaining deviation to adjust */
-        deviation = deviation - adjustment;
-
-        /* next expiry point of the schedule table */
-        index++;
-
-    } while( (index < schedtable->count) && (deviation != 0) );
-
-    /* re-insert the next expiry point with its new date */
-    /* MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
-       tpl_schedule_table*. This cast behaves correctly because the first member
-       of tpl_schedule_table is a tpl_time_obj */
-    index = ((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index;
-    st->date = (st->date) - (st->cycle)
-               + ((schedtable->expiry)[index]->sync_offset);
-    st->cycle = 0;
-    tpl_insert_time_obj(st);
-
+  /* re-insert the next expiry point with its new date */
+  /* MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
+     tpl_schedule_table*. This cast behaves correctly because the first member
+     of tpl_schedule_table is a tpl_time_obj */
+  index = ((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index;
+  st->date = (st->date) - (st->cycle)
+             + ((schedtable->expiry)[index]->sync_offset);
+  st->cycle = 0;
+  tpl_insert_time_obj(st);
 }
 
 /*

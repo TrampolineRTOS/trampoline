@@ -31,7 +31,8 @@ nonterminal <scheduletable_parameters>
     ?@lstring name ;
 nonterminal <st_autostart_params>
     !@autostart_obj autostart ;
-nonterminal <ltgt_sync_params> ;
+nonterminal <ltgt_sync_params>
+  !@ltgt_sync_obj sync ;
 
 # external non terminal
 nonterminal <description>
@@ -127,16 +128,26 @@ rule <scheduletable_parameters>
         end cast ;
 
     while
-        $LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION$ ; $=$ ; $FALSE$ ;
-#        select
-#            $TRUE$ ;
-#            ${$ ;
-#            <ltgt_sync_params> ;
-#            $}$ ;
-#        or
-#            $FALSE$ ; 
-#        end select ;
+        @ltgt_sync_obj sync ;
+        $LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION$ ; $=$ ;
+        select
+          $TRUE$ ;
+          ${$ ;
+          <ltgt_sync_params> ?sync ;
+          $}$ ;
+        or
+          $FALSE$ ;
+          sync := [@ltgt_sync_false new !here] ;
+        end select ;
         <description> ?* ; $;$ ;
+
+        cast st_ltgt_sync :
+        when == @ltgt_sync_void do
+          st_ltgt_sync := sync ;
+        else
+          error here : "LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION attribute already defined for Schedule Table ".[name string] ;
+          error [st_ltgt_sync loc] : "Was previously defined here" ;
+        end cast ;
 
     while
         @bool periodic ;
@@ -220,7 +231,46 @@ rule <st_autostart_params>
     autostart := [@sd_autostart_true new !here !offset !app_modes] ;
 end rule ;
 
-rule <ltgt_sync_params> :
+rule <ltgt_sync_params>
+  !@ltgt_sync_obj sync
+:
+  @basic_type precision := [@void new !here] ;
+  @lstring strategy := [@lstring new !"" !here] ;
+  
+  repeat
+  while
+    @luint64 prec ;
+    $PRECISION$ ; $=$ ; $uint_number$ ?prec ;
+    cast precision :
+    when == @void do
+      precision := [@uint64_class new !here ![prec uint64]] ;
+    else
+      error here : "PRECISION attribute already defined" ;
+      error [precision location] : "Was previously defined here" ;
+    end cast ;
+    $;$ ;
+  while
+    @lstring strat ;
+    $SYNC_STRATEGY$ ; $=$ ; $idf$ ?strat ;
+    if [strategy string] == "" then
+      strategy := strat ;
+    else
+      error here : "SYNC_STRATEGY attribute already defined" ;
+      error strategy : "Was previously defined here" ;
+    end if ;
+    $;$ ;  
+  end repeat ;
+
+  cast precision :
+  when == @void do
+    error here : "PRECISION attribute is missing" ;
+  else end cast ;
+  
+  if [strategy string] == "" then
+    error here : "SYNC_STRATEGY attribute is missing" ;
+  end if ;
+
+  sync := [@ltgt_sync_true new !here !strategy !precision] ;
 end rule ;
 
 rule <st_action_params>
@@ -236,7 +286,7 @@ rule <st_action_params>
         repeat
         while
             @luint64 new_offset ;
-            $OFFSET$ ; $=$ ; $uint_number$ ? new_offset ; $;$ ;
+            $OFFSET$ ; $=$ ; $uint_number$ ?new_offset ; $;$ ;
             if offset_known then
                 error here : "OFFSET attribute already defined for this schedule table ACTIVATETASK action" ;
                 error [offset location] : "was previously defined here" ;

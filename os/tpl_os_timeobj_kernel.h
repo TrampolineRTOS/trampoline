@@ -47,7 +47,7 @@ typedef u8 tpl_time_obj_state;
  * Prototype for expire functions
  */
 typedef P2FUNC(tpl_status, OS_APPL_CODE, tpl_expire_func)(
-    P2CONST(struct TPL_TIME_OBJ, AUTOMATIC, OS_APPL_CONST)
+    P2VAR(struct TPL_TIME_OBJ, AUTOMATIC, OS_APPL_CONST)
 );
 
 /**

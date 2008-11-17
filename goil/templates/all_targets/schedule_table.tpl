@@ -11,7 +11,9 @@ tpl_schedtable_static stat_$SCHEDTABLE$ = {
     /* expiry points        */  $EXPIRY_TABLE$,
     /* expiry points count  */  $EXPIRY_TABLE_SIZE$,
     /* sync strategy        */  $SYNC_STRATEGY$,
-    /* periodic             */  $PERIODIC$
+    /* periodic             */  $PERIODIC$,
+    /* length               */  $LENGTH$,
+    /* precision            */  $PRECISION$
 };
 
 tpl_schedule_table $SCHEDTABLE$ = {
@@ -24,8 +26,5 @@ tpl_schedule_table $SCHEDTABLE$ = {
         /* state of the time object */  $SCHEDTABLE_STATE$
     },
     /* next schedule table          */  NULL_PTR,
-    /* current expiry point         */  0,
-    /* sync to global time          */  FALSE,
-    /* offset to global time        */  0,
-    /* offset to reduce             */  0
+    /* current expiry point         */  0
 };
