@@ -29,7 +29,7 @@
 
 #include "tpl_os_timeobj_kernel.h"
 #include "tpl_os_types.h"
-#include "tpl_as_st_definitions.h"
+/*#include "tpl_as_definitions.h"*/
 
 typedef VAR(u8, AUTOMATIC)  ScheduleTableType;
 typedef VAR(tpl_time_obj_state, AUTOMATIC) ScheduleTableStatusType;

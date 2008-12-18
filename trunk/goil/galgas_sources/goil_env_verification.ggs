@@ -99,7 +99,7 @@ routine checkTrampolinePath
   @string osPath := absolutePath."/os";
   if not [osPath directoryExists] then
     error [path location]: "The directory \'".absolutePath."\' does not seem to be the Trampoline base path.".
-                           "I can\'t find the os/ subfolder.";
+                           " I can\'t find the os/ subfolder.";
   end if;
   #then checks machines path.
   @string machinesPath := absolutePath."/machines";

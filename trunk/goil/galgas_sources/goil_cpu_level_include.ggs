@@ -29,6 +29,7 @@ grammar goil_cpu_level_include "LL1":
         ?!@event_map         events
         ?!@isr_map           isrs
         ?!@message_map       messages
+        ?!@netmess_map       net_messages
         ?!@scheduletable_map scheduletables
         ?!@app_map           applis
     ;
@@ -38,7 +39,6 @@ grammar goil_cpu_level_include "LL1":
     unused <implementation_definition> ;
     unused <include_file_level> ;
     unused <start> ;
-    unused <ltgt_sync_params> ;
 end grammar ;
 
 # vim:ft=ggs:ts=4:sw=4

@@ -29,6 +29,44 @@
 #ifndef TPL_AS_APPLICATION_H
 #define TPL_AS_APPLICATION_H
 
+#include "tpl_os_custom_types.h"
+#include "tpl_os_types.h"
+
+/**
+ *  @typedef  ObjectTypeType
+ *
+ *  type of object. It can be one of the following
+ *
+ *  @see  #OBJECT_TASK
+ *  @see  #OBJECT_ISR
+ *  @see  #OBJECT_ALARM
+ *  @see  #OBJECT_RESOURCE
+ *  @see  #OBJECT_COUNTER
+ *  @see  #OBJECT_SCHEDULETABLE 
+ */
+typedef u8  ObjectTypeType;
+
+/**
+ *  @typedef  ApplicationType
+ *
+ *  Id of an OS Application
+ */
+typedef tpl_app_id  ApplicationType;
+
+/**
+ *  @typedef ObjectAccessType
+ *
+ *  Return type used by CheckObjectAccess. @see #CheckObjectAccess
+ */
+typedef u8  ObjectAccessType;
+
+/**
+ *  @typedef RestartType
+ *
+ *  Type used to specifies how TerminateApplication should behave
+ */
+typedef u8  RestartType;
+  
 /**
  *  Get the application ID to which the current process belongs to
  *
@@ -73,8 +111,7 @@ FUNC(ObjectAccessType, OS_CODE) CheckObjectAccess(
  *  @retval   E_OS_CALLEVEL wrong context (OS288)
  *  @retval   E_OS_VALUE    invalid restart_opt (OS459)
  */
-FUNC(StatusType, OS_CODE) TerminateApplication(
-  RestartType restart_opt);
+FUNC(StatusType, OS_CODE) TerminateApplication(RestartType restart_opt);
 
 /*  TPL_AS_APPLICATION_H  */
 #endif

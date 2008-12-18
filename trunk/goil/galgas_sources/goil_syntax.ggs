@@ -21,6 +21,7 @@ import semantics goil_semantics in "goil_semantics.ggs" ;
 import semantics goil_proc_generation in "goil_proc_generation.ggs" ;
 import semantics goil_app_generation in "goil_app_generation.ggs" ;
 import semantics goil_types_app in "goil_types_app.ggs" ;
+import semantics goil_types_networkmessage in "goil_types_networkmessage.ggs" ;
 import semantics goil_scheduletable_verif in "goil_scheduletable_verif.ggs" ;
 import semantics goil_alarm_verif in "goil_alarm_verif.ggs" ;
 import semantics goil_app_verif in "goil_app_verif.ggs" ;
@@ -47,6 +48,7 @@ nonterminal <object_definition_list>
     ?!@event_map         events
     ?!@isr_map           isrs
     ?!@message_map       messages
+    ?!@netmess_map       net_messages
     ?!@scheduletable_map scheduletables
     ?!@app_map           applis
 ;
@@ -67,6 +69,7 @@ nonterminal <include_cpu_level>
     ?!@event_map         events
     ?!@isr_map           isrs
     ?!@message_map       messages
+    ?!@netmess_map       net_messages
     ?!@scheduletable_map scheduletables
     ?!@app_map           applis
 ;
@@ -107,7 +110,9 @@ nonterminal <scheduletable>
 nonterminal <appli>
     ?!@app_map applis;
 
-nonterminal <networkmess> ;
+nonterminal <networkmess>
+  ?!@netmess_map netmess ;
+
 nonterminal <com> ;
 nonterminal <ipdu> ;
 
@@ -148,6 +153,7 @@ rule <start> :
         ![@event_map         emptyMap]
         ![@isr_map           emptyMap]
         ![@message_map       emptyMap]
+        ![@netmess_map       emptyMap]
         ![@scheduletable_map emptyMap]
         ![@app_map           emptyMap]
     ] ;
@@ -201,6 +207,7 @@ rule <start> :
     all_event_masks_different !events ;
     all_alarm_actions_correct !alarms !tasks !counters ;
     counters_of_alarms_defined !alarms !counters ;
+#    networkmessages_exist_and_ok !messages !net_messages ;
 
   # cross-objects Autosar checking
 
@@ -276,6 +283,11 @@ rule <start> :
                     !max_prio
                     ?ready_list ;
 
+                @string_map app_for_obj ;
+                compute_app_for_obj
+                    !applis
+                    ?app_for_obj ;
+
                 generate_flags
                     !os
                     !tasks
@@ -291,13 +303,14 @@ rule <start> :
 
                 generate_counters
                     !counters
+                    !app_for_obj
                     !?header
                     !?obj_header
                     !?implementation ;
 
                 generate_alarms
                     !alarms
-                    !prefix
+                    !app_for_obj
                     !?header
                     !?obj_header
                     !?implementation ;
@@ -307,6 +320,7 @@ rule <start> :
                     !tasks
                     !resources
                     !tasks_actual_prio
+                    !app_for_obj
                     !?header
                     !?obj_header
                     !?implementation ;
@@ -316,6 +330,7 @@ rule <start> :
                     !isrs
                     !resources
                     !isrs_actual_prio
+                    !app_for_obj
                     !?header
                     !?obj_header
                     !?implementation ;
@@ -333,6 +348,7 @@ rule <start> :
                     !resources
                     !rez_actual_prio
                     !rez_comments
+                    !app_for_obj
                     !?header
                     !?obj_header
                     !?implementation ;
@@ -347,6 +363,7 @@ rule <start> :
                 if [option goil_options.autosar_on] then
                     generate_schedule_tables
                         !scheduletables
+                        !app_for_obj
                         !?header
                         !?obj_header
                         !?implementation ;
@@ -381,6 +398,7 @@ rule <start> :
                     !counters
                     !resources
                     !scheduletables
+                    !applis
                     !max_prio
                     !?types ;
 
@@ -513,6 +531,7 @@ rule <application_definition>
     @event_map         events         := [file events] ;
     @isr_map           isrs           := [file isrs] ;
     @message_map       messages       := [file messages] ;
+    @netmess_map       net_messages   := [file net_messages] ;
     @scheduletable_map scheduletables := [file scheduletables] ;
     @app_map           applis         := [file applis] ;
 
@@ -528,6 +547,7 @@ rule <application_definition>
         !?events
         !?isrs
         !?messages
+        !?net_messages
         !?scheduletables
         !?applis
     ;
@@ -544,6 +564,7 @@ rule <application_definition>
         !events
         !isrs
         !messages
+        !net_messages
         !scheduletables
         !applis
     ] ;
@@ -558,6 +579,7 @@ rule <object_definition_list>
     ?!@event_map         events
     ?!@isr_map           isrs
     ?!@message_map       messages
+    ?!@netmess_map       net_messages
     ?!@scheduletable_map scheduletables
     ?!@app_map           applis
 :
@@ -572,7 +594,7 @@ rule <object_definition_list>
     while <event> !?events ; <description> ?* ;
     while <isr> !?isrs ; <description> ?* ;
     while <mess> !?messages ; <description> ?* ;
-    while <networkmess> ; <description> ?* ;
+    while <networkmess> !?net_messages ; <description> ?* ;
     while <com> ; <description> ?* ;
     while <ipdu> ; <description> ?* ;
     while <nm> ; <description> ?* ;
@@ -587,6 +609,7 @@ rule <object_definition_list>
         !?events
         !?isrs
         !?messages
+        !?net_messages
         !?scheduletables
         !?applis
     ;
@@ -662,6 +685,7 @@ rule <include_cpu_level>
     ?!@event_map         events
     ?!@isr_map           isrs
     ?!@message_map       messages
+    ?!@netmess_map       net_messages
     ?!@scheduletable_map scheduletables
     ?!@app_map           applis
 :
@@ -682,6 +706,7 @@ rule <include_cpu_level>
         !?events
         !?isrs
         !?messages
+        !?net_messages
         !?scheduletables
         !?applis
     ;

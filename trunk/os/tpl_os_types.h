@@ -37,8 +37,8 @@
  *
  * See paragraph 13.1, page 48 of OSEK/VDX 2.2.2 spec
  */
-#ifndef STATUSTYPEDEFINED
-#define STATUSTYPEDEFINED
+#ifndef STATUSTYPE_DEFINED
+#define STATUSTYPE_DEFINED
 typedef tpl_status      StatusType;
 #endif
 

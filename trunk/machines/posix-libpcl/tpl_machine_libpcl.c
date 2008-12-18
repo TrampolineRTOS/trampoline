@@ -383,17 +383,19 @@ void tpl_sleep(void)
 }
 
 static tpl_proc_static my_tpl_sleep = {
-    NULL,
-    {NULL, 0},
-    tpl_sleep,
-    NULL,
-    0,
-    0,
-    0,
-    0,
+  NULL,
+  {NULL, 0},
+  tpl_sleep,
+  NULL,
+  -1,
+#ifdef WITH_OSAPPLICATION
+  -1,
+#endif
+  0,
+  0,
+  0,
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    /* no timing protection
-       for the idle task :D */  NULL
+NULL    /* no timing protection for the idle task :D */
 #endif
 };
 

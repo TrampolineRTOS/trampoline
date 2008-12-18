@@ -27,6 +27,10 @@
 
 #include "tpl_os_internal_types.h"
 
+#ifdef WITH_OSAPPLICATION
+#include "tpl_as_app_kernel.h"
+#endif /* WITH_OSAPPLICATION */
+
 /* Forward declaration */
 struct TPL_COUNTER;
 struct TPL_TIME_OBJ;
@@ -60,11 +64,15 @@ typedef P2FUNC(tpl_status, OS_APPL_CODE, tpl_expire_func)(
  * @see #TPL_ALARM
  */
 struct TPL_TIME_OBJ_STATIC {
-    struct P2VAR(TPL_COUNTER, TYPEDEF, OS_APPL_DATA)  counter;  /**< a pointer to the counter the
-                                                                     alarm belongs to               */
-    VAR(tpl_expire_func, TYPEDEF)                     expire;   /**< expiration processing to be
-                                                                     done when the time object
-                                                                     expires                        */
+  struct P2VAR(TPL_COUNTER, TYPEDEF, OS_APPL_DATA)
+    counter;  /**<  a pointer to the counter the alarm belongs to             */
+  VAR(tpl_expire_func, TYPEDEF)
+    expire;   /**<  expiration processing to be done when the time object
+                    expires                                                   */
+#ifdef WITH_OSAPPLICATION
+  CONST(tpl_app_id, TYPEDEF)
+    app_id;   /**< id of the OS application which owns the time object        */
+#endif
 };
 
 /**
@@ -112,20 +120,28 @@ typedef struct TPL_TIME_OBJ tpl_time_obj;
  * This is the data structure used to describe a counter
  */
 struct TPL_COUNTER {
-    CONST(tpl_tick, TYPEDEF)                    ticks_per_base;     /**< number of ticks until the
-                                                                         counter increments                 */
-    CONST(tpl_tick, TYPEDEF)                    max_allowed_value;  /**< maximum allowed value for
-                                                                         a counter                          */
-    CONST(tpl_tick, TYPEDEF)                    min_cycle;          /**< number of ticks until the
-                                                                         counter increments                 */
-    VAR(tpl_tick, TYPEDEF)                      current_tick;       /**< current tick value of the counter  */
-    VAR(tpl_tick, TYPEDEF)                      current_date;       /**< current value of the counter       */
+  CONST(tpl_tick, TYPEDEF)
+    ticks_per_base;     /**< number of ticks until the  counter increments    */
+  CONST(tpl_tick, TYPEDEF) 
+    max_allowed_value;  /**< maximum allowed value for a counter              */
+  CONST(tpl_tick, TYPEDEF)
+    min_cycle;          /**< number of ticks until the counter increments     */
+  VAR(tpl_tick, TYPEDEF)
+    current_tick;       /**< current tick value of the counter                */
+  VAR(tpl_tick, TYPEDEF)
+    current_date;       /**< current value of the counter                     */
 #ifdef WITH_AUTOSAR
-    CONST(tpl_counter_kind, TYPEDEF)            kind;               /**< kind (hardware or software) of the
-                                                                         counter                            */
+  CONST(tpl_counter_kind, TYPEDEF)
+    kind;               /**< kind (hardware or software) of the counter       */
 #endif
-    P2VAR(tpl_time_obj, TYPEDEF, OS_APPL_DATA)  first_to;           /**< active alarms list head            */
-    P2VAR(tpl_time_obj, TYPEDEF, OS_APPL_DATA)  next_to;            /**< next active alarms                 */
+#ifdef WITH_OSAPPLICATION
+  CONST(tpl_app_id, TYPEDEF)
+    app_id;   /**< id of the OS application which owns the counter            */
+#endif
+  P2VAR(tpl_time_obj, TYPEDEF, OS_APPL_DATA)
+    first_to;           /**< active time object list head                     */
+  P2VAR(tpl_time_obj, TYPEDEF, OS_APPL_DATA)
+    next_to;            /**< next active time object                          */
 };
 
 /**

@@ -7,6 +7,7 @@ import semantics goil_types_isr in "goil_types_isr.ggs" ;
 import semantics goil_types_counter in "goil_types_counter.ggs" ;
 import semantics goil_types_scheduletable in "goil_types_scheduletable.ggs" ;
 import semantics goil_types_app in "goil_types_app.ggs" ;
+import semantics goil_types_networkmessage in "goil_types_networkmessage.ggs" ;
 
 class @root_obj {
     @os_obj            os ;
@@ -17,6 +18,7 @@ class @root_obj {
     @event_map         events ;
     @isr_map           isrs ;
     @message_map       messages ;
+    @netmess_map       net_messages ;
     @scheduletable_map scheduletables ;
     @app_map           applis ;
 }

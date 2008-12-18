@@ -150,7 +150,7 @@ list message_attributes error message "message attribute '%K'" style keywordsSty
 # defined elsewhere.
 #
 list networkmessage_attribute error message "networkmessage attribute '%K'" style keywordsStyle :
-    "STATIC", "DYNAMIC", "SIZEINBITS", "MAXSIZEINBITS",
+    "STATIC", "DYNAMIC", "ZERO", "SIZEINBITS", "MAXSIZEINBITS",
     "BITORDERING", "BIGENDIAN", "LITTLEENDIAN", "BITPOSITION",
     "DATAINTERPRETATION", "UNSIGNEDINTEGER", "BYTEARRAY",
     "DIRECTION", "SENT", "RECEIVED" ;

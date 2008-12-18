@@ -238,8 +238,8 @@ extern FUNC(void, OS_CODE) tpl_stop_budget_monitor(
  *
  * function called when a resource is got.
  *
- * @param this_exec_obj the executable object that get the resource
- * @param this_resource the resource got
+ * @param proc_id the executable object that get the resource
+ * @param rez_id the resource got
  *
  * @pre all interrupts should be disabled during this function execution
  */
@@ -252,14 +252,28 @@ extern FUNC(void, OS_CODE) tpl_start_resource_monitor(
  *
  * function called when a resource is released.
  *
- * @param this_exec_obj the executable object that released the resource
- * @param this_resource the resource released
+ * @param proc_id the executable object that released the resource
+ * @param rez_id the resource released
  *
  * @pre all interrupts should be disabled during this function execution
  */
 extern FUNC(void, OS_CODE) tpl_stop_resource_monitor(
   CONST(tpl_proc_id, AUTOMATIC)     proc_id,
   CONST(tpl_resource_id, AUTOMATIC) rez_id);
+
+#ifdef WITH_OSAPPLICATION
+/**
+ * @internal
+ *
+ * function called when an OS Application is killed
+ *
+ * @param proc_id the executable object that released all the resources
+ *
+ * @pre all interrupts should be disabled during this function execution
+ */
+extern FUNC(void, OS_CODE) tpl_stop_all_resource_monitor(
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
+#endif
 
 /**
  * @internal

@@ -37,46 +37,52 @@ $CONFIG_FLAGS$
  * Declaration of Extended task count
  */
 #define EXTENDED_TASK_COUNT     $EXTENDED_TASK_COUNT$
+
 /*
  * Declaration of ISR2 object count
  */
-#define ISR_COUNT               $ISR_COUNT$
+#define ISR_COUNT             $ISR_COUNT$
 
 /*
  * Declaration of Alarm object count
  */
-#define ALARM_COUNT             $ALARM_COUNT$
+#define ALARM_COUNT           $ALARM_COUNT$
 
 /*
  * Declaration of Resource object count
  */
-#define RESOURCE_COUNT          $RESOURCE_COUNT$
+#define RESOURCE_COUNT        $RESOURCE_COUNT$
 
 /*
  * Declaration of Send Message object count
  */
-#define SEND_MESSAGE_COUNT      $SEND_MESSAGE_COUNT$
+#define SEND_MESSAGE_COUNT    $SEND_MESSAGE_COUNT$
 
 /*
  * Declaration of Receive Message object count
  */
-#define RECEIVE_MESSAGE_COUNT   $RECEIVE_MESSAGE_COUNT$
+#define RECEIVE_MESSAGE_COUNT $RECEIVE_MESSAGE_COUNT$
 
 #ifdef WITH_AUTOSAR
 /*
  * Declaration of Schedule Table object count
  */
-#define SCHEDTABLE_COUNT        $SCHEDTABLE_COUNT$
+#define SCHEDTABLE_COUNT      $SCHEDTABLE_COUNT$
 
 /*
  * Declaration of Software Counters object count
  */
-#define COUNTER_COUNT           $COUNTER_COUNT$
+#define COUNTER_COUNT         $COUNTER_COUNT$
+
+/*
+ * Declaration of OS Application object count
+ */
+#define APP_COUNT             $APP_COUNT$
 
 /*
  * Declaration of the number of virtual watchdogs used for timing protection
  */
-#define MAXIMUM_SCHEDULED_WATCHDOGS     $MAX_WATCH_DOG$
+#define MAXIMUM_SCHEDULED_WATCHDOGS $MAX_WATCH_DOG$
 #endif
 
 /*

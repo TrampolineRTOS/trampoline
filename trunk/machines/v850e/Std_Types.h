@@ -46,11 +46,16 @@ typedef struct
 /******************************************************************************/
 /* SYMBOL DEFINITIONS                                                         */
 /******************************************************************************/
-#ifndef STATUSTYPEDEFINED
-#define STATUSTYPEDEFINED
-#define E_OK 0x00
+#ifndef STATUSTYPE_DEFINED
+#define STATUSTYPE_DEFINED
 typedef unsigned char StatusType; /* OSEK compliance */
 #endif
+
+#ifndef E_OK_DEFINED
+#define E_OK_DEFINED
+#define E_OK 0x00
+#endif
+
 #define E_NOT_OK 0x01
 
 #define STD_HIGH 0x01 /* Physical state 5V or 3.3V */

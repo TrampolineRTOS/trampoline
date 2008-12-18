@@ -460,6 +460,7 @@
  * @param name the name (C identifier) of the task
  */
 #define TASK(name)              \
+    DeclareTask(name);          \
     void name##_function(void)
 
 /**
@@ -562,10 +563,6 @@
 
 
 
-/*****************************************
- * Type of counter for AUTOSAR extension *
- *****************************************/
-
 #ifdef WITH_AUTOSAR
 /**
  * @def HARDWARE_COUNTER
@@ -584,6 +581,17 @@
  * @see #tpl_counter_kind
  */
 #define SOFTWARE_COUNTER    1
+
+#if (AUTOSAR_SC == 3) || (AUTOSAR_SC == 4)
+/**
+ *  @def INVALID_OSAPPLICATION
+ *
+ *  No OS Application is running
+ *
+ *  @see  #tpl_app_id
+ */
+#define INVALID_OSAPPLICATION   APP_COUNT
+#endif
 
 #endif
 

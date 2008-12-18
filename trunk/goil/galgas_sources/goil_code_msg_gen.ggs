@@ -146,6 +146,7 @@ routine generate_messages
       i_tab := "CONSTP2VAR(tpl_base_sending_mo, AUTOMATIC, OS_APPL_DATA)\n" ;
       i_tab .= "  tpl_send_message_table[SEND_MESSAGE_COUNT] = {\n" ;
     do
+      message name."\n";
       i_tab .= "  (tpl_base_sending_mo *)&".name."_message" ;
       h_tab .= "#define ".name."_id ".[n string]."\n" ;
       h_tab .= "CONST(MessageIdentifier, AUTOMATIC) ".name." = ".name."_id;\n" ;
@@ -157,6 +158,8 @@ routine generate_messages
 
     h_res .= "\n".h_tab ;
     result .= "\n".i_tab ;
+    h_tab := "";
+    i_tab := "";
 
     foreach rmo (@string name) :n
     before
@@ -172,8 +175,12 @@ routine generate_messages
     after
       i_tab .= "\n};\n" ;
     end foreach ;
+
     h_res .= "\n".h_tab ;
     result .= "\n".i_tab ;
+
+    message result;
+    message h_res;
 
     doReplace !?implementation !"$MESSAGES$" !result ;
     doReplace !?implementation !"$MESSAGEIDS$" !h_res ;

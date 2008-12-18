@@ -54,6 +54,9 @@ VAR(tpl_counter, OS_VAR) SystemCounter_counter_desc = {
 #ifdef WITH_AUTOSAR
   /* kind                 */  HARDWARE_COUNTER,
 #endif
+#ifdef WITH_OSAPPLICATION
+  /* OS application id    */  INVALID_OSAPPLICATION,
+#endif
   /* first alarm          */  NULL_PTR,
   /* next alarm to raise  */  NULL_PTR
 };

@@ -29,7 +29,7 @@ grammar goil_file_level_include "LL1":
     unused <default_bool>, <default_enum>, <default_float_number> ;
     unused <default_sint64_number>, <default_string>, <default_uint64_number> ;
     unused <float_number_set>, <sint64_number_set> ;
-    unused <start>, <uint64_number_set>, <ltgt_sync_params> ;
+    unused <start>, <uint64_number_set> ;
 end grammar ;
 
 # vim:ft=ggs:ts=4:sw=4

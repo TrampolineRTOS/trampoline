@@ -43,12 +43,13 @@
  * @see #RES_SCHEDULER
  */
 VAR(tpl_resource, OS_VAR) res_sched_rez_desc = {
-  RES_SCHEDULER_PRIORITY, /**<  the ceiling priority is defined as the
-                                maximum priority of the tasks of the
-                                application                               */
-  0,                      /*   owner_prev_priority                        */
-  INVALID_TASK,           /*   owner                                      */
-  NULL                    /*   next_res                                   */
+  RES_SCHEDULER_PRIORITY, /*  ceiling priority                            */
+  0,                      /*  owner_prev_priority                         */
+  INVALID_TASK,           /*  owner                                       */
+#ifdef WITH_OSAPPLICATION
+  INVALID_OSAPPLICATION,  /*  OS Application id                           */
+#endif    
+  NULL                    /*  next_res                                    */
 };
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
@@ -56,6 +57,39 @@ VAR(tpl_resource, OS_VAR) res_sched_rez_desc = {
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
+
+
+#ifdef WITH_OSAPPLICATION
+/**
+ * @internal
+ *
+ * tpl_release_all_resources releases all the resources got by a process
+ * Since this function is called when the proccess is killed, the priority
+ * of the process is not changed by this function.
+ * No rescheduling is done.
+ */
+FUNC(void, OS_CODE) tpl_release_all_resources(
+  CONST(tpl_proc_id, AUTOMATIC) proc_id)
+{
+  /*  Get the resource pointer of the process */
+  P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res =
+  tpl_dyn_proc_table[proc_id]->resources;
+  
+  if (res != NULL)
+  {
+    tpl_dyn_proc_table[proc_id]->resources = NULL;
+    
+    do
+    {
+      CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) next_res =
+      res->next_res;
+      res->owner = INVALID_TASK;
+      res->next_res = NULL;
+      res = next_res;
+    } while (res != NULL);
+  }
+}
+#endif
 
 /*
  * Getting a resource.

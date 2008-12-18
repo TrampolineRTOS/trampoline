@@ -34,6 +34,10 @@
 /* #include "tpl_as_st_kernel.h" */
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
+#ifdef WITH_OSAPPLICATION
+#include "tpl_as_app_kernel.h"
+#endif /* WITH_OSAPPLICATION */
+
 /**
  * @def INVALID_TASK
  *
@@ -164,22 +168,17 @@ typedef P2FUNC(void, OS_APPL_CODE, tpl_proc_function)(void);
  * and there is no need to store the owner
  */
 typedef struct {
-    CONST(tpl_priority, TYPEDEF)
-                        ceiling_priority;    /**< Ceiling priority as
-                                                  computed at system
-                                                  generation time
-                                                  */
-    VAR(tpl_priority, TYPEDEF)
-                        owner_prev_priority; /**< Priority of the owner prior
-                                                  to the access to the resource.
-                                                  This field is used to restore
-                                                  the priority of the task when
-                                                  the resource is released
-                                                  */
-    VAR(tpl_bool, TYPEDEF)
-                        taken;               /**< Flag to tell if the internal
-                                                  resource is taken or not
-                                                  */
+  CONST(tpl_priority, TYPEDEF)
+    ceiling_priority;     /**<  Ceiling priority as computed at system
+                                generation time                               */
+  VAR(tpl_priority, TYPEDEF)
+    owner_prev_priority;  /**<  Priority of the owner prior to the access
+                                to the resource. This field is used to
+                                restore the priority of the task when the
+                                resource is released                          */
+  VAR(tpl_bool, TYPEDEF)
+    taken;                /**<  Flag to tell if the internal resource
+                                is taken or not                               */
 } tpl_internal_resource;
 
 /**
@@ -190,46 +189,33 @@ typedef struct {
  * part of the descriptor can be stored in ROM.
  */
 struct TPL_PROC_STATIC {
-    VAR(tpl_context, TYPEDEF)       context;            /**< context(s) of
-                                                             the task/isr
-                                                             */
-    VAR(tpl_stack, TYPEDEF)         stack;              /**< stack(s) of the
-                                                             task/isr
-                                                             */
-    CONST(tpl_proc_function, TYPEDEF)
-                                    entry;              /**< function that is
-                                                             the entry point
-                                                             of the task/isr
-                                                             */
-    CONSTP2VAR(tpl_internal_resource, TYPEDEF, OS_APPL_DATA)
-                                    internal_resource;  /**< pointer to an
-                                                             internal resource.
-                                                             NULL if the task
-                                                             does not have an
-                                                             internal resource
-                                                             */
-    CONST(tpl_task_id, TYPEDEF)     id;                 /**< id of task/isr
-                                                             */
-    CONST(tpl_priority, TYPEDEF)    base_priority;      /**< base priority of
-                                                             the task/isr
-                                                             */
-    CONST(tpl_activate_counter, TYPEDEF)
-                                    max_activate_count; /**< max activation
-                                                             count of a
-                                                             task/isr
-                                                             */
-    CONST(tpl_proc_type, TYPEDEF)   type;               /**< type of the
-                                                             task/isr
-                                                             */
+  VAR(tpl_context, TYPEDEF)
+    context;            /**<  context(s) of the task/isr                      */
+  VAR(tpl_stack, TYPEDEF)
+    stack;              /**<  stack(s) of the  task/isr                       */
+  CONST(tpl_proc_function, TYPEDEF)
+    entry;              /**<  function that is the entry point
+                              of the task/isr                                 */
+  CONSTP2VAR(tpl_internal_resource, TYPEDEF, OS_APPL_DATA)
+    internal_resource;  /**<  pointer to an internal resource. NULL if the
+                              task does not have an internal resource         */
+  CONST(tpl_task_id, TYPEDEF)
+    id;                 /**<  id of task/isr                                  */
+#ifdef WITH_OSAPPLICATION
+  CONST(tpl_app_id, TYPEDEF)
+    app_id;             /**<  id of the OS application which owns
+                              the task/ISR                                    */
+#endif
+  CONST(tpl_priority, TYPEDEF)
+    base_priority;      /**<  base priority of the task/isr                   */
+  CONST(tpl_activate_counter, TYPEDEF)
+    max_activate_count; /**<  max activation count of a task/isr              */
+  CONST(tpl_proc_type, TYPEDEF)
+    type;               /**<  type of the task/isr                            */
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    P2CONST(tpl_timing_protection, TYPEDEF, OS_APPL_CONST)
-                                    timing_protection;  /**< timing protection
-                                                             configuration
-                                                             (can be NULL
-                                                             if no timing
-                                                             protection is
-                                                             needed)
-                                                             */
+  P2CONST(tpl_timing_protection, TYPEDEF, OS_APPL_CONST)
+    timing_protection;  /**<  timing protection configuration (can be NULL
+                              if no timing protection is needed)              */
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 };
 
@@ -326,6 +312,13 @@ typedef struct {
  */
 extern VAR(tpl_proc_id, OS_VAR) tpl_running_id;
 
+#ifdef WITH_AUTOSAR && ((AUTOSAR_SC == 3) || (AUTOSAR_SC == 4)) 
+/**
+ * currently running OS application id
+ */
+extern VAR(tpl_app_id, OS_VAR) tpl_running_app_id;
+#endif
+
 /**
  * Internal RES_SCHEDULER resource
  */
@@ -395,22 +388,27 @@ FUNC(tpl_status, OS_CODE) tpl_schedule_from_idle(void);
 FUNC(tpl_status, OS_CODE) tpl_schedule_from_waiting(void);
 
 FUNC(void, OS_CODE) tpl_init_proc(
-    CONST(tpl_proc_id, AUTOMATIC) proc_id);
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 FUNC(void, OS_CODE) tpl_put_preempted_proc(
-    CONST(tpl_proc_id, AUTOMATIC) proc_id);
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 FUNC(void, OS_CODE) tpl_put_new_proc(
-    CONST(tpl_proc_id, AUTOMATIC) proc_id);
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 FUNC(void, OS_CODE) tpl_init_os(
-    CONST(tpl_application_mode, AUTOMATIC) app_mode);
+  CONST(tpl_application_mode, AUTOMATIC) app_mode);
 
 FUNC(void, OS_CODE) tpl_get_internal_resource(
-    CONST(tpl_proc_id, AUTOMATIC) task_id);
+  CONST(tpl_proc_id, AUTOMATIC) task_id);
 
 FUNC(void, OS_CODE) tpl_release_internal_resource(
-    CONST(tpl_proc_id, AUTOMATIC) task_id);
+  CONST(tpl_proc_id, AUTOMATIC) task_id);
+
+#ifdef WITH_OSAPPLICATION
+FUNC(void, OS_CODE) tpl_remove_proc(
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
+#endif
 
 /**
  * @internal

@@ -27,22 +27,12 @@
  */
 
 #include "tpl_as_counter_kernel.h"
-#include "tpl_os_timeobj_kernel.h"
 #include "tpl_os_kernel.h"
 #include "tpl_os_errorhook.h"
 #include "tpl_machine_interface.h"
 #include "tpl_as_error.h"
 #include "tpl_as_isr_kernel.h"
 #include "tpl_as_protec_hook.h"
-
-#ifndef NO_COUNTER
-/*  MISRA RULE 27 VIOLATION: This object is not declared as external
-    in a header file because it is only used in this file but declared
-    in the configuration file
-*/
-extern CONSTP2VAR(tpl_counter, OS_VAR, OS_APPL_DATA)
-    tpl_counter_table[COUNTER_COUNT];
-#endif
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"

@@ -48,6 +48,7 @@ compile "goil_scheduletable_verif.ggs" ;
 compile "goil_alarm_verif.ggs" ;
 compile "goil_app_verif.ggs" ;
 compile "goil_env_verification.ggs" ;
+compile "goil_message_verif.ggs" ;
 
 #
 # Datatypes
@@ -62,6 +63,7 @@ compile "goil_types_resource.ggs" ;
 compile "goil_types_isr.ggs" ;
 compile "goil_types_task.ggs" ;
 compile "goil_types_counter.ggs" ;
+compile "goil_types_networkmessage.ggs" ;
 
 #
 # Objects of the application definition
