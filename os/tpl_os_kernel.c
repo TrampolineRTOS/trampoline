@@ -39,6 +39,9 @@
 #endif
 #ifdef WITH_AUTOSAR
 #include "tpl_as_st_kernel.h"
+#if AUTOSAR_SC == 3 || AUTOSAR_SC == 4
+#include "tpl_as_app_kernel.h"
+#endif
 #endif
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 #include "tpl_as_protec_hook.h"
@@ -91,6 +94,9 @@ CONST(tpl_proc_static, OS_VAR) idle_task_static = {
     /* no entry point       */  NULL,
     /* internal resource    */  NULL,
     /* id is IDLE_TASK_ID   */  IDLE_TASK_ID,
+#ifdef WITH_OSAPPLICATION
+    /* OS application id    */  INVALID_OSAPPLICATION,
+#endif
     /* base priority is 0   */  0,
     /* max activate count   */  1,
     /* type is BASIC        */  TASK_BASIC
@@ -125,6 +131,17 @@ VAR(tpl_proc, OS_VAR) idle_task = {
  * runs.
  */
 VAR(tpl_proc_id, OS_VAR) tpl_running_id = -2;
+
+#if defined(WITH_AUTOSAR) && ((AUTOSAR_SC == 3) || (AUTOSAR_SC == 4)) 
+/**
+ * @internal
+ *
+ * tpl_running_app_id is the application id of the currently running process
+ *
+ * At system startup it is set to INVALID_OSAPPLICATION.
+ */
+VAR(tpl_app_id, OS_VAR) tpl_running_app_id = INVALID_OSAPPLICATION;
+#endif
 
 /*  MISRA RULE 27 VIOLATION: These 2 variables are used only in this file
     but decalred in the configuration file, this is why they do not need
@@ -569,7 +586,71 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
   DOW_DO(printrl("tpl_put_new_exec_object - apres");)
 }
 
+
 #endif /* WITH_POWEROF2QUEUE */
+
+#ifdef WITH_OSAPPLICATION
+/**
+ * @internal
+ *
+ * tpl_remove_proc_for_prio removes all the process instances at the given
+ * priority queue
+ */
+FUNC(void, OS_CODE) tpl_remove_proc_for_prio(
+  CONST(tpl_proc_id, AUTOMATIC)   proc_id,
+  CONST(tpl_priority, AUTOMATIC)  prio)
+{
+  P2VAR(tpl_proc_id, AUTOMATIC, OS_APPL_DATA)
+    fifo = tpl_ready_list[prio].fifo;
+  P2VAR(tpl_proc_id, AUTOMATIC, OS_APPL_DATA)
+    end_fifo = fifo + tpl_ready_list[prio].size - 1;
+  P2VAR(tpl_proc_id, AUTOMATIC, OS_APPL_DATA)
+    r = fifo + tpl_fifo_rw[prio].read;
+  P2VAR(tpl_proc_id, AUTOMATIC, OS_APPL_DATA) w = r;
+  VAR(u8, AUTOMATIC) size = tpl_fifo_rw[prio].size;;
+  VAR(u8, AUTOMATIC) new_size = size;
+
+  while (size > 0)
+  {
+    if (*r != proc_id)
+    {
+      *w = *r;
+      w = (w == end_fifo) ? fifo : w + 1 ;
+    }
+    else {
+      new_size--;
+    }
+    r = (r == end_fifo) ? fifo : r + 1 ;
+    size--;
+  }
+  tpl_fifo_rw[prio].size = new_size;  
+}
+
+/**
+ * @internal
+ *
+ * tpl_remove_proc removes all the process instances in the ready queue
+ */
+FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
+{
+  /*  the process may be present in 2 priority levels:
+      - in its current priority level (1 time)
+      - in its base priority level (possibly many times)
+   */
+  CONST(tpl_priority, AUTOMATIC) prio = tpl_dyn_proc_table[proc_id]->priority;
+  CONST(tpl_priority, AUTOMATIC) base_prio =
+    tpl_stat_proc_table[proc_id]->base_priority;
+  
+  /*  First clean the current prio fifo if needed */
+  if (prio != base_prio)
+  {
+    tpl_remove_proc_for_prio(proc_id, base_prio);
+  }
+  /*  Then clean the base_prio fifo */
+  tpl_remove_proc_for_prio(proc_id, prio);
+}
+
+#endif
 
 /**
  * @internal

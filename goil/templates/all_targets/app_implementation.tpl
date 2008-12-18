@@ -33,6 +33,7 @@
 #include "tpl_as_action.h"
 #include "tpl_as_isr_kernel.h"
 #include "tpl_as_counter.h"
+#include "tpl_as_app_kernel.h"
 #endif
 
 /* #include "Application_types.h" */
@@ -72,7 +73,16 @@ $MESSAGEIDS$
 /*=============================================================================
  * Declaration of Scheduletables IDs
  */
+#ifdef WITH_AUTOSAR
 $SCHEDTABLEIDS$
+#endif
+
+/*=============================================================================
+ * Declaration of OS Application IDs
+ */
+#ifdef WITH_AUTOSAR
+$OSAPPIDS$
+#endif
 
 /*=============================================================================
  * Definition and initialization of Resource related structures
@@ -138,6 +148,11 @@ $MESSAGES$
  * Declaration of schedule tables related defines and structures
  */
 $SCHEDULETABLES$
+
+/*=============================================================================
+ * Declaration of OS applications related defines and structures
+ */
+$OSAPPLICATIONS$
 #endif
 
 /*=============================================================================

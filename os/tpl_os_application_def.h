@@ -162,7 +162,22 @@
  * One can disable stack monitoring while using AUTOSAR by undefining it.
  * This can be useful for debugging.
  */
-#define WITH_AUTOSAR_STACK_MONITORING 
+#define WITH_AUTOSAR_STACK_MONITORING
+
+/**
+ * @def WITH_OSAPPLICATION
+ *
+ * @internal
+ *
+ * This compilation is set if WITH_AUTOSAR is defined and AUTOSAR_SC is
+ * equal to 3 or 4. But if WITH_NO_OSAPPLICATION is set, it is unset.
+ */
+#if (AUTOSAR_SC == 3) || (AUTOSAR_SC == 4)
+#ifndef WITH_NO_OSAPPLICATION
+#define WITH_OSAPPLICATION
+#endif
+#endif
+
 #endif /* defined WITH_AUTOSAR */
 
 #endif /* TPL_OS_APPLICATION_DEF_H */

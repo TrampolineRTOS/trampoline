@@ -4,16 +4,19 @@
 $EXPIRY_POINTS$
 
 tpl_schedtable_static stat_$SCHEDTABLE$ = {
-    {   /* static time object part */
-        /* counter          */  $COUNTER$,
-        /* expire function  */  tpl_process_schedtable
-    },
-    /* expiry points        */  $EXPIRY_TABLE$,
-    /* expiry points count  */  $EXPIRY_TABLE_SIZE$,
-    /* sync strategy        */  $SYNC_STRATEGY$,
-    /* periodic             */  $PERIODIC$,
-    /* length               */  $LENGTH$,
-    /* precision            */  $PRECISION$
+  { /* static time object part */
+    /* counter            */  $COUNTER$,
+    /* expire function    */  tpl_process_schedtable
+#ifdef WITH_OSAPPLICATION
+    /* OS application id  */  , $APP_ID$
+#endif
+  },
+  /* expiry points        */  $EXPIRY_TABLE$,
+  /* expiry points count  */  $EXPIRY_TABLE_SIZE$,
+  /* sync strategy        */  $SYNC_STRATEGY$,
+  /* periodic             */  $PERIODIC$,
+  /* length               */  $LENGTH$,
+  /* precision            */  $PRECISION$
 };
 
 tpl_schedule_table $SCHEDTABLE$ = {

@@ -517,6 +517,47 @@ FUNC(void, OS_CODE) tpl_stop_resource_monitor (
 }
 
 
+#ifdef WITH_OSAPPLICATION
+/**
+ * Function used to stop all resource locking monitor for a task/isr2
+ *
+ * @param proc_id: owner of the watchdog to stop
+ *
+ */
+FUNC(void, OS_CODE) tpl_stop_all_resource_monitor (
+  CONST(tpl_proc_id, AUTOMATIC) proc_id)
+{
+  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) proc =
+    tpl_stat_proc_table[proc_id];
+  
+#ifndef NO_RESOURCE
+  if ((proc->timing_protection != NULL) &&
+      (proc->timing_protection->resource_lock_time != NULL))
+  {
+    VAR(tpl_resource_id, AUTOMATIC) rez_id;
+    
+    for (rez_id = 0; rez_id < RESOURCE_COUNT; rez_id++)
+    {
+      VAR(tpl_time, AUTOMATIC) resource_lock_time =
+        proc->timing_protection->resource_lock_time[rez_id];
+      
+      /*  if resource lock time is null, it means there is
+          no timing protection for this resource            */
+      if (resource_lock_time >0)
+      {
+        P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) watchdog;
+        /* select the corresponding watchdog */
+        watchdog = &tpl_watchdog_resource_monitor[rez_id];
+        
+        /* remove the watchdog */
+        tpl_unschedule_watchdog(watchdog);
+      }
+    }
+  }
+#endif
+}
+#endif
+
 /**
  * Function used to start an isr locking monitor for a task/isr2
  *

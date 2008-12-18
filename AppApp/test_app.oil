@@ -1,0 +1,268 @@
+OIL_VERSION = "2.5" : "test" ;
+
+IMPLEMENTATION trampoline {
+    TASK {
+        UINT32 STACKSIZE = 32768 ;
+        UINT32 PRIORITY = 1 ;
+    } ;
+    ISR {
+        UINT32 STACKSIZE = 32768 ;
+    } ;
+};
+
+CPU test {
+
+    OS config {
+        STATUS = EXTENDED;
+        ERRORHOOK = TRUE;
+        PRETASKHOOK = TRUE;
+        APP_SRC = "tpl_test_app.c";
+        DOW = TRUE;
+        UNITTEST = TRUE;
+
+        CFLAGS  = "-g";
+        CFLAGS  = "-Wall -pedantic -fasm-blocks";
+        CFLAGS  = "-Wmissing-field-initializers";
+        ASFLAGS = "";
+        LDFLAGS = "-g";
+    } ;
+
+
+    APPMODE std {
+    };
+
+    TASK periodicTask {
+        PRIORITY = 2;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        RESOURCE  = r1;
+        ACCESSING_APPLICATION = app;
+        MESSAGE = sm;
+    };
+    
+    //default tick is 50 ms
+    COUNTER counter100ms {
+        TICKSPERBASE = 2; 
+        MAXALLOWEDVALUE = 10;
+        MINCYCLE = 1;
+        TYPE = HARDWARE {};
+    };
+    
+    ALARM alarm1s {
+        COUNTER = counter100ms;
+        ACTION = ACTIVATETASK {
+            TASK = periodicTask;
+        };
+        AUTOSTART = TRUE {
+            ALARMTIME = 1;
+            CYCLETIME = 10; //each 1000 ms.
+            APPMODE = std;
+		};
+    };
+    
+    ALARM alarmevent {
+        COUNTER = SystemCounter;
+        ACTION = SETEVENT {
+            TASK = t2;
+            EVENT = evt1;
+        };
+        AUTOSTART = TRUE {
+            ALARMTIME = 1;
+            CYCLETIME = 10; //each 1000 ms.
+            APPMODE = std;
+		};
+    };
+    
+    EVENT evt1 { MASK=AUTO; };
+    
+    RESOURCE r1 { RESOURCEPROPERTY = STANDARD; };
+    RESOURCE r2 { RESOURCEPROPERTY = STANDARD; };
+};
+
+CPU test {
+
+    TASK t2 {
+        PRIORITY = 3;
+        AUTOSTART = FALSE;
+        ACTIVATION = 4;
+        SCHEDULE = FULL;
+        STACKSIZE = 16000;
+        RESOURCE  = r2;
+        EVENT = evt1;
+        MESSAGE = rm;
+    };
+    
+    TASK t3 {
+        PRIORITY = 4;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        STACKSIZE = 16000;
+    };
+    
+    TASK t4 {
+        PRIORITY = 4;
+        AUTOSTART = FALSE;
+        ACTIVATION = 3;
+        SCHEDULE = FULL;
+        STACKSIZE = 16000;
+    };
+    
+    TASK t5 {
+        PRIORITY = 4;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        STACKSIZE = 16000;
+    };
+    
+    TASK t6 {
+        PRIORITY = 4;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        STACKSIZE = 16000;
+    };
+    
+    TASK t7 {
+        PRIORITY = 4;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        STACKSIZE = 16000;
+    };
+    
+    TASK t8 {
+        PRIORITY = 4;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        STACKSIZE = 16000;
+    };
+    
+    TASK t9 {
+        PRIORITY = 4;
+        AUTOSTART = FALSE;
+        ACTIVATION = 2;
+        SCHEDULE = FULL;
+        STACKSIZE = 16000;
+    };
+    
+    TASK t10 {
+        PRIORITY = 4;
+        AUTOSTART = FALSE;
+        ACTIVATION = 2;
+        SCHEDULE = FULL;
+        STACKSIZE = 16000;
+    };
+    
+    TASK t11 {
+        PRIORITY = 4;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        STACKSIZE = 16000;
+    };
+    
+    TASK t12 {
+        PRIORITY = 4;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        STACKSIZE = 16000;
+    };
+    
+    TASK t13 {
+        PRIORITY = 4;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        STACKSIZE = 16000;
+    };
+    
+    TASK t14 {
+        PRIORITY = 4;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        STACKSIZE = 16000;
+    };
+    
+    TASK t15 {
+        PRIORITY = 4;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        STACKSIZE = 16000;
+    };
+    
+    MESSAGE sm {
+        MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
+            CDATATYPE = "u32" ;
+        };
+    };
+    
+    MESSAGE rm {
+        MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+            SENDINGMESSAGE = sm;
+            INITIALVALUE = "0";
+        };
+        NOTIFICATION = ACTIVATETASK {
+            TASK = t2;
+        };
+    };
+    
+    APPLICATION app {
+        TRUSTED = FALSE;
+        STARTUPHOOK = TRUE;
+        TASK = t2;
+        ALARM = alarm1s;
+        RESOURCE = r1;
+        RESOURCE = r2;
+    };
+    
+    APPLICATION clim {
+        TRUSTED = FALSE;
+        STARTUPHOOK = TRUE;
+        TASK = t5;
+        TASK = t7;
+        TASK = t9;
+        ALARM = alarmevent;
+        SCHEDULETABLE = allons_y;
+    };
+    
+    APPLICATION rien {
+        TRUSTED = FALSE;
+        STARTUPHOOK = TRUE;
+        TASK = periodicTask;
+        TASK = t10;
+        TASK = t11;
+        TASK = t12;
+        TASK = t13;
+        TASK = t14;
+        TASK = t15;
+        TASK = t3;
+        TASK = t4;
+        TASK = t6;
+        TASK = t8;
+        COUNTER = counter100ms;
+    };
+    
+    SCHEDULETABLE allons_y {
+        COUNTER = SystemCounter;
+        AUTOSTART = TRUE { OFFSET = 3; APPMODE = std; };
+        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE;
+        PERIODIC = TRUE;
+        LENGTH = 10;
+        ACTION = ACTIVATETASK {
+            OFFSET = 3;
+            TASK = t2;
+        };
+        ACTION = ACTIVATETASK {
+            OFFSET = 2;
+            TASK = t3;
+        };
+        ACCESSING_APPLICATION = app;
+    };
+};

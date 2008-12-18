@@ -29,7 +29,7 @@
 
 #include "tpl_os_internal_types.h"
 #include "tpl_os_alarm_kernel.h"
-#include "tpl_as_st_definitions.h"
+#include "tpl_as_definitions.h"
 
 typedef VAR(u8, AUTOMATIC)  tpl_schedtable_state;
 
@@ -180,7 +180,7 @@ extern CONSTP2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA)
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-#endif
+#endif /* NO_SCHEDTABLE */
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"

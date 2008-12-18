@@ -77,6 +77,22 @@ typedef $COUNTER_ID_T$ tpl_counter_id;
  */
 typedef $SCHEDTABLE_ID_T$ tpl_schedtable_id;
 
+/**
+ * @internal
+ *
+ * Type used to store the id of an OS Application
+ * Its size is computed according to the number of OS Applications
+ */
+typedef $OSAPPLICATION_ID_T$ tpl_app_id;
+
+/**
+ * @internal
+ *
+ * Generic type used in OS Application API
+ * Its size is computed by doing the max of all object kind
+ */
+typedef $GENERIC_ID_T$ tpl_generic_id;
+
 #endif /* WITH_AUTOSAR */
 
 #endif /* TPL_APP_CUSTOM_TYPES_H */

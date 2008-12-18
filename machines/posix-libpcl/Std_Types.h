@@ -51,8 +51,8 @@ typedef struct
 /******************************************************************************/
 /* SYMBOL DEFINITIONS                                                         */
 /******************************************************************************/
-#ifndef STATUSTYPEDEFINED
-#define STATUSTYPEDEFINED
+#ifndef STATUSTYPE_DEFINED
+#define STATUSTYPE_DEFINED
 typedef unsigned char StatusType;   /* OSEK compliance */
 #endif
 

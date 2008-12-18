@@ -7,10 +7,13 @@
  * ISRs which use this resource :
  * $ISRS$
  */
-tpl_resource $RESOURCE$ = {
-    /* ceiling priority of the resource */  (tpl_priority)$PRIORITY$,
-    /* owner previous priority          */  (tpl_priority)0,
-    /* owner of the resource            */  -1,
-    /* next resource in the list        */  NULL
+VAR(tpl_resource, OS_VAR) $RESOURCE$ = {
+  /* ceiling priority of the resource */  (tpl_priority)$PRIORITY$,
+  /* owner previous priority          */  (tpl_priority)0,
+  /* owner of the resource            */  -1,
+#ifdef WITH_OSAPPLICATION
+  /* OS Application id                */  $APP_ID$,
+#endif    
+  /* next resource in the list        */  NULL
 };
 

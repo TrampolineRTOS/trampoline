@@ -99,7 +99,7 @@ abstract class @base_mess extends @oil_obj {
     @action_obj notification ;
     @action_obj notificationerror ;
     @stringset  acc_apps ;
-    @ident_map other_fields;
+    @ident_map  other_fields;
 }
 
 map @message_map ;
@@ -420,16 +420,16 @@ class @ssi_mess_prop extends @mess_prop_obj {
 }
 
 class @sse_mess_prop extends @mess_prop_obj {
-    @lstring cdatatype ;
-    @lstring tranferproperty ;
+    @lstring         cdatatype ;
+    @lstring         tranferproperty ;
     @filter_prop_obj filter ;
-    @lstring networkordercallout ;
-    @lstring cpuordercallout ;
-    @basic_type initialvalue ;
-    @lstring networkmessage ;
+    @lstring         networkordercallout ;
+    @lstring         cpuordercallout ;
+    @basic_type      initialvalue ;
+    @lstring         networkmessage ;
     override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
     override method generate
-        ?@lstring        unused name 
+        ?@lstring        name 
         ?@base_mess      unused mess
         ?@message_map    unused messages
         ?@ident_list_map unused dests
@@ -437,6 +437,14 @@ class @sse_mess_prop extends @mess_prop_obj {
         !@string         i_res :
 
         h_res := "" ;
+        retrieveTemplateString ?i_res !"message_sse" ;
+        doReplace !?i_res !"$MESSAGE_NAME$" ![name string] ;
+        doReplace !?i_res !"$MESSAGE$" ![name string]."_message" ;
+        doReplace !?i_res !"$NETWORKMESSAGE$" ![networkmessage string]."_net_message" ;
+        if [tranferproperty string] != "triggered" then
+          warning tranferproperty: "Only TRIGGERED transfer property is supported in this version" ;
+        end if ;
+        doReplace !?i_res !"$CDATATYPE$" ![cdatatype string] ;
         i_res := "" ;
     end method ;
 }
@@ -491,7 +499,7 @@ class @sze_mess_prop extends @mess_prop_obj {
     @lstring networkmessage ;
     override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
     override method generate
-        ?@lstring        unused name 
+        ?@lstring        name 
         ?@base_mess      unused mess
         ?@message_map    unused messages
         ?@ident_list_map unused dests
@@ -499,7 +507,10 @@ class @sze_mess_prop extends @mess_prop_obj {
         !@string         i_res :
 
         h_res := "" ;
-        i_res := "" ;
+        retrieveTemplateString ?i_res !"message_sze" ;
+        doReplace !?i_res !"$MESSAGE_NAME$" ![name string] ;
+        doReplace !?i_res !"$MESSAGE$" ![name string]."_message" ;
+        doReplace !?i_res !"$NETWORKMESSAGE$" ![networkmessage string]."_net_message" ;
     end method ;
 }
 
@@ -744,7 +755,9 @@ class @true_link extends @link_obj {
     @lstring receivemessage ;
 }
 
-class @false_link extends @link_obj {}
+class @false_link extends @link_obj {
+  @lstring networkmessage ;
+}
 
 class @nmcallback_action extends @action_obj {
     @lstring function_name ;

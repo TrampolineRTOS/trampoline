@@ -13,8 +13,6 @@ IMPLEMENTATION trampoline {
 CPU test {
 
     OS config {
-//        SYSTEM_CALL = TRUE;
-//        POWEROF2QUEUE = TRUE;
         STATUS = EXTENDED;
         ERRORHOOK = TRUE;
         PRETASKHOOK = TRUE;
@@ -22,8 +20,8 @@ CPU test {
         TRAMPOLINE_BASE_PATH = "..";
         DOW=TRUE;
         CFLAGS  = "-g";
-        CFLAGS  = "-Wall -pedantic -Wformat -Werror -std=c99";
-        CFLAGS  = "-Wmissing-field-initializers"; // -arch ppc";
+        CFLAGS  = "-Wall -pedantic -Wformat -std=c99";
+        CFLAGS  = "-Wmissing-field-initializers"; 
         ASFLAGS = "";
         LDFLAGS = "-g";
     } ;
@@ -40,12 +38,11 @@ CPU test {
         RESOURCE  = r1;
     };
     
-    //default tick is 50 ms
+    //default tick is 10 ms
     COUNTER counter100ms {
-        TICKSPERBASE = 2; 
+        TICKSPERBASE = 10; 
         MAXALLOWEDVALUE = 10;
         MINCYCLE = 1;
-/*        TYPE = HARDWARE {}; */
     };
     
     ALARM alarm1s {

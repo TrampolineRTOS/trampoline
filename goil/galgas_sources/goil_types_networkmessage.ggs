@@ -1,0 +1,40 @@
+semantics goil_types_networkmessage :
+
+import semantics goil_basic_types in "goil_basic_types.ggs" ;
+
+abstract class @base_netprop { @location loc ; }
+
+class @void_netprop extends @base_netprop {}
+
+class @static_netprop extends @base_netprop {
+  @lsint   size_in_bits ;
+  @lstring bit_ordering ;
+  @lsint   bit_position ;
+  @lstring data_interpretation ;
+  @luint64 initial_value ;
+  @lstring direction ;
+}
+
+class @dynamic_netprop extends @base_netprop {
+  @lsint   max_size_in_bits ;
+  @lstring bit_ordering ;
+  @lsint   bit_position ;
+  @luint64 initial_value ;
+  @lstring direction ;
+}
+
+class @zero_netprop extends @base_netprop {}
+
+class @netmess_obj extends @oil_obj {
+  @lstring      ipdu ;
+  @base_netprop netprop ;
+}
+
+map @netmess_map {
+    @netmess_obj netmess ;
+    insert put error message "Network message %K is already defined in %L" ;
+    search get error message "Network message %K is unkown" ;
+    remove del error message "Netmork message %K is unkown" ;
+}
+
+end semantics ;

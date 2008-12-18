@@ -1,0 +1,38 @@
+semantics goil_message_verif :
+
+import semantics goil_types_networkmessage in "goil_types_networkmessage.ggs";
+import semantics goil_semantic_types in "goil_semantic_types.ggs";
+
+function check_dir_sent
+  ?@lstring     mess
+  ?@netmess_map netm
+  -> @bool res
+:
+  res := true ;
+end function ;
+
+routine networkmessages_exist_and_ok
+  ?@message_map messages
+  ?@netmess_map net_messages
+:
+
+  # verify all network messages referenced by messages exist and
+  # are of the good type
+  foreach messages do
+    @string nm := "" ;
+    @uint dir := 0 ;
+    cast [mess messageproperty] :
+    when == @sse_mess_prop sse do
+#      if not check_dir_sent(
+      nm := [[sse networkmessage] string] ; dir := 1 ;
+    when == @sde_mess_prop sde do
+      nm := [[sde networkmessage] string] ; dir := 1 ;
+    when == @sze_mess_prop sze do
+      nm := [[sze networkmessage] string] ; dir := 1 ;
+    when == @rze_mess_prop rze do
+      nm := [[rze networkmessage] string] ; dir := 1 ;
+    else end cast ;
+  end foreach ;
+end routine ;
+
+end semantics ;

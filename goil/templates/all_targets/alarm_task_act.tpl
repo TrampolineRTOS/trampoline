@@ -9,11 +9,14 @@ tpl_task_activation_action task_act_of_$ALARM_NAME$ = {
 };
 
 tpl_alarm_static stat_$ALARM$ = {
-    {
-        /* pointer to counter           */  &$COUNTER$,
-        /* pointer to the expiration    */  tpl_raise_alarm
-    },
-    /* action of the alarm  */  (tpl_action *)&task_act_of_$ALARM_NAME$
+  {
+    /* pointer to counter           */  &$COUNTER$,
+    /* pointer to the expiration    */  tpl_raise_alarm
+#ifdef WITH_OSAPPLICATION
+    /* OS application id            */  , $APP_ID$
+#endif
+  },
+  /* action of the alarm  */  (tpl_action *)&task_act_of_$ALARM_NAME$
 };
 
 tpl_time_obj $ALARM$ = {

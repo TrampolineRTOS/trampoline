@@ -31,11 +31,11 @@
 #define TPL_DISPATCH_H
 
 /**
- * @def CT_ASM
+ * @def TC_ASM
  *
- * CT_ASM expand to the appropriate keyword to qualify an assembly language
+ * TC_ASM expand to the appropriate keyword to qualify an assembly language
  * function. If the compiler uses this kind of construct, define it here
- * If it does not, define CT_ASM with no value and put the ad hoc keywords
+ * If it does not, define TC_ASM with no value and put the ad hoc keywords
  * in TPL_SYSCALL
  *
  * @see #ASM

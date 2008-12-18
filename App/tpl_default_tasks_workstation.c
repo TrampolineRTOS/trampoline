@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "tpl_os.h"
-#include "tpl_os_generated_configuration.h"
 
 
 #define _XOPEN_SOURCE 500
@@ -43,6 +42,8 @@ void ShutdownHook(StatusType error)
 {
     printf("Au revoir et a bientot :)\n");
 }
+
+DeclareTask(t2);
 
 TASK(periodicTask)
 {

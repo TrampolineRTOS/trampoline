@@ -29,7 +29,10 @@ CONST(tpl_proc_static, OS_CONST) $EXEC_STATIC$ = {
     /* entry point (function)   */  $EXEC_FUNCTION$,
     /* internal ressource       */  $RESOURCE_PTR$,
     /* task id                  */  $TASK_ID$,
-    /* task base priority       */  (tpl_priority)$TASK_PRIORITY$,
+#ifdef WITH_OSAPPLICATION
+    /* OS application id        */  $APP_ID$,
+#endif
+    /* task base priority       */  $TASK_PRIORITY$,
     /* max activation count     */  $TASK_MAX_ACT_COUNT$,
     /* task type                */  $TASK_TYPE$,
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION

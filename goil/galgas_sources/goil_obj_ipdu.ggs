@@ -38,7 +38,8 @@ nonterminal <periodic_attributes> ;
 nonterminal <mixed_attributes> ;
 
 # external nonterminals
-nonterminal <sizeinbits> ;
+nonterminal <sizeinbits>
+  !@luint64 sib ;
 nonterminal <description>
     !@lstring desc ;
 
@@ -47,7 +48,7 @@ rule <ipdu> :
     $idf$ ?* ;
     ${$ ;
     repeat
-        while <sizeinbits> ;
+        while <sizeinbits> ?* ;
         while <ipduproperty> ;
         while <ipducallout> ;
         while <layerused> ;

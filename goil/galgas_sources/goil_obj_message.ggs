@@ -1155,8 +1155,11 @@ rule <link>
         $}$ ;
         link := [@true_link new !rcv_mess] ;
     or
-        $FALSE$ ;
-        link := [@false_link new] ;
+        @lstring net_mess ;
+        $FALSE$ ; ${$ ;
+        $NETWORKMESSAGE$ ; $=$ ; $idf$ ?net_mess ; <description> ?* ; $;$ ;
+        $}$ ;
+        link := [@false_link new !net_mess] ;
     end select ;
     <description> ?* ; $;$ ;
 end rule ;
