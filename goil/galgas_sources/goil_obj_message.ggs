@@ -686,7 +686,7 @@ rule <rue_attributes>
     @filter_prop_obj filter := [@void_filter new] ;
     @bool has_initial_value := false ;
     @basic_type initial_value := [@void new !here] ;
-    @link_obj link := [@void_link new] ;
+    @link_obj link := [@void_link new !here] ;
 
     ${$ ;
     repeat
@@ -743,7 +743,7 @@ rule <rqe_attributes>
     @filter_prop_obj filter := [@void_filter new] ;
     @bool has_queue_size := false ;
     @luint64 queue_size := [@luint64 new !0L !here] ;
-    @link_obj link := [@void_link new] ;
+    @link_obj link := [@void_link new !here] ;
     @bool has_initial_value := false ;
     @basic_type initial_value := [@void new !here] ;
 
@@ -808,7 +808,7 @@ end rule ;
 rule <rde_attributes>
     ?!@mess_prop_obj mess_prop
 :
-    @link_obj link := [@void_link new] ;
+    @link_obj link := [@void_link new !here] ;
     @bool has_initial_value := false ;
     @basic_type initial_value := [@void new !here] ;
 
@@ -1153,13 +1153,13 @@ rule <link>
         $TRUE$ ; ${$ ;
         $RECEIVEMESSAGE$ ; $=$ ; $idf$ ?rcv_mess ; <description> ?* ; $;$ ;
         $}$ ;
-        link := [@true_link new !rcv_mess] ;
+        link := [@true_link new !here!rcv_mess] ;
     or
         @lstring net_mess ;
         $FALSE$ ; ${$ ;
         $NETWORKMESSAGE$ ; $=$ ; $idf$ ?net_mess ; <description> ?* ; $;$ ;
         $}$ ;
-        link := [@false_link new !net_mess] ;
+        link := [@false_link new !here!net_mess] ;
     end select ;
     <description> ?* ; $;$ ;
 end rule ;

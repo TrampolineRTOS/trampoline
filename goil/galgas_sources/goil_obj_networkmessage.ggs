@@ -79,6 +79,14 @@ rule <networkmess>
   end repeat ;
   $}$ ;
   <description> ?* ; $;$ ;
+
+  nm := [@netmess_obj new
+    ![@lstring new !"" !here]
+    !ipdu
+    !netprop
+  ];
+
+  [!?netmess put !name !nm] ;
 end rule ;
 
 rule <ipdu_ref>
@@ -105,7 +113,17 @@ rule <net_messageproperty>
   or
     $DYNAMIC$ ; <dynamic_mp> ?nn ;
   or
-    $ZERO$ ; nn := [@zero_netprop new !here] ;
+    $ZERO$ ;
+    # Normally a Zero network message does not have
+    # sub properties. Since whe do not use IPDU in this
+    # temporary implementation, we need a direction
+    # in network messages. It will be removed when the
+    # implementation will be fully compliant
+    ${$ ; 
+    @lstring dir ;
+    <direction> ?dir ;
+    nn := [@zero_netprop new !here !dir] ;
+    $}$ ;
   end select ;
   cast netprop :
   when == @void_netprop do

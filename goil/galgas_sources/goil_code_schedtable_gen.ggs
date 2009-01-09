@@ -21,7 +21,9 @@ routine generate_schedule_tables
 
     foreach sts (@lstring name @scheduletable_obj st) :i do
       @string app_name := "";
-      [app_for_obj get !name ?app_name] ;
+      if [app_for_obj count] > 0 then
+        [app_for_obj get !name ?app_name] ;
+      end if ;
       [st generate !name !app_name !?i_result] ;
       h_result .= "#define ".[name string]."_id ".[i string]."\n" ;
       h_result .= "CONST(ScheduleTableType, AUTOMATIC) ".[name string]." = ".[name string]."_id;\n" ;

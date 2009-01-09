@@ -377,7 +377,7 @@ class @oneeveryn_filter extends @filter_prop_obj {
     end method ;
 }
 
-abstract class @link_obj {}
+abstract class @link_obj { @location loc ; }
 
 class @void_mess_prop extends @mess_prop_obj {
     override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
@@ -441,11 +441,15 @@ class @sse_mess_prop extends @mess_prop_obj {
         doReplace !?i_res !"$MESSAGE_NAME$" ![name string] ;
         doReplace !?i_res !"$MESSAGE$" ![name string]."_message" ;
         doReplace !?i_res !"$NETWORKMESSAGE$" ![networkmessage string]."_net_message" ;
+        doReplace !?i_res !"$BUFFER$"  ![name string]."_buffer" ;
         if [tranferproperty string] != "triggered" then
           warning tranferproperty: "Only TRIGGERED transfer property is supported in this version" ;
         end if ;
-        doReplace !?i_res !"$CDATATYPE$" ![cdatatype string] ;
-        i_res := "" ;
+        doReplace !?i_res !"$CTYPE$" ![cdatatype string] ;
+        @string iv ;
+        [initialvalue string ?iv] ;
+        if iv != "" then iv := " = ".iv ; end if ;
+        doReplace !?i_res !"$INITIALVALUE$" !iv ;
     end method ;
 }
 

@@ -35,8 +35,10 @@
 #include "tpl_as_st_kernel.h"
 #include "tpl_as_definitions.h"
 
+#if APP_COUNT > 0
 extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST)
   tpl_app_table[APP_COUNT];
+#endif
 
 static CONST(tpl_generic_id, AUTOMATIC) tpl_obj_count_table[5] = {
   TASK_COUNT+ISR_COUNT,
@@ -53,7 +55,11 @@ static CONST(tpl_generic_id, AUTOMATIC) tpl_obj_count_table[5] = {
  */
 FUNC(tpl_app_id, OS_CODE) tpl_get_application_id_service(void)
 {
+#if APP_COUNT > 0
   return tpl_running_app_id;
+#else
+  return INVALID_OSAPPLICATION;
+#endif
 }
 
 /**
@@ -70,6 +76,7 @@ FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
 {
   VAR(tpl_app_id, AUTOMATIC) result = INVALID_OSAPPLICATION;
   
+#if APP_COUNT > 0
   switch (obj_type) {
       
     case OBJECT_TASK: /*  Same as OBJECT_ISR  */
@@ -126,6 +133,7 @@ FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
       result = INVALID_OSAPPLICATION;
       
   }
+#endif
   
   return result;
 }
@@ -149,6 +157,7 @@ FUNC(u8, OS_CODE) tpl_check_object_access_service(
 {
   VAR(u8, AUTOMATIC) result = NO_ACCESS;
 
+#if APP_COUNT > 0
   if ((app_id < APP_COUNT) &&
       (obj_type < OBJECT_TYPE_COUNT) &&
       (obj_id < tpl_obj_count_table[obj_type]))
@@ -162,6 +171,7 @@ FUNC(u8, OS_CODE) tpl_check_object_access_service(
     result = ((app_access->access_vec[obj_type][byte_idx]) &
                     (1 << bit_shift)) >> bit_shift;
   }
+#endif
   
   return result;
 }
@@ -181,10 +191,12 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
+#if APP_COUNT > 0
   if (tpl_running_app_id < APP_COUNT)
   {
     /*  First, remove all alarms belonging
         to the OS application from the queue            */
+#ifndef NO_ALARM
     {
       P2CONST(tpl_alarm_id, AUTOMATIC, OS_APPL_CONST) alarms =
         tpl_app_table[tpl_running_app_id]->alarms;
@@ -203,8 +215,10 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
         }
       }
     }
+#endif
     /*  Then remove all the schedule tables belonging
         to the OS application from the queue            */
+#ifndef NO_SCHEDTABLE
     {
       P2CONST(tpl_schedtable_id, AUTOMATIC, OS_APPL_CONST) schedtables =
         tpl_app_table[tpl_running_app_id]->sts;
@@ -224,9 +238,11 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
         }
       }
     }
+#endif
     /*  Then remove all processes belonging to the OS
         application in the ready list and in the waiting
         state (the running process called this service)   */
+#if !defined(NO_TASK) && !defined(NO_ISR)
     {
       P2CONST(tpl_proc_id, AUTOMATIC, OS_APPL_CONST) procs =
         tpl_app_table[tpl_running_app_id]->procs;
@@ -254,11 +270,13 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
           tpl_stat_proc_table[proc_id]->base_priority;
       }
     }
+#endif
   }
   else
   {
     result = E_OS_CALLEVEL;
   }
+#endif
   return result;
 }
 

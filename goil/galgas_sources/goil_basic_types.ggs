@@ -183,7 +183,7 @@ map @ident_map {
 map @string_map {
     @string value ;
     insert put error message "%K is duplicated in %L";
-    search get error message "Key %K is not defined" ;
+    search get error message "stringmap key %K is not defined" ;
 }
 
 #
