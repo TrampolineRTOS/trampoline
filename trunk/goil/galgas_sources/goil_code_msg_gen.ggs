@@ -2,7 +2,30 @@ semantics goil_code_msg_gen :
 
 import semantics goil_routines in "goil_routines.ggs" ;
 import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
+import semantics goil_types_networkmessage in "goil_types_networkmessage.ggs" ;
 import semantics goil_targets in "goil_targets.ggs" ;
+
+
+#--------------------------------------------------------------------
+# Network Messages generation
+#--------------------------------------------------------------------
+routine generate_network_messages
+  ?@netmess_map net_messages
+  ?!@string     unused header
+  ?!@string     unused obj_header
+  ?!@string     implementation :
+
+  @string i_res := "" ;
+
+  foreach net_messages do
+    @string mess ;
+    [netmess generate !key ?mess] ;
+    i_res .= mess ;
+  end foreach ;
+
+  doReplace !?implementation !"$NETWORKMESSAGES$" !i_res ;
+    
+end routine ;  
 
 #--------------------------------------------------------------------
 # Messages generation
@@ -119,8 +142,8 @@ routine generate_messages
         when == @sde_mess_prop do smo += ![name string] ;
         when == @szi_mess_prop do smo += ![name string] ;
         when == @sze_mess_prop do smo += ![name string] ;
-        when == @rzi_mess_prop do # rmo += ![name string] ;
-        when == @rze_mess_prop do # rmo += ![name string] ;
+        when == @rzi_mess_prop do rmo += ![name string] ;
+        when == @rze_mess_prop do rmo += ![name string] ;
         when == @rui_mess_prop do rmo += ![name string] ;
         when == @rqi_mess_prop do rmo += ![name string] ;
         when == @rue_mess_prop do rmo += ![name string] ;
@@ -146,7 +169,7 @@ routine generate_messages
       i_tab := "CONSTP2VAR(tpl_base_sending_mo, AUTOMATIC, OS_APPL_DATA)\n" ;
       i_tab .= "  tpl_send_message_table[SEND_MESSAGE_COUNT] = {\n" ;
     do
-      message name."\n";
+#      message name."\n";
       i_tab .= "  (tpl_base_sending_mo *)&".name."_message" ;
       h_tab .= "#define ".name."_id ".[n string]."\n" ;
       h_tab .= "CONST(MessageIdentifier, AUTOMATIC) ".name." = ".name."_id;\n" ;
@@ -179,8 +202,8 @@ routine generate_messages
     h_res .= "\n".h_tab ;
     result .= "\n".i_tab ;
 
-    message result;
-    message h_res;
+##    message result;
+##    message h_res;
 
     doReplace !?implementation !"$MESSAGES$" !result ;
     doReplace !?implementation !"$MESSAGEIDS$" !h_res ;

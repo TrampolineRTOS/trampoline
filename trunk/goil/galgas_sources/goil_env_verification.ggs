@@ -63,7 +63,7 @@ end routine;
 #This routine checks that file does not exists. In fact
 # it checks that it does not point to a directory.
 # if file exists... nothing is done!! 
-# if the it is a directory, an error is generated.
+# if it is a directory, an error is generated.
 # it also checks that the filename does not corespond to the project file name.
 routine checkFileDoesNotExists
   ?? @lstring fileName

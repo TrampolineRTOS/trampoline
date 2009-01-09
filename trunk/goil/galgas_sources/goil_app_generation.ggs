@@ -86,13 +86,15 @@ routine generate_apps
   ?!@string           obj_head
   ?!@string           imp
 :
-  @string res := "" ;
+
+ @string res := "" ;
   @stringlist app_list [emptyList] ;
   @string ids := "" ;
 
 # set up the application count
   doReplace !?obj_head !"$APP_COUNT$" ![[apps count] string] ;
 
+  if [apps count] > 0 then
 # Build the descriptor of the app
 # First, sort the task as in the task table
   @tasks_by_type stasks [emptySortedList];
@@ -329,8 +331,11 @@ routine generate_apps
   res .= "  ".[@string componentsJoinedByString !app_list !",\n  "] ;
   res .= "\n};\n" ;
 
+  end if ;
+
   doReplace !?imp !"$OSAPPLICATIONS$" !res ; 
-  doReplace !?imp !"$OSAPPIDS$" !ids ; 
+  doReplace !?imp !"$OSAPPIDS$" !ids ;
+
 end routine ;
 
 end semantics ;

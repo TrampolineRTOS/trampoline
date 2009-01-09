@@ -25,6 +25,7 @@ import semantics goil_types_networkmessage in "goil_types_networkmessage.ggs" ;
 import semantics goil_scheduletable_verif in "goil_scheduletable_verif.ggs" ;
 import semantics goil_alarm_verif in "goil_alarm_verif.ggs" ;
 import semantics goil_app_verif in "goil_app_verif.ggs" ;
+import semantics goil_message_verif in "goil_message_verif.ggs" ;
 import semantics cfg_types in "cfg_types.ggs" ;
 import semantics goil_env_verification in "goil_env_verification.ggs" ;
 
@@ -173,6 +174,7 @@ rule <start> :
     @event_map         events         := [cpu events] ;
     @isr_map           isrs           := [cpu isrs] ;
     @message_map       messages       := [cpu messages] ;
+    @netmess_map       net_messages   := [cpu net_messages] ;
     @scheduletable_map scheduletables := [cpu scheduletables] ;
     @app_map           applis         := [cpu applis] ;
 
@@ -194,6 +196,7 @@ rule <start> :
     resources_well_formed !resources ;
     isrs_well_formed !isrs ;
     events_well_formed !events ;
+    networkmessages_well_formed !net_messages ;
 
   # Autosar checking
 
@@ -207,7 +210,7 @@ rule <start> :
     all_event_masks_different !events ;
     all_alarm_actions_correct !alarms !tasks !counters ;
     counters_of_alarms_defined !alarms !counters ;
-#    networkmessages_exist_and_ok !messages !net_messages ;
+    networkmessages_exist_and_ok !messages !net_messages ;
 
   # cross-objects Autosar checking
 

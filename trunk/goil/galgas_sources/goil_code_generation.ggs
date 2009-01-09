@@ -605,9 +605,11 @@ routine generate_alarms
 
 # OS application which owns the alarm
         if [option goil_options.autosar_on] then
-          @string app_name ;
-          [app_for_obj get !alarm_name ?app_name] ;
-          doReplace !?result !"$APP_ID$" ! app_name."_id" ;
+          if [app_for_obj count] > 0 then
+            @string app_name ;
+            [app_for_obj get !alarm_name ?app_name] ;
+            doReplace !?result !"$APP_ID$" ! app_name."_id" ;
+          end if ;
         end if ;
 
         alarms_result := alarms_result . "\n" . result ;
@@ -1067,9 +1069,11 @@ routine generate_tasks
 
         # AUTOSAR OS Application part
         if [option goil_options.autosar_on] then
+          if [app_for_obj count] > 0 then
             @string app_name ;
             [app_for_obj get !task_name ?app_name] ;
             doReplace !?result !"$APP_ID$" ! app_name."_id" ;
+          end if ;
         end if ;
 
         tasks_result := tasks_result . "\n" . result ;
@@ -1148,9 +1152,11 @@ routine generate_isrs
         isrs_result := isrs_result . "\n" . result ;
         # AUTOSAR OS Application part
         if [option goil_options.autosar_on] then
-          @string app_name ;
-          [app_for_obj get !isr_name ?app_name] ;
-          doReplace !?result !"$APP_ID$" ! app_name."_id" ;
+          if [app_for_obj count] > 0 then
+            @string app_name ;
+            [app_for_obj get !isr_name ?app_name] ;
+            doReplace !?result !"$APP_ID$" ! app_name."_id" ;
+          end if ;
         end if ;
 
     end foreach ;
@@ -1231,10 +1237,12 @@ routine generate_counters
             end cast ;
             doReplace !?result !"$COUNTER_KIND$" !tmp ;
 
-            @string app_name ;
-            [app_for_obj get !counter_name ?app_name] ;
-            doReplace !?result !"$APP_ID$" ! app_name."_id" ;
-
+            
+            if [app_for_obj count] > 0 then
+              @string app_name ;
+              [app_for_obj get !counter_name ?app_name] ;
+              doReplace !?result !"$APP_ID$" ! app_name."_id" ;
+            end if ;
         end if ;
 
         counters_result := counters_result . "\n" . result ;
@@ -1327,9 +1335,11 @@ routine generate_resources
         doReplace !?result !"$USAGE$" !usage ;
 
         if [option goil_options.autosar_on] then
-          @string app_name ;
-          [app_for_obj get !resource_name ?app_name] ;
-          doReplace !?result !"$APP_ID$" ! app_name."_id" ;
+          if [app_for_obj count] > 0 then
+            @string app_name ;
+            [app_for_obj get !resource_name ?app_name] ;
+            doReplace !?result !"$APP_ID$" ! app_name."_id" ;
+          end if ;
         end if ;
 
         resources_result := resources_result . "\n" . result ;
