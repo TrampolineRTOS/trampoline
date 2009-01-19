@@ -158,12 +158,12 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
       is a tpl_isr available
    */
 #ifdef OS_EXTENDED
-  if (isr_id < ISR_COUNT)
+  if ((isr_id >= TASK_COUNT) && (isr_id < (TASK_COUNT + ISR_COUNT)))
   {
 #endif
     tpl_it_nesting++;
     
-    isr = tpl_isr_stat_table[isr_id];
+    isr = tpl_isr_stat_table[isr_id - TASK_COUNT];
     
     if (isr != NULL)
     {
