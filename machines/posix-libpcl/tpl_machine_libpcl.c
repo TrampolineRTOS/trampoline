@@ -367,7 +367,7 @@ void tpl_signal_handler(int sig)
     {
         if (signal_for_isr_id[id] == sig)
         {
-            tpl_central_interrupt_handler(id);
+            tpl_central_interrupt_handler(id + TASK_COUNT);
         }
     }
 #endif /* NO_ISR */

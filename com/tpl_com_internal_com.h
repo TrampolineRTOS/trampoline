@@ -20,10 +20,10 @@
 
 #include "tpl_com_mo.h"
 
-tpl_status tpl_send_static_internal_message(tpl_base_sending_mo*, tpl_com_data*);
-tpl_status tpl_send_zero_internal_message(tpl_base_sending_mo*, tpl_com_data*);
-tpl_status tpl_receive_static_internal_unqueued_message(tpl_base_receiving_mo*, tpl_com_data*);
-tpl_status tpl_receive_static_internal_queued_message(tpl_base_receiving_mo*,tpl_com_data*);
+tpl_status tpl_send_static_internal_message(void*, tpl_com_data*);
+tpl_status tpl_send_zero_internal_message(void*, tpl_com_data*);
+tpl_status tpl_receive_static_internal_unqueued_message(void*, tpl_com_data*);
+tpl_status tpl_receive_static_internal_queued_message(void*,tpl_com_data*);
 
 #endif
 /* __TPL_COM_INTERNAL_COM__ */

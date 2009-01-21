@@ -33,7 +33,7 @@ struct TPL_DATA_RECEIVING_MO;
  * Prototype for sending functions
  */
 typedef tpl_status (*tpl_sending_func)(
-    struct TPL_BASE_SENDING_MO *,
+    void *,
     tpl_com_data *
 );
 
@@ -41,7 +41,7 @@ typedef tpl_status (*tpl_sending_func)(
  * Prototype for receiving functions
  */
 typedef tpl_status (*tpl_receiving_func)(
-    struct TPL_DATA_RECEIVING_MO *,
+    void *,
     tpl_com_data *
 );
 
@@ -50,7 +50,7 @@ typedef tpl_status (*tpl_receiving_func)(
  */
 typedef tpl_status (*tpl_data_copy_func)(
     tpl_com_data *,
-    struct TPL_DATA_RECEIVING_MO *
+    void *
 );
 
 /*!

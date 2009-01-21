@@ -26,14 +26,14 @@
  * this function is attached to the sending message object.
  */ 
 tpl_status tpl_send_static_internal_message(
-    tpl_base_sending_mo *smo,
-    tpl_com_data        *data
+    void          *smo,
+    tpl_com_data  *data
     )
 {
     tpl_status result = E_OK;
     
     /*  cast the base mo to the correct type of mo                          */
-    tpl_internal_sending_mo *ismo = (tpl_internal_sending_mo *)smo;
+    tpl_internal_sending_mo *ismo = smo;
     /*  get the first of the receiving mo                                   */
     tpl_data_receiving_mo *rmo = (tpl_data_receiving_mo *)ismo->internal_target;
     /*  iterate through the receiving mo to copy the data to the receivers  */
@@ -54,12 +54,12 @@ tpl_status tpl_send_static_internal_message(
  * This function is attached to the sending message object
  */
 tpl_status tpl_send_zero_internal_message(
-    tpl_base_sending_mo     *smo,
-    tpl_com_data            *data
+    void          *smo,
+    tpl_com_data  *data
     )
 {
     /*  cast the base mo to the correct type of mo  */
-    tpl_internal_sending_mo *ismo = (tpl_internal_sending_mo *)smo;
+    tpl_internal_sending_mo *ismo = smo;
     /*  notify the receivers                        */
     tpl_notify_receiving_mos(ismo->internal_target, FROM_TASK_LEVEL);
     
@@ -72,13 +72,12 @@ tpl_status tpl_send_zero_internal_message(
  * This function is attached to the receiving message object.
  */
 tpl_status tpl_receive_static_internal_unqueued_message(
-    tpl_base_receiving_mo   *rmo,
-    tpl_com_data            *data
+    void          *rmo,
+    tpl_com_data  *data
     )
 {
     /*  cast the base receiving mo to the correct type of mo                */
-    tpl_internal_receiving_unqueued_mo *rum =
-        (tpl_internal_receiving_unqueued_mo *)rmo;
+    tpl_internal_receiving_unqueued_mo *rum = rmo;
     /*  get the destination buffer                                          */
     tpl_com_data *mo_buf = rum->buffer.buffer;
     /*  get the size of the buffer                                          */
@@ -103,8 +102,8 @@ tpl_status tpl_receive_static_internal_unqueued_message(
  * This function is attached to the receiving message object.
  */
 tpl_status tpl_receive_static_internal_queued_message(
-    tpl_base_receiving_mo   *rmo,
-    tpl_com_data            *data
+    void          *rmo,
+    tpl_com_data  *data
     )
 {
     /*  destination buffer                                      */

@@ -9,10 +9,10 @@ import semantics goil_types_scheduletable in "goil_types_scheduletable.ggs" ;
 #--------------------------------------------------------------------
 routine generate_schedule_tables
     ?@scheduletable_map sts
-    ?@string_map app_for_obj
-    ?!@string header
-    ?!@string obj_header
-    ?!@string implementation
+    ?@string_map        app_for_obj
+    ?!@string unused    header
+    ?!@string           obj_header
+    ?!@string           implementation
 :
     @string h_result := "" ;
     @string i_result := "" ;

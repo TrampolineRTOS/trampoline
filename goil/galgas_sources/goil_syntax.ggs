@@ -363,6 +363,13 @@ rule <start> :
                     !?obj_header
                     !?implementation ;
 
+                generate_network_messages
+                  !net_messages
+                  !messages
+                  !?header
+                  !?obj_header
+                  !?implementation ;
+
                 if [option goil_options.autosar_on] then
                     generate_schedule_tables
                         !scheduletables

@@ -14,7 +14,7 @@
  */
 
 #include "tpl_os.h"
-#include "tpl_com.h"
+#include "tpl_com_internal.h"
 #include "tpl_os_error.h"
 #include "tpl_machine.h"
 #include "tpl_com_error.h"

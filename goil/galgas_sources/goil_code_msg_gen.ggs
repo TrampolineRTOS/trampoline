@@ -11,6 +11,7 @@ import semantics goil_targets in "goil_targets.ggs" ;
 #--------------------------------------------------------------------
 routine generate_network_messages
   ?@netmess_map net_messages
+  ?@message_map messages
   ?!@string     unused header
   ?!@string     unused obj_header
   ?!@string     implementation :
@@ -19,7 +20,19 @@ routine generate_network_messages
 
   foreach net_messages do
     @string mess ;
-    [netmess generate !key ?mess] ;
+    @string ctype := "";
+    @string inval := "";
+    @string nm_name := [key string] ;
+    foreach messages do
+      cast [mess messageproperty]:
+      when == @sse_mess_prop sse do
+        if [[sse networkmessage] string] == nm_name then
+          ctype := [[sse cdatatype] string] ;
+          [[sse initialvalue] string ?inval] ;
+        end if ;
+      else end cast ; 
+    end foreach ;
+    [netmess generate !key !ctype !inval ?mess] ;
     i_res .= mess ;
   end foreach ;
 
@@ -33,7 +46,7 @@ end routine ;
 routine generate_messages
     ?@message_map messages
     ?@prefix_map  unused p
-    ?!@string     unused header
+    ?!@string     header
     ?!@string     obj_header
     ?!@string     implementation :
 

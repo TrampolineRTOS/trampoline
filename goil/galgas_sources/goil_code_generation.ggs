@@ -215,6 +215,14 @@ routine generate_flags
     when == @bool_class b do
         if [b value] then flags .= "#define    WITH_USERESSCHEDULER\n" ; end if ;
     else end cast ;
+
+    # Output the TRAMPOLINE_BASE_PATH if it has been set in the OIL file
+    @lstring tpl_base_path := [os tpl_base_path] ;
+    if [tpl_base_path string] != "" then
+      flags .= "#define    TRAMPOLINE_BASE_PATH \"".[tpl_base_path string]."\"\n";
+    else
+      flags .= "#define    TRAMPOLINE_BASE_PATH \"..\"\n";
+    end if ;
     
     if [option goil_options.autosar_on] then
         # the autosar flag is turned on. so additional symbols are processed

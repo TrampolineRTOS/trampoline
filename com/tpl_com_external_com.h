@@ -19,8 +19,8 @@
 #include "tpl_com_mo.h"
 
 tpl_status tpl_receive_static_external_unqueued_message(
-    tpl_base_receiving_mo*,
-    tpl_com_data*);
+    void*         rmo,
+    tpl_com_data* date);
 
 tpl_status tpl_send_static_external_message(
     void            *smo,

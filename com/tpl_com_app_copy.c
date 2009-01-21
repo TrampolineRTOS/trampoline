@@ -45,8 +45,7 @@
  */
 tpl_status tpl_copy_from_unqueued(
     tpl_com_data            *data,
-    tpl_data_receiving_mo   *rmo
-    )
+    tpl_data_receiving_mo   *rmo)
 {
     /*  get the source buffer. rmo can be an unqueued internal
         or external message object. rmo is cast to an internal message
@@ -83,8 +82,7 @@ tpl_status tpl_copy_from_unqueued(
  */
 tpl_status tpl_copy_from_queued(
     tpl_com_data            *data,
-    tpl_data_receiving_mo   *rmo
-    )
+    tpl_data_receiving_mo   *rmo)
 {
     /*  Default result status to E_OK                                       */
     tpl_status  result = E_OK;

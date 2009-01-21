@@ -82,7 +82,7 @@ routine generate_apps
   ?@resource_map      rezs
   ?@scheduletable_map sts
   ?@counter_map       cnts
-  ?!@string           head
+  ?!@string unused    head
   ?!@string           obj_head
   ?!@string           imp
 :

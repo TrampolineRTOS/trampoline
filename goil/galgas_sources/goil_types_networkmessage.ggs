@@ -47,9 +47,14 @@ class @zero_netprop extends @base_netprop {
 class @netmess_obj extends @oil_obj {
   @lstring      ipdu ;
   @base_netprop netprop ;
-  method generate ?@lstring name !@string res :
+  method generate ?@lstring name ?@string ctype ?@string inval !@string res :
     [netprop generate ?res] ;
     doReplace !?res !"$NAME$" ![name string] ;
+    doReplace !?res !"$CTYPE$" !ctype ;
+    if inval != "" then
+      inval := " = ".inval ;
+    end if ;
+    doReplace !?res !"$INITIALVALUE$" !inval ;
   end method ;
 }
 
