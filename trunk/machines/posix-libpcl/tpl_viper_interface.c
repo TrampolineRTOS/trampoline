@@ -25,6 +25,8 @@
 #include <sys/mman.h>
 #include <semaphore.h>
 
+#include "tpl_app_objects.h"
+
 /*
  * Data used to communicate with viper
  */
@@ -66,20 +68,22 @@ void viper_kill(void)
  */
 void tpl_viper_init(void)
 {
-    int  viper_path_ok = 0;
+    int  viper_exe_ok = 0;
     char *viper_args[] = { NULL, NULL };
     char *viper_env[] = { NULL };
     
     /*  Check the VIPER_PATH environment variable is defined    */
     char *viper_path = getenv(VIPER_PATH);
-    
+    char viper_exe[256];
+  
     if (viper_path != NULL)
     {
-        viper_path = strcat(viper_path,"/viper");
+        strcpy(viper_exe, viper_path);
+        strcat(viper_exe,"/viper");
         
-        if (access(viper_path, X_OK) == 0)
+        if (access(viper_exe, X_OK) == 0)
         {
-            viper_path_ok = 1;
+            viper_exe_ok = 1;
         }
         else
         {
@@ -88,21 +92,28 @@ void tpl_viper_init(void)
     }
     else
     {        
-        viper_path = "viper/viper";
-        if( access( viper_path, X_OK ) != 0 )
+#ifdef TRAMPOLINE_BASE_PATH
+        viper_path = TRAMPOLINE_BASE_PATH"/viper";
+#else
+        viper_path = "../viper";
+#endif
+        strcpy(viper_exe, viper_path);
+        strcat(viper_exe, "/viper");
+
+        if( access( viper_exe, X_OK ) != 0 )
         {
             fprintf(stderr,"Error: VIPER_PATH is not defined. Exiting\n");
             exit(1);
         }
         else
         {
-            viper_path_ok = 1;
+            viper_exe_ok = 1;
         }
     }
-    
-    if (viper_path_ok == 1) {
-        /*  set up the first and only arg of viper to the path of viper */
-        viper_args[0] = viper_path;
+      
+    if (viper_exe_ok == 1) {
+        /*  set up the first and only arg of viper to the exe of viper */
+        viper_args[0] = viper_exe;
         
         /*
          * Init the shared objects (shared memory and semaphores) used to 
@@ -177,8 +188,8 @@ void tpl_viper_init(void)
          */
         if ((viper_pid = fork()) == 0) {
             /*  Launch viper    */
-            if (execve(viper_path, viper_args, viper_env) < 0) {
-                printf("%s\n",viper_path);
+            if (execve(viper_exe, viper_args, viper_env) < 0) {
+                printf("%s\n",viper_exe);
                 perror("viper: unable to launch viper");
                 exit(1);
             }

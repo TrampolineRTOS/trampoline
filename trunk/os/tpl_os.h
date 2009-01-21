@@ -56,6 +56,11 @@
  */
 #include "tpl_os_it.h"
 
+/*
+ * Inclusion of the header for communication related API services
+ */
+#include "tpl_com_internal.h"
+
 #ifdef WITH_AUTOSAR
 /*
  * Inclusion of the header for schedule table related API services

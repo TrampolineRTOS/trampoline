@@ -106,47 +106,54 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
 }
 
 FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
-    CONST(tpl_alarm_id, AUTOMATIC)              alarm_id,
-    P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA)    tick)
+  CONST(tpl_alarm_id, AUTOMATIC)              alarm_id,
+  P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA)    tick)
 {
-    VAR(tpl_status, AUTOMATIC) result = E_OK;
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
 
 #ifndef NO_ALARM
-    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
 #endif
 
-    /* check interrupts are not disabled by user    */
-    CHECK_INTERRUPT_LOCK(result)
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
 
-    LOCK_WHEN_HOOK()
+  LOCK_WHEN_HOOK()
 
-    STORE_SERVICE(OSServiceId_GetAlarm)
-    STORE_ALARM_ID(alarm_id)
-    STORE_TICK_REF(tick)
+  STORE_SERVICE(OSServiceId_GetAlarm)
+  STORE_ALARM_ID(alarm_id)
+  STORE_TICK_REF(tick)
 
-    CHECK_ALARM_ID_ERROR(alarm_id,result)
+  CHECK_ALARM_ID_ERROR(alarm_id,result)
 
 #ifndef NO_ALARM
-    IF_NO_EXTENDED_ERROR(result)
-        alarm = tpl_alarm_table[alarm_id];
+  IF_NO_EXTENDED_ERROR(result)
+    alarm = tpl_alarm_table[alarm_id];
 
-        /*  verify the alarm is active  */
-        if (alarm->state == (tpl_time_obj_state)ALARM_ACTIVE)
-        {
-            *tick = alarm->date - alarm->stat_part->counter->current_date;
-        }
-        else
-        {
-            result = E_OS_NOFUNC;
-        }
-    IF_NO_EXTENDED_ERROR_END()
+    /*  verify the alarm is active  */
+    if (alarm->state == (tpl_time_obj_state)ALARM_ACTIVE)
+    {
+      VAR(tpl_tick, AUTOMATIC) alarm_date = alarm->date;
+      VAR(tpl_tick, AUTOMATIC) current_date =
+        alarm->stat_part->counter->current_date;
+      if (alarm_date < current_date)
+      {
+        alarm_date += alarm->stat_part->counter->max_allowed_value;
+      }
+      *tick = alarm_date - current_date;
+    }
+    else
+    {
+      result = E_OS_NOFUNC;
+    }
+  IF_NO_EXTENDED_ERROR_END()
 #endif
 
-    PROCESS_ERROR(result)
+  PROCESS_ERROR(result)
 
-    UNLOCK_WHEN_HOOK()
+  UNLOCK_WHEN_HOOK()
 
-    return result;
+  return result;
 }
 
 FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(

@@ -102,8 +102,6 @@ $ISRS$
 /*=============================================================================
  * Definition and initialization of process tables (tasks and isrs)
  */
-#if (TASK_COUNT != 0) || (ISR_COUNT != 0)
-
 $PROC_STATIC_TABLE$
 
 $PROC_DYNAMIC_TABLE$
@@ -117,8 +115,6 @@ $ISR_HELPER_TABLE$
 
 #ifdef WITH_AUTOSAR
 $ISR_ENABLE_TABLE$
-#endif
-
 #endif
 
 #endif
@@ -141,6 +137,7 @@ $FLAGSFUNCTIONS$
 /*=============================================================================
  * Definition and initialization of Messages related structures
  */
+$NETWORKMESSAGES$
 $MESSAGES$
 
 #ifdef WITH_AUTOSAR

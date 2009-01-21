@@ -1082,15 +1082,15 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @note checking is disabled when OS_EXTENDED is not defined
  */
 #ifdef OS_EXTENDED
-#   define CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)            \
-    if ((result == (tpl_status)E_OK) &&                             \
-        (tpl_stat_proc_table[task_id]->type !=                      \
-        (tpl_proc_type)TASK_EXTENDED))                              \
-    {                                                               \
-        result = (tpl_status)E_OS_ACCESS;                           \
-    }
+# define CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)            \
+  if ((result == (tpl_status)E_OK) &&                             \
+      (tpl_stat_proc_table[task_id]->type !=                      \
+      (tpl_proc_type)TASK_EXTENDED))                              \
+  {                                                               \
+    result = (tpl_status)E_OS_ACCESS;                             \
+  }
 #else
-#   define CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)
+# define CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)
 #endif
 
 /**

@@ -24,28 +24,27 @@
  * tpl_receive_static_internal_unqueued_message
  */
 tpl_status tpl_receive_static_external_unqueued_message(
-    tpl_base_receiving_mo   *rmo,
-    tpl_com_data            *data)
+  void          *rmo,
+  tpl_com_data  *data)
 {
-    /*  cast the base receiving mo to the correct type of mo                */
-    tpl_external_receiving_unqueued_mo *rum =
-        (tpl_external_receiving_unqueued_mo *)rmo;
-    /*  get the destination buffer                                          */
-    tpl_com_data *mo_buf = rum->buffer.buffer;
-    /*  get the size of the buffer                                          */
-    int size = rum->buffer.size;
-    
-    /*  reception filtering                                                 */
-    if (tpl_filtering(mo_buf, data, size, rum->base_mo.filter)) {
-        /*  copy the data from the source (data)
-            to the message object buffer
-        */
-        while (size-- > 0) {
-            *mo_buf++ = *data++;
-        }
-    }
-    
-    return E_OK;
+  /*  cast the base receiving mo to the correct type of mo                */
+  tpl_external_receiving_unqueued_mo *rum = rmo;
+  /*  get the destination buffer                                          */
+  tpl_com_data *mo_buf = rum->buffer.buffer;
+  /*  get the size of the buffer                                          */
+  int size = rum->buffer.size;
+  
+  /*  reception filtering                                                 */
+  if (tpl_filtering(mo_buf, data, size, rum->base_mo.filter)) {
+      /*  copy the data from the source (data)
+          to the message object buffer
+      */
+      while (size-- > 0) {
+          *mo_buf++ = *data++;
+      }
+  }
+  
+  return E_OK;
 }
 
 /*
@@ -54,15 +53,20 @@ tpl_status tpl_receive_static_external_unqueued_message(
  * This function is attached to the sending message object.
  */
 tpl_status tpl_send_static_external_message(
-    void            *smo,
-    tpl_com_data    *data)
+  void            *smo,
+  tpl_com_data    *data)
 {
-    /*  cast the base mo to the correct typo of mo      */
-    tpl_external_sending_mo *esmo = smo;
-    /*  filter the message                                  */
-    if (tpl_filtering(esmo, data)) {
-        /*  get the target ipdu                             */
-/*        tpl_sending_ipdu *ipdu = esmo->external_target;
-    }
+  /*  cast the base mo to the correct typo of mo      */
+  tpl_external_sending_static_mo *esmo = smo;
+
+  tpl_com_data *buf = esmo->net_mess->buffer;
+  tpl_message_size size = esmo->net_mess->size;
+  
+  while (size--)
+  {
+    *buf++ = *data++;
+  }
+  
+  /*  Sending of message to the network should occur here */
+  
 }
-*/
