@@ -163,23 +163,17 @@ FUNC(tpl_status, OS_CODE) tpl_disable_interrupt_source_service(
 FUNC(tpl_status, OS_CODE) tpl_enable_interrupt_source_service(
     VAR(tpl_isr_id, AUTOMATIC) isr_id)
 {
-    VAR(tpl_status, AUTOMATIC)  result = E_OK;
+  VAR(tpl_status, AUTOMATIC)  result = E_OK;
+
+  CHECK_ISR_ID_ERROR(isr_id,result)
 
 #ifndef NO_ISR
-    P2VAR(tpl_isr, OS_APPL_DATA, AUTOMATIC) isr;
+  IF_NO_EXTENDED_ERROR(result)
+    tpl_enable_isr2_by_user(isr_id);
+  IF_NO_EXTENDED_ERROR_END()
 #endif
 
-    CHECK_ISR_ID_ERROR(isr_id,result)
-
-#ifndef NO_ISR
-    IF_NO_EXTENDED_ERROR(result)
-        /* get the isr */
-        isr = tpl_isr_table[isr_id];
-        tpl_enable_isr2_by_user(isr);
-    IF_NO_EXTENDED_ERROR_END()
-#endif
-
-    return result;
+  return result;
 }
 
 

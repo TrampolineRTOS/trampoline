@@ -32,6 +32,7 @@
 #include "tpl_as_st_kernel.h"
 #include "tpl_as_action.h"
 #include "tpl_as_isr_kernel.h"
+#include "tpl_as_isr.h"
 #include "tpl_as_counter.h"
 #include "tpl_as_app_kernel.h"
 #endif
