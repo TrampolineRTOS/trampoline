@@ -29,6 +29,8 @@
 #include "tpl_os_errorhook.h"
 #include "tpl_machine_interface.h"
 
+#include "tpl_debug.h"
+
 #ifdef WITH_AUTOSAR
 #include "tpl_as_protec_hook.h"
 #endif
@@ -118,7 +120,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
 
-  LOCK_WHEN_HOOK()
+  LOCK_WHEN_TASK_OR_ISR()
 
   STORE_SERVICE(OSServiceId_GetAlarm)
   STORE_ALARM_ID(alarm_id)
@@ -141,6 +143,12 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
         alarm_date += alarm->stat_part->counter->max_allowed_value;
       }
       *tick = alarm_date - current_date;
+
+      if (*tick == 0)
+      {
+        print_counter(alarm->stat_part->counter);
+        printf("%d, %d, %d\n",alarm, alarm_date, current_date);
+      }
     }
     else
     {
@@ -151,7 +159,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
 
   PROCESS_ERROR(result)
 
-  UNLOCK_WHEN_HOOK()
+  UNLOCK_WHEN_TASK_OR_ISR()
 
   return result;
 }
@@ -172,7 +180,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
     /* check interrupts are not disabled by user    */
     CHECK_INTERRUPT_LOCK(result)
 
-    LOCK_WHEN_HOOK()
+    LOCK_WHEN_TASK_OR_ISR()
 
     STORE_SERVICE(OSServiceId_SetRelAlarm)
     STORE_ALARM_ID(alarm_id)
@@ -211,7 +219,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
 
     PROCESS_ERROR(result)
 
-    UNLOCK_WHEN_HOOK()
+    UNLOCK_WHEN_TASK_OR_ISR()
 
     return result;
 }
@@ -235,7 +243,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
     /* check interrupts are not disabled by user    */
     CHECK_INTERRUPT_LOCK(result)
 
-    LOCK_WHEN_HOOK()
+    LOCK_WHEN_TASK_OR_ISR()
 
     STORE_SERVICE(OSServiceId_SetAbsAlarm)
     STORE_ALARM_ID(alarm_id)
@@ -268,7 +276,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
 
     PROCESS_ERROR(result)
 
-    UNLOCK_WHEN_HOOK()
+    UNLOCK_WHEN_TASK_OR_ISR()
 
     return result;
 }
@@ -290,7 +298,7 @@ FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
     /* check interrupts are not disabled by user    */
     CHECK_INTERRUPT_LOCK(result)
 
-    LOCK_WHEN_HOOK()
+    LOCK_WHEN_TASK_OR_ISR()
 
     STORE_SERVICE(OSServiceId_CancelAlarm)
     STORE_ALARM_ID(alarm_id)
@@ -315,7 +323,7 @@ FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
 
     PROCESS_ERROR(result)
 
-    UNLOCK_WHEN_HOOK()
+    UNLOCK_WHEN_TASK_OR_ISR()
 
     return result;
 }
