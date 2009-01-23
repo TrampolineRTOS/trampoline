@@ -14,6 +14,9 @@
  * $URL$
  */
 
+#include <avr/io.h>
+#include <avr/interrupt.h> 
+
 #include "tpl_machine.h"
 #include "tpl_os_application_def.h"   /* NO_ALARM */
 #include "tpl_os_generated_configuration.h"	   /* TASK_COUNT and ISR_COUNT*/
@@ -86,16 +89,17 @@ void tpl_init_context(tpl_task *task)
 
 }
 
-
+unsigned char itPrec = 0;
 
 void tpl_get_task_lock(void)
 {
-	//IEN = 0;
+	itPrec = SREG >> 7;
+	cli();
 }
 
 void tpl_release_task_lock(void)
 {
-	//IEN = 1;
+	if(itPrec) sei();
 }
 
 /*
