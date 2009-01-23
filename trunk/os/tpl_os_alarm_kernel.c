@@ -143,12 +143,6 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
         alarm_date += alarm->stat_part->counter->max_allowed_value;
       }
       *tick = alarm_date - current_date;
-
-      if (*tick == 0)
-      {
-        print_counter(alarm->stat_part->counter);
-        printf("%d, %d, %d\n",alarm, alarm_date, current_date);
-      }
     }
     else
     {
