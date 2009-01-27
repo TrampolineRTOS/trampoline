@@ -92,9 +92,16 @@ TEMP_SOURCE_DIRS   = $(OS_PATH) $(COM_PATH) $(AUTOSAR_PATH)
 TEMP_SOURCE_DIRS += $(DEBUG_PATH) $(MACHINE_PATH) $(OIL_OUTPUT_PATH) .
 include $(OS_MAKE_PATH)/compiler_rules.mk
 
+# the following fixes old Make-rules which does not 
+# define specific LD variable (linking was previously
+# made with CC command)
+ifndef LD
+LD = $(CC)
+endif
+
 # exe rule -> Link
 $(EXEC): $(OBJ)
-	$(CC) -o $(EXEC) $(OBJ) $(CFLAGS) $(LDFLAGS) 
+	$(LD) -o $(EXEC) $(OBJ) $(CFLAGS) $(LDFLAGS) 
 
 #clean
 .PHONY: clean mrproper
