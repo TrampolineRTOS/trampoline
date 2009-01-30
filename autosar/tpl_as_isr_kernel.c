@@ -37,13 +37,15 @@ FUNC(void, OS_CODE) tpl_disable_isr2_by_user (
   CONST(tpl_isr_id, AUTOMATIC) isr_id)
 {
 #ifndef NO_ISR
-  if (tpl_isr2_enable_table[isr_id] == DISABLED_BY_TIMING_PROTECTION)
+  VAR(tpl_isr_id, AUTOMATIC) actual_id = isr_id - TASK_COUNT;
+  
+  if (tpl_isr2_enable_table[actual_id] == DISABLED_BY_TIMING_PROTECTION)
   {
-    tpl_isr2_enable_table[isr_id] = DISABLED_BY_BOTH;
+    tpl_isr2_enable_table[actual_id] = DISABLED_BY_BOTH;
   }
   else
   {
-    tpl_isr2_enable_table[isr_id] = DISABLED_BY_USER;
+    tpl_isr2_enable_table[actual_id] = DISABLED_BY_USER;
   }
 #endif
 }
@@ -52,14 +54,16 @@ FUNC(void, OS_CODE) tpl_disable_isr2_by_timing_protection (
   CONST(tpl_isr_id, AUTOMATIC) isr_id)
 {
 #ifndef NO_ISR
-  if (tpl_isr2_enable_table[isr_id] == DISABLED_BY_USER)
+  VAR(tpl_isr_id, AUTOMATIC) actual_id = isr_id - TASK_COUNT;
+  
+  if (tpl_isr2_enable_table[actual_id] == DISABLED_BY_USER)
   {
     /* this case cannot happen but it is logically valid */
-    tpl_isr2_enable_table[isr_id] = DISABLED_BY_BOTH;
+    tpl_isr2_enable_table[actual_id] = DISABLED_BY_BOTH;
   }
   else
   {
-    tpl_isr2_enable_table[isr_id] = DISABLED_BY_TIMING_PROTECTION;
+    tpl_isr2_enable_table[actual_id] = DISABLED_BY_TIMING_PROTECTION;
   }
 #endif
 }
@@ -68,13 +72,15 @@ FUNC(void, OS_CODE) tpl_enable_isr2_by_user (
   CONST(tpl_isr_id, AUTOMATIC) isr_id)
 {
 #ifndef NO_ISR
-  if (tpl_isr2_enable_table[isr_id] == DISABLED_BY_USER)
+  VAR(tpl_isr_id, AUTOMATIC) actual_id = isr_id - TASK_COUNT;
+  
+  if (tpl_isr2_enable_table[actual_id] == DISABLED_BY_USER)
   {
-    tpl_isr2_enable_table[isr_id] = ENABLED;
+    tpl_isr2_enable_table[actual_id] = ENABLED;
   }
-  if (tpl_isr2_enable_table[isr_id] == DISABLED_BY_BOTH)
+  if (tpl_isr2_enable_table[actual_id] == DISABLED_BY_BOTH)
   {
-    tpl_isr2_enable_table[isr_id] = DISABLED_BY_TIMING_PROTECTION;
+    tpl_isr2_enable_table[actual_id] = DISABLED_BY_TIMING_PROTECTION;
   }
 #endif
 }
@@ -83,13 +89,15 @@ FUNC(void, OS_CODE) tpl_enable_isr2_by_timing_protection (
   CONST(tpl_isr_id, AUTOMATIC) isr_id)
 {
 #ifndef NO_ISR
-  if (tpl_isr2_enable_table[isr_id] == DISABLED_BY_BOTH)
+  VAR(tpl_isr_id, AUTOMATIC) actual_id = isr_id - TASK_COUNT;
+
+  if (tpl_isr2_enable_table[actual_id] == DISABLED_BY_BOTH)
   {
-    tpl_isr2_enable_table[isr_id] = DISABLED_BY_USER;
+    tpl_isr2_enable_table[actual_id] = DISABLED_BY_USER;
   }
-  if (tpl_isr2_enable_table[isr_id] == DISABLED_BY_TIMING_PROTECTION)
+  if (tpl_isr2_enable_table[actual_id] == DISABLED_BY_TIMING_PROTECTION)
   {
-    tpl_isr2_enable_table[isr_id] = ENABLED;
+    tpl_isr2_enable_table[actual_id] = ENABLED;
   }
 #endif
 }
@@ -100,7 +108,7 @@ FUNC(tpl_bool, OS_CODE) tpl_is_isr2_enabled (
   VAR(tpl_bool, AUTOMATIC) result = FALSE;
 
 #ifndef NO_ISR
-  if (tpl_isr2_enable_table[isr_id] == ENABLED)
+  if (tpl_isr2_enable_table[isr_id - TASK_COUNT] == ENABLED)
   {
     result = TRUE;
   }

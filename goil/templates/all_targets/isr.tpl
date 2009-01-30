@@ -28,6 +28,9 @@ CONST(tpl_proc_static, OS_CONST) $EXEC_STATIC$ = {
     /* entry point (function)   */ $EXEC_FUNCTION$,
     /* internal ressource       */ NULL,
     /* isr id                   */ $ISR_ID$,
+#ifdef WITH_OSAPPLICATION
+    /* OS application id        */  $APP_ID$,
+#endif
     /* isr base priority        */ (tpl_priority)$ISR_PRIORITY$,
     /* max activation count     */ $ISR_MAX_ACT_COUNT$,
     /* isr type                 */ IS_ROUTINE,
