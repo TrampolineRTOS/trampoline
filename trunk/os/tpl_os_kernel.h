@@ -312,7 +312,7 @@ typedef struct {
  */
 extern VAR(tpl_proc_id, OS_VAR) tpl_running_id;
 
-#ifdef WITH_AUTOSAR && ((AUTOSAR_SC == 3) || (AUTOSAR_SC == 4)) 
+#if defined(WITH_AUTOSAR) && ((AUTOSAR_SC == 3) || (AUTOSAR_SC == 4)) 
 /**
  * currently running OS application id
  */
