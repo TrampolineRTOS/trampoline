@@ -1426,7 +1426,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
     if(FALSE!=tpl_get_interrupt_lock_status())  \
     {                                           \
         tpl_reset_interrupt_lock_status();      \
-        tpl_call_error_hook(E_OS_DISABLEDINT);  \
+        PROCESS_ERROR(E_OS_DISABLEDINT);        \
         result = E_OS_DISABLEDINT;              \
     }
 #endif

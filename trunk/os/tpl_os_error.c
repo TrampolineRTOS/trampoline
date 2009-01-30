@@ -26,10 +26,9 @@
 #include "tpl_os_errorhook.h"
 #include "tpl_os_error.h"
 #include "tpl_os_internal_types.h"
+#include "tpl_os_definitions.h"
 
 #ifdef WITH_ERROR_HOOK
-
-#include "tpl_os_definitions.h"
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"

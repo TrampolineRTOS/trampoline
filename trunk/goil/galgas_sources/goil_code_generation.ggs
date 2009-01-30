@@ -1157,15 +1157,18 @@ routine generate_isrs
         doReplace !?result !"$TIMING_PROT_STRUCT$" !tp ;
         doReplace !?result !"$TIMING_PROT_REF$" !tp_ref ;
 
-        isrs_result := isrs_result . "\n" . result ;
         # AUTOSAR OS Application part
         if [option goil_options.autosar_on] then
+message "Autosar on\n";
           if [app_for_obj count] > 0 then
             @string app_name ;
             [app_for_obj get !isr_name ?app_name] ;
+message "Appname = ".app_name."\n";
             doReplace !?result !"$APP_ID$" ! app_name."_id" ;
           end if ;
         end if ;
+
+        isrs_result := isrs_result . "\n" . result ;
 
     end foreach ;
 
