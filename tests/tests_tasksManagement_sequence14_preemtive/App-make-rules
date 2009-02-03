@@ -1,7 +1,0 @@
-LDFLAGS += -lembUnit -L tests/lib
-
-#tests/embUnit/libembunit.a: OBJ
-#	cd tests/embUnit ;\
-#	make ARCH=$(ARCH) TARGET=$(TARGET)
-
-#$(EXE): tests/embUnit/libembunit.a 

@@ -1,9 +1,13 @@
-#include <../embUnit/embUnit.h>
+#include <embUnit/embUnit.h>
 #include "../../os/tpl_os.h"
-#include "tpl_os_generated_configuration.h"
-#include "../../os/os_machine/ARM7/OKI/uart.h"
+#include "defaultAppWorkstation/tpl_os_generated_configuration.h"
+#include "../../machines/ARM7/OKI/uart.h"
 #include "../../os/tpl_os_kernel.h"
 #include "tests_tasksManagement_sequence3.h"
+
+TestRef TaskManagementTest_seq3_t1_instance(void);
+
+TestRef TaskManagementTest_seq3_t3_instance(void);
 
 int main(void)
 {

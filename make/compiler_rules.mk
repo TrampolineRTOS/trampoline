@@ -35,6 +35,9 @@ $(DEP_DIR)/%.c.d: $(A_DIR)/%.c Makefile $(DEP_DIR) $(OIL_OUTPUT_PATH)/$(OIL_GENE
 #----------------------------------------------------------------------*
 #### Compilation rules. ASM files.
 #----------------------------------------------------------------------*
+$(OBJ_DIR)/%.s.o: $(A_DIR)/%.s Makefile
+	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
+	$(AS) $(ASFLAGS) $< -o $@
 
 #----------------------------------------------------------------------*
 #### Compilation rules. c++ files.

@@ -1,35 +1,9 @@
-#
-# Trampoline OS
-#
-# Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline est protégé par la loi sur la propriété intellectuelle
-#
-# This software is distributed under the Lesser GNU Public Licence
-#
-# $Date$
-# $Rev$
-# $Author$
-# $URL$
-#
+# listing of object files for Trick specific part
+# TRICK_OBJS = _udivsi3.o _dvmd_tls.o
+# listing of object files for OKI specific part
+OKI_SOURCES = timer.c interruption.c i2c.c horloge.c gpio.c memoire.c interruption_vecteurs.s interruption_systeme.c uart.c 
+# listing of object files for ARM generic part
+ARM7_SOURCES = tpl_machine_arm7.c tpl_machine_arm7_asm.s tpl_startup_arm7.s
 
-include ../../../Make-rules
 
-ifeq ($(AUTOSAR),true)
-  CFLAGS += -I../$(AUTOSAR_PATH)
-endif
-
-AD_OBJS = tpl_machine_arm7.c.o tpl_machine_arm7_asm.s.o
-O_DIR = ../../../$(OBJ_DIR)
-
-ASMFLAGS += -I../.. -I.
-
-$(O_DIR)/%.c.o: %.c
-	$(CC) $(ASMFLAGS) -c $< -o $@
-
-$(O_DIR)/%.s.o: %.s
-	$(AS) $(ASMFLAGS) $< -o $@	
-	
-ad:	$(AD_OBJS)
-
-clean:
-	@rm -vf $(AD_OBJS)
+SOURCES += $(ARM7_SOURCES) $(OKI_SOURCES)
