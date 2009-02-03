@@ -13,8 +13,29 @@ IMPLEMENTATION trampoline {
 CPU test {
 
     OS config {
-        STATUS = STANDARD;
-	SHUTDOWNHOOK = TRUE;
+         STATUS = STANDARD;
+		SHUTDOWNHOOK = TRUE;
+		STARTUPHOOK = TRUE;
+    	ERRORHOOK = TRUE;
+        PRETASKHOOK = TRUE;
+        APP_SRC = "tests_tasksManagement_sequence10.c";
+        APP_SRC = "task1_instance.c";
+        APP_SRC = "task2_instance.c";
+        APP_SRC = "task3_instance.c";
+        TRAMPOLINE_BASE_PATH = "../..";
+        CFLAGS  = "-g";
+        CFLAGS  = "-I ../";
+        CFLAGS  = "-I /usr/lib/arm-eclipse-eseo/codesourcery-gnu-arm/arm-none-eabi/include/sys/";
+        CFLAGS  = "-I ../embUnit";
+        ASFLAGS = "";
+		LDFLAGS = "../../machines/ARM7/OKI/Trick/_udivsi3.o ../../machines/ARM7/OKI/Trick/_dvmd_tls.o";
+    	LDFLAGS = "-L ../../machines/ARM7/OKI";
+		LDFLAGS = "-L ../embUnit ";
+		LDFLAGS = "-L ../ ";
+		LDFLAGS = "-L ../lib";
+		LDFLAGS = "-L ../../tests/lib -lembUnit";
+    	LDFLAGS = "-n -T ../../machines/ARM7/ldscript -Map ../../machines/ARM7/ld.map ";
+    
     } ;
 
     APPMODE std {};

@@ -8,21 +8,25 @@
  *
  * Trampoline ARM7 specifics
  *
- * $Date$
+ * $Date: 2008/01/17 08:47:20 $
  * $Rev$
- * $Author$
+ * $Author: LaurentMenard $
  * $URL: http://localhost:8888/Trampoline/svn/tpl_machine/ARM7/tpl_machine_ARM7.h $
  */
+#include "../os/tpl_os_application_def.h"
+#include "../os/tpl_os_internal_types.h"
+/*#include "tpl_os_internal_types.h"*/
 
-#include "../../tpl_os_internal_types.h"
 
-#ifndef __TPL_MACHINE_ARM7_H__
-#define __TPL_MACHINE_ARM7_H__
+
+#ifndef TPL_MACHINE_H
+#define TPL_MACHINE_H
+
+
 
 /* in comment for each register: address in memory / sfr number */
 struct ARM7_CONTEXT {
 	unsigned int R[16];   /* FF0E / 87 */
-
 };
 
 typedef struct ARM7_CONTEXT arm7_context;
@@ -38,13 +42,30 @@ typedef struct TPL_CONTEXT tpl_context;
 extern arm7_context idle_task_context;
 #define IDLE_CONTEXT &idle_task_context 
 
+/**
+ * tpl_stack_word is the basic element of a stack in order to have a proper
+ * data alignement.
+ */
+typedef u32 tpl_stack_word;
+
+/**
+ * tpl_stack_size is the data type used to store the stack size
+ */
+typedef u16 tpl_stack_size;
 
 
 struct TPL_STACK {
-    tpl_stack_word  *stack_zone;
-    tpl_stack_size  stack_size;
+    tpl_stack_word 	*stack_zone;
+    tpl_stack_size       stack_size;
 };
 typedef struct TPL_STACK tpl_stack;
+
+/*Zone de pile IRQ*/
+struct TPL_STACK_IT {
+    tpl_stack_word 	*stack_zone;
+    tpl_stack_size       stack_size;
+};
+typedef struct TPL_STACK_IT tpl_stack_IT;
 
 /*#define IDLE_TASK_SYS_STACK_LENGTH 10
 extern tpl_stack_word idata idle_task_sys_stack[IDLE_TASK_SYS_STACK_LENGTH];

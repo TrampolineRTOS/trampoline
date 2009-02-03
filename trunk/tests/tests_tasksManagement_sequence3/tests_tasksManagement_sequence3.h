@@ -34,4 +34,7 @@ void test(void);
  * redirection for the output of the test*/
 void stdimpl_print(const char* string);
 
+
+
+
 #endif /*TESTS_TASKSMANAGEMENT_SEQUENCE3_H_*/

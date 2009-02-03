@@ -1,22 +1,31 @@
 /*Instance of task t2*/
 
 #include "test_instances.h"
-#include <../embUnit/embUnit.h>
+#include <embUnit/embUnit.h>
 #include "../../os/tpl_os.h"
-#include "tpl_os_generated_configuration.h"
+#include "defaultAppWorkstation/tpl_os_generated_configuration.h"
+
+DeclareTask(t1);
+DeclareTask(t2);
 
 /*test case:test the reaction of the system called with 
 an activation of a task*/
 static void test_t2_instance(void)
 {
+
 	int result_inst_1, result_inst_2, result_inst_3;
-	result_inst_1 = ActivateTask(t1);
-	result_inst_2 = ActivateTask(t2);
-	result_inst_3 = ChainTask(t1);
-	TEST_ASSERT_EQUAL_INT(E_OS_LIMIT, result_inst_1);
-	TEST_ASSERT_EQUAL_INT(E_OS_LIMIT, result_inst_2);
-	TEST_ASSERT_EQUAL_INT(E_OS_LIMIT, result_inst_3);
+//	result_inst_1 = ;
+//	result_inst_2 = ;
+//	result_inst_3 = ;
+	
+	TEST_ASSERT_EQUAL_INT(E_OS_LIMIT, ActivateTask(t1));
+	TEST_ASSERT_EQUAL_INT(E_OS_LIMIT, ActivateTask(t2));
+	TEST_ASSERT_EQUAL_INT(E_OS_LIMIT, ChainTask(t1));
+	
+	UART_envoyer_chaine("t2 \n");
+	
 	TerminateTask();
+
 }
 
 /*create the test suite with all the test cases*/

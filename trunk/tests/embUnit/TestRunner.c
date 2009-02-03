@@ -30,7 +30,7 @@
  * use or other dealings in this Software without prior written 
  * authorization of the copyright holder.
  *
- * $Id: TestRunner.c,v 1.1.1.1 2008/01/17 08:47:19 LaurentMenard Exp $
+ * $Id$
  */
 #include "config.h"
 #include "stdImpl.h"
@@ -38,7 +38,6 @@
 #include "TestListener.h"
 #include "TestResult.h"
 #include "TestRunner.h"
-#include "../../os/os_machine/ARM7/OKI/uart.h"
 
 static TestResult result_;
 static Test* root_;
@@ -54,21 +53,21 @@ static void TestRunner_endTest(TestListner* self,Test* test)
 
 static void TestRunner_addFailure(TestListner* self,Test* test,char* msg,int line,char* file)
 {
-	UART_envoyer_chaine("\n");
-	UART_envoyer_chaine(Test_name(root_));
-	UART_envoyer_chaine(".");
-	UART_envoyer_chaine(Test_name(test));
+	stdimpl_print("\n");
+	stdimpl_print(Test_name(root_));
+	stdimpl_print(".");
+	stdimpl_print(Test_name(test));
 	{
 		char buf[16];
-		UART_envoyer_chaine(" (");
-		UART_envoyer_chaine(file);
-		UART_envoyer_chaine(" ");
+		stdimpl_print(" (");
+		stdimpl_print(file);
+		stdimpl_print(" ");
 		stdimpl_itoa(line, buf, 10);
-		UART_envoyer_chaine(buf);
-		UART_envoyer_chaine(") ");
+		stdimpl_print(buf);
+		stdimpl_print(") ");
 	}
-	UART_envoyer_chaine(msg);
-	UART_envoyer_chaine("\n");
+	stdimpl_print(msg);
+	stdimpl_print("\n");
 }
 
 static const TestListnerImplement TestRunnerImplement = {
@@ -96,17 +95,17 @@ void TestRunner_end(void)
 {
 	char buf[16];
 	if (result_.failureCount) {
-		UART_envoyer_chaine("\nrun ");
+		stdimpl_print("\nrun ");
 		stdimpl_itoa(result_.runCount, buf, 10);
-		UART_envoyer_chaine(buf);
-		UART_envoyer_chaine(" failures ");
+		stdimpl_print(buf);
+		stdimpl_print(" failures ");
 		stdimpl_itoa(result_.failureCount, buf, 10);
-		UART_envoyer_chaine(buf);
-		UART_envoyer_chaine("\n");
+		stdimpl_print(buf);
+		stdimpl_print("\n");
 	} else {
-		UART_envoyer_chaine("\nOK (");
+		stdimpl_print("\nOK (");
 		stdimpl_itoa(result_.runCount, buf, 10);
-		UART_envoyer_chaine(buf);
-		UART_envoyer_chaine(" tests)\n");
+		stdimpl_print(buf);
+		stdimpl_print(" tests)\n");
 	}
 }

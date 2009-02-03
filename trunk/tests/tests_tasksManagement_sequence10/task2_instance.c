@@ -1,9 +1,12 @@
 /*Instance of task t2*/
 
 #include "test_instances.h"
-#include <../embUnit/embUnit.h>
+#include <embUnit/embUnit.h>
 #include "../../os/tpl_os.h"
-#include "tpl_os_generated_configuration.h"
+#include "defaultAppWorkstation/tpl_os_generated_configuration.h"
+
+DeclareTask(t3);
+DeclareTask(t2);
 
 /*test case:test the reaction of the system called with 
 an activation of a task*/

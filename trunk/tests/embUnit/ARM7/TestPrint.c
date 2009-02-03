@@ -8,7 +8,7 @@
   */
 
 #include "embUnit.h"
-#include "../../os/os_machine/ARM7/OKI/uart.h"
+#include "../../machines/ARM7/uart.h"
 #include "TestPrint.h"
 
 void stdimpl_print(const char* string){
