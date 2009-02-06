@@ -9,8 +9,8 @@
  *
  *  Trampoline OS
  *
- *  Trampoline is copyright (c) IRCCyN 2005-2008
- *  Autosar extension is copyright (c) IRCCyN and ESEO 2007-2008
+ *  Trampoline is copyright (c) IRCCyN 2005-2009
+ *  Autosar extension is copyright (c) IRCCyN and ESEO 2007-2009
  *  Trampoline and its Autosar extension are protected by the
  *  French intellectual property law.
  *
@@ -56,7 +56,7 @@ static CONST(tpl_generic_id, AUTOMATIC) tpl_obj_count_table[5] = {
 FUNC(tpl_app_id, OS_CODE) tpl_get_application_id_service(void)
 {
 #if APP_COUNT > 0
-  return tpl_running_app_id;
+  return tpl_stat_proc_table[tpl_running_id]->app_id;
 #else
   return INVALID_OSAPPLICATION;
 #endif
@@ -190,18 +190,20 @@ FUNC(u8, OS_CODE) tpl_check_object_access_service(
 FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+  VAR(tpl_app_id, AUTOMATIC) running_app_id =
+    tpl_stat_proc_table[tpl_running_id]->app_id;
 
 #if APP_COUNT > 0
-  if (tpl_running_app_id < APP_COUNT)
+  if (running_app_id < APP_COUNT)
   {
     /*  First, remove all alarms belonging
         to the OS application from the queue            */
 #ifndef NO_ALARM
     {
       P2CONST(tpl_alarm_id, AUTOMATIC, OS_APPL_CONST) alarms =
-        tpl_app_table[tpl_running_app_id]->alarms;
+        tpl_app_table[running_app_id]->alarms;
       CONST(tpl_alarm_id, AUTOMATIC) alarm_count =
-        tpl_app_table[tpl_running_app_id]->alarm_count;
+        tpl_app_table[running_app_id]->alarm_count;
       VAR(tpl_alarm_id, AUTOMATIC) i;
       for (i = 0; i < alarm_count; i++)
       {
@@ -221,9 +223,9 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
 #ifndef NO_SCHEDTABLE
     {
       P2CONST(tpl_schedtable_id, AUTOMATIC, OS_APPL_CONST) schedtables =
-        tpl_app_table[tpl_running_app_id]->sts;
+        tpl_app_table[running_app_id]->sts;
       CONST(tpl_schedtable_id, AUTOMATIC) schedtable_count =
-        tpl_app_table[tpl_running_app_id]->st_count;
+        tpl_app_table[running_app_id]->st_count;
       VAR(tpl_schedtable_id, AUTOMATIC) i;
       for (i = 0; i < schedtable_count; i++)
       {
@@ -245,9 +247,9 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
 #if !defined(NO_TASK) && !defined(NO_ISR)
     {
       P2CONST(tpl_proc_id, AUTOMATIC, OS_APPL_CONST) procs =
-        tpl_app_table[tpl_running_app_id]->procs;
+        tpl_app_table[running_app_id]->procs;
       CONST(tpl_proc_id, AUTOMATIC) proc_count =
-        tpl_app_table[tpl_running_app_id]->proc_count;
+        tpl_app_table[running_app_id]->proc_count;
       VAR(tpl_proc_id, AUTOMATIC) i;
       for (i = 0; i < proc_count; i++)
       {

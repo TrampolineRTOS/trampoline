@@ -26,13 +26,14 @@ routine tasks_well_formed ?@task_map tasks :
         cast defined_activation :
         when == @void do
             error [task_name location] : "ACTIVATION attribute not defined for TASK ".[task_name string] ;
-        when == @uint64_class ui do
+        when == @uint32_class ui do
             defined_events := [task events] ;
-            if ( [defined_events count] > 0 & [[ui value] uint] > 1) then
+            if ( [defined_events count] > 0 & [ui value] > 1) then
                 error [task_name location] : "ACTIVATION attribute for extended task ".[task_name string]." should be set to 1" ;
                 error [ui location] : "ACTIVATION attribute set to ".[[ui value] string]. " here" ;
             end if ;
         else
+          error here : "Internal error, wrong datatype for ACTIVATION in task ".[task_name string] ;
         end cast ;
         defined_schedule := [task schedule] ;
         if [defined_schedule string] == "" then

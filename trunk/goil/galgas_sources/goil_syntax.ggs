@@ -20,6 +20,7 @@ import lexique goil_lexique in "goil_lexique.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 import semantics goil_proc_generation in "goil_proc_generation.ggs" ;
 import semantics goil_app_generation in "goil_app_generation.ggs" ;
+import semantics goil_mp_generation in "goil_mp_generation.ggs" ;
 import semantics goil_types_app in "goil_types_app.ggs" ;
 import semantics goil_types_networkmessage in "goil_types_networkmessage.ggs" ;
 import semantics goil_scheduletable_verif in "goil_scheduletable_verif.ggs" ;
@@ -346,6 +347,12 @@ rule <start> :
                     !?header
                     !?implementation
                     !?obj_header ;
+
+                generate_mp
+                  !tasks
+                  !isrs
+                  !applis
+                  !app_for_obj ;
 
                 generate_resources
                     !resources

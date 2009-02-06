@@ -146,7 +146,7 @@ routine generate_apps
         if [[isr acc_apps] hasKey ![app_name string]] then vec .= "1" ; else vec .= "0" ; end if ;
       end if ;
     end foreach ;
-    message vec."\n" ;
+#    message vec."\n" ;
 
     generate_vector !vec ?init ?count ;
     if count > 0 then
@@ -166,7 +166,7 @@ routine generate_apps
         if [[alarm acc_apps] hasKey ![app_name string]] then vec .= "1" ; else vec .= "0" ; end if ;
       end if ;
     end foreach ;
-    message vec."\n" ;
+#    message vec."\n" ;
 
     generate_vector !vec ?init ?count ;
     if count > 0 then
@@ -191,7 +191,7 @@ routine generate_apps
     # add the res_scheduler
     vec .= "01" ;
 
-    message vec."\n" ;
+#    message vec."\n" ;
 
     generate_vector !vec ?init ?count ;
     if count > 0 then

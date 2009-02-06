@@ -312,13 +312,6 @@ typedef struct {
  */
 extern VAR(tpl_proc_id, OS_VAR) tpl_running_id;
 
-#if defined(WITH_AUTOSAR) && ((AUTOSAR_SC == 3) || (AUTOSAR_SC == 4)) 
-/**
- * currently running OS application id
- */
-extern VAR(tpl_app_id, OS_VAR) tpl_running_app_id;
-#endif
-
 /**
  * Internal RES_SCHEDULER resource
  */
