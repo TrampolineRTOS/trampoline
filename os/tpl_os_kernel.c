@@ -132,17 +132,6 @@ VAR(tpl_proc, OS_VAR) idle_task = {
  */
 VAR(tpl_proc_id, OS_VAR) tpl_running_id = -2;
 
-#if defined(WITH_AUTOSAR) && ((AUTOSAR_SC == 3) || (AUTOSAR_SC == 4)) 
-/**
- * @internal
- *
- * tpl_running_app_id is the application id of the currently running process
- *
- * At system startup it is set to INVALID_OSAPPLICATION.
- */
-VAR(tpl_app_id, OS_VAR) tpl_running_app_id = INVALID_OSAPPLICATION;
-#endif
-
 /*  MISRA RULE 27 VIOLATION: These 2 variables are used only in this file
     but decalred in the configuration file, this is why they do not need
     to be declared as external in a header file
@@ -607,7 +596,7 @@ FUNC(void, OS_CODE) tpl_remove_proc_for_prio(
   P2VAR(tpl_proc_id, AUTOMATIC, OS_APPL_DATA)
     r = fifo + tpl_fifo_rw[prio].read;
   P2VAR(tpl_proc_id, AUTOMATIC, OS_APPL_DATA) w = r;
-  VAR(u8, AUTOMATIC) size = tpl_fifo_rw[prio].size;;
+  VAR(u8, AUTOMATIC) size = tpl_fifo_rw[prio].size;
   VAR(u8, AUTOMATIC) new_size = size;
 
   while (size > 0)
@@ -833,7 +822,7 @@ FUNC(tpl_status, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
     /*  get the ready task from the ready task list             */
     tpl_running_id = tpl_get_proc();
     running = tpl_dyn_proc_table[tpl_running_id];
-    
+
     if (running->state == READY_AND_NEW)
     {
       /*  the object has not be preempted. So its
