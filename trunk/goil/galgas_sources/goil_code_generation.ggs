@@ -287,6 +287,24 @@ end routine ;
 # Makefile generation
 #--------------------------------------------------------------------
 
+routine getTrampolineTargetName
+  !  @string trampolineTarget
+:
+  @string goilTargetName := [option goil_options.target_platform];
+  if goilTargetName == "arm7"      then trampolineTarget := "ARM7";
+  elsif goilTargetName == "avr"    then trampolineTarget := "avr";
+  elsif goilTargetName == "c166"   then trampolineTarget := "c166";
+  elsif goilTargetName == "h8300h" then trampolineTarget := "h8300h";
+  elsif goilTargetName == "hcs12"  then trampolineTarget := "s12x";
+  elsif goilTargetName == "libpcl" then trampolineTarget := "posix-libpcl";
+  elsif goilTargetName == "ppc"    then trampolineTarget := "PPC";
+  elsif goilTargetName == "v850e"  then trampolineTarget := "v850e";
+  else 
+    error here: "unknown target name. Can't find the corresponding Trampoline target.";
+    trampolineTarget := "";
+  end if;
+end routine;
+
 routine updateTemplateWithStringList
   ?? @lstringlist strList
   ?? @string templateKey
@@ -309,6 +327,7 @@ routine generate_makefile
 :
     @string makefileSpecStr;
     @string makefileStr;
+
     retrieveTemplateStringIfExist ?makefileSpecStr !"Makefile_specific";
     retrieveTemplateString ?makefileStr !"Makefile";
     makefileStr := [makefileStr stringByReplacingStringByString !"$MAKEFILE_SPEC$" !makefileSpecStr];
@@ -340,7 +359,10 @@ routine generate_makefile
     @string makerulesStr;
     retrieveTemplateString ?makerulesStr !"Make-rules";
     @string filename := directory."/Make-rules";
+    @string trampolineTarget; 
+    getTrampolineTargetName ? trampolineTarget;
     makerulesStr := [makerulesStr stringByReplacingStringByString !"$GOIL_TARGET$"![option goil_options.target_platform]];
+    makerulesStr := [makerulesStr stringByReplacingStringByString !"$TRAMPOLINE_TARGET$"!trampolineTarget];
     #template
     @string templatePathStr := [option goil_options.template_dir];
     @string templateStr;

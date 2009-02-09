@@ -6,14 +6,13 @@
  * @file avr_switch_context.s
  *
  * @section File informations
- *
+ * initial file from Guillaume Forget. Copyright IRCCyN 2008-
  * $Date: 2008-07-29 11:06:28 +0200 (lun., 28 avr. 2008) $
  * $Rev: 500 $
  * $Author: gforget $
  * $URL: https://trampoline.rts-software.org/svn/trunk/os/os_machine/avr/avr_switch_context.s $
  *
  */
-// ce programme a été fait par guillaume forget copyright IRCCYN
 
 .global tpl_switch_context
 .global tpl_switch_context_from_it 
