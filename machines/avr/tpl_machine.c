@@ -22,6 +22,7 @@
 #include "tpl_os_generated_configuration.h"	   /* TASK_COUNT and ISR_COUNT*/
 #include "tpl_os_definitions.h" /* IS_ROUTINE  */
 #include "tpl_os_internal_types.h"
+#include "tpl_os_kernel.h" /*tpl_stat_proc_table and tpl_proc_static*/
 
 avr_context idle_task_context;
 
@@ -46,12 +47,15 @@ void tpl_shutdown(void)
  * WARNING: This function MUST NOT modify GPRs!!! (the task in parameter
  * can be the running one!!!)
  */
-void tpl_init_context(tpl_task *task)
+FUNC(void, OS_CODE) tpl_init_context(
+    CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
+//void tpl_init_context(tpl_task *task)
 {
+
     int a=0; /*internal variable, used to put the register R00 to R31 on the tabular*/
 	u8 *pointer;
   	/* Gets a pointer to the static descriptor of the task whose context is going to be initialized */
-	const tpl_exec_static *static_desc = task->exec_desc.static_desc;
+	const tpl_proc_static *static_desc = tpl_stat_proc_table[proc_id];
 	/* Init stack pointer */
 	u8 *sp=(void *)((u16)(static_desc->stack.stack_zone) + static_desc->stack.stack_size - 1);
 
@@ -81,25 +85,20 @@ void tpl_init_context(tpl_task *task)
 	/* put register 16 on the chart */
 	pointer++;
 	*pointer=0x00;
-
-
-
-  
-
-
 }
 
-unsigned char itPrec = 0;
+volatile static unsigned char tpl_locking_depth = 0;
 
 void tpl_get_task_lock(void)
 {
-	itPrec = SREG >> 7;
 	cli();
+	tpl_locking_depth++;
 }
 
 void tpl_release_task_lock(void)
 {
-	if(itPrec) sei();
+    if (tpl_locking_depth > 0) tpl_locking_depth--;
+    if (tpl_locking_depth == 0) sei();
 }
 
 /*
@@ -111,5 +110,35 @@ void tpl_init_machine(void)
 	#ifndef NO_ALARM
 		tpl_init_tick_timer();
 	#endif
+	sei();
 }
 
+void tpl_enable_all_interrupts_service(void)
+{
+	cli();
+}
+
+void tpl_disable_all_interrupts_service(void)
+{
+	sei();
+}
+
+void tpl_resume_all_interrupts_service(void)
+{
+    if (tpl_locking_depth > 0) tpl_locking_depth--;
+    if (tpl_locking_depth == 0) sei();
+}
+
+void tpl_suspend_all_interrupts_service(void)
+{
+	cli();
+	tpl_locking_depth++;
+}
+void tpl_resume_os_interrupts_service(void)
+{
+	tpl_resume_all_interrupts_service();
+}
+void tpl_suspend_os_interrupts_service(void)
+{
+	tpl_suspend_all_interrupts_service();
+}

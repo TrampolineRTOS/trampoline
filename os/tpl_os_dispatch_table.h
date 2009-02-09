@@ -41,3 +41,4 @@ extern const tpl_system_call tpl_dispatch_table[SYSCALL_COUNT];
 /* TPL_OS_DISPATCH_TABLE_H */
 #endif
 /* End of file tpl_os_dispatch_table.h */
+
