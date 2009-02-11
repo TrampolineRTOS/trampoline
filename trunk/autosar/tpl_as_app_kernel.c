@@ -190,10 +190,11 @@ FUNC(u8, OS_CODE) tpl_check_object_access_service(
 FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+
+#if APP_COUNT > 0
   VAR(tpl_app_id, AUTOMATIC) running_app_id =
     tpl_stat_proc_table[tpl_running_id]->app_id;
 
-#if APP_COUNT > 0
   if (running_app_id < APP_COUNT)
   {
     /*  First, remove all alarms belonging
