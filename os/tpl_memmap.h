@@ -23,7 +23,7 @@
  */
 
 #ifdef WITH_MEMMAP
-#include "Memmap.h"
+#include "MemMap.h"
 #endif
 
 /* End of file tpl_memmap.h */

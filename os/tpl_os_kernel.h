@@ -309,8 +309,18 @@ typedef struct {
 /**
  * Currently running executable object id. This "executable object" can be
  * a task or an interrupt service routine
+ * 
+ * It has been changed to an int to ease its usage in asssembly language
  */
-extern VAR(tpl_proc_id, OS_VAR) tpl_running_id;
+extern VAR(int, OS_VAR) tpl_running_id;
+
+/**
+ * 2 bits are used in this variable.
+ * bit 0 indicates a context switch is needed after calling a service,
+ * bit 1 indicated the context of the processus that loses the cpu
+ * should be saved.
+ */
+extern VAR(u8, OS_VAR) tpl_need_switch;
 
 /**
  * Internal RES_SCHEDULER resource

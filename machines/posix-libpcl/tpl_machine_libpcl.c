@@ -478,14 +478,14 @@ FUNC(void, OS_CODE) tpl_switch_context(
     CONSTP2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
 {
     /* assert( **new_context != co_current() ); */
-    tpl_release_task_lock();  
+//    tpl_release_task_lock();  
     if( *new_context == &idle_task_context )
     {
         /* idle_task activation */
         co_call( idle_task_context );
     }
     else co_call( **new_context );
-    tpl_get_task_lock(); 
+//    tpl_get_task_lock(); 
 }
 
 

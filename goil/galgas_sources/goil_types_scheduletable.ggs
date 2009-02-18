@@ -139,7 +139,7 @@ class @scheduletable_obj extends @oil_obj {
         cast autostart :
         when == @sd_autostart_false do
             doReplace !?stres !"$SCHEDTABLE_DATE$" !"0" ;
-            doReplace !?stres !"$SCHEDTABLE_STATE$" !"SCHEDULETABLE_NOT_STARTED" ;
+            doReplace !?stres !"$SCHEDTABLE_STATE$" !"SCHEDULETABLE_STOPPED" ;
         when == @sd_autostart_true sa do
             doReplace !?stres !"$SCHEDTABLE_DATE$" ![[[sa offset] uint64] string] ;
             doReplace !?stres !"$SCHEDTABLE_STATE$" !"SCHEDULETABLE_AUTOSTART" ;

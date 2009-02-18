@@ -17,13 +17,13 @@ $COUNTER_LIST$
 #endif
   if (need_rescheduling == NEED_RESCHEDULING)
   {
-    if( OS_IDLE == tpl_os_state )
-    {
-        tpl_schedule_from_idle();
-    }
-    else
-    {
-        tpl_schedule_from_running(FROM_IT_LEVEL);
+    tpl_proc_id old_running_id = tpl_running_id;
+    tpl_status result = tpl_schedule(FROM_IT_LEVEL);
+    if (tpl_need_switch != NO_NEED_SWITCH) {
+      tpl_switch_context_from_it(
+        &(tpl_stat_proc_table[old_running_id]->context),
+        &(tpl_stat_proc_table[tpl_running_id]->context)
+      );
     }
   }
 }

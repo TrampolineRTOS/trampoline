@@ -130,10 +130,20 @@ VAR(tpl_proc, OS_VAR) idle_task = {
  * that exists from the start time to the time the first task (idle included)
  * runs.
  */
-VAR(tpl_proc_id, OS_VAR) tpl_running_id = -2;
+VAR(int, OS_VAR) tpl_running_id = -2;
+
+/**
+ * @internal
+ *
+ * tpl_need_switch is used to indicate a context switch should occur
+ * It is set un the services and tested before calling the context switch
+ * and reset to FALSE after that
+ */ 
+VAR(u8, OS_VAR) tpl_need_switch = NO_NEED_SWITCH;
+ 
 
 /*  MISRA RULE 27 VIOLATION: These 2 variables are used only in this file
-    but decalred in the configuration file, this is why they do not need
+    but declared in the configuration file, this is why they do not need
     to be declared as external in a header file
 */
 
@@ -738,8 +748,9 @@ FUNC(tpl_status, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
                     READY_AND_NEW in the ready list.
       - DYING:      if the running object is in the DYING state, its
                     context is not saved and it loses the CPU.          */
-  tpl_proc_state state = running->state;
-  tpl_status result = NO_SPECIAL_CODE;
+  VAR(tpl_proc_state, AUTOMATIC) state = running->state;
+  VAR(tpl_status, AUTOMATIC) result = NO_SPECIAL_CODE;
+  VAR(u8, AUTOMATIC) need_switch = NO_NEED_SWITCH;
   
   tpl_bool schedule =
   (tpl_h_prio != -1) &&
@@ -761,6 +772,9 @@ FUNC(tpl_status, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
     {
       /*  the current running task become READY                   */
       running->state = (tpl_proc_state)READY;
+      /*  the the contexte of the current running process needs
+          to be saved                                             */
+      need_switch = NEED_SAVE;
       /*  put the running task in the ready task list             */
       /*  Bug fix. preempted objects are put at the head
           of the set while newly activated objects are
@@ -850,8 +864,11 @@ FUNC(tpl_status, OS_CODE) tpl_schedule(CONST(u8, AUTOMATIC) from)
         rescheduled task is running                             */
     CALL_PRE_TASK_HOOK()
     
-    result = NEED_CONTEXT_SWITCH;
+    /*  Notify a context switch should occur                    */
+    need_switch |= NEED_SWITCH;
   }
+  
+  tpl_need_switch = need_switch;
   
   return result;
 }
@@ -873,6 +890,8 @@ FUNC(tpl_status, OS_CODE) tpl_schedule_from_running(CONST(u8, AUTOMATIC) from)
   VAR(tpl_status, AUTOMATIC) result = NO_SPECIAL_CODE;
   P2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) running =
     tpl_dyn_proc_table[tpl_running_id];
+  VAR(u8, AUTOMATIC) need_switch = NO_NEED_SWITCH;
+  
   /*  the tpl_running_obj is never NULL and is in the state RUNNING  */
   DOW_ASSERT(running != NULL)
   DOW_ASSERT(running->state == RUNNING)
@@ -933,8 +952,10 @@ FUNC(tpl_status, OS_CODE) tpl_schedule_from_running(CONST(u8, AUTOMATIC) from)
         PreTaskHook while the rescheduled task is running         */
     CALL_PRE_TASK_HOOK()
     
-    result = NEED_CONTEXT_SWITCH;
+    need_switch = NEED_SWITCH | NEED_SAVE;
   }
+  
+  tpl_need_switch = need_switch;
   
   return result;
 }
@@ -959,7 +980,7 @@ FUNC(tpl_status, OS_CODE) tpl_schedule_from_dying(void)
                       READY_AND_NEW in the ready list.
       - DYING:        if the running object is in the DYING state, its
                       context is not saved and it loses the CPU.          */
-  tpl_proc_state state = running->state;
+  VAR(tpl_proc_state, AUTOMATIC) state = running->state;
   VAR(tpl_status, AUTOMATIC) result = NO_SPECIAL_CODE;
   
 #ifdef WITH_AUTOSAR_STACK_MONITORING
@@ -1057,7 +1078,7 @@ FUNC(tpl_status, OS_CODE) tpl_schedule_from_dying(void)
       the rescheduled task is running                                     */
   CALL_PRE_TASK_HOOK()
   
-  result = NEED_CONTEXT_SWITCH;
+  tpl_need_switch = NEED_SWITCH;
   
   return result;
 }
@@ -1123,7 +1144,7 @@ FUNC(tpl_status, OS_CODE) tpl_schedule_from_idle(void)
   CALL_PRE_TASK_HOOK()
   
   /*  Indicates a context switch is needed                      */
-  result = NEED_CONTEXT_SWITCH;
+  tpl_need_switch = NEED_SWITCH | NEED_SAVE;
   
   return result;
 }
@@ -1193,7 +1214,7 @@ FUNC(tpl_status, OS_CODE) tpl_schedule_from_waiting(void)
   
   /*  Switch the context  */
   
-  result = NEED_CONTEXT_SWITCH;
+  tpl_need_switch = NEED_SWITCH | NEED_SAVE;
   
   return result;
 }
@@ -1468,7 +1489,7 @@ FUNC(void, OS_CODE) tpl_start_os_service(
     result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
     
 #ifndef WITH_SYSTEM_CALL
-    if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH)
+    if (tpl_need_switch != NO_NEED_SWITCH)
     {
       tpl_switch_context(
         &(tpl_stat_proc_table[IDLE_TASK_ID]->context),

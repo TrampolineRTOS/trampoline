@@ -19,10 +19,10 @@
  *
  * @section infos File informations
  *
- * $Date: 2008-09-05 15:24:48 +0200 (Fri, 05 Sep 2008) $
- * $Rev: 509 $
- * $Author: jlb $
- * $URL: https://trampoline.rts-software.org/svn/trunk/os/tpl_os_task.c $
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
  */
 
 #include "tpl_machine_interface.h"
@@ -75,7 +75,7 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
 #endif
 
 #ifndef WITH_SYSTEM_CALL
-  if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH)
+  if (tpl_need_switch != NO_NEED_SWITCH)
   {
     tpl_switch_context(
       &(tpl_stat_proc_table[old_running_id]->context),
@@ -125,7 +125,7 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 #endif
 
 #ifndef WITH_SYSTEM_CALL
-  if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH)
+  if (tpl_need_switch != NO_NEED_SWITCH)
   {
     tpl_switch_context(
       NULL,
@@ -149,9 +149,9 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   VAR(StatusType, AUTOMATIC) result = E_OK;
   
 #ifndef NO_TASK
-  P2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) dyn_proc;
+  P2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)          dyn_proc;
   P2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) stat_proc;
-  VAR(tpl_activate_counter, AUTOMATIC)            count;
+  VAR(tpl_activate_counter, AUTOMATIC)              count;
 #endif
   
   /* check interrupts are not disabled by user    */
@@ -231,7 +231,7 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
     }
     
 #ifndef WITH_SYSTEM_CALL
-    if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH)
+    if (tpl_need_switch != NO_NEED_SWITCH)
     {
       stat_proc = tpl_stat_proc_table[tpl_running_id];
       tpl_switch_context(
@@ -286,7 +286,7 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 #endif
   
 #ifndef WITH_SYSTEM_CALL
-  if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH)
+  if (tpl_need_switch != NO_NEED_SWITCH)
   {
     tpl_switch_context(
       &(tpl_stat_proc_table[old_running_id]->context),

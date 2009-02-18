@@ -234,7 +234,7 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
     IF_NO_EXTENDED_ERROR_END()
 
 #ifndef WITH_SYSTEM_CALL
-    if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH)
+    if (tpl_need_switch != NO_NEED_SWITCH)
     {
       tpl_switch_context(
         &(tpl_stat_proc_table[old_running_id]->context),

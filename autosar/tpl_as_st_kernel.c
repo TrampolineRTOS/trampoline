@@ -108,7 +108,7 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
     for (i = 0; i < next_ep->count; i++)
     {
         action_desc = (next_ep->actions)[i];
-        need_resched |= (action_desc->action)(action_desc);
+        need_resched |= TRAMPOLINE_STATUS_MASK & (action_desc->action)(action_desc);
     }
 
     /* reset the offset of last expiry point to its default value,
