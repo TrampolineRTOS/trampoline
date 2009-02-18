@@ -210,17 +210,6 @@
 #define NEED_RESCHEDULING       32
 
 /**
- * @def NEED_CONTEXT_SWITCH
- *
- * Context switch has to be made.
- *
- * @note This is a Trampoline result code, not an OSEK one.
- *
- * @see #tpl_status
- */
-#define NEED_CONTEXT_SWITCH     64
-
-/**
  * @def E_OK_AND_SCHEDULE
  *
  * Combines OSEK-E_OK and Trampoline-NEED_RESCHEDULING result codes
@@ -293,6 +282,38 @@
 #define WAITING         0x3
 #endif
 
+
+/************************************
+ * bits of tpl_need_switch          *
+ ************************************/
+
+/**
+ * @def NO_NEED_SWITCH
+ *
+ * Used for tpl_need_switch variable. No context switch should occur
+ *
+ * @see #tpl_need_switch
+ */
+#define NO_NEED_SWITCH  0x0
+
+/**
+ * @def NEED_SWITCH
+ *
+ * Used for tpl_need_switch variable. A context switch should occur
+ *
+ * @see #tpl_need_switch
+ */
+#define NEED_SWITCH     0x1
+
+/**
+ * @def NEED_SAVE
+ *
+ * Used for tpl_need_switch variable. The context of the process that
+ * loses the CPU should be saved
+ *
+ * @see #tpl_need_switch
+ */
+#define NEED_SAVE       0x2
 
 /************************************
  * Always existing application mode *

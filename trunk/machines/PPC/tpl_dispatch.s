@@ -35,6 +35,7 @@
 .reference tpl_dispatch_table
 .reference tpl_sc_switch_context
 .reference tpl_unset_mp
+.reference tpl_running_id
 
 kernel_stack_size = 80
 
@@ -70,9 +71,15 @@ tpl_sc_handler:
         stw  r1,12(r11)                     /* save the sp of the caller    */
         mr   r1,r11                         /* set the kernel stack         */
         stw  r12,8(r1)                      /* save the LR                  */
-        lis  r11,hi16(tpl_running_obj)      /* save the descriptor pointer  */
-        ori  r11,r11,lo16(tpl_running_obj)  /* of the caller                */
-        stw  r11,16(r1)
+        
+        /*  Save the id of the caller in the system stack. This has to be
+            done because if the service does a reschedule, it will be
+            changed and we need it to do the context switch                 */
+
+        lis  r11,hi16(tpl_running_id)       /* get the address of the       */
+        ori  r11,r11,lo16(tpl_running_id)   /* tpl_running_id variable      */
+        lwz  r11,0(r11)                     /* get tpl_running_id           */
+        stw  r11,16(r1)                     /* save it in the system task   */
         
         /*  The kernel stack is like that:
         
@@ -86,7 +93,7 @@ tpl_sc_handler:
             +----------------------------+
         +12 |      SP of the caller      |
             +----------------------------+
-        +16 |    task descriptor ptr     |
+        +16 |    calling task/ISR id     |
             +----------------------------+
         +20 | return code of the service |
             +----------------------------+

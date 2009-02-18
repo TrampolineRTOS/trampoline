@@ -67,10 +67,13 @@ void tpl_notify_receiving_mos(tpl_base_receiving_mo *rmo, u8 from)
     }
   
 #ifndef WITH_SYSTEM_CALL
-  tpl_switch_context(
-    &(tpl_stat_proc_table[old_running_id]->context),
-    &(tpl_stat_proc_table[tpl_running_id]->context)
-  );
+  if (tpl_need_switch != NO_NEED_SWITCH)
+  {
+    tpl_switch_context(
+      &(tpl_stat_proc_table[old_running_id]->context),
+      &(tpl_stat_proc_table[tpl_running_id]->context)
+    );
+  }
 #endif
 
 }

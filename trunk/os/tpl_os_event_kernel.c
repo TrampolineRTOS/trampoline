@@ -17,9 +17,9 @@
  *
  * @section infos File informations
  *
- * $Date: 2008-09-05 15:24:48 +0200 (Fri, 05 Sep 2008) $
- * $Rev: 509 $
- * $Author: jlb $
+ * $Date$
+ * $Rev$
+ * $Author$
  * $URL$
  */
 
@@ -80,7 +80,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
 #endif
 
 #ifndef WITH_SYSTEM_CALL
-  if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH)
+  if (tpl_need_switch != NO_NEED_SWITCH)
   {
     tpl_switch_context(
       (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
@@ -219,7 +219,7 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
 #endif
   
 #ifndef WITH_SYSTEM_CALL
-  if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH)
+  if (tpl_need_switch != NO_NEED_SWITCH)
   {
     tpl_switch_context(
       &(tpl_stat_proc_table[old_running_id]->context),

@@ -79,7 +79,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
 #endif
   
 #ifndef WITH_SYSTEM_CALL
-  if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH)
+  if (tpl_need_switch != NO_NEED_SWITCH)
   {
     tpl_switch_context(
       NULL,
@@ -203,7 +203,7 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
       }
       
 #ifndef WITH_SYSTEM_CALL
-      if ((result & NEED_CONTEXT_SWITCH) == NEED_CONTEXT_SWITCH)
+      if (tpl_need_switch != NO_NEED_SWITCH)
       {
         tpl_switch_context_from_it(
           &(tpl_stat_proc_table[old_running_id]->context),
