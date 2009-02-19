@@ -454,7 +454,11 @@ void tpl_release_task_lock(void)
     assert(0 <= x && x <= 1); */
     /*  fprintf(stderr, "%d-unlock\n", cnt++);*/
     
-    tpl_locking_depth--;
+	//
+    if (tpl_locking_depth > 0)
+	{
+	   tpl_locking_depth--;
+	}
 
 #ifdef WITH_AUTOSAR
     tpl_cpt_os_task_lock--;
@@ -500,6 +504,9 @@ FUNC(void, OS_CODE) tpl_switch_context_from_it(
         co_call( idle_task_context );
     }
     else co_call( **new_context );
+	
+	tpl_release_task_lock();
+	
 }
 
 #define CO_MIN_SIZE (4*8*(4 * 1024))
@@ -511,10 +518,7 @@ void tpl_osek_func_stub( void* data )
     tpl_proc_type     type = ((tpl_proc_static*)data)->type;
   
     /* Avoid signal blocking due to a previous call to tpl_init_context in a OS_ISR2 context. */
-    if (sigprocmask(SIG_UNBLOCK,&signal_set,NULL) == -1) {
-        perror("tpl_osek_func_stub failed");
-        exit(-1);
-    }
+	tpl_release_task_lock();
     
     /* printf("** unlock (tpl_osek_func_stub) ** X=%d\n",x) ; */
   
