@@ -1,0 +1,59 @@
+OIL_VERSION = "2.5" : "interrupts_s4" ;
+
+IMPLEMENTATION trampoline {
+	
+    TASK {
+        UINT32 STACKSIZE = 32768 ;
+        UINT32 [1..10] PRIORITY = 1 ;
+    } ;
+};
+
+ CPU test {
+
+    OS config {
+        STATUS = STANDARD;
+		APP_SRC = "interrupts_s4.c";
+		APP_SRC = "task1_instance.c";
+		APP_SRC = "isr1_instance.c";
+		APP_SRC = "callback_instance.c";
+		APP_SRC = "../config.c";
+        TRAMPOLINE_BASE_PATH = "../../..";
+        APP_NAME = "interrupts_s4_non";
+		CFLAGS = "-I../embUnit";
+		LDFLAGS = "-L../lib -lembUnit";
+		SHUTDOWNHOOK = TRUE;
+    } ;
+
+    APPMODE std {};
+
+    TASK t1 {
+        AUTOSTART = TRUE { APPMODE = std ; } ;
+        PRIORITY = 1;
+        ACTIVATION = 1;
+        SCHEDULE = NON;
+    };
+	
+	ISR isr1 {
+		CATEGORY = 2;
+		STACKSIZE = 32000;
+		PRIORITY = 2;
+		SOURCE = SIGUSR1;
+	};
+	
+	COUNTER Counter1{
+		MAXALLOWEDVALUE = 16;
+		TICKSPERBASE = 10;
+		MINCYCLE = 1;
+	};
+	
+	ALARM Alarm1{
+		COUNTER = Counter1;
+		ACTION = ALARMCALLBACK {
+			ALARMCALLBACKNAME = "CallBackC";
+		};
+		AUTOSTART = FALSE;
+	};
+
+};
+
+

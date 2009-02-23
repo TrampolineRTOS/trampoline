@@ -1,0 +1,57 @@
+OIL_VERSION = "2.5" : "resources_s3" ;
+
+IMPLEMENTATION trampoline {
+	
+    TASK {
+        UINT32 STACKSIZE = 32768 ;
+        UINT32 [1..10] PRIORITY = 1 ;
+    } ;
+};
+
+ CPU test {
+
+    OS config {
+        STATUS = STANDARD;
+		APP_SRC = "resources_s3.c";
+		APP_SRC = "task1_instance.c";
+		APP_SRC = "task2_instance.c";
+		APP_SRC = "task3_instance.c";
+        TRAMPOLINE_BASE_PATH = "../../..";
+        APP_NAME = "resources_s3";
+		CFLAGS = "-I../embUnit";
+		LDFLAGS = "-L../lib -lembUnit";
+		SHUTDOWNHOOK = TRUE;
+    } ;
+
+    APPMODE std {};
+
+    TASK t1 {
+        AUTOSTART = TRUE { APPMODE = std ; } ;
+        PRIORITY = 1;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+		RESOURCE = Resource1;
+    };
+
+    TASK t2 {
+        AUTOSTART = FALSE ;
+        PRIORITY = 2;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+		RESOURCE = Resource1;
+    };
+	
+    TASK t3 {
+        AUTOSTART = FALSE ;
+        PRIORITY = 3;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+	
+	RESOURCE Resource1{
+		RESOURCEPROPERTY = STANDARD;
+	};
+
+};
+
+
