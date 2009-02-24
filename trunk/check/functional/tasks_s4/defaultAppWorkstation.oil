@@ -1,0 +1,44 @@
+OIL_VERSION = "2.5" : "tests_tasksManagement_sequence4" ;
+
+IMPLEMENTATION trampoline {
+    TASK {
+        UINT32 STACKSIZE = 32768 ;
+        UINT32 [1..10] PRIORITY = 1 ;
+    } ;
+};
+
+ CPU test {
+
+    OS config {
+        STATUS = STANDARD;
+		APP_SRC = "tests_tasksManagement_sequence4.c";
+		APP_SRC = "task1_instance.c";
+		APP_SRC = "task2_instance.c";
+        TRAMPOLINE_BASE_PATH = "../../..";
+        APP_NAME = "tests_tasksManagement_sequence4";
+		CFLAGS = "-I../embUnit";
+		LDFLAGS = "-L../lib -lembUnit";
+		SHUTDOWNHOOK = TRUE;
+    } ;
+
+    APPMODE std {};
+
+    TASK t1 {
+        AUTOSTART =  TRUE { APPMODE = std ; } ;
+        PRIORITY = 1;
+        ACTIVATION = 1;
+        SCHEDULE = NON;
+        EVENT = Event1;
+    };
+
+    TASK t2 {
+        AUTOSTART =  FALSE;
+        PRIORITY = 2;
+        ACTIVATION = 1;
+        SCHEDULE = NON;
+        EVENT = Event2;
+    };
+
+    EVENT Event1 { MASK=AUTO; };
+    EVENT Event2 { MASK=AUTO; };
+};
