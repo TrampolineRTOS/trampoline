@@ -16,7 +16,9 @@ then
 	for i in `cat testSequences.txt`
 	do
 		rm -rf ./${i}/build #do not call make mrproper.
-		touch ./${i}/defaultAppWorkstation.oil
+		#touch ./${i}/defaultAppWorkstation.oil
+		#remove make-rules, makefiles, defaultAppWorkstation too
+				
 	done
 else
 
@@ -29,7 +31,9 @@ else
 	for i in `cat testSequences.txt`
 	do
 		cd ./${i}
-		make 
+		#if all files are deleted when 'clean' a goil is needed (with goil's templates url) and the target librarie (here libpcl) :
+		goil --target=libpcl --templates=../../../goil/templates/ -g defaultAppWorkstation.oil
+		make
 		./${i} >> ../results.log
 		cd ..
 	done
