@@ -1,4 +1,4 @@
-OIL_VERSION = "2.5" : "tests_tasksManagement_sequence12" ;
+OIL_VERSION = "2.5" : "tasks_s12" ;
 
 IMPLEMENTATION trampoline {
     TASK {
@@ -11,13 +11,13 @@ CPU test {
 
     OS config {
         STATUS = STANDARD;
-		APP_SRC = "tests_tasksManagement_sequence12.c";
+		APP_SRC = "tasks_s12.c";
 		APP_SRC = "task1_instance.c";
 		APP_SRC = "task2_instance.c";
 		APP_SRC = "task3_instances.c";
 		APP_SRC = "task3_instance3.c";
         TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "tests_tasksManagement_sequence12_nonpreemtive";
+        APP_NAME = "tasks_s12_non";
 		CFLAGS = "-I../embUnit";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;

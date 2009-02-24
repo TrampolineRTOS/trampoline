@@ -1,4 +1,4 @@
-OIL_VERSION = "2.5" : "tests_tasksManagement_sequence4" ;
+OIL_VERSION = "2.5" : "tasks_s4" ;
 
 IMPLEMENTATION trampoline {
     TASK {
@@ -11,11 +11,11 @@ IMPLEMENTATION trampoline {
 
     OS config {
         STATUS = STANDARD;
-		APP_SRC = "tests_tasksManagement_sequence4.c";
+		APP_SRC = "tasks_s4.c";
 		APP_SRC = "task1_instance.c";
 		APP_SRC = "task2_instance.c";
         TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "tests_tasksManagement_sequence4";
+        APP_NAME = "tasks_s4";
 		CFLAGS = "-I../embUnit";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;

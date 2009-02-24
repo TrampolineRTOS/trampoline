@@ -5,20 +5,23 @@
 # args:
 # (nothing): performs tests
 # clean    : call make clean for each tests folders
+# {goil's target} : if Makefile hasn't been created yet, a 'goil' command is needed with the target name (default=libpcl)
 #
-# TODO : commit test task_management and change their names
+# TODO : 
 #		 finish hook_s4
-#		 finish interrupts_s4
-######ichat-balloon-style://left-thought
+#		 finish tasks_s14
+######
 
 if [ "$1" = "clean" ]
 then
 	for i in `cat testSequences.txt`
 	do
-		rm -rf ./${i}/build #do not call make mrproper.
-		#touch ./${i}/defaultAppWorkstation.oil
-		#remove make-rules, makefiles, defaultAppWorkstation too
-				
+		#remove make-rules, makefiles, defaultAppWorkstation/ and build/
+		rm -rf ./${i}/build
+		rm -rf ./${i}/defaultAppWorkstation
+		rm -rf ./${i}/Make-rules
+		rm -rf ./${i}/Makefile
+		rm -rf ./${i}/${i}			
 	done
 else
 
@@ -31,20 +34,31 @@ else
 	for i in `cat testSequences.txt`
 	do
 		cd ./${i}
-		#if all files are deleted when 'clean' a goil is needed (with goil's templates url) and the target librarie (here libpcl) :
-		goil --target=libpcl --templates=../../../goil/templates/ -g defaultAppWorkstation.oil
+		
+		#if Makefile doesn't exist -> do goil
+		if ! `test -f Makefile`
+		then
+			#check if target's name is among arguments (default=libpcl)
+			if [ "$1" = "" ]
+			then	
+				goil --target=libpcl --templates=../../../goil/templates/ -g defaultAppWorkstation.oil
+			else 
+				goil --target=$1 --templates=../../../goil/templates/ -g defaultAppWorkstation.oil	
+			fi
+		fi
+		
 		make
 		./${i} >> ../results.log
 		cd ..
 	done
 	echo "Tests done."
 
-	#echo "Compare results with the expected ones..."
+	echo "Compare results with the expected ones..."
 	if [ `diff results_expected.log results.log | wc -l` -eq 0 ] 
 	then 
 		echo "Success!!"
 	else
 		echo "Failed! Results are stored in `pwd`/results.log"
-		opendiff results_expected.log results.log
+		#opendiff results_expected.log results.log
 	fi
 fi
