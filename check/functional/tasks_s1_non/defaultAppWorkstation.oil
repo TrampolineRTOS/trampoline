@@ -22,7 +22,7 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "isr1_instance.c";
         APP_SRC = "../config.c";
 		TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "tasks_s1";
+        APP_NAME = "tasks_s1_non";
 		CFLAGS = "-I../embUnit";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;

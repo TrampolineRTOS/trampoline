@@ -16,7 +16,7 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "startup_instance.c";
 		APP_SRC = "shutdown_instance.c";
         TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "hook_s1_full";
+        APP_NAME = "hook_s1_non";
 		CFLAGS = "-I../embUnit";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
