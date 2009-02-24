@@ -81,7 +81,7 @@ CPU test {
     TASK t2 {
         PRIORITY = 3;
         AUTOSTART = FALSE;
-        ACTIVATION = 4;
+        ACTIVATION = 1;
         SCHEDULE = FULL;
         STACKSIZE = 16000;
         RESOURCE  = r2;
