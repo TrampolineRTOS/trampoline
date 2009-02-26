@@ -28,6 +28,13 @@
 #include "tpl_os_timeobj_kernel.h"
 #include "tpl_os_action.h"
 
+/**
+ * @def INVALID_ALARM
+ *
+ * This value is used to specify an invalid alarm ID
+ */
+#define INVALID_ALARM    (-1)
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
