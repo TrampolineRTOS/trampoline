@@ -336,6 +336,8 @@ void tpl_suspend_os_interrupts_service(void)
  */
 void tpl_signal_handler(int sig)
 {
+	tpl_get_task_lock(); //disable interrupts in PostTaskook and "PreTaskISR"
+	
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
   struct itimerval timer;
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
@@ -371,6 +373,9 @@ void tpl_signal_handler(int sig)
         }
     }
 #endif /* NO_ISR */
+
+	tpl_release_task_lock(); //released interrupts returning in the previous task
+
 }
 
 /*
@@ -505,7 +510,7 @@ FUNC(void, OS_CODE) tpl_switch_context_from_it(
     }
     else co_call( **new_context );
 	
-	tpl_release_task_lock();
+	//tpl_release_task_lock(); //move at the end of tpl_signal_handler()
 	
 }
 
