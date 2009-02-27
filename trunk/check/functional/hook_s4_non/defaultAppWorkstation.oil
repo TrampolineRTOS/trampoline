@@ -15,6 +15,12 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "../config.c";
 		APP_SRC = "hook_s4.c";
 		APP_SRC = "task1_instance.c";
+		APP_SRC = "task2_instance.c";
+		APP_SRC = "isr1_instance.c";
+		APP_SRC = "isr2_instance.c";
+		APP_SRC = "error_instance.c";
+		APP_SRC = "posttask_instance5.c";
+		APP_SRC = "pretask_instance2.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "hook_s4_non";
 		CFLAGS = "-I../embUnit";
@@ -31,13 +37,13 @@ IMPLEMENTATION trampoline {
     TASK t1 {
         AUTOSTART = TRUE { APPMODE = std ; } ;
         PRIORITY = 1;
-        ACTIVATION = 2;
+        ACTIVATION = 1;
         SCHEDULE = NON;
     };
 	
 	TASK t2 {
         AUTOSTART = FALSE ;
-        PRIORITY = 1;
+        PRIORITY = 2;
         ACTIVATION = 1;
         SCHEDULE = NON;
     };
@@ -45,8 +51,15 @@ IMPLEMENTATION trampoline {
 	ISR isr1{
 		CATEGORY = 2;
 		STACKSIZE = 32000;
-		PRIORITY = 1;
+		PRIORITY = 2;
 		SOURCE = SIGUSR1;
+	};
+
+	ISR isr2{
+		CATEGORY = 2;
+		STACKSIZE = 32000;
+		PRIORITY = 1;
+		SOURCE = SIGUSR2;
 	};
 	
 

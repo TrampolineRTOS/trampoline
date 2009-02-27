@@ -3,17 +3,18 @@
 #include "embUnit.h";
 
 TestRef HookTest_seq4_t1_instance(void);
+TestRef HookTest_seq4_t2_instance(void);
 TestRef HookTest_seq4_isr1_instance(void);
+TestRef HookTest_seq4_isr2_instance(void);
+TestRef HookTest_seq4_error_instance(void);
+TestRef HookTest_seq4_pretask_instance2(void);
+TestRef HookTest_seq4_posttask_instance5(void);
 
 void tpl_send_it1(void);
+void tpl_send_it2(void);
 
-int error_instance = 0;
 int posttask_instance = 0;
 int pretask_instance = 0;
-int task1_instance = 0;
-
-DeclareTask(t2);
-DeclareTask(t1);
 
 int main(void)
 {
@@ -32,55 +33,19 @@ void ShutdownHook(StatusType error)
 }
 
 void ErrorHook(void)
-{ 
-	error_instance++;
-	switch (error_instance) {
-		case 1: {
-			//
-			break;
-		}
-		case 2: {
-			//
-			break;
-		}
-		case 3: {
-			
-			break;
-		}
-		case 4: {
-			
-			break;
-		}
-		default: {
-			
-			break;
-		}
-	}
-	
-	
+{
+	//stdimpl_print("ErrorHook\n");
+	TestRunner_runTest(HookTest_seq4_error_instance());
 	
 }
 
 void PreTaskHook(void)
 { 
 	pretask_instance++;
-	stdimpl_print("Pretaskhook : case%d",pretask_instance);
+	//stdimpl_print("PreTask : case %d\n",pretask_instance);
 	switch (pretask_instance) {
-		case 1: {
-			//
-			break;
-		}
 		case 2: {
-			//
-			break;
-		}
-		case 3: {
-			
-			break;
-		}
-		case 4: {
-			//stdimpl_print(" - ResumeAllInterrupts\n");
-			//ResumeAllInterrupts();
+			TestRunner_runTest(HookTest_seq4_pretask_instance2());
 			break;
 		}
 		default: {
@@ -88,121 +53,46 @@ void PreTaskHook(void)
 			break;
 		}
 	}
-	stdimpl_print("\n");	
 	
 }
 
 void PostTaskHook(void)
 { 
 	posttask_instance++;
-	stdimpl_print("Posttaskhook : case%d",posttask_instance);
+	//stdimpl_print("PostTask : case %d\n",pretask_instance);
 	switch (posttask_instance) {
-		case 1: {
-			stdimpl_print(" - call interrupt");
-			tpl_send_it1();
-			tpl_send_it1();
-			tpl_send_it1();
-			tpl_send_it1();
-			tpl_send_it1();
-			tpl_send_it1();
-			break;
-		}
-		case 2: {
-			stdimpl_print(" - SuspendAllInterrupts");
-			SuspendAllInterrupts();
-			stdimpl_print(" - ResumeAllInterrupts");
-			ResumeAllInterrupts();
-			stdimpl_print(" - call interrupt");
-			tpl_send_it1();
-			break;
-		}
-		case 3: {
-			stdimpl_print(" - call interrupt");
-			tpl_send_it1();			
-			break;
-		}
-		case 4: {
+		case 5: {
+			TestRunner_runTest(HookTest_seq4_posttask_instance5());
 			break;
 		}
 		default: {
-			stdimpl_print(" - call interrupt");
-			tpl_send_it1();
+
 			break;
 		}
 	}
-	stdimpl_print("\n");
 }
 
 TASK(t1)
 {
-	task1_instance++;
-	stdimpl_print("Task1 : case%d",task1_instance);
-	switch (task1_instance) {
-		case 1: {
-			stdimpl_print("\n");
-			EnableAllInterrupts();
-			ChainTask(t1);
-			
-			break;
-		}
-		case 2: {		
-			stdimpl_print(" - \n");
-			ChainTask(t1);
-			break;
-		}
-		case 3: {
-			stdimpl_print(" - \n");
-			ChainTask(t1);
-			break;
-		}
-		case 4: {
-			stdimpl_print(" - \n");
-			ChainTask(t1);
-			break;
-		}	
-		case 5: {	
-			stdimpl_print(" - \n");
-			ChainTask(t1);
-			break;
-		}
-		default: {
-			stdimpl_print(" - \n");
-			break;
-		}
-	}
-
-	
-	//TestRunner_runTest(HookTest_seq4_t1_instance());
-	/*stdimpl_print("before interrupt\n");
-	tpl_send_it1();
-	
-	stdimpl_print("Suspend interrupt from task\n");
-	SuspendAllInterrupts();
-	
-	stdimpl_print("before interrupt\n");
-	tpl_send_it1();
-	tpl_send_it1();
-	
-	stdimpl_print("Resume interrupt from task\n");
-	ResumeAllInterrupts();
-	
-	tpl_send_it1();
-	
-	stdimpl_print("before chaintask\n");
-	ChainTask(t2);
-*/
+	TestRunner_runTest(HookTest_seq4_t1_instance());
 }
 
 
 TASK(t2)
 {
-	stdimpl_print("before shutdownOS\n");
-	ShutdownOS(E_OK);
+	TestRunner_runTest(HookTest_seq4_t2_instance());
 }
 
 
 ISR(isr1)
 {
-	stdimpl_print("**** ISR1 : case1 \n");
-	//TestRunner_runTest(HookTest_seq4_isr1_instance());
+	//stdimpl_print("ISR1 \n");
+	TestRunner_runTest(HookTest_seq4_isr1_instance());
+}
+
+ISR(isr2)
+{
+	//stdimpl_print("ISR2 \n");
+	TestRunner_runTest(HookTest_seq4_isr2_instance());
+	ShutdownOS(E_OK);
 }

@@ -3,21 +3,11 @@
 //#include "test_instances.h"
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "config.h" /*Display information n the right way (printf on UNIX...)*/
 
 /*test case:test the reaction of the system called with 
 an activation of a isr*/
 static void test_isr1_instance(void)
 {
-	int result_inst_1;
-	
-	result_inst_1 = GetActiveApplicationMode();
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_1);
-	
-	stdimpl_print("IN interrupt\n");
-	
-	
-	//ShutdownOS(E_OK)
 	
 }
 

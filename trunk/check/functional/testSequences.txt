@@ -64,3 +64,5 @@ hook_s2_full
 hook_s2_non
 hook_s3_full
 hook_s3_non
+hook_s4_full
+hook_s4_non
