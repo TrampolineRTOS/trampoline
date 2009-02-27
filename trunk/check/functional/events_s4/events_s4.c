@@ -1,4 +1,5 @@
 #include "config.h" /*Display information in the right way (printf on UNIX...)*/
+#include "embUnit.h"
 #include "tpl_os.h"
 
 TestRef EventMechanismTest_seq4_t1_instance(void);

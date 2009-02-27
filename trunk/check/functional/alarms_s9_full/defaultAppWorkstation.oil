@@ -1,4 +1,4 @@
-OIL_VERSION = "2.5" : "alarms_s11" ;
+OIL_VERSION = "2.5" : "alarms_s9" ;
 
 IMPLEMENTATION trampoline {
 	
@@ -12,7 +12,7 @@ IMPLEMENTATION trampoline {
 
     OS config {
         STATUS = EXTENDED;
-		APP_SRC = "alarms_s11.c";
+		APP_SRC = "alarms_s9.c";
 		APP_SRC = "task1_instance.c";
 		APP_SRC = "task2_instance.c";
 		APP_SRC = "task3_instance.c";
@@ -22,7 +22,7 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "callback_instance.c";
 		APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "alarms_s11_full";
+        APP_NAME = "alarms_s9_full";
 		CFLAGS = "-I../embUnit";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
