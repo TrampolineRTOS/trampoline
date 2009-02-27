@@ -3,7 +3,6 @@
 #include "embUnit.h"
 
 TestRef AlarmsTest_seq4_t1_instance(void);
-TestRef AlarmsTest_seq4_t2_instance(void);
 TestRef AlarmsTest_seq4_callback_instance(void);
 
 int main(void)
@@ -22,12 +21,6 @@ TASK(t1)
 	TestRunner_start();
 	TestRunner_runTest(AlarmsTest_seq4_t1_instance());
 	ShutdownOS(E_OK);
-}
-
-TASK(t2)
-{
-	TestRunner_runTest(AlarmsTest_seq4_t2_instance());
-	
 }
 
 void CallBackC_callback(void){

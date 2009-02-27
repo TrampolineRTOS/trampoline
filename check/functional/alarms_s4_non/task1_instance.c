@@ -12,7 +12,7 @@ void WaitActivationOneShotAlarm(AlarmType Alarm);
 an activation of a task*/
 static void test_t1_instance(void)
 {
-	int result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_9, result_inst_10;
+	int result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_7;
 	
 	result_inst_1 = SetAbsAlarm(Alarm1, 2, 2);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
@@ -24,34 +24,24 @@ static void test_t1_instance(void)
 	//We have to wait until the alarm is activated and it depends if it's an periodic alarm or a one shot alarm.
 	WaitActivationPeriodicAlarm(Alarm1);
 	
-	result_inst_3 = Schedule();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);	
-	
 	WaitActivationPeriodicAlarm(Alarm1);
 	
-	result_inst_4 = Schedule();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_4);	
+	result_inst_3 = CancelAlarm(Alarm1);
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
 	
-	result_inst_5 = CancelAlarm(Alarm1);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_5);
-	
-	result_inst_6 = SetRelAlarm(Alarm1, 2, 0);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_6);
+	result_inst_4 = SetRelAlarm(Alarm1, 2, 0);
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_4);
 
-	result_inst_7 = SetRelAlarm(Alarm1, 3, 0);
-	TEST_ASSERT_EQUAL_INT(E_OS_STATE, result_inst_7);
+	result_inst_5 = SetRelAlarm(Alarm1, 3, 0);
+	TEST_ASSERT_EQUAL_INT(E_OS_STATE, result_inst_5);
 	
-	TickType result_inst_8;
-	result_inst_9 = GetAlarm(Alarm1, &result_inst_8);
-	TEST_ASSERT_EQUAL_INT(2, result_inst_8); //the alarm is active so ticks is changing and can be changing just before we read it. Sould we still read it ?
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_9);
+	TickType result_inst_6;
+	result_inst_7 = GetAlarm(Alarm1, &result_inst_6);
+	TEST_ASSERT_EQUAL_INT(2, result_inst_6); //the alarm is active so ticks is changing and can be changing just before we read it. Sould we still read it ?
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_7);
 	
 	WaitActivationOneShotAlarm(Alarm1);
-	
-	result_inst_10 = Schedule();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_10);
-	
-	
+		
 }
 
 /*create the test suite with all the test cases*/

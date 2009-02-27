@@ -17,7 +17,7 @@ CPU test {
 		APP_SRC = "task2_instance.c";
 		APP_SRC = "task3_instance1.c";
 		APP_SRC = "task3_instance2.c";
-        TRAMPOLINE_BASE_PATH = "../../..";
+		TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "tasks_s9_non";
 		CFLAGS = "-I../embUnit";
 		LDFLAGS = "-L../lib -lembUnit";
@@ -46,4 +46,6 @@ CPU test {
         ACTIVATION = 1;
         SCHEDULE = NON;
     };
+	
+
 };

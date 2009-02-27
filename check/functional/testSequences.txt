@@ -55,10 +55,8 @@ alarms_s5
 alarms_s6
 alarms_s7
 alarms_s8
-alarms_s9
-alarms_s10
-alarms_s11_full
-alarms_s11_non
+alarms_s9_full
+alarms_s9_non
 
 hook_s1_full
 hook_s1_non
