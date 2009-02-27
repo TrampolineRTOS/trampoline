@@ -2,24 +2,21 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "config.h" /*Display information n the right way (printf on UNIX...)*/
 
-DeclareTask(t1);
-
-void tpl_send_it1();
+DeclareTask(t2);
 
 /*test case:test the reaction of the system called with 
 an activation of a task*/
 static void test_t1_instance(void)
 {
-	int result_inst_1, result_inst_2, result_inst_3;
-	
-	tpl_send_it1();
-	
+	int result_inst_1, result_inst_2;
+
 	result_inst_1 = GetActiveApplicationMode();
 	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_1);
 	
-	result_inst_2 = ChainTask(t1);
+	EnableAllInterrupts();
+	
+	result_inst_2 = ChainTask(t2);
 	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_2);	
 	
 }
