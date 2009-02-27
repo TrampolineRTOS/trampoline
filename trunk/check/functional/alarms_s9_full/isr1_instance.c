@@ -2,7 +2,7 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "tpl_os_kernel.h" //for INVALID_TASK
+#include "tpl_os_alarm_kernel.h" /*for INVALID_ALARM*/
 
 DeclareAlarm(Alarm0);
 DeclareAlarm(Alarm1_1);
@@ -26,21 +26,21 @@ static void test_isr1_instance(void)
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
 	
 	AlarmBaseType alarmbase;
-	result_inst_2 = GetAlarmBase(INVALID_TASK, &alarmbase);
+	result_inst_2 = GetAlarmBase(INVALID_ALARM, &alarmbase);
 	TEST_ASSERT_EQUAL_INT(E_OS_ID, result_inst_2);
 	
 	result_inst_3 = GetAlarmBase(Alarm0, &alarmbase);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
 	
 	TickType tik;
-	result_inst_4 = GetAlarm(INVALID_TASK, &tik);
+	result_inst_4 = GetAlarm(INVALID_ALARM, &tik);
 	TEST_ASSERT_EQUAL_INT(E_OS_ID, result_inst_4);
 	
 	result_inst_5 = GetAlarm(Alarm0, &tik);
 	TEST_ASSERT_EQUAL_INT(E_OS_NOFUNC, result_inst_5);
 	
 	
-	result_inst_6 = SetRelAlarm(INVALID_TASK, 0, 0);
+	result_inst_6 = SetRelAlarm(INVALID_ALARM, 0, 0);
 	TEST_ASSERT_EQUAL_INT(E_OS_ID, result_inst_6);
 	
 	result_inst_7 = SetRelAlarm(Alarm0, -1 , 0);
@@ -56,7 +56,7 @@ static void test_isr1_instance(void)
 	TEST_ASSERT_EQUAL_INT(E_OS_VALUE, result_inst_10);	
 	
 	
-	result_inst_11 = SetAbsAlarm(INVALID_TASK, 0, 0);
+	result_inst_11 = SetAbsAlarm(INVALID_ALARM, 0, 0);
 	TEST_ASSERT_EQUAL_INT(E_OS_ID, result_inst_11);
 	
 	result_inst_12 = SetAbsAlarm(Alarm0, -1 , 0);
@@ -72,7 +72,7 @@ static void test_isr1_instance(void)
 	TEST_ASSERT_EQUAL_INT(E_OS_VALUE, result_inst_15);	
 	
 	
-	result_inst_16 = CancelAlarm(INVALID_TASK);
+	result_inst_16 = CancelAlarm(INVALID_ALARM);
 	TEST_ASSERT_EQUAL_INT(E_OS_ID, result_inst_16);	
 	
 	result_inst_17 = CancelAlarm(Alarm0);

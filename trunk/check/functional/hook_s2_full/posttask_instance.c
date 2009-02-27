@@ -6,8 +6,7 @@
 #include "tpl_os_kernel.h"; //for INVALID_TASK
 #include "tpl_os_generated_configuration.h"; //for OSMAXALLOWEDVALUE_Counter1...
 
-#define t1_id 0
-
+DeclareTask(t1);
 DeclareAlarm(Alarm1);
 
 /*test case:test the reaction of the system called with 
@@ -25,6 +24,12 @@ static void test_posttask_instance(void)
 	
 	TaskStateType task_state;
 	result_inst_3 = GetTaskState(task_id, &task_state);
+	/* When a task is finishing, Task_state should be RUNNING.
+	 Here, Task_state is not equal to RUNNING. When tpl_schedule_from_dying() is called,
+	 task_state is equal to DYING (0x7) and when gettaskstate() is called, it returns
+	 DYING && 0x3 = 0x3 which is equal to WAITING.
+	 -> Maybe we have to change DYING from 0x7 to 0x6.
+	 */
 	
 	EventMaskType event_mask;
 	result_inst_4 = GetEvent(task_id,&event_mask);
@@ -38,15 +43,7 @@ static void test_posttask_instance(void)
 	
 	TickType tik;
 	result_inst_6 = GetAlarm(Alarm1,&tik);
-	/*result_inst_6 is different when task_id is t1_id :
-	 - When task_state == WAITING, result_inst_6 == E_OK
-	 - When task_state == RUNNNING, result_inst_6 == E_OS_NOFUNC
-	 The problem is task_state is never equal to RUNNING. When tpl_schedule_from_dying() is called,
-	 task_state is equal to DYNING (0x7) and when gettaskstate() is called, it returns
-	 DYING && 0x3 = 0x3 which is equal to WAITING and not RUNNING.
-	 Maybe we have to change DYING from 0x7 to 0x6.
-	*/
-	//TEST_ASSERT_EQUAL_INT(E_OS_NOFUNC , result_inst_6);
+
 	//stdimpl_print("POSTTASKHOOK - task : %d - state : %d - getevent : %d - getalarm : %d - tick : %d\n",task_id,task_state,result_inst_6,event_mask,tik);
 	
 	if(task_id == INVALID_TASK){
@@ -56,12 +53,18 @@ static void test_posttask_instance(void)
 		
 		//TEST_ASSERT_EQUAL_INT(SUSPENDED , task_state);
 	}
-	else if(task_id == t1_id){
+	else if(task_id == t1){
 		TEST_ASSERT_EQUAL_INT(E_OK , result_inst_3);
 		TEST_ASSERT_EQUAL_INT(E_OK , result_inst_4);
-		TEST_ASSERT_EQUAL_INT(0 , task_id);
+		TEST_ASSERT_EQUAL_INT(t1 , task_id);
 		
-		//on task_state -> test if GetAlarm equal E_OK or E_OS_FUNC
+		/* After resolving task_state ****
+			On task_state :
+				if equal to WAITING -> GetAlarm equal E_OK (t1 is waiting for an event just after setting the alarm)
+				if equal to RUNNING -> GetAlarm equal E_OS_FUNC (when t1 is dying (after t1 received Event1), the alarm doesn't exist anymore)
+		
+			TEST_ASSERT_EQUAL_INT(E_OS_NOFUNC , result_inst_6);
+		*/
 	}
 	else{
 		stdimpl_print("posttask Instance error");

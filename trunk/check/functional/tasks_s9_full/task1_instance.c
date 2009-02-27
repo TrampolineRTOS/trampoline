@@ -15,7 +15,7 @@ static void test_t1_instance(void)
 	
 	TaskType result_inst_1;
 	result_inst_2 = GetTaskID(&result_inst_1);
-	TEST_ASSERT_EQUAL_INT(0 , result_inst_1);
+	TEST_ASSERT_EQUAL_INT(t1 , result_inst_1);
 	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_2);
 	
 	TaskStateType result_inst_3;

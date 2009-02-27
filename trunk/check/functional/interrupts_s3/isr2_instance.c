@@ -3,7 +3,6 @@
 //#include "test_instances.h"
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "tpl_os_kernel.h" /*for INVALID_TASK*/
 
 DeclareTask(t2);
 

@@ -79,8 +79,8 @@ void PreTaskHook(void)
 			break;
 		}
 		case 4: {
-			ResumeAllInterrupts();
-			stdimpl_print(" - ResumeAllInterrupts");
+			//stdimpl_print(" - ResumeAllInterrupts\n");
+			//ResumeAllInterrupts();
 			break;
 		}
 		default: {
@@ -98,24 +98,35 @@ void PostTaskHook(void)
 	stdimpl_print("Posttaskhook : case%d",posttask_instance);
 	switch (posttask_instance) {
 		case 1: {
-			//
+			stdimpl_print(" - call interrupt");
+			tpl_send_it1();
+			tpl_send_it1();
+			tpl_send_it1();
+			tpl_send_it1();
+			tpl_send_it1();
+			tpl_send_it1();
 			break;
 		}
 		case 2: {
-			SuspendAllInterrupts();
 			stdimpl_print(" - SuspendAllInterrupts");
+			SuspendAllInterrupts();
+			stdimpl_print(" - ResumeAllInterrupts");
+			ResumeAllInterrupts();
+			stdimpl_print(" - call interrupt");
+			tpl_send_it1();
 			break;
 		}
 		case 3: {
-			
+			stdimpl_print(" - call interrupt");
+			tpl_send_it1();			
 			break;
 		}
 		case 4: {
-			//ResumeAllInterrupts();
 			break;
 		}
 		default: {
-			
+			stdimpl_print(" - call interrupt");
+			tpl_send_it1();
 			break;
 		}
 	}
@@ -125,35 +136,37 @@ void PostTaskHook(void)
 TASK(t1)
 {
 	task1_instance++;
-	stdimpl_print("Task1 : case%d\n",task1_instance);
+	stdimpl_print("Task1 : case%d",task1_instance);
 	switch (task1_instance) {
 		case 1: {
+			stdimpl_print("\n");
 			EnableAllInterrupts();
 			ChainTask(t1);
+			
 			break;
 		}
 		case 2: {		
-			stdimpl_print(" - call interrupt");
-			tpl_send_it1();
+			stdimpl_print(" - \n");
 			ChainTask(t1);
 			break;
 		}
 		case 3: {
-			tpl_send_it1();
+			stdimpl_print(" - \n");
 			ChainTask(t1);
 			break;
 		}
 		case 4: {
-			
+			stdimpl_print(" - \n");
 			ChainTask(t1);
 			break;
 		}	
-		case 5: {			
+		case 5: {	
+			stdimpl_print(" - \n");
 			ChainTask(t1);
 			break;
 		}
 		default: {
-			
+			stdimpl_print(" - \n");
 			break;
 		}
 	}
@@ -190,6 +203,6 @@ TASK(t2)
 
 ISR(isr1)
 {
-	stdimpl_print("ISR1 : case1 \n");
+	stdimpl_print("**** ISR1 : case1 \n");
 	//TestRunner_runTest(HookTest_seq4_isr1_instance());
 }

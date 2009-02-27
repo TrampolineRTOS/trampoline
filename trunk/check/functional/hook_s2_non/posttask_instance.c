@@ -6,8 +6,7 @@
 #include "tpl_os_kernel.h"; //for INVALID_TASK
 #include "tpl_os_generated_configuration.h"; //for OSMAXALLOWEDVALUE_Counter1...
 
-#define t1_id 0
-
+DeclareTask(t1);
 DeclareAlarm(Alarm1);
 
 /*test case:test the reaction of the system called with 
@@ -54,10 +53,10 @@ static void test_posttask_instance(void)
 		
 		//TEST_ASSERT_EQUAL_INT(SUSPENDED , task_state);
 	}
-	else if(task_id == t1_id){
+	else if(task_id == t1){
 		TEST_ASSERT_EQUAL_INT(E_OK , result_inst_3);
 		TEST_ASSERT_EQUAL_INT(E_OK , result_inst_4);
-		TEST_ASSERT_EQUAL_INT(0 , task_id);
+		TEST_ASSERT_EQUAL_INT(t1 , task_id);
 		
 		/* After resolving task_state ****
 			On task_state :

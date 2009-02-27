@@ -14,7 +14,6 @@ IMPLEMENTATION trampoline {
         STATUS = STANDARD;
 		APP_SRC = "alarms_s4.c";
 		APP_SRC = "task1_instance.c";
-		APP_SRC = "task2_instance.c";
 		APP_SRC = "callback_instance.c";
 		APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
@@ -29,13 +28,6 @@ IMPLEMENTATION trampoline {
     TASK t1 {
         AUTOSTART = TRUE { APPMODE = std ; } ;
         PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-    };
-	
-    TASK t2 {
-        AUTOSTART = FALSE ;
-        PRIORITY = 2;
         ACTIVATION = 1;
         SCHEDULE = NON;
     };

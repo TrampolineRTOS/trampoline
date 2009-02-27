@@ -3,9 +3,7 @@
 #include "embUnit.h"
 #include "tpl_os.h"
 #include "config.h" /*Display information in the right way (printf on UNIX...)*/
-//#include "tpl_os_generated_configuration.h"
-
-#define INVALID_ALARM (-1)
+#include "tpl_os_alarm_kernel.h" /*for INVALID_ALARM*/
 
 DeclareAlarm(Alarm1);
 

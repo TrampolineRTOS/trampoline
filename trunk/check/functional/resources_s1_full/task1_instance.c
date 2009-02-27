@@ -3,8 +3,7 @@
 //#include "test_instances.h"
 #include "embUnit.h"
 #include "tpl_os.h"
-
-#define INVALID_RESOURCE (-1) //put in tpl_os_kernel.h
+#include "tpl_os_rez_kernel.h" /*for INVALID_RESOURCE*/
 
 DeclareResource(Resource1);
 DeclareResource(Resource2);

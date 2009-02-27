@@ -5,6 +5,7 @@
 #include "config.h" /*Display information n the right way (printf on UNIX...)*/
 #include "tpl_os_generated_configuration.h"; //for OSMAXALLOWEDVALUE_Counter1...
 
+DeclareTask(t1);
 DeclareAlarm(Alarm1);
 DeclareEvent(Event1);
 
@@ -20,7 +21,7 @@ static void test_error_instance(void)
 	TaskType task_id;
 	result_inst_2 = GetTaskID(&task_id);
 	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_2); 
-	TEST_ASSERT_EQUAL_INT(0 , task_id); 
+	TEST_ASSERT_EQUAL_INT(t1 , task_id); 
 		
 	TaskStateType task_state;
 	result_inst_3 = GetTaskState(task_id, &task_state);
