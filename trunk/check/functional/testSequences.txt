@@ -26,6 +26,7 @@ interrupts_s2
 interrupts_s3
 interrupts_s4_full
 interrupts_s4_non
+interrupts_s5
 
 events_s1_full
 events_s1_non
