@@ -53,6 +53,7 @@ struct TPL_APP_ACCESS {
   CONST(tpl_resource_id, TYPEDEF)                         rez_count;
   CONST(tpl_schedtable_id, TYPEDEF)                       st_count;
   CONST(tpl_counter_id, TYPEDEF)                          cnt_count;
+  CONST(tpl_proc_id, TYPEDEF)                             restart;
 };
 
 /**

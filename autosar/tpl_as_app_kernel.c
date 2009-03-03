@@ -274,6 +274,12 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
       }
     }
 #endif
+  /* Restart the application if needed  */
+    if ((opt == RESTART) &&
+        (tpl_app_table[running_app_id]->restart != INVALID_TASK))
+    {
+      tpl_activate_task(tpl_app_table[running_app_id]->restart);
+    }
   }
   else
   {

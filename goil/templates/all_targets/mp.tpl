@@ -6,6 +6,7 @@
  */
 
 #include "tpl_os_mem_prot.h"
+#include "tpl_os_definitions.h"
 
 /*
  * Memory descriptor for each process

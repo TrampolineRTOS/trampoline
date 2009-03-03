@@ -310,8 +310,7 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(
   VAR(tpl_priority, AUTOMATIC)                prio;
   P2VAR(tpl_proc_id, OS_APPL_DATA, AUTOMATIC) fifo;
   VAR(u8, AUTOMATIC)                          write_idx;
-  
-  DOW_DO(printrl("tpl_put_prempted_exec_object - avant");)
+  DOW_DO(printrl("tpl_put_preempted_exec_object - avant");)
   
   /*  the priority used as level in the ready list
       for a preempted object is the current priority                */
@@ -418,7 +417,7 @@ FUNC(void, OS_CODE) printrl(
       {
         idx -= tpl_ready_list[i].size;
       }
-      printf(" %d",level[idx]);
+      printf(" %d [%d]",level[idx],size);
     }
     printf("\n");
   }
@@ -496,7 +495,8 @@ tpl_put_preempted_proc(
   VAR(tpl_priority, AUTOMATIC)                prio;
   P2VAR(tpl_proc_id, AUTOMATIC, OS_APPL_DATA) fifo;
   VAR(u8, AUTOMATIC)                          write_idx;
-  
+  DOW_DO(VAR(u8, AUTOMATIC) size_before;)
+
   DOW_DO(printrl("tpl_put_prempted_exec_object - avant");)
   
   /*  the priority used as level in the ready list
@@ -505,6 +505,8 @@ tpl_put_preempted_proc(
   
   DOW_ASSERT((prio >= 0) && (prio < PRIO_LEVEL_COUNT))
   DOW_ASSERT(tpl_fifo_rw[prio].size < tpl_ready_list[prio].size)
+  
+  DOW_DO(size_before = tpl_fifo_rw[prio].size;)
   
   /*  a preempted executable object is put at the head of the fifo    */
   write_idx = tpl_fifo_rw[prio].read - 1 ;
@@ -524,6 +526,8 @@ tpl_put_preempted_proc(
   /* adjust the size                                                  */
   tpl_fifo_rw[prio].size++;
   
+  DOW_ASSERT(tpl_fifo_rw[prio].size == (size_before + 1));
+             
   /* adjust the highest priority non empty fifo                       */
   if (prio > tpl_h_prio) {
     tpl_h_prio = prio;
@@ -549,7 +553,8 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
   VAR(tpl_priority, AUTOMATIC)                prio;
   P2VAR(tpl_proc_id, AUTOMATIC, OS_APPL_DATA) fifo;
   VAR(u8, AUTOMATIC)                          write_idx;
-  
+  DOW_DO(VAR(u8, AUTOMATIC) size_before;)
+
   DOW_DO(printrl("tpl_put_new_exec_object - avant");)
   
   /*  the priority used as level in the ready list
@@ -558,6 +563,8 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
   
   DOW_ASSERT((prio >= 0) && (prio < PRIO_LEVEL_COUNT))
   DOW_ASSERT(tpl_fifo_rw[prio].size < tpl_ready_list[prio].size)
+  
+  DOW_DO(size_before = tpl_fifo_rw[prio].size;)
   
   /*  a newly activated executable object
       is put at the end of the fifo                     */
@@ -577,6 +584,8 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
   /* adjust the size                                    */
   tpl_fifo_rw[prio].size++;
   
+  DOW_ASSERT(tpl_fifo_rw[prio].size == (size_before + 1));
+
   /* adjust the highest priority non empty fifo         */
   if (prio > tpl_h_prio) {
     tpl_h_prio = prio;
@@ -622,7 +631,13 @@ FUNC(void, OS_CODE) tpl_remove_proc_for_prio(
     r = (r == end_fifo) ? fifo : r + 1 ;
     size--;
   }
-  tpl_fifo_rw[prio].size = new_size;  
+  tpl_fifo_rw[prio].size = new_size;
+  
+  /*  Adjust the highest priority non empty fifo index                */
+  while ((tpl_h_prio >= 0) && (tpl_fifo_rw[tpl_h_prio].size == 0))
+  {
+    tpl_h_prio--;
+  }  
 }
 
 /**
@@ -640,6 +655,9 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
   CONST(tpl_priority, AUTOMATIC) base_prio =
     tpl_stat_proc_table[proc_id]->base_priority;
   
+  DOW_DO(printf("\n**** remove proc %d ****\n",proc_id);)
+  DOW_DO(printrl("tpl_remove_proc - before");)
+  
   /*  First clean the current prio fifo if needed */
   if (prio != base_prio)
   {
@@ -647,6 +665,8 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
   }
   /*  Then clean the base_prio fifo */
   tpl_remove_proc_for_prio(proc_id, prio);
+
+  DOW_DO(printrl("tpl_remove_proc - after");)
 }
 
 #endif
@@ -658,7 +678,7 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
  *
  * @see #tpl_os_state
  */
-FUNC(VAR(tpl_os_state, AUTOMATIC), OS_CODE) tpl_current_os_state(void)
+FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(void)
 {
   VAR(tpl_os_state, OS_APPL_DATA) state = OS_UNKNOWN;
   

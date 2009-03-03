@@ -486,15 +486,13 @@ FUNC(void, OS_CODE) tpl_switch_context(
     CONSTP2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
     CONSTP2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
 {
-    /* assert( **new_context != co_current() ); */
-//    tpl_release_task_lock();  
+    assert( **new_context != co_current() );
     if( *new_context == &idle_task_context )
     {
         /* idle_task activation */
         co_call( idle_task_context );
     }
     else co_call( **new_context );
-//    tpl_get_task_lock(); 
 }
 
 
@@ -509,9 +507,6 @@ FUNC(void, OS_CODE) tpl_switch_context_from_it(
         co_call( idle_task_context );
     }
     else co_call( **new_context );
-	
-	//tpl_release_task_lock(); //move at the end of tpl_signal_handler()
-	
 }
 
 #define CO_MIN_SIZE (4*8*(4 * 1024))
