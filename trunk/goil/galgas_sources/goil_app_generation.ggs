@@ -321,6 +321,16 @@ routine generate_apps
       doReplace !?tpl !"$CNT_OWNERSHIP$" !"NULL" ;
     end if ;
 
+#
+# Restart task, INVALID_TASK if no retart task specified
+#
+    cast [app restart] :
+    when == @string_class rst do
+      doReplace !?tpl !"$RESTART$" ![rst value]."_id" ;
+    else
+      doReplace !?tpl !"$RESTART$" !"INVALID_TASK" ;
+    end cast ;
+
     doReplace !?tpl !"$OWNERSHIP_VEC$" !ownership_vec ;
 
 #    log tpl ;
