@@ -1,6 +1,0 @@
-Task management : tout les tests ont été réalisé (sauf pour les isr : 20 21 25 26 35 36 37 38 ) (41 tests)
-Interrupt Processing : rien  (12 tests)
-Event mechanism : tout les tests ont été réalisé (sauf pour les isr : 12 13 23 24) (26 tests)
-Resource management : 2 tests de fait (16 tests)
-Alarm : tous fait  sauf le 31 32 33 34 36 (36 tests)
-
