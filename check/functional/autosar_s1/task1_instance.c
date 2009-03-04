@@ -12,7 +12,7 @@ static void test_t1_instance(void)
 	int result_inst_1;
 	
 	result_inst_1 = GetApplicationID();	
-	TEST_ASSERT_EQUAL_INT(0, result_inst_1);
+	TEST_ASSERT_EQUAL_INT(1, result_inst_1);
 	
 	ActivateTask(t2);
 	
