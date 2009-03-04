@@ -36,7 +36,7 @@ PLATFORM_LINKER_OPTIONS :=
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-include ../common_files_for_make/makefile.mke
+include ../galgas_sources/GALGAS_OUTPUT/file_list.mke
 
 #---------------------------------------------------------------------------*
 #                                                                           *
