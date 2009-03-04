@@ -1,0 +1,77 @@
+OIL_VERSION = "2.5" : "com_internal_s2" ;
+
+IMPLEMENTATION trampoline {
+    TASK {
+        UINT32 STACKSIZE = 32768 ;
+        UINT32 PRIORITY = 1 ;
+    } ;
+    ISR {
+        UINT32 STACKSIZE = 32768 ;
+    } ;
+};
+
+CPU test {
+
+    OS config {
+        STATUS = EXTENDED;
+        APP_SRC = "com_internal_s2.c";
+        APP_SRC = "task1_instance.c";
+        APP_SRC = "task2_instance.c";
+        APP_SRC = "../config.c";
+        TRAMPOLINE_BASE_PATH = "../../..";
+        APP_NAME = "com_internal_s2";
+		ERRORHOOK = FALSE;
+        PRETASKHOOK = FALSE;
+		SHUTDOWNHOOK = TRUE;
+		
+		CFLAGS = "-I../embUnit";
+		LDFLAGS = "-L../lib -lembUnit";
+        
+
+    } ;
+
+    APPMODE std {
+    };
+
+    TASK t1 {
+        PRIORITY = 1;
+        AUTOSTART = TRUE { APPMODE = std ; } ;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        MESSAGE = sm;
+    };
+
+    TASK t2 {
+        PRIORITY = 2;
+        AUTOSTART = FALSE ;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        MESSAGE = rm;
+    };
+        
+    MESSAGE sm {
+        MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
+            CDATATYPE = "u32" ;
+        };
+		NOTIFICATION = NONE;
+    };
+    
+    MESSAGE rm {
+        MESSAGEPROPERTY = RECEIVE_QUEUED_INTERNAL {
+            SENDINGMESSAGE = sm;
+			QUEUESIZE = 5;
+        };
+        NOTIFICATION = ACTIVATETASK {
+            TASK = t2;
+        };
+    };
+		
+	COM config {
+		COMERRORHOOK = FALSE;
+		COMUSEGETSERVICEID = FALSE;
+		COMUSEPARAMETERACCESS = FALSE;
+		COMSTARTCOMEXTENSION = FALSE;
+		COMSTATUS = COMEXTENDED;
+	};
+	
+};
