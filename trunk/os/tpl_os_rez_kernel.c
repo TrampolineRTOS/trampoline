@@ -228,20 +228,20 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
 
       old_running_id = tpl_running_id;
       result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
-  #ifdef WITH_AUTOSAR_TIMING_PROTECTION
+# ifdef WITH_AUTOSAR_TIMING_PROTECTION
       tpl_stop_resource_monitor(tpl_running_id, res_id);
-  #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+# endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+# ifndef WITH_SYSTEM_CALL
+      if (tpl_need_switch != NO_NEED_SWITCH)
+      {
+        tpl_switch_context(
+          &(tpl_stat_proc_table[old_running_id]->context),
+          &(tpl_stat_proc_table[tpl_running_id]->context)
+        );
+      }
+# endif
     IF_NO_EXTENDED_ERROR_END()
 
-#ifndef WITH_SYSTEM_CALL
-    if (tpl_need_switch != NO_NEED_SWITCH)
-    {
-      tpl_switch_context(
-        &(tpl_stat_proc_table[old_running_id]->context),
-        &(tpl_stat_proc_table[tpl_running_id]->context)
-      );
-    }
-#endif
 
     UNLOCK_WHEN_NO_HOOK()
   IF_NO_EXTENDED_ERROR_END()
