@@ -21,6 +21,10 @@
 #include "tpl_com_base_mo.h"
 #include "tpl_com_app_def.h"
 
+#ifdef COM_EXTENDED
+#include "tpl_com_internal_com.h"
+#endif
+
 void tpl_get_task_lock(void);
 void tpl_release_task_lock(void);
 

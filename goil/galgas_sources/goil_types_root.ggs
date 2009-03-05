@@ -1,6 +1,7 @@
 semantics goil_types_root :
 
 import semantics goil_types_os in "goil_types_os.ggs" ;
+import semantics com_type in "com_type.ggs" ;
 import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
 import semantics goil_types_task in "goil_types_task.ggs" ;
 import semantics goil_types_isr in "goil_types_isr.ggs" ;
@@ -11,6 +12,7 @@ import semantics goil_types_networkmessage in "goil_types_networkmessage.ggs" ;
 
 class @root_obj {
     @os_obj            os ;
+    @com               com ;
     @task_map          tasks ;
     @counter_map       counters ;
     @alarm_map         alarms ;

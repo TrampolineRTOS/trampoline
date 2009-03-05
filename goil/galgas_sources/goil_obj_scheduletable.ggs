@@ -38,7 +38,7 @@ nonterminal <ltgt_sync_params>
 nonterminal <description>
     !@lstring desc ;
 nonterminal <boolean>
-    !@bool bool ;
+    !@lbool bool ;
 nonterminal <st_action_params>
     ?!@action_list actions ;
 
@@ -150,14 +150,14 @@ rule <scheduletable_parameters>
         end cast ;
 
     while
-        @bool periodic ;
+        @lbool periodic ;
         $PERIODIC$ ; $=$ ; <boolean> ?periodic ; <description> ?* ; $;$ ;
 
         cast st_periodic :
         when == @void do
-            st_periodic := [@bool_class new !here !periodic] ;
+            st_periodic := [@bool_class new ![periodic location] ![periodic bool]] ;
         else
-            error here : "PERIODIC attribute already defined for Schedule Table ".[name string] ;
+            error periodic : "PERIODIC attribute already defined for Schedule Table ".[name string] ;
             error [st_periodic location] : "Was previously define here" ;
         end cast ;
 

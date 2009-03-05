@@ -65,6 +65,7 @@ project all_goil :
   semantics "goil_types_task.ggs" : makefile, xcode_tool ;
   semantics "goil_types_counter.ggs" : makefile, xcode_tool ;
   semantics "goil_types_networkmessage.ggs" : makefile, xcode_tool ;
+  semantics "com_type.ggs" : makefile, xcode_tool ;
   
   #
   # Objects of the application definition

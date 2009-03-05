@@ -16,6 +16,8 @@
  */
 $CONFIG_FLAGS$
 
+$COM_CONFIG_FLAGS$
+
 /*
  * Count of the objects used in the application.
  * These informations are used by Trampoline to avoid to

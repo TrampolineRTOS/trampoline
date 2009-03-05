@@ -22,6 +22,7 @@ grammar goil_cpu_level_include "LL1":
 
     root <object_definition_list>
         ?!@os_obj            os
+        ?!@com               com
         ?!@task_map          tasks
         ?!@counter_map       counters
         ?!@alarm_map         alarms

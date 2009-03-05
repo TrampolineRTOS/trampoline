@@ -21,6 +21,7 @@ import semantics goil_semantics in "goil_semantics.ggs" ;
 import semantics goil_proc_generation in "goil_proc_generation.ggs" ;
 import semantics goil_app_generation in "goil_app_generation.ggs" ;
 import semantics goil_mp_generation in "goil_mp_generation.ggs" ;
+import semantics com_type in "com_type.ggs" ;
 import semantics goil_types_app in "goil_types_app.ggs" ;
 import semantics goil_types_networkmessage in "goil_types_networkmessage.ggs" ;
 import semantics goil_scheduletable_verif in "goil_scheduletable_verif.ggs" ;
@@ -43,6 +44,7 @@ nonterminal <description> !@lstring desc ;
 nonterminal <application_definition> ?!@root_obj file ;
 nonterminal <object_definition_list>
     ?!@os_obj            os
+    ?!@com               com
     ?!@task_map          tasks
     ?!@counter_map       counters
     ?!@alarm_map         alarms
@@ -56,7 +58,7 @@ nonterminal <object_definition_list>
 ;
 nonterminal <nm> ;
 
-nonterminal <boolean> !@bool val ;
+nonterminal <boolean> !@lbool val ;
 nonterminal <free_field> ?!@ident_map ids ;
 nonterminal <include_file_level>
     ?!@implementation imp
@@ -64,6 +66,7 @@ nonterminal <include_file_level>
 ;
 nonterminal <include_cpu_level>
     ?!@os_obj            os
+    ?!@com               com
     ?!@task_map          tasks
     ?!@counter_map       counters
     ?!@alarm_map         alarms
@@ -115,7 +118,9 @@ nonterminal <appli>
 nonterminal <networkmess>
   ?!@netmess_map netmess ;
 
-nonterminal <com> ;
+nonterminal <com>
+  ?!@com com ;
+
 nonterminal <ipdu> ;
 
 #
@@ -148,6 +153,17 @@ rule <start> :
             ![@lstring new !"" !here]
             ![@ident_map emptyMap]
          ]
+        ![@com new
+          ![@lstring new !"" !here]
+          !void_obj
+          !void_obj
+          !void_obj
+          !void_obj
+          !void_obj
+          ![@lstringlist emptyList]
+          ![@lstring new !"" !here]
+          ![@lstringlist emptyList]
+         ]
         ![@task_map          emptyMap]
         ![@counter_map       emptyMap]
         ![@alarm_map         emptyMap]
@@ -168,6 +184,7 @@ rule <start> :
     # per object static verification
 
     @os_obj            os             := [cpu os] ;
+    @com               com            := [cpu com] ;
     @task_map          tasks          := [cpu tasks] ;
     @counter_map       counters       := [cpu counters] ;
     @alarm_map         alarms         := [cpu alarms] ;
@@ -297,6 +314,8 @@ rule <start> :
                     !tasks
                     !isrs
                     !?obj_header ;
+
+                [com generate !?obj_header] ;
 
                 generate_events
                     !events
@@ -541,6 +560,7 @@ rule <application_definition>
     ?!@root_obj file
 :
     @os_obj            os             := [file os] ;
+    @com               com            := [file com] ;
     @task_map          tasks          := [file tasks] ;
     @counter_map       counters       := [file counters] ;
     @alarm_map         alarms         := [file alarms] ;
@@ -557,6 +577,7 @@ rule <application_definition>
     ${$ ;
     <object_definition_list>
         !?os
+        !?com
         !?tasks
         !?counters
         !?alarms
@@ -574,6 +595,7 @@ rule <application_definition>
 
     file := [@root_obj new
         !os
+        !com
         !tasks
         !counters
         !alarms
@@ -589,6 +611,7 @@ end rule ;
 
 rule <object_definition_list>
     ?!@os_obj            os
+    ?!@com               com
     ?!@task_map          tasks
     ?!@counter_map       counters
     ?!@alarm_map         alarms
@@ -612,13 +635,14 @@ rule <object_definition_list>
     while <isr> !?isrs ; <description> ?* ;
     while <mess> !?messages ; <description> ?* ;
     while <networkmess> !?net_messages ; <description> ?* ;
-    while <com> ; <description> ?* ;
+    while <com> !?com ; <description> ?* ;
     while <ipdu> ; <description> ?* ;
     while <nm> ; <description> ?* ;
     while <scheduletable> !?scheduletables ; <description> ?* ;
     while <appli> !?applis ; <description> ?* ;
     while <include_cpu_level>
         !?os
+        !?com
         !?tasks
         !?counters
         !?alarms
@@ -644,13 +668,13 @@ end rule ;
 #--------------------------------------------------------------------
 # Miscellaneous non terminals
 #--------------------------------------------------------------------
-rule <boolean> !@bool val :
+rule <boolean> !@lbool val :
     select
         $TRUE$ ;
-        val := true ;
+        val := [@lbool new !true !here] ;
     or
         $FALSE$ ;
-        val := false ;
+        val := [@lbool new !false !here] ;
     end select ;
 end rule ;
 
@@ -668,9 +692,9 @@ rule <free_field> ?!@ident_map ids :
         $uint_number$ ?value ;
         val := [@uint64_class new  ![value location] ![value uint64]] ;
     or
-        @bool value ;
+        @lbool value ;
         <boolean> ?value ;
-        val := [@bool_class new ![idf location] !value] ;
+        val := [@bool_class new ![idf location] ![value bool]] ;
     end select ;
     [!?ids put !idf !val] ; 
 end rule ;
@@ -695,6 +719,7 @@ end rule ;
 
 rule <include_cpu_level>
     ?!@os_obj            os
+    ?!@com               com
     ?!@task_map          tasks
     ?!@counter_map       counters
     ?!@alarm_map         alarms
@@ -716,6 +741,7 @@ rule <include_cpu_level>
     end select ;
     grammar goil_cpu_level_include in file_name
         !?os
+        !?com
         !?tasks
         !?counters
         !?alarms
