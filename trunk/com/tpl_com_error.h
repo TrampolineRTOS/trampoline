@@ -166,10 +166,10 @@ extern tpl_com_service_call_descriptor tpl_com_service;
  * STORE_COM_APPLICATION_DATA_REF
  */
 #ifdef WITH_COM_ERROR_HOOK
-#   define STORE_COM_APPLICATION_DATA_REF(data_ref)   \
-    tpl_com_service.parameters.data_ref = (tpl_com_data *)(data_ref);
+#   define STORE_COM_APPLICATION_DATA_REF(data)   \
+    tpl_com_service.parameters.data_ref = (tpl_com_data *)(data);
 #else
-#   define STORE_COM_APPLICATION_DATA_REF(data_ref)
+#   define STORE_COM_APPLICATION_DATA_REF(data)
 #endif
 
 /*

@@ -48,8 +48,6 @@ nonterminal <task_autostart_params>
 #
 nonterminal <description>
     !@lstring desc ;
-nonterminal <boolean>
-    !@bool val ;
 nonterminal <free_field>
     ?!@ident_map ids ;
 nonterminal <timing_prot_attrs>

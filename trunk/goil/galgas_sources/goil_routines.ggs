@@ -280,5 +280,38 @@ routine file_in_path
     end foreach ;
 end routine ;
 
+routine add_lstring_unique
+  ?!@lstringlist l
+  ?@lstring e
+:
+  @bool found := false ;
+  @lstring res := [@lstring new !"" !here] ;
+  foreach l (@lstring s) do
+    if [s string] == [e string] then
+      found := true ;
+      res := s ;
+    end if ;
+  end foreach ;
+  if found then
+    error e : [e string]." has already be listed" ;
+    error res : "was listed here" ;
+  else
+    l += !e ;
+  end if ;
+end routine ;
+
+routine set_lstring_if_empty
+  ?!@lstring s
+  ?@lstring ns
+  ?@string att
+:
+  if [s string] == "" then
+    s := ns ;
+  else
+    error ns : "Redefinition of ".att ;
+    error s : "was defined here" ;
+  end if ;
+end routine ;
+
 end semantics ;
 # vim:ft=ggs:ts=4:sw=4

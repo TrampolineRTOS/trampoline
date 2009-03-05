@@ -235,5 +235,38 @@ class @autostart_void extends @autostart_obj {
 class @autostart_false extends @autostart_obj {
 }
 
+routine set_bool
+  ?!@basic_type t
+  ?@lbool b
+  ?@string att
+:
+  cast t :
+  when == @bool_class do
+    error b : "Redefinition of ".att ;
+    error [t location] : "wad defined here" ;
+  else
+    t := [@bool_class new ![b location] ![b bool]] ;
+  end cast ;
+end routine ;
+
+routine bool_flag
+  ?!@string res
+  ?@basic_type b
+  ?@string flag
+:
+  cast b :
+  when == @void do
+#    res .= "#define ".flag."    NO\n" ;
+  when == @bool_class bo do
+    if [bo value] then
+      res .= "#define ".flag."\n";#."    YES\n" ;
+    else
+#      res .= "#define ".flag."    NO\n" ;
+    end if ;
+  else 
+    error [b location] : "Internal error, wrong datatype" ;
+  end cast ;
+end routine ;
+
 end semantics ;
 # vim:ft=ggs:ts=2:sw=2

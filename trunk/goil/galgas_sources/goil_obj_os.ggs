@@ -40,7 +40,7 @@ nonterminal <description>
 nonterminal <free_field>
     ?!@ident_map ids ;
 nonterminal <boolean>
-    !@bool val ;
+    !@lbool val ;
 #
 # local rules implementation
 #
@@ -84,67 +84,66 @@ rule <os>
         <description> ?* ; $;$ ;
     while
         $STARTUPHOOK$ ; $=$ ;
-        @bool suh ;
+        @lbool suh ;
         <boolean> ?suh ;
         <description> ?* ; $;$ ;
         cast startuphook :
         when == @void do 
-            startuphook := [@bool_class new !here !suh] ;
+            startuphook := [@bool_class new ![suh location] ![suh bool]] ;
         else
             error here : "STARTUPHOOK already defined for OS object" ;
             error [startuphook location] : "was previously defined here" ;
         end cast ;
    while
         $SHUTDOWNHOOK$ ; $=$ ;
-        @bool sdh ;
+        @lbool sdh ;
         <boolean> ?sdh ;
         <description> ?* ; $;$ ;
         cast shutdownhook :
         when == @void do
-            shutdownhook := [@bool_class new !here !sdh] ;
+            shutdownhook := [@bool_class new ![sdh location] ![sdh bool]] ;
         else
             error here : "SHUTDOWNHOOK already defined for OS object" ;
             error [shutdownhook location] : "was previously defined here" ;
         end cast ;
    while
         $ERRORHOOK$ ; $=$ ;
-        @bool eh ;
+        @lbool eh ;
         <boolean> ?eh ;
         <description> ?* ; $;$ ;
         cast errorhook :
         when == @void do
-            errorhook := [@bool_class new !here !eh] ;
+            errorhook := [@bool_class new ![eh location] ![eh bool]] ;
         else
             error here : "ERRORHOOK already defined for OS object" ;
             error [errorhook location] : "was previously defined here" ;
         end cast ;
    while
         $PRETASKHOOK$ ; $=$ ;
-        @bool preth ;
+        @lbool preth ;
         <boolean> ?preth ;
         <description> ?* ; $;$ ;
         cast pretaskhook :
         when == @void do
-            pretaskhook := [@bool_class new !here !preth] ;
+            pretaskhook := [@bool_class new ![preth location] ![preth bool]] ;
         else
-            error here : "PRETASKHOOK already defined for OS object" ;
+            error preth : "PRETASKHOOK already defined for OS object" ;
             error [pretaskhook location] : "was previously defined here" ;
         end cast ;
    while
+       $POSTTASKHOOK$ ; $=$ ;
+        @lbool posth ;
+        <boolean> ?posth ;
         cast posttaskhook :
         when == @void do
+          posttaskhook := [@bool_class new ![posth location] ![posth bool]] ;
         else
-            error here : "POSTTASKHOOK already defined for OS object" ;
+            error posth : "POSTTASKHOOK already defined for OS object" ;
             error [posttaskhook location] : "was previously defined here" ;
         end cast ;
-        $POSTTASKHOOK$ ; $=$ ;
-        @bool posth ;
-        <boolean> ?posth ;
-        posttaskhook := [@bool_class new !here !posth] ;
         <description> ?* ; $;$ ;
-
-   while
-        @bool proth ;
+  while
+        @lbool proth ;
         $PROTECTIONHOOK$ ; $=$ ; <boolean> ?proth ; <description> ?* ; $;$ ;
 
         if [option goil_options.autosar_on] == FALSE then
@@ -152,9 +151,9 @@ rule <os>
         end if ;
         cast protectionhook :
         when == @void do
-            protectionhook := [@bool_class new !here !proth] ;
+            protectionhook := [@bool_class new ![proth location] ![proth bool]] ;
         else
-            error here : "PROTECTIONHOOK already defined for OS object" ;
+            error proth : "PROTECTIONHOOK already defined for OS object" ;
             error [protectionhook location] : "was previously defined here" ;
         end cast ;
 
@@ -183,53 +182,53 @@ rule <os>
         if [option goil_options.autosar_on] == FALSE then
             error here : "AUTOSAR flag is off, turn it on to use STACKMONITORING attribute in OS object" ;
         end if ;
+        $STACKMONITORING$ ; $=$ ;
+        @lbool stackmon ;
+        <boolean> ?stackmon ;
         cast stackmonitoring :
         when == @void do
+          stackmonitoring := [@bool_class new ![stackmon location] ![stackmon bool]] ;
         else
-            error here : "STACKMONITORING already defined for OS object" ;
+            error stackmon : "STACKMONITORING already defined for OS object" ;
             error [stackmonitoring location] : "was previously defined here" ;
         end cast ;
-        $STACKMONITORING$ ; $=$ ;
-        @bool stackmon ;
-        <boolean> ?stackmon ;
-        stackmonitoring := [@bool_class new !here !stackmon] ;
-        <description> ?* ; $;$ ;
+       <description> ?* ; $;$ ;
 
     while
+        $USEGETSERVICEID$ ; $=$ ;
+        @lbool ugsi ;
+        <boolean> ?ugsi ;
         cast usegetserviceid :
         when == @void do
+          usegetserviceid := [@bool_class new ![ugsi location] ![ugsi bool]] ;
         else
-            error here : "USEGETSERVICEID already defined for OS object" ;
+            error ugsi : "USEGETSERVICEID already defined for OS object" ;
             error [usegetserviceid location] : "was previously defined here" ;
         end cast ;
-        $USEGETSERVICEID$ ; $=$ ;
-        @bool ugsi ;
-        <boolean> ?ugsi ;
-        usegetserviceid := [@bool_class new !here !ugsi] ;
         <description> ?* ; $;$ ;
     while
+       $USEPARAMETERACCESS$ ; $=$ ;
+        @lbool upa ;
+        <boolean> ?upa ;
         cast useparameteraccess :
         when == @void do
+          useparameteraccess := [@bool_class new ![upa location] ![upa bool]] ;
         else
-            error here : "USEPARAMETERACCESS already defined for OS object" ;
-            error [useparameteraccess location] : "was previously defined here" ;
+          error upa : "USEPARAMETERACCESS already defined for OS object" ;
+          error [useparameteraccess location] : "was previously defined here" ;
         end cast ;
-        $USEPARAMETERACCESS$ ; $=$ ;
-        @bool upa ;
-        <boolean> ?upa ;
-        useparameteraccess := [@bool_class new !here !upa] ;
         <description> ?* ; $;$ ;
     while
+       $USERESSCHEDULER$ ; $=$ ;
+        @lbool urs ;
+        <boolean> ?urs ;
         cast useresscheduler :
         when == @void do
+          useresscheduler := [@bool_class new ![urs location] ![urs bool]] ;
         else
-            error here : "USERESSCHEDULER already defined for OS object" ;
+            error urs : "USERESSCHEDULER already defined for OS object" ;
             error [useresscheduler location] : "was previously defined here" ;
         end cast ;
-        $USERESSCHEDULER$ ; $=$ ;
-        @bool urs ;
-        <boolean> ?urs ;
-        useresscheduler := [@bool_class new !here !urs] ;
         <description> ?* ; $;$ ;
     while
         @lstring src ;
