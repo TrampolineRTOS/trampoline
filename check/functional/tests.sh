@@ -28,7 +28,7 @@ then
 	done
 else
 
-	echo "Begin internal Functionnal Test Procedure.."
+	echo "Begin internal functionnal test procedure..."
 
 	## Create an empty file
 	> results.log
@@ -37,7 +37,7 @@ else
 	for i in `cat testSequences.txt`
 	do
 		cd ./${i}
-		
+		echo "running $i"
 		#if Makefile doesn't exist -> do goil
 		if ! `test -f Makefile`
 		then
@@ -50,7 +50,7 @@ else
 			fi
 		fi
 		
-		make
+		make -s
 		./${i} >> ../results.log
 		cd ..
 	done

@@ -74,23 +74,21 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   if (result == (tpl_status)E_OK_AND_SCHEDULE)
   {
     result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
-    /*            result &= OSEK_STATUS_MASK; */
+# ifndef WITH_SYSTEM_CALL
+    if (tpl_need_switch != NO_NEED_SWITCH)
+    {
+      tpl_switch_context(
+        (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
+          &(tpl_stat_proc_table[old_running_id]->context),
+        (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
+          &(tpl_stat_proc_table[tpl_running_id]->context)
+      );
+    }
+# endif
   }
   IF_NO_EXTENDED_ERROR_END()
 #endif
 
-#ifndef WITH_SYSTEM_CALL
-  if (tpl_need_switch != NO_NEED_SWITCH)
-  {
-    tpl_switch_context(
-      (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
-        &(tpl_stat_proc_table[old_running_id]->context),
-      (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
-        &(tpl_stat_proc_table[tpl_running_id]->context)
-    );
-  }
-#endif
-  
   UNLOCK_WHEN_NO_HOOK()
   
   PROCESS_ERROR(result)
@@ -214,18 +212,17 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
     old_running_id = tpl_running_id;
     /*  and a rescheduling occurs                           */
     result |= tpl_schedule_from_waiting();
+# ifndef WITH_SYSTEM_CALL
+    if (tpl_need_switch != NO_NEED_SWITCH)
+    {
+      tpl_switch_context(
+        &(tpl_stat_proc_table[old_running_id]->context),
+        &(tpl_stat_proc_table[tpl_running_id]->context)
+      );
+    }
+# endif  
   }
   IF_NO_EXTENDED_ERROR_END()
-#endif
-  
-#ifndef WITH_SYSTEM_CALL
-  if (tpl_need_switch != NO_NEED_SWITCH)
-  {
-    tpl_switch_context(
-      &(tpl_stat_proc_table[old_running_id]->context),
-      &(tpl_stat_proc_table[tpl_running_id]->context)
-    );
-  }
 #endif
   
   UNLOCK_WHEN_NO_HOOK()

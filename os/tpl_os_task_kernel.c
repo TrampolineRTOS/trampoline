@@ -70,20 +70,19 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
     {
       old_running_id = tpl_running_id;
       result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
+# ifndef WITH_SYSTEM_CALL
+      if (tpl_need_switch != NO_NEED_SWITCH)
+      {
+        tpl_switch_context(
+          &(tpl_stat_proc_table[old_running_id]->context),
+          &(tpl_stat_proc_table[tpl_running_id]->context)
+        );
+      }
+# endif
     }
   IF_NO_EXTENDED_ERROR_END()
 #endif
 
-#ifndef WITH_SYSTEM_CALL
-  if (tpl_need_switch != NO_NEED_SWITCH)
-  {
-    tpl_switch_context(
-      &(tpl_stat_proc_table[old_running_id]->context),
-      &(tpl_stat_proc_table[tpl_running_id]->context)
-    );
-  }
-#endif
-  
   PROCESS_ERROR(result)
 
   /*  unlock the task structures  */
@@ -121,17 +120,17 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
     /*  and let the scheduler do its job                            */
     result |= tpl_schedule_from_dying();
 
-  IF_NO_EXTENDED_ERROR_END()
-#endif
+# ifndef WITH_SYSTEM_CALL
+    if (tpl_need_switch != NO_NEED_SWITCH)
+    {
+      tpl_switch_context(
+        NULL,
+        &(tpl_stat_proc_table[tpl_running_id]->context)
+      );
+    }
+# endif
 
-#ifndef WITH_SYSTEM_CALL
-  if (tpl_need_switch != NO_NEED_SWITCH)
-  {
-    tpl_switch_context(
-      NULL,
-      &(tpl_stat_proc_table[tpl_running_id]->context)
-    );
-  }
+  IF_NO_EXTENDED_ERROR_END()
 #endif
 
   PROCESS_ERROR(result)
@@ -228,19 +227,17 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
     {
       /*  and let the scheduler do its job                            */
       result |= tpl_schedule_from_dying();
+# ifndef WITH_SYSTEM_CALL
+      if (tpl_need_switch != NO_NEED_SWITCH)
+      {
+        stat_proc = tpl_stat_proc_table[tpl_running_id];
+        tpl_switch_context(
+                           NULL,
+                           &(stat_proc->context)
+                           );
+      }
+# endif
     }
-    
-#ifndef WITH_SYSTEM_CALL
-    if (tpl_need_switch != NO_NEED_SWITCH)
-    {
-      stat_proc = tpl_stat_proc_table[tpl_running_id];
-      tpl_switch_context(
-        NULL,
-        &(stat_proc->context)
-      );
-    }
-#endif
-    
     
   IF_NO_EXTENDED_ERROR_END()
 #endif
@@ -282,17 +279,16 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
     result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
     /*  get the internal resource       */
     tpl_get_internal_resource(tpl_running_id);
+# ifndef WITH_SYSTEM_CALL
+    if (tpl_need_switch != NO_NEED_SWITCH)
+    {
+      tpl_switch_context(
+        &(tpl_stat_proc_table[old_running_id]->context),
+        &(tpl_stat_proc_table[tpl_running_id]->context)
+      );
+    }
+# endif
   IF_NO_EXTENDED_ERROR_END()
-#endif
-  
-#ifndef WITH_SYSTEM_CALL
-  if (tpl_need_switch != NO_NEED_SWITCH)
-  {
-    tpl_switch_context(
-      &(tpl_stat_proc_table[old_running_id]->context),
-      &(tpl_stat_proc_table[tpl_running_id]->context)
-    );
-  }
 #endif
   
   PROCESS_ERROR(result)

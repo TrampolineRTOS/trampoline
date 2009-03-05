@@ -29,8 +29,7 @@ $(OBJ_DIR)/%.c.o: $(A_DIR)/%.c Makefile
 # generate dep files for c files
 # OIL compiler should have made his work (some .c and .h files are generated).
 $(DEP_DIR)/%.c.d: $(A_DIR)/%.c Makefile $(DEP_DIR) $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE)
-	@$(CC) $(CFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.c.o $(DEP_DIR)/$*.c.d:@ ;print ;}' > $@;\
- 	echo 'build dependancy for $<'; 
+	@$(CC) $(CFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.c.o $(DEP_DIR)/$*.c.d:@ ;print ;}' > $@;
 
 #----------------------------------------------------------------------*
 #### Compilation rules. ASM files.
@@ -62,20 +61,16 @@ $(OBJ_DIR)/%.C.o: $(A_DIR)/%.C Makefile
 
 # generate dep files for c++ files
 $(DEP_DIR)/%.cpp.d: $(A_DIR)/%.cpp Makefile $(DEP_DIR) $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE)
-	@$(CC) $(CFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.cpp.o $(DEP_DIR)/$*.d:@ ;print ;}' > $@;\
- 	echo 'build dependancy for $<'; 
+	@$(CC) $(CFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.cpp.o $(DEP_DIR)/$*.d:@ ;print ;}' > $@;
 
 $(DEP_DIR)/%.cc.d: $(A_DIR)/%.cc Makefile $(DEP_DIR) $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE)
-	@$(CC) $(CFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.cc.o $(DEP_DIR)/$*.d:@ ;print ;}' > $@;\
- 	echo 'build dependancy for $<'; 
+	@$(CC) $(CFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.cc.o $(DEP_DIR)/$*.d:@ ;print ;}' > $@;
 
 $(DEP_DIR)/%.cxx.d: $(A_DIR)/%.cxx Makefile $(DEP_DIR) $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE)
-	@$(CC) $(CFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.cxx.o $(DEP_DIR)/$*.d:@ ;print ;}' > $@;\
- 	echo 'build dependancy for $<'; 
+	@$(CC) $(CFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.cxx.o $(DEP_DIR)/$*.d:@ ;print ;}' > $@;
 
 $(DEP_DIR)/%.C.d: $(A_DIR)/%.C Makefile $(DEP_DIR) $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE)
-	@$(CC) $(CFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.C.o $(DEP_DIR)/$*.d:@ ;print ;}' > $@;\
- 	echo 'build dependancy for $<'; 
+	@$(CC) $(CFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.C.o $(DEP_DIR)/$*.d:@ ;print ;}' > $@;
 
 #----------------------------------------------------------------------*
 #Call recursively this file, without the first item of TEMP_SOURCE_DIRS *
