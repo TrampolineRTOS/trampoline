@@ -47,7 +47,7 @@ STATIC VAR(u32, OS_VAR) tpl_cpt_os_task_lock = 0;
 
 #ifdef WITH_AUTOSAR
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
 {
     VAR(tpl_bool, AUTOMATIC) result;
@@ -64,7 +64,7 @@ FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
     return result;
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 #endif
 
 /*******************************************************************************
@@ -76,7 +76,7 @@ FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
 *******************************************************************************/
 #ifdef WITH_AUTOSAR
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
 {
   tpl_user_task_lock = FALSE;
@@ -86,7 +86,7 @@ FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
   tpl_locking_depth = tpl_cpt_os_task_lock;
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 #endif
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
@@ -481,7 +481,7 @@ void tpl_release_task_lock(void)
 
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 FUNC(void, OS_CODE) tpl_switch_context(
     CONSTP2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
     CONSTP2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
@@ -537,7 +537,7 @@ void tpl_osek_func_stub( void* data )
 static coroutine_t previous_old_co = NULL;
 
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "tpl_memmap.h"
 FUNC(void, OS_CODE) tpl_init_context(
     CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
 {
