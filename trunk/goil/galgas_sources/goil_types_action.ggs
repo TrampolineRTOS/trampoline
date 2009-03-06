@@ -79,6 +79,7 @@ class @activatetask_action extends @action_obj {
 
 class @callback_action extends @action_obj {
     @lstring function_name ;
+
     override method generate
         ?@lstring    name
         ?@string     err
@@ -87,13 +88,13 @@ class @callback_action extends @action_obj {
         ?!@string    i_res :
 
         @string res ;
-        retrieveTemplateString ?res !"notification_activatetask" ;
+        retrieveTemplateString ?res !"notification_callback" ;
 
         doReplace !?res !"$NOTIFICATION_NAME$"   !err." of message ".[name string] ;
         doReplace !?res !"$NOTIFICATION$" ![name string]."_notification" ;
         doReplace !?res !"$CALLBACK$" ![function_name string]."_callback" ;
 
-        doReplace !?i_res !key ![name string] ;
+        doReplace !?i_res !key !"&".[name string]."_notification" ;
 
         i_res := res."\n".i_res ;
    end method ;
