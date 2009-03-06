@@ -48,7 +48,7 @@ class @setevent_action extends @action_obj {
         doReplace !?res !"$TASK$" ![task_name string]."_id" ;
         doReplace !?res !"$EVENT$" ![event_name string]."_mask" ;
 
-        doReplace !?i_res !key ![name string] ;
+        doReplace !?i_res !key !"&".[name string]."_notification" ;
 
         i_res := res."\n".i_res ;
    end method ;
