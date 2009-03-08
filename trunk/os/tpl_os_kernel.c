@@ -1270,18 +1270,9 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
     {
       if (task->activate_count == 0)
       {
-        if (s_task->type == TASK_EXTENDED)
-        {
-          /*  if the task is an extended one, it is inited now          */
-          task->state = (tpl_proc_state)READY;
-          tpl_init_proc(task_id);
-        }
-        else
-        {
-          /*  if it is a basic task, its initialization
-           is postponed to the time it will get the CPU                 */
-          task->state = (tpl_proc_state)READY_AND_NEW;
-        }
+        /*  the initialization is postponed to the time it will
+            get the CPU as indicated by READY_AND_NEW state             */
+        task->state = (tpl_proc_state)READY_AND_NEW;
       }
       /*  put it in the list                                            */
       tpl_put_new_proc(task_id);

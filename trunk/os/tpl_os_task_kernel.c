@@ -191,18 +191,9 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
       {
         if (count == 0)
         {
-          if (stat_proc->type == TASK_EXTENDED)
-          {
-            /*  if the task is an extended one, it is initialized now */
-            dyn_proc->state = (tpl_proc_state)READY;
-            tpl_init_proc(task_id);
-          }
-          else
-          {
-            /*  if it is a basic task, its initialization is
-                postponed to the time it will get the CPU             */
-            dyn_proc->state = (tpl_proc_state)READY_AND_NEW;
-          }
+          /*  the initialization is postponed to the time it will
+              get the CPU as indicated by READY_AND_NEW state         */
+          dyn_proc->state = (tpl_proc_state)READY_AND_NEW;
         }
         /*  put it in the list  */
         tpl_put_new_proc(task_id);
