@@ -21,307 +21,299 @@ import option goil_options in "goil_options.ggs" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 
 nonterminal <mess>
-    ?!@message_map messages ;
+  ?!@message_map messages ;
 
 nonterminal <message_attributes>
-    ?@lstring message_name
-    ?!@action_obj notif
-    ?!@action_obj notif_error
-    ?!@stringset acc_apps
-    ?!@ident_map others
-    ?!@mess_prop_obj mess_prop ;
+  ?!@action_obj    notif
+  ?!@action_obj    notif_error
+  ?!@lstringlist   acc_apps
+  ?!@ident_map     others
+  ?!@mess_prop_obj mess_prop ;
 
 nonterminal <message_property>
-    ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop ;
 
 nonterminal <notification_property>
-    !@action_obj notif ;
+  !@action_obj notif ;
 
 nonterminal <ssi_attributes>
-    ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop ;
 
 nonterminal <sse_attributes>
-    ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop ;
 
 nonterminal <sde_attributes>
-    ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop ;
 
 nonterminal <sze_attributes>
-    ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop ;
 
 nonterminal <rzi_attributes>
-    ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop ;
 
 nonterminal <rze_attributes>
-    ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop ;
 
 nonterminal <rui_attributes>
-    ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop ;
 
 nonterminal <rqi_attributes>
-    ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop ;
 
 nonterminal <rue_attributes>
-    ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop ;
 
 nonterminal <rqe_attributes>
-    ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop ;
 
 nonterminal <rde_attributes>
-    ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop ;
 
 nonterminal <rzs_attributes>
-    ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop ;
 
 nonterminal <cdatatype>
-    !@lstring cdatatype ;
+  !@lstring cdatatype ;
 
 nonterminal <transferproperty>
-    !@lstring transferproperty ;
+  !@lstring transferproperty ;
 
 nonterminal <networkmessage>
-    !@lstring net_message ;
+  !@lstring net_message ;
 
 nonterminal <filter>
-    !@filter_prop_obj filter ;
+  !@filter_prop_obj filter ;
 
 nonterminal <mask_x_attribute>
-    !@luint64 mask
-    !@luint64 x ;
+  !@luint64 mask
+  !@luint64 x ;
 
 nonterminal <mask_attribute>
-    !@luint64 mask ;
+  !@luint64 mask ;
 
 nonterminal <min_max_attribute>
-    !@luint64 min
-    !@luint64 max ;
+  !@luint64 min
+  !@luint64 max ;
 
 nonterminal <period_offset_attribute>
-    !@luint64 period
-    !@luint64 offset ;
+  !@luint64 period
+  !@luint64 offset ;
 
 nonterminal <networkordercallout>
-    !@lstring net_order_callout ;
+  !@lstring net_order_callout ;
 
 nonterminal <cpuordercallout>
-    !@lstring cpu_order_callout ;
+  !@lstring cpu_order_callout ;
 
 nonterminal <initialvalue>
-    !@basic_type initial_value ;
+  !@basic_type initial_value ;
 
 nonterminal <sendingmessage>
-    !@lstring sending_message ;
+  !@lstring sending_message ;
 
 nonterminal <queuesize>
-    !@luint64 queue_size ;
+  !@luint64 queue_size ;
 
 nonterminal <link>
-    !@link_obj link ;
+  !@link_obj link ;
 
 #
 # external nonterminals
 #
 nonterminal <description>
-	!@lstring desc ;
+  !@lstring desc ;
 nonterminal <free_field>
-    ?!@ident_map ids ;
+  ?!@ident_map ids ;
 
 rule <mess>
-    ?!@message_map messages
+  ?!@message_map messages
 :
-    @lstring message_name ;
-    @message_obj mess ;
-    @lstring desc ;
-    @mess_prop_obj mess_prop ;
-    @action_obj notif ;
-    @action_obj notif_error ;
-    @stringset acc_apps ;
-    @ident_map others ;
+  @lstring message_name ;
+  @message_obj   mess ;
+  @lstring       desc ;
+  @mess_prop_obj mess_prop ;
+  @action_obj    notif ;
+  @action_obj    notif_error ;
+  @lstringlist   acc_apps ;
+  @ident_map     others ;
 
-
-    $MESSAGE$ ;
-    $idf$ ?message_name ;
-    ${$ ;
-    if [messages hasKey ![message_name string]] then
-        [!?messages del !message_name ?mess] ;
-        mess_prop := [mess messageproperty] ;
-        notif := [mess notification] ;
-        notif_error := [mess notificationerror] ;
-        acc_apps := [mess acc_apps] ;
-        others := [mess other_fields] ;
-        desc := [mess desc] ;
-    else
-        mess_prop := [@void_mess_prop new !here] ;
-        notif := [@void_action new !here] ;
-        notif_error := [@void_action new !here] ;
-        acc_apps := [@stringset emptySet] ;
-        others := [@ident_map emptyMap] ;
-        desc := [@lstring new !"" !here] ;
-        mess := [@message_obj new !desc !notif !notif_error !acc_apps !others !mess_prop] ;
-    end if ;
-
-    <message_attributes> !message_name !?notif !?notif_error !?acc_apps !?others !?mess_prop ;
-    $}$ ;
-    <description> ?desc ;
-    $;$ ;
+  $MESSAGE$ ; $idf$ ?message_name ; ${$ ;
+  if [messages hasKey ![message_name string]] then
+    [!?messages del !message_name ?mess] ;
+    mess_prop := [mess messageproperty] ;
+    notif := [mess notification] ;
+    notif_error := [mess notificationerror] ;
+    acc_apps := [mess acc_apps] ;
+    others := [mess other_fields] ;
+    desc := [mess desc] ;
+  else
+    mess_prop := [@void_mess_prop new !here] ;
+    notif := [@void_action new !here] ;
+    notif_error := [@void_action new !here] ;
+    acc_apps := [@lstringlist emptyList] ;
+    others := [@ident_map emptyMap] ;
+    desc := [@lstring new !"" !here] ;
     mess := [@message_obj new !desc !notif !notif_error !acc_apps !others !mess_prop] ;
-    [!?messages put !message_name !mess] ;
+  end if ;
+
+  <message_attributes> !?notif !?notif_error !?acc_apps !?others !?mess_prop ;
+  $}$ ;
+  <description> ?desc ;
+  $;$ ;
+  mess := [@message_obj new !desc !notif !notif_error !acc_apps !others !mess_prop] ;
+  [!?messages put !message_name !mess] ;
 end rule ;
 
 rule <message_attributes>
-    ?@lstring message_name
-    ?!@action_obj notif
-    ?!@action_obj notif_error
-    ?!@stringset acc_apps
-    ?!@ident_map others
-    ?!@mess_prop_obj mess_prop
+  ?!@action_obj    notif
+  ?!@action_obj    notif_error
+  ?!@lstringlist   acc_apps
+  ?!@ident_map     others
+  ?!@mess_prop_obj mess_prop
 :
-    repeat
-    while
-        cast mess_prop :
-        when == @void_mess_prop do
-        else 
-            error here : "MESSAGEPROPERTY attribute already defined for message ".[message_name string] ;
-            error [mess_prop location] : "previously defined here" ;
-        end cast ;
-        $MESSAGEPROPERTY$ ;   $=$ ; <message_property> !?mess_prop ; <description> ?* ; $;$ ;
-    while
-        cast notif :
-        when == @void_action do
-        else 
-            error here : "NOTIFICATION attribute already defined for message ".[message_name string] ;
-            error [notif location] : "previously defined here" ;
-        end cast ;
-        $NOTIFICATION$ ;      $=$ ; <notification_property> ?notif ; <description> ?* ; $;$ ;
-    while
-        cast notif_error :
-        when == @void_action do
-        else 
-            error here : "NOTIFICATIONERROR attribute already defined for message ".[message_name string] ;
-            error [notif_error location] : "was previously defined here" ;
-        end cast ;
-        $NOTIFICATIONERROR$ ; $=$ ; <notification_property> ?notif_error ; <description> ?* ; $;$ ;
-    while
-        @lstring app ;
-        $ACCESSING_APPLICATION$ ; $=$ ; $idf$ ?app ; <description> ?* ; $;$ ;
-        if [acc_apps hasKey ![app string]] then
-            warning here : "ACCESSING_APPLICATION " . [app string] . " already defined for MESSAGE " . [message_name string] ;
-        end if ;
-        acc_apps += ![app string] ;
-    while
-        <free_field> !?others ;
-    end repeat ;
+  repeat
+  while
+    cast mess_prop :
+    when == @void_mess_prop do
+    else 
+      error here : "MESSAGEPROPERTY attribute already defined" ;
+      error [mess_prop location] : "previously defined here" ;
+    end cast ;
+    $MESSAGEPROPERTY$ ;   $=$ ; <message_property> !?mess_prop ; <description> ?* ; $;$ ;
+  while
+    cast notif :
+    when == @void_action do
+    else 
+      error here : "NOTIFICATION attribute already defined" ;
+      error [notif location] : "previously defined here" ;
+    end cast ;
+    $NOTIFICATION$ ;      $=$ ; <notification_property> ?notif ; <description> ?* ; $;$ ;
+  while
+    cast notif_error :
+    when == @void_action do
+    else 
+      error here : "NOTIFICATIONERROR attribute already defined" ;
+      error [notif_error location] : "was previously defined here" ;
+    end cast ;
+    $NOTIFICATIONERROR$ ; $=$ ; <notification_property> ?notif_error ; <description> ?* ; $;$ ;
+  while
+    @lstring app ;
+    $ACCESSING_APPLICATION$ ; $=$ ; $idf$ ?app ; <description> ?* ; $;$ ;
+    add_lstring_unique !?acc_apps !app !"ACCESSING_APPLICATION" ;
+  while
+    <free_field> !?others ;
+  end repeat ;
 end rule ;
 
 rule <message_property>
-    ?!@mess_prop_obj mess_prop
+  ?!@mess_prop_obj mess_prop
 :
-    select $SEND_STATIC_INTERNAL$ ;      <ssi_attributes> !?mess_prop ;
-    or     $SEND_STATIC_EXTERNAL$ ;      <sse_attributes> !?mess_prop ;
-    or     $SEND_DYNAMIC_EXTERNAL$ ;     <sde_attributes> !?mess_prop ;
-    or     $SEND_ZERO_INTERNAL$ ;        mess_prop := [@szi_mess_prop new !here] ;
-    or     $SEND_ZERO_EXTERNAL$ ;        <sze_attributes> !?mess_prop ;
-    or     $RECEIVE_ZERO_INTERNAL$ ;     <rzi_attributes> !?mess_prop ;
-    or     $RECEIVE_ZERO_EXTERNAL$ ;     <rze_attributes> !?mess_prop ;
-    or     $RECEIVE_UNQUEUED_INTERNAL$ ; <rui_attributes> !?mess_prop ;
-    or     $RECEIVE_QUEUED_INTERNAL$ ;   <rqi_attributes> !?mess_prop ;
-    or     $RECEIVE_UNQUEUED_EXTERNAL$ ; <rue_attributes> !?mess_prop ;
-    or     $RECEIVE_QUEUED_EXTERNAL$ ;   <rqe_attributes> !?mess_prop ;
-    or     $RECEIVE_DYNAMIC_EXTERNAL$ ;  <rde_attributes> !?mess_prop ;
-    or     $RECEIVE_ZERO_SENDERS$ ;      <rzs_attributes> !?mess_prop ;
-    end select ;
+  select $SEND_STATIC_INTERNAL$ ;      <ssi_attributes> !?mess_prop ;
+  or     $SEND_STATIC_EXTERNAL$ ;      <sse_attributes> !?mess_prop ;
+  or     $SEND_DYNAMIC_EXTERNAL$ ;     <sde_attributes> !?mess_prop ;
+  or     $SEND_ZERO_INTERNAL$ ;        mess_prop := [@szi_mess_prop new !here] ;
+  or     $SEND_ZERO_EXTERNAL$ ;        <sze_attributes> !?mess_prop ;
+  or     $RECEIVE_ZERO_INTERNAL$ ;     <rzi_attributes> !?mess_prop ;
+  or     $RECEIVE_ZERO_EXTERNAL$ ;     <rze_attributes> !?mess_prop ;
+  or     $RECEIVE_UNQUEUED_INTERNAL$ ; <rui_attributes> !?mess_prop ;
+  or     $RECEIVE_QUEUED_INTERNAL$ ;   <rqi_attributes> !?mess_prop ;
+  or     $RECEIVE_UNQUEUED_EXTERNAL$ ; <rue_attributes> !?mess_prop ;
+  or     $RECEIVE_QUEUED_EXTERNAL$ ;   <rqe_attributes> !?mess_prop ;
+  or     $RECEIVE_DYNAMIC_EXTERNAL$ ;  <rde_attributes> !?mess_prop ;
+  or     $RECEIVE_ZERO_SENDERS$ ;      <rzs_attributes> !?mess_prop ;
+  end select ;
 end rule;
 
 rule <notification_property>
-    !@action_obj notif
+  !@action_obj notif
 :
-    select
-        $NONE$ ;
-        notif := [@void_action new !here] ;
-    or
-		 $SETEVENT$ ; ${$ ;
-        @bool has_task := false ;
-        @lstring task_name := [@lstring new !"" !here] ;
-        @bool has_event := false ;
-        @lstring event_name := [@lstring new !"" !here] ;
-		 repeat
-        while
-            if has_task then
-                error here : "TASK already defined for SETEVENT notification" ;
-            end if ;
-            $TASK$ ;
-            $=$ ;
-            $idf$ ?task_name ;
-            <description> ?* ; $;$ ;
-            has_task := true ;
-        while
-            if has_event then
-                error here : "EVENT already defined for SETEVENT notification" ;
-            end if ;
-            $EVENT$ ;
-            $=$ ;
-            $idf$ ?event_name ;
-            <description> ?* ; $;$ ;
-            has_event := true ;
-        end repeat ;
-        $}$ ;
-        if not has_task then
-            error here : "Task not defined for SETEVENT notification" ;
+  select
+    $NONE$ ;
+    notif := [@void_action new !here] ;
+  or
+    $SETEVENT$ ; ${$ ;
+    @bool has_task := false ;
+    @lstring task_name := [@lstring new !"" !here] ;
+    @bool has_event := false ;
+    @lstring event_name := [@lstring new !"" !here] ;
+    repeat
+    while
+      if has_task then
+        error here : "TASK already defined for SETEVENT notification" ;
+      end if ;
+      $TASK$ ;
+      $=$ ;
+      $idf$ ?task_name ;
+      <description> ?* ; $;$ ;
+      has_task := true ;
+    while
+        if has_event then
+            error here : "EVENT already defined for SETEVENT notification" ;
         end if ;
-        if not has_event then
-            error here : "Event not defined for SETEVENT notification" ;
-        end if ;
-        notif := [@setevent_action new !here !task_name !event_name] ;
-    or
-        @lstring task_name ;
-        $ACTIVATETASK$ ; ${$ ;
-        $TASK$ ; $=$ ; $idf$ ?task_name ;
+        $EVENT$ ;
+        $=$ ;
+        $idf$ ?event_name ;
         <description> ?* ; $;$ ;
-        $}$ ;        
-        notif := [@activatetask_action new !here !task_name] ;
-    or
-        @lstring function_name ;
-        $COMCALLBACK$ ; ${$ ;
-        $COMCALLBACKNAME$ ; $=$ ; $string$ ?function_name ;
-        <description> ?* ; $;$ ;
-        $}$ ; 
-        notif := [@callback_action new !here !function_name] ;
-    or
-        @lstring flag_name ;
-        $FLAG$ ; ${$ ;
-        $FLAGNAME$ ; $=$ ; $string$ ?flag_name ;
-        <description> ?* ; $;$ ;
-        $}$ ;        
-        notif := [@flag_action new !here !flag_name] ;
-    or
-        @bool has_function := false ;
-        @lstring function_name := [@lstring new !"" !here] ;
-        @bool has_ipdu := false ;
-        @luint64 ipdu := [@luint64 new !0L !here] ;
-        $INMCALLBACK$ ; ${$ ;
-        repeat
-        while
-            if has_function then
-                error here : "Callback routine already defined for NMCALLBACK notification" ;
-            end if ;
-            $CALLBACKROUTINENAME$ ; $=$ ; $string$ ?function_name ; <description> ?* ; $;$ ;
-            has_function := true ;
-        while
-            if has_ipdu then
-                error here : "Callback routine already defined for NMCALLBACK notification" ;
-            end if ;
-            $MONITOREDIPDU$ ; $=$ ; $uint_number$ ?ipdu ; <description> ?* ; $;$ ;
-            has_ipdu := true ;
-        end repeat ;
-        $}$ ; 
-        if not has_function then
-            error here : "Callback not defined for NMCALLBACK notification" ;
-        end if ;
-        if not has_ipdu then
-            error here : "IPDU not defined for NMCALLBACK notification" ;
-        end if ;
-        notif := [@nmcallback_action new !here !function_name !ipdu] ;
-    end select ;
+        has_event := true ;
+    end repeat ;
+    $}$ ;
+    if not has_task then
+        error here : "Task not defined for SETEVENT notification" ;
+    end if ;
+    if not has_event then
+        error here : "Event not defined for SETEVENT notification" ;
+    end if ;
+    notif := [@setevent_action new !here !task_name !event_name] ;
+  or
+      @lstring task_name ;
+      $ACTIVATETASK$ ; ${$ ;
+      $TASK$ ; $=$ ; $idf$ ?task_name ;
+      <description> ?* ; $;$ ;
+      $}$ ;        
+      notif := [@activatetask_action new !here !task_name] ;
+  or
+      @lstring function_name ;
+      $COMCALLBACK$ ; ${$ ;
+      $COMCALLBACKNAME$ ; $=$ ; $string$ ?function_name ;
+      <description> ?* ; $;$ ;
+      $}$ ; 
+      notif := [@callback_action new !here !function_name] ;
+  or
+      @lstring flag_name ;
+      $FLAG$ ; ${$ ;
+      $FLAGNAME$ ; $=$ ; $string$ ?flag_name ;
+      <description> ?* ; $;$ ;
+      $}$ ;        
+      notif := [@flag_action new !here !flag_name] ;
+  or
+      @bool has_function := false ;
+      @lstring function_name := [@lstring new !"" !here] ;
+      @bool has_ipdu := false ;
+      @luint64 ipdu := [@luint64 new !0L !here] ;
+      $INMCALLBACK$ ; ${$ ;
+      repeat
+      while
+          if has_function then
+              error here : "Callback routine already defined for NMCALLBACK notification" ;
+          end if ;
+          $CALLBACKROUTINENAME$ ; $=$ ; $string$ ?function_name ; <description> ?* ; $;$ ;
+          has_function := true ;
+      while
+          if has_ipdu then
+              error here : "Callback routine already defined for NMCALLBACK notification" ;
+          end if ;
+          $MONITOREDIPDU$ ; $=$ ; $uint_number$ ?ipdu ; <description> ?* ; $;$ ;
+          has_ipdu := true ;
+      end repeat ;
+      $}$ ; 
+      if not has_function then
+          error here : "Callback not defined for NMCALLBACK notification" ;
+      end if ;
+      if not has_ipdu then
+          error here : "IPDU not defined for NMCALLBACK notification" ;
+      end if ;
+      notif := [@nmcallback_action new !here !function_name !ipdu] ;
+  end select ;
 end rule;
 
 rule <ssi_attributes>

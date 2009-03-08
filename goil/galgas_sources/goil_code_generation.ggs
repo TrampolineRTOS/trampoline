@@ -505,8 +505,8 @@ routine generate_types
   # iterate through the tasks to get the maximum number of events
   @uint max_ev := 0 ;
   foreach tasks (@lstring key @task_obj task) do
-    @stringset evts := [task events] ;
-    if [evts count] > max_ev then max_ev := [evts count] ; end if ;
+    @lstringlist evts := [task events] ;
+    if [evts length] > max_ev then max_ev := [evts length] ; end if ;
   end foreach ;
   generate_mask_type ![max_ev uint64] !"Too much events" ?type ;
   types := [types stringByReplacingStringByString !"$EVENTMASK_T$" !type] ;
@@ -830,8 +830,10 @@ routine compute_rez_priority
         @uint rez_act := 0 ;
         @string rez_comment := "" ;
         foreach tasks (@lstring tn @task_obj t) do
-            @stringset owned_rez := [t resources] ;
-            if [owned_rez hasKey ![rez_name string]] then
+            @lstringlist owned_rez := [t resources] ;
+            @bool owned ;
+            is_in_lstringlist !owned_rez !rez_name ?* ?owned ;
+            if owned then
                 @uint prio ;
                 @uint act ;
                 [prio_for_task get !tn ?prio ?act] ;
@@ -843,8 +845,10 @@ routine compute_rez_priority
             end if ;
         end foreach ;
         foreach isrs (@lstring isn @isr_obj i) do
-            @stringset owned_rez := [i resources] ;
-            if [owned_rez hasKey ![rez_name string]] then
+            @lstringlist owned_rez := [i resources] ;
+            @bool owned ;
+            is_in_lstringlist !owned_rez !rez_name ?* ?owned ;
+            if owned then
                 @uint prio;
                 @uint act ;
                 [prio_for_isr get !isn ?prio ?act] ;
@@ -865,8 +869,10 @@ routine compute_rez_priority
         # count added but it should not be. So substract it
         #
         foreach tasks (@lstring tn @task_obj t) do
-            @stringset owned_rez := [t resources] ;
-            if [owned_rez hasKey ![rez_name string]] then
+            @lstringlist owned_rez := [t resources] ;
+            @bool owned ;
+            is_in_lstringlist !owned_rez !rez_name ?* ?owned ;
+            if owned then
                 @uint prio ;
                 @uint act ;
                 [prio_for_task get !tn ?prio ?act] ;
@@ -876,8 +882,10 @@ routine compute_rez_priority
             end if ;
         end foreach ;
         foreach isrs (@lstring isn @isr_obj i) do
-            @stringset owned_rez := [i resources] ;
-            if [owned_rez hasKey ![rez_name string]] then
+            @lstringlist owned_rez := [i resources] ;
+            @bool owned ;
+            is_in_lstringlist !owned_rez !rez_name ?* ?owned ;
+            if owned then
                 @uint prio;
                 @uint act ;
                 [prio_for_isr get !isn ?prio ?act] ;
@@ -1021,7 +1029,7 @@ routine generate_tasks
         # it is a basic task. It the task uses at least one event it is
         # an extended task.
         @string tpl_evt := "" ;
-        if [[task events] count] == 0 then
+        if [[task events] length] == 0 then
             # basic task
             result := [result stringByReplacingStringByString !"$TASK_TYPE$" !"TASK_BASIC"] ;
         else
@@ -1048,16 +1056,16 @@ routine generate_tasks
             doReplace !?result !"$RESOURCE_PTR$" !"&INTERNAL_RES_SCHEDULER" ;
         else
             # Schedule is FULL. Look for the usage of an internal resource
-            @stringset used_rez := [task resources] ;
+            @lstringlist used_rez := [task resources] ;
             @bool no_internal_rez_found := true ;
-            foreach used_rez (@string rez_name) do
+            foreach used_rez (@lstring rez_name) do
                 if no_internal_rez_found then
                     @resource_obj rez ;
-                    [resources get ![@lstring new !rez_name !here] ?rez] ;
+                    [resources get !rez_name ?rez] ;
                     @resource_property_obj rez_prop := [rez property] ;
                     cast rez_prop :
                     when == @resource_property_internal_obj do
-                         doReplace !?result !"$RESOURCE_PTR$" !"&".rez_name."_rez_desc" ;
+                         doReplace !?result !"$RESOURCE_PTR$" !"&".[rez_name string]."_rez_desc" ;
                          no_internal_rez_found := false ;
                     else
                     end cast ;
@@ -1438,12 +1446,12 @@ routine generate_events
     @stringset_map tasks_for_event [emptyMap] ; 
 
     foreach tasks (@lstring task_name @task_obj task) do
-        @stringset events_used ;
+        @lstringlist events_used ;
         events_used := [task events] ;
         @uint64 event_mask := 0L ;
-        foreach events_used (@string evt_name) do
+        foreach events_used (@lstring evt_name) do
             @event_obj event ;
-            [events get ![@lstring new !evt_name !here] ?event] ;
+            [events get !evt_name ?event] ;
             @event_mask_obj mask_obj ;
             mask_obj := [event mask] ;
             cast mask_obj :
@@ -1456,24 +1464,24 @@ routine generate_events
                 end if ;
             when == @event_mask_auto_obj do
                 @uint count ;
-                if [evt_usage hasKey !evt_name]
+                if [evt_usage hasKey ![evt_name string]]
                 then
-                    [!?evt_usage delete ![@lstring new !evt_name !here] ?count] ;
+                    [!?evt_usage delete !evt_name ?count] ;
                     count++ ;
                 else
                     count := 1 ;
                 end if ;
-                [!?evt_usage insert_count ![@lstring new !evt_name !here] !count] ;
+                [!?evt_usage insert_count !evt_name !count] ;
             else
             end cast ;
 
             @stringset ref_tasks [emptySet] ;
-            if [tasks_for_event hasKey !evt_name] 
+            if [tasks_for_event hasKey ![evt_name string]] 
             then
-                [!?tasks_for_event delete ![@lstring new !evt_name !here] ?ref_tasks] ;
+                [!?tasks_for_event delete !evt_name ?ref_tasks] ;
             end if ;
             ref_tasks += ![task_name string] ;
-            [!?tasks_for_event add ![@lstring new !evt_name !here] !ref_tasks] ;
+            [!?tasks_for_event add !evt_name !ref_tasks] ;
 
         end foreach ;
         [!?task_mask insert_mask !task_name !event_mask] ;

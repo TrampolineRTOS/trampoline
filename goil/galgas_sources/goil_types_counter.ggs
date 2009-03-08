@@ -42,7 +42,7 @@ class @counter_obj extends @oil_obj {
     @basic_type   ticks_per_base ;
     @basic_type   min_cycle ;
 # AUTOSAR fields
-    @stringset    acc_apps ;
+    @lstringlist  acc_apps ;
     @counter_type type ;
     @lstring      unit ;
 }

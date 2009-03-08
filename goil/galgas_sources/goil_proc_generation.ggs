@@ -50,7 +50,7 @@ routine generate_proc_table
   @tasks_by_type stasks [emptySortedList];
   # sort tasks according to type (basic or extended)
   foreach tasks do
-    if [[task events] count] > 0 then
+    if [[task events] length] > 0 then
       stasks += !0 ![key string] ;
       ex_t_ct++ ;
     else

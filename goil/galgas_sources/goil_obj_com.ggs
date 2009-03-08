@@ -143,7 +143,7 @@ rule <comappmode>
 :
   @lstring s ;
   $COMAPPMODE$ ; $=$ ; $string$ ?s ;
-  add_lstring_unique !?am !s ;
+  add_lstring_unique !?am !s !"COMAPPMODE";
   <description> ?* ; $;$ ;
 end rule;
 
@@ -166,7 +166,7 @@ rule <use>
 :
   @lstring use ;
   $USE$ ; $=$ ; $string$ ?use ;
-  add_lstring_unique !?u !use ;
+  add_lstring_unique !?u !use !"USE" ;
   <description> ?* ; $;$ ;
 end rule;
 
