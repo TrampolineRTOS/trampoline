@@ -280,20 +280,32 @@ routine file_in_path
     end foreach ;
 end routine ;
 
+routine is_in_lstringlist
+  ?@lstringlist l
+  ?@lstring     e
+  !@lstring     f
+  !@bool        p
+:
+  p := false ;
+  f := [@lstring new !"" !here] ;
+  foreach l (@lstring s) do
+    if [s string] == [e string] then
+      p := true ;
+      f := s ;
+    end if ;
+  end foreach ;
+end routine ;
+
 routine add_lstring_unique
   ?!@lstringlist l
   ?@lstring e
+  ?@string att
 :
-  @bool found := false ;
-  @lstring res := [@lstring new !"" !here] ;
-  foreach l (@lstring s) do
-    if [s string] == [e string] then
-      found := true ;
-      res := s ;
-    end if ;
-  end foreach ;
+  @bool found ;
+  @lstring res ;
+  is_in_lstringlist !l !e ?res ?found ;
   if found then
-    error e : [e string]." has already be listed" ;
+    error e : att." ".[e string]." has already be listed" ;
     error res : "was listed here" ;
   else
     l += !e ;

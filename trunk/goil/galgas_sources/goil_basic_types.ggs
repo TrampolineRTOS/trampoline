@@ -235,15 +235,73 @@ class @autostart_void extends @autostart_obj {
 class @autostart_false extends @autostart_obj {
 }
 
+#
+# set_uint32 sets it first argument as a @uint32_class according
+# to its second argument if it is unset (ie @void). Otherwise
+# it outputs an error.
+#
+# @param  t     The uint32 to set
+# @param  i     The integer used as source
+# @param  att   The name of the attribute.
+#               Used in the error message
+#
+routine set_uint32
+  ?!@basic_type t
+  ?@luint64     i
+  ?@string      att
+:
+  cast t :
+  when == @void do
+    t := [@uint32_class new ![i location] ![[i uint64] uint]] ;
+  else
+    error i : "Redefinition of ".att ;
+    error [t location] : "was defined here" ;
+  end cast ;
+end routine ;
+
+#
+# set_uint64 sets it first argument as a @uint64_class according
+# to its second argument if it is unset (ie @void). Otherwise
+# it outputs an error.
+#
+# @param  t     The uint64 to set
+# @param  i     The integer used as source
+# @param  att   The name of the attribute.
+#               Used in the error message
+#
+routine set_uint64
+  ?!@basic_type t
+  ?@luint64     i
+  ?@string      att
+:
+  cast t :
+  when == @void do
+    t := [@uint64_class new ![i location] ![i uint64]] ;
+  else
+    error i : "Redefinition of ".att ;
+    error [t location] : "was defined here" ;
+  end cast ;
+end routine ;
+
+#
+# set_bool sets it first argument as a @bool_class according
+# to its second argument if it is unset (ie @void). Otherwise
+# it outputs an error.
+#
+# @param  t     The bool to set
+# @param  b     The bool used as source
+# @param  att   The name of the attribute.
+#               Used in the error message
+#
 routine set_bool
   ?!@basic_type t
-  ?@lbool b
-  ?@string att
+  ?@lbool       b
+  ?@string      att
 :
   cast t :
   when == @bool_class do
     error b : "Redefinition of ".att ;
-    error [t location] : "wad defined here" ;
+    error [t location] : "was defined here" ;
   else
     t := [@bool_class new ![b location] ![b bool]] ;
   end cast ;

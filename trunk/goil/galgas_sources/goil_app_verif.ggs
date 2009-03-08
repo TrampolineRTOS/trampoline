@@ -6,14 +6,13 @@ import semantics goil_types_task in "goil_types_task.ggs" ;
 import semantics goil_types_scheduletable in "goil_types_scheduletable.ggs" ;
 
 routine object_exists
-  ?@stringset def
-  ?@stringset ref
-  ?@string    obj_type
-  ?@lstring   name
+  ?@stringset   def
+  ?@lstringlist ref
+  ?@string      obj_type
 :
-  foreach ref (@string s) do
-    if not [def hasKey !s] then
-      error name : obj_type." referenced from ".[name string]." does not exist" ;
+  foreach ref (@lstring s) do
+    if not [def hasKey ![s string]] then
+      error s : obj_type." ".[s string]." referenced does not exist" ;
     end if ;
   end foreach ;
 end routine ;
@@ -64,37 +63,37 @@ routine apps_well_formed
   if [apps count] > 0 then
     # Verify the objects referenced from an application exists
     foreach apps do
-      object_exists ![tasks allKeys] ![[app tasks] allKeys] !"Task" !key ;
-      object_exists ![isrs allKeys] ![[app isrs] allKeys] !"ISR" !key ;
-      object_exists ![alarms allKeys] ![[app alarms] allKeys] !"Alarm" !key ;
-      object_exists ![schedtables allKeys] ![[app schedtables] allKeys] !"Schedule Table" !key ;
-      object_exists ![counters allKeys] ![[app counters] allKeys] !"Counter" !key ;
-      object_exists ![resources allKeys] ![[app resources] allKeys] !"Resource" !key ;
+      object_exists ![tasks allKeys] ![[app tasks] keyList] !"Task" ;
+      object_exists ![isrs allKeys] ![[app isrs] keyList] !"ISR" ;
+      object_exists ![alarms allKeys] ![[app alarms] keyList] !"Alarm" ;
+      object_exists ![schedtables allKeys] ![[app schedtables] keyList] !"Schedule Table" ;
+      object_exists ![counters allKeys] ![[app counters] keyList] !"Counter" ;
+      object_exists ![resources allKeys] ![[app resources] keyList] !"Resource" ;
 #    object_exists ![messages allKeys] ![[app messages] allKeys] !"Message" !key ;
     end foreach ;
 
     # verify accessing applications of each object exist
     @stringset all_apps := [apps allKeys] ;
     foreach tasks do
-      object_exists !all_apps ![task acc_apps] !"Application" !key ;
+      object_exists !all_apps ![task acc_apps] !"Application" ;
     end foreach ;
     foreach isrs do
-      object_exists !all_apps ![isr acc_apps] !"Application" !key ;
+      object_exists !all_apps ![isr acc_apps] !"Application" ;
     end foreach ;
     foreach alarms do
-      object_exists !all_apps ![alarm acc_apps] !"Application" !key ;
+      object_exists !all_apps ![alarm acc_apps] !"Application" ;
     end foreach ;
     foreach schedtables do
-      object_exists !all_apps ![st acc_apps] !"Application" !key ;
+      object_exists !all_apps ![st acc_apps] !"Application" ;
     end foreach ;
     foreach counters do
-      object_exists !all_apps ![counter acc_apps] !"Application" !key ;
+      object_exists !all_apps ![counter acc_apps] !"Application" ;
     end foreach ;
     foreach resources do
-      object_exists !all_apps ![resource acc_apps] !"Application" !key ;
+      object_exists !all_apps ![resource acc_apps] !"Application" ;
     end foreach ;
     foreach messages do
-      object_exists !all_apps ![mess acc_apps] !"Application" !key ;
+      object_exists !all_apps ![mess acc_apps] !"Application" ;
     end foreach ;
 
     # verify objects are not in 2 OS Applications

@@ -30,265 +30,184 @@ import semantics goil_types_os in "goil_types_os.ggs" ;
 #
 # local rules declaration
 #
-nonterminal <os> ?!@os_obj os ;
+nonterminal <os>
+  ?!@os_obj os ;
 
 #
 # external rules 
 #
 nonterminal <description>
-    !@lstring desc ;
+  !@lstring desc ;
 nonterminal <free_field>
-    ?!@ident_map ids ;
+  ?!@ident_map ids ;
 nonterminal <boolean>
-    !@lbool val ;
+  !@lbool val ;
 #
 # local rules implementation
 #
 rule <os> 
-    ?!@os_obj os
+  ?!@os_obj os
 :
-    @lstring	   status  := [os status] ;
-    @basic_type  startuphook := [os startuphook] ;
-    @basic_type  shutdownhook := [os shutdownhook] ;
-    @basic_type  errorhook := [os errorhook] ;
-    @basic_type  pretaskhook := [os pretaskhook] ;
-    @basic_type  posttaskhook := [os posttaskhook] ;
-    @basic_type  protectionhook := [os protectionhook] ;     # AUTOSAR
-    @lstring     scalabilityclass := [os scalabilityclass] ; # AUTOSAR
-    @basic_type  stackmonitoring := [os stackmonitoring] ;   # AUTOSAR
-    @basic_type  usegetserviceid := [os usegetserviceid] ;
-    @basic_type  useparameteraccess := [os useparameteraccess] ;
-    @basic_type  useresscheduler := [os useresscheduler] ;
-    @lstringlist app_src := [os app_src] ;                   # Makefile
-    @lstringlist cflags := [os cflags] ;                     # Makefile
-    @lstringlist asflags := [os asflags] ;                   # Makefile
-    @lstringlist ldflags := [os ldflags] ;                   # Makefile
-    @lstring     app_name := [os app_name] ;                 # Makefile
-    @lstring     tpl_base_path := [os tpl_base_path];        # Makefile
-    @ident_map   others := [os others] ;                     # Makefile
+  @lstring	   status  := [os status] ;
+  @basic_type  startuphook := [os startuphook] ;
+  @basic_type  shutdownhook := [os shutdownhook] ;
+  @basic_type  errorhook := [os errorhook] ;
+  @basic_type  pretaskhook := [os pretaskhook] ;
+  @basic_type  posttaskhook := [os posttaskhook] ;
+  @basic_type  protectionhook := [os protectionhook] ;     # AUTOSAR
+  @lstring     scalabilityclass := [os scalabilityclass] ; # AUTOSAR
+  @basic_type  stackmonitoring := [os stackmonitoring] ;   # AUTOSAR
+  @basic_type  usegetserviceid := [os usegetserviceid] ;
+  @basic_type  useparameteraccess := [os useparameteraccess] ;
+  @basic_type  useresscheduler := [os useresscheduler] ;
+  @lstringlist app_src := [os app_src] ;                   # Makefile
+  @lstringlist cflags := [os cflags] ;                     # Makefile
+  @lstringlist asflags := [os asflags] ;                   # Makefile
+  @lstringlist ldflags := [os ldflags] ;                   # Makefile
+  @lstring     app_name := [os app_name] ;                 # Makefile
+  @lstring     tpl_base_path := [os tpl_base_path];        # Makefile
+  @ident_map   others := [os others] ;                     # Makefile
 
-    $OS$ ;
-    $idf$ ?* ;
-    ${$ ;
-    repeat
-    while
-        $STATUS$ ; $=$ ;
-        if [status string] != "" then
-           error here : "STATUS already defined for OS object" ;
-        end if ;
-        select
-            $EXTENDED$ ; status := [@lstring new !"extended" !here] ;
-        or
-            $STANDARD$ ; status := [@lstring new !"standard" !here] ;
-        end select ;
-        <description> ?* ; $;$ ;
-    while
-        $STARTUPHOOK$ ; $=$ ;
-        @lbool suh ;
-        <boolean> ?suh ;
-        <description> ?* ; $;$ ;
-        cast startuphook :
-        when == @void do 
-            startuphook := [@bool_class new ![suh location] ![suh bool]] ;
-        else
-            error here : "STARTUPHOOK already defined for OS object" ;
-            error [startuphook location] : "was previously defined here" ;
-        end cast ;
-   while
-        $SHUTDOWNHOOK$ ; $=$ ;
-        @lbool sdh ;
-        <boolean> ?sdh ;
-        <description> ?* ; $;$ ;
-        cast shutdownhook :
-        when == @void do
-            shutdownhook := [@bool_class new ![sdh location] ![sdh bool]] ;
-        else
-            error here : "SHUTDOWNHOOK already defined for OS object" ;
-            error [shutdownhook location] : "was previously defined here" ;
-        end cast ;
-   while
-        $ERRORHOOK$ ; $=$ ;
-        @lbool eh ;
-        <boolean> ?eh ;
-        <description> ?* ; $;$ ;
-        cast errorhook :
-        when == @void do
-            errorhook := [@bool_class new ![eh location] ![eh bool]] ;
-        else
-            error here : "ERRORHOOK already defined for OS object" ;
-            error [errorhook location] : "was previously defined here" ;
-        end cast ;
-   while
-        $PRETASKHOOK$ ; $=$ ;
-        @lbool preth ;
-        <boolean> ?preth ;
-        <description> ?* ; $;$ ;
-        cast pretaskhook :
-        when == @void do
-            pretaskhook := [@bool_class new ![preth location] ![preth bool]] ;
-        else
-            error preth : "PRETASKHOOK already defined for OS object" ;
-            error [pretaskhook location] : "was previously defined here" ;
-        end cast ;
-   while
-       $POSTTASKHOOK$ ; $=$ ;
-        @lbool posth ;
-        <boolean> ?posth ;
-        cast posttaskhook :
-        when == @void do
-          posttaskhook := [@bool_class new ![posth location] ![posth bool]] ;
-        else
-            error posth : "POSTTASKHOOK already defined for OS object" ;
-            error [posttaskhook location] : "was previously defined here" ;
-        end cast ;
-        <description> ?* ; $;$ ;
+  $OS$ ;
+  $idf$ ?* ;
+  ${$ ;
+  repeat
   while
-        @lbool proth ;
-        $PROTECTIONHOOK$ ; $=$ ; <boolean> ?proth ; <description> ?* ; $;$ ;
+    @lstring st ;
+    $STATUS$ ; $=$ ;
+    select
+        $EXTENDED$ ; st := [@lstring new !"extended" !here] ;
+    or
+        $STANDARD$ ; st := [@lstring new !"standard" !here] ;
+    end select ;
+    <description> ?* ; $;$ ;
+    set_lstring_if_empty !?status !st !"STATUS" ;
+  while
+    @lbool suh ;
+    $STARTUPHOOK$ ; $=$ ; <boolean> ?suh ;
+    set_bool !?startuphook !suh !"STARTUPHOOK" ;
+    <description> ?* ; $;$ ;
+  while
+    @lbool sdh ;
+    $SHUTDOWNHOOK$ ; $=$ ; <boolean> ?sdh ; <description> ?* ; $;$ ;
+    set_bool !?shutdownhook !sdh !"SHUTDOWNHOOK" ;
+  while
+    @lbool eh ;
+    $ERRORHOOK$ ; $=$ ; <boolean> ?eh ; <description> ?* ; $;$ ;
+    set_bool !?errorhook !eh !"ERRORHOOK" ;
+  while
+    @lbool preth ;
+    $PRETASKHOOK$ ; $=$ ; <boolean> ?preth ; <description> ?* ; $;$ ;
+    set_bool !?pretaskhook !preth !"PRETASKHOOK" ;
+  while
+    @lbool posth ;
+    $POSTTASKHOOK$ ; $=$ ; <boolean> ?posth ; <description> ?* ; $;$ ;
+    set_bool !?posttaskhook !posth !"POSTTASKHOOK" ;
+  while
+    @lbool proth ;
+    $PROTECTIONHOOK$ ; $=$ ; <boolean> ?proth ; <description> ?* ; $;$ ;
+    if [option goil_options.autosar_on] == FALSE then
+        error here : "AUTOSAR flag is off, turn it on to use PROTECTIONHOOK attribute in OS object" ;
+    end if ;
+    set_bool !?protectionhook !proth !"PROTECTIONHOOK" ;
+  while
+    if [option goil_options.autosar_on] == FALSE then
+        error here : "AUTOSAR flag is off, turn it on to use SCALABILITYCLASS attribute in OS object" ;
+    end if ;
+    $SCALABILITYCLASS$ ; $=$ ;
+    if [scalabilityclass string] != "" then
+       error here : "SCALABILITYCLASS already defined for OS object" ;
+    end if ;
+    select
+        $SC1$ ; scalabilityclass := [@lstring new !"sc1" !here] ;
+    or
+        $SC2$ ; scalabilityclass := [@lstring new !"sc2" !here] ;
+    or
+        $SC3$ ; scalabilityclass := [@lstring new !"sc3" !here] ;
+    or
+        $SC4$ ; scalabilityclass := [@lstring new !"sc4" !here] ;
+    or
+        $AUTO$ ; scalabilityclass := [@lstring new !"auto" !here] ;
+    end select ;
+    <description> ?* ; $;$ ;
+  while
+    if [option goil_options.autosar_on] == FALSE then
+        error here : "AUTOSAR flag is off, turn it on to use STACKMONITORING attribute in OS object" ;
+    end if ;
+    @lbool stackmon ;
+    $STACKMONITORING$ ; $=$ ; <boolean> ?stackmon ;
+    set_bool !?stackmonitoring !stackmon !"STACKMONITORING" ;
+    <description> ?* ; $;$ ;
+  while
+    @lbool ugsi ;
+    $USEGETSERVICEID$ ; $=$ ; <boolean> ?ugsi ;
+    set_bool !?usegetserviceid !ugsi !"USEGETSERVICEID" ;
+    <description> ?* ; $;$ ;
+  while
+    @lbool upa ;
+    $USEPARAMETERACCESS$ ; $=$ ; <boolean> ?upa ;
+    set_bool !?useparameteraccess !upa !"USEPARAMETERACCESS" ;
+    <description> ?* ; $;$ ;
+  while
+    @lbool urs ;
+    $USERESSCHEDULER$ ; $=$ ; <boolean> ?urs ;
+    set_bool !?useresscheduler !urs !"USERESSCHEDULER" ;
+    <description> ?* ; $;$ ;
+  while
+    @lstring src ;
+    $APP_SRC$ ; $=$ ; $string$ ?src ; <description> ?* ; $;$ ;
+    checkFileExists !src;
+    app_src += !src ;
+  while
+    @lstring flag ;
+    $CFLAGS$ ; $=$ ; $string$ ?flag ; <description> ?* ; $;$ ;
+    cflags += !flag ;
+  while
+    @lstring flag ;
+    $ASFLAGS$ ; $=$ ; $string$ ?flag ; <description> ?* ; $;$ ;
+    asflags += !flag ;
+  while
+    @lstring flag ;
+    $LDFLAGS$ ; $=$ ; $string$ ?flag ; <description> ?* ; $;$ ;
+    ldflags += !flag ;
+  while
+    @lstring an ;
+    $APP_NAME$ ; $=$ ; $string$ ?an ; <description> ?* ; $;$ ;
+    set_lstring_if_empty !?app_name !an !"APP_NAME" ;
+  while
+    @lstring tbp ;
+    $TRAMPOLINE_BASE_PATH$ ; $=$ ; $string$ ?tbp ; <description> ?* ; $;$ ;
+    set_lstring_if_empty !?tpl_base_path !tbp !"TRAMPOLINE_BASE_PATH" ;
+  while
+    <free_field> !?others ; <description> ?* ; $;$ ;
+  end repeat ;
+  $}$ ;
+  @lstring desc ;
+  <description> ?desc ;
+  $;$ ;
 
-        if [option goil_options.autosar_on] == FALSE then
-            error here : "AUTOSAR flag is off, turn it on to use PROTECTIONHOOK attribute in OS object" ;
-        end if ;
-        cast protectionhook :
-        when == @void do
-            protectionhook := [@bool_class new ![proth location] ![proth bool]] ;
-        else
-            error proth : "PROTECTIONHOOK already defined for OS object" ;
-            error [protectionhook location] : "was previously defined here" ;
-        end cast ;
-
-    while
-        if [option goil_options.autosar_on] == FALSE then
-            error here : "AUTOSAR flag is off, turn it on to use SCALABILITYCLASS attribute in OS object" ;
-        end if ;
-        $SCALABILITYCLASS$ ; $=$ ;
-        if [scalabilityclass string] != "" then
-           error here : "SCALABILITYCLASS already defined for OS object" ;
-        end if ;
-        select
-            $SC1$ ; scalabilityclass := [@lstring new !"sc1" !here] ;
-        or
-            $SC2$ ; scalabilityclass := [@lstring new !"sc2" !here] ;
-        or
-            $SC3$ ; scalabilityclass := [@lstring new !"sc3" !here] ;
-        or
-            $SC4$ ; scalabilityclass := [@lstring new !"sc4" !here] ;
-        or
-            $AUTO$ ; scalabilityclass := [@lstring new !"auto" !here] ;
-        end select ;
-        <description> ?* ; $;$ ;
-
-   while
-        if [option goil_options.autosar_on] == FALSE then
-            error here : "AUTOSAR flag is off, turn it on to use STACKMONITORING attribute in OS object" ;
-        end if ;
-        $STACKMONITORING$ ; $=$ ;
-        @lbool stackmon ;
-        <boolean> ?stackmon ;
-        cast stackmonitoring :
-        when == @void do
-          stackmonitoring := [@bool_class new ![stackmon location] ![stackmon bool]] ;
-        else
-            error stackmon : "STACKMONITORING already defined for OS object" ;
-            error [stackmonitoring location] : "was previously defined here" ;
-        end cast ;
-       <description> ?* ; $;$ ;
-
-    while
-        $USEGETSERVICEID$ ; $=$ ;
-        @lbool ugsi ;
-        <boolean> ?ugsi ;
-        cast usegetserviceid :
-        when == @void do
-          usegetserviceid := [@bool_class new ![ugsi location] ![ugsi bool]] ;
-        else
-            error ugsi : "USEGETSERVICEID already defined for OS object" ;
-            error [usegetserviceid location] : "was previously defined here" ;
-        end cast ;
-        <description> ?* ; $;$ ;
-    while
-       $USEPARAMETERACCESS$ ; $=$ ;
-        @lbool upa ;
-        <boolean> ?upa ;
-        cast useparameteraccess :
-        when == @void do
-          useparameteraccess := [@bool_class new ![upa location] ![upa bool]] ;
-        else
-          error upa : "USEPARAMETERACCESS already defined for OS object" ;
-          error [useparameteraccess location] : "was previously defined here" ;
-        end cast ;
-        <description> ?* ; $;$ ;
-    while
-       $USERESSCHEDULER$ ; $=$ ;
-        @lbool urs ;
-        <boolean> ?urs ;
-        cast useresscheduler :
-        when == @void do
-          useresscheduler := [@bool_class new ![urs location] ![urs bool]] ;
-        else
-            error urs : "USERESSCHEDULER already defined for OS object" ;
-            error [useresscheduler location] : "was previously defined here" ;
-        end cast ;
-        <description> ?* ; $;$ ;
-    while
-        @lstring src ;
-        $APP_SRC$ ; $=$ ; $string$ ?src ; <description> ?* ; $;$ ;
-        checkFileExists !src;
-        app_src += !src ;
-    while
-        @lstring flag ;
-        $CFLAGS$ ; $=$ ; $string$ ?flag ; <description> ?* ; $;$ ;
-        cflags += !flag ;
-    while
-        @lstring flag ;
-        $ASFLAGS$ ; $=$ ; $string$ ?flag ; <description> ?* ; $;$ ;
-        asflags += !flag ;
-    while
-        @lstring flag ;
-        $LDFLAGS$ ; $=$ ; $string$ ?flag ; <description> ?* ; $;$ ;
-        ldflags += !flag ;
-    while
-        if [app_name string] != "" then
-          error here: "The generated executable is already defined.";
-          error [app_name location]: "was previously defined here.";
-        end if;
-        $APP_NAME$ ; $=$ ; $string$ ?app_name; <description> ?* ; $;$ ;
-    while
-        if [tpl_base_path string] != "" then
-          error here: "The trampoline base path is already defined.";
-          error [tpl_base_path location]: "was previously defined here.";
-        end if;
-        $TRAMPOLINE_BASE_PATH$ ; $=$ ; $string$ ?tpl_base_path ; <description> ?* ; $;$ ;
-    while
-        <free_field> !?others ; <description> ?* ; $;$ ;
-    end repeat ;
-    $}$ ;
-    @lstring desc ;
-    <description> ?desc ;
-    $;$ ;
-
-    os := [@os_obj new
-        !desc
-        !status
-        !startuphook
-        !shutdownhook
-        !errorhook
-        !pretaskhook
-        !posttaskhook
-        !protectionhook
-        !scalabilityclass
-        !stackmonitoring
-        !usegetserviceid
-        !useparameteraccess
-        !useresscheduler
-        !app_src
-        !cflags
-        !asflags
-        !ldflags
-        !app_name
-        !tpl_base_path
-        !others
-    ];
+  os := [@os_obj new
+    !desc
+    !status
+    !startuphook
+    !shutdownhook
+    !errorhook
+    !pretaskhook
+    !posttaskhook
+    !protectionhook
+    !scalabilityclass
+    !stackmonitoring
+    !usegetserviceid
+    !useparameteraccess
+    !useresscheduler
+    !app_src
+    !cflags
+    !asflags
+    !ldflags
+    !app_name
+    !tpl_base_path
+    !others
+  ];
 end rule ;
 
 end syntax ;

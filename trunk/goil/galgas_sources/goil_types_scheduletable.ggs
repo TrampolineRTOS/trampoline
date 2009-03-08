@@ -102,7 +102,7 @@ class @scheduletable_obj extends @oil_obj {
     @basic_type      periodic ;
     @basic_type      length ;
     @action_list     actions ;
-    @stringset       acc_apps ;
+    @lstringlist     acc_apps ;
 
     method generate
         ?@lstring name     # name of the schedule table

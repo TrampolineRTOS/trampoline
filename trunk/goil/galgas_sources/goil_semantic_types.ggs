@@ -81,7 +81,7 @@ class @alarm_obj extends @oil_obj {
     @lstring        counter_name ;
     @action_obj     action_params ;
     @autostart_obj  autostart_params ;
-    @stringset      acc_apps ;
+    @lstringlist    acc_apps ;
 }
 
 map @alarm_map {
@@ -96,10 +96,10 @@ map @alarm_map {
 #
 
 abstract class @base_mess extends @oil_obj {
-    @action_obj notification ;
-    @action_obj notificationerror ;
-    @stringset  acc_apps ;
-    @ident_map  other_fields;
+    @action_obj  notification ;
+    @action_obj  notificationerror ;
+    @lstringlist acc_apps ;
+    @ident_map   other_fields;
 }
 
 map @message_map ;

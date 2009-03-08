@@ -10,9 +10,9 @@ import semantics goil_types_timing_prot in "goil_types_timing_prot.ggs" ;
 class @isr_obj extends @oil_obj {
     @basic_type  category ;
     @basic_type  priority ;
-    @stringset   resources ;
-    @stringset   messages ;
-    @stringset   acc_apps ;
+    @lstringlist resources ;
+    @lstringlist messages ;
+    @lstringlist acc_apps ;
     @timing_prot timing_prot ;
     @ident_map   other_fields;
 

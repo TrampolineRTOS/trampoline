@@ -24,7 +24,7 @@ class @resource_property_internal_obj extends @resource_property_obj {
 
 class @resource_obj extends @oil_obj {
     @resource_property_obj property ;
-    @stringset             acc_apps ;
+    @lstringlist           acc_apps ;
 }
 
 map @resource_map {

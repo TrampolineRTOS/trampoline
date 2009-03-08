@@ -12,7 +12,7 @@ import semantics goil_types_counter in "goil_types_counter.ggs" ;
 routine tasks_well_formed ?@task_map tasks :
     @basic_type defined_priority := [@void new !here] ;
     @basic_type defined_activation := [@void new !here] ;
-    @stringset defined_events [emptySet] ;
+    @lstringlist defined_events [emptyList] ;
     @lstring defined_schedule := [@lstring new !"" !here] ;
     @task_autostart_obj defined_autostart := [@task_autostart_void new !here] ;
     foreach tasks (@lstring task_name @task_obj task) do
@@ -28,7 +28,7 @@ routine tasks_well_formed ?@task_map tasks :
             error [task_name location] : "ACTIVATION attribute not defined for TASK ".[task_name string] ;
         when == @uint32_class ui do
             defined_events := [task events] ;
-            if ( [defined_events count] > 0 & [ui value] > 1) then
+            if ( [defined_events length] > 0 & [ui value] > 1) then
                 error [task_name location] : "ACTIVATION attribute for extended task ".[task_name string]." should be set to 1" ;
                 error [ui location] : "ACTIVATION attribute set to ".[[ui value] string]. " here" ;
             end if ;
@@ -267,32 +267,32 @@ routine all_events_and_resources_and_messages_defined_and_used
     foreach tasks (@lstring task_name @task_obj task) do
 
         #all referenced events must be defined
-        @stringset task_events ;
+        @lstringlist task_events ;
         task_events := [task events] ;
-        foreach task_events (@string event_name) do
-            used_events += !event_name ;
-            if (not [events hasKey !event_name])
-            then error task_name : "EVENT " . event_name . " is not defined" ;
+        foreach task_events (@lstring event_name) do
+            used_events += ![event_name string];
+            if (not [events hasKey ![event_name string]])
+            then error event_name : "EVENT ".[event_name string]." is not defined" ;
             end if ;
         end foreach ;
 
         #all referenced resources must be defined
-        @stringset task_resources ;
+        @lstringlist task_resources ;
         task_resources := [task resources] ;
-        foreach task_resources (@string res_name) do
-            used_resources += !res_name ;
-            if (not [resources hasKey !res_name])
-            then error task_name : "RESOURCE " . res_name . " is not defined" ;
+        foreach task_resources (@lstring res_name) do
+            used_resources += ![res_name string];
+            if (not [resources hasKey ![res_name string]])
+            then error res_name : "RESOURCE ".[res_name string]." is not defined" ;
             end if ;
         end foreach ;
 
         #all referenced messages must be defined
-        @stringset task_messages ;
+        @lstringlist task_messages ;
         task_messages := [task messages] ;
-        foreach task_messages (@string mess_name) do
-            used_messages += !mess_name ;
-            if (not [messages hasKey !mess_name]) then
-                error task_name : "MESSAGE " .mess_name . " is not defined" ;
+        foreach task_messages (@lstring mess_name) do
+            used_messages += ![mess_name string];
+            if (not [messages hasKey ![mess_name string]]) then
+                error mess_name : "MESSAGE ".[mess_name string]." is not defined" ;
             end if ;
         end foreach ;
     end foreach ;
@@ -301,20 +301,20 @@ routine all_events_and_resources_and_messages_defined_and_used
     foreach isrs (@lstring isr_name @isr_obj isr) do
 
         #all referenced resources must be defined
-        @stringset isr_resources := [isr resources] ;
-        foreach isr_resources (@string res_name) do
-            used_resources+= !res_name ;
-            if (not [resources hasKey !res_name])
+        @lstringlist isr_resources := [isr resources] ;
+        foreach isr_resources (@lstring res_name) do
+            used_resources += ![res_name string] ;
+            if (not [resources hasKey ![res_name string]])
             then error isr_name : "RESOURCE " . res_name . " is not defined" ;
             end if ;
         end foreach ;
 
         #all referenced messages must be defined
-        @stringset isr_messages ;
+        @lstringlist isr_messages ;
         isr_messages := [isr messages] ;
-        foreach isr_messages (@string mess_name) do
-            used_messages += !mess_name ;
-            if (not [messages hasKey !mess_name]) then
+        foreach isr_messages (@lstring mess_name) do
+            used_messages += ![mess_name string];
+            if (not [messages hasKey ![mess_name string]]) then
                 error isr_name : "MESSAGE " .mess_name . " is not defined" ;
             end if ;
         end foreach ;
@@ -380,11 +380,13 @@ routine all_alarm_actions_correct
                 then error [act task_name] : "TASK " . [[act task_name] string] . " is never defined" ;
                 else 
                     @task_obj task_data ;
-                    @stringset known_events ;
+                    @lstringlist known_events ;
                     [tasks get ![act task_name] ?task_data] ;
                     known_events := [task_data events] ;
-                    if not [known_events hasKey ![[act event_name] string]]
-                    then warning [act event_name] : "EVENT " . [[act event_name] string] . " is not defined for TASK " . [[act task_name] string] ;
+                    @bool known ;
+                    is_in_lstringlist !known_events ![act event_name] ?* ?known ;
+                    if not known then
+                      warning [act event_name] : "EVENT " . [[act event_name] string] . " is not defined for TASK " . [[act task_name] string] ;
                     end if ;
                 end if ;
             when == @activatetask_action act do

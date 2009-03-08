@@ -25,10 +25,10 @@ class @task_obj extends @oil_obj {
     @lstring            schedule ;
     @basic_type         activation ;
     @task_autostart_obj autostart ;
-    @stringset          resources ;
-    @stringset          events ;
-    @stringset          messages ;
-    @stringset          acc_apps ;
+    @lstringlist        resources ;
+    @lstringlist        events ;
+    @lstringlist        messages ;
+    @lstringlist        acc_apps ;
     @timing_prot        timing_prot ;
     @ident_map          others;
 }

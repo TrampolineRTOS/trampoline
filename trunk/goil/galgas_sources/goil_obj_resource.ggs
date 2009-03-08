@@ -24,101 +24,92 @@ import semantics goil_semantics in "goil_semantics.ggs" ;
 # local nonterminals description
 #
 nonterminal <resource> 
-    ?!@resource_map resources ;
+  ?!@resource_map resources ;
 nonterminal <resource_attributes>
-    ?@lstring                rez_name
-    ?!@resource_property_obj property
-    ?!@stringset             acc_apps ;
+  ?!@resource_property_obj property
+  ?!@lstringlist           acc_apps ;
 
 #
 # external nonterminals
 #
 nonterminal <description>
-	!@lstring desc ;
+  !@lstring desc ;
 
 #
 # local rules implementation
 #
 rule <resource>
-    ?!@resource_map resources 
+  ?!@resource_map resources 
 :
-    @resource_obj resource ;
-    @lstring resource_name ;
-    @resource_property_obj property ;
-    @stringset acc_apps ;
-    @lstring desc ;
+  @resource_obj resource ;
+  @lstring resource_name ;
+  @resource_property_obj property ;
+  @lstringlist acc_apps ;
+  @lstring desc ;
 
-    $RESOURCE$ ;
-    $idf$ ?resource_name ;
-    if [resource_name string] == "res_sched" then
-        error here : "'res_sched' is a reserved name of the schedule resource";
-    end if;
-    ${$ ;
-    if [resources hasKey ![resource_name string]] then
-        [!?resources del !resource_name ?resource] ;
-        property := [resource property] ;
-        acc_apps := [resource acc_apps] ;
-        desc := [resource desc] ;
-    else
-        property := [@resource_property_void_obj new !here] ;
-        acc_apps := [@stringset emptySet] ;
-        desc := [@lstring new !"" !here] ;
-        resource := [@resource_obj new !desc !property !acc_apps] ;
-   end if ;
-    <resource_attributes> !resource_name !?property !?acc_apps ;
-	$}$ ;
-	<description> ?desc ;
-	$;$ ;
-
-	resource := [@resource_obj new !desc !property !acc_apps] ;
-	[!?resources put !resource_name !resource] ;
+  $RESOURCE$ ;
+  $idf$ ?resource_name ;
+  if [resource_name string] == "res_sched" then
+    error here : "'res_sched' is a reserved name of the schedule resource";
+  end if;
+  ${$ ;
+  if [resources hasKey ![resource_name string]] then
+    [!?resources del !resource_name ?resource] ;
+    property := [resource property] ;
+    acc_apps := [resource acc_apps] ;
+    desc := [resource desc] ;
+  else
+    property := [@resource_property_void_obj new !here] ;
+    acc_apps := [@lstringlist emptyList] ;
+    desc := [@lstring new !"" !here] ;
+    resource := [@resource_obj new !desc !property !acc_apps] ;
+  end if ;
+  <resource_attributes> !?property !?acc_apps ;
+  $}$ ; <description> ?desc ; $;$ ;
+  resource := [@resource_obj new !desc !property !acc_apps] ;
+  [!?resources put !resource_name !resource] ;
 end rule ;
 
 rule <resource_attributes>
-    ?@lstring                rez_name
-    ?!@resource_property_obj property
-    ?!@stringset             acc_apps
+  ?!@resource_property_obj property
+  ?!@lstringlist           acc_apps
 :
-
   repeat
   while  
     $RESOURCEPROPERTY$ ; $=$ ;
     select
-        $STANDARD$ ;
-        cast property :
-        when == @resource_property_void_obj do 
-            property := [@resource_property_standard_obj new !here] ;
-        else
-            error here : "RESOURCEPROPERTY attribute already defined for this resource" ;
-            error [property location] : "was already defined here" ;
-        end cast ;
+      $STANDARD$ ;
+      cast property :
+      when == @resource_property_void_obj do 
+        property := [@resource_property_standard_obj new !here] ;
+      else
+        error here : "RESOURCEPROPERTY attribute already defined for this resource" ;
+        error [property location] : "was already defined here" ;
+      end cast ;
     or
-        @lstring linked_resource ;
-        $LINKED$ ; ${$ ; $LINKEDRESOURCE$ ; $=$ ; $idf$ ?linked_resource ; $;$ ; $}$ ;
-        cast property :
-        when == @resource_property_void_obj do
-            property := [@resource_property_linked_obj new !here !linked_resource] ;
-        else
-            error here : "RESOURCEPROPERTY attribute already defined for this resource" ;
-            error [property location] : "was already defined here" ;
-        end cast ;
+      @lstring linked_resource ;
+      $LINKED$ ; ${$ ; $LINKEDRESOURCE$ ; $=$ ; $idf$ ?linked_resource ; $;$ ; $}$ ;
+      cast property :
+      when == @resource_property_void_obj do
+        property := [@resource_property_linked_obj new !here !linked_resource] ;
+      else
+        error here : "RESOURCEPROPERTY attribute already defined for this resource" ;
+        error [property location] : "was already defined here" ;
+      end cast ;
 	or 
-		$INTERNAL$ ;
-        cast property :
-        when == @resource_property_void_obj do
-            property := [@resource_property_internal_obj new !here] ;
-        else
-            error here : "RESOURCEPROPERTY attribute already defined for this resource" ;
-            error [property location] : "was already defined here" ;
-        end cast ;
+      $INTERNAL$ ;
+      cast property :
+      when == @resource_property_void_obj do
+        property := [@resource_property_internal_obj new !here] ;
+      else
+        error here : "RESOURCEPROPERTY attribute already defined for this resource" ;
+        error [property location] : "was already defined here" ;
+      end cast ;
 	end select ;
   while
     @lstring app ;
     $ACCESSING_APPLICATION$ ; $=$ ; $idf$ ?app ; <description> ?* ; $;$ ;
-    if [acc_apps hasKey ![app string]] then
-      warning here : "ACCESSING_APPLICATION " . [app string] . " already defined for RESOURCE " . [rez_name string] ;
-    end if ;
-    acc_apps += ![app string] ;
+    add_lstring_unique !?acc_apps !app !"ACCESSING_APPLICATION" ;
   end repeat ;
   <description> ?* ; $;$ ;
 end rule ;
