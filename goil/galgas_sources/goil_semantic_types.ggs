@@ -149,7 +149,7 @@ abstract class @mess_prop_obj {
         foreach dest_list (@lstring obj) while notfound do
 #            message [obj string]."\n" ;
             if nextone then
-                doReplace !?res !"$TARGET_PTR$" ![obj string]."_message" ;
+                doReplace !?res !"$TARGET_PTR$" !"&".[obj string]."_message" ;
                 notfound := false ;
             end if ;
             if [obj string] == [name string] then
@@ -295,9 +295,17 @@ class @newiswithin extends @filter_prop_obj {
     @luint64 min ;
     @luint64 max ;
     override method generate
-        ?@lstring    unused name
-        ?!@string    unused res :
+        ?@lstring    name
+        ?!@string    res :
 
+        @string f_res ;
+        retrieveTemplateString ?f_res !"filter_interval" ;
+        res := f_res . res ;
+        [self base_generate !name !?res] ;
+        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_new_is_within" ;
+        doReplace !?res !"$FILTER_KIND$" !"New is Within" ;
+        doReplace !?res !"$MIN$" ![[min uint64] string] ;
+        doReplace !?res !"$MAX$" ![[max uint64] string] ;
     end method ;
 }
 
