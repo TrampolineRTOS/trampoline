@@ -92,7 +92,7 @@ tpl_bool tpl_filter_new_is_within(
     tpl_com_value old_value,
     tpl_com_value new_value)
 {
-    return ((new_value >= ((tpl_interval_filter_desc *)fd)->min) &&
+	return ((new_value >= ((tpl_interval_filter_desc *)fd)->min) &&
             (new_value <= ((tpl_interval_filter_desc *)fd)->max));
 }
 
