@@ -2,7 +2,7 @@
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
- * Trampoline est protégé par la loi sur la propriété intellectuelle
+ * Trampoline est protÃˆgÃˆ par la loi sur la propriÃˆtÃˆ intellectuelle
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -18,6 +18,7 @@
 #define __TPL_COM_ERROR_H__
 
 #include "tpl_com_definitions.h"
+#include "tpl_com_internal.h"
 
 #ifdef WITH_COM_ERROR_HOOK
 
@@ -63,7 +64,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
 /*
  * macros to access the service id and its parameters from hook routine
  */
-#define OSErrorGetServiceId()   (tpl_com_service.service_id)
+#define COMErrorGetServiceId()   (tpl_com_service.service_id)
 
 /*  StartCOM parameter  */
 #define COMError_StartCOM_Mode()   \
@@ -166,10 +167,10 @@ extern tpl_com_service_call_descriptor tpl_com_service;
  * STORE_COM_APPLICATION_DATA_REF
  */
 #ifdef WITH_COM_ERROR_HOOK
-#   define STORE_COM_APPLICATION_DATA_REF(data)   \
-    tpl_com_service.parameters.data_ref = (tpl_com_data *)(data);
+#   define STORE_COM_APPLICATION_DATA_REF(data_ref1)   \
+    tpl_com_service.parameters.data_ref = (tpl_com_data *)(data_ref1);
 #else
-#   define STORE_COM_APPLICATION_DATA_REF(data)
+#   define STORE_COM_APPLICATION_DATA_REF(data_ref1)
 #endif
 
 /*
@@ -192,7 +193,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
 #define PROCESS_COM_ERROR(error)        \
     if (error != E_OK) {            \
         tpl_call_com_error_hook(error); \
-    }                               
+	}                               
 #else
 #define PROCESS_COM_ERROR(error)
 #endif
@@ -257,7 +258,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
 #   define CHECK_NOT_ZERO_LENGTH_SEND(mess_id,result)   \
     if (result == E_OK &&                               \
         tpl_send_message_table[mess_id]->sender ==      \
-            tpl_send_zero_internal_message) {           \
+            tpl_send_zero_internal_message ) {           \
         result = E_COM_ID;                              \
     }
 #endif
