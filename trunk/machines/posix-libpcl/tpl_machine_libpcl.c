@@ -486,7 +486,7 @@ FUNC(void, OS_CODE) tpl_switch_context(
     CONSTP2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
     CONSTP2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
 {
-    assert( **new_context != co_current() );
+    //assert( **new_context != co_current() );
     if( *new_context == &idle_task_context )
     {
         /* idle_task activation */
