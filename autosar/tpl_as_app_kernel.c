@@ -194,6 +194,8 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
 #if APP_COUNT > 0
   VAR(tpl_app_id, AUTOMATIC) running_app_id =
     tpl_stat_proc_table[tpl_running_id]->app_id;
+  VAR(tpl_proc_id, AUTOMATIC) restart_id =
+    tpl_app_table[running_app_id]->restart;
 
   if (running_app_id < APP_COUNT)
   {
@@ -276,10 +278,33 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
 #endif
   /* Restart the application if needed  */
     if ((opt == RESTART) &&
-        (tpl_app_table[running_app_id]->restart != INVALID_TASK))
+        (restart_id != INVALID_TASK))
     {
-      tpl_activate_task(tpl_app_table[running_app_id]->restart);
+      if (restart_id == tpl_running_id)
+      {
+        tpl_dyn_proc_table[tpl_running_id]->state = RESURRECT;
+      }
+      else
+      {
+        tpl_dyn_proc_table[tpl_running_id]->state = DYING;  
+        tpl_activate_task(tpl_app_table[running_app_id]->restart);
+      }
+      tpl_schedule_from_dying();
     }
+    else
+    {
+      tpl_dyn_proc_table[tpl_running_id]->state = DYING;  
+      tpl_schedule_from_dying();
+    }
+# ifndef WITH_SYSTEM_CALL
+    if (tpl_need_switch != NO_NEED_SWITCH)
+    {
+      tpl_switch_context(
+        NULL,
+        &(tpl_stat_proc_table[tpl_running_id]->context)
+      );
+    }
+# endif
   }
   else
   {
