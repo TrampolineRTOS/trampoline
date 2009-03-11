@@ -27,6 +27,7 @@
 #define E_COM_LENGTH    18
 #define E_COM_LIMIT     19
 #define E_COM_NOMSG     20
+#define E_COM_FILTEREDOUT 21
 
 #ifdef WITH_EXTERNAL_COM
 /*

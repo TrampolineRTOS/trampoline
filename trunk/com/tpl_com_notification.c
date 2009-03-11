@@ -44,22 +44,23 @@ tpl_status tpl_action_setflag(const tpl_action *action)
  *
  *
  */
-void tpl_notify_receiving_mos(tpl_base_receiving_mo *rmo, u8 from)
+void tpl_notify_receiving_mos(tpl_status result, u8 from)
 {
-    tpl_status result = E_OK ;
+    //tpl_status result = E_OK ;
     VAR(tpl_proc_id, AUTOMATIC) old_running_id;
   
     /*
      * Walk along the receiving message object chain and call the notification
      * for each one when the notication exists.
      */
+	/*
     while (rmo != NULL) {
         tpl_action *notification = rmo->notification;
         if (notification != NULL) {
             result |= notification->action(notification);
         }
         rmo = rmo->next_mo;
-    }
+    }*/
 	
     if ((result & NEED_RESCHEDULING) != 0) {
       old_running_id = tpl_running_id;

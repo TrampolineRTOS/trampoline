@@ -2,7 +2,7 @@
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
- * Trampoline est protégé par la loi sur la propriété intellectuelle
+ * Trampoline est protÃˆgÃˆ par la loi sur la propriÃˆtÃˆ intellectuelle
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -119,6 +119,7 @@ tpl_status tpl_copy_from_queued(
             dq->index = 0;
         }
         
+		/* if an overflow occured in the previous sent message */
         if (dq->overflow)
         {
             dq->overflow = FALSE;
