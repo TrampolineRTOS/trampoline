@@ -116,7 +116,7 @@ class @flag_action extends @action_obj {
         doReplace !?res !"$NOTIFICATION$" ![name string]."_notification" ;
         doReplace !?res !"$FLAGFUNCTION$" !"tpl_set_flag_".[flag_name string] ;
 
-        doReplace !?i_res !key ![name string] ;
+        doReplace !?i_res !key !"&".[name string]."_notification" ;
 
         i_res := res."\n".i_res ;
     end method ;

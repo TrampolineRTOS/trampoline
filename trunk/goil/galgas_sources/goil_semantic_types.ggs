@@ -229,9 +229,17 @@ class @maskednewequalsx_filter extends @filter_prop_obj {
     @luint64 mask ;
     @luint64 x ;
     override method generate
-        ?@lstring    unused name
-        ?!@string    unused res :
+        ?@lstring    name
+        ?!@string    res :
 
+        @string f_res ;
+        retrieveTemplateString ?f_res !"filter_mask_x" ;
+        res := f_res . res ;
+        [self base_generate !name !?res] ;
+        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_masked_new_equals_x" ;
+        doReplace !?res !"$FILTER_KIND$" !"Masked New Equals X" ;
+        doReplace !?res !"$MASK$" ![[mask uint64] string] ;
+        doReplace !?res !"$X$" ![[x uint64] string] ;
     end method ;
 }
 
@@ -239,9 +247,17 @@ class @maskednewdiffersx_filter extends @filter_prop_obj {
     @luint64 mask ;
     @luint64 x ;
     override method generate
-        ?@lstring    unused name
-        ?!@string    unused res :
+        ?@lstring    name
+        ?!@string    res :
 
+        @string f_res ;
+        retrieveTemplateString ?f_res !"filter_mask_x" ;
+        res := f_res . res ;
+        [self base_generate !name !?res] ;
+        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_masked_new_differs_x" ;
+        doReplace !?res !"$FILTER_KIND$" !"Masked New Differs X" ;
+        doReplace !?res !"$MASK$" ![[mask uint64] string] ;
+        doReplace !?res !"$X$" ![[x uint64] string] ;
     end method ;
 }
 
@@ -276,18 +292,32 @@ class @newisdifferent_filter extends @filter_prop_obj {
 class @maskednewequalsmaskedold_filter extends @filter_prop_obj {
     @luint64 mask ;
     override method generate
-        ?@lstring    unused name
-        ?!@string    unused res :
+        ?@lstring    name
+        ?!@string    res :
 
+        @string f_res ;
+        retrieveTemplateString ?f_res !"filter_mask" ;
+        res := f_res . res ;
+        [self base_generate !name !?res] ;
+        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_masked_new_equals_masked_old" ;
+        doReplace !?res !"$FILTER_KIND$" !"Masked New Equals Masked Old" ;
+        doReplace !?res !"$MASK$" ![[mask uint64] string] ;
     end method ;
 }
 
 class @maskednewdiffersmaskedold_filter extends @filter_prop_obj {
     @luint64 mask ;
     override method generate
-        ?@lstring    unused name
-        ?!@string    unused res :
+        ?@lstring    name
+        ?!@string    res :
 
+        @string f_res ;
+        retrieveTemplateString ?f_res !"filter_mask" ;
+        res := f_res . res ;
+        [self base_generate !name !?res] ;
+        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_masked_new_differs_masked_old" ;
+        doReplace !?res !"$FILTER_KIND$" !"Masked New Differs Masked Old" ;
+        doReplace !?res !"$MASK$" ![[mask uint64] string] ;
     end method ;
 }
 
@@ -313,9 +343,17 @@ class @newisoutside extends @filter_prop_obj {
     @luint64 min ;
     @luint64 max ;
     override method generate
-        ?@lstring    unused name
-        ?!@string    unused res :
+        ?@lstring    name
+        ?!@string    res :
 
+        @string f_res ;
+        retrieveTemplateString ?f_res !"filter_interval" ;
+        res := f_res . res ;
+        [self base_generate !name !?res] ;
+        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_new_is_outside" ;
+        doReplace !?res !"$FILTER_KIND$" !"New is Outside" ;
+        doReplace !?res !"$MIN$" ![[min uint64] string] ;
+        doReplace !?res !"$MAX$" ![[max uint64] string] ;
     end method ;
 }
 
@@ -379,9 +417,18 @@ class @oneeveryn_filter extends @filter_prop_obj {
     @luint64 period ;
     @luint64 offset ;
     override method generate
-        ?@lstring    unused name
-        ?!@string    unused res :
+        ?@lstring    name
+        ?!@string    res :
 
+        @string f_res ;
+        retrieveTemplateString ?f_res !"filter_occurence" ;
+        res := f_res . res ;
+        [self base_generate !name !?res] ;
+        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_one_every_n" ;
+        doReplace !?res !"$FILTER_KIND$" !"One Every N" ;
+        doReplace !?res !"$PERIOD$" ![[period uint64] string] ;
+        doReplace !?res !"$OFFSET$" ![[offset uint64] string] ;
+		#doReplace !?res !"$INITIALVALUE$" !"$INITIALVALUE$"-"$PERIOD$" ;
     end method ;
 }
 
@@ -455,6 +502,10 @@ class @sse_mess_prop extends @mess_prop_obj {
         end if ;
         doReplace !?i_res !"$CTYPE$" ![cdatatype string] ;
         @string iv ;
+#added by Florent 090313 - we have to initialise occ to (INITIALVALUE - PERIOD + 1)
+#		 @lsint64 init ;
+#		 init := initialvalue - period + 1 ;
+#
         [initialvalue string ?iv] ;
         if iv != "" then iv := " = ".iv ; end if ;
         doReplace !?i_res !"$INITIALVALUE$" !iv ;

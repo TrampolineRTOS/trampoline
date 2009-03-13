@@ -2,13 +2,14 @@
  * $FILTER_KIND$ filter of message object $MESSAGE_NAME$
  */
  
-tpl_com_count $OCCURENCE$;
+char occ$INITIALVALUE$-$PERIOD$+1;
 
 tpl_occurence_filter_desc $FILTER$ = {
     {
     /*  filtering function          */  $FILTERING_FUNC$
     },
     /*  period                      */  $PERIOD$,
-    /*  occurence pointer           */  &$OCCURENCE$
+    /*  offset 						*/	$OFFSET$,
+    /*  occurence pointer           */  &occ
 };
 

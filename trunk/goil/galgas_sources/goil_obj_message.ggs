@@ -1060,13 +1060,13 @@ rule <period_offset_attribute>
         if has_period then
             error here : "PERIOD is already defined for the filter" ;
         end if ;
-        $PERIOD$ ; $=$ ; $uint_number$ ?* ; <description> ?* ; $;$ ;
+        $PERIOD$ ; $=$ ; $uint_number$ ?period ; <description> ?* ; $;$ ;
         has_period := true ;
     while
         if has_offset then
             error here : "OFFSET is already defined for the filter" ;
         end if ;
-        $OFFSET$ ; $=$ ; $uint_number$ ?* ; <description> ?* ; $;$ ;
+        $OFFSET$ ; $=$ ; $uint_number$ ?offset ; <description> ?* ; $;$ ;
         has_offset := true ;
     end repeat ;
     $}$ ;
