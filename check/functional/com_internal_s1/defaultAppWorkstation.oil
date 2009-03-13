@@ -17,6 +17,8 @@ CPU test {
         APP_SRC = "com_internal_s1.c";
         APP_SRC = "task1_instance.c";
         APP_SRC = "task2_instance.c";
+        APP_SRC = "comerror_instance1.c";
+        APP_SRC = "comerror_instance2.c";
         APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "com_internal_s1";
@@ -26,10 +28,17 @@ CPU test {
 		
 		CFLAGS = "-I../embUnit";
 		LDFLAGS = "-L../lib -lembUnit";
-        
 
     } ;
-
+	
+	COM config {
+		COMSTATUS = COMEXTENDED;
+		COMERRORHOOK = TRUE;
+		COMUSEGETSERVICEID = FALSE;
+		COMUSEPARAMETERACCESS = FALSE;
+		COMSTARTCOMEXTENSION = FALSE;
+	};
+	
     APPMODE std {
     };
 
@@ -51,7 +60,7 @@ CPU test {
         
     MESSAGE sm {
         MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
-            CDATATYPE = "u32" ;
+            CDATATYPE = "u8" ;
         };
 		NOTIFICATION = NONE;
     };
@@ -60,18 +69,9 @@ CPU test {
         MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
             SENDINGMESSAGE = sm;
             INITIALVALUE = "0";
+			FILTER = ALWAYS;
         };
-        NOTIFICATION = ACTIVATETASK {
-            TASK = t2;
-        };
+        NOTIFICATION = NONE;
     };
-		
-	COM config {
-		COMERRORHOOK = TRUE;
-		COMUSEGETSERVICEID = FALSE;
-		COMUSEPARAMETERACCESS = FALSE;
-		COMSTARTCOMEXTENSION = FALSE;
-		COMSTATUS = COMEXTENDED;
-	};
-	
+
 };
