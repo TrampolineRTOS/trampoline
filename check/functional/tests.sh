@@ -37,6 +37,7 @@ else
 	for i in `cat testSequences.txt`
 	do
 		cd ./${i}
+		rm -rf ./${i} #remove the executable file in order to know if the make succeed.
 		echo "running $i"
 		#if Makefile doesn't exist -> do goil
 		if ! `test -f Makefile`
