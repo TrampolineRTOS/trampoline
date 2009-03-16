@@ -30,6 +30,7 @@ CPU test {
         APP_SRC = "task7_instance3.c";
         APP_SRC = "task8_instance1.c";
         APP_SRC = "task8_instance2.c";
+        APP_SRC = "task8_instance3.c";
 		TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "com_internal_s5";
 		ERRORHOOK = FALSE;
@@ -198,8 +199,8 @@ CPU test {
             SENDINGMESSAGE = sm;
             INITIALVALUE = "0";
 			FILTER = ONEEVERYN {
-				PERIOD = 3;
-				OFFSET = 2;
+				PERIOD = 2;
+				OFFSET = 3;
 			};
         };
         NOTIFICATION = ACTIVATETASK {

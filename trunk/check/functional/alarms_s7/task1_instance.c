@@ -43,6 +43,7 @@ static void test_t1_instance(void)
 	
 	result_inst_9 = TerminateTask();
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_9);
+	
 }
 
 /*create the test suite with all the test cases*/

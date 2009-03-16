@@ -16,7 +16,6 @@
 
 #include "tpl_com_filters.h"
 #include "tpl_os_definitions.h"
-#include <stdio.h>
 
 tpl_bool tpl_filter_always(
     tpl_filter_desc *fd,
@@ -93,7 +92,6 @@ tpl_bool tpl_filter_new_is_within(
     tpl_com_value old_value,
     tpl_com_value new_value)
 {
-	//printf("filter_within : min = %d - max = %d - oldvalue = %d - newvalue = %d\n",(((tpl_interval_filter_desc *)fd)->min),(((tpl_interval_filter_desc *)fd)->max),old_value,new_value);
 	return ((new_value >= ((tpl_interval_filter_desc *)fd)->min) &&
             (new_value <= ((tpl_interval_filter_desc *)fd)->max));
 }
@@ -104,7 +102,6 @@ tpl_bool tpl_filter_new_is_outside(
     tpl_com_value new_value)
 {
     
-	//printf("filter_outside : min = %d - max = %d - oldvalue = %d - newvalue = %d\n",(((tpl_interval_filter_desc *)fd)->min),(((tpl_interval_filter_desc *)fd)->max),old_value,new_value);
 	return ((new_value < ((tpl_interval_filter_desc *)fd)->min) ||
             (new_value > ((tpl_interval_filter_desc *)fd)->max));
 }
@@ -146,13 +143,24 @@ tpl_bool tpl_filter_one_every_n(
     tpl_com_value old_value,
     tpl_com_value new_value)
 {
-    tpl_com_count *occ = ((tpl_occurence_filter_desc *)fd)->occurence;
-    if (*occ == ((tpl_occurence_filter_desc *)fd)->period) {
-        *occ = 0;
-        return TRUE;
-    }
-    else {
-        ++(*occ);
-        return FALSE;
-    }
+	tpl_bool b_temp;
+	tpl_com_count *occ = ((tpl_occurence_filter_desc *)fd)->occurence;
+	if (*occ < ( ((tpl_occurence_filter_desc *)fd)->period + ((tpl_occurence_filter_desc *)fd)->offset ) )
+	{
+		++(*occ);
+		b_temp = FALSE;
+	}
+	else {
+		if (*occ == ( ((tpl_occurence_filter_desc *)fd)->period + ((tpl_occurence_filter_desc *)fd)->offset) )
+		{
+			b_temp = TRUE;
+		}
+		else
+		{
+			b_temp = FALSE;
+		}
+		*occ = ((tpl_occurence_filter_desc *)fd)->offset;
+	}
+	return b_temp;
 }
+

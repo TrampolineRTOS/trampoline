@@ -2,8 +2,6 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
-#include "tpl_com_definitions.h" //for E_COM_ID
 
 DeclareMessage(rm_flag);
 
@@ -25,8 +23,6 @@ static void test_t4_instance(void)
 	result_inst_1 = ReceiveMessage(rm_flag, &received_char);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
 	TEST_ASSERT_EQUAL_INT((int)('2'), (int)received_char);
-	
-	stdimpl_print("Message received from waited task = %c \n",received_char);
 	
 	//result_inst_3 = TerminateTask();
 	//TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);

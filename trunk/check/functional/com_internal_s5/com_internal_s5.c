@@ -23,6 +23,7 @@ TestRef COMInternalTest_seq5_t7_instance3(void);
 
 TestRef COMInternalTest_seq5_t8_instance1(void);
 TestRef COMInternalTest_seq5_t8_instance2(void);
+TestRef COMInternalTest_seq5_t8_instance3(void);
 
 int t4_instance = 0;
 int t5_instance = 0;
@@ -141,6 +142,9 @@ TASK(t8)
 			break;
 		case 2:
 			TestRunner_runTest(COMInternalTest_seq5_t8_instance2());
+			break;
+		case 3:
+			TestRunner_runTest(COMInternalTest_seq5_t8_instance3());
 			break;
 		default:
 			stdimpl_print("instance error\n");

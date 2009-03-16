@@ -15,7 +15,7 @@ static void test_t8_instance2(void)
 	
 	result_inst_1 = ReceiveMessage(rm_oneeveryn, &received_char);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
-	TEST_ASSERT_EQUAL_INT(2, (int)received_char);
+	TEST_ASSERT_EQUAL_INT(1, (int)received_char);
 	
 	result_inst_3 = TerminateTask();
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);

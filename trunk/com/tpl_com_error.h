@@ -199,6 +199,21 @@ extern tpl_com_service_call_descriptor tpl_com_service;
 #endif
 
 /*-----------------------------------------------------------------------------
+ * PROCESS_GETMESSAGESTATUS_ERROR
+ * This maccro generates the code to call the error hook, when
+ * an error occured in GetMessageStatus, if the WITH_ERROR_HOOK flag is on and no
+ * code at all if the flag is off.
+ */
+#if defined(WITH_COM_ERROR_HOOK) && defined(COM_EXTENDED)
+#define PROCESS_GETMESSAGESTATUS_ERROR(error)		\
+	if (result == E_COM_ID){						\
+			tpl_call_com_error_hook(error);			\
+	}
+#else
+#define PROCESS_GETMESSAGESTATUS_ERROR(error)
+#endif
+
+/*-----------------------------------------------------------------------------
  * CHECK_SEND_MESSAGE_ID_ERROR macro definition
  * This macro defines the appropriate error program
  * for out of range mess_id for sending message objects.
