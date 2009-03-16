@@ -1,9 +1,6 @@
 #include "config.h" /*Display information in the right way (printf on UNIX...)*/
 #include "tpl_os.h"
 #include "embUnit.h"
-//#include "tests_tasksManagement_sequence1.h"
-//#define _XOPEN_SOURCE 500
-//include <unistd.h>
 
 TestRef InterruptProcessingTest_seq2_t1_instance(void);
 TestRef InterruptProcessingTest_seq2_isr1_instance(void);

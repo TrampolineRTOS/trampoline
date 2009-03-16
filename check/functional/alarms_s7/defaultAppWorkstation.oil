@@ -58,7 +58,6 @@ IMPLEMENTATION trampoline {
 	EVENT Event1{
 		MASK = AUTO;
 	};
-
 };
 
 

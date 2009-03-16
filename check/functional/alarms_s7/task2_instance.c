@@ -18,7 +18,7 @@ static void test_t2_instance(void)
 	
 	result_inst_2 = WaitEvent(Event1);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
-		
+	
 }
 
 /*create the test suite with all the test cases*/

@@ -112,6 +112,8 @@ tpl_status tpl_receive_static_internal_unqueued_message(
     tpl_com_data  *data
     )
 {
+	tpl_status result = E_COM_FILTEREDOUT;
+	
     /*  cast the base receiving mo to the correct type of mo                */
     tpl_internal_receiving_unqueued_mo *rum = rmo;
     /*  get the destination buffer                                          */
@@ -121,17 +123,16 @@ tpl_status tpl_receive_static_internal_unqueued_message(
     
     /*  reception filtering                                                 */
     if (tpl_filtering(mo_buf, data, size, rum->base_mo.filter)) {
-        /*  copy the data from the source (data)
-            to the message object buffer
-        */
-        while (size-- > 0) {
-            *mo_buf++ = *data++;
-        }
-		return E_OK;
+		result =  E_OK;
+		/*  copy the data from the source (data)
+		 to the message object buffer
+		 */
+		while (size-- > 0) {
+			*mo_buf++ = *data++;
+		}
     }
-	else{
-		return E_COM_FILTEREDOUT;
-	}
+		
+	return result;
 }
 
 /*!

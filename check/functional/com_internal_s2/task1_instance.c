@@ -13,6 +13,9 @@ static void test_t1_instance(void)
 {
 	int result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5;
 	
+	result_inst_1 = GetMessageStatus(sm);	
+	TEST_ASSERT_EQUAL_INT(E_COM_NOMSG, result_inst_1);
+	
 	result_inst_1 = SendMessage(SEND_MESSAGE_COUNT, "1");	
 	TEST_ASSERT_EQUAL_INT(E_COM_ID, result_inst_1);
 	

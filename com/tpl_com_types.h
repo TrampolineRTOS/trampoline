@@ -37,7 +37,7 @@ typedef unsigned char       tpl_com_data;
 /*
  * tpl_com_count is the type used for the occurence filter
  */
-typedef unsigned char tpl_com_count;
+typedef s8 tpl_com_count;
 
 /*
  * tpl_message_id is used to identify messages

@@ -99,6 +99,8 @@ struct TPL_OCCURENCE_FILTER_DESC {
     tpl_filter_desc     b_desc ;
     /*  period of the filter                    */
     const tpl_com_count period;
+	/*  offset from the period					*/
+	const tpl_com_count offset;
     /*  pointer to the occurence of the data    */
     tpl_com_count       *occurence;
 };
