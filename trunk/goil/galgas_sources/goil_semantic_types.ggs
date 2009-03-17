@@ -64,8 +64,11 @@ map @event_usage_map {
     remove delete error message "Key %K cannot be deleted" ;
 }
 
-list @events {
-    @lstring event_name ;
+sortedlist @sorted_events {
+  @lstring event_name ;
+  @uint    count ;
+}{
+  count >
 }
 
 #

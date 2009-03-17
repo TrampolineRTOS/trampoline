@@ -44,6 +44,7 @@ map @task_mask {
     @uint64 mask ;
     insert insert_mask error message "Task %K has already its mask" ;
     search get_mask error message "No mask for task %K" ;
+    remove del_mask error message "No mask for task %K" ;
 }
 
 sortedlist @objs_by_prio {
