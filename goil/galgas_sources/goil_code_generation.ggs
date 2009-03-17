@@ -1487,65 +1487,111 @@ routine generate_events
         [!?task_mask insert_mask !task_name !event_mask] ;
     end foreach ;
 
-    #
-    # Output the user events
-    #
-    foreach events (@lstring evt_name @event_obj evt) do
-        @event_mask_obj evt_mask ;
-        evt_mask := [evt mask] ;
-        cast evt_mask :
-        when == @event_mask_user_obj emu do
-            @string result := tpl_event ;
-            doReplace !?result !"$EVENT$" ![evt_name string]."_mask" ;
-            doReplace !?result !"$EVENT_NAME$" ![evt_name string] ;
-            doReplace !?result !"$EVENT_MASK$" ![[[emu mask] uint64] string] ;
-            imp_result .= result."\n" ;
-        else
-        end cast ;
-    end foreach ;
+  #
+  # Output the user events
+  #
+  foreach events (@lstring evt_name @event_obj evt) do
+    @event_mask_obj evt_mask ;
+    evt_mask := [evt mask] ;
+    cast evt_mask :
+    when == @event_mask_user_obj emu do
+      @string result := tpl_event ;
+      doReplace !?result !"$EVENT$" ![evt_name string]."_mask" ;
+      doReplace !?result !"$EVENT_NAME$" ![evt_name string] ;
+      doReplace !?result !"$EVENT_MASK$" ![[[emu mask] uint64] string] ;
+      imp_result .= result."\n" ;
+    else
+    end cast ;
+  end foreach ;
 
-    #
-    # Sort the auto events by reference count
-    # and build a list by ref count
-    #
-    @events ordered_evt [emptyList] ;
-    @uint max := 0 ;
-    @events to_delete [emptyList];
-    @uint evt_count := [evt_usage count] ;
+  #
+  # Sort the auto events by reference count
+  # in a sorted list
+  #
+  @sorted_events sort_evts [emptySortedList] ;
+  foreach evt_usage do
+    sort_evts += !key !count ;
+  end foreach ;
 
-    loop evt_count + 1 :
-    while [evt_usage count] > 0 do
-        max := 0 ;
-        foreach evt_usage (@lstring key @uint count) do
+  #
+  # Compute the mask for auto events
+  #
+  # iterate through the events to compute the mask
+  #
+
+  foreach sort_evts do
+    if [tasks_for_event hasKey ![event_name string]] then
+      @stringset tasks ;
+      [tasks_for_event get !event_name ?tasks] ;
+      @uint64 mask := 0L ;
+      foreach tasks (@string t) do
+        @uint64 tm ;
+        [task_mask get_mask ![@lstring new !t !here] ?tm] ;
+        mask := mask | tm ;
+      end foreach ;
+      # 0 are available slots in the mask.
+      # look for the first available slot starting from bit 0
+      @uint64 bit := 1L ;
+      loop 32 :
+      while (bit & ~mask) == 0L do
+        bit := bit << 1 ; 
+      end loop ;
+      message "found ".[bit string]."\n" ;
+      # update the task mask of the corresponding tasks
+      foreach tasks (@string t) do
+        @uint64 tm ;
+        [!?task_mask del_mask ![@lstring new !t !here] ?tm] ;
+        tm := bit | tm ;
+        [!?task_mask insert_mask ![@lstring new !t !here] !tm] ;
+      end foreach ;
+     
+      @string result := tpl_event ;
+      doReplace !?result !"$EVENT$" ![event_name string]."_mask" ;
+      doReplace !?result !"$EVENT_NAME$" ![event_name string] ;
+      doReplace !?result !"$EVENT_MASK$" ![bit string] ;
+      imp_result .= result."\n" ;
+
+    end if ;
+  end foreach ;
+
+#    @events ordered_evt [emptyList] ;
+#    @uint max := 0 ;
+#    @events to_delete [emptyList];
+#   @uint evt_count := [evt_usage count] ;
+
+#    loop evt_count + 1 :
+#    while [evt_usage count] > 0 do
+#        max := 0 ;
+#        foreach evt_usage (@lstring key @uint count) do
 #            message [key string]." : ".[count string]."\n" ;
-            if count > max
-            then
-                max := count ;
-            end if ;
-        end foreach ;
+#            if count > max
+#            then
+#                max := count ;
+#            end if ;
+#        end foreach ;
 
 #        message "max = ".[max string]."\n" ;
 
-        to_delete := [@events emptyList] ;
-        foreach evt_usage (@lstring key @uint count) do
-            if count == max
-            then
-                ordered_evt += !key ;
-                to_delete += !key ;
+#        to_delete := [@events emptyList] ;
+#        foreach evt_usage (@lstring key @uint count) do
+#            if count == max
+#            then
+#                ordered_evt += !key ;
+#                to_delete += !key ;
 #                message "A detruire : ".[key string]."\n" ;
-            end if ;
-        end foreach ;
+#            end if ;
+#        end foreach ;
 
-        foreach to_delete (@lstring key) do
+#        foreach to_delete (@lstring key) do
 #            message "destruction de : ".[key string]."\n" ;
-            [!?evt_usage delete !key ?*] ;
-        end foreach ;
+#            [!?evt_usage delete !key ?*] ;
+#        end foreach ;
 
 #        message "taille de la map = ".[[evt_usage count] string]."\n" ;
 #        foreach evt_usage (@lstring key @uint count) do
 #            message "Il reste : ".[key string].", ".[count string]."\n" ;
 #        end foreach ;
-    end loop ;
+#    end loop ;
 
 #    message "FIN\n" ; 
     #
@@ -1553,32 +1599,32 @@ routine generate_events
     #
 
 #    log task_mask ;
-    @uint64 common_mask := 0L ;
-    foreach ordered_evt (@lstring evt) do
+#    @uint64 common_mask := 0L ;
+#    foreach ordered_evt (@lstring evt) do
 #        message [evt string]."\n" ;
         # build the user mask
-        @stringset ref_tasks ;
-        [tasks_for_event get !evt ?ref_tasks] ;
-        foreach ref_tasks (@string task_name) do
-            @uint64 mask ;
-            [task_mask get_mask ![@lstring new !task_name !here] ?mask] ;
-            common_mask := common_mask | mask ;
-        end foreach ;
+ #       @stringset ref_tasks ;
+ #       [tasks_for_event get !evt ?ref_tasks] ;
+ #       foreach ref_tasks (@string task_name) do
+ #           @uint64 mask ;
+ #           [task_mask get_mask ![@lstring new !task_name !here] ?mask] ;
+ #           common_mask := common_mask | mask ;
+ #       end foreach ;
 #        message "mask = ".[common_mask string]."\n" ;
         # find the first unused bit in the mask
-        @uint64 needle := 1L ;
-        loop 64:
-        while (needle & common_mask) != 0L do
-            needle := needle << 1 ;
-        end loop ;
+ #       @uint64 needle := 1L ;
+ #       loop 64:
+ #       while (needle & common_mask) != 0L do
+ #           needle := needle << 1 ;
+ #       end loop ;
 #        message "found ".[needle string]."\n" ;
-        common_mask := common_mask | needle ;
-        @string result := tpl_event ;
-        doReplace !?result !"$EVENT$" ![evt string]."_mask" ;
-        doReplace !?result !"$EVENT_NAME$" ![evt string] ;
-        doReplace !?result !"$EVENT_MASK$" ![needle string] ;
-        imp_result .= result."\n" ;
-    end foreach ;
+ #       common_mask := common_mask | needle ;
+ #       @string result := tpl_event ;
+ #       doReplace !?result !"$EVENT$" ![evt string]."_mask" ;
+ #       doReplace !?result !"$EVENT_NAME$" ![evt string] ;
+ #       doReplace !?result !"$EVENT_MASK$" ![needle string] ;
+ #       imp_result .= result."\n" ;
+ #   end foreach ;
 
 #    header := [header stringByReplacingStringByString !"$EVENTS$" !imp_result] ; 
     doReplace !?implementation !"$EVENTS$" !imp_result ; 
