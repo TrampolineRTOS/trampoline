@@ -10,7 +10,7 @@
 ** Supported MCUs       : NEC V850E
 ** Supported Compilers  : GHS Multi
 **-----------------------------------------------------------------------------
-** File name         : Memmap.h
+** File name         : MemMap.h
 **
 ** Module name       : All AUTOSAR modules
 **

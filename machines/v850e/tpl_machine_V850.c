@@ -54,7 +54,7 @@
 /* DECLARATION OF GLOBAL VARIABLES                                            */
 /******************************************************************************/
 #define   OS_START_SEC_VAR_UNSPECIFIED
-#include  "Memmap.h"
+#include  "MemMap.h"
 
 VAR(tpl_stack_word, OS_VAR) stack_zone_of_IdleTask[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
 
@@ -66,30 +66,30 @@ _STATIC_ VAR(tpl_time, OS_VAR) Os_GlobalTime;
 #endif
 
 #define   OS_STOP_SEC_VAR_UNSPECIFIED
-#include  "Memmap.h"
+#include  "MemMap.h"
 
 
 #define OS_START_SEC_VAR_16BITS
-#include  "Memmap.h"
+#include  "MemMap.h"
 
 _STATIC_ VAR(uint16, OS_VAR) Os_CptTaskLock;
 
 #define   OS_STOP_SEC_VAR_16BITS
-#include  "Memmap.h"
+#include  "MemMap.h"
 
 
 /******************************************************************************/
 /* DECLARATION OF INTERNAL FUNCTIONS                                             */
 /******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 _STATIC_ FUNC(void, OS_CODE) Os_StartBaseTimer(void);
 
 _STATIC_ FUNC(void, OS_CODE) Os_ErrorTerminateTask(void);
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 
 /******************************************************************************/
@@ -105,7 +105,7 @@ _STATIC_ FUNC(void, OS_CODE) Os_ErrorTerminateTask(void);
 ** Remarks: None
 ******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 FUNC(void, OS_CODE) tpl_init_context(
     P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) exec_obj)
 {
@@ -158,7 +158,7 @@ FUNC(void, OS_CODE) tpl_init_context(
 
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 /******************************************************************************
 ** Function name: tpl_init_machine(void)
@@ -170,7 +170,7 @@ FUNC(void, OS_CODE) tpl_init_context(
 ** Remarks: None
 ******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 FUNC(void, OS_CODE) tpl_init_machine(void)
 {
     VAR(uint8, AUTOMATIC) i;
@@ -228,7 +228,7 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
 #endif
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 
 /*******************************************************************************
@@ -240,7 +240,7 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
 ** Remarks: assembly function
 *******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 FUNC(void, OS_CODE) tpl_switch_context(
   P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
@@ -521,7 +521,7 @@ FUNC(void, OS_CODE) tpl_switch_context(
 
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 /*******************************************************************************
 ** Function name: tpl_switch_context(tpl_context *old_context, tpl_context *new_context)
@@ -532,7 +532,7 @@ FUNC(void, OS_CODE) tpl_switch_context(
 ** Remarks: assembly function
 *******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 FUNC(void, OS_CODE) tpl_switch_context_from_it(
   P2VAR(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
@@ -808,7 +808,7 @@ FUNC(void, OS_CODE) tpl_switch_context_from_it(
 
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 
 /*******************************************************************************
@@ -819,13 +819,13 @@ FUNC(void, OS_CODE) tpl_switch_context_from_it(
 ** Remarks:
 *******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 FUNC(void, OS_CODE) tpl_sleep(void)
 {
   while(1);
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 
 /*******************************************************************************
@@ -836,7 +836,7 @@ FUNC(void, OS_CODE) tpl_sleep(void)
 ** Remarks:
 *******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 FUNC(void, OS_CODE) tpl_shutdown(void)
 {
   __asm("di");  /* set the I bit of CCR, inhibits interrupts */
@@ -846,7 +846,7 @@ FUNC(void, OS_CODE) tpl_shutdown(void)
 
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 
 /*******************************************************************************
@@ -857,14 +857,14 @@ FUNC(void, OS_CODE) tpl_shutdown(void)
 ** Remarks: assembly function
 *******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 FUNC(void, OS_CODE) tpl_get_task_lock(void)
 {
   __asm("di");  /* inhibits interrupts */
   Os_CptTaskLock++;
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 
 /*******************************************************************************
@@ -875,7 +875,7 @@ FUNC(void, OS_CODE) tpl_get_task_lock(void)
 ** Remarks: assembly function
 *******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 FUNC(void, OS_CODE) tpl_release_task_lock(void)
 {
   if( Os_CptTaskLock > 0)
@@ -888,7 +888,7 @@ FUNC(void, OS_CODE) tpl_release_task_lock(void)
   }
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 
 /*******************************************************************************
@@ -899,7 +899,7 @@ FUNC(void, OS_CODE) tpl_release_task_lock(void)
 ** Remarks:
 *******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 FUNC(void, OS_CODE) EnableAllInterrupts(void)
 {
   __asm("ei");  /* re-allows interrupts */
@@ -909,7 +909,7 @@ FUNC(void, OS_CODE) EnableAllInterrupts(void)
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 
 /*******************************************************************************
@@ -920,7 +920,7 @@ FUNC(void, OS_CODE) EnableAllInterrupts(void)
 ** Remarks:
 *******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 FUNC(void, OS_CODE) DisableAllInterrupts(void)
 {
   __asm("di");  /* inhibits interrupts */
@@ -930,7 +930,7 @@ FUNC(void, OS_CODE) DisableAllInterrupts(void)
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 
 /*******************************************************************************
@@ -941,7 +941,7 @@ FUNC(void, OS_CODE) DisableAllInterrupts(void)
 ** Remarks:
 *******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 FUNC(void, OS_CODE) ResumeAllInterrupts(void)
 {
   if( Os_CptTaskLock > 0)
@@ -957,7 +957,7 @@ FUNC(void, OS_CODE) ResumeAllInterrupts(void)
   }
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 
 /*******************************************************************************
@@ -968,7 +968,7 @@ FUNC(void, OS_CODE) ResumeAllInterrupts(void)
 ** Remarks:
 *******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 FUNC(void, OS_CODE) SuspendAllInterrupts(void)
 {
   __asm("di");  /* inhibits interrupts */
@@ -982,7 +982,7 @@ FUNC(void, OS_CODE) SuspendAllInterrupts(void)
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 
 /*******************************************************************************
@@ -993,7 +993,7 @@ FUNC(void, OS_CODE) SuspendAllInterrupts(void)
 ** Remarks:
 *******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 FUNC(void, OS_CODE) ResumeOSInterrupts(void)
 {
   if( Os_CptTaskLock > 0)
@@ -1009,7 +1009,7 @@ FUNC(void, OS_CODE) ResumeOSInterrupts(void)
   }
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 
 /*******************************************************************************
@@ -1020,7 +1020,7 @@ FUNC(void, OS_CODE) ResumeOSInterrupts(void)
 ** Remarks:
 *******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 FUNC(void, OS_CODE) SuspendOSInterrupts(void)
 {
   __asm("di");  /* inhibits interrupts */
@@ -1034,7 +1034,7 @@ FUNC(void, OS_CODE) SuspendOSInterrupts(void)
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
@@ -1047,7 +1047,7 @@ FUNC(void, OS_CODE) SuspendOSInterrupts(void)
 ** Remarks:
 *******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 FUNC(void, OS_CODE) tpl_set_watchdog(
   VAR(tpl_time, AUTOMATIC) delay,
   VAR(tpl_watchdog_expire_function, AUTOMATIC) function)
@@ -1060,7 +1060,7 @@ FUNC(void, OS_CODE) tpl_set_watchdog(
   Gpt_StartTimer(OS_GPTCHANNEL_WATCHDOG, NbTicks);
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 
 /*******************************************************************************
@@ -1071,7 +1071,7 @@ FUNC(void, OS_CODE) tpl_set_watchdog(
 ** Remarks:
 *******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 FUNC(void, OS_CODE) tpl_cancel_watchdog(void)
 {
   Gpt_DisableNotification(OS_GPTCHANNEL_WATCHDOG);
@@ -1079,7 +1079,7 @@ FUNC(void, OS_CODE) tpl_cancel_watchdog(void)
   Gpt_StopTimer(OS_GPTCHANNEL_WATCHDOG);
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 
 /*******************************************************************************
@@ -1090,13 +1090,13 @@ FUNC(void, OS_CODE) tpl_cancel_watchdog(void)
 ** Remarks:
 *******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 FUNC(tpl_time, OS_CODE) tpl_get_local_current_date(void)
 {
   return Os_GlobalTime;
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
@@ -1113,7 +1113,7 @@ FUNC(tpl_time, OS_CODE) tpl_get_local_current_date(void)
 ** Remarks:
 *******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 FUNC(u8, OS_CODE) tpl_check_stack_pointer(
   P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
@@ -1139,7 +1139,7 @@ FUNC(u8, OS_CODE) tpl_check_stack_pointer(
 
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 
 /*******************************************************************************
@@ -1152,7 +1152,7 @@ FUNC(u8, OS_CODE) tpl_check_stack_pointer(
 ** Remarks:
 *******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 FUNC(u8, OS_CODE) tpl_check_stack_footprint(
   P2VAR(tpl_exec_common, OS_APPL_DATA, AUTOMATIC) this_exec_obj)
 {
@@ -1173,7 +1173,7 @@ FUNC(u8, OS_CODE) tpl_check_stack_footprint(
   }
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
@@ -1189,7 +1189,7 @@ FUNC(u8, OS_CODE) tpl_check_stack_footprint(
 *******************************************************************************/
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 #define GPT_START_SEC_PUBLIC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 FUNC(void, GPT_PUBLIC_CODE) Os_WatchdogCallback(void)
 {
   Gpt_DisableNotification(OS_GPTCHANNEL_WATCHDOG);
@@ -1202,7 +1202,7 @@ FUNC(void, GPT_PUBLIC_CODE) Os_WatchdogCallback(void)
   }
 }
 #define GPT_STOP_SEC_PUBLIC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 #endif
 
 /*******************************************************************************
@@ -1213,7 +1213,7 @@ FUNC(void, GPT_PUBLIC_CODE) Os_WatchdogCallback(void)
 ** Remarks:
 *******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 _STATIC_ FUNC(void, OS_CODE) Os_StartBaseTimer(void)
 {
   Gpt_EnableNotification(OS_GPTCHANNEL_TICK);
@@ -1221,7 +1221,7 @@ _STATIC_ FUNC(void, OS_CODE) Os_StartBaseTimer(void)
 
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 
 
@@ -1234,13 +1234,13 @@ _STATIC_ FUNC(void, OS_CODE) Os_StartBaseTimer(void)
 ** Remarks:
 *******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 FUNC(void, OS_CODE) Os_IncTime(void)
 {
   Os_GlobalTime = (Os_GlobalTime+(OS_TIMER_GLOBALTIME_PERIOD));
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 
 
@@ -1253,7 +1253,7 @@ FUNC(void, OS_CODE) Os_IncTime(void)
 ** Remarks:
 *******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 _STATIC_ FUNC(void, OS_CODE) Os_ErrorTerminateTask(void)
 {
   PROCESS_ERROR(E_OS_MISSINGEND)
@@ -1261,5 +1261,5 @@ _STATIC_ FUNC(void, OS_CODE) Os_ErrorTerminateTask(void)
   TerminateTask();
 }
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 

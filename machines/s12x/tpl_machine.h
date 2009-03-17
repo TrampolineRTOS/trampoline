@@ -76,7 +76,7 @@ typedef struct
 /* DECLARATION OF VARIABLES                                                   */
 /******************************************************************************/
 #define OS_START_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
+#include "MemMap.h"
 
 extern VAR(hcs12_context, OS_VAR) idle_task_context;
 
@@ -84,19 +84,19 @@ extern VAR(tpl_stack_word, OS_VAR)
     stack_zone_of_IdleTask[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "Memmap.h"
+#include "MemMap.h"
 
 /******************************************************************************/
 /* DECLARATION OF FUNCTIONS                                                   */
 /******************************************************************************/
 #define OS_START_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 extern FUNC(void, GPT_CODE) tpl_watchdog_callback(void);
 extern FUNC(void, OS_CODE)  tpl_inc_time(void);
 
 #define OS_STOP_SEC_CODE
-#include "Memmap.h"
+#include "MemMap.h"
 
 /* TPL_MACHINE_HCS12_H */
 #endif
