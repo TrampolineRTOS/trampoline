@@ -1536,7 +1536,7 @@ routine generate_events
       while (bit & ~mask) == 0L do
         bit := bit << 1 ; 
       end loop ;
-      message "found ".[bit string]."\n" ;
+      # message "found ".[bit string]."\n" ;
       # update the task mask of the corresponding tasks
       foreach tasks (@string t) do
         @uint64 tm ;
