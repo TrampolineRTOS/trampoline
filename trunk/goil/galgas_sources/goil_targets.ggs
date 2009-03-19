@@ -2,6 +2,7 @@ semantics goil_targets :
 
 import semantics goil_target_c166 in "goil_target_c166.ggs" ;
 import semantics goil_target_libpcl in "goil_target_libpcl.ggs" ;
+import semantics goil_target_posix in "goil_target_posix.ggs" ;
 import semantics goil_target_hcs12 in "goil_target_hcs12.ggs" ;
 import semantics goil_target_v850e in "goil_target_v850e.ggs" ;
 import semantics goil_target_h8300h in "goil_target_h8300h.ggs" ;
@@ -86,6 +87,8 @@ routine generate_context_and_stack
       generate_target_c166   !name !idents !exe !?context_and_stack ;
     elsif target == "libpcl" then
       generate_target_libpcl !name !idents !exe !?context_and_stack ;
+    elsif target == "posix" then
+      generate_target_posix !name !idents !exe !?context_and_stack ;
     elsif target == "hcs12" then
       generate_target_hcs12  !name !idents !exe !?context_and_stack ;
     elsif target == "ppc" then
@@ -118,6 +121,8 @@ routine generate_isr_specific
       generate_isr_c166   !isrs !?code;
     elsif target == "libpcl" then
       generate_isr_libpcl !isrs !?code;
+    elsif target == "posix" then
+      generate_isr_posix !isrs !?code;
     elsif target == "hcs12" then
       generate_isr_hcs12  !isrs !?code;
     elsif target == "ppc" then
@@ -149,6 +154,8 @@ routine generate_counter_specific
       generate_counter_c166 !counters !?code;
     elsif target == "libpcl" then
       generate_counter_libpcl !counters !?code;
+    elsif target == "posix" then
+      generate_counter_posix !counters !?code;
     elsif target == "hcs12" then
       generate_counter_hcs12 !counters !?code;
     elsif target == "ppc" then

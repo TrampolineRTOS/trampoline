@@ -1,0 +1,89 @@
+semantics goil_target_posix :
+
+import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
+import semantics goil_routines in "goil_routines.ggs" ;
+import semantics goil_types_isr in "goil_types_isr.ggs" ;
+import semantics goil_types_counter in "goil_types_counter.ggs" ;
+
+routine generate_target_posix
+  ?@lstring   name
+  ?@ident_map others
+  ?@oil_obj   exe
+  ?!@string   result
+:
+  doReplace !?result !"$STACK_ZONE$" ![name string]."_stack_zone" ;
+  doReplace !?result !"$STACK$" ![name string]."_stack" ;
+  doReplace !?result !"$EXEC_ALL_CONTEXT$" ![name string]."_int_context" ;
+
+  @uint stack_size;
+  additional_int_key_required !"STACKSIZE" !others !name ?stack_size ;
+  doReplace !?result !"$STACK_SIZE$" ![stack_size string] ;
+
+  cast exe :
+  when == @isr_obj do
+    #object is an isr.
+    #check that SIGNAL is present.
+    @string sig;
+    additional_string_key_required !"SOURCE" !others !name ?sig;
+  else end cast ;
+end routine ;
+
+routine generate_isr_posix
+  ??@isr_map           isrs
+  ?!@string            code
+:
+  @string result := "";
+  @bool first := true;
+
+  @isr_list list_isr [emptySortedList];
+
+  foreach isrs (@lstring isr_name *) do
+    list_isr += !isr_name ![isr_name string];
+  end foreach;
+    
+  foreach list_isr (@lstring isr_name *) do
+    @isr_obj isr;
+    [isrs get !isr_name ?isr];
+    if not first then result .= ",\n";
+    end if;
+    first := false;
+    @string key := "SOURCE";
+    @ident_map others := [isr other_fields];
+    if [others hasKey !key]
+    then
+        @basic_type value ;
+        [others get ![@lstring new !key !here] ?value] ;
+        cast value :
+        when == @string_class s do
+            result := result."\t".[s value];
+        else 
+            error isr_name : key." should be a string" ;
+        end cast ;
+    else
+        error isr_name : "no ".key." specified" ;
+    end if ;
+  end foreach ;
+  code := [code stringByReplacingStringByString !"$ISR_SIGNAL_LIST$" !result] ;
+end routine ;
+
+routine generate_counter_posix
+  ??@counter_map counters
+  ?!@string code
+:
+  @string result := "";
+  foreach counters (@lstring counter_name @counter_obj counter) do
+    cast [counter type] :
+    when == @software_counter do
+    else
+      @string tmp;
+      retrieveTemplateString ?tmp !"counter_list_specific";
+      doReplace !?tmp !"$COUNTER$" ![counter_name string]."_counter_desc" ;
+      result .= tmp;
+    end cast ;
+  end foreach ;
+
+  doReplace !?code !"$COUNTER_LIST$" !result ;
+end routine ;
+
+end semantics ;
+# vim:ft=ggs:ts=4:sw=4
