@@ -90,8 +90,8 @@ STATIC VAR(tpl_application_mode, OS_VAR) application_mode;
  */
 CONST(tpl_proc_static, OS_VAR) idle_task_static = {
     /* context              */  IDLE_CONTEXT,
-    /* no stack             */  IDLE_STACK,
-    /* no entry point       */  NULL,
+    /* stack                */  IDLE_STACK, 
+    /* entry point          */  IDLE_ENTRY,
     /* internal resource    */  NULL,
     /* id is IDLE_TASK_ID   */  IDLE_TASK_ID,
 #ifdef WITH_OSAPPLICATION
@@ -203,7 +203,7 @@ VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER = {
                                  maximum priority of the tasks of the
                                  application                                */
     0,
-    NULL
+    FALSE 
 };
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
