@@ -805,6 +805,30 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #endif
 
 /**
+ * @def LOCK_KERNEL
+ *
+ * This macro locks the kernel when WITH_SYSTEM_CALL is not
+ * defined. If WITH_SYSTEM_CALL is defined it does nothing
+ */
+#ifdef WITH_SYSTEM_CALL
+#define LOCK_KERNEL()
+#else
+#define LOCK_KERNEL() tpl_get_task_lock();
+#endif
+
+/**
+ * @def UNLOCK_KERNEL
+ *
+ * This macro unlocks the kernel when WITH_SYSTEM_CALL is not
+ * defined. If WITH_SYSTEM_CALL is defined it does nothing
+ */
+#ifdef WITH_SYSTEM_CALL
+#define UNLOCK_KERNEL()
+#else
+#define UNLOCK_KERNEL() tpl_release_task_lock();
+#endif
+
+/**
  * @def IF_NO_EXTENDED_ERROR
  *
  * In conjonction with #END_IF_NO_EXTENDED_ERROR, this macro
@@ -836,118 +860,6 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
     }
 #else
 #   define IF_NO_EXTENDED_ERROR_END()
-#endif
-
-/**
- * @def LOCK_WHEN_HOOK
- *
- * Locks preemption only when #WITH_ERROR_HOOK is defined.
- *
- * Used for some services that does not require locking when
- * #WITH_ERROR_HOOK is not defined while it is needed when
- * #WITH_ERROR_HOOK is defined.
- *
- * @see #UNLOCK_WHEN_HOOK
- * @see #LOCK_WHEN_NO_HOOK
- */
-#ifdef WITH_ERROR_HOOK
-#   define LOCK_WHEN_HOOK()     \
-    tpl_get_task_lock();
-#   define UNLOCK_WHEN_HOOK()   \
-    tpl_release_task_lock();
-#else
-#   define LOCK_WHEN_HOOK()
-#   define UNLOCK_WHEN_HOOK()
-#endif
-
-/**
- * @def LOCK_WHEN_NO_HOOK
- *
- * Locks preemption only if #WITH_ERROR_HOOK is not defined. This is
- * the opposite of #LOCK_WHEN_HOOK.
- *
- * Used for some services that require different locking scheme
- * according to hook use.
- *
- * @see #UNLOCK_WHEN_NO_HOOK
- * @see #LOCK_WHEN_HOOK
- */
-#ifdef WITH_ERROR_HOOK
-#   define LOCK_WHEN_NO_HOOK()
-#   define UNLOCK_WHEN_NO_HOOK()
-#else
-#   define LOCK_WHEN_NO_HOOK()     \
-    tpl_get_task_lock();
-#   define UNLOCK_WHEN_NO_HOOK()   \
-    tpl_release_task_lock();
-#endif
-
-/**
- * @def LOCK_WHEN_TASK
- *
- * Locks only when NO_TASK is not defined.
- *
- * @see #UNLOCK_WHEN_TASK
- */
-#ifdef NO_TASK
-#   define LOCK_WHEN_TASK()
-#   define UNLOCK_WHEN_TASK()
-#else
-#   define LOCK_WHEN_TASK()     \
-    tpl_get_task_lock();
-#   define UNLOCK_WHEN_TASK()   \
-    tpl_release_task_lock();
-#endif
-
-/**
- * @def LOCK_WHEN_ISR
- *
- * Locks only when NO_ISR is not defined.
- *
- * @see #UNLOCK_WHEN_ISR
- */
-#ifdef NO_ISR
-#   define LOCK_WHEN_ISR()
-#   define UNLOCK_WHEN_ISR()
-#else
-#   define LOCK_WHEN_ISR()     \
-    tpl_get_task_lock();
-#   define UNLOCK_WHEN_ISR()   \
-    tpl_release_task_lock();
-#endif
-
-/**
- * @def LOCK_WHEN_TASK_OR_ISR
- *
- * Locks only when NO_TASK or NO_ISR is not defined.
- *
- * @see #UNLOCK_WHEN_TASK_OR_ISR
- */
-#if defined(NO_ISR) && defined(NO_TASK)
-#   define LOCK_WHEN_TASK_OR_ISR()
-#   define UNLOCK_WHEN_TASK_OR_ISR()
-#else
-#   define LOCK_WHEN_TASK_OR_ISR()     \
-    tpl_get_task_lock();
-#   define UNLOCK_WHEN_TASK_OR_ISR()   \
-    tpl_release_task_lock();
-#endif
-
-/**
- * @def LOCK_WHEN_RESOURCE
- *
- * Locks only when NO_RESOURCE is not defined.
- *
- * @see #UNLOCK_WHEN_RESOURCE
- */
-#ifdef NO_RESOURCE
-#   define LOCK_WHEN_RESOURCE()
-#   define UNLOCK_WHEN_RESOURCE()
-#else
-#   define LOCK_WHEN_RESOURCE()     \
-    tpl_get_task_lock();
-#   define UNLOCK_WHEN_RESOURCE()   \
-    tpl_release_task_lock();
 #endif
 
 /**

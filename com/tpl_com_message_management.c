@@ -42,7 +42,7 @@ StatusType GetMessageStatus(MessageIdentifier mess_id)
 #endif
 	
     /*  lock the task structures                    */
-    LOCK_WHEN_TASK()
+    LOCK_KERNEL()
     
     /*  store information for error hook routine    */
     STORE_COM_SERVICE(COMServiceId_GetMessageStatus)
@@ -88,7 +88,7 @@ StatusType GetMessageStatus(MessageIdentifier mess_id)
 
 	PROCESS_GETMESSAGESTATUS_ERROR(result)
 	
-    UNLOCK_WHEN_TASK()
+    UNLOCK_KERNEL()
     
     return result;
 	
@@ -106,7 +106,7 @@ StatusType SendMessage(MessageIdentifier mess_id, ApplicationDataRef data)
     
 
     /*  lock the task structures                    */
-    LOCK_WHEN_TASK()
+    LOCK_KERNEL()
     
     /*  store information for error hook routine    */
     STORE_COM_SERVICE(COMServiceId_SendMessage)
@@ -128,7 +128,7 @@ StatusType SendMessage(MessageIdentifier mess_id, ApplicationDataRef data)
 
     PROCESS_COM_ERROR(result)
 
-    UNLOCK_WHEN_TASK()
+    UNLOCK_KERNEL()
     
     return result;
 }
@@ -143,7 +143,7 @@ StatusType ReceiveMessage(MessageIdentifier mess_id, ApplicationDataRef data)
 #endif
 
     /*  lock the task structures                    */
-    LOCK_WHEN_TASK()
+    LOCK_KERNEL()
     
     STORE_COM_SERVICE(COMServiceId_ReceiveMessage)
     STORE_COM_MESSAGE_ID(mess_id)
@@ -163,7 +163,7 @@ StatusType ReceiveMessage(MessageIdentifier mess_id, ApplicationDataRef data)
 
     PROCESS_COM_ERROR(result)
 
-    UNLOCK_WHEN_TASK()
+    UNLOCK_KERNEL()
     
     return result;
 }
@@ -178,7 +178,7 @@ StatusType SendZeroMessage(MessageIdentifier mess_id)
 #endif
 
     /*  lock the task structures                    */
-    LOCK_WHEN_TASK()
+    LOCK_KERNEL()
     
     /*  store information for error hook routine    */
     STORE_COM_SERVICE(COMServiceId_SendZeroMessage)
@@ -199,7 +199,7 @@ StatusType SendZeroMessage(MessageIdentifier mess_id)
 
     PROCESS_COM_ERROR(result)
 
-    UNLOCK_WHEN_TASK()
+    UNLOCK_KERNEL()
     
     return result;
 }

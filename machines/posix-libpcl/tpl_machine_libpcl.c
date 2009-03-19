@@ -336,15 +336,16 @@ void tpl_suspend_os_interrupts_service(void)
  */
 void tpl_signal_handler(int sig)
 {
-	tpl_get_task_lock(); //disable interrupts in PostTaskook and "PreTaskISR"
-	
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
   struct itimerval timer;
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   
 #ifndef NO_ISR
-    unsigned int id;
+  unsigned int id;
 #endif /* NO_ISR */
+
+	tpl_get_task_lock(); /* disable interrupts in PostTaskook and "PreTaskISR" */
+	
 #ifndef NO_ALARM
     if (signal_for_counters == sig) tpl_call_counter_tick();
 #endif /* NO_ALARM */
@@ -374,7 +375,8 @@ void tpl_signal_handler(int sig)
     }
 #endif /* NO_ISR */
 
-	tpl_release_task_lock(); //released interrupts returning in the previous task
+  /* released interrupts returning in the previous task	*/
+  tpl_release_task_lock();
 
 }
 
@@ -458,9 +460,7 @@ void tpl_release_task_lock(void)
     if (x < 0) printf("** unlock ** X=%d\n",x);
     assert(0 <= x && x <= 1); */
     /*  fprintf(stderr, "%d-unlock\n", cnt++);*/
-    
-	//
-    if (tpl_locking_depth > 0)
+  if (tpl_locking_depth > 0)
 	{
 	   tpl_locking_depth--;
 	}
@@ -573,8 +573,9 @@ FUNC(void, OS_CODE) tpl_init_context(
     /* If old_co != NULL, we should garbage it soon. */
     if( old_co != NULL )
     {
-        if( previous_old_co != NULL )
+      if( previous_old_co != NULL ) {
         co_delete( previous_old_co );
+      }
         previous_old_co = old_co;
     }
 }

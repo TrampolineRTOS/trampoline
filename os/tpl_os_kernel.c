@@ -993,14 +993,9 @@ FUNC(tpl_status, OS_CODE) tpl_schedule_from_dying(void)
 {
   P2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) running =
     tpl_dyn_proc_table[tpl_running_id];
-
-  /*  the tpl_running_obj is never NULL and may be in 2 states
-      - RESURRECT:    if the running object is in the RESURRECT state,
-                      its context is not saved, it is put as
-                      READY_AND_NEW in the ready list.
-      - DYING:        if the running object is in the DYING state, its
-                      context is not saved and it loses the CPU.          */
-  VAR(tpl_proc_state, AUTOMATIC) state = running->state;
+  
+  /*  the tpl_running_obj is never NULL and is the dying one
+      so its context is not saved */
   VAR(tpl_status, AUTOMATIC) result = NO_SPECIAL_CODE;
   
 #ifdef WITH_AUTOSAR_STACK_MONITORING
@@ -1008,7 +1003,7 @@ FUNC(tpl_status, OS_CODE) tpl_schedule_from_dying(void)
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
   
   /*  a task switch will occur. It is time to call the
-      PostTaskHook while the soon descheduled task is running             */
+   PostTaskHook while the soon descheduled task is running             */
   CALL_POST_TASK_HOOK()
   
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
@@ -1017,68 +1012,37 @@ FUNC(tpl_status, OS_CODE) tpl_schedule_from_dying(void)
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   
   /*  the task loses the CPU because it has been put in the WAITING or
-      in the DYING state, its internal resource is released.              */
+   in the DYING state, its internal resource is released.              */
   tpl_release_internal_resource(tpl_running_id);
   
-  if (state == (tpl_proc_state)RESURRECT)
+  /*  and checked to compute its state.                                 */
+  if (running->activate_count > 0)
   {
+    /*  there is at least one instance of the dying running object in
+        the ready list. So it is put in the READY_AND_NEW state. This
+        way when the next instance will be prepared to run it will
+        be initialized.                                                 */
     running->state = READY_AND_NEW;
-    /*  This case happens when a task chains to itself
-        by calling ChainTask                                              */
-    if( tpl_h_prio >= running->priority )
-    {
-      /*  if the resurrecting object has not the highest priority, or has
-          the same priority as the highest priority in the fifo,
-          it is put in the fifo                                           */
-      tpl_put_new_proc(tpl_running_id);
-      
-      /*  get the ready task from the ready task list                     */
-      tpl_running_id = tpl_get_proc();
-    }
-    else
-    {
-      /*  else if the resurrecting object has the highest priority,
-          it can be rescheduled immedialty without being put and got
-          from the fifo                                                   */
-      /*  nothing to do, the running object is already selected           */
-    }
-    
   }
   else
   {
-    /*  if the running object is dying, the activate count
-        is decreased                                                      */
-    running->activate_count--;
-    
-    /*  and checked to compute its state.                                 */
-    if (running->activate_count > 0)
-    {
-      /*  there is at least one instance of the dying running object in
-          the ready list. So it is put in the READY_AND_NEW state. This
-          way when the next instance will be prepared to run it will
-          be initialized.                                                 */
-      running->state = READY_AND_NEW;
-    }
-    else
-    {
-      /*  there is no instance of the dying running object in the ready
-          list. So it is put in the SUSPENDED state.                      */
-      running->state = SUSPENDED;
-    }
-    
-    /*  get the ready task from the ready task list                       */
-    tpl_running_id = tpl_get_proc();
+    /*  there is no instance of the dying running object in the ready
+        list. So it is put in the SUSPENDED state.                      */
+    running->state = SUSPENDED;
   }
+  
+  /*  get the ready task from the ready task list                       */
+  tpl_running_id = tpl_get_proc();
   
   running = tpl_dyn_proc_table[tpl_running_id];
   
   if (running->state == READY_AND_NEW)
   {
     /*  the object has not be preempted. So its
-        descriptor must be initialized                                    */
+        descriptor must be initialized                                  */
     tpl_init_proc(tpl_running_id);
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    /* start the budget monitor for the activated task or isr             */
+    /* start the budget monitor for the activated task or isr           */
     tpl_start_budget_monitor(tpl_running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
@@ -1088,14 +1052,14 @@ FUNC(tpl_status, OS_CODE) tpl_schedule_from_dying(void)
     tpl_continue_budget_monitor(tpl_running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
-  /*  the inserted task become RUNNING                                    */
+  /*  the inserted task become RUNNING                                  */
   running->state = RUNNING;
   /*  If an internal resource is assigned to the task
-      and it is not already taken by it, take it                          */
+      and it is not already taken by it, take it                        */
   tpl_get_internal_resource(tpl_running_id);
   
   /*  A new task has been elected. It is time to call PreTaskHook while
-      the rescheduled task is running                                     */
+      the rescheduled task is running                                   */
   CALL_PRE_TASK_HOOK()
   
   tpl_need_switch = NEED_SWITCH;
@@ -1243,8 +1207,9 @@ FUNC(tpl_status, OS_CODE) tpl_schedule_from_waiting(void)
 /**
  * @internal
  *
- * This function is called by OSEK/VDX ActivateTask and by
- * the raise of an alarm.
+ * This function is called by OSEK/VDX ActivateTask and ChainTask
+ * and by all events that lead to the activation of a task (alarm,
+ * notification, schedule table).
  *
  * the activation count is incremented
  * if the task is in the SUSPENDED state, it is moved
@@ -1393,7 +1358,8 @@ FUNC(void, OS_CODE) tpl_init_proc(
       tpl_init_context is declared in tpl_machine_interface.h           */
   tpl_init_context(proc_id);
 
-#ifndef NO_EXTENDED_TASK  /*  if the object is an extended task, init the events                          */
+#ifndef NO_EXTENDED_TASK
+  /*  if the object is an extended task, init the events                */
   if (proc_id < EXTENDED_TASK_COUNT)
   {
     CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA) events =
@@ -1441,7 +1407,8 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
   
   for (i = 0; i < ALARM_COUNT; i++)
   {
-    auto_time_obj = (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_alarm_table[i];
+    auto_time_obj =
+      (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_alarm_table[i];
     if (auto_time_obj->state == (tpl_time_obj_state)ALARM_AUTOSTART)
     {
       auto_time_obj->state = ALARM_ACTIVE;
@@ -1455,7 +1422,8 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
   
   for (i = 0; i < SCHEDTABLE_COUNT; i++)
   {
-    auto_time_obj = (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_schedtable_table[i];
+    auto_time_obj =
+      (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_schedtable_table[i];
     if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART)
     {
       auto_time_obj->state = SCHEDULETABLE_RUNNING;
@@ -1492,9 +1460,7 @@ FUNC(void, OS_CODE) tpl_start_os_service(
   
   tpl_running_id = IDLE_TASK_ID;
   
-  /*  Call tpl_schedule to elect the greatest priority task
-   tpl_schedule also set the state of the OS according to the elected
-   task */
+  /*  Call tpl_schedule to elect the greatest priority task */
   if(tpl_h_prio != -1)
   {
     result |= tpl_schedule_from_running(FROM_TASK_LEVEL);

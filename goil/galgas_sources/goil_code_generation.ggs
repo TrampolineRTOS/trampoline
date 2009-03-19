@@ -1534,9 +1534,12 @@ routine generate_events
       # look for the first available slot starting from bit 0
       @uint64 bit := 1L ;
       loop 32 :
-      while (bit & ~mask) == 0L do
+      while (bit < [[@uint max] uint64]) & ((bit & ~mask) == 0L) do
         bit := bit << 1 ; 
       end loop ;
+      if bit > [[@uint max] uint64] then
+        error event_name : "No mask available for this event" ;
+      end if ;
       # message "found ".[bit string]."\n" ;
       # update the task mask of the corresponding tasks
       foreach tasks (@string t) do

@@ -113,7 +113,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
   
-  LOCK_WHEN_HOOK()
+  LOCK_KERNEL()
   
   STORE_SERVICE(OSServiceId_GetResource)
   STORE_RESOURCE_ID(res_id)
@@ -126,9 +126,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
 #else
   res = NULL; /* error */
 #endif
-  
-  LOCK_WHEN_NO_HOOK()
-  
+
   /*  Return an error if the task that attempt to get
       the resource has a higher priority than the resource
       or the resource is already owned by another task
@@ -157,12 +155,11 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   IF_NO_EXTENDED_ERROR_END()
   
-  UNLOCK_WHEN_NO_HOOK()
   IF_NO_EXTENDED_ERROR_END()
   
   PROCESS_ERROR(result)
   
-  UNLOCK_WHEN_HOOK()
+  UNLOCK_KERNEL()
   
   return result;
 }
@@ -188,7 +185,7 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
 
-  LOCK_WHEN_HOOK()
+  LOCK_KERNEL()
 
   STORE_SERVICE(OSServiceId_ReleaseResource)
   STORE_RESOURCE_ID(res_id)
@@ -202,8 +199,6 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
     res = NULL; /* error */
   #endif
   
-    LOCK_WHEN_NO_HOOK()
-
     /*  the spec requires resources to be released in
         the reverse order of the getting. if the resource
         is not owned or not release in the good order.
@@ -242,13 +237,11 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
 # endif
     IF_NO_EXTENDED_ERROR_END()
 
-
-    UNLOCK_WHEN_NO_HOOK()
   IF_NO_EXTENDED_ERROR_END()
 
   PROCESS_ERROR(result)
 
-  UNLOCK_WHEN_HOOK()
+  UNLOCK_KERNEL()
 
   return result;
 }

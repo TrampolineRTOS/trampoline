@@ -82,7 +82,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
     /* check interrupts are not disabled by user    */
     CHECK_INTERRUPT_LOCK(result)
 
-    LOCK_WHEN_HOOK()
+    LOCK_KERNEL()
 
     STORE_SERVICE(OSServiceId_GetAlarm)
     STORE_ALARM_ID(alarm_id)
@@ -102,7 +102,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
 
     PROCESS_ERROR(result)
 
-    UNLOCK_WHEN_HOOK()
+    UNLOCK_KERNEL()
 
     return result;
 }
@@ -120,7 +120,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
 
-  LOCK_WHEN_TASK_OR_ISR()
+  LOCK_KERNEL()
 
   STORE_SERVICE(OSServiceId_GetAlarm)
   STORE_ALARM_ID(alarm_id)
@@ -153,7 +153,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
 
   PROCESS_ERROR(result)
 
-  UNLOCK_WHEN_TASK_OR_ISR()
+  UNLOCK_KERNEL()
 
   return result;
 }
@@ -174,7 +174,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
     /* check interrupts are not disabled by user    */
     CHECK_INTERRUPT_LOCK(result)
 
-    LOCK_WHEN_TASK_OR_ISR()
+    LOCK_KERNEL()
 
     STORE_SERVICE(OSServiceId_SetRelAlarm)
     STORE_ALARM_ID(alarm_id)
@@ -213,7 +213,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
 
     PROCESS_ERROR(result)
 
-    UNLOCK_WHEN_TASK_OR_ISR()
+    UNLOCK_KERNEL()
 
     return result;
 }
@@ -237,7 +237,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
     /* check interrupts are not disabled by user    */
     CHECK_INTERRUPT_LOCK(result)
 
-    LOCK_WHEN_TASK_OR_ISR()
+    LOCK_KERNEL()
 
     STORE_SERVICE(OSServiceId_SetAbsAlarm)
     STORE_ALARM_ID(alarm_id)
@@ -270,7 +270,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
 
     PROCESS_ERROR(result)
 
-    UNLOCK_WHEN_TASK_OR_ISR()
+    UNLOCK_KERNEL()
 
     return result;
 }
@@ -292,7 +292,7 @@ FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
     /* check interrupts are not disabled by user    */
     CHECK_INTERRUPT_LOCK(result)
 
-    LOCK_WHEN_TASK_OR_ISR()
+    LOCK_KERNEL()
 
     STORE_SERVICE(OSServiceId_CancelAlarm)
     STORE_ALARM_ID(alarm_id)
@@ -317,7 +317,7 @@ FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
 
     PROCESS_ERROR(result)
 
-    UNLOCK_WHEN_TASK_OR_ISR()
+    UNLOCK_KERNEL()
 
     return result;
 }
