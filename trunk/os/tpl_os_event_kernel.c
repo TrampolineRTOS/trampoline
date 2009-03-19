@@ -53,16 +53,14 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
   
-  LOCK_WHEN_HOOK()
+  LOCK_KERNEL()
   
   STORE_SERVICE(OSServiceId_SetEvent)
   STORE_TASK_ID(task_id)
   STORE_EVENT_MASK(event)
   
   CHECK_TASK_ID_ERROR(task_id,result)
-  
-  LOCK_WHEN_NO_HOOK()
-  
+
   /*  checks the task is an extended one  */
   CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)
   /*  checks the task is not in the SUSPENDED state   */
@@ -88,12 +86,10 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   }
   IF_NO_EXTENDED_ERROR_END()
 #endif
-
-  UNLOCK_WHEN_NO_HOOK()
   
   PROCESS_ERROR(result)
   
-  UNLOCK_WHEN_HOOK()
+  UNLOCK_KERNEL()
   
   return result;
 }
@@ -110,12 +106,11 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
   
-  LOCK_WHEN_HOOK()
+  LOCK_KERNEL()
   
   STORE_SERVICE(OSServiceId_ClearEvent)
   STORE_EVENT_MASK(event)
   
-  LOCK_WHEN_NO_HOOK()
   /*  ClearEvent cannot be called from ISR level  */
   CHECK_TASK_CALL_LEVEL_ERROR(result)
   /*  checks the calling task is an extended one  */
@@ -126,12 +121,10 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
     tpl_task_events_table[tpl_running_id]->evt_set &= (tpl_event_mask)(~event);
   IF_NO_EXTENDED_ERROR_END()
 #endif
-  
-  UNLOCK_WHEN_NO_HOOK()
-  
+    
   PROCESS_ERROR(result)
   
-  UNLOCK_WHEN_HOOK()
+  UNLOCK_KERNEL()
   
   return result;
 }
@@ -148,7 +141,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
   
-  LOCK_WHEN_HOOK()
+  LOCK_KERNEL()
   
   STORE_SERVICE(OSServiceId_GetEvent)
   STORE_TASK_ID(task_id)
@@ -169,7 +162,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
   
   PROCESS_ERROR(result)
   
-  UNLOCK_WHEN_HOOK()
+  UNLOCK_KERNEL()
   
   return result;
 }
@@ -186,12 +179,11 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
   
-  LOCK_WHEN_HOOK()
+  LOCK_KERNEL()
   
   STORE_SERVICE(OSServiceId_WaitEvent)
   STORE_EVENT_MASK(event)
   
-  LOCK_WHEN_NO_HOOK()
   /*  WaitEvent cannot be called from ISR level  */
   CHECK_TASK_CALL_LEVEL_ERROR(result)
   /*  checks the calling task is an extended one  */
@@ -224,12 +216,10 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   }
   IF_NO_EXTENDED_ERROR_END()
 #endif
-  
-  UNLOCK_WHEN_NO_HOOK()
-  
+    
   PROCESS_ERROR(result)
   
-  UNLOCK_WHEN_HOOK()
+  UNLOCK_KERNEL()
   
   return result;
 }

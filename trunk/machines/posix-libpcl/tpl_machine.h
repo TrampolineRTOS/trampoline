@@ -10,6 +10,7 @@ typedef coroutine_t *tpl_context;
 extern coroutine_t idle_task_context;
 
 #define IDLE_CONTEXT &idle_task_context
+#define IDLE_ENTRY NULL
 
 /**
  * tpl_stack_word is the basic element of a stack in order to have a proper

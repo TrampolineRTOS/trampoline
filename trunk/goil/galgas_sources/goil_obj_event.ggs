@@ -88,6 +88,22 @@ rule <event_attributes>
             cast mask :
             when == @event_mask_void_obj do
                 mask := [@event_mask_user_obj new !here !mask_value] ;
+                if [mask_value uint64] > [[@uint max] uint64] then
+                  error here : "MASK attribute should be a 32 bits integer" ;
+                else
+                  @uint nbbits := 0 ;
+                  @uint64 pof2 := 1L ;
+                  loop 32 :
+                  while pof2 < [[@uint max] uint64] do
+                    if (pof2 & [mask_value uint64]) != 0L then
+                      nbbits++ ;
+                    end if ;
+                    pof2 := pof2 << 1 ;
+                  end loop ;
+                  if nbbits > 1 then
+                    warning here : "MASK attribute uses more than 1 bit" ;
+                  end if ;
+                end if ;                  
             else
                 error here : "MASK attribute already defined for this EVENT" ;
                 error [mask location] : "was previously defined here" ;

@@ -62,7 +62,7 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
   CHECK_INTERRUPT_LOCK(result)
 
   /*  lock the task structures                    */
-  LOCK_WHEN_TASK_OR_ISR()
+  LOCK_KERNEL()
 
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_IncrementCounter)
@@ -102,7 +102,7 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
   PROCESS_ERROR(result)
 
   /*  unlock the task structures                  */
-  UNLOCK_WHEN_TASK_OR_ISR()
+  UNLOCK_KERNEL()
 
   return result;
 }
@@ -130,7 +130,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_counter_value_service(
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
 
-  LOCK_WHEN_HOOK()
+  LOCK_KERNEL()
 
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_GetCounterValue)
@@ -155,7 +155,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_counter_value_service(
   PROCESS_ERROR(result)
 
   /*  unlock the task structures                  */
-  UNLOCK_WHEN_HOOK()
+  UNLOCK_KERNEL()
 
   return result;
 }
@@ -185,7 +185,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_elapsed_counter_value_service(
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
 
-  LOCK_WHEN_HOOK()
+  LOCK_KERNEL()
 
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_GetElapsedCounterValue)
@@ -218,7 +218,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_elapsed_counter_value_service(
   PROCESS_ERROR(result)
 
   /*  unlock the task structures                  */
-  UNLOCK_WHEN_HOOK()
+  UNLOCK_KERNEL()
 
   return result;
 }

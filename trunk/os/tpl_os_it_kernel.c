@@ -56,7 +56,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
   CHECK_INTERRUPT_LOCK(result)
   
   /*  lock the task structures    */
-  LOCK_WHEN_ISR()
+  LOCK_KERNEL()
   
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_TerminateISR)
@@ -69,9 +69,10 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
 #ifndef NO_ISR
   IF_NO_EXTENDED_ERROR(result)
   
-  /*  set the state of the running task to DYING                  */
-  tpl_dyn_proc_table[tpl_running_id]->state = (tpl_proc_state)DYING;
-  
+  /* the activate count is decreased
+   */
+  tpl_dyn_proc_table[tpl_running_id]->activate_count--;
+    
   /*  and let the scheduler do its job                            */
   result |= tpl_schedule_from_dying();
   
@@ -91,7 +92,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
   PROCESS_ERROR(result)
   
   /*  unlock the task structures  */
-  UNLOCK_WHEN_ISR()
+  UNLOCK_KERNEL()
   
   return result;
 }

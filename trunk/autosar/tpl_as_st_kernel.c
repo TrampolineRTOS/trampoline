@@ -374,7 +374,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel_service(
     /* check interrupts are not disabled by user    */
     CHECK_INTERRUPT_LOCK(result)
 
-    LOCK_WHEN_TASK()
+    LOCK_KERNEL()
 
     STORE_SERVICE(OSServiceId_StartScheduleTableRel)
     STORE_SCHEDTABLE_ID(sched_table_id)
@@ -425,7 +425,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel_service(
 
     PROCESS_ERROR(result)
 
-    UNLOCK_WHEN_TASK()
+    UNLOCK_KERNEL()
 
     return result;
 }
@@ -453,7 +453,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs_service(
     /* check interrupts are not disabled by user    */
     CHECK_INTERRUPT_LOCK(result)
 
-    LOCK_WHEN_TASK()
+    LOCK_KERNEL()
 
     STORE_SERVICE(OSServiceId_StartScheduleTableAbs)
     STORE_SCHEDTABLE_ID(sched_table_id)
@@ -497,7 +497,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs_service(
 
     PROCESS_ERROR(result)
 
-    UNLOCK_WHEN_TASK()
+    UNLOCK_KERNEL()
 
     return result;
 }
@@ -522,7 +522,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_synchron_service(
     /* check interrupts are not disabled by user    */
     CHECK_INTERRUPT_LOCK(result)
 
-    LOCK_WHEN_TASK()
+    LOCK_KERNEL()
 
     STORE_SERVICE(OSServiceId_StartScheduleTableSynchron)
     STORE_SCHEDTABLE_ID(sched_table_id)
@@ -550,7 +550,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_synchron_service(
 
     PROCESS_ERROR(result)
 
-    UNLOCK_WHEN_TASK()
+    UNLOCK_KERNEL()
 
     return result;
 }
@@ -575,7 +575,7 @@ FUNC(tpl_status, OS_CODE) tpl_stop_schedule_table_service(
     /* check interrupts are not disabled by user    */
     CHECK_INTERRUPT_LOCK(result)
 
-    LOCK_WHEN_TASK()
+    LOCK_KERNEL()
 
     STORE_SERVICE(OSServiceId_StopScheduleTable)
     STORE_SCHEDTABLE_ID(sched_table_id)
@@ -605,7 +605,7 @@ FUNC(tpl_status, OS_CODE) tpl_stop_schedule_table_service(
 
     PROCESS_ERROR(result)
 
-    UNLOCK_WHEN_TASK()
+    UNLOCK_KERNEL()
 
     return result;
 }
@@ -631,7 +631,7 @@ FUNC(tpl_status, OS_CODE) tpl_next_schedule_table_service(
     /* check interrupts are not disabled by user    */
     CHECK_INTERRUPT_LOCK(result)
 
-    LOCK_WHEN_TASK()
+    LOCK_KERNEL()
 
     STORE_SERVICE(OSServiceId_NextScheduleTable)
     STORE_SCHEDTABLE_ID(current_st_id)
@@ -671,7 +671,7 @@ FUNC(tpl_status, OS_CODE) tpl_next_schedule_table_service(
 
     PROCESS_ERROR(result)
 
-    UNLOCK_WHEN_TASK()
+    UNLOCK_KERNEL()
 
     return result;
 }
@@ -697,7 +697,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_schedule_table_status_service(
     /* check interrupts are not disabled by user    */
     CHECK_INTERRUPT_LOCK(result)
 
-    LOCK_WHEN_HOOK()
+    LOCK_KERNEL()
 
     /*  store information for error hook routine    */
     STORE_SERVICE(OSServiceId_GetScheduleTableStatus)
@@ -713,7 +713,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_schedule_table_status_service(
     IF_NO_EXTENDED_ERROR_END()
 #endif
 
-    UNLOCK_WHEN_HOOK()
+    UNLOCK_KERNEL()
 
     return result;
 }
@@ -740,7 +740,7 @@ FUNC(tpl_status, OS_CODE) tpl_sync_schedule_table_service(
     /* check interrupts are not disabled by user    */
     CHECK_INTERRUPT_LOCK(result)
 
-    LOCK_WHEN_HOOK()
+    LOCK_KERNEL()
 
     /*  store information for error hook routine    */
     STORE_SERVICE(OSServiceId_SyncScheduleTable)
@@ -776,7 +776,7 @@ FUNC(tpl_status, OS_CODE) tpl_sync_schedule_table_service(
     IF_NO_EXTENDED_ERROR_END()
 #endif
 
-    UNLOCK_WHEN_HOOK()
+    UNLOCK_KERNEL()
 
     return result;
 }
@@ -805,7 +805,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_schedule_table_async(
     /* check interrupts are not disabled by user    */
     CHECK_INTERRUPT_LOCK(result)
 
-    LOCK_WHEN_HOOK()
+    LOCK_KERNEL()
 
     /*  store information for error hook routine    */
     STORE_SERVICE(OSServiceId_SyncScheduleTable)
@@ -839,7 +839,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_schedule_table_async(
     IF_NO_EXTENDED_ERROR_END()
 #endif
 
-    UNLOCK_WHEN_HOOK()
+    UNLOCK_KERNEL()
 
     return result;
 }

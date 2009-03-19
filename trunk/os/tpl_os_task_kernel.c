@@ -54,7 +54,7 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
   CHECK_INTERRUPT_LOCK(result)
 
   /*  lock the task structures    */
-  LOCK_WHEN_TASK()
+  LOCK_KERNEL()
 
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_ActivateTask)
@@ -86,7 +86,7 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
   PROCESS_ERROR(result)
 
   /*  unlock the task structures  */
-  UNLOCK_WHEN_TASK()
+  UNLOCK_KERNEL()
 
   return result;
 }
@@ -101,7 +101,7 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
   CHECK_INTERRUPT_LOCK(result)
 
   /*  lock the task structures    */
-  LOCK_WHEN_TASK()
+  LOCK_KERNEL()
 
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_TerminateTask)
@@ -113,11 +113,12 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 
 #ifndef NO_TASK
   IF_NO_EXTENDED_ERROR(result)
-
-    /*  set the state of the running task to DYING                  */
-    tpl_dyn_proc_table[tpl_running_id]->state = (tpl_proc_state)DYING;
-
-    /*  and let the scheduler do its job                            */
+    /*  the activate count is decreased 
+     */
+    tpl_dyn_proc_table[tpl_running_id]->activate_count--;
+  
+    /*  and let the scheduler do its job
+     */
     result |= tpl_schedule_from_dying();
 
 # ifndef WITH_SYSTEM_CALL
@@ -136,7 +137,7 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
   PROCESS_ERROR(result)
 
   /*  unlock the task structures  */
-  UNLOCK_WHEN_TASK()
+  UNLOCK_KERNEL()
 
   return result;
 }
@@ -145,19 +146,16 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   CONST(TaskType, AUTOMATIC) task_id)
 {
-  VAR(StatusType, AUTOMATIC) result = E_OK;
-  
+  VAR(StatusType, AUTOMATIC)  result = E_OK;
 #ifndef NO_TASK
-  P2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)          dyn_proc;
-  P2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) stat_proc;
-  VAR(tpl_activate_counter, AUTOMATIC)              count;
+  P2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task;
 #endif
   
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
   
   /*  lock the task system    */
-  LOCK_WHEN_TASK()
+  LOCK_KERNEL()
   
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_ChainTask)
@@ -172,62 +170,33 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   
 #ifndef NO_TASK
   IF_NO_EXTENDED_ERROR(result)
+    task = tpl_dyn_proc_table[tpl_running_id];
+    /* the activate count is decreased
+     */
+    task->activate_count--;
   
-    dyn_proc = tpl_dyn_proc_table[task_id];
-    stat_proc = tpl_stat_proc_table[task_id];
+    /* activate the chained task
+     */
+    result = tpl_activate_task(task_id);
     
-    if (task_id == tpl_running_id)
-    {
-      /*  The activated task and the currently running object
-          are the same. So the task is put in the RESURRECT state.    */
-      tpl_dyn_proc_table[tpl_running_id]->state = RESURRECT;
-      
-    }
-    else
-    {
-      count = dyn_proc->activate_count;
-      
-      if (count < stat_proc->max_activate_count)
-      {
-        if (count == 0)
-        {
-          /*  the initialization is postponed to the time it will
-              get the CPU as indicated by READY_AND_NEW state         */
-          dyn_proc->state = (tpl_proc_state)READY_AND_NEW;
-        }
-        /*  put it in the list  */
-        tpl_put_new_proc(task_id);
-        
-        /*  inc the task activation count. When the task
-            will terminate it will dec this count and if
-            not zero it will be reactivated                           */
-        dyn_proc->activate_count++;
-        
-        /*  the object that is currently running is put in
-            the DYING state                                           */
-        tpl_dyn_proc_table[tpl_running_id]->state = DYING;
-      }
-      else
-      {
-        /*  The max activation count is reached. So an error occurs   */
-        result = E_OS_LIMIT;
-      }
-    }
-    
-    if (result == E_OK)
+    if (result == E_OK_AND_SCHEDULE)
     {
       /*  and let the scheduler do its job                            */
       result |= tpl_schedule_from_dying();
 # ifndef WITH_SYSTEM_CALL
       if (tpl_need_switch != NO_NEED_SWITCH)
       {
-        stat_proc = tpl_stat_proc_table[tpl_running_id];
         tpl_switch_context(
-                           NULL,
-                           &(stat_proc->context)
-                           );
+          NULL,
+          &(tpl_stat_proc_table[tpl_running_id]->context)
+        );
       }
 # endif
+    }
+    else
+    {
+      /* the activate count is restored since the caller does not terminate */
+      task->activate_count++;
     }
     
   IF_NO_EXTENDED_ERROR_END()
@@ -236,7 +205,7 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   PROCESS_ERROR(result)
   
   /*  unlock the task structures  */
-  UNLOCK_WHEN_TASK()
+  UNLOCK_KERNEL()
   
   return result;
 }
@@ -251,7 +220,7 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
   CHECK_INTERRUPT_LOCK(result)
   
   /*  lock the task system    */
-  LOCK_WHEN_TASK()
+  LOCK_KERNEL()
   
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_Schedule)
@@ -285,7 +254,7 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
   PROCESS_ERROR(result)
   
   /*  unlock the task structures  */
-  UNLOCK_WHEN_TASK()
+  UNLOCK_KERNEL()
   
   return result;
 }
@@ -294,6 +263,8 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
   VAR(TaskRefType, AUTOMATIC) task_id)
 {
+
+  LOCK_KERNEL()
   /*  get the task id from the task descriptor. If the id is not
       within 0 and TASK_COUNT-1, INVALID_TASK is returned         */
   if (tpl_running_id >= 0 && tpl_running_id < TASK_COUNT)
@@ -304,6 +275,9 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
   {
     *task_id = INVALID_TASK;
   }
+  
+  UNLOCK_KERNEL()
+  
   return E_OK;
 }
 
@@ -317,7 +291,7 @@ FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
 
-  LOCK_WHEN_HOOK()
+  LOCK_KERNEL()
 
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_GetTaskState)
@@ -334,7 +308,7 @@ FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
 
   PROCESS_ERROR(result)
 
-  UNLOCK_WHEN_HOOK()
+  UNLOCK_KERNEL()
 
   return result;
 }
