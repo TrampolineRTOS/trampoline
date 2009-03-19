@@ -107,7 +107,8 @@ project all_goil :
   semantics "goil_target_h8300h.ggs" : makefile, xcode_tool ;
   semantics "goil_target_arm7.ggs" : makefile, xcode_tool ;
   semantics "goil_target_avr.ggs" : makefile, xcode_tool ;
-  
+  semantics "goil_target_posix.ggs" : makefile, xcode_tool ;  
+
   grammar "goil_grammar.ggs" : makefile, xcode_tool ;
   syntax "goil_file_level_include.ggs" : makefile, xcode_tool ;
   syntax "goil_cpu_level_include.ggs" : makefile, xcode_tool ;
