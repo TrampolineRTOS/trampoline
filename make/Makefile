@@ -104,24 +104,14 @@ $(EXEC): $(OBJ)
 	$(LD) -o $(EXEC) $(OBJ) $(CFLAGS) $(LDFLAGS) 
 
 #clean
-.PHONY: clean mrproper
+.PHONY: clean 
 clean:
 	@rm -rf $(OBJ) *~  $(EXTRA_FILES_CLEAN)
-
-#big clean
-mrproper: clean internalCheckClean
 	@rm -rf $(EXEC) $(DEPFILES) $(EXTRA_FILES_MRPROPER) $(OIL_OUTPUT_PATH)
 
 # generate C file from OIL file, using goil.
 $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE): $(OIL_FILE) Makefile
 	$(GOIL_COMPILER) --generate-makefile --target=$(GOIL_TARGET) $(GOIL_TEMPLATE_STR) $(AUTOSAR_GOIL_FLAG) $(OIL_FILE)
-
-#internal functional tests
-internalCheck: 
-	@cd $(TPL_BASE_PATH)/check/functional  && ./tests.sh && cd - >/dev/null
-	
-internalCheckClean: 
-	@cd $(TPL_BASE_PATH)/check/functional  && ./tests.sh clean && cd - >/dev/null
 
 #documentation
 doc: doc-dev doc-user
