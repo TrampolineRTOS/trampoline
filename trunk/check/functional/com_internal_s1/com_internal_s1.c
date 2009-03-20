@@ -8,6 +8,8 @@ TestRef COMInternalTest_seq1_t1_instance(void);
 TestRef COMInternalTest_seq1_t2_instance(void);
 TestRef COMInternalTest_seq1_comerror_instance1(void);
 TestRef COMInternalTest_seq1_comerror_instance2(void);
+TestRef COMInternalTest_seq1_comerror_instance3(void);
+TestRef COMInternalTest_seq1_comerror_instance4(void);
 
 DeclareMessage(sm);
 DeclareMessage(rm);
@@ -30,7 +32,7 @@ void ErrorHook(error){
 	
 }
 
-void COMErrorHook(error){
+void COMErrorHook(StatusType error){
 	
 	com_error_instance++;
 	switch (com_error_instance) {
@@ -39,6 +41,12 @@ void COMErrorHook(error){
 			break;
 		case 2:
 			TestRunner_runTest(COMInternalTest_seq1_comerror_instance2());
+			break;
+		case 3:
+			TestRunner_runTest(COMInternalTest_seq1_comerror_instance3());
+			break;
+		case 4:
+			TestRunner_runTest(COMInternalTest_seq1_comerror_instance4());
 			break;
 		default:
 			stdimpl_print("instance error\n");

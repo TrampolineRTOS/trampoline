@@ -225,7 +225,7 @@ void tpl_disable_all_interrupts_service(void)
  */
 void tpl_resume_all_interrupts_service(void)
 {
-    if (tpl_locking_depth > 0)
+	if (tpl_locking_depth > 0)
     {
         tpl_locking_depth--;
     
@@ -336,6 +336,7 @@ void tpl_suspend_os_interrupts_service(void)
  */
 void tpl_signal_handler(int sig)
 {
+		
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
   struct itimerval timer;
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
@@ -343,14 +344,20 @@ void tpl_signal_handler(int sig)
 #ifndef NO_ISR
   unsigned int id;
 #endif /* NO_ISR */
-
-	tpl_get_task_lock(); /* disable interrupts in PostTaskook and "PreTaskISR" */
 	
-#ifndef NO_ALARM
-    if (signal_for_counters == sig) tpl_call_counter_tick();
-#endif /* NO_ALARM */
+	//printf("tpl_signal_handler - tpl_locking_depth = %d\n",tpl_locking_depth);
+	/* disable interrupts in PostTaskook and "PreTaskISR".
+	 * tpl_locking_depth is incremented becasuse otherwise, when ResumeAllInterrupts
+	 * is called in Post(Pre)-Task, interrupts are enabled whereas it shouldn't.
+	 */
+	tpl_locking_depth++; 
+	
+// What's that for ? two calls to tpl_call_counter_tick ifndef NO_ALARM. by Florent 090318
+//#ifndef NO_ALARM
+//    if (signal_for_counters == sig) tpl_call_counter_tick();
+//#endif /* NO_ALARM */
 #if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
-    if (signal_for_counters == sig) tpl_call_counter_tick();
+	if (signal_for_counters == sig) tpl_call_counter_tick();
 #endif /*(defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     if (sig == signal_for_watchdog)
@@ -370,14 +377,14 @@ void tpl_signal_handler(int sig)
     {
         if (signal_for_isr_id[id] == sig)
         {
-            tpl_central_interrupt_handler(id + TASK_COUNT);
+			//printf("tpl_signal_handler - ISR2 - tpl_locking_depth = %d\n",tpl_locking_depth);
+			tpl_central_interrupt_handler(id + TASK_COUNT);
         }
     }
 #endif /* NO_ISR */
 
-  /* released interrupts returning in the previous task	*/
-  tpl_release_task_lock();
-
+	/* Release interrupts returning in the previous context*/
+	tpl_locking_depth--;
 }
 
 /*

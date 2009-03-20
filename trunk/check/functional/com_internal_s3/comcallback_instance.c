@@ -13,7 +13,7 @@ static void test_comcallback_instance(void)
 	
 	char received_char;
 	
-	result_inst_1 = ReceiveMessage(rm_comcallback, &received_char); //not allowed !!!
+	result_inst_1 = ReceiveMessage(rm_comcallback, &received_char); //not allowed !!! Should be E_OS_CALLEVEL
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
 	TEST_ASSERT_EQUAL_INT((int)('3'), (int)received_char);
 	

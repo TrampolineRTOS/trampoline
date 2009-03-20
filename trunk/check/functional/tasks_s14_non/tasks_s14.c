@@ -1,10 +1,6 @@
 #include "config.h" /*Display information in the right way (printf on UNIX...)*/
 #include "embUnit.h"
 #include "tpl_os.h"
-//#include "tpl_os_generated_configuration.h"
-//#include "../../os/os_machine/ARM7/OKI/uart.h"
-//#include "../../os/tpl_os_kernel.h"
-//#include "tests_tasksManagement_sequence9.h"
 
 TestRef TaskManagementTest_seq14_t1_instance(void);
 TestRef TaskManagementTest_seq14_t2_instance(void);

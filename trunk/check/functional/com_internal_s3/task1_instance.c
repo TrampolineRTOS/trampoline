@@ -3,7 +3,6 @@
 #include "embUnit.h"
 #include "tpl_os.h"
 #include "tpl_com_definitions.h"  //for E_COM_ID
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
 
 DeclareMessage(sm_activatetask);
 DeclareMessage(sm_setevent);
