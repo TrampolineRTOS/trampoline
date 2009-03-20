@@ -225,7 +225,7 @@ rule <start> :
   # cross-objects static verification 
     resolve_linked_resources !?resources ;
     all_events_and_resources_and_messages_defined_and_used !tasks !isrs !events !resources !messages ;
-    all_event_masks_different !events ;
+  #  all_event_masks_different !events ;
     all_alarm_actions_correct !alarms !tasks !counters ;
     counters_of_alarms_defined !alarms !counters ;
     networkmessages_exist_and_ok !messages !net_messages ;

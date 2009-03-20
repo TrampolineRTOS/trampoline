@@ -1461,7 +1461,7 @@ routine generate_events
                 then
                     event_mask := event_mask | [[emu mask] uint64] ;
                 else
-                    error [emu mask] : "Mask %K conflicts with previous declarations" ;
+                    error [emu mask] : "MASK of event ".[evt_name string]." conflicts with previous declarations" ;
                 end if ;
             when == @event_mask_auto_obj do
                 @uint count ;

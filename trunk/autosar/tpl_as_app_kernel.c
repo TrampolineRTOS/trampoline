@@ -34,6 +34,7 @@
 #include "tpl_as_counter_kernel.h"
 #include "tpl_as_st_kernel.h"
 #include "tpl_as_definitions.h"
+#include "tpl_machine_interface.h"
 
 #if APP_COUNT > 0
 extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST)
