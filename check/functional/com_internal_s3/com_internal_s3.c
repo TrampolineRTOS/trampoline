@@ -28,15 +28,6 @@ void ErrorHook(error){
 	
 }
 
-
-void COMErrorHook(error){
-	
-//
-	
-	
-}
-
-
 TASK(t1)
 {
 	TestRunner_start();

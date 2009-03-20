@@ -1538,7 +1538,7 @@ routine generate_events
         bit := bit << 1 ; 
       end loop ;
       if bit > [[@uint max] uint64] then
-        error event_name : "No mask available for this event" ;
+        error event_name : "All event mask bits are already use, event ".[event_name string]." can't be created" ;
       end if ;
       # message "found ".[bit string]."\n" ;
       # update the task mask of the corresponding tasks

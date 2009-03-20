@@ -16,7 +16,7 @@ static void test_t1_instance(void)
 	result_inst_1 = GetMessageStatus(sm);	
 	TEST_ASSERT_EQUAL_INT(E_COM_NOMSG, result_inst_1);
 	
-	result_inst_1 = SendMessage(SEND_MESSAGE_COUNT, "1");	
+	result_inst_1 = SendMessage(SEND_MESSAGE_COUNT, 0);	
 	TEST_ASSERT_EQUAL_INT(E_COM_ID, result_inst_1);
 	
 	result_inst_1 = GetMessageStatus(sm);	

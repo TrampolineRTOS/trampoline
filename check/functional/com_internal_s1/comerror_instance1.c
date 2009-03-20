@@ -12,7 +12,7 @@ static void test_comerror_instance1(void)
 	int result_inst_1;
 		
 	result_inst_1 = COMErrorGetServiceId();
-	TEST_ASSERT_EQUAL_INT(COMServiceId_SendMessage , result_inst_1);
+	TEST_ASSERT_EQUAL_INT(COMServiceId_GetMessageStatus , result_inst_1);
 	
 }
 

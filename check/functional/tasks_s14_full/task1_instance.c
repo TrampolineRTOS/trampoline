@@ -1,9 +1,7 @@
 /*Instance of task t1*/
 
-//#include "test_instances.h"
 #include "embUnit.h"
 #include "tpl_os.h"
-//#include "tpl_os_generated_configuration.h"
 
 DeclareTask(t2);
 DeclareTask(t3);
@@ -33,7 +31,7 @@ DeclareEvent(Task1_Event8);
  an activation of a task*/
 static void test_t1_instance(void)
 {
-	int result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9, result_inst_10, result_inst_11, result_inst_12, result_inst_13, result_inst_14, result_inst_15, result_inst_16, result_inst_17, result_inst_18, result_inst_19, result_inst_20, result_inst_21, result_inst_22, result_inst_23;
+	int result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9, result_inst_10, result_inst_11, result_inst_12, result_inst_13, result_inst_14, result_inst_15, result_inst_16, result_inst_17, result_inst_18, result_inst_19, result_inst_20, result_inst_21, result_inst_22, result_inst_23, result_inst_24;
 	
 	result_inst_1 = ActivateTask(t2);
 	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_1);
@@ -104,7 +102,8 @@ static void test_t1_instance(void)
 	result_inst_23 = ClearEvent(Task1_Event8);
 	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_23);
 	
-	TerminateTask();
+	result_inst_24 = TerminateTask();
+	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_24);
 }
 
 /*create the test suite with all the test cases*/

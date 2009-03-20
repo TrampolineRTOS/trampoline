@@ -16,27 +16,18 @@ static void test_t2_instance(void)
 	char received_char;
 	
 	result_inst_1 = GetMessageStatus(rm);
-	TEST_ASSERT_EQUAL_INT(E_COM_LIMIT, result_inst_1);
+	TEST_ASSERT_EQUAL_INT(E_COM_ID, result_inst_1);
 	
 	result_inst_1 = ReceiveMessage(rm, &received_char);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
 	TEST_ASSERT_EQUAL_INT((int)('1'), (int)received_char);
 	
-	result_inst_1 = GetMessageStatus(rm);
-	TEST_ASSERT_EQUAL_INT(E_COM_LIMIT, result_inst_1);
-	
 	result_inst_1 = ReceiveMessage(rm, &received_char);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
 	TEST_ASSERT_EQUAL_INT((int)('1'), (int)received_char);
-	
-	result_inst_1 = GetMessageStatus(rm);
-	TEST_ASSERT_EQUAL_INT(E_COM_LIMIT, result_inst_1);
 	
 	result_inst_2 = ReceiveMessage(SEND_MESSAGE_COUNT, &received_char);
 	TEST_ASSERT_EQUAL_INT(E_COM_ID, result_inst_2);
-		
-	result_inst_1 = GetMessageStatus(rm);
-	TEST_ASSERT_EQUAL_INT(E_COM_LIMIT, result_inst_1);
 	
 	result_inst_3 = TerminateTask();
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
