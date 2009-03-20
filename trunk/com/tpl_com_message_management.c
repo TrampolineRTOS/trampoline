@@ -80,7 +80,7 @@ StatusType GetMessageStatus(MessageIdentifier mess_id)
 	}
 	else{
 		// if message unqueued
-		result =  E_COM_LIMIT;
+		result =  E_COM_ID;
 	}
 	
 	IF_NO_EXTENDED_ERROR_END();
