@@ -39,7 +39,7 @@ class @com extends @oil_obj {
 
   method generate ?!@string h :
 
-    @string res := "" ;
+    @string res := "#define WITH_COM\n" ;
 
     cast timebase :
     when == @void do
@@ -55,7 +55,7 @@ class @com extends @oil_obj {
     bool_flag !?res !errorhook !"WITH_COM_ERROR_HOOK" ;
     bool_flag !?res !usegetserviceid !"WITH_COM_USEGETSERVICEID" ;
     bool_flag !?res !useparameteraccess !"WITH_COM_USEPARAMETERACCESS" ;
-    bool_flag !?res ! startcomextension !"WITH_COM_STARTCOMEXTENSION" ;
+    bool_flag !?res !startcomextension !"WITH_COM_STARTCOMEXTENSION" ;
 
     if [status string] == "extended" then
       res .= "#define COM_EXTENDED\n";#    YES\n" ;
