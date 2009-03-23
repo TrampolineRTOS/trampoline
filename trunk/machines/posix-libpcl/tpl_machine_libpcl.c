@@ -175,160 +175,27 @@ void tpl_call_counter_tick();
 static sigset_t tpl_saved_state;
 
 /**
- * Enable all interrupts
- *
- * @see #EnableAllInterrupts
+ * Enable interrupts
  */
-void tpl_enable_all_interrupts_service(void)
+void tpl_enable_interrupts(void)
 {
     if (sigprocmask(SIG_SETMASK,&tpl_saved_state,NULL) == -1)
     {
-        perror("EnableAllInterrupts failed");
+        perror("tpl_enable_interrupts failed");
         exit(-1);
     }
-
-#ifdef WITH_AUTOSAR
-    tpl_user_task_lock = FALSE;
-#endif
-
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    tpl_stop_all_isr_lock_monitor(tpl_running_id);
-#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 
 /**
- * Disable all interrupts
- *
- * @see #DisableAllInterrupts
+ * Disable interrupts
  */
-void tpl_disable_all_interrupts_service(void)
+void tpl_disable_interrupts(void)
 {
     if (sigprocmask(SIG_BLOCK,&signal_set,&tpl_saved_state) == -1)
     {
-        perror("DisableAllInterrupts failed");
+        perror("tpl_enable_interrupts failed");
         exit(-1);
     }
-
-#ifdef WITH_AUTOSAR
-    tpl_user_task_lock = TRUE;
-#endif
-
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    tpl_start_all_isr_lock_monitor(tpl_running_id);
-#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
-}
-
-/** 
- * Resume all interrupts
- *
- * @see #ResumeAllInterrupts
- */
-void tpl_resume_all_interrupts_service(void)
-{
-	if (tpl_locking_depth > 0)
-    {
-        tpl_locking_depth--;
-    
-#ifdef WITH_AUTOSAR
-        tpl_cpt_user_task_lock--;
-#endif
-    }
-
-    if (tpl_locking_depth == 0)
-    {
-        if (sigprocmask(SIG_UNBLOCK,&signal_set,NULL) == -1)
-        {
-            perror("ResumeAllInterrupts failed");
-            exit(-1);
-        }
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-        tpl_stop_all_isr_lock_monitor(tpl_running_id);
-#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
-    }
-}
-
-/**
- * Suspend all interrupts
- *
- * @see #SuspendAllInterrupts
- */
-void tpl_suspend_all_interrupts_service(void)
-{
-    if (sigprocmask(SIG_BLOCK,&signal_set,NULL) == -1)
-    {
-        perror("SuspendAllInterrupts failed");
-        exit(-1);
-    }
-    
-    
-    tpl_locking_depth++;
-
-#ifdef WITH_AUTOSAR
-    tpl_cpt_user_task_lock++;
-#endif
-
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    if (tpl_locking_depth == 1)
-    {
-        tpl_start_all_isr_lock_monitor(tpl_running_id);
-    }
-#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
-}
-
-/** 
- * Resume category 2 interrupts
- *
- * @see #ResumeOSInterrupts
- */
-void tpl_resume_os_interrupts_service(void)
-{
-    if (tpl_locking_depth > 0)
-    {
-        tpl_locking_depth--;
-
-#ifdef WITH_AUTOSAR
-        tpl_cpt_user_task_lock--;
-#endif
-    }
-    
-    if (tpl_locking_depth == 0)
-    {
-        if (sigprocmask(SIG_UNBLOCK,&signal_set,NULL) == -1)
-        {
-            perror("ResumeAllInterrupts failed");
-            exit(-1);
-        }
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-        tpl_stop_os_isr_lock_monitor(tpl_running_id);
-#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
-    }
-}
-
-/**
- * Suspend category 2 interrupts
- *
- * @see #SuspendOSInterrupts
- */
-void tpl_suspend_os_interrupts_service(void)
-{
-    if (sigprocmask(SIG_BLOCK,&signal_set,NULL) == -1)
-    {
-        perror("SuspendAllInterrupts failed");
-        exit(-1);
-    }
-    
-    tpl_locking_depth++;
-
-#ifdef WITH_AUTOSAR
-    tpl_cpt_user_task_lock++;
-#endif
-
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    if (tpl_locking_depth == 1)
-    {
-      tpl_start_os_isr_lock_monitor(tpl_running_id); 
-    }
-#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 
 /*
