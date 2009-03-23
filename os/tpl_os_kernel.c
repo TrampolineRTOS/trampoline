@@ -29,6 +29,7 @@
 #include "tpl_os_kernel.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os_hooks.h"
+#include "tpl_os_error.h"
 #include "tpl_os_alarm_kernel.h"
 #include "tpl_machine.h"
 #include "tpl_machine_interface.h"
@@ -126,11 +127,10 @@ VAR(tpl_proc, OS_VAR) idle_task = {
  *
  * tpl_running_id is the currently running process id.
  *
- * At system startup it is set to -2 (no task at all). It is a transiant
- * that exists from the start time to the time the first task (idle included)
- * runs.
+ * At system startup it is set to IDLE_TASK_ID since the main is a part
+ * of the idle task.
  */
-VAR(int, OS_VAR) tpl_running_id = -2;
+VAR(int, OS_VAR) tpl_running_id = IDLE_TASK_ID;
 
 /**
  * @internal
@@ -170,7 +170,7 @@ extern VAR(tpl_fifo_state, OS_VAR) tpl_fifo_rw[];
 #include "tpl_memmap.h"
 
 
-#define OS_START_SEC_VAR_8BITS
+#define OS_START_SEC_VAR_8BIT
 #include "tpl_memmap.h"
 
 /**
@@ -186,7 +186,7 @@ extern VAR(tpl_fifo_state, OS_VAR) tpl_fifo_rw[];
  */
 VAR(s8, OS_VAR) tpl_h_prio = -1;
 
-#define OS_STOP_SEC_VAR_8BITS
+#define OS_STOP_SEC_VAR_8BIT
 #include "tpl_memmap.h"
 
 
@@ -1444,9 +1444,9 @@ FUNC(void, OS_CODE) tpl_start_os_service(
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
   
+  LOCK_KERNEL()
+
   application_mode = mode;
-  tpl_init_machine();
-  tpl_get_task_lock();
   
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
   tpl_init_timing_protection();
@@ -1458,7 +1458,7 @@ FUNC(void, OS_CODE) tpl_start_os_service(
       after the os is initialized and before the scheduler is running     */
   CALL_STARTUP_HOOK()
   
-  tpl_running_id = IDLE_TASK_ID;
+/*  tpl_running_id = IDLE_TASK_ID; */
   
   /*  Call tpl_schedule to elect the greatest priority task */
   if(tpl_h_prio != -1)
@@ -1476,10 +1476,7 @@ FUNC(void, OS_CODE) tpl_start_os_service(
 #endif
   }
   
-  tpl_release_task_lock();
-  
-  /*  Fall back to the idle loop */
-  tpl_sleep();
+  UNLOCK_KERNEL()
 }
 
 FUNC(void, OS_CODE) tpl_shutdown_os_service(

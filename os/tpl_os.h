@@ -56,10 +56,13 @@
  */
 #include "tpl_os_it.h"
 
+
+#ifdef WITH_COM
 /*
  * Inclusion of the header for communication related API services
  */
 #include "tpl_com_internal.h"
+#endif
 
 #ifdef WITH_AUTOSAR
 /*
@@ -112,7 +115,7 @@ FUNC(AppModeType, OS_CODE) GetActiveApplicationMode(void);
  *
  * see paragraph 13.7.2.2 page 66 of OSEK/VDX 2.2.2 spec
  */
-FUNC(void, OS_CODE) StartOS(
+extern FUNC(void, OS_CODE) StartOS(
     CONST(AppModeType, AUTOMATIC) mode
 );
 

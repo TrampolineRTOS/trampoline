@@ -53,7 +53,7 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
 
-  /*  lock the task structures    */
+  /*  lock the kernel    */
   LOCK_KERNEL()
 
   /*  store information for error hook routine    */
@@ -85,7 +85,7 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
 
   PROCESS_ERROR(result)
 
-  /*  unlock the task structures  */
+  /*  unlock the kernel  */
   UNLOCK_KERNEL()
 
   return result;
@@ -100,7 +100,7 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
 
-  /*  lock the task structures    */
+  /*  lock the kernel    */
   LOCK_KERNEL()
 
   /*  store information for error hook routine    */
@@ -136,7 +136,7 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 
   PROCESS_ERROR(result)
 
-  /*  unlock the task structures  */
+  /*  unlock the kernel  */
   UNLOCK_KERNEL()
 
   return result;
@@ -154,7 +154,7 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
   
-  /*  lock the task system    */
+  /*  lock the kernel    */
   LOCK_KERNEL()
   
   /*  store information for error hook routine    */

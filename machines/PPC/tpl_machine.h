@@ -23,10 +23,13 @@
  * $URL$
  */
 
-#ifndef TPL_MACHINE_H
-#define TPL_MACHINE_H
+#ifndef TPL_MACHINE_PPC_H
+#define TPL_MACHINE_PPC_H
 
 #include "tpl_os_custom_types.h"
+
+typedef u32 tpl_stack_word;
+typedef u32 tpl_stack_size;
 
 /*
  * Integer context of the PowerPC
@@ -50,6 +53,7 @@ struct PPC_INTEGER_CONTEXT {
 
 typedef struct PPC_INTEGER_CONTEXT ppc_integer_context;
 
+#ifdef WITH_FLOAT
 /*
  * Floating Point Context of the PowerPC
  * fpr are Floating Point Register. They are named f0 to f31 in assembly code
@@ -61,6 +65,7 @@ struct PPC_FLOAT_CONTEXT {
 };
 
 typedef struct PPC_FLOAT_CONTEXT ppc_float_context;
+#endif
 
 
 #ifdef WITH_ALTIVEC
@@ -81,7 +86,9 @@ typedef struct PPC_VECTOR_CONTEXT ppc_vector_context;
 
 struct TPL_CONTEXT {
     ppc_integer_context *ic;
+#ifdef WITH_FLOAT
     ppc_float_context   *fc;
+#endif
 #ifdef WITH_ALTIVEC
     ppc_vector_context  *vc;
 #endif
@@ -89,13 +96,7 @@ struct TPL_CONTEXT {
 
 typedef struct TPL_CONTEXT tpl_context;
 
-extern ppc_integer_context idle_task_context;
-
-#ifdef WITH_ALTIVEC
-#define IDLE_CONTEXT { &idle_task_context, NULL, NULL }
-#else
-#define IDLE_CONTEXT { &idle_task_context, NULL }
-#endif
+extern VAR(ppc_integer_context, OS_VAR) idle_task_context;
 
 /* tpl_stack is a data structure used to
  * describe the stack(s) used for each task
@@ -113,6 +114,70 @@ struct TPL_STACK {
 
 typedef struct TPL_STACK tpl_stack;
 
-#define IDLE_STACK {NULL,0}
+/**
+ * @def IDLE_CONTEXT
+ *
+ * The context used to save the idle task
+ */
+#ifdef WITH_FLOAT
+#  define IDLE_CONTEXT { &idle_task_context, NULL }
+#else
+#  ifdef WITH_ALTIVEC
+#    define IDLE_CONTEXT { &idle_task_context, NULL, NULL }
+#  else
+#    define IDLE_CONTEXT { &idle_task_context }
+#  endif
+#endif
+
+/**
+ * @def IDLE_ENTRY
+ *
+ * Entry point of the idle task. Not used in PPC port
+ */
+#define IDLE_ENTRY NULL
+
+/**
+ * @def SIZE_OF_IDLE_TASK
+ *
+ * The size of the stack of the idle task which is also the stack
+ * used for machine startup
+ */
+#define SIZE_OF_IDLE_STACK  200
+
+/**
+ * @def IDLE_STACK
+ *
+ * the idle stack definition
+ */
+#define IDLE_STACK { NULL, 0 }
+
+/*
+ * external variables
+ */
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+extern VAR(ppc_integer_context, OS_VAR) idle_task_context;
+extern VAR(tpl_stack_word, OS_VAR)
+    stack_zone_of_IdleTask[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
+extern VAR(u8, OS_VAR) tpl_keep_prio[15];
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+typedef P2FUNC(void, OS_CODE, INTfunc)(void);
+extern INTfunc InterruptVectortable[];
+
+/*
+ * Various functions
+ * the declaration of these functions is not needed, but
+ * it avoids a MISRA rule violation
+ */
+__interrupt FUNC(void, OS_CODE) tpl_sc_handler(void);
+
+extern FUNC(void, OS_CODE) tpl_interrupt_handler_save(void);
+extern FUNC(void, OS_CODE) tpl_interrupt_handler_restore(void);
+extern FUNC(void, OS_CODE) OSCOUNTERBASETICK_FUNC(void);
+extern FUNC(void, OS_CODE) OSCOUNTERWATCHDOG_FUNC(void);
 
 #endif /* TPL_MACHINE_PPC_H */

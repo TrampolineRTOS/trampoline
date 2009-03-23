@@ -1,9 +1,9 @@
 /*
- *  @file tpl_dispatch.s
+ * @file tpl_dispatch.s
  *
  * @section desc File description
  *
- * Trampoline dispatch level
+ * Trampoline dispatch level for PowerPC port
  *
  * @section copyright Copyright
  *
@@ -29,21 +29,29 @@
 
 #include "tpl_os_service_ids.h"
 #include "tpl_os_definitions.h"
+#include "tpl_os_kernel_stack.h"
+#include "tpl_assembler.h"
 
 #define SYSCALL_COUNT   OS_SYSCALL_COUNT
 
-.reference tpl_dispatch_table
-.reference tpl_sc_switch_context
-.reference tpl_unset_mp
-.reference tpl_running_id
+TPL_EXTERN  tpl_dispatch_table
+TPL_EXTERN  tpl_stat_proc_table
+TPL_EXTERN  tpl_save_context
+TPL_EXTERN  tpl_load_context
+TPL_EXTERN  tpl_unset_mp
+TPL_EXTERN  tpl_running_id
+TPL_EXTERN  tpl_need_switch
 
-kernel_stack_size = 80
+  .global tpl_kernel_stack
+  .global tpl_sc_handler
+  
+  .data
+  .align 4
+tpl_kernel_stack:
+  .space  KERNEL_STACK_SIZE
 
-.data
-.align 4
-tpl_kernel_stack:   .space      kernel_stack_size
-
-.text
+  .text
+  .section  ".IVORhandlers","ax"
 /**
  * System call handler
  *
@@ -51,112 +59,136 @@ tpl_kernel_stack:   .space      kernel_stack_size
  * call interrupt vector. This first part saves the registers it uses on the
  * task/ISR2 stack and branches to this function.
  */
+    
 tpl_sc_handler:
 
-        /* The first thing to do is to check the service id is a valid one  */
-        
-        cmpwi r0,SYSCALL_COUNT              /* check the service id is in   */
-        bge   ISID                          /* the allowed range            */
+    /* The first thing to do is to check the service id is a valid one  */
+    
+    cmpwi r0,SYSCALL_COUNT              /* check the service id is in   */
+    bge   ISID                          /* the allowed range            */
+    
+    /*  The second thing is to switch to kernel mem protection scheme   */
+    
+    mflr r12                            /* save lr to call tpl_unset_mp */
+    ;        bl   tpl_unset_mp                   /* disable memory protection    */
+    
+    /*  The third thing is to switch to the kernel stack                */
+    
+    lis  r11,TPL_HIG(tpl_kernel_stack)  /* get the kernel stack ptr     */
+    ori  r11,r11,TPL_LOW(tpl_kernel_stack)
+    addi r11,r11,KERNEL_STACK_SIZE-KS_FOOTPRINT /* point to the bottom  */
+    stw  r1,KS_SP(r11)                  /* save the sp of the caller    */
+    mr   r1,r11                         /* set the kernel stack         */
+    stw  r12,KS_LR(r1)                  /* save the LR                  */
+    mfcr r11                            /* save the CR                  */
+    stw  r11,KS_CR(r1)
+    
+    /*  Save the id of the caller in the kernel stack. This has to be
+        done because if the service does a reschedule, it will be
+        changed and we need it to do the context switch                 */
+    
+    lis  r11,TPL_HIG(tpl_running_id)    /* get the address of the       */
+    ori  r11,r11,TPL_LOW(tpl_running_id)/* tpl_running_id variable      */
+    lwz  r11,0(r11)                     /* get tpl_running_id           */
+    stw  r11,KS_RUNNING_ID(r1)          /* save it in the kernel task   */
+    
+    /*  Then get the pointer to the service that is called              */
+    
+    slwi r0,r0,2                              /* compute the offset     */
+    lis  r11,TPL_HIG(tpl_dispatch_table)      /* load the ptr to the    */
+    ori  r11,r11,TPL_LOW(tpl_dispatch_table)  /* dispatch table         */
+    lwzx r11,r11,r0                     /* get the ptr to the service   */
+    mtlr r11
+    
+    /*  Reset the tpl_need_switch variable to NO_NEED_SWITCH before
+        calling the service. This is needed because, beside
+        tpl_schedule, no service modify this variable. So an old value
+        is retained                                                     */
+    lis  r11,TPL_HIG(tpl_need_switch)
+    ori  r11,r11,TPL_LOW(tpl_need_switch)
+    stw  r11,KS_NSW_PTR(r1)   /*  the pointer to this variable is saved
+                                  in the kernel stack for future use    */
+    li   r0,NO_NEED_SWITCH
+    stb  r0,0(r11)
+    
+    /*  Call the service                                                */
+    
+    blrl
+    
+    /*  Check the tpl_need_switch variable
+        to see if a switch should occur                                 */
+    
+    lwz   r11,KS_NSW_PTR(r1)
+    lbz   r11,0(r11)
+    andi. r0,r11,NEED_SWITCH
+    beq   no_context_switch
+    
+    /* r3 will be destroyed by the call to tpl_save_context
+       It is save in the ad hoc area since it is the return code
+       of the service                                                   */
+       
+    stw   r3,KS_RETURN_CODE(r1)
+    
+    /* save the pointer to stat_proc_table in the kernel stack
+       for future use                                                   */
+    lis   r3,TPL_HIG(tpl_stat_proc_table)
+    ori   r3,r3,TPL_LOW(tpl_stat_proc_table)
+    stw   r3,KS_SPT_PTR(r1)
+    
+    /* Check if context of the task/isr that just lost the CPU needs
+       to be saved. This occurs on a TerminateTask or ChainTask         */
+    
+    andi. r0,r11,NEED_SAVE
+    beq   no_save
+    
+    /* get the context pointer of the task that just lost the CPU       */
+    
+    lwz   r0,KS_RUNNING_ID(r1)          /* get the task id              */
+    slwi  r0,r0,2                       /* compute the offset           */
+    lwzx  r3,r3,r0                      /* get the context pointer      */
+    
+    bl    tpl_save_context
+    
+    /* get the context pointer of the task that just got the CPU        */
 
-        /*  The second thing is to switch to kernel mem protection scheme   */
-        
-        mflr r12                            /* save lr to call tpl_unset_mp */
-        bl   tpl_kernel_mp                  /* disable memory protection    */
-        
-        /*  The third thing is to switch to the kernel stack               */
-        
-        lis  r11,hi16(tpl_kernel_stack)     /* get the system stack ptr     */
-        ori  r11,r11,lo16(tpl_kernel_stack)
-        addi r11,r11,kernel_stack_size-24   /* point to the bottom          */
-        stw  r1,12(r11)                     /* save the sp of the caller    */
-        mr   r1,r11                         /* set the kernel stack         */
-        stw  r12,8(r1)                      /* save the LR                  */
-        
-        /*  Save the id of the caller in the system stack. This has to be
-            done because if the service does a reschedule, it will be
-            changed and we need it to do the context switch                 */
-
-        lis  r11,hi16(tpl_running_id)       /* get the address of the       */
-        ori  r11,r11,lo16(tpl_running_id)   /* tpl_running_id variable      */
-        lwz  r11,0(r11)                     /* get tpl_running_id           */
-        stw  r11,16(r1)                     /* save it in the system task   */
-        
-        /*  The kernel stack is like that:
-        
-            |                            |
-            +----------------------------+
-    SP->    |        linkage area        |  The linkage area is a zone
-            +----------------------------+  reserved for the callee when
-         +4 |        linkage area        |  calling a C function
-            +----------------------------+
-         +8 |      LR of the caller      |
-            +----------------------------+
-        +12 |      SP of the caller      |
-            +----------------------------+
-        +16 |    calling task/ISR id     |
-            +----------------------------+
-        +20 | return code of the service |
-            +----------------------------+
-        */
-
-        /*  Then get the pointer to the service that is called              */
-        
-        slwi r0,r0,2                        /* change the id to an offset   */
-        lis  r11,hi16(tpl_dispatch_table)   /* load the ptr to the          */
-        ori  r11,r11,lo16(tpl_dispatch_table)   /* dispatch table           */
-        lwz  r11,0(r11)                     /* get the ptr to the service   */
-        lwzx r11,r11,r0
-        
-        /*  Call the service                                                */
-        
-        mtlr r11
-        blrl
-        
-        /*  Check the return code (in r3) to see if a switch occured        */
-        
-        andi. r11,r3,NEED_CONTEXT_SWITCH
-        bne   no_context_switch
-
-        /* r3 will be destroyed by the call to tpl_sc_context_switch
-           It is save in the ad hoc area                                    */
-           
-        stw   r3,20(r1)
-
-        /* get the context pointer of the task that just lost the CPU       */
-        
-        lwz   r11,16(r1)                    /* get the task descriptor      */
-        lwz   r3,0(r11)                     /* get the context pointer      */
-        
-        /* get the context pointer of the task that just got the CPU        */
-        
-        lis   r11,hi16(tpl_running_obj)     /* get the task descriptor      */
-        ori   r11,r11,lo16(tpl_running_obj)
-        lwz   r4,0(r11)                     /* get the context pointer      */
-        
-        bl    tpl_sc_switch_context
-        
-        /*  r3 is restored (ie get back the return code                     */
-        
-        lwz   r3,20(r1)
-        
-        /*  set up the memory protection for the process that just
-            got the CPU                                                     */
-        lis   r11,hi16(tpl_running_obj)     /* get the task descriptor      */
-        ori   r11,r11,lo16(tpl_running_obj)
-        lwz   r11,ID(r11)                   /* 
-        
+no_save:
+ 
+    lis   r3,TPL_HIG(tpl_running_id)    /* get the task/isr id          */
+    ori   r3,r3,TPL_LOW(tpl_running_id)
+    lwz   r0,0(r3)
+    slwi  r0,r0,2                       /* compute the offset           */
+    lwz   r3,KS_SPT_PTR(r1)
+    lwzx  r3,r3,r0                      /* get the context pointer      */
+    
+    bl    tpl_load_context
+    
+    /*  r3 is restored (ie get back the return code                     */
+    
+    lwz   r3,KS_RETURN_CODE(r1)
+    
+    /*  set up the memory protection for the process that just
+        got the CPU                                                     */
+//        lis   r11,TPL_HIG(tpl_running_id)   /* get the task descriptor      */
+//        ori   r11,r11,TPL_LOW(tpl_running_id)
+    
 no_context_switch:
-        
-        /*  Restore the execution context of the caller
-            (or the context of the task/isr which just got the CPU)         */
-            
-        lwz   r12,8(r1)                     /* Get the LR                   */
-        lwz   r1,12(r1)                     /* Restore the SP               */
-        
-        /*  Enable the memory protection                                    */
-        bl    tpl_user_mp
-        
-        /*  restore the LR before returning                                 */
-        mtlr  r12
+    
+    /*  Restore the execution context of the caller
+        (or the context of the task/isr which just got the CPU)         */
 
-ISID:   rfi                                 /* return from interrupt        */
+    lwz   r11,KS_CR(r1)                 /* Get the CR                   */
+    mtcr  r11
+    lwz   r12,KS_LR(r1)                 /* Get the LR                   */
+    lwz   r1,KS_SP(r1)                  /* Restore the SP               */
+    
+    /*  Enable the memory protection                                    */
+//        bl    tpl_user_mp
+    
+    /*  restore the LR before returning                                 */
+    mtlr  r12
+
+ISID:
+    rfi                                 /* return from interrupt        */
+
+  .type tpl_sc_handler,@function
+  .size tpl_sc_handler,$-tpl_sc_handler

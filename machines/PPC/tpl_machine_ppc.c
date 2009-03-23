@@ -29,16 +29,16 @@
 #include "tpl_os_it.h"
 #include "tpl_os_it_kernel.h"
 
-#include <MPC565.h>
+#include "MPC551x.h"
+/*#include <MPC565.h> */
 
 /*#include "tpl_os_generated_configuration.h"*/
 
-extern tpl_exec_common *tpl_running_obj;
-ppc_integer_context idle_task_context;
+extern int tpl_running_id;
+extern CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)
+tpl_stat_proc_table[TASK_COUNT+ISR_COUNT+1];
 
-static u32 tpl_msr_start_value;
-static u32 tpl_register_r2;
-static u32 tpl_register_r13;
+ppc_integer_context idle_task_context;
 
 #define EE_BIT      0x8000
 
@@ -927,39 +927,6 @@ no_new:
 }
 
 /*
- * tpl_init_context initialize a context to prepare a task to run.
- * It sets up the stack and srr0 and init the other registers to 0
- */
-void tpl_init_context(tpl_exec_common *exec_obj)
-{
-	int i;
-	ppc_integer_context *ic = exec_obj->static_desc->context.ic;
-	
-	for (i = 0; i < 32; i++ ) {
-        ic->gpr[i] = 0;
-	}
-	
-	ic->cr = 0;
-	ic->xer = 0;
-	ic->ctr = 0;
-	
-	/* address of the instruction to excute when returning
-	   from the system call. So it is set to the entry point of the task
-	*/
-	ic->srr0 = (unsigned long)exec_obj->static_desc->entry;
-	ic->srr1 = tpl_msr_start_value;
-	/*  The stack pointer is computed by adding the base address of
-	    the stack to its size and by substracting the space needed
-	    for the linkage area and 12 bytes that are pushed by the 
-	    context switch function */
-	ic->gpr[1] = ((unsigned long)exec_obj->static_desc->stack.stack_zone)
-	               + exec_obj->static_desc->stack.stack_size
-	               - 20;
-    ic->gpr[2] = tpl_register_r2;
-    ic->gpr[13] = tpl_register_r13;
-}
-
-/*
  */
 asm void tpl_init_machine(void)
 {
@@ -978,10 +945,11 @@ asm void tpl_init_machine(void)
 			blr
 }
 
-void tpl_ack_timer(void)
+/*void tpl_ack_timer(void)
 {
 	if(USIU.PISCR.B.PS) // Interruption de Timer
 	{
 		USIU.PISCR.B.PS = 1;
 	}
 }
+*/

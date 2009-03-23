@@ -110,7 +110,7 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
   
   STORE_SERVICE(OSServiceId_ClearEvent)
   STORE_EVENT_MASK(event)
-  
+
   /*  ClearEvent cannot be called from ISR level  */
   CHECK_TASK_CALL_LEVEL_ERROR(result)
   /*  checks the calling task is an extended one  */
@@ -121,7 +121,7 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
     tpl_task_events_table[tpl_running_id]->evt_set &= (tpl_event_mask)(~event);
   IF_NO_EXTENDED_ERROR_END()
 #endif
-    
+
   PROCESS_ERROR(result)
   
   UNLOCK_KERNEL()
@@ -216,7 +216,7 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   }
   IF_NO_EXTENDED_ERROR_END()
 #endif
-    
+
   PROCESS_ERROR(result)
   
   UNLOCK_KERNEL()
