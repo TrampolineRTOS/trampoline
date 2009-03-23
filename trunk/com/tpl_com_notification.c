@@ -62,17 +62,28 @@ void tpl_notify_receiving_mos(tpl_status result, u8 from)
         rmo = rmo->next_mo;
     }*/
 	
-    if ((result & NEED_RESCHEDULING) != 0) {
+    if ((result & NEED_RESCHEDULING) != 0)
+    {
       old_running_id = tpl_running_id;
-        result |= tpl_schedule(from);
+      tpl_schedule_from_running();
 #ifndef WITH_SYSTEM_CALL
-		if (tpl_need_switch != NO_NEED_SWITCH)
-		{
-			tpl_switch_context(
-			&(tpl_stat_proc_table[old_running_id]->context),
-			&(tpl_stat_proc_table[tpl_running_id]->context)
-			);
-		}
+      if (tpl_need_switch != NO_NEED_SWITCH)
+      {
+        if (from == FROM_IT_LEVEL)
+        {
+          tpl_switch_context_from_it(
+            &(tpl_stat_proc_table[old_running_id]->context),
+            &(tpl_stat_proc_table[tpl_running_id]->context)
+          );
+        }
+        else
+        {
+          tpl_switch_context(
+            &(tpl_stat_proc_table[old_running_id]->context),
+            &(tpl_stat_proc_table[tpl_running_id]->context)
+          );
+        }
+      }
 #endif
     }
   
