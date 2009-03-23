@@ -29,11 +29,6 @@
 #include "tpl_os_task_kernel.h"
 #include "tpl_os_definitions.h"
 
-#ifdef WITH_SYSTEM_CALL
-#include "tpl_os_service_ids.h"
-#include "tpl_dispatch.h"
-#endif
-
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -42,68 +37,44 @@
  *
  * see header file documentation or refer to the OSEK/VDX 2.2.2 specification
  */
-ASM FUNC(StatusType, OS_CODE) ActivateTask(
-    CONST(TaskType, AUTOMATIC) task_id)
+FUNC(StatusType, OS_CODE) ActivateTask(
+  CONST(TaskType, AUTOMATIC) task_id)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_ActivateTask)
-#else
-    return OSEK_STATUS_MASK & tpl_activate_task_service(task_id);
-#endif
+  return OSEK_STATUS_MASK & tpl_activate_task_service(task_id);
 }
 
 
-ASM FUNC(StatusType, OS_CODE) TerminateTask(void)
+FUNC(StatusType, OS_CODE) TerminateTask(void)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_TerminateTask)
-#else
-    return OSEK_STATUS_MASK & tpl_terminate_task_service();
-#endif
+  return OSEK_STATUS_MASK & tpl_terminate_task_service();
 }
 
 
-ASM FUNC(StatusType, OS_CODE) ChainTask(
-    CONST(TaskType, AUTOMATIC) task_id)
+FUNC(StatusType, OS_CODE) ChainTask(
+  CONST(TaskType, AUTOMATIC) task_id)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_ChainTask)
-#else
-    return OSEK_STATUS_MASK & tpl_chain_task_service(task_id);
-#endif
+  return OSEK_STATUS_MASK & tpl_chain_task_service(task_id);
 }
 
 
-ASM FUNC(StatusType, OS_CODE) Schedule(void)
+FUNC(StatusType, OS_CODE) Schedule(void)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_Schedule)
-#else
-    return OSEK_STATUS_MASK & tpl_schedule_service();
-#endif
+  return OSEK_STATUS_MASK & tpl_schedule_service();
 }
 
 
-ASM FUNC(StatusType, OS_CODE) GetTaskID(
-    VAR(TaskRefType, AUTOMATIC) task_id)
+FUNC(StatusType, OS_CODE) GetTaskID(
+  VAR(TaskRefType, AUTOMATIC) task_id)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_GetTaskID)
-#else
-    return tpl_get_task_id_service(task_id);
-#endif
+  return tpl_get_task_id_service(task_id);
 }
 
 
-ASM FUNC(StatusType, OS_CODE) GetTaskState(
-    CONST(TaskType, AUTOMATIC)        task_id,
-    VAR(TaskStateRefType, AUTOMATIC)  state)
+FUNC(StatusType, OS_CODE) GetTaskState(
+  CONST(TaskType, AUTOMATIC)        task_id,
+  VAR(TaskStateRefType, AUTOMATIC)  state)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_GetTaskState)
-#else
-    return tpl_get_task_state_service(task_id, state);
-#endif
+  return tpl_get_task_state_service(task_id, state);
 }
 
 #define OS_STOP_SEC_CODE

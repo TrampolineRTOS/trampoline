@@ -50,41 +50,46 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-ASM FUNC(AppModeType, OS_CODE) GetActiveApplicationMode(void)
-{
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_GetActiveApplicationMode)
-#else
-    return tpl_get_active_application_mode_service();
-#endif
-}
+#ifndef WITH_SYSTEM_CALL
 
 /*
- * StartOS can be called by the app to start the OS in
- * an appropriate mode.
+ * GetActiveApplicationMode return the active application mode
  */
-ASM FUNC(void, OS_CODE) StartOS(
-    CONST(AppModeType, AUTOMATIC) mode)
+FUNC(AppModeType, OS_CODE) GetActiveApplicationMode(void)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_StartOS)
-#else
-    tpl_start_os_service(mode);
-#endif
+  return tpl_get_active_application_mode_service();
 }
 
 /*
  * ShutdownOS can be called by the app to shutdown it
  */
-ASM FUNC(void, OS_CODE) ShutdownOS(
-    CONST(StatusType, AUTOMATIC) error  /*@unused@*/
-)
+FUNC(void, OS_CODE) ShutdownOS(
+  CONST(StatusType, AUTOMATIC) error  /*@unused@*/)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_ShutdownOS)
-#else
-    tpl_shutdown_os_service(error);
+  tpl_shutdown_os_service(error);
+}
+
 #endif
+
+/*
+ * StartOS can be called by the app to start the OS in
+ * an appropriate mode.
+ */
+FUNC(void, OS_CODE) StartOS(
+  CONST(AppModeType, AUTOMATIC) mode)
+{
+  /*  Initialize the hardware to allow the OS to run  */
+  tpl_init_machine();
+
+  /*  Call the service                                */
+#ifdef WITH_SYSTEM_CALL
+  tpl_start_os(mode);
+#else
+  tpl_start_os_service();
+#endif
+  
+  /*  Fall back to the idle loop                      */
+  tpl_sleep();
 }
 
 #define OS_STOP_SEC_CODE

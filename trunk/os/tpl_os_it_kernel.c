@@ -42,6 +42,124 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
+STATIC VAR(u16, OS_VAR) tpl_locking_depth = 0;
+
+/**
+ * TODO: document this
+ */
+FUNC(void, OS_CODE) tpl_suspend_all_interrupts_service(void)
+{
+  tpl_disable_interrupts();
+  
+  tpl_locking_depth++;
+
+#ifdef WITH_AUTOSAR
+  tpl_cpt_user_task_lock++;
+#endif
+
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+  if( tpl_locking_depth == 1)
+  {
+    tpl_start_all_isr_lock_monitor(tpl_running_id);
+  }
+#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
+}
+
+/**
+ * TODO: document this
+ */
+FUNC(void, OS_CODE) tpl_resume_all_interrupts_service(void)
+{
+  if (tpl_locking_depth > 0)
+  {
+    tpl_locking_depth--;
+#ifdef WITH_AUTOSAR
+    tpl_cpt_user_task_lock--;
+#endif
+  }
+  if( tpl_locking_depth == 0)
+  {
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    tpl_stop_all_isr_lock_monitor(tpl_running_id);
+#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
+    tpl_enable_interrupts();
+  }
+}
+
+/**
+ * TODO: document this
+ */
+FUNC(void, OS_CODE) tpl_disable_all_interrupts_service(void)
+{
+  tpl_disable_interrupts();
+
+#ifdef WITH_AUTOSAR
+  tpl_user_task_lock = TRUE;
+#endif
+
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+  tpl_start_all_isr_lock_monitor(tpl_running_obj);
+#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
+}
+
+/**
+ * TODO: document this
+ */
+FUNC(void, OS_CODE) tpl_enable_all_interrupts_service(void)
+{
+#ifdef WITH_AUTOSAR
+  tpl_user_task_lock = FALSE;
+#endif
+
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+  tpl_stop_all_isr_lock_monitor(tpl_running_obj);
+#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
+
+  tpl_enable_interrupts();
+}
+
+/**
+ * TODO: document this
+ */
+FUNC(void, OS_CODE) tpl_suspend_os_interrupts_service(void)
+{
+  tpl_disable_interrupts();
+  
+  tpl_locking_depth++;
+
+#ifdef WITH_AUTOSAR
+  tpl_cpt_user_task_lock++;
+#endif
+
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+  if( tpl_locking_depth == 1)
+  {
+    tpl_start_all_isr_lock_monitor(tpl_running_id);
+  }
+#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
+}
+
+/**
+ * TODO: document this
+ */
+FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void)
+{
+  if (tpl_locking_depth > 0)
+  {
+    tpl_locking_depth--;
+#ifdef WITH_AUTOSAR
+    tpl_cpt_user_task_lock--;
+#endif
+  }
+  if( tpl_locking_depth == 0)
+  {
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    tpl_stop_all_isr_lock_monitor(tpl_running_id);
+#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
+    tpl_enable_interrupts();
+  }
+}
+
 /*
  * tpl_terminate_isr2_service
  *

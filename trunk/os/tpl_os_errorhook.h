@@ -46,8 +46,13 @@
 FUNC(void, OS_CODE) tpl_call_error_hook(
     CONST(tpl_status, AUTOMATIC) error);
 
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
 #ifdef WITH_ERROR_HOOK
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 /*
  * The function corresponding to this prototype should be provided
  * by the application

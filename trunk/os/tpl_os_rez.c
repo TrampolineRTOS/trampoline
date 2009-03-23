@@ -35,46 +35,22 @@
 #include "tpl_as_isr.h"
 #endif
 
-#define OS_START_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
-
-/**
- * This special resource is used to deny preemption.
- *
- * @note    It can be used by a task but is not stored
- *          in the general resource table.
- *
- * see paragraph 13.4.4 page 59 of OSEK/VDX 2.2.2 spec
- */
-CONST(ResourceType, OS_CONST) RES_SCHEDULER = RESOURCE_COUNT - 1;
-
-#define OS_STOP_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
- 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
 /*
  * OSEK/VDX API services
  */
-ASM FUNC(StatusType, OS_CODE) GetResource(
-    CONST(ResourceType, AUTOMATIC) res_id)
+FUNC(StatusType, OS_CODE) GetResource(
+  CONST(ResourceType, AUTOMATIC) res_id)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_GetResource)
-#else
-    return tpl_get_resource_service(res_id);
-#endif
+  return tpl_get_resource_service(res_id);
 }
 
-ASM FUNC(StatusType, OS_CODE) ReleaseResource(
-    CONST(ResourceType, AUTOMATIC) res_id)
+FUNC(StatusType, OS_CODE) ReleaseResource(
+  CONST(ResourceType, AUTOMATIC) res_id)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_ReleaseResource)
-#else
-    return OSEK_STATUS_MASK & tpl_release_resource_service(res_id);
-#endif
+  return OSEK_STATUS_MASK & tpl_release_resource_service(res_id);
 }
 
 #define OS_STOP_SEC_CODE

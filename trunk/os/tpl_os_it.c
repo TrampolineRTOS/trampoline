@@ -27,11 +27,6 @@
 #include "tpl_os_it.h"
 #include "tpl_os_it_kernel.h"
 
-#ifdef WITH_SYSTEM_CALL
-#include "tpl_os_service_ids.h"
-#include "tpl_dispatch.h"
-#endif
-
 #ifdef WITH_AUTOSAR
 #include "tpl_as_isr.h"
 #endif
@@ -45,13 +40,9 @@
  * While this function is not part of the OSEK API, it is used
  * to terminate an ISR2 routine
  */
-ASM FUNC(StatusType, OS_CODE) TerminateISR2(void)
+FUNC(StatusType, OS_CODE) TerminateISR2(void)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_TerminateISR)
-#else
-    return tpl_terminate_isr2_service();
-#endif
+  return tpl_terminate_isr2_service();
 }
 
 /*
@@ -61,13 +52,9 @@ ASM FUNC(StatusType, OS_CODE) TerminateISR2(void)
  *
  * @see #DisableAllInterrupts
  */
-ASM FUNC(void, OS_CODE) EnableAllInterrupts(void)
+FUNC(void, OS_CODE) EnableAllInterrupts(void)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_EnableAllInterrupts)
-#else
-    tpl_enable_all_interrupts_service();
-#endif
+  tpl_enable_all_interrupts_service();
 }
 
 
@@ -78,13 +65,9 @@ ASM FUNC(void, OS_CODE) EnableAllInterrupts(void)
  *
  * @see #EnableAllInterrupts
  */
-ASM FUNC(void, OS_CODE) DisableAllInterrupts(void)
+FUNC(void, OS_CODE) DisableAllInterrupts(void)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_DisableAllInterrupts)
-#else
-    tpl_disable_all_interrupts_service();
-#endif
+  tpl_disable_all_interrupts_service();
 }
 
 
@@ -95,13 +78,9 @@ ASM FUNC(void, OS_CODE) DisableAllInterrupts(void)
  *
  * @see #SuspendAllInterrupts
  */
-ASM FUNC(void, OS_CODE) ResumeAllInterrupts(void)
+FUNC(void, OS_CODE) ResumeAllInterrupts(void)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_ResumeAllInterrupts)
-#else
-    tpl_resume_all_interrupts_service();
-#endif
+   tpl_resume_all_interrupts_service();
 }
 
 
@@ -112,13 +91,9 @@ ASM FUNC(void, OS_CODE) ResumeAllInterrupts(void)
  *
  * @see #ResumeAllInterrupts
  */
-ASM FUNC(void, OS_CODE) SuspendAllInterrupts(void)
+FUNC(void, OS_CODE) SuspendAllInterrupts(void)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_SuspendAllInterrupts)
-#else
-    tpl_suspend_all_interrupts_service();
-#endif
+  tpl_suspend_all_interrupts_service();
 }
 
 
@@ -129,13 +104,9 @@ ASM FUNC(void, OS_CODE) SuspendAllInterrupts(void)
  *
  * @see #SuspendOSInterrupts
  */
-ASM FUNC(void, OS_CODE) ResumeOSInterrupts(void)
+FUNC(void, OS_CODE) ResumeOSInterrupts(void)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_ResumeOSInterrupts)
-#else
-    tpl_resume_os_interrupts_service();
-#endif
+  tpl_resume_os_interrupts_service();
 }
 
 
@@ -146,13 +117,9 @@ ASM FUNC(void, OS_CODE) ResumeOSInterrupts(void)
  *
  * @see #ResumeOSInterrupts
  */
-ASM FUNC(void, OS_CODE) SuspendOSInterrupts(void)
+FUNC(void, OS_CODE) SuspendOSInterrupts(void)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_SuspendOSInterrupts)
-#else
-    tpl_suspend_os_interrupts_service();
-#endif
+   tpl_suspend_os_interrupts_service();
 }
 
 #define OS_STOP_SEC_CODE
