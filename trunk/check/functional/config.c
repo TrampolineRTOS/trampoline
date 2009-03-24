@@ -7,11 +7,17 @@
  *
  */
 
-
-//librariy for kill :
 #include <signal.h>
-//library for getpid :
 #include <unistd.h>
+
+#include "embUnit.h"
+#include "tpl_os.h"
+
+#include "config.h"
+
+//#include "config_tests.h"
+
+unsigned char test_number;
 
 void tpl_send_it1(void){
 	int ipid;
@@ -25,11 +31,30 @@ void tpl_send_it2(void){
 	kill(ipid,SIGUSR2);
 }
 
+void tpl_send_it3(void){
+	int ipid;
+	ipid = getpid();
+	kill(ipid,SIGINT);
+}
 
-#include "embUnit.h"
-#include "tpl_os.h"
-//Display information in the right way (printf on UNIX...)
-#include "config.h"
+void signaux_pendants(void)
+{
+	sigset_t  sig_set; /* liste des signaux bloqués */
+	
+	int pi = getpid ();
+	char string [256];
+	stdimpl_print("The pid is %d - ",pi);
+	
+	sigpending(&sig_set);
+	
+	stdimpl_print("Les signaux pendants sont %d ",sig_set);
+	
+	if (sigismember ( &sig_set,SIGUSR1) ) 
+		stdimpl_print("SIGUSR1 pendant \n");
+	
+	if (sigismember ( &sig_set,SIGUSR2) ) 
+		stdimpl_print("SIGUSR2 pendant \n");
+}
 
 void WaitActivationPeriodicAlarm(AlarmType Alarm){
 	
@@ -59,27 +84,11 @@ void WaitActivationOneShotAlarm(AlarmType Alarm){
 	
 }
 
-/* It's maybe more usefull if we need just to call a fonction not matter if the alarm is a
- periodic or a one shot alarm.
- 
-void WaitActivationAlarm(AlarmType Alarm){
-	
-	AlarmBaseType alarmBase;
-	int result_inst_ = GetAlarmBase(Alarm, &alarmBase);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_);
-	
-	stdimpl_print("maxallowedvalue : %d\n",alarmBase.maxallowedvalue);
-	stdimpl_print("ticksperbase : %d\n",alarmBase.ticksperbase);
-	stdimpl_print("mincycle : %d\n",alarmBase.mincycle);
-	
-	stdimpl_print("maxallowedvalue OS : %d\n",OSMAXALLOWEDVALUE_Counter1);
-	stdimpl_print("ticksperbase OS : %d\n",OSTICKSPERBASE_Counter1);
-	stdimpl_print("mincycle OS : %d\n",OSMINCYCLE_Counter1);
-	
-	if(alarmBase.mincycle == 0){
-		WaitActivationOneShotAlarm(Alarm);
-	}
-	else{
-		WaitActivationPeriodicAlarm(Alarm);
-	}
-}*/
+void StartTests(void)
+{
+	//extern unsigned char test_number;
+	test_number = 0;
+	TestRunner_start();	
+}
+
+

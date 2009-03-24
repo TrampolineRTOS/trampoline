@@ -1,4 +1,4 @@
-OIL_VERSION = "2.5" : "hook_s4" ;
+OIL_VERSION = "2.5" : "hook_s6" ;
 
 IMPLEMENTATION trampoline {
 	
@@ -13,26 +13,21 @@ IMPLEMENTATION trampoline {
     OS config {
         STATUS = EXTENDED;
 		APP_SRC = "../config.c";
-		APP_SRC = "hook_s4.c";
+		APP_SRC = "hook_s6.c";
 		APP_SRC = "task1_instance.c";
-		APP_SRC = "task2_instance.c";
 		APP_SRC = "isr1_instance.c";
 		APP_SRC = "isr2_instance.c";
-		APP_SRC = "posttask_instance3.c";
-		APP_SRC = "posttask_instance6.c";
-		APP_SRC = "pretask_instance2.c";
-		APP_SRC = "pretask_instance3.c";
-		APP_SRC = "pretask_instance6.c";
-		APP_SRC = "pretask_instance7.c";
+		APP_SRC = "error_instance.c";
+		APP_SRC = "posttask_instance4.c";
         TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "hook_s4_non";
+        APP_NAME = "hook_s6_non";
 		CFLAGS = "-I../embUnit";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
 		STARTUPHOOK = TRUE;
-		ERRORHOOK = FALSE;
+		ERRORHOOK = TRUE;
 		POSTTASKHOOK = TRUE;
-		PRETASKHOOK = TRUE;
+		PRETASKHOOK = FALSE;
     } ;
 
     APPMODE std {};
@@ -40,13 +35,6 @@ IMPLEMENTATION trampoline {
     TASK t1 {
         AUTOSTART = TRUE { APPMODE = std ; } ;
         PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-    };
-	
-	TASK t2 {
-        AUTOSTART = FALSE ;
-        PRIORITY = 2;
         ACTIVATION = 1;
         SCHEDULE = NON;
     };

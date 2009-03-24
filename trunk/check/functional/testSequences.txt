@@ -70,6 +70,8 @@ hook_s3_full
 hook_s3_non
 hook_s4_full
 hook_s4_non
+hook_s5_non
+hook_s6_non
 
 com_internal_s1
 com_internal_s2

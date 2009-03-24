@@ -24,8 +24,8 @@ then
 		rm -rf ./${i}/Make-rules
 		rm -rf ./${i}/Makefile
 		rm -rf ./${i}/${i}
-		> results.log
 	done
+	rm -rf results.log
 else
 
 	echo "Begin internal functionnal test procedure..."
