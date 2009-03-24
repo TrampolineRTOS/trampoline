@@ -18,12 +18,12 @@ static void test_posttask_instance5(void)
 }
 
 /*create the test suite with all the test cases*/
-TestRef HookTest_seq4_posttask_instance5(void)
+TestRef HookTest_seq5_posttask_instance5(void)
 {
 	EMB_UNIT_TESTFIXTURES(fixtures) {
 		new_TestFixture("test_posttask_instance5",test_posttask_instance5)
 	};
-	EMB_UNIT_TESTCALLER(HookTest,"HookTest_sequence4",NULL,NULL,fixtures);
+	EMB_UNIT_TESTCALLER(HookTest,"HookTest_sequence5",NULL,NULL,fixtures);
 
 	return (TestRef)&HookTest;
 }

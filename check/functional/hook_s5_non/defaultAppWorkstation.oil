@@ -1,4 +1,4 @@
-OIL_VERSION = "2.5" : "hook_s4" ;
+OIL_VERSION = "2.5" : "hook_s5" ;
 
 IMPLEMENTATION trampoline {
 	
@@ -13,19 +13,16 @@ IMPLEMENTATION trampoline {
     OS config {
         STATUS = EXTENDED;
 		APP_SRC = "../config.c";
-		APP_SRC = "hook_s4.c";
+		APP_SRC = "hook_s5.c";
 		APP_SRC = "task1_instance.c";
 		APP_SRC = "task2_instance.c";
 		APP_SRC = "isr1_instance.c";
-		APP_SRC = "isr2_instance.c";
-		APP_SRC = "posttask_instance3.c";
-		APP_SRC = "posttask_instance6.c";
-		APP_SRC = "pretask_instance2.c";
-		APP_SRC = "pretask_instance3.c";
-		APP_SRC = "pretask_instance6.c";
-		APP_SRC = "pretask_instance7.c";
+		APP_SRC = "pretask_instance8.c";
+		APP_SRC = "pretask_instance11.c";
+		APP_SRC = "posttask_instance2.c";
+		APP_SRC = "posttask_instance5.c";
         TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "hook_s4_non";
+        APP_NAME = "hook_s5_non";
 		CFLAGS = "-I../embUnit";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
@@ -57,14 +54,20 @@ IMPLEMENTATION trampoline {
 		PRIORITY = 1;
 		SOURCE = SIGINT;
 	};
-
-	ISR isr2{
-		CATEGORY = 2;
-		STACKSIZE = 32000;
-		PRIORITY = 2;
-		SOURCE = SIGUSR2;
+	
+	COUNTER Counter1{
+		MAXALLOWEDVALUE = 16;
+		TICKSPERBASE = 100;
+		MINCYCLE = 1;
 	};
 	
+	ALARM Alarm1{
+		COUNTER = Counter1;
+		ACTION = ACTIVATETASK {
+			TASK = t2;
+		};
+		AUTOSTART = FALSE;
+	};
 
 };
 

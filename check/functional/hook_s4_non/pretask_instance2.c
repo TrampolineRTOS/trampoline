@@ -9,11 +9,10 @@ void tpl_send_it1(void);
 an activation of a isr*/
 static void test_pretask_instance2(void)
 {
-	tpl_send_it1();
+	tpl_send_it3();
 	SuspendAllInterrupts();
-	tpl_send_it1();
+	tpl_send_it3();
 	ResumeAllInterrupts();
-	
 }
 
 /*create the test suite with all the test cases*/

@@ -6,9 +6,12 @@ TestRef HookTest_seq4_t1_instance(void);
 TestRef HookTest_seq4_t2_instance(void);
 TestRef HookTest_seq4_isr1_instance(void);
 TestRef HookTest_seq4_isr2_instance(void);
-TestRef HookTest_seq4_error_instance(void);
 TestRef HookTest_seq4_pretask_instance2(void);
-TestRef HookTest_seq4_posttask_instance5(void);
+TestRef HookTest_seq4_pretask_instance3(void);
+TestRef HookTest_seq4_pretask_instance6(void);
+TestRef HookTest_seq4_pretask_instance7(void);
+TestRef HookTest_seq4_posttask_instance3(void);
+TestRef HookTest_seq4_posttask_instance6(void);
 
 void tpl_send_it1(void);
 void tpl_send_it2(void);
@@ -32,13 +35,6 @@ void ShutdownHook(StatusType error)
 	TestRunner_end();
 }
 
-void ErrorHook(void)
-{
-	//stdimpl_print("ErrorHook\n");
-	TestRunner_runTest(HookTest_seq4_error_instance());
-	
-}
-
 void PreTaskHook(void)
 { 
 	pretask_instance++;
@@ -48,8 +44,15 @@ void PreTaskHook(void)
 			TestRunner_runTest(HookTest_seq4_pretask_instance2());
 			break;
 		}
+		case 3: {
+			TestRunner_runTest(HookTest_seq4_pretask_instance3());
+			break;
+		}
+		case 6: {
+			TestRunner_runTest(HookTest_seq4_pretask_instance6());
+			break;
+		}
 		default: {
-			
 			break;
 		}
 	}
@@ -59,10 +62,14 @@ void PreTaskHook(void)
 void PostTaskHook(void)
 { 
 	posttask_instance++;
-	//stdimpl_print("PostTask : case %d\n",pretask_instance);
+	//stdimpl_print("PostTask : case %d\n",posttask_instance);
 	switch (posttask_instance) {
-		case 5: {
-			TestRunner_runTest(HookTest_seq4_posttask_instance5());
+		case 3: {
+			TestRunner_runTest(HookTest_seq4_posttask_instance3());
+			break;
+		}
+		case 6: {
+			TestRunner_runTest(HookTest_seq4_posttask_instance6());
 			break;
 		}
 		default: {
@@ -74,25 +81,27 @@ void PostTaskHook(void)
 
 TASK(t1)
 {
+	//stdimpl_print("T1\n");
 	TestRunner_runTest(HookTest_seq4_t1_instance());
 }
 
 
 TASK(t2)
 {
+	//stdimpl_print("T2\n");
 	TestRunner_runTest(HookTest_seq4_t2_instance());
+	ShutdownOS(E_OK);
 }
 
 
 ISR(isr1)
 {
-	//stdimpl_print("ISR1 \n");
+	//stdimpl_print("ISR1\n");
 	TestRunner_runTest(HookTest_seq4_isr1_instance());
 }
 
 ISR(isr2)
 {
-	//stdimpl_print("ISR2 \n");
+	//stdimpl_print("ISR2\n");
 	TestRunner_runTest(HookTest_seq4_isr2_instance());
-	ShutdownOS(E_OK);
 }
