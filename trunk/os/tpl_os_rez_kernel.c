@@ -34,6 +34,22 @@
 #include "tpl_as_protec_hook.h"
 #endif
 
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+/**
+ * This special resource is used to deny preemption.
+ *
+ * @note    It can be used by a task but is not stored
+ *          in the general resource table.
+ *
+ * see paragraph 13.4.4 page 59 of OSEK/VDX 2.2.2 spec
+ */
+CONST(tpl_resource_id, OS_CONST) RES_SCHEDULER = RESOURCE_COUNT - 1;
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -222,7 +238,8 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
       res->owner = INVALID_TASK;
 
       old_running_id = tpl_running_id;
-      result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
+      
+      tpl_schedule_from_running();
 # ifdef WITH_AUTOSAR_TIMING_PROTECTION
       tpl_stop_resource_monitor(tpl_running_id, res_id);
 # endif /* WITH_AUTOSAR_TIMING_PROTECTION */

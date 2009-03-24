@@ -2,7 +2,7 @@
 #include "Memmap.h"
 
 FUNC(void, OS_CODE) Os_IncTime(void);
-FUNC(void, OS_CODE) tpl_schedule(int from);
+FUNC(void, OS_CODE) tpl_schedule_from_running(void);
 FUNC(tpl_status, OS_CODE) tpl_counter_tick(tpl_counter *counter);
 
 #define OS_STOP_SEC_CODE
@@ -22,7 +22,7 @@ $COUNTER_LIST$
   if (need_rescheduling == NEED_RESCHEDULING)
   {
     tpl_proc_id old_running_id = tpl_running_id;
-    tpl_status result = tpl_schedule(FROM_IT_LEVEL);
+    tpl_schedule_from_running();
     if (tpl_need_switch != NO_NEED_SWITCH) {
       tpl_switch_context_from_it(
         &(tpl_stat_proc_table[old_running_id]->context),

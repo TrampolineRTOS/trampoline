@@ -366,8 +366,7 @@ extern CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)
 /**
  * Kernel functions
  */
-FUNC(VAR(tpl_os_state, AUTOMATIC), OS_CODE) tpl_current_os_state(
-    void);
+FUNC(VAR(tpl_os_state, AUTOMATIC), OS_CODE) tpl_current_os_state(void);
 
 FUNC(tpl_application_mode, OS_CODE) tpl_get_active_application_mode_service(
     void);
@@ -378,17 +377,11 @@ FUNC(void, OS_CODE) tpl_start_os_service(
 FUNC(void, OS_CODE) tpl_shutdown_os_service(
     CONST(tpl_status, AUTOMATIC) error);
     
-FUNC(tpl_status, OS_CODE) tpl_schedule(
-    CONST(u8, AUTOMATIC) from);
+FUNC(void, OS_CODE) tpl_schedule_from_running(void);
 
-FUNC(tpl_status, OS_CODE) tpl_schedule_from_running(
-    CONST(u8, AUTOMATIC) from);
+FUNC(void, OS_CODE) tpl_schedule_from_dying(void);
 
-FUNC(tpl_status, OS_CODE) tpl_schedule_from_dying(void);
-
-FUNC(tpl_status, OS_CODE) tpl_schedule_from_idle(void);
-
-FUNC(tpl_status, OS_CODE) tpl_schedule_from_waiting(void);
+FUNC(void, OS_CODE) tpl_schedule_from_waiting(void);
 
 FUNC(void, OS_CODE) tpl_init_proc(
   CONST(tpl_proc_id, AUTOMATIC) proc_id);

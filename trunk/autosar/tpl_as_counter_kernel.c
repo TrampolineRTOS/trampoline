@@ -83,7 +83,7 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
 
     if (need_rescheduling == NEED_RESCHEDULING) {
       old_running_id = tpl_running_id;
-      result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
+      tpl_schedule_from_running();
     }
 
   IF_NO_EXTENDED_ERROR_END()

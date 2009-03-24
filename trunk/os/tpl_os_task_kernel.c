@@ -69,7 +69,7 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
     if (result == (tpl_status)E_OK_AND_SCHEDULE)
     {
       old_running_id = tpl_running_id;
-      result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
+      tpl_schedule_from_running();
 # ifndef WITH_SYSTEM_CALL
       if (tpl_need_switch != NO_NEED_SWITCH)
       {
@@ -119,7 +119,7 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
   
     /*  and let the scheduler do its job
      */
-    result |= tpl_schedule_from_dying();
+    tpl_schedule_from_dying();
 
 # ifndef WITH_SYSTEM_CALL
     if (tpl_need_switch != NO_NEED_SWITCH)
@@ -182,7 +182,7 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
     if (result == E_OK_AND_SCHEDULE)
     {
       /*  and let the scheduler do its job                            */
-      result |= tpl_schedule_from_dying();
+      tpl_schedule_from_dying();
 # ifndef WITH_SYSTEM_CALL
       if (tpl_need_switch != NO_NEED_SWITCH)
       {
@@ -236,7 +236,7 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
     tpl_release_internal_resource(tpl_running_id);
     /*  does the rescheduling           */
     old_running_id = tpl_running_id;
-    result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
+    tpl_schedule_from_running();
     /*  get the internal resource       */
     tpl_get_internal_resource(tpl_running_id);
 # ifndef WITH_SYSTEM_CALL

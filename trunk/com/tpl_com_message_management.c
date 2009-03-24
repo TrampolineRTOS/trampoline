@@ -22,15 +22,15 @@
 #include "tpl_com_app_def.h"
 #include "tpl_com_errorhook.h" //added by Florent 090304
 
-#ifdef COM_EXTENDED
+/*#ifdef COM_EXTENDED*/
 #include "tpl_com_internal_com.h"
-#endif
+/*#endif*/
 
 void tpl_get_task_lock(void);
 void tpl_release_task_lock(void);
 
-tpl_status tpl_send_zero_internal_message(void *smo,tpl_com_data  *data); //added by Florent 090303
-//or #include "tpl_com_internal_com.h" ?
+tpl_status tpl_send_zero_internal_message(void *smo,tpl_com_data  *data); /*added by Florent 090303*/
+/*or #include "tpl_com_internal_com.h" ?*/
 
 StatusType GetMessageStatus(MessageIdentifier mess_id)
 {

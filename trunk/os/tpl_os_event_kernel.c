@@ -71,7 +71,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   result = tpl_set_event(task_id, event);
   if (result == (tpl_status)E_OK_AND_SCHEDULE)
   {
-    result |= tpl_schedule_from_running(FROM_TASK_LEVEL);
+    tpl_schedule_from_running();
 # ifndef WITH_SYSTEM_CALL
     if (tpl_need_switch != NO_NEED_SWITCH)
     {
@@ -203,7 +203,7 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
     /*  save the current running process                    */
     old_running_id = tpl_running_id;
     /*  and a rescheduling occurs                           */
-    result |= tpl_schedule_from_waiting();
+    tpl_schedule_from_waiting();
 # ifndef WITH_SYSTEM_CALL
     if (tpl_need_switch != NO_NEED_SWITCH)
     {

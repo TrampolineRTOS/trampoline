@@ -1308,7 +1308,7 @@ routine generate_counters
             counter_table .= "    &".[counter_name string]."_counter_desc" ;
             counter_ids .= "#define ".[counter_name string]."_id ".[n string]."\n" ;
             counter_ids .= "CONST(CounterType, AUTOMATIC) ".[counter_name string]." = ".[counter_name string]."_id;" ;
-        between counter_table .= ",\n"; counter_ids := "\n" ;
+        between counter_table .= ",\n"; counter_ids .= "\n" ;
         after counter_table .= "\n};\n#endif\n";    
         end foreach ;
         counters_result .= counter_table ;
