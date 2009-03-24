@@ -43,6 +43,8 @@
 #include "tpl_memmap.h"
 
 STATIC VAR(u16, OS_VAR) tpl_locking_depth = 0;
+extern VAR(u32, OS_VAR) tpl_cpt_user_task_lock;
+extern VAR(tpl_bool, OS_VAR) tpl_user_task_lock;
 
 /**
  * TODO: document this
@@ -84,6 +86,7 @@ FUNC(void, OS_CODE) tpl_resume_all_interrupts_service(void)
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
     tpl_enable_interrupts();
   }
+  
 }
 
 /**
@@ -98,7 +101,7 @@ FUNC(void, OS_CODE) tpl_disable_all_interrupts_service(void)
 #endif
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-  tpl_start_all_isr_lock_monitor(tpl_running_obj);
+  tpl_start_all_isr_lock_monitor(tpl_running_id);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 
@@ -112,7 +115,7 @@ FUNC(void, OS_CODE) tpl_enable_all_interrupts_service(void)
 #endif
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-  tpl_stop_all_isr_lock_monitor(tpl_running_obj);
+  tpl_stop_all_isr_lock_monitor(tpl_running_id);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 
   tpl_enable_interrupts();
@@ -192,7 +195,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
   tpl_dyn_proc_table[tpl_running_id]->activate_count--;
     
   /*  and let the scheduler do its job                            */
-  result |= tpl_schedule_from_dying();
+  tpl_schedule_from_dying();
   
   IF_NO_EXTENDED_ERROR_END()
 #endif
@@ -266,7 +269,6 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
 {
   STATIC VAR(s32, AUTOMATIC) tpl_it_nesting =  0;
   P2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA) isr;
-  VAR(tpl_status, AUTOMATIC) result = E_OK;
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
     tpl_check_stack(tpl_running_id);
@@ -312,14 +314,7 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
     {
       tpl_proc_id old_running_id = tpl_running_id;
       
-      if(tpl_current_os_state() == OS_IDLE)
-      {
-        result |= tpl_schedule_from_idle();
-      }
-      else
-      {
-        result |= tpl_schedule(FROM_IT_LEVEL);
-      }
+      tpl_schedule_from_running();
       
 #ifndef WITH_SYSTEM_CALL
       if (tpl_need_switch != NO_NEED_SWITCH)

@@ -81,6 +81,20 @@ extern FUNC(void, OS_CODE) tpl_init_context(
 /**
  * @internal
  *
+ * tpl_disable_interrupts disable all interrupts
+ */
+extern FUNC(void, OS_CODE) tpl_disable_interrupts(void);
+
+/**
+ * @internal
+ *
+ * tpl_enable_interrupts disable all interrupts
+ */
+extern FUNC(void, OS_CODE) tpl_enable_interrupts(void);
+
+/**
+ * @internal
+ *
  * tpl_get_task_lock locks the kernel
  */
 extern FUNC(void, OS_CODE) tpl_get_task_lock(void);

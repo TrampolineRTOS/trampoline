@@ -40,8 +40,8 @@ coroutine_t idle_task_context = 0;
 volatile static u32 tpl_locking_depth = 0;
 
 #ifdef WITH_AUTOSAR
-STATIC VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;
-STATIC VAR(u32, OS_VAR) tpl_cpt_user_task_lock = 0;
+VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;
+VAR(u32, OS_VAR) tpl_cpt_user_task_lock = 0;
 STATIC VAR(u32, OS_VAR) tpl_cpt_os_task_lock = 0;
 #endif
 
@@ -179,7 +179,7 @@ static sigset_t tpl_saved_state;
  */
 void tpl_enable_interrupts(void)
 {
-    if (sigprocmask(SIG_SETMASK,&tpl_saved_state,NULL) == -1)
+    if (sigprocmask(SIG_UNBLOCK,&signal_set,NULL) == -1)
     {
         perror("tpl_enable_interrupts failed");
         exit(-1);
@@ -191,7 +191,7 @@ void tpl_enable_interrupts(void)
  */
 void tpl_disable_interrupts(void)
 {
-    if (sigprocmask(SIG_BLOCK,&signal_set,&tpl_saved_state) == -1)
+    if (sigprocmask(SIG_BLOCK,&signal_set,NULL) == -1)
     {
         perror("tpl_enable_interrupts failed");
         exit(-1);
@@ -212,17 +212,17 @@ void tpl_signal_handler(int sig)
   unsigned int id;
 #endif /* NO_ISR */
 	
-	//printf("tpl_signal_handler - tpl_locking_depth = %d\n",tpl_locking_depth);
+	/*printf("tpl_signal_handler - tpl_locking_depth = %d\n",tpl_locking_depth);*/
 	/* disable interrupts in PostTaskook and "PreTaskISR".
 	 * tpl_locking_depth is incremented becasuse otherwise, when ResumeAllInterrupts
 	 * is called in Post(Pre)-Task, interrupts are enabled whereas it shouldn't.
 	 */
 	tpl_locking_depth++; 
 	
-// What's that for ? two calls to tpl_call_counter_tick ifndef NO_ALARM. by Florent 090318
-//#ifndef NO_ALARM
-//    if (signal_for_counters == sig) tpl_call_counter_tick();
-//#endif /* NO_ALARM */
+/* What's that for ? two calls to tpl_call_counter_tick ifndef NO_ALARM. by Florent 090318
+#ifndef NO_ALARM
+    if (signal_for_counters == sig) tpl_call_counter_tick();
+#endif *//* NO_ALARM */
 #if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
 	if (signal_for_counters == sig) tpl_call_counter_tick();
 #endif /*(defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */
@@ -244,7 +244,7 @@ void tpl_signal_handler(int sig)
     {
         if (signal_for_isr_id[id] == sig)
         {
-			//printf("tpl_signal_handler - ISR2 - tpl_locking_depth = %d\n",tpl_locking_depth);
+			/*printf("tpl_signal_handler - ISR2 - tpl_locking_depth = %d\n",tpl_locking_depth);*/
 			tpl_central_interrupt_handler(id + TASK_COUNT);
         }
     }

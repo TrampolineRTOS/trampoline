@@ -56,6 +56,10 @@
  */
 #include "tpl_os_it.h"
 
+/*
+ * Inclusion of the header for service id and parameters access
+ */
+#include "tpl_os_error.h"
 
 #ifdef WITH_COM
 /*

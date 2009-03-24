@@ -272,7 +272,7 @@ rule "//" :
 	repeat #accept all except 0xA (LF) and 0xD (CR)
 	while '\x1'->'\x9' | '\xB'| '\xC'| '\xE' -> '\xFF' : 
 	end repeat ;
-    drop $comment$ ;
+   drop $comment$ ;
 end rule ;
 
 message unterminated_comment_error : "unterminated comment" ;

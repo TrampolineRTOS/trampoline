@@ -27,6 +27,7 @@
 
 #include "tpl_os.h"
 #include "tpl_os_kernel.h"
+#include "tpl_machine_interface.h"
 
 #ifdef WITH_SYSTEM_CALL
 #include "tpl_os_service_ids.h"
@@ -85,7 +86,7 @@ FUNC(void, OS_CODE) StartOS(
 #ifdef WITH_SYSTEM_CALL
   tpl_start_os(mode);
 #else
-  tpl_start_os_service();
+  tpl_start_os_service(mode);
 #endif
   
   /*  Fall back to the idle loop                      */
