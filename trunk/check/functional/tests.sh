@@ -28,7 +28,7 @@ then
 	rm -rf results.log
 else
 
-	echo "Begin internal functionnal test procedure..."
+	echo "Begin internal functional test procedure..."
 
 	## Create an empty file
 	> results.log

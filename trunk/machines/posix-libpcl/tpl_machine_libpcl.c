@@ -37,7 +37,7 @@
 coroutine_t idle_task_context = 0;
 
 
-volatile static u32 tpl_locking_depth = 0;
+extern volatile u32 tpl_locking_depth;
 
 #ifdef WITH_AUTOSAR
 VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;

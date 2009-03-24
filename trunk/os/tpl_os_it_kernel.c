@@ -42,7 +42,7 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-STATIC VAR(u16, OS_VAR) tpl_locking_depth = 0;
+volatile VAR(u16, OS_VAR) tpl_locking_depth = 0;
 extern VAR(u32, OS_VAR) tpl_cpt_user_task_lock;
 extern VAR(tpl_bool, OS_VAR) tpl_user_task_lock;
 
