@@ -1,6 +1,5 @@
 /*Instance of interruption isr1*/
 
-//#include "test_instances.h"
 #include "embUnit.h"
 #include "tpl_os.h"
 #include "tpl_os_kernel.h" /*for INVALID_TASK*/
@@ -17,22 +16,22 @@ DeclareTask(t5);
  an activation of a isr*/
 static void test_isr1_instance(void)
 {
-	int result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9, result_inst_10, result_inst_11, result_inst_12;
+	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9, result_inst_10, result_inst_11, result_inst_12;
+	EventMaskType result_inst_0;
 	
-	EventMaskType result_inst_;
-	result_inst_1 = GetEvent(INVALID_TASK, &result_inst_);
+	result_inst_1 = GetEvent(INVALID_TASK, &result_inst_0);
 	TEST_ASSERT_EQUAL_INT(E_OS_ID , result_inst_1);
 
-	result_inst_2 = GetEvent(t3, &result_inst_);
+	result_inst_2 = GetEvent(t3, &result_inst_0);
 	TEST_ASSERT_EQUAL_INT(E_OS_ACCESS , result_inst_2);
 	
-	result_inst_3 = GetEvent(t4, &result_inst_);
+	result_inst_3 = GetEvent(t4, &result_inst_0);
 	TEST_ASSERT_EQUAL_INT(E_OS_STATE , result_inst_3);
 	
-	result_inst_4 = GetEvent(t5, &result_inst_);
+	result_inst_4 = GetEvent(t5, &result_inst_0);
 	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_4);
 	
-	result_inst_5 = GetEvent(t2, &result_inst_);
+	result_inst_5 = GetEvent(t2, &result_inst_0);
 	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_5);
 	
 	result_inst_6 = SetEvent(INVALID_TASK, Event1);

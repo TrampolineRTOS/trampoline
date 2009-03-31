@@ -5,14 +5,17 @@
 
 void tpl_send_it1(void);
 
+DeclareTask(t2);
+
 /*test case:test the reaction of the system called with 
 an activation of a isr*/
 static void test_pretask_instance2(void)
 {
-	tpl_send_it3();
+	tpl_send_it1();
 	SuspendAllInterrupts();
-	tpl_send_it3();
+	tpl_send_it1();
 	ResumeAllInterrupts();
+	
 }
 
 /*create the test suite with all the test cases*/

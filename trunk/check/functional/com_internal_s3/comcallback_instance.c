@@ -9,11 +9,11 @@ DeclareMessage(rm_comcallback);
  an activation of a task*/
 static void test_comcallback_instance(void)
 {
-	int result_inst_1, result_inst_2, result_inst_3;
+	StatusType result_inst_1;
+	StatusType received_char;
 	
-	char received_char;
-	
-	result_inst_1 = ReceiveMessage(rm_comcallback, &received_char); //not allowed !!! Should be E_OS_CALLEVEL
+	/*not allowed !!! Should be E_OS_CALLEVEL*/
+	result_inst_1 = ReceiveMessage(rm_comcallback, &received_char); 
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
 	TEST_ASSERT_EQUAL_INT((int)('3'), (int)received_char);
 	

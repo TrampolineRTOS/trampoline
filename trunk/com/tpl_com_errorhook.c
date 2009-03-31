@@ -32,17 +32,16 @@
 
 #ifdef WITH_COM_ERROR_HOOK
 
-//#define OS_START_SEC_VAR_UNSPECIFIED
-//#include "tpl_memmap.h"
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 
-//VAR(tpl_service_call_desc, OS_VAR) tpl_service;
-tpl_com_service_call_descriptor tpl_com_service;
+VAR(tpl_com_service_call_descriptor, OS_VAR) tpl_com_service;
 
-//#define OS_STOP_SEC_VAR_UNSPECIFIED
-//#include "tpl_memmap.h"
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 
-//#define OS_START_SEC_CODE
-//#include "tpl_memmap.h"
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 
 /**
  * Function used to call the COM application error hook
@@ -53,7 +52,8 @@ tpl_com_service_call_descriptor tpl_com_service;
  *
  * @see #PROCESS_ERROR
  */
-void tpl_call_com_error_hook(tpl_status error)
+FUNC(void, OS_CODE) tpl_call_com_error_hook(
+	CONST(tpl_status, AUTOMATIC) error)
 {
 	
 	/**
@@ -69,7 +69,9 @@ void tpl_call_com_error_hook(tpl_status error)
     }
 }
 
-//#define OS_STOP_SEC_CODE
-//#include "tpl_memmap.h"
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 #endif /* WITH_COM_ERROR_HOOK */
+
+/* End of file tpl_com_errorhook.c */

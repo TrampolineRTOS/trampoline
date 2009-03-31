@@ -11,24 +11,25 @@ DeclareTask(t3);
 an activation of a task*/
 static void test_t1_instance1(void)
 {
-	int result_inst1_1,result_inst1_2,result_inst1_3,result_inst1_4,result_inst1_5,result_inst1_6;
-	result_inst1_1 = ActivateTask(t2);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst1_1); 
+	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6;
 	
-	result_inst1_2 = ActivateTask(t2);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst1_2);
+	result_inst_1 = ActivateTask(t2);
+	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_1); 
 	
-	result_inst1_3 = Schedule();;
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst1_3); 
+	result_inst_2 = ActivateTask(t2);
+	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_2);
 	
-	result_inst1_4 = ActivateTask(t1);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst1_4); 
+	result_inst_3 = Schedule();;
+	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_3); 
 	
-	result_inst1_5 = ActivateTask(t3);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst1_5);
+	result_inst_4 = ActivateTask(t1);
+	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_4); 
 	
-	result_inst1_6 = ChainTask(t3);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst1_6);
+	result_inst_5 = ActivateTask(t3);
+	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_5);
+	
+	result_inst_6 = ChainTask(t3);
+	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_6);
 }
 
 /*create the test suite with all the test cases*/

@@ -10,15 +10,14 @@ DeclareEvent(Event1);
  an activation of a task*/
 static void test_t3_instance(void)
 {
-	int result_inst_1, result_inst_2, result_inst_3;
-	
-	char received_char;
+	StatusType result_inst_1, result_inst_2, result_inst_3;
+	StatusType received_char;
 	
 	result_inst_1 = WaitEvent(Event1);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
 	
-	result_inst_1 = ReceiveMessage(rm_setevent, &received_char);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
+	result_inst_2 = ReceiveMessage(rm_setevent, &received_char);
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
 	TEST_ASSERT_EQUAL_INT((int)('2'), (int)received_char);
 
 	result_inst_3 = TerminateTask();

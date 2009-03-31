@@ -1,9 +1,7 @@
-/*Instance 2 of task t1*/
+/*Instance 3 of task t1*/
 
 #include "embUnit.h"
 #include "tpl_os.h"
-
-DeclareTask(t1);
 
 /*test case:test the reaction of the system called with 
 an activation of a task*/

@@ -24,6 +24,8 @@ IMPLEMENTATION trampoline {
         TRAMPOLINE_BASE_PATH = "../../..";
 		APP_NAME = "resources_s1_non";
 		CFLAGS = "-I../embUnit";
+        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
     } ;
@@ -55,7 +57,7 @@ IMPLEMENTATION trampoline {
 		CATEGORY = 2;
 		STACKSIZE = 32000;
 		PRIORITY = 1;
-		SOURCE = SIGUSR2;
+		SOURCE = SIGTERM;
 		RESOURCE = Resource1;
 	};
 	

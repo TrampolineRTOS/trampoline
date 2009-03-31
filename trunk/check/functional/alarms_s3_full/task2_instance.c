@@ -2,7 +2,6 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
 
 DeclareEvent(Event2);
 
@@ -11,7 +10,7 @@ an activation of a task*/
 static void test_t2_instance(void)
 {
 	
-	int result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6;
+	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6;
 	
 	result_inst_1 = WaitEvent(Event2);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);

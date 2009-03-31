@@ -2,6 +2,7 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
+#include "tpl_os_kernel.h"
 
 void tpl_send_it2(void);
 
@@ -13,6 +14,8 @@ static void test_pretask_instance3(void)
 	SuspendAllInterrupts();
 	tpl_send_it2();
 	ResumeAllInterrupts();
+
+	
 }
 
 /*create the test suite with all the test cases*/

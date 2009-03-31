@@ -7,7 +7,7 @@
 an activation of a task*/
 static void test_startup_instance(void)
 {
-	int result_inst_1;
+	StatusType result_inst_1;
 	
 	result_inst_1 = GetActiveApplicationMode();
 	TEST_ASSERT_EQUAL_INT(OSDEFAULTAPPMODE , result_inst_1); 

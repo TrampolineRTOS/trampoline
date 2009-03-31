@@ -1,18 +1,18 @@
 /*Instance of task t1*/
+
 #include "embUnit.h"
 #include "tpl_os.h"
 #include "tpl_os_kernel.h" /*for INVALID_TASK*/
 
-DeclareTask(t1);
 DeclareTask(t2);
 
-void tpl_send_it2(void);
+void tpl_send_it1(void);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
 static void test_t1_instance(void)
 {
-	int result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9;
+	StatusType result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9;
 	
 	EnableAllInterrupts();
 	
@@ -40,7 +40,7 @@ static void test_t1_instance(void)
 	result_inst_9 = ReleaseResource(RES_SCHEDULER);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_9);
 	
-	tpl_send_it2();
+	tpl_send_it1();
 }
 
 /*create the test suite with all the test cases*/

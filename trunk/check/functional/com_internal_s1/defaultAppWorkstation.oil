@@ -24,11 +24,11 @@ CPU test {
         APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "com_internal_s1";
-		ERRORHOOK = TRUE;
-        PRETASKHOOK = FALSE;
 		SHUTDOWNHOOK = TRUE;
 		
 		CFLAGS = "-I../embUnit";
+        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../lib -lembUnit";
 
     } ;

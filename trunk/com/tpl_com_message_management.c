@@ -20,7 +20,7 @@
 #include "tpl_com_error.h"
 #include "tpl_com_base_mo.h"
 #include "tpl_com_app_def.h"
-#include "tpl_com_errorhook.h" //added by Florent 090304
+#include "tpl_com_errorhook.h" /*added by Florent 090303*/
 
 /*#ifdef COM_EXTENDED*/
 #include "tpl_com_internal_com.h"
@@ -39,6 +39,7 @@ StatusType GetMessageStatus(MessageIdentifier mess_id)
 	
 #ifndef NO_RECEIVE_MESSAGE
     tpl_data_receiving_mo	*rmo = NULL;
+	tpl_queue *queue = NULL;
 #endif
 	
     /*  lock the task structures                    */
@@ -57,11 +58,11 @@ StatusType GetMessageStatus(MessageIdentifier mess_id)
 	
 #ifndef NO_RECEIVE_MESSAGE
 	IF_NO_EXTENDED_ERROR(result)
-	//  get the message object from its id          
+	/*  get the message object from its id			*/          
 	rmo = (tpl_data_receiving_mo *)tpl_receive_message_table[mess_id];
-	tpl_queue   *queue = &((tpl_internal_receiving_queued_mo *)rmo)->queue;
+	queue = &((tpl_internal_receiving_queued_mo *)rmo)->queue;
 	
-	// if message queued
+	/* if message queued							*/
 	if( queue->element_size != 0 )
 	{
 		struct TPL_QUEUE_DYNAMIC    *dq = queue->dyn_desc;
@@ -79,7 +80,7 @@ StatusType GetMessageStatus(MessageIdentifier mess_id)
 		}
 	}
 	else{
-		// if message unqueued
+		/* if message unqueued						*/
 		result =  E_COM_ID;
 	}
 	

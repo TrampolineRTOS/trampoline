@@ -1,4 +1,3 @@
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
 #include "tpl_os.h"
 #include "embUnit.h"
 
@@ -29,7 +28,7 @@ TASK(t2)
 	TestRunner_runTest(AlarmsTest_seq10_t2_instance());
 }
 
-
-void CallBackC_callback(void){
+void CallBackC_callback(void)
+{
 	TestRunner_runTest(AlarmsTest_seq10_callback_instance());
 }

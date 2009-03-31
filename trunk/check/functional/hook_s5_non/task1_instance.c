@@ -5,33 +5,32 @@
 
 DeclareAlarm(Alarm1);
 
+void WaitActivationOneShotAlarm(AlarmType Alarm);
+
 /*test case:test the reaction of the system called with 
 an activation of a task*/
 static void test_t1_instance(void)
 {
-	int result_inst_1, result_inst_2;
+	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4;
 
 	EnableAllInterrupts();
 			
-	result_inst_2 = SetRelAlarm(Alarm1, 2, 0);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_2);	
-	
-	
-	WaitActivationOneShotAlarm(Alarm1);
-	
-	result_inst_2 = Schedule();
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_2);	
-	
-	result_inst_2 = SetRelAlarm(Alarm1, 2, 0);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_2);	
+	result_inst_1 = SetRelAlarm(Alarm1, 2, 0);
+	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_1);	
 	
 	WaitActivationOneShotAlarm(Alarm1);
 	
 	result_inst_2 = Schedule();
 	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_2);	
 	
+	result_inst_3 = SetRelAlarm(Alarm1, 2, 0);
+	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_3);	
 	
+	WaitActivationOneShotAlarm(Alarm1);
 	
+	result_inst_4 = Schedule();
+	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_4);	
+		
 }
 
 /*create the test suite with all the test cases*/

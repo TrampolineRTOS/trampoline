@@ -7,7 +7,7 @@ TestRef TaskManagementTest_seq12_t2_instance(void);
 TestRef TaskManagementTest_seq12_t3_instances(void);
 TestRef TaskManagementTest_seq12_t3_instance3(void);
 
-unsigned char instance_t3=0;
+unsigned char instance_t3 = 0;
 
 int main(void)
 {
@@ -34,11 +34,28 @@ TASK(t2)
 TASK(t3)
 {
 	instance_t3 ++;
-	if(instance_t3 == 3){
-		TestRunner_runTest(TaskManagementTest_seq12_t3_instance3());
-		ShutdownOS(E_OK);
-	}
-	else{
-		TestRunner_runTest(TaskManagementTest_seq12_t3_instances());
+	switch(instance_t3)
+	{ 
+		case 1:	
+		{
+			TestRunner_runTest(TaskManagementTest_seq12_t3_instances());
+			break;
+		}
+		case 2:
+		{
+			TestRunner_runTest(TaskManagementTest_seq12_t3_instances());
+			break;
+		}
+		case 3:
+		{
+			TestRunner_runTest(TaskManagementTest_seq12_t3_instance3());
+			ShutdownOS(E_OK);
+			break;
+		}
+		default:
+		{
+			stdimpl_print("Instance error \n");
+			break;
+		}
 	}
 }

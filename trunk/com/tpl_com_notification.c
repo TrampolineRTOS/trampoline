@@ -46,7 +46,6 @@ tpl_status tpl_action_setflag(const tpl_action *action)
  */
 void tpl_notify_receiving_mos(tpl_status result, u8 from)
 {
-    //tpl_status result = E_OK ;
     VAR(tpl_proc_id, AUTOMATIC) old_running_id;
   
     /*

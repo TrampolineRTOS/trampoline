@@ -1,19 +1,23 @@
-/*Instance of com error*/
+/*Instance 1 of com error*/
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "config.h" //for stdimpl_print
-#include "tpl_com_error.h" //for COMErrorGetServiceId()
+#include "tpl_com_error.h" /*for COMErrorGetServiceId()*/
+
+DeclareMessage(sm);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
 static void test_comerror_instance1(void)
 {
-	int result_inst_1;
+	StatusType result_inst_1, result_inst_2;
 		
 	result_inst_1 = COMErrorGetServiceId();
 	TEST_ASSERT_EQUAL_INT(COMServiceId_GetMessageStatus , result_inst_1);
 	
+	result_inst_2 = COMError_GetMessageStatus_Message();
+	TEST_ASSERT_EQUAL_INT(sm , result_inst_2);
+
 }
 
 /*create the test suite with all the test cases*/

@@ -1,6 +1,5 @@
 /*Instance of task t3*/
 
-//#include "test_instances.h"
 #include "embUnit.h"
 #include "tpl_os.h"
 
@@ -8,8 +7,7 @@
 an activation of a task*/
 static void test_t3_instance(void)
 {
-	
-	int result_inst;
+	StatusType result_inst;
 	
 	result_inst = TerminateTask();
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst); 

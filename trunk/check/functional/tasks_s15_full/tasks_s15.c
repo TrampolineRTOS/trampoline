@@ -35,7 +35,8 @@ TASK(t1)
 TASK(t2)
 {
 	instance++;
-	switch (instance) {
+	switch (instance)
+	{
 		case 1 :
 			TestRunner_runTest(TaskManagementTest_seq16_t2_instance1());
 			break;

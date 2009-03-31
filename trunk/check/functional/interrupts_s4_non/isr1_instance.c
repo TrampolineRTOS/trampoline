@@ -1,4 +1,4 @@
-/*Instance of task t1*/
+/*Instance of task isr1*/
 
 #include "embUnit.h"
 #include "tpl_os.h"

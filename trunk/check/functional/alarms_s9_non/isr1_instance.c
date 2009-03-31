@@ -19,20 +19,20 @@ void WaitActivationPeriodicAlarm(AlarmType Alarm);
  an activation of a task*/
 static void test_isr1_instance(void)
 {
-	int result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9, result_inst_10, result_inst_11, result_inst_12, result_inst_13, result_inst_14, result_inst_15;
-	int result_inst_16, result_inst_17, result_inst_18, result_inst_19, result_inst_20, result_inst_21, result_inst_22, result_inst_23, result_inst_24, result_inst_25, result_inst_26, result_inst_27, result_inst_28, result_inst_29, result_inst_30, result_inst_31, result_inst_32, result_inst_33, result_inst_34, result_inst_35;
+	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9, result_inst_10, result_inst_11, result_inst_12, result_inst_13, result_inst_14, result_inst_15;
+	StatusType result_inst_16, result_inst_17, result_inst_18, result_inst_19, result_inst_20, result_inst_21, result_inst_22, result_inst_23, result_inst_24, result_inst_25, result_inst_26, result_inst_27, result_inst_28, result_inst_29, result_inst_30, result_inst_31, result_inst_32, result_inst_33, result_inst_34, result_inst_35;
+	AlarmBaseType alarmbase;
+	TickType tik;
 	
 	result_inst_1 = ActivateTask(t4);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
 	
-	AlarmBaseType alarmbase;
 	result_inst_2 = GetAlarmBase(INVALID_ALARM, &alarmbase);
 	TEST_ASSERT_EQUAL_INT(E_OS_ID, result_inst_2);
 	
 	result_inst_3 = GetAlarmBase(Alarm0, &alarmbase);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
 	
-	TickType tik;
 	result_inst_4 = GetAlarm(INVALID_ALARM, &tik);
 	TEST_ASSERT_EQUAL_INT(E_OS_ID, result_inst_4);
 	
@@ -78,7 +78,7 @@ static void test_isr1_instance(void)
 	result_inst_17 = CancelAlarm(Alarm0);
 	TEST_ASSERT_EQUAL_INT(E_OS_NOFUNC, result_inst_17);	
 	
-	//Alarm1_1 & Alarm1_2	
+	
 	result_inst_18 = SetRelAlarm(Alarm1_1, 2 , 2);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_18);	
 	
@@ -103,7 +103,7 @@ static void test_isr1_instance(void)
 	
 	WaitActivationOneShotAlarm(Alarm1_2);
 	
-	//Alarm2_1 & Alarm2_2
+	
 	result_inst_24 = SetRelAlarm(Alarm2_1, 2 , 2);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_24);	
 	
@@ -128,7 +128,7 @@ static void test_isr1_instance(void)
 	
 	WaitActivationOneShotAlarm(Alarm2_2);
 	
-	//Alarm3
+	
 	result_inst_30 = SetRelAlarm(Alarm3, 2 , 2);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_30);	
 	

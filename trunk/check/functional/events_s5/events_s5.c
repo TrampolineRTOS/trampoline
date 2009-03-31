@@ -37,7 +37,7 @@ TASK(t3)
 
 TASK(t4)
 {
-
+	stdimpl_print("error instance");
 }
 
 TASK(t5)

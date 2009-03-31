@@ -9,23 +9,21 @@ DeclareMessage(rm_flag);
  an activation of a task*/
 static void test_t4_instance(void)
 {
-	int result_inst_1, result_inst_2, result_inst_3;
-	
-	char received_char;
-	
-	
-	
+	StatusType result_inst_1;
+	StatusType received_char;
+		
 	/* while readflag != 1, then receive message
 	while (ReadFlag() != 1) {
-		//
+	
 	}*/
 		
 	result_inst_1 = ReceiveMessage(rm_flag, &received_char);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
 	TEST_ASSERT_EQUAL_INT((int)('2'), (int)received_char);
 	
-	//result_inst_3 = TerminateTask();
-	//TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
+	/*result_inst_3 = TerminateTask();
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
+	 */
 }
 
 /*create the test suite with all the test cases*/

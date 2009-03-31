@@ -1,6 +1,5 @@
 /*Instance of task t1*/
 
-//#include "test_instances.h"
 #include "embUnit.h"
 #include "tpl_os.h"
 
@@ -12,7 +11,7 @@ an activation of a task*/
 static void test_t1_instance(void)
 {
 	
-	int result_inst_1,result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7;
+	StatusType result_inst_1,result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7;
 	
 	result_inst_1 = GetResource(RES_SCHEDULER);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1); 
@@ -20,19 +19,19 @@ static void test_t1_instance(void)
 	result_inst_2 = ActivateTask(t2);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
 	
-	result_inst_3 = Schedule(); //nothing should happened because t1 gets RES_SCHEDULER
+	result_inst_3 = Schedule();
 	TEST_ASSERT_EQUAL_INT(E_OS_RESOURCE, result_inst_3);
 
 	result_inst_4 = ActivateTask(t3);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_4);
 	
-	result_inst_5 = Schedule(); //nothing should happened because t1 gets RES_SCHEDULER
+	result_inst_5 = Schedule();
 	TEST_ASSERT_EQUAL_INT(E_OS_RESOURCE, result_inst_5);
 
 	result_inst_6 = ReleaseResource(RES_SCHEDULER);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_6);
 	
-	result_inst_7 = Schedule(); //t3 and t2 are actived because t1 release RES_SCHEDULER
+	result_inst_7 = Schedule();
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_7);
 
 

@@ -1,4 +1,3 @@
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
 #include "tpl_os.h"
 #include "embUnit.h";
 
@@ -6,12 +5,12 @@ TestRef HookTest_seq4_t1_instance(void);
 TestRef HookTest_seq4_t2_instance(void);
 TestRef HookTest_seq4_isr1_instance(void);
 TestRef HookTest_seq4_isr2_instance(void);
-TestRef HookTest_seq4_error_instance(void);
 TestRef HookTest_seq4_pretask_instance2(void);
-TestRef HookTest_seq4_posttask_instance5(void);
-
-void tpl_send_it1(void);
-void tpl_send_it2(void);
+TestRef HookTest_seq4_pretask_instance3(void);
+TestRef HookTest_seq4_pretask_instance6(void);
+TestRef HookTest_seq4_pretask_instance7(void);
+TestRef HookTest_seq4_posttask_instance3(void);
+TestRef HookTest_seq4_posttask_instance6(void);
 
 int posttask_instance = 0;
 int pretask_instance = 0;
@@ -32,24 +31,28 @@ void ShutdownHook(StatusType error)
 	TestRunner_end();
 }
 
-void ErrorHook(void)
-{
-	//stdimpl_print("ErrorHook\n");
-	TestRunner_runTest(HookTest_seq4_error_instance());
-	
-}
-
 void PreTaskHook(void)
 { 
 	pretask_instance++;
-	//stdimpl_print("PreTask : case %d\n",pretask_instance);
-	switch (pretask_instance) {
-		case 2: {
+	switch (pretask_instance)
+	{
+		case 2:
+		{
 			TestRunner_runTest(HookTest_seq4_pretask_instance2());
 			break;
 		}
-		default: {
-			
+		case 3:
+		{
+			TestRunner_runTest(HookTest_seq4_pretask_instance3());
+			break;
+		}
+		case 6: 
+		{
+			TestRunner_runTest(HookTest_seq4_pretask_instance6());
+			break;
+		}
+		default: 
+		{
 			break;
 		}
 	}
@@ -59,14 +62,21 @@ void PreTaskHook(void)
 void PostTaskHook(void)
 { 
 	posttask_instance++;
-	//stdimpl_print("PostTask : case %d\n",pretask_instance);
-	switch (posttask_instance) {
-		case 5: {
-			TestRunner_runTest(HookTest_seq4_posttask_instance5());
+	switch (posttask_instance) 
+	{
+		case 3:
+		{
+			TestRunner_runTest(HookTest_seq4_posttask_instance3());
 			break;
 		}
-		default: {
-
+		case 6:
+		{
+			TestRunner_runTest(HookTest_seq4_posttask_instance6());
+			break;
+		}
+		default: 
+		{
+			
 			break;
 		}
 	}
@@ -81,18 +91,16 @@ TASK(t1)
 TASK(t2)
 {
 	TestRunner_runTest(HookTest_seq4_t2_instance());
+	ShutdownOS(E_OK);
 }
 
 
 ISR(isr1)
 {
-	//stdimpl_print("ISR1 \n");
 	TestRunner_runTest(HookTest_seq4_isr1_instance());
 }
 
 ISR(isr2)
 {
-	//stdimpl_print("ISR2 \n");
 	TestRunner_runTest(HookTest_seq4_isr2_instance());
-	ShutdownOS(E_OK);
 }

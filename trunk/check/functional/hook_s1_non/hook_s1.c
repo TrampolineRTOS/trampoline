@@ -25,5 +25,5 @@ void ShutdownHook(StatusType error)
 
 TASK(t1)
 {
-	//
+	stdimpl_print("instance error");
 }

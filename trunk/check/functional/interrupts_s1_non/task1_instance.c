@@ -1,6 +1,5 @@
 /*Instance of task t1*/
 
-//#include "test_instances.h"
 #include "embUnit.h"
 #include "tpl_os.h"
 
@@ -23,17 +22,25 @@ static void test_t1_instance(void)
 	SuspendAllInterrupts();
 	ResumeAllInterrupts();
 	SuspendAllInterrupts();
+	SuspendAllInterrupts();
+	SuspendAllInterrupts();
 	tpl_send_it2();
 	
+	ResumeAllInterrupts();
+	ResumeAllInterrupts();
 	ResumeAllInterrupts();
 	tpl_send_it2();
 	
 	SuspendOSInterrupts();
 	ResumeOSInterrupts();
 	SuspendOSInterrupts();
+	SuspendOSInterrupts();
+	SuspendOSInterrupts();
 	tpl_send_it2();
 	
 	ResumeOSInterrupts();
+	ResumeOSInterrupts();
+	ResumeOSInterrupts();	
 	tpl_send_it1();
 }
 

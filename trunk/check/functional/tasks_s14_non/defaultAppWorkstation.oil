@@ -31,6 +31,8 @@ CPU test {
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "tasks_s14_non";
 		CFLAGS = "-I../embUnit";
+        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
     } ;

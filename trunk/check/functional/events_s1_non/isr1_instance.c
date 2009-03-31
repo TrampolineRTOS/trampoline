@@ -1,6 +1,5 @@
 /*Instance of interruption isr1*/
 
-//#include "test_instances.h"
 #include "embUnit.h"
 #include "tpl_os.h"
 
@@ -10,11 +9,12 @@ DeclareEvent(Event1);
  an activation of a isr*/
 static void test_isr1_instance(void)
 {
-	int result_inst_1, result_inst_2;
-	result_inst_1 =ClearEvent(Event1);
+	StatusType result_inst_1, result_inst_2;
+	
+	result_inst_1 = ClearEvent(Event1);
 	TEST_ASSERT_EQUAL_INT(E_OS_CALLEVEL , result_inst_1);
 
-	result_inst_2 =WaitEvent(Event1);
+	result_inst_2 = WaitEvent(Event1);
 	TEST_ASSERT_EQUAL_INT(E_OS_CALLEVEL , result_inst_2);
 
 }

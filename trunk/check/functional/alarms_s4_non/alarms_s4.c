@@ -1,4 +1,3 @@
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
 #include "tpl_os.h"
 #include "embUnit.h"
 
@@ -23,6 +22,7 @@ TASK(t1)
 	ShutdownOS(E_OK);
 }
 
-void CallBackC_callback(void){
+void CallBackC_callback(void)
+{
 	TestRunner_runTest(AlarmsTest_seq4_callback_instance());
 }

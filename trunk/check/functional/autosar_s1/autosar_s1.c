@@ -1,5 +1,4 @@
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
-#include "tpl_os.h"
+#include "Os.h"
 #include "embUnit.h"
 
 TestRef AutosarTest_seq1_t1_instance(void);

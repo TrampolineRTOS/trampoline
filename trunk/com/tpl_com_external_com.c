@@ -68,5 +68,5 @@ tpl_status tpl_send_static_external_message(
   }
   
   /*  Sending of message to the network should occur here */
-  
+	return E_OK;
 }

@@ -1,4 +1,3 @@
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
 #include "tpl_os.h"
 #include "embUnit.h"
 
@@ -27,7 +26,6 @@ TASK(t1)
 TASK(t2)
 {
 	TestRunner_runTest(TaskManagementTest_seq1_t2_instance());
-	
 }
 
 ISR(isr1)

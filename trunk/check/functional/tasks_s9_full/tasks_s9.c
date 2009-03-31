@@ -7,7 +7,7 @@ TestRef TaskManagementTest_seq9_t2_instance(void);
 TestRef TaskManagementTest_seq9_t3_instance1(void);
 TestRef TaskManagementTest_seq9_t3_instance2(void);
 
-unsigned char instance_t3=0;
+unsigned char instance_t3 = 0;
 
 int main(void)
 {

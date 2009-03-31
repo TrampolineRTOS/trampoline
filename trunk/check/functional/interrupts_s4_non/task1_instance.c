@@ -4,6 +4,7 @@
 #include "tpl_os.h"
 
 DeclareAlarm(Alarm1);
+DeclareAlarm(Alarm2);
 
 void WaitActivationOneShotAlarm(AlarmType Alarm);
 
@@ -11,14 +12,19 @@ void WaitActivationOneShotAlarm(AlarmType Alarm);
 an activation of a task*/
 static void test_t1_instance(void)
 {
-	int result_inst_1;
+	StatusType result_inst_1;
 	
 	EnableAllInterrupts();
 	
-	result_inst_1 = SetAbsAlarm(Alarm1, 2, 0);
+	result_inst_1 = SetRelAlarm(Alarm1, 2, 0);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
 	
-	WaitActivationOneShotAlarm(Alarm1);		
+	WaitActivationOneShotAlarm(Alarm1);	
+	
+	result_inst_1 = SetRelAlarm(Alarm2, 2, 0);
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
+	
+	WaitActivationOneShotAlarm(Alarm2);		
 	
 }
 

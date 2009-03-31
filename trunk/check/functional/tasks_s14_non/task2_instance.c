@@ -16,7 +16,7 @@ DeclareEvent(Task2_Event8);
 an activation of a task*/
 static void test_t2_instance(void)
 {
-	int result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9;
+	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9;
 
 	result_inst_1 = ClearEvent(Task2_Event1);
 	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_1); 

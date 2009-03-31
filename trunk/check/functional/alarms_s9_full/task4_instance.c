@@ -1,4 +1,4 @@
-/*Instance of task t3*/
+/*Instance of task t4*/
 
 #include "embUnit.h"
 #include "tpl_os.h"
@@ -7,7 +7,7 @@
  an activation of a task*/
 static void test_t4_instance(void)
 {
-	int result_inst_1;
+	StatusType result_inst_1;
 	
 	result_inst_1 = TerminateTask();
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
