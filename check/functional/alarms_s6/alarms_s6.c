@@ -28,7 +28,6 @@ TASK(t1)
 
 TASK(t2)
 {
-	/*Switch to finish by Shutdown(OS)*/
 	instance_t1 ++;
 	switch(instance_t1)
 	{ 

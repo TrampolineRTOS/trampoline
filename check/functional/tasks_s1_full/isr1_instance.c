@@ -10,7 +10,9 @@ DeclareTask(t2);
  an activation of a isr*/
 static void test_isr1_instance(void)
 {
-	int result_inst_1, result_inst_2, result_inst_3, result_inst_5;
+	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_5;
+	TaskType result_inst_4;
+
 	result_inst_1 = TerminateTask();
 	TEST_ASSERT_EQUAL_INT(E_OS_CALLEVEL , result_inst_1);
 	
@@ -20,7 +22,6 @@ static void test_isr1_instance(void)
 	result_inst_3 = Schedule();
 	TEST_ASSERT_EQUAL_INT(E_OS_CALLEVEL , result_inst_3);
 	
-	TaskType result_inst_4;
 	result_inst_5 = GetTaskID(&result_inst_4);
 	TEST_ASSERT_EQUAL_INT(INVALID_TASK , result_inst_4);
 	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_5);

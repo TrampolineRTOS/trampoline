@@ -1,7 +1,7 @@
 /*Instance of task t1*/
 
 #include "embUnit.h"
-#include "tpl_os.h"
+#include "Os.h"
 
 DeclareTask(t2);
 
@@ -9,7 +9,7 @@ DeclareTask(t2);
  an activation of a task*/
 static void test_t1_instance(void)
 {
-	int result_inst_1;
+	StatusType result_inst_1;
 	
 	result_inst_1 = GetApplicationID();	
 	TEST_ASSERT_EQUAL_INT(1, result_inst_1);

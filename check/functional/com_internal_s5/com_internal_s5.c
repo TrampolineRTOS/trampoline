@@ -52,19 +52,19 @@ TASK(t1)
 TASK(t2)
 {
 	TestRunner_runTest(COMInternalTest_seq5_t2_instance());
-	
 }
 
 TASK(t3)
 {
+	stdimpl_print("instance error");
 	TestRunner_runTest(COMInternalTest_seq5_t3_instance());	
-	
 }
 
 TASK(t4)
 {	
 	t4_instance++;
-	switch (t4_instance) {
+	switch (t4_instance)
+	{
 		case 1:
 			TestRunner_runTest(COMInternalTest_seq5_t4_instance1());
 			break;
@@ -80,7 +80,8 @@ TASK(t4)
 TASK(t5)
 {	
 	t5_instance++;
-	switch (t5_instance) {
+	switch (t5_instance) 
+	{
 		case 1:
 			TestRunner_runTest(COMInternalTest_seq5_t5_instance1());
 			break;
@@ -100,7 +101,8 @@ TASK(t5)
 TASK(t6)
 {
 	t6_instance++;
-	switch (t6_instance) {
+	switch (t6_instance)
+	{
 		case 1:
 			TestRunner_runTest(COMInternalTest_seq5_t6_instance1());
 			break;
@@ -117,7 +119,8 @@ TASK(t6)
 TASK(t7)
 {
 	t7_instance++;
-	switch (t7_instance) {
+	switch (t7_instance) 
+	{
 		case 1:
 			TestRunner_runTest(COMInternalTest_seq5_t7_instance1());
 			break;
@@ -136,7 +139,8 @@ TASK(t7)
 TASK(t8)
 {
 	t8_instance++;
-	switch (t8_instance) {
+	switch (t8_instance)
+	{
 		case 1:
 			TestRunner_runTest(COMInternalTest_seq5_t8_instance1());
 			break;

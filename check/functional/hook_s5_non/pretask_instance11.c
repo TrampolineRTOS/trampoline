@@ -9,9 +9,9 @@ void tpl_send_it1(void);
 an activation of a isr*/
 static void test_pretask_instance11(void)
 {
-	tpl_send_it3();
+	tpl_send_it1();
 	SuspendAllInterrupts();
-	tpl_send_it3();
+	tpl_send_it1();
 	ResumeAllInterrupts();
 }
 

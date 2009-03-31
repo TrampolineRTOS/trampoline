@@ -7,7 +7,6 @@
 an activation of a isr*/
 static void test_isr1_instance(void)
 {
-	//
 	
 }
 

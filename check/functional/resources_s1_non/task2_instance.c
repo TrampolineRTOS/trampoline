@@ -1,6 +1,5 @@
 /*Instance of task t1*/
 
-//#include "test_instances.h"
 #include "embUnit.h"
 #include "tpl_os.h"
 
@@ -11,7 +10,7 @@ DeclareResource(Resource2);
 static void test_t2_instance(void)
 {
 	
-	int result_inst_1, result_inst_2;
+	StatusType result_inst_1, result_inst_2;
 	
 	result_inst_1 = GetResource(Resource2);
 	TEST_ASSERT_EQUAL_INT(E_OS_ACCESS, result_inst_1);

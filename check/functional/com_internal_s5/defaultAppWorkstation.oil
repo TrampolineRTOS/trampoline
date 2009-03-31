@@ -33,11 +33,11 @@ CPU test {
         APP_SRC = "task8_instance3.c";
 		TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "com_internal_s5";
-		ERRORHOOK = FALSE;
-        PRETASKHOOK = FALSE;
 		SHUTDOWNHOOK = TRUE;
 		
 		CFLAGS = "-I../embUnit";
+        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../lib -lembUnit";
         
 

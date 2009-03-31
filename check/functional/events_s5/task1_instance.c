@@ -9,7 +9,7 @@ DeclareEvent(Event1);
  an activation of a task*/
 static void test_t1_instance(void)
 {
-	int result_inst_1, result_inst_2;
+	StatusType result_inst_1, result_inst_2;
 		
 	result_inst_1 = WaitEvent(Event1);	
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);

@@ -2,7 +2,7 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "tpl_com_definitions.h" //for E_COM_ID
+#include "tpl_com_definitions.h" /*for E_COM_ID*/
 
 DeclareMessage(rm);
 
@@ -10,27 +10,25 @@ DeclareMessage(rm);
  an activation of a task*/
 static void test_t2_instance(void)
 {
-	int result_inst_1, result_inst_2, result_inst_3;
-	
-	
-	char received_char;
+	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5;
+	StatusType received_char;
 	
 	result_inst_1 = GetMessageStatus(rm);
 	TEST_ASSERT_EQUAL_INT(E_COM_ID, result_inst_1);
 	
-	result_inst_1 = ReceiveMessage(rm, &received_char);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
+	result_inst_2 = ReceiveMessage(rm, &received_char);
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
 	TEST_ASSERT_EQUAL_INT((int)('1'), (int)received_char);
 	
-	result_inst_1 = ReceiveMessage(rm, &received_char);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
-	TEST_ASSERT_EQUAL_INT((int)('1'), (int)received_char);
-	
-	result_inst_2 = ReceiveMessage(SEND_MESSAGE_COUNT, &received_char);
-	TEST_ASSERT_EQUAL_INT(E_COM_ID, result_inst_2);
-	
-	result_inst_3 = TerminateTask();
+	result_inst_3 = ReceiveMessage(rm, &received_char);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
+	TEST_ASSERT_EQUAL_INT((int)('1'), (int)received_char);
+	
+	result_inst_4 = ReceiveMessage(SEND_MESSAGE_COUNT, &received_char);
+	TEST_ASSERT_EQUAL_INT(E_COM_ID, result_inst_4);
+	
+	result_inst_5 = TerminateTask();
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_5);
 }
 
 /*create the test suite with all the test cases*/

@@ -26,6 +26,8 @@ CPU test {
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "tasks_s15_full";
 		CFLAGS = "-I../embUnit";
+        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
 	} ;
@@ -96,7 +98,7 @@ CPU test {
 		STACKSIZE = 32000;
 		CATEGORY = 2;
 		PRIORITY = 1;
-		SOURCE = SIGUSR1;
+		SOURCE = SIGTERM;
 	};
 	
 	EVENT Event1{

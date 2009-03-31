@@ -2,7 +2,6 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
 
 DeclareAlarm(Alarm1);
 
@@ -13,7 +12,7 @@ an activation of a task*/
 static void test_t1_instance(void)
 {
 	
-	int result_inst_1;
+	StatusType result_inst_1;
 	
 	result_inst_1 = SetRelAlarm(Alarm1, 2, 0);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);

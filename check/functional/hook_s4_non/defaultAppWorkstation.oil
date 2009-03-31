@@ -23,14 +23,14 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "pretask_instance2.c";
 		APP_SRC = "pretask_instance3.c";
 		APP_SRC = "pretask_instance6.c";
-		APP_SRC = "pretask_instance7.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "hook_s4_non";
 		CFLAGS = "-I../embUnit";
+        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
 		STARTUPHOOK = TRUE;
-		ERRORHOOK = FALSE;
 		POSTTASKHOOK = TRUE;
 		PRETASKHOOK = TRUE;
     } ;
@@ -55,7 +55,7 @@ IMPLEMENTATION trampoline {
 		CATEGORY = 2;
 		STACKSIZE = 32000;
 		PRIORITY = 1;
-		SOURCE = SIGINT;
+		SOURCE = SIGTERM;
 	};
 
 	ISR isr2{

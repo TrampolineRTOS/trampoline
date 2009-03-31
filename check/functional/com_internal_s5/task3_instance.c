@@ -2,13 +2,12 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
 static void test_t3_instance(void)
 {
-	stdimpl_print("instance error\n");
+
 }
 
 /*create the test suite with all the test cases*/

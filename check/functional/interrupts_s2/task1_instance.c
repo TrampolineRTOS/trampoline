@@ -9,7 +9,7 @@ void tpl_send_it2(void);
 an activation of a task*/
 static void test_t1_instance(void)
 {
-	int result_inst;
+	StatusType result_inst;
 
 	EnableAllInterrupts();
 	tpl_send_it2();

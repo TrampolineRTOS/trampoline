@@ -1,16 +1,18 @@
 /*Instance of interruption isr1*/
 
-//#include "test_instances.h"
 #include "embUnit.h"
 #include "tpl_os.h"
 
 void tpl_send_it2(void);
+void tpl_send_it3(void);
 
 /*test case:test the reaction of the system called with 
-an activation of a isr*/
+ an activation of a isr*/
 static void test_isr1_instance(void)
 {
 	EnableAllInterrupts();
+	DisableAllInterrupts();
+	DisableAllInterrupts();
 	DisableAllInterrupts();
 	tpl_send_it2();
 	tpl_send_it2();
@@ -22,19 +24,26 @@ static void test_isr1_instance(void)
 	SuspendAllInterrupts();
 	ResumeAllInterrupts();
 	SuspendAllInterrupts();
+	SuspendAllInterrupts();
+	SuspendAllInterrupts();
 	tpl_send_it2();
 	
+	ResumeAllInterrupts();
+	ResumeAllInterrupts();
 	ResumeAllInterrupts();
 	tpl_send_it2();
 	
 	SuspendOSInterrupts();
 	ResumeOSInterrupts();
 	SuspendOSInterrupts();
+	SuspendOSInterrupts();
+	SuspendOSInterrupts();
 	tpl_send_it2();
 	
 	ResumeOSInterrupts();
-	tpl_send_it2();
-	
+	ResumeOSInterrupts();
+	ResumeOSInterrupts();
+	tpl_send_it3();
 	
 }
 
@@ -45,6 +54,6 @@ TestRef InterruptProcessingTest_seq1_isr1_instance(void)
 		new_TestFixture("test_isr1_instance",test_isr1_instance)
 	};
 	EMB_UNIT_TESTCALLER(InterruptProcessingTest,"InterruptProcessingTest_sequence1",NULL,NULL,fixtures);
-
+	
 	return (TestRef)&InterruptProcessingTest;
 }

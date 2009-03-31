@@ -9,13 +9,13 @@ DeclareTask(t1);
 an activation of a task*/
 static void test_t1_instance2(void)
 {
-	int result_inst2_1, result_inst2_2;
+	StatusType result_inst_1, result_inst_2;
 	
-	result_inst2_1 = ActivateTask(t1);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst2_1);
+	result_inst_1 = ActivateTask(t1);
+	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_1);
 	
-	result_inst2_2 = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst2_2);
+	result_inst_2 = TerminateTask();
+	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_2);
 }
 
 /*create the test suite with all the test cases*/

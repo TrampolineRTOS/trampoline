@@ -9,7 +9,7 @@ DeclareTask(t3);
  an activation of a task*/
 static void test_t5_instance(void)
 {
-	int result_inst_1;
+	StatusType result_inst_1;
 	
 	result_inst_1 = ActivateTask(t3);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);

@@ -1,6 +1,5 @@
 /*Instance of interruption isr1*/
 
-//#include "test_instances.h"
 #include "embUnit.h"
 #include "tpl_os.h"
 
@@ -8,7 +7,6 @@
 an activation of a isr*/
 static void test_isr1_instance(void)
 {
-	//
 	
 }
 

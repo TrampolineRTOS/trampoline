@@ -43,15 +43,22 @@
  *
  * @param tpl_status The error code which causes the call back
  */
-void tpl_call_com_error_hook(tpl_status error);
+FUNC(void, OS_CODE) tpl_call_com_error_hook(
+	CONST(tpl_status, AUTOMATIC) error);
 
-#ifdef WITH_ERROR_HOOK
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+#ifdef WITH_COM_ERROR_HOOK
+
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 
 /*
  * The function corresponding to this prototype should be provided
  * by the application
  */
-extern void COMErrorHook(StatusType error);
+extern FUNC(void, OS_CODE) COMErrorHook(VAR(StatusType, AUTOMATIC) error);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

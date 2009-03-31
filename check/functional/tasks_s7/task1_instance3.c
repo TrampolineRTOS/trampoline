@@ -3,8 +3,6 @@
 #include "tpl_os.h"
 #include "embUnit.h"
 
-DeclareTask(t1);
-
 /*test case:test the reaction of the system called with 
 an activation of a task*/
 static void test_t1_instance3(void)

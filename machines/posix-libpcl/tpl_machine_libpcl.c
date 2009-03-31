@@ -212,17 +212,12 @@ void tpl_signal_handler(int sig)
   unsigned int id;
 #endif /* NO_ISR */
 	
-	/*printf("tpl_signal_handler - tpl_locking_depth = %d\n",tpl_locking_depth);*/
-	/* disable interrupts in PostTaskook and "PreTaskISR".
-	 * tpl_locking_depth is incremented becasuse otherwise, when ResumeAllInterrupts
+	/* Disable interrupts in PostTaskook and "PreTaskISR" :
+	 * tpl_locking_depth is incremented because otherwise, when ResumeAllInterrupts
 	 * is called in Post(Pre)-Task, interrupts are enabled whereas it shouldn't.
 	 */
 	tpl_locking_depth++; 
 	
-/* What's that for ? two calls to tpl_call_counter_tick ifndef NO_ALARM. by Florent 090318
-#ifndef NO_ALARM
-    if (signal_for_counters == sig) tpl_call_counter_tick();
-#endif *//* NO_ALARM */
 #if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
 	if (signal_for_counters == sig) tpl_call_counter_tick();
 #endif /*(defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */

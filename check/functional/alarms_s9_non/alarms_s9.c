@@ -1,4 +1,3 @@
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
 #include "tpl_os.h"
 #include "embUnit.h"
 
@@ -53,6 +52,7 @@ ISR(isr1)
 	TestRunner_runTest(AlarmsTest_seq11_isr1_instance());	
 }
 
-void CallBackC_callback(void){
+void CallBackC_callback(void)
+{
 	TestRunner_runTest(AlarmsTest_seq11_callback_instance());
 }

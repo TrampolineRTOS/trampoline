@@ -9,13 +9,14 @@ DeclareTask(t2);
 an activation of a task*/
 static void test_t1_instance(void)
 {
-	int result_inst_1;
+	StatusType result_inst_1;
 	
 	EnableAllInterrupts();
 	
 	SuspendAllInterrupts();
 	
-	//test API service calls (ActivateTask...)
+	/*
+	 test API service calls (ActivateTask...) */
 	result_inst_1 = ActivateTask(t2);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
 	

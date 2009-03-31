@@ -2,13 +2,12 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "config.h" /*Display information n the right way (printf on UNIX...)*/
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
 static void test_t2_instance(void)
 {
-	int result_inst;
+	StatusType result_inst;
 
 	result_inst = TerminateTask();
 	TEST_ASSERT_EQUAL_INT(E_OK , result_inst); 

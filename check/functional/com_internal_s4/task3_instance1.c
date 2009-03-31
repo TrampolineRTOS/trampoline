@@ -9,16 +9,15 @@ DeclareMessage(rm_maskednewdiffersx);
  an activation of a task*/
 static void test_t3_instance1(void)
 {
-	int result_inst_1, result_inst_2, result_inst_3;
-	
-	char received_char;
+	StatusType result_inst_1, result_inst_2;
+	StatusType received_char;
 	
 	result_inst_1 = ReceiveMessage(rm_maskednewdiffersx, &received_char);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
 	TEST_ASSERT_EQUAL_INT(3, (int)received_char);
 	
-	result_inst_3 = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
+	result_inst_2 = TerminateTask();
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
 }
 
 /*create the test suite with all the test cases*/

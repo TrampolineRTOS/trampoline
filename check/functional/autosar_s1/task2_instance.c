@@ -1,14 +1,14 @@
 /*Instance of task t2*/
 
 #include "embUnit.h"
-#include "tpl_os.h"
-#include "tpl_as_isr.h"
+#include "Os.h"
+//#include "tpl_as_isr.h"
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
 static void test_t2_instance(void)
 {
-	int result_inst_1;
+	StatusType result_inst_1;
 	
 	result_inst_1 = GetISRID();
 	TEST_ASSERT_EQUAL_INT(INVALID_ISR, result_inst_1);

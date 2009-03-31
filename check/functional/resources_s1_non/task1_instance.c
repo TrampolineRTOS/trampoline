@@ -1,6 +1,5 @@
 /*Instance of task t1*/
 
-//#include "test_instances.h"
 #include "embUnit.h"
 #include "tpl_os.h"
 #include "tpl_os_rez_kernel.h" /*for INVALID_RESOURCE*/
@@ -14,14 +13,14 @@ DeclareResource(Resource6);
 DeclareResource(ResourceA);
 DeclareTask(t2);
 
-void tpl_send_it2(void);
+void tpl_send_it1(void);
 
 /*test case:test the reaction of the system called with 
 an activation of a task*/
 static void test_t1_instance(void)
 {
 	
-	int result_inst_1, result_inst_1_5, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9, result_inst_10, result_inst_11, result_inst_12, result_inst_13, result_inst_14, result_inst_15, result_inst_16, result_inst_17, result_inst_18, result_inst_19;
+	StatusType result_inst_1, result_inst_1_5, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9, result_inst_10, result_inst_11, result_inst_12, result_inst_13, result_inst_14, result_inst_15, result_inst_16, result_inst_17, result_inst_18, result_inst_19;
 	
 	EnableAllInterrupts();
 	
@@ -70,8 +69,7 @@ static void test_t1_instance(void)
 	result_inst_14 = ReleaseResource(Resource1);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_14);
 	
-	//trigger interrupt ISR2
-	tpl_send_it2();
+	tpl_send_it1();
 	
 	result_inst_15 = ReleaseResource(Resource1);
 	TEST_ASSERT_EQUAL_INT(E_OS_NOFUNC, result_inst_15);

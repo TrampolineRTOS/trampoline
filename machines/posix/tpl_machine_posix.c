@@ -178,7 +178,7 @@ static sigset_t tpl_saved_state;
  */
 void tpl_enable_interrupts(void)
 {
-    if (sigprocmask(SIG_SETMASK,&tpl_saved_state,NULL) == -1)
+    if (sigprocmask(SIG_UNBLOCK,&signal_set,&tpl_saved_state) == -1)
     {
         perror("tpl_enable_interrupts failed");
         exit(-1);
@@ -201,8 +201,7 @@ void tpl_disable_interrupts(void)
  * The signal handler used when interrupts are enabled
  */
 void tpl_signal_handler(int sig)
-{
-	tpl_get_task_lock(); //disable interrupts in PostTaskook and "PreTaskISR"
+{	
 	
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
   struct itimerval timer;
@@ -211,9 +210,13 @@ void tpl_signal_handler(int sig)
 #ifndef NO_ISR
     unsigned int id;
 #endif /* NO_ISR */
-#ifndef NO_ALARM
-    if (signal_for_counters == sig) tpl_call_counter_tick();
-#endif /* NO_ALARM */
+
+	/* Disable interrupts in PostTaskook and "PreTaskISR" :
+	 * tpl_locking_depth is incremented because otherwise, when ResumeAllInterrupts
+	 * is called in Post(Pre)-Task, interrupts are enabled whereas it shouldn't.
+	 */
+	tpl_locking_depth++; 
+	
 #if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
     if (signal_for_counters == sig) tpl_call_counter_tick();
 #endif /*(defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */
@@ -235,13 +238,12 @@ void tpl_signal_handler(int sig)
     {
         if (signal_for_isr_id[id] == sig)
         {
-            tpl_central_interrupt_handler(id + TASK_COUNT);
+			tpl_central_interrupt_handler(id + TASK_COUNT);
         }
     }
 #endif /* NO_ISR */
-
-	tpl_release_task_lock(); //released interrupts returning in the previous task
-
+	/* Release interrupts returning in the previous context*/
+	tpl_locking_depth--;
 }
 
 /*
@@ -324,7 +326,6 @@ void tpl_release_task_lock(void)
     assert(0 <= x && x <= 1); */
     /*  fprintf(stderr, "%d-unlock\n", cnt++);*/
     
-	//
     if (tpl_locking_depth > 0)
 	{
 	   tpl_locking_depth--;
@@ -471,7 +472,6 @@ FUNC(void, OS_CODE) tpl_init_context(
     sigset_t old_mask;
 
     /* 1 : save the current mask, and mask our worker signal : SIGUSR1 */
-//    sigemptyset(new_mask);
     sigemptyset(&new_mask);
     sigaddset(&new_mask, SIGUSR1);
     sigprocmask(SIG_BLOCK, &new_mask, &old_mask);
@@ -607,7 +607,7 @@ void tpl_init_machine(void)
 /* REPRENDRE ICI -----*/    
     tpl_init_context((tpl_proc_id)(IDLE_TASK_ID));
         
-//    assert( idle_task_context != NULL );
+/*    assert( idle_task_context != NULL ); */
     
     /*
      * block the handling of signals

@@ -5,6 +5,8 @@
 
 void tpl_send_it2(void);
 
+DeclareTask(t2);
+
 /*test case:test the reaction of the system called with 
 an activation of a isr*/
 static void test_pretask_instance6(void)

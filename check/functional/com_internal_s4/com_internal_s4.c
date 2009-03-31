@@ -61,7 +61,8 @@ TASK(t1)
 TASK(t2)
 {
 	t2_instance++;
-	switch (t2_instance) {
+	switch (t2_instance)
+	{
 		case 1:
 			TestRunner_runTest(COMInternalTest_seq4_t2_instance1());
 			break;
@@ -80,7 +81,8 @@ TASK(t2)
 TASK(t3)
 {
 	t3_instance++;
-	switch (t3_instance) {
+	switch (t3_instance)
+	{
 		case 1:
 			TestRunner_runTest(COMInternalTest_seq4_t3_instance1());
 			break;
@@ -101,7 +103,8 @@ TASK(t4)
 TASK(t5)
 {	
 	t5_instance++;
-	switch (t5_instance) {
+	switch (t5_instance)
+	{
 		case 1:
 			TestRunner_runTest(COMInternalTest_seq4_t5_instance1());
 			break;
@@ -124,7 +127,8 @@ TASK(t5)
 TASK(t6)
 {
 	t6_instance++;
-	switch (t6_instance) {
+	switch (t6_instance)
+	{
 		case 1:
 			TestRunner_runTest(COMInternalTest_seq4_t6_instance1());
 			break;
@@ -141,7 +145,8 @@ TASK(t6)
 TASK(t7)
 {	
 	t7_instance++;
-	switch (t7_instance) {
+	switch (t7_instance)
+	{
 		case 1:
 			TestRunner_runTest(COMInternalTest_seq4_t7_instance1());
 			break;
@@ -157,7 +162,8 @@ TASK(t7)
 TASK(t8)
 {
 	t8_instance++;
-	switch (t8_instance) {
+	switch (t8_instance)
+	{
 		case 1:
 			TestRunner_runTest(COMInternalTest_seq4_t8_instance1());
 			break;
@@ -173,7 +179,8 @@ TASK(t8)
 TASK(t9)
 {
 	t9_instance++;
-	switch (t9_instance) {
+	switch (t9_instance)
+	{
 		case 1:
 			TestRunner_runTest(COMInternalTest_seq4_t9_instance1());
 			break;

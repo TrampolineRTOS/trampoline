@@ -9,7 +9,7 @@ DeclareTask(t3);
  an activation of a task*/
 static void test_t3_instance1(void)
 {
-	int result_inst;
+	StatusType result_inst;
 	
 	result_inst = ChainTask(t3);
 	TEST_ASSERT_EQUAL_INT(E_OK , result_inst);

@@ -9,16 +9,15 @@ DeclareMessage(rm_newisoutside);
  an activation of a task*/
 static void test_t9_instance3(void)
 {
-	int result_inst_1, result_inst_2, result_inst_3;
-	
-	char received_char;
+	StatusType result_inst_1, result_inst_2;
+	StatusType received_char;
 	
 	result_inst_1 = ReceiveMessage(rm_newisoutside, &received_char);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
 	TEST_ASSERT_EQUAL_INT(2, (int)received_char);
 	
-	result_inst_3 = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
+	result_inst_2 = TerminateTask();
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
 	
 }
 

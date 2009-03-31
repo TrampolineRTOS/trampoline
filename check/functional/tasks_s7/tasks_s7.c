@@ -2,12 +2,13 @@
 #include "tpl_os.h"
 #include "embUnit.h"
 
-unsigned char instance_t1=0;
 TestRef TaskManagementTest_seq7_t1_instance1(void);
 TestRef TaskManagementTest_seq7_t1_instance2(void);
 TestRef TaskManagementTest_seq7_t1_instance3(void);
 TestRef TaskManagementTest_seq7_t2_instance(void);
 TestRef TaskManagementTest_seq7_t3_instance(void);
+
+unsigned char instance_t1 = 0;
 
 int main(void){
 	StartOS(OSDEFAULTAPPMODE);

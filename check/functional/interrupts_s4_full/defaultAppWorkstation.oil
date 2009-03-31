@@ -15,11 +15,14 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "interrupts_s4.c";
 		APP_SRC = "task1_instance.c";
 		APP_SRC = "isr1_instance.c";
-		APP_SRC = "callback_instance.c";
+		APP_SRC = "callback1_instance.c";
+		APP_SRC = "callback2_instance.c";
 		APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "interrupts_s4_full";
 		CFLAGS = "-I../embUnit";
+        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
     } ;
@@ -30,14 +33,14 @@ IMPLEMENTATION trampoline {
         AUTOSTART = TRUE { APPMODE = std ; } ;
         PRIORITY = 1;
         ACTIVATION = 1;
-        SCHEDULE = NON;
+        SCHEDULE = FULL;
     };
 	
 	ISR isr1 {
 		CATEGORY = 2;
 		STACKSIZE = 32000;
 		PRIORITY = 2;
-		SOURCE = SIGUSR1;
+		SOURCE = SIGTERM;
 	};
 	
 	COUNTER Counter1{
@@ -49,7 +52,15 @@ IMPLEMENTATION trampoline {
 	ALARM Alarm1{
 		COUNTER = Counter1;
 		ACTION = ALARMCALLBACK {
-			ALARMCALLBACKNAME = "CallBackC";
+			ALARMCALLBACKNAME = "CallBack1";
+		};
+		AUTOSTART = FALSE;
+	};
+	
+	ALARM Alarm2{
+		COUNTER = Counter1;
+		ACTION = ALARMCALLBACK {
+			ALARMCALLBACKNAME = "CallBack2";
 		};
 		AUTOSTART = FALSE;
 	};

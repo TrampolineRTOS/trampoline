@@ -8,10 +8,7 @@
 # {goil's target} : if Makefile hasn't been created yet, a 'goil' command is needed with the target name (default=libpcl)
 #
 # TODO : 
-#		 finish hook_s2
-#		 finish hook_s4
-#		 finish tasks_s14
-#		 --> delete testSequences file and do the loops for each directory #ls -d */
+#		 delete testSequences file and do the loops for each directory (which contains defaultAppWorkstation.oil) #ls -d
 ######
 
 if [ "$1" = "clean" ]

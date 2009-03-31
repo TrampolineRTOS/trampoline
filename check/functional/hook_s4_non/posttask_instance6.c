@@ -2,6 +2,7 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
+#include "tpl_os_kernel.h"
 
 void tpl_send_it1(void);
 
@@ -9,12 +10,10 @@ void tpl_send_it1(void);
 an activation of a isr*/
 static void test_posttask_instance6(void)
 {
-	
-	tpl_send_it3();
+	tpl_send_it1();
 	SuspendAllInterrupts();
-	tpl_send_it3();
+	tpl_send_it1();
 	ResumeAllInterrupts();
-	
 }
 
 /*create the test suite with all the test cases*/

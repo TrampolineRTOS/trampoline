@@ -20,10 +20,13 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "task1_instance.c";
 		APP_SRC = "isr1_instance.c";
 		APP_SRC = "isr2_instance.c";
+		APP_SRC = "isr3_instance.c";
 		APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
 		APP_NAME = "interrupts_s1_full";
 		CFLAGS = "-I../embUnit";
+        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
     } ;
@@ -41,7 +44,7 @@ IMPLEMENTATION trampoline {
 		CATEGORY = 2;
 		STACKSIZE = 32000;
 		PRIORITY = 1;
-		SOURCE = SIGUSR1;
+		SOURCE = SIGTERM;
 	};
 	
 	ISR isr2 {
@@ -49,6 +52,13 @@ IMPLEMENTATION trampoline {
 		STACKSIZE = 32000;
 		PRIORITY = 2;
 		SOURCE = SIGUSR2;
+	};
+	
+	ISR isr3 {
+		CATEGORY = 2;
+		STACKSIZE = 32000;
+		PRIORITY = 3;
+		SOURCE = SIGPIPE;
 	};
 
 };

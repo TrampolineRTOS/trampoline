@@ -7,7 +7,7 @@
  an activation of a task*/
 static void test_t5_instance(void)
 {
-	//
+
 }
 
 /*create the test suite with all the test cases*/

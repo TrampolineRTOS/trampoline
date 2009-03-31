@@ -18,16 +18,19 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "task2_instance.c";
 		APP_SRC = "isr1_instance.c";
 		APP_SRC = "isr2_instance.c";
-		APP_SRC = "error_instance.c";
-		APP_SRC = "posttask_instance5.c";
+		APP_SRC = "posttask_instance3.c";
+		APP_SRC = "posttask_instance6.c";
 		APP_SRC = "pretask_instance2.c";
+		APP_SRC = "pretask_instance3.c";
+		APP_SRC = "pretask_instance6.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "hook_s4_full";
 		CFLAGS = "-I../embUnit";
+        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
 		STARTUPHOOK = TRUE;
-		ERRORHOOK = TRUE;
 		POSTTASKHOOK = TRUE;
 		PRETASKHOOK = TRUE;
     } ;
@@ -38,27 +41,27 @@ IMPLEMENTATION trampoline {
         AUTOSTART = TRUE { APPMODE = std ; } ;
         PRIORITY = 1;
         ACTIVATION = 1;
-        SCHEDULE = FULL;
+        SCHEDULE = NON;
     };
 	
 	TASK t2 {
         AUTOSTART = FALSE ;
         PRIORITY = 2;
         ACTIVATION = 1;
-        SCHEDULE = FULL;
+        SCHEDULE = NON;
     };
 	
 	ISR isr1{
 		CATEGORY = 2;
 		STACKSIZE = 32000;
-		PRIORITY = 2;
-		SOURCE = SIGUSR1;
+		PRIORITY = 1;
+		SOURCE = SIGTERM;
 	};
 
 	ISR isr2{
 		CATEGORY = 2;
 		STACKSIZE = 32000;
-		PRIORITY = 1;
+		PRIORITY = 2;
 		SOURCE = SIGUSR2;
 	};
 	

@@ -1,4 +1,4 @@
-/*Instance of task t3*/
+/*Instance of task t5*/
 
 #include "embUnit.h"
 #include "tpl_os.h"
@@ -9,7 +9,7 @@ void tpl_send_it1(void);
  an activation of a task*/
 static void test_t5_instance(void)
 {
-	int result_inst_1;
+	StatusType result_inst_1;
 	
 	EnableAllInterrupts();
 	

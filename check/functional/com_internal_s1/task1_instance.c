@@ -2,8 +2,7 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "tpl_com_definitions.h"  //for E_COM_ID
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
+#include "tpl_com_definitions.h"  /*for E_COM_ID*/
 
 DeclareMessage(sm);
 DeclareTask(t2);
@@ -12,25 +11,26 @@ DeclareTask(t2);
  an activation of a task*/
 static void test_t1_instance(void)
 {
-	int result_inst_1, result_inst_2;
+	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5;
 	
-	//result_inst_1 = GetCOMApplicationMode();	
-	//TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
+	/*result_inst_1 = GetCOMApplicationMode();	
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
+	*/
 	
 	result_inst_1 = GetMessageStatus(sm);	
 	TEST_ASSERT_EQUAL_INT(E_COM_ID, result_inst_1);
 	
-	result_inst_1 = SendMessage(SEND_MESSAGE_COUNT, 0);	
-	TEST_ASSERT_EQUAL_INT(E_COM_ID, result_inst_1);
+	result_inst_2 = SendMessage(SEND_MESSAGE_COUNT, 0);	
+	TEST_ASSERT_EQUAL_INT(E_COM_ID, result_inst_2);
 	
-	result_inst_2 = SendMessage(sm, "0");
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
+	result_inst_3 = SendMessage(sm, "0");
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
 	
-	result_inst_2 = SendMessage(sm, "1");	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
+	result_inst_4 = SendMessage(sm, "1");	
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_4);
 	
-	result_inst_2 = ActivateTask(t2);	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
+	result_inst_5 = ActivateTask(t2);	
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_5);
 	
 	
 }

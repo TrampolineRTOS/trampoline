@@ -12,14 +12,14 @@ void WaitActivationOneShotAlarm(AlarmType Alarm);
  an activation of a task*/
 static void test_t3_instance(void)
 {
-	int result_inst_1, result_inst_3, result_inst_4;
+	StatusType result_inst_1, result_inst_3, result_inst_4;
+	TaskStateType result_inst_2;
 	
 	result_inst_1 = SetRelAlarm(Alarm1, 2, 0);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
 	
 	WaitActivationOneShotAlarm(Alarm1);
 	
-	TaskStateType result_inst_2;
 	result_inst_3 = GetTaskState(t2, &result_inst_2);
 	TEST_ASSERT_EQUAL_INT(READY, result_inst_2);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);

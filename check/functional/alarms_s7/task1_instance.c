@@ -2,7 +2,6 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "config.h" /*Display information in the right way (printf on UNIX...)*/
 
 DeclareAlarm(Alarm1);
 DeclareTask(t2);
@@ -14,7 +13,9 @@ an activation of a task*/
 static void test_t1_instance(void)
 {
 	
-	int result_inst_1, result_inst_2, result_inst_4, result_inst_5, result_inst_6, result_inst_8, result_inst_9;
+	StatusType result_inst_1, result_inst_2, result_inst_4, result_inst_5, result_inst_6, result_inst_8, result_inst_9;
+	EventMaskType result_inst_3;
+	TaskStateType result_inst_7;
 	
 	result_inst_1 = ActivateTask(t2);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
@@ -24,7 +25,6 @@ static void test_t1_instance(void)
 		
 	WaitActivationOneShotAlarm(Alarm1);
 	
-	EventMaskType result_inst_3;
 	result_inst_4 = GetEvent(t2, &result_inst_3);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_4);	
 	
@@ -36,7 +36,6 @@ static void test_t1_instance(void)
 	
 	WaitActivationOneShotAlarm(Alarm1);
 	
-	TaskStateType result_inst_7;
 	result_inst_8 = GetTaskState(t2, &result_inst_7);
 	TEST_ASSERT_EQUAL_INT(READY, result_inst_7);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_8);

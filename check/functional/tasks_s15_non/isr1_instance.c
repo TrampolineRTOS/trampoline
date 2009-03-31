@@ -2,7 +2,7 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "tpl_os_kernel.h" //for INVALID_TASK
+#include "tpl_os_kernel.h" /*for INVALID_TASK*/
 
 DeclareTask(t1);
 DeclareTask(t2);
@@ -17,8 +17,10 @@ DeclareTask(t8);
  an activation of a task*/
 static void test_isr1_instance(void)
 {
-	int result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9, result_inst_10, result_inst_11, result_inst_12, result_inst_13, result_inst_15, result_inst_17, result_inst_19;
-	
+	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9, result_inst_10, result_inst_11, result_inst_12, result_inst_13, result_inst_15, result_inst_17, result_inst_19;
+	TaskStateType result_inst_14, result_inst_16;
+	TaskType result_inst_18;
+
 	result_inst_1 = ActivateTask(INVALID_TASK);
 	TEST_ASSERT_EQUAL_INT(E_OS_ID, result_inst_1);
 	
@@ -58,17 +60,13 @@ static void test_isr1_instance(void)
 	result_inst_13 = ActivateTask(t8);
 	TEST_ASSERT_EQUAL_INT(E_OS_LIMIT , result_inst_13); 
 	
-	TaskStateType result_inst_14;
 	result_inst_15 = GetTaskState(INVALID_TASK, &result_inst_14);
-	//TEST_ASSERT_EQUAL_INT(E_OK , result_inst_14); 
 	TEST_ASSERT_EQUAL_INT(E_OS_ID , result_inst_15);
 	
-	TaskStateType result_inst_16;
 	result_inst_17 = GetTaskState(t8, &result_inst_16);
 	TEST_ASSERT_EQUAL_INT(WAITING , result_inst_16); 
 	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_17);
 	
-	TaskType result_inst_18;
 	result_inst_19 = GetTaskID(&result_inst_18);
 	TEST_ASSERT_EQUAL_INT(INVALID_TASK , result_inst_18);
 	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_19); 

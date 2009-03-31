@@ -10,9 +10,6 @@ TestRef COMInternalTest_seq2_comerror_instance3(void);
 TestRef COMInternalTest_seq2_comerror_instance4(void);
 TestRef COMInternalTest_seq2_comerror_instance5(void);
 
-DeclareMessage(sm);
-DeclareMessage(rm);
-
 int com_error_instance=0;
 
 int main(void)
@@ -29,7 +26,8 @@ void ShutdownHook(StatusType error)
 void COMErrorHook(StatusType error){
 	
 	com_error_instance++;
-	switch (com_error_instance) {
+	switch (com_error_instance)
+	{
 		case 1:
 			TestRunner_runTest(COMInternalTest_seq2_comerror_instance1());
 			break;
@@ -49,8 +47,6 @@ void COMErrorHook(StatusType error){
 			stdimpl_print("instance error\n");
 			break;
 	}
-	
-	
 }
 
 TASK(t1)
@@ -65,16 +61,3 @@ TASK(t2)
 	TestRunner_runTest(COMInternalTest_seq2_t2_instance());
 	
 }
-
-/*
-
- DOW = TRUE;
- UNITTEST = TRUE;
- 
- CFLAGS  = "-g";
- CFLAGS  = "-Wall -pedantic -fasm-blocks";
- CFLAGS  = "-Wmissing-field-initializers";
- ASFLAGS = "";
- LDFLAGS = "-g";
-
-*/

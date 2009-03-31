@@ -7,7 +7,7 @@
 an activation of a task*/
 static void test_t2_instance(void)
 {
-	//
+
 	
 }
 
