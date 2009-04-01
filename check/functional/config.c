@@ -15,7 +15,7 @@
 
 #include "config.h"
 
-#include "config_tests.h"
+/* New EmbUnit tests #include "config_tests.h" */
 
 unsigned char test_number;
 

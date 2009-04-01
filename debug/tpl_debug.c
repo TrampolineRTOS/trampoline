@@ -33,15 +33,15 @@ void print_counter(tpl_counter *c)
   tpl_time_obj *t = c->first_to;
   
   printf("counter (ticks_per_base=%d, max_allowed_value=%d, min_cycle=%d)\n",
-         c->ticks_per_base,
-         c->max_allowed_value,
-         c->min_cycle);
+         (int)c->ticks_per_base,
+         (int)c->max_allowed_value,
+         (int)c->min_cycle);
   printf("    current_tick=%d, current_date=%d\n",
-         c->current_tick,
-         c->current_date);
+         (int)c->current_tick,
+         (int)c->current_date);
   
   while (t != NULL) {
-    printf("        date=%d, alr=%d\n",t->date,t);
+    printf("        date=%d, alr=%d\n",(int)t->date,(int)t);
     t = t->next_to;
   }
 }
