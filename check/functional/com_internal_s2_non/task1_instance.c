@@ -11,12 +11,12 @@ DeclareTask(t2);
  an activation of a task*/
 static void test_t1_instance(void)
 {
-	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9, result_inst_10, result_inst_11, result_inst_12;
+	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9, result_inst_10, result_inst_11, result_inst_12, result_inst_13;
 	
 	result_inst_1 = GetMessageStatus(sm);	
 	TEST_ASSERT_EQUAL_INT(E_COM_NOMSG, result_inst_1);
 	
-	result_inst_2 = SendMessage(SEND_MESSAGE_COUNT, 0);	
+	result_inst_2 = SendMessage(SEND_MESSAGE_COUNT, "5");	
 	TEST_ASSERT_EQUAL_INT(E_COM_ID, result_inst_2);
 	
 	result_inst_3 = GetMessageStatus(sm);	
@@ -48,7 +48,9 @@ static void test_t1_instance(void)
 	
 	result_inst_12 = ActivateTask(t2);	
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_12);
-			
+	
+	result_inst_13 = Schedule();	
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_13);
 }
 
 /*create the test suite with all the test cases*/

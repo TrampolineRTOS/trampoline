@@ -20,7 +20,7 @@ static void test_t1_instance(void)
 	result_inst_1 = GetMessageStatus(sm);	
 	TEST_ASSERT_EQUAL_INT(E_COM_ID, result_inst_1);
 	
-	result_inst_2 = SendMessage(SEND_MESSAGE_COUNT, 0);	
+	result_inst_2 = SendMessage(SEND_MESSAGE_COUNT, "3");	
 	TEST_ASSERT_EQUAL_INT(E_COM_ID, result_inst_2);
 	
 	result_inst_3 = SendMessage(sm, "0");

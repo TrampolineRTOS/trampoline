@@ -16,8 +16,9 @@ static void test_t2_instance(void)
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
 	TEST_ASSERT_EQUAL_INT((int)('1'), (int)received_char);
 	
-	result_inst_2 = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
+	ShutdownOS(E_OK);
+	//result_inst_2 = TerminateTask();
+	//TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
 }
 
 /*create the test suite with all the test cases*/

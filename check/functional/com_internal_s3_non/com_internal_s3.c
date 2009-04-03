@@ -29,20 +29,24 @@ TASK(t1)
 
 TASK(t2)
 {
+	printf("t2\n");
 	TestRunner_runTest(COMInternalTest_seq3_t2_instance());
 }
 
 TASK(t3)
 {
+	printf("t3\n");
 	TestRunner_runTest(COMInternalTest_seq3_t3_instance());
 }
 
 TASK(t4)
 {
+	printf("t4\n");
 	TestRunner_runTest(COMInternalTest_seq3_t4_instance());
 }
 
 extern void ComCallBack_callback(void)
 {	
+	printf("callback\n");
 	TestRunner_runTest(COMInternalTest_seq3_comcallback_instance());
 }
