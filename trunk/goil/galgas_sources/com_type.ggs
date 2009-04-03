@@ -28,6 +28,7 @@ import semantics goil_basic_types in "goil_basic_types.ggs" ;
 import semantics goil_routines in "goil_routines.ggs" ;
 
 class @com extends @oil_obj {
+  @bool        usecom ; # true if a COM {} appears un OIL file, false otherwise
   @basic_type  timebase ;
   @basic_type  errorhook ;
   @basic_type  usegetserviceid ;
@@ -39,8 +40,12 @@ class @com extends @oil_obj {
 
   method generate ?!@string h :
 
-    @string res := "#define WITH_COM\n" ;
+    @string res := "" ;
 
+    if usecom then
+      res := "#define WITH_COM\n" ;
+    end if ;
+      
     cast timebase :
     when == @void do
       res .= "#define TPL_COMTIMEBASE 0.001\n" ;

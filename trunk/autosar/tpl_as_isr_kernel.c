@@ -132,9 +132,10 @@ FUNC(tpl_bool, OS_CODE) tpl_is_isr2_enabled (
  */
 FUNC(tpl_isr_id, OS_CODE) tpl_get_isr_id_service(void)
 {
-  if ((tpl_running_id >= TASK_COUNT) && tpl_running_id < (ISR_COUNT+TASK_COUNT))
+  if ((tpl_kern.running_id >= TASK_COUNT) &&
+      tpl_kern.running_id < (ISR_COUNT+TASK_COUNT))
   {
-    return tpl_running_id;
+    return tpl_kern.running_id;
   }
   else
   {

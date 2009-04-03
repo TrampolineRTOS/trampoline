@@ -57,7 +57,7 @@ static CONST(tpl_generic_id, AUTOMATIC) tpl_obj_count_table[5] = {
 FUNC(tpl_app_id, OS_CODE) tpl_get_application_id_service(void)
 {
 #if APP_COUNT > 0
-  return tpl_stat_proc_table[tpl_running_id]->app_id;
+  return tpl_kern.s_running->app_id;
 #else
   return INVALID_OSAPPLICATION;
 #endif
@@ -101,7 +101,7 @@ FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
       break;
       
     case OBJECT_RESOURCE:
-#ifndef NO_RESOURCE
+#ifndef RESOURCE_COUNT > 1
       /* RES_SCHEDULER id is equal to RESOURCE_COUNT - 1  */
       if (obj_id < (RESOURCE_COUNT - 1))
       {
@@ -194,7 +194,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
 
 #if APP_COUNT > 0
   VAR(tpl_app_id, AUTOMATIC) running_app_id =
-    tpl_stat_proc_table[tpl_running_id]->app_id;
+    tpl_kern.s_running->app_id;
   VAR(tpl_proc_id, AUTOMATIC) restart_id =
     tpl_app_table[running_app_id]->restart;
 
@@ -281,28 +281,28 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
     if ((opt == RESTART) &&
         (restart_id != INVALID_TASK))
     {
-      if (restart_id == tpl_running_id)
+      if (restart_id == tpl_kern.running_id)
       {
-        tpl_dyn_proc_table[tpl_running_id]->state = RESURRECT;
+        tpl_kern.running->state = RESURRECT;
       }
       else
       {
-        tpl_dyn_proc_table[tpl_running_id]->state = DYING;  
+        tpl_kern.running->state = DYING;  
         tpl_activate_task(tpl_app_table[running_app_id]->restart);
       }
       tpl_schedule_from_dying();
     }
     else
     {
-      tpl_dyn_proc_table[tpl_running_id]->state = DYING;  
+      tpl_kern.running->state = DYING;  
       tpl_schedule_from_dying();
     }
 # ifndef WITH_SYSTEM_CALL
-    if (tpl_need_switch != NO_NEED_SWITCH)
+    if (tpl_kern.need_switch != NO_NEED_SWITCH)
     {
       tpl_switch_context(
         NULL,
-        &(tpl_stat_proc_table[tpl_running_id]->context)
+        &(tpl_kern.s_running->context)
       );
     }
 # endif

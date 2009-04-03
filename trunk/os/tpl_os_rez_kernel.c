@@ -119,8 +119,6 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
 {
   /*  init the error to no error  */
   VAR(tpl_status, AUTOMATIC) result = E_OK;
-  P2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) running =
-    tpl_dyn_proc_table[tpl_running_id];
 
 #ifndef NO_RESOURCE
   P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
@@ -151,23 +149,23 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
   
   IF_NO_EXTENDED_ERROR(result)
     /*  set the owner of the resource to the calling task     */
-    res->owner = tpl_running_id;
+    res->owner = tpl_kern.running_id;
     /*  add the ressource at the beginning of the
         resource list stored in the task descriptor              */
-    res->next_res = running->resources;
-    running->resources = res;
+    res->next_res = tpl_kern.running->resources;
+    tpl_kern.running->resources = res;
     /*  save the current priority of the task in the resource */
-    res->owner_prev_priority = running->priority;
+    res->owner_prev_priority = tpl_kern.running->priority;
   
-    if (running->priority < res->ceiling_priority)
+    if (tpl_kern.running->priority < res->ceiling_priority)
     {
       /*  set the task priority at the ceiling priority of the resource
           if the ceiling priority is greater than the current priority of
           the task  */
-      running->priority = res->ceiling_priority;
+      tpl_kern.running->priority = res->ceiling_priority;
     }
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    tpl_start_resource_monitor(tpl_running_id, res_id);
+    tpl_start_resource_monitor(tpl_kern.running_id, res_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   IF_NO_EXTENDED_ERROR_END()
   
@@ -192,9 +190,6 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
 {
   /*  init the error to no error  */
   VAR(tpl_status, AUTOMATIC) result = E_OK;
-  VAR(tpl_proc_id, AUTOMATIC) old_running_id;
-  P2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) running =
-    tpl_dyn_proc_table[tpl_running_id];
 
   P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
 
@@ -230,25 +225,23 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
 
     IF_NO_EXTENDED_ERROR(result)
         /*  get the saved priority  */
-      running->priority = res->owner_prev_priority;
+      tpl_kern.running->priority = res->owner_prev_priority;
       /*  remove the resource from the resource list  */
-      running->resources = res->next_res;
+      tpl_kern.running->resources = res->next_res;
       res->next_res = NULL;
       /*  remove the owner    */
       res->owner = INVALID_TASK;
 
-      old_running_id = tpl_running_id;
-      
       tpl_schedule_from_running();
 # ifdef WITH_AUTOSAR_TIMING_PROTECTION
-      tpl_stop_resource_monitor(tpl_running_id, res_id);
+      tpl_stop_resource_monitor(tpl_kern.running_id, res_id);
 # endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 # ifndef WITH_SYSTEM_CALL
-      if (tpl_need_switch != NO_NEED_SWITCH)
+      if (tpl_kern.need_switch != NO_NEED_SWITCH)
       {
         tpl_switch_context(
-          &(tpl_stat_proc_table[old_running_id]->context),
-          &(tpl_stat_proc_table[tpl_running_id]->context)
+          &(tpl_kern.s_old->context),
+          &(tpl_kern.s_running->context)
         );
       }
 # endif

@@ -125,12 +125,28 @@ VAR(tpl_proc, OS_VAR) idle_task = {
 /**
  * @internal
  *
+ * tpl_kern gather informations on the current executing object and
+ * the previous one
+ */
+VAR(tpl_kern_state, OS_VAR) tpl_kern =
+{
+  NULL,
+  &idle_task_static,
+  NULL,
+  &idle_task,
+  IDLE_TASK_ID,
+  NO_NEED_SWITCH
+};
+
+/**
+ * @internal
+ *
  * tpl_running_id is the currently running process id.
  *
  * At system startup it is set to IDLE_TASK_ID since the main is a part
  * of the idle task.
  */
-VAR(int, OS_VAR) tpl_running_id = IDLE_TASK_ID;
+/* VAR(int, OS_VAR) tpl_running_id = IDLE_TASK_ID; */
 
 /**
  * @internal
@@ -139,7 +155,7 @@ VAR(int, OS_VAR) tpl_running_id = IDLE_TASK_ID;
  * It is set un the services and tested before calling the context switch
  * and reset to FALSE after that
  */ 
-VAR(u8, OS_VAR) tpl_need_switch = NO_NEED_SWITCH;
+/* VAR(u8, OS_VAR) tpl_need_switch = NO_NEED_SWITCH; */
  
 
 /*  MISRA RULE 27 VIOLATION: These 2 variables are used only in this file
@@ -682,14 +698,14 @@ FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(void)
 {
   VAR(tpl_os_state, OS_APPL_DATA) state = OS_UNKNOWN;
   
-  if (tpl_running_id == -2) {
+  if (tpl_kern.running_id == -2) {
     state = OS_INIT;
   }
-  else if (tpl_running_id == INVALID_TASK)
+  else if (tpl_kern.running_id == INVALID_TASK)
   {
     state = OS_IDLE;
   }
-  else if (tpl_running_id >= TASK_COUNT)
+  else if (tpl_kern.running_id >= TASK_COUNT)
   {
     state = OS_ISR2;
   }
@@ -755,65 +771,67 @@ FUNC(void, OS_CODE) tpl_release_internal_resource(
  */
 FUNC(void, OS_CODE) tpl_schedule_from_running(void)
 {
-  P2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) running =
-    tpl_dyn_proc_table[tpl_running_id];
   VAR(u8, AUTOMATIC) need_switch = NO_NEED_SWITCH;
   
   /*  the tpl_running_obj is never NULL and is in the state RUNNING  */
-  DOW_ASSERT(running != NULL)
-  DOW_ASSERT(running->state == RUNNING)
+  DOW_ASSERT(tpl_kern.running != NULL)
+  DOW_ASSERT(tpl_kern.running->state == RUNNING)
   DOW_ASSERT(tpl_h_prio != -1)
   
 #ifdef WITH_AUTOSAR_STACK_MONITORING
-  tpl_check_stack (tpl_running_id);
+  tpl_check_stack (tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
   
-  if (tpl_h_prio > running->priority)
+  if (tpl_h_prio > tpl_kern.running->priority)
   {
     /*  a task switch will occur. It is time to call the
         PostTaskHook while the soon descheduled task is running   */
     CALL_POST_TASK_HOOK()
     
     /*  the current running task become READY                     */
-    running->state = (tpl_proc_state)READY;
+    tpl_kern.running->state = (tpl_proc_state)READY;
     /*  put the running task in the ready task list               */
     /*  Bug fix. preempted objects are put at the head of the
         set while newly activated objects are put at the end of
         the set. So we have to distinguish them                   */
-    tpl_put_preempted_proc(tpl_running_id);
+    tpl_put_preempted_proc(tpl_kern.running_id);
+    /*  copy it in old slot of tpl_kern                           */
+    tpl_kern.old = tpl_kern.running;
+    tpl_kern.s_old = tpl_kern.s_running;
     
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     /*  pause the budget monitor                                  */
-    tpl_pause_budget_monitor (tpl_running_id);
+    tpl_pause_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
     
     
     /*  get the ready task from the ready task list               */
-    tpl_running_id = tpl_get_proc();
-    running = tpl_dyn_proc_table[tpl_running_id];
+    tpl_kern.running_id = tpl_get_proc();
+    tpl_kern.running = tpl_dyn_proc_table[tpl_kern.running_id];
+    tpl_kern.s_running = tpl_stat_proc_table[tpl_kern.running_id];
     
-    if (running->state == READY_AND_NEW)
+    if (tpl_kern.running->state == READY_AND_NEW)
     {
       /*  the object has not be preempted. So its
           descriptor must be initialized                          */
-      tpl_init_proc(tpl_running_id);
+      tpl_init_proc(tpl_kern.running_id);
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
       /*  start the budget monitor for the activated task or isr  */
-      tpl_start_budget_monitor(tpl_running_id);
+      tpl_start_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
     }
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     else
     {
-      tpl_continue_budget_monitor(tpl_running_id);
+      tpl_continue_budget_monitor(tpl_kern.running_id);
     }
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
     
     /*  the inserted task become RUNNING                          */
-    running->state = RUNNING;
+    tpl_kern.running->state = RUNNING;
     /*  If an internal resource is assigned to the task
         and it is not already taken by it, take it                */
-    tpl_get_internal_resource(tpl_running_id);
+    tpl_get_internal_resource(tpl_kern.running_id);
     
     /*  A new task has been elected. It is time to call
         PreTaskHook while the rescheduled task is running         */
@@ -822,7 +840,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
     need_switch = NEED_SWITCH | NEED_SAVE;
   }
   
-  tpl_need_switch = need_switch;
+  tpl_kern.need_switch = need_switch;
 }
 
 /**
@@ -836,11 +854,8 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
  */
 FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
 {
-  P2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) running =
-    tpl_dyn_proc_table[tpl_running_id];
-  
 #ifdef WITH_AUTOSAR_STACK_MONITORING
-  tpl_check_stack(tpl_running_id);
+  tpl_check_stack(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
   
   /*  a task switch will occur. It is time to call the
@@ -849,61 +864,64 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
   
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
   /*  pause the budget monitoring when a running obj has ended            */
-  tpl_stop_budget_monitor(tpl_running_id);
+  tpl_stop_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   
   /*  the task loses the CPU because it has been put in the WAITING or
    in the DYING state, its internal resource is released.              */
-  tpl_release_internal_resource(tpl_running_id);
+  tpl_release_internal_resource(tpl_kern.running_id);
   
   /*  and checked to compute its state.                                 */
-  if (running->activate_count > 0)
+  if (tpl_kern.running->activate_count > 0)
   {
     /*  there is at least one instance of the dying running object in
         the ready list. So it is put in the READY_AND_NEW state. This
         way when the next instance will be prepared to run it will
         be initialized.                                                 */
-    running->state = READY_AND_NEW;
+    tpl_kern.running->state = READY_AND_NEW;
   }
   else
   {
     /*  there is no instance of the dying running object in the ready
         list. So it is put in the SUSPENDED state.                      */
-    running->state = SUSPENDED;
+    tpl_kern.running->state = SUSPENDED;
   }
   
+  /*  copy it in old slot of tpl_kern                           */
+  tpl_kern.old = tpl_kern.running;
+  tpl_kern.s_old = tpl_kern.s_running;
   /*  get the ready task from the ready task list                       */
-  tpl_running_id = tpl_get_proc();
+  tpl_kern.running_id = tpl_get_proc();
+  tpl_kern.running = tpl_dyn_proc_table[tpl_kern.running_id];
+  tpl_kern.s_running = tpl_stat_proc_table[tpl_kern.running_id];
   
-  running = tpl_dyn_proc_table[tpl_running_id];
-  
-  if (running->state == READY_AND_NEW)
+  if (tpl_kern.running->state == READY_AND_NEW)
   {
     /*  the object has not be preempted. So its
         descriptor must be initialized                                  */
-    tpl_init_proc(tpl_running_id);
+    tpl_init_proc(tpl_kern.running_id);
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     /* start the budget monitor for the activated task or isr           */
-    tpl_start_budget_monitor(tpl_running_id);
+    tpl_start_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
   else
   {
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    tpl_continue_budget_monitor(tpl_running_id);
+    tpl_continue_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
   /*  the inserted task become RUNNING                                  */
-  running->state = RUNNING;
+  tpl_kern.running->state = RUNNING;
   /*  If an internal resource is assigned to the task
       and it is not already taken by it, take it                        */
-  tpl_get_internal_resource(tpl_running_id);
+  tpl_get_internal_resource(tpl_kern.running_id);
   
   /*  A new task has been elected. It is time to call PreTaskHook while
       the rescheduled task is running                                   */
   CALL_PRE_TASK_HOOK()
   
-  tpl_need_switch = NEED_SWITCH;
+  tpl_kern.need_switch = NEED_SWITCH;
 }
 
 /**
@@ -917,7 +935,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
 FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
 {
 #ifdef WITH_AUTOSAR_STACK_MONITORING
-  tpl_check_stack(tpl_running_id);
+  tpl_check_stack(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
   
   /*  a task switch will occur. It is time to call the
@@ -926,40 +944,45 @@ FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
   
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
   /*  pause the budget monitoring when a task has ended           */
-  tpl_pause_budget_monitor(tpl_running_id);
+  tpl_pause_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   
   /*  the task loses the CPU because it has been put in the
       WAITING or in the DYING state, its internal resource
       is released.                                                */
-  tpl_release_internal_resource(tpl_running_id);
+  tpl_release_internal_resource(tpl_kern.running_id);
   
   
+  /*  copy it in old slot of tpl_kern                           */
+  tpl_kern.old = tpl_kern.running;
+  tpl_kern.s_old = tpl_kern.s_running;
   /*  get the ready task from the ready task list                 */
-  tpl_running_id = tpl_get_proc();
+  tpl_kern.running_id = tpl_get_proc();
+  tpl_kern.running = tpl_dyn_proc_table[tpl_kern.running_id];
+  tpl_kern.s_running = tpl_stat_proc_table[tpl_kern.running_id];
   
-  if (tpl_dyn_proc_table[tpl_running_id]->state == READY_AND_NEW)
+  if (tpl_kern.running->state == READY_AND_NEW)
   {
     /*  the object has not be preempted. So its
         descriptor must be initialized                            */
-    tpl_init_proc(tpl_running_id);
+    tpl_init_proc(tpl_kern.running_id);
     
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     /*  start the budget monitor for the activated task           */
-    tpl_start_budget_monitor(tpl_running_id);
+    tpl_start_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
   else
   {
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    tpl_continue_budget_monitor(tpl_running_id);
+    tpl_continue_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
   /*  the inserted task become RUNNING                            */
-  tpl_dyn_proc_table[tpl_running_id]->state = RUNNING;
+  tpl_kern.running->state = RUNNING;
   /*  If an internal resource is assigned to the task
       and it is not already taken by it, take it                  */
-  tpl_get_internal_resource(tpl_running_id);
+  tpl_get_internal_resource(tpl_kern.running_id);
   
   /*  A new task has been elected
    It is time to call PreTaskHook while the
@@ -968,7 +991,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
   
   /*  Switch the context  */
   
-  tpl_need_switch = NEED_SWITCH | NEED_SAVE;
+  tpl_kern.need_switch = NEED_SWITCH | NEED_SAVE;
 }
 
 
@@ -1224,20 +1247,18 @@ FUNC(void, OS_CODE) tpl_start_os_service(
   /*  Call the startup hook. According to the spec, it should be called
       after the os is initialized and before the scheduler is running     */
   CALL_STARTUP_HOOK()
-  
-/*  tpl_running_id = IDLE_TASK_ID; */
-  
+
   /*  Call tpl_schedule to elect the greatest priority task */
   if(tpl_h_prio != -1)
   {
     tpl_schedule_from_running();
     
 #ifndef WITH_SYSTEM_CALL
-    if (tpl_need_switch != NO_NEED_SWITCH)
+    if (tpl_kern.need_switch != NO_NEED_SWITCH)
     {
       tpl_switch_context(
-        &(tpl_stat_proc_table[IDLE_TASK_ID]->context),
-        &(tpl_stat_proc_table[tpl_running_id]->context)
+        &(tpl_kern.s_old->context),
+        &(tpl_kern.s_running->context)
       );
     }
 #endif

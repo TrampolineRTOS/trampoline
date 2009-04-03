@@ -94,7 +94,7 @@
 #define RESTART     0
 
 /**
- *  @def  RESTART
+ *  @def  NO_RESTART
  *
  *  Parameter for TerminateApplication.
  *  @see #TerminateApplication

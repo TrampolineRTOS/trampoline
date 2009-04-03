@@ -62,7 +62,7 @@ FUNC(void, OS_CODE) tpl_suspend_all_interrupts_service(void)
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
   if( tpl_locking_depth == 1)
   {
-    tpl_start_all_isr_lock_monitor(tpl_running_id);
+    tpl_start_all_isr_lock_monitor(tpl_kern.running_id);
   }
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
@@ -82,7 +82,7 @@ FUNC(void, OS_CODE) tpl_resume_all_interrupts_service(void)
   if( tpl_locking_depth == 0)
   {
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    tpl_stop_all_isr_lock_monitor(tpl_running_id);
+    tpl_stop_all_isr_lock_monitor(tpl_kern.running_id);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
     tpl_enable_interrupts();
   }
@@ -101,7 +101,7 @@ FUNC(void, OS_CODE) tpl_disable_all_interrupts_service(void)
 #endif
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-  tpl_start_all_isr_lock_monitor(tpl_running_id);
+  tpl_start_all_isr_lock_monitor(tpl_kern.running_id);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 
@@ -115,7 +115,7 @@ FUNC(void, OS_CODE) tpl_enable_all_interrupts_service(void)
 #endif
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-  tpl_stop_all_isr_lock_monitor(tpl_running_id);
+  tpl_stop_all_isr_lock_monitor(tpl_kern.running_id);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 
   tpl_enable_interrupts();
@@ -137,7 +137,7 @@ FUNC(void, OS_CODE) tpl_suspend_os_interrupts_service(void)
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
   if( tpl_locking_depth == 1)
   {
-    tpl_start_all_isr_lock_monitor(tpl_running_id);
+    tpl_start_all_isr_lock_monitor(tpl_kern.running_id);
   }
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
@@ -157,7 +157,7 @@ FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void)
   if( tpl_locking_depth == 0)
   {
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    tpl_stop_all_isr_lock_monitor(tpl_running_id);
+    tpl_stop_all_isr_lock_monitor(tpl_kern.running_id);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
     tpl_enable_interrupts();
   }
@@ -192,20 +192,20 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
   
   /* the activate count is decreased
    */
-  tpl_dyn_proc_table[tpl_running_id]->activate_count--;
+  tpl_kern.running->activate_count--;
     
-  /*  and let the scheduler do its job                            */
+  /*  and let the scheduler do its job  */
   tpl_schedule_from_dying();
   
   IF_NO_EXTENDED_ERROR_END()
 #endif
   
 #ifndef WITH_SYSTEM_CALL
-  if (tpl_need_switch != NO_NEED_SWITCH)
+  if (tpl_kern.need_switch != NO_NEED_SWITCH)
   {
     tpl_switch_context(
       NULL,
-      &(tpl_stat_proc_table[tpl_running_id]->context)
+      &(tpl_kern.s_running->context)
     );
   }
 #endif
@@ -271,7 +271,7 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
   P2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA) isr;
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
-    tpl_check_stack(tpl_running_id);
+    tpl_check_stack(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
   /*  Is there a handler for this id ?
@@ -312,16 +312,14 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
     
     if (tpl_it_nesting == 0)
     {
-      tpl_proc_id old_running_id = tpl_running_id;
-      
       tpl_schedule_from_running();
       
 #ifndef WITH_SYSTEM_CALL
-      if (tpl_need_switch != NO_NEED_SWITCH)
+      if (tpl_kern.need_switch != NO_NEED_SWITCH)
       {
         tpl_switch_context_from_it(
-          &(tpl_stat_proc_table[old_running_id]->context),
-          &(tpl_stat_proc_table[tpl_running_id]->context)
+          &(tpl_kern.s_old->context),
+          &(tpl_kern.s_running->context)
         );
       }
 #endif

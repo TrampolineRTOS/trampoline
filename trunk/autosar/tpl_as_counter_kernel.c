@@ -82,23 +82,22 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
     need_rescheduling |= tpl_counter_tick(counter);
 
     if (need_rescheduling == NEED_RESCHEDULING) {
-      old_running_id = tpl_running_id;
       tpl_schedule_from_running();
+#ifndef WITH_SYSTEM_CALL
+      if (tpl_kern.need_switch != NO_NEED_SWITCH)
+      {
+        tpl_switch_context(
+          &(tpl_kern.s_old->context),
+          &(tpl_kern.s_running->context)
+        );
+      }
+#endif
+      
     }
 
   IF_NO_EXTENDED_ERROR_END()
 #endif
 
-#ifndef WITH_SYSTEM_CALL
-  if (tpl_need_switch != NO_NEED_SWITCH)
-  {
-    tpl_switch_context(
-      &(tpl_stat_proc_table[old_running_id]->context),
-      &(tpl_stat_proc_table[tpl_running_id]->context)
-    );
-  }
-#endif
-  
   PROCESS_ERROR(result)
 
   /*  unlock the task structures                  */

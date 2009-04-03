@@ -48,9 +48,6 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   CONST(tpl_event_mask, AUTOMATIC)    event)
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
-#ifndef NO_EXTENDED_TASK
-  VAR(tpl_proc_id, AUTOMATIC) old_running_id = tpl_running_id;
-#endif
 	
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
@@ -75,13 +72,11 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   {
     tpl_schedule_from_running();
 # ifndef WITH_SYSTEM_CALL
-    if (tpl_need_switch != NO_NEED_SWITCH)
+    if (tpl_kern.need_switch != NO_NEED_SWITCH)
     {
       tpl_switch_context(
-        (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
-          &(tpl_stat_proc_table[old_running_id]->context),
-        (P2VAR(tpl_context, AUTOMATIC, OS_APPL_DATA))
-          &(tpl_stat_proc_table[tpl_running_id]->context)
+        &(tpl_kern.s_old->context),
+        &(tpl_kern.s_running->context)
       );
     }
 # endif
@@ -120,7 +115,8 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
   
 #ifndef NO_EXTENDED_TASK
   IF_NO_EXTENDED_ERROR(result)
-    tpl_task_events_table[tpl_running_id]->evt_set &= (tpl_event_mask)(~event);
+    tpl_task_events_table[tpl_kern.running_id]->evt_set &=
+      (tpl_event_mask)(~event);
   IF_NO_EXTENDED_ERROR_END()
 #endif
 
@@ -177,9 +173,8 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 #ifndef NO_EXTENDED_TASK
-  VAR(tpl_task_id, AUTOMATIC) old_running_id;
+  P2VAR(tpl_task_events, AUTOMATIC, OS_VAR) task_events;  
 #endif
-	
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
   
@@ -197,23 +192,22 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   
 #ifndef NO_EXTENDED_TASK
   IF_NO_EXTENDED_ERROR(result)
+  task_events = tpl_task_events_table[tpl_kern.running_id];
   /*  all the evt_wait is overidden.  */
-  tpl_task_events_table[tpl_running_id]->evt_wait = event;
+  task_events->evt_wait = event;
   /*  check one of the event to wait is not already set       */
-  if ((tpl_task_events_table[tpl_running_id]->evt_set & event) == 0)
+  if ((task_events->evt_set & event) == 0)
   {
     /*  no one is set, the task goes in the WAITING state   */
-    tpl_dyn_proc_table[tpl_running_id]->state = WAITING;
-    /*  save the current running process                    */
-    old_running_id = tpl_running_id;
+    tpl_kern.running->state = WAITING;
     /*  and a rescheduling occurs                           */
     tpl_schedule_from_waiting();
 # ifndef WITH_SYSTEM_CALL
-    if (tpl_need_switch != NO_NEED_SWITCH)
+    if (tpl_kern.need_switch != NO_NEED_SWITCH)
     {
       tpl_switch_context(
-        &(tpl_stat_proc_table[old_running_id]->context),
-        &(tpl_stat_proc_table[tpl_running_id]->context)
+        &(tpl_kern.s_old->context),
+        &(tpl_kern.s_running->context)
       );
     }
 # endif  

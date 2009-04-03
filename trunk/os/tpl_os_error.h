@@ -1018,8 +1018,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #ifdef OS_EXTENDED
 # define CHECK_NOT_EXTENDED_RUNNING_ERROR(result)   \
   if ((result == (tpl_status)E_OK) &&               \
-      (tpl_stat_proc_table[tpl_running_id]->type != \
-      (tpl_proc_type)TASK_EXTENDED))                \
+      (tpl_kern.running_id >= EXTENDED_TASK_COUNT)) \
   {                                                 \
     result = (tpl_status)E_OS_ACCESS;               \
   }
@@ -1077,7 +1076,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #if !defined(NO_TASK) && defined(OS_EXTENDED)
 #   define CHECK_RUNNING_OWNS_REZ_ERROR(result)                     \
     if ((result == (tpl_status)E_OK) &&                             \
-        ((tpl_dyn_proc_table[tpl_running_id]->resources) != NULL))  \
+        ((tpl_kern.running->resources) != NULL))                    \
     {                                                               \
         result = (tpl_status)E_OS_RESOURCE;                         \
     }
@@ -1264,7 +1263,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #   define CHECK_RESOURCE_PRIO_ERROR_ON_GET(res,result)         \
     if ((result == (tpl_status)E_OK) &&                         \
         (((res)->owner != INVALID_TASK) ||                      \
-         (tpl_stat_proc_table[tpl_running_id]->base_priority >  \
+         (tpl_kern.s_running->base_priority >                   \
           res->ceiling_priority)))                              \
     {                                                           \
         result = (tpl_status)E_OS_ACCESS;                       \
@@ -1289,7 +1288,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #ifdef OS_EXTENDED
 #   define CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(res,result)     \
     if ((result == (tpl_status)E_OK) &&                         \
-        (tpl_stat_proc_table[tpl_running_id]->base_priority >   \
+        (tpl_kern.s_running->base_priority >   \
          (res)->ceiling_priority))                              \
     {                                                           \
         result = (tpl_status)E_OS_ACCESS;                       \
@@ -1315,7 +1314,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #ifdef OS_EXTENDED
 #   define CHECK_RESOURCE_ORDER_ON_RELEASE(res,result)              \
     if ((result == (tpl_status)E_OK) &&                             \
-         (tpl_dyn_proc_table[tpl_running_id]->resources != (res)))  \
+         (tpl_kern.running->resources != (res)))                    \
     {                                                               \
         result = (tpl_status)E_OS_NOFUNC;                           \
     }

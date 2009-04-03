@@ -155,6 +155,7 @@ rule <start> :
          ]
         ![@com new
           ![@lstring new !"" !here]
+          !false
           !void_obj
           !void_obj
           !void_obj
