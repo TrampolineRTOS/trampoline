@@ -48,8 +48,10 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   CONST(tpl_event_mask, AUTOMATIC)    event)
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+#ifndef NO_EXTENDED_TASK
   VAR(tpl_proc_id, AUTOMATIC) old_running_id = tpl_running_id;
-  
+#endif
+	
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
   
@@ -174,8 +176,10 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   CONST(tpl_event_mask, AUTOMATIC) event)
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+#ifndef NO_EXTENDED_TASK
   VAR(tpl_task_id, AUTOMATIC) old_running_id;
-  
+#endif
+	
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
   
