@@ -49,6 +49,7 @@ rule <com>
   ?!@com com
 :
   # get the current values of the attributes
+  @bool        usecom := true ;
   @basic_type  tb := [com timebase] ;
   @basic_type  eh := [com errorhook] ;
   @basic_type  ugsid := [com usegetserviceid] ;
@@ -76,6 +77,7 @@ rule <com>
 
   com := [@com new
     ![@lstring new !"" !here]
+    !usecom
     !tb
     !eh
     !ugsid

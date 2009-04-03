@@ -48,7 +48,6 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
 {
   /*  init the error to no error  */
   VAR(StatusType, AUTOMATIC) result = E_OK;
-  VAR(tpl_proc_id, AUTOMATIC) old_running_id;
 
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
@@ -68,14 +67,13 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
     result = tpl_activate_task(task_id);
     if (result == (tpl_status)E_OK_AND_SCHEDULE)
     {
-      old_running_id = tpl_running_id;
       tpl_schedule_from_running();
 # ifndef WITH_SYSTEM_CALL
-      if (tpl_need_switch != NO_NEED_SWITCH)
+      if (tpl_kern.need_switch != NO_NEED_SWITCH)
       {
         tpl_switch_context(
-          &(tpl_stat_proc_table[old_running_id]->context),
-          &(tpl_stat_proc_table[tpl_running_id]->context)
+          &(tpl_kern.s_old->context),
+          &(tpl_kern.s_running->context)
         );
       }
 # endif
@@ -115,18 +113,18 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
   IF_NO_EXTENDED_ERROR(result)
     /*  the activate count is decreased 
      */
-    tpl_dyn_proc_table[tpl_running_id]->activate_count--;
+    tpl_kern.running->activate_count--;
   
     /*  and let the scheduler do its job
      */
     tpl_schedule_from_dying();
 
 # ifndef WITH_SYSTEM_CALL
-    if (tpl_need_switch != NO_NEED_SWITCH)
+    if (tpl_kern.need_switch != NO_NEED_SWITCH)
     {
       tpl_switch_context(
         NULL,
-        &(tpl_stat_proc_table[tpl_running_id]->context)
+        &(tpl_kern.s_running->context)
       );
     }
 # endif
@@ -147,10 +145,7 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   CONST(TaskType, AUTOMATIC) task_id)
 {
   VAR(StatusType, AUTOMATIC)  result = E_OK;
-#ifndef NO_TASK
-  P2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task;
-#endif
-  
+
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
   
@@ -170,10 +165,9 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   
 #ifndef NO_TASK
   IF_NO_EXTENDED_ERROR(result)
-    task = tpl_dyn_proc_table[tpl_running_id];
     /* the activate count is decreased
      */
-    task->activate_count--;
+    tpl_kern.running->activate_count--;
   
     /* activate the chained task
      */
@@ -184,11 +178,11 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
       /*  and let the scheduler do its job                            */
       tpl_schedule_from_dying();
 # ifndef WITH_SYSTEM_CALL
-      if (tpl_need_switch != NO_NEED_SWITCH)
+      if (tpl_kern.need_switch != NO_NEED_SWITCH)
       {
         tpl_switch_context(
           NULL,
-          &(tpl_stat_proc_table[tpl_running_id]->context)
+          &(tpl_kern.s_running->context)
         );
       }
 # endif
@@ -196,7 +190,7 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
     else
     {
       /* the activate count is restored since the caller does not terminate */
-      task->activate_count++;
+      tpl_kern.running->activate_count++;
     }
     
   IF_NO_EXTENDED_ERROR_END()
@@ -214,7 +208,6 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
 FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 {
   VAR(StatusType, AUTOMATIC) result = E_OK;
-  VAR(tpl_proc_id, AUTOMATIC) old_running_id;
   
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
@@ -233,18 +226,17 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 #ifndef NO_TASK
   IF_NO_EXTENDED_ERROR(result)
     /*  release the internal resource   */
-    tpl_release_internal_resource(tpl_running_id);
+    tpl_release_internal_resource(tpl_kern.running_id);
     /*  does the rescheduling           */
-    old_running_id = tpl_running_id;
     tpl_schedule_from_running();
     /*  get the internal resource       */
-    tpl_get_internal_resource(tpl_running_id);
+    tpl_get_internal_resource(tpl_kern.running_id);
 # ifndef WITH_SYSTEM_CALL
-    if (tpl_need_switch != NO_NEED_SWITCH)
+    if (tpl_kern.need_switch != NO_NEED_SWITCH)
     {
       tpl_switch_context(
-        &(tpl_stat_proc_table[old_running_id]->context),
-        &(tpl_stat_proc_table[tpl_running_id]->context)
+        &(tpl_kern.s_old->context),
+        &(tpl_kern.s_running->context)
       );
     }
 # endif
@@ -267,9 +259,9 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
   LOCK_KERNEL()
   /*  get the task id from the task descriptor. If the id is not
       within 0 and TASK_COUNT-1, INVALID_TASK is returned         */
-  if (tpl_running_id >= 0 && tpl_running_id < TASK_COUNT)
+  if (tpl_kern.running_id >= 0 && tpl_kern.running_id < TASK_COUNT)
   {
-    *task_id = tpl_running_id;
+    *task_id = tpl_kern.running_id;
   }
   else
   {

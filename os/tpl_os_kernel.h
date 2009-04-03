@@ -254,14 +254,27 @@ struct TPL_PROC {
 };
 
 /**
- * @typedef tpl_exec_common
+ * @typedef tpl_proc
  *
- * This is an alias for the #TPL_EXEC_COMMON structure.
+ * This is an alias for the #TPL_PROC structure.
  *
- * @see #TPL_EXEC_COMMON
+ * @see #TPL_PROC
  */
 typedef struct TPL_PROC tpl_proc;
 
+/**
+ * @typedef tpl_kern_state
+ */
+typedef struct 
+{
+  P2CONST(tpl_proc_static, TYPEDEF, OS_CONST) s_old;
+  P2CONST(tpl_proc_static, TYPEDEF, OS_CONST) s_running;
+  P2VAR(tpl_proc, TYPEDEF, OS_VAR)            old;
+  P2VAR(tpl_proc, TYPEDEF, OS_VAR)            running;
+  VAR(tpl_proc_id, TYPEDEF)                   running_id;
+  VAR(u8, TYPEDEF)                            need_switch;
+} tpl_kern_state;
+ 
 /**
  * @typedef tpl_fifo_state
  *
@@ -306,13 +319,15 @@ typedef struct {
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
+extern VAR(tpl_kern_state, OS_VAR) tpl_kern;
+
 /**
  * Currently running executable object id. This "executable object" can be
  * a task or an interrupt service routine
  * 
  * It has been changed to an int to ease its usage in asssembly language
  */
-extern VAR(int, OS_VAR) tpl_running_id;
+/* extern VAR(int, OS_VAR) tpl_running_id; */
 
 /**
  * 2 bits are used in this variable.
@@ -320,7 +335,7 @@ extern VAR(int, OS_VAR) tpl_running_id;
  * bit 1 indicated the context of the processus that loses the cpu
  * should be saved.
  */
-extern VAR(u8, OS_VAR) tpl_need_switch;
+/* extern VAR(u8, OS_VAR) tpl_need_switch; */
 
 /**
  * Internal RES_SCHEDULER resource
