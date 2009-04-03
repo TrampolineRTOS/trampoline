@@ -49,7 +49,7 @@ CPU test {
         PRIORITY = 1;
         AUTOSTART = TRUE { APPMODE = std ; } ;
         ACTIVATION = 1;
-        SCHEDULE = FULL;
+        SCHEDULE = NON;
         MESSAGE = sm;
     };
 
@@ -57,7 +57,7 @@ CPU test {
         PRIORITY = 2;
         AUTOSTART = FALSE ;
         ACTIVATION = 1;
-        SCHEDULE = FULL;
+        SCHEDULE = NON;
         MESSAGE = rm;
     };
         

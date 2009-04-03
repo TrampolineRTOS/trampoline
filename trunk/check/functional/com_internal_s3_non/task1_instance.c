@@ -14,29 +14,29 @@ DeclareTask(t3);
 static void test_t1_instance(void)
 {
 	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4;
-	
+	printf("T1\n");
 	result_inst_1 = ActivateTask(t3);	
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
-	
+	printf("after activatetask3\n");
 	result_inst_2 = SendMessage(sm_activatetask, "1");	
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
-	
+	printf("after sendmessage1\n");
 	result_inst_3 = SendMessage(sm_setevent, "2");	
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
-	
+	printf("after sendmessage2\n");
 	result_inst_4 = SendMessage(sm_comcallback, "3");	
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_4);
-	
+	printf("after sendmessage3\n");
 	/* Message flag doesn't work
 	 result_inst_2 = ActivateTask(t4);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
 	
 	result_inst_2 = SendMessage(sm_flag, "4");
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
-	
+	*/
 	result_inst_2 = TerminateTask();
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
-	*/
+	
 }
 
 /*create the test suite with all the test cases*/
