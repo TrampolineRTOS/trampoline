@@ -32,7 +32,7 @@ CPU test {
         APP_SRC = "task8_instance2.c";
         APP_SRC = "task8_instance3.c";
 		TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "com_internal_s5";
+        APP_NAME = "com_internal_s5_full";
 		SHUTDOWNHOOK = TRUE;
 		
 		CFLAGS = "-I../embUnit";

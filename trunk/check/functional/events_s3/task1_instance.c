@@ -4,6 +4,7 @@
 #include "tpl_os.h"
 
 DeclareTask(t2);
+DeclareTask(t3);
 DeclareEvent(Event1);
 DeclareEvent(Event2);
 DeclareEvent(Event3);
@@ -12,7 +13,7 @@ DeclareEvent(Event3);
  an activation of a task*/
 static void test_t1_instance(void)
 {
-	StatusType result_inst_2, result_inst_4, result_inst_5, result_inst_7, result_inst_9, result_inst_10, result_inst_12, result_inst_14, result_inst_15, result_inst_17, result_inst_18;
+	StatusType result_inst_2, result_inst_4, result_inst_5, result_inst_7, result_inst_9, result_inst_10, result_inst_12, result_inst_14, result_inst_15, result_inst_17, result_inst_18, result_inst_19, result_inst_20;
 	TaskStateType result_inst_1, result_inst_6, result_inst_11;
 	EventMaskType result_inst_3, result_inst_8, result_inst_13, result_inst_16;
 	
@@ -53,8 +54,14 @@ static void test_t1_instance(void)
 	TEST_ASSERT_EQUAL_INT(Event1|Event2|Event3, result_inst_16);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_17);						  
 	
-	result_inst_18 = TerminateTask();	
+	result_inst_18 = ActivateTask(t3);	
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_18);
+	
+	result_inst_19 = SetEvent(t3,Event3);	
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_19);
+		
+	result_inst_20 = TerminateTask();	
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_20);
 
 }
 

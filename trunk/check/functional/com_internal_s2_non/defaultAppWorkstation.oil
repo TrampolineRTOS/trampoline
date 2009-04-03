@@ -24,7 +24,7 @@ CPU test {
 		APP_SRC = "comerror_instance5.c";
         APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "com_internal_s2";
+        APP_NAME = "com_internal_s2_non";
 		SHUTDOWNHOOK = TRUE;
 		
 		CFLAGS = "-I../embUnit";

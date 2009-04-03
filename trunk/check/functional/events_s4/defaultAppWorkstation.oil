@@ -32,6 +32,7 @@ IMPLEMENTATION trampoline {
         PRIORITY = 2;
         ACTIVATION = 1;
         SCHEDULE = FULL;
+		EVENT = Event1;
     };
 
     TASK t2 {

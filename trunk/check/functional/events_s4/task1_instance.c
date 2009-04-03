@@ -3,6 +3,7 @@
 #include "embUnit.h"
 #include "tpl_os.h"
 
+DeclareTask(t1);
 DeclareTask(t2);
 DeclareTask(t3);
 DeclareTask(t4);
@@ -15,9 +16,9 @@ DeclareEvent(Event3);
  an activation of a task*/
 static void test_t1_instance(void)
 {
-	StatusType result_inst_1, result_inst_3, result_inst_5, result_inst_6, result_inst_8, result_inst_9, result_inst_11, result_inst_12, result_inst_13, result_inst_14;
+	StatusType result_inst_1, result_inst_3, result_inst_5, result_inst_6, result_inst_8, result_inst_9, result_inst_11, result_inst_12, result_inst_13, result_inst_15, result_inst_16;
 	TaskStateType result_inst_2, result_inst_7;
-	EventMaskType result_inst_4, result_inst_10;
+	EventMaskType result_inst_4, result_inst_10, result_inst_14;
 
 	result_inst_1 = SetEvent(t2,Event2);	
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);	
@@ -50,8 +51,12 @@ static void test_t1_instance(void)
 	result_inst_13 = ActivateTask(t4);	
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_13);	
 	
-	result_inst_14 = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_14);
+	result_inst_15 = GetEvent(t1, &result_inst_14);
+	TEST_ASSERT_EQUAL_INT(Event1, result_inst_14);
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_15);	
+	
+	result_inst_16 = TerminateTask();
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_16);
 	
 }
 
