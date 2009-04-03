@@ -22,7 +22,7 @@ CPU test {
         APP_SRC = "comcallback_instance.c";
         APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "com_internal_s3";
+        APP_NAME = "com_internal_s3_non";
 		SHUTDOWNHOOK = TRUE;
 		
 		CFLAGS = "-I../embUnit";

@@ -4,12 +4,13 @@
 #include "tpl_os.h"
 
 DeclareEvent(Event1);
+DeclareTask(t1);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
 static void test_t2_instance(void)
 {
-	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4;
+	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5;
 	
 	result_inst_1 = WaitEvent(Event1);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
@@ -17,11 +18,14 @@ static void test_t2_instance(void)
 	result_inst_2 = ClearEvent(Event1);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
 	
-	result_inst_3 = WaitEvent(Event1);
+	result_inst_3 = SetEvent(t1, Event1);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
-
-	result_inst_4 = TerminateTask();
+	
+	result_inst_4 = WaitEvent(Event1);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_4);
+
+	result_inst_5 = TerminateTask();
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_5);
 }
 
 /*create the test suite with all the test cases*/

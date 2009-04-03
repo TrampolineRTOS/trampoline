@@ -14,6 +14,7 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "events_s3.c";
 		APP_SRC = "task1_instance.c";
 		APP_SRC = "task2_instance.c";
+		APP_SRC = "task3_instance.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "events_s3";
 		CFLAGS = "-I../embUnit";
@@ -39,6 +40,14 @@ IMPLEMENTATION trampoline {
         SCHEDULE = NON;
 		EVENT = Event1;
 		EVENT = Event2;
+		EVENT = Event3;
+    };
+	
+    TASK t3 {
+        AUTOSTART = FALSE ;
+        PRIORITY = 1;
+        ACTIVATION = 1;
+        SCHEDULE = NON;
 		EVENT = Event3;
     };
 	

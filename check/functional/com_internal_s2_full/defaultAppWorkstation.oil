@@ -1,4 +1,4 @@
-OIL_VERSION = "2.5" : "com_internal_s1" ;
+OIL_VERSION = "2.5" : "com_internal_s2" ;
 
 IMPLEMENTATION trampoline {
     TASK {
@@ -14,16 +14,17 @@ CPU test {
 
     OS config {
         STATUS = EXTENDED;
-        APP_SRC = "com_internal_s1.c";
+        APP_SRC = "com_internal_s2.c";
         APP_SRC = "task1_instance.c";
         APP_SRC = "task2_instance.c";
-        APP_SRC = "comerror_instance1.c";
-        APP_SRC = "comerror_instance2.c";
-        APP_SRC = "comerror_instance3.c";
-        APP_SRC = "comerror_instance4.c";
+		APP_SRC = "comerror_instance1.c";
+		APP_SRC = "comerror_instance2.c";
+		APP_SRC = "comerror_instance3.c";
+		APP_SRC = "comerror_instance4.c";
+		APP_SRC = "comerror_instance5.c";
         APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "com_internal_s1";
+        APP_NAME = "com_internal_s2_full";
 		SHUTDOWNHOOK = TRUE;
 		
 		CFLAGS = "-I../embUnit";
@@ -32,7 +33,7 @@ CPU test {
 		LDFLAGS = "-L../lib -lembUnit";
 
     } ;
-	
+
 	COM config {
 		COMSTATUS = COMEXTENDED;
 		COMERRORHOOK = TRUE;
@@ -68,12 +69,11 @@ CPU test {
     };
     
     MESSAGE rm {
-        MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+        MESSAGEPROPERTY = RECEIVE_QUEUED_INTERNAL {
             SENDINGMESSAGE = sm;
-            INITIALVALUE = "0";
-			FILTER = ALWAYS;
+			QUEUESIZE = 3;
         };
-        NOTIFICATION = NONE;
+		NOTIFICATION = NONE;
     };
-
+	
 };
