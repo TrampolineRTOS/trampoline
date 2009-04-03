@@ -76,7 +76,12 @@ hook_s6_full
 hook_s6_non
 
 com_internal_s1_full
+com_internal_s1_non
 com_internal_s2_full
-com_internal_s3_full
-com_internal_s4_full
+com_internal_s2_non
+com_internal_s3
+com_internal_s4
 com_internal_s5_full
+com_internal_s5_non
+com_internal_s6_full
+com_internal_s6_non
