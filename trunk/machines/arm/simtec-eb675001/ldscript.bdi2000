@@ -1,0 +1,85 @@
+/**
+ * @file ldscript.bdi2000
+ *
+ * @section descr File description
+ *
+ * Trampoline Simtec eb675001 port linker configuration file
+ *
+ * This memory mapping is the reference. We provide a flashable version
+ * but it is not currently maintained (as rarely used). Here, directives
+ * to flash memory mapping are commented out. Just uncomment them to replace
+ * all "remap" assignements.
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline OS
+ *
+ * Trampoline is copyright (c) IRCCyN 2005+
+ * Copyright ESEO for function and data structures documentation and ARM port
+ * Trampoline is protected by the French intellectual property law.
+ *
+ * This software is distributed under the Lesser GNU Public Licence
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+
+MEMORY {
+   remap (wx)  : ORIGIN = 0x00000000, LENGTH = 4M
+   sram  (w)   : ORIGIN = 0x50000000, LENGTH = 32K
+   dram  (w)   : ORIGIN = 0xC0000000, LENGTH = 32M
+   rom   (r)   : ORIGIN = 0xC8000000, LENGTH = 4M
+}
+
+/* Le point d'entrée du programme est situé à l'étiquette Vec_reset */
+ENTRY(Vec_reset)
+
+SECTIONS {
+
+   /* contains all non-volatile and immutable data
+    * code, constants, ... */
+   immutable : {
+      debut_rom = .;
+		* (.vectbl)
+		* (.text)
+		* (.rodata)
+      fin_rom = .;
+   /*} > rom */
+   } > remap
+	
+   initialized_vars : {
+      debut_data = .;
+      * (.data)
+      fin_data = ALIGN(4); /* needs to be aligned for bootstrap to work */
+   /* } > dram AT>rom */
+   } > remap AT>remap
+
+   uninitialized_vars (NOLOAD) : {
+      debut_bss = .;
+      * (.bss)
+      * (COMMON)
+      fin_bss = ALIGN(4); /* needs to be aligned for bootstrap to work */
+      * (stacks)
+
+      /* end symbol is used by newlib to know
+       * where malloc will allocate its data */
+      end = .;
+   /*} > dram */
+   } > remap
+
+   /* stack of bootstrap needs to be in SRAM which does not need to be configured
+	  * to work.
+		*/
+	 bootstrap_stack (NOLOAD) : {
+      *(bootstrap_stack)
+	 } > sram
+	
+   dram_overflow = 0xC2000000;
+	 remap_overflow = 0x08000000;
+	 sram_overflow = 0x50000000 + 32K;
+}
+
