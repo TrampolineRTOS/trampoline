@@ -1,0 +1,11 @@
+- follow up the tpl_need_switch problem into start_os_service
+- rewrite code to handle ISRs
+- rewrite all AUTOSAR code 
+- fix AUTOSAR sys/user double locking system (autosar and libpcl)
+- adapt GOIL to generate :
+	- ISR code
+	- counter code
+	- asm macros
+- does the kernel really need to be reentrant
+- implement timers watchdogs etc.. choices made :
+  - use system timer for generating local heartbeat (used for counters, watchdogs local time, ...)

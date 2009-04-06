@@ -30,6 +30,7 @@
 
 void print_counter(tpl_counter *c)
 {
+#ifdef WITH_DOW /* not all ports have an stdc */
   tpl_time_obj *t = c->first_to;
   
   printf("counter (ticks_per_base=%d, max_allowed_value=%d, min_cycle=%d)\n",
@@ -44,13 +45,16 @@ void print_counter(tpl_counter *c)
     printf("        date=%d, alr=%d\n",(int)t->date,(int)t);
     t = t->next_to;
   }
+#endif /* defined WITH_DOW */
 }
 
 void print_rez(tpl_resource_id rez_id)
 {
+#ifdef WITH_DOW /* not all ports have an stdc */
   printf("resource %d (ceiling_prio=%d, owner_prio=%d)\n",
          rez_id,
          tpl_resource_table[rez_id]->ceiling_priority,
          tpl_resource_table[rez_id]->owner_prev_priority);
   printf("    owner=%d\n",tpl_resource_table[rez_id]->owner);
+#endif /* defined WITH_DOW */
 }
