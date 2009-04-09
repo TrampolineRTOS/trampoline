@@ -6,6 +6,7 @@
 
 CC=gcc
 LD=gcc
+AS=gcc
 
 #############################################################################
 # OIL CONFIGURATION
@@ -24,7 +25,7 @@ $GOIL_TEMPLATE_PATH$
 # * posix-libpcl (requires the portable libpcl on your system) 
 # * Hitachi h8300h
 # Some targets does not use Makefile (c166, HCS12, ...)
-TARGET=posix-libpcl
+TARGET=$TRAMPOLINE_TARGET$
 
 # arch may be:
 # * libpcl

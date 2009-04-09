@@ -41,21 +41,17 @@
 /*
  * OSEK/VDX API services
  */
-#ifndef WITH_SYSTEM_CALL
 FUNC(StatusType, OS_CODE) GetResource(
-    CONST(ResourceType, AUTOMATIC) res_id)
+  CONST(ResourceType, AUTOMATIC) res_id)
 {
-    return tpl_get_resource_service(res_id);
+  return tpl_get_resource_service(res_id);
 }
-#endif
 
-#ifndef WITH_SYSTEM_CALL
 FUNC(StatusType, OS_CODE) ReleaseResource(
-    CONST(ResourceType, AUTOMATIC) res_id)
+  CONST(ResourceType, AUTOMATIC) res_id)
 {
-    return OSEK_STATUS_MASK & tpl_release_resource_service(res_id);
+  return OSEK_STATUS_MASK & tpl_release_resource_service(res_id);
 }
-#endif
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

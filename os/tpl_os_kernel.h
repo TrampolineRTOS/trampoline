@@ -271,7 +271,7 @@ typedef struct
   P2CONST(tpl_proc_static, TYPEDEF, OS_CONST) s_running;
   P2VAR(tpl_proc, TYPEDEF, OS_VAR)            old;
   P2VAR(tpl_proc, TYPEDEF, OS_VAR)            running;
-  VAR(int, TYPEDEF)     		              running_id;
+  VAR(int, TYPEDEF)                           running_id;
   VAR(u8, TYPEDEF)                            need_switch;
 } tpl_kern_state;
  

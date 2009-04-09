@@ -2,7 +2,7 @@
  *  tpl_as_definitions.h
  *  trampoline
  *
- *  Created by Jean-Luc Bï¿½chennec on 20/11/07.
+ *  Created by Jean-Luc Béchennec on 20/11/07.
  *  Copyright 2007 __MyCompanyName__. All rights reserved.
  *
  */

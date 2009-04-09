@@ -34,10 +34,6 @@
 #include "tpl_as_isr_kernel.h"
 #include "tpl_machine_interface.h"
 
-#ifdef WITH_SYSTEM_CALL
-#error "This file should not be part of your project since WITH_SYSTEM_CALL is defined"
-#endif
-
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -61,7 +57,7 @@ FUNC(ISRType, OS_CODE) GetISRID(void)
 /**
  * Disables the specified ISR
  *
- * see ï¿½8.4.20 of AUTOSAR/Specification of the Operating System v2.1.0
+ * see §8.4.20 of AUTOSAR/Specification of the Operating System v2.1.0
  */
 FUNC(StatusType, OS_CODE) DisableInterruptSource (VAR(ISRType, AUTOMATIC) isr_id)
 {
@@ -74,7 +70,7 @@ FUNC(StatusType, OS_CODE) DisableInterruptSource (VAR(ISRType, AUTOMATIC) isr_id
 /**
  * Enables the specified ISR
  *
- * see ï¿½8.4.21 of AUTOSAR/Specification of the Operating System v2.1.0
+ * see §8.4.21 of AUTOSAR/Specification of the Operating System v2.1.0
  */
 FUNC(StatusType, OS_CODE) EnableInterruptSource (VAR(ISRType, AUTOMATIC) isr_id)
 {

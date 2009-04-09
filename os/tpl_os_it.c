@@ -27,11 +27,6 @@
 #include "tpl_os_it.h"
 #include "tpl_os_it_kernel.h"
 
-#ifdef WITH_SYSTEM_CALL
-#include "tpl_os_service_ids.h"
-#include "tpl_dispatch.h"
-#endif
-
 #ifdef WITH_AUTOSAR
 #include "tpl_as_isr.h"
 #endif
@@ -40,17 +35,15 @@
 #include "tpl_memmap.h"
 
 /*
- * TerminateISR2
+ * TerminateISR
  *
  * While this function is not part of the OSEK API, it is used
  * to terminate an ISR2 routine
  */
-#ifndef WITH_SYSTEM_CALL
 FUNC(StatusType, OS_CODE) TerminateISR2(void)
 {
-    return tpl_terminate_isr2_service();
+  return tpl_terminate_isr2_service();
 }
-#endif
 
 /*
  * Enable all interrupts
@@ -59,12 +52,10 @@ FUNC(StatusType, OS_CODE) TerminateISR2(void)
  *
  * @see #DisableAllInterrupts
  */
-#ifndef WITH_SYSTEM_CALL
 FUNC(void, OS_CODE) EnableAllInterrupts(void)
 {
-    tpl_enable_all_interrupts_service();
+  tpl_enable_all_interrupts_service();
 }
-#endif
 
 
 /*
@@ -74,12 +65,10 @@ FUNC(void, OS_CODE) EnableAllInterrupts(void)
  *
  * @see #EnableAllInterrupts
  */
-#ifndef WITH_SYSTEM_CALL
 FUNC(void, OS_CODE) DisableAllInterrupts(void)
 {
-    tpl_disable_all_interrupts_service();
+  tpl_disable_all_interrupts_service();
 }
-#endif
 
 
 /*
@@ -89,12 +78,10 @@ FUNC(void, OS_CODE) DisableAllInterrupts(void)
  *
  * @see #SuspendAllInterrupts
  */
-#ifndef WITH_SYSTEM_CALL
 FUNC(void, OS_CODE) ResumeAllInterrupts(void)
 {
-    tpl_resume_all_interrupts_service();
+   tpl_resume_all_interrupts_service();
 }
-#endif
 
 
 /*
@@ -104,12 +91,10 @@ FUNC(void, OS_CODE) ResumeAllInterrupts(void)
  *
  * @see #ResumeAllInterrupts
  */
-#ifndef WITH_SYSTEM_CALL
 FUNC(void, OS_CODE) SuspendAllInterrupts(void)
 {
-    tpl_suspend_all_interrupts_service();
+  tpl_suspend_all_interrupts_service();
 }
-#endif
 
 
 /*
@@ -119,12 +104,10 @@ FUNC(void, OS_CODE) SuspendAllInterrupts(void)
  *
  * @see #SuspendOSInterrupts
  */
-#ifndef WITH_SYSTEM_CALL
 FUNC(void, OS_CODE) ResumeOSInterrupts(void)
 {
-    tpl_resume_os_interrupts_service();
+  tpl_resume_os_interrupts_service();
 }
-#endif
 
 
 /*
@@ -134,12 +117,10 @@ FUNC(void, OS_CODE) ResumeOSInterrupts(void)
  *
  * @see #ResumeOSInterrupts
  */
-#ifndef WITH_SYSTEM_CALL
 FUNC(void, OS_CODE) SuspendOSInterrupts(void)
 {
-    tpl_suspend_os_interrupts_service();
+   tpl_suspend_os_interrupts_service();
 }
-#endif
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

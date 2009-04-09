@@ -161,7 +161,7 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
     }
     else {
         /*  The schedule table is finished                                  */
-        /*  Test whether a schedule table has been ï¿½ nextified ï¿½ or not     */
+        /*  Test whether a schedule table has been « nextified » or not     */
         /*  MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
             tpl_schedtable*. This cast behaves correctly because the
             first member of tpl_schedula_table is a tpl_time_obj            */
