@@ -38,6 +38,19 @@ $(OBJ_DIR)/%.s.o: $(A_DIR)/%.s Makefile
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
 	$(AS) $(ASFLAGS) $< -o $@
 
+$(OBJ_DIR)/%.S.i: $(A_DIR)/%.S Makefile
+	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
+	$(CPP) $(CPPFLAGS) $< -o $@
+
+$(OBJ_DIR)/%.S.o: $(OBJ_DIR)/%.S.i Makefile
+	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
+	$(AS) $(ASFLAGS) $< -o $@
+
+# generate dep files for S files (preprocessable assembler files)
+$(DEP_DIR)/%.S.d: $(A_DIR)/%.S Makefile $(DEP_DIR) $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE)
+	@$(CC) $(CPPFLAGS) -MM $< | perl -e 'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.c.o $(DEP_DIR)/$*.c.d:@ ;print ;}' > $@ ;\
+	echo 'build dependancy for $<';
+
 #----------------------------------------------------------------------*
 #### Compilation rules. c++ files.
 ## extensions are: .cpp .cc .cxx .C

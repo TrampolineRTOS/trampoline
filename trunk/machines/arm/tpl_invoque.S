@@ -28,6 +28,10 @@
 #include "tpl_os_application_def.h"
 #include "tpl_os_service_ids.h"
 
+#ifndef WITH_SYSTEM_CALL
+#error "This file should not be part of your project since WITH_SYSTEM_CALL is not defined"
+#endif
+
 #ifdef WITH_SYSTEM_CALL
 
 .global ActivateTask

@@ -38,62 +38,54 @@
 /*
  * SetEvent
  */
-ASM FUNC(StatusType, OS_CODE) SetEvent(
+#ifndef WITH_SYSTEM_CALL
+FUNC(StatusType, OS_CODE) SetEvent(
     CONST(TaskType, AUTOMATIC)      task_id,
     CONST(EventMaskType, AUTOMATIC) event)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_SetEvent)
-#else
     StatusType result = tpl_set_event_service(task_id, event);
     return result & OSEK_STATUS_MASK;
-#endif
 }
+#endif
 
 
 /*
  * ClearEvent
  * see paragraph 13.5.3.2, page 61 of OSEK spec 2.2.2
  */
-ASM FUNC(StatusType, OS_CODE) ClearEvent(
+#ifndef WITH_SYSTEM_CALL
+FUNC(StatusType, OS_CODE) ClearEvent(
     CONST(EventMaskType, AUTOMATIC) event)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_ClearEvent)
-#else
     return tpl_clear_event_service(event);
-#endif
 }
+#endif
 
 /*
  * GetEvent
  * see paragraph 13.5.3.3, page 61 of OSEK spec 2.2.2
  */
-ASM FUNC(StatusType, OS_CODE) GetEvent(
+#ifndef WITH_SYSTEM_CALL
+FUNC(StatusType, OS_CODE) GetEvent(
     CONST(TaskType, AUTOMATIC)          task_id,
     CONST(EventMaskRefType, AUTOMATIC)  event)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_GetEvent)
-#else
     return tpl_get_event_service(task_id, event);
-#endif
 }
+#endif
 
 /*
  * WaitEvent
  * see $13.5.3.4, page 61-62 of OSEK spec 2.2.2
  */
-ASM FUNC(StatusType, OS_CODE) WaitEvent(
+#ifndef WITH_SYSTEM_CALL
+FUNC(StatusType, OS_CODE) WaitEvent(
     CONST(EventMaskType, AUTOMATIC) event)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_WaitEvent)
-#else
     StatusType result = tpl_wait_event_service(event);
     return result & OSEK_STATUS_MASK;
-#endif
 }
+#endif
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

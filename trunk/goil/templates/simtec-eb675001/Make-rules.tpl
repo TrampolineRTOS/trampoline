@@ -4,8 +4,9 @@
 # To get a new default Make-rules file, you should simply remove the current file and call
 # the goil compiler one time.
 
-CC=gcc
-LD=gcc
+CC=arm-none-eabi-gcc
+AS=arm-none-eabi-as
+LD=arm-none-eabi-ld
 
 #############################################################################
 # OIL CONFIGURATION
@@ -24,7 +25,7 @@ $GOIL_TEMPLATE_PATH$
 # * posix-libpcl (requires the portable libpcl on your system) 
 # * Hitachi h8300h
 # Some targets does not use Makefile (c166, HCS12, ...)
-TARGET=posix-libpcl
+TARGET=arm/simtec-eb675001
 
 # arch may be:
 # * libpcl

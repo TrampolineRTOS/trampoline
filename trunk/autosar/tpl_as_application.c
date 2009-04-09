@@ -29,6 +29,10 @@
 #include "tpl_as_application.h"
 #include "tpl_as_app_kernel.h"
 
+#ifdef WITH_SYSTEM_CALL
+#error "This file should not be part of your project since WITH_SYSTEM_CALL is defined"
+#endif
+
 /**
  *  Get the application ID to which the current process belongs to
  *

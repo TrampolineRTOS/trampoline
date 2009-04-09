@@ -30,6 +30,7 @@
 #define TPL_OS_MEM_PROT_H
 
 #include "tpl_compiler.h"
+#include "tpl_memory_protection.h"
 
 /**
  * @struct TPL_MEM_REGION

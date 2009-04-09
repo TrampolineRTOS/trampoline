@@ -20,9 +20,12 @@ SOURCES += tpl_as_isr_kernel.c
 SOURCES += tpl_as_stack_monitor.c
 SOURCES += tpl_as_timing_protec.c
 SOURCES += tpl_as_action.c
+SOURCES += tpl_as_protec_hook.c
+SOURCES += tpl_as_app_kernel.c
+
+ifeq ($(strip $(WITH_SYSTEM_CALL)),false)
+SOURCES += tpl_as_application.c
 SOURCES += tpl_as_counter.c
 SOURCES += tpl_as_isr.c
-SOURCES += tpl_as_protec_hook.c
 SOURCES += tpl_as_schedtable.c
-SOURCES += tpl_as_application.c
-SOURCES += tpl_as_app_kernel.c
+endif

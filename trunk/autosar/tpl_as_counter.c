@@ -30,6 +30,12 @@
 #include "tpl_as_counter_kernel.h"
 #include "tpl_os_definitions.h"
 
+
+#ifdef WITH_SYSTEM_CALL
+#error "This file should not be part of your project since WITH_SYSTEM_CALL is defined"
+#endif
+
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 

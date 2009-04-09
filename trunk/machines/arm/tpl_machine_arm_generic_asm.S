@@ -30,6 +30,18 @@
 
 #include "../tpl_asm_definitions.h"
 
+/* Give the necessary offsets for acces to the different elements of 
+ * an tpl_kern_state type structure 
+ */
+ 
+.set OFFSET_S_OLD,0
+.set OFFSET_S_RUNNING, 4
+.set OFFSET_OLD, 8
+.set OFFSET_RUNNING, 12
+.set OFFSET_RUNNING_ID, 16
+.set OFFSET_NEED_SWITCH, 20
+
+
 .bss
 .align 2
 
@@ -125,23 +137,6 @@ kernel_enter_\mode:
 	ldr r2, [r1]
 	add r2, r2, #1
 	str r2, [r1]
-
-	/* Save the current running task's
-	 * identifier so we can know 
-	 * from which task a context switch should be done.
-   *
-   * If we are in a nested entrance, we should
-   * not set old_running_id again.
-	 */
-  cmp r2, #1
-  bhi skip_set_old_running_\mode
-	ldr r1, =old_running_id
-	ldr r2, =tpl_running_id
-	LDR_PROC_ID r0, [r2]
-	STR_PROC_ID r0, [r1]
-
-skip_set_old_running_\mode:
-
 .endm
 
 /* this macro is called whenever the kernel mode is to be exited */
@@ -178,30 +173,27 @@ kernel_exit_\mode:
  */
 .macro context_switch mode
 context_switch_\mode:
-  /* r0 points on the static proc table, from where we find the context */
-	ldr r0, =tpl_stat_proc_table
+  /* load the tpl_kern base address */
+	ldr r0, =tpl_kern
 
 	/*
 	 * SAVE OLD CONTEXT
 	 */
 
   /* do we need to save the context ? if not, jump to load */
-	ldr r2, =tpl_need_switch
-	ldrb r2, [r2]
+	ldrb r2, [r0, #OFFSET_NEED_SWITCH]
 	tst r2, #NEED_SAVE
 	beq load_context_\mode
 	
-	/* get the context block address */
-  ldr r2, =old_running_id
-  LDR_PROC_ID r2, [r2]
+  /* get the context block address */
+   
+  ldr r2, [r0, #OFFSET_S_OLD] /* get the address of the context bloc */
 
-	add r2, r0, r2, LSL #2
-  ldr r2, [r2]             /* jump to dynamic descriptor (from static descriptor) */
-  ldr r2, [r2]             /* jump to context bloc (from dynamic descriptor) */
+  ldr r2, [r2]                /* jump to context bloc (from static descriptor) */
 
-	add r2, r2, #(4 * 4)     /* jump over r0-r3 saving zone */
-	stmia r2, {r4-r14}^
-	sub r2, r2, #(4 * 4)     /* get back to begining of task's saving zone... */
+  add r2, r2, #(4 * 4)        /* jump over r0-r3 saving zone */
+  stmia r2, {r4-r14}^
+  sub r2, r2, #(4 * 4)        /* get back to begining of task's saving zone... */
 
 .if (\mode == CPSR_SVC_MODE)
   ldmfd sp!, {r4}          /* as SWI is reentrant, true SPSR is found in the stack */
@@ -240,17 +232,16 @@ load_context_\mode:
 	/*
 	 * LOAD NEW CONTEXT
 	 */
-	ldr r2, =tpl_running_id
-	LDR_PROC_ID r2, [r2]
-	
+	 
 	/* Get the context block address.
 	 *
 	 * We use r14 as it will be restored separatly and later, it
-	 * is useful for the following ldmia instruction */
-	add r14, r0, r2, LSL #2
+	 * is useful for the following ldmia instruction
+	 */
+	 
+	ldr r14, [r0, #OFFSET_S_RUNNING] /* get the address of the context bloc */
 
-  ldr r14, [r14]  /* jump to dynamic descriptor (from static descriptor) */
-  ldr r14, [r14]  /* jump to context bloc (from dynamic descriptor) */
+ 	ldr r14, [r14]                   /* jump to context bloc (from static descriptor) */
 	
 	ldr r0, [r14, #(16 * 4)]
 	msr spsr, r0 
@@ -270,8 +261,8 @@ pipeline_flush\mode:
 /* this macro clears bit Z (of status register) if context switch is needed */
 .macro is_context_switch_needed mode
 is_context_switch_needed_\mode:
-  ldr r2, =tpl_need_switch
-  ldrb r2, [r2]
+  ldr r2, =tpl_kern
+  ldrb r2, [r2, #OFFSET_NEED_SWITCH]
   cmp r2, #NO_NEED_SWITCH
 .endm
 
@@ -343,6 +334,9 @@ tpl_primary_syscall_handler:
   bhi swi_no_context_switch
 
 	context_switch CPSR_SVC_MODE
+	
+	
+
 
 swi_no_context_switch:
 

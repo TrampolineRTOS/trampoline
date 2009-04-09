@@ -38,13 +38,6 @@
 CONST (int, OS_VAR) tpl_proc_static_size = sizeof (tpl_proc_static);
 
 /**
- * This variable is used for context switch. It is used in
- * assembler module but defined here to follow the best
- * the type of a proc identifier
- */
-VAR (int, OS_VAR) old_running_id;
-
-/**
  * Context for the idle task
  */
 VAR (arm_context, OS_VAR) idle_task_context;
@@ -113,7 +106,6 @@ FUNC(void, OS_CODE) tpl_init_context(
 FUNC (void, OS_CODE) tpl_init_machine_generic (void)
 {
 	 tpl_locking_depth = 0;
-	 old_running_id = IDLE_TASK_ID;
 	 tpl_init_machine_low_level ();
 }
 

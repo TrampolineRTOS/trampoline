@@ -51,7 +51,6 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
   VAR(tpl_counter_id, AUTOMATIC) counter_id)
 {
   VAR(tpl_status, AUTOMATIC)  result = E_OK;
-  VAR(tpl_proc_id, AUTOMATIC) old_running_id;
 
 #ifndef NO_COUNTER
   P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = NULL;
@@ -98,6 +97,19 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
   IF_NO_EXTENDED_ERROR_END()
 #endif
 
+<<<<<<< .mine
+=======
+#ifndef WITH_SYSTEM_CALL
+  if (tpl_need_switch != NO_NEED_SWITCH)
+  {
+    tpl_switch_context(
+      &(tpl_stat_proc_table[old_running_id]->context),
+      &(tpl_stat_proc_table[tpl_running_id]->context)
+    );
+  }
+#endif
+  
+>>>>>>> .r701
   PROCESS_ERROR(result)
 
   /*  unlock the task structures                  */
