@@ -42,8 +42,6 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-
-#ifndef WITH_SYSTEM_CALL
 volatile VAR(u16, OS_VAR) tpl_locking_depth = 0;
 extern VAR(u32, OS_VAR) tpl_cpt_user_task_lock;
 extern VAR(tpl_bool, OS_VAR) tpl_user_task_lock;
@@ -165,7 +163,6 @@ FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void)
   }
 }
 
-#endif /*WITH_SYSTEM_CALL*/
 /*
  * tpl_terminate_isr2_service
  *
@@ -183,7 +180,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
   LOCK_KERNEL()
   
   /*  store information for error hook routine    */
-  STORE_SERVICE(OSServiceId_TerminateISR2)
+  STORE_SERVICE(OSServiceId_TerminateISR)
   
   /*  check we are at the ISR2 level  */
   CHECK_ISR2_CALL_LEVEL_ERROR(result)
@@ -315,6 +312,7 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
     
     if (tpl_it_nesting == 0)
     {
+      tpl_schedule_from_running();
       
 #ifndef WITH_SYSTEM_CALL
       if (tpl_kern.need_switch != NO_NEED_SWITCH)

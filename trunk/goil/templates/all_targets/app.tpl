@@ -23,6 +23,7 @@ CONST(tpl_app_access, OS_APPL_CONST) $APP_NAME$_app_access = {
   $ALARM_COUNT$,
   $REZ_COUNT$,
   $ST_COUNT$,
-  $CNT_COUNT$
+  $CNT_COUNT$,
+  $RESTART$
 };
 

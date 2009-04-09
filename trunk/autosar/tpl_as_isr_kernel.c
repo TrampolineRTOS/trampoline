@@ -146,7 +146,7 @@ FUNC(tpl_isr_id, OS_CODE) tpl_get_isr_id_service(void)
 /**
  * Disables the specified ISR
  *
- * see ï¿½8.4.20 of AUTOSAR/Specification of the Operating System v2.1.0
+ * see §8.4.20 of AUTOSAR/Specification of the Operating System v2.1.0
  */
 FUNC(tpl_status, OS_CODE) tpl_disable_interrupt_source_service(
   CONST(tpl_isr_id, AUTOMATIC) isr_id)
@@ -167,7 +167,7 @@ FUNC(tpl_status, OS_CODE) tpl_disable_interrupt_source_service(
 /**
  * Enables the specified ISR
  *
- * see ï¿½8.4.21 of AUTOSAR/Specification of the Operating System v2.1.0
+ * see §8.4.21 of AUTOSAR/Specification of the Operating System v2.1.0
  */
 FUNC(tpl_status, OS_CODE) tpl_enable_interrupt_source_service(
     VAR(tpl_isr_id, AUTOMATIC) isr_id)

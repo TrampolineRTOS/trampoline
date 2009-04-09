@@ -9,8 +9,8 @@
  *
  *  Trampoline OS
  *
- *  Trampoline is copyright (c) IRCCyN 2005-2008
- *  Autosar extension is copyright (c) IRCCyN and ESEO 2007-2008
+ *  Trampoline is copyright (c) IRCCyN 2005-2009
+ *  Autosar extension is copyright (c) IRCCyN and ESEO 2007-2009
  *  Trampoline and its Autosar extension are protected by the
  *  French intellectual property law.
  *
