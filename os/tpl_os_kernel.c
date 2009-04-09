@@ -91,8 +91,8 @@ STATIC VAR(tpl_application_mode, OS_VAR) application_mode;
  */
 CONST(tpl_proc_static, OS_VAR) idle_task_static = {
     /* context              */  IDLE_CONTEXT,
-    /* stack                */  IDLE_STACK, 
-    /* entry point          */  IDLE_ENTRY,
+    /* no stack             */  IDLE_STACK,
+    /* no entry point       */  NULL,
     /* internal resource    */  NULL,
     /* id is IDLE_TASK_ID   */  IDLE_TASK_ID,
 #ifdef WITH_OSAPPLICATION
@@ -146,7 +146,7 @@ VAR(tpl_kern_state, OS_VAR) tpl_kern =
  * At system startup it is set to IDLE_TASK_ID since the main is a part
  * of the idle task.
  */
-/* VAR(int, OS_VAR) tpl_running_id = IDLE_TASK_ID; */
+/*VAR(int, OS_VAR) tpl_running_id = IDLE_TASK_ID;*/
 
 /**
  * @internal
@@ -155,7 +155,7 @@ VAR(tpl_kern_state, OS_VAR) tpl_kern =
  * It is set un the services and tested before calling the context switch
  * and reset to FALSE after that
  */ 
-/* VAR(u8, OS_VAR) tpl_need_switch = NO_NEED_SWITCH; */
+/*VAR(u8, OS_VAR) tpl_need_switch = NO_NEED_SWITCH;*/
  
 
 /*  MISRA RULE 27 VIOLATION: These 2 variables are used only in this file
@@ -1262,7 +1262,7 @@ FUNC(void, OS_CODE) tpl_start_os_service(
       );
     }
 #endif
-  }
+}
   
   UNLOCK_KERNEL()
 }

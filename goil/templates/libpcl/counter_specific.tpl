@@ -10,7 +10,7 @@ $COUNTER_LIST$
   need_rescheduling |= tpl_counter_tick(&SystemCounter_counter_desc);
 
   
-	if (need_rescheduling == NEED_RESCHEDULING)
+  if (need_rescheduling == NEED_RESCHEDULING)
   {
     tpl_proc_id old_running_id = tpl_running_id;
     tpl_schedule(FROM_IT_LEVEL);

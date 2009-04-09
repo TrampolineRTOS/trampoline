@@ -23,8 +23,8 @@ tpl_internal_receiving_queued_mo $MESSAGE$ = {
     },
     {   /*  queue structure   */
         /*  pointer to the dynamic descriptor   */  &$DYN_QUEUE$,
-        /*  max size of the queue               */  $QUEUE_SIZE$*sizeof($CTYPE$),
-        /*  element size of the queue           */  sizeof($CTYPE$),
+        /*  max size of the queue               */  $QUEUE_SIZE$*$ELEMENT_SIZE$,
+        /*  element size of the queue           */  $ELEMENT_SIZE$,
         /*  pointer to the buffer               */  (tpl_com_data *)$BUFFER$
     }
 };

@@ -6,4 +6,4 @@ ifeq ($(strip $(OS)),Linux)
 	LDFLAGS += -lrt
 endif
 
-CFLAGS += -I$(VIPER_DIR)
+CFLAGS += -I$(VIPER_PATH)

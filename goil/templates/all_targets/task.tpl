@@ -18,7 +18,7 @@ $TIMING_PROT_STRUCT$
 #endif
 
 
-#define OS_START_SEC_CONST_UNSPECIFIED
+#define OS_START_SEC_CONFIGDATA_UNSPECIFIED
 #include "tpl_memmap.h"
 /*
  * Static descriptor of task $EXEC_NAME$
@@ -41,7 +41,7 @@ CONST(tpl_proc_static, OS_CONST) $EXEC_STATIC$ = {
 #endif
 };
 
-#define OS_STOP_SEC_CONST_UNSPECIFIED
+#define OS_STOP_SEC_CONFIGDATA_UNSPECIFIED
 #include "tpl_memmap.h"
 
 
