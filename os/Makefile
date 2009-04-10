@@ -26,10 +26,14 @@ SOURCES += tpl_os_timeobj_kernel.c
 SOURCES += tpl_os_kernel.c
 SOURCES += tpl_os_action.c
 SOURCES += tpl_os_error.c
+SOURCES += tpl_os_dispatch_table.c
+
+
+ifeq ($(strip $(WITH_SYSTEM_CALL)),false)
 SOURCES += tpl_os_alarm.c
 SOURCES += tpl_os_event.c
 SOURCES += tpl_os_it.c
 SOURCES += tpl_os_rez.c
 SOURCES += tpl_os_task.c
 SOURCES += tpl_os.c
-SOURCES += tpl_os_dispatch_table.c
+endif

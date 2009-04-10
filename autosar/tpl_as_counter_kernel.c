@@ -51,7 +51,6 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
   VAR(tpl_counter_id, AUTOMATIC) counter_id)
 {
   VAR(tpl_status, AUTOMATIC)  result = E_OK;
-  VAR(tpl_proc_id, AUTOMATIC) old_running_id;
 
 #ifndef NO_COUNTER
   P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = NULL;

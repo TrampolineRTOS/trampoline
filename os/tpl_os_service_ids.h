@@ -244,12 +244,12 @@
 #define OSServiceId_ShutdownOS                  25
 
 /**
- * @def OSServiceId_TerminateISR
+ * @def OSServiceId_TerminateISR2
  *
  * @see #SERVICE_CALL_DESCRIPTOR
- * @see #TerminateISR
+ * @see #TerminateISR2
  */
-#define OSServiceId_TerminateISR                26
+#define OSServiceId_TerminateISR2               26
 
 /**
  * @def OS_SYSCALL_COUNT

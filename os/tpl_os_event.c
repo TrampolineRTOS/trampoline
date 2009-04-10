@@ -23,14 +23,11 @@
  * $URL$
  */
 
+#ifndef WITH_SYSTEM_CALL
+
 #include "tpl_os_event.h"
 #include "tpl_os_event_kernel.h"
 #include "tpl_os_definitions.h"
-
-#ifdef WITH_SYSTEM_CALL
-#include "tpl_os_service_ids.h"
-#include "tpl_dispatch.h"
-#endif
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -38,16 +35,12 @@
 /*
  * SetEvent
  */
-ASM FUNC(StatusType, OS_CODE) SetEvent(
+FUNC(StatusType, OS_CODE) SetEvent(
     CONST(TaskType, AUTOMATIC)      task_id,
     CONST(EventMaskType, AUTOMATIC) event)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_SetEvent)
-#else
     StatusType result = tpl_set_event_service(task_id, event);
     return result & OSEK_STATUS_MASK;
-#endif
 }
 
 
@@ -55,47 +48,39 @@ ASM FUNC(StatusType, OS_CODE) SetEvent(
  * ClearEvent
  * see paragraph 13.5.3.2, page 61 of OSEK spec 2.2.2
  */
-ASM FUNC(StatusType, OS_CODE) ClearEvent(
+FUNC(StatusType, OS_CODE) ClearEvent(
     CONST(EventMaskType, AUTOMATIC) event)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_ClearEvent)
-#else
     return tpl_clear_event_service(event);
-#endif
 }
 
 /*
  * GetEvent
  * see paragraph 13.5.3.3, page 61 of OSEK spec 2.2.2
  */
-ASM FUNC(StatusType, OS_CODE) GetEvent(
+FUNC(StatusType, OS_CODE) GetEvent(
     CONST(TaskType, AUTOMATIC)          task_id,
     CONST(EventMaskRefType, AUTOMATIC)  event)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_GetEvent)
-#else
     return tpl_get_event_service(task_id, event);
-#endif
 }
 
 /*
  * WaitEvent
  * see $13.5.3.4, page 61-62 of OSEK spec 2.2.2
  */
-ASM FUNC(StatusType, OS_CODE) WaitEvent(
+FUNC(StatusType, OS_CODE) WaitEvent(
     CONST(EventMaskType, AUTOMATIC) event)
 {
-#ifdef WITH_SYSTEM_CALL
-    TPL_SYSCALL(OSServiceId_WaitEvent)
-#else
     StatusType result = tpl_wait_event_service(event);
     return result & OSEK_STATUS_MASK;
-#endif
 }
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
+
+#else
+#error "This file should not be part of your project since WITH_SYSTEM_CALL is defined"
+#endif /* WITH_SYSTEM_CALL */
 
 /* End of file tpl_os_event.c */

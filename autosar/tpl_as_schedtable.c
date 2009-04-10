@@ -26,6 +26,8 @@
  * $URL$
  */
 
+#ifndef WITH_SYSTEM_CALL
+
 #include "tpl_as_schedtable.h"
 #include "tpl_as_st_kernel.h"
 
@@ -43,10 +45,7 @@ FUNC(StatusType, OS_CODE)  StartScheduleTableRel(
     VAR(TickType, AUTOMATIC)          offset
 )
 {
-#ifdef WITH_SYSTEM_CALL
-#else
     return tpl_start_schedule_table_rel_service(sched_table_id, offset);
-#endif
 }
 
 /*
@@ -60,10 +59,7 @@ FUNC(StatusType, OS_CODE)  StartScheduleTableAbs(
     VAR(TickType, AUTOMATIC)            tick_val
 )
 {
-#ifdef WITH_SYSTEM_CALL
-#else
     return tpl_start_schedule_table_abs_service(sched_table_id, tick_val);
-#endif
 }
 
 
@@ -77,10 +73,7 @@ FUNC(StatusType, OS_CODE)  StartScheduleTableSynchron(
     VAR(ScheduleTableType, AUTOMATIC)   sched_table_id
 )
 {
-#ifdef WITH_SYSTEM_CALL
-#else
     return tpl_start_schedule_table_synchron_service(sched_table_id);
-#endif
 }
 
 
@@ -94,10 +87,7 @@ FUNC(StatusType, OS_CODE) StopScheduleTable(
     VAR(ScheduleTableType, AUTOMATIC)   sched_table_id
 )
 {
-#ifdef WITH_SYSTEM_CALL
-#else
     return tpl_stop_schedule_table_service(sched_table_id);
-#endif
 }
 
 /*
@@ -111,10 +101,7 @@ FUNC(StatusType, OS_CODE) NextScheduleTable(
     VAR(ScheduleTableType, AUTOMATIC)   next_st_id
 )
 {
-#ifdef WITH_SYSTEM_CALL
-#else
     return tpl_next_schedule_table_service(current_st_id, next_st_id);
-#endif
 }
 
 
@@ -128,10 +115,7 @@ FUNC(StatusType, OS_CODE) GetScheduleTableStatus(
     VAR(ScheduleTableType, AUTOMATIC)           sched_table_id,
     VAR(ScheduleTableStatusRefType, AUTOMATIC)  status)
 {
-#ifdef WITH_SYSTEM_CALL
-#else
     return tpl_get_schedule_table_status_service(sched_table_id, status);
-#endif
 }
 
 
@@ -146,10 +130,7 @@ FUNC(StatusType, OS_CODE) SyncScheduleTable(
     VAR(ScheduleTableType, AUTOMATIC)   sched_table_id,
     VAR(TickType, AUTOMATIC)            value)
 {
-#ifdef WITH_SYSTEM_CALL
-#else
     return tpl_sync_schedule_table_service(sched_table_id, value);
-#endif
 }
 
 
@@ -163,14 +144,14 @@ FUNC(StatusType, OS_CODE) SetScheduleTableAsync(
     VAR(ScheduleTableType, AUTOMATIC) sched_table_id
 )
 {
-#ifdef WITH_SYSTEM_CALL
-#else
     return tpl_set_schedule_table_async(sched_table_id);
-#endif
 }
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
+#else
+#error "This file should not be part of your project since WITH_SYSTEM_CALL is defined"
+#endif /* WITH_SYSTEM_CALL */
 
 /* End of file tpl_as_schedtable.c */

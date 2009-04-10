@@ -39,8 +39,8 @@ include $(COM_PATH)/Makefile
 include $(MACHINE_PATH)/Makefile
 
 #add trampoline paths in the include path. 
-CFLAGS += -I$(MACHINE_PATH)  -I$(OIL_OUTPUT_PATH) 
-CFLAGS += -I$(OS_PATH) -I$(COM_PATH) -I$(DEBUG_PATH)
+CPPFLAGS += -I$(MACHINE_PATH)  -I$(OIL_OUTPUT_PATH) 
+CPPFLAGS += -I$(OS_PATH) -I$(COM_PATH) -I$(DEBUG_PATH)
 
 #############################################################################
 # Autosar specific Configuration
@@ -48,7 +48,7 @@ CFLAGS += -I$(OS_PATH) -I$(COM_PATH) -I$(DEBUG_PATH)
 ifeq ($(strip $(AUTOSAR)),true)
   AUTOSAR_GOIL_FLAG = --autosar
   AUTOSAR_DEP = AUTOSAR
-  CFLAGS += -I$(AUTOSAR_PATH)
+  CPPFLAGS += -I$(AUTOSAR_PATH)
   AUTOSAR_MAKE_FLAG = AUTOSAR=true
 else
   AUTOSAR_GOIL_FLAG =
@@ -67,6 +67,14 @@ ifdef GOIL_TEMPLATE_PATH
 else #use the default template directory.
 	GOIL_TEMPLATE_STR =
 endif
+
+#############################################################################
+# In the end, CFLAGS includes all CPPFLAGS (because it is used 
+# in this way in compiler_rules.mk
+#############################################################################
+
+CFLAGS += $(CPPFLAGS)
+
 
 #############################################################################
 # objects and dependancy files.
@@ -88,7 +96,7 @@ ALL: | $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE) $(EXEC)
 # generate compilation and dependancy rules for these
 # paths, by including recursively the compiler_rules
 # makefile.
-TEMP_SOURCE_DIRS   = $(OS_PATH) $(COM_PATH) $(AUTOSAR_PATH) 
+TEMP_SOURCE_DIRS += $(OS_PATH) $(COM_PATH) $(AUTOSAR_PATH) 
 TEMP_SOURCE_DIRS += $(DEBUG_PATH) $(MACHINE_PATH) $(OIL_OUTPUT_PATH) .
 include $(OS_MAKE_PATH)/compiler_rules.mk
 
@@ -99,20 +107,28 @@ ifndef LD
 LD = $(CC)
 endif
 
+# the following fixes old Make-rules which does not
+# define specific CPP command variable
+ifndef CPP
+CPP = $(CC) -E
+endif
+
 # exe rule -> Link
 $(EXEC): $(OBJ)
-	$(LD) -o $(EXEC) $(OBJ) $(CFLAGS) $(LDFLAGS) 
+	$(LD) -o $(EXEC) $(OBJ) $(LDFLAGS) 
 
 #clean
-.PHONY: clean 
+.PHONY: clean mrproper
 clean:
 	@rm -rf $(OBJ) *~  $(EXTRA_FILES_CLEAN)
+
+#big clean
+mrproper: clean
 	@rm -rf $(EXEC) $(DEPFILES) $(EXTRA_FILES_MRPROPER) $(OIL_OUTPUT_PATH)
 
 # generate C file from OIL file, using goil.
 $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE): $(OIL_FILE) Makefile
 	$(GOIL_COMPILER) --generate-makefile --target=$(GOIL_TARGET) $(GOIL_TEMPLATE_STR) $(AUTOSAR_GOIL_FLAG) $(OIL_FILE)
-
 #documentation
 doc: doc-dev doc-user
 

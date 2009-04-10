@@ -180,7 +180,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
   LOCK_KERNEL()
   
   /*  store information for error hook routine    */
-  STORE_SERVICE(OSServiceId_TerminateISR)
+  STORE_SERVICE(OSServiceId_TerminateISR2)
   
   /*  check we are at the ISR2 level  */
   CHECK_ISR2_CALL_LEVEL_ERROR(result)

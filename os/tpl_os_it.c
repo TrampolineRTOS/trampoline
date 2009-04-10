@@ -24,6 +24,8 @@
  * $URL$
  */
 
+#ifndef WITH_SYSTEM_CALL
+
 #include "tpl_os_it.h"
 #include "tpl_os_it_kernel.h"
 
@@ -35,14 +37,14 @@
 #include "tpl_memmap.h"
 
 /*
- * TerminateISR
+ * TerminateISR2
  *
  * While this function is not part of the OSEK API, it is used
  * to terminate an ISR2 routine
  */
 FUNC(StatusType, OS_CODE) TerminateISR2(void)
 {
-  return tpl_terminate_isr2_service();
+    return tpl_terminate_isr2_service();
 }
 
 /*
@@ -54,7 +56,7 @@ FUNC(StatusType, OS_CODE) TerminateISR2(void)
  */
 FUNC(void, OS_CODE) EnableAllInterrupts(void)
 {
-  tpl_enable_all_interrupts_service();
+    tpl_enable_all_interrupts_service();
 }
 
 
@@ -67,7 +69,7 @@ FUNC(void, OS_CODE) EnableAllInterrupts(void)
  */
 FUNC(void, OS_CODE) DisableAllInterrupts(void)
 {
-  tpl_disable_all_interrupts_service();
+    tpl_disable_all_interrupts_service();
 }
 
 
@@ -80,7 +82,7 @@ FUNC(void, OS_CODE) DisableAllInterrupts(void)
  */
 FUNC(void, OS_CODE) ResumeAllInterrupts(void)
 {
-   tpl_resume_all_interrupts_service();
+    tpl_resume_all_interrupts_service();
 }
 
 
@@ -93,7 +95,7 @@ FUNC(void, OS_CODE) ResumeAllInterrupts(void)
  */
 FUNC(void, OS_CODE) SuspendAllInterrupts(void)
 {
-  tpl_suspend_all_interrupts_service();
+    tpl_suspend_all_interrupts_service();
 }
 
 
@@ -106,7 +108,7 @@ FUNC(void, OS_CODE) SuspendAllInterrupts(void)
  */
 FUNC(void, OS_CODE) ResumeOSInterrupts(void)
 {
-  tpl_resume_os_interrupts_service();
+    tpl_resume_os_interrupts_service();
 }
 
 
@@ -119,10 +121,14 @@ FUNC(void, OS_CODE) ResumeOSInterrupts(void)
  */
 FUNC(void, OS_CODE) SuspendOSInterrupts(void)
 {
-   tpl_suspend_os_interrupts_service();
+    tpl_suspend_os_interrupts_service();
 }
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
+
+#else
+#error "This file should not be part of your project since WITH_SYSTEM_CALL is defined"
+#endif /* WITH_SYSTEM_CALL */
 
 /* End of file tpl_os_it.h */
