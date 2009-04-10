@@ -25,14 +25,11 @@
  * - OS shutdown
  */
 
+#ifndef WITH_SYSTEM_CALL
+
 #include "tpl_os.h"
 #include "tpl_os_kernel.h"
 #include "tpl_machine_interface.h"
-
-#ifdef WITH_SYSTEM_CALL
-#include "tpl_os_service_ids.h"
-#include "tpl_dispatch.h"
-#endif
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 #include "tpl_as_timing_protec.h"
@@ -51,49 +48,40 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-#ifndef WITH_SYSTEM_CALL
 
 /*
  * GetActiveApplicationMode return the active application mode
  */
 FUNC(AppModeType, OS_CODE) GetActiveApplicationMode(void)
 {
-  return tpl_get_active_application_mode_service();
+    return tpl_get_active_application_mode_service();
 }
-
-/*
- * ShutdownOS can be called by the app to shutdown it
- */
-FUNC(void, OS_CODE) ShutdownOS(
-  CONST(StatusType, AUTOMATIC) error  /*@unused@*/)
-{
-  tpl_shutdown_os_service(error);
-}
-
-#endif
 
 /*
  * StartOS can be called by the app to start the OS in
  * an appropriate mode.
  */
 FUNC(void, OS_CODE) StartOS(
-  CONST(AppModeType, AUTOMATIC) mode)
+    CONST(AppModeType, AUTOMATIC) mode)
 {
-  /*  Initialize the hardware to allow the OS to run  */
-  tpl_init_machine();
+    tpl_start_os_service(mode);
+}
 
-  /*  Call the service                                */
-#ifdef WITH_SYSTEM_CALL
-  tpl_start_os(mode);
-#else
-  tpl_start_os_service(mode);
-#endif
-  
-  /*  Fall back to the idle loop                      */
-  tpl_sleep();
+/*
+ * ShutdownOS can be called by the app to shutdown it
+ */
+FUNC(void, OS_CODE) ShutdownOS(
+    CONST(StatusType, AUTOMATIC) error  /*@unused@*/
+)
+{
+    tpl_shutdown_os_service(error);
 }
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
+
+#else
+#error "This file should not be part of your project since WITH_SYSTEM_CALL is defined"
+#endif /* WITH_SYSTEM_CALL */
 
 /* End of file tpl_os.c */

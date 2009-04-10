@@ -25,6 +25,8 @@
  *  $Author$
  *  $URL$
  */
+ 
+#ifndef WITH_SYSTEM_CALL
 
 #include "tpl_as_application.h"
 #include "tpl_as_app_kernel.h"
@@ -36,10 +38,7 @@
  */
 FUNC(ApplicationType, OS_CODE) GetApplicationID(void)
 {
-#ifdef WITH_SYSTEM_CALL
-#else
   return tpl_get_application_id_service();
-#endif
 }
 
 /**
@@ -54,10 +53,7 @@ FUNC(ApplicationType, OS_CODE) CheckObjectOwnership(
   ObjectTypeType  obj_type,
   tpl_generic_id  obj_id)
 {
-#ifdef WITH_SYSTEM_CALL
-#else
   return tpl_check_object_ownership_service(obj_type, obj_id);
-#endif  
 }
 
 /**
@@ -74,10 +70,7 @@ FUNC(ObjectAccessType, OS_CODE) CheckObjectAccess(
   ObjectTypeType  obj_type,
   tpl_generic_id  obj_id)
 {
-#ifdef WITH_SYSTEM_CALL
-#else
   return tpl_check_object_access_service(app_id, obj_type, obj_id);
-#endif
 }
 
 /**
@@ -93,10 +86,11 @@ FUNC(ObjectAccessType, OS_CODE) CheckObjectAccess(
  */
 FUNC(StatusType, OS_CODE) TerminateApplication(RestartType restart_opt)
 {
-#ifdef WITH_SYSTEM_CALL
-#else
   return tpl_terminate_application_service(restart_opt);
-#endif
 }
+
+#else
+#error "This file should not be part of your project since WITH_SYSTEM_CALL is defined"
+#endif /* WITH_SYSTEM_CALL */
 
 /*  End of file tpl_as_application.c  */

@@ -26,6 +26,8 @@
  * $URL$
  */
 
+#ifndef WITH_SYSTEM_CALL
+
 #include "tpl_as_isr.h"
 #include "tpl_os_internal_types.h"
 #include "tpl_os_kernel.h"
@@ -48,39 +50,34 @@
  */
 FUNC(ISRType, OS_CODE) GetISRID(void)
 {
-#ifdef WITH_SYSTEM_CALL
-#else
     return tpl_get_isr_id_service();
-#endif
 }
 
 /**
  * Disables the specified ISR
  *
- * see §8.4.20 of AUTOSAR/Specification of the Operating System v2.1.0
+ * see ï¿½8.4.20 of AUTOSAR/Specification of the Operating System v2.1.0
  */
 FUNC(StatusType, OS_CODE) DisableInterruptSource (VAR(ISRType, AUTOMATIC) isr_id)
 {
-#ifdef WITH_SYSTEM_CALL
-#else
     return tpl_disable_interrupt_source_service(isr_id);
-#endif
 }
 
 /**
  * Enables the specified ISR
  *
- * see §8.4.21 of AUTOSAR/Specification of the Operating System v2.1.0
+ * see ï¿½8.4.21 of AUTOSAR/Specification of the Operating System v2.1.0
  */
 FUNC(StatusType, OS_CODE) EnableInterruptSource (VAR(ISRType, AUTOMATIC) isr_id)
 {
-#ifdef WITH_SYSTEM_CALL
-#else
     return tpl_enable_interrupt_source_service(isr_id);
-#endif
 }
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
+
+#else
+#error "This file should not be part of your project since WITH_SYSTEM_CALL is defined"
+#endif /* WITH_SYSTEM_CALL */
 
 /* End of file tpl_as_isr.c */

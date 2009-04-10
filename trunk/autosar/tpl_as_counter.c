@@ -25,6 +25,8 @@
  * $Author$
  * $URL$
  */
+ 
+#indef WITH_SYSTEM_CALL
 
 #include "tpl_as_counter.h"
 #include "tpl_as_counter_kernel.h"
@@ -45,10 +47,7 @@
  */
 FUNC(StatusType, OS_CODE) IncrementCounter(VAR(CounterType, AUTOMATIC) counter_id)
 {
-#ifdef WITH_SYSTEM_CALL
-#else
     return OSEK_STATUS_MASK & tpl_increment_counter_service(counter_id);
-#endif
 }
 
 
@@ -65,10 +64,7 @@ FUNC(StatusType, OS_CODE) GetCounterValue(
     VAR(CounterType, AUTOMATIC) counter_id,
     VAR(TickRefType, AUTOMATIC) value)
 {
-#ifdef WITH_SYSTEM_CALL
-#else
     return tpl_get_counter_value_service(counter_id, value);
-#endif
 }
 
 
@@ -86,17 +82,18 @@ FUNC(StatusType, OS_CODE) GetElapsedCounterValue(
     VAR(TickType, AUTOMATIC)    previous_value,
     VAR(TickRefType, AUTOMATIC) value)
 {
-#ifdef WITH_SYSTEM_CALL
-#else
     return tpl_get_elapsed_counter_value_service(
         counter_id,
         previous_value,
         value
     );
-#endif
 }
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
+
+#else
+#error "This file should not be part of your project since WITH_SYSTEM_CALL is defined"
+#endif /* WITH_SYSTEM_CALL */
 
 /* End of file tpl_as_counter.c */

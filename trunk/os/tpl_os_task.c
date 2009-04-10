@@ -25,9 +25,12 @@
  * $URL$
  */
 
+#ifndef WITH_SYSTEM_CALL
+
 #include "tpl_os_task.h"
 #include "tpl_os_task_kernel.h"
 #include "tpl_os_definitions.h"
+
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -38,46 +41,50 @@
  * see header file documentation or refer to the OSEK/VDX 2.2.2 specification
  */
 FUNC(StatusType, OS_CODE) ActivateTask(
-  CONST(TaskType, AUTOMATIC) task_id)
+    CONST(TaskType, AUTOMATIC) task_id)
 {
-  return OSEK_STATUS_MASK & tpl_activate_task_service(task_id);
+    return OSEK_STATUS_MASK & tpl_activate_task_service(task_id);
 }
 
 
 FUNC(StatusType, OS_CODE) TerminateTask(void)
 {
-  return OSEK_STATUS_MASK & tpl_terminate_task_service();
+    return OSEK_STATUS_MASK & tpl_terminate_task_service();
 }
 
 
 FUNC(StatusType, OS_CODE) ChainTask(
-  CONST(TaskType, AUTOMATIC) task_id)
+    CONST(TaskType, AUTOMATIC) task_id)
 {
-  return OSEK_STATUS_MASK & tpl_chain_task_service(task_id);
+    return OSEK_STATUS_MASK & tpl_chain_task_service(task_id);
 }
 
 
 FUNC(StatusType, OS_CODE) Schedule(void)
 {
-  return OSEK_STATUS_MASK & tpl_schedule_service();
+    return OSEK_STATUS_MASK & tpl_schedule_service();
 }
 
 
 FUNC(StatusType, OS_CODE) GetTaskID(
-  VAR(TaskRefType, AUTOMATIC) task_id)
+    VAR(TaskRefType, AUTOMATIC) task_id)
 {
-  return tpl_get_task_id_service(task_id);
+    return tpl_get_task_id_service(task_id);
 }
 
 
 FUNC(StatusType, OS_CODE) GetTaskState(
-  CONST(TaskType, AUTOMATIC)        task_id,
-  VAR(TaskStateRefType, AUTOMATIC)  state)
+    CONST(TaskType, AUTOMATIC)        task_id,
+    VAR(TaskStateRefType, AUTOMATIC)  state)
 {
-  return tpl_get_task_state_service(task_id, state);
+    return tpl_get_task_state_service(task_id, state);
 }
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
+
+#else
+#error "This file should not be part of your project since WITH_SYSTEM_CALL is defined"
+#endif /* WITH_SYSTEM_CALL */
 
 /* End of file tpl_os_task.c */
