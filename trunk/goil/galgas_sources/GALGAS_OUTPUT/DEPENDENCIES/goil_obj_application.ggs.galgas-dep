@@ -1,0 +1,7 @@
+451::
+goil_lexique.ggs
+goil_options.ggs
+goil_types_app.ggs
+goil_basic_types.ggs::
+GALGAS_OUTPUT/goil_obj_application.h
+GALGAS_OUTPUT/goil_obj_application.cpp
