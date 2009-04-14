@@ -1,0 +1,5 @@
+451::
+goil_grammar.ggs
+goil_options.ggs
+goil_lexique.ggs::
+GALGAS_OUTPUT/cocoaGOIL.mm

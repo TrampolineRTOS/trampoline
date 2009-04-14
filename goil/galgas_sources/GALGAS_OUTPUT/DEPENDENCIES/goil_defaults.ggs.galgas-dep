@@ -1,0 +1,13 @@
+451::
+goil_semantic_types.ggs
+goil_basic_types.ggs
+goil_types_action.ggs
+goil_routines.ggs
+goil_check.ggs
+goil_types_task.ggs
+goil_types_timing_prot.ggs
+goil_types_resource.ggs
+cfg_types.ggs
+goil_types_isr.ggs::
+GALGAS_OUTPUT/goil_defaults.h
+GALGAS_OUTPUT/goil_defaults.cpp
