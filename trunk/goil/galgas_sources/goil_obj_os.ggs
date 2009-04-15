@@ -60,6 +60,7 @@ rule <os>
   @basic_type  usegetserviceid := [os usegetserviceid] ;
   @basic_type  useparameteraccess := [os useparameteraccess] ;
   @basic_type  useresscheduler := [os useresscheduler] ;
+  @basic_type  systemcall := [os systemcall] ;
   @lstringlist app_src := [os app_src] ;                   # Makefile
   @lstringlist cflags := [os cflags] ;                     # Makefile
   @lstringlist asflags := [os asflags] ;                   # Makefile
@@ -154,6 +155,11 @@ rule <os>
     set_bool !?useresscheduler !urs !"USERESSCHEDULER" ;
     <description> ?* ; $;$ ;
   while
+    @lbool sc ;
+    $SYSTEM_CALL$ ; $=$ ; <boolean> ?sc ;
+    set_bool !?systemcall !sc !"SYSTEM_CALL" ;
+    <description> ?* ; $;$ ;
+  while
     @lstring src ;
     $APP_SRC$ ; $=$ ; $string$ ?src ; <description> ?* ; $;$ ;
     checkFileExists !src;
@@ -200,6 +206,7 @@ rule <os>
     !usegetserviceid
     !useparameteraccess
     !useresscheduler
+    !systemcall
     !app_src
     !cflags
     !asflags
