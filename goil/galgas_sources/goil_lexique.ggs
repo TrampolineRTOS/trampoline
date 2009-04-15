@@ -81,7 +81,7 @@ list objectRefType error message "object reference type '%K'" style keywordsStyl
 #
 list os_attributes error message "os attribute '%K'" style keywordsStyle :
     "STATUS", "EXTENDED", "STARTUPHOOK", "ERRORHOOK", "SHUTDOWNHOOK", "PRETASKHOOK",
-    "POSTTASKHOOK", "USEGETSERVICEID", "USEPARAMETERACCESS", "USERESSCHEDULER" ;
+    "POSTTASKHOOK", "USEGETSERVICEID", "USEPARAMETERACCESS", "USERESSCHEDULER", "SYSTEM_CALL" ;
 
 #
 # Task object predefined attributes that are not

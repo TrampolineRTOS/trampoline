@@ -39,6 +39,7 @@ class @os_obj extends @oil_obj {
     @basic_type  usegetserviceid ;
     @basic_type  useparameteraccess ;
     @basic_type  useresscheduler ;
+    @basic_type  systemcall ;
     @lstringlist app_src ;
     @lstringlist cflags ;
     @lstringlist asflags ;

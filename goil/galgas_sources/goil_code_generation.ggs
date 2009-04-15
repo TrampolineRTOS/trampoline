@@ -216,6 +216,12 @@ routine generate_flags
         if [b value] then flags .= "#define    WITH_USERESSCHEDULER\n" ; end if ;
     else end cast ;
 
+    # Check the SYSTEM_CALL field
+    cast [os systemcall] :
+    when == @bool_class b do
+        if [b value] then flags .= "#define    WITH_SYSTEM_CALL\n" ; end if ;
+    else end cast ;
+
     # Output the TRAMPOLINE_BASE_PATH if it has been set in the OIL file
     @lstring tpl_base_path := [os tpl_base_path] ;
     if [tpl_base_path string] != "" then
@@ -364,6 +370,17 @@ routine generate_makefile
     getTrampolineTargetName ? trampolineTarget;
     makerulesStr := [makerulesStr stringByReplacingStringByString !"$GOIL_TARGET$"![option goil_options.target_platform]];
     makerulesStr := [makerulesStr stringByReplacingStringByString !"$TRAMPOLINE_TARGET$"!trampolineTarget];
+
+    cast [os systemcall] :
+    when == @bool_class b do
+      @string s ;
+      [b string ?s] ;
+      doReplace !?makerulesStr !"$WSC$" !s ;
+    else
+      doReplace !?makerulesStr !"$WSC$" !"false" ;
+    end cast ;
+
+
     #template
     @string templatePathStr := [option goil_options.template_dir];
     @string templateStr;
