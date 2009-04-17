@@ -23,7 +23,7 @@
 #include "tpl_os_kernel.h" /* for tpl_running_obj */
 #endif /* WITH_AUTOSAR */
 
-#include <assert.h>
+/*#include <assert.h>*/
 #include <setjmp.h>
 #include <signal.h>
 #include <stdio.h>
@@ -33,9 +33,10 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-tpl_stack_word idle_stack_zone[32768/sizeof(tpl_stack_word)] = {0};
-struct TPL_STACK idle_task_stack = { idle_stack_zone, 32768} ;
-struct TPL_CONTEXT idle_task_context = { {0} };
+VAR(tpl_stack_word, OS_VAR) idle_stack_zone[32768/sizeof(tpl_stack_word)] = {0} ;
+VAR(struct TPL_STACK, OS_VAR) idle_task_stack = { idle_stack_zone, 32768} ;
+VAR(struct TPL_CONTEXT, OS_VAR) idle_task_context = { {0}, {0} };
+
 extern volatile u32 tpl_locking_depth;
 
 #ifdef WITH_AUTOSAR
@@ -156,7 +157,7 @@ tpl_bool tpl_check_stack_footprint(const tpl_stack *stack)
     const int signal_for_watchdog = SIGALRM;
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 #if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
-	const int signal_for_counters = SIGUSR2;
+	const int signal_for_counters = SIGTERM;
 #endif
 
 /*
@@ -171,16 +172,16 @@ sigset_t    signal_set;
  */
 void tpl_call_counter_tick();
 
-static sigset_t tpl_saved_state;
+/*static sigset_t tpl_saved_state;*/
 
 /**
  * Enable all interrupts
  */
 void tpl_enable_interrupts(void)
 {
-    if (sigprocmask(SIG_UNBLOCK,&signal_set,&tpl_saved_state) == -1)
+    if ( -1 == sigprocmask(SIG_UNBLOCK, &signal_set, NULL) )
     {
-        perror("tpl_enable_interrupts failed");
+        perror("tpl_enable_interrupt failed");
         exit(-1);
     }
 }
@@ -190,7 +191,7 @@ void tpl_enable_interrupts(void)
  */
 void tpl_disable_interrupts(void)
 {
-    if (sigprocmask(SIG_BLOCK,&signal_set,&tpl_saved_state) == -1)
+    if ( -1 == sigprocmask(SIG_BLOCK, &signal_set, NULL) )
     {
         perror("tpl_disable_interrupts failed");
         exit(-1);
@@ -201,49 +202,72 @@ void tpl_disable_interrupts(void)
  * The signal handler used when interrupts are enabled
  */
 void tpl_signal_handler(int sig)
-{	
-	
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-  struct itimerval timer;
-#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-  
-#ifndef NO_ISR
-    unsigned int id;
-#endif /* NO_ISR */
+{
 
-	/* Disable interrupts in PostTaskook and "PreTaskISR" :
-	 * tpl_locking_depth is incremented because otherwise, when ResumeAllInterrupts
-	 * is called in Post(Pre)-Task, interrupts are enabled whereas it shouldn't.
-	 */
-	tpl_locking_depth++; 
-	
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+    struct itimerval timer;
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+#ifndef NO_ISR
+            unsigned int id;
+            unsigned char found;
+#endif
+
+    tpl_locking_depth++;
+  
 #if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
-    if (signal_for_counters == sig) tpl_call_counter_tick();
+    if (signal_for_counters == sig) 
+    {
+        tpl_call_counter_tick();
+    }
+    else
+    {
 #endif /*(defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    if (sig == signal_for_watchdog)
-    {
-        /* disable the interval timer (one shot) */
-        timer.it_value.tv_sec = 0;
-        timer.it_value.tv_usec = 0;
-        timer.it_interval.tv_sec = 1;
-        timer.it_interval.tv_usec = 0;
-        setitimer (ITIMER_REAL, &timer, NULL);
+        if (signal_for_watchdog == sig)
+        {
+            /* disable the interval timer (one shot) */
+            timer.it_value.tv_sec = 0;
+            timer.it_value.tv_usec = 0;
+            timer.it_interval.tv_sec = 1;
+            timer.it_interval.tv_usec = 0;
+            setitimer (ITIMER_REAL, &timer, NULL);
       
-        tpl_watchdog_expiration();
-    }    
+           tpl_watchdog_expiration();
+        }
+        else
+        {
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 #ifndef NO_ISR
-    for (id = 0; id < ISR_COUNT; id++)
-    {
-        if (signal_for_isr_id[id] == sig)
-        {
-			tpl_central_interrupt_handler(id + TASK_COUNT);
-        }
-    }
+            id = 0;
+            found = (sig == signal_for_isr_id[id]);
+            while( (id < ISR_COUNT) && !found)
+            {
+                id++;
+                if(id < ISR_COUNT) 
+                {
+                    found  = (sig == signal_for_isr_id[id]);
+                }
+            }/* while((id < ISR_COUNT) && !found) */
+
+            if(found)
+            {
+                tpl_central_interrupt_handler(id + TASK_COUNT);
+            } 
+            else
+            {
+                /* Unknown interrupt request ! */
+                printf("No ISR is registered for signal %d\n", sig);
+                printf("Cowardly exiting!\n");
+                tpl_shutdown();
+            }
 #endif /* NO_ISR */
-	/* Release interrupts returning in the previous context*/
-	tpl_locking_depth--;
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+        }
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+#if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
+    }
+#endif /* (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */
+    tpl_locking_depth--;
 }
 
 /*
@@ -251,25 +275,8 @@ void tpl_signal_handler(int sig)
  */
 void tpl_sleep(void)
 {
-    while (1) sleep(10);
+    while (1) sleep(10); 
 }
-
-/*static tpl_proc_static my_tpl_sleep = {
-  {0},
-  {NULL, 0},
-  tpl_sleep,
-  NULL,
-  -1,
-#ifdef WITH_OSAPPLICATION
-  -1,
-#endif
-  0,
-  0,
-  0,
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-NULL    no timing protection for the idle task :D */
-/*#endif
-};*/
 
 extern void viper_kill(void);
 
@@ -283,7 +290,6 @@ void tpl_shutdown(void)
     }
     
     viper_kill();
-    /* sleep forever */
     exit(0);
 }
 
@@ -298,21 +304,18 @@ void tpl_get_task_lock(void)
     /*
      * block the handling of signals
      */
-    /*  fprintf(stderr, "%d-lock\n", cnt++);*/
-    if (sigprocmask(SIG_BLOCK,&signal_set,NULL) == -1)
-    {
-        perror("tpl_get_lock failed");
-        exit(-1);
+    if(0 == tpl_locking_depth) {
+        if (sigprocmask(SIG_BLOCK,&signal_set,NULL) == -1)
+        {
+            perror("tpl_get_lock failed");
+            exit(-1);
+        }
     }
-/*    x++; */
     tpl_locking_depth++;
 
 #ifdef WITH_AUTOSAR
     tpl_cpt_os_task_lock++;
 #endif
-    
-/*    if (x > 1) printf("** lock ** X=%d\n",x);
-    assert( 0 <= x && x <= 1); */
 }
 
 /*
@@ -321,15 +324,12 @@ void tpl_get_task_lock(void)
  */
 void tpl_release_task_lock(void)
 {
-/*     x--;
-    if (x < 0) printf("** unlock ** X=%d\n",x);
-    assert(0 <= x && x <= 1); */
-    /*  fprintf(stderr, "%d-unlock\n", cnt++);*/
-    
-    if (tpl_locking_depth > 0)
-	{
-	   tpl_locking_depth--;
-	}
+/*    if(0 > tpl_locking_depth)
+    {
+        tpl_locking_depth--;
+    }
+*/
+    tpl_locking_depth--;
 
 #ifdef WITH_AUTOSAR
     tpl_cpt_os_task_lock--;
@@ -344,21 +344,19 @@ void tpl_release_task_lock(void)
     }
 }
 
-
-
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 FUNC(void, OS_CODE) tpl_switch_context(
     CONSTP2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
     CONSTP2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
 {
-    if( NULL == old_context )
+    if( NULL == old_context)
     {
-        longjmp((*new_context)->env, 1);
+        _longjmp((*new_context)->current, 1);
     }
-    else if ( 0 == setjmp((*old_context)->env) ) 
+    else if ( 0 == _setjmp((*old_context)->current) ) 
     {
-        longjmp((*new_context)->env, 1);
+        _longjmp((*new_context)->current, 1);
     }
     return;
 }
@@ -370,17 +368,25 @@ FUNC(void, OS_CODE) tpl_switch_context_from_it(
 {
     if( NULL == old_context )
     {
-        longjmp((*new_context)->env, 1);
+        _longjmp((*new_context)->current, 1);
     }
-    else if ( 0 == setjmp((*old_context)->env) ) 
+    else if ( 0 == _setjmp((*old_context)->current) ) 
     {
-        longjmp((*new_context)->env, 1);
+        _longjmp((*new_context)->current, 1);
     }
     return;
 }
 
-#define MIN_STACK_SIZE (4*8*(4 * 1024))
-
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+FUNC(void, OS_CODE) tpl_init_context(
+        CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
+{
+    /*printf("tpl_init_context(%d)\n", proc_id);*/
+    memcpy( tpl_stat_proc_table[proc_id]->context->current,
+            tpl_stat_proc_table[proc_id]->context->initial,
+            sizeof(jmp_buf));
+}
 
 void tpl_osek_func_stub( tpl_proc_id task_id )
 {
@@ -390,8 +396,6 @@ void tpl_osek_func_stub( tpl_proc_id task_id )
     /* Avoid signal blocking due to a previous call to tpl_init_context in a OS_ISR2 context. */
 	tpl_release_task_lock();
     
-    /* printf("** unlock (tpl_osek_func_stub) ** X=%d\n",x) ; */
-  
     (*func)();
     
     if (type == IS_ROUTINE) {
@@ -407,33 +411,44 @@ void tpl_osek_func_stub( tpl_proc_id task_id )
  * global variables used to store the "old" context
  * during the trampoline phase used to create a new context
  */
-VAR(jmp_buf,OS_VAR)         saved_env;
 VAR(sigset_t,OS_VAR)        saved_mask;
 VAR(sig_atomic_t,OS_VAR)    handler_has_been_triggered;
-VAR(jmp_buf,OS_VAR)         *new_env;
 VAR(tpl_proc_id,OS_VAR)     new_proc_id;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
-FUNC(void, OS_CODE) tpl_init_context_boot(void)
+FUNC(void, OS_CODE) tpl_create_context_boot(void)
 {
     tpl_proc_id context_owner_proc_id;
     
     /*
-     * 10 : restore the mask modified by longjmp so that
+     * 10 : restore the mask modified by _longjmp so that
      * all tasks are executed with the same mask
+     * Commented out since _longjmp/_setjmp replace longjmp/setjmp
      */
-    sigprocmask(SIG_SETMASK, &saved_mask, NULL);
+     sigprocmask(SIG_SETMASK, &saved_mask, NULL);
 
     /* 11 : store the id of the owner of this context */
     context_owner_proc_id = new_proc_id;
+    /*printf("Just set context_owner_proc_id to %d\n", context_owner_proc_id); */
+/*    getchar();*/
 
-    /* 12 & 13 : context is ready, jump back to the tpl_init_context */
-    if( 0 == setjmp(*new_env) )
-        longjmp(saved_env, 1);
+    /* 12 & 13 : context is ready, jump back to the tpl_create_context */
+    if( 0 == _setjmp(tpl_stat_proc_table[context_owner_proc_id]->context->initial) ) 
+    {
+        _longjmp(tpl_stat_proc_table[IDLE_TASK_ID]->context->current, 1);
+    }
 
+    /*printf("About to launch proc#%d\n", context_owner_proc_id);*/
+/*    getchar(); */
+    /* 13 bis : save the initial context of the task */
+    /*memcpy( tpl_stat_proc_table[context_owner_proc_id]->context->initial,
+            tpl_stat_proc_table[context_owner_proc_id]->context->current, 
+            sizeof(jmp_buf));
+    */
     /* We are back for the first dispatch. Let's go */
-    tpl_osek_func_stub(context_owner_proc_id);
+/*    tpl_osek_func_stub(context_owner_proc_id); */
+    tpl_osek_func_stub(tpl_kern.running_id);
 
     /* We should not be there. Let's crash*/
     abort();
@@ -442,10 +457,10 @@ FUNC(void, OS_CODE) tpl_init_context_boot(void)
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
-FUNC(void, OS_CODE) tpl_init_context_trampoline(int sigid)
+FUNC(void, OS_CODE) tpl_create_context_trampoline(int sigid)
 {
     /* 5 : new context created. We go back to tpl_init_context */
-    if( 0==setjmp(*new_env) ) 
+    if( 0==_setjmp(tpl_stat_proc_table[new_proc_id]->context->initial) ) 
     {
         handler_has_been_triggered = TRUE;
         return;
@@ -455,13 +470,13 @@ FUNC(void, OS_CODE) tpl_init_context_trampoline(int sigid)
      * 9 : we are back after a jump, but no more in signal handling mode
      * We are ready to boot the new context with a clean stack 
      */
-    tpl_init_context_boot();
+    tpl_create_context_boot();
     return;
 }
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
-FUNC(void, OS_CODE) tpl_init_context(
+FUNC(void, OS_CODE) tpl_create_context(
     CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
 {
     struct sigaction new_action;
@@ -474,7 +489,7 @@ FUNC(void, OS_CODE) tpl_init_context(
     /* 1 : save the current mask, and mask our worker signal : SIGUSR1 */
     sigemptyset(&new_mask);
     sigaddset(&new_mask, SIGUSR1);
-    sigprocmask(SIG_BLOCK, &new_mask, &old_mask);
+    sigprocmask(SIG_BLOCK, &new_mask, &old_mask); 
 
     /*
      * 2 : install the new action for our worker signal.
@@ -483,7 +498,7 @@ FUNC(void, OS_CODE) tpl_init_context(
      * When it will be executed, all signals will be blocked.
      */
     memset((void*)&new_action, 0, sizeof(new_action));
-    new_action.sa_handler = tpl_init_context_trampoline;
+    new_action.sa_handler = tpl_create_context_trampoline;
     new_action.sa_flags = SA_ONSTACK;
     sigemptyset(&new_action.sa_mask);
     sigaction(SIGUSR1, &new_action, &old_action);
@@ -494,10 +509,10 @@ FUNC(void, OS_CODE) tpl_init_context(
     new_stack.ss_flags = 0;
     sigaltstack(&new_stack, &old_stack);
 
-    /* 4-a : save the current context before to create the new one */
-    new_env = &((tpl_stat_proc_table[proc_id]->context)->env);
+    /* 4-a : store data for new context in globals */
+/*    new_env = &((tpl_stat_proc_table[proc_id]->context)->current);*/
     new_proc_id = proc_id;
-    saved_mask = old_mask;
+    saved_mask = old_mask; 
     handler_has_been_triggered = FALSE;
     /* 4-b : send the worker signal */
     kill(getpid(), SIGUSR1);
@@ -527,8 +542,8 @@ FUNC(void, OS_CODE) tpl_init_context(
      * 7 & 8 : we jump back to the created context.
      * This time, we are no more in signal handling mode
      */
-    if ( 0 == setjmp(saved_env) )
-        longjmp(*new_env,1);
+    if ( 0 == _setjmp(tpl_stat_proc_table[IDLE_TASK_ID]->context->current) )
+        _longjmp(tpl_stat_proc_table[new_proc_id]->context->initial,1);
 
     /* 
      * 14 : we go back to the caller 
@@ -547,20 +562,25 @@ void quit(int n)
  */
 void tpl_init_machine(void)
 {
+    tpl_proc_id proc_id;
 #ifndef NO_ISR
     int id;
 #endif
-    
     struct sigaction sa;
 
-    /*printf("start viper.\n");*/
-    tpl_viper_init();
-  
+
+    /* create the context of each tpl_proc */
+    for(    proc_id = 0; 
+            proc_id < TASK_COUNT+ISR_COUNT; 
+            proc_id++)
+    {
+        tpl_create_context(proc_id);
+    }
+    
     signal(SIGINT, quit);
     signal(SIGHUP, quit);
 
     sigemptyset(&signal_set);
-    sigemptyset(&tpl_saved_state);
     
     /*
      * init a signal mask to block all signals (aka interrupts)
@@ -569,9 +589,6 @@ void tpl_init_machine(void)
     for (id = 0; id < ISR_COUNT; id++) {
         sigaddset(&signal_set,signal_for_isr_id[id]);
     }
-#endif
-#ifndef NO_ALARM
-    sigaddset(&signal_set,signal_for_counters);
 #endif
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     sigaddset(&signal_set,signal_for_watchdog);
@@ -595,37 +612,17 @@ void tpl_init_machine(void)
         sigaction(signal_for_isr_id[id],&sa,NULL);
     }
 #endif
-#ifndef NO_ALARM
-    sigaction(signal_for_counters,&sa,NULL);
-#endif
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     sigaction(signal_for_watchdog,&sa,NULL);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 #if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
     sigaction(signal_for_counters,&sa,NULL);
 #endif /*(defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */
-/* REPRENDRE ICI -----*/    
-    tpl_init_context((tpl_proc_id)(IDLE_TASK_ID));
-        
-/*    assert( idle_task_context != NULL ); */
-    
-    /*
-     * block the handling of signals
-     */
-    /*if (sigprocmask(SIG_BLOCK,&signal_set,NULL) == -1) {
-        perror("tpl_init_machine failed");
-        exit(-1);
-    }
-    */
-#ifndef NO_ALARM
+
+    tpl_viper_init();
+    usleep(1000);
+#if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
     tpl_viper_start_auto_timer(signal_for_counters,10000);  /* 10 ms */
-#endif
-#ifdef WITH_AUTOSAR
-#ifndef NO_SCHEDTABLE
-    #ifdef NO_ALARM
-    tpl_viper_start_auto_timer(signal_for_counters,10000);  /* 10 ms */
-    #endif
-#endif
 #endif
 
     /*

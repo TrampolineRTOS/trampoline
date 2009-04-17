@@ -28,7 +28,8 @@ typedef struct TPL_STACK *tpl_stack;
 extern struct TPL_STACK idle_task_stack;
 
 struct TPL_CONTEXT {
-    jmp_buf env;
+    jmp_buf initial;
+    jmp_buf current;
 };
 typedef struct TPL_CONTEXT *tpl_context;
 extern struct TPL_CONTEXT idle_task_context;
