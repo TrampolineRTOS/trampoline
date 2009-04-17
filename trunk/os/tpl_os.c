@@ -64,6 +64,7 @@ FUNC(AppModeType, OS_CODE) GetActiveApplicationMode(void)
 FUNC(void, OS_CODE) StartOS(
     CONST(AppModeType, AUTOMATIC) mode)
 {
+    tpl_init_machine();  
     tpl_start_os_service(mode);
 }
 

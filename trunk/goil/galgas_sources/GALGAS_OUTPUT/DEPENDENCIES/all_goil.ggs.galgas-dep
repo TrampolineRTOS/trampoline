@@ -1,4 +1,4 @@
-451::
+456::
 goil_lexique.ggs
 goil_options.ggs
 goil_syntax.ggs
@@ -272,3 +272,4 @@ GALGAS_OUTPUT/cocoaGOIL.mm
 GALGAS_OUTPUT/DEPENDENCIES/cocoaGOIL.ggs.galgas-dep
 GALGAS_OUTPUT/file_list.mke
 GALGAS_OUTPUT/file_list_for_xcode_project.txt
+../project_xcode/goil.xcodeproj/project.pbxproj

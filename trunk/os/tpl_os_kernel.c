@@ -89,7 +89,7 @@ STATIC VAR(tpl_application_mode, OS_VAR) application_mode;
  *
  * @see #idle_task
  */
-CONST(tpl_proc_static, OS_VAR) idle_task_static = {
+CONST(tpl_proc_static, OS_CONST) idle_task_static = {
     /* context              */  IDLE_CONTEXT,
     /* stack                */  IDLE_STACK, 
     /* entry point          */  IDLE_ENTRY,
