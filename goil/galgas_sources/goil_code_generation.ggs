@@ -297,12 +297,12 @@ routine getTrampolineTargetName
   !  @string trampolineTarget
 :
   @string goilTargetName := [option goil_options.target_platform];
-  if goilTargetName == "arm7"      then trampolineTarget := "ARM7";
+  if    goilTargetName == "arm"    then trampolineTarget := "arm";
   elsif goilTargetName == "avr"    then trampolineTarget := "avr";
   elsif goilTargetName == "c166"   then trampolineTarget := "c166";
   elsif goilTargetName == "h8300h" then trampolineTarget := "h8300h";
   elsif goilTargetName == "hcs12"  then trampolineTarget := "s12x";
-  elsif goilTargetName == "libpcl" then trampolineTarget := "posix-libpcl";
+  elsif goilTargetName == "libpcl" then trampolineTarget := "libpcl";
   elsif goilTargetName == "posix"  then trampolineTarget := "posix";
   elsif goilTargetName == "ppc"    then trampolineTarget := "PPC";
   elsif goilTargetName == "v850e"  then trampolineTarget := "v850e";
