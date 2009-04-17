@@ -54,7 +54,7 @@
  */
 FUNC(AppModeType, OS_CODE) GetActiveApplicationMode(void)
 {
-    return tpl_get_active_application_mode_service();
+  return tpl_get_active_application_mode_service();
 }
 
 /*
@@ -64,8 +64,10 @@ FUNC(AppModeType, OS_CODE) GetActiveApplicationMode(void)
 FUNC(void, OS_CODE) StartOS(
     CONST(AppModeType, AUTOMATIC) mode)
 {
-    tpl_init_machine();  
-    tpl_start_os_service(mode);
+  tpl_init_machine();  
+  tpl_start_os_service(mode);
+  /*  Fall back to the idle loop                      */
+  tpl_sleep();
 }
 
 /*
@@ -75,7 +77,7 @@ FUNC(void, OS_CODE) ShutdownOS(
     CONST(StatusType, AUTOMATIC) error  /*@unused@*/
 )
 {
-    tpl_shutdown_os_service(error);
+  tpl_shutdown_os_service(error);
 }
 
 #define OS_STOP_SEC_CODE
