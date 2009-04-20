@@ -67,7 +67,8 @@ rule <os>
   @lstringlist ldflags := [os ldflags] ;                   # Makefile
   @lstring     app_name := [os app_name] ;                 # Makefile
   @lstring     tpl_base_path := [os tpl_base_path];        # Makefile
-  @ident_map   others := [os others] ;                     # Makefile
+  @trace       trace := [os trace] ;
+  @ident_map   others := [os others] ;
 
   $OS$ ;
   $idf$ ?* ;
@@ -185,6 +186,23 @@ rule <os>
     $TRAMPOLINE_BASE_PATH$ ; $=$ ; $string$ ?tbp ; <description> ?* ; $;$ ;
     set_lstring_if_empty !?tpl_base_path !tbp !"TRAMPOLINE_BASE_PATH" ;
   while
+    @trace t ;
+    $TRACE$ ; $=$ ;
+    select
+      @lstring file ;
+      $TRUE$ ; ${$ ; $FILE$ ; $=$ ; $string$ ?file ; $;$ ; $}$ ;
+      t := [@trace_on new !here !file] ;
+    or
+      $FALSE$ ; t := [@trace_off new !here] ;
+    end select ;
+    $;$ ;
+    cast trace :
+    when == @trace do trace := t ;
+    else
+      error [t loc] : "Redefinition of TRACE" ;
+      error [trace loc] : "was defined here" ;
+    end cast ;
+  while
     <free_field> !?others ; <description> ?* ; $;$ ;
   end repeat ;
   $}$ ;
@@ -213,6 +231,7 @@ rule <os>
     !ldflags
     !app_name
     !tpl_base_path
+    !trace
     !others
   ];
 end rule ;
