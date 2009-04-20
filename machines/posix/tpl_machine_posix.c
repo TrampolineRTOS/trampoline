@@ -157,7 +157,7 @@ tpl_bool tpl_check_stack_footprint(const tpl_stack *stack)
     const int signal_for_watchdog = SIGALRM;
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 #if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
-	const int signal_for_counters = SIGTERM;
+	const int signal_for_counters = SIGUSR2;
 #endif
 
 /*
