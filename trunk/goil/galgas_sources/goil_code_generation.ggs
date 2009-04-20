@@ -273,6 +273,11 @@ routine generate_flags
         flags .= "#define    AUTOSAR_SC    4\n";
     end if ;
 
+    # trace flags
+    @string tr ;
+    [[os trace] generate ?tr] ;
+    flags .= tr ;
+
     # Output the boolean free flags
     foreach [os others] (@lstring key @basic_type f_obj) do
         cast f_obj :

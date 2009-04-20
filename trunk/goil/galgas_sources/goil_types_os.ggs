@@ -26,27 +26,49 @@ semantics goil_types_os :
 
 import semantics goil_basic_types in "goil_basic_types.ggs" ;
 
+class @trace {
+  @location loc ;
+  method generate !@string res :
+    res := "#define TRACE         NO\n" ;
+  end method ;
+}
+
+class @trace_off extends @trace {
+  override method generate !@string res :
+    res := "#define TRACE         NO\n" ;
+  end method ;
+}
+
+class @trace_on extends @trace {
+  @lstring file ;
+  override method generate !@string res :
+    res := "#define TRACE         YES\n" ;
+    res .= "#define TRACE_FILE    \"".[file string]."\"\n" ;
+  end method ;
+}
+
 class @os_obj extends @oil_obj {
-    @lstring	   status ;
-    @basic_type  startuphook ;
-    @basic_type  shutdownhook ;
-    @basic_type  errorhook ;
-    @basic_type  pretaskhook ;
-    @basic_type  posttaskhook ;
-    @basic_type  protectionhook ;   # AUTOSAR
-    @lstring     scalabilityclass ; # AUTOSAR
-    @basic_type  stackmonitoring ;  # AUTOSAR
-    @basic_type  usegetserviceid ;
-    @basic_type  useparameteraccess ;
-    @basic_type  useresscheduler ;
-    @basic_type  systemcall ;
-    @lstringlist app_src ;
-    @lstringlist cflags ;
-    @lstringlist asflags ;
-    @lstringlist ldflags ;
-    @lstring     app_name;
-    @lstring     tpl_base_path;
-    @ident_map   others ;
+  @lstring     status ;
+  @basic_type  startuphook ;
+  @basic_type  shutdownhook ;
+  @basic_type  errorhook ;
+  @basic_type  pretaskhook ;
+  @basic_type  posttaskhook ;
+  @basic_type  protectionhook ;   # AUTOSAR
+  @lstring     scalabilityclass ; # AUTOSAR
+  @basic_type  stackmonitoring ;  # AUTOSAR
+  @basic_type  usegetserviceid ;
+  @basic_type  useparameteraccess ;
+  @basic_type  useresscheduler ;
+  @basic_type  systemcall ;
+  @lstringlist app_src ;
+  @lstringlist cflags ;
+  @lstringlist asflags ;
+  @lstringlist ldflags ;
+  @lstring     app_name;
+  @lstring     tpl_base_path;
+  @trace       trace ;
+  @ident_map   others ;
 }
 
 end semantics ;

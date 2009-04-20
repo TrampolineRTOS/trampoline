@@ -152,6 +152,7 @@ rule <start> :
             ![@lstringlist emptyList]
             ![@lstring new !"" !here]
             ![@lstring new !"" !here]
+            ![@trace new !here]
             ![@ident_map emptyMap]
          ]
         ![@com new
