@@ -2,6 +2,7 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
+#include "config.h"
 
 DeclareTask(t2);
 DeclareTask(t3);
@@ -16,7 +17,7 @@ static void test_t1_instance(void)
 	
 	result_inst_1 = GetResource(Resource1);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1); 
-	
+		
 	result_inst_2 = ActivateTask(t2);
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
 	

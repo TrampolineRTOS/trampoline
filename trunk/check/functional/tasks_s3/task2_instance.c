@@ -4,13 +4,14 @@
 #include "tpl_os.h"
 
 /*test case:test the reaction of the system called with 
-an activation of a task*/
+ an activation of a task*/
 static void test_t2_instance(void)
 {
-	StatusType result_inst;
+	StatusType result_inst_1;
 	
-	result_inst = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst); 
+	SCHEDULING_CHECK_INIT(4);
+	result_inst_1 =  TerminateTask();
+	SCHEDULING_CHECK_AND_EQUAL_INT(4 , E_OK , result_inst_1);
 	
 }
 
@@ -21,6 +22,6 @@ TestRef TaskManagementTest_seq3_t2_instance(void)
 		new_TestFixture("test_t2_instance",test_t2_instance)
 	};
 	EMB_UNIT_TESTCALLER(TaskManagementTest,"TaskManagementTest_sequence3",NULL,NULL,fixtures);
-
+	
 	return (TestRef)&TaskManagementTest;
 }

@@ -13,22 +13,27 @@ static void test_t1_instance(void)
 	StatusType result_inst_1,result_inst_4,result_inst_5,result_inst_6,result_inst_7;
 	TaskStateType result_inst_3;
 	
+	SCHEDULING_CHECK_INIT(1);
 	result_inst_1 = ActivateTask(t2);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_1); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(4 , E_OK , result_inst_1);
 	
+	SCHEDULING_CHECK_INIT(5);
 	result_inst_4 = GetTaskState(t2,&result_inst_3);
-	TEST_ASSERT_EQUAL_INT(WAITING , result_inst_3);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_4);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(5 , WAITING , result_inst_3);
+	SCHEDULING_CHECK_AND_EQUAL_INT(5 , E_OK , result_inst_4);
 	
+	SCHEDULING_CHECK_INIT(6);
 	result_inst_5 = ActivateTask(t2);
-	TEST_ASSERT_EQUAL_INT(E_OS_LIMIT , result_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT(6 , E_OS_LIMIT , result_inst_5);
 	
+	SCHEDULING_CHECK_INIT(7);
 	result_inst_6 = ChainTask(t2);
-	TEST_ASSERT_EQUAL_INT(E_OS_LIMIT , result_inst_6);	
+	SCHEDULING_CHECK_AND_EQUAL_INT(7 , E_OS_LIMIT , result_inst_6);	
 	
-	result_inst_7= SetEvent(t2,Event2);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_7);
-	
+	SCHEDULING_CHECK_INIT(8);
+	result_inst_7 = SetEvent(t2,Event2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(10 , E_OK , result_inst_7);
+
 }
 
 /*create the test suite with all the test cases*/

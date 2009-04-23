@@ -2,8 +2,17 @@
 #include "embUnit.h"
 
 TestRef ResourceManagementTest_seq1_t1_instance(void);
-TestRef ResourceManagementTest_seq1_t2_instance(void);
+TestRef ResourceManagementTest_seq1_t2_instance1(void);
+TestRef ResourceManagementTest_seq1_t2_instance2(void);
 TestRef ResourceManagementTest_seq1_isr1_instance(void);
+TestRef ResourceManagementTest_seq1_isr2_instance1(void);
+TestRef ResourceManagementTest_seq1_isr2_instance2(void);
+TestRef ResourceManagementTest_seq1_isr3_instance1(void);
+TestRef ResourceManagementTest_seq1_isr3_instance2(void);
+
+StatusType instance_t2 = 0;
+StatusType instance_isr2 = 0;
+StatusType instance_isr3 = 0;
 
 int main(void)
 {
@@ -25,10 +34,75 @@ TASK(t1)
 
 TASK(t2)
 {
-	TestRunner_runTest(ResourceManagementTest_seq1_t2_instance());
+	instance_t2 ++;
+	switch(instance_t2)
+	{ 
+		case 1:	
+		{
+			TestRunner_runTest(ResourceManagementTest_seq1_t2_instance1());
+			break;
+		}
+		case 2:
+		{
+			TestRunner_runTest(ResourceManagementTest_seq1_t2_instance2());
+			break;
+		}
+		default:
+		{
+			stdimpl_print("Instance error \n");
+			break;
+		}
+	}
+	
 }
 
 ISR(isr1)
 {
 	TestRunner_runTest(ResourceManagementTest_seq1_isr1_instance());
+}
+
+ISR(isr2)
+{
+	instance_isr2 ++;
+	switch(instance_isr2)
+	{ 
+		case 1:	
+		{
+			TestRunner_runTest(ResourceManagementTest_seq1_isr2_instance1());
+			break;
+		}
+		case 2:
+		{
+			TestRunner_runTest(ResourceManagementTest_seq1_isr2_instance2());
+			break;
+		}
+		default:
+		{
+			stdimpl_print("Instance error \n");
+			break;
+		}
+	}
+}
+
+ISR(isr3)
+{
+	instance_isr3 ++;
+	switch(instance_isr3)
+	{ 
+		case 1:	
+		{
+			TestRunner_runTest(ResourceManagementTest_seq1_isr3_instance1());
+			break;
+		}
+		case 2:
+		{
+			TestRunner_runTest(ResourceManagementTest_seq1_isr3_instance2());
+			break;
+		}
+		default:
+		{
+			stdimpl_print("Instance error \n");
+			break;
+		}
+	}
 }
