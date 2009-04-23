@@ -18,8 +18,13 @@ IMPLEMENTATION trampoline {
         STATUS = EXTENDED;
 		APP_SRC = "resources_s1.c";
 		APP_SRC = "task1_instance.c";
-		APP_SRC = "task2_instance.c";
+		APP_SRC = "task2_instance1.c";
+		APP_SRC = "task2_instance2.c";
 		APP_SRC = "isr1_instance.c";
+		APP_SRC = "isr2_instance1.c";
+		APP_SRC = "isr2_instance2.c";
+		APP_SRC = "isr3_instance1.c";
+		APP_SRC = "isr3_instance2.c";
 		APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
 		APP_NAME = "resources_s1_full";
@@ -55,10 +60,25 @@ IMPLEMENTATION trampoline {
 	
 	ISR isr1 {
 		CATEGORY = 2;
-		STACKSIZE = 32000;
+		STACKSIZE = 32768;
 		PRIORITY = 1;
 		SOURCE = SIGTERM;
 		RESOURCE = Resource1;
+	};
+	
+	ISR isr2 {
+		CATEGORY = 2;
+		STACKSIZE = 32768;
+		PRIORITY = 2;
+		SOURCE = SIGUSR2;
+		RESOURCE = Resource1;
+	};
+	
+	ISR isr3 {
+		CATEGORY = 2;
+		STACKSIZE = 32768;
+		PRIORITY = 3;
+		SOURCE = SIGPIPE;
 	};
 	
 	RESOURCE Resource1{

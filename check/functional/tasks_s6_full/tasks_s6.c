@@ -17,7 +17,7 @@ void ShutdownHook(StatusType error)
 
 TASK(t1)
 {
-	TestRunner_start();
+	TestRunner_start();	
 	TestRunner_runTest(TaskManagementTest_seq6_t1_instance());
 	ShutdownOS(E_OK);
 }

@@ -46,5 +46,6 @@
 #include "../embUnit/stdImpl.h"
 #include "../embUnit/AssertImpl.h"
 #include "../embUnit/HelperMacro.h"
+#include "../embUnit/SchedulingCheck.h"
 
 #endif/*__EMBUNIT_H__*/

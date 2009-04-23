@@ -15,10 +15,6 @@
 
 #include "config.h"
 
-/* New EmbUnit tests #include "config_tests.h" */
-
-unsigned char test_number;
-
 void tpl_send_it1(void){
 	int ipid;
 	ipid = getpid();
@@ -82,11 +78,3 @@ void WaitActivationOneShotAlarm(AlarmType Alarm){
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_);
 	
 }
-
-void StartTests(void)
-{
-	test_number = 0;
-	TestRunner_start();	
-}
-
-
