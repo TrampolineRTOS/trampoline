@@ -29,20 +29,20 @@ import semantics goil_basic_types in "goil_basic_types.ggs" ;
 class @trace {
   @location loc ;
   method generate !@string res :
-    res := "#define TRACE         NO\n" ;
+    res := "#define WITH_TRACE     NO\n" ;
   end method ;
 }
 
 class @trace_off extends @trace {
   override method generate !@string res :
-    res := "#define TRACE         NO\n" ;
+    res := "#define WITH_TRACE     NO\n" ;
   end method ;
 }
 
 class @trace_on extends @trace {
   @lstring file ;
   override method generate !@string res :
-    res := "#define TRACE         YES\n" ;
+    res := "#define WITH_TRACE     YES\n" ;
     res .= "#define TRACE_FILE    \"".[file string]."\"\n" ;
   end method ;
 }
