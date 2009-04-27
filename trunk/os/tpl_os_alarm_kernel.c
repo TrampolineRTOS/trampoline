@@ -196,7 +196,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
             date = cnt->current_date + increment;
             if (date > cnt->max_allowed_value)
             {
-                date -= cnt->max_allowed_value;
+                date -= (cnt->max_allowed_value + 1);
             }
             alarm->date = date;
             alarm->cycle = cycle;
