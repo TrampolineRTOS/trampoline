@@ -269,7 +269,7 @@ STATIC FUNC(void, OS_CODE) tpl_remove_timeobj_set(
  */
 extern FUNC(void, OS_CODE) printrl(
                                    P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg);
-
+#include <stdio.h>
 FUNC(tpl_status, OS_CODE) tpl_counter_tick(
   P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
 {
@@ -298,6 +298,7 @@ FUNC(tpl_status, OS_CODE) tpl_counter_tick(
     {
       date = 0;
     }
+    /*fprintf(stderr,"%x: %d\n",(int)counter,(int)date);*/
     counter->current_date = date;
     counter->current_tick = 0;
     
@@ -330,7 +331,7 @@ FUNC(tpl_status, OS_CODE) tpl_counter_tick(
           new_date = t_obj->date + t_obj->cycle;
           if (new_date > counter->max_allowed_value)
           {
-            new_date -= counter->max_allowed_value;
+            new_date -= (counter->max_allowed_value + 1);
           }
           t_obj->date = new_date;
           /*  and the alarm is put back in the alarm
