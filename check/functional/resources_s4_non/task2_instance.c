@@ -9,8 +9,9 @@ static void test_t2_instance(void)
 {
 	StatusType result_inst;
 	
+	SCHEDULING_CHECK_INIT(9);
 	result_inst = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(9,E_OK, result_inst); 
 
 }
 

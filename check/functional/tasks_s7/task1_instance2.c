@@ -11,11 +11,13 @@ static void test_t1_instance2(void)
 {
 	StatusType result_inst_1, result_inst_2;
 	
+	SCHEDULING_CHECK_INIT(11);
 	result_inst_1 = ActivateTask(t1);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(11,E_OK , result_inst_1);
 	
+	SCHEDULING_CHECK_INIT(12);
 	result_inst_2 = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(12,E_OK , result_inst_2);
 }
 
 /*create the test suite with all the test cases*/

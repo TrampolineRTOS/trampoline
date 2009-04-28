@@ -12,15 +12,17 @@ static void test_t1_instance(void)
 {
 	StatusType result_inst_1,result_inst_2,result_inst_3;
 	
+	SCHEDULING_CHECK_INIT(1);
 	result_inst_1 = ActivateTask(t2);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_1); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(1,E_OK , result_inst_1); 
 	
+	SCHEDULING_CHECK_INIT(2);
 	result_inst_2 = ActivateTask(t3);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(2,E_OK , result_inst_2);
 	
+	SCHEDULING_CHECK_INIT(3);
 	result_inst_3 = Schedule();
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_3);
-	
+	SCHEDULING_CHECK_AND_EQUAL_INT(5,E_OK , result_inst_3);
 }
 
 /*create the test suite with all the test cases*/

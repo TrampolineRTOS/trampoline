@@ -15,8 +15,12 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "../config.c";
 		APP_SRC = "hook_s5.c";
 		APP_SRC = "task1_instance.c";
-		APP_SRC = "task2_instance.c";
-		APP_SRC = "isr1_instance.c";
+		APP_SRC = "task2_instance1.c";
+		APP_SRC = "task2_instance2.c";
+		APP_SRC = "isr1_instance1.c";
+		APP_SRC = "isr1_instance2.c";
+		APP_SRC = "isr1_instance3.c";
+		APP_SRC = "isr1_instance4.c";
 		APP_SRC = "pretask_instance8.c";
 		APP_SRC = "pretask_instance11.c";
 		APP_SRC = "posttask_instance2.c";
@@ -24,7 +28,7 @@ IMPLEMENTATION trampoline {
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "hook_s5_non";
 		CFLAGS = "-I../embUnit";
-        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;

@@ -6,11 +6,8 @@
 /*test case:test the reaction of the system called with 
 an activation of a isr*/
 static void test_isr2_instance(void)
-{
-	StatusType result_inst_1;
-	
-	result_inst_1 = GetActiveApplicationMode();
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_1);
+{	
+	SCHEDULING_CHECK_STEP(6);
 	
 }
 

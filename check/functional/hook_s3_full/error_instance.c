@@ -19,30 +19,36 @@ static void test_error_instance(void)
 	AlarmBaseType alarm_base;
 	TickType tik;
 
+	SCHEDULING_CHECK_INIT(4);
 	result_inst_1 = GetActiveApplicationMode();
-	TEST_ASSERT_EQUAL_INT(OSDEFAULTAPPMODE , result_inst_1); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(4,OSDEFAULTAPPMODE , result_inst_1); 
 	
+	SCHEDULING_CHECK_INIT(5);
 	result_inst_2 = GetTaskID(&task_id);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_2); 
-	TEST_ASSERT_EQUAL_INT(t1 , task_id); 
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(5,E_OK , result_inst_2); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(5,t1 , task_id); 
 		
+	SCHEDULING_CHECK_INIT(6);
 	result_inst_3 = GetTaskState(task_id, &task_state);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_3); 
-	TEST_ASSERT_EQUAL_INT(RUNNING , task_state); 
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(6,E_OK , result_inst_3); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(6,RUNNING , task_state); 
 	
+	SCHEDULING_CHECK_INIT(7);
 	result_inst_4 = GetEvent(task_id,&event_mask);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_2); 
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_2); 
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(7,E_OK , result_inst_2); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(7,E_OK , result_inst_2); 
 	
+	SCHEDULING_CHECK_INIT(8);
 	result_inst_5 = GetAlarmBase(Alarm1, &alarm_base);
-	TEST_ASSERT_EQUAL_INT(OSMAXALLOWEDVALUE_Counter1, (int)(alarm_base.maxallowedvalue));
-	TEST_ASSERT_EQUAL_INT(OSTICKSPERBASE_Counter1, (int)(alarm_base.ticksperbase));
-	TEST_ASSERT_EQUAL_INT(OSMINCYCLE_Counter1, (int)(alarm_base.mincycle));
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(8,OSMAXALLOWEDVALUE_Counter1, (int)(alarm_base.maxallowedvalue));
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(8,OSTICKSPERBASE_Counter1, (int)(alarm_base.ticksperbase));
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(8,OSMINCYCLE_Counter1, (int)(alarm_base.mincycle));
+	SCHEDULING_CHECK_AND_EQUAL_INT(8,E_OK , result_inst_5);
 	
+	SCHEDULING_CHECK_INIT(9);
 	result_inst_6 = GetAlarm(Alarm1,&tik);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_6);
-	TEST_ASSERT_EQUAL_INT(OSMAXALLOWEDVALUE , tik);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(9,E_OK , result_inst_6);
+	SCHEDULING_CHECK_AND_EQUAL_INT(9,OSMAXALLOWEDVALUE , tik);
 	
 }
 

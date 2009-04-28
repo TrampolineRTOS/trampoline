@@ -12,14 +12,17 @@ static void test_comerror_instance3(void)
 {
 	StatusType result_inst_1, result_inst_2, result_inst_3;
 	
+	SCHEDULING_CHECK_INIT(27);
 	result_inst_1 = COMErrorGetServiceId();
-	TEST_ASSERT_EQUAL_INT(COMServiceId_ReceiveMessage , result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(27,COMServiceId_ReceiveMessage , result_inst_1);
 	
+	SCHEDULING_CHECK_INIT(28);
 	result_inst_2 = (StatusType)(*COMError_ReceiveMessage_DataRef());
-	TEST_ASSERT_EQUAL_INT((StatusType)('3') , result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(28,(StatusType)('3') , result_inst_2);
 	
+	SCHEDULING_CHECK_INIT(29);
 	result_inst_3 = (StatusType)COMError_ReceiveMessage_Message();
-	TEST_ASSERT_EQUAL_INT(rm , result_inst_3);
+	SCHEDULING_CHECK_AND_EQUAL_INT(29,rm , result_inst_3);
 }
 
 /*create the test suite with all the test cases*/

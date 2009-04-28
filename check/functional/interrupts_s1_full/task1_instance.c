@@ -10,6 +10,9 @@ void tpl_send_it2(void);
 an activation of a task*/
 static void test_t1_instance(void)
 {	
+	
+	SCHEDULING_CHECK_STEP(1);
+	
 	EnableAllInterrupts();
 	DisableAllInterrupts();
 	DisableAllInterrupts();
@@ -21,7 +24,12 @@ static void test_t1_instance(void)
 	EnableAllInterrupts();
 	EnableAllInterrupts();
 	EnableAllInterrupts();
+
+	SCHEDULING_CHECK_STEP(3);
+
 	tpl_send_it2();
+	
+	SCHEDULING_CHECK_STEP(5);
 	
 	SuspendAllInterrupts();
 	ResumeAllInterrupts();
@@ -33,7 +41,12 @@ static void test_t1_instance(void)
 	ResumeAllInterrupts();
 	ResumeAllInterrupts();
 	ResumeAllInterrupts();
+	
+	SCHEDULING_CHECK_STEP(7);
+	
 	tpl_send_it2();
+	
+	SCHEDULING_CHECK_STEP(9);	
 	
 	SuspendOSInterrupts();
 	ResumeOSInterrupts();
@@ -45,7 +58,13 @@ static void test_t1_instance(void)
 	ResumeOSInterrupts();
 	ResumeOSInterrupts();
 	ResumeOSInterrupts();
+	
+	SCHEDULING_CHECK_STEP(11);
+	
 	tpl_send_it1();
+	
+	SCHEDULING_CHECK_STEP(27);
+	
 }
 
 /*create the test suite with all the test cases*/

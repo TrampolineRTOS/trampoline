@@ -17,12 +17,13 @@ static void test_t4_instance(void)
 	
 	}*/
 		
+	SCHEDULING_CHECK_INIT(1);
 	result_inst_1 = ReceiveMessage(rm_flag, &received_char);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
-	TEST_ASSERT_EQUAL_INT((int)('2'), (int)received_char);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(1,E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(1,(int)('2'), (int)received_char);
 	
 	/*result_inst_3 = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
+	SCHEDULING_CHECK_AND_EQUAL_INT(X,E_OK, result_inst_3);
 	 */
 }
 

@@ -19,12 +19,13 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "task4_instance.c";
 		APP_SRC = "task5_instance.c";
 		APP_SRC = "isr1_instance.c";
-		APP_SRC = "callback_instance.c";
+		APP_SRC = "callback_instance1.c";
+		APP_SRC = "callback_instance2.c";
 		APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "alarms_s9_non";
 		CFLAGS = "-I../embUnit";
-        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
@@ -34,7 +35,7 @@ IMPLEMENTATION trampoline {
 
     TASK t1 {
         AUTOSTART = FALSE ;
-        PRIORITY = 3;
+        PRIORITY = 1;
         ACTIVATION = 1;
         SCHEDULE = NON;
     };

@@ -20,57 +20,73 @@ static void test_isr1_instance(void)
 	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9, result_inst_10, result_inst_11, result_inst_12, result_inst_13, result_inst_15, result_inst_17, result_inst_19;
 	TaskStateType result_inst_14, result_inst_16;
 	TaskType result_inst_18;
-
+	
+	SCHEDULING_CHECK_INIT(2);
 	result_inst_1 = ActivateTask(INVALID_TASK);
-	TEST_ASSERT_EQUAL_INT(E_OS_ID, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(2,E_OS_ID, result_inst_1);
 	
+	SCHEDULING_CHECK_INIT(3);
 	result_inst_2 = ActivateTask(t2);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_2); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(3,E_OK , result_inst_2); 
 	
+	SCHEDULING_CHECK_INIT(4);
 	result_inst_3 = ActivateTask(t3);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_3); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(4,E_OK , result_inst_3); 
 	
+	SCHEDULING_CHECK_INIT(5);
 	result_inst_4 = ActivateTask(t4);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_4); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(5,E_OK , result_inst_4); 
 	
+	SCHEDULING_CHECK_INIT(6);
 	result_inst_5 = ActivateTask(t5);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_5); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(6,E_OK , result_inst_5); 
 	
+	SCHEDULING_CHECK_INIT(7);
 	result_inst_6 = ActivateTask(t6);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_6); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(7,E_OK , result_inst_6); 
 	
+	SCHEDULING_CHECK_INIT(8);
 	result_inst_7 = ActivateTask(t7);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_7); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(8,E_OK , result_inst_7); 
 	
+	SCHEDULING_CHECK_INIT(9);
 	result_inst_8 = ActivateTask(t2);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_8); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(9,E_OK , result_inst_8); 
 	
+	SCHEDULING_CHECK_INIT(10);
 	result_inst_9 = ActivateTask(t3);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_9); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(10,E_OK , result_inst_9); 
 	
+	SCHEDULING_CHECK_INIT(11);
 	result_inst_10 = ActivateTask(t4);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_10); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(11,E_OK , result_inst_10); 
 	
+	SCHEDULING_CHECK_INIT(12);
 	result_inst_11 = ActivateTask(t1);
-	TEST_ASSERT_EQUAL_INT(E_OS_LIMIT , result_inst_11); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(12,E_OS_LIMIT , result_inst_11); 
 	
+	SCHEDULING_CHECK_INIT(13);
 	result_inst_12 = ActivateTask(t5);
-	TEST_ASSERT_EQUAL_INT(E_OS_LIMIT , result_inst_12); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(13,E_OS_LIMIT , result_inst_12); 
 	
+	SCHEDULING_CHECK_INIT(14);
 	result_inst_13 = ActivateTask(t8);
-	TEST_ASSERT_EQUAL_INT(E_OS_LIMIT , result_inst_13); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(14,E_OS_LIMIT , result_inst_13); 
 	
+	SCHEDULING_CHECK_INIT(15);
 	result_inst_15 = GetTaskState(INVALID_TASK, &result_inst_14);
-	TEST_ASSERT_EQUAL_INT(E_OS_ID , result_inst_15);
+	SCHEDULING_CHECK_AND_EQUAL_INT(15,E_OS_ID , result_inst_15);
 	
+	SCHEDULING_CHECK_INIT(16);
 	result_inst_17 = GetTaskState(t8, &result_inst_16);
-	TEST_ASSERT_EQUAL_INT(WAITING , result_inst_16); 
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_17);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(16,WAITING , result_inst_16); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(16,E_OK , result_inst_17);
 	
+	SCHEDULING_CHECK_INIT(17);
 	result_inst_19 = GetTaskID(&result_inst_18);
-	TEST_ASSERT_EQUAL_INT(INVALID_TASK , result_inst_18);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_19); 
-
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(17,INVALID_TASK , result_inst_18);
+	SCHEDULING_CHECK_AND_EQUAL_INT(17,E_OK , result_inst_19); 
+	
 }
 
 /*create the test suite with all the test cases*/

@@ -17,17 +17,20 @@ static void test_t4_instance(void)
 	StatusType result_inst_1, result_inst_3, result_inst_4;
 	EventMaskType result_inst_2;
 	
+	SCHEDULING_CHECK_INIT(8);
 	result_inst_1 = SetRelAlarm(Alarm1, 2, 0);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(8,E_OK, result_inst_1);
 	
 	WaitActivationOneShotAlarm(Alarm1);
 	
+	SCHEDULING_CHECK_INIT(9);
 	result_inst_3 = GetEvent(t2, &result_inst_2);
-	TEST_ASSERT_EQUAL_INT(Event2, result_inst_2);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(9,Event2, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(9,E_OK, result_inst_3);
 	
+	SCHEDULING_CHECK_INIT(10);
 	result_inst_4 = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_4);
+	SCHEDULING_CHECK_AND_EQUAL_INT(10,E_OK, result_inst_4);
 	
 }
 

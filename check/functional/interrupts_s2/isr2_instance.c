@@ -13,10 +13,13 @@ static void test_isr2_instance(void)
 {
 	StatusType result_inst;
 	
+	SCHEDULING_CHECK_STEP(2);
+	
 	tpl_send_it1();
 	
+	SCHEDULING_CHECK_INIT(3);
 	result_inst = ActivateTask(t2);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst);
+	SCHEDULING_CHECK_AND_EQUAL_INT(3,E_OK, result_inst);
 	
 }
 

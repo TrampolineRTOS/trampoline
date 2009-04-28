@@ -12,23 +12,29 @@ static void test_t2_instance(void)
 	
 	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6;
 	
+	SCHEDULING_CHECK_INIT(1);
 	result_inst_1 = WaitEvent(Event2);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(4,E_OK, result_inst_1);
 	
+	SCHEDULING_CHECK_INIT(5);
 	result_inst_2 = ClearEvent(Event2);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(5,E_OK, result_inst_2);
 	
+	SCHEDULING_CHECK_INIT(6);
 	result_inst_3 = WaitEvent(Event2);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
+	SCHEDULING_CHECK_AND_EQUAL_INT(7,E_OK, result_inst_3);
 	
+	SCHEDULING_CHECK_INIT(8);
 	result_inst_4 = ClearEvent(Event2);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_4);
+	SCHEDULING_CHECK_AND_EQUAL_INT(8,E_OK, result_inst_4);
 	
+	SCHEDULING_CHECK_INIT(9);
 	result_inst_5 = WaitEvent(Event2);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT(14,E_OK, result_inst_5);
 	
+	SCHEDULING_CHECK_INIT(15);
 	result_inst_6 = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_6);
+	SCHEDULING_CHECK_AND_EQUAL_INT(15,E_OK, result_inst_6);
 	
 }
 

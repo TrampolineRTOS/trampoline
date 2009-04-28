@@ -11,8 +11,9 @@ static void test_t3_instance1(void)
 {
 	StatusType result_inst;
 	
+	SCHEDULING_CHECK_INIT(8);
 	result_inst = ChainTask(t3);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst);
+	SCHEDULING_CHECK_AND_EQUAL_INT(8,E_OK , result_inst);
 	
 }
 

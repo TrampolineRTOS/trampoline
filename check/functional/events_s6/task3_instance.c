@@ -13,10 +13,12 @@ static void test_t3_instance(void)
 	
 	EnableAllInterrupts();
 	
+	SCHEDULING_CHECK_STEP(5);
 	tpl_send_it1();
 	
+	SCHEDULING_CHECK_INIT(19);
 	result_inst_1 = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(19,E_OK, result_inst_1);
 	
 }
 

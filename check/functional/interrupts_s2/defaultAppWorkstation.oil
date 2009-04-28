@@ -18,13 +18,14 @@ IMPLEMENTATION trampoline {
         STATUS = EXTENDED;
 		APP_SRC = "interrupts_s2.c";
 		APP_SRC = "task1_instance.c";
+		APP_SRC = "task2_instance.c";
 		APP_SRC = "isr1_instance.c";
 		APP_SRC = "isr2_instance.c";
 		APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "interrupts_s2";
 		CFLAGS = "-I../embUnit";
-        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;

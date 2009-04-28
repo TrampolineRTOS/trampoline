@@ -11,8 +11,9 @@ static void test_t1_instance(void)
 {
 	StatusType result_inst_1;
 	
+	SCHEDULING_CHECK_INIT(3);
 	result_inst_1 = ActivateTask(t3);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(8,E_OK , result_inst_1);
 	
 }
 

@@ -13,15 +13,18 @@ static void test_t4_instance(void)
 	StatusType result_inst_1, result_inst_3, result_inst_4;
 	TaskStateType result_inst_2;
 	
+	SCHEDULING_CHECK_INIT(14);
 	result_inst_1 = SetEvent(t2,Event1);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(14,E_OK, result_inst_1);
 	
+	SCHEDULING_CHECK_INIT(15);
 	result_inst_3 = GetTaskState(t2, &result_inst_2);
-	TEST_ASSERT_EQUAL_INT(READY, result_inst_2);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);	
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(15,READY, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(15,E_OK, result_inst_3);	
 	
+	SCHEDULING_CHECK_INIT(16);
 	result_inst_4 = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_4);
+	SCHEDULING_CHECK_AND_EQUAL_INT(16,E_OK, result_inst_4);
 	
 }
 

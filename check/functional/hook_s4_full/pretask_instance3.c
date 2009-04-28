@@ -9,6 +9,8 @@ void tpl_send_it2(void);
 an activation of a isr*/
 static void test_pretask_instance3(void)
 {
+	SCHEDULING_CHECK_STEP(4);
+
 	tpl_send_it2();
 	SuspendAllInterrupts();
 	tpl_send_it2();

@@ -49,6 +49,7 @@ else
 		fi
 		
 		make -s
+		echo "${i} :" >>../results.log
 		./${i} >> ../results.log
 		cd ..
 	done

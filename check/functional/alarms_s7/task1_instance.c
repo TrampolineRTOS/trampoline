@@ -17,31 +17,38 @@ static void test_t1_instance(void)
 	EventMaskType result_inst_3;
 	TaskStateType result_inst_7;
 	
+	SCHEDULING_CHECK_INIT(1);
 	result_inst_1 = ActivateTask(t2);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(1,E_OK, result_inst_1);
 
+	SCHEDULING_CHECK_INIT(2);
 	result_inst_2 = SetRelAlarm(Alarm1, 2, 0);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(2,E_OK, result_inst_2);
 		
 	WaitActivationOneShotAlarm(Alarm1);
 	
+	SCHEDULING_CHECK_INIT(3);
 	result_inst_4 = GetEvent(t2, &result_inst_3);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_4);	
+	SCHEDULING_CHECK_AND_EQUAL_INT(3,E_OK, result_inst_4);	
 	
+	SCHEDULING_CHECK_INIT(4);
 	result_inst_5 = Schedule();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_5);	
+	SCHEDULING_CHECK_AND_EQUAL_INT(6,E_OK, result_inst_5);	
 	
+	SCHEDULING_CHECK_INIT(7);
 	result_inst_6 = SetRelAlarm(Alarm1, 2, 0);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_6);
+	SCHEDULING_CHECK_AND_EQUAL_INT(7,E_OK, result_inst_6);
 	
 	WaitActivationOneShotAlarm(Alarm1);
 	
+	SCHEDULING_CHECK_INIT(8);
 	result_inst_8 = GetTaskState(t2, &result_inst_7);
-	TEST_ASSERT_EQUAL_INT(READY, result_inst_7);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_8);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(8,READY, result_inst_7);
+	SCHEDULING_CHECK_AND_EQUAL_INT(8,E_OK, result_inst_8);
 	
+	SCHEDULING_CHECK_INIT(9);
 	result_inst_9 = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_9);
+	SCHEDULING_CHECK_AND_EQUAL_INT(9,E_OK, result_inst_9);
 	
 }
 

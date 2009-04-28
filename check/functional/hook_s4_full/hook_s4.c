@@ -1,10 +1,13 @@
 #include "tpl_os.h"
-#include "embUnit.h";
+#include "embUnit.h"
+#include "config.h" /*for stdimpl_print */
 
 TestRef HookTest_seq4_t1_instance(void);
 TestRef HookTest_seq4_t2_instance(void);
-TestRef HookTest_seq4_isr1_instance(void);
-TestRef HookTest_seq4_isr2_instance(void);
+TestRef HookTest_seq4_isr1_instance1(void);
+TestRef HookTest_seq4_isr1_instance2(void);
+TestRef HookTest_seq4_isr2_instance1(void);
+TestRef HookTest_seq4_isr2_instance2(void);
 TestRef HookTest_seq4_pretask_instance2(void);
 TestRef HookTest_seq4_pretask_instance3(void);
 TestRef HookTest_seq4_pretask_instance6(void);
@@ -12,8 +15,10 @@ TestRef HookTest_seq4_pretask_instance7(void);
 TestRef HookTest_seq4_posttask_instance3(void);
 TestRef HookTest_seq4_posttask_instance6(void);
 
-int posttask_instance = 0;
-int pretask_instance = 0;
+unsigned char instance_pre = 0;
+unsigned char instance_post = 0;
+unsigned char instance_isr2 = 0;
+unsigned char instance_isr1 = 0;
 
 int main(void)
 {
@@ -33,8 +38,8 @@ void ShutdownHook(StatusType error)
 
 void PreTaskHook(void)
 { 
-	pretask_instance++;
-	switch (pretask_instance)
+	instance_pre++;
+	switch (instance_pre)
 	{
 		case 2:
 		{
@@ -61,8 +66,8 @@ void PreTaskHook(void)
 
 void PostTaskHook(void)
 { 
-	posttask_instance++;
-	switch (posttask_instance) 
+	instance_post++;
+	switch (instance_post) 
 	{
 		case 3:
 		{
@@ -97,10 +102,47 @@ TASK(t2)
 
 ISR(isr1)
 {
-	TestRunner_runTest(HookTest_seq4_isr1_instance());
+	instance_isr1++;
+	switch (instance_isr1)
+	{
+		case 1:
+		{
+			TestRunner_runTest(HookTest_seq4_isr1_instance1());
+			break;
+		}
+		case 2:
+		{
+			TestRunner_runTest(HookTest_seq4_isr1_instance2());
+			break;
+		}
+		default: 
+		{
+			stdimpl_print("instance error");
+			break;
+		}
+	}
+	
 }
 
 ISR(isr2)
 {
-	TestRunner_runTest(HookTest_seq4_isr2_instance());
+	instance_isr2++;
+	switch (instance_isr2)
+	{
+		case 1:
+		{
+			TestRunner_runTest(HookTest_seq4_isr2_instance1());
+			break;
+		}
+		case 2:
+		{
+			TestRunner_runTest(HookTest_seq4_isr2_instance2());
+			break;
+		}
+		default: 
+		{
+			stdimpl_print("instance error");
+			break;
+		}
+	}
 }

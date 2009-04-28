@@ -12,12 +12,14 @@ static void test_t9_instance3(void)
 	StatusType result_inst_1, result_inst_2;
 	StatusType received_char;
 	
+	SCHEDULING_CHECK_INIT(42);
 	result_inst_1 = ReceiveMessage(rm_newisoutside, &received_char);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
-	TEST_ASSERT_EQUAL_INT(2, (int)received_char);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(42,E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(42,2, (int)received_char);
 	
+	SCHEDULING_CHECK_INIT(43);
 	result_inst_2 = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(43,E_OK, result_inst_2);
 	
 }
 

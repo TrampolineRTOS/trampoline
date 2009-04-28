@@ -5,15 +5,19 @@
 TestRef TaskManagementTest_seq16_t1_instance(void);
 TestRef TaskManagementTest_seq16_t2_instance1(void);
 TestRef TaskManagementTest_seq16_t2_instance2(void);
-TestRef TaskManagementTest_seq16_t3_instance(void);
-TestRef TaskManagementTest_seq16_t4_instance(void);
+TestRef TaskManagementTest_seq16_t3_instance1(void);
+TestRef TaskManagementTest_seq16_t3_instance2(void);
+TestRef TaskManagementTest_seq16_t4_instance1(void);
+TestRef TaskManagementTest_seq16_t4_instance2(void);
 TestRef TaskManagementTest_seq16_t5_instance(void);
 TestRef TaskManagementTest_seq16_t6_instance(void);
 TestRef TaskManagementTest_seq16_t7_instance(void);
 TestRef TaskManagementTest_seq16_t8_instance(void);
 TestRef TaskManagementTest_seq16_isr1_instance(void);
 
-int instance = 0;
+unsigned char instance_t2 = 0;
+unsigned char instance_t3 = 0;
+unsigned char instance_t4 = 0;
 
 int main(void)
 {
@@ -34,8 +38,8 @@ TASK(t1)
 
 TASK(t2)
 {
-	instance++;
-	switch (instance)
+	instance_t2++;
+	switch (instance_t2)
 	{
 		case 1 :
 			TestRunner_runTest(TaskManagementTest_seq16_t2_instance1());
@@ -52,12 +56,36 @@ TASK(t2)
 
 TASK(t3)
 {
-	TestRunner_runTest(TaskManagementTest_seq16_t3_instance());
+	instance_t3++;
+	switch (instance_t3)
+	{
+		case 1 :
+			TestRunner_runTest(TaskManagementTest_seq16_t3_instance1());
+			break;
+		case 2 :
+			TestRunner_runTest(TaskManagementTest_seq16_t3_instance2());
+			break;
+		default:
+			stdimpl_print("Instance error");
+			break;
+	}
 }
 
 TASK(t4)
 {
-	TestRunner_runTest(TaskManagementTest_seq16_t4_instance());
+	instance_t4++;
+	switch (instance_t4)
+	{
+		case 1 :
+			TestRunner_runTest(TaskManagementTest_seq16_t4_instance1());
+			break;
+		case 2 :
+			TestRunner_runTest(TaskManagementTest_seq16_t4_instance2());
+			break;
+		default:
+			stdimpl_print("Instance error");
+			break;
+	}
 }
 
 TASK(t5)

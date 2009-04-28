@@ -9,6 +9,9 @@ void tpl_send_it1(void);
 an activation of a isr*/
 static void test_error_instance(void)
 {
+	
+	SCHEDULING_CHECK_STEP(2);
+	
 	tpl_send_it1();
 	SuspendAllInterrupts();
 	tpl_send_it1();

@@ -15,39 +15,49 @@ static void test_t1_instance(void)
 	StatusType car1;
 	
 	car1 = 3;
+	SCHEDULING_CHECK_INIT(1);
 	result_inst_2 = SendMessage(sm, &car1);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(1,E_OK, result_inst_2);
 	
+	SCHEDULING_CHECK_INIT(2);
 	result_inst_3 = Schedule();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
+	SCHEDULING_CHECK_AND_EQUAL_INT(10,E_OK, result_inst_3);
 
 	car1 = 12;
+	SCHEDULING_CHECK_INIT(11);
 	result_inst_4 = SendMessage(sm, &car1);	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_4);
+	SCHEDULING_CHECK_AND_EQUAL_INT(11,E_OK, result_inst_4);
 	
+	SCHEDULING_CHECK_INIT(12);
 	result_inst_5 = Schedule();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT(20,E_OK, result_inst_5);
 	
 	car1 = 7;
+	SCHEDULING_CHECK_INIT(21);
 	result_inst_6 = SendMessage(sm, &car1);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_6);
+	SCHEDULING_CHECK_AND_EQUAL_INT(21,E_OK, result_inst_6);
 	
+	SCHEDULING_CHECK_INIT(22);
 	result_inst_7 = Schedule();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_7);
+	SCHEDULING_CHECK_AND_EQUAL_INT(28,E_OK, result_inst_7);
 	
 	car1 = 7;
+	SCHEDULING_CHECK_INIT(29);
 	result_inst_8 = SendMessage(sm, &car1);	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_8);
+	SCHEDULING_CHECK_AND_EQUAL_INT(29,E_OK, result_inst_8);
 	
+	SCHEDULING_CHECK_INIT(30);
 	result_inst_9 = Schedule();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_9);
+	SCHEDULING_CHECK_AND_EQUAL_INT(34,E_OK, result_inst_9);
 	
 	car1 = 2;
+	SCHEDULING_CHECK_INIT(35);
 	result_inst_10 = SendMessage(sm, &car1);	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_10);
+	SCHEDULING_CHECK_AND_EQUAL_INT(35,E_OK, result_inst_10);
 	
+	SCHEDULING_CHECK_INIT(36);
 	result_inst_11 = Schedule();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_11);
+	SCHEDULING_CHECK_AND_EQUAL_INT(48,E_OK, result_inst_11);
 	
 }
 

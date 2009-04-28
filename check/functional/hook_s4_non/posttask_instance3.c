@@ -5,12 +5,13 @@
 
 void tpl_send_it1(void);
 
-DeclareTask(t2);
-
 /*test case:test the reaction of the system called with 
-an activation of a isr*/
+ an activation of a isr*/
 static void test_posttask_instance3(void)
 {
+	
+	SCHEDULING_CHECK_STEP(3);
+	
 	tpl_send_it1();
 	SuspendAllInterrupts();
 	tpl_send_it1();
@@ -25,6 +26,6 @@ TestRef HookTest_seq4_posttask_instance3(void)
 		new_TestFixture("test_posttask_instance3",test_posttask_instance3)
 	};
 	EMB_UNIT_TESTCALLER(HookTest,"HookTest_sequence4",NULL,NULL,fixtures);
-
+	
 	return (TestRef)&HookTest;
 }

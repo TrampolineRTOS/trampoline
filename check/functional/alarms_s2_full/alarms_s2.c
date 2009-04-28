@@ -2,7 +2,11 @@
 #include "embUnit.h"
 
 TestRef AlarmsTest_seq2_t1_instance(void);
-TestRef AlarmsTest_seq2_t2_instance(void);
+TestRef AlarmsTest_seq2_t2_instance1(void);
+TestRef AlarmsTest_seq2_t2_instance2(void);
+TestRef AlarmsTest_seq2_t2_instance3(void);
+
+unsigned char instance_t2 = 0;
 
 int main(void)
 {
@@ -24,5 +28,28 @@ TASK(t1)
 
 TASK(t2)
 {
-	TestRunner_runTest(AlarmsTest_seq2_t2_instance());
+	instance_t2++;
+	switch (instance_t2)
+	{
+		case 1 :
+		{
+			TestRunner_runTest(AlarmsTest_seq2_t2_instance1());
+			break;
+		}
+		case 2 :
+		{
+			TestRunner_runTest(AlarmsTest_seq2_t2_instance2());
+			break;
+		}
+		case 3 :
+		{
+			TestRunner_runTest(AlarmsTest_seq2_t2_instance3());
+			break;
+		}
+		default:
+		{
+			stdimpl_print("Instance error");
+			break;
+		}
+	}
 }

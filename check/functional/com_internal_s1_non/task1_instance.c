@@ -14,26 +14,32 @@ static void test_t1_instance(void)
 	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6;
 	
 	/*result_inst_1 = GetCOMApplicationMode();	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
-	*/
+	 SCHEDULING_CHECK_AND_EQUAL_INT(X,E_OK, result_inst_1);
+	 */
 	
+	SCHEDULING_CHECK_INIT(1);
 	result_inst_1 = GetMessageStatus(sm);	
-	TEST_ASSERT_EQUAL_INT(E_COM_ID, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(3,E_COM_ID, result_inst_1);
 	
+	SCHEDULING_CHECK_INIT(4);
 	result_inst_2 = SendMessage(SEND_MESSAGE_COUNT, "3");	
-	TEST_ASSERT_EQUAL_INT(E_COM_ID, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(7,E_COM_ID, result_inst_2);
 	
+	SCHEDULING_CHECK_INIT(8);
 	result_inst_3 = SendMessage(sm, "0");
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
+	SCHEDULING_CHECK_AND_EQUAL_INT(8,E_OK, result_inst_3);
 	
+	SCHEDULING_CHECK_INIT(9);
 	result_inst_4 = SendMessage(sm, "1");	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_4);
+	SCHEDULING_CHECK_AND_EQUAL_INT(9,E_OK, result_inst_4);
 	
+	SCHEDULING_CHECK_INIT(10);
 	result_inst_5 = ActivateTask(t2);	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT(10,E_OK, result_inst_5);
 	
+	SCHEDULING_CHECK_INIT(11);
 	result_inst_6 = Schedule();	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_6);
+	SCHEDULING_CHECK_AND_EQUAL_INT(21,E_OK, result_inst_6);
 	
 }
 
