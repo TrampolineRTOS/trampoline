@@ -47,8 +47,7 @@ static void test_error_instance(void)
 	
 	SCHEDULING_CHECK_INIT(9);
 	result_inst_6 = GetAlarm(Alarm1,&tik);
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(9,E_OK , result_inst_6);
-	SCHEDULING_CHECK_AND_EQUAL_INT(9,OSMAXALLOWEDVALUE , tik);
+	SCHEDULING_CHECK_AND_EQUAL_INT(9,E_OK , result_inst_6);
 	
 }
 
