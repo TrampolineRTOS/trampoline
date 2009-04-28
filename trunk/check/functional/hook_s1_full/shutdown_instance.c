@@ -9,8 +9,9 @@ static void test_shutdown_instance(void)
 {
 	StatusType result_inst_1;
 	
+	SCHEDULING_CHECK_INIT(2);
 	result_inst_1 = GetActiveApplicationMode();
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_1); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(2,E_OK , result_inst_1); 
 
 }
 

@@ -13,15 +13,18 @@ static void test_t3_instance(void)
 	StatusType result_inst_2,result_inst_3, result_inst_4;
 	EventMaskType result_inst_1;
 
+	SCHEDULING_CHECK_INIT(2);
 	result_inst_2 = GetEvent(t3, &result_inst_1);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_1); 
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_2); 
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(2,E_OK , result_inst_1); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(2,E_OK , result_inst_2); 
 	
+	SCHEDULING_CHECK_INIT(3);
 	result_inst_3 = ActivateTask(t2);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_3);
+	SCHEDULING_CHECK_AND_EQUAL_INT(3,E_OK , result_inst_3);
 
+	SCHEDULING_CHECK_INIT(4);
 	result_inst_4 = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_4);
+	SCHEDULING_CHECK_AND_EQUAL_INT(4,E_OK , result_inst_4);
 }
 
 /*create the test suite with all the test cases*/

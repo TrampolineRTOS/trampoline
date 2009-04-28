@@ -11,8 +11,9 @@ static void test_t3_instance(void)
 {
 	StatusType result_inst_1;
 	
+	SCHEDULING_CHECK_INIT(20);
 	result_inst_1 = WaitEvent(Event3);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(20,E_OK, result_inst_1);
 
 }
 

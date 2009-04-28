@@ -14,32 +14,41 @@ static void test_t1_instance(void)
 {
 	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_7;
 	TickType result_inst_6;
-	
-	
+
+	SCHEDULING_CHECK_INIT(1);
 	result_inst_1 = SetAbsAlarm(Alarm1, 2, 2);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(1,E_OK, result_inst_1);
 	
+	SCHEDULING_CHECK_INIT(2);
 	result_inst_2 = SetAbsAlarm(Alarm1, 3, 0);
-	TEST_ASSERT_EQUAL_INT(E_OS_STATE, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(2,E_OS_STATE, result_inst_2);
 	
 	WaitActivationPeriodicAlarm(Alarm1);
 	
+	SCHEDULING_CHECK_STEP(4);
+
 	WaitActivationPeriodicAlarm(Alarm1);
 	
+	SCHEDULING_CHECK_INIT(6);
 	result_inst_3 = CancelAlarm(Alarm1);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
+	SCHEDULING_CHECK_AND_EQUAL_INT(6,E_OK, result_inst_3);
 	
+	SCHEDULING_CHECK_INIT(7);
 	result_inst_4 = SetRelAlarm(Alarm1, 2, 0);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_4);
+	SCHEDULING_CHECK_AND_EQUAL_INT(7,E_OK, result_inst_4);
 	
+	SCHEDULING_CHECK_INIT(8);
 	result_inst_5 = SetRelAlarm(Alarm1, 3, 0);
-	TEST_ASSERT_EQUAL_INT(E_OS_STATE, result_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT(8,E_OS_STATE, result_inst_5);
 	
+	SCHEDULING_CHECK_INIT(9);
 	result_inst_7 = GetAlarm(Alarm1, &result_inst_6);
-	TEST_ASSERT_EQUAL_INT(2, result_inst_6);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_7);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(9,2, result_inst_6);
+	SCHEDULING_CHECK_AND_EQUAL_INT(9,E_OK, result_inst_7);
 	
 	WaitActivationOneShotAlarm(Alarm1);
+	
+	SCHEDULING_CHECK_STEP(11);
 	
 }
 

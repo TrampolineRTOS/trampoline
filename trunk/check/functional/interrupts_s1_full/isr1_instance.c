@@ -10,16 +10,23 @@ void tpl_send_it3(void);
 an activation of a isr*/
 static void test_isr1_instance(void)
 {
-	EnableAllInterrupts();
-	DisableAllInterrupts();
-	DisableAllInterrupts();
-	DisableAllInterrupts();
-	tpl_send_it2();
-	tpl_send_it2();
-	tpl_send_it2();
+	SCHEDULING_CHECK_STEP(12);
 	
 	EnableAllInterrupts();
+	DisableAllInterrupts();
+	DisableAllInterrupts();
+	DisableAllInterrupts();
 	tpl_send_it2();
+	tpl_send_it2();
+	tpl_send_it2();
+	
+	EnableAllInterrupts();
+	
+	SCHEDULING_CHECK_STEP(14);
+	
+	tpl_send_it2();
+	
+	SCHEDULING_CHECK_STEP(16);
 	
 	SuspendAllInterrupts();
 	ResumeAllInterrupts();
@@ -31,7 +38,12 @@ static void test_isr1_instance(void)
 	ResumeAllInterrupts();
 	ResumeAllInterrupts();
 	ResumeAllInterrupts();
+	
+	SCHEDULING_CHECK_STEP(18);
+	
 	tpl_send_it2();
+	
+	SCHEDULING_CHECK_STEP(20);
 	
 	SuspendOSInterrupts();
 	ResumeOSInterrupts();
@@ -43,7 +55,13 @@ static void test_isr1_instance(void)
 	ResumeOSInterrupts();
 	ResumeOSInterrupts();
 	ResumeOSInterrupts();
+	
+	SCHEDULING_CHECK_STEP(22);
+	
 	tpl_send_it3();
+	
+	SCHEDULING_CHECK_STEP(26);
+	
 	
 }
 

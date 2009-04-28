@@ -10,6 +10,8 @@ an activation of a isr*/
 static void test_posttask_instance5(void)
 {
 	
+	SCHEDULING_CHECK_STEP(5);
+
 	tpl_send_it1();
 	SuspendAllInterrupts();
 	tpl_send_it1();

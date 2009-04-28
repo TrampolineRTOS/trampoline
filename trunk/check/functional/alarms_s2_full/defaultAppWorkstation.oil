@@ -14,12 +14,14 @@ IMPLEMENTATION trampoline {
         STATUS = STANDARD;
 		APP_SRC = "alarms_s2.c";
 		APP_SRC = "task1_instance.c";
-		APP_SRC = "task2_instance.c";
+		APP_SRC = "task2_instance1.c";
+		APP_SRC = "task2_instance2.c";
+		APP_SRC = "task2_instance3.c";
 		APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "alarms_s2_full";
 		CFLAGS = "-I../embUnit";
-        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;

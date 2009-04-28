@@ -11,12 +11,14 @@ static void test_isr1_instance(void)
 {
 	StatusType result_inst_1, result_inst_2;
 	
+	SCHEDULING_CHECK_INIT(5);
 	result_inst_1 = ClearEvent(Event1);
-	TEST_ASSERT_EQUAL_INT(E_OS_CALLEVEL , result_inst_1);
-
+	SCHEDULING_CHECK_AND_EQUAL_INT(5,E_OS_CALLEVEL , result_inst_1);
+	
+	SCHEDULING_CHECK_INIT(6);
 	result_inst_2 = WaitEvent(Event1);
-	TEST_ASSERT_EQUAL_INT(E_OS_CALLEVEL , result_inst_2);
-
+	SCHEDULING_CHECK_AND_EQUAL_INT(6,E_OS_CALLEVEL , result_inst_2);
+	
 }
 
 /*create the test suite with all the test cases*/

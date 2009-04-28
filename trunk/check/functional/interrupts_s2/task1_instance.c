@@ -12,10 +12,14 @@ static void test_t1_instance(void)
 	StatusType result_inst;
 
 	EnableAllInterrupts();
+	
+	SCHEDULING_CHECK_STEP(1);
+	
 	tpl_send_it2();
 
+	SCHEDULING_CHECK_INIT(5);
 	result_inst = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(5,E_OK, result_inst); 
 }
 
 /*create the test suite with all the test cases*/

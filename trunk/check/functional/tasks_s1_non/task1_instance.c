@@ -13,41 +13,53 @@ an activation of a task*/
 static void test_t1_instance(void)
 {
 	StatusType result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9, result_inst_10, result_inst_11;
+	TaskStateType result_inst_3_5;
 	
 	EnableAllInterrupts();
 	
+	SCHEDULING_CHECK_INIT(1);
 	result_inst_2 = ActivateTask(INVALID_TASK);	
-	TEST_ASSERT_EQUAL_INT(E_OS_ID, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(1,E_OS_ID, result_inst_2);
 	
-	result_inst_3 = GetTaskState(INVALID_TASK,0x0);
-	TEST_ASSERT_EQUAL_INT(E_OS_ID, result_inst_3);
+	SCHEDULING_CHECK_INIT(2);
+	result_inst_3 = GetTaskState(INVALID_TASK,&result_inst_3_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT(2,E_OS_ID, result_inst_3);
 	
+	SCHEDULING_CHECK_INIT(3);
 	result_inst_4 = ChainTask(INVALID_TASK);
-	TEST_ASSERT_EQUAL_INT(E_OS_ID, result_inst_4);
+	SCHEDULING_CHECK_AND_EQUAL_INT(3,E_OS_ID, result_inst_4);
 	
+	SCHEDULING_CHECK_INIT(4);
 	result_inst_5 = ActivateTask(t2);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT(4,E_OK, result_inst_5);
 	
+	SCHEDULING_CHECK_INIT(5);
 	result_inst_6 = Schedule();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_6);
+	SCHEDULING_CHECK_AND_EQUAL_INT(9,E_OK, result_inst_6);
 	
+	SCHEDULING_CHECK_INIT(10);
 	result_inst_7 = GetResource(RES_SCHEDULER);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_7);
+	SCHEDULING_CHECK_AND_EQUAL_INT(10,E_OK, result_inst_7);
 	
+	SCHEDULING_CHECK_INIT(11);
 	result_inst_8 = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OS_RESOURCE, result_inst_8);
+	SCHEDULING_CHECK_AND_EQUAL_INT(11,E_OS_RESOURCE, result_inst_8);
 	
+	SCHEDULING_CHECK_INIT(12);
 	result_inst_9 = ChainTask(t2);
-	TEST_ASSERT_EQUAL_INT(E_OS_RESOURCE, result_inst_9);
+	SCHEDULING_CHECK_AND_EQUAL_INT(12,E_OS_RESOURCE, result_inst_9);
 	
+	SCHEDULING_CHECK_INIT(13);
 	result_inst_10 = Schedule();
-	TEST_ASSERT_EQUAL_INT(E_OS_RESOURCE, result_inst_10);
+	SCHEDULING_CHECK_AND_EQUAL_INT(13,E_OS_RESOURCE, result_inst_10);
 	
+	SCHEDULING_CHECK_INIT(14);
 	result_inst_11 = ReleaseResource(RES_SCHEDULER);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_11);
+	SCHEDULING_CHECK_AND_EQUAL_INT(14,E_OK, result_inst_11);
 	
 	tpl_send_it1();
 	
+	SCHEDULING_CHECK_STEP(19);
 }
 
 /*create the test suite with all the test cases*/

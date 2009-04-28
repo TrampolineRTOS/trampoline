@@ -16,7 +16,15 @@ CPU test {
         STATUS = EXTENDED;
         APP_SRC = "com_internal_s5.c";
         APP_SRC = "task1_instance.c";
-        APP_SRC = "task2_instance.c";
+        APP_SRC = "task2_instance1.c";
+        APP_SRC = "task2_instance2.c";
+        APP_SRC = "task2_instance3.c";
+        APP_SRC = "task2_instance4.c";
+        APP_SRC = "task2_instance5.c";
+        APP_SRC = "task2_instance6.c";
+        APP_SRC = "task2_instance7.c";
+        APP_SRC = "task2_instance8.c";
+        APP_SRC = "task2_instance9.c";
         APP_SRC = "task3_instance.c";
         APP_SRC = "task4_instance1.c";
         APP_SRC = "task4_instance2.c";
@@ -36,7 +44,7 @@ CPU test {
 		SHUTDOWNHOOK = TRUE;
 		
 		CFLAGS = "-I../embUnit";
-        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../lib -lembUnit";
         

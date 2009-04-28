@@ -7,7 +7,10 @@ TestRef AlarmsTest_seq11_t3_instance(void);
 TestRef AlarmsTest_seq11_t4_instance(void);
 TestRef AlarmsTest_seq11_t5_instance(void);
 TestRef AlarmsTest_seq11_isr1_instance(void);
-TestRef AlarmsTest_seq11_callback_instance(void);
+TestRef AlarmsTest_seq11_callback_instance1(void);
+TestRef AlarmsTest_seq11_callback_instance2(void);
+
+unsigned char instance_callback = 0;
 
 int main(void)
 {
@@ -54,5 +57,23 @@ ISR(isr1)
 
 void CallBackC_callback(void)
 {
-	TestRunner_runTest(AlarmsTest_seq11_callback_instance());
+	instance_callback++;
+	switch(instance_callback)
+	{ 
+		case 1:	
+		{
+			TestRunner_runTest(AlarmsTest_seq11_callback_instance1());
+			break;
+		}
+		case 2:
+		{
+			TestRunner_runTest(AlarmsTest_seq11_callback_instance2());
+			break;
+		}
+		default:
+		{
+			stdimpl_print("Instance error \n");
+			break;
+		}
+	}
 }

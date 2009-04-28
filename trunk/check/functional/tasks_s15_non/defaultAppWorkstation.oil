@@ -17,8 +17,10 @@ CPU test {
 		APP_SRC = "task1_instance.c";
 		APP_SRC = "task2_instance1.c";
 		APP_SRC = "task2_instance2.c";
-		APP_SRC = "task3_instance.c";
-		APP_SRC = "task4_instance.c";
+		APP_SRC = "task3_instance1.c";
+		APP_SRC = "task3_instance2.c";
+		APP_SRC = "task4_instance1.c";
+		APP_SRC = "task4_instance2.c";
 		APP_SRC = "task5_instance.c";
 		APP_SRC = "task6_instance.c";
 		APP_SRC = "task7_instance.c";
@@ -26,7 +28,7 @@ CPU test {
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "tasks_s15_non";
 		CFLAGS = "-I../embUnit";
-        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;

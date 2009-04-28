@@ -3,10 +3,14 @@
 #include "tpl_os.h"
 
 TestRef TaskManagementTest_seq12_t1_instance(void);
-TestRef TaskManagementTest_seq12_t2_instance(void);
-TestRef TaskManagementTest_seq12_t3_instances(void);
+TestRef TaskManagementTest_seq12_t2_instance1(void);
+TestRef TaskManagementTest_seq12_t2_instance2(void);
+TestRef TaskManagementTest_seq12_t2_instance3(void);
+TestRef TaskManagementTest_seq12_t3_instance1(void);
+TestRef TaskManagementTest_seq12_t3_instance2(void);
 TestRef TaskManagementTest_seq12_t3_instance3(void);
 
+unsigned char instance_t2 = 0;
 unsigned char instance_t3 = 0;
 
 int main(void)
@@ -27,8 +31,31 @@ TASK(t1)
 }
 
 TASK(t2)
-{
-	TestRunner_runTest(TaskManagementTest_seq12_t2_instance());
+{	
+	instance_t2 ++;
+	switch(instance_t2)
+	{ 
+		case 1:	
+		{
+			TestRunner_runTest(TaskManagementTest_seq12_t2_instance1());
+			break;
+		}
+		case 2:
+		{
+			TestRunner_runTest(TaskManagementTest_seq12_t2_instance2());
+			break;
+		}
+		case 3:
+		{
+			TestRunner_runTest(TaskManagementTest_seq12_t2_instance3());
+			break;
+		}
+		default:
+		{
+			stdimpl_print("Instance error \n");
+			break;
+		}
+	}
 }
 
 TASK(t3)
@@ -38,12 +65,12 @@ TASK(t3)
 	{ 
 		case 1:	
 		{
-			TestRunner_runTest(TaskManagementTest_seq12_t3_instances());
+			TestRunner_runTest(TaskManagementTest_seq12_t3_instance1());
 			break;
 		}
 		case 2:
 		{
-			TestRunner_runTest(TaskManagementTest_seq12_t3_instances());
+			TestRunner_runTest(TaskManagementTest_seq12_t3_instance2());
 			break;
 		}
 		case 3:
@@ -57,5 +84,5 @@ TASK(t3)
 			stdimpl_print("Instance error \n");
 			break;
 		}
-	}	
+	}
 }

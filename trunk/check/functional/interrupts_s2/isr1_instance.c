@@ -7,6 +7,7 @@
 an activation of a isr*/
 static void test_isr1_instance(void)
 {
+	SCHEDULING_CHECK_STEP(4);
 	
 }
 

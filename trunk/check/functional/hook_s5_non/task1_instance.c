@@ -15,21 +15,25 @@ static void test_t1_instance(void)
 
 	EnableAllInterrupts();
 			
+	SCHEDULING_CHECK_INIT(1);
 	result_inst_1 = SetRelAlarm(Alarm1, 2, 0);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_1);	
+	SCHEDULING_CHECK_AND_EQUAL_INT(1,E_OK , result_inst_1);	
 	
 	WaitActivationOneShotAlarm(Alarm1);
 	
+	SCHEDULING_CHECK_INIT(2);
 	result_inst_2 = Schedule();
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_2);	
+	SCHEDULING_CHECK_AND_EQUAL_INT(7,E_OK , result_inst_2);	
 	
+	SCHEDULING_CHECK_INIT(8);
 	result_inst_3 = SetRelAlarm(Alarm1, 2, 0);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_3);	
+	SCHEDULING_CHECK_AND_EQUAL_INT(8,E_OK , result_inst_3);	
 	
 	WaitActivationOneShotAlarm(Alarm1);
 	
+	SCHEDULING_CHECK_INIT(9);
 	result_inst_4 = Schedule();
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_4);	
+	SCHEDULING_CHECK_AND_EQUAL_INT(14,E_OK , result_inst_4);	
 		
 }
 

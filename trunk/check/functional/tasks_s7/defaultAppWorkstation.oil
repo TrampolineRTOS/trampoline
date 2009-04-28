@@ -16,12 +16,14 @@ CPU test {
 		APP_SRC = "task1_instance1.c";
 		APP_SRC = "task1_instance2.c";
 		APP_SRC = "task1_instance3.c";
-		APP_SRC = "task2_instance.c";
-		APP_SRC = "task3_instance.c";
+		APP_SRC = "task2_instance1.c";
+		APP_SRC = "task2_instance2.c";
+		APP_SRC = "task3_instance1.c";
+		APP_SRC = "task3_instance2.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "tasks_s7";
 		CFLAGS = "-I../embUnit";
-        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;

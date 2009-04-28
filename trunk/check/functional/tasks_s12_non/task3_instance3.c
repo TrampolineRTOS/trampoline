@@ -1,4 +1,4 @@
-/*Instance3 of task t3*/
+/*Instance 3 of task t3*/
 
 #include "embUnit.h"
 #include "tpl_os.h"
@@ -7,7 +7,7 @@
  an activation of a task*/
 static void test_t3_instance3(void)
 {
-	
+	SCHEDULING_CHECK_STEP(13);
 }
 
 /*create the test suite with all the test cases*/

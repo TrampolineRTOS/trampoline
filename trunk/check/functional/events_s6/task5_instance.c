@@ -11,8 +11,9 @@ static void test_t5_instance(void)
 {
 	StatusType result_inst_1;
 	
+	SCHEDULING_CHECK_INIT(4);
 	result_inst_1 = ActivateTask(t3);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(20,E_OK, result_inst_1);
 }
 
 /*create the test suite with all the test cases*/

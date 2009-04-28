@@ -12,8 +12,9 @@ static void test_callback_instance(void)
 	
 	StatusType result_inst_1;
 	
+	SCHEDULING_CHECK_INIT(2);
 	result_inst_1 = ActivateTask(t2);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(3,E_OK, result_inst_1);
 
 	
 }

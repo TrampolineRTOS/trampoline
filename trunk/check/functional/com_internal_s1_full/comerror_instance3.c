@@ -12,11 +12,13 @@ static void test_comerror_instance3(void)
 {
 	StatusType result_inst_1, result_inst_2;
 		
+	SCHEDULING_CHECK_INIT(12);
 	result_inst_1 = COMErrorGetServiceId();
-	TEST_ASSERT_EQUAL_INT(COMServiceId_GetMessageStatus , result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(12,COMServiceId_GetMessageStatus , result_inst_1);
 	
+	SCHEDULING_CHECK_INIT(13);
 	result_inst_2 = COMError_GetMessageStatus_Message();
-	TEST_ASSERT_EQUAL_INT(rm , result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(13,rm , result_inst_2);
 	
 }
 

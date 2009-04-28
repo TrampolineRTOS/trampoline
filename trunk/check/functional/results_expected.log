@@ -1,162 +1,243 @@
+tasks_s1_full :
 ...
 OK (3 tests)
+tasks_s1_non :
 ...
 OK (3 tests)
+tasks_s2 :
 ...
 OK (3 tests)
+tasks_s3 :
 ...
 OK (3 tests)
+tasks_s4 :
 ..
 OK (2 tests)
+tasks_s5 :
 ...
 OK (3 tests)
+tasks_s6_full :
 ..
 OK (2 tests)
+tasks_s6_non :
 ..
 OK (2 tests)
+tasks_s7 :
 .......
 OK (7 tests)
+tasks_s8 :
 .....
 OK (5 tests)
+tasks_s9_full :
 ....
 OK (4 tests)
+tasks_s9_non :
 ....
 OK (4 tests)
+tasks_s10 :
 ...
 OK (3 tests)
+tasks_s11_full :
 ....
 OK (4 tests)
+tasks_s11_non :
 ....
 OK (4 tests)
+tasks_s12_full :
 .......
 OK (7 tests)
+tasks_s12_non :
 .......
 OK (7 tests)
+tasks_s13_full :
 ........
 OK (8 tests)
+tasks_s13_non :
 ........
 OK (8 tests)
+tasks_s14_full :
 ................
 OK (16 tests)
+tasks_s14_non :
 ................
 OK (16 tests)
+tasks_s15_full :
 ............
 OK (12 tests)
+tasks_s15_non :
 ............
 OK (12 tests)
+interrupts_s1_full :
 ..............
 OK (14 tests)
+interrupts_s1_non :
 ..............
 OK (14 tests)
-...
-OK (3 tests)
+interrupts_s2 :
 ....
 OK (4 tests)
-.....
-OK (5 tests)
-.....
-OK (5 tests)
-..
-OK (2 tests)
-...
-OK (3 tests)
-...
-OK (3 tests)
-..
-OK (2 tests)
-..
-OK (2 tests)
-...
-OK (3 tests)
+interrupts_s3 :
 ....
 OK (4 tests)
+interrupts_s4_full :
 .....
 OK (5 tests)
+interrupts_s4_non :
 .....
 OK (5 tests)
+interrupts_s5 :
+..
+OK (2 tests)
+events_s1_full :
+...
+OK (3 tests)
+events_s1_non :
+...
+OK (3 tests)
+events_s2_full :
+..
+OK (2 tests)
+events_s2_non :
+..
+OK (2 tests)
+events_s3 :
+...
+OK (3 tests)
+events_s4 :
+....
+OK (4 tests)
+events_s5 :
+.....
+OK (5 tests)
+events_s6 :
+.....
+OK (5 tests)
+resources_s1_full :
 ........
 OK (8 tests)
+resources_s1_non :
 ........
 OK (8 tests)
+resources_s2 :
 ...
 OK (3 tests)
+resources_s3 :
 ...
 OK (3 tests)
+resources_s4_full :
 ...
 OK (3 tests)
+resources_s4_non :
 ...
 OK (3 tests)
+alarms_s1_full :
 .
 OK (1 test)
+alarms_s1_non :
 .
 OK (1 test)
+alarms_s2_full :
 ....
 OK (4 tests)
+alarms_s2_non :
 ....
 OK (4 tests)
+alarms_s3_full :
 ..
 OK (2 tests)
+alarms_s3_non :
 ..
 OK (2 tests)
+alarms_s4_full :
 ....
 OK (4 tests)
+alarms_s4_non :
 ....
 OK (4 tests)
+alarms_s5 :
 ..
 OK (2 tests)
+alarms_s6 :
 ....
 OK (4 tests)
+alarms_s7 :
 ..
 OK (2 tests)
+alarms_s8 :
 ....
 OK (4 tests)
-.......
-OK (7 tests)
-.......
-OK (7 tests)
+alarms_s9_full :
+........
+OK (8 tests)
+alarms_s9_non :
+........
+OK (8 tests)
+alarms_s10 :
 ...
 OK (3 tests)
+hook_s1_full :
 ..
 OK (2 tests)
+hook_s1_non :
 ..
 OK (2 tests)
-.......................
-OK (23 tests)
-.......................
-OK (23 tests)
+hook_s2_full :
+...................
+OK (19 tests)
+hook_s2_non :
+...................
+OK (19 tests)
+hook_s3_full :
 ..
 OK (2 tests)
+hook_s3_non :
 ..
 OK (2 tests)
+hook_s4_full :
 ...........
 OK (11 tests)
+hook_s4_non :
 ...........
 OK (11 tests)
+hook_s5_full :
 ...........
 OK (11 tests)
+hook_s5_non :
 ...........
 OK (11 tests)
+hook_s6_full :
 .....
 OK (5 tests)
+hook_s6_non :
 .....
 OK (5 tests)
+com_internal_s1_full :
 ......
 OK (6 tests)
+com_internal_s1_non :
 ......
 OK (6 tests)
+com_internal_s2_full :
 .......
 OK (7 tests)
+com_internal_s2_non :
 .......
 OK (7 tests)
+com_internal_s3 :
 ....
 OK (4 tests)
+com_internal_s4 :
 ....
 OK (4 tests)
+com_internal_s5_full :
 .......................
 OK (23 tests)
+com_internal_s5_non :
 .......................
 OK (23 tests)
+com_internal_s6_full :
 ....................
 OK (20 tests)
+com_internal_s6_non :
 ....................
 OK (20 tests)

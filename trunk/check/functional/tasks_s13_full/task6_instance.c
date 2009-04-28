@@ -9,8 +9,9 @@ static void test_t6_instance(void)
 {
 	StatusType result_inst;
 	
+	SCHEDULING_CHECK_INIT(13);
 	result_inst = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(13,E_OK , result_inst); 
 }
 
 /*create the test suite with all the test cases*/

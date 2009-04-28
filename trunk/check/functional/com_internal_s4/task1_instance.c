@@ -15,28 +15,33 @@ static void test_t1_instance(void)
 {
 	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5;
 	
+	SCHEDULING_CHECK_INIT(1);
 	result_inst_1 = ActivateTask(t3);	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(1,E_OK, result_inst_1);
 	
+	SCHEDULING_CHECK_INIT(2);
 	result_inst_2 = SendMessage(sm_activatetask, "1");	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(2,E_OK, result_inst_2);
 	
+	SCHEDULING_CHECK_INIT(3);
 	result_inst_3 = SendMessage(sm_setevent, "2");	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
+	SCHEDULING_CHECK_AND_EQUAL_INT(3,E_OK, result_inst_3);
 	
+	SCHEDULING_CHECK_INIT(4);
 	result_inst_4 = SendMessage(sm_comcallback, "3");	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_4);
+	SCHEDULING_CHECK_AND_EQUAL_INT(5,E_OK, result_inst_4);
 	
 	/* Message flag doesn't work
 	 result_inst_2 = ActivateTask(t4);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(X,E_OK, result_inst_2);
 	
 	result_inst_2 = SendMessage(sm_flag, "4");
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(X,E_OK, result_inst_2);
 	*/
 	
+	SCHEDULING_CHECK_INIT(6);
 	result_inst_5 = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT(6,E_OK, result_inst_5);
 	
 }
 

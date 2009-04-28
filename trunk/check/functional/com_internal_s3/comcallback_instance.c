@@ -13,9 +13,10 @@ static void test_comcallback_instance(void)
 	StatusType received_char;
 	
 	/*not allowed !!! Should be E_OS_CALLEVEL*/
+	SCHEDULING_CHECK_INIT(10);
 	result_inst_1 = ReceiveMessage(rm_comcallback, &received_char); 
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
-	TEST_ASSERT_EQUAL_INT((int)('3'), (int)received_char);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(10,E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(10,(int)('3'), (int)received_char);
 	
 }
 

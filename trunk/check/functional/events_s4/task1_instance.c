@@ -20,43 +20,54 @@ static void test_t1_instance(void)
 	TaskStateType result_inst_2, result_inst_7;
 	EventMaskType result_inst_4, result_inst_10, result_inst_14;
 
+	SCHEDULING_CHECK_INIT(2);
 	result_inst_1 = SetEvent(t2,Event2);	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);	
+	SCHEDULING_CHECK_AND_EQUAL_INT(2,E_OK, result_inst_1);	
 	
+	SCHEDULING_CHECK_INIT(3);
 	result_inst_3 = GetTaskState(t2, &result_inst_2);
-	TEST_ASSERT_EQUAL_INT(WAITING, result_inst_2);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);	
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(3,WAITING, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(3,E_OK, result_inst_3);	
 
+	SCHEDULING_CHECK_INIT(4);
 	result_inst_5 = GetEvent(t2,&result_inst_4);
-	TEST_ASSERT_EQUAL_INT(Event2, result_inst_4);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_5);	
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(4,Event2, result_inst_4);
+	SCHEDULING_CHECK_AND_EQUAL_INT(4,E_OK, result_inst_5);	
 	
+	SCHEDULING_CHECK_INIT(5);
 	result_inst_6 = ActivateTask(t3);	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_6);	
+	SCHEDULING_CHECK_AND_EQUAL_INT(5,E_OK, result_inst_6);	
 	
+	SCHEDULING_CHECK_INIT(6);
 	result_inst_8 = GetTaskState(t3, &result_inst_7);
-	TEST_ASSERT_EQUAL_INT(READY, result_inst_7);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_8);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(6,READY, result_inst_7);
+	SCHEDULING_CHECK_AND_EQUAL_INT(6,E_OK, result_inst_8);
 	
+	SCHEDULING_CHECK_INIT(7);
 	result_inst_9 = SetEvent(t3,Event3);	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_9);	
+	SCHEDULING_CHECK_AND_EQUAL_INT(7,E_OK, result_inst_9);	
 	
+	SCHEDULING_CHECK_INIT(8);
 	result_inst_11 = GetEvent(t3,&result_inst_10);
-	TEST_ASSERT_EQUAL_INT(Event3, result_inst_10);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_11);	
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(8,Event3, result_inst_10);
+	SCHEDULING_CHECK_AND_EQUAL_INT(8,E_OK, result_inst_11);	
 	
+	SCHEDULING_CHECK_INIT(9);
 	result_inst_12 = SetEvent(t2,Event1);	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_12);	
+	SCHEDULING_CHECK_AND_EQUAL_INT(12,E_OK, result_inst_12);	
 	
+	SCHEDULING_CHECK_INIT(13);
 	result_inst_13 = ActivateTask(t4);	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_13);	
+	SCHEDULING_CHECK_AND_EQUAL_INT(17,E_OK, result_inst_13);	
 	
+	SCHEDULING_CHECK_INIT(18);
 	result_inst_15 = GetEvent(t1, &result_inst_14);
-	TEST_ASSERT_EQUAL_INT(Event1, result_inst_14);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_15);	
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(18,Event1, result_inst_14);
+	SCHEDULING_CHECK_AND_EQUAL_INT(18,E_OK, result_inst_15);	
 	
+	SCHEDULING_CHECK_INIT(19);
 	result_inst_16 = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_16);
+	SCHEDULING_CHECK_AND_EQUAL_INT(19,E_OK, result_inst_16);
 	
 }
 

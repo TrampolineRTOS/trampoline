@@ -13,11 +13,13 @@ static void test_t1_instance(void)
 
 	EnableAllInterrupts();
 	
+	SCHEDULING_CHECK_INIT(1);
 	result_inst_1 = ActivateTask(t1);
-	TEST_ASSERT_EQUAL_INT(E_OS_LIMIT , result_inst_1);	
+	SCHEDULING_CHECK_AND_EQUAL_INT(3,E_OS_LIMIT , result_inst_1);	
 	
+	SCHEDULING_CHECK_INIT(4);
 	result_inst_2 = ChainTask(t1);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_2);	
+	SCHEDULING_CHECK_AND_EQUAL_INT(4,E_OK , result_inst_2);	
 	
 }
 

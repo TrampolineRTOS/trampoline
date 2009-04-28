@@ -9,6 +9,8 @@ void tpl_send_it1(void);
  an activation of a task*/
 static void test_callback2_instance(void)
 {	
+	SCHEDULING_CHECK_STEP(6);
+	
 	SuspendAllInterrupts();
 	SuspendAllInterrupts();
 	SuspendAllInterrupts();
@@ -16,6 +18,8 @@ static void test_callback2_instance(void)
 	ResumeAllInterrupts();
 	ResumeAllInterrupts();
 	ResumeAllInterrupts();
+	
+	SCHEDULING_CHECK_STEP(7);
 }
 
 /*create the test suite with all the test cases*/

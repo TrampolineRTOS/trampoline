@@ -45,7 +45,7 @@ void signaux_pendants(void)
 	stdimpl_print("Les signaux pendants sont %d ",sig_set);
 	
 	if (sigismember ( &sig_set,SIGTERM) ) 
-		stdimpl_print("SIGUSR2 pendant \n");
+		stdimpl_print("SIGTERM pendant \n");
 	
 	if (sigismember ( &sig_set,SIGUSR2) ) 
 		stdimpl_print("SIGUSR2 pendant \n");
@@ -55,7 +55,7 @@ void WaitActivationPeriodicAlarm(AlarmType Alarm){
 	
 	u32 temp, result_inst_;
 	TickType result_inst_tt;
-	result_inst_tt = 0;
+	result_inst_tt = 0;		
 	do{
 		temp = result_inst_tt;
 		result_inst_ = GetAlarm(Alarm,&result_inst_tt);

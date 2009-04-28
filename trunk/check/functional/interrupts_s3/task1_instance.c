@@ -10,8 +10,13 @@ an activation of a task*/
 static void test_t1_instance(void)
 {
 	EnableAllInterrupts();
+	
+	SCHEDULING_CHECK_STEP(1);
+	
 	tpl_send_it2();
 
+	SCHEDULING_CHECK_STEP(6);
+	
 }
 
 /*create the test suite with all the test cases*/

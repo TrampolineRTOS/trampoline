@@ -12,12 +12,14 @@ static void test_t8_instance3(void)
 	StatusType result_inst_1, result_inst_2;
 	StatusType received_char;
 	
+	SCHEDULING_CHECK_INIT(61);
 	result_inst_1 = ReceiveMessage(rm_oneeveryn, &received_char);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
-	TEST_ASSERT_EQUAL_INT(5, (int)received_char);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(61,E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(61,5, (int)received_char);
 	
+	SCHEDULING_CHECK_INIT(62);
 	result_inst_2 = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(62,E_OK, result_inst_2);
 }
 
 /*create the test suite with all the test cases*/

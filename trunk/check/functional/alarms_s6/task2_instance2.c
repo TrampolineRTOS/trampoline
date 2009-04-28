@@ -7,7 +7,7 @@
  an activation of a task*/
 static void test_t2_instance2(void)
 {
-	
+	SCHEDULING_CHECK_STEP(7);
 }
 
 /*create the test suite with all the test cases*/

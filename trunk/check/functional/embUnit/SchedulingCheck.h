@@ -29,17 +29,21 @@
 #include "config.h"
 #include "AssertImpl.h"
 
+void assertImplementationInt(int expected,int actual, long line, const char *file); /*AssertImpl.c*/
+
 /**
  * @def SCHEDULING_CHECK_INIT
  *
  * This macro initialise a local variable incrementing the global variable test_number.
+ *
+ *	@param number step number
  *
  */
 #define SCHEDULING_CHECK_INIT(number)												\
 	{																	\
 		extern unsigned char test_number;								\
 		if ((number) != (++test_number)){								\
-			stdimpl_print("SCHEDULING_CHECK_INIT error : step %d expected and step %d found \n",(number),(test_number)); \
+			assertImplementationInt((number),(test_number),__LINE__,__FILE__); \
 		}	
 
 /**
@@ -62,7 +66,7 @@
 		if ((number) == (test_number)){									\
 			TEST_ASSERT_EQUAL_INT((expected),(actual))					\
 		}else{															\
-			stdimpl_print("SCHEDULING_CHECK_AND_EQUAL_INT error : step %d expected and step %d found \n",(number),(test_number)); \
+			assertImplementationInt((number),(test_number),__LINE__,__FILE__); \
 		}																\
 	}
 
@@ -81,8 +85,24 @@
 		if ((number) == (test_number)){							\
 			TEST_ASSERT_EQUAL_INT((expected),(actual))					\
 		}else{															\
-			stdimpl_print("SCHEDULING_CHECK_AND_EQUAL_INT_FIRST error : step %d expected and step %d found \n",(number),(test_number)); \
+			assertImplementationInt((number),(test_number),__LINE__,__FILE__); \
 		}
+
+/**
+ * @def SCHEDULING_CHECK_FINAL
+ *
+ * This macro check the return of any ISR2 in the final task juste before shutdowning "Trampoline".
+ *
+ *	@param number step number
+ *
+ */
+#define SCHEDULING_CHECK_STEP(number)									\
+	{																	\
+		extern unsigned char test_number;								\
+		if ((number) != (++test_number)){								\
+			assertImplementationInt((number),(test_number),__LINE__,__FILE__); \
+		}																\
+	}
 
 /*	__SCHEDULING_CHECK_H__	*/
 #endif

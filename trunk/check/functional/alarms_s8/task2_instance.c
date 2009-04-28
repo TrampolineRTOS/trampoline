@@ -13,17 +13,21 @@ static void test_t2_instance(void)
 	
 	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4;
 	
+	SCHEDULING_CHECK_INIT(1);
 	result_inst_1 = WaitEvent(Event2);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(5,E_OK, result_inst_1);
 	
+	SCHEDULING_CHECK_INIT(6);
 	result_inst_2 = ClearEvent(Event2);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(6,E_OK, result_inst_2);
 		
+	SCHEDULING_CHECK_INIT(7);
 	result_inst_3 = ActivateTask(t4);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
+	SCHEDULING_CHECK_AND_EQUAL_INT(10,E_OK, result_inst_3);
 	
+	SCHEDULING_CHECK_INIT(11);
 	result_inst_4 = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_4);
+	SCHEDULING_CHECK_AND_EQUAL_INT(11,E_OK, result_inst_4);
 	
 }
 

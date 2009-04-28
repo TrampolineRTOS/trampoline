@@ -15,24 +15,29 @@ static void test_t1_instance(void)
 	StatusType car1;
 		
 	car1 = 3;
+	SCHEDULING_CHECK_INIT(1);
 	result_inst_2 = SendMessage(sm, &car1);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(9,E_OK, result_inst_2);
 	
 	car1 = 12;
+	SCHEDULING_CHECK_INIT(10);
 	result_inst_3 = SendMessage(sm, &car1);	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_3);
+	SCHEDULING_CHECK_AND_EQUAL_INT(18,E_OK, result_inst_3);
 	
 	car1 = 7;
+	SCHEDULING_CHECK_INIT(19);
 	result_inst_4 = SendMessage(sm, &car1);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_4);
+	SCHEDULING_CHECK_AND_EQUAL_INT(25,E_OK, result_inst_4);
 	
 	car1 = 7;
+	SCHEDULING_CHECK_INIT(26);
 	result_inst_5 = SendMessage(sm, &car1);	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT(30,E_OK, result_inst_5);
 	
 	car1 = 2;
+	SCHEDULING_CHECK_INIT(31);
 	result_inst_6 = SendMessage(sm, &car1);	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_6);
+	SCHEDULING_CHECK_AND_EQUAL_INT(43,E_OK, result_inst_6);
 		
 }
 

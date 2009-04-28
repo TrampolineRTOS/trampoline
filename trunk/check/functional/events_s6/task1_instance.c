@@ -11,11 +11,13 @@ static void test_t1_instance(void)
 {
 	StatusType result_inst_1, result_inst_2;
 		
+	SCHEDULING_CHECK_INIT(1);
 	result_inst_1 = WaitEvent(Event1);	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(17,E_OK, result_inst_1);
 
+	SCHEDULING_CHECK_INIT(18);
 	result_inst_2 = TerminateTask();	
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(18,E_OK, result_inst_2);
 
 
 }

@@ -2,7 +2,11 @@
 #include "embUnit.h"
 
 TestRef AlarmsTest_seq4_t1_instance(void);
-TestRef AlarmsTest_seq4_callback_instance(void);
+TestRef AlarmsTest_seq4_callback_instance1(void);
+TestRef AlarmsTest_seq4_callback_instance2(void);
+TestRef AlarmsTest_seq4_callback_instance3(void);
+
+unsigned char instance_callback = 0;
 
 int main(void)
 {
@@ -24,5 +28,30 @@ TASK(t1)
 
 void CallBackC_callback(void)
 {
-	TestRunner_runTest(AlarmsTest_seq4_callback_instance());
+	instance_callback++;
+	switch (instance_callback)
+	{
+		case 1 :
+		{
+			TestRunner_runTest(AlarmsTest_seq4_callback_instance1());
+			break;
+		}
+		case 2 :
+		{
+			TestRunner_runTest(AlarmsTest_seq4_callback_instance2());
+			break;
+		}
+		case 3 :
+		{
+			TestRunner_runTest(AlarmsTest_seq4_callback_instance3());
+			break;
+		}
+		default:
+		{
+			stdimpl_print("Instance error");
+			break;
+		}
+	}
+	
+	
 }

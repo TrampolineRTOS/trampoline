@@ -18,51 +18,63 @@ static void test_t1_instance(void)
 	AlarmBaseType result_inst_1;
 	TickType result_inst_3, result_inst_13;
 	
+	SCHEDULING_CHECK_INIT(1);
 	result_inst_2 = GetAlarmBase(Alarm1, &result_inst_1);
-	TEST_ASSERT_EQUAL_INT(OSMAXALLOWEDVALUE_Counter1, (int)(result_inst_1.maxallowedvalue));
-	TEST_ASSERT_EQUAL_INT(OSTICKSPERBASE_Counter1, (int)(result_inst_1.ticksperbase));
-	TEST_ASSERT_EQUAL_INT(OSMINCYCLE_Counter1, (int)(result_inst_1.mincycle));
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(1,OSMAXALLOWEDVALUE_Counter1, (int)(result_inst_1.maxallowedvalue));
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(1,OSTICKSPERBASE_Counter1, (int)(result_inst_1.ticksperbase));
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(1,OSMINCYCLE_Counter1, (int)(result_inst_1.mincycle));
+	SCHEDULING_CHECK_AND_EQUAL_INT(1,E_OK, result_inst_2);
 	
+	SCHEDULING_CHECK_INIT(2);
 	result_inst_4 = GetAlarm(Alarm1, &result_inst_3);
-	TEST_ASSERT_EQUAL_INT(E_OS_NOFUNC, result_inst_4);
+	SCHEDULING_CHECK_AND_EQUAL_INT(2,E_OS_NOFUNC, result_inst_4);
 	
+	SCHEDULING_CHECK_INIT(3);
 	result_inst_5 = CancelAlarm(Alarm1);
-	TEST_ASSERT_EQUAL_INT(E_OS_NOFUNC, result_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT(3,E_OS_NOFUNC, result_inst_5);
 	
+	SCHEDULING_CHECK_INIT(4);
 	result_inst_6 = SetAbsAlarm(Alarm1, 2, 2);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_6);
+	SCHEDULING_CHECK_AND_EQUAL_INT(4,E_OK, result_inst_6);
 	
+	SCHEDULING_CHECK_INIT(5);
 	result_inst_7 = SetAbsAlarm(Alarm1, 3, 0);
-	TEST_ASSERT_EQUAL_INT(E_OS_STATE, result_inst_7);
+	SCHEDULING_CHECK_AND_EQUAL_INT(5,E_OS_STATE, result_inst_7);
 
 	WaitActivationPeriodicAlarm(Alarm1);
 	
+	SCHEDULING_CHECK_INIT(6);
 	result_inst_8 = Schedule();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_8);	
+	SCHEDULING_CHECK_AND_EQUAL_INT(7,E_OK, result_inst_8);	
 
 	WaitActivationPeriodicAlarm(Alarm1);
 
+	SCHEDULING_CHECK_INIT(8);
 	result_inst_9 = Schedule();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_9);	
+	SCHEDULING_CHECK_AND_EQUAL_INT(9,E_OK, result_inst_9);	
 
+	SCHEDULING_CHECK_INIT(10);
 	result_inst_10 = CancelAlarm(Alarm1);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_10);
+	SCHEDULING_CHECK_AND_EQUAL_INT(10,E_OK, result_inst_10);
 	
+	SCHEDULING_CHECK_INIT(11);
 	result_inst_11 = SetRelAlarm(Alarm1, 2, 0);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_11);
+	SCHEDULING_CHECK_AND_EQUAL_INT(11,E_OK, result_inst_11);
 	
+	SCHEDULING_CHECK_INIT(12);
 	result_inst_12 = SetRelAlarm(Alarm1, 3, 0);
-	TEST_ASSERT_EQUAL_INT(E_OS_STATE, result_inst_12);
+	SCHEDULING_CHECK_AND_EQUAL_INT(12,E_OS_STATE, result_inst_12);
 	
+	SCHEDULING_CHECK_INIT(13);
 	result_inst_14 = GetAlarm(Alarm1, &result_inst_13);
-	TEST_ASSERT_EQUAL_INT(2, result_inst_13);
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_14);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(13,2, result_inst_13);
+	SCHEDULING_CHECK_AND_EQUAL_INT(13,E_OK, result_inst_14);
 	
 	WaitActivationOneShotAlarm(Alarm1);
 
+	SCHEDULING_CHECK_INIT(14);
 	result_inst_15 = Schedule();
-	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_15);
+	SCHEDULING_CHECK_AND_EQUAL_INT(15,E_OK, result_inst_15);
 }
 
 /*create the test suite with all the test cases*/

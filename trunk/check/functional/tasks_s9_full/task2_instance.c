@@ -12,12 +12,14 @@ static void test_t2_instance(void)
 	StatusType result_inst_2, result_inst_3;
 	TaskStateType result_inst_1;
 	
+	SCHEDULING_CHECK_INIT(5);
 	result_inst_2 = GetTaskState(t1,&result_inst_1);
-	TEST_ASSERT_EQUAL_INT(READY , result_inst_1);
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(5,READY , result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(5,E_OK , result_inst_2);
 	
+	SCHEDULING_CHECK_INIT(6);
 	result_inst_3 = TerminateTask();
-	TEST_ASSERT_EQUAL_INT(E_OK , result_inst_3);
+	SCHEDULING_CHECK_AND_EQUAL_INT(6,E_OK , result_inst_3);
 }
 
 /*create the test suite with all the test cases*/
