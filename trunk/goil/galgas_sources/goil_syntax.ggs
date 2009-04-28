@@ -421,6 +421,11 @@ rule <start> :
                         !?header
                         !?obj_header
                         !?implementation ;
+                    generate_trusted_functions
+                        !applis
+                        !?header
+                        !?obj_header
+                        !?implementation ;
                 end if ;
 
                 generate_ready_list

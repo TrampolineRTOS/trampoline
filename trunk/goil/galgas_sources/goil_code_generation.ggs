@@ -562,6 +562,17 @@ routine generate_types
   #message "tpl_schedtable_id:           ".type."\n" ;
   types := [types stringByReplacingStringByString !"$SCHEDTABLE_ID_T$" !type] ;
 
+  # compute the type for tpl_timeobj_id as the max of the number of
+  # alarms and schedule tables
+  if [alarms count] > [schedtables count] then
+    c := [[alarms count] uint64] ;
+  else
+    c := [[schedtables count] uint64] ;
+  end if ;
+  if c > max then max := c ; end if ;
+  generate_unsigned_type !c !"too many time objects" ?type ;
+  types := [types stringByReplacingStringByString !"$TIMEOBJ_ID_T$" !type] ;
+
   # compute the type for tpl_app_id
   generate_unsigned_type ![[apps count] uint64]+1L !"too many OS applications" ?type ;
   #message "tpl_app_id:           ".type."\n" ;

@@ -360,4 +360,52 @@ routine generate_apps
 
 end routine ;
 
+#
+# generate_trusted_functions generates the data structures
+# used for Trusted Functions : table and ids
+#
+routine generate_trusted_functions
+  ?@app_map           apps
+  ?!@string unused    head
+  ?!@string           obj_head
+  ?!@string           imp
+:
+  @stringset tfs [emptySet] ;
+
+  foreach apps do
+    cast [app trusted] :
+    when == @app_trusted_true t do
+      foreach [t trusted_fcts] (@string s) do
+        tfs += !s ;
+      end foreach ;
+    else end cast ;
+  end foreach ;
+
+  @string fcts := "" ;
+  @string fct_ids := "" ;
+  @string fct_table := "" ;
+  @uint tf_id := 0 ;
+
+  foreach tfs (@string s)
+  before
+    fct_table := "CONSTP2CONST(tpl_trusted_fct, AUTOMATIC, OS_APPL_DATA)\n" ;
+    fct_table .= "  tpl_trusted_fct_table[TRUSTED_FCT_COUNT] = {\n" ;
+  do
+    fcts .= "void TRUSTED_".s."(TrustedFunctionIndexType idx, TrustedFunctionParameterRefType params);\n" ;
+    fct_ids .= "#define ".s."_id    ".[tf_id string]."\n" ;
+    fct_ids .= "CONST(TrustedFunctionIndexType, AUTOMATIC) ".s." = ".s."_id\n" ;
+    fct_table .= "  TRUSTED_".s ;
+    tf_id++ ;
+  between
+    fct_table .= ",\n" ;
+  after
+    fct_table .= "\n};\n" ;
+  end foreach ;
+
+  doReplace !?imp !"$TRUSTED_IDS$" !fct_ids ;
+  doReplace !?imp !"$TRUSTED_FCTS$" !fcts ;
+  doReplace !?imp !"$TRUSTED_TABLE$" !fct_table ;
+  doReplace !?obj_head !"$TRUSTED_FCT_COUNT$" ![tf_id string] ;
+end routine ;
+
 end semantics ;

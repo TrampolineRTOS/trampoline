@@ -1,5 +1,4 @@
 #include "tpl_os_internal_types.h"
-#include "tpl_os_definitions.h"
 #include "tpl_machine.h"
 #include "tpl_os_it.h"
 #include "tpl_os_it_kernel.h"
@@ -83,6 +82,8 @@ $SCHEDTABLEIDS$
  */
 #ifdef WITH_AUTOSAR
 $OSAPPIDS$
+
+$TRUSTED_IDS$
 #endif
 
 /*=============================================================================
@@ -151,6 +152,13 @@ $SCHEDULETABLES$
  * Declaration of OS applications related defines and structures
  */
 $OSAPPLICATIONS$
+
+/*=============================================================================
+ * Declaration of Trusted Functions table
+ */
+$TRUSTED_FCTS$
+
+$TRUSTED_TABLE$
 #endif
 
 /*=============================================================================
