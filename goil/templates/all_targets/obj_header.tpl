@@ -11,6 +11,8 @@
 #ifndef OJB_HEADER_H
 #define OJB_HEADER_H
 
+#include "tpl_os_definitions.h"
+
 /*
  * Configuration flags
  */
@@ -80,6 +82,11 @@ $COM_CONFIG_FLAGS$
  * Declaration of OS Application object count
  */
 #define APP_COUNT             $APP_COUNT$
+
+/*
+ * Declaration of Trusted Function count
+ */
+#define TRUSTED_FCT_COUNT     $TRUSTED_FCT_COUNT$
 
 /*
  * Declaration of the number of virtual watchdogs used for timing protection

@@ -7,6 +7,9 @@ tpl_schedtable_static stat_$SCHEDTABLE$ = {
   { /* static time object part */
     /* counter            */  $COUNTER$,
     /* expire function    */  tpl_process_schedtable
+#if (WITH_TRACE == YES)
+    /* id of the alarm for tracing  */  , $SCHEDTABLE_NAME$_id
+#endif
 #ifdef WITH_OSAPPLICATION
     /* OS application id  */  , $APP_ID$
 #endif

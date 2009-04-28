@@ -26,7 +26,7 @@
  * $URL$
  */
  
-#indef WITH_SYSTEM_CALL
+#ifndef WITH_SYSTEM_CALL
 
 #include "tpl_as_counter.h"
 #include "tpl_as_counter_kernel.h"

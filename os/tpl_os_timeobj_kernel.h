@@ -65,13 +65,18 @@ typedef P2FUNC(tpl_status, OS_APPL_CODE, tpl_expire_func)(
  */
 struct TPL_TIME_OBJ_STATIC {
   struct P2VAR(TPL_COUNTER, TYPEDEF, OS_APPL_DATA)
-    counter;  /**<  a pointer to the counter the alarm belongs to             */
-  VAR(tpl_expire_func, TYPEDEF)
-    expire;   /**<  expiration processing to be done when the time object
+    counter;      /**<  a pointer to the counter the alarm belongs to         */
+  CONST(tpl_expire_func, TYPEDEF)
+    expire;       /**<  expiration processing to be done when the time object
                     expires                                                   */
+#if (WITH_TRACE == YES)
+  CONST(tpl_timeobj_id, TYPEDEF)
+    timeobj_id;   /**<  the id of the alarm or schedule table. This id
+                        is used for tracing the kernel                        */
+#endif
 #ifdef WITH_OSAPPLICATION
   CONST(tpl_app_id, TYPEDEF)
-    app_id;   /**< id of the OS application which owns the time object        */
+    app_id;       /**< id of the OS application which owns the time object    */
 #endif
 };
 

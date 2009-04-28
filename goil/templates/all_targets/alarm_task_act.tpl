@@ -12,6 +12,9 @@ tpl_alarm_static stat_$ALARM$ = {
   {
     /* pointer to counter           */  &$COUNTER$,
     /* pointer to the expiration    */  tpl_raise_alarm
+#if (WITH_TRACE == YES)
+    /* id of the alarm for tracing  */  , $ALARM_NAME$_id
+#endif
 #ifdef WITH_OSAPPLICATION
     /* OS application id            */  , $APP_ID$
 #endif

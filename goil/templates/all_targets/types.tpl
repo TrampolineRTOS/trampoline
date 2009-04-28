@@ -62,6 +62,16 @@ typedef $ALARM_ID_T$ tpl_alarm_id;
  */
 typedef $RESOURCE_ID_T$ tpl_resource_id;
 
+#if (WITH_TRACE == YES)
+/**
+ * @internal
+ *
+ * Type used to store the id of an alarm or a schedule table
+ * This is used only for tracing
+ */
+typedef $TIMEOBJ_ID_T$ tpl_timeobj_id;
+#endif
+
 #ifdef WITH_AUTOSAR
 /**
  * @internal

@@ -307,6 +307,18 @@ routine set_bool
   end cast ;
 end routine ;
 
+routine get_bool
+  ?@basic_type t
+  !@bool       b
+:
+  cast t :
+  when == @bool_class bc do
+    b := [bc value] ;
+  else
+    b := false ;
+  end cast ;
+end routine ;
+
 routine bool_flag
   ?!@string res
   ?@basic_type b

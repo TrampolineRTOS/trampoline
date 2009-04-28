@@ -40,9 +40,9 @@ VAR(struct TPL_CONTEXT, OS_VAR) idle_task_context = { {0}, {0} };
 extern volatile u32 tpl_locking_depth;
 
 #ifdef WITH_AUTOSAR
-STATIC VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;
-STATIC VAR(u32, OS_VAR) tpl_cpt_user_task_lock = 0;
-STATIC VAR(u32, OS_VAR) tpl_cpt_os_task_lock = 0;
+VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;
+VAR(u32, OS_VAR) tpl_cpt_user_task_lock = 0;
+VAR(u32, OS_VAR) tpl_cpt_os_task_lock = 0;
 #endif
 
 #ifdef WITH_AUTOSAR
