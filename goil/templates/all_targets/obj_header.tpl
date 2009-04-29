@@ -11,7 +11,7 @@
 #ifndef OJB_HEADER_H
 #define OJB_HEADER_H
 
-#include "tpl_os_definitions.h"
+#include "tpl_config_def.h"
 
 /*
  * Configuration flags

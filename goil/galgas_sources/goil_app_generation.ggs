@@ -388,12 +388,14 @@ routine generate_trusted_functions
 
   foreach tfs (@string s)
   before
-    fct_table := "CONSTP2CONST(tpl_trusted_fct, AUTOMATIC, OS_APPL_DATA)\n" ;
+    fct_table := "CONST(tpl_trusted_fct, OS_APPL_CODE)\n" ;
     fct_table .= "  tpl_trusted_fct_table[TRUSTED_FCT_COUNT] = {\n" ;
   do
-    fcts .= "void TRUSTED_".s."(TrustedFunctionIndexType idx, TrustedFunctionParameterRefType params);\n" ;
+    fcts .= "FUNC(void, OS_APPL_CODE) TRUSTED_".s."(\n" ;
+    fcts .= "  CONST(TrustedFunctionIndexType, AUTOMATIC) idx,\n" ;
+    fcts .= "  CONST(TrustedFunctionParameterRefType, AUTOMATIC) params);\n" ;
     fct_ids .= "#define ".s."_id    ".[tf_id string]."\n" ;
-    fct_ids .= "CONST(TrustedFunctionIndexType, AUTOMATIC) ".s." = ".s."_id\n" ;
+    fct_ids .= "CONST(TrustedFunctionIndexType, AUTOMATIC) ".s." = ".s."_id;\n" ;
     fct_table .= "  TRUSTED_".s ;
     tf_id++ ;
   between

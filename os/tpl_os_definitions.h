@@ -27,20 +27,6 @@
 #define TPL_OS_DEFINITIONS_H
 
 /**
- * @def NO
- *
- * Used by configuration flags.
- */
-#define NO    0
-
-/**
- * @def YES
- *
- * Used by configuration flags.
- */
-#define YES   1
-
-/**
  * @def FALSE
  *
  * boolean false value

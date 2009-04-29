@@ -12,6 +12,80 @@
 
 #include "tpl_os_definitions.h"
 
+/* Additional AUTOSAR error codes */
+
+/**
+ * @def E_OS_SERVICEID
+ *
+ * Service can not be called
+ */
+#define E_OS_SERVICEID            16
+
+/**
+ * @def E_OS_ILLEGAL_ADDRESS
+ *
+ * An invalid address is given as a parameter to a service
+ */
+#define E_OS_ILLEGAL_ADDRESS      17
+
+/**
+ * @def E_OS_MISSINGEND
+ *
+ * Tasks terminates without a TerminateTask() or ChainTask() call 
+ */
+#define E_OS_MISSINGEND           18
+
+/**
+ * @def E_OS_DISABLEDINT
+ *
+ * A service of the OS is called inside an interrupt disable/enable pair 
+ */
+#define E_OS_DISABLEDINT          19
+
+/**
+ * @def E_OS_STACKFAULT
+ *
+ * A stack fault detected via stack monitoring by the OS
+ */
+#define E_OS_STACKFAULT           20
+
+/**
+ * @def E_OS_PROTECTION_MEMORY
+ *
+ * A memory access violation occurred
+ */
+#define E_OS_PROTECTION_MEMORY    21
+
+/**
+ * @def E_OS_PROTECTION_TIME
+ *
+ * A Task exceeds its execution time budget,
+ * A Category 2 OsIsr exceeds its execution time budget
+ */
+#define E_OS_PROTECTION_TIME      22
+
+/**
+ * @def E_OS_PROTECTION_ARRIVAL
+ *
+ * A Task/Category 2 arrives before its timeframe has expired 
+ */
+#define E_OS_PROTECTION_ARRIVAL   23
+
+/**
+ * @def E_OS_PROTECTION_LOCKED
+ *
+ * A Task/Category 2 OsIsr blocks for too long
+ */
+#define E_OS_PROTECTION_LOCKED    24
+
+/**
+ * @def E_OS_PROTECTION_EXCEPTION
+ *
+ * A trap occurred
+ */
+#define E_OS_PROTECTION_EXCEPTION 25
+
+
 /* Schedule tables states */
 
 #define SCHEDULETABLE_AUTOSTART                 TIME_OBJ_AUTOSTART
