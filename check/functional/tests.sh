@@ -21,6 +21,8 @@ then
 		rm -rf ./${i}/Make-rules
 		rm -rf ./${i}/Makefile
 		rm -rf ./${i}/${i}
+		rm -rf ./embUnit/*.o
+		rm -rf ./lib/libembUnit.a
 	done
 	rm -rf results.log
 else
@@ -29,6 +31,9 @@ else
 
 	## Create an empty file
 	> results.log
+
+	# Make embUnit
+	( cd ./embUnit ; make )
 
 	# Build and execute all the tests
 	for i in `cat testSequences.txt`
