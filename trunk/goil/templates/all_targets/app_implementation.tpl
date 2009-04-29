@@ -10,6 +10,7 @@
 #include "tpl_os_event.h"
 #include "tpl_os_action.h"
 #include "tpl_os_kernel.h"
+#include "tpl_os_definitions.h"
 
 /*#ifndef WITH_AUTOSAR*/
 #ifndef WITH_NOCOM
@@ -34,6 +35,8 @@
 #include "tpl_as_isr.h"
 #include "tpl_as_counter.h"
 #include "tpl_as_app_kernel.h"
+#include "tpl_as_trusted_fct.h"
+#include "tpl_as_trusted_fct_kernel.h"
 #endif
 
 /* #include "Application_types.h" */

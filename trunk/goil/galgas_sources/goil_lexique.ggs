@@ -220,7 +220,7 @@ list schedtable_attrs error message "SCHEDULETABLE attribute '%K'" style keyword
 # Applications attributes
 #
 list application_attrs error message "APPLICATION attribute '%K'" style keywordsStyle :
-    "TRUSTED", "HAS_RESTARTTASK", "RESTARTTASK", "TRUSTED_FUNCTION" ;
+    "TRUSTED", "HAS_RESTARTTASK", "RESTARTTASK", "TRUSTED_FUNCTION", "NAME" ;
 
 #
 # timing protection attributes

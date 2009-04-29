@@ -30,66 +30,7 @@
 #include "tpl_os_internal_types.h"
 #include "tpl_os_custom_types.h"
 #include "tpl_os_types.h"
-
-/**
- * @def E_OS_PROTECTION_TIME
- *
- * A task exeeded its execution budget or an ISR2 exeeded its
- * exection time.
- *
- * see paragraph 7.10 of autosar OS SWS 2.1
- *
- * @see #ProtectionHook
- */
-#define E_OS_PROTECTION_TIME 32
-
-/**
- * @def E_OS_PROTECTION_LOCKED
- *
- * A Task/Category 2 ISR blocks for too long
- *
- * see paragraph 7.10 of autosar OS SWS 2.1
- *
- * @see #ProtectionHook
- */
-#define E_OS_PROTECTION_LOCKED 33
-
-/**
- * @def E_OS_STACKFAULT
- *
- * A stackfault occurred (see paragraph 7.4 of AUTOSAR OS SWS 2.1)
- *
- * @see #ProtectionHook
- */
-#define E_OS_STACKFAULT 34
-
-/**
- * @def E_OS_MISSINGEND
- *
- * Task returned without call to TerminateTask
- * (see paragraph 7.6.3.3.2 of AUTOSAR OS SWS 2.1)
- *
- * @see #ErrorHook
- */
-#define E_OS_MISSINGEND 35
-
-/**
- * @def E_OS_DISABLEINT
- *
- * An API is called while the interrupt are disabled by user
- *
- * @see #ErrorHook
- */
-#define E_OS_DISABLEDINT 36
-
-/**
- * @def E_OS_PROTECTION_EXCEPTION
- *
- * called when a core excpetion occured, like wrong op code
- *
- * @see #ErrorHook
- */
-#define E_OS_PROTECTION_EXCEPTION 37
+#include "tpl_as_definitions.h"
 
 /**
  * @typedef ProtectionReturnType

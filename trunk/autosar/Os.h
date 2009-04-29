@@ -49,6 +49,7 @@
 #include "tpl_as_schedtable.h"
 #include "tpl_as_stack_monitor.h"
 #include "tpl_as_timing_protec.h"
+#include "tpl_as_trusted_fct.h"
 #endif
 
 /* Configuration includes */

@@ -237,19 +237,30 @@ end rule ;
 rule <trusted_fcts>
     !@app_trusted_obj trust_attr
 :
-    @stringset t_funcs := [@stringset emptySet] ;
-    select
-        ${$ ;
-        repeat
-        while
-            @lstring f_name ;
-            $TRUSTED_FUNCTION$ ; $=$ ; $idf$ ?f_name ; $;$ ;
-            t_funcs += ![f_name string] ;
-        end repeat ;
-        $}$ ;
-    or end select ;
+  @stringset t_funcs := [@stringset emptySet] ;
+  select
+    ${$ ;
+    repeat
+    while
+      @lstring f_name := [@lstring new !"" !here] ;
+      $TRUSTED_FUNCTION$ ; $=$ ;
+      @bool tfok := false ;
+      select
+        $idf$ ?f_name ; $;$ ; tfok := true ;
+      or
+        $TRUE$ ; ${$ ; $NAME$ ; $=$ ; $string$ ?f_name ; $;$ ; $}$ ; $;$ ;
+        tfok := true ;
+      or
+        $FALSE$ ;
+      end select ;
+      if tfok then
+        t_funcs += ![f_name string] ;
+      end if ;
+    end repeat ;
+    $}$ ;
+  or end select ;
 
-    trust_attr := [@app_trusted_true new !here !t_funcs] ;
+  trust_attr := [@app_trusted_true new !here !t_funcs] ;
 end rule ;
 
 end syntax ;

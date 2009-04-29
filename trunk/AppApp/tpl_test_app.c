@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "tpl_os.h"
+#include "Os.h"
 #include "tpl_com_internal.h"
 
 #define _XOPEN_SOURCE 500
@@ -90,15 +90,17 @@ DeclareAlarm(alarm1s);
 DeclareMessage(sm);
 DeclareMessage(rm);
 
+DeclareTrustedFunction(seldom_used);
+
 TASK(periodicTask)
 {
   static u32 compte = 0;
   StatusType result;
   
+  CallTrustedFunction(seldom_used, &compte);
   compte++;
-  printf("periodicTask (%d)\n", compte);
+  printf("periodicTask (%d)\n", (int)compte);
   fflush(stdout);
-  if (compte == 4) ShutdownOS(E_OK);
   printf("Premier act t2\n");
   GetResource(r1);
   result = ActivateTask(t2);
@@ -204,3 +206,31 @@ TASK(t15)
   printf("t15\n");
 	TerminateTask();
 }
+
+ISR(test)
+{
+  ISRType id = GetISRID();
+  printf("%d\n",(int)id);
+}
+
+FUNC(void, OS_APPL_CODE) TRUSTED_crash_system(
+  CONST(TrustedFunctionIndexType, AUTOMATIC) idx,
+  CONST(TrustedFunctionParameterRefType, AUTOMATIC) params)
+{
+  printf("CRASHHHH !....\n");
+}
+
+FUNC(void, OS_APPL_CODE) TRUSTED_not_needed(
+  CONST(TrustedFunctionIndexType, AUTOMATIC) idx,
+  CONST(TrustedFunctionParameterRefType, AUTOMATIC) params)
+{
+  printf("Not needed !....\n");
+}
+
+FUNC(void, OS_APPL_CODE) TRUSTED_seldom_used(
+  CONST(TrustedFunctionIndexType, AUTOMATIC) idx,
+  CONST(TrustedFunctionParameterRefType, AUTOMATIC) params)
+{
+  printf("Seldom used param = %d!....\n",(int)*((u32 *)params));
+}
+

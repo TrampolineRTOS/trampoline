@@ -578,6 +578,21 @@ routine generate_types
   #message "tpl_app_id:           ".type."\n" ;
   doReplace !?types !"$OSAPPLICATION_ID_T$" !type ;
 
+  # compute the type for tpl_tf_id (trusted function index)
+  @stringset tfs [emptySet] ;
+
+  foreach apps do
+    cast [app trusted] :
+    when == @app_trusted_true t do
+      foreach [t trusted_fcts] (@string s) do
+        tfs += !s ;
+      end foreach ;
+    else end cast ;
+  end foreach ;
+
+  generate_unsigned_type ![[tfs count] uint64] !"Too many Trusted Functions" ?type ;
+  doReplace !?types !"$TRUSTED_FCT_ID_T$" !type ;
+
   # compute the type for tpl_generic_id
   generate_unsigned_type !max !"too many objects" ?type ;
   #message "tpl_generic_id:           ".type."\n" ;
