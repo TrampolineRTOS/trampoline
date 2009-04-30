@@ -224,7 +224,7 @@ CPU test {
     
     APPLICATION app {
         TRUSTED = TRUE {
-            TRUSTED_FUNCTION = crash_system;
+            TRUSTED_FUNCTION = TRUE { NAME = "crash_system"; };
             TRUSTED_FUNCTION = seldom_used;
             TRUSTED_FUNCTION = not_needed;
         };
