@@ -26,24 +26,54 @@ semantics goil_types_os :
 
 import semantics goil_basic_types in "goil_basic_types.ggs" ;
 
+abstract class @trace_method {
+  @location loc ;
+  abstract method generate_c !@string res ;
+}
+
+class @trace_void extends @trace_method {
+  override method generate_c !@string res :
+    res := "#error \"TRACE_METHOD is not defined\"\n" ;
+  end method ;
+}
+
+class @trace_file extends @trace_method {
+  @lstring name ;
+  override method generate_c !@string res :
+    res := "#define    TRACE_FILE     \"".[name string]."\"\n" ;
+  end method ;
+}
+
 class @trace {
   @location loc ;
-  method generate !@string res :
-    res := "#define WITH_TRACE     NO\n" ;
+  method generate_c !@string res :
+    res := "#define    WITH_TRACE     NO\n" ;
+  end method ;
+  method generate_make !@string res :
+    res := "WITH_TRACE=false\n" ;
   end method ;
 }
 
 class @trace_off extends @trace {
-  override method generate !@string res :
-    res := "#define WITH_TRACE     NO\n" ;
+  override method generate_c !@string res :
+    res := "#define    WITH_TRACE     NO\n" ;
+  end method ;
+  override method generate_make !@string res :
+    res := "WITH_TRACE=false\n" ;
   end method ;
 }
 
 class @trace_on extends @trace {
-  @lstring file ;
-  override method generate !@string res :
-    res := "#define WITH_TRACE     YES\n" ;
-    res .= "#define TRACE_FILE    \"".[file string]."\"\n" ;
+  @lstring      form ;
+  @trace_method meth ;
+  override method generate_c !@string res :
+    res := "#define    TRACE_FORMAT   ".[form string]."\n" ;
+    @string m ;
+    [meth generate_c ?m] ;
+    res .= m ;
+  end method ;
+  override method generate_make !@string res :
+    res := "WITH_TRACE=true\n" ;
   end method ;
 }
 
@@ -70,5 +100,29 @@ class @os_obj extends @oil_obj {
   @trace       trace ;
   @ident_map   others ;
 }
+
+#
+# set_method sets it first argument as the second one
+# if it is unset (ie @void). Otherwise
+# it outputs an error.
+#
+# @param  t     The method to set
+# @param  s     The method used as source
+# @param  att   The name of the attribute.
+#               Used in the error message
+#
+routine set_method
+  ?!@trace_method t
+  ?@trace_method  s
+  ?@string        att
+:
+  cast t :
+  when == @trace_void do
+    t := s ;
+  else
+    error [s loc] : "Redefinition of ".att ;
+    error [t loc] : "was defined here" ;
+  end cast ;
+end routine ;
 
 end semantics ;

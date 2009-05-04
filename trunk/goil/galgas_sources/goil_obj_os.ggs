@@ -189,9 +189,32 @@ rule <os>
     @trace t ;
     $TRACE$ ; $=$ ;
     select
-      @lstring file ;
-      $TRUE$ ; ${$ ; $FILE$ ; $=$ ; $string$ ?file ; $;$ ; $}$ ;
-      t := [@trace_on new !here !file] ;
+      $TRUE$ ; ${$ ; 
+      @trace_method m := [@trace_void new !here] ;
+      @lstring f := [@lstring new !"" !here] ;
+      repeat
+      while
+        $METHOD$ ; $=$ ;
+        @lstring file ;
+        $FILE$ ; ${$ ; $NAME$ ; $=$ ; $string$ ?file ;
+        set_method !?m ![@trace_file new !here !file] !"NAME" ;
+        $;$ ;
+        $}$ ; $;$ ;
+      while
+        @lstring fmt ;
+        $FORMAT$ ; $=$ ; $idf$ ?fmt ;
+        set_lstring_if_empty !?f !fmt !"FORMAT" ;
+        $;$ ;
+      end repeat ;
+      if [f string] == "" then
+        error here : "Missing FORMAT in TRACE" ;
+      end if ;
+      cast m :
+      when == @trace_void do
+        error here : "Missing METHOD in TRACE";
+      else end cast ;
+      t := [@trace_on new !here !f !m] ;
+      $}$ ;
     or
       $FALSE$ ; t := [@trace_off new !here] ;
     end select ;
