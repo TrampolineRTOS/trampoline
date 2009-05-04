@@ -2,7 +2,6 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "tpl_os_kernel.h" /*for INVALID_TASK*/
 
 DeclareTask(t1);
 DeclareTask(t2);
@@ -12,6 +11,7 @@ DeclareTask(t5);
 DeclareTask(t6);
 DeclareTask(t7);
 DeclareTask(t8);
+DeclareTask(INVALID_TASK);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/

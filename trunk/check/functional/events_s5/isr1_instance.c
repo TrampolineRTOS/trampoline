@@ -2,7 +2,6 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "tpl_os_kernel.h" /*for INVALID_TASK*/
 
 DeclareEvent(Event1);
 DeclareEvent(Event2);
@@ -11,6 +10,7 @@ DeclareTask(t2);
 DeclareTask(t3);
 DeclareTask(t4);
 DeclareTask(t5);
+DeclareTask(INVALID_TASK);
 
 /*test case:test the reaction of the system called with 
  an activation of a isr*/

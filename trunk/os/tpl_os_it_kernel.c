@@ -31,6 +31,8 @@
 
 #include "tpl_os_it_kernel.h"
 
+#include <assert.h>
+
 #ifdef WITH_AUTOSAR_STACK_MONITORING
 #include "tpl_as_stack_monitor.h"
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
@@ -72,6 +74,9 @@ FUNC(void, OS_CODE) tpl_suspend_all_interrupts_service(void)
  */
 FUNC(void, OS_CODE) tpl_resume_all_interrupts_service(void)
 {
+  #if defined(__unix__) || defined(__APPLE__)
+	assert( tpl_locking_depth > 0 );
+  #endif
   if (tpl_locking_depth > 0)
   {
     tpl_locking_depth--;
@@ -79,6 +84,7 @@ FUNC(void, OS_CODE) tpl_resume_all_interrupts_service(void)
     tpl_cpt_user_task_lock--;
 #endif
   }
+	
   if( tpl_locking_depth == 0)
   {
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
@@ -147,6 +153,9 @@ FUNC(void, OS_CODE) tpl_suspend_os_interrupts_service(void)
  */
 FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void)
 {
+  #if defined(__unix__) || defined(__APPLE__)
+	assert( tpl_locking_depth > 0 );
+  #endif
   if (tpl_locking_depth > 0)
   {
     tpl_locking_depth--;
@@ -154,6 +163,7 @@ FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void)
     tpl_cpt_user_task_lock--;
 #endif
   }
+	
   if( tpl_locking_depth == 0)
   {
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION

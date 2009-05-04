@@ -40,13 +40,6 @@
 #endif /* WITH_OSAPPLICATION */
 
 /**
- * @def INVALID_TASK
- *
- * This value is used to specify an invalid #TaskType
- */
-#define INVALID_TASK    (-1)
-
-/**
  * @typedef tpl_os_state
  *
  * States of Trampoline : 
@@ -334,6 +327,14 @@ extern VAR(tpl_proc, OS_VAR) idle_task;
  * Id of the Idle task
  */
 #define IDLE_TASK_ID  (TASK_COUNT+ISR_COUNT)
+
+/*
+ * @def INVALID_TASK_ID
+ *
+ * see #INVALID_TASK
+ *
+ */
+#define INVALID_TASK_ID  -1
 
 /**
  * Arrays of all processes static and dynamic descriptors.

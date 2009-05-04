@@ -19,11 +19,12 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "autosar_s1.c";
 		APP_SRC = "task1_instance.c";
 		APP_SRC = "task2_instance.c";
+		APP_SRC = "isr1_instance.c";
 		APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "autosar_s1";
 		CFLAGS = "-I../embUnit";
-        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
@@ -46,6 +47,20 @@ IMPLEMENTATION trampoline {
         SCHEDULE = FULL;
 		EVENT = Event1;
     };
+	
+	ISR isr1 {
+		CATEGORY = 2;
+		SOURCE = SIGTERM;
+		PRIORITY = 1;
+		STACKSIZE = 32768;
+	};
+	
+	ISR isr2 {
+		CATEGORY = 2;
+		SOURCE = SIGUSR2;
+		PRIORITY = 1;
+		STACKSIZE = 32768;
+	};
 		
 	EVENT Event1 {
 		MASK = AUTO;
@@ -56,6 +71,8 @@ IMPLEMENTATION trampoline {
         STARTUPHOOK = TRUE;
         TASK = t1;
         TASK = t2;
+		ISR = isr1;
+		ISR = isr2;
 	};
 
 };

@@ -2,9 +2,9 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "tpl_os_kernel.h"; /*for INVALID_TASK*/
 
 DeclareAlarm(Alarm1);
+DeclareTask(INVALID_TASK);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/

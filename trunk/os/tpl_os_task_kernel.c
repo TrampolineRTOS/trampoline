@@ -37,6 +37,9 @@
 #include "tpl_as_protec_hook.h"
 #endif
 
+#include "tpl_os_task.h"
+DeclareTask(INVALID_TASK);
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 

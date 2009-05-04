@@ -2,7 +2,6 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "tpl_os_alarm_kernel.h" /*for INVALID_ALARM*/
 
 DeclareAlarm(Alarm0);
 DeclareAlarm(Alarm1_1);
@@ -10,6 +9,7 @@ DeclareAlarm(Alarm1_2);
 DeclareAlarm(Alarm2_1);
 DeclareAlarm(Alarm2_2);
 DeclareAlarm(Alarm3);
+DeclareAlarm(INVALID_ALARM);
 DeclareTask(t3);
 DeclareTask(t4);
 
@@ -198,12 +198,12 @@ static void test_isr1_instance(void)
 }
 
 /*create the test suite with all the test cases*/
-TestRef AlarmsTest_seq11_isr1_instance(void)
+TestRef AlarmsTest_seq9_isr1_instance(void)
 {
 	EMB_UNIT_TESTFIXTURES(fixtures) {
 		new_TestFixture("test_isr1_instance",test_isr1_instance)
 	};
-	EMB_UNIT_TESTCALLER(AlarmsTest,"AlarmsTest_sequence11",NULL,NULL,fixtures);
+	EMB_UNIT_TESTCALLER(AlarmsTest,"AlarmsTest_sequence9",NULL,NULL,fixtures);
 	
 	return (TestRef)&AlarmsTest;
 }

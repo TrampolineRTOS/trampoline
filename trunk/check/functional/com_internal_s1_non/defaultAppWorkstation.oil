@@ -21,15 +21,16 @@ CPU test {
         APP_SRC = "comerror_instance2.c";
         APP_SRC = "comerror_instance3.c";
         APP_SRC = "comerror_instance4.c";
+        APP_SRC = "comerror_instance5.c";
         APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "com_internal_s1_non";
 		SHUTDOWNHOOK = TRUE;
 		
 		CFLAGS = "-I../embUnit";
-        CFLAGS  = "-Werror -Wall -pedantic";
+        CFLAGS  = "-Werror -Wall -pedantic -g";
         CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../lib -lembUnit";
+		LDFLAGS = "-L../lib -lembUnit -g";
 
     } ;
 	

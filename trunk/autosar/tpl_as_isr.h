@@ -46,6 +46,17 @@ typedef tpl_isr_id  ISRType;
 #include "tpl_memmap.h"
 
 /**
+ * @def DeclareISR
+ *
+ * Defines an ISR
+ *
+ * @param isr_id ISR's C identifier
+ *
+ */
+#define DeclareISR(isr_id)  \
+extern CONST(ISRType, AUTOMATIC) isr_id
+
+/**
  * Get the ID of the currently running ISR.
  *
  * @retval Identifier of the currently running ISR
@@ -64,7 +75,7 @@ FUNC(ISRType, OS_CODE) GetISRID(void);
  * @retval  E_OK no error
  * @retval  E_OS_ID isr_id is not a valid ISR id (only in extended error)
  *
- * see §8.4.20 of AUTOSAR/Specification of the Operating System v2.1.0
+ * see ÃŸ8.4.20 of AUTOSAR/Specification of the Operating System v2.1.0
  */
 FUNC(StatusType, OS_CODE) DisableInterruptSource (VAR(ISRType, AUTOMATIC) isr_id);
 
@@ -76,7 +87,7 @@ FUNC(StatusType, OS_CODE) DisableInterruptSource (VAR(ISRType, AUTOMATIC) isr_id
  * @retval  E_OK no error
  * @retval  E_OS_ID isr_id is not a valid ISR id (only in extended error)
  *
- * see §8.4.21 of AUTOSAR/Specification of the Operating System v2.1.0
+ * see ÃŸ8.4.21 of AUTOSAR/Specification of the Operating System v2.1.0
  */
 FUNC(StatusType, OS_CODE) EnableInterruptSource (VAR(ISRType, AUTOMATIC) isr_id);
 

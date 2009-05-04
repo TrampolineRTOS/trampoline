@@ -25,12 +25,12 @@ static void test_t5_instance(void)
 }
 
 /*create the test suite with all the test cases*/
-TestRef AlarmsTest_seq11_t5_instance(void)
+TestRef AlarmsTest_seq9_t5_instance(void)
 {
 	EMB_UNIT_TESTFIXTURES(fixtures) {
 		new_TestFixture("test_t5_instance",test_t5_instance)
 	};
-	EMB_UNIT_TESTCALLER(AlarmsTest,"AlarmsTest_sequence11",NULL,NULL,fixtures);
+	EMB_UNIT_TESTCALLER(AlarmsTest,"AlarmsTest_sequence9",NULL,NULL,fixtures);
 	
 	return (TestRef)&AlarmsTest;
 }

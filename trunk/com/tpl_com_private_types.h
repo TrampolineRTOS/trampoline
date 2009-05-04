@@ -17,7 +17,6 @@
 #define TPL_COM_PRIVATE_TYPES_H
 
 #include "tpl_com_types.h"
-#include "tpl_os_std_types.h"
 
 /*!
  *  An alias of the message size datatype

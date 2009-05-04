@@ -62,6 +62,13 @@ tpl_get_proc(void);
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
+/**
+ * @def INVALID_TASK
+ *
+ * This value is used to specify an invalid #TaskType
+ * It is initialise by invalid_task_id to initialise other structure without INVALID_TASK, which is a constant.
+ */
+CONST(TaskType, AUTOMATIC) INVALID_TASK = INVALID_TASK_ID;
 
 /*
  * @internal

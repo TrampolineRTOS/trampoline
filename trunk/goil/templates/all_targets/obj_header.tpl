@@ -47,6 +47,8 @@ $COM_CONFIG_FLAGS$
  */
 #define ISR_COUNT             $ISR_COUNT$
 
+
+
 /*
  * Declaration of Alarm object count
  */

@@ -26,6 +26,8 @@
 #include "tpl_com_internal_com.h"
 /*#endif*/
 
+#include <stdio.h>
+
 void tpl_get_task_lock(void);
 void tpl_release_task_lock(void);
 
@@ -113,11 +115,11 @@ StatusType SendMessage(MessageIdentifier mess_id, ApplicationDataRef data)
     STORE_COM_SERVICE(COMServiceId_SendMessage)
     STORE_COM_MESSAGE_ID(mess_id)
     STORE_COM_APPLICATION_DATA_REF(data)
-
-    /*  Check the error                             */
+	
+	/*  Check the error                             */
     CHECK_SEND_MESSAGE_ID_ERROR(mess_id,result)
     CHECK_NOT_ZERO_LENGTH_SEND(mess_id,result);
-    
+	
 #ifndef NO_SEND_MESSAGE
     IF_NO_EXTENDED_ERROR(result)
     /*  get the message object from its id          */

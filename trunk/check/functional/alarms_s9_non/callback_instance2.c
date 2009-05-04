@@ -12,12 +12,12 @@ static void test_callback_instance2(void)
 }
 
 /*create the test suite with all the test cases*/
-TestRef AlarmsTest_seq11_callback_instance2(void)
+TestRef AlarmsTest_seq9_callback_instance2(void)
 {
 	EMB_UNIT_TESTFIXTURES(fixtures) {
 		new_TestFixture("test_callback_instance2",test_callback_instance2)
 	};
-	EMB_UNIT_TESTCALLER(AlarmsTest,"AlarmsTest_sequence11",NULL,NULL,fixtures);
+	EMB_UNIT_TESTCALLER(AlarmsTest,"AlarmsTest_sequence9",NULL,NULL,fixtures);
 	
 	return (TestRef)&AlarmsTest;
 }

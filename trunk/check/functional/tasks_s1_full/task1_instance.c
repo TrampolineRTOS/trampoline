@@ -2,9 +2,9 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "tpl_os_kernel.h" /*for INVALID_TASK*/
 
 DeclareTask(t2);
+DeclareTask(INVALID_TASK);
 
 void tpl_send_it1(void);
 

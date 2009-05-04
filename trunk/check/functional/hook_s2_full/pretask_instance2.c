@@ -2,11 +2,11 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "tpl_os_kernel.h"; /*for INVALID_TASK*/
 #include "tpl_os_generated_configuration.h"; /*for OSMAXALLOWEDVALUE_Counter1...*/
 
 DeclareTask(t2);
 DeclareAlarm(Alarm1);
+DeclareTask(INVALID_TASK);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/

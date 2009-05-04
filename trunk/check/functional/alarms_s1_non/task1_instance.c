@@ -2,10 +2,10 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "tpl_os_alarm_kernel.h" /*for INVALID_ALARM*/
-#include "tpl_os_generated_configuration.h"
+#include "tpl_os_generated_configuration.h" /*for OSMAXALLOWEDVALUE*/
 
 DeclareAlarm(Alarm1);
+DeclareAlarm(INVALID_ALARM);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/

@@ -68,6 +68,17 @@ typedef u8  ObjectAccessType;
 typedef u8  RestartType;
   
 /**
+ * @def DeclareApplication
+ *
+ * Defines an application
+ *
+ * @param app_id application's C identifier
+ *
+ */
+#define DeclareApplication(app_id)  \
+	extern CONST(ApplicationType, OS_APPL_CONST) app_id
+
+/**
  *  Get the application ID to which the current process belongs to
  *
  *  @retval   the application ID (OS261) or INVALID_OSAPPLICATION (OS262)
