@@ -2,7 +2,6 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "tpl_os_rez_kernel.h" /*for INVALID_RESOURCE*/
 
 DeclareResource(Resource1);
 DeclareResource(Resource2);
@@ -11,6 +10,7 @@ DeclareResource(Resource4);
 DeclareResource(Resource5);
 DeclareResource(Resource6);
 DeclareResource(ResourceA);
+DeclareResource(INVALID_RESOURCE);
 
 void tpl_send_it1(void);
 void tpl_send_it2(void);

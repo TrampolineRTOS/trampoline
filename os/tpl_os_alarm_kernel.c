@@ -39,6 +39,13 @@
 #include "tpl_memmap.h"
 
 /**
+ * @def INVALID_ALARM
+ *
+ * This value is used to specify an invalid alarm ID
+ */
+CONST(tpl_alarm_id, AUTOMATIC) INVALID_ALARM = (-1);
+
+/**
  * @internal
  *
  * tpl_raise_alarm is called by tpl_counter_tick

@@ -2,17 +2,27 @@
 
 #include "embUnit.h"
 #include "Os.h"
-//#include "tpl_as_isr.h"
+#include "tpl_as_isr.h"
+
+void tpl_send_it1();
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
 static void test_t2_instance(void)
 {
-	StatusType result_inst_1;
+	ISRType result_inst_1;
+	StatusType result_inst_2;
 	
 	SCHEDULING_CHECK_INIT(3);
 	result_inst_1 = GetISRID();
 	SCHEDULING_CHECK_AND_EQUAL_INT(3,INVALID_ISR, result_inst_1);
+	
+	tpl_send_it1();
+	
+	SCHEDULING_CHECK_INIT(5);
+	result_inst_2 = TerminateTask();
+	SCHEDULING_CHECK_AND_EQUAL_INT(5,E_OK, result_inst_2);
+	
 	
 }
 

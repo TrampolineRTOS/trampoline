@@ -28,7 +28,7 @@ static void test_t2_instance(void)
 	SCHEDULING_CHECK_AND_EQUAL_INT(16,(int)('1'), (int)received_char);
 	
 	SCHEDULING_CHECK_INIT(17);
-	result_inst_4 = ReceiveMessage(SEND_MESSAGE_COUNT, &received_char);
+	result_inst_4 = ReceiveMessage(RECEIVE_MESSAGE_COUNT, &received_char);
 	SCHEDULING_CHECK_AND_EQUAL_INT(20,E_COM_ID, result_inst_4);
 	
 	SCHEDULING_CHECK_INIT(21);

@@ -37,6 +37,7 @@
 #include "tpl_as_app_kernel.h"
 #include "tpl_as_trusted_fct.h"
 #include "tpl_as_trusted_fct_kernel.h"
+#include "tpl_as_application.h"
 #endif
 
 /* #include "Application_types.h" */

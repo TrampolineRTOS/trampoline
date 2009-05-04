@@ -111,7 +111,7 @@ routine generate_apps
   foreach apps (@lstring app_name @app_obj app) :n do
     app_list += !"&".[app_name string]."_app_access" ;
     ids .= "#define ".[app_name string]."_id ".[n string]."\n" ;
-    ids .= "CONST(tpl_app_id, OS_APPL_CONST) ".[app_name string]." = ".[app_name string]."_id;\n" ;
+    ids .= "CONST(ApplicationType, OS_APPL_CONST) ".[app_name string]." = ".[app_name string]."_id;\n" ;
     # vectors store all the bit vectors
     @string vectors := "" ;
     @string vec := "" ;
@@ -340,7 +340,7 @@ routine generate_apps
     when == @string_class rst do
       doReplace !?tpl !"$RESTART$" ![rst value]."_id" ;
     else
-      doReplace !?tpl !"$RESTART$" !"INVALID_TASK" ;
+      doReplace !?tpl !"$RESTART$" !"INVALID_TASK_ID" ;
     end cast ;
 
     doReplace !?tpl !"$OWNERSHIP_VEC$" !ownership_vec ;

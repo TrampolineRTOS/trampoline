@@ -27,9 +27,15 @@
 #include "tpl_as_trusted_fct_kernel.h"
 #include "tpl_as_definitions.h"
 
+<<<<<<< .mine
+#if (TRUSTED_FCT_COUNT > 0) 
+	extern CONST(tpl_trusted_fct, OS_APPL_CODE) tpl_trusted_fct_table[TRUSTED_FCT_COUNT];
+#endif
+=======
 #if TRUSTED_FCT_COUNT > 0
 extern CONST(tpl_trusted_fct, OS_APPL_CODE)
   tpl_trusted_fct_table[TRUSTED_FCT_COUNT];
+>>>>>>> .r776
 #endif
 
 #define OS_START_SEC_CODE
@@ -41,16 +47,22 @@ FUNC(tpl_status, OS_CODE) tpl_call_trusted_function_service(
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
   
-  if (fct_idx < TRUSTED_FCT_COUNT)
-  {
-    CONST(tpl_trusted_fct, AUTOMATIC) tf =
-      tpl_trusted_fct_table[fct_idx];
-    tf(fct_idx, fct_param);
-  }
-  else
-  {
-    result = E_OS_SERVICEID;
-  }
+  #if (TRUSTED_FCT_COUNT > 0)						
+	if (fct_idx < TRUSTED_FCT_COUNT)			
+	{												
+		CONST(tpl_trusted_fct, AUTOMATIC) tf = tpl_trusted_fct_table[fct_idx]; 
+		tf(fct_idx, fct_param);						
+	}												
+	else											
+	{												
+  #endif
+	
+		result = E_OS_SERVICEID;
+
+  #if (TRUSTED_FCT_COUNT > 0)						
+	}												
+  #endif
+	
   return result;
 }
 

@@ -8,6 +8,7 @@ TestRef COMInternalTest_seq1_comerror_instance1(void);
 TestRef COMInternalTest_seq1_comerror_instance2(void);
 TestRef COMInternalTest_seq1_comerror_instance3(void);
 TestRef COMInternalTest_seq1_comerror_instance4(void);
+TestRef COMInternalTest_seq1_comerror_instance5(void);
 
 int com_error_instance = 0;
 
@@ -38,6 +39,9 @@ void COMErrorHook(StatusType error){
 			break;
 		case 4:
 			TestRunner_runTest(COMInternalTest_seq1_comerror_instance4());
+			break;
+		case 5:
+			TestRunner_runTest(COMInternalTest_seq1_comerror_instance5());
 			break;
 		default:
 			stdimpl_print("instance error\n");

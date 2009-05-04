@@ -33,13 +33,6 @@
 #endif /* WITH_OSAPPLICATION */
 
 /**
- * @def INVALID_RESOURCE
- *
- * This value is used to specify an invalid resource
- */
-#define INVALID_RESOURCE    (-1)
-
-/**
  * @struct TPL_RESOURCE
  *
  * This structure describes all attributes of a resource

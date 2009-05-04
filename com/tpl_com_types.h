@@ -42,7 +42,7 @@ typedef s8 tpl_com_count;
 /*
  * tpl_message_id is used to identify messages
  */
-typedef short int tpl_message_id;
+typedef unsigned short int tpl_message_id;
 
 /*
  * tpl_message_size is the data type used to store the size of a message.

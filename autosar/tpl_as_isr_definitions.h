@@ -31,7 +31,7 @@
  * @def INVALID_ISR
  *
  * value returned by GetISRID when the currently running object
- * is not an ISR 2
+ * is not an ISR 2. This macro violates MISRA rule.
  */
 #define INVALID_ISR (-1)
 

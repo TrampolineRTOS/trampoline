@@ -85,3 +85,7 @@ com_internal_s5_full
 com_internal_s5_non
 com_internal_s6_full
 com_internal_s6_non
+
+autosar_s1
+
+../GOIL/goil_s1

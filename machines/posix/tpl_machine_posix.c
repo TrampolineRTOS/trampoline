@@ -23,7 +23,7 @@
 #include "tpl_os_kernel.h" /* for tpl_running_obj */
 #endif /* WITH_AUTOSAR */
 
-/*#include <assert.h>*/
+#include <assert.h>
 #include <setjmp.h>
 #include <signal.h>
 #include <stdio.h>
@@ -324,12 +324,11 @@ void tpl_get_task_lock(void)
  */
 void tpl_release_task_lock(void)
 {
-/*    if(0 > tpl_locking_depth)
+	assert( tpl_locking_depth > 0 );
+	if(0 > tpl_locking_depth)
     {
         tpl_locking_depth--;
     }
-*/
-    tpl_locking_depth--;
 
 #ifdef WITH_AUTOSAR
     tpl_cpt_os_task_lock--;

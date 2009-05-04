@@ -16,7 +16,6 @@
 #ifndef __TPL_COM_H__
 #define __TPL_COM_H__
 
-#include "tpl_com_private_types.h"
 #include "tpl_com_definitions.h"
 
 #ifndef __TPL_INTERNAL_COM_H__

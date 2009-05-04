@@ -329,7 +329,8 @@ void tpl_release_task_lock(void)
     if (x < 0) printf("** unlock ** X=%d\n",x);
     assert(0 <= x && x <= 1); */
     /*  fprintf(stderr, "%d-unlock\n", cnt++);*/
-  if (tpl_locking_depth > 0)
+	assert( tpl_locking_depth > 0 );
+    if (tpl_locking_depth > 0)
 	{
 	   tpl_locking_depth--;
 	}

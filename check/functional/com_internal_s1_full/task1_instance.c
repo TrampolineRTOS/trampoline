@@ -11,7 +11,7 @@ DeclareTask(t2);
  an activation of a task*/
 static void test_t1_instance(void)
 {
-	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5;
+	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6;
 	
 	/*result_inst_1 = GetCOMApplicationMode();	
 	SCHEDULING_CHECK_AND_EQUAL_INT(X,E_OK, result_inst_1);
@@ -37,6 +37,9 @@ static void test_t1_instance(void)
 	result_inst_5 = ActivateTask(t2);	
 	SCHEDULING_CHECK_AND_EQUAL_INT(20,E_OK, result_inst_5);
 	
+	SCHEDULING_CHECK_INIT(21);
+	result_inst_6 = SendMessage(-1, "3");
+	SCHEDULING_CHECK_AND_EQUAL_INT(24,E_COM_ID, result_inst_6);
 	
 }
 
