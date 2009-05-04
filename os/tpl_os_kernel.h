@@ -95,31 +95,6 @@ typedef u8 tpl_os_state;
 #define OS_UNKNOWN  4
 
 /**
- * @def DYING
- *
- * Task is dying. This is an transient state
- * used to  tell the scheduler the currently
- * running task relinquishes the CPU and its
- * context should not be saved
- *
- * @see #tpl_exec_state
- */
-#define DYING           0x7
-
-/**
- * @def RESURRECT
- *
- * Task is resurrecting. This is an transient state
- * used to  tell the scheduler the currently
- * running task relinquishes the CPU,
- * its context should not be saved,
- * it should be put in the ready list like a new task
- *
- * @see #tpl_exec_state
- */
-#define RESURRECT       0xB
-
-/**
  * @def AUTOSTART
  *
  * Task is automatically activated at system startup

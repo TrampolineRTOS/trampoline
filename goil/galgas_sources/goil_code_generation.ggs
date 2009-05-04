@@ -275,7 +275,7 @@ routine generate_flags
 
     # trace flags
     @string tr ;
-    [[os trace] generate ?tr] ;
+    [[os trace] generate_c ?tr] ;
     flags .= tr ;
 
     # Output the boolean free flags
@@ -365,6 +365,13 @@ routine generate_makefile
     if [option goil_options.autosar_on] then autosarStr := "true";
     else autosarStr := "false"; end if;
     makefileStr := [makefileStr stringByReplacingStringByString !"$AUTOSAR_ON$" !autosarStr];
+    # trace flags
+    @string flags := "";
+    @string tr ;
+    [[os trace] generate_make ?tr] ;
+    flags .= tr ;
+    doReplace !?makefileStr !"$FLAGS$" !flags;
+
     [makefileStr writeToFile ! directory."/Makefile"];
 
     #build Make-rules only the first time.

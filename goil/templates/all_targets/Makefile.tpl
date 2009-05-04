@@ -46,6 +46,9 @@ BUILD_DIR = build
 # If 'true', Autosar extension are compiled in (schedule tables, ...)
 AUTOSAR = $AUTOSAR_ON$
 
+# Trampoline generation flags
+$FLAGS$
+
 $MAKEFILE_SPEC$
 
 #Application specific rules
