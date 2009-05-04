@@ -35,6 +35,9 @@
 #include "tpl_as_st_kernel.h"
 #include "tpl_as_definitions.h"
 #include "tpl_machine_interface.h"
+#include "tpl_os_error.h"
+
+#include "tpl_dow.h"
 
 #if APP_COUNT > 0
 extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST)
@@ -77,6 +80,7 @@ FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
 {
   VAR(tpl_app_id, AUTOMATIC) result = INVALID_OSAPPLICATION;
   
+  LOCK_KERNEL()
 #if APP_COUNT > 0
   switch (obj_type) {
       
@@ -136,6 +140,8 @@ FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
   }
 #endif
   
+  UNLOCK_KERNEL()
+  
   return result;
 }
 
@@ -158,6 +164,8 @@ FUNC(u8, OS_CODE) tpl_check_object_access_service(
 {
   VAR(u8, AUTOMATIC) result = NO_ACCESS;
 
+  LOCK_KERNEL()
+  
 #if APP_COUNT > 0
   if ((app_id < APP_COUNT) &&
       (obj_type < OBJECT_TYPE_COUNT) &&
@@ -173,6 +181,8 @@ FUNC(u8, OS_CODE) tpl_check_object_access_service(
                     (1 << bit_shift)) >> bit_shift;
   }
 #endif
+  
+  UNLOCK_KERNEL()
   
   return result;
 }
@@ -191,12 +201,16 @@ FUNC(u8, OS_CODE) tpl_check_object_access_service(
 FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
-
+  VAR(tpl_app_id, AUTOMATIC) running_app_id;
+  VAR(tpl_proc_id, AUTOMATIC) restart_id;
+  
+  LOCK_KERNEL()
+  
 #if APP_COUNT > 0
-  VAR(tpl_app_id, AUTOMATIC) running_app_id =
-    tpl_kern.s_running->app_id;
-  VAR(tpl_proc_id, AUTOMATIC) restart_id =
-    tpl_app_table[running_app_id]->restart;
+  running_app_id = tpl_kern.s_running->app_id;
+  restart_id = tpl_app_table[running_app_id]->restart;
+
+  DOW_DO(printf("CALLING TerminateApplication");)
 
   if (running_app_id < APP_COUNT)
   {
@@ -214,6 +228,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
         CONST(tpl_alarm_id, AUTOMATIC) alarm_id = alarms[i];
         P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm =
           tpl_alarm_table[alarm_id];
+        DOW_DO(printf("Removing alarm %d\n",(int)alarm_id);)
         if (alarm->state == ALARM_ACTIVE)
         {
           tpl_remove_time_obj(alarm);
@@ -281,37 +296,44 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
     if ((opt == RESTART) &&
         (restart_id != INVALID_TASK))
     {
-      if (restart_id == tpl_kern.running_id)
+      result = tpl_activate_task(tpl_app_table[running_app_id]->restart);
+
+      if (result == E_OK_AND_SCHEDULE) /* Should always be E_OK_AND_SCHEDULE */
       {
-        tpl_kern.running->state = RESURRECT;
+        /*  and let the scheduler do its job                            */
+        tpl_schedule_from_dying();
+# ifndef WITH_SYSTEM_CALL
+        if (tpl_kern.need_switch != NO_NEED_SWITCH)
+        {
+          tpl_switch_context(NULL, &(tpl_kern.s_running->context));
+        }
+# endif
       }
       else
       {
-        tpl_kern.running->state = DYING;  
-        tpl_activate_task(tpl_app_table[running_app_id]->restart);
+        /* the activate count is restored since the caller does not terminate */
+        tpl_kern.running->activate_count++;
       }
-      tpl_schedule_from_dying();
     }
     else
     {
-      tpl_kern.running->state = DYING;  
       tpl_schedule_from_dying();
-    }
 # ifndef WITH_SYSTEM_CALL
-    if (tpl_kern.need_switch != NO_NEED_SWITCH)
-    {
-      tpl_switch_context(
-        NULL,
-        &(tpl_kern.s_running->context)
-      );
-    }
+      if (tpl_kern.need_switch != NO_NEED_SWITCH)
+      {
+        tpl_switch_context(NULL, &(tpl_kern.s_running->context));
+      }
 # endif
+    }
   }
   else
   {
     result = E_OS_CALLEVEL;
   }
 #endif
+  
+  UNLOCK_KERNEL()
+  
   return result;
 }
 

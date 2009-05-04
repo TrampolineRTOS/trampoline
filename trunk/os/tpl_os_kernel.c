@@ -114,6 +114,9 @@ CONST(tpl_proc_static, OS_CONST) idle_task_static = {
  */
 VAR(tpl_proc, OS_VAR) idle_task = {
     /* resources            */  NULL,
+#ifdef WITH_OSAPPLICATION
+    /* trusted count  */        0,    
+#endif /* WITH_OSAPPLICATION */
     /* activation count     */  0,
     /* priority             */  0,
     /* state                */  RUNNING

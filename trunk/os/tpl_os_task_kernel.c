@@ -180,10 +180,7 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
 # ifndef WITH_SYSTEM_CALL
       if (tpl_kern.need_switch != NO_NEED_SWITCH)
       {
-        tpl_switch_context(
-          NULL,
-          &(tpl_kern.s_running->context)
-        );
+        tpl_switch_context(NULL, &(tpl_kern.s_running->context));
       }
 # endif
     }

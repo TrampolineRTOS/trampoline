@@ -51,12 +51,15 @@ CONST(tpl_proc_static, OS_CONST) $EXEC_STATIC$ = {
  * Dynamic descriptor of task $EXEC_NAME$
  */
 VAR(tpl_proc, OS_VAR) $TASK$ = {
-    /* resources            */  NULL,
-    /* activate count       */  0,
-    /* task priority        */  (tpl_priority)$TASK_PRIORITY$,
-    /* task state           */  $TASK_STATE$
+    /* resources                      */  NULL,
+#ifdef WITH_OSAPPLICATION
+    /* if > 0 the process is trusted  */  $TRUSTED_COUNT$,    
+#endif /* WITH_OSAPPLICATION */
+    /* activate count                 */  0,
+    /* task priority                  */  (tpl_priority)$TASK_PRIORITY$,
+    /* task state                     */  $TASK_STATE$
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    /* activation allowed   */  ,TRUE
+    /* activation allowed             */  ,TRUE
 #endif
 };
 

@@ -57,12 +57,15 @@ tpl_isr_static $ISR_HELPER$ = {
  * Dynamic descriptor of ISR $EXEC_NAME$
  */
 VAR(tpl_proc, OS_VAR) $ISR$ = {
-    /* resources            */  NULL,
-    /* activate count       */  0,
-    /* isr priority         */  (tpl_priority)$ISR_PRIORITY$,
-    /* isr state            */  SUSPENDED
+    /* resources            */            NULL,
+#ifdef WITH_OSAPPLICATION
+    /* if > 0 the process is trusted  */  $TRUSTED_COUNT$,    
+#endif /* WITH_OSAPPLICATION */
+    /* activate count       */            0,
+    /* isr priority         */            (tpl_priority)$ISR_PRIORITY$,
+    /* isr state            */            SUSPENDED
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    /* activation allowed   */  ,TRUE
+    /* activation allowed   */            ,TRUE
 #endif
 };
 
