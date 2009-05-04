@@ -1047,14 +1047,15 @@ end routine ;
 # Tasks generation
 #-------------------------------------------------------------------------------
 routine generate_tasks
-    ?@config          cfg
-    ?@task_map        tasks
-    ?@resource_map    resources
-    ?@prio_map        actual_priorities
-    ?@string_map      app_for_obj
-    ?!@string         unused header
-    ?!@string         obj_header
-    ?!@string         implementation :
+  ?@config          cfg
+  ?@task_map        tasks
+  ?@app_map         apps
+  ?@resource_map    resources
+  ?@prio_map        actual_priorities
+  ?@string_map      app_for_obj
+  ?!@string         unused header
+  ?!@string         obj_header
+  ?!@string         implementation :
 
     @string tpl_task ;
     @string tasks_result := "" ;
@@ -1167,6 +1168,14 @@ routine generate_tasks
             @string app_name ;
             [app_for_obj get !task_name ?app_name] ;
             doReplace !?result !"$APP_ID$" ! app_name."_id" ;
+            # look if the OS Application is trusted
+            @uint trust := 0 ;
+            @app_obj app ;
+            [apps get ![@lstring new !app_name !here] ?app] ;
+            cast [app trusted] :
+            when == @app_trusted_true do trust++;
+            else end cast ;
+            doReplace !?result !"$TRUSTED_COUNT$" ![trust string] ;
           end if ;
         end if ;
 
@@ -1193,14 +1202,15 @@ end routine ;
 # ISRs generation
 #--------------------------------------------------------------------
 routine generate_isrs
-    ?@config          cfg
-    ?@isr_map         isrs
-    ?@resource_map    resources
-    ?@prio_map        actual_priorities
-    ?@string_map      app_for_obj
-    ?!@string         unused header
-    ?!@string         obj_header
-    ?!@string         implementation :
+  ?@config          cfg
+  ?@isr_map         isrs
+  ?@app_map         apps
+  ?@resource_map    resources
+  ?@prio_map        actual_priorities
+  ?@string_map      app_for_obj
+  ?!@string         unused header
+  ?!@string         obj_header
+  ?!@string         implementation :
 
     @string tpl_isr ;
     @string tpl_isr_spec ;
@@ -1249,6 +1259,14 @@ routine generate_isrs
             @string app_name ;
             [app_for_obj get !isr_name ?app_name] ;
             doReplace !?result !"$APP_ID$" ! app_name."_id" ;
+            # look if the OS Application is trusted
+            @uint trust := 0 ;
+            @app_obj app ;
+            [apps get ![@lstring new !app_name !here] ?app] ;
+            cast [app trusted] :
+            when == @app_trusted_true do trust++;
+            else end cast ;
+            doReplace !?result !"$TRUSTED_COUNT$" ![trust string] ;
           end if ;
         end if ;
 

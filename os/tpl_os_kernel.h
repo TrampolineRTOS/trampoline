@@ -36,6 +36,7 @@
 
 #ifdef WITH_OSAPPLICATION
 #include "tpl_as_app_kernel.h"
+#include "tpl_as_trusted_fct_kernel.h"
 #endif /* WITH_OSAPPLICATION */
 
 /**
@@ -157,7 +158,7 @@ typedef struct {
 } tpl_internal_resource;
 
 /**
- * @struct TPL_EXEC_STATIC
+ * @struct TPL_PROC_STATIC
  *
  * This is a data structure used to describe the static members of task
  * descriptors or category 2 Interrupt Service Routines. Static means this
@@ -197,9 +198,9 @@ struct TPL_PROC_STATIC {
 /**
  * @typedef tpl_exec_static
  *
- * This is an alias for the #TPL_EXEC_STATIC structure
+ * This is an alias for the #TPL_PROC_STATIC structure
  *
- * @see #TPL_EXEC_STATIC
+ * @see #TPL_PROC_STATIC
  */
 typedef struct TPL_PROC_STATIC tpl_proc_static;
 
@@ -210,21 +211,21 @@ typedef struct TPL_PROC_STATIC tpl_proc_static;
  * descriptors
  */
 struct TPL_PROC {
-    struct P2VAR(TPL_RESOURCE, TYPEDEF, OS_APPL_DATA)
-                                    resources;          /**< head of the
-                                                             ressources held
-                                                             */
-    VAR(tpl_activate_counter, TYPEDEF)
-                                    activate_count;     /**< current activate
-                                                             count
-                                                             */
-    VAR(tpl_priority, TYPEDEF)      priority;           /**< current priority
-                                                             */
-    VAR(tpl_proc_state, TYPEDEF)    state;              /**< state (READY,
-                                                             RUNNING, ...)
-                                                             */
+  struct P2VAR(TPL_RESOURCE, TYPEDEF, OS_APPL_DATA)
+    resources;          /**< head of the ressources held          */
+#ifdef WITH_OSAPPLICATION
+  VAR(tpl_trusted_count, TYPEDEF)
+    trusted_counter;    /**<  if > 0 the process is trusted       */
+#endif /* WITH_OSAPPLICATION */
+  VAR(tpl_activate_counter, TYPEDEF)
+    activate_count;     /**< current activate count               */
+  VAR(tpl_priority, TYPEDEF)
+    priority;           /**< current priority                     */
+  VAR(tpl_proc_state, TYPEDEF)
+    state;              /**< state (READY, RUNNING, ...)          */
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    VAR(tpl_bool, TYPEDEF)          activation_allowed;
+  VAR(tpl_bool, TYPEDEF)
+    activation_allowed; /**< TRUE is the process may be activated */
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 };
 
