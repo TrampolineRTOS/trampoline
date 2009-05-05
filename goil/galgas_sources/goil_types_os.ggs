@@ -40,14 +40,14 @@ class @trace_void extends @trace_method {
 class @trace_file extends @trace_method {
   @lstring name ;
   override method generate_c !@string res :
-    res := "#define    TRACE_FILE     \"".[name string]."\"\n" ;
+    res := "#define    TRACE_FILE      \"".[name string]."\"\n" ;
   end method ;
 }
 
 class @trace {
   @location loc ;
   method generate_c !@string res :
-    res := "#define    WITH_TRACE     NO\n" ;
+    res := "#define    WITH_TRACE      NO\n" ;
   end method ;
   method generate_make !@string res :
     res := "WITH_TRACE=false\n" ;
@@ -56,7 +56,7 @@ class @trace {
 
 class @trace_off extends @trace {
   override method generate_c !@string res :
-    res := "#define    WITH_TRACE     NO\n" ;
+    res := "#define    WITH_TRACE      NO\n" ;
   end method ;
   override method generate_make !@string res :
     res := "WITH_TRACE=false\n" ;
@@ -67,8 +67,8 @@ class @trace_on extends @trace {
   @lstring      form ;
   @trace_method meth ;
   override method generate_c !@string res :
-    res := "#define    WITH_TRACE     YES\n" ;
-    res .= "#define    TRACE_FORMAT   ".[form string]."\n" ;
+    res := "#define    WITH_TRACE      YES\n" ;
+    res .= "#define    TRACE_FORMAT(p) tpl_trace_format_".[form string]."(p);\n" ;
     @string m ;
     [meth generate_c ?m] ;
     res .= m ;
