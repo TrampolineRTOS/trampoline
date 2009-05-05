@@ -77,13 +77,12 @@ FUNC(void, OS_CODE) tpl_resume_all_interrupts_service(void)
   #if defined(__unix__) || defined(__APPLE__)
 	assert( tpl_locking_depth > 0 );
   #endif
-  if (tpl_locking_depth > 0)
-  {
-    tpl_locking_depth--;
+    
+	tpl_locking_depth--;
+	
 #ifdef WITH_AUTOSAR
     tpl_cpt_user_task_lock--;
 #endif
-  }
 	
   if( tpl_locking_depth == 0)
   {
@@ -156,13 +155,12 @@ FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void)
   #if defined(__unix__) || defined(__APPLE__)
 	assert( tpl_locking_depth > 0 );
   #endif
-  if (tpl_locking_depth > 0)
-  {
+	
     tpl_locking_depth--;
+	
 #ifdef WITH_AUTOSAR
     tpl_cpt_user_task_lock--;
 #endif
-  }
 	
   if( tpl_locking_depth == 0)
   {

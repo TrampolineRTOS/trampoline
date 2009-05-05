@@ -28,9 +28,9 @@ CPU test {
 		SHUTDOWNHOOK = TRUE;
 		
 		CFLAGS = "-I../embUnit";
-        CFLAGS  = "-Werror -Wall -pedantic -g";
+        CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../lib -lembUnit -g";
+		LDFLAGS = "-L../lib -lembUnit";
 
     } ;
 	
