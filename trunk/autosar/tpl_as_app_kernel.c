@@ -37,14 +37,11 @@
 #include "tpl_machine_interface.h"
 #include "tpl_os_error.h"
 
-<<<<<<< .mine
 #include "tpl_os_task.h"
 DeclareTask(INVALID_TASK);
 
-=======
 #include "tpl_dow.h"
 
->>>>>>> .r776
 #if APP_COUNT > 0
 extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST)
   tpl_app_table[APP_COUNT];

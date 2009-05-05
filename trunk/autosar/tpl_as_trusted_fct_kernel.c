@@ -27,15 +27,9 @@
 #include "tpl_as_trusted_fct_kernel.h"
 #include "tpl_as_definitions.h"
 
-<<<<<<< .mine
-#if (TRUSTED_FCT_COUNT > 0) 
-	extern CONST(tpl_trusted_fct, OS_APPL_CODE) tpl_trusted_fct_table[TRUSTED_FCT_COUNT];
-#endif
-=======
 #if TRUSTED_FCT_COUNT > 0
 extern CONST(tpl_trusted_fct, OS_APPL_CODE)
   tpl_trusted_fct_table[TRUSTED_FCT_COUNT];
->>>>>>> .r776
 #endif
 
 #define OS_START_SEC_CODE

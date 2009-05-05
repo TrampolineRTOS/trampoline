@@ -45,11 +45,23 @@ else
 		else
 			result_path="../"
 		fi
-	
-		cd ./${i}
-		echo "running $i" | tee -a "${result_path}results.log" #display running test sequence on the standard output for the user and in the log file to better understand failed tests
+			
+		#Adding AUTOSAR flag if autosar test sequence
+		if [ "`echo ${i} | grep autosar`" != "" ]
+		then
+			autosar_flag="-a"
+		else
+			autosar_flag=""
+		fi
 		
-		rm -rf ./${i} #remove the executable file in order to know if the make succeed.
+		#Go in the test sequence
+		cd ./${i}
+		
+		#display running test sequence on the standard output for the user and in the log file to better understand failed tests
+		echo "running $i" | tee -a "${result_path}results.log" 
+		
+		#remove the executable file in order to know if the make succeed.
+		rm -rf ./${i} 
 		
 		#if Makefile doesn't exist -> do goil
 		if ! `test -f Makefile`
@@ -57,19 +69,20 @@ else
 			#check if target's name is among arguments (default=libpcl)
 			if [ "$1" = "" ]
 			then	
-				goil --target=libpcl --templates=../../../goil/templates/ -g defaultAppWorkstation.oil 2>&1 | tee -a "${result_path}results.log"
+				goil --target=libpcl --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>&1 | tee -a "${result_path}results.log"
 			else 
-				goil --target=$1 --templates=../../../goil/templates/ -g defaultAppWorkstation.oil 2>&1 | tee -a "${result_path}results.log" 
+				goil --target=$1 --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>&1 | tee -a "${result_path}results.log" 
 			fi
 		fi
 		
-		#if goil succeed (Makefile has been created) -> do make and axecute file
+		#if goil succeed (Makefile has been created) -> do make and execute file
 		if `test -f Makefile`
 		then
 			make -s
 			./${i} >> "${result_path}results.log"
 		fi
 		
+		#Go out of the test sequence
 		cd "${result_path}"
 	
 	done
