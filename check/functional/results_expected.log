@@ -245,6 +245,6 @@ running autosar_s1
 ...
 OK (3 tests)
 running ../GOIL/goil_s1
-/Users/florent/Documents/trampoline-trunk/check/GOIL/goil_s1/defaultAppWorkstation.oil:86:32: warning: MASK attribute uses more than 1 bit
-/Users/florent/Documents/trampoline-trunk/check/GOIL/goil_s1/defaultAppWorkstation.oil:113:31: error: MASK of event Task2_Event2 conflicts with previous declarations
-/Users/florent/Documents/trampoline-trunk/check/GOIL/goil_s1/defaultAppWorkstation.oil:38:22: error: All event mask bits are already use, event Task1_Event9 can't be created
+CHECKPATH/GOIL/goil_s1/defaultAppWorkstation.oil:86:32: warning: MASK attribute uses more than 1 bit
+CHECKPATH/GOIL/goil_s1/defaultAppWorkstation.oil:113:31: error: MASK of event Task2_Event2 conflicts with previous declarations
+CHECKPATH/GOIL/goil_s1/defaultAppWorkstation.oil:38:22: error: All event mask bits are already use, event Task1_Event9 can't be created
