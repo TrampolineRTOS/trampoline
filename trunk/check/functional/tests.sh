@@ -24,7 +24,10 @@ then
 		rm -rf ./embUnit/*.o
 		rm -rf ./lib/libembUnit.a
 	done
+	#Delete results.log
 	rm -rf results.log
+	#Change in results_expected.log the check directory path to 'CHECKPATH'.
+	( cd .. ; cat ./functional/results_expected.log | sed -e "s/`pwd | sed 's_\/_\\\/_g'`/CHECKPATH/g" > ./backup.txt ; mv ./backup.txt ./functional/results_expected.log )
 else
 
 	echo "Begin internal functional test procedure..."
@@ -35,6 +38,9 @@ else
 	# Make embUnit
 	( cd ./embUnit ; make )
 
+	#Change in results_expected.log 'CHECKPATH' to check directory Path : for goil tests
+	( cd .. ; cat ./functional/results_expected.log | sed -e "s/CHECKPATH/`pwd | sed 's_\/_\\\/_g'`/g" > ./backup.txt ; mv ./backup.txt ./functional/results_expected.log )
+		
 	# Build and execute all the tests
 	for i in `cat testSequences.txt`
 	do
@@ -52,7 +58,7 @@ else
 			autosar_flag="-a"
 		else
 			autosar_flag=""
-		fi
+		fi	
 		
 		#Go in the test sequence
 		cd ./${i}
