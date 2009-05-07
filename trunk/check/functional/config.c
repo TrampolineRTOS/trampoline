@@ -1,10 +1,24 @@
-/*
- *  config.c
- *  tramp_project
+/**
+ * @file config.c
  *
- *  Created by Florent Pavin on 19/01/09.
- *  Copyright 2009 __IRCYYN__. All rights reserved.
+ * @section desc File description
  *
+ * 
+ * @section copyright Copyright
+ *
+ * Trampoline OS
+ *
+ * Trampoline is copyright (c) IRCCyN 2005-2007
+ * Trampoline is protected by the French intellectual property law.
+ *
+ * This software is distributed under the Lesser GNU Public Licence
+ *
+ * @section infos File informations
+ *
+ * $Date:$
+ * $Rev:$
+ * $Author: fp $
+ * $URL:$
  */
 
 #include <signal.h>
@@ -35,20 +49,20 @@ void tpl_send_it3(void){
 
 void signaux_pendants(void)
 {
-	sigset_t  sig_set; /* liste des signaux bloqués */
+	sigset_t  sig_set;
 	
 	int pi = getpid ();
 	stdimpl_print("The pid is %d - ",pi);
 	
 	sigpending(&sig_set);
 	
-	stdimpl_print("Les signaux pendants sont %d ",sig_set);
+	stdimpl_print("Pending signals are %d ",sig_set);
 	
 	if (sigismember ( &sig_set,SIGTERM) ) 
-		stdimpl_print("SIGTERM pendant \n");
+		stdimpl_print("SIGTERM is pending \n");
 	
 	if (sigismember ( &sig_set,SIGUSR2) ) 
-		stdimpl_print("SIGUSR2 pendant \n");
+		stdimpl_print("SIGUSR2 is pending \n");
 }
 
 void WaitActivationPeriodicAlarm(AlarmType Alarm){

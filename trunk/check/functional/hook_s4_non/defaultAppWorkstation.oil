@@ -27,10 +27,10 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "pretask_instance6.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "hook_s4_non";
-		CFLAGS = "-I../embUnit";
+		CFLAGS = "-I../../embUnit";
         CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../lib -lembUnit";
+		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
 		STARTUPHOOK = TRUE;
 		POSTTASKHOOK = TRUE;
