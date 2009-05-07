@@ -18,10 +18,10 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "task1_instance.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "hook_s3_full";
-		CFLAGS = "-I../embUnit";
+		CFLAGS = "-I../../embUnit";
         CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../lib -lembUnit";
+		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
 		STARTUPHOOK = TRUE;
 		ERRORHOOK = TRUE;

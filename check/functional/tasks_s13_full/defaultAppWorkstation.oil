@@ -22,10 +22,10 @@ CPU test {
 		APP_SRC = "task8_instance.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "tasks_s13_full";
-		CFLAGS = "-I../embUnit";
+		CFLAGS = "-I../../embUnit";
         CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../lib -lembUnit";
+		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
     } ;
 

@@ -13,7 +13,7 @@
 
 if [ "$1" = "clean" ]
 then
-	for i in `cat testSequences.txt`
+	for i in `cat GOIL_testSequences.txt`
 	do
 		#remove make-rules, makefiles, defaultAppWorkstation/, build/, embUnit/*.o and lib/libembUnit.a
 		rm -rf ./${i}/build
@@ -21,37 +21,25 @@ then
 		rm -rf ./${i}/Make-rules
 		rm -rf ./${i}/Makefile
 		rm -rf ./${i}/${i}
-		rm -rf ./embUnit/*.o
-		rm -rf ./lib/libembUnit.a
 	done
 	#Delete results.log
-	rm -rf results.log
+	rm -rf GOIL_results.log
 	#Change in results_expected.log the check directory path to 'CHECKPATH'.
-	( cd .. ; cat ./functional/results_expected.log | sed -e "s/`pwd | sed 's_\/_\\\/_g'`/CHECKPATH/g" > ./backup.txt ; mv ./backup.txt ./functional/results_expected.log )
+	( cat ./GOIL_results_expected.log | sed -e "s/`pwd | sed 's_\/_\\\/_g'`/CHECKPATH/g" > ./backup.txt ; mv ./backup.txt ./GOIL_results_expected.log )
 else
 
-	echo "Begin internal functional test procedure..."
+	echo "Begin GOIL test procedure..."
 
 	## Create an empty file
-	> results.log
-
-	# Make embUnit
-	( cd ./embUnit ; make )
+	> GOIL_results.log
 
 	#Change in results_expected.log 'CHECKPATH' to check directory Path : for goil tests
-	( cd .. ; cat ./functional/results_expected.log | sed -e "s/CHECKPATH/`pwd | sed 's_\/_\\\/_g'`/g" > ./backup.txt ; mv ./backup.txt ./functional/results_expected.log )
+	( cat ./GOIL_results_expected.log | sed -e "s/CHECKPATH/`pwd | sed 's_\/_\\\/_g'`/g" > ./backup.txt ; mv ./backup.txt ./GOIL_results_expected.log )
 		
 	# Build and execute all the tests
-	for i in `cat testSequences.txt`
+	for i in `cat GOIL_testSequences.txt`
 	do
-		#the path to the result file is different from a functional test or a goil test, this if tests if the test sequence is a functional or a goil one and change the path according to.
-		if [ "`echo ${i} | grep goil`" != "" ]
-		then
-			result_path="../../functional/"
-		else
-			result_path="../"
-		fi
-			
+	
 		#Adding AUTOSAR flag if autosar test sequence
 		if [ "`echo ${i} | grep autosar`" != "" ]
 		then
@@ -64,7 +52,7 @@ else
 		cd ./${i}
 		
 		#display running test sequence on the standard output for the user and in the log file to better understand failed tests
-		echo "running $i" | tee -a "${result_path}results.log" 
+		echo "running $i" | tee -a ../GOIL_results.log 
 		
 		#remove the executable file in order to know if the make succeed.
 		rm -rf ./${i} 
@@ -75,9 +63,9 @@ else
 			#check if target's name is among arguments (default=libpcl)
 			if [ "$1" = "" ]
 			then	
-				goil --target=libpcl --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>&1 | tee -a "${result_path}results.log"
+				goil --target=libpcl --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>> ../GOIL_results.log 1>> ../GOIL_results.log
 			else 
-				goil --target=$1 --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>&1 | tee -a "${result_path}results.log" 
+				goil --target=$1 --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>> ../GOIL_results.log 1>> ../GOIL_results.log
 			fi
 		fi
 		
@@ -85,21 +73,13 @@ else
 		if `test -f Makefile`
 		then
 			make -s
-			./${i} >> "${result_path}results.log"
+			./${i} >> ../GOIL_results.log
 		fi
 		
 		#Go out of the test sequence
-		cd "${result_path}"
+		cd ..
 	
 	done
-	echo "Tests done."
+	echo "GOIL tests done."
 
-	echo "Compare results with the expected ones..."
-	if [ `diff results_expected.log results.log | wc -l` -eq 0 ] 
-	then 
-		echo "Success!!"
-	else
-		echo "Failed! Results are stored in `pwd`/results.log"
-		#opendiff results_expected.log results.log
-	fi
 fi

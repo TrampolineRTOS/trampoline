@@ -43,10 +43,10 @@ CPU test {
         APP_NAME = "com_internal_s5_full";
 		SHUTDOWNHOOK = TRUE;
 		
-		CFLAGS = "-I../embUnit";
+		CFLAGS = "-I../../embUnit";
         CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../lib -lembUnit";
+		LDFLAGS = "-L../../lib -lembUnit";
         
 
     } ;

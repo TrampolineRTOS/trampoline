@@ -21,10 +21,10 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "interrupts_s4_full";
-		CFLAGS = "-I../embUnit";
+		CFLAGS = "-I../../embUnit";
         CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../lib -lembUnit";
+		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
     } ;
 
