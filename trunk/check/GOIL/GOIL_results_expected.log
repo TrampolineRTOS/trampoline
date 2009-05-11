@@ -1,4 +1,4 @@
 running goil_s1
-CHECKPATH/goil_s1/defaultAppWorkstation.oil:86:32: warning: MASK attribute uses more than 1 bit
-CHECKPATH/goil_s1/defaultAppWorkstation.oil:113:31: error: MASK of event Task2_Event2 conflicts with previous declarations
-CHECKPATH/goil_s1/defaultAppWorkstation.oil:38:22: error: All event mask bits are already use, event Task1_Event9 can't be created
+CHECKPATH/goil_s1/defaultAppWorkstation.oil:122:32: warning: MASK attribute uses more than 1 bit
+CHECKPATH/goil_s1/defaultAppWorkstation.oil:149:31: error: MASK of event Task2_Event2 conflicts with previous declarations
+CHECKPATH/goil_s1/defaultAppWorkstation.oil:74:22: error: All event mask bits are already use, event Task1_Event9 can't be created

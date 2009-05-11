@@ -11,6 +11,8 @@
 #		 delete testSequences file and do the loops for each directory (which contains defaultAppWorkstation.oil) #ls -d
 ######
 
+results=$2
+
 if [ "$1" = "clean" ]
 then
 	for i in `cat functional_testSequences.txt`
@@ -25,12 +27,20 @@ then
 
 	#Delete results.log
 	rm -rf functional_results.log
+	
+	#Delete embUnit's objects and librairy
+	rm -rf ./../embUnit/*.o
+	rm -rf ./../lib/libembUnit.a
+	
 else
 
 	echo "Begin functional test procedure..."
 
 	## Create an empty file
 	> functional_results.log
+	
+	# Make embUnit
+	( cd ../embUnit ; make )
 	
 	# Build and execute all the tests
 	for i in `cat functional_testSequences.txt`
@@ -55,10 +65,11 @@ else
 		#if Makefile doesn't exist -> do goil
 		if ! `test -f Makefile`
 		then
-			#check if target's name is among arguments (default=libpcl)
-			if [ "$1" = "" ]
+			#check if target's name is among arguments (default=libpcl). If "no_results" is sent by test.sh, do goil with libpcl.
+			if [ "$1" = "" ] || [ "$1" = "no_results" ]
 			then	
 				goil --target=libpcl --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>&1 | tee -a ../functional_results.log
+				results=$1
 			else 
 				goil --target=$1 --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>&1 | tee -a ../functional_results.log
 			fi
@@ -76,5 +87,17 @@ else
 	
 	done
 	echo "Functional tests done."
+	
+	if [ "$results" != "no_results" ]
+	then
+		#Compare results
+		echo "Compare functional results with the expected ones..."
+		if [ `diff functional_results_expected.log functional_results.log | wc -l` -eq 0 ]
+		then
+			echo "functional tests Succeed!!"
+		else
+			echo "functional tests Failed! Results are stored in `pwd`/functional_results.log"
+		fi
+	fi
 
 fi
