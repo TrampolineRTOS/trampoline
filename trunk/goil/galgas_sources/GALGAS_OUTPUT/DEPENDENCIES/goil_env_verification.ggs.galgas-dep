@@ -1,4 +1,6 @@
 463::
-goil_options.ggs::
+goil_options.ggs
+goil_routines.ggs
+goil_basic_types.ggs::
 GALGAS_OUTPUT/goil_env_verification.h
 GALGAS_OUTPUT/goil_env_verification.cpp

@@ -25,7 +25,17 @@ COM_PATH = $(TPL_BASE_PATH)/com
 AUTOSAR_PATH = $(TPL_BASE_PATH)/autosar
 DEBUG_PATH = $(TPL_BASE_PATH)/debug
 VIPER_DIR = $(TPL_BASE_PATH)/viper  #VIPER_PATH is reserved for viper executable :-/
-MACHINE_PATH = $(TPL_BASE_PATH)/machines/$(TARGET)
+MACHINE_PATH = $(TPL_BASE_PATH)/machines
+
+ifdef ARCH
+ARCH_PATH = $(MACHINE_PATH)/$(ARCH)
+ifdef CHIP
+CHIP_PATH = $(ARCH_PATH)/$(CHIP)
+ifdef BOARD
+BOARD_PATH = $(CHIP_PATH)/$(BOARD)
+endif
+endif
+endif
 
 #############################################################################
 # Add Trampoline source files.
@@ -36,10 +46,29 @@ ifeq ($(strip $(AUTOSAR)),true)
   include $(AUTOSAR_PATH)/Makefile
 endif
 include $(COM_PATH)/Makefile
-include $(MACHINE_PATH)/Makefile
+
+ifdef ARCH_PATH
+-include $(ARCH_PATH)/Makefile
+CPPFLAGS += -I$(ARCH_PATH)
+TEMP_SOURCE_DIRS += $(ARCH_PATH)
+endif
+
+ifdef CHIP_PATH
+-include $(CHIP_PATH)/Makefile
+CPPFLAGS += -I$(CHIP_PATH)
+TEMP_SOURCE_DIRS += $(CHIP_PATH)
+endif
+
+ifdef BOARD_PATH
+-include $(BOARD_PATH)/Makefile
+CPPFLAGS += -I$(BOARD_PATH)
+TEMP_SOURCE_DIRS += $(BOARD_PATH)
+endif
+
+
 
 #add trampoline paths in the include path. 
-CPPFLAGS += -I$(MACHINE_PATH)  -I$(OIL_OUTPUT_PATH) 
+CPPFLAGS += -I$(OIL_OUTPUT_PATH) 
 CPPFLAGS += -I$(OS_PATH) -I$(COM_PATH) -I$(DEBUG_PATH)
 
 #############################################################################
@@ -97,7 +126,7 @@ ALL: | $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE) $(EXEC)
 # paths, by including recursively the compiler_rules
 # makefile.
 TEMP_SOURCE_DIRS += $(OS_PATH) $(COM_PATH) $(AUTOSAR_PATH) 
-TEMP_SOURCE_DIRS += $(DEBUG_PATH) $(MACHINE_PATH) $(OIL_OUTPUT_PATH) .
+TEMP_SOURCE_DIRS += $(DEBUG_PATH) $(OIL_OUTPUT_PATH) .
 include $(OS_MAKE_PATH)/compiler_rules.mk
 
 # the following fixes old Make-rules which does not 

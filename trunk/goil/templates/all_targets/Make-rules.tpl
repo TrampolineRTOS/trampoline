@@ -26,6 +26,8 @@ $GOIL_TEMPLATE_PATH$
 # * Hitachi h8300h
 # Some targets does not use Makefile (c166, HCS12, ...)
 TARGET=$TRAMPOLINE_TARGET$
+$ARCH_CHIP_BOARD$
+
 
 # arch may be:
 # * libpcl
