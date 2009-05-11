@@ -24,15 +24,24 @@ then
 	done
 	#Delete results.log
 	rm -rf GOIL_results.log
+	
 	#Change in results_expected.log the check directory path to 'CHECKPATH'.
 	( cat ./GOIL_results_expected.log | sed -e "s/`pwd | sed 's_\/_\\\/_g'`/CHECKPATH/g" > ./backup.txt ; mv ./backup.txt ./GOIL_results_expected.log )
+	
+	#Delete embUnit's objects and librairy
+	rm -rf ./../embUnit/*.o
+	rm -rf ./../lib/libembUnit.a
+	
 else
 
 	echo "Begin GOIL test procedure..."
 
 	## Create an empty file
 	> GOIL_results.log
-
+	
+	# Make embUnit
+	( cd ../embUnit ; make )
+	
 	#Change in results_expected.log 'CHECKPATH' to check directory Path : for goil tests
 	( cat ./GOIL_results_expected.log | sed -e "s/CHECKPATH/`pwd | sed 's_\/_\\\/_g'`/g" > ./backup.txt ; mv ./backup.txt ./GOIL_results_expected.log )
 		
@@ -60,12 +69,13 @@ else
 		#if Makefile doesn't exist -> do goil
 		if ! `test -f Makefile`
 		then
-			#check if target's name is among arguments (default=libpcl)
-			if [ "$1" = "" ]
+			#check if target's name is among arguments (default=libpcl). If "no_results" is sent by test.sh, do goil with libpcl.
+			if [ "$1" = "" ] || [ "$1" = "no_results" ]
 			then	
-				goil --target=libpcl --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>> ../GOIL_results.log 1>> ../GOIL_results.log
+				goil --target=libpcl --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>&1 | tee -a ../GOIL_results.log
+				results=$1
 			else 
-				goil --target=$1 --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>> ../GOIL_results.log 1>> ../GOIL_results.log
+				goil --target=$1 --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>&1 | tee -a ../GOIL_results.log
 			fi
 		fi
 		
@@ -81,5 +91,17 @@ else
 	
 	done
 	echo "GOIL tests done."
+	
+	if [ "$2" != "no_results" ]
+	then
+		#Compare results
+		echo "Compare GOIL results with the expected ones..."
+		if [ `diff GOIL_results_expected.log GOIL_results.log | wc -l` -eq 0 ]
+		then
+			echo "GOIL tests Succeed!!"
+		else
+			echo "GOIL tests Failed! Results are stored in `pwd`/GOIL_results.log"
+		fi
+	fi
 
 fi

@@ -11,25 +11,13 @@
 #		 delete testSequences file and do the loops for each directory (which contains defaultAppWorkstation.oil) #ls -d
 ######
 
-if [ "$1" = "clean" ]
-then
-	#Delete embUnit's objects and librairy
-	rm -rf ./embUnit/*.o
-	rm -rf ./lib/libembUnit.a
-		
-else
-	# Make embUnit
-	( cd ./embUnit ; make )
-	
-fi
-
 #functional tests
 cd ./functional
-./functional_tests.sh $1
+./functional_tests.sh $1 no_results
 
 #GOIL tests
 cd ../GOIL
-./GOIL_tests.sh $1
+./GOIL_tests.sh $1 no_results
 
 cd ..
 
