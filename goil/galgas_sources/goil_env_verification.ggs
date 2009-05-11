@@ -26,6 +26,7 @@
 
 semantics goil_env_verification :
 import option goil_options in "goil_options.ggs" ;
+import semantics goil_routines in "goil_routines.ggs" ;
 
 routine getProjectName
   ! @string directory
@@ -37,7 +38,7 @@ routine getProjectName
 end routine;
 
 routine getAbsoluteSourceFilePath
-  ?? @lstring fileName
+  ?? @string fileName
   !  @string absoluteFilePath
 :
   @string sourceFilePath := [[@string stringWithSourceFilePath] stringByDeletingLastPathComponent];
@@ -54,7 +55,7 @@ routine checkFileExists
   ?? @lstring fileName
 :
   @string absoluteFilePath;
-  getAbsoluteSourceFilePath !fileName ?absoluteFilePath;
+  getAbsoluteSourceFilePath ![fileName string] ?absoluteFilePath;
   if not [absoluteFilePath fileExists] then
     warning [fileName location]: "The file \'".absoluteFilePath."\' does not exists!";
   end if;
@@ -69,7 +70,7 @@ routine checkFileDoesNotExists
   ?? @lstring fileName
 :
   @string absoluteFilePath;
-  getAbsoluteSourceFilePath !fileName ?absoluteFilePath;
+  getAbsoluteSourceFilePath ![fileName string] ?absoluteFilePath;
   if [[fileName string] directoryExists] then
     error [fileName location]: "The file \'".absoluteFilePath."\' already exists and is a directory. It will not be overwritten.";
 #  elsif [[fileName string] fileExists] then
@@ -94,8 +95,8 @@ routine checkTrampolinePath
   ?? @lstring path
 :
   @string absolutePath;
-  getAbsoluteSourceFilePath !path ?absolutePath;
-  #first check that os paht is ok
+  getAbsoluteSourceFilePath ![path string] ?absolutePath;
+  #first check that os path is ok
   @string osPath := absolutePath."/os";
   if not [osPath directoryExists] then
     error [path location]: "The directory \'".absolutePath."\' does not seem to be the Trampoline base path.".
@@ -109,6 +110,25 @@ routine checkTrampolinePath
   end if;
 end routine;
 
+# This routine checks the arch, chip and board corresponds
+# a valid configuration
+routine check_target
+  ??@string trampoline_path
+:
+  @string machines_path;
+  getAbsoluteSourceFilePath !trampoline_path ?machines_path;
+  machines_path .= "/machines";
+  @string arch_path := machines_path."/".arch();
+  @string chip_path := arch_path."/".chip();
+  @string board_path := chip_path."/".board();
+  if not [arch_path directoryExists] then
+    warning here: "The directory \'".arch_path."\' does not exist";
+  elsif not [chip_path directoryExists] then
+    warning here: "The directory \'".chip_path."\' does not exist";
+  elsif not [board_path directoryExists] then
+    warning here: "The directory \'".board_path."\' does not exist";
+  end if;
+end routine;
 
 end semantics;
 # vim:ft=ggs:ts=4:sw=4

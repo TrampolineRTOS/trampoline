@@ -11,11 +11,37 @@ end routine ;
 
 #
 # arch returns the target architecture in arch_name
-# a target architecture 
-routine arch !@string arch_name :
-    @stringlist components := [[option goil_options.target_platform] componentsSeparatedByString !"/"] ;
-    [components first ?arch_name] ;
-end routine ;
+# a target architecture is the instruction set (ie ARM, PowerPC, ...)
+#
+function arch -> @string arch_name :
+  @stringlist components := [[option goil_options.target_platform] componentsSeparatedByString !"/"] ;
+  [components first ?arch_name] ;
+end function ;
+
+#
+# chip returns the target implementation of the architecture
+# a target implementation is the kind of microcontroller (ie ARM7, ARM9, ...)
+#
+function chip -> @string chip_name :
+  @stringlist components := [[option goil_options.target_platform] componentsSeparatedByString !"/"] ;
+  if [components length] > 1 then
+    chip_name := [components mValueAtIndex !1] ;
+  else
+    chip_name := "" ;
+  end if ;
+end function ;
+
+#
+# board returns the target board of the chip
+#
+function board -> @string board_name :
+  @stringlist components := [[option goil_options.target_platform] componentsSeparatedByString !"/"] ;
+  if [components length] > 2 then
+    board_name := [components mValueAtIndex !2] ;
+  else
+    board_name := "" ;
+  end if ;
+end function ;
 
 routine templates_directory !@string temp_dir :
     temp_dir := "" ;
@@ -49,15 +75,12 @@ routine retrieveTemplateStringIfExist !@string templateString ?@string obj :
     @string target_platform ;
     @string targ_tpl := "" ;
 
-# Get the platform
-    target ?target_platform ;
-    
 # Get the template directory
     @string temp_dir ;
     templates_directory ?temp_dir ;
 
 # Look for a template in target plateform path
-    targ_tpl := temp_dir.target_platform."/".obj.".tpl" ;
+    targ_tpl := temp_dir.arch()."/".obj.".tpl" ;
 
     if [targ_tpl fileExists]
     then templateString := [@string stringWithContentsOfFile !targ_tpl] ;
@@ -76,8 +99,7 @@ end routine ;
 routine retrieveTemplateString !@string templateString ?@string obj :
     retrieveTemplateStringIfExist ?templateString !obj;
     if templateString == "" then
-        @string target_platform ;
-        target ?target_platform ;
+        @string target_platform := arch();
         @string temp_dir ;
         templates_directory ?temp_dir ;
         error here: "No template found for ".obj." (searched in ". temp_dir.target_platform
@@ -90,9 +112,7 @@ routine config_file
 :
     @string template_dir ;
     templates_directory ?template_dir ;
-    @string target_platform ;
-    target ?target_platform ;
-    @string cfg := template_dir.target_platform."/target.cfg" ;
+    @string cfg := template_dir.arch()."/target.cfg" ;
     if not [cfg fileExists] then
         cfg := "" ;
     end if ;
@@ -332,6 +352,16 @@ routine set_lstring_if_empty
     error s : "was defined here" ;
   end if ;
 end routine ;
+
+routine add_makefile_flag_if_not_empty
+  ?!@string receiver
+  ?@string flag_name
+  ?@string flag_value
+:
+  if flag_value != "" then
+    receiver .= flag_name . "=". flag_value . "\n" ;
+  end if ;
+end routine;
 
 end semantics ;
 # vim:ft=ggs:ts=4:sw=4
