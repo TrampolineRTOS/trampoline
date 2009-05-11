@@ -36,7 +36,7 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "tpl_os_generated_configuration.h"; /*for OSMAXALLOWEDVALUE_Counter1...*/
+#include "tpl_os_generated_configuration.h" /*for OSMAXALLOWEDVALUE_Counter1...*/
 
 DeclareTask(t1);
 DeclareTask(t2);
