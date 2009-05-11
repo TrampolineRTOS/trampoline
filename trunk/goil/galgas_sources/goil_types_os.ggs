@@ -68,7 +68,7 @@ class @trace_on extends @trace {
   @trace_method meth ;
   override method generate_c !@string res :
     res := "#define    WITH_TRACE             YES\n" ;
-    res .= "#define    TRACE_FORMAT(a)        tpl_trace_format_".[form string]."(a);\n" ;
+    res .= "#define    TRACE_FORMAT()         tpl_trace_format_".[form string]."();\n" ;
     @string m ;
     [meth generate_c ?m] ;
     res .= m ;
