@@ -56,7 +56,7 @@ void signaux_pendants(void)
 	
 	sigpending(&sig_set);
 	
-	stdimpl_print("Pending signals are %d ",sig_set);
+	stdimpl_print("Pending signals are %d ",(int)sig_set);
 	
 	if (sigismember ( &sig_set,SIGTERM) ) 
 		stdimpl_print("SIGTERM is pending \n");

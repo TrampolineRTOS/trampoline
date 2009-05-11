@@ -33,7 +33,7 @@
  */
 
 #include "tpl_os.h"
-#include "embUnit.h";
+#include "embUnit.h"
 
 TestRef HookTest_seq6_t1_instance(void);
 TestRef HookTest_seq6_isr1_instance(void);
