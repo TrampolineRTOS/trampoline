@@ -100,7 +100,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_counter_value_service(
  */
 FUNC(tpl_status, OS_CODE) tpl_get_elapsed_counter_value_service(
     VAR(tpl_counter_id, AUTOMATIC)              counter_id,
-    VAR(tpl_tick, AUTOMATIC)                    previous_value,
+    P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA)    previous_value,
     P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA)    value
 );
 
