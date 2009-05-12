@@ -133,7 +133,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_counter_value_service(
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_GetCounterValue)
   STORE_COUNTER_ID(counter_id)
-  STORE_TICK_REF(value)
+  STORE_TICK_REF_1(value)
 
   /*  check a counter_id error                    */
   CHECK_COUNTER_ID_ERROR(counter_id,result)
@@ -169,9 +169,9 @@ FUNC(tpl_status, OS_CODE) tpl_get_counter_value_service(
  * AUTOSAR/Specification of the Operating System v2.1.0
  */
 FUNC(tpl_status, OS_CODE) tpl_get_elapsed_counter_value_service(
-  VAR(tpl_counter_id, AUTOMATIC)              counter_id,
-  VAR(tpl_tick, AUTOMATIC)                    previous_value,
-  P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA)    value)
+  VAR(tpl_counter_id, AUTOMATIC)            counter_id,
+  P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA)  previous_value,
+  P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA)  value)
 {
   VAR(tpl_status, AUTOMATIC)  result = E_OK;
 
@@ -188,14 +188,14 @@ FUNC(tpl_status, OS_CODE) tpl_get_elapsed_counter_value_service(
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_GetElapsedCounterValue)
   STORE_COUNTER_ID(counter_id)
-  STORE_TICK_2(previous_value)
-  STORE_TICK_REF(value)
+  STORE_TICK_REF_1(previous_value)
+  STORE_TICK_REF_2(value)
 
   /*  check a counter_id error                    */
   CHECK_COUNTER_ID_ERROR(counter_id,result)
   /*  check the previous value does not exceed
       the maxallowedvalue of the counter          */
-  CHECK_COUNTER_MAX_ALLOWED_VALUE_ERROR(counter_id, previous_value, result)
+  CHECK_COUNTER_MAX_ALLOWED_VALUE_ERROR(counter_id, *previous_value, result)
 
 #ifndef NO_COUNTER
   IF_NO_EXTENDED_ERROR(result)
@@ -205,10 +205,11 @@ FUNC(tpl_status, OS_CODE) tpl_get_elapsed_counter_value_service(
 
     /*  get the current counter value           */
     cpt_val = counter->current_date;
-    if (cpt_val < previous_value) {
+    if (cpt_val < *previous_value) {
         cpt_val += tpl_counter_table[counter_id]->max_allowed_value + 1;
     }
-    *value = cpt_val - previous_value;
+    *value = cpt_val - *previous_value;
+    *previous_value = counter->current_date;
 
   IF_NO_EXTENDED_ERROR_END()
 #endif

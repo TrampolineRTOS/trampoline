@@ -117,17 +117,27 @@ union PARAM_PARAM_BLOCK {
 #endif
 };
 
+union PARAM_PARAM_BLOCK_2 {
+  VAR(tpl_tick, TYPEDEF)          tick;             /**< used by #SetRelAlarm,
+                                                         #SetAbsAlarm
+                                                    */
+  P2VAR(tpl_tick, AUTOMATIC, TYPEDEF)
+                                  tick_ref;         /**< used by
+                                                         #GetElapsedCounterValue
+                                                    */
+};
+
 /**
  * @struct PARAM_BLOCK
  *
  * This structure gathers all parameters for an error hook
  */
 struct PARAM_BLOCK {
-    union ID_PARAM_BLOCK    id;     /**< identifies the OS element
+    union ID_PARAM_BLOCK      id;     /**< identifies the OS element
                                            concerned by the error */
-    union PARAM_PARAM_BLOCK param;  /**< gives more information about the
-                                           reason of the error */
-    VAR(tpl_tick, TYPEDEF)  cycle;  /**< cycle set for a relative alarm */
+    union PARAM_PARAM_BLOCK   param;  /**< gives more information about the
+                                           reason of the error    */
+    union PARAM_PARAM_BLOCK_2 param2; /**< more informations      */
 };
 
 /**
@@ -191,7 +201,8 @@ typedef struct SERVICE_CALL_DESCRIPTOR tpl_service_call_desc;
  * - #STORE_RESOURCE_ID
  * - #STORE_ALARM_ID
  * - #STORE_ALARM_BASE_REF
- * - #STORE_TICK_REF
+ * - #STORE_TICK_REF_1
+ * - #STORE_TICK_REF_2
  * - #STORE_TICK_1
  * - #STORE_TICK_2
  * - #STORE_EVENT_MASK
@@ -515,7 +526,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @see #OSError_SetRelAlarm_increment
  */
 #define OSError_SetRelAlarm_cycle()     \
-    (tpl_service.parameters.cycle)
+    (tpl_service.parameters.param2.tick)
 
 /**
  * @def OSError_SetAbsAlarm_AlarmID
@@ -563,7 +574,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @see OSError_SetAbsAlarm_start
  */
 #define OSError_SetAbsAlarm_cycle()     \
-    (tpl_service.parameters.cycle)
+    (tpl_service.parameters.param2.tick)
 
 /**
  * @def OSError_CancelAlarm_AlarmID
@@ -703,7 +714,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #endif
 
 /**
- * @def STORE_TICK_REF
+ * @def STORE_TICK_REF_1
  *
  * Stores a tick reference into service error variable
  *
@@ -712,10 +723,26 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @see #OSError_GetAlarm_Tick
  */
 #ifdef WITH_ERROR_HOOK
-#   define STORE_TICK_REF(ref)     \
-    tpl_service.parameters.param.tick_ref = (ref);
+#   define STORE_TICK_REF_1(ref)     \
+      tpl_service.parameters.param.tick_ref = (ref);
 #else
-#   define STORE_TICK_REF(tick_ref)
+#   define STORE_TICK_REF_1(tick_ref)
+#endif
+
+/**
+ * @def STORE_TICK_REF_2
+ *
+ * Stores a tick reference into service error variable
+ *
+ * @param ref type is #TickRefType
+ *
+ * @see #OSError_GetAlarm_Tick
+ */
+#ifdef WITH_ERROR_HOOK
+#   define STORE_TICK_REF_2(ref)     \
+      tpl_service.parameters.param2.tick_ref = (ref);
+#else
+#   define STORE_TICK_REF_2(tick_ref)
 #endif
 
 /**
@@ -747,7 +774,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  */
 #ifdef WITH_ERROR_HOOK
 #   define STORE_TICK_2(t)     \
-    tpl_service.parameters.cycle = (t);
+    tpl_service.parameters.param2.tick = (t);
 #else
 #   define STORE_TICK_2(t)
 #endif

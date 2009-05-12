@@ -79,7 +79,7 @@ FUNC(StatusType, OS_CODE) GetCounterValue(
  */
 FUNC(StatusType, OS_CODE) GetElapsedCounterValue(
     VAR(CounterType, AUTOMATIC) counter_id,
-    VAR(TickType, AUTOMATIC)    previous_value,
+    VAR(TickRefType, AUTOMATIC) previous_value,
     VAR(TickRefType, AUTOMATIC) value)
 {
     return tpl_get_elapsed_counter_value_service(

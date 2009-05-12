@@ -131,7 +131,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
 
   STORE_SERVICE(OSServiceId_GetAlarm)
   STORE_ALARM_ID(alarm_id)
-  STORE_TICK_REF(tick)
+  STORE_TICK_REF_1(tick)
 
   CHECK_ALARM_ID_ERROR(alarm_id,result)
 
