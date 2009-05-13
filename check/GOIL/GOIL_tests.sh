@@ -11,6 +11,8 @@
 #		 delete testSequences file and do the loops for each directory (which contains defaultAppWorkstation.oil) #ls -d
 ######
 
+results=$2
+
 if [ "$1" = "clean" ]
 then
 	for i in `cat GOIL_testSequences.txt`
@@ -72,10 +74,10 @@ else
 			#check if target's name is among arguments (default=libpcl). If "no_results" is sent by test.sh, do goil with libpcl.
 			if [ "$1" = "" ] || [ "$1" = "no_results" ]
 			then	
-				goil --target=libpcl --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>&1 | tee -a ../GOIL_results.log
+				goil --target=libpcl --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>> ../GOIL_results.log 1>> ../GOIL_results.log
 				results=$1
 			else 
-				goil --target=$1 --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>&1 | tee -a ../GOIL_results.log
+				goil --target=$1 --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>> ../GOIL_results.log 1>> ../GOIL_results.log
 			fi
 		fi
 		
@@ -92,7 +94,7 @@ else
 	done
 	echo "GOIL tests done."
 	
-	if [ "$2" != "no_results" ]
+	if [ "$results" != "no_results" ]
 	then
 		#Compare results
 		echo "Compare GOIL results with the expected ones..."

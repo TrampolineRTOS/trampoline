@@ -621,10 +621,10 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  */
 #ifdef WITH_ERROR_HOOK
-#   define STORE_TASK_ID(task_id)   \
-    tpl_service.parameters.id.task_id = (task_id);
+#   define STORE_TASK_ID(taskid)   \
+    tpl_service.parameters.id.task_id = (taskid);
 #else
-#   define STORE_TASK_ID(task_id)
+#   define STORE_TASK_ID(taskid)
 #endif
 
 /**

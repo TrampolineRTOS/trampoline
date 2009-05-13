@@ -386,7 +386,7 @@ routine all_alarm_actions_correct
                     @bool known ;
                     is_in_lstringlist !known_events ![act event_name] ?* ?known ;
                     if not known then
-                      warning [act event_name] : "EVENT " . [[act event_name] string] . " is not defined for TASK " . [[act task_name] string] ;
+                      error [act event_name] : "EVENT " . [[act event_name] string] . " is not defined for TASK " . [[act task_name] string] ;
                     end if ;
                 end if ;
             when == @activatetask_action act do
