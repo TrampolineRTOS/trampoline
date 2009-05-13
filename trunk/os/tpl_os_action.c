@@ -27,6 +27,8 @@
 #include "tpl_os_task_kernel.h"
 #include "tpl_os_event_kernel.h"
 #include "tpl_os_action.h"
+#include "tpl_os_error.h"
+#include "tpl_os_errorhook.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -61,9 +63,20 @@ FUNC(tpl_status, OS_CODE) tpl_action_activate_task(
    * first member of tpl_task_activation_action is a tpl_action
    * This cast behaves correctly.
    */
-  return tpl_activate_task(
-      ((P2CONST(tpl_task_activation_action, AUTOMATIC, OS_APPL_CONST))action)->task_id
-  );
+	
+  /*  init the error to no error  */
+  VAR(StatusType, AUTOMATIC) result_action = E_OK;
+
+  /*  store information for error hook routine    */
+  STORE_SERVICE(OSServiceId_ActivateTask)
+  STORE_TASK_ID(((P2CONST(tpl_task_activation_action, AUTOMATIC, OS_APPL_CONST))action)->task_id)
+	
+  /* call alarm action and save return value to launch error hook if alarm action goes wrong */
+  result_action = tpl_activate_task( ((P2CONST(tpl_task_activation_action, AUTOMATIC, OS_APPL_CONST))action)->task_id);
+	
+  PROCESS_ERROR(result_action)
+	
+  return result_action;
 }
 
 /**
@@ -78,10 +91,25 @@ FUNC(tpl_status, OS_CODE) tpl_action_setevent(
    * first member of tpl_setevent_action is a tpl_action
    * This cast behaves correctly.
    */
-  return tpl_set_event(
+
+  /*  init the error to no error  */
+  VAR(StatusType, AUTOMATIC) result_action = E_OK;
+	
+  /*  store information for error hook routine    */
+  STORE_SERVICE(OSServiceId_SetEvent)
+  STORE_TASK_ID(((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->task_id)
+  STORE_EVENT_MASK(((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->mask)
+	
+  /* call alarm action and save return value to launch error hook if alarm action goes wrong */
+  result_action = tpl_set_event(
       ((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->task_id,
       ((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->mask
   );
+	
+  PROCESS_ERROR(result_action);
+   
+  return result_action;
+	
 }
 
 #define OS_STOP_SEC_CODE
