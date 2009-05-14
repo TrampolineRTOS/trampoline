@@ -29,6 +29,7 @@
 #include "tpl_os_error.h"
 #include "tpl_os_errorhook.h"
 #include "tpl_machine_interface.h"
+#include "tpl_trace.h"
 
 #ifdef WITH_AUTOSAR
 #include "tpl_as_protec_hook.h"
@@ -161,6 +162,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
   IF_NO_EXTENDED_ERROR(result)
     /*  set the owner of the resource to the calling task     */
     res->owner = tpl_kern.running_id;
+    TRACE_RES_GET(res_id, tpl_kern.running_id)
     /*  add the ressource at the beginning of the
         resource list stored in the task descriptor              */
     res->next_res = tpl_kern.running->resources;
@@ -174,6 +176,8 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
           if the ceiling priority is greater than the current priority of
           the task  */
       tpl_kern.running->priority = res->ceiling_priority;
+      TRACE_TASK_CHANGE_PRIORITY(tpl_kern.running_id)
+      TRACE_ISR_CHANGE_PRIORITY(tpl_kern.running_id)
     }
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     tpl_start_resource_monitor(tpl_kern.running_id, res_id);
@@ -235,14 +239,16 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
     CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(res,result)
 
     IF_NO_EXTENDED_ERROR(result)
-        /*  get the saved priority  */
+        /*  get the saved priority  */      
       tpl_kern.running->priority = res->owner_prev_priority;
+      TRACE_TASK_CHANGE_PRIORITY(tpl_kern.running_id)
+      TRACE_ISR_CHANGE_PRIORITY(tpl_kern.running_id)
       /*  remove the resource from the resource list  */
       tpl_kern.running->resources = res->next_res;
       res->next_res = NULL;
       /*  remove the owner    */
       res->owner = INVALID_TASK;
-
+      TRACE_RES_RELEASED(res_id)
       tpl_schedule_from_running();
 # ifdef WITH_AUTOSAR_TIMING_PROTECTION
       tpl_stop_resource_monitor(tpl_kern.running_id, res_id);

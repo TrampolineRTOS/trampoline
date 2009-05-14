@@ -31,6 +31,7 @@
 #include "tpl_os_hooks.h"
 #include "tpl_os_errorhook.h"
 #include "tpl_os_task_kernel.h"
+#include "tpl_trace.h"
 
 #ifdef WITH_AUTOSAR
 #include "tpl_as_isr_kernel.h"
@@ -70,6 +71,7 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
     result = tpl_activate_task(task_id);
     if (result == (tpl_status)E_OK_AND_SCHEDULE)
     {
+      TRACE_TASK_EXECUTE(task_id)
       tpl_schedule_from_running();
 # ifndef WITH_SYSTEM_CALL
       if (tpl_kern.need_switch != NO_NEED_SWITCH)
@@ -114,14 +116,15 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 
 #ifndef NO_TASK
   IF_NO_EXTENDED_ERROR(result)
-    /*  the activate count is decreased 
+    /*  the activate count is decreased
      */
     tpl_kern.running->activate_count--;
-  
+
     /*  and let the scheduler do its job
      */
     tpl_schedule_from_dying();
-
+    TRACE_TASK_TERMINATE(tpl_kern.s_old->id,tpl_kern.s_old->id)
+    TRACE_ISR_TERMINATE(tpl_kern.s_old->id,tpl_kern.s_old->id)
 # ifndef WITH_SYSTEM_CALL
     if (tpl_kern.need_switch != NO_NEED_SWITCH)
     {
@@ -151,35 +154,37 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
 
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
-  
+
   /*  lock the kernel    */
   LOCK_KERNEL()
-  
+
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_ChainTask)
   STORE_TASK_ID(task_id)
-  
+
   /*  Check a call level error    */
   CHECK_TASK_CALL_LEVEL_ERROR(result)
   /*  Check a task_id error       */
   CHECK_TASK_ID_ERROR(task_id,result)
   /*  Check no resource is held by the terminating task   */
   CHECK_RUNNING_OWNS_REZ_ERROR(result)
-  
+
 #ifndef NO_TASK
   IF_NO_EXTENDED_ERROR(result)
     /* the activate count is decreased
      */
     tpl_kern.running->activate_count--;
-  
+
     /* activate the chained task
      */
     result = tpl_activate_task(task_id);
-    
+
     if (result == E_OK_AND_SCHEDULE)
     {
       /*  and let the scheduler do its job                            */
       tpl_schedule_from_dying();
+      TRACE_TASK_TERMINATE(tpl_kern.s_old->id,tpl_kern.running_id)
+      TRACE_ISR_TERMINATE(tpl_kern.s_old->id,tpl_kern.running_id)
 # ifndef WITH_SYSTEM_CALL
       if (tpl_kern.need_switch != NO_NEED_SWITCH)
       {
@@ -192,15 +197,15 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
       /* the activate count is restored since the caller does not terminate */
       tpl_kern.running->activate_count++;
     }
-    
+
   IF_NO_EXTENDED_ERROR_END()
 #endif
-  
+
   PROCESS_ERROR(result)
-  
+
   /*  unlock the task structures  */
   UNLOCK_KERNEL()
-  
+
   return result;
 }
 
@@ -208,21 +213,21 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
 FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 {
   VAR(StatusType, AUTOMATIC) result = E_OK;
-  
+
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
-  
+
   /*  lock the task system    */
   LOCK_KERNEL()
-  
+
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_Schedule)
-  
+
   /*  Check a call level error    */
   CHECK_TASK_CALL_LEVEL_ERROR(result)
   /*  Check no resource is held by the calling task   */
   CHECK_RUNNING_OWNS_REZ_ERROR(result)
-  
+
 #ifndef NO_TASK
   IF_NO_EXTENDED_ERROR(result)
     /*  release the internal resource   */
@@ -242,12 +247,12 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 # endif
   IF_NO_EXTENDED_ERROR_END()
 #endif
-  
+
   PROCESS_ERROR(result)
-  
+
   /*  unlock the task structures  */
   UNLOCK_KERNEL()
-  
+
   return result;
 }
 
@@ -267,9 +272,9 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
   {
     *task_id = INVALID_TASK;
   }
-  
+
   UNLOCK_KERNEL()
-  
+
   return E_OK;
 }
 

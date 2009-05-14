@@ -28,6 +28,7 @@
 #include "tpl_os_error.h"
 #include "tpl_os_errorhook.h"
 #include "tpl_machine_interface.h"
+#include "tpl_trace.h"
 
 #include "tpl_debug.h"
 
@@ -68,7 +69,8 @@ FUNC(tpl_status, OS_CODE) tpl_raise_alarm(
     P2VAR(tpl_alarm_static, AUTOMATIC, OS_APPL_DATA) stat_alarm = (tpl_alarm_static *)time_obj->stat_part;
     /*  Get the action to perform from the alarm descriptor */
     P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action_desc = stat_alarm->action;
-
+    
+    TRACE_ALARM_EXPIRE(time_obj)
     /*  Call the action                                     */
     result = (action_desc->action)(action_desc) ;
 
@@ -209,6 +211,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
             alarm->cycle = cycle;
             alarm->state = ALARM_ACTIVE;
             tpl_insert_time_obj(alarm);
+	    TRACE_ALARM_SCHEDULED(alarm)
         }
         else
         {
@@ -266,6 +269,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
         alarm->cycle = cycle;
         alarm->state = ALARM_ACTIVE;
         tpl_insert_time_obj(alarm);
+	TRACE_ALARM_SCHEDULED(alarm)
     }
     else
     {
@@ -313,6 +317,7 @@ FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
     if (alarm->state == (tpl_time_obj_state)ALARM_ACTIVE)
     {
         tpl_remove_time_obj(alarm);
+	TRACE_ALARM_CANCEL(alarm_id)
         alarm->state = ALARM_SLEEP;
     }
     else

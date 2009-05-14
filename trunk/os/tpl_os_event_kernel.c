@@ -29,6 +29,7 @@
 #include "tpl_os_kernel.h"
 #include "tpl_os_task_kernel.h"
 #include "tpl_machine_interface.h"
+#include "tpl_trace.h"
 
 #ifdef WITH_AUTOSAR
 #include "tpl_as_isr_kernel.h"
@@ -199,6 +200,7 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   if ((task_events->evt_set & event) == 0)
   {
     /*  no one is set, the task goes in the WAITING state   */
+    TRACE_TASK_WAIT(tpl_kern.running_id)
     tpl_kern.running->state = WAITING;
     /*  and a rescheduling occurs                           */
     tpl_schedule_from_waiting();

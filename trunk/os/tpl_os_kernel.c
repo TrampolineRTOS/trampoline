@@ -34,6 +34,9 @@
 #include "tpl_machine.h"
 #include "tpl_machine_interface.h"
 #include "tpl_dow.h"
+#include "tpl_trace.h"
+#include <stdio.h>
+
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
 #include "tpl_as_stack_monitor.h"
@@ -390,7 +393,7 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
   /*  the priority used as level in the ready list
       for a newly activated object is the base priority                   */
   prio = tpl_stat_proc_table[proc_id]->base_priority;
-  
+
   DOW_ASSERT((prio >= 0) && (prio < PRIO_LEVEL_COUNT))
   DOW_ASSERT(tpl_fifo_rw[prio].size < tpl_ready_list[prio].size)
   
@@ -407,6 +410,7 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
   
   /* adjust the size                                                      */
   tpl_fifo_rw[prio].size++;
+
   
   /* adjust the highest priority non empty fifo                           */
   if (prio > tpl_h_prio) {
@@ -586,7 +590,7 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
   /*  the priority used as level in the ready list
       for a newly activated object is the base priority */
   prio = tpl_stat_proc_table[proc_id]->base_priority ;
-  
+
   DOW_ASSERT((prio >= 0) && (prio < PRIO_LEVEL_COUNT))
   DOW_ASSERT(tpl_fifo_rw[prio].size < tpl_ready_list[prio].size)
   
@@ -809,6 +813,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
     tpl_kern.old = tpl_kern.running;
     tpl_kern.s_old = tpl_kern.s_running;
     
+    
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     /*  pause the budget monitor                                  */
     tpl_pause_budget_monitor(tpl_kern.running_id);
@@ -819,7 +824,10 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
     tpl_kern.running_id = tpl_get_proc();
     tpl_kern.running = tpl_dyn_proc_table[tpl_kern.running_id];
     tpl_kern.s_running = tpl_stat_proc_table[tpl_kern.running_id];
-    
+  
+      TRACE_ISR_PREEMPT(tpl_kern)
+      TRACE_TASK_PREEMPT(tpl_kern)
+
     if (tpl_kern.running->state == READY_AND_NEW)
     {
       /*  the object has not be preempted. So its
@@ -838,6 +846,8 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
     
     /*  the inserted task become RUNNING                          */
+    TRACE_TASK_EXECUTE(tpl_kern.running_id)
+    TRACE_ISR_RUN(tpl_kern.running_id)
     tpl_kern.running->state = RUNNING;
     /*  If an internal resource is assigned to the task
         and it is not already taken by it, take it                */
@@ -1038,6 +1048,8 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
       {
         /*  the initialization is postponed to the time it will
             get the CPU as indicated by READY_AND_NEW state             */
+	TRACE_TASK_ACTIVATE(task_id)
+
         task->state = (tpl_proc_state)READY_AND_NEW;
         
 #ifndef NO_EXTENDED_TASK
@@ -1115,7 +1127,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
           /*  set the state to READY  */
           task->state = (tpl_proc_state)READY;
           /*  put the task in the READY list          */
-          
+          TRACE_TASK_RELEASED(task_id,incoming_event)
           tpl_put_new_proc(task_id);
           
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
@@ -1257,6 +1269,7 @@ FUNC(void, OS_CODE) tpl_start_os_service(
   /*  Call the startup hook. According to the spec, it should be called
       after the os is initialized and before the scheduler is running     */
   CALL_STARTUP_HOOK()
+  TRACE_TPL_INIT()
 
   /*  Call tpl_schedule to elect the greatest priority task */
   if(tpl_h_prio != -1)
@@ -1281,8 +1294,10 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
     CONST(tpl_status, AUTOMATIC) error  /*@unused@*/)
 {
     CALL_SHUTDOWN_HOOK(error)
+    TRACE_TPL_TERMINATE()
     /* architecture dependant shutdown. */
     tpl_shutdown();
+    
 }
 
 #define OS_STOP_SEC_CODE

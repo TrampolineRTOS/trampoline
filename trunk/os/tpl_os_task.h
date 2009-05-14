@@ -28,6 +28,8 @@
 #define TPL_OS_TASK_H
 
 #include "tpl_os_types.h"
+#include "tpl_os_internal_types.h"
+#include "tpl_os_custom_types.h"
 
 /*
  * Task Management
