@@ -29,7 +29,7 @@
 #include "tpl_os_timeobj_kernel.h"
 
 #if WITH_TRACE == YES
-#include "tpl_trace_posix.h"
+#include "tpl_target_trace.h"
 #endif
 
 /**

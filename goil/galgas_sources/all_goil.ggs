@@ -23,9 +23,9 @@
 #
 
 project all_goil :
-  lexique "goil_lexique.ggs" : makefile, xcode_tool, xcode_app ;
-  option "goil_options.ggs" : makefile, xcode_tool, xcode_app ;
-  syntax "goil_syntax.ggs" : makefile, xcode_tool ;
+  lexique   "goil_lexique.ggs" : makefile, xcode_tool, xcode_app ;
+  option    "goil_options.ggs" : makefile, xcode_tool, xcode_app ;
+  syntax    "goil_syntax.ggs" : makefile, xcode_tool ;
   semantics "goil_semantics.ggs" : makefile, xcode_tool ;
   semantics "goil_basic_types.ggs" : makefile, xcode_tool ;
   semantics "goil_semantic_types.ggs" : makefile, xcode_tool ;

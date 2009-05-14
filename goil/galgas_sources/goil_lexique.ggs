@@ -82,7 +82,15 @@ list objectRefType error message "object reference type '%K'" style keywordsStyl
 list os_attributes error message "os attribute '%K'" style keywordsStyle :
     "STATUS", "EXTENDED", "STARTUPHOOK", "ERRORHOOK", "SHUTDOWNHOOK", "PRETASKHOOK",
     "POSTTASKHOOK", "USEGETSERVICEID", "USEPARAMETERACCESS", "USERESSCHEDULER", "SYSTEM_CALL",
-    "TRACE", "FILE", "METHOD", "FORMAT" ;
+    "TRACE" ;
+
+#
+# TRACE attributes
+#
+list trace_attributes error message "trace attribute '%K'" style keywordsStyle :
+  "FILE", "METHOD", "FORMAT", "TRACE_TASK", "TRACE_ISR",
+  "TRACE_RESOURCE", "TRACE_ALARM", "TRACE_USER" ;
+
 
 #
 # Task object predefined attributes that are not
@@ -301,6 +309,7 @@ rule 'a'->'z' | 'A'->'Z' :
         default search att_token in miscSpecifiers
         default search att_token in objectRefType
         default search att_token in os_attributes
+        default search att_token in trace_attributes
         default search att_token in task_attributes
         default search att_token in counter_attributes
         default search att_token in as_counter_attributes

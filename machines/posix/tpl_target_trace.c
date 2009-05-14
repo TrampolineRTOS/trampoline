@@ -24,13 +24,20 @@
  * $Author: ljunker $
  * $URL: http://trampoline.rts-software.org/svn/trunk/os/tpl_trace.c $
  */
-#include "tpl_trace_posix.h"
+#include "tpl_target_trace.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
 #include <string.h> /* strncpy() */
 #include <stdlib.h> /* atol() */
+
+
+VAR(tpl_str_trace, OS_CONST) trace;
+
+VAR(char,OS_VAR) DATE[20];
+
+FILE* TRACE_FILE_PT;
 
 /**
 * DATE FUNCTION
@@ -96,7 +103,7 @@ FUNC(void, OS_CODE)tpl_trace_format_txt(void)
   int i = 0;
   if(TRACE_FILE_PT == NULL)
   {
-  TRACE_FILE_PT = fopen(TRACE_FILE,"a");
+  TRACE_FILE_PT = fopen(TRACE_FILE,"w");
   }
   fprintf(TRACE_FILE_PT,"%s,%d",trace.begin_date,trace.trace_type);
   while ( trace.value[i] != -1 )
@@ -104,7 +111,6 @@ FUNC(void, OS_CODE)tpl_trace_format_txt(void)
     fprintf(TRACE_FILE_PT,",%d",trace.value[i]);
     i++;
   }
-  fprintf(TRACE_FILE_PT,",%s\n",trace.end_date);
 }
 
 
@@ -113,16 +119,16 @@ FUNC(void, OS_CODE)tpl_trace_format_xml(void)
   int i = 0;
   if(TRACE_FILE_PT == NULL)
   {
-  TRACE_FILE_PT = fopen(TRACE_FILE,"a");
+  TRACE_FILE_PT = fopen(TRACE_FILE,"w");
   fprintf(TRACE_FILE_PT,"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n<!DOCTYPE trace\n[\n<!ELEMENT trace(record*)>\n<!ELEMENT record (begin_date,trace_type,value*,end_date)>\n<!ELEMENT begin_date>\n<!ELEMENT trace_type>\n<!ELEMENT value>\n<!ELEMENT end_value>\n]>\n<trace>\n");
   }
-  fprintf(TRACE_FILE_PT,"<record>\n<begin_date>%s</begin_date>\n<trace_type>%d</trace_type>\n",trace.begin_date,trace.trace_type);
+  fprintf(TRACE_FILE_PT,"<record>\n<date>%s</date>\n<trace_type>%d</trace_type>\n",trace.begin_date,trace.trace_type);
   while ( trace.value[i] != -1 )
   {
     fprintf(TRACE_FILE_PT,"<value>%d</value>\n",trace.value[i]);
     i++;
   }
-  fprintf(TRACE_FILE_PT,"<end_date>%s</end_date>\n</record>\n",trace.end_date);
+  fprintf(TRACE_FILE_PT,"</record>\n");
   if(trace.trace_type == 19)
   {
     fprintf(TRACE_FILE_PT,"</trace>");
@@ -136,7 +142,7 @@ FUNC(void, OS_CODE)tpl_trace_format_bin(void)
   long date;
   if(TRACE_FILE_PT == NULL)
   {
-  TRACE_FILE_PT = fopen(TRACE_FILE,"ab");
+  TRACE_FILE_PT = fopen(TRACE_FILE,"wb");
   }
   date = atol(trace.begin_date);
   fwrite(&date,1,sizeof(date),TRACE_FILE_PT);
@@ -146,8 +152,6 @@ FUNC(void, OS_CODE)tpl_trace_format_bin(void)
     fwrite(&trace.value[i],1,sizeof(trace.value[i]),TRACE_FILE_PT);
     i++;
   }
-  date = atol(trace.end_date);
-  fwrite(&date,1,sizeof(date),TRACE_FILE_PT);
 }
 
 #define OS_STOP_SEC_CODE
