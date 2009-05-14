@@ -25,9 +25,12 @@
 #ifndef __TPL_TRACE_H__
 #define __TPL_TRACE_H__
 
-#include "tpl_trace_posix.h"
 #include "tpl_os_kernel.h"
 #include "tpl_os_timeobj_kernel.h"
+
+#if WITH_TRACE == YES
+#include "tpl_trace_posix.h"
+#endif
 
 /**
 * @def IDs of the different traces
