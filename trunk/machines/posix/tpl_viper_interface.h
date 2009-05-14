@@ -18,7 +18,7 @@
 #define TPL_VIPER_INTERFACE_H
 
 
-#define _XOPEN_SOURCE 500
+#define _XOPEN_SOURCE 600
 #include <unistd.h>
 
 extern void tpl_viper_init(void);

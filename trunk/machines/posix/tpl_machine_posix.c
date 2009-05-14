@@ -35,7 +35,7 @@
 
 VAR(tpl_stack_word, OS_VAR) idle_stack_zone[32768/sizeof(tpl_stack_word)] = {0} ;
 VAR(struct TPL_STACK, OS_VAR) idle_task_stack = { idle_stack_zone, 32768} ;
-VAR(struct TPL_CONTEXT, OS_VAR) idle_task_context = { {0}, {0} };
+VAR(struct TPL_CONTEXT, OS_VAR) idle_task_context;
 
 extern volatile u32 tpl_locking_depth;
 
