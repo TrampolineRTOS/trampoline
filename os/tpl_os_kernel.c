@@ -35,8 +35,6 @@
 #include "tpl_machine_interface.h"
 #include "tpl_dow.h"
 #include "tpl_trace.h"
-#include <stdio.h>
-
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
 #include "tpl_as_stack_monitor.h"
@@ -54,9 +52,7 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-STATIC /*@null@*/
-FUNC(VAR(tpl_proc_id, AUTOMATIC), OS_CODE)
-tpl_get_proc(void);
+STATIC /*@null@*/ FUNC(VAR(tpl_proc_id, AUTOMATIC), OS_CODE) tpl_get_proc(void);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
