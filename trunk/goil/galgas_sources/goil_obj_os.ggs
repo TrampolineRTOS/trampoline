@@ -192,6 +192,12 @@ rule <os>
       $TRUE$ ; ${$ ; 
       @trace_method m := [@trace_void new !here] ;
       @lstring f := [@lstring new !"" !here] ;
+      @void void_obj := [@void new !here] ;
+      @basic_type tt := void_obj ;
+      @basic_type ti := void_obj ;
+      @basic_type tr := void_obj ;
+      @basic_type ta := void_obj ;
+      @basic_type tu := void_obj ;
       repeat
       while
         $METHOD$ ; $=$ ;
@@ -203,8 +209,27 @@ rule <os>
       while
         @lstring fmt ;
         $FORMAT$ ; $=$ ; $idf$ ?fmt ;
-        set_lstring_if_empty !?f !fmt !"FORMAT" ;
-        $;$ ;
+        set_lstring_if_empty !?f !fmt !"FORMAT" ; $;$ ;
+      while
+        @lbool b ;
+        $TRACE_TASK$ ; $=$ ; <boolean> ?b ;
+        set_bool !?tt !b !"TRACE_TASK" ; $;$ ;
+      while
+        @lbool b ;
+        $TRACE_ISR$ ; $=$ ; <boolean> ?b ;
+        set_bool !?ti !b !"TRACE_ISR" ; $;$ ;
+      while
+        @lbool b ;
+        $TRACE_RESOURCE$ ; $=$ ; <boolean> ?b ;
+        set_bool !?tr !b !"TRACE_RESOURCE" ; $;$ ;
+      while
+        @lbool b ;
+        $TRACE_ALARM$ ; $=$ ; <boolean> ?b ;
+        set_bool !?ta !b !"TRACE_ALARM" ; $;$ ;
+      while
+        @lbool b ;
+        $TRACE_USER$ ; $=$ ; <boolean> ?b ;
+        set_bool !?tu !b !"TRACE_USER" ; $;$ ;
       end repeat ;
       if [f string] == "" then
         error here : "Missing FORMAT in TRACE" ;
@@ -213,7 +238,16 @@ rule <os>
       when == @trace_void do
         error here : "Missing METHOD in TRACE";
       else end cast ;
-      t := [@trace_on new !here !f !m] ;
+      t := [@trace_on new
+        !here
+        !f
+        !m
+        !tt
+        !ti
+        !tr
+        !ta
+        !tu
+      ] ;
       $}$ ;
     or
       $FALSE$ ; t := [@trace_off new !here] ;

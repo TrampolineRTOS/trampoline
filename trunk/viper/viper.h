@@ -11,7 +11,9 @@
 #define __VIPER_H__
 
 /* define required by Linux. */
+#ifndef _XOPEN_SOURCE
 #define _XOPEN_SOURCE 500
+#endif
 #include <unistd.h>
 #include <sys/types.h>
 

@@ -81,11 +81,12 @@ struct STR_TRACE
 };
 
 typedef struct STR_TRACE tpl_str_trace;
-VAR(tpl_str_trace, OS_CONST) trace;
 
-VAR(char,OS_VAR) DATE[20];
+extern VAR(tpl_str_trace, OS_CONST) trace;
 
-FILE* TRACE_FILE_PT;
+extern VAR(char,OS_VAR) DATE[20];
+
+extern FILE* TRACE_FILE_PT;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"

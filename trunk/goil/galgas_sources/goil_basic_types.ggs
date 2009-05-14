@@ -310,14 +310,35 @@ end routine ;
 routine get_bool
   ?@basic_type t
   !@bool       b
+  ?@bool       def
 :
   cast t :
   when == @bool_class bc do
     b := [bc value] ;
   else
-    b := false ;
+    b := def ;
   end cast ;
 end routine ;
+
+function yes_no ?@bool b ->@string res :
+  if b then res := "YES"; else res := "NO"; end if;
+end function ;
+
+function bool_define
+  ?@string     flag
+  ?@basic_type t
+  ?@bool       def
+  ->@string    res
+:
+  cast t :
+  when == @void do
+    res := "#define    ".flag."    ".yes_no(!def)."\n" ;
+  when == @bool_class b do
+    res := "#define    ".flag."    ".yes_no(![b value])."\n" ;
+  else
+    res := "#define    ".flag."    ".yes_no(!def)."\n" ;
+  end cast ;
+end function ;
 
 routine bool_flag
   ?!@string res

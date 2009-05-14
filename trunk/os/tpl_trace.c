@@ -442,7 +442,7 @@ FUNC(void, OS_CODE) tpl_trace_tpl_init()
   tpl_trace_get_date();
   EVENT_BEGIN(TPL_INIT)
   EVENT_END()
-    FORMAT_TRACE()
+  FORMAT_TRACE()
 }
 
 FUNC(void, OS_CODE) tpl_trace_tpl_terminate()
@@ -451,7 +451,7 @@ FUNC(void, OS_CODE) tpl_trace_tpl_terminate()
 
   EVENT_BEGIN(TPL_TERMINATE)
   EVENT_END()
-    FORMAT_TRACE()
+  FORMAT_TRACE()
 }
 
 #define OS_STOP_SEC_CODE
