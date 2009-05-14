@@ -28,7 +28,7 @@
 #include "tpl_os_error.h"
 #include "tpl_os_errorhook.h"
 #include "tpl_machine_interface.h"
-
+#include "tpl_trace.h"
 #include "tpl_os_it_kernel.h"
 
 #include <assert.h>
@@ -259,6 +259,7 @@ STATIC FUNC(void, OS_CODE) tpl_activate_isr(
       }
     }
     /*  put it in the list  */
+    TRACE_ISR_ACTIVATE(isr_id);
     tpl_put_new_proc(isr_id);
     /*  inc the isr activation count. When the isr will terminate
         it will dec this count and if not zero it will be reactivated   */
