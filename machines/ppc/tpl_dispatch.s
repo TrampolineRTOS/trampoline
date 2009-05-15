@@ -39,7 +39,7 @@ TPL_EXTERN  tpl_stat_proc_table
 TPL_EXTERN  tpl_save_context
 TPL_EXTERN  tpl_load_context
 TPL_EXTERN  tpl_unset_mp
-TPL_EXTERN  tpl_running_id
+TPL_EXTERN  tpl_kern
 TPL_EXTERN  tpl_need_switch
 
   .global tpl_kernel_stack
@@ -83,15 +83,6 @@ tpl_sc_handler:
     mfcr r11                            /* save the CR                  */
     stw  r11,KS_CR(r1)
     
-    /*  Save the id of the caller in the kernel stack. This has to be
-        done because if the service does a reschedule, it will be
-        changed and we need it to do the context switch                 */
-    
-    lis  r11,TPL_HIG(tpl_running_id)    /* get the address of the       */
-    ori  r11,r11,TPL_LOW(tpl_running_id)/* tpl_running_id variable      */
-    lwz  r11,0(r11)                     /* get tpl_running_id           */
-    stw  r11,KS_RUNNING_ID(r1)          /* save it in the kernel task   */
-    
     /*  Then get the pointer to the service that is called              */
     
     slwi r0,r0,2                              /* compute the offset     */
@@ -104,12 +95,10 @@ tpl_sc_handler:
         calling the service. This is needed because, beside
         tpl_schedule, no service modify this variable. So an old value
         is retained                                                     */
-    lis  r11,TPL_HIG(tpl_need_switch)
-    ori  r11,r11,TPL_LOW(tpl_need_switch)
-    stw  r11,KS_NSW_PTR(r1)   /*  the pointer to this variable is saved
-                                  in the kernel stack for future use    */
+    lis  r11,TPL_HIG(tpl_kern)
+    ori  r11,r11,TPL_LOW(tpl_kern)
     li   r0,NO_NEED_SWITCH
-    stb  r0,0(r11)
+    stb  r0,20(r11)
     
     /*  Call the service                                                */
     
@@ -118,9 +107,10 @@ tpl_sc_handler:
     /*  Check the tpl_need_switch variable
         to see if a switch should occur                                 */
     
-    lwz   r11,KS_NSW_PTR(r1)
-    lbz   r11,0(r11)
-    andi. r0,r11,NEED_SWITCH
+    lis   r11,TPL_HIG(tpl_kern)
+    ori   r11,r11,TPL_LOW(tpl_kern)
+    lbz   r12,20(r11)
+    andi. r0,r12,NEED_SWITCH
     beq   no_context_switch
     
     /* r3 will be destroyed by the call to tpl_save_context
@@ -129,23 +119,15 @@ tpl_sc_handler:
        
     stw   r3,KS_RETURN_CODE(r1)
     
-    /* save the pointer to stat_proc_table in the kernel stack
-       for future use                                                   */
-    lis   r3,TPL_HIG(tpl_stat_proc_table)
-    ori   r3,r3,TPL_LOW(tpl_stat_proc_table)
-    stw   r3,KS_SPT_PTR(r1)
-    
     /* Check if context of the task/isr that just lost the CPU needs
        to be saved. This occurs on a TerminateTask or ChainTask         */
     
-    andi. r0,r11,NEED_SAVE
+    andi. r0,r12,NEED_SAVE
     beq   no_save
     
     /* get the context pointer of the task that just lost the CPU       */
     
-    lwz   r0,KS_RUNNING_ID(r1)          /* get the task id              */
-    slwi  r0,r0,2                       /* compute the offset           */
-    lwzx  r3,r3,r0                      /* get the context pointer      */
+    lwz   r3,0(r11)                     /* get s_old                    */
     
     bl    tpl_save_context
     
@@ -153,12 +135,7 @@ tpl_sc_handler:
 
 no_save:
  
-    lis   r3,TPL_HIG(tpl_running_id)    /* get the task/isr id          */
-    ori   r3,r3,TPL_LOW(tpl_running_id)
-    lwz   r0,0(r3)
-    slwi  r0,r0,2                       /* compute the offset           */
-    lwz   r3,KS_SPT_PTR(r1)
-    lwzx  r3,r3,r0                      /* get the context pointer      */
+    lwzx  r3,4(r11)                     /* get s_running                */
     
     bl    tpl_load_context
     
@@ -168,9 +145,8 @@ no_save:
     
     /*  set up the memory protection for the process that just
         got the CPU                                                     */
-//        lis   r11,TPL_HIG(tpl_running_id)   /* get the task descriptor      */
-//        ori   r11,r11,TPL_LOW(tpl_running_id)
-    
+
+    /* TODO */    
 no_context_switch:
     
     /*  Restore the execution context of the caller

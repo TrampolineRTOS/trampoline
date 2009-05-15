@@ -36,13 +36,6 @@
 #define E_OS_MISSINGEND           18
 
 /**
- * @def E_OS_DISABLEDINT
- *
- * A service of the OS is called inside an interrupt disable/enable pair 
- */
-#define E_OS_DISABLEDINT          19
-
-/**
  * @def E_OS_STACKFAULT
  *
  * A stack fault detected via stack monitoring by the OS

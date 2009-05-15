@@ -135,17 +135,19 @@ void tpl_cancel_watchdog(void)
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
-tpl_bool tpl_check_stack_pointer(const tpl_stack *stack)
+FUNC(tpl_bool, OS_CODE) tpl_check_stack_pointer(
+  CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
-    return 1;
+  return 1;
 }
 
-tpl_bool tpl_check_stack_footprint(const tpl_stack *stack)
+tpl_bool tpl_check_stack_footprint(
+  CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
-    return 1;
+  return 1;
 }
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
-
+                                   
 /*
  * table which stores the signals used for interrupt
  * handlers.
@@ -346,8 +348,8 @@ void tpl_release_task_lock(void)
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 FUNC(void, OS_CODE) tpl_switch_context(
-    CONSTP2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
-    CONSTP2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
+    CONSTP2CONST(tpl_context, AUTOMATIC, OS_CONST) old_context,
+    CONSTP2CONST(tpl_context, AUTOMATIC, OS_CONST) new_context)
 {
     assert( **new_context != co_current() );
     if( *new_context == &idle_task_context )
@@ -360,8 +362,8 @@ FUNC(void, OS_CODE) tpl_switch_context(
 
 
 FUNC(void, OS_CODE) tpl_switch_context_from_it(
-    CONSTP2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) old_context,
-    CONSTP2CONST(tpl_context, OS_APPL_DATA, AUTOMATIC) new_context)
+    CONSTP2CONST(tpl_context, AUTOMATIC, OS_CONST) old_context,
+    CONSTP2CONST(tpl_context, AUTOMATIC, OS_CONST) new_context)
 {
     assert( **new_context != co_current() );
     if( *new_context == &idle_task_context )

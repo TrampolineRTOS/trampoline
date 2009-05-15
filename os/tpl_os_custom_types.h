@@ -54,6 +54,8 @@ typedef P2VAR(u8, TYPEDEF, OS_APPL_DATA) tpl_buffer;
  */
 typedef u8 tpl_scheduled_watchdog_id;
 
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+
 /**
  * Time data (duration or date) used in timing protection. The unit is system
  * dependant (see #tpl_get_local_current_date)).
@@ -61,8 +63,6 @@ typedef u8 tpl_scheduled_watchdog_id;
  * @see #tpl_get_local_current_date
  */
 typedef u32 tpl_time;
-
-#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
 #endif /* TPL_OS_CUSTOM_TYPES_H */
 

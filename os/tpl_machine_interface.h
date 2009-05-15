@@ -45,8 +45,8 @@
  *                      scheduled.
  */
 extern FUNC(void, OS_CODE) tpl_switch_context(
-  CONSTP2CONST(tpl_context, AUTOMATIC, OS_APPL_DATA) old_context,
-  CONSTP2CONST(tpl_context, AUTOMATIC, OS_APPL_DATA) new_context
+  CONSTP2CONST(tpl_context, AUTOMATIC, OS_CONST) old_context,
+  CONSTP2CONST(tpl_context, AUTOMATIC, OS_CONST) new_context
 );
 
 
@@ -62,8 +62,8 @@ extern FUNC(void, OS_CODE) tpl_switch_context(
  *                      scheduled.
  */
 extern FUNC(void, OS_CODE) tpl_switch_context_from_it(
-  CONSTP2CONST(tpl_context, AUTOMATIC, OS_APPL_DATA) old_context,
-  CONSTP2CONST(tpl_context, AUTOMATIC, OS_APPL_DATA) new_context
+  CONSTP2CONST(tpl_context, AUTOMATIC, OS_CONST) old_context,
+  CONSTP2CONST(tpl_context, AUTOMATIC, OS_CONST) new_context
 );
 
 
@@ -202,8 +202,7 @@ extern FUNC(tpl_time, OS_CODE) tpl_get_local_current_date(void);
  * Depending on what the hardware is able to do, this function may not be
  * able to detect an error. Only undoubted errors are reported.
  *
- * @param stack a pointeur to the stack section of the object (task or ISR)
- *        to check
+ * @param proc_id is the id of the process (task or ISR) to check
  *
  * @retval 1 no stack overflow detected
  * @retval 0 stack overflow deteted
@@ -211,8 +210,7 @@ extern FUNC(tpl_time, OS_CODE) tpl_get_local_current_date(void);
  * @see #tpl_check_stack_footprint
  */
 FUNC(tpl_bool, OS_CODE) tpl_check_stack_pointer(
-  CONSTP2CONST(tpl_stack, AUTOMATIC, OS_APPL_DATA) stack
-);
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 /**
  * @internal
@@ -220,8 +218,7 @@ FUNC(tpl_bool, OS_CODE) tpl_check_stack_pointer(
  * This functions checks the stack did not overflowed by looking if the stack
  * tagging has not been completly erased.
  *
- * @param stack a pointeur to the stack section of the object (task or ISR)
- *        to check
+ * @param proc_id is the id of the process (task or ISR) to check
  *
  * @note This function needs a stack tagging which should be done at system
  * initialization (#tpl_init_machine). The stack tagging consists in filling
@@ -234,8 +231,7 @@ FUNC(tpl_bool, OS_CODE) tpl_check_stack_pointer(
  * @retval 0 stack overflow deteted
  */
 FUNC(u8, OS_CODE) tpl_check_stack_footprint(
-  CONSTP2CONST(tpl_stack, AUTOMATIC, OS_APPL_DATA) stack
-);
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
 #define OS_STOP_SEC_CODE

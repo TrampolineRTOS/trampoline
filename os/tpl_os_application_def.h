@@ -142,30 +142,6 @@
 
 #ifdef WITH_AUTOSAR
 /**
- * @def WITH_AUTOSAR_TIMING_PROTECTION
- *
- * @internal
- *
- * This compilation flag is automatically set when WITH_AUTOSAR is defined.
- *
- * One can disable timing protection while using AUTOSAR by undefining it.
- * This can be useful for debugging.
- */
-#define WITH_AUTOSAR_TIMING_PROTECTION
-
-/**
- * @def WITH_AUTOSAR_STACK_MONITORING
- *
- * @internal
- *
- * This compilation flag is automatically set when WITH_AUTOSAR is defined.
- *
- * One can disable stack monitoring while using AUTOSAR by undefining it.
- * This can be useful for debugging.
- */
-#define WITH_AUTOSAR_STACK_MONITORING
-
-/**
  * @def WITH_OSAPPLICATION
  *
  * @internal
