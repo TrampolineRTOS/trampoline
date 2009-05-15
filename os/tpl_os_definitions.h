@@ -186,9 +186,12 @@
 #ifdef WITH_AUTOSAR
 
 /**
- * TODO: Document this
+ * @def E_OS_DISABLEDINT
+ *
+ * A service of the OS is called inside an interrupt disable/enable pair 
  */
-#define E_OS_DISABLEDINT 9
+#define E_OS_DISABLEDINT          19
+
 #endif
 
 /**************************************
