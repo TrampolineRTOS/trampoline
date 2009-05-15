@@ -65,9 +65,10 @@ STATIC /*@null@*/ FUNC(VAR(tpl_proc_id, AUTOMATIC), OS_CODE) tpl_get_proc(void);
  * @def INVALID_TASK
  *
  * This value is used to specify an invalid #TaskType
- * It is initialise by invalid_task_id to initialise other structure without INVALID_TASK, which is a constant.
+ * It is initialise by INVALID_TASK_ID to initialise other structure
+ * without INVALID_TASK, which is a constant.
  */
-CONST(TaskType, AUTOMATIC) INVALID_TASK = INVALID_TASK_ID;
+CONST(tpl_proc_id, AUTOMATIC) INVALID_TASK = INVALID_TASK_ID;
 
 /*
  * @internal

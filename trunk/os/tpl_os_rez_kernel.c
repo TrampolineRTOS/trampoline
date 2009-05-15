@@ -35,8 +35,7 @@
 #include "tpl_as_protec_hook.h"
 #endif
 
-#include "tpl_os_task.h"
-DeclareTask(INVALID_TASK);
+extern CONST(tpl_proc_id, AUTOMATIC) INVALID_TASK;
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -56,7 +55,7 @@ CONST(tpl_resource_id, OS_CONST) RES_SCHEDULER = RESOURCE_COUNT - 1;
  *
  * This value is used to specify an invalid resource
  */
-CONST(tpl_resource_id, AUTOMATIC) INVALID_RESOURCE = (-1);
+CONST(tpl_resource_id, AUTOMATIC) INVALID_RESOURCE = (tpl_resource_id)(-1);
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -73,7 +72,7 @@ CONST(tpl_resource_id, AUTOMATIC) INVALID_RESOURCE = (-1);
 VAR(tpl_resource, OS_VAR) res_sched_rez_desc = {
   RES_SCHEDULER_PRIORITY, /*  ceiling priority                            */
   0,                      /*  owner_prev_priority                         */
-  INVALID_TASK_ID,           /*  owner                                       */
+  INVALID_TASK_ID,        /*  owner                                       */
 #ifdef WITH_OSAPPLICATION
   INVALID_OSAPPLICATION,  /*  OS Application id                           */
 #endif    
