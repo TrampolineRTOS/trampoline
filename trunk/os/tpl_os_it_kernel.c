@@ -31,7 +31,9 @@
 #include "tpl_trace.h"
 #include "tpl_os_it_kernel.h"
 
+#if defined(__unix__) || defined(__APPLE__)
 #include <assert.h>
+#endif
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
 #include "tpl_as_stack_monitor.h"

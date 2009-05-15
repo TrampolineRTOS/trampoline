@@ -805,5 +805,5 @@ STATIC FUNC(void, OS_CODE) tpl_unschedule_watchdog(
 #include "tpl_memmap.h"
 
 #else /* defined WITH_AUTOSAR_TIMING_PROTECTION */
-static u8 nothing;
+volatile static u8 nothing;
 #endif /* !defined WITH_AUTOSAR_TIMING_PROTECTION */
