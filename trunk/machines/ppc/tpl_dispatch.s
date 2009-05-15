@@ -135,7 +135,7 @@ tpl_sc_handler:
 
 no_save:
  
-    lwzx  r3,4(r11)                     /* get s_running                */
+    lwz   r3,4(r11)                     /* get s_running                */
     
     bl    tpl_load_context
     

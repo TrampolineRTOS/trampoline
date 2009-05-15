@@ -25,9 +25,10 @@
  * - OS shutdown
  */
 
+#include "tpl_os.h"
+
 #ifndef WITH_SYSTEM_CALL
 
-#include "tpl_os.h"
 #include "tpl_os_kernel.h"
 #include "tpl_machine_interface.h"
 
@@ -35,19 +36,8 @@
 #include "tpl_as_timing_protec.h"
 #endif
 
-#define OS_START_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
-/* MISRA RULE 27 VIOLATION: This object has external linkage
-  but is only used in this file and in tpl_os_kernel.c where it is defined. */
-
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
-
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
-
 
 /*
  * GetActiveApplicationMode return the active application mode
