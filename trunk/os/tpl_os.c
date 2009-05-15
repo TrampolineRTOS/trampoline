@@ -61,13 +61,10 @@ FUNC(AppModeType, OS_CODE) GetActiveApplicationMode(void)
  * StartOS can be called by the app to start the OS in
  * an appropriate mode.
  */
-FUNC(void, OS_CODE) StartOS(
+FUNC(void, OS_CODE) tpl_start_os(
     CONST(AppModeType, AUTOMATIC) mode)
 {
-  tpl_init_machine();  
   tpl_start_os_service(mode);
-  /*  Fall back to the idle loop                      */
-  tpl_sleep();
 }
 
 /*
@@ -83,8 +80,25 @@ FUNC(void, OS_CODE) ShutdownOS(
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-#else
-#error "This file should not be part of your project since WITH_SYSTEM_CALL is defined"
 #endif /* WITH_SYSTEM_CALL */
+
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
+/*
+ * StartOS can be called by the app to start the OS in
+ * an appropriate mode.
+ */
+FUNC(void, OS_CODE) StartOS(
+  CONST(AppModeType, AUTOMATIC) mode)
+{
+  tpl_init_machine();  
+  tpl_start_os(mode);
+  /*  Fall back to the idle loop                      */
+  tpl_sleep();
+}
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 /* End of file tpl_os.c */
