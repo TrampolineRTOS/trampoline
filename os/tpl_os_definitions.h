@@ -26,6 +26,8 @@
 #ifndef TPL_OS_DEFINITIONS_H
 #define TPL_OS_DEFINITIONS_H
 
+#include "tpl_os_application_def.h"
+
 /**
  * @def FALSE
  *
@@ -180,6 +182,14 @@
  * standard service definition to know the exact meaning.
  */
 #define E_OS_VALUE      8
+
+#ifdef WITH_AUTOSAR
+
+/**
+ * TODO: Document this
+ */
+#define E_OS_DISABLEDINT 9
+#endif
 
 /**************************************
  * Special result code for Trampoline *
