@@ -249,7 +249,7 @@
  * @see #SERVICE_CALL_DESCRIPTOR
  * @see #TerminateISR2
  */
-#define OSServiceId_TerminateISR2               26
+#define OSServiceId_TerminateISR                26
 
 /**
  * @def OS_SYSCALL_COUNT
