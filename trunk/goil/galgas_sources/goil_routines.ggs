@@ -3,12 +3,6 @@ semantics goil_routines :
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_basic_types in "goil_basic_types.ggs" ;
 
-routine target !@string target_platform :
-    target_platform := [option goil_options.target_platform] ;
-#    message target_platform ;
-#    target_platform := "ppc";
-end routine ;
-
 #
 # arch returns the target architecture in arch_name
 # a target architecture is the instruction set (ie ARM, PowerPC, ...)
@@ -79,22 +73,31 @@ routine retrieveTemplateStringIfExist !@string templateString ?@string obj :
     @string temp_dir ;
     templates_directory ?temp_dir ;
 
-# Look for a template in target plateform path
-    targ_tpl := temp_dir.arch()."/".obj.".tpl" ;
+# Get the template file name
+    @string temp_name := obj.".tpl" ;
 
+    targ_tpl := temp_dir.arch()."/".chip()."/".board()."/".temp_name;
     if [targ_tpl fileExists]
-    then templateString := [@string stringWithContentsOfFile !targ_tpl] ;
+    then templateString := [@string stringWithContentsOfFile !targ_tpl];
     else
-			# then in the all_targets path
-        targ_tpl := temp_dir."all_targets/".obj.".tpl" ;
+      targ_tpl := temp_dir.arch()."/".chip()."/".temp_name;
+      if [targ_tpl fileExists]
+      then templateString := [@string stringWithContentsOfFile !targ_tpl];
+      else
+        targ_tpl := temp_dir.arch()."/".temp_name;
         if [targ_tpl fileExists]
-        then templateString := [@string stringWithContentsOfFile !targ_tpl] ;
-#             message "found template in all_targets\n" ;
-        else 
-				templateString := "" ;
-        end if ;
+        then templateString := [@string stringWithContentsOfFile !targ_tpl];
+        else
+  			# then in the all_targets path
+          targ_tpl := temp_dir."all_targets/".temp_name;
+          if [targ_tpl fileExists]
+          then templateString := [@string stringWithContentsOfFile !targ_tpl];
+          else templateString := "";
+          end if;
+        end if;
+      end if;
     end if;
-end routine ;
+end routine;
 
 routine retrieveTemplateString !@string templateString ?@string obj :
     retrieveTemplateStringIfExist ?templateString !obj;
