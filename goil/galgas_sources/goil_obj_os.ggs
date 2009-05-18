@@ -193,11 +193,12 @@ rule <os>
       @trace_method m := [@trace_void new !here] ;
       @lstring f := [@lstring new !"" !here] ;
       @void void_obj := [@void new !here] ;
-      @basic_type tt := void_obj ;
-      @basic_type ti := void_obj ;
-      @basic_type tr := void_obj ;
-      @basic_type ta := void_obj ;
-      @basic_type tu := void_obj ;
+      @basic_type tt := void_obj;
+      @basic_type ti := void_obj;
+      @basic_type tr := void_obj;
+      @basic_type ta := void_obj;
+      @basic_type tu := void_obj;
+      @basic_type ds := void_obj;
       repeat
       while
         $METHOD$ ; $=$ ;
@@ -230,6 +231,10 @@ rule <os>
         @lbool b ;
         $TRACE_USER$ ; $=$ ; <boolean> ?b ;
         set_bool !?tu !b !"TRACE_USER" ; $;$ ;
+      while
+        @lbool b;
+        $DESCRIPTION$; $=$; <boolean> ?b;
+        set_bool !?ds !b !"DESCRIPTION"; $;$;
       end repeat ;
       if [f string] == "" then
         error here : "Missing FORMAT in TRACE" ;
@@ -247,6 +252,7 @@ rule <os>
         !tr
         !ta
         !tu
+        !ds
       ] ;
       $}$ ;
     or

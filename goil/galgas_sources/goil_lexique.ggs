@@ -89,7 +89,7 @@ list os_attributes error message "os attribute '%K'" style keywordsStyle :
 #
 list trace_attributes error message "trace attribute '%K'" style keywordsStyle :
   "FILE", "METHOD", "FORMAT", "TRACE_TASK", "TRACE_ISR",
-  "TRACE_RESOURCE", "TRACE_ALARM", "TRACE_USER" ;
+  "TRACE_RESOURCE", "TRACE_ALARM", "TRACE_USER", "DESCRIPTION";
 
 
 #

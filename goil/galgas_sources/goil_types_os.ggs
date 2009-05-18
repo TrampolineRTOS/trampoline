@@ -71,6 +71,7 @@ class @trace_on extends @trace {
   @basic_type   trace_resource ;
   @basic_type   trace_alarm ;
   @basic_type   trace_user_event ;
+  @basic_type   desc;
   override method generate_c !@string res :
     res := "#define    WITH_TRACE             YES\n" ;
     res .= bool_define(!"TRACE_TASK" !trace_task !true);

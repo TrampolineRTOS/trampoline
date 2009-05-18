@@ -41,6 +41,7 @@ goil_scheduletable_verif.ggs
 goil_alarm_verif.ggs
 goil_app_verif.ggs
 goil_message_verif.ggs
+trace_description.ggs
 goil_cpu_level_include.ggs
 goil_options.ggs
 goil_file_level_include.ggs
