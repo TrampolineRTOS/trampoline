@@ -89,4 +89,9 @@ com_internal_s6_non
 autosar_s1
 autosar_sc_s1
 autosar_sc_s2
+autosar_sc_s3
+autosar_sc_s4
+autosar_sc_s5
+autosar_alarm_s1
+autosar_alarm_s2
 

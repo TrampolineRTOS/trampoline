@@ -36,7 +36,7 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "tpl_os_generated_configuration.h" /*for OSMAXALLOWEDVALUE*/
+#include "tpl_os_generated_configuration.h"
 
 DeclareAlarm(Alarm1);
 DeclareAlarm(INVALID_ALARM);

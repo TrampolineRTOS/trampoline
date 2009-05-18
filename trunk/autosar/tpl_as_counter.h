@@ -44,7 +44,10 @@ typedef tpl_counter_id  CounterType;
 #include "tpl_memmap.h"
 
 /**
- * Declare a counter
+ * @def Declare a counter
+ *
+ * Defines a counter
+ *
  */
 #define DeclareCounter(counter_id)  \
   extern CONST(CounterType, AUTOMATIC) counter_id

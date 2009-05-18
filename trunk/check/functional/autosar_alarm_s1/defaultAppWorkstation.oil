@@ -1,5 +1,5 @@
 /**
- * @file autosar_sc_s1/defaultAppWorkstation.oil
+ * @file autosar_alarm_s1/defaultAppWorkstation.oil
  *
  * @section desc File description
  *
@@ -32,7 +32,7 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "autosar_sc_s1" ;
+OIL_VERSION = "2.5" : "autosar_alarm_s1" ;
 
 IMPLEMENTATION trampoline {
 
@@ -49,15 +49,16 @@ IMPLEMENTATION trampoline {
  CPU test {
 
     OS config {
-        STATUS = STANDARD;
-		APP_SRC = "autosar_sc_s1.c";
+        STATUS = EXTENDED;
+		APP_SRC = "autosar_alarm_s1.c";
 		APP_SRC = "task1_instance.c";
 		APP_SRC = "error_instance1.c";
 		APP_SRC = "error_instance2.c";
+		APP_SRC = "error_instance3.c";
         TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "autosar_sc_s1";
+        APP_NAME = "autosar_alarm_s1";
 		CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Werror -Wall -pedantic";
+        CFLAGS  = "-Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
@@ -67,24 +68,58 @@ IMPLEMENTATION trampoline {
 
     APPMODE std {};
 
+	/* ACTIVATETASK - max activation */
     TASK t1 {
         AUTOSTART = TRUE { APPMODE = std ; } ;
-        PRIORITY = 1;
+        PRIORITY = 2;
         ACTIVATION = 1;
         SCHEDULE = FULL;
     };
 	
+	/* SETEVENT - suspended task */
+	TASK t2 {
+        AUTOSTART = FALSE ;
+        PRIORITY = 1;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+		EVENT = Event1;
+    };
+	
 	COUNTER Software_Counter{
-		MAXALLOWEDVALUE = 3;
-		TICKSPERBASE = 2;
+		MAXALLOWEDVALUE = 10;
+		TICKSPERBASE = 1;
 		MINCYCLE = 1;
 		TYPE = SOFTWARE;
 	};
 	
-	ALARM Alarm1{
+	COUNTER Software_Counter_By_Alarm{
+		MAXALLOWEDVALUE = 10;
+		TICKSPERBASE = 1;
+		MINCYCLE = 1;
+		TYPE = SOFTWARE;
+	};
+	
+	ALARM Alarm_ActivateTask{
 		COUNTER = Software_Counter;
 		ACTION = ACTIVATETASK {
 			TASK = t1;
+		};
+		AUTOSTART = FALSE;
+	};
+
+	ALARM Alarm_SetEvent_suspendedtask{
+		COUNTER = Software_Counter;
+		ACTION = SETEVENT {
+			TASK = t2;
+			EVENT = Event1;
+		};
+		AUTOSTART = FALSE;
+	};
+		
+	ALARM Alarm_IncrementCounter{
+		COUNTER = Software_Counter;
+		ACTION = INCREMENTCOUNTER {
+			COUNTER = Software_Counter_By_Alarm;
 		};
 		AUTOSTART = FALSE;
 	};
@@ -93,12 +128,20 @@ IMPLEMENTATION trampoline {
         TRUSTED = FALSE;
         STARTUPHOOK = TRUE;
         TASK = t1;
+		TASK = t2;
 		COUNTER = Software_Counter;
-		ALARM = Alarm1;
+		COUNTER = Software_Counter_By_Alarm;
+		ALARM = Alarm_ActivateTask;
+		ALARM = Alarm_SetEvent_suspendedtask;
+		ALARM = Alarm_IncrementCounter;
+	};
+	
+	EVENT Event1 {
+		MASK = AUTO;
 	};
 	
 };
 
 
 
-/* End of file autosar_sc_s1/defaultAppWorkstation.oil */
+/* End of file autosar_alarm_s1/defaultAppWorkstation.oil */

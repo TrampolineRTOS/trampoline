@@ -1150,7 +1150,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #endif
 
 /**
- * @def CHECK_ALARM_MAX_ALLOWED_VALUE_ERROR
+ * @def CHECK_ALARM_INCREMENT_ERROR
  *
  * Checks if increment is within the range of the maximum
  * allowed value for the counter used by the alarm
@@ -1166,22 +1166,35 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 /* No extended error checking (! OS_EXTENDED)                   */
 #if !defined(OS_EXTENDED)
     /* Does not check the task_id in this case                  */
-#   define CHECK_ALARM_MAX_ALLOWED_VALUE_ERROR(alarm_id,increment,result)
+#   define CHECK_ALARM_INCREMENT_ERROR(alarm_id,increment,result)
 #endif
 
 /* NO_ALARM and extended error checking (OS_EXTENDED)           */
 #if defined(NO_ALARM) && defined(OS_EXTENDED)
     /* E_OS_ID is returned in this case  */
-#   define CHECK_ALARM_MAX_ALLOWED_VALUE_ERROR(alarm_id,increment,result)
+#   define CHECK_ALARM_INCREMENT_ERROR(alarm_id,increment,result)
+#endif
+
+/* !NO_ALARM and extended error checking (OS_EXTENDED) and WITH_AUTOSAR    */
+#if !defined(NO_ALARM) && defined(OS_EXTENDED) && defined(WITH_AUTOSAR)
+/* E_OK or E_OS_VALUE   */
+#   define CHECK_ALARM_INCREMENT_ERROR(alarm_id,increment,result)     \
+	if ((result == (tpl_status)E_OK) &&                                       \
+		(((increment) >                                                       \
+		tpl_alarm_table[(alarm_id)]->stat_part->counter->max_allowed_value)   \
+		|| ((increment) == 0) ))											  \
+	{                                                                         \
+		result = (tpl_status)E_OS_VALUE;                                      \
+	}
 #endif
 
 /* !NO_ALARM and extended error checking (OS_EXTENDED)          */
-#if !defined(NO_ALARM) && defined(OS_EXTENDED)
+#if !defined(NO_ALARM) && defined(OS_EXTENDED) && !defined(WITH_AUTOSAR)
     /* E_OK or E_OS_VALUE   */
-#   define CHECK_ALARM_MAX_ALLOWED_VALUE_ERROR(alarm_id,increment,result)     \
+#   define CHECK_ALARM_INCREMENT_ERROR(alarm_id,increment,result)			  \
     if ((result == (tpl_status)E_OK) &&                                       \
-        ((increment) >                                                        \
-         tpl_alarm_table[(alarm_id)]->stat_part->counter->max_allowed_value)) \
+        (((increment) >                                                       \
+         tpl_alarm_table[(alarm_id)]->stat_part->counter->max_allowed_value))) \
     {                                                                         \
         result = (tpl_status)E_OS_VALUE;                                      \
     }

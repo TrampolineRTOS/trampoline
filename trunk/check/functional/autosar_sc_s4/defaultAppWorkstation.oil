@@ -1,5 +1,5 @@
 /**
- * @file autosar_sc_s1/defaultAppWorkstation.oil
+ * @file autosar_sc_s4/defaultAppWorkstation.oil
  *
  * @section desc File description
  *
@@ -32,7 +32,7 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "autosar_sc_s1" ;
+OIL_VERSION = "2.5" : "autosar_sc_s4" ;
 
 IMPLEMENTATION trampoline {
 
@@ -50,12 +50,13 @@ IMPLEMENTATION trampoline {
 
     OS config {
         STATUS = STANDARD;
-		APP_SRC = "autosar_sc_s1.c";
+		APP_SRC = "../config.c";
+		APP_SRC = "autosar_sc_s4.c";
 		APP_SRC = "task1_instance.c";
-		APP_SRC = "error_instance1.c";
-		APP_SRC = "error_instance2.c";
+		APP_SRC = "isr1_instance.c";
+		APP_SRC = "error_instance.c";
         TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "autosar_sc_s1";
+        APP_NAME = "autosar_sc_s4";
 		CFLAGS = "-I../../embUnit";
         CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
@@ -74,6 +75,13 @@ IMPLEMENTATION trampoline {
         SCHEDULE = FULL;
     };
 	
+	ISR isr1 {
+		CATEGORY = 2;
+		STACKSIZE = 32768;
+		PRIORITY = 1;
+		SOURCE = SIGTERM;
+	};
+		
 	COUNTER Software_Counter{
 		MAXALLOWEDVALUE = 3;
 		TICKSPERBASE = 2;
@@ -93,6 +101,7 @@ IMPLEMENTATION trampoline {
         TRUSTED = FALSE;
         STARTUPHOOK = TRUE;
         TASK = t1;
+		ISR = isr1;
 		COUNTER = Software_Counter;
 		ALARM = Alarm1;
 	};
@@ -101,4 +110,4 @@ IMPLEMENTATION trampoline {
 
 
 
-/* End of file autosar_sc_s1/defaultAppWorkstation.oil */
+/* End of file autosar_sc_s4/defaultAppWorkstation.oil */

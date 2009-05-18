@@ -1,5 +1,5 @@
 /**
- * @file autosar_sc_s2/autosar_sc_s2.c
+ * @file autosar_alarm_s1/autosar_alarm_s1.c
  *
  * @section desc File description
  *
@@ -35,12 +35,44 @@
 #include "Os.h"
 #include "embUnit.h"
 
-TestRef AutosarSCTest_seq2_t1_instance(void);
+TestRef AutosarAlarmTest_seq1_t1_instance(void);
+TestRef AutosarAlarmTest_seq1_error_instance1(void);
+TestRef AutosarAlarmTest_seq1_error_instance2(void);
+TestRef AutosarAlarmTest_seq1_error_instance3(void);
+
+StatusType error_instance = 0;
 
 int main(void)
 {
 	StartOS(OSDEFAULTAPPMODE);
 	return 0;
+}
+
+void ErrorHook(void)
+{
+	error_instance++;
+	switch (error_instance) {
+		case 1:
+		{
+			TestRunner_runTest(AutosarAlarmTest_seq1_error_instance1());
+			break;
+		}
+		case 2:
+		{
+			TestRunner_runTest(AutosarAlarmTest_seq1_error_instance2());
+			break;
+		}
+		case 3:
+		{
+			TestRunner_runTest(AutosarAlarmTest_seq1_error_instance3());
+			break;
+		}
+		default:
+		{
+			stdimpl_print("instance error\n");
+			break;
+		}
+	}
 }
 
 void ShutdownHook(StatusType error)
@@ -51,8 +83,12 @@ void ShutdownHook(StatusType error)
 TASK(t1)
 {
 	TestRunner_start();
-	TestRunner_runTest(AutosarSCTest_seq2_t1_instance());
+	TestRunner_runTest(AutosarAlarmTest_seq1_t1_instance());
 	ShutdownOS(E_OK);
 }
 
-/* End of file autosar_sc_s2/autosar_sc_s2.c */
+TASK(t2)
+{
+	stdimpl_print("instance error\n");
+}
+/* End of file autosar_alarm_s1/autosar_alarm_s1.c */

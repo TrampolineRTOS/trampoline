@@ -245,8 +245,23 @@ running autosar_s1
 ...
 OK (3 tests)
 running autosar_sc_s1
-..
-OK (2 tests)
+...
+OK (3 tests)
 running autosar_sc_s2
 .
 OK (1 test)
+running autosar_sc_s3
+.
+OK (1 test)
+running autosar_sc_s4
+...
+OK (3 tests)
+running autosar_sc_s5
+..
+OK (2 tests)
+running autosar_alarm_s1
+....
+OK (4 tests)
+running autosar_alarm_s2
+.....
+OK (5 tests)

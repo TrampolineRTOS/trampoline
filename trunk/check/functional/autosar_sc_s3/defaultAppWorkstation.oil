@@ -1,5 +1,5 @@
 /**
- * @file autosar_sc_s1/defaultAppWorkstation.oil
+ * @file autosar_sc_s3/defaultAppWorkstation.oil
  *
  * @section desc File description
  *
@@ -32,7 +32,7 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "autosar_sc_s1" ;
+OIL_VERSION = "2.5" : "autosar_sc_s3" ;
 
 IMPLEMENTATION trampoline {
 
@@ -49,19 +49,17 @@ IMPLEMENTATION trampoline {
  CPU test {
 
     OS config {
-        STATUS = STANDARD;
-		APP_SRC = "autosar_sc_s1.c";
+        STATUS = EXTENDED;
+		APP_SRC = "autosar_sc_s3.c";
 		APP_SRC = "task1_instance.c";
-		APP_SRC = "error_instance1.c";
-		APP_SRC = "error_instance2.c";
+		APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "autosar_sc_s1";
+        APP_NAME = "autosar_sc_s3";
 		CFLAGS = "-I../../embUnit";
         CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
-		ERRORHOOK = TRUE;
 		
 	};
 
@@ -74,31 +72,30 @@ IMPLEMENTATION trampoline {
         SCHEDULE = FULL;
     };
 	
+	COUNTER Hardware_Counter{
+		MAXALLOWEDVALUE = 3;
+		TICKSPERBASE = 2;
+		MINCYCLE = 1;
+		TYPE = HARDWARE {};
+	};
+	
 	COUNTER Software_Counter{
 		MAXALLOWEDVALUE = 3;
 		TICKSPERBASE = 2;
 		MINCYCLE = 1;
 		TYPE = SOFTWARE;
 	};
-	
-	ALARM Alarm1{
-		COUNTER = Software_Counter;
-		ACTION = ACTIVATETASK {
-			TASK = t1;
-		};
-		AUTOSTART = FALSE;
-	};
-	
+		
     APPLICATION app {
         TRUSTED = FALSE;
         STARTUPHOOK = TRUE;
         TASK = t1;
 		COUNTER = Software_Counter;
-		ALARM = Alarm1;
+		COUNTER = Hardware_Counter;
 	};
-	
+		
 };
 
 
 
-/* End of file autosar_sc_s1/defaultAppWorkstation.oil */
+/* End of file autosar_sc_s3/defaultAppWorkstation.oil */

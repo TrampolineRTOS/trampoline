@@ -1,5 +1,5 @@
 /**
- * @file autosar_sc_s2/autosar_sc_s2.c
+ * @file autosar_alarm_s2/error_instance3.c
  *
  * @section desc File description
  *
@@ -32,27 +32,32 @@
  * $URL$
  */
 
-#include "Os.h"
+/*Instance 3 of error*/
+
 #include "embUnit.h"
+#include "Os.h"
 
-TestRef AutosarSCTest_seq2_t1_instance(void);
-
-int main(void)
+/*test case:test the reaction of the system called with 
+ an activation of a task*/
+static void test_error_instance3(void)
 {
-	StartOS(OSDEFAULTAPPMODE);
-	return 0;
+	StatusType result_inst_1;
+	
+	SCHEDULING_CHECK_INIT(13);
+	result_inst_1 = OSErrorGetServiceId();
+	SCHEDULING_CHECK_AND_EQUAL_INT(13,OSServiceId_SetRelAlarm , result_inst_1);
+		
 }
 
-void ShutdownHook(StatusType error)
-{ 
-	TestRunner_end();
-}
-
-TASK(t1)
+/*create the test suite with all the test cases*/
+TestRef AutosarAlarmTest_seq2_error_instance3(void)
 {
-	TestRunner_start();
-	TestRunner_runTest(AutosarSCTest_seq2_t1_instance());
-	ShutdownOS(E_OK);
+	EMB_UNIT_TESTFIXTURES(fixtures) {
+		new_TestFixture("test_error_instance3",test_error_instance3)
+	};
+	EMB_UNIT_TESTCALLER(AutosarAlarmTest,"AutosarAlarmTest_sequence2",NULL,NULL,fixtures);
+	
+	return (TestRef)&AutosarAlarmTest;
 }
 
-/* End of file autosar_sc_s2/autosar_sc_s2.c */
+/* End of file autosar_alarm_s1/error_instance3.c */

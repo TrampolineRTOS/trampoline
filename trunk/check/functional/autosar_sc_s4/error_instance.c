@@ -1,5 +1,5 @@
 /**
- * @file autosar_sc_s2/autosar_sc_s2.c
+ * @file autosar_sc_s4/error_instance.c
  *
  * @section desc File description
  *
@@ -32,27 +32,39 @@
  * $URL$
  */
 
-#include "Os.h"
+/*Instance of error*/
+
 #include "embUnit.h"
+#include "Os.h"
+/*#include "tpl_os_error.h" */ /*for OSErrorGetServiceId()*/
 
-TestRef AutosarSCTest_seq2_t1_instance(void);
+DeclareTask(t1);
 
-int main(void)
+/*test case:test the reaction of the system called with 
+ an activation of a task*/
+static void test_error_instance(void)
 {
-	StartOS(OSDEFAULTAPPMODE);
-	return 0;
+	StatusType result_inst_1, result_inst_2;
+	
+	SCHEDULING_CHECK_INIT(9);
+	result_inst_1 = OSErrorGetServiceId();
+	SCHEDULING_CHECK_AND_EQUAL_INT(9,OSServiceId_ActivateTask , result_inst_1);
+	
+	SCHEDULING_CHECK_INIT(10);
+	result_inst_2 = OSError_ActivateTask_TaskID();
+	SCHEDULING_CHECK_AND_EQUAL_INT(10,t1 , result_inst_2);
+	
 }
 
-void ShutdownHook(StatusType error)
-{ 
-	TestRunner_end();
-}
-
-TASK(t1)
+/*create the test suite with all the test cases*/
+TestRef AutosarSCTest_seq4_error_instance(void)
 {
-	TestRunner_start();
-	TestRunner_runTest(AutosarSCTest_seq2_t1_instance());
-	ShutdownOS(E_OK);
+	EMB_UNIT_TESTFIXTURES(fixtures) {
+		new_TestFixture("test_error_instance",test_error_instance)
+	};
+	EMB_UNIT_TESTCALLER(AutosarSCTest,"AutosarSCTest_sequence4",NULL,NULL,fixtures);
+	
+	return (TestRef)&AutosarSCTest;
 }
 
-/* End of file autosar_sc_s2/autosar_sc_s2.c */
+/* End of file autosar_sc_s4/error_instance.c */
