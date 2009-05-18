@@ -11,8 +11,6 @@
 #		 delete testSequences file and do the loops for each directory (which contains defaultAppWorkstation.oil) #ls -d
 ######
 
-results=$2
-
 if [ "$1" = "clean" ]
 then
 	for i in `cat GOIL_testSequences.txt`
@@ -41,8 +39,12 @@ else
 	## Create an empty file
 	> GOIL_results.log
 	
-	# Make embUnit
-	( cd ../embUnit ; make )
+	# Make embUnit if needed
+	if ! `test -f ../lib/libembUnit.a`
+	then
+		echo "Make embunit"
+		( cd ../embUnit ; make )
+	fi
 	
 	#Change in results_expected.log 'CHECKPATH' to check directory Path : for goil tests
 	( cat ./GOIL_results_expected.log | sed -e "s/CHECKPATH/`pwd | sed 's_\/_\\\/_g'`/g" > ./backup.txt ; mv ./backup.txt ./GOIL_results_expected.log )
@@ -75,7 +77,6 @@ else
 			if [ "$1" = "" ] || [ "$1" = "no_results" ]
 			then	
 				goil --target=libpcl --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>> ../GOIL_results.log 1>> ../GOIL_results.log
-				results=$1
 			else 
 				goil --target=$1 --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>> ../GOIL_results.log 1>> ../GOIL_results.log
 			fi
@@ -94,7 +95,7 @@ else
 	done
 	echo "GOIL tests done."
 	
-	if [ "$results" != "no_results" ]
+	if [ "$1" != "no_results" ] && [ "$2" != "no_results" ]
 	then
 		#Compare results
 		echo "Compare GOIL results with the expected ones..."
