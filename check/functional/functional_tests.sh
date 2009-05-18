@@ -11,8 +11,6 @@
 #		 delete testSequences file and do the loops for each directory (which contains defaultAppWorkstation.oil) #ls -d
 ######
 
-results=$2
-
 if [ "$1" = "clean" ]
 then
 	for i in `cat functional_testSequences.txt`
@@ -39,9 +37,13 @@ else
 	## Create an empty file
 	> functional_results.log
 	
-	# Make embUnit
-	( cd ../embUnit ; make )
-	
+	# Make embUnit if needed
+	if ! `test -f ../lib/libembUnit.a`
+	then
+		echo "Make embunit"
+		( cd ../embUnit ; make )
+	fi
+		
 	# Build and execute all the tests
 	for i in `cat functional_testSequences.txt`
 	do
@@ -61,7 +63,7 @@ else
 		
 		#remove the executable file in order to know if the make succeed.
 		rm -rf ./${i} 
-		
+
 		#if Makefile doesn't exist -> do goil
 		if ! `test -f Makefile`
 		then
@@ -69,7 +71,6 @@ else
 			if [ "$1" = "" ] || [ "$1" = "no_results" ]
 			then	
 				goil --target=libpcl --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>&1 | tee -a ../functional_results.log
-				results=$1
 			else 
 				goil --target=$1 --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>&1 | tee -a ../functional_results.log
 			fi
@@ -87,8 +88,8 @@ else
 	
 	done
 	echo "Functional tests done."
-	
-	if [ "$results" != "no_results" ]
+
+	if [ "$1" != "no_results" ] && [ "$2" != "no_results" ]
 	then
 		#Compare results
 		echo "Compare functional results with the expected ones..."

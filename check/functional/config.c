@@ -3,51 +3,95 @@
  *
  * @section desc File description
  *
- * 
  * @section copyright Copyright
  *
- * Trampoline OS
+ * Trampoline Test Suite
  *
- * Trampoline is copyright (c) IRCCyN 2005-2007
- * Trampoline is protected by the French intellectual property law.
+ * Trampoline Test Suite is copyright (c) IRCCyN 2005-2007
+ * Trampoline Test Suite is protected by the French intellectual property law.
  *
- * This software is distributed under the Lesser GNU Public Licence
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; version 2
+ * of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * @section infos File informations
  *
- * $Date:$
- * $Rev:$
- * $Author: fp $
- * $URL:$
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
  */
+
+#ifdef WITH_AUTOSAR
+	#include "Os.h"
+#else
+	#include "tpl_os.h"
+#endif
+
+#ifndef NO_ALARM
+	#include "tpl_os_timeobj_kernel.h"
+#endif
+
+#include "embUnit.h"
+#include "config.h"
 
 #include <signal.h>
 #include <unistd.h>
+#include <assert.h>
 
-#include "embUnit.h"
-#include "tpl_os.h"
-
-#include "config.h"
-
+/*
+ * @def tpl_send_it3
+ *
+ * This function send signal SIGPIPE to himself (so Trampoline).
+ *
+ */
 void tpl_send_it1(void){
 	int ipid;
 	ipid = getpid();
 	kill(ipid,SIGTERM);
 }
 
+/*
+ * @def tpl_send_it3
+ *
+ * This function send signal SIGPIPE to himself (so Trampoline).
+ *
+ */
 void tpl_send_it2(void){
 	int ipid;
 	ipid = getpid();
 	kill(ipid,SIGUSR2);
 }
 
+/*
+ * @def tpl_send_it3
+ *
+ * This function send signal SIGPIPE to himself (so Trampoline).
+ *
+ */
 void tpl_send_it3(void){
 	int ipid;
 	ipid = getpid();
 	kill(ipid,SIGPIPE);
 }
 
-void signaux_pendants(void)
+/*
+ * @def pending_signals
+ *
+ * This function prints the pending signals. Useful to debug to check if an interrupts has occured or not.
+ *
+ */
+void pending_signals(void)
 {
 	sigset_t  sig_set;
 	
@@ -65,6 +109,19 @@ void signaux_pendants(void)
 		stdimpl_print("SIGUSR2 is pending \n");
 }
 
+#ifndef NO_ALARM
+
+extern CONSTP2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)
+tpl_alarm_table[ALARM_COUNT];
+
+/*
+ * @def WaitActivationPeriodicAlarm
+ *
+ * This function wait for alarm periodic alarm expiration
+ *
+ * @param Alarm Alarm id
+ *
+ */
 void WaitActivationPeriodicAlarm(AlarmType Alarm){
 	
 	u32 temp, result_inst_;
@@ -78,6 +135,14 @@ void WaitActivationPeriodicAlarm(AlarmType Alarm){
 		
 }
 
+/*
+ * @def WaitActivationOneShotAlarm
+ *
+ * This function wait for alarm one shot alarm expiration
+ *
+ * @param Alarm Alarm id
+ *
+ */
 void WaitActivationOneShotAlarm(AlarmType Alarm){
 
 	int result_inst_;
@@ -85,10 +150,55 @@ void WaitActivationOneShotAlarm(AlarmType Alarm){
 	
 	do{
 		GetAlarm(Alarm,&result_inst_tt);
-		/* for debug stdimpl_print("one shot alarm : ticks = %d\n",result_inst_tt);*/
-	}while((SetRelAlarm(Alarm, 1, 0) == E_OS_STATE));
+		/* for debug stdimpl_print("one shot alarm : ticks = %lu\n",result_inst_tt); */
+	}while((SetRelAlarm(Alarm, tpl_alarm_table[Alarm]->stat_part->counter->max_allowed_value , 0) == E_OS_STATE));
 	
 	result_inst_ = CancelAlarm(Alarm); /* Cancel the previous alarm usefull only for the test */
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_);
 	
 }
+
+#endif /* NO_ALARM */
+
+#if !defined (NO_COUNTER) && defined (WITH_AUTOSAR)
+
+extern CONSTP2VAR(tpl_counter, OS_VAR, OS_APPL_DATA)
+tpl_counter_table[COUNTER_COUNT];
+
+/*
+ * @def WaitCounterDeltaValue
+ *
+ * This function use tpl_counter_table, which is part of memory protection.
+ * This function should be executed with trusted funtion
+ *
+ * @param Counter Counter id
+ * @param delta_value Delta value to wait to the counter #Counter
+ *
+ */
+void WaitCounterDeltaValue(CounterType Counter, TickType delta_value){
+	
+	StatusType status_was;
+	TickType value_was, value_exp;
+	
+	/* if delta_value > OSMAXALLOWEDVALUE */	
+	#if defined(__unix__) || defined(__APPLE__)
+		assert(delta_value <= tpl_counter_table[Counter]->max_allowed_value);
+	#endif
+	
+	/* find the expected value (value_exp) from the actual value (value_was) and delta value (delta_value) */
+	GetCounterValue(Counter, &value_was);
+	value_exp = value_was + delta_value;
+	
+	/* if value_exp is higher than OSMAXALLOXEDVALUE, do value_exp - OSMAXALLOWEDVALUE */
+	if(value_exp > tpl_counter_table[Counter]->max_allowed_value){
+		value_exp -= (tpl_counter_table[Counter]->max_allowed_value + 1);
+	}
+	
+	do{
+		status_was = GetCounterValue(Counter, &value_was);
+	}while(value_was != value_exp);
+}
+
+#endif /* NO_COUNTER */
+
+/* End of file config.c */

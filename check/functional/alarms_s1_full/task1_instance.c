@@ -78,7 +78,7 @@ static void test_t1_instance(void)
 	SCHEDULING_CHECK_AND_EQUAL_INT(6,E_OS_VALUE, result_inst_9);
 
 	SCHEDULING_CHECK_INIT(7);
-	result_inst_10 = SetRelAlarm(Alarm1, 0, result_inst_5.mincycle - 1);
+	result_inst_10 = SetRelAlarm(Alarm1, 0, result_inst_5.mincycle - 1 );
 	SCHEDULING_CHECK_AND_EQUAL_INT(7,E_OS_VALUE, result_inst_10);
 	
 	SCHEDULING_CHECK_INIT(8);

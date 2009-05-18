@@ -1,5 +1,5 @@
 /**
- * @file autosar_sc_s2/autosar_sc_s2.c
+ * @file autosar_sc_s5/task1_instance.c
  *
  * @section desc File description
  *
@@ -32,27 +32,34 @@
  * $URL$
  */
 
-#include "Os.h"
+/*Instance of task t1*/
+
 #include "embUnit.h"
+#include "Os.h"
 
-TestRef AutosarSCTest_seq2_t1_instance(void);
+void tpl_send_it1(void);
 
-int main(void)
+/*test case:test the reaction of the system called with 
+ an activation of a task*/
+static void test_t1_instance(void)
 {
-	StartOS(OSDEFAULTAPPMODE);
-	return 0;
+	SCHEDULING_CHECK_STEP(1);
+	
+	tpl_send_it1();
+	
+	SCHEDULING_CHECK_STEP(13);
+	
 }
 
-void ShutdownHook(StatusType error)
-{ 
-	TestRunner_end();
-}
-
-TASK(t1)
+/*create the test suite with all the test cases*/
+TestRef AutosarSCTest_seq5_t1_instance(void)
 {
-	TestRunner_start();
-	TestRunner_runTest(AutosarSCTest_seq2_t1_instance());
-	ShutdownOS(E_OK);
+	EMB_UNIT_TESTFIXTURES(fixtures) {
+		new_TestFixture("test_t1_instance",test_t1_instance)
+	};
+	EMB_UNIT_TESTCALLER(AutosarSCTest,"AutosarSCTest_sequence5",NULL,NULL,fixtures);
+	
+	return (TestRef)&AutosarSCTest;
 }
 
-/* End of file autosar_sc_s2/autosar_sc_s2.c */
+/* End of file autosar_sc_s5/task1_instance.c */

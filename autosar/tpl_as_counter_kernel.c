@@ -37,6 +37,13 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
+/**
+ * @def INVALID_COUNTER
+ *
+ * This value is used to specify an invalid counter
+ */
+CONST(tpl_counter_id, AUTOMATIC) INVALID_COUNTER = (-1);
+
 /*
  * Increment a counter.
  *

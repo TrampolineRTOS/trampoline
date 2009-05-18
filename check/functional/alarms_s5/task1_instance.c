@@ -51,7 +51,7 @@ static void test_t1_instance(void)
 	TaskStateType result_inst_2;
 	
 	SCHEDULING_CHECK_INIT(1);
-	result_inst_1 = SetRelAlarm(Alarm1, 2, 0);
+	result_inst_1 = SetRelAlarm(Alarm1, 0, 0);
 	SCHEDULING_CHECK_AND_EQUAL_INT(1,E_OK, result_inst_1);
 	
 	WaitActivationOneShotAlarm(Alarm1);

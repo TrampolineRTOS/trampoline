@@ -191,7 +191,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
     STORE_TICK_2(cycle)
 
     CHECK_ALARM_ID_ERROR(alarm_id,result)
-    CHECK_ALARM_MAX_ALLOWED_VALUE_ERROR(alarm_id,increment,result)
+    CHECK_ALARM_INCREMENT_ERROR(alarm_id,increment,result)
     CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
 
 #ifndef NO_ALARM
@@ -255,7 +255,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
     STORE_TICK_2(cycle)
 
     CHECK_ALARM_ID_ERROR(alarm_id,result)
-    CHECK_ALARM_MAX_ALLOWED_VALUE_ERROR(alarm_id,start,result)
+    CHECK_ALARM_INCREMENT_ERROR(alarm_id,start,result)
     CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
 
 #ifndef NO_ALARM

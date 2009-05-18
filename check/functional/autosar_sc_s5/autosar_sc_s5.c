@@ -1,5 +1,5 @@
 /**
- * @file autosar_sc_s2/autosar_sc_s2.c
+ * @file autosar_sc_s5/autosar_sc_s5.c
  *
  * @section desc File description
  *
@@ -35,7 +35,8 @@
 #include "Os.h"
 #include "embUnit.h"
 
-TestRef AutosarSCTest_seq2_t1_instance(void);
+TestRef AutosarSCTest_seq5_t1_instance(void);
+TestRef AutosarSCTest_seq5_isr1_instance(void);
 
 int main(void)
 {
@@ -51,8 +52,13 @@ void ShutdownHook(StatusType error)
 TASK(t1)
 {
 	TestRunner_start();
-	TestRunner_runTest(AutosarSCTest_seq2_t1_instance());
+	TestRunner_runTest(AutosarSCTest_seq5_t1_instance());
 	ShutdownOS(E_OK);
 }
 
-/* End of file autosar_sc_s2/autosar_sc_s2.c */
+ISR(isr1)
+{
+	TestRunner_runTest(AutosarSCTest_seq5_isr1_instance());
+}
+
+/* End of file autosar_sc_s5/autosar_sc_s5.c */
