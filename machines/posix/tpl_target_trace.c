@@ -111,6 +111,7 @@ FUNC(void, OS_CODE)tpl_trace_format_txt(void)
     fprintf(TRACE_FILE_PT,",%d",trace.value[i]);
     i++;
   }
+  fprintf(TRACE_FILE_PT,"\n");
 }
 
 
