@@ -1,5 +1,5 @@
 /**
- * @file goil_s1/defaultAppWorkstation.oil
+ * @file goil_events_s1/defaultAppWorkstation.oil
  *
  * @section desc File description
  *
@@ -45,10 +45,8 @@ CPU test {
 
     OS config {
         STATUS = STANDARD;
-		APP_SRC = "goil_s1.c";
-		APP_SRC = "task1_instance.c";
 		TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "goil_s1_non";
+        APP_NAME = "goil_events_s1";
 		CFLAGS = "-I../../embUnit";
         CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
