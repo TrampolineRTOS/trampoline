@@ -307,10 +307,10 @@ routine set_bool
   end cast ;
 end routine ;
 
-routine get_bool
-  ?@basic_type t
-  !@bool       b
-  ?@bool       def
+function get_bool
+  ??@basic_type t
+  ??@bool       def
+  ->@bool       b
 :
   cast t :
   when == @bool_class bc do
@@ -318,7 +318,7 @@ routine get_bool
   else
     b := def ;
   end cast ;
-end routine ;
+end function ;
 
 function yes_no ?@bool b ->@string res :
   if b then res := "YES"; else res := "NO"; end if;

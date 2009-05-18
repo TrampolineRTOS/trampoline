@@ -30,6 +30,7 @@ import semantics goil_app_verif in "goil_app_verif.ggs" ;
 import semantics goil_message_verif in "goil_message_verif.ggs" ;
 import semantics cfg_types in "cfg_types.ggs" ;
 import semantics goil_env_verification in "goil_env_verification.ggs" ;
+import semantics trace_description in "trace_description.ggs";
 
 #import semantics goil_crc_table in "goil_crc_table.ggs" ;
 import grammar goil_cpu_level_include in "goil_cpu_level_include.ggs" ;
@@ -453,8 +454,7 @@ rule <start> :
 #                    !?implementation ;
 
                 # write the result to files
-                @string directory;
-                getProjectName ?directory;
+                @string directory := getProjectName();
                 
                 @string header_file := "tpl_os_generated_configuration.h" ;
                 @string obj_header_file  := "tpl_app_objects.h" ;
@@ -510,6 +510,8 @@ rule <start> :
                             ![[[@string stringWithSourceFilePath]
                                        stringByDeletingPathExtension] lastPathComponent];
                     end if ;
+
+                    generate_description !cpu;
                 end if ;
             else
                 message "No target platform given, compiling aborted\n" ;

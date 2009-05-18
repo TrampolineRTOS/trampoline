@@ -3,6 +3,14 @@ semantics goil_routines :
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_basic_types in "goil_basic_types.ggs" ;
 
+function getProjectName -> @string directory
+:
+  directory := [[@string stringWithSourceFilePath] stringByDeletingPathExtension];
+  if [option goil_options.project_dir] != "" then
+    directory := [option goil_options.project_dir] ;
+  end if ;
+end function;
+
 #
 # arch returns the target architecture in arch_name
 # a target architecture is the instruction set (ie ARM, PowerPC, ...)
