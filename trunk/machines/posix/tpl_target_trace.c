@@ -46,8 +46,8 @@ FILE* TRACE_FILE_PT;
 FUNC(void, OS_CODE)tpl_trace_get_date()
 {
   struct timeval result;
-    int sec;
-    int usec;
+  int sec;
+  int usec;
 
   gettimeofday(&result,NULL);
   sec = result.tv_sec;
@@ -69,7 +69,6 @@ FUNC(void, OS_CODE)tpl_trace_event_begin(
  strncpy(trace.begin_date, DATE, sizeof(DATE));
  trace.trace_type = trace_id;
  trace.value[0] = -1;
-
 }
 
 /** Function adding a value to the record. Knowing the event type of the trace, 
@@ -103,7 +102,7 @@ FUNC(void, OS_CODE)tpl_trace_format_txt(void)
   int i = 0;
   if(TRACE_FILE_PT == NULL)
   {
-  TRACE_FILE_PT = fopen(TRACE_FILE,"w");
+    TRACE_FILE_PT = fopen(TRACE_FILE,"w");
   }
   fprintf(TRACE_FILE_PT,"%s,%d",trace.begin_date,trace.trace_type);
   while ( trace.value[i] != -1 )
@@ -120,19 +119,31 @@ FUNC(void, OS_CODE)tpl_trace_format_xml(void)
   int i = 0;
   if(TRACE_FILE_PT == NULL)
   {
-  TRACE_FILE_PT = fopen(TRACE_FILE,"w");
-  fprintf(TRACE_FILE_PT,"<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n<!DOCTYPE trace\n[\n<!ELEMENT trace(record*)>\n<!ELEMENT record (begin_date,trace_type,value*,end_date)>\n<!ELEMENT begin_date>\n<!ELEMENT trace_type>\n<!ELEMENT value>\n<!ELEMENT end_value>\n]>\n<trace>\n");
+    TRACE_FILE_PT = fopen(TRACE_FILE,"w");
+    fprintf(TRACE_FILE_PT,
+            "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"
+            "<!DOCTYPE trace\n"
+            "[\n"
+            "<!ELEMENT trace(record*)>\n"
+            "<!ELEMENT record(values)>\n"
+            "<!ELEMENT value>\n"
+            "<!ELEMENT values(value*)>\n"
+            "]>\n"
+            "<trace>\n");
   }
-  fprintf(TRACE_FILE_PT,"<record>\n<date>%s</date>\n<trace_type>%d</trace_type>\n",trace.begin_date,trace.trace_type);
+  fprintf(TRACE_FILE_PT,
+          "<record date=\"%s\" type=\"%d\">\n"
+          "<values>\n",
+          trace.begin_date,trace.trace_type);
   while ( trace.value[i] != -1 )
   {
     fprintf(TRACE_FILE_PT,"<value>%d</value>\n",trace.value[i]);
     i++;
   }
-  fprintf(TRACE_FILE_PT,"</record>\n");
+  fprintf(TRACE_FILE_PT,"</values>\n</record>\n");
   if(trace.trace_type == 19)
   {
-    fprintf(TRACE_FILE_PT,"</trace>");
+    fprintf(TRACE_FILE_PT,"</trace>\n");
   }
 }
 
@@ -141,9 +152,9 @@ FUNC(void, OS_CODE)tpl_trace_format_bin(void)
 { 
   int i = 0;
   long date;
-  if(TRACE_FILE_PT == NULL)
+  if (TRACE_FILE_PT == NULL)
   {
-  TRACE_FILE_PT = fopen(TRACE_FILE,"wb");
+    TRACE_FILE_PT = fopen(TRACE_FILE,"wb");
   }
   date = atol(trace.begin_date);
   fwrite(&date,1,sizeof(date),TRACE_FILE_PT);
