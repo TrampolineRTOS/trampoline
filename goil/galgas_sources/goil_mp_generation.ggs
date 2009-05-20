@@ -155,7 +155,7 @@ routine generate_mp
   end foreach;
   mp_table .= "  NULL\n};" ;
 
-  @string directory := getProjectName();
+  @string directory := project_name();
 
   doReplace !?tpl_mp !"$APPLICATION$" !directory ;
   doReplace !?tpl_mp !"$LINKER_SYM$"  !ext ;

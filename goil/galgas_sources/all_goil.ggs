@@ -88,12 +88,14 @@ project all_goil :
   #
   # Code generation
   #
+  semantics "config_type.ggs" : makefile, xcode_tool ;
   semantics "goil_code_generation.ggs" : makefile, xcode_tool ;
   semantics "goil_proc_generation.ggs" : makefile, xcode_tool ;
   semantics "goil_mp_generation.ggs" : makefile, xcode_tool ;
   semantics "goil_app_generation.ggs" : makefile, xcode_tool ;
   semantics "goil_code_msg_gen.ggs" : makefile, xcode_tool ;
   semantics "goil_code_schedtable_gen.ggs" : makefile, xcode_tool ;
+  semantics "it_table_generation.ggs" : makefile, xcode_tool ;
   semantics "trace_description.ggs" : makefile, xcode_tool;
   #semantics "goil_orti_gen.ggs";
   #

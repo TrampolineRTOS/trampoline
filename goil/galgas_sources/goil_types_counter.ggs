@@ -41,6 +41,7 @@ class @counter_obj extends @oil_obj {
     @basic_type   max_allowed_value ;
     @basic_type   ticks_per_base ;
     @basic_type   min_cycle ;
+    @lstring      source ;
 # AUTOSAR fields
     @lstringlist  acc_apps ;
     @counter_type type ;

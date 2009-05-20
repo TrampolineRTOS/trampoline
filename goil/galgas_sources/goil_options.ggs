@@ -4,6 +4,7 @@ option goil_options :
 @string project_dir       : 'p', "project" -> "Specifies project directory (by default, the project directory is the name of the oil file, without the .oil extension)" ;
 @string template_dir      : '\0', "templates" -> "Specifies template directory (used by goil for code generation)" ;
 @bool   autosar_on        : 'a',  "autosar" -> "Parse Autosar objects and attributes" ;
+@bool   posix_it          : 'i', "interrupts" -> "Use the new interrupt scheme introduced for viper 2";
 #@bool   orti_on           : '\0', "orti"              -> "Generate an ORTI file" ;
 @bool   generate_makefile : 'g', "generate-makefile" -> "Generate a Makefile from OS extra attributes" ;
 #@uint   corrected_bits    : '\0', "crc"               -> "Generate correcting code" default 0 ;

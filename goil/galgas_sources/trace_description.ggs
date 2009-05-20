@@ -36,7 +36,7 @@ routine generate_description
   when == @trace_on to do
     if get_bool(![to desc] !false) then
       @string res := "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n";
-      res .= "<app name=\"".[getProjectName() lastPathComponent]."\">\n";
+      res .= "<app name=\"".[project_name() lastPathComponent]."\">\n";
 
       @tasks_by_type stasks [emptySortedList];
       # sort tasks according to type (basic or extended)
@@ -100,7 +100,7 @@ routine generate_description
 
       res .= "</app>\n";
 
-      @string desc_file_name := getProjectName().".desc";
+      @string desc_file_name := project_name().".desc";
       [res writeToFile!desc_file_name];
     end if;
   else end cast;

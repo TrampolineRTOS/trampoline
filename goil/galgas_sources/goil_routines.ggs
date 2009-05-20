@@ -3,12 +3,16 @@ semantics goil_routines :
 import option goil_options in "goil_options.ggs" ;
 import semantics goil_basic_types in "goil_basic_types.ggs" ;
 
-function getProjectName -> @string directory
+function project_name -> @string directory
 :
   directory := [[@string stringWithSourceFilePath] stringByDeletingPathExtension];
   if [option goil_options.project_dir] != "" then
     directory := [option goil_options.project_dir] ;
   end if ;
+end function;
+
+function oil_dir -> @string dir :
+  dir := [[@string stringWithSourceFilePath] stringByDeletingLastPathComponent];
 end function;
 
 #
@@ -118,8 +122,7 @@ routine retrieveTemplateString !@string templateString ?@string obj :
     end if;
 end routine;
 
-routine config_file
-    !@lstring cfg_file
+function config_file -> @lstring cfg_file
 :
     @string template_dir ;
     templates_directory ?template_dir ;
@@ -128,7 +131,16 @@ routine config_file
         cfg := "" ;
     end if ;
     cfg_file := [@lstring new !cfg !here] ;
-end routine ;
+end function ;
+
+function extra_config_file -> @lstring cfg_file
+:
+    @string cfg := oil_dir()."/target.cfg" ;
+    if not [cfg fileExists] then
+      cfg := "" ;
+    end if ;
+    cfg_file := [@lstring new !cfg !here] ;
+end function ;
 
 routine prefix ?@prefix_map p ?@string key !@string val :
     @lstring lkey := [@lstring new !key !here] ;

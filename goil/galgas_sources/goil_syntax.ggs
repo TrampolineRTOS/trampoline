@@ -31,6 +31,8 @@ import semantics goil_message_verif in "goil_message_verif.ggs" ;
 import semantics cfg_types in "cfg_types.ggs" ;
 import semantics goil_env_verification in "goil_env_verification.ggs" ;
 import semantics trace_description in "trace_description.ggs";
+import semantics it_table_generation in "it_table_generation.ggs";
+import semantics config_type in "config_type.ggs";
 
 #import semantics goil_crc_table in "goil_crc_table.ggs" ;
 import grammar goil_cpu_level_include in "goil_cpu_level_include.ggs" ;
@@ -258,12 +260,17 @@ rule <start> :
                 @string types ;
 
                 @config cfg [emptyMap] ;
-                @lstring cfg_file ;
-                config_file ?cfg_file ;
+                @lstring cfg_file := config_file();
                 if [cfg_file string] != "" then
                     grammar cfg_grammar in cfg_file ?cfg ;
                 end if ;
 
+                @lstring extra_cfg_file := extra_config_file();
+                if [extra_cfg_file string] != "" then
+                    grammar cfg_grammar in extra_cfg_file ?cfg ;
+                end if ;
+
+                @os_config generated_conf := os_cfg(!cpu);
 
                 retrieveTemplateString ?header !"app_header" ;
                 retrieveTemplateString ?obj_header !"obj_header" ;
@@ -314,6 +321,7 @@ rule <start> :
                     ?app_for_obj ;
 
                 generate_flags
+                    !generated_conf
                     !os
                     !tasks
                     !isrs
@@ -448,13 +456,19 @@ rule <start> :
                     !applis
                     !max_prio
                     !?types ;
+                  
+                generate_it_table
+                    !cfg
+                    !generated_conf
+                    !cpu
+                    !?implementation ;
 
 #                generate_crc
 #                    !tasks
 #                    !?implementation ;
 
                 # write the result to files
-                @string directory := getProjectName();
+                @string directory := project_name();
                 
                 @string header_file := "tpl_os_generated_configuration.h" ;
                 @string obj_header_file  := "tpl_app_objects.h" ;

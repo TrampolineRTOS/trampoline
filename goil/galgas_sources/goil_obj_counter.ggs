@@ -27,6 +27,7 @@ nonterminal <counter_parameters>
   ?!@basic_type   max_allowed_value
   ?!@basic_type   ticks_per_base
   ?!@basic_type   min_cycle
+  ?!@lstring      source
   ?!@lstringlist  acc_apps
   ?!@counter_type type
   ?!@lstring      unit ;
@@ -50,6 +51,7 @@ rule <counter>
   @basic_type   max_allowed_value ;
   @basic_type   ticks_per_base ;
   @basic_type   min_cycle ;
+  @lstring      source;
   @lstringlist    acc_apps ;
   @counter_type type ;
   @lstring      unit ;
@@ -63,6 +65,7 @@ rule <counter>
     max_allowed_value := [counter max_allowed_value] ;
     ticks_per_base    := [counter ticks_per_base] ;
     min_cycle         := [counter min_cycle] ;
+    source            := [counter source];
     acc_apps          := [counter acc_apps] ;
     type              := [counter type] ;
     unit              := [counter unit] ;
@@ -71,6 +74,7 @@ rule <counter>
     max_allowed_value := [@void new !here] ;
     ticks_per_base    := [@void new !here] ;
     min_cycle         := [@void new !here] ;
+    source            := [@lstring new !"" !here] ;
     acc_apps          := [@lstringlist emptyList] ;
     type              := [@void_counter new !here] ;
     unit              := [@lstring new !"" !here] ;
@@ -80,12 +84,13 @@ rule <counter>
       !max_allowed_value
       !ticks_per_base
       !min_cycle
+      !source
       !acc_apps
       !type
       !unit] ;
   end if ;
   ${$ ;
-  <counter_parameters> !?max_allowed_value !?ticks_per_base !?min_cycle !?acc_apps !?type !?unit ;
+  <counter_parameters> !?max_allowed_value !?ticks_per_base !?min_cycle !?source !?acc_apps !?type !?unit ;
   $}$ ;
   <description> ?desc ;
   $;$ ;
@@ -95,6 +100,7 @@ rule <counter>
     !max_allowed_value
     !ticks_per_base
     !min_cycle
+    !source
     !acc_apps
     !type
     !unit] ;
@@ -105,6 +111,7 @@ rule <counter_parameters>
   ?!@basic_type   max_allowed_value
   ?!@basic_type   ticks_per_base
   ?!@basic_type   min_cycle
+  ?!@lstring      source
   ?!@lstringlist  acc_apps
   ?!@counter_type type
   ?!@lstring      unit
@@ -153,6 +160,10 @@ rule <counter_parameters>
       error here : "UNIT attribute already defined for this counter" ;
       error unit : "was defined here" ;
     end if ;
+  while
+    @lstring src;
+    $SOURCE$; $=$; $idf$ ?src; <description> ?* ; $;$ ;
+    set_lstring_if_empty !?source !src !"SOURCE";
   while
     @lstring app ;
     $ACCESSING_APPLICATION$ ; $=$ ; $idf$ ?app ; <description> ?* ; $;$ ;

@@ -35,6 +35,7 @@ import semantics goil_types_app in "goil_types_app.ggs" ;
 import semantics goil_code_msg_gen in "goil_code_msg_gen.ggs" ;
 import semantics goil_code_schedtable_gen in "goil_code_schedtable_gen.ggs" ;
 import semantics goil_env_verification in "goil_env_verification.ggs" ;
+import semantics config_type in "config_type.ggs" ;
 
 import semantics cfg_types in "cfg_types.ggs" ;
 
@@ -148,10 +149,11 @@ end routine ;
 # Code generation routines
 #--------------------------------------------------------------------
 routine generate_flags
-    ?@os_obj   os
-    ?@task_map tasks
-    ?@isr_map  isrs
-    ?!@string  obj_header
+    ??@os_config os_gen_cfg
+    ?@os_obj     os
+    ?@task_map   tasks
+    ?@isr_map    isrs
+    ?!@string    obj_header
 :
     @string flags := "" ;
  
@@ -280,6 +282,9 @@ routine generate_flags
     @string tr ;
     [[os trace] generate_c ?tr] ;
     flags .= tr ;
+
+    # with_it_table
+    flags .= bool_define(!"WITH_IT_TABLE"![os_gen_cfg with_it_table]);
 
     # Output the boolean free flags
     foreach [os others] (@lstring key @basic_type f_obj) do

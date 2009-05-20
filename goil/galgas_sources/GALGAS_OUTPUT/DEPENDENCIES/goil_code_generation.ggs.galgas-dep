@@ -26,6 +26,9 @@ goil_types_networkmessage.ggs
 goil_code_schedtable_gen.ggs
 goil_types_scheduletable.ggs
 goil_env_verification.ggs
+config_type.ggs
+goil_types_root.ggs
+com_type.ggs
 goil_options.ggs::
 GALGAS_OUTPUT/goil_code_generation.h
 GALGAS_OUTPUT/goil_code_generation.cpp

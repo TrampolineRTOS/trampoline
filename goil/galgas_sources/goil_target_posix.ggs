@@ -4,6 +4,7 @@ import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
 import semantics goil_routines in "goil_routines.ggs" ;
 import semantics goil_types_isr in "goil_types_isr.ggs" ;
 import semantics goil_types_counter in "goil_types_counter.ggs" ;
+import option goil_options in "goil_options.ggs" ;
 
 routine generate_target_posix
   ?@lstring   name
@@ -37,32 +38,34 @@ routine generate_isr_posix
 
   @isr_list list_isr [emptySortedList];
 
-  foreach isrs (@lstring isr_name *) do
-    list_isr += !isr_name ![isr_name string];
-  end foreach;
-    
-  foreach list_isr (@lstring isr_name *) do
-    @isr_obj isr;
-    [isrs get !isr_name ?isr];
-    if not first then result .= ",\n";
-    end if;
-    first := false;
-    @string key := "SOURCE";
-    @ident_map others := [isr other_fields];
-    if [others hasKey !key]
-    then
-        @basic_type value ;
-        [others get ![@lstring new !key !here] ?value] ;
-        cast value :
-        when == @string_class s do
-            result := result."\t".[s value];
-        else 
-            error isr_name : key." should be a string" ;
-        end cast ;
-    else
-        error isr_name : "no ".key." specified" ;
-    end if ;
-  end foreach ;
+  if not [option goil_options.posix_it] then
+    foreach isrs (@lstring isr_name *) do
+      list_isr += !isr_name ![isr_name string];
+    end foreach;
+      
+    foreach list_isr (@lstring isr_name *) do
+      @isr_obj isr;
+      [isrs get !isr_name ?isr];
+      if not first then result .= ",\n";
+      end if;
+      first := false;
+      @string key := "SOURCE";
+      @ident_map others := [isr other_fields];
+      if [others hasKey !key]
+      then
+          @basic_type value ;
+          [others get ![@lstring new !key !here] ?value] ;
+          cast value :
+          when == @string_class s do
+              result := result."\t".[s value];
+          else 
+              error isr_name : key." should be a string" ;
+          end cast ;
+      else
+          error isr_name : "no ".key." specified" ;
+      end if ;
+    end foreach ;
+  end if;
   code := [code stringByReplacingStringByString !"$ISR_SIGNAL_LIST$" !result] ;
 end routine ;
 
