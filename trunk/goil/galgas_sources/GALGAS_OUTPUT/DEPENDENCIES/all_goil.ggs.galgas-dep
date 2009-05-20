@@ -36,6 +36,7 @@ goil_target_ppc.ggs
 goil_code_msg_gen.ggs
 goil_code_schedtable_gen.ggs
 goil_env_verification.ggs
+config_type.ggs
 goil_proc_generation.ggs
 goil_app_generation.ggs
 goil_mp_generation.ggs
@@ -44,6 +45,7 @@ goil_alarm_verif.ggs
 goil_app_verif.ggs
 goil_message_verif.ggs
 trace_description.ggs
+it_table_generation.ggs
 goil_cpu_level_include.ggs
 goil_file_level_include.ggs
 cfg_grammar.ggs
@@ -197,6 +199,9 @@ GALGAS_OUTPUT/DEPENDENCIES/goil_obj_application.ggs.galgas-dep
 GALGAS_OUTPUT/goil_timing_prot_attrs.h
 GALGAS_OUTPUT/goil_timing_prot_attrs.cpp
 GALGAS_OUTPUT/DEPENDENCIES/goil_timing_prot_attrs.ggs.galgas-dep
+GALGAS_OUTPUT/config_type.h
+GALGAS_OUTPUT/config_type.cpp
+GALGAS_OUTPUT/DEPENDENCIES/config_type.ggs.galgas-dep
 GALGAS_OUTPUT/goil_code_generation.h
 GALGAS_OUTPUT/goil_code_generation.cpp
 GALGAS_OUTPUT/DEPENDENCIES/goil_code_generation.ggs.galgas-dep
@@ -215,6 +220,9 @@ GALGAS_OUTPUT/DEPENDENCIES/goil_code_msg_gen.ggs.galgas-dep
 GALGAS_OUTPUT/goil_code_schedtable_gen.h
 GALGAS_OUTPUT/goil_code_schedtable_gen.cpp
 GALGAS_OUTPUT/DEPENDENCIES/goil_code_schedtable_gen.ggs.galgas-dep
+GALGAS_OUTPUT/it_table_generation.h
+GALGAS_OUTPUT/it_table_generation.cpp
+GALGAS_OUTPUT/DEPENDENCIES/it_table_generation.ggs.galgas-dep
 GALGAS_OUTPUT/trace_description.h
 GALGAS_OUTPUT/trace_description.cpp
 GALGAS_OUTPUT/DEPENDENCIES/trace_description.ggs.galgas-dep

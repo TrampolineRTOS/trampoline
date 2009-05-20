@@ -7,6 +7,7 @@ goil_types_isr.ggs
 goil_types_timing_prot.ggs
 goil_types_resource.ggs
 cfg_types.ggs
-goil_types_counter.ggs::
+goil_types_counter.ggs
+goil_options.ggs::
 GALGAS_OUTPUT/goil_target_posix.h
 GALGAS_OUTPUT/goil_target_posix.cpp

@@ -1178,12 +1178,12 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 /* !NO_ALARM and extended error checking (OS_EXTENDED) and WITH_AUTOSAR    */
 #if !defined(NO_ALARM) && defined(OS_EXTENDED) && defined(WITH_AUTOSAR)
 /* E_OK or E_OS_VALUE   */
-#   define CHECK_ALARM_INCREMENT_ERROR(alarm_id,increment,result)     \
-	if ((result == (tpl_status)E_OK) &&                                       \
+#   define CHECK_ALARM_INCREMENT_ERROR(alarm_id,increment,result)         \
+	if ((result == (tpl_status)E_OK) &&                                     \
 		(((increment) >                                                       \
 		tpl_alarm_table[(alarm_id)]->stat_part->counter->max_allowed_value)   \
-		|| ((increment) == 0) ))											  \
-	{                                                                         \
+		|| ((increment) == 0) ))                                              \
+	{                                                                       \
 		result = (tpl_status)E_OS_VALUE;                                      \
 	}
 #endif
@@ -1191,12 +1191,12 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 /* !NO_ALARM and extended error checking (OS_EXTENDED)          */
 #if !defined(NO_ALARM) && defined(OS_EXTENDED) && !defined(WITH_AUTOSAR)
     /* E_OK or E_OS_VALUE   */
-#   define CHECK_ALARM_INCREMENT_ERROR(alarm_id,increment,result)			  \
-    if ((result == (tpl_status)E_OK) &&                                       \
-        (((increment) >                                                       \
+#   define CHECK_ALARM_INCREMENT_ERROR(alarm_id,increment,result)              \
+    if ((result == (tpl_status)E_OK) &&                                        \
+        (((increment) >                                                        \
          tpl_alarm_table[(alarm_id)]->stat_part->counter->max_allowed_value))) \
-    {                                                                         \
-        result = (tpl_status)E_OS_VALUE;                                      \
+    {                                                                          \
+        result = (tpl_status)E_OS_VALUE;                                       \
     }
 #endif
 

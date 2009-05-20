@@ -18,7 +18,8 @@
 lexique cfg_lexique :
 
 list cfg_keywords error message "Config file keyword '%K'" :
-    "tp_ns_per_counter_tick", "stack_alignment", "task", "isr", "isr_code", "counter_code" ;
+    "tp_ns_per_counter_tick", "stack_alignment", "task", "isr", "isr_code", "counter_code",
+    "interrupts" ;
 
 list cfg_type error message "Config file data type '%K'" :
     "uint8", "sint8", "uint16", "sint16", "uint32", "sint32", "uint64", "sint64" ;

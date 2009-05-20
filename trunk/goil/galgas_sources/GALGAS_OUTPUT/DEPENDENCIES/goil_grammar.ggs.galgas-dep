@@ -36,6 +36,7 @@ goil_target_ppc.ggs
 goil_code_msg_gen.ggs
 goil_code_schedtable_gen.ggs
 goil_env_verification.ggs
+config_type.ggs
 goil_proc_generation.ggs
 goil_app_generation.ggs
 goil_mp_generation.ggs
@@ -44,6 +45,7 @@ goil_alarm_verif.ggs
 goil_app_verif.ggs
 goil_message_verif.ggs
 trace_description.ggs
+it_table_generation.ggs
 goil_cpu_level_include.ggs
 goil_file_level_include.ggs
 cfg_grammar.ggs

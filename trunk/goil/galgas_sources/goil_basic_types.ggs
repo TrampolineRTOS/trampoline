@@ -326,17 +326,23 @@ end function ;
 
 function bool_define
   ?@string     flag
+  ?@bool       b
+  ->@string    res
+:
+  res := "#define    ".flag."    ".yes_no(!b)."\n" ;
+end function ;
+
+function bool_class_define
+  ?@string     flag
   ?@basic_type t
   ?@bool       def
   ->@string    res
 :
   cast t :
-  when == @void do
-    res := "#define    ".flag."    ".yes_no(!def)."\n" ;
   when == @bool_class b do
-    res := "#define    ".flag."    ".yes_no(![b value])."\n" ;
+    res := bool_define(!flag![b value]);
   else
-    res := "#define    ".flag."    ".yes_no(!def)."\n" ;
+    res := bool_define(!flag!def) ;
   end cast ;
 end function ;
 

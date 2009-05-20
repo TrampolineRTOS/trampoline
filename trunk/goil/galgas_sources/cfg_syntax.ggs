@@ -28,15 +28,20 @@ nonterminal <cfg_attrs>
     ?!@cfg_attrs attrs
 ;
 
+nonterminal <interrupts>
+    ?!@basic_type its
+;
+
 rule <cfg_start>
     !@config cfg
 :
     cfg := [@config emptyMap] ;
 
-    @cfg_attrs task_attrs [emptyMap] ;
-    @cfg_attrs isr_attrs [emptyMap] ;
-    @cfg_attrs isr_code_attrs [emptyMap] ;
-    @cfg_attrs counter_code_attrs [emptyMap] ;
+    @cfg_attrs  task_attrs [emptyMap] ;
+    @cfg_attrs  isr_attrs [emptyMap] ;
+    @cfg_attrs  isr_code_attrs [emptyMap] ;
+    @cfg_attrs  counter_code_attrs [emptyMap] ;
+    @basic_type its := [@void new !here]; 
 
     repeat
     while
@@ -77,6 +82,8 @@ rule <cfg_start>
         @lstring oil_attr ;
         @lstring tpl_attr ;
         $counter_code$ ; ${$ ; <cfg_attrs> !?counter_code_attrs ; $}$ ; $;$ ;
+    while
+        <interrupts> !?its;
     end repeat ;
 
     [!?cfg put
@@ -95,6 +102,7 @@ rule <cfg_start>
         ![@lstring new !"counter_code_attrs" !here]
         ![@attrs new !here !counter_code_attrs]
     ] ;
+    [!?cfg put![@lstring new!"it_sources"!here]!its];
 end rule ;
 
 
@@ -109,5 +117,22 @@ rule <cfg_attrs>
         [!?attrs put !oil_attr !tpl_attr] ;
     end repeat ;
 end rule ;
+
+rule <interrupts>
+  ?!@basic_type its
+:
+  @ident_map it_src [emptyMap];
+  $interrupts$;
+  @location it_loc := here;
+  ${$;
+  repeat while
+    @lstring src;
+    @luint64 id;
+    $idf$ ?src; $=$; $uint$ ?id; $;$;
+    [!?it_src put!src![@uint64_class new![id location]![id uint64]]];
+  end repeat;
+  $}$; $;$;
+  its := [@interrupts new!it_loc!it_src];
+end rule;
 
 end syntax ;

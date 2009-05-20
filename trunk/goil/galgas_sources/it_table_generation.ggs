@@ -1,0 +1,145 @@
+#
+# @file it_table_generation.ggs
+#
+# @section File description
+#
+# This file contains routines to generate interrupt table.
+#
+# @section Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline is protected by the french intellectual property law.
+#
+# goil is distributed under the GNU Public Licence V2
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics it_table_generation:
+
+import semantics goil_types_root in "goil_types_root.ggs";
+import semantics cfg_types in "cfg_types.ggs" ;
+import semantics config_type in "config_type.ggs" ;
+import option goil_options in "goil_options.ggs" ;
+
+list @it_table {
+  @string fct;
+  @string param;
+}
+
+routine generate_it_table
+  ??@config     cfg
+  ??@os_config  gen_cfg
+  ??@root_obj   cpu
+  ?!@string     imp
+:
+  if [option goil_options.posix_it] then
+    if [cfg hasKey!"it_sources"] then
+
+      @it_table tbl [emptyList];
+      @uint n := 32;
+      loop 32: while n > 0 do
+        tbl += !"tpl_null_it"!"NULL";
+        n--;
+      end loop;
+
+  # Check an interrupt source set is available
+      @basic_type interrupt_srcs;
+      [cfg get![@lstring new!"it_sources"!here]?interrupt_srcs];
+      cast interrupt_srcs:
+      when == @interrupts i do
+
+   # look up the isr
+        @uint isr_base_id := [[cpu tasks] count];
+        foreach [cpu isrs] :isr_id do
+          if [[isr other_fields] hasKey!"SOURCE"] then
+            @basic_type val;
+            [[isr other_fields] get![@lstring new!"SOURCE"!here]?val];
+            cast val:
+            when == @string_class s do
+              if [[i it_sources] hasKey![s value]] then
+                @basic_type it_id;
+                [[i it_sources] get![@lstring new![s value]!here]?it_id];
+                cast it_id:
+                when == @uint64_class it_id do
+                  [!?tbl setFctAtIndex!"tpl_central_interrupt_handler"![[it_id value] uint]];
+                  [!?tbl setParamAtIndex![isr_id+isr_base_id string]![[it_id value] uint]];
+                else
+                  error [it_id location]: "Internal error, this should be an integer";
+                end cast;
+              else
+                error [s location]: "SOURCE ".[s value]." is not available for the target";
+              end if;
+            else
+              error [val location]: "SOURCE should be an identifier";
+            end cast;
+          else
+            error key : "No SOURCE specified for ISR";
+          end if;
+        end foreach;
+    # look up the counters
+        foreach [cpu counters] do
+          @lstring src := [counter source];
+          if [src string] != "" then
+            @bool counter_ok := true;
+            if [option goil_options.autosar_on] then
+              cast [counter type]:
+              when == @software_counter do
+                warning key: "A SOFTWARE COUNTER should not have an interrupt SOURCE. Ignored";
+                counter_ok := false;
+              else end cast;
+            end if;
+            if counter_ok then
+              if [[i it_sources] hasKey![src string]] then
+                @basic_type it_id;
+                [[i it_sources] get![@lstring new![src string]!here]?it_id];
+                cast it_id:
+                when == @uint64_class it_id do
+                  [!?tbl setFctAtIndex!"tpl_counter_tick"![[it_id value] uint]];
+                  [!?tbl setParamAtIndex!"&".[key string]."_counter_desc"![[it_id value] uint]];
+                else
+                  error [it_id location]: "Internal error, this should be an integer";
+                end cast;
+              end if;
+            end if;
+          else
+            if [option goil_options.autosar_on] then
+              cast [counter type]:
+              when == @hardware_counter do
+                error key: "No SOURCE specified for COUNTER";
+              else end cast;
+            else
+              error key: "No SOURCE specified for COUNTER";
+            end if;
+          end if;
+        end foreach;
+      else
+        error here: "No interrupt source id defined for the target";
+      end cast;
+
+  # timing protection
+      if [gen_cfg with_timingprotection] then
+        [!?tbl setFctAtIndex!"tpl_watchdog_expiration"!31];
+        [!?tbl setParamAtIndex!"NULL"!31];
+      end if;
+
+      @string its := "tpl_it_vector_entry tpl_it_vector[32] = {\n";
+      foreach tbl do its .= "  { ".fct.", (void *)".param." }";
+      between        its .= ",\n";
+      after          its .= "\n";
+      end foreach;
+      its .= "};\n";
+
+      doReplace!?imp!"$IT_TABLE$"!its;
+    end if;
+  end if;
+end routine;
+
+end semantics;

@@ -31,6 +31,7 @@ goil_target_avr.ggs
 goil_target_ppc.ggs
 goil_code_msg_gen.ggs
 goil_code_schedtable_gen.ggs
-goil_env_verification.ggs::
+goil_env_verification.ggs
+config_type.ggs::
 GALGAS_OUTPUT/goil_semantics.h
 GALGAS_OUTPUT/goil_semantics.cpp

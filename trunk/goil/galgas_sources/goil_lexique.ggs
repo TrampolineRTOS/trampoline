@@ -273,6 +273,9 @@ list cpt_type_attr error message "Counter type attribute '%K'" style keywordsSty
     "NS",
     "CONSTNAME";
 
+list it_src_attr error message "Interrupt Source '%K'" style keywordsStyle :
+    "SOURCE";
+
 #----------------------- comments -------------------------------
 # They must be defined before delimitors!! 
 # '/' is a delimitor.
@@ -330,6 +333,7 @@ rule 'a'->'z' | 'A'->'Z' :
         default search att_token in timing_prot_attribs
         default search att_token in unit
         default search att_token in cpt_type_attr
+        default search att_token in it_src_attr
         default $idf$ ;
 end rule ;
 

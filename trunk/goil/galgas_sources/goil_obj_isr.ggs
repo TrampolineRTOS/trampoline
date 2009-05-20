@@ -186,6 +186,11 @@ rule <isr_attributes>
     $ACCESSING_APPLICATION$ ; $=$ ; $idf$ ?app ; <description> ?* ; $;$ ;
     add_lstring_unique !?acc_apps !app !"ACCESSING_APPLICATION" ;
   while
+    @lstring src ;
+    $SOURCE$; $=$; $idf$?src;
+    [!?other_fields put![@lstring new!"SOURCE"!here]![@string_class new![src location]![src string]]];
+    <description>?*; $;$;
+  while
     <free_field> !?other_fields ; <description> ?* ; $;$ ;
   end repeat ;
 end rule ;

@@ -3,21 +3,26 @@ semantics cfg_types :
 import semantics goil_basic_types in "goil_basic_types.ggs" ;
 
 map @config {
-    @basic_type value;
-    insert put error message "Key %K is duplicated in %L" ;
-    search get error message "Key %K is not defined" ;
-    remove del error message "Key %K is not defined" ;
+  @basic_type value;
+  insert put error message "Key %K is duplicated in %L" ;
+  search get error message "Key %K is not defined" ;
+  remove del error message "Key %K is not defined" ;
 }
 
 map @cfg_attrs {
-    @lstring tpl_attr ;
-    insert put error message "Attribute %K redefined in %L" ;
-    search get error message "Attribute %K is not defined" ;
-    remove del error message "Attribute %K is not defined" ;
+  @lstring tpl_attr ;
+  insert put error message "Attribute %K redefined in %L" ;
+  search get error message "Attribute %K is not defined" ;
+  remove del error message "Attribute %K is not defined" ;
 }
 
 class @attrs extends @basic_type {
-    @cfg_attrs attrs ;
+  @cfg_attrs attrs ;
+  override method string !@string s : s := "" ; end method ;
+}
+
+class @interrupts extends @basic_type {
+  @ident_map it_sources ;
   override method string !@string s : s := "" ; end method ;
 }
 
