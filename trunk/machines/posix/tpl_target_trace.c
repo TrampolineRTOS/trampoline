@@ -124,10 +124,10 @@ FUNC(void, OS_CODE)tpl_trace_format_xml(void)
             "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n"
             "<!DOCTYPE trace\n"
             "[\n"
-            "<!ELEMENT trace(record*)>\n"
-            "<!ELEMENT record(values)>\n"
-            "<!ELEMENT value>\n"
-            "<!ELEMENT values(value*)>\n"
+            "<!ELEMENT trace (record*)>\n"
+            "<!ELEMENT record (values)>\n"
+            "<!ELEMENT values (value*)>\n"
+            "<!ELEMENT value (#PCDATA)>\n"
             "]>\n"
             "<trace>\n");
   }
