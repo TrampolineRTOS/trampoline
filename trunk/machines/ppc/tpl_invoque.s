@@ -38,405 +38,568 @@
   .global ActivateTask
 ActivateTask:
   subi r1,r1,16
-  li r0,OSServiceId_ActivateTask
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_ActivateTask
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type ActivateTask,@function
   .size ActivateTask,$-ActivateTask
 
   .global TerminateTask
 TerminateTask:
   subi r1,r1,16
-  li r0,OSServiceId_TerminateTask
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_TerminateTask
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type TerminateTask,@function
   .size TerminateTask,$-TerminateTask
 
   .global ChainTask
 ChainTask:
   subi r1,r1,16
-  li r0,OSServiceId_ChainTask
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_ChainTask
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type ChainTask,@function
   .size ChainTask,$-ChainTask
 
   .global Schedule
 Schedule:
   subi r1,r1,16
-  li r0,OSServiceId_Schedule
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_Schedule
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type Schedule,@function
   .size Schedule,$-Schedule
 
   .global GetTaskID
 GetTaskID:
   subi r1,r1,16
-  li r0,OSServiceId_GetTaskID
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_GetTaskID
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type GetTaskID,@function
   .size GetTaskID,$-GetTaskID
 
   .global GetTaskState
 GetTaskState:
   subi r1,r1,16
-  li r0,OSServiceId_GetTaskState
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_GetTaskState
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type GetTaskState,@function
   .size GetTaskState,$-GetTaskState
 
   .global EnableAllInterrupts
 EnableAllInterrupts:
   subi r1,r1,16
-  li r0,OSServiceId_EnableAllInterrupts
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_EnableAllInterrupts
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type EnableAllInterrupts,@function
   .size EnableAllInterrupts,$-EnableAllInterrupts
 
   .global DisableAllInterrupts
 DisableAllInterrupts:
   subi r1,r1,16
-  li r0,OSServiceId_DisableAllInterrupts
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_DisableAllInterrupts
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type DisableAllInterrupts,@function
   .size DisableAllInterrupts,$-DisableAllInterrupts
 
   .global ResumeAllInterrupts
 ResumeAllInterrupts:
   subi r1,r1,16
-  li r0,OSServiceId_ResumeAllInterrupts
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_ResumeAllInterrupts
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type ResumeAllInterrupts,@function
   .size ResumeAllInterrupts,$-ResumeAllInterrupts
 
   .global SuspendAllInterrupts
 SuspendAllInterrupts:
   subi r1,r1,16
-  li r0,OSServiceId_SuspendAllInterrupts
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_SuspendAllInterrupts
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type SuspendAllInterrupts,@function
   .size SuspendAllInterrupts,$-SuspendAllInterrupts
 
   .global ResumeOSInterrupts
 ResumeOSInterrupts:
   subi r1,r1,16
-  li r0,OSServiceId_ResumeOSInterrupts
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_ResumeOSInterrupts
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type ResumeOSInterrupts,@function
   .size ResumeOSInterrupts,$-ResumeOSInterrupts
 
   .global SuspendOSInterrupts
 SuspendOSInterrupts:
   subi r1,r1,16
-  li r0,OSServiceId_SuspendOSInterrupts
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_SuspendOSInterrupts
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type SuspendOSInterrupts,@function
   .size SuspendOSInterrupts,$-SuspendOSInterrupts
 
   .global GetResource
 GetResource:
   subi r1,r1,16
-  li r0,OSServiceId_GetResource
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_GetResource
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type GetResource,@function
   .size GetResource,$-GetResource
 
   .global ReleaseResource
 ReleaseResource:
   subi r1,r1,16
-  li r0,OSServiceId_ReleaseResource
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_ReleaseResource
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type ReleaseResource,@function
   .size ReleaseResource,$-ReleaseResource
 
   .global SetEvent
 SetEvent:
   subi r1,r1,16
-  li r0,OSServiceId_SetEvent
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_SetEvent
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type SetEvent,@function
   .size SetEvent,$-SetEvent
 
   .global ClearEvent
 ClearEvent:
   subi r1,r1,16
-  li r0,OSServiceId_ClearEvent
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_ClearEvent
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type ClearEvent,@function
   .size ClearEvent,$-ClearEvent
 
   .global GetEvent
 GetEvent:
   subi r1,r1,16
-  li r0,OSServiceId_GetEvent
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_GetEvent
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type GetEvent,@function
   .size GetEvent,$-GetEvent
 
   .global WaitEvent
 WaitEvent:
   subi r1,r1,16
-  li r0,OSServiceId_WaitEvent
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_WaitEvent
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type WaitEvent,@function
   .size WaitEvent,$-WaitEvent
 
   .global GetAlarmBase
 GetAlarmBase:
   subi r1,r1,16
-  li r0,OSServiceId_GetAlarmBase
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_GetAlarmBase
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type GetAlarmBase,@function
   .size GetAlarmBase,$-GetAlarmBase
 
   .global GetAlarm
 GetAlarm:
   subi r1,r1,16
-  li r0,OSServiceId_GetAlarm
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_GetAlarm
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type GetAlarm,@function
   .size GetAlarm,$-GetAlarm
 
   .global SetRelAlarm
 SetRelAlarm:
   subi r1,r1,16
-  li r0,OSServiceId_SetRelAlarm
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_SetRelAlarm
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type SetRelAlarm,@function
   .size SetRelAlarm,$-SetRelAlarm
 
   .global SetAbsAlarm
 SetAbsAlarm:
   subi r1,r1,16
-  li r0,OSServiceId_SetAbsAlarm
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_SetAbsAlarm
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type SetAbsAlarm,@function
   .size SetAbsAlarm,$-SetAbsAlarm
 
   .global CancelAlarm
 CancelAlarm:
   subi r1,r1,16
-  li r0,OSServiceId_CancelAlarm
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_CancelAlarm
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type CancelAlarm,@function
   .size CancelAlarm,$-CancelAlarm
 
   .global GetActiveApplicationMode
 GetActiveApplicationMode:
   subi r1,r1,16
-  li r0,OSServiceId_GetActiveApplicationMode
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_GetActiveApplicationMode
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type GetActiveApplicationMode,@function
   .size GetActiveApplicationMode,$-GetActiveApplicationMode
 
   .global tpl_start_os
 tpl_start_os:
   subi r1,r1,16
-  li r0,OSServiceId_StartOS
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_StartOS
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type tpl_start_os,@function
   .size tpl_start_os,$-tpl_start_os
 
   .global ShutdownOS
 ShutdownOS:
   subi r1,r1,16
-  li r0,OSServiceId_ShutdownOS
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_ShutdownOS
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type ShutdownOS,@function
   .size ShutdownOS,$-ShutdownOS
 
   .global TerminateISR
 TerminateISR:
   subi r1,r1,16
-  li r0,OSServiceId_TerminateISR
+  stw  r0,4(r1)
+  mflr r0
+  stw  r0,0(r1)
+  stw  r11,8(r1)
+  stw  r12,12(r1)
+  li   r0,OSServiceId_TerminateISR
   sc
-  lwz r0,0(r1)
-  lwz r10,4(r1)
-  lwz r11,8(r1)
-  lwz r12,12(r1)
-  add r1,r1,16
+  lwz  r12,12(r1)
+  lwz  r11,8(r1)
+  lwz  r0,0(r1)
+  mtlr r0
+  lwz  r0,4(r1)
+  addi r1,r1,16
   blr
-
+  
   .type TerminateISR,@function
   .size TerminateISR,$-TerminateISR
 
+/* End of file tpl_invoque.s */

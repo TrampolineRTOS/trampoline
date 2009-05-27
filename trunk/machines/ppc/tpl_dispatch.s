@@ -133,6 +133,9 @@ tpl_sc_handler:
     
     /* get the context pointer of the task that just got the CPU        */
 
+    lis   r11,TPL_HIG(tpl_kern)
+    ori   r11,r11,TPL_LOW(tpl_kern)
+    
 no_save:
  
     lwz   r3,4(r11)                     /* get s_running                */
