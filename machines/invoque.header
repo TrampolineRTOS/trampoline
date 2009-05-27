@@ -1,8 +1,3 @@
-#!/bin/bash
-
-GEN_SOURCE_NAME=tpl_invoque.s
-
-cat << EOF > $GEN_SOURCE_NAME
 /**
  * @file tpl_invoque.s
  *
@@ -25,10 +20,10 @@ cat << EOF > $GEN_SOURCE_NAME
  *
  * @section infos File informations
  *
- * \$Date$
- * \$Rev$
- * \$Author$
- * \$URL$
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
  */
 #include "tpl_os_application_def.h"
 #include "tpl_os_service_ids.h"
@@ -36,15 +31,4 @@ cat << EOF > $GEN_SOURCE_NAME
 #ifndef WITH_SYSTEM_CALL
 #error "This file should not be part of your project since WITH_SYSTEM_CALL is not defined"
 #endif
-
-  .text
-/*  .section ".COMMON_CODE" */
-
-EOF
-
-awk '$2 ~/OSServiceId_/ {\
-split($2,a,"_");\
-if (a[2] == "StartOS") { a[2] = "tpl_start_os"; }\
-printf("  .global %s\n%s:\n  subi r1,r1,16\n  li r0,%s\n  sc\n  lwz r0,0(r1)\n  lwz r10,4(r1)\n  lwz r11,8(r1)\n  lwz r12,12(r1)\n  add r1,r1,16\n  blr\n\n  .type %s,@function\n  .size %s,$-%s\n\n",a[2],a[2],$2,a[2],a[2],a[2])\
-}' ../../os/tpl_os_service_ids.h >> $GEN_SOURCE_NAME
 
