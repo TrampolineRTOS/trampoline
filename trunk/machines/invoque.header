@@ -1,5 +1,5 @@
 /**
- * @file tpl_invoque.s
+ * @file tpl_invoque.$EXT
  *
  * @section descr File description
  *
@@ -20,10 +20,10 @@
  *
  * @section infos File informations
  *
- * $Date$
- * $Rev$
- * $Author$
- * $URL$
+ * $$Date$$
+ * $$Rev$$
+ * $$Author$$
+ * $$URL$$
  */
 #include "tpl_os_application_def.h"
 #include "tpl_os_service_ids.h"
