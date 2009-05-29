@@ -138,7 +138,7 @@ STATIC FUNC(void, OS_CODE) tpl_call_terminateISR(void)
 
 /*    tpl_keep_prio[current_prio] = TRUE;
 
-    result = TerminateISR2(); */
+    result = TerminateISR(); */
 }
 
 /**

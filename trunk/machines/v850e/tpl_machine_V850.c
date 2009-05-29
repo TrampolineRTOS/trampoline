@@ -137,11 +137,11 @@ FUNC(void, OS_CODE) tpl_init_context(
 
   /* initialize the return address of the object (task or isr2)
     this is used if the user forget to termiante a task or isr
-    by TerminateTask() or TerminateISR2() */
+    by TerminateTask() or TerminateISR() */
   if(exec_obj->static_desc->type == IS_ROUTINE)
   {
-    /* if object is an ISR2, initialize the return address to TerminateISR2() */
-    ic->Rn[31] = (uint32)TerminateISR2;
+    /* if object is an ISR2, initialize the return address to TerminateISR() */
+    ic->Rn[31] = (uint32)TerminateISR;
   }
   else
   {

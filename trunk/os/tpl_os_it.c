@@ -37,7 +37,7 @@
 #include "tpl_memmap.h"
 
 /*
- * TerminateISR2
+ * TerminateISR
  *
  * While this function is not part of the OSEK API, it is used
  * to terminate an ISR2 routine

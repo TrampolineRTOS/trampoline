@@ -989,7 +989,7 @@ __interrupt FUNC(void, OS_CODE) tpl_exception_occured(void)
 ** Function name: tpl_call_missing_end(void)
 ** Description: this function is called by tpl_switch_context when a task
 **              returns without call to TerminateTask or an isr without
-**              call to TerminateISR2
+**              call to TerminateISR
 ** Parameter context: pointer to the context of the faulty object
 ** Return value: None
 ** Remarks:
@@ -1002,7 +1002,7 @@ STATIC FUNC(void, OS_CODE) tpl_call_missing_end(void)
 
     if( IS_ROUTINE == (tpl_running_obj->static_desc->type) )
     {
-        result = TerminateISR2();
+        result = TerminateISR();
     }
     else
     {
