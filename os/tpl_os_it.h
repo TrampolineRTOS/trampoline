@@ -104,7 +104,7 @@ FUNC(void, OS_CODE) SuspendOSInterrupts(void);
  *
  * This service is equivalent to TerminateTask but for ISR2
  */
-FUNC(StatusType, OS_CODE) TerminateISR2(void);
+FUNC(StatusType, OS_CODE) TerminateISR(void);
 
 
 #define OS_STOP_SEC_CODE

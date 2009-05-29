@@ -244,10 +244,10 @@
 #define OSServiceId_ShutdownOS                  25
 
 /**
- * @def OSServiceId_TerminateISR2
+ * @def OSServiceId_TerminateISR
  *
  * @see #SERVICE_CALL_DESCRIPTOR
- * @see #TerminateISR2
+ * @see #TerminateISR
  */
 #define OSServiceId_TerminateISR                26
 
