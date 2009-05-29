@@ -867,7 +867,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
  * Does the scheduling form a dying object
  *
  * This function is called by the OSEK/VDX TerminateTask, ChainTask,
- * and by the function TerminateISR2
+ * and by the function TerminateISR
  *
  */
 FUNC(void, OS_CODE) tpl_schedule_from_dying(void)

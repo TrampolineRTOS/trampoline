@@ -352,7 +352,7 @@ void tpl_osek_func_stub( tpl_proc_id task_id )
     (*func)();
     
     if (type == IS_ROUTINE) {
-        TerminateISR2();
+        TerminateISR();
     }
     else {
         fprintf(stderr, "[OSEK/VDX Spec. 2.2.3 Sec. 4.7] Ending the task without a call to TerminateTask or ChainTask is strictly forbidden and causes undefined behaviour.\n");
