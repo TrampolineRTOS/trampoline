@@ -33,15 +33,31 @@
 
 import re
 import sys
+import getopt
 from string import Template
- 
-def main(argv):
-    if len(argv) > 1:
-        print "warning: extra argument(s) ignored"
+
+def usage():
+    print "usage: gen_invoque.py [-e<extension>]"
     
+def main(argv):
+    
+    try:
+        opts,args = getopt.getopt(argv,"e:","extension=")
+    except getopt.GetoptError, err:
+        print str(err)
+        usage()
+        sys.exit(2)
+    
+    extension = "s"
+    for o,a in opts:
+        if o == "-e":
+            extension = a
+                
     # get the header file
     try:
         result = open("../invoque.header").read()
+        subs = Template(result)
+        result = subs.substitute(EXT=extension)
     except:
         print "warning: ../invoque.header is missing"
         result = ""
@@ -73,13 +89,13 @@ def main(argv):
                     scall = subs.substitute(SYSCALLNAME=service,SYSCALLFCT=fct)
                     result = result + scall
 
-            result = result + "/* End of file tpl_invoque.s */\n"
+            result = result + "/* End of file tpl_invoque." + extension + " */\n"
             
             try:
-                res_fd = open("tpl_invoque.s",'w')
+                res_fd = open("tpl_invoque."+extension,'w')
                 res_fd.write(result);
             except:
-                print "error: unable to create tpl_invoque.s"
+                print "error: unable to create tpl_invoque."+extension
 
         except:
             print "error: tpl_os_service_ids.h file is not available"
