@@ -1,0 +1,118 @@
+semantics scheduletable_verif:
+
+#import semantics goil_semantic_types in "goil_semantic_types.ggs";
+#import semantics goil_types_scheduletable in "goil_types_scheduletable.ggs";
+#import semantics goil_types_counter in "goil_types_counter.ggs";
+#import semantics goil_types_task in "goil_types_task.ggs";
+import semantics goil_types_root in "goil_types_root.ggs";
+
+#
+# Autosar schedule tables verification
+#
+routine schedule_tables_well_formed
+  ??@scheduletable_map sts
+:
+  foreach sts (@lstring stname @scheduletable_obj st) do
+    # check at least one expiry point of
+    # each schedule table has its offset set to 0
+    # check there is no expiry point with an offset greater than
+    # the LENGTH of the schedule table
+    @uint64 len:= 0L;
+    cast [st length]:
+      when == @uint64_class ui do
+        len:= [ui value];
+      else
+        error here: "Internal error, incorrect datatype for LENGTH attribute of Schedule Table ".[stname string];
+    end cast;
+    
+    # Check the schedule table has not a length equal to 0
+    if len == 0L then
+      error [[st length] location]: "The LENGTH attribute should not be 0";
+    end if;
+
+    @action_list actions:= [st actions];
+#        @bool offset0_found:= false;
+    foreach actions (@uint64 offset @action_obj action) do
+#            if offset == 0L then offset0_found:= true; end if;
+      if offset > len then
+        error [action location]: "Offset of action is greater than the LENGTH attribute of Schedule Table ".[stname string];
+      end if;
+    end foreach;
+#        if not offset0_found then
+#            error [stname location]: "No expiry point found with a 0 offset for Schedule Table ".[stname string];
+#        end if;
+  end foreach;
+end routine;
+
+routine schedule_tables_counters_exist_and_compatible
+  ??@scheduletable_map sts
+  ??@counter_map       cnts
+:
+  foreach sts (@lstring stname @scheduletable_obj st) do
+    @lstring cnt:= [st counter];
+
+    if not ([cnts hasKey ![cnt string]]) & ([cnt string] != "SystemCounter") then
+      error cnt: "counter ".[cnt string]." is not defined !";
+    else
+      @uint64 len:= 0L;
+      @location loc:= here;
+      cast [st length]:
+      when == @uint64_class ui do len:= [ui value]; loc:= [ui location];
+      else error here: "Internal error, incorrect datatype for LENGTH attribute of schedule table ".[stname string];
+      end cast;
+
+      if [cnt string] == "SystemCounter" then
+        if len > 32767L then
+          error loc: "LENGTH of schedule table ".[stname string]." is greater than MAXALLOWEDVALUE of counter ".[cnt string];
+        end if;
+      else
+        # check the length of te schedule table is not
+        # greater than the max allowed value of the counter
+        @counter_obj cpt;
+        [cnts get !cnt ?cpt];
+        @uint64 max:= 0L;
+
+        cast [cpt max_allowed_value]:
+          when == @uint32_class ui do
+            max:= [[ui value] uint64];
+          else
+            error here: "Internal error, incorrect datatype for MAXALLOWEDVALUE attribute of counter ".[cnt string];
+        end cast;
+
+        if len > max then
+          error loc: "LENGTH of schedule table ".[stname string]." is greater than MAXALLOWEDVALUE of counter ".[cnt string];
+        end if;
+      end if;
+    end if;
+  end foreach;
+end routine;
+
+routine schedule_tables_tasks_and_events_exist
+  ??@root_obj cpu
+
+#scheduletable_map sts
+#  ??@task_map          tasks
+#  ??@event_map         events
+:
+  foreach [cpu scheduletables] (@lstring stname @scheduletable_obj st) do
+    foreach [st actions] (@uint64 offset @action_obj action) do
+      cast action:
+        when == @activatetask_action ata do
+          if not [[cpu tasks] hasKey ![[ata task_name] string]] then
+            error [action location]: "TASK attribute of action does not reference an existing task";
+          end if;
+      when == @setevent_action sea do
+        if not [[cpu tasks] hasKey ![[sea task_name] string]] then
+          error [action location]: "TASK attribute of action does not reference an existing task";
+        end if;
+        if not [[cpu events] hasKey ![[sea event_name] string]] then
+          error [action location]: "EVENT attribute of action does not reference an existing event";
+        end if;
+        else
+          error stname: "Internal error, incorrect datatype for ACTION attribute at offset ".[offset string]." of schedule table ".[stname string];
+      end cast;
+    end foreach;
+  end foreach;
+end routine;
+
+end semantics;

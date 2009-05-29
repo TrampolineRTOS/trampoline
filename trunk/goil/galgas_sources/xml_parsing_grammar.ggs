@@ -1,0 +1,12 @@
+grammar xml_parsing_grammar "LL1":
+import lexique xml_parsing_lexique in "xml_parsing_lexique.ggs" ;
+import syntax xml_parsing_syntax in "xml_parsing_syntax.ggs" ;
+
+root <start_symbol>
+  !@xmlNodeList outRootNodes
+  ??@bool inIncludeComments
+  ??@bool inDoNotCondenseWhiteSpaces
+  ??@bool inPrintDuringParsing
+;
+
+end grammar ;

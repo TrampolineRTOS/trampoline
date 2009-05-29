@@ -1,6 +1,8 @@
-program goil_program "version 2.0b27" :
+program goil_program "version 2.0b28" :
   import grammar goil_grammar in "goil_grammar.ggs" ;
-#  import grammar xgoil_grammar in "xgoil_grammar.ggs" ;
+  import semantics xml_types in "xml_types.ggs";
+  import grammar xml_parsing_grammar in "xml_parsing_grammar.ggs" ;
+  import semantics xml_to_goil in "xml_to_goil.ggs";
 
 #--- Prologue routine
   before {
@@ -15,9 +17,17 @@ program goil_program "version 2.0b27" :
     grammar goil_grammar in inSourceFile ;
   }
 
-#  when . "epc" message "a XML source file" ??@lstring in_source_file {
-#    grammar xgoil_grammar in in_source_file ;
-#  }
+  when . "epc" message "a XML source file" ??@lstring inSourceFile {
+    @xmlNodeList root_nodes;
+    grammar xml_parsing_grammar in inSourceFile
+      ?root_nodes
+      !false
+      !true
+      !true;
+      logXMLNodes !root_nodes ;
+
+    @root_obj cpu := transform_xml_to_goil(!root_nodes);
+  }
 
 #--- Epilogue routine
   after {

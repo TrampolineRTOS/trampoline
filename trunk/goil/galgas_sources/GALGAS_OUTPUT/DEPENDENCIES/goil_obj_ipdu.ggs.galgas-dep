@@ -1,4 +1,4 @@
-463::
+491::
 goil_lexique.ggs
 goil_options.ggs
 goil_semantics.ggs
@@ -18,9 +18,16 @@ goil_types_counter.ggs
 goil_types_scheduletable.ggs
 goil_types_app.ggs
 goil_types_networkmessage.ggs
-goil_defaults.ggs
+defaults.ggs
 goil_check.ggs
 goil_semantic_verification.ggs
+resources_verif.ggs
+scheduletable_verif.ggs
+tasks_verif.ggs
+isrs_verif.ggs
+goil_message_verif.ggs
+goil_alarm_verif.ggs
+goil_app_verif.ggs
 goil_code_generation.ggs
 goil_targets.ggs
 goil_target_c166.ggs
@@ -35,7 +42,12 @@ goil_target_avr.ggs
 goil_target_ppc.ggs
 goil_code_msg_gen.ggs
 goil_code_schedtable_gen.ggs
+goil_proc_generation.ggs
+goil_mp_generation.ggs
 goil_env_verification.ggs
-config_type.ggs::
+goil_app_generation.ggs
+it_table_generation.ggs
+config_type.ggs
+trace_description.ggs::
 GALGAS_OUTPUT/goil_obj_ipdu.h
 GALGAS_OUTPUT/goil_obj_ipdu.cpp

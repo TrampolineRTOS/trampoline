@@ -1,0 +1,118 @@
+template lexique xml_parsing_lexique :
+
+template "<" feature preserved ... "" ;
+
+replace "&amp;" -> "&" ;
+replace "&lt;" -> "<" ;
+replace "&gt;" -> ">" ;
+replace "&quot;" -> "\"" ;
+replace "&apos;" -> "'" ;
+replace "&#" ... ";" : codePointToUnicode ;
+
+style delimitersStyle -> "Delimiter:" ;
+style nameStyle -> "Name:" ;
+style attributeValue -> "Attribute value:" ;
+style commentStyle -> "Comment:" ;
+style textStyle -> "Text:" ;
+
+@lstring tokenString ;
+
+#-------------------------- comment  --------------------
+
+$comment$ ! tokenString error message "a comment" style commentStyle feature templateEndMark ;
+
+message incorrectCommentError : "incorrect XML comment" ;
+
+rule "<!--" :
+  repeat
+  while "&amp;" :
+    enterCharacterIntoString (tokenString, '&') ;
+  while "&lt;" :
+    enterCharacterIntoString (tokenString, '<') ;
+  while "&gt;" :
+    enterCharacterIntoString (tokenString, '>') ;
+  while "&quot;" :
+    enterCharacterIntoString (tokenString, '"') ;
+  while "&apos;" :
+    enterCharacterIntoString (tokenString, ''') ;
+  while '\u0001' -> ',' | '.' -> '\U0010FFFF' :
+    enterCharacterIntoString (tokenString, *) ;
+  while ~ "-->" error incorrectCommentError :
+    enterCharacterIntoString (tokenString, '-') ;
+  end repeat ;
+  send $comment$ ;
+end rule ;
+
+# ----------------------------- Delimiters ---------------------------------------
+list xmlDelimitorsList error message "the '%K' delimitor" style delimitersStyle :
+  "<",
+  "<?",
+  ">" feature templateEndMark,
+  "?>" feature templateEndMark,
+  "/>" feature templateEndMark,
+  "</",
+  "=" ;
+
+rule list xmlDelimitorsList ;
+
+#-------------------------- name  --------------------
+
+$name$ ! tokenString error message "a name" style nameStyle ;
+
+rule isUnicodeLetter :
+  repeat
+    enterCharacterIntoString (tokenString, *) ;
+  while isUnicodeLetter | '0'->'9' | '-' :
+  end repeat ;
+  send $name$ ;
+end rule ;
+
+#-------------------------- Attribute value  --------------------
+
+$value$ ! tokenString error message "an attribute value" style attributeValue ;
+
+message incorrectAttributeEnd : "attribute value should be enclosed between apostrophes (') or quotation marks (\")" ;
+
+rule '"' :
+  repeat
+  while "&amp;" :
+    enterCharacterIntoString (tokenString, '&') ;
+  while "&lt;" :
+    enterCharacterIntoString (tokenString, '<') ;
+  while "&gt;" :
+    enterCharacterIntoString (tokenString, '>') ;
+  while "&quot;" :
+    enterCharacterIntoString (tokenString, '"') ;
+  while "&apos;" :
+    enterCharacterIntoString (tokenString, ''') ;
+  while ~ "\"" error incorrectAttributeEnd :
+    enterCharacterIntoString (tokenString, *) ;
+  end repeat ;
+  send $value$ ;
+end rule ;
+
+rule ''' :
+  repeat
+  while "&amp;" :
+    enterCharacterIntoString (tokenString, '&') ;
+  while "&lt;" :
+    enterCharacterIntoString (tokenString, '<') ;
+  while "&gt;" :
+    enterCharacterIntoString (tokenString, '>') ;
+  while "&quot;" :
+    enterCharacterIntoString (tokenString, '"') ;
+  while "&apos;" :
+    enterCharacterIntoString (tokenString, ''') ;
+  while ~ "'" error incorrectAttributeEnd :
+    enterCharacterIntoString (tokenString, *) ;
+  end repeat ;
+  send $value$ ;
+end rule ;
+
+# --------------------- separators -----------------------------------------
+rule '\u0001' -> ' ' :
+end rule ;
+
+#----------------------------------------------------------------------------*
+
+end lexique ;

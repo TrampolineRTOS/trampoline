@@ -34,10 +34,16 @@ import semantics goil_types_task in "goil_types_task.ggs" ;
 import semantics goil_types_app in "goil_types_app.ggs" ;
 import semantics goil_code_msg_gen in "goil_code_msg_gen.ggs" ;
 import semantics goil_code_schedtable_gen in "goil_code_schedtable_gen.ggs" ;
+import semantics goil_proc_generation in "goil_proc_generation.ggs" ;
+import semantics goil_mp_generation in "goil_mp_generation.ggs" ;
+import semantics goil_app_generation in "goil_app_generation.ggs" ;
+import semantics it_table_generation in "it_table_generation.ggs";
+import semantics trace_description in "trace_description.ggs";
 import semantics goil_env_verification in "goil_env_verification.ggs" ;
 import semantics config_type in "config_type.ggs" ;
 
 import semantics cfg_types in "cfg_types.ggs" ;
+import grammar cfg_grammar in "cfg_grammar.ggs" ;
 
 import option goil_options in "goil_options.ggs" ;
 
@@ -61,8 +67,8 @@ routine init_prefixes ?!@prefix_map prefix :
 #    [!?prefix add ![@lstring new !"isr_helper" !here]
 #              !"static_helper_of_isr_" !"$ISR_HELPER$"] ;
 
-    [!?prefix add ![@lstring new !"proc" !here]
-              !"_descriptor" !""] ;
+#    [!?prefix add ![@lstring new !"proc" !here]
+#              !"_descriptor" !""] ;
 
 #    [!?prefix add ![@lstring new !"alarm" !here]
 #              !"descriptor_of_alarm_" !"$ALARM$"] ;
@@ -306,25 +312,25 @@ end routine ;
 # Makefile generation
 #--------------------------------------------------------------------
 
-routine getTrampolineTargetName
-  !  @string trampolineTarget
+function trampoline_target_name
+  ->@string trampoline_target
 :
   @string goilTargetName := arch();
-  if    goilTargetName == "arm"    then trampolineTarget := "arm";
-  elsif goilTargetName == "avr"    then trampolineTarget := "avr";
-  elsif goilTargetName == "c166"   then trampolineTarget := "c166";
-  elsif goilTargetName == "h8300h" then trampolineTarget := "h8300h";
-  elsif goilTargetName == "hcs12"  then trampolineTarget := "hcs12";
-  elsif goilTargetName == "libpcl" then trampolineTarget := "libpcl";
-  elsif goilTargetName == "posix"  then trampolineTarget := "posix";
-  elsif goilTargetName == "posix_vp2"  then trampolineTarget := "posix_vp2";
-  elsif goilTargetName == "ppc"    then trampolineTarget := "ppc";
-  elsif goilTargetName == "v850e"  then trampolineTarget := "v850e";
+  if    goilTargetName == "arm"       then trampoline_target := "arm";
+  elsif goilTargetName == "avr"       then trampoline_target := "avr";
+  elsif goilTargetName == "c166"      then trampoline_target := "c166";
+  elsif goilTargetName == "h8300h"    then trampoline_target := "h8300h";
+  elsif goilTargetName == "hcs12"     then trampoline_target := "hcs12";
+  elsif goilTargetName == "libpcl"    then trampoline_target := "libpcl";
+  elsif goilTargetName == "posix"     then trampoline_target := "posix";
+  elsif goilTargetName == "posix_vp2" then trampoline_target := "posix_vp2";
+  elsif goilTargetName == "ppc"       then trampoline_target := "ppc";
+  elsif goilTargetName == "v850e"     then trampoline_target := "v850e";
   else 
     error here: "unknown target name. Can't find the corresponding Trampoline target.";
-    trampolineTarget := "";
+    trampoline_target := "";
   end if;
-end routine;
+end function;
 
 routine updateTemplateWithStringList
   ?? @lstringlist strList
@@ -387,8 +393,7 @@ routine generate_makefile
     @string makerulesStr;
     retrieveTemplateString ?makerulesStr !"Make-rules";
     @string filename := directory."/Make-rules";
-    @string trampolineTarget; 
-    getTrampolineTargetName ? trampolineTarget;
+    @string trampolineTarget := trampoline_target_name();
     makerulesStr := [makerulesStr stringByReplacingStringByString !"$GOIL_TARGET$"![option goil_options.target_platform]];
     makerulesStr := [makerulesStr stringByReplacingStringByString !"$TRAMPOLINE_TARGET$"!trampolineTarget];
 
@@ -1511,7 +1516,6 @@ end routine ;
 routine generate_events
     ?@event_map events
     ?@task_map tasks
-    ?@prefix_map unused p
     ?!@string unused header
     ?!@string implementation
 :
@@ -1806,6 +1810,306 @@ routine generate_ready_list
     implementation := [implementation stringByReplacingStringByString !"$READY_LIST$" !fifo] ;
     obj_header := [obj_header stringByReplacingStringByString !"$PRIO_LEVEL_COUNT$" ![(max_prio + 1) string]] ;
 end routine ;
+
+##
+# @fn generate_all
+#
+# routine generate_all does the generation of all the system.
+# 
+# @param cpu the root object got from the parsing
+# 
+routine generate_all
+  ??@root_obj cpu
+:
+  # code generation
+  @string timestamp := [@string stringWithCurrentDateTime] ;
+
+  @string temp_dir ;
+  templates_directory ?temp_dir ;
+
+  if temp_dir != "" then
+      @string target := [option goil_options.target_platform] ;
+      if target != "" then
+          @string header ;
+          @string obj_header ;
+          @string implementation ;
+          @string types ;
+
+          @config cfg [emptyMap] ;
+          @lstring cfg_file := config_file();
+          if [cfg_file string] != "" then
+              grammar cfg_grammar in cfg_file ?cfg ;
+          end if ;
+
+          @lstring extra_cfg_file := extra_config_file();
+          if [extra_cfg_file string] != "" then
+              grammar cfg_grammar in extra_cfg_file ?cfg ;
+          end if ;
+
+          @os_config generated_conf := os_cfg(!cpu);
+
+          retrieveTemplateString ?header !"app_header" ;
+          retrieveTemplateString ?obj_header !"obj_header" ;
+          retrieveTemplateString ?implementation !"app_implementation" ;
+          retrieveTemplateString ?types !"types" ;
+          @prefix_map prefix := [@prefix_map emptyMap] ;
+
+          init_prefixes !?prefix ;
+
+          @uint max_task_prio ;
+          @uint max_prio ;
+          @prio_map tasks_actual_prio ;
+          compute_actual_task_priority
+              ![cpu tasks]
+              ?tasks_actual_prio
+              ?max_task_prio ;
+
+          @prio_map isrs_actual_prio ;
+          compute_actual_isr_priority
+              ![cpu isrs]
+              ?isrs_actual_prio
+              !max_task_prio
+              ?max_prio ;
+
+          @prio_map rez_actual_prio ;
+          @string_map rez_comments ;
+          compute_rez_priority 
+              ![cpu resources]
+              ![cpu tasks]
+              !tasks_actual_prio
+              ![cpu isrs] 
+              !isrs_actual_prio
+              ?rez_actual_prio
+              ?rez_comments ;
+
+          @prio_list ready_list ;
+          compute_ready_list
+              !tasks_actual_prio
+              !isrs_actual_prio
+              !rez_actual_prio
+              !max_task_prio
+              !max_prio
+              ?ready_list ;
+
+          @string_map app_for_obj ;
+          compute_app_for_obj
+              ![cpu applis]
+              ?app_for_obj ;
+
+          generate_flags
+              !generated_conf
+              ![cpu os]
+              ![cpu tasks]
+              ![cpu isrs]
+              !?obj_header ;
+
+          [[cpu com] generate !?obj_header] ;
+
+          generate_events
+              ![cpu events]
+              ![cpu tasks]
+              !?header
+              !?implementation ;
+
+          generate_counters
+              ![cpu counters]
+              !app_for_obj
+              !?header
+              !?obj_header
+              !?implementation ;
+
+          generate_alarms
+              ![cpu alarms]
+              !app_for_obj
+              !?header
+              !?obj_header
+              !?implementation ;
+
+          generate_tasks
+              !cfg
+              ![cpu tasks]
+              ![cpu applis]
+              ![cpu resources]
+              !tasks_actual_prio
+              !app_for_obj
+              !?header
+              !?obj_header
+              !?implementation ;
+
+          generate_isrs
+              !cfg
+              ![cpu isrs]
+              ![cpu applis]
+              ![cpu resources]
+              !isrs_actual_prio
+              !app_for_obj
+              !?header
+              !?obj_header
+              !?implementation ;
+
+# Generate the process ids and table
+
+          generate_proc_table
+              ![cpu tasks]
+              ![cpu isrs]
+              !?header
+              !?implementation
+              !?obj_header ;
+
+          generate_mp
+            ![cpu tasks]
+            ![cpu isrs]
+            ![cpu applis]
+            !app_for_obj ;
+
+          generate_resources
+              ![cpu resources]
+              !rez_actual_prio
+              !rez_comments
+              !app_for_obj
+              !?header
+              !?obj_header
+              !?implementation ;
+
+          generate_messages
+              ![cpu messages]
+              !prefix
+              !?header
+              !?obj_header
+              !?implementation ;
+
+          generate_network_messages
+            ![cpu net_messages]
+            ![cpu messages]
+            !?header
+            !?obj_header
+            !?implementation ;
+
+          if [option goil_options.autosar_on] then
+              generate_schedule_tables
+                  ![cpu scheduletables]
+                  !app_for_obj
+                  !?header
+                  !?obj_header
+                  !?implementation ;
+              generate_timing_prot
+                  ![cpu tasks]
+                  ![cpu resources]
+                  !?obj_header ;
+              generate_apps
+                  ![cpu applis]
+                  ![cpu tasks]
+                  ![cpu isrs]
+                  ![cpu alarms]
+                  ![cpu resources]
+                  ![cpu scheduletables]
+                  ![cpu counters]
+                  !?header
+                  !?obj_header
+                  !?implementation ;
+              generate_trusted_functions
+                  ![cpu applis]
+                  !?header
+                  !?obj_header
+                  !?implementation ;
+          end if ;
+
+          generate_ready_list
+              ![cpu os]
+              !max_prio
+              !ready_list
+              !?obj_header
+              !?implementation ;
+
+          generate_types
+              ![cpu tasks]
+              ![cpu isrs]
+              ![cpu alarms]
+              ![cpu counters]
+              ![cpu resources]
+              ![cpu scheduletables]
+              ![cpu applis]
+              !max_prio
+              !?types ;
+            
+          generate_it_table
+              !cfg
+              !generated_conf
+              !cpu
+              !?implementation ;
+
+#                generate_crc
+#                    !tasks
+#                    !?implementation ;
+
+          # write the result to files
+          @string directory := project_name();
+          
+          @string header_file := "tpl_os_generated_configuration.h" ;
+          @string obj_header_file  := "tpl_app_objects.h" ;
+          @string implementation_file  := "tpl_os_generated_configuration.c" ;
+          @string types_file := "tpl_app_custom_types.h" ;
+
+          header := [header stringByReplacingStringByString !"$HEADER$" !header_file];
+          header := [header stringByReplacingStringByString !"$IMPLEMENTATION$" !implementation_file];
+          header := [header stringByReplacingStringByString !"$TIMESTAMP$" !timestamp];
+          obj_header := [obj_header stringByReplacingStringByString !"$OBJ_HEADER$" !obj_header_file];
+          obj_header := [obj_header stringByReplacingStringByString !"$TIMESTAMP$" !timestamp];
+          implementation := [implementation stringByReplacingStringByString !"$HEADER$" !header_file];
+          implementation := [implementation stringByReplacingStringByString !"$OBJ_HEADER$" !obj_header_file];
+          implementation := [implementation stringByReplacingStringByString !"$IMPLEMENTATION$" !implementation_file];
+          implementation := [implementation stringByReplacingStringByString !"$TIMESTAMP$" !timestamp];
+
+          @uint error_count := [@uint errorCount] ;
+
+          header_file := directory . "/" . header_file ;
+          obj_header_file := directory . "/" . obj_header_file ;
+          implementation_file := directory . "/" . implementation_file ;
+          types_file := directory . "/" . types_file ;
+
+          if error_count == 0 then
+              if [option .verbose_output] then
+                  message "creating " . header_file . "\n" ;
+              end if;
+              [header makeDirectoryAndWriteToFile !header_file] ;
+              if [option .verbose_output] then
+                  message "creating " . obj_header_file . "\n" ;
+              end if;
+              [obj_header makeDirectoryAndWriteToFile !obj_header_file] ;
+              if [option .verbose_output] then
+                  message "creating " . implementation_file . "\n" ;
+              end if;
+              [implementation makeDirectoryAndWriteToFile !implementation_file] ;
+              if [option .verbose_output] then
+                  message "creating " . types_file . "\n" ;
+              end if ;
+              [types makeDirectoryAndWriteToFile !types_file] ;
+          
+              if [option goil_options.generate_makefile] then
+                  @string makefile_dir := [directory stringByDeletingLastPathComponent] ;
+                  if makefile_dir == "" then
+                      makefile_dir := "." ;
+                  end if ; 
+                  if [option .verbose_output] then
+                      message "creating ".makefile_dir."/makefile\n" ;
+                  end if;
+                  generate_makefile
+                      ![cpu os]
+                      !makefile_dir
+                      ![[[@string stringWithSourceFilePath]
+                                 stringByDeletingPathExtension] lastPathComponent];
+              end if ;
+
+              generate_description !cpu;
+          end if ;
+      else
+          message "No target platform given, compiling aborted\n" ;
+      end if ;
+  else
+      message "No template directory defined, compiling aborted\n" ;
+  end if ;
+end routine;
+  
 
 end semantics ;
 # vim:ft=ggs:ts=4:sw=4
