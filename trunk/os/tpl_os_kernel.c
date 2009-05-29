@@ -1262,12 +1262,13 @@ FUNC(void, OS_CODE) tpl_start_os_service(
   tpl_init_timing_protection();
 #endif
   
+  TRACE_TPL_INIT()
+  
   tpl_init_os(mode);
   
   /*  Call the startup hook. According to the spec, it should be called
       after the os is initialized and before the scheduler is running     */
   CALL_STARTUP_HOOK()
-  TRACE_TPL_INIT()
 
   /*  Call tpl_schedule to elect the greatest priority task */
   if(tpl_h_prio != -1)

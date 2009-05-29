@@ -42,7 +42,7 @@
  * While this function is not part of the OSEK API, it is used
  * to terminate an ISR2 routine
  */
-FUNC(StatusType, OS_CODE) TerminateISR2(void)
+FUNC(StatusType, OS_CODE) TerminateISR(void)
 {
     return tpl_terminate_isr2_service();
 }
