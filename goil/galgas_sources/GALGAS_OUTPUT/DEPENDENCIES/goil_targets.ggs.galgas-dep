@@ -11,6 +11,7 @@ cfg_types.ggs
 goil_types_counter.ggs
 goil_target_libpcl.ggs
 goil_target_posix.ggs
+goil_target_posix_vp2.ggs
 goil_target_hcs12.ggs
 goil_target_v850e.ggs
 goil_target_h8300h.ggs

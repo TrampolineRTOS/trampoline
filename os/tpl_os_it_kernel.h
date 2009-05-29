@@ -39,6 +39,32 @@
  */
 typedef P2FUNC(tpl_bool, OS_APPL_CODE, tpl_isr_helper)(void);
 
+typedef P2FUNC(void, OS_APPL_CODE, tpl_it_handler)(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
+
+/**
+ * @struct TPL_IT_VECTOR_ENTRY
+ *
+ * Entry of the tpl interrupt vector
+ */
+struct TPL_IT_VECTOR_ENTRY {
+    CONST(tpl_it_handler, AUTOMATIC) func;      /**< pointer to the request 
+                                                    handling function for 
+                                                    this interrupt 
+                                                */
+    P2VAR(void, OS_APPL_DATA, AUTOMATIC) args;  /**< pointer to the 
+                                                  arguments the function
+                                                */
+};
+
+/**
+ * @typedef tpl_it_vector_entry
+ *
+ * This is an alias for #TPL_IT_VECTOR_ENTRY structure
+ *
+ * @see #TPL_IT_VECTOR_ENTRY
+ */
+typedef struct TPL_IT_VECTOR_ENTRY tpl_it_vector_entry;
+
 /**
  * @struct TPL_ISR_STATIC
  *
@@ -103,6 +129,21 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void);
  * @param interrupt service routine identifier
  */
 FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) id);
+
+/**
+ * This is the dispatcher of interrupts. It should be called by
+ * the root interrupt handler with an ISR identifier. VP2 version.
+ *
+ * @param interrupt service routine identifier
+ */
+FUNC(void, OS_CODE) tpl_central_interrupt_handler_2(P2CONST(void, OS_APPL_DATA, AUTOMATIC) id);
+
+/**
+ * This function is called when an unknown interrupt is raised.
+ * It is empty. It is only present to attach a breakpoint for
+ * debugging purposes. VP2 version.
+ */
+FUNC(void, OS_CODE) tpl_null_it(P2CONST(void, OS_APPL_DATA, AUTOMATIC));
 
 /**
  * Enable all interrupts service

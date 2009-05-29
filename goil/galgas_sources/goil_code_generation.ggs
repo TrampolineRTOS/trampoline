@@ -317,6 +317,7 @@ routine getTrampolineTargetName
   elsif goilTargetName == "hcs12"  then trampolineTarget := "hcs12";
   elsif goilTargetName == "libpcl" then trampolineTarget := "libpcl";
   elsif goilTargetName == "posix"  then trampolineTarget := "posix";
+  elsif goilTargetName == "posix_vp2"  then trampolineTarget := "posix_vp2";
   elsif goilTargetName == "ppc"    then trampolineTarget := "ppc";
   elsif goilTargetName == "v850e"  then trampolineTarget := "v850e";
   else 

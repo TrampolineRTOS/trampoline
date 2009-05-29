@@ -420,6 +420,7 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
 #else /* WITH_POWEROF2QUEUE */
 
 #ifdef WITH_DOW
+#include <stdio.h>
 /* MISRA RULE 13 VIOLATION: this function is only used for debug purpose,
    so production release is not impacted by MISRA rules violated
    in this function

@@ -27,6 +27,7 @@ goil_targets.ggs
 goil_target_c166.ggs
 goil_target_libpcl.ggs
 goil_target_posix.ggs
+goil_target_posix_vp2.ggs
 goil_target_hcs12.ggs
 goil_target_v850e.ggs
 goil_target_h8300h.ggs
@@ -256,6 +257,9 @@ GALGAS_OUTPUT/DEPENDENCIES/goil_target_avr.ggs.galgas-dep
 GALGAS_OUTPUT/goil_target_posix.h
 GALGAS_OUTPUT/goil_target_posix.cpp
 GALGAS_OUTPUT/DEPENDENCIES/goil_target_posix.ggs.galgas-dep
+GALGAS_OUTPUT/goil_target_posix_vp2.h
+GALGAS_OUTPUT/goil_target_posix_vp2.cpp
+GALGAS_OUTPUT/DEPENDENCIES/goil_target_posix_vp2.ggs.galgas-dep
 GALGAS_OUTPUT/goil_grammar.cpp
 GALGAS_OUTPUT/goil_grammar.h
 GALGAS_OUTPUT/DEPENDENCIES/goil_grammar.ggs.galgas-dep

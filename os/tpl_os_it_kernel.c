@@ -340,6 +340,26 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
 #endif
 }
 
+
+/*
+ * The central interrupt handler is called by the interrupt handler
+ * with the id of the interrupt (usually its priority) as parameter
+ * tpl_central_interrupt_handler saves the context of the interrupted
+ * task / interrupt handler, switches to the context of the handler
+ * and calls the handler. VP2 version
+ */
+FUNC(void, OS_CODE) tpl_central_interrupt_handler_2(P2CONST(void, OS_APPL_DATA, AUTOMATIC) isr_id)
+{
+    u32 tmp;
+    tmp = (u32)isr_id;
+    tpl_central_interrupt_handler(tmp);
+}
+
+FUNC(void, OS_CODE) tpl_null_it(P2CONST(void, OS_APPL_DATA, AUTOMATIC) foo)
+{
+    /* empty function */
+}
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

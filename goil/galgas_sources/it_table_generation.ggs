@@ -69,7 +69,7 @@ routine generate_it_table
                 [[i it_sources] get![@lstring new![s value]!here]?it_id];
                 cast it_id:
                 when == @uint64_class it_id do
-                  [!?tbl setFctAtIndex!"tpl_central_interrupt_handler"![[it_id value] uint]];
+                  [!?tbl setFctAtIndex!"tpl_central_interrupt_handler_2"![[it_id value] uint]];
                   [!?tbl setParamAtIndex![isr_id+isr_base_id string]![[it_id value] uint]];
                 else
                   error [it_id location]: "Internal error, this should be an integer";
