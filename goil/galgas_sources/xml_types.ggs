@@ -1,0 +1,99 @@
+semantics xml_types :
+
+#------------------------------------------------------------*
+
+enum @xmlNodeType {
+  constructor element, text, comment ;
+}{
+}
+
+#------------------------------------------------------------*
+
+map @xmlAttributeMap {
+  @lstring value ;
+  insert insertKey error message "the '%K' attribute has been already declared" ;
+  search searchKey error message "the '%K' attribute is not declared" ;
+}
+
+#------------------------------------------------------------*
+
+list @xmlNodeList ;
+
+#------------------------------------------------------------*
+
+class @xmlNode {
+  @xmlNodeType type;
+  @lstring name ;
+  @xmlAttributeMap attributeMap ;
+  @xmlNodeList nodeList ;
+}
+
+#------------------------------------------------------------*
+
+list @xmlNodeList {
+  @xmlNode node ;
+}
+
+#------------------------------------------------------------*
+
+routine internal_logXMLNodes
+  ??@xmlNodeList inNodeList
+  ??@string inIndentationString
+  ?!@string ioString
+:
+  foreach inNodeList do
+    ioString .= inIndentationString ;
+    switch [node type]
+    when element :
+      ioString.= "ELEMENT '" . [node name] . "' " ;
+      ioString .= [[[[node name] location] line] string] ;
+      ioString .= ":" . [[[[node name] location] column] string] ;
+      ioString .= ":" . [[[[node name] location] locationIndex] string] . " {" ;
+      foreach [node attributeMap] do
+        ioString .= "'" . key . "' " ;
+        ioString .= [[[key location] line] string] ;
+        ioString .= ":" . [[[key location] column] string] ;
+        ioString .= ":" . [[[key location] locationIndex] string] ;
+        ioString .= " -> '" . value . "' " ;
+        ioString .= [[[value location] line] string] ;
+        ioString .= ":" . [[[value location] column] string] ;
+        ioString .= ":" . [[[value location] locationIndex] string] ;
+      between ioString .= ", " ;
+      end foreach ;
+      ioString .= "}\n" ;
+      internal_logXMLNodes ![node nodeList] ! inIndentationString . " " !?ioString ;
+    when text :
+      ioString .= "TEXT '" . [node name] . "' " ;
+      ioString .= [[[[node name] location] line] string] ;
+      ioString .= ":" . [[[[node name] location] column] string] ;
+      ioString .= ":" . [[[[node name] location] locationIndex] string] . "\n" ;
+    when comment :
+      ioString.= "COMMENT '" . [node name] . "' " ;
+      ioString .= [[[[node name] location] line] string] ;
+      ioString .= ":" . [[[[node name] location] column] string] ;
+      ioString .= ":" . [[[[node name] location] locationIndex] string] . "\n" ;
+    end switch ;
+  end foreach ;
+end routine ;
+
+#------------------------------------------------------------*
+
+routine logXMLNodes ??@xmlNodeList inNodeList :
+  @string s := "" ;
+  internal_logXMLNodes !inNodeList !"" !?s ;
+  message s ;
+end routine ;
+
+#------------------------------------------------------------*
+
+extern routine parseXMLFile
+  ??@lstring inFileName
+  !@xmlNodeList outRootNodeList
+  ??@bool inIncludeComments
+  ??@bool inDoNotCondenseWhiteSpaces
+  ??@bool inPrintDuringParsing
+;
+
+#------------------------------------------------------------*
+
+end semantics ;

@@ -26,7 +26,7 @@ list cfg_type error message "Config file data type '%K'" :
 
 rule "//" :
 	repeat #accept all except 0xA (LF) and 0xD (CR)
-	while '\x1'->'\x9' | '\xB'| '\xC'| '\xE' -> '\xFF' : 
+	while '\u0001'->'\u0009' | '\u000B'| '\u000C'| '\u000E' -> '\uFFFD' : 
 	end repeat ;
 end rule ;
 
@@ -61,7 +61,7 @@ end rule ;
 
 rule '"' :
     repeat
-    while '\x20'->'\x21' | '\x23' -> '\xFF' :
+    while '\u0020'->'\u0021' | '\u0023' -> '\uFFFD' :
         enterCharacterIntoString ( string, * ) ;
     end repeat ;
     select
@@ -90,7 +90,7 @@ rule list cfg_delimiters;
 #
 # Eat whitespaces
 #
-rule '\x1'->' ':
+rule '\u0001'->' ':
 end rule;
 
 end lexique ;

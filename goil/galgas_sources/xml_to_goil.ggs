@@ -1,0 +1,87 @@
+#
+# @file xml_to_goil.ggs
+#
+# @section File description
+#
+# This file contains routine to transform an xml tree to
+# goil internal data.
+#
+# @section Copyright
+#
+# Goil OIL compiler for Trampoline
+#
+# Goil is copyright (c) IRCCyN 2005+
+# Goil is protected by the french law of intellectual property
+#
+# This software is distributed under the GNU Public Licence V2
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics xml_to_goil:
+
+import semantics xml_types in "xml_types.ggs";
+import semantics goil_types_root in "goil_types_root.ggs";
+
+function transform_xml_to_goil
+  ??@xmlNodeList nodes
+  ->@root_obj    cpu
+:
+    @void void_obj := [@void new !here] ;
+    cpu := [@root_obj new
+      ![@os_obj new
+        ![@lstring new !"" !here]
+        ![@lstring new !"" !here]
+        !void_obj
+        !void_obj
+        !void_obj
+        !void_obj
+        !void_obj
+        !void_obj
+        ![@lstring new !"" !here]
+        !void_obj
+        !void_obj
+        !void_obj
+        !void_obj
+        !void_obj
+        ![@lstringlist emptyList]
+        ![@lstringlist emptyList]
+        ![@lstringlist emptyList]
+        ![@lstringlist emptyList]
+        ![@lstring new !"" !here]
+        ![@lstring new !"" !here]
+        ![@trace new !here]
+        ![@ident_map emptyMap]
+       ]
+      ![@com new
+        ![@lstring new !"" !here]
+        !false
+        !void_obj
+        !void_obj
+        !void_obj
+        !void_obj
+        !void_obj
+        ![@lstringlist emptyList]
+        ![@lstring new !"" !here]
+        ![@lstringlist emptyList]
+       ]
+      ![@task_map          emptyMap]
+      ![@counter_map       emptyMap]
+      ![@alarm_map         emptyMap]
+      ![@resource_map      emptyMap]
+      ![@event_map         emptyMap]
+      ![@isr_map           emptyMap]
+      ![@message_map       emptyMap]
+      ![@netmess_map       emptyMap]
+      ![@scheduletable_map emptyMap]
+      ![@app_map           emptyMap]
+    ] ;
+end function;
+
+end semantics;
+# End of file xml_to_goil.ggs

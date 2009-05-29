@@ -1,9 +1,11 @@
 semantics goil_app_verif :
 
-import semantics goil_semantics in "goil_semantics.ggs" ;
-import semantics goil_types_app in "goil_types_app.ggs" ;
-import semantics goil_types_task in "goil_types_task.ggs" ;
-import semantics goil_types_scheduletable in "goil_types_scheduletable.ggs" ;
+#import semantics goil_semantics in "goil_semantics.ggs" ;
+import semantics goil_types_root     in "goil_types_root.ggs";
+
+#import semantics goil_types_app in "goil_types_app.ggs" ;
+#import semantics goil_types_task in "goil_types_task.ggs" ;
+#import semantics goil_types_scheduletable in "goil_types_scheduletable.ggs" ;
 
 routine object_exists
   ?@stringset   def
@@ -51,15 +53,25 @@ routine object_not_in_any
 end routine ;
 
 routine apps_well_formed
-  ?@app_map           apps
-  ?@task_map          tasks
-  ?@isr_map           isrs
-  ?@alarm_map         alarms
-  ?@scheduletable_map schedtables
-  ?@counter_map       counters
-  ?@resource_map      resources
-  ?@message_map       messages
+  ??@root_obj cpu
+#  ?@app_map           apps
+#  ?@task_map          tasks
+#  ?@isr_map           isrs
+#  ?@alarm_map         alarms
+#  ?@scheduletable_map schedtables
+#  ?@counter_map       counters
+#  ?@resource_map      resources
+#  ?@message_map       messages
 :
+  @app_map           apps        := [cpu applis];
+  @task_map          tasks       := [cpu tasks];
+  @isr_map           isrs        := [cpu isrs];
+  @alarm_map         alarms      := [cpu alarms];
+  @scheduletable_map schedtables := [cpu scheduletables];
+  @counter_map       counters    := [cpu counters];
+  @resource_map      resources   := [cpu resources];
+  @message_map       messages    := [cpu messages];
+
   if [apps count] > 0 then
     # Verify the objects referenced from an application exists
     foreach apps do

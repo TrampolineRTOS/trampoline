@@ -101,6 +101,65 @@ routine check_external_link_received
   end cast ;
 end routine ;
 
+##
+# @fn messages_well_formed
+#
+# messages_well_formed checks each ISR has all the required
+# attributes and checks also attributes are consistent.
+# Required attribute is :
+# - MESSAGEPROPERTY
+#
+# 
+#
+# @param alarms    the map of alarms.
+#
+routine messages_well_formed
+  ??@message_map messages
+:
+  foreach messages (@lstring message_name @message_obj mess) do
+
+    cast [mess messageproperty] :
+      when == @void_mess_prop do
+        error message_name: "MESSAGEPROPERTY attribute missing for message ".[message_name string];
+      else
+    end cast;
+
+    cast [mess notification] :
+      when == @void_action do
+      else # a notification is declared
+        cast [mess messageproperty]:
+          when == @ssi_mess_prop do
+            error [[mess notification] location]: "NOTIFICATION is not allowed for SEND_STATIC_INTERNAL message";
+          when == @szi_mess_prop do
+            error [[mess notification] location]: "NOTIFICATION is not allowed for SEND_ZERO_INTERNAL message";
+          when == @rzs_mess_prop do
+            error [[mess notification] location]: "NOTIFICATION is not allowed for RECEIVE_ZERO_SENDERS message";
+          else
+        end cast;
+    end cast;
+
+    cast [mess notificationerror] :
+      when == @void_action do
+      else # an error notification is declared
+        cast [mess messageproperty] :
+          when == @ssi_mess_prop do
+            error [[mess notification] location]: "NOTIFICATIONERROR is not allowed for SEND_STATIC_INTERNAL message";
+          when == @szi_mess_prop do
+            error [[mess notification] location]: "NOTIFICATIONERROR is not allowed for SEND_ZERO_INTERNAL message";
+          when == @rzi_mess_prop do
+            error [[mess notification] location]: "NOTIFICATIONERROR is not allowed for RECEIVE_ZERO_INTERNAL message";
+          when == @rui_mess_prop do
+            error [[mess notification] location]: "NOTIFICATIONERROR is not allowed for RECEIVE_UNQUEUED_INTERNAL message";
+          when == @rqi_mess_prop do
+            error [[mess notification] location]: "NOTIFICATIONERROR is not allowed for RECEIVE_QUEUED_INTERNAL message";
+          when == @rzs_mess_prop do
+            error [[mess notification] location]: "NOTIFICATIONERROR is not allowed for RECEIVE_ZERO_SENDERS message";
+          else
+        end cast;
+    end cast;
+  end foreach;
+end routine;
+
 routine networkmessages_exist_and_ok
   ?@message_map messages
   ?@netmess_map netm

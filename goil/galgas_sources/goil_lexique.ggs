@@ -282,7 +282,7 @@ list it_src_attr error message "Interrupt Source '%K'" style keywordsStyle :
 $comment$ error message "a comment" style commentStyle ;
 rule "//" :
 	repeat #accept all except 0xA (LF) and 0xD (CR)
-	while '\x1'->'\x9' | '\xB'| '\xC'| '\xE' -> '\xFF' : 
+	while '\u0001'->'\u0009' | '\u000B'| '\u000C'| '\u000E' -> '\uFFFD' : 
 	end repeat ;
    drop $comment$ ;
 end rule ;
@@ -348,7 +348,7 @@ rule list OILDelimiters;
 #
 # Eat whitespaces
 #
-rule '\x1'->' ':
+rule '\u0001'->' ':
 end rule;
 
 #
@@ -365,7 +365,7 @@ $string$ !a_string error message "literal string" style stringStyle ;
 
 rule '"' :
     repeat
-    while '\x20'->'\x21' | '\x23' -> '\xFF' :
+    while '\u0020'->'\u0021' | '\u0023' -> '\uFFFD' :
         enterCharacterIntoString ( a_string, * ) ;
     end repeat ;
     select
@@ -380,7 +380,7 @@ $g_string$ !a_string error message "in search path" style pathStyle ;
 
 rule '<' :
     repeat
-    while '\x20'->'\x3D' | '\x3F' -> '\xFF' :
+    while '\u0020'->'\u003D' | '\u003F' -> '\uFFFD' :
         enterCharacterIntoString ( a_string, * ) ;
     end repeat ;
     select

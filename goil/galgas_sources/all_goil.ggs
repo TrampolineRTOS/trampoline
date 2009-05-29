@@ -23,114 +23,118 @@
 #
 
 project all_goil :
-  lexique   "goil_lexique.ggs" : makefile, xcode_tool, xcode_app ;
-  option    "goil_options.ggs" : makefile, xcode_tool, xcode_app ;
-  syntax    "goil_syntax.ggs" : makefile, xcode_tool ;
-  semantics "goil_semantics.ggs" : makefile, xcode_tool ;
-  semantics "goil_basic_types.ggs" : makefile, xcode_tool ;
-  semantics "goil_semantic_types.ggs" : makefile, xcode_tool ;
-  semantics "goil_imp_def.ggs" : makefile, xcode_tool ;
-  semantics "goil_routines.ggs" : makefile, xcode_tool ;
-  semantics "goil_check.ggs" : makefile, xcode_tool ;
+  lexique   "goil_lexique.ggs"        : makefile, xcode_tool, xcode_app;
+  option    "goil_options.ggs"        : makefile, xcode_tool, xcode_app;
+  syntax    "goil_syntax.ggs"         : makefile, xcode_tool;
+  semantics "goil_semantics.ggs"      : makefile, xcode_tool;
+  semantics "goil_basic_types.ggs"    : makefile, xcode_tool;
+  semantics "goil_semantic_types.ggs" : makefile, xcode_tool;
+  semantics "goil_imp_def.ggs"        : makefile, xcode_tool;
+  semantics "goil_routines.ggs"       : makefile, xcode_tool;
+  semantics "goil_check.ggs"          : makefile, xcode_tool;
   
   #
-  # Parsing of xml files
+  # XML parsing for AUTOSAR 3+
   #
-  #compile "xgoil_lexique.ggs" : makefile, xcode_tool ;
-  #compile "xgoil_syntax.ggs" : makefile, xcode_tool ; 
-  #semantics "xgoil_grammar.ggs" : makefile, xcode_tool ;
-  
+  lexique   "xml_parsing_lexique.ggs"  : makefile, xcode_tool, xcode_app;
+  syntax    "xml_parsing_syntax.ggs"   : makefile, xcode_tool;
+  grammar   "xml_parsing_grammar.ggs"  : makefile, xcode_tool;  
+  semantics "xml_types.ggs"            : makefile, xcode_tool;
+  semantics "xml_to_goil.ggs"          : makefile, xcode_tool;
   #
   # Post-processing and verification
   #
-  semantics "goil_defaults.ggs" : makefile, xcode_tool ;
-  semantics "goil_semantic_verification.ggs" : makefile, xcode_tool ;
-  semantics "goil_scheduletable_verif.ggs" : makefile, xcode_tool ;
-  semantics "goil_alarm_verif.ggs" : makefile, xcode_tool ;
-  semantics "goil_app_verif.ggs" : makefile, xcode_tool ;
-  semantics "goil_env_verification.ggs" : makefile, xcode_tool ;
-  semantics "goil_message_verif.ggs" : makefile, xcode_tool ;
+  semantics "defaults.ggs"                   : makefile, xcode_tool;
+  semantics "goil_semantic_verification.ggs" : makefile, xcode_tool;
+  semantics "scheduletable_verif.ggs"        : makefile, xcode_tool;
+  semantics "goil_alarm_verif.ggs"           : makefile, xcode_tool;
+  semantics "isrs_verif.ggs"                 : makefile, xcode_tool;
+  semantics "tasks_verif.ggs"                : makefile, xcode_tool;
+  semantics "resources_verif.ggs"            : makefile, xcode_tool;
+  semantics "goil_app_verif.ggs"             : makefile, xcode_tool;
+  semantics "goil_env_verification.ggs"      : makefile, xcode_tool;
+  semantics "goil_message_verif.ggs"         : makefile, xcode_tool;
   
   #
   # Datatypes
   #
-  semantics "goil_types_os.ggs" : makefile, xcode_tool ;
-  semantics "goil_types_scheduletable.ggs" : makefile, xcode_tool ;
-  semantics "goil_types_app.ggs" : makefile, xcode_tool ;
-  semantics "goil_types_action.ggs" : makefile, xcode_tool ;
-  semantics "goil_types_root.ggs" : makefile, xcode_tool ;
-  semantics "goil_types_timing_prot.ggs" : makefile, xcode_tool ;
-  semantics "goil_types_resource.ggs" : makefile, xcode_tool ;
-  semantics "goil_types_isr.ggs" : makefile, xcode_tool ;
-  semantics "goil_types_task.ggs" : makefile, xcode_tool ;
-  semantics "goil_types_counter.ggs" : makefile, xcode_tool ;
-  semantics "goil_types_networkmessage.ggs" : makefile, xcode_tool ;
-  semantics "com_type.ggs" : makefile, xcode_tool ;
+  semantics "goil_types_os.ggs"             : makefile, xcode_tool;
+  semantics "goil_types_scheduletable.ggs"  : makefile, xcode_tool;
+  semantics "goil_types_app.ggs"            : makefile, xcode_tool;
+  semantics "goil_types_action.ggs"         : makefile, xcode_tool;
+  semantics "goil_types_root.ggs"           : makefile, xcode_tool;
+  semantics "goil_types_timing_prot.ggs"    : makefile, xcode_tool;
+  semantics "goil_types_resource.ggs"       : makefile, xcode_tool;
+  semantics "goil_types_isr.ggs"            : makefile, xcode_tool;
+  semantics "goil_types_task.ggs"           : makefile, xcode_tool;
+  semantics "goil_types_counter.ggs"        : makefile, xcode_tool;
+  semantics "goil_types_networkmessage.ggs" : makefile, xcode_tool;
+  semantics "com_type.ggs"                  : makefile, xcode_tool;
   
   #
   # Objects of the application definition
   #
-  semantics "goil_obj_os.ggs" : makefile, xcode_tool ;
-  semantics "goil_obj_task.ggs" : makefile, xcode_tool ;
-  semantics "goil_obj_counter.ggs" : makefile, xcode_tool ;
-  semantics "goil_obj_appmode.ggs" : makefile, xcode_tool ;
-  semantics "goil_obj_alarm.ggs" : makefile, xcode_tool ;
-  semantics "goil_obj_resource.ggs" : makefile, xcode_tool ;
-  semantics "goil_obj_event.ggs" : makefile, xcode_tool ;
-  semantics "goil_obj_isr.ggs" : makefile, xcode_tool ;
-  semantics "goil_obj_message.ggs" : makefile, xcode_tool ;
-  semantics "goil_obj_networkmessage.ggs" : makefile, xcode_tool ;
-  semantics "goil_obj_com.ggs" : makefile, xcode_tool ;
-  semantics "goil_obj_ipdu.ggs" : makefile, xcode_tool ;
-  semantics "goil_obj_scheduletable.ggs" : makefile, xcode_tool ;
-  semantics "goil_obj_application.ggs" : makefile, xcode_tool ;
-  semantics "goil_timing_prot_attrs.ggs" : makefile, xcode_tool ;
+  semantics "goil_obj_os.ggs"             : makefile, xcode_tool;
+  semantics "goil_obj_task.ggs"           : makefile, xcode_tool;
+  semantics "goil_obj_counter.ggs"        : makefile, xcode_tool;
+  semantics "goil_obj_appmode.ggs"        : makefile, xcode_tool;
+  semantics "goil_obj_alarm.ggs"          : makefile, xcode_tool;
+  semantics "goil_obj_resource.ggs"       : makefile, xcode_tool;
+  semantics "goil_obj_event.ggs"          : makefile, xcode_tool;
+  semantics "goil_obj_isr.ggs"            : makefile, xcode_tool;
+  semantics "goil_obj_message.ggs"        : makefile, xcode_tool;
+  semantics "goil_obj_networkmessage.ggs" : makefile, xcode_tool;
+  semantics "goil_obj_com.ggs"            : makefile, xcode_tool;
+  semantics "goil_obj_ipdu.ggs"           : makefile, xcode_tool;
+  semantics "goil_obj_scheduletable.ggs"  : makefile, xcode_tool;
+  semantics "goil_obj_application.ggs"    : makefile, xcode_tool;
+  semantics "goil_timing_prot_attrs.ggs"  : makefile, xcode_tool;
   #
   # Code generation
   #
-  semantics "config_type.ggs" : makefile, xcode_tool ;
-  semantics "goil_code_generation.ggs" : makefile, xcode_tool ;
-  semantics "goil_proc_generation.ggs" : makefile, xcode_tool ;
-  semantics "goil_mp_generation.ggs" : makefile, xcode_tool ;
-  semantics "goil_app_generation.ggs" : makefile, xcode_tool ;
-  semantics "goil_code_msg_gen.ggs" : makefile, xcode_tool ;
-  semantics "goil_code_schedtable_gen.ggs" : makefile, xcode_tool ;
-  semantics "it_table_generation.ggs" : makefile, xcode_tool ;
-  semantics "trace_description.ggs" : makefile, xcode_tool;
+  semantics "config_type.ggs"              : makefile, xcode_tool;
+  semantics "goil_code_generation.ggs"     : makefile, xcode_tool;
+  semantics "goil_proc_generation.ggs"     : makefile, xcode_tool;
+  semantics "goil_mp_generation.ggs"       : makefile, xcode_tool;
+  semantics "goil_app_generation.ggs"      : makefile, xcode_tool;
+  semantics "goil_code_msg_gen.ggs"        : makefile, xcode_tool;
+  semantics "goil_code_schedtable_gen.ggs" : makefile, xcode_tool;
+  semantics "it_table_generation.ggs"      : makefile, xcode_tool;
+  semantics "trace_description.ggs"        : makefile, xcode_tool;
   #semantics "goil_orti_gen.ggs";
   #
   # Target specific code generation
   #
-  semantics "goil_targets.ggs" : makefile, xcode_tool ;
-  semantics "goil_target_c166.ggs" : makefile, xcode_tool ;
-  semantics "goil_target_libpcl.ggs" : makefile, xcode_tool ;
-  semantics "goil_target_hcs12.ggs" : makefile, xcode_tool ;
-  semantics "goil_target_ppc.ggs" : makefile, xcode_tool ;
-  semantics "goil_target_v850e.ggs" : makefile, xcode_tool ;
-  semantics "goil_target_h8300h.ggs" : makefile, xcode_tool ;
-  semantics "goil_target_arm7.ggs" : makefile, xcode_tool ;
-  semantics "goil_target_avr.ggs" : makefile, xcode_tool ;
-  semantics "goil_target_posix.ggs" : makefile, xcode_tool ;  
+  semantics "goil_targets.ggs"       : makefile, xcode_tool;
+  semantics "goil_target_c166.ggs"   : makefile, xcode_tool;
+  semantics "goil_target_libpcl.ggs" : makefile, xcode_tool;
+  semantics "goil_target_hcs12.ggs"  : makefile, xcode_tool;
+  semantics "goil_target_ppc.ggs"    : makefile, xcode_tool;
+  semantics "goil_target_v850e.ggs"  : makefile, xcode_tool;
+  semantics "goil_target_h8300h.ggs" : makefile, xcode_tool;
+  semantics "goil_target_arm7.ggs"   : makefile, xcode_tool;
+  semantics "goil_target_avr.ggs"    : makefile, xcode_tool;
+  semantics "goil_target_posix.ggs"  : makefile, xcode_tool;  
   semantics "goil_target_posix_vp2.ggs" : makefile, xcode_tool ;  
 
-  grammar "goil_grammar.ggs" : makefile, xcode_tool ;
-  syntax "goil_file_level_include.ggs" : makefile, xcode_tool ;
-  syntax "goil_cpu_level_include.ggs" : makefile, xcode_tool ;
-  program "goil_program.ggs" : makefile, xcode_tool ;
+  grammar "goil_grammar.ggs"            : makefile, xcode_tool;
+  syntax  "goil_file_level_include.ggs" : makefile, xcode_tool;
+  syntax  "goil_cpu_level_include.ggs"  : makefile, xcode_tool;
+  program "goil_program.ggs"            : makefile, xcode_tool;
   
   #
   # Parsing of config file
   #
-  lexique "cfg_lexique.ggs" : makefile, xcode_tool ;
-  syntax "cfg_syntax.ggs" : makefile, xcode_tool ;
-  grammar "cfg_grammar.ggs" : makefile, xcode_tool ;
-  semantics "cfg_types.ggs" : makefile, xcode_tool ;
+  lexique   "cfg_lexique.ggs"  : makefile, xcode_tool;
+  syntax    "cfg_syntax.ggs"   : makefile, xcode_tool;
+  grammar   "cfg_grammar.ggs"  : makefile, xcode_tool;
+  semantics "cfg_types.ggs"    : makefile, xcode_tool;
   
   #
   # Cocoa GOIL
   #
-  gui "cocoaGOIL.ggs" : xcode_tool, xcode_app ;
+  gui "cocoaGOIL.ggs" : xcode_tool, xcode_app;
   
-end project ;
+end project;
 # vim:ft=ggs:ts=4:sw=4
 

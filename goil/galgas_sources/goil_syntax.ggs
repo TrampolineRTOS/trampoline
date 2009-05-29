@@ -14,37 +14,37 @@
 # $URL$
 #
 
-syntax goil_syntax :
-import lexique goil_lexique in "goil_lexique.ggs" ;
-#import option goil_options in "goil_options.ggs" ;
-import semantics goil_semantics in "goil_semantics.ggs" ;
-import semantics goil_proc_generation in "goil_proc_generation.ggs" ;
-import semantics goil_app_generation in "goil_app_generation.ggs" ;
-import semantics goil_mp_generation in "goil_mp_generation.ggs" ;
-import semantics com_type in "com_type.ggs" ;
-import semantics goil_types_app in "goil_types_app.ggs" ;
-import semantics goil_types_networkmessage in "goil_types_networkmessage.ggs" ;
-import semantics goil_scheduletable_verif in "goil_scheduletable_verif.ggs" ;
-import semantics goil_alarm_verif in "goil_alarm_verif.ggs" ;
-import semantics goil_app_verif in "goil_app_verif.ggs" ;
-import semantics goil_message_verif in "goil_message_verif.ggs" ;
-import semantics cfg_types in "cfg_types.ggs" ;
-import semantics goil_env_verification in "goil_env_verification.ggs" ;
-import semantics trace_description in "trace_description.ggs";
-import semantics it_table_generation in "it_table_generation.ggs";
+syntax goil_syntax:
+import lexique goil_lexique in "goil_lexique.ggs";
+#import option goil_options in "goil_options.ggs";
+import semantics goil_semantics in "goil_semantics.ggs";
+#import semantics goil_proc_generation in "goil_proc_generation.ggs";
+#import semantics goil_app_generation in "goil_app_generation.ggs";
+#import semantics goil_mp_generation in "goil_mp_generation.ggs";
+import semantics com_type in "com_type.ggs";
+import semantics goil_types_app in "goil_types_app.ggs";
+import semantics goil_types_networkmessage in "goil_types_networkmessage.ggs";
+#import semantics goil_scheduletable_verif in "goil_scheduletable_verif.ggs";
+#import semantics goil_alarm_verif in "goil_alarm_verif.ggs";
+#import semantics goil_app_verif in "goil_app_verif.ggs";
+#import semantics goil_message_verif in "goil_message_verif.ggs";
+import semantics cfg_types in "cfg_types.ggs";
+import semantics goil_env_verification in "goil_env_verification.ggs";
+#import semantics trace_description in "trace_description.ggs";
+#import semantics it_table_generation in "it_table_generation.ggs";
 import semantics config_type in "config_type.ggs";
 
-#import semantics goil_crc_table in "goil_crc_table.ggs" ;
-import grammar goil_cpu_level_include in "goil_cpu_level_include.ggs" ;
-import grammar goil_file_level_include in "goil_file_level_include.ggs" ;
-import grammar cfg_grammar in "cfg_grammar.ggs" ;
+#import semantics goil_crc_table in "goil_crc_table.ggs";
+import grammar goil_cpu_level_include in "goil_cpu_level_include.ggs";
+import grammar goil_file_level_include in "goil_file_level_include.ggs";
+#import grammar cfg_grammar in "cfg_grammar.ggs";
 
-nonterminal <start> ;
-nonterminal <file> ?!@implementation imp ?!@root_obj cpu ;
-nonterminal <OIL_version> !@lstring version !@lstring desc ;
-nonterminal <description> !@lstring desc ;
+nonterminal <start>;
+nonterminal <file> ?!@implementation imp ?!@root_obj cpu;
+nonterminal <OIL_version> !@lstring version !@lstring desc;
+nonterminal <description> !@lstring desc;
 
-nonterminal <application_definition> ?!@root_obj file ;
+nonterminal <application_definition> ?!@root_obj file;
 nonterminal <object_definition_list>
     ?!@os_obj            os
     ?!@com               com
@@ -59,10 +59,10 @@ nonterminal <object_definition_list>
     ?!@scheduletable_map scheduletables
     ?!@app_map           applis
 ;
-nonterminal <nm> ;
+nonterminal <nm>;
 
-nonterminal <boolean> !@lbool val ;
-nonterminal <free_field> ?!@ident_map ids ;
+nonterminal <boolean> !@lbool val;
+nonterminal <free_field> ?!@ident_map ids;
 nonterminal <include_file_level>
     ?!@implementation imp
     ?!@root_obj cpu
@@ -85,54 +85,54 @@ nonterminal <include_cpu_level>
 #--------------------------------------------------------------------
 # extern nonterminals
 #--------------------------------------------------------------------
-nonterminal <implementation_definition> ?!@implementation imp ;
+nonterminal <implementation_definition> ?!@implementation imp;
 
 nonterminal <os>
-    ?!@os_obj os ;
+    ?!@os_obj os;
 
-nonterminal <appmode> ;
+nonterminal <appmode>;
 nonterminal <task> 
-    ?!@task_map outTask ;
+    ?!@task_map outTask;
 
 nonterminal <counter>
-    ?!@counter_map counters ;
+    ?!@counter_map counters;
 
 nonterminal <alarm>
-    ?!@alarm_map alarms ;
+    ?!@alarm_map alarms;
 
 nonterminal <resource>
-    ?!@resource_map resources ;
+    ?!@resource_map resources;
 
 nonterminal <event> 
     ?!@event_map events;
 
 nonterminal <isr>
-    ?!@isr_map isrs ;
+    ?!@isr_map isrs;
 
 nonterminal <mess>
-    ?!@message_map messages ;
+    ?!@message_map messages;
 
 nonterminal <scheduletable>
-    ?!@scheduletable_map stm ;
+    ?!@scheduletable_map stm;
 
 nonterminal <appli>
     ?!@app_map applis;
 
 nonterminal <networkmess>
-  ?!@netmess_map netmess ;
+  ?!@netmess_map netmess;
 
 nonterminal <com>
-  ?!@com com ;
+  ?!@com com;
 
-nonterminal <ipdu> ;
+nonterminal <ipdu>;
 
 #
 # root
 #
 
-rule <start> :
-    @implementation imp [emptyMap] ;
-    @void     void_obj := [@void new !here] ;
+rule <start>:
+    @implementation imp [emptyMap];
+    @void     void_obj := [@void new !here];
     @root_obj cpu := [@root_obj new
         ![@os_obj new
             ![@lstring new !"" !here]
@@ -180,404 +180,79 @@ rule <start> :
         ![@netmess_map       emptyMap]
         ![@scheduletable_map emptyMap]
         ![@app_map           emptyMap]
-    ] ;
-    <file> !?imp !?cpu ;
+    ];
+    <file> !?imp !?cpu;
 
-    # log imp ;
+    # log imp;
     #
     # semantics constraint checking
     #
     # per object static verification
 
-    @os_obj            os             := [cpu os] ;
-    @com               com            := [cpu com] ;
-    @task_map          tasks          := [cpu tasks] ;
-    @counter_map       counters       := [cpu counters] ;
-    @alarm_map         alarms         := [cpu alarms] ;
-    @resource_map      resources      := [cpu resources] ;
-    @event_map         events         := [cpu events] ;
-    @isr_map           isrs           := [cpu isrs] ;
-    @message_map       messages       := [cpu messages] ;
-    @netmess_map       net_messages   := [cpu net_messages] ;
-    @scheduletable_map scheduletables := [cpu scheduletables] ;
-    @app_map           applis         := [cpu applis] ;
+#    @os_obj            os             := [cpu os];
+#    @com               com            := [cpu com];
+#    @task_map          tasks          := [cpu tasks];
+#    @counter_map       counters       := [cpu counters];
+#    @alarm_map         alarms         := [cpu alarms];
+#    @resource_map      resources      := [cpu resources];
+#    @event_map         events         := [cpu events];
+#    @isr_map           isrs           := [cpu isrs];
+#    @message_map       messages       := [cpu messages];
+#    @netmess_map       net_messages   := [cpu net_messages];
+#    @scheduletable_map scheduletables := [cpu scheduletables];
+#    @app_map           applis         := [cpu applis];
 
-    if [imp hasKey !"task"] then
-        @implementation_spec spec ;
-        [imp get ![@lstring new !"task" !here] ?spec] ;
-        verify_and_set_tasks_defaults !?tasks !spec ;
-    end if ;
-
-    if [imp hasKey !"isr"] then
-        @implementation_spec spec ;
-        [imp get ![@lstring new !"isr" !here] ?spec] ;
-        verify_and_set_isrs_defaults !?isrs !spec ;
-    end if ;
-
-    tasks_well_formed !tasks ;
-    counters_well_formed !counters ;
-    alarms_well_formed !alarms ;
-    resources_well_formed !resources ;
-    isrs_well_formed !isrs ;
-    events_well_formed !events ;
-    networkmessages_well_formed !net_messages ;
-
-  # Autosar checking
-
-    if [option goil_options.autosar_on] then
-        schedule_tables_well_formed !scheduletables ;
-    end if ;
-
-  # cross-objects static verification 
-    resolve_linked_resources !?resources ;
-    all_events_and_resources_and_messages_defined_and_used !tasks !isrs !events !resources !messages ;
-  #  all_event_masks_different !events ;
-    all_alarm_actions_correct !alarms !tasks !counters ;
-    counters_of_alarms_defined !alarms !counters ;
-    networkmessages_exist_and_ok !messages !net_messages ;
-
-  # cross-objects Autosar checking
-
-    if [option goil_options.autosar_on] then
-        schedule_tables_counters_exist_and_compatible !scheduletables !counters ;
-        schedule_tables_tasks_and_events_exist !scheduletables !tasks !events ;
-        apps_well_formed !applis !tasks !isrs !alarms !scheduletables !counters !resources !messages ;
-    end if ;
+    set_defaults !imp !?cpu;
+    verify_all !?cpu;
+    generate_all !cpu;
 
     if [@uint errorCount] == 0 then
-        # code generation
-        @string timestamp := [@string stringWithCurrentDateTime] ;
+      generate_all !cpu;
+    end if;
 
-        @string temp_dir ;
-        templates_directory ?temp_dir ;
-
-        if temp_dir != "" then
-            @string target := [option goil_options.target_platform] ;
-            if target != "" then
-                @string header ;
-                @string obj_header ;
-                @string implementation ;
-                @string types ;
-
-                @config cfg [emptyMap] ;
-                @lstring cfg_file := config_file();
-                if [cfg_file string] != "" then
-                    grammar cfg_grammar in cfg_file ?cfg ;
-                end if ;
-
-                @lstring extra_cfg_file := extra_config_file();
-                if [extra_cfg_file string] != "" then
-                    grammar cfg_grammar in extra_cfg_file ?cfg ;
-                end if ;
-
-                @os_config generated_conf := os_cfg(!cpu);
-
-                retrieveTemplateString ?header !"app_header" ;
-                retrieveTemplateString ?obj_header !"obj_header" ;
-                retrieveTemplateString ?implementation !"app_implementation" ;
-                retrieveTemplateString ?types !"types" ;
-                @prefix_map prefix := [@prefix_map emptyMap] ;
-
-                init_prefixes !?prefix ;
-
-                @uint max_task_prio ;
-                @uint max_prio ;
-                @prio_map tasks_actual_prio ;
-                compute_actual_task_priority
-                    !tasks
-                    ?tasks_actual_prio
-                    ?max_task_prio ;
-
-                @prio_map isrs_actual_prio ;
-                compute_actual_isr_priority
-                    !isrs
-                    ?isrs_actual_prio
-                    !max_task_prio
-                    ?max_prio ;
-
-                @prio_map rez_actual_prio ;
-                @string_map rez_comments ;
-                compute_rez_priority 
-                    !resources
-                    !tasks
-                    !tasks_actual_prio
-                    !isrs 
-                    !isrs_actual_prio
-                    ?rez_actual_prio
-                    ?rez_comments ;
-
-                @prio_list ready_list ;
-                compute_ready_list
-                    !tasks_actual_prio
-                    !isrs_actual_prio
-                    !rez_actual_prio
-                    !max_task_prio
-                    !max_prio
-                    ?ready_list ;
-
-                @string_map app_for_obj ;
-                compute_app_for_obj
-                    !applis
-                    ?app_for_obj ;
-
-                generate_flags
-                    !generated_conf
-                    !os
-                    !tasks
-                    !isrs
-                    !?obj_header ;
-
-                [com generate !?obj_header] ;
-
-                generate_events
-                    !events
-                    !tasks
-                    !prefix
-                    !?header
-                    !?implementation ;
-
-                generate_counters
-                    !counters
-                    !app_for_obj
-                    !?header
-                    !?obj_header
-                    !?implementation ;
-
-                generate_alarms
-                    !alarms
-                    !app_for_obj
-                    !?header
-                    !?obj_header
-                    !?implementation ;
-
-                generate_tasks
-                    !cfg
-                    !tasks
-                    !applis
-                    !resources
-                    !tasks_actual_prio
-                    !app_for_obj
-                    !?header
-                    !?obj_header
-                    !?implementation ;
-
-                generate_isrs
-                    !cfg
-                    !isrs
-                    !applis
-                    !resources
-                    !isrs_actual_prio
-                    !app_for_obj
-                    !?header
-                    !?obj_header
-                    !?implementation ;
-
-# Generate the process ids and table
-
-                generate_proc_table
-                    !tasks
-                    !isrs
-                    !?header
-                    !?implementation
-                    !?obj_header ;
-
-                generate_mp
-                  !tasks
-                  !isrs
-                  !applis
-                  !app_for_obj ;
-
-                generate_resources
-                    !resources
-                    !rez_actual_prio
-                    !rez_comments
-                    !app_for_obj
-                    !?header
-                    !?obj_header
-                    !?implementation ;
-
-                generate_messages
-                    !messages
-                    !prefix
-                    !?header
-                    !?obj_header
-                    !?implementation ;
-
-                generate_network_messages
-                  !net_messages
-                  !messages
-                  !?header
-                  !?obj_header
-                  !?implementation ;
-
-                if [option goil_options.autosar_on] then
-                    generate_schedule_tables
-                        !scheduletables
-                        !app_for_obj
-                        !?header
-                        !?obj_header
-                        !?implementation ;
-                    generate_timing_prot
-                        !tasks
-                        !resources
-                        !?obj_header ;
-                    generate_apps
-                        !applis
-                        !tasks
-                        !isrs
-                        !alarms
-                        !resources
-                        !scheduletables
-                        !counters
-                        !?header
-                        !?obj_header
-                        !?implementation ;
-                    generate_trusted_functions
-                        !applis
-                        !?header
-                        !?obj_header
-                        !?implementation ;
-                end if ;
-
-                generate_ready_list
-                    !os
-                    !max_prio
-                    !ready_list
-                    !?obj_header
-                    !?implementation ;
-
-                generate_types
-                    !tasks
-                    !isrs
-                    !alarms
-                    !counters
-                    !resources
-                    !scheduletables
-                    !applis
-                    !max_prio
-                    !?types ;
-                  
-                generate_it_table
-                    !cfg
-                    !generated_conf
-                    !cpu
-                    !?implementation ;
-
-#                generate_crc
-#                    !tasks
-#                    !?implementation ;
-
-                # write the result to files
-                @string directory := project_name();
-                
-                @string header_file := "tpl_os_generated_configuration.h" ;
-                @string obj_header_file  := "tpl_app_objects.h" ;
-                @string implementation_file  := "tpl_os_generated_configuration.c" ;
-                @string types_file := "tpl_app_custom_types.h" ;
-
-                header := [header stringByReplacingStringByString !"$HEADER$" !header_file];
-                header := [header stringByReplacingStringByString !"$IMPLEMENTATION$" !implementation_file];
-                header := [header stringByReplacingStringByString !"$TIMESTAMP$" !timestamp];
-                obj_header := [obj_header stringByReplacingStringByString !"$OBJ_HEADER$" !obj_header_file];
-                obj_header := [obj_header stringByReplacingStringByString !"$TIMESTAMP$" !timestamp];
-                implementation := [implementation stringByReplacingStringByString !"$HEADER$" !header_file];
-                implementation := [implementation stringByReplacingStringByString !"$OBJ_HEADER$" !obj_header_file];
-                implementation := [implementation stringByReplacingStringByString !"$IMPLEMENTATION$" !implementation_file];
-                implementation := [implementation stringByReplacingStringByString !"$TIMESTAMP$" !timestamp];
-
-                @uint error_count := [@uint errorCount] ;
-
-                header_file := directory . "/" . header_file ;
-                obj_header_file := directory . "/" . obj_header_file ;
-                implementation_file := directory . "/" . implementation_file ;
-                types_file := directory . "/" . types_file ;
-
-                if error_count == 0 then
-                    if [option .verbose_output] then
-                        message "creating " . header_file . "\n" ;
-                    end if;
-                    [header makeDirectoryAndWriteToFile !header_file] ;
-                    if [option .verbose_output] then
-                        message "creating " . obj_header_file . "\n" ;
-                    end if;
-                    [obj_header makeDirectoryAndWriteToFile !obj_header_file] ;
-                    if [option .verbose_output] then
-                        message "creating " . implementation_file . "\n" ;
-                    end if;
-                    [implementation makeDirectoryAndWriteToFile !implementation_file] ;
-                    if [option .verbose_output] then
-                        message "creating " . types_file . "\n" ;
-                    end if ;
-                    [types makeDirectoryAndWriteToFile !types_file] ;
-                
-                    if [option goil_options.generate_makefile] then
-                        @string makefile_dir := [directory stringByDeletingLastPathComponent] ;
-                        if makefile_dir == "" then
-                            makefile_dir := "." ;
-                        end if ; 
-                        if [option .verbose_output] then
-                            message "creating ".makefile_dir."/makefile\n" ;
-                        end if;
-                        generate_makefile
-                            !os
-                            !makefile_dir
-                            ![[[@string stringWithSourceFilePath]
-                                       stringByDeletingPathExtension] lastPathComponent];
-                    end if ;
-
-                    generate_description !cpu;
-                end if ;
-            else
-                message "No target platform given, compiling aborted\n" ;
-            end if ;
-        else
-            message "No template directory defined, compiling aborted\n" ;
-        end if ;
-    end if ;
-
-end rule ;
+end rule;
 
 rule <file>
     ?!@implementation imp
     ?!@root_obj cpu
 :
-    @lstring version := [@lstring new !"" !here] ;
-    @lstring desc := [@lstring new !"" !here] ;
+    @lstring version := [@lstring new !"" !here];
+    @lstring desc := [@lstring new !"" !here];
     repeat
     while
-        <include_file_level> !?imp !?cpu ;
+        <include_file_level> !?imp !?cpu;
     while
-        <OIL_version> ?version ?desc ;
+        <OIL_version> ?version ?desc;
     while
-        <implementation_definition> !?imp ;
+        <implementation_definition> !?imp;
     while
-        <application_definition> !?cpu ;
-    end repeat ;
+        <application_definition> !?cpu;
+    end repeat;
 
-end rule ;
+end rule;
 
 #
 # Description of an OIL declaration
 #
-rule <description> !@lstring desc :
+rule <description> !@lstring desc:
     select
-        desc := [@lstring new !"" !here] ;
+        desc := [@lstring new !"" !here];
     or
-        $:$ ;
-        $string$ ?desc ;
-    end select ;
-end rule ;
+        $:$;
+        $string$ ?desc;
+    end select;
+end rule;
 
 #
 # OIL version appears at the beginning of OIL files
 #
-rule <OIL_version> !@lstring version !@lstring desc :
-    $OIL_VERSION$ ;
-    $=$ ;
-    $string$ ?version ;
-    <description> ?desc ;
-    $;$ ;
-end rule ;
+rule <OIL_version> !@lstring version !@lstring desc:
+    $OIL_VERSION$;
+    $=$;
+    $string$ ?version;
+    <description> ?desc;
+    $;$;
+end rule;
 
 #--------------------------------------------------------------------
 # Application definition part
@@ -585,22 +260,22 @@ end rule ;
 rule <application_definition>
     ?!@root_obj file
 :
-    @os_obj            os             := [file os] ;
-    @com               com            := [file com] ;
-    @task_map          tasks          := [file tasks] ;
-    @counter_map       counters       := [file counters] ;
-    @alarm_map         alarms         := [file alarms] ;
-    @resource_map      resources      := [file resources] ;
-    @event_map         events         := [file events] ;
-    @isr_map           isrs           := [file isrs] ;
-    @message_map       messages       := [file messages] ;
-    @netmess_map       net_messages   := [file net_messages] ;
-    @scheduletable_map scheduletables := [file scheduletables] ;
-    @app_map           applis         := [file applis] ;
+    @os_obj            os              := [file os];
+    @com               com             := [file com];
+    @task_map          tasks           := [file tasks];
+    @counter_map       counters        := [file counters];
+    @alarm_map         alarms          := [file alarms];
+    @resource_map      resources       := [file resources];
+    @event_map         events          := [file events];
+    @isr_map           isrs            := [file isrs];
+    @message_map       messages        := [file messages];
+    @netmess_map       net_messages    := [file net_messages];
+    @scheduletable_map scheduletables  := [file scheduletables];
+    @app_map           applis          := [file applis];
 
-    $CPU$ ;
-    $idf$ ?* ;
-    ${$ ;
+    $CPU$;
+    $idf$ ?*;
+    ${$;
     <object_definition_list>
         !?os
         !?com
@@ -614,10 +289,10 @@ rule <application_definition>
         !?net_messages
         !?scheduletables
         !?applis
-    ;
-    $}$ ;
-    <description> ?* ;
-    $;$ ;
+   ;
+    $}$;
+    <description> ?*;
+    $;$;
 
     file := [@root_obj new
         !os
@@ -632,8 +307,8 @@ rule <application_definition>
         !net_messages
         !scheduletables
         !applis
-    ] ;
-end rule ;
+    ];
+end rule;
 
 rule <object_definition_list>
     ?!@os_obj            os
@@ -651,21 +326,21 @@ rule <object_definition_list>
 :
 
    repeat
-    while <os> !?os ;
-    while <appmode> ; <description> ?* ;
-    while <task> !?tasks ;
-    while <counter> !?counters ;
-    while <alarm> !?alarms ; <description> ?* ;
-    while <resource> !?resources ; <description> ?* ;
-    while <event> !?events ; <description> ?* ;
-    while <isr> !?isrs ; <description> ?* ;
-    while <mess> !?messages ; <description> ?* ;
-    while <networkmess> !?net_messages ; <description> ?* ;
-    while <com> !?com ; <description> ?* ;
-    while <ipdu> ; <description> ?* ;
-    while <nm> ; <description> ?* ;
-    while <scheduletable> !?scheduletables ; <description> ?* ;
-    while <appli> !?applis ; <description> ?* ;
+    while <os> !?os;
+    while <appmode>; <description> ?*;
+    while <task> !?tasks;
+    while <counter> !?counters;
+    while <alarm> !?alarms; <description> ?*;
+    while <resource> !?resources; <description> ?*;
+    while <event> !?events; <description> ?*;
+    while <isr> !?isrs; <description> ?*;
+    while <mess> !?messages; <description> ?*;
+    while <networkmess> !?net_messages; <description> ?*;
+    while <com> !?com; <description> ?*;
+    while <ipdu>; <description> ?*;
+    while <nm>; <description> ?*;
+    while <scheduletable> !?scheduletables; <description> ?*;
+    while <appli> !?applis; <description> ?*;
     while <include_cpu_level>
         !?os
         !?com
@@ -679,69 +354,69 @@ rule <object_definition_list>
         !?net_messages
         !?scheduletables
         !?applis
-    ;
-    end repeat ;
-end rule ;
+   ;
+    end repeat;
+end rule;
 
-rule <nm> :
-   $NM$ ;
-   $idf$ ?* ;
-   ${$ ;
-   $}$ ;
-   $;$ ;
-end rule ;
+rule <nm>:
+   $NM$;
+   $idf$ ?*;
+   ${$;
+   $}$;
+   $;$;
+end rule;
 
 #--------------------------------------------------------------------
 # Miscellaneous non terminals
 #--------------------------------------------------------------------
-rule <boolean> !@lbool val :
+rule <boolean> !@lbool val:
     select
-        $TRUE$ ;
-        val := [@lbool new !true !here] ;
+        $TRUE$;
+        val := [@lbool new !true !here];
     or
-        $FALSE$ ;
-        val := [@lbool new !false !here] ;
-    end select ;
-end rule ;
+        $FALSE$;
+        val := [@lbool new !false !here];
+    end select;
+end rule;
 
-rule <free_field> ?!@ident_map ids :
-    @lstring idf ;
-    @basic_type val ;
-    $idf$ ?idf ;
-    $=$ ;
+rule <free_field> ?!@ident_map ids:
+    @lstring idf;
+    @basic_type val;
+    $idf$ ?idf;
+    $=$;
     select
-        @lstring value ;
-        $idf$ ?value ;
-        val := [@string_class new  ![value location] ![value string]] ;
+        @lstring value;
+        $idf$ ?value;
+        val := [@string_class new  ![value location] ![value string]];
     or
-        @luint64 value ;
-        $uint_number$ ?value ;
-        val := [@uint64_class new  ![value location] ![value uint64]] ;
+        @luint64 value;
+        $uint_number$ ?value;
+        val := [@uint64_class new  ![value location] ![value uint64]];
     or
-        @lbool value ;
-        <boolean> ?value ;
-        val := [@bool_class new ![idf location] ![value bool]] ;
-    end select ;
-    [!?ids put !idf !val] ; 
-end rule ;
+        @lbool value;
+        <boolean> ?value;
+        val := [@bool_class new ![idf location] ![value bool]];
+    end select;
+    [!?ids put !idf !val]; 
+end rule;
 
 rule <include_file_level>
     ?!@implementation imp
     ?!@root_obj cpu
 :
-    $include$ ;
-    @lstring file_name ;
+    $include$;
+    @lstring file_name;
     select
-        $g_string$ ?file_name ;
-        file_in_path !?file_name ;
+        $g_string$ ?file_name;
+        file_in_path !?file_name;
     or
-        $string$ ?file_name ;
-    end select ;
+        $string$ ?file_name;
+    end select;
     grammar goil_file_level_include in file_name
         !?imp
         !?cpu
-    ;
-end rule ;
+   ;
+end rule;
 
 rule <include_cpu_level>
     ?!@os_obj            os
@@ -757,14 +432,14 @@ rule <include_cpu_level>
     ?!@scheduletable_map scheduletables
     ?!@app_map           applis
 :
-    $include$ ;
-    @lstring file_name ;
+    $include$;
+    @lstring file_name;
     select
-        $g_string$ ?file_name ;
-        file_in_path !?file_name ;
+        $g_string$ ?file_name;
+        file_in_path !?file_name;
     or
-        $string$ ?file_name ;
-    end select ;
+        $string$ ?file_name;
+    end select;
     grammar goil_cpu_level_include in file_name
         !?os
         !?com
@@ -778,8 +453,8 @@ rule <include_cpu_level>
         !?net_messages
         !?scheduletables
         !?applis
-    ;
-end rule ;
+   ;
+end rule;
 
-end syntax ;
+end syntax;
 # vim:ft=ggs:ts=4:sw=4

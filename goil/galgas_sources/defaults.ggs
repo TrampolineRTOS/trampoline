@@ -1,20 +1,20 @@
-#
-# @file goil_defaults.ggs
+##
+# @file defaults.ggs
 #
 # @section File description
 #
-# Default value copy in defined objects.
+# routines defined in defaults semantics component
+# set the default value of objects according to the
+# implementation of the OIL file.
 #
 # @section Copyright
 #
-# Trampoline OS
+# Goil OIL compiler - Trampoline OS
 #
 # Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline est protégé par la loi sur la propriété intellectuelle
+# Trampoline is protected by the french intellectual property law.
 #
-# OIL compiler for Trampoline
-#
-# This software is distributed under the Lesser GNU Public Licence
+# This software is distributed under the GNU Public Licence V2
 #
 # @section File informations
 #
@@ -24,12 +24,11 @@
 # $URL$
 #
 
-semantics goil_defaults :
+semantics defaults :
 
 import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
 import semantics goil_check in "goil_check.ggs" ;
-import semantics goil_types_task in "goil_types_task.ggs" ;
-import semantics goil_types_isr in "goil_types_isr.ggs" ;
+import semantics goil_types_root in "goil_types_root.ggs" ;
 
 routine check_custom_field
     ?!@ident_map others
@@ -151,4 +150,30 @@ message "PRIORITY!\n";
     end foreach ;
 end routine ;
 
+routine set_defaults
+  ??@implementation imp
+  ?!@root_obj       cpu
+:
+  # set task defaults
+  if [imp hasKey !"task"] then
+      @task_map tasks := [cpu tasks];
+      @implementation_spec spec;
+      [imp get ![@lstring new !"task" !here] ?spec];
+      verify_and_set_tasks_defaults !?tasks !spec;
+      [!?cpu setTasks !tasks];
+      tasks := [cpu tasks];
+  end if ;
+
+  # set ISR defaults
+  if [imp hasKey !"isr"] then
+      @isr_map isrs := [cpu isrs];
+      @implementation_spec spec;
+      [imp get ![@lstring new !"isr" !here] ?spec];
+      verify_and_set_isrs_defaults !?isrs !spec;
+      [!?cpu setIsrs !isrs];
+  end if ;
+
+end routine;
+
 end semantics ;
+# End of file defaults.ggs
