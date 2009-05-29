@@ -1,6 +1,6 @@
 option goil_options :
 
-@string target_platform   : 't', "target" -> "Specifies target platform (avr, h8300h, libpcl, posix, v850e arm, c166, hcs12 or ppc)" ;
+@string target_platform   : 't', "target" -> "Specifies target platform (avr, h8300h, libpcl, posix, posix_vp2, v850e, arm, c166, hcs12 or ppc)" ;
 @string project_dir       : 'p', "project" -> "Specifies project directory (by default, the project directory is the name of the oil file, without the .oil extension)" ;
 @string template_dir      : '\0', "templates" -> "Specifies template directory (used by goil for code generation)" ;
 @bool   autosar_on        : 'a',  "autosar" -> "Parse Autosar objects and attributes" ;

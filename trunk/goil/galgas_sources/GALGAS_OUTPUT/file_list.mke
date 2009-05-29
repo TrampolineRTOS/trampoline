@@ -104,6 +104,7 @@ SOURCES += goil_target_h8300h.cpp
 SOURCES += goil_target_arm7.cpp
 SOURCES += goil_target_avr.cpp
 SOURCES += goil_target_posix.cpp
+SOURCES += goil_target_posix_vp2.cpp
 SOURCES += goil_grammar.cpp
 SOURCES += goil_file_level_include.cpp
 SOURCES += goil_cpu_level_include.cpp

@@ -1,0 +1,52 @@
+OIL_VERSION = "2.5" : "test" ;
+
+IMPLEMENTATION trampoline {
+    TASK {
+        UINT32 STACKSIZE = 32768 ;
+        UINT32 PRIORITY = 1 ;
+    } ;
+    ISR {
+        UINT32 STACKSIZE = 32768 ;
+    } ;
+};
+
+CPU test {
+
+    OS config {
+        STATUS = EXTENDED;
+        ERRORHOOK = FALSE;
+        PRETASKHOOK = TRUE;
+        APP_SRC = "tpl_default_tasks_workstation.c";
+        APP_SRC = "viper.c";
+        APP_SRC = "com.c";
+        APP_SRC = "fifo.c";
+        TRAMPOLINE_BASE_PATH = "..";
+        DOW=TRUE;
+        CFLAGS  = "-g";
+        CFLAGS  = "-Wall -Wformat -Werror -pedantic -std=c89";
+        CFLAGS  = "-Wmissing-field-initializers -I."; 
+        ASFLAGS = "";
+        LDFLAGS = "";
+    } ;
+
+
+    APPMODE std {
+    };
+
+    ISR foo {
+        CATEGORY = 2;
+        STACKSIZE = 32768;
+        PRIORITY = 15;
+        SOURCE = IRQ7;
+    };
+
+    TASK bar {
+        PRIORITY = 5;
+        AUTOSTART = TRUE {
+            APPMODE = std;
+        };
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+    
+};
