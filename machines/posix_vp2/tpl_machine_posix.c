@@ -21,6 +21,8 @@
 #ifdef WITH_AUTOSAR
 #include "tpl_as_isr_kernel.h"
 #include "tpl_os_kernel.h" /* for tpl_running_obj */
+#include "tpl_as_definitions.h"
+#include "tpl_os_task_kernel.h"
 #endif /* WITH_AUTOSAR */
 #include "viper.h"
 
@@ -44,11 +46,11 @@ VAR(tpl_stack_word, OS_VAR) idle_stack_zone[32768/sizeof(tpl_stack_word)] = {0} 
 VAR(struct TPL_STACK, OS_VAR) idle_task_stack = { idle_stack_zone, 32768} ;
 VAR(struct TPL_CONTEXT, OS_VAR) idle_task_context;
 
-#ifdef WITH_AUTOSAR
 VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;
 VAR(u32, OS_VAR) tpl_cpt_user_task_lock = 0;
+VAR(u32, OS_VAR) tpl_cpt_user_task_lock_All = 0;
+VAR(u32, OS_VAR) tpl_cpt_user_task_lock_OS = 0;
 VAR(u32, OS_VAR) tpl_cpt_os_task_lock = 0;
-#endif
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 VAR(static struct timeval, OS_VAR) startup_time;
@@ -70,14 +72,13 @@ void quit(int n)
     ShutdownOS(E_OK);  
 }
 
-#ifdef WITH_AUTOSAR
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
 {
     VAR(tpl_bool, AUTOMATIC) result;
 
-    if( (TRUE == tpl_user_task_lock) || (tpl_cpt_user_task_lock > 0) )
+    if( (TRUE == tpl_user_task_lock) || (tpl_cpt_user_task_lock_OS > 0) || (tpl_cpt_user_task_lock_All > 0) )
     {
         result = TRUE;
     }
@@ -90,7 +91,6 @@ FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
-#endif
 
 /*******************************************************************************
 ** Function name: tpl_reset_interrupt_lock_status
@@ -106,7 +106,8 @@ FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
 {
   tpl_user_task_lock = FALSE;
 
-  tpl_cpt_user_task_lock = 0;
+  tpl_cpt_user_task_lock_All = 0;
+  tpl_cpt_user_task_lock_OS = 0;
 
   tpl_locking_depth = tpl_cpt_os_task_lock;
 }
@@ -119,6 +120,8 @@ FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
 FUNC(void, OS_CODE) tpl_watchdog_callback(void)
 {
 }
+
+static struct timeval startup_time;
 
 tpl_time tpl_get_local_current_date ()
 {
@@ -207,29 +210,40 @@ void tpl_disable_interrupts(void)
  */
 void tpl_signal_handler(int sig)
 {
-    unsigned int id;
+    u32 requested_it, channel_id;
 
     /* */
     tpl_locking_depth++;
- 
-    /* Get the interrupt id from shared memory through vp_ipc API */
-    id = vp_ipc_get_interruption_id(&viper);
+    tpl_cpt_os_task_lock++;
 
-    /* If the interrupt id is valid, call the registred function */
-    if( (TPL_IT_VECTOR_INDEX_OFFSET <= id) &&
-        (id < TPL_IT_VECTOR_INDEX_OFFSET + TPL_IT_VECTOR_SIZE))
+    /* Get the interrupt id from shared memory through vp_ipc API */
+    requested_it = vp_ipc_get_interruption_id(&viper);
+    
+    channel_id = 31; /* TODO : change magic number */
+    while(requested_it != 0)
     {
-        id = id - TPL_IT_VECTOR_INDEX_OFFSET;
-        tpl_it_vector[id].func(tpl_it_vector[id].args);
-    }
-    else
-    {
-        /* Unknown interrupt request: invoke the balrog */
-        printf("No ISR is registered for signal %d\n", sig);
-        printf("Cowardly exiting!\n");
-        tpl_shutdown();
+        if(requested_it & 0x80000000)
+        {
+            /* If the interrupt id is valid, call the registred function */
+            if( (TPL_IT_VECTOR_INDEX_OFFSET <= channel_id) &&
+                (channel_id < TPL_IT_VECTOR_INDEX_OFFSET + TPL_IT_VECTOR_SIZE))
+            {
+                channel_id = channel_id - TPL_IT_VECTOR_INDEX_OFFSET;
+                tpl_it_vector[channel_id].func(tpl_it_vector[channel_id].args);
+            }
+            else
+            {
+                /* Unknown interrupt request: invoke the balrog */
+                printf("No ISR is registered for signal %d\n", sig);
+                printf("Cowardly exiting!\n");
+                tpl_shutdown();
+            }
+        }
+        channel_id --;
+        requested_it <<= 1;
     }
     tpl_locking_depth--;
+    tpl_cpt_os_task_lock--;
 }
 
 /*
@@ -237,7 +251,7 @@ void tpl_signal_handler(int sig)
  */
 void tpl_sleep(void)
 {
-    while (1) pause(); 
+    while (1) pause();
 }
 
 void tpl_shutdown(void)
@@ -251,8 +265,6 @@ void tpl_shutdown(void)
     exit(0);
 }
 
-/*volatile int x = 0;
-int cnt = 0;*/
 /*
  * tpl_get_task_lock is used to lock a critical section 
  * around the task management in the os.
@@ -289,7 +301,7 @@ void tpl_release_task_lock(void)
     tpl_cpt_os_task_lock--;
 #endif
 
-    if (0 == tpl_locking_depth)
+    if ( (tpl_locking_depth == 0) && (FALSE == tpl_user_task_lock) )
     {
         if (sigprocmask(SIG_UNBLOCK,&signal_set_all,NULL) == -1) {
             perror("tpl_release_lock failed");
@@ -352,9 +364,31 @@ void tpl_osek_func_stub( tpl_proc_id task_id )
     (*func)();
     
     if (type == IS_ROUTINE) {
+	#ifdef WITH_AUTOSAR	
+	    if (TerminateISR() == E_OS_DISABLEDINT)
+		{
+			tpl_reset_interrupt_lock_status();
+			tpl_enable_all_interrupts_service();	
+		}
+	#endif /* WITH_AUTOSAR*/
         TerminateISR();
     }
     else {
+
+	#ifdef WITH_AUTOSAR
+        if(FALSE!=tpl_get_interrupt_lock_status())  
+		{                                           
+			/*enable interrupts :*/
+			tpl_reset_interrupt_lock_status();
+			tpl_enable_all_interrupts_service();
+		}
+		/*error hook*/
+		
+		PROCESS_ERROR(E_OS_MISSINGEND);
+
+		/*terminate the task :*/
+		tpl_terminate_task_service();
+    #endif /* WITH_AUTOSAR */
         fprintf(stderr, "[OSEK/VDX Spec. 2.2.3 Sec. 4.7] Ending the task without a call to TerminateTask or ChainTask is strictly forbidden and causes undefined behaviour.\n");
         exit(1);
     }
