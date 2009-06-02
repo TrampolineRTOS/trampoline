@@ -349,6 +349,42 @@ rule <st_action_params>
       error here : "incomplete expiry point" ;
     end if ;
     $}$ ;
+  or
+    $INCREMENTCOUNTER$ ;
+    ${$ ;
+    @bool    offset_known := false ;
+    @bool    counter_known := false ;
+    @luint64 offset := [@luint64 new !0L !here] ;
+    @lstring counter := [@lstring new !"" !here] ;
+    repeat
+    while
+      @luint64 new_offset ;
+      $OFFSET$ ; $=$ ; $uint_number$ ?new_offset ; $;$ ;
+      if offset_known then
+        error here : "OFFSET attribute already defined for this schedule table INCREMENTCOUNTER action" ;
+        error [offset location] : "was previously defined here" ;
+      else
+        offset := new_offset ;
+        offset_known := true ;
+      end if ;
+    while
+      @lstring new_counter ;
+      $COUNTER$ ; $=$ ; $idf$ ?new_counter ; $;$ ;
+      if counter_known then
+        error here : "COUNTER attribute already defined for this schedule table INCREMENTCOUNTER action" ;
+        error [counter location] : "was previously defined here" ;
+      else
+        counter := new_counter ;
+        counter_known := true ;
+      end if ;
+    end repeat ;
+    if counter_known & offset_known then
+ 		@incrementcounter_action sdata := [@incrementcounter_action new !here !counter] ;
+     	actions += ![offset uint64] !sdata ;
+    else
+      error here : "incomplete expiry point" ;
+    end if ;
+    $}$ ;
   end select ;
 end rule ;
 

@@ -153,6 +153,8 @@ class @scheduletable_obj extends @oil_obj {
         retrieveTemplateString ?setevent_tpl !"notification_setevent" ;
         @string activatetask_tpl ;
         retrieveTemplateString ?activatetask_tpl !"notification_activatetask" ;
+        @string incrementcounter_tpl ;
+        retrieveTemplateString ?incrementcounter_tpl !"notification_incrementcounter" ;
 
         @uint64 cur_offset := 0L ;
         @uint64 previous_offset := 0L ;
@@ -186,6 +188,8 @@ class @scheduletable_obj extends @oil_obj {
             when == @setevent_action sea do
                 res := [setevent_tpl stringByReplacingStringByString !"$TASK$" ![[sea task_name] string]."_id"] ;
                 res := [res stringByReplacingStringByString !"$EVENT$" ![[sea event_name] string]."_mask"] ;
+            when == @incrementcounter_action ica do
+                res := [incrementcounter_tpl stringByReplacingStringByString !"$COUNTER$" ![[ica counter_name] string]."_counter_desc"] ;
             else error name : "Internal error, unexpected type for ACTION attribute of schedule table ".[name string] ;
             end cast ;
             res := [res stringByReplacingStringByString
