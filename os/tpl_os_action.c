@@ -99,7 +99,6 @@ FUNC(tpl_status, OS_CODE) tpl_action_setevent(
   STORE_SERVICE(OSServiceId_SetEvent)
   STORE_TASK_ID(((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->task_id)
   STORE_EVENT_MASK(((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->mask)
-	
   /* call alarm action and save return value to launch error hook if alarm action goes wrong */
   result_action = tpl_set_event(
       ((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->task_id,

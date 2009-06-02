@@ -51,8 +51,6 @@ static void test_t1_instance(void)
 	StatusType result_inst_1,result_inst_2, result_inst_3, result_inst_4, result_inst_6, result_inst_8, result_inst_10, result_inst_11, result_inst_12;
 	EventMaskType result_inst_5, result_inst_7, result_inst_9; 
 	
-	EnableAllInterrupts();
-	
 	SCHEDULING_CHECK_INIT(1);
 	result_inst_1 = SetEvent(INVALID_TASK,Event1);	
 	SCHEDULING_CHECK_AND_EQUAL_INT(1,E_OS_ID, result_inst_1);

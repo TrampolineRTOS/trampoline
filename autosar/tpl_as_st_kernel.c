@@ -48,6 +48,14 @@ STATIC FUNC(tpl_tick, OS_CODE) tpl_min(
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
+
+/**
+ * @def INVALID_SCHEDULETABLE
+ *
+ * This value is used to specify an invalid schedule table
+ */
+CONST(tpl_schedtable_id, AUTOMATIC) INVALID_SCHEDULETABLE = (tpl_schedtable_id)(-1);
+
 /*
  * This returns the min of 2 values provided
  */
@@ -161,7 +169,7 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
     }
     else {
         /*  The schedule table is finished                                  */
-        /*  Test whether a schedule table has been « nextified » or not     */
+        /*  Test whether a schedule table has been Â´ nextified Âª or not     */
         /*  MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
             tpl_schedtable*. This cast behaves correctly because the
             first member of tpl_schedula_table is a tpl_time_obj            */
@@ -589,12 +597,18 @@ FUNC(tpl_status, OS_CODE) tpl_stop_schedule_table_service(
         /*  Check the schedule table is started */
         if (st->b_desc.state != (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
         {
-            /* MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
-               tpl_time_obj*. This cast behaves correctly because the first memeber
-               of tpl_schedula_table is a tpl_time_obj */
-            tpl_remove_time_obj((tpl_time_obj *)st);
+			/* MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
+			 tpl_time_obj*. This cast behaves correctly because the first member
+			 of tpl_schedul_table is a tpl_time_obj */
+			tpl_remove_time_obj((tpl_time_obj *)st);
             st->b_desc.state = SCHEDULETABLE_STOPPED;
             st->index = 0; /* reset the expiry point index to 0 */
+			
+			/*check if next schedule table exists*/
+			if (st->next != NULL)
+			{
+				st->next->b_desc.state = SCHEDULETABLE_STOPPED;
+			}
         }
         else
         {
@@ -637,8 +651,9 @@ FUNC(tpl_status, OS_CODE) tpl_next_schedule_table_service(
     STORE_SCHEDTABLE_ID(current_st_id)
     STORE_SCHEDTABLE_ID2(next_st_id)
 
-    CHECK_SCHEDTABLE_ID_ERROR(current_st_id, result)
+	CHECK_SCHEDTABLE_ID_ERROR(current_st_id, result)
     CHECK_SCHEDTABLE_ID_ERROR(next_st_id, result)
+	CHECK_SCHEDTABLE_TO_STOPPED(next_st_id,result)
 
 #ifndef NO_SCHEDTABLE
     IF_NO_EXTENDED_ERROR(result)
@@ -765,11 +780,11 @@ FUNC(tpl_status, OS_CODE) tpl_sync_schedule_table_service(
                else if running synchronize it */
             if( st->b_desc.state == SCHEDULETABLE_WAITING )
             {
-                tpl_start_sched_table_sync(st, value);
+                tpl_start_sched_table_sync(&(st->b_desc), value);
             }
             else
             {
-                tpl_sync_sched_table(st, value);
+                tpl_sync_sched_table(&(st->b_desc), value);
             }
         }
 

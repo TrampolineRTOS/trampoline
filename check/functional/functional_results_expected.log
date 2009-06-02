@@ -86,8 +86,11 @@ running interrupts_s4_non
 .....
 OK (5 tests)
 running interrupts_s5
-..
-OK (2 tests)
+....
+OK (4 tests)
+running interrupts_s6
+.
+OK (1 test)
 running events_s1_full
 ...
 OK (3 tests)
@@ -265,3 +268,18 @@ OK (4 tests)
 running autosar_alarm_s2
 .....
 OK (5 tests)
+running autosar_st_s1
+.
+OK (1 test)
+running autosar_st_s2
+.
+OK (1 test)
+running autosar_sp_s1
+.......
+OK (7 tests)
+running autosar_sp_s2
+.....
+OK (5 tests)
+running autosar_sp_s3
+....
+OK (4 tests)

@@ -58,7 +58,7 @@ TestRef AutosarTest_seq1_isr1_instance(void)
 	EMB_UNIT_TESTFIXTURES(fixtures) {
 		new_TestFixture("test_isr1_instance",test_isr1_instance)
 	};
-	EMB_UNIT_TESTCALLER(AutosarTest,"AutosarTest_sequence2",NULL,NULL,fixtures);
+	EMB_UNIT_TESTCALLER(AutosarTest,"AutosarTest_sequence1",NULL,NULL,fixtures);
 	
 	return (TestRef)&AutosarTest;
 }

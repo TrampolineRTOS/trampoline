@@ -45,8 +45,6 @@ static void test_t5_instance(void)
 {
 	StatusType result_inst_1;
 	
-	EnableAllInterrupts();
-	
 	SCHEDULING_CHECK_STEP(1);
 	
 	tpl_send_it1();

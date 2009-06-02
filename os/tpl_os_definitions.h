@@ -183,7 +183,7 @@
  */
 #define E_OS_VALUE      8
 
-#ifdef WITH_AUTOSAR
+/*#ifdef WITH_AUTOSAR*/
 
 /**
  * @def E_OS_DISABLEDINT
@@ -192,7 +192,7 @@
  */
 #define E_OS_DISABLEDINT          19
 
-#endif
+/*#endif*/
 
 /**************************************
  * Special result code for Trampoline *

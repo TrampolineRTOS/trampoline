@@ -50,11 +50,11 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 	
+  LOCK_KERNEL()
+	
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
-  
-  LOCK_KERNEL()
-  
+	
   STORE_SERVICE(OSServiceId_SetEvent)
   STORE_TASK_ID(task_id)
   STORE_EVENT_MASK(event)
@@ -101,10 +101,10 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
   
+  LOCK_KERNEL()
+
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
-  
-  LOCK_KERNEL()
   
   STORE_SERVICE(OSServiceId_ClearEvent)
   STORE_EVENT_MASK(event)
@@ -137,11 +137,11 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
   
+  LOCK_KERNEL()
+
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
-  
-  LOCK_KERNEL()
-  
+
   STORE_SERVICE(OSServiceId_GetEvent)
   STORE_TASK_ID(task_id)
   STORE_EVENT_MASK_REF(event)
@@ -176,11 +176,12 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
 #ifndef NO_EXTENDED_TASK
   P2VAR(tpl_task_events, AUTOMATIC, OS_VAR) task_events;  
 #endif
+ 
+  LOCK_KERNEL()
+
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
-  
-  LOCK_KERNEL()
-  
+
   STORE_SERVICE(OSServiceId_WaitEvent)
   STORE_EVENT_MASK(event)
   

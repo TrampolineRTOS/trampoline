@@ -53,10 +53,10 @@
  * see paragraph 8.4.15 page 71 of
  * AUTOSAR/Specification of the Operating System v2.1.0
  */
-FUNC(tpl_status, OS_CODE) tpl_start_schedule_table_synchron_service( 
+/*FUNC(tpl_status, OS_CODE) tpl_start_schedule_table_synchron_service( 
     VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id, 
     VAR(tpl_tick, AUTOMATIC)            gt 
-);
+);*/
 
 /**
  * Synchronize a schedule table with global time.
@@ -74,10 +74,10 @@ FUNC(tpl_status, OS_CODE) tpl_start_schedule_table_synchron_service(
  * see paragraph 8.4.16, page 72 of
  * AUTOSAR/Specification of the Operating System v2.1.0
  */
-FUNC(tpl_status, OS_CODE) tpl_sync_schedule_table_service(
+/*FUNC(tpl_status, OS_CODE) tpl_sync_schedule_table_service(
     VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id,
     VAR(tpl_tick, AUTOMATIC)            gt
-);
+);*/
 
 /**
  * Set the status of the schedule table to asynchronous
@@ -90,9 +90,9 @@ FUNC(tpl_status, OS_CODE) tpl_sync_schedule_table_service(
  * see paragraph 8.4.17, page 73 of
  * AUTOSAR/Specification of the Operating System v2.1.0
  */
-FUNC(tpl_status, OS_CODE) tpl_set_schedule_table_async_service(
+/*FUNC(tpl_status, OS_CODE) tpl_set_schedule_table_async_service(
     VAR(tpl_schedtable_id, AUTOMATIC) sched_table_id
-);
+);*/
 
 /* TPL_AS_GT_KERNEL_H */
 #endif

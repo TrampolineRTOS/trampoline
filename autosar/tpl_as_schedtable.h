@@ -31,12 +31,24 @@
 #include "tpl_os_types.h"
 /*#include "tpl_as_definitions.h"*/
 
-typedef VAR(u8, AUTOMATIC)  ScheduleTableType;
+typedef VAR(tpl_schedtable_id, AUTOMATIC)  ScheduleTableType;
 typedef VAR(tpl_time_obj_state, AUTOMATIC) ScheduleTableStatusType;
 typedef P2VAR(tpl_time_obj_state, AUTOMATIC, OS_APPL_DATA) ScheduleTableStatusRefType;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
+
+/**
+ * @def DeclareScheduleTable
+ *
+ * Defines a Schedule Table
+ *
+ * @param scheduletable_id schedule table's C identifier
+ *
+ */
+#define DeclareScheduleTable(scheduletable_id)				\
+		extern CONST(ScheduleTableType, AUTOMATIC) scheduletable_id
+
 
 /**
  * Start a schedule table at a relative date.

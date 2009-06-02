@@ -39,34 +39,92 @@
 
 DeclareTask(t2);
 
+void tpl_send_it1(void);
+
 /*test case:test the reaction of the system called with 
 an activation of a task*/
 static void test_t1_instance(void)
 {
 	StatusType result_inst_1;
-	
-	EnableAllInterrupts();
-	
+		
+	SCHEDULING_CHECK_STEP(1);
 	SuspendAllInterrupts();
 	
-	/*
-	 test API service calls (ActivateTask...) */
-	SCHEDULING_CHECK_INIT(1);
+	SCHEDULING_CHECK_INIT(2);
 	result_inst_1 = ActivateTask(t2);
-	SCHEDULING_CHECK_AND_EQUAL_INT(2,E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(2,E_OS_DISABLEDINT, result_inst_1);
 	
+	SCHEDULING_CHECK_STEP(3);
+	tpl_send_it1();
+	
+	SCHEDULING_CHECK_STEP(4);
+	ResumeOSInterrupts();
+	
+	SCHEDULING_CHECK_STEP(5);
+	EnableAllInterrupts();
+	
+	SCHEDULING_CHECK_STEP(6);
 	ResumeAllInterrupts();
-
+		
+	
+	
+	SCHEDULING_CHECK_STEP(8);
+	SuspendOSInterrupts();
+	
+	SCHEDULING_CHECK_INIT(9);
+	result_inst_1 = ActivateTask(t2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(9,E_OS_DISABLEDINT, result_inst_1);
+	
+	SCHEDULING_CHECK_STEP(10);
+	tpl_send_it1();
+	
+	SCHEDULING_CHECK_STEP(11);
+	ResumeAllInterrupts();
+	
+	SCHEDULING_CHECK_STEP(12);
+	EnableAllInterrupts();
+	
+	SCHEDULING_CHECK_STEP(13);
+	DisableAllInterrupts();
+	
+	SCHEDULING_CHECK_STEP(14);
+	EnableAllInterrupts();
+	
+	SCHEDULING_CHECK_STEP(15);
+	ResumeOSInterrupts();
+	
+	
+	
+	SCHEDULING_CHECK_STEP(17);
+	DisableAllInterrupts();
+	
+	SCHEDULING_CHECK_INIT(18);
+	result_inst_1 = ActivateTask(t2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(18,E_OS_DISABLEDINT, result_inst_1);
+	
+	SCHEDULING_CHECK_STEP(19);
+	tpl_send_it1();
+	
+	SCHEDULING_CHECK_STEP(20);
+	ResumeAllInterrupts();
+	
+	SCHEDULING_CHECK_STEP(21);
+	ResumeOSInterrupts();
+	
+	SCHEDULING_CHECK_STEP(22);
+	EnableAllInterrupts();
+	
+	SCHEDULING_CHECK_STEP(24);
 
 }
 
 /*create the test suite with all the test cases*/
-TestRef InterruptProcessingTest_seq3_t1_instance(void)
+TestRef InterruptProcessingTest_seq5_t1_instance(void)
 {
 	EMB_UNIT_TESTFIXTURES(fixtures) {
 		new_TestFixture("test_t1_instance",test_t1_instance)
 	};
-	EMB_UNIT_TESTCALLER(InterruptProcessingTest,"InterruptProcessingTest_sequence3",NULL,NULL,fixtures);
+	EMB_UNIT_TESTCALLER(InterruptProcessingTest,"InterruptProcessingTest_sequence5",NULL,NULL,fixtures);
 
 	return (TestRef)&InterruptProcessingTest;
 }

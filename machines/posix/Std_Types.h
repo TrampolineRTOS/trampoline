@@ -38,7 +38,7 @@
 /******************************************************************************/
 /* TYPE DEFINITIONS                                                           */
 /******************************************************************************/
-typedef uint8 Std_ReturnType;
+typedef u8 Std_ReturnType;
 typedef struct
 {
     uint16 vendorID;

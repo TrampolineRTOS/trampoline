@@ -46,9 +46,9 @@ static void test_isr1_instance(void)
 {
 	SCHEDULING_CHECK_STEP(12);
 	
+	DisableAllInterrupts();
 	EnableAllInterrupts();
-	DisableAllInterrupts();
-	DisableAllInterrupts();
+	
 	DisableAllInterrupts();
 	tpl_send_it2();
 	tpl_send_it2();

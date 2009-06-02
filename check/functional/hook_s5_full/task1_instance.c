@@ -46,8 +46,6 @@ an activation of a task*/
 static void test_t1_instance(void)
 {
 	StatusType result_inst_1, result_inst_2;
-
-	EnableAllInterrupts();
 			
 	SCHEDULING_CHECK_INIT(1);
 	result_inst_1 = SetRelAlarm(Alarm1, 2, 0);

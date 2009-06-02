@@ -793,7 +793,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
 #ifdef WITH_AUTOSAR_STACK_MONITORING
   tpl_check_stack (tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
-  
+
   if (tpl_h_prio > tpl_kern.running->priority)
   {
     /*  a task switch will occur. It is time to call the
@@ -1006,7 +1006,6 @@ FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
    It is time to call PreTaskHook while the
    rescheduled task is running                     */
   CALL_PRE_TASK_HOOK()
-  
   /*  Switch the context  */
   
   tpl_kern.need_switch = NEED_SWITCH | NEED_SAVE;

@@ -45,8 +45,6 @@ static void test_t1_instance(void)
 {
 	StatusType result_inst_1;
 	
-	EnableAllInterrupts();
-	
 	SCHEDULING_CHECK_INIT(1);
 	result_inst_1 = ChainTask(t2);
 	SCHEDULING_CHECK_AND_EQUAL_INT(1,E_OK , result_inst_1);	

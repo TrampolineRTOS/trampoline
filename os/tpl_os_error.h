@@ -33,6 +33,8 @@
 #include "tpl_os_timeobj_kernel.h"
 #endif
 
+FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void);
+
 /*
  * Remember (see "The design of Trampoline") :
  * NO_TASK means there is no task defined in the system
@@ -43,6 +45,8 @@
 
 #ifdef WITH_ERROR_HOOK
 
+FUNC(void, OS_CODE) tpl_call_error_hook(CONST(tpl_status, AUTOMATIC) error);
+	
 /**
  * @union ID_PARAM_BLOCK
  *
@@ -614,7 +618,6 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @see #OSError_ActivateTask_TaskID
  * @see #OSError_ChainTask_TaskID
- * @see #OSError_GetTaskID_TaskID
  * @see #OSError_GetTaskState_TaskID
  * @see #OSError_SetEvent_TaskID
  * @see #OSError_GetEvent_TaskID
@@ -638,10 +641,10 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @see #
  */
 #ifdef WITH_ERROR_HOOK
-#   define STORE_TASK_ID_REF(task_id_ref)  \
-    tpl_service.parameters.id.task_id_ref = (task_id_ref);
+#   define STORE_TASK_ID_REF(taskidref)  \
+    tpl_service.parameters.id.task_id_ref = (taskidref);
 #else
-#   define STORE_TASK_ID_REF(task_id_ref)
+#   define STORE_TASK_ID_REF(taskidref)
 #endif
 
 /**
@@ -1370,17 +1373,12 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @param result: error code returned
  */
-#ifndef WITH_AUTOSAR
-#define CHECK_INTERRUPT_LOCK(result)
-#else
+
 #define CHECK_INTERRUPT_LOCK(result)            \
     if(FALSE!=tpl_get_interrupt_lock_status())  \
     {                                           \
-        tpl_reset_interrupt_lock_status();      \
-        PROCESS_ERROR(E_OS_DISABLEDINT);        \
         result = E_OS_DISABLEDINT;              \
     }
-#endif
 
 #endif /*TPL_OS_ERROR_H */
 

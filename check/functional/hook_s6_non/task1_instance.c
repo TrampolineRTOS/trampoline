@@ -45,8 +45,6 @@ static void test_t1_instance(void)
 {
 	StatusType result_inst_1, result_inst_2;
 	
-	EnableAllInterrupts();
-	
 	SCHEDULING_CHECK_INIT(1);
 	result_inst_1 = ActivateTask(t1);
 	SCHEDULING_CHECK_AND_EQUAL_INT(3,E_OS_LIMIT , result_inst_1);	
