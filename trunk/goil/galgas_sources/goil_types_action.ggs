@@ -128,13 +128,23 @@ class @flag_action extends @action_obj {
 
 class @incrementcounter_action extends @action_obj {
     @lstring counter_name ;
-    override method generate
-        ?@lstring    unused name
-        ?@string     unused err
-        ?@string     unused key
+ 	 override method generate
+        ?@lstring    name
+        ?@string     err
+        ?@string     key
         ?!@string    unused h_res
-        ?!@string    unused i_res :
+        ?!@string    i_res :
 
+        @string res ;
+        retrieveTemplateString ?res !"notification_incrementcounter" ;
+
+        doReplace !?res !"$NOTIFICATION_NAME$"   !err." of message ".[name string] ;
+        doReplace !?res !"$NOTIFICATION$" ![name string]."_notification" ;
+        doReplace !?res !"$COUNTER$" ![counter_name string]."_id" ;
+
+        doReplace !?i_res !key !"&".[name string]."_notification" ;
+
+        i_res := res."\n".i_res ;
     end method ;
 }
 

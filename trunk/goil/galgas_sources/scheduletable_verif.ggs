@@ -101,13 +101,17 @@ routine schedule_tables_tasks_and_events_exist
           if not [[cpu tasks] hasKey ![[ata task_name] string]] then
             error [action location]: "TASK attribute of action does not reference an existing task";
           end if;
-      when == @setevent_action sea do
-        if not [[cpu tasks] hasKey ![[sea task_name] string]] then
-          error [action location]: "TASK attribute of action does not reference an existing task";
-        end if;
-        if not [[cpu events] hasKey ![[sea event_name] string]] then
-          error [action location]: "EVENT attribute of action does not reference an existing event";
-        end if;
+      	 when == @setevent_action sea do
+        	if not [[cpu tasks] hasKey ![[sea task_name] string]] then
+          		error [action location]: "TASK attribute of action does not reference an existing task";
+       	end if;
+       	if not [[cpu events] hasKey ![[sea event_name] string]] then
+        		error [action location]: "EVENT attribute of action does not reference an existing event";
+        	end if;
+		 when == @incrementcounter_action ica do
+          if not [[cpu counters] hasKey ![[ica counter_name] string]] then
+            error [action location]: "COUNTER attribute of action does not reference an existing counter";
+          end if;
         else
           error stname: "Internal error, incorrect datatype for ACTION attribute at offset ".[offset string]." of schedule table ".[stname string];
       end cast;
