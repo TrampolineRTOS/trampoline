@@ -18,6 +18,7 @@ goil_target_h8300h.ggs
 goil_target_arm7.ggs
 goil_target_avr.ggs
 goil_target_ppc.ggs
-goil_types_task.ggs::
+goil_types_task.ggs
+goil_options.ggs::
 GALGAS_OUTPUT/goil_targets.h
 GALGAS_OUTPUT/goil_targets.cpp

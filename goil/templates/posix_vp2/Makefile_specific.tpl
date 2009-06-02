@@ -5,3 +5,4 @@ ifeq ($(strip $(OS)),Linux)
     CFLAGS += -D_XOPEN_SOURCE=600
 endif
 
+CFLAGS += -I$(TPL_BASE_PATH)/viper2/ipc

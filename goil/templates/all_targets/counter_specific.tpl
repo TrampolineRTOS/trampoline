@@ -2,7 +2,7 @@
 #include "tpl_os_timeobj_kernel.h"  /* tpl_counter_tick */
 #include "tpl_machine_interface.h"  /* tpl_switch_context_from_it */
 
-void tpl_call_counter_tick()
+void tpl_tick_$IT_SOURCE$()
 {
 	tpl_status  need_rescheduling = NO_SPECIAL_CODE;
 $COUNTER_LIST$
