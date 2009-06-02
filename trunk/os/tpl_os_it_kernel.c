@@ -47,7 +47,8 @@
 #include "tpl_memmap.h"
 
 volatile VAR(u32, OS_VAR) tpl_locking_depth = 0;
-extern VAR(u32, OS_VAR) tpl_cpt_user_task_lock;
+extern VAR(u32, OS_VAR) tpl_cpt_user_task_lock_OS;
+extern VAR(u32, OS_VAR) tpl_cpt_user_task_lock_All;
 extern VAR(tpl_bool, OS_VAR) tpl_user_task_lock;
 
 /**
@@ -59,9 +60,7 @@ FUNC(void, OS_CODE) tpl_suspend_all_interrupts_service(void)
   
   tpl_locking_depth++;
 
-#ifdef WITH_AUTOSAR
-  tpl_cpt_user_task_lock++;
-#endif
+  tpl_cpt_user_task_lock_All++;
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
   if( tpl_locking_depth == 1)
@@ -77,22 +76,23 @@ FUNC(void, OS_CODE) tpl_suspend_all_interrupts_service(void)
 FUNC(void, OS_CODE) tpl_resume_all_interrupts_service(void)
 {
   #if defined(__unix__) || defined(__APPLE__)
-	assert( tpl_locking_depth > 0 );
+	assert( tpl_locking_depth >= 0 );
   #endif
     
-	tpl_locking_depth--;
+	if( tpl_cpt_user_task_lock_All != 0 )
+	{
+		tpl_locking_depth--;
 	
-#ifdef WITH_AUTOSAR
-    tpl_cpt_user_task_lock--;
-#endif
+		tpl_cpt_user_task_lock_All--;
 	
-  if( tpl_locking_depth == 0)
-  {
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    tpl_stop_all_isr_lock_monitor(tpl_kern.running_id);
-#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
-    tpl_enable_interrupts();
-  }
+		if( tpl_locking_depth == 0)
+		{
+	#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+			tpl_stop_all_isr_lock_monitor(tpl_kern.running_id);
+	#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
+			tpl_enable_interrupts();
+		}
+	}
   
 }
 
@@ -101,15 +101,16 @@ FUNC(void, OS_CODE) tpl_resume_all_interrupts_service(void)
  */
 FUNC(void, OS_CODE) tpl_disable_all_interrupts_service(void)
 {
-  tpl_disable_interrupts();
+  if( (tpl_cpt_user_task_lock_All == 0) && (tpl_cpt_user_task_lock_OS == 0) )
+  {
+	  tpl_disable_interrupts();
 
-#ifdef WITH_AUTOSAR
-  tpl_user_task_lock = TRUE;
-#endif
+	  tpl_user_task_lock = TRUE;
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-  tpl_start_all_isr_lock_monitor(tpl_kern.running_id);
-#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
+	#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+	  tpl_start_all_isr_lock_monitor(tpl_kern.running_id);
+	#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
+  }
 }
 
 /**
@@ -117,15 +118,16 @@ FUNC(void, OS_CODE) tpl_disable_all_interrupts_service(void)
  */
 FUNC(void, OS_CODE) tpl_enable_all_interrupts_service(void)
 {
-#ifdef WITH_AUTOSAR
-  tpl_user_task_lock = FALSE;
-#endif
+	if( tpl_user_task_lock != FALSE )
+	{
+		tpl_user_task_lock = FALSE;
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-  tpl_stop_all_isr_lock_monitor(tpl_kern.running_id);
-#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
+	#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+		tpl_stop_all_isr_lock_monitor(tpl_kern.running_id);
+	#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 
-  tpl_enable_interrupts();
+		tpl_enable_interrupts();
+	}
 }
 
 /**
@@ -137,9 +139,7 @@ FUNC(void, OS_CODE) tpl_suspend_os_interrupts_service(void)
   
   tpl_locking_depth++;
 
-#ifdef WITH_AUTOSAR
-  tpl_cpt_user_task_lock++;
-#endif
+  tpl_cpt_user_task_lock_OS++;
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
   if( tpl_locking_depth == 1)
@@ -147,6 +147,7 @@ FUNC(void, OS_CODE) tpl_suspend_os_interrupts_service(void)
     tpl_start_all_isr_lock_monitor(tpl_kern.running_id);
   }
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
+
 }
 
 /**
@@ -155,22 +156,23 @@ FUNC(void, OS_CODE) tpl_suspend_os_interrupts_service(void)
 FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void)
 {
   #if defined(__unix__) || defined(__APPLE__)
-	assert( tpl_locking_depth > 0 );
+	assert( tpl_locking_depth >= 0 );
   #endif
+    
+	if( tpl_cpt_user_task_lock_OS != 0 )
+	{	
+		tpl_locking_depth--;
 	
-    tpl_locking_depth--;
+		tpl_cpt_user_task_lock_OS--;
 	
-#ifdef WITH_AUTOSAR
-    tpl_cpt_user_task_lock--;
-#endif
-	
-  if( tpl_locking_depth == 0)
-  {
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    tpl_stop_all_isr_lock_monitor(tpl_kern.running_id);
-#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
-    tpl_enable_interrupts();
-  }
+		if( tpl_locking_depth == 0)
+		{
+	#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+			tpl_stop_all_isr_lock_monitor(tpl_kern.running_id);
+	#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
+			tpl_enable_interrupts();
+		}
+	}
 }
 
 /*
@@ -184,11 +186,11 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
   /*  init the error to no error  */
   VAR(tpl_status, AUTOMATIC) result = E_OK;
   
-  CHECK_INTERRUPT_LOCK(result)
-  
   /*  lock the task structures    */
   LOCK_KERNEL()
-  
+
+  CHECK_INTERRUPT_LOCK(result)
+
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_TerminateISR)
   
@@ -206,20 +208,17 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
     
   /*  and let the scheduler do its job  */
   tpl_schedule_from_dying();
-  
+ 
+  #ifndef WITH_SYSTEM_CALL
+		if (tpl_kern.need_switch != NO_NEED_SWITCH)
+		{
+			tpl_switch_context(NULL, &(tpl_kern.s_running->context));
+		}
+  #endif
+	
   IF_NO_EXTENDED_ERROR_END()
 #endif
-  
-#ifndef WITH_SYSTEM_CALL
-  if (tpl_kern.need_switch != NO_NEED_SWITCH)
-  {
-    tpl_switch_context(
-      NULL,
-      &(tpl_kern.s_running->context)
-    );
-  }
-#endif
-  
+   
   PROCESS_ERROR(result)
   
   /*  unlock the task structures  */

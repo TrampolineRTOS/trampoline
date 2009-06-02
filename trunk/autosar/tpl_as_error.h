@@ -236,6 +236,38 @@
 #endif
 
 /**
+ * @def CHECK_SCHEDTABLE_TO_STOPPED
+ *
+ * Checks if schedule table (to)'s state is stopped.
+ *
+ * @param sched_table_id #ScheduleTableType to check
+ * @param result error code to set if check fails
+ *
+ * @note error code is not set if it do not equals E_OK
+ *
+ * @note checking is disable when OS_EXTENDED is not defined
+ */
+
+/* No extended error checking (! OS_EXTENDED)  */
+#if !defined(OS_EXTENDED)
+#   define CHECK_SCHEDTABLE_TO_STOPPED(sched_table_id,result)
+#elif !defined(NO_SCHEDTABLE)
+#   define CHECK_SCHEDTABLE_TO_STOPPED(sched_table_id,result)			\
+	if ((result == (tpl_status)E_OK) &&                                 \
+	(tpl_schedtable_table[sched_table_id]->b_desc.state !=				\
+	SCHEDULETABLE_STOPPED) )											\
+	{                                                                   \
+		result = (tpl_status)E_OS_STATE;                                \
+	}
+#else
+#   define CHECK_SCHEDTABLE_TO_STOPPED(sched_table_id,result)			\
+	if (result == (tpl_status)E_OK)                                     \
+	{                                                                   \
+		result = (tpl_status)E_OS_ID;                                   \
+	}
+#endif
+
+/**
  * @def CHECK_SCHEDTABLE_OFFSET_VALUE
  *
  * Checks if the value is > 0 and <= MAXALLOWEDVALUE of the counter

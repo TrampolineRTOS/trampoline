@@ -13,13 +13,17 @@
 #include "tpl_viper_interface.h"
 #include "tpl_os_it_kernel.h"
 #include "tpl_os.h"
+#include "tpl_os_task_kernel.h"
 #include "tpl_machine_interface.h"
 #include "tpl_os_application_def.h" /* define NO_ISR if needed. */
+
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 #include "tpl_as_timing_protec.h"
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+
 #ifdef WITH_AUTOSAR
 #include "tpl_as_isr_kernel.h"
+#include "tpl_as_definitions.h"
 #include "tpl_os_kernel.h" /* for tpl_running_obj */
 #endif /* WITH_AUTOSAR */
 
@@ -39,20 +43,18 @@ coroutine_t idle_task_context = 0;
 
 extern volatile u32 tpl_locking_depth;
 
-#ifdef WITH_AUTOSAR
 VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;
-VAR(u32, OS_VAR) tpl_cpt_user_task_lock = 0;
+VAR(u32, OS_VAR) tpl_cpt_user_task_lock_OS = 0;
+VAR(u32, OS_VAR) tpl_cpt_user_task_lock_All = 0;
 STATIC VAR(u32, OS_VAR) tpl_cpt_os_task_lock = 0;
-#endif
 
-#ifdef WITH_AUTOSAR
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
 {
     VAR(tpl_bool, AUTOMATIC) result;
 
-    if( (TRUE == tpl_user_task_lock) || (tpl_cpt_user_task_lock > 0) )
+    if( (TRUE == tpl_user_task_lock) || (tpl_cpt_user_task_lock_OS > 0) || (tpl_cpt_user_task_lock_All > 0) )
     {
         result = TRUE;
     }
@@ -65,7 +67,6 @@ FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
-#endif
 
 /*******************************************************************************
 ** Function name: tpl_reset_interrupt_lock_status
@@ -74,20 +75,19 @@ FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
 ** Return value:  None
 ** Remarks:
 *******************************************************************************/
-#ifdef WITH_AUTOSAR
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
 {
   tpl_user_task_lock = FALSE;
 
-  tpl_cpt_user_task_lock = 0;
-
+  tpl_cpt_user_task_lock_OS = 0;
+  tpl_cpt_user_task_lock_All = 0;
+	
   tpl_locking_depth = tpl_cpt_os_task_lock;
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
-#endif
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 
@@ -218,7 +218,8 @@ void tpl_signal_handler(int sig)
 	 * tpl_locking_depth is incremented because otherwise, when ResumeAllInterrupts
 	 * is called in Post(Pre)-Task, interrupts are enabled whereas it shouldn't.
 	 */
-	tpl_locking_depth++; 
+	tpl_locking_depth++;
+    tpl_cpt_os_task_lock++;
 	
 #if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
 	if (signal_for_counters == sig) tpl_call_counter_tick();
@@ -241,7 +242,6 @@ void tpl_signal_handler(int sig)
     {
         if (signal_for_isr_id[id] == sig)
         {
-			/*printf("tpl_signal_handler - ISR2 - tpl_locking_depth = %d\n",tpl_locking_depth);*/
 			tpl_central_interrupt_handler(id + TASK_COUNT);
         }
     }
@@ -249,6 +249,8 @@ void tpl_signal_handler(int sig)
 
 	/* Release interrupts returning in the previous context*/
 	tpl_locking_depth--;
+	tpl_cpt_os_task_lock--;
+	
 }
 
 /*
@@ -304,21 +306,14 @@ void tpl_get_task_lock(void)
     /*
      * block the handling of signals
      */
-    /*  fprintf(stderr, "%d-lock\n", cnt++);*/
     if (sigprocmask(SIG_BLOCK,&signal_set,NULL) == -1)
     {
         perror("tpl_get_lock failed");
         exit(-1);
     }
-/*    x++; */
     tpl_locking_depth++;
-
-#ifdef WITH_AUTOSAR
     tpl_cpt_os_task_lock++;
-#endif
     
-/*    if (x > 1) printf("** lock ** X=%d\n",x);
-    assert( 0 <= x && x <= 1); */
 }
 
 /*
@@ -329,12 +324,9 @@ void tpl_release_task_lock(void)
 {
 	assert( tpl_locking_depth > 0 );
 	tpl_locking_depth--;
-
-#ifdef WITH_AUTOSAR
     tpl_cpt_os_task_lock--;
-#endif
 
-    if (tpl_locking_depth == 0)
+    if ( (tpl_locking_depth == 0) && (FALSE == tpl_user_task_lock) )
     {
         if (sigprocmask(SIG_UNBLOCK,&signal_set,NULL) == -1) {
             perror("tpl_release_lock failed");
@@ -390,11 +382,35 @@ void tpl_osek_func_stub( void* data )
     (*func)();
     
     if (type == IS_ROUTINE) {
-        TerminateISR();
+	#ifdef WITH_AUTOSAR	
+	    if (TerminateISR() == E_OS_DISABLEDINT)
+		{
+			tpl_reset_interrupt_lock_status();
+			tpl_enable_all_interrupts_service();	
+		}
+	#endif /* WITH_AUTOSAR*/
+		TerminateISR();
     }
     else {
-        fprintf(stderr, "[OSEK/VDX Spec. 2.2.3 Sec. 4.7] Ending the task without a call to TerminateTask or ChainTask is strictly forbidden and causes undefined behaviour.\n");
-        exit(1);
+	
+	#ifdef WITH_AUTOSAR	
+		if(FALSE!=tpl_get_interrupt_lock_status())  
+		{                                           
+			/*enable interrupts :*/
+			tpl_reset_interrupt_lock_status();
+			tpl_enable_all_interrupts_service();
+		}
+		
+		/*error hook*/
+		PROCESS_ERROR(E_OS_MISSINGEND);
+		
+		/*terminate the task :*/
+		tpl_terminate_task_service();
+	#endif /* WITH_AUTOSAR */ 
+		
+		/*should never come here because the task has to be terminated by the OS*/
+		fprintf(stderr, "[OSEK/VDX Spec. 2.2.3 Sec. 4.7] Ending the task without a call to TerminateTask or ChainTask is strictly forbidden and causes undefined behaviour.\n");
+		exit(1);
     }
 }
 

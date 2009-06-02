@@ -43,7 +43,6 @@ void tpl_send_it2(void);
 an activation of a task*/
 static void test_t1_instance(void)
 {
-	EnableAllInterrupts();
 	
 	SCHEDULING_CHECK_STEP(1);
 	

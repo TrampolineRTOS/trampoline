@@ -53,6 +53,9 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "interrupts_s5.c";
 		APP_SRC = "task1_instance.c";
 		APP_SRC = "task2_instance.c";
+		APP_SRC = "isr1_instance1.c";
+		APP_SRC = "isr1_instance2.c";
+		APP_SRC = "isr1_instance3.c";
 		APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "interrupts_s5";
@@ -79,6 +82,12 @@ IMPLEMENTATION trampoline {
         SCHEDULE = FULL;
     };
 
+	ISR isr1{
+		CATEGORY = 2;
+		PRIORITY = 1;
+		STACKSIZE = 32768;
+		SOURCE = SIGTERM;	
+	};
 
 };
 

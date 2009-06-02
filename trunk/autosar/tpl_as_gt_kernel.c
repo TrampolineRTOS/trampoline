@@ -66,7 +66,7 @@ FUNC(tpl_status, OS_CODE) tpl_start_schedule_table_synchron_service(
     P2VAR(tpl_schedule_table, OS_APPL_DATA, AUTOMATIC) st;
 #endif
 
-    LOCK_WHEN_TASK()
+    LOCK_KERNEL()
 
     STORE_SERVICE(OSServiceId_StartScheduleTableSynchron)
     STORE_SCHEDTABLE_ID(sched_table_id)
@@ -100,7 +100,7 @@ FUNC(tpl_status, OS_CODE) tpl_start_schedule_table_synchron_service(
     
     PROCESS_ERROR(result)
 
-    UNLOCK_WHEN_TASK()
+    UNLOCK_KERNEL()
 
     return result;
 }

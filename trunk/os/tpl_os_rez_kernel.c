@@ -135,11 +135,11 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
   P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
 #endif
   
+  LOCK_KERNEL()
+
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
-  
-  LOCK_KERNEL()
-  
+
   STORE_SERVICE(OSServiceId_GetResource)
   STORE_RESOURCE_ID(res_id)
   
@@ -207,10 +207,10 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
 
   P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
 
+  LOCK_KERNEL()
+
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
-
-  LOCK_KERNEL()
 
   STORE_SERVICE(OSServiceId_ReleaseResource)
   STORE_RESOURCE_ID(res_id)

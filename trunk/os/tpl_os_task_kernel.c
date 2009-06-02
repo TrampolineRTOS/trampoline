@@ -52,11 +52,11 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
   /*  init the error to no error  */
   VAR(StatusType, AUTOMATIC) result = E_OK;
 
-  /* check interrupts are not disabled by user    */
-  CHECK_INTERRUPT_LOCK(result)
-
   /*  lock the kernel    */
   LOCK_KERNEL()
+
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
 
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_ActivateTask)
@@ -86,9 +86,10 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
 #endif
 
   PROCESS_ERROR(result)
-
+	
   /*  unlock the kernel  */
   UNLOCK_KERNEL()
+	
 
   return result;
 }
@@ -99,11 +100,11 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
   /*  init the error to no error  */
   VAR(StatusType, AUTOMATIC) result = E_OK;
 
-  /* check interrupts are not disabled by user    */
-  CHECK_INTERRUPT_LOCK(result)
-
   /*  lock the kernel    */
   LOCK_KERNEL()
+
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
 
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_TerminateTask)
@@ -151,11 +152,11 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
 {
   VAR(StatusType, AUTOMATIC)  result = E_OK;
 
-  /* check interrupts are not disabled by user    */
-  CHECK_INTERRUPT_LOCK(result)
-
   /*  lock the kernel    */
   LOCK_KERNEL()
+
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
 
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_ChainTask)
@@ -213,11 +214,11 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 {
   VAR(StatusType, AUTOMATIC) result = E_OK;
 
-  /* check interrupts are not disabled by user    */
-  CHECK_INTERRUPT_LOCK(result)
-
   /*  lock the task system    */
   LOCK_KERNEL()
+
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
 
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_Schedule)
@@ -259,22 +260,33 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
   VAR(TaskRefType, AUTOMATIC) task_id)
 {
-
+  VAR(StatusType, AUTOMATIC) result = E_OK;
+	
   LOCK_KERNEL()
+
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
+
+  /*  store information for error hook routine    */
+  STORE_SERVICE(OSServiceId_GetTaskID)
+  STORE_TASK_ID_REF(task_id)
+  
   /*  get the task id from the task descriptor. If the id is not
       within 0 and TASK_COUNT-1, INVALID_TASK is returned         */
-  if (tpl_kern.running_id >= 0 && tpl_kern.running_id < TASK_COUNT)
-  {
-    *task_id = tpl_kern.running_id;
-  }
-  else
-  {
-    *task_id = INVALID_TASK;
-  }
-
+  IF_NO_EXTENDED_ERROR(result)
+	if (tpl_kern.running_id >= 0 && tpl_kern.running_id < TASK_COUNT)
+	{
+		*task_id = tpl_kern.running_id;
+	}
+	else
+	{
+		*task_id = INVALID_TASK;
+	}
+  IF_NO_EXTENDED_ERROR_END()
+  
   UNLOCK_KERNEL()
 
-  return E_OK;
+  return result;
 }
 
 
@@ -284,13 +296,14 @@ FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
 {
   VAR(StatusType, AUTOMATIC) result = E_OK;
 
+  LOCK_KERNEL()
+
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result)
 
-  LOCK_KERNEL()
-
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_GetTaskState)
+  STORE_TASK_ID(task_id)
   STORE_TASK_STATE_REF(state)
 
   /*  Check a task_id error       */

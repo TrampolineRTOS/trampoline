@@ -47,16 +47,14 @@ static void test_t1_instance(void)
 	
 	SCHEDULING_CHECK_STEP(1);
 	
+	DisableAllInterrupts();
 	EnableAllInterrupts();
-	DisableAllInterrupts();
-	DisableAllInterrupts();
+
 	DisableAllInterrupts();
 	tpl_send_it2();
 	tpl_send_it2();
 	tpl_send_it2();
 	
-	EnableAllInterrupts();
-	EnableAllInterrupts();
 	EnableAllInterrupts();
 
 	SCHEDULING_CHECK_STEP(3);

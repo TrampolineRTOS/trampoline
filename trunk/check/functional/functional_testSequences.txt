@@ -29,6 +29,7 @@ interrupts_s3
 interrupts_s4_full
 interrupts_s4_non
 interrupts_s5
+interrupts_s6
 
 events_s1_full
 events_s1_non
@@ -94,4 +95,8 @@ autosar_sc_s4
 autosar_sc_s5
 autosar_alarm_s1
 autosar_alarm_s2
-
+autosar_st_s1
+autosar_st_s2
+autosar_sp_s1
+autosar_sp_s2
+autosar_sp_s3

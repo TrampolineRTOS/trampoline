@@ -32,7 +32,7 @@
  * $URL$
  */
 
-/*Instance of task t1*/
+/*Instance of task t2*/
 
 #include "embUnit.h"
 #include "tpl_os.h"
@@ -41,21 +41,21 @@
 an activation of a task*/
 static void test_t2_instance(void)
 {
-	StatusType result_inst;
+	StatusType result_inst_1;
 	
 	SCHEDULING_CHECK_INIT(2);
-	result_inst = TerminateTask();
-	SCHEDULING_CHECK_AND_EQUAL_INT(2,E_OK, result_inst); 
+	result_inst_1 = TerminateTask();
+	SCHEDULING_CHECK_AND_EQUAL_INT(2,E_OK, result_inst_1);
 	
 }
 
 /*create the test suite with all the test cases*/
-TestRef InterruptProcessingTest_seq3_t2_instance(void)
+TestRef InterruptProcessingTest_seq5_t2_instance(void)
 {
 	EMB_UNIT_TESTFIXTURES(fixtures) {
 		new_TestFixture("test_t2_instance",test_t2_instance)
 	};
-	EMB_UNIT_TESTCALLER(InterruptProcessingTest,"InterruptProcessingTest_sequence3",NULL,NULL,fixtures);
+	EMB_UNIT_TESTCALLER(InterruptProcessingTest,"InterruptProcessingTest_sequence5",NULL,NULL,fixtures);
 
 	return (TestRef)&InterruptProcessingTest;
 }

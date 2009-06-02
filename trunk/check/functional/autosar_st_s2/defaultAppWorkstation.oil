@@ -1,0 +1,140 @@
+OIL_VERSION = "2.5" : "autosar_st_s2" ;
+
+IMPLEMENTATION trampoline {
+
+	OS {
+		ENUM [EXTENDED] STATUS;
+	};
+	
+    TASK {
+        UINT32 STACKSIZE = 32768 ;
+        UINT32 [1..10] PRIORITY = 1 ;
+    } ;
+};
+
+ CPU test {
+
+    OS config {
+        STATUS = EXTENDED;
+		APP_SRC = "autosar_st_s2.c";
+		APP_SRC = "task1_instance.c";
+        TRAMPOLINE_BASE_PATH = "../../..";
+        APP_NAME = "autosar_st_s2";
+		CFLAGS = "-I../../embUnit";
+        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Wmissing-field-initializers";
+		LDFLAGS = "-L../../lib -lembUnit";
+		SHUTDOWNHOOK = TRUE;
+		
+	};
+
+    APPMODE std {};
+
+    TASK t1 {
+        AUTOSTART = TRUE { APPMODE = std ; } ;
+        PRIORITY = 1;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+	
+	TASK t2 {
+        AUTOSTART = FALSE;
+        PRIORITY = 3;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+	
+	COUNTER Software_Counter{
+		MAXALLOWEDVALUE = 100;
+		TICKSPERBASE = 1;
+		MINCYCLE = 1;
+		TYPE = SOFTWARE;
+	};
+	
+	COUNTER Hardware_Counter{
+		MAXALLOWEDVALUE = 50;
+		TICKSPERBASE = 1;
+		MINCYCLE = 1;
+		TYPE = HARDWARE {};
+	};
+	
+    APPLICATION app {
+        TRUSTED = FALSE;
+        STARTUPHOOK = TRUE;
+        TASK = t1;
+		TASK = t2;
+		COUNTER = Software_Counter;
+		COUNTER = Hardware_Counter;
+        SCHEDULETABLE = sched_1;
+        SCHEDULETABLE = sched_2;
+        SCHEDULETABLE = sched_3;
+        SCHEDULETABLE = sched_4;
+        SCHEDULETABLE = sched_5;
+
+	};
+	
+	SCHEDULETABLE sched_1 {
+        COUNTER = Software_Counter;
+        AUTOSTART = FALSE ; //TRUE { OFFSET = 1; APPMODE = std; };
+        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+        PERIODIC = FALSE;
+        LENGTH = 10;
+        ACTION = ACTIVATETASK {
+            OFFSET = 2;
+            TASK = t2;
+        };
+        ACCESSING_APPLICATION = app;
+    };
+	
+	SCHEDULETABLE sched_2 {
+        COUNTER = Software_Counter;
+        AUTOSTART = FALSE ; //TRUE { OFFSET = 1; APPMODE = std; };
+        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+        PERIODIC = FALSE;
+        LENGTH = 10;
+        ACTION = ACTIVATETASK {
+            OFFSET = 2;
+            TASK = t2;
+        };
+        ACCESSING_APPLICATION = app;
+    };
+	
+	SCHEDULETABLE sched_3 {
+        COUNTER = Software_Counter;
+        AUTOSTART = FALSE ; //TRUE { OFFSET = 1; APPMODE = std; };
+        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+        PERIODIC = FALSE;
+        LENGTH = 3;
+        ACTION = ACTIVATETASK {
+            OFFSET = 2;
+            TASK = t2;
+        };
+        ACCESSING_APPLICATION = app;
+    };
+	
+	SCHEDULETABLE sched_4 {
+        COUNTER = Hardware_Counter;
+        AUTOSTART = FALSE ; //TRUE { OFFSET = 1; APPMODE = std; };
+        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+        PERIODIC = FALSE;
+        LENGTH = 10;
+        ACTION = ACTIVATETASK {
+            OFFSET = 2;
+            TASK = t2;
+        };
+        ACCESSING_APPLICATION = app;
+    };
+	
+	SCHEDULETABLE sched_5 {
+        COUNTER = Software_Counter;
+        AUTOSTART = FALSE ; //TRUE { OFFSET = 1; APPMODE = std; };
+        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+        PERIODIC = FALSE;
+        LENGTH = 10;
+        ACTION = ACTIVATETASK {
+            OFFSET = 2;
+            TASK = t2;
+        };
+        ACCESSING_APPLICATION = app;
+    };
+};
