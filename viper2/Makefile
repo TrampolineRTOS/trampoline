@@ -4,7 +4,7 @@
 ##
 # Commons
 ##
-CFLAGS    += -Wall --std=c89 -D_XOPEN_SOURCE=600 -pedantic 
+CFLAGS    += -Wall --std=c99 -D_XOPEN_SOURCE=600 -pedantic 
 LDFLAGS   += 
 OBJ_dir    = .obj
 PYTHON_inc =  $(shell echo /usr/include/python* | tr ' ' '\n' | tail -n1)
@@ -37,23 +37,6 @@ CAN_ldflags =
 TPL_MOD_src = viper.c
 TPL_MOD_hdr = viper.h
 TPL_MOD_obj = $(addprefix $(MODULE_obj_dir)/,$(TPL_MOD_src:.c=.o))
-
-##
-# Tests
-# Each test directory have only two files to compile : 
-##
-TESTS_dir     = test
-# List all directory
-TESTS_names   = $(shell find $(TESTS_dir) -mindepth 1 -maxdepth 1 -type d -print | grep -v ".svn")
-TESTS_tpl_src = viper.c com.c util/fifo.c device/tpl_can_driver.c
-TESTS_tpl_obj = $(addprefix $(MODULE_obj_dir)/,$(TESTS_tpl_src:.c=.o))
-TESTS_vpr_src = ipc_mod.c com.c util/fifo.c
-TESTS_vpr_obj = $(addprefix $(MODULE_obj_dir)/,$(TESTS_vpr_src:.c=.o))
-TESTS_tpl_bin = $(addsuffix /pseudo_trampoline,$(TESTS_names))
-TESTS_vpr_bin = $(addsuffix /pseudo_viper,$(TESTS_names))
-
-TESTS_cflags  = -I$(MODULE_dir) -Idevice
-TESTS_ldflags =
 
 ############# Swig configuration #######################
 # Swig is used to generate a Wrapper between C 
@@ -90,7 +73,7 @@ endif
 # Default
 ##
 default : $(MODULE_bin)
-all: default tests
+all: default
 
 ##
 # Python module
@@ -119,22 +102,6 @@ $(CAN_obj) : $(CAN_dir)/$(CAN_src)
 	$(CC) -o $@ -c $< $(CFLAGS) $(CAN_cflags)
  		
 ##
-# Tests
-##
-tests : can $(MODULE_bin) $(TESTS_tpl_bin) $(TESTS_vpr_bin)
-
-test/%/pseudo_trampoline : test/%/pseudo_trampoline.o 
-	$(CC) -o $@ $< $(TESTS_tpl_obj) $(LDFLAGS) $(TESTS_ldflags)
-
-test/%/pseudo_viper : test/%/pseudo_viper.o 
-	$(CC) -o $@ $< $(TESTS_vpr_obj) $(LDFLAGS) $(TESTS_ldflags) 
-
-test/%/pseudo_trampoline.o : test/%/pseudo_trampoline.c
-	$(CC) -o $@ -c $< $(CFLAGS) $(TESTS_cflags)
-
-test/%/pseudo_viper.o : test/%/pseudo_viper.c
-	$(CC) -o $@ -c $< $(CFLAGS) $(TESTS_cflags)
-##
 # Clean & Mrproper
 ##
 .PHONY : clean mrproper
@@ -143,4 +110,5 @@ clean:
 	@rm -rf $(OBJ_dir)/ *~ $(MODULE_dir)/$(INTERFACE_SRC)
 
 mrproper: clean
-	@rm -f $(MODULE_bin) ipc/$(MODULE_name) *.pyc ipc/*.pyc $(TESTS_tpl_bin) $(TESTS_vpr_bin) 
+	@rm -f $(MODULE_bin) ipc/$(MODULE_name) *.pyc ipc/*.pyc
+
