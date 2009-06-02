@@ -55,4 +55,12 @@ map @counter_map {
     remove del error message "Counter %K is not defined" ;
 }
 
+sortedlist @counter_by_source {
+  @string      source;
+  @lstring     name;
+  @counter_obj counter;
+}{
+  source >
+}
+
 end semantics ;

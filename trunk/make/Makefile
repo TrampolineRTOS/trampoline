@@ -24,7 +24,6 @@ OS_PATH = $(TPL_BASE_PATH)/os
 COM_PATH = $(TPL_BASE_PATH)/com
 AUTOSAR_PATH = $(TPL_BASE_PATH)/autosar
 DEBUG_PATH = $(TPL_BASE_PATH)/debug
-VIPER_DIR = $(TPL_BASE_PATH)/viper  #VIPER_PATH is reserved for viper executable :-/
 MACHINE_PATH = $(TPL_BASE_PATH)/machines
 
 ifdef ARCH
