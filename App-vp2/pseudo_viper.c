@@ -29,7 +29,6 @@ int main()
   }
 
   tpl_ipc_destroy_instance(trampoline);
-  free(trampoline);
 
   printf("[VPR] Stop\n");
   return 0;
