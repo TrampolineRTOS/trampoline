@@ -8,6 +8,6 @@ struct TPL_STACK $STACK$ = {$STACK_ZONE$, $STACK_SIZE$};
 /*
  * $EXEC_NAME$ context
  */
-struct TPL_CONTEXT $EXEC_ALL_CONTEXT$ = { {0}, {0} };
+struct TPL_CONTEXT $EXEC_ALL_CONTEXT$; 
 
 #define $EXEC_CONTEXT$ &$EXEC_ALL_CONTEXT$
