@@ -6,6 +6,8 @@
 ##
 CFLAGS    += -Wall --std=c99 -D_XOPEN_SOURCE=600 -pedantic 
 LDFLAGS   += 
+AR         = ar
+RANLIB     = ranlib
 OBJ_dir    = .obj
 PYTHON_inc =  $(shell echo /usr/include/python* | tr ' ' '\n' | tail -n1)
 
@@ -23,20 +25,16 @@ MODULE_cflags  = -I$(PYTHON_inc) -I$(MODULE_dir)
 MODULE_ldflags = -dynamiclib
 
 ##
-# CAN
+# Trampoline static module (vp_ipc.a)
 ##
-CAN_dir = device
-CAN_src = tpl_can_driver.c
-CAN_obj = $(addprefix $(MODULE_obj_dir)/$(CAN_dir)/,$(CAN_src:.c=.o))
-CAN_cflags = -I$(MODULE_dir)
-CAN_ldflags =
-
-##
-# Trampoline
-##
-TPL_MOD_src = viper.c
-TPL_MOD_hdr = viper.h
-TPL_MOD_obj = $(addprefix $(MODULE_obj_dir)/,$(TPL_MOD_src:.c=.o))
+TPL_MODULE_dir     = ipc
+TPL_MODULE_src     = com.c viper.c util/fifo.c
+TPL_MODULE_bin     = ipc/libvp_ipc.a
+TPL_MODULE_hdr     = com.h viper.h util/fifo.h
+TPL_MODULE_obj_dir = $(MODULE_obj_dir)
+TPL_MODULE_obj     = $(addprefix $(MODULE_obj_dir)/,$(TPL_MODULE_src:.c=.o))
+TPL_MODULE_cflags  = -I$(MODULE_dir)
+TPL_MODULE_ldflags = ru
 
 ############# Swig configuration #######################
 # Swig is used to generate a Wrapper between C 
@@ -73,7 +71,8 @@ endif
 # Default
 ##
 default : $(MODULE_bin)
-all: default
+mod : $(TPL_MODULE_bin)
+all: default mod
 
 ##
 # Python module
@@ -83,7 +82,7 @@ $(MODULE_dir)/$(INTERFACE_SRC): $(MODULE_dir)/$(INTERFACE)
 
 MODULE_src += $(INTERFACE_SRC)
 
-$(MODULE_bin) : $(MODULE_obj) $(TPL_MOD_obj)
+$(MODULE_bin) : $(MODULE_obj) 
 		$(CC) -o $@ $(MODULE_obj) $(MODULE_ldflags) $(LDFLAGS)
 
 $(MODULE_obj_dir)/%.o : $(MODULE_dir)/%.c
@@ -92,15 +91,10 @@ $(MODULE_obj_dir)/%.o : $(MODULE_dir)/%.c
 		@if [ ! -d $(MODULE_obj_dir)/util ]; then mkdir $(MODULE_obj_dir)/util; fi;
 		$(CC) -o $@ -c $< $(CFLAGS) $(MODULE_cflags)
 
-##
-# CAN
-# ##
-can : $(CAN_obj)
+$(TPL_MODULE_bin): $(TPL_MODULE_obj)
+	$(AR) $(TPL_MODULE_ldflags) $@ $(TPL_MODULE_obj)
+	$(RANLIB) $@
 
-$(CAN_obj) : $(CAN_dir)/$(CAN_src)
-	@if [ ! -d $(MODULE_obj_dir)/$(CAN_dir) ]; then mkdir $(MODULE_obj_dir)/$(CAN_dir);fi;
-	$(CC) -o $@ -c $< $(CFLAGS) $(CAN_cflags)
- 		
 ##
 # Clean & Mrproper
 ##
@@ -110,5 +104,5 @@ clean:
 	@rm -rf $(OBJ_dir)/ *~ $(MODULE_dir)/$(INTERFACE_SRC)
 
 mrproper: clean
-	@rm -f $(MODULE_bin) ipc/$(MODULE_name) *.pyc ipc/*.pyc
+	@rm -f $(MODULE_bin) ipc/$(MODULE_name) *.pyc ipc/*.pyc $(TPL_MODULE_bin)
 
