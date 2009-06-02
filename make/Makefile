@@ -157,7 +157,7 @@ mrproper: clean
 
 # generate C file from OIL file, using goil.
 $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE): $(OIL_FILE) Makefile
-	$(GOIL_COMPILER) --generate-makefile --target=$(GOIL_TARGET) $(GOIL_TEMPLATE_STR) $(AUTOSAR_GOIL_FLAG) $(OIL_FILE)
+	$(GOIL_COMPILER) --generate-makefile --target=$(GOIL_TARGET) $(GOIL_TEMPLATE_STR) $(GENITVEC) $(AUTOSAR_GOIL_FLAG) $(OIL_FILE)
 #documentation
 doc: doc-dev doc-user
 
