@@ -33,12 +33,10 @@ scheduler = Scheduler(speedCoeff = 3)
  #    ]
  # )
 ecu = Ecu(
-    "./path/to/trampoline",
+    "../App-vp2/trampoline",
     scheduler,
     [
-      Device("NOTHIN", 1, []),
-      Device("NOTHIN_2", 9, []),
-      Timer("TIMER0", 7, type = timer.AUTO, delay = 2)
+      Timer("IRQ7", 7, type = timer.AUTO, delay = 2)
     ]
 )
 
