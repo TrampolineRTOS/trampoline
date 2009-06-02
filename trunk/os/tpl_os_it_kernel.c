@@ -227,6 +227,11 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
   return result;
 }
 
+FUNC(void, OS_CODE) tpl_null_it(P2CONST(void, OS_APPL_DATA, AUTOMATIC) foo)
+{
+  /* empty function */
+}
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -352,11 +357,6 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler_2(P2CONST(void, OS_APPL_DATA, 
     u32 tmp;
     tmp = (u32)isr_id;
     tpl_central_interrupt_handler(tmp);
-}
-
-FUNC(void, OS_CODE) tpl_null_it(P2CONST(void, OS_APPL_DATA, AUTOMATIC) foo)
-{
-    /* empty function */
 }
 
 #define OS_STOP_SEC_CODE

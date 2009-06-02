@@ -96,6 +96,11 @@ $TRUSTED_IDS$
 $RESOURCES$
 
 /*=============================================================================
+ * Definition and initialization of Counters related defines and structures
+ */
+$COUNTERS$
+
+/*=============================================================================
  * Definition and initialization of Task related defines and structures
  */
 $TASKS$
@@ -125,11 +130,6 @@ $ISR_ENABLE_TABLE$
 
 #endif
  
-/*=============================================================================
- * Definition and initialization of Counters related defines and structures
- */
-$COUNTERS$
-
 /*=============================================================================
  * Definition and initialization of Alarm related structures
  */

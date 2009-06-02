@@ -46,6 +46,9 @@ BUILD_DIR = build
 # If 'true', Autosar extension are compiled in (schedule tables, ...)
 AUTOSAR = $AUTOSAR_ON$
 
+# Interrupt vector generation
+GENITVEC = $GENITVEC$
+
 # Trampoline generation flags
 $FLAGS$
 
