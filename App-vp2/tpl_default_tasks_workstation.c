@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include "tpl_os.h"
 
-
-#define _XOPEN_SOURCE 500
 #include <unistd.h>
 
 int main(void)
