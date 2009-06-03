@@ -17,9 +17,6 @@ CPU test {
         ERRORHOOK = FALSE;
         PRETASKHOOK = TRUE;
         APP_SRC = "tpl_default_tasks_workstation.c";
-        APP_SRC = "viper.c";
-        APP_SRC = "com.c";
-        APP_SRC = "fifo.c";
         TRAMPOLINE_BASE_PATH = "..";
         DOW=TRUE;
         CFLAGS  = "-g";
