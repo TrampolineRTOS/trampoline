@@ -413,7 +413,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel_service(
                 st->b_desc.date = date;
                 st->b_desc.state = SCHEDULETABLE_RUNNING;
                 /* MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
-                   tpl_time_obj*. This cast behaves correctly because the first memeber
+                   tpl_time_obj*. This cast behaves correctly because the first member
                    of tpl_schedula_table is a tpl_time_obj */
                 tpl_insert_time_obj((tpl_time_obj *)st);
             }
