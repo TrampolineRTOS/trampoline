@@ -197,13 +197,14 @@ routine generate_counter_specific
           @string cnt_set_code;
           retrieveTemplateString ?cnt_set_code !"counter_specific";
           doReplace !?cnt_set_code !"$TICK_FUNC$" !"tpl_tick_";
-          doReplace !?cnt_set_code !"$IT_SOURCE$" !source;
+          doReplace !?cnt_set_code !"$IT_SOURCE$" !prev_src;
           generate_counter_for_target !target !cnt_set !?cnt_set_code;
           code .= cnt_set_code;
           cnt_set := [@counter_map emptyMap];
         end if;
-        [!?cnt_set put !name !counter];
       end if;
+      [!?cnt_set put !name !counter];
+      prev_src := source;
     end foreach;
     if [cnt_set count] > 0 then
       @string cnt_set_code;

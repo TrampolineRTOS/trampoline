@@ -186,7 +186,7 @@ routine add_system_counter
       else
     end cast;
     if [[sys_cnt source] string] == "" then
-      warning [sys_cnt source] : "SystemCounter has no interrupt source";
+      error [sys_cnt source] : "SystemCounter has no SOURCE";
     end if;
     if [option goil_options.autosar_on] then
       # put all OS Applications in the accessing application list

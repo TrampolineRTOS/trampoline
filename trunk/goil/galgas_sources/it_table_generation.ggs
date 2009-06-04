@@ -85,6 +85,7 @@ routine generate_it_table
           end if;
         end foreach;
     # look up the counters
+        @stringset counter_it_set [emptySet];
         foreach [cpu counters] do
           @lstring src := [counter source];
           if [src string] != "" then
@@ -97,32 +98,36 @@ routine generate_it_table
               else end cast;
             end if;
             if counter_ok then
-              if [[i it_sources] hasKey![src string]] then
-                @basic_type it_id;
-                [[i it_sources] get![@lstring new![src string]!here]?it_id];
-                cast it_id:
-                when == @uint64_class it_id do
-                  [!?tbl setFctAtIndex!"tpl_counter_tick"![[it_id value] uint]];
-                  [!?tbl setParamAtIndex!"&".[key string]."_counter_desc"![[it_id value] uint]];
-                else
-                  error [it_id location]: "Internal error, this should be an integer";
-                end cast;
-              end if;
+              counter_it_set += ![src string];
             end if;
           else
             if [option goil_options.autosar_on] then
               cast [counter type]:
               when == @hardware_counter do
-                error key: "No SOURCE specified for COUNTER";
+                error key: "No SOURCE specified for COUNTER ".[key string];
               else end cast;
             else
-              error key: "No SOURCE specified for COUNTER";
+              error key: "No SOURCE specified for COUNTER ".[key string];
             end if;
           end if;
+          foreach counter_it_set (@string it_src) do
+            if [[i it_sources] hasKey! it_src] then
+              @basic_type it_id;
+              [[i it_sources] get![@lstring new!it_src!here]?it_id];
+              cast it_id:
+              when == @uint64_class it_id do
+                [!?tbl setFctAtIndex!"tpl_tick_".it_src![[it_id value] uint]];
+                [!?tbl setParamAtIndex!"NULL"![[it_id value] uint]];
+              else
+                error [it_id location]: "Internal error, this should be an integer";
+              end cast;
+            end if;
+          end foreach;
         end foreach;
       else
         error here: "No interrupt source id defined for the target";
       end cast;
+
 
   # timing protection
       if [gen_cfg with_timingprotection] then
