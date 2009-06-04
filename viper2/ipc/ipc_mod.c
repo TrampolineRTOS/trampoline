@@ -11,6 +11,7 @@
 #include <fcntl.h> /* O_* constantes */
 #include <stdbool.h> /* bool */
 #include <sys/mman.h> /* shm_open() mmap() */
+#include <Python.h> /* GIL get and release */
 
 #include "consts.h"
 
@@ -341,6 +342,12 @@ modified_reg_t tpl_ipc_pop_fifo(ipc_t *ipc)
   modified_reg_t modified_reg = {-1, -1};
   const modified_reg_t modified_reg_err = {-1, -1};
 
+#ifdef DEBUG
+  printf("(DD) Viper to trampoline %d : tpl_ipc_pop_fifo()\n", ipc->pid);
+#endif
+  /* Release GIL (Python) */
+  Py_BEGIN_ALLOW_THREADS
+
   /* Semaphore */
   /** FIFO is empty ? (no full cells) */
   if(0 != sem_wait(ipc->fifo_full_sem))
@@ -361,6 +368,9 @@ modified_reg_t tpl_ipc_pop_fifo(ipc_t *ipc)
     perror("viper : sem_post(fifo_empty_cells)");
     return modified_reg_err;
   }
+
+  /* Get GIL (Python) */
+  Py_END_ALLOW_THREADS
 
   return modified_reg;
 }
