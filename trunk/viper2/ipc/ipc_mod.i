@@ -8,5 +8,6 @@
 
 /* Parse the header file to generate wrappers */
 %include "ipc_mod.h"
-typedef signed long long int dev_id_t;
+typedef signed long long int reg_id_t;
+typedef int dev_id_t;
 

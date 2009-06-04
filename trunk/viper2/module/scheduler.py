@@ -7,23 +7,46 @@ import time, threading
 # EVENT CLASS
 ###############################################################################
 class Event(object):
-  def __init__(self, device, delay):
+  """
+  Event class is a structure with accessors.
+  This class is used to add new event to the Scheduler.
+  """
+  def __init__(self, device, delay, modifiedRegisters = None):
     self.__time   = delay
     self.__device = device
+    self.__modifiedRegisters = modifiedRegisters
 
   def getTime(self):
+    """
+    @return time to wait in seconds (float)
+    """
     return self.__time
 
   def setTime(self, time_):
+    """
+    Set time. This function is used by scheduler to speed up
+    the time by instance.
+    @param time_ new time to set.
+    """
     self.__time = time_
 
   def getDevice(self):
+    """
+    @return device id (tiny one [withou '<<'])
+    """
     return self.__device
+
+  def getModifiedRegisters(self):
+    """
+    @return modified registers mask
+    """
+    return self.__modifiedRegisters
 
 ###############################################################################
 # SCHEDULER CLASS
 ###############################################################################
 class Scheduler(object):
+#TODO doc
   def __init__(self, speedCoeff):
     """
     Constructor.
@@ -48,6 +71,7 @@ class Scheduler(object):
     self.__sem.release()
 
   def start(self):
+#TODO
     """
     TODO:
       Sleep scheduler the min time to wait.
@@ -67,7 +91,7 @@ class Scheduler(object):
 	self.__sem.acquire()
 	self.__events.remove(event)
 	self.__sem.release()
-        event.getDevice().event()
+        event.getDevice().event(event.getModifiedRegisters())
 
   def kill(self):
     """
