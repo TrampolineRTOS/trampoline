@@ -2,15 +2,12 @@
 #include "tpl_os_timeobj_kernel.h"  /* tpl_counter_tick */
 #include "tpl_machine_interface.h"  /* tpl_switch_context_from_it */
 
-void tpl_tick_$IT_SOURCE$()
+void $TICK_FUNC$$IT_SOURCE$()
 {
-	tpl_status  need_rescheduling = NO_SPECIAL_CODE;
+  tpl_status  need_rescheduling = NO_SPECIAL_CODE;
 $COUNTER_LIST$
 
-  need_rescheduling |= tpl_counter_tick(&SystemCounter_counter_desc);
-
-  
-	if (need_rescheduling == NEED_RESCHEDULING)
+  if (need_rescheduling == NEED_RESCHEDULING)
   {
     tpl_schedule_from_running();
 #ifndef WITH_SYSTEM_CALL

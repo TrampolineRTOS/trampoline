@@ -1,12 +1,20 @@
 #
-# Trampoline OS
+# @file goil_obj_counter.ggs
 #
-# Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline est prot»g» par la loi sur la propri»t» intellectuelle
+# @section File description
 #
-# This software is distributed under the Lesser GNU Public Licence
+# Counter object parsing
 #
-# GOIL counter object parser
+# @section Copyright
+#
+# Goil OIL compiler for Trampoline
+#
+# Goil is copyright (c) IRCCyN 2005+
+# Goil is protected by the french law of intellectual property
+#
+# This software is distributed under the GNU Public Licence V2
+#
+# @section File informations
 #
 # $Date$
 # $Rev$

@@ -14,6 +14,7 @@ import semantics goil_target_ppc in "goil_target_ppc.ggs";
 import semantics goil_routines in "goil_routines.ggs";
 import semantics goil_types_task in "goil_types_task.ggs";
 import semantics goil_types_isr in "goil_types_isr.ggs";
+import semantics goil_types_os in "goil_types_os.ggs";
 
 import semantics cfg_types in "cfg_types.ggs";
 
@@ -175,9 +176,9 @@ routine generate_counter_for_target
   end if;
 end routine;
 
-routine generate_counter_specific 
-    ??@counter_map counters 
-    !@string code
+routine generate_counter_specific
+  ??@counter_map counters 
+  !@string       code
 :
 
   @string target := arch();
@@ -195,6 +196,7 @@ routine generate_counter_specific
         if [cnt_set count] > 0 then
           @string cnt_set_code;
           retrieveTemplateString ?cnt_set_code !"counter_specific";
+          doReplace !?cnt_set_code !"$TICK_FUNC$" !"tpl_tick_";
           doReplace !?cnt_set_code !"$IT_SOURCE$" !source;
           generate_counter_for_target !target !cnt_set !?cnt_set_code;
           code .= cnt_set_code;
@@ -206,11 +208,15 @@ routine generate_counter_specific
     if [cnt_set count] > 0 then
       @string cnt_set_code;
       retrieveTemplateString ?cnt_set_code !"counter_specific";
+      doReplace !?cnt_set_code !"$TICK_FUNC$" !"tpl_tick_";
+      doReplace !?cnt_set_code !"$IT_SOURCE$" !prev_src;
       generate_counter_for_target !target !cnt_set !?cnt_set_code;
       code .= cnt_set_code;
     end if;
   else
     retrieveTemplateString ?code !"counter_specific";
+    doReplace !?code !"$TICK_FUNC$" !"tpl_call_counter_tick";
+    doReplace !?code !"$IT_SOURCE$" !"";
     generate_counter_for_target !target !counters !?code;
   end if;
 

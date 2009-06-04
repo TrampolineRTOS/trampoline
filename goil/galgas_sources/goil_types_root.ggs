@@ -13,12 +13,12 @@ import semantics goil_types_networkmessage in "goil_types_networkmessage.ggs" ;
 class @root_obj {
     @os_obj            os ;
     @com               com ;
-    @task_map          tasks feature setter;
-    @counter_map       counters ;
+    @task_map          tasks     feature setter;
+    @counter_map       counters  feature setter;
     @alarm_map         alarms ;
     @resource_map      resources feature setter ;
     @event_map         events ;
-    @isr_map           isrs feature setter;
+    @isr_map           isrs      feature setter;
     @message_map       messages ;
     @netmess_map       net_messages ;
     @scheduletable_map scheduletables ;

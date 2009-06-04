@@ -13,7 +13,6 @@ routine counters_of_alarms_defined
 #
 # Check the counter exists or is SystemCounter
 #
-  
     @lstring counter := [alarm counter_name] ;
     if not ([counters hasKey ![counter string]]) & ([counter string] != "SystemCounter") then
       error counter : "counter ".[counter string]." is not defined !";
@@ -38,27 +37,17 @@ routine counters_of_alarms_defined
           end if ;
         end if ;
 
-
-        if [counter string] == "SystemCounter" then
-          if alarm_time > 32767 then
+        @counter_obj ct ;
+        [counters getCounter !counter ?ct] ;
+        cast [ct max_allowed_value] :
+        when == @uint32_class mc do
+          if alarm_time > [mc value] then
             error [a location] : "ALARMTIME is greater than counter MAXALLOWEDVALUE" ;
           end if ;
-          if cycle_time > 32767 then
+          if cycle_time > [mc value] then
             error [a location] : "CYCLETIME is greater than counter MAXALLOWEDVALUE" ;
           end if ;
-        else
-          @counter_obj ct ;
-          [counters get !counter ?ct] ;
-          cast [ct max_allowed_value] :
-          when == @uint32_class mc do
-            if alarm_time > [mc value] then
-              error [a location] : "ALARMTIME is greater than counter MAXALLOWEDVALUE" ;
-            end if ;
-            if cycle_time > [mc value] then
-              error [a location] : "CYCLETIME is greater than counter MAXALLOWEDVALUE" ;
-            end if ;
-          else end cast ;
-        end if ;
+        else end cast ;
       else end cast ;
     end if ;
   end foreach ;

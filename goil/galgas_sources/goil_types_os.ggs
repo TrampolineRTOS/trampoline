@@ -24,93 +24,93 @@
 
 semantics goil_types_os :
 
-import semantics goil_basic_types in "goil_basic_types.ggs" ;
+import semantics goil_basic_types in "goil_basic_types.ggs";
 
 abstract class @trace_method {
-  @location loc ;
-  abstract method generate_c !@string res ;
+  @location loc;
+  abstract method generate_c !@string res;
 }
 
 class @trace_void extends @trace_method {
   override method generate_c !@string res :
-    res := "#error \"TRACE_METHOD is not defined\"\n" ;
-  end method ;
+    res := "#error \"TRACE_METHOD is not defined\"\n";
+  end method;
 }
 
 class @trace_file extends @trace_method {
-  @lstring name ;
+  @lstring name;
   override method generate_c !@string res :
-    res := "#define    TRACE_FILE             \"".[name string]."\"\n" ;
-  end method ;
+    res := "#define    TRACE_FILE             \"".[name string]."\"\n";
+  end method;
 }
 
 class @trace {
-  @location loc ;
+  @location loc;
   method generate_c !@string res :
-    res := "#define    WITH_TRACE             NO\n" ;
-  end method ;
+    res := "#define    WITH_TRACE             NO\n";
+  end method;
   method generate_make !@string res :
-    res := "WITH_TRACE=false\n" ;
-  end method ;
+    res := "WITH_TRACE=false\n";
+  end method;
 }
 
 class @trace_off extends @trace {
   override method generate_c !@string res :
-    res := "#define    WITH_TRACE             NO\n" ;
-  end method ;
+    res := "#define    WITH_TRACE             NO\n";
+  end method;
   override method generate_make !@string res :
-    res := "WITH_TRACE=false\n" ;
-  end method ;
+    res := "WITH_TRACE=false\n";
+  end method;
 }
 
 class @trace_on extends @trace {
-  @lstring      form ;
-  @trace_method meth ;
-  @basic_type   trace_task ;
-  @basic_type   trace_isr ;
-  @basic_type   trace_resource ;
-  @basic_type   trace_alarm ;
-  @basic_type   trace_user_event ;
+  @lstring      form;
+  @trace_method meth;
+  @basic_type   trace_task;
+  @basic_type   trace_isr;
+  @basic_type   trace_resource;
+  @basic_type   trace_alarm;
+  @basic_type   trace_user_event;
   @basic_type   desc;
   override method generate_c !@string res :
-    res := "#define    WITH_TRACE             YES\n" ;
+    res := "#define    WITH_TRACE             YES\n";
     res .= bool_class_define(!"TRACE_TASK" !trace_task !true);
     res .= bool_class_define(!"TRACE_ISR" !trace_isr !true);
     res .= bool_class_define(!"TRACE_RES" !trace_resource !true);
     res .= bool_class_define(!"TRACE_ALARM" !trace_alarm !true);
     res .= bool_class_define(!"TRACE_U_EVENT" !trace_user_event !true);
-    res .= "#define    TRACE_FORMAT()         tpl_trace_format_".[form string]."();\n" ;
-    @string m ;
-    [meth generate_c ?m] ;
-    res .= m ;
-  end method ;
+    res .= "#define    TRACE_FORMAT()         tpl_trace_format_".[form string]."();\n";
+    @string m;
+    [meth generate_c ?m];
+    res .= m;
+  end method;
   override method generate_make !@string res :
-    res := "WITH_TRACE=true\n" ;
-  end method ;
+    res := "WITH_TRACE=true\n";
+  end method;
 }
 
 class @os_obj extends @oil_obj {
-  @lstring     status ;
-  @basic_type  startuphook ;
-  @basic_type  shutdownhook ;
-  @basic_type  errorhook ;
-  @basic_type  pretaskhook ;
-  @basic_type  posttaskhook ;
-  @basic_type  protectionhook ;   # AUTOSAR
-  @lstring     scalabilityclass ; # AUTOSAR
-  @basic_type  stackmonitoring ;  # AUTOSAR
-  @basic_type  usegetserviceid ;
-  @basic_type  useparameteraccess ;
-  @basic_type  useresscheduler ;
-  @basic_type  systemcall ;
-  @lstringlist app_src ;
-  @lstringlist cflags ;
-  @lstringlist asflags ;
-  @lstringlist ldflags ;
+  @lstring     status;
+  @basic_type  startuphook;
+  @basic_type  shutdownhook;
+  @basic_type  errorhook;
+  @basic_type  pretaskhook;
+  @basic_type  posttaskhook;
+  @basic_type  protectionhook;   # AUTOSAR
+  @lstring     scalabilityclass; # AUTOSAR
+  @basic_type  stackmonitoring;  # AUTOSAR
+  @basic_type  usegetserviceid;
+  @basic_type  useparameteraccess;
+  @basic_type  useresscheduler;
+  @basic_type  systemcall;
+  @lstringlist app_src;
+  @lstringlist cflags;
+  @lstringlist asflags;
+  @lstringlist ldflags;
   @lstring     app_name;
   @lstring     tpl_base_path;
-  @trace       trace ;
-  @ident_map   others ;
+  @trace       trace;
+  @ident_map   others;
 }
 
 #
@@ -130,11 +130,11 @@ routine set_method
 :
   cast t :
   when == @trace_void do
-    t := s ;
+    t := s;
   else
-    error [s loc] : "Redefinition of ".att ;
-    error [t loc] : "was defined here" ;
-  end cast ;
-end routine ;
+    error [s loc] : "Redefinition of ".att;
+    error [t loc] : "was defined here";
+  end cast;
+end routine;
 
-end semantics ;
+end semantics;

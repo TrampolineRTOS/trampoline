@@ -61,27 +61,21 @@ routine schedule_tables_counters_exist_and_compatible
       else error here: "Internal error, incorrect datatype for LENGTH attribute of schedule table ".[stname string];
       end cast;
 
-      if [cnt string] == "SystemCounter" then
-        if len > 32767L then
-          error loc: "LENGTH of schedule table ".[stname string]." is greater than MAXALLOWEDVALUE of counter ".[cnt string];
-        end if;
-      else
-        # check the length of te schedule table is not
-        # greater than the max allowed value of the counter
-        @counter_obj cpt;
-        [cnts get !cnt ?cpt];
-        @uint64 max:= 0L;
+      # check the length of te schedule table is not
+      # greater than the max allowed value of the counter
+      @counter_obj cpt;
+      [cnts getCounter !cnt ?cpt];
+      @uint64 max:= 0L;
 
-        cast [cpt max_allowed_value]:
-          when == @uint32_class ui do
-            max:= [[ui value] uint64];
-          else
-            error here: "Internal error, incorrect datatype for MAXALLOWEDVALUE attribute of counter ".[cnt string];
-        end cast;
+      cast [cpt max_allowed_value]:
+        when == @uint32_class ui do
+          max:= [[ui value] uint64];
+        else
+          error here: "Internal error, incorrect datatype for MAXALLOWEDVALUE attribute of counter ".[cnt string];
+      end cast;
 
-        if len > max then
-          error loc: "LENGTH of schedule table ".[stname string]." is greater than MAXALLOWEDVALUE of counter ".[cnt string];
-        end if;
+      if len > max then
+        error loc: "LENGTH of schedule table ".[stname string]." is greater than MAXALLOWEDVALUE of counter ".[cnt string];
       end if;
     end if;
   end foreach;

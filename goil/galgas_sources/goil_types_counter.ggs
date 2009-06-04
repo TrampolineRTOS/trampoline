@@ -1,13 +1,13 @@
 semantics goil_types_counter :
 
-import semantics goil_basic_types in "goil_basic_types.ggs" ;
+import semantics goil_basic_types in "goil_basic_types.ggs";
  
 #
 # Counter classes
 #
 
 abstract class @counter_driver {
-    @location location ;
+    @location location;
 }
 
 class @void_driver extends @counter_driver {}
@@ -15,17 +15,17 @@ class @void_driver extends @counter_driver {}
 class @os_internal_driver extends @counter_driver {}
 
 class @gpt_driver extends @counter_driver {
-    @basic_type ns_per_hw_tick ;
-    @lstring    gpt_channel_name ;
+    @basic_type ns_per_hw_tick;
+    @lstring    gpt_channel_name;
 }
 
 list @time_constants {
-    @basic_type     ns ;
-    @lstring        const_name ; 
+    @basic_type     ns;
+    @lstring        const_name; 
 }    
 
 abstract class @counter_type {
-    @location location ;
+    @location location;
 }
 
 class @void_counter extends @counter_type {}
@@ -33,26 +33,26 @@ class @void_counter extends @counter_type {}
 class @software_counter extends @counter_type {}
 
 class @hardware_counter extends @counter_type {
-    @counter_driver driver ;
-    @time_constants time_consts ; 
+    @counter_driver driver;
+    @time_constants time_consts; 
 }
 
 class @counter_obj extends @oil_obj {
-    @basic_type   max_allowed_value ;
-    @basic_type   ticks_per_base ;
-    @basic_type   min_cycle ;
-    @lstring      source ;
+    @basic_type   max_allowed_value feature setter;
+    @basic_type   ticks_per_base feature setter;
+    @basic_type   min_cycle feature setter;
+    @lstring      source;
 # AUTOSAR fields
-    @lstringlist  acc_apps ;
-    @counter_type type ;
-    @lstring      unit ;
+    @lstringlist  acc_apps feature setter;
+    @counter_type type;
+    @lstring      unit;
 }
 
 map @counter_map {
-    @counter_obj counter ;
-    insert put error message "Counter %K is duplicated in %L" ;
-    search get error message "Counter %K is not defined" ;
-    remove del error message "Counter %K is not defined" ;
+    @counter_obj counter;
+    insert put error message "Counter %K is duplicated in %L";
+    search getCounter error message "Counter %K is not defined";
+    remove del error message "Counter %K is not defined";
 }
 
 sortedlist @counter_by_source {
@@ -63,4 +63,4 @@ sortedlist @counter_by_source {
   source >
 }
 
-end semantics ;
+end semantics;
