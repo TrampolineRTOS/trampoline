@@ -204,12 +204,14 @@ FUNC(u8, OS_CODE) tpl_check_object_access_service(
 FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
+#if APP_COUNT > 0
   VAR(tpl_app_id, AUTOMATIC) running_app_id;
   VAR(tpl_proc_id, AUTOMATIC) restart_id;
-  
+#endif /*APP_COUNT*/
+	
   LOCK_KERNEL()
   
-#if APP_COUNT > 0
+#if APP_COUNT > 0	
   running_app_id = tpl_kern.s_running->app_id;
   restart_id = tpl_app_table[running_app_id]->restart;
 
