@@ -98,7 +98,7 @@ STATIC VAR(tpl_application_mode, OS_VAR) application_mode;
  */
 CONST(tpl_proc_static, OS_CONST) idle_task_static = {
     /* context              */  IDLE_CONTEXT,
-    /* stack                */  IDLE_STACK, 
+    /* stack                */  IDLE_STACK,
     /* entry point          */  IDLE_ENTRY,
     /* internal resource    */  NULL,
     /* id is IDLE_TASK_ID   */  IDLE_TASK_ID,
@@ -122,7 +122,7 @@ CONST(tpl_proc_static, OS_CONST) idle_task_static = {
 VAR(tpl_proc, OS_VAR) idle_task = {
     /* resources            */  NULL,
 #ifdef WITH_OSAPPLICATION
-    /* trusted count  */        0,    
+    /* trusted count  */        0,
 #endif /* WITH_OSAPPLICATION */
     /* activation count     */  0,
     /* priority             */  0,
@@ -164,9 +164,9 @@ VAR(tpl_kern_state, OS_VAR) tpl_kern =
  * tpl_need_switch is used to indicate a context switch should occur
  * It is set un the services and tested before calling the context switch
  * and reset to FALSE after that
- */ 
+ */
 /* VAR(u8, OS_VAR) tpl_need_switch = NO_NEED_SWITCH; */
- 
+
 
 /*  MISRA RULE 27 VIOLATION: These 2 variables are used only in this file
     but declared in the configuration file, this is why they do not need
@@ -229,7 +229,7 @@ VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER = {
                                  maximum priority of the tasks of the
                                  application                                */
     0,
-    FALSE 
+    FALSE
 };
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
@@ -253,7 +253,7 @@ FUNC(void, OS_CODE) printrl(
   int i,j;
   tpl_exec_common **level;
   u8 mask;
-  
+
   printf("%s - Highest: %d\n",msg,tpl_h_prio);
   for (i = 0; i < PRIO_LEVEL_COUNT; i++)
   {
@@ -288,34 +288,34 @@ FUNC(VAR(tpl_proc_id, AUTOMATIC), OS_CODE) tpl_get_proc(void)
   VAR(tpl_proc_id, AUTOMATIC)                 elected;
   P2VAR(tpl_proc_id, AUTOMATIC, OS_APPL_DATA) highest;
   VAR(u8, AUTOMATIC)                          read_idx;
-  
+
   DOW_ASSERT((tpl_h_prio >= 0) && (tpl_h_prio < PRIO_LEVEL_COUNT))
   DOW_ASSERT(tpl_fifo_rw[tpl_h_prio].size > 0)
-  
+
   DOW_DO(printrl("tpl_get_exec_object - avant");)
-  
+
   /*  Get the highest priority non empty fifo                         */
   highest = tpl_ready_list[tpl_h_prio].fifo;
-  
+
   /*  Get the read index                                              */
   read_idx = tpl_fifo_rw[tpl_h_prio].read;
-  
+
   /*  The fifo is not empty, get the descriptor                       */
   elected = highest[read_idx];
-  
+
   /*  Adjust the read index and the size                              */
   read_idx = (read_idx + 1) & tpl_ready_list[tpl_h_prio].mask;
   tpl_fifo_rw[tpl_h_prio].read = read_idx;
   tpl_fifo_rw[tpl_h_prio].size--;
-  
+
   /*  Adjust the highest priority non empty fifo index                */
   while ((tpl_h_prio >= 0) && (tpl_fifo_rw[tpl_h_prio].size == 0))
   {
     tpl_h_prio--;
   }
-  
+
   DOW_DO(printrl("tpl_get_exec_object - apres");)
-  
+
   return elected;
 }
 
@@ -337,33 +337,33 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(
   P2VAR(tpl_proc_id, OS_APPL_DATA, AUTOMATIC) fifo;
   VAR(u8, AUTOMATIC)                          write_idx;
   DOW_DO(printrl("tpl_put_preempted_exec_object - avant");)
-  
+
   /*  the priority used as level in the ready list
       for a preempted object is the current priority                */
   prio = tpl_dyn_proc_table[proc_id]->priority;
-  
+
   DOW_ASSERT((prio >= 0) && (prio < PRIO_LEVEL_COUNT))
   DOW_ASSERT(tpl_fifo_rw[prio].size < tpl_ready_list[prio].size)
-  
+
   /*  a preempted executable object is put at the head of the fifo  */
   write_idx = (tpl_fifo_rw[prio].read - 1) & tpl_ready_list[prio].mask ;
-  
+
   tpl_fifo_rw[prio].read = write_idx;
-  
+
   /*  Get the corresponding fifo                                    */
   fifo = tpl_ready_list[prio].fifo;
-  
+
   /*  put the executable object in it */
   fifo[write_idx] = proc_id ;
-  
+
   /* adjust the size                                                */
   tpl_fifo_rw[prio].size++;
-  
+
   /* adjust the highest priority non empty fifo                     */
   if (prio > tpl_h_prio) {
     tpl_h_prio = prio;
   }
-  
+
   DOW_DO(printrl("tpl_put_preempted_exec_object - apres");)
 }
 
@@ -384,36 +384,36 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
   VAR(tpl_priority, AUTOMATIC)                prio;
   P2VAR(tpl_proc_id, OS_APPL_DATA, AUTOMATIC) fifo;
   VAR(u8, AUTOMATIC)                          write_idx;
-  
+
   DOW_DO(printrl("tpl_put_new_exec_object - avant");)
-  
+
   /*  the priority used as level in the ready list
       for a newly activated object is the base priority                   */
   prio = tpl_stat_proc_table[proc_id]->base_priority;
 
   DOW_ASSERT((prio >= 0) && (prio < PRIO_LEVEL_COUNT))
   DOW_ASSERT(tpl_fifo_rw[prio].size < tpl_ready_list[prio].size)
-  
+
   /*  a newly activated executable object
       is put at the end of the fifo                                       */
   write_idx = (tpl_fifo_rw[prio].read + tpl_fifo_rw[prio].size) &
   tpl_ready_list[prio].mask;
-  
+
   /*  Get the corresponding fifo                                          */
   fifo = tpl_ready_list[prio].fifo;
-  
+
   /*  put the executable object in it */
   fifo[write_idx] = proc_id ;
-  
+
   /* adjust the size                                                      */
   tpl_fifo_rw[prio].size++;
 
-  
+
   /* adjust the highest priority non empty fifo                           */
   if (prio > tpl_h_prio) {
     tpl_h_prio = prio;
   }
-  
+
   DOW_DO(printrl("tpl_put_new_exec_object - apres");)
 }
 
@@ -431,7 +431,7 @@ FUNC(void, OS_CODE) printrl(
   int i,j;
   tpl_proc_id *level;
   int size;
-  
+
   printf("%s - Highest: %d\n",msg,tpl_h_prio);
   for (i = 0; i < PRIO_LEVEL_COUNT; i++)
   {
@@ -470,21 +470,21 @@ FUNC(VAR(tpl_proc_id, AUTOMATIC), OS_CODE) tpl_get_proc(void)
   VAR(tpl_proc_id, AUTOMATIC)                 elected;
   P2VAR(tpl_proc_id, AUTOMATIC, OS_APPL_DATA) highest;
   VAR(u8, AUTOMATIC)                          read_idx;
-  
+
   DOW_ASSERT((tpl_h_prio >= 0) && (tpl_h_prio < PRIO_LEVEL_COUNT))
   DOW_ASSERT(tpl_fifo_rw[tpl_h_prio].size > 0)
-  
+
   DOW_DO(printrl("tpl_get_exec_object - avant");)
-  
+
   /*  Get the highest priority non empty fifo                         */
   highest = tpl_ready_list[tpl_h_prio].fifo;
-  
+
   /*  Get the read index                                              */
   read_idx = tpl_fifo_rw[tpl_h_prio].read;
-  
+
   /*  The fifo is not empty, get the descriptor                       */
   elected = highest[read_idx];
-  
+
   /*  Adjust the read index and the size                              */
   read_idx++;
   if (read_idx >= tpl_ready_list[tpl_h_prio].size)
@@ -493,15 +493,15 @@ FUNC(VAR(tpl_proc_id, AUTOMATIC), OS_CODE) tpl_get_proc(void)
   }
   tpl_fifo_rw[tpl_h_prio].read = read_idx;
   tpl_fifo_rw[tpl_h_prio].size--;
-  
+
   /*  Adjust the highest priority non empty fifo index                */
   while ((tpl_h_prio >= 0) && (tpl_fifo_rw[tpl_h_prio].size == 0))
   {
     tpl_h_prio--;
   }
-  
+
   DOW_DO(printrl("tpl_get_exec_object - apres");)
-  
+
   return elected;
 }
 
@@ -526,41 +526,41 @@ tpl_put_preempted_proc(
   DOW_DO(VAR(u8, AUTOMATIC) size_before;)
 
   DOW_DO(printrl("tpl_put_prempted_exec_object - avant");)
-  
+
   /*  the priority used as level in the ready list
       for a preempted object is the current priority                  */
   prio = tpl_dyn_proc_table[proc_id]->priority;
-  
+
   DOW_ASSERT((prio >= 0) && (prio < PRIO_LEVEL_COUNT))
   DOW_ASSERT(tpl_fifo_rw[prio].size < tpl_ready_list[prio].size)
-  
+
   DOW_DO(size_before = tpl_fifo_rw[prio].size;)
-  
+
   /*  a preempted executable object is put at the head of the fifo    */
   write_idx = tpl_fifo_rw[prio].read - 1 ;
-  
+
   /*  since write_idx is unsigned, an overflow could occur            */
   if (write_idx >= tpl_ready_list[prio].size) {
     write_idx = tpl_ready_list[prio].size - 1;
   }
   tpl_fifo_rw[prio].read = write_idx;
-  
+
   /*  Get the corresponding fifo                                      */
   fifo = tpl_ready_list[prio].fifo;
-  
+
   /*  put the executable object in it                                 */
   fifo[write_idx] = proc_id ;
-  
+
   /* adjust the size                                                  */
   tpl_fifo_rw[prio].size++;
-  
+
   DOW_ASSERT(tpl_fifo_rw[prio].size == (size_before + 1));
-             
+
   /* adjust the highest priority non empty fifo                       */
   if (prio > tpl_h_prio) {
     tpl_h_prio = prio;
   }
-  
+
   DOW_DO(printrl("tpl_put_preempted_exec_object - apres");)
 }
 
@@ -584,41 +584,41 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
   DOW_DO(VAR(u8, AUTOMATIC) size_before;)
 
   DOW_DO(printrl("tpl_put_new_exec_object - avant");)
-  
+
   /*  the priority used as level in the ready list
       for a newly activated object is the base priority */
   prio = tpl_stat_proc_table[proc_id]->base_priority ;
 
   DOW_ASSERT((prio >= 0) && (prio < PRIO_LEVEL_COUNT))
   DOW_ASSERT(tpl_fifo_rw[prio].size < tpl_ready_list[prio].size)
-  
+
   DOW_DO(size_before = tpl_fifo_rw[prio].size;)
-  
+
   /*  a newly activated executable object
       is put at the end of the fifo                     */
   write_idx = tpl_fifo_rw[prio].read + tpl_fifo_rw[prio].size;
-  
+
   /*  adjust the write index                            */
   if (write_idx >= tpl_ready_list[prio].size) {
     write_idx -= tpl_ready_list[prio].size;
   }
-  
+
   /*  Get the corresponding fifo                        */
   fifo = tpl_ready_list[prio].fifo;
-  
+
   /*  put the executable object in it                   */
   fifo[write_idx] = proc_id ;
-  
+
   /* adjust the size                                    */
   tpl_fifo_rw[prio].size++;
-  
+
   DOW_ASSERT(tpl_fifo_rw[prio].size == (size_before + 1));
 
   /* adjust the highest priority non empty fifo         */
   if (prio > tpl_h_prio) {
     tpl_h_prio = prio;
   }
-  
+
   DOW_DO(printrl("tpl_put_new_exec_object - apres");)
 }
 
@@ -660,12 +660,12 @@ FUNC(void, OS_CODE) tpl_remove_proc_for_prio(
     size--;
   }
   tpl_fifo_rw[prio].size = new_size;
-  
+
   /*  Adjust the highest priority non empty fifo index                */
   while ((tpl_h_prio >= 0) && (tpl_fifo_rw[tpl_h_prio].size == 0))
   {
     tpl_h_prio--;
-  }  
+  }
 }
 
 /**
@@ -682,10 +682,10 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
   CONST(tpl_priority, AUTOMATIC) prio = tpl_dyn_proc_table[proc_id]->priority;
   CONST(tpl_priority, AUTOMATIC) base_prio =
     tpl_stat_proc_table[proc_id]->base_priority;
-  
+
   DOW_DO(printf("\n**** remove proc %d ****\n",proc_id);)
   DOW_DO(printrl("tpl_remove_proc - before");)
-  
+
   /*  First clean the current prio fifo if needed */
   if (prio != base_prio)
   {
@@ -709,7 +709,7 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(void)
 {
   VAR(tpl_os_state, OS_APPL_DATA) state = OS_UNKNOWN;
-  
+
   if (tpl_kern.running_id == -2) {
     state = OS_INIT;
   }
@@ -725,7 +725,7 @@ FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(void)
   {
     state = OS_TASK;
   }
-  
+
   return state;
 }
 
@@ -741,7 +741,7 @@ FUNC(void, OS_CODE) tpl_get_internal_resource(
 {
   CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
     tpl_stat_proc_table[task_id]->internal_resource;
-  
+
   if ((rez != NULL) && (rez->taken == FALSE))
   {
     rez->taken = TRUE;
@@ -762,7 +762,7 @@ FUNC(void, OS_CODE) tpl_release_internal_resource(
 {
   CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
     tpl_stat_proc_table[task_id]->internal_resource;
-  
+
   if ((rez != NULL) && (rez->taken == TRUE))
   {
     rez->taken = FALSE;
@@ -784,12 +784,12 @@ FUNC(void, OS_CODE) tpl_release_internal_resource(
 FUNC(void, OS_CODE) tpl_schedule_from_running(void)
 {
   VAR(u8, AUTOMATIC) need_switch = NO_NEED_SWITCH;
-  
+
   /*  the tpl_running_obj is never NULL and is in the state RUNNING  */
   DOW_ASSERT(tpl_kern.running != NULL)
   DOW_ASSERT(tpl_kern.running->state == RUNNING)
   DOW_ASSERT(tpl_h_prio != -1)
-  
+
 #ifdef WITH_AUTOSAR_STACK_MONITORING
   tpl_check_stack (tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
@@ -799,7 +799,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
     /*  a task switch will occur. It is time to call the
         PostTaskHook while the soon descheduled task is running   */
     CALL_POST_TASK_HOOK()
-    
+
     /*  the current running task become READY                     */
     tpl_kern.running->state = (tpl_proc_state)READY;
     /*  put the running task in the ready task list               */
@@ -810,19 +810,19 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
     /*  copy it in old slot of tpl_kern                           */
     tpl_kern.old = tpl_kern.running;
     tpl_kern.s_old = tpl_kern.s_running;
-    
-    
+
+
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     /*  pause the budget monitor                                  */
     tpl_pause_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-    
-    
+
+
     /*  get the ready task from the ready task list               */
     tpl_kern.running_id = tpl_get_proc();
     tpl_kern.running = tpl_dyn_proc_table[tpl_kern.running_id];
     tpl_kern.s_running = tpl_stat_proc_table[tpl_kern.running_id];
-  
+
       TRACE_ISR_PREEMPT(tpl_kern)
       TRACE_TASK_PREEMPT(tpl_kern)
 
@@ -842,7 +842,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
       tpl_continue_budget_monitor(tpl_kern.running_id);
     }
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-    
+
     /*  the inserted task become RUNNING                          */
     TRACE_TASK_EXECUTE(tpl_kern.running_id)
     TRACE_ISR_RUN(tpl_kern.running_id)
@@ -850,14 +850,14 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
     /*  If an internal resource is assigned to the task
         and it is not already taken by it, take it                */
     tpl_get_internal_resource(tpl_kern.running_id);
-    
+
     /*  A new task has been elected. It is time to call
         PreTaskHook while the rescheduled task is running         */
     CALL_PRE_TASK_HOOK()
-    
+
     need_switch = NEED_SWITCH | NEED_SAVE;
   }
-  
+
   tpl_kern.need_switch = need_switch;
 }
 
@@ -875,20 +875,20 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
 #ifdef WITH_AUTOSAR_STACK_MONITORING
   tpl_check_stack(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
-  
+
   /*  a task switch will occur. It is time to call the
    PostTaskHook while the soon descheduled task is running             */
   CALL_POST_TASK_HOOK()
-  
+
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
   /*  pause the budget monitoring when a running obj has ended            */
   tpl_stop_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-  
+
   /*  the task loses the CPU because it has been put in the WAITING or
    in the DYING state, its internal resource is released.              */
   tpl_release_internal_resource(tpl_kern.running_id);
-  
+
   /*  and checked to compute its state.                                 */
   if (tpl_kern.running->activate_count > 0)
   {
@@ -904,7 +904,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
         list. So it is put in the SUSPENDED state.                      */
     tpl_kern.running->state = SUSPENDED;
   }
-  
+
   /*  copy it in old slot of tpl_kern                           */
   tpl_kern.old = tpl_kern.running;
   tpl_kern.s_old = tpl_kern.s_running;
@@ -912,7 +912,10 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
   tpl_kern.running_id = tpl_get_proc();
   tpl_kern.running = tpl_dyn_proc_table[tpl_kern.running_id];
   tpl_kern.s_running = tpl_stat_proc_table[tpl_kern.running_id];
-  
+
+  TRACE_ISR_PREEMPT(tpl_kern)
+  TRACE_TASK_PREEMPT(tpl_kern)
+
   if (tpl_kern.running->state == READY_AND_NEW)
   {
     /*  the object has not be preempted. So its
@@ -930,15 +933,17 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
   /*  the inserted task become RUNNING                                  */
+  TRACE_ISR_RUN(tpl_kern.running_id)
+  TRACE_TASK_EXECUTE(tpl_kern.running_id)
   tpl_kern.running->state = RUNNING;
   /*  If an internal resource is assigned to the task
       and it is not already taken by it, take it                        */
   tpl_get_internal_resource(tpl_kern.running_id);
-  
+
   /*  A new task has been elected. It is time to call PreTaskHook while
       the rescheduled task is running                                   */
   CALL_PRE_TASK_HOOK()
-  
+
   tpl_kern.need_switch = NEED_SWITCH;
 }
 
@@ -955,22 +960,22 @@ FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
 #ifdef WITH_AUTOSAR_STACK_MONITORING
   tpl_check_stack(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
-  
+
   /*  a task switch will occur. It is time to call the
       PostTaskHook while the soon descheduled task is running     */
   CALL_POST_TASK_HOOK()
-  
+
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
   /*  pause the budget monitoring when a task has ended           */
   tpl_pause_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-  
+
   /*  the task loses the CPU because it has been put in the
       WAITING or in the DYING state, its internal resource
       is released.                                                */
   tpl_release_internal_resource(tpl_kern.running_id);
-  
-  
+
+
   /*  copy it in old slot of tpl_kern                           */
   tpl_kern.old = tpl_kern.running;
   tpl_kern.s_old = tpl_kern.s_running;
@@ -978,13 +983,16 @@ FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
   tpl_kern.running_id = tpl_get_proc();
   tpl_kern.running = tpl_dyn_proc_table[tpl_kern.running_id];
   tpl_kern.s_running = tpl_stat_proc_table[tpl_kern.running_id];
-  
+
+  TRACE_ISR_PREEMPT(tpl_kern)
+  TRACE_TASK_PREEMPT(tpl_kern)
+
   if (tpl_kern.running->state == READY_AND_NEW)
   {
     /*  the object has not be preempted. So its
         descriptor must be initialized                            */
     tpl_init_proc(tpl_kern.running_id);
-    
+
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     /*  start the budget monitor for the activated task           */
     tpl_start_budget_monitor(tpl_kern.running_id);
@@ -997,17 +1005,20 @@ FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
   /*  the inserted task become RUNNING                            */
+  TRACE_ISR_RUN(tpl_kern.running_id)
+  TRACE_TASK_EXECUTE(tpl_kern.running_id)
   tpl_kern.running->state = RUNNING;
   /*  If an internal resource is assigned to the task
       and it is not already taken by it, take it                  */
   tpl_get_internal_resource(tpl_kern.running_id);
-  
+
   /*  A new task has been elected
    It is time to call PreTaskHook while the
    rescheduled task is running                     */
   CALL_PRE_TASK_HOOK()
+
   /*  Switch the context  */
-  
+
   tpl_kern.need_switch = NEED_SWITCH | NEED_SAVE;
 }
 
@@ -1045,10 +1056,10 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
       {
         /*  the initialization is postponed to the time it will
             get the CPU as indicated by READY_AND_NEW state             */
-	TRACE_TASK_ACTIVATE(task_id)
+        TRACE_TASK_ACTIVATE(task_id)
 
         task->state = (tpl_proc_state)READY_AND_NEW;
-        
+
 #ifndef NO_EXTENDED_TASK
         /*  if the object is an extended task, init the events          */
         if (task_id < EXTENDED_TASK_COUNT)
@@ -1058,18 +1069,18 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
           events->evt_set = events->evt_wait = 0;
         }
 #endif
-        
+
       }
       /*  put it in the list                                            */
       tpl_put_new_proc(task_id);
       /*  inc the task activation count. When the task will terminate
           it will dec this count and if not zero it will be reactivated */
       task->activate_count++;
-      
+
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
       tpl_start_timeframe(task_id);
 #endif
-      
+
       result = (tpl_status)E_OK_AND_SCHEDULE;
     }
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
@@ -1096,13 +1107,13 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
   CONST(tpl_event_mask, AUTOMATIC)  incoming_event)
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
-  
+
 #ifndef NO_EXTENDED_TASK
   CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task =
     tpl_dyn_proc_table[task_id];
   CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA) events =
     tpl_task_events_table[task_id];
-  
+
   if (task->state != (tpl_proc_state)SUSPENDED)
   {
     /*  merge the incoming event mask with the old one  */
@@ -1126,11 +1137,11 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
           /*  put the task in the READY list          */
           TRACE_TASK_RELEASED(task_id,incoming_event)
           tpl_put_new_proc(task_id);
-          
+
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
           tpl_start_timeframe(task_id);
 #endif
-          
+
           /*  notify a scheduling needs to be done    */
           result = (tpl_status)E_OK_AND_SCHEDULE;
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
@@ -1149,7 +1160,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
     result = E_OS_STATE;
   }
 #endif
-  
+
   return result;
 }
 
@@ -1170,7 +1181,7 @@ FUNC(void, OS_CODE) tpl_init_proc(
 {
   CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) dyn =
     tpl_dyn_proc_table[proc_id];
-    
+
   /*  The priority is set to the base priority of the executable object */
   dyn->priority = tpl_stat_proc_table[proc_id]->base_priority;
   /*  set the resources list to NULL                                    */
@@ -1192,7 +1203,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 #ifndef NO_ALARM
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
 #endif
-  
+
 #ifdef WITH_AUTOSAR
 #ifdef NO_ALARM
 #ifndef NO_SCHEDTABLE
@@ -1200,7 +1211,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 #endif
 #endif
 #endif
-  
+
 #ifndef NO_TASK
   /*  Look for autostart tasks    */
   for (i = 0; i < TASK_COUNT; i++)
@@ -1213,9 +1224,9 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
   }
 #endif
 #ifndef NO_ALARM
-  
+
   /*  Look for autostart alarms    */
-  
+
   for (i = 0; i < ALARM_COUNT; i++)
   {
     auto_time_obj =
@@ -1226,11 +1237,11 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
       tpl_insert_time_obj(auto_time_obj);
     }
   }
-  
+
 #endif
 #if defined WITH_AUTOSAR && !defined NO_SCHEDTABLE
   /*  Look for autostart schedule tables  */
-  
+
   for (i = 0; i < SCHEDTABLE_COUNT; i++)
   {
     auto_time_obj =
@@ -1252,19 +1263,19 @@ FUNC(tpl_application_mode, OS_CODE) tpl_get_active_application_mode_service(
 
 FUNC(void, OS_CODE) tpl_start_os_service(
   CONST(tpl_application_mode, AUTOMATIC) mode)
-{  
+{
   LOCK_KERNEL()
 
   application_mode = mode;
-  
+
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
   tpl_init_timing_protection();
 #endif
-  
+
   TRACE_TPL_INIT()
-  
+
   tpl_init_os(mode);
-  
+
   /*  Call the startup hook. According to the spec, it should be called
       after the os is initialized and before the scheduler is running     */
   CALL_STARTUP_HOOK()
@@ -1273,7 +1284,7 @@ FUNC(void, OS_CODE) tpl_start_os_service(
   if(tpl_h_prio != -1)
   {
     tpl_schedule_from_running();
-    
+
 #ifndef WITH_SYSTEM_CALL
     if (tpl_kern.need_switch != NO_NEED_SWITCH)
     {
@@ -1284,7 +1295,7 @@ FUNC(void, OS_CODE) tpl_start_os_service(
     }
 #endif
   }
-  
+
   UNLOCK_KERNEL()
 }
 
@@ -1295,7 +1306,7 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
     TRACE_TPL_TERMINATE()
     /* architecture dependant shutdown. */
     tpl_shutdown();
-    
+
 }
 
 #define OS_STOP_SEC_CODE

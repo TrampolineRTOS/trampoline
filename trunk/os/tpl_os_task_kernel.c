@@ -70,7 +70,6 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
     result = tpl_activate_task(task_id);
     if (result == (tpl_status)E_OK_AND_SCHEDULE)
     {
-      TRACE_TASK_EXECUTE(task_id)
       tpl_schedule_from_running();
 # ifndef WITH_SYSTEM_CALL
       if (tpl_kern.need_switch != NO_NEED_SWITCH)
