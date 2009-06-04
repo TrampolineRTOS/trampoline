@@ -146,7 +146,14 @@ routine apps_well_formed
     # schedule tables
     object_not_in_any ![schedtables keyList] !all_sts_in_app    !"SCHEDULETABLE" ;
     # counters
-    object_not_in_any ![counters keyList]    !all_cnts_in_app   !"COUNTER" ;
+    # remove the SystemCounter which does not belong to any app
+    @lstringlist counter_keys [emptyList];
+    foreach counters do
+      if [key string] != "SystemCounter" then
+        counter_keys += !key;
+      end if;
+    end foreach;
+    object_not_in_any !counter_keys          !all_cnts_in_app   !"COUNTER" ;
     # resources
     object_not_in_any ![resources keyList]   !all_rezs_in_app   !"RESOURCE" ;
   end if ;

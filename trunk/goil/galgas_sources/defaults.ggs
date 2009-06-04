@@ -29,6 +29,7 @@ semantics defaults :
 import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
 import semantics goil_check in "goil_check.ggs" ;
 import semantics goil_types_root in "goil_types_root.ggs" ;
+import option goil_options in "goil_options.ggs" ;
 
 routine check_custom_field
     ?!@ident_map others
@@ -150,6 +151,73 @@ message "PRIORITY!\n";
     end foreach ;
 end routine ;
 
+
+##
+# @fn add_system_counter
+#
+# Add the system counter to the counter map.
+# If it already exists only missing fields are added
+#
+routine add_system_counter
+  ?!@root_obj cpu
+:
+  @counter_map counters := [cpu counters];
+  @counter_obj sys_cnt;
+  @lstringlist all_apps := [[cpu applis] keyList];
+  foreach [cpu applis] do
+    all_apps += !key;
+  end foreach;
+
+  if [counters hasKey !"SystemCounter"] then
+    [!?counters del ![@lstring new !"SystemCounter" !here] ?sys_cnt];
+    cast [sys_cnt max_allowed_value]:
+      when == @void do
+        [!?sys_cnt setMax_allowed_value ![@uint32_class new !here !32767]];
+      else
+    end cast;
+    cast [sys_cnt ticks_per_base]:
+      when == @void do
+        [!?sys_cnt setTicks_per_base ![@uint32_class new !here !1]];
+      else
+    end cast;
+    cast [sys_cnt min_cycle]:
+      when == @void do
+        [!?sys_cnt setMin_cycle ![@uint32_class new !here !1]];
+      else
+    end cast;
+    if [[sys_cnt source] string] == "" then
+      warning [sys_cnt source] : "SystemCounter has no interrupt source";
+    end if;
+    if [option goil_options.autosar_on] then
+      # put all OS Applications in the accessing application list
+      if [[sys_cnt acc_apps] length] == 0 then
+        [!?sys_cnt setAcc_apps !all_apps];
+      end if;
+      cast [sys_cnt type]:
+        when == @software_counter sc do
+          error [sc location] : "Incompatible TYPE for SystemCounter";
+        else
+      end cast;
+    end if;
+  else
+    @hardware_counter type := [@hardware_counter new !here ![@void_driver new !here] ![@time_constants emptyList]];
+    sys_cnt := [@counter_obj new
+      ![@lstring new !"Predefined SystemCounter" !here]
+      ![@uint32_class new !here !32767] # max_allowed_value
+      ![@uint32_class new !here !1]     # ticks_per_base
+      ![@uint32_class new !here !1]     # min_cycle
+      ![@lstring new !"" !here]         # source
+      !all_apps                         # acc_apps
+      !type                             # type
+      ![@lstring new !"" !here]         # unit
+    ];
+  end if;
+  # put the object in the map
+  [!?counters put ![@lstring new !"SystemCounter" !here] !sys_cnt];
+  # put back the map in cpu
+  [!?cpu setCounters !counters];
+end routine;
+
 routine set_defaults
   ??@implementation imp
   ?!@root_obj       cpu
@@ -172,6 +240,9 @@ routine set_defaults
       verify_and_set_isrs_defaults !?isrs !spec;
       [!?cpu setIsrs !isrs];
   end if ;
+
+  add_system_counter
+      !?cpu;
 
 end routine;
 

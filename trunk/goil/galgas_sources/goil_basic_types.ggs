@@ -11,7 +11,7 @@
 # Trampoline OS
 #
 # Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline est protégé par la loi sur la propriété intellectuelle
+# Trampoline est protege par la loi sur la propriete intellectuelle
 #
 # This software is distributed under the Lesser GNU Public Licence
 #
@@ -282,6 +282,30 @@ routine set_uint64
     error [t location] : "was defined here" ;
   end cast ;
 end routine ;
+
+#
+# set_lstring sets it first argument as a @string_class according
+# to its second argument if it is unset (ie @void). Otherwise
+# it outputs an error.
+#
+# @param  t     The uint64 to set
+# @param  s     The lstring used as source
+# @param  att   The name of the attribute.
+#               Used in the error message
+#
+routine set_lstring
+  ?!@basic_type t
+  ??@lstring    s
+  ??@string     att
+:
+  cast t :
+    when == @void do
+      t := [@string_class new ![s location] ![s string]];
+    else
+      error s : "Redefinition of ".att;
+      error [t location] : "was defined here";
+  end cast;
+end routine;
 
 #
 # set_bool sets it first argument as a @bool_class according

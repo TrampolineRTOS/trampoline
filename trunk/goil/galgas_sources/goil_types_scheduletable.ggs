@@ -166,7 +166,7 @@ class @scheduletable_obj extends @oil_obj {
         @bool first_time := true ;
 
         foreach actions (@uint64 offset @action_obj action) do
-            message [offset string]."\n" ;
+            #message [offset string]."\n" ;
             if offset != cur_offset then
               if not first_time then
                 # output the table of actions for the previous expiry point

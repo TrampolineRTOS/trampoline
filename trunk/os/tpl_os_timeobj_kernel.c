@@ -29,41 +29,6 @@
 #include "tpl_os_definitions.h"
 #include "tpl_debug.h"
 
-#define OS_START_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
-#define val_OSMAXALLOWEDVALUE 32767
-#define val_OSTICKSPERBASE    1
-#define val_OSMINCYCLE        1
-
-CONST(tpl_tick, OS_CONST) OSMAXALLOWEDVALUE;
-CONST(tpl_tick, OS_CONST) OSTICKSPERBASE;
-CONST(tpl_tick, OS_CONST) OSMINCYCLE;
-
-/**
- * @internal
- *
- * SystemCounter descriptor
- */
-VAR(tpl_counter, OS_VAR) SystemCounter_counter_desc = {
-  /* ticks per base       */  val_OSTICKSPERBASE,
-  /* max allowed value    */  val_OSMAXALLOWEDVALUE,
-  /* min cycle            */  val_OSMINCYCLE,
-  /* current tick         */  0,
-  /* current date         */  0,
-#ifdef WITH_AUTOSAR
-  /* kind                 */  HARDWARE_COUNTER,
-#endif
-#ifdef WITH_OSAPPLICATION
-  /* OS application id    */  INVALID_OSAPPLICATION,
-#endif
-  /* first alarm          */  NULL_PTR,
-  /* next alarm to raise  */  NULL_PTR
-};
-
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 

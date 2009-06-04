@@ -20,39 +20,39 @@ lexique goil_lexique :
 # Styles for Galgas GOIL
 #
 
-style keywordsStyle -> "Keywords:" ;
-style identifierStyle -> "Identifiers:" ;
-style delimitersStyle -> "Delimiters:" ;
-style stringStyle -> "String literals:" ;
-style pathStyle -> "Path String:" ;
-style integerStyle -> "Integer Literals:" ;
-style floatStyle -> "Floating Point Literals:" ;
-style commandStyle -> "Commands:" ;
-style commentStyle -> "Comments:" ;
+style keywordsStyle -> "Keywords:";
+style identifierStyle -> "Identifiers:";
+style delimitersStyle -> "Delimiters:";
+style stringStyle -> "String literals:";
+style pathStyle -> "Path String:";
+style integerStyle -> "Integer Literals:";
+style floatStyle -> "Floating Point Literals:";
+style commandStyle -> "Commands:";
+style commentStyle -> "Comments:";
 
 #
 # Extra keywords for makefile generation
 #
 list makefileKeywords error message "Makefile attribute  '%K'" style keywordsStyle :
-    "APP_SRC", "CFLAGS", "ASFLAGS", "LDFLAGS", "APP_NAME", "TRAMPOLINE_BASE_PATH" ;
+    "APP_SRC", "CFLAGS", "ASFLAGS", "LDFLAGS", "APP_NAME", "TRAMPOLINE_BASE_PATH";
 
 #
 # OIL_VERSION keyword
 #
 list oilVersion error message "OIL version" style keywordsStyle :
-    "OIL_VERSION" ;
+    "OIL_VERSION";
 #
 # List of OIL definitions
 #
 list oilDefinitions error message "OIL implementation definition" style keywordsStyle :
-    "IMPLEMENTATION" ;
+    "IMPLEMENTATION";
 
 #
 # List of objects in OIL implementation
 #
 list objList error message "Object '%K'" style keywordsStyle :
     "OS", "TASK", "COUNTER", "ALARM", "RESOURCE", "EVENT",
-    "ISR", "MESSAGE", "COM", "NM", "APPMODE", "IPDU", "CPU" ;
+    "ISR", "MESSAGE", "COM", "NM", "APPMODE", "IPDU", "CPU";
 
 @lstring att_token;
 
@@ -60,13 +60,13 @@ list objList error message "Object '%K'" style keywordsStyle :
 # List of datatypes
 #
 list dataTypes ! att_token error message "type '%K'" style keywordsStyle :
-    "UINT32", "INT32", "UINT64", "INT64", "FLOAT", "ENUM", "STRING", "BOOLEAN" ;
+    "UINT32", "INT32", "UINT64", "INT64", "FLOAT", "ENUM", "STRING", "BOOLEAN";
 
 #
 # Miscellaneous specifiers
 #
 list miscSpecifiers error message "specifier '%K'" style keywordsStyle :
-    "WITH_AUTO", "NO_DEFAULT", "AUTO", "MASK", "CATEGORY" ;
+    "WITH_AUTO", "NO_DEFAULT", "AUTO", "MASK", "CATEGORY";
 
 #
 # Objects Ref Types
@@ -74,7 +74,7 @@ list miscSpecifiers error message "specifier '%K'" style keywordsStyle :
 list objectRefType error message "object reference type '%K'" style keywordsStyle :
     "OS_TYPE", "TASK_TYPE", "COUNTER_TYPE", "ALARM_TYPE",
     "RESOURCE_TYPE", "EVENT_TYPE", "ISR_TYPE", "MESSAGE_TYPE",
-    "COM_TYPE", "NM_TYPE", "APPMODE_TYPE", "IPDU_TYPE" ;
+    "COM_TYPE", "NM_TYPE", "APPMODE_TYPE", "IPDU_TYPE";
 
 #
 # OS attributes
@@ -82,7 +82,7 @@ list objectRefType error message "object reference type '%K'" style keywordsStyl
 list os_attributes error message "os attribute '%K'" style keywordsStyle :
     "STATUS", "EXTENDED", "STARTUPHOOK", "ERRORHOOK", "SHUTDOWNHOOK", "PRETASKHOOK",
     "POSTTASKHOOK", "USEGETSERVICEID", "USEPARAMETERACCESS", "USERESSCHEDULER", "SYSTEM_CALL",
-    "TRACE" ;
+    "TRACE";
 
 #
 # TRACE attributes
@@ -97,19 +97,19 @@ list trace_attributes error message "trace attribute '%K'" style keywordsStyle :
 # defined elsewhere.
 #
 list task_attributes error message "task attribute '%K'" style keywordsStyle :
-    "PRIORITY", "SCHEDULE", "ACTIVATION", "AUTOSTART" ;
+    "PRIORITY", "SCHEDULE", "ACTIVATION", "AUTOSTART";
 
 #
 # Counter object predefined attributes that are not
 # defined elsewhere.
 #
 list counter_attributes error message "counter attribute '%K'" style keywordsStyle :
-    "MAXALLOWEDVALUE", "TICKSPERBASE", "MINCYCLE" ;
+    "MAXALLOWEDVALUE", "TICKSPERBASE", "MINCYCLE";
 
 # Additional AUTOSAR attributes for counters
 list as_counter_attributes error message "counter attribute '%K'" style keywordsStyle :
     "TYPE",
-    "UNIT" ;
+    "UNIT";
 
 #
 # Alarm object predefined attributes that are not
@@ -119,7 +119,7 @@ list alarm_attributes error message "alarm attribute '%K'" style keywordsStyle :
     "ACTION", "SETEVENT", "ACTIVATETASK", "ALARMCALLBACK",
     "ALARMCALLBACKNAME", "ALARMTIME", "CYCLETIME",
 # for AUTOSAR
-    "INCREMENTCOUNTER" ;
+    "INCREMENTCOUNTER";
 
 #
 # Resource object predefined attributes that are not
@@ -127,7 +127,7 @@ list alarm_attributes error message "alarm attribute '%K'" style keywordsStyle :
 #
 list resource_attributes error message "resource attribute '%K'" style keywordsStyle :
     "RESOURCEPROPERTY", "STANDARD", "LINKED", "LINKEDRESOURCE",
-    "INTERNAL" ;
+    "INTERNAL";
 
 #
 # Message object predefined attributes that are not
@@ -152,7 +152,7 @@ list message_attributes error message "message attribute '%K'" style keywordsSty
     "NEWISLESSOREQUAL", "NEWISLESS", "NEWISGREATEROREQUAL",
     "ONEEVERYN", "MIN", "MAX", "X", "PERIOD", "OFFSET",
     "NETWORKORDERCALLOUT", "CPUORDERCALLOUT", "INITIALVALUE",
-    "QUEUESIZE", "LINK", "RECEIVEMESSAGE", "FLAG", "FLAGNAME" ;
+    "QUEUESIZE", "LINK", "RECEIVEMESSAGE", "FLAG", "FLAGNAME";
 
 #
 # Networkmessage object predefined attributes that are not
@@ -162,7 +162,7 @@ list networkmessage_attribute error message "networkmessage attribute '%K'" styl
     "STATIC", "DYNAMIC", "ZERO", "SIZEINBITS", "MAXSIZEINBITS",
     "BITORDERING", "BIGENDIAN", "LITTLEENDIAN", "BITPOSITION",
     "DATAINTERPRETATION", "UNSIGNEDINTEGER", "BYTEARRAY",
-    "DIRECTION", "SENT", "RECEIVED" ;
+    "DIRECTION", "SENT", "RECEIVED";
 
 #
 # Com object predefined attributes that are not
@@ -172,7 +172,7 @@ list com_attribute error message "com attribute '%K'" style keywordsStyle :
     "COMTIMEBASE", "COMERRORHOOK", "COMUSEGETSERVICEID",
     "COMUSEPARAMETERACCESS", "COMSTARTCOMEXTENSION",
     "COMAPPMODE", "COMSTATUS", "USE", "COMEXTENDED",
-    "COMSTANDARD" ;
+    "COMSTANDARD";
 
 #
 # IPDU object predefined attributes that are not
@@ -182,19 +182,19 @@ list ipdu_attribute error message "ipdu attribute '%K'" style keywordsStyle :
     "IPDUPROPERTY", "IPDUCALLOUT", "LAYERUSED",
     "TRANSMISSIONMODE", "DIRECT", "PERIODIC", "MIXED",
     "TIMEOUT", "FIRTSTIMEOUT", "MINIMUMDELAYTIME",
-    "TIMEPERIOD", "TIMEOFFSET" ;
+    "TIMEPERIOD", "TIMEOFFSET";
 
 #
 # Scheduling attribute
 #
 list scheduling error message "scheduling value '%K'" style keywordsStyle :
-    "NON", "FULL" ;
+    "NON", "FULL";
 
 #
 # Booleans
 #
 list boolean error message "boolean '%K'" style keywordsStyle :
-	"FALSE", "TRUE" ;
+	"FALSE", "TRUE";
 
 #
 # AUTOSAR addon
@@ -204,17 +204,17 @@ list autosar_attr error message "AUTOSAR attribute '%K'" style keywordsStyle :
     "SCALABILITYCLASS",
     "STACKMONITORING",
     "TIMING_PROTECTION",
-    "ACCESSING_APPLICATION" ;
+    "ACCESSING_APPLICATION";
 
 list autosar_key error message "AUTOSAR value '%K'" style keywordsStyle :
     "SC1",
     "SC2",
     "SC3",
-    "SC4" ;
+    "SC4";
 
 list autosar_objs error message "AUTOSAR object '%K'" style keywordsStyle :
     "SCHEDULETABLE",
-    "APPLICATION" ;
+    "APPLICATION";
 
 #
 # Schedule tables attributes
@@ -222,13 +222,13 @@ list autosar_objs error message "AUTOSAR object '%K'" style keywordsStyle :
 list schedtable_attrs error message "SCHEDULETABLE attribute '%K'" style keywordsStyle :
     "LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION", "SYNC_STRATEGY",
     "MAX_INCREASE", "MAX_DECREASE", "MAX_INCREASE_ASYNC",
-    "MAX_DECREASE_ASYNC", "PRECISION", "LENGTH" ;
+    "MAX_DECREASE_ASYNC", "PRECISION", "LENGTH";
 
 #
 # Applications attributes
 #
 list application_attrs error message "APPLICATION attribute '%K'" style keywordsStyle :
-    "TRUSTED", "HAS_RESTARTTASK", "RESTARTTASK", "TRUSTED_FUNCTION", "NAME" ;
+    "TRUSTED", "HAS_RESTARTTASK", "RESTARTTASK", "TRUSTED_FUNCTION", "NAME";
 
 #
 # timing protection attributes
@@ -242,20 +242,20 @@ list timing_prot_attribs error message "TIMING_PROTECTION attribute '%K'" style 
     "MAXALLINTERRUPTLOCKTIME",
     "LOCKINGTIME",
     "RESOURCELOCK",
-    "MAXRESOURCELOCKTIME" ;
+    "MAXRESOURCELOCKTIME";
 
 #
 # Synchronization strategy
 #
 list sync_strategy error message "Synchronization strategy '%K'" style keywordsStyle :
-	"SMOOTH", "HARD" ;
+	"SMOOTH", "HARD";
 
 #
 # units for counters
 #
 list unit !att_token error message "Unit '%K'" style keywordsStyle :
     "TICKS",
-    "NANOSECONDS" ;
+    "NANOSECONDS";
 
 #
 # types attributes and subattributes for counters
@@ -279,25 +279,25 @@ list it_src_attr error message "Interrupt Source '%K'" style keywordsStyle :
 #----------------------- comments -------------------------------
 # They must be defined before delimitors!! 
 # '/' is a delimitor.
-$comment$ error message "a comment" style commentStyle ;
+$comment$ error message "a comment" style commentStyle;
 rule "//" :
 	repeat #accept all except 0xA (LF) and 0xD (CR)
 	while '\u0001'->'\u0009' | '\u000B'| '\u000C'| '\u000E' -> '\uFFFD' : 
-	end repeat ;
-   drop $comment$ ;
-end rule ;
+	end repeat;
+   drop $comment$;
+end rule;
 
-message unterminated_comment_error : "unterminated comment" ;
+message unterminated_comment_error : "unterminated comment";
 
 rule "/*" :
    repeat
    while ~ "*/" error unterminated_comment_error :
-   end repeat ;
-   drop $comment$ ;
-end rule ;
+   end repeat;
+   drop $comment$;
+end rule;
 
 #--------------------- Identifiers --------------------------
-$idf$ !att_token error message "identifier" style identifierStyle ;
+$idf$ !att_token error message "identifier" style identifierStyle;
 
 rule 'a'->'z' | 'A'->'Z' :
     repeat
@@ -334,14 +334,14 @@ rule 'a'->'z' | 'A'->'Z' :
         default search att_token in unit
         default search att_token in cpt_type_attr
         default search att_token in it_src_attr
-        default $idf$ ;
-end rule ;
+        default $idf$;
+end rule;
 
 #
 # List of delimiters in OIL
 #
 list OILDelimiters error message "'%K' delimiter" style delimitersStyle:
-  ";", ":", "=", "{", "}", "..", "[", "]", ",", ".", "-" ;
+  ";", ":", "=", "{", "}", "..", "[", "]", ",", ".", "-";
 
 rule list OILDelimiters;
 
@@ -354,50 +354,50 @@ end rule;
 #
 # As usual the literal s
 #
-message internalError : "internal error" ;
-message decimalNumberTooLarge : "decimal number too large" ;
-message unterminatedLitteralString : "Unterminated literal string" ; 
-message unableToConvertToDouble : "Unable to convert the string to double" ;
+message internalError : "internal error";
+message decimalNumberTooLarge : "decimal number too large";
+message unterminatedLitteralString : "Unterminated literal string"; 
+message unableToConvertToDouble : "Unable to convert the string to double";
 
-@lstring a_string ;
+@lstring a_string;
 
-$string$ !a_string error message "literal string" style stringStyle ;
+$string$ !a_string error message "literal string" style stringStyle;
 
 rule '"' :
     repeat
     while '\u0020'->'\u0021' | '\u0023' -> '\uFFFD' :
-        enterCharacterIntoString ( a_string, * ) ;
-    end repeat ;
+        enterCharacterIntoString ( a_string, * );
+    end repeat;
     select
         when '"' :
-            send $string$ ;
+            send $string$;
         default
-            error unterminatedLitteralString ;
-    end select ;
-end rule ;
+            error unterminatedLitteralString;
+    end select;
+end rule;
 
-$g_string$ !a_string error message "in search path" style pathStyle ;
+$g_string$ !a_string error message "in search path" style pathStyle;
 
 rule '<' :
     repeat
     while '\u0020'->'\u003D' | '\u003F' -> '\uFFFD' :
-        enterCharacterIntoString ( a_string, * ) ;
-    end repeat ;
+        enterCharacterIntoString ( a_string, * );
+    end repeat;
     select
         when '>' :
-            send $g_string$ ;
+            send $g_string$;
         default
-            error unterminatedLitteralString ;
-    end select ;
-end rule ;
+            error unterminatedLitteralString;
+    end select;
+end rule;
 
 @luint64 integerNumber;
 @ldouble floatNumber;
 @lstring number;
 
-$uint_number$ !integerNumber error message "literal unsigned 64 bits integer" style integerStyle ;
-$float_number$ !floatNumber error message "literal float" style floatStyle ; 
-$set_start_uint_number$ !integerNumber error message "literal unsigned 64 bits integer" style integerStyle ;
+$uint_number$ !integerNumber error message "literal unsigned 64 bits integer" style integerStyle;
+$float_number$ !floatNumber error message "literal float" style floatStyle; 
+$set_start_uint_number$ !integerNumber error message "literal unsigned 64 bits integer" style integerStyle;
 
 
 #
@@ -406,10 +406,10 @@ $set_start_uint_number$ !integerNumber error message "literal unsigned 64 bits i
 rule "0x" | "0X" :
     repeat
     while '0'->'9' | 'a'->'f' | 'A'->'F':
-         enterHexDigitIntoUInt64(*,integerNumber) error decimalNumberTooLarge, internalError ;
-    end repeat ;
-    send $uint_number$ ;
-end rule ;
+         enterHexDigitIntoUInt64(*,integerNumber) error decimalNumberTooLarge, internalError;
+    end repeat;
+    send $uint_number$;
+end rule;
 
 #
 # Unsigned literal number. This rule scans decimal integers
@@ -417,43 +417,43 @@ end rule ;
 rule '0'->'9':
     repeat
         enterCharacterIntoString (number, *);
-        enterDigitIntoUInt64 (*,integerNumber) error decimalNumberTooLarge, internalError ;
+        enterDigitIntoUInt64 (*,integerNumber) error decimalNumberTooLarge, internalError;
     while '0'->'9' :
     end repeat;
     select
         when '.' :
 			select
 				when '.' :
-					send $set_start_uint_number$ ;
+					send $set_start_uint_number$;
 				default
 		          	repeat
                 		enterCharacterIntoString (number, *);
             		while '0'->'9' :
             		end repeat;
             		convertStringToDouble(number,floatNumber) error unableToConvertToDouble;
-            		send $float_number$ ;
+            		send $float_number$;
 			end select;
         default
-            send $uint_number$ ;
-    end select ;
-end rule ;
+            send $uint_number$;
+    end select;
+end rule;
 
 #
 # Include mechanism
 #
 list commands error message "command '%K'" style keywordsStyle :
-    "include" ;
+    "include";
 
-$command$ !att_token error message "command"style commandStyle ;
+$command$ !att_token error message "command"style commandStyle;
 
 rule '#':
     repeat
     while 'a'->'z' | 'A'->'Z' :
-        enterCharacterIntoString(att_token, *) ;
-    end repeat ;
+        enterCharacterIntoString(att_token, *);
+    end repeat;
     send search att_token in commands
-        default $command$ ;
-end rule ;
+        default $command$;
+end rule;
 
-end lexique ;
+end lexique;
 # vim:ft=ggs:ts=4:sw=4

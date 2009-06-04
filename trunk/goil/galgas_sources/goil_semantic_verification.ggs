@@ -259,7 +259,7 @@ routine all_alarm_actions_correct
       when == @incrementcounter_action act do
         if [counters hasKey ![[act counter_name] string]] then
           @counter_obj cnt;
-          [counters get ![act counter_name] ?cnt];
+          [counters getCounter ![act counter_name] ?cnt];
           cast [cnt type]:
             when == @software_counter do
             else
