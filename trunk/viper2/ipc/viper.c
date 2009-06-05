@@ -182,7 +182,7 @@ void vp_ipc_get_shared_memory(ipc_t *ipc)
   create_sh_memory(ipc);
 }
 
-void vp_ipc_write_reg(ipc_t *ipc, reg_id_t reg_id, reg_t *reg)
+void vp_ipc_write_reg(ipc_t *ipc, reg_id_t reg_id, reg_t reg)
 {
 #ifdef DEBUG
   printf("(DD) Trampoline %d : vp_ipc_write_reg()\n", getpid());
