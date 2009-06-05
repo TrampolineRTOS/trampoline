@@ -26,15 +26,18 @@ CPU test {
         LDFLAGS = "";
     } ;
 
+    COUNTER SystemCounter {
+	SOURCE = IRQ2;
+    };
 
     APPMODE std {
     };
 
     ISR foo {
-        CATEGORY = 2;
+        CATEGORY  = 2;
         STACKSIZE = 32768;
-        PRIORITY = 15;
-        SOURCE = IRQ7;
+        PRIORITY  = 15;
+        SOURCE    = IRQ7;
     };
 
     TASK bar {

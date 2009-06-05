@@ -1,7 +1,7 @@
 ###############################################################################
 # IMPORTS
 ###############################################################################
-import signal
+import signal, copy
 from register import Register
 
 ###############################################################################
@@ -39,6 +39,8 @@ class Device(object):
 
     """ Attributes """
     self.id	    = 1 << callbackIndex
+    self.irq        = "IRQ" + str(callbackIndex)
+    self.longID     = None
     self.__offset   = 0
     self._registers = {} # Dict
     self._scheduler = None
@@ -57,14 +59,16 @@ class Device(object):
       if register.id != -1 and self.__offset < register.id:
 	self.__offset = register.id
       if register.id == - 1:
-	register.setID(1 << (self.__offset + len(self.registers)))
-      self.registers[register.name] = register
+	register.setID(1 << (self.__offset + len(self._registers)))
+
+      """ Add register (reference) to the list """
+      self._registers[register.name] = register
 
   def generate(self, header):
     """
-    Generate the header file use to compile trampoline with the same identifiers
-    than viper 2
-    @param header file descriptor where device have to write its generation
+    Generate the header file use to compile trampoline with
+        the same identifiers than viper 2
+     @param header file descriptor where device have to write its generation
     """
 
     """ Generate trampoline header """
@@ -73,25 +77,48 @@ class Device(object):
 
   def generateRegisters(self, header):
     """
-    Generate the header file use to compile trampolin with the same identifiers
-    than viper 2
+    Generate the header file use to compile trampolin with
+        the same identifiers than viper 2
     @param header file descriptor where device have to write its generation
     """
     for name, register in self._registers.iteritems():
       register.generate(header)
 
-
   def setEcu(self, ecu):
     """
     Set ecu to use
+    If the function is called, it means we are on run() mode.
+    So we copy registers and set Ecu to them
     """
     self._ecu = ecu
+
+    """ Copy registers """
+    buffDict = {}   #Dict
+    buffReg  = None
+    for name, register in self._registers.iteritems():
+      """ Copy """
+      buffReg = copy.deepcopy(register)
+
+      """ Set IPC """
+      buffReg.setIPC(ecu.getIPC())
+
+      """ Set Device """
+      buffReg.setDevice(self)
+
+      """ Add it to the buffList """
+      buffDict[buffReg.name] = buffReg
+
+    """ The buffList is the new list """
+    self._registers = buffDict
 
   def setScheduler(self, scheduler):
     """
     Set logical scheduler to use
     """
     self._scheduler = scheduler
+
+  def genLongID(self, offset):
+    self.longID = self.id << offset
 
   def sendIt(self):
     """

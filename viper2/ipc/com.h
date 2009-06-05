@@ -82,9 +82,9 @@ bool init_ipc_struct(ipc_t *ipc);
  * Write a register
  * @param ipc ipc_t structure (contains shared memory and semaphore)
  * @param reg_id register id which will be modified
- * @param reg pointer to the reg_t structure to copy in reg reg_id
+ * @param reg information to copy in reg reg_id
  */
-void write_reg(ipc_t *ipc, reg_id_t reg_id, reg_t *reg);
+void write_reg(ipc_t *ipc, reg_id_t reg_id, reg_t reg);
 
 /**
  * Read a register

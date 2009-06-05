@@ -185,7 +185,7 @@ bool init_ipc_struct(ipc_t *ipc)
 }
 
 
-void write_reg(ipc_t *ipc, reg_id_t reg_id, reg_t *reg)
+void write_reg(ipc_t *ipc, reg_id_t reg_id, reg_t reg)
 {
   /* Semaphore */
 #ifdef READER_WRITER_SEM
@@ -241,7 +241,7 @@ void write_reg(ipc_t *ipc, reg_id_t reg_id, reg_t *reg)
 #endif
 
   /* Writes register */
-  ipc->sh_mem->reg[reg2i(reg_id)] = (*reg); /* Copy because reg is not necessary in the shared memory */
+  ipc->sh_mem->reg[reg2i(reg_id)] = reg;
 
   /* Release semaphore */
 #ifdef READER_WRITER_SEM

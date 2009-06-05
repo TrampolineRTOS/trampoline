@@ -11,7 +11,14 @@ class Event(object):
   Event class is a structure with accessors.
   This class is used to add new event to the Scheduler.
   """
+
   def __init__(self, device, delay, modifiedRegisters = None):
+    """
+    Constructor.
+    @param device device to call when time is elapsed
+    @param delay time to wait (seconds, float)
+    @param modifiedRegisters list of modifiedRegisters to give to device (use by Ecu only)
+    """
     self.__time   = delay
     self.__device = device
     self.__modifiedRegisters = modifiedRegisters
@@ -32,7 +39,7 @@ class Event(object):
 
   def getDevice(self):
     """
-    @return device id (tiny one [withou '<<'])
+    @return device id
     """
     return self.__device
 
@@ -46,11 +53,15 @@ class Event(object):
 # SCHEDULER CLASS
 ###############################################################################
 class Scheduler(object):
-#TODO doc
+  """
+  Logical scheduler
+  All events are handle by this class.
+  There may have one instance of this class.
+  """
   def __init__(self, speedCoeff):
     """
     Constructor.
-    @param speedCoeff (floating variable) is the coeff to apply to the time. 
+    @param speedCoeff (floating variable) is the coeff to apply to the time.
 	    3 means three times speeder
     """
     self.__speedCoeff = float(speedCoeff)
@@ -61,7 +72,7 @@ class Scheduler(object):
   def addEvent(self, event):  
     """
     Add event to the scheduler.
-    Time is calculate by the function. 
+    Time is calculate by the function.
       So you have to give time to wait from present.
     @param event the Event to add
     """
@@ -72,10 +83,9 @@ class Scheduler(object):
 
   def start(self):
 #TODO
-    """
-    TODO:
+    """    TODO:
       Sleep scheduler the min time to wait.
-    Start scheduler : Get Event whose time is passed, call event() 
+    Start scheduler : Get Event whose time is passed, call event()
       Device'method and remove the event from the list.
     """
 

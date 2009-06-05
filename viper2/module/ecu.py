@@ -3,6 +3,7 @@
 ###############################################################################
 import re, sys
 import threading, time #ReadingThread
+from errors import IPCError
 
 sys.path.append('ipc')
 import ipc
@@ -14,7 +15,7 @@ from device import Device
 class ReadingThread(threading.Thread):
   """
   Reading thread block on fifo access while fifo is empty.
-  When fifo is not empty, reading thread add an event to the 
+  When fifo is not empty, reading thread add an event to the
   ecu. Next, ecu add an event to the good device one, and scheduler
   wake up the device. The scheduler give modifiedRegisters mask to
   event too.
@@ -73,7 +74,7 @@ class Ecu(object):
     
     """ Init """
     self.__devices       = {} # Dict
-    self.__offset        = 32 # 32 last bits are used by registers TODO Get it in consts.h
+    self.__offset        = ipc.REGISTER_ID_BITS # Last bits are used by registers
     self.__ipc           = None
     self.__readingThread = None # No reading thread if we only generate
 
@@ -97,13 +98,13 @@ class Ecu(object):
     """ IPC """
     self.__ipc = ipc.tpl_ipc_create_instance(self.__osPath)
     if not self.__ipc:
-      raise ValueError, "You must compile trampoline before run viper 2"  
-      # TODO Create IPCError class
+      raise IPCError, "You must compile trampoline before run viper 2"  
 
     """ Init devices """ 
     for name, device in self.__devices.iteritems():
       device.setEcu(self)
       device.setScheduler(self.__scheduler)
+      device.genLongID(self.__offset)
       device.start()
 
     """ Init and start reading thread """
@@ -113,8 +114,8 @@ class Ecu(object):
 
   def generate(self):
     """
-    Generate the header file use to compile trampolin with the same identifiers
-    than viper 2
+    Generate the header file use to compile trampolin with the same
+    identifiers than viper 2
     """
 
     """ Open header """
@@ -137,7 +138,7 @@ class Ecu(object):
     for name, device in self.__devices.iteritems(): 
       index += 1
       header.write("const reg_id_t " + device.name + " = " + hex(device.id << self.__offset) + ";\n")
-      oilFile.write("  " + device.name + " = " + str(device.callbackIndex) + ";\n")
+      oilFile.write("  " + device.irq + " = " + str(device.callbackIndex) + ";\n")
 
     """ Generate register identifier """
     header.write("\n/* Registers */\n")
@@ -159,17 +160,20 @@ class Ecu(object):
   def sendIt(self, signum, id):
     """
     Send an UNIX interruption (kill).
-    @pararm signum must be Device.SIGUSR1, Device.SIGUSR2 or Device.SIGALRM 
-    @param id the device id (tiny one [without '<<'])
+    @pararm signum must be Device.SIGUSR1, Device.SIGUSR2 or Device.SIGALRM
+    @param id the device id
     """
     ipc.tpl_ipc_send_it(self.__ipc, signum, id)
 
   def kill(self):
-    """ Stop reading thread """
+    """
+    Stop Reading thread, trampoline and Ecu
+    """
+    """Stop reading thread"""
     if self.__readingThread:
       self.__readingThread.kill()
       if self.__readingThread.isAlive():
-        print "Waiting reading thread 1 secondes..."
+        print "Waiting reading thread 1 seconde..."
         time.sleep(1)
         if self.__readingThread.isAlive():
           print "Reading thread stop not clearly."
@@ -178,21 +182,11 @@ class Ecu(object):
     if self.__ipc:
       ipc.tpl_ipc_destroy_instance(self.__ipc)
 
-  def writeRegister(self, registerID, info):
-    """
-    Write an information into a register of the shared memory
-    @param registerID a full register id (device|reg)
-    @param info an 32 bits integer
-    """
-    ipc.tpl_ipc_write_reg(self.__ipc, registerID, info)
+  def getIPC(self):
+    return self.__ipc
 
-  def readRegister(self, registerID):
-    """
-    Read an information from a register of the shared memory
-    @param registerID a full register id (device|reg)
-    @return the information (32 bits integer)
-    """
-    return ipc.tpl_ipc_read_reg(self.__ipc, registerID) 
+  def getDir(self):
+    return self.__dir
 
   def event(self, deviceID, registersMask):
     """
@@ -201,8 +195,20 @@ class Ecu(object):
     @param registerMask register mask (reg_id_t)
     """
     if deviceID not in self.__devices:
-      raise ValueError, str(deviceID) + " is not in devices list !" # TODO IPCError ?
+      raise IPCError, str(deviceID) + " is not in devices list !" 
+
     else:
-      self.__scheduler.addEvent(
-          Event(self.__devices[deviceID], 0, registersMask)
-      )
+      """ Find index of modified registers """
+      mask  = 1 << self.__offset
+      index = self.__offset
+      reg = []
+
+      while mask != 0:
+        if registersMask & mask != 0:
+          reg.append(index)
+
+        mask >>= 1
+        index -= 1
+
+      """ Add event to scheduler """
+      self.__scheduler.addEvent(Event(self.__devices[deviceID], 0, reg))

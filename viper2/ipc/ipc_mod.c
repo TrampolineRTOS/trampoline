@@ -386,7 +386,7 @@ pid_t tpl_ipc_get_pid(ipc_t *ipc)
   return ipc->pid;
 }
 
-void tpl_ipc_write_reg(ipc_t *ipc, reg_id_t reg_id, reg_t *reg)
+void tpl_ipc_write_reg(ipc_t *ipc, reg_id_t reg_id, reg_t reg)
 {
 #ifdef DEBUG
   printf("(DD) Viper to trampoline %d : tpl_ipc_write_reg()\n", ipc->pid);

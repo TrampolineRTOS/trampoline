@@ -55,7 +55,7 @@ void vp_ipc_signal_update(ipc_t *ipc, dev_id_t dev_id, mask_t mask);
  * @param reg_id register id which will be modified
  * @param reg pointer to the reg_t structure to copy in reg reg_id
  */
-void vp_ipc_write_reg(ipc_t *ipc, reg_id_t reg_id, reg_t *reg);
+void vp_ipc_write_reg(ipc_t *ipc, reg_id_t reg_id, reg_t reg);
 
 /**
  * Read a register

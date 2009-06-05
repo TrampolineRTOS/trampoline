@@ -10,7 +10,7 @@
 #define FIFO_SIZE	 20  /* number of cells in fifo */
 #define REGISTERS_NB	 100 /* number of shared registers */
 #define FILE_PATH_LEN	 64
-#define REGISTER_ID_BITS 16 /* number of bits to identify a register */
+#define REGISTER_ID_BITS 32 /* number of bits to identify a register */
 /*#define DEVICES_ID_BITS	 16 *//* number of bits to identify a device */
 
 /* Mask */
