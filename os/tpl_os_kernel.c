@@ -913,8 +913,9 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
   tpl_kern.running = tpl_dyn_proc_table[tpl_kern.running_id];
   tpl_kern.s_running = tpl_stat_proc_table[tpl_kern.running_id];
 
-  TRACE_ISR_PREEMPT(tpl_kern)
-  TRACE_TASK_PREEMPT(tpl_kern)
+//  TRACE_ISR_PREEMPT(tpl_kern)
+//  TRACE_TASK_PREEMPT(tpl_kern)
+  TRACE_TASK_EXECUTE(tpl_kern.running_id)
 
   if (tpl_kern.running->state == READY_AND_NEW)
   {

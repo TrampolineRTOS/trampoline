@@ -208,6 +208,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
     
   /*  and let the scheduler do its job  */
   tpl_schedule_from_dying();
+  TRACE_ISR_TERMINATE(tpl_kern.s_old->id,tpl_kern.s_old->id)
  
   #ifndef WITH_SYSTEM_CALL
 		if (tpl_kern.need_switch != NO_NEED_SWITCH)
