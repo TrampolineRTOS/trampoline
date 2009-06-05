@@ -121,8 +121,8 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 
     /*  and let the scheduler do its job
      */
+    TRACE_TASK_TERMINATE(tpl_kern.running_id,tpl_kern.running_id)
     tpl_schedule_from_dying();
-    TRACE_TASK_TERMINATE(tpl_kern.s_old->id,tpl_kern.s_old->id)
 # ifndef WITH_SYSTEM_CALL
     if (tpl_kern.need_switch != NO_NEED_SWITCH)
     {
