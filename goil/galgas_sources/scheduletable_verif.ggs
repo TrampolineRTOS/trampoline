@@ -32,7 +32,7 @@ routine schedule_tables_well_formed
 
     @action_list actions:= [st actions];
 #        @bool offset0_found:= false;
-    foreach actions (@uint64 offset @action_obj action) do
+    foreach actions (@uint64 offset @uint order @action_obj action) do
 #            if offset == 0L then offset0_found:= true; end if;
       if offset > len then
         error [action location]: "Offset of action is greater than the LENGTH attribute of Schedule Table ".[stname string];
@@ -89,8 +89,10 @@ routine schedule_tables_tasks_and_events_exist
 #  ??@event_map         events
 :
   foreach [cpu scheduletables] (@lstring stname @scheduletable_obj st) do
-    foreach [st actions] (@uint64 offset @action_obj action) do
+    foreach [st actions] (@uint64 offset @uint order @action_obj action) do
       cast action:
+        #when == @void_action do
+        #  error stname: "ACTION attribute not defined for SCHEDULETABLE ".[stname string];
         when == @activatetask_action ata do
           if not [[cpu tasks] hasKey ![[ata task_name] string]] then
             error [action location]: "TASK attribute of action does not reference an existing task";

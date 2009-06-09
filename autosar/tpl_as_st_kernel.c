@@ -110,9 +110,9 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
     P2VAR(tpl_action, AUTOMATIC, OS_APPL_DATA)  action_desc;
     VAR(tpl_action_count, AUTOMATIC)  i;
 
-    VAR(tpl_tick, AUTOMATIC) before;
-    VAR(tpl_tick, AUTOMATIC) deviation;
+	VAR(tpl_tick, AUTOMATIC) deviation;
 
+	/*launch all the actions of the expiry point*/
     for (i = 0; i < next_ep->count; i++)
     {
         action_desc = (next_ep->actions)[i];
@@ -129,7 +129,7 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
     /*  Reset the cycle of the time object                                  */
     st->cycle = 0;
 
-    /*  Test whether the schedule table is finished or not                  */
+    /*  Test whether the schedule table is finished or not */
     if (index < schedtable->count)
     {
         /*  The schedule table is not finished                              */
@@ -139,70 +139,39 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
         /* MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
           tpl_schedtable*. This cast behaves correctly because the first memeber
           of tpl_schedule_table is a tpl_time_obj */
-        st->cycle = (schedtable->expiry)[index]->sync_offset;
-        ((tpl_schedule_table *)st)->index = index;
+		st->cycle = (schedtable->expiry)[index]->sync_offset;
+		((tpl_schedule_table *)st)->index = index;
+		
+		/*replace that by a #ifdef but declare first WITH_NO_SYNC from GOIL*/
+		if (schedtable->sync_strat != SCHEDTABLE_NO_SYNC)
+		{
+			/* calculate the absolute value of the deviation */
+			if ((schedtable->expiry)[index]->sync_offset >=
+				(schedtable->expiry)[index]->offset )
+			{
+				deviation = (schedtable->expiry)[index]->sync_offset -
+							(schedtable->expiry)[index]->offset;
+			}
+			else
+			{
+				deviation = (schedtable->expiry)[index]->offset -
+							(schedtable->expiry)[index]->sync_offset;
+			}
 
-        /* calculate the absolute value of the deviation */
-        if ((schedtable->expiry)[index]->sync_offset >=
-            (schedtable->expiry)[index]->offset )
-        {
-            deviation = (schedtable->expiry)[index]->sync_offset -
-                        (schedtable->expiry)[index]->offset;
-        }
-        else
-        {
-            deviation = (schedtable->expiry)[index]->offset -
-                        (schedtable->expiry)[index]->sync_offset;
-        }
-
-        /* if deviation is less than the configured precision,
-           the schedule table is considered synchronized */
-        if (deviation <= (schedtable->precision))
-        {
-            st->state = SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS;
-        }
-        else
-        {
-            st->state = SCHEDULETABLE_RUNNING;
-        }
-
-    }
-    else {
-        /*  The schedule table is finished                                  */
-        /*  Test whether a schedule table has been ´ nextified ª or not     */
-        /*  MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
-            tpl_schedtable*. This cast behaves correctly because the
-            first member of tpl_schedula_table is a tpl_time_obj            */
-        tpl_schedule_table *next = ((tpl_schedule_table *)st)->next;
-        /*  Get the remaining time to fill the current schedule table
-            period. This time is stored in the offset of the first expiry
-            point                                                           */
-        before = (schedtable->expiry)[0]->offset;
-        if (next != NULL) {
-            /*  reset the state of the current schedule table               */
-            st->state = SCHEDULETABLE_STOPPED;
-            /*  There is a next schedule table set, start it                */
-            next->b_desc.date =
-                next->b_desc.stat_part->counter->current_date + before;
-        /*  MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
-            tpl_time_obj*. This cast behaves correctly because the
-            first member of tpl_schedule_table is a tpl_time_obj            */
-            ((tpl_time_obj *)next)->state = SCHEDULETABLE_RUNNING;
-            tpl_insert_time_obj((tpl_time_obj *)next);
-        }
-        else if (schedtable->periodic == TRUE) {
-            /*  No next schedule table but the current table is periodic    */
-            st->cycle = before;
-        }
-        else {
-            /*  reset the state of the current schedule table               */
-            st->state = SCHEDULETABLE_STOPPED;
-        }
-        /*  Reset the index                                                 */
-        /*  MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
-            tpl_schedtable*. This cast behaves correctly because the
-            first memberof tpl_schedule_table is a tpl_time_obj             */
-        ((tpl_schedule_table *)st)->index = 0;
+			/* if deviation is less than the configured precision,
+			   the schedule table is considered synchronized */
+			if (deviation <= (schedtable->precision))
+			{
+				st->state = SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS;
+			}
+			else
+			{
+				st->state = SCHEDULETABLE_RUNNING;
+			}
+		}
+		else{
+			st->state = SCHEDULETABLE_RUNNING;
+		}
     }
 
     return need_resched;

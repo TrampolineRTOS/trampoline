@@ -74,7 +74,7 @@ class @activatetask_action extends @action_obj {
         doReplace !?i_res !key !"&".[name string]."_notification" ;
 
         i_res := res."\n".i_res ;
-   end method ;
+    end method ;
 }
 
 class @callback_action extends @action_obj {
@@ -97,7 +97,7 @@ class @callback_action extends @action_obj {
         doReplace !?i_res !key !"&".[name string]."_notification" ;
 
         i_res := res."\n".i_res ;
-   end method ;
+    end method ;
 }
 
 class @flag_action extends @action_obj {
