@@ -1,4 +1,4 @@
-OIL_VERSION = "2.5" : "autosar_st_s2" ;
+OIL_VERSION = "2.5" : "autosar_st_s3" ;
 
 IMPLEMENTATION trampoline {
 
@@ -16,10 +16,14 @@ IMPLEMENTATION trampoline {
 
     OS config {
         STATUS = EXTENDED;
-		APP_SRC = "autosar_st_s2.c";
+		APP_SRC = "autosar_st_s3.c";
 		APP_SRC = "task1_instance.c";
+		APP_SRC = "task2_instance.c";
+		APP_SRC = "task3_instance.c";
+		APP_SRC = "task4_instance.c";
+		APP_SRC = "task5_instance.c";
         TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "autosar_st_s2";
+        APP_NAME = "autosar_st_s3";
 		CFLAGS = "-I../../embUnit";
         CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
@@ -38,8 +42,31 @@ IMPLEMENTATION trampoline {
     };
 	
 	TASK t2 {
-        AUTOSTART = FALSE;
+        AUTOSTART = FALSE ;
+        PRIORITY = 2;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+		EVENT = Event1;
+    };
+	
+	TASK t3 {
+        AUTOSTART = FALSE ;
         PRIORITY = 3;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+		EVENT = Event1;
+    };
+	
+	TASK t4 {
+        AUTOSTART = FALSE ;
+        PRIORITY = 3;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+	
+	TASK t5 {
+        AUTOSTART = FALSE ;
+        PRIORITY = 4;
         ACTIVATION = 1;
         SCHEDULE = FULL;
     };
@@ -51,22 +78,37 @@ IMPLEMENTATION trampoline {
 		TYPE = SOFTWARE;
 	};
 	
-	COUNTER Hardware_Counter{
+	COUNTER Software_Counter_bis{
 		MAXALLOWEDVALUE = 100;
 		TICKSPERBASE = 1;
 		MINCYCLE = 1;
-		TYPE = HARDWARE {};
+		TYPE = SOFTWARE;
 	};
-		
+	
 	SCHEDULETABLE sched1 {
         COUNTER = Software_Counter;
         AUTOSTART = FALSE ;
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
-        LENGTH = 10;
+        LENGTH = 3;
+        ACTION = SETEVENT {
+            OFFSET = 0;
+            TASK = t3;
+			EVENT = Event1;
+        };
+		ACTION = ACTIVATETASK {
+            OFFSET = 0;
+            TASK = t5;
+        };
+       
+        ACTION = SETEVENT {
+            OFFSET = 1;
+            TASK = t3;
+			EVENT = Event1;
+        };
         ACTION = ACTIVATETASK {
-            OFFSET = 2;
-            TASK = t2;
+            OFFSET = 1;
+            TASK = t4;
         };
         ACCESSING_APPLICATION = app;
     };
@@ -76,51 +118,45 @@ IMPLEMENTATION trampoline {
         AUTOSTART = FALSE ;
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
-        LENGTH = 10;
-        ACTION = ACTIVATETASK {
-            OFFSET = 2;
+        LENGTH = 1;
+		ACTION = INCREMENTCOUNTER {
+            OFFSET = 1;
+            COUNTER = Software_Counter_bis;
+        };
+		ACTION = SETEVENT {
+            OFFSET = 1;
+            TASK = t3;
+			EVENT = Event1;
+        };
+		ACTION = SETEVENT {
+            OFFSET = 1;
+            TASK = t2;
+			EVENT = Event1;
+        };
+		ACTION = ACTIVATETASK {
+            OFFSET = 1;
             TASK = t2;
         };
+
         ACCESSING_APPLICATION = app;
     };
 	
-	SCHEDULETABLE sched3 {
-        COUNTER = Software_Counter;
-        AUTOSTART = FALSE ;
-		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
-        PERIODIC = FALSE;
-        LENGTH = 3;
-        ACTION = ACTIVATETASK {
-            OFFSET = 2;
-            TASK = t2;
-        };
-        ACCESSING_APPLICATION = app;
-    };
+	EVENT Event1{
+		MASK = AUTO;
+	};
 	
-	SCHEDULETABLE sched4 {
-        COUNTER = Hardware_Counter;
-        AUTOSTART = FALSE ;
-        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
-        PERIODIC = FALSE;
-        LENGTH = 10;
-        ACTION = ACTIVATETASK {
-            OFFSET = 2;
-            TASK = t2;
-        };
-        ACCESSING_APPLICATION = app;
-    };
-	
-    APPLICATION app {
+	APPLICATION app {
         TRUSTED = FALSE;
         STARTUPHOOK = TRUE;
         TASK = t1;
 		TASK = t2;
+		TASK = t3;
+		TASK = t4;
+		TASK = t5;
 		COUNTER = Software_Counter;
-		COUNTER = Hardware_Counter;
+		COUNTER = Software_Counter_bis;
         SCHEDULETABLE = sched1;
         SCHEDULETABLE = sched2;
-        SCHEDULETABLE = sched3;
-        SCHEDULETABLE = sched4;
 	};
-
+	
 };

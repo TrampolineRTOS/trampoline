@@ -296,7 +296,7 @@ rule <st_action_params>
     end repeat ;
     if task_known & offset_known then
       @activatetask_action sdata := [@activatetask_action new !here !task] ;
-      actions += ![offset uint64] !sdata ;
+      actions += ![offset uint64] !1 !sdata ;
     else
       error here : "incomplete expiry point" ;
     end if ;
@@ -344,7 +344,7 @@ rule <st_action_params>
     end repeat ;
     if task_known & offset_known & event_known then
       @setevent_action sdata := [@setevent_action new !here !task !event] ;
-      actions += ![offset uint64] !sdata ;
+      actions += ![offset uint64] !2 !sdata ;
     else
       error here : "incomplete expiry point" ;
     end if ;
@@ -380,7 +380,7 @@ rule <st_action_params>
     end repeat ;
     if counter_known & offset_known then
  		@incrementcounter_action sdata := [@incrementcounter_action new !here !counter] ;
-     	actions += ![offset uint64] !sdata ;
+     	actions += ![offset uint64] !3 !sdata ;
     else
       error here : "incomplete expiry point" ;
     end if ;

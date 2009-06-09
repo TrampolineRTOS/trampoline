@@ -1,4 +1,4 @@
-OIL_VERSION = "2.5" : "autosar_st_s1" ;
+OIL_VERSION = "2.5" : "autosar_st_s4" ;
 
 IMPLEMENTATION trampoline {
 
@@ -15,22 +15,26 @@ IMPLEMENTATION trampoline {
  CPU test {
 
     OS config {
-        STATUS = EXTENDED;
-		APP_SRC = "autosar_st_s1.c";
+        STATUS = STANDARD;
+		APP_SRC = "autosar_st_s4.c";
 		APP_SRC = "task1_instance.c";
+		APP_SRC = "error_instance1.c";
+		APP_SRC = "error_instance2.c";
+		APP_SRC = "error_instance3.c";
         TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "autosar_st_s1";
+        APP_NAME = "autosar_st_s4";
 		CFLAGS = "-I../../embUnit";
         CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
+		ERRORHOOK = TRUE;
 		
 	};
 
     APPMODE std {};
 
-    TASK t1 {
+ 	TASK t1 {
         AUTOSTART = TRUE { APPMODE = std ; } ;
         PRIORITY = 1;
         ACTIVATION = 1;
@@ -38,10 +42,18 @@ IMPLEMENTATION trampoline {
     };
 	
 	TASK t2 {
-        AUTOSTART = FALSE;
+        AUTOSTART = FALSE ;
+        PRIORITY = 2;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+	
+	TASK t3 {
+        AUTOSTART = FALSE ;
         PRIORITY = 3;
         ACTIVATION = 1;
         SCHEDULE = FULL;
+		EVENT = Event1;
     };
 	
 	COUNTER Software_Counter{
@@ -50,27 +62,41 @@ IMPLEMENTATION trampoline {
 		MINCYCLE = 1;
 		TYPE = SOFTWARE;
 	};
-		
-	SCHEDULETABLE sched1 {
+	
+	SCHEDULETABLE sched {
         COUNTER = Software_Counter;
-        AUTOSTART = FALSE ; //TRUE { OFFSET = 1; APPMODE = std; };
+        AUTOSTART = FALSE ;
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
-        LENGTH = 10;
+        LENGTH = 2;
         ACTION = ACTIVATETASK {
-            OFFSET = 2;
+            OFFSET = 0;
+            TASK = t1;
+        };
+        ACTION = SETEVENT {
+            OFFSET = 1;
             TASK = t2;
+			EVENT = Event1;
+        };
+        ACTION = SETEVENT {
+            OFFSET = 2;
+            TASK = t3;
+			EVENT = Event1;
         };
         ACCESSING_APPLICATION = app;
     };
+	
+	EVENT Event1{
+		MASK = AUTO;
+	};
 	
 	APPLICATION app {
         TRUSTED = FALSE;
         STARTUPHOOK = TRUE;
         TASK = t1;
 		TASK = t2;
+		TASK = t3;
 		COUNTER = Software_Counter;
-	    SCHEDULETABLE = sched1;
+	    SCHEDULETABLE = sched;
 	};
-
 };

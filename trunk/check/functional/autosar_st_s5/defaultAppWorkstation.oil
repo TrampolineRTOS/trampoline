@@ -1,4 +1,4 @@
-OIL_VERSION = "2.5" : "autosar_st_s1" ;
+OIL_VERSION = "2.5" : "autosar_st_s5" ;
 
 IMPLEMENTATION trampoline {
 
@@ -15,16 +15,19 @@ IMPLEMENTATION trampoline {
  CPU test {
 
     OS config {
-        STATUS = EXTENDED;
-		APP_SRC = "autosar_st_s1.c";
+        STATUS = STANDARD;
+		APP_SRC = "autosar_st_s5.c";
 		APP_SRC = "task1_instance.c";
+		APP_SRC = "task2_instance.c";
+		APP_SRC = "error_instance.c";
         TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "autosar_st_s1";
+        APP_NAME = "autosar_st_s5";
 		CFLAGS = "-I../../embUnit";
         CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
+		ERRORHOOK = TRUE;
 		
 	};
 
@@ -38,11 +41,13 @@ IMPLEMENTATION trampoline {
     };
 	
 	TASK t2 {
-        AUTOSTART = FALSE;
-        PRIORITY = 3;
+        AUTOSTART = FALSE ;
+        PRIORITY = 2;
         ACTIVATION = 1;
         SCHEDULE = FULL;
+		EVENT = Event1;
     };
+	
 	
 	COUNTER Software_Counter{
 		MAXALLOWEDVALUE = 100;
@@ -53,16 +58,34 @@ IMPLEMENTATION trampoline {
 		
 	SCHEDULETABLE sched1 {
         COUNTER = Software_Counter;
-        AUTOSTART = FALSE ; //TRUE { OFFSET = 1; APPMODE = std; };
+        AUTOSTART = FALSE ;
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
-        LENGTH = 10;
+        LENGTH = 2;
         ACTION = ACTIVATETASK {
-            OFFSET = 2;
+            OFFSET = 1;
             TASK = t2;
         };
         ACCESSING_APPLICATION = app;
     };
+	
+	SCHEDULETABLE sched2 {
+        COUNTER = Software_Counter;
+        AUTOSTART = FALSE ;
+        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+        PERIODIC = FALSE;
+        LENGTH = 1;
+        ACTION = SETEVENT {
+            OFFSET = 1;
+            TASK = t2;
+			EVENT = Event1;
+        };
+        ACCESSING_APPLICATION = app;
+    };
+	
+	EVENT Event1{
+		MASK = AUTO;
+	};
 	
 	APPLICATION app {
         TRUSTED = FALSE;
@@ -71,6 +94,7 @@ IMPLEMENTATION trampoline {
 		TASK = t2;
 		COUNTER = Software_Counter;
 	    SCHEDULETABLE = sched1;
+		SCHEDULETABLE = sched2;
 	};
-
+	
 };

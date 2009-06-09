@@ -53,9 +53,10 @@ class @ltgt_sync_true extends @ltgt_sync_obj {
 
 sortedlist @action_list {
     @uint64 offset ;
+    @uint   order;
     @action_obj act ;
 }{
-    offset <
+    offset <, order <
 }
 
 
@@ -70,9 +71,9 @@ routine expiry_point
     @string exp_st ;
     retrieveTemplateString ?exp_st !"expiry_point" ;
     exp_st := [exp_st stringByReplacingStringByString !"$EXPIRY_POINT$" ![name string]."_".[expiry string]."_expirypoint"] ;
-    if expiry != 0L then
+	 #if expiry != 0L then
         exp_st := [exp_st stringByReplacingStringByString !"$OFFSET$" ![expiry-previous_expiry string]] ;
-    end if ;
+    #end if ;
     exp_st := [exp_st stringByReplacingStringByString !"$ACTION_COUNT$" ![index string]] ;
     exp_st := [exp_st stringByReplacingStringByString !"$ACTION_ARRAY$" ![name string]."_".[expiry string]] ;
 
@@ -155,6 +156,8 @@ class @scheduletable_obj extends @oil_obj {
         retrieveTemplateString ?activatetask_tpl !"notification_activatetask" ;
         @string incrementcounter_tpl ;
         retrieveTemplateString ?incrementcounter_tpl !"notification_incrementcounter" ;
+        @string finalizescheduletable_tpl ;
+        retrieveTemplateString ? finalizescheduletable_tpl !"notification_finalizescheduletable" ;
 
         @uint64 cur_offset := 0L ;
         @uint64 previous_offset := 0L ;
@@ -165,23 +168,22 @@ class @scheduletable_obj extends @oil_obj {
         @string expiry_table := "tpl_expiry_point *".[name string]."_expiry_table[$EXPIRY_TABLE_SIZE$] = {\n" ;
         @bool first_time := true ;
 
-        foreach actions (@uint64 offset @action_obj action) do
-            #message [offset string]."\n" ;
-            if offset != cur_offset then
-              if not first_time then
+        foreach actions (@uint64 offset @uint order @action_obj action) do
+        	if (offset != cur_offset) | ((offset == 0L) & (first_time == true)) then
+          		if not first_time then
                 # output the table of actions for the previous expiry point
-                expiry_point !name !cur_offset !previous_offset !index !?act_table ;
+				  expiry_point !name !cur_offset !previous_offset !index !?act_table ;
                 expiry_table .= "    &".[name string]."_".[cur_offset string]."_expirypoint,\n" ;
-              else
+        		else
                 first_time := false ;
               end if ;
               previous_offset := cur_offset ;
               cur_offset := offset ;
               index := 0 ;
               expiry_count++ ;
-           end if ;
-
-            @string res := "" ;
+        	end if ;
+			
+			 @string res := "" ;
             cast action :
             when == @activatetask_action ata do
                 res := [activatetask_tpl stringByReplacingStringByString !"$TASK$" ![[ata task_name] string]."_id"] ;
@@ -202,13 +204,38 @@ class @scheduletable_obj extends @oil_obj {
             index ++ ;
             act_structs .= res."\n" ;
         end foreach ;
+
+		 #check if offset==length :
+		 #			if yes -> add finalize_ST_action ; expiry_point and expiry_table
+		 # 			if no -> finish expiry_point and expiry_table ; add finalize_ST_action ; expiry_point and expiry_table
+        cast length :
+        when == @uint64_class len do		
+			if (cur_offset != [len value]) then
+				expiry_point !name !cur_offset !previous_offset !index !?act_table ;
+        		expiry_table .= "    &".[name string]."_".[cur_offset string]."_expirypoint,\n" ;
+				previous_offset := cur_offset ;
+				cur_offset := [len value] ;
+				index := 0 ;
+        		expiry_count++ ;
+			end if;
+		 else end cast ;
+		 @string res := "" ;
+		 res := [finalizescheduletable_tpl stringByReplacingStringByString !"$SCHEDTABLE$" ![name string]."_sched_table"] ;
+		 res := [res stringByReplacingStringByString
+               !"$NOTIFICATION_NAME$"
+               !"expiry point at offset ".[cur_offset string]." of schedule table ".[name string]] ;
+        res := [res stringByReplacingStringByString
+               !"$NOTIFICATION$"
+               ![name string]."_".[index string]."_".[cur_offset string]."_expirypoint_action"] ;
+		 index ++ ;
+        act_structs .= res."\n" ;
         expiry_point !name !cur_offset !previous_offset !index !?act_table ;
         expiry_table .= "    &".[name string]."_".[cur_offset string]."_expirypoint\n};" ;
 
         # compute the remaining time from the last expiry point to the beginning
         # of the next execution of the schedule table (for periodic schedule tables)
         @uint64 lastOffset ;
-        [actions greatest ?lastOffset ?*] ;
+        [actions greatest ?lastOffset ?* ?*] ;
         cast length :
         when == @uint64_class len do
             @uint64 delay := [len value] - lastOffset ;
