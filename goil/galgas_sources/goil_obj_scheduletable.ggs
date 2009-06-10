@@ -97,7 +97,7 @@ rule <scheduletable_parameters>
     @lstring counter ;
     $COUNTER$ ;  $=$ ; $idf$ ?counter ; <description> ?* ; $;$ ;
     if [st_counter string] != "" then
-      error here : "COUNTER attribute already defined for Schedule Table ".[name string] ;
+      error here : "OS409 - COUNTER attribute already defined for Schedule Table ".[name string] ;
       error [st_counter location] : "Was previously define here" ;
     else
       st_counter := counter ;
@@ -201,7 +201,7 @@ rule <st_autostart_params>
   repeat
   while
     if offset_known then
-      error here : "OFFSET attribute already defined for this schedule table autostart" ;
+      error here : "OS442 - OFFSET attribute already defined for this schedule table autostart" ;
       error [offset location] : "was previously defined here" ;
     end if ; 
     $OFFSET$ ; $=$ ; $uint_number$ ?offset ; <description> ?* ; $;$ ;
@@ -277,7 +277,7 @@ rule <st_action_params>
       @luint64 new_offset ;
       $OFFSET$ ; $=$ ; $uint_number$ ?new_offset ; $;$ ;
       if offset_known then
-        error here : "OFFSET attribute already defined for this schedule table ACTIVATETASK action" ;
+        error here : "OS442 - OFFSET attribute already defined for this schedule table ACTIVATETASK action" ;
         error [offset location] : "was previously defined here" ;
       else
         offset := new_offset ;
@@ -315,7 +315,7 @@ rule <st_action_params>
       @luint64 new_offset ;
       $OFFSET$ ; $=$ ; $uint_number$ ? new_offset ; $;$ ;
       if offset_known then
-        error here : "OFFSET attribute already defined for this schedule table ACTIVATETASK action" ;
+        error here : "OS442 - OFFSET attribute already defined for this schedule table SETEVENT action" ;
         error [offset location] : "was previously defined here" ;
       else
         offset := new_offset ;
@@ -325,7 +325,7 @@ rule <st_action_params>
       @lstring new_task ;
       $TASK$ ; $=$ ; $idf$ ?new_task ; $;$ ;
       if task_known then
-        error here : "TASK attribute already defined for this schedule table ACTIVATETASK action" ;
+        error here : "TASK attribute already defined for this schedule table SETEVENT action" ;
         error [task location] : "was previously defined here" ;
       else
        task := new_task ;
@@ -361,7 +361,7 @@ rule <st_action_params>
       @luint64 new_offset ;
       $OFFSET$ ; $=$ ; $uint_number$ ?new_offset ; $;$ ;
       if offset_known then
-        error here : "OFFSET attribute already defined for this schedule table INCREMENTCOUNTER action" ;
+        error here : "OS442 - OFFSET attribute already defined for this schedule table INCREMENTCOUNTER action" ;
         error [offset location] : "was previously defined here" ;
       else
         offset := new_offset ;

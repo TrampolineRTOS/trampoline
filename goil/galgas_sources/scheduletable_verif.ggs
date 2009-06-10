@@ -11,36 +11,98 @@ import semantics goil_types_root in "goil_types_root.ggs";
 #
 routine schedule_tables_well_formed
   ??@scheduletable_map sts
+  ??@root_obj cpu
 :
   foreach sts (@lstring stname @scheduletable_obj st) do
-    # check at least one expiry point of
-    # each schedule table has its offset set to 0
-    # check there is no expiry point with an offset greater than
-    # the LENGTH of the schedule table
-    @uint64 len:= 0L;
-    cast [st length]:
+	#check signgle-shot or repeating
+	@string perio := "" ;
+	cast [st periodic] :
+  	 	when == @bool_class b do
+        	if [b value] == true then 
+                perio := "TRUE";
+          	else
+          	     perio := "FALSE";
+      		end if ;
+   	else error stname : "Internal error, unexpected type for PERIODIC attribute of schedule table ".[stname string] ;
+   	end cast ;
+
+	# Check LENGTH is a number
+	@uint64 len:= 0L;
+   	cast [st length]:
       when == @uint64_class ui do
         len:= [ui value];
       else
         error here: "Internal error, incorrect datatype for LENGTH attribute of Schedule Table ".[stname string];
-    end cast;
+   	end cast;
     
     # Check the schedule table has not a length equal to 0
     if len == 0L then
       error [[st length] location]: "The LENGTH attribute should not be 0";
     end if;
 
-    @action_list actions:= [st actions];
-#        @bool offset0_found:= false;
-    foreach actions (@uint64 offset @uint order @action_obj action) do
-#            if offset == 0L then offset0_found:= true; end if;
-      if offset > len then
-        error [action location]: "Offset of action is greater than the LENGTH attribute of Schedule Table ".[stname string];
-      end if;
-    end foreach;
-#        if not offset0_found then
-#            error [stname location]: "No expiry point found with a 0 offset for Schedule Table ".[stname string];
-#        end if;
+  	@action_list actions:= [st actions];
+	
+	# Check if at least one action exist in the schedule table 
+	if ([actions length] == 0) then
+	  	error stname: "OS401-OS407 - ACTION attribute not defined for SCHEDULETABLE ".[stname string];
+	end if;
+
+  	@uint64 cur_offset := 0L ;
+  	@uint64 previous_offset := 0L ;
+   	@uint64 diff_offset := 0L ;
+  	@counter_map       counters       := [cpu counters];
+	@bool first_time := true;
+	#check counter value
+	#foreach [st counter] (@lstring counter_name @counter_obj counter) do
+	#message "counter = ".[st counter]."\n"; 
+
+ 	foreach actions (@uint64 offset @uint order @action_obj action) do
+  		# check there is no expiry point with an offset greater than the LENGTH of the schedule table
+     	if offset > len then
+         error [action location]: "Offset of action is greater than the LENGTH attribute of Schedule Table ".[stname string];
+      	end if;
+
+		diff_offset := offset - cur_offset;
+		#message "offset = ".[offset string]." cur_offset = ".[cur_offset string]." diff_offset = ".[diff_offset string]."\n";
+		
+		# check the first offset is either 0 or in the range [OsMinCycle .. OsMaxaAllowedValue]
+		# check the delay between expiry points is in the range [OsMinCycle .. OsMaxaAllowedValue]
+		@string OS;
+		if (cur_offset == 0L) then
+			OS := "OS443";
+		else
+			OS := "OS408";
+		end if;
+		if (diff_offset != 0L) then
+			if [counters hasKey ![[st counter] string]] then
+			    @counter_obj cnt;
+				[counters getCounter ![st counter] ?cnt];
+				cast [cnt min_cycle] :
+					when == @uint32_class mc do
+						if (diff_offset < [[mc value] uint64]) then
+            				error stname : OS." - Delay between offset(".[cur_offset string].") and offset(".[offset string].") is less than mincyle(".[[[mc value] uint64] string].") of the counter of ".[stname string];
+						end if;
+				else end cast;
+				cast [cnt max_allowed_value] :
+					when == @uint32_class mc do
+						if (diff_offset > [[mc value] uint64]) then
+           				error stname : OS." - Delay between offset(".[cur_offset string].") and offset(".[offset string].") is greater than maxallowedvalue(".[[[mc value] uint64] string].") of the counter of ".[stname string];
+						end if;
+				else end cast;
+			end if;
+		end if;
+
+		# check the final delay  :
+		#		- single-shot ST : 0 or in the range [OsMinCycle .. OsMaxaAllowedValue]
+		#		- repeating ST : in the range [OsMinCycle .. OsMaxaAllowedValue]
+		if ((offset == len) & (first_time == true) & (perio == "TRUE")) then
+			error stname : "OS444 - Final delay (final offset) can be equal to LENGTH only for single-shot schedule table and ".[stname string]." isn't one";
+		end if;		
+
+		cur_offset := offset;
+
+  	end foreach;
+
   end foreach;
 end routine;
 
@@ -90,11 +152,9 @@ routine schedule_tables_tasks_and_events_exist
 :
   foreach [cpu scheduletables] (@lstring stname @scheduletable_obj st) do
     foreach [st actions] (@uint64 offset @uint order @action_obj action) do
-      cast action:
-        #when == @void_action do
-        #  error stname: "ACTION attribute not defined for SCHEDULETABLE ".[stname string];
+        cast action:
         when == @activatetask_action ata do
-          if not [[cpu tasks] hasKey ![[ata task_name] string]] then
+		   if not [[cpu tasks] hasKey ![[ata task_name] string]] then
             error [action location]: "TASK attribute of action does not reference an existing task";
           end if;
       	 when == @setevent_action sea do

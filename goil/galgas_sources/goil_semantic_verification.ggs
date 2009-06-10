@@ -293,9 +293,9 @@ routine verify_all
 
   # Autosar checking
 
-  if [option goil_options.autosar_on] then
-    schedule_tables_well_formed ![cpu scheduletables];
-  end if;
+ # if [option goil_options.autosar_on] then
+ #   schedule_tables_well_formed ![cpu scheduletables];
+ # end if;
 
   # cross-objects static verification
   @resource_map resources:= [cpu resources];
@@ -310,6 +310,7 @@ routine verify_all
 
   # cross-objects Autosar checking
   if [option goil_options.autosar_on] then
+    schedule_tables_well_formed ![cpu scheduletables] !cpu;
     schedule_tables_counters_exist_and_compatible ![cpu scheduletables] ![cpu counters];
     schedule_tables_tasks_and_events_exist !cpu;
     apps_well_formed !cpu;

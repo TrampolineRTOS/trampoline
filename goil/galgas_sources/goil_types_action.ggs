@@ -25,7 +25,7 @@ class @void_action extends @action_obj {
         ?!@string    unused h_res
         ?!@string    i_res :
 
-        doReplace !?i_res !key !"NULL_PTR" ;
+       doReplace !?i_res !key !"NULL_PTR" ;
     end method ;
 }
 
