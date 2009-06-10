@@ -3,42 +3,30 @@
 ###############################################################################
 import random
 import device
-from device import Device
 from scheduler import Event
 
 ###############################################################################
 # MOTOR CLASS
 ###############################################################################
-class Motor(Device):
+class Motor(device.Device):
   """
-    Init:
-      * Send speed we want to Trampoline 
-
-    LOOP:
-      Trampoline -> Viper:
-	* Read "captor" register to get the motor speed
-	* Calculate delta with speed asked 
-	* Write this delta to "commande" register.
-	* signal_update() (Push fifo)
-       
-      Viper -> Trampoline :
-	* Read "commande" register.
-	* Apply noise(random)
-	* Write to "captor" register the actual speed.
-
+    Viper -> Trampoline :
+      * Read "control" register. (Absolute speed to apply)
+      * Apply noise(random)
+      * Write to "sensor" register the actual speed.
 
     Speed is noised each Motor.__delay seconds !
   """
-  def __init__(self, name, id, captorReg, commandeReg, noise, delay = 0.2, signal = device.SIGUSR2):
+  def __init__(self, name, id, sensorReg, controlReg, noise, delay = 0.2, signal = device.SIGUSR2):
     """
     Constructor.
     @see Device.__init__()
     """
-    Device.__init__(self, name, id, signal, [captorReg, commandeReg])
+    device.Device.__init__(self, name, id, signal, [sensorReg, controlReg])
     self.__type     = type
     self.__delay    = float(delay)
-    self.__captor   = captorReg.name
-    self.__commande = commandeReg.name
+    self.__sensor   = sensorReg.name
+    self.__control  = controlReg.name
     self.__noise    = noise
     self.__speed    = 0
 
@@ -57,18 +45,24 @@ class Motor(Device):
 
       """ If event come from Trampoline """
       """ Get command """
-    elif self._registers[self.__commande].id in modifiedRegisters:
-        self.__speed += self._registers[self.__commande].read()
+    elif self._registers[self.__control].id in modifiedRegisters:
+        self.__speed = self._registers[self.__control].read()
 
-        """ Apply noise and write captor speed """
+	print "[VPR] (MOTOR) " + str(self.__speed)
+
+        """ Apply noise and write sensor speed """
         self.noise()
+    else:
+      print "[VPR](DEBUG) Some registers are not handle :", modifiedRegisters
 
   def noise(self):
       """ Noise """
       self.__speed += random.randint(-self.__noise, self.__noise)
+      if self.__speed < 0:
+	self.__speed = 0
 
       """ Write to registers """
-      self._registers[self.__captor].write(self.__speed)
+      self._registers[self.__sensor].write(self.__speed)
 
   def start(self):
     """

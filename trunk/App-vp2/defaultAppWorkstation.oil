@@ -33,14 +33,14 @@ CPU test {
     APPMODE std {
     };
 
-    ISR foo {
+    ISR tick {
         CATEGORY  = 2;
         STACKSIZE = 32768;
         PRIORITY  = 15;
         SOURCE    = IRQ7;
     };
 
-    TASK bar {
+    TASK init{
         PRIORITY = 5;
         AUTOSTART = TRUE {
             APPMODE = std;
@@ -48,5 +48,18 @@ CPU test {
         ACTIVATION = 1;
         SCHEDULE = FULL;
     };
-    
+
+    TASK motor {
+        PRIORITY = 3;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+
+    TASK startMotor {
+        PRIORITY = 4;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
 };

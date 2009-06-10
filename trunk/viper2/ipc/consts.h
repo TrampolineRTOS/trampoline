@@ -38,11 +38,11 @@
 #endif
 
 /* Useful for FIFO container */
-typedef int dev_id_t;
+typedef int64_t reg_id_t;
 typedef int64_t mask_t;
 typedef struct st_modified_reg_t
 {
-  dev_id_t dev;
+  reg_id_t dev;
   mask_t reg_mask; 
 }modified_reg_t;
 

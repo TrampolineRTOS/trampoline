@@ -2,67 +2,26 @@
 ###############################################################################
 # IMPORT
 ###############################################################################
-import sys, signal, traceback, subprocess
-
+import sys
 sys.path.append('module')
-from ecu       import Ecu
-from device    import Device
-from register  import Register
-from scheduler import Scheduler
-
-##
-# Devices
-##
-import device # device.SIGUSR1, device.SIGUSR2 and device.SIGALRM
 sys.path.append('device')
-import timer
-from timer     import Timer
-from motor     import Motor
+sys.path.append('ipc')
 
-###############################################################################
-# GLOBALS VARIABLES
-###############################################################################
-scheduler = None
+import signal
+import traceback
+import subprocess
+import config
 
 ###############################################################################
 # SIGNAL HANDLER
 ###############################################################################
 def signalHandler(signum, stackFrame):
   print "\nSignal catch, stop Viper 2..."
-  scheduler.kill()
+  config.scheduler.kill()
 
 ###############################################################################
 # MAIN
 ###############################################################################
-# Scheduler
-scheduler = Scheduler(speedCoeff = 1)
-
-#Registers
- # Example : regYY = Register("YY")
-captor   = Register("CAPTOR")
-commande = Register("COMMANDE")
-
-#Ecu 1
-# You should always add registers in same order. Else there is an overlap.
-# TODO I want to find out how to add registers with no order constraint
- # Exemple : ecu = Ecu(
- #    "./path/to/trampoline_executable",
- #    scheduler,
- #    [
- #      Device("CAN0",    2, device.SIGUSR1, [regYY, regTX]),
- #    ]
- # )
-allEcus = [
-  Ecu(
-    "../App-vp2/trampoline",
-    scheduler,
-    [
-      Timer("TIMER0", 7, type = timer.AUTO, delay = 0.5),
-      Motor("MOTOR0", 2, captor, commande, noise = 5)   
-    ]
-  )
-]
-
 #Help
 if "-h" in sys.argv or "--help" in sys.argv:
   print "USAGE: ./viper2.py [-g [-c [--nodep]]]"
@@ -75,7 +34,7 @@ if "-h" in sys.argv or "--help" in sys.argv:
 
 #Generate
 elif "-g" in sys.argv or "--generate" in sys.argv:
-  for ecu in allEcus:
+  for ecu in config.allEcus:
     error = False
     ecu.generate()
 
@@ -109,21 +68,21 @@ else:
     signal.signal(signal.SIGINT, signalHandler)
 
     """ Start all ecus """
-    for ecu in allEcus:
+    for ecu in config.allEcus:
       ecu.start()
 
     """ Start logical scheduler """
-    scheduler.start()
+    config.scheduler.start()
 
   except Exception:
     traceback.print_exc()
 
   finally:
     """ Kill logical scheduler """
-    scheduler.kill()
+    config.scheduler.kill()
 
     """ Kill all ecus """
-    for ecu in allEcus:
+    for ecu in config.allEcus:
       ecu.kill()
 
     print "\nBye,"

@@ -7,7 +7,7 @@
 #include <unistd.h>
 
 #include "tpl_os_custom_types.h"
-
+#include "viper.h"
 
 /**
  * tpl_stack_word is the basic element of a stack in order to have a proper
@@ -35,6 +35,8 @@ typedef struct TPL_CONTEXT *tpl_context;
 extern struct TPL_CONTEXT idle_task_context;
 
 extern void tpl_sleep(void);
+
+extern ipc_t viper;
 
 #define IDLE_CONTEXT    &idle_task_context 
 #define IDLE_ENTRY      tpl_sleep

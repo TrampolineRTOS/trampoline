@@ -38,7 +38,8 @@ class Register(object):
     """
     if not self.generated:
       self.generated = True
-      file.write("const reg_id_t " + self.name + " = " + hex(self.id) + ";\n")
+      file.write("#define " + self.name + "_val " + (hex(self.id)) + "\n")
+      file.write("const reg_id_t " + self.name + " = " + self.name + "_val;\n")
 
   def setDevice(self, device):
     """
@@ -64,4 +65,4 @@ class Register(object):
     Read an information from the register
     @return info (32bits integer)
     """
-    return ipc.tpl_ipc_read_reg(self.__ipc, self.device.longID | self.id)
+    return ipc.tpl_ipc_read_reg(self.__ipc, self.__device.longID | self.id)

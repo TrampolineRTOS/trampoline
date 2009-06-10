@@ -12,7 +12,7 @@
 #include "util/fifo.h"
 
 typedef int64_t reg_t; /* a register do 4 octets */
-typedef int64_t reg_id_t;
+typedef int64_t dev_id_t;
 
 /**
  * Structure

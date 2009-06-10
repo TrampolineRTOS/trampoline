@@ -5,7 +5,7 @@ import signal, copy
 from register import Register
 
 ###############################################################################
-# CONSTANTES
+# CONSTANTS
 ###############################################################################
 SIGALRM = signal.SIGALRM 
 SIGUSR1 = signal.SIGUSR1
@@ -73,7 +73,7 @@ class Device(object):
 
     """ Generate trampoline header """
     for name, register in self._registers.iteritems():
-      header.write("const reg_id_t " + self.name + "_" + register.name + " = " + self.name + " | " + register.name + ";\n")
+      header.write("const reg_id_t " + self.name + "_" + register.name + " = " + self.name + "_val | " + register.name + "_val;\n")
 
   def generateRegisters(self, header):
     """

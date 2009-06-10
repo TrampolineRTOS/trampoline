@@ -1,7 +1,13 @@
 #include <stdio.h>
+
 #include "tpl_os.h"
+#include "tpl_machine.h"
+
+#include "vp_ipc_devices.h"
 
 #include <unistd.h>
+
+int motor_speed = 20;
 
 int main(void)
 {
@@ -14,39 +20,59 @@ void PreTaskHook(void)
 {
     TaskType id;
     GetTaskID(&id);
-    printf("Avant %d\n",id);
+    printf("[TPL] Avant %d\n",id);
 }
 
 void PostTaskHook(void)
 {
     TaskType id;
     GetTaskID(&id);
-    printf("Apres %d\n",id);
+    printf("[TPL] Apres %d\n",id);
 }
 
 void StartupHook(void)
 {
-    printf("Ca demarre !\n");
+    printf("[TPL] Ca demarre !\n");
 }
 
 void ShutdownHook(StatusType error)
 {
-    printf("Au revoir et a bientot :)\n");
+    printf("[TPL] Au revoir et a bientot :)\n");
 }
 
-DeclareTask(bar);
+DeclareTask(init);
+DeclareTask(motor);
+DeclareTask(startMotor);
 
-TASK(bar)
+TASK(init)
 {
-    while(1)
-    {
-        printf("bar\n");
-        sleep(1);
-    } 
-	TerminateTask();
+    ActivateTask(startMotor);
+    TerminateTask();
 }
 
-ISR(foo)
+TASK(startMotor)
 {
-    printf("foo\n");
+    printf("[TPL](MOTOR) Want speed : %d\n", motor_speed);
+
+    vp_ipc_write_reg(&viper, MOTOR0_CONTROL, (reg_t)motor_speed);
+    vp_ipc_signal_update(&viper, MOTOR0, CONTROL);
+    
+    TerminateTask();
+}
+
+TASK(motor)
+{
+    int real_speed = (int)vp_ipc_read_reg(&viper, MOTOR0 | SENSOR);
+
+    printf("[TPL](MOTOR) Motor real speed is : %d\n", real_speed);
+    
+    vp_ipc_write_reg(&viper, MOTOR0 | CONTROL, (reg_t)motor_speed);
+    vp_ipc_signal_update(&viper, MOTOR0, CONTROL);
+
+    TerminateTask();
+}
+
+ISR(tick)
+{
+    ActivateTask(motor);
 }
