@@ -113,7 +113,7 @@ class @scheduletable_obj extends @oil_obj {
         @string stres ;
         retrieveTemplateString ?stres !"schedule_table" ;
 
-        doReplace !?stres !"$SCHEDTABLE_NAME$" ![name string] ;
+		 doReplace !?stres !"$SCHEDTABLE_NAME$" ![name string] ;
         doReplace !?stres !"$SCHEDTABLE$" ![name string]."_sched_table" ;
         doReplace !?stres !"$COUNTER$" !"&".[counter string]."_counter_desc" ;
         doReplace !?stres !"$EXPIRY_TABLE$" ![name string]."_expiry_table" ;
@@ -121,20 +121,18 @@ class @scheduletable_obj extends @oil_obj {
 
 #        @string sync_strat ;
 #        [ltgt_sync strategy ?sync_strat] ;
-        @string perio := "" ;
 
 #        doReplace !?stres !"$SYNC_STRATEGY$" !sync_strat ;
-
-        cast periodic :
-        when == @bool_class b do
-            if [b value] == true then 
+        @string perio := "" ;
+		 cast periodic :
+  	 		when == @bool_class b do
+        	if [b value] == true then 
                 perio := "TRUE";
-            else
-                perio := "FALSE";
-        end if ;
-        else error name : "Internal error, unexpected type for PERIODIC attribute of schedule table ".[name string] ;
-        end cast ;
-
+          	else
+          	     perio := "FALSE";
+      		end if ;
+   		 else error name : "Internal error, unexpected type for PERIODIC attribute of schedule table ".[name string] ;
+   		 end cast ;
         doReplace !?stres !"$PERIODIC$" !perio ;
 
         cast autostart :
@@ -218,7 +216,11 @@ class @scheduletable_obj extends @oil_obj {
 				index := 0 ;
         		expiry_count++ ;
 			end if;
-		 else end cast ;
+          doReplace !?stres !"$LENGTH$" ![[len value] string] ;
+		 else
+            error name : "Internal error, unexpected type for LENGTH attribute of schedule table ".[name string] ;
+        end cast ;
+
 		 @string res := "" ;
 		 res := [finalizescheduletable_tpl stringByReplacingStringByString !"$SCHEDTABLE$" ![name string]."_sched_table"] ;
 		 res := [res stringByReplacingStringByString
@@ -234,17 +236,16 @@ class @scheduletable_obj extends @oil_obj {
 
         # compute the remaining time from the last expiry point to the beginning
         # of the next execution of the schedule table (for periodic schedule tables)
-        @uint64 lastOffset ;
-        [actions greatest ?lastOffset ?* ?*] ;
-        cast length :
-        when == @uint64_class len do
-            @uint64 delay := [len value] - lastOffset ;
-            act_table := [act_table stringByReplacingStringByString !"$OFFSET$" ![delay string]] ;
+        #@uint64 lastOffset ;
+        #[actions greatest ?lastOffset ?* ?*] ;
+        #cast length :
+        #when == @uint64_class len do
+        #    @uint64 delay := [len value] - lastOffset ;
+        #    act_table := [act_table stringByReplacingStringByString !"$OFFSET$" ![delay string]] ;
             # put the length too
-            doReplace !?stres !"$LENGTH$" ![[len value] string] ;
-        else
-            error name : "Internal error, unexpected type for LENGTH attribute of schedule table ".[name string] ;
-        end cast ;
+        #else
+        #    error name : "Internal error, unexpected type for LENGTH attribute of schedule table ".[name string] ;
+        #end cast ;
 
         # set the synchronization strategy and parameters
         cast ltgt_sync :
