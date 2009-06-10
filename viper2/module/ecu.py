@@ -5,9 +5,9 @@ import re, sys
 import threading, time #ReadingThread
 from errors import IPCError
 
-sys.path.append('ipc')
 import ipc
 from device import Device
+from scheduler import Event 
 
 ###############################################################################
 # READING THREAD CLASS
@@ -43,8 +43,7 @@ class ReadingThread(threading.Thread):
       modified = ipc.tpl_ipc_pop_fifo(self.__ipc);
 
       """ Call Ecu event handler """
-      device = ipc.tpl_ipc_reg_to_dev(modified.dev)
-      self.__ecu.event(device, modified.reg_mask)
+      self.__ecu.event(int(modified.dev), modified.reg_mask)
 
   def kill(self):
     """
@@ -129,7 +128,7 @@ class Ecu(object):
 
     """ Generate header """
     header.write("#ifndef __VP_DEVICES_H__\n#define __VP_DEVICES_H__\n")
-    header.write('\n#include "ipc/com.h" /* reg_id_t, dev_id_t */\n')
+    header.write('\n#include "com.h" /* reg_id_t, dev_id_t */\n')
     oilFile.write("interrupts{\n")
 
     """ Generate device identifier """
@@ -137,7 +136,12 @@ class Ecu(object):
     header.write("\n/* Devices */\n")
     for name, device in self.__devices.iteritems(): 
       index += 1
-      header.write("const reg_id_t " + device.name + " = " + hex(device.id << self.__offset) + ";\n")
+      header.write("#define " + device.name + "_val ((reg_id_t)" + hex(device.id) +  ") << " + str(self.__offset) + "\n")
+
+    header.write("\n");
+
+    for name, device in self.__devices.iteritems():
+      header.write("const reg_id_t " + device.name + " = " + device.name + "_val;\n")
       oilFile.write("  " + device.irq + " = " + str(device.callbackIndex) + ";\n")
 
     """ Generate register identifier """
@@ -194,13 +198,14 @@ class Ecu(object):
     @param deviceID device id
     @param registerMask register mask (reg_id_t)
     """
+    deviceID = deviceID >> self.__offset
     if deviceID not in self.__devices:
       raise IPCError, str(deviceID) + " is not in devices list !" 
 
     else:
       """ Find index of modified registers """
       mask  = 1 << self.__offset
-      index = self.__offset
+      index = self.__offset + 1
       reg = []
 
       while mask != 0:

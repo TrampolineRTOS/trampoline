@@ -91,11 +91,6 @@ printf("(DD) Viper to trampoline %d : tpl_ipc_send_it()\n", ipc->pid);
   kill(ipc->pid, signum);
 }
 
-dev_id_t tpl_ipc_reg_to_dev(reg_id_t *reg)
-{
-  return (dev_id_t)((*reg) >> REGISTER_ID_BITS); 
-}
-
 #ifdef READER_WRITER_SEM
 void init_reader_writer(struct st_reader_writer *reader_writer, int pid)
 {

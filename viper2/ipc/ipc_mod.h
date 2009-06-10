@@ -72,10 +72,4 @@ void tpl_ipc_wait_tpl(ipc_t *ipc);
  */
 modified_reg_t tpl_ipc_pop_fifo(ipc_t *ipc);
 
-/**
- * @param reg register + device identifiers
- * @return device dentifier only
- */
-dev_id_t tpl_ipc_reg_to_dev(reg_id_t *reg);
-
 #endif /* __IPC_MOD_H__ */

@@ -16,6 +16,8 @@ if [ $# -gt 1 ]; then
 fi
 
 cd $1
+if [ $NODEP -eq 1 ];then
+  rm -f trampoline
+fi
 goil -i -g -t=posix_vp2 --templates=../goil/templates/ *.oil 
 make NODEP=$NODEP
-cd ..

@@ -2,11 +2,10 @@
 # IMPORTS
 ###############################################################################
 import device
-from device import Device
 from scheduler import Event
 
 ###############################################################################
-# CONSTANTES
+# CONSTANTS
 ###############################################################################
 ONE_SHOT = 0
 AUTO     = 1
@@ -14,7 +13,7 @@ AUTO     = 1
 ###############################################################################
 # TIMER CLASS
 ###############################################################################
-class Timer(Device):
+class Timer(device.Device):
   """
   Timer device. This timer can run with a one shot and you could specify a delay
   """
@@ -26,7 +25,7 @@ class Timer(Device):
     @param type ONE_SHOT or AUTO
     @param delay time (second) between two shots (This is a float)
     """
-    Device.__init__(self, name, id, signal, registers)
+    device.Device.__init__(self, name, id, signal, registers)
     self.__type  = type
     self.__delay = float(delay)
 

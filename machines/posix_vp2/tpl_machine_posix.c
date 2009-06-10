@@ -24,7 +24,6 @@
 #include "tpl_as_definitions.h"
 #include "tpl_os_task_kernel.h"
 #endif /* WITH_AUTOSAR */
-#include "viper.h"
 
 #include <assert.h>
 #include <setjmp.h>
@@ -36,11 +35,10 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-static ipc_t viper;
-
 extern volatile u32 tpl_locking_depth;
 
 extern tpl_it_vector_entry tpl_it_vector[];
+ipc_t viper;
 
 VAR(tpl_stack_word, OS_VAR) idle_stack_zone[32768/sizeof(tpl_stack_word)] = {0} ;
 VAR(struct TPL_STACK, OS_VAR) idle_task_stack = { idle_stack_zone, 32768} ;
