@@ -89,6 +89,15 @@ FUNC(tpl_status, OS_CODE) tpl_action_finalize_schedule_table(
 	 point                                                           */
 	before = (schedtable->expiry)[0]->offset;
 	
+	/*  Reset the cycle of the time object                                  */
+	st->cycle = 0;
+	
+	/*  Reset the index                                                 */
+	/*  MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
+	 tpl_schedtable*. This cast behaves correctly because the
+	 first memberof tpl_schedule_table is a tpl_time_obj             */
+	((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index = 0;
+	
 	if (next != NULL) {
 		
 		/*  Get the next expiry point                                        */
@@ -111,6 +120,8 @@ FUNC(tpl_status, OS_CODE) tpl_action_finalize_schedule_table(
 				need_resched |= TRAMPOLINE_STATUS_MASK & (action_desc->action)(action_desc);
 			}
 			
+			/*should do a synchronisation if needed*/
+			
 			/*Increment index because the first one has just been launched*/
 			next->index = 1;
 		}
@@ -122,18 +133,30 @@ FUNC(tpl_status, OS_CODE) tpl_action_finalize_schedule_table(
 		tpl_insert_time_obj((tpl_time_obj *)next);
 	}
 	else if (schedtable->periodic == TRUE) {
+		/* if first expiry point in the next ST is at offset=0, launch it directly  */
+		if(schedtable->expiry[0]->offset == 0)
+		{
+			/*launch all the actions of the expiry point*/
+			for (i = 0; i < schedtable->expiry[0]->count; i++)
+			{
+				action_desc = (schedtable->expiry[0]->actions)[i];
+				need_resched |= TRAMPOLINE_STATUS_MASK & (action_desc->action)(action_desc);
+			}
+			
+			/*should do a synchronisation if needed*/
+			
+			/*Increment index because the first one has just been launched*/
+			((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index = 1;
+		}
+		
 		/*  No next schedule table but the current table is periodic    */
 		st->cycle = before;
 	}
 	else {
+
 		/*  reset the state of the current schedule table               */
 		st->state = SCHEDULETABLE_STOPPED;
 	}
-	/*  Reset the index                                                 */
-	/*  MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
-	 tpl_schedtable*. This cast behaves correctly because the
-	 first memberof tpl_schedule_table is a tpl_time_obj             */
-	((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index = 0;
 	
 	return need_resched;
 }

@@ -30,7 +30,7 @@ nonterminal <scheduletable_parameters>
   ?!@scheduletable_obj st
   ?@lstring name ;
 nonterminal <st_autostart_params>
-  !@autostart_obj autostart ;
+  !@autostart_obj autostart ?@uint mode;
 nonterminal <ltgt_sync_params>
   !@ltgt_sync_obj sync ;
 
@@ -106,9 +106,19 @@ rule <scheduletable_parameters>
     @autostart_obj autostart ;
     $AUTOSTART$ ;  $=$ ;
     select
-      $TRUE$ ;
+      $ABSOLUTE$ ;
       ${$ ;
-      <st_autostart_params> ?autostart ;
+      <st_autostart_params> ?autostart !1 ;
+      $}$ ;
+    or
+      $RELATIVE$ ;
+      ${$ ;
+      <st_autostart_params> ?autostart !2 ;
+      $}$ ;
+    or
+      $SYNCHRON$ ;
+      ${$ ;
+      <st_autostart_params> ?autostart !3 ;
       $}$ ;
     or
       $FALSE$ ; autostart := [@sd_autostart_false new !here] ;
@@ -191,6 +201,7 @@ end rule ;
 
 rule <st_autostart_params>
   !@autostart_obj autostart
+  ?@uint			 mode
 :
   @bool offset_known := false ;
 
@@ -212,12 +223,17 @@ rule <st_autostart_params>
     app_modes += ![app_mode string];
  end repeat ;
 
+  if (mode == 3) then
+		offset_known := true;
+  end if;	
+
   # signal an error when the OFFSET parameter is missing
-  if not offset_known then
+  if (offset_known == false) then
     error here : "OFFSET attribute is missing" ;
   end if ;
 
-  autostart := [@sd_autostart_true new !here !offset !app_modes] ;
+  autostart := [@sd_autostart_true new !here !offset !app_modes !mode] ;
+
 end rule ;
 
 rule <ltgt_sync_params>

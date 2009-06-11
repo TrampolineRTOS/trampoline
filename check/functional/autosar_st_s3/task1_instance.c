@@ -24,7 +24,7 @@ static void test_t1_instance(void)
 	SCHEDULING_CHECK_INIT(3);
 	result_inst_2 = StartScheduleTableRel(sched1, 1);
 	SCHEDULING_CHECK_AND_EQUAL_INT(3,E_OK, result_inst_2);
-	
+
 	SCHEDULING_CHECK_INIT(4);
 	result_inst_3 = IncrementCounter(Software_Counter);
 	/*start schedule table (because StartScheduleTabelRel(x, 1))*/
@@ -40,7 +40,7 @@ static void test_t1_instance(void)
 	result_inst_5 = GetScheduleTableStatus(sched1, &ScheduleTableStatusType_inst_1);
 	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(12, SCHEDULETABLE_RUNNING , ScheduleTableStatusType_inst_1); /*should be RUNNING*/
 	SCHEDULING_CHECK_AND_EQUAL_INT(12,E_OK, result_inst_5);
-		
+	
 	SCHEDULING_CHECK_INIT(13);
 	result_inst_6 = IncrementCounter(Software_Counter);
 	/*offset = 2+offset_sched*/
@@ -50,7 +50,7 @@ static void test_t1_instance(void)
 	result_inst_7 = GetScheduleTableStatus(sched1, &ScheduleTableStatusType_inst_2);
 	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(14, SCHEDULETABLE_RUNNING , ScheduleTableStatusType_inst_2); /*should be RUNNING*/
 	SCHEDULING_CHECK_AND_EQUAL_INT(14,E_OK, result_inst_7);
-
+	
 	SCHEDULING_CHECK_INIT(15);
 	result_inst_8 = IncrementCounter(Software_Counter);
 	/*offset = 3+offset_sched*/

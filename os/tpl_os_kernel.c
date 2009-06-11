@@ -1243,11 +1243,21 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
   {
     auto_time_obj =
       (P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA))tpl_schedtable_table[i];
-    if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART)
+    if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_RELATIVE)
     {
-      auto_time_obj->state = SCHEDULETABLE_RUNNING;
-      tpl_insert_time_obj(auto_time_obj);
+		auto_time_obj->state = SCHEDULETABLE_STOPPED;
+		tpl_start_schedule_table_rel_service(i, auto_time_obj->date);
     }
+	else if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_ABSOLUTE)
+	{
+		auto_time_obj->state = SCHEDULETABLE_STOPPED;
+		tpl_start_schedule_table_abs_service(i, auto_time_obj->date);
+	}
+	else if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_SYNCHRON)
+	{
+		auto_time_obj->state = SCHEDULETABLE_STOPPED;
+		tpl_start_schedule_table_synchron_service(i);
+	}
   }
 #endif
 }

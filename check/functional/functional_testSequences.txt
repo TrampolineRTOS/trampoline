@@ -100,6 +100,7 @@ autosar_st_s2
 autosar_st_s3
 autosar_st_s4
 autosar_st_s5
+autosar_st_s6
 autosar_sp_s1
 autosar_sp_s2
 autosar_sp_s3
