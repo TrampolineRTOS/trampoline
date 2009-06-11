@@ -124,10 +124,15 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
 	/*if nexted (periodic or nexted) or STOPPED, reset old sync->offset but don't synchronize because it's already done in
 	 tpl_action_finalize_schedule_table */
 	if ((index < index_temp) || ((index == 1) && (schedtable->count == 2)) || (st->state == SCHEDULETABLE_STOPPED)){
-		/* reset the offset of last expiry point to its default value,
-		 because adjustment for synchronisation of this expiry point has been done */
-		(schedtable->expiry)[index_temp]->sync_offset = (schedtable->expiry)[index_temp]->offset;		
-			
+		/*if offset=0 has been forced in tpl_action_finalize... reset offset=0 otherwise, reset offset=count*/
+		if (index == 1){
+			(schedtable->expiry)[0]->sync_offset = (schedtable->expiry)[0]->offset;						
+		}
+		else{
+			/* reset the offset of last expiry point to its default value,
+			 because adjustment for synchronisation of this expiry point has been done */
+			(schedtable->expiry)[index_temp]->sync_offset = (schedtable->expiry)[index_temp]->offset;			
+		}
 	}
 	else{
 
@@ -579,7 +584,7 @@ FUNC(tpl_status, OS_CODE) tpl_stop_schedule_table_service(
 			 tpl_time_obj*. This cast behaves correctly because the first member
 			 of tpl_schedul_table is a tpl_time_obj */
 			tpl_remove_time_obj((tpl_time_obj *)st);
-            st->b_desc.state = SCHEDULETABLE_STOPPED;
+			st->b_desc.state = SCHEDULETABLE_STOPPED;
             st->index = 0; /* reset the expiry point index to 0 */
 			
 			/*check if next schedule table exists*/
@@ -648,7 +653,7 @@ FUNC(tpl_status, OS_CODE) tpl_next_schedule_table_service(
                 /*  Set the next pointer                            */
                 if (current_st->next != NULL)
                 {
-                    current_st->next->b_desc.state = SCHEDULETABLE_STOPPED;
+					current_st->next->b_desc.state = SCHEDULETABLE_STOPPED;
                 }
                 current_st->next = next_st;
                 /*  And the state of the next schedule table        */

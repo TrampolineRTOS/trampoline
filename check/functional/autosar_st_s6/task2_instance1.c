@@ -13,11 +13,11 @@ static void test_t2_instance1(void)
 	
 	SCHEDULING_CHECK_INIT(6);
 	result_inst_1 = WaitEvent(Event1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(11,E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(12,E_OK, result_inst_1);
 	
-	SCHEDULING_CHECK_INIT(12);
+	SCHEDULING_CHECK_INIT(13);
 	result_inst_2 = TerminateTask();
-	SCHEDULING_CHECK_AND_EQUAL_INT(12,E_OK, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(13,E_OK, result_inst_2);
 		
 }
 
