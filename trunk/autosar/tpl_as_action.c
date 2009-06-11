@@ -32,6 +32,8 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
+#include <stdio.h>
+
 /**
  *  action function for action by incrementing counter
  */
@@ -99,11 +101,10 @@ FUNC(tpl_status, OS_CODE) tpl_action_finalize_schedule_table(
 	((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index = 0;
 	
 	if (next != NULL) {
-		
 		/*  Get the next expiry point                                        */
 		P2VAR(tpl_expiry_point, AUTOMATIC, OS_APPL_DATA) next_ep =
 			((P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))next->b_desc.stat_part)->expiry[0];
-		
+
 		/*  reset the state of the current schedule table               */
 		st->state = SCHEDULETABLE_STOPPED;
 		
@@ -133,6 +134,9 @@ FUNC(tpl_status, OS_CODE) tpl_action_finalize_schedule_table(
 		tpl_insert_time_obj((tpl_time_obj *)next);
 	}
 	else if (schedtable->periodic == TRUE) {
+		/*  No next schedule table but the current table is periodic    */
+		st->cycle = before;
+		
 		/* if first expiry point in the next ST is at offset=0, launch it directly  */
 		if(schedtable->expiry[0]->offset == 0)
 		{
@@ -144,16 +148,18 @@ FUNC(tpl_status, OS_CODE) tpl_action_finalize_schedule_table(
 			}
 			
 			/*should do a synchronisation if needed*/
+			/* reset the offset of last expiry point to its default value,
+			 because adjustment for synchronisation of this expiry point has been done */
+			(schedtable->expiry)[schedtable->expiry[0]->count]->sync_offset = (schedtable->expiry)[schedtable->expiry[0]->count]->offset;
 			
 			/*Increment index because the first one has just been launched*/
 			((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index = 1;
+			
+			/*  if offset=0, save the next offset in cycle */
+			st->cycle = schedtable->expiry[1]->offset;
 		}
-		
-		/*  No next schedule table but the current table is periodic    */
-		st->cycle = before;
 	}
 	else {
-
 		/*  reset the state of the current schedule table               */
 		st->state = SCHEDULETABLE_STOPPED;
 	}
