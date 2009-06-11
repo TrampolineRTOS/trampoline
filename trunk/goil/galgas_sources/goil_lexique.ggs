@@ -225,6 +225,12 @@ list schedtable_attrs error message "SCHEDULETABLE attribute '%K'" style keyword
     "MAX_DECREASE_ASYNC", "PRECISION", "LENGTH";
 
 #
+# Autostart attributes
+#
+list autostart_attrs error message "AUTOSTART attribute '%K'" style keywordsStyle :
+    "ABSOLUTE", "RELATIVE", "SYNCHRON";
+
+#
 # Applications attributes
 #
 list application_attrs error message "APPLICATION attribute '%K'" style keywordsStyle :
@@ -328,6 +334,7 @@ rule 'a'->'z' | 'A'->'Z' :
         default search att_token in autosar_key
         default search att_token in autosar_objs
         default search att_token in schedtable_attrs
+        default search att_token in autostart_attrs
         default search att_token in application_attrs
         default search att_token in sync_strategy
         default search att_token in timing_prot_attribs

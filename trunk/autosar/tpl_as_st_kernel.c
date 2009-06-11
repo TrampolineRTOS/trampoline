@@ -100,6 +100,8 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
       of tpl_schedula_table is a tpl_time_obj */
     VAR(tpl_expiry_count, AUTOMATIC)  index =
         ((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index;
+	VAR(tpl_expiry_count, AUTOMATIC)  index_temp = index;
+	
     /*  Get the current expiry point                                        */
     P2VAR(tpl_expiry_point, AUTOMATIC, OS_APPL_DATA) next_ep =
         (schedtable->expiry)[index];
@@ -111,34 +113,38 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
     VAR(tpl_action_count, AUTOMATIC)  i;
 
 	VAR(tpl_tick, AUTOMATIC) deviation;
-
+	
 	/*launch all the actions of the expiry point*/
     for (i = 0; i < next_ep->count; i++)
     {
         action_desc = (next_ep->actions)[i];
         need_resched |= TRAMPOLINE_STATUS_MASK & (action_desc->action)(action_desc);
     }
+	
+	/*if nexted (periodic or nexted) or STOPPED, reset old sync->offset but don't synchronize because it's already done in
+	 tpl_action_finalize_schedule_table */
+	if ((index < index_temp) || ((index == 1) && (schedtable->count == 2)) || (st->state == SCHEDULETABLE_STOPPED)){
+		/* reset the offset of last expiry point to its default value,
+		 because adjustment for synchronisation of this expiry point has been done */
+		(schedtable->expiry)[index_temp]->sync_offset = (schedtable->expiry)[index_temp]->offset;		
+			
+	}
+	else{
 
-    /* reset the offset of last expiry point to its default value,
-       because adjustment for synchronisation of this expiry point has been done */
-    (schedtable->expiry)[index]->sync_offset = (schedtable->expiry)[index]->offset;
-
-    /*  Prepare the next expiry point                                       */
-    index++;
-
-    /*  Reset the cycle of the time object                                  */
-    st->cycle = 0;
-
-    /*  Test whether the schedule table is finished or not */
-    if (index < schedtable->count)
-    {
+		/* reset the offset of last expiry point to its default value,
+		 because adjustment for synchronisation of this expiry point has been done */
+		(schedtable->expiry)[index]->sync_offset = (schedtable->expiry)[index]->offset;		
+		
+		/*  Prepare the next expiry point                                       */
+		index++;
+		
         /*  The schedule table is not finished                              */
         /*  Set the next cycle to the offset of the next expiry point
-            (offsets are not relative to the start of the schedule table
-            but to the previous expiry point                                */
+		 (offsets are not relative to the start of the schedule table
+		 but to the previous expiry point                                */
         /* MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
-          tpl_schedtable*. This cast behaves correctly because the first memeber
-          of tpl_schedule_table is a tpl_time_obj */
+		 tpl_schedtable*. This cast behaves correctly because the first memeber
+		 of tpl_schedule_table is a tpl_time_obj */
 		st->cycle = (schedtable->expiry)[index]->sync_offset;
 		((tpl_schedule_table *)st)->index = index;
 		
@@ -150,16 +156,16 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
 				(schedtable->expiry)[index]->offset )
 			{
 				deviation = (schedtable->expiry)[index]->sync_offset -
-							(schedtable->expiry)[index]->offset;
+				(schedtable->expiry)[index]->offset;
 			}
 			else
 			{
 				deviation = (schedtable->expiry)[index]->offset -
-							(schedtable->expiry)[index]->sync_offset;
+				(schedtable->expiry)[index]->sync_offset;
 			}
-
+			
 			/* if deviation is less than the configured precision,
-			   the schedule table is considered synchronized */
+			 the schedule table is considered synchronized */
 			if (deviation <= (schedtable->precision))
 			{
 				st->state = SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS;
@@ -172,8 +178,10 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
 		else{
 			st->state = SCHEDULETABLE_RUNNING;
 		}
-    }
-
+	
+		
+	}
+	
     return need_resched;
 }
 
@@ -375,6 +383,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel_service(
                 /*  the schedule table is not already started, proceed  */
                 cnt = st->b_desc.stat_part->counter;
                 date = cnt->current_date + offset + (schedtable->expiry[0])->offset;
+			/*	printf("tpl_start_schedule_table_rel_service - date = %d",date); */
                 if (date > cnt->max_allowed_value)
                 {
                     date -= cnt->max_allowed_value;

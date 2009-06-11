@@ -24,6 +24,7 @@ class @sd_autostart_false extends @autostart_obj {}
 class @sd_autostart_true extends @autostart_obj {
     @luint64   offset ;
     @stringset app_modes ;
+	 @uint mode;
 }
 
 abstract class @ltgt_sync_obj {
@@ -140,8 +141,14 @@ class @scheduletable_obj extends @oil_obj {
             doReplace !?stres !"$SCHEDTABLE_DATE$" !"0" ;
             doReplace !?stres !"$SCHEDTABLE_STATE$" !"SCHEDULETABLE_STOPPED" ;
         when == @sd_autostart_true sa do
-            doReplace !?stres !"$SCHEDTABLE_DATE$" ![[[sa offset] uint64] string] ;
-            doReplace !?stres !"$SCHEDTABLE_STATE$" !"SCHEDULETABLE_AUTOSTART" ;
+          	doReplace !?stres !"$SCHEDTABLE_DATE$" ![[[sa offset] uint64] string] ;
+			if ([sa mode] == 1) then
+				doReplace !?stres !"$SCHEDTABLE_STATE$" !"SCHEDULETABLE_AUTOSTART_ABSOLUTE" ;
+			elsif ([sa mode] == 2) then
+  		  		doReplace !?stres !"$SCHEDTABLE_STATE$" !"SCHEDULETABLE_AUTOSTART_RELATIVE" ;
+			elsif ([sa mode] == 3) then
+            	doReplace !?stres !"$SCHEDTABLE_STATE$" !"SCHEDULETABLE_AUTOSTART_SYNCHRON" ;
+			end if;
         else error name : "Internal error, unexpected type for AUTOSTART attribute of schedule table ".[name string] ;
         end cast ;
 
