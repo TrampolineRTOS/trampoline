@@ -50,20 +50,18 @@ rule <resource>
   $RESOURCE$ ;
   $idf$ ?resource_name ;
   if [resource_name string] == "res_sched" then
-    error here : "'res_sched' is a reserved name of the schedule resource";
+    error here : "'res_sched' is a reserved name of the scheduler resource";
   end if;
   ${$ ;
   if [resources hasKey ![resource_name string]] then
     [!?resources del !resource_name ?resource] ;
-    property := [resource property] ;
-    acc_apps := [resource acc_apps] ;
-    desc := [resource desc] ;
   else
-    property := [@resource_property_void_obj new !here] ;
-    acc_apps := [@lstringlist emptyList] ;
-    desc := [@lstring new !"" !here] ;
-    resource := [@resource_obj new !desc !property !acc_apps] ;
+    resource := default_resource_obj();
   end if ;
+  property := [resource property] ;
+  acc_apps := [resource acc_apps] ;
+  desc := [resource desc] ;
+
   <resource_attributes> !?property !?acc_apps ;
   $}$ ; <description> ?desc ; $;$ ;
   resource := [@resource_obj new !desc !property !acc_apps] ;

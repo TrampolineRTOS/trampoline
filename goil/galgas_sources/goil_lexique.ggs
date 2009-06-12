@@ -2,7 +2,7 @@
 # Trampoline OS
 #
 # Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline est protégé par la loi sur la propriété intellectuelle
+# Trampoline est protege par la loi sur la propriete intellectuelle
 #
 # This software is distributed under the Lesser GNU Public Licence
 #
@@ -54,7 +54,7 @@ list objList error message "Object '%K'" style keywordsStyle :
     "OS", "TASK", "COUNTER", "ALARM", "RESOURCE", "EVENT",
     "ISR", "MESSAGE", "COM", "NM", "APPMODE", "IPDU", "CPU";
 
-@lstring att_token;
+@string att_token;
 
 #
 # List of datatypes
@@ -228,7 +228,7 @@ list schedtable_attrs error message "SCHEDULETABLE attribute '%K'" style keyword
 # Autostart attributes
 #
 list autostart_attrs error message "AUTOSTART attribute '%K'" style keywordsStyle :
-    "ABSOLUTE", "RELATIVE", "SYNCHRON";
+    "ABSOLUTE", "RELATIVE", "SYNCHRON", "START";
 
 #
 # Applications attributes
@@ -307,7 +307,7 @@ $idf$ !att_token error message "identifier" style identifierStyle;
 
 rule 'a'->'z' | 'A'->'Z' :
     repeat
-        enterCharacterIntoString (att_token, *);
+        enterCharacterIntoString !?att_token !*;
     while 'a'->'z' | 'A'->'Z' | '_' | '0'->'9' :
     end repeat;
     send search att_token in oilVersion
@@ -366,14 +366,14 @@ message decimalNumberTooLarge : "decimal number too large";
 message unterminatedLitteralString : "Unterminated literal string"; 
 message unableToConvertToDouble : "Unable to convert the string to double";
 
-@lstring a_string;
+@string a_string;
 
 $string$ !a_string error message "literal string" style stringStyle;
 
 rule '"' :
     repeat
     while '\u0020'->'\u0021' | '\u0023' -> '\uFFFD' :
-        enterCharacterIntoString ( a_string, * );
+        enterCharacterIntoString !?a_string !* ;
     end repeat;
     select
         when '"' :
@@ -388,7 +388,7 @@ $g_string$ !a_string error message "in search path" style pathStyle;
 rule '<' :
     repeat
     while '\u0020'->'\u003D' | '\u003F' -> '\uFFFD' :
-        enterCharacterIntoString ( a_string, * );
+        enterCharacterIntoString !?a_string !* ;
     end repeat;
     select
         when '>' :
@@ -398,9 +398,9 @@ rule '<' :
     end select;
 end rule;
 
-@luint64 integerNumber;
-@ldouble floatNumber;
-@lstring number;
+@uint64 integerNumber;
+@double floatNumber;
+@string number;
 
 $uint_number$ !integerNumber error message "literal unsigned 64 bits integer" style integerStyle;
 $float_number$ !floatNumber error message "literal float" style floatStyle; 
@@ -413,7 +413,7 @@ $set_start_uint_number$ !integerNumber error message "literal unsigned 64 bits i
 rule "0x" | "0X" :
     repeat
     while '0'->'9' | 'a'->'f' | 'A'->'F':
-         enterHexDigitIntoUInt64(*,integerNumber) error decimalNumberTooLarge, internalError;
+         enterHexDigitIntoUInt64 !* !?integerNumber error decimalNumberTooLarge, internalError;
     end repeat;
     send $uint_number$;
 end rule;
@@ -423,8 +423,8 @@ end rule;
 # 
 rule '0'->'9':
     repeat
-        enterCharacterIntoString (number, *);
-        enterDigitIntoUInt64 (*,integerNumber) error decimalNumberTooLarge, internalError;
+        enterCharacterIntoString !?number !* ;
+        enterDigitIntoUInt64 !* !?integerNumber error decimalNumberTooLarge, internalError;
     while '0'->'9' :
     end repeat;
     select
@@ -434,10 +434,10 @@ rule '0'->'9':
 					send $set_start_uint_number$;
 				default
 		          	repeat
-                		enterCharacterIntoString (number, *);
+                		enterCharacterIntoString !?number !* ;
             		while '0'->'9' :
             		end repeat;
-            		convertStringToDouble(number,floatNumber) error unableToConvertToDouble;
+            		convertStringToDouble !number !?floatNumber error unableToConvertToDouble;
             		send $float_number$;
 			end select;
         default
@@ -456,7 +456,7 @@ $command$ !att_token error message "command"style commandStyle;
 rule '#':
     repeat
     while 'a'->'z' | 'A'->'Z' :
-        enterCharacterIntoString(att_token, *);
+        enterCharacterIntoString !?att_token !* ;
     end repeat;
     send search att_token in commands
         default $command$;

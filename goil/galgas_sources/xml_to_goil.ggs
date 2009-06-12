@@ -27,72 +27,74 @@ semantics xml_to_goil:
 
 import semantics xml_types in "xml_types.ggs";
 import semantics goil_types_root in "goil_types_root.ggs";
+import semantics xml_utils in "xml_utils.ggs";
+import semantics xml_containers in "xml_containers.ggs";
+
+routine parse_os
+  ??@xmlNodeList os_elems
+  ?!@root_obj    cpu
+:
+  foreach os_elems do
+    if is_elem(!node!"CONTAINERS") then
+      message "CONTAINERS trouve\n";
+      @xmlNodeList nl := [node nodeList];
+      foreach nl do
+        if is_elem(!node!"CONTAINER") then
+          message "CONTAINER trouve\n";
+          parse_container ![node nodeList] !?cpu;
+        end if;
+      end foreach;
+    end if;
+  end foreach;
+end routine;
 
 function transform_xml_to_goil
   ??@xmlNodeList nodes
   ->@root_obj    cpu
 :
-  @void void_obj := [@void new !here] ;
-  cpu := [@root_obj new
-    ![@os_obj new
-      ![@lstring new !"" !here]
-      ![@lstring new !"" !here]
-      !void_obj
-      !void_obj
-      !void_obj
-      !void_obj
-      !void_obj
-      !void_obj
-      ![@lstring new !"" !here]
-      !void_obj
-      !void_obj
-      !void_obj
-      !void_obj
-      !void_obj
-      ![@lstringlist emptyList]
-      ![@lstringlist emptyList]
-      ![@lstringlist emptyList]
-      ![@lstringlist emptyList]
-      ![@lstring new !"" !here]
-      ![@lstring new !"" !here]
-      ![@trace new !here]
-      ![@ident_map emptyMap]
-     ]
-    ![@com new
-      ![@lstring new !"" !here]
-      !false
-      !void_obj
-      !void_obj
-      !void_obj
-      !void_obj
-      !void_obj
-      ![@lstringlist emptyList]
-      ![@lstring new !"" !here]
-      ![@lstringlist emptyList]
-     ]
-    ![@task_map          emptyMap]
-    ![@counter_map       emptyMap]
-    ![@alarm_map         emptyMap]
-    ![@resource_map      emptyMap]
-    ![@event_map         emptyMap]
-    ![@isr_map           emptyMap]
-    ![@message_map       emptyMap]
-    ![@netmess_map       emptyMap]
-    ![@scheduletable_map emptyMap]
-    ![@app_map           emptyMap]
-  ] ;
-
+  cpu := void_root_obj();
 
   if [nodes length] == 0 then
     error here: "Empty epc file";
   else
     @bool root_found := false;
-    foreach nodes do
-      if [node type] == [@xmlNodeType element] then
-        if [[node name] string] == "AUTOSAR" & root_found == false then
-           root_found := true;
-#           process_autosar !nodeList !?cpu;
-        end if;
+    foreach nodes
+    while root_found == false
+    do
+      if is_elem(!node!"AUTOSAR") then
+        @xmlNodeList nl := [node nodeList];
+        foreach nl do
+          if is_elem(!node!"TOP-LEVEL-PACKAGES") then
+            @xmlNodeList nl := [node nodeList];
+            foreach nl do
+              if is_elem(!node!"AR-PACKAGE") then
+                @xmlNodeList nl := [node nodeList];
+                foreach nl do
+                  if is_elem(!node!"ELEMENTS") then
+                    @xmlNodeList nl := [node nodeList];
+                    foreach nl do
+                      if is_elem(!node!"MODULE-CONFIGURATION") then
+                        @xmlNode module := node;
+                        @xmlNodeList nl := [node nodeList];
+                        foreach nl do
+                          if is_elem(!node!"SHORT-NAME") then
+                            @xmlNodeList nl := [node nodeList];
+                            @xmlNode module_name;
+                            [nl first ?module_name];
+                            if is_text(!module_name!"Os_Configuration") then
+                              parse_os ![module nodeList] !?cpu;
+                              root_found := true;
+                            end if;
+                          end if;
+                        end foreach;
+                      end if;
+                    end foreach;
+                  end if;
+                end foreach;
+              end if;
+            end foreach;
+          end if;
+        end foreach;
       end if;
     end foreach;
   end if;

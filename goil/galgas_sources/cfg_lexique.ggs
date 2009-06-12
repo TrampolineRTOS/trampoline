@@ -41,9 +41,9 @@ rule "/*" :
    end repeat ;
 end rule ;
 
-@lstring keyword;
-@lstring string;
-@luint64 integer;
+@string keyword;
+@string string;
+@uint64 integer;
 
 $idf$    !keyword error message "identifier" ;
 $string$ !string  error message "litteral string" ;
@@ -51,7 +51,7 @@ $uint$   !integer error message "litteral unsigned 64 bits integer" ;
 
 rule 'a'->'z' | 'A'->'Z' :
     repeat
-        enterCharacterIntoString (keyword, *);
+        enterCharacterIntoString !?keyword !*;
     while 'a'->'z' | 'A'->'Z' | '_' | '0'->'9' :
     end repeat;
     send
@@ -62,7 +62,7 @@ end rule ;
 rule '"' :
     repeat
     while '\u0020'->'\u0021' | '\u0023' -> '\uFFFD' :
-        enterCharacterIntoString ( string, * ) ;
+        enterCharacterIntoString !?string !* ;
     end repeat ;
     select
         when '"' :
@@ -72,12 +72,12 @@ rule '"' :
     end select ;
 end rule ;
 
-@lstring number;
+@string number;
 
 rule '0'->'9':
     repeat
-        enterCharacterIntoString (number, *);
-        enterDigitIntoUInt64 (*,integer) error decimalNumberTooLarge, internalError ;
+        enterCharacterIntoString !?number !* ;
+        enterDigitIntoUInt64 !* !?integer error decimalNumberTooLarge, internalError ;
     while '0'->'9' :
     end repeat;
     send $uint$ ;

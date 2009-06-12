@@ -235,6 +235,19 @@ class @autostart_void extends @autostart_obj {
 class @autostart_false extends @autostart_obj {
 }
 
+
+function empty_lstring
+  ->@lstring ls
+:
+  ls := [@lstring new !"" !here];
+end function ;
+
+function void_class
+  ->@basic_type v
+:
+  v := [@void new !here];
+end function;
+
 #
 # set_uint32 sets it first argument as a @uint32_class according
 # to its second argument if it is unset (ie @void). Otherwise
@@ -388,6 +401,21 @@ routine bool_flag
     error [b location] : "Internal error, wrong datatype" ;
   end cast ;
 end routine ;
+
+routine p_bt
+  ??@basic_type bt
+:
+  @string res;
+  [bt string ?res];
+  message [[bt location] locationString].": ".res."\n";
+end routine;
+
+function luint64_value
+  ??@uint64_class c
+  ->@luint64      v
+:
+  v := [@luint64 new ![c value] ![c location]];
+end function;
 
 end semantics ;
 # vim:ft=ggs:ts=2:sw=2

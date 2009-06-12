@@ -1,4 +1,4 @@
-OIL_VERSION = "2.5" : "autosar_st_s6" ;
+OIL_VERSION = "2.5" : "autosar_st_s6";
 
 IMPLEMENTATION trampoline {
 
@@ -7,9 +7,9 @@ IMPLEMENTATION trampoline {
 	};
 	
     TASK {
-        UINT32 STACKSIZE = 32768 ;
-        UINT32 [1..10] PRIORITY = 1 ;
-    } ;
+        UINT32 STACKSIZE = 32768;
+        UINT32 [1..10] PRIORITY = 1;
+    };
 };
 
  CPU test {
@@ -35,14 +35,14 @@ IMPLEMENTATION trampoline {
     APPMODE std {};
 
     TASK t1 {
-        AUTOSTART = TRUE { APPMODE = std ; } ;
+        AUTOSTART = TRUE { APPMODE = std; };
         PRIORITY = 1;
         ACTIVATION = 1;
         SCHEDULE = FULL;
     };
 	
 	TASK t2 {
-        AUTOSTART = FALSE ;
+        AUTOSTART = FALSE;
         PRIORITY = 2;
         ACTIVATION = 1;
         SCHEDULE = FULL;
@@ -58,8 +58,8 @@ IMPLEMENTATION trampoline {
 	
 	SCHEDULETABLE sched1 {
         COUNTER = Software_Counter;
-        AUTOSTART = RELATIVE { OFFSET=2 ; APPMODE= std ; } ;
-        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+        AUTOSTART = RELATIVE { OFFSET = 2; APPMODE = std; };
+        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE;
         PERIODIC = TRUE;
         LENGTH = 3;
         ACTION = ACTIVATETASK {
@@ -71,8 +71,8 @@ IMPLEMENTATION trampoline {
 	
 	SCHEDULETABLE sched2 {
         COUNTER = Software_Counter;
-        AUTOSTART = ABSOLUTE { OFFSET=8 ; APPMODE= std ; } ;
-        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+        AUTOSTART = ABSOLUTE { START = 8; APPMODE = std; };
+        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE;
         PERIODIC = TRUE;
         LENGTH = 2;
         ACTION = SETEVENT {
