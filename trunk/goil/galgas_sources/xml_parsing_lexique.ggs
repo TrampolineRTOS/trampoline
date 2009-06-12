@@ -15,7 +15,7 @@ style attributeValue -> "Attribute value:" ;
 style commentStyle -> "Comment:" ;
 style textStyle -> "Text:" ;
 
-@lstring tokenString ;
+@string tokenString ;
 
 #-------------------------- comment  --------------------
 
@@ -26,19 +26,19 @@ message incorrectCommentError : "incorrect XML comment" ;
 rule "<!--" :
   repeat
   while "&amp;" :
-    enterCharacterIntoString (tokenString, '&') ;
+    enterCharacterIntoString !?tokenString !'&';
   while "&lt;" :
-    enterCharacterIntoString (tokenString, '<') ;
+    enterCharacterIntoString !?tokenString !'<';
   while "&gt;" :
-    enterCharacterIntoString (tokenString, '>') ;
+    enterCharacterIntoString !?tokenString !'>';
   while "&quot;" :
-    enterCharacterIntoString (tokenString, '"') ;
+    enterCharacterIntoString !?tokenString !'"';
   while "&apos;" :
-    enterCharacterIntoString (tokenString, ''') ;
+    enterCharacterIntoString !?tokenString !''';
   while '\u0001' -> ',' | '.' -> '\U0010FFFF' :
-    enterCharacterIntoString (tokenString, *) ;
+    enterCharacterIntoString !?tokenString !*;
   while ~ "-->" error incorrectCommentError :
-    enterCharacterIntoString (tokenString, '-') ;
+    enterCharacterIntoString !?tokenString !'-';
   end repeat ;
   send $comment$ ;
 end rule ;
@@ -61,7 +61,7 @@ $name$ ! tokenString error message "a name" style nameStyle ;
 
 rule isUnicodeLetter :
   repeat
-    enterCharacterIntoString (tokenString, *) ;
+    enterCharacterIntoString !?tokenString !* ;
   while isUnicodeLetter | '0'->'9' | '-' :
   end repeat ;
   send $name$ ;
@@ -76,17 +76,17 @@ message incorrectAttributeEnd : "attribute value should be enclosed between apos
 rule '"' :
   repeat
   while "&amp;" :
-    enterCharacterIntoString (tokenString, '&') ;
+    enterCharacterIntoString !?tokenString !'&';
   while "&lt;" :
-    enterCharacterIntoString (tokenString, '<') ;
+    enterCharacterIntoString !?tokenString !'<';
   while "&gt;" :
-    enterCharacterIntoString (tokenString, '>') ;
+    enterCharacterIntoString !?tokenString !'>';
   while "&quot;" :
-    enterCharacterIntoString (tokenString, '"') ;
+    enterCharacterIntoString !?tokenString !'"';
   while "&apos;" :
-    enterCharacterIntoString (tokenString, ''') ;
+    enterCharacterIntoString !?tokenString !''';
   while ~ "\"" error incorrectAttributeEnd :
-    enterCharacterIntoString (tokenString, *) ;
+    enterCharacterIntoString !?tokenString !*;
   end repeat ;
   send $value$ ;
 end rule ;
@@ -94,17 +94,17 @@ end rule ;
 rule ''' :
   repeat
   while "&amp;" :
-    enterCharacterIntoString (tokenString, '&') ;
+    enterCharacterIntoString !?tokenString !'&';
   while "&lt;" :
-    enterCharacterIntoString (tokenString, '<') ;
+    enterCharacterIntoString !?tokenString !'<';
   while "&gt;" :
-    enterCharacterIntoString (tokenString, '>') ;
+    enterCharacterIntoString !?tokenString !'>';
   while "&quot;" :
-    enterCharacterIntoString (tokenString, '"') ;
+    enterCharacterIntoString !?tokenString !'"';
   while "&apos;" :
-    enterCharacterIntoString (tokenString, ''') ;
+    enterCharacterIntoString !?tokenString !''';
   while ~ "'" error incorrectAttributeEnd :
-    enterCharacterIntoString (tokenString, *) ;
+    enterCharacterIntoString !?tokenString !*;
   end repeat ;
   send $value$ ;
 end rule ;

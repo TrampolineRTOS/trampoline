@@ -10,7 +10,7 @@
 # Goil OIL compiler for Trampoline
 #
 # Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline est protŽgŽ par la loi sur la propriŽtŽ intellectuelle
+# Trampoline est protege par la loi sur la propriete intellectuelle
 #
 # This software is distributed under the GNU Public Licence v2
 #
@@ -89,30 +89,6 @@ class @trace_on extends @trace {
   end method;
 }
 
-class @os_obj extends @oil_obj {
-  @lstring     status;
-  @basic_type  startuphook;
-  @basic_type  shutdownhook;
-  @basic_type  errorhook;
-  @basic_type  pretaskhook;
-  @basic_type  posttaskhook;
-  @basic_type  protectionhook;   # AUTOSAR
-  @lstring     scalabilityclass; # AUTOSAR
-  @basic_type  stackmonitoring;  # AUTOSAR
-  @basic_type  usegetserviceid;
-  @basic_type  useparameteraccess;
-  @basic_type  useresscheduler;
-  @basic_type  systemcall;
-  @lstringlist app_src;
-  @lstringlist cflags;
-  @lstringlist asflags;
-  @lstringlist ldflags;
-  @lstring     app_name;
-  @lstring     tpl_base_path;
-  @trace       trace;
-  @ident_map   others;
-}
-
 #
 # set_method sets it first argument as the second one
 # if it is unset (ie @void). Otherwise
@@ -136,5 +112,60 @@ routine set_method
     error [t loc] : "was defined here";
   end cast;
 end routine;
+
+class @os_obj extends @oil_obj {
+  @lstring     status             feature setter;
+  @basic_type  startuphook        feature setter;
+  @basic_type  shutdownhook       feature setter;
+  @basic_type  errorhook          feature setter;
+  @basic_type  pretaskhook        feature setter;
+  @basic_type  posttaskhook       feature setter;
+  @basic_type  protectionhook     feature setter; # AUTOSAR
+  @lstring     scalabilityclass   feature setter; # AUTOSAR
+  @basic_type  stackmonitoring    feature setter; # AUTOSAR
+  @basic_type  usegetserviceid    feature setter;
+  @basic_type  useparameteraccess feature setter;
+  @basic_type  useresscheduler    feature setter;
+  @basic_type  systemcall         feature setter;
+  @lstringlist app_src            feature setter;
+  @lstringlist cflags             feature setter;
+  @lstringlist asflags            feature setter;
+  @lstringlist ldflags            feature setter;
+  @lstring     app_name           feature setter;
+  @lstring     tpl_base_path      feature setter;
+  @trace       trace              feature setter;
+  @ident_map   others             feature setter;
+}
+
+function void_os_obj
+  ->@os_obj os
+:
+  @void    void_obj := [@void new !here];
+  @lstring emptyString := [@lstring new !"" !here];
+  os := [@os_obj new
+    !emptyString
+    !emptyString
+    !void_obj
+    !void_obj
+    !void_obj
+    !void_obj
+    !void_obj
+    !void_obj
+    !emptyString
+    !void_obj
+    !void_obj
+    !void_obj
+    !void_obj
+    !void_obj
+    ![@lstringlist emptyList]
+    ![@lstringlist emptyList]
+    ![@lstringlist emptyList]
+    ![@lstringlist emptyList]
+    !emptyString
+    !emptyString
+    ![@trace new !here]
+    ![@ident_map emptyMap]
+  ];
+end function;
 
 end semantics;

@@ -1,4 +1,4 @@
-491::
+502::
 xml_types.ggs
 goil_types_root.ggs
 goil_types_os.ggs
@@ -15,6 +15,12 @@ goil_types_isr.ggs
 goil_types_counter.ggs
 goil_types_scheduletable.ggs
 goil_types_app.ggs
-goil_types_networkmessage.ggs::
+goil_types_networkmessage.ggs
+xml_utils.ggs
+xml_containers.ggs
+xml_os.ggs
+xml_resource.ggs
+xml_schedtable.ggs
+xml_task.ggs::
 GALGAS_OUTPUT/xml_to_goil.h
 GALGAS_OUTPUT/xml_to_goil.cpp

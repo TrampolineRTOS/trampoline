@@ -11,18 +11,37 @@ import semantics goil_types_app in "goil_types_app.ggs" ;
 import semantics goil_types_networkmessage in "goil_types_networkmessage.ggs" ;
 
 class @root_obj {
-    @os_obj            os ;
+    @os_obj            os             feature setter;
     @com               com ;
-    @task_map          tasks     feature setter;
-    @counter_map       counters  feature setter;
+    @task_map          tasks          feature setter;
+    @counter_map       counters       feature setter;
     @alarm_map         alarms ;
-    @resource_map      resources feature setter ;
+    @resource_map      resources      feature setter ;
     @event_map         events ;
-    @isr_map           isrs      feature setter;
+    @isr_map           isrs           feature setter;
     @message_map       messages ;
     @netmess_map       net_messages ;
-    @scheduletable_map scheduletables ;
+    @scheduletable_map scheduletables feature setter;
     @app_map           applis ;
 }
+
+function void_root_obj
+  ->@root_obj cpu
+:
+  cpu := [@root_obj new
+    !void_os_obj()
+    !void_com_obj()
+    ![@task_map          emptyMap]
+    ![@counter_map       emptyMap]
+    ![@alarm_map         emptyMap]
+    ![@resource_map      emptyMap]
+    ![@event_map         emptyMap]
+    ![@isr_map           emptyMap]
+    ![@message_map       emptyMap]
+    ![@netmess_map       emptyMap]
+    ![@scheduletable_map emptyMap]
+    ![@app_map           emptyMap]
+  ];
+end function;
 
 end semantics ;

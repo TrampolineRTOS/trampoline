@@ -10,7 +10,7 @@
 # Goil OIL compiler for Trampoline
 #
 # Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline est protŽgŽ par la loi sur la propriŽtŽ intellectuelle
+# Trampoline est protege par la loi sur la propriete intellectuelle
 #
 # This software is distributed under the GNU Public Licence v2
 #
@@ -75,5 +75,24 @@ class @com extends @oil_obj {
     doReplace !?h !"$COM_CONFIG_FLAGS$" !res ;
   end method ;
 }
+
+function void_com_obj
+  ->@com com
+:
+  @void    void_obj := [@void new !here];
+  @lstring emptyString := [@lstring new !"" !here];
+  com := [@com new
+    !emptyString
+    !false
+    !void_obj
+    !void_obj
+    !void_obj
+    !void_obj
+    !void_obj
+    ![@lstringlist emptyList]
+    !emptyString
+    ![@lstringlist emptyList]
+  ];
+end function;
 
 end semantics ;

@@ -2,7 +2,7 @@
 # Trampoline OS
 #
 # Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline est protégé par la loi sur la propriété intellectuelle
+# Trampoline est protege par la loi sur la propriete intellectuelle
 #
 # This software is distributed under the Lesser GNU Public Licence
 #
@@ -133,54 +133,7 @@ nonterminal <ipdu>;
 rule <start>:
     @implementation imp [emptyMap];
     @void     void_obj := [@void new !here];
-    @root_obj cpu := [@root_obj new
-        ![@os_obj new
-            ![@lstring new !"" !here]
-            ![@lstring new !"" !here]
-            !void_obj
-            !void_obj
-            !void_obj
-            !void_obj
-            !void_obj
-            !void_obj
-            ![@lstring new !"" !here]
-            !void_obj
-            !void_obj
-            !void_obj
-            !void_obj
-            !void_obj
-            ![@lstringlist emptyList]
-            ![@lstringlist emptyList]
-            ![@lstringlist emptyList]
-            ![@lstringlist emptyList]
-            ![@lstring new !"" !here]
-            ![@lstring new !"" !here]
-            ![@trace new !here]
-            ![@ident_map emptyMap]
-         ]
-        ![@com new
-          ![@lstring new !"" !here]
-          !false
-          !void_obj
-          !void_obj
-          !void_obj
-          !void_obj
-          !void_obj
-          ![@lstringlist emptyList]
-          ![@lstring new !"" !here]
-          ![@lstringlist emptyList]
-         ]
-        ![@task_map          emptyMap]
-        ![@counter_map       emptyMap]
-        ![@alarm_map         emptyMap]
-        ![@resource_map      emptyMap]
-        ![@event_map         emptyMap]
-        ![@isr_map           emptyMap]
-        ![@message_map       emptyMap]
-        ![@netmess_map       emptyMap]
-        ![@scheduletable_map emptyMap]
-        ![@app_map           emptyMap]
-    ];
+    @root_obj cpu := void_root_obj();
     <file> !?imp !?cpu;
 
     # log imp;

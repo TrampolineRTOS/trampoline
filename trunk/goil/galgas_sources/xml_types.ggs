@@ -3,7 +3,7 @@ semantics xml_types :
 #------------------------------------------------------------*
 
 enum @xmlNodeType {
-  constructor element, text, comment ;
+  constructor element, text, comment, void ;
 }{
 }
 
@@ -72,6 +72,7 @@ routine internal_logXMLNodes
       ioString .= [[[[node name] location] line] string] ;
       ioString .= ":" . [[[[node name] location] column] string] ;
       ioString .= ":" . [[[[node name] location] locationIndex] string] . "\n" ;
+    when void :
     end switch ;
   end foreach ;
 end routine ;
