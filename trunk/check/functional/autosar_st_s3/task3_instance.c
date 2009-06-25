@@ -13,27 +13,27 @@ static void test_t3_instance(void)
 		
 	SCHEDULING_CHECK_INIT(2);
 	result_inst_1 = WaitEvent(Event1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(5,E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(7,E_OK, result_inst_1);
 	
-	SCHEDULING_CHECK_INIT(6);
+	SCHEDULING_CHECK_INIT(8);
 	result_inst_2 = ClearEvent(Event1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(6,E_OK, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(8,E_OK, result_inst_2);
 	
-	SCHEDULING_CHECK_INIT(7);
+	SCHEDULING_CHECK_INIT(9);
 	result_inst_3 = WaitEvent(Event1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(9,E_OK, result_inst_3);
+	SCHEDULING_CHECK_AND_EQUAL_INT(11,E_OK, result_inst_3);
 	
-	SCHEDULING_CHECK_INIT(10);
+	SCHEDULING_CHECK_INIT(12);
 	result_inst_4 = ClearEvent(Event1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(10,E_OK, result_inst_4);
+	SCHEDULING_CHECK_AND_EQUAL_INT(12,E_OK, result_inst_4);
 	
-	SCHEDULING_CHECK_INIT(11);
+	SCHEDULING_CHECK_INIT(13);
 	result_inst_5 = WaitEvent(Event1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(20,E_OK, result_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT(21,E_OK, result_inst_5);
 	
-	SCHEDULING_CHECK_INIT(21);
+	SCHEDULING_CHECK_INIT(22);
 	result_inst_6 = TerminateTask();
-	SCHEDULING_CHECK_AND_EQUAL_INT(21,E_OK, result_inst_6);
+	SCHEDULING_CHECK_AND_EQUAL_INT(22,E_OK, result_inst_6);
 		
 }
 

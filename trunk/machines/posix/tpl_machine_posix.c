@@ -589,7 +589,7 @@ void tpl_init_machine(void)
 
     /* create the context of each tpl_proc */
     for(    proc_id = 0; 
-            proc_id < TASK_COUNT+ISR_COUNT; 
+            proc_id < TASK_COUNT+ISR_COUNT+1; 
             proc_id++)
     {
         tpl_create_context(proc_id);

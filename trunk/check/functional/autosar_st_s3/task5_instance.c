@@ -9,9 +9,9 @@ static void test_t5_instance(void)
 {
 	StatusType result_inst_1;
 		
-	SCHEDULING_CHECK_INIT(5);
+	SCHEDULING_CHECK_INIT(7);
 	result_inst_1 = TerminateTask();
-	SCHEDULING_CHECK_AND_EQUAL_INT(5,E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(7,E_OK, result_inst_1);
 		
 }
 

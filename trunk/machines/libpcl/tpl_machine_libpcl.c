@@ -38,8 +38,8 @@
 #include <sched.h>
 #include <pcl.h>
 
-coroutine_t idle_task_context = 0;
-
+coroutine_t idle_task_context;
+VAR(tpl_stack_word, OS_VAR) idle_stack_zone[32768/sizeof(tpl_stack_word)] = {0} ;
 
 extern volatile u32 tpl_locking_depth;
 
@@ -261,7 +261,7 @@ void tpl_sleep(void)
     while (1);
 /*      sched_yield();*/
 }
-
+/*
 static tpl_proc_static my_tpl_sleep = {
   NULL,
   {NULL, 0},
@@ -275,9 +275,9 @@ static tpl_proc_static my_tpl_sleep = {
   0,
   0,
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-NULL    /* no timing protection for the idle task :D */
+NULL    // no timing protection for the idle task :D 
 #endif
-};
+};*/
 
 extern void viper_kill(void);
 
@@ -530,8 +530,9 @@ void tpl_init_machine(void)
     sigaction(signal_for_counters,&sa,NULL);
 #endif /*(defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */
     
-    idle_task_context = co_create( tpl_osek_func_stub, (void*)&my_tpl_sleep, NULL, CO_MIN_SIZE );
-    assert( idle_task_context != NULL );
+   /* idle_task_context already created in tpl_init_machine() 
+	idle_task_context = co_create( tpl_osek_func_stub, (void*)&idle_task_static, NULL, CO_MIN_SIZE );
+    assert( idle_task_context != NULL );*/
     
     /*
      * block the handling of signals

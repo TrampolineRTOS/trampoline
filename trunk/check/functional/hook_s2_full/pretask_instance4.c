@@ -48,19 +48,19 @@ static void test_pretask_instance4(void)
 	TaskStateType task_state;
 	EventMaskType event_mask;
 	
-	SCHEDULING_CHECK_INIT(45);
+	SCHEDULING_CHECK_INIT(36);
 	result_inst_1 = GetTaskID(&task_id);
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(45,t2 , task_id); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(45,E_OK , result_inst_1); 
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(36,t2 , task_id); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(36,E_OK , result_inst_1); 
 	
-	SCHEDULING_CHECK_INIT(46);
+	SCHEDULING_CHECK_INIT(37);
 	result_inst_2 = GetTaskState(task_id, &task_state);
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(46,RUNNING , task_state);
-	SCHEDULING_CHECK_AND_EQUAL_INT(46,E_OK , result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(37,RUNNING , task_state);
+	SCHEDULING_CHECK_AND_EQUAL_INT(37,E_OK , result_inst_2);
 	
-	SCHEDULING_CHECK_INIT(47);
+	SCHEDULING_CHECK_INIT(38);
 	result_inst_3 = GetEvent(task_id,&event_mask);
-	SCHEDULING_CHECK_AND_EQUAL_INT(48,E_OS_ACCESS , result_inst_3);
+	SCHEDULING_CHECK_AND_EQUAL_INT(39,E_OS_ACCESS , result_inst_3);
 	
 }
 

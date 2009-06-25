@@ -41,7 +41,7 @@
 an activation of a task*/
 static void test_error_instance3(void)
 {
-	SCHEDULING_CHECK_STEP(9);
+	SCHEDULING_CHECK_STEP(19);
 
 }
 

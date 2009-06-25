@@ -1,5 +1,5 @@
 /**
- * @file hook_s2_non/error_instance8.c
+ * @file hook_s5_non/posttask_instance5.c
  *
  * @section desc File description
  *
@@ -32,27 +32,36 @@
  * $URL$
  */
 
-/*Instance 8 of error hook routine*/
+/*Instance 5 of posttask*/
 
 #include "embUnit.h"
 #include "tpl_os.h"
 
+void tpl_send_it1(void);
+
 /*test case:test the reaction of the system called with 
-an activation of a task*/
-static void test_error_instance8(void)
+an activation of a isr*/
+static void test_posttask_instance4(void)
 {
-	SCHEDULING_CHECK_STEP(39);
+	
+	SCHEDULING_CHECK_STEP(6);
+	
+	tpl_send_it1();
+	SuspendAllInterrupts();
+	tpl_send_it1();
+	ResumeAllInterrupts();
+	
 }
 
 /*create the test suite with all the test cases*/
-TestRef HookTest_seq2_error_instance8(void)
+TestRef HookTest_seq5_posttask_instance4(void)
 {
 	EMB_UNIT_TESTFIXTURES(fixtures) {
-		new_TestFixture("test_error_instance8",test_error_instance8)
+		new_TestFixture("test_posttask_instance4",test_posttask_instance4)
 	};
-	EMB_UNIT_TESTCALLER(HookTest,"HookTest_sequence2",NULL,NULL,fixtures);
+	EMB_UNIT_TESTCALLER(HookTest,"HookTest_sequence5",NULL,NULL,fixtures);
 
 	return (TestRef)&HookTest;
 }
 
-/* End of file hook_s2_non/error_instance8.c */
+/* End of file hook_s5_non/posttask_instance5.c */

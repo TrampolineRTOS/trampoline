@@ -319,8 +319,12 @@ rule <ltgt_sync_params>
 
   cast precision :
   when == @void do
-    error here : "PRECISION attribute is missing";
-  else end cast;
+	if ([strategy string] == "IMPLICIT") then
+		precision := [@uint64_class new !here !0L] ;
+	else
+		error here : "PRECISION attribute is missing " ;
+	end if;
+  else end cast ;
   
   if [strategy string] == "" then
     error here : "SYNC_STRATEGY attribute is missing";

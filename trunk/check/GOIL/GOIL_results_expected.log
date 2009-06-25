@@ -1,19 +1,30 @@
 running goil_events_s1
-/Users/jlb/Documents/Develop/trampoline/trunk/check/GOIL/goil_events_s1/defaultAppWorkstation.oil:120:32: warning: MASK attribute uses more than 1 bit
-/Users/jlb/Documents/Develop/trampoline/trunk/check/GOIL/goil_events_s1/defaultAppWorkstation.oil:147:31: error: MASK of event Task2_Event2 conflicts with previous declarations
-/Users/jlb/Documents/Develop/trampoline/trunk/check/GOIL/goil_events_s1/defaultAppWorkstation.oil:72:22: error: All event mask bits are already use, event Task1_Event9 can't be created
+CHECKPATH/goil_events_s1/defaultAppWorkstation.oil:120:32: warning: MASK attribute uses more than 1 bit
+CHECKPATH/goil_events_s1/defaultAppWorkstation.oil:147:31: error: MASK of event Task2_Event2 conflicts with previous declarations
+CHECKPATH/goil_events_s1/defaultAppWorkstation.oil:72:22: error: All event mask bits are already use, event Task1_Event9 can't be created
 running goil_autosar_alarm_s1
-/Users/jlb/Documents/Develop/trampoline/trunk/check/GOIL/goil_autosar_alarm_s1/defaultAppWorkstation.oil:108:29: error: COUNTER Hardware_Counter is not a software counter
-/Users/jlb/Documents/Develop/trampoline/trunk/check/GOIL/goil_autosar_alarm_s1/defaultAppWorkstation.oil:99:17: error: EVENT Event1 is not defined for TASK t1
+CHECKPATH/goil_autosar_alarm_s1/defaultAppWorkstation.oil:108:29: error: COUNTER Hardware_Counter is not a software counter
+CHECKPATH/goil_autosar_alarm_s1/defaultAppWorkstation.oil:99:17: error: EVENT Event1 is not defined for TASK t1
 running goil_autosar_st_s1
-/Users/jlb/Documents/Develop/trampoline/trunk/check/GOIL/goil_autosar_st_s1/defaultAppWorkstation.oil:56:17: error: OS409 - COUNTER attribute already defined for Schedule Table sched1
-/Users/jlb/Documents/Develop/trampoline/trunk/check/GOIL/goil_autosar_st_s1/defaultAppWorkstation.oil:54:34: error: Was previously define here
-/Users/jlb/Documents/Develop/trampoline/trunk/check/GOIL/goil_autosar_st_s1/defaultAppWorkstation.oil:117:16: error: OS442 - OFFSET attribute already defined for this schedule table ACTIVATETASK action
-/Users/jlb/Documents/Develop/trampoline/trunk/check/GOIL/goil_autosar_st_s1/defaultAppWorkstation.oil:115:22: error: was previously defined here
-/Users/jlb/Documents/Develop/trampoline/trunk/check/GOIL/goil_autosar_st_s1/defaultAppWorkstation.oil:53:21: error: OS401-OS407 - ACTION attribute not defined for SCHEDULETABLE sched1
-/Users/jlb/Documents/Develop/trampoline/trunk/check/GOIL/goil_autosar_st_s1/defaultAppWorkstation.oil:63:21: error: OS443 - Delay between offset(0) and offset(2) is less than mincyle(4) of the counter of sched2
-/Users/jlb/Documents/Develop/trampoline/trunk/check/GOIL/goil_autosar_st_s1/defaultAppWorkstation.oil:63:21: error: OS408 - Delay between offset(2) and offset(5) is less than mincyle(4) of the counter of sched2
-/Users/jlb/Documents/Develop/trampoline/trunk/check/GOIL/goil_autosar_st_s1/defaultAppWorkstation.oil:88:21: error: OS443 - Delay between offset(0) and offset(12) is greater than maxallowedvalue(10) of the counter of sched3
-/Users/jlb/Documents/Develop/trampoline/trunk/check/GOIL/goil_autosar_st_s1/defaultAppWorkstation.oil:88:21: error: OS408 - Delay between offset(12) and offset(23) is greater than maxallowedvalue(10) of the counter of sched3
-/Users/jlb/Documents/Develop/trampoline/trunk/check/GOIL/goil_autosar_st_s1/defaultAppWorkstation.oil:88:21: error: OS444 - Final delay (final offset) can be equal to LENGTH only for single-shot schedule table and sched3 isn't one
-/Users/jlb/Documents/Develop/trampoline/trunk/check/GOIL/goil_autosar_st_s1/defaultAppWorkstation.oil:95:8: error: LENGTH of schedule table sched3 is greater than MAXALLOWEDVALUE of counter Software_Counter
+CHECKPATH/goil_autosar_st_s1/defaultAppWorkstation.oil:56:17: error: OS409 - COUNTER attribute already defined for Schedule Table sched1
+CHECKPATH/goil_autosar_st_s1/defaultAppWorkstation.oil:54:34: error: Was previously define here
+CHECKPATH/goil_autosar_st_s1/defaultAppWorkstation.oil:117:16: error: OS442 - OFFSET attribute already defined for this schedule table ACTIVATETASK action
+CHECKPATH/goil_autosar_st_s1/defaultAppWorkstation.oil:115:22: error: was previously defined here
+CHECKPATH/goil_autosar_st_s1/defaultAppWorkstation.oil:53:21: error: OS401-OS407 - ACTION attribute not defined for SCHEDULETABLE sched1
+CHECKPATH/goil_autosar_st_s1/defaultAppWorkstation.oil:63:21: error: OS443 - Delay between offset(0) and offset(2) is less than mincyle(4) of the counter of sched2
+CHECKPATH/goil_autosar_st_s1/defaultAppWorkstation.oil:63:21: error: OS408 - Delay between offset(2) and offset(5) is less than mincyle(4) of the counter of sched2
+CHECKPATH/goil_autosar_st_s1/defaultAppWorkstation.oil:88:21: error: OS443 - Delay between offset(0) and offset(12) is greater than maxallowedvalue(10) of the counter of sched3
+CHECKPATH/goil_autosar_st_s1/defaultAppWorkstation.oil:88:21: error: OS408 - Delay between offset(12) and offset(23) is greater than maxallowedvalue(10) of the counter of sched3
+CHECKPATH/goil_autosar_st_s1/defaultAppWorkstation.oil:88:21: error: OS444 - Final delay (final offset) can be equal to LENGTH only for single-shot schedule table and sched3 isn't one
+CHECKPATH/goil_autosar_st_s1/defaultAppWorkstation.oil:95:8: error: LENGTH of schedule table sched3 is greater than MAXALLOWEDVALUE of counter Software_Counter
+running goil_autosar_st_s2
+CHECKPATH/goil_autosar_st_s2/defaultAppWorkstation.oil:45:21: error: sched1 autostart's offset out of range [4 10]
+CHECKPATH/goil_autosar_st_s2/defaultAppWorkstation.oil:58:21: error: sched2 autostart's offset out of range [4 10]
+CHECKPATH/goil_autosar_st_s2/defaultAppWorkstation.oil:71:21: error: sched3 autostart's offset out of range [4 10] and not 0
+CHECKPATH/goil_autosar_st_s2/defaultAppWorkstation.oil:84:21: error: sched4 autostart's offset out of range [4 10] and not 0
+CHECKPATH/goil_autosar_st_s2/defaultAppWorkstation.oil:97:21: error: sched5 autostart's offset out of range [4 10] and not 0
+running goil_autosar_sts_s1
+CHECKPATH/goil_autosar_sts_s1/defaultAppWorkstation.oil:46:21: error: An implicit schedule table shall be repeating otherwise, synchronisation can't be done. See sched1
+CHECKPATH/goil_autosar_sts_s1/defaultAppWorkstation.oil:46:21: error: OS430 - sched1 should be started in Absolute mode only
+CHECKPATH/goil_autosar_sts_s1/defaultAppWorkstation.oil:46:21: error: OS429 - LENGTH of sched1 should be equal to OSMAXALLOWEDVALUE + 1 (10)
+CHECKPATH/goil_autosar_sts_s1/defaultAppWorkstation.oil:63:21: error: OS430 - sched2 should be started in Absolute mode only

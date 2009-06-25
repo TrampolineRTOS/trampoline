@@ -54,8 +54,8 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "isr1_instance2.c";
 		APP_SRC = "isr2_instance1.c";
 		APP_SRC = "isr2_instance2.c";
-		APP_SRC = "posttask_instance3.c";
-		APP_SRC = "posttask_instance6.c";
+		APP_SRC = "posttask_instance2.c";
+		APP_SRC = "posttask_instance5.c";
 		APP_SRC = "pretask_instance2.c";
 		APP_SRC = "pretask_instance3.c";
 		APP_SRC = "pretask_instance6.c";

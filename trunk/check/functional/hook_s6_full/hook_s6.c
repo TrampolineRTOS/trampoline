@@ -39,7 +39,7 @@ TestRef HookTest_seq6_t1_instance(void);
 TestRef HookTest_seq6_isr1_instance(void);
 TestRef HookTest_seq6_isr2_instance(void);
 TestRef HookTest_seq6_error_instance(void);
-TestRef HookTest_seq6_posttask_instance4(void);
+TestRef HookTest_seq6_posttask_instance3(void);
 
 int posttask_instance = 0;
 
@@ -69,9 +69,9 @@ void PostTaskHook(void)
 	posttask_instance++;
 	switch (posttask_instance)
 	{
-		case 4:
+		case 3:
 		{
-			TestRunner_runTest(HookTest_seq6_posttask_instance4());
+			TestRunner_runTest(HookTest_seq6_posttask_instance3());
 			break;
 		}
 		default:

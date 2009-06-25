@@ -46,8 +46,8 @@ TestRef HookTest_seq4_pretask_instance2(void);
 TestRef HookTest_seq4_pretask_instance3(void);
 TestRef HookTest_seq4_pretask_instance6(void);
 TestRef HookTest_seq4_pretask_instance7(void);
-TestRef HookTest_seq4_posttask_instance3(void);
-TestRef HookTest_seq4_posttask_instance6(void);
+TestRef HookTest_seq4_posttask_instance2(void);
+TestRef HookTest_seq4_posttask_instance5(void);
 
 unsigned char instance_pre = 0;
 unsigned char instance_post = 0;
@@ -103,14 +103,14 @@ void PostTaskHook(void)
 	instance_post++;
 	switch (instance_post) 
 	{
-		case 3:
+		case 2:
 		{
-			TestRunner_runTest(HookTest_seq4_posttask_instance3());
+			TestRunner_runTest(HookTest_seq4_posttask_instance2());
 			break;
 		}
-		case 6:
+		case 5:
 		{
-			TestRunner_runTest(HookTest_seq4_posttask_instance6());
+			TestRunner_runTest(HookTest_seq4_posttask_instance5());
 			break;
 		}
 		default: 

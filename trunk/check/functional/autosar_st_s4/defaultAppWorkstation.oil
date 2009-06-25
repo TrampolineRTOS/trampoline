@@ -24,7 +24,7 @@ IMPLEMENTATION trampoline {
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "autosar_st_s4";
 		CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Werror -Wall -pedantic";
+        CFLAGS  = "-Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
