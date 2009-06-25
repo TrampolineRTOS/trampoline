@@ -54,13 +54,9 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "error_instance4.c";
 		APP_SRC = "error_instance5.c";
 		APP_SRC = "error_instance6.c";
-		APP_SRC = "error_instance7.c";
-		APP_SRC = "error_instance8.c";
-		APP_SRC = "error_instance9.c";
 		APP_SRC = "posttask_instance1.c";
 		APP_SRC = "posttask_instance2.c";
 		APP_SRC = "posttask_instance3.c";
-		APP_SRC = "posttask_instance4.c";
 		APP_SRC = "pretask_instance1.c";
 		APP_SRC = "pretask_instance2.c";
 		APP_SRC = "pretask_instance3.c";
@@ -70,7 +66,7 @@ IMPLEMENTATION trampoline {
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "hook_s2_full";
 		CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Werror -Wall -pedantic";
+        CFLAGS  = "-Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;

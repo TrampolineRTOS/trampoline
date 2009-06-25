@@ -3,11 +3,16 @@
 #include "config.h"
 
 TestRef AutosarSTTest_seq6_t1_instance(void);
-TestRef AutosarSTTest_seq6_t2_instance1(void);
-TestRef AutosarSTTest_seq6_t2_instance2(void);
-TestRef AutosarSTTest_seq6_error_instance(void);
-
-StatusType instance_t2 = 0;
+TestRef AutosarSTTest_seq6_t2_instance(void);
+TestRef AutosarSTTest_seq6_t3_instance(void);
+TestRef AutosarSTTest_seq6_t4_instance(void);
+TestRef AutosarSTTest_seq6_t5_instance(void);
+TestRef AutosarSTTest_seq6_t6_instance(void);
+TestRef AutosarSTTest_seq6_t7_instance(void);
+TestRef AutosarSTTest_seq6_t8_instance(void);
+TestRef AutosarSTTest_seq6_t9_instance(void);
+TestRef AutosarSTTest_seq6_t10_instance(void);
+TestRef AutosarSTTest_seq6_t11_instance(void);
 
 int main(void)
 {
@@ -20,11 +25,6 @@ void ShutdownHook(StatusType error)
 	TestRunner_end();
 }
 
-void ErrorHook(StatusType error)
-{
-	TestRunner_runTest(AutosarSTTest_seq6_error_instance());	
-}
-
 TASK(t1)
 {
 	TestRunner_start();
@@ -34,23 +34,51 @@ TASK(t1)
 
 TASK(t2)
 {
-	instance_t2++;
-	switch (instance_t2) {
-		case 1:
-		{
-			TestRunner_runTest(AutosarSTTest_seq6_t2_instance1());
-			break;
-		}
-		case 2:
-		{
-			TestRunner_runTest(AutosarSTTest_seq6_t2_instance2());
-			break;
-		}
-		default:
-		{
-			stdimpl_print("instance error\n");
-			break;
-		}
-	}
-	
+	TestRunner_runTest(AutosarSTTest_seq6_t2_instance());
 }
+
+TASK(t3)
+{
+	TestRunner_runTest(AutosarSTTest_seq6_t3_instance());
+}
+
+TASK(t4)
+{
+	TestRunner_runTest(AutosarSTTest_seq6_t4_instance());
+}
+
+TASK(t5)
+{
+	TestRunner_runTest(AutosarSTTest_seq6_t5_instance());
+}
+
+TASK(t6)
+{
+	TestRunner_runTest(AutosarSTTest_seq6_t6_instance());
+}
+
+TASK(t7)
+{
+	TestRunner_runTest(AutosarSTTest_seq6_t7_instance());
+}
+
+TASK(t8)
+{
+	TestRunner_runTest(AutosarSTTest_seq6_t8_instance());
+}
+
+TASK(t9)
+{
+	TestRunner_runTest(AutosarSTTest_seq6_t9_instance());
+}
+
+TASK(t10)
+{
+	TestRunner_runTest(AutosarSTTest_seq6_t10_instance());
+}
+
+TASK(t11)
+{
+	TestRunner_runTest(AutosarSTTest_seq6_t11_instance());
+}
+

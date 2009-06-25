@@ -8,9 +8,8 @@
 typedef coroutine_t *tpl_context;
 
 extern coroutine_t idle_task_context;
-
 #define IDLE_CONTEXT &idle_task_context
-#define IDLE_ENTRY NULL
+
 
 /**
  * tpl_stack_word is the basic element of a stack in order to have a proper
@@ -30,6 +29,10 @@ struct TPL_STACK {
 
 typedef struct TPL_STACK tpl_stack;
 
-#define IDLE_STACK {NULL,0}
+extern VAR(tpl_stack_word, OS_VAR) idle_stack_zone[32768/sizeof(tpl_stack_word)];
+
+extern void tpl_sleep(void);
+#define IDLE_ENTRY		&tpl_sleep
+#define IDLE_STACK		{ idle_stack_zone , 32768}
 
 #endif /* TPL_MACHINE_H */

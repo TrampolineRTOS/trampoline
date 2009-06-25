@@ -36,17 +36,17 @@ project all_goil :
   #
   # XML parsing for AUTOSAR 3+
   #
-  lexique   "xml_parsing_lexique.ggs"  : makefile, xcode_tool, xcode_app;
-  syntax    "xml_parsing_syntax.ggs"   : makefile, xcode_tool;
-  grammar   "xml_parsing_grammar.ggs"  : makefile, xcode_tool;  
-  semantics "xml_types.ggs"            : makefile, xcode_tool;
-  semantics "xml_to_goil.ggs"          : makefile, xcode_tool;
-  semantics "xml_utils.ggs"            : makefile, xcode_tool;
-  semantics "xml_os.ggs"               : makefile, xcode_tool;
-  semantics "xml_resource.ggs"         : makefile, xcode_tool;
-  semantics "xml_schedtable.ggs"       : makefile, xcode_tool;
-  semantics "xml_task.ggs"             : makefile, xcode_tool;
-  semantics "xml_containers.ggs"       : makefile, xcode_tool;
+#  lexique   "xml_parsing_lexique.ggs"  : makefile, xcode_tool, xcode_app;
+#  syntax    "xml_parsing_syntax.ggs"   : makefile, xcode_tool;
+#  grammar   "xml_parsing_grammar.ggs"  : makefile, xcode_tool;  
+#  semantics "xml_types.ggs"            : makefile, xcode_tool;
+#  semantics "xml_to_goil.ggs"          : makefile, xcode_tool;
+#  semantics "xml_utils.ggs"            : makefile, xcode_tool;
+#  semantics "xml_os.ggs"               : makefile, xcode_tool;
+#  semantics "xml_resource.ggs"         : makefile, xcode_tool;
+#  semantics "xml_schedtable.ggs"       : makefile, xcode_tool;
+#  semantics "xml_task.ggs"             : makefile, xcode_tool;
+#  semantics "xml_containers.ggs"       : makefile, xcode_tool;
   #
   # Post-processing and verification
   #

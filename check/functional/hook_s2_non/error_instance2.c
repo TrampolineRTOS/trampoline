@@ -1,5 +1,5 @@
 /**
- * @file hook_s2_non/error_instance2.c
+ * @file hook_s2_full/error_instance2.c
  *
  * @section desc File description
  *
@@ -41,7 +41,7 @@
 an activation of a task*/
 static void test_error_instance2(void)
 {
-	SCHEDULING_CHECK_STEP(6);
+	SCHEDULING_CHECK_STEP(17);
 
 }
 
@@ -56,4 +56,4 @@ TestRef HookTest_seq2_error_instance2(void)
 	return (TestRef)&HookTest;
 }
 
-/* End of file hook_s2_non/error_instance2.c */
+/* End of file hook_s2_full/error_instance2.c */

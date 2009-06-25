@@ -48,21 +48,21 @@ static void test_t1_instance(void)
 {
 	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4;
 	
-	SCHEDULING_CHECK_INIT(17);
+	SCHEDULING_CHECK_INIT(8);
 	result_inst_1 = SetAbsAlarm(Alarm1, 16, 0);
-	SCHEDULING_CHECK_AND_EQUAL_INT(17,E_OK , result_inst_1); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(8,E_OK , result_inst_1); 
 
-	SCHEDULING_CHECK_INIT(18);
+	SCHEDULING_CHECK_INIT(9);
 	result_inst_2 = WaitEvent(Event1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(39,E_OK , result_inst_2); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(30,E_OK , result_inst_2); 
 
-	SCHEDULING_CHECK_INIT(40);
+	SCHEDULING_CHECK_INIT(31);
 	result_inst_3 = SetEvent(t1, Event1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(40,E_OK , result_inst_3); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(31,E_OK , result_inst_3); 
 	
-	SCHEDULING_CHECK_INIT(41);
+	SCHEDULING_CHECK_INIT(32);
 	result_inst_4 = ChainTask(t2);
-	SCHEDULING_CHECK_AND_EQUAL_INT(41,E_OK , result_inst_4); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(32,E_OK , result_inst_4); 
 	
 }
 

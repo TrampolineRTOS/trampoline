@@ -53,30 +53,30 @@ static void test_pretask_instance3(void)
 	AlarmBaseType alarm_base;
 	TickType tik;
 	
-	SCHEDULING_CHECK_INIT(34);
+	SCHEDULING_CHECK_INIT(25);
 	result_inst_1 = GetTaskID(&task_id);
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(34,t1 , task_id); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(34,E_OK , result_inst_1); 
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(25,t1 , task_id); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(25,E_OK , result_inst_1); 
 	
-	SCHEDULING_CHECK_INIT(35);
+	SCHEDULING_CHECK_INIT(26);
 	result_inst_2 = GetTaskState(task_id, &task_state);
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(35,RUNNING , task_state);
-	SCHEDULING_CHECK_AND_EQUAL_INT(35,E_OK , result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(26,RUNNING , task_state);
+	SCHEDULING_CHECK_AND_EQUAL_INT(26,E_OK , result_inst_2);
 	
-	SCHEDULING_CHECK_INIT(36);
+	SCHEDULING_CHECK_INIT(27);
 	result_inst_3 = GetEvent(task_id,&event_mask);
-	SCHEDULING_CHECK_AND_EQUAL_INT(36,E_OK , result_inst_3);
+	SCHEDULING_CHECK_AND_EQUAL_INT(27,E_OK , result_inst_3);
 	
-	SCHEDULING_CHECK_INIT(37);
+	SCHEDULING_CHECK_INIT(28);
 	result_inst_4 = GetAlarmBase(Alarm1, &alarm_base);
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(37,OSMAXALLOWEDVALUE_Counter1, (int)(alarm_base.maxallowedvalue));
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(37,OSTICKSPERBASE_Counter1, (int)(alarm_base.ticksperbase));
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(37,OSMINCYCLE_Counter1, (int)(alarm_base.mincycle));
-	SCHEDULING_CHECK_AND_EQUAL_INT(37,E_OK , result_inst_4);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(28,OSMAXALLOWEDVALUE_Counter1, (int)(alarm_base.maxallowedvalue));
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(28,OSTICKSPERBASE_Counter1, (int)(alarm_base.ticksperbase));
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(28,OSMINCYCLE_Counter1, (int)(alarm_base.mincycle));
+	SCHEDULING_CHECK_AND_EQUAL_INT(28,E_OK , result_inst_4);
 	
-	SCHEDULING_CHECK_INIT(38);
+	SCHEDULING_CHECK_INIT(29);
 	result_inst_5 = GetAlarm(Alarm1,&tik);
-	SCHEDULING_CHECK_AND_EQUAL_INT(39,E_OS_NOFUNC , result_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT(30,E_OS_NOFUNC , result_inst_5);
 	
 	
 }

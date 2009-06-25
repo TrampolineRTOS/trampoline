@@ -1,5 +1,5 @@
 /**
- * @file hook_s2_non/posttask_instance3.c
+ * @file hook_s2_full/posttask_instance3.c
  *
  * @section desc File description
  *
@@ -37,26 +37,32 @@
 #include "embUnit.h"
 #include "tpl_os.h"
 
-DeclareAlarm(Alarm1);
-DeclareTask(INVALID_TASK);
+DeclareTask(t1);
+DeclareEvent(Event1);
 
 /*test case:test the reaction of the system called with 
-an activation of a task*/
+ an activation of a task*/
 static void test_posttask_instance3(void)
 {
-	StatusType result_inst_1, result_inst_2;
+	StatusType result_inst_1, result_inst_2, result_inst_3;
 	TaskType task_id;
-	TickType tik;
+	TaskStateType task_state;
+	EventMaskType event_mask;
 	
-	SCHEDULING_CHECK_INIT(31);
+	SCHEDULING_CHECK_INIT(33);
 	result_inst_1 = GetTaskID(&task_id);
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(31,INVALID_TASK , task_id); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(31,E_OK , result_inst_1); 
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(33,t1 , task_id);
+	SCHEDULING_CHECK_AND_EQUAL_INT(33,E_OK , result_inst_1); 
 	
-	SCHEDULING_CHECK_INIT(32);
-	result_inst_2 = GetAlarm(Alarm1,&tik);
-	SCHEDULING_CHECK_AND_EQUAL_INT(33,E_OS_NOFUNC , result_inst_2);
-
+	SCHEDULING_CHECK_INIT(34);
+	result_inst_2 = GetTaskState(task_id, &task_state);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(34,RUNNING , task_state);
+	SCHEDULING_CHECK_AND_EQUAL_INT(34,E_OK , result_inst_2);
+	
+	SCHEDULING_CHECK_INIT(35);
+	result_inst_3 = GetEvent(task_id,&event_mask);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(35,Event1 , event_mask);
+	SCHEDULING_CHECK_AND_EQUAL_INT(35,E_OK , result_inst_3);	
 	
 }
 
@@ -67,8 +73,8 @@ TestRef HookTest_seq2_posttask_instance3(void)
 		new_TestFixture("test_posttask_instance3",test_posttask_instance3)
 	};
 	EMB_UNIT_TESTCALLER(HookTest,"HookTest_sequence2",NULL,NULL,fixtures);
-
+	
 	return (TestRef)&HookTest;
 }
 
-/* End of file hook_s2_non/posttask_instance3.c */
+/* End of file hook_s2_full/posttask_instance3.c */

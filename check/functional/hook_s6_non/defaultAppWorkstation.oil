@@ -52,7 +52,7 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "isr1_instance.c";
 		APP_SRC = "isr2_instance.c";
 		APP_SRC = "error_instance.c";
-		APP_SRC = "posttask_instance4.c";
+		APP_SRC = "posttask_instance3.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "hook_s6_non";
 		CFLAGS = "-I../../embUnit";

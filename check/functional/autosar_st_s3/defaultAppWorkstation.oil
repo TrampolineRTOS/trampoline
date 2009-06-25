@@ -25,7 +25,7 @@ IMPLEMENTATION trampoline {
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "autosar_st_s3";
 		CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Werror -Wall -pedantic";
+        CFLAGS  = "-Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
@@ -78,13 +78,6 @@ IMPLEMENTATION trampoline {
 		TYPE = SOFTWARE;
 	};
 	
-	COUNTER Software_Counter_bis{
-		MAXALLOWEDVALUE = 100;
-		TICKSPERBASE = 1;
-		MINCYCLE = 1;
-		TYPE = SOFTWARE;
-	};
-	
 	SCHEDULETABLE sched1 {
         COUNTER = Software_Counter;
         AUTOSTART = FALSE ;
@@ -119,10 +112,6 @@ IMPLEMENTATION trampoline {
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
         LENGTH = 1;
-		ACTION = INCREMENTCOUNTER {
-            OFFSET = 1;
-            COUNTER = Software_Counter_bis;
-        };
 		ACTION = SETEVENT {
             OFFSET = 1;
             TASK = t3;
@@ -154,7 +143,6 @@ IMPLEMENTATION trampoline {
 		TASK = t4;
 		TASK = t5;
 		COUNTER = Software_Counter;
-		COUNTER = Software_Counter_bis;
         SCHEDULETABLE = sched1;
         SCHEDULETABLE = sched2;
 	};

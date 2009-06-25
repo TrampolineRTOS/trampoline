@@ -99,7 +99,7 @@ STATIC VAR(tpl_application_mode, OS_VAR) application_mode;
 CONST(tpl_proc_static, OS_CONST) idle_task_static = {
     /* context              */  IDLE_CONTEXT,
     /* stack                */  IDLE_STACK,
-    /* entry point          */  IDLE_ENTRY,
+	/* entry point          */	IDLE_ENTRY,
     /* internal resource    */  NULL,
     /* id is IDLE_TASK_ID   */  IDLE_TASK_ID,
 #ifdef WITH_OSAPPLICATION
@@ -126,7 +126,7 @@ VAR(tpl_proc, OS_VAR) idle_task = {
 #endif /* WITH_OSAPPLICATION */
     /* activation count     */  0,
     /* priority             */  0,
-    /* state                */  RUNNING
+    /* state                */  SUSPENDED
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     /* activation_allowed   */  ,TRUE
 #endif
@@ -473,7 +473,7 @@ FUNC(VAR(tpl_proc_id, AUTOMATIC), OS_CODE) tpl_get_proc(void)
 
   DOW_ASSERT((tpl_h_prio >= 0) && (tpl_h_prio < PRIO_LEVEL_COUNT))
   DOW_ASSERT(tpl_fifo_rw[tpl_h_prio].size > 0)
-
+	
   DOW_DO(printrl("tpl_get_exec_object - avant");)
 
   /*  Get the highest priority non empty fifo                         */
@@ -589,7 +589,7 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
       for a newly activated object is the base priority */
   prio = tpl_stat_proc_table[proc_id]->base_priority ;
 
-  DOW_ASSERT((prio >= 0) && (prio < PRIO_LEVEL_COUNT))
+	DOW_ASSERT((prio >= 0) && (prio < PRIO_LEVEL_COUNT))
   DOW_ASSERT(tpl_fifo_rw[prio].size < tpl_ready_list[prio].size)
 
   DOW_DO(size_before = tpl_fifo_rw[prio].size;)
@@ -972,17 +972,17 @@ FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
       is released.                                                */
   tpl_release_internal_resource(tpl_kern.running_id);
 
-
   /*  copy it in old slot of tpl_kern                           */
   tpl_kern.old = tpl_kern.running;
   tpl_kern.s_old = tpl_kern.s_running;
   /*  get the ready task from the ready task list                 */
-  tpl_kern.running_id = tpl_get_proc();
-  tpl_kern.running = tpl_dyn_proc_table[tpl_kern.running_id];
-  tpl_kern.s_running = tpl_stat_proc_table[tpl_kern.running_id];
+ tpl_kern.running_id = tpl_get_proc();
+ tpl_kern.running = tpl_dyn_proc_table[tpl_kern.running_id];
+ tpl_kern.s_running = tpl_stat_proc_table[tpl_kern.running_id];
 
   TRACE_ISR_PREEMPT(tpl_kern)
   TRACE_TASK_PREEMPT(tpl_kern)
+	
 
   if (tpl_kern.running->state == READY_AND_NEW)
   {
@@ -1017,8 +1017,42 @@ FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
   /*  Switch the context  */
 
   tpl_kern.need_switch = NEED_SWITCH | NEED_SAVE;
+
 }
 
+/**
+ * @internal
+ *
+ * TODO: document this
+ */
+FUNC(void, OS_CODE) tpl_start_scheduling(void)
+{
+  CONST(tpl_proc_id, AUTOMATIC) first_proc = tpl_get_proc();
+  tpl_kern.running_id = first_proc;
+  tpl_kern.running = tpl_dyn_proc_table[first_proc];
+  tpl_kern.s_running = tpl_stat_proc_table[first_proc];
+  /*  the object has not be preempted. So its
+   descriptor must be initialized                                  */
+  tpl_init_proc(first_proc);
+#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+  /* start the budget monitor for the activated task or isr           */
+  tpl_start_budget_monitor(first_proc);
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+
+  /*  the inserted task become RUNNING                                  */
+  TRACE_ISR_RUN(first_proc)
+  TRACE_TASK_EXECUTE(first_proc)
+  tpl_kern.running->state = RUNNING;
+  /*  If an internal resource is assigned to the task
+   and it is not already taken by it, take it                        */
+  tpl_get_internal_resource(first_proc);
+  
+  /*  A new task has been elected. It is time to call PreTaskHook while
+   the rescheduled task is running                                   */
+  CALL_PRE_TASK_HOOK()
+  
+  tpl_kern.need_switch = NEED_SWITCH;
+}
 
 /**
  * @internal
@@ -1077,7 +1111,6 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
       tpl_start_timeframe(task_id);
 #endif
-
       result = (tpl_status)E_OK_AND_SCHEDULE;
     }
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
@@ -1209,6 +1242,9 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 #endif
 #endif
 
+  /*  Start the idle task */
+  result = tpl_activate_task(IDLE_TASK_ID);
+  
 #ifndef NO_TASK
   /*  Look for autostart tasks    */
   for (i = 0; i < TASK_COUNT; i++)
@@ -1290,7 +1326,7 @@ FUNC(void, OS_CODE) tpl_start_os_service(
   /*  Call tpl_schedule to elect the greatest priority task */
   if(tpl_h_prio != -1)
   {
-    tpl_schedule_from_running();
+    tpl_start_scheduling();
 
 #ifndef WITH_SYSTEM_CALL
     if (tpl_kern.need_switch != NO_NEED_SWITCH)

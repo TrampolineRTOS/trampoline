@@ -1,5 +1,5 @@
 /**
- * @file hook_s4_non/posttask_instance3.c
+ * @file hook_s5_full/posttask_instance5.c
  *
  * @section desc File description
  *
@@ -32,7 +32,7 @@
  * $URL$
  */
 
-/*Instance 3 of posttask*/
+/*Instance 5 of posttask*/
 
 #include "embUnit.h"
 #include "tpl_os.h"
@@ -40,12 +40,12 @@
 void tpl_send_it1(void);
 
 /*test case:test the reaction of the system called with 
- an activation of a isr*/
-static void test_posttask_instance3(void)
+an activation of a isr*/
+static void test_posttask_instance4(void)
 {
 	
-	SCHEDULING_CHECK_STEP(3);
-	
+	SCHEDULING_CHECK_STEP(5);
+
 	tpl_send_it1();
 	SuspendAllInterrupts();
 	tpl_send_it1();
@@ -54,14 +54,14 @@ static void test_posttask_instance3(void)
 }
 
 /*create the test suite with all the test cases*/
-TestRef HookTest_seq4_posttask_instance3(void)
+TestRef HookTest_seq5_posttask_instance4(void)
 {
 	EMB_UNIT_TESTFIXTURES(fixtures) {
-		new_TestFixture("test_posttask_instance3",test_posttask_instance3)
+		new_TestFixture("test_posttask_instance4",test_posttask_instance4)
 	};
-	EMB_UNIT_TESTCALLER(HookTest,"HookTest_sequence4",NULL,NULL,fixtures);
-	
+	EMB_UNIT_TESTCALLER(HookTest,"HookTest_sequence5",NULL,NULL,fixtures);
+
 	return (TestRef)&HookTest;
 }
 
-/* End of file hook_s4_non/posttask_instance3.c */
+/* End of file hook_s5_full/posttask_instance5.c */

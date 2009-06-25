@@ -84,8 +84,8 @@ FUNC(void, OS_CODE) StartOS(
 {
   tpl_init_machine();  
   tpl_start_os(mode);
-  /*  Fall back to the idle loop                      */
-  tpl_sleep();
+  /*  tpl_start_os does not return since the idle task will run
+      if no other task is AUTOSTART */
 }
 
 #define OS_STOP_SEC_CODE

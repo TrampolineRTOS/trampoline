@@ -41,7 +41,7 @@
 an activation of a task*/
 static void test_error_instance1(void)
 {
-	SCHEDULING_CHECK_STEP(4);
+	SCHEDULING_CHECK_STEP(7);
 }
 
 /*create the test suite with all the test cases*/

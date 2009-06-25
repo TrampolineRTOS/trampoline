@@ -11,7 +11,7 @@ static void test_t2_instance2(void)
 {
 	StatusType result_inst_1, result_inst_2;
 	
-	SCHEDULING_CHECK_INIT(15);
+	SCHEDULING_CHECK_INIT(16);
 	result_inst_1 = WaitEvent(Event1);
 	SCHEDULING_CHECK_AND_EQUAL_INT(16,E_OK, result_inst_1);
 	
@@ -21,12 +21,12 @@ static void test_t2_instance2(void)
 }
 
 /*create the test suite with all the test cases*/
-TestRef AutosarSTTest_seq6_t2_instance2(void)
+TestRef AutosarSTTest_seq7_t2_instance2(void)
 {
 	EMB_UNIT_TESTFIXTURES(fixtures) {
 		new_TestFixture("test_t2_instance2",test_t2_instance2)
 	};
-	EMB_UNIT_TESTCALLER(AutosarSTTest,"AutosarSTTest_sequence6",NULL,NULL,fixtures);
+	EMB_UNIT_TESTCALLER(AutosarSTTest,"AutosarSTTest_sequence7",NULL,NULL,fixtures);
 	
 	return (TestRef)&AutosarSTTest;
 }

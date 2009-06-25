@@ -1,5 +1,5 @@
 /**
- * @file hook_s2_non/hook_s2.c
+ * @file hook_s2_full/hook_s2.c
  *
  * @section desc File description
  *
@@ -41,9 +41,6 @@ TestRef HookTest_seq2_error_instance3(void);
 TestRef HookTest_seq2_error_instance4(void);
 TestRef HookTest_seq2_error_instance5(void);
 TestRef HookTest_seq2_error_instance6(void);
-TestRef HookTest_seq2_error_instance7(void);
-TestRef HookTest_seq2_error_instance8(void);
-TestRef HookTest_seq2_error_instance9(void);
 TestRef HookTest_seq2_pretask_instance1(void);
 TestRef HookTest_seq2_pretask_instance2(void);
 TestRef HookTest_seq2_pretask_instance3(void);
@@ -51,7 +48,6 @@ TestRef HookTest_seq2_pretask_instance4(void);
 TestRef HookTest_seq2_posttask_instance1(void);
 TestRef HookTest_seq2_posttask_instance2(void);
 TestRef HookTest_seq2_posttask_instance3(void);
-TestRef HookTest_seq2_posttask_instance4(void);
 TestRef HookTest_seq2_t1_instance(void);
 TestRef HookTest_seq2_t2_instance(void);
 
@@ -105,21 +101,6 @@ void ErrorHook(void)
 			TestRunner_runTest(HookTest_seq2_error_instance6());
 			break;
 		}
-		case 7 :
-		{
-			TestRunner_runTest(HookTest_seq2_error_instance7());
-			break;
-		}
-		case 8 :
-		{
-			TestRunner_runTest(HookTest_seq2_error_instance8());
-			break;
-		}
-		case 9 :
-		{
-			TestRunner_runTest(HookTest_seq2_error_instance9());
-			break;
-		}
 		default:
 		{
 			stdimpl_print("Instance error");
@@ -136,6 +117,7 @@ void PreTaskHook(void)
 	{
 		case 1 :
 		{
+			TestRunner_start();
 			TestRunner_runTest(HookTest_seq2_pretask_instance1());
 			break;
 		}
@@ -169,7 +151,6 @@ void PostTaskHook(void)
 	{
 		case 1 :
 		{
-			TestRunner_start();
 			TestRunner_runTest(HookTest_seq2_posttask_instance1());
 			break;
 		}
@@ -183,18 +164,13 @@ void PostTaskHook(void)
 			TestRunner_runTest(HookTest_seq2_posttask_instance3());
 			break;
 		}
-		case 4 :
-		{
-			TestRunner_runTest(HookTest_seq2_posttask_instance4());
-			break;
-		}
 		default:
 		{
 			stdimpl_print("Instance error");
 			break;
 		}
 	}
-	
+
 	
 }
 
@@ -209,4 +185,4 @@ TASK(t2)
 	ShutdownOS(E_OK);
 }
 
-/* End of file hook_s2_non/hook_s2.c */
+/* End of file hook_s2_full/hook_s2.c */
