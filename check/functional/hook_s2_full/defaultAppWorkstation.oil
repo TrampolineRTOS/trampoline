@@ -67,8 +67,8 @@ IMPLEMENTATION trampoline {
         APP_NAME = "hook_s2_full";
 		CFLAGS = "-I../../embUnit";
         CFLAGS  = "-Wall -pedantic";
-        CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../../lib -lembUnit";
+        CFLAGS  = "-Wmissing-field-initializers -g";
+		LDFLAGS = "-L../../lib -lembUnit -g";
 		SHUTDOWNHOOK = TRUE;
 		ERRORHOOK = TRUE;
 		PRETASKHOOK = TRUE;

@@ -157,7 +157,7 @@ rule <start>:
 
     set_defaults !imp !?cpu;
     verify_all !?cpu;
-    generate_all !cpu;
+#    generate_all !cpu;
 
     if [@uint errorCount] == 0 then
       generate_all !cpu;

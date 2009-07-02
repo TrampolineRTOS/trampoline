@@ -222,7 +222,7 @@ list autosar_objs error message "AUTOSAR object '%K'" style keywordsStyle :
 list schedtable_attrs error message "SCHEDULETABLE attribute '%K'" style keywordsStyle :
     "LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION", "SYNC_STRATEGY",
     "MAX_INCREASE", "MAX_DECREASE", "MAX_INCREASE_ASYNC",
-    "MAX_DECREASE_ASYNC", "PRECISION", "LENGTH";
+    "MAX_DECREASE_ASYNC", "PRECISION", "LENGTH", "EXPIRY_POINT",    "MAX_RETARD", "MAX_ADVANCE", "ADJUSTABLE";
 
 #
 # Autostart attributes

@@ -78,55 +78,55 @@ IMPLEMENTATION trampoline {
 		TYPE = SOFTWARE;
 	};
 	
-	SCHEDULETABLE sched1 {
+    SCHEDULETABLE sched1 {
         COUNTER = Software_Counter;
         AUTOSTART = FALSE ;
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
         LENGTH = 3;
-        ACTION = SETEVENT {
+        EXPIRY_POINT first_point {
             OFFSET = 0;
-            TASK = t3;
-			EVENT = Event1;
+            ACTION = SETEVENT {
+                TASK = t3;
+		      	EVENT = Event1;
+            };
+		    ACTION = ACTIVATETASK {
+                TASK = t5;
+            };
         };
-		ACTION = ACTIVATETASK {
-            OFFSET = 0;
-            TASK = t5;
-        };
-       
-        ACTION = SETEVENT {
+        EXPIRY_POINT second_point {
             OFFSET = 1;
-            TASK = t3;
-			EVENT = Event1;
-        };
-        ACTION = ACTIVATETASK {
-            OFFSET = 1;
-            TASK = t4;
+            ACTION = SETEVENT {
+                TASK = t3;
+		      	EVENT = Event1;
+            };
+            ACTION = ACTIVATETASK {
+                TASK = t4;
+            };
         };
         ACCESSING_APPLICATION = app;
     };
 	
-	SCHEDULETABLE sched2 {
+    SCHEDULETABLE sched2 {
         COUNTER = Software_Counter;
         AUTOSTART = FALSE ;
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
         LENGTH = 1;
-		ACTION = SETEVENT {
+        EXPIRY_POINT many_things {
             OFFSET = 1;
-            TASK = t3;
-			EVENT = Event1;
+            ACTION = SETEVENT {
+                TASK = t3;
+                EVENT = Event1;
+            };
+            ACTION = SETEVENT {
+                TASK = t2;
+                EVENT = Event1;
+            };
+            ACTION = ACTIVATETASK {
+                TASK = t2;
+            };
         };
-		ACTION = SETEVENT {
-            OFFSET = 1;
-            TASK = t2;
-			EVENT = Event1;
-        };
-		ACTION = ACTIVATETASK {
-            OFFSET = 1;
-            TASK = t2;
-        };
-
         ACCESSING_APPLICATION = app;
     };
 	

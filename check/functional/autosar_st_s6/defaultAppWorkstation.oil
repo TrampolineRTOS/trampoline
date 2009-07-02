@@ -130,9 +130,11 @@ IMPLEMENTATION trampoline {
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
         LENGTH = 7;
-        ACTION = ACTIVATETASK {
+        EXPIRY_POINT one {
             OFFSET = 0;
-            TASK = t2;
+            ACTION = ACTIVATETASK {
+                TASK = t2;
+            };
         };
         ACCESSING_APPLICATION = app;
     };
@@ -143,9 +145,11 @@ IMPLEMENTATION trampoline {
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
         LENGTH = 7;
-        ACTION = ACTIVATETASK {
+        EXPIRY_POINT two {
             OFFSET = 5;
-            TASK = t3;
+            ACTION = ACTIVATETASK {
+                TASK = t3;
+            };
         };
         ACCESSING_APPLICATION = app;
     };
@@ -156,9 +160,11 @@ IMPLEMENTATION trampoline {
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
         LENGTH = 7;
-        ACTION = ACTIVATETASK {
+        EXPIRY_POINT three {
             OFFSET = 6;
-            TASK = t4;
+            ACTION = ACTIVATETASK {
+                TASK = t4;
+            };
         };
         ACCESSING_APPLICATION = app;
     };
@@ -169,9 +175,11 @@ IMPLEMENTATION trampoline {
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
         LENGTH = 7;
-        ACTION = ACTIVATETASK {
+        EXPIRY_POINT four {
             OFFSET = 0;
-            TASK = t5;
+            ACTION = ACTIVATETASK {
+                TASK = t5;
+            };
         };
         ACCESSING_APPLICATION = app;
     };
@@ -182,9 +190,11 @@ IMPLEMENTATION trampoline {
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
         LENGTH = 7;
-        ACTION = ACTIVATETASK {
+        EXPIRY_POINT five {
             OFFSET = 2;
-            TASK = t6;
+            ACTION = ACTIVATETASK {
+                TASK = t6;
+            };
         };
         ACCESSING_APPLICATION = app;
     };
@@ -195,9 +205,11 @@ IMPLEMENTATION trampoline {
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
         LENGTH = 7;
-        ACTION = ACTIVATETASK {
+        EXPIRY_POINT six {
             OFFSET = 3;
-            TASK = t7;
+            ACTION = ACTIVATETASK {
+                TASK = t7;
+            };
         };
         ACCESSING_APPLICATION = app;
     };
@@ -208,9 +220,11 @@ IMPLEMENTATION trampoline {
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
         LENGTH = 7;
-        ACTION = ACTIVATETASK {
+        EXPIRY_POINT seven {
             OFFSET = 6;
-            TASK = t11;
+            ACTION = ACTIVATETASK {
+                TASK = t11;
+            };
         };
         ACCESSING_APPLICATION = app;
     };
@@ -221,9 +235,11 @@ IMPLEMENTATION trampoline {
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
         LENGTH = 7;
-        ACTION = ACTIVATETASK {
+        EXPIRY_POINT eight {
             OFFSET = 0;
-            TASK = t8;
+            ACTION = ACTIVATETASK {
+                TASK = t8;
+            };
         };
         ACCESSING_APPLICATION = app;
     };
@@ -234,9 +250,11 @@ IMPLEMENTATION trampoline {
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
         LENGTH = 7;
-        ACTION = ACTIVATETASK {
+        EXPIRY_POINT nine {
             OFFSET = 4;
-            TASK = t9;
+            ACTION = ACTIVATETASK {
+                TASK = t9;
+            };
         };
         ACCESSING_APPLICATION = app;
     };
@@ -247,9 +265,11 @@ IMPLEMENTATION trampoline {
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
         LENGTH = 7;
-        ACTION = ACTIVATETASK {
+        EXPIRY_POINT ten {
             OFFSET = 5;
-            TASK = t10;
+            ACTION = ACTIVATETASK {
+                TASK = t10;
+            };
         };
         ACCESSING_APPLICATION = app;
     };

@@ -52,11 +52,12 @@ IMPLEMENTATION trampoline {
         PERIODIC = FALSE;
         LENGTH = 10;
 		
-       ACTION = ACTIVATETASK {
+		EXPIRY_POINT ep {
             OFFSET = 2;
-            TASK = t1;
-        };
-		
+            ACTION = ACTIVATETASK {
+                TASK = t1;
+            };
+		};
 		ACCESSING_APPLICATION = app;
     };
 
@@ -69,11 +70,12 @@ IMPLEMENTATION trampoline {
         PERIODIC = TRUE;
         LENGTH = 11;
 		
-       ACTION = ACTIVATETASK {
+        EXPIRY_POINT ep {
             OFFSET = 2;
-            TASK = t1;
+            ACTION = ACTIVATETASK {
+                TASK = t1;
+            };
         };
-		
 		ACCESSING_APPLICATION = app;
     };
 	

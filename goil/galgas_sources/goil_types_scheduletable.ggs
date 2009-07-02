@@ -58,216 +58,199 @@ class @ltgt_sync_true extends @ltgt_sync_obj {
 }
 
 sortedlist @action_list {
-    @uint64 offset;
-    @uint   order;
-    @action_obj act;
+    @uint       order;
+    @action_obj action;
 }{
-    offset <, order <
+    order <
+}abstract class @adjustable_obj extends @oil_obj {  @location location;  abstract method generate ?!@string res;}
+class @adjustable_void extends @adjustable_obj {  override method generate ?!@string res:    doReplace !?res !"$MAX_RETARD$" !"0";    doReplace !?res !"$MAX_ADVANCE$" !"0";  end method;}class @adjustable_false extends @adjustable_obj {  override method generate ?!@string res:    doReplace !?res !"$MAX_RETARD$" !"0";    doReplace !?res !"$MAX_ADVANCE$" !"0";  end method;}class @adjustable_true extends @adjustable_obj {  @basic_type  max_retard;  @basic_type  max_advance;  override method generate ?!@string res:    doReplace !?res !"$MAX_RETARD$" ![uint64_or_error(!max_retard !"MAX_RETARD") string];    doReplace !?res !"$MAX_ADVANCE$" ![uint64_or_error(!max_advance !"MAX_ADVANCE") string];  end method;}routine set_adjustable  ?!@adjustable_obj adj  ?@adjustable_obj  new_adj:  cast adj:  when == @adjustable_void do  else    error [new_adj location]: "Redefinition of ADJUSTABLE";    error [adj location]: "was defined here";  end cast;end routine;  
+class @expiry_point_obj extends @oil_obj {  @basic_type     offset;
+  @lstring        name;
+  @adjustable_obj adjust;
+  @action_list    actions feature setter;
 }
 
+sortedlist @expiry_point_list {
+  @uint64           off;
+  @expiry_point_obj point;
+}{ off < }
 
-routine expiry_point
-    ?@lstring name
-    ?@uint64  expiry
-    ?@uint64  previous_expiry
-    ?@uint    index
-    ?!@string i_res
+routine expiry_point_actions
+  ??@lstring name
+  ??@uint64  off
+  ??@action_list actions
+  ?!@string i_res
 :
-    # compute the expiry point descriptor
-    @string exp_st;
-    retrieveTemplateString ?exp_st !"expiry_point";
-    exp_st := [exp_st stringByReplacingStringByString !"$EXPIRY_POINT$" ![name string]."_".[expiry string]."_expirypoint"];
-	 #if expiry != 0L then
-        exp_st := [exp_st stringByReplacingStringByString !"$OFFSET$" ![expiry-previous_expiry string]];
-    #end if;
-    exp_st := [exp_st stringByReplacingStringByString !"$ACTION_COUNT$" ![index string]];
-    exp_st := [exp_st stringByReplacingStringByString !"$ACTION_ARRAY$" ![name string]."_".[expiry string]];
+  # Generate the expiry points and actions for each expiry point
+  @string setevent_tpl;
+  retrieveTemplateString ?setevent_tpl !"notification_setevent";
+  @string activatetask_tpl;
+  retrieveTemplateString ?activatetask_tpl !"notification_activatetask";
+  @string finalizescheduletable_tpl;
+  retrieveTemplateString ?finalizescheduletable_tpl !"notification_finalizescheduletable";
+  # output the table of actions for the expiry point
+  @string act_res := "";
+  @string res := "\ntpl_action *".[name string]."_".[off string]."[".[[actions length] string]."] = {\n";
+  foreach actions :i do    res .= "    (tpl_action *)&".[name string]."_".[off string]."_".[i string]."_action";
+    @string act := "";
+    cast action :
+    when == @activatetask_action ata do
+      act := [activatetask_tpl stringByReplacingStringByString !"$TASK$" ![[ata task_name] string]."_id"];
+    when == @setevent_action sea do
+      act := [setevent_tpl stringByReplacingStringByString !"$TASK$" ![[sea task_name] string]."_id"];
+      act := [act stringByReplacingStringByString !"$EVENT$" ![[sea event_name] string]."_mask"];
+    when == @finalize_st_action do
+      act := [finalizescheduletable_tpl stringByReplacingStringByString !"$SCHEDTABLE$" ![name string]."_sched_table"] ;
+    else
+      error name : "Internal error, unexpected type for ACTION attribute of schedule table ".[name string];
+    end cast;
+    doReplace
+      !?act
+      !"$NOTIFICATION_NAME$"
+      !"expiry point at offset ".[off string]." of schedule table ".[name string];
+    doReplace
+      !?act
+      !"$NOTIFICATION$"
+      ![name string]."_".[off string]."_".[i string]."_action";
+    act_res .= act;
+  between res .= ",\n";
+  end foreach;
+  res := act_res . res . "\n};\n";
 
-    # output the table of actions for the expiry point
-    @string res := "\ntpl_action *".[name string]."_".[expiry string]."[".[index string]."] = {\n";
-    @uint i := 0;
-    loop index :
-    while i < index do
-        res .= "    (tpl_action *)&".[name string]."_".[i string]."_".[expiry string]."_expirypoint_action";
-        if i < index - 1 then
-            res .= ",\n";
-        else
-            res .= "\n";
-        end if;
-        i++;
-    end loop;
-    res .= "};\n";
-
-    i_res .= [exp_st stringByReplacingStringByString !"$EXPIRY_POINT_ACTIONS$" !res];
-end routine;
+  doReplace !?i_res !"$EXPIRY_POINT_ACTIONS$" !res;end routine;
 
 
 class @scheduletable_obj extends @oil_obj {
-    @lstring         counter   feature setter;
-    @autostart_obj	autostart feature setter;
-    @ltgt_sync_obj	ltgt_sync feature setter;
-    @basic_type      periodic  feature setter;
-    @basic_type      length    feature setter;
-    @action_list     actions   feature setter;
-    @lstringlist     acc_apps  feature setter;
+  @lstring           counter    feature setter;
+  @autostart_obj     autostart  feature setter;
+  @ltgt_sync_obj     ltgt_sync  feature setter;
+  @basic_type        periodic   feature setter;
+  @basic_type        length     feature setter;
+  @expiry_point_list exp_points feature setter;
+  @lstringlist       acc_apps   feature setter;
 
-    method generate
-        ?@lstring name     # name of the schedule table
-        ?@string  app_name # name of the os application
-        ?!@string i_res    # implementation template
-    :
-        @string stres;
-        retrieveTemplateString ?stres !"schedule_table";
+  method generate
+    ?@lstring name     # name of the schedule table
+    ?@string  app_name # name of the os application
+    ?!@string i_res    # implementation template
+  :
+    @string stres;
+    retrieveTemplateString ?stres !"schedule_table";
 
-        doReplace !?stres !"$SCHEDTABLE_NAME$" ![name string];
-        doReplace !?stres !"$SCHEDTABLE$" ![name string]."_sched_table";
-        doReplace !?stres !"$COUNTER$" !"&".[counter string]."_counter_desc";
-        doReplace !?stres !"$EXPIRY_TABLE$" ![name string]."_expiry_table";
-        doReplace !?stres !"$APP_ID$" !app_name."_id";
+    doReplace !?stres !"$SCHEDTABLE_NAME$" ![name string];
+    doReplace !?stres !"$SCHEDTABLE$" ![name string]."_sched_table";
+    doReplace !?stres !"$COUNTER$" !"&".[counter string]."_counter_desc";
+    doReplace !?stres !"$EXPIRY_TABLE$" ![name string]."_expiry_table";
+    doReplace !?stres !"$APP_ID$" !app_name."_id";
+    # set the length of the schedule table
+    # In addition, add the finalize schedule table action to the schedule table
+		 # Check if offset==length :
+		 #   if yes -> add finalize_ST_action; expiry_point and expiry_table
+		 #   if no -> finish expiry_point and expiry_table; add finalize_ST_action; expiry_point and expiry_table
+    @expiry_point_list epl := exp_points;
+    cast length:
+    when == @uint64_class len do
+      doReplace !?stres !"$LENGTH$" ![[len value] string];
+      @uint64 last_offset;
+      @expiry_point_obj last_point;
+      [!?epl popGreatest ?last_offset ?last_point];
+      if last_offset == [len value] then
+        # add the finalize action to the last expiry point
+        @action_list acts := [last_point actions];
+        acts += !10 ![@finalize_st_action new !here];
+        [!?last_point setActions !acts];
+      else
+        # add a new expiry point for the finalize action
+        @action_list finalize_ep_actions [emptySortedList];
+        finalize_ep_actions += !10 ![@finalize_st_action new !here];
+        @expiry_point_obj finalize_ep :=
+          [@expiry_point_obj new
+            ![@lstring new !"" !here]
+            ![@uint64_class new !here ![len value]]
+            ![@lstring new !"finalize" !here]
+            ![@adjustable_void new !empty_lstring() !here] 
+            !finalize_ep_actions
+          ];
+        epl += ![len value] !finalize_ep;
+      end if;
+      epl += !last_offset !last_point;
+    else
+      error name : "Internal error, unexpected type for LENGTH attribute of schedule table ".[name string] ;
+    end cast;
 #        @string sync_strat ;
 #        [ltgt_sync strategy ?sync_strat] ;
 #        doReplace !?stres !"$SYNC_STRATEGY$" !sync_strat;
-        @string perio := "" ;
-		 cast periodic :
-  	 		when == @bool_class b do
-        	if [b value] == true then 
-                perio := "TRUE";
-            else
-                perio := "FALSE";
-        end if;
-        else error name : "Internal error, unexpected type for PERIODIC attribute of schedule table ".[name string];
-        end cast;
+    @string perio := "" ;
+    cast periodic :
+    when == @bool_class b do
+      if [b value] == true then 
+        perio := "TRUE";
+      else
+        perio := "FALSE";
+      end if;
+    else      error name : "Internal error, unexpected type for PERIODIC attribute of schedule table ".[name string];
+    end cast;
 
-        doReplace !?stres !"$PERIODIC$" !perio;
+    doReplace !?stres !"$PERIODIC$" !perio;
 
-        cast autostart :
-        when == @sd_autostart_false do
-            doReplace !?stres !"$SCHEDTABLE_DATE$" !"0";
-            doReplace !?stres !"$SCHEDTABLE_STATE$" !"SCHEDULETABLE_STOPPED";
-        when == @sd_autostart_synchron do
-            doReplace !?stres !"$SCHEDTABLE_DATE$" !"0";
-            doReplace !?stres !"$SCHEDTABLE_STATE$" !"SCHEDULETABLE_AUTOSTART_SYNCHRON";
-        when == @sd_autostart_relative sa do
-            doReplace !?stres !"$SCHEDTABLE_DATE$" ![[[sa offset] uint64] string];
-            doReplace !?stres !"$SCHEDTABLE_STATE$" !"SCHEDULETABLE_AUTOSTART_RELATIVE";
-        when == @sd_autostart_absolute sa do
-            doReplace !?stres !"$SCHEDTABLE_DATE$" ![[[sa value] uint64] string];
-            doReplace !?stres !"$SCHEDTABLE_STATE$" !"SCHEDULETABLE_AUTOSTART_ABSOLUTE";
-        else error name : "Internal error, unexpected type for AUTOSTART attribute of schedule table ".[name string];
-        end cast;
+    cast autostart :
+    when == @sd_autostart_false do
+        doReplace !?stres !"$SCHEDTABLE_DATE$" !"0";
+        doReplace !?stres !"$SCHEDTABLE_STATE$" !"SCHEDULETABLE_STOPPED";
+    when == @sd_autostart_synchron do
+        doReplace !?stres !"$SCHEDTABLE_DATE$" !"0";
+        doReplace !?stres !"$SCHEDTABLE_STATE$" !"SCHEDULETABLE_AUTOSTART_SYNCHRON";
+    when == @sd_autostart_relative sa do
+        doReplace !?stres !"$SCHEDTABLE_DATE$" ![[[sa offset] uint64] string];
+        doReplace !?stres !"$SCHEDTABLE_STATE$" !"SCHEDULETABLE_AUTOSTART_RELATIVE";
+    when == @sd_autostart_absolute sa do
+        doReplace !?stres !"$SCHEDTABLE_DATE$" ![[[sa value] uint64] string];
+        doReplace !?stres !"$SCHEDTABLE_STATE$" !"SCHEDULETABLE_AUTOSTART_ABSOLUTE";
+    else error name : "Internal error, unexpected type for AUTOSTART attribute of schedule table ".[name string];
+    end cast;
 
-        # Generate the expiry points and actions for each expiry point
-        @string expiry_tpl;
-        retrieveTemplateString ?expiry_tpl !"expiry_point";
-        @string setevent_tpl;
-        retrieveTemplateString ?setevent_tpl !"notification_setevent";
-        @string activatetask_tpl;
-        retrieveTemplateString ?activatetask_tpl !"notification_activatetask";
-        @string incrementcounter_tpl;
-        retrieveTemplateString ?incrementcounter_tpl !"notification_incrementcounter";
-        @string finalizescheduletable_tpl;
-        retrieveTemplateString ? finalizescheduletable_tpl !"notification_finalizescheduletable";
 
-        @uint64 cur_offset := 0L;
-        @uint64 previous_offset := 0L;
-        @uint index := 0;
-        @uint expiry_count := 0;
-        @string act_table := "";
-        @string act_structs := "";
-        @string expiry_table := "tpl_expiry_point *".[name string]."_expiry_table[$EXPIRY_TABLE_SIZE$] = {\n";
-        @bool first_time := true;
+    @string act_table := "";
+    @string act_structs := "";
+    @string expiry_table := "tpl_expiry_point *".[name string]."_expiry_table[$EXPIRY_TABLE_SIZE$] = {\n";
+    @uint64 prev_offset := 0L;
+        foreach epl do
+      # compute the expiry point descriptor
+      @string exp_st;
+      retrieveTemplateString ?exp_st !"expiry_point";
+      doReplace !?exp_st !"$EXPIRY_POINT$" ![name string]."_".[off string]."_expirypoint";
+      doReplace !?exp_st !"$OFFSET$" ![off-prev_offset string];
+      doReplace !?exp_st !"$ACTION_COUNT$" ![[[point actions] length] string];
+      doReplace !?exp_st !"$ACTION_ARRAY$" ![name string]."_".[off string];      
+      # output the table of actions for expiry point
+      expiry_point_actions !name !off ![point actions] !?exp_st;      [[point adjust] generate !?exp_st];      act_structs .= exp_st;
+      expiry_table .= "    &".[name string]."_".[off string]."_expirypoint";
+      prev_offset := off;    between      expiry_table .= ",\n";    after      expiry_table .= "\n};\n";
+    end foreach;
 
-        foreach actions (@uint64 offset @uint order @action_obj action) do
-        	if (offset != cur_offset) | ((offset == 0L) & (first_time == true)) then
-          		if not first_time then
-                # output the table of actions for the previous expiry point
-				  expiry_point !name !cur_offset !previous_offset !index !?act_table;
-                expiry_table .= "    &".[name string]."_".[cur_offset string]."_expirypoint,\n";
-        		else
-                first_time := false;
-              end if;
-              previous_offset := cur_offset;
-              cur_offset := offset;
-              index := 0;
-              expiry_count++;
-        	end if;
-			
-			 @string res := "";
-            cast action :
-            when == @activatetask_action ata do
-                res := [activatetask_tpl stringByReplacingStringByString !"$TASK$" ![[ata task_name] string]."_id"];
-            when == @setevent_action sea do
-                res := [setevent_tpl stringByReplacingStringByString !"$TASK$" ![[sea task_name] string]."_id"];
-                res := [res stringByReplacingStringByString !"$EVENT$" ![[sea event_name] string]."_mask"];
-            when == @incrementcounter_action ica do
-                res := [incrementcounter_tpl stringByReplacingStringByString !"$COUNTER$" ![[ica counter_name] string]."_counter_desc"];
-            else error name : "Internal error, unexpected type for ACTION attribute of schedule table ".[name string];
-            end cast;
-            res := [res stringByReplacingStringByString
-                    !"$NOTIFICATION_NAME$"
-                    !"expiry point at offset ".[offset string]." of schedule table ".[name string]];
-            res := [res stringByReplacingStringByString
-                    !"$NOTIFICATION$"
-                    ![name string]."_".[index string]."_".[offset string]."_expirypoint_action"];
+    # set the synchronization strategy and parameters
+    cast ltgt_sync :
+    when == @ltgt_sync_void do
+      doReplace !?stres !"$SYNC_STRATEGY$" !"SCHEDTABLE_NO_SYNC";
+      doReplace !?stres !"$PRECISION$" !"0";
+    when == @ltgt_sync_false do
+      doReplace !?stres !"$SYNC_STRATEGY$" !"SCHEDTABLE_NO_SYNC";
+      doReplace !?stres !"$PRECISION$" !"0";
+    when == @ltgt_sync_true sst do
+      doReplace !?stres !"$SYNC_STRATEGY$" !"SCHEDTABLE_".[[sst strategy] string]."_SYNC";
+      cast [sst precision] :
+      when == @uint64_class p do
+        doReplace !?stres !"$PRECISION$" ![[p value] string];
+      else
+        error [sst loc] : "Internal error, wrong type for PRECISION";
+      end cast;
+    else end cast;
 
-            index ++;
-            act_structs .= res."\n";
-        end foreach;
+    doReplace !?stres !"$EXPIRY_POINTS$" !act_structs.act_table.expiry_table;
+    doReplace !?stres !"$EXPIRY_TABLE_SIZE$" ![[epl length] string];
 
-		 #check if offset==length :
-		 #			if yes -> add finalize_ST_action; expiry_point and expiry_table
-		 # 			if no -> finish expiry_point and expiry_table; add finalize_ST_action; expiry_point and expiry_table
-        cast length :
-        when == @uint64_class len do		
-			if (cur_offset != [len value]) then
-				expiry_point !name !cur_offset !previous_offset !index !?act_table;
-        		expiry_table .= "    &".[name string]."_".[cur_offset string]."_expirypoint,\n";
-				previous_offset := cur_offset;
-				cur_offset := [len value];
-				index := 0;
-        		expiry_count++;
-			end if;
-          doReplace !?stres !"$LENGTH$" ![[len value] string] ;
-		 else
-            error name : "Internal error, unexpected type for LENGTH attribute of schedule table ".[name string] ;
-        end cast ;
-
-		 @string res := "" ;
-		 res := [finalizescheduletable_tpl stringByReplacingStringByString !"$SCHEDTABLE$" ![name string]."_sched_table"] ;
-		 res := [res stringByReplacingStringByString
-               !"$NOTIFICATION_NAME$"
-               !"expiry point at offset ".[cur_offset string]." of schedule table ".[name string]];
-        res := [res stringByReplacingStringByString
-               !"$NOTIFICATION$"
-               ![name string]."_".[index string]."_".[cur_offset string]."_expirypoint_action"];
-		 index ++;
-        act_structs .= res."\n";
-        expiry_point !name !cur_offset !previous_offset !index !?act_table;
-        expiry_table .= "    &".[name string]."_".[cur_offset string]."_expirypoint\n};";
-
-        # set the synchronization strategy and parameters
-        cast ltgt_sync :
-        when == @ltgt_sync_void do
-          doReplace !?stres !"$SYNC_STRATEGY$" !"SCHEDTABLE_NO_SYNC";
-          doReplace !?stres !"$PRECISION$" !"0";
-        when == @ltgt_sync_false do
-          doReplace !?stres !"$SYNC_STRATEGY$" !"SCHEDTABLE_NO_SYNC";
-          doReplace !?stres !"$PRECISION$" !"0";
-        when == @ltgt_sync_true sst do
-          doReplace !?stres !"$SYNC_STRATEGY$" !"SCHEDTABLE_".[[sst strategy] string]."_SYNC";
-          cast [sst precision] :
-          when == @uint64_class p do
-            doReplace !?stres !"$PRECISION$" ![[p value] string];
-          else
-            error [sst loc] : "Internal error, wrong type for PRECISION";
-          end cast;
-        else end cast;
-
-        doReplace !?stres !"$EXPIRY_POINTS$" !act_structs.act_table.expiry_table;
-        doReplace !?stres !"$EXPIRY_TABLE_SIZE$" ![expiry_count string];
-
-        i_res .= stres."\n";
-    end method;
+    i_res .= stres."\n";
+  end method;
 }
 
 map @scheduletable_map {
@@ -281,14 +264,14 @@ function default_scheduletable_obj
   ->@scheduletable_obj st
 :
   st := [@scheduletable_obj new
-    !empty_lstring()             # description
-    !empty_lstring()             # counter
-    ![@autostart_void new !here] # autostart
-    ![@ltgt_sync_void new !here] # sync to global time
-    ![@void new !here]           # periodic
-    ![@void new !here]           # length
-    ![@action_list emptySortedList]    # actions
-    ![@lstringlist emptyList]    # accessing applications
+    !empty_lstring()                      # description
+    !empty_lstring()                      # counter
+    ![@autostart_void new !here]          # autostart
+    ![@ltgt_sync_void new !here]          # sync to global time
+    ![@void new !here]                    # periodic
+    ![@void new !here]                    # length
+    ![@expiry_point_list emptySortedList] # actions
+    ![@lstringlist emptyList]             # accessing applications
   ] ;
 end function;
 
