@@ -37,14 +37,15 @@ nonterminal <st_autostart_sync_params>
   !@autostart_obj autostart;
 nonterminal <ltgt_sync_params>
   !@ltgt_sync_obj sync;
+nonterminal <st_expiry_pt_params>  ?@lstring          ep_name  !@expiry_point_obj epl;
+nonterminal <st_action_params>
+  ?!@action_list actions;
 
 # external non terminal
 nonterminal <description>
   !@lstring desc;
 nonterminal <boolean>
   !@lbool bool;
-nonterminal <st_action_params>
-  ?!@action_list actions;
 
 rule <scheduletable>
   ?!@scheduletable_map stm
@@ -62,16 +63,7 @@ rule <scheduletable>
   if [stm hasKey ![name string]] then
     [!?stm del !name ?st];
   else
-    st := [@scheduletable_obj new
-      ![@lstring new !"" !here]    # description
-      ![@lstring new !"" !here]    # counter
-      ![@autostart_void new !here] # autostart
-      ![@ltgt_sync_void new !here] # sync to global time
-      ![@void new !here]           # periodic
-      ![@void new !here]           # length
-      ![@action_list emptySortedList]    # actions
-      ![@lstringlist emptyList]    # accessing applications
-    ];
+    st := default_scheduletable_obj();
   end if;
 
   <scheduletable_parameters> !?st !name;
@@ -87,14 +79,14 @@ rule <scheduletable_parameters>
   ?!@scheduletable_obj st
   ?@lstring name
 :
-  @lstring       st_description := [st desc];
-  @lstring       st_counter     := [st counter];
-  @autostart_obj st_autostart   := [st autostart];
-  @ltgt_sync_obj st_ltgt_sync   := [st ltgt_sync];
-  @basic_type    st_periodic    := [st periodic];
-  @basic_type    st_length      := [st length];
-  @action_list   st_actions     := [st actions];
-  @lstringlist   st_acc_apps    := [st acc_apps];
+  @lstring           st_description := [st desc];
+  @lstring           st_counter     := [st counter];
+  @autostart_obj     st_autostart   := [st autostart];
+  @ltgt_sync_obj     st_ltgt_sync   := [st ltgt_sync];
+  @basic_type        st_periodic    := [st periodic];
+  @basic_type        st_length      := [st length];
+  @expiry_point_list st_exp_pts     := [st exp_points];
+  @lstringlist       st_acc_apps    := [st acc_apps];
 
   repeat
   while
@@ -186,9 +178,15 @@ rule <scheduletable_parameters>
       error here : "LENGTH attribute already defined for Schedule Table ".[name string];
       error [st_periodic location] : "Was previously define here";
     end cast;
+#  while
+#    $ACTION$; $=$; <st_action_params> !?st_actions; <description> ?*; $;$;
+#
   while
-    $ACTION$; $=$; <st_action_params> !?st_actions; <description> ?*; $;$;
-
+    @lstring exp_name;
+    $EXPIRY_POINT$; $idf$ ?exp_name; ${$;      @expiry_point_obj ep;
+      <st_expiry_pt_params> !exp_name ?ep;
+    $}$; <description> ?*; $;$;    cast [ep offset]:    when == @uint64_class off do
+      st_exp_pts += ![off value] !ep;    else      error exp_name: "OS404 - OFFSET is missing for expiry point ".[exp_name string];    end cast;
   while
     @lstring app;
     $ACCESSING_APPLICATION$; $=$; $idf$ ?app; <description> ?*; $;$;
@@ -205,8 +203,8 @@ rule <scheduletable_parameters>
     !st_ltgt_sync
     !st_periodic
     !st_length
-    !st_actions
-    !st_acc_apps
+    !st_exp_pts
+    !st_acc_apps    
   ];
 end rule;
 
@@ -333,27 +331,16 @@ rule <ltgt_sync_params>
   sync := [@ltgt_sync_true new !here !strategy !precision];
 end rule;
 
-rule <st_action_params>
+rule <st_expiry_pt_params>  ?@lstring          ep_name  !@expiry_point_obj epl:  @adjustable_obj adjust := [@adjustable_void new !empty_lstring() !here];  @basic_type offset := void_obj();  @action_list actions [emptySortedList];  repeat  while    @luint64 off;    $OFFSET$; $=$; $uint_number$ ?off; $;$;    set_uint64 !?offset !off !"OFFSET";  while    $ACTION$; $=$; <st_action_params> !?actions; $;$;  while    $ADJUSTABLE$;    @location adj_loc := here;    $=$;    select      $TRUE$; ${$;        @basic_type max_retard := void_obj();        @basic_type max_advance := void_obj();        repeat        while          @luint64 ret;          $MAX_RETARD$; $=$; $uint_number$ ?ret;          set_uint64 !?max_retard !ret !"MAX_RETARD";        while          @luint64 adv;          $MAX_ADVANCE$; $=$; $uint_number$ ?adv;          set_uint64 !?max_advance !adv !"MAX_ADVANCE";        end repeat;      $}$;      set_adjustable        !?adjust        ![@adjustable_true new !empty_lstring() !adj_loc !max_retard !max_advance];    or      $FALSE$;      set_adjustable !?adjust ![@adjustable_false new !empty_lstring() !adj_loc];    end select;    $;$;  end repeat;  epl := [@expiry_point_obj new   !empty_lstring()    !offset    !ep_name   !adjust   !actions  ];end rule;
+rule <st_action_params>
   ?!@action_list actions
 :
   select
     $ACTIVATETASK$;
     ${$;
-    @bool    offset_known := false;
     @bool    task_known := false;
-    @luint64 offset := [@luint64 new !0L !here];
     @lstring task := [@lstring new !"" !here];
     repeat
-    while
-      @luint64 new_offset;
-      $OFFSET$; $=$; $uint_number$ ?new_offset; $;$;
-      if offset_known then
-        error here : "OS442 - OFFSET attribute already defined for this schedule table ACTIVATETASK action";
-        error [offset location] : "was previously defined here";
-      else
-        offset := new_offset;
-        offset_known := true;
-      end if;
     while
       @lstring new_task;
       $TASK$; $=$; $idf$ ?new_task; $;$;
@@ -365,33 +352,21 @@ rule <st_action_params>
         task_known := true;
       end if;
     end repeat;
-    if task_known & offset_known then
+    if task_known then
       @activatetask_action sdata := [@activatetask_action new !here !task];
-      actions += ![offset uint64] !1 !sdata;
+      actions += !1 !sdata;
     else
-      error here : "incomplete expiry point";
+      error here : "incomplete action";
     end if;
     $}$;
   or
-    @bool    offset_known := false;
     @bool    task_known := false;
     @bool    event_known := false;
-    @luint64 offset := [@luint64 new !0L !here];
     @lstring task := [@lstring new !"" !here];
     @lstring event := [@lstring new !"" !here];
     $SETEVENT$;
     ${$;
     repeat
-    while
-      @luint64 new_offset;
-      $OFFSET$; $=$; $uint_number$ ? new_offset; $;$;
-      if offset_known then
-        error here : "OS442 - OFFSET attribute already defined for this schedule table SETEVENT action";
-        error [offset location] : "was previously defined here";
-      else
-        offset := new_offset;
-        offset_known := true;
-      end if;
     while
       @lstring new_task;
       $TASK$; $=$; $idf$ ?new_task; $;$;
@@ -413,47 +388,11 @@ rule <st_action_params>
         event_known := true;
       end if;
     end repeat;
-    if task_known & offset_known & event_known then
+    if task_known & event_known then
       @setevent_action sdata := [@setevent_action new !here !task !event];
-      actions += ![offset uint64] !2 !sdata;
+      actions += !2 !sdata;
     else
-      error here : "incomplete expiry point";
-    end if;
-    $}$;
-  or
-    $INCREMENTCOUNTER$;
-    ${$;
-    @bool    offset_known := false;
-    @bool    counter_known := false;
-    @luint64 offset := [@luint64 new !0L !here];
-    @lstring counter := [@lstring new !"" !here];
-    repeat
-    while
-      @luint64 new_offset;
-      $OFFSET$; $=$; $uint_number$ ?new_offset; $;$;
-      if offset_known then
-        error here : "OS442 - OFFSET attribute already defined for this schedule table INCREMENTCOUNTER action";
-        error [offset location] : "was previously defined here";
-      else
-        offset := new_offset;
-        offset_known := true;
-      end if;
-    while
-      @lstring new_counter;
-      $COUNTER$; $=$; $idf$ ?new_counter; $;$;
-      if counter_known then
-        error here : "COUNTER attribute already defined for this schedule table INCREMENTCOUNTER action";
-        error [counter location] : "was previously defined here";
-      else
-        counter := new_counter;
-        counter_known := true;
-      end if;
-    end repeat;
-    if counter_known & offset_known then
- 		@incrementcounter_action sdata := [@incrementcounter_action new !here !counter];
-     	actions += ![offset uint64] !3 !sdata;
-    else
-      error here : "incomplete expiry point";
+      error here : "incomplete action";
     end if;
     $}$;
   end select;

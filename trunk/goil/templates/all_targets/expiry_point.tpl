@@ -5,7 +5,7 @@ tpl_expiry_point $EXPIRY_POINT$ = {
     /*  sync_offset                         */  $OFFSET$,
     /*  number of actions for the expiry pt */  $ACTION_COUNT$,
     /*  pointer to the actions array        */  $ACTION_ARRAY$,
-    /*  maximum advance deviation           */  0,
-    /*  maximum delay deviation             */  0
+    /*  maximum advance deviation           */  $MAX_ADVANCE$,
+    /*  maximum retard deviation            */  $MAX_RETARD$
 };
 

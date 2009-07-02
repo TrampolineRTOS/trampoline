@@ -31,7 +31,7 @@ import semantics xml_utils in "xml_utils.ggs";
 routine parse_schedtable_autostart
   ??@xmlNodeList       cont_elems
   ??@lstring           name
-  ??@location          autoloc
+  ??@location          unused autoloc
   ?!@scheduletable_obj st
 :
   @xmlNode node := elem_named(!cont_elems!"REFERENCE-VALUES");
@@ -78,16 +78,64 @@ routine parse_st_taskactivation
   ??@xmlNodeList       cont_elems
   ??@lstring           name
   ??@location          loc
-  ?!@scheduletable_obj st
+  ??@uint64            offset
+  ?!@action_list       actions
 :
+  @xmlNode node := elem_named(!cont_elems!"REFERENCE-VALUES");
+  if is_not_void(!node) then
+    @xmlNodeList subs := [node nodeList];
+    @lstring task := empty_lstring();
+    foreach subs do
+      if    is_param(!node!"OsScheduleTableActivateTaskRef") then
+        message " TASK = ".[lstring_param(!node) string]."\n";
+        set_lstring_if_empty !?task !lstring_param(!node) !"OsScheduleTableActivateTaskRef";
+      end if;
+    end foreach;
+    if [task string] != "" then
+      @activatetask_action sdata := [@activatetask_action new !loc !task];
+      actions += !offset !1 !sdata;
+    else
+      error [node name]: "No OsScheduleTableActivateTaskRef parameter found";
+    end if;
+  else
+    error name: "No REFERENCE-VALUES found in OsScheduleTableTaskActivation";
+  end if; 
 end routine;
 
 routine parse_st_eventsetting
   ??@xmlNodeList       cont_elems
   ??@lstring           name
   ??@location          loc
-  ?!@scheduletable_obj st
+  ??@uint64            offset
+  ?!@action_list       actions
 :
+  @xmlNode node := elem_named(!cont_elems!"REFERENCE-VALUES");
+  if is_not_void(!node) then
+    @xmlNodeList subs := [node nodeList];
+    @lstring task := empty_lstring();
+    @lstring event := empty_lstring();
+    foreach subs do
+      if    is_param(!node!"OsScheduleTableSetEventTaskRef") then
+        message " TASK = ".[lstring_param(!node) string]."\n";
+        set_lstring_if_empty !?task !lstring_param(!node) !"OsScheduleTableSetEventTaskRef";
+      elsif is_param(!node!"OsScheduleTableSetEventRef") then
+        message " EVENT = ".[lstring_param(!node) string]."\n";
+        set_lstring_if_empty !?event !lstring_param(!node) !"OsScheduleTableSetEventRef";
+      end if;
+    end foreach;
+    if [task string] != "" then
+      if [event string] != "" then
+        @setevent_action sdata := [@setevent_action new !loc !task !event];
+        actions += !offset !2 !sdata;
+      else
+        error [node name]: "No OsScheduleTableSetEventRef parameter found";
+      end if;
+    else
+      error [node name]: "No OsScheduleTableSetEventTaskRef parameter found";
+    end if;
+  else
+    error name: "No REFERENCE-VALUES found in OsScheduleTableTaskActivation";
+  end if; 
 end routine;
 
 routine parse_st_adjustexppoint
@@ -96,23 +144,43 @@ routine parse_st_adjustexppoint
   ??@location          loc
   ?!@scheduletable_obj st
 :
+  @xmlNode node := elem_named(!cont_elems!"PARAMETER-VALUES");
+  if is_not_void(!node) then
+    @xmlNodeList subs := [node nodeList];
+    @basic_type max_advance := void_class();
+    @basic_type max_retard := void_class();
+    foreach subs do
+      if    is_param(!node!"OsScheduleTableMaxAdvance") then
+        message " MAX ADVANCE = ".[[luint64_param(!node) uint64] string]."\n";
+        set_uint64 !?max_advance !luint64_param(!node) !"OsScheduleTableMaxAdvance";
+      elsif is_param(!node!"OsScheduleTableMaxRetard") then
+        message " MAX RETARD = ".[[luint64_param(!node) uint64] string]."\n";
+        set_uint64 !?max_retard !luint64_param(!node) !"OsScheduleTableMaxRetard";
+      end if;
+    end foreach;
+  else    
+    error name: "No PARAMETER-VALUES found in OsScheduleTblAdjustableExpPoint";
+  end if; 
 end routine;
 
 routine parse_schedtable_expiry_subcontainer
   ??@xmlNodeList       cont_elems
   ??@lstring           name
+  ??@uint64            offset
   ?!@scheduletable_obj st
 :
+  @action_list actions := [st actions];
   foreach cont_elems do
     @lstring elem_name := long_name(!node);
     if [elem_name string] == "OsScheduleTableTaskActivation" then
-      parse_st_taskactivation !cont_elems !name ![elem_name location] !?st;
-    elsif [elem_name string] == "OsScheduleTableEventSetting" then
-      parse_st_eventsetting !cont_elems !name ![elem_name location] !?st;
+      parse_st_taskactivation !cont_elems !name ![elem_name location] !offset !?actions;
+   elsif [elem_name string] == "OsScheduleTableEventSetting" then
+      parse_st_eventsetting !cont_elems !name ![elem_name location] !offset !?actions;
     elsif [elem_name string] == "OsScheduleTblAdjustableExpPoint" then      
       parse_st_adjustexppoint !cont_elems !name ![elem_name location] !?st;
     end if;
   end foreach;
+  [!?st setActions !actions];
 end routine;
 
 routine parse_schedtable_expiry 
@@ -133,9 +201,14 @@ routine parse_schedtable_expiry
     end foreach;
     node := elem_named(!cont_elems!"SUB-CONTAINERS");
     @xmlNodeList nl := [node nodeList];
-    foreach nl do
-      parse_schedtable_expiry_subcontainer ![node nodeList] !name !?st;
-    end foreach;
+    cast offset:
+    when == @uint64_class off do
+      foreach nl do
+        parse_schedtable_expiry_subcontainer ![node nodeList] !name ![off value] !?st;
+      end foreach;
+    else
+      error [node name]: "No OFFSET parameter found";
+    end cast; 
   else
     error name: "No PARAMETER-VALUES found in OsScheduleTableExpiryPoint";
   end if; 

@@ -97,20 +97,20 @@ STATIC VAR(tpl_application_mode, OS_VAR) application_mode;
  * @see #idle_task
  */
 CONST(tpl_proc_static, OS_CONST) idle_task_static = {
-    /* context              */  IDLE_CONTEXT,
-    /* stack                */  IDLE_STACK,
+  /* context              */  IDLE_CONTEXT,
+  /* stack                */  IDLE_STACK,
 	/* entry point          */	IDLE_ENTRY,
-    /* internal resource    */  NULL,
-    /* id is IDLE_TASK_ID   */  IDLE_TASK_ID,
+  /* internal resource    */  NULL,
+  /* id is IDLE_TASK_ID   */  IDLE_TASK_ID,
 #ifdef WITH_OSAPPLICATION
-    /* OS application id    */  INVALID_OSAPPLICATION,
+  /* OS application id    */  INVALID_OSAPPLICATION,
 #endif
-    /* base priority is 0   */  0,
-    /* max activate count   */  1,
-    /* type is BASIC        */  TASK_BASIC
+  /* base priority is 0   */  0,
+  /* max activate count   */  1,
+  /* type is BASIC        */  TASK_BASIC
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    /* no timing protection
-       for the idle task :D */  ,NULL
+  /* no timing protection
+     for the idle task :D */  ,NULL
 #endif
 };
 
@@ -120,15 +120,15 @@ CONST(tpl_proc_static, OS_CONST) idle_task_static = {
  * idle task descriptor
  */
 VAR(tpl_proc, OS_VAR) idle_task = {
-    /* resources            */  NULL,
+  /* resources            */  NULL,
 #ifdef WITH_OSAPPLICATION
-    /* trusted count  */        0,
+  /* trusted count  */        0,
 #endif /* WITH_OSAPPLICATION */
-    /* activation count     */  0,
-    /* priority             */  0,
-    /* state                */  SUSPENDED
+  /* activation count     */  0,
+  /* priority             */  0,
+  /* state                */  SUSPENDED
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    /* activation_allowed   */  ,TRUE
+  /* activation_allowed   */  ,TRUE
 #endif
 };
 
@@ -147,26 +147,6 @@ VAR(tpl_kern_state, OS_VAR) tpl_kern =
   IDLE_TASK_ID,
   NO_NEED_SWITCH
 };
-
-/**
- * @internal
- *
- * tpl_running_id is the currently running process id.
- *
- * At system startup it is set to IDLE_TASK_ID since the main is a part
- * of the idle task.
- */
-/* VAR(int, OS_VAR) tpl_running_id = IDLE_TASK_ID; */
-
-/**
- * @internal
- *
- * tpl_need_switch is used to indicate a context switch should occur
- * It is set un the services and tested before calling the context switch
- * and reset to FALSE after that
- */
-/* VAR(u8, OS_VAR) tpl_need_switch = NO_NEED_SWITCH; */
-
 
 /*  MISRA RULE 27 VIOLATION: These 2 variables are used only in this file
     but declared in the configuration file, this is why they do not need
@@ -1031,6 +1011,7 @@ FUNC(void, OS_CODE) tpl_start_scheduling(void)
   tpl_kern.running_id = first_proc;
   tpl_kern.running = tpl_dyn_proc_table[first_proc];
   tpl_kern.s_running = tpl_stat_proc_table[first_proc];
+  
   /*  the object has not be preempted. So its
    descriptor must be initialized                                  */
   tpl_init_proc(first_proc);

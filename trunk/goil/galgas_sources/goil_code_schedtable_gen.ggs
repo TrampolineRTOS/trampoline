@@ -18,13 +18,11 @@ routine generate_schedule_tables
     @string i_result := "" ;
     @string st_table := "CONSTP2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA)\n" ;
     st_table .= "  tpl_schedtable_table[SCHEDTABLE_COUNT] = {\n" ;
-
     foreach sts (@lstring name @scheduletable_obj st) :i do
       @string app_name := "";
       if [app_for_obj count] > 0 then
         [app_for_obj get !name ?app_name] ;
-      end if ;
-      [st generate !name !app_name !?i_result] ;
+      end if ;      [st generate !name !app_name !?i_result] ;
       h_result .= "#define ".[name string]."_id ".[i string]."\n" ;
       h_result .= "CONST(ScheduleTableType, AUTOMATIC) ".[name string]." = ".[name string]."_id;\n" ;
       st_table .= "    &".[name string]."_sched_table" ;

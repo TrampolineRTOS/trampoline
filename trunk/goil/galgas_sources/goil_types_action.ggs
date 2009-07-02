@@ -148,5 +148,15 @@ class @incrementcounter_action extends @action_obj {
     end method ;
 }
 
+class @finalize_st_action extends @action_obj {
+  override method generate
+    ?@lstring    unused name
+    ?@string     unused err
+    ?@string     unused key
+    ?!@string    unused h_res
+    ?!@string    unused i_res :
+  end method ;
+}
+
 end semantics ;
 # vim:ft=ggs:ts=4:sw=4

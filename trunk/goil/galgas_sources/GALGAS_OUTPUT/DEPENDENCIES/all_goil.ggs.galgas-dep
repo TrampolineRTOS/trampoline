@@ -71,15 +71,6 @@ goil_timing_prot_attrs.ggs
 cfg_grammar.ggs
 goil_grammar.ggs
 goil_program.ggs
-xml_types.ggs
-xml_parsing_grammar.ggs
-xml_to_goil.ggs
-xml_utils.ggs
-xml_containers.ggs
-xml_os.ggs
-xml_resource.ggs
-xml_schedtable.ggs
-xml_task.ggs
 cfg_lexique.ggs
 cfg_syntax.ggs
 cocoaGOIL.ggs::

@@ -62,9 +62,11 @@ IMPLEMENTATION trampoline {
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
         LENGTH = 2;
-        ACTION = ACTIVATETASK {
+        EXPIRY_POINT the_only_one {
             OFFSET = 1;
-            TASK = t2;
+            ACTION = ACTIVATETASK {
+                TASK = t2;
+            };
         };
         ACCESSING_APPLICATION = app;
     };
@@ -75,10 +77,12 @@ IMPLEMENTATION trampoline {
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
         LENGTH = 1;
-        ACTION = SETEVENT {
+        EXPIRY_POINT lonely {
             OFFSET = 1;
-            TASK = t2;
-			EVENT = Event1;
+            ACTION = SETEVENT {
+                TASK = t2;
+                EVENT = Event1;
+            };
         };
         ACCESSING_APPLICATION = app;
     };

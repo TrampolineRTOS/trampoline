@@ -43,7 +43,7 @@ class @uint32_class    extends @basic_type {
     s := [value string] ;
   end method ;
 }
-
+function uint32_or_error  ?@basic_type t  ?@string     att  ->@uint      v:  v := 0;  cast t:  when == @uint32_class ui do    v := [ui value];  else    error [t location]: att." is not defined";  end cast;end function;
 class @sint32_class    extends @basic_type {
   @sint   value ;
   override method string !@string s :
@@ -57,7 +57,7 @@ class @uint64_class    extends @basic_type {
     s := [value string] ;
   end method ;
 }
-
+function uint64_or_error  ?@basic_type t  ?@string     att  ->@uint64    v:  v := 0L;  cast t:  when == @uint64_class ui do    v := [ui value];  else    error [t location]: "Internal error, ".att." has a wrong datatype";  end cast;end function;
 class @sint64_class    extends @basic_type {
   @sint64 value ;
   override method string !@string s :
@@ -242,7 +242,7 @@ function empty_lstring
   ls := [@lstring new !"" !here];
 end function ;
 
-function void_class
+function void_obj
   ->@basic_type v
 :
   v := [@void new !here];
@@ -415,7 +415,6 @@ function luint64_value
   ->@luint64      v
 :
   v := [@luint64 new ![c value] ![c location]];
-end function;
-
+end function;
 end semantics ;
 # vim:ft=ggs:ts=2:sw=2
