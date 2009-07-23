@@ -96,3 +96,5 @@ FUNC(StatusType, OS_CODE) EnableInterruptSource (VAR(ISRType, AUTOMATIC) isr_id)
 
 /* TPL_AS_ISR_H */
 #endif
+
+/* End of file tpl_as_isr.h */

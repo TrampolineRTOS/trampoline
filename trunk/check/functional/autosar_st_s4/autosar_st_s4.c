@@ -34,11 +34,6 @@ void ErrorHook(StatusType error)
 			TestRunner_runTest(AutosarSTTest_seq4_error_instance2());
 			break;
 		}
-		case 3 :
-		{
-			TestRunner_runTest(AutosarSTTest_seq4_error_instance3());
-			break;
-		}
 		default:
 		{
 			stdimpl_print("Instance error");
@@ -56,11 +51,6 @@ TASK(t1)
 }
 
 TASK(t2)
-{
-	stdimpl_print("instance error\n");
-}
-
-TASK(t3)
 {
 	stdimpl_print("instance error\n");
 }

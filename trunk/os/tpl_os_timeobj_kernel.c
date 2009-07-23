@@ -180,7 +180,7 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
         P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)    af_to;
         VAR(tpl_tick, AUTOMATIC)                        date = first_to->date;
 		VAR(tpl_bool, AUTOMATIC) object = FALSE;
-	
+
         /*  look for the last time object with the same date as the first one   */
         do
         {	
@@ -191,7 +191,7 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
 			{
 				if (t_obj == counter->next_to)
 				{
-					/*Careful if all object are boostrap, remove date from the counter*/
+					/*Careful if all the objects are boostrap, remove date from the counter*/
 					counter->next_to = t_obj->next_to;
 					first_to = t_obj->next_to;
 					last_to = t_obj;
@@ -199,17 +199,18 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
 				}
 				else
 				{ 
-					t_obj->next_to->prev_to = t_obj->prev_to;
-					t_obj->prev_to->next_to = t_obj->next_to;
-					
-					t_obj->prev_to = first_to->prev_to;
-					t_obj->prev_to->next_to = t_obj;
-					
-					t_obj->next_to = first_to;
-					t_obj->next_to->prev_to = t_obj;
-
-					t_obj->state = t_obj->state & ~SCHEDULETABLE_BOOTSTRAP;
-					t_obj = last_to;
+					/* if next object is null, it's impossible to store next_to->prev_to, so*/
+					if (t_obj->next_to != NULL)
+					{
+						t_obj->next_to->prev_to = t_obj->prev_to;
+					}
+						t_obj->prev_to->next_to = t_obj->next_to;
+						t_obj->prev_to = first_to->prev_to;
+						t_obj->prev_to->next_to = t_obj;
+						t_obj->next_to = first_to;
+						t_obj->next_to->prev_to = t_obj;
+						t_obj->state = t_obj->state & ~SCHEDULETABLE_BOOTSTRAP;
+						t_obj = last_to;
 				}
 			}
 			else
@@ -225,7 +226,7 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
 		#endif /* WITH_AUTOSAR */
         }
         while ((t_obj != NULL) && (t_obj->date == date));
-        		
+
         /*  disconnect the chain of object(s). */
         t_obj = first_to->prev_to;
         af_to = last_to->next_to;
@@ -237,6 +238,7 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
         {
             af_to->prev_to = t_obj;
         }
+
         /*  if first_to is also the first_to of the queue, update the
             first_to of the counter                     */
         if (counter->first_to == first_to)
@@ -247,6 +249,7 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
 		/* if object == TRUE, return counter->next_to (by saving it first)
 		   else, return NULL
 		 */
+
 		if (object == TRUE)
 		{
 			real_next_to = counter->next_to;
@@ -261,7 +264,6 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
 		{
 			counter->next_to = counter->first_to;
 		}
-		
 		/*  update the end of the chain of object(s)    */
 		last_to->next_to = NULL;
     }
@@ -310,7 +312,6 @@ FUNC(tpl_status, OS_CODE) tpl_counter_tick(
   VAR(tpl_tick, AUTOMATIC)                      new_date;
   VAR(tpl_status, AUTOMATIC)                    need_resched = NO_SPECIAL_CODE;
 
-
   /*  inc the current tick value of the counter     */
   counter->current_tick++;
   /*  if tickperbase is reached, the counter is inc */
@@ -337,8 +338,9 @@ FUNC(tpl_status, OS_CODE) tpl_counter_tick(
           from the list. (if object from schedule
 	      table has been BOOTSTRAP, don't process
 	      the expiry point(s))								*/
-		
+
 	  real_next_to_temp = tpl_remove_timeobj_set(counter);
+
 	  if( real_next_to_temp != NULL)
 	  {
 		  /* save the "real one" next_to (in case of a schedule table,
@@ -377,6 +379,7 @@ FUNC(tpl_status, OS_CODE) tpl_counter_tick(
 			}
 			t_obj = next_to;
 		  } while (t_obj != NULL);
+
 	  }
 		
     }

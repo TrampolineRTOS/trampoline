@@ -18,74 +18,75 @@ IMPLEMENTATION trampoline {
         STATUS = STANDARD;
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "autosar_sts_s1";
-		CFLAGS = "-I../../embUnit";
         CFLAGS  = "-Werror -Wall -pedantic";
-        CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../../lib -lembUnit";
-		SHUTDOWNHOOK = TRUE;
-		
+        CFLAGS  = "-Wmissing-field-initializers";		
 	};
 
     APPMODE std {};
 
-    TASK t1 {
-        AUTOSTART = TRUE { APPMODE = std ; } ;
-        PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
-		
+	TASK t1 {
+		AUTOSTART = TRUE { APPMODE = std ; } ;
+		PRIORITY = 1;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+	};
 	COUNTER Software_Counter{
 		MAXALLOWEDVALUE = 10;
 		TICKSPERBASE = 1;
 		MINCYCLE = 1;
 		TYPE = SOFTWARE;
 	};
-	
-	
 	SCHEDULETABLE sched1 {
-        COUNTER = Software_Counter;
-        AUTOSTART = RELATIVE { OFFSET = 2 ; APPMODE = std ; }  ;
+		COUNTER = Software_Counter;
+		AUTOSTART = RELATIVE { OFFSET = 2 ; APPMODE = std ; }  ;
 		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = TRUE {
 			SYNC_STRATEGY = IMPLICIT ;
 		};
-        PERIODIC = FALSE;
-        LENGTH = 10;
-		
+		PERIODIC = FALSE;
+		LENGTH = 10;
 		EXPIRY_POINT ep {
-            OFFSET = 2;
-            ACTION = ACTIVATETASK {
-                TASK = t1;
-            };
+			OFFSET = 2;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
 		};
-		ACCESSING_APPLICATION = app;
-    };
-
+	};
 	SCHEDULETABLE sched2 {
-        COUNTER = Software_Counter;
-        AUTOSTART = SYNCHRON { APPMODE = std ; }  ;
+		COUNTER = Software_Counter;
+		AUTOSTART = SYNCHRON { APPMODE = std ; }  ;
 		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = TRUE {
 			SYNC_STRATEGY = IMPLICIT ;
 		};
-        PERIODIC = TRUE;
-        LENGTH = 11;
-		
-        EXPIRY_POINT ep {
-            OFFSET = 2;
-            ACTION = ACTIVATETASK {
-                TASK = t1;
-            };
-        };
-		ACCESSING_APPLICATION = app;
-    };
-	
+		PERIODIC = TRUE;
+		LENGTH = 11;
+		EXPIRY_POINT ep {
+			OFFSET = 2;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
+		};
+	};
+	SCHEDULETABLE sched3 {
+		COUNTER = Software_Counter;
+		AUTOSTART = ABSOLUTE { START = 1 ; APPMODE = std ; } ;
+		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = TRUE {
+			SYNC_STRATEGY = IMPLICIT ;
+		};
+		PERIODIC = TRUE;
+		LENGTH = 11;
+		EXPIRY_POINT ep {
+			OFFSET = 2;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
+		};
+	};
 	APPLICATION app {
-        TRUSTED = FALSE;
-        STARTUPHOOK = TRUE;
-        TASK = t1;
+		TASK = t1;
 		COUNTER = Software_Counter;
 		SCHEDULETABLE = sched1;
 		SCHEDULETABLE = sched2;
+		SCHEDULETABLE = sched3;
 	};
 	
 };

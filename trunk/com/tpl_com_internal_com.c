@@ -20,6 +20,15 @@
 #include "tpl_com_definitions.h"
 #include "tpl_com_notification.h"
 
+#ifdef WITH_COM
+/**
+ * @def INVALID_MESSAGE
+ *
+ * This value is used to specify an invalid message ID
+ */
+CONST(tpl_message_id, AUTOMATIC) INVALID_MESSAGE = SEND_MESSAGE_COUNT;
+#endif
+
 /*
  * tpl_send_static_internal_message sends a message from an internal only
  * sending message object to a set of internal receiving message objects.

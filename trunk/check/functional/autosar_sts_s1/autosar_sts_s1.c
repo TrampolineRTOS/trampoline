@@ -6,6 +6,7 @@ TestRef AutosarSTSTest_seq1_t1_instance(void);
 TestRef AutosarSTSTest_seq1_t2_instance(void);
 TestRef AutosarSTSTest_seq1_error_instance1(void);
 TestRef AutosarSTSTest_seq1_error_instance2(void);
+TestRef AutosarSTSTest_seq1_error_instance3(void);
 
 StatusType instance_error = 0;
 
@@ -32,6 +33,11 @@ void ErrorHook(StatusType error)
 		case 2:
 		{
 			TestRunner_runTest(AutosarSTSTest_seq1_error_instance2());	
+			break;
+		}
+		case 3:
+		{
+			TestRunner_runTest(AutosarSTSTest_seq1_error_instance3());	
 			break;
 		}
 		default:

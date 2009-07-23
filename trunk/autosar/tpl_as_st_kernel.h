@@ -45,6 +45,35 @@ typedef VAR(u16, TYPEDEF) tpl_action_count ;
 typedef VAR(u16, TYPEDEF) tpl_expiry_count ;
 
 /**
+ *
+ * This returns the min of 2 values provided
+ *
+ */
+FUNC(tpl_tick, OS_CODE) tpl_min(
+	VAR(tpl_tick, AUTOMATIC) var_1,
+	VAR(tpl_tick, AUTOMATIC) var_2);
+
+/*
+ * @def tpl_adjust_next_expiry_point
+ *
+ * tpl_adjust_next_expiry_point adjusts the next expiry point
+ * of a schedule table, depending on its deviation.
+ *
+ * @param st schedule table's pointer
+ * @param index index of the current expiry point
+ * @param last_expiry_point boolean to know if the actual is
+ * the last expiry point of the schedule table or not (if 
+ * last one, the adjustment have to be done to the first one
+ * of the next period of the schedule table).
+ *
+ */
+FUNC(void, OS_CODE) tpl_adjust_next_expiry_point(
+	 P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) st,
+	 VAR(tpl_expiry_count, AUTOMATIC) index,
+	 VAR(tpl_bool, AUTOMATIC) last_expiry_point
+	 );
+
+/**
  * @struct TPL_SCHEDTABLE_SYNC
  *
  * Structure that stores information about the synchronization
@@ -106,6 +135,8 @@ struct TPL_SCHEDULE_TABLE {
     VAR(tpl_expiry_count, TYPEDEF)                          index;      /**< next expiry point to
                                                                              process in the schedule
                                                                              table                      */
+	VAR(s32, TYPEDEF)										deviation;	/**< deviation of the schedule
+																			 table from counter synchro */
 };
 
 /**
@@ -193,6 +224,21 @@ extern CONSTP2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA)
  * case is a TPL_SCHEDTABLE_STATIC structure, this function get the next expiry
  * point and execute the corresponding actions. Then the alarm is updated to
  * match the offset of the next expiry point.
+ *
+ * For adjustable schedule table, if the actual expiry point is the finalize one,
+ * the sync_offset has to be restored.
+ *
+ * Otherwise, first change the state of the
+ * schedule table, depending to Duration. If EXPLICIT, RUNNING_AND_SYNCHRONOUS,
+ * if IMPLICIT, non-synchronised schedule table or asynchronous schedule table,
+ * RUNNING.
+ * Next, if actual expiry point is the last one, adjust the first expiry point
+ * (next one), if repeating schedule table (careful to the adjustment, if superior
+ * to first.delay, adjust the finalize expiry point too), otherwise (next and
+ * single shot), place the finalize expiry point in the queue. Otherwise (not last
+ * expiry point), adjust the next expiry point.
+ * Increment index and store it and store cycle.
+ *
  */
 extern FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) st);

@@ -40,6 +40,7 @@
 
 DeclareMessage(sm);
 DeclareTask(t2);
+DeclareMessage(INVALID_MESSAGE);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
@@ -56,7 +57,7 @@ static void test_t1_instance(void)
 	SCHEDULING_CHECK_AND_EQUAL_INT(3,E_COM_ID, result_inst_1);
 	
 	SCHEDULING_CHECK_INIT(4);
-	result_inst_2 = SendMessage(SEND_MESSAGE_COUNT, "3");	
+	result_inst_2 = SendMessage(INVALID_MESSAGE, "3");	
 	SCHEDULING_CHECK_AND_EQUAL_INT(7,E_COM_ID, result_inst_2);
 	
 	SCHEDULING_CHECK_INIT(8);

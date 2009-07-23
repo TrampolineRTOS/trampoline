@@ -15,7 +15,7 @@ IMPLEMENTATION trampoline {
  CPU test {
 
     OS config {
-        STATUS = STANDARD;
+        STATUS = EXTENDED;
 		APP_SRC = "autosar_st_s5.c";
 		APP_SRC = "task1_instance.c";
 		APP_SRC = "task2_instance.c";

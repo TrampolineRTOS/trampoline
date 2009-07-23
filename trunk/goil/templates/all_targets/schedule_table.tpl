@@ -32,5 +32,6 @@ tpl_schedule_table $SCHEDTABLE$ = {
         /* state of the time object */  $SCHEDTABLE_STATE$
     },
     /* next schedule table          */  NULL_PTR,
-    /* current expiry point         */  0
+    /* current expiry point         */  0,
+    /* deviation 					*/	0				
 };
