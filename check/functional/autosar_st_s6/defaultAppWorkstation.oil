@@ -15,7 +15,7 @@ IMPLEMENTATION trampoline {
  CPU test {
 
     OS config {
-        STATUS = STANDARD;
+        STATUS = EXTENDED;
 		APP_SRC = "autosar_st_s6.c";
 		APP_SRC = "task1_instance.c";
 		APP_SRC = "task2_instance.c";
@@ -26,8 +26,6 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "task7_instance.c";
 		APP_SRC = "task8_instance.c";
 		APP_SRC = "task9_instance.c";
-		APP_SRC = "task10_instance.c";
-		APP_SRC = "task11_instance.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "autosar_st_s6";
 		CFLAGS = "-I../../embUnit";
@@ -95,28 +93,13 @@ IMPLEMENTATION trampoline {
         ACTIVATION = 1;
         SCHEDULE = FULL;
     };
-	
+
 	TASK t9 {
         AUTOSTART = FALSE ;
         PRIORITY = 2;
         ACTIVATION = 1;
         SCHEDULE = FULL;
     };
-	
-	TASK t10 {
-        AUTOSTART = FALSE ;
-        PRIORITY = 2;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
-	
-	TASK t11 {
-        AUTOSTART = FALSE ;
-        PRIORITY = 2;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
-		
 	COUNTER Software_Counter{
 		MAXALLOWEDVALUE = 6;
 		TICKSPERBASE = 1;
@@ -129,7 +112,7 @@ IMPLEMENTATION trampoline {
         AUTOSTART = FALSE ;
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
-        LENGTH = 7;
+        LENGTH = 6;
         EXPIRY_POINT one {
             OFFSET = 0;
             ACTION = ACTIVATETASK {
@@ -174,7 +157,7 @@ IMPLEMENTATION trampoline {
         AUTOSTART = FALSE ;
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
-        LENGTH = 7;
+        LENGTH = 6;
         EXPIRY_POINT four {
             OFFSET = 0;
             ACTION = ACTIVATETASK {
@@ -200,80 +183,47 @@ IMPLEMENTATION trampoline {
     };
 	
 	SCHEDULETABLE sched_abs_less_3 {
-        COUNTER = Software_Counter;
-        AUTOSTART = FALSE;
-        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
-        PERIODIC = FALSE;
-        LENGTH = 7;
-        EXPIRY_POINT six {
-            OFFSET = 3;
-            ACTION = ACTIVATETASK {
-                TASK = t7;
-            };
-        };
-        ACCESSING_APPLICATION = app;
-    };
-	 
-    SCHEDULETABLE sched_rel_0 {
+		COUNTER = Software_Counter;
+		AUTOSTART = FALSE;
+		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+		PERIODIC = FALSE;
+		LENGTH = 7;
+		EXPIRY_POINT six {
+			OFFSET = 5;
+			ACTION = ACTIVATETASK {
+				TASK = t7;
+			};
+		};
+		ACCESSING_APPLICATION = app;
+	};
+	SCHEDULETABLE sched_abs_less_4 {
+		COUNTER = Software_Counter;
+		AUTOSTART = FALSE;
+		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+		PERIODIC = FALSE;
+		LENGTH = 7;
+		EXPIRY_POINT six {
+			OFFSET = 5;
+			ACTION = ACTIVATETASK {
+				TASK = t8;
+			};
+		};
+		ACCESSING_APPLICATION = app;
+	};	 
+    SCHEDULETABLE sched_rel {
         COUNTER = Software_Counter;
         AUTOSTART = FALSE;
         LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
         PERIODIC = FALSE;
         LENGTH = 7;
         EXPIRY_POINT seven {
-            OFFSET = 6;
-            ACTION = ACTIVATETASK {
-                TASK = t11;
-            };
-        };
-        ACCESSING_APPLICATION = app;
-    };
-
-	SCHEDULETABLE sched_rel_1 {
-        COUNTER = Software_Counter;
-        AUTOSTART = FALSE ;
-        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
-        PERIODIC = FALSE;
-        LENGTH = 7;
-        EXPIRY_POINT eight {
-            OFFSET = 0;
-            ACTION = ACTIVATETASK {
-                TASK = t8;
-            };
-        };
-        ACCESSING_APPLICATION = app;
-    };
-	
-	SCHEDULETABLE sched_rel_2 {
-        COUNTER = Software_Counter;
-        AUTOSTART = FALSE;
-        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
-        PERIODIC = FALSE;
-        LENGTH = 7;
-        EXPIRY_POINT nine {
-            OFFSET = 4;
+            OFFSET = 1;
             ACTION = ACTIVATETASK {
                 TASK = t9;
             };
         };
         ACCESSING_APPLICATION = app;
     };
-	
-	SCHEDULETABLE sched_rel_3 {
-        COUNTER = Software_Counter;
-        AUTOSTART = FALSE;
-        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
-        PERIODIC = FALSE;
-        LENGTH = 7;
-        EXPIRY_POINT ten {
-            OFFSET = 5;
-            ACTION = ACTIVATETASK {
-                TASK = t10;
-            };
-        };
-        ACCESSING_APPLICATION = app;
-    };
-   		
 	APPLICATION app {
         TRUSTED = FALSE;
         STARTUPHOOK = TRUE;
@@ -286,8 +236,6 @@ IMPLEMENTATION trampoline {
         TASK = t7;
 		TASK = t8;
 		TASK = t9;
-        TASK = t10;
-        TASK = t11;
 		COUNTER = Software_Counter;
 	    SCHEDULETABLE = sched_abs_more_1;
 	    SCHEDULETABLE = sched_abs_more_2;
@@ -295,10 +243,8 @@ IMPLEMENTATION trampoline {
 	    SCHEDULETABLE = sched_abs_less_1;
 	    SCHEDULETABLE = sched_abs_less_2;
 	    SCHEDULETABLE = sched_abs_less_3;
-		SCHEDULETABLE = sched_rel_0;
-		SCHEDULETABLE = sched_rel_1;
-		SCHEDULETABLE = sched_rel_2;
-		SCHEDULETABLE = sched_rel_3;
+	    SCHEDULETABLE = sched_abs_less_4;
+		SCHEDULETABLE = sched_rel;
 	};
 	
 };

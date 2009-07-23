@@ -24,98 +24,123 @@
  * $URL$
  */
  
-#ifndef TPL_AS_ERROR
-#define TPL_AS_ERROR
+#ifndef TPL_AS_ERROR_H
+#define TPL_AS_ERROR_H
 
 #include "tpl_os_error.h"
+#include "tpl_as_service_ids.h"
 
 /**
- * @def OSServiceId_StartScheduleTableRel
+ * @def OSServiceId_OSServiceId_StartScheduleTableAbs_ScheduleTableID
  *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #StartScheduleTableRel
+ * StartScheduleTableAbs service error parameter
+ *
+ * Returns the identifier (#ScheduleTableType) of the schedule table which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  */
-#define OSServiceId_StartScheduleTableRel   64
+#define OSServiceId_StartScheduleTableAbs_ScheduleTableID()   \
+	(tpl_service.parameters.id.schedtable_id)
 
 /**
- * @def OSServiceId_StartScheduleTableAbs
+ * @def OSServiceId_StartScheduleTableAbs_value
  *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #StartScheduleTableAbs
+ * StartScheduleTableAbs service error parameter
+ *
+ * Returns the value (#TickType) of the schedule table which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  */
-#define OSServiceId_StartScheduleTableAbs   65
+#define OSServiceId_StartScheduleTableAbs_value()   \
+	(tpl_service.parameters.param.tick)
 
 /**
- * @def OSServiceId_StopScheduleTable
+ * @def OSServiceId_OSServiceId_StartScheduleTableRel_ScheduleTableID
  *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #StopScheduleTable
+ * StartScheduleTableRel service error parameter
+ *
+ * Returns the identifier (#ScheduleTableType) of the schedule table which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  */
-#define OSServiceId_StopScheduleTable       66
+#define OSServiceId_StartScheduleTableRel_ScheduleTableID()   \
+	(tpl_service.parameters.id.schedtable_id)
 
 /**
- * @def OSServiceId_NextScheduleTable
+ * @def OSServiceId_OSServiceId_StartScheduleTableRel_value
  *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #NextScheduleTable
+ * StartScheduleTableRel service error parameter
+ *
+ * Returns the value (#TickType) of the schedule table which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  */
-#define OSServiceId_NextScheduleTable       67
+#define OSServiceId_StartScheduleTableRel_offset()   \
+	(tpl_service.parameters.param.tick)
 
 /**
- * @def OSServiceId_IncrementCounter
+ * @def OSServiceId_SetScheduleTableAsync_ScheduleTableID
  *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #IncrementCounter
+ * SetScheduleTableAsync service error parameter
+ *
+ * Returns the identifier (#ScheduleTableType) of the schedule table which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  */
-#define OSServiceId_IncrementCounter        68
+#define OSServiceId_SetScheduleTableAsync_ScheduleTableID()   \
+	(tpl_service.parameters.id.schedtable_id)
 
 /**
- * @def OSServiceId_GetCounterValue
+ * @def OSServiceId_StartScheduleTableSynchron_ScheduleTableID
  *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #GetCounterValue
+ * StartScheduleTableSynchron service error parameter
+ *
+ * Returns the identifier (#ScheduleTableType) of the schedule table which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  */
-#define OSServiceId_GetCounterValue         69
+#define OSServiceId_StartScheduleTableSynchron_ScheduleTableID()   \
+	(tpl_service.parameters.id.schedtable_id)
 
 /**
- * @def OSServiceId_GetElapsedCounterValue
+ * @def OSServiceId_SyncScheduleTable_ScheduleTableID
  *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #GetElapsedCounterValue
+ * SyncScheduleTable service error parameter
+ *
+ * Returns the identifier (#ScheduleTableType) of the schedule table which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  */
-#define OSServiceId_GetElapsedCounterValue  70
+#define OSServiceId_SyncScheduleTable_ScheduleTableID()   \
+	(tpl_service.parameters.id.schedtable_id)
 
 /**
- * @def OSServiceId_GetScheduleTableStatus
+ * @def OSServiceId_SyncScheduleTable_value
  *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #GetScheduleTableStatus
- */
-#define OSServiceId_GetScheduleTableStatus  71
-
-/**
- * @def OSServiceId_SetScheduleTableAsync
+ * SyncScheduleTable service error parameter
  *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #SetScheduleTableAsync
- */
-#define OSServiceId_SetScheduleTableAsync   72
-
-/**
- * @def OSServiceId_StartScheduleTableSynchron
+ * Returns the value (#TickType) of the schedule table which
+ * caused the error.
  *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #StartScheduleTableSynchron
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
  */
-#define OSServiceId_StartScheduleTableSynchron  73
-
-/**
- * @def OSServiceId_SyncScheduleTable
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #SyncScheduleTable
- */
-#define OSServiceId_SyncScheduleTable           74
+#define OSServiceId_SyncScheduleTable_value()   \
+	(tpl_service.parameters.param.tick)
 
 /**
  * @def STORE_SCHEDTABLE_ID
@@ -268,6 +293,40 @@
 #endif
 
 /**
+ * @def CHECK_SCHEDTABLE_DIFF_STOPPED_AND_NEXT
+ *
+ * Checks if schedule table (to)'s state is neither stopped nor 'nexted'.
+ *
+ * @param sched_table_id #ScheduleTableType to check
+ * @param result error code to set if check fails
+ *
+ * @note error code is not set if it do not equals E_OK
+ *
+ * @note checking is disable when OS_EXTENDED is not defined
+ */
+
+/* No extended error checking (! OS_EXTENDED)  */
+#if !defined(OS_EXTENDED)
+#   define CHECK_SCHEDTABLE_DIFF_STOPPED_AND_NEXT(sched_table_id,result)
+#elif !defined(NO_SCHEDTABLE)
+#   define CHECK_SCHEDTABLE_DIFF_STOPPED_AND_NEXT(sched_table_id,result)	\
+	if ((result == (tpl_status)E_OK) &&										\
+		( (tpl_schedtable_table[sched_table_id]->b_desc.state ==			\
+		SCHEDULETABLE_STOPPED) ||											\
+		(tpl_schedtable_table[sched_table_id]->b_desc.state ==				\
+		SCHEDULETABLE_NEXT) ) )												\
+	{																		\
+		result = (tpl_status)E_OS_STATE;									\
+	}
+#else
+#   define CHECK_SCHEDTABLE_DIFF_STOPPED_AND_NEXT(sched_table_id,result)	\
+	if (result == (tpl_status)E_OK)											\
+	{																		\
+		result = (tpl_status)E_OS_ID;										\
+	}
+#endif
+
+/**
  * @def CHECK_SCHEDTABLE_OFFSET_VALUE
  *
  * Checks if the value is > 0 and <= MAXALLOWEDVALUE of the counter
@@ -287,11 +346,12 @@
 #   define CHECK_SCHEDTABLE_OFFSET_VALUE(sched_table_id,offset,result)
 #elif !defined(NO_SCHEDTABLE)
 #   define CHECK_SCHEDTABLE_OFFSET_VALUE(sched_table_id,offset,result)  \
-    if ((result == (tpl_status)E_OK) &&                                 \
+	if ((result == (tpl_status)E_OK) &&                                 \
         ((offset >                                                      \
-         tpl_schedtable_table[sched_table_id]->                         \
-         b_desc.stat_part->counter->max_allowed_value) ||               \
-         (offset == (TickType)0)))                                      \
+         (tpl_schedtable_table[sched_table_id]->                        \
+         b_desc.stat_part->counter->max_allowed_value -					\
+		 (((P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))((tpl_schedtable_table[sched_table_id])->b_desc.stat_part))->expiry[0])->offset) ) \
+		 || (offset == (TickType)0)))                                      \
     {                                                                   \
         result = (tpl_status)E_OS_VALUE;                                \
     }
@@ -337,6 +397,41 @@
     {                                                                   \
         result = (tpl_status)E_OS_ID;                                   \
     }
+#endif
+
+/**
+ * @def CHECK_SCHEDTABLE_VALUE
+ *
+ * Checks if the value <= DURATION of the schedule
+ * table sched_table_id belongs to.
+ *
+ * @param sched_table_id #ScheduleTableType
+ * @param value #TickType to check
+ * @param result error code to set if check fails
+ *
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disable when OS_EXTENDED is not defined
+ * @note sched_table_id should be checked before doing this check
+ */
+
+/* No extended error checking (! OS_EXTENDED)  */
+#if !defined(OS_EXTENDED)
+#   define CHECK_SCHEDTABLE_VALUE(sched_table_id,value,result)
+#elif !defined(NO_SCHEDTABLE)
+#   define CHECK_SCHEDTABLE_VALUE(sched_table_id,value,result)      \
+	if ( (result == (tpl_status)E_OK) &&                                 \
+		(value >                                                        \
+		(((tpl_schedtable_static *)(tpl_schedtable_table[sched_table_id]-> \
+		b_desc.stat_part))->length)) )                \
+	{                                                                   \
+		result = (tpl_status)E_OS_VALUE;                                \
+	}
+#else
+#   define CHECK_SCHEDTABLE_VALUE(sched_table_id,value,result)      \
+	if (result == (tpl_status)E_OK)                                     \
+	{                                                                   \
+		result = (tpl_status)E_OS_ID;                                   \
+	}
 #endif
 
 /**
@@ -425,28 +520,67 @@
 #endif
 
 /**
- * @def CHECK_SCHEDTABLE_SYNC_STRATEGY_ERROR
+ * @def CHECK_SCHEDTABLE_SYNC_STRATEGY_EQUAL_ERROR
  *
  * Checks
  *
  * @param schedtable #ScheduleTableType
  * @param result error code to set if check fails
  *
- * @note error code is not set if it do not equals E_OK
+ * @note error code is not set if it does not equal E_OK
  * @note checking is disable when OS_EXTENDED is not defined
  * @note sched_table_id should be checked before doing this check
  */
 
 /* No extended error checking (! OS_EXTENDED)  */
 #if !defined(OS_EXTENDED)
-#   define CHECK_SCHEDTABLE_SYNC_STRATEGY_ERROR(schedtable,result)
-#else
-#   define CHECK_SCHEDTABLE_SYNC_STRATEGY_ERROR(schedtable,result)            \
-    if ( (result == (tpl_status)E_OK) &&                                      \
-         ((schedtable->sync_strat) == SCHEDTABLE_EXPLICIT_SYNC))                \
-    {                                                                         \
-        result = (tpl_status)E_OS_ID;                                         \
+#   define CHECK_SCHEDTABLE_SYNC_STRATEGY_EQUAL_ERROR(st_id,sync,result)
+#elif !defined(NO_SCHEDTABLE)
+#   define CHECK_SCHEDTABLE_SYNC_STRATEGY_EQUAL_ERROR(st_id,sync,result)        \
+    if ( (result == (tpl_status)E_OK) &&										\
+	((((tpl_schedtable_static *)(tpl_schedtable_table[st_id]->					\
+	b_desc.stat_part))->sync_strat) == sync))									\
+    {																			\
+        result = (tpl_status)E_OS_ID;											\
     }
+#else
+#   define CHECK_SCHEDTABLE_SYNC_STRATEGY_EQUAL_ERROR(st_id,sync,result)      \
+	if (result == (tpl_status)E_OK)                                     \
+	{                                                                   \
+		result = (tpl_status)E_OS_ID;                                   \
+	}
+#endif
+
+/**
+ * @def CHECK_SCHEDTABLE_SYNC_STRATEGY_DIFF_ERROR
+ *
+ * Checks
+ *
+ * @param schedtable #ScheduleTableType
+ * @param result error code to set if check fails
+ *
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disable when OS_EXTENDED is not defined
+ * @note sched_table_id should be checked before doing this check
+ */
+
+/* No extended error checking (! OS_EXTENDED)  */
+#if !defined(OS_EXTENDED)
+#   define CHECK_SCHEDTABLE_SYNC_STRATEGY_DIFF_ERROR(st_id,sync,result)
+#elif !defined(NO_SCHEDTABLE)
+#   define CHECK_SCHEDTABLE_SYNC_STRATEGY_DIFF_ERROR(st_id,sync,result)            \
+	if ( (result == (tpl_status)E_OK) &&                                      \
+		((((tpl_schedtable_static *)(tpl_schedtable_table[st_id]-> \
+		b_desc.stat_part))->sync_strat) != sync))                \
+	{                                                                         \
+		result = (tpl_status)E_OS_ID;                                         \
+}
+#else
+#   define CHECK_SCHEDTABLE_SYNC_STRATEGY_DIFF_ERROR(st_id,sync,result)      \
+	if (result == (tpl_status)E_OK)                                     \
+	{                                                                   \
+		result = (tpl_status)E_OS_ID;                                   \
+	}
 #endif
 
 /**
@@ -615,3 +749,5 @@
 
 /* TPL_AS_ERROR_H */
 #endif
+
+/* End of file tpl_as_error.h */

@@ -371,7 +371,7 @@ routine set_lstring_if_empty
   if [s string] == "" then
     s := ns ;
   else
-    error ns : "Redefinition of ".att ;
+    error ns : att." Redefinition" ;
     error s : "was defined here" ;
   end if ;
 end routine ;

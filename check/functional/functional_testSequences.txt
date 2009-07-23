@@ -105,3 +105,17 @@ autosar_st_s7
 autosar_sp_s1
 autosar_sp_s2
 autosar_sp_s3
+autosar_sts_s1
+autosar_sts_s2
+autosar_sts_s3
+autosar_sts_s4
+autosar_sts_s5
+autosar_sts_s6
+autosar_sts_s7
+autosar_sts_s8
+autosar_sts_s9
+autosar_sts_s10
+autosar_sts_s11
+autosar_sts_s12
+autosar_sts_s13
+autosar_sts_s14

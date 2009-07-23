@@ -1,4 +1,4 @@
-OIL_VERSION = "2.5" : "autosar_st_s2" ;
+OIL_VERSION = "2.5" : "goil_autosar_st_s2" ;
 
 IMPLEMENTATION trampoline {
 
@@ -17,110 +17,120 @@ IMPLEMENTATION trampoline {
     OS config {
         STATUS = STANDARD;
         TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "autosar_st_s2";
-		CFLAGS = "-I../../embUnit";
+        APP_NAME = "goil_autosar_st_s2";
         CFLAGS  = "-Werror -Wall -pedantic";
-        CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../../lib -lembUnit";
-		SHUTDOWNHOOK = TRUE;
-		
+        CFLAGS  = "-Wmissing-field-initializers";		
 	};
 
     APPMODE std {};
 
-    TASK t1 {
-        AUTOSTART = FALSE ;
-        PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
-		
+	TASK t1 {
+		AUTOSTART = TRUE { APPMODE = std ; } ;
+		PRIORITY = 1;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+		EVENT = Event1;
+	};
 	COUNTER Software_Counter{
 		MAXALLOWEDVALUE = 10;
 		TICKSPERBASE = 1;
 		MINCYCLE = 4;
 		TYPE = SOFTWARE;
 	};
-	
 	SCHEDULETABLE sched1 {
-        COUNTER = Software_Counter;
-        AUTOSTART = ABSOLUTE { START = 2 ; APPMODE = std ; } ;
-        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
-        PERIODIC = FALSE;
-        LENGTH = 10;
-		EXPIRY_POINT ep {
-            OFFSET = 4;
-            ACTION = ACTIVATETASK {
-                TASK = t1;
-            };
+		COUNTER = Software_Counter;
+		AUTOSTART = FALSE ;
+		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+		PERIODIC = FALSE;
+		LENGTH = 10;
+		EXPIRY_POINT sched1_ep1 {
+			OFFSET = 0;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
 		};
-		ACCESSING_APPLICATION = app;
-    };
-	
+	};
 	SCHEDULETABLE sched2 {
-        COUNTER = Software_Counter;
-        AUTOSTART = ABSOLUTE { START = 12 ; APPMODE = std ; } ;
-        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
-        PERIODIC = FALSE;
-        LENGTH = 10;
-		EXPIRY_POINT ep {
-            OFFSET = 4;
-            ACTION = ACTIVATETASK {
-                TASK = t1;
-            };
+		COUNTER = Software_Counter;
+		AUTOSTART = FALSE ;
+		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+		PERIODIC = FALSE;
+		LENGTH = 6;
+		EXPIRY_POINT sched2_ep1 {
+			OFFSET = 3;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
 		};
-		ACCESSING_APPLICATION = app;
-    };
-	
+		EXPIRY_POINT sched2_ep2 {
+			OFFSET = 6;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
+		};
+	};
 	SCHEDULETABLE sched3 {
-        COUNTER = Software_Counter;
-        AUTOSTART = RELATIVE { OFFSET = 0 ; APPMODE = std ; } ;
-        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
-        PERIODIC = FALSE;
-        LENGTH = 10;
-		EXPIRY_POINT ep {
-            OFFSET = 4;
-            ACTION = ACTIVATETASK {
-                TASK = t1;
-            };
+		COUNTER = Software_Counter;
+		AUTOSTART = FALSE ;
+		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+		PERIODIC = FALSE;
+		LENGTH = 11;
+		EXPIRY_POINT sched3_ep1 {
+			OFFSET = 4;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
 		};
-		ACCESSING_APPLICATION = app;
-    };
-	
+		EXPIRY_POINT sched3_ep2 {
+			OFFSET = 8;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
+		};
+	};
 	SCHEDULETABLE sched4 {
-        COUNTER = Software_Counter;
-        AUTOSTART = RELATIVE { OFFSET = 2 ; APPMODE = std ; } ;
-        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
-        PERIODIC = FALSE;
-        LENGTH = 10;
-		EXPIRY_POINT ep {
-            OFFSET = 4;
-            ACTION = ACTIVATETASK {
-                TASK = t1;
-            };
+		COUNTER = Software_Counter;
+		AUTOSTART = FALSE ;
+		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+		PERIODIC = FALSE;
+		LENGTH = 24;
+		EXPIRY_POINT sched4_ep1 {
+			OFFSET = 10;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
 		};
-		ACCESSING_APPLICATION = app;
-    };
-	
+		EXPIRY_POINT sched4_ep2 {
+			OFFSET = 20;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
+		};
+	};
 	SCHEDULETABLE sched5 {
-        COUNTER = Software_Counter;
-        AUTOSTART = RELATIVE { OFFSET = 12 ; APPMODE = std ; } ;
-        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
-        PERIODIC = FALSE;
-        LENGTH = 10;
-		EXPIRY_POINT ep {
-            OFFSET = 4;
-            ACTION = ACTIVATETASK {
-                TASK = t1;
-            };
+		COUNTER = Software_Counter;
+		AUTOSTART = FALSE ;
+		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+		PERIODIC = FALSE;
+		LENGTH = 33;
+		EXPIRY_POINT sched5_ep1 {
+			OFFSET = 11;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
 		};
-		ACCESSING_APPLICATION = app;
-    };
-		
+		EXPIRY_POINT sched5_ep2 {
+			OFFSET = 22;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
+		};
+	};
+	EVENT Event1{
+		MASK = AUTO;
+	};
 	APPLICATION app {
-        TRUSTED = FALSE;
-        STARTUPHOOK = TRUE;
-        TASK = t1;
+		TASK = t1;
 		COUNTER = Software_Counter;
 		SCHEDULETABLE = sched1;
 		SCHEDULETABLE = sched2;

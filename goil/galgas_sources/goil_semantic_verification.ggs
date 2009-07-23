@@ -246,11 +246,12 @@ routine all_alarm_actions_correct
           @lstringlist known_events;
           [tasks get ![act task_name] ?task_data];
           known_events:= [task_data events];
-          @bool known;
-          is_in_lstringlist !known_events ![act event_name] ?* ?known;
-          if not known then
-            error [act event_name]: "EVENT ".[[act event_name] string]." is not defined for TASK ".[[act task_name] string];
-          end if;
+          if ([known_events length] == 0) then             error [act event_name]: "An alarm can't set an Event to a basic task (Task ".[[act task_name] string]." is a basic task).";                   end if;
+          #@bool known;
+          #is_in_lstringlist !known_events ![act event_name] ?* ?known;
+          #if not known then
+          #  error [act event_name]: "EVENT ".[[act event_name] string]." is not defined for TASK ".[[act task_name] string];
+          #end if;
         end if;
       when == @activatetask_action act do
         if not [defined_task_names hasKey ![[act task_name] string]] then
@@ -263,7 +264,7 @@ routine all_alarm_actions_correct
           cast [cnt type]:
             when == @software_counter do
             else
-              error [act counter_name]: "COUNTER ".[[act counter_name] string]." is not a software counter";
+              error [act counter_name]: "OS285 - It is impossible to increment a hardware counter (".[[act counter_name] string]." is not a software counter).";
           end cast;
         else
           error [act counter_name]: "COUNTER ".[[act counter_name] string]." is never defined";
@@ -310,9 +311,8 @@ routine verify_all
 
   # cross-objects Autosar checking
   if [option goil_options.autosar_on] then
-    schedule_tables_well_formed ![cpu scheduletables] !cpu;
-    schedule_tables_counters_exist_and_compatible ![cpu scheduletables] ![cpu counters];
-    schedule_tables_tasks_and_events_exist !cpu;
+    schedule_tables_well_formed ![cpu scheduletables] !cpu;    schedule_tables_counters_exist_and_compatible ![cpu scheduletables] ![cpu counters];
+    schedule_tables_tasks_and_events_exist !cpu ![cpu tasks];
     apps_well_formed !cpu;
   end if;
 

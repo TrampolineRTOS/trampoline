@@ -39,6 +39,7 @@
 #include "tpl_com_definitions.h" /*for E_COM_NOMSG...*/
 
 DeclareMessage(rm);
+DeclareMessage(INVALID_MESSAGE);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
@@ -87,11 +88,11 @@ static void test_t2_instance(void)
 	SCHEDULING_CHECK_AND_EQUAL_INT(30,E_COM_NOMSG, result_inst_9);
 	
 	SCHEDULING_CHECK_INIT(31);
-	result_inst_10 = ReceiveMessage(SEND_MESSAGE_COUNT, &received_char);
+	result_inst_10 = ReceiveMessage(INVALID_MESSAGE, &received_char);
 	SCHEDULING_CHECK_AND_EQUAL_INT(34,E_COM_ID, result_inst_10);
 	
 	SCHEDULING_CHECK_INIT(35);
-	result_inst_11 = GetMessageStatus(SEND_MESSAGE_COUNT);	
+	result_inst_11 = GetMessageStatus(INVALID_MESSAGE);	
 	SCHEDULING_CHECK_AND_EQUAL_INT(37,E_COM_ID, result_inst_11);
 
 	SCHEDULING_CHECK_INIT(38);

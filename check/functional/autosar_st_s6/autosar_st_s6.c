@@ -11,8 +11,6 @@ TestRef AutosarSTTest_seq6_t6_instance(void);
 TestRef AutosarSTTest_seq6_t7_instance(void);
 TestRef AutosarSTTest_seq6_t8_instance(void);
 TestRef AutosarSTTest_seq6_t9_instance(void);
-TestRef AutosarSTTest_seq6_t10_instance(void);
-TestRef AutosarSTTest_seq6_t11_instance(void);
 
 int main(void)
 {
@@ -71,14 +69,3 @@ TASK(t9)
 {
 	TestRunner_runTest(AutosarSTTest_seq6_t9_instance());
 }
-
-TASK(t10)
-{
-	TestRunner_runTest(AutosarSTTest_seq6_t10_instance());
-}
-
-TASK(t11)
-{
-	TestRunner_runTest(AutosarSTTest_seq6_t11_instance());
-}
-

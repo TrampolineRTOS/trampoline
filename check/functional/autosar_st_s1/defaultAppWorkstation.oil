@@ -30,49 +30,45 @@ IMPLEMENTATION trampoline {
 
     APPMODE std {};
 
-    TASK t1 {
-        AUTOSTART = TRUE { APPMODE = std ; } ;
-        PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
-	
+	TASK t1 {
+		AUTOSTART = TRUE { APPMODE = std ; } ;
+		PRIORITY = 1;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+	};
 	TASK t2 {
-        AUTOSTART = FALSE;
-        PRIORITY = 3;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
-	
+		AUTOSTART = FALSE;
+		PRIORITY = 3;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+	};
 	COUNTER Software_Counter{
 		MAXALLOWEDVALUE = 100;
 		TICKSPERBASE = 1;
 		MINCYCLE = 1;
 		TYPE = SOFTWARE;
 	};
-		
 	SCHEDULETABLE sched1 {
-        COUNTER = Software_Counter;
-        AUTOSTART = FALSE ; // TRUE { OFFSET = 1; APPMODE = std; };
-        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
-        PERIODIC = FALSE;
-        LENGTH = 10;
-        EXPIRY_POINT t2_acti {
-            OFFSET = 2;
-            ACTION = ACTIVATETASK {
-                TASK = t2;
-            };
-        };
-        ACCESSING_APPLICATION = app;
-    };
-	
+		COUNTER = Software_Counter;
+		AUTOSTART = FALSE ;
+		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+		PERIODIC = FALSE;
+		LENGTH = 10;
+		EXPIRY_POINT t2_acti {
+			OFFSET = 2;
+			ACTION = ACTIVATETASK {
+				TASK = t2;
+			};
+		};
+		ACCESSING_APPLICATION = app;
+	};
 	APPLICATION app {
-        TRUSTED = FALSE;
-        STARTUPHOOK = TRUE;
-        TASK = t1;
+		TRUSTED = FALSE;
+		STARTUPHOOK = TRUE;
+		TASK = t1;
 		TASK = t2;
 		COUNTER = Software_Counter;
-	    SCHEDULETABLE = sched1;
+		SCHEDULETABLE = sched1;
 	};
 
 };

@@ -77,7 +77,7 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
   /*  check a counter_id error                    */
   CHECK_COUNTER_ID_ERROR(counter_id,result)
   CHECK_COUNTER_KIND_ERROR(counter_id,result)
-
+	
 #ifndef NO_COUNTER
   IF_NO_EXTENDED_ERROR(result)
 
@@ -86,7 +86,7 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
 
     /*  increment the counter                   */
     need_rescheduling |= tpl_counter_tick(counter);
-
+	
     if (need_rescheduling == NEED_RESCHEDULING) {
       tpl_schedule_from_running();
 #ifndef WITH_SYSTEM_CALL

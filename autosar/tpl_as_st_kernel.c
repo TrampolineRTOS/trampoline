@@ -36,10 +36,12 @@
 #include "tpl_machine_interface.h"
 #include "tpl_dow.h"
 
+#include <stdio.h>
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-STATIC FUNC(tpl_tick, OS_CODE) tpl_min(
+FUNC(tpl_tick, OS_CODE) tpl_min(
    VAR(tpl_tick, AUTOMATIC) var_1,
    VAR(tpl_tick, AUTOMATIC) var_2);
 #define OS_STOP_SEC_CODE
@@ -54,12 +56,9 @@ STATIC FUNC(tpl_tick, OS_CODE) tpl_min(
  *
  * This value is used to specify an invalid schedule table
  */
-CONST(tpl_schedtable_id, AUTOMATIC) INVALID_SCHEDULETABLE = (tpl_schedtable_id)(-1);
+CONST(tpl_schedtable_id, AUTOMATIC) INVALID_SCHEDULETABLE = SCHEDTABLE_COUNT;
 
-/*
- * This returns the min of 2 values provided
- */
-STATIC FUNC(tpl_tick, OS_CODE) tpl_min(
+FUNC(tpl_tick, OS_CODE) tpl_min(
    VAR(tpl_tick, AUTOMATIC) var_1,
    VAR(tpl_tick, AUTOMATIC) var_2)
 {
@@ -76,6 +75,75 @@ STATIC FUNC(tpl_tick, OS_CODE) tpl_min(
   return return_value;
 }
 
+FUNC(void, OS_CODE) tpl_adjust_next_expiry_point(
+					P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) st,
+					VAR(tpl_expiry_count, AUTOMATIC) index,
+					VAR(tpl_bool, AUTOMATIC) last_expiry_point
+					)
+{
+	/* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
+	 tpl_schedtable_static*. This cast behaves correctly because st is a
+	 tpl_schedtable */
+    P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA) schedtable =
+	(P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))st->stat_part;
+	
+	P2VAR(tpl_expiry_point, AUTOMATIC, OS_APPL_DATA) next_ep;
+	
+	VAR(s32, AUTOMATIC) deviation = ((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->deviation;
+	
+	VAR(tpl_tick, AUTOMATIC) adjustment;
+
+	
+	/* if last expiry point */
+	if ( last_expiry_point == TRUE )
+	{
+		/* Get the next expiry point */
+		next_ep = (schedtable->expiry)[0];
+		/* Adjust it according to deviation */
+		if ( deviation <= 0 )
+		{
+			adjustment = tpl_min(~(deviation - 1), (next_ep->max_retard));
+			
+			/* if adjustment > first.delay, adjust final.delay*/
+			if ( adjustment > next_ep->sync_offset)
+			{
+				(schedtable->expiry)[schedtable->count-1]->sync_offset -= (adjustment - next_ep->sync_offset);
+				next_ep->sync_offset = 0;
+			}
+			else
+			{
+				next_ep->sync_offset -= adjustment;
+			}
+			((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->deviation += adjustment;
+		}
+		else
+		{
+			adjustment = tpl_min(deviation, (next_ep->max_advance));
+			next_ep->sync_offset += adjustment;
+			((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->deviation -= adjustment;			 
+		}
+	}
+	else
+	/* if not last expiry point */
+	{
+		/* Get the next expiry point */
+		next_ep = (schedtable->expiry)[index+1];
+		/* Adjust it according to deviation */
+		if ( deviation <= 0 )
+		{
+			adjustment = tpl_min(~(deviation - 1), (next_ep->max_retard));
+			next_ep->sync_offset -= adjustment;
+			((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->deviation += adjustment;
+		}
+		else
+		{
+			adjustment = tpl_min(deviation, (next_ep->max_advance));
+			next_ep->sync_offset += adjustment;
+			((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->deviation -= adjustment;			 
+		}
+	}
+	
+}
 
 
 /*
@@ -94,6 +162,7 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
       tpl_schedtable */
     P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA) schedtable =
         (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))st->stat_part;
+	
     /*  Get the current index                                               */
     /* MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
       tpl_schedtable*. This cast behaves correctly because the first member
@@ -103,47 +172,72 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
 	VAR(tpl_expiry_count, AUTOMATIC)  index_temp = index;
 	
     /*  Get the current expiry point                                        */
-    P2VAR(tpl_expiry_point, AUTOMATIC, OS_APPL_DATA) next_ep =
-        (schedtable->expiry)[index];
+    P2VAR(tpl_expiry_point, AUTOMATIC, OS_APPL_DATA) current_ep =
+	(schedtable->expiry)[index];
 	
     /*  Process the current expiry point                                    */
     VAR(tpl_status, AUTOMATIC)              need_resched = NO_SPECIAL_CODE;
 
     P2VAR(tpl_action, AUTOMATIC, OS_APPL_DATA)  action_desc;
     VAR(tpl_action_count, AUTOMATIC)  i;
-
-	VAR(tpl_tick, AUTOMATIC) deviation;
+	
+	VAR(tpl_expiry_count, AUTOMATIC) abs_deviation = ( ~(((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->deviation - 1 ) );
 	
 	/*launch all the actions of the expiry point*/
-	for (i = 0; i < next_ep->count; i++)
+	for (i = 0; i < current_ep->count; i++)
 	{
-		action_desc = (next_ep->actions)[i];
+		action_desc = (current_ep->actions)[i];
 		need_resched |= TRAMPOLINE_STATUS_MASK & (action_desc->action)(action_desc);
 	}
 	
-	/*if nexted (periodic or nexted) or STOPPED, reset old sync->offset but don't synchronize because it's already done in
-	 tpl_action_finalize_schedule_table */
-	if ((index < index_temp) || ((index == 1) && (schedtable->count == 2)) || (st->state == SCHEDULETABLE_STOPPED)){
-		/*if offset=0 has been forced in tpl_action_finalize... reset offset=0,
-		  otherwise, reset offset=count */
-		if (index == 1){
-			(schedtable->expiry)[0]->sync_offset = (schedtable->expiry)[0]->offset;						
-		}
-		else{
-			/* reset the offset of last expiry point to its default value,
-			 because adjustment for synchronisation of this expiry point has been done */
-			(schedtable->expiry)[index_temp]->sync_offset = (schedtable->expiry)[index_temp]->offset;			
-		}
+	index = ((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index;
+	
+	/*if finalize expiry point and if repeating st hasn't got offset at 0 */
+	if (index_temp == (schedtable->count - 1))
+	{
+		/* reset the offset of last expiry point to its default value,
+		 because adjustment for synchronisation of this expiry point has already been done */
+		(schedtable->expiry)[index_temp]->sync_offset = (schedtable->expiry)[index_temp]->offset;
 	}
-	else{
-		
+	else
+	{
+		/* change state of the schedule table */
+		if (schedtable->sync_strat != SCHEDTABLE_NO_SYNC)
+		{
+			/* if deviation is less than the configured precision,
+			   the schedule table is considered synchronized */
+			/* if the schedule table is asynchronous (started or became),
+			   the schedule table is configured as RUNNING */
+			if ((st->state & SCHEDULETABLE_ASYNC) == SCHEDULETABLE_ASYNC)
+			{
+				st->state = SCHEDULETABLE_RUNNING | SCHEDULETABLE_ASYNC;
+			}
+			else if ( abs_deviation <= (schedtable->precision) )
+			{
+				st->state = SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS;
+			}
+			else
+			{
+				st->state = SCHEDULETABLE_RUNNING;
+			}
+		}
+		else
+		{
+			st->state = SCHEDULETABLE_RUNNING;
+		}
+						
 		/* reset the offset of last expiry point to its default value,
 		 because adjustment for synchronisation of this expiry point has been done */
-		(schedtable->expiry)[index]->sync_offset = (schedtable->expiry)[index]->offset;		
+		(schedtable->expiry)[index_temp]->sync_offset = (schedtable->expiry)[index_temp]->offset;		
+
+		/* adjust next expiry point if EXPLICIT schedule table and not asynchronous */
+		if ( (schedtable->sync_strat == SCHEDTABLE_EXPLICIT_SYNC) && ((st->state & SCHEDULETABLE_ASYNC) != SCHEDULETABLE_ASYNC) && ( abs_deviation > (schedtable->precision) ) )
+		{
+			tpl_adjust_next_expiry_point(st, index,  ( (index_temp == (schedtable->count - 2)) && (schedtable->periodic == TRUE) ));
+		}
 		
 		/*  Prepare the next expiry point                                       */
 		index++;
-					
 		/*  The schedule table is not finished                              */
 		/*  Set the next cycle to the offset of the next expiry point
 		 (offsets are not relative to the start of the schedule table
@@ -153,45 +247,11 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
 		 of tpl_schedule_table is a tpl_time_obj */
 		st->cycle = (schedtable->expiry)[index]->sync_offset;
 		((tpl_schedule_table *)st)->index = index;
-		
-		/*replace that by a #ifdef but declare first WITH_NO_SYNC from GOIL*/
-		if (schedtable->sync_strat != SCHEDTABLE_NO_SYNC)
-		{
-			/* calculate the absolute value of the deviation */
-			if ((schedtable->expiry)[index]->sync_offset >=
-				(schedtable->expiry)[index]->offset )
-			{
-				deviation = (schedtable->expiry)[index]->sync_offset -
-				(schedtable->expiry)[index]->offset;
-			}
-			else
-			{
-				deviation = (schedtable->expiry)[index]->offset -
-				(schedtable->expiry)[index]->sync_offset;
-			}
-			
-			/* if deviation is less than the configured precision,
-			 the schedule table is considered synchronized */
-			if (deviation <= (schedtable->precision))
-			{
-				st->state = SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS;
-			}
-			else
-			{
-				st->state = SCHEDULETABLE_RUNNING;
-			}
-		}
-		else{
-			st->state = SCHEDULETABLE_RUNNING;
-		}
-		
-		
+					
 	}	
 		
     return need_resched;
 }
-
-
 
 /*
  * This function is called after a schedule table has been started
@@ -211,7 +271,7 @@ FUNC(void, OS_CODE) tpl_start_sched_table_sync(
    * start date = drive_cnt.now + (duration - sync_date)
    */
   st->date = (st->stat_part->counter->current_date)
-             + (st->date) + ((schedtable->length) - sync_date);
+             + (st->date) + ((schedtable->length) - sync_date) + schedtable->expiry[0]->offset;
 
   /* as the schdule table is started synchronously, it is synchronous     */
   st->state = SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS;
@@ -235,18 +295,12 @@ FUNC(void, OS_CODE) tpl_sync_sched_table(
   /*  Get the current index                                               */
   VAR(tpl_expiry_count, AUTOMATIC)  index;
   VAR(tpl_expiry_count, AUTOMATIC)  j;
-  /*  Get the current expiry point                                        */
-  P2VAR(tpl_expiry_point, AUTOMATIC, OS_APPL_DATA) next_ep;
 
   VAR(tpl_tick, AUTOMATIC)  drive_cnt_now;
   VAR(tpl_tick, AUTOMATIC)  drive_cnt_match;
   VAR(tpl_tick, AUTOMATIC)  position_on_tbl;
-  VAR(tpl_tick, AUTOMATIC)  adjustment;
   VAR(tpl_tick, AUTOMATIC)  next_ep_offset=0;
-  VAR(tpl_tick, AUTOMATIC)  deviation;
-
-  /* remove the next expiry point, because its date is going to be changed */
-  tpl_remove_time_obj(st);
+  VAR(s32, AUTOMATIC)  deviation;
 
   /* get the current date of the counter which drives the schedule table  */
   drive_cnt_now = st->stat_part->counter->current_date;
@@ -273,74 +327,25 @@ FUNC(void, OS_CODE) tpl_sync_sched_table(
   }
 
   /* calculate the current position in the schedule table */
-  position_on_tbl = next_ep_offset;
-  position_on_tbl = position_on_tbl - (drive_cnt_match - drive_cnt_now);
+  position_on_tbl = next_ep_offset - (drive_cnt_match - drive_cnt_now);
 
-  /* compute resynchronization for each expiry point until
-   * the end of the schedule table or the schedule table is synchronized
-   */
-  do
+  /* calculate the deviation and store it into the schedule table */
+  deviation = position_on_tbl - sync_date;
+  
+  /* change state if schedule table is not synchronous */
+  if( deviation <= schedtable->precision )
   {
-    /* get the new next expiry point to compute */
-    next_ep = ((schedtable->expiry)[index]);
-
-    /* the algorithm is quite different if deviation is advance or overdue */
-    if( position_on_tbl >= sync_date) /* advance */
-    {
-      /*  from the current date, calculate the deviation with the
-          synchronisation time                                        */
-      deviation = position_on_tbl - sync_date;
-      /*  calculate offset adjustment for this expiry point,
-       *  refer to OS420 of Autosar spec
-       */
-      adjustment = tpl_min(deviation, (next_ep->max_advance));
-      next_ep->sync_offset = next_ep->offset + adjustment;
-    }
-    else /* overdue */
-    {
-      /*  from the current date, calculate the deviation with the
-          synchronisation time                                        */
-      deviation = sync_date - position_on_tbl;
-      /* calculate offset adjustment for this expiry point,
-       * refer to OS421 of Autosar spec
-       */
-      adjustment = tpl_min(deviation, (next_ep->max_retard));
-
-      /* if this is the next expiry point, we have to take care that the
-       * adjustment will not set the date before the current date
-       */
-      /*  MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
-          tpl_schedule_table*. This cast behaves correctly because the
-          first member of tpl_schedule_table is a tpl_time_obj        */
-      if (index ==
-          ((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index)
-      {
-        if (adjustment >= ((st->date) - drive_cnt_now))
-        {
-            adjustment = ((st->date) - drive_cnt_now - 1);
-        }
-      }
-      next_ep->sync_offset = next_ep->offset - adjustment;
-    }
-
-    /* calculate the remaining deviation to adjust */
-    deviation = deviation - adjustment;
-
-    /* next expiry point of the schedule table */
-    index++;
-
-  } while( (index < schedtable->count) && (deviation != 0) );
-
-  /* re-insert the next expiry point with its new date */
-  /* MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
-     tpl_schedule_table*. This cast behaves correctly because the first member
-     of tpl_schedule_table is a tpl_time_obj */
-  index = ((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index;
-  st->date = (st->date) - (st->cycle)
-             + ((schedtable->expiry)[index]->sync_offset);
-  st->cycle = 0;
-  tpl_insert_time_obj(st);
-}
+	  st->state = SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS;
+  }
+  else
+  {
+	  st->state = SCHEDULETABLE_RUNNING;	  
+  }
+	
+  /* save deviation */
+  ((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->deviation = deviation;
+	
+ }
 
 /*
  * Start a schedule table at a relative date.
@@ -374,62 +379,44 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel_service(
     CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
     CHECK_SCHEDTABLE_OFFSET_VALUE(sched_table_id,offset,result)
 
+	CHECK_SCHEDTABLE_SYNC_STRATEGY_EQUAL_ERROR(sched_table_id, SCHEDTABLE_IMPLICIT_SYNC, result)
+	
 #ifndef NO_SCHEDTABLE
     IF_NO_EXTENDED_ERROR(result)
-        st = tpl_schedtable_table[sched_table_id];
+		st = tpl_schedtable_table[sched_table_id];
         /* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
            tpl_schedtable_static*. This cast behaves correctly because the first memeber
            of tpl_schedula_table_static is a tpl_time_obj_static */
-        schedtable = (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))(st->b_desc.stat_part);
-
-        if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
-        {
-            if(schedtable->sync_strat != SCHEDTABLE_IMPLICIT_SYNC)
-            {
-                /*  the schedule table is not already started, proceed  */
-                cnt = st->b_desc.stat_part->counter;
+		schedtable = (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))(st->b_desc.stat_part);
+	
+		if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
+		{			
+		   		/*  the schedule table is not already started, proceed  */
+				cnt = st->b_desc.stat_part->counter;
 				
-				/* if NO_SYNC, state = RUNNING,
-				   otherwise, state = RUNNING_AND_SYNCHRONOUS */
-				if (schedtable->sync_strat != SCHEDTABLE_NO_SYNC)
-				{
-					st->b_desc.state = SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS;
-				}
-				else
-				{
-					st->b_desc.state = SCHEDULETABLE_RUNNING;
-				}
+				/* if NO_SYNC, state = RUNNING
+				   if EXPLICIT, state = RUNNING and ASYNC	*/
+				st->b_desc.state = SCHEDULETABLE_RUNNING | SCHEDULETABLE_ASYNC;
 				
-				/* if "schedule table offset" > max_allowed_value, set a bootstrap*/
-				if ((offset + (schedtable->expiry[0])->offset) > (cnt->max_allowed_value + 1))
-				{
-					st->b_desc.state = st->b_desc.state | SCHEDULETABLE_BOOTSTRAP;
-				}
 				date = cnt->current_date + offset + (schedtable->expiry[0])->offset; 
 				
 				/* if date > max_allowed_value, take the modulus */
 				if (date > cnt->max_allowed_value)
-                {
-                    date = date - cnt->max_allowed_value - 1;
-                }
+				{
+					date = date - cnt->max_allowed_value - 1;
+				}
 				st->b_desc.date = date;
-				
-                /* MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
-                   tpl_time_obj*. This cast behaves correctly because the first member
-                   of tpl_schedula_table is a tpl_time_obj */
-                tpl_insert_time_obj((tpl_time_obj *)st);
-            }
-            else
-            {
-              result = E_OS_ID;
-            }
-        }
-        else
-        {
-            /*  the schedule table is already started,
-                return the proper error code                        */
-            result = E_OS_STATE;
-        }
+				/* MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
+				   tpl_time_obj*. This cast behaves correctly because the first member
+				   of tpl_schedula_table is a tpl_time_obj */
+				tpl_insert_time_obj((tpl_time_obj *)st);
+		}
+		else
+		{
+			/*  the schedule table is already started,
+				return the proper error code                        */
+			result = E_OS_STATE;
+		}
     IF_NO_EXTENDED_ERROR_END()
 #endif
 
@@ -473,13 +460,12 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs_service(
     CHECK_SCHEDTABLE_TICK_VALUE(sched_table_id,tick_val,result)
 
 #ifndef NO_SCHEDTABLE
-    IF_NO_EXTENDED_ERROR(result)
-        st = tpl_schedtable_table[sched_table_id];
-        /* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
-           tpl_schedtable_static*. This cast behaves correctly because the first memeber
-           of tpl_schedula_table_static is a tpl_time_obj_static */
-        schedtable = (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))(st->b_desc.stat_part);
-
+	IF_NO_EXTENDED_ERROR(result)
+		st = tpl_schedtable_table[sched_table_id];
+		/* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
+	   tpl_schedtable_static*. This cast behaves correctly because the first memeber
+	   of tpl_schedula_table_static is a tpl_time_obj_static */
+		schedtable = (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))(st->b_desc.stat_part);
         if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
         {
             /*  the schedule table is not already started, proceed  */
@@ -487,13 +473,13 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs_service(
 			
 			/* if NO_SYNC, state = RUNNING,
 			 otherwise, state = RUNNING_AND_SYNCHRONOUS */
-			if (schedtable->sync_strat != SCHEDTABLE_NO_SYNC)
+			if (schedtable->sync_strat == SCHEDTABLE_IMPLICIT_SYNC)
 			{
 				st->b_desc.state = SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS;
 			}
 			else
 			{
-				st->b_desc.state = SCHEDULETABLE_RUNNING;
+				st->b_desc.state = SCHEDULETABLE_RUNNING | SCHEDULETABLE_ASYNC;
 			}
 			
 			date = (tick_val + (schedtable->expiry[0])->offset);
@@ -514,7 +500,6 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs_service(
 				date -= (cnt->max_allowed_value + 1);
 			}
 			st->b_desc.date = date;
-			
 			/*printf(" - date=%d - state=%d\n",st->b_desc.date,st->b_desc.state);*/
             /* MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
                tpl_time_obj*. This cast behaves correctly because the first memeber
@@ -559,27 +544,30 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_synchron_service(
 
     LOCK_KERNEL()
 
-    STORE_SERVICE(OSServiceId_StartScheduleTableSynchron)
+	STORE_SERVICE(OSServiceId_StartScheduleTableSynchron)
     STORE_SCHEDTABLE_ID(sched_table_id)
-
+	
     CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
 
-#ifndef NO_SCHEDTABLE
-    IF_NO_EXTENDED_ERROR(result)
-        st = tpl_schedtable_table[sched_table_id];
+	CHECK_SCHEDTABLE_SYNC_STRATEGY_DIFF_ERROR(sched_table_id, SCHEDTABLE_EXPLICIT_SYNC, result)
 
-        if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
-        {
-            /*  the schedule table is not already started,
-                it is put in the waiting state until the global time is provided */
-            st->b_desc.state = SCHEDULETABLE_WAITING;
-        }
-        else
-        {
-            /*  the schedule table is already started,
-                return the proper error code                        */
-            result = E_OS_STATE;
-        }
+#ifndef NO_SCHEDTABLE
+	IF_NO_EXTENDED_ERROR(result)
+		st = tpl_schedtable_table[sched_table_id];
+		
+		if (st->b_desc.state == (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
+		{
+			/*  the schedule table is not already started,
+				it is put in the waiting state until the global time is provided */
+			st->b_desc.state = SCHEDULETABLE_WAITING;
+		}
+		else
+		{
+			/*  the schedule table is already started,
+				return the proper error code                        */
+			result = E_OS_STATE;
+		}
+	
     IF_NO_EXTENDED_ERROR_END()
 #endif
 
@@ -624,18 +612,18 @@ FUNC(tpl_status, OS_CODE) tpl_stop_schedule_table_service(
         /*  Check the schedule table is started */
         if (st->b_desc.state != (tpl_schedtable_state)SCHEDULETABLE_STOPPED)
         {
+			/*check if next schedule table exists*/
+			if (st->next != NULL)
+			{
+				st->next->b_desc.state = SCHEDULETABLE_STOPPED;
+			}
+			
 			/* MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
 			 tpl_time_obj*. This cast behaves correctly because the first member
 			 of tpl_schedul_table is a tpl_time_obj */
 			tpl_remove_time_obj((tpl_time_obj *)st);
 			st->b_desc.state = SCHEDULETABLE_STOPPED;
             st->index = 0; /* reset the expiry point index to 0 */
-			
-			/*check if next schedule table exists*/
-			if (st->next != NULL)
-			{
-				st->next->b_desc.state = SCHEDULETABLE_STOPPED;
-			}
         }
         else
         {
@@ -751,9 +739,11 @@ FUNC(tpl_status, OS_CODE) tpl_get_schedule_table_status_service(
 #ifndef NO_SCHEDTABLE
     IF_NO_EXTENDED_ERROR(result)
         st = tpl_schedtable_table[sched_table_id];
-        *status = (st->b_desc.state & ~SCHEDULETABLE_BOOTSTRAP);
+        *status = (st->b_desc.state & ~SCHEDULETABLE_BOOTSTRAP & ~SCHEDULETABLE_ASYNC);
     IF_NO_EXTENDED_ERROR_END()
 #endif
+	
+    PROCESS_ERROR(result)
 
     UNLOCK_KERNEL()
 
@@ -788,35 +778,32 @@ FUNC(tpl_status, OS_CODE) tpl_sync_schedule_table_service(
     STORE_SERVICE(OSServiceId_SyncScheduleTable)
     STORE_SCHEDTABLE_ID(sched_table_id)
     STORE_TICK_1(value)
+	
+	CHECK_SCHEDTABLE_ID_ERROR(sched_table_id, result)
+	CHECK_SCHEDTABLE_VALUE(sched_table_id, value, result)
 
-    CHECK_SCHEDTABLE_ID_ERROR(sched_table_id, result)
-
+	CHECK_SCHEDTABLE_SYNC_STRATEGY_DIFF_ERROR(sched_table_id, SCHEDTABLE_EXPLICIT_SYNC, result)
+	CHECK_SCHEDTABLE_DIFF_STOPPED_AND_NEXT(sched_table_id, result)
+	
 #ifndef NO_SCHEDTABLE
     IF_NO_EXTENDED_ERROR(result)
-        st = tpl_schedtable_table[sched_table_id];
-
-        /* check the state of the schedude table */
-        if( (SCHEDULETABLE_STOPPED == st->b_desc.state)
-         || (SCHEDULETABLE_NEXT == st->b_desc.state) )
-        {
-          result=E_OS_STATE;
-        }
-        else
-        {
-            /* if schedule table is waiting, start it,
-               else if running synchronize it */
-            if( st->b_desc.state == SCHEDULETABLE_WAITING )
-            {
-                tpl_start_sched_table_sync(&(st->b_desc), value);
-            }
-            else
-            {
-                tpl_sync_sched_table(&(st->b_desc), value);
-            }
-        }
-
+		st = tpl_schedtable_table[sched_table_id];
+	
+		/* if schedule table is waiting, start it,
+		   else if running synchronize it */
+		if( st->b_desc.state == SCHEDULETABLE_WAITING )
+		{
+			tpl_start_sched_table_sync(&(st->b_desc), value);
+		}
+		else
+		{
+			tpl_sync_sched_table(&(st->b_desc), value);
+		}
+	
     IF_NO_EXTENDED_ERROR_END()
 #endif
+	
+    PROCESS_ERROR(result)
 
     UNLOCK_KERNEL()
 
@@ -839,9 +826,6 @@ FUNC(tpl_status, OS_CODE) tpl_set_schedule_table_async(
 #ifndef NO_SCHEDTABLE
     P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
     P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA) schedtable;
-    VAR(u16, AUTOMATIC) index;
-
-
 #endif
 
     /* check interrupts are not disabled by user    */
@@ -850,36 +834,33 @@ FUNC(tpl_status, OS_CODE) tpl_set_schedule_table_async(
     LOCK_KERNEL()
 
     /*  store information for error hook routine    */
-    STORE_SERVICE(OSServiceId_SyncScheduleTable)
+    STORE_SERVICE(OSServiceId_SetScheduleTableAsync)
     STORE_SCHEDTABLE_ID(sched_table_id)
 
     CHECK_SCHEDTABLE_ID_ERROR(sched_table_id, result)
 
+    CHECK_SCHEDTABLE_SYNC_STRATEGY_DIFF_ERROR(sched_table_id, SCHEDTABLE_EXPLICIT_SYNC, result)
+
 #ifndef NO_SCHEDTABLE
-    st = tpl_schedtable_table[sched_table_id];
+    IF_NO_EXTENDED_ERROR(result)
+		st = tpl_schedtable_table[sched_table_id];
         /* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
            tpl_schedtable_static*. This cast behaves correctly because the first memeber
            of tpl_schedula_table_static is a tpl_time_obj_static */
-    schedtable = (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))st->b_desc.stat_part;
-
-    CHECK_SCHEDTABLE_SYNC_STRATEGY_ERROR(schedtable, result)
-
-    IF_NO_EXTENDED_ERROR(result)
-
-        /* check the state of the schedule table */
+		schedtable = (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))st->b_desc.stat_part;
+    
+		/* check the state of the schedule table */
         if( (SCHEDULETABLE_RUNNING == st->b_desc.state)
          || (SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS == st->b_desc.state) )
         {
-            st->b_desc.state = SCHEDULETABLE_RUNNING;
-
-            for(index = 0; index < schedtable->count; index++)
-            {
-                (schedtable->expiry)[index]->sync_offset = (schedtable->expiry)[index]->offset;
-            }
+            st->b_desc.state = SCHEDULETABLE_RUNNING | SCHEDULETABLE_ASYNC;
+			/*st->deviation = 0;*/
         }
 
     IF_NO_EXTENDED_ERROR_END()
 #endif
+	
+    PROCESS_ERROR(result)
 
     UNLOCK_KERNEL()
 

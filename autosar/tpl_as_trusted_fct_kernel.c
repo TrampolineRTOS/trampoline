@@ -26,6 +26,7 @@
 
 #include "tpl_as_trusted_fct_kernel.h"
 #include "tpl_as_definitions.h"
+#include "tpl_os_kernel.h"
 
 #if TRUSTED_FCT_COUNT > 0
 extern CONST(tpl_trusted_fct, OS_APPL_CODE)
@@ -44,8 +45,10 @@ FUNC(tpl_status, OS_CODE) tpl_call_trusted_function_service(
   #if (TRUSTED_FCT_COUNT > 0)						
 	if (fct_idx < TRUSTED_FCT_COUNT)			
 	{												
-		CONST(tpl_trusted_fct, AUTOMATIC) tf = tpl_trusted_fct_table[fct_idx]; 
+		CONST(tpl_trusted_fct, AUTOMATIC) tf = tpl_trusted_fct_table[fct_idx];
+		tpl_kern.running->trusted_counter++;
 		tf(fct_idx, fct_param);						
+		tpl_kern.running->trusted_counter--;
 	}												
 	else											
 	{												

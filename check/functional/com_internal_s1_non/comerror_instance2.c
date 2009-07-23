@@ -38,6 +38,8 @@
 #include "tpl_os.h"
 #include "tpl_com_error.h" /*for COMErrorGetServiceId()*/
 
+DeclareMessage(INVALID_MESSAGE);
+
 /*test case:test the reaction of the system called with 
  an activation of a task*/
 static void test_comerror_instance2(void)
@@ -54,7 +56,7 @@ static void test_comerror_instance2(void)
 	
 	SCHEDULING_CHECK_INIT(7);
 	result_inst_3 = (StatusType)COMError_SendMessage_Message();
-	SCHEDULING_CHECK_AND_EQUAL_INT(7,SEND_MESSAGE_COUNT , result_inst_3);
+	SCHEDULING_CHECK_AND_EQUAL_INT(7,INVALID_MESSAGE , result_inst_3);
 	
 }
 

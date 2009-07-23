@@ -52,46 +52,37 @@ IMPLEMENTATION trampoline {
         STATUS = STANDARD;
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "goil_autosar_alarm_s1";
-		CFLAGS = "-I../../embUnit";
         CFLAGS  = "-Wall -pedantic";
-        CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../../lib -lembUnit";
-		SHUTDOWNHOOK = TRUE;
-		
+        CFLAGS  = "-Wmissing-field-initializers";		
 	};
 
     APPMODE std {};
 
 	TASK t1 {
-        AUTOSTART = TRUE { APPMODE = std ; } ;
-        PRIORITY = 2;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
-	
+		AUTOSTART = TRUE { APPMODE = std ; } ;
+		PRIORITY = 2;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+	};
 	TASK t2 {
-        AUTOSTART = FALSE ;
-        PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
+		AUTOSTART = FALSE ;
+		PRIORITY = 1;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
 		EVENT = Event1;
-    };
-	
+	};
 	COUNTER Hardware_Counter{
 		MAXALLOWEDVALUE = 10;
 		TICKSPERBASE = 1;
 		MINCYCLE = 1;
 		TYPE = HARDWARE {};
 	};
-	
 	COUNTER Software_Counter{
 		MAXALLOWEDVALUE = 10;
 		TICKSPERBASE = 1;
 		MINCYCLE = 1;
 		TYPE = SOFTWARE;
 	};
-
-	/*set event to a basic task*/
 	ALARM Alarm_SetEvent_basictask{
 		COUNTER = Software_Counter;
 		ACTION = SETEVENT {
@@ -100,8 +91,6 @@ IMPLEMENTATION trampoline {
 		};
 		AUTOSTART = FALSE;
 	};
-		
-	/*increment hardware counter*/
 	ALARM Alarm_IncrementCounter{
 		COUNTER = Software_Counter;
 		ACTION = INCREMENTCOUNTER {
@@ -109,18 +98,14 @@ IMPLEMENTATION trampoline {
 		};
 		AUTOSTART = FALSE;
 	};
-	
-    APPLICATION app {
-        TRUSTED = FALSE;
-        STARTUPHOOK = TRUE;
-        TASK = t1;
+	APPLICATION app {
+		TASK = t1;
 		TASK = t2;
 		COUNTER = Software_Counter;
 		COUNTER = Hardware_Counter;
 		ALARM = Alarm_SetEvent_basictask;
 		ALARM = Alarm_IncrementCounter;
 	};
-	
 	EVENT Event1 {
 		MASK = AUTO;
 	};
