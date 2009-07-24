@@ -70,14 +70,14 @@ IMPLEMENTATION trampoline {
         AUTOSTART = TRUE { APPMODE = std ; } ;
         PRIORITY = 1;
         ACTIVATION = 1;
-        SCHEDULE = NON;
+        SCHEDULE = FULL;
     };
 
     TASK t2 {
         AUTOSTART =  FALSE;
         PRIORITY = 3;
         ACTIVATION = 1;
-        SCHEDULE = NON;
+        SCHEDULE = FULL;
 		RESOURCE = Resource1;
 		EVENT = Event1;
     };

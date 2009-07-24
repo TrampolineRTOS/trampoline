@@ -70,44 +70,38 @@ IMPLEMENTATION trampoline {
 
     APPMODE std {};
 
-	/* ACTIVATETASK - max activation */
-    TASK t1 {
-        AUTOSTART = TRUE { APPMODE = std ; } ;
-        PRIORITY = 2;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
 	
-	/* SETEVENT - suspended task */
+	TASK t1 {
+		AUTOSTART = TRUE { APPMODE = std ; } ;
+		PRIORITY = 2;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+	};
 	TASK t2 {
-        AUTOSTART = FALSE ;
-        PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
+		AUTOSTART = FALSE ;
+		PRIORITY = 1;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
 		EVENT = Event1;
-    };
-	
+	};
 	ISR isr1 {
 		CATEGORY = 2;
 		SOURCE = SIGTERM;
 		PRIORITY = 1;
 		STACKSIZE = 32768;
 	};
-	
 	COUNTER Software_Counter{
 		MAXALLOWEDVALUE = 10;
 		TICKSPERBASE = 1;
 		MINCYCLE = 1;
 		TYPE = SOFTWARE;
 	};
-	
 	COUNTER Software_Counter_By_Alarm{
 		MAXALLOWEDVALUE = 10;
 		TICKSPERBASE = 1;
 		MINCYCLE = 1;
 		TYPE = SOFTWARE;
 	};
-	
 	ALARM Alarm_ActivateTask{
 		COUNTER = Software_Counter;
 		ACTION = ACTIVATETASK {
@@ -115,16 +109,14 @@ IMPLEMENTATION trampoline {
 		};
 		AUTOSTART = FALSE;
 	};
-
 	ALARM Alarm_SetEvent_suspendedtask{
 		COUNTER = Software_Counter;
 		ACTION = SETEVENT {
 			TASK = t2;
-			EVENT = Event1;
+		EVENT = Event1;
 		};
 		AUTOSTART = FALSE;
 	};
-		
 	ALARM Alarm_IncrementCounter{
 		COUNTER = Software_Counter;
 		ACTION = INCREMENTCOUNTER {
@@ -132,11 +124,8 @@ IMPLEMENTATION trampoline {
 		};
 		AUTOSTART = FALSE;
 	};
-	
-    APPLICATION app {
-        TRUSTED = FALSE;
-        STARTUPHOOK = TRUE;
-        TASK = t1;
+	APPLICATION app {
+		TASK = t1;
 		TASK = t2;
 		COUNTER = Software_Counter;
 		COUNTER = Software_Counter_By_Alarm;
@@ -145,7 +134,6 @@ IMPLEMENTATION trampoline {
 		ALARM = Alarm_IncrementCounter;
 		ISR = isr1;
 	};
-	
 	EVENT Event1 {
 		MASK = AUTO;
 	};
