@@ -77,7 +77,7 @@ CPU test {
         AUTOSTART = TRUE { APPMODE = std ; } ;
         PRIORITY = 16;
         ACTIVATION = 1;
-        SCHEDULE = NON;
+        SCHEDULE = FULL;
 		EVENT = Task1_Event1; 
 		EVENT = Task1_Event2; 
 		EVENT = Task1_Event3; 
@@ -92,7 +92,7 @@ CPU test {
         AUTOSTART = FALSE;
         PRIORITY = 15;
         ACTIVATION = 1;
-        SCHEDULE = NON;
+        SCHEDULE = FULL;
 		EVENT = Task2_Event1; 
 		EVENT = Task2_Event2; 
 		EVENT = Task2_Event3; 
@@ -107,7 +107,7 @@ CPU test {
         AUTOSTART = FALSE;
         PRIORITY = 14;
         ACTIVATION = 1;
-        SCHEDULE = NON;
+        SCHEDULE = FULL;
 		EVENT = Task3_Event1; 
 		EVENT = Task3_Event2; 
 		EVENT = Task3_Event3; 
@@ -122,7 +122,7 @@ CPU test {
         AUTOSTART = FALSE;
         PRIORITY = 13;
         ACTIVATION = 1;
-        SCHEDULE = NON;
+        SCHEDULE = FULL;
 		EVENT = Task4_Event1; 
 		EVENT = Task4_Event2; 
 		EVENT = Task4_Event3; 
@@ -137,7 +137,7 @@ CPU test {
         AUTOSTART = FALSE;
         PRIORITY = 12;
         ACTIVATION = 1;
-        SCHEDULE = NON;
+        SCHEDULE = FULL;
 		EVENT = Task5_Event1; 
 		EVENT = Task5_Event2; 
 		EVENT = Task5_Event3; 
@@ -152,7 +152,7 @@ CPU test {
         AUTOSTART = FALSE;
         PRIORITY = 11;
         ACTIVATION = 1;
-        SCHEDULE = NON;
+        SCHEDULE = FULL;
 		EVENT = Task6_Event1; 
 		EVENT = Task6_Event2; 
 		EVENT = Task6_Event3; 
@@ -168,7 +168,7 @@ CPU test {
         AUTOSTART = FALSE;
         PRIORITY = 10;
         ACTIVATION = 1;
-        SCHEDULE = NON;
+        SCHEDULE = FULL;
 		EVENT = Task7_Event1; 
 		EVENT = Task7_Event2; 
 		EVENT = Task7_Event3; 
@@ -183,7 +183,7 @@ CPU test {
         AUTOSTART = FALSE;
         PRIORITY = 9;
         ACTIVATION = 1;
-        SCHEDULE = NON;
+        SCHEDULE = FULL;
 		EVENT = Task8_Event1; 
 		EVENT = Task8_Event2; 
 		EVENT = Task8_Event3; 
@@ -198,7 +198,7 @@ CPU test {
         AUTOSTART = FALSE;
         PRIORITY = 8;
         ACTIVATION = 1;
-        SCHEDULE = NON;
+        SCHEDULE = FULL;
 		EVENT = Task9_Event1; 
 		EVENT = Task9_Event2; 
 		EVENT = Task9_Event3; 
@@ -213,7 +213,7 @@ CPU test {
         AUTOSTART = FALSE;
         PRIORITY = 7;
         ACTIVATION = 1;
-        SCHEDULE = NON;
+        SCHEDULE = FULL;
 		EVENT = Task10_Event1; 
 		EVENT = Task10_Event2; 
 		EVENT = Task10_Event3; 
@@ -228,7 +228,7 @@ CPU test {
         AUTOSTART = FALSE;
         PRIORITY = 6;
         ACTIVATION = 1;
-        SCHEDULE = NON;
+        SCHEDULE = FULL;
 		EVENT = Task11_Event1; 
 		EVENT = Task11_Event2; 
 		EVENT = Task11_Event3; 
@@ -243,7 +243,7 @@ CPU test {
         AUTOSTART = FALSE;
         PRIORITY = 5;
         ACTIVATION = 1;
-        SCHEDULE = NON;
+        SCHEDULE = FULL;
 		EVENT = Task12_Event1; 
 		EVENT = Task12_Event2; 
 		EVENT = Task12_Event3; 
@@ -258,7 +258,7 @@ CPU test {
         AUTOSTART = FALSE;
         PRIORITY = 4;
         ACTIVATION = 1;
-        SCHEDULE = NON;
+        SCHEDULE = FULL;
 		EVENT = Task13_Event1; 
 		EVENT = Task13_Event2; 
 		EVENT = Task13_Event3; 
@@ -273,7 +273,7 @@ CPU test {
         AUTOSTART = FALSE;
         PRIORITY = 3;
         ACTIVATION = 1;
-        SCHEDULE = NON;
+        SCHEDULE = FULL;
 		EVENT = Task14_Event1; 
 		EVENT = Task14_Event2; 
 		EVENT = Task14_Event3; 
@@ -288,7 +288,7 @@ CPU test {
         AUTOSTART = FALSE;
         PRIORITY = 2;
         ACTIVATION = 1;
-        SCHEDULE = NON;
+        SCHEDULE = FULL;
 		EVENT = Task15_Event1; 
 		EVENT = Task15_Event2; 
 		EVENT = Task15_Event3; 
@@ -303,7 +303,7 @@ CPU test {
         AUTOSTART = FALSE;
         PRIORITY = 1;
         ACTIVATION = 1;
-        SCHEDULE = NON;
+        SCHEDULE = FULL;
 		EVENT = Task16_Event1; 
 		EVENT = Task16_Event2; 
 		EVENT = Task16_Event3; 
