@@ -116,11 +116,11 @@ running events_s6
 .....
 OK (5 tests)
 running resources_s1_full
-........
-OK (8 tests)
+..
+OK (2 tests)
 running resources_s1_non
-........
-OK (8 tests)
+..
+OK (2 tests)
 running resources_s2
 ...
 OK (3 tests)
@@ -133,6 +133,9 @@ OK (3 tests)
 running resources_s4_non
 ...
 OK (3 tests)
+running resources_s5
+....
+OK (4 tests)
 running alarms_s1_full
 .
 OK (1 test)
@@ -289,15 +292,6 @@ OK (9 tests)
 running autosar_st_s7
 .....
 OK (5 tests)
-running autosar_sp_s1
-.......
-OK (7 tests)
-running autosar_sp_s2
-.....
-OK (5 tests)
-running autosar_sp_s3
-....
-OK (4 tests)
 running autosar_sts_s1
 .....
 OK (5 tests)
@@ -340,3 +334,9 @@ OK (5 tests)
 running autosar_sts_s14
 .......
 OK (7 tests)
+running autosar_sp_s1
+........
+OK (8 tests)
+running autosar_sp_s3
+....
+OK (4 tests)

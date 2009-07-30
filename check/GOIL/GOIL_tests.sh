@@ -13,15 +13,15 @@
 
 if [ "$1" = "clean" ]
 then
-	for i in `cat GOIL_testSequences.txt`
-	do
-		#remove make-rules, makefiles, defaultAppWorkstation/, build/, embUnit/*.o and lib/libembUnit.a
-		rm -rf ./${i}/build
-		rm -rf ./${i}/defaultAppWorkstation
-		rm -rf ./${i}/Make-rules
-		rm -rf ./${i}/Makefile
-		rm -rf ./${i}/${i}
-	done
+#	for i in `cat GOIL_testSequences.txt`
+#	do
+#		#remove make-rules, makefiles, defaultAppWorkstation/, build/, embUnit/*.o and lib/libembUnit.a
+#		rm -rf ./${i}/build
+#		rm -rf ./${i}/${i}
+#		rm -rf ./${i}/Make-rules
+#		rm -rf ./${i}/Makefile
+#		rm -rf ./${i}/${i}
+#	done
 	#Delete results.log
 	rm -rf GOIL_results.log
 	
@@ -76,9 +76,9 @@ else
 			#check if target's name is among arguments (default=libpcl). If "no_results" is sent by test.sh, do goil with libpcl.
 			if [ "$1" = "" ] || [ "$1" = "no_results" ]
 			then	
-				goil --target=posix --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>> ../GOIL_results.log 1>> ../GOIL_results.log
+				goil --target=posix --templates=../../../goil/templates/ -g ${i}.oil $autosar_flag 2>> ../GOIL_results.log 1>> ../GOIL_results.log
 			else 
-				goil --target=$1 --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>> ../GOIL_results.log 1>> ../GOIL_results.log
+				goil --target=$1 --templates=../../../goil/templates/ -g ${i}.oil $autosar_flag 2>> ../GOIL_results.log 1>> ../GOIL_results.log
 			fi
 		fi
 		

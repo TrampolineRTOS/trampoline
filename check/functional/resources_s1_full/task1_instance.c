@@ -45,17 +45,13 @@ DeclareResource(Resource5);
 DeclareResource(Resource6);
 DeclareResource(ResourceA);
 DeclareResource(INVALID_RESOURCE);
-
-void tpl_send_it1(void);
-void tpl_send_it2(void);
-void tpl_send_it3(void);
+DeclareTask(t2);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
 static void test_t1_instance(void)
-{
-	
-	StatusType result_inst_1, result_inst_1_5, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9, result_inst_10, result_inst_11, result_inst_12, result_inst_13, result_inst_14, result_inst_15, result_inst_16, result_inst_17;
+{	
+	StatusType result_inst_1, result_inst_1_5, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9, result_inst_10, result_inst_11, result_inst_12, result_inst_13, result_inst_14, result_inst_15, result_inst_16, result_inst_17, result_inst_18, result_inst_19, result_inst_20;
 	
 	SCHEDULING_CHECK_INIT(1);
 	result_inst_1 = GetResource(ResourceA);
@@ -110,33 +106,38 @@ static void test_t1_instance(void)
 	SCHEDULING_CHECK_AND_EQUAL_INT(13 , E_OK, result_inst_12);
 	
 	SCHEDULING_CHECK_INIT(14);
-	result_inst_13 = ReleaseResource(Resource2);
-	SCHEDULING_CHECK_AND_EQUAL_INT(14 , E_OK, result_inst_13);
+	result_inst_13 = ReleaseResource(Resource1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(14 , E_OS_NOFUNC, result_inst_13);
 	
-	tpl_send_it2();
+	SCHEDULING_CHECK_INIT(15);
+	result_inst_14 = ReleaseResource(Resource2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(15 , E_OK, result_inst_14);
 	
-	tpl_send_it3();
-	/*it3 and t2 trigged*/
-
+	SCHEDULING_CHECK_INIT(16);
+	result_inst_15 = GetResource(Resource1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(16 , E_OS_ACCESS, result_inst_15);
+	
 	SCHEDULING_CHECK_INIT(17);
-	result_inst_14 = ReleaseResource(Resource1);
-	/*it2 trigged*/
-	SCHEDULING_CHECK_AND_EQUAL_INT(20 , E_OK, result_inst_14);
+	result_inst_17 = ReleaseResource(Resource1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(17 , E_OK, result_inst_17);
 	
-	tpl_send_it1();
-	/*it1 trigged*/
+	SCHEDULING_CHECK_INIT(18);
+	result_inst_16 = ActivateTask(t2);
+	/*force scheduling*/
+	SCHEDULING_CHECK_AND_EQUAL_INT(21 , E_OK, result_inst_16);
 	
-	SCHEDULING_CHECK_INIT(31);
-	result_inst_15 = ReleaseResource(Resource1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(31 , E_OS_NOFUNC, result_inst_15);
+	SCHEDULING_CHECK_INIT(22);
+	result_inst_18 = ReleaseResource(INVALID_RESOURCE);
+	SCHEDULING_CHECK_AND_EQUAL_INT(22 , E_OS_ID, result_inst_18);
 	
-	SCHEDULING_CHECK_INIT(32);
-	result_inst_16 = ReleaseResource(RES_SCHEDULER);
-	SCHEDULING_CHECK_AND_EQUAL_INT(32 , E_OS_NOFUNC, result_inst_16);
+	SCHEDULING_CHECK_INIT(23);
+	result_inst_19 = ReleaseResource(Resource1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(23 , E_OS_NOFUNC, result_inst_19);
 	
-	SCHEDULING_CHECK_INIT(33);
-	result_inst_17 = ReleaseResource(INVALID_RESOURCE);
-	SCHEDULING_CHECK_AND_EQUAL_INT(33 , E_OS_ID, result_inst_17);
+	SCHEDULING_CHECK_INIT(24);
+	result_inst_20 = ReleaseResource(RES_SCHEDULER);
+	SCHEDULING_CHECK_AND_EQUAL_INT(24 , E_OS_NOFUNC, result_inst_20);
+	
 	
 }
 
