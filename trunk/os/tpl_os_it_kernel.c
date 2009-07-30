@@ -207,8 +207,8 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
   tpl_kern.running->activate_count--;
     
   /*  and let the scheduler do its job  */
+  TRACE_ISR_TERMINATE(tpl_kern.running_id,tpl_kern.running_id)
   tpl_schedule_from_dying();
-  TRACE_ISR_TERMINATE(tpl_kern.s_old->id,tpl_kern.s_old->id)
  
   #ifndef WITH_SYSTEM_CALL
 		if (tpl_kern.need_switch != NO_NEED_SWITCH)
@@ -306,8 +306,8 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
     {
       if ((isr->next) == NULL)
       {
-        /*  Only one handler for this id. run the handler   */
-        tpl_activate_isr(isr->isr_id);
+		/*  Only one handler for this id. run the handler   */
+		tpl_activate_isr(isr->isr_id);
       }
       else
       {
@@ -317,7 +317,8 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
           if (isr->helper() == TRUE)
           {
             /* activate the handler */
-            tpl_activate_isr(isr->isr_id);
+			tpl_activate_isr(isr->isr_id);
+			
           }
           isr = isr->next;
         }

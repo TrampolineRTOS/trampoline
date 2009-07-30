@@ -224,6 +224,11 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
     res = NULL; /* error */
   #endif
   
+	
+    /*  Return an error if the task that attempt to get
+	 the resource has a higher priority than the resource    */
+    CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(res,result)
+	
     /*  the spec requires resources to be released in
         the reverse order of the getting. if the resource
         is not owned or not release in the good order.
@@ -233,9 +238,6 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
     */
     CHECK_RESOURCE_ORDER_ON_RELEASE(res,result)
   
-    /*  Return an error if the task that attempt to get
-        the resource has a higher priority than the resource    */
-    CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(res,result)
 
     IF_NO_EXTENDED_ERROR(result)
         /*  get the saved priority  */      

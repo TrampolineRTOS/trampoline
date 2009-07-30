@@ -247,7 +247,7 @@ FUNC(void, OS_CODE) tpl_trace_res_released(
   EVENT_BEGIN(RES_RELEASED)
   EVENT_VALUE(res_id)
   EVENT_END()
-    FORMAT_TRACE()
+  FORMAT_TRACE()
 }
 
 /**
@@ -306,8 +306,8 @@ FUNC(void, OS_CODE) tpl_trace_isr_preempt(
 }
 
 FUNC(void, OS_CODE) tpl_trace_isr_terminate(
-  CONST(tpl_isr_id, AUTOMATIC) dying_isr_id, CONST(TaskType, AUTOMATIC)
-chained_isr_id)
+  CONST(tpl_isr_id, AUTOMATIC) dying_isr_id, CONST(tpl_isr_id, AUTOMATIC)
+  chained_isr_id) 
 {
   VAR(tpl_priority, AUTOMATIC) dying_isr_prio;
   VAR(tpl_status, AUTOMATIC) chained_isr_old_status;
@@ -317,7 +317,7 @@ chained_isr_id)
     dying_isr_prio = tpl_dyn_proc_table[dying_isr_id]->priority;
     tpl_trace_get_date();
 
-    EVENT_BEGIN(TASK_TERMINATE)
+    EVENT_BEGIN(ISR_TERMINATE)
     EVENT_VALUE(dying_isr_id)
     EVENT_VALUE(dying_isr_prio)
   
@@ -331,7 +331,8 @@ chained_isr_id)
       EVENT_VALUE(chained_isr_prio)
       EVENT_VALUE(chained_isr_old_status)
     }
-     EVENT_END()
+	  
+	EVENT_END()
     FORMAT_TRACE()
   }
 }
@@ -342,7 +343,7 @@ FUNC(void, OS_CODE) tpl_trace_isr_activate(
   VAR(tpl_status, AUTOMATIC) isr_old_status;
   VAR(tpl_priority, AUTOMATIC) isr_prio;
 
-  if(tpl_kern.s_running->type == 0x2)
+  if(tpl_stat_proc_table[isr_id]->type == 0x2)
   {
     tpl_trace_get_date();
     isr_old_status = tpl_dyn_proc_table[isr_id]->state;
@@ -393,7 +394,7 @@ FUNC(void, OS_CODE) tpl_trace_alarm_scheduled(
   EVENT_VALUE(scheduled_alarm_id)
   EVENT_VALUE(scheduled_alarm_expir_date)
   EVENT_END()
-    FORMAT_TRACE()
+  FORMAT_TRACE()
 }
 
 FUNC(void, OS_CODE) tpl_trace_alarm_expire(
@@ -419,7 +420,7 @@ FUNC(void, OS_CODE) tpl_trace_alarm_expire(
     if(expired_alarm_action == tpl_action_setevent){
     EVENT_VALUE(TRACE_SET_EVENT)
     }
-    EVENT_END();
+    EVENT_END()
     FORMAT_TRACE()
   }
 }

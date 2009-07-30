@@ -46,6 +46,7 @@ resources_s2
 resources_s3
 resources_s4_full
 resources_s4_non
+resources_s5
 
 alarms_s1_full
 alarms_s1_non
@@ -102,9 +103,6 @@ autosar_st_s4
 autosar_st_s5
 autosar_st_s6
 autosar_st_s7
-autosar_sp_s1
-autosar_sp_s2
-autosar_sp_s3
 autosar_sts_s1
 autosar_sts_s2
 autosar_sts_s3
@@ -119,3 +117,6 @@ autosar_sts_s11
 autosar_sts_s12
 autosar_sts_s13
 autosar_sts_s14
+
+autosar_sp_s1
+autosar_sp_s3

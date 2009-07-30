@@ -50,9 +50,9 @@
 #include <assert.h>
 
 /*
- * @def tpl_send_it3
+ * @def tpl_send_it1
  *
- * This function send signal SIGPIPE to himself (so Trampoline).
+ * This function send signal SIGTERM to himself (so Trampoline).
  *
  */
 void tpl_send_it1(void){
@@ -62,9 +62,9 @@ void tpl_send_it1(void){
 }
 
 /*
- * @def tpl_send_it3
+ * @def tpl_send_it2
  *
- * This function send signal SIGPIPE to himself (so Trampoline).
+ * This function send signal SIGUSR2 to himself (so Trampoline).
  *
  */
 void tpl_send_it2(void){

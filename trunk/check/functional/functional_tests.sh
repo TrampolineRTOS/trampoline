@@ -8,19 +8,19 @@
 # {goil's target} : if Makefile hasn't been created yet, a 'goil' command is needed with the target name (default=libpcl)
 #
 # TODO : 
-#		 delete testSequences file and do the loops for each directory (which contains defaultAppWorkstation.oil) #ls -d
+#		 delete testSequences file and do the loops for each directory (which contains ${i}.oil) #ls -d
 ######
 
 if [ "$1" = "clean" ]
 then
 	for i in `cat functional_testSequences.txt`
 	do
-		#remove make-rules, makefiles, defaultAppWorkstation/, build/, embUnit/*.o and lib/libembUnit.a
+		#remove make-rules, makefiles, ${i}/, build/, embUnit/*.o and lib/libembUnit.a
 		rm -rf ./${i}/build
-		rm -rf ./${i}/defaultAppWorkstation
+		rm -rf ./${i}/${i}
 		rm -rf ./${i}/Make-rules
 		rm -rf ./${i}/Makefile
-		rm -rf ./${i}/${i}
+		rm -rf ./${i}/${i}_exe
 	done
 
 	#Delete results.log
@@ -70,9 +70,9 @@ else
 			#check if target's name is among arguments (default=libpcl). If "no_results" is sent by test.sh, do goil with libpcl.
 			if [ "$1" = "" ] || [ "$1" = "no_results" ]
 			then	
-				goil --target=posix --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>&1 | tee -a ../functional_results.log
+				goil --target=posix --templates=../../../goil/templates/ -g ${i}.oil $autosar_flag 2>&1 | tee -a ../functional_results.log
 			else 
-				goil --target=$1 --templates=../../../goil/templates/ -g defaultAppWorkstation.oil $autosar_flag 2>&1 | tee -a ../functional_results.log
+				goil --target=$1 --templates=../../../goil/templates/ -g ${i}.oil $autosar_flag 2>&1 | tee -a ../functional_results.log
 			fi
 		fi
 		
@@ -80,7 +80,7 @@ else
 		if `test -f Makefile`
 		then
 			make -s
-			./${i} >> ../functional_results.log
+			./${i}_exe >> ../functional_results.log
 		fi
 		
 		#Go out of the test sequence
