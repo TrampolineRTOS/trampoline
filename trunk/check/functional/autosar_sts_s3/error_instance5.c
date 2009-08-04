@@ -1,5 +1,5 @@
 /**
- * @file autosar_sp_s3/task1_instance.c
+ * @file autosar_sts_s3/error_instance5.c
  *
  * @section desc File description
  *
@@ -32,33 +32,36 @@
  * $URL$
  */
 
-/*Instance of task t1*/
+/*Instance 5 of error*/
 
 #include "embUnit.h"
 #include "Os.h"
 
-void tpl_send_it1(void);
+DeclareScheduleTable(sched_explicit);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
-static void test_t1_instance(void)
+static void test_error_instance5(void)
 {
-	SCHEDULING_CHECK_STEP(1);
+	StatusType result_inst_1;
 	
-	tpl_send_it1();
-	
-	SCHEDULING_CHECK_STEP(7);
-	
+	SCHEDULING_CHECK_INIT(16);
+	result_inst_1 = OSErrorGetServiceId();
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(16,OSServiceId_StartScheduleTableAbs, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(16,sched_explicit, OSServiceId_StartScheduleTableAbs_ScheduleTableID());
+	SCHEDULING_CHECK_AND_EQUAL_INT(16,1 , OSServiceId_StartScheduleTableAbs_value());
+		
 }
 
 /*create the test suite with all the test cases*/
-TestRef AutosarSPTest_seq3_t1_instance(void)
+TestRef AutosarSTSTest_seq3_error_instance5(void)
 {
 	EMB_UNIT_TESTFIXTURES(fixtures) {
-		new_TestFixture("test_t1_instance",test_t1_instance)
+		new_TestFixture("test_error_instance5",test_error_instance5)
 	};
-	EMB_UNIT_TESTCALLER(AutosarSPTest,"AutosarSPTest_sequence3",NULL,NULL,fixtures);
+	EMB_UNIT_TESTCALLER(AutosarSTSTest,"AutosarSTSTest_sequence3",NULL,NULL,fixtures);
 	
-	return (TestRef)&AutosarSPTest;
+	return (TestRef)&AutosarSTSTest;
 }
-/* End of file autosar_sp_s3/task1_instance.c */
+
+/* End of file autosar_sts_s3/error_instance5.c */

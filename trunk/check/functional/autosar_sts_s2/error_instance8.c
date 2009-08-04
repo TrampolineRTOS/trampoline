@@ -37,7 +37,7 @@
 #include "embUnit.h"
 #include "Os.h"
 
-DeclareScheduleTable(sched_explicit);
+DeclareScheduleTable(sched_explicit_next);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
@@ -45,11 +45,11 @@ static void test_error_instance8(void)
 {
 	StatusType result_inst_1;
 	
-	SCHEDULING_CHECK_INIT(17);
+	SCHEDULING_CHECK_INIT(18);
 	result_inst_1 = OSErrorGetServiceId();
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(17,sched_explicit, OSServiceId_StartScheduleTableAbs_ScheduleTableID());
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(17,1 , OSServiceId_StartScheduleTableAbs_value());
-	SCHEDULING_CHECK_AND_EQUAL_INT(17,OSServiceId_StartScheduleTableAbs, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(18,sched_explicit_next, OSServiceId_SyncScheduleTable_ScheduleTableID());
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(18,1 , OSServiceId_SyncScheduleTable_value());
+	SCHEDULING_CHECK_AND_EQUAL_INT(18,OSServiceId_SyncScheduleTable, result_inst_1);
 		
 }
 

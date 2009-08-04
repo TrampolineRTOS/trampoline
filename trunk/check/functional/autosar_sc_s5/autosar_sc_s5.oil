@@ -61,7 +61,6 @@ IMPLEMENTATION trampoline {
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
-		
 	};
 
     APPMODE std {};

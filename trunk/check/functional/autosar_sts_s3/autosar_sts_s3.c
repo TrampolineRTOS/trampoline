@@ -38,6 +38,13 @@
 
 TestRef AutosarSTSTest_seq3_t1_instance(void);
 TestRef AutosarSTSTest_seq3_t2_instance(void);
+TestRef AutosarSTSTest_seq3_error_instance2(void);
+TestRef AutosarSTSTest_seq3_error_instance3(void);
+TestRef AutosarSTSTest_seq3_error_instance4(void);
+TestRef AutosarSTSTest_seq3_error_instance5(void);
+TestRef AutosarSTSTest_seq3_error_instance6(void);
+
+StatusType instance_error = 0;
 
 int main(void)
 {
@@ -48,6 +55,48 @@ int main(void)
 void ShutdownHook(StatusType error)
 { 
 	TestRunner_end();
+}
+
+void ErrorHook(StatusType error)
+{
+	instance_error++;
+	switch (instance_error) {
+		case 1:
+		{
+			break;
+		}
+		case 2:
+		{
+			TestRunner_runTest(AutosarSTSTest_seq3_error_instance2());	
+			break;
+		}
+		case 3:
+		{
+			TestRunner_runTest(AutosarSTSTest_seq3_error_instance3());	
+			break;
+		}
+		case 4:
+		{
+			TestRunner_runTest(AutosarSTSTest_seq3_error_instance4());	
+			break;
+		}
+		case 5:
+		{
+			TestRunner_runTest(AutosarSTSTest_seq3_error_instance5());	
+			break;
+		}
+		case 6:
+		{
+			TestRunner_runTest(AutosarSTSTest_seq3_error_instance6());	
+			break;
+		}
+		default:
+		{
+			stdimpl_print("instance error\n");
+			break;
+		}
+	}
+	
 }
 
 TASK(t1)

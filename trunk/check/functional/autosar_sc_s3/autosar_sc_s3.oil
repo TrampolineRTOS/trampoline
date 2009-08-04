@@ -52,6 +52,12 @@ IMPLEMENTATION trampoline {
         STATUS = EXTENDED;
 		APP_SRC = "autosar_sc_s3.c";
 		APP_SRC = "task1_instance.c";
+		APP_SRC = "error_instance1.c";
+		APP_SRC = "error_instance2.c";
+		APP_SRC = "error_instance3.c";
+		APP_SRC = "error_instance4.c";
+		APP_SRC = "error_instance5.c";
+		APP_SRC = "error_instance6.c";
 		APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "autosar_sc_s3_exe";
@@ -60,7 +66,7 @@ IMPLEMENTATION trampoline {
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
-		
+		ERRORHOOK = TRUE;
 	};
 
     APPMODE std {};

@@ -31,7 +31,35 @@
 #include "tpl_as_service_ids.h"
 
 /**
- * @def OSServiceId_OSServiceId_StartScheduleTableAbs_ScheduleTableID
+ * @def OSServiceId_StartScheduleTableRel_ScheduleTableID
+ *
+ * StartScheduleTableRel service error parameter
+ *
+ * Returns the identifier (#ScheduleTableType) of the schedule table which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#define OSServiceId_StartScheduleTableRel_ScheduleTableID()   \
+	(tpl_service.parameters.id.schedtable_id)
+
+/**
+ * @def OSServiceId_StartScheduleTableRel_value
+ *
+ * StartScheduleTableRel service error parameter
+ *
+ * Returns the value (#TickType) of the schedule table which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#define OSServiceId_StartScheduleTableRel_offset()   \
+	(tpl_service.parameters.param.tick)
+
+/**
+ * @def OSServiceId_StartScheduleTableAbs_ScheduleTableID
  *
  * StartScheduleTableAbs service error parameter
  *
@@ -59,9 +87,9 @@
 	(tpl_service.parameters.param.tick)
 
 /**
- * @def OSServiceId_OSServiceId_StartScheduleTableRel_ScheduleTableID
+ * @def OSServiceId_StopScheduleTable_ScheduleTableID
  *
- * StartScheduleTableRel service error parameter
+ * StopScheduleTable service error parameter
  *
  * Returns the identifier (#ScheduleTableType) of the schedule table which
  * caused the error.
@@ -69,22 +97,162 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_StartScheduleTableRel_ScheduleTableID()   \
+#define OSServiceId_StopScheduleTable_ScheduleTableID()   \
 	(tpl_service.parameters.id.schedtable_id)
 
 /**
- * @def OSServiceId_OSServiceId_StartScheduleTableRel_value
+ * @def OSServiceId_NextScheduleTable_ScheduleTableID
  *
- * StartScheduleTableRel service error parameter
+ * NextScheduleTable service error parameter
  *
- * Returns the value (#TickType) of the schedule table which
+ * Returns the identifier (#ScheduleTableType) of the schedule table which
  * caused the error.
  *
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_StartScheduleTableRel_offset()   \
-	(tpl_service.parameters.param.tick)
+#define OSServiceId_NextScheduleTable_ScheduleTableID()   \
+	(tpl_service.parameters.id.schedtable_id)
+
+/**
+ * @def OSServiceId_NextScheduleTable_ScheduleTableID2
+ *
+ * NextScheduleTable service error parameter
+ *
+ * Returns the identifier (#ScheduleTableType) of the schedule table which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#define OSServiceId_NextScheduleTable_ScheduleTableID2()   \
+	(tpl_service.parameters.param.next_st_id)
+
+/**
+ * @def OSServiceId_NextScheduleTable_ScheduleTableID2
+ *
+ * NextScheduleTable service error parameter
+ *
+ * Returns the identifier (#ScheduleTableType) of the schedule table which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#define OSServiceId_NextScheduleTable_ScheduleTableID2()   \
+(tpl_service.parameters.param.next_st_id)
+
+/**
+ * @def OSServiceId_IncrementCounter_CounterID
+ *
+ * IncrementCounter service error parameter
+ *
+ * Returns the identifier (#CounterType) of the counter which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#define OSServiceId_IncrementCounter_CounterID()   \
+	(tpl_service.parameters.id.counter_id)
+
+/**
+ * @def OSServiceId_GetCounterValue_CounterID
+ *
+ * GetCounterValue service error parameter
+ *
+ * Returns the identifier (#CounterType) of the counter which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#define OSServiceId_GetCounterValue_CounterID()   \
+	(tpl_service.parameters.id.counter_id)
+
+/**
+ * @def OSServiceId_GetCounterValue_value
+ *
+ * GetCounterValue service error parameter
+ *
+ * Returns the identifier (#CounterType) of the counter which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#define OSServiceId_GetCounterValue_value()   \
+	(tpl_service.parameters.param.tick_ref)
+
+/**
+ * @def OSServiceId_GetElapsedCounterValue_CounterID
+ *
+ * GetElapsedCounterValue service error parameter
+ *
+ * Returns the identifier (#CounterType) of the counter which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#define OSServiceId_GetElapsedCounterValue_CounterID()   \
+	(tpl_service.parameters.id.counter_id)
+
+/**
+ * @def OSServiceId_GetElapsedCounterValue_previous_value
+ *
+ * GetElapsedCounterValue service error parameter
+ *
+ * Returns the identifier (#CounterType) of the counter which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#define OSServiceId_GetElapsedCounterValue_previous_value()   \
+	(tpl_service.parameters.param.tick_ref)
+
+/**
+ * @def OSServiceId_GetElapsedCounterValue_value
+ *
+ * GetElapsedCounterValue service error parameter
+ *
+ * Returns the identifier (#CounterType) of the counter which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#define OSServiceId_GetElapsedCounterValue_value()   \
+	(tpl_service.parameters.param2.tick_ref)
+
+/**
+ * @def OSServiceId_GetScheduleTableStatus_ScheduleTableID
+ *
+ * GetScheduleTableStatus service error parameter
+ *
+ * Returns the identifier (#ScheduleTableType) of the schedule table which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#define OSServiceId_GetScheduleTableStatus_ScheduleTableID()   \
+	(tpl_service.parameters.id.schedtable_id)
+
+/**
+ * @def OSServiceId_GetScheduleTableStatus_status
+ *
+ * GetScheduleTableStatus service error parameter
+ *
+ * Returns the identifier (#ScheduleTableType) of the schedule table which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#define OSServiceId_GetScheduleTableStatus_status()   \
+	(tpl_service.parameters.param.st_stat)
 
 /**
  * @def OSServiceId_SetScheduleTableAsync_ScheduleTableID

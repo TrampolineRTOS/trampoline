@@ -23,6 +23,7 @@
 #include "tpl_os_kernel.h" /* for tpl_running_obj */
 #include "tpl_as_definitions.h"
 #include "tpl_os_task_kernel.h"
+#include "tpl_os_rez_kernel.h"
 #endif /* WITH_AUTOSAR */
 
 #include <assert.h>
@@ -386,36 +387,60 @@ void tpl_osek_func_stub( tpl_proc_id task_id )
 {
     tpl_proc_function func = tpl_stat_proc_table[task_id]->entry;
     tpl_proc_type     type = tpl_stat_proc_table[task_id]->type;
+#ifdef WITH_AUTOSAR	
+	/*  init the error to no error  */
+	VAR(StatusType, AUTOMATIC) result = E_OK;
+#endif /* WITH_AUTOSAR */
   
     /* Avoid signal blocking due to a previous call to tpl_init_context in a OS_ISR2 context. */
 	tpl_release_task_lock();
     
     (*func)();
     
+	/* If old process is an ISR2, call TerminateISR2 (in AUTOSAR : enable interrupts and release
+	   resources, calling the errorhook (if configured), if needed).
+	   If old process is a task :
+	   - OSEK : error
+	   - AUTOSAR : terminate the task calling errorhook (if configured) and enable interrupts
+	   and release resources, if needed
+	 */
     if (type == IS_ROUTINE) {
 	#ifdef WITH_AUTOSAR	
-	    if (TerminateISR() == E_OS_DISABLEDINT)
-		{
+		/* enable interrupts if disabled */
+		if(FALSE!=tpl_get_interrupt_lock_status())  
+	    {
 			tpl_reset_interrupt_lock_status();
-			tpl_enable_all_interrupts_service();	
+			tpl_enable_all_interrupts_service();
+			result = E_OS_DISABLEDINT;
 		}
+		/* release resources if held */
+		if( (tpl_kern.running->resources) != NULL ){
+			tpl_release_all_resources(tpl_kern.running_id);
+			result = E_OS_RESOURCE;
+		}
+		
+		PROCESS_ERROR(result);  /* store terminateISR service id ?*/
 	#endif /* WITH_AUTOSAR*/
 		TerminateISR();
     }
     else {
 
 	#ifdef WITH_AUTOSAR	
+		/* enable interrupts if disabled */
 		if(FALSE!=tpl_get_interrupt_lock_status())  
 		{                                           
-			/*enable interrupts :*/
 			tpl_reset_interrupt_lock_status();
 			tpl_enable_all_interrupts_service();
 		}
-		/*error hook*/
+		/* release resources if held */
+		if( (tpl_kern.running->resources) != NULL ){
+			tpl_release_all_resources(tpl_kern.running_id);
+		}
 		
-		PROCESS_ERROR(E_OS_MISSINGEND);
+		/* error hook*/
+		PROCESS_ERROR(E_OS_MISSINGEND); /* store terminatetask service id ?*/
 
-		/*terminate the task :*/
+		/* terminate the task */
 		tpl_terminate_task_service();
 	#endif /* WITH_AUTOSAR */ 
 		

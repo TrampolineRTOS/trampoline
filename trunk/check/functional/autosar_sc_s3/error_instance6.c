@@ -1,5 +1,5 @@
 /**
- * @file autosar_sp_s3/isr1_instance.c
+ * @file autosar_sc_s3/error_instance6.c
  *
  * @section desc File description
  *
@@ -32,39 +32,35 @@
  * $URL$
  */
 
-
-/*Instance of task isr1*/
+/*Instance 6 of error*/
 
 #include "embUnit.h"
 #include "Os.h"
 
-void tpl_send_it3(void);
+DeclareCounter(INVALID_COUNTER);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
-static void test_isr1_instance(void)
+static void test_error_instance6(void)
 {
-	SCHEDULING_CHECK_STEP(2);
-	DisableAllInterrupts();
+	StatusType result_inst_1;
 	
-	/*check interrupts disabled*/
-	SCHEDULING_CHECK_STEP(3);
-	tpl_send_it3();
-	
-	SCHEDULING_CHECK_STEP(4);
+	SCHEDULING_CHECK_INIT(12);
+	result_inst_1 = OSErrorGetServiceId();
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(12,OSServiceId_GetElapsedCounterValue , result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(12, INVALID_COUNTER , OSServiceId_GetElapsedCounterValue_CounterID());
 	
 }
 
 /*create the test suite with all the test cases*/
-TestRef AutosarSPTest_seq3_isr1_instance(void)
+TestRef AutosarSTTest_seq3_error_instance6(void)
 {
 	EMB_UNIT_TESTFIXTURES(fixtures) {
-		new_TestFixture("test_isr1_instance",test_isr1_instance)
+		new_TestFixture("test_error_instance6",test_error_instance6)
 	};
-	EMB_UNIT_TESTCALLER(AutosarSPTest,"AutosarSPTest_sequence3",NULL,NULL,fixtures);
+	EMB_UNIT_TESTCALLER(AutosarSTTest,"AutosarSTTest_sequence3",NULL,NULL,fixtures);
 	
-	return (TestRef)&AutosarSPTest;
+	return (TestRef)&AutosarSTTest;
 }
 
-
-/* End of file autosar_sp_s3/isr1_instance.c */
+/* End of file autosar_sc_s3/error_instance6.c */

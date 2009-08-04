@@ -101,7 +101,10 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
   /*  Get the resource pointer of the process */
   P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res =
   tpl_dyn_proc_table[proc_id]->resources;
-  
+#ifdef WITH_TRACE
+  VAR(tpl_resource_id, AUTOMATIC) res_id;
+#endif /* WITH_TRACE */
+	
   if (res != NULL)
   {
     tpl_dyn_proc_table[proc_id]->resources = NULL;
@@ -112,7 +115,17 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
       res->next_res;
       res->owner = INVALID_TASK;
       res->next_res = NULL;
-      res = next_res;
+		
+	  /* find the id of the resource for the trace */
+#ifdef WITH_TRACE
+	  res_id = 0;
+	  while( tpl_resource_table[res_id] != res ){
+		  res_id++;
+	  }
+	  TRACE_RES_RELEASED(res_id)
+#endif /* WITH_TRACE */
+		
+	  res = next_res;
     } while (res != NULL);
   }
 }

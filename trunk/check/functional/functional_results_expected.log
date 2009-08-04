@@ -257,8 +257,8 @@ running autosar_sc_s2
 .
 OK (1 test)
 running autosar_sc_s3
-.
-OK (1 test)
+.......
+OK (7 tests)
 running autosar_sc_s4
 ...
 OK (3 tests)
@@ -272,11 +272,11 @@ running autosar_alarm_s2
 .....
 OK (5 tests)
 running autosar_st_s1
-.
-OK (1 test)
+..........
+OK (10 tests)
 running autosar_st_s2
-.
-OK (1 test)
+...........
+OK (11 tests)
 running autosar_st_s3
 .....
 OK (5 tests)
@@ -284,8 +284,8 @@ running autosar_st_s4
 ...
 OK (3 tests)
 running autosar_st_s5
-...
-OK (3 tests)
+..........
+OK (10 tests)
 running autosar_st_s6
 .........
 OK (9 tests)
@@ -296,11 +296,11 @@ running autosar_sts_s1
 .....
 OK (5 tests)
 running autosar_sts_s2
-..................
-OK (18 tests)
+..............
+OK (14 tests)
 running autosar_sts_s3
-..
-OK (2 tests)
+.......
+OK (7 tests)
 running autosar_sts_s4
 ...
 OK (3 tests)
@@ -337,6 +337,12 @@ OK (7 tests)
 running autosar_sp_s1
 ........
 OK (8 tests)
-running autosar_sp_s3
+running autosar_sp_s2
 ....
 OK (4 tests)
+running autosar_sp_s3
+..........
+OK (10 tests)
+running autosar_sp_s4
+.......
+OK (7 tests)
