@@ -51,53 +51,66 @@ IMPLEMENTATION trampoline {
     OS config {
         STATUS = EXTENDED;
 		APP_SRC = "autosar_sp_s3.c";
-		APP_SRC = "task1_instance.c";
-		APP_SRC = "error_instance.c";
-		APP_SRC = "isr1_instance.c";
-		APP_SRC = "isr2_instance.c";
+		APP_SRC = "task1_instance1.c";
+		APP_SRC = "task1_instance2.c";
+		APP_SRC = "task2_instance.c";
+		APP_SRC = "task3_instance.c";
+		APP_SRC = "error_instance1.c";
+		APP_SRC = "error_instance2.c";
+		APP_SRC = "error_instance3.c";
+		APP_SRC = "error_instance4.c";
+		APP_SRC = "error_instance5.c";
+		APP_SRC = "posttask_instance2.c";
 		APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "autosar_sp_s3_exe";
 		CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
 		ERRORHOOK = TRUE;
-		
+		POSTTASKHOOK = TRUE;
 	};
 
     APPMODE std {};
 
-    TASK t1 {
-        AUTOSTART =  TRUE { APPMODE = std ; } ;
-        PRIORITY = 3;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
-
-	ISR isr1 {
-		CATEGORY = 2;
-		SOURCE = SIGTERM;
+	TASK t1 {
+		AUTOSTART =  TRUE { APPMODE = std ; } ;
 		PRIORITY = 1;
-		STACKSIZE = 32768;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+		RESOURCE = Resource1;
+		RESOURCE = Resource2;
 	};
-		
-	ISR isr2 {
-		CATEGORY = 2;
-		SOURCE = SIGPIPE;
+	TASK t2 {
+		AUTOSTART = FALSE ;
 		PRIORITY = 2;
-		STACKSIZE = 32768;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+		RESOURCE = Resource1;
+		RESOURCE = Resource2;
 	};
-    
+	TASK t3 {
+		AUTOSTART = FALSE ;
+		PRIORITY = 3;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+	};
+	RESOURCE Resource1{
+		RESOURCEPROPERTY = STANDARD;
+	};
+	RESOURCE Resource2{
+		RESOURCEPROPERTY = STANDARD;
+	};
 	APPLICATION app {
-        TRUSTED = FALSE;
-        STARTUPHOOK = FALSE;
-        TASK = t1;
-		ISR = isr1;
-		ISR = isr2;
+		TASK = t1;
+		TASK = t2;
+		TASK = t3;
+		RESOURCE = Resource1;
+		RESOURCE = Resource2;
 	};
-
+	
 };
 
 /* End of file autosar_sp_s3.oil */

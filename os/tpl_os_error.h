@@ -729,7 +729,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #   define STORE_TICK_REF_1(ref)     \
       tpl_service.parameters.param.tick_ref = (ref);
 #else
-#   define STORE_TICK_REF_1(tick_ref)
+#   define STORE_TICK_REF_1(ref)
 #endif
 
 /**
@@ -745,7 +745,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #   define STORE_TICK_REF_2(ref)     \
       tpl_service.parameters.param2.tick_ref = (ref);
 #else
-#   define STORE_TICK_REF_2(tick_ref)
+#   define STORE_TICK_REF_2(ref)
 #endif
 
 /**

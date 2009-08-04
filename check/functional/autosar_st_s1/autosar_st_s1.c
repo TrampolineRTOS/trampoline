@@ -37,6 +37,17 @@
 #include "config.h" /*for stdimpl_print*/
 
 TestRef AutosarSTTest_seq1_t1_instance(void);
+TestRef AutosarSTTest_seq1_error_instance1(void);
+TestRef AutosarSTTest_seq1_error_instance2(void);
+TestRef AutosarSTTest_seq1_error_instance3(void);
+TestRef AutosarSTTest_seq1_error_instance4(void);
+TestRef AutosarSTTest_seq1_error_instance5(void);
+TestRef AutosarSTTest_seq1_error_instance6(void);
+TestRef AutosarSTTest_seq1_error_instance7(void);
+TestRef AutosarSTTest_seq1_error_instance8(void);
+TestRef AutosarSTTest_seq1_error_instance9(void);
+
+StatusType instance_error = 0;
 
 int main(void)
 {
@@ -47,6 +58,65 @@ int main(void)
 void ShutdownHook(StatusType error)
 { 
 	TestRunner_end();
+}
+
+void ErrorHook(StatusType error)
+{
+	instance_error++;
+	switch (instance_error)
+	{
+		case 1 :
+		{
+			TestRunner_runTest(AutosarSTTest_seq1_error_instance1());	
+			break;
+		}
+		case 2 :
+		{
+			TestRunner_runTest(AutosarSTTest_seq1_error_instance2());	
+			break;
+		}
+		case 3 :
+		{
+			TestRunner_runTest(AutosarSTTest_seq1_error_instance3());	
+			break;
+		}
+		case 4 :
+		{
+			TestRunner_runTest(AutosarSTTest_seq1_error_instance4());	
+			break;
+		}
+		case 5 :
+		{
+			TestRunner_runTest(AutosarSTTest_seq1_error_instance5());	
+			break;
+		}
+		case 6 :
+		{
+			TestRunner_runTest(AutosarSTTest_seq1_error_instance6());	
+			break;
+		}
+		case 7 :
+		{
+			TestRunner_runTest(AutosarSTTest_seq1_error_instance7());	
+			break;
+		}
+		case 8 :
+		{
+			TestRunner_runTest(AutosarSTTest_seq1_error_instance8());	
+			break;
+		}
+		case 9 :
+		{
+			TestRunner_runTest(AutosarSTTest_seq1_error_instance9());	
+			break;
+		}
+		default:
+		{
+			stdimpl_print("Instance error");
+			break;
+		}
+	}
+	
 }
 
 TASK(t1)

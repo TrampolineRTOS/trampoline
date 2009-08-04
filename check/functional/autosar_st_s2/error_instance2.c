@@ -1,5 +1,5 @@
 /**
- * @file autosar_sp_s3/isr2_instance.c
+ * @file autosar_st_s2/error_instance2.c
  *
  * @section desc File description
  *
@@ -32,29 +32,37 @@
  * $URL$
  */
 
-
-/*Instance of task isr1*/
+/*Instance 2 of error*/
 
 #include "embUnit.h"
 #include "Os.h"
-#include "tpl_as_isr.h"
+
+DeclareScheduleTable(INVALID_SCHEDULETABLE);
+DeclareScheduleTable(sched1);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
-static void test_isr2_instance(void)
+static void test_error_instance2(void)
 {
-	SCHEDULING_CHECK_STEP(6);
+	StatusType result_inst_1;
+	
+	SCHEDULING_CHECK_INIT(6);
+	result_inst_1 = OSErrorGetServiceId();
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(6,OSServiceId_NextScheduleTable , result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(6, sched1 , OSServiceId_NextScheduleTable_ScheduleTableID());
+	SCHEDULING_CHECK_AND_EQUAL_INT(6, INVALID_SCHEDULETABLE, OSServiceId_NextScheduleTable_ScheduleTableID2());
+	
 }
 
 /*create the test suite with all the test cases*/
-TestRef AutosarSPTest_seq3_isr2_instance(void)
+TestRef AutosarSTTest_seq2_error_instance2(void)
 {
 	EMB_UNIT_TESTFIXTURES(fixtures) {
-		new_TestFixture("test_isr2_instance",test_isr2_instance)
+		new_TestFixture("test_error_instance2",test_error_instance2)
 	};
-	EMB_UNIT_TESTCALLER(AutosarSPTest,"AutosarSPTest_sequence3",NULL,NULL,fixtures);
+	EMB_UNIT_TESTCALLER(AutosarSTTest,"AutosarSTTest_sequence2",NULL,NULL,fixtures);
 	
-	return (TestRef)&AutosarSPTest;
+	return (TestRef)&AutosarSTTest;
 }
 
-/* End of file autosar_sp_s3/isr2_instance.c */
+/* End of file autosar_st_s2/error_instance2.c */

@@ -22,7 +22,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1261, USA.
  *
  * @section infos File informations
  *
@@ -37,7 +37,7 @@
 #include "embUnit.h"
 #include "Os.h"
 
-DeclareScheduleTable(INVALID_SCHEDULETABLE);
+DeclareScheduleTable(sched_nosync);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
@@ -47,7 +47,7 @@ static void test_error_instance12(void)
 	
 	SCHEDULING_CHECK_INIT(26);
 	result_inst_1 = OSErrorGetServiceId();
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(26,INVALID_SCHEDULETABLE, OSServiceId_SetScheduleTableAsync_ScheduleTableID());
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(26,sched_nosync, OSServiceId_SetScheduleTableAsync_ScheduleTableID());
 	SCHEDULING_CHECK_AND_EQUAL_INT(26,OSServiceId_SetScheduleTableAsync, result_inst_1);
 		
 }

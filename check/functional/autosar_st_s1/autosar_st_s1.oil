@@ -52,14 +52,23 @@ IMPLEMENTATION trampoline {
         STATUS = EXTENDED;
 		APP_SRC = "autosar_st_s1.c";
 		APP_SRC = "task1_instance.c";
+		APP_SRC = "error_instance1.c";
+		APP_SRC = "error_instance2.c";
+		APP_SRC = "error_instance3.c";
+		APP_SRC = "error_instance4.c";
+		APP_SRC = "error_instance5.c";
+		APP_SRC = "error_instance6.c";
+		APP_SRC = "error_instance7.c";
+		APP_SRC = "error_instance8.c";
+		APP_SRC = "error_instance9.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "autosar_st_s1_exe";
 		CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
-		
+		ERRORHOOK = TRUE;
 	};
 
     APPMODE std {};

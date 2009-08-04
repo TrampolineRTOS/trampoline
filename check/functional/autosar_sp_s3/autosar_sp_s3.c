@@ -35,12 +35,21 @@
 #include "Os.h"
 #include "embUnit.h"
 
-TestRef AutosarSPTest_seq3_t1_instance(void);
-TestRef AutosarSPTest_seq3_isr1_instance(void);
-TestRef AutosarSPTest_seq3_isr2_instance(void);
-TestRef AutosarSPTest_seq3_error_instance(void);
+TestRef AutosarSPTest_seq3_t1_instance1(void);
+TestRef AutosarSPTest_seq3_t1_instance2(void);
+TestRef AutosarSPTest_seq3_t2_instance(void);
+TestRef AutosarSPTest_seq3_t3_instance(void);
+TestRef AutosarSPTest_seq3_error_instance1(void);
+TestRef AutosarSPTest_seq3_error_instance2(void);
+TestRef AutosarSPTest_seq3_error_instance3(void);
+TestRef AutosarSPTest_seq3_error_instance4(void);
+TestRef AutosarSPTest_seq3_error_instance5(void);
+TestRef AutosarSPTest_seq3_posttask_instance2(void);
 
 StatusType error_status;
+StatusType instance_error = 0;
+StatusType instance_t1 = 0;
+StatusType instance_post = 0;
 
 int main(void)
 {
@@ -51,7 +60,58 @@ int main(void)
 void ErrorHook(StatusType error)
 {
 	error_status = error;
-	TestRunner_runTest(AutosarSPTest_seq3_error_instance());
+	
+	instance_error++;
+	switch (instance_error)
+	{
+		case 1 :
+		{
+			TestRunner_runTest(AutosarSPTest_seq3_error_instance1());
+			break;
+		}
+		case 2 :
+		{
+			TestRunner_runTest(AutosarSPTest_seq3_error_instance2());
+			break;
+		}
+		case 3 :
+		{
+			TestRunner_runTest(AutosarSPTest_seq3_error_instance3());
+			break;
+		}
+		case 4 :
+		{
+			TestRunner_runTest(AutosarSPTest_seq3_error_instance4());
+			break;
+		}
+		case 5 :
+		{
+			TestRunner_runTest(AutosarSPTest_seq3_error_instance5());
+			break;
+		}
+		default:
+		{
+			stdimpl_print("Instance error");
+			break;
+		}
+	}
+}
+void PostTaskHook(void)
+{ 
+	instance_post++;
+	switch (instance_post)
+	{
+		case 2:
+		{
+			TestRunner_runTest(AutosarSPTest_seq3_posttask_instance2());
+			break;
+		}
+		default:
+		{
+			
+			break;
+		}
+	}
 }
 
 void ShutdownHook(StatusType error)
@@ -61,21 +121,37 @@ void ShutdownHook(StatusType error)
 
 TASK(t1)
 {
-	TestRunner_start();
-	TestRunner_runTest(AutosarSPTest_seq3_t1_instance());
-	ShutdownOS(E_OK);
+	instance_t1++;
+	switch (instance_t1)
+	{
+		case 1 :
+		{
+			TestRunner_start();
+			TestRunner_runTest(AutosarSPTest_seq3_t1_instance1());
+			break;
+		}
+		case 2 :
+		{
+			TestRunner_runTest(AutosarSPTest_seq3_t1_instance2());
+			ShutdownOS(E_OK);
+			break;
+		}
+		default:
+		{
+			stdimpl_print("Instance error");
+			break;
+		}
+	}
 }
 
-ISR(isr1)
+TASK(t2)
 {
-	TestRunner_runTest(AutosarSPTest_seq3_isr1_instance());
+	TestRunner_runTest(AutosarSPTest_seq3_t2_instance());
 }
 
-
-ISR(isr2)
+TASK(t3)
 {
-	TestRunner_runTest(AutosarSPTest_seq3_isr2_instance());
+	TestRunner_runTest(AutosarSPTest_seq3_t3_instance());
 }
-
 
 /* End of file autosar_sp_s3/autosar_sp_s3.c */

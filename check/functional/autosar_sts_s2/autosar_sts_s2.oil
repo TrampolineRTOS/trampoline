@@ -65,14 +65,10 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "error_instance11.c";
 		APP_SRC = "error_instance12.c";
 		APP_SRC = "error_instance13.c";
-		APP_SRC = "error_instance14.c";
-		APP_SRC = "error_instance15.c";
-		APP_SRC = "error_instance16.c";
-		APP_SRC = "error_instance17.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "autosar_sts_s2_exe";
 		CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;

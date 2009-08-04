@@ -53,11 +53,18 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "autosar_st_s5.c";
 		APP_SRC = "task1_instance.c";
 		APP_SRC = "task2_instance.c";
-		APP_SRC = "error_instance.c";
+		APP_SRC = "error_instance1.c";
+		APP_SRC = "error_instance2.c";
+		APP_SRC = "error_instance3.c";
+		APP_SRC = "error_instance4.c";
+		APP_SRC = "error_instance5.c";
+		APP_SRC = "error_instance6.c";
+		APP_SRC = "error_instance7.c";
+		APP_SRC = "error_instance8.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "autosar_st_s5_exe";
 		CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
@@ -67,72 +74,80 @@ IMPLEMENTATION trampoline {
 
     APPMODE std {};
 
-    TASK t1 {
-        AUTOSTART = TRUE { APPMODE = std ; } ;
-        PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
-	
+	TASK t1 {
+		AUTOSTART = TRUE { APPMODE = std ; } ;
+		PRIORITY = 1;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+	};
 	TASK t2 {
-        AUTOSTART = FALSE ;
-        PRIORITY = 2;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
+		AUTOSTART = FALSE ;
+		PRIORITY = 2;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
 		EVENT = Event1;
-    };
-	
-	
+	};
 	COUNTER Software_Counter{
 		MAXALLOWEDVALUE = 100;
 		TICKSPERBASE = 1;
 		MINCYCLE = 1;
 		TYPE = SOFTWARE;
-	};
-		
+	};		
 	SCHEDULETABLE sched1 {
-        COUNTER = Software_Counter;
-        AUTOSTART = FALSE ;
-        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
-        PERIODIC = FALSE;
-        LENGTH = 2;
-        EXPIRY_POINT the_only_one {
-            OFFSET = 1;
-            ACTION = ACTIVATETASK {
-                TASK = t2;
-            };
-        };
-        ACCESSING_APPLICATION = app;
-    };
-	
+		COUNTER = Software_Counter;
+		AUTOSTART = FALSE ;
+		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+		PERIODIC = FALSE;
+		LENGTH = 2;
+		EXPIRY_POINT sched1_exp1 {
+		OFFSET = 1;
+			ACTION = ACTIVATETASK {
+				TASK = t2;
+			};
+		};
+		ACCESSING_APPLICATION = app;
+	};
 	SCHEDULETABLE sched2 {
-        COUNTER = Software_Counter;
-        AUTOSTART = FALSE ;
-        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
-        PERIODIC = FALSE;
-        LENGTH = 1;
-        EXPIRY_POINT lonely {
-            OFFSET = 1;
-            ACTION = SETEVENT {
-                TASK = t2;
-                EVENT = Event1;
-            };
-        };
-        ACCESSING_APPLICATION = app;
-    };
-	
+		COUNTER = Software_Counter;
+		AUTOSTART = FALSE ;
+		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+		PERIODIC = FALSE;
+		LENGTH = 1;
+		EXPIRY_POINT sched2_exp1 {
+			OFFSET = 1;
+			ACTION = SETEVENT {
+				TASK = t2;
+				EVENT = Event1;
+			};
+		};
+		ACCESSING_APPLICATION = app;
+	};
+	SCHEDULETABLE sched3 {
+		COUNTER = Software_Counter;
+		AUTOSTART = FALSE ;
+		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+		PERIODIC = FALSE;
+		LENGTH = 2;
+		EXPIRY_POINT sched3_exp1 {
+		OFFSET = 0;
+			ACTION = ACTIVATETASK {
+				TASK = t2;
+			};
+		};
+		ACCESSING_APPLICATION = app;
+	};
 	EVENT Event1{
 		MASK = AUTO;
 	};
-	
 	APPLICATION app {
-        TRUSTED = FALSE;
-        STARTUPHOOK = TRUE;
-        TASK = t1;
+		TRUSTED = FALSE;
+		STARTUPHOOK = TRUE;
+		TASK = t1;
 		TASK = t2;
 		COUNTER = Software_Counter;
-	    SCHEDULETABLE = sched1;
+		SCHEDULETABLE = sched1;
 		SCHEDULETABLE = sched2;
+		SCHEDULETABLE = sched3;
 	};
 	
 };

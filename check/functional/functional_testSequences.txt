@@ -119,4 +119,6 @@ autosar_sts_s13
 autosar_sts_s14
 
 autosar_sp_s1
+autosar_sp_s2
 autosar_sp_s3
+autosar_sp_s4

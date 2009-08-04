@@ -37,6 +37,8 @@
 #include "embUnit.h"
 #include "Os.h"
 
+DeclareAlarm(Alarm_ActivateTask);
+
 /*test case:test the reaction of the system called with 
  an activation of a task*/
 static void test_error_instance3(void)
@@ -45,7 +47,10 @@ static void test_error_instance3(void)
 	
 	SCHEDULING_CHECK_INIT(13);
 	result_inst_1 = OSErrorGetServiceId();
-	SCHEDULING_CHECK_AND_EQUAL_INT(13,OSServiceId_SetRelAlarm , result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(13,OSServiceId_SetRelAlarm , result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(13, 0 , OSError_SetRelAlarm_increment());
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(13, 0 , OSError_SetRelAlarm_cycle());
+	SCHEDULING_CHECK_AND_EQUAL_INT(13, Alarm_ActivateTask , OSError_SetRelAlarm_AlarmID());
 		
 }
 

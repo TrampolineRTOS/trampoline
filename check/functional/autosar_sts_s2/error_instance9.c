@@ -45,11 +45,11 @@ static void test_error_instance9(void)
 {
 	StatusType result_inst_1;
 	
-	SCHEDULING_CHECK_INIT(19);
+	SCHEDULING_CHECK_INIT(20);
 	result_inst_1 = OSErrorGetServiceId();
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(19,sched_explicit, OSServiceId_StartScheduleTableRel_ScheduleTableID());
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(19,1 , OSServiceId_StartScheduleTableRel_offset());
-	SCHEDULING_CHECK_AND_EQUAL_INT(19,OSServiceId_StartScheduleTableRel, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(20,sched_explicit, OSServiceId_SyncScheduleTable_ScheduleTableID());
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(20,11 , OSServiceId_SyncScheduleTable_value());
+	SCHEDULING_CHECK_AND_EQUAL_INT(20,OSServiceId_SyncScheduleTable, result_inst_1);
 		
 }
 

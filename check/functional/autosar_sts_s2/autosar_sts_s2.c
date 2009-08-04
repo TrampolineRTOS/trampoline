@@ -50,10 +50,6 @@ TestRef AutosarSTSTest_seq2_error_instance10(void);
 TestRef AutosarSTSTest_seq2_error_instance11(void);
 TestRef AutosarSTSTest_seq2_error_instance12(void);
 TestRef AutosarSTSTest_seq2_error_instance13(void);
-TestRef AutosarSTSTest_seq2_error_instance14(void);
-TestRef AutosarSTSTest_seq2_error_instance15(void);
-TestRef AutosarSTSTest_seq2_error_instance16(void);
-TestRef AutosarSTSTest_seq2_error_instance17(void);
 
 StatusType instance_error = 0;
 
@@ -135,26 +131,6 @@ void ErrorHook(StatusType error)
 		case 13:
 		{
 			TestRunner_runTest(AutosarSTSTest_seq2_error_instance13());	
-			break;
-		}
-		case 14:
-		{
-			TestRunner_runTest(AutosarSTSTest_seq2_error_instance14());	
-			break;
-		}
-		case 15:
-		{
-			TestRunner_runTest(AutosarSTSTest_seq2_error_instance15());	
-			break;
-		}
-		case 16:
-		{
-			TestRunner_runTest(AutosarSTSTest_seq2_error_instance16());	
-			break;
-		}
-		case 17:
-		{
-			TestRunner_runTest(AutosarSTSTest_seq2_error_instance17());	
 			break;
 		}
 		default:

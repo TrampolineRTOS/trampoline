@@ -38,6 +38,8 @@
 TestRef AutosarSCTest_seq5_t1_instance(void);
 TestRef AutosarSCTest_seq5_isr1_instance(void);
 
+StatusType instance_error = 0;
+
 int main(void)
 {
 	StartOS(OSDEFAULTAPPMODE);
