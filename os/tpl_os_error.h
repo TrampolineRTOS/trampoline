@@ -31,6 +31,7 @@
 
 #ifdef WITH_AUTOSAR
 #include "tpl_os_timeobj_kernel.h"
+#include "tpl_as_application.h"
 #endif
 
 FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void);
@@ -80,7 +81,9 @@ union ID_PARAM_BLOCK {
     VAR(tpl_schedtable_id, TYPEDEF) schedtable_id;  /**< @todo document this
                                                     */
     VAR(tpl_counter_id, TYPEDEF)    counter_id;     /**< @todo document this
-                                                    */
+													*/
+    VAR(tpl_app_id, TYPEDEF)		application_id; /**< @todo document this
+												    */
 #endif
 };
 
@@ -117,7 +120,11 @@ union PARAM_PARAM_BLOCK {
                                                     */
     P2VAR(tpl_time_obj_state, AUTOMATIC, TYPEDEF)
                                     st_stat;        /**< @todo document this
-                                                    */
+													*/
+    VAR(ObjectTypeType, TYPEDEF)	object_type;     /**< @todo document this
+													*/
+    VAR(u8, TYPEDEF)				opt_termapp;     /**< @todo document this
+													*/
 #endif
 };
 
@@ -129,6 +136,10 @@ union PARAM_PARAM_BLOCK_2 {
                                   tick_ref;         /**< used by
                                                          #GetElapsedCounterValue
                                                     */
+#ifdef WITH_AUTOSAR
+  VAR(tpl_generic_id, TYPEDEF)	  object_id;        /**< @todo document this
+													*/
+#endif
 };
 
 /**
@@ -602,7 +613,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @see #OSErrorGetServiceId
  */
-#ifdef WITH_ERROR_HOOK
+#if defined(WITH_ERROR_HOOK)
 #   define STORE_SERVICE(service)   \
     tpl_service.service_id = (service);
 #else
@@ -1379,6 +1390,213 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
     {                                           \
         result = E_OS_DISABLEDINT;              \
     }
+
+/**
+ * @def CHECK_ACCESS_RIGHTS_TASK_ID
+ *
+ * This macro checks if running task is allowed to access to
+ * the task identifier in parameter
+ *
+ * This macro is a little different than the service call CheckObjectAccess.
+ * (bit_shift+1) because the first bit (bit_shift) is set if th object	
+ * belongs to the OS application and we want to know if the actual
+ * task has access right to the application, which is indicates by 
+ * the second bit (bit_shift+1).
+ *
+ * @param obj_id #ObjectID to check
+ * @param result error code variable to set (StatusType)
+ *
+ * @note this checking is disabled if OS_EXTENDED is not set
+ *
+ * @note the error code is set only if there was no
+ * previous error
+ */
+
+#if !defined(OS_EXTENDED) || !defined(WITH_OSAPPLICATION)
+#   define CHECK_ACCESS_RIGHTS_TASK_ID(obj_id,result)
+#else
+#   define CHECK_ACCESS_RIGHTS_TASK_ID(obj_id,result)							\
+	if( result == (tpl_status)E_OK )											\
+	{																			\
+		CONST(u8, AUTOMATIC) bit_shift = ((tpl_kern.running_id << 1) & 0x7);	\
+		CONST(u8, AUTOMATIC) byte_idx = tpl_kern.running_id >> 2;				\
+		extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
+		CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =		\
+			tpl_app_table[tpl_stat_proc_table[obj_id]->app_id];					\
+		if ( (((app_access->access_vec[OBJECT_TASK][byte_idx]) &				\
+			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )				\
+		{																		\
+			result = E_OS_ACCESS;												\
+		}																		\
+	}																			
+#endif
+
+/**
+ * @def CHECK_ACCESS_RIGHTS_ALARM_ID
+ *
+ * This macro checks if running task is allowed to access to
+ * the alarm identifier in parameter
+ *
+ * This macro is a little different than the service call CheckObjectAccess.
+ * (bit_shift+1) because the first bit (bit_shift) is set if th object	
+ * belongs to the OS application and we want to know if the actual
+ * task has access right to the application, which is indicates by 
+ * the second bit (bit_shift+1).
+ *
+ * @param obj_id #ObjectID to check
+ * @param result error code variable to set (StatusType)
+ *
+ * @note this checking is disabled if OS_EXTENDED is not set
+ *
+ * @note the error code is set only if there was no
+ * previous error
+ */
+
+#if !defined(OS_EXTENDED) || !defined(WITH_OSAPPLICATION) || defined(NO_ALARM)
+#   define CHECK_ACCESS_RIGHTS_ALARM_ID(obj_id,result)
+#else
+#   define CHECK_ACCESS_RIGHTS_ALARM_ID(obj_id,result)							\
+	if( result == (tpl_status)E_OK )											\
+	{																			\
+		CONST(u8, AUTOMATIC) bit_shift = ((tpl_kern.running_id << 1) & 0x7);	\
+		CONST(u8, AUTOMATIC) byte_idx = tpl_kern.running_id >> 2;				\
+		extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
+		extern CONSTP2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) tpl_alarm_table[ALARM_COUNT]; \
+		P2CONST(tpl_time_obj_static, AUTOMATIC, OS_CONST) alr =					\
+			tpl_alarm_table[obj_id]->stat_part;									\
+		CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =		\
+			tpl_app_table[alr->app_id];											\
+		if ( (((app_access->access_vec[OBJECT_TASK][byte_idx]) &				\
+			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )				\
+		{																		\
+			result = E_OS_ACCESS;												\
+		}																		\
+	}																			
+#endif
+
+/**
+ * @def CHECK_ACCESS_RIGHTS_RESOURCE_ID
+ *
+ * This macro checks if running task is allowed to access to
+ * the resource identifier in parameter
+ *
+ * This macro is a little different than the service call CheckObjectAccess.
+ * (bit_shift+1) because the first bit (bit_shift) is set if th object	
+ * belongs to the OS application and we want to know if the actual
+ * task has access right to the application, which is indicates by 
+ * the second bit (bit_shift+1).
+ *
+ * @param obj_id #ObjectID to check
+ * @param result error code variable to set (StatusType)
+ *
+ * @note this checking is disabled if OS_EXTENDED is not set
+ *
+ * @note the error code is set only if there was no
+ * previous error
+ */
+
+#if !defined(OS_EXTENDED) || !defined(WITH_OSAPPLICATION)
+#   define CHECK_ACCESS_RIGHTS_RESOURCE_ID(obj_id,result)
+#else
+#   define CHECK_ACCESS_RIGHTS_RESOURCE_ID(obj_id,result)						\
+	if( result == (tpl_status)E_OK )											\
+	{																			\
+		CONST(u8, AUTOMATIC) bit_shift = ((tpl_kern.running_id << 1) & 0x7);	\
+		CONST(u8, AUTOMATIC) byte_idx = tpl_kern.running_id >> 2;				\
+		extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
+		extern CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) tpl_resource_table[RESOURCE_COUNT]; \
+		CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =		\
+			tpl_app_table[tpl_resource_table[obj_id]->app_id];					\
+		if ( (((app_access->access_vec[OBJECT_TASK][byte_idx]) &				\
+			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )				\
+		{																		\
+			result = E_OS_ACCESS;												\
+		}																		\
+	}																			
+#endif
+
+/**
+ * @def CHECK_ACCESS_RIGHTS_COUNTER_ID
+ *
+ * This macro checks if running task is allowed to access to
+ * the counter identifier in parameter
+ *
+ * This macro is a little different than the service call CheckObjectAccess.
+ * (bit_shift+1) because the first bit (bit_shift) is set if th object	
+ * belongs to the OS application and we want to know if the actual
+ * task has access right to the application, which is indicates by 
+ * the second bit (bit_shift+1).
+ *
+ * @param obj_id #ObjectID to check
+ * @param result error code variable to set (StatusType)
+ *
+ * @note this checking is disabled if OS_EXTENDED is not set
+ *
+ * @note the error code is set only if there was no
+ * previous error
+ */
+
+#if !defined(OS_EXTENDED) || !defined(WITH_OSAPPLICATION) || defined(NO_COUNTER)
+#   define CHECK_ACCESS_RIGHTS_COUNTER_ID(obj_id,result)
+#else
+#   define CHECK_ACCESS_RIGHTS_COUNTER_ID(obj_id,result)						\
+	if( result == (tpl_status)E_OK )											\
+	{																			\
+		CONST(u8, AUTOMATIC) bit_shift = ((tpl_kern.running_id << 1) & 0x7);	\
+		CONST(u8, AUTOMATIC) byte_idx = tpl_kern.running_id >> 2;				\
+		extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
+		extern CONSTP2VAR(tpl_counter, OS_VAR, OS_APPL_DATA) tpl_counter_table[COUNTER_COUNT]; \
+		CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =		\
+			tpl_app_table[tpl_counter_table[obj_id]->app_id];					\
+		if ( (((app_access->access_vec[OBJECT_TASK][byte_idx]) &				\
+			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )				\
+		{																		\
+			result = E_OS_ACCESS;												\
+		}																		\
+	}																			
+#endif
+
+/**
+ * @def CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID
+ *
+ * This macro checks if running task is allowed to access to
+ * the schedule table identifier in parameter
+ *
+ * This macro is a little different than the service call CheckObjectAccess.
+ * (bit_shift+1) because the first bit (bit_shift) is set if th object	
+ * belongs to the OS application and we want to know if the actual
+ * task has access right to the application, which is indicates by 
+ * the second bit (bit_shift+1).
+ *
+ * @param obj_id #ObjectID to check
+ * @param result error code variable to set (StatusType)
+ *
+ * @note this checking is disabled if OS_EXTENDED is not set
+ *
+ * @note the error code is set only if there was no
+ * previous error
+ */
+
+#if !defined(OS_EXTENDED) || !defined(WITH_OSAPPLICATION) ||  defined(NO_SCHEDTABLE)
+#   define CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(obj_id,result)
+#else
+#   define CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(obj_id,result)					\
+	if( result == (tpl_status)E_OK )											\
+	{																			\
+		CONST(u8, AUTOMATIC) bit_shift = ((tpl_kern.running_id << 1) & 0x7);	\
+		CONST(u8, AUTOMATIC) byte_idx = tpl_kern.running_id >> 2;				\
+		extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
+		P2CONST(tpl_time_obj_static, AUTOMATIC, OS_CONST) st =					\
+			tpl_schedtable_table[obj_id]->b_desc.stat_part;						\
+		CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =		\
+			tpl_app_table[st->app_id];											\
+		if ( (((app_access->access_vec[OBJECT_TASK][byte_idx]) &				\
+			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )				\
+		{																		\
+			result = E_OS_ACCESS;												\
+		}																		\
+	}																			
+#endif
 
 #endif /*TPL_OS_ERROR_H */
 

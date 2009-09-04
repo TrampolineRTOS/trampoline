@@ -51,7 +51,7 @@ static void test_t1_instance(void)
 	
 	SCHEDULING_CHECK_INIT(4);
 	result_inst_2 = GetEvent(t2,&result_inst_1);
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(4,E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(4, 0 , result_inst_1);
 	SCHEDULING_CHECK_AND_EQUAL_INT(4,E_OK, result_inst_2);
 	
 	SCHEDULING_CHECK_INIT(5);
@@ -73,7 +73,7 @@ static void test_t1_instance(void)
 	
 	SCHEDULING_CHECK_INIT(9);
 	result_inst_9 = GetEvent(t1,&result_inst_8);
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(9,E_OK, result_inst_8);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(9, 0 , result_inst_8);
 	SCHEDULING_CHECK_AND_EQUAL_INT(9,E_OK, result_inst_9);
 	
 	SCHEDULING_CHECK_INIT(10);

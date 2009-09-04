@@ -156,7 +156,10 @@ routine apps_well_formed
     object_not_in_any !counter_keys          !all_cnts_in_app   !"COUNTER" ;
     # resources
     object_not_in_any ![resources keyList]   !all_rezs_in_app   !"RESOURCE" ;
-  end if ;
+
+    #verify than an OS-Application is composed by at least one task or isr2
+    foreach apps (@lstring app_name @app_obj app) do
+       #message "There is ".[[[[app tasks] keyList] length] string]." tasks in app ".[app_name string]."\n";       if ([[[app tasks] keyList] length] == 0) & ([[[app isrs] keyList] length] == 0) then          error app_name:"OS445 - An application should have at least one Task OR ISR2. \n";       end if;    end foreach;       end if ;
 end routine ;
 
 end semantics ;

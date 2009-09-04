@@ -97,15 +97,6 @@ IMPLEMENTATION trampoline {
 		AUTOSTART = FALSE;
 	};
 	
-    APPLICATION app {
-        TRUSTED = FALSE;
-        STARTUPHOOK = TRUE;
-        TASK = t1;
-		ISR = isr1;
-		COUNTER = Software_Counter;
-		ALARM = Alarm1;
-	};
-	
 };
 
 

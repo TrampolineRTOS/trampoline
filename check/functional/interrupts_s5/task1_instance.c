@@ -45,7 +45,7 @@ void tpl_send_it1(void);
 an activation of a task*/
 static void test_t1_instance(void)
 {
-	StatusType result_inst_1;
+	StatusType result_inst_1, result_inst_2, result_inst_3;
 		
 	SCHEDULING_CHECK_STEP(1);
 	SuspendAllInterrupts();
@@ -72,8 +72,8 @@ static void test_t1_instance(void)
 	SuspendOSInterrupts();
 	
 	SCHEDULING_CHECK_INIT(9);
-	result_inst_1 = ActivateTask(t2);
-	SCHEDULING_CHECK_AND_EQUAL_INT(9,E_OS_DISABLEDINT, result_inst_1);
+	result_inst_2 = ActivateTask(t2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(9,E_OS_DISABLEDINT, result_inst_2);
 	
 	SCHEDULING_CHECK_STEP(10);
 	tpl_send_it1();
@@ -99,8 +99,8 @@ static void test_t1_instance(void)
 	DisableAllInterrupts();
 	
 	SCHEDULING_CHECK_INIT(18);
-	result_inst_1 = ActivateTask(t2);
-	SCHEDULING_CHECK_AND_EQUAL_INT(18,E_OS_DISABLEDINT, result_inst_1);
+	result_inst_3 = ActivateTask(t2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(18,E_OS_DISABLEDINT, result_inst_3);
 	
 	SCHEDULING_CHECK_STEP(19);
 	tpl_send_it1();

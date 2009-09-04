@@ -56,6 +56,11 @@ void ShutdownHook(StatusType error)
 	TestRunner_end();
 }
 
+void StartupHook(void)
+{
+	TestRunner_start();
+}
+
 void ErrorHook(StatusType error)
 {
 	instance_error++;
@@ -80,7 +85,6 @@ void ErrorHook(StatusType error)
 
 TASK(t1)
 {
-	TestRunner_start();
 	TestRunner_runTest(AutosarSTTest_seq7_t1_instance());
 	ShutdownOS(E_OK);
 }

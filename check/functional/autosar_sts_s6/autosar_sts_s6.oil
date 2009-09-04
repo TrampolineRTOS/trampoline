@@ -105,15 +105,6 @@ IMPLEMENTATION trampoline {
 				MAX_ADVANCE = 0;
 			};
 		};
-		ACCESSING_APPLICATION = app;
-	};
-	APPLICATION app {
-		TRUSTED = FALSE;
-		STARTUPHOOK = TRUE;
-		TASK = t1;
-		TASK = t2;
-		COUNTER = Software_Counter1;
-		SCHEDULETABLE = sched_explicit;
 	};
 	
 };

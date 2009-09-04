@@ -63,6 +63,7 @@ alarms_s8
 alarms_s9_full
 alarms_s9_non
 alarms_s10
+alarms_s11
 
 hook_s1_full
 hook_s1_non
@@ -88,14 +89,14 @@ com_internal_s5_non
 com_internal_s6_full
 com_internal_s6_non
 
-autosar_s1
+autosar_coreos_s1
+autosar_coreos_s2
+autosar_coreos_s3
 autosar_sc_s1
 autosar_sc_s2
 autosar_sc_s3
 autosar_sc_s4
 autosar_sc_s5
-autosar_alarm_s1
-autosar_alarm_s2
 autosar_st_s1
 autosar_st_s2
 autosar_st_s3
@@ -118,7 +119,14 @@ autosar_sts_s12
 autosar_sts_s13
 autosar_sts_s14
 
+autosar_app_s1
+autosar_app_s2
+autosar_app_s3
+autosar_app_s4
+
 autosar_sp_s1
 autosar_sp_s2
 autosar_sp_s3
 autosar_sp_s4
+autosar_sp_s5
+

@@ -68,43 +68,35 @@ else
 		echo "running $i" | tee -a ../GOIL_results.log 
 		
 		#remove the executable file in order to know if the make succeed.
-		rm -rf ./${i} 
+		#rm -rf ./${i}_exe
+		
+		#check if previous target compiled is the same as the one wanted. If not, clean all and compile
+		#if [ "`cat Make-rules | grep GOIL_TARGET | grep -c $1`" = "0" ]
+		#then
+		#	echo "target changed in ${i}, modifying target compilation by $1" 
+		#	rm -rf ./build
+		#	rm -rf ./${i}
+		#	rm -rf ./Make-rules
+		#	rm -rf ./Makefile
+		#fi
 		
 		#if Makefile doesn't exist -> do goil
-		if ! `test -f Makefile`
-		then
-			#check if target's name is among arguments (default=libpcl). If "no_results" is sent by test.sh, do goil with libpcl.
-			if [ "$1" = "" ] || [ "$1" = "no_results" ]
-			then	
-				goil --target=posix --templates=../../../goil/templates/ -g ${i}.oil $autosar_flag 2>> ../GOIL_results.log 1>> ../GOIL_results.log
-			else 
-				goil --target=$1 --templates=../../../goil/templates/ -g ${i}.oil $autosar_flag 2>> ../GOIL_results.log 1>> ../GOIL_results.log
-			fi
-		fi
+		#if ! [ -f Makefile ]
+		#then
+			goil --target=$1 --templates=../../../goil/templates/ -g ${i}.oil $autosar_flag 2>> ../GOIL_results.log 1>> ../GOIL_results.log
+		#fi
 		
 		#if goil succeed (Makefile has been created) -> do make and execute file
-		if `test -f Makefile`
-		then
-			make -s
-			./${i} >> ../GOIL_results.log
-		fi
+		#if `test -f Makefile`
+		#then
+		#	make -s
+		#	./${i} >> ../GOIL_results.log
+		#fi
 		
 		#Go out of the test sequence
 		cd ..
 	
 	done
 	echo "GOIL tests done."
-	
-	if [ "$1" != "no_results" ] && [ "$2" != "no_results" ]
-	then
-		#Compare results
-		echo "Compare GOIL results with the expected ones..."
-		if [ `diff GOIL_results_expected.log GOIL_results.log | wc -l` -eq 0 ]
-		then
-			echo "GOIL tests Succeed!!"
-		else
-			echo "GOIL tests Failed! Results are stored in `pwd`/GOIL_results.log"
-		fi
-	fi
 
 fi

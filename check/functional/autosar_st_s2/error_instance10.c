@@ -48,7 +48,7 @@ static void test_error_instance10(void)
 	SCHEDULING_CHECK_INIT(37);
 	result_inst_1 = OSErrorGetServiceId();
 	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(37, OSServiceId_GetScheduleTableStatus , result_inst_1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(37, INVALID_SCHEDULETABLE , OSServiceId_GetScheduleTableStatus_ScheduleTableID());	
+	SCHEDULING_CHECK_AND_EQUAL_INT(37, INVALID_SCHEDULETABLE , OSError_GetScheduleTableStatus_ScheduleTableID());	
 }
 
 /*create the test suite with all the test cases*/

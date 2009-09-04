@@ -63,6 +63,7 @@ IMPLEMENTATION trampoline {
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
+		STARTUPHOOK = TRUE;
 		ERRORHOOK = TRUE;
 		
 	};
@@ -117,13 +118,6 @@ IMPLEMENTATION trampoline {
 	};
 	EVENT Event1{
 		MASK = AUTO;
-	};
-	APPLICATION app {
-		TASK = t1;
-		TASK = t2;
-		COUNTER = Software_Counter;
-		SCHEDULETABLE = sched1;
-		SCHEDULETABLE = sched2;
 	};
 	
 };

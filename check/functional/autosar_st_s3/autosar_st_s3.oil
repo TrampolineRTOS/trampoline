@@ -138,7 +138,6 @@ IMPLEMENTATION trampoline {
                 TASK = t4;
             };
         };
-        ACCESSING_APPLICATION = app;
     };
 	
     SCHEDULETABLE sched2 {
@@ -161,24 +160,10 @@ IMPLEMENTATION trampoline {
                 TASK = t2;
             };
         };
-        ACCESSING_APPLICATION = app;
     };
 	
 	EVENT Event1{
 		MASK = AUTO;
-	};
-	
-	APPLICATION app {
-        TRUSTED = FALSE;
-        STARTUPHOOK = TRUE;
-        TASK = t1;
-		TASK = t2;
-		TASK = t3;
-		TASK = t4;
-		TASK = t5;
-		COUNTER = Software_Counter;
-        SCHEDULETABLE = sched1;
-        SCHEDULETABLE = sched2;
 	};
 	
 };

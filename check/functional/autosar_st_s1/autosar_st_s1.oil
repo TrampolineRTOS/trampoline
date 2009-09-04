@@ -103,15 +103,6 @@ IMPLEMENTATION trampoline {
 				TASK = t2;
 			};
 		};
-		ACCESSING_APPLICATION = app;
-	};
-	APPLICATION app {
-		TRUSTED = FALSE;
-		STARTUPHOOK = TRUE;
-		TASK = t1;
-		TASK = t2;
-		COUNTER = Software_Counter;
-		SCHEDULETABLE = sched1;
 	};
 
 };

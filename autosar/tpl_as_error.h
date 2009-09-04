@@ -31,7 +31,77 @@
 #include "tpl_as_service_ids.h"
 
 /**
- * @def OSServiceId_StartScheduleTableRel_ScheduleTableID
+ * @def OSError_CheckObjectAccess_ApplicationID
+ *
+ * CheckObjectAccess service error parameter
+ *
+ * Returns the identifier (#ApplicationType) of the schedule table which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#define OSError_CheckObjectAccess_ApplicationID()   \
+		(tpl_service.parameters.id.application_id)
+
+/**
+ * @def OSError_CheckObjectAccess_ObjectType
+ *
+ * CheckObjectAccess service error parameter
+ *
+ * Returns the identifier (#ObjectTypeType) of the schedule table which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#define OSError_CheckObjectAccess_ObjectType()   \
+		(tpl_service.parameters.param.object_type)
+
+/**
+ * @def OSError_CheckObjectAccess_ObjectID
+ *
+ * CheckObjectAccess service error parameter
+ *
+ * Returns the identifier (#ObjectID) of the schedule table which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#define OSError_CheckObjectAccess_ObjectID()   \
+		(tpl_service.parameters.param2.object_id)
+
+/**
+ * @def OSError_CheckObjectOwnership_ObjectType
+ *
+ * CheckObjectOwnership service error parameter
+ *
+ * Returns the identifier (#ObjectTypeType) of the schedule table which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#define OSError_CheckObjectOwnership_ObjectType()   \
+		(tpl_service.parameters.param.object_type)
+
+/**
+ * @def OSError_CheckObjectOwnership_ObjectID
+ *
+ * CheckObjectOwnership service error parameter
+ *
+ * Returns the identifier (#ObjectID) of the schedule table which
+ * caused the error.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#define OSError_CheckObjectOwnership_ObjectID()   \
+		(tpl_service.parameters.param2.object_id)
+
+/**
+ * @def OSError_StartScheduleTableRel_ScheduleTableID
  *
  * StartScheduleTableRel service error parameter
  *
@@ -41,11 +111,11 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_StartScheduleTableRel_ScheduleTableID()   \
-	(tpl_service.parameters.id.schedtable_id)
+#define OSError_StartScheduleTableRel_ScheduleTableID()   \
+		(tpl_service.parameters.id.schedtable_id)
 
 /**
- * @def OSServiceId_StartScheduleTableRel_value
+ * @def OSError_StartScheduleTableRel_value
  *
  * StartScheduleTableRel service error parameter
  *
@@ -55,11 +125,11 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_StartScheduleTableRel_offset()   \
+#define OSError_StartScheduleTableRel_offset()   \
 	(tpl_service.parameters.param.tick)
 
 /**
- * @def OSServiceId_StartScheduleTableAbs_ScheduleTableID
+ * @def OSError_StartScheduleTableAbs_ScheduleTableID
  *
  * StartScheduleTableAbs service error parameter
  *
@@ -69,11 +139,11 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_StartScheduleTableAbs_ScheduleTableID()   \
+#define OSError_StartScheduleTableAbs_ScheduleTableID()   \
 	(tpl_service.parameters.id.schedtable_id)
 
 /**
- * @def OSServiceId_StartScheduleTableAbs_value
+ * @def OSError_StartScheduleTableAbs_value
  *
  * StartScheduleTableAbs service error parameter
  *
@@ -83,11 +153,11 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_StartScheduleTableAbs_value()   \
+#define OSError_StartScheduleTableAbs_value()   \
 	(tpl_service.parameters.param.tick)
 
 /**
- * @def OSServiceId_StopScheduleTable_ScheduleTableID
+ * @def OSError_StopScheduleTable_ScheduleTableID
  *
  * StopScheduleTable service error parameter
  *
@@ -97,11 +167,11 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_StopScheduleTable_ScheduleTableID()   \
+#define OSError_StopScheduleTable_ScheduleTableID()   \
 	(tpl_service.parameters.id.schedtable_id)
 
 /**
- * @def OSServiceId_NextScheduleTable_ScheduleTableID
+ * @def OSError_NextScheduleTable_ScheduleTableID
  *
  * NextScheduleTable service error parameter
  *
@@ -111,11 +181,11 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_NextScheduleTable_ScheduleTableID()   \
+#define OSError_NextScheduleTable_ScheduleTableID()   \
 	(tpl_service.parameters.id.schedtable_id)
 
 /**
- * @def OSServiceId_NextScheduleTable_ScheduleTableID2
+ * @def OSError_NextScheduleTable_ScheduleTableID2
  *
  * NextScheduleTable service error parameter
  *
@@ -125,11 +195,11 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_NextScheduleTable_ScheduleTableID2()   \
+#define OSError_NextScheduleTable_ScheduleTableID2()   \
 	(tpl_service.parameters.param.next_st_id)
 
 /**
- * @def OSServiceId_NextScheduleTable_ScheduleTableID2
+ * @def OSError_NextScheduleTable_ScheduleTableID2
  *
  * NextScheduleTable service error parameter
  *
@@ -139,11 +209,11 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_NextScheduleTable_ScheduleTableID2()   \
+#define OSError_NextScheduleTable_ScheduleTableID2()   \
 (tpl_service.parameters.param.next_st_id)
 
 /**
- * @def OSServiceId_IncrementCounter_CounterID
+ * @def OSError_IncrementCounter_CounterID
  *
  * IncrementCounter service error parameter
  *
@@ -153,11 +223,11 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_IncrementCounter_CounterID()   \
+#define OSError_IncrementCounter_CounterID()   \
 	(tpl_service.parameters.id.counter_id)
 
 /**
- * @def OSServiceId_GetCounterValue_CounterID
+ * @def OSError_GetCounterValue_CounterID
  *
  * GetCounterValue service error parameter
  *
@@ -167,11 +237,11 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_GetCounterValue_CounterID()   \
+#define OSError_GetCounterValue_CounterID()   \
 	(tpl_service.parameters.id.counter_id)
 
 /**
- * @def OSServiceId_GetCounterValue_value
+ * @def OSError_GetCounterValue_value
  *
  * GetCounterValue service error parameter
  *
@@ -181,11 +251,11 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_GetCounterValue_value()   \
+#define OSError_GetCounterValue_value()   \
 	(tpl_service.parameters.param.tick_ref)
 
 /**
- * @def OSServiceId_GetElapsedCounterValue_CounterID
+ * @def OSError_GetElapsedCounterValue_CounterID
  *
  * GetElapsedCounterValue service error parameter
  *
@@ -195,11 +265,11 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_GetElapsedCounterValue_CounterID()   \
+#define OSError_GetElapsedCounterValue_CounterID()   \
 	(tpl_service.parameters.id.counter_id)
 
 /**
- * @def OSServiceId_GetElapsedCounterValue_previous_value
+ * @def OSError_GetElapsedCounterValue_previous_value
  *
  * GetElapsedCounterValue service error parameter
  *
@@ -209,11 +279,11 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_GetElapsedCounterValue_previous_value()   \
+#define OSError_GetElapsedCounterValue_previous_value()   \
 	(tpl_service.parameters.param.tick_ref)
 
 /**
- * @def OSServiceId_GetElapsedCounterValue_value
+ * @def OSError_GetElapsedCounterValue_value
  *
  * GetElapsedCounterValue service error parameter
  *
@@ -223,11 +293,11 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_GetElapsedCounterValue_value()   \
+#define OSError_GetElapsedCounterValue_value()   \
 	(tpl_service.parameters.param2.tick_ref)
 
 /**
- * @def OSServiceId_GetScheduleTableStatus_ScheduleTableID
+ * @def OSError_GetScheduleTableStatus_ScheduleTableID
  *
  * GetScheduleTableStatus service error parameter
  *
@@ -237,11 +307,11 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_GetScheduleTableStatus_ScheduleTableID()   \
+#define OSError_GetScheduleTableStatus_ScheduleTableID()   \
 	(tpl_service.parameters.id.schedtable_id)
 
 /**
- * @def OSServiceId_GetScheduleTableStatus_status
+ * @def OSError_GetScheduleTableStatus_status
  *
  * GetScheduleTableStatus service error parameter
  *
@@ -251,11 +321,11 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_GetScheduleTableStatus_status()   \
+#define OSError_GetScheduleTableStatus_status()   \
 	(tpl_service.parameters.param.st_stat)
 
 /**
- * @def OSServiceId_SetScheduleTableAsync_ScheduleTableID
+ * @def OSError_SetScheduleTableAsync_ScheduleTableID
  *
  * SetScheduleTableAsync service error parameter
  *
@@ -265,11 +335,11 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_SetScheduleTableAsync_ScheduleTableID()   \
+#define OSError_SetScheduleTableAsync_ScheduleTableID()   \
 	(tpl_service.parameters.id.schedtable_id)
 
 /**
- * @def OSServiceId_StartScheduleTableSynchron_ScheduleTableID
+ * @def OSError_StartScheduleTableSynchron_ScheduleTableID
  *
  * StartScheduleTableSynchron service error parameter
  *
@@ -279,11 +349,11 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_StartScheduleTableSynchron_ScheduleTableID()   \
+#define OSError_StartScheduleTableSynchron_ScheduleTableID()   \
 	(tpl_service.parameters.id.schedtable_id)
 
 /**
- * @def OSServiceId_SyncScheduleTable_ScheduleTableID
+ * @def OSError_SyncScheduleTable_ScheduleTableID
  *
  * SyncScheduleTable service error parameter
  *
@@ -293,11 +363,11 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_SyncScheduleTable_ScheduleTableID()   \
+#define OSError_SyncScheduleTable_ScheduleTableID()   \
 	(tpl_service.parameters.id.schedtable_id)
 
 /**
- * @def OSServiceId_SyncScheduleTable_value
+ * @def OSError_SyncScheduleTable_value
  *
  * SyncScheduleTable service error parameter
  *
@@ -307,8 +377,76 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSServiceId_SyncScheduleTable_value()   \
+#define OSError_SyncScheduleTable_value()   \
 	(tpl_service.parameters.param.tick)
+
+/**
+ * @def OSError_TerminateApplication_opt
+ *
+ * TerminateApplication service error parameter
+ *
+ * Returns the value (#u8) of the option.
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#define OSError_TerminateApplication_opt()   \
+	(tpl_service.parameters.param.opt_termapp)
+
+
+
+/**
+ * @def STORE_APPLICATION_ID
+ *
+ * Stores the id of an application
+ *
+ * @param counter_id type is #ApplicationID
+ *
+ * @see #OSError_CheckObjectAccess_ApplicationID
+ * 
+ */
+#ifdef WITH_ERROR_HOOK
+#   define STORE_APPLICATION_ID(app_id)   \
+	tpl_service.parameters.id.application_id = (app_id);
+#else
+#   define STORE_APPLICATION_ID(app_id)
+#endif 
+
+/**
+ * @def STORE_OBJECT_TYPE
+ *
+ * Stores the type of an object
+ *
+ * @param counter_id type is #ObjectTypeType
+ *
+ * @see #OSError_CheckObjectAccess_ObjectType
+ * @see #OSError_CheckObjectOwnership_ObjectType
+ * 
+ */
+#ifdef WITH_ERROR_HOOK
+#   define STORE_OBJECT_TYPE(obj_typ)   \
+	tpl_service.parameters.param.object_type = (obj_typ);
+#else
+#   define STORE_OBJECT_TYPE(obj_typ)
+#endif 
+
+/**
+ * @def STORE_OBJECT_ID
+ *
+ * Stores the id of an object
+ *
+ * @param counter_id type is #ObjectID
+ *
+ * @see #OSError_CheckObjectAccess_ObjectID
+ * @see #OSError_CheckObjectOwnership_ObjectID
+ * 
+ */
+#ifdef WITH_ERROR_HOOK
+#   define STORE_OBJECT_ID(obj_id)   \
+		tpl_service.parameters.param2.object_id = (obj_id);
+#else
+#   define STORE_OBJECT_ID(obj_id)
+#endif 
 
 /**
  * @def STORE_SCHEDTABLE_ID
@@ -317,12 +455,14 @@
  *
  * @param sched_table_id type is #ScheduleTableType
  *
- * @see #OSError_ActivateTask_TaskID
- * @see #OSError_ChainTask_TaskID
- * @see #OSError_GetTaskID_TaskID
- * @see #OSError_GetTaskState_TaskID
- * @see #OSError_SetEvent_TaskID
- * @see #OSError_GetEvent_TaskID
+ * @see #OSError_StartScheduleTableRel_ScheduleTableID
+ * @see #OSError_StartScheduleTableAbs_ScheduleTableID
+ * @see #OSError_StopScheduleTable_ScheduleTableID
+ * @see #OSError_NextScheduleTable_ScheduleTableID
+ * @see #OSError_StartScheduleTableSynchron_ScheduleTableID
+ * @see #OSError_SyncScheduleTable_ScheduleTableID
+ * @see #OSError_GetScheduleTableStatus_ScheduleTableID
+ * @see #OSError_SetScheduleTableAsync_ScheduleTableID
  * 
  */
 #ifdef WITH_ERROR_HOOK
@@ -339,12 +479,7 @@
  *
  * @param schedtable_id type is #ScheduleTableType
  *
- * @see #OSError_ActivateTask_TaskID
- * @see #OSError_ChainTask_TaskID
- * @see #OSError_GetTaskID_TaskID
- * @see #OSError_GetTaskState_TaskID
- * @see #OSError_SetEvent_TaskID
- * @see #OSError_GetEvent_TaskID
+ * @see #OSError_NextScheduleTable_ScheduleTableID
  * 
  */
 #ifdef WITH_ERROR_HOOK
@@ -362,6 +497,8 @@
  * @param counter_id type is #CounterType
  *
  * @see #OSError_IncrementCounter_CounterID
+ * @see #OSError_GetCounterValue_CounterID
+ * @see #OSError_GetElapsedCounterValue_CounterID
  * 
  */
 #ifdef WITH_ERROR_HOOK
@@ -387,6 +524,25 @@
 #else
 #   define STORE_ST_STATUS_REF(status)
 #endif 
+
+/**
+ * @def STORE_TERMAPP_OPT
+ *
+ * Stores the option when terminating an applicaiton
+ *
+ * @param opt type is #u8
+ *
+ * @see #OSError_TerminateApplication_opt
+ * 
+ */
+#ifdef WITH_ERROR_HOOK
+#   define STORE_TERMAPP_OPT(opt)   \
+	tpl_service.parameters.param.opt_termapp = (opt);
+#else
+#   define STORE_TERMAPP_OPT(opt)
+#endif 
+
+
 
 /**
  * @def CHECK_SCHEDTABLE_ID_ERROR
@@ -913,7 +1069,6 @@
         result = (tpl_status)E_OS_ID;                               \
     }
 #endif
-
 
 /* TPL_AS_ERROR_H */
 #endif

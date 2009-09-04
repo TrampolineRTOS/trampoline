@@ -1282,15 +1282,37 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 FUNC(tpl_application_mode, OS_CODE) tpl_get_active_application_mode_service(
   void)
 {
-  return application_mode;
+  VAR(tpl_application_mode, AUTOMATIC) app_mode = application_mode;
+  VAR(StatusType, AUTOMATIC) result = E_OK;
+	
+  /*  lock the kernel    */
+  LOCK_KERNEL()
+	
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
+	
+  /*  store information for error hook routine    */
+  STORE_SERVICE(OSServiceId_GetActiveApplicationMode)
+	
+  app_mode = application_mode;
+	
+  PROCESS_ERROR(result)
+	
+  UNLOCK_KERNEL()
+	
+  return app_mode;
 }
 
 FUNC(void, OS_CODE) tpl_start_os_service(
   CONST(tpl_application_mode, AUTOMATIC) mode)
 {
+  /*  lock the kernel    */
   LOCK_KERNEL()
 
-  application_mode = mode;
+  /*  store information for error hook routine    */
+  STORE_SERVICE(OSServiceId_StartOS)
+	
+application_mode = mode;
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
   tpl_init_timing_protection();
@@ -1301,36 +1323,45 @@ FUNC(void, OS_CODE) tpl_start_os_service(
   tpl_init_os(mode);
 
   /*  Call the startup hook. According to the spec, it should be called
-      after the os is initialized and before the scheduler is running     */
+	  after the os is initialized and before the scheduler is running     */
   CALL_STARTUP_HOOK()
 
   /*  Call tpl_schedule to elect the greatest priority task */
   if(tpl_h_prio != -1)
   {
-    tpl_start_scheduling();
+	tpl_start_scheduling();
 
 #ifndef WITH_SYSTEM_CALL
-    if (tpl_kern.need_switch != NO_NEED_SWITCH)
-    {
-      tpl_switch_context(
-        &(tpl_kern.s_old->context),
-        &(tpl_kern.s_running->context)
-      );
-    }
+	if (tpl_kern.need_switch != NO_NEED_SWITCH)
+	{
+	  tpl_switch_context(
+		&(tpl_kern.s_old->context),
+		&(tpl_kern.s_running->context)
+	  );
+	}
 #endif
   }
-
+	
+  /*  unlock the kernel  */
   UNLOCK_KERNEL()
 }
 
 FUNC(void, OS_CODE) tpl_shutdown_os_service(
     CONST(tpl_status, AUTOMATIC) error  /*@unused@*/)
 {
-    CALL_SHUTDOWN_HOOK(error)
-    TRACE_TPL_TERMINATE()
-    /* architecture dependant shutdown. */
-    tpl_shutdown();
+  /*  lock the kernel    */
+  LOCK_KERNEL()
+	
+  /*  store information for error hook routine */
+  STORE_SERVICE(OSServiceId_ShutdownOS)
 
+  CALL_SHUTDOWN_HOOK(error)
+  TRACE_TPL_TERMINATE()
+  /* architecture dependant shutdown. */
+  tpl_shutdown();
+	
+  /*  unlock the kernel */
+  UNLOCK_KERNEL()
 }
 
 #define OS_STOP_SEC_CODE

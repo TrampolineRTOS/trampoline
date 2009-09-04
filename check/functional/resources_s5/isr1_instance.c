@@ -49,31 +49,31 @@ void tpl_send_it3(void);
  an activation of a isr*/
 static void test_isr1_instance(void)
 {
-	StatusType result_inst_1, result_inst_2, result_inst_4, result_inst_5, result_inst_6;
+	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9, result_inst_10, result_inst_11, result_inst_12;
 	
 	SCHEDULING_CHECK_INIT(2);
 	result_inst_1 = GetResource(INVALID_RESOURCE);
 	SCHEDULING_CHECK_AND_EQUAL_INT(2 , E_OS_ID, result_inst_1);
 	
 	SCHEDULING_CHECK_INIT(3);
-	result_inst_4 = GetResource(Resource3);
-	SCHEDULING_CHECK_AND_EQUAL_INT(3, E_OS_ACCESS, result_inst_4);
+	result_inst_2 = GetResource(Resource3);
+	SCHEDULING_CHECK_AND_EQUAL_INT(3, E_OS_ACCESS, result_inst_2);
 	
 	SCHEDULING_CHECK_INIT(4);
-	result_inst_1 = GetResource(Resource1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(4 , E_OK, result_inst_1);
+	result_inst_3 = GetResource(Resource1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(4 , E_OK, result_inst_3);
 	
 	SCHEDULING_CHECK_INIT(5);
-	result_inst_1 = GetResource(Resource1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(5 , E_OS_ACCESS, result_inst_1);
+	result_inst_4 = GetResource(Resource1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(5 , E_OS_ACCESS, result_inst_4);
 	
 	SCHEDULING_CHECK_INIT(6);
-	result_inst_6 = GetResource(RES_SCHEDULER);
-	SCHEDULING_CHECK_AND_EQUAL_INT(6 , E_OS_ACCESS, result_inst_6);
+	result_inst_5 = GetResource(RES_SCHEDULER);
+	SCHEDULING_CHECK_AND_EQUAL_INT(6 , E_OS_ACCESS, result_inst_5);
 	
 	SCHEDULING_CHECK_INIT(7);
-	result_inst_1 = GetResource(Resource2);
-	SCHEDULING_CHECK_AND_EQUAL_INT(7 , E_OK, result_inst_1);
+	result_inst_6 = GetResource(Resource2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(7 , E_OK, result_inst_6);
 	
 	tpl_send_it2();
 	
@@ -81,29 +81,29 @@ static void test_isr1_instance(void)
 	/*it3 trigged*/
 	
 	SCHEDULING_CHECK_INIT(9);
-	result_inst_5 = ReleaseResource(Resource1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(9 , E_OS_NOFUNC, result_inst_5);
+	result_inst_7 = ReleaseResource(Resource1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(9 , E_OS_NOFUNC, result_inst_7);
 	
 	SCHEDULING_CHECK_INIT(10);
-	result_inst_2 = ReleaseResource(Resource2);
-	SCHEDULING_CHECK_AND_EQUAL_INT(10 , E_OK, result_inst_2);
+	result_inst_8 = ReleaseResource(Resource2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(10 , E_OK, result_inst_8);
 	
 	SCHEDULING_CHECK_INIT(11);
-	result_inst_5 = ReleaseResource(Resource1);
+	result_inst_9 = ReleaseResource(Resource1);
 	/*it2 trigged*/
-	SCHEDULING_CHECK_AND_EQUAL_INT(12 , E_OK, result_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT(12 , E_OK, result_inst_9);
 	
 	SCHEDULING_CHECK_INIT(13);
-	result_inst_1 = ReleaseResource(INVALID_RESOURCE);
-	SCHEDULING_CHECK_AND_EQUAL_INT(13 , E_OS_ID, result_inst_1);
+	result_inst_10 = ReleaseResource(INVALID_RESOURCE);
+	SCHEDULING_CHECK_AND_EQUAL_INT(13 , E_OS_ID, result_inst_10);
 	
 	SCHEDULING_CHECK_INIT(14);
-	result_inst_1 = ReleaseResource(Resource1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(14 , E_OS_NOFUNC, result_inst_1);
+	result_inst_11 = ReleaseResource(Resource1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(14 , E_OS_NOFUNC, result_inst_11);
 	
 	SCHEDULING_CHECK_INIT(15);
-	result_inst_1 = ReleaseResource(RES_SCHEDULER);
-	SCHEDULING_CHECK_AND_EQUAL_INT(15 , E_OS_ACCESS, result_inst_1);
+	result_inst_12 = ReleaseResource(RES_SCHEDULER);
+	SCHEDULING_CHECK_AND_EQUAL_INT(15 , E_OS_ACCESS, result_inst_12);
 	
 }
 

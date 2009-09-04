@@ -153,7 +153,6 @@ IMPLEMENTATION trampoline {
                 TASK = t2;
             };
         };
-        ACCESSING_APPLICATION = app;
     };
 	
 	SCHEDULETABLE sched_abs_more_2 {
@@ -168,7 +167,6 @@ IMPLEMENTATION trampoline {
                 TASK = t3;
             };
         };
-        ACCESSING_APPLICATION = app;
     };
 	
 	SCHEDULETABLE sched_abs_more_3 {
@@ -183,7 +181,6 @@ IMPLEMENTATION trampoline {
                 TASK = t4;
             };
         };
-        ACCESSING_APPLICATION = app;
     };
 	
 	SCHEDULETABLE sched_abs_less_1 {
@@ -198,7 +195,6 @@ IMPLEMENTATION trampoline {
                 TASK = t5;
             };
         };
-        ACCESSING_APPLICATION = app;
     };
 	
 	SCHEDULETABLE sched_abs_less_2 {
@@ -213,7 +209,6 @@ IMPLEMENTATION trampoline {
                 TASK = t6;
             };
         };
-        ACCESSING_APPLICATION = app;
     };
 	
 	SCHEDULETABLE sched_abs_less_3 {
@@ -228,7 +223,6 @@ IMPLEMENTATION trampoline {
 				TASK = t7;
 			};
 		};
-		ACCESSING_APPLICATION = app;
 	};
 	SCHEDULETABLE sched_abs_less_4 {
 		COUNTER = Software_Counter;
@@ -242,7 +236,6 @@ IMPLEMENTATION trampoline {
 				TASK = t8;
 			};
 		};
-		ACCESSING_APPLICATION = app;
 	};	 
     SCHEDULETABLE sched_rel {
         COUNTER = Software_Counter;
@@ -256,30 +249,7 @@ IMPLEMENTATION trampoline {
                 TASK = t9;
             };
         };
-        ACCESSING_APPLICATION = app;
     };
-	APPLICATION app {
-        TRUSTED = FALSE;
-        STARTUPHOOK = TRUE;
-        TASK = t1;
-		TASK = t2;
-		TASK = t3;
-        TASK = t4;
-		TASK = t5;
-		TASK = t6;
-        TASK = t7;
-		TASK = t8;
-		TASK = t9;
-		COUNTER = Software_Counter;
-	    SCHEDULETABLE = sched_abs_more_1;
-	    SCHEDULETABLE = sched_abs_more_2;
-	    SCHEDULETABLE = sched_abs_more_3;
-	    SCHEDULETABLE = sched_abs_less_1;
-	    SCHEDULETABLE = sched_abs_less_2;
-	    SCHEDULETABLE = sched_abs_less_3;
-	    SCHEDULETABLE = sched_abs_less_4;
-		SCHEDULETABLE = sched_rel;
-	};
 	
 };
 

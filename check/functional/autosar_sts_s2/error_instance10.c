@@ -47,7 +47,7 @@ static void test_error_instance10(void)
 	
 	SCHEDULING_CHECK_INIT(22);
 	result_inst_1 = OSErrorGetServiceId();
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(22,INVALID_SCHEDULETABLE, OSServiceId_SetScheduleTableAsync_ScheduleTableID());
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(22,INVALID_SCHEDULETABLE, OSError_SetScheduleTableAsync_ScheduleTableID());
 	SCHEDULING_CHECK_AND_EQUAL_INT(22,OSServiceId_SetScheduleTableAsync, result_inst_1);
 		
 }

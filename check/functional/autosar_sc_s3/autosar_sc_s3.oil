@@ -92,14 +92,6 @@ IMPLEMENTATION trampoline {
 		TYPE = SOFTWARE;
 	};
 		
-    APPLICATION app {
-        TRUSTED = FALSE;
-        STARTUPHOOK = TRUE;
-        TASK = t1;
-		COUNTER = Software_Counter;
-		COUNTER = Hardware_Counter;
-	};
-		
 };
 
 

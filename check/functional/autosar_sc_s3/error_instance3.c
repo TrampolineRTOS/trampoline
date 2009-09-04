@@ -48,7 +48,8 @@ static void test_error_instance3(void)
 	SCHEDULING_CHECK_INIT(6);
 	result_inst_1 = OSErrorGetServiceId();
 	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(6,OSServiceId_GetCounterValue , result_inst_1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(6, INVALID_COUNTER , OSServiceId_GetCounterValue_CounterID());
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(6, (OSMAXALLOWEDVALUE_Software_Counter + 1) , (StatusType)(*OSError_GetCounterValue_value()));
+	SCHEDULING_CHECK_AND_EQUAL_INT(6, INVALID_COUNTER , OSError_GetCounterValue_CounterID());
 	
 }
 

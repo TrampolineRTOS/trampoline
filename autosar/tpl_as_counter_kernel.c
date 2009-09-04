@@ -76,6 +76,10 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
 
   /*  check a counter_id error                    */
   CHECK_COUNTER_ID_ERROR(counter_id,result)
+	
+  /* check access right */
+  CHECK_ACCESS_RIGHTS_COUNTER_ID(counter_id,result)
+	
   CHECK_COUNTER_KIND_ERROR(counter_id,result)
 	
 #ifndef NO_COUNTER
@@ -144,6 +148,9 @@ FUNC(tpl_status, OS_CODE) tpl_get_counter_value_service(
 
   /*  check a counter_id error                    */
   CHECK_COUNTER_ID_ERROR(counter_id,result)
+	
+  /* check access right */
+  CHECK_ACCESS_RIGHTS_COUNTER_ID(counter_id,result)
 
 #ifndef NO_COUNTER
   IF_NO_EXTENDED_ERROR(result)
@@ -200,6 +207,10 @@ FUNC(tpl_status, OS_CODE) tpl_get_elapsed_counter_value_service(
 
   /*  check a counter_id error                    */
   CHECK_COUNTER_ID_ERROR(counter_id,result)
+	
+  /* check access right */
+  CHECK_ACCESS_RIGHTS_COUNTER_ID(counter_id,result)
+	
   /*  check the previous value does not exceed
       the maxallowedvalue of the counter          */
   CHECK_COUNTER_MAX_ALLOWED_VALUE_ERROR(counter_id, *previous_value, result)

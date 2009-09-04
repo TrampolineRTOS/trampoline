@@ -30,6 +30,10 @@
 #include "tpl_as_isr_definitions.h"
 #include "tpl_as_error.h"
 
+/* for LOCK_KERNEL() UNLOCK_KERNEL()  */
+extern FUNC(void, OS_CODE) tpl_get_task_lock(void);
+extern FUNC(void, OS_CODE) tpl_release_task_lock(void);
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -132,21 +136,36 @@ FUNC(tpl_bool, OS_CODE) tpl_is_isr2_enabled (
  */
 FUNC(tpl_isr_id, OS_CODE) tpl_get_isr_id_service(void)
 {
+  VAR(StatusType, AUTOMATIC) result_status = E_OK;
+  VAR(tpl_isr_id, AUTOMATIC) result = INVALID_ISR;
+
+  /*  lock the kernel    */
+  LOCK_KERNEL()
+	
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result_status)
+	
+  /*  store information for error hook routine    */
+  STORE_SERVICE(OSServiceId_GetISRID)
+
   if ((tpl_kern.running_id >= TASK_COUNT) &&
       tpl_kern.running_id < (ISR_COUNT+TASK_COUNT))
   {
-    return tpl_kern.running_id;
+    result = tpl_kern.running_id;
   }
-  else
-  {
-    return INVALID_ISR;
-  }
+	
+  PROCESS_ERROR(result_status)
+	
+  /*  unlock the kernel  */
+  UNLOCK_KERNEL()
+	
+  return result;	
 }
 
 /**
  * Disables the specified ISR
  *
- * see §8.4.20 of AUTOSAR/Specification of the Operating System v2.1.0
+ * see ÃŸ8.4.20 of AUTOSAR/Specification of the Operating System v2.1.0
  */
 FUNC(tpl_status, OS_CODE) tpl_disable_interrupt_source_service(
   CONST(tpl_isr_id, AUTOMATIC) isr_id)
@@ -167,7 +186,7 @@ FUNC(tpl_status, OS_CODE) tpl_disable_interrupt_source_service(
 /**
  * Enables the specified ISR
  *
- * see §8.4.21 of AUTOSAR/Specification of the Operating System v2.1.0
+ * see ÃŸ8.4.21 of AUTOSAR/Specification of the Operating System v2.1.0
  */
 FUNC(tpl_status, OS_CODE) tpl_enable_interrupt_source_service(
     VAR(tpl_isr_id, AUTOMATIC) isr_id)

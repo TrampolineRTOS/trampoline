@@ -272,6 +272,11 @@ FUNC(void, OS_CODE) tpl_start_sched_table_sync(
    */
   st->date = (st->stat_part->counter->current_date)
              + (st->date) + ((schedtable->length) - sync_date) + schedtable->expiry[0]->offset;
+	
+  if ( st->date > st->stat_part->counter->max_allowed_value )
+  {
+	  st->date = st->date - st->stat_part->counter->max_allowed_value - 1;
+  }
 
   /* as the schdule table is started synchronously, it is synchronous     */
   st->state = SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS;
@@ -377,6 +382,10 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel_service(
     STORE_TICK_1(offset)
 
     CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
+	
+	/* check access right */
+	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(sched_table_id,result)
+	
     CHECK_SCHEDTABLE_OFFSET_VALUE(sched_table_id,offset,result)
 
 	CHECK_SCHEDTABLE_SYNC_STRATEGY_EQUAL_ERROR(sched_table_id, SCHEDTABLE_IMPLICIT_SYNC, result)
@@ -457,6 +466,10 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs_service(
     STORE_TICK_1(tick_val)
 
     CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
+	
+	/* check access right */
+	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(sched_table_id,result)
+	
     CHECK_SCHEDTABLE_TICK_VALUE(sched_table_id,tick_val,result)
 
 #ifndef NO_SCHEDTABLE
@@ -539,15 +552,18 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_synchron_service(
     P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
 #endif
 
+    LOCK_KERNEL()
+	
     /* check interrupts are not disabled by user    */
     CHECK_INTERRUPT_LOCK(result)
-
-    LOCK_KERNEL()
-
+	
 	STORE_SERVICE(OSServiceId_StartScheduleTableSynchron)
     STORE_SCHEDTABLE_ID(sched_table_id)
 	
     CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
+	
+	/* check access right */
+	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(sched_table_id,result)
 
 	CHECK_SCHEDTABLE_SYNC_STRATEGY_DIFF_ERROR(sched_table_id, SCHEDTABLE_EXPLICIT_SYNC, result)
 
@@ -604,6 +620,9 @@ FUNC(tpl_status, OS_CODE) tpl_stop_schedule_table_service(
     STORE_SCHEDTABLE_ID(sched_table_id)
 
     CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
+	
+	/* check access right */
+	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(sched_table_id,result)
 
 #ifndef NO_SCHEDTABLE
     IF_NO_EXTENDED_ERROR(result)
@@ -667,7 +686,15 @@ FUNC(tpl_status, OS_CODE) tpl_next_schedule_table_service(
     STORE_SCHEDTABLE_ID2(next_st_id)
 
 	CHECK_SCHEDTABLE_ID_ERROR(current_st_id, result)
-    CHECK_SCHEDTABLE_ID_ERROR(next_st_id, result)
+	
+	/* check access right */
+	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(current_st_id,result)
+    
+	CHECK_SCHEDTABLE_ID_ERROR(next_st_id, result)
+	
+	/* check access right */
+	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(next_st_id,result)
+	
 	CHECK_SCHEDTABLE_TO_STOPPED(next_st_id,result)
 
 #ifndef NO_SCHEDTABLE
@@ -735,6 +762,9 @@ FUNC(tpl_status, OS_CODE) tpl_get_schedule_table_status_service(
     STORE_ST_STATUS_REF(status)
 
     CHECK_SCHEDTABLE_ID_ERROR(sched_table_id, result)
+	
+	/* check access right */
+	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(sched_table_id,result)
 
 #ifndef NO_SCHEDTABLE
     IF_NO_EXTENDED_ERROR(result)
@@ -780,6 +810,10 @@ FUNC(tpl_status, OS_CODE) tpl_sync_schedule_table_service(
     STORE_TICK_1(value)
 	
 	CHECK_SCHEDTABLE_ID_ERROR(sched_table_id, result)
+	
+	/* check access right */
+	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(sched_table_id,result)
+	
 	CHECK_SCHEDTABLE_VALUE(sched_table_id, value, result)
 
 	CHECK_SCHEDTABLE_SYNC_STRATEGY_DIFF_ERROR(sched_table_id, SCHEDTABLE_EXPLICIT_SYNC, result)
@@ -838,6 +872,9 @@ FUNC(tpl_status, OS_CODE) tpl_set_schedule_table_async(
     STORE_SCHEDTABLE_ID(sched_table_id)
 
     CHECK_SCHEDTABLE_ID_ERROR(sched_table_id, result)
+	
+	/* check access right */
+	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(sched_table_id,result)
 
     CHECK_SCHEDTABLE_SYNC_STRATEGY_DIFF_ERROR(sched_table_id, SCHEDTABLE_EXPLICIT_SYNC, result)
 

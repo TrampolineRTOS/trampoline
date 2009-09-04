@@ -47,8 +47,8 @@ static void test_error_instance6(void)
 	
 	SCHEDULING_CHECK_INIT(12);
 	result_inst_1 = OSErrorGetServiceId();
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(12,sched_nosync, OSServiceId_SyncScheduleTable_ScheduleTableID());
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(12,1 , OSServiceId_SyncScheduleTable_value());
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(12,sched_nosync, OSError_SyncScheduleTable_ScheduleTableID());
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(12,1 , OSError_SyncScheduleTable_value());
 	SCHEDULING_CHECK_AND_EQUAL_INT(12,OSServiceId_SyncScheduleTable, result_inst_1);
 		
 }

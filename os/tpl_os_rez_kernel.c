@@ -86,7 +86,7 @@ VAR(tpl_resource, OS_VAR) res_sched_rez_desc = {
 #include "tpl_memmap.h"
 
 
-#ifdef WITH_OSAPPLICATION
+#ifdef WITH_AUTOSAR
 /**
  * @internal
  *
@@ -129,7 +129,7 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
     } while (res != NULL);
   }
 }
-#endif
+#endif /* WITH_AUTOSAR */
 
 /*
  * Getting a resource.
@@ -157,6 +157,9 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
   STORE_RESOURCE_ID(res_id)
   
   CHECK_RESOURCE_ID_ERROR(res_id,result)
+	
+  /* check access right */
+  CHECK_ACCESS_RIGHTS_RESOURCE_ID(res_id,result)
   
   IF_NO_EXTENDED_ERROR(result)
 #ifndef NO_RESOURCE
@@ -229,7 +232,10 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
   STORE_RESOURCE_ID(res_id)
 
   CHECK_RESOURCE_ID_ERROR(res_id,result)
-
+	
+  /* check access right */
+  CHECK_ACCESS_RIGHTS_RESOURCE_ID(res_id,result)
+	
   IF_NO_EXTENDED_ERROR(result)
   #ifndef NO_RESOURCE
     res = tpl_resource_table[res_id];
