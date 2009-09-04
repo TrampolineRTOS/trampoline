@@ -89,8 +89,8 @@ running interrupts_s5
 ....
 OK (4 tests)
 running interrupts_s6
-.
-OK (1 test)
+...................
+OK (19 tests)
 running events_s1_full
 ...
 OK (3 tests)
@@ -181,6 +181,9 @@ OK (8 tests)
 running alarms_s10
 ...
 OK (3 tests)
+running alarms_s11
+...
+OK (3 tests)
 running hook_s1_full
 ..
 OK (2 tests)
@@ -247,9 +250,15 @@ OK (20 tests)
 running com_internal_s6_non
 ....................
 OK (20 tests)
-running autosar_s1
-...
-OK (3 tests)
+running autosar_coreos_s1
+....
+OK (4 tests)
+running autosar_coreos_s2
+.....
+OK (5 tests)
+running autosar_coreos_s3
+....
+OK (4 tests)
 running autosar_sc_s1
 ...
 OK (3 tests)
@@ -265,12 +274,6 @@ OK (3 tests)
 running autosar_sc_s5
 ..
 OK (2 tests)
-running autosar_alarm_s1
-....
-OK (4 tests)
-running autosar_alarm_s2
-.....
-OK (5 tests)
 running autosar_st_s1
 ..........
 OK (10 tests)
@@ -334,6 +337,18 @@ OK (5 tests)
 running autosar_sts_s14
 .......
 OK (7 tests)
+running autosar_app_s1
+....
+OK (4 tests)
+running autosar_app_s2
+.
+OK (1 test)
+running autosar_app_s3
+.
+OK (1 test)
+running autosar_app_s4
+...
+OK (3 tests)
 running autosar_sp_s1
 ........
 OK (8 tests)
@@ -346,3 +361,6 @@ OK (10 tests)
 running autosar_sp_s4
 .......
 OK (7 tests)
+running autosar_sp_s5
+.................
+OK (17 tests)

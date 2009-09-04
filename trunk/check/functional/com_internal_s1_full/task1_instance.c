@@ -48,8 +48,8 @@ static void test_t1_instance(void)
 {
 	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6;
 	
-	/*result_inst_1 = GetCOMApplicationMode();	
-	SCHEDULING_CHECK_AND_EQUAL_INT(X,E_OK, result_inst_1);
+	/*result_inst = GetCOMApplicationMode();	
+	SCHEDULING_CHECK_AND_EQUAL_INT(X,E_OK, result_inst);
 	*/
 	
 	SCHEDULING_CHECK_INIT(1);

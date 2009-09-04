@@ -87,13 +87,6 @@ IMPLEMENTATION trampoline {
 		PRIORITY = 2;
 		STACKSIZE = 32768;
 	};
-	APPLICATION app {
-		TRUSTED = FALSE;
-		STARTUPHOOK = FALSE;
-		TASK = t1;
-		ISR = isr1;
-		ISR = isr2;
-	};
 
 };
 

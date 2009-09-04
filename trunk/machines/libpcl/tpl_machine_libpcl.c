@@ -399,7 +399,7 @@ void tpl_osek_func_stub( void* data )
 		if(FALSE!=tpl_get_interrupt_lock_status())  
 	    {
 			tpl_reset_interrupt_lock_status();
-			tpl_enable_all_interrupts_service();
+			/*tpl_enable_interrupts(); now ?? or wait until TerminateISR reschedule and interrupts enabled returning previous API service call OR by signal_handler.*/
 			result = E_OS_DISABLEDINT;
 		}
 		/* release resources if held */
@@ -408,7 +408,7 @@ void tpl_osek_func_stub( void* data )
 			result = E_OS_RESOURCE;
 		}
 		
-		PROCESS_ERROR(result);  /* store terminateISR service id ?*/
+		PROCESS_ERROR(result);  /* store terminateISR service id before hook ?*/
 #endif /* WITH_AUTOSAR*/
 		TerminateISR();
     }
@@ -419,7 +419,7 @@ void tpl_osek_func_stub( void* data )
 		if(FALSE!=tpl_get_interrupt_lock_status())  
 		{                                           
 			tpl_reset_interrupt_lock_status();
-			tpl_enable_all_interrupts_service();
+			/*tpl_enable_interrupts(); now ?? or wait until TerminateISR reschedule and interrupts enabled returning previous API service call OR by signal_handler.*/
 		}
 		/* release resources if held */
 		if( (tpl_kern.running->resources) != NULL ){
@@ -427,7 +427,7 @@ void tpl_osek_func_stub( void* data )
 		}
 		
 		/* error hook*/
-		PROCESS_ERROR(E_OS_MISSINGEND); /* store terminatetask service id ?*/
+		PROCESS_ERROR(E_OS_MISSINGEND); /* store terminatetask service id before hook ?*/
 		
 		/* terminate the task */
 		tpl_terminate_task_service();

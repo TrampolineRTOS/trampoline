@@ -48,7 +48,7 @@ static void test_error_instance6(void)
 	SCHEDULING_CHECK_INIT(12);
 	result_inst_1 = OSErrorGetServiceId();
 	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(12,OSServiceId_GetElapsedCounterValue , result_inst_1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(12, INVALID_COUNTER , OSServiceId_GetElapsedCounterValue_CounterID());
+	SCHEDULING_CHECK_AND_EQUAL_INT(12, INVALID_COUNTER , OSError_GetElapsedCounterValue_CounterID());
 	
 }
 

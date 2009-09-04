@@ -52,6 +52,24 @@ IMPLEMENTATION trampoline {
         STATUS = EXTENDED;
 		APP_SRC = "interrupts_s6.c";
 		APP_SRC = "task1_instance.c";
+		APP_SRC = "error_instance1.c";
+		APP_SRC = "error_instance2.c";
+		APP_SRC = "error_instance3.c";
+		APP_SRC = "error_instance4.c";
+		APP_SRC = "error_instance5.c";
+		APP_SRC = "error_instance6.c";
+		APP_SRC = "error_instance7.c";
+		APP_SRC = "error_instance8.c";
+		APP_SRC = "error_instance9.c";
+		APP_SRC = "error_instance10.c";
+		APP_SRC = "error_instance11.c";
+		APP_SRC = "error_instance12.c";
+		APP_SRC = "error_instance13.c";
+		APP_SRC = "error_instance14.c";
+		APP_SRC = "error_instance15.c";
+		APP_SRC = "error_instance16.c";
+		APP_SRC = "error_instance17.c";
+		APP_SRC = "error_instance18.c";
 		APP_SRC = "../config.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "interrupts_s6_exe";
@@ -60,47 +78,36 @@ IMPLEMENTATION trampoline {
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
+		ERRORHOOK = TRUE;
     } ;
 
     APPMODE std {};
 
-    TASK t1 {
-        AUTOSTART = TRUE { APPMODE = std ; } ;
-        PRIORITY = 2;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-		RESOURCE = Resource1;
-    };
-	
-	TASK t2 {
-        AUTOSTART = FALSE;
-        PRIORITY = 3;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
-	
-	TASK t3 {
-        AUTOSTART = TRUE { APPMODE = std ; } ;
+	TASK t1 {
+		AUTOSTART = TRUE { APPMODE = std ; } ;
 		PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+		RESOURCE = Resource1;
+	};
+	TASK t2 {
+		AUTOSTART = FALSE;
+		PRIORITY = 2;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
 		EVENT = Event1;
-    };
-	
+	};
 	RESOURCE Resource1{
 		RESOURCEPROPERTY = STANDARD;
 	};
-	
 	EVENT Event1{
 		MASK = AUTO;
 	};
-	
 	COUNTER Counter1{
 		MAXALLOWEDVALUE = 10;
 		MINCYCLE = 1;
 		TICKSPERBASE = 1;
 	};
-	
 	ALARM Alarm1{
 		COUNTER = Counter1;
 		ACTION = ACTIVATETASK {
@@ -111,6 +118,4 @@ IMPLEMENTATION trampoline {
 
 };
 
-
-
-/* End of file interrupts_s5.oil */
+/* End of file interrupts_s6.oil */

@@ -103,13 +103,6 @@ IMPLEMENTATION trampoline {
 	RESOURCE Resource2{
 		RESOURCEPROPERTY = STANDARD;
 	};
-	APPLICATION app {
-		TASK = t1;
-		TASK = t2;
-		TASK = t3;
-		RESOURCE = Resource1;
-		RESOURCE = Resource2;
-	};
 	
 };
 

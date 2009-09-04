@@ -51,9 +51,6 @@ IMPLEMENTATION trampoline {
     OS config {
         STATUS = STANDARD;
         TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "autosar_sts_s2";
-        CFLAGS  = "-Werror -Wall -pedantic";
-        CFLAGS  = "-Wmissing-field-initializers";
 	};
 
     APPMODE std {};

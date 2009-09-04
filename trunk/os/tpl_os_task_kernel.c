@@ -51,7 +51,7 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
 {
   /*  init the error to no error  */
   VAR(StatusType, AUTOMATIC) result = E_OK;
-
+	
   /*  lock the kernel    */
   LOCK_KERNEL()
 
@@ -65,6 +65,9 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
   /*  Check a task_id error   */
   CHECK_TASK_ID_ERROR(task_id,result)
 
+  /* check access right */
+  CHECK_ACCESS_RIGHTS_TASK_ID(task_id,result)
+	
 #ifndef NO_TASK
   IF_NO_EXTENDED_ERROR(result)
     result = tpl_activate_task(task_id);
@@ -80,7 +83,7 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
         );
       }
 # endif
-    }
+	}
   IF_NO_EXTENDED_ERROR_END()
 #endif
 
@@ -89,7 +92,6 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
   /*  unlock the kernel  */
   UNLOCK_KERNEL()
 	
-
   return result;
 }
 
@@ -166,6 +168,9 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   CHECK_TASK_ID_ERROR(task_id,result)
   /*  Check no resource is held by the terminating task   */
   CHECK_RUNNING_OWNS_REZ_ERROR(result)
+	
+  /* check access right */
+  CHECK_ACCESS_RIGHTS_TASK_ID(task_id,result)
 
 #ifndef NO_TASK
   IF_NO_EXTENDED_ERROR(result)
@@ -280,7 +285,9 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
 		*task_id = INVALID_TASK;
 	}
   IF_NO_EXTENDED_ERROR_END()
-  
+	
+  PROCESS_ERROR(result)
+	
   UNLOCK_KERNEL()
 
   return result;
@@ -305,6 +312,9 @@ FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
 
   /*  Check a task_id error       */
   CHECK_TASK_ID_ERROR(task_id,result)
+
+  /* check access right */
+  CHECK_ACCESS_RIGHTS_TASK_ID(task_id,result)
 
 #ifndef NO_TASK
   IF_NO_EXTENDED_ERROR(result)

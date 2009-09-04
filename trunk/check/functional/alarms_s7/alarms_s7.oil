@@ -61,27 +61,24 @@ IMPLEMENTATION trampoline {
 
     APPMODE std {};
 
-    TASK t1 {
-        AUTOSTART = TRUE { APPMODE = std ; } ;
-        PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-    };
-	
-    TASK t2 {
-        AUTOSTART = FALSE ;
-        PRIORITY = 2;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
+	TASK t1 {
+		AUTOSTART = TRUE { APPMODE = std ; } ;
+		PRIORITY = 1;
+		ACTIVATION = 1;
+		SCHEDULE = NON;
+	};
+	TASK t2 {
+		AUTOSTART = FALSE ;
+		PRIORITY = 2;
+		ACTIVATION = 1;
+		SCHEDULE = NON;
 		EVENT = Event1;
-    };
-	
+	};
 	COUNTER Counter1{
 		MAXALLOWEDVALUE = 16;
 		TICKSPERBASE = 10;
 		MINCYCLE = 1;
 	};
-	
 	ALARM Alarm1{
 		COUNTER = Counter1;
 		ACTION = SETEVENT {
@@ -90,7 +87,6 @@ IMPLEMENTATION trampoline {
 		};
 		AUTOSTART = FALSE;
 	};
-	
 	EVENT Event1{
 		MASK = AUTO;
 	};

@@ -53,7 +53,7 @@ static void test_t2_instance(void)
 	
 	SCHEDULING_CHECK_INIT(2);
 	result_inst_3 = GetEvent(t1,&result_inst_2);
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(2,E_OK, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(2, 0 , result_inst_2);
 	SCHEDULING_CHECK_AND_EQUAL_INT(2,E_OK, result_inst_3);
 	
 	SCHEDULING_CHECK_INIT(3);

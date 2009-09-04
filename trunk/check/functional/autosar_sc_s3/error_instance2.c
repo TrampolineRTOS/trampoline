@@ -48,7 +48,7 @@ static void test_error_instance2(void)
 	SCHEDULING_CHECK_INIT(4);
 	result_inst_1 = OSErrorGetServiceId();
 	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(4,OSServiceId_IncrementCounter , result_inst_1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(4, INVALID_COUNTER , OSServiceId_IncrementCounter_CounterID());
+	SCHEDULING_CHECK_AND_EQUAL_INT(4, INVALID_COUNTER , OSError_IncrementCounter_CounterID());
 	
 }
 

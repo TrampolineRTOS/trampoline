@@ -85,7 +85,7 @@ IMPLEMENTATION trampoline {
 		EVENT = Event1;
 	};
 	COUNTER Software_Counter1{
-		MAXALLOWEDVALUE = 9;
+		MAXALLOWEDVALUE = 4;
 		TICKSPERBASE = 1;
 		MINCYCLE = 1;
 		TYPE = SOFTWARE;
@@ -112,15 +112,6 @@ IMPLEMENTATION trampoline {
 				EVENT = Event1;
 			};
 		};
-		ACCESSING_APPLICATION = app;
-	};
-	APPLICATION app {
-		TRUSTED = FALSE;
-		STARTUPHOOK = TRUE;
-		TASK = t1;
-		TASK = t2;
-		COUNTER = Software_Counter1;
-		SCHEDULETABLE = sched_explicit;
 	};
 	EVENT Event1{
 		MASK = AUTO;

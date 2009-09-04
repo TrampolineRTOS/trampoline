@@ -50,10 +50,7 @@ IMPLEMENTATION trampoline {
 
     OS config {
         STATUS = STANDARD;
-        TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "goil_autosar_st_s4";
-        CFLAGS  = "-Werror -Wall -pedantic";
-        CFLAGS  = "-Wmissing-field-initializers";		
+        TRAMPOLINE_BASE_PATH = "../../..";		
 	};
 
     APPMODE std {};

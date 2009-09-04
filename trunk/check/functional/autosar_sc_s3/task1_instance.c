@@ -46,8 +46,10 @@ DeclareCounter(INVALID_COUNTER);
 static void test_t1_instance(void)
 {
 	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6;
-	TickType TickType_inst_1, TickType_inst_3, TickType_inst_5, TickType_inst_6, TickType_inst_7;
+	TickType TickType_inst_5, TickType_inst_6, TickType_inst_7;
+	TickType TickType_inst_1 = OSMAXALLOWEDVALUE_Software_Counter + 1;
 	TickType TickType_inst_2 = OSMAXALLOWEDVALUE_Software_Counter + 1;
+	TickType TickType_inst_3 = OSMAXALLOWEDVALUE_Software_Counter + 1;
 	TickType TickType_inst_4 = OSMAXALLOWEDVALUE_Hardware_Counter + 1;
 	
 	SCHEDULING_CHECK_INIT(1);

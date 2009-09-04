@@ -60,6 +60,9 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   STORE_EVENT_MASK(event)
   
   CHECK_TASK_ID_ERROR(task_id,result)
+	
+  /* check access right */
+  CHECK_ACCESS_RIGHTS_TASK_ID(task_id,result)
 
   /*  checks the task is an extended one  */
   CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)
@@ -147,7 +150,10 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
   STORE_EVENT_MASK_REF(event)
   
   CHECK_TASK_ID_ERROR(task_id,result)
-  
+  	
+  /* check access right */
+  CHECK_ACCESS_RIGHTS_TASK_ID(task_id,result)
+	
   /*  checks the task is an extended one  */
   CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)
   /*  checks the task is not in the SUSPENDED state   */

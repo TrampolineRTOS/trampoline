@@ -48,8 +48,8 @@ static void test_error_instance1(void)
 	SCHEDULING_CHECK_INIT(3);
 	result_inst_1 = OSErrorGetServiceId();
 	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(3,OSServiceId_StartScheduleTableRel , result_inst_1);
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(3, INVALID_SCHEDULETABLE , OSServiceId_StartScheduleTableRel_ScheduleTableID());
-	SCHEDULING_CHECK_AND_EQUAL_INT(3, 1, OSServiceId_StartScheduleTableRel_offset());
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(3, INVALID_SCHEDULETABLE , OSError_StartScheduleTableRel_ScheduleTableID());
+	SCHEDULING_CHECK_AND_EQUAL_INT(3, 1, OSError_StartScheduleTableRel_offset());
 	
 }
 

@@ -47,8 +47,8 @@ static void test_error_instance4(void)
 	
 	SCHEDULING_CHECK_INIT(8);
 	result_inst_1 = OSErrorGetServiceId();
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(8,INVALID_SCHEDULETABLE , OSServiceId_SyncScheduleTable_ScheduleTableID());
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(8,1 , OSServiceId_SyncScheduleTable_value());
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(8,INVALID_SCHEDULETABLE , OSError_SyncScheduleTable_ScheduleTableID());
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(8,1 , OSError_SyncScheduleTable_value());
 	SCHEDULING_CHECK_AND_EQUAL_INT(8,OSServiceId_SyncScheduleTable, result_inst_1);
 		
 }

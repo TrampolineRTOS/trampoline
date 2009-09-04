@@ -114,7 +114,6 @@ IMPLEMENTATION trampoline {
                 TASK = t2;
             };
         };
-        ACCESSING_APPLICATION = app;
     };
 	
 	SCHEDULETABLE sched2 {
@@ -129,7 +128,6 @@ IMPLEMENTATION trampoline {
                 TASK = t2;
             };
         };
-        ACCESSING_APPLICATION = app;
     };
 	
 	SCHEDULETABLE sched3 {
@@ -144,7 +142,6 @@ IMPLEMENTATION trampoline {
                 TASK = t2;
             };
         };
-        ACCESSING_APPLICATION = app;
     };
 	
 	SCHEDULETABLE sched4 {
@@ -159,21 +156,7 @@ IMPLEMENTATION trampoline {
                 TASK = t2;
             };
         };
-        ACCESSING_APPLICATION = app;
     };
-	
-    APPLICATION app {
-        TRUSTED = FALSE;
-        STARTUPHOOK = TRUE;
-        TASK = t1;
-		TASK = t2;
-		COUNTER = Software_Counter;
-		COUNTER = Hardware_Counter;
-        SCHEDULETABLE = sched1;
-        SCHEDULETABLE = sched2;
-        SCHEDULETABLE = sched3;
-        SCHEDULETABLE = sched4;
-	};
 
 };
 

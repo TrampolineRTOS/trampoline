@@ -15,7 +15,7 @@ if [ "$1" = "clean" ]
 then
 	for i in `cat functional_testSequences.txt`
 	do
-		#remove make-rules, makefiles, ${i}/, build/, embUnit/*.o and lib/libembUnit.a
+		#remove make-rules, makefiles, ${i}/, build/ and exe file
 		rm -rf ./${i}/build
 		rm -rf ./${i}/${i}
 		rm -rf ./${i}/Make-rules
@@ -62,18 +62,22 @@ else
 		echo "running $i" | tee -a ../functional_results.log 
 		
 		#remove the executable file in order to know if the make succeed.
-		rm -rf ./${i} 
+		rm -rf ./${i}_exe
 
-		#if Makefile doesn't exist -> do goil
-		if ! `test -f Makefile`
+		#check if previous target compiled is the same as the one wanted. If not, clean all and compile
+		if [ -f Make-rules ] && [ "`cat Make-rules | grep GOIL_TARGET | grep -c $1`" = "0" ]
 		then
-			#check if target's name is among arguments (default=libpcl). If "no_results" is sent by test.sh, do goil with libpcl.
-			if [ "$1" = "" ] || [ "$1" = "no_results" ]
-			then	
-				goil --target=posix --templates=../../../goil/templates/ -g ${i}.oil $autosar_flag 2>&1 | tee -a ../functional_results.log
-			else 
-				goil --target=$1 --templates=../../../goil/templates/ -g ${i}.oil $autosar_flag 2>&1 | tee -a ../functional_results.log
-			fi
+			echo "(previous target different than $1 -> Recompilation...)" 
+			rm -rf ./build
+			rm -rf ./${i}
+			rm -rf ./Make-rules
+			rm -rf ./Makefile
+		fi
+		
+		#if Makefile doesn't exist -> do goil
+		if ! [ -f Makefile ]
+		then
+			goil --target=$1 --templates=../../../goil/templates/ -g ${i}.oil $autosar_flag 2>&1 | tee -a ../functional_results.log
 		fi
 		
 		#if goil succeed (Makefile has been created) -> do make and execute file
@@ -88,17 +92,5 @@ else
 	
 	done
 	echo "Functional tests done."
-
-	if [ "$1" != "no_results" ] && [ "$2" != "no_results" ]
-	then
-		#Compare results
-		echo "Compare functional results with the expected ones..."
-		if [ `diff functional_results_expected.log functional_results.log | wc -l` -eq 0 ]
-		then
-			echo "functional tests Succeed!!"
-		else
-			echo "functional tests Failed! Results are stored in `pwd`/functional_results.log"
-		fi
-	fi
 
 fi

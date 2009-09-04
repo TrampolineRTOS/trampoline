@@ -93,12 +93,15 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
 	/* check interrupts are not disabled by user    */
     CHECK_INTERRUPT_LOCK(result)
 
-    STORE_SERVICE(OSServiceId_GetAlarm)
+    STORE_SERVICE(OSServiceId_GetAlarmBase)
     STORE_ALARM_ID(alarm_id)
     STORE_ALARM_BASE_REF(info)
 
     CHECK_ALARM_ID_ERROR(alarm_id,result)
-
+	
+	/* check access right */
+	CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
+	
 #ifndef NO_ALARM
     IF_NO_EXTENDED_ERROR(result)
         alarm = tpl_alarm_table[alarm_id];
@@ -136,7 +139,10 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
   STORE_TICK_REF_1(tick)
 
   CHECK_ALARM_ID_ERROR(alarm_id,result)
-
+	
+  /* check access right */
+  CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
+	
 #ifndef NO_ALARM
   IF_NO_EXTENDED_ERROR(result)
     alarm = tpl_alarm_table[alarm_id];
@@ -191,6 +197,10 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
     STORE_TICK_2(cycle)
 
     CHECK_ALARM_ID_ERROR(alarm_id,result)
+	
+	/* check access right */
+	CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
+	
     CHECK_ALARM_INCREMENT_ERROR(alarm_id,increment,result)
     CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
 
@@ -255,6 +265,10 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
     STORE_TICK_2(cycle)
 
     CHECK_ALARM_ID_ERROR(alarm_id,result)
+	
+	/* check access right */
+	CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
+	
     CHECK_ALARM_INCREMENT_ERROR(alarm_id,start,result)
     CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
 
@@ -309,6 +323,9 @@ FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
     STORE_ALARM_ID(alarm_id)
 
     CHECK_ALARM_ID_ERROR(alarm_id,result)
+	
+	/* check access right */
+	CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
 
 #ifndef NO_ALARM
     IF_NO_EXTENDED_ERROR(result)

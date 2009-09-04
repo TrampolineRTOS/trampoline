@@ -173,4 +173,13 @@
  */
 #define NO_RESTART  1
 
+/**
+ *  @def  INVALID_RESTART
+ *
+ *  Invalid Parameter for TerminateApplication.
+ *  @see #TerminateApplication
+ *  @see #RestartType
+ */
+#define INVALID_RESTART  2
+
 #endif /* TPL_AS_DEFINITIONS_H */
