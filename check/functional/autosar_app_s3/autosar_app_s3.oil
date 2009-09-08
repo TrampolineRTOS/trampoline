@@ -89,6 +89,12 @@ IMPLEMENTATION trampoline {
 		TICKSPERBASE = 1;
 		MINCYCLE = 1;
 		TYPE = SOFTWARE;
+	};		
+	COUNTER Software_Counter2{
+		MAXALLOWEDVALUE = 100;
+		TICKSPERBASE = 1;
+		MINCYCLE = 1;
+		TYPE = SOFTWARE;
 	};
 	ALARM Alarm1{
 		COUNTER = Software_Counter;
@@ -111,7 +117,7 @@ IMPLEMENTATION trampoline {
 		};
 	};
 	SCHEDULETABLE sched2 {
-		COUNTER = Software_Counter;
+		COUNTER = Software_Counter2;
 		AUTOSTART = FALSE ;
 		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
 		PERIODIC = FALSE;
@@ -127,16 +133,17 @@ IMPLEMENTATION trampoline {
 		RESOURCEPROPERTY = STANDARD;
 	};
 	APPLICATION app1 {
-		TASK = t1;
-		RESOURCE = Resource1;
+		ALARM = Alarm1;
 		COUNTER = Software_Counter;
+		RESOURCE = Resource1;
 		SCHEDULETABLE = sched1;
+		TASK = t1;
 	};
 	APPLICATION app2 {
-		ALARM = Alarm1;
-		TASK = t2;
+		COUNTER = Software_Counter2;
 		ISR = isr1;
 		SCHEDULETABLE = sched2;
+		TASK = t2;
 	};
 
 	

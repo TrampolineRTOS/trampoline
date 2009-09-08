@@ -157,9 +157,73 @@ routine apps_well_formed
     # resources
     object_not_in_any ![resources keyList]   !all_rezs_in_app   !"RESOURCE" ;
 
-    #verify than an OS-Application is composed by at least one task or isr2
+    #verify than an OS-Application is composed by at least one Task OR Isr2
     foreach apps (@lstring app_name @app_obj app) do
-       #message "There is ".[[[[app tasks] keyList] length] string]." tasks in app ".[app_name string]."\n";       if ([[[app tasks] keyList] length] == 0) & ([[[app isrs] keyList] length] == 0) then          error app_name:"OS445 - An application should have at least one Task OR ISR2. \n";       end if;    end foreach;       end if ;
+       #message "There is ".[[[[app tasks] keyList] length] string]." tasks in app ".[app_name string]."\n";       if ([[[app tasks] keyList] length] == 0) & ([[[app isrs] keyList] length] == 0) then          error app_name:"OS445 - An application should have at least one Task OR ISR2.";       end if;    end foreach;        @bool right_app := false;    @bool access_app := false;    #verify than an alarm/schedule table doesn't try to access to objects (task, counter, object counter) in other applications)    foreach alarms (@lstring alarm_name @alarm_obj alarm) do 
+        #verify object counter:        # find counter's application...        foreach apps (@lstring app_name @app_obj app) do                                   foreach [app counters] (@lstring counter_name2 @basic_type counter) do             if ( [counter_name2 string] == [[alarm counter_name] string]) then                # ... and verify if the alarm is in the same application of the task
+                foreach [app alarms] (@lstring alarm_name2 @basic_type alarm2) do                   if ( [alarm_name2 string] == [alarm_name string]) then                      right_app := true;                   end if;                end foreach;       
+                if (right_app == false) then
+                   foreach [alarm acc_apps] (@lstring s) do
+                     if [s string] == [app_name string] then
+                         access_app := true;
+                     end if ;
+                   end foreach ;                   if (access_app == false) then                      error alarm_name:"Counter ".[[alarm counter_name] string]." doesn't belong to the same application of alarm ".[alarm_name string];                   end if;                   access_app := false;                end if;                             right_app := false;             end if;           end foreach;         end foreach;  
+        
+        #verify task, counter:        @action_obj alarm_action;        alarm_action := [alarm action_params];
+        cast alarm_action :
+        when == @setevent_action sea do            # find task's application...            foreach apps (@lstring app_name @app_obj app) do                                       foreach [app tasks] (@lstring task_name2 @basic_type task) do                 if ( [task_name2 string] == [[sea task_name] string]) then                    # ... and verify if the alarm is in the same application of the task
+                    foreach [app alarms] (@lstring alarm_name2 @basic_type alarm2) do                       if ( [alarm_name2 string] == [alarm_name string]) then                          right_app := true;                       end if;                    end foreach;       
+                    if (right_app == false) then
+                       foreach [alarm acc_apps] (@lstring s) do
+                         if [s string] == [app_name string] then
+                             access_app := true;
+                         end if ;
+                       end foreach ;                       if (access_app == false) then                          error alarm_name:"Task ".[[sea task_name] string]." doesn't belong to the same application of alarm ".[alarm_name string];                       end if;                       access_app := false;                    end if;                                 right_app := false;                 end if;               end foreach;             end foreach;
+        when == @activatetask_action ata do            # find task's application...            foreach apps (@lstring app_name @app_obj app) do                                       foreach [app tasks] (@lstring task_name2 @basic_type task) do                 if ( [task_name2 string] == [[ata task_name] string]) then                    # ... and verify if the alarm is in the same application of the task
+                    foreach [app alarms] (@lstring alarm_name2 @basic_type alarm2) do
+                       if ( [alarm_name2 string] == [alarm_name string]) then                          right_app := true;                       end if;                    end foreach;       
+                    if (right_app == false) then
+                       foreach [alarm acc_apps] (@lstring s) do
+                         if [s string] == [app_name string] then
+                             access_app := true;
+                         end if ;
+                       end foreach ;                       if (access_app == false) then                          error alarm_name:"Task ".[[ata task_name] string]." doesn't belong to the same application of alarm ".[alarm_name string];                       end if;                       access_app := false;                    end if;                                 right_app := false;                 end if;               end foreach;             end foreach;                when == @incrementcounter_action ica do            # find counter's application...            foreach apps (@lstring app_name @app_obj app) do                                       foreach [app counters] (@lstring counter_name2 @basic_type counter) do                 if ( [counter_name2 string] == [[ica counter_name] string]) then                    # ... and verify if the alarm is in the same application of the task
+                    foreach [app alarms] (@lstring alarm_name2 @basic_type alarm2) do                       if ( [alarm_name2 string] == [alarm_name string]) then                          right_app := true;                       end if;                    end foreach;       
+                    if (right_app == false) then
+                       foreach [alarm acc_apps] (@lstring s) do
+                         if [s string] == [app_name string] then
+                             access_app := true;
+                         end if ;
+                       end foreach ;                       if (access_app == false) then                          error alarm_name:"Counter ".[[ica counter_name] string]." doesn't belong to the same application of alarm ".[alarm_name string];                       end if;                       access_app := false;                    end if;                                 right_app := false;                 end if;               end foreach;             end foreach;          
+        else end cast;           end foreach;        foreach schedtables (@lstring sched_name @scheduletable_obj sched) do 
+        #verify object counter:        # find counter's application...        foreach apps (@lstring app_name @app_obj app) do                                   foreach [app counters] (@lstring counter_name2 @basic_type counter) do             if ( [counter_name2 string] == [[sched counter] string]) then                # ... and verify if the schedule table is in the same application of the task
+                foreach [app schedtables] (@lstring sched_name2 @basic_type sched) do                   if ( [sched_name2 string] == [sched_name string]) then                      right_app := true;                   end if;                end foreach;       
+                if (right_app == false) then                   foreach [sched acc_apps] (@lstring s) do
+                     if [s string] == [app_name string] then
+                         access_app := true;
+                     end if ;
+                   end foreach ;                   if (access_app == false) then                                       error sched_name:"Counter ".[[sched counter] string]." doesn't belong to the same application of schedule table ".[sched_name string];                   end if;                   access_app := false;                end if;                             right_app := false;             end if;           end foreach;         end foreach;  
+                #check each expiry point                @expiry_point_list eps:= [sched exp_points];        foreach eps (@uint64 eps_name @expiry_point_obj eps) do
+          #cast point :          #when == @setevent_action sea do          #else end cast;
+          @action_list eps_action;          eps_action := [eps actions];
+          foreach eps_action (@uint action_name @action_obj action) do
+             cast action :
+             when == @setevent_action sea do               # find task's application...               foreach apps (@lstring app_name @app_obj app) do                                         foreach [app tasks] (@lstring task_name2 @basic_type task) do                   if ( [task_name2 string] == [[sea task_name] string]) then                      # ... and verify if the schedule table is in the same application of the task
+                      foreach [app schedtables] (@lstring sched_name2 @basic_type sched) do                         if ( [sched_name2 string] == [sched_name string]) then                            right_app := true;                         end if;                      end foreach;            
+                      if (right_app == false) then                         foreach [sched acc_apps] (@lstring s) do
+                           if [s string] == [app_name string] then
+                               access_app := true;
+                           end if ;
+                         end foreach ;                         if (access_app == false) then                            error sched_name:"Task ".[[sea task_name] string]." doesn't belong to the same application of schedule table ".[sched_name string];                         end if;                         access_app := false;                      end if;                                   right_app := false;                   end if;                 end foreach;                end foreach;
+             when == @activatetask_action ata do               # find task's application...               foreach apps (@lstring app_name @app_obj app) do                                         foreach [app tasks] (@lstring task_name2 @basic_type task) do                   if ( [task_name2 string] == [[ata task_name] string]) then                      # ... and verify if the schedule table is in the same application of the task
+                      foreach [app schedtables] (@lstring sched_name2 @basic_type sched) do                         if ( [sched_name2 string] == [sched_name string]) then                            right_app := true;                         end if;                      end foreach;            
+                      if (right_app == false) then                         foreach [sched acc_apps] (@lstring s) do
+                           if [s string] == [app_name string] then
+                               access_app := true;
+                           end if ;
+                         end foreach ;                         if (access_app == false) then                                                  error sched_name:"Task ".[[ata task_name] string]." doesn't belong to the same application of schedule table ".[sched_name string];                         end if;                         access_app := false;                      end if;                                   right_app := false;                   end if;                 end foreach;                end foreach;         
+             else end cast;       
+          end foreach;        end foreach;       end foreach;       end if ;
 end routine ;
 
 end semantics ;
