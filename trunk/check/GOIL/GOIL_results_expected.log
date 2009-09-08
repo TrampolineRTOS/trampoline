@@ -54,5 +54,14 @@ CHECKPATH/goil_autosar_sts_s2/goil_autosar_sts_s2.oil:100:21: error: OS437 - In 
 CHECKPATH/goil_autosar_sts_s2/goil_autosar_sts_s2.oil:134:16: error: Internal error, PRECISION has a wrong datatype
 CHECKPATH/goil_autosar_sts_s2/goil_autosar_sts_s2.oil:138:14: error: OS431 - An EXPLICIT schedule table shouldn't have a duration greater than OSMAXALLOWEVALUE + 1 (9) of its counter.
 running goil_autosar_app_s1
-CHECKPATH/goil_autosar_app_s1/goil_autosar_app_s1.oil:73:17: error: OS445 - An application should have at least one Task OR ISR2. 
-
+CHECKPATH/goil_autosar_app_s1/goil_autosar_app_s1.oil:73:17: error: OS445 - An application should have at least one Task OR ISR2.
+running goil_autosar_app_s2
+CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:89:13: error: Counter Software_Counter2 doesn't belong to the same application of alarm Alarm1
+CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:104:13: error: Task t2 doesn't belong to the same application of alarm Alarm2
+CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:119:13: error: Task t2 doesn't belong to the same application of alarm Alarm3
+CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:136:13: error: Counter Software_Counter2 doesn't belong to the same application of alarm Alarm4
+CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:151:21: error: Counter Software_Counter2 doesn't belong to the same application of schedule table sched1
+CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:178:21: error: Task t2 doesn't belong to the same application of schedule table sched2
+CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:178:21: error: Task t3 doesn't belong to the same application of schedule table sched2
+CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:218:21: error: Task t3 doesn't belong to the same application of schedule table sched3
+CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:218:21: error: Task t2 doesn't belong to the same application of schedule table sched3

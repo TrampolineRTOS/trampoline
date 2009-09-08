@@ -45,6 +45,7 @@ IMPLEMENTATION trampoline {
 
     OS config {
         STATUS = STANDARD;
+		APP_SRC = "../config.c";
 		APP_SRC = "tasks_s2.c";
 		APP_SRC = "task1_instance.c";
 		APP_SRC = "task2_instance.c";
@@ -60,26 +61,24 @@ IMPLEMENTATION trampoline {
 
     APPMODE std {};
 
-    TASK t1 {
-        AUTOSTART = TRUE { APPMODE = std ; } ;
-        PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-    };
-
-    TASK t2 {
-        AUTOSTART = FALSE;
-        PRIORITY = 2;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-    };
-
-    TASK t3 {
-        AUTOSTART = FALSE;
-        PRIORITY = 3;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-    };
+	TASK t1 {
+		AUTOSTART = TRUE { APPMODE = std ; } ;
+		PRIORITY = 1;
+		ACTIVATION = 1;
+		SCHEDULE = NON;
+	};
+	TASK t2 {
+		AUTOSTART = FALSE;
+		PRIORITY = 2;
+		ACTIVATION = 1;
+		SCHEDULE = NON;
+	};
+	TASK t3 {
+		AUTOSTART = FALSE;
+		PRIORITY = 3;
+		ACTIVATION = 1;
+		SCHEDULE = NON;
+	};
 };
 
 /* End of file tasks_s2.oil */

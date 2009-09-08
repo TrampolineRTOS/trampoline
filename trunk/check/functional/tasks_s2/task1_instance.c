@@ -39,6 +39,9 @@
 
 DeclareTask(t2);
 DeclareTask(t3);
+DeclareAlarm(Alarm1);
+
+void WaitActivationOneShotAlarm(AlarmType Alarm);
 
 /*test case:test the reaction of the system called with 
 an activation of a task*/

@@ -103,11 +103,11 @@ static void test_t1_instance(void)
 	SCHEDULING_CHECK_AND_EQUAL_INT(9, NO_ACCESS, result_obj_9);
 	
 	SCHEDULING_CHECK_INIT(10);
-	result_obj_10 = CheckObjectAccess(app2, OBJECT_ALARM, Alarm1); 
+	result_obj_10 = CheckObjectAccess(app1, OBJECT_ALARM, Alarm1); 
 	SCHEDULING_CHECK_AND_EQUAL_INT(10, ACCESS, result_obj_10);
 	
 	SCHEDULING_CHECK_INIT(11);
-	result_obj_11 = CheckObjectAccess(app1, OBJECT_ALARM, Alarm1); 
+	result_obj_11 = CheckObjectAccess(app2, OBJECT_ALARM, Alarm1); 
 	SCHEDULING_CHECK_AND_EQUAL_INT(11, NO_ACCESS, result_obj_11);
 	
 	
@@ -190,7 +190,7 @@ static void test_t1_instance(void)
 	
 	SCHEDULING_CHECK_INIT(30);
 	result_app_7 = CheckObjectOwnership(OBJECT_ALARM, Alarm1); 
-	SCHEDULING_CHECK_AND_EQUAL_INT(30, app2, result_app_7);
+	SCHEDULING_CHECK_AND_EQUAL_INT(30, app1, result_app_7);
 	
 	
 	SCHEDULING_CHECK_INIT(31);

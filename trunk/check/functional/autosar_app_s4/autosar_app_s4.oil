@@ -111,7 +111,7 @@ IMPLEMENTATION trampoline {
 	ALARM Alarm2{
 		COUNTER = Software_Counter2;
 		ACTION = ACTIVATETASK {
-			TASK = t1;
+			TASK = t2;
 		};
 		AUTOSTART = FALSE;
 	};
@@ -166,7 +166,6 @@ IMPLEMENTATION trampoline {
 	RESOURCE Resource1{
 		RESOURCEPROPERTY = STANDARD;
 	};
-
 	RESOURCE Resource2{
 		RESOURCEPROPERTY = STANDARD;
 	};
