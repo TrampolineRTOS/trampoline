@@ -47,9 +47,44 @@
 #include "tpl_memmap.h"
 
 volatile VAR(u32, OS_VAR) tpl_locking_depth = 0;
-extern VAR(u32, OS_VAR) tpl_cpt_user_task_lock_OS;
-extern VAR(u32, OS_VAR) tpl_cpt_user_task_lock_All;
-extern VAR(tpl_bool, OS_VAR) tpl_user_task_lock;
+VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;
+VAR(u32, OS_VAR) tpl_cpt_user_task_lock_All = 0;
+VAR(u32, OS_VAR) tpl_cpt_user_task_lock_OS = 0;
+VAR(u32, OS_VAR) tpl_cpt_os_task_lock = 0;
+
+/**
+ * TODO : document this
+ * This function reset the status of interrupt lock by user
+ */
+FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
+{
+    VAR(tpl_bool, AUTOMATIC) result;
+	
+    if( (TRUE == tpl_user_task_lock) || (tpl_cpt_user_task_lock_OS > 0) || (tpl_cpt_user_task_lock_All > 0) )
+    {
+        result = TRUE;
+    }
+    else
+    {
+        result = FALSE;
+    }
+	
+    return result;
+}
+
+/**
+ * TODO : document this
+ * This function reset the status of interrupt lock by user
+ */
+FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
+{
+	tpl_user_task_lock = FALSE;
+	
+	tpl_cpt_user_task_lock_All = 0;
+	tpl_cpt_user_task_lock_OS = 0;
+	
+	tpl_locking_depth = tpl_cpt_os_task_lock;
+}
 
 /**
  * TODO: document this

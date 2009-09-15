@@ -44,11 +44,8 @@ VAR(tpl_stack_word, OS_VAR) idle_stack_zone[32768/sizeof(tpl_stack_word)] = {0} 
 VAR(struct TPL_STACK, OS_VAR) idle_task_stack = { idle_stack_zone, 32768} ;
 VAR(struct TPL_CONTEXT, OS_VAR) idle_task_context;
 
-VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;
-VAR(u32, OS_VAR) tpl_cpt_user_task_lock = 0;
-VAR(u32, OS_VAR) tpl_cpt_user_task_lock_All = 0;
-VAR(u32, OS_VAR) tpl_cpt_user_task_lock_OS = 0;
-VAR(u32, OS_VAR) tpl_cpt_os_task_lock = 0;
+extern VAR(tpl_bool, OS_VAR) tpl_user_task_lock;
+extern VAR(u32, OS_VAR) tpl_cpt_os_task_lock;
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 VAR(static struct timeval, OS_VAR) startup_time;
@@ -69,49 +66,6 @@ void quit(int n)
 {
     ShutdownOS(E_OK);  
 }
-
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
-FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
-{
-    VAR(tpl_bool, AUTOMATIC) result;
-
-    if( (TRUE == tpl_user_task_lock) || (tpl_cpt_user_task_lock_OS > 0) || (tpl_cpt_user_task_lock_All > 0) )
-    {
-        result = TRUE;
-    }
-    else
-    {
-        result = FALSE;
-    }
-
-    return result;
-}
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
-
-/*******************************************************************************
-** Function name: tpl_reset_interrupt_lock_status
-** Description: this function reset the status of interrupt lock by user
-** Parameter : None
-** Return value:  None
-** Remarks:
-*******************************************************************************/
-#ifdef WITH_AUTOSAR
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
-FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
-{
-  tpl_user_task_lock = FALSE;
-
-  tpl_cpt_user_task_lock_All = 0;
-  tpl_cpt_user_task_lock_OS = 0;
-
-  tpl_locking_depth = tpl_cpt_os_task_lock;
-}
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
-#endif
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 
@@ -209,14 +163,14 @@ void tpl_disable_interrupts(void)
 void tpl_signal_handler(int sig)
 {
     u32 requested_it, channel_id;
-
+	
     /* */
     tpl_locking_depth++;
     tpl_cpt_os_task_lock++;
 
     /* Get the interrupt id from shared memory through vp_ipc API */
     requested_it = vp_ipc_get_interruption_id(&viper);
-    
+   
     channel_id = 31; /* TODO : change magic number */
     while(requested_it != 0)
     {
@@ -224,7 +178,7 @@ void tpl_signal_handler(int sig)
         {
             /* If the interrupt id is valid, call the registred function */
             if( (TPL_IT_VECTOR_INDEX_OFFSET <= channel_id) &&
-                (channel_id < TPL_IT_VECTOR_INDEX_OFFSET + TPL_IT_VECTOR_SIZE))
+                (channel_id < (TPL_IT_VECTOR_INDEX_OFFSET + TPL_IT_VECTOR_SIZE)))
             {
                 channel_id = channel_id - TPL_IT_VECTOR_INDEX_OFFSET;
                 tpl_it_vector[channel_id].func(tpl_it_vector[channel_id].args);
@@ -539,7 +493,7 @@ void tpl_init_machine(void)
     /* 
      * create the context of each tpl_proc 
      */
-    for(proc_id = 0; proc_id < TASK_COUNT+ISR_COUNT; proc_id++)
+    for(proc_id = 0; proc_id < TASK_COUNT+ISR_COUNT+1; proc_id++)
     {
         tpl_create_context(proc_id);
     }
