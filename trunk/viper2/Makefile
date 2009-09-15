@@ -70,9 +70,9 @@ endif
 ##
 # Default
 ##
-default : $(MODULE_bin)
+all: wrapper mod
+wrapper : $(MODULE_bin)
 mod : $(TPL_MODULE_bin)
-all: default mod
 
 ##
 # Python module
