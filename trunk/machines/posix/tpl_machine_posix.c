@@ -26,7 +26,9 @@
 #include "tpl_os_rez_kernel.h"
 #endif /* WITH_AUTOSAR */
 
-#include <assert.h>
+#if defined(__unix__) || defined(__APPLE__)
+	#include <assert.h>
+#endif
 #include <setjmp.h>
 #include <signal.h>
 #include <stdio.h>
@@ -41,52 +43,8 @@ VAR(struct TPL_STACK, OS_VAR) idle_task_stack = { idle_stack_zone, 32768} ;
 VAR(struct TPL_CONTEXT, OS_VAR) idle_task_context;
 
 extern volatile u32 tpl_locking_depth;
-
-VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;
-VAR(u32, OS_VAR) tpl_cpt_user_task_lock_All = 0;
-VAR(u32, OS_VAR) tpl_cpt_user_task_lock_OS = 0;
-VAR(u32, OS_VAR) tpl_cpt_os_task_lock = 0;
-
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
-FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
-{
-    VAR(tpl_bool, AUTOMATIC) result;
-
-    if( (TRUE == tpl_user_task_lock) || (tpl_cpt_user_task_lock_OS > 0) || (tpl_cpt_user_task_lock_All > 0) )
-    {
-        result = TRUE;
-    }
-    else
-    {
-        result = FALSE;
-    }
-
-    return result;
-}
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
-
-/*******************************************************************************
-** Function name: tpl_reset_interrupt_lock_status
-** Description: this function reset the status of interrupt lock by user
-** Parameter : None
-** Return value:  None
-** Remarks:
-*******************************************************************************/
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
-FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
-{
-  tpl_user_task_lock = FALSE;
-
-  tpl_cpt_user_task_lock_All = 0;
-  tpl_cpt_user_task_lock_OS = 0;
-
-  tpl_locking_depth = tpl_cpt_os_task_lock;
-}
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
+extern VAR(tpl_bool, OS_VAR) tpl_user_task_lock;
+extern VAR(tpl_bool, OS_VAR) tpl_cpt_os_task_lock;
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 
@@ -326,7 +284,9 @@ void tpl_get_task_lock(void)
  */
 void tpl_release_task_lock(void)
 {
+#if defined(__unix__) || defined(__APPLE__)
 	assert( tpl_locking_depth > 0 );
+#endif
 	tpl_locking_depth--;
     tpl_cpt_os_task_lock--;
 

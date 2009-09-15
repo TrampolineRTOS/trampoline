@@ -52,7 +52,7 @@ TASK(init)
 
 TASK(startMotor)
 {
-    printf("[TPL](MOTOR) Want speed : %d\n", motor_speed);
+    printf("[TPL](MOTOR) Wanted speed : %d\n", motor_speed);
 
     vp_ipc_write_reg(&viper, MOTOR0_CONTROL, (reg_t)motor_speed);
     vp_ipc_signal_update(&viper, MOTOR0, CONTROL);

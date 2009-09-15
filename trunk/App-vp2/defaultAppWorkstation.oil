@@ -20,15 +20,16 @@ CPU test {
         TRAMPOLINE_BASE_PATH = "..";
         DOW=TRUE;
         CFLAGS  = "-g";
-        CFLAGS  = "-Wall -Wformat -Werror -pedantic -std=c89";
+        CFLAGS  = "-Wall -Wformat -Werror -pedantic -std=c99";
         CFLAGS  = "-Wmissing-field-initializers -I."; 
         ASFLAGS = "";
         LDFLAGS = "";
+		STARTUPHOOK = TRUE;
     } ;
 
-    COUNTER SystemCounter {
-	SOURCE = IRQ2;
-    };
+	COUNTER SystemCounter {
+		SOURCE = IRQ3;
+	};
 
     APPMODE std {
     };
@@ -62,4 +63,5 @@ CPU test {
         ACTIVATION = 1;
         SCHEDULE = FULL;
     };
+
 };
