@@ -1,4 +1,14 @@
 #!/usr/bin/python
+
+###############################################################################
+# check that viper2 ipc lib is compiled.
+###############################################################################
+import os
+try:
+  import ipc
+except:
+	os.system("make all")
+
 ###############################################################################
 # IMPORT
 ###############################################################################
@@ -11,6 +21,8 @@ import signal
 import traceback
 import subprocess
 import config
+
+
 
 ###############################################################################
 # SIGNAL HANDLER
@@ -42,7 +54,7 @@ elif "-g" in sys.argv or "--generate" in sys.argv:
     if "-c" in sys.argv or "--compile" in sys.argv:
       command = ["sh", "./genTpl.sh", ecu.getDir()]
       if "-nodep" in sys.argv or "--nodep" in sys.argv:
-	command.append("NODEP")
+        command.append("NODEP")
 
       make = subprocess.Popen(command,
 	  stdin=subprocess.PIPE, 
@@ -53,12 +65,12 @@ elif "-g" in sys.argv or "--generate" in sys.argv:
 
       make.wait()
       for line in make.stderr:
-	error = True
-	print line
+        error = True
+        print line
 
       if error:
-	print "Error while generating trampoline :", ecu.getDir(),"quit viper2."
-	break
+        print "Error while generating trampoline :", ecu.getDir(),"quit viper2."
+        break
 
 #Run & kill
 else:
