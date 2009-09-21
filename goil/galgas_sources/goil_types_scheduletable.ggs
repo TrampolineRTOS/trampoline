@@ -33,7 +33,7 @@ class @sd_autostart_absolute extends @sd_autostart_true {
 }
 
 abstract class @ltgt_sync_obj {
-    @location	loc;
+    @location loc;
 
 #    abstract method strategy !@string sync_strat;
 }
@@ -62,9 +62,49 @@ sortedlist @action_list {
     @action_obj action;
 }{
     order <
-}abstract class @adjustable_obj extends @oil_obj {  @location location;  abstract method generate ?!@string res;}
-class @adjustable_void extends @adjustable_obj {  override method generate ?!@string res:    doReplace !?res !"$MAX_RETARD$" !"0";    doReplace !?res !"$MAX_ADVANCE$" !"0";  end method;}class @adjustable_false extends @adjustable_obj {  override method generate ?!@string res:    doReplace !?res !"$MAX_RETARD$" !"0";    doReplace !?res !"$MAX_ADVANCE$" !"0";  end method;}class @adjustable_true extends @adjustable_obj {  @basic_type  max_retard;  @basic_type  max_advance;  override method generate ?!@string res:    doReplace !?res !"$MAX_RETARD$" ![uint64_or_error(!max_retard !"MAX_RETARD") string];    doReplace !?res !"$MAX_ADVANCE$" ![uint64_or_error(!max_advance !"MAX_ADVANCE") string];  end method;}routine set_adjustable  ?!@adjustable_obj adj  ?@adjustable_obj  new_adj:  cast adj:  when == @adjustable_void do    adj := new_adj;  else    error [new_adj location]: "Redefinition of ADJUSTABLE";    error [adj location]: "was defined here";  end cast;end routine;  
-class @expiry_point_obj extends @oil_obj {  @basic_type     offset;
+}
+
+
+abstract class @adjustable_obj extends @oil_obj {
+  @location location;
+  abstract method generate ?!@string res;
+}
+class @adjustable_void extends @adjustable_obj {
+  override method generate ?!@string res:
+    doReplace !?res !"$MAX_RETARD$" !"0";
+    doReplace !?res !"$MAX_ADVANCE$" !"0";
+  end method;
+}
+class @adjustable_false extends @adjustable_obj {
+  override method generate ?!@string res:
+    doReplace !?res !"$MAX_RETARD$" !"0";
+    doReplace !?res !"$MAX_ADVANCE$" !"0";
+  end method;
+}
+class @adjustable_true extends @adjustable_obj {
+  @basic_type  max_retard;
+  @basic_type  max_advance;
+  override method generate ?!@string res:
+    doReplace !?res !"$MAX_RETARD$" ![uint64_or_error(!max_retard !"MAX_RETARD") string];
+    doReplace !?res !"$MAX_ADVANCE$" ![uint64_or_error(!max_advance !"MAX_ADVANCE") string];
+  end method;
+}
+
+routine set_adjustable
+  ?!@adjustable_obj adj
+  ?@adjustable_obj  new_adj
+:
+  cast adj:
+  when == @adjustable_void do
+    adj := new_adj;
+  else
+    error [new_adj location]: "Redefinition of ADJUSTABLE";
+    error [adj location]: "was defined here";
+  end cast;
+end routine;
+  
+class @expiry_point_obj extends @oil_obj {
+  @basic_type     offset;
   @lstring        name;
   @adjustable_obj adjust;
   @action_list    actions feature setter;
@@ -91,7 +131,8 @@ routine expiry_point_actions
   # output the table of actions for the expiry point
   @string act_res := "";
   @string res := "\ntpl_action *".[name string]."_".[off string]."[".[[actions length] string]."] = {\n";
-  foreach actions :i do    res .= "    (tpl_action *)&".[name string]."_".[off string]."_".[i string]."_action";
+  foreach actions :i do
+    res .= "    (tpl_action *)&".[name string]."_".[off string]."_".[i string]."_action";
     @string act := "";
     cast action :
     when == @activatetask_action ata do
@@ -117,7 +158,8 @@ routine expiry_point_actions
   end foreach;
   res := act_res . res . "\n};\n";
 
-  doReplace !?i_res !"$EXPIRY_POINT_ACTIONS$" !res;end routine;
+  doReplace !?i_res !"$EXPIRY_POINT_ACTIONS$" !res;
+end routine;
 
 
 class @scheduletable_obj extends @oil_obj {
@@ -144,9 +186,9 @@ class @scheduletable_obj extends @oil_obj {
     doReplace !?stres !"$APP_ID$" !app_name."_id";
     # set the length of the schedule table
     # In addition, add the finalize schedule table action to the schedule table
-		 # Check if offset==length :
-		 #   if yes -> add finalize_ST_action; expiry_point and expiry_table
-		 #   if no -> finish expiry_point and expiry_table; add finalize_ST_action; expiry_point and expiry_table
+   # Check if offset==length :
+   #   if yes -> add finalize_ST_action; expiry_point and expiry_table
+   #   if no -> finish expiry_point and expiry_table; add finalize_ST_action; expiry_point and expiry_table
     @expiry_point_list epl := exp_points;
     cast length:
     when == @uint64_class len do
@@ -188,7 +230,8 @@ class @scheduletable_obj extends @oil_obj {
       else
         perio := "FALSE";
       end if;
-    else      error name : "Internal error, unexpected type for PERIODIC attribute of schedule table ".[name string];
+    else
+      error name : "Internal error, unexpected type for PERIODIC attribute of schedule table ".[name string];
     end cast;
 
     doReplace !?stres !"$PERIODIC$" !perio;
@@ -214,18 +257,26 @@ class @scheduletable_obj extends @oil_obj {
     @string act_structs := "";
     @string expiry_table := "tpl_expiry_point *".[name string]."_expiry_table[$EXPIRY_TABLE_SIZE$] = {\n";
     @uint64 prev_offset := 0L;
-        foreach epl do
+    
+    foreach epl do
       # compute the expiry point descriptor
       @string exp_st;
       retrieveTemplateString ?exp_st !"expiry_point";
       doReplace !?exp_st !"$EXPIRY_POINT$" ![name string]."_".[off string]."_expirypoint";
       doReplace !?exp_st !"$OFFSET$" ![off-prev_offset string];
       doReplace !?exp_st !"$ACTION_COUNT$" ![[[point actions] length] string];
-      doReplace !?exp_st !"$ACTION_ARRAY$" ![name string]."_".[off string];      
+      doReplace !?exp_st !"$ACTION_ARRAY$" ![name string]."_".[off string];
+      
       # output the table of actions for expiry point
-      expiry_point_actions !name !off ![point actions] !?exp_st;      [[point adjust] generate !?exp_st];      act_structs .= exp_st;
+      expiry_point_actions !name !off ![point actions] !?exp_st;
+      [[point adjust] generate !?exp_st];
+      act_structs .= exp_st;
       expiry_table .= "    &".[name string]."_".[off string]."_expirypoint";
-      prev_offset := off;    between      expiry_table .= ",\n";    after      expiry_table .= "\n};\n";
+      prev_offset := off;
+    between
+      expiry_table .= ",\n";
+    after
+      expiry_table .= "\n};\n";
     end foreach;
 
     # set the synchronization strategy and parameters

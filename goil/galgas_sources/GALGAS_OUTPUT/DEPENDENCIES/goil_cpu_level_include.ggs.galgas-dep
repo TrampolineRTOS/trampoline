@@ -1,6 +1,6 @@
-515::
-goil_lexique.ggs
-goil_options.ggs
+572::
+goil_lexique.gLexique
+goil_options.gOption
 goil_syntax.ggs
 goil_semantics.ggs
 goil_types_root.ggs

@@ -8,7 +8,7 @@
 # Trampoline OS
 #
 # Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline est protŽgŽ par la loi sur la propriŽtŽ intellectuelle
+# Trampoline est protï¿½gï¿½ par la loi sur la propriï¿½tï¿½ intellectuelle
 #
 # This software is distributed under the Lesser GNU Public Licence
 #
@@ -22,8 +22,8 @@
 
 syntax goil_obj_os :
 
-import lexique goil_lexique in "goil_lexique.ggs" ;
-import option goil_options in "goil_options.ggs" ;
+import lexique goil_lexique in "goil_lexique.gLexique" ;
+import option goil_options in "goil_options.gOption" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 import semantics goil_types_os in "goil_types_os.ggs" ;
 
@@ -48,7 +48,7 @@ nonterminal <boolean>
 rule <os> 
   ?!@os_obj os
 :
-  @lstring	   status  := [os status] ;
+  @lstring    status  := [os status] ;
   @basic_type  startuphook := [os startuphook] ;
   @basic_type  shutdownhook := [os shutdownhook] ;
   @basic_type  errorhook := [os errorhook] ;

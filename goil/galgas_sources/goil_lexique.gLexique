@@ -194,7 +194,7 @@ list scheduling error message "scheduling value '%K'" style keywordsStyle :
 # Booleans
 #
 list boolean error message "boolean '%K'" style keywordsStyle :
-	"FALSE", "TRUE";
+ "FALSE", "TRUE";
 
 #
 # AUTOSAR addon
@@ -222,7 +222,8 @@ list autosar_objs error message "AUTOSAR object '%K'" style keywordsStyle :
 list schedtable_attrs error message "SCHEDULETABLE attribute '%K'" style keywordsStyle :
     "LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION", "SYNC_STRATEGY",
     "MAX_INCREASE", "MAX_DECREASE", "MAX_INCREASE_ASYNC",
-    "MAX_DECREASE_ASYNC", "PRECISION", "LENGTH", "EXPIRY_POINT",    "MAX_RETARD", "MAX_ADVANCE", "ADJUSTABLE";
+    "MAX_DECREASE_ASYNC", "PRECISION", "LENGTH", "EXPIRY_POINT",
+    "MAX_RETARD", "MAX_ADVANCE", "ADJUSTABLE";
 
 #
 # Autostart attributes
@@ -254,7 +255,7 @@ list timing_prot_attribs error message "TIMING_PROTECTION attribute '%K'" style 
 # Synchronization strategy
 #
 list sync_strategy error message "Synchronization strategy '%K'" style keywordsStyle :
-	"SMOOTH", "HARD";
+ "SMOOTH", "HARD";
 
 #
 # units for counters
@@ -287,9 +288,9 @@ list it_src_attr error message "Interrupt Source '%K'" style keywordsStyle :
 # '/' is a delimitor.
 $comment$ error message "a comment" style commentStyle;
 rule "//" :
-	repeat #accept all except 0xA (LF) and 0xD (CR)
-	while '\u0001'->'\u0009' | '\u000B'| '\u000C'| '\u000E' -> '\uFFFD' : 
-	end repeat;
+ repeat #accept all except 0xA (LF) and 0xD (CR)
+ while '\u0001'->'\u0009' | '\u000B'| '\u000C'| '\u000E' -> '\uFFFD' : 
+ end repeat;
    drop $comment$;
 end rule;
 
@@ -429,17 +430,17 @@ rule '0'->'9':
     end repeat;
     select
         when '.' :
-			select
-				when '.' :
-					send $set_start_uint_number$;
-				default
-		          	repeat
-                		enterCharacterIntoString !?number !* ;
-            		while '0'->'9' :
-            		end repeat;
-            		convertStringToDouble !number !?floatNumber error unableToConvertToDouble;
-            		send $float_number$;
-			end select;
+   select
+    when '.' :
+     send $set_start_uint_number$;
+    default
+             repeat
+                  enterCharacterIntoString !?number !* ;
+              while '0'->'9' :
+              end repeat;
+              convertStringToDouble !number !?floatNumber error unableToConvertToDouble;
+              send $float_number$;
+   end select;
         default
             send $uint_number$;
     end select;

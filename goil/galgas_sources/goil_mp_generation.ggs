@@ -30,7 +30,7 @@ import semantics goil_types_isr        in "goil_types_isr.ggs" ;
 import semantics goil_types_app        in "goil_types_app.ggs" ;
 import semantics goil_env_verification in "goil_env_verification.ggs" ;
 
-import option goil_options in "goil_options.ggs" ;
+import option goil_options in "goil_options.gOption" ;
 
 #
 # generate_mp generates the descriptors used for memory protection

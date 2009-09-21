@@ -27,7 +27,7 @@ semantics goil_proc_generation :
 import semantics goil_types_task in "goil_types_task.ggs" ;
 import semantics goil_types_isr in "goil_types_isr.ggs" ;
 import semantics goil_routines in "goil_routines.ggs" ;
-import option goil_options in "goil_options.ggs" ;
+import option goil_options in "goil_options.gOption" ;
 
 routine generate_proc_table
   ??@task_map tasks

@@ -2,7 +2,7 @@ semantics goil_alarm_verif :
 
 import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
 import semantics goil_types_counter in "goil_types_counter.ggs" ;
-import option goil_options in "goil_options.ggs" ;
+import option goil_options in "goil_options.gOption" ;
 
 routine counters_of_alarms_defined
     ?@alarm_map   alarms

@@ -4,7 +4,7 @@ import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
 import semantics goil_routines in "goil_routines.ggs" ;
 import semantics goil_types_isr in "goil_types_isr.ggs" ;
 import semantics goil_types_counter in "goil_types_counter.ggs" ;
-import option goil_options in "goil_options.ggs" ;
+import option goil_options in "goil_options.gOption" ;
 
 routine generate_target_posix
   ?@lstring   name

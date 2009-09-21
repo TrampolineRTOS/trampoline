@@ -18,7 +18,7 @@ import semantics goil_types_os in "goil_types_os.ggs";
 
 import semantics cfg_types in "cfg_types.ggs";
 
-import option goil_options in "goil_options.ggs";
+import option goil_options in "goil_options.gOption";
 
 #routine init_targets_prefixes ?!@prefix_map prefix :
 #    @string target;
@@ -157,8 +157,8 @@ routine generate_counter_for_target
     generate_counter_libpcl !counters !?code;
   elsif target == "posix" then
     generate_counter_posix !counters !?code;
-	elsif target =="posix_vp2" then
-		generate_counter_posix_vp2 !counters !?code;
+ elsif target =="posix_vp2" then
+  generate_counter_posix_vp2 !counters !?code;
   elsif target == "hcs12" then
     generate_counter_hcs12 !counters !?code;
   elsif target == "ppc" then

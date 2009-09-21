@@ -28,7 +28,8 @@ program goil_program "version 2.0b28" :
 #    @root_obj cpu := transform_xml_to_goil(!root_nodes);
 #  }
 #
-#--- Epilogue routine
+
+#--- Epilogue routine
   after {
   }
 

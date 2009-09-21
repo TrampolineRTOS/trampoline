@@ -16,8 +16,8 @@
 
 syntax goil_obj_networkmessage :
 
-import lexique goil_lexique in "goil_lexique.ggs" ;
-import option goil_options in "goil_options.ggs" ;
+import lexique goil_lexique in "goil_lexique.gLexique" ;
+import option goil_options in "goil_options.gOption" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 import semantics goil_types_networkmessage in "goil_types_networkmessage.ggs";
 

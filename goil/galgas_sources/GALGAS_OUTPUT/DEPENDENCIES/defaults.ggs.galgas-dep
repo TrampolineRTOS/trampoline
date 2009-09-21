@@ -1,4 +1,4 @@
-515::
+572::
 goil_semantic_types.ggs
 goil_basic_types.ggs
 goil_types_action.ggs
@@ -16,6 +16,6 @@ goil_types_counter.ggs
 goil_types_scheduletable.ggs
 goil_types_app.ggs
 goil_types_networkmessage.ggs
-goil_options.ggs::
+goil_options.gOption::
 GALGAS_OUTPUT/defaults.h
 GALGAS_OUTPUT/defaults.cpp

@@ -35,8 +35,8 @@ map @resource_map {
 }
 
 map @linked_resources {
-	@lstring linked_resource ;
-	insert put error message "Resource %K (%L) is part of a cycle of linked resources" ;
+ @lstring linked_resource ;
+ insert put error message "Resource %K (%L) is part of a cycle of linked resources" ;
 }
 
 function default_resource_obj

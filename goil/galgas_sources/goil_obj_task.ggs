@@ -2,7 +2,7 @@
 # Trampoline OS
 #
 # Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline est protªgª par la loi sur la propriªtª intellectuelle
+# Trampoline est protï¿½gï¿½ par la loi sur la propriï¿½tï¿½ intellectuelle
 #
 # This software is distributed under the Lesser GNU Public Licence
 #
@@ -16,8 +16,8 @@
 
 syntax goil_obj_task :
 
-import lexique goil_lexique in "goil_lexique.ggs" ;
-import option goil_options in "goil_options.ggs" ;
+import lexique goil_lexique in "goil_lexique.gLexique" ;
+import option goil_options in "goil_options.gOption" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 import semantics goil_types_timing_prot in "goil_types_timing_prot.ggs" ;
 
@@ -149,7 +149,7 @@ rule <task>
     !others
   ] ;
   [!?tasks put !task_name !task] ;
-end rule ;	
+end rule ; 
 
 rule <task_attributes>
   ?!@basic_type         priority
@@ -181,7 +181,7 @@ rule <task_attributes>
     $AUTOSTART$ ; $=$ ;
     select $TRUE$ ; ${$ ; <task_autostart_params> ?auto ; $}$ ;
     or     $FALSE$ ; auto := [@task_autostart_false new !here] ;
-		 end select ;
+   end select ;
     cast autostart :
     when == @task_autostart_void do
       autostart := auto ;
@@ -257,17 +257,17 @@ end rule;
 rule <task_autostart_params>
   !@task_autostart_obj autostart
 :
-	@lstring appmode := [@lstring new !"" !here];
-	@stringset appmodes [emptySet] ;
-	repeat
-	while
-		$APPMODE$ ; $=$ ; $idf$ ?appmode ; <description> ?* ; $;$ ;
-		if ([appmodes hasKey ![appmode string]]) then
-			warning here : "APPMODE " . [appmode string] . " already defined for this task AUTOSTART attribute" ;
-		end if ; 
-		appmodes += ![appmode string] ;
-	end repeat;
-	autostart := [@task_autostart_true new !here !appmodes] ;
+ @lstring appmode := [@lstring new !"" !here];
+ @stringset appmodes [emptySet] ;
+ repeat
+ while
+  $APPMODE$ ; $=$ ; $idf$ ?appmode ; <description> ?* ; $;$ ;
+  if ([appmodes hasKey ![appmode string]]) then
+   warning here : "APPMODE " . [appmode string] . " already defined for this task AUTOSTART attribute" ;
+  end if ; 
+  appmodes += ![appmode string] ;
+ end repeat;
+ autostart := [@task_autostart_true new !here !appmodes] ;
 end rule ;
 
 end syntax ;

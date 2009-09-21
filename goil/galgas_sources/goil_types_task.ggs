@@ -17,7 +17,7 @@ class @task_autostart_false extends @task_autostart_obj {
 }
 
 class @task_autostart_true extends @task_autostart_obj {
-	@stringset appmodes ;
+ @stringset appmodes ;
 }
 
 class @task_obj extends @oil_obj {

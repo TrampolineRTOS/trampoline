@@ -128,7 +128,7 @@ class @flag_action extends @action_obj {
 
 class @incrementcounter_action extends @action_obj {
     @lstring counter_name ;
- 	 override method generate
+   override method generate
         ?@lstring    name
         ?@string     err
         ?@string     key

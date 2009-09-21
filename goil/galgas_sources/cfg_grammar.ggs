@@ -16,7 +16,7 @@
 #
 
 grammar cfg_grammar "LL1" :
-    import lexique cfg_lexique in "cfg_lexique.ggs" ;
+    import lexique cfg_lexique in "cfg_lexique.gLexique" ;
     import syntax  cfg_syntax  in "cfg_syntax.ggs" ;
 
     root <cfg_start>

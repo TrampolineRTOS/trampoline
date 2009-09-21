@@ -1,6 +1,6 @@
 semantics goil_routines :
 
-import option goil_options in "goil_options.ggs" ;
+import option goil_options in "goil_options.gOption" ;
 import semantics goil_basic_types in "goil_basic_types.ggs" ;
 
 function project_name -> @string directory
@@ -100,7 +100,7 @@ routine retrieveTemplateStringIfExist !@string templateString ?@string obj :
         if [targ_tpl fileExists]
         then templateString := [@string stringWithContentsOfFile !targ_tpl];
         else
-  			# then in the all_targets path
+     # then in the all_targets path
           targ_tpl := temp_dir."all_targets/".temp_name;
           if [targ_tpl fileExists]
           then templateString := [@string stringWithContentsOfFile !targ_tpl];

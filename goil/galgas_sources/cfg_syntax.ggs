@@ -17,7 +17,7 @@
 
 syntax cfg_syntax :
 
-import lexique cfg_lexique in "cfg_lexique.ggs" ;
+import lexique cfg_lexique in "cfg_lexique.gLexique" ;
 import semantics cfg_types in "cfg_types.ggs" ;
 
 nonterminal <cfg_start>

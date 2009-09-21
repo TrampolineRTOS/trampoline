@@ -16,8 +16,8 @@
 
 syntax goil_obj_isr :
 
-import lexique goil_lexique in "goil_lexique.ggs" ;
-import option goil_options in "goil_options.ggs" ;
+import lexique goil_lexique in "goil_lexique.gLexique" ;
+import option goil_options in "goil_options.gOption" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 import semantics goil_types_timing_prot in "goil_types_timing_prot.ggs" ;
 

@@ -15,8 +15,8 @@
 
 syntax goil_obj_application :
 
-import lexique goil_lexique in "goil_lexique.ggs" ;
-import option goil_options in "goil_options.ggs" ;
+import lexique goil_lexique in "goil_lexique.gLexique" ;
+import option goil_options in "goil_options.gOption" ;
 import semantics goil_types_app in "goil_types_app.ggs" ;
 
 #
@@ -105,7 +105,7 @@ rule <app_attributes>
         select
             $TRUE$ ;
             <trusted_fcts> ?trust ;
-		 or
+   or
             $FALSE$ ;
             trust := [@app_trusted_false new !here] ;
         end select ;
@@ -121,7 +121,7 @@ rule <app_attributes>
         $STARTUPHOOK$ ; $=$ ;
         select
             $TRUE$ ; sh := true ;
-		 or
+   or
             $FALSE$ ; sh := false ;
         end select ;
         cast startuphook :
@@ -136,7 +136,7 @@ rule <app_attributes>
         $SHUTDOWNHOOK$ ; $=$ ;
         select
             $TRUE$ ; sh := true ;
-		 or
+   or
             $FALSE$ ; sh := false ;
         end select ;
         cast shutdownhook :
@@ -151,7 +151,7 @@ rule <app_attributes>
         $ERRORHOOK$ ; $=$ ;
         select
             $TRUE$ ; eh := true ;
-		 or
+   or
             $FALSE$ ; eh := false ;
         end select ;
         cast errorhook :
@@ -168,7 +168,7 @@ rule <app_attributes>
             @lstring res_task ;
             $TRUE$ ; ${$ ; $RESTARTTASK$ ; $=$ ; $idf$ ?res_task ; $;$ ; $}$ ;
             hr := [@string_class new !here ![res_task string]] ;
-		 or
+   or
             $FALSE$ ;
             hr := [@bool_class new !here !false] ;
         end select ;
