@@ -431,7 +431,7 @@ class @oneeveryn_filter extends @filter_prop_obj {
         doReplace !?res !"$FILTER_KIND$" !"One Every N" ;
         doReplace !?res !"$PERIOD$" ![[period uint64] string] ;
         doReplace !?res !"$OFFSET$" ![[offset uint64] string] ;
-		#doReplace !?res !"$INITIALVALUE$" !"$INITIALVALUE$"-"$PERIOD$" ;
+  #doReplace !?res !"$INITIALVALUE$" !"$INITIALVALUE$"-"$PERIOD$" ;
     end method ;
 }
 
@@ -506,8 +506,8 @@ class @sse_mess_prop extends @mess_prop_obj {
         doReplace !?i_res !"$CTYPE$" ![cdatatype string] ;
         @string iv ;
 #added by Florent 090313 - we have to initialise occ to (INITIALVALUE - PERIOD + 1)
-#		 @lsint64 init ;
-#		 init := initialvalue - period + 1 ;
+#   @lsint64 init ;
+#   init := initialvalue - period + 1 ;
 #
         [initialvalue string ?iv] ;
         if iv != "" then iv := " = ".iv ; end if ;

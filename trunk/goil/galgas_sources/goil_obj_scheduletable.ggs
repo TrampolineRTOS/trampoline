@@ -17,8 +17,8 @@
 
 syntax goil_obj_scheduletable :
 
-import lexique goil_lexique in "goil_lexique.ggs";
-import option goil_options in "goil_options.ggs";
+import lexique goil_lexique in "goil_lexique.gLexique";
+import option goil_options in "goil_options.gOption";
 import semantics goil_semantics in "goil_semantics.ggs";
 import semantics goil_basic_types in "goil_basic_types.ggs";
 import semantics goil_types_action in "goil_types_action.ggs";
@@ -37,7 +37,9 @@ nonterminal <st_autostart_sync_params>
   !@autostart_obj autostart;
 nonterminal <ltgt_sync_params>
   !@ltgt_sync_obj sync;
-nonterminal <st_expiry_pt_params>  ?@lstring          ep_name  !@expiry_point_obj epl;
+nonterminal <st_expiry_pt_params>
+  ?@lstring          ep_name
+  !@expiry_point_obj epl;
 nonterminal <st_action_params>
   ?!@action_list actions;
 
@@ -87,7 +89,8 @@ rule <scheduletable_parameters>
   @basic_type        st_length      := [st length];
   @expiry_point_list st_exp_pts     := [st exp_points];
   @lstringlist       st_acc_apps    := [st acc_apps];
-  repeat
+
+  repeat
   while
     @lstring counter;
     $COUNTER$;  $=$; $idf$ ?counter; <description> ?*; $;$;
@@ -158,7 +161,8 @@ rule <scheduletable_parameters>
   while
     @lbool periodic;
     $PERIODIC$; $=$; <boolean> ?periodic; <description> ?*; $;$;
-      cast st_periodic :
+
+      cast st_periodic :
     when == @void do
       st_periodic := [@bool_class new ![periodic location] ![periodic bool]];
     else
@@ -181,10 +185,16 @@ rule <scheduletable_parameters>
 #
   while
     @lstring exp_name;
-    $EXPIRY_POINT$; $idf$ ?exp_name; ${$;      @expiry_point_obj ep;
+    $EXPIRY_POINT$; $idf$ ?exp_name; ${$;
+      @expiry_point_obj ep;
       <st_expiry_pt_params> !exp_name ?ep;
-    $}$; <description> ?*; $;$;    cast [ep offset]:    when == @uint64_class off do
-      st_exp_pts += ![off value] !ep;    else      error exp_name: "OS404 - OFFSET is missing for expiry point ".[exp_name string];    end cast;
+    $}$; <description> ?*; $;$;
+    cast [ep offset]:
+    when == @uint64_class off do
+      st_exp_pts += ![off value] !ep;
+    else
+      error exp_name: "OS404 - OFFSET is missing for expiry point ".[exp_name string];
+    end cast;
   while
     @lstring app;
     $ACCESSING_APPLICATION$; $=$; $idf$ ?app; <description> ?*; $;$;
@@ -202,7 +212,8 @@ rule <scheduletable_parameters>
     !st_periodic
     !st_length
     !st_exp_pts
-    !st_acc_apps    
+    !st_acc_apps
+    
   ];
 end rule;
 
@@ -315,11 +326,11 @@ rule <ltgt_sync_params>
 
   cast precision :
   when == @void do
-	if ([strategy string] == "IMPLICIT") then
-		precision := [@uint64_class new !here !0L] ;
-	else
-		error here : "PRECISION attribute is missing " ;
-	end if;
+ if ([strategy string] == "IMPLICIT") then
+  precision := [@uint64_class new !here !0L] ;
+ else
+  error here : "PRECISION attribute is missing " ;
+ end if;
   else end cast ;
   
   if [strategy string] == "" then
@@ -329,9 +340,59 @@ rule <ltgt_sync_params>
   sync := [@ltgt_sync_true new !here !strategy !precision];
 end rule;
 
-rule <st_expiry_pt_params>  ?@lstring          ep_name  !@expiry_point_obj epl:  @adjustable_obj adjust := [@adjustable_void new !empty_lstring() !here];  @basic_type offset := void_obj();  @action_list actions [emptySortedList];  repeat  while    @luint64 off;    $OFFSET$; $=$; $uint_number$ ?off; $;$;    set_uint64 !?offset !off !"OS442 - OFFSET";  while    $ACTION$; $=$; <st_action_params> !?actions; $;$;  while    $ADJUSTABLE$;    @location adj_loc := here;    $=$;    select      $TRUE$; ${$;
-        @basic_type max_retard := void_obj();        @basic_type max_advance := void_obj();        repeat        while          @luint64 ret;          $MAX_RETARD$; $=$; $uint_number$ ?ret; $;$;          set_uint64 !?max_retard !ret !"MAX_RETARD";         while          @luint64 adv;          $MAX_ADVANCE$; $=$; $uint_number$ ?adv; $;$;          set_uint64 !?max_advance !adv !"MAX_ADVANCE";         end repeat;      $}$;      set_adjustable        !?adjust        ![@adjustable_true new !empty_lstring() !adj_loc !max_retard !max_advance];    or      $FALSE$;      set_adjustable !?adjust ![@adjustable_false new !empty_lstring() !adj_loc];    end select;    $;$;  end repeat;  epl := [@expiry_point_obj new   !empty_lstring()    !offset    !ep_name   !adjust   !actions  ];end rule;
-rule <st_action_params>
+rule <st_expiry_pt_params>
+  ?@lstring          ep_name
+  !@expiry_point_obj epl
+:
+  @adjustable_obj adjust := [@adjustable_void new !empty_lstring() !here];
+  @basic_type offset := void_obj();
+  @action_list actions [emptySortedList];
+  repeat
+  while
+    @luint64 off;
+    $OFFSET$; $=$; $uint_number$ ?off; $;$;
+    set_uint64 !?offset !off !"OS442 - OFFSET";
+  while
+
+    $ACTION$; $=$; <st_action_params> !?actions; $;$;
+  while
+    $ADJUSTABLE$;
+    @location adj_loc := here;
+    $=$;
+    select
+      $TRUE$; ${$;
+        @basic_type max_retard := void_obj();
+        @basic_type max_advance := void_obj();
+        repeat
+        while
+          @luint64 ret;
+          $MAX_RETARD$; $=$; $uint_number$ ?ret; $;$;
+          set_uint64 !?max_retard !ret !"MAX_RETARD"; 
+        while
+          @luint64 adv;
+          $MAX_ADVANCE$; $=$; $uint_number$ ?adv; $;$;
+          set_uint64 !?max_advance !adv !"MAX_ADVANCE"; 
+        end repeat;
+      $}$;
+      set_adjustable
+        !?adjust
+        ![@adjustable_true new !empty_lstring() !adj_loc !max_retard !max_advance];
+    or
+      $FALSE$;
+      set_adjustable !?adjust ![@adjustable_false new !empty_lstring() !adj_loc];
+    end select;
+    $;$;
+  end repeat;
+  epl := [@expiry_point_obj new
+   !empty_lstring() 
+   !offset 
+   !ep_name
+   !adjust
+   !actions
+  ];
+end rule;
+
+rule <st_action_params>
   ?!@action_list actions
 :
   select

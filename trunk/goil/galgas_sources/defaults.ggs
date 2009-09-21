@@ -29,7 +29,7 @@ semantics defaults :
 import semantics goil_semantic_types in "goil_semantic_types.ggs" ;
 import semantics goil_check in "goil_check.ggs" ;
 import semantics goil_types_root in "goil_types_root.ggs" ;
-import option goil_options in "goil_options.ggs" ;
+import option goil_options in "goil_options.gOption" ;
 
 routine check_custom_field
     ?!@ident_map others

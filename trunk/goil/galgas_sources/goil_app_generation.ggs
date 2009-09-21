@@ -149,9 +149,12 @@ routine generate_apps
         is_in_lstringlist ![isr acc_apps] !app_name ?* ?found ;
         if found then vec .= "1" ; else vec .= "0" ; end if ;
       end if ;
-    end foreach ;   #IDLE task can access to every OS-Application (for autostarting Schedule table...)
+    end foreach ;
+   
+#IDLE task can access to every OS-Application (for autostarting Schedule table...)
     vec .= "01" ;  
-#    message vec."\n" ;
+#    message vec."\n" ;
+
     generate_vector !vec ?init ?count ;
     if count > 0 then
       vectors .= "u8 ".[app_name string]."_procs_access[".[count string]."] = {".init."};\n" ;

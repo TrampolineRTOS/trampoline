@@ -1,4 +1,4 @@
-515::
+572::
 goil_routines.ggs
 goil_basic_types.ggs
 goil_types_task.ggs
@@ -8,6 +8,6 @@ cfg_types.ggs
 goil_types_isr.ggs
 goil_types_app.ggs
 goil_env_verification.ggs
-goil_options.ggs::
+goil_options.gOption::
 GALGAS_OUTPUT/goil_mp_generation.h
 GALGAS_OUTPUT/goil_mp_generation.cpp

@@ -27,7 +27,7 @@ semantics it_table_generation:
 import semantics goil_types_root in "goil_types_root.ggs";
 import semantics cfg_types in "cfg_types.ggs" ;
 import semantics config_type in "config_type.ggs" ;
-import option goil_options in "goil_options.ggs" ;
+import option goil_options in "goil_options.gOption" ;
 
 list @it_table {
   @string fct;

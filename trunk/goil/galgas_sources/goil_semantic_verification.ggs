@@ -9,7 +9,7 @@ import semantics goil_alarm_verif    in "goil_alarm_verif.ggs";
 import semantics goil_app_verif      in "goil_app_verif.ggs";
 import semantics goil_types_root     in "goil_types_root.ggs";
 import semantics goil_semantic_types in "goil_semantic_types.ggs";
-import option goil_options           in "goil_options.ggs";
+import option goil_options           in "goil_options.gOption";
 
 #
 # Per object static verification
@@ -246,7 +246,9 @@ routine all_alarm_actions_correct
           @lstringlist known_events;
           [tasks get ![act task_name] ?task_data];
           known_events:= [task_data events];
-          if ([known_events length] == 0) then             error [act event_name]: "An alarm can't set an Event to a basic task (Task ".[[act task_name] string]." is a basic task).";                   end if;
+          if ([known_events length] == 0) then
+             error [act event_name]: "An alarm can't set an Event to a basic task (Task ".[[act task_name] string]." is a basic task).";         
+          end if;
           #@bool known;
           #is_in_lstringlist !known_events ![act event_name] ?* ?known;
           #if not known then
@@ -311,7 +313,8 @@ routine verify_all
 
   # cross-objects Autosar checking
   if [option goil_options.autosar_on] then
-    schedule_tables_well_formed ![cpu scheduletables] !cpu;    schedule_tables_counters_exist_and_compatible ![cpu scheduletables] ![cpu counters];
+    schedule_tables_well_formed ![cpu scheduletables] !cpu;
+    schedule_tables_counters_exist_and_compatible ![cpu scheduletables] ![cpu counters];
     schedule_tables_tasks_and_events_exist !cpu ![cpu tasks];
     apps_well_formed !cpu;
   end if;

@@ -45,7 +45,7 @@ import semantics config_type in "config_type.ggs";
 import semantics cfg_types in "cfg_types.ggs";
 import grammar cfg_grammar in "cfg_grammar.ggs";
 
-import option goil_options in "goil_options.ggs";
+import option goil_options in "goil_options.gOption";
 
 #--------------------------------------------------------------------
 # Initialisation of token found in templates

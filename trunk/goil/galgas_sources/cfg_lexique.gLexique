@@ -25,9 +25,9 @@ list cfg_type error message "Config file data type '%K'" :
     "uint8", "sint8", "uint16", "sint16", "uint32", "sint32", "uint64", "sint64" ;
 
 rule "//" :
-	repeat #accept all except 0xA (LF) and 0xD (CR)
-	while '\u0001'->'\u0009' | '\u000B'| '\u000C'| '\u000E' -> '\uFFFD' : 
-	end repeat ;
+ repeat #accept all except 0xA (LF) and 0xD (CR)
+ while '\u0001'->'\u0009' | '\u000B'| '\u000C'| '\u000E' -> '\uFFFD' : 
+ end repeat ;
 end rule ;
 
 message unterminated_comment_error : "unterminated comment" ;

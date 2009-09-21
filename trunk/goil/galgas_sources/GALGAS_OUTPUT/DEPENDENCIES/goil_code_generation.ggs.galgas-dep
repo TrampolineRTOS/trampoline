@@ -1,4 +1,4 @@
-515::
+572::
 goil_routines.ggs
 goil_basic_types.ggs
 goil_semantic_types.ggs
@@ -36,6 +36,6 @@ com_type.ggs
 config_type.ggs
 trace_description.ggs
 cfg_grammar.ggs
-goil_options.ggs::
+goil_options.gOption::
 GALGAS_OUTPUT/goil_code_generation.h
 GALGAS_OUTPUT/goil_code_generation.cpp

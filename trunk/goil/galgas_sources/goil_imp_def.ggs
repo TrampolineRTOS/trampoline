@@ -17,8 +17,8 @@
 
 syntax goil_imp_def :
 
-import lexique goil_lexique in "goil_lexique.ggs" ;
-import option goil_options in "goil_options.ggs" ;
+import lexique goil_lexique in "goil_lexique.gLexique" ;
+import option goil_options in "goil_options.gOption" ;
 import semantics goil_semantics in "goil_semantics.ggs" ;
 import semantics goil_routines in "goil_routines.ggs" ;
 import semantics goil_check in "goil_check.ggs" ;

@@ -23,8 +23,8 @@
 #
 
 project all_goil :
-  lexique   "goil_lexique.ggs"        : makefile, xcode_tool, xcode_app;
-  option    "goil_options.ggs"        : makefile, xcode_tool, xcode_app;
+  lexique   "goil_lexique.gLexique"   : makefile, xcode_tool, xcode_app;
+  option    "goil_options.gOption"    : makefile, xcode_tool, xcode_app;
   syntax    "goil_syntax.ggs"         : makefile, xcode_tool;
   semantics "goil_semantics.ggs"      : makefile, xcode_tool;
   semantics "goil_basic_types.ggs"    : makefile, xcode_tool;
@@ -131,15 +131,15 @@ project all_goil :
   #
   # Parsing of config file
   #
-  lexique   "cfg_lexique.ggs"  : makefile, xcode_tool;
-  syntax    "cfg_syntax.ggs"   : makefile, xcode_tool;
-  grammar   "cfg_grammar.ggs"  : makefile, xcode_tool;
-  semantics "cfg_types.ggs"    : makefile, xcode_tool;
+  lexique   "cfg_lexique.gLexique" : makefile, xcode_tool;
+  syntax    "cfg_syntax.ggs"       : makefile, xcode_tool;
+  grammar   "cfg_grammar.ggs"      : makefile, xcode_tool;
+  semantics "cfg_types.ggs"        : makefile, xcode_tool;
   
   #
   # Cocoa GOIL
   #
-  gui "cocoaGOIL.ggs" : xcode_tool, xcode_app;
+  gui "cocoaGOIL.gGui" : xcode_tool, xcode_app;
   
 end project;
 # vim:ft=ggs:ts=4:sw=4

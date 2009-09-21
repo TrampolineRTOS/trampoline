@@ -1,6 +1,6 @@
 grammar goil_grammar "LL1":
-    import lexique goil_lexique            in "goil_lexique.ggs" ;
-    import option  goil_options            in "goil_options.ggs" ;
+    import lexique goil_lexique            in "goil_lexique.gLexique" ;
+    import option  goil_options            in "goil_options.gOption" ;
 
     import syntax  goil_syntax             in "goil_syntax.ggs" ;
     import syntax  goil_imp_def            in "goil_imp_def.ggs" ;

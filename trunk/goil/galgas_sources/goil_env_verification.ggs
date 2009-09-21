@@ -25,7 +25,7 @@
 #
 
 semantics goil_env_verification :
-import option goil_options in "goil_options.ggs" ;
+import option goil_options in "goil_options.gOption" ;
 import semantics goil_routines in "goil_routines.ggs" ;
 
 routine getAbsoluteSourceFilePath
