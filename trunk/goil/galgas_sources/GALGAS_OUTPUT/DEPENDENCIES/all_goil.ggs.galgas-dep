@@ -1,4 +1,4 @@
-572::
+573::
 goil_lexique.gLexique
 goil_options.gOption
 goil_syntax.ggs
@@ -288,6 +288,8 @@ GALGAS_OUTPUT/goil_program.cpp
 GALGAS_OUTPUT/DEPENDENCIES/goil_program.ggs.galgas-dep
 GALGAS_OUTPUT/cfg_lexique.h
 GALGAS_OUTPUT/cfg_lexique.cpp
+GALGAS_OUTPUT/cfg_lexique-cocoa.h
+GALGAS_OUTPUT/cfg_lexique-cocoa.m
 GALGAS_OUTPUT/cfg_syntax.h
 GALGAS_OUTPUT/cfg_syntax.cpp
 GALGAS_OUTPUT/DEPENDENCIES/cfg_syntax.ggs.galgas-dep
@@ -297,6 +299,7 @@ GALGAS_OUTPUT/DEPENDENCIES/cfg_grammar.ggs.galgas-dep
 GALGAS_OUTPUT/cfg_types.h
 GALGAS_OUTPUT/cfg_types.cpp
 GALGAS_OUTPUT/DEPENDENCIES/cfg_types.ggs.galgas-dep
+GALGAS_OUTPUT/cocoaGOIL.m
 GALGAS_OUTPUT/file_list.mke
 GALGAS_OUTPUT/file_list_for_xcode_project.txt
 ../project_xcode/goil.xcodeproj/project.pbxproj

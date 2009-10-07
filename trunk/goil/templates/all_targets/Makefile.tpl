@@ -49,6 +49,9 @@ AUTOSAR = $AUTOSAR_ON$
 # Interrupt vector generation
 GENITVEC = $GENITVEC$
 
+# if there is an interrupt generation, the oil file depends on target.cfg
+OIL_FILE_DEP = $OIL_FILE_DEP$
+
 # Trampoline generation flags
 $FLAGS$
 

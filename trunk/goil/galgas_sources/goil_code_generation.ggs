@@ -386,10 +386,16 @@ routine generate_makefile
     [[os trace] generate_make ?tr];
     flags .= tr;
     doReplace !?makefileStr !"$FLAGS$" !flags;
+
     # -i option
     @string i_option := "";
-    if [option goil_options.posix_it] then i_option := "-i"; end if;
+    @string target_cfg_dep := "";
+    if [option goil_options.posix_it] then 
+        i_option := "-i"; 
+        target_cfg_dep := "target.cfg";
+    end if;
     doReplace !?makefileStr !"$GENITVEC$" !i_option;
+    doReplace !?makefileStr !"$OIL_FILE_DEP$" !target_cfg_dep;
 
     [makefileStr writeToFile ! directory."/Makefile"];
 
