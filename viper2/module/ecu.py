@@ -57,7 +57,7 @@ class ReadingThread(threading.Thread):
 class Ecu(object):
   """
   Ecu class.
-  Ecu (Engine control unit) represent devices and an operating system.
+  Ecu (Electronic Component Unit) represents both devices and soft (operating system and application)
   """
   
   def __init__(self, osPath, scheduler, devices = None):
@@ -124,7 +124,7 @@ class Ecu(object):
     except IOError:
       print "Can't access to " + self.__dir + "vp_ipc_devices.h"
       print " or " + self.__dir + "target.cfg"
-      raise IOError, "You should verify dir \""+ self.__dir + "\" exists and it can be writable"
+      raise IOError, "You should verify dir \""+ self.__dir + "\" exists and it is writable"
 
     """ Generate header """
     header.write("#ifndef __VP_DEVICES_H__\n#define __VP_DEVICES_H__\n")

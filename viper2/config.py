@@ -42,7 +42,7 @@ allEcus = [
     "../App-vp2/trampoline",
     scheduler,
     [
-      Timer("TIMER0", 7, type = timer.AUTO, delay = 0.5),
+      Timer("TIMER0", 6, type = timer.AUTO, delay = 0.5),
       Motor("MOTOR0", 2, sensor, control, noise = 5)   
     ]
   )

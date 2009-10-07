@@ -38,7 +38,7 @@ CPU test {
         CATEGORY  = 2;
         STACKSIZE = 32768;
         PRIORITY  = 15;
-        SOURCE    = IRQ7;
+        SOURCE    = IRQ6;
     };
 
     TASK init{
