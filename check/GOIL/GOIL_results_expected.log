@@ -63,5 +63,5 @@ CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:136:13: error: Counter Sof
 CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:151:21: error: Counter Software_Counter2 doesn't belong to the same application of schedule table sched1
 CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:178:21: error: Task t2 doesn't belong to the same application of schedule table sched2
 CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:178:21: error: Task t3 doesn't belong to the same application of schedule table sched2
-CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:218:21: error: Task t3 doesn't belong to the same application of schedule table sched3
-CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:218:21: error: Task t2 doesn't belong to the same application of schedule table sched3
+CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:220:21: error: Task t3 doesn't belong to the same application of schedule table sched3
+CHECKPATH/goil_autosar_app_s2/goil_autosar_app_s2.oil:220:21: error: Task t2 doesn't belong to the same application of schedule table sched3
