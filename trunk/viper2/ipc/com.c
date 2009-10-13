@@ -15,19 +15,19 @@
 /**
  * Using a register, this function return the index to
  *  find this register in the shared memory
- * The register is a complete register ID (means that
- *  it's a register ID | device ID
+ * The register is a complete register ID (it means that
+ *  it's device ID | register ID)
  */
 int reg2i(reg_id_t n)
 {
   int index_reg	    = 0; 
   int index_dev	    = 0;
   int reg_index_max = 0;
-  reg_id_t reg_max  = REGISTER_MAX;
-
+  reg_id_t reg_max  = REGISTER_ID_BITS;
+  
   reg_id_t reg = n & REGISTER_MASK; /* Only reg */
-  dev_id_t dev = n & DEVICE_MASK;   /* Only device */
-
+  dev_id_t dev = (n & DEVICE_MASK) >> REGISTER_ID_BITS;   /* Only device */
+  
   /* Find position of the 1 */
   while((reg = reg >> 1) != 0)
     ++index_reg;
@@ -36,7 +36,7 @@ int reg2i(reg_id_t n)
   while((reg_max = reg_max >> 1) != 0)
     ++reg_index_max;
 
-  return (index_dev * (reg_index_max + 1)) + index_reg;
+  return ((index_dev << reg_index_max) | index_reg); 
 }
 
 void map_sh_mem(ipc_t *ipc)

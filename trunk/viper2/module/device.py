@@ -3,6 +3,8 @@
 ###############################################################################
 import signal, copy
 from register import Register
+import pygame
+from const import *
 
 ###############################################################################
 # CONSTANTS
@@ -18,7 +20,10 @@ class Device(object):
   """
   Device class, represent the comportement of a device for the Ecu
   """
-
+  
+  """Attributes for Pygame"""
+  pygamepointer = [0, 0, 0]
+  
   def __init__(self, name, callbackIndex, signal, registers = None):
     """
     Constructor.
@@ -38,18 +43,41 @@ class Device(object):
     self._signal       = signal
 
     """ Attributes """
-    self.id	    = 1 << callbackIndex
+    
+    self.id         = 1 << callbackIndex
     self.irq        = "IRQ" + str(callbackIndex)
     self.longID     = None
     self.__offset   = 0
     self._registers = {} # Dict
     self._scheduler = None
     self._ecu       = None
-
+    
+    """Attributes for Pygame"""
+    self._localisation = [0, 0]
+    self._box		= [0, 0]
+    self._font		= None
+          
     """ Add registers """
     if registers:
       self.add(registers)
 
+  def location(self, width, height):
+    #TODO : Try without parameters ? stocking them in variable (self._width...) before calling location() method ?
+    #       Think of a matter to display ECUs' devices in one column or something else...
+    if (self.pygamepointer[2] < height):
+     if ((self.pygamepointer[0] + width) < screen_width):
+      self.pygamepointer[2] = height
+     
+    if ((self.pygamepointer[0] + width) > screen_width):
+     self.pygamepointer[1] += self.pygamepointer[2]
+     self.pygamepointer[0] = width
+     self.pygamepointer[2] = height
+     self._localisation = [0, self.pygamepointer[1]] 
+    else:
+     self._localisation = [self.pygamepointer[0], self.pygamepointer[1]]     
+     self.pygamepointer[0] = self.pygamepointer[0] + width 
+    self._box = [width, height]
+    
   def add(self, registers):
     """
     Add registers to the device
@@ -57,9 +85,9 @@ class Device(object):
     """
     for register in registers:
       if register.id != -1 and self.__offset < register.id:
-	self.__offset = register.id
-      if register.id == - 1:
-	register.setID(1 << (self.__offset + len(self._registers)))
+        self.__offset = register.id
+      if register.id == -1:
+        register.setID(1 << (self.__offset + len(self._registers)))
 
       """ Add register (reference) to the list """
       self._registers[register.name] = register
@@ -129,5 +157,13 @@ class Device(object):
   def event(self, modifiedRegisters = None):
     pass # TODO How to do abstract method with Python ?
 
+  def key(typ, sub):
+    print "received key sub.type:" + str(typ) + " sub:" + str(sub)
+    
+  def start_pygame(self):
+    print "device.start_pygame()"
+    #self.__font = pygame.font.Font(None, 20)
+  
   def start(self):
+    print "device.start()"
     pass

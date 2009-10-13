@@ -28,13 +28,22 @@ MODULE_ldflags = -dynamiclib
 # Trampoline static module (vp_ipc.a)
 ##
 TPL_MODULE_dir     = ipc
-TPL_MODULE_src     = com.c viper.c util/fifo.c
+TPL_MODULE_src     = com.c viper.c util/fifo.c device/tpl_can_driver.c
 TPL_MODULE_bin     = ipc/libvp_ipc.a
-TPL_MODULE_hdr     = com.h viper.h util/fifo.h
+TPL_MODULE_hdr     = com.h viper.h util/fifo.h device/tpl_can_driver.h
 TPL_MODULE_obj_dir = $(MODULE_obj_dir)
 TPL_MODULE_obj     = $(addprefix $(MODULE_obj_dir)/,$(TPL_MODULE_src:.c=.o))
 TPL_MODULE_cflags  = -I$(MODULE_dir)
 TPL_MODULE_ldflags = ru
+
+##
+# CAN
+##
+CAN_dir = device
+CAN_src = tpl_can_driver.c
+CAN_obj = $(addprefix $(MODULE_obj_dir)/$(CAN_dir)/,$(CAN_src:.c=.o))
+CAN_cflags = -I$(MODULE_dir)
+CAN_ldflags =
 
 ############# Swig configuration #######################
 # Swig is used to generate a Wrapper between C 
@@ -59,7 +68,7 @@ ifeq ($(strip $(ARCH)),Linux)
 	SWIG_CFLAGS += -DLINUX
 endif
 ifeq ($(strip $(ARCH)),Darwin)
-  	MODULE_ldflags += -lpython
+  	MODULE_ldflags += -lpython2.6
 	CFLAGS         += -DDARWIN
 	SWIG_CFLAGS    += -DDARWIN
 endif
@@ -70,7 +79,7 @@ endif
 ##
 # Default
 ##
-all: wrapper mod
+all: wrapper can mod
 wrapper : $(MODULE_bin)
 mod : $(TPL_MODULE_bin)
 
@@ -96,6 +105,14 @@ $(TPL_MODULE_bin): $(TPL_MODULE_obj)
 	$(RANLIB) $@
 
 ##
+# CAN
+# ##
+can : $(CAN_obj)
+$(CAN_obj) : $(CAN_dir)/$(CAN_src)
+	@if [ ! -d $(MODULE_obj_dir)/$(CAN_dir) ]; then mkdir $(MODULE_obj_dir)/$(CAN_dir);fi;
+	$(CC) -o $@ -c $< $(CFLAGS) $(CAN_cflags)
+
+##
 # Clean & Mrproper
 ##
 .PHONY : clean mrproper
@@ -104,5 +121,5 @@ clean:
 	@rm -rf $(OBJ_dir)/ *~ $(MODULE_dir)/$(INTERFACE_SRC)
 
 mrproper: clean
-	@rm -f $(MODULE_bin) ipc/$(MODULE_name) *.pyc ipc/*.pyc $(TPL_MODULE_bin)
+	@rm -f $(MODULE_bin) ipc/$(MODULE_name) *.pyc ipc/*.pyc device/*.pyc module/*.pyc widget/*.pyc config.pyc $(TPL_MODULE_bin)
 
