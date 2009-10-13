@@ -78,7 +78,7 @@ printf("(DD) Viper to trampoline %d : tpl_ipc_send_it()\n", ipc->pid);
 
   /* Write the interruption ID on the shared memory */
   ipc->sh_mem->it_id |= it_id;
-
+	
   /* Release semaphore */
   if(0 != sem_post(ipc->it_id_sem))
   {
@@ -155,7 +155,7 @@ ipc_t *tpl_ipc_create_instance(char *ipc_path)
     }
     ipc->pid = pid;
 
-    /* Initializes structure and opens semaphores */
+    /* Initialize structure and open semaphores */
     if(!init_ipc_struct(ipc))
     {
       fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
@@ -172,7 +172,7 @@ ipc_t *tpl_ipc_create_instance(char *ipc_path)
       return NULL;
     }
 
-    /* Initializes shared memory */
+    /* Initialize shared memory */
     ipc->sh_mem->it_id = 0x0; /* not any interruption */
     fifo_init(&ipc->sh_mem->fifo);
     for(i = 0; i < REGISTERS_NB; ++i)
@@ -202,6 +202,18 @@ ipc_t *tpl_ipc_create_instance(char *ipc_path)
   return NULL; /* Never here */
 }
 
+void tpl_sem_post_fifo_full_sem(ipc_t *ipc)
+{    
+    /* Closing Viper2 and Trampoline, Viper2 Reading Thread
+       has to be unlock by "posting" the fifo_full_sem. */
+    if(0 != sem_post(ipc->fifo_full_sem))
+    {
+        fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+        perror("viper : sem_post(fifo)");
+        return ;
+    }
+}
+
 void tpl_ipc_destroy_instance(ipc_t *ipc)
 {
 #ifdef DEBUG
@@ -218,6 +230,9 @@ void tpl_ipc_destroy_instance(ipc_t *ipc)
   }
 
 /* TODO CLOSE READER WRITER SEMAPHORE BEFORE REMOVE SHARED MEMORY */
+#ifdef DEBUG
+  printf("(DD) Viper to trampoline %d : tpl_ipc_destroy_instance - removes shared memory\n", ipc->pid);
+#endif
   /* Removes shared memory */
   if(0 != close(ipc->sh_mem_fd))
   {
@@ -226,6 +241,9 @@ void tpl_ipc_destroy_instance(ipc_t *ipc)
   }
 
   /* Removes semaphores */
+#ifdef DEBUG
+  printf("(DD) Viper to trampoline %d : tpl_ipc_destroy_instance - removes Viper semaphore\n", ipc->pid);
+#endif
   /** Viper semaphore */
   if(NULL != ipc->vp_sem)
   if(0 != sem_close(ipc->vp_sem))
@@ -234,6 +252,9 @@ void tpl_ipc_destroy_instance(ipc_t *ipc)
     perror("viper : sem_close(Viper)");
   }
 
+#ifdef DEBUG
+  printf("(DD) Viper to trampoline %d : tpl_ipc_destroy_instance - removes Trampoline semaphore\n", ipc->pid);
+#endif
   /** Trampoline semaphore */
   if(NULL != ipc->tpl_sem)
   if(0 != sem_close(ipc->tpl_sem))
@@ -242,6 +263,9 @@ void tpl_ipc_destroy_instance(ipc_t *ipc)
     perror("viper : sem_close(Trampoline)");
   }
   
+#ifdef DEBUG
+  printf("(DD) Viper to trampoline %d : tpl_ipc_destroy_instance - removes it_id semaphore\n", ipc->pid);
+#endif
   /** it_id semaphore */
   if(NULL != ipc->it_id_sem)
   if(0 != sem_close(ipc->it_id_sem))
@@ -250,6 +274,9 @@ void tpl_ipc_destroy_instance(ipc_t *ipc)
     perror("viper : sem_close(Interruption_ID)");
   }
 
+#ifdef DEBUG
+  printf("(DD) Viper to trampoline %d : tpl_ipc_destroy_instance - removes reg semaphore\n", ipc->pid);
+#endif
   /** reg semaphore */
 #ifdef READER_WRITER_SEM
   /** Writer */
@@ -285,6 +312,9 @@ void tpl_ipc_destroy_instance(ipc_t *ipc)
   }
 #endif
 
+#ifdef DEBUG
+  printf("(DD) Viper to trampoline %d : tpl_ipc_destroy_instance - removes fifo full cells semaphore\n", ipc->pid);
+#endif
   /** fifo full cells semaphore */
   if(NULL != ipc->fifo_full_sem)
   if(0 != sem_close(ipc->fifo_full_sem))
@@ -293,6 +323,9 @@ void tpl_ipc_destroy_instance(ipc_t *ipc)
     perror("viper : sem_close(Fifo_max)");
   }
 
+#ifdef DEBUG
+  printf("(DD) Viper to trampoline %d : tpl_ipc_destroy_instance - removes fifo empty cells semaphore\n", ipc->pid);
+#endif
   /** fifo empty cells semaphore */
   if(NULL != ipc->fifo_empty_sem)
   if(0 != sem_close(ipc->fifo_empty_sem))
@@ -384,7 +417,7 @@ pid_t tpl_ipc_get_pid(ipc_t *ipc)
 void tpl_ipc_write_reg(ipc_t *ipc, reg_id_t reg_id, reg_t reg)
 {
 #ifdef DEBUG
-  printf("(DD) Viper to trampoline %d : tpl_ipc_write_reg()\n", ipc->pid);
+	printf("(DD) Viper to trampoline %d : tpl_ipc_write_reg()\n", ipc->pid);
 #endif
 
   write_reg(ipc, reg_id, reg);
@@ -395,7 +428,6 @@ reg_t tpl_ipc_read_reg(ipc_t *ipc, reg_id_t reg_id)
 #ifdef DEBUG
   printf("(DD) Viper to trampoline %d : tpl_ipc_read_reg()\n", ipc->pid);
 #endif
-
   return read_reg(ipc, reg_id);
 }
 

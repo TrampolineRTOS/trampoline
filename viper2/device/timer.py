@@ -3,6 +3,8 @@
 ###############################################################################
 import device
 from scheduler import Event
+import time
+from const import *
 
 ###############################################################################
 # CONSTANTS
@@ -28,6 +30,7 @@ class Timer(device.Device):
     device.Device.__init__(self, name, id, signal, registers)
     self.__type  = type
     self.__delay = float(delay)
+    self._localisation = [0, 0]
 
   def setType(self, type):
     """
@@ -41,18 +44,21 @@ class Timer(device.Device):
     """
     self.__delay = delay
 
-  def event(self, modifiedRegisters = None):
+  def event(self, ev, modifiedRegisters = None):
     """
     Call from Scheduler
     """
     self.sendIt() 
-
-    if self.__type != ONE_SHOT:
-      self._scheduler.addEvent(Event(self, self.__delay))
 
   def start(self):
     """
     Call from ecu, at the beginin
     Here the first call is written to the scheduler
     """
-    self._scheduler.addEvent(Event(self, self.__delay))
+    if self.__type != ONE_SHOT:
+      self._scheduler.addEvent(Event(self, self.__delay, periodic = true))
+    else:
+      self._scheduler.addEvent(Event(self, self.__delay))
+
+  def draw(self, widget):
+    """ """

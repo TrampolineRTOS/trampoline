@@ -14,9 +14,9 @@
 /*#define DEVICES_ID_BITS	 16 *//* number of bits to identify a device */
 
 /* Mask */
-#define DEVICE_MASK   0xFFFF0000 /* get first sixteen bits */
-#define REGISTER_MASK 0x0000FFFF /* get last sixteen bits */
-#define REGISTER_MAX  0x00008000 /* 1000 0000 0000 0000 */
+#define DEVICE_MASK   0xFFFF00000000 /* get first sixteen bits */
+#define REGISTER_MASK 0x0000FFFFFFFF /* get last sixteen bits */
+#define REGISTER_MAX  0x000080000000 /* 1000 0000 0000 0000 */
 
 /* Shared memory */
 #define DATA_FILE_PATH "/viper.data.%d"

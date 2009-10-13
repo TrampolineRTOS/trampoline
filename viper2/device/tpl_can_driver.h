@@ -1,6 +1,7 @@
 #ifndef __TPL_CAN_DRIVER_H
 #define __TPL_CAN_DRIVER_H
 
+#include "../com/tpl_com_ipdu.h"
 #include "registers.h"
 #include "viper.h"
 
@@ -11,7 +12,7 @@
 /**
  *  number of elements in the filter
  */
-#define FILTER_LENGTH	  8
+#define FILTER_LENGTH    8
 
 /**
  *  number of registers needed to contain
@@ -32,15 +33,27 @@
 /**
  *  frame identifiers
  */
-enum {	IDENTIFIER_1,
-	IDENTIFIER_2,
-	IDENTIFIER_3  };
+enum {  IDENTIFIER_1,
+        IDENTIFIER_2,
+        IDENTIFIER_3  };
 
 /**
  *  variables for boolean tests
  */
-enum {	TRUE,
-	FALSE };
+#ifndef TRUE
+#define TRUE    (1)
+#endif
+#ifndef FALSE
+#define FALSE   (0)
+#endif
+
+/**
+ *  registers (cast a frame before sending it)
+ *
+ */
+typedef struct {
+    reg_t reg[FRAME_REG_NUMBER];
+}frame_to_reg;
 
 /*====================
  *  types
@@ -52,14 +65,14 @@ enum {	TRUE,
  *  0 : data frame
  *  1 : remote frame
  */
-typedef char  rtr_t;  /* 1 byte */
+typedef char rtr_t;  /* 1 byte */
 
 /**
  *  length of frame
  *
  *  0..8
  */
-typedef char  dlc_t;  /* 1 byte */
+typedef char dlc_t;  /* 1 byte */
 
 /**
  *  format of frame
@@ -67,7 +80,7 @@ typedef char  dlc_t;  /* 1 byte */
  *  0 : standard frame
  *  1 : extend frame
  */
-typedef char  ide_t;  /* 1 byte */
+typedef char ide_t;  /* 1 byte */
 
 /**
  *  identifier type
@@ -76,8 +89,8 @@ typedef char  ide_t;  /* 1 byte */
  *  extend frame    : used  std_id and ext_id
  */
 typedef struct {
-  unsigned int std_id; /* 4 bytes */
-  unsigned int ext_id; /* 4 bytes */
+  int std_id; /* 4 bytes */
+  int ext_id; /* 4 bytes */
 }
 identifier_t;
 
@@ -86,31 +99,24 @@ identifier_t;
  *
  *  array of identifiers
  */
-typedef identifier_t  filter_t[FILTER_LENGTH];	/* 64 bytes */
+typedef identifier_t filter_t[FILTER_LENGTH]; /* 64 bytes */
 
 /**
  *  data type
  */
 typedef struct {
-  unsigned int bytes_1; /* 4 bytes */
-  unsigned int bytes_2; /* 4 bytes */
+  int byte_1;
+  int byte_2;
 }
 data_t;
-
-/**
- *  ipdu type
- *  
- *  TODO not here : just for test
- */
-typedef data_t tpl_ipdu;
 
 /**
  *  arbitration type
  */
 typedef  struct {
-  identifier_t identifier;
-  rtr_t rtr;
-  ide_t ide;
+  identifier_t  identifier;
+  rtr_t         rtr;
+  ide_t         ide;
 }
 arbitration_t;
 
@@ -119,8 +125,8 @@ arbitration_t;
  */
 typedef struct {
   arbitration_t arbitration;
-  dlc_t dlc;
-  data_t data;
+  dlc_t         dlc;
+  data_t        data;
 }
 frame_t;
 
@@ -131,7 +137,7 @@ frame_t;
  *  register to frame
  */
 typedef union {
-  reg_t reg[FRAME_REG_NUMBER];
+  reg_t   reg[FRAME_REG_NUMBER];
   frame_t frame;
 }
 frame_conversion_union_t;
@@ -143,10 +149,34 @@ frame_conversion_union_t;
  *  register to filter
  */
 typedef union {
-  reg_t reg[FILTER_REG_NUMBER];
-  filter_t filter;
+  reg_t     reg[FILTER_REG_NUMBER];
+  filter_t  filter;
 }
 filter_conversion_union_t;
+
+/**
+ *  union used for conversion
+ *
+ *  data to ipdu
+ *  ipdu to data
+ */
+typedef union {
+  data_t              data;
+  tpl_sending_ipdu    s_ipdu;
+}
+s_ipdu_conversion_union_t;
+
+/**
+ *  union used for conversion
+ *
+ *  data to ipdu
+ *  ipdu to data
+ */
+typedef union {
+  data_t              data;
+  tpl_receiving_ipdu  r_ipdu;
+}
+r_ipdu_conversion_union_t;
 
 /*====================
  *  prototypes
@@ -155,33 +185,35 @@ filter_conversion_union_t;
 /**
  *  send an ipdu
  *  
- *  @param  ipc	  structure used for communication
+ *  @param  ipc   structure used for communication
+ *  @param  can_device CAN device's mask
  *  @param  ipdu  ipdu to send
  */
-void send_ipdu(ipc_t* ipc, tpl_ipdu* ipdu);
+void send_ipdu(ipc_t* ipc, dev_id_t can_device, tpl_sending_ipdu* ipdu);
 
 /**
  *  receive an ipdu
  *  
- *  @param  ipc	  structure used for communication
+ *  @param  ipc   structure used for communication
+ *  @param  can_device CAN device's mask
  *  @param  ipdu  ipdu wich will take the receive ipdu value
  */
-void receive_ipdu(ipc_t* ipc, tpl_ipdu* ipdu);
+void receive_ipdu(ipc_t* ipc, dev_id_t can_device, tpl_receiving_ipdu* ipdu);
 
 /**
  *  say if an identifier is standard
  *  
- *  @param  identifier	identifier to test
- *  @return		TRUE if the identifier is standard, else FALSE
+ *  @param  identifier  identifier to test
+ *  @return             TRUE if the identifier is standard, else FALSE
  */
 int is_standard_identifier(identifier_t* identifier);
 
 /**
  *  say if an identifier is already in a filter
  *
- *  @param  filter	filter to test
- *  @param  identifier	identifier to search
- *  @return		TRUE if the identifier exists, else FALSE
+ *  @param  filter      filter to test
+ *  @param  identifier  identifier to search
+ *  @return             TRUE if the identifier exists, else FALSE
  */
 int is_existed_identifier(filter_t filter, identifier_t* identifier);
 
@@ -189,7 +221,7 @@ int is_existed_identifier(filter_t filter, identifier_t* identifier);
  *  say if a filter is empty
  *
  *  @param  filter  filter to test
- *  @return	    TRUE if the filter is empty, else FALSE
+ *  @return         TRUE if the filter is empty, else FALSE
  */
 int is_empty_filter(filter_t filter);
 
@@ -197,7 +229,7 @@ int is_empty_filter(filter_t filter);
  *  say if a filter is full
  *
  *  @param  filter  filter to test
- *  @return	    TRUE if the filter is full, else FALSE
+ *  @return         TRUE if the filter is full, else FALSE
  */
 int is_full_filter(filter_t filter);
 
@@ -211,31 +243,32 @@ void init_filter(filter_t filter);
 /**
  *  add an identifier to a filter
  *  
- *  @param  filter	filter where add an identifier
- *  @param  identifier	identifier to add
+ *  @param  filter      filter where add an identifier
+ *  @param  identifier  identifier to add
  */
 void add_identifier_to_filter(filter_t filter, identifier_t* identifier);
 
 /**
  *  remove an identifier to a filter
  *  
- *  @param  filter	filter where remove an identifier
- *  @param  identifier	identifier to remove
+ *  @param  filter      filter where remove an identifier
+ *  @param  identifier  identifier to remove
  */
 void remove_identifier_to_filter(filter_t filter, identifier_t* identifier);
 
 /**
  *  update the filter registers
  *  
- *  @param  ipc	    structure used for communication
+ *  @param  ipc     structure used for communication
+ *  @param  can_device CAN device's mask
  *  @param  filter  filter to write in registers
  */
-void update_filter(ipc_t* ipc, filter_t filtre);
+void update_filter(ipc_t* ipc, dev_id_t can_device, filter_t filtre);
 
 /**
  *  read the filter registers
  *
- *  @param  ipc	    structure used for communication
+ *  @param  ipc     structure used for communication
  *  @param  filter  filter wich will take the read filter
  */
 void read_filter(ipc_t* ipc, filter_t filter);
@@ -245,7 +278,7 @@ void read_filter(ipc_t* ipc, filter_t filter);
  *  
  *  @param  frame   frame to test
  *  @param  filter  filter to used to test the acceptance
- *  @return	    TRUE if the frame is acceptable, else FALSE
+ *  @return         TRUE if the frame is acceptable, else FALSE
  */
 int frame_acceptance(frame_t* frame, filter_t filter);
 

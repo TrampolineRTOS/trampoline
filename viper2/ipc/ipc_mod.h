@@ -17,6 +17,8 @@
  */
 ipc_t *tpl_ipc_create_instance(char *trampoline_path);
 
+void tpl_sem_post_fifo_full_sem(ipc_t *ipc);
+
 /**
  * Kill a trampoline instance and free shared memory and semaphores
  * @param ipc ipc_t structure associate to a trampoline instance you want to kill.

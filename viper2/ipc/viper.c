@@ -63,6 +63,7 @@ void vp_ipc_signal_update(ipc_t *ipc, dev_id_t dev_id, mask_t mask)
     perror("viper : malloc(Modified_reg) FIFO");
     return ;
   }
+
   modified_reg->dev = dev_id;
   modified_reg->reg_mask = mask;
 
@@ -78,7 +79,7 @@ void vp_ipc_signal_update(ipc_t *ipc, dev_id_t dev_id, mask_t mask)
 
   /* Add new cell into FIFO */
   fifo_push(&ipc->sh_mem->fifo, modified_reg);
-
+ 
   /* Semaphore */
   /** FIFO semaphore adding (unlock viper2 reading thread) */
   if(0 != sem_post(ipc->fifo_full_sem))
@@ -90,6 +91,7 @@ void vp_ipc_signal_update(ipc_t *ipc, dev_id_t dev_id, mask_t mask)
 
   /* Free memory */
   free(modified_reg);
+
 }
 
 int vp_ipc_get_interruption_id(ipc_t *ipc)
@@ -111,7 +113,7 @@ int vp_ipc_get_interruption_id(ipc_t *ipc)
 
   it_id = ipc->sh_mem->it_id;
 
-  /* We have read these interruption id */
+  /* We have read the interruption id */
   /* You could want to reset the interruptions identifiers you have handle after treatement.
    * So you will have to do this :
    *
@@ -163,7 +165,7 @@ void vp_ipc_wait_vp(ipc_t *ipc)
 void vp_ipc_get_shared_memory(ipc_t *ipc)
 {
 #ifdef DEBUG
-  printf("(DD) Trampoline %d : vp_ipc_shared_memory()\n", getpid());
+  printf("(DD) Trampoline %d : vp_ipc_get_shared_memory()\n", getpid());
 #endif
   /* Copy pid */
   ipc->pid = getpid();
@@ -185,7 +187,7 @@ void vp_ipc_get_shared_memory(ipc_t *ipc)
 void vp_ipc_write_reg(ipc_t *ipc, reg_id_t reg_id, reg_t reg)
 {
 #ifdef DEBUG
-  printf("(DD) Trampoline %d : vp_ipc_write_reg()\n", getpid());
+  printf("(DD) Trampoline %d : vp_ipc_write_reg() - &viper=%d\n", getpid(),(int)ipc);
 #endif
 
   write_reg(ipc, reg_id, reg);
