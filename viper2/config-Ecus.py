@@ -8,6 +8,7 @@ from ecu import Ecu
 from device import Device
 from register import Register
 from scheduler import Scheduler
+from display import Display
 
 ##
 # Devices
@@ -20,6 +21,8 @@ from motor import Motor
 from can import CAN
 from can import CAN_Network
 from dac import DAC
+
+dispatch_display = Display(pygame = True)
 
 ###############################################################################
 # SCHEDULER

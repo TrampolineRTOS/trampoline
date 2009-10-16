@@ -6,7 +6,7 @@ import sys
 import device
 import config
 from const import *
-import pygame
+#import pygame
 
 ###############################################################################
 # EVENT CLASS
@@ -71,7 +71,7 @@ class Scheduler(object):
   """
   Logical scheduler
   All events are handle by this class.
-  There may have one instance of this class.
+  ?? There may have one instance of this class.
   """
   
   def __init__(self, speedCoeff):
@@ -85,14 +85,18 @@ class Scheduler(object):
     self.__run        = True
     self.__sem        = threading.Semaphore()
     
+    """ Dispatch display on pygame or consol """
+    from config import dispatch_display
+    dispatch_display.scheduler(self)
+              
   def addEvent(self, event):  
     """
-    Add event to the scheduler.
-    Time is calculated by the function.
-    So you have to give time to wait from present.
+    * Add event to the scheduler.
+    * If periodic event, increment delay to last execution time
+      If one shot event, increment delay to actual time
+    * Insert event in the right place
     @param event the Event to add
     """
-    # if event periodic, delay event from timeperiodic otherwise, from time.time()
     if (event._periodic == true):
       newtime = (event.getDelay() / self.__speedCoeff) + event.getTime()
     else:
@@ -100,9 +104,8 @@ class Scheduler(object):
     event.setTime(newtime)
 
     self.__sem.acquire()
-    # find the right place to insert the new event
+    # TODO : Don't start the searching from the beginning of the list but by the middle (worst case in log(n) instead of n)
     length = len(self.__events)
-    print "length" + str(length)
     i = 0
     if (length > 0):
       for ev in range(length):
@@ -111,33 +114,23 @@ class Scheduler(object):
         break
        i = i + 1
 
-    #insert the new event at the right place
     self.__events.insert(i,event)
     self.__sem.release()
     
-  def start(self, widg):
-    """    TODO:
-      Sleep scheduler the min time to wait.
-    Start scheduler : Get Event whose time is passed, call event()
+  def start(self):
+    """
+    * If pygame, launch event received
+    * Start scheduler : Get Event whose time is passed, call event()
       Device'method and remove the event from the list.
-    """   
-                 
+    * Sleep scheduler the min time to wait.
+    """  
+           
     while self.__run:
-     
-     """Waiting for events from the keyboard/mouse"""
-     for event in pygame.event.get():
-      if event.type == pygame.QUIT: sys.exit()
-      else:
-          # TODO : here or in widg.event() ?
-          if (event.type == MOUSEBUTTONUP) or (event.type == MOUSEBUTTONDOWN) or (event.type == KEYDOWN):
-           """ Find widgets selected and send focus/key """
-           for id in widg._widget_box:
-            if (event.pos[0] > widg._widget_box[id][0][0]):
-              if (event.pos[0] < widg._widget_box[id][1][0]):
-                if (event.pos[1] > widg._widget_box[id][0][1]):
-                  if (event.pos[1] < widg._widget_box[id][1][1]):
-                    #launch event
-                    widg._widgets[id].event(event)
+     """
+     * If pygame : wait for event
+       Otherwise : Do nothing
+     """
+     self._pygameOrNotPygame()
 
      #TODO : Check if better to use an other thread for event management
      """Event sorting..."""
@@ -159,7 +152,7 @@ class Scheduler(object):
       else:
         self.__events.remove(event)
       self.__sem.release()
-      event.getDevice().event(event, event.getModifiedRegisters())    
+      event.getDevice().event(event.getModifiedRegisters())    
         
      self.__sem.acquire()
      ttw = self.__events[0].getTime()
@@ -168,16 +161,25 @@ class Scheduler(object):
      """Sleep until next event"""
      threading.Event().wait(ttw-time.time())
 
-        
+  def withoutPygame(self):
+    pass
+    
+  def withPygame(self):
+     """
+     * Waiting for events from the keyboard/mouse
+     """
+     for event in pygame.event.get():
+      if (event.type == pygame.QUIT):
+        sys.exit()
+      else:
+          self._widg.event(event)  
+              
   def kill(self):
     """
     Stop scheduler
     """
+    #TODO : dispatch kill too according to pygameOrNotPygame
     pygame.quit()
     self.__run = False
 
-  def start_pygame(self, widget):
-    """
-     Start pygame
-    """
     

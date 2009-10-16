@@ -7,6 +7,7 @@ import device # device.SIGUSR1, device.SIGUSR2 and device.SIGALRM
 from ecu import Ecu
 from device import Device
 from scheduler import Scheduler
+from display import Display
 
 ##
 # Devices
@@ -16,6 +17,8 @@ from timer import Timer
 from dac import DAC
 from lcd import LCD
 from bp import BP
+
+dispatch_display = Display(pygame = True)
 
 ###############################################################################
 # SCHEDULER

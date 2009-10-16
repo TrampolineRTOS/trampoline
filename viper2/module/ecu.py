@@ -81,30 +81,34 @@ class Ecu(object):
     self._dir = self.__dir
     
     """ Init """
-    self.__devices       = {} # Dict
-    self.__devices_location = {}
+    self._devices       = {} # Dict
+    # useful ?? self.__devices_location = {}
     self.__offset        = ipc.REGISTER_ID_BITS # Last bits are used by registers
     self.__ipc           = None
     self.__readingThread = None # No reading thread if we only generate
     
+    #from config import dispatch_display
+    #dispatch_display.ecu_init(self) 
+    
     """ Add devices """
     if devices != None:
-      self.add(devices)
-    
+      self.add(devices)       
+        
   def add(self, devices):
     """
     Add devices to the ecu.
     @param devices the devices list used by the Ecu (class Device)
     """
     for device in devices:
-      self.__devices[device.id] = device
+      self._devices[device.id] = device
       #TODO : check if location not duplicate (in device class and in "the" device)
-      self.__devices_location[device.id] = device._localisation,device._box
+      # useful ? self.__devices_location[device.id] = device._localisation,device._box
       #print "location:" + str(self.__devices_location[device.id][0][0]) + "-" + str(self.__devices_location[device.id][0][0]+self.__devices_location[device.id][1][0]) + ";" + str(self.__devices_location[device.id][0][1]) + ";" + str(self.__devices_location[device.id][0][1]+self.__devices_location[device.id][1][1])
 
   def start(self):
     """
-    Run trampoline process, run reading thread and devices.
+    * Run trampoline process, run reading thread and devices.
+    * Initialize Pygame if needed.
     """
     
     """ IPC """
@@ -113,7 +117,7 @@ class Ecu(object):
       raise IPCError, "You must compile trampoline before run viper 2"  
 
     """ Init devices """ 
-    for name, device in self.__devices.iteritems():
+    for name, device in self._devices.iteritems():
       device.setEcu(self)
       device.setScheduler(self.__scheduler)
       device.genLongID(self.__offset)
@@ -124,13 +128,9 @@ class Ecu(object):
     self.__readingThread.setDaemon(True) # Can stop script even if thread is running
     self.__readingThread.start()
     
-  def draw(self, widget_list):
-    """
-    Add widgets to widgets list
-    """        
-    for name, device in self.__devices.iteritems():
-      device._font = pygame.font.Font(None, 20)
-      device.draw(widget_list)
+    """ Draw Ecu if Display mode == pygame (here and not in __init__ because devices are not yet created in __init__) """
+    from config import dispatch_display
+    dispatch_display.ecu(self)
   	
   def generate(self):
     """
@@ -155,24 +155,24 @@ class Ecu(object):
     """ Generate device identifier """
     index = 0
     header.write("\n/* Devices */\n")
-    for name, device in self.__devices.iteritems(): 
+    for name, device in self._devices.iteritems(): 
       index += 1
       header.write("#define " + device.name + "_val ((reg_id_t)" + hex(device.id) +  ") << " + str(self.__offset) + "\n")
 
     header.write("\n");
 
-    for name, device in self.__devices.iteritems():
+    for name, device in self._devices.iteritems():
       header.write("const reg_id_t " + device.name + " = " + device.name + "_val;\n")
       oilFile.write("  " + device.irq + " = " + str(device.callbackIndex) + ";\n")
 
     """ Generate register identifier """
     header.write("\n/* Registers */\n")
-    for name, device in self.__devices.iteritems():
+    for name, device in self._devices.iteritems():
       device.generateRegisters(header)
 
     """ Generate matchless registers identifiers """
     header.write("\n/* Completes registers */\n")
-    for name, device in self.__devices.iteritems():
+    for name, device in self._devices.iteritems():
       device.generate(header)
 
     """ Generate footer """
@@ -221,7 +221,7 @@ class Ecu(object):
     @param registerMask register mask (reg_id_t)
     """
     deviceID = deviceID >> self.__offset
-    if deviceID not in self.__devices:
+    if deviceID not in self._devices:
       raise IPCError, str(deviceID) + " is not in devices list !" 
 
     else:
@@ -238,7 +238,7 @@ class Ecu(object):
         index -= 1
 
       """ Add event to scheduler """
-      self.__scheduler.addEvent(Event(self.__devices[deviceID], 0, false, reg))
+      self.__scheduler.addEvent(Event(self._devices[deviceID], 0, false, reg))
 
   def send(self, sub):
     print "ecu.send() - sub:" + str(sub)

@@ -36,7 +36,6 @@ lcd_height = 120
 lcdserver_width = 400
 lcdserver_height = 400
 robot_size = 4
-#robot_light = 4
 
 ####
 # Constant for "key" pressed

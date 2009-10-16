@@ -18,15 +18,31 @@ class BP(device.Device):
     @see Device.__init__()
     @param delay time (second) between two shots (This is a float)
     """
+    
+    self._width = button_width
+    self._height = button_height
+    
     device.Device.__init__(self, name, id, signal, registers)
-    device.Device.location(self, button_width, button_height)
-   
+    
   def start(self):
     """
     Nothing to be done for starting device because
     it waits for command from the user.
     """
 
-  def draw(self, widget_list):
+  ################################################################    
+  # Display on Consol - Impossible ??
+  ################################################################
+ 
+  def display_on_consol(self):
+    pass
+
+  ################################################################    
+  # Display on Pygame
+  ################################################################
+  
+  def display_on_pygame_adding_widgets(self, widget_list):
     Button(widget_list, self, self.callbackIndex, [self._localisation[0], self._localisation[1]])
     
+  def display_on_pygame(self):
+    pass
