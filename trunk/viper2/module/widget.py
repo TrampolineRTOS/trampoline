@@ -15,11 +15,14 @@ class Widget(object):
   ecu = 0
   
   def __init__(self):
+    """
+    Constructor : Initialize pygame and widgets.
+    """
     self._widget_box	    = {}
     self._widgets			= {}
     self._actual_widget 	= None
+    self._focused_widget    = None
     
-    """Initialise Screen"""
     pygame.init()
     screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption('Viper2')
@@ -27,25 +30,45 @@ class Widget(object):
     screen.fill(background)
     pygame.display.flip()
         
-  def event(self, loc):
-    """ Search if loc is in the widget 
-        box and "launch" event if OK
+  def event(self, ev):
+    """
+    * Receiving an event, search if it occurs to a widget and launch widget's action if OK
+    @ param ev event received
     """ 
-    #if mouse click, find the focused widget, otherwise, send event to the "actual" widget
-  
+    # TODO : if mousebuttonup.pos == mousebuttondown.pos
+    #           launch event
+    # It will launch the event at the up position unlike now (at down position)
+    if (ev.type == MOUSEBUTTONDOWN):
+      for id in self._widget_box:
+        if (ev.pos[0] > self._widget_box[id][0][0]):
+          if (ev.pos[0] < self._widget_box[id][1][0]):
+            if (ev.pos[1] > self._widget_box[id][0][1]):
+              if (ev.pos[1] < self._widget_box[id][1][1]):
+                self._focused_widget = id      
+                self._widgets[id].event(ev)
+    elif (ev.type == MOUSEBUTTONUP):
+      self._widgets[self._focused_widget].event(ev)
+    elif (ev.type == KEYDOWN):
+      self._widgets[self._focused_widget].event(ev)
+                    
   def add(self, widg, device, id, box):
-    #print "widget.add() - ecu:" + str(self.ecu) + " device._ecu:" + str(device._ecu)
+    """
+    * Add widget in widget list, increment ecu number
+      (because it could happen that two widgets have the same id
+      if they are not in the same Ecu. In this case, the widget's
+      id is multiply by the Ecu's id)  
+    @param widg widget to add
+    @param device device to know the widget's Ecu
+    @param id widget's id to store the idget in the widget list
+    @param box widgets list
+    """
+    if (self._focused_widget == None):
+      self._focused_widget = id
     if (self.ecu != device._ecu):
       self.ecu = device._ecu
       self.ecu_number = self.ecu_number + 1
     
-    #print "self.ecu_number:" + str(self.ecu_number)
-    
     self._widget_box[id+32*(self.ecu_number-1)] = box
     self._widgets[id+32*(self.ecu_number-1)] 	 = widg
-    
-    #print "self._widgets:" + str(self._widgets) + "self._widget_box:" + str(self._widget_box)
   
-  def start(self):
-    pass
     

@@ -27,11 +27,13 @@ class Timer(device.Device):
     @param type ONE_SHOT or AUTO
     @param delay time (second) between two shots (This is a float)
     """
+    self._width = 0
+    self._height = 0
+    
     device.Device.__init__(self, name, id, signal, registers)
     self.__type  = type
     self.__delay = float(delay)
-    self._localisation = [0, 0]
-
+    
   def setType(self, type):
     """
     Change type of timer (ONE_SHOT or AUTO)
@@ -44,7 +46,7 @@ class Timer(device.Device):
     """
     self.__delay = delay
 
-  def event(self, ev, modifiedRegisters = None):
+  def event(self, modifiedRegisters = None):
     """
     Call from Scheduler
     """
@@ -59,6 +61,21 @@ class Timer(device.Device):
       self._scheduler.addEvent(Event(self, self.__delay, periodic = true))
     else:
       self._scheduler.addEvent(Event(self, self.__delay))
+  
+  ################################################################    
+  # Display on Consol
+  ################################################################
+  
+  def display_on_consol(self):
+    pass
+  
+  ################################################################    
+  # Display on Pygame
+  ################################################################
+  
+  def display_on_pygame_adding_widgets(self, widget):
+    pass
 
-  def draw(self, widget):
-    """ """
+  def display_on_pygame(self):
+    pass
+    

@@ -2,7 +2,6 @@
 # IMPORTS
 ###############################################################################
 import device
-import pygame
 from const import *
 from register import Register
 
@@ -44,83 +43,27 @@ class LCD(device.Device):
     self.__reg8     = Reg8.name
     self.__reg9     = Reg9.name
     
-    device.Device.__init__(self, name, id, signal, [Reg0, Reg1, Reg2, Reg3, Reg4, Reg5, Reg6, Reg7, Reg8, Reg9])
-    self.__name       = name
-
-    """Attributes for Pygame"""
-    device.Device.location(self, lcd_width, lcd_height)
-    #self.__pygame_localisation()
-    self.__background 	  = None
-    self.__backgroundrect = None
-    self.__legend		  = None
-    self.__legendrect     = None
+    self._width = lcd_width
+    self._height = lcd_height
     
-#  def __pygame_localisation(self):
-#    if (self.pygamepointer[2] < lcd_height):
-#     if ((self.pygamepointer[0] + lcd_width) < screen_width):
-#      self.pygamepointer[2] = lcd_height
-#     
-#    if ((self.pygamepointer[0] + lcd_width) > screen_width):
-#     self.pygamepointer[1] = self.pygamepointer[2]
-#     self.pygamepointer[0] = 0
-#     self.pygamepointer[2] = lcd_height
-#     self._localisation = [self.pygamepointer[0], self.pygamepointer[1]]
-#    else:
-#     self._localisation = [self.pygamepointer[0], self.pygamepointer[1]]
-#     self.pygamepointer[0] = self.pygamepointer[0] + lcd_width
+    device.Device.__init__(self, name, id, signal, [Reg0, Reg1, Reg2, Reg3, Reg4, Reg5, Reg6, Reg7, Reg8, Reg9])
        
-  def event(self, ev, modifiedRegisters = None):
+  def event(self, modifiedRegisters = None):
     """
     Call from Scheduler
     """
     
     """ If event doesn't come from Trampoline """
     if not modifiedRegisters:
-      print "[VPR] (" + str(self.__name) + ") Event doesn't come from Trampoline !!! "
+      print "[VPR] (" + str(self.name) + ") Event doesn't come from Trampoline !!! "
 
       """ If event come from Trampoline """
       """ Get command """
     elif self._registers[self.__reg0].id in modifiedRegisters:
-      print "[VPR] (" + str(self.__name) + ") : " + chr(self._registers[self.__reg9].read()) + chr(self._registers[self.__reg8].read())  + chr(self._registers[self.__reg7].read()) + chr(self._registers[self.__reg6].read()) + chr(self._registers[self.__reg5].read()) + chr(self._registers[self.__reg4].read()) + chr(self._registers[self.__reg3].read()) + chr(self._registers[self.__reg2].read()) + chr(self._registers[self.__reg1].read()) + chr(self._registers[self.__reg0].read()) 
-      #print "[VPR] (" + str(self.__name) + ") : " + str(self._registers[self.__reg1].read()) + "-" + str(self._registers[self.__reg0].read()) 
-      #update widget
-      self.draw_update()
+      self._display()
           
     else:
       print "[VPR](DEBUG) Some registers are not handle :", modifiedRegisters
-
-  def draw(self, widget_list):
-    """Initialise pygame screen"""
-    self.draw_init()
-
-  def draw_init(self):
-      """ Fill background """
-      self.__background = pygame.Surface((lcd_width - 2*border_line, lcd_height - 30))
-      self.__backgroundrect = self.__background.fill((255, 255, 239)) 
-      self.__backgroundrect = self.__backgroundrect.move([self._localisation[0]+border_line, self._localisation[1]+border_line])
-      
-      self.__legend = self._font.render(self._ecu.getDir() + self.name, 1, (0, 0, 0))
-      self.__legendrect = self.__legend.get_rect()
-      temp_size = self._font.size(str(self._ecu.getDir()) + str(self.name))
-      self.__legendrect = self.__legendrect.move([self._localisation[0] + lcd_width -temp_size[0] -border_line, self._localisation[1] + lcd_height - 30 + 2*border_line])  
-      
-      screen = pygame.display.get_surface()
-      screen.blit(self.__background, self.__backgroundrect)
-      screen.blit(self.__legend, self.__legendrect)
-      pygame.display.flip()  
-
-  def draw_update(self):
-      """ Update draw """
-      text = self._font.render(chr(self._registers[self.__reg9].read()) + chr(self._registers[self.__reg8].read())  + chr(self._registers[self.__reg7].read()) + chr(self._registers[self.__reg6].read()) + chr(self._registers[self.__reg5].read()) + chr(self._registers[self.__reg4].read()) + chr(self._registers[self.__reg3].read()) + chr(self._registers[self.__reg2].read()) + chr(self._registers[self.__reg1].read()) + chr(self._registers[self.__reg0].read()), 1, (0, 0, 0))
-      #text = self._font.render(str(self._registers[self.__reg1].read()) + "-" + str(self._registers[self.__reg0].read()), 1, (0, 0, 0))
-      textrect = text.get_rect()
-      textrect = textrect.move([self._localisation[0]+ 15, self._localisation[1]+ 15])
-      
-      """ Update screen """
-      screen = pygame.display.get_surface()
-      screen.blit(self.__background, self.__backgroundrect)
-      screen.blit(text, textrect)
-      pygame.display.flip()  
 
   def start(self):
     """
@@ -146,4 +89,48 @@ class LCD(device.Device):
       self._registers[self.__reg1].write(32)
     if ( self._registers[self.__reg0].read() == 0 ):
       self._registers[self.__reg0].write(32)
+  
+  ################################################################    
+  # Display on Consol
+  ################################################################
+  
+  def display_on_consol(self):
+      print "[VPR] (" + str(self.name) + ") : " + chr(self._registers[self.__reg9].read()) + chr(self._registers[self.__reg8].read())  + chr(self._registers[self.__reg7].read()) + chr(self._registers[self.__reg6].read()) + chr(self._registers[self.__reg5].read()) + chr(self._registers[self.__reg4].read()) + chr(self._registers[self.__reg3].read()) + chr(self._registers[self.__reg2].read()) + chr(self._registers[self.__reg1].read()) + chr(self._registers[self.__reg0].read()) 
+  
+  ################################################################    
+  # Display on Pygame
+  ################################################################
+  
+  def display_on_pygame_adding_widgets(self, widget_list):
+      """Initialise pygame screen"""
+      self.display_on_pygame_init()
+
+  def display_on_pygame_init(self):
+      """ Fill background """
+      self.__background = pygame.Surface((lcd_width - 2*border_line, lcd_height - 30))
+      self.__backgroundrect = self.__background.fill((255, 255, 239)) 
+      self.__backgroundrect = self.__backgroundrect.move([self._localisation[0]+border_line, self._localisation[1]+border_line])
       
+      self.__legend = self._font.render(self._ecu.getDir() + self.name, 1, (0, 0, 0))
+      self.__legendrect = self.__legend.get_rect()
+      temp_size = self._font.size(str(self._ecu.getDir()) + str(self.name))
+      self.__legendrect = self.__legendrect.move([self._localisation[0] + lcd_width -temp_size[0] -border_line, self._localisation[1] + lcd_height - 30 + 2*border_line])  
+      
+      screen = pygame.display.get_surface()
+      screen.blit(self.__background, self.__backgroundrect)
+      screen.blit(self.__legend, self.__legendrect)
+      pygame.display.flip()  
+
+  def display_on_pygame(self):
+      """ Update pygame """
+      text = self._font.render(chr(self._registers[self.__reg9].read()) + chr(self._registers[self.__reg8].read())  + chr(self._registers[self.__reg7].read()) + chr(self._registers[self.__reg6].read()) + chr(self._registers[self.__reg5].read()) + chr(self._registers[self.__reg4].read()) + chr(self._registers[self.__reg3].read()) + chr(self._registers[self.__reg2].read()) + chr(self._registers[self.__reg1].read()) + chr(self._registers[self.__reg0].read()), 1, (0, 0, 0))
+      # Sometimes useful : text = self._font.render(str(self._registers[self.__reg1].read()) + "-" + str(self._registers[self.__reg0].read()), 1, (0, 0, 0))
+      textrect = text.get_rect()
+      textrect = textrect.move([self._localisation[0]+ 15, self._localisation[1]+ 15])
+      
+      """ Update screen """
+      screen = pygame.display.get_surface()
+      screen.blit(self.__background, self.__backgroundrect)
+      screen.blit(text, textrect)
+      pygame.display.flip()  
+    

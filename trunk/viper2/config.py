@@ -8,6 +8,7 @@ from ecu import Ecu
 from device import Device
 from register import Register
 from scheduler import Scheduler
+from display import Display
 
 ##
 # Devices
@@ -20,7 +21,8 @@ from server import Server
 from can import CAN_Network
 from can import CAN
 from motor import Motor
-from motor import MotorPap
+
+dispatch_display = Display(pygame = True)
 
 ###############################################################################
 # SCHEDULER
@@ -48,7 +50,7 @@ can_net = CAN_Network()
 # Add Pygame widgets if needed (for example, a screen which displays several
 # information coming from several application
 ###############################################################################
-display_server = Server("LCDSERVER")
+display_server = Server("LCDSERVER") # uses pygame
 
 ###############################################################################
 # ECUS 
@@ -63,7 +65,7 @@ allEcus = [
       # TODO : offset between delay and "real" delay. Is 0.01 too fast ???
       # TODO : LCD doesn't send signal to Trampoline but uses an id.
       #        --> Try to find how to do to keep this id free.
-      CAN(can_net, "CAN1", 0, 1),
+      CAN(can_net, "CAN1", 0),
       Timer("TIMER1", 1, type = timer.AUTO, delay = 0.1),
 	  LCDServer("LCD1", 2, display_server),      
       Motor("MOTOR1_1",3),
@@ -78,7 +80,7 @@ allEcus = [
     "../App-Robot2/trampoline",
     scheduler,
     [
-      CAN(can_net, "CAN2", 0, 2),
+      CAN(can_net, "CAN2", 0),
       Timer("TIMER2", 1, type = timer.AUTO, delay = 0.1),
       LCDServer("LCD2", 2, display_server),      
       Motor("MOTOR2_1",3),

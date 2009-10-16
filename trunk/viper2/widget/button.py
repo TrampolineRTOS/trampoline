@@ -2,7 +2,6 @@
 # IMPORTS
 ###############################################################################
 #import signal, copy
-#from register import Register
 import widget
 import pygame
 from const import *

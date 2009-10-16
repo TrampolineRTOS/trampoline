@@ -3,8 +3,7 @@
 ###############################################################################
 import signal, copy
 from register import Register
-import pygame
-from const import *
+#useful ? from const import *
 
 ###############################################################################
 # CONSTANTS
@@ -43,7 +42,6 @@ class Device(object):
     self._signal       = signal
 
     """ Attributes """
-    
     self.id         = 1 << callbackIndex
     self.irq        = "IRQ" + str(callbackIndex)
     self.longID     = None
@@ -51,32 +49,14 @@ class Device(object):
     self._registers = {} # Dict
     self._scheduler = None
     self._ecu       = None
-    
-    """Attributes for Pygame"""
-    self._localisation = [0, 0]
-    self._box		= [0, 0]
-    self._font		= None
-          
+              
     """ Add registers """
     if registers:
       self.add(registers)
-
-  def location(self, width, height):
-    #TODO : Try without parameters ? stocking them in variable (self._width...) before calling location() method ?
-    #       Think of a matter to display ECUs' devices in one column or something else...
-    if (self.pygamepointer[2] < height):
-     if ((self.pygamepointer[0] + width) < screen_width):
-      self.pygamepointer[2] = height
-     
-    if ((self.pygamepointer[0] + width) > screen_width):
-     self.pygamepointer[1] += self.pygamepointer[2]
-     self.pygamepointer[0] = width
-     self.pygamepointer[2] = height
-     self._localisation = [0, self.pygamepointer[1]] 
-    else:
-     self._localisation = [self.pygamepointer[0], self.pygamepointer[1]]     
-     self.pygamepointer[0] = self.pygamepointer[0] + width 
-    self._box = [width, height]
+      
+    """ Dispatch display on pygame or consol """
+    from config import dispatch_display
+    dispatch_display.device(self)
     
   def add(self, registers):
     """
@@ -159,11 +139,6 @@ class Device(object):
 
   def key(typ, sub):
     print "received key sub.type:" + str(typ) + " sub:" + str(sub)
-    
-  def start_pygame(self):
-    print "device.start_pygame()"
-    #self.__font = pygame.font.Font(None, 20)
-  
+      
   def start(self):
-    print "device.start()"
     pass

@@ -48,7 +48,9 @@ import signal
 import traceback
 import subprocess
 import config
+from config import dispatch_display
 from widget import Widget
+import display
 
 ###############################################################################
 # SIGNAL HANDLER
@@ -136,18 +138,15 @@ else:
     # CTRL+C
     signal.signal(signal.SIGINT, signalHandler)
     
+    from config import dispatch_display    
+    dispatch_display.start()
+                
     """ Start all ecus """
     for ecu in config.allEcus:
       ecu.start()
 
-    """ Start Pygame - Init 'widg' as widgets container """
-    widget_list = Widget()
-    """ Draw ECUs' Devices - Insert Widgets in 'widg' if needed """
-    for ecu in config.allEcus:
-      ecu.draw(widget_list)
-
     """ Start logical scheduler """
-    config.scheduler.start(widget_list)
+    config.scheduler.start()
     
   except Exception:
     traceback.print_exc()

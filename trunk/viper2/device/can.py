@@ -12,14 +12,15 @@ class CAN(device.Device):
   Timer device. This timer can run with a one shot and you could specify a delay
   """
 
-  def __init__(self, network, name, id, id2, signal = device.SIGUSR2):
+  def __init__(self, network, name, id, signal = device.SIGUSR2):
     """
     Constructor.
     @see Device.__init__()
     """
-    #add can to the network
+
+    """ Add can to the network """
     self.__network = network
-    network.add(self, id2)
+    network.add(self)
     
     """ Create CAN Registers """
     Reg1 = Register("SEND_FRAME_REG1")
@@ -47,34 +48,28 @@ class CAN(device.Device):
     self._reg11     = Reg11.name
     self._reg12     = Reg12.name
     
+    self._width = 0
+    self._height = 0
+        
     device.Device.__init__(self, name, id, signal, [Reg1, Reg2, Reg3, Reg4, Reg5, Reg6, Reg7, Reg8, Reg9, Reg10, Reg11, Reg12])
-    self.__name       = name
-    self.__id2        = id2
     
-  def event(self, ev, modifiedRegisters = None):
+  def event(self, modifiedRegisters = None):
     """
     Call from Scheduler
     """
     
     """ If event doesn't come from Trampoline """
     if not modifiedRegisters:
-      print "[VPR] (" + str(self.__name) + ") Event doesn't come from Trampoline !!! "
+      print "[VPR] (" + str(self.name) + ") Event doesn't come from Trampoline !!! "
 
       """ If event come from Trampoline """
       """ Get command """
     elif self._registers[self._reg1].id in modifiedRegisters:
-      print "[VPR] (" + str(self.__name) + ") : [filters + transmission]" # + str(self._registers[self._reg1].read())  + " ; " + str(self._registers[self._reg2].read())  + " ; " + str(self._registers[self._reg3].read())  + " ; " + str(self._registers[self._reg4].read())  + " ; " + str(self._registers[self._reg5].read())  + " ; " + str(self._registers[self._reg6].read()) 
-      #update widget
-      #self.draw_update()
-      
+      self._display()
       self.__network.event(self)
     
     else:
       print "[VPR](DEBUG) Some registers are not handle :", modifiedRegisters
-
-  def send(self):
-    print "can.send() name:" + str(self.__name)
-    print "[VPR] (" + str(self.__name) + ") : " + str(self._registers[self._reg1].read())  + " ; " + str(self._registers[self._reg2].read())  + " ; " + str(self._registers[self._reg3].read())  + " ; " + str(self._registers[self._reg4].read())  + " ; " + str(self._registers[self._reg5].read())  + " ; " + str(self._registers[self._reg6].read()) 
 
   def start(self):
     """
@@ -105,9 +100,25 @@ class CAN(device.Device):
       self._registers[self._reg2].write(32)
     if ( self._registers[self._reg1].read() == 0 ):
       self._registers[self._reg1].write(32)
-          
-  def draw(self, widget):
-    """ """
+
+  ################################################################    
+  # Display on Consol
+  ################################################################
+  
+  def display_on_consol(self):
+      print "[VPR] (" + str(self.name) + ") : " + str(self._registers[self._reg1].read())  + " ; " + str(self._registers[self._reg2].read())  + " ; " + str(self._registers[self._reg3].read())  + " ; " + str(self._registers[self._reg4].read())  + " ; " + str(self._registers[self._reg5].read())  + " ; " + str(self._registers[self._reg6].read()) 
+  
+  ################################################################    
+  # Display on Pygame
+  ################################################################
+
+  def display_on_pygame_adding_widgets(self, widget_list):
+    pass
+    
+  def display_on_pygame(self):
+    print "[VPR] (" + str(self.name) + ") : " + str(self._registers[self._reg1].read())  + " ; " + str(self._registers[self._reg2].read())  + " ; " + str(self._registers[self._reg3].read())  + " ; " + str(self._registers[self._reg4].read())  + " ; " + str(self._registers[self._reg5].read())  + " ; " + str(self._registers[self._reg6].read()) 
+    
+
 
 ###############################################################################
 # CAN_Network CLASS
@@ -125,7 +136,7 @@ class CAN_Network(device.Device):
     self._can_list = {}
     self._can_id = 0
   
-  def add(self, device, id):
+  def add(self, device):
     """ Add CAN node into the network """
     self._can_list[self._can_id] = device
     self._can_id = self._can_id + 1
@@ -148,11 +159,11 @@ class CAN_Network(device.Device):
         self._can_list[id_can]._registers[self._can_list[id_can]._reg12].write(device._registers[device._reg6].read())
         self._can_list[id_can].sendIt() 
           
-  def start(self):
-    """
-    Call from ecu, at the beginin
-    Here the first call is written to the scheduler
-    """
+  #def start(self):
+  #  """
+  #  Call from ecu, at the beginin
+  #  Here the first call is written to the scheduler
+  #  """
     
-  def draw(self, widget):
-    """ """
+  #def draw(self, widget):
+  #  """ """

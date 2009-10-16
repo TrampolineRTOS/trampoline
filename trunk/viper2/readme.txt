@@ -1,10 +1,15 @@
 Starting Viper2 :
 
-* Viper2 works with pygame (Viper2 doesn't check a pygame installation yet).
-Install pygame with the python version required.
+* Viper2 can work with pygame or only with the consol. You don't have to to install pygame if you don't need it, but some examples need it because of the user interaction (App-GBF, App-Robot*).
 
-* Make your application with config.py (with Ecus...)
+* Make your own application in config.py with Ecus... (or use one of the examples changing a config-*.py name in config.py). For more informations, see Viper2 documentation (not available yet).
+ 
+* Select your display in config.py (THIS LINE HAS TO BE IN THE FILE) :
+  - pygame -> "dispatch_display = Display(pygame = True)" (Install pygame with the python version required at http://www.pygame.org/ and http://www.python.org/)
+  - consol -> "dispatch_display = Display(pygame = False)"
 
-* Launch Viper2 by "python viper2.py -g -c" (Viper2 check AUTOMATICLY the python version, modify the include/library path of python in the makefile and make the libraries for Trampoline and Viper2 with "make all")
+* Compile Viper2 and Trampoline by "python viper2.py -g -c" (Viper2 check AUTOMATICLY the python version, modify the include/library path of python in the makefile and make the libraries for Trampoline and Viper2 with "make all")
+
+* Launch Viper2 by "python viper2.py"
 
 * Clean Viper2 (before a commit for example) by "python viper2.py -m"
