@@ -21,23 +21,12 @@ except:
   vers = sys.version_info
   vers_1 = commands.getoutput("echo '" + str(vers) + "' | awk -F',' '{print $1}' | awk -F'(' '{print $2}'")
   vers_2 = commands.getoutput("echo '" + str(vers) + "' | awk '{print $2}' | awk -F',' '{print $1}'")
-  #vers_python = "python" + vers_1 + "." + vers_2
   vers_python = commands.getoutput("echo python" + vers_1 + "." + vers_2)
 
-  #get python (bin) path
-  wich_python = commands.getoutput("which " + vers_python)
-  path_python_bin = commands.getoutput("echo " + wich_python + " | sed 's_n/" + vers_python + "_n_g'")
-
-  #get python include path 
-  path_python_include = commands.getoutput("echo " + path_python_bin + " | sed 's/bin/include/g'")
-  #get python lib path
-  path_python_lib = commands.getoutput("echo " + path_python_bin + " | sed 's/bin/lib/g'")
-
   #change path in Makefile
-  commands.getoutput("sed 's:PATH_PYTHON_INCLUDE:" + path_python_include + ":g' Makefile > TMPFILE && mv TMPFILE Makefile")
-  commands.getoutput("sed 's:PATH_PYTHON_LIB:" + path_python_lib + ":g' Makefile > TMPFILE && mv TMPFILE Makefile")
-  commands.getoutput("sed 's:VERS_PYTHON:" + vers_python + ":g' Makefile > TMPFILE && mv TMPFILE Makefile")
-
+  commands.getoutput("sed 's:PYTHON_INCLUDE:`" + vers_python + "-config --includes" + "`:g' Makefile > TMPFILE && mv TMPFILE Makefile")
+  commands.getoutput("sed 's:PYTHON_LDFLAGS:`" + vers_python + "-config --ldflags" + "`:g' Makefile > TMPFILE && mv TMPFILE Makefile")
+  
   """ Make libraries """
   os.system("make all")
   
@@ -86,22 +75,11 @@ elif "-m" in sys.argv or "--mrproper" in sys.argv:
   vers = sys.version_info
   vers_1 = commands.getoutput("echo '" + str(vers) + "' | awk -F',' '{print $1}' | awk -F'(' '{print $2}'")
   vers_2 = commands.getoutput("echo '" + str(vers) + "' | awk '{print $2}' | awk -F',' '{print $1}'")
-  #vers_python = "python" + vers_1 + "." + vers_2
   vers_python = commands.getoutput("echo python" + vers_1 + "." + vers_2)
 
-  #get python (bin) path
-  wich_python = commands.getoutput("which " + vers_python)
-  path_python_bin = commands.getoutput("echo " + wich_python + " | sed 's_n/" + vers_python + "_n_g'")
-
-  #get python include path 
-  path_python_include = commands.getoutput("echo " + path_python_bin + " | sed 's/bin/include/g'")
-  #get python lib path
-  path_python_lib = commands.getoutput("echo " + path_python_bin + " | sed 's/bin/lib/g'")
-
   #change path in Makefile
-  commands.getoutput("sed 's:" + path_python_include + ":PATH_PYTHON_INCLUDE:g' Makefile > TMPFILE && mv TMPFILE Makefile")
-  commands.getoutput("sed 's:" + path_python_lib + ":PATH_PYTHON_LIB:g' Makefile > TMPFILE && mv TMPFILE Makefile")
-  commands.getoutput("sed 's:" + vers_python + ":VERS_PYTHON:g' Makefile > TMPFILE && mv TMPFILE Makefile")
+  commands.getoutput("sed 's:`" + vers_python + "-config --includes" + "`:PYTHON_INCLUDE:g' Makefile > TMPFILE && mv TMPFILE Makefile")
+  commands.getoutput("sed 's:`" + vers_python + "-config --ldflags" + "`:PYTHON_LDFLAGS:g' Makefile > TMPFILE && mv TMPFILE Makefile")
   
 #Generate
 elif "-g" in sys.argv or "--generate" in sys.argv:

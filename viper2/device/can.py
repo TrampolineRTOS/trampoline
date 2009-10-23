@@ -23,18 +23,18 @@ class CAN(device.Device):
     network.add(self)
     
     """ Create CAN Registers """
-    Reg1 = Register("SEND_FRAME_REG1")
-    Reg2 = Register("SEND_FRAME_REG2")
-    Reg3 = Register("SEND_FRAME_REG3")
-    Reg4 = Register("SEND_FRAME_REG4")
-    Reg5 = Register("SEND_FRAME_REG5")
-    Reg6 = Register("SEND_FRAME_REG6")
-    Reg7 = Register("RECEIVE_FRAME_REG1")
-    Reg8 = Register("RECEIVE_FRAME_REG2")
-    Reg9 = Register("RECEIVE_FRAME_REG3")
-    Reg10 = Register("RECEIVE_FRAME_REG4")
-    Reg11 = Register("RECEIVE_FRAME_REG5")
-    Reg12 = Register("RECEIVE_FRAME_REG6")
+    Reg1 = Register(name + "_SEND_FRAME_REG1")
+    Reg2 = Register(name + "_SEND_FRAME_REG2")
+    Reg3 = Register(name + "_SEND_FRAME_REG3")
+    Reg4 = Register(name + "_SEND_FRAME_REG4")
+    Reg5 = Register(name + "_SEND_FRAME_REG5")
+    Reg6 = Register(name + "_SEND_FRAME_REG6")
+    Reg7 = Register(name + "_RECEIVE_FRAME_REG1")
+    Reg8 = Register(name + "_RECEIVE_FRAME_REG2")
+    Reg9 = Register(name + "_RECEIVE_FRAME_REG3")
+    Reg10 = Register(name + "_RECEIVE_FRAME_REG4")
+    Reg11 = Register(name + "_RECEIVE_FRAME_REG5")
+    Reg12 = Register(name + "_RECEIVE_FRAME_REG6")
     self._reg1     = Reg1.name
     self._reg2     = Reg2.name
     self._reg3     = Reg3.name
@@ -118,6 +118,8 @@ class CAN(device.Device):
   def display_on_pygame(self):
     print "[VPR] (" + str(self.name) + ") : " + str(self._registers[self._reg1].read())  + " ; " + str(self._registers[self._reg2].read())  + " ; " + str(self._registers[self._reg3].read())  + " ; " + str(self._registers[self._reg4].read())  + " ; " + str(self._registers[self._reg5].read())  + " ; " + str(self._registers[self._reg6].read()) 
     
+  def refresh_display(self):
+    pass
 
 
 ###############################################################################

@@ -134,7 +134,7 @@ class Device(object):
     """
     self._ecu.sendIt(self._signal, self.id)
 
-  def event(self, modifiedRegisters = None):
+  def event(self, ev, modifiedRegisters = None):
     pass # TODO How to do abstract method with Python ?
 
   def key(typ, sub):

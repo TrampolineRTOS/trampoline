@@ -28,70 +28,41 @@ CPU test {
     COUNTER SystemCounter {
         SOURCE = IRQ1;
     };
-    
-    TASK Idle {
+
+    ALARM alarmeSensors {
+        COUNTER = SystemCounter;
+        ACTION = ACTIVATETASK {
+            TASK = SensorAndSendVector;
+        };
+        AUTOSTART = TRUE {
+			ALARMTIME = 1;
+			CYCLETIME = 2;
+			APPMODE = std;
+		};
+    };
+
+    TASK MotorControl {
+        PRIORITY = 1;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = NON;
+    };
+
+    TASK SensorAndSendVector {
         PRIORITY = 2;
         AUTOSTART = TRUE { APPMODE = std; };
         ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
-    
-    TASK SendVector {
-        PRIORITY = 3;
-        AUTOSTART = FALSE;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
-
-    TASK Sensor {
-        PRIORITY = 5;
-        AUTOSTART = TRUE { APPMODE = std; };
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
+        SCHEDULE = NON;
         EVENT = Event1;
         EVENT = Event2;
     };
     
-    ISR IsrSensor1 {
+    ISR CAN {
         CATEGORY = 2 ;
 		PRIORITY = 30;
-		SOURCE = IRQ3;
-    };    
-	
-    ISR IsrSensor2 {
-        CATEGORY = 2 ;
-		PRIORITY = 30;
-		SOURCE = IRQ4;
-    };    
-    
-    ISR BPFaster {
-        CATEGORY = 2 ;
-		PRIORITY = 30;
-		SOURCE = IRQ5;
-		RESOURCE = ResourceVector;
-    };
-    
-    ISR BPSlower {
-        CATEGORY = 2 ;
-		PRIORITY = 30;
-		SOURCE = IRQ6;
-		RESOURCE = ResourceVector;
-    };
-    
-    ISR BPLeft {
-        CATEGORY = 2 ;
-		PRIORITY = 30;
-		SOURCE = IRQ7;
-		RESOURCE = ResourceVector;
-    };
-    
-    ISR BPRight {
-        CATEGORY = 2 ;
-		PRIORITY = 30;
-		SOURCE = IRQ8;
-		RESOURCE = ResourceVector;
-    };
-    
+		SOURCE = IRQ0;
+    }; 
+        
     RESOURCE ResourceVector {
         RESOURCEPROPERTY = STANDARD;
     };

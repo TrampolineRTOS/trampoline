@@ -20,7 +20,7 @@ class Motor(device.Device):
 
     Speed is transfertfunctiond each Motor.__delay seconds !
   """
-  def __init__(self, name, id, frequency = None, max_pwm = 100, tickperrotation = 100, max_rpm = 300, delay = 0.5, transfertfunction = None, signal = device.SIGUSR2):
+  def __init__(self, name, id, frequency = None, max_pwm = 100, tickperrotation = 100, max_rpm = 300, delay = 0.2, transfertfunction = None, signal = device.SIGUSR2):
     """
     Constructor.
     @see Device.__init__()
@@ -48,6 +48,7 @@ class Motor(device.Device):
     self.__pwm      = 0                             # Max is 1024 (10-bits resoulution)
     self.__speed    = 0                             
     self.__tickperdelay = 0
+    self.__ticks    = 0
     
   def event(self, modifiedRegisters = None):
     """
@@ -60,7 +61,7 @@ class Motor(device.Device):
       self.motor() # -> consigne
       self.transfertfunction() # -> speed
       self.sensor() # -> tickperdelay
-      self.sendIt()
+      #self.sendIt()
 
       """ If event come from Trampoline """
       """ Get command """
@@ -74,13 +75,17 @@ class Motor(device.Device):
   def motor(self):
     """ find consigne from pwm, max_pwm and max_rpm """
     self.__consigne = (self.__pwm*self.__max_rpm)/(self.__max_pwm)
+    #self.__consigne = self.__pwm
 
   def sensor(self):
     """ find tickperdelay from speed, delay, tickperrotations"""
     self.__tickperdelay = self.__speed*(self.__delay/(self.__secondsperminute))*self.__tickperrotation
+    self.__ticks = self.__ticks + self.__tickperdelay
+    print self.name + " motor.sensor() - ticks:" + str(self.__ticks) + " pwm:" + str(self.__pwm) + " t:" + str(time.time())
+    #self.__tickperdelay = self.__speed
     
     """ Write tick per delay in registers """
-    self._registers[self.__sensor].write(int(self.__tickperdelay))
+    self._registers[self.__sensor].write(int(self.__ticks))
       
   def transfertfunction(self):
      """ Filter """
@@ -111,4 +116,6 @@ class Motor(device.Device):
   def display_on_pygame(self):
     print "[VPR] " + str(self.name) + ":" + str(self.__pwm) 
       
+  def refresh_display(self):
+    pass
           

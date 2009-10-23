@@ -45,6 +45,7 @@ class ReadingThread(threading.Thread):
     modified = ipc.tpl_ipc_pop_fifo(self.__ipc);
 
     while self.__run:
+      #print "event.run() - time:" + str(time.time() - 1256045588)
       """ Call Ecu event handler """
       self.__ecu.event(int(modified.dev), modified.reg_mask)
       
@@ -82,13 +83,9 @@ class Ecu(object):
     
     """ Init """
     self._devices       = {} # Dict
-    # useful ?? self.__devices_location = {}
     self.__offset        = ipc.REGISTER_ID_BITS # Last bits are used by registers
     self.__ipc           = None
     self.__readingThread = None # No reading thread if we only generate
-    
-    #from config import dispatch_display
-    #dispatch_display.ecu_init(self) 
     
     """ Add devices """
     if devices != None:
@@ -236,7 +233,8 @@ class Ecu(object):
 
         mask >>= 1
         index -= 1
-
+        
+      
       """ Add event to scheduler """
       self.__scheduler.addEvent(Event(self._devices[deviceID], 0, false, reg))
 
