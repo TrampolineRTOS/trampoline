@@ -27,11 +27,8 @@ int sensor1 = 0;
 int sensor2 = 0;
 
 /* Task declaration */
-DeclareEvent(Event1);
-DeclareEvent(Event2);
 DeclareTask(MotorControl);
 DeclareTask(SensorAndSendVector);
-DeclareResource(ResourceVector);
 
 int main(void)
 {
@@ -41,12 +38,12 @@ int main(void)
 
 void StartupHook(void)
 {
-    printf("[TPL1] Ca demarre !\n");
+    printf("[TPL1] Starting !\n");
 }
 
 void ShutdownHook(StatusType error)
 {
-    printf("[TPL1] Au revoir et a bientot :)\n");
+    printf("[TPL1] Ending !\n");
 }
 
 TASK(MotorControl)
@@ -57,7 +54,6 @@ TASK(MotorControl)
     
     /* received ipdu */
     receive_ipdu(&viper, CAN1_1, &r_ipdu);
-    printf("[TPL1] Received IPDU\n");
     printf("[TPL1] Received an I-PDU... id = %d - mode = %d - buf = %d\n",r_ipdu.id,r_ipdu.transmission_mode,r_ipdu.buf[0]);
     
     /* Receiving movement vector, find motor commands */
@@ -98,9 +94,7 @@ TASK(MotorControl)
         }
     }
 
-    printf("[TPL1] MoveVector[0]:%d MoveVector[1]:%d\n",MoveVector[0],MoveVector[1]);
     /* Change Motor */
-    //TODO : Only one update ? 
     vp_ipc_write_reg(&viper, MOTOR1_1_MOTOR1_1_CONTROL, (reg_t)MoveVector[0]);
     vp_ipc_write_reg(&viper, MOTOR1_2_MOTOR1_2_CONTROL, (reg_t)MoveVector[1]);
     
@@ -112,11 +106,9 @@ TASK(MotorControl)
 
 TASK(SensorAndSendVector)
 {
-    
+    // TODO : int ??
     int temp1 = (int)vp_ipc_read_reg(&viper, MOTOR1_1 | MOTOR1_1_SENSOR);
     int temp2 = (int)vp_ipc_read_reg(&viper, MOTOR1_2 | MOTOR1_2_SENSOR);
-    printf("[TPL1] - sensor1:%d - sensor2:%d\n",sensor1,sensor2);
-    printf("[TPL1] --> m1:%d - m2:%d\n",temp1-sensor1,temp2-sensor2);
 
     /* Convert ticks in centimeters */
     double m1 = (double)((temp1-sensor1)*tickincm);
@@ -153,7 +145,6 @@ TASK(SensorAndSendVector)
             position[0] += m1*dx/hyp;
             position[1] += m2*dy/hyp;        
             
-            printf("hyp:%f m1:%f m2:%f dx:%f dy:%f \n",hyp,m1,m2,dx,dy);
             //printf("[TPL1] Straigh ahead - dx:%f dy:%f hyp:%f m1:%f dx':%f dy':%f\n",dx,dy,hyp,m1,(m1*dx/hyp),(m2*dy/hyp));
         }
     }    
@@ -178,7 +169,6 @@ TASK(SensorAndSendVector)
         /* Find next position */
         position[0] = x0 + r*sin(theta);
         position[1] = y0 - r*cos(theta);
-        printf("r:%f theta:%f x0:%f y0:%f \n",r,theta,x0,y0);
         //printf("[TPL1] Robot's position - m1:%f m2:%f beta:%f r:%f x0:%f y0:%f theta:%f x:%f y:%f\n",m1,m2,beta,r,x0,y0,theta,position[0],position[1]);
     }
         
@@ -188,19 +178,14 @@ TASK(SensorAndSendVector)
     s_ipdu.transmission_mode = 0;
     s_ipdu.nb_message = 2;
     
-    unsigned char test[2]; // = "message";
-    
-    // ##########################
-    // dx and dy can be negative !!!
-    
-    test[0] = dx;
-    test[1] = dy;
+    unsigned char test[2];
+    test[0] = (char)(m1/tickincm);
+    test[1] = (char)(m2/tickincm);
     s_ipdu.buf = test;
     
     printf("[TPL1] Send an I-PDU... id:%d - mode:%d - buf:%d-%d\n", s_ipdu.id,s_ipdu.transmission_mode,s_ipdu.buf[0],s_ipdu.buf[1]);
     send_ipdu(&viper, CAN1_2, &s_ipdu);
     
-    printf("[TPL1] position[0]:%f position[1]:%f\n",position[0],position[1]);
     /* Write in the screen registers*/
     vp_ipc_write_reg(&viper, LCD1_LCD1_REG0, (reg_t)(position[0]));
     vp_ipc_write_reg(&viper, LCD1_LCD1_REG1, (reg_t)(position[1]));

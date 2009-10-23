@@ -53,22 +53,12 @@ CPU test {
         AUTOSTART = TRUE { APPMODE = std; };
         ACTIVATION = 1;
         SCHEDULE = NON;
-        EVENT = Event1;
-        EVENT = Event2;
     };
 
     ISR CAN {
         CATEGORY = 2 ;
 		PRIORITY = 30;
 		SOURCE = IRQ0;
-    };
-
-    EVENT Event1{
-        MASK = AUTO;
-    };
-    
-    EVENT Event2{
-        MASK = AUTO;
     };
     
 };

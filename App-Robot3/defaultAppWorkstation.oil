@@ -28,14 +28,33 @@ CPU test {
     COUNTER SystemCounter {
         SOURCE = IRQ1;
     };
+
+    ALARM alarmeSensors {
+        COUNTER = SystemCounter;
+        ACTION = ACTIVATETASK {
+            TASK = Sensors;
+        };
+        AUTOSTART = TRUE {
+			ALARMTIME = 1;
+			CYCLETIME = 5;
+			APPMODE = std;
+		};
+    };
     
-    TASK Idle {
-        PRIORITY = 2;
+    TASK MotorControl {
+        PRIORITY = 1;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = NON;
+    };
+       
+    TASK Sensors {
+        PRIORITY = 5;
         AUTOSTART = TRUE { APPMODE = std; };
         ACTIVATION = 1;
-        SCHEDULE = FULL;
+        SCHEDULE = NON;
     };
-   
+
     ISR CAN {
         CATEGORY = 2 ;
 		PRIORITY = 30;
