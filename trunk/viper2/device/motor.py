@@ -75,14 +75,11 @@ class Motor(device.Device):
   def motor(self):
     """ find consigne from pwm, max_pwm and max_rpm """
     self.__consigne = (self.__pwm*self.__max_rpm)/(self.__max_pwm)
-    #self.__consigne = self.__pwm
-
+   
   def sensor(self):
     """ find tickperdelay from speed, delay, tickperrotations"""
     self.__tickperdelay = self.__speed*(self.__delay/(self.__secondsperminute))*self.__tickperrotation
     self.__ticks = self.__ticks + self.__tickperdelay
-    print self.name + " motor.sensor() - ticks:" + str(self.__ticks) + " pwm:" + str(self.__pwm) + " t:" + str(time.time())
-    #self.__tickperdelay = self.__speed
     
     """ Write tick per delay in registers """
     self._registers[self.__sensor].write(int(self.__ticks))

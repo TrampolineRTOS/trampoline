@@ -106,9 +106,9 @@ allEcus = [
     [
       CAN(can_net2, "CAN3", 0),
       Timer("TIMER0", 1, type = timer.AUTO, delay = 0.1),
-      #LCD("LCD3", 2),
-      #Motor("MOTOR_SPEED3",3),
-      #MotorPap("MOTOR_PAP3",4),
+      LCDServer("LCD3", 2, display_server),      
+      Motor("MOTOR3_1",3),
+      Motor("MOTOR3_2",4),
     ]
   )
 ]
