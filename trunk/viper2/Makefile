@@ -9,8 +9,7 @@ LDFLAGS   +=
 AR         = ar
 RANLIB     = ranlib
 OBJ_dir    = .obj
-PYTHON_inc =  $(shell echo PATH_PYTHON_INCLUDE/VERS_PYTHON | tr ' ' '\n' | tail -n1)
-
+PYTHON_inc =  PYTHON_INCLUDE
 ##
 # Python module (ipc_mod)
 ##
@@ -68,10 +67,10 @@ ifeq ($(strip $(ARCH)),Linux)
 	SWIG_CFLAGS += -DLINUX
 endif
 ifeq ($(strip $(ARCH)),Darwin)
-	MODULE_ldflags += -LPATH_PYTHON_LIB -lVERS_PYTHON
 	CFLAGS         += -DDARWIN
 	SWIG_CFLAGS    += -DDARWIN
 endif
+MODULE_ldflags += PYTHON_LDFLAGS
 
 ########################################################
 # Makefile

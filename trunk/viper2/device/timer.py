@@ -50,6 +50,7 @@ class Timer(device.Device):
     """
     Call from Scheduler
     """
+    #print "timer.event() - t:" + str(time.time() - 1256045588)
     self.sendIt() 
 
   def start(self):
@@ -79,3 +80,5 @@ class Timer(device.Device):
   def display_on_pygame(self):
     pass
     
+  def refresh_display(self):
+    pass

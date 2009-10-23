@@ -1,7 +1,6 @@
 ###############################################################################
 # IMPORTS
 ###############################################################################
-#import signal, copy
 import widget
 import pygame
 from const import *
@@ -13,7 +12,13 @@ class Button(widget.Widget):
   """
   Button Plus
   """
-  def __init__(self, widg, device, id, pos):
+  def __init__(self, widg, device, pos):
+     """
+     Constructor : Initialize button appearance (button unpressed), the legend and ad the widget to the widget list.
+     @param widg widgets list
+     @param device widget's device
+     @param pos widget position
+     """
      self.__device = device
      self._pos = pos
      
@@ -29,9 +34,12 @@ class Button(widget.Widget):
      screen.blit(self.__legend, self.__legendrect)
      pygame.display.flip()
      
-     widg.add(self, device, id, [[pos[0],pos[1]],[pos[0]+button_width,pos[1]+button_height]])     
+     widg.add(self, device, device.callbackIndex, [[pos[0],pos[1]],[pos[0]+button_width,pos[1]+button_height]])     
   
   def button_pressed(self):
+     """
+     * Change picture when button is pressed
+     """
      self.__background = pygame.image.load("pictures/BPPlus_pressed.jpg")
      self.__backgroundrect = self.__background.get_rect()
      self.__backgroundrect = self.__backgroundrect.move([self._pos[0] + border_line, self._pos[1] + border_line])
@@ -41,6 +49,9 @@ class Button(widget.Widget):
      pygame.display.flip()
      
   def button_unpressed(self):
+     """
+     * Change picture when button is unpressed
+     """
      self.__background = pygame.image.load("pictures/BPPlus.jpg")
      self.__backgroundrect = self.__background.get_rect()
      self.__backgroundrect = self.__backgroundrect.move([self._pos[0] + border_line, self._pos[1] + border_line])
@@ -50,6 +61,10 @@ class Button(widget.Widget):
      pygame.display.flip()
      
   def event(self, event):
+    """
+    * Launch appropriate methode depending on the event received (MouseDown or MouseUp)
+    @param event event received
+    """
     if event.type == MOUSEBUTTONDOWN:
       self.button_pressed()
       self.__device.sendIt()

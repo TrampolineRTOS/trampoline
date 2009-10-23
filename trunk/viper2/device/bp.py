@@ -42,7 +42,10 @@ class BP(device.Device):
   ################################################################
   
   def display_on_pygame_adding_widgets(self, widget_list):
-    Button(widget_list, self, self.callbackIndex, [self._localisation[0], self._localisation[1]])
+    Button(widget_list, self, [self._localisation[0], self._localisation[1]])
     
   def display_on_pygame(self):
+    pass
+    
+  def refresh_display(self):
     pass

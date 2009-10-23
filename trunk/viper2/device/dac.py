@@ -38,7 +38,8 @@ class DAC(device.Device):
     """
     """ If event doesn't come from Trampoline """
     self.__new_time = time.time()
-    
+    #print "new_time:" + str(self.__new_time - 1255968550) + " getTime():" + str(ev.getTime() - 1255968550)
+           
     if not modifiedRegisters:
       """ Add new event (speed change) """
       print "[VPR] (" + str(self.__name) + ") Event doesn't come from Trampoline !!! "
@@ -47,6 +48,7 @@ class DAC(device.Device):
       """ Get command """
     elif self._registers[self.__reg].id in modifiedRegisters:
       self.__value = self._registers[self.__reg].read()
+      print "dac.event() - time:" + str(time.time() - 1256045588) + " val:" + str(self._registers[self.__reg].read())
       self._display()
       
     else:
@@ -63,7 +65,7 @@ class DAC(device.Device):
   ################################################################
   
   def display_on_consol(self):
-    print "[VPR] (" + str(self.__name) + ") " + str(self.__value)
+    print "[VPR] (" + str(self.name) + ") " + str(self.__value)
 
   ################################################################    
   # Display on Pygame
@@ -79,7 +81,7 @@ class DAC(device.Device):
     self.__oscillo_x_start = 0
     self.__oscillo_x_start_bool = 0
     self.__volt_div 	= 1
-    self.__sec_div 		= 1
+    self.__sec_div 		= 0.5
     self.__points_list 	= []
     self.__time 		= 0
     self.__adjust_pixel = 0
@@ -112,15 +114,17 @@ class DAC(device.Device):
     self.__points_list.append((oscillo_x_end, oscillo_y_end))
     pygame.draw.lines(self.__background, (249, 255, 35), 0, self.__points_list, 1)
     self.__oscillo_x_start = oscillo_x_end
-                 
-    """ Update screen """
-    screen = pygame.display.get_surface()
-    screen.blit(self.__background, self.__backgroundrect)
-    pygame.display.flip()
       
   def display_on_pygame_reset(self):          
       self.__background = pygame.image.load("pictures/oscilloscope_background.jpg")
       self.__backgroundrect = self.__background.get_rect()
       self.__backgroundrect = self.__backgroundrect.move([self._localisation[0] + border_line , self._localisation[1] + border_line])
        
-      
+  def refresh_display(self):
+    """ Update screen """
+    #t1 = time.time()
+    #print "dac.refresh() - time:" + str(time.time() - 1256045588)
+    screen = pygame.display.get_surface()
+    screen.blit(self.__background, self.__backgroundrect)
+    #t2 = time.time()
+    #print "dac - t2-t1:" + str(t2-t1)      

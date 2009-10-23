@@ -81,7 +81,8 @@ class LCDServer(device.Device):
   def display_on_pygame(self):
     pass    
     
-    
+  def refresh_display(self):
+    self._serv.refresh_display()
     
 ###############################################################################
 # SERVER CLASS
@@ -138,12 +139,15 @@ class Server(device.Device):
     self._robots_color[1]   = green
     self._robots_color[2]   = yellow
     self._robots_color[3]   = black
+    self.__robot            = {}
+    self.__robotrect        = {}
 
     self.display_on_pygame_init()
   
   def display_on_pygame_init(self):
     """ Fill background """
-    self.__background = pygame.Surface((lcdserver_width - 2*border_line, lcdserver_height - 30))
+    self.__lcdserver_height_screen = 30
+    self.__background = pygame.Surface((lcdserver_width - 2*border_line, lcdserver_height - self.__lcdserver_height_screen))
     self.__backgroundrect = self.__background.fill(white) 
     self.__backgroundrect = self.__backgroundrect.move([self._localisation[0]+border_line, self._localisation[1]+border_line])
           
@@ -154,26 +158,23 @@ class Server(device.Device):
     
   def display_on_pygame(self):
     """ Update pygame """
-    self.__background = pygame.Surface((lcdserver_width - 2*border_line, lcdserver_height - 30))
-    self.__backgroundrect = self.__background.fill(white) 
-    self.__backgroundrect = self.__backgroundrect.move([self._localisation[0]+border_line, self._localisation[1]+border_line])
-    
-    screen = pygame.display.get_surface()
-    screen.blit(self.__background, self.__backgroundrect)
-
     for i, serv in self._robots_lcdserver.iteritems():
       #if first value not "None", draw the robot
       if (self._robots_position[i] != None):
-        x=self._localisation[0]+border_line+self._robots_position[i][0]-robot_size/2
-        y=self._localisation[1]+lcdserver_height+border_line-self._robots_position[i][1]-robot_size/2
+        x=self._localisation[0] + border_line + (self._robots_position[i][0]) - robot_size/2
+        y=self._localisation[1] + lcdserver_height - self.__lcdserver_height_screen - border_line - (self._robots_position[i][1]) - robot_size/2
         
-        self.__robot = pygame.Surface((robot_size, robot_size))
-        self.__robotrect = self.__robot.fill(self._robots_color[i]) 
-        self.__robotrect = self.__robotrect.move([x ,y ])
-        screen.blit(self.__robot, self.__robotrect)
+        self.__robot[i] = pygame.Surface((robot_size, robot_size))
+        self.__robotrect[i] = self.__robot[i].fill(self._robots_color[i]) 
+        self.__robotrect[i] = self.__robotrect[i].move([x ,y ])
         
-        """ Drawing a car: """
-        
-          
-    pygame.display.flip()        
-        
+  def refresh_display(self):
+    #print "Server.refresh_display()"
+    screen = pygame.display.get_surface()
+    screen.blit(self.__background, self.__backgroundrect)
+    for i, serv in self._robots_lcdserver.iteritems():
+      if (self._robots_position[i] != None):
+        screen.blit(self.__robot[i], self.__robotrect[i])
+    pygame.display.flip()    
+  
+  

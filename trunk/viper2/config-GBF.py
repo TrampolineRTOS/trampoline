@@ -45,7 +45,7 @@ allEcus = [
     scheduler,
     [
       # TODO : offset between delay and "real" delay. Is 0.01 too fast ???
-      Timer("TIMER0", 1, type = timer.AUTO, delay = 0.01),
+      Timer("TIMER0", 1, type = timer.AUTO, delay = 0.01), #0.015 ok
 	  DAC("DAC0", 2),
 	  LCD("LCD1", 3),
       LCD("LCD2", 4),

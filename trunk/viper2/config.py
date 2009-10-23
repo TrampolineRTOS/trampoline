@@ -42,7 +42,8 @@ scheduler = Scheduler(speedCoeff = 1)
 ##########
 # Add Can Network if needed
 ###############################################################################
-can_net = CAN_Network()
+can_net1 = CAN_Network()
+can_net2 = CAN_Network()
 
 ###############################################################################
 # PYGAME WIDGETS
@@ -59,17 +60,14 @@ display_server = Server("LCDSERVER") # uses pygame
 ###############################################################################
 allEcus = [
   Ecu(
-    "../App-Robot1/trampoline",
+    "../App-RobotPC/trampoline",
     scheduler,
     [
       # TODO : offset between delay and "real" delay. Is 0.01 too fast ???
       # TODO : LCD doesn't send signal to Trampoline but uses an id.
       #        --> Try to find how to do to keep this id free.
-      CAN(can_net, "CAN1", 0),
-      Timer("TIMER1", 1, type = timer.AUTO, delay = 0.1),
-	  LCDServer("LCD1", 2, display_server),      
-      Motor("MOTOR1_1",3),
-      Motor("MOTOR1_2",4),
+      CAN(can_net1, "CAN0", 0),
+      Timer("TIMER0", 1, type = timer.AUTO, delay = 1),
       BP("BPFaster", 5),
       BP("BPSlower", 6),
       BP("BPLeft", 7),
@@ -77,11 +75,26 @@ allEcus = [
     ]
   ),
   Ecu(
+    "../App-Robot1/trampoline",
+    scheduler,
+    [
+      # TODO : offset between delay and "real" delay. Is 0.01 too fast ???
+      # TODO : LCD doesn't send signal to Trampoline but uses an id.
+      #        --> Try to find how to do to keep this id free.
+      CAN(can_net1, "CAN1_1", 0),
+      Timer("TIMER0", 1, type = timer.AUTO, delay = 0.1),
+      LCDServer("LCD1", 2, display_server),      
+      Motor("MOTOR1_1",3),
+      Motor("MOTOR1_2",4),
+      CAN(can_net2, "CAN1_2", 5),
+    ]
+  ),
+  Ecu(
     "../App-Robot2/trampoline",
     scheduler,
     [
-      CAN(can_net, "CAN2", 0),
-      Timer("TIMER2", 1, type = timer.AUTO, delay = 0.1),
+      CAN(can_net2, "CAN2", 0),
+      Timer("TIMER0", 1, type = timer.AUTO, delay = 0.1),
       LCDServer("LCD2", 2, display_server),      
       Motor("MOTOR2_1",3),
       Motor("MOTOR2_2",4),
@@ -91,8 +104,8 @@ allEcus = [
     "../App-Robot3/trampoline",
     scheduler,
     [
-      CAN(can_net, "CAN3", 0, 3),
-      Timer("TIMER3", 1, type = timer.AUTO, delay = 0.1),
+      CAN(can_net2, "CAN3", 0),
+      Timer("TIMER0", 1, type = timer.AUTO, delay = 0.1),
       #LCD("LCD3", 2),
       #Motor("MOTOR_SPEED3",3),
       #MotorPap("MOTOR_PAP3",4),
