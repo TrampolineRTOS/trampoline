@@ -12,14 +12,24 @@ class Display(object):
   """
   pygame_bool = False
   
-  def __init__(self, pygame = True):
+  def __init__(self, pygame = True, screen = None):
     """
     Constructor : Check if pygame is installed and if the user want to use pygame or not
     @param pygame boolean to display information on pygame or on consol
     """
     self.pygame_bool = pygame
     self._init_display = True
-
+    
+    global screen_width
+    global screen_height
+    if (screen != None):
+      screen_width = screen[0]
+      screen_height = screen[1]
+    else:
+      screen_width = 800
+      screen_height = 600
+    
+      
     if (self.pygame_bool == True):
       try:
         import pygame
@@ -40,22 +50,23 @@ class Display(object):
       device._display = device.display_on_pygame
       """ Locate device on the screen 
       """
-      device._localisation = [0, 0]
-      device._box		= [0, 0]
-      # Useful ? device._font		= None
-      # Think of a matter to display ECUs' devices in one column or something else...
-      from const import screen_width
-      if (device.pygamepointer[2] < device._height):
-        if ((device.pygamepointer[0] + device._width) < screen_width):
+      # TODO : check if position != None that the position doesn't belong to another device ?
+      if (device._position == None):
+        if (device.pygamepointer[2] < device._height):
+          if ((device.pygamepointer[0] + device._width) < screen_width):
+            device.pygamepointer[2] = device._height
+        if ((device.pygamepointer[0] + device._width) > screen_width):
+          device.pygamepointer[1] += device.pygamepointer[2]
+          device.pygamepointer[0] = device._width
           device.pygamepointer[2] = device._height
-      if ((device.pygamepointer[0] + device._width) > screen_width):
-        device.pygamepointer[1] += device.pygamepointer[2]
-        device.pygamepointer[0] = device._width
-        device.pygamepointer[2] = device._height
-        device._localisation = [0, device.pygamepointer[1]] 
-      else:
-        device._localisation = [device.pygamepointer[0], device.pygamepointer[1]]     
-        device.pygamepointer[0] = device.pygamepointer[0] + device._width 
+          device._position = [0, device.pygamepointer[1]] 
+        else:
+          device._position = [device.pygamepointer[0], device.pygamepointer[1]]     
+          device.pygamepointer[0] = device.pygamepointer[0] + device._width
+      
+      if ((device._position[1] + device._height) > screen_height) or ((device._position[0] + device._width) > screen_width) :
+        print "The screen dimensions are too little for the devices (or widgets). Change them in Display() parameters in config.py"
+        exit(1) 
       device._box = [device._width, device._height]
       
   def ecu(self, ecu):
@@ -91,4 +102,13 @@ class Display(object):
       print "Display mode : Pygame"
     else:
       print "Display mode : Consol"
+      
+  def end(self):
+    """
+    * Quit pygame
+    """
+    if (self.pygame_bool == True):
+      self._widget_list.quit_pygame()
+  
+  
     

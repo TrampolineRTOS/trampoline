@@ -24,8 +24,9 @@ class Widget(object):
     self._focused_widget    = None
     
     pygame.init()
+    from display import screen_width, screen_height    
     screen = pygame.display.set_mode((screen_width, screen_height))
-    pygame.display.set_caption('Viper2')
+    pygame.display.set_caption('ViPER2')
     background = background_color
     screen.fill(background)
     pygame.display.flip()
@@ -36,7 +37,7 @@ class Widget(object):
     @ param ev event received
     """ 
     # TODO : if mousebuttonup.pos == mousebuttondown.pos
-    #           launch event
+    #           -> launch event
     # It will launch the event at the up position unlike now (at down position)
     if (ev.type == MOUSEBUTTONDOWN):
       for id in self._widget_box:
@@ -71,4 +72,6 @@ class Widget(object):
     self._widget_box[id+32*(self.ecu_number-1)] = box
     self._widgets[id+32*(self.ecu_number-1)] 	 = widg
   
+  def quit_pygame(self):
+    pygame.quit()
     

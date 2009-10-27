@@ -20,7 +20,7 @@ class Timer(device.Device):
   Timer device. This timer can run with a one shot and you could specify a delay
   """
 
-  def __init__(self, name, id, signal = device.SIGUSR2, registers = None, type = ONE_SHOT, delay = 1):
+  def __init__(self, name, id, signal = device.SIGUSR2, position = None, registers = None, type = ONE_SHOT, delay = 1):
     """
     Constructor.
     @see Device.__init__()
@@ -29,6 +29,7 @@ class Timer(device.Device):
     """
     self._width = 0
     self._height = 0
+    self._position = position
     
     device.Device.__init__(self, name, id, signal, registers)
     self.__type  = type
@@ -50,7 +51,6 @@ class Timer(device.Device):
     """
     Call from Scheduler
     """
-    #print "timer.event() - t:" + str(time.time() - 1256045588)
     self.sendIt() 
 
   def start(self):
@@ -59,7 +59,7 @@ class Timer(device.Device):
     Here the first call is written to the scheduler
     """
     if self.__type != ONE_SHOT:
-      self._scheduler.addEvent(Event(self, self.__delay, periodic = true))
+      self._scheduler.addEvent(Event(self, self.__delay, periodic = True))
     else:
       self._scheduler.addEvent(Event(self, self.__delay))
   

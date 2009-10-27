@@ -34,12 +34,20 @@ int main(void)
 
 void StartupHook(void)
 {
-    printf("[TPL] Ca demarre !\n");
+    printf("[TPL] Starting !\n");
 }
 
 void ShutdownHook(StatusType error)
 {
-    printf("[TPL] Au revoir et a bientot :)\n");
+    printf("[TPL] Ending !\n");
+}
+
+TASK(Init){
+    
+	GetResource(ressourceAfficheur);
+	affichePeriode();
+	ReleaseResource(ressourceAfficheur);
+	TerminateTask();
 }
 
 TASK(gestionSignal)
@@ -53,7 +61,8 @@ TASK(gestionSignal)
 		i = 0;
 	}
 	/* send value to DAC */
-	dac(signa_sin[i]);
+    dac(signa_sin[i]);
+    
 	
 	/* stop dialoguing DAC */
 	stop_dialoguing_dac();
@@ -128,7 +137,7 @@ void InitApp(void)
 	 CC1IC = 0x69; //IE=1, LVL 10, GLVL 1
 	 */
 	
-	periode_per_ten = 10;
+	periode_per_ten = 2;
 }
 
 void afficheHeure(const unsigned char minutes, const unsigned char secondes)
@@ -144,7 +153,6 @@ void afficheHeure(const unsigned char minutes, const unsigned char secondes)
 
 void affichePeriode()
 {
-	printf("periode_per_ten:%d\n",periode_per_ten);
 	int periode = periode_per_ten*10;
 	affPeriodeStr[0] = periode/100 %10 + '0';
 	affPeriodeStr[1] = periode/10 %10 + '0';

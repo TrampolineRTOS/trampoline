@@ -22,15 +22,15 @@ class Button(widget.Widget):
      self.__device = device
      self._pos = pos
      
+     self._font = pygame.font.Font(None, 40)
+
      self.button_unpressed()
      
-     self.__legend = device._font.render(device.name, 1, (0, 0, 0))
+     self.__legend = device._font.render(device.name, 1, black)
      self.__legendrect = self.__legend.get_rect()
      temp_size = device._font.size(str(device.name))
      self.__legendrect = self.__legendrect.move([pos[0] + button_width - temp_size[0], pos[1] + button_height - temp_size[1]])  
-     
      screen = pygame.display.get_surface()
-     screen.blit(self.__background, self.__backgroundrect)
      screen.blit(self.__legend, self.__legendrect)
      pygame.display.flip()
      
@@ -40,24 +40,54 @@ class Button(widget.Widget):
      """
      * Change picture when button is pressed
      """
-     self.__background = pygame.image.load("pictures/BPPlus_pressed.jpg")
-     self.__backgroundrect = self.__background.get_rect()
-     self.__backgroundrect = self.__backgroundrect.move([self._pos[0] + border_line, self._pos[1] + border_line])
-     
      screen = pygame.display.get_surface()
-     screen.blit(self.__background, self.__backgroundrect)
+     if (self.__device._picture == None):
+       self.__background = pygame.image.load("pictures/BP_pressed.jpg")
+       if (self.__device._text == None):
+         self.__text = self._font.render(self.__device.name, 1, black)
+         self.__textrect = self.__text.get_rect()
+         temp_size = self._font.size(str(self.__device.name))
+       else:
+         self.__text = self._font.render(self.__device._text, 1, black)
+         self.__textrect = self.__text.get_rect()
+         temp_size = self._font.size(str(self.__device._text))
+       self.__textrect = self.__textrect.move([self._pos[0] + button_width/2 - temp_size[0]/2, self._pos[1] + button_height_only/2 - temp_size[1]/2])
+       self.__backgroundrect = self.__background.get_rect()
+       self.__backgroundrect = self.__backgroundrect.move([self._pos[0] + border_line, self._pos[1] + border_line])
+       screen.blit(self.__background, self.__backgroundrect)
+       screen.blit(self.__text, self.__textrect)
+     else:
+       self.__background = pygame.image.load(self.__device._picture + "_pressed.jpg") 
+       self.__backgroundrect = self.__background.get_rect()
+       self.__backgroundrect = self.__backgroundrect.move([self._pos[0] + border_line, self._pos[1] + border_line])
+       screen.blit(self.__background, self.__backgroundrect)
      pygame.display.flip()
      
   def button_unpressed(self):
      """
      * Change picture when button is unpressed
      """
-     self.__background = pygame.image.load("pictures/BPPlus.jpg")
-     self.__backgroundrect = self.__background.get_rect()
-     self.__backgroundrect = self.__backgroundrect.move([self._pos[0] + border_line, self._pos[1] + border_line])
-    
      screen = pygame.display.get_surface()
-     screen.blit(self.__background, self.__backgroundrect)
+     if (self.__device._picture == None):
+       self.__background = pygame.image.load("pictures/BP_unpressed.jpg")
+       if (self.__device._text == None):
+         self.__text = self._font.render(self.__device.name, 1, black)
+         self.__textrect = self.__text.get_rect()
+         temp_size = self._font.size(str(self.__device.name))
+       else:
+         self.__text = self._font.render(self.__device._text, 1, black)
+         self.__textrect = self.__text.get_rect()
+         temp_size = self._font.size(str(self.__device._text))
+       self.__textrect = self.__textrect.move([self._pos[0] + button_width/2 - temp_size[0]/2, self._pos[1] + button_height_only/2 - temp_size[1]/2])
+       self.__backgroundrect = self.__background.get_rect()
+       self.__backgroundrect = self.__backgroundrect.move([self._pos[0] + border_line, self._pos[1] + border_line])
+       screen.blit(self.__background, self.__backgroundrect)
+       screen.blit(self.__text, self.__textrect)
+     else:
+       self.__background = pygame.image.load(self.__device._picture + "_unpressed.jpg") 
+       self.__backgroundrect = self.__background.get_rect()
+       self.__backgroundrect = self.__backgroundrect.move([self._pos[0] + border_line, self._pos[1] + border_line])
+       screen.blit(self.__background, self.__backgroundrect)
      pygame.display.flip()
      
   def event(self, event):

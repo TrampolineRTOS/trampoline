@@ -16,7 +16,7 @@ class DAC(device.Device):
       * Read "reg" register.
   """
   
-  def __init__(self, name, id, signal = device.SIGUSR2):
+  def __init__(self, name, id, signal = device.SIGUSR2, position = None):
     """
     Constructor.
     @see Device.__init__()
@@ -26,8 +26,10 @@ class DAC(device.Device):
     Reg = Register(name + "_REG")
     self.__reg     = Reg.name
 
+    # TODO : put that somewhere else ? (in a part of pygame display ?)
     self._width = dac_width
     self._height = dac_height
+    self._position = position
     
     device.Device.__init__(self, name, id, signal, [Reg])
     self.__value    = 0
@@ -38,7 +40,6 @@ class DAC(device.Device):
     """
     """ If event doesn't come from Trampoline """
     self.__new_time = time.time()
-    #print "new_time:" + str(self.__new_time - 1255968550) + " getTime():" + str(ev.getTime() - 1255968550)
            
     if not modifiedRegisters:
       """ Add new event (speed change) """
@@ -48,7 +49,6 @@ class DAC(device.Device):
       """ Get command """
     elif self._registers[self.__reg].id in modifiedRegisters:
       self.__value = self._registers[self.__reg].read()
-      print "dac.event() - time:" + str(time.time() - 1256045588) + " val:" + str(self._registers[self.__reg].read())
       self._display()
       
     else:
@@ -86,10 +86,10 @@ class DAC(device.Device):
     self.__time 		= 0
     self.__adjust_pixel = 0
 
-    self.__legend = self._font.render(self._ecu.getDir() + self.name, 1, (0, 0, 0))
+    self.__legend = self._font.render(str(self.__sec_div) + "s/div    ;    " + str(self.__volt_div) + "V/div    ;    " + self._ecu.getDir() + self.name, 1, (0, 0, 0))
     self.__legendrect = self.__legend.get_rect()
-    temp_size = self._font.size(str(self._ecu.getDir()) + str(self.name))
-    self.__legendrect = self.__legendrect.move([self._localisation[0] + dac_width - temp_size[0] - border_line, self._localisation[1] + dac_height - temp_size[1]])  
+    temp_size = self._font.size(str(self.__sec_div) + "s/div    ;    " + str(self.__volt_div) + "V/div    ;    " + str(self._ecu.getDir()) + str(self.name))
+    self.__legendrect = self.__legendrect.move([self._position[0] + dac_width - temp_size[0] - border_line, self._position[1] + dac_height - temp_size[1]])  
       
     self.display_on_pygame_reset()
      
@@ -118,13 +118,10 @@ class DAC(device.Device):
   def display_on_pygame_reset(self):          
       self.__background = pygame.image.load("pictures/oscilloscope_background.jpg")
       self.__backgroundrect = self.__background.get_rect()
-      self.__backgroundrect = self.__backgroundrect.move([self._localisation[0] + border_line , self._localisation[1] + border_line])
+      self.__backgroundrect = self.__backgroundrect.move([self._position[0] + border_line , self._position[1] + border_line])
        
   def refresh_display(self):
     """ Update screen """
-    #t1 = time.time()
-    #print "dac.refresh() - time:" + str(time.time() - 1256045588)
     screen = pygame.display.get_surface()
     screen.blit(self.__background, self.__backgroundrect)
-    #t2 = time.time()
-    #print "dac - t2-t1:" + str(t2-t1)      
+    

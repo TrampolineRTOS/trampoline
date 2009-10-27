@@ -8,7 +8,7 @@ from const import *
 ###############################################################################
 # LCDSERVER CLASS
 ###############################################################################
-class LCDServer(device.Device):
+class DisplayServer(device.Device):
   """
     Liquid Crystal Displays for a Server.
     The server collects serveral LCDServer value and display them.
@@ -16,7 +16,7 @@ class LCDServer(device.Device):
       * Read "regX" registers.
     
   """
-  def __init__(self, name, id, serv, signal = device.SIGUSR2):
+  def __init__(self, name, id, serv, position = None, signal = device.SIGUSR2):
     """
     Constructor.
     @see Device.__init__()
@@ -26,13 +26,16 @@ class LCDServer(device.Device):
     Reg1 = Register(name + "_REG1")
     self.__reg0     = Reg0.name
     self.__reg1     = Reg1.name
+
     self._width = 0
     self._height = 0
+    self._position = position
+
     device.Device.__init__(self, name, id, signal, [Reg0, Reg1])
     self._reg0_val  = None
     self._reg1_val  = None
     self._serv      = serv
-    #add LCDServer into Server
+    #add DisplayServer into Server
     self._serv.add_lcd(self)
   
   def event(self, modifiedRegisters = None):
@@ -68,8 +71,6 @@ class LCDServer(device.Device):
   
   def display_on_consol(self):
     pass
-    # Useful ? print "[VPR] (" + str(self.name) + ") : " + str(self._registers[self.__reg0].read()) + "-" + str(self._registers[self.__reg1].read()) 
-    # self._serv.display_on_consol()
   
   ################################################################    
   # Display on Pygame
@@ -91,7 +92,7 @@ class Server(device.Device):
   """
   Container of all the widgets
   """
-  def __init__(self, name):
+  def __init__(self, name, position = None):
     self._robots_position   = {}
     self._robots_lcdserver  = {}
     self._lcdserver_number = 0
@@ -99,8 +100,8 @@ class Server(device.Device):
 
     self._width = lcdserver_width
     self._height = lcdserver_height
+    self._position = position
             
-    #device.Device.__init__(self, name, id, signal = device.SIGUSR2)
     from config import dispatch_display
     dispatch_display.device(self)
     
@@ -111,10 +112,6 @@ class Server(device.Device):
     self._lcdserver_number = self._lcdserver_number + 1         
                          
   def update(self, lcdserv, posx, posy):
-    
-    #update before saving values for updating lcdserver one by one on the screen. TODO ?
-    #self.draw_update(lcdserv, posx, posy)
-            
     for i, serv in self._robots_lcdserver.iteritems():
       if (serv == lcdserv):
         self._robots_position[i] = (posx, posy)
@@ -135,9 +132,9 @@ class Server(device.Device):
   def display_on_pygame_adding_widgets(self, lcdserv):
     """ Initialize variables """
     self._robots_color      = {}
-    self._robots_color[0]   = red
-    self._robots_color[1]   = green
-    self._robots_color[2]   = yellow
+    self._robots_color[0]   = red # declared in const.py
+    self._robots_color[1]   = orange
+    self._robots_color[2]   = blue
     self._robots_color[3]   = black
     self.__robot            = {}
     self.__robotrect        = {}
@@ -149,7 +146,7 @@ class Server(device.Device):
     self.__lcdserver_height_screen = 30
     self.__background = pygame.Surface((lcdserver_width - 2*border_line, lcdserver_height - self.__lcdserver_height_screen))
     self.__backgroundrect = self.__background.fill(white) 
-    self.__backgroundrect = self.__backgroundrect.move([self._localisation[0]+border_line, self._localisation[1]+border_line])
+    self.__backgroundrect = self.__backgroundrect.move([self._position[0]+border_line, self._position[1]+border_line])
           
     """ Update screen """ 
     screen = pygame.display.get_surface()
@@ -161,17 +158,15 @@ class Server(device.Device):
     for i, serv in self._robots_lcdserver.iteritems():
       #if first value not "None", draw the robot
       if (self._robots_position[i] != None):
-        x=self._localisation[0] + border_line + (self._robots_position[i][0]) - robot_size/2
-        y=self._localisation[1] + lcdserver_height - self.__lcdserver_height_screen - border_line - (self._robots_position[i][1]) - robot_size/2
+        x=self._position[0] + border_line + (self._robots_position[i][0] % (lcdserver_width - 2*border_line)) - robot_size/2
+        y=self._position[1] + border_line + lcdserver_height - self.__lcdserver_height_screen - (self._robots_position[i][1] % ( lcdserver_height - self.__lcdserver_height_screen)) - robot_size/2
         
         self.__robot[i] = pygame.Surface((robot_size, robot_size))
         self.__robotrect[i] = self.__robot[i].fill(self._robots_color[i]) 
         self.__robotrect[i] = self.__robotrect[i].move([x ,y ])
         
   def refresh_display(self):
-    #print "Server.refresh_display()"
     screen = pygame.display.get_surface()
-    screen.blit(self.__background, self.__backgroundrect)
     for i, serv in self._robots_lcdserver.iteritems():
       if (self._robots_position[i] != None):
         screen.blit(self.__robot[i], self.__robotrect[i])

@@ -16,7 +16,7 @@ class LCD(device.Device):
       * Read "regX" registers.
     
   """
-  def __init__(self, name, id, delay = 0, signal = device.SIGUSR2):
+  def __init__(self, name, id, delay = 0, position = None, signal = device.SIGUSR2):
     """
     Constructor.
     @see Device.__init__()
@@ -46,6 +46,7 @@ class LCD(device.Device):
     
     self._width = lcd_width
     self._height = lcd_height
+    self._position = position
     
     device.Device.__init__(self, name, id, signal, [Reg0, Reg1, Reg2, Reg3, Reg4, Reg5, Reg6, Reg7, Reg8, Reg9])
        
@@ -61,7 +62,6 @@ class LCD(device.Device):
       """ If event come from Trampoline """
       """ Get command """
     elif self._registers[self.__reg0].id in modifiedRegisters:
-      print "lcd.event() - time:" + str(time.time() - 1256045588)
       self._display()
           
     else:
@@ -111,17 +111,16 @@ class LCD(device.Device):
       """ Fill background """
       self.__background = pygame.Surface((lcd_width - 2*border_line, lcd_height - 30))
       self.__backgroundrect = self.__background.fill((255, 255, 239)) 
-      self.__backgroundrect = self.__backgroundrect.move([self._localisation[0]+border_line, self._localisation[1]+border_line])
+      self.__backgroundrect = self.__backgroundrect.move([self._position[0]+border_line, self._position[1]+border_line])
       
-      # Init text ??
-      self.__text = pygame.Surface((lcd_width - 2*border_line, lcd_height - 30))
-      self.__textrect = self.__text.fill((255, 255, 239)) 
-      self.__textrect = self.__textrect.move([self._localisation[0]+border_line, self._localisation[1]+border_line])
-      
+      self.__text = self._font.render(chr(self._registers[self.__reg9].read()) + chr(self._registers[self.__reg8].read())  + chr(self._registers[self.__reg7].read()) + chr(self._registers[self.__reg6].read()) + chr(self._registers[self.__reg5].read()) + chr(self._registers[self.__reg4].read()) + chr(self._registers[self.__reg3].read()) + chr(self._registers[self.__reg2].read()) + chr(self._registers[self.__reg1].read()) + chr(self._registers[self.__reg0].read()), 1, (0, 0, 0))
+      self.__textrect = self.__text.get_rect()
+      self.__textrect = self.__textrect.move([self._position[0]+ 15, self._position[1]+ 15])
+
       self.__legend = self._font.render(self._ecu.getDir() + self.name, 1, (0, 0, 0))
       self.__legendrect = self.__legend.get_rect()
       temp_size = self._font.size(str(self._ecu.getDir()) + str(self.name))
-      self.__legendrect = self.__legendrect.move([self._localisation[0] + lcd_width -temp_size[0] -border_line, self._localisation[1] + lcd_height - 30 + 2*border_line])  
+      self.__legendrect = self.__legendrect.move([self._position[0] + lcd_width -temp_size[0] -border_line, self._position[1] + lcd_height - 30 + 2*border_line])  
       
       screen = pygame.display.get_surface()
       screen.blit(self.__background, self.__backgroundrect)
@@ -131,17 +130,12 @@ class LCD(device.Device):
   def display_on_pygame(self):
       """ Update pygame """
       self.__text = self._font.render(chr(self._registers[self.__reg9].read()) + chr(self._registers[self.__reg8].read())  + chr(self._registers[self.__reg7].read()) + chr(self._registers[self.__reg6].read()) + chr(self._registers[self.__reg5].read()) + chr(self._registers[self.__reg4].read()) + chr(self._registers[self.__reg3].read()) + chr(self._registers[self.__reg2].read()) + chr(self._registers[self.__reg1].read()) + chr(self._registers[self.__reg0].read()), 1, (0, 0, 0))
-      # Sometimes useful : text = self._font.render(str(self._registers[self.__reg1].read()) + "-" + str(self._registers[self.__reg0].read()), 1, (0, 0, 0))
       self.__textrect = self.__text.get_rect()
-      self.__textrect = self.__textrect.move([self._localisation[0]+ 15, self._localisation[1]+ 15])
+      self.__textrect = self.__textrect.move([self._position[0]+ 15, self._position[1]+ 15])
    
   def refresh_display(self):
-      #TODO : refresh only when needed - create a bool which is set to False here and True on display_on_pygame(). If it's True, Refresh.
       """ Update screen """
-      #t1 = time.time()
-      #print "lcd.refresh() - time:" + str(time.time() - 1256045588)
       screen = pygame.display.get_surface()
       screen.blit(self.__background, self.__backgroundrect)
       screen.blit(self.__text, self.__textrect)
-      #t2 = time.time()
-      #print "lcd - t2-t1:" + str(t2-t1)          
+      

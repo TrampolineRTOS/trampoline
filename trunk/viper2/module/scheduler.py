@@ -28,7 +28,7 @@ class Event(object):
     self.__device = device
     self.__modifiedRegisters = modifiedRegisters
     self._periodic = periodic
-    if (self._periodic == true):
+    if (self._periodic == True):
       self.__time = time.time()
 
   def getTime(self):
@@ -62,7 +62,41 @@ class Event(object):
     @return modified registers mask
     """
     return self.__modifiedRegisters
+
+###############################################################################
+# SORTING THREAD CLASS
+###############################################################################
+class SortingThread(threading.Thread):
+  """
+  This thread is created by the scheduler to
+  """
+
+  def __init__(self, sched):
+    """
+    Constructor.
+    @param ipc ipc structure to access fifo with ipc_mod module
+    @ecu ecu to add event.
+    """
+    threading.Thread.__init__(self)
+    self.__sched = sched
+    self.__run = True
+
+  def run(self):
+    """
+    The threaded function.
+    Wait that fifo is not empty.
+    """
     
+    while self.__run:
+      """ Sort Events """
+      self.__sched.sortEvent()
+      
+  def kill(self):
+    """
+    Call to stop the main loop of the sorting thread.
+    """
+    self.__run = False
+        
 ###############################################################################
 # SCHEDULER CLASS
 ###############################################################################
@@ -98,25 +132,21 @@ class Scheduler(object):
     * Insert event in the right place
     @param event the Event to add
     """    
-    if (event._periodic == true):
+    if (event._periodic == True):
       newtime = (event.getDelay() / self.__speedCoeff) + event.getTime()
     else:
       newtime = (event.getDelay() / self.__speedCoeff) + time.time()
     event.setTime(newtime)
-
-    #print "sched.addEvent() - t:" + str(newtime - 1256045588)
-
+    
     self.__sem.acquire()
     # TODO : Don't start the searching from the beginning of the list but by the middle (worst case in log(n) instead of n)
     length = len(self.__events)
     i = 0
     if (length > 0):
-      for ev in range(length):
-       oldtime = self.__events[ev].getTime()
-       if (oldtime > newtime):
+      for ev in range(length): 
+       if (self.__events[ev].getTime() > newtime):
         break
        i = i + 1
-
     self.__events.insert(i,event)
     self.__sem.release()
      
@@ -133,9 +163,7 @@ class Scheduler(object):
     self.__sortingThread.setDaemon(True) # Can stop script even if thread is running
     self.__sortingThread.start()
     self.__fps        = time.time()
-        
-    #sys.setcheckinterval(100)
-    
+            
     while self.__run:
      """
      * If pygame : wait for event
@@ -150,10 +178,7 @@ class Scheduler(object):
      """
      * Waiting for events from the keyboard/mouse
      * Refresh display every 100ms ( 10 fps )
-     """
-     #t10 = time.time()
-     #print "sched.withPygame() - start at t:" + str(time.time() - 1256045588)
-     
+     """     
      for event in pygame.event.get():
       if (event.type == pygame.QUIT):
         sys.exit()
@@ -165,18 +190,14 @@ class Scheduler(object):
        for name, device in ecu._devices.iteritems():
          device.refresh_display()
      pygame.display.flip()
-     #print "sched.withPygame() - end refresh display at t:" + str(time.time() - 1256045588)
      self.__fps += 0.1 # 10fps
        
-     #t11 = time.time()
-     #print "sched.withPygame() - t11-t10:" + str(t11-t10) + " - ttw:" + str(self.__fps-time.time()) + " t:" + str(time.time() - 1256045588)
      threading.Event().wait(self.__fps-time.time())
        
   def kill(self):
     """
     Stop scheduler
     """
-    #TODO : dispatch kill too according to pygameOrNotPygame
     self.__run = False
     """Stop reading thread"""
     if self.__sortingThread:
@@ -184,11 +205,8 @@ class Scheduler(object):
       if self.__sortingThread.isAlive():
         print "Waiting sorting thread 1 seconde (it's may be waiting for next event)..."
         time.sleep(1)
-    pygame.quit()
 
   def sortEvent(self):
-     #t1 = time.time()
-     #TODO : Check if better to use an other thread for event management
      """Event sorting..."""
      previousTime=0
      events	  = [] # List
@@ -198,60 +216,36 @@ class Scheduler(object):
        if event.getTime() != previousTime:
         events.append(event)
         previousTime=event.getTime()
-    
+     
      """...and lauching"""
      for event in events:
       self.__sem.acquire()
-      #TODO: check if better somewhere else ?
-      if (event._periodic == true):
+      if (event._periodic == True):
         index = self.__events.index(event)
         self.__events[index].setTime(self.__events[index].getTime()+(self.__events[index].getDelay()/self.__speedCoeff))
-        #print "sched.sortEvent() - t:" + str(self.__events[index].getTime() - 1256045588)
+        eventtomove = self.__events.pop(index)
+        length = len(self.__events)
+        i = 0
+        for ev in range(length): 
+         if (self.__events[ev].getTime() > eventtomove.getTime()):
+           break
+         i = i + 1
+        self.__events.insert(i,eventtomove)
       else:
         self.__events.remove(event)
       self.__sem.release()
       event.getDevice().event(event.getModifiedRegisters())    
       
+     # TODO : When sendIt() is just to save the IT to send (because it could happen
+     #        that at one date, several devices send an IT to Trampoline(s)).
+     #        --> Send IT(s) now :
+     #            - save IT to send in each ECUs and check each ECUs now ?
+     #            - save IT to send in the scheduler and launch it(them) now ?
+      
      self.__sem.acquire()
      ttw = self.__events[0].getTime()
      self.__sem.release()
      
-     #t2 = time.time()
-     #print "sched.sortEvent() - t2-t1:" + str(t2-t1) + " ttw:" + str(ttw-time.time()) + " t:" + str(time.time() - 1256045588)
      """Sleep until next event"""
      threading.Event().wait(ttw-time.time())
-     
-###############################################################################
-# SORTING THREAD CLASS
-###############################################################################
-class SortingThread(threading.Thread):
-  """
-  
-  """
 
-  def __init__(self, sched):
-    """
-    Constructor.
-    @param ipc ipc structure to access fifo with ipc_mod module
-    @ecu ecu to add event.
-    """
-    threading.Thread.__init__(self)
-    self.__sched = sched
-    self.__run = True
-
-  def run(self):
-    """
-    The threaded function.
-    Wait that fifo is not empty.
-    """
-    
-    while self.__run:
-      """ Sort Events """
-      self.__sched.sortEvent()
-      
-  def kill(self):
-    """
-    Call to stop the main loop of the sorting thread.
-    """
-    self.__run = False
-    

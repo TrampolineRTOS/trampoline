@@ -18,7 +18,13 @@ from dac import DAC
 from lcd import LCD
 from bp import BP
 
-dispatch_display = Display(pygame = True)
+###############################################################################
+# DISPLAY
+##########
+# You shall modify pygame to True or False if you want or not to use pygame (True by default)
+# You shall modify screen if you want to change screen dimensions ([800, 600] by default)
+###############################################################################
+dispatch_display = Display(pygame = True, screen = [565, 325])
 
 ###############################################################################
 # SCHEDULER
@@ -33,6 +39,7 @@ scheduler = Scheduler(speedCoeff = 1)
 # Add registers like that : reg = Register("NAME")
 ###############################################################################
 
+
 ###############################################################################
 # ECUS 
 ##########
@@ -44,13 +51,12 @@ allEcus = [
     "../App-GBF/trampoline",
     scheduler,
     [
-      # TODO : offset between delay and "real" delay. Is 0.01 too fast ???
-      Timer("TIMER0", 1, type = timer.AUTO, delay = 0.01), #0.015 ok
-	  DAC("DAC0", 2),
-	  LCD("LCD1", 3),
-      LCD("LCD2", 4),
-      BP("BPPlus", 10),
-      BP("BPMinus", 11),
+      Timer("TIMER0", 1, type = timer.AUTO, delay = 0.01),
+	  DAC("DAC0", 2, position = [0, 0] ),
+	  LCD("LCD1", 3, position = [360, 0] ),
+      LCD("LCD2", 4, position = [360, 120] ),
+      BP("BPPlus", 10, position = [360, 240], picture="pictures/BPPlus"),
+      BP("BPMinus", 11, position = [460, 240], picture="pictures/BPMinus" ),
     ]
   )
 ]
