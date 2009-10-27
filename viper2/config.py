@@ -16,20 +16,26 @@ from display import Display
 import timer
 from timer import Timer
 from bp import BP
-from server import LCDServer
+from server import DisplayServer
 from server import Server
 from can import CAN_Network
 from can import CAN
 from motor import Motor
 
-dispatch_display = Display(pygame = True)
+###############################################################################
+# DISPLAY
+##########
+# You shall modify pygame to True or False if you want or not to use pygame (True by default)
+# You shall modify screen if you want to change screen dimensions ([800, 600] by default)
+###############################################################################
+dispatch_display = Display(pygame = True, screen = [400, 560])
 
 ###############################################################################
 # SCHEDULER
 ##########
 # You shall modify speedCoeff only
 ###############################################################################
-scheduler = Scheduler(speedCoeff = 1)
+scheduler = Scheduler(speedCoeff = 0.5)
 
 ###############################################################################
 # REGISTERS
@@ -51,7 +57,7 @@ can_net2 = CAN_Network()
 # Add Pygame widgets if needed (for example, a screen which displays several
 # information coming from several application
 ###############################################################################
-display_server = Server("LCDSERVER") # uses pygame
+display_server = Server("SERVER") # uses pygame
 
 ###############################################################################
 # ECUS 
@@ -63,27 +69,21 @@ allEcus = [
     "../App-RobotPC/trampoline",
     scheduler,
     [
-      # TODO : offset between delay and "real" delay. Is 0.01 too fast ???
-      # TODO : LCD doesn't send signal to Trampoline but uses an id.
-      #        --> Try to find how to do to keep this id free.
       CAN(can_net1, "CAN0", 0),
       Timer("TIMER0", 1, type = timer.AUTO, delay = 1),
-      BP("BPFaster", 5),
-      BP("BPSlower", 6),
-      BP("BPLeft", 7),
-      BP("BPRight", 8),
+      BP("BPFaster", 5, position = [100, 400], text="/\\" ),
+      BP("BPSlower", 6, position = [100, 480], text="\\/"),
+      BP("BPLeft", 7, position = [0, 480], text="<" ),
+      BP("BPRight", 8, position = [200, 480], text=">" ),
     ]
   ),
   Ecu(
     "../App-Robot1/trampoline",
     scheduler,
     [
-      # TODO : offset between delay and "real" delay. Is 0.01 too fast ???
-      # TODO : LCD doesn't send signal to Trampoline but uses an id.
-      #        --> Try to find how to do to keep this id free.
       CAN(can_net1, "CAN1_1", 0),
-      Timer("TIMER0", 1, type = timer.AUTO, delay = 0.1),
-      LCDServer("LCD1", 2, display_server),      
+      Timer("TIMER1", 1, type = timer.AUTO, delay = 0.1),
+      DisplayServer("LCD1", 2, display_server),      
       Motor("MOTOR1_1",3),
       Motor("MOTOR1_2",4),
       CAN(can_net2, "CAN1_2", 5),
@@ -94,8 +94,8 @@ allEcus = [
     scheduler,
     [
       CAN(can_net2, "CAN2", 0),
-      Timer("TIMER0", 1, type = timer.AUTO, delay = 0.1),
-      LCDServer("LCD2", 2, display_server),      
+      Timer("TIMER2", 1, type = timer.AUTO, delay = 0.1),
+      DisplayServer("LCD2", 2, display_server),      
       Motor("MOTOR2_1",3),
       Motor("MOTOR2_2",4),
     ]
@@ -105,8 +105,8 @@ allEcus = [
     scheduler,
     [
       CAN(can_net2, "CAN3", 0),
-      Timer("TIMER0", 1, type = timer.AUTO, delay = 0.1),
-      LCDServer("LCD3", 2, display_server),      
+      Timer("TIMER3", 1, type = timer.AUTO, delay = 0.1),
+      DisplayServer("LCD3", 2, display_server),      
       Motor("MOTOR3_1",3),
       Motor("MOTOR3_2",4),
     ]

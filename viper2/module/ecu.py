@@ -45,7 +45,6 @@ class ReadingThread(threading.Thread):
     modified = ipc.tpl_ipc_pop_fifo(self.__ipc);
 
     while self.__run:
-      #print "event.run() - time:" + str(time.time() - 1256045588)
       """ Call Ecu event handler """
       self.__ecu.event(int(modified.dev), modified.reg_mask)
       
@@ -98,10 +97,7 @@ class Ecu(object):
     """
     for device in devices:
       self._devices[device.id] = device
-      #TODO : check if location not duplicate (in device class and in "the" device)
-      # useful ? self.__devices_location[device.id] = device._localisation,device._box
-      #print "location:" + str(self.__devices_location[device.id][0][0]) + "-" + str(self.__devices_location[device.id][0][0]+self.__devices_location[device.id][1][0]) + ";" + str(self.__devices_location[device.id][0][1]) + ";" + str(self.__devices_location[device.id][0][1]+self.__devices_location[device.id][1][1])
-
+      
   def start(self):
     """
     * Run trampoline process, run reading thread and devices.
@@ -236,7 +232,7 @@ class Ecu(object):
         
       
       """ Add event to scheduler """
-      self.__scheduler.addEvent(Event(self._devices[deviceID], 0, false, reg))
+      self.__scheduler.addEvent(Event(self._devices[deviceID], 0, False, reg))
 
   def send(self, sub):
     print "ecu.send() - sub:" + str(sub)

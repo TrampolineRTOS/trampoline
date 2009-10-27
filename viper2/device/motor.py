@@ -20,7 +20,7 @@ class Motor(device.Device):
 
     Speed is transfertfunctiond each Motor.__delay seconds !
   """
-  def __init__(self, name, id, frequency = None, max_pwm = 100, tickperrotation = 100, max_rpm = 300, delay = 0.2, transfertfunction = None, signal = device.SIGUSR2):
+  def __init__(self, name, id, frequency = None, max_pwm = 100, tickperrotation = 100, max_rpm = 300, delay = 0.2, transfertfunction = None, signal = device.SIGUSR2, position = None):
     """
     Constructor.
     @see Device.__init__()
@@ -34,18 +34,18 @@ class Motor(device.Device):
 
     self._width = 0
     self._height = 0
+    self._position = position
 
     device.Device.__init__(self, name, id, signal, [sensorReg, controlReg])
     self.__type     = type
     self.__delay    = float(delay)
-    # TODO : make a better period with delay. use directly time+delay and add delay to previous time each time.
     self.__transfertfunction    = transfertfunction # Not used
     self.__fequency = frequency                     # Not used
     self.__tickperrotation = tickperrotation
     self.__max_rpm  = max_rpm
     self.__max_pwm  = max_pwm
     self.__secondsperminute = 60
-    self.__pwm      = 0                             # Max is 1024 (10-bits resoulution)
+    self.__pwm      = 0                             # In microcontroler, Max is usually 1024 (10-bits resoulution)
     self.__speed    = 0                             
     self.__tickperdelay = 0
     self.__ticks    = 0
@@ -56,12 +56,11 @@ class Motor(device.Device):
     """
     """ If event doesn't come from Trampoline : Motor Sensor """
     if not modifiedRegisters:
-      
+
       """ Motor simulation """
       self.motor() # -> consigne
       self.transfertfunction() # -> speed
       self.sensor() # -> tickperdelay
-      #self.sendIt()
 
       """ If event come from Trampoline """
       """ Get command """
@@ -94,7 +93,7 @@ class Motor(device.Device):
     Here the first call is written to the scheduler
     """
     self._registers[self.__control].write(0)
-    self._scheduler.addEvent(Event(self, self.__delay, true))
+    self._scheduler.addEvent(Event(self, self.__delay, True))
     
   ###############################################################    
   # Display on Consol

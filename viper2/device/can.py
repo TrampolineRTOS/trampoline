@@ -12,7 +12,7 @@ class CAN(device.Device):
   Timer device. This timer can run with a one shot and you could specify a delay
   """
 
-  def __init__(self, network, name, id, signal = device.SIGUSR2):
+  def __init__(self, network, name, id, position = None, signal = device.SIGUSR2):
     """
     Constructor.
     @see Device.__init__()
@@ -50,6 +50,7 @@ class CAN(device.Device):
     
     self._width = 0
     self._height = 0
+    self._position = position
         
     device.Device.__init__(self, name, id, signal, [Reg1, Reg2, Reg3, Reg4, Reg5, Reg6, Reg7, Reg8, Reg9, Reg10, Reg11, Reg12])
     
@@ -148,11 +149,9 @@ class CAN_Network(device.Device):
     Call from CAN :
      - Dispatch received frame to all CAN devices
     """
-    #TODO : check filter and dispatch to "interested" CAN
+    #TODO : check filter and dispatch to "interested" CAN ?
     for id_can in self._can_list:
       if (self._can_list[id_can] != device):
-        #print "reg1:" + str(device._registers[device._reg1].read())
-        #rg = device._registers[device._reg1].read()
         self._can_list[id_can]._registers[self._can_list[id_can]._reg7].write(device._registers[device._reg1].read())
         self._can_list[id_can]._registers[self._can_list[id_can]._reg8].write(device._registers[device._reg2].read())
         self._can_list[id_can]._registers[self._can_list[id_can]._reg9].write(device._registers[device._reg3].read())
@@ -160,12 +159,3 @@ class CAN_Network(device.Device):
         self._can_list[id_can]._registers[self._can_list[id_can]._reg11].write(device._registers[device._reg5].read())
         self._can_list[id_can]._registers[self._can_list[id_can]._reg12].write(device._registers[device._reg6].read())
         self._can_list[id_can].sendIt() 
-          
-  #def start(self):
-  #  """
-  #  Call from ecu, at the beginin
-  #  Here the first call is written to the scheduler
-  #  """
-    
-  #def draw(self, widget):
-  #  """ """

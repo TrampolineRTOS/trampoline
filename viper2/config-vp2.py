@@ -15,6 +15,15 @@ from scheduler import Scheduler
 import timer
 from timer import Timer
 from motor import Motor
+from display import Display
+
+###############################################################################
+# DISPLAY
+##########
+# You shall modify pygame to True or False if you want or not to use pygame (True by default)
+# You shall modify screen if you want to change screen dimensions ([800, 600] by default)
+###############################################################################
+dispatch_display = Display(pygame = False)
 
 ###############################################################################
 # SCHEDULER
@@ -28,8 +37,8 @@ scheduler = Scheduler(speedCoeff = 1)
 ##########
 # Add registers like that : reg = Register("NAME")
 ###############################################################################
-sensor = Register("SENSOR")
-control = Register("CONTROL")
+#sensor = Register("SENSOR")
+#control = Register("CONTROL")
 
 ###############################################################################
 # ECUS 
@@ -43,7 +52,7 @@ allEcus = [
     scheduler,
     [
       Timer("TIMER0", 7, type = timer.AUTO, delay = 0.5),
-      Motor("MOTOR0", 2, sensor, control, noise = 5),
+      Motor("MOTOR0", 2),
     ]
   )
 ]

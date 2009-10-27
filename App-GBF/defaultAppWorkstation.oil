@@ -26,19 +26,27 @@ CPU test {
         STARTUPHOOK = TRUE;
     } ;
 
+    TASK Init {
+        PRIORITY = 1;
+        AUTOSTART = TRUE { APPMODE = std; };
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+		RESOURCE = ressourceAfficheur;
+    };
+
     TASK gestionHeure {
         PRIORITY = 2;
         AUTOSTART = FALSE;
         ACTIVATION = 1;
-        SCHEDULE = NON;
+        SCHEDULE = FULL;
 		RESOURCE = ressourceAfficheur;
     };
     
     TASK gestionSignal {
-        PRIORITY = 40;
+        PRIORITY = 3;
+        AUTOSTART = FALSE;
         SCHEDULE = FULL;
         ACTIVATION = 1;
-        AUTOSTART = FALSE;
     };
     
     COUNTER SystemCounter {
@@ -64,7 +72,7 @@ CPU test {
         };
         AUTOSTART = TRUE {
 			ALARMTIME = 1;
-			CYCLETIME = 10;
+			CYCLETIME = 2;
 			APPMODE = std;
 		};
     };

@@ -36,7 +36,7 @@ CPU test {
         };
         AUTOSTART = TRUE {
 			ALARMTIME = 1;
-			CYCLETIME = 5;
+			CYCLETIME = 2;
 			APPMODE = std;
 		};
     };

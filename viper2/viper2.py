@@ -115,8 +115,7 @@ else:
     """ Signal handler """
     # CTRL+C
     signal.signal(signal.SIGINT, signalHandler)
-    
-    from config import dispatch_display    
+        
     dispatch_display.start()
                 
     """ Start all ecus """
@@ -135,5 +134,7 @@ else:
     """ Kill all ecus """
     for ecu in config.allEcus:
      ecu.kill()
+
+    dispatch_display.end()
 
     print "\nBye,"

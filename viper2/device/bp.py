@@ -12,7 +12,7 @@ class BP(device.Device):
   """
   """
 
-  def __init__(self, name, id, signal = device.SIGUSR2, registers = None):
+  def __init__(self, name, id, text = None, picture = None, signal = device.SIGUSR2, position = None, registers = None):
     """
     Constructor.
     @see Device.__init__()
@@ -21,6 +21,9 @@ class BP(device.Device):
     
     self._width = button_width
     self._height = button_height
+    self._position = position
+    self._text = text
+    self._picture = picture
     
     device.Device.__init__(self, name, id, signal, registers)
     
@@ -42,7 +45,7 @@ class BP(device.Device):
   ################################################################
   
   def display_on_pygame_adding_widgets(self, widget_list):
-    Button(widget_list, self, [self._localisation[0], self._localisation[1]])
+    Button(widget_list, self, [self._position[0], self._position[1]])
     
   def display_on_pygame(self):
     pass
