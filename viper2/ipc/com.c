@@ -93,7 +93,7 @@ bool init_ipc_struct(ipc_t *ipc)
 #else
   sprintf(reg_sem_file_path, REG_SEM_FILE_PATH, ipc->pid);
 #endif
-
+  
   /* Open semaphores */
   /** Viper semaphore */
   ipc->vp_sem = sem_open(vp_sem_file_path, O_CREAT, 0600, 0); /* Block on first wait */

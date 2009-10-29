@@ -47,7 +47,7 @@ TASK(SendButtons)
     
     /* send ipdu */
     printf("[TPL_PC] Send an I-PDU... id:%d - mode:%d - buf:%d\n", s_ipdu.id,s_ipdu.transmission_mode,s_ipdu.buf[0]);
-    send_ipdu(&viper, CAN0, &s_ipdu);
+    send_ipdu(&viper, NET0, &s_ipdu);
 
 	TerminateTask();
 }

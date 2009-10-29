@@ -11,7 +11,7 @@
 #define BETA_INIT 0.000000001
 #define TICK_PER_ROTATION 100 // TODO : Find a way to synchronize viper2 and trampoline about TICK_PER_ROTATION
 #define PI 3.141592
-#define RADIUS 30
+#define RADIUS 3
 int gap = 10;
 double theta = 1.570796;
 double position[2] = {100,150};
@@ -53,11 +53,12 @@ TASK(MotorControl)
     r_ipdu.buf = my_buf;
     
     /* received ipdu */
-    receive_ipdu(&viper, CAN1_1, &r_ipdu);
+    receive_ipdu(&viper, NET1_1, &r_ipdu);
     printf("[TPL1] Received an I-PDU... id = %d - mode = %d - buf = %d\n",r_ipdu.id,r_ipdu.transmission_mode,r_ipdu.buf[0]);
     
     /* Receiving movement vector, find motor commands */
     //TODO : keep the same radius circle !!!
+    //TODO : Fix a maximal turning circle (because it can have errors in the odometry)
     switch(r_ipdu.buf[0])
     {
         case 1:
@@ -173,7 +174,7 @@ TASK(SensorAndSendVector)
     }
         
     
-    /* SendVector to CAN */
+    /* SendVector to NET */
     s_ipdu.id = 1;
     s_ipdu.transmission_mode = 0;
     s_ipdu.nb_message = 2;
@@ -184,7 +185,7 @@ TASK(SensorAndSendVector)
     s_ipdu.buf = test;
     
     printf("[TPL1] Send an I-PDU... id:%d - mode:%d - buf:%d-%d\n", s_ipdu.id,s_ipdu.transmission_mode,s_ipdu.buf[0],s_ipdu.buf[1]);
-    send_ipdu(&viper, CAN1_2, &s_ipdu);
+    send_ipdu(&viper, NET1_2, &s_ipdu);
     
     /* Write in the screen registers*/
     vp_ipc_write_reg(&viper, LCD1_LCD1_REG0, (reg_t)(position[0]));
@@ -195,7 +196,7 @@ TASK(SensorAndSendVector)
     
 }
 
-ISR(CAN) 
+ISR(Network) 
 {
     ActivateTask(MotorControl);        
 }

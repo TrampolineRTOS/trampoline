@@ -17,7 +17,7 @@ AUTO     = 1
 ###############################################################################
 class Timer(device.Device):
   """
-  Timer device. This timer can run with a one shot and you could specify a delay
+  Timer class is a timer which can be one shot (ONE_SHOT) or periodic (AUTO).
   """
 
   def __init__(self, name, id, signal = device.SIGUSR2, position = None, registers = None, type = ONE_SHOT, delay = 1):
@@ -55,8 +55,8 @@ class Timer(device.Device):
 
   def start(self):
     """
-    Call from ecu, at the beginin
-    Here the first call is written to the scheduler
+    Call from ecu, at the begining.
+    Start periodic timer if selected by the user.
     """
     if self.__type != ONE_SHOT:
       self._scheduler.addEvent(Event(self, self.__delay, periodic = True))

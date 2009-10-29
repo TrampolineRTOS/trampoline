@@ -10,6 +10,7 @@ AR         = ar
 RANLIB     = ranlib
 OBJ_dir    = .obj
 PYTHON_inc =  PYTHON_INCLUDE
+
 ##
 # Python module (ipc_mod)
 ##

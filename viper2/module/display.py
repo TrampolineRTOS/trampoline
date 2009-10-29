@@ -2,45 +2,40 @@
 # IMPORTS
 ###############################################################################
 from widget import Widget
+from errors import IPCError
 
 ###############################################################################
 # WIDGET CLASS
 ###############################################################################
 class Display(object):
   """
-  Container of all the widgets
+  Display class. According to the user (pygame or consol mode), this class dispatchs 
+  devices display in the right support. It also locates (or check if location has been
+  set by the user) the device on the screen.
   """
   pygame_bool = False
   
-  def __init__(self, pygame = True, screen = None):
+  def __init__(self, pygame = True, screen = [800, 600]):
     """
     Constructor : Check if pygame is installed and if the user want to use pygame or not
     @param pygame boolean to display information on pygame or on consol
+    @param screen screen dimensions (set to [800, 600] by default)
     """
     self.pygame_bool = pygame
     self._init_display = True
+    self._screen = screen
     
-    global screen_width
-    global screen_height
-    if (screen != None):
-      screen_width = screen[0]
-      screen_height = screen[1]
-    else:
-      screen_width = 800
-      screen_height = 600
-    
-      
     if (self.pygame_bool == True):
       try:
         import pygame
       except:
         self.pygame_bool = False
-        print "Pygame not installed. Please go to http://www.pygame.org/ to insall a Pygame version according to a Python version (http://www.python.org/)" 
+        raise IPCError, "You're trying to use Pygame but it is not installed. Select pygame = False in Display paramters or go to http://www.pygame.org/ to insall a Pygame version according to a Python version (http://www.python.org/)" 
           
   def device(self, device):
     """
-    * Set variable to the right function to call to display device information : pygame or consol (from device.__init__())
-    * Locate "pygame" device if needed
+    Set variable to the right function to call to display device information : pygame or consol (from device.__init__())
+    Locate "pygame" device if needed
     @param device device to modify
     """
     
@@ -53,9 +48,9 @@ class Display(object):
       # TODO : check if position != None that the position doesn't belong to another device ?
       if (device._position == None):
         if (device.pygamepointer[2] < device._height):
-          if ((device.pygamepointer[0] + device._width) < screen_width):
+          if ((device.pygamepointer[0] + device._width) < self._screen[0]):
             device.pygamepointer[2] = device._height
-        if ((device.pygamepointer[0] + device._width) > screen_width):
+        if ((device.pygamepointer[0] + device._width) > self._screen[0]):
           device.pygamepointer[1] += device.pygamepointer[2]
           device.pygamepointer[0] = device._width
           device.pygamepointer[2] = device._height
@@ -64,14 +59,13 @@ class Display(object):
           device._position = [device.pygamepointer[0], device.pygamepointer[1]]     
           device.pygamepointer[0] = device.pygamepointer[0] + device._width
       
-      if ((device._position[1] + device._height) > screen_height) or ((device._position[0] + device._width) > screen_width) :
-        print "The screen dimensions are too little for the devices (or widgets). Change them in Display() parameters in config.py"
-        exit(1) 
+      if ((device._position[1] + device._height) > self._screen[1]) or ((device._position[0] + device._width) > self._screen[0]) :
+        raise IPCError, "The screen dimensions are too small for the devices (or widgets). Change them in Display() parameters in config.py"
       device._box = [device._width, device._height]
       
   def ecu(self, ecu):
     """
-    * Depending on pygame/consol, display information to the user (from ecu.start())
+    Depending on pygame/consol, display information to the user (from ecu.start())
     @param ecu ecu to modify
     """ 
     if (self.pygame_bool == True):
@@ -82,8 +76,8 @@ class Display(object):
     
   def scheduler(self, sched):
     """
-    * Set variable as right function to call to display from the device : pygame or consol
-    @ param sched sched to modify
+    Set variable as right function to call to display from the device : pygame or consol
+    @param sched sched to modify
     """
     if (self.pygame_bool == False):
       sched._pygameOrNotPygame = sched.withoutPygame
@@ -92,8 +86,8 @@ class Display(object):
                   
   def start(self):
     """
-    * Initialize widget list and store it in scheduler
-    * Display on the consol the display mode used (to the user)
+    Initialize widget list and store it in scheduler
+    Display on the consol the display mode used (to the user)
     """
     if (self.pygame_bool == True):
       self._widget_list = Widget()
@@ -105,7 +99,7 @@ class Display(object):
       
   def end(self):
     """
-    * Quit pygame
+    Quit pygame
     """
     if (self.pygame_bool == True):
       self._widget_list.quit_pygame()

@@ -15,8 +15,9 @@ import commands
 try:
   import ipc
 except:
-  """ Set python paths (lib and include)
-      in Makefile according to python used  
+  """
+  Set python paths (lib and include)
+  in Makefile according to python used  
   """
   vers = sys.version_info
   vers_1 = commands.getoutput("echo '" + str(vers) + "' | awk -F',' '{print $1}' | awk -F'(' '{print $2}'")
@@ -69,9 +70,12 @@ elif "-m" in sys.argv or "--mrproper" in sys.argv:
   for ecu in config.allEcus:
     os.system("cd " + ecu._dir + "; rm -rf build; rm -rf defaultAppWorkstation; rm -rf Make-rules; rm -rf Makefile; rm -rf trampoline; rm -rf target.cfg; rm -rf vp_ipc_devices.h")
   
-  """ ReSet python paths (lib and include)
-      in Makefile according to python used
   """
+  ReSet python paths (lib and include)
+  in Makefile according to python used
+  """
+  # TODO : check what happen if python version X is used to compile the librarie and python version Y to clean !!
+  # --> use awk to replace the command between `` by 0 and replace `0` by PYHTON_*
   vers = sys.version_info
   vers_1 = commands.getoutput("echo '" + str(vers) + "' | awk -F',' '{print $1}' | awk -F'(' '{print $2}'")
   vers_2 = commands.getoutput("echo '" + str(vers) + "' | awk '{print $2}' | awk -F',' '{print $1}'")

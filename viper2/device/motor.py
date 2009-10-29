@@ -13,17 +13,20 @@ from const import *
 ###############################################################################
 class Motor(device.Device):
   """
-    Viper -> Trampoline :
-      * Read "control" register. (Absolute speed to apply)
-      * Apply transfertfunction(random)
-      * Write to "sensor" register the actual speed.
-
-    Speed is transfertfunctiond each Motor.__delay seconds !
+    Motor class, represent three blocks linked to a real motor:
+    - The Pwm -> Consign conversion
+    - The motor transfert function
+    - The sensor which returns ticks number elapsed
+    Thus, the class waits first for a command from a Trampoline application and
+    store it. Every delay (given by the user), the motor calculs the ticks
+    number elapsed in a delay (self.__tickperdelay) and add it to the tick number
+    elapsed in total (self.__ticks) and write it in a register.
   """
   def __init__(self, name, id, frequency = None, max_pwm = 100, tickperrotation = 100, max_rpm = 300, delay = 0.2, transfertfunction = None, signal = device.SIGUSR2, position = None):
     """
     Constructor.
     @see Device.__init__()
+    @param delay time (second) between two shots (This is a float)
     """
 
     """ Create Motor registers"""
@@ -89,8 +92,8 @@ class Motor(device.Device):
       
   def start(self):
     """
-    Call from ecu, at the beginin
-    Here the first call is written to the scheduler
+    Call from ecu, at the begining.
+    Initialize register and start periodic sensor timer (increase sensor each self.__delay time)
     """
     self._registers[self.__control].write(0)
     self._scheduler.addEvent(Event(self, self.__delay, True))

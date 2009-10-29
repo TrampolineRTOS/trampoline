@@ -11,15 +11,19 @@ from register import Register
 ###############################################################################
 class DAC(device.Device):
   """
-    Digital to Analog Converter
-    Viper -> Trampoline :
-      * Read "reg" register.
+    TODO :
+    DAC (Digital to Analog Converter) class is connected to an oscilloscope
+    (several DAC can be connected like a real oscilloscope).
+    It receives commands from a Trampoline application and store it (the display
+    is done by the oscilloscope, by the scheduler).
+    Oscilloscope contains widgets, but how to refresh the screen ?
   """
   
   def __init__(self, name, id, signal = device.SIGUSR2, position = None):
     """
     Constructor.
     @see Device.__init__()
+    @param position device position can be set from the User
     """
 
     """ Create DAC registers"""
@@ -74,7 +78,7 @@ class DAC(device.Device):
   def display_on_pygame_adding_widgets(self, widget_list):
     """Initialise device's display"""
     self.display_on_pygame_init()
-    #TODO : insert "Input Text" widget to change time division and "voltage" division
+    #TODO : insert "Input Text" widget to change "time" division and "voltage" division
       
   def display_on_pygame_init(self):
     """ Attributes for Pygame """
@@ -121,7 +125,9 @@ class DAC(device.Device):
       self.__backgroundrect = self.__backgroundrect.move([self._position[0] + border_line , self._position[1] + border_line])
        
   def refresh_display(self):
-    """ Update screen """
+    """
+    see scheduler()
+    """
     screen = pygame.display.get_surface()
     screen.blit(self.__background, self.__backgroundrect)
     

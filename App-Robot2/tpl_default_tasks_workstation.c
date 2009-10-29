@@ -11,7 +11,7 @@
 #define BETA_INIT 0.000000001
 #define TICK_PER_ROTATION 100 // TODO : Find a way to synchronize viper2 and trampoline about TICK_PER_ROTATION
 #define PI 3.141592
-#define RADIUS 30
+#define RADIUS 3
 int gap = 10;
 double theta = 1.570796;
 double position[2] = {100,100};
@@ -130,7 +130,7 @@ TASK(MotorControl){
     r_ipdu.buf = my_buf;
     
     /* received ipdu */
-    receive_ipdu(&viper, CAN2, &r_ipdu);
+    receive_ipdu(&viper, NET2, &r_ipdu);
     printf("[TPL2] Received an I-PDU... id = %d - mode = %d - buf = %d-%d\n",r_ipdu.id,r_ipdu.transmission_mode,r_ipdu.buf[0],r_ipdu.buf[1]);
     
     /* Receiving robot1 ticks -> find motor commands */
@@ -148,7 +148,7 @@ TASK(MotorControl){
     TerminateTask();
 }
 
-ISR(CAN) 
+ISR(Network) 
 {
     ActivateTask(MotorControl);
 }
