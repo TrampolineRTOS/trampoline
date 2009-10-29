@@ -1,7 +1,7 @@
 ###############################################################################
 # IMPORTS
 ###############################################################################
-import re, sys, tty, termios
+import re#, sys#, tty#, termios
 import threading, time #ReadingThread
 from errors import IPCError
 

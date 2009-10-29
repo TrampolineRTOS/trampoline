@@ -6,6 +6,7 @@ import sys
 import device
 import config
 from const import *
+from errors import IPCError
 
 ###############################################################################
 # EVENT CLASS
@@ -23,14 +24,12 @@ class Event(object):
     @param delay time to wait (seconds, float)
     @param modifiedRegisters list of modifiedRegisters to give to device (use by Ecu only)
     """
-    self.__time   = delay
+    self.__time = 0
     self.__delay  = delay
     self.__device = device
     self.__modifiedRegisters = modifiedRegisters
     self._periodic = periodic
-    if (self._periodic == True):
-      self.__time = time.time()
-
+    
   def getTime(self):
     """
     @return date the event will be launched
@@ -68,14 +67,14 @@ class Event(object):
 ###############################################################################
 class SortingThread(threading.Thread):
   """
-  This thread is created by the scheduler to
+  Sorting thread schedules the events after inserted in the event list by
+  Reading thread (see Scheduler())
   """
 
   def __init__(self, sched):
     """
     Constructor.
-    @param ipc ipc structure to access fifo with ipc_mod module
-    @ecu ecu to add event.
+    @param sched scheduler where is the event list
     """
     threading.Thread.__init__(self)
     self.__sched = sched
@@ -83,8 +82,7 @@ class SortingThread(threading.Thread):
 
   def run(self):
     """
-    The threaded function.
-    Wait that fifo is not empty.
+    see Scheduler.sortEvent()
     """
     
     while self.__run:
@@ -93,7 +91,7 @@ class SortingThread(threading.Thread):
       
   def kill(self):
     """
-    Call to stop the main loop of the sorting thread.
+    Call to stop the main loop of the sorting thread (by the scheduler when ending).
     """
     self.__run = False
         
@@ -103,8 +101,10 @@ class SortingThread(threading.Thread):
 class Scheduler(object):
   """
   Logical scheduler
-  All events are handle by this class.
-  ?? There may have one instance of this class.
+  Contain list of events to schedule (used by the "SortingThread" instance and
+  'ReadingThread" instance). Depending on pygame or console mode, catch events
+  from the user and send it to the concern widget (see Widget()).
+  Update the screen at a certain frequency.
   """
   
   def __init__(self, speedCoeff):
@@ -121,25 +121,26 @@ class Scheduler(object):
     self.__time       = 0
         
     """ Dispatch display on pygame or consol """
-    from config import dispatch_display
-    dispatch_display.scheduler(self)
+    try:
+      from config import dispatch_display
+      dispatch_display.scheduler(self)
+    except:
+      raise IPCError, "Dispaly instance not created in config file. Go to the readme file."
               
   def addEvent(self, event):  
     """
-    * Add event to the scheduler.
-    * If periodic event, increment delay to last execution time
+    Add event to the scheduler.
+    If periodic event, increment delay to last execution time
       If one shot event, increment delay to actual time
-    * Insert event in the right place
+    Insert event in the right place
     @param event the Event to add
     """    
-    if (event._periodic == True):
-      newtime = (event.getDelay() / self.__speedCoeff) + event.getTime()
-    else:
-      newtime = (event.getDelay() / self.__speedCoeff) + time.time()
+    newtime = (event.getDelay() / self.__speedCoeff) + time.time()
     event.setTime(newtime)
     
     self.__sem.acquire()
-    # TODO : Don't start the searching from the beginning of the list but by the middle (worst case in log(n) instead of n)
+    # TODO : Don't start the searching from the beginning of the list but by the
+    #        middle (worst case in log(n) instead of n)
     length = len(self.__events)
     i = 0
     if (length > 0):
@@ -152,10 +153,10 @@ class Scheduler(object):
      
   def start(self):
     """
-    * If pygame, launch event received
-    * Start scheduler : Get Event whose time is passed, call event()
+    If pygame, launch event received
+    Start scheduler : Get Event whose time is passed, call event()
       Device'method and remove the event from the list.
-    * Sleep scheduler the min time to wait.
+    Sleep scheduler the min time to wait.
     """
     
     """ Init and start sorting thread """
@@ -166,7 +167,7 @@ class Scheduler(object):
             
     while self.__run:
      """
-     * If pygame : wait for event
+     If pygame : wait for event
        Otherwise : Do nothing
      """
      self._pygameOrNotPygame()
@@ -176,12 +177,14 @@ class Scheduler(object):
     
   def withPygame(self):
      """
-     * Waiting for events from the keyboard/mouse
-     * Refresh display every 100ms ( 10 fps )
+     Waiting for events from the keyboard/mouse
+     Refresh screen (every 100ms for example), instead of updating the screen each
+     received event by the device (which can have an updating time longer than the
+     delay between two events).
      """     
      for event in pygame.event.get():
       if (event.type == pygame.QUIT):
-        sys.exit()
+        self.kill()
       else:
           self._widg.event(event)  
      
@@ -207,7 +210,13 @@ class Scheduler(object):
         time.sleep(1)
 
   def sortEvent(self):
-     """Event sorting..."""
+     """
+     Copie event whose time is passed (event.getTime() < time.time()).
+     Remove event (except if periodic event, thus change time and move it to the rifht
+      place in the events list).
+     Launch event device action.
+     Thus, event sorting...
+     """
      previousTime=0
      events	  = [] # List
      currentTime = time.time()
@@ -246,6 +255,6 @@ class Scheduler(object):
      ttw = self.__events[0].getTime()
      self.__sem.release()
      
-     """Sleep until next event"""
+     """ Sleep until next event (better for cpu time consuming) """
      threading.Event().wait(ttw-time.time())
 

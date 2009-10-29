@@ -9,7 +9,7 @@ from const import *
 ###############################################################################
 class Widget(object):
   """
-  Container of all the widgets
+  Container of all the widgets (and their dimensions in the box list)
   """
   ecu_number = 0
   ecu = 0
@@ -24,8 +24,8 @@ class Widget(object):
     self._focused_widget    = None
     
     pygame.init()
-    from display import screen_width, screen_height    
-    screen = pygame.display.set_mode((screen_width, screen_height))
+    from config import dispatch_display
+    screen = pygame.display.set_mode((dispatch_display._screen[0], dispatch_display._screen[1]))
     pygame.display.set_caption('ViPER2')
     background = background_color
     screen.fill(background)

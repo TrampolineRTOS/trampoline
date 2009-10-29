@@ -18,8 +18,8 @@ from timer import Timer
 from bp import BP
 from server import DisplayServer
 from server import Server
-from can import CAN_Network
-from can import CAN
+from ether import Ether
+from network import Network
 from motor import Motor
 
 ###############################################################################
@@ -35,7 +35,7 @@ dispatch_display = Display(pygame = True, screen = [400, 560])
 ##########
 # You shall modify speedCoeff only
 ###############################################################################
-scheduler = Scheduler(speedCoeff = 0.5)
+scheduler = Scheduler(speedCoeff = 1)
 
 ###############################################################################
 # REGISTERS
@@ -48,8 +48,8 @@ scheduler = Scheduler(speedCoeff = 0.5)
 ##########
 # Add Can Network if needed
 ###############################################################################
-can_net1 = CAN_Network()
-can_net2 = CAN_Network()
+network_master = Ether()
+network_slave = Ether()
 
 ###############################################################################
 # PYGAME WIDGETS
@@ -69,7 +69,7 @@ allEcus = [
     "../App-RobotPC/trampoline",
     scheduler,
     [
-      CAN(can_net1, "CAN0", 0),
+      Network(network_master, "NET0", 0),
       Timer("TIMER0", 1, type = timer.AUTO, delay = 1),
       BP("BPFaster", 5, position = [100, 400], text="/\\" ),
       BP("BPSlower", 6, position = [100, 480], text="\\/"),
@@ -81,19 +81,19 @@ allEcus = [
     "../App-Robot1/trampoline",
     scheduler,
     [
-      CAN(can_net1, "CAN1_1", 0),
+      Network(network_master, "NET1_1", 0),
       Timer("TIMER1", 1, type = timer.AUTO, delay = 0.1),
       DisplayServer("LCD1", 2, display_server),      
       Motor("MOTOR1_1",3),
       Motor("MOTOR1_2",4),
-      CAN(can_net2, "CAN1_2", 5),
+      Network(network_slave, "NET1_2", 5),
     ]
   ),
   Ecu(
     "../App-Robot2/trampoline",
     scheduler,
     [
-      CAN(can_net2, "CAN2", 0),
+      Network(network_slave, "NET2", 0),
       Timer("TIMER2", 1, type = timer.AUTO, delay = 0.1),
       DisplayServer("LCD2", 2, display_server),      
       Motor("MOTOR2_1",3),
@@ -104,7 +104,7 @@ allEcus = [
     "../App-Robot3/trampoline",
     scheduler,
     [
-      CAN(can_net2, "CAN3", 0),
+      Network(network_slave, "NET3", 0),
       Timer("TIMER3", 1, type = timer.AUTO, delay = 0.1),
       DisplayServer("LCD3", 2, display_server),      
       Motor("MOTOR3_1",3),

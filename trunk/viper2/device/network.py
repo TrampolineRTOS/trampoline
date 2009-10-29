@@ -6,11 +6,11 @@ from ether import EtherDevice
 from register import Register
 
 ###############################################################################
-# CAN CLASS
+# NETWORK CLASS
 ###############################################################################
-class CAN(device.Device):
+class Network(EtherDevice):
   """
-  CAN class is a class which herits of an EtherDevice class, linked to
+  Network class is a class which herits of an EtherDevice class, linked to
   the ether in parameters
   """
 
@@ -70,11 +70,11 @@ class CAN(device.Device):
       """ Get command """
     elif self._registers[self._reg1].id in modifiedRegisters:
       self._display()
-      self.__network.event(self)
+      self.sendToNetwork()
     
     else:
       print "[VPR](DEBUG) Some registers are not handle :", modifiedRegisters
-  
+ 
   def sendToNetwork(self):
     """
     Dispatch received frame to all devices in the same ether

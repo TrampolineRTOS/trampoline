@@ -11,15 +11,15 @@ import time
 ###############################################################################
 class LCD(device.Device):
   """
-    Liquid Crystal Display
-    Viper -> Trampoline :
-      * Read "regX" registers.
-    
+    LCD (Liquid Crystal Display) class receives "commands" from a Trampoline
+    application and store it (the display is done by the scheduler).
+    The class waits for "commands" in ASCII.
   """
-  def __init__(self, name, id, delay = 0, position = None, signal = device.SIGUSR2):
+  def __init__(self, name, id, position = None, signal = device.SIGUSR2):
     """
     Constructor.
     @see Device.__init__()
+    @param position device position can be set from the User
     """
     
     """ Create LCD registers"""
@@ -69,7 +69,8 @@ class LCD(device.Device):
 
   def start(self):
     """
-    Store 32 (ASCII caracter "space") in all the registers of the LCD device
+    Call from ecu, at the begining.
+    Initialize registers.
     """
     if ( self._registers[self.__reg9].read() == 0 ):
       self._registers[self.__reg9].write(32)

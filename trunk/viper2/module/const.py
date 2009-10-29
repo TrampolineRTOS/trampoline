@@ -1,15 +1,15 @@
-#######
-# Constant for drawings
-#######
+#############################
+# Constant for pygame
+#############################
 
 # Colors
-red = (248, 34, 0)
-yellow = (255, 227, 24)
-orange = (255, 101, 39)
-green = (0, 152, 6)
-blue = (37, 44, 255)
 black = (0, 0, 0)
+blue = (37, 44, 255)
+green = (0, 152, 6)
+orange = (255, 101, 39)
+red = (248, 34, 0)
 white = (255, 255, 255)
+yellow = (255, 227, 24)
 background_color = 231, 229, 210
 
 # Devices
@@ -36,9 +36,9 @@ lcdserver_width = 400
 lcdserver_height = 400
 robot_size = 4
 
-####
+###################################
 # Constant for "key" pressed
-#######
+###################################
 
 import pygame
 

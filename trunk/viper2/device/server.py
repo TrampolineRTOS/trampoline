@@ -10,11 +10,9 @@ from const import *
 ###############################################################################
 class DisplayServer(device.Device):
   """
-    Liquid Crystal Displays for a Server.
-    The server collects serveral LCDServer value and display them.
-    Viper -> Trampoline :
-      * Read "regX" registers.
-    
+    DisplayServer is connected to a Server class.
+    It waits for commands from a Trampline application and updates them in the
+    Server list.
   """
   def __init__(self, name, id, serv, position = None, signal = device.SIGUSR2):
     """
@@ -58,7 +56,8 @@ class DisplayServer(device.Device):
   
   def start(self):
     """
-    Store 32 (ASCII caracter "space") in all the registers of the LCD device
+    Call from ecu, at the begining.
+    Initialize registers.
     """
     if ( self._registers[self.__reg1].read() == 0 ):
       self._registers[self.__reg1].write(32)
@@ -90,7 +89,10 @@ class DisplayServer(device.Device):
 ###############################################################################
 class Server(device.Device):
   """
-  Container of all the widgets
+  Container of DisplayServer instances
+  Receive informations from DisplayServer instances and store them (the display
+  is done by the scheduler).
+  This class is used to display three robots on a screen to see their positions.
   """
   def __init__(self, name, position = None):
     self._robots_position   = {}
@@ -166,6 +168,9 @@ class Server(device.Device):
         self.__robotrect[i] = self.__robotrect[i].move([x ,y ])
         
   def refresh_display(self):
+    """
+    see scheduler()
+    """
     screen = pygame.display.get_surface()
     for i, serv in self._robots_lcdserver.iteritems():
       if (self._robots_position[i] != None):

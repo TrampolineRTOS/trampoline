@@ -68,14 +68,18 @@ void send_ipdu(ipc_t* ipc, dev_id_t can_device, tpl_sending_ipdu* ipdu)
   frame_reg.reg[2] = frame.arbitration.rtr;  
     
   unsigned char * ptr_ide;
-  ptr_ide = (int)&frame_reg.reg[2]  + (int)sizeof(char);
+
+//printf("&frame_reg.reg[2] : %d\n",(int)sizeof(&frame_reg.reg[2]));
+  ptr_ide = (void *)&frame_reg.reg[2];
+  ptr_ide += (int)(sizeof(char));
   *ptr_ide = frame.arbitration.ide;
   
   frame_reg.reg[3] = frame.dlc;  
   
   for(i = 0; i < (ipdu->nb_message) ; i ++)
   {
-      ptr_ide = (int)&frame_reg.reg[4] + i*(int)sizeof(char);
+      ptr_ide = (void *)&frame_reg.reg[4];
+      ptr_ide += i*(int)sizeof(char);
       *ptr_ide = ipdu->buf[i];
   }
      
@@ -118,7 +122,8 @@ void receive_ipdu(ipc_t* ipc, dev_id_t can_device, tpl_receiving_ipdu* ipdu)
   frame.arbitration.rtr = frame_reg.reg[2];  
     
   unsigned char * ptr_ide;
-  ptr_ide = (int)&frame_reg.reg[2] + (int)sizeof(char);
+  ptr_ide = (void *)&frame_reg.reg[2];
+  ptr_ide += (int)sizeof(char);
   frame.arbitration.ide = *ptr_ide;
     
   frame.dlc = frame_reg.reg[3];  
@@ -132,7 +137,8 @@ void receive_ipdu(ipc_t* ipc, dev_id_t can_device, tpl_receiving_ipdu* ipdu)
     /* Make ipdu from registers */
     for(i = 0; i < (ipdu->nb_message) ; i ++)
     {
-        ptr_ide = (int)&frame_reg.reg[4] + i*(int)sizeof(char);
+        ptr_ide = (void *)&frame_reg.reg[4];
+        ptr_ide += i*(int)sizeof(char);
         ipdu->buf[i] = *ptr_ide;
     }
   }

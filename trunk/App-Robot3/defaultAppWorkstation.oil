@@ -55,7 +55,7 @@ CPU test {
         SCHEDULE = NON;
     };
 
-    ISR CAN {
+    ISR Network {
         CATEGORY = 2 ;
 		PRIORITY = 30;
 		SOURCE = IRQ0;

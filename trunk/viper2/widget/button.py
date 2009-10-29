@@ -3,7 +3,7 @@
 ###############################################################################
 import widget
 import pygame
-from const import *
+from const import black, button_height_only, border_line, MOUSEBUTTONDOWN, MOUSEBUTTONUP
 
 ###############################################################################
 # BUTTON CLASS
@@ -29,12 +29,12 @@ class Button(widget.Widget):
      self.__legend = device._font.render(device.name, 1, black)
      self.__legendrect = self.__legend.get_rect()
      temp_size = device._font.size(str(device.name))
-     self.__legendrect = self.__legendrect.move([pos[0] + button_width - temp_size[0], pos[1] + button_height - temp_size[1]])  
+     self.__legendrect = self.__legendrect.move([pos[0] + device._width - temp_size[0], pos[1] + device._height - temp_size[1]])  
      screen = pygame.display.get_surface()
      screen.blit(self.__legend, self.__legendrect)
      pygame.display.flip()
      
-     widg.add(self, device, device.callbackIndex, [[pos[0],pos[1]],[pos[0]+button_width,pos[1]+button_height]])     
+     widg.add(self, device, device.callbackIndex, [[pos[0],pos[1]],[pos[0] + device._width , pos[1] + device._height]])     
   
   def button_pressed(self):
      """
@@ -51,7 +51,7 @@ class Button(widget.Widget):
          self.__text = self._font.render(self.__device._text, 1, black)
          self.__textrect = self.__text.get_rect()
          temp_size = self._font.size(str(self.__device._text))
-       self.__textrect = self.__textrect.move([self._pos[0] + button_width/2 - temp_size[0]/2, self._pos[1] + button_height_only/2 - temp_size[1]/2])
+       self.__textrect = self.__textrect.move([self._pos[0] + self.__device._width/2 - temp_size[0]/2, self._pos[1] + button_height_only/2 - temp_size[1]/2])
        self.__backgroundrect = self.__background.get_rect()
        self.__backgroundrect = self.__backgroundrect.move([self._pos[0] + border_line, self._pos[1] + border_line])
        screen.blit(self.__background, self.__backgroundrect)
@@ -78,7 +78,7 @@ class Button(widget.Widget):
          self.__text = self._font.render(self.__device._text, 1, black)
          self.__textrect = self.__text.get_rect()
          temp_size = self._font.size(str(self.__device._text))
-       self.__textrect = self.__textrect.move([self._pos[0] + button_width/2 - temp_size[0]/2, self._pos[1] + button_height_only/2 - temp_size[1]/2])
+       self.__textrect = self.__textrect.move([self._pos[0] + self.__device._width/2 - temp_size[0]/2, self._pos[1] + button_height_only/2 - temp_size[1]/2])
        self.__backgroundrect = self.__background.get_rect()
        self.__backgroundrect = self.__backgroundrect.move([self._pos[0] + border_line, self._pos[1] + border_line])
        screen.blit(self.__background, self.__backgroundrect)
