@@ -5,7 +5,7 @@ from widget import Widget
 from errors import IPCError
 
 ###############################################################################
-# WIDGET CLASS
+# DISPLAY CLASS
 ###############################################################################
 class Display(object):
   """
@@ -25,13 +25,13 @@ class Display(object):
     self._init_display = True
     self._screen = screen
     
-    if (self.pygame_bool == True):
-      try:
-        import pygame
-      except:
-        self.pygame_bool = False
-        raise IPCError, "You're trying to use Pygame but it is not installed. Select pygame = False in Display paramters or go to http://www.pygame.org/ to insall a Pygame version according to a Python version (http://www.python.org/)" 
-          
+    #if (self.pygame_bool == True):
+    #  try:
+    #    import pygame
+    #  except:
+    #    self.pygame_bool = False
+    #    raise IPCError, "You're trying to use Pygame but it is not installed. Select pygame = False in Display parameters or go to http://www.pygame.org/ to insall a Pygame version according to a Python version (http://www.python.org/)" 
+ 
   def device(self, device):
     """
     Set variable to the right function to call to display device information : pygame or console (from device.__init__())
@@ -90,6 +90,12 @@ class Display(object):
     Display on the console the display mode used (to the user)
     """
     if (self.pygame_bool == True):
+      try:
+        import pygame
+      except:
+        self.pygame_bool = False
+        raise IPCError, "You're trying to use Pygame but it is not installed. Select pygame = False in Display parameters or go to http://www.pygame.org/ to insall a Pygame version according to a Python version (http://www.python.org/)"
+
       self._widget_list = Widget()
       from config import scheduler
       scheduler._widg = self._widget_list

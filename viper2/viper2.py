@@ -7,7 +7,7 @@ sys.path.append('device')
 sys.path.append('ipc')
 sys.path.append('widget')
 
-##############################################################################
+###############################################################################
 # Check that viper2 ipc lib is compiled. Otherwise, compile it and set python paths 
 ###############################################################################
 import os
@@ -23,10 +23,18 @@ except:
   vers_1 = commands.getoutput("echo '" + str(vers) + "' | awk -F',' '{print $1}' | awk -F'(' '{print $2}'")
   vers_2 = commands.getoutput("echo '" + str(vers) + "' | awk '{print $2}' | awk -F',' '{print $1}'")
   vers_python = commands.getoutput("echo python" + vers_1 + "." + vers_2)
-
+  
   #change path in Makefile
-  commands.getoutput("sed 's:PYTHON_INCLUDE:`" + vers_python + "-config --includes" + "`:g' Makefile > TMPFILE && mv TMPFILE Makefile")
-  commands.getoutput("sed 's:PYTHON_LDFLAGS:`" + vers_python + "-config --ldflags" + "`:g' Makefile > TMPFILE && mv TMPFILE Makefile")
+  #try pythonX-config
+  comeback = commands.getoutput("which " + vers_python + "-config")
+  if (comeback == ""):
+    raise IPCError, "" + vers_python + "-config isn't installed. You can install it by sudo apt-get install " + vers_python + "-dev"  
+  else:
+    PYTHON_INCLUDE_line_number = commands.getoutput("sed -n '/#PYTHON_INCLUDE/=' Makefile")
+    PYTHON_LDFLAGS_line_number = commands.getoutput("sed -n '/#PYTHON_LDFLAGS/=' Makefile")
+    #if python version different than previous used, change python version in makefile
+    commands.getoutput("sed '" + PYTHON_INCLUDE_line_number + "cPYTHON_inc = `" + vers_python + "-config --includes" + "` #PYTHON_INCLUDE' Makefile > TMPFILE && mv TMPFILE Makefile")
+    commands.getoutput("sed '" + PYTHON_LDFLAGS_line_number + "cMODULE_ldflags += `" + vers_python + "-config --ldflags" + "` #PYTHON_LDFLAGS' Makefile > TMPFILE && mv TMPFILE Makefile")
   
   """ Make libraries """
   os.system("make all")
@@ -60,12 +68,12 @@ if "-h" in sys.argv or "--help" in sys.argv:
   print ""
   print "\t-g : Generate vp_ipc_devices.h and target.cfg"
   print "\t-c : Use with -g, compile trampolines"
-  print "\t-m : Clean dependencies (before a commit)"
+  print "\t--clean : Clean dependencies (before a commit)"
   print "\t-v : Launch application in verbose mode"
   print "\t--nodep : Use with -c, compile with NODEP=1 option"
 
 #Clean
-elif "-m" in sys.argv or "--mrproper" in sys.argv:
+elif "--clean" in sys.argv :
   """ Clean dependencies """
   os.system("make mrproper")
   for ecu in config.allEcus:

@@ -2,8 +2,7 @@
 # IMPORTS
 ###############################################################################
 import widget
-import pygame
-from const import black, button_height_only, border_line, MOUSEBUTTONDOWN, MOUSEBUTTONUP
+from const import *
 
 ###############################################################################
 # BUTTON CLASS

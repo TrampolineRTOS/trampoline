@@ -8,7 +8,6 @@ from errors import IPCError
 import ipc
 from device import Device
 from scheduler import Event 
-import pygame
 from const import *
 
 ###############################################################################

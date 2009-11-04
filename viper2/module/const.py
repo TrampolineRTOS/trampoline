@@ -36,18 +36,18 @@ lcdserver_width = 400
 lcdserver_height = 400
 robot_size = 4
 
-###################################
-# Constant for "key" pressed
-###################################
+try:
+  import pygame
+  from pygame.locals import QUIT, MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION, KEYDOWN, USEREVENT
+  #ENTER = pygame.locals.USEREVENT + 0
+  #EXIT = pygame.locals.USEREVENT + 1
+  #BLUR = pygame.locals.USEREVENT + 2
+  #FOCUS = pygame.locals.USEREVENT + 3
+  #CLICK = pygame.locals.USEREVENT + 4
+  #CHANGE = pygame.locals.USEREVENT + 5
+  #OPEN = pygame.locals.USEREVENT + 6
+  #CLOSE = pygame.locals.USEREVENT + 7
+except:
+  """"""
 
-import pygame
 
-from pygame.locals import QUIT, MOUSEBUTTONDOWN, MOUSEBUTTONUP, MOUSEMOTION, KEYDOWN, USEREVENT
-ENTER = pygame.locals.USEREVENT + 0
-EXIT = pygame.locals.USEREVENT + 1
-BLUR = pygame.locals.USEREVENT + 2
-FOCUS = pygame.locals.USEREVENT + 3
-CLICK = pygame.locals.USEREVENT + 4
-CHANGE = pygame.locals.USEREVENT + 5
-OPEN = pygame.locals.USEREVENT + 6
-CLOSE = pygame.locals.USEREVENT + 7
