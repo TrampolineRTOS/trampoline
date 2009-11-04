@@ -3,7 +3,7 @@
 
 #include <stdbool.h> /* bool */
 
-#include "consts.h"
+#include "../consts.h"
 
 /**
  * Structure,
