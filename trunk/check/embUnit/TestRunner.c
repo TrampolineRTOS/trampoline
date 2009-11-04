@@ -54,19 +54,19 @@ static void TestRunner_endTest(TestListner* self,Test* test)
 static void TestRunner_addFailure(TestListner* self,Test* test,char* msg,int line,char* file)
 {
 	stdimpl_print("\n");
-	stdimpl_print(Test_name(root_));
+	stdimpl_print("%s",Test_name(root_));
 	stdimpl_print(".");
-	stdimpl_print(Test_name(test));
+	stdimpl_print("%s",Test_name(test));
 	{
 		char buf[16];
 		stdimpl_print(" (");
-		stdimpl_print(file);
+		stdimpl_print("%s",file);
 		stdimpl_print(" ");
 		stdimpl_itoa(line, buf, 10);
-		stdimpl_print(buf);
+		stdimpl_print("%s",buf);
 		stdimpl_print(") ");
 	}
-	stdimpl_print(msg);
+	stdimpl_print("%s",msg);
 	stdimpl_print("\n");
 }
 
@@ -97,15 +97,15 @@ void TestRunner_end(void)
 	if (result_.failureCount) {
 		stdimpl_print("\nrun ");
 		stdimpl_itoa(result_.runCount, buf, 10);
-		stdimpl_print(buf);
+		stdimpl_print("%s",buf);
 		stdimpl_print(" failures ");
 		stdimpl_itoa(result_.failureCount, buf, 10);
-		stdimpl_print(buf);
+		stdimpl_print("%s",buf);
 		stdimpl_print("\n");
 	} else {
 		stdimpl_print("\nOK (");
 		stdimpl_itoa(result_.runCount, buf, 10);
-		stdimpl_print(buf);
+		stdimpl_print("%s",buf);
 		/*Modif. 13 jan 2009*/
 		if(result_.runCount==1){
 			stdimpl_print(" test)\n");
