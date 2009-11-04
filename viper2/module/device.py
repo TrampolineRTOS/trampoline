@@ -53,7 +53,7 @@ class Device(object):
     if registers:
       self.add(registers)
       
-    """ Dispatch display on pygame or consol """
+    """ Dispatch display on pygame or console """
     from config import dispatch_display
     dispatch_display.device(self)
     

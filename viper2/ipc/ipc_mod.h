@@ -32,7 +32,7 @@ void tpl_ipc_destroy_instance(ipc_t *ipc);
  * @param signum shall be SIGUSR2, SIGUSR1 or SIGALARM
  * @param it_id must be a bit set to 1.
  */
-void tpl_ipc_send_it(ipc_t *ipc, int signum, dev_id_t it_id);
+void tpl_ipc_send_it(ipc_t *ipc, int signum, dev_id_t it_id, int verbose);
 
 /**
  * Useful for the python module

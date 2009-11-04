@@ -17,6 +17,7 @@ PYTHON_inc =  PYTHON_INCLUDE
 MODULE_dir     = ipc
 MODULE_src     = com.c ipc_mod.c util/fifo.c
 MODULE_hdr     = com.h ipc_mod.h util/fifo.h
+MODULE_swig    = ipc_mod.h consts.h
 MODULE_bin     = _ipc.so
 MODULE_name    = ipc.py
 MODULE_obj_dir = $(OBJ_dir)/$(MODULE_dir)
@@ -56,6 +57,7 @@ SWIG          = swig -python -shadow
 SWIG_CFLAGS   = -Wall
 INTERFACE     = ipc_mod.i
 INTERFACE_SRC = ipc_mod_wrap.c
+SWIG_BASENAME = $(shell which swig)
 
 ########################################################
 # ARCH dependant stuff
@@ -86,8 +88,10 @@ mod : $(TPL_MODULE_bin)
 ##
 # Python module
 ##
-$(MODULE_dir)/$(INTERFACE_SRC): $(MODULE_dir)/$(INTERFACE)
+$(MODULE_dir)/$(INTERFACE_SRC): $(MODULE_dir)/$(INTERFACE) ipc/ipc_mod.h ipc/consts.h
+ifneq "$(SWIG_BASENAME)" ""
 	$(SWIG) $(SWIG_CFLAGS) -o $@ $<
+endif
 
 MODULE_src += $(INTERFACE_SRC)
 
@@ -118,8 +122,8 @@ $(CAN_obj) : $(CAN_dir)/$(CAN_src)
 .PHONY : clean mrproper
 
 clean:
-	@rm -rf $(OBJ_dir)/ *~ $(MODULE_dir)/$(INTERFACE_SRC)
+	@rm -rf $(OBJ_dir)/ *~
 
 mrproper: clean
-	@rm -f $(MODULE_bin) ipc/$(MODULE_name) *.pyc ipc/*.pyc device/*.pyc module/*.pyc widget/*.pyc config.pyc $(TPL_MODULE_bin)
+	@rm -f $(MODULE_bin) *.pyc ipc/*.pyc device/*.pyc module/*.pyc widget/*.pyc config.pyc $(TPL_MODULE_bin)
 

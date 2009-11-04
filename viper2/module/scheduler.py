@@ -119,8 +119,9 @@ class Scheduler(object):
     self.__run        = True
     self.__sem        = threading.Semaphore()
     self.__time       = 0
-        
-    """ Dispatch display on pygame or consol """
+    self._verbose     = False
+    
+    """ Dispatch display on pygame or console """
     try:
       from config import dispatch_display
       dispatch_display.scheduler(self)
@@ -187,7 +188,7 @@ class Scheduler(object):
         self.kill()
       else:
           self._widg.event(event)  
-     
+      
      """ Display devices """
      for ecu in config.allEcus:
        for name, device in ecu._devices.iteritems():

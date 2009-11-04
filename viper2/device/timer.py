@@ -67,7 +67,7 @@ class Timer(device.Device):
   # Display on Consol
   ################################################################
   
-  def display_on_consol(self):
+  def display_on_console(self):
     pass
   
   ################################################################    
