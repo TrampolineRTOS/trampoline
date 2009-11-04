@@ -42,7 +42,7 @@ class BP(device.Device):
   # Display on Consol - Impossible ??
   ################################################################
  
-  def display_on_consol(self):
+  def display_on_console(self):
     pass
 
   ################################################################    

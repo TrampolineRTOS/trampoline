@@ -61,6 +61,7 @@ if "-h" in sys.argv or "--help" in sys.argv:
   print "\t-g : Generate vp_ipc_devices.h and target.cfg"
   print "\t-c : Use with -g, compile trampolines"
   print "\t-m : Clean dependencies (before a commit)"
+  print "\t-v : Launch application in verbose mode"
   print "\t--nodep : Use with -c, compile with NODEP=1 option"
 
 #Clean
@@ -115,6 +116,10 @@ elif "-g" in sys.argv or "--generate" in sys.argv:
 
 #Run & kill
 else:
+  #Verbose mode
+  if "-v" in sys.argv or "--verbose" in sys.argv:
+    config.scheduler._verbose = True
+  
   try:
     """ Signal handler """
     # CTRL+C

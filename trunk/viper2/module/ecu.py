@@ -167,7 +167,7 @@ class Ecu(object):
     header.write("\n/* Completes registers */\n")
     for name, device in self._devices.iteritems():
       device.generate(header)
-
+     
     """ Generate footer """
     header.write("\n#endif /* __VP_DEVICES_H__ */\n")
     oilFile.write("};\n")
@@ -181,7 +181,7 @@ class Ecu(object):
     @pararm signum must be Device.SIGUSR1, Device.SIGUSR2 or Device.SIGALRM
     @param id the device id
     """
-    ipc.tpl_ipc_send_it(self.__ipc, signum, id)
+    ipc.tpl_ipc_send_it(self.__ipc, signum, id, self.__scheduler._verbose)
 
   def kill(self):
     """

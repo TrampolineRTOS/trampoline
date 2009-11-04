@@ -9,7 +9,7 @@ from errors import IPCError
 ###############################################################################
 class Display(object):
   """
-  Display class. According to the user (pygame or consol mode), this class dispatchs 
+  Display class. According to the user (pygame or console mode), this class dispatchs 
   devices display in the right support. It also locates (or check if location has been
   set by the user) the device on the screen.
   """
@@ -18,7 +18,7 @@ class Display(object):
   def __init__(self, pygame = True, screen = [800, 600]):
     """
     Constructor : Check if pygame is installed and if the user want to use pygame or not
-    @param pygame boolean to display information on pygame or on consol
+    @param pygame boolean to display information on pygame or on console
     @param screen screen dimensions (set to [800, 600] by default)
     """
     self.pygame_bool = pygame
@@ -34,13 +34,13 @@ class Display(object):
           
   def device(self, device):
     """
-    Set variable to the right function to call to display device information : pygame or consol (from device.__init__())
+    Set variable to the right function to call to display device information : pygame or console (from device.__init__())
     Locate "pygame" device if needed
     @param device device to modify
     """
     
     if (self.pygame_bool == False):
-      device._display = device.display_on_consol      
+      device._display = device.display_on_console    
     else:
       device._display = device.display_on_pygame
       """ Locate device on the screen 
@@ -65,7 +65,7 @@ class Display(object):
       
   def ecu(self, ecu):
     """
-    Depending on pygame/consol, display information to the user (from ecu.start())
+    Depending on pygame/console, display information to the user (from ecu.start())
     @param ecu ecu to modify
     """ 
     if (self.pygame_bool == True):
@@ -76,7 +76,7 @@ class Display(object):
     
   def scheduler(self, sched):
     """
-    Set variable as right function to call to display from the device : pygame or consol
+    Set variable as right function to call to display from the device : pygame or console
     @param sched sched to modify
     """
     if (self.pygame_bool == False):
@@ -87,7 +87,7 @@ class Display(object):
   def start(self):
     """
     Initialize widget list and store it in scheduler
-    Display on the consol the display mode used (to the user)
+    Display on the console the display mode used (to the user)
     """
     if (self.pygame_bool == True):
       self._widget_list = Widget()

@@ -97,7 +97,7 @@ class LCD(device.Device):
   # Display on Consol
   ################################################################
   
-  def display_on_consol(self):
+  def display_on_console(self):
       print "[VPR] (" + str(self.name) + ") : " + chr(self._registers[self.__reg9].read()) + chr(self._registers[self.__reg8].read())  + chr(self._registers[self.__reg7].read()) + chr(self._registers[self.__reg6].read()) + chr(self._registers[self.__reg5].read()) + chr(self._registers[self.__reg4].read()) + chr(self._registers[self.__reg3].read()) + chr(self._registers[self.__reg2].read()) + chr(self._registers[self.__reg1].read()) + chr(self._registers[self.__reg0].read()) 
   
   ################################################################    

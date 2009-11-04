@@ -124,7 +124,7 @@ class Network(EtherDevice):
   # Display on Consol
   ################################################################
   
-  def display_on_consol(self):
+  def display_on_console(self):
       print "[VPR] (" + str(self.name) + ") : " + str(self._registers[self._reg1].read())  + " ; " + str(self._registers[self._reg2].read())  + " ; " + str(self._registers[self._reg3].read())  + " ; " + str(self._registers[self._reg4].read())  + " ; " + str(self._registers[self._reg5].read())  + " ; " + str(self._registers[self._reg6].read()) 
   
   ################################################################    

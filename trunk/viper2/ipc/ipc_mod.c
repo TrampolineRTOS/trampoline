@@ -62,7 +62,7 @@ void create_sh_memory(ipc_t *ipc)
   map_sh_mem(ipc);
 }
 
-void tpl_ipc_send_it(ipc_t *ipc, int signum, dev_id_t it_id)
+void tpl_ipc_send_it(ipc_t *ipc, int signum, dev_id_t it_id, int verbose)
 {
 #ifdef DEBUG
 printf("(DD) Viper to trampoline %d : tpl_ipc_send_it()\n", ipc->pid);
@@ -77,7 +77,16 @@ printf("(DD) Viper to trampoline %d : tpl_ipc_send_it()\n", ipc->pid);
   }
 
   /* Write the interruption ID on the shared memory */
-  ipc->sh_mem->it_id |= it_id;
+  dev_id_t previous_it = ipc->sh_mem->it_id;
+  if ( (previous_it & it_id) && verbose == 1 ){
+      fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+      perror("viper : interrupt identifier already sent by Viper2 but didn't catch by Trampoline");
+      return ;
+  }
+  else{
+      ipc->sh_mem->it_id |= it_id;
+  }
+  
 	
   /* Release semaphore */
   if(0 != sem_post(ipc->it_id_sem))

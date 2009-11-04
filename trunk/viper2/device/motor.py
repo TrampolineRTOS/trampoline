@@ -102,7 +102,7 @@ class Motor(device.Device):
   # Display on Consol
   ################################################################
   
-  def display_on_consol(self):
+  def display_on_console(self):
     print "[VPR] " + str(self.name) + ":" + str(self.__pwm) 
   
   ################################################################    

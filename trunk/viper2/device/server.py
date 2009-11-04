@@ -68,7 +68,7 @@ class DisplayServer(device.Device):
   # Display on Consol
   ################################################################
   
-  def display_on_consol(self):
+  def display_on_console(self):
     pass
   
   ################################################################    
@@ -124,7 +124,7 @@ class Server(device.Device):
   # Display on Consol
   ################################################################
   
-  def display_on_consol(self):
+  def display_on_console(self):
     print "[VPR] " + str(self.name) + ": " + str(self._robots_position)  
       
   ################################################################    
