@@ -9,7 +9,7 @@ LDFLAGS   +=
 AR         = ar
 RANLIB     = ranlib
 OBJ_dir    = .obj
-PYTHON_inc = PYTHON_INCLUDE #PYTHON_INCLUDE
+PYTHON_inc = #PYTHON_INCLUDE
 
 ##
 # Python module (ipc_mod)
@@ -73,7 +73,7 @@ ifeq ($(strip $(ARCH)),Darwin)
 	CFLAGS         += -DDARWIN
 	SWIG_CFLAGS    += -DDARWIN
 endif
-MODULE_ldflags += PYTHON_LDFLAGS #PYTHON_LDFLAGS
+MODULE_ldflags += #PYTHON_LDFLAGS
 
 ########################################################
 # Makefile
