@@ -1,0 +1,265 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{}
+
+\usepackage{color} %For interrogation about report or code
+\usepackage{hyperref} %Liens hypertexte du sommaire
+\usepackage{listings}
+\usepackage{moreverb}
+\usepackage{verbatim}
+
+\title{Trampoline (OSEK/VDX OS) Test Implementation - Version 1.0}
+\author{Florent PAVIN ; Jean-Luc BECHENNEC}
+
+\usepackage[dvips]{geometry} % TO MODIFY THE MARGE
+\geometry{
+	right = 4cm,
+}
+
+\lstset{ %
+language=C,                % choose the language of the code
+basicstyle= \footnotesize,       % the size of the fonts that are used for the code
+%numbers=left,                   % where to put the line-numbers
+%numberstyle=\footnotesize,      % the size of the fonts that are used for the line-numbers
+%stepnumber=2,                   % the step between two line-numbers. If it's 1 each line will be numbered
+%numbersep=2pt,                  % how far the line-numbers are from the code
+backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+showspaces=false,               % show spaces adding particular underscores
+showstringspaces=false,         % underline spaces within strings
+showtabs=false,                 % show tabs within strings adding particular underscores
+frame=single,			% adds a frame around the code
+tabsize=3,			% sets default tabsize to 2 spaces
+captionpos=b,			% sets the caption-position to bottom
+breaklines=true,		% sets automatic line breaking
+breakatwhitespace=false,	% sets if automatic breaks should only happen at whitespace
+escapeinside={\%*}{*)}          % if you want to add a comment within your code
+}
+
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{Introduction}
+This document describes the test implementation of the Trampoline test procedure \cite{TrampolineTestPlan_10}. It is based on \textit{Guide de mise en oeuvre des tests de non régression} \cite{GuideDeMiseEnOeuvreDesTestsDeNonRegression}.
+
+\section{Tests implementation}
+To implement the tests sequences of the Trampoline test procedure \cite{TrampolineTestProcedure_10}, Embedded Unit \cite{Embunit} is used. \\ 
+The first section is thus what is Embedded Unit, how to use it to check if a variable has the right value, and what we add to the software to check the scheduling of our tests. \\
+The second section will define the test code organisation and distribution with a test sequence example.\\
+To conclue the tests implementation, a configuration file has to be created in order to garantee the portage of the tests from every operating system (Unix, Windows...).
+
+\subsection{Embedded Unit}
+
+	\subsubsection{Embedded Unit explanation}
+	To check a test sequence with Embedded Unit, three functions has to be called. The first is to start a new Embedded Unit check with \textit{TestRunner\_start()}, the second is to call the test sequence by \textit{TestRunner\_runTest(function\_to\_call())} and the last one is to finish Embedded Unit check and display information about the tests which have just been tested with \textit{TestRunner\_end()}.\\
+	You should create \textit{function\_to\_call()} as below to respect EmbUnit syntax :
+	\begin{lstlisting}
+	/*create the test suite with all the test cases*/
+	TestRef function_to_call(void)
+	{
+		EMB_UNIT_TESTFIXTURES(fixtures) {
+			new_TestFixture("Instance_Name1_of_task1",Instance_Name1_of_task1)
+			new_TestFixture("Instance_Name2_of_task1",Instance_Name2_of_task1)
+		};
+		EMB_UNIT_TESTCALLER(Test_Sequence_Name,"Test_Sequence_Name",NULL,NULL,fixtures);
+	
+		return (TestRef)&Test_Sequence_Name;
+	}
+	\end{lstlisting}
+	
+	You can create as many "new\_TestFixture" as you want, with differents \textit{Instance\_Names()} and make your tests with TEST\_ASSERT\_EQUAL\_INT macro as shown below :
+	\begin{lstlisting}
+	/*test case:test the reaction of the system called with an activation of a task*/
+	static void Instance_Name1_of_task1(void)
+	{	
+		int result_inst_1, result_inst_2;
+	
+		result_inst_1 = ActivateTask(t0);
+		TEST_ASSERT_EQUAL_INT(E_OS_ID , result_inst_1);
+	
+		result_inst_2 = ActivateTask(t2);
+		TEST_ASSERT_EQUAL_INT(E_OK , result_inst_2);
+	}
+	\end{lstlisting}
+	
+	You can call different \textit{TestRunner\_runTest(function\_to\_call())} with different \textit{function\_to\_call}. If all your tests are good, Embedded Unit should display
+	\small
+	\begin{verbatim}
+	(OK n tests)
+	\end{verbatim}
+	\normalsize
+
+	n is \textit{TestRunner\_runTest()} call number.\\
+	If one of your test is wrong, Embedded Unit should display
+	\small
+	\begin{verbatim}
+	([Test_Sequence_Name].[Instance_Name1_of_task1] ([file].c [line]) exp [value_expected]
+	was [value_was])
+	run n failure x
+	\end{verbatim}
+	\normalsize
+	telling you exactly which is the wrong TEST\_ASSERT\_EQUAL\_INT and what the value should be equal to ([value\_expected] instead of [value\_was]). \\
+	The number of failed tests (x) and the total sequence number (n) are displayed too.
+		
+	\subsubsection{Adds to Embedded Unit}
+	As Embedded Unit can't tell the user about the scheduling of a test sequence, we decided to add an upstrem macro to TEST\_ASSERT\_EQUAL\_TIME.\\
+	In order to check scheduling, we decided to create a global variable. Before each service call, a Macro is called to check if the service number (in parameter), is equal to the global variable incremented. After each service call, an other Macro is called to check if the service number (in parameter), is equal to the global variable.
+	The second Macro is here to check a switch context and the first Macro to check the creation of a new task.
+	The two macros code are (from \textit{SchedulingCheck.h}) :
+	
+	\begin{lstlisting}
+#define SCHEDULING_CHECK_INIT(number)									         \
+{																				 	         \
+	extern unsigned char test_number;									         \
+	if ((number) != (++test_number)){									         \
+		assertImplementationInt((number),(test_number),__LINE__,__FILE__);\
+	}	
+#define SCHEDULING_CHECK_AND_EQUAL_INT(number, expected, actual)        \
+	if ((number) == (test_number)){										         \
+		TEST_ASSERT_EQUAL_INT((expected),(actual))					         \
+	}else{															                  \
+		assertImplementationInt((number),(test_number),__LINE__,__FILE__);\
+	}																                     \
+}
+	\end{lstlisting} 
+	
+	\textit{test\_number} is previously declared and set to zero (see \textit{Scheduling.c}).
+	If sereval tests are needed, SCHEDULING\_CHECK\_AND\_EQUAL\_INT\_FIRST (see below) is used to check the first variable(s) but the last macro has to be SCHEDULING\_CHECK\_AND\_ EQUAL\_INT to close the "bracket".
+	
+	\begin{lstlisting}
+#define SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(number, expected, actual)  \
+	if ((number) == (test_number)){										         \
+		TEST_ASSERT_EQUAL_INT((expected),(actual))					         \
+	}else{															                  \
+		assertImplementationInt((number),(test_number),__LINE__,__FILE__);\
+	}
+	\end{lstlisting} 
+	
+	An other macro is created to check the scheduling without testing a service call, it is SCHEDULING\_CHECK\_STEP :
+	\begin{lstlisting}
+#define SCHEDULING_CHECK_STEP(number)									         \
+{																	                     \
+	extern unsigned char test_number;								            \
+	if ((number) != (++test_number)){								            \
+		assertImplementationInt((number),(test_number),__LINE__,__FILE__);\
+	}															                        \
+}
+	\end{lstlisting}
+
+	\textit{Instance\_Name1\_of\_task1()} became :
+	\begin{lstlisting}
+	/*test case:test the reaction of the system called with an activation of a task*/
+	static void Instance_Name1_of_task1(void)
+	{	
+		int result_inst_1, result_inst_2;
+	
+		SCHEDULING_CHECK_INIT(1);
+		result_inst_1 = ActivateTask(t0);
+		SCHEDULING_CHECK_AND_EQUAL_INT(1 , E_OS_ID , result_inst_1);
+	
+		SCHEDULING_CHECK_INIT(2);
+		result_inst_2 = ActivateTask(t2);
+		SCHEDULING_CHECK_AND_EQUAL_INT(3 , E_OK , result_inst_2);
+		
+		SCHEDULING_CHECK_STEP(4);
+	}
+	\end{lstlisting}
+	with
+	\begin{lstlisting}
+	/*test case:test the reaction of the system called with an activation of a task*/
+	static void Instance_Name1_of_task2(void)
+	{	
+		int result_inst_1;
+	
+		SCHEDULING_CHECK_INIT(3);
+		result_inst_1 = TerminateTask();
+		SCHEDULING_CHECK_AND_EQUAL_INT(3 , E_OK , result_inst_1);
+	}
+	\end{lstlisting}
+	As task2 has a priority higher than task1, its activation in task1 should preempt task1 (if the mode is preemptive). Scheduling tests have to check that task2 is executed after ActivateTask(t2). The returned value of TerminateTask() can't be tested if the service goes well, it is just here in case the service doesn't go properly. In \textit{Instance\_Name1\_of\_task1}, SCHEDULING\_CHECK\_STEP(4) is not useful because the previous macro check that task2 has preempted task1, but it is here to show how to use it.
+
+\subsection{Test code organisation and distribution}
+	As EmbUnit is described above, this section explains functions (see \textit{config.c}) we have created to make tests easier to understand and implement with a test sequence example in Annexe \ref{annexe_testsequenceexample}.
+	
+	\subsubsection{Send Interrupts}
+	We have created a function to send interrupt to Trampoline. As this function is not portable, it is explained later in \ref{test_portage}.
+		
+	\subsubsection{Alarm Test Sequences}
+	As we discovered that the computer runs the program too fast and the alarm expiration is hardware dependant, we decided to create a synchronization between the task which creates the alarm and the activation of this alarm. We did that in two different maner, depending on a periodic alarm or a one shot alarm. \\
+Indeed, in order to wait the activation of a periodic alarm we check the number of ticks left before this activation, save this value, and when the number of ticks is higher than the old one, it means the counter restart from "cycle" and the alarm has been activated. We have to fix "cycle" at more than '1' otherwise it's always '1' and we don't know when the alarm has been activated. We fix '2' in every test sequences. We have then to "force scheduling".\\
+If it's a one shot alarm, a call to \textit{SetRelAlarm()} returns E\_OS\_STATE because the alarm is already active, but when it returns E\_OK, it means the previous alarm has been activated. We have to cancel the last alarm and "force scheduling".\\
+Those functions should be called from every test sequences thus, they are in an uppstream file (see \textit{./config.c}). The functions are below :
+
+\begin{lstlisting}
+void WaitActivationPeriodicAlarm(AlarmType Alarm){
+	u32 temp, result_inst_;
+	TickType result_inst_tt;
+	result_inst_tt = 0;		
+	do{
+		temp = result_inst_tt;
+		result_inst_ = GetAlarm(Alarm,&result_inst_tt);
+	}while( (temp >= result_inst_tt) || (temp==(0)) );	
+}
+
+void WaitActivationOneShotAlarm(AlarmType Alarm){
+	int result_inst_;
+	TickType result_inst_tt;
+	do{
+		GetAlarm(Alarm,&result_inst_tt);
+	}while((SetRelAlarm(Alarm, 1, 0) == E_OS_STATE));
+	
+	result_inst_ = CancelAlarm(Alarm);
+	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_);
+	
+}
+\end{lstlisting}
+
+The incrementation of the counter on Unix System is a random bit. Sometimes, it is incremented three or four times in a row so in \textbf{preemptive} mode, if TICKPERBASE is equal to '1', the alarm is activated several times in a row and the number of ticks can always be '2' (if TICKPERBASE=2 in the OIL file) and never '1'. The activation of the alarm is thus not detected by the function and the test sequence goes wrong. To correct this problem, we fix TICKPERBASE to '10' in every test sequences.
+		
+\subsection{Tests portage : configuration file - IN PROGRESS} \label{test_portage}
+	As we said above, we have to be careful not to create OS dependent function to ensure the tests portage. Like interrupts functions which is different weather the tests are executed in Unix, Window... operating system. This section goes all over the portable functions.
+	
+	\subsubsection{Interrupts trigger}
+	On Unix systems, interrupts are trigged using the \textit{kill} function and can be done as showed below :
+	\begin{lstlisting}
+	void tpl_send_it1(void){
+		int ipid;
+		ipid = getpid();
+		kill(ipid,SIGUSR1);
+	}
+	\end{lstlisting}
+	On Windows systems (use different fonction or a software to translate Unix functions on Windows ones ?) :
+	\begin{lstlisting}
+		windows function..
+	\end{lstlisting}
+		
+	\subsubsection{Embedded Unit output}
+	As we said earlier, Embedded Unit displays on the screen weather the tests are good or wrong. \textit{embUnit/config.h} contains a macro which calls the display function according to the machine :
+	\begin{itemize}
+	\item \textit{printf} on Unix systems 
+	\item \textit{windows print} on Windows systems
+	\end{itemize}
+
+\section{Tests automatisation...}
+\subsection{...from `functional` directory}
+	In order to make all the tests and to be able to tell to the user if they've been executed correctly, we have created a shell script. This shell script build and execute all the test sequences and compare the results (saved in a file) to the expected ones (an other file). The shell script is below. The names of the test sequences are in `testSequences.txt`. The "clean" case deletes all the files that have been created to generated the executable file and the embUnit library (because it is OS dependent).
+	\lstinputlisting[language=sh,firstline=1]{../../trampoline-trunk/check/tests.sh}
+	
+\appendix
+\section{Test sequence example : alarms\_s11} \label{annexe_testsequenceexample}
+
+\lstinputlisting[language=C,firstline=1]{../../trampoline-trunk/check/functional/alarms_s11/alarms_s11.oil}
+\lstinputlisting[language=C,firstline=1]{../../trampoline-trunk/check/functional/alarms_s11/alarms_s11.c}
+\lstinputlisting[language=C,firstline=1]{../../trampoline-trunk/check/functional/alarms_s11/task1_instance.c}
+\lstinputlisting[language=C,firstline=1]{../../trampoline-trunk/check/functional/alarms_s11/task2_instance.c}
+\lstinputlisting[language=C,firstline=1]{../../trampoline-trunk/check/functional/alarms_s11/task3_instance.c}
+	
+	
+	
+\bibliographystyle{plain} 
+\bibliography{Bib} 
+
+
+\end{document}
