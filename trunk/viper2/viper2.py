@@ -32,10 +32,9 @@ except:
   else:
     PYTHON_INCLUDE_line_number = commands.getoutput("sed -n '/#PYTHON_INCLUDE/=' Makefile")
     PYTHON_LDFLAGS_line_number = commands.getoutput("sed -n '/#PYTHON_LDFLAGS/=' Makefile")
-    #if python version different than previous used, change python version in makefile
-    commands.getoutput("sed '" + PYTHON_INCLUDE_line_number + "cPYTHON_inc = `" + vers_python + "-config --includes" + "` #PYTHON_INCLUDE' Makefile > TMPFILE && mv TMPFILE Makefile")
-    commands.getoutput("sed '" + PYTHON_LDFLAGS_line_number + "cMODULE_ldflags += `" + vers_python + "-config --ldflags" + "` #PYTHON_LDFLAGS' Makefile > TMPFILE && mv TMPFILE Makefile")
-  
+    commands.getoutput("sed '" + PYTHON_INCLUDE_line_number + "s/.*/PYTHON_inc = `" + vers_python + "-config --includes" + "` #PYTHON_INCLUDE/' Makefile > TMPFILE && mv TMPFILE Makefile")
+    commands.getoutput("sed '" + PYTHON_LDFLAGS_line_number + "s/.*/MODULE_ldflags += `" + vers_python + "-config --ldflags" + "` #PYTHON_LDFLAGS/' Makefile > TMPFILE && mv TMPFILE Makefile")
+    
   """ Make libraries """
   os.system("make all")
   
@@ -91,8 +90,10 @@ elif "--clean" in sys.argv :
   vers_python = commands.getoutput("echo python" + vers_1 + "." + vers_2)
 
   #change path in Makefile
-  commands.getoutput("sed 's:`" + vers_python + "-config --includes" + "`:PYTHON_INCLUDE:g' Makefile > TMPFILE && mv TMPFILE Makefile")
-  commands.getoutput("sed 's:`" + vers_python + "-config --ldflags" + "`:PYTHON_LDFLAGS:g' Makefile > TMPFILE && mv TMPFILE Makefile")
+  PYTHON_INCLUDE_line_number = commands.getoutput("sed -n '/#PYTHON_INCLUDE/=' Makefile")
+  PYTHON_LDFLAGS_line_number = commands.getoutput("sed -n '/#PYTHON_LDFLAGS/=' Makefile")
+  commands.getoutput("sed '" + PYTHON_INCLUDE_line_number + "s/.*/PYTHON_inc = #PYTHON_INCLUDE/' Makefile > TMPFILE && mv TMPFILE Makefile")
+  commands.getoutput("sed '" + PYTHON_LDFLAGS_line_number + "s/.*/MODULE_ldflags += #PYTHON_LDFLAGS/' Makefile > TMPFILE && mv TMPFILE Makefile")
   
 #Generate
 elif "-g" in sys.argv or "--generate" in sys.argv:
