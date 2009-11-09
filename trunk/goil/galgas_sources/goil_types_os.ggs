@@ -74,11 +74,11 @@ class @trace_on extends @trace {
   @basic_type   desc;
   override method generate_c !@string res :
     res := "#define    WITH_TRACE             YES\n";
-    res .= bool_class_define(!"TRACE_TASK" !trace_task !true);
-    res .= bool_class_define(!"TRACE_ISR" !trace_isr !true);
-    res .= bool_class_define(!"TRACE_RES" !trace_resource !true);
-    res .= bool_class_define(!"TRACE_ALARM" !trace_alarm !true);
-    res .= bool_class_define(!"TRACE_U_EVENT" !trace_user_event !true);
+    res .= bool_class_define[!"TRACE_TASK" !trace_task !true];
+    res .= bool_class_define[!"TRACE_ISR" !trace_isr !true];
+    res .= bool_class_define[!"TRACE_RES" !trace_resource !true];
+    res .= bool_class_define[!"TRACE_ALARM" !trace_alarm !true];
+    res .= bool_class_define[!"TRACE_U_EVENT" !trace_user_event !true];
     res .= "#define    TRACE_FORMAT()         tpl_trace_format_".[form string]."();\n";
     @string m;
     [meth generate_c ?m];

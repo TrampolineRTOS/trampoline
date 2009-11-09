@@ -1,4 +1,27 @@
 grammar goil_grammar "LL1":
+#--- References to syntax components used when source file extension is .gGrammar
+#    Theses constructs are silently parsed when source file extension is .ggs
+    with "goil_syntax.ggs" ;
+    with "goil_imp_def.ggs" ;
+
+    with "goil_obj_os.ggs" ;
+    with "goil_obj_task.ggs" ;
+    with "goil_obj_counter.ggs" ;
+    with "goil_obj_appmode.ggs" ;
+    with "goil_obj_alarm.ggs" ;
+    with "goil_obj_resource.ggs" ;
+    with "goil_obj_event.ggs" ;
+    with "goil_obj_isr.ggs" ;
+    with "goil_obj_message.ggs" ;
+    with "goil_obj_networkmessage.ggs" ;
+    with "goil_obj_com.ggs" ;
+    with "goil_obj_ipdu.ggs" ;
+    with "goil_obj_scheduletable.ggs" ;
+    with "goil_obj_application.ggs" ;
+    with "goil_timing_prot_attrs.ggs" ;
+
+#--- References to syntax components used when source file extension is .ggs
+#    Theses constructs are silently parsed when source file extension is .gGrammar
     import lexique goil_lexique            in "goil_lexique.gLexique" ;
     import option  goil_options            in "goil_options.gOption" ;
 

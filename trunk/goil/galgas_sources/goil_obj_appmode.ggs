@@ -2,7 +2,7 @@
 # Trampoline OS
 #
 # Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline est prot»g» par la loi sur la propri»t» intellectuelle
+# Trampoline est protï¿½gï¿½ par la loi sur la propriï¿½tï¿½ intellectuelle
 #
 # This software is distributed under the Lesser GNU Public Licence
 #
@@ -15,6 +15,8 @@
 #
 
 syntax goil_obj_appmode :
+#--- Lexique Reference, used when grammar source file extension is .gGrammar
+with "goil_lexique.gLexique";
 
 import lexique goil_lexique in "goil_lexique.gLexique" ;
 import option goil_options in "goil_options.gOption" ;

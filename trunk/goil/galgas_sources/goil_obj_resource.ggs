@@ -15,6 +15,8 @@
 #
 
 syntax goil_obj_resource :
+#--- Lexique Reference, used when grammar source file extension is .gGrammar
+with "goil_lexique.gLexique";
 
 import lexique goil_lexique in "goil_lexique.gLexique" ;
 import option goil_options in "goil_options.gOption" ;
@@ -56,7 +58,7 @@ rule <resource>
   if [resources hasKey ![resource_name string]] then
     [!?resources del !resource_name ?resource] ;
   else
-    resource := default_resource_obj();
+    resource := default_resource_obj[];
   end if ;
   property := [resource property] ;
   acc_apps := [resource acc_apps] ;

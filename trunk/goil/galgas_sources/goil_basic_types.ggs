@@ -394,7 +394,7 @@ function bool_define
   ?@bool       b
   ->@string    res
 :
-  res := "#define    ".flag."    ".yes_no(!b)."\n" ;
+  res := "#define    ".flag."    ".yes_no[!b]."\n" ;
 end function ;
 
 function bool_class_define
@@ -405,9 +405,9 @@ function bool_class_define
 :
   cast t :
   when == @bool_class b do
-    res := bool_define(!flag![b value]);
+    res := bool_define[!flag![b value]];
   else
-    res := bool_define(!flag!def) ;
+    res := bool_define[!flag!def] ;
   end cast ;
 end function ;
 

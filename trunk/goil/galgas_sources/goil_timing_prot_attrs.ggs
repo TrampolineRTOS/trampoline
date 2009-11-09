@@ -1,4 +1,6 @@
 syntax goil_timing_prot_attrs :
+#--- Lexique Reference, used when grammar source file extension is .gGrammar
+with "goil_lexique.gLexique";
 
 import lexique goil_lexique in "goil_lexique.gLexique" ;
 import option goil_options in "goil_options.gOption" ;

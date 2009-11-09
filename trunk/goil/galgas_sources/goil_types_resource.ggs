@@ -43,7 +43,7 @@ function default_resource_obj
   ->@resource_obj rez
 :
   rez := [@resource_obj new
-    !empty_lstring()
+    !empty_lstring[]
     ![@resource_property_void_obj new !here]
     ![@lstringlist emptyList]
   ];

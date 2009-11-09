@@ -16,6 +16,8 @@
 #
 
 syntax goil_obj_scheduletable :
+#--- Lexique Reference, used when grammar source file extension is .gGrammar
+with "goil_lexique.gLexique";
 
 import lexique goil_lexique in "goil_lexique.gLexique";
 import option goil_options in "goil_options.gOption";
@@ -65,7 +67,7 @@ rule <scheduletable>
   if [stm hasKey ![name string]] then
     [!?stm del !name ?st];
   else
-    st := default_scheduletable_obj();
+    st := default_scheduletable_obj[];
   end if;
 
   <scheduletable_parameters> !?st !name;
@@ -344,8 +346,8 @@ rule <st_expiry_pt_params>
   ?@lstring          ep_name
   !@expiry_point_obj epl
 :
-  @adjustable_obj adjust := [@adjustable_void new !empty_lstring() !here];
-  @basic_type offset := void_obj();
+  @adjustable_obj adjust := [@adjustable_void new !empty_lstring[] !here];
+  @basic_type offset := void_obj[];
   @action_list actions [emptySortedList];
   repeat
   while
@@ -361,8 +363,8 @@ rule <st_expiry_pt_params>
     $=$;
     select
       $TRUE$; ${$;
-        @basic_type max_retard := void_obj();
-        @basic_type max_advance := void_obj();
+        @basic_type max_retard := void_obj[];
+        @basic_type max_advance := void_obj[];
         repeat
         while
           @luint64 ret;
@@ -376,15 +378,15 @@ rule <st_expiry_pt_params>
       $}$;
       set_adjustable
         !?adjust
-        ![@adjustable_true new !empty_lstring() !adj_loc !max_retard !max_advance];
+        ![@adjustable_true new !empty_lstring[] !adj_loc !max_retard !max_advance];
     or
       $FALSE$;
-      set_adjustable !?adjust ![@adjustable_false new !empty_lstring() !adj_loc];
+      set_adjustable !?adjust ![@adjustable_false new !empty_lstring[] !adj_loc];
     end select;
     $;$;
   end repeat;
   epl := [@expiry_point_obj new
-   !empty_lstring() 
+   !empty_lstring[] 
    !offset 
    !ep_name
    !adjust

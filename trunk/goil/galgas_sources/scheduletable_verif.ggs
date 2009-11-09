@@ -15,9 +15,9 @@ routine schedule_tables_well_formed
 :
   foreach sts (@lstring stname @scheduletable_obj st) do
     #check signgle-shot or repeating
-    @bool perio := get_bool(![st periodic] !false);
+    @bool perio := get_bool[![st periodic] !false];
     # Check LENGTH is a number
-    @uint64 len := uint64_or_error(![st length] !"LENGTH");
+    @uint64 len := uint64_or_error[![st length] !"LENGTH"];
       
     # Check precision in the range [0 ; Duration]
     cast [st ltgt_sync]:      
@@ -25,7 +25,7 @@ routine schedule_tables_well_formed
        if perio == false then
            error [[st periodic] location]: "A synchronized schedule table shall be repeating otherwise, synchronisation can't be done.";
        end if;
-       @uint64 prec := uint64_or_error(![sync precision] !"PRECISION");
+       @uint64 prec := uint64_or_error[![sync precision] !"PRECISION"];
        if ( prec > ( len + 1L ) ) then
           error [[sync precision] location]: "OS438 - An explicit schedule table shall have a precision in the range 0 to duration.";
        end if;
@@ -72,8 +72,8 @@ routine schedule_tables_well_formed
     if [counters hasKey ![[st counter] string]] then
       @counter_obj cnt;
       [counters getCounter ![st counter] ?cnt];
-      @uint64 mav := [uint32_or_error(![cnt max_allowed_value] !"MAXALLOWEDVALUE") uint64];
-      @uint64 mc := [uint32_or_error(![cnt min_cycle] !"MINCYCLE") uint64];
+      @uint64 mav := [uint32_or_error[![cnt max_allowed_value] !"MAXALLOWEDVALUE"] uint64];
+      @uint64 mc := [uint32_or_error[![cnt min_cycle] !"MINCYCLE"] uint64];
   
       @bool first_ep := true;
       @uint64 previous_offset := 0L ;
@@ -83,7 +83,7 @@ routine schedule_tables_well_formed
  
         # Check the offset of each expiry point is not beyond the LENGTH of
         # the schedule table
-        @uint64 offset := uint64_or_error(![point offset] !"OS442 - OFFSET");
+        @uint64 offset := uint64_or_error[![point offset] !"OS442 - OFFSET"];
         @location off_loc := [[point offset] location];
         if offset > len then
            error off_loc: "OFFSET of expiry point is greater than the LENGTH of the Schedule Table ".[stname string];
@@ -100,8 +100,8 @@ routine schedule_tables_well_formed
         @location adj_loc := [[point adjust] location];
         cast [point adjust]:
           when == @adjustable_true adj do
-            maxret := uint64_or_error(![adj max_retard] !"MAX_RETARD");
-            maxadv := uint64_or_error(![adj max_advance] !"MAX_ADVANCE");
+            maxret := uint64_or_error[![adj max_retard] !"MAX_RETARD"];
+            maxadv := uint64_or_error[![adj max_advance] !"MAX_ADVANCE"];
             
             # save the first offset and the first maxretard to check at the end if it's ok (depends on the last expiry point)
             if (previous_offset == 0L) then

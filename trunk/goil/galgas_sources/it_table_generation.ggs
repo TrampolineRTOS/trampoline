@@ -58,7 +58,7 @@ routine generate_it_table
 
    # look up the isr
         @uint isr_base_id := [[cpu tasks] count];
-        foreach [cpu isrs] :isr_id do
+        foreach [cpu isrs] index isr_id do
           if [[isr other_fields] hasKey!"SOURCE"] then
             @basic_type val;
             [[isr other_fields] get![@lstring new!"SOURCE"!here]?val];
