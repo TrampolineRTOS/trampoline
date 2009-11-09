@@ -16,6 +16,8 @@
 #
 
 syntax cfg_syntax :
+#--- Lexique Reference, used when grammar source file extension is .gGrammar
+with "cfg_lexique.gLexique";
 
 import lexique cfg_lexique in "cfg_lexique.gLexique" ;
 import semantics cfg_types in "cfg_types.ggs" ;

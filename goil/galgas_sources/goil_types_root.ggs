@@ -29,8 +29,8 @@ function void_root_obj
   ->@root_obj cpu
 :
   cpu := [@root_obj new
-    !void_os_obj()
-    !void_com_obj()
+    !void_os_obj[]
+    !void_com_obj[]
     ![@task_map          emptyMap]
     ![@counter_map       emptyMap]
     ![@alarm_map         emptyMap]

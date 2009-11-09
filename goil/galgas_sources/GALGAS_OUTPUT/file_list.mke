@@ -4,7 +4,16 @@
 ifdef LIBPM_PATH_ENV_VAR
   LIB_PM_PATH := $(LIBPM_PATH_ENV_VAR)
 else
-  LIB_PM_PATH := ../../libpm
+  ifeq ($(shell if [ -d ../libpm ] ; then echo 1 ; else echo 0 ; fi), 1) 
+    LIB_PM_PATH := ../libpm
+  else
+    ifeq ($(shell if [ -d ../../libpm ] ; then echo 1 ; else echo 0 ; fi), 1) 
+      LIB_PM_PATH := ../../libpm
+    else
+      $(error Cannot find libpm: neither ../libpm nor ../../libpm exist)
+      LIB_PM_PATH :=
+    endif
+  endif
 endif
 
 #---------------------------------------------------------------*

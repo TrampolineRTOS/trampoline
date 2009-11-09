@@ -1,0 +1,67 @@
+grammar goil_cpu_level_include "LL1":
+#--- References to syntax components used when source file extension is .gGrammar
+#    Theses constructs are silently parsed when source file extension is .ggs
+    with "goil_syntax.ggs" ;
+
+    with "goil_obj_os.ggs" ;
+    with "goil_obj_task.ggs" ;
+    with "goil_obj_counter.ggs" ;
+    with "goil_obj_appmode.ggs" ;
+    with "goil_obj_alarm.ggs" ;
+    with "goil_obj_resource.ggs" ;
+    with "goil_obj_event.ggs" ;
+    with "goil_obj_isr.ggs" ;
+    with "goil_obj_message.ggs" ;
+    with "goil_obj_networkmessage.ggs" ;
+    with "goil_obj_com.ggs" ;
+    with "goil_obj_ipdu.ggs" ;
+    with "goil_obj_scheduletable.ggs" ;
+    with "goil_obj_application.ggs" ;
+    with "goil_timing_prot_attrs.ggs" ;
+
+#--- References to syntax components used when source file extension is .ggs
+#    Theses constructs are silently parsed when source file extension is .gGrammar
+    import lexique goil_lexique            in "goil_lexique.gLexique" ;
+    import option  goil_options            in "goil_options.gOption" ;
+
+    import syntax  goil_syntax             in "goil_syntax.ggs" ;
+
+    import syntax  goil_obj_os             in "goil_obj_os.ggs" ;
+    import syntax  goil_obj_task           in "goil_obj_task.ggs" ;
+    import syntax  goil_obj_counter        in "goil_obj_counter.ggs" ;
+    import syntax  goil_obj_appmode        in "goil_obj_appmode.ggs" ;
+    import syntax  goil_obj_alarm          in "goil_obj_alarm.ggs" ;
+    import syntax  goil_obj_resource       in "goil_obj_resource.ggs" ;
+    import syntax  goil_obj_event          in "goil_obj_event.ggs" ;
+    import syntax  goil_obj_isr            in "goil_obj_isr.ggs" ;
+    import syntax  goil_obj_message        in "goil_obj_message.ggs" ;
+    import syntax  goil_obj_networkmessage in "goil_obj_networkmessage.ggs" ;
+    import syntax  goil_obj_com            in "goil_obj_com.ggs" ;
+    import syntax  goil_obj_ipdu           in "goil_obj_ipdu.ggs" ;
+    import syntax  goil_obj_scheduletable  in "goil_obj_scheduletable.ggs" ;
+    import syntax  goil_obj_application    in "goil_obj_application.ggs" ;
+    import syntax  goil_timing_prot_attrs  in "goil_timing_prot_attrs.ggs" ;
+
+    root <object_definition_list>
+        ?!@os_obj            os
+        ?!@com               com
+        ?!@task_map          tasks
+        ?!@counter_map       counters
+        ?!@alarm_map         alarms
+        ?!@resource_map      resources
+        ?!@event_map         events
+        ?!@isr_map           isrs
+        ?!@message_map       messages
+        ?!@netmess_map       net_messages
+        ?!@scheduletable_map scheduletables
+        ?!@app_map           applis
+    ;
+    unused <OIL_version> ;
+    unused <application_definition> ;
+    unused <file> ;
+    unused <implementation_definition> ;
+    unused <include_file_level> ;
+    unused <start> ;
+end grammar ;
+
+# vim:ft=ggs:ts=4:sw=4

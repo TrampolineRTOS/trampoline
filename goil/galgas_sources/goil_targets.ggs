@@ -59,7 +59,7 @@ routine generate_context_and_stack
     @ident_map idents [emptyMap];
     @attrs attrs := [@attrs new !here ![@cfg_attrs emptyMap]];
 
-    @string target := arch();
+    @string target := arch[];
 
     cast exe :
     when == @task_obj tk do
@@ -117,7 +117,7 @@ routine generate_isr_specific
     ??@isr_map        isrs 
     !@string          code
 :
-    @string target := arch();
+    @string target := arch[];
 
     retrieveTemplateString ?code !"isr_specific";
 
@@ -181,7 +181,7 @@ routine generate_counter_specific
   !@string       code
 :
 
-  @string target := arch();
+  @string target := arch[];
 
   if [option goil_options.posix_it] then
     @counter_by_source cbs [emptySortedList];

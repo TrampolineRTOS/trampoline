@@ -108,7 +108,7 @@ routine generate_apps
   end foreach ;
 
 
-  foreach apps (@lstring app_name @app_obj app) :n do
+  foreach apps (@lstring app_name @app_obj app) index n do
     app_list += !"&".[app_name string]."_app_access" ;
     ids .= "#define ".[app_name string]."_id ".[n string]."\n" ;
     ids .= "CONST(ApplicationType, OS_APPL_CONST) ".[app_name string]." = ".[app_name string]."_id;\n" ;

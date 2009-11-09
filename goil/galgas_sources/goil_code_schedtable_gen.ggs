@@ -18,7 +18,7 @@ routine generate_schedule_tables
     @string i_result := "" ;
     @string st_table := "CONSTP2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA)\n" ;
     st_table .= "  tpl_schedtable_table[SCHEDTABLE_COUNT] = {\n" ;
-    foreach sts (@lstring name @scheduletable_obj st) :i do
+    foreach sts (@lstring name @scheduletable_obj st) index i do
       @string app_name := "";
       if [app_for_obj count] > 0 then
         [app_for_obj get !name ?app_name] ;

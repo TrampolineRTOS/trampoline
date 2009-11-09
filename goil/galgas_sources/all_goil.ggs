@@ -123,17 +123,17 @@ project all_goil :
   semantics "goil_target_posix.ggs"  : makefile, xcode_tool;  
   semantics "goil_target_posix_vp2.ggs" : makefile, xcode_tool ;  
 
-  grammar "goil_grammar.ggs"            : makefile, xcode_tool;
-  syntax  "goil_file_level_include.ggs" : makefile, xcode_tool;
-  syntax  "goil_cpu_level_include.ggs"  : makefile, xcode_tool;
-  program "goil_program.ggs"            : makefile, xcode_tool;
+  grammar "goil_grammar.gGrammar"            : makefile, xcode_tool;
+  grammar "goil_file_level_include.gGrammar" : makefile, xcode_tool;
+  grammar "goil_cpu_level_include.gGrammar"  : makefile, xcode_tool;
+  program "goil_program.ggs"                 : makefile, xcode_tool;
   
   #
   # Parsing of config file
   #
   lexique   "cfg_lexique.gLexique" : makefile, xcode_tool;
   syntax    "cfg_syntax.ggs"       : makefile, xcode_tool;
-  grammar   "cfg_grammar.ggs"      : makefile, xcode_tool;
+  grammar   "cfg_grammar.gGrammar" : makefile, xcode_tool;
   semantics "cfg_types.ggs"        : makefile, xcode_tool;
   
   #

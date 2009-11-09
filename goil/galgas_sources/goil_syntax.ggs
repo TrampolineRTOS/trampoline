@@ -15,6 +15,9 @@
 #
 
 syntax goil_syntax:
+#--- Lexique Reference, used when grammar source file extension is .gGrammar
+with "goil_lexique.gLexique";
+
 import lexique goil_lexique in "goil_lexique.gLexique";
 #import option goil_options in "goil_options.gOption";
 import semantics goil_semantics in "goil_semantics.ggs";
@@ -35,8 +38,8 @@ import semantics goil_env_verification in "goil_env_verification.ggs";
 import semantics config_type in "config_type.ggs";
 
 #import semantics goil_crc_table in "goil_crc_table.ggs";
-import grammar goil_cpu_level_include in "goil_cpu_level_include.ggs";
-import grammar goil_file_level_include in "goil_file_level_include.ggs";
+import grammar goil_cpu_level_include in "goil_cpu_level_include.gGrammar";
+import grammar goil_file_level_include in "goil_file_level_include.gGrammar";
 #import grammar cfg_grammar in "cfg_grammar.ggs";
 
 nonterminal <start>;
@@ -133,7 +136,7 @@ nonterminal <ipdu>;
 rule <start>:
     @implementation imp [emptyMap];
     @void     void_obj := [@void new !here];
-    @root_obj cpu := void_root_obj();
+    @root_obj cpu := void_root_obj[];
     <file> !?imp !?cpu;
 
     # log imp;

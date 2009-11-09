@@ -43,7 +43,7 @@ import semantics goil_env_verification in "goil_env_verification.ggs";
 import semantics config_type in "config_type.ggs";
 
 import semantics cfg_types in "cfg_types.ggs";
-import grammar cfg_grammar in "cfg_grammar.ggs";
+import grammar cfg_grammar in "cfg_grammar.gGrammar";
 
 import option goil_options in "goil_options.gOption";
 
@@ -164,7 +164,7 @@ routine generate_flags
     @string flags := "";
  
     # Output the ARCH
-    flags .= "#define    TARGET_ARCH    ARCH_".[arch() uppercaseString]."\n";
+    flags .= "#define    TARGET_ARCH    ARCH_".[arch[] uppercaseString]."\n";
 
     # Check the STATUS field
     if [[os status] string] == "extended" then
@@ -290,7 +290,7 @@ routine generate_flags
     flags .= tr;
 
     # with_it_table
-    flags .= bool_define(!"WITH_IT_TABLE"![os_gen_cfg with_it_table]);
+    flags .= bool_define[!"WITH_IT_TABLE"![os_gen_cfg with_it_table]];
 
     # Output the boolean free flags
     foreach [os others] (@lstring key @basic_type f_obj) do
@@ -315,7 +315,7 @@ end routine;
 function trampoline_target_name
   ->@string trampoline_target
 :
-  @string goilTargetName := arch();
+  @string goilTargetName := arch[];
   if    goilTargetName == "arm"       then trampoline_target := "arm";
   elsif goilTargetName == "avr"       then trampoline_target := "avr";
   elsif goilTargetName == "c166"      then trampoline_target := "c166";
@@ -403,16 +403,16 @@ routine generate_makefile
     @string makerulesStr;
     retrieveTemplateString ?makerulesStr !"Make-rules";
     @string filename := directory."/Make-rules";
-    @string trampolineTarget := trampoline_target_name();
+    @string trampolineTarget := trampoline_target_name[];
     makerulesStr := [makerulesStr stringByReplacingStringByString !"$GOIL_TARGET$"![option goil_options.target_platform]];
     makerulesStr := [makerulesStr stringByReplacingStringByString !"$TRAMPOLINE_TARGET$"!trampolineTarget];
 
     #target
     check_target !tpl_base_path_str;
     @string arch_chip_board := "";
-    add_makefile_flag_if_not_empty !?arch_chip_board !"ARCH" !arch();
-    add_makefile_flag_if_not_empty !?arch_chip_board !"CHIP" !chip();
-    add_makefile_flag_if_not_empty !?arch_chip_board !"BOARD" !board();
+    add_makefile_flag_if_not_empty !?arch_chip_board !"ARCH" !arch[];
+    add_makefile_flag_if_not_empty !?arch_chip_board !"CHIP" !chip[];
+    add_makefile_flag_if_not_empty !?arch_chip_board !"BOARD" !board[];
    
     doReplace !?makerulesStr !"$ARCH_CHIP_BOARD$" ! arch_chip_board;
 
@@ -737,7 +737,7 @@ routine generate_alarms
 # build the alarm table
     @string alarm_ids := "";
     @string alarm_imp := "";
-    foreach [alarms allKeys] (@string name) :n
+    foreach [alarms allKeys] (@string name) index n
     before
       alarm_imp := "CONSTP2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)\n";
       alarm_imp .= "  tpl_alarm_table[ALARM_COUNT] = {\n";
@@ -1417,7 +1417,7 @@ routine generate_counters
     # IncrementCounter, GetCounterValue and GetElapsedCounterValue
     if [option goil_options.autosar_on] then
        @string counter_table := "";
-        foreach counters (@lstring counter_name @counter_obj counter) :n
+        foreach counters (@lstring counter_name @counter_obj counter) index n
         before
           counter_table := "#ifdef WITH_AUTOSAR\n";
           counter_table .= "CONSTP2VAR(tpl_counter, OS_VAR, OS_APPL_DATA)\n";
@@ -1507,14 +1507,14 @@ routine generate_resources
     @string rez_ids := "";
     @string rez_imp := "";
 
-    foreach regular_rez (@string name) :n do
+    foreach regular_rez (@string name) index n do
       rez_ids .= "#define ".name."_id ".[n string]."\n";
       rez_ids .= "CONST(ResourceType, AUTOMATIC) ".name." = ".name."_id;\n";
     end foreach;
 
     regular_rez += !"res_sched";
 
-    foreach regular_rez (@string name) :n
+    foreach regular_rez (@string name) index n
     before
       rez_imp := "CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA)\n  tpl_resource_table[RESOURCE_COUNT] = {\n";
     do
@@ -1858,17 +1858,17 @@ routine generate_all
           @string types;
 
           @config cfg [emptyMap];
-          @lstring cfg_file := config_file();
+          @lstring cfg_file := config_file[];
           if [cfg_file string] != "" then
               grammar cfg_grammar in cfg_file ?cfg;
           end if;
 
-          @lstring extra_cfg_file := extra_config_file();
+          @lstring extra_cfg_file := extra_config_file[];
           if [extra_cfg_file string] != "" then
               grammar cfg_grammar in extra_cfg_file ?cfg;
           end if;
 
-          @os_config generated_conf := os_cfg(!cpu);
+          @os_config generated_conf := os_cfg[!cpu];
 
           retrieveTemplateString ?header !"app_header";
           retrieveTemplateString ?obj_header !"obj_header";
@@ -2065,7 +2065,7 @@ routine generate_all
 #                    !?implementation;
 
           # write the result to files
-          @string directory := project_name();
+          @string directory := project_name[];
           
           @string header_file := "tpl_os_generated_configuration.h";
           @string obj_header_file  := "tpl_app_objects.h";

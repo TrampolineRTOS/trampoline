@@ -11,7 +11,7 @@
 # Goil OIL compiler for Trampoline
 #
 # Trampoline is copyright (c) IRCCyN 2005+
-# Trampoline est protŽgŽ par la loi sur la propriŽtŽ intellectuelle
+# Trampoline est protï¿½gï¿½ par la loi sur la propriï¿½tï¿½ intellectuelle
 #
 # This software is distributed under the GNU Public Licence v2
 #
@@ -34,9 +34,9 @@ routine generate_description
   @trace tr := [[cpu os] trace];
   cast tr:
   when == @trace_on to do
-    if get_bool(![to desc] !false) then
+    if get_bool[![to desc] !false] then
       @string res := "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n";
-      res .= "<app name=\"".[project_name() lastPathComponent]."\">\n";
+      res .= "<app name=\"".[project_name[] lastPathComponent]."\">\n";
 
       @tasks_by_type stasks [emptySortedList];
       # sort tasks according to type (basic or extended)
@@ -49,7 +49,7 @@ routine generate_description
       end foreach ;
 
       @uint id := 0;
-      if get_bool(![to trace_task] !true) then
+      if get_bool[![to trace_task] !true] then
         res .= "<tasks>\n";
         @tasks_by_type stasks [emptySortedList];
         # sort tasks according to type (basic or extended)
@@ -69,7 +69,7 @@ routine generate_description
       end if;
     
       id := [stasks length];
-      if get_bool(![to trace_isr] !true) then
+      if get_bool[![to trace_isr] !true] then
         res .= "<isrs>\n";
         foreach [cpu isrs] do
           res .= "  <isr name=\"".[key string]."\" id=\"".[id string]."\"/>\n";
@@ -78,7 +78,7 @@ routine generate_description
         res .= "</isrs>\n";
       end if;
     
-      if get_bool(![to trace_resource] !true) then
+      if get_bool[![to trace_resource] !true] then
         id := 0;
         res .= "<resources>\n";
         foreach [cpu resources] do
@@ -88,7 +88,7 @@ routine generate_description
         res .= "</resources>\n";
       end if;
 
-      if get_bool(![to trace_alarm] !true) then
+      if get_bool[![to trace_alarm] !true] then
         id := 0;
         res .= "<alarms>\n";
         foreach [cpu alarms] do
@@ -100,7 +100,7 @@ routine generate_description
 
       res .= "</app>\n";
 
-      @string desc_file_name := project_name().".desc";
+      @string desc_file_name := project_name[].".desc";
       [res writeToFile!desc_file_name];
     end if;
   else end cast;

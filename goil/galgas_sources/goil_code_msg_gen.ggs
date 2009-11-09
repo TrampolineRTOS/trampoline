@@ -177,7 +177,7 @@ routine generate_messages
     @string h_tab := "" ;
     @string i_tab := "" ;
 
-    foreach smo (@string name) :n
+    foreach smo (@string name) index n
     before
       i_tab := "CONSTP2VAR(tpl_base_sending_mo, AUTOMATIC, OS_APPL_DATA)\n" ;
       i_tab .= "  tpl_send_message_table[SEND_MESSAGE_COUNT] = {\n" ;
@@ -197,7 +197,7 @@ routine generate_messages
     h_tab := "";
     i_tab := "";
 
-    foreach rmo (@string name) :n
+    foreach rmo (@string name) index n
     before
       i_tab := "CONSTP2VAR(tpl_base_receiving_mo, AUTOMATIC, OS_APPL_DATA)\n" ;
       i_tab .= "  tpl_receive_message_table[RECEIVE_MESSAGE_COUNT] = {\n" ;

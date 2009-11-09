@@ -85,8 +85,8 @@ class @adjustable_true extends @adjustable_obj {
   @basic_type  max_retard;
   @basic_type  max_advance;
   override method generate ?!@string res:
-    doReplace !?res !"$MAX_RETARD$" ![uint64_or_error(!max_retard !"MAX_RETARD") string];
-    doReplace !?res !"$MAX_ADVANCE$" ![uint64_or_error(!max_advance !"MAX_ADVANCE") string];
+    doReplace !?res !"$MAX_RETARD$" ![uint64_or_error[!max_retard !"MAX_RETARD"] string];
+    doReplace !?res !"$MAX_ADVANCE$" ![uint64_or_error[!max_advance !"MAX_ADVANCE"] string];
   end method;
 }
 
@@ -131,7 +131,7 @@ routine expiry_point_actions
   # output the table of actions for the expiry point
   @string act_res := "";
   @string res := "\ntpl_action *".[name string]."_".[off string]."[".[[actions length] string]."] = {\n";
-  foreach actions :i do
+  foreach actions index i do
     res .= "    (tpl_action *)&".[name string]."_".[off string]."_".[i string]."_action";
     @string act := "";
     cast action :
@@ -210,7 +210,7 @@ class @scheduletable_obj extends @oil_obj {
             ![@lstring new !"" !here]
             ![@uint64_class new !here ![len value]]
             ![@lstring new !"finalize" !here]
-            ![@adjustable_void new !empty_lstring() !here] 
+            ![@adjustable_void new !empty_lstring[] !here] 
             !finalize_ep_actions
           ];
         epl += ![len value] !finalize_ep;
@@ -315,8 +315,8 @@ function default_scheduletable_obj
   ->@scheduletable_obj st
 :
   st := [@scheduletable_obj new
-    !empty_lstring()                      # description
-    !empty_lstring()                      # counter
+    !empty_lstring[]                      # description
+    !empty_lstring[]                      # counter
     ![@autostart_void new !here]          # autostart
     ![@ltgt_sync_void new !here]          # sync to global time
     ![@void new !here]                    # periodic

@@ -88,15 +88,15 @@ routine retrieveTemplateStringIfExist !@string templateString ?@string obj :
 # Get the template file name
     @string temp_name := obj.".tpl" ;
 
-    targ_tpl := temp_dir.arch()."/".chip()."/".board()."/".temp_name;
+    targ_tpl := temp_dir.arch[]."/".chip[]."/".board[]."/".temp_name;
     if [targ_tpl fileExists]
     then templateString := [@string stringWithContentsOfFile !targ_tpl];
     else
-      targ_tpl := temp_dir.arch()."/".chip()."/".temp_name;
+      targ_tpl := temp_dir.arch[]."/".chip[]."/".temp_name;
       if [targ_tpl fileExists]
       then templateString := [@string stringWithContentsOfFile !targ_tpl];
       else
-        targ_tpl := temp_dir.arch()."/".temp_name;
+        targ_tpl := temp_dir.arch[]."/".temp_name;
         if [targ_tpl fileExists]
         then templateString := [@string stringWithContentsOfFile !targ_tpl];
         else
@@ -114,7 +114,7 @@ end routine;
 routine retrieveTemplateString !@string templateString ?@string obj :
     retrieveTemplateStringIfExist ?templateString !obj;
     if templateString == "" then
-        @string target_platform := arch();
+        @string target_platform := arch[];
         @string temp_dir ;
         templates_directory ?temp_dir ;
         error here: "No template found for ".obj." (searched in ". temp_dir.target_platform
@@ -126,7 +126,7 @@ function config_file -> @lstring cfg_file
 :
     @string template_dir ;
     templates_directory ?template_dir ;
-    @string cfg := template_dir.arch()."/target.cfg" ;
+    @string cfg := template_dir.arch[]."/target.cfg" ;
     if not [cfg fileExists] then
         cfg := "" ;
     end if ;
@@ -135,7 +135,7 @@ end function ;
 
 function extra_config_file -> @lstring cfg_file
 :
-    @string cfg := oil_dir()."/target.cfg" ;
+    @string cfg := oil_dir[]."/target.cfg" ;
     if not [cfg fileExists] then
       cfg := "" ;
     end if ;
