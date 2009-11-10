@@ -1,6 +1,0 @@
-502::
-xml_parsing_lexique.ggs
-xml_parsing_syntax.ggs
-xml_types.ggs::
-GALGAS_OUTPUT/xml_parsing_grammar.cpp
-GALGAS_OUTPUT/xml_parsing_grammar.h
