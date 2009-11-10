@@ -28,14 +28,12 @@ semantics goil_basic_types :
 abstract class @basic_type {
   @location location ;
 
-  abstract method string !@string s ;
-}
-
-class @void            extends @basic_type {
-  override method string !@string s :
+  method string !@string s :
     s := "" ;
   end method ;
 }
+
+class @void extends @basic_type {}
 
 class @uint32_class    extends @basic_type {
   @uint   value ;
@@ -388,6 +386,10 @@ end function ;
 function yes_no ?@bool b ->@string res :
   if b then res := "YES"; else res := "NO"; end if;
 end function ;
+
+function true_false ?@bool b ->@string res :
+  if b then res := "true"; else res := "false"; end if;
+end function;
 
 function bool_define
   ?@string     flag

@@ -83,7 +83,7 @@ rule '0'->'9':
     send $uint$ ;
 end rule ;
 
-list cfg_delimiters error message "'%K' delimiter": ";", "=", "{", "}" ;
+list cfg_delimiters error message "'%K' delimiter": ";", "=", "{", "}", "[", "]";
 
 rule list cfg_delimiters;
 

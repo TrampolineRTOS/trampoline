@@ -40,8 +40,7 @@ class @setevent_action extends @action_obj {
         ?!@string    unused h_res
         ?!@string    i_res :
 
-        @string res ;
-        retrieveTemplateString ?res !"notification_setevent" ;
+        @string res := template_string[!"code" !"notification_setevent"];
 
         doReplace !?res !"$NOTIFICATION_NAME$"   !err." of message ".[name string] ;
         doReplace !?res !"$NOTIFICATION$" ![name string]."_notification" ;
@@ -64,8 +63,7 @@ class @activatetask_action extends @action_obj {
         ?!@string    unused h_res
         ?!@string    i_res :
 
-        @string res ;
-        retrieveTemplateString ?res !"notification_activatetask" ;
+        @string res := template_string[!"code" !"notification_activatetask"];
 
         doReplace !?res !"$NOTIFICATION_NAME$"   !err." of message ".[name string] ;
         doReplace !?res !"$NOTIFICATION$" ![name string]."_notification" ;
@@ -87,8 +85,7 @@ class @callback_action extends @action_obj {
         ?!@string    unused h_res
         ?!@string    i_res :
 
-        @string res ;
-        retrieveTemplateString ?res !"notification_callback" ;
+        @string res := template_string[!"code" !"notification_callback"];
 
         doReplace !?res !"$NOTIFICATION_NAME$"   !err." of message ".[name string] ;
         doReplace !?res !"$NOTIFICATION$" ![name string]."_notification" ;
@@ -109,8 +106,7 @@ class @flag_action extends @action_obj {
         ?!@string    unused h_res
         ?!@string    i_res :
 
-        @string res ;
-        retrieveTemplateString ?res !"notification_flag" ;
+        @string res := template_string[!"code" !"notification_flag"];
 
         doReplace !?res !"$NOTIFICATION_NAME$"   !err." of message ".[name string] ;
         doReplace !?res !"$NOTIFICATION$" ![name string]."_notification" ;
@@ -135,9 +131,8 @@ class @incrementcounter_action extends @action_obj {
         ?!@string    unused h_res
         ?!@string    i_res :
 
-        @string res ;
-        retrieveTemplateString ?res !"notification_incrementcounter" ;
-
+        @string res := template_string[!"code" !"notification_incrementcounter"];
+        
         doReplace !?res !"$NOTIFICATION_NAME$"   !err." of message ".[name string] ;
         doReplace !?res !"$NOTIFICATION$" ![name string]."_notification" ;
         doReplace !?res !"$COUNTER$" ![counter_name string]."_id" ;

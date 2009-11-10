@@ -1,0 +1,376 @@
+#
+# @file memory_mapping.gSemantics
+#
+# @section File description
+#
+# This file contains the functions for the generation of
+# memory mapping related data structures. ie: memory protection
+# linker script and MemMap file
+#
+# @section Copyright
+#
+# Goil OIL compiler for Trampoline
+#
+# Goil is copyright (c) IRCCyN 2005+
+# Goil is protected by the french law of intellectual property
+#
+# This software is distributed under the GNU Public Licence V2
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics memory_mapping :
+
+import semantics goil_routines         in "goil_routines.ggs" ;
+import semantics goil_types_root       in "goil_types_root.ggs" ;
+import semantics goil_env_verification in "goil_env_verification.ggs" ;
+
+import option goil_options in "goil_options.gOption" ;
+
+#
+# memmap_template return the named template according to the compiler used
+#
+function memmap_template
+  ??@string compiler
+  ??@string tpl_name
+  ->@string tpl
+:
+  @string rtd := root_templates_directory[];
+  @string path := rtd."/".compiler."/".tpl_name.".tpl";
+  message rtd."\n";
+  message path."\n";
+  if [path fileExists] then
+    tpl := [@string stringWithContentsOfFile !path];
+  else
+    tpl := "";
+    warning here : "No template for ".tpl_name;
+  end if; 
+end function;
+
+#
+# generate_mp generates the descriptors used for memory protection
+#
+routine generate_mp
+  ??@root_obj   cpu
+  ??@string_map app_for_obj
+  ?!@string     unused header
+  ?!@string     implementation
+  ?!@string     unused obj_header
+:
+
+  if memory_protection_on[![cpu os]] then 
+    @string tpl_mp := template_string[!"code" !"mp"];
+    @string tpl_mp_desc := template_string[!"code" !"mp_desc"];
+    @string dec := "" ;
+    @string init := "" ;
+    @string ext := "" ;
+
+    doReplace !?tpl_mp !"$TIMESTAMP$" ![@string stringWithCurrentDateTime];
+
+    @stringset known_osapp [emptySet] ;
+
+    foreach [cpu tasks] do
+      dec .= [tpl_mp_desc stringByReplacingStringByString !"$NAME$" ![key string]];
+      ext .= "extern void __SEG_START_TASK_".[key string]."_VAR_RGN;\n" ;
+      ext .= "extern void __SEG_END_TASK_".[key string]."_VAR_RGN;\n" ;
+      ext .= "extern void __SEG_START_TASK_".[key string]."_STACK_RGN;\n" ;
+      ext .= "extern void __SEG_END_TASK_".[key string]."_STACK_RGN;\n" ;
+      if [option goil_options.autosar_on] then
+        if [app_for_obj count] > 0 then
+          @string app_name ;
+          [app_for_obj get !key ?app_name] ;
+          if not [known_osapp hasKey !app_name] then
+            ext .= "extern void __SEG_START_APP_".app_name."_VAR_RGN;\n" ;
+            ext .= "extern void __SEG_END_APP_".app_name."_VAR_RGN;\n" ;
+            known_osapp += !app_name ;
+          end if ;
+        end if ;
+      end if ;
+      init .= "  ".[key string]."_mp_desc.proc_var.start = __SEG_START_TASK_".[key string]."_VAR_RGN;\n" ;
+      init .= "  ".[key string]."_mp_desc.proc_var.end = __SEG_END_TASK_".[key string]."_VAR_RGN;\n" ;
+      init .= "  ".[key string]."_mp_desc.proc_stack.start = __SEG_START_TASK_".[key string]."_STACK_RGN;\n" ;
+      init .= "  ".[key string]."_mp_desc.proc_stack.end = __SEG_END_TASK_".[key string]."_STACK_RGN;\n" ;
+      if [option goil_options.autosar_on] then
+        if [app_for_obj count] > 0 then
+          @string app_name ;
+          [app_for_obj get !key ?app_name] ;
+          init .= "#ifdef WITH_OSAPPLICATION\n" ;
+          init .= "  ".[key string]."_mp_desc.osap_var.start = __SEG_START_APP_".app_name."_VAR_RGN;\n" ;
+          init .= "  ".[key string]."_mp_desc.osap_var.end = __SEG_END_APP_".app_name."_VAR_RGN;\n" ;
+          init .= "#endif\n" ;
+        end if ;
+      end if ;
+    end foreach ;
+
+    foreach [cpu isrs] do
+      dec .= [tpl_mp_desc stringByReplacingStringByString !"$NAME$" ![key string]];
+      ext .= "extern void *__SEG_START_ISR_".[key string]."_VAR_RGN;\n" ;
+      ext .= "extern void *__SEG_END_ISR_".[key string]."_VAR_RGN;\n" ;
+      ext .= "extern void *__SEG_START_ISR_".[key string]."_STACK_RGN;\n" ;
+      ext .= "extern void *__SEG_END_ISR_".[key string]."_STACK_RGN;\n" ;
+      if [option goil_options.autosar_on] then
+        if [app_for_obj count] > 0 then
+          @string app_name ;
+          [app_for_obj get !key ?app_name] ;
+          if not [known_osapp hasKey !app_name] then
+            ext .= "extern void *__SEG_START_APP_".app_name."_VAR_RGN;\n" ;
+            ext .= "extern void *__SEG_END_APP_".app_name."_VAR_RGN;\n" ;
+            known_osapp += !app_name ;
+          end if ;
+        end if ;
+      end if ;
+      init .= "  ".[key string]."_mp_desc.proc_var.start = __SEG_START_ISR_".[key string]."_VAR_RGN;\n" ;
+      init .= "  ".[key string]."_mp_desc.proc_var.end = __SEG_END_ISR_".[key string]."_VAR_RGN;\n" ;
+      init .= "  ".[key string]."_mp_desc.proc_stack.start = __SEG_START_ISR_".[key string]."_STACK_RGN;\n" ;
+      init .= "  ".[key string]."_mp_desc.proc_stack.end = __SEG_END_ISR_".[key string]."_STACK_RGN;\n" ;
+      if [option goil_options.autosar_on] then
+        if [app_for_obj count] > 0 then
+          @string app_name ;
+          [app_for_obj get !key ?app_name] ;
+          init .= "#ifdef WITH_OSAPPLICATION\n" ;
+          init .= "  ".[key string]."_mp_desc.osap_var.start = __SEG_START_APP_".app_name."_VAR_RGN;\n" ;
+          init .= "  ".[key string]."_mp_desc.osap_var.end = __SEG_END_APP_".app_name."_VAR_RGN;\n" ;
+          init .= "#endif\n" ;
+        end if ;
+      end if ;
+    end foreach ;
+
+    @tasks_by_type stasks [emptySortedList];
+    # sort tasks according to type (basic or extended)
+    foreach [cpu tasks] do
+      if [[task events] length] > 0 then
+        stasks += !0 ![key string] ;
+      else
+        stasks += !1 ![key string] ;
+      end if ;
+    end foreach ;
+
+    @string mp_table := "CONSTP2VAR(tpl_mem_prot_desc, AUTOMATIC, OS_VAR) tpl_mp_table[TASK_COUNT + ISR_COUNT + 1] = {\n" ;
+    foreach stasks do
+      # if the task belongs to a trusted OS Application, the corresponding
+      # table entry is set to NULL
+      if [option goil_options.autosar_on] then
+        if [app_for_obj count] > 0 then
+          @string app_name ;
+          [app_for_obj get ![@lstring new !name !here] ?app_name] ;
+          @app_obj app ;
+          [[cpu applis] get ![@lstring new !app_name !here] ?app] ;
+          cast [app trusted] :
+          when == @app_trusted_true do
+            mp_table .= "  NULL,\n" ;
+          else
+            mp_table .= "  &".name."_mp_desc,\n" ;
+          end cast ; 
+        end if ;
+      else
+        mp_table .= "  &".name."_mp_desc,\n" ;
+      end if ;
+    end foreach;
+
+    foreach [cpu isrs] do
+      mp_table .= "  &".[key string]."_mp_desc,\n" ;
+    end foreach;
+    mp_table .= "  NULL\n};" ;
+
+    @string directory := project_name[];
+
+    doReplace !?tpl_mp !"$APPLICATION$" !directory ;
+    doReplace !?tpl_mp !"$LINKER_SYM$"  !ext ;
+    doReplace !?tpl_mp !"$REGION_DESC$" !dec ;
+    doReplace !?tpl_mp !"$INIT_CODE$"   !init ;
+    doReplace !?tpl_mp !"$DESC_TABLE$"  !mp_table ;
+
+    doReplace !?implementation !"$MEMORY_PROTECTION$" !tpl_mp;
+  end if;
+end routine ;
+
+routine generate_link_script
+  ??@root_obj cpu
+:
+  @string linker := linker[![[cpu os] memmap]];
+  if linker != "" then
+    @string task_vars := "";
+    @string isr_vars := "";
+    @string task_stack := "";
+    @string isr_stack := "";
+    @string app_vars := "";
+    @string user_consts := "";
+    @string user_code := "";
+    
+    # generate task related script
+    @string var_tpl := template_string[!linker !"task_var"];
+    @string stack_tpl := template_string[!linker !"task_stack"];
+    @string const_tpl := template_string[!linker !"task_const"];
+    @string code_tpl := template_string[!linker !"task_code"];
+    foreach [cpu tasks] do
+      task_vars   .= [var_tpl stringByReplacingStringByString   !"$TASK_NAME$" ![key string]];
+      task_stack  .= [stack_tpl stringByReplacingStringByString !"$TASK_NAME$" ![key string]];
+      user_consts .= [const_tpl stringByReplacingStringByString !"$TASK_NAME$" ![key string]];
+      user_code   .= [code_tpl stringByReplacingStringByString  !"$TASK_NAME$" ![key string]];
+    end foreach;
+
+    # generate isr related script
+    var_tpl := template_string[!linker !"isr_var"];
+    stack_tpl := template_string[!linker !"isr_stack"];
+    const_tpl := template_string[!linker !"isr_const"];
+    code_tpl := template_string[!linker !"isr_code"];
+    foreach [cpu isrs] do
+      isr_vars    .= [var_tpl stringByReplacingStringByString   !"$ISR_NAME$" ![key string]];
+      isr_stack   .= [stack_tpl stringByReplacingStringByString !"$TASK_NAME$" ![key string]];
+      user_consts .= [const_tpl stringByReplacingStringByString !"$ISR_NAME$" ![key string]];
+      user_code   .= [code_tpl stringByReplacingStringByString  !"$ISR_NAME$" ![key string]];
+    end foreach;
+    
+    # generate application related script
+    var_tpl := template_string[!linker !"app_var"];
+    const_tpl := template_string[!linker !"app_const"];
+    foreach [cpu applis] do
+      app_vars    .= [var_tpl stringByReplacingStringByString   !"$APP_NAME$" ![key string]];
+      user_consts .= [const_tpl stringByReplacingStringByString !"$APP_NAME$" ![key string]];
+    end foreach;
+    
+    # generate the whole script
+    @string script := template_string[!linker !"script"];
+    doReplace !?script !"$USER_CODE$"  !user_code;
+    doReplace !?script !"$USER_CONST$" !user_consts;
+    doReplace !?script !"$PROC_VAR$"   !task_vars.isr_vars;
+    doReplace !?script !"$PROC_STACK$" !task_stack.isr_stack;
+    doReplace !?script !"$APP_VAR$"    !app_vars;
+
+    @string script_file := project_name[]."/script.ld";
+    @uint error_count := [@uint errorCount];
+    if error_count == 0 then
+      if [option .verbose_output] then
+          message "creating " . script_file . "\n";
+      end if;
+      [script makeDirectoryAndWriteToFile !script_file];
+    end if;
+  end if;
+end routine;
+
+routine generate_memmap
+  ??@root_obj   cpu
+:
+  @string cc := compiler[![[cpu os] memmap]];
+  if cc != "" then
+    @string mm := memmap_template[!cc !"MemMap.h"];
+    @string result := "";
+    @string gen_tpl := memmap_template[!cc !"generic_section"];
+    @string section_tpl := [gen_tpl stringByReplacingStringByString !"$CONT$" !"SEC"];
+    @string config_tpl := [gen_tpl stringByReplacingStringByString !"$CONT$" !"CONFIG"];
+    @stringlist data_size [emptyList];
+    data_size += !"BOOLEAN";
+    data_size += !"8BIT";
+    data_size += !"16BIT";
+    data_size += !"32BIT";
+    data_size += !"UNSPECIFIED";
+    @stringlist sub_kind [emptyList];
+    sub_kind += !"_NOINIT";
+    sub_kind += !"_POWER_ON_INIT";
+    sub_kind += !"_FAST";
+    sub_kind += !"";
+
+    @string obj_tpl := [section_tpl stringByReplacingStringByString !"$OBJ$" !"Task"];
+    foreach [cpu tasks] do
+      @string named_sec := [obj_tpl stringByReplacingStringByString !"$NAME$" ![key string]];
+      # generate the variables sections
+      @string var_sec_tpl := [named_sec stringByReplacingStringByString !"$KIND$" !"VAR"];
+      foreach sub_kind (@string sk) do
+        @string var_sec_sk_tpl := [var_sec_tpl stringByReplacingStringByString !"$SUBKIND$" !sk];
+        foreach data_size (@string size) do
+          @string partial_result := [var_sec_sk_tpl stringByReplacingStringByString !"$SIZE$" !size];
+          result .= partial_result;
+        end foreach;
+      end foreach;
+      # generate the constants sections
+      @string const_sec_tpl := [named_sec stringByReplacingStringByString !"$KIND$" !"CONST"];
+      const_sec_tpl := [const_sec_tpl stringByReplacingStringByString !"$SUBKIND$" !""];
+      foreach data_size (@string size) do
+        @string partial_result := [const_sec_tpl stringByReplacingStringByString !"$SIZE$" !size];
+        result .= partial_result;
+      end foreach;
+      const_sec_tpl := [named_sec stringByReplacingStringByString !"$KIND$" !"CALIB"];
+      const_sec_tpl := [const_sec_tpl stringByReplacingStringByString !"$SUBKIND$" !""];
+      foreach data_size (@string size) do
+        @string partial_result := [const_sec_tpl stringByReplacingStringByString !"$SIZE$" !size];
+        result .= partial_result;
+      end foreach;
+      const_sec_tpl := [named_sec stringByReplacingStringByString !"$KIND$" !"CARTO"];
+      const_sec_tpl := [const_sec_tpl stringByReplacingStringByString !"$SUBKIND$" !""];
+      foreach data_size (@string size) do
+        @string partial_result := [const_sec_tpl stringByReplacingStringByString !"$SIZE$" !size];
+        result .= partial_result;
+      end foreach;
+      # generate configuration data section
+      @string cfg_data := [config_tpl stringByReplacingStringByString !"$KIND$" !"DATA"];
+      cfg_data := [cfg_data stringByReplacingStringByString !"$SUBKIND$" !""];
+      cfg_data := [cfg_data stringByReplacingStringByString !"$OBJ$" !"Task"];
+      cfg_data := [cfg_data stringByReplacingStringByString !"$NAME$" ![key string]];
+      foreach data_size (@string size) do
+        @string partial_result := [cfg_data stringByReplacingStringByString !"$SIZE$" !size];
+        result .= partial_result;
+      end foreach;
+    end foreach;
+    
+    obj_tpl := [section_tpl stringByReplacingStringByString !"$OBJ$" !"ISR"];
+    foreach [cpu isrs] do
+      @string named_sec := [obj_tpl stringByReplacingStringByString !"$NAME$" ![key string]];
+      # generate the variables sections
+      @string var_sec_tpl := [named_sec stringByReplacingStringByString !"$KIND$" !"VAR"];
+      foreach sub_kind (@string sk) do
+        @string var_sec_sk_tpl := [var_sec_tpl stringByReplacingStringByString !"$SUBKIND$" !sk];
+        foreach data_size (@string size) do
+          @string partial_result := [var_sec_sk_tpl stringByReplacingStringByString !"$SIZE$" !size];
+          result .= partial_result;
+        end foreach;
+      end foreach;
+      # generate the constants sections
+      @string const_sec_tpl := [named_sec stringByReplacingStringByString !"$KIND$" !"CONST"];
+      const_sec_tpl := [const_sec_tpl stringByReplacingStringByString !"$SUBKIND$" !""];
+      foreach data_size (@string size) do
+        @string partial_result := [const_sec_tpl stringByReplacingStringByString !"$SIZE$" !size];
+        result .= partial_result;
+      end foreach;
+      const_sec_tpl := [named_sec stringByReplacingStringByString !"$KIND$" !"CALIB"];
+      const_sec_tpl := [const_sec_tpl stringByReplacingStringByString !"$SUBKIND$" !""];
+      foreach data_size (@string size) do
+        @string partial_result := [const_sec_tpl stringByReplacingStringByString !"$SIZE$" !size];
+        result .= partial_result;
+      end foreach;
+      const_sec_tpl := [named_sec stringByReplacingStringByString !"$KIND$" !"CARTO"];
+      const_sec_tpl := [const_sec_tpl stringByReplacingStringByString !"$SUBKIND$" !""];
+      foreach data_size (@string size) do
+        @string partial_result := [const_sec_tpl stringByReplacingStringByString !"$SIZE$" !size];
+        result .= partial_result;
+      end foreach;
+      # generate configuration data section
+      @string cfg_data := [config_tpl stringByReplacingStringByString !"$KIND$" !"DATA"];
+      cfg_data := [cfg_data stringByReplacingStringByString !"$SUBKIND$" !""];
+      cfg_data := [cfg_data stringByReplacingStringByString !"$OBJ$" !"ISR"];
+      cfg_data := [cfg_data stringByReplacingStringByString !"$NAME$" ![key string]];
+      foreach data_size (@string size) do
+        @string partial_result := [cfg_data stringByReplacingStringByString !"$SIZE$" !size];
+        result .= partial_result;
+      end foreach;
+    end foreach;
+
+    doReplace !?mm !"$APP_MEMMAP$" !result;
+
+    @string mm_file := project_name[]."/MemMap.h";
+    if [@uint errorCount] == 0 then
+      if [option .verbose_output] then
+          message "creating " . mm_file . "\n";
+      end if;
+      [mm makeDirectoryAndWriteToFile !mm_file];
+    end if;
+
+  else
+  end if ;
+end routine;
+
+end semantics ;

@@ -49,16 +49,35 @@ function board -> @string board_name :
   end if ;
 end function ;
 
-routine templates_directory !@string temp_dir :
-    temp_dir := "" ;
+#
+# add_path_component adds a path component uh
+#
+function add_path_component
+  ?@string path
+  ?@string component
+  -> @string new_path
+:
+  if [path characterAtIndex ![path length]-1] != '/' then
+    new_path := path . "/" . component;
+  else
+    new_path := path . component;
+  end if;
+end function;
 
-    if [option goil_options.template_dir] != "" then
-        temp_dir := [option goil_options.template_dir] ;
-    else
-        temp_dir := [@string stringWithEnvironmentVariableOrEmpty !"GOIL_TEMPLATES"] ;
-    end if ;
+function root_templates_directory
+  ->@string tpl_dir
+:
+  if [option goil_options.template_dir] != "" then
+    tpl_dir := [option goil_options.template_dir] ;
+  else
+    tpl_dir := [@string stringWithEnvironmentVariableOrEmpty !"GOIL_TEMPLATES"] ;
+  end if ;
+end function;
 
+function templates_directory ?@string prefix -> @string temp_dir :
+    temp_dir := root_templates_directory[];
     if temp_dir != "" then
+        temp_dir := add_path_component[!temp_dir !prefix]; 
         temp_dir := [temp_dir unixPathWithNativePath] ;
         # check the path is an absolute one
         if [temp_dir characterAtIndex !0] != '/' then
@@ -73,59 +92,67 @@ routine templates_directory !@string temp_dir :
         end if ;
     end if ;
 #    message "templates = ".temp_dir."\n";
-end routine ;
+end function ;
 
 #if the template does not exist, templateString is an empty string.
 # no error is generated.
-routine retrieveTemplateStringIfExist !@string templateString ?@string obj :
+function template_string_if_exist
+  ?@string prefix
+  ?@string obj
+  ->@string tpl
+:
     @string target_platform ;
     @string targ_tpl := "" ;
 
 # Get the template directory
     @string temp_dir ;
-    templates_directory ?temp_dir ;
+    temp_dir := templates_directory[!prefix];
 
 # Get the template file name
     @string temp_name := obj.".tpl" ;
 
     targ_tpl := temp_dir.arch[]."/".chip[]."/".board[]."/".temp_name;
     if [targ_tpl fileExists]
-    then templateString := [@string stringWithContentsOfFile !targ_tpl];
+    then tpl := [@string stringWithContentsOfFile !targ_tpl];
     else
       targ_tpl := temp_dir.arch[]."/".chip[]."/".temp_name;
       if [targ_tpl fileExists]
-      then templateString := [@string stringWithContentsOfFile !targ_tpl];
+      then tpl := [@string stringWithContentsOfFile !targ_tpl];
       else
         targ_tpl := temp_dir.arch[]."/".temp_name;
         if [targ_tpl fileExists]
-        then templateString := [@string stringWithContentsOfFile !targ_tpl];
+        then tpl := [@string stringWithContentsOfFile !targ_tpl];
         else
      # then in the all_targets path
           targ_tpl := temp_dir."all_targets/".temp_name;
           if [targ_tpl fileExists]
-          then templateString := [@string stringWithContentsOfFile !targ_tpl];
-          else templateString := "";
+          then tpl := [@string stringWithContentsOfFile !targ_tpl];
+          else tpl := "";
           end if;
         end if;
       end if;
     end if;
-end routine;
+end function;
 
-routine retrieveTemplateString !@string templateString ?@string obj :
-    retrieveTemplateStringIfExist ?templateString !obj;
-    if templateString == "" then
+function template_string
+  ?@string prefix
+  ?@string obj
+  ->@string tpl
+:
+    tpl := template_string_if_exist[!prefix !obj];
+    if tpl == "" then
         @string target_platform := arch[];
         @string temp_dir ;
-        templates_directory ?temp_dir ;
+        temp_dir := templates_directory[!prefix] ;
         error here: "No template found for ".obj." (searched in ". temp_dir.target_platform
               ." and in ".temp_dir."all_targets)";
     end if;
-end routine;
+end function;
 
 function config_file -> @lstring cfg_file
 :
     @string template_dir ;
-    templates_directory ?template_dir ;
+    template_dir := templates_directory[!"code"];
     @string cfg := template_dir.arch[]."/target.cfg" ;
     if not [cfg fileExists] then
         cfg := "" ;
@@ -157,6 +184,14 @@ end routine ;
 
 routine doReplace ?!@string s ?@string o ?@string n :
   s := [s stringByReplacingStringByString !o !n] ;
+end routine ;
+
+routine do_replace_default ?!@string s ?@string o ?@string n ?@string d:
+  if n != "" then
+    s := [s stringByReplacingStringByString !o !n];
+  else
+    s := [s stringByReplacingStringByString !o !d];
+  end if;
 end routine ;
 
 routine replace_no_prefix ?@prefix_map p ?@string key ?@string name ?!@string res :

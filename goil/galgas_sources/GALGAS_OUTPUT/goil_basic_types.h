@@ -4415,6 +4415,15 @@ GGS_string function_yes_no (C_Compiler &,
 
 //---------------------------------------------------------------------------*
 //                                                                           *
+//                          Function 'true_false'                            *
+//                                                                           *
+//---------------------------------------------------------------------------*
+
+GGS_string function_true_false (C_Compiler &,
+                                GGS_bool  COMMA_LOCATION_ARGS) ;
+
+//---------------------------------------------------------------------------*
+//                                                                           *
 //                          Function 'bool_define'                           *
 //                                                                           *
 //---------------------------------------------------------------------------*
@@ -4486,7 +4495,7 @@ class cPtr_basic_type : public cPtr__AC_galgas_class {
 //--- Method 'string'
   public : virtual void method_string (C_Compiler &,
                                 GGS_string& 
-                                COMMA_LOCATION_ARGS) const = 0 ;
+                                COMMA_LOCATION_ARGS) const ;
 
 //--- Class message
   public : virtual const char * _message (void) const ;
@@ -4523,11 +4532,6 @@ class cPtr_void : public cPtr_basic_type {
   #endif
 
 //--- Attributes
-//--- Method 'string'
-  public : virtual void method_string (C_Compiler &,
-                                GGS_string& 
-                                COMMA_LOCATION_ARGS) const ;
-
 //--- Class message
   public : virtual const char * _message (void) const ;
   public : static const char * _static_message (void) ;

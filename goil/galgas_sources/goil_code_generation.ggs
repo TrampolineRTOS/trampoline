@@ -35,7 +35,7 @@ import semantics goil_types_app in "goil_types_app.ggs";
 import semantics goil_code_msg_gen in "goil_code_msg_gen.ggs";
 import semantics goil_code_schedtable_gen in "goil_code_schedtable_gen.ggs";
 import semantics goil_proc_generation in "goil_proc_generation.ggs";
-import semantics goil_mp_generation in "goil_mp_generation.ggs";
+import semantics memory_mapping in "memory_mapping.ggs";
 import semantics goil_app_generation in "goil_app_generation.ggs";
 import semantics it_table_generation in "it_table_generation.ggs";
 import semantics trace_description in "trace_description.ggs";
@@ -233,6 +233,12 @@ routine generate_flags
         if [b value] then flags .= "#define    WITH_SYSTEM_CALL\n"; end if;
     else end cast;
 
+    # Check the MEMORY_PROTECTION field
+    flags .= bool_class_define[!"WITH_MEMORY_PROTECTION" !memory_protection[!os] !false];
+
+    # WITH_MEMMAP flag
+    flags .= bool_define[!"WITH_MEMMAP" !memory_mapping[!os]];
+
     # Output the TRAMPOLINE_BASE_PATH if it has been set in the OIL file
     @lstring tpl_base_path := [os tpl_base_path];
     if [tpl_base_path string] != "" then
@@ -352,11 +358,9 @@ routine generate_makefile
     ?@string directory
     ?@string app
 :
-    @string makefileSpecStr;
-    @string makefileStr;
-
-    retrieveTemplateStringIfExist ?makefileSpecStr !"Makefile_specific";
-    retrieveTemplateString ?makefileStr !"Makefile";
+    @string makefileSpecStr := template_string_if_exist[!"code" !"Makefile_specific"];
+    @string makefileStr := template_string[!"code" !"Makefile"];
+    
     makefileStr := [makefileStr stringByReplacingStringByString !"$MAKEFILE_SPEC$" !makefileSpecStr];
     updateTemplateWithStringList ![os app_src] !"$APP_SRC$" !?makefileStr;
     updateTemplateWithStringList ![os cflags]  !"$CFLAGS$"  !?makefileStr;
@@ -400,13 +404,16 @@ routine generate_makefile
     [makefileStr writeToFile ! directory."/Makefile"];
 
     #build Make-rules only the first time.
-    @string makerulesStr;
-    retrieveTemplateString ?makerulesStr !"Make-rules";
+    @string makerulesStr := template_string[!"code" !"Make-rules"];
     @string filename := directory."/Make-rules";
     @string trampolineTarget := trampoline_target_name[];
     makerulesStr := [makerulesStr stringByReplacingStringByString !"$GOIL_TARGET$"![option goil_options.target_platform]];
     makerulesStr := [makerulesStr stringByReplacingStringByString !"$TRAMPOLINE_TARGET$"!trampolineTarget];
-
+ 
+    do_replace_default !?makerulesStr !"$COMPILER$" ![[os compiler] string] !"gcc";
+    do_replace_default !?makerulesStr !"$ASSEMBLER$" ![[os assembler] string] !"as";
+    do_replace_default !?makerulesStr !"$LINKER$" ![[os compiler] string] !"gcc";
+ 
     #target
     check_target !tpl_base_path_str;
     @string arch_chip_board := "";
@@ -416,16 +423,9 @@ routine generate_makefile
    
     doReplace !?makerulesStr !"$ARCH_CHIP_BOARD$" ! arch_chip_board;
 
-    cast [os systemcall] :
-    when == @bool_class b do
-      @string s;
-      [b string ?s];
-      doReplace !?makerulesStr !"$WSC$" !s;
-    else
-      doReplace !?makerulesStr !"$WSC$" !"false";
-    end cast;
-
-
+    doReplace !?makerulesStr !"$WSC$" !true_false[!get_bool[![os systemcall] !false]];
+    doReplace !?makerulesStr !"$WMP$" !true_false[!get_bool[!memory_protection[!os] !false]];
+    
     #template
     @string templatePathStr := [option goil_options.template_dir];
     @string templateStr;
@@ -438,7 +438,6 @@ routine generate_makefile
     if not [filename fileExists] then #does not overwrite.
         [makerulesStr writeToFile !filename];
     end if;
-
 
 end routine;
 
@@ -661,17 +660,12 @@ routine generate_alarms
     ?!@string    obj_header
     ?!@string    implementation :
 
-    @string tpl_alarm_setevent;
-    @string tpl_alarm_activatetask;
-    @string tpl_alarm_callback;
-    @string tpl_alarm_incrementcounter;
+    @string tpl_alarm_setevent         := template_string[!"code" !"alarm_event_set"];
+    @string tpl_alarm_activatetask     := template_string[!"code" !"alarm_task_act"];
+    @string tpl_alarm_callback         := template_string[!"code" !"alarm_callback"];
+    @string tpl_alarm_incrementcounter := template_string[!"code" !"alarm_inc_counter"];
 
     @string alarms_result := "";
-
-    retrieveTemplateString ?tpl_alarm_setevent         !"alarm_event_set";
-    retrieveTemplateString ?tpl_alarm_activatetask     !"alarm_task_act";
-    retrieveTemplateString ?tpl_alarm_callback         !"alarm_callback";
-    retrieveTemplateString ?tpl_alarm_incrementcounter !"alarm_inc_counter";
 
     foreach alarms (@lstring alarm_name @alarm_obj alarm) do
         @string result := "";
@@ -1092,10 +1086,8 @@ routine generate_tasks
   ?!@string         obj_header
   ?!@string         implementation :
 
-    @string tpl_task;
+    @string tpl_task := template_string[!"code" !"task"];
     @string tasks_result := "";
-
-    retrieveTemplateString ?tpl_task !"task";
 
     @uint max_prio := 0;
     @bool non_preemptable_exists := false;
@@ -1127,7 +1119,7 @@ routine generate_tasks
         else
             result := [result stringByReplacingStringByString !"$TASK_TYPE$" !"TASK_EXTENDED"];
             # setup the event structure
-            retrieveTemplateString ?tpl_evt !"event_masks";
+            tpl_evt := template_string[!"code" !"event_masks"];
             doReplace !?tpl_evt !"$EXEC_NAME$" ![task_name string];
             doReplace !?tpl_evt !"$TASK_EVENT_STRUCT$" ![task_name string]."_task_evts";
         end if;
@@ -1247,12 +1239,11 @@ routine generate_isrs
   ?!@string         obj_header
   ?!@string         implementation :
 
-    @string tpl_isr;
+    @string tpl_isr := template_string[!"code" !"isr"];
     @string tpl_isr_spec;
 
     @string isrs_result := "";
 
-    retrieveTemplateString ?tpl_isr !"isr";
 
     foreach isrs (@lstring isr_name @isr_obj isr) do
         @string tmp := "";
@@ -1334,11 +1325,9 @@ routine generate_counters
     ?!@string     obj_header
     ?!@string     implementation :
 
-    @string tpl_counter;
+    @string tpl_counter := template_string[!"code" !"counter"];
     @string counters_result := "";
     @string counters_cst := "";
-
-    retrieveTemplateString ?tpl_counter !"counter";
 
     foreach counters (@lstring counter_name @counter_obj counter) do
         @string tmp := "";
@@ -1451,13 +1440,10 @@ routine generate_resources
     ?!@string      obj_header
     ?!@string      implementation :
 
-    @string tpl_resource;
-    @string tpl_internal_resource;
+    @string tpl_resource := template_string[!"code" !"resource"];
+    @string tpl_internal_resource := template_string[!"code" !"internal_resource"];
     @string resources_result := "";
     @stringset regular_rez [emptySet];
-
-    retrieveTemplateString ?tpl_resource !"resource";
-    retrieveTemplateString ?tpl_internal_resource !"internal_resource";
 
     foreach resources (@lstring resource_name @resource_obj resource) do
         
@@ -1541,11 +1527,10 @@ routine generate_events
     ?!@string unused header
     ?!@string implementation
 :
-    @string tpl_event;
+    @string tpl_event := template_string[!"code" !"event"];
     @string imp_result := "";
 #    @string implementation_result := "";
 
-    retrieveTemplateString ?tpl_event !"event";
 
     #
     # Iterate through the tasks to get the events used.
@@ -1846,16 +1831,15 @@ routine generate_all
   # code generation
   @string timestamp := [@string stringWithCurrentDateTime];
 
-  @string temp_dir;
-  templates_directory ?temp_dir;
+  @string temp_dir := templates_directory[!"code"];
 
   if temp_dir != "" then
       @string target := [option goil_options.target_platform];
       if target != "" then
-          @string header;
-          @string obj_header;
-          @string implementation;
-          @string types;
+          @string header := template_string[!"code" !"app_header"];
+          @string obj_header := template_string[!"code" !"obj_header"];
+          @string implementation := template_string[!"code" !"app_implementation"];
+          @string types := template_string[!"code" !"types"];
 
           @config cfg [emptyMap];
           @lstring cfg_file := config_file[];
@@ -1869,11 +1853,6 @@ routine generate_all
           end if;
 
           @os_config generated_conf := os_cfg[!cpu];
-
-          retrieveTemplateString ?header !"app_header";
-          retrieveTemplateString ?obj_header !"obj_header";
-          retrieveTemplateString ?implementation !"app_implementation";
-          retrieveTemplateString ?types !"types";
           @prefix_map prefix := [@prefix_map emptyMap];
 
           init_prefixes !?prefix;
@@ -1979,10 +1958,11 @@ routine generate_all
               !?obj_header;
 
           generate_mp
-            ![cpu tasks]
-            ![cpu isrs]
-            ![cpu applis]
-            !app_for_obj;
+            !cpu
+            !app_for_obj
+            !?header
+            !?implementation
+            !?obj_header;
 
           generate_resources
               ![cpu resources]
@@ -2060,6 +2040,11 @@ routine generate_all
               !cpu
               !?implementation;
 
+          generate_link_script
+              !cpu;
+              
+          generate_memmap
+            !cpu;
 #                generate_crc
 #                    !tasks
 #                    !?implementation;

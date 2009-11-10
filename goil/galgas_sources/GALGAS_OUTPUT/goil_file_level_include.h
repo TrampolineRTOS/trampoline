@@ -431,6 +431,8 @@ class goil_file_level_include : public goil_syntax,
   public : virtual PMSInt16 select_goil_obj_os_2 (goil_lexique &) ;
   public : virtual PMSInt16 select_goil_obj_os_3 (goil_lexique &) ;
   public : virtual PMSInt16 select_repeat_goil_obj_os_4 (goil_lexique &) ;
+  public : virtual PMSInt16 select_goil_obj_os_5 (goil_lexique &) ;
+  public : virtual PMSInt16 select_repeat_goil_obj_os_6 (goil_lexique &) ;
   public : virtual PMSInt16 select_repeat_goil_obj_task_0 (goil_lexique &) ;
   public : virtual PMSInt16 select_goil_obj_task_1 (goil_lexique &) ;
   public : virtual PMSInt16 select_goil_obj_task_2 (goil_lexique &) ;

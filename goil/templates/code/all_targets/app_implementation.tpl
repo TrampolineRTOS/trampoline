@@ -110,6 +110,10 @@ $TASKS$
  */
 $ISRS$
 
+#if WITH_IT_TABLE == YES
+$IT_TABLE$
+#endif
+
 /*=============================================================================
  * Definition and initialization of process tables (tasks and isrs)
  */
@@ -163,6 +167,10 @@ $OSAPPLICATIONS$
 $TRUSTED_FCTS$
 
 $TRUSTED_TABLE$
+#endif
+
+#if WITH_MEMORY_PROTECTION == YES
+$MEMORY_PROTECTION$
 #endif
 
 /*=============================================================================

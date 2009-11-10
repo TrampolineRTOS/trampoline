@@ -1,12 +1,12 @@
-573::
+598::
 resources_verif.ggs
 goil_types_resource.ggs
 goil_basic_types.ggs
 scheduletable_verif.ggs
 goil_types_root.ggs
 goil_types_os.ggs
-com_type.ggs
 goil_routines.ggs
+com_type.ggs
 goil_semantic_types.ggs
 goil_types_action.ggs
 goil_types_task.ggs

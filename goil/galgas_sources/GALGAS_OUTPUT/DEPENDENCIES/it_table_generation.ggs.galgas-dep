@@ -1,9 +1,9 @@
-573::
+598::
 goil_types_root.ggs
 goil_types_os.ggs
 goil_basic_types.ggs
-com_type.ggs
 goil_routines.ggs
+com_type.ggs
 goil_semantic_types.ggs
 goil_types_action.ggs
 goil_types_task.ggs

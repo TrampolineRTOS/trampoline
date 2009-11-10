@@ -10,7 +10,7 @@
 # Trampoline is copyright (c) IRCCyN 2005+
 # Trampoline est prot�g� par la loi sur la propri�t� intellectuelle
 #
-# This software is distributed under the Lesser GNU Public Licence
+# This software is distributed under the GNU Public Licence
 #
 # @section File informations
 #
@@ -50,7 +50,7 @@ nonterminal <boolean>
 rule <os> 
   ?!@os_obj os
 :
-  @lstring    status  := [os status] ;
+  @lstring     status  := [os status] ;
   @basic_type  startuphook := [os startuphook] ;
   @basic_type  shutdownhook := [os shutdownhook] ;
   @basic_type  errorhook := [os errorhook] ;
@@ -63,12 +63,16 @@ rule <os>
   @basic_type  useparameteraccess := [os useparameteraccess] ;
   @basic_type  useresscheduler := [os useresscheduler] ;
   @basic_type  systemcall := [os systemcall] ;
-  @lstringlist app_src := [os app_src] ;                   # Makefile
-  @lstringlist cflags := [os cflags] ;                     # Makefile
-  @lstringlist asflags := [os asflags] ;                   # Makefile
-  @lstringlist ldflags := [os ldflags] ;                   # Makefile
-  @lstring     app_name := [os app_name] ;                 # Makefile
-  @lstring     tpl_base_path := [os tpl_base_path];        # Makefile
+  @basic_type  memmap := [os memmap] ;
+  @lstringlist app_src := [os app_src] ;                  # Makefile
+  @lstring     compiler := [os compiler];                 # Makefile
+  @lstring     assembler := [os assembler];               # Makefile
+  @lstring     linker := [os linker];                     # Makefile
+  @lstringlist cflags := [os cflags] ;                    # Makefile
+  @lstringlist asflags := [os asflags] ;                  # Makefile
+  @lstringlist ldflags := [os ldflags] ;                  # Makefile
+  @lstring     app_name := [os app_name] ;                # Makefile
+  @lstring     tpl_base_path := [os tpl_base_path];       # Makefile
   @trace       trace := [os trace] ;
   @ident_map   others := [os others] ;
 
@@ -163,6 +167,31 @@ rule <os>
     set_bool !?systemcall !sc !"SYSTEM_CALL" ;
     <description> ?* ; $;$ ;
   while
+    @basic_type mm ;
+    $MEMMAP$ ; $=$ ; 
+    select
+      $FALSE$;
+      set_memmap !?memmap ![@memmap_false new !here] !"MEMMAP";
+    or
+      $TRUE$; ${$;
+      @lstring lk := empty_lstring[];
+      @lstring cc := empty_lstring[];
+      @basic_type mp := void_obj[];
+      repeat while
+        @lstring l;
+        $LINKER$; $=$; $idf$ ?l; set_lstring_if_empty !?lk !l !"LINKER"; $;$;
+      while
+        @lstring c;
+        $COMPILER$; $=$; $idf$ ?c; set_lstring_if_empty !?cc !c !"COMPILER"; $;$;
+      while
+        @lbool p;
+        $MEMORY_PROTECTION$; $=$; <boolean> ?p; set_bool !?mp !p !"MEMORY_PROTECTION"; $;$;
+      end repeat;
+      $}$;
+      set_memmap !?memmap ![@memmap_true new !here !cc !lk !mp] !"MEMMAP";
+    end select;
+    <description> ?*; $;$;
+  while
     @lstring src ;
     $APP_SRC$ ; $=$ ; $string$ ?src ; <description> ?* ; $;$ ;
     checkFileExists !src;
@@ -187,6 +216,18 @@ rule <os>
     @lstring tbp ;
     $TRAMPOLINE_BASE_PATH$ ; $=$ ; $string$ ?tbp ; <description> ?* ; $;$ ;
     set_lstring_if_empty !?tpl_base_path !tbp !"TRAMPOLINE_BASE_PATH" ;
+  while
+    @lstring cc;
+    $COMPILER$; $=$; $string$ ?cc; <description> ?*; $;$;
+    set_lstring_if_empty !?compiler !cc !"COMPILER";
+  while
+    @lstring as;
+    $ASSEMBLER$; $=$; $string$ ?as; <description> ?*; $;$;
+    set_lstring_if_empty !?assembler !as !"ASSEMBLER";
+  while
+    @lstring ld;
+    $LINKER$; $=$; $string$ ?ld; <description> ?*; $;$;
+    set_lstring_if_empty !?linker !ld !"LINKER";
   while
     @trace t ;
     $TRACE$ ; $=$ ;
@@ -290,7 +331,11 @@ rule <os>
     !useparameteraccess
     !useresscheduler
     !systemcall
+    !memmap
     !app_src
+    !compiler
+    !assembler
+    !linker
     !cflags
     !asflags
     !ldflags

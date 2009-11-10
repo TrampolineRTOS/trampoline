@@ -4,9 +4,9 @@
 # To get a new default Make-rules file, you should simply remove the current file and call
 # the goil compiler one time.
 
-CC=gcc
-LD=gcc
-AS=gcc
+CC=$COMPILER$
+LD=$LINKER$
+AS=$ASSEMBLER$
 
 #############################################################################
 # OIL CONFIGURATION
@@ -37,6 +37,7 @@ GOIL_TARGET =$GOIL_TARGET$
 # WITH_SYSTEM_CALL is true when compiling trampoline
 # with system call support. It is false otherwise
 WITH_SYSTEM_CALL=$WSC$
+WITH_MEMORY_PROTECTION=$WPM$
 
 #############################################################################
 # DOXYGEN tool

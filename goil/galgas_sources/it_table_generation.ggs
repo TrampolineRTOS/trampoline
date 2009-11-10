@@ -43,18 +43,20 @@ routine generate_it_table
   if [option goil_options.posix_it] then
     if [cfg hasKey!"it_sources"] then
 
-      @it_table tbl [emptyList];
-      @uint n := 32;
-      loop 32: while n > 0 do
-        tbl += !"tpl_null_it"!"NULL";
-        n--;
-      end loop;
-
   # Check an interrupt source set is available
       @basic_type interrupt_srcs;
       [cfg get![@lstring new!"it_sources"!here]?interrupt_srcs];
       cast interrupt_srcs:
       when == @interrupts i do
+        @it_table tbl [emptyList];
+        @uint64 it_count := [[i it_count] uint64];
+        
+        @uint n := [it_count uint];
+        loop 32: while n > 0 do
+          tbl += !"tpl_null_it"!"NULL";
+          n--;
+        end loop;
+
 
    # look up the isr
         @uint isr_base_id := [[cpu tasks] count];
@@ -124,25 +126,25 @@ routine generate_it_table
             end if;
           end foreach;
         end foreach;
+    # timing protection
+        if [gen_cfg with_timingprotection] then
+          [!?tbl setFctAtIndex!"tpl_watchdog_expiration"![it_count uint] - 1];
+          [!?tbl setParamAtIndex!"NULL"![it_count uint] - 1];
+        end if;
+  
+        @string its := "tpl_it_vector_entry tpl_it_vector[".[it_count string]."] = {\n";
+        foreach tbl do its .= "  { ".fct.", (void *)".param." }";
+        between        its .= ",\n";
+        after          its .= "\n";
+        end foreach;
+        its .= "};\n";
+  
+        doReplace!?imp!"$IT_TABLE$"!its;
       else
         error here: "No interrupt source id defined for the target";
       end cast;
 
 
-  # timing protection
-      if [gen_cfg with_timingprotection] then
-        [!?tbl setFctAtIndex!"tpl_watchdog_expiration"!31];
-        [!?tbl setParamAtIndex!"NULL"!31];
-      end if;
-
-      @string its := "tpl_it_vector_entry tpl_it_vector[32] = {\n";
-      foreach tbl do its .= "  { ".fct.", (void *)".param." }";
-      between        its .= ",\n";
-      after          its .= "\n";
-      end foreach;
-      its .= "};\n";
-
-      doReplace!?imp!"$IT_TABLE$"!its;
     end if;
   end if;
 end routine;
