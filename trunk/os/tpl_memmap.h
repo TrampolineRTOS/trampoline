@@ -22,7 +22,9 @@
  * $URL$
  */
 
-#ifdef WITH_MEMMAP
+#include "tpl_config_def.h"
+
+#if WITH_MEMMAP == YES
 #include "MemMap.h"
 #endif
 

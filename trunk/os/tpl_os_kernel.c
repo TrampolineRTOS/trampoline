@@ -960,7 +960,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
  tpl_kern.running = tpl_dyn_proc_table[tpl_kern.running_id];
  tpl_kern.s_running = tpl_stat_proc_table[tpl_kern.running_id];
 
-  TRACE_ISR_PREEMPT(tpl_kern)
+  TRACE_ISR_PREEMPT(tpl_kern) /* TODO: Not needed */
   TRACE_TASK_PREEMPT(tpl_kern)
 	
 
@@ -982,7 +982,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
   /*  the inserted task become RUNNING                            */
-  TRACE_ISR_RUN(tpl_kern.running_id)
+  TRACE_ISR_RUN(tpl_kern.running_id) /* TODO: not needed */
   TRACE_TASK_EXECUTE(tpl_kern.running_id)
   tpl_kern.running->state = RUNNING;
   /*  If an internal resource is assigned to the task

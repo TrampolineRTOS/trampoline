@@ -411,6 +411,9 @@ FUNC(void, OS_CODE) tpl_trace_alarm_expire(
     expired_alarm_action = expired_alarm_stat->action->action;
     
     EVENT_BEGIN(ALARM_EXPIRE)
+    
+    /* TODO: missing Alarm id here */
+    
     if(expired_alarm_action == tpl_action_callback){
     EVENT_VALUE(TRACE_CALLBACK)
     }
