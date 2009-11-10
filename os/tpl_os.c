@@ -26,11 +26,10 @@
  */
 
 #include "tpl_os.h"
-
-#ifndef WITH_SYSTEM_CALL
-
 #include "tpl_os_kernel.h"
 #include "tpl_machine_interface.h"
+
+#ifndef WITH_SYSTEM_CALL
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 #include "tpl_as_timing_protec.h"
@@ -69,6 +68,10 @@ FUNC(void, OS_CODE) ShutdownOS(
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
+
+#else /* WITH_SYSTEM_CALL */
+
+extern FUNC(void, OS_CODE) tpl_start_os(CONST(AppModeType, AUTOMATIC) mode);
 
 #endif /* WITH_SYSTEM_CALL */
 
