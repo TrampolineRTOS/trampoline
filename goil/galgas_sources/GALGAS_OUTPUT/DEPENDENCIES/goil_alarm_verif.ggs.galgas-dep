@@ -1,9 +1,0 @@
-598::
-goil_semantic_types.ggs
-goil_basic_types.ggs
-goil_types_action.ggs
-goil_routines.ggs
-goil_types_counter.ggs
-goil_options.gOption::
-GALGAS_OUTPUT/goil_alarm_verif.h
-GALGAS_OUTPUT/goil_alarm_verif.cpp

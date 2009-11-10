@@ -1,8 +1,0 @@
-598::
-goil_routines.ggs
-goil_basic_types.ggs
-goil_semantic_types.ggs
-goil_types_action.ggs
-goil_types_scheduletable.ggs::
-GALGAS_OUTPUT/goil_code_schedtable_gen.h
-GALGAS_OUTPUT/goil_code_schedtable_gen.cpp

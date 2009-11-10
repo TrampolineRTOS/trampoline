@@ -1,7 +1,0 @@
-573::
-cfg_lexique.gLexique
-cfg_syntax.ggs
-cfg_types.ggs
-goil_basic_types.ggs::
-GALGAS_OUTPUT/cfg_grammar.cpp
-GALGAS_OUTPUT/cfg_grammar.h
