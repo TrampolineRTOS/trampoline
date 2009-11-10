@@ -248,10 +248,8 @@ routine generate_messages
         result .= " };\n" ;
         
         @uint flag_order := 0 ;
-        @string flag_macros ;
-        @string flag_function ;
-        retrieveTemplateString ?flag_macros !"flag_macros" ;
-        retrieveTemplateString ?flag_function !"flag_function" ;
+        @string flag_macros := template_string[!"code" !"flag_macros"];
+        @string flag_function := template_string[!"code" !"flag_function"];
 
         foreach flags (@string flag) do
            @string fm := flag_macros ;

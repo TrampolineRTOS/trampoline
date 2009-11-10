@@ -44,8 +44,7 @@ routine generate_counter_c166
 :
   @string result := "";
   foreach counters (@lstring counter_name @counter_obj counter) do
-    @string tmp;
-    retrieveTemplateString ?tmp !"counter_list_specific";
+    @string tmp := template_string[!"code" !"counter_list_specific"];
     doReplace !?tmp !"$COUNTER$" ![counter_name string]."_counter_desc" ;
     result .= tmp;
   end foreach ;

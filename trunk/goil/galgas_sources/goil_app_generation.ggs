@@ -118,7 +118,7 @@ routine generate_apps
     @string init ;
     @uint count ;
     @string tpl ;
-    retrieveTemplateString ?tpl !"app" ;
+    tpl := template_string[!"code" !"app"];
 
     doReplace !?tpl !"$APP_NAME$" ![app_name string] ;
 

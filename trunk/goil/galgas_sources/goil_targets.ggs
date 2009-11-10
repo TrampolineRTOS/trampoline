@@ -63,7 +63,7 @@ routine generate_context_and_stack
 
     cast exe :
     when == @task_obj tk do
-        retrieveTemplateString ?tpl_context_and_stack !"each_task_specific";
+        tpl_context_and_stack := template_string[!"code" !"each_task_specific"];
         context_and_stack := tpl_context_and_stack;
         idents := [tk others];
         @basic_type b_attrs;
@@ -73,7 +73,7 @@ routine generate_context_and_stack
         else error here : "Internal error, unknown config task attributes";
         end cast;
     when == @isr_obj isr do
-        retrieveTemplateString ?tpl_context_and_stack !"each_isr_specific";
+        tpl_context_and_stack := template_string[!"code" !"each_isr_specific"];
         context_and_stack := tpl_context_and_stack;
         idents := [isr other_fields];
         @basic_type b_attrs;
@@ -119,7 +119,7 @@ routine generate_isr_specific
 :
     @string target := arch[];
 
-    retrieveTemplateString ?code !"isr_specific";
+    code := template_string[!"code" !"isr_specific"];
 
     if target == "c166" then
       generate_isr_c166   !isrs !?code;
@@ -194,8 +194,7 @@ routine generate_counter_specific
     foreach cbs do
       if source != prev_src then
         if [cnt_set count] > 0 then
-          @string cnt_set_code;
-          retrieveTemplateString ?cnt_set_code !"counter_specific";
+          @string cnt_set_code := template_string[!"code" !"counter_specific"];
           doReplace !?cnt_set_code !"$TICK_FUNC$" !"tpl_tick_";
           doReplace !?cnt_set_code !"$IT_SOURCE$" !prev_src;
           generate_counter_for_target !target !cnt_set !?cnt_set_code;
@@ -207,15 +206,14 @@ routine generate_counter_specific
       prev_src := source;
     end foreach;
     if [cnt_set count] > 0 then
-      @string cnt_set_code;
-      retrieveTemplateString ?cnt_set_code !"counter_specific";
+      @string cnt_set_code := template_string[!"code" !"counter_specific"];
       doReplace !?cnt_set_code !"$TICK_FUNC$" !"tpl_tick_";
       doReplace !?cnt_set_code !"$IT_SOURCE$" !prev_src;
       generate_counter_for_target !target !cnt_set !?cnt_set_code;
       code .= cnt_set_code;
     end if;
   else
-    retrieveTemplateString ?code !"counter_specific";
+    code := template_string[!"code" !"counter_specific"];
     doReplace !?code !"$TICK_FUNC$" !"tpl_call_counter_tick";
     doReplace !?code !"$IT_SOURCE$" !"";
     generate_counter_for_target !target !counters !?code;

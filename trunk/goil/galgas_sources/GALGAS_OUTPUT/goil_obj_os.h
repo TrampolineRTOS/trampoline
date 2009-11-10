@@ -96,6 +96,10 @@ class goil_obj_os {
 
   protected : virtual PMSInt16 select_repeat_goil_obj_os_4 (goil_lexique &) = 0 ;
 
+  protected : virtual PMSInt16 select_goil_obj_os_5 (goil_lexique &) = 0 ;
+
+  protected : virtual PMSInt16 select_repeat_goil_obj_os_6 (goil_lexique &) = 0 ;
+
 } ;
 
 //---------------------------------------------------------------------------*

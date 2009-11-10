@@ -29,54 +29,54 @@
 		C8051CFD4E9EA8072E3189E2 /* goil_imp_def.cpp */ = {isa = PBXBuildFile; fileRef = F4C10BF22AA353E27879133C ; settings = {ATTRIBUTES = (); }; };
 		25C816C22647A73E1482372B /* goil_lexique.cpp */ = {isa = PBXBuildFile; fileRef = 4CEA9109507CACD8E2F2AEFC ; settings = {ATTRIBUTES = (); }; };
 		62A78B84F3D5D92F4FAA000B /* goil_message_verif.cpp */ = {isa = PBXBuildFile; fileRef = FC8586DFA4D1BC0E1742C08B ; settings = {ATTRIBUTES = (); }; };
-		814305CA9AD266F53BC82511 /* goil_mp_generation.cpp */ = {isa = PBXBuildFile; fileRef = 7260AE62E3B1396831A8398F ; settings = {ATTRIBUTES = (); }; };
-		7DC79D135BA18E051673D906 /* goil_obj_alarm.cpp */ = {isa = PBXBuildFile; fileRef = CE56D3D6FA748AB6D9AF3FD7 ; settings = {ATTRIBUTES = (); }; };
-		8B48137A16A1ACD04ED91125 /* goil_obj_application.cpp */ = {isa = PBXBuildFile; fileRef = A9DED88F18ECEE47145A72C0 ; settings = {ATTRIBUTES = (); }; };
-		B30D6F8C31474BD0764E6AC0 /* goil_obj_appmode.cpp */ = {isa = PBXBuildFile; fileRef = 778DFAECDC212708F721B788 ; settings = {ATTRIBUTES = (); }; };
-		B9B3EEE609D05B90C14222FB /* goil_obj_com.cpp */ = {isa = PBXBuildFile; fileRef = 19AD8176D665453CFB2E55F0 ; settings = {ATTRIBUTES = (); }; };
-		73A3CEF72E03AA9D980C7ECA /* goil_obj_counter.cpp */ = {isa = PBXBuildFile; fileRef = 6AB90CE0268229151C9BDE11 ; settings = {ATTRIBUTES = (); }; };
-		570FF6858AFD2723755FF790 /* goil_obj_event.cpp */ = {isa = PBXBuildFile; fileRef = 754BA1C09B3695E0CB6CDE7F ; settings = {ATTRIBUTES = (); }; };
-		E87D244975439C6124592772 /* goil_obj_ipdu.cpp */ = {isa = PBXBuildFile; fileRef = 80A295F8076B1C5722A46AA2 ; settings = {ATTRIBUTES = (); }; };
-		5B27425BB056AC56F8953D24 /* goil_obj_isr.cpp */ = {isa = PBXBuildFile; fileRef = 7FBDB1988EF4C628EBA02591 ; settings = {ATTRIBUTES = (); }; };
-		279BE180185CAC7D243C5EB3 /* goil_obj_message.cpp */ = {isa = PBXBuildFile; fileRef = 6E7929B125F8597834FA83A4 ; settings = {ATTRIBUTES = (); }; };
-		49EF2FF029A833CCCC778FD0 /* goil_obj_networkmessage.cpp */ = {isa = PBXBuildFile; fileRef = 5C00B1249BBE3554A4FDF6FB ; settings = {ATTRIBUTES = (); }; };
-		6BCD6CF08C11A970FBE0E2A6 /* goil_obj_os.cpp */ = {isa = PBXBuildFile; fileRef = 568125ED6C3F678819B6E058 ; settings = {ATTRIBUTES = (); }; };
-		2F5A3230ABFADD476E8B04C9 /* goil_obj_resource.cpp */ = {isa = PBXBuildFile; fileRef = 14875E45BBA028A21ED38046 ; settings = {ATTRIBUTES = (); }; };
-		C859D284DC13885A37CE8D81 /* goil_obj_scheduletable.cpp */ = {isa = PBXBuildFile; fileRef = 28D4BF8CE0FF2EC19B371514 ; settings = {ATTRIBUTES = (); }; };
-		EC258A9FCAF239CC55D53363 /* goil_obj_task.cpp */ = {isa = PBXBuildFile; fileRef = F00665CE8623E36BD4E3C7C5 ; settings = {ATTRIBUTES = (); }; };
-		69CB0CBBF816BBB65D56947E /* goil_options.cpp */ = {isa = PBXBuildFile; fileRef = 44A3365A46C9077EBB5E35C3 ; settings = {ATTRIBUTES = (); }; };
-		0EE742F6DDDAA13FFF98F104 /* goil_proc_generation.cpp */ = {isa = PBXBuildFile; fileRef = 55CE926456240B2FF0100BDE ; settings = {ATTRIBUTES = (); }; };
-		E68E51891440E4DA0B65A70C /* goil_program.cpp */ = {isa = PBXBuildFile; fileRef = 08E959397ADF34B1D77E88D7 ; settings = {ATTRIBUTES = (); }; };
-		FFD51418EC58BD793F2D9B1B /* goil_routines.cpp */ = {isa = PBXBuildFile; fileRef = 68B6EDD3015B3EDC9A11367B ; settings = {ATTRIBUTES = (); }; };
-		36797EC98478F85E7626DE4A /* goil_semantic_types.cpp */ = {isa = PBXBuildFile; fileRef = C3FF0AF142B6D3BEAD98A923 ; settings = {ATTRIBUTES = (); }; };
-		B67632A7E958E23F24BD07D7 /* goil_semantic_verification.cpp */ = {isa = PBXBuildFile; fileRef = 6F775098FE977004015C6193 ; settings = {ATTRIBUTES = (); }; };
-		D64FF53ECCFDD09AD10A15B3 /* goil_semantics.cpp */ = {isa = PBXBuildFile; fileRef = FC03EB9DED908C236BD1996D ; settings = {ATTRIBUTES = (); }; };
-		A691D157187EE1CF9E896D03 /* goil_syntax.cpp */ = {isa = PBXBuildFile; fileRef = 7343C29048673252E490F736 ; settings = {ATTRIBUTES = (); }; };
-		263B9530DF88F7F002E78EA5 /* goil_target_arm7.cpp */ = {isa = PBXBuildFile; fileRef = CFA5649E7003B83DD4755294 ; settings = {ATTRIBUTES = (); }; };
-		512D13DF5083790D64C4D5DD /* goil_target_avr.cpp */ = {isa = PBXBuildFile; fileRef = A57B0395E163467C9DAE521B ; settings = {ATTRIBUTES = (); }; };
-		2F737D7ADEAB84D339DBABD3 /* goil_target_c166.cpp */ = {isa = PBXBuildFile; fileRef = 87F5EE0BC9D43BBF5BBE87FB ; settings = {ATTRIBUTES = (); }; };
-		DD95A9A6F1252739B1AD8C24 /* goil_target_h8300h.cpp */ = {isa = PBXBuildFile; fileRef = BF3D9FE611D5A8E90FEFDC9C ; settings = {ATTRIBUTES = (); }; };
-		284B5B27AA7CB790DC20F80B /* goil_target_hcs12.cpp */ = {isa = PBXBuildFile; fileRef = CCBDB62EC96E702F07F6425B ; settings = {ATTRIBUTES = (); }; };
-		D784977CACBFCBB00C48F133 /* goil_target_libpcl.cpp */ = {isa = PBXBuildFile; fileRef = BAF56627478EC76A704E9B52 ; settings = {ATTRIBUTES = (); }; };
-		51612ACF12457E4D67635A95 /* goil_target_posix.cpp */ = {isa = PBXBuildFile; fileRef = C660610B44D9B9FED0FF9548 ; settings = {ATTRIBUTES = (); }; };
-		531952D72E5847C4183E6910 /* goil_target_posix_vp2.cpp */ = {isa = PBXBuildFile; fileRef = E1CC6BB9F0CD2A47751A186F ; settings = {ATTRIBUTES = (); }; };
-		12DE6341FBA65B0AD0433500 /* goil_target_ppc.cpp */ = {isa = PBXBuildFile; fileRef = B098B75C294DFFDC3E463904 ; settings = {ATTRIBUTES = (); }; };
-		3EAF29526A11A9B7AC33BFAC /* goil_target_v850e.cpp */ = {isa = PBXBuildFile; fileRef = B63885E0D7C260CC007E8B9D ; settings = {ATTRIBUTES = (); }; };
-		AAE265B790965A275B53AE50 /* goil_targets.cpp */ = {isa = PBXBuildFile; fileRef = 9D8A121CE581499D7B701668 ; settings = {ATTRIBUTES = (); }; };
-		2F8F3DC4F3CF45F02C61C0C1 /* goil_timing_prot_attrs.cpp */ = {isa = PBXBuildFile; fileRef = 86960EEB576A8FD4C9EC6997 ; settings = {ATTRIBUTES = (); }; };
-		62E40C570A322F1B0B659098 /* goil_types_action.cpp */ = {isa = PBXBuildFile; fileRef = E11FB9384C4CF38708677C48 ; settings = {ATTRIBUTES = (); }; };
-		6393C9111E6526EA173A7C8B /* goil_types_app.cpp */ = {isa = PBXBuildFile; fileRef = DE89D9058FCB0B968DBBBD68 ; settings = {ATTRIBUTES = (); }; };
-		D58A54E94377E6AE2EDED4D9 /* goil_types_counter.cpp */ = {isa = PBXBuildFile; fileRef = CA89A1678042477183B7AC3F ; settings = {ATTRIBUTES = (); }; };
-		BA585B952B62C14A3A175A61 /* goil_types_isr.cpp */ = {isa = PBXBuildFile; fileRef = E4AAF9573AA5DFF913DF997A ; settings = {ATTRIBUTES = (); }; };
-		273E507E6040FCB07DCB4509 /* goil_types_networkmessage.cpp */ = {isa = PBXBuildFile; fileRef = AC59075B964B07152D234B70 ; settings = {ATTRIBUTES = (); }; };
-		3F67C759BF4FC791BA842AA2 /* goil_types_os.cpp */ = {isa = PBXBuildFile; fileRef = D8F4755FF269862EA77393DD ; settings = {ATTRIBUTES = (); }; };
-		EC53BCEA3B7513CCEF5857AC /* goil_types_resource.cpp */ = {isa = PBXBuildFile; fileRef = 5ED3D6B8079E2E7E7BACC9F2 ; settings = {ATTRIBUTES = (); }; };
-		50BA3F7CBA1E6C53E8FA6845 /* goil_types_root.cpp */ = {isa = PBXBuildFile; fileRef = 04D6854880943E5C3CD9CA25 ; settings = {ATTRIBUTES = (); }; };
-		1C773F3F8DC8B4BE867A9A02 /* goil_types_scheduletable.cpp */ = {isa = PBXBuildFile; fileRef = F984EEABDBB0A7D494132EE5 ; settings = {ATTRIBUTES = (); }; };
-		2D552343BC8E460416382DCA /* goil_types_task.cpp */ = {isa = PBXBuildFile; fileRef = 2BA9336A670E36D0ED79BC43 ; settings = {ATTRIBUTES = (); }; };
-		CFAB08731A97E7B91BE644DE /* goil_types_timing_prot.cpp */ = {isa = PBXBuildFile; fileRef = 6DA19D22B51C68001E7E0E54 ; settings = {ATTRIBUTES = (); }; };
-		AAD094E0B5CB1B01D712F708 /* isrs_verif.cpp */ = {isa = PBXBuildFile; fileRef = 8EBCB58C6CE932B957B6F332 ; settings = {ATTRIBUTES = (); }; };
-		0041A42470269D56260243A1 /* it_table_generation.cpp */ = {isa = PBXBuildFile; fileRef = 685A0DD18FB6A08AF0923DE0 ; settings = {ATTRIBUTES = (); }; };
+		814305CA9AD266F53BC82511 /* goil_obj_alarm.cpp */ = {isa = PBXBuildFile; fileRef = 7260AE62E3B1396831A8398F ; settings = {ATTRIBUTES = (); }; };
+		7DC79D135BA18E051673D906 /* goil_obj_application.cpp */ = {isa = PBXBuildFile; fileRef = CE56D3D6FA748AB6D9AF3FD7 ; settings = {ATTRIBUTES = (); }; };
+		8B48137A16A1ACD04ED91125 /* goil_obj_appmode.cpp */ = {isa = PBXBuildFile; fileRef = A9DED88F18ECEE47145A72C0 ; settings = {ATTRIBUTES = (); }; };
+		B30D6F8C31474BD0764E6AC0 /* goil_obj_com.cpp */ = {isa = PBXBuildFile; fileRef = 778DFAECDC212708F721B788 ; settings = {ATTRIBUTES = (); }; };
+		B9B3EEE609D05B90C14222FB /* goil_obj_counter.cpp */ = {isa = PBXBuildFile; fileRef = 19AD8176D665453CFB2E55F0 ; settings = {ATTRIBUTES = (); }; };
+		73A3CEF72E03AA9D980C7ECA /* goil_obj_event.cpp */ = {isa = PBXBuildFile; fileRef = 6AB90CE0268229151C9BDE11 ; settings = {ATTRIBUTES = (); }; };
+		570FF6858AFD2723755FF790 /* goil_obj_ipdu.cpp */ = {isa = PBXBuildFile; fileRef = 754BA1C09B3695E0CB6CDE7F ; settings = {ATTRIBUTES = (); }; };
+		E87D244975439C6124592772 /* goil_obj_isr.cpp */ = {isa = PBXBuildFile; fileRef = 80A295F8076B1C5722A46AA2 ; settings = {ATTRIBUTES = (); }; };
+		5B27425BB056AC56F8953D24 /* goil_obj_message.cpp */ = {isa = PBXBuildFile; fileRef = 7FBDB1988EF4C628EBA02591 ; settings = {ATTRIBUTES = (); }; };
+		279BE180185CAC7D243C5EB3 /* goil_obj_networkmessage.cpp */ = {isa = PBXBuildFile; fileRef = 6E7929B125F8597834FA83A4 ; settings = {ATTRIBUTES = (); }; };
+		49EF2FF029A833CCCC778FD0 /* goil_obj_os.cpp */ = {isa = PBXBuildFile; fileRef = 5C00B1249BBE3554A4FDF6FB ; settings = {ATTRIBUTES = (); }; };
+		6BCD6CF08C11A970FBE0E2A6 /* goil_obj_resource.cpp */ = {isa = PBXBuildFile; fileRef = 568125ED6C3F678819B6E058 ; settings = {ATTRIBUTES = (); }; };
+		2F5A3230ABFADD476E8B04C9 /* goil_obj_scheduletable.cpp */ = {isa = PBXBuildFile; fileRef = 14875E45BBA028A21ED38046 ; settings = {ATTRIBUTES = (); }; };
+		C859D284DC13885A37CE8D81 /* goil_obj_task.cpp */ = {isa = PBXBuildFile; fileRef = 28D4BF8CE0FF2EC19B371514 ; settings = {ATTRIBUTES = (); }; };
+		EC258A9FCAF239CC55D53363 /* goil_options.cpp */ = {isa = PBXBuildFile; fileRef = F00665CE8623E36BD4E3C7C5 ; settings = {ATTRIBUTES = (); }; };
+		69CB0CBBF816BBB65D56947E /* goil_proc_generation.cpp */ = {isa = PBXBuildFile; fileRef = 44A3365A46C9077EBB5E35C3 ; settings = {ATTRIBUTES = (); }; };
+		0EE742F6DDDAA13FFF98F104 /* goil_program.cpp */ = {isa = PBXBuildFile; fileRef = 55CE926456240B2FF0100BDE ; settings = {ATTRIBUTES = (); }; };
+		E68E51891440E4DA0B65A70C /* goil_routines.cpp */ = {isa = PBXBuildFile; fileRef = 08E959397ADF34B1D77E88D7 ; settings = {ATTRIBUTES = (); }; };
+		FFD51418EC58BD793F2D9B1B /* goil_semantic_types.cpp */ = {isa = PBXBuildFile; fileRef = 68B6EDD3015B3EDC9A11367B ; settings = {ATTRIBUTES = (); }; };
+		36797EC98478F85E7626DE4A /* goil_semantic_verification.cpp */ = {isa = PBXBuildFile; fileRef = C3FF0AF142B6D3BEAD98A923 ; settings = {ATTRIBUTES = (); }; };
+		B67632A7E958E23F24BD07D7 /* goil_semantics.cpp */ = {isa = PBXBuildFile; fileRef = 6F775098FE977004015C6193 ; settings = {ATTRIBUTES = (); }; };
+		D64FF53ECCFDD09AD10A15B3 /* goil_syntax.cpp */ = {isa = PBXBuildFile; fileRef = FC03EB9DED908C236BD1996D ; settings = {ATTRIBUTES = (); }; };
+		A691D157187EE1CF9E896D03 /* goil_target_arm7.cpp */ = {isa = PBXBuildFile; fileRef = 7343C29048673252E490F736 ; settings = {ATTRIBUTES = (); }; };
+		263B9530DF88F7F002E78EA5 /* goil_target_avr.cpp */ = {isa = PBXBuildFile; fileRef = CFA5649E7003B83DD4755294 ; settings = {ATTRIBUTES = (); }; };
+		512D13DF5083790D64C4D5DD /* goil_target_c166.cpp */ = {isa = PBXBuildFile; fileRef = A57B0395E163467C9DAE521B ; settings = {ATTRIBUTES = (); }; };
+		2F737D7ADEAB84D339DBABD3 /* goil_target_h8300h.cpp */ = {isa = PBXBuildFile; fileRef = 87F5EE0BC9D43BBF5BBE87FB ; settings = {ATTRIBUTES = (); }; };
+		DD95A9A6F1252739B1AD8C24 /* goil_target_hcs12.cpp */ = {isa = PBXBuildFile; fileRef = BF3D9FE611D5A8E90FEFDC9C ; settings = {ATTRIBUTES = (); }; };
+		284B5B27AA7CB790DC20F80B /* goil_target_libpcl.cpp */ = {isa = PBXBuildFile; fileRef = CCBDB62EC96E702F07F6425B ; settings = {ATTRIBUTES = (); }; };
+		D784977CACBFCBB00C48F133 /* goil_target_posix.cpp */ = {isa = PBXBuildFile; fileRef = BAF56627478EC76A704E9B52 ; settings = {ATTRIBUTES = (); }; };
+		51612ACF12457E4D67635A95 /* goil_target_posix_vp2.cpp */ = {isa = PBXBuildFile; fileRef = C660610B44D9B9FED0FF9548 ; settings = {ATTRIBUTES = (); }; };
+		531952D72E5847C4183E6910 /* goil_target_ppc.cpp */ = {isa = PBXBuildFile; fileRef = E1CC6BB9F0CD2A47751A186F ; settings = {ATTRIBUTES = (); }; };
+		12DE6341FBA65B0AD0433500 /* goil_target_v850e.cpp */ = {isa = PBXBuildFile; fileRef = B098B75C294DFFDC3E463904 ; settings = {ATTRIBUTES = (); }; };
+		3EAF29526A11A9B7AC33BFAC /* goil_targets.cpp */ = {isa = PBXBuildFile; fileRef = B63885E0D7C260CC007E8B9D ; settings = {ATTRIBUTES = (); }; };
+		AAE265B790965A275B53AE50 /* goil_timing_prot_attrs.cpp */ = {isa = PBXBuildFile; fileRef = 9D8A121CE581499D7B701668 ; settings = {ATTRIBUTES = (); }; };
+		2F8F3DC4F3CF45F02C61C0C1 /* goil_types_action.cpp */ = {isa = PBXBuildFile; fileRef = 86960EEB576A8FD4C9EC6997 ; settings = {ATTRIBUTES = (); }; };
+		62E40C570A322F1B0B659098 /* goil_types_app.cpp */ = {isa = PBXBuildFile; fileRef = E11FB9384C4CF38708677C48 ; settings = {ATTRIBUTES = (); }; };
+		6393C9111E6526EA173A7C8B /* goil_types_counter.cpp */ = {isa = PBXBuildFile; fileRef = DE89D9058FCB0B968DBBBD68 ; settings = {ATTRIBUTES = (); }; };
+		D58A54E94377E6AE2EDED4D9 /* goil_types_isr.cpp */ = {isa = PBXBuildFile; fileRef = CA89A1678042477183B7AC3F ; settings = {ATTRIBUTES = (); }; };
+		BA585B952B62C14A3A175A61 /* goil_types_networkmessage.cpp */ = {isa = PBXBuildFile; fileRef = E4AAF9573AA5DFF913DF997A ; settings = {ATTRIBUTES = (); }; };
+		273E507E6040FCB07DCB4509 /* goil_types_os.cpp */ = {isa = PBXBuildFile; fileRef = AC59075B964B07152D234B70 ; settings = {ATTRIBUTES = (); }; };
+		3F67C759BF4FC791BA842AA2 /* goil_types_resource.cpp */ = {isa = PBXBuildFile; fileRef = D8F4755FF269862EA77393DD ; settings = {ATTRIBUTES = (); }; };
+		EC53BCEA3B7513CCEF5857AC /* goil_types_root.cpp */ = {isa = PBXBuildFile; fileRef = 5ED3D6B8079E2E7E7BACC9F2 ; settings = {ATTRIBUTES = (); }; };
+		50BA3F7CBA1E6C53E8FA6845 /* goil_types_scheduletable.cpp */ = {isa = PBXBuildFile; fileRef = 04D6854880943E5C3CD9CA25 ; settings = {ATTRIBUTES = (); }; };
+		1C773F3F8DC8B4BE867A9A02 /* goil_types_task.cpp */ = {isa = PBXBuildFile; fileRef = F984EEABDBB0A7D494132EE5 ; settings = {ATTRIBUTES = (); }; };
+		2D552343BC8E460416382DCA /* goil_types_timing_prot.cpp */ = {isa = PBXBuildFile; fileRef = 2BA9336A670E36D0ED79BC43 ; settings = {ATTRIBUTES = (); }; };
+		CFAB08731A97E7B91BE644DE /* isrs_verif.cpp */ = {isa = PBXBuildFile; fileRef = 6DA19D22B51C68001E7E0E54 ; settings = {ATTRIBUTES = (); }; };
+		AAD094E0B5CB1B01D712F708 /* it_table_generation.cpp */ = {isa = PBXBuildFile; fileRef = 8EBCB58C6CE932B957B6F332 ; settings = {ATTRIBUTES = (); }; };
+		0041A42470269D56260243A1 /* memory_mapping.cpp */ = {isa = PBXBuildFile; fileRef = 685A0DD18FB6A08AF0923DE0 ; settings = {ATTRIBUTES = (); }; };
 		BED5BEAE847A7FF6E220B5CF /* resources_verif.cpp */ = {isa = PBXBuildFile; fileRef = 9B3020AFEECD95B4009ADF4C ; settings = {ATTRIBUTES = (); }; };
 		C60D1DB1D2E5E7A07DA55B26 /* scheduletable_verif.cpp */ = {isa = PBXBuildFile; fileRef = 5FCA3E988C2AF215D4E544D3 ; settings = {ATTRIBUTES = (); }; };
 		C1921C25C5121F9DA7815CDE /* tasks_verif.cpp */ = {isa = PBXBuildFile; fileRef = 052A8CE66358EB576B8912C8 ; settings = {ATTRIBUTES = (); }; };
@@ -171,54 +171,54 @@
 		EFC3B337800875B5D382A072 /* goil_imp_def.cpp */ = {isa = PBXBuildFile; fileRef = F4C10BF22AA353E27879133C ; settings = {ATTRIBUTES = (); }; };
 		F552CEA2F369918C5E1E12BC /* goil_lexique.cpp */ = {isa = PBXBuildFile; fileRef = 4CEA9109507CACD8E2F2AEFC ; settings = {ATTRIBUTES = (); }; };
 		A391DAABE3DE1D76A6739CCD /* goil_message_verif.cpp */ = {isa = PBXBuildFile; fileRef = FC8586DFA4D1BC0E1742C08B ; settings = {ATTRIBUTES = (); }; };
-		70AE7C3F6F3F1F37029303C9 /* goil_mp_generation.cpp */ = {isa = PBXBuildFile; fileRef = 7260AE62E3B1396831A8398F ; settings = {ATTRIBUTES = (); }; };
-		080F7736089C757404650E40 /* goil_obj_alarm.cpp */ = {isa = PBXBuildFile; fileRef = CE56D3D6FA748AB6D9AF3FD7 ; settings = {ATTRIBUTES = (); }; };
-		EFEE97BACB63E52C54F0ADA0 /* goil_obj_application.cpp */ = {isa = PBXBuildFile; fileRef = A9DED88F18ECEE47145A72C0 ; settings = {ATTRIBUTES = (); }; };
-		E9D31EA2830A5E73CE3ED328 /* goil_obj_appmode.cpp */ = {isa = PBXBuildFile; fileRef = 778DFAECDC212708F721B788 ; settings = {ATTRIBUTES = (); }; };
-		3A0739141292A5429B952FE6 /* goil_obj_com.cpp */ = {isa = PBXBuildFile; fileRef = 19AD8176D665453CFB2E55F0 ; settings = {ATTRIBUTES = (); }; };
-		48976138166DE32772B1BF40 /* goil_obj_counter.cpp */ = {isa = PBXBuildFile; fileRef = 6AB90CE0268229151C9BDE11 ; settings = {ATTRIBUTES = (); }; };
-		25EDED36F486BC85FEB3F0AB /* goil_obj_event.cpp */ = {isa = PBXBuildFile; fileRef = 754BA1C09B3695E0CB6CDE7F ; settings = {ATTRIBUTES = (); }; };
-		BB602B6D35BEA8460AA8F8E5 /* goil_obj_ipdu.cpp */ = {isa = PBXBuildFile; fileRef = 80A295F8076B1C5722A46AA2 ; settings = {ATTRIBUTES = (); }; };
-		5990E441F0FB6F3FAD709E21 /* goil_obj_isr.cpp */ = {isa = PBXBuildFile; fileRef = 7FBDB1988EF4C628EBA02591 ; settings = {ATTRIBUTES = (); }; };
-		A81692282BA642AAFD57BE3A /* goil_obj_message.cpp */ = {isa = PBXBuildFile; fileRef = 6E7929B125F8597834FA83A4 ; settings = {ATTRIBUTES = (); }; };
-		2E496207586DF2854B17995F /* goil_obj_networkmessage.cpp */ = {isa = PBXBuildFile; fileRef = 5C00B1249BBE3554A4FDF6FB ; settings = {ATTRIBUTES = (); }; };
-		0B6109813DAFA101CEB2FAEB /* goil_obj_os.cpp */ = {isa = PBXBuildFile; fileRef = 568125ED6C3F678819B6E058 ; settings = {ATTRIBUTES = (); }; };
-		4D5DE9D18C350CDF64C5AA3D /* goil_obj_resource.cpp */ = {isa = PBXBuildFile; fileRef = 14875E45BBA028A21ED38046 ; settings = {ATTRIBUTES = (); }; };
-		749B2941217DDD59394240E8 /* goil_obj_scheduletable.cpp */ = {isa = PBXBuildFile; fileRef = 28D4BF8CE0FF2EC19B371514 ; settings = {ATTRIBUTES = (); }; };
-		56E613024C057BE590B542EB /* goil_obj_task.cpp */ = {isa = PBXBuildFile; fileRef = F00665CE8623E36BD4E3C7C5 ; settings = {ATTRIBUTES = (); }; };
-		76FB8C371AFEAD6410D55534 /* goil_options.cpp */ = {isa = PBXBuildFile; fileRef = 44A3365A46C9077EBB5E35C3 ; settings = {ATTRIBUTES = (); }; };
-		9183DE32E976C6F04E700201 /* goil_proc_generation.cpp */ = {isa = PBXBuildFile; fileRef = 55CE926456240B2FF0100BDE ; settings = {ATTRIBUTES = (); }; };
-		46ED40E1AF829D1FA82DAA10 /* goil_program.cpp */ = {isa = PBXBuildFile; fileRef = 08E959397ADF34B1D77E88D7 ; settings = {ATTRIBUTES = (); }; };
-		E374177EEF023BF5D0C018B6 /* goil_routines.cpp */ = {isa = PBXBuildFile; fileRef = 68B6EDD3015B3EDC9A11367B ; settings = {ATTRIBUTES = (); }; };
-		A7A5D6A1A87373DFFA53DBE5 /* goil_semantic_types.cpp */ = {isa = PBXBuildFile; fileRef = C3FF0AF142B6D3BEAD98A923 ; settings = {ATTRIBUTES = (); }; };
-		3DE0D4EACB9A3E6E53E5448D /* goil_semantic_verification.cpp */ = {isa = PBXBuildFile; fileRef = 6F775098FE977004015C6193 ; settings = {ATTRIBUTES = (); }; };
-		714116F3B292A982238F83D2 /* goil_semantics.cpp */ = {isa = PBXBuildFile; fileRef = FC03EB9DED908C236BD1996D ; settings = {ATTRIBUTES = (); }; };
-		F376FFFE2EE4DDF4A988880D /* goil_syntax.cpp */ = {isa = PBXBuildFile; fileRef = 7343C29048673252E490F736 ; settings = {ATTRIBUTES = (); }; };
-		2492B5106526B2331E526138 /* goil_target_arm7.cpp */ = {isa = PBXBuildFile; fileRef = CFA5649E7003B83DD4755294 ; settings = {ATTRIBUTES = (); }; };
-		31C8188555C2FF05B4D542C3 /* goil_target_avr.cpp */ = {isa = PBXBuildFile; fileRef = A57B0395E163467C9DAE521B ; settings = {ATTRIBUTES = (); }; };
-		02ACD8D7DD095917F9EFE4CB /* goil_target_c166.cpp */ = {isa = PBXBuildFile; fileRef = 87F5EE0BC9D43BBF5BBE87FB ; settings = {ATTRIBUTES = (); }; };
-		0859F2CB9F7C8F8CACB8D2A6 /* goil_target_h8300h.cpp */ = {isa = PBXBuildFile; fileRef = BF3D9FE611D5A8E90FEFDC9C ; settings = {ATTRIBUTES = (); }; };
-		80A8F11F8F69CBB52B1396BE /* goil_target_hcs12.cpp */ = {isa = PBXBuildFile; fileRef = CCBDB62EC96E702F07F6425B ; settings = {ATTRIBUTES = (); }; };
-		513B73148B7D49F70AFCFB32 /* goil_target_libpcl.cpp */ = {isa = PBXBuildFile; fileRef = BAF56627478EC76A704E9B52 ; settings = {ATTRIBUTES = (); }; };
-		E1538FB6C45901D524EE2F98 /* goil_target_posix.cpp */ = {isa = PBXBuildFile; fileRef = C660610B44D9B9FED0FF9548 ; settings = {ATTRIBUTES = (); }; };
-		7A33AE8CEF33961C34144F84 /* goil_target_posix_vp2.cpp */ = {isa = PBXBuildFile; fileRef = E1CC6BB9F0CD2A47751A186F ; settings = {ATTRIBUTES = (); }; };
-		C617D3CD28DBBDD72BE8F9A2 /* goil_target_ppc.cpp */ = {isa = PBXBuildFile; fileRef = B098B75C294DFFDC3E463904 ; settings = {ATTRIBUTES = (); }; };
-		9621E305170616BA3D3DAC32 /* goil_target_v850e.cpp */ = {isa = PBXBuildFile; fileRef = B63885E0D7C260CC007E8B9D ; settings = {ATTRIBUTES = (); }; };
-		4B39C5DC66674D09081940F0 /* goil_targets.cpp */ = {isa = PBXBuildFile; fileRef = 9D8A121CE581499D7B701668 ; settings = {ATTRIBUTES = (); }; };
-		E8F631CC6075C0F87BB4978C /* goil_timing_prot_attrs.cpp */ = {isa = PBXBuildFile; fileRef = 86960EEB576A8FD4C9EC6997 ; settings = {ATTRIBUTES = (); }; };
-		D42B89B0585260B6F2360BDD /* goil_types_action.cpp */ = {isa = PBXBuildFile; fileRef = E11FB9384C4CF38708677C48 ; settings = {ATTRIBUTES = (); }; };
-		A4EA036CFC6433C3E2EE63B0 /* goil_types_app.cpp */ = {isa = PBXBuildFile; fileRef = DE89D9058FCB0B968DBBBD68 ; settings = {ATTRIBUTES = (); }; };
-		B69F8E13F14B405E038DEB64 /* goil_types_counter.cpp */ = {isa = PBXBuildFile; fileRef = CA89A1678042477183B7AC3F ; settings = {ATTRIBUTES = (); }; };
-		4646C57502B480DC052C4FE1 /* goil_types_isr.cpp */ = {isa = PBXBuildFile; fileRef = E4AAF9573AA5DFF913DF997A ; settings = {ATTRIBUTES = (); }; };
-		D09CF1A0EC3E19C7F2529F2B /* goil_types_networkmessage.cpp */ = {isa = PBXBuildFile; fileRef = AC59075B964B07152D234B70 ; settings = {ATTRIBUTES = (); }; };
-		28506CCB6F72B12C0245DDBC /* goil_types_os.cpp */ = {isa = PBXBuildFile; fileRef = D8F4755FF269862EA77393DD ; settings = {ATTRIBUTES = (); }; };
-		2EF83DEFF5C7813A67E14F0A /* goil_types_resource.cpp */ = {isa = PBXBuildFile; fileRef = 5ED3D6B8079E2E7E7BACC9F2 ; settings = {ATTRIBUTES = (); }; };
-		60135C32E34F46A71175850C /* goil_types_root.cpp */ = {isa = PBXBuildFile; fileRef = 04D6854880943E5C3CD9CA25 ; settings = {ATTRIBUTES = (); }; };
-		5C68F1206823815F66102863 /* goil_types_scheduletable.cpp */ = {isa = PBXBuildFile; fileRef = F984EEABDBB0A7D494132EE5 ; settings = {ATTRIBUTES = (); }; };
-		BB76D4357324DD7E69F3CD18 /* goil_types_task.cpp */ = {isa = PBXBuildFile; fileRef = 2BA9336A670E36D0ED79BC43 ; settings = {ATTRIBUTES = (); }; };
-		576290FA60EB31B5FC917AD1 /* goil_types_timing_prot.cpp */ = {isa = PBXBuildFile; fileRef = 6DA19D22B51C68001E7E0E54 ; settings = {ATTRIBUTES = (); }; };
-		F19FDA463CB386442EAC2B3D /* isrs_verif.cpp */ = {isa = PBXBuildFile; fileRef = 8EBCB58C6CE932B957B6F332 ; settings = {ATTRIBUTES = (); }; };
-		68C5AE12BD18488BC579B30D /* it_table_generation.cpp */ = {isa = PBXBuildFile; fileRef = 685A0DD18FB6A08AF0923DE0 ; settings = {ATTRIBUTES = (); }; };
+		70AE7C3F6F3F1F37029303C9 /* goil_obj_alarm.cpp */ = {isa = PBXBuildFile; fileRef = 7260AE62E3B1396831A8398F ; settings = {ATTRIBUTES = (); }; };
+		080F7736089C757404650E40 /* goil_obj_application.cpp */ = {isa = PBXBuildFile; fileRef = CE56D3D6FA748AB6D9AF3FD7 ; settings = {ATTRIBUTES = (); }; };
+		EFEE97BACB63E52C54F0ADA0 /* goil_obj_appmode.cpp */ = {isa = PBXBuildFile; fileRef = A9DED88F18ECEE47145A72C0 ; settings = {ATTRIBUTES = (); }; };
+		E9D31EA2830A5E73CE3ED328 /* goil_obj_com.cpp */ = {isa = PBXBuildFile; fileRef = 778DFAECDC212708F721B788 ; settings = {ATTRIBUTES = (); }; };
+		3A0739141292A5429B952FE6 /* goil_obj_counter.cpp */ = {isa = PBXBuildFile; fileRef = 19AD8176D665453CFB2E55F0 ; settings = {ATTRIBUTES = (); }; };
+		48976138166DE32772B1BF40 /* goil_obj_event.cpp */ = {isa = PBXBuildFile; fileRef = 6AB90CE0268229151C9BDE11 ; settings = {ATTRIBUTES = (); }; };
+		25EDED36F486BC85FEB3F0AB /* goil_obj_ipdu.cpp */ = {isa = PBXBuildFile; fileRef = 754BA1C09B3695E0CB6CDE7F ; settings = {ATTRIBUTES = (); }; };
+		BB602B6D35BEA8460AA8F8E5 /* goil_obj_isr.cpp */ = {isa = PBXBuildFile; fileRef = 80A295F8076B1C5722A46AA2 ; settings = {ATTRIBUTES = (); }; };
+		5990E441F0FB6F3FAD709E21 /* goil_obj_message.cpp */ = {isa = PBXBuildFile; fileRef = 7FBDB1988EF4C628EBA02591 ; settings = {ATTRIBUTES = (); }; };
+		A81692282BA642AAFD57BE3A /* goil_obj_networkmessage.cpp */ = {isa = PBXBuildFile; fileRef = 6E7929B125F8597834FA83A4 ; settings = {ATTRIBUTES = (); }; };
+		2E496207586DF2854B17995F /* goil_obj_os.cpp */ = {isa = PBXBuildFile; fileRef = 5C00B1249BBE3554A4FDF6FB ; settings = {ATTRIBUTES = (); }; };
+		0B6109813DAFA101CEB2FAEB /* goil_obj_resource.cpp */ = {isa = PBXBuildFile; fileRef = 568125ED6C3F678819B6E058 ; settings = {ATTRIBUTES = (); }; };
+		4D5DE9D18C350CDF64C5AA3D /* goil_obj_scheduletable.cpp */ = {isa = PBXBuildFile; fileRef = 14875E45BBA028A21ED38046 ; settings = {ATTRIBUTES = (); }; };
+		749B2941217DDD59394240E8 /* goil_obj_task.cpp */ = {isa = PBXBuildFile; fileRef = 28D4BF8CE0FF2EC19B371514 ; settings = {ATTRIBUTES = (); }; };
+		56E613024C057BE590B542EB /* goil_options.cpp */ = {isa = PBXBuildFile; fileRef = F00665CE8623E36BD4E3C7C5 ; settings = {ATTRIBUTES = (); }; };
+		76FB8C371AFEAD6410D55534 /* goil_proc_generation.cpp */ = {isa = PBXBuildFile; fileRef = 44A3365A46C9077EBB5E35C3 ; settings = {ATTRIBUTES = (); }; };
+		9183DE32E976C6F04E700201 /* goil_program.cpp */ = {isa = PBXBuildFile; fileRef = 55CE926456240B2FF0100BDE ; settings = {ATTRIBUTES = (); }; };
+		46ED40E1AF829D1FA82DAA10 /* goil_routines.cpp */ = {isa = PBXBuildFile; fileRef = 08E959397ADF34B1D77E88D7 ; settings = {ATTRIBUTES = (); }; };
+		E374177EEF023BF5D0C018B6 /* goil_semantic_types.cpp */ = {isa = PBXBuildFile; fileRef = 68B6EDD3015B3EDC9A11367B ; settings = {ATTRIBUTES = (); }; };
+		A7A5D6A1A87373DFFA53DBE5 /* goil_semantic_verification.cpp */ = {isa = PBXBuildFile; fileRef = C3FF0AF142B6D3BEAD98A923 ; settings = {ATTRIBUTES = (); }; };
+		3DE0D4EACB9A3E6E53E5448D /* goil_semantics.cpp */ = {isa = PBXBuildFile; fileRef = 6F775098FE977004015C6193 ; settings = {ATTRIBUTES = (); }; };
+		714116F3B292A982238F83D2 /* goil_syntax.cpp */ = {isa = PBXBuildFile; fileRef = FC03EB9DED908C236BD1996D ; settings = {ATTRIBUTES = (); }; };
+		F376FFFE2EE4DDF4A988880D /* goil_target_arm7.cpp */ = {isa = PBXBuildFile; fileRef = 7343C29048673252E490F736 ; settings = {ATTRIBUTES = (); }; };
+		2492B5106526B2331E526138 /* goil_target_avr.cpp */ = {isa = PBXBuildFile; fileRef = CFA5649E7003B83DD4755294 ; settings = {ATTRIBUTES = (); }; };
+		31C8188555C2FF05B4D542C3 /* goil_target_c166.cpp */ = {isa = PBXBuildFile; fileRef = A57B0395E163467C9DAE521B ; settings = {ATTRIBUTES = (); }; };
+		02ACD8D7DD095917F9EFE4CB /* goil_target_h8300h.cpp */ = {isa = PBXBuildFile; fileRef = 87F5EE0BC9D43BBF5BBE87FB ; settings = {ATTRIBUTES = (); }; };
+		0859F2CB9F7C8F8CACB8D2A6 /* goil_target_hcs12.cpp */ = {isa = PBXBuildFile; fileRef = BF3D9FE611D5A8E90FEFDC9C ; settings = {ATTRIBUTES = (); }; };
+		80A8F11F8F69CBB52B1396BE /* goil_target_libpcl.cpp */ = {isa = PBXBuildFile; fileRef = CCBDB62EC96E702F07F6425B ; settings = {ATTRIBUTES = (); }; };
+		513B73148B7D49F70AFCFB32 /* goil_target_posix.cpp */ = {isa = PBXBuildFile; fileRef = BAF56627478EC76A704E9B52 ; settings = {ATTRIBUTES = (); }; };
+		E1538FB6C45901D524EE2F98 /* goil_target_posix_vp2.cpp */ = {isa = PBXBuildFile; fileRef = C660610B44D9B9FED0FF9548 ; settings = {ATTRIBUTES = (); }; };
+		7A33AE8CEF33961C34144F84 /* goil_target_ppc.cpp */ = {isa = PBXBuildFile; fileRef = E1CC6BB9F0CD2A47751A186F ; settings = {ATTRIBUTES = (); }; };
+		C617D3CD28DBBDD72BE8F9A2 /* goil_target_v850e.cpp */ = {isa = PBXBuildFile; fileRef = B098B75C294DFFDC3E463904 ; settings = {ATTRIBUTES = (); }; };
+		9621E305170616BA3D3DAC32 /* goil_targets.cpp */ = {isa = PBXBuildFile; fileRef = B63885E0D7C260CC007E8B9D ; settings = {ATTRIBUTES = (); }; };
+		4B39C5DC66674D09081940F0 /* goil_timing_prot_attrs.cpp */ = {isa = PBXBuildFile; fileRef = 9D8A121CE581499D7B701668 ; settings = {ATTRIBUTES = (); }; };
+		E8F631CC6075C0F87BB4978C /* goil_types_action.cpp */ = {isa = PBXBuildFile; fileRef = 86960EEB576A8FD4C9EC6997 ; settings = {ATTRIBUTES = (); }; };
+		D42B89B0585260B6F2360BDD /* goil_types_app.cpp */ = {isa = PBXBuildFile; fileRef = E11FB9384C4CF38708677C48 ; settings = {ATTRIBUTES = (); }; };
+		A4EA036CFC6433C3E2EE63B0 /* goil_types_counter.cpp */ = {isa = PBXBuildFile; fileRef = DE89D9058FCB0B968DBBBD68 ; settings = {ATTRIBUTES = (); }; };
+		B69F8E13F14B405E038DEB64 /* goil_types_isr.cpp */ = {isa = PBXBuildFile; fileRef = CA89A1678042477183B7AC3F ; settings = {ATTRIBUTES = (); }; };
+		4646C57502B480DC052C4FE1 /* goil_types_networkmessage.cpp */ = {isa = PBXBuildFile; fileRef = E4AAF9573AA5DFF913DF997A ; settings = {ATTRIBUTES = (); }; };
+		D09CF1A0EC3E19C7F2529F2B /* goil_types_os.cpp */ = {isa = PBXBuildFile; fileRef = AC59075B964B07152D234B70 ; settings = {ATTRIBUTES = (); }; };
+		28506CCB6F72B12C0245DDBC /* goil_types_resource.cpp */ = {isa = PBXBuildFile; fileRef = D8F4755FF269862EA77393DD ; settings = {ATTRIBUTES = (); }; };
+		2EF83DEFF5C7813A67E14F0A /* goil_types_root.cpp */ = {isa = PBXBuildFile; fileRef = 5ED3D6B8079E2E7E7BACC9F2 ; settings = {ATTRIBUTES = (); }; };
+		60135C32E34F46A71175850C /* goil_types_scheduletable.cpp */ = {isa = PBXBuildFile; fileRef = 04D6854880943E5C3CD9CA25 ; settings = {ATTRIBUTES = (); }; };
+		5C68F1206823815F66102863 /* goil_types_task.cpp */ = {isa = PBXBuildFile; fileRef = F984EEABDBB0A7D494132EE5 ; settings = {ATTRIBUTES = (); }; };
+		BB76D4357324DD7E69F3CD18 /* goil_types_timing_prot.cpp */ = {isa = PBXBuildFile; fileRef = 2BA9336A670E36D0ED79BC43 ; settings = {ATTRIBUTES = (); }; };
+		576290FA60EB31B5FC917AD1 /* isrs_verif.cpp */ = {isa = PBXBuildFile; fileRef = 6DA19D22B51C68001E7E0E54 ; settings = {ATTRIBUTES = (); }; };
+		F19FDA463CB386442EAC2B3D /* it_table_generation.cpp */ = {isa = PBXBuildFile; fileRef = 8EBCB58C6CE932B957B6F332 ; settings = {ATTRIBUTES = (); }; };
+		68C5AE12BD18488BC579B30D /* memory_mapping.cpp */ = {isa = PBXBuildFile; fileRef = 685A0DD18FB6A08AF0923DE0 ; settings = {ATTRIBUTES = (); }; };
 		DEC96096C5E0FCC8DD42AB6D /* resources_verif.cpp */ = {isa = PBXBuildFile; fileRef = 9B3020AFEECD95B4009ADF4C ; settings = {ATTRIBUTES = (); }; };
 		26A9018052C429CC4E56739B /* scheduletable_verif.cpp */ = {isa = PBXBuildFile; fileRef = 5FCA3E988C2AF215D4E544D3 ; settings = {ATTRIBUTES = (); }; };
 		2C033A83D663B8D9FB4BE56E /* tasks_verif.cpp */ = {isa = PBXBuildFile; fileRef = 052A8CE66358EB576B8912C8 ; settings = {ATTRIBUTES = (); }; };
@@ -564,106 +564,106 @@
 		3F027327D8461063F4AC58A6 /* goil_lexique.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_lexique.h; path = goil_lexique.h; sourceTree = "<group>"; };
 		FC8586DFA4D1BC0E1742C08B /* goil_message_verif.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_message_verif.cpp; path = goil_message_verif.cpp; sourceTree = "<group>"; };
 		C833DFF4B38FC8D2872F1EC6 /* goil_message_verif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_message_verif.h; path = goil_message_verif.h; sourceTree = "<group>"; };
-		7260AE62E3B1396831A8398F /* goil_mp_generation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_mp_generation.cpp; path = goil_mp_generation.cpp; sourceTree = "<group>"; };
-		E875A2E075A1A4A6E1B9770F /* goil_mp_generation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_mp_generation.h; path = goil_mp_generation.h; sourceTree = "<group>"; };
-		CE56D3D6FA748AB6D9AF3FD7 /* goil_obj_alarm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_alarm.cpp; path = goil_obj_alarm.cpp; sourceTree = "<group>"; };
-		B79421734881B53E1E1B18B6 /* goil_obj_alarm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_alarm.h; path = goil_obj_alarm.h; sourceTree = "<group>"; };
-		A9DED88F18ECEE47145A72C0 /* goil_obj_application.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_application.cpp; path = goil_obj_application.cpp; sourceTree = "<group>"; };
-		30BD3DCAEFC96F40275BDC0A /* goil_obj_application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_application.h; path = goil_obj_application.h; sourceTree = "<group>"; };
-		778DFAECDC212708F721B788 /* goil_obj_appmode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_appmode.cpp; path = goil_obj_appmode.cpp; sourceTree = "<group>"; };
-		4DFA42CADDBD0694A4E9BDC8 /* goil_obj_appmode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_appmode.h; path = goil_obj_appmode.h; sourceTree = "<group>"; };
-		19AD8176D665453CFB2E55F0 /* goil_obj_com.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_com.cpp; path = goil_obj_com.cpp; sourceTree = "<group>"; };
-		E76FC522773286A895BC8436 /* goil_obj_com.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_com.h; path = goil_obj_com.h; sourceTree = "<group>"; };
-		6AB90CE0268229151C9BDE11 /* goil_obj_counter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_counter.cpp; path = goil_obj_counter.cpp; sourceTree = "<group>"; };
-		3AFB633E50CDF1B20DE6F466 /* goil_obj_counter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_counter.h; path = goil_obj_counter.h; sourceTree = "<group>"; };
-		754BA1C09B3695E0CB6CDE7F /* goil_obj_event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_event.cpp; path = goil_obj_event.cpp; sourceTree = "<group>"; };
-		6A60928B05A7E228A89C3799 /* goil_obj_event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_event.h; path = goil_obj_event.h; sourceTree = "<group>"; };
-		80A295F8076B1C5722A46AA2 /* goil_obj_ipdu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_ipdu.cpp; path = goil_obj_ipdu.cpp; sourceTree = "<group>"; };
-		A126B2F4B2374F342BE9ED44 /* goil_obj_ipdu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_ipdu.h; path = goil_obj_ipdu.h; sourceTree = "<group>"; };
-		7FBDB1988EF4C628EBA02591 /* goil_obj_isr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_isr.cpp; path = goil_obj_isr.cpp; sourceTree = "<group>"; };
-		4163B3523AFE57C2E008BC8C /* goil_obj_isr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_isr.h; path = goil_obj_isr.h; sourceTree = "<group>"; };
-		6E7929B125F8597834FA83A4 /* goil_obj_message.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_message.cpp; path = goil_obj_message.cpp; sourceTree = "<group>"; };
-		4608232E07D3AA3D998E5135 /* goil_obj_message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_message.h; path = goil_obj_message.h; sourceTree = "<group>"; };
-		5C00B1249BBE3554A4FDF6FB /* goil_obj_networkmessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_networkmessage.cpp; path = goil_obj_networkmessage.cpp; sourceTree = "<group>"; };
-		CBF4CAAED33C36B1B5FC2CB1 /* goil_obj_networkmessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_networkmessage.h; path = goil_obj_networkmessage.h; sourceTree = "<group>"; };
-		568125ED6C3F678819B6E058 /* goil_obj_os.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_os.cpp; path = goil_obj_os.cpp; sourceTree = "<group>"; };
-		8E4C41F2747BFA2F1B5F87DB /* goil_obj_os.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_os.h; path = goil_obj_os.h; sourceTree = "<group>"; };
-		14875E45BBA028A21ED38046 /* goil_obj_resource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_resource.cpp; path = goil_obj_resource.cpp; sourceTree = "<group>"; };
-		EC990F19C78C75BD1E06F215 /* goil_obj_resource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_resource.h; path = goil_obj_resource.h; sourceTree = "<group>"; };
-		28D4BF8CE0FF2EC19B371514 /* goil_obj_scheduletable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_scheduletable.cpp; path = goil_obj_scheduletable.cpp; sourceTree = "<group>"; };
-		976AAB5298D5DA10FE66F21D /* goil_obj_scheduletable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_scheduletable.h; path = goil_obj_scheduletable.h; sourceTree = "<group>"; };
-		F00665CE8623E36BD4E3C7C5 /* goil_obj_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_task.cpp; path = goil_obj_task.cpp; sourceTree = "<group>"; };
-		3223EFBC24C7D2583BE69251 /* goil_obj_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_task.h; path = goil_obj_task.h; sourceTree = "<group>"; };
-		44A3365A46C9077EBB5E35C3 /* goil_options.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_options.cpp; path = goil_options.cpp; sourceTree = "<group>"; };
-		674997CDB4692D34DE8633C4 /* goil_options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_options.h; path = goil_options.h; sourceTree = "<group>"; };
-		55CE926456240B2FF0100BDE /* goil_proc_generation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_proc_generation.cpp; path = goil_proc_generation.cpp; sourceTree = "<group>"; };
-		65E6E1EDC05F3D8AB658C551 /* goil_proc_generation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_proc_generation.h; path = goil_proc_generation.h; sourceTree = "<group>"; };
-		08E959397ADF34B1D77E88D7 /* goil_program.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_program.cpp; path = goil_program.cpp; sourceTree = "<group>"; };
-		C30201F73F142449D037028D /* goil_program.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_program.h; path = goil_program.h; sourceTree = "<group>"; };
-		68B6EDD3015B3EDC9A11367B /* goil_routines.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_routines.cpp; path = goil_routines.cpp; sourceTree = "<group>"; };
-		19C5080B9A6A17BEF029331C /* goil_routines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_routines.h; path = goil_routines.h; sourceTree = "<group>"; };
-		C3FF0AF142B6D3BEAD98A923 /* goil_semantic_types.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_semantic_types.cpp; path = goil_semantic_types.cpp; sourceTree = "<group>"; };
-		94728BC39AA24BE94B319D21 /* goil_semantic_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_semantic_types.h; path = goil_semantic_types.h; sourceTree = "<group>"; };
-		6F775098FE977004015C6193 /* goil_semantic_verification.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_semantic_verification.cpp; path = goil_semantic_verification.cpp; sourceTree = "<group>"; };
-		909C13838FF95CCFA94CEBD9 /* goil_semantic_verification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_semantic_verification.h; path = goil_semantic_verification.h; sourceTree = "<group>"; };
-		FC03EB9DED908C236BD1996D /* goil_semantics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_semantics.cpp; path = goil_semantics.cpp; sourceTree = "<group>"; };
-		316C49E5A833517C45D31070 /* goil_semantics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_semantics.h; path = goil_semantics.h; sourceTree = "<group>"; };
-		7343C29048673252E490F736 /* goil_syntax.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_syntax.cpp; path = goil_syntax.cpp; sourceTree = "<group>"; };
-		C49EB8F757AE6439E879BB2A /* goil_syntax.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_syntax.h; path = goil_syntax.h; sourceTree = "<group>"; };
-		CFA5649E7003B83DD4755294 /* goil_target_arm7.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_target_arm7.cpp; path = goil_target_arm7.cpp; sourceTree = "<group>"; };
-		32D17E56E07902B254DFAD10 /* goil_target_arm7.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_target_arm7.h; path = goil_target_arm7.h; sourceTree = "<group>"; };
-		A57B0395E163467C9DAE521B /* goil_target_avr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_target_avr.cpp; path = goil_target_avr.cpp; sourceTree = "<group>"; };
-		AD9F68F89B29639786CB62EF /* goil_target_avr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_target_avr.h; path = goil_target_avr.h; sourceTree = "<group>"; };
-		87F5EE0BC9D43BBF5BBE87FB /* goil_target_c166.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_target_c166.cpp; path = goil_target_c166.cpp; sourceTree = "<group>"; };
-		F9020D2ABEFE558796B99584 /* goil_target_c166.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_target_c166.h; path = goil_target_c166.h; sourceTree = "<group>"; };
-		BF3D9FE611D5A8E90FEFDC9C /* goil_target_h8300h.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_target_h8300h.cpp; path = goil_target_h8300h.cpp; sourceTree = "<group>"; };
-		991E3BEF5E069713AF9FA6CA /* goil_target_h8300h.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_target_h8300h.h; path = goil_target_h8300h.h; sourceTree = "<group>"; };
-		CCBDB62EC96E702F07F6425B /* goil_target_hcs12.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_target_hcs12.cpp; path = goil_target_hcs12.cpp; sourceTree = "<group>"; };
-		F5E1059396431415E770C6DD /* goil_target_hcs12.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_target_hcs12.h; path = goil_target_hcs12.h; sourceTree = "<group>"; };
-		BAF56627478EC76A704E9B52 /* goil_target_libpcl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_target_libpcl.cpp; path = goil_target_libpcl.cpp; sourceTree = "<group>"; };
-		7A99787BD197EACD77ACCE5E /* goil_target_libpcl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_target_libpcl.h; path = goil_target_libpcl.h; sourceTree = "<group>"; };
-		C660610B44D9B9FED0FF9548 /* goil_target_posix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_target_posix.cpp; path = goil_target_posix.cpp; sourceTree = "<group>"; };
-		5B3F9FC8EA15D152ADD07294 /* goil_target_posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_target_posix.h; path = goil_target_posix.h; sourceTree = "<group>"; };
-		E1CC6BB9F0CD2A47751A186F /* goil_target_posix_vp2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_target_posix_vp2.cpp; path = goil_target_posix_vp2.cpp; sourceTree = "<group>"; };
-		D5920AA6C7C996A5EE53A70F /* goil_target_posix_vp2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_target_posix_vp2.h; path = goil_target_posix_vp2.h; sourceTree = "<group>"; };
-		B098B75C294DFFDC3E463904 /* goil_target_ppc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_target_ppc.cpp; path = goil_target_ppc.cpp; sourceTree = "<group>"; };
-		74270FD093EE8A9BF8AE7D0B /* goil_target_ppc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_target_ppc.h; path = goil_target_ppc.h; sourceTree = "<group>"; };
-		B63885E0D7C260CC007E8B9D /* goil_target_v850e.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_target_v850e.cpp; path = goil_target_v850e.cpp; sourceTree = "<group>"; };
-		524DEF3DCA464469D2CF9F3E /* goil_target_v850e.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_target_v850e.h; path = goil_target_v850e.h; sourceTree = "<group>"; };
-		9D8A121CE581499D7B701668 /* goil_targets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_targets.cpp; path = goil_targets.cpp; sourceTree = "<group>"; };
-		BB0B408017B62254211691B5 /* goil_targets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_targets.h; path = goil_targets.h; sourceTree = "<group>"; };
-		86960EEB576A8FD4C9EC6997 /* goil_timing_prot_attrs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_timing_prot_attrs.cpp; path = goil_timing_prot_attrs.cpp; sourceTree = "<group>"; };
-		D7DBBB00F97BA6CE92BF5ADD /* goil_timing_prot_attrs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_timing_prot_attrs.h; path = goil_timing_prot_attrs.h; sourceTree = "<group>"; };
-		E11FB9384C4CF38708677C48 /* goil_types_action.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_action.cpp; path = goil_types_action.cpp; sourceTree = "<group>"; };
-		E729311EF5B5C3003946C48F /* goil_types_action.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_action.h; path = goil_types_action.h; sourceTree = "<group>"; };
-		DE89D9058FCB0B968DBBBD68 /* goil_types_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_app.cpp; path = goil_types_app.cpp; sourceTree = "<group>"; };
-		8BA799AAA845E1C2E8A762BD /* goil_types_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_app.h; path = goil_types_app.h; sourceTree = "<group>"; };
-		CA89A1678042477183B7AC3F /* goil_types_counter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_counter.cpp; path = goil_types_counter.cpp; sourceTree = "<group>"; };
-		E93E74D3DF8527599FA62642 /* goil_types_counter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_counter.h; path = goil_types_counter.h; sourceTree = "<group>"; };
-		E4AAF9573AA5DFF913DF997A /* goil_types_isr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_isr.cpp; path = goil_types_isr.cpp; sourceTree = "<group>"; };
-		2E6F13B3A2DF133F073095DD /* goil_types_isr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_isr.h; path = goil_types_isr.h; sourceTree = "<group>"; };
-		AC59075B964B07152D234B70 /* goil_types_networkmessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_networkmessage.cpp; path = goil_types_networkmessage.cpp; sourceTree = "<group>"; };
-		87B126F152ED3D89A146B445 /* goil_types_networkmessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_networkmessage.h; path = goil_types_networkmessage.h; sourceTree = "<group>"; };
-		D8F4755FF269862EA77393DD /* goil_types_os.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_os.cpp; path = goil_types_os.cpp; sourceTree = "<group>"; };
-		EF840F0C74A814EC9237B6EC /* goil_types_os.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_os.h; path = goil_types_os.h; sourceTree = "<group>"; };
-		5ED3D6B8079E2E7E7BACC9F2 /* goil_types_resource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_resource.cpp; path = goil_types_resource.cpp; sourceTree = "<group>"; };
-		6EBAAFC66CC0879C71B5DB5C /* goil_types_resource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_resource.h; path = goil_types_resource.h; sourceTree = "<group>"; };
-		04D6854880943E5C3CD9CA25 /* goil_types_root.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_root.cpp; path = goil_types_root.cpp; sourceTree = "<group>"; };
-		1A19057CFF70779273E95AA6 /* goil_types_root.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_root.h; path = goil_types_root.h; sourceTree = "<group>"; };
-		F984EEABDBB0A7D494132EE5 /* goil_types_scheduletable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_scheduletable.cpp; path = goil_types_scheduletable.cpp; sourceTree = "<group>"; };
-		3C5EE48D0B7D48C591B8F430 /* goil_types_scheduletable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_scheduletable.h; path = goil_types_scheduletable.h; sourceTree = "<group>"; };
-		2BA9336A670E36D0ED79BC43 /* goil_types_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_task.cpp; path = goil_types_task.cpp; sourceTree = "<group>"; };
-		2726FB0A03BB19F2D8D9524D /* goil_types_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_task.h; path = goil_types_task.h; sourceTree = "<group>"; };
-		6DA19D22B51C68001E7E0E54 /* goil_types_timing_prot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_timing_prot.cpp; path = goil_types_timing_prot.cpp; sourceTree = "<group>"; };
-		F5033BC65BF8D78622277C4E /* goil_types_timing_prot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_timing_prot.h; path = goil_types_timing_prot.h; sourceTree = "<group>"; };
-		8EBCB58C6CE932B957B6F332 /* isrs_verif.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = isrs_verif.cpp; path = isrs_verif.cpp; sourceTree = "<group>"; };
-		66EC4FA56EB1E1F8CBE183B9 /* isrs_verif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = isrs_verif.h; path = isrs_verif.h; sourceTree = "<group>"; };
-		685A0DD18FB6A08AF0923DE0 /* it_table_generation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = it_table_generation.cpp; path = it_table_generation.cpp; sourceTree = "<group>"; };
-		D5904A438616FF7BDB3F7439 /* it_table_generation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = it_table_generation.h; path = it_table_generation.h; sourceTree = "<group>"; };
+		7260AE62E3B1396831A8398F /* goil_obj_alarm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_alarm.cpp; path = goil_obj_alarm.cpp; sourceTree = "<group>"; };
+		E875A2E075A1A4A6E1B9770F /* goil_obj_alarm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_alarm.h; path = goil_obj_alarm.h; sourceTree = "<group>"; };
+		CE56D3D6FA748AB6D9AF3FD7 /* goil_obj_application.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_application.cpp; path = goil_obj_application.cpp; sourceTree = "<group>"; };
+		B79421734881B53E1E1B18B6 /* goil_obj_application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_application.h; path = goil_obj_application.h; sourceTree = "<group>"; };
+		A9DED88F18ECEE47145A72C0 /* goil_obj_appmode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_appmode.cpp; path = goil_obj_appmode.cpp; sourceTree = "<group>"; };
+		30BD3DCAEFC96F40275BDC0A /* goil_obj_appmode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_appmode.h; path = goil_obj_appmode.h; sourceTree = "<group>"; };
+		778DFAECDC212708F721B788 /* goil_obj_com.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_com.cpp; path = goil_obj_com.cpp; sourceTree = "<group>"; };
+		4DFA42CADDBD0694A4E9BDC8 /* goil_obj_com.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_com.h; path = goil_obj_com.h; sourceTree = "<group>"; };
+		19AD8176D665453CFB2E55F0 /* goil_obj_counter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_counter.cpp; path = goil_obj_counter.cpp; sourceTree = "<group>"; };
+		E76FC522773286A895BC8436 /* goil_obj_counter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_counter.h; path = goil_obj_counter.h; sourceTree = "<group>"; };
+		6AB90CE0268229151C9BDE11 /* goil_obj_event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_event.cpp; path = goil_obj_event.cpp; sourceTree = "<group>"; };
+		3AFB633E50CDF1B20DE6F466 /* goil_obj_event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_event.h; path = goil_obj_event.h; sourceTree = "<group>"; };
+		754BA1C09B3695E0CB6CDE7F /* goil_obj_ipdu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_ipdu.cpp; path = goil_obj_ipdu.cpp; sourceTree = "<group>"; };
+		6A60928B05A7E228A89C3799 /* goil_obj_ipdu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_ipdu.h; path = goil_obj_ipdu.h; sourceTree = "<group>"; };
+		80A295F8076B1C5722A46AA2 /* goil_obj_isr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_isr.cpp; path = goil_obj_isr.cpp; sourceTree = "<group>"; };
+		A126B2F4B2374F342BE9ED44 /* goil_obj_isr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_isr.h; path = goil_obj_isr.h; sourceTree = "<group>"; };
+		7FBDB1988EF4C628EBA02591 /* goil_obj_message.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_message.cpp; path = goil_obj_message.cpp; sourceTree = "<group>"; };
+		4163B3523AFE57C2E008BC8C /* goil_obj_message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_message.h; path = goil_obj_message.h; sourceTree = "<group>"; };
+		6E7929B125F8597834FA83A4 /* goil_obj_networkmessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_networkmessage.cpp; path = goil_obj_networkmessage.cpp; sourceTree = "<group>"; };
+		4608232E07D3AA3D998E5135 /* goil_obj_networkmessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_networkmessage.h; path = goil_obj_networkmessage.h; sourceTree = "<group>"; };
+		5C00B1249BBE3554A4FDF6FB /* goil_obj_os.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_os.cpp; path = goil_obj_os.cpp; sourceTree = "<group>"; };
+		CBF4CAAED33C36B1B5FC2CB1 /* goil_obj_os.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_os.h; path = goil_obj_os.h; sourceTree = "<group>"; };
+		568125ED6C3F678819B6E058 /* goil_obj_resource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_resource.cpp; path = goil_obj_resource.cpp; sourceTree = "<group>"; };
+		8E4C41F2747BFA2F1B5F87DB /* goil_obj_resource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_resource.h; path = goil_obj_resource.h; sourceTree = "<group>"; };
+		14875E45BBA028A21ED38046 /* goil_obj_scheduletable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_scheduletable.cpp; path = goil_obj_scheduletable.cpp; sourceTree = "<group>"; };
+		EC990F19C78C75BD1E06F215 /* goil_obj_scheduletable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_scheduletable.h; path = goil_obj_scheduletable.h; sourceTree = "<group>"; };
+		28D4BF8CE0FF2EC19B371514 /* goil_obj_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_obj_task.cpp; path = goil_obj_task.cpp; sourceTree = "<group>"; };
+		976AAB5298D5DA10FE66F21D /* goil_obj_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_obj_task.h; path = goil_obj_task.h; sourceTree = "<group>"; };
+		F00665CE8623E36BD4E3C7C5 /* goil_options.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_options.cpp; path = goil_options.cpp; sourceTree = "<group>"; };
+		3223EFBC24C7D2583BE69251 /* goil_options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_options.h; path = goil_options.h; sourceTree = "<group>"; };
+		44A3365A46C9077EBB5E35C3 /* goil_proc_generation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_proc_generation.cpp; path = goil_proc_generation.cpp; sourceTree = "<group>"; };
+		674997CDB4692D34DE8633C4 /* goil_proc_generation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_proc_generation.h; path = goil_proc_generation.h; sourceTree = "<group>"; };
+		55CE926456240B2FF0100BDE /* goil_program.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_program.cpp; path = goil_program.cpp; sourceTree = "<group>"; };
+		65E6E1EDC05F3D8AB658C551 /* goil_program.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_program.h; path = goil_program.h; sourceTree = "<group>"; };
+		08E959397ADF34B1D77E88D7 /* goil_routines.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_routines.cpp; path = goil_routines.cpp; sourceTree = "<group>"; };
+		C30201F73F142449D037028D /* goil_routines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_routines.h; path = goil_routines.h; sourceTree = "<group>"; };
+		68B6EDD3015B3EDC9A11367B /* goil_semantic_types.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_semantic_types.cpp; path = goil_semantic_types.cpp; sourceTree = "<group>"; };
+		19C5080B9A6A17BEF029331C /* goil_semantic_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_semantic_types.h; path = goil_semantic_types.h; sourceTree = "<group>"; };
+		C3FF0AF142B6D3BEAD98A923 /* goil_semantic_verification.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_semantic_verification.cpp; path = goil_semantic_verification.cpp; sourceTree = "<group>"; };
+		94728BC39AA24BE94B319D21 /* goil_semantic_verification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_semantic_verification.h; path = goil_semantic_verification.h; sourceTree = "<group>"; };
+		6F775098FE977004015C6193 /* goil_semantics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_semantics.cpp; path = goil_semantics.cpp; sourceTree = "<group>"; };
+		909C13838FF95CCFA94CEBD9 /* goil_semantics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_semantics.h; path = goil_semantics.h; sourceTree = "<group>"; };
+		FC03EB9DED908C236BD1996D /* goil_syntax.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_syntax.cpp; path = goil_syntax.cpp; sourceTree = "<group>"; };
+		316C49E5A833517C45D31070 /* goil_syntax.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_syntax.h; path = goil_syntax.h; sourceTree = "<group>"; };
+		7343C29048673252E490F736 /* goil_target_arm7.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_target_arm7.cpp; path = goil_target_arm7.cpp; sourceTree = "<group>"; };
+		C49EB8F757AE6439E879BB2A /* goil_target_arm7.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_target_arm7.h; path = goil_target_arm7.h; sourceTree = "<group>"; };
+		CFA5649E7003B83DD4755294 /* goil_target_avr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_target_avr.cpp; path = goil_target_avr.cpp; sourceTree = "<group>"; };
+		32D17E56E07902B254DFAD10 /* goil_target_avr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_target_avr.h; path = goil_target_avr.h; sourceTree = "<group>"; };
+		A57B0395E163467C9DAE521B /* goil_target_c166.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_target_c166.cpp; path = goil_target_c166.cpp; sourceTree = "<group>"; };
+		AD9F68F89B29639786CB62EF /* goil_target_c166.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_target_c166.h; path = goil_target_c166.h; sourceTree = "<group>"; };
+		87F5EE0BC9D43BBF5BBE87FB /* goil_target_h8300h.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_target_h8300h.cpp; path = goil_target_h8300h.cpp; sourceTree = "<group>"; };
+		F9020D2ABEFE558796B99584 /* goil_target_h8300h.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_target_h8300h.h; path = goil_target_h8300h.h; sourceTree = "<group>"; };
+		BF3D9FE611D5A8E90FEFDC9C /* goil_target_hcs12.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_target_hcs12.cpp; path = goil_target_hcs12.cpp; sourceTree = "<group>"; };
+		991E3BEF5E069713AF9FA6CA /* goil_target_hcs12.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_target_hcs12.h; path = goil_target_hcs12.h; sourceTree = "<group>"; };
+		CCBDB62EC96E702F07F6425B /* goil_target_libpcl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_target_libpcl.cpp; path = goil_target_libpcl.cpp; sourceTree = "<group>"; };
+		F5E1059396431415E770C6DD /* goil_target_libpcl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_target_libpcl.h; path = goil_target_libpcl.h; sourceTree = "<group>"; };
+		BAF56627478EC76A704E9B52 /* goil_target_posix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_target_posix.cpp; path = goil_target_posix.cpp; sourceTree = "<group>"; };
+		7A99787BD197EACD77ACCE5E /* goil_target_posix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_target_posix.h; path = goil_target_posix.h; sourceTree = "<group>"; };
+		C660610B44D9B9FED0FF9548 /* goil_target_posix_vp2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_target_posix_vp2.cpp; path = goil_target_posix_vp2.cpp; sourceTree = "<group>"; };
+		5B3F9FC8EA15D152ADD07294 /* goil_target_posix_vp2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_target_posix_vp2.h; path = goil_target_posix_vp2.h; sourceTree = "<group>"; };
+		E1CC6BB9F0CD2A47751A186F /* goil_target_ppc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_target_ppc.cpp; path = goil_target_ppc.cpp; sourceTree = "<group>"; };
+		D5920AA6C7C996A5EE53A70F /* goil_target_ppc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_target_ppc.h; path = goil_target_ppc.h; sourceTree = "<group>"; };
+		B098B75C294DFFDC3E463904 /* goil_target_v850e.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_target_v850e.cpp; path = goil_target_v850e.cpp; sourceTree = "<group>"; };
+		74270FD093EE8A9BF8AE7D0B /* goil_target_v850e.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_target_v850e.h; path = goil_target_v850e.h; sourceTree = "<group>"; };
+		B63885E0D7C260CC007E8B9D /* goil_targets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_targets.cpp; path = goil_targets.cpp; sourceTree = "<group>"; };
+		524DEF3DCA464469D2CF9F3E /* goil_targets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_targets.h; path = goil_targets.h; sourceTree = "<group>"; };
+		9D8A121CE581499D7B701668 /* goil_timing_prot_attrs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_timing_prot_attrs.cpp; path = goil_timing_prot_attrs.cpp; sourceTree = "<group>"; };
+		BB0B408017B62254211691B5 /* goil_timing_prot_attrs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_timing_prot_attrs.h; path = goil_timing_prot_attrs.h; sourceTree = "<group>"; };
+		86960EEB576A8FD4C9EC6997 /* goil_types_action.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_action.cpp; path = goil_types_action.cpp; sourceTree = "<group>"; };
+		D7DBBB00F97BA6CE92BF5ADD /* goil_types_action.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_action.h; path = goil_types_action.h; sourceTree = "<group>"; };
+		E11FB9384C4CF38708677C48 /* goil_types_app.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_app.cpp; path = goil_types_app.cpp; sourceTree = "<group>"; };
+		E729311EF5B5C3003946C48F /* goil_types_app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_app.h; path = goil_types_app.h; sourceTree = "<group>"; };
+		DE89D9058FCB0B968DBBBD68 /* goil_types_counter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_counter.cpp; path = goil_types_counter.cpp; sourceTree = "<group>"; };
+		8BA799AAA845E1C2E8A762BD /* goil_types_counter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_counter.h; path = goil_types_counter.h; sourceTree = "<group>"; };
+		CA89A1678042477183B7AC3F /* goil_types_isr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_isr.cpp; path = goil_types_isr.cpp; sourceTree = "<group>"; };
+		E93E74D3DF8527599FA62642 /* goil_types_isr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_isr.h; path = goil_types_isr.h; sourceTree = "<group>"; };
+		E4AAF9573AA5DFF913DF997A /* goil_types_networkmessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_networkmessage.cpp; path = goil_types_networkmessage.cpp; sourceTree = "<group>"; };
+		2E6F13B3A2DF133F073095DD /* goil_types_networkmessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_networkmessage.h; path = goil_types_networkmessage.h; sourceTree = "<group>"; };
+		AC59075B964B07152D234B70 /* goil_types_os.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_os.cpp; path = goil_types_os.cpp; sourceTree = "<group>"; };
+		87B126F152ED3D89A146B445 /* goil_types_os.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_os.h; path = goil_types_os.h; sourceTree = "<group>"; };
+		D8F4755FF269862EA77393DD /* goil_types_resource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_resource.cpp; path = goil_types_resource.cpp; sourceTree = "<group>"; };
+		EF840F0C74A814EC9237B6EC /* goil_types_resource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_resource.h; path = goil_types_resource.h; sourceTree = "<group>"; };
+		5ED3D6B8079E2E7E7BACC9F2 /* goil_types_root.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_root.cpp; path = goil_types_root.cpp; sourceTree = "<group>"; };
+		6EBAAFC66CC0879C71B5DB5C /* goil_types_root.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_root.h; path = goil_types_root.h; sourceTree = "<group>"; };
+		04D6854880943E5C3CD9CA25 /* goil_types_scheduletable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_scheduletable.cpp; path = goil_types_scheduletable.cpp; sourceTree = "<group>"; };
+		1A19057CFF70779273E95AA6 /* goil_types_scheduletable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_scheduletable.h; path = goil_types_scheduletable.h; sourceTree = "<group>"; };
+		F984EEABDBB0A7D494132EE5 /* goil_types_task.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_task.cpp; path = goil_types_task.cpp; sourceTree = "<group>"; };
+		3C5EE48D0B7D48C591B8F430 /* goil_types_task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_task.h; path = goil_types_task.h; sourceTree = "<group>"; };
+		2BA9336A670E36D0ED79BC43 /* goil_types_timing_prot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = goil_types_timing_prot.cpp; path = goil_types_timing_prot.cpp; sourceTree = "<group>"; };
+		2726FB0A03BB19F2D8D9524D /* goil_types_timing_prot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = goil_types_timing_prot.h; path = goil_types_timing_prot.h; sourceTree = "<group>"; };
+		6DA19D22B51C68001E7E0E54 /* isrs_verif.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = isrs_verif.cpp; path = isrs_verif.cpp; sourceTree = "<group>"; };
+		F5033BC65BF8D78622277C4E /* isrs_verif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = isrs_verif.h; path = isrs_verif.h; sourceTree = "<group>"; };
+		8EBCB58C6CE932B957B6F332 /* it_table_generation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = it_table_generation.cpp; path = it_table_generation.cpp; sourceTree = "<group>"; };
+		66EC4FA56EB1E1F8CBE183B9 /* it_table_generation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = it_table_generation.h; path = it_table_generation.h; sourceTree = "<group>"; };
 		325A8F591B52D302E7181331 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.obj; name = main.m; path = main.m; sourceTree = "<group>"; };
 		CBCC5E5D1C6E28598E8CBBE8 /* mainForLIBPM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mainForLIBPM.h; path = mainForLIBPM.h; sourceTree = "<group>"; };
 		2FE46A9D49D3D3AF4F57443D /* md5.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = md5.cpp; path = md5.cpp; sourceTree = "<group>"; };
 		7642BF815A88822C447D9DC4 /* md5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = md5.h; path = md5.h; sourceTree = "<group>"; };
+		685A0DD18FB6A08AF0923DE0 /* memory_mapping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = memory_mapping.cpp; path = memory_mapping.cpp; sourceTree = "<group>"; };
+		D5904A438616FF7BDB3F7439 /* memory_mapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = memory_mapping.h; path = memory_mapping.h; sourceTree = "<group>"; };
 		76FA1A4F25F62E0EB5261CA3 /* oil.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = oil.icns; path = oil.icns; sourceTree = "<group>"; };
 		8409A4022A2C4C5A5CA3EE19 /* oil_source.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = oil_source.icns; path = oil_source.icns; sourceTree = "<group>"; };
 		C6FCB220FFE637CDA29BB3F6 /* predefined_types.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = predefined_types.cpp; path = predefined_types.cpp; sourceTree = "<group>"; };
@@ -752,102 +752,102 @@
 				3F027327D8461063F4AC58A6 /* goil_lexique.h */,
 				FC8586DFA4D1BC0E1742C08B /* goil_message_verif.cpp */,
 				C833DFF4B38FC8D2872F1EC6 /* goil_message_verif.h */,
-				7260AE62E3B1396831A8398F /* goil_mp_generation.cpp */,
-				E875A2E075A1A4A6E1B9770F /* goil_mp_generation.h */,
-				CE56D3D6FA748AB6D9AF3FD7 /* goil_obj_alarm.cpp */,
-				B79421734881B53E1E1B18B6 /* goil_obj_alarm.h */,
-				A9DED88F18ECEE47145A72C0 /* goil_obj_application.cpp */,
-				30BD3DCAEFC96F40275BDC0A /* goil_obj_application.h */,
-				778DFAECDC212708F721B788 /* goil_obj_appmode.cpp */,
-				4DFA42CADDBD0694A4E9BDC8 /* goil_obj_appmode.h */,
-				19AD8176D665453CFB2E55F0 /* goil_obj_com.cpp */,
-				E76FC522773286A895BC8436 /* goil_obj_com.h */,
-				6AB90CE0268229151C9BDE11 /* goil_obj_counter.cpp */,
-				3AFB633E50CDF1B20DE6F466 /* goil_obj_counter.h */,
-				754BA1C09B3695E0CB6CDE7F /* goil_obj_event.cpp */,
-				6A60928B05A7E228A89C3799 /* goil_obj_event.h */,
-				80A295F8076B1C5722A46AA2 /* goil_obj_ipdu.cpp */,
-				A126B2F4B2374F342BE9ED44 /* goil_obj_ipdu.h */,
-				7FBDB1988EF4C628EBA02591 /* goil_obj_isr.cpp */,
-				4163B3523AFE57C2E008BC8C /* goil_obj_isr.h */,
-				6E7929B125F8597834FA83A4 /* goil_obj_message.cpp */,
-				4608232E07D3AA3D998E5135 /* goil_obj_message.h */,
-				5C00B1249BBE3554A4FDF6FB /* goil_obj_networkmessage.cpp */,
-				CBF4CAAED33C36B1B5FC2CB1 /* goil_obj_networkmessage.h */,
-				568125ED6C3F678819B6E058 /* goil_obj_os.cpp */,
-				8E4C41F2747BFA2F1B5F87DB /* goil_obj_os.h */,
-				14875E45BBA028A21ED38046 /* goil_obj_resource.cpp */,
-				EC990F19C78C75BD1E06F215 /* goil_obj_resource.h */,
-				28D4BF8CE0FF2EC19B371514 /* goil_obj_scheduletable.cpp */,
-				976AAB5298D5DA10FE66F21D /* goil_obj_scheduletable.h */,
-				F00665CE8623E36BD4E3C7C5 /* goil_obj_task.cpp */,
-				3223EFBC24C7D2583BE69251 /* goil_obj_task.h */,
-				44A3365A46C9077EBB5E35C3 /* goil_options.cpp */,
-				674997CDB4692D34DE8633C4 /* goil_options.h */,
-				55CE926456240B2FF0100BDE /* goil_proc_generation.cpp */,
-				65E6E1EDC05F3D8AB658C551 /* goil_proc_generation.h */,
-				08E959397ADF34B1D77E88D7 /* goil_program.cpp */,
-				C30201F73F142449D037028D /* goil_program.h */,
-				68B6EDD3015B3EDC9A11367B /* goil_routines.cpp */,
-				19C5080B9A6A17BEF029331C /* goil_routines.h */,
-				C3FF0AF142B6D3BEAD98A923 /* goil_semantic_types.cpp */,
-				94728BC39AA24BE94B319D21 /* goil_semantic_types.h */,
-				6F775098FE977004015C6193 /* goil_semantic_verification.cpp */,
-				909C13838FF95CCFA94CEBD9 /* goil_semantic_verification.h */,
-				FC03EB9DED908C236BD1996D /* goil_semantics.cpp */,
-				316C49E5A833517C45D31070 /* goil_semantics.h */,
-				7343C29048673252E490F736 /* goil_syntax.cpp */,
-				C49EB8F757AE6439E879BB2A /* goil_syntax.h */,
-				CFA5649E7003B83DD4755294 /* goil_target_arm7.cpp */,
-				32D17E56E07902B254DFAD10 /* goil_target_arm7.h */,
-				A57B0395E163467C9DAE521B /* goil_target_avr.cpp */,
-				AD9F68F89B29639786CB62EF /* goil_target_avr.h */,
-				87F5EE0BC9D43BBF5BBE87FB /* goil_target_c166.cpp */,
-				F9020D2ABEFE558796B99584 /* goil_target_c166.h */,
-				BF3D9FE611D5A8E90FEFDC9C /* goil_target_h8300h.cpp */,
-				991E3BEF5E069713AF9FA6CA /* goil_target_h8300h.h */,
-				CCBDB62EC96E702F07F6425B /* goil_target_hcs12.cpp */,
-				F5E1059396431415E770C6DD /* goil_target_hcs12.h */,
-				BAF56627478EC76A704E9B52 /* goil_target_libpcl.cpp */,
-				7A99787BD197EACD77ACCE5E /* goil_target_libpcl.h */,
-				C660610B44D9B9FED0FF9548 /* goil_target_posix.cpp */,
-				5B3F9FC8EA15D152ADD07294 /* goil_target_posix.h */,
-				E1CC6BB9F0CD2A47751A186F /* goil_target_posix_vp2.cpp */,
-				D5920AA6C7C996A5EE53A70F /* goil_target_posix_vp2.h */,
-				B098B75C294DFFDC3E463904 /* goil_target_ppc.cpp */,
-				74270FD093EE8A9BF8AE7D0B /* goil_target_ppc.h */,
-				B63885E0D7C260CC007E8B9D /* goil_target_v850e.cpp */,
-				524DEF3DCA464469D2CF9F3E /* goil_target_v850e.h */,
-				9D8A121CE581499D7B701668 /* goil_targets.cpp */,
-				BB0B408017B62254211691B5 /* goil_targets.h */,
-				86960EEB576A8FD4C9EC6997 /* goil_timing_prot_attrs.cpp */,
-				D7DBBB00F97BA6CE92BF5ADD /* goil_timing_prot_attrs.h */,
-				E11FB9384C4CF38708677C48 /* goil_types_action.cpp */,
-				E729311EF5B5C3003946C48F /* goil_types_action.h */,
-				DE89D9058FCB0B968DBBBD68 /* goil_types_app.cpp */,
-				8BA799AAA845E1C2E8A762BD /* goil_types_app.h */,
-				CA89A1678042477183B7AC3F /* goil_types_counter.cpp */,
-				E93E74D3DF8527599FA62642 /* goil_types_counter.h */,
-				E4AAF9573AA5DFF913DF997A /* goil_types_isr.cpp */,
-				2E6F13B3A2DF133F073095DD /* goil_types_isr.h */,
-				AC59075B964B07152D234B70 /* goil_types_networkmessage.cpp */,
-				87B126F152ED3D89A146B445 /* goil_types_networkmessage.h */,
-				D8F4755FF269862EA77393DD /* goil_types_os.cpp */,
-				EF840F0C74A814EC9237B6EC /* goil_types_os.h */,
-				5ED3D6B8079E2E7E7BACC9F2 /* goil_types_resource.cpp */,
-				6EBAAFC66CC0879C71B5DB5C /* goil_types_resource.h */,
-				04D6854880943E5C3CD9CA25 /* goil_types_root.cpp */,
-				1A19057CFF70779273E95AA6 /* goil_types_root.h */,
-				F984EEABDBB0A7D494132EE5 /* goil_types_scheduletable.cpp */,
-				3C5EE48D0B7D48C591B8F430 /* goil_types_scheduletable.h */,
-				2BA9336A670E36D0ED79BC43 /* goil_types_task.cpp */,
-				2726FB0A03BB19F2D8D9524D /* goil_types_task.h */,
-				6DA19D22B51C68001E7E0E54 /* goil_types_timing_prot.cpp */,
-				F5033BC65BF8D78622277C4E /* goil_types_timing_prot.h */,
-				8EBCB58C6CE932B957B6F332 /* isrs_verif.cpp */,
-				66EC4FA56EB1E1F8CBE183B9 /* isrs_verif.h */,
-				685A0DD18FB6A08AF0923DE0 /* it_table_generation.cpp */,
-				D5904A438616FF7BDB3F7439 /* it_table_generation.h */,
+				7260AE62E3B1396831A8398F /* goil_obj_alarm.cpp */,
+				E875A2E075A1A4A6E1B9770F /* goil_obj_alarm.h */,
+				CE56D3D6FA748AB6D9AF3FD7 /* goil_obj_application.cpp */,
+				B79421734881B53E1E1B18B6 /* goil_obj_application.h */,
+				A9DED88F18ECEE47145A72C0 /* goil_obj_appmode.cpp */,
+				30BD3DCAEFC96F40275BDC0A /* goil_obj_appmode.h */,
+				778DFAECDC212708F721B788 /* goil_obj_com.cpp */,
+				4DFA42CADDBD0694A4E9BDC8 /* goil_obj_com.h */,
+				19AD8176D665453CFB2E55F0 /* goil_obj_counter.cpp */,
+				E76FC522773286A895BC8436 /* goil_obj_counter.h */,
+				6AB90CE0268229151C9BDE11 /* goil_obj_event.cpp */,
+				3AFB633E50CDF1B20DE6F466 /* goil_obj_event.h */,
+				754BA1C09B3695E0CB6CDE7F /* goil_obj_ipdu.cpp */,
+				6A60928B05A7E228A89C3799 /* goil_obj_ipdu.h */,
+				80A295F8076B1C5722A46AA2 /* goil_obj_isr.cpp */,
+				A126B2F4B2374F342BE9ED44 /* goil_obj_isr.h */,
+				7FBDB1988EF4C628EBA02591 /* goil_obj_message.cpp */,
+				4163B3523AFE57C2E008BC8C /* goil_obj_message.h */,
+				6E7929B125F8597834FA83A4 /* goil_obj_networkmessage.cpp */,
+				4608232E07D3AA3D998E5135 /* goil_obj_networkmessage.h */,
+				5C00B1249BBE3554A4FDF6FB /* goil_obj_os.cpp */,
+				CBF4CAAED33C36B1B5FC2CB1 /* goil_obj_os.h */,
+				568125ED6C3F678819B6E058 /* goil_obj_resource.cpp */,
+				8E4C41F2747BFA2F1B5F87DB /* goil_obj_resource.h */,
+				14875E45BBA028A21ED38046 /* goil_obj_scheduletable.cpp */,
+				EC990F19C78C75BD1E06F215 /* goil_obj_scheduletable.h */,
+				28D4BF8CE0FF2EC19B371514 /* goil_obj_task.cpp */,
+				976AAB5298D5DA10FE66F21D /* goil_obj_task.h */,
+				F00665CE8623E36BD4E3C7C5 /* goil_options.cpp */,
+				3223EFBC24C7D2583BE69251 /* goil_options.h */,
+				44A3365A46C9077EBB5E35C3 /* goil_proc_generation.cpp */,
+				674997CDB4692D34DE8633C4 /* goil_proc_generation.h */,
+				55CE926456240B2FF0100BDE /* goil_program.cpp */,
+				65E6E1EDC05F3D8AB658C551 /* goil_program.h */,
+				08E959397ADF34B1D77E88D7 /* goil_routines.cpp */,
+				C30201F73F142449D037028D /* goil_routines.h */,
+				68B6EDD3015B3EDC9A11367B /* goil_semantic_types.cpp */,
+				19C5080B9A6A17BEF029331C /* goil_semantic_types.h */,
+				C3FF0AF142B6D3BEAD98A923 /* goil_semantic_verification.cpp */,
+				94728BC39AA24BE94B319D21 /* goil_semantic_verification.h */,
+				6F775098FE977004015C6193 /* goil_semantics.cpp */,
+				909C13838FF95CCFA94CEBD9 /* goil_semantics.h */,
+				FC03EB9DED908C236BD1996D /* goil_syntax.cpp */,
+				316C49E5A833517C45D31070 /* goil_syntax.h */,
+				7343C29048673252E490F736 /* goil_target_arm7.cpp */,
+				C49EB8F757AE6439E879BB2A /* goil_target_arm7.h */,
+				CFA5649E7003B83DD4755294 /* goil_target_avr.cpp */,
+				32D17E56E07902B254DFAD10 /* goil_target_avr.h */,
+				A57B0395E163467C9DAE521B /* goil_target_c166.cpp */,
+				AD9F68F89B29639786CB62EF /* goil_target_c166.h */,
+				87F5EE0BC9D43BBF5BBE87FB /* goil_target_h8300h.cpp */,
+				F9020D2ABEFE558796B99584 /* goil_target_h8300h.h */,
+				BF3D9FE611D5A8E90FEFDC9C /* goil_target_hcs12.cpp */,
+				991E3BEF5E069713AF9FA6CA /* goil_target_hcs12.h */,
+				CCBDB62EC96E702F07F6425B /* goil_target_libpcl.cpp */,
+				F5E1059396431415E770C6DD /* goil_target_libpcl.h */,
+				BAF56627478EC76A704E9B52 /* goil_target_posix.cpp */,
+				7A99787BD197EACD77ACCE5E /* goil_target_posix.h */,
+				C660610B44D9B9FED0FF9548 /* goil_target_posix_vp2.cpp */,
+				5B3F9FC8EA15D152ADD07294 /* goil_target_posix_vp2.h */,
+				E1CC6BB9F0CD2A47751A186F /* goil_target_ppc.cpp */,
+				D5920AA6C7C996A5EE53A70F /* goil_target_ppc.h */,
+				B098B75C294DFFDC3E463904 /* goil_target_v850e.cpp */,
+				74270FD093EE8A9BF8AE7D0B /* goil_target_v850e.h */,
+				B63885E0D7C260CC007E8B9D /* goil_targets.cpp */,
+				524DEF3DCA464469D2CF9F3E /* goil_targets.h */,
+				9D8A121CE581499D7B701668 /* goil_timing_prot_attrs.cpp */,
+				BB0B408017B62254211691B5 /* goil_timing_prot_attrs.h */,
+				86960EEB576A8FD4C9EC6997 /* goil_types_action.cpp */,
+				D7DBBB00F97BA6CE92BF5ADD /* goil_types_action.h */,
+				E11FB9384C4CF38708677C48 /* goil_types_app.cpp */,
+				E729311EF5B5C3003946C48F /* goil_types_app.h */,
+				DE89D9058FCB0B968DBBBD68 /* goil_types_counter.cpp */,
+				8BA799AAA845E1C2E8A762BD /* goil_types_counter.h */,
+				CA89A1678042477183B7AC3F /* goil_types_isr.cpp */,
+				E93E74D3DF8527599FA62642 /* goil_types_isr.h */,
+				E4AAF9573AA5DFF913DF997A /* goil_types_networkmessage.cpp */,
+				2E6F13B3A2DF133F073095DD /* goil_types_networkmessage.h */,
+				AC59075B964B07152D234B70 /* goil_types_os.cpp */,
+				87B126F152ED3D89A146B445 /* goil_types_os.h */,
+				D8F4755FF269862EA77393DD /* goil_types_resource.cpp */,
+				EF840F0C74A814EC9237B6EC /* goil_types_resource.h */,
+				5ED3D6B8079E2E7E7BACC9F2 /* goil_types_root.cpp */,
+				6EBAAFC66CC0879C71B5DB5C /* goil_types_root.h */,
+				04D6854880943E5C3CD9CA25 /* goil_types_scheduletable.cpp */,
+				1A19057CFF70779273E95AA6 /* goil_types_scheduletable.h */,
+				F984EEABDBB0A7D494132EE5 /* goil_types_task.cpp */,
+				3C5EE48D0B7D48C591B8F430 /* goil_types_task.h */,
+				2BA9336A670E36D0ED79BC43 /* goil_types_timing_prot.cpp */,
+				2726FB0A03BB19F2D8D9524D /* goil_types_timing_prot.h */,
+				6DA19D22B51C68001E7E0E54 /* isrs_verif.cpp */,
+				F5033BC65BF8D78622277C4E /* isrs_verif.h */,
+				8EBCB58C6CE932B957B6F332 /* it_table_generation.cpp */,
+				66EC4FA56EB1E1F8CBE183B9 /* it_table_generation.h */,
+				685A0DD18FB6A08AF0923DE0 /* memory_mapping.cpp */,
+				D5904A438616FF7BDB3F7439 /* memory_mapping.h */,
 				9B3020AFEECD95B4009ADF4C /* resources_verif.cpp */,
 				54F96369AB93E4F3BB068C22 /* resources_verif.h */,
 				5FCA3E988C2AF215D4E544D3 /* scheduletable_verif.cpp */,

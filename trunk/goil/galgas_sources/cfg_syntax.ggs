@@ -124,17 +124,25 @@ rule <interrupts>
   ?!@basic_type its
 :
   @ident_map it_src [emptyMap];
-  $interrupts$;
+  @luint64 it_count;
+  $interrupts$; $[$; $uint$ ?it_count; $]$;
+  if [it_count uint64] > 32L then
+    error it_count: "Interrupt count must be <= 32";
+  end if; 
   @location it_loc := here;
   ${$;
   repeat while
     @lstring src;
     @luint64 id;
     $idf$ ?src; $=$; $uint$ ?id; $;$;
+    if [id uint64] >= [it_count uint64] then
+      error id: "Interrupt id out of range";
+      error it_count: "Range was defined here";
+    end if;
     [!?it_src put!src![@uint64_class new![id location]![id uint64]]];
   end repeat;
   $}$; $;$;
-  its := [@interrupts new!it_loc!it_src];
+  its := [@interrupts new !it_loc !it_count !it_src];
 end rule;
 
 end syntax ;

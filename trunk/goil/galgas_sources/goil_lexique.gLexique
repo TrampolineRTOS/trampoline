@@ -34,7 +34,8 @@ style commentStyle -> "Comments:";
 # Extra keywords for makefile generation
 #
 list makefileKeywords error message "Makefile attribute  '%K'" style keywordsStyle :
-    "APP_SRC", "CFLAGS", "ASFLAGS", "LDFLAGS", "APP_NAME", "TRAMPOLINE_BASE_PATH";
+    "APP_SRC", "COMPILER", "ASSEMBLER", "LINKER", 
+    "CFLAGS", "ASFLAGS", "LDFLAGS", "APP_NAME", "TRAMPOLINE_BASE_PATH";
 
 #
 # OIL_VERSION keyword
@@ -82,7 +83,7 @@ list objectRefType error message "object reference type '%K'" style keywordsStyl
 list os_attributes error message "os attribute '%K'" style keywordsStyle :
     "STATUS", "EXTENDED", "STARTUPHOOK", "ERRORHOOK", "SHUTDOWNHOOK", "PRETASKHOOK",
     "POSTTASKHOOK", "USEGETSERVICEID", "USEPARAMETERACCESS", "USERESSCHEDULER", "SYSTEM_CALL",
-    "TRACE";
+    "MEMMAP", "MEMORY_PROTECTION", "TRACE";
 
 #
 # TRACE attributes

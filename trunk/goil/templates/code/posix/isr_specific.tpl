@@ -6,6 +6,4 @@ int signal_for_isr_id[] = {
 $ISR_SIGNAL_LIST$
 };
 #endif
-#else
-$IT_TABLE$
 #endif

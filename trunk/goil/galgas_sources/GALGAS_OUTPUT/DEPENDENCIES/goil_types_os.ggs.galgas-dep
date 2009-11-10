@@ -1,4 +1,5 @@
-573::
-goil_basic_types.ggs::
+598::
+goil_basic_types.ggs
+goil_routines.ggs::
 GALGAS_OUTPUT/goil_types_os.h
 GALGAS_OUTPUT/goil_types_os.cpp

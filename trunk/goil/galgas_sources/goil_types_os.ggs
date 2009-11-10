@@ -25,6 +25,7 @@
 semantics goil_types_os :
 
 import semantics goil_basic_types in "goil_basic_types.ggs";
+import semantics goil_routines in "goil_routines.ggs";
 
 abstract class @trace_method {
   @location loc;
@@ -113,6 +114,29 @@ routine set_method
   end cast;
 end routine;
 
+# MemMap
+class @memmap_false extends @basic_type {}
+
+class @memmap_true extends @basic_type {
+  @lstring    compiler;
+  @lstring    linker;
+  @basic_type memory_prot;
+}
+
+routine set_memmap
+  ?!@basic_type m
+  ?@basic_type  nm
+  ?@string      att
+:
+  cast m :
+  when == @void do
+    m := nm;
+  else
+    error [nm location] : "Redefinition of ".att;
+    error [m location]  : "was defined here";
+  end cast;
+end routine;
+
 class @os_obj extends @oil_obj {
   @lstring     status             feature setter;
   @basic_type  startuphook        feature setter;
@@ -127,7 +151,11 @@ class @os_obj extends @oil_obj {
   @basic_type  useparameteraccess feature setter;
   @basic_type  useresscheduler    feature setter;
   @basic_type  systemcall         feature setter;
+  @basic_type  memmap             feature setter;
   @lstringlist app_src            feature setter;
+  @lstring     compiler           feature setter;
+  @lstring     assembler          feature setter;
+  @lstring     linker             feature setter;
   @lstringlist cflags             feature setter;
   @lstringlist asflags            feature setter;
   @lstringlist ldflags            feature setter;
@@ -136,6 +164,99 @@ class @os_obj extends @oil_obj {
   @trace       trace              feature setter;
   @ident_map   others             feature setter;
 }
+
+function memory_protection
+  ?@os_obj      os
+  ->@basic_type mp
+:
+  cast [os memmap]:
+  when == @memmap_true mm do
+    mp := [mm memory_prot];
+  else
+    mp := [@bool_class new !here !false];
+  end cast;
+end function;
+
+function memory_protection_on
+  ?@os_obj os
+  ->@bool  mp
+:
+  cast [os memmap]:
+  when == @memmap_true mm do
+    cast [mm memory_prot] :
+    when == @bool_class b do
+      mp := [b value];
+    else
+      mp := false;
+    end cast;
+  else
+    mp := false;
+  end cast;
+end function;
+
+function memory_mapping
+  ?@os_obj os
+  ->@bool  mm
+:
+  cast [os memmap]:
+  when == @memmap_true do
+    mm := true;
+  else
+    mm := false;
+  end cast;
+end function;
+
+#
+# compiler returns a non empty string if a compiler is specified
+# for memory mapping purpose
+#
+function compiler
+  ??@basic_type os_memmap
+  ->@string   cc
+:
+  cast os_memmap :
+  when == @memmap_true s do cc := [[s compiler] string];
+  else cc := "";
+  end cast;
+  if cc != "" then
+    cc := "compiler/".cc;
+    @string rtd := root_templates_directory[];
+    if rtd != "" then
+      @string path := rtd."/".cc;
+      if not [path directoryExists] then
+        cc := "";
+      end if;
+    else
+      cc := "";
+    end if;
+  end if;
+end function;
+
+#
+# linker returns a non empty string if a linker is specified
+# for memory mapping purpose
+#
+function linker
+  ??@basic_type os_memmap
+  ->@string   lk
+:
+  cast os_memmap :
+  when == @memmap_true s do lk := [[s linker] string];
+  else lk := "";
+  end cast;
+  if lk != "" then
+    lk := "linker/".lk;
+    @string rtd := root_templates_directory[];
+    if rtd != "" then
+      @string path := rtd."/".lk;
+      if not [path directoryExists] then
+        lk := "";
+      end if;
+    else
+      lk := "";
+    end if;
+  end if;
+end function;
 
 function void_os_obj
   ->@os_obj os
@@ -157,7 +278,11 @@ function void_os_obj
     !void_obj
     !void_obj
     !void_obj
-    ![@lstringlist emptyList]
+    !void_obj                 # memmap
+    ![@lstringlist emptyList] # app_src
+    !emptyString
+    !emptyString
+    !emptyString
     ![@lstringlist emptyList]
     ![@lstringlist emptyList]
     ![@lstringlist emptyList]
