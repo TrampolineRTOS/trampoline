@@ -8,6 +8,10 @@ option goil_options :
 #@bool   orti_on           : '\0', "orti"              -> "Generate an ORTI file" ;
 @bool   generate_makefile : 'g', "generate-makefile" -> "Generate a Makefile from OS extra attributes";
 #@uint   corrected_bits    : '\0', "crc"               -> "Generate correcting code" default 0 ;
+
+#--- Added by PM for new templates
+@string goil_template_dir : '\0', "goil-templates" -> "Specifies template directory (used by goil for code generation, for new-style templates)";
+@bool run_goil_template_test : '\0', "run-goil-template-test" -> "Runs and displays a GOIL template for template testing purpose";
 end option ;
 
 # vim:ft=ggs:ts=4:sw=4

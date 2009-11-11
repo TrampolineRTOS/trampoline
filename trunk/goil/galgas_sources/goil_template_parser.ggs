@@ -1,0 +1,351 @@
+#---------------------------------------------------------------------------*
+#                                                                           *
+#  GOIL Template parser                                                     *
+#                                                                           *
+#  Copyright (C) 2009, ..., 2009 Pierre Molinaro.                           *
+#                                                                           *
+#  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
+#                                                                           *
+#  This program is free software; you can redistribute it and/or modify it  *
+#  under the terms of the GNU General Public License as published by the    *
+#  Free Software Foundation.                                                *
+#                                                                           *
+#  This program is distributed in the hope it will be useful, but WITHOUT   *
+#  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
+#  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
+#   more details.                                                           *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+syntax goil_template_parser :
+with "goil_template_scanner.gLexique" ;
+
+import lexique goil_template_scanner in "goil_template_scanner.gLexique" ;
+
+import semantics goil_template_invocation in "goil_template_invocation.ggs" ;
+
+nonterminal <goil_template_start_symbol>
+  ??@goilTemplateVariableMap inTemplateVariableMap
+  ?!@string ioResultingString
+;
+
+nonterminal <template_instruction>
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@string ioResultingString
+label parse
+;
+
+nonterminal <expression>
+  ??@goilTemplateVariableMap inTemplateVariableMap
+  !@goilTemplateValue outExpression
+  !@goilTemplateType outResultType
+label parse
+;
+
+nonterminal  <template_instruction_list>
+  ??@goilTemplateVariableMap inTemplateVariableMap
+  ?!@string ioResultingString
+label parseAndResetTemplateString
+label parse
+;
+
+#---------------------------------------------------------------------------*
+
+rule <template_instruction>
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@string ioResultingString
+:
+  $!$ ;
+  @goilTemplateValue expression ;
+  @goilTemplateType resultType ;
+  <expression>
+    !ioTemplateVariableMap
+    ?expression
+    ?resultType
+  ;
+  if resultType != [@goilTemplateType stringType] then
+    error here : "only a string expression can be emitted (it has "
+    . [resultType messageGoilTemplateType] . " type" ;
+  end if ;
+  ioResultingString .= [expression mStringValue] ;
+end rule ;
+
+#---------------------------------------------------------------------------*
+
+rule <template_instruction>
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@string ioResultingString
+:
+  $template$ ;
+  $identifier$ ? @lstring templateName ;
+  goilTemplateInvocation
+    !templateName
+    !ioTemplateVariableMap
+    !?ioResultingString
+  ;
+end rule ;
+
+#---------------------------------------------------------------------------*
+
+rule <template_instruction>
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@string ioResultingString
+:
+  $?$ ;
+  $identifier$ ? @lstring columnConstantName ;
+  @string value := "" ;
+  @bool searchEndOfLine := true ;
+  @uint idx := [ioResultingString length] ;
+  loop [ioResultingString length] :
+  while (idx > 0) & searchEndOfLine
+  do
+    searchEndOfLine := [ioResultingString characterAtIndex !idx - 1] != '\n' ;
+    idx -- ;
+    if searchEndOfLine then
+      value .= " " ;
+    end if ;
+  end loop ;
+  [!?ioTemplateVariableMap insertKey
+    !columnConstantName
+    ![@goilTemplateType stringType]
+    ![@goilTemplateValue new !0L !value ![@goilTemplateFieldMapList emptyList]]
+  ] ;
+end rule ;
+
+#---------------------------------------------------------------------------*
+
+#rule <template_instruction>
+#  ?!@typeVariablesMap ioTemplateVariableMap
+#  ??@EXsemanticContext inSemanticContext
+#  ??@goilTemplateVariableMap inComponentSemanticsEntitiesMap
+#  ??@M_optionComponents inOptionsComponentsMapForUse
+#  ?!@templateInstructionList ioResultingInstructionList
+#:
+#  $block$ ;
+#  @goilTemplateValue expression ;
+#  @goilTemplateType resultType ;
+#  <expression>
+#    !inComponentSemanticsEntitiesMap
+#    !inSemanticContext
+#    !inOptionsComponentsMapForUse
+#    !?ioTemplateVariableMap
+#    ?expression
+#    ?resultType
+#  ;
+#  @typeGalgas_uint x := (cast resultType if >= @typeGalgas_uint else error here) ;
+#  $:$ ;
+##--- Instruction list
+#  @templateInstructionList blockInstructionList [emptyList] ;
+#  enterTemplateString !? blockInstructionList ;
+#  repeat
+#  while
+#    <template_instruction>
+#      !?ioTemplateVariableMap
+#      !inSemanticContext
+#      !inComponentSemanticsEntitiesMap
+#      !inOptionsComponentsMapForUse
+#      !?blockInstructionList
+#    ;
+#    enterTemplateString !?blockInstructionList ;
+#  end repeat ;
+##---
+#  $end$ ;
+#  $block$ ;
+#  ioResultingInstructionList += ![@templateBlockInstruction new
+#   !expression
+#   !here
+#   !blockInstructionList
+#  ] ;
+#end rule ;
+
+#---------------------------------------------------------------------------*
+
+rule <template_instruction>
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@string ioResultingString
+:
+  $if$ ;
+  @bool currentCondition := false ;
+  repeat
+    parse
+    when not currentCondition :
+      @goilTemplateValue expression ;
+      @goilTemplateType expressionType ;
+      <expression>
+        !ioTemplateVariableMap
+        ?expression
+        ?expressionType
+      ;
+      if expressionType != [@goilTemplateType boolType] then
+        error here:"the operand of the 'not' operator should be boolean" ;
+      end if ;
+      currentCondition := [expression mUnsigned64Value] == 1L ;
+      $then$ ;
+      parse
+      when currentCondition :
+        <template_instruction_list>
+          !ioTemplateVariableMap
+          !?ioResultingString
+        ;
+      else
+        <template_instruction_list> parseAndResetTemplateString ;
+      end parse ;
+    else
+      <expression> parse ;
+      $then$ ;
+      <template_instruction_list> parseAndResetTemplateString ;
+    end parse ;
+  while
+    $elsif$ ;
+  end repeat ;
+#--- else
+  select
+  or
+    $else$ ;
+    parse
+    when not currentCondition :
+      <template_instruction_list>
+        !ioTemplateVariableMap
+        !?ioResultingString
+      ;
+    else
+      <template_instruction_list> parseAndResetTemplateString ;
+    end parse ;
+  end select ;
+#---
+  $end$ ;
+  $if$ ;
+end rule ;
+
+#---------------------------------------------------------------------------*
+
+rule  <template_instruction_list>
+  ??@goilTemplateVariableMap inTemplateVariableMap
+  ?!@string ioResultingString
+:
+  @goilTemplateVariableMap templateVariableMap := inTemplateVariableMap ;
+  ioResultingString .= [@lstring retrieveAndResetTemplateString]  ;
+  repeat
+  while
+    <template_instruction>
+      !?templateVariableMap
+      !?ioResultingString
+    ;
+    ioResultingString .= [@lstring retrieveAndResetTemplateString]  ;
+  end repeat ;
+label parseAndResetTemplateString
+:
+  repeat
+  while
+    <template_instruction> parse ;
+  end repeat ;
+  @lstring s := [@lstring retrieveAndResetTemplateString]  ; # Value not used
+end rule ;
+
+#---------------------------------------------------------------------------*
+
+rule  <goil_template_start_symbol>
+  ??@goilTemplateVariableMap inTemplateVariableMap
+  ?!@string ioResultingString
+:
+  <template_instruction_list>
+    !inTemplateVariableMap
+    !?ioResultingString
+  ;
+end rule ;
+
+#---------------------------------------------------------------------------*
+
+rule <template_instruction>
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@string ioResultingString
+:
+  $foreach$ ;
+  @goilTemplateValue expression ;
+  @goilTemplateType expressionType ;
+  <expression>
+    !ioTemplateVariableMap
+    ?expression
+    ?expressionType
+  ;
+  if expressionType != [@goilTemplateType listType] then
+    error here:"only a list can be enumerated" ;
+  end if ;
+  @string foreachPrefix ;
+  select
+    foreachPrefix := "" ;
+  or
+    $prefixedby$ ;
+    $identifier$ ? @lstring prefixString ;
+    foreachPrefix := [prefixString string] ;
+  end select ;
+#--- before block
+  select
+  or
+    $before$ ;
+    parse
+    when [[expression mMapListValue] length] > 0 :
+      <template_instruction_list>
+        !ioTemplateVariableMap
+        !?ioResultingString
+      ;
+    else
+      <template_instruction_list> parseAndResetTemplateString ;
+    end parse ;
+  end select ;
+#--- Do block
+  $do$ ;
+  @uint idx := 0 ;
+  parse loop [[expression mMapListValue] length]
+  while idx < [[expression mMapListValue] length] do
+    const @goilTemplateFieldMap fieldMap := [[expression mMapListValue] mMapAtIndex !idx] ;
+    @goilTemplateVariableMap templateVariableMap := ioTemplateVariableMap ;
+    foreach fieldMap do
+      [!?templateVariableMap insertKey
+        !key
+        !mType
+        ![@goilTemplateValue new !mUnsigned64Value !mStringValue ![@goilTemplateFieldMapList emptyList]]
+      ] ;
+    end foreach ;
+    <template_instruction_list>
+      !templateVariableMap
+      !?ioResultingString
+    ;
+    idx ++ ;
+    select
+    or
+      $between$ ;
+      parse 
+      when idx < [[expression mMapListValue] length] :
+        <template_instruction_list>
+          !ioTemplateVariableMap
+          !?ioResultingString
+        ;
+      else
+        <template_instruction_list> parseAndResetTemplateString ;
+      end parse ;
+    end select ;
+  end parse ;
+  @lstring s := [@lstring retrieveAndResetTemplateString]  ; # Value not used
+#--- after block
+  select
+  or
+    $after$ ;
+    parse
+    when [[expression mMapListValue] length] > 0 :
+      <template_instruction_list>
+        !ioTemplateVariableMap
+        !?ioResultingString
+      ;
+    else
+      <template_instruction_list> parseAndResetTemplateString ;
+    end parse ;
+  end select ;
+#---
+  $end$ ;
+  $foreach$ ;
+end rule ;
+
+#---------------------------------------------------------------------------*
+
+end syntax ;

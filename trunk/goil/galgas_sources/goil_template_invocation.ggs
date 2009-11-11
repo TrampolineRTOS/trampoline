@@ -1,0 +1,232 @@
+#---------------------------------------------------------------------------*
+#                                                                           *
+#  GOIL template invocation                                                 *
+#                                                                           *
+#  Copyright (C) 2009, ..., 2009 Pierre Molinaro.                           *
+#                                                                           *
+#  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
+#                                                                           *
+#  This program is free software; you can redistribute it and/or modify it  *
+#  under the terms of the GNU General Public License as published by the    *
+#  Free Software Foundation.                                                *
+#                                                                           *
+#  This program is distributed in the hope it will be useful, but WITHOUT   *
+#  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
+#  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
+#   more details.                                                           *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+semantics goil_template_invocation :
+import semantics goil_template_semantics in "goil_template_semantics.ggs" ;
+import grammar goil_template_grammar in "goil_template_grammar.gGrammar" ;
+import option goil_options in "goil_options.gOption" ;
+
+#------------------------------------------------------------------------------*
+
+routine addBoolValue
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ??@lstring inVariableName
+  ??@bool inValue
+:
+  [!?ioTemplateVariableMap insertKey
+    !inVariableName
+    ![@goilTemplateType boolType]
+    ![@goilTemplateValue new !if inValue then 1L else 0L end !"" ![@goilTemplateFieldMapList emptyList]]
+  ] ;
+end routine ;
+
+#------------------------------------------------------------------------------*
+
+routine addUnsignedValue
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ??@lstring inVariableName
+  ??@uint64 inValue
+:
+  [!?ioTemplateVariableMap insertKey
+    !inVariableName
+    ![@goilTemplateType unsignedType]
+    ![@goilTemplateValue new !inValue !"" ![@goilTemplateFieldMapList emptyList]]
+  ] ;
+end routine ;
+
+#------------------------------------------------------------------------------*
+
+routine addStringValue
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ??@lstring inVariableName
+  ??@string inValue
+:
+  [!?ioTemplateVariableMap insertKey
+    !inVariableName
+    ![@goilTemplateType stringType]
+    ![@goilTemplateValue new !0L !inValue ![@goilTemplateFieldMapList emptyList]]
+  ] ;
+end routine ;
+
+#------------------------------------------------------------------------------*
+
+routine addListValue
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ??@lstring inVariableName
+  ??@goilTemplateFieldMapList inValue
+:
+  [!?ioTemplateVariableMap insertKey
+    !inVariableName
+    ![@goilTemplateType listType]
+    ![@goilTemplateValue new !0L !"" !inValue]
+  ] ;
+end routine ;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#  A D D    A    F I E L D    V A L U E                                        *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+routine addBoolFieldValue
+  ?!@goilTemplateFieldMap ioTemplateFieldMap
+  ??@lstring inVariableName
+  ??@bool inValue
+:
+  [!?ioTemplateFieldMap insertKey
+    !inVariableName
+    ![@goilTemplateType boolType]
+    !if inValue then 1L else 0L end
+    !""
+  ] ;
+end routine ;
+
+#------------------------------------------------------------------------------*
+
+routine addUnsignedFieldValue
+  ?!@goilTemplateFieldMap ioTemplateFieldMap
+  ??@lstring inVariableName
+  ??@uint64 inValue
+:
+  [!?ioTemplateFieldMap insertKey
+    !inVariableName
+    ![@goilTemplateType unsignedType]
+    !inValue
+    !""
+  ] ;
+end routine ;
+
+#------------------------------------------------------------------------------*
+
+routine addStringFieldValue
+  ?!@goilTemplateFieldMap ioTemplateFieldMap
+  ??@lstring inVariableName
+  ??@string inValue
+:
+  [!?ioTemplateFieldMap insertKey
+    !inVariableName
+    ![@goilTemplateType stringType]
+    !0L
+    !inValue
+  ] ;
+end routine ;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#  D I S P L A Y    T Y P E    A N D    V A L U E                              *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+function displayTypeAndValue
+  ??@goilTemplateType inType
+  ??@goilTemplateValue inValue
+  -> @string outResult
+:
+  switch inType
+  when boolType :
+    outResult := "bool: " . if [inValue mUnsigned64Value] == 1L then "yes" else "no" end ;
+  when unsignedType :
+    outResult := "unsigned: " . [[inValue mUnsigned64Value] string] ;
+  when stringType :
+    outResult := "string: '" . [inValue mStringValue] . "'" ;
+  when listType :
+    outResult := "list, " . [[[inValue mMapListValue] length] string] . " element" . if [[inValue mMapListValue] length] > 1 then "s" else "" end . ":" ;
+    foreach [inValue mMapListValue] index idx do
+      outResult .= "\n  #" . [idx string] . ":" ;
+      foreach mMap do
+        outResult .= "'" . key . "' " ;
+        switch mType
+        when boolType :
+          outResult .= "bool: " . if mUnsigned64Value == 1L then "yes" else "no" end ;
+        when unsignedType :
+          outResult .= "unsigned: " . [mUnsigned64Value string] ;
+        when stringType :
+          outResult .= "string: '" . mStringValue . "'" ;
+        when listType :
+        end switch ;
+      between outResult .= ", " ;
+      end foreach ;
+    end foreach ;
+  end switch ;
+end function ;
+
+#------------------------------------------------------------------------------*
+
+routine displayTemplateVariableMap
+  ??@goilTemplateVariableMap inTemplateVariableMap
+:
+  foreach inTemplateVariableMap do
+    message "'" . key . "' " . displayTypeAndValue [!mType !mValue] . "\n" ;
+  end foreach ;
+end routine ;
+
+
+#------------------------------------------------------------------------------*
+
+routine goilTemplateInvocation
+  ??@lstring inTemplateName
+  ??@goilTemplateVariableMap inTemplateVariableMap
+  ?!@string ioResultingString
+:
+  if [@uint errorCount] == 0 then
+    const @string templateDir := [option goil_options.goil_template_dir] ;
+    if [templateDir length] == 0 then
+      error inTemplateName:"the '--goil-templates' option is required for generating code" ;
+    elsif not [templateDir directoryExists] then
+      error inTemplateName:"the '--goil-templates' option value is '" . templateDir . "', but is not a valid directory path" ;
+    else
+      const @string targetDir := [option goil_options.target_platform] ;
+      if [targetDir length] == 0 then
+        error inTemplateName:"the '--target' (or '-t') option is required for generating code" ;
+      elsif not [templateDir . "/" . targetDir directoryExists] then
+        error inTemplateName:"the '--target' (or '-t') option value is '" . templateDir
+        . "', so the path formed with '--goil-templates' option is '"
+        . templateDir . "/" . targetDir
+        . "', but it is not a valid directory path" ;
+      else
+        @string targetTemplatePartialPath := targetDir ;
+        @stringlist pathList [emptyList] ;
+        @bool found := false ;
+        loop [targetDir length] :
+        while ([targetTemplatePartialPath length] > 0) & not found
+        do
+          const @string fullTemplatePath := templateDir . "/" . targetTemplatePartialPath . "/" . inTemplateName . ".goilTemplate" ;
+          pathList += !fullTemplatePath ;
+          found := [fullTemplatePath fileExists] ;
+          if found then
+            grammar goil_template_grammar in [@lstring new !fullTemplatePath !here] !inTemplateVariableMap !?ioResultingString ;
+          else
+            targetTemplatePartialPath := [targetTemplatePartialPath stringByDeletingLastPathComponent] ;
+          end if ;
+        end loop ;
+        if not found then
+          @string m := "cannot find a valid path for the '" . inTemplateName . "' template; I have tried:" ;
+          foreach pathList do
+            m .= "\n  - '" . mValue . "';" ;
+          end foreach ;
+          error inTemplateName :m ;
+        end if ;
+      end if ;
+    end if ;
+  end if ;
+end routine ;
+
+#------------------------------------------------------------------------------*
+
+end semantics ;

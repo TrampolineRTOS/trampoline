@@ -9,6 +9,24 @@
 		<dict>
 			<key>CFBundleTypeExtensions</key>
 			<array>
+				<string>goilTemplate</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>oil_source</string>
+			<key>CFBundleTypeName</key>
+			<string>goil Template</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSTypeIsPackage</key>
+			<false/>
+			<key>NSDocumentClass</key>
+			<string>OC_GGS_Document</string>
+			<key>NSPersistentStoreTypeKey</key>
+			<string>Binary</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
 				<string>oil</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
