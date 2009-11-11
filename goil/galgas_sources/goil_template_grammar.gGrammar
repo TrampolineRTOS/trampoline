@@ -1,8 +1,9 @@
 #---------------------------------------------------------------------------*
 #                                                                           *
-#  Cocoa component for GOIL                                                 *
+#  GOIL Template grammar                                                    *
 #                                                                           *
-#  Copyright (C) 2008 Pierre Molinaro.                                      *
+#  Copyright (C) 2009, ..., 2009 Pierre Molinaro.                           *
+#                                                                           *
 #  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 #                                                                           *
 #  This program is free software; you can redistribute it and/or modify it  *
@@ -16,22 +17,18 @@
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-gui cocoaGOIL "cocoa" :
-with option "goil_options.gOption" ;
+grammar goil_template_grammar "LL1" :
+  with "goil_template_parser.ggs" ;
+  with "goil_template_expression_parser.ggs" ;
 
-with lexique "goil_lexique.gLexique" {
-  fileExtension : "goil" ;
-  title: "Source" ;
-  blockComment : "//" ;
-}
+  import lexique goil_template_scanner in "goil_template_scanner.gLexique" ;
+  import syntax goil_template_parser in "goil_template_parser.ggs" ;
+  import syntax goil_template_expression_parser in "goil_template_expression_parser.ggs" ;
 
-#--- Added by PM
-with lexique "goil_template_scanner.gLexique" {
-  fileExtension : "goilTemplate" ;
-  title: "Template" ;
-  blockComment : "#" ;
-}
+  root <goil_template_start_symbol>
+    ??@goilTemplateVariableMap inTemplateVariableMap
+    ?!@string ioResultingString
+  ;
+end grammar ;
 
-end gui ;
-
-#--------------------------------------------------------------------------------*
+#---------------------------------------------------------------------------*

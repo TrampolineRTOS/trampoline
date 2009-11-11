@@ -23,6 +23,19 @@
 #
 
 project all_goil :
+  #
+  # New templates (added by PM)
+  #
+  semantics "goil_template_semantics.ggs"         : makefile, xcode_tool;
+  lexique   "goil_template_scanner.gLexique"      : makefile, xcode_tool;
+  syntax    "goil_template_expression_parser.ggs" : makefile, xcode_tool;
+  syntax    "goil_template_parser.ggs"            : makefile, xcode_tool;
+  grammar   "goil_template_grammar.gGrammar"      : makefile, xcode_tool;
+  semantics "goil_template_invocation.ggs"        : makefile, xcode_tool;
+  semantics "goil_template_test.ggs"              : makefile, xcode_tool;
+
+
+
   lexique   "goil_lexique.gLexique"   : makefile, xcode_tool, xcode_app;
   option    "goil_options.gOption"    : makefile, xcode_tool, xcode_app;
   syntax    "goil_syntax.ggs"         : makefile, xcode_tool;
@@ -33,6 +46,7 @@ project all_goil :
   semantics "goil_routines.ggs"       : makefile, xcode_tool;
   semantics "goil_check.ggs"          : makefile, xcode_tool;
   
+
   #
   # XML parsing for AUTOSAR 3+
   #
@@ -139,7 +153,7 @@ project all_goil :
   #
   # Cocoa GOIL
   #
-  gui "cocoaGOIL.gGui" : xcode_tool, xcode_app;
+  gui "cocoaGOIL.gGui" : xcode_app;
   
 end project;
 # vim:ft=ggs:ts=4:sw=4

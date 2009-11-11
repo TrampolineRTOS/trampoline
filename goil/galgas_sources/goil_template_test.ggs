@@ -1,0 +1,94 @@
+#---------------------------------------------------------------------------*
+#                                                                           *
+#  GOIL template invocation                                                 *
+#                                                                           *
+#  Copyright (C) 2009, ..., 2009 Pierre Molinaro.                           *
+#                                                                           *
+#  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
+#                                                                           *
+#  This program is free software; you can redistribute it and/or modify it  *
+#  under the terms of the GNU General Public License as published by the    *
+#  Free Software Foundation.                                                *
+#                                                                           *
+#  This program is distributed in the hope it will be useful, but WITHOUT   *
+#  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
+#  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
+#   more details.                                                           *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+semantics goil_template_test :
+  import semantics goil_template_invocation in "goil_template_invocation.ggs" ;
+  import grammar goil_template_grammar in "goil_template_grammar.gGrammar" ;
+  import option goil_options in "goil_options.gOption" ;
+
+#------------------------------------------------------------------------------*
+
+routine testTemplate
+:
+  if [option goil_options.run_goil_template_test] then
+    const @string templateSourceString := 
+      "ceci est%!CHAINE1 %un template.\n"
+      "Test if vrai:%if TRUE_VAR then !CHAINE1%1re branche%!CHAINE1 else !CHAINE2 %2e branche% !CHAINE2 end if %.\n"
+      "Test if false:%if FALSE_VAR then !CHAINE1%1re branche%!CHAINE1 else !CHAINE2 %2e branche% !CHAINE2 end if %.\n"
+      "Test if false, true:%if FALSE_VAR then !CHAINE1%1re branche%!CHAINE1 elsif TRUE_VAR then !CHAINE2 %2e branche% !CHAINE2  else !CHAINE3 %3e branche% !CHAINE3 end if %.\n"
+      "Test if false, false:%if FALSE_VAR then !CHAINE1%1re branche%!CHAINE1 elsif FALSE_VAR then !CHAINE2 %2e branche% !CHAINE2  else !CHAINE3 %3e branche% !CHAINE3 end if %.\n"
+      "Test indentation %?COL%.\n"
+      "%!COL%^ (le ^ doit être juste au dessous du point)\n"
+      "La liste a %![[UNE_LISTE length] string]% element% if [UNE_LISTE length] > 1 then %s% end if%.\n"
+      "Enumeration de la liste:\n%"
+      "foreach UNE_LISTE\n"
+      "before %<before>%\n"
+      "do %<do>'%!STR_FIELD%', %![UINT_FIELD string]%</do>%\n"
+      "between %<between>%\n"
+      "after %<after>%\n"
+      "end foreach\n"
+      "%Fin enumeration.\n"
+      "Enumeration d'une liste vide:%foreach LISTE_VIDE\n"
+      "before %<before>%\n"
+      "do %<do>%\n"
+      "between %<between>%\n"
+      "after %<after>%\n"
+      "end foreach\n"
+      "%Fin enumeration.\n"
+    ;
+    @goilTemplateVariableMap sampleMap [emptyMap] ;
+    addBoolValue !?sampleMap ![@lstring new !"TRUE_VAR" !here] !true ;
+    addBoolValue !?sampleMap ![@lstring new !"FALSE_VAR" !here] !false ;
+    addStringValue !?sampleMap ![@lstring new !"CHAINE1" !here] !"<ch1>" ;
+    addStringValue !?sampleMap ![@lstring new !"CHAINE2" !here] !"<ch2>" ;
+    addStringValue !?sampleMap ![@lstring new !"CHAINE3" !here] !"<ch3>" ;
+    addUnsignedValue !?sampleMap ![@lstring new !"UINT0" !here] !123L ;
+    
+    @goilTemplateFieldMap fieldMap [emptyMap] ;
+    addBoolFieldValue !?fieldMap ![@lstring new !"BOOL_FIELD" !here] !true ;
+    addUnsignedFieldValue !?fieldMap ![@lstring new !"UINT_FIELD" !here] !14L ;
+    addStringFieldValue !?fieldMap ![@lstring new !"STR_FIELD" !here] !"<toto>" ;
+    @goilTemplateFieldMapList fieldMapList [listWithValue !fieldMap] ;
+    fieldMap := [@goilTemplateFieldMap emptyMap] ;
+    addBoolFieldValue !?fieldMap ![@lstring new !"BOOL_FIELD" !here] !false ;
+    addUnsignedFieldValue !?fieldMap ![@lstring new !"UINT_FIELD" !here] !23L ;
+    addStringFieldValue !?fieldMap ![@lstring new !"STR_FIELD" !here] !"<tutu>" ;
+    fieldMapList += !fieldMap ;
+    addListValue !?sampleMap ![@lstring new !"UNE_LISTE" !here] !fieldMapList ;
+
+    addListValue !?sampleMap ![@lstring new !"LISTE_VIDE" !here] ![@goilTemplateFieldMapList emptyList] ;
+    
+    @string resutingString := "" ;
+    grammar goil_template_grammar on templateSourceString
+      !sampleMap
+      !?resutingString
+    ;
+    message "------------------- TEMPLATE SOURCE STRING ----------------------\n" ;
+    message templateSourceString ;
+    message "------------------- DUMP TEMPLATE VARIABLE MAP ------------------\n" ;
+    displayTemplateVariableMap !sampleMap ;
+    message "------------------- RESULT STRING -------------------------------\n" ;
+    message resutingString ;
+    message "------------------- END -----------------------------------------\n" ;
+  end if ;
+end routine ;
+
+#------------------------------------------------------------------------------*
+
+end semantics ;
