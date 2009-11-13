@@ -271,14 +271,14 @@ rule <template_instruction>
   if expressionType != [@goilTemplateType listType] then
     error here:"only a list can be enumerated" ;
   end if ;
-  @string foreachPrefix ;
-  select
-    foreachPrefix := "" ;
-  or
-    $prefixedby$ ;
-    $identifier$ ? @lstring prefixString ;
-    foreachPrefix := [prefixString string] ;
-  end select ;
+#  @string foreachPrefix ;
+#  select
+#    foreachPrefix := "" ;
+#  or
+#    $prefixedby$ ;
+#    $identifier$ ? @lstring prefixString ;
+#    foreachPrefix := [prefixString string] ;
+#  end select ;
 #--- before block
   select
   or

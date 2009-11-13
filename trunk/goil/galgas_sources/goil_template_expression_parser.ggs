@@ -373,6 +373,44 @@ end routine ;
 
 #------------------------------------------------------------------------------*
 #                                                                              *
+#  A R G U M E N T    L I S T    S I G N A T U R E                             *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+function argumentListSignature
+  ??@goilTemplateExpressionList inParameterTypeList
+  -> @string outResult
+:
+  outResult := " this method call has " ;
+  outResult .= [[inParameterTypeList length] string] . " argument" ;
+  outResult .= if [inParameterTypeList length] > 0 then "s" else "" end ;
+  foreach inParameterTypeList
+  before outResult .= ": " ;
+  do outResult .= [mType messageGoilTemplateType] ;
+  between outResult .= ", " ;
+  end foreach ;
+end function ;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#  C H E C K    I N V O C A T I O N    H A S   N O    A R G U M E N T          *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+routine checkInvocationHasNoArgument
+  ??@goilTemplateType inType
+  ??@lstring inMethodName
+  ??@goilTemplateExpressionList inParameterTypeList
+:
+  if [inParameterTypeList length] > 0 then
+    error inMethodName:"calling '" . inMethodName . "' on a "
+    . [inType messageGoilTemplateType] . " type requires no argument; "
+    . argumentListSignature [!inParameterTypeList] ;
+  end if ;
+end routine ;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
 #  M E T H O D    I N V O C A T I O N                                          *
 #                                                                              *
 #------------------------------------------------------------------------------*
@@ -381,34 +419,70 @@ routine templateMethodInvocation
   ??@goilTemplateType inType
   ??@goilTemplateValue inValue
   ??@lstring inMethodName
-  ??@goilTemplateExpressionList unused inParameterTypeList
+  ??@goilTemplateExpressionList inParameterTypeList
   !@goilTemplateType outResultType
   !@goilTemplateValue outResultValue
 :
   switch inType
   when boolType :
-    error inMethodName: "this template method is not defined" ->outResultValue, outResultType ;
+    if [inMethodName string] == "string" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList ;
+      outResultType := [@goilTemplateType stringType] ;
+      outResultValue := valueWithString [
+        ! if [inValue mUnsigned64Value] > 0L then "true" else "false" end
+      ] ;
+    elsif [inMethodName string] == "unsigned" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList ;
+      outResultType := [@goilTemplateType unsignedType] ;
+      outResultValue := inValue ;
+    else
+      error inMethodName: "this template method is not defined" ->outResultValue, outResultType ;
+    end if ;
   when unsignedType :
     if [inMethodName string] == "string" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList ;
       outResultType := [@goilTemplateType stringType] ;
-      outResultValue := [@goilTemplateValue new
-        !0L
-        ![[inValue mUnsigned64Value] string]
-        ![@goilTemplateFieldMapList emptyList]
-      ] ;
+      outResultValue := valueWithString [![[inValue mUnsigned64Value] string]] ;
+    elsif [inMethodName string] == "hexString" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList ;
+      outResultType := [@goilTemplateType stringType] ;
+      outResultValue := valueWithString [![[inValue mUnsigned64Value] hexString]] ;
     else
       error inMethodName: "this template method is not defined" ->outResultValue, outResultType ;
     end if ;
   when stringType :
-    error inMethodName: "this template method is not defined" ->outResultValue, outResultType ;
+    if [inMethodName string] == "HTMLRepresentation" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList ;
+      outResultType := [@goilTemplateType stringType] ;
+      outResultValue := valueWithString [![[inValue mStringValue] HTMLRepresentation]] ;
+    elsif [inMethodName string] == "identifierRepresentation" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList ;
+      outResultType := [@goilTemplateType stringType] ;
+      outResultValue := valueWithString [![[inValue mStringValue] identifierRepresentation]] ;
+    elsif [inMethodName string] == "lowercaseString" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList ;
+      outResultType := [@goilTemplateType stringType] ;
+      outResultValue := valueWithString [![[inValue mStringValue] lowercaseString]] ;
+    elsif [inMethodName string] == "length" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList ;
+      outResultType := [@goilTemplateType unsignedType] ;
+      outResultValue := valueWithUnsigned [![[[inValue mStringValue] length] uint64]] ;
+    elsif [inMethodName string] == "stringByCapitalizingFirstCharacter" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList ;
+      outResultType := [@goilTemplateType stringType] ;
+      outResultValue := valueWithString [![[inValue mStringValue] stringByCapitalizingFirstCharacter]] ;
+    elsif [inMethodName string] == "uppercaseString" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList ;
+      outResultType := [@goilTemplateType stringType] ;
+      outResultValue := valueWithString [![[inValue mStringValue] uppercaseString]] ;
+    else
+      error inMethodName: "this template method is not defined" ->outResultValue, outResultType ;
+    end if ;
   when listType :
     if [inMethodName string] == "length" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList ;
       outResultType := [@goilTemplateType unsignedType] ;
-      outResultValue := [@goilTemplateValue new
-        ![[[inValue mMapListValue] length] uint64]
-        !""
-        ![@goilTemplateFieldMapList emptyList]
-      ] ;
+      outResultValue := valueWithUnsigned [![[[inValue mMapListValue] length] uint64]] ;
     else
       error inMethodName: "this template method is not defined" ->outResultValue, outResultType ;
     end if ;

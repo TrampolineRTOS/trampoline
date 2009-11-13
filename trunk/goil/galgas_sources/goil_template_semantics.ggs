@@ -87,4 +87,43 @@ list @goilTemplateExpressionList {
 
 #------------------------------------------------------------------------------*
 
+function valueWithBool
+  ??@bool inValue
+  ->@goilTemplateValue outValue
+:
+  outValue := [@goilTemplateValue new
+    ![inValue uint64]
+    !""
+    ![@goilTemplateFieldMapList emptyList]
+  ] ;
+end function ;
+
+#------------------------------------------------------------------------------*
+
+function valueWithUnsigned
+  ??@uint64 inValue
+  ->@goilTemplateValue outValue
+:
+  outValue := [@goilTemplateValue new
+    !inValue
+    !""
+    ![@goilTemplateFieldMapList emptyList]
+  ] ;
+end function ;
+
+#------------------------------------------------------------------------------*
+
+function valueWithString
+  ??@string inValue
+  ->@goilTemplateValue outValue
+:
+  outValue := [@goilTemplateValue new
+    !0L
+    !inValue
+    ![@goilTemplateFieldMapList emptyList]
+  ] ;
+end function ;
+
+#------------------------------------------------------------------------------*
+
 end semantics ;
