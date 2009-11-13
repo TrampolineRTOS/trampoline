@@ -495,7 +495,7 @@
  */
 #define TASK(name)              \
     DeclareTask(name);          \
-    void name##_function(void)
+    FUNC(void, OS_APPL_CODE) name##_function(void)
 
 /**
  * @def ISR2
@@ -505,7 +505,7 @@
  * @param name the name (C identifier) of the IRS
  */
 #define ISR(name)               \
-    void name##_function(void)
+    FUNC(void, OS_APPL_CODE) name##_function(void)
 
 /**
  * @def ALARMCALLBACK

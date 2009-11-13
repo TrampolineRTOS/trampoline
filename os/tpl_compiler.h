@@ -28,11 +28,11 @@
 
 #include "tpl_app_objects.h"
 
-#ifdef WITH_COMPILER_SETTINGS
+#if WITH_COMPILER_SETTINGS == YES
 
 #include "Compiler.h"
 
-#else
+#elif WITH_COMPILER_SETTINGS == NO
 
 #define AUTOMATIC
 #define TYPEDEF
@@ -62,6 +62,8 @@
 #define OS_APPL_CONST         AUTOMATIC
 #define OS_APPL_CODE          AUTOMATIC
 
+#else
+  #error "Configuration error WITH_COMPILER_SETTINGS is not defined"
 #endif
 
 /* TPL_COMPILER_H */

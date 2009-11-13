@@ -71,7 +71,11 @@ FUNC(void, OS_CODE) ShutdownOS(
 
 #else /* WITH_SYSTEM_CALL */
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 extern FUNC(void, OS_CODE) tpl_start_os(CONST(AppModeType, AUTOMATIC) mode);
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 #endif /* WITH_SYSTEM_CALL */
 

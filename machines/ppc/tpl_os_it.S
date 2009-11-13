@@ -53,7 +53,7 @@
 tpl_enable_interrupts:
   mfspr r11,spr_SRR1    /* get the register where the MSR has been saved  */
   li    r12,0           /* set r11 to EE_BIT constant                     */
-  ori   r12,r12,EE_BIT
+  ori   r12,r12,EE_BIT_1
   or    r11,r11,r12     /* clear the EE_BIT in SRR1 copy                  */ 
   mtspr spr_SRR1,r11   /* put back in SRR1                               */
   blr 
@@ -71,7 +71,7 @@ tpl_enable_interrupts:
 tpl_disable_interrupts:
   mfspr r11,spr_SRR1    /* get the register where the MSR has been saved  */
   li    r12,0           /* set r11 to EE_BIT constant                     */
-  ori   r12,r12,EE_BIT
+  ori   r12,r12,EE_BIT_1
   andc  r11,r11,r12     /* clear the EE_BIT in SRR1 copy                  */ 
   mtspr spr_SRR1,r11   /* put back in SRR1                               */
   blr 
