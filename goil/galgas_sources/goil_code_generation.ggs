@@ -238,6 +238,7 @@ routine generate_flags
 
     # WITH_MEMMAP flag
     flags .= bool_define[!"WITH_MEMMAP" !memory_mapping[!os]];
+    flags .= bool_define[!"WITH_COMPILER_SETTINGS" !memory_mapping[!os]];
 
     # Output the TRAMPOLINE_BASE_PATH if it has been set in the OIL file
     @lstring tpl_base_path := [os tpl_base_path];
@@ -2044,6 +2045,9 @@ routine generate_all
               !cpu;
               
           generate_memmap
+            !cpu;
+
+          generate_compiler
             !cpu;
 #                generate_crc
 #                    !tasks

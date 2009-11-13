@@ -30,46 +30,35 @@
 #ifndef TPL_OS_KERNEL_STACK_H
 #define TPL_OS_KERNEL_STACK_H
 
-      /*  The kernel stack is like that:
-        
-            |                                 |
-            +---------------------------------+
-    SP->    |          linkage area           |  The linkage area is a zone
-            +---------------------------------+  reserved for the callee when
-         +4 |          linkage area           |  calling a C function
-            +---------------------------------+
-         +8 |        LR of the caller         |
-            +---------------------------------+
-        +12 |        SP of the caller         |
-            +---------------------------------+
-        +16 |        CR of the caller         |
-            +---------------------------------+
-        +20 |               r11               |
-            +---------------------------------+
-        +24 |               r12               |
-            +---------------------------------+
-        +28 | return code of the service (r3) |
-            +---------------------------------+
-        +32 |       calling task/ISR id       |
-            +---------------------------------+
-        +36 |     tpl_stat_proc_table ptr     |
-            +---------------------------------+
-        +40 |       tpl_need_switch ptr       |
-            +---------------------------------+
-        */
+/*
+ * The kernel stack is like that:
+ *       
+ *          |                                 |
+ *          +---------------------------------+
+ *  SP->    |          linkage area           |  The linkage area is a zone
+ *          +---------------------------------+  reserved for the callee when
+ *       +4 |          linkage area           |  calling a C function
+ *          +---------------------------------+
+ *       +8 |        SP of the caller         |
+ *          +---------------------------------+
+ *      +12 |       SRR0 of the caller        |
+ *          +---------------------------------+
+ *      +16 |       SRR1 of the caller        |
+ *          +---------------------------------+
+ *      +20 | return code of the service (r3) |
+ *          +---------------------------------+
+ *      +24 | pointer to the tpl_kern struct  |
+ *          +---------------------------------+
+ */
 
-#define KERNEL_STACK_SIZE 80
-#define KS_FOOTPRINT      44
+#define KERNEL_STACK_SIZE 300
+#define KS_FOOTPRINT      28
 
-#define KS_LR             8
-#define KS_SP             12
-#define KS_CR             16
-#define KS_R11            20
-#define KS_R12            24
-#define KS_RETURN_CODE    28
-#define KS_RUNNING_ID     32
-#define KS_SPT_PTR        36
-#define KS_NSW_PTR        40
+#define KS_SP             8
+#define KS_SRR0           12
+#define KS_SRR1           16
+#define KS_RETURN_CODE    20
+#define KS_KERN_PTR       24
 
 /* TPL_OS_KERNEL_STACK_H */
 #endif 

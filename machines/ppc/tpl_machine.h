@@ -96,7 +96,11 @@ struct TPL_CONTEXT {
 
 typedef struct TPL_CONTEXT tpl_context;
 
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 extern VAR(ppc_integer_context, OS_VAR) idle_task_context;
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 
 /* tpl_stack is a data structure used to
  * describe the stack(s) used for each task
@@ -134,7 +138,7 @@ typedef struct TPL_STACK tpl_stack;
  *
  * Entry point of the idle task. Not used in PPC port
  */
-#define IDLE_ENTRY NULL
+#define IDLE_ENTRY tpl_sleep
 
 /**
  * @def SIZE_OF_IDLE_TASK
@@ -149,7 +153,13 @@ typedef struct TPL_STACK tpl_stack;
  *
  * the idle stack definition
  */
-#define IDLE_STACK { NULL, 0 }
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+extern VAR(tpl_stack_word, OS_VAR)
+  idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+#define IDLE_STACK { idle_stack, SIZE_OF_IDLE_STACK }
 
 /*
  * external variables
@@ -158,8 +168,7 @@ typedef struct TPL_STACK tpl_stack;
 #include "tpl_memmap.h"
 
 extern VAR(ppc_integer_context, OS_VAR) idle_task_context;
-extern VAR(tpl_stack_word, OS_VAR)
-    stack_zone_of_IdleTask[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
+
 extern VAR(u8, OS_VAR) tpl_keep_prio[15];
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
@@ -167,17 +176,5 @@ extern VAR(u8, OS_VAR) tpl_keep_prio[15];
 
 typedef P2FUNC(void, OS_CODE, INTfunc)(void);
 extern INTfunc InterruptVectortable[];
-
-/*
- * Various functions
- * the declaration of these functions is not needed, but
- * it avoids a MISRA rule violation
- */
-__interrupt FUNC(void, OS_CODE) tpl_sc_handler(void);
-
-extern FUNC(void, OS_CODE) tpl_interrupt_handler_save(void);
-extern FUNC(void, OS_CODE) tpl_interrupt_handler_restore(void);
-extern FUNC(void, OS_CODE) OSCOUNTERBASETICK_FUNC(void);
-extern FUNC(void, OS_CODE) OSCOUNTERWATCHDOG_FUNC(void);
 
 #endif /* TPL_MACHINE_PPC_H */
