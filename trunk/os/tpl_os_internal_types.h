@@ -107,20 +107,16 @@ typedef u8 tpl_proc_state;
  * @see AlarmBaseType
  */
 struct ALARM_BASE_TYPE {
-    VAR(tpl_tick, TYPEDEF)  maxallowedvalue;    /**< maximum possible allowed
-                                                     count values in tick
-                                                */
-    VAR(tpl_tick, TYPEDEF)  ticksperbase;       /**< number of ticks required
-                                                     to reach a counter-
-                                                     specific (significant)
-                                                     unit 
-                                                */
-    VAR(tpl_tick, TYPEDEF)  mincycle;           /**< smallest allowed value for
-                                                     the cycle-parameter of
-                                                     SetRelAlarm/SetAbsAlarm
-                                                     (only for systems with
-                                                     extended status)
-                                                */
+    VAR(tpl_tick, TYPEDEF)  maxallowedvalue; /**< maximum possible allowed
+                                                  count values in tick        */
+    VAR(tpl_tick, TYPEDEF)  ticksperbase;    /**< number of ticks required to
+                                                  reach a counter-specific
+                                                  (significant) unit          */
+    VAR(tpl_tick, TYPEDEF)  mincycle;        /**< smallest allowed value for
+                                                  the cycle parameter of
+                                                  SetRelAlarm/SetAbsAlarm
+                                                  (only for systems with
+                                                  extended status)            */
 };
 
 /**

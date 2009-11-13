@@ -39,7 +39,7 @@
 /*
  * Mapping in the context structures
  */
-#define GPR0    0
+/* #define GPR0    0 */
 #define GPR1    4
 #define GPR2    8
 #define GPR3    12
@@ -50,8 +50,8 @@
 #define GPR8    32
 #define GPR9    36
 #define GPR10   40
-#define GPR11   44
-#define GPR12   48
+/* #define GPR11   44
+#define GPR12   48 */
 #define GPR13   52
 #define GPR14   56
 #define GPR15   60
@@ -71,9 +71,9 @@
 #define GPR29   116
 #define GPR30   120
 #define GPR31   124
-#define CR      128
+/* #define CR      128 */
 #define XER     132
-#define LR      136
+/* #define LR      136 */
 #define CTR     140
 #define SRR0    144
 #define SRR1    148
@@ -149,28 +149,21 @@ tpl_save_context:
     stw     r29,GPR29(r11)
     stw     r30,GPR30(r11)
     stw     r31,GPR31(r11)
-    
-    lwz     r0,KS_LR(r1)                /* get back lr and save it  */
-    stw     r0,LR(r11)
-    
+        
     lwz     r0,KS_SP(r1)                /* get back sp and save it  */
     stw     r0,GPR1(r11)
-    
-    lwz     r0,KS_CR(r1)                /* get back cr and save it  */
-    stw     r0,CR(r11)
     
     lwz     r0,KS_RETURN_CODE(r1)       /* get back r3 and save it  */
     stw     r3,GPR3(r11)
     
     mfxer   r0                          /* save the xer             */
     stw     r0,XER(r11)
-  
     mfctr   r0                          /* save the ctr             */
     stw     r0,CTR(r11)
   
-    mfspr   r0,spr_SRR0                 /* save SRR0 and SRR1       */
+    lwz     r0,KS_SRR0(r1)              /* save SRR0 and SRR1       */
     stw     r0,SRR0(r11)
-    mfspr   r0,spr_SRR1
+    lwz     r0,KS_SRR1(r1)
     stw     r0,SRR1(r11)
   
 #ifdef WITH_FLOAT
@@ -178,39 +171,39 @@ tpl_save_context:
     
     blr   /* returns */
 
+  .type tpl_save_context,@function
+  .size tpl_save_context,$-tpl_save_context
+
 /**
- * tpl_load_context loads a context from a tpl_context to the registers
- * and to the kernel stack
+ * tpl_load_context loads a context from a tpl_context
+ * to the registers and to the kernel stack
+ * This function is run on the kernel stack
+ *
+ * @param   r3 contains the pointer to the context pointers
  */
 tpl_load_context:
   
 #ifdef WITH_FLOAT
 #endif
 
-    lwz r11,INT_CONTEXT(r3) /* Get the pointer to the integer context     */
+    lwz r11,INT_CONTEXT(r3)   /* Get the pointer to the integer context   */
 
+/*  setup the kernel stack stuff  */
+    lwz     r0,GPR1(r11)      /* load sp and put it in the kernel stack   */
+    stw     r0,KS_SP(r1)
+    lwz     r0,GPR3(r11)      /* load r3 and put it in the kernel stack   */
+    stw     r0,KS_RETURN_CODE(r1)
+
+/*  setup the registers */
     lwz     r0,SRR0(r11)    /* load SRR0 and SRR1                         */
-    mtspr   spr_SRR0,r0
+    stw     r0,KS_SRR0(1)
     lwz     r0,SRR1(r11)
-    mtspr   spr_SRR1,r0
+    stw     r0,KS_SRR1(r1)
 
     lwz     r0,CTR(r11)     /* load the ctr                               */
     mtctr   r0
-
     lwz     r0,XER(r11)     /* load the xer                               */
     mtxer   r0
-
-    lwz     r0,GPR3(r11)    /* load r3 and put it in the kernel stack     */
-    stw     r0,KS_RETURN_CODE(r1)
-    
-    lwz     r0,CR(r11)      /* load cr and put it in the kernel stack     */
-    stw     r0,KS_CR(r1)
-
-    lwz     r0,GPR1(r11)    /* load sp and put it in the kernel stack     */
-    stw     r0,KS_SP(r1)
-
-    lwz     r0,LR(r11)      /* load lr and put it in the kernel stack     */
-    stw     r0,KS_LR(r1)
 
     lwz     r31,GPR31(r11)
     lwz     r30,GPR30(r11)
@@ -231,7 +224,6 @@ tpl_load_context:
     lwz     r15,GPR15(r11)
     lwz     r14,GPR14(r11)
     lwz     r13,GPR13(r11)
-    lwz     r12,GPR12(r11)
     lwz     r10,GPR10(r11)
     lwz     r9,GPR9(r11)
     lwz     r8,GPR8(r11)
@@ -239,9 +231,9 @@ tpl_load_context:
     lwz     r6,GPR6(r11)
     lwz     r5,GPR5(r11)
     lwz     r4,GPR4(r11)
-    lwz     r3,GPR3(r11)
     lwz     r2,GPR2(r11)
-    lwz     r0,GPR0(r11)
-    lwz     r11,GPR11(r11)
 
     blr   /* returns */
+
+  .type tpl_load_context,@function
+  .size tpl_load_context,$-tpl_load_context

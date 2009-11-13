@@ -34,7 +34,11 @@
 #include "tpl_as_application.h"
 #endif
 
-FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void);
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+extern FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void);
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 /*
  * Remember (see "The design of Trampoline") :
@@ -46,7 +50,11 @@ FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void);
 
 #ifdef WITH_ERROR_HOOK
 
-FUNC(void, OS_CODE) tpl_call_error_hook(CONST(tpl_status, AUTOMATIC) error);
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+extern FUNC(void, OS_CODE) tpl_call_error_hook(CONST(tpl_status, AUTOMATIC) error);
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 	
 /**
  * @union ID_PARAM_BLOCK
