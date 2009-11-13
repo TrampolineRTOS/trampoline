@@ -2,8 +2,8 @@ ENTRY(_start)
 
 MEMORY
 {
-  IT_vectors (ax) : ORIGIN = 0,       LENGTH = 0x3000
-	ram (wax) :       ORIGIN = 0x3000,  LENGTH = 16M /* 16 Mo of Volatile memory*/
+  IT_vectors (ax) : ORIGIN = 0,      LENGTH = 0x3000
+  ram (wax) :       ORIGIN = 0x3000, LENGTH = 16M /* 16 Mo of Volatile memory*/
 }
 
 SECTIONS
@@ -12,7 +12,7 @@ SECTIONS
    * code and consts of the operating system (Trampoline).
    * this section is not accessible from an untrusted process
    */
-	. = ALIGN(4);
+  . = ALIGN(4);
   ostext : {
     *(.osCode)
   } > ram
@@ -28,7 +28,7 @@ SECTIONS
 	. = ALIGN(16);  /* MPC5510 MPU requires 16 bytes alignment */
   __SEG_START_APP_CODE_CONST_RGN = .;
 	apptext : {
-    *(.apiCode)   /* API functions  */
+    *(.osApiCode)   /* API functions  */
 $USER_CODE$
   } > ram
   . = ALIGN(16);
@@ -38,6 +38,15 @@ $USER_CONST$
   . = ALIGN(16);
   __SEG_START_APP_CODE_CONST_RGN = . - 1;
   
+  /*
+   * bss data
+   */
+  . = ALIGN(16);
+  bss_data : {
+    *(.bss) *(.sbss)
+  } > ram
+  . = ALIGN(16);
+
   /*
    * private data of processes
    */
@@ -60,5 +69,6 @@ $APP_VAR$
   } > ram
 
 	.vector 0xC00 : { *(.SC_handler ) }> IT_vectors
+
 }
 

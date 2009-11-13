@@ -308,8 +308,8 @@ rule <os>
       error [t loc] : "Redefinition of TRACE" ;
       error [trace loc] : "was defined here" ;
     end cast ;
-  while
-    <free_field> !?others ; <description> ?* ; $;$ ;
+#  while
+#    <free_field> !?others ; <description> ?* ; $;$ ;
   end repeat ;
   $}$ ;
   @lstring desc ;
