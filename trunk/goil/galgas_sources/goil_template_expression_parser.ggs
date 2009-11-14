@@ -31,6 +31,7 @@ import semantics goil_template_semantics in "goil_template_semantics.ggs" ;
 #------------------------------------------------------------------------------*
 
 nonterminal <expression>
+  ??@string inPath
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -38,6 +39,7 @@ label parse
 ;
 
 nonterminal <relation_term>
+  ??@string inPath
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -45,6 +47,7 @@ label parse
 ;
 
 nonterminal <relation_factor>
+  ??@string inPath
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -52,6 +55,7 @@ label parse
 ;
 
 nonterminal <simple_expression>
+  ??@string inPath
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -59,6 +63,7 @@ label parse
 ;
 
 nonterminal <term>
+  ??@string inPath
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -66,6 +71,7 @@ label parse
 ;
 
 nonterminal <factor>
+  ??@string inPath
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -73,6 +79,7 @@ label parse
 ;
 
 nonterminal <output_expression_list>
+  ??@string inPath
   !@goilTemplateExpressionList outValueList 
   ??@goilTemplateVariableMap inVariableMap
 label parse
@@ -496,11 +503,13 @@ end routine ;
 #------------------------------------------------------------------------------*
 
 rule <expression>
+  ??@string inPath
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
 :
   <relation_term>
+    !inPath
     !inVariableMap
     ?outValue
     ?outResultType
@@ -513,6 +522,7 @@ rule <expression>
     @goilTemplateType firstOperandType := outResultType ;
     @goilTemplateType secondOperandType ;
     <relation_term>
+      !inPath
       !inVariableMap
       ?rightOperand
       ?secondOperandType
@@ -530,6 +540,7 @@ rule <expression>
     @goilTemplateType firstOperandType := outResultType ;
     @goilTemplateType secondOperandType ;
     <relation_term>
+      !inPath
       !inVariableMap
       ?rightOperand
       ?secondOperandType
@@ -550,11 +561,13 @@ end rule ;
 #------------------------------------------------------------------------------*
 
 rule <relation_term>
+  ??@string inPath
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
 :
   <relation_factor>
+    !inPath
     !inVariableMap
     ?outValue
     ?outResultType
@@ -567,6 +580,7 @@ rule <relation_term>
     @goilTemplateType firstOperandType := outResultType ;
     @goilTemplateType secondOperandType ;
     <relation_factor>
+      !inPath
       !inVariableMap
       ?rightOperand
       ?secondOperandType
@@ -587,11 +601,13 @@ end rule ;
 #------------------------------------------------------------------------------*
 
 rule <relation_factor>
+  ??@string inPath
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
 :
   <simple_expression>
+    !inPath
     !inVariableMap
     ?outValue
     ?outResultType
@@ -604,6 +620,7 @@ rule <relation_factor>
     @goilTemplateValue rightExpression ;
     @goilTemplateType rightType ;
     <simple_expression>
+      !inPath
       !inVariableMap
       ?rightExpression
       ?rightType ;
@@ -626,6 +643,7 @@ rule <relation_factor>
     @goilTemplateValue rightExpression ;
     @goilTemplateType rightType ;
     <simple_expression>
+      !inPath
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -649,6 +667,7 @@ rule <relation_factor>
     @goilTemplateValue rightExpression ;
     @goilTemplateType rightType ;
     <simple_expression>
+      !inPath
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -672,6 +691,7 @@ rule <relation_factor>
     @goilTemplateValue rightExpression ;
     @goilTemplateType rightType ;
     <simple_expression>
+      !inPath
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -695,6 +715,7 @@ rule <relation_factor>
     @goilTemplateValue rightExpression ;
     @goilTemplateType rightType ;
     <simple_expression>
+      !inPath
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -718,6 +739,7 @@ rule <relation_factor>
     @goilTemplateValue rightExpression ;
     @goilTemplateType rightType ;
     <simple_expression>
+      !inPath
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -744,11 +766,13 @@ end rule ;
 #------------------------------------------------------------------------------*
 
 rule <simple_expression>
+  ??@string inPath
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
 :
   <term>
+    !inPath
     !inVariableMap
     ?outValue
     ?outResultType
@@ -761,6 +785,7 @@ rule <simple_expression>
     @goilTemplateValue rightExpression ;
     @goilTemplateType rightType ;
     <term>
+      !inPath
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -774,6 +799,7 @@ rule <simple_expression>
     @goilTemplateValue rightExpression ;
     @goilTemplateType rightType ;
     <term>
+      !inPath
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -787,6 +813,7 @@ rule <simple_expression>
     @goilTemplateValue rightExpression ;
     @goilTemplateType rightType ;
     <term>
+      !inPath
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -800,6 +827,7 @@ rule <simple_expression>
     @goilTemplateValue rightExpression ;
     @goilTemplateType rightType ;
     <term>
+      !inPath
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -816,11 +844,13 @@ end rule ;
 #------------------------------------------------------------------------------*
 
 rule <term>
+  ??@string inPath
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
 :
   <factor>
+    !inPath
     !inVariableMap
     ?outValue
     ?outResultType
@@ -833,6 +863,7 @@ rule <term>
     @goilTemplateValue rightExpression ;
     @goilTemplateType rightType ;
     <factor>
+      !inPath
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -846,6 +877,7 @@ rule <term>
     @goilTemplateValue rightExpression ;
     @goilTemplateType rightType ;
     <factor>
+      !inPath
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -859,6 +891,7 @@ rule <term>
     @goilTemplateValue rightExpression ;
     @goilTemplateType rightType ;
     <factor>
+      !inPath
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -875,6 +908,7 @@ end rule ;
 #------------------------------------------------------------------------------*
 
 rule <factor>
+  ??@string unused inPath
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -890,12 +924,14 @@ end rule ;
 #------------------------------------------------------------------------------*
 
 rule <factor>
+  ??@string inPath
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
 :
   $($ ;
   <expression>
+    !inPath
     !inVariableMap
     ?outValue
     ?outResultType
@@ -910,6 +946,7 @@ end rule ;
 #------------------------------------------------------------------------------*
 
 rule <factor>
+  ??@string inPath
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -918,6 +955,7 @@ rule <factor>
   @goilTemplateValue expression ;
   @goilTemplateType operandType ;
   <factor>
+    !inPath
     !inVariableMap
     ?expression
     ?operandType
@@ -937,6 +975,7 @@ end rule ;
 #------------------------------------------------------------------------------*
 
 rule <factor>
+  ??@string inPath
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -945,6 +984,7 @@ rule <factor>
   @goilTemplateValue value ;
   @goilTemplateType operandType ;
   <factor>
+    !inPath
     !inVariableMap
     ?value
     ?operandType
@@ -964,6 +1004,7 @@ end rule ;
 #------------------------------------------------------------------------------*
 
 rule <factor>
+  ??@string unused inPath
   ??@goilTemplateVariableMap unused inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -984,6 +1025,7 @@ end rule ;
 #------------------------------------------------------------------------------*
 
 rule <factor>
+  ??@string unused inPath
   ??@goilTemplateVariableMap unused inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -1004,6 +1046,7 @@ end rule ;
 #------------------------------------------------------------------------------*
 
 rule <factor>
+  ??@string unused inPath
   ??@goilTemplateVariableMap unused inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -1026,6 +1069,7 @@ end rule ;
 #------------------------------------------------------------------------------*
 
 rule <factor>
+  ??@string inPath
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -1035,6 +1079,7 @@ rule <factor>
   @goilTemplateValue expressionValue ;
   @goilTemplateType expressionType ;
   <expression>
+    !inPath
     !inVariableMap
     ?expressionValue
     ?expressionType
@@ -1044,6 +1089,7 @@ rule <factor>
 
   @goilTemplateExpressionList expressionList ;
   <output_expression_list>
+    !inPath
     ?expressionList 
     !inVariableMap
   ;
@@ -1116,6 +1162,7 @@ end rule ;
 #------------------------------------------------------------------------------*
 
 rule <output_expression_list>
+  ??@string inPath
   !@goilTemplateExpressionList outValueList 
   ??@goilTemplateVariableMap inVariableMap
 :
@@ -1126,6 +1173,7 @@ rule <output_expression_list>
     @goilTemplateValue expression ;
     @goilTemplateType resultType ;
     <expression> 
+      !inPath
       !inVariableMap
       ?expression
       ?resultType
