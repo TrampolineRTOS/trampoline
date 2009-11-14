@@ -181,6 +181,7 @@ end routine ;
 
 routine goilTemplateInvocation
   ??@lstring inTemplateName
+  ??@string inPath
   ??@goilTemplateVariableMap inTemplateVariableMap
   ?!@string ioResultingString
 :
@@ -200,9 +201,17 @@ routine goilTemplateInvocation
         . templateDir . "/" . targetDir
         . "', but it is not a valid directory path" ;
       else
-        @string targetTemplatePartialPath := targetDir ;
         @stringlist pathList [emptyList] ;
         @bool found := false ;
+        if inPath != "" then
+          const @string fullTemplatePath := inPath . "/" . inTemplateName . ".goilTemplate" ;
+          pathList += !fullTemplatePath ;
+          found := [fullTemplatePath fileExists] ;
+          if found then
+            grammar goil_template_grammar in [@lstring new !fullTemplatePath !here] !inPath !inTemplateVariableMap !?ioResultingString ;
+          end if ;
+        end if ;
+        @string targetTemplatePartialPath := targetDir ;
         loop [targetDir length] :
         while ([targetTemplatePartialPath length] > 0) & not found
         do
@@ -210,7 +219,7 @@ routine goilTemplateInvocation
           pathList += !fullTemplatePath ;
           found := [fullTemplatePath fileExists] ;
           if found then
-            grammar goil_template_grammar in [@lstring new !fullTemplatePath !here] !inTemplateVariableMap !?ioResultingString ;
+            grammar goil_template_grammar in [@lstring new !fullTemplatePath !here] !inPath !inTemplateVariableMap !?ioResultingString ;
           else
             targetTemplatePartialPath := [targetTemplatePartialPath stringByDeletingLastPathComponent] ;
           end if ;

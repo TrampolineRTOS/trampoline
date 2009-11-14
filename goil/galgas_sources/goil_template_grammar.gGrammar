@@ -26,6 +26,7 @@ grammar goil_template_grammar "LL1" :
   import syntax goil_template_expression_parser in "goil_template_expression_parser.ggs" ;
 
   root <goil_template_start_symbol>
+    ??@string inPath
     ??@goilTemplateVariableMap inTemplateVariableMap
     ?!@string ioResultingString
   ;

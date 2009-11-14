@@ -87,6 +87,13 @@ list @goilTemplateExpressionList {
 
 #------------------------------------------------------------------------------*
 
+list @goilTemplateEnumationList {
+  @goilTemplateValue mEnumeratedValue ;
+  @string mPrefix ;
+}
+
+#------------------------------------------------------------------------------*
+
 function valueWithBool
   ??@bool inValue
   ->@goilTemplateValue outValue

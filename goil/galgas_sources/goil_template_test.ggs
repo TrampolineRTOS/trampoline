@@ -51,6 +51,20 @@ routine testTemplate
       "after %<after>%\n"
       "end foreach\n"
       "%Fin enumeration.\n"
+      "Enumeration de deux listes, dont l'une est vide:%foreach LISTE_VIDE, UNE_LISTE\n"
+      "before %<before>%\n"
+      "do %<do>%\n"
+      "between %<between>%\n"
+      "after %<after>%\n"
+      "end foreach\n"
+      "%Fin enumeration.\n"
+      "Enumeration de deux listes, utilisation de prefixed by:%foreach UNE_LISTE prefixedby premier_, AUTRE_LISTE\n"
+      "before %<before>%\n"
+      "do %<do>'%!premier_STR_FIELD%', '%!STR_FIELD%', %![premier_UINT_FIELD string]%, %![OTHER_UINT_FIELD string]%</do>%\n"
+      "between %<between>%\n"
+      "after %<after>%\n"
+      "end foreach\n"
+      "%Fin enumeration.\n"
     ;
     @goilTemplateVariableMap sampleMap [emptyMap] ;
     addBoolValue !?sampleMap ![@lstring new !"TRUE_VAR" !here] !true ;
@@ -72,10 +86,17 @@ routine testTemplate
     fieldMapList += !fieldMap ;
     addListValue !?sampleMap ![@lstring new !"UNE_LISTE" !here] !fieldMapList ;
 
+    fieldMap := [@goilTemplateFieldMap emptyMap] ;
+    addBoolFieldValue !?fieldMap ![@lstring new !"OTHER_BOOL_FIELD" !here] !false ;
+    addUnsignedFieldValue !?fieldMap ![@lstring new !"OTHER_UINT_FIELD" !here] !52L ;
+    addStringFieldValue !?fieldMap ![@lstring new !"STR_FIELD" !here] !"<tata>" ;
+    addListValue !?sampleMap ![@lstring new !"AUTRE_LISTE" !here] ![@goilTemplateFieldMapList listWithValue !fieldMap] ;
+
     addListValue !?sampleMap ![@lstring new !"LISTE_VIDE" !here] ![@goilTemplateFieldMapList emptyList] ;
     
     @string resutingString := "" ;
     grammar goil_template_grammar on templateSourceString
+      !""
       !sampleMap
       !?resutingString
     ;
