@@ -99,7 +99,7 @@ typedef tpl_application_mode AppModeType;
  * pages 66+ of OSEK/VDX 2.2.2 spec
  */
 
-#define OS_START_SEC_CODE
+#define API_START_SEC_CODE
 #include "tpl_memmap.h"
 
 /**
@@ -135,7 +135,7 @@ FUNC(void, OS_CODE) ShutdownOS(
     CONST(StatusType, AUTOMATIC) error
 );
 
-#define OS_STOP_SEC_CODE
+#define API_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #endif /* TPL_OS_H */

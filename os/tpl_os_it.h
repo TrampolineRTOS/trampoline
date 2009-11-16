@@ -29,7 +29,7 @@
 #include "tpl_os_types.h"
 #include "tpl_compiler.h"
 
-#define OS_START_SEC_CODE
+#define API_START_SEC_CODE
 #include "tpl_memmap.h"
 
 /*
@@ -107,7 +107,7 @@ FUNC(void, OS_CODE) SuspendOSInterrupts(void);
 FUNC(StatusType, OS_CODE) TerminateISR(void);
 
 
-#define OS_STOP_SEC_CODE
+#define API_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #endif /* TPL_OS_IT_H */

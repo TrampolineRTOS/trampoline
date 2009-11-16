@@ -77,7 +77,7 @@ extern CONST(ResourceType, OS_CONST) RES_SCHEDULER;
   extern CONST(ResourceType, AUTOMATIC) resource_id
 
 
-#define OS_START_SEC_CODE
+#define API_START_SEC_CODE
 #include "tpl_memmap.h"
 
 /*
@@ -118,7 +118,7 @@ FUNC(StatusType, OS_CODE) ReleaseResource(
     CONST(ResourceType, AUTOMATIC) res_id);
 
 
-#define OS_STOP_SEC_CODE
+#define API_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #endif /* TPL_OS_REZ_H */

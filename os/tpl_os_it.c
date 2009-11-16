@@ -33,7 +33,7 @@
 #include "tpl_as_isr.h"
 #endif
 
-#define OS_START_SEC_CODE
+#define API_START_SEC_CODE
 #include "tpl_memmap.h"
 
 /*
@@ -124,7 +124,7 @@ FUNC(void, OS_CODE) SuspendOSInterrupts(void)
     tpl_suspend_os_interrupts_service();
 }
 
-#define OS_STOP_SEC_CODE
+#define API_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #else

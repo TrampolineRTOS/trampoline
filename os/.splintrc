@@ -1,5 +1,4 @@
--I ./os_machine/posix-libpcl
--I ../App/defaultAppWorkstation
+-I ../machines/posix-libpcl
 -I .
 
 #-hints

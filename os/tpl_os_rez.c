@@ -32,7 +32,7 @@
 #include "tpl_as_isr.h"
 #endif
 
-#define OS_START_SEC_CODE
+#define API_START_SEC_CODE
 #include "tpl_memmap.h"
 
 /*
@@ -50,7 +50,7 @@ FUNC(StatusType, OS_CODE) ReleaseResource(
     return OSEK_STATUS_MASK & tpl_release_resource_service(res_id);
 }
 
-#define OS_STOP_SEC_CODE
+#define API_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #else

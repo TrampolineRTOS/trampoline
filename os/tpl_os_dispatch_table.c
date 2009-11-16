@@ -44,7 +44,9 @@
 /* isr services */
 #include "tpl_os_it_kernel.h"
 
-const tpl_system_call tpl_dispatch_table[OS_SYSCALL_COUNT] = {
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+CONST(tpl_system_call, OS_CONST) tpl_dispatch_table[OS_SYSCALL_COUNT] = {
 /* task services */
     (tpl_system_call) tpl_activate_task_service,
     (tpl_system_call) tpl_terminate_task_service,
@@ -80,5 +82,7 @@ const tpl_system_call tpl_dispatch_table[OS_SYSCALL_COUNT] = {
 /* isr services */
     (tpl_system_call) tpl_terminate_isr2_service
 };
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 
 /* End of file tpl_os_dispatch_table.c */

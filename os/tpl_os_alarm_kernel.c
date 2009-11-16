@@ -36,16 +36,19 @@
 #include "tpl_as_protec_hook.h"
 #endif
 
-#define OS_START_SEC_CODE
+#define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-
 /**
  * @def INVALID_ALARM
  *
  * This value is used to specify an invalid alarm ID
  */
 CONST(tpl_alarm_id, AUTOMATIC) INVALID_ALARM = (-1);
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 /**
  * @internal
  *

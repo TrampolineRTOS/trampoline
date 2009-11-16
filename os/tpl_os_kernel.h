@@ -312,14 +312,22 @@ extern VAR(tpl_kern_state, OS_VAR) tpl_kern;
 extern VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER;
 
 /**
+ * Dynamic descriptor of the idle task
+ */
+extern VAR(tpl_proc, OS_VAR) idle_task;
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+/**
  * Static descriptor of the idle task
  */
 extern CONST(tpl_proc_static, OS_VAR) idle_task_static;
 
-/**
- * Dynamic descriptor of the idle task
- */
-extern VAR(tpl_proc, OS_VAR) idle_task;
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 
 /**
  * @def IDLE_TASK_ID
@@ -336,6 +344,8 @@ extern VAR(tpl_proc, OS_VAR) idle_task;
  */
 #define INVALID_TASK_ID  -1
 
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 /**
  * Arrays of all processes static and dynamic descriptors.
  *
@@ -349,7 +359,7 @@ extern CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)
 extern CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)
   tpl_dyn_proc_table[TASK_COUNT+ISR_COUNT+1];
             
-#define OS_STOP_SEC_VAR_UNSPECIFIED
+#define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
 

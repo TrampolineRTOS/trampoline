@@ -79,7 +79,7 @@ extern FUNC(void, OS_CODE) tpl_start_os(CONST(AppModeType, AUTOMATIC) mode);
 
 #endif /* WITH_SYSTEM_CALL */
 
-#define OS_START_SEC_CODE
+#define API_START_SEC_CODE
 #include "tpl_memmap.h"
 
 /*
@@ -95,7 +95,7 @@ FUNC(void, OS_CODE) StartOS(
       if no other task is AUTOSTART */
 }
 
-#define OS_STOP_SEC_CODE
+#define API_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 /* End of file tpl_os.c */
