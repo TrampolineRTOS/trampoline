@@ -25,6 +25,18 @@ VAR(TaskType, OS_VAR) new_task;
 #define OS_STOP_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 
+#define APP_Task_iamsolonely_START_SEC_CONST_32BIT
+#include "tpl_memmap.h"
+CONST(int, AUTOMATIC) toto = 0;
+#define APP_Task_iamsolonely_STOP_SEC_CONST_32BIT
+#include "tpl_memmap.h"
+
+#define APP_Task_iamsolonely_START_SEC_VAR_32BIT
+#include "tpl_memmap.h"
+VAR(int, AUTOMATIC) titi = 0;
+#define APP_Task_iamsolonely_STOP_SEC_VAR_32BIT
+#include "tpl_memmap.h"
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 FUNC(void, OS_CODE) PreTaskHook(void)
