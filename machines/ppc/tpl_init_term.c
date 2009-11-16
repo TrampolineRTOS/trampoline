@@ -31,17 +31,25 @@
 #include "tpl_os_it_kernel.h"
 #include "tpl_assembler.h"
 
+#define OS_START_SEC_VAR_32BIT
+#include "tpl_memmap.h"
 VAR(tpl_stack_word, OS_VAR)
   idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
+#define OS_STOP_SEC_VAR_32BIT
+#include "tpl_memmap.h"
 
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 extern CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)
   tpl_stat_proc_table[TASK_COUNT+ISR_COUNT+1];
-
-#define OS_START_SEC_VAR_UNSPECIFIED
+#define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-u32 tpl_msr_start_value;
-u32 tpl_register_r2;
-u32 tpl_register_r13;
+
+#define OS_START_SEC_VAR_32BIT
+#include "tpl_memmap.h"
+VAR(u32, OS_VAR) tpl_msr_start_value;
+VAR(u32, OS_VAR) tpl_register_r2;
+VAR(u32, OS_VAR) tpl_register_r13;
 VAR(ppc_integer_context, OS_VAR) idle_task_context = {
   { /* r0 */   0,
     /* sp */   ((u32)(idle_stack)) + SIZE_OF_IDLE_STACK - 48,
@@ -83,7 +91,7 @@ VAR(ppc_integer_context, OS_VAR) idle_task_context = {
   /* srr0 */ (u32)tpl_sleep,
   /* srr1 */ 0x00008000
 };
-#define OS_STOP_SEC_VAR_UNSPECIFIED
+#define OS_STOP_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 
 

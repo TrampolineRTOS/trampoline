@@ -106,11 +106,13 @@
  */
 #define stack_rgn_access  0x03618861E
   
-.text
-.global tpl_kernel_mp
-.global tpl_user_mp
-.global tpl_set_process_mp
-.global tpl_set_app_mp
+  .text
+  .global tpl_kernel_mp
+  .global tpl_user_mp
+  .global tpl_set_process_mp
+  .global tpl_set_app_mp
+  .section ".osCode","ax"
+
 TPL_EXTERN tpl_mp_table
 
 /**
