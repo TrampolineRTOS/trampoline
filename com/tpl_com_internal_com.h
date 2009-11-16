@@ -20,10 +20,27 @@
 
 #include "tpl_com_mo.h"
 
-tpl_status tpl_send_static_internal_message(void*, tpl_com_data*);
-tpl_status tpl_send_zero_internal_message(void*, tpl_com_data*);
-tpl_status tpl_receive_static_internal_unqueued_message(void*, tpl_com_data*);
-tpl_status tpl_receive_static_internal_queued_message(void*,tpl_com_data*);
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
+FUNC(tpl_status, OS_CODE) tpl_send_static_internal_message(
+  CONSTP2CONST(void, AUTOMATIC, OS_CONST)       smo,
+  CONSTP2CONST(tpl_com_data, AUTOMATIC, OS_VAR) data);
+
+FUNC(tpl_status, OS_CODE) tpl_send_zero_internal_message(
+  CONSTP2CONST(void, AUTOMATIC, OS_CONST)       smo,
+  CONSTP2CONST(tpl_com_data, AUTOMATIC, OS_VAR) data);
+
+FUNC(tpl_status, OS_CODE) tpl_receive_static_internal_unqueued_message(
+  CONSTP2CONST(void, AUTOMATIC, OS_CONST)       rmo,
+  CONSTP2CONST(tpl_com_data, AUTOMATIC, OS_VAR) data);
+
+FUNC(tpl_status, OS_CODE) tpl_receive_static_internal_queued_message(
+  CONSTP2CONST(void, AUTOMATIC, OS_CONST)       rmo,
+  CONSTP2CONST(tpl_com_data, AUTOMATIC, OS_VAR) data);
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 #endif
 /* __TPL_COM_INTERNAL_COM__ */

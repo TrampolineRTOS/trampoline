@@ -33,25 +33,22 @@ struct TPL_DATA_RECEIVING_MO;
  * Prototype for sending functions
  */
 typedef tpl_status (*tpl_sending_func)(
-    void *,
-    tpl_com_data *
-);
+  P2CONST(void, AUTOMATIC, OS_CODE),
+  CONSTP2CONST(tpl_com_data, AUTOMATIC, OS_VAR));
 
 /*
  * Prototype for receiving functions
  */
 typedef tpl_status (*tpl_receiving_func)(
-    void *,
-    tpl_com_data *
-);
+  P2CONST(void, AUTOMATIC, OS_CODE),
+  P2CONST(tpl_com_data, AUTOMATIC, OS_VAR));
 
 /*
  * Prototype for copying functions
  */
 typedef tpl_status (*tpl_data_copy_func)(
-    tpl_com_data *,
-    void *
-);
+  P2VAR(tpl_com_data, AUTOMATIC, OS_APPL_DATA),
+  CONSTP2CONST(void, AUTOMATIC, OS_CONST));
 
 /*!
  *  \struct TPL_BASE_SENDING_MO

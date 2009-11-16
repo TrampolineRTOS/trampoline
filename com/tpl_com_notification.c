@@ -23,10 +23,14 @@
 #include "tpl_com_definitions.h"
 #include "tpl_com_notification.h"
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
 /**
  *  action function for action set flag
  */
-tpl_status tpl_action_setflag(const tpl_action *action)
+FUNC(tpl_status, OS_CODE) tpl_action_setflag(
+  CONSTP2CONST(tpl_action, AUTOMATIC, OS_CONST) action)
 {
     /*
      * A tpl_action * is cast to a tpl_callback_action *
@@ -44,7 +48,9 @@ tpl_status tpl_action_setflag(const tpl_action *action)
  *
  *
  */
-void tpl_notify_receiving_mos(tpl_status result, u8 from)
+FUNC(void, OS_CODE) tpl_notify_receiving_mos(
+  CONST(tpl_status, AUTOMATIC) result,
+  CONST(u8, AUTOMATIC) from)
 {
   /*
      * Walk along the receiving message object chain and call the notification
@@ -59,30 +65,32 @@ void tpl_notify_receiving_mos(tpl_status result, u8 from)
         rmo = rmo->next_mo;
     }*/
 	
-    if ((result & NEED_RESCHEDULING) != 0)
-    {
-      tpl_schedule_from_running();
+  if ((result & NEED_RESCHEDULING) != 0)
+  {
+    tpl_schedule_from_running();
 #ifndef WITH_SYSTEM_CALL
-      if (tpl_kern.need_switch != NO_NEED_SWITCH)
+    if (tpl_kern.need_switch != NO_NEED_SWITCH)
+    {
+      if (from == FROM_IT_LEVEL)
       {
-        if (from == FROM_IT_LEVEL)
-        {
-          tpl_switch_context_from_it(
-            &(tpl_kern.s_old->context),
-            &(tpl_kern.s_running->context)
-          );
-        }
-        else
-        {
-          tpl_switch_context(
-            &(tpl_kern.s_old->context),
-            &(tpl_kern.s_running->context)
-          );
-        }
+        tpl_switch_context_from_it(
+          &(tpl_kern.s_old->context),
+          &(tpl_kern.s_running->context)
+        );
       }
-#endif
+      else
+      {
+        tpl_switch_context(
+          &(tpl_kern.s_old->context),
+          &(tpl_kern.s_running->context)
+        );
+      }
     }
-  
-
-
+#endif
+  }
 }
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+/* End of file tpl_com_notification.c */

@@ -14,25 +14,90 @@
  * $URL: http://localhost:8888/Trampoline/svn/tpl_com_filters.h $
  */
 
-#ifndef __TPL_COM_FILTERS_H__
-#define __TPL_COM_FILTERS_H__
+#ifndef TPL_COM_FILTERS_H
+#define TPL_COM_FILTERS_H
 
 #include "tpl_com_filtering.h"
 
-tpl_bool tpl_filter_always(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-tpl_bool tpl_filter_never(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-tpl_bool tpl_filter_masked_new_equals_x(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-tpl_bool tpl_filter_masked_new_differs_x(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-tpl_bool tpl_filter_new_is_equal(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-tpl_bool tpl_filter_new_is_different(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-tpl_bool tpl_filter_masked_new_equals_masked_old(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-tpl_bool tpl_filter_masked_new_differs_masked_old(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-tpl_bool tpl_filter_new_is_within(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-tpl_bool tpl_filter_new_is_outside(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-tpl_bool tpl_filter_new_is_greater(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-tpl_bool tpl_filter_new_is_less_or_equal(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-tpl_bool tpl_filter_new_is_less(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-tpl_bool tpl_filter_new_is_greater_or_equal(tpl_filter_desc *, tpl_com_value, tpl_com_value);
-tpl_bool tpl_filter_one_every_n(tpl_filter_desc *, tpl_com_value, tpl_com_value);
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
+FUNC(tpl_bool, OS_CODE) tpl_filter_always(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value);
+
+FUNC(tpl_bool, OS_CODE) tpl_filter_never(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value);
+
+FUNC(tpl_bool, OS_CODE) tpl_filter_masked_new_equals_x(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value);
+
+FUNC(tpl_bool, OS_CODE) tpl_filter_masked_new_differs_x(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value);
+
+FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_equal(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value);
+
+FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_different(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value);
+
+FUNC(tpl_bool, OS_CODE) tpl_filter_masked_new_equals_masked_old(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value);
+
+FUNC(tpl_bool, OS_CODE) tpl_filter_masked_new_differs_masked_old(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value);
+
+FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_within(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value);
+
+FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_outside(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value);
+
+FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_greater(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value);
+
+FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_less_or_equal(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value);
+
+FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_less(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value);
+
+FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_greater_or_equal(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value);
+
+FUNC(tpl_bool, OS_CODE) tpl_filter_one_every_n(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value);
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 #endif

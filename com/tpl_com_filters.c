@@ -17,134 +17,139 @@
 #include "tpl_com_filters.h"
 #include "tpl_os_definitions.h"
 
-tpl_bool tpl_filter_always(
-    tpl_filter_desc *fd,
-    tpl_com_value old_value,
-    tpl_com_value new_value)
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
+FUNC(tpl_bool, OS_CODE) tpl_filter_always(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value)
 {
-    return TRUE;
+  return TRUE;
 }
 
-tpl_bool tpl_filter_never(
-    tpl_filter_desc *fd,
-    tpl_com_value old_value,
-    tpl_com_value new_value)
+FUNC(tpl_bool, OS_CODE) tpl_filter_never(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value)
 {
-    return FALSE;
+  return FALSE;
 }
 
-tpl_bool tpl_filter_masked_new_equals_x(
-    tpl_filter_desc *fd,
-    tpl_com_value old_value,
-    tpl_com_value new_value)
+FUNC(tpl_bool, OS_CODE) tpl_filter_masked_new_equals_x(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value)
 {
-    return ((new_value &
-            ((tpl_mask_x_filter_desc *)fd)->mask)
-            == ((tpl_mask_x_filter_desc *)fd)->x);
+  return (tpl_bool)((new_value &
+          ((tpl_mask_x_filter_desc *)fd)->mask)
+          == ((tpl_mask_x_filter_desc *)fd)->x);
 }
 
-tpl_bool tpl_filter_masked_new_differs_x(
-    tpl_filter_desc *fd,
-    tpl_com_value old_value,
-    tpl_com_value new_value)
+FUNC(tpl_bool, OS_CODE) tpl_filter_masked_new_differs_x(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value)
 {
-    return ((new_value &
-            ((tpl_mask_x_filter_desc *)fd)->mask)
-            != ((tpl_mask_x_filter_desc *)fd)->x);
+  return (tpl_bool)((new_value &
+          ((tpl_mask_x_filter_desc *)fd)->mask)
+          != ((tpl_mask_x_filter_desc *)fd)->x);
 }
 
-tpl_bool tpl_filter_new_is_equal(
-    tpl_filter_desc *fd,
-    tpl_com_value old_value,
-    tpl_com_value new_value)
+FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_equal(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value)
 {
-    return (new_value == old_value);
+  return (tpl_bool)(new_value == old_value);
 }
 
-tpl_bool tpl_filter_new_is_different(
-    tpl_filter_desc *fd,
-    tpl_com_value old_value,
-    tpl_com_value new_value)
+FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_different(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value)
 {
-    return (new_value != old_value);
+  return (tpl_bool)(new_value != old_value);
 }
 
-tpl_bool tpl_filter_masked_new_equals_masked_old(
-    tpl_filter_desc *fd,
-    tpl_com_value old_value,
-    tpl_com_value new_value)
+FUNC(tpl_bool, OS_CODE) tpl_filter_masked_new_equals_masked_old(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value)
 {
-    return ((new_value & ((tpl_mask_filter_desc *)fd)->mask)
-            == (old_value & ((tpl_mask_filter_desc *)fd)->mask));
+  return (tpl_bool)((new_value & ((tpl_mask_filter_desc *)fd)->mask)
+          == (old_value & ((tpl_mask_filter_desc *)fd)->mask));
 }
 
-tpl_bool tpl_filter_masked_new_differs_masked_old(
-    tpl_filter_desc *fd,
-    tpl_com_value old_value,
-    tpl_com_value new_value)
+FUNC(tpl_bool, OS_CODE) tpl_filter_masked_new_differs_masked_old(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value)
 {
-    return ((new_value & ((tpl_mask_filter_desc *)fd)->mask)
-            != (old_value & ((tpl_mask_filter_desc *)fd)->mask));
+  return (tpl_bool)((new_value & ((tpl_mask_filter_desc *)fd)->mask)
+          != (old_value & ((tpl_mask_filter_desc *)fd)->mask));
 }
 
-tpl_bool tpl_filter_new_is_within(
-    tpl_filter_desc *fd,
-    tpl_com_value old_value,
-    tpl_com_value new_value)
+FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_within(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value)
 {
-	return ((new_value >= ((tpl_interval_filter_desc *)fd)->min) &&
+	return (tpl_bool)((new_value >= ((tpl_interval_filter_desc *)fd)->min) &&
             (new_value <= ((tpl_interval_filter_desc *)fd)->max));
 }
 
-tpl_bool tpl_filter_new_is_outside(
-    tpl_filter_desc *fd,
-    tpl_com_value old_value,
-    tpl_com_value new_value)
+FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_outside(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value)
 {
     
-	return ((new_value < ((tpl_interval_filter_desc *)fd)->min) ||
+	return (tpl_bool)((new_value < ((tpl_interval_filter_desc *)fd)->min) ||
             (new_value > ((tpl_interval_filter_desc *)fd)->max));
 }
 
-tpl_bool tpl_filter_new_is_greater(
-    tpl_filter_desc *fd,
-    tpl_com_value old_value,
-    tpl_com_value new_value)
+FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_greater(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value)
 {
-    return (new_value > old_value);
+  return (tpl_bool)(new_value > old_value);
 }
 
-tpl_bool tpl_filter_new_is_less_or_equal(
-    tpl_filter_desc *fd,
-    tpl_com_value old_value,
-    tpl_com_value new_value)
+FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_less_or_equal(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value)
 {
-    return (new_value <= old_value);
+  return (tpl_bool)(new_value <= old_value);
 }
 
-tpl_bool tpl_filter_new_is_less(
-    tpl_filter_desc *fd,
-    tpl_com_value old_value,
-    tpl_com_value new_value)
+FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_less(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value)
 {
-    return (new_value < old_value);
+  return (tpl_bool)(new_value < old_value);
 }
 
-tpl_bool tpl_filter_new_is_greater_or_equal(
-    tpl_filter_desc *fd,
-    tpl_com_value old_value,
-    tpl_com_value new_value)
+FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_greater_or_equal(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value)
 {
-    return (new_value >= old_value);
+  return (tpl_bool)(new_value >= old_value);
 }
 
-tpl_bool tpl_filter_one_every_n(
-    tpl_filter_desc *fd,
-    tpl_com_value old_value,
-    tpl_com_value new_value)
+FUNC(tpl_bool, OS_CODE) tpl_filter_one_every_n(
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
+  CONST(tpl_com_value, AUTOMATIC) old_value,
+  CONST(tpl_com_value, AUTOMATIC) new_value)
 {
-	tpl_bool b_temp;
-	tpl_com_count *occ = ((tpl_occurence_filter_desc *)fd)->occurence;
+	VAR(tpl_bool, AUTOMATIC) b_temp = FALSE;
+	CONSTP2VAR(tpl_com_count, AUTOMATIC, OS_VAR)
+  occ = ((tpl_occurence_filter_desc *)fd)->occurence;
+
 	if (*occ < ( ((tpl_occurence_filter_desc *)fd)->period + ((tpl_occurence_filter_desc *)fd)->offset ) )
 	{
 		++(*occ);
@@ -164,3 +169,7 @@ tpl_bool tpl_filter_one_every_n(
 	return b_temp;
 }
 
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+/* End of file tpl_com_filters.h */
