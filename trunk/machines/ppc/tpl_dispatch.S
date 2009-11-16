@@ -51,6 +51,7 @@ TPL_EXTERN  tpl_need_switch
  * The kernel stack. When a system call is done, the sc handler switches
  * to the kernel stack.
  */
+  .section ".osVar","axw"
 tpl_kernel_stack:
   .space  KERNEL_STACK_SIZE
 tpl_kernel_stack_bottom:
@@ -58,10 +59,12 @@ tpl_kernel_stack_bottom:
  * A reentrency counter to track system calls made from
  * hook routines
  */
+  .align  4
 tpl_reentrency_counter:
   .space  4,0
 
   .text
+  .section ".osCode","ax"
   
 /**
  * tpl_enter_kernel does all the stuff to switch from

@@ -39,6 +39,7 @@ TPL_EXTERN tpl_kernel_stack
   .text
   .global _start
 
+  .section ".osCode","ax"
 _start:
 
   /* set up the stack */

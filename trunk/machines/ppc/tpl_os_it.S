@@ -38,7 +38,9 @@
   .global tpl_enable_interrupts
   .global tpl_disable_interrupts
 
-.text
+  .text
+  
+  .section ".osCode","ax"
 
 /**
  * Enable interrupts. On the PowerPC, the interrupt bit is located

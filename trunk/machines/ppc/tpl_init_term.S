@@ -40,6 +40,8 @@ TPL_EXTERN tpl_msr_start_value
   .global tpl_init_regs
   .global tpl_shutdown
   
+  .section ".osCode","ax"
+  
 tpl_init_regs:
   subi  r1,r1,4   /* space on the stack */
   stw   r3,0(r1)  /* save the working register  */

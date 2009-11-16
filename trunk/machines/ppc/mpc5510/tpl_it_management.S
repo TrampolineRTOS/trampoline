@@ -32,6 +32,7 @@
   .equ INTC_IACKR_PRC0, 0xfff48010  /* MPC551x: P0 Interrupt Acknowledge @  */
   
   .text
+  .section ".osCode","ax"
   
 tpl_it_id:
   lis   r3,TPL_HIG(INTC_IACKR_PRC0)

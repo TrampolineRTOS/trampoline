@@ -113,7 +113,8 @@
 #define FPR31   248
 #define FPSCR   256
 
-.text
+  .text
+  .section ".osCode","ax"
 /**
  * tpl_save_context saves the context in the context passed in r3
  * this function is called from tpl_sc_handler and we are running

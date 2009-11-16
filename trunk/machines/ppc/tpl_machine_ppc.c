@@ -38,7 +38,11 @@ extern int tpl_running_id;
 extern CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)
 tpl_stat_proc_table[TASK_COUNT+ISR_COUNT+1];
 
+#define OS_START_SEC_VAR_32BIT
+#include "tpl_memmap.h"
 ppc_integer_context idle_task_context;
+#define OS_STOP_SEC_VAR_32BIT
+#include "tpl_memmap.h"
 
 #define EE_BIT      0x8000
 
