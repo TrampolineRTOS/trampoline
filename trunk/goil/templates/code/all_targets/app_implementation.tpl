@@ -42,6 +42,8 @@
 
 /* #include "Application_types.h" */
 
+#define API_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 /*=============================================================================
  * Declaration of event masks
  */
@@ -90,6 +92,9 @@ $OSAPPIDS$
 $TRUSTED_IDS$
 #endif
 
+#define API_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
 /*=============================================================================
  * Definition and initialization of Resource related structures
  */
@@ -111,9 +116,15 @@ $TASKS$
 $ISRS$
 
 #if WITH_IT_TABLE == YES
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 $IT_TABLE$
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 #endif
 
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 /*=============================================================================
  * Definition and initialization of process tables (tasks and isrs)
  */
@@ -133,7 +144,10 @@ $ISR_ENABLE_TABLE$
 #endif
 
 #endif
- 
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
 /*=============================================================================
  * Definition and initialization of Alarm related structures
  */

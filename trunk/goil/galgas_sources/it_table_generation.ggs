@@ -132,7 +132,7 @@ routine generate_it_table
           [!?tbl setParamAtIndex!"NULL"![it_count uint] - 1];
         end if;
   
-        @string its := "tpl_it_vector_entry tpl_it_vector[".[it_count string]."] = {\n";
+        @string its := "CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[".[it_count string]."] = {\n";
         foreach tbl do its .= "  { ".fct.", (void *)".param." }";
         between        its .= ",\n";
         after          its .= "\n";
