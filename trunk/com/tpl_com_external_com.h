@@ -18,13 +18,19 @@
 
 #include "tpl_com_mo.h"
 
-tpl_status tpl_receive_static_external_unqueued_message(
-    void*         rmo,
-    tpl_com_data* date);
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 
-tpl_status tpl_send_static_external_message(
-    void            *smo,
-    tpl_com_data    *data);
+FUNC(tpl_status, OS_CODE) tpl_receive_static_external_unqueued_message(
+  CONSTP2CONST(void, AUTOMATIC, OS_CONST)   rmo,
+  P2CONST(tpl_com_data, AUTOMATIC, OS_VAR)  data);
+
+FUNC(tpl_status, OS_CODE) tpl_send_static_external_message(
+  CONSTP2CONST(void, AUTOMATIC, OS_CONST) smo,
+  P2VAR(tpl_com_data, AUTOMATIC, OS_VAR)  data);
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 #endif
 /* TPL_COM_EXTERNAL_COM */

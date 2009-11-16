@@ -26,27 +26,36 @@
  *
  * This value is used to specify an invalid message ID
  */
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 CONST(tpl_message_id, AUTOMATIC) INVALID_MESSAGE = SEND_MESSAGE_COUNT;
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 #endif
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 /*
  * tpl_send_static_internal_message sends a message from an internal only
  * sending message object to a set of internal receiving message objects.
  * this function is attached to the sending message object.
  */ 
-tpl_status tpl_send_static_internal_message(
-    void          *smo,
-    tpl_com_data  *data
-    )
+FUNC(tpl_status, OS_CODE) tpl_send_static_internal_message(
+  CONSTP2CONST(void, AUTOMATIC, OS_CONST)       smo,
+  CONSTP2CONST(tpl_com_data, AUTOMATIC, OS_VAR) data)
 {
-  tpl_status result = E_OK;
-	tpl_status result_notification = E_OK;
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
+	VAR(tpl_status, AUTOMATIC) result_notification = E_OK;
     
   /*  cast the base mo to the correct type of mo                          */
-  tpl_internal_sending_mo *ismo = smo;
+  CONSTP2CONST(tpl_internal_sending_mo, AUTOMATIC, OS_CONST)
+  ismo = smo;
   /*  get the first of the receiving mo                                   */
-  tpl_data_receiving_mo *rmo = (tpl_data_receiving_mo *)ismo->internal_target;
-	tpl_base_receiving_mo *rmo_notification = (tpl_base_receiving_mo *)ismo->internal_target;
+  P2CONST(tpl_data_receiving_mo, AUTOMATIC, OS_CONST)
+  rmo = (tpl_data_receiving_mo *)ismo->internal_target;
+  
+	P2CONST(tpl_base_receiving_mo, AUTOMATIC, OS_CONST) 
+  rmo_notification = (tpl_base_receiving_mo *)ismo->internal_target;
 	
   /*  iterate through the receiving mo to copy the data to the receivers  */
   while ((result == E_OK || result == E_COM_FILTEREDOUT) && (rmo != NULL))
@@ -86,16 +95,18 @@ tpl_status tpl_send_static_internal_message(
  * only sending message object to a set of internal receiving message objects.
  * This function is attached to the sending message object
  */
-tpl_status tpl_send_zero_internal_message(
-    void          *smo,
-    tpl_com_data  *data
-    )
+FUNC(tpl_status, OS_CODE) tpl_send_zero_internal_message(
+  CONSTP2CONST(void, AUTOMATIC, OS_CONST)       smo,
+  CONSTP2CONST(tpl_com_data, AUTOMATIC, OS_VAR) data)
 {
   /*  cast the base mo to the correct type of mo  */
-  tpl_internal_sending_mo *ismo = smo;
+  CONSTP2CONST(tpl_internal_sending_mo, AUTOMATIC, OS_CONST)
+  ismo = smo;
 	
-	tpl_status result_notification = E_OK;
-	tpl_base_receiving_mo *rmo_notification = ismo->internal_target;
+	VAR(tpl_status, AUTOMATIC) result_notification = E_OK;
+
+	P2CONST(tpl_base_receiving_mo, AUTOMATIC, OS_CONST)
+  rmo_notification = ismo->internal_target;
 	
 	/*
      * Walk along the receiving message object chain and call the notification
@@ -122,19 +133,20 @@ tpl_status tpl_send_zero_internal_message(
  * buffer and copies it to the buffer of the unqueued message object.
  * This function is attached to the receiving message object.
  */
-tpl_status tpl_receive_static_internal_unqueued_message(
-    void          *rmo,
-    tpl_com_data  *data
-    )
+FUNC(tpl_status, OS_CODE) tpl_receive_static_internal_unqueued_message(
+  CONSTP2CONST(void, AUTOMATIC, OS_CONST)       rmo,
+  P2CONST(tpl_com_data, AUTOMATIC, OS_VAR) data)
 {
-	tpl_status result = E_COM_FILTEREDOUT;
+	VAR(tpl_status, AUTOMATIC) result = E_COM_FILTEREDOUT;
 	
   /*  cast the base receiving mo to the correct type of mo                */
-  tpl_internal_receiving_unqueued_mo *rum = rmo;
+  CONSTP2CONST(tpl_internal_receiving_unqueued_mo, AUTOMATIC, OS_CONST)
+  rum = rmo;
   /*  get the destination buffer                                          */
-  tpl_com_data *mo_buf = rum->buffer.buffer;
+  P2VAR(tpl_com_data, AUTOMATIC, OS_VAR)
+  mo_buf = rum->buffer.buffer;
   /*  get the size of the buffer                                          */
-  int size = rum->buffer.size;
+  VAR(int, AUTOMATIC) size = rum->buffer.size;
   
   /*  reception filtering                                                 */
   if (tpl_filtering(mo_buf, data, size, rum->base_mo.filter))
@@ -157,17 +169,18 @@ tpl_status tpl_receive_static_internal_unqueued_message(
  * buffer and copies it to the buffer of a queued message object.
  * This function is attached to the receiving message object.
  */
-tpl_status tpl_receive_static_internal_queued_message(
-    void          *rmo,
-    tpl_com_data  *data
-    )
+FUNC(tpl_status, OS_CODE) tpl_receive_static_internal_queued_message(
+  CONSTP2CONST(void, AUTOMATIC, OS_CONST)   rmo,
+  P2CONST(tpl_com_data, AUTOMATIC, OS_VAR)  data)
 {
   /*  destination buffer                                      */
-  tpl_com_data *dst = NULL;
+  P2VAR(tpl_com_data, AUTOMATIC, OS_VAR) dst = NULL;
   /*  cast the base receiving mo to the correct type of mo    */
-  tpl_queue *rq = &(((tpl_internal_receiving_queued_mo *)rmo)->queue);
+  CONSTP2CONST(tpl_queue, AUTOMATIC, OS_CONST)
+  rq = &(((tpl_internal_receiving_queued_mo *)rmo)->queue);
   /*  get the dynamic part of the queue                       */
-  struct TPL_QUEUE_DYNAMIC    *dq = rq->dyn_desc;
+  CONSTP2VAR(tpl_queue_dyn, AUTOMATIC, OS_VAR)
+  dq = rq->dyn_desc;
   
   /*  get the buffer to perform the write                     */
   dst = tpl_queue_element_for_write(rq);
@@ -189,3 +202,8 @@ tpl_status tpl_receive_static_internal_queued_message(
   }
 	return E_OK;
 }
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+/* End of file tpl_com_internal_com.c */

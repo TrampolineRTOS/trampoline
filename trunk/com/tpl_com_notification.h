@@ -43,8 +43,18 @@ struct TPL_FLAG_ACTION {
 typedef struct TPL_FLAG_ACTION
 tpl_flag_action;
 
-tpl_status tpl_action_setflag(const tpl_action *action);
-void tpl_notify_receiving_mos(tpl_status result, u8 from);
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+
+FUNC(tpl_status, OS_CODE) tpl_action_setflag(
+  CONSTP2CONST(tpl_action, AUTOMATIC, OS_CONST) action);
+
+FUNC(void, OS_CODE) tpl_notify_receiving_mos(
+  CONST(tpl_status, AUTOMATIC) result,
+  CONST(u8, AUTOMATIC) from);
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 #endif /*  TPL_OS_NOTIFICATION_H  */
 

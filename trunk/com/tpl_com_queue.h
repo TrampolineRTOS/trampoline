@@ -63,18 +63,25 @@ struct TPL_QUEUE_STATIC {
 typedef struct TPL_QUEUE_DYNAMIC tpl_queue_dyn;
 typedef struct TPL_QUEUE_STATIC tpl_queue;
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 /*
  *  Queue management functions prototypes
  *
  *  Pointer to the next element available for a write
  *  (or NULL if no space left)
  */
-tpl_com_data *tpl_queue_element_for_write(tpl_queue *);
+FUNC(tpl_com_data, OS_CODE) *tpl_queue_element_for_write(
+  CONSTP2CONST(tpl_queue, AUTOMATIC, OS_CONST) queue);
 
 /*
  *  Pointer to the next element available for a read
  *  (or NULL if empty queue)
  */
-tpl_com_data *tpl_queue_element_for_read(tpl_queue *);
+FUNC(tpl_com_data, OS_CODE) *tpl_queue_element_for_read(
+  CONSTP2CONST(tpl_queue, AUTOMATIC, OS_CONST) queue);
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 #endif

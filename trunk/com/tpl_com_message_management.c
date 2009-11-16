@@ -28,34 +28,39 @@
 
 #include <stdio.h>
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 void tpl_get_task_lock(void);
 void tpl_release_task_lock(void);
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
-tpl_status tpl_send_zero_internal_message(void *smo,tpl_com_data  *data); /*added by Florent 090303*/
-/*or #include "tpl_com_internal_com.h" ?*/
+#define API_START_SEC_CODE
+#include "tpl_memmap.h"
 
-StatusType GetMessageStatus(MessageIdentifier mess_id)
+FUNC(StatusType, OS_CODE) GetMessageStatus(
+  CONST(MessageIdentifier, AUTOMATIC) mess_id)
 {
 	/*  init the error to no error                  */
-    StatusType result = E_OK;
+  VAR(StatusType, AUTOMATIC) result = E_OK;
 	
 #ifndef NO_RECEIVE_MESSAGE
-    tpl_data_receiving_mo	*rmo = NULL;
-	tpl_queue *queue = NULL;
+  P2CONST(tpl_data_receiving_mo, AUTOMATIC, OS_CONST)	rmo = NULL;
+	P2CONST(tpl_queue, AUTOMATIC, OS_CONST) queue = NULL;
 #endif
 	
-    /*  lock the task structures                    */
-    LOCK_KERNEL()
-    
-    /*  store information for error hook routine    */
-    STORE_COM_SERVICE(COMServiceId_GetMessageStatus)
-    STORE_COM_MESSAGE_ID(mess_id)
-	
-    /*  Check the error                             */
-    CHECK_SEND_MESSAGE_ID_ERROR(mess_id,result)
-    CHECK_NOT_ZERO_LENGTH_SEND(mess_id,result);
-	/*  Check the error                             */
-    CHECK_RECEIVE_MESSAGE_ID_ERROR(mess_id,result)
+  /*  lock the task structures                    */
+  LOCK_KERNEL()
+  
+  /*  store information for error hook routine    */
+  STORE_COM_SERVICE(COMServiceId_GetMessageStatus)
+  STORE_COM_MESSAGE_ID(mess_id)
+
+  /*  Check the error                             */
+  CHECK_SEND_MESSAGE_ID_ERROR(mess_id,result)
+  CHECK_NOT_ZERO_LENGTH_SEND(mess_id,result);
+  /*  Check the error                             */
+  CHECK_RECEIVE_MESSAGE_ID_ERROR(mess_id,result)
 
 	
 #ifndef NO_RECEIVE_MESSAGE
@@ -98,111 +103,120 @@ StatusType GetMessageStatus(MessageIdentifier mess_id)
 	
 }
 
-StatusType SendMessage(MessageIdentifier mess_id, ApplicationDataRef data)
+FUNC(StatusType, OS_CODE) SendMessage(
+  CONST(MessageIdentifier, AUTOMATIC)   mess_id,
+  CONST(ApplicationDataRef, AUTOMATIC)  data)
 {
-    /*  init the error to no error                  */
-    StatusType result = E_OK;
+  /*  init the error to no error                  */
+  StatusType result = E_OK;
 
 #ifndef NO_SEND_MESSAGE
-    tpl_base_sending_mo *smo = NULL;
+  P2CONST(tpl_base_sending_mo, AUTOMATIC, OS_CONST) smo = NULL;
 #endif
-    
+  
+  /*  lock the task structures                    */
+  LOCK_KERNEL()
+  
+  /*  store information for error hook routine    */
+  STORE_COM_SERVICE(COMServiceId_SendMessage)
+  STORE_COM_MESSAGE_ID(mess_id)
+  STORE_COM_APPLICATION_DATA_REF(data)
 
-    /*  lock the task structures                    */
-    LOCK_KERNEL()
-    
-    /*  store information for error hook routine    */
-    STORE_COM_SERVICE(COMServiceId_SendMessage)
-    STORE_COM_MESSAGE_ID(mess_id)
-    STORE_COM_APPLICATION_DATA_REF(data)
-	
-	/*  Check the error                             */
-    CHECK_SEND_MESSAGE_ID_ERROR(mess_id,result)
-    CHECK_NOT_ZERO_LENGTH_SEND(mess_id,result);
-	
+/*  Check the error                             */
+  CHECK_SEND_MESSAGE_ID_ERROR(mess_id,result)
+  CHECK_NOT_ZERO_LENGTH_SEND(mess_id,result);
+
 #ifndef NO_SEND_MESSAGE
-    IF_NO_EXTENDED_ERROR(result)
-    /*  get the message object from its id          */
-    smo = (tpl_base_sending_mo *)tpl_send_message_table[mess_id];
-    /*  call the sending function                   */
-    result = smo->sender(smo, data);
-    IF_NO_EXTENDED_ERROR_END()
+  IF_NO_EXTENDED_ERROR(result)
+  /*  get the message object from its id          */
+  smo = (tpl_base_sending_mo *)tpl_send_message_table[mess_id];
+  /*  call the sending function                   */
+  result = smo->sender(smo, data);
+  IF_NO_EXTENDED_ERROR_END()
 #endif
 
-    PROCESS_COM_ERROR(result)
+  PROCESS_COM_ERROR(result)
 
-    UNLOCK_KERNEL()
-    
-    return result;
+  UNLOCK_KERNEL()
+  
+  return result;
 }
 
-StatusType ReceiveMessage(MessageIdentifier mess_id, ApplicationDataRef data)
+FUNC(StatusType, OS_CODE) ReceiveMessage(
+  CONST(MessageIdentifier, AUTOMATIC)  mess_id,
+  CONST(ApplicationDataRef, AUTOMATIC) data)
 {
-    /*  init the error to no error                  */
-    StatusType result = E_OK;
+  /*  init the error to no error                  */
+  VAR(StatusType, AUTOMATIC) result = E_OK;
 
 #ifndef NO_RECEIVE_MESSAGE
-    tpl_data_receiving_mo	*rmo = NULL;
+  P2CONST(tpl_data_receiving_mo, AUTOMATIC, OS_CONST) rmo = NULL;
 #endif
 
-    /*  lock the task structures                    */
-    LOCK_KERNEL()
-    
-    STORE_COM_SERVICE(COMServiceId_ReceiveMessage)
-    STORE_COM_MESSAGE_ID(mess_id)
-    STORE_COM_APPLICATION_DATA_REF(data)
+  /*  lock the task structures                    */
+  LOCK_KERNEL()
+  
+  STORE_COM_SERVICE(COMServiceId_ReceiveMessage)
+  STORE_COM_MESSAGE_ID(mess_id)
+  STORE_COM_APPLICATION_DATA_REF(data)
 
-    /*  Check the error                             */
-    CHECK_RECEIVE_MESSAGE_ID_ERROR(mess_id,result)
+  /*  Check the error                             */
+  CHECK_RECEIVE_MESSAGE_ID_ERROR(mess_id,result)
 
 #ifndef NO_RECEIVE_MESSAGE
-    IF_NO_EXTENDED_ERROR(result)
-    /*  get the message object from its id          */
-    rmo = (tpl_data_receiving_mo *)tpl_receive_message_table[mess_id];
-    /*  call the sending function                   */
-    result = rmo->copier(data, rmo);
-    IF_NO_EXTENDED_ERROR_END()
+  IF_NO_EXTENDED_ERROR(result)
+  /*  get the message object from its id          */
+  rmo = (tpl_data_receiving_mo *)tpl_receive_message_table[mess_id];
+  /*  call the sending function                   */
+  result = rmo->copier(data, rmo);
+  IF_NO_EXTENDED_ERROR_END()
 #endif
 
-    PROCESS_COM_ERROR(result)
+  PROCESS_COM_ERROR(result)
 
-    UNLOCK_KERNEL()
-    
-    return result;
+  UNLOCK_KERNEL()
+  
+  return result;
 }
 
-StatusType SendZeroMessage(MessageIdentifier mess_id)
+FUNC(StatusType, OS_CODE) SendZeroMessage(
+  CONST(MessageIdentifier, AUTOMATIC) mess_id)
 {
-    /*  init the error to no error                  */
-    StatusType result = E_OK;
+  /*  init the error to no error                  */
+  VAR(StatusType, AUTOMATIC) result = E_OK;
 
 #ifndef NO_SEND_MESSAGE
-    tpl_base_sending_mo *smo = NULL;
+  P2CONST(tpl_base_sending_mo, AUTOMATIC, OS_CONST) smo = NULL;
 #endif
 
-    /*  lock the task structures                    */
-    LOCK_KERNEL()
-    
-    /*  store information for error hook routine    */
-    STORE_COM_SERVICE(COMServiceId_SendZeroMessage)
-    STORE_COM_MESSAGE_ID(mess_id)
+  /*  lock the task structures                    */
+  LOCK_KERNEL()
+  
+  /*  store information for error hook routine    */
+  STORE_COM_SERVICE(COMServiceId_SendZeroMessage)
+  STORE_COM_MESSAGE_ID(mess_id)
 
-    /*  Check the error                             */
-    CHECK_SEND_MESSAGE_ID_ERROR(mess_id,result)
-    CHECK_ZERO_LENGTH_SEND(mess_id,result)
-    
+  /*  Check the error                             */
+  CHECK_SEND_MESSAGE_ID_ERROR(mess_id,result)
+  CHECK_ZERO_LENGTH_SEND(mess_id,result)
+  
 #ifndef NO_SEND_MESSAGE
-    IF_NO_EXTENDED_ERROR(result)
-    /*  get the message object from its id          */
-    smo = (tpl_base_sending_mo *)tpl_send_message_table[mess_id];
-    /*  call the sending function                   */
-    smo->sender(smo, NULL);
-    IF_NO_EXTENDED_ERROR_END()
+  IF_NO_EXTENDED_ERROR(result)
+  /*  get the message object from its id          */
+  smo = (tpl_base_sending_mo *)tpl_send_message_table[mess_id];
+  /*  call the sending function                   */
+  smo->sender(smo, NULL);
+  IF_NO_EXTENDED_ERROR_END()
 #endif
 
-    PROCESS_COM_ERROR(result)
+  PROCESS_COM_ERROR(result)
 
-    UNLOCK_KERNEL()
-    
-    return result;
+  UNLOCK_KERNEL()
+  
+  return result;
 }
+
+#define API_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+/* End of file tpl_com_message_management.c */

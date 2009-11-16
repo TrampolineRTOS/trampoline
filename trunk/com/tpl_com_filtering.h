@@ -29,9 +29,9 @@ struct TPL_FILTER_DESC;
  * filtering function pointer
  */
 typedef tpl_bool (*tpl_filter_func)(
-    struct TPL_FILTER_DESC *,
-    tpl_com_value,
-    tpl_com_value
+  CONSTP2CONST(struct TPL_FILTER_DESC, AUTOMATIC, OS_CODE),
+  CONST(tpl_com_value, AUTOMATIC),
+  CONST(tpl_com_value, AUTOMATIC)
 );
 
 /*!
@@ -107,10 +107,14 @@ struct TPL_OCCURENCE_FILTER_DESC {
 
 typedef struct TPL_OCCURENCE_FILTER_DESC tpl_occurence_filter_desc;
 
-tpl_bool tpl_filtering(
-    unsigned char *,
-    unsigned char *,
-    tpl_message_size,
-    tpl_filter_desc *);
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+FUNC(tpl_bool, OS_CODE) tpl_filtering(
+  P2CONST(tpl_com_data, AUTOMATIC, OS_VAR)            old_data,
+  P2CONST(tpl_com_data, AUTOMATIC, OS_VAR)            new_data,
+  VAR(tpl_message_size, AUTOMATIC)                    size,
+  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CONST)  filter_desc);
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 
 #endif
