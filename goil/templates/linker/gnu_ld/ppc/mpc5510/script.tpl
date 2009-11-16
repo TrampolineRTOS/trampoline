@@ -23,26 +23,46 @@ SECTIONS
   } > ram
   
   /*
+   * remaining .text (ie no section given)
+   */
+  text_garbage : {
+    *(.text)
+    *(.ctors)
+    *(.dtors)
+
+  } > ram
+
+  other_garage : {
+    *(.init)
+    *(.fini)
+  } > ram
+  
+  /*
+   * vars of the operating system (Trampoline)
+   */
+  osvars : {
+    *(.osVar)
+  } > ram
+
+  /*
    * code and consts of the processes of the applications
    */
-	. = ALIGN(16);  /* MPC5510 MPU requires 16 bytes alignment */
-  __SEG_START_APP_CODE_CONST_RGN = .;
-	apptext : {
+	apptext ALIGN(16) : { /* MPC5510 MPU requires 16 bytes alignment */
+    __SEG_START_APP_CODE_CONST_RGN = .;
+    *(.osApiConst)  /* API constants  */
     *(.osApiCode)   /* API functions  */
 $USER_CODE$
   } > ram
-  . = ALIGN(16);
-  appconst : {
+  appconst ALIGN(16) : {
 $USER_CONST$
+    . = ALIGN(16);
+    __SEG_START_APP_CODE_CONST_RGN = . - 1;
   } > ram
-  . = ALIGN(16);
-  __SEG_START_APP_CODE_CONST_RGN = . - 1;
   
   /*
    * bss data
    */
-  . = ALIGN(16);
-  bss_data : {
+  bss_data ALIGN(16) : {
     *(.bss) *(.sbss)
   } > ram
   . = ALIGN(16);
@@ -67,7 +87,16 @@ $PROC_STACK$
   appvars : {
 $APP_VAR$
   } > ram
-
+  
+  /*
+   * garbage
+   */
+  data_garbage : {
+    *(.data)
+    *(.sdata)
+    *(.sdata2)
+  } > ram
+  
 	.vector 0xC00 : { *(.SC_handler ) }> IT_vectors
 
 }

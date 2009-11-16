@@ -1503,13 +1503,17 @@ routine generate_resources
 
     foreach regular_rez (@string name) index n
     before
-      rez_imp := "CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA)\n  tpl_resource_table[RESOURCE_COUNT] = {\n";
+      rez_imp := "#define OS_START_SEC_CONST_UNSPECIFIED\n";
+      rez_imp .= "#include \"tpl_memmap.h\"\n";
+      rez_imp .= "CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA)\n  tpl_resource_table[RESOURCE_COUNT] = {\n";
     do
        rez_imp .= "  &".name."_rez_desc";
     between
       rez_imp .= ",\n";
     after
       rez_imp .= "\n};\n";
+      rez_imp .= "#define OS_STOP_SEC_CONST_UNSPECIFIED\n";
+      rez_imp .= "#include \"tpl_memmap.h\"\n\n";
     end foreach;
 #    desc_table !"tpl_resource" !"resource" !"_rez_desc" !regular_rez ?rez_head ?rez_imp;
     resources_result := resources_result."\n".rez_imp;
@@ -1766,6 +1770,8 @@ routine generate_ready_list
         end cast;
     end if;
 
+    fifo .= "#define OS_START_SEC_VAR_UNSPECIFIED\n#include \"tpl_memmap.h\"\n";
+
     foreach ready_list (@uint size) do
         @uint max_size;
         if powerof2 then
@@ -1777,14 +1783,14 @@ routine generate_ready_list
         else
             max_size := size;
         end if;
-        fifo .= "tpl_proc_id tpl_priority_".[prio string]."_fifo[".[max_size string]."];\n";
+        fifo .= "VAR(tpl_proc_id, OS_VAR) tpl_priority_".[prio string]."_fifo[".[max_size string]."];\n";
         prio++;
     end foreach;
 
     fifo .= "\n";
 
     prio := 0;
-    fifo .= "tpl_fifo_state tpl_fifo_rw[".[(max_prio + 1) string]."] = {\n";
+    fifo .= "VAR(tpl_fifo_state, OS_VAR) tpl_fifo_rw[".[(max_prio + 1) string]."] = {\n";
     loop max_prio + 1 :
     while prio <= max_prio do
         fifo .= "    { 0 , 0 }";
@@ -1794,8 +1800,12 @@ routine generate_ready_list
     end loop;
     fifo .= "};\n\n";
 
+    fifo .= "#define OS_STOP_SEC_VAR_UNSPECIFIED\n#include \"tpl_memmap.h\"\n";
+
+    fifo .= "#define OS_START_SEC_CONST_UNSPECIFIED\n#include \"tpl_memmap.h\"\n";
+
     prio := 0;
-    fifo .= "tpl_priority_level tpl_ready_list[".[(max_prio + 1) string]."] = {\n";
+    fifo .= "CONST(tpl_priority_level, OS_CONST) tpl_ready_list[".[(max_prio + 1) string]."] = {\n";
     foreach ready_list (@uint size) do
         @uint max_size;
         if powerof2 then
@@ -1814,6 +1824,8 @@ routine generate_ready_list
         prio++;
     end foreach;
     fifo .= "};\n\n";
+
+    fifo .= "#define OS_STOP_SEC_CONST_UNSPECIFIED\n#include \"tpl_memmap.h\"\n";
 
     implementation := [implementation stringByReplacingStringByString !"$READY_LIST$" !fifo];
     obj_header := [obj_header stringByReplacingStringByString !"$PRIO_LEVEL_COUNT$" ![(max_prio + 1) string]];
