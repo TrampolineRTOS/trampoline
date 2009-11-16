@@ -29,7 +29,16 @@
 
 #include "tpl_os_timeobj_kernel.h"
 
-void print_counter(tpl_counter *c);
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+FUNC(void, OS_CODE)
+  print_counter(CONSTP2VAR(tpl_counter, AUTOMATIC, OS_CONST) c);
+
+FUNC(void, OS_CODE)
+  print_rez(CONST(tpl_resource_id, AUTOMATIC) rez_id);
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
 
 /* TPL_DEBUG_H */
 #endif

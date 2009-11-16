@@ -28,7 +28,10 @@
 #include "tpl_os_rez_kernel.h"
 #include <stdio.h>
 
-void print_counter(tpl_counter *c)
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+FUNC(void, OS_CODE)
+  print_counter(CONSTP2VAR(tpl_counter, AUTOMATIC, OS_CONST) c)
 {
 #ifdef WITH_DOW /* not all ports have an stdc */
   tpl_time_obj *t = c->first_to;
@@ -48,7 +51,8 @@ void print_counter(tpl_counter *c)
 #endif /* defined WITH_DOW */
 }
 
-void print_rez(tpl_resource_id rez_id)
+FUNC(void, OS_CODE)
+  print_rez(CONST(tpl_resource_id, AUTOMATIC) rez_id)
 {
 #ifdef WITH_DOW /* not all ports have an stdc */
   printf("resource %d (ceiling_prio=%d, owner_prio=%d)\n",
@@ -58,3 +62,8 @@ void print_rez(tpl_resource_id rez_id)
   printf("    owner=%d\n",tpl_resource_table[rez_id]->owner);
 #endif /* defined WITH_DOW */
 }
+
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+/* End of file tpl_debug.c */
