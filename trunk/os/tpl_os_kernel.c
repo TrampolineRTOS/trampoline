@@ -58,7 +58,7 @@ STATIC /*@null@*/ FUNC(VAR(tpl_proc_id, AUTOMATIC), OS_CODE) tpl_get_proc(void);
 #include "tpl_memmap.h"
 
 
-#define OS_START_SEC_VAR_UNSPECIFIED
+#define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
 /**
@@ -69,25 +69,6 @@ STATIC /*@null@*/ FUNC(VAR(tpl_proc_id, AUTOMATIC), OS_CODE) tpl_get_proc(void);
  * without INVALID_TASK, which is a constant.
  */
 CONST(tpl_proc_id, AUTOMATIC) INVALID_TASK = INVALID_TASK_ID;
-
-/*
- * @internal
- *
- * The Application Mode that was used to start the OS.
- *
- * @see #tpl_start_os_service
- * @see #tpl_shutdown_os_service
- */
-STATIC VAR(tpl_application_mode, OS_VAR) application_mode;
-
-/*
- * idle_task is the task descriptor of the kernel task
- * used when no other task is ready. The OS starts
- * by setting this task as the running task (ie the
- * init code currently being run.
- * It then calls tpl_schedule to start the
- * multitasking and falls back in an infinite loop.
- */
 
 /**
  * @internal
@@ -110,9 +91,34 @@ CONST(tpl_proc_static, OS_CONST) idle_task_static = {
   /* type is BASIC        */  TASK_BASIC
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
   /* no timing protection
-     for the idle task :D */  ,NULL
+   for the idle task :D */  ,NULL
 #endif
 };
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+/*
+ * @internal
+ *
+ * The Application Mode that was used to start the OS.
+ *
+ * @see #tpl_start_os_service
+ * @see #tpl_shutdown_os_service
+ */
+STATIC VAR(tpl_application_mode, OS_VAR) application_mode = OSDEFAULTAPPMODE;
+
+/*
+ * idle_task is the task descriptor of the kernel task
+ * used when no other task is ready. The OS starts
+ * by setting this task as the running task (ie the
+ * init code currently being run.
+ * It then calls tpl_schedule to start the
+ * multitasking and falls back in an infinite loop.
+ */
 
 /**
  * @internal

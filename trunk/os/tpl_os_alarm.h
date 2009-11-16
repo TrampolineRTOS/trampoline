@@ -97,7 +97,7 @@ extern CONST(tpl_tick, OS_CONST) OSTICKSPERBASE;
 extern CONST(tpl_tick, OS_CONST) OSMINCYCLE;
 
 
-#define OS_START_SEC_CODE
+#define API_START_SEC_CODE
 #include "tpl_memmap.h"
 
 /*
@@ -204,7 +204,7 @@ FUNC(StatusType, OS_CODE) CancelAlarm(
  * pages 66+ of OSEK/VDX 2.2.2 spec
  */
 
-#define OS_STOP_SEC_CODE
+#define API_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #endif /* TPL_OS_ALARM_H */

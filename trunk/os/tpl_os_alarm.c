@@ -32,7 +32,7 @@
 #include "tpl_as_isr.h"
 #endif
 
-#define OS_START_SEC_CODE
+#define API_START_SEC_CODE
 #include "tpl_memmap.h"
 
 /*
@@ -101,7 +101,7 @@ FUNC(StatusType, OS_CODE) CancelAlarm(
     return tpl_cancel_alarm_service(alarm_id);
 }
 
-#define OS_STOP_SEC_CODE
+#define API_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #else

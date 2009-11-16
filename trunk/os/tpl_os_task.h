@@ -50,7 +50,7 @@
 #define DeclareTask(task_id) extern CONST(TaskType, AUTOMATIC) task_id
 
 
-#define OS_START_SEC_CODE
+#define API_START_SEC_CODE
 #include "tpl_memmap.h"
 
 /*
@@ -149,7 +149,7 @@ FUNC(StatusType, OS_CODE) GetTaskState(
     VAR(TaskStateRefType, AUTOMATIC)  state);
 
 
-#define OS_STOP_SEC_CODE
+#define API_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #endif /* TPL_OS_TASK_H */

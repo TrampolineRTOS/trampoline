@@ -65,7 +65,7 @@ typedef P2VAR(tpl_event_mask, TYPEDEF, OS_APPL_DATA)  EventMaskRefType;
 extern CONST(EventMaskType, AUTOMATIC) event_id
 
 
-#define OS_START_SEC_CODE
+#define API_START_SEC_CODE
 #include "tpl_memmap.h"
 
 /*
@@ -140,7 +140,7 @@ FUNC(StatusType, OS_CODE) WaitEvent(
     CONST(EventMaskType, AUTOMATIC) event);
 
 
-#define OS_STOP_SEC_CODE
+#define API_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #endif /* TPL_OS_EVENT */

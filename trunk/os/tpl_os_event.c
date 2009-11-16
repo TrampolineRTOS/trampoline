@@ -29,7 +29,7 @@
 #include "tpl_os_event_kernel.h"
 #include "tpl_os_definitions.h"
 
-#define OS_START_SEC_CODE
+#define API_START_SEC_CODE
 #include "tpl_memmap.h"
 
 /*
@@ -76,7 +76,7 @@ FUNC(StatusType, OS_CODE) WaitEvent(
     return result & OSEK_STATUS_MASK;
 }
 
-#define OS_STOP_SEC_CODE
+#define API_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 #else

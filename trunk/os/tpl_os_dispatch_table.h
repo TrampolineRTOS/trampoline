@@ -31,12 +31,17 @@
 #define TPL_OS_DISPATCH_TABLE_H
 
 #include "tpl_os_service_ids.h"
+#include "tpl_compiler.h"
 
 #define SYSCALL_COUNT   OS_SYSCALL_COUNT
 
 typedef void (* tpl_system_call)(void);
 
-extern const tpl_system_call tpl_dispatch_table[SYSCALL_COUNT];
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+extern CONST(tpl_system_call, OS_CONST) tpl_dispatch_table[SYSCALL_COUNT];
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 
 /* TPL_OS_DISPATCH_TABLE_H */
 #endif
