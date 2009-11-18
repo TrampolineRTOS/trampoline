@@ -28,6 +28,9 @@ OIL_FILE = $OIL_FILE$
 # it should be declared as APP_SRC in the OS section of the .oil file (many times allowed).
 SOURCES  = $APP_SRC$
 
+# Trampoline generation flags
+$FLAGS$
+
 #CFLAGS: flags used for the compilation process
 # it should be declared as CFLAGS in the OS section of the .oil file (many times allowed).
 CFLAGS   = $CFLAGS$
@@ -35,7 +38,10 @@ CFLAGS   = $CFLAGS$
 #LDLAGS: flags used for the link process
 # it should be declared as CFLAGS in the OS section of the .oil file (many times allowed).
 LDFLAGS  = $LDFLAGS$
-#ASLAGS: flags used for the assembly process (if required)
+ifeq ($(strip $(WITH_MEMMAP)),true)
+LDFLAGS += -T $(basename $(OIL_FILE))/script.ld -Wl,-Map,$(basename $(OIL_FILE)).map
+endif
+#ASFLAGS: flags used for the assembly process (if required)
 # it should be declared as AS_FLAGS in the OS section of the .oil file (many times allowed).
 ASFLAGS  = $ASFLAGS$
 
@@ -51,9 +57,6 @@ GENITVEC = $GENITVEC$
 
 # if there is an interrupt generation, the oil file depends on target.cfg
 OIL_FILE_DEP = $OIL_FILE_DEP$
-
-# Trampoline generation flags
-$FLAGS$
 
 $MAKEFILE_SPEC$
 

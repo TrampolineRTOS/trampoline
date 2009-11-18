@@ -399,6 +399,14 @@ function bool_define
   res := "#define    ".flag."    ".yes_no[!b]."\n" ;
 end function ;
 
+function bool_make_define
+  ?@string     flag
+  ?@bool       b
+  ->@string    res
+:
+  res := flag." = ".true_false[!b]."\n" ;
+end function ;
+
 function bool_class_define
   ?@string     flag
   ?@basic_type t
@@ -410,6 +418,20 @@ function bool_class_define
     res := bool_define[!flag![b value]];
   else
     res := bool_define[!flag!def] ;
+  end cast ;
+end function ;
+
+function bool_class_make_define
+  ?@string     flag
+  ?@basic_type t
+  ?@bool       def
+  ->@string    res
+:
+  cast t :
+  when == @bool_class b do
+    res := bool_make_define[!flag![b value]];
+  else
+    res := bool_make_define[!flag!def] ;
   end cast ;
 end function ;
 

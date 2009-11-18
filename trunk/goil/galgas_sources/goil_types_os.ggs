@@ -51,7 +51,7 @@ class @trace {
     res := "#define    WITH_TRACE             NO\n";
   end method;
   method generate_make !@string res :
-    res := "WITH_TRACE=false\n";
+    res := "WITH_TRACE = false\n";
   end method;
 }
 
@@ -60,7 +60,7 @@ class @trace_off extends @trace {
     res := "#define    WITH_TRACE             NO\n";
   end method;
   override method generate_make !@string res :
-    res := "WITH_TRACE=false\n";
+    res := "WITH_TRACE = false\n";
   end method;
 }
 
@@ -86,7 +86,7 @@ class @trace_on extends @trace {
     res .= m;
   end method;
   override method generate_make !@string res :
-    res := "WITH_TRACE=true\n";
+    res := "WITH_TRACE = true\n";
   end method;
 }
 

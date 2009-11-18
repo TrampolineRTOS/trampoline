@@ -87,7 +87,7 @@ tpl_enter_kernel:
   stw   r12,0(r11)
   bne   no_stack_change
   
-#ifdef WITH_MEMORY_PROTECTION
+#if WITH_MEMORY_PROTECTION == YES
   /*
    * Switch to kernel mem protection scheme
    */
@@ -158,7 +158,7 @@ tpl_leave_kernel:
   lwz   r1,KS_SP-KS_FOOTPRINT(r1)   /*  Restore the SP and switch
                                         back to the process stack     */
 
-#ifdef WITH_MEMORY_PROTECTION
+#if WITH_MEMORY_PROTECTION == YES
   /*
    * Switch to user mem protection scheme
    */
@@ -294,11 +294,13 @@ tpl_sc_handler:
   
 no_save:
 
+#if WITH_MEMORY_PROTECTION == YES
   /*
    * set up the memory protection for the process that just got the CPU
    */
   lwz   r3,16(r11)    /* get the id of the process which get the cpu  */
   bl    tpl_set_process_mp        /* set the memory protection scheme */
+#endif
 
   lwz   r3,4(r11)                     /* get s_running                */
   bl    tpl_load_context

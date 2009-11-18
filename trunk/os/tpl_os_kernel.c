@@ -127,9 +127,9 @@ STATIC VAR(tpl_application_mode, OS_VAR) application_mode = OSDEFAULTAPPMODE;
  */
 VAR(tpl_proc, OS_VAR) idle_task = {
   /* resources            */  NULL,
-#ifdef WITH_OSAPPLICATION
+#if WITH_MEMORY_PROTECTION == YES
   /* trusted count  */        0,
-#endif /* WITH_OSAPPLICATION */
+#endif /* WITH_MEMORY_PROTECTION */
   /* activation count     */  0,
   /* priority             */  0,
   /* state                */  SUSPENDED

@@ -206,10 +206,10 @@ typedef struct TPL_PROC_STATIC tpl_proc_static;
 struct TPL_PROC {
   struct P2VAR(TPL_RESOURCE, TYPEDEF, OS_APPL_DATA)
     resources;          /**< head of the ressources held          */
-#ifdef WITH_OSAPPLICATION
+#if WITH_MEMORY_PROTECTION == YES
   VAR(tpl_trusted_count, TYPEDEF)
     trusted_counter;    /**<  if > 0 the process is trusted       */
-#endif /* WITH_OSAPPLICATION */
+#endif /* WITH_MEMORY_PROTECTION */
   VAR(tpl_activate_counter, TYPEDEF)
     activate_count;     /**< current activate count               */
   VAR(tpl_priority, TYPEDEF)

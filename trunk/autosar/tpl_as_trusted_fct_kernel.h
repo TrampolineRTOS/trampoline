@@ -29,17 +29,6 @@
 
 #include "tpl_os_internal_types.h" 
 
-/**
- * @internal
- *
- * tpl_trusted_count is used for the trusted counter of each process
- * each time a process calls a trusted function its counter is incremented
- * and decremented when the function returns. This allow trusted functions
- * to call trusted functions. The number of nested calls is limited by
- * the size of this type.
- */
-typedef unsigned int tpl_trusted_count;
-
 typedef P2FUNC(void, OS_APPL_CODE, tpl_trusted_fct)(
   CONST(tpl_tf_id, AUTOMATIC)               fct_idx,
   CONSTP2VAR(void, AUTOMATIC, OS_APPL_DATA) fct_param);

@@ -60,11 +60,17 @@ routine generate_proc_table
   
   doReplace !?obj_head !"$EXTENDED_TASK_COUNT$" ![ex_t_ct string] ;
 
-  names_head := "#if !defined(NO_TASK) || !defined(NO_ISR)\n" ;
-  names_head .= "extern char *proc_name_table[TASK_COUNT + ISR_COUNT];\n" ;
+  names_head := "#if !defined(NO_TASK) || !defined(NO_ISR)\n";
+  names_head .= "#define API_START_SEC_CONST_UNSPECIFIED\n";
+  names_head .= "#include \"tpl_memmap.h\"\n"; 
+  names_head .= "extern CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA) proc_name_table[TASK_COUNT + ISR_COUNT];\n" ;
+  names_head .= "#define API_STOP_SEC_CONST_UNSPECIFIED\n";
+  names_head .= "#include \"tpl_memmap.h\"\n"; 
   names_head .= "#endif\n" ;
   names_imp := "#if !defined(NO_TASK) || !defined(NO_ISR)\n" ;
-  names_imp .= "char *proc_name_table[TASK_COUNT + ISR_COUNT] = {\n" ;
+  names_imp .= "#define API_START_SEC_CONST_UNSPECIFIED\n";
+  names_imp .= "#include \"tpl_memmap.h\"\n"; 
+  names_imp .= "CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA) proc_name_table[TASK_COUNT + ISR_COUNT] = {\n" ;
   # start with tasks, extended first
   foreach stasks do
     names_imp .= "  \"".name."\",\n" ;
@@ -85,7 +91,10 @@ routine generate_proc_table
     id++ ;
  end foreach ;
 
-  names_imp .= "};\n#endif" ;
+  names_imp .= "};\n";
+  names_imp .= "#define API_STOP_SEC_CONST_UNSPECIFIED\n";
+  names_imp .= "#include \"tpl_memmap.h\"\n"; 
+  names_imp .= "#endif\n" ;
 
   proc_stat_imp := "CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)\ntpl_stat_proc_table[TASK_COUNT+ISR_COUNT+1] = {\n" ;
   proc_dyn_imp := "CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)\ntpl_dyn_proc_table[TASK_COUNT+ISR_COUNT+1] = {\n" ;

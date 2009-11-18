@@ -37,7 +37,6 @@ GOIL_TARGET =$GOIL_TARGET$
 # WITH_SYSTEM_CALL is true when compiling trampoline
 # with system call support. It is false otherwise
 WITH_SYSTEM_CALL=$WSC$
-WITH_MEMORY_PROTECTION=$WPM$
 
 #############################################################################
 # DOXYGEN tool
