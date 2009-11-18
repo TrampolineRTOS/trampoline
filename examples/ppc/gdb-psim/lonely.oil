@@ -24,7 +24,7 @@ CPU test {
         CFLAGS  = "-static -nostdlib -fno-omit-frame-pointer -U__unix__";
         CFLAGS  = "-Wmissing-field-initializers"; 
         ASFLAGS = "-g";
-        LDFLAGS = "-g -T lonely/script.ld -Wl,-Map,tram.map";
+        LDFLAGS = "-g";
         COMPILER = "powerpc-elf-gcc";
         ASSEMBLER = "powerpc-elf-as";
         LINKER = "powerpc-elf-ld";

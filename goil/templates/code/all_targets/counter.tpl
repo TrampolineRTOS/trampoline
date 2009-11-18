@@ -2,9 +2,13 @@
  * counter $COUNTER_NAME$ descriptor
  */
 
+#define API_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 CONST(tpl_tick, OS_CONST) OSTICKSPERBASE$COUNTER_SUFF$ = $TICKS_PER_BASE$;
 CONST(tpl_tick, OS_CONST) OSMAXALLOWEDVALUE$COUNTER_SUFF$ = $MAX_ALLOWED_VALUE$;
 CONST(tpl_tick, OS_CONST) OSMINCYCLE$COUNTER_SUFF$ = $MIN_CYCLE$;
+#define API_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"

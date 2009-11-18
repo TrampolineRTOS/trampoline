@@ -58,9 +58,9 @@ tpl_isr_static $ISR_HELPER$ = {
  */
 VAR(tpl_proc, OS_VAR) $ISR$ = {
     /* resources            */            NULL,
-#ifdef WITH_OSAPPLICATION
+#if WITH_MEMORY_PROTECTION == YES
     /* if > 0 the process is trusted  */  $TRUSTED_COUNT$,    
-#endif /* WITH_OSAPPLICATION */
+#endif /* WITH_MEMORY_PROTECTION */
     /* activate count       */            0,
     /* isr priority         */            (tpl_priority)$ISR_PRIORITY$,
     /* isr state            */            SUSPENDED

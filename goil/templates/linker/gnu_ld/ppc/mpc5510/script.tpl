@@ -32,7 +32,7 @@ SECTIONS
 
   } > ram
 
-  other_garage : {
+  other_garbage : {
     *(.init)
     *(.fini)
   } > ram
@@ -49,8 +49,9 @@ SECTIONS
    */
 	apptext ALIGN(16) : { /* MPC5510 MPU requires 16 bytes alignment */
     __SEG_START_APP_CODE_CONST_RGN = .;
-    *(.osApiConst)  /* API constants  */
-    *(.osApiCode)   /* API functions  */
+    *(.osApiConst)  /* API constants    */
+    *(.rodata)      /* litteral strings */
+    *(.osApiCode)   /* API functions    */
 $USER_CODE$
   } > ram
   appconst ALIGN(16) : {
@@ -63,7 +64,7 @@ $USER_CONST$
    * bss data
    */
   bss_data ALIGN(16) : {
-    *(.bss) *(.sbss)
+    *(.bss) *(.sbss)  /* *(.sbss2) */
   } > ram
   . = ALIGN(16);
 
@@ -95,8 +96,19 @@ $APP_VAR$
     *(.data)
     *(.sdata)
     *(.sdata2)
+    *(.got)
+    *(.got1)
+    *(.got2)
+    *(.fixup)
+    *(.gcc_except_table)
+    *(.eh_frame)
+    *(.jcr)
   } > ram
-  
+  .comment :        { *(.comment)        } > ram
+  relocatable : {
+    *(.rela.*)
+  } > ram
+
 	.vector 0xC00 : { *(.SC_handler ) }> IT_vectors
 
 }

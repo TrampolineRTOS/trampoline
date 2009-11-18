@@ -390,8 +390,13 @@ routine generate_makefile
     @string tr;
     [[os trace] generate_make ?tr];
     flags .= tr;
-    doReplace !?makefileStr !"$FLAGS$" !flags;
+    # memmap flag
+    flags .= bool_make_define[!"WITH_MEMMAP" !memory_mapping[!os]];
+    # memory protection flag
+    flags .= bool_class_make_define[!"WITH_MEMORY_PROTECTION" !memory_protection[!os] !false];
 
+    doReplace !?makefileStr !"$FLAGS$" !flags;
+    
     # -i option
     @string i_option := "";
     @string target_cfg_dep := "";
@@ -1204,7 +1209,11 @@ routine generate_tasks
             when == @app_trusted_true do trust++;
             else end cast;
             doReplace !?result !"$TRUSTED_COUNT$" ![trust string];
+          else
+            doReplace !?result !"$TRUSTED_COUNT$" !"0";
           end if;
+        else
+          doReplace !?result !"$TRUSTED_COUNT$" !"0";
         end if;
 
         tasks_result := tasks_result . "\n" . result;

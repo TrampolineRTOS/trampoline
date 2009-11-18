@@ -1,11 +1,11 @@
 
-#define OS_START_SEC_CODE
+#define APP_Task_$EXEC_NAME$_START_SEC_CODE
 #include "tpl_memmap.h"
 /*
  * Task $EXEC_NAME$ function prototype
  */
-void $EXEC_FUNCTION$(void);
-#define OS_STOP_SEC_CODE
+FUNC(void, OS_APPL_CODE) $EXEC_FUNCTION$(void);
+#define APP_Task_$EXEC_NAME$_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 
@@ -52,9 +52,9 @@ CONST(tpl_proc_static, OS_CONST) $EXEC_STATIC$ = {
  */
 VAR(tpl_proc, OS_VAR) $TASK$ = {
     /* resources                      */  NULL,
-#ifdef WITH_OSAPPLICATION
+#if WITH_MEMORY_PROTECTION == YES
     /* if > 0 the process is trusted  */  $TRUSTED_COUNT$,    
-#endif /* WITH_OSAPPLICATION */
+#endif /* WITH_MEMORY_PROTECTION */
     /* activate count                 */  0,
     /* task priority                  */  (tpl_priority)$TASK_PRIORITY$,
     /* task state                     */  $TASK_STATE$

@@ -99,6 +99,19 @@ typedef u8 tpl_status;
  */
 typedef u8 tpl_proc_state;
 
+#if WITH_MEMORY_PROTECTION == YES
+/**
+ * @internal
+ *
+ * tpl_trusted_count is used for the trusted counter of each process
+ * each time a process calls a trusted function its counter is incremented
+ * and decremented when the function returns. This allow trusted functions
+ * to call trusted functions. The number of nested calls is limited by
+ * the size of this type.
+ */
+typedef unsigned int tpl_trusted_count;
+#endif
+
 /**
  * @struct ALARM_BASE_TYPE
  *

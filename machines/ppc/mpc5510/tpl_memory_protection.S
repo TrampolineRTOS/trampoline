@@ -110,7 +110,6 @@
   .global tpl_kernel_mp
   .global tpl_user_mp
   .global tpl_set_process_mp
-  .global tpl_set_app_mp
   .section ".osCode","ax"
 
 TPL_EXTERN tpl_mp_table
@@ -178,6 +177,15 @@ tpl_set_process_mp:
     lwzx    r11,r11,r3
     
     /*
+     * If the pointer is NULL, no memory protection is
+     * configured for the process. So it is a trusted
+     * process and the corresponding field in the dynamic
+     * process descriptor is greater than 0
+     */
+    cmpwi   r11,0
+    beq     finished
+    
+    /*
      * Configuration for the private var access of the process
      */
 
@@ -238,6 +246,7 @@ tpl_set_process_mp:
     stw     r3,MPU_RGD2_pid(r11)    
 #endif
 
+finished:
     blr
 
 /* End of file tpl_memory_protection.s */
