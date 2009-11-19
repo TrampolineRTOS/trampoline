@@ -33,24 +33,6 @@ import semantics goil_env_verification in "goil_env_verification.ggs" ;
 import option goil_options in "goil_options.gOption" ;
 
 #
-# memmap_template return the named template according to the compiler used
-#
-function memmap_template
-  ??@string compiler
-  ??@string tpl_name
-  ->@string tpl
-:
-  @string rtd := root_templates_directory[];
-  @string path := rtd."/".compiler."/".tpl_name.".tpl";
-  if [path fileExists] then
-    tpl := [@string stringWithContentsOfFile !path];
-  else
-    tpl := "";
-    warning here : "No template for ".tpl_name;
-  end if; 
-end function;
-
-#
 # generate_mp generates the descriptors used for memory protection
 #
 routine generate_mp
@@ -62,8 +44,8 @@ routine generate_mp
 :
 
   if memory_protection_on[![cpu os]] then 
-    @string tpl_mp := template_string[!"code" !"mp"];
-    @string tpl_mp_desc := template_string[!"code" !"mp_desc"];
+    @string tpl_mp := template_string_if_exist[!"code" !"mp"];
+    @string tpl_mp_desc := template_string_if_exist[!"code" !"mp_desc"];
     @string dec := "" ;
     @string ext := "" ;
 
@@ -166,10 +148,10 @@ routine generate_link_script
     @string user_code := "";
     
     # generate task related script
-    @string var_tpl := template_string[!linker !"task_var"];
-    @string stack_tpl := template_string[!linker !"task_stack"];
-    @string const_tpl := template_string[!linker !"task_const"];
-    @string code_tpl := template_string[!linker !"task_code"];
+    @string var_tpl := template_string_if_exist[!linker !"task_var"];
+    @string stack_tpl := template_string_if_exist[!linker !"task_stack"];
+    @string const_tpl := template_string_if_exist[!linker !"task_const"];
+    @string code_tpl := template_string_if_exist[!linker !"task_code"];
     foreach [cpu tasks] do
       task_vars   .= [var_tpl stringByReplacingStringByString   !"$TASK_NAME$" ![key string]];
       task_stack  .= [stack_tpl stringByReplacingStringByString !"$TASK_NAME$" ![key string]];
@@ -178,10 +160,10 @@ routine generate_link_script
     end foreach;
 
     # generate isr related script
-    var_tpl := template_string[!linker !"isr_var"];
-    stack_tpl := template_string[!linker !"isr_stack"];
-    const_tpl := template_string[!linker !"isr_const"];
-    code_tpl := template_string[!linker !"isr_code"];
+    var_tpl := template_string_if_exist[!linker !"isr_var"];
+    stack_tpl := template_string_if_exist[!linker !"isr_stack"];
+    const_tpl := template_string_if_exist[!linker !"isr_const"];
+    code_tpl := template_string_if_exist[!linker !"isr_code"];
     foreach [cpu isrs] do
       isr_vars    .= [var_tpl stringByReplacingStringByString   !"$ISR_NAME$" ![key string]];
       isr_stack   .= [stack_tpl stringByReplacingStringByString !"$TASK_NAME$" ![key string]];
@@ -190,15 +172,15 @@ routine generate_link_script
     end foreach;
     
     # generate application related script
-    var_tpl := template_string[!linker !"app_var"];
-    const_tpl := template_string[!linker !"app_const"];
+    var_tpl := template_string_if_exist[!linker !"app_var"];
+    const_tpl := template_string_if_exist[!linker !"app_const"];
     foreach [cpu applis] do
       app_vars    .= [var_tpl stringByReplacingStringByString   !"$APP_NAME$" ![key string]];
       user_consts .= [const_tpl stringByReplacingStringByString !"$APP_NAME$" ![key string]];
     end foreach;
     
     # generate the whole script
-    @string script := template_string[!linker !"script"];
+    @string script := template_string_if_exist[!linker !"script"];
     doReplace !?script !"$USER_CODE$"  !user_code;
     doReplace !?script !"$USER_CONST$" !user_consts;
     doReplace !?script !"$PROC_VAR$"   !task_vars.isr_vars;
@@ -221,9 +203,9 @@ routine generate_memmap
 :
   @string cc := compiler[![[cpu os] memmap]];
   if cc != "" then
-    @string mm := memmap_template[!cc !"MemMap.h"];
+    @string mm := template_string_if_exist[!cc !"MemMap.h"];
     @string result := "";
-    @string gen_tpl := memmap_template[!cc !"generic_section"];
+    @string gen_tpl := template_string_if_exist[!cc !"generic_section"];
     @string section_tpl := [gen_tpl stringByReplacingStringByString !"$CONT$" !"SEC"];
     @string config_tpl := [gen_tpl stringByReplacingStringByString !"$CONT$" !"CONFIG"];
     @stringlist data_size [emptyList];
@@ -246,10 +228,12 @@ routine generate_memmap
       doReplace !?code_sec_tpl !"$SUBKIND$" !"";
       doReplace !?code_sec_tpl !"$SIZE$" !"";
       doReplace !?code_sec_tpl !"$TYPE$" !"CODE";
+      doReplace !?code_sec_tpl !"$SECTION_KIND$" !"text";
       result .= code_sec_tpl;
       # generate the variables sections
       @string var_sec_tpl := [named_sec stringByReplacingStringByString !"$KIND$" !"VAR"];
       doReplace !?var_sec_tpl !"$TYPE$" !"DATA";
+      doReplace !?var_sec_tpl !"$SECTION_KIND$" !"data";
       foreach sub_kind (@string sk) do
         @string var_sec_sk_tpl := [var_sec_tpl stringByReplacingStringByString !"$SUBKIND$" !sk];
         foreach data_size (@string size) do
@@ -260,6 +244,7 @@ routine generate_memmap
       # generate the constants sections
       @string const_sec_tpl := [named_sec stringByReplacingStringByString !"$KIND$" !"CONST"];
       doReplace !?const_sec_tpl !"$TYPE$" !"DATA";
+      doReplace !?const_sec_tpl !"$SECTION_KIND$" !"rodata";
       const_sec_tpl := [const_sec_tpl stringByReplacingStringByString !"$SUBKIND$" !""];
       foreach data_size (@string size) do
         @string partial_result := [const_sec_tpl stringByReplacingStringByString !"$SIZE$" !size];
@@ -282,6 +267,7 @@ routine generate_memmap
       # generate configuration data section
       @string cfg_data := [config_tpl stringByReplacingStringByString !"$KIND$" !"DATA"];
       doReplace !?cfg_data !"$TYPE$" !"DATA";
+      doReplace !?cfg_data !"$SECTION_KIND$" !"data";
       cfg_data := [cfg_data stringByReplacingStringByString !"$SUBKIND$" !""];
       cfg_data := [cfg_data stringByReplacingStringByString !"$OBJ$" !"Task"];
       cfg_data := [cfg_data stringByReplacingStringByString !"$NAME$" ![key string]];
@@ -292,6 +278,7 @@ routine generate_memmap
       # generate the stack section
       @string stack_data := [named_sec stringByReplacingStringByString !"$KIND$" !"STACK"];
       doReplace !?stack_data !"$TYPE$" !"DATA";
+      doReplace !?stack_data !"$SECTION_KIND$" !"data";
       doReplace !?stack_data !"$SUBKIND$" !"";
       doReplace !?stack_data !"$SIZE$" !"";
       result .= stack_data;
@@ -305,10 +292,12 @@ routine generate_memmap
       doReplace !?code_sec_tpl !"$SUBKIND$" !"";
       doReplace !?code_sec_tpl !"$SIZE$" !"";
       doReplace !?code_sec_tpl !"$TYPE$" !"CODE";
+      doReplace !?code_sec_tpl !"$SECTION_KIND$" !"text";
       result .= code_sec_tpl;
       # generate the variables sections
       @string var_sec_tpl := [named_sec stringByReplacingStringByString !"$KIND$" !"VAR"];
       doReplace !?var_sec_tpl !"$TYPE$" !"DATA";
+      doReplace !?var_sec_tpl !"$SECTION_KIND$" !"data";
       foreach sub_kind (@string sk) do
         @string var_sec_sk_tpl := [var_sec_tpl stringByReplacingStringByString !"$SUBKIND$" !sk];
         foreach data_size (@string size) do
@@ -319,6 +308,7 @@ routine generate_memmap
       # generate the constants sections
       @string const_sec_tpl := [named_sec stringByReplacingStringByString !"$KIND$" !"CONST"];
       doReplace !?const_sec_tpl !"$TYPE$" !"DATA";
+      doReplace !?const_sec_tpl !"$SECTION_KIND$" !"rodata";
       const_sec_tpl := [const_sec_tpl stringByReplacingStringByString !"$SUBKIND$" !""];
       foreach data_size (@string size) do
         @string partial_result := [const_sec_tpl stringByReplacingStringByString !"$SIZE$" !size];
@@ -341,6 +331,7 @@ routine generate_memmap
       # generate configuration data section
       @string cfg_data := [config_tpl stringByReplacingStringByString !"$KIND$" !"DATA"];
       doReplace !?cfg_data !"$TYPE$" !"DATA";
+      doReplace !?cfg_data !"$SECTION_KIND$" !"data";
       cfg_data := [cfg_data stringByReplacingStringByString !"$SUBKIND$" !""];
       cfg_data := [cfg_data stringByReplacingStringByString !"$OBJ$" !"ISR"];
       cfg_data := [cfg_data stringByReplacingStringByString !"$NAME$" ![key string]];
@@ -354,9 +345,10 @@ routine generate_memmap
 
     # OS MemMap
     @string os_secs := "";
-    @string os_tpl := memmap_template[!cc !"os_section"];
+    @string os_tpl := template_string_if_exist[!cc !"os_section"];
     @string code_section := [os_tpl stringByReplacingStringByString !"$KIND$" !"CODE"];
     doReplace !?code_section !"$TYPE$" !"CODE";
+    doReplace !?code_section !"$SECTION_KIND$" !"text";
     doReplace !?code_section !"$CONT$" !"SEC";
     doReplace !?code_section !"$SUBKIND$" !"";
     doReplace !?code_section !"$SIZE$" !"";
@@ -365,6 +357,7 @@ routine generate_memmap
     
     @string var_section := [os_tpl stringByReplacingStringByString !"$KIND$" !"VAR"];
     doReplace !?var_section !"$TYPE$" !"DATA";
+    doReplace !?var_section !"$SECTION_KIND$" !"data";
     doReplace !?var_section !"$CONT$" !"SEC";
     doReplace !?var_section !"$SECTION$" !".osVar";
     @string no_init := [var_section stringByReplacingStringByString !"$SUBKIND$" !"_NOINIT"];
@@ -386,6 +379,7 @@ routine generate_memmap
 
     @string const_section := [os_tpl stringByReplacingStringByString !"$KIND$" !"CONST"];
     doReplace !?const_section !"$TYPE$" !"DATA";
+    doReplace !?const_section !"$SECTION_KIND$" !"rodata";
     doReplace !?const_section !"$CONT$" !"SEC";
     doReplace !?const_section !"$SECTION$" !".osConst";
     @string os_const := [const_section stringByReplacingStringByString !"$SUBKIND$" !""];
@@ -396,7 +390,7 @@ routine generate_memmap
     doReplace !?mm !"$OS_MEMMAP$" !os_secs;
 
     # API MemMap
-    @string api_tpl := memmap_template[!cc !"api_section"];
+    @string api_tpl := template_string_if_exist[!cc !"api_section"];
     doReplace !?mm !"$API_MEMMAP$" !api_tpl;
     
     @string mm_file := project_name[]."/MemMap.h";
@@ -416,8 +410,8 @@ routine generate_compiler
 :
   @string cc := compiler[![[cpu os] memmap]];
   if cc != "" then
-    @string comp := memmap_template[!cc !"Compiler.h"];
-    @string comp_cfg := memmap_template[!cc !"Compiler_Cfg.h"];
+    @string comp := template_string_if_exist[!cc !"Compiler.h"];
+    @string comp_cfg := template_string_if_exist[!cc !"Compiler_Cfg.h"];
     @string comp_file := project_name[]."/Compiler.h";
     @string comp_cfg_file := project_name[]."/Compiler_Cfg.h";
 

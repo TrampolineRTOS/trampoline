@@ -7,8 +7,7 @@
     #error "Starting a $SECTION$ while a section is already started"
   #else
     #undef MEMMAP_ERROR
-    #undef CURRENT_LINKER_$TYPE$_SECTION_NAME
-    #define CURRENT_LINKER_$TYPE$_SECTION_NAME __attribute__ ((section ("$SECTION$")))
+    #pragma ghs section $SECTION_KIND$="$SECTION$"
     #define CURRENT_LINKER_$TYPE$_SECTION
   #endif
 #endif
@@ -18,8 +17,6 @@
   #ifdef CURRENT_LINKER_$TYPE$_SECTION
     #undef MEMMAP_ERROR
     #undef CURRENT_LINKER_$TYPE$_SECTION
-    #undef CURRENT_LINKER_$TYPE$_SECTION_NAME
-    #define CURRENT_LINKER_$TYPE$_SECTION_NAME
   #else
     #error "No section $SECTION$ started"
   #endif

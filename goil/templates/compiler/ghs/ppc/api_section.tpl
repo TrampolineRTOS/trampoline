@@ -7,8 +7,7 @@
     #error "Starting a .osApiCode while a section is already started"
   #else
     #undef MEMMAP_ERROR
-    #undef CURRENT_LINKER_CODE_SECTION_NAME
-    #define CURRENT_LINKER_CODE_SECTION_NAME __attribute__ ((section (".osApiCode")))
+    #pragma ghs section text=".osApiCode"
     #define CURRENT_LINKER_CODE_SECTION
   #endif
 #endif
@@ -18,8 +17,6 @@
   #ifdef CURRENT_LINKER_CODE_SECTION
     #undef MEMMAP_ERROR
     #undef CURRENT_LINKER_CODE_SECTION
-    #undef CURRENT_LINKER_CODE_SECTION_NAME
-    #define CURRENT_LINKER_CODE_SECTION_NAME
   #else
     #error "No section .osApiCode started"
   #endif
@@ -31,8 +28,7 @@
     #error "Starting a .osApiConst while a section is already started"
   #else
     #undef MEMMAP_ERROR
-    #undef CURRENT_LINKER_DATA_SECTION_NAME
-    #define CURRENT_LINKER_DATA_SECTION_NAME __attribute__ ((section (".osApiConst")))
+    #pragma ghs section rodata=".osApiConst"
     #define CURRENT_LINKER_DATA_SECTION
   #endif
 #endif
@@ -42,8 +38,6 @@
   #ifdef CURRENT_LINKER_DATA_SECTION
     #undef MEMMAP_ERROR
     #undef CURRENT_LINKER_DATA_SECTION
-    #undef CURRENT_LINKER_DATA_SECTION_NAME
-    #define CURRENT_LINKER_DATA_SECTION_NAME
   #else
     #error "No section .osApiConst started"
   #endif
