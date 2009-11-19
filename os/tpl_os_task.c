@@ -25,12 +25,12 @@
  * $URL$
  */
 
+#include "tpl_os_definitions.h"
+
 #ifndef WITH_SYSTEM_CALL
 
 #include "tpl_os_task.h"
 #include "tpl_os_task_kernel.h"
-#include "tpl_os_definitions.h"
-
 
 #define API_START_SEC_CODE
 #include "tpl_memmap.h"

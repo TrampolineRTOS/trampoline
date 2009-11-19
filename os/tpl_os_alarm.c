@@ -23,6 +23,9 @@
  * $Author$
  * $URL$
  */
+
+#include "tpl_os_definitions.h"
+
 #ifndef WITH_SYSTEM_CALL
 
 #include "tpl_os_alarm.h"

@@ -61,7 +61,7 @@ tpl_kernel_stack_bottom:
  */
   .align  4
 tpl_reentrency_counter:
-  .space  4,0
+  .long   0
 
   .text
   .section ".osCode","ax"
