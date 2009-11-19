@@ -1,5 +1,5 @@
 /**
- * @file tpl_invoque.S
+ * @file tpl_invoque.s
  *
  * @section descr File description
  *
@@ -32,19 +32,13 @@
 #error "This file should not be part of your project since WITH_SYSTEM_CALL is not defined"
 #endif
 
-#include "tpl_assembler.h"
-
   .text
-  .section ".osApiCode"
+/*  .section ".COMMON_CODE" */
 
   .global ActivateTask
 ActivateTask:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_ActivateTask
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type ActivateTask,@function
@@ -52,12 +46,8 @@ ActivateTask:
 
   .global TerminateTask
 TerminateTask:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_TerminateTask
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type TerminateTask,@function
@@ -65,12 +55,8 @@ TerminateTask:
 
   .global ChainTask
 ChainTask:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_ChainTask
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type ChainTask,@function
@@ -78,12 +64,8 @@ ChainTask:
 
   .global Schedule
 Schedule:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_Schedule
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type Schedule,@function
@@ -91,12 +73,8 @@ Schedule:
 
   .global GetTaskID
 GetTaskID:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_GetTaskID
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type GetTaskID,@function
@@ -104,12 +82,8 @@ GetTaskID:
 
   .global GetTaskState
 GetTaskState:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_GetTaskState
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type GetTaskState,@function
@@ -117,12 +91,8 @@ GetTaskState:
 
   .global EnableAllInterrupts
 EnableAllInterrupts:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_EnableAllInterrupts
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type EnableAllInterrupts,@function
@@ -130,12 +100,8 @@ EnableAllInterrupts:
 
   .global DisableAllInterrupts
 DisableAllInterrupts:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_DisableAllInterrupts
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type DisableAllInterrupts,@function
@@ -143,12 +109,8 @@ DisableAllInterrupts:
 
   .global ResumeAllInterrupts
 ResumeAllInterrupts:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_ResumeAllInterrupts
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type ResumeAllInterrupts,@function
@@ -156,12 +118,8 @@ ResumeAllInterrupts:
 
   .global SuspendAllInterrupts
 SuspendAllInterrupts:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_SuspendAllInterrupts
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type SuspendAllInterrupts,@function
@@ -169,12 +127,8 @@ SuspendAllInterrupts:
 
   .global ResumeOSInterrupts
 ResumeOSInterrupts:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_ResumeOSInterrupts
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type ResumeOSInterrupts,@function
@@ -182,12 +136,8 @@ ResumeOSInterrupts:
 
   .global SuspendOSInterrupts
 SuspendOSInterrupts:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_SuspendOSInterrupts
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type SuspendOSInterrupts,@function
@@ -195,12 +145,8 @@ SuspendOSInterrupts:
 
   .global GetResource
 GetResource:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_GetResource
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type GetResource,@function
@@ -208,12 +154,8 @@ GetResource:
 
   .global ReleaseResource
 ReleaseResource:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_ReleaseResource
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type ReleaseResource,@function
@@ -221,12 +163,8 @@ ReleaseResource:
 
   .global SetEvent
 SetEvent:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_SetEvent
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type SetEvent,@function
@@ -234,12 +172,8 @@ SetEvent:
 
   .global ClearEvent
 ClearEvent:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_ClearEvent
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type ClearEvent,@function
@@ -247,12 +181,8 @@ ClearEvent:
 
   .global GetEvent
 GetEvent:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_GetEvent
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type GetEvent,@function
@@ -260,12 +190,8 @@ GetEvent:
 
   .global WaitEvent
 WaitEvent:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_WaitEvent
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type WaitEvent,@function
@@ -273,12 +199,8 @@ WaitEvent:
 
   .global GetAlarmBase
 GetAlarmBase:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_GetAlarmBase
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type GetAlarmBase,@function
@@ -286,12 +208,8 @@ GetAlarmBase:
 
   .global GetAlarm
 GetAlarm:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_GetAlarm
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type GetAlarm,@function
@@ -299,12 +217,8 @@ GetAlarm:
 
   .global SetRelAlarm
 SetRelAlarm:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_SetRelAlarm
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type SetRelAlarm,@function
@@ -312,12 +226,8 @@ SetRelAlarm:
 
   .global SetAbsAlarm
 SetAbsAlarm:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_SetAbsAlarm
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type SetAbsAlarm,@function
@@ -325,12 +235,8 @@ SetAbsAlarm:
 
   .global CancelAlarm
 CancelAlarm:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_CancelAlarm
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type CancelAlarm,@function
@@ -338,12 +244,8 @@ CancelAlarm:
 
   .global GetActiveApplicationMode
 GetActiveApplicationMode:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_GetActiveApplicationMode
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type GetActiveApplicationMode,@function
@@ -351,12 +253,8 @@ GetActiveApplicationMode:
 
   .global tpl_start_os
 tpl_start_os:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_StartOS
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type tpl_start_os,@function
@@ -364,12 +262,8 @@ tpl_start_os:
 
   .global ShutdownOS
 ShutdownOS:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_ShutdownOS
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type ShutdownOS,@function
@@ -377,15 +271,11 @@ ShutdownOS:
 
   .global TerminateISR
 TerminateISR:
-  subi r1,r1,4
-  stw  r0,0(r1)
   li   r0,OSServiceId_TerminateISR
   sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
   blr
   
   .type TerminateISR,@function
   .size TerminateISR,$-TerminateISR
 
-/* End of file tpl_invoque.S */
+/* End of file tpl_invoque.s */

@@ -22,11 +22,12 @@
  * $URL$
  */
 
+#include "tpl_os_definitions.h"
+
 #ifndef WITH_SYSTEM_CALL
 
 #include "tpl_os_rez.h"
 #include "tpl_os_rez_kernel.h"
-#include "tpl_os_definitions.h"
 
 #ifdef WITH_AUTOSAR
 #include "tpl_as_isr.h"
