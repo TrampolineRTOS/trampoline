@@ -66,8 +66,6 @@ void vp_ipc_signal_update(ipc_t *ipc, global_ipc_t *global_ipc, dev_id_t dev_id,
 
   modified_reg->dev = dev_id;
   modified_reg->reg_mask = mask;
-  /* Release GIL (Python) */
-  //Py_BEGIN_ALLOW_THREADS ?? for read time ?
     
   /* Read time from Viper2 global shared memory (from Trampoline) */
   if(0 != sem_wait(global_ipc->global_sem))
