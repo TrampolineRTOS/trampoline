@@ -55,7 +55,7 @@ TASK(startMotor)
     printf("[TPL](MOTOR) Wanted speed : %d\n", motor_speed);
 
     vp_ipc_write_reg(&viper, MOTOR0_MOTOR0_CONTROL, (reg_t)motor_speed);
-    vp_ipc_signal_update(&viper, MOTOR0, MOTOR0_CONTROL);
+    vp_ipc_signal_update(&viper, &global_shared_memory, MOTOR0, MOTOR0_CONTROL);
     
     TerminateTask();
 }
@@ -67,7 +67,7 @@ TASK(motor)
     printf("[TPL](MOTOR) Motor real speed is : %d\n", real_speed);
     
     vp_ipc_write_reg(&viper, MOTOR0 | MOTOR0_CONTROL, (reg_t)motor_speed);
-    vp_ipc_signal_update(&viper, MOTOR0, MOTOR0_CONTROL);
+    vp_ipc_signal_update(&viper, &global_shared_memory, MOTOR0, MOTOR0_CONTROL);
 
     TerminateTask();
 }

@@ -70,7 +70,7 @@ allEcus = [
     scheduler,
     [
       Network(network_master, "NET0", 0),
-      Timer("TIMER0", 1, type = timer.AUTO, delay = 1),
+      Timer("TIMER0", 1, type = timer.AUTO, delay = 1000),
       BP("BPFaster", 5, position = [100, 400], text="/\\" ),
       BP("BPSlower", 6, position = [100, 480], text="\\/"),
       BP("BPLeft", 7, position = [0, 480], text="<" ),
@@ -82,7 +82,7 @@ allEcus = [
     scheduler,
     [
       Network(network_master, "NET1_1", 0),
-      Timer("TIMER1", 1, type = timer.AUTO, delay = 0.1),
+      Timer("TIMER1", 1, type = timer.AUTO, delay = 100),
       DisplayServer("LCD1", 2, display_server),      
       Motor("MOTOR1_1",3),
       Motor("MOTOR1_2",4),
@@ -94,7 +94,7 @@ allEcus = [
     scheduler,
     [
       Network(network_slave, "NET2", 0),
-      Timer("TIMER2", 1, type = timer.AUTO, delay = 0.1),
+      Timer("TIMER2", 1, type = timer.AUTO, delay = 100),
       DisplayServer("LCD2", 2, display_server),      
       Motor("MOTOR2_1",3),
       Motor("MOTOR2_2",4),
@@ -105,7 +105,7 @@ allEcus = [
     scheduler,
     [
       Network(network_slave, "NET3", 0),
-      Timer("TIMER3", 1, type = timer.AUTO, delay = 0.1),
+      Timer("TIMER3", 1, type = timer.AUTO, delay = 100),
       DisplayServer("LCD3", 2, display_server),      
       Motor("MOTOR3_1",3),
       Motor("MOTOR3_2",4),

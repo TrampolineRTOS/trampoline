@@ -74,4 +74,17 @@ void tpl_ipc_wait_tpl(ipc_t *ipc);
  */
 modified_reg_t tpl_ipc_pop_fifo(ipc_t *ipc);
 
+/**
+ * @param tpl_number trampoline application number to set the maximum semaphore
+ * counter allowed
+ * @return a global_ipc_t structure which contains semaphores and shared memory
+ */
+global_ipc_t *tpl_ipc_create_global_memory(void);
+
+/**
+ * @param global_ipc pointer to global shared memory
+ * @param time actual global time
+ */
+void write_global_time(global_ipc_t *global_ipc, time_tt time);
+
 #endif /* __IPC_MOD_H__ */

@@ -39,6 +39,7 @@ extern volatile u32 tpl_locking_depth;
 
 extern tpl_it_vector_entry tpl_it_vector[];
 ipc_t viper;
+global_ipc_t global_shared_memory;
 
 VAR(tpl_stack_word, OS_VAR) idle_stack_zone[32768/sizeof(tpl_stack_word)] = {0} ;
 VAR(struct TPL_STACK, OS_VAR) idle_task_stack = { idle_stack_zone, 32768} ;
@@ -170,7 +171,7 @@ void tpl_signal_handler(int sig)
 
     /* Get the interrupt id from shared memory through vp_ipc API */
     requested_it = vp_ipc_get_interruption_id(&viper);
-   
+    
     channel_id = 31; /* TODO : change magic number */
     while(requested_it != 0)
     {
@@ -542,6 +543,8 @@ void tpl_init_machine(void)
 #endif
     
     vp_ipc_get_shared_memory(&viper);
+    vp_ipc_get_global_shared_memory(&global_shared_memory);
+    
     vp_ipc_ready(&viper);
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION

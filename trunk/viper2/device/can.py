@@ -57,7 +57,7 @@ class CAN(device.Device):
         
     device.Device.__init__(self, name, id, signal, [Reg1, Reg2, Reg3, Reg4, Reg5, Reg6, Reg7, Reg8, Reg9, Reg10, Reg11, Reg12])
     
-  def event(self, modifiedRegisters = None):
+  def event(self, time, modifiedRegisters = None):
     """
     Call from Scheduler
     """

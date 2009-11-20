@@ -27,6 +27,7 @@
 #define IT_ID_SEM_FILE_PATH	  "/viper.sem.it_id.%d" /* Access to interruption id area */
 #define FIFO_FULL_SEM_FILE_PATH	  "/viper.sem.fifo.full.%d" /* Can't add when fifo is full */
 #define FIFO_EMPTY_SEM_FILE_PATH  "/viper.sem.fifo.empty%d" /* We can't read when fifo is empty */
+#define GLOBAL_SEM_FILE_PATH  "/viper.sem.global.%d"
 
 /* Semaphore to access registers */
 #ifdef READER_WRITER_SEM
@@ -40,10 +41,12 @@
 /* Useful for FIFO container */
 typedef int64_t reg_id_t;
 typedef int64_t mask_t;
+typedef int64_t time_tt; //double on every machine ?
 typedef struct st_modified_reg_t
 {
-  reg_id_t dev;
-  mask_t reg_mask; 
+    reg_id_t dev;
+    mask_t reg_mask; 
+    time_tt time;
 }modified_reg_t;
 
 #endif

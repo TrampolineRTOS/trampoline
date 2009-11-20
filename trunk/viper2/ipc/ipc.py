@@ -58,6 +58,8 @@ tpl_ipc_read_reg = _ipc.tpl_ipc_read_reg
 tpl_ipc_ready = _ipc.tpl_ipc_ready
 tpl_ipc_wait_tpl = _ipc.tpl_ipc_wait_tpl
 tpl_ipc_pop_fifo = _ipc.tpl_ipc_pop_fifo
+tpl_ipc_create_global_memory = _ipc.tpl_ipc_create_global_memory
+write_global_time = _ipc.write_global_time
 FIFO_SIZE = _ipc.FIFO_SIZE
 REGISTERS_NB = _ipc.REGISTERS_NB
 FILE_PATH_LEN = _ipc.FILE_PATH_LEN
@@ -71,6 +73,7 @@ TPL_SEM_FILE_PATH = _ipc.TPL_SEM_FILE_PATH
 IT_ID_SEM_FILE_PATH = _ipc.IT_ID_SEM_FILE_PATH
 FIFO_FULL_SEM_FILE_PATH = _ipc.FIFO_FULL_SEM_FILE_PATH
 FIFO_EMPTY_SEM_FILE_PATH = _ipc.FIFO_EMPTY_SEM_FILE_PATH
+GLOBAL_SEM_FILE_PATH = _ipc.GLOBAL_SEM_FILE_PATH
 REG_SEM_FILE_PATH = _ipc.REG_SEM_FILE_PATH
 class modified_reg_t(_object):
     __swig_setmethods__ = {}
@@ -84,6 +87,9 @@ class modified_reg_t(_object):
     __swig_setmethods__["reg_mask"] = _ipc.modified_reg_t_reg_mask_set
     __swig_getmethods__["reg_mask"] = _ipc.modified_reg_t_reg_mask_get
     if _newclass:reg_mask = _swig_property(_ipc.modified_reg_t_reg_mask_get, _ipc.modified_reg_t_reg_mask_set)
+    __swig_setmethods__["time"] = _ipc.modified_reg_t_time_set
+    __swig_getmethods__["time"] = _ipc.modified_reg_t_time_get
+    if _newclass:time = _swig_property(_ipc.modified_reg_t_time_get, _ipc.modified_reg_t_time_set)
     def __init__(self, *args): 
         this = _ipc.new_modified_reg_t(*args)
         try: self.this.append(this)

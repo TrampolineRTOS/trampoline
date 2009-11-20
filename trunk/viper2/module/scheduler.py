@@ -5,6 +5,7 @@ import time, threading, thread
 import sys
 import device
 import config
+import ipc
 from const import *
 from errors import IPCError
 
@@ -17,18 +18,17 @@ class Event(object):
   This class is used to add new event to the Scheduler.
   """
 
-  def __init__(self, device, delay, periodic, modifiedRegisters = None):
+  def __init__(self, device, time, delay, modifiedRegisters = None):
     """
     Constructor.
     @param device device to call when time is elapsed
     @param delay time to wait (seconds, float)
     @param modifiedRegisters list of modifiedRegisters to give to device (use by Ecu only)
     """
-    self.__time = 0
+    self.__time = time # divided by 10 because time is multiplied by 10 before saving in the global memory
     self.__delay  = delay
     self.__device = device
     self.__modifiedRegisters = modifiedRegisters
-    self._periodic = periodic
     
   def getTime(self):
     """
@@ -94,7 +94,41 @@ class SortingThread(threading.Thread):
     Call to stop the main loop of the sorting thread (by the scheduler when ending).
     """
     self.__run = False
-        
+    
+###############################################################################
+# TIME THREAD CLASS
+###############################################################################
+class TimeThread(threading.Thread):
+  """
+  Time thread 
+  """
+
+  def __init__(self, sched):
+    """
+    Constructor.
+    @param sched scheduler where is the event list
+    """
+    threading.Thread.__init__(self)
+    self.__sched = sched
+    self.__run = True
+    self.__sched._time = 0
+
+  def run(self):
+    while self.__run:
+      """ Increment Time """
+      self.__sched._semtime.acquire()
+      self.__sched._time += 0.01
+      self.__sched._semtime.release()
+     
+      """ Wait 10 ms """
+      threading.Event().wait(0.01)
+      
+  def kill(self):
+    """
+    Call to stop the main loop of the sorting thread (by the scheduler when ending).
+    """
+    self.__run = False
+       
 ###############################################################################
 # SCHEDULER CLASS
 ###############################################################################
@@ -113,12 +147,13 @@ class Scheduler(object):
     @param speedCoeff (floating variable) is the coeff to apply to the time.
 	    3 means three times speeder
     """
-    self.__speedCoeff = float(speedCoeff)
+    self.__speedCoeff = speedCoeff # convert to float ?
     self.__events     = [] # List
     self.__fps        = time.time()
     self.__run        = True
     self.__sem        = threading.Semaphore()
-    self.__time       = 0
+    #self._semtime     = threading.Semaphore()
+    self._time        = 0
     self._verbose     = False
     
     """ Dispatch display on pygame or console """
@@ -131,12 +166,13 @@ class Scheduler(object):
   def addEvent(self, event):  
     """
     Add event to the scheduler.
-    If periodic event, increment delay to last execution time
-      If one shot event, increment delay to actual time
+    If periodic event, this is never called
+    If initialisation of periodic event, init to getTime + delay
+    If one shot event, increment delay to getTime
     Insert event in the right place
     @param event the Event to add
     """    
-    newtime = (event.getDelay() / self.__speedCoeff) + time.time()
+    newtime = event.getTime()
     event.setTime(newtime)
     
     self.__sem.acquire()
@@ -151,7 +187,10 @@ class Scheduler(object):
        i = i + 1
     self.__events.insert(i,event)
     self.__sem.release()
-     
+  
+  def createGlobalMemory(self):
+    self.__global_mem = ipc.tpl_ipc_create_global_memory()        
+                          
   def start(self):
     """
     If pygame, launch event received
@@ -213,24 +252,22 @@ class Scheduler(object):
   def sortEvent(self):
      """
      Copie event whose time is passed (event.getTime() < time.time()).
-     Remove event (except if periodic event, thus change time and move it to the rifht
+     Remove event (except if periodic event, thus change time and move it to the right
       place in the events list).
      Launch event device action.
      Thus, event sorting...
      """
-     previousTime=0
      events	  = [] # List
-     currentTime = time.time()
+     self.__sem.acquire()
      for event in self.__events:
-      if event.getTime() < currentTime:
-       if event.getTime() != previousTime:
+      if event.getTime() <= self._time:
         events.append(event)
-        previousTime=event.getTime()
+     self.__sem.release()
      
-     """...and lauching"""
+     """..., lauching..."""
      for event in events:
       self.__sem.acquire()
-      if (event._periodic == True):
+      if (event.getDelay() != 0):
         index = self.__events.index(event)
         self.__events[index].setTime(self.__events[index].getTime()+(self.__events[index].getDelay()/self.__speedCoeff))
         eventtomove = self.__events.pop(index)
@@ -244,18 +281,21 @@ class Scheduler(object):
       else:
         self.__events.remove(event)
       self.__sem.release()
-      event.getDevice().event(event.getModifiedRegisters())    
-      
-     # TODO : When sendIt() is just to save the IT to send (because it could happen
-     #        that at one date, several devices send an IT to Trampoline(s)).
-     #        --> Send IT(s) now :
-     #            - save IT to send in each ECUs and check each ECUs now ?
-     #            - save IT to send in the scheduler and launch it(them) now ?
-      
-     self.__sem.acquire()
-     ttw = self.__events[0].getTime()
-     self.__sem.release()
+      event.getDevice().event(event.getTime(), event.getModifiedRegisters())    
      
+     """...and send it if needed"""
+     for ecu in config.allEcus:
+       ecu.launchIt()
+                 
+     self.__sem.acquire()
+     # TODO : Detect if there is at least one event in the list ? otherwise, set ttw to zero ?
+     ttw = self.__events[0].getTime() - self._time
+     self.__sem.release()
+          
      """ Sleep until next event (better for cpu time consuming) """
-     threading.Event().wait(ttw-time.time())
-
+     # TODO : it's even may be not useful to wait ttw, we can wait as long as we want because we are already unsynchronised !
+     threading.Event().wait(float(ttw)/1000)
+       
+     self._time += ttw
+     ipc.write_global_time(self.__global_mem , self._time)
+     

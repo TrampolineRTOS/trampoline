@@ -37,6 +37,7 @@ extern struct TPL_CONTEXT idle_task_context;
 extern void tpl_sleep(void);
 
 extern ipc_t viper;
+extern global_ipc_t global_shared_memory;
 
 #define IDLE_CONTEXT    &idle_task_context 
 #define IDLE_ENTRY      tpl_sleep

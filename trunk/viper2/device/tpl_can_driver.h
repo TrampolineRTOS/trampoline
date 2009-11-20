@@ -189,7 +189,7 @@ r_ipdu_conversion_union_t;
  *  @param  can_device CAN device's mask
  *  @param  ipdu  ipdu to send
  */
-void send_ipdu(ipc_t* ipc, dev_id_t can_device, tpl_sending_ipdu* ipdu);
+void send_ipdu(ipc_t* ipc, global_ipc_t *global_ipc, dev_id_t can_device, tpl_sending_ipdu* ipdu);
 
 /**
  *  receive an ipdu
@@ -198,7 +198,7 @@ void send_ipdu(ipc_t* ipc, dev_id_t can_device, tpl_sending_ipdu* ipdu);
  *  @param  can_device CAN device's mask
  *  @param  ipdu  ipdu wich will take the receive ipdu value
  */
-void receive_ipdu(ipc_t* ipc, dev_id_t can_device, tpl_receiving_ipdu* ipdu);
+void receive_ipdu(ipc_t* ipc, global_ipc_t *global_ipc, dev_id_t can_device, tpl_receiving_ipdu* ipdu);
 
 /**
  *  say if an identifier is standard
@@ -263,7 +263,7 @@ void remove_identifier_to_filter(filter_t filter, identifier_t* identifier);
  *  @param  can_device CAN device's mask
  *  @param  filter  filter to write in registers
  */
-void update_filter(ipc_t* ipc, dev_id_t can_device, filter_t filtre);
+void update_filter(ipc_t* ipc, global_ipc_t *global_ipc, dev_id_t can_device, filter_t filtre);
 
 /**
  *  read the filter registers

@@ -95,7 +95,7 @@ endif
 
 MODULE_src += $(INTERFACE_SRC)
 
-$(MODULE_bin) : $(MODULE_obj) 
+$(MODULE_bin) : $(MODULE_obj)
 		$(CC) -o $@ $(MODULE_obj) $(MODULE_ldflags) $(LDFLAGS)
 
 $(MODULE_obj_dir)/%.o : $(MODULE_dir)/%.c

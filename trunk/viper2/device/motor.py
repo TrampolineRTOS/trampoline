@@ -22,7 +22,7 @@ class Motor(device.Device):
     number elapsed in a delay (self.__tickperdelay) and add it to the tick number
     elapsed in total (self.__ticks) and write it in a register.
   """
-  def __init__(self, name, id, frequency = None, max_pwm = 100, tickperrotation = 100, max_rpm = 300, delay = 0.2, transfertfunction = None, signal = device.SIGUSR2, position = None):
+  def __init__(self, name, id, frequency = None, max_pwm = 100, tickperrotation = 100, max_rpm = 300, delay = 200, transfertfunction = None, signal = device.SIGUSR2, position = None):
     """
     Constructor.
     @see Device.__init__()
@@ -41,7 +41,7 @@ class Motor(device.Device):
 
     device.Device.__init__(self, name, id, signal, [sensorReg, controlReg])
     self.__type     = type
-    self.__delay    = float(delay)
+    self.__delay    = delay
     self.__transfertfunction    = transfertfunction # Not used
     self.__fequency = frequency                     # Not used
     self.__tickperrotation = tickperrotation
@@ -52,8 +52,9 @@ class Motor(device.Device):
     self.__speed    = 0                             
     self.__tickperdelay = 0
     self.__ticks    = 0
+    self.__convertMsToS = 1000
     
-  def event(self, modifiedRegisters = None):
+  def event(self, time, modifiedRegisters = None):
     """
     Call from Scheduler
     """
@@ -80,11 +81,11 @@ class Motor(device.Device):
    
   def sensor(self):
     """ find tickperdelay from speed, delay, tickperrotations"""
-    self.__tickperdelay = self.__speed*(self.__delay/(self.__secondsperminute))*self.__tickperrotation
+    self.__tickperdelay = self.__speed*(float(self.__delay)/(self.__convertMsToS*self.__secondsperminute))*self.__tickperrotation
     self.__ticks = self.__ticks + self.__tickperdelay
     
     """ Write tick per delay in registers """
-    self._registers[self.__sensor].write(int(self.__ticks))
+    self._registers[self.__sensor].write(long(self.__ticks)) # int changed to long
       
   def transfertfunction(self):
      """ Filter """
@@ -96,7 +97,7 @@ class Motor(device.Device):
     Initialize register and start periodic sensor timer (increase sensor each self.__delay time)
     """
     self._registers[self.__control].write(0)
-    self._scheduler.addEvent(Event(self, self.__delay, True))
+    self._scheduler.addEvent(Event(self, 0, self.__delay))
     
   ###############################################################    
   # Display on Consol

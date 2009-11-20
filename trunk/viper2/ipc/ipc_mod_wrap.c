@@ -2449,13 +2449,14 @@ SWIG_Python_MustGetPtr(PyObject *obj, swig_type_info *ty, int argnum, int flags)
 /* -------- TYPES TABLE (BEGIN) -------- */
 
 #define SWIGTYPE_p_char swig_types[0]
-#define SWIGTYPE_p_int swig_types[1]
-#define SWIGTYPE_p_ipc_t swig_types[2]
-#define SWIGTYPE_p_long_long swig_types[3]
-#define SWIGTYPE_p_pid_t swig_types[4]
-#define SWIGTYPE_p_st_modified_reg_t swig_types[5]
-static swig_type_info *swig_types[7];
-static swig_module_info swig_module = {swig_types, 6, 0, 0, 0, 0};
+#define SWIGTYPE_p_global_ipc_t swig_types[1]
+#define SWIGTYPE_p_int swig_types[2]
+#define SWIGTYPE_p_ipc_t swig_types[3]
+#define SWIGTYPE_p_long_long swig_types[4]
+#define SWIGTYPE_p_pid_t swig_types[5]
+#define SWIGTYPE_p_st_modified_reg_t swig_types[6]
+static swig_type_info *swig_types[8];
+static swig_module_info swig_module = {swig_types, 7, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -3054,6 +3055,49 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_tpl_ipc_create_global_memory(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  global_ipc_t *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":tpl_ipc_create_global_memory")) SWIG_fail;
+  result = (global_ipc_t *)tpl_ipc_create_global_memory();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_global_ipc_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_write_global_time(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  global_ipc_t *arg1 = (global_ipc_t *) 0 ;
+  time_tt arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  long long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:write_global_time",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_global_ipc_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "write_global_time" "', argument " "1"" of type '" "global_ipc_t *""'"); 
+  }
+  arg1 = (global_ipc_t *)(argp1);
+  ecode2 = SWIG_AsVal_long_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "write_global_time" "', argument " "2"" of type '" "time_tt""'");
+  } 
+  arg2 = (time_tt)(val2);
+  write_global_time(arg1,arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_modified_reg_t_dev_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   modified_reg_t *arg1 = (modified_reg_t *) 0 ;
@@ -3160,6 +3204,59 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_modified_reg_t_time_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  modified_reg_t *arg1 = (modified_reg_t *) 0 ;
+  time_tt arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  long long val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:modified_reg_t_time_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_st_modified_reg_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "modified_reg_t_time_set" "', argument " "1"" of type '" "modified_reg_t *""'"); 
+  }
+  arg1 = (modified_reg_t *)(argp1);
+  ecode2 = SWIG_AsVal_long_SS_long(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "modified_reg_t_time_set" "', argument " "2"" of type '" "time_tt""'");
+  } 
+  arg2 = (time_tt)(val2);
+  if (arg1) (arg1)->time = arg2;
+  
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_modified_reg_t_time_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  modified_reg_t *arg1 = (modified_reg_t *) 0 ;
+  time_tt result;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:modified_reg_t_time_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_st_modified_reg_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "modified_reg_t_time_get" "', argument " "1"" of type '" "modified_reg_t *""'"); 
+  }
+  arg1 = (modified_reg_t *)(argp1);
+  result = (time_tt) ((arg1)->time);
+  resultobj = SWIG_From_long_SS_long((long long)(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_new_modified_reg_t(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   modified_reg_t *result = 0 ;
@@ -3213,10 +3310,14 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"tpl_ipc_ready", _wrap_tpl_ipc_ready, METH_VARARGS, NULL},
 	 { (char *)"tpl_ipc_wait_tpl", _wrap_tpl_ipc_wait_tpl, METH_VARARGS, NULL},
 	 { (char *)"tpl_ipc_pop_fifo", _wrap_tpl_ipc_pop_fifo, METH_VARARGS, NULL},
+	 { (char *)"tpl_ipc_create_global_memory", _wrap_tpl_ipc_create_global_memory, METH_VARARGS, NULL},
+	 { (char *)"write_global_time", _wrap_write_global_time, METH_VARARGS, NULL},
 	 { (char *)"modified_reg_t_dev_set", _wrap_modified_reg_t_dev_set, METH_VARARGS, NULL},
 	 { (char *)"modified_reg_t_dev_get", _wrap_modified_reg_t_dev_get, METH_VARARGS, NULL},
 	 { (char *)"modified_reg_t_reg_mask_set", _wrap_modified_reg_t_reg_mask_set, METH_VARARGS, NULL},
 	 { (char *)"modified_reg_t_reg_mask_get", _wrap_modified_reg_t_reg_mask_get, METH_VARARGS, NULL},
+	 { (char *)"modified_reg_t_time_set", _wrap_modified_reg_t_time_set, METH_VARARGS, NULL},
+	 { (char *)"modified_reg_t_time_get", _wrap_modified_reg_t_time_get, METH_VARARGS, NULL},
 	 { (char *)"new_modified_reg_t", _wrap_new_modified_reg_t, METH_VARARGS, NULL},
 	 { (char *)"delete_modified_reg_t", _wrap_delete_modified_reg_t, METH_VARARGS, NULL},
 	 { (char *)"modified_reg_t_swigregister", modified_reg_t_swigregister, METH_VARARGS, NULL},
@@ -3227,6 +3328,7 @@ static PyMethodDef SwigMethods[] = {
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_global_ipc_t = {"_p_global_ipc_t", "global_ipc_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_int = {"_p_int", "int *|reg_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_ipc_t = {"_p_ipc_t", "ipc_t *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_long_long = {"_p_long_long", "long long *|int64_t *", 0, 0, (void*)0, 0};
@@ -3235,6 +3337,7 @@ static swig_type_info _swigt__p_st_modified_reg_t = {"_p_st_modified_reg_t", "st
 
 static swig_type_info *swig_type_initial[] = {
   &_swigt__p_char,
+  &_swigt__p_global_ipc_t,
   &_swigt__p_int,
   &_swigt__p_ipc_t,
   &_swigt__p_long_long,
@@ -3243,6 +3346,7 @@ static swig_type_info *swig_type_initial[] = {
 };
 
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_global_ipc_t[] = {  {&_swigt__p_global_ipc_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_int[] = {  {&_swigt__p_int, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_ipc_t[] = {  {&_swigt__p_ipc_t, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_long_long[] = {  {&_swigt__p_long_long, 0, 0, 0},{0, 0, 0, 0}};
@@ -3251,6 +3355,7 @@ static swig_cast_info _swigc__p_st_modified_reg_t[] = {  {&_swigt__p_st_modified
 
 static swig_cast_info *swig_cast_initial[] = {
   _swigc__p_char,
+  _swigc__p_global_ipc_t,
   _swigc__p_int,
   _swigc__p_ipc_t,
   _swigc__p_long_long,
@@ -3789,6 +3894,7 @@ SWIGEXPORT void SWIG_init(void) {
   SWIG_Python_SetConstant(d, "IT_ID_SEM_FILE_PATH",SWIG_FromCharPtr("/viper.sem.it_id.%d"));
   SWIG_Python_SetConstant(d, "FIFO_FULL_SEM_FILE_PATH",SWIG_FromCharPtr("/viper.sem.fifo.full.%d"));
   SWIG_Python_SetConstant(d, "FIFO_EMPTY_SEM_FILE_PATH",SWIG_FromCharPtr("/viper.sem.fifo.empty%d"));
+  SWIG_Python_SetConstant(d, "GLOBAL_SEM_FILE_PATH",SWIG_FromCharPtr("/viper.sem.global.%d"));
   SWIG_Python_SetConstant(d, "REG_SEM_FILE_PATH",SWIG_FromCharPtr("/viper.sem.reg_write.%d"));
 }
 

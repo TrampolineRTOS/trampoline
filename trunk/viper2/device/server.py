@@ -36,7 +36,7 @@ class DisplayServer(device.Device):
     #add DisplayServer into Server
     self._serv.add_lcd(self)
   
-  def event(self, modifiedRegisters = None):
+  def event(self, time, modifiedRegisters = None):
     """
     Call from Scheduler
     """
