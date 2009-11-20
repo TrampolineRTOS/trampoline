@@ -53,7 +53,7 @@ TASK(MotorControl)
     r_ipdu.buf = my_buf;
     
     /* received ipdu */
-    receive_ipdu(&viper, NET1_1, &r_ipdu);
+    receive_ipdu(&viper, &global_shared_memory, NET1_1, &r_ipdu);
     printf("[TPL1] Received an I-PDU... id = %d - mode = %d - buf = %d\n",r_ipdu.id,r_ipdu.transmission_mode,r_ipdu.buf[0]);
     
     /* Receiving movement vector, find motor commands */
@@ -99,8 +99,8 @@ TASK(MotorControl)
     vp_ipc_write_reg(&viper, MOTOR1_1_MOTOR1_1_CONTROL, (reg_t)MoveVector[0]);
     vp_ipc_write_reg(&viper, MOTOR1_2_MOTOR1_2_CONTROL, (reg_t)MoveVector[1]);
     
-    vp_ipc_signal_update(&viper, MOTOR1_1, MOTOR1_1_CONTROL);
-    vp_ipc_signal_update(&viper, MOTOR1_2, MOTOR1_2_CONTROL);
+    vp_ipc_signal_update(&viper, &global_shared_memory, MOTOR1_1, MOTOR1_1_CONTROL);
+    vp_ipc_signal_update(&viper, &global_shared_memory, MOTOR1_2, MOTOR1_2_CONTROL);
     
 	TerminateTask();
 }
@@ -185,12 +185,12 @@ TASK(SensorAndSendVector)
     s_ipdu.buf = test;
     
     printf("[TPL1] Send an I-PDU... id:%d - mode:%d - buf:%d-%d\n", s_ipdu.id,s_ipdu.transmission_mode,s_ipdu.buf[0],s_ipdu.buf[1]);
-    send_ipdu(&viper, NET1_2, &s_ipdu);
+    send_ipdu(&viper, &global_shared_memory, NET1_2, &s_ipdu);
     
     /* Write in the screen registers*/
     vp_ipc_write_reg(&viper, LCD1_LCD1_REG0, (reg_t)(position[0]));
     vp_ipc_write_reg(&viper, LCD1_LCD1_REG1, (reg_t)(position[1]));
-    vp_ipc_signal_update(&viper, LCD1, LCD1_REG0 | LCD1_REG1);
+    vp_ipc_signal_update(&viper, &global_shared_memory, LCD1, LCD1_REG0 | LCD1_REG1);
 
     TerminateTask();
     

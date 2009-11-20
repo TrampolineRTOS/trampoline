@@ -18,7 +18,6 @@ CPU test {
         PRETASKHOOK = TRUE;
         APP_SRC = "tpl_default_tasks_workstation.c";
         TRAMPOLINE_BASE_PATH = "..";
-        DOW=TRUE;
         CFLAGS  = "-g";
         CFLAGS  = "-Wall -Wformat -Werror -pedantic -std=c99";
         CFLAGS  = "-Wmissing-field-initializers -I."; 
@@ -28,7 +27,7 @@ CPU test {
     } ;
 
 	COUNTER SystemCounter {
-		SOURCE = IRQ3;
+		SOURCE = IRQ7;
 	};
 
     APPMODE std {
@@ -38,7 +37,7 @@ CPU test {
         CATEGORY  = 2;
         STACKSIZE = 32768;
         PRIORITY  = 15;
-        SOURCE    = IRQ6;
+        SOURCE    = IRQ2;
     };
 
     TASK init{

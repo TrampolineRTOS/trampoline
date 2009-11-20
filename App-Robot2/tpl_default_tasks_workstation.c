@@ -117,7 +117,7 @@ TASK(Sensors)
     /* Write in the screen registers*/
     vp_ipc_write_reg(&viper, LCD2_LCD2_REG0, (reg_t)(position[0]));
     vp_ipc_write_reg(&viper, LCD2_LCD2_REG1, (reg_t)(position[1]));
-    vp_ipc_signal_update(&viper, LCD2, LCD2_REG0 | LCD2_REG1);
+    vp_ipc_signal_update(&viper, &global_shared_memory, LCD2, LCD2_REG0 | LCD2_REG1);
 
     TerminateTask();
     
@@ -130,7 +130,7 @@ TASK(MotorControl){
     r_ipdu.buf = my_buf;
     
     /* received ipdu */
-    receive_ipdu(&viper, NET2, &r_ipdu);
+    receive_ipdu(&viper, &global_shared_memory, NET2, &r_ipdu);
     printf("[TPL2] Received an I-PDU... id = %d - mode = %d - buf = %d-%d\n",r_ipdu.id,r_ipdu.transmission_mode,r_ipdu.buf[0],r_ipdu.buf[1]);
     
     /* Receiving robot1 ticks -> find motor commands */
@@ -142,8 +142,8 @@ TASK(MotorControl){
     vp_ipc_write_reg(&viper, MOTOR2_1_MOTOR2_1_CONTROL, (reg_t)pwm1);
     vp_ipc_write_reg(&viper, MOTOR2_2_MOTOR2_2_CONTROL, (reg_t)pwm2);
     
-    vp_ipc_signal_update(&viper, MOTOR2_1, MOTOR2_1_CONTROL);
-    vp_ipc_signal_update(&viper, MOTOR2_2, MOTOR2_2_CONTROL);
+    vp_ipc_signal_update(&viper, &global_shared_memory, MOTOR2_1, MOTOR2_1_CONTROL);
+    vp_ipc_signal_update(&viper, &global_shared_memory, MOTOR2_2, MOTOR2_2_CONTROL);
 
     TerminateTask();
 }

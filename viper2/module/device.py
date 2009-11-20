@@ -21,7 +21,7 @@ class Device(object):
   
   """Attributes for Pygame"""
   pygamepointer = [0, 0, 0]
-  
+    
   def __init__(self, name, callbackIndex, signal, registers = None):
     """
     Constructor.

@@ -9,6 +9,7 @@ import ipc
 from device import Device
 from scheduler import Event 
 from const import *
+from signal import SIGALRM, SIGUSR1, SIGUSR2
 
 ###############################################################################
 # READING THREAD CLASS
@@ -42,10 +43,10 @@ class ReadingThread(threading.Thread):
     
     """ Get modified device and reg """
     modified = ipc.tpl_ipc_pop_fifo(self.__ipc);
-
+    
     while self.__run:
       """ Call Ecu event handler """
-      self.__ecu.event(int(modified.dev), modified.reg_mask)
+      self.__ecu.event(int(modified.dev), modified.reg_mask, modified.time)
       
       """ Get modified device and reg """
       modified = ipc.tpl_ipc_pop_fifo(self.__ipc);
@@ -65,8 +66,7 @@ class Ecu(object):
   """
   Ecu class.
   Ecu (Engine control unit) represent devices and an operating system.
-  """
-  
+  """  
   def __init__(self, osPath, scheduler, devices = None):
     """
     Constructor.
@@ -78,13 +78,18 @@ class Ecu(object):
     self.__scheduler = scheduler
     self.__dir = re.match(r'.*/+', osPath).group() #get dir from osPath
     self._dir = self.__dir
-    
+        
     """ Init """
-    self._devices       = {} # Dict
+    self._devices        = {} # Dict
     self.__offset        = ipc.REGISTER_ID_BITS # Last bits are used by registers
     self.__ipc           = None
     self.__readingThread = None # No reading thread if we only generate
     
+    self.__id_list          = {}
+    self.__id_list[SIGUSR1] = 0
+    self.__id_list[SIGUSR2] = 0
+    self.__id_list[SIGALRM] = 0
+        
     """ Add devices """
     if devices != None:
       self.add(devices)       
@@ -142,7 +147,7 @@ class Ecu(object):
     """ Generate header """
     header.write("#ifndef __VP_DEVICES_H__\n#define __VP_DEVICES_H__\n")
     header.write('\n#include "com.h" /* reg_id_t, dev_id_t */\n')
-    oilFile.write("interrupts{\n")
+    oilFile.write("interrupts[31]{\n")
 
     """ Generate device identifier """
     index = 0
@@ -180,8 +185,22 @@ class Ecu(object):
     @pararm signum must be Device.SIGUSR1, Device.SIGUSR2 or Device.SIGALRM
     @param id the device id
     """
-    ipc.tpl_ipc_send_it(self.__ipc, signum, id, self.__scheduler._verbose)
-
+    # TODO : check if id already in the list ?    
+    self.__id_list[signum] += id
+   
+  def launchIt(self):
+    """
+    Launch interrupts
+    Reset lists
+    """
+    for sig, id in self.__id_list.iteritems():
+      if (id != 0):
+        ipc.tpl_ipc_send_it(self.__ipc, sig, id, self.__scheduler._verbose)
+            
+    self.__id_list[SIGUSR1] = 0
+    self.__id_list[SIGUSR2] = 0
+    self.__id_list[SIGALRM] = 0
+     
   def kill(self):
     """
     Stop Reading thread, trampoline and Ecu
@@ -206,7 +225,7 @@ class Ecu(object):
   def getDir(self):
     return self.__dir
 
-  def event(self, deviceID, registersMask):
+  def event(self, deviceID, registersMask, deviceTime):
     """
     Add an event to the scheduler list and wakes up it.
     @param deviceID device id
@@ -231,7 +250,7 @@ class Ecu(object):
         
       
       """ Add event to scheduler """
-      self.__scheduler.addEvent(Event(self._devices[deviceID], 0, False, reg))
+      self.__scheduler.addEvent(Event(self._devices[deviceID], deviceTime, 0, reg))
 
   def send(self, sub):
     print "ecu.send() - sub:" + str(sub)

@@ -35,8 +35,8 @@ except:
     commands.getoutput("sed '" + PYTHON_INCLUDE_line_number + "s/.*/PYTHON_inc = `" + vers_python + "-config --includes" + "` #PYTHON_INCLUDE/' Makefile > TMPFILE && mv TMPFILE Makefile")
     commands.getoutput("sed '" + PYTHON_LDFLAGS_line_number + "s/.*/MODULE_ldflags += `" + vers_python + "-config --ldflags" + "` #PYTHON_LDFLAGS/' Makefile > TMPFILE && mv TMPFILE Makefile")
     
-  """ Make libraries """
-  os.system("make all")
+""" Make libraries """
+os.system("make all")
   
 ###############################################################################
 # IMPORT
@@ -135,6 +135,9 @@ else:
     signal.signal(signal.SIGINT, signalHandler)
         
     dispatch_display.start()
+                
+    # TODO : create memory in Viper2 and let the application use it by a semaphore (in parameter in ecu.start() ?)            
+    config.scheduler.createGlobalMemory()
                 
     """ Start all ecus """
     for ecu in config.allEcus:

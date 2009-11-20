@@ -47,7 +47,7 @@ reg_id_t filter_reg_ids[] = { FILTER_REG_1,
  *  @param  ipc   structure used for communication
  *  @param  ipdu  ipdu to send
  */
-void send_ipdu(ipc_t* ipc, dev_id_t can_device, tpl_sending_ipdu* ipdu)
+void send_ipdu(ipc_t* ipc, global_ipc_t *global_ipc, dev_id_t can_device, tpl_sending_ipdu* ipdu)
 {
   /* variables */
   frame_t frame;
@@ -95,7 +95,7 @@ void send_ipdu(ipc_t* ipc, dev_id_t can_device, tpl_sending_ipdu* ipdu)
   mask |= can_device;
   
   /* signal update */
-  vp_ipc_signal_update(ipc, can_device, mask);
+  vp_ipc_signal_update(ipc, global_ipc, can_device, mask);
 }
 
 /**
@@ -104,7 +104,7 @@ void send_ipdu(ipc_t* ipc, dev_id_t can_device, tpl_sending_ipdu* ipdu)
  *  @param  ipc   structure used for communication
  *  @param  ipdu  ipdu witch will take the receive ipdu value
  */
-void receive_ipdu(ipc_t* ipc, dev_id_t can_device, tpl_receiving_ipdu* ipdu)
+void receive_ipdu(ipc_t* ipc, global_ipc_t *global_ipc, dev_id_t can_device, tpl_receiving_ipdu* ipdu)
 {
   /* variables */
   frame_to_reg frame_reg;
@@ -391,7 +391,7 @@ void remove_identifier_to_filter(filter_t filter, identifier_t* identifier)
  *  @param  ipc     structure used for communication
  *  @param  filter  filter to write in registers
  */
-void update_filter(ipc_t* ipc, dev_id_t can_device, filter_t filter)
+void update_filter(ipc_t* ipc, global_ipc_t *global_ipc, dev_id_t can_device, filter_t filter)
 {
   /* variables */
   filter_conversion_union_t convert;
@@ -418,7 +418,7 @@ void update_filter(ipc_t* ipc, dev_id_t can_device, filter_t filter)
   mask |= can_device;
     
   /* signal update */
-  vp_ipc_signal_update(ipc, can_device, mask);
+  vp_ipc_signal_update(ipc, global_ipc, can_device, mask);
 }
 
 /**

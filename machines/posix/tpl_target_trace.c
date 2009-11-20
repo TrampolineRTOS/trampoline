@@ -32,6 +32,8 @@
 #include <string.h> /* strncpy() */
 #include <stdlib.h> /* atol() */
 
+/*for get date depending SystemCounter*/
+#include "tpl_os_timeobj_kernel.h"
 
 VAR(tpl_str_trace, OS_CONST) trace;
 
@@ -49,10 +51,18 @@ FUNC(void, OS_CODE)tpl_trace_get_date()
   int sec;
   int usec;
 
+  /* get date depending system time*/
   gettimeofday(&result,NULL);
   sec = result.tv_sec;
   usec = result.tv_usec;
   sprintf(DATE,"%d%06d",sec,usec);
+
+  /* get date depending SystemCounter 
+  extern VAR(tpl_counter, OS_VAR) Software_Counter_counter_desc;
+  P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = &Software_Counter_counter_desc;
+  int dat_now = counter->current_date;
+  sprintf(DATE,"%d",dat_now); */
+  	
 }
 
 /**

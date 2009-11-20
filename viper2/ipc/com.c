@@ -406,3 +406,45 @@ reg_t read_reg(ipc_t *ipc, reg_id_t reg_id)
   return reg;
 }
 
+void map_global_sh_mem(global_ipc_t *global_ipc)
+{
+    /* Maps shared memory with size of global_sh_mem */
+    global_ipc->global_sh_mem = 
+    mmap(
+         NULL, 
+         sizeof(struct st_global_sh_mem),
+         PROT_WRITE, 
+         MAP_SHARED, 
+         global_ipc->global_sh_mem_fd, 
+         0	      /* beginin of the shared memory in the memory page */
+         );
+    if(MAP_FAILED == global_ipc->global_sh_mem)
+    {
+        fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+        perror("mmap()");
+        if(0 != close(global_ipc->global_sh_mem_fd))
+        {
+            perror("close(global_sh_mem_fd)");
+        }
+        global_ipc->global_sh_mem = NULL;
+        return;
+    }
+}
+
+bool init_global_ipc_struct(global_ipc_t *global_ipc)
+{
+    char global_sem_file_path[FILE_PATH_LEN];
+    
+    sprintf(global_sem_file_path, GLOBAL_SEM_FILE_PATH, global_ipc->pid);
+    
+    global_ipc->global_sem = sem_open(global_sem_file_path, O_CREAT, 0600, 1);
+    if((void *)SEM_FAILED == global_ipc->global_sem)
+    {
+        fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+        perror("viper : sem_open(global_ipc)");
+        return false;
+    }
+    
+    return true;
+    
+}

@@ -29,7 +29,6 @@
 /** 
  * Open the shared memory and semaphores next to initialized ipc structure 
  * @param ipc ipc_t structure to initialized, this is in these ipc structure that shared memory and semaphores will be open
- * @param pid the trampoline pid (returns by getpid of unistd.h)
  */
 void vp_ipc_get_shared_memory(ipc_t *ipc);
 
@@ -47,7 +46,7 @@ int vp_ipc_get_interruption_id(ipc_t *ipc);
  * @param dev_id the modified device identifier
  * @param mask the modified registers of dev_id mask
  */
-void vp_ipc_signal_update(ipc_t *ipc, dev_id_t dev_id, mask_t mask);
+void vp_ipc_signal_update(ipc_t *ipc, global_ipc_t *global_ipc, dev_id_t dev_id, mask_t mask);
 
 /**
  * Write a register
@@ -76,5 +75,11 @@ void vp_ipc_ready(ipc_t *ipc);
  * @param ipc ipc_t structure (containing shared memory and semaphores)
  */
 void vp_ipc_wait_vp(ipc_t *ipc);
+
+/** 
+ * Open the global shared memory and semaphores next to initialized global_ipc structure 
+ * @param global_ipc global_ipc_t structure to initialized, it'is in that global_ipc structure that global shared memory and semaphores will be open
+ */
+void vp_ipc_get_global_shared_memory(global_ipc_t *global_ipc);
 
 #endif /* __VIPER_H__ */

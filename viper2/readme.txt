@@ -12,4 +12,4 @@ Starting Viper2 :
 
 * Launch Viper2 by "python viper2.py"
 
-* Clean Viper2 (before a commit for example) by "python viper2.py -m"
+* Clean Viper2 (before a commit for example) by "python viper2.py --clean"

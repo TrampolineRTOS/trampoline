@@ -24,7 +24,7 @@ from bp import BP
 # You shall modify pygame to True or False if you want or not to use pygame (True by default)
 # You shall modify screen if you want to change screen dimensions ([800, 600] by default)
 ###############################################################################
-dispatch_display = Display(pygame = True, screen = [565, 325])
+dispatch_display = Display(pygame = True, screen = [560, 320])
 
 ###############################################################################
 # SCHEDULER
@@ -51,7 +51,7 @@ allEcus = [
     "../App-GBF/trampoline",
     scheduler,
     [
-      Timer("TIMER0", 1, type = timer.AUTO, delay = 0.01),
+      Timer("TIMER0", 1, type = timer.AUTO, delay = 10),
 	  DAC("DAC0", 2, position = [0, 0] ),
 	  LCD("LCD1", 3, position = [360, 0] ),
       LCD("LCD2", 4, position = [360, 120] ),

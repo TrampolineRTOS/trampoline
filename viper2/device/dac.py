@@ -34,19 +34,19 @@ class DAC(device.Device):
     self._width = dac_width
     self._height = dac_height
     self._position = position
+    self.__convertMsToS = 1000
     
     device.Device.__init__(self, name, id, signal, [Reg])
     self.__value    = 0
     
-  def event(self, modifiedRegisters = None):
+  def event(self, time, modifiedRegisters = None):
     """
     Call from Scheduler
     """
     """ If event doesn't come from Trampoline """
-    self.__new_time = time.time()
+    self.__new_time = float(time)/self.__convertMsToS
            
     if not modifiedRegisters:
-      """ Add new event (speed change) """
       print "[VPR] (" + str(self.__name) + ") Event doesn't come from Trampoline !!! "
       
       """ If event comes from Trampoline """

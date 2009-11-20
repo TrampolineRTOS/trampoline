@@ -46,13 +46,14 @@ then
 fi
 
 
+#GOIL tests
+cd ./GOIL
+./GOIL_tests.sh $target
+
 #functional tests
-cd ./functional
+cd ../functional
 ./functional_tests.sh $target
 
-#GOIL tests
-cd ../GOIL
-./GOIL_tests.sh $target
 
 cd ..
 

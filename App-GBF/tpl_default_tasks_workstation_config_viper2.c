@@ -9,7 +9,7 @@
 void dac(int value_to_convert)
 {
 	vp_ipc_write_reg(&viper, DAC0_DAC0_REG, (reg_t)value_to_convert);
-    vp_ipc_signal_update(&viper, DAC0, DAC0_REG);
+    vp_ipc_signal_update(&viper, &global_shared_memory, DAC0, DAC0_REG);
 }
 
 void start_dialoguing_dac(void)
@@ -39,7 +39,7 @@ void lcd1(char *string)
     vp_ipc_write_reg(&viper, LCD1_LCD1_REG2, (reg_t)string[2]);
     vp_ipc_write_reg(&viper, LCD1_LCD1_REG3, (reg_t)string[1]);
     vp_ipc_write_reg(&viper, LCD1_LCD1_REG4, (reg_t)string[0]);
-    vp_ipc_signal_update(&viper, LCD1, LCD1_REG0 | LCD1_REG1 | LCD1_REG2 | LCD1_REG3 | LCD1_REG4);
+    vp_ipc_signal_update(&viper, &global_shared_memory, LCD1, LCD1_REG0 | LCD1_REG1 | LCD1_REG2 | LCD1_REG3 | LCD1_REG4);
 }
 
 void lcd2(char *string)
@@ -51,5 +51,5 @@ void lcd2(char *string)
     vp_ipc_write_reg(&viper, LCD2_LCD2_REG4, (reg_t)string[2]);
     vp_ipc_write_reg(&viper, LCD2_LCD2_REG5, (reg_t)string[1]);
     vp_ipc_write_reg(&viper, LCD2_LCD2_REG6, (reg_t)string[0]);
-    vp_ipc_signal_update(&viper, LCD2, LCD2_REG0 | LCD2_REG1 | LCD2_REG2 | LCD2_REG3 | LCD2_REG4 | LCD2_REG5 | LCD2_REG6);
+    vp_ipc_signal_update(&viper, &global_shared_memory, LCD2, LCD2_REG0 | LCD2_REG1 | LCD2_REG2 | LCD2_REG3 | LCD2_REG4 | LCD2_REG5 | LCD2_REG6);
 }

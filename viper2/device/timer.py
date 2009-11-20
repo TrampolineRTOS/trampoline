@@ -20,7 +20,7 @@ class Timer(device.Device):
   Timer class is a timer which can be one shot (ONE_SHOT) or periodic (AUTO).
   """
 
-  def __init__(self, name, id, signal = device.SIGUSR2, position = None, registers = None, type = ONE_SHOT, delay = 1):
+  def __init__(self, name, id, signal = device.SIGUSR2, position = None, registers = None, type = ONE_SHOT, delay = 1000):
     """
     Constructor.
     @see Device.__init__()
@@ -33,7 +33,7 @@ class Timer(device.Device):
     
     device.Device.__init__(self, name, id, signal, registers)
     self.__type  = type
-    self.__delay = float(delay)
+    self.__delay = delay
     
   def setType(self, type):
     """
@@ -47,7 +47,7 @@ class Timer(device.Device):
     """
     self.__delay = delay
 
-  def event(self, modifiedRegisters = None):
+  def event(self, time, modifiedRegisters = None):
     """
     Call from Scheduler
     """
@@ -59,9 +59,9 @@ class Timer(device.Device):
     Start periodic timer if selected by the user.
     """
     if self.__type != ONE_SHOT:
-      self._scheduler.addEvent(Event(self, self.__delay, periodic = True))
+      self._scheduler.addEvent(Event(self, 0, self.__delay))
     else:
-      self._scheduler.addEvent(Event(self, self.__delay))
+      self._scheduler.addEvent(Event(self, 0, 0))
   
   ################################################################    
   # Display on Consol

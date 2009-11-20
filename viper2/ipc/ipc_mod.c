@@ -3,7 +3,7 @@
  */
 #include "ipc_mod.h"
 
-#include <unistd.h> /* access() fork() pid_t */
+#include <unistd.h> /* access() fork() pid_t getpid() */
 
 #include <stdio.h>
 #include <stdlib.h> /* malloc() */
@@ -396,7 +396,7 @@ modified_reg_t tpl_ipc_pop_fifo(ipc_t *ipc)
 
   /* Get first cell from FIFO */
   modified_reg = fifo_pop(&ipc->sh_mem->fifo);
-
+    
   /* Semaphore */
   /** FIFO semaphore adding (new empty cell) */
   if(0 != sem_post(ipc->fifo_empty_sem))
@@ -438,6 +438,108 @@ reg_t tpl_ipc_read_reg(ipc_t *ipc, reg_id_t reg_id)
   printf("(DD) Viper to trampoline %d : tpl_ipc_read_reg()\n", ipc->pid);
 #endif
   return read_reg(ipc, reg_id);
+}
+
+
+
+
+
+void create_global_sh_memory(global_ipc_t *global_ipc)
+{
+    /* Variables */
+    char data_file_path[FILE_PATH_LEN];
+    global_ipc->global_sh_mem = NULL;
+    
+#ifdef DEBUG
+    printf("(DD) Viper to trampoline %d : create_global_memory()\n", global_ipc->pid);
+#endif
+    
+    /* Creates shared memory */
+    sprintf(data_file_path, DATA_FILE_PATH, global_ipc->pid);
+    global_ipc->global_sh_mem_fd = shm_open(data_file_path, (O_CREAT | O_RDWR | O_EXCL), 0600);
+    if(-1 == global_ipc->global_sh_mem_fd)
+    {
+        fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+        perror("shm_open()");
+        return;
+    }
+    
+    /* We don't need an entire memory page */
+    if(-1 == ftruncate(global_ipc->global_sh_mem_fd, sizeof(struct st_global_sh_mem)))
+    {
+        fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+        perror("ftruncate()");
+        return;
+    }
+    
+#ifdef DEBUG
+    printf("(DD) Viper to trampoline %d : map_global_sh_mem()\n", global_ipc->pid);
+#endif
+    
+    /* Maps shared memory with size of sh_mem */
+    map_global_sh_mem(global_ipc);
+}
+
+global_ipc_t *tpl_ipc_create_global_memory(void)
+{
+    /* Variables */
+    global_ipc_t *global_ipc = NULL;
+   
+#ifdef DEBUG
+    printf("(DD) Viper to trampoline ?? : tpl_ipc_create_global_memory()\n");
+#endif
+    
+    global_ipc = (global_ipc_t *)malloc(sizeof(global_ipc_t));
+    if(global_ipc == NULL)
+    {
+        fprintf(stderr, "viper_mem's path\n");
+        perror("viper : malloc()");
+        return NULL;
+    }
+    global_ipc->pid = getpid();
+    
+    /* Init struct and open semapthores */
+    if(!init_global_ipc_struct(global_ipc))
+    {
+        fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+        fprintf(stderr, "viper : init_global_ipc_struct()");
+        return NULL;
+    }
+    
+    /* Shared memory */
+    create_global_sh_memory(global_ipc);
+    if(NULL == global_ipc->global_sh_mem)
+    {
+        fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+        perror("viper : create_global_memory()");
+        return NULL;
+    }    
+    
+    /* Init memory */
+    global_ipc->global_sh_mem->global_time = 0;
+    
+    return global_ipc;
+}
+
+void write_global_time(global_ipc_t *global_ipc, time_tt time)
+{    
+    /* Read time from Viper2 global shared memory (from Trampoline) */
+    if(0 != sem_wait(global_ipc->global_sem))
+    {
+        fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+        perror("sem_wait(global_sem)");
+        return;
+    }  
+    
+    /* Writes register */
+    global_ipc->global_sh_mem->global_time = time;
+    
+    if(0 != sem_post(global_ipc->global_sem))
+    {
+        fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+        perror("viper : sem_post(global_sem)");
+        return ;
+    }  
 }
 
 /****************************/

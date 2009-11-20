@@ -72,6 +72,26 @@ typedef struct st_ipc
 }ipc_t;
 
 /**
+ * Structure,
+ *  global memory between viper 2 and trampoline application(s)
+ */
+struct st_global_sh_mem
+{
+    int global_time;
+};
+
+/**
+ * Structure of the global memory
+ */
+typedef struct st_global_ipc
+{
+    pid_t pid; /* Viper pid, use to create semaphores and share memory paths */
+    sem_t *global_sem; /* Semaphore to access the memory */
+    struct st_global_sh_mem *global_sh_mem;
+    int global_sh_mem_fd;	    /* file descriptor */
+}global_ipc_t;
+
+/**
  * Initialize all the ipc_t structure
  * @param trampline pointer to structure to initialize
  * @return false if an error occurs
@@ -101,5 +121,20 @@ reg_t read_reg(ipc_t *ipc, reg_id_t reg_id);
  * @return ipc->sh_mem == NULL on error
  */
 void map_sh_mem(ipc_t *ipc);
+
+/**
+ * Initialize all the global_ipc_t structure
+ * @param global_ipc trampline pointer to structure to initialize
+ * @return false if an error occurs
+ */
+bool init_global_ipc_struct(global_ipc_t *global_ipc);
+
+/**
+ * Map the global shared memory
+ *
+ * @param global_ipc pointer on a global_ipc_t structure where the global shared memory is created.
+ * @return global_ipc->global_sh_mem == NULL on error
+ */
+void map_global_sh_mem(global_ipc_t *global_ipc);
 
 #endif /* __COM_H__ */
