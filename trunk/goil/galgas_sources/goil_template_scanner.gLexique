@@ -36,6 +36,7 @@ style delimitersStyle -> "Delimiters" ;
 style nonTerminalStyle -> "Non Terminal Symbols" ;
 style integerStyle -> "Integer Constants" ;
 style float_csts -> "Floating Point Constants" ;
+style stringStyle -> "String literals";
 style commentStyle -> "Comments" ;
 
 # -------------------------- identifier or key word --------------------
@@ -166,6 +167,27 @@ rule '<' :
     send $<$ ;
   end select ;
 end rule ;
+
+# ------------------------------------ String ----------------------------
+
+message unterminatedLitteralString : "Unterminated literal string"; 
+
+@string a_string;
+
+$string$ !a_string error message "literal string" style stringStyle;
+
+rule '"' :
+    repeat
+    while '\u0020'->'\u0021' | '\u0023' -> '\uFFFD' :
+        enterCharacterIntoString !?a_string !* ;
+    end repeat;
+    select
+        when '"' :
+            send $string$;
+        default
+            error unterminatedLitteralString;
+    end select;
+end rule;
 
 # ------------------------------------ Comment ----------------------------
 $comment$ error message "a comment" style commentStyle ;
