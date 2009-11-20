@@ -174,12 +174,20 @@ rule <os>
       set_memmap !?memmap ![@memmap_false new !here] !"MEMMAP";
     or
       $TRUE$; ${$;
-      @lstring lk := empty_lstring[];
+      @basic_type lk := void_obj[];
       @lstring cc := empty_lstring[];
       @basic_type mp := void_obj[];
       repeat while
         @lstring l;
-        $LINKER$; $=$; $idf$ ?l; set_lstring_if_empty !?lk !l !"LINKER"; $;$;
+        @lstring s := empty_lstring[];
+        $LINKER$; $=$; $idf$ ?l; 
+        select 
+          ${$; $SCRIPT$; $=$ ; $string$ ?s; $;$; $}$; 
+          set_linker !?lk ![@yes_linker new !here !l !s] !"LINKER";
+        or
+          set_linker !?lk ![@yes_linker new !here !l ![@lstring new !"script.ld" !here]] !"LINKER";
+        end select;
+        $;$;
       while
         @lstring c;
         $COMPILER$; $=$; $idf$ ?c; set_lstring_if_empty !?cc !c !"COMPILER"; $;$;

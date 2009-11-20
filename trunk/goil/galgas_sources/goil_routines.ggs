@@ -127,7 +127,12 @@ function template_string_if_exist
           targ_tpl := temp_dir."all_targets/".temp_name;
           if [targ_tpl fileExists]
           then tpl := [@string stringWithContentsOfFile !targ_tpl];
-          else tpl := "";
+          else
+            targ_tpl := temp_dir.temp_name;
+            if [targ_tpl fileExists]
+            then tpl := [@string stringWithContentsOfFile !targ_tpl];
+            else tpl := "";
+            end if;
           end if;
         end if;
       end if;

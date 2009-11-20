@@ -187,7 +187,8 @@ routine generate_link_script
     doReplace !?script !"$PROC_STACK$" !task_stack.isr_stack;
     doReplace !?script !"$APP_VAR$"    !app_vars;
 
-    @string script_file := project_name[]."/script.ld";
+    
+    @string script_file := project_name[]."/".link_script_name[![[cpu os] memmap]];
     @uint error_count := [@uint errorCount];
     if error_count == 0 then
       if [option .verbose_output] then
