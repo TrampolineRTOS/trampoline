@@ -397,6 +397,10 @@ routine generate_makefile
 
     doReplace !?makefileStr !"$FLAGS$" !flags;
     
+    # ld script file name
+    doReplace !?makefileStr !"$SCRIPT_FILE$" !link_script_name[![os memmap]];
+
+    
     # -i option
     @string i_option := "";
     @string target_cfg_dep := "";
