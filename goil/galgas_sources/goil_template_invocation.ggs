@@ -24,6 +24,13 @@ import option goil_options in "goil_options.gOption" ;
 
 #------------------------------------------------------------------------------*
 
+once allowedFunctions -> @stringset outAllowedFunctionSet :
+  outAllowedFunctionSet := [@stringset emptySet] ;
+  outAllowedFunctionSet += !"testFunction" ;
+end once ;
+
+#------------------------------------------------------------------------------*
+
 routine addBoolValue
   ?!@goilTemplateVariableMap ioTemplateVariableMap
   ??@lstring inVariableName

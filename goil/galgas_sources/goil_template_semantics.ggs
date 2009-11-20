@@ -81,7 +81,7 @@ map @goilTemplateVariableMap {
 #------------------------------------------------------------------------------*
 
 list @goilTemplateExpressionList {
-  @goilTemplateValue mExpression ;
+  @goilTemplateValue mValue ;
   @goilTemplateType mType ;
 }
 

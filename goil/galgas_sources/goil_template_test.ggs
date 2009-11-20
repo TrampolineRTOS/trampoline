@@ -24,6 +24,17 @@ semantics goil_template_test :
 
 #------------------------------------------------------------------------------*
 
+function testFunction
+  ??@string inArg1
+  ??@uint64 inArg2
+  ??@bool inArg3
+  ->@string outResult
+:
+  outResult := "{" . inArg1 . "} " . [inArg2 string] . " " . [inArg3 ocString] ;
+end function ;
+
+#------------------------------------------------------------------------------*
+
 routine testTemplate
 :
   if [option goil_options.run_goil_template_test] then
@@ -65,6 +76,8 @@ routine testTemplate
       "after %<after>%\n"
       "end foreach\n"
       "%Fin enumeration.\n"
+      "Test de l'appel de fonction\n"
+      "%!testFunction (\"A\", 3, yes)%\n"
     ;
     @goilTemplateVariableMap sampleMap [emptyMap] ;
     addBoolValue !?sampleMap ![@lstring new !"TRUE_VAR" !here] !true ;
@@ -100,6 +113,13 @@ routine testTemplate
       !sampleMap
       !?resutingString
     ;
+    message "------------------- GOIL FUNCTION LIST --------------------------\n" ;
+    const @stringset allowedFunctionSet := allowedFunctions [] ;
+    foreach [@function functionList] do
+      if [allowedFunctionSet hasKey ![mValue name]] then
+        log mValue ;
+      end if ;
+    end foreach ;
     message "------------------- TEMPLATE SOURCE STRING ----------------------\n" ;
     message templateSourceString ;
     message "------------------- DUMP TEMPLATE VARIABLE MAP ------------------\n" ;

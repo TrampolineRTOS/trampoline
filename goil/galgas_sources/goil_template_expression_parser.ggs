@@ -78,13 +78,6 @@ nonterminal <factor>
 label parse
 ;
 
-nonterminal <output_expression_list>
-  ??@string inPath
-  !@goilTemplateExpressionList outValueList 
-  ??@goilTemplateVariableMap inVariableMap
-label parse
-;
-
 #---------------------------------------------------------------------------*
 #                                                                           *
 #   M A T C H    &    O P E R A T O R                                       *
@@ -903,22 +896,6 @@ end rule ;
 
 #------------------------------------------------------------------------------*
 #                                                                              *
-#   F A C T O R    :    <var>                                                  *
-#                                                                              *
-#------------------------------------------------------------------------------*
-
-rule <factor>
-  ??@string unused inPath
-  ??@goilTemplateVariableMap inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
-:
-  $identifier$ ? @lstring variableName ;
-  [inVariableMap searchKey !variableName ?outResultType ?outValue] ;
-end rule ;
-
-#------------------------------------------------------------------------------*
-#                                                                              *
 #   F A C T O R    :    ( EXPRESSION )                                         *
 #                                                                              *
 #------------------------------------------------------------------------------*
@@ -1063,6 +1040,27 @@ end rule ;
 
 #------------------------------------------------------------------------------*
 #                                                                              *
+#   F A C T O R    :    a literal string value                                 *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ??@string unused inPath
+  ??@goilTemplateVariableMap unused inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  $string$ ?@lstring literalString ;
+  outValue := [@goilTemplateValue new
+    !0L
+    ![literalString string]
+    ![@goilTemplateFieldMapList emptyList]
+  ] ;
+  outResultType := [@goilTemplateType stringType] ;
+end rule ;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
 #                         F A C T O R                                          *
 #   template method call :   [expression method !... ]                         *
 #                                                                              *
@@ -1087,12 +1085,24 @@ rule <factor>
 
   $identifier$ ? @lstring templateMethodName ;
 
-  @goilTemplateExpressionList expressionList ;
-  <output_expression_list>
-    !inPath
-    ?expressionList 
-    !inVariableMap
-  ;
+  @goilTemplateExpressionList expressionList [emptyList] ;
+  select
+  or
+    $:$ ;
+    repeat
+      @goilTemplateValue expression ;
+      @goilTemplateType resultType ;
+      <expression> 
+        !inPath
+        !inVariableMap
+        ?expression
+        ?resultType
+      ;
+      expressionList += !expression !resultType ;
+    while
+      $,$ ;
+    end repeat ;
+  end select ;
 
   $]$ ;
 
@@ -1109,77 +1119,123 @@ end rule ;
 #------------------------------------------------------------------------------*
 #                                                                              *
 #                         F A C T O R                                          *
-#   function call        :   function_name [!... ]                             *
+#   function call        :   function_name (..., ...)                          *
+#   variable             :   variable_name                                     *
 #                                                                              *
 #------------------------------------------------------------------------------*
 
-#rule <factor>
-#  ??@goilTemplateVariableMap inVariableMap
-#  !@goilTemplateValue outValue
-#  !@goilTemplateType outResultType
-#:
-##--- Function call
-#  $identifier$ ?@lstring functionName ;
-##--- Search for function name
-#  @L_EXsignature signatureRoutine ;
-#  @AC_semanticsEntity entite ;
-#  [inVariableMap searchKey !functionName ?entite] ;
-#  @bool isExternActionCall ;
-#  cast entite:
-#  when >= @typeEntiteFonction r do
-#    signatureRoutine := [r aListeArgumentsFormels] ;
-#    outResultType := [r mReturnedType] ;
-#    isExternActionCall := false ;
-#  when >= @typeEntiteFonctionExterne ae do
-#    signatureRoutine := [ae aSignature] ;
-#    outResultType := [ae mReturnedType] ;
-#    isExternActionCall := true ;
-#  else
-#    error functionName :
-#     "'" . [functionName string] . "' should name a function or an extern function"
-#     -> signatureRoutine, isExternActionCall, outResultType
-#    ;
-#  end cast ;
-##--- Actual arguments
-#  @goilTemplateExpressionList expressionList ;
-#  @typeListeAttributsSemantiques listeAttributsSemantiques [emptyList] ;
-#  foreach signatureRoutine do
-#    listeAttributsSemantiques += !mType ![@lstring new !"" !here] ;
-#  end foreach ;
-#  $[$ ;
-#  <output_expression_list>
-#    ?expressionList
-#     !?ioVariablesMap
-#  ;
-#  $]$ ;
-#  outValue := [@typeFunctionCall new !functionName !expressionList] ;
-#end rule ;
-
-#------------------------------------------------------------------------------*
-#                                                                              *
-#   O U T P U T    E X P R E S S I O N    L I S T                              *
-#                                                                              *
-#------------------------------------------------------------------------------*
-
-rule <output_expression_list>
-  ??@string inPath
-  !@goilTemplateExpressionList outValueList 
-  ??@goilTemplateVariableMap inVariableMap
+routine typeError
+  ??@lstring inFunctionName
+  ??@type inActualType
+  ??@string inExpectedTypeName
+  ??@uint inParameterIndex
 :
-  outValueList := [@goilTemplateExpressionList emptyList] ;
-  repeat
-  while
-    $!$ ;
-    @goilTemplateValue expression ;
-    @goilTemplateType resultType ;
-    <expression> 
-      !inPath
-      !inVariableMap
-      ?expression
-      ?resultType
-    ;
-    outValueList += !expression !resultType ;
-  end repeat ;
+  @string m := "the function requires the parameter " . [inParameterIndex string]
+  . " to be " . inExpectedTypeName . "; its type is "
+  ;
+  if inActualType == `@bool then
+    m .= "boolean" ;
+  elsif inActualType == `@uint64 then
+    m .= "unsigned" ;
+  elsif inActualType == `@string then
+    m .= "string" ;
+  else
+    m .= "a not allowed type" ;
+  end if ;
+  error inFunctionName : m ;
+end routine ;
+
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ??@string inPath
+  ??@goilTemplateVariableMap inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+#--- Function call
+  $identifier$ ?@lstring functionOrVariableName ;
+  select
+    [inVariableMap searchKey !functionOrVariableName ?outResultType ?outValue] ;
+  or
+  #--- Search for function name
+    @function f ;
+    if not [@function functionIsDefined ![functionOrVariableName string]] then
+      error functionOrVariableName : "there is no '" . functionOrVariableName . "' function defined in GOIL run time" ->f ;
+    else
+      f := [@function functionWithName ![functionOrVariableName string]] ;
+    end if ;
+  #--- Parse actual arguments
+    @goilTemplateExpressionList actualArgumentList [emptyList] ;
+    $($ ;
+    repeat
+      @goilTemplateValue expression ;
+      @goilTemplateType resultType ;
+      <expression> 
+        !inPath
+        !inVariableMap
+        ?expression
+        ?resultType
+      ;
+      actualArgumentList += !expression !resultType ;
+    while
+      $,$ ;
+    end repeat ;
+    $)$ ;
+  #--- Check arguments
+    @objectlist actualArgumentObjectList [emptyList] ;
+    const @typelist formalParameterList := [f formalParameterTypeList] ;
+    if [formalParameterList length] != [actualArgumentList length] then
+      error functionOrVariableName: "this function is invoked with "
+      . [[actualArgumentList length] string]
+      . " parameter" . if [actualArgumentList length] > 1 then "s" else "" end
+      . ", but requires " 
+      . [[formalParameterList length] string]
+      . " parameter" . if [formalParameterList length] > 1 then "s" else "" end
+      -> outValue, outResultType ;
+    else
+      @uint idx := 1 ;
+      foreach formalParameterList prefixedby formal_, actualArgumentList prefixedby actual_ do
+        switch actual_mType
+        when boolType :
+          if formal_mValue != `@bool then
+            typeError !functionOrVariableName !formal_mValue !"boolean" !idx ;
+          end if ;
+          actualArgumentObjectList += ![if [actual_mValue mUnsigned64Value] == 0L then false else true end object] ;
+        when unsignedType :
+          if formal_mValue != `@uint64 then
+            typeError !functionOrVariableName !formal_mValue !"unsigned" !idx ;
+          end if ;
+          actualArgumentObjectList += ![[actual_mValue mUnsigned64Value] object] ;
+        when stringType :
+          if formal_mValue != `@string then
+            typeError !functionOrVariableName !formal_mValue !"string" !idx ;
+          end if ;
+          actualArgumentObjectList += ![[actual_mValue mStringValue] object] ;
+        when listType :
+          typeError !functionOrVariableName !formal_mValue !"string" !idx ;
+        end switch ;
+        idx ++ ;     
+      end foreach ;
+      outResultType := [@goilTemplateType unsignedType] ;
+      outValue := [@goilTemplateValue new !0L !"" ![@goilTemplateFieldMapList emptyList]] ;
+      if [@uint errorCount] == 0 then
+        const @object result := [f invoke !actualArgumentObjectList ![functionOrVariableName location]] ;
+        if [result objectStaticType] == `@uint64 then
+          outResultType := [@goilTemplateType unsignedType] ;
+          outValue.mUnsigned64Value := (cast result if == @uint64 else error functionOrVariableName) ;
+        elsif [result objectStaticType] == `@bool then
+          outResultType := [@goilTemplateType boolType] ;
+          outValue.mUnsigned64Value := [(cast result if == @bool else error functionOrVariableName) uint64] ;
+        elsif [result objectStaticType] == `@string then
+          outResultType := [@goilTemplateType stringType] ;
+          outValue.mStringValue := (cast result if == @string else error functionOrVariableName) ;
+        else
+          error functionOrVariableName : "this function does not return an unsigned, boolean or string value" ;
+        end if ;
+      end if ;
+    end if ;
+  end select ;
 end rule ;
 
 #------------------------------------------------------------------------------*
