@@ -41,7 +41,7 @@
 /* Useful for FIFO container */
 typedef int64_t reg_id_t;
 typedef int64_t mask_t;
-typedef int64_t time_tt; //double on every machine ?
+typedef int64_t time_tt;
 typedef struct st_modified_reg_t
 {
     reg_id_t dev;

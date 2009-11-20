@@ -94,40 +94,6 @@ class SortingThread(threading.Thread):
     Call to stop the main loop of the sorting thread (by the scheduler when ending).
     """
     self.__run = False
-    
-###############################################################################
-# TIME THREAD CLASS
-###############################################################################
-class TimeThread(threading.Thread):
-  """
-  Time thread 
-  """
-
-  def __init__(self, sched):
-    """
-    Constructor.
-    @param sched scheduler where is the event list
-    """
-    threading.Thread.__init__(self)
-    self.__sched = sched
-    self.__run = True
-    self.__sched._time = 0
-
-  def run(self):
-    while self.__run:
-      """ Increment Time """
-      self.__sched._semtime.acquire()
-      self.__sched._time += 0.01
-      self.__sched._semtime.release()
-     
-      """ Wait 10 ms """
-      threading.Event().wait(0.01)
-      
-  def kill(self):
-    """
-    Call to stop the main loop of the sorting thread (by the scheduler when ending).
-    """
-    self.__run = False
        
 ###############################################################################
 # SCHEDULER CLASS
