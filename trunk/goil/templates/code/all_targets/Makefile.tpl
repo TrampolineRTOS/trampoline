@@ -39,7 +39,7 @@ CFLAGS   = $CFLAGS$
 # it should be declared as CFLAGS in the OS section of the .oil file (many times allowed).
 LDFLAGS  = $LDFLAGS$
 ifeq ($(strip $(WITH_MEMMAP)),true)
-LDFLAGS += -T $(basename $(OIL_FILE))/script.ld -Wl,-Map,$(basename $(OIL_FILE)).map
+LDFLAGS += -T $(basename $(OIL_FILE))/$SCRIPT_FILE$ -Wl,-Map,$(basename $(OIL_FILE)).map
 endif
 #ASFLAGS: flags used for the assembly process (if required)
 # it should be declared as AS_FLAGS in the OS section of the .oil file (many times allowed).
