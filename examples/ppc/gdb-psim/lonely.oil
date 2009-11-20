@@ -31,7 +31,7 @@ CPU test {
         SYSTEM_CALL = TRUE;
         MEMMAP = TRUE {
           COMPILER = gcc;
-          LINKER = gnu_ld;
+          LINKER = gnu_ld { SCRIPT = "test.prm"; };
           MEMORY_PROTECTION = TRUE;
         };
     } ;

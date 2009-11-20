@@ -115,13 +115,52 @@ routine set_method
 end routine;
 
 # MemMap
+class @no_linker extends @basic_type {}
+class @yes_linker extends @basic_type {
+  @lstring linker;
+  @lstring script;
+}
+
+routine set_linker
+  ?!@basic_type l
+  ?@basic_type  nl
+  ?@string      att
+:
+  cast l :
+  when == @void do
+    l := nl;
+  else
+    error [nl location] : "Redefinition of ".att;
+    error [l location]  : "was defined here";
+  end cast;
+end routine;    
+
 class @memmap_false extends @basic_type {}
 
 class @memmap_true extends @basic_type {
   @lstring    compiler;
-  @lstring    linker;
+  @basic_type linker;
   @basic_type memory_prot;
 }
+
+function link_script_name
+  ??@basic_type mm
+  ->@string name
+:
+  cast mm :
+  when == @memmap_true m do
+    cast [m linker] :
+    when == @yes_linker l do
+      name := [[l script] string];
+    else
+      error [m location]: "No script file defined";
+      name := "";
+    end cast;
+  else
+    error [mm location] : "No MEMMAP";
+    name := "";
+  end cast;    
+end function;
 
 routine set_memmap
   ?!@basic_type m
@@ -241,7 +280,13 @@ function linker
   ->@string   lk
 :
   cast os_memmap :
-  when == @memmap_true s do lk := [[s linker] string];
+  when == @memmap_true s do
+    cast [s linker] :
+    when == @no_linker do lk := "";
+    when == @yes_linker l do lk := [[l linker] string];
+    else
+      lk := ""; 
+    end cast;
   else lk := "";
   end cast;
   if lk != "" then

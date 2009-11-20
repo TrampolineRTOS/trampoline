@@ -34,7 +34,7 @@ style commentStyle -> "Comments:";
 # Extra keywords for makefile generation
 #
 list makefileKeywords error message "Makefile attribute  '%K'" style keywordsStyle :
-    "APP_SRC", "COMPILER", "ASSEMBLER", "LINKER", 
+    "APP_SRC", "COMPILER", "ASSEMBLER", "LINKER", "SCRIPT",
     "CFLAGS", "ASFLAGS", "LDFLAGS", "APP_NAME", "TRAMPOLINE_BASE_PATH";
 
 #
