@@ -147,7 +147,7 @@ class Ecu(object):
     """ Generate header """
     header.write("#ifndef __VP_DEVICES_H__\n#define __VP_DEVICES_H__\n")
     header.write('\n#include "com.h" /* reg_id_t, dev_id_t */\n')
-    oilFile.write("interrupts[31]{\n")
+    oilFile.write("interrupts[32]{\n")
 
     """ Generate device identifier """
     index = 0

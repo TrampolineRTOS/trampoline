@@ -90,7 +90,7 @@ void tpl_send_it3(void){
  *
  * This function prints the pending signals. Useful to debug to check if an interrupts has occured or not.
  *
- */
+ 
 void pending_signals(void)
 {
 	sigset_t  sig_set;
@@ -108,7 +108,7 @@ void pending_signals(void)
 	if (sigismember ( &sig_set,SIGUSR2) ) 
 		stdimpl_print("SIGUSR2 is pending \n");
 }
-
+*/
 #ifndef NO_ALARM
 
 extern CONSTP2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)

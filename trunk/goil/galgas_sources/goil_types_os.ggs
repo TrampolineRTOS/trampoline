@@ -157,7 +157,7 @@ function link_script_name
       name := "";
     end cast;
   else
-    error [mm location] : "No MEMMAP";
+    #error [mm location] : "No MEMMAP";
     name := "";
   end cast;    
 end function;
