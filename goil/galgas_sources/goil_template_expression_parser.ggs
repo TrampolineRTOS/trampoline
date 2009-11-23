@@ -1160,7 +1160,7 @@ rule <factor>
   or
   #--- Search for function name
     @function f ;
-    if not [@function functionIsDefined ![functionOrVariableName string]] then
+    if not [@function isFunctionDefined ![functionOrVariableName string]] then
       error functionOrVariableName : "there is no '" . functionOrVariableName . "' function defined in GOIL run time" ->f ;
     else
       f := [@function functionWithName ![functionOrVariableName string]] ;
