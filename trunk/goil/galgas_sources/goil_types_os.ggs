@@ -153,7 +153,6 @@ function link_script_name
     when == @yes_linker l do
       name := [[l script] string];
     else
-      error [m location]: "No script file defined";
       name := "";
     end cast;
   else

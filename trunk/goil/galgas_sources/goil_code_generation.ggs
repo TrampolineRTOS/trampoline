@@ -392,6 +392,7 @@ routine generate_makefile
     flags .= tr;
     # memmap flag
     flags .= bool_make_define[!"WITH_MEMMAP" !memory_mapping[!os]];
+    flags .= bool_make_define[!"WITH_LINKSCRIPT" !(link_script_name[![os memmap]] != "")];
     # memory protection flag
     flags .= bool_class_make_define[!"WITH_MEMORY_PROTECTION" !memory_protection[!os] !false];
 
