@@ -173,29 +173,33 @@ rule <os>
       $FALSE$;
       set_memmap !?memmap ![@memmap_false new !here] !"MEMMAP";
     or
-      $TRUE$; ${$;
+      $TRUE$; 
       @basic_type lk := void_obj[];
       @lstring cc := empty_lstring[];
-      @basic_type mp := void_obj[];
-      repeat while
-        @lstring l;
-        @lstring s := empty_lstring[];
-        $LINKER$; $=$; $idf$ ?l; 
-        select 
-          ${$; $SCRIPT$; $=$ ; $string$ ?s; $;$; $}$; 
-          set_linker !?lk ![@yes_linker new !here !l !s] !"LINKER";
-        or
-          set_linker !?lk ![@yes_linker new !here !l ![@lstring new !"script.ld" !here]] !"LINKER";
-        end select;
-        $;$;
-      while
-        @lstring c;
-        $COMPILER$; $=$; $idf$ ?c; set_lstring_if_empty !?cc !c !"COMPILER"; $;$;
-      while
-        @lbool p;
-        $MEMORY_PROTECTION$; $=$; <boolean> ?p; set_bool !?mp !p !"MEMORY_PROTECTION"; $;$;
-      end repeat;
-      $}$;
+      @basic_type mp := void_obj[];      
+      select 
+        ${$;
+        repeat while
+          @lstring l;
+          @lstring s := empty_lstring[];
+          $LINKER$; $=$; $idf$ ?l; 
+          select 
+            ${$; $SCRIPT$; $=$ ; $string$ ?s; $;$; $}$; 
+            set_linker !?lk ![@yes_linker new !here !l !s] !"LINKER";
+          or
+            set_linker !?lk ![@yes_linker new !here !l ![@lstring new !"script.ld" !here]] !"LINKER";
+          end select;
+          $;$;
+        while
+          @lstring c;
+          $COMPILER$; $=$; $idf$ ?c; set_lstring_if_empty !?cc !c !"COMPILER"; $;$;
+        while
+          @lbool p;
+          $MEMORY_PROTECTION$; $=$; <boolean> ?p; set_bool !?mp !p !"MEMORY_PROTECTION"; $;$;
+        end repeat;
+        $}$;
+      or
+      end select;
       set_memmap !?memmap ![@memmap_true new !here !cc !lk !mp] !"MEMMAP";
     end select;
     <description> ?*; $;$;
