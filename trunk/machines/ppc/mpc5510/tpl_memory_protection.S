@@ -111,7 +111,7 @@
   .global tpl_kernel_mp
   .global tpl_user_mp
   .global tpl_set_process_mp
-  .section ".osCode","ax"
+  .section ".osCode" CODE_ACCESS_RIGHT
 
 TPL_EXTERN tpl_mp_table
 

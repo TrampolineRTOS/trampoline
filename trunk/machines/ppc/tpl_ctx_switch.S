@@ -114,7 +114,7 @@
 #define FPSCR   256
 
   .text
-  .section ".osCode","ax"
+  .section .osCode CODE_ACCESS_RIGHT
 /**
  * tpl_save_context saves the context in the context passed in r3
  * this function is called from tpl_sc_handler and we are running

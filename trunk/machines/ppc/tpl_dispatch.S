@@ -56,7 +56,7 @@ TPL_EXTERN  tpl_set_process_mp
  * The kernel stack. When a system call is done, the sc handler switches
  * to the kernel stack.
  */
-  .section ".osVar","axw"
+  .section .osVar VAR_ACCESS_RIGHT
 tpl_kernel_stack:
   .space  KERNEL_STACK_SIZE
 tpl_kernel_stack_bottom:
@@ -69,7 +69,7 @@ tpl_reentrency_counter:
   .long   0
 
   .text
-  .section ".osCode","ax"
+  .section .osCode CODE_ACCESS_RIGHT
   
 /**
  * tpl_enter_kernel does all the stuff to switch from
@@ -178,11 +178,11 @@ no_stack_restore:
  
 /****************************************************************************/
 
-  .section  ".SC_vector", "ax"
+  .section  .SC_vector  CODE_ACCESS_RIGHT
 tpl_sc_vector:
   b   tpl_sc_handler
 
-  .section  ".SC_handler","ax"
+  .section  .SC_handler CODE_ACCESS_RIGHT
 
 /**
  * System call handler

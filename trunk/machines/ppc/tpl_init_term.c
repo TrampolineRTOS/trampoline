@@ -52,7 +52,7 @@ VAR(u32, OS_VAR) tpl_register_r2;
 VAR(u32, OS_VAR) tpl_register_r13;
 VAR(ppc_integer_context, OS_VAR) idle_task_context = {
   { /* r0 */   0,
-    /* sp */   ((u32)(idle_stack)) + SIZE_OF_IDLE_STACK - 48,
+    /* sp */   0,
     /* r2 */   0,
     /* r3 */   0,
     /* r4 */   0,
@@ -100,6 +100,7 @@ VAR(ppc_integer_context, OS_VAR) idle_task_context = {
 STATIC FUNC(void, OS_CODE) tpl_call_missingend(void);
 STATIC FUNC(void, OS_CODE) tpl_call_terminateISR(void);
 extern FUNC(void, OS_CODE) tpl_init_regs(void);
+extern FUNC(void, OS_CODE) tpl_init_interrupts(void);
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -254,8 +255,8 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
   tpl_register_r13 = 0;
   tpl_msr_start_value = 0;
 
-
-
+  
+  idle_task_context.gpr[1] = ((u32)(idle_stack)) + SIZE_OF_IDLE_STACK - 48;
 /*  INTC.MCR.B.HVEN_PRC0 = 0;
   INTC.MCR.B.VTES_PRC0 = 0;
   INTC.IACKR_PRC0.R = (uint32_t)(&InterruptVectortable[0]);
@@ -268,6 +269,7 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
 #endif
 
   tpl_init_regs();
+  tpl_init_interrupts();
 /*  tpl_init_tick(); */
 }
 
