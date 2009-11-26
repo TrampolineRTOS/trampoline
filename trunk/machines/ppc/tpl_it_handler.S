@@ -32,14 +32,20 @@
 #include "tpl_os_kernel_stack.h"
 #include "tpl_assembler.h"
 
-TPL_EXTERN  tpl_stat_proc_table
+TPL_EXTERN  tpl_kern
+TPL_EXTERN  tpl_need_switch
+
 TPL_EXTERN  tpl_save_context
 TPL_EXTERN  tpl_load_context
-TPL_EXTERN  tpl_unset_mp
-TPL_EXTERN  tpl_kern
-TPL_EXTERN  tpl_kernel_stack_bottom
+TPL_EXTERN  tpl_kernel_mp
+TPL_EXTERN  tpl_user_mp
+TPL_EXTERN  tpl_set_process_mp
 
   .text
+  .section  ".EI_vector","ax"
+tpl_it_vector:
+  b     tpl_it_handler
+  
   .section  ".EI_handler","ax"
   .global tpl_it_handler
   
@@ -83,25 +89,16 @@ tpl_it_handler:
   stw   r11,12(r1)
   stw   r0,16(r1)
   
-  /*        bl   tpl_unset_mp */ /* disable memory protection    */
+  /*
+   * Does the stuff to enter in kernel
+   */
+  bl    tpl_enter_kernel
 
   /*
-   * Switch to the kernel stack
-   */  
-  lis   r11,TPL_HIG(tpl_kernel_stack_bottom)      /* get the kernel           */
-  ori   r11,r11,TPL_LOW(tpl_kernel_stack_bottom)  /* stack bottom ptr         */
-  subi  r11,r11,KS_FOOTPRINT  /* make space on the stack to call C functions  */
-  stw   r1,KS_SP(r11)         /*  save the sp of the caller                   */
-  mr    r1,r11                /*  set the kernel stack                        */
-  stw   r3,KS_RETURN_CODE(r1) /* save r3                                      */
-  /*
-   * Save SRR0 and SRR1 filled by the sc done by the caller
-   * in the kernel stack. Needed to allow sc in hooks
+   * Save r3 in the kernel stack. It is from here it will be get to be saved
+   * in the context of the interrupted process
    */
-  mfspr r11,spr_SRR0
-  stw   r11,KS_SRR0(r1)
-  mfspr r11,spr_SRR1
-  stw   r11,KS_SRR1(r1)
+  stw   r3,KS_RETURN_CODE(r1)
   
   /*
    * Save the context of the running process.
@@ -125,50 +122,72 @@ tpl_it_handler:
   bl    tpl_save_context
 
   /*
+   * Get the id of the interrupt
+   * (it is returned in r3)
+   */
+  bl    tpl_it_id
+
+  /*
    * Get a pointer to the it vector
    */
   lis   r11,TPL_HIG(tpl_it_vector)
   ori   r11,r11,TPL_LOW(tpl_it_vector)
   /*
-   * Here we need a way to get the id of the it. It depends on the
-   * interrupt controller. For testing we put a constant
+   * convert the it id to an offset. Each entry of the tpl_it_vector
+   * uses 2 x 4 bytes words on a 32 bits PowerPC. The first word
+   * id the function pointer of the it handler. The second word is
+   * its parameter (so it is loaded in r3)
    */
-  li    r12,5
-  slwi  r12,r12,2
-  lwz   r0,r11,r12
-  /*  Call the IT routine */
+  slwi  r12,r3,3
+  lwzx  r0,r11,r12
+  addi  r12,r12,4
   mtlr  r0
+  lwzx  r3,r11,r12
+  /*
+   * Call the IT routine
+   */
   blrl
   
-  /*  test tpl_need_switch to see if a rescheduling occured                 */
-  lis   r11,TPL_HIG(tpl_kern)
-  ori   r11,r11,TPL_LOW(tpl_kern)
+  /*
+   * test tpl_need_switch to see if a rescheduling occured
+   */
+  lwz   r11,KS_KERN_PTR(r1)
   lbz   r12,0(r11)
   andi. r12,r12,NEED_SWITCH
+  
   beq   no_context_switch
 
-  /* HERE WE SHOULD HAVE THE CONTEXT SWITCH FOR FP REGISTERS                */
+#if WITH_FLOAT == YES
+  /*
+   * TODO: HERE WE SHOULD HAVE THE CONTEXT SWITCH FOR FP REGISTERS
+   */
+#endif
+
+#if WITH_MEMORY_PROTECTION == YES
+  lwz   r11,KS_KERN_PTR(r1)
+  lwz   r3,16(r11)    /* get the id of the process which get the cpu  */
+  bl    tpl_set_process_mp        /* set the memory protection scheme */
+#endif
 
 no_context_switch:
 
-  lwz   r11,KS_KERN_PTR(r1)
   /*
    * load the context of the running process. The pointer to the context
    * is in r3
    */
-  lwz   r3,4(r11)                         /* get the context pointer        */
+  lwz   r11,KS_KERN_PTR(r1)
+  lwz   r3,4(r11)                         /* get s_running            */
   bl    tpl_load_context
-  /*
-   * Restore the SRR0 and SRR1 saved in the system stack
-   */
-  lwz   r11,KS_SRR0(r1)
-  mtspr spr_SRR0,r11
-  lwz   r11,KS_SRR1(r1)
-  mtspr spr_SRR1,r11
 
-  /*  Get back registers that was saved in the system stack                 */
-  lwz   r3,KS_RETURN_CODE(r1)             /* get r3                         */
-  lwz   r1,KS_SP(r1)                      /* Restore the SP                 */
+  /*
+   * Get back registers that was saved in the system stack
+   */
+  lwz   r3,KS_RETURN_CODE(r1)             /* get r3                   */
+
+  /*
+   * does the stuff to leave the kernel
+   */
+  bl    tpl_leave_kernel
 
   /*  restore the registers befor returning                           */
   lwz   r0,16(r1)

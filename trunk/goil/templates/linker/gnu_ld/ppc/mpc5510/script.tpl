@@ -2,8 +2,23 @@ ENTRY(_start)
 
 MEMORY
 {
-  IT_vectors (ax) : ORIGIN = 0,      LENGTH = 0x3000
-  ram (wax) :       ORIGIN = 0x3000, LENGTH = 16M /* 16 Mo of Volatile memory*/
+  system_reset        (ax) : ORIGIN = 0x100,  LENGTH = 0x100
+  machine_check       (ax) : ORIGIN = 0x200,  LENGTH = 0x100
+  data_storage        (ax) : ORIGIN = 0x300,  LENGTH = 0x100
+  instruction_storage (ax) : ORIGIN = 0x400,  LENGTH = 0x100
+  external_interrupt  (ax) : ORIGIN = 0x500,  LENGTH = 0x100
+  alignment           (ax) : ORIGIN = 0x600,  LENGTH = 0x100
+  program             (ax) : ORIGIN = 0x700,  LENGTH = 0x100
+  fp_unavailable      (ax) : ORIGIN = 0x800,  LENGTH = 0x100
+  decrementer         (ax) : ORIGIN = 0x900,  LENGTH = 0x100
+  reserved_A00        (ax) : ORIGIN = 0xA00,  LENGTH = 0x100
+  reserved_B00        (ax) : ORIGIN = 0xB00,  LENGTH = 0x100
+  system_call         (ax) : ORIGIN = 0xC00,  LENGTH = 0x100
+  trace               (ax) : ORIGIN = 0xD00,  LENGTH = 0x100
+  fp_assist           (ax) : ORIGIN = 0xE00,  LENGTH = 0x100
+  
+  ram                (wax) : ORIGIN = 0x3000, LENGTH = 16M
+                            /* 16 Mo of Volatile memory*/
 }
 
 SECTIONS
@@ -14,6 +29,8 @@ SECTIONS
    */
   . = ALIGN(4);
   ostext : {
+    *(.SC_handler)
+    *(.EI_handler)
     *(.osCode)
   } > ram
 
@@ -109,7 +126,8 @@ $APP_VAR$
     *(.rela.*)
   } > ram
 
-	.vector 0xC00 : { *(.SC_handler ) }> IT_vectors
+	.vector_external_interrupt : { *(.EI_vector) } > external_interrupt
+  .vector_system_call :        { *(.SC_vector) } > system_call
 
 }
 

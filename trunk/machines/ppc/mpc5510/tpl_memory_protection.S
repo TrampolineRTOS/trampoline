@@ -25,6 +25,7 @@
 
 /* #include "tpl_memory_protection.h" */
 #include "tpl_app_objects.h"
+#include "tpl_os_kernel_stack.h"
 #include "tpl_assembler.h"
 
 /* Base address of the MPU */
@@ -114,6 +115,8 @@
 
 TPL_EXTERN tpl_mp_table
 
+TPL_EXTERN tpl_kern
+
 /**
  * Disable memory protection. This function is called when
  * entering in kernel mode (typically at the start of the it
@@ -124,38 +127,67 @@ TPL_EXTERN tpl_mp_table
  * Uses r11 and r12
  */
 tpl_kernel_mp:
-
-    /*  Load the kernel mode value                  */
-    lis   r11,TPL_HIG(kernel_mode)
-    ori   r11,r11,TPL_LOW(kernel_mode)
-    /*  Load the address of the control register    */
-    lis   r12,TPL_HIG(MPUBase)
-    ori   r12,r12,TPL_LOW(MPUBase)
-    /*  Disable memory protection                   */
-    stw   r12,MPU_CESR(r12)
-    /*  That's all                                  */
-    blr
+  /*
+   * Load the kernel mode value
+   */
+  lis   r11,TPL_HIG(kernel_mode)
+  ori   r11,r11,TPL_LOW(kernel_mode)
+  /*
+   * Load the address of the control register
+   */
+  lis   r12,TPL_HIG(MPUBase)
+  ori   r12,r12,TPL_LOW(MPUBase)
+  /*
+   * Disable memory protection
+   */
+  stw   r12,MPU_CESR(r12)
+  /*
+   * That's all
+   */
+  blr
 
 /**
  * Enable memory protection. This function is called when
  * returning to user mode (typically at the end of the it
- * handler and at the start of the system call).
+ * handler and at the end of the system call).
+ * However, if the current process is a trusted one
+ * this is known by checking the trusted_counter field
+ * in the process dynamic descriptor. If is is > 0
+ * the the process is trusted. In this case, the memory
+ * protection stay unabled.
  *
  * no parameter and no return value
  *
  * Uses r11 only
  */
 tpl_user_mp:
-
-    /*  Load the kernel mode value                  */
-    lis   r11,TPL_HIG(user_mode)
-    ori   r11,r11,TPL_LOW(user_mode)
-    /*  Load the address of the control register    */
-    lis   r12,TPL_HIG(MPUBase)
-    ori   r12,r12,TPL_LOW(MPUBase)
-    /*  Enable memory protection                   */
-    stw   r12,MPU_CESR(r12)
-    /*  That's all                                  */
+  /*
+   * get the running process dynamic descriptor
+   * pointer from the kernel stack.
+   */
+  lwz   r11,KS_KERN_PTR(r1)
+  lwz   r12,12(r11)
+  lwz   r11,4(r12)
+  cmpwi r11,0
+  bgt   trusted_proc
+  /*
+   *  Load the user mode value
+   */
+  lis   r11,TPL_HIG(user_mode)
+  ori   r11,r11,TPL_LOW(user_mode)
+  /*
+   * Load the address of the control register
+   */
+  lis   r12,TPL_HIG(MPUBase)
+  ori   r12,r12,TPL_LOW(MPUBase)
+  /*
+   * Enable memory protection
+   */
+  stw   r12,MPU_CESR(r12)
+  /*
+   * That's all
+   */
+trusted_proc:
     blr
     
 /**
@@ -164,89 +196,88 @@ tpl_user_mp:
  * @param   r3    the id of the process
  */
 tpl_set_process_mp:
+  /*  Load the address of the control register            */
+  lis   r12,TPL_HIG(MPUBase)
+  ori   r12,r12,TPL_LOW(MPUBase)
+  /* get the tpl_mp_table pointer                         */
+  lis     r11,TPL_HIG(tpl_mp_table)
+  ori     r11,r11,TPL_LOW(tpl_mp_table)
+  /* tranform the id to an offset                         */
+  slwi    r3,r3,2
+  /* get the pointer to the mp descriptor                 */
+  lwzx    r11,r11,r3
+  
+  /*
+   * If the pointer is NULL, no memory protection is
+   * configured for the process. So it is a trusted
+   * process and the corresponding field in the dynamic
+   * process descriptor is greater than 0
+   */
+  cmpwi   r11,0
+  beq     finished
+  
+  /*
+   * Configuration for the private var access of the process
+   */
 
-    /*  Load the address of the control register            */
-    lis   r12,TPL_HIG(MPUBase)
-    ori   r12,r12,TPL_LOW(MPUBase)
-    /* get the tpl_mp_table pointer                         */
-    lis     r11,TPL_HIG(tpl_mp_table)
-    ori     r11,r11,TPL_LOW(tpl_mp_table)
-    /* tranform the id to an offset                         */
-    slwi    r3,r3,2
-    /* get the pointer to the mp descriptor                 */
-    lwzx    r11,r11,r3
-    
-    /*
-     * If the pointer is NULL, no memory protection is
-     * configured for the process. So it is a trusted
-     * process and the corresponding field in the dynamic
-     * process descriptor is greater than 0
-     */
-    cmpwi   r11,0
-    beq     finished
-    
-    /*
-     * Configuration for the private var access of the process
-     */
-
-    /* get the start address of private data region         */
-    lwz     r3,0(r11)
-    /* set the start address                                */
-    stw     r3,MPU_RGD0_start(r11)
-    /* get the end address                                  */
-    lwz     r3,4(r11)
-    /* set the end address                                  */
-    stw     r3,MPU_RGD0_end(r11)
-    /* set the access rights                                */
-    lis     r3,TPL_HIG(var_rgn_access)
-    ori     r3,r3,TPL_LOW(var_rgn_access)
-    stw     r3,MPU_RGD0_access(r11)
-    /* validate the descriptor                              */
-    li      r3,1
-    stw     r3,MPU_RGD0_pid(r11)
-    
-    /*
-     * Configuration for the stack access of the process
-     */
-    /* get the start address of private data region         */
-    lwz     r3,8(r11)
-    /* set the start address                                */
-    stw     r3,MPU_RGD1_start(r11)
-    /* get the end address                                  */
-    lwz     r3,12(r11)
-    /* set the end address                                  */
-    stw     r3,MPU_RGD1_end(r11)
-    /* set the access rights                                */
-    lis     r3,TPL_HIG(stack_rgn_access)
-    ori     r3,r3,TPL_LOW(stack_rgn_access)
-    stw     r3,MPU_RGD1_access(r11)
-    /* validate the descriptor                              */
-    li      r3,1
-    stw     r3,MPU_RGD1_pid(r11)
-    
+  /* get the start address of private data region         */
+  lwz     r3,0(r11)
+  /* set the start address                                */
+  stw     r3,MPU_RGD0_start(r11)
+  /* get the end address                                  */
+  lwz     r3,4(r11)
+  /* set the end address                                  */
+  stw     r3,MPU_RGD0_end(r11)
+  /* set the access rights                                */
+  lis     r3,TPL_HIG(var_rgn_access)
+  ori     r3,r3,TPL_LOW(var_rgn_access)
+  stw     r3,MPU_RGD0_access(r11)
+  /* validate the descriptor                              */
+  li      r3,1
+  stw     r3,MPU_RGD0_pid(r11)
+  
+  /*
+   * Configuration for the stack access of the process
+   */
+  /* get the start address of private data region         */
+  lwz     r3,8(r11)
+  /* set the start address                                */
+  stw     r3,MPU_RGD1_start(r11)
+  /* get the end address                                  */
+  lwz     r3,12(r11)
+  /* set the end address                                  */
+  stw     r3,MPU_RGD1_end(r11)
+  /* set the access rights                                */
+  lis     r3,TPL_HIG(stack_rgn_access)
+  ori     r3,r3,TPL_LOW(stack_rgn_access)
+  stw     r3,MPU_RGD1_access(r11)
+  /* validate the descriptor                              */
+  li      r3,1
+  stw     r3,MPU_RGD1_pid(r11)
+  
 #ifdef WITH_OSAPPLICATION
-    /*
-     * Configuration for the private var access of the OS Application
-     */
+  /*
+   * Configuration for the private var access of the OS Application
+   */
 
-    /* get the start address of private data region         */
-    lwz     r3,16(r11)
-    /* set the start address                                */
-    stw     r3,MPU_RGD2_start(r11)
-    /* get the end address                                  */
-    lwz     r3,20(r11)
-    /* set the end address                                  */
-    stw     r3,MPU_RGD2_end(r11)
-    /* set the access rights                                */
-    lis     r3,TPL_HIG(var_rgn_access)
-    ori     r3,r3,TPL_LOW(var_rgn_access)
-    stw     r3,MPU_RGD2_access(r11)
-    /* validate the descriptor                              */
-    li      r3,1
-    stw     r3,MPU_RGD2_pid(r11)    
+  /* get the start address of private data region         */
+  lwz     r3,16(r11)
+  /* set the start address                                */
+  stw     r3,MPU_RGD2_start(r11)
+  /* get the end address                                  */
+  lwz     r3,20(r11)
+  /* set the end address                                  */
+  stw     r3,MPU_RGD2_end(r11)
+  /* set the access rights                                */
+  lis     r3,TPL_HIG(var_rgn_access)
+  ori     r3,r3,TPL_LOW(var_rgn_access)
+  stw     r3,MPU_RGD2_access(r11)
+  /* validate the descriptor                              */
+  li      r3,1
+  stw     r3,MPU_RGD2_pid(r11)    
 #endif
 
 finished:
-    blr
+  blr
 
 /* End of file tpl_memory_protection.s */

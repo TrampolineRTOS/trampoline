@@ -35,15 +35,20 @@
 #define SYSCALL_COUNT   OS_SYSCALL_COUNT
 
 TPL_EXTERN  tpl_dispatch_table
-TPL_EXTERN  tpl_stat_proc_table
-TPL_EXTERN  tpl_save_context
-TPL_EXTERN  tpl_load_context
-TPL_EXTERN  tpl_unset_mp
 TPL_EXTERN  tpl_kern
 TPL_EXTERN  tpl_need_switch
 
+TPL_EXTERN  tpl_save_context
+TPL_EXTERN  tpl_load_context
+TPL_EXTERN  tpl_kernel_mp
+TPL_EXTERN  tpl_user_mp
+TPL_EXTERN  tpl_set_process_mp
+
   .global tpl_kernel_stack
+  .global tpl_kernel_stack_bottom
   .global tpl_sc_handler
+  .global tpl_enter_kernel
+  .global tpl_leave_kernel
   
   .data
   .align  4
@@ -172,15 +177,18 @@ no_stack_restore:
   .size tpl_leave_kernel,$-tpl_leave_kernel
  
 /****************************************************************************/
- 
+
+  .section  ".SC_vector", "ax"
+tpl_sc_vector:
+  b   tpl_sc_handler
+
   .section  ".SC_handler","ax"
 
 /**
  * System call handler
  *
  * This is the second part of the handler. The first part is in the system
- * call interrupt vector. This first part saves the registers it uses on the
- * task/ISR2 stack and branches to this function.
+ * call interrupt vector. This first part branches to this function.
  */
     
 tpl_sc_handler:
@@ -302,6 +310,7 @@ no_save:
   bl    tpl_set_process_mp        /* set the memory protection scheme */
 #endif
 
+  lwz   r11,KS_KERN_PTR(r1)
   lwz   r3,4(r11)                     /* get s_running                */
   bl    tpl_load_context
   
