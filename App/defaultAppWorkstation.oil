@@ -18,12 +18,14 @@ CPU test {
         PRETASKHOOK = TRUE;
         APP_SRC = "tpl_default_tasks_workstation.c";
         TRAMPOLINE_BASE_PATH = "..";
-        DOW=TRUE;
         CFLAGS  = "-g";
         CFLAGS  = "-Wall -pedantic -Wformat -std=c99";
         CFLAGS  = "-Wmissing-field-initializers"; 
         ASFLAGS = "";
         LDFLAGS = "-g";
+        COMPILER = "gcc";
+        LINKER = "gcc";
+        ASSEMBLER = "as";
     } ;
 
 

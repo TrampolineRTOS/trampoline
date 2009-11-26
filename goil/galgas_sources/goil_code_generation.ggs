@@ -319,26 +319,6 @@ end routine;
 # Makefile generation
 #--------------------------------------------------------------------
 
-function trampoline_target_name
-  ->@string trampoline_target
-:
-  @string goilTargetName := arch[];
-  if    goilTargetName == "arm"       then trampoline_target := "arm";
-  elsif goilTargetName == "avr"       then trampoline_target := "avr";
-  elsif goilTargetName == "c166"      then trampoline_target := "c166";
-  elsif goilTargetName == "h8300h"    then trampoline_target := "h8300h";
-  elsif goilTargetName == "hcs12"     then trampoline_target := "hcs12";
-  elsif goilTargetName == "libpcl"    then trampoline_target := "libpcl";
-  elsif goilTargetName == "posix"     then trampoline_target := "posix";
-  elsif goilTargetName == "posix_vp2" then trampoline_target := "posix_vp2";
-  elsif goilTargetName == "ppc"       then trampoline_target := "ppc";
-  elsif goilTargetName == "v850e"     then trampoline_target := "v850e";
-  else 
-    error here: "unknown target name. Can't find the corresponding Trampoline target.";
-    trampoline_target := "";
-  end if;
-end function;
-
 routine updateTemplateWithStringList
   ?? @lstringlist strList
   ?? @string templateKey
@@ -379,8 +359,10 @@ routine generate_makefile
     if tpl_base_path_str == "" then tpl_base_path_str := ".."; end if;
     checkTrampolinePath ![@lstring new !tpl_base_path_str ![[os tpl_base_path] location]];
     makefileStr := [makefileStr stringByReplacingStringByString !"$TRAMPOLINE_BASE_PATH$" !tpl_base_path_str];
-
+    
+    #oil file
     makefileStr := [makefileStr stringByReplacingStringByString !"$OIL_FILE$" !app.".oil"];
+    #autosar flag
     @string autosarStr;
     if [option goil_options.autosar_on] then autosarStr := "true";
     else autosarStr := "false"; end if;
@@ -395,12 +377,9 @@ routine generate_makefile
     flags .= bool_make_define[!"WITH_LINKSCRIPT" !(link_script_name[![os memmap]] != "")];
     # memory protection flag
     flags .= bool_class_make_define[!"WITH_MEMORY_PROTECTION" !memory_protection[!os] !false];
-
     doReplace !?makefileStr !"$FLAGS$" !flags;
-    
     # ld script file name
     doReplace !?makefileStr !"$SCRIPT_FILE$" !link_script_name[![os memmap]];
-
     
     # -i option
     @string i_option := "";
@@ -412,18 +391,11 @@ routine generate_makefile
     doReplace !?makefileStr !"$GENITVEC$" !i_option;
     doReplace !?makefileStr !"$OIL_FILE_DEP$" !target_cfg_dep;
 
-    [makefileStr writeToFile ! directory."/Makefile"];
-
-    #build Make-rules only the first time.
-    @string makerulesStr := template_string[!"code" !"Make-rules"];
-    @string filename := directory."/Make-rules";
-    @string trampolineTarget := trampoline_target_name[];
-    makerulesStr := [makerulesStr stringByReplacingStringByString !"$GOIL_TARGET$"![option goil_options.target_platform]];
-    makerulesStr := [makerulesStr stringByReplacingStringByString !"$TRAMPOLINE_TARGET$"!trampolineTarget];
+    makefileStr := [makefileStr stringByReplacingStringByString !"$TRAMPOLINE_TARGET$"![option goil_options.target_platform]];
  
-    do_replace_default !?makerulesStr !"$COMPILER$" ![[os compiler] string] !"gcc";
-    do_replace_default !?makerulesStr !"$ASSEMBLER$" ![[os assembler] string] !"as";
-    do_replace_default !?makerulesStr !"$LINKER$" ![[os compiler] string] !"gcc";
+    do_replace_default !?makefileStr !"$COMPILER$" ![[os compiler] string] !"gcc";
+    do_replace_default !?makefileStr !"$ASSEMBLER$" ![[os assembler] string] !"as";
+    do_replace_default !?makefileStr !"$LINKER$" ![[os compiler] string] !"gcc";
  
     #target
     check_target !tpl_base_path_str;
@@ -432,10 +404,10 @@ routine generate_makefile
     add_makefile_flag_if_not_empty !?arch_chip_board !"CHIP" !chip[];
     add_makefile_flag_if_not_empty !?arch_chip_board !"BOARD" !board[];
    
-    doReplace !?makerulesStr !"$ARCH_CHIP_BOARD$" ! arch_chip_board;
+    doReplace !?makefileStr !"$ARCH_CHIP_BOARD$" ! arch_chip_board;
 
-    doReplace !?makerulesStr !"$WSC$" !true_false[!get_bool[![os systemcall] !false]];
-    doReplace !?makerulesStr !"$WMP$" !true_false[!get_bool[!memory_protection[!os] !false]];
+    doReplace !?makefileStr !"$WSC$" !true_false[!get_bool[![os systemcall] !false]];
+    doReplace !?makefileStr !"$WMP$" !true_false[!get_bool[!memory_protection[!os] !false]];
     
     #template
     @string templatePathStr := [option goil_options.template_dir];
@@ -445,11 +417,8 @@ routine generate_makefile
     else
         templateStr := "#GOIL_TEMPLATE_PATH = ";
     end if;
-    makerulesStr := [makerulesStr stringByReplacingStringByString !"$GOIL_TEMPLATE_PATH$"!templateStr];
-    if not [filename fileExists] then #does not overwrite.
-        [makerulesStr writeToFile !filename];
-    end if;
-
+    makefileStr := [makefileStr stringByReplacingStringByString !"$GOIL_TEMPLATE_PATH$"!templateStr];
+    [makefileStr writeToFile ! directory."/Makefile"];
 end routine;
 
 #--------------------------------------------------------------------

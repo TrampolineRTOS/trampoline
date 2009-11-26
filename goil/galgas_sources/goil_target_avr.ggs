@@ -46,7 +46,7 @@ import semantics goil_types_counter in "goil_types_counter.ggs" ;
 routine generate_target_avr
   ??@lstring   name
   ??@ident_map others
-  ??@oil_obj   unused exe
+  ??@oil_obj   exe
   ?!@string    result
 :
   doReplace !?result !"$STACK_ZONE$" ![name string]."_stack" ;
@@ -55,6 +55,14 @@ routine generate_target_avr
   @uint stack_size ;
   additional_int_key_required !"STACKSIZE" !others !name ?stack_size ;
   doReplace !?result !"$STACK_SIZE$" ![stack_size string] ;
+  cast exe :
+  when == @isr_obj do
+      #object is an isr.
+      @string trap ;
+      additional_string_key_required !"TRAP" !others !name ?trap ;
+      doReplace !?result !"$TRAP$" !trap;
+  else
+  end cast ;
 end routine ;
 
 routine generate_isr_avr
