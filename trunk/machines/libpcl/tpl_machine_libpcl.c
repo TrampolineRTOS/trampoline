@@ -44,51 +44,11 @@ VAR(tpl_stack_word, OS_VAR) idle_stack_zone[32768/sizeof(tpl_stack_word)] = {0} 
 
 extern volatile u32 tpl_locking_depth;
 
-VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;
-VAR(u32, OS_VAR) tpl_cpt_user_task_lock_OS = 0;
-VAR(u32, OS_VAR) tpl_cpt_user_task_lock_All = 0;
+extern tpl_bool tpl_user_task_lock;
+extern u32 tpl_cpt_user_task_lock_OS ;
+extern u32 tpl_cpt_user_task_lock_All ;
 STATIC VAR(u32, OS_VAR) tpl_cpt_os_task_lock = 0;
 
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
-FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
-{
-    VAR(tpl_bool, AUTOMATIC) result;
-
-    if( (TRUE == tpl_user_task_lock) || (tpl_cpt_user_task_lock_OS > 0) || (tpl_cpt_user_task_lock_All > 0) )
-    {
-        result = TRUE;
-    }
-    else
-    {
-        result = FALSE;
-    }
-
-    return result;
-}
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
-
-/*******************************************************************************
-** Function name: tpl_reset_interrupt_lock_status
-** Description: this function reset the status of interrupt lock by user
-** Parameter : None
-** Return value:  None
-** Remarks:
-*******************************************************************************/
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
-FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
-{
-  tpl_user_task_lock = FALSE;
-
-  tpl_cpt_user_task_lock_OS = 0;
-  tpl_cpt_user_task_lock_All = 0;
-	
-  tpl_locking_depth = tpl_cpt_os_task_lock;
-}
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 

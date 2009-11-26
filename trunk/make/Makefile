@@ -146,17 +146,15 @@ $(EXEC): $(OBJ)
 	$(LD) -o $(EXEC) $(OBJ) $(LDFLAGS) 
 
 #clean
-.PHONY: clean mrproper
+.PHONY: clean 
 clean:
 	@rm -rf $(OBJ) *~  $(EXTRA_FILES_CLEAN)
+	@rm -rf $(EXEC) $(DEPFILES) $(BUILD_DIR) $(OIL_OUTPUT_PATH)
 
-#big clean
-mrproper: clean
-	@rm -rf $(EXEC) $(DEPFILES) $(EXTRA_FILES_MRPROPER) $(OIL_OUTPUT_PATH)
 
 # generate C file from OIL file, using goil.
 $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE): $(OIL_FILE) $(OIL_FILE_DEP) Makefile
-	$(GOIL_COMPILER) --generate-makefile --target=$(GOIL_TARGET) $(GOIL_TEMPLATE_STR) $(GENITVEC) $(AUTOSAR_GOIL_FLAG) $(OIL_FILE)
+	$(GOIL_COMPILER) --generate-makefile --target=$(TRAMPOLINE_TARGET) $(GOIL_TEMPLATE_STR) $(GENITVEC) $(AUTOSAR_GOIL_FLAG) $(OIL_FILE)
 
 #documentation
 doc: doc-dev doc-user
