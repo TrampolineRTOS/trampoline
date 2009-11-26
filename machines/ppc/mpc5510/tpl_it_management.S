@@ -29,16 +29,67 @@
 
 #include "tpl_assembler.h"
 
-  .equ INTC_IACKR_PRC0, 0xfff48010  /* MPC551x: P0 Interrupt Acknowledge @  */
+  .equ INTC_addr, 0xfff48000
+  .equ INTC_CPR_PRC0,   INTC_addr +  0x8
+  .equ INTC_IACKR_PRC0, INTC_addr + 0x10  /* MPC551x: P0 Interrupt Acknowledge @  */
+  .equ INTC_SSCIR,      INTC_addr + 0x20
+  .equ INTC_PSR,        INTC_addr + 0x40
+  .equ spr_IVPR, 63
   
   .text
-  .section ".osCode","ax"
+  .section .osCode CODE_ACCESS_RIGHT
   .global tpl_it_id
 tpl_it_id:
   lis   r3,TPL_HIG(INTC_IACKR_PRC0)
   ori   r3,r3,TPL_LOW(INTC_IACKR_PRC0)
   lwz   r3,0(r3)
+  srwi  r3,r3,2
   blr
   
   .type tpl_it_id,@function
   .size tpl_it_id,$-tpl_it_id
+
+  .global tpl_init_interrupts
+tpl_init_interrupts:
+  li    r11,0x1000
+  mtspr spr_IVPR,r11
+  
+  /*
+   * setup the software interrupt for testing
+   */
+  /* first the priority */
+  lis	r11,TPL_HIG(INTC_PSR)
+  ori   r11,r11,TPL_LOW(INTC_PSR)
+  li	r12,0x1
+  slwi  r12,r12,24
+  stw   r12,0(r11)
+  /* set the current priority of the core to 0 */
+  lis	r11,TPL_HIG(INTC_CPR_PRC0)
+  ori   r11,r11,TPL_LOW(INTC_CPR_PRC0)
+  li	r12,0x0
+  stw   r12,0(r11)
+  
+
+  .global tpl_trigger_sw_it  
+tpl_trigger_sw_it:
+  lis	r11,TPL_HIG(INTC_SSCIR)
+  ori	r11,r11,TPL_LOW(INTC_SSCIR)
+  li	r12,0x2
+  slwi  r12,r12,24
+  stw   r12,0(r11)
+  blr
+  
+  .global tpl_ack_sw_it
+tpl_ack_sw_it:
+  lis	r11,TPL_HIG(INTC_SSCIR)
+  ori	r11,r11,TPL_LOW(INTC_SSCIR)
+  li	r12,0x1
+  slwi  r12,r12,24
+  stw   r12,0(r11)
+  blr
+  
+  blr
+  
+  .type tpl_init_interrupts,@function
+  .size tpl_init_interrupts,$-tpl_init_interrupts
+

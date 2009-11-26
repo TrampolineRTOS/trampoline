@@ -35,7 +35,7 @@
 #include "tpl_assembler.h"
 
   .text
-  .section ".osApiCode"
+  .section .osApiCode CODE_ACCESS_RIGHT
 
   .global ActivateTask
 ActivateTask:

@@ -33,20 +33,23 @@
 #include "tpl_assembler.h"
 
 TPL_EXTERN  tpl_kern
-TPL_EXTERN  tpl_need_switch
+TPL_EXTERN  tpl_it_table
 
 TPL_EXTERN  tpl_save_context
 TPL_EXTERN  tpl_load_context
 TPL_EXTERN  tpl_kernel_mp
 TPL_EXTERN  tpl_user_mp
 TPL_EXTERN  tpl_set_process_mp
+TPL_EXTERN  tpl_enter_kernel
+TPL_EXTERN  tpl_leave_kernel
+TPL_EXTERN  tpl_it_id
 
   .text
-  .section  ".EI_vector","ax"
+  .section  .EI_vector CODE_ACCESS_RIGHT
 tpl_it_vector:
   b     tpl_it_handler
   
-  .section  ".EI_handler","ax"
+  .section  .EI_handler CODE_ACCESS_RIGHT
   .global tpl_it_handler
   
 /*
@@ -118,7 +121,7 @@ tpl_it_handler:
    * Save the context of the interrupted process
    * The pointer to the context is in r3
    */  
-  lwz   r3,0(r11)           /* get the context pointer      */
+  lwz   r3,4(r11)           /* get the context pointer      */
   bl    tpl_save_context
 
   /*
@@ -128,10 +131,10 @@ tpl_it_handler:
   bl    tpl_it_id
 
   /*
-   * Get a pointer to the it vector
+   * Get a pointer to the it table
    */
-  lis   r11,TPL_HIG(tpl_it_vector)
-  ori   r11,r11,TPL_LOW(tpl_it_vector)
+  lis   r11,TPL_HIG(tpl_it_table)
+  ori   r11,r11,TPL_LOW(tpl_it_table)
   /*
    * convert the it id to an offset. Each entry of the tpl_it_vector
    * uses 2 x 4 bytes words on a 32 bits PowerPC. The first word

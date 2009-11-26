@@ -40,7 +40,7 @@ TPL_EXTERN tpl_msr_start_value
   .global tpl_init_regs
   .global tpl_shutdown
   
-  .section ".osCode","ax"
+  .section .osCode CODE_ACCESS_RIGHT
   
 tpl_init_regs:
   subi  r1,r1,4   /* space on the stack */
@@ -71,6 +71,7 @@ tpl_shutdown:
   mtmsr r5
 infinite_loop:
   b     infinite_loop
+    
 
   .type tpl_shutdown,@function
   .size tpl_shutdown,$-tpl_shutdown

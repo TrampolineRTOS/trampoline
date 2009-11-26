@@ -40,7 +40,7 @@
 
   .text
   
-  .section ".osCode","ax"
+  .section .osCode CODE_ACCESS_RIGHT
 
 /**
  * Enable interrupts. On the PowerPC, the interrupt bit is located
