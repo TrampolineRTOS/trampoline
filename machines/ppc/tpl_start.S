@@ -43,8 +43,8 @@ TPL_EXTERN tpl_kernel_stack
 _start:
 
   /* set up the stack */
-  lis   r1,tpl_kernel_stack@h
-  ori   r1,r1,tpl_kernel_stack@l
+  lis   r1,TPL_HIG(tpl_kernel_stack)
+  ori   r1,r1,TPL_LOW(tpl_kernel_stack)
   addi  r1,r1,KERNEL_STACK_SIZE - KS_FOOTPRINT
   /* set up the MSR   */
   mfmsr r0
@@ -53,7 +53,10 @@ _start:
   and   r0,r0,r3
   mtmsr r0
   
-  b main
+  bl    main
+
+_never_get_here:
+  b     _never_get_here
   
   .type _start,@function
   .size _start,$-_start

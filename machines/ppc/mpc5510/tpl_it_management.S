@@ -33,10 +33,11 @@
   
   .text
   .section ".osCode","ax"
-  
+  .global tpl_it_id
 tpl_it_id:
   lis   r3,TPL_HIG(INTC_IACKR_PRC0)
-  lwz   r3,TPL_LOW(INTC_IACKR_PRC0)(r3)
+  ori   r3,r3,TPL_LOW(INTC_IACKR_PRC0)
+  lwz   r3,0(r3)
   blr
   
   .type tpl_it_id,@function
