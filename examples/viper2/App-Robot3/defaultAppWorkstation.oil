@@ -16,8 +16,7 @@ CPU test {
         STATUS = EXTENDED;
         ERRORHOOK = FALSE;
         APP_SRC = "tpl_default_tasks_workstation.c";
-        TRAMPOLINE_BASE_PATH = "..";
-        CFLAGS  = "-g";
+        TRAMPOLINE_BASE_PATH = "../../..";
         CFLAGS  = "-Wall -Wformat -Werror -pedantic -std=c99";
         CFLAGS  = "-Wmissing-field-initializers -I."; 
         LDFLAGS = "-lm";
