@@ -109,6 +109,7 @@ routine testTemplate
     
     @string resutingString := "" ;
     grammar goil_template_grammar on templateSourceString
+      !"code"
       !""
       !sampleMap
       !?resutingString

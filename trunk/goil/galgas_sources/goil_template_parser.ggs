@@ -25,12 +25,14 @@ import lexique goil_template_scanner in "goil_template_scanner.gLexique" ;
 import semantics goil_template_invocation in "goil_template_invocation.ggs" ;
 
 nonterminal <goil_template_start_symbol>
+  ??@string inPrefix
   ??@string inPath
   ??@goilTemplateVariableMap inTemplateVariableMap
   ?!@string ioResultingString
 ;
 
 nonterminal <template_instruction>
+  ??@string inPrefix
   ??@string inPath
   ?!@goilTemplateVariableMap ioTemplateVariableMap
   ?!@string ioResultingString
@@ -38,6 +40,7 @@ label parse
 ;
 
 nonterminal <expression>
+  ??@string inPrefix
   ??@string inPath
   ??@goilTemplateVariableMap inTemplateVariableMap
   !@goilTemplateValue outExpression
@@ -46,6 +49,7 @@ label parse
 ;
 
 nonterminal  <template_instruction_list>
+  ??@string inPrefix
   ??@string inPath
   ??@goilTemplateVariableMap inTemplateVariableMap
   ?!@string ioResultingString
@@ -56,6 +60,7 @@ label parse
 #---------------------------------------------------------------------------*
 
 rule <template_instruction>
+  ??@string inPrefix
   ??@string inPath
   ?!@goilTemplateVariableMap ioTemplateVariableMap
   ?!@string ioResultingString
@@ -64,6 +69,7 @@ rule <template_instruction>
   @goilTemplateValue expression ;
   @goilTemplateType resultType ;
   <expression>
+    !inPrefix
     !inPath
     !ioTemplateVariableMap
     ?expression
@@ -79,6 +85,7 @@ end rule ;
 #---------------------------------------------------------------------------*
 
 rule <template_instruction>
+  ??@string inPrefix
   ??@string inPath
   ?!@goilTemplateVariableMap ioTemplateVariableMap
   ?!@string ioResultingString
@@ -87,6 +94,7 @@ rule <template_instruction>
   $identifier$ ? @lstring templateName ;
   goilTemplateInvocation
     !templateName
+    !inPrefix
     !inPath
     !ioTemplateVariableMap
     !?ioResultingString
@@ -96,6 +104,7 @@ end rule ;
 #---------------------------------------------------------------------------*
 
 rule <template_instruction>
+  ??@string unused inPrefix
   ??@string unused inPath
   ?!@goilTemplateVariableMap ioTemplateVariableMap
   ?!@string ioResultingString
@@ -170,6 +179,7 @@ end rule ;
 #---------------------------------------------------------------------------*
 
 rule <template_instruction>
+  ??@string inPrefix
   ??@string inPath
   ?!@goilTemplateVariableMap ioTemplateVariableMap
   ?!@string ioResultingString
@@ -182,6 +192,7 @@ rule <template_instruction>
       @goilTemplateValue expression ;
       @goilTemplateType expressionType ;
       <expression>
+        !inPrefix
         !inPath
         !ioTemplateVariableMap
         ?expression
@@ -195,6 +206,7 @@ rule <template_instruction>
       parse
       when currentCondition :
         <template_instruction_list>
+          !inPrefix
           !inPath
           !ioTemplateVariableMap
           !?ioResultingString
@@ -217,6 +229,7 @@ rule <template_instruction>
     parse
     when not currentCondition :
       <template_instruction_list>
+        !inPrefix
         !inPath
         !ioTemplateVariableMap
         !?ioResultingString
@@ -233,6 +246,7 @@ end rule ;
 #---------------------------------------------------------------------------*
 
 rule  <template_instruction_list>
+  ??@string inPrefix
   ??@string inPath
   ??@goilTemplateVariableMap inTemplateVariableMap
   ?!@string ioResultingString
@@ -242,6 +256,7 @@ rule  <template_instruction_list>
   repeat
   while
     <template_instruction>
+      !inPrefix
       !inPath
       !?templateVariableMap
       !?ioResultingString
@@ -260,11 +275,13 @@ end rule ;
 #---------------------------------------------------------------------------*
 
 rule  <goil_template_start_symbol>
+  ??@string inPrefix
   ??@string inPath
   ??@goilTemplateVariableMap inTemplateVariableMap
   ?!@string ioResultingString
 :
   <template_instruction_list>
+    !inPrefix
     !inPath
     !inTemplateVariableMap
     !?ioResultingString
@@ -274,6 +291,7 @@ end rule ;
 #---------------------------------------------------------------------------*
 
 rule <template_instruction>
+  ??@string inPrefix
   ??@string inPath
   ?!@goilTemplateVariableMap ioTemplateVariableMap
   ?!@string ioResultingString
@@ -285,6 +303,7 @@ rule <template_instruction>
     @goilTemplateValue enumeratedValue ;
     @goilTemplateType expressionType ;
     <expression>
+      !inPrefix
       !inPath
       !ioTemplateVariableMap
       ?enumeratedValue
@@ -314,6 +333,7 @@ rule <template_instruction>
     parse
     when shortestListLentgh > 0 :
       <template_instruction_list>
+        !inPrefix
         !inPath
         !ioTemplateVariableMap
         !?ioResultingString
@@ -339,6 +359,7 @@ rule <template_instruction>
       end foreach ;
     end foreach ;
     <template_instruction_list>
+      !inPrefix
       !inPath
       !templateVariableMap
       !?ioResultingString
@@ -350,6 +371,7 @@ rule <template_instruction>
       parse 
       when idx < shortestListLentgh :
         <template_instruction_list>
+          !inPrefix
           !inPath
           !ioTemplateVariableMap
           !?ioResultingString
@@ -367,6 +389,7 @@ rule <template_instruction>
     parse
     when shortestListLentgh > 0 :
       <template_instruction_list>
+        !inPrefix
         !inPath
         !ioTemplateVariableMap
         !?ioResultingString

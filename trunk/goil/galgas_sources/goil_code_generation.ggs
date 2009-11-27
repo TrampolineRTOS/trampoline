@@ -2042,6 +2042,9 @@ routine generate_all
           generate_memmap
             !cpu;
 
+#          generate_memmap_new
+#            !cpu;
+
           generate_compiler
             !cpu;
 #                generate_crc
