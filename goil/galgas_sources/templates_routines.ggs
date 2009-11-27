@@ -1,0 +1,17 @@
+semantics templates_routines :
+import semantics goil_template_invocation in "goil_template_invocation.ggs";
+
+function goil_template
+  ??@string prefix
+  ??@string name
+  ->@string result
+:
+  result := "";
+  goilTemplateInvocation
+    ![@lstring new !name !here]
+    !prefix
+    !"templates"
+    ![@goilTemplateVariableMap emptyMap]
+    !?result;
+end function;
+end semantics;

@@ -58,6 +58,7 @@ SOURCES += goil_template_parser.cpp
 SOURCES += goil_template_grammar.cpp
 SOURCES += goil_template_invocation.cpp
 SOURCES += goil_template_test.cpp
+SOURCES += templates_routines.cpp
 SOURCES += goil_lexique.cpp
 SOURCES += goil_options.cpp
 SOURCES += goil_syntax.cpp

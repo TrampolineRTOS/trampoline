@@ -187,10 +187,11 @@ end routine ;
 #------------------------------------------------------------------------------*
 
 routine goilTemplateInvocation
-  ??@lstring inTemplateName
-  ??@string inPath
+  ??@lstring                 inTemplateName
+  ??@string                  inPrefix
+  ??@string                  inPath
   ??@goilTemplateVariableMap inTemplateVariableMap
-  ?!@string ioResultingString
+  ?!@string                  ioResultingString
 :
   if [@uint errorCount] == 0 then
     const @string templateDir := [option goil_options.goil_template_dir] ;
@@ -202,31 +203,33 @@ routine goilTemplateInvocation
       const @string targetDir := [option goil_options.target_platform] ;
       if [targetDir length] == 0 then
         error inTemplateName:"the '--target' (or '-t') option is required for generating code" ;
-      elsif not [templateDir . "/" . targetDir directoryExists] then
-        error inTemplateName:"the '--target' (or '-t') option value is '" . templateDir
-        . "', so the path formed with '--goil-templates' option is '"
-        . templateDir . "/" . targetDir
-        . "', but it is not a valid directory path" ;
+      elsif not [templateDir . "/" . inPrefix directoryExists] then
+        error inTemplateName: "internal. no ". inPrefix . "template found";
+#      elsif not [templateDir . "/" . targetDir directoryExists] then
+#        error inTemplateName:"the '--target' (or '-t') option value is '" . templateDir
+#        . "', so the path formed with '--goil-templates' option is '"
+#        . templateDir . "/" . targetDir
+#        . "', but it is not a valid directory path" ;
       else
         @stringlist pathList [emptyList] ;
         @bool found := false ;
         if inPath != "" then
-          const @string fullTemplatePath := inPath . "/" . inTemplateName . ".goilTemplate" ;
+          const @string fullTemplatePath := inPath . "/" . inPrefix . "/" . inTemplateName . ".goilTemplate" ;
           pathList += !fullTemplatePath ;
           found := [fullTemplatePath fileExists] ;
           if found then
-            grammar goil_template_grammar in [@lstring new !fullTemplatePath !here] !inPath !inTemplateVariableMap !?ioResultingString ;
+            grammar goil_template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inTemplateVariableMap !?ioResultingString ;
           end if ;
         end if ;
         @string targetTemplatePartialPath := targetDir ;
         loop [targetDir length] :
         while ([targetTemplatePartialPath length] > 0) & not found
         do
-          const @string fullTemplatePath := templateDir . "/" . targetTemplatePartialPath . "/" . inTemplateName . ".goilTemplate" ;
+          const @string fullTemplatePath := templateDir . "/" . inPrefix . "/" . targetTemplatePartialPath . "/" . inTemplateName . ".goilTemplate" ;
           pathList += !fullTemplatePath ;
           found := [fullTemplatePath fileExists] ;
           if found then
-            grammar goil_template_grammar in [@lstring new !fullTemplatePath !here] !inPath !inTemplateVariableMap !?ioResultingString ;
+            grammar goil_template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inTemplateVariableMap !?ioResultingString ;
           else
             targetTemplatePartialPath := [targetTemplatePartialPath stringByDeletingLastPathComponent] ;
           end if ;
