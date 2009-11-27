@@ -19,5 +19,10 @@ cd $1
 if [ $NODEP -eq 1 ];then
   rm -f trampoline
 fi
-goil -i -g -t=posix_vp2 --templates=../goil/templates/ *.oil 
+# TODO : check if Makefile already exist instead of doing a GOIL every time
+if ! [ -f Makefile ]
+then
+  goil -i -g -t=posix_vp2 --templates=../../../goil/templates/ *.oil
+fi
 make NODEP=$NODEP
+

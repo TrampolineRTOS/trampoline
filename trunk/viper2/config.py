@@ -66,7 +66,7 @@ display_server = Server("SERVER") # uses pygame
 ###############################################################################
 allEcus = [
   Ecu(
-    "../App-RobotPC/trampoline",
+    "../examples/viper2/App-RobotPC/trampoline",
     scheduler,
     [
       Network(network_master, "NET0", 0),
@@ -78,7 +78,7 @@ allEcus = [
     ]
   ),
   Ecu(
-    "../App-Robot1/trampoline",
+    "../examples/viper2/App-Robot1/trampoline",
     scheduler,
     [
       Network(network_master, "NET1_1", 0),
@@ -90,7 +90,7 @@ allEcus = [
     ]
   ),
   Ecu(
-    "../App-Robot2/trampoline",
+    "../examples/viper2/App-Robot2/trampoline",
     scheduler,
     [
       Network(network_slave, "NET2", 0),
@@ -101,7 +101,7 @@ allEcus = [
     ]
   ),
   Ecu(
-    "../App-Robot3/trampoline",
+    "../examples/viper2/App-Robot3/trampoline",
     scheduler,
     [
       Network(network_slave, "NET3", 0),

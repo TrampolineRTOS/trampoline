@@ -48,7 +48,7 @@ scheduler = Scheduler(speedCoeff = 1)
 ###############################################################################
 allEcus = [
   Ecu(
-    "../App-vp2/trampoline",
+    "../examples/viper2/App-vp2/trampoline",
     scheduler,
     [
       Timer("TIMER0", 7, type = timer.AUTO, delay = 500),

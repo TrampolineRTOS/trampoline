@@ -99,7 +99,10 @@ elif "--clean" in sys.argv :
 elif "-g" in sys.argv or "--generate" in sys.argv:
   for ecu in config.allEcus:
     error = False
-    ecu.generate()
+    # Don't generate files if config.c hasn't been modified since last generation
+    returns = commands.getoutput("if ! [ -f " + ecu.getDir() + "target.cfg ] || [ \"`stat -f \"%m\" config.py`\" -gt \"`stat -f \"%m\" " + ecu.getDir() + "target.cfg`\" ]; then echo 1; else echo 0; fi")
+    if (returns == "1"):
+      ecu.generate()
 
     #Compile
     if "-c" in sys.argv or "--compile" in sys.argv:
@@ -118,7 +121,7 @@ elif "-g" in sys.argv or "--generate" in sys.argv:
       for line in make.stderr:
         error = True
         print line
-
+      
       if error:
         print "Error while generating trampoline :", ecu.getDir(),"quit viper2."
         break
