@@ -30,7 +30,7 @@ routine counters_of_alarms_defined
         # An ALARMTIME equal to 0 is forbidden in AUTOSAR and 
         # discouraged in OSEK
         if alarm_time == 0 then
-          if [option goil_options.autosar_on] == true then
+          if [option goil_options.autosar_on value] == true then
             error [a alarm_time] : "ALARMTIME must be > 0" ;
           else
             warning [a alarm_time] : "ALARMTIME equal to 0 has an undefined behavior" ;

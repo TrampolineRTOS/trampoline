@@ -38,7 +38,7 @@ routine generate_isr_posix_vp2
 
   @isr_list list_isr [emptySortedList];
 
-  if not [option goil_options.posix_it] then
+  if not [option goil_options.posix_it value] then
     foreach isrs (@lstring isr_name *) do
       list_isr += !isr_name ![isr_name string];
     end foreach;

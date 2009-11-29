@@ -49,7 +49,7 @@ rule <appli>
     
 
     $APPLICATION$ ;
-    if [option goil_options.autosar_on] == false then
+    if [option goil_options.autosar_on value] == false then
       error here : "AUTOSAR flag is off, turn it on to use APPLICATION objects" ;
     end if ;
     $idf$ ?name ;

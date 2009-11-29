@@ -37,7 +37,7 @@ end function ;
 
 routine testTemplate
 :
-  if [option goil_options.run_goil_template_test] then
+  if [option goil_options.run_goil_template_test value] then
     const @string templateSourceString := 
       "ceci est%!CHAINE1 %un template.\n"
       "Test if vrai:%if TRUE_VAR then !CHAINE1%1re branche%!CHAINE1 else !CHAINE2 %2e branche% !CHAINE2 end if %.\n"

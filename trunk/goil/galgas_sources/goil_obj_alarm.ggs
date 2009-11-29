@@ -167,7 +167,7 @@ rule <alarm_action_params>
     <description> ?* ; $;$ ;
     alarm_action := [@activatetask_action new !here !task_name] ;
   or
-    if [option goil_options.autosar_on] then
+    if [option goil_options.autosar_on value] then
       error here : "AUTOSAR flag is on. AUTOSAR spec does not allow alarm callback" ;
     end if ;
     @lstring function_name ;
@@ -176,7 +176,7 @@ rule <alarm_action_params>
     <description> ?* ; $;$ ;
     alarm_action := [@callback_action new !here !function_name] ;
   or
-    if [option goil_options.autosar_on] == false then
+    if [option goil_options.autosar_on value] == false then
       error here : "AUTOSAR flag is off. Turn it on to allow an INCREMENTCOUNTER action in alarm" ;
     end if ;
     @lstring counter_name ;

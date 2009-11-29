@@ -194,13 +194,13 @@ routine goilTemplateInvocation
   ?!@string                  ioResultingString
 :
   if [@uint errorCount] == 0 then
-    const @string templateDir := [option goil_options.goil_template_dir] ;
+    const @string templateDir := [option goil_options.goil_template_dir value] ;
     if [templateDir length] == 0 then
       error inTemplateName:"the '--goil-templates' option is required for generating code" ;
     elsif not [templateDir directoryExists] then
       error inTemplateName:"the '--goil-templates' option value is '" . templateDir . "', but is not a valid directory path" ;
     else
-      const @string targetDir := [option goil_options.target_platform] ;
+      const @string targetDir := [option goil_options.target_platform value] ;
       if [targetDir length] == 0 then
         error inTemplateName:"the '--target' (or '-t') option is required for generating code" ;
       elsif not [templateDir . "/" . inPrefix directoryExists] then

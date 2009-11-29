@@ -188,7 +188,7 @@ routine add_system_counter
     if [[sys_cnt source] string] == "" then
       error [sys_cnt source] : "SystemCounter has no SOURCE";
     end if;
-    if [option goil_options.autosar_on] then
+    if [option goil_options.autosar_on value] then
       # put all OS Applications in the accessing application list
       if [[sys_cnt acc_apps] length] == 0 then
         [!?sys_cnt setAcc_apps !all_apps];

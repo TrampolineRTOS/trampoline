@@ -40,7 +40,7 @@ routine generate_it_table
   ??@root_obj   cpu
   ?!@string     imp
 :
-  if [option goil_options.posix_it] then
+  if [option goil_options.posix_it value] then
     if [cfg hasKey!"it_sources"] then
 
   # Check an interrupt source set is available
@@ -92,7 +92,7 @@ routine generate_it_table
           @lstring src := [counter source];
           if [src string] != "" then
             @bool counter_ok := true;
-            if [option goil_options.autosar_on] then
+            if [option goil_options.autosar_on value] then
               cast [counter type]:
               when == @software_counter do
                 warning key: "A SOFTWARE COUNTER should not have an interrupt SOURCE. Ignored";
@@ -103,7 +103,7 @@ routine generate_it_table
               counter_it_set += ![src string];
             end if;
           else
-            if [option goil_options.autosar_on] then
+            if [option goil_options.autosar_on value] then
               cast [counter type]:
               when == @hardware_counter do
                 error key: "No SOURCE specified for COUNTER ".[key string];

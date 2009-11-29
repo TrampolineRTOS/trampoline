@@ -183,7 +183,7 @@ routine generate_counter_specific
 
   @string target := arch[];
 
-  if [option goil_options.posix_it] then
+  if [option goil_options.posix_it value] then
     @counter_by_source cbs [emptySortedList];
     foreach counters do
       cbs += ![[counter source] string] !key !counter;

@@ -56,7 +56,7 @@ routine generate_mp
 
     foreach [cpu tasks] do
       @string desc := [tpl_mp_desc stringByReplacingStringByString !"$NAME$" ![key string]];
-      if [option goil_options.autosar_on] then
+      if [option goil_options.autosar_on value] then
         if [app_for_obj count] > 0 then
           @string app_name ;
           [app_for_obj get !key ?app_name] ;
@@ -73,7 +73,7 @@ routine generate_mp
 
     foreach [cpu isrs] do
       @string desc := [tpl_mp_desc stringByReplacingStringByString !"$NAME$" ![key string]];
-      if [option goil_options.autosar_on] then
+      if [option goil_options.autosar_on value] then
         if [app_for_obj count] > 0 then
           @string app_name ;
           [app_for_obj get !key ?app_name] ;
@@ -101,7 +101,7 @@ routine generate_mp
     foreach stasks do
       # if the task belongs to a trusted OS Application, the corresponding
       # table entry is set to NULL
-      if [option goil_options.autosar_on] then
+      if [option goil_options.autosar_on value] then
         if [app_for_obj count] > 0 then
           @string app_name ;
           [app_for_obj get ![@lstring new !name !here] ?app_name] ;
@@ -192,7 +192,7 @@ routine generate_link_script
     @string script_file := project_name[]."/".link_script_name[![[cpu os] memmap]];
     @uint error_count := [@uint errorCount];
     if error_count == 0 then
-      if [option .verbose_output] then
+      if [option .verbose_output value] then
           message "creating " . script_file . "\n";
       end if;
       [script makeDirectoryAndWriteToFile !script_file];
@@ -397,7 +397,7 @@ routine generate_memmap
     
     @string mm_file := project_name[]."/MemMap.h";
     if [@uint errorCount] == 0 then
-      if [option .verbose_output] then
+      if [option .verbose_output value] then
           message "creating " . mm_file . "\n";
       end if;
       [mm makeDirectoryAndWriteToFile !mm_file];
@@ -428,11 +428,11 @@ routine generate_compiler
     @string comp_cfg_file := project_name[]."/Compiler_Cfg.h";
 
     if [@uint errorCount] == 0 then
-      if [option .verbose_output] then
+      if [option .verbose_output value] then
           message "creating " . comp_file . "\n";
       end if;
       [comp makeDirectoryAndWriteToFile !comp_file];
-      if [option .verbose_output] then
+      if [option .verbose_output value] then
           message "creating " . comp_cfg_file . "\n";
       end if;
       [comp_cfg makeDirectoryAndWriteToFile !comp_cfg_file];

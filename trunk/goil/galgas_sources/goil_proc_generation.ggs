@@ -85,7 +85,7 @@ routine generate_proc_table
     names_imp .= "  \"".[key string]."\",\n" ;
 #    isr_head .= "#define ".[key string]."  ".[id string]."\n" ;
     proc_ids .= "#define ".[key string]."_id  ".[id string]."\n" ;
-    if [option goil_options.autosar_on] then
+    if [option goil_options.autosar_on value] then
       proc_ids .= "CONST(ISRType, AUTOMATIC) ".[key string]." = ".[key string]."_id;\n" ;
     end if ;
     id++ ;
