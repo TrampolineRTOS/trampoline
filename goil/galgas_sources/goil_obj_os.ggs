@@ -114,12 +114,12 @@ rule <os>
   while
     @lbool proth ;
     $PROTECTIONHOOK$ ; $=$ ; <boolean> ?proth ; <description> ?* ; $;$ ;
-    if [option goil_options.autosar_on] == FALSE then
+    if [option goil_options.autosar_on value] == FALSE then
         error here : "AUTOSAR flag is off, turn it on to use PROTECTIONHOOK attribute in OS object" ;
     end if ;
     set_bool !?protectionhook !proth !"PROTECTIONHOOK" ;
   while
-    if [option goil_options.autosar_on] == FALSE then
+    if [option goil_options.autosar_on value] == FALSE then
         error here : "AUTOSAR flag is off, turn it on to use SCALABILITYCLASS attribute in OS object" ;
     end if ;
     $SCALABILITYCLASS$ ; $=$ ;
@@ -139,7 +139,7 @@ rule <os>
     end select ;
     <description> ?* ; $;$ ;
   while
-    if [option goil_options.autosar_on] == FALSE then
+    if [option goil_options.autosar_on value] == FALSE then
         error here : "AUTOSAR flag is off, turn it on to use STACKMONITORING attribute in OS object" ;
     end if ;
     @lbool stackmon ;

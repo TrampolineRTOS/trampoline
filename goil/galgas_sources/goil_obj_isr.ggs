@@ -144,7 +144,7 @@ rule <isr_attributes>
     $MESSAGE$ ; $=$ ; $idf$ ?mess ; <description> ?* ; $;$ ;
     add_lstring_unique !?messages !mess !"MESSAGE" ;
   while
-    if [option goil_options.autosar_on] == false then
+    if [option goil_options.autosar_on value] == false then
       error here : "AUTOSAR flag is off, turn it on to use TIMINGPROTECTION attribute in ISR object" ;
     end if ;
     $TIMING_PROTECTION$ ; $=$ ;

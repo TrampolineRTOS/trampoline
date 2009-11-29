@@ -6,8 +6,8 @@ import semantics goil_basic_types in "goil_basic_types.ggs" ;
 function project_name -> @string directory
 :
   directory := [[@string stringWithSourceFilePath] stringByDeletingPathExtension];
-  if [option goil_options.project_dir] != "" then
-    directory := [option goil_options.project_dir] ;
+  if [option goil_options.project_dir value] != "" then
+    directory := [option goil_options.project_dir value] ;
   end if ;
 end function;
 
@@ -20,7 +20,7 @@ end function;
 # a target architecture is the instruction set (ie ARM, PowerPC, ...)
 #
 function arch -> @string arch_name :
-  @stringlist components := [[option goil_options.target_platform] componentsSeparatedByString !"/"] ;
+  @stringlist components := [[option goil_options.target_platform value] componentsSeparatedByString !"/"] ;
   [components first ?arch_name] ;
 end function ;
 
@@ -29,7 +29,7 @@ end function ;
 # a target implementation is the kind of microcontroller (ie ARM7, ARM9, ...)
 #
 function chip -> @string chip_name :
-  @stringlist components := [[option goil_options.target_platform] componentsSeparatedByString !"/"] ;
+  @stringlist components := [[option goil_options.target_platform value] componentsSeparatedByString !"/"] ;
   if [components length] > 1 then
     chip_name := [components mValueAtIndex !1] ;
   else
@@ -41,7 +41,7 @@ end function ;
 # board returns the target board of the chip
 #
 function board -> @string board_name :
-  @stringlist components := [[option goil_options.target_platform] componentsSeparatedByString !"/"] ;
+  @stringlist components := [[option goil_options.target_platform value] componentsSeparatedByString !"/"] ;
   if [components length] > 2 then
     board_name := [components mValueAtIndex !2] ;
   else
@@ -67,8 +67,8 @@ end function;
 function root_templates_directory
   ->@string tpl_dir
 :
-  if [option goil_options.template_dir] != "" then
-    tpl_dir := [option goil_options.template_dir] ;
+  if [option goil_options.template_dir value] != "" then
+    tpl_dir := [option goil_options.template_dir value] ;
   else
     tpl_dir := [@string stringWithEnvironmentVariableOrEmpty !"GOIL_TEMPLATES"] ;
   end if ;
@@ -253,7 +253,7 @@ routine obj_table
 :
 #    @uint taskCount := [names count] ;
 #    @uint bitCount := [taskCount significantBitCount] ;
-#    @uint correctedBits := [option goil_options. corrected_bits] ;
+#    @uint correctedBits := [option goil_options.corrected_bits] value ;
     implementation := "tpl_".typename." *tpl_".varname."_table[".[varname uppercaseString]."_COUNT] = {\n" ;
     header := "\n" ;
 #    @uint n := 0 ;

@@ -140,7 +140,7 @@ rule <counter_parameters>
     $MINCYCLE$ ; $=$ ; $uint_number$ ?c ; <description> ?* ; $;$ ;
     set_uint32 !?min_cycle !c !"MINCYCLE" ;
   while
-    if [option goil_options.autosar_on] == false then
+    if [option goil_options.autosar_on value] == false then
       error here : "AUTOSAR flag is off, turn it on to use TYPE attribute in COUNTER object" ;
     end if ;
     @counter_type cpt_type ;
@@ -153,7 +153,7 @@ rule <counter_parameters>
       error [type location] : "was defined here" ;
     end cast ;      
   while
-    if [option goil_options.autosar_on] == false then
+    if [option goil_options.autosar_on value] == false then
       error here : "AUTOSAR flag is off, turn it on to use UNIT attribute in COUNTER object" ;
     end if ;
     @lstring cpt_unit ;

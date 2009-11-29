@@ -148,7 +148,7 @@ function os_cfg
   # we begin with 
 
   # IT table
-  @bool itt := [option goil_options.posix_it];
+  @bool itt := [option goil_options.posix_it value];
   # timing protection
   @bool tp := false;
   foreach [cpu tasks] do

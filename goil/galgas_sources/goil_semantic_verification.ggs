@@ -296,7 +296,7 @@ routine verify_all
 
   # Autosar checking
 
- # if [option goil_options.autosar_on] then
+ # if [option goil_options.autosar_on value] then
  #   schedule_tables_well_formed ![cpu scheduletables];
  # end if;
 
@@ -312,7 +312,7 @@ routine verify_all
   networkmessages_exist_and_ok ![cpu messages] ![cpu net_messages];
 
   # cross-objects Autosar checking
-  if [option goil_options.autosar_on] then
+  if [option goil_options.autosar_on value] then
     schedule_tables_well_formed ![cpu scheduletables] !cpu;
     schedule_tables_counters_exist_and_compatible ![cpu scheduletables] ![cpu counters];
     schedule_tables_tasks_and_events_exist !cpu ![cpu tasks];

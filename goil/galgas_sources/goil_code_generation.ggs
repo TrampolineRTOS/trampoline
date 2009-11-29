@@ -248,7 +248,7 @@ routine generate_flags
       flags .= "#define    TRAMPOLINE_BASE_PATH \"..\"\n";
     end if;
     
-    if [option goil_options.autosar_on] then
+    if [option goil_options.autosar_on value] then
         # the autosar flag is turned on. so additional symbols are processed
 
         flags .= "#define    WITH_AUTOSAR\n";
@@ -310,7 +310,7 @@ routine generate_flags
         end cast;
     end foreach;
 
-#    flags .= "#define    CRC_LEVEL " . [[option goil_options. corrected_bits] string] . "\n";
+#    flags .= "#define    CRC_LEVEL " . [[option goil_options.corrected_bits value] string] . "\n";
 
     obj_header := [obj_header stringByReplacingStringByString !"$CONFIG_FLAGS$" !flags];
 end routine;
@@ -364,7 +364,7 @@ routine generate_makefile
     makefileStr := [makefileStr stringByReplacingStringByString !"$OIL_FILE$" !app.".oil"];
     #autosar flag
     @string autosarStr;
-    if [option goil_options.autosar_on] then autosarStr := "true";
+    if [option goil_options.autosar_on value] then autosarStr := "true";
     else autosarStr := "false"; end if;
     makefileStr := [makefileStr stringByReplacingStringByString !"$AUTOSAR_ON$" !autosarStr];
     # trace flags
@@ -384,14 +384,14 @@ routine generate_makefile
     # -i option
     @string i_option := "";
     @string target_cfg_dep := "";
-    if [option goil_options.posix_it] then 
+    if [option goil_options.posix_it value] then 
         i_option := "-i"; 
         target_cfg_dep := "target.cfg";
     end if;
     doReplace !?makefileStr !"$GENITVEC$" !i_option;
     doReplace !?makefileStr !"$OIL_FILE_DEP$" !target_cfg_dep;
 
-    makefileStr := [makefileStr stringByReplacingStringByString !"$TRAMPOLINE_TARGET$"![option goil_options.target_platform]];
+    makefileStr := [makefileStr stringByReplacingStringByString !"$TRAMPOLINE_TARGET$"![option goil_options.target_platform value]];
  
     do_replace_default !?makefileStr !"$COMPILER$" ![[os compiler] string] !"gcc";
     do_replace_default !?makefileStr !"$ASSEMBLER$" ![[os assembler] string] !"as";
@@ -410,7 +410,7 @@ routine generate_makefile
     doReplace !?makefileStr !"$WMP$" !true_false[!get_bool[!memory_protection[!os] !false]];
     
     #template
-    @string templatePathStr := [option goil_options.template_dir];
+    @string templatePathStr := [option goil_options.template_dir value];
     @string templateStr;
     if templatePathStr != "" then
         templateStr := "GOIL_TEMPLATE_PATH = ".templatePathStr;
@@ -697,7 +697,7 @@ routine generate_alarms
         doReplace !?result !"$COUNTER$" ![counter_name string]."_counter_desc";
 
 # OS application which owns the alarm
-        if [option goil_options.autosar_on] then
+        if [option goil_options.autosar_on value] then
           if [app_for_obj count] > 0 then
             @string app_name;
             [app_for_obj get !alarm_name ?app_name];
@@ -1170,7 +1170,7 @@ routine generate_tasks
         result := [result stringByReplacingStringByString !"$TIMING_PROT_REF$" !tp_ref];
 
         # AUTOSAR OS Application part
-        if [option goil_options.autosar_on] then
+        if [option goil_options.autosar_on value] then
           if [app_for_obj count] > 0 then
             @string app_name;
             [app_for_obj get !task_name ?app_name];
@@ -1264,7 +1264,7 @@ routine generate_isrs
         doReplace !?result !"$TIMING_PROT_REF$" !tp_ref;
 
         # AUTOSAR OS Application part
-        if [option goil_options.autosar_on] then
+        if [option goil_options.autosar_on value] then
           if [app_for_obj count] > 0 then
             @string app_name;
             [app_for_obj get !isr_name ?app_name];
@@ -1356,7 +1356,7 @@ routine generate_counters
         # The COUNTER TYPE is specific to the AUTOSAR extension.
         # There is no software counter in OSEK.
         #
-        if [option goil_options.autosar_on] then
+        if [option goil_options.autosar_on value] then
             @counter_type type := [counter type];
             cast type :
             when == @software_counter do tmp := "SOFTWARE_COUNTER";
@@ -1388,7 +1388,7 @@ routine generate_counters
     # For AUTOSAR extension, generate a counter table
     # of counters to allow access by API functions
     # IncrementCounter, GetCounterValue and GetElapsedCounterValue
-    if [option goil_options.autosar_on] then
+    if [option goil_options.autosar_on value] then
        @string counter_table := "";
         foreach counters (@lstring counter_name @counter_obj counter) index n
         before
@@ -1462,7 +1462,7 @@ routine generate_resources
         doReplace !?result !"$PRIORITY$" ![prio string];
         doReplace !?result !"$USAGE$" !usage;
 
-        if [option goil_options.autosar_on] then
+        if [option goil_options.autosar_on value] then
           if [app_for_obj count] > 0 then
             @string app_name;
             [app_for_obj get !resource_name ?app_name];
@@ -1830,7 +1830,7 @@ routine generate_all
   @string temp_dir := templates_directory[!"code"];
 
   if temp_dir != "" then
-      @string target := [option goil_options.target_platform];
+      @string target := [option goil_options.target_platform value];
       if target != "" then
           @string header := template_string[!"code" !"app_header"];
           @string obj_header := template_string[!"code" !"obj_header"];
@@ -1983,7 +1983,7 @@ routine generate_all
             !?obj_header
             !?implementation;
 
-          if [option goil_options.autosar_on] then
+          if [option goil_options.autosar_on value] then
               generate_schedule_tables
                   ![cpu scheduletables]
                   !app_for_obj
@@ -2077,29 +2077,29 @@ routine generate_all
           types_file := directory . "/" . types_file;
 
           if error_count == 0 then
-              if [option .verbose_output] then
+              if [option .verbose_output value] then
                   message "creating " . header_file . "\n";
               end if;
               [header makeDirectoryAndWriteToFile !header_file];
-              if [option .verbose_output] then
+              if [option .verbose_output value] then
                   message "creating " . obj_header_file . "\n";
               end if;
               [obj_header makeDirectoryAndWriteToFile !obj_header_file];
-              if [option .verbose_output] then
+              if [option .verbose_output value] then
                   message "creating " . implementation_file . "\n";
               end if;
               [implementation makeDirectoryAndWriteToFile !implementation_file];
-              if [option .verbose_output] then
+              if [option .verbose_output value] then
                   message "creating " . types_file . "\n";
               end if;
               [types makeDirectoryAndWriteToFile !types_file];
           
-              if [option goil_options.generate_makefile] then
+              if [option goil_options.generate_makefile value] then
                   @string makefile_dir := [directory stringByDeletingLastPathComponent];
                   if makefile_dir == "" then
                       makefile_dir := ".";
                   end if; 
-                  if [option .verbose_output] then
+                  if [option .verbose_output value] then
                       message "creating ".makefile_dir."/makefile\n";
                   end if;
                   generate_makefile

@@ -55,7 +55,7 @@ rule <scheduletable>
   ?!@scheduletable_map stm
 :
   $SCHEDULETABLE$;
-  if [option goil_options.autosar_on] == false then
+  if [option goil_options.autosar_on value] == false then
     error here : "AUTOSAR flag is off, turn it on to use SCHEDULETABLE objects";
   end if;
   @lstring name;
