@@ -15,7 +15,12 @@
  */
 
 #include <avr/io.h>
-#include <avr/interrupt.h> 
+//interrupt.h declares sei() and cli() functions.
+//but the 'ISR' macro is used to declare
+//interrupt handlers.
+//It is the same macro to declare ISR2 in OSEK.
+#include <avr/interrupt.h>
+#undef ISR
 
 #include "tpl_machine.h"
 #include "tpl_os_application_def.h"   /* NO_ALARM */
@@ -25,6 +30,13 @@
 #include "tpl_os_kernel.h" /*tpl_stat_proc_table and tpl_proc_static*/
 
 avr_context idle_task_context;
+
+#define OS_START_SEC_VAR_32BIT
+#include "tpl_memmap.h"
+VAR(tpl_stack_word, OS_VAR)
+idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
+#define OS_STOP_SEC_VAR_32BIT
+#include "tpl_memmap.h"
 
 
 /*
@@ -107,38 +119,18 @@ void tpl_release_task_lock(void)
 void tpl_init_tick_timer();
 void tpl_init_machine(void)
 {
-	#ifndef NO_ALARM
-		tpl_init_tick_timer();
-	#endif
+//	#ifndef NO_ALARM
+//		tpl_init_tick_timer();
+//	#endif
 	sei();
 }
 
-void tpl_enable_all_interrupts_service(void)
+void tpl_enable_interrupts(void)
 {
 	cli();
 }
 
-void tpl_disable_all_interrupts_service(void)
+void tpl_disable_interrupts(void)
 {
 	sei();
-}
-
-void tpl_resume_all_interrupts_service(void)
-{
-    if (tpl_locking_depth > 0) tpl_locking_depth--;
-    if (tpl_locking_depth == 0) sei();
-}
-
-void tpl_suspend_all_interrupts_service(void)
-{
-	cli();
-	tpl_locking_depth++;
-}
-void tpl_resume_os_interrupts_service(void)
-{
-	tpl_resume_all_interrupts_service();
-}
-void tpl_suspend_os_interrupts_service(void)
-{
-	tpl_suspend_all_interrupts_service();
 }
