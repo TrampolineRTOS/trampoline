@@ -24,10 +24,12 @@ grammar goil_template_grammar "LL1" :
   import lexique goil_template_scanner in "goil_template_scanner.gLexique" ;
   import syntax goil_template_parser in "goil_template_parser.ggs" ;
   import syntax goil_template_expression_parser in "goil_template_expression_parser.ggs" ;
+##  import semantics system_config in "system_config.ggs";
 
   root <goil_template_start_symbol>
     ??@string inPrefix
     ??@string inPath
+    ??@systemConfig inCfg
     ??@goilTemplateVariableMap inTemplateVariableMap
     ?!@string ioResultingString
   ;

@@ -23,6 +23,7 @@ with "goil_template_scanner.gLexique" ;
 import lexique goil_template_scanner in "goil_template_scanner.gLexique" ;
 
 import semantics goil_template_semantics in "goil_template_semantics.ggs" ;
+import semantics system_config in "system_config.ggs" ;
 
 #------------------------------------------------------------------------------*
 #                                                                              *
@@ -33,6 +34,7 @@ import semantics goil_template_semantics in "goil_template_semantics.ggs" ;
 nonterminal <expression>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -42,6 +44,7 @@ label parse
 nonterminal <relation_term>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -51,6 +54,7 @@ label parse
 nonterminal <relation_factor>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -60,6 +64,7 @@ label parse
 nonterminal <simple_expression>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -69,6 +74,7 @@ label parse
 nonterminal <term>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -78,6 +84,7 @@ label parse
 nonterminal <factor>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -504,6 +511,7 @@ end routine ;
 rule <expression>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -511,6 +519,7 @@ rule <expression>
   <relation_term>
     !inPrefix
     !inPath
+    !inCfg
     !inVariableMap
     ?outValue
     ?outResultType
@@ -525,6 +534,7 @@ rule <expression>
     <relation_term>
       !inPrefix
       !inPath
+      !inCfg
       !inVariableMap
       ?rightOperand
       ?secondOperandType
@@ -544,6 +554,7 @@ rule <expression>
     <relation_term>
       !inPrefix
       !inPath
+      !inCfg
       !inVariableMap
       ?rightOperand
       ?secondOperandType
@@ -566,6 +577,7 @@ end rule ;
 rule <relation_term>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -573,6 +585,7 @@ rule <relation_term>
   <relation_factor>
     !inPrefix
     !inPath
+    !inCfg
     !inVariableMap
     ?outValue
     ?outResultType
@@ -587,6 +600,7 @@ rule <relation_term>
     <relation_factor>
       !inPrefix
       !inPath
+      !inCfg
       !inVariableMap
       ?rightOperand
       ?secondOperandType
@@ -609,6 +623,7 @@ end rule ;
 rule <relation_factor>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -616,6 +631,7 @@ rule <relation_factor>
   <simple_expression>
     !inPrefix
     !inPath
+    !inCfg
     !inVariableMap
     ?outValue
     ?outResultType
@@ -630,6 +646,7 @@ rule <relation_factor>
     <simple_expression>
       !inPrefix
       !inPath
+      !inCfg
       !inVariableMap
       ?rightExpression
       ?rightType ;
@@ -654,6 +671,7 @@ rule <relation_factor>
     <simple_expression>
       !inPrefix
       !inPath
+      !inCfg
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -679,6 +697,7 @@ rule <relation_factor>
     <simple_expression>
       !inPrefix
       !inPath
+      !inCfg
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -704,6 +723,7 @@ rule <relation_factor>
     <simple_expression>
       !inPrefix
       !inPath
+      !inCfg
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -729,6 +749,7 @@ rule <relation_factor>
     <simple_expression>
       !inPrefix
       !inPath
+      !inCfg
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -754,6 +775,7 @@ rule <relation_factor>
     <simple_expression>
       !inPrefix
       !inPath
+      !inCfg
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -782,6 +804,7 @@ end rule ;
 rule <simple_expression>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -789,6 +812,7 @@ rule <simple_expression>
   <term>
     !inPrefix
     !inPath
+    !inCfg
     !inVariableMap
     ?outValue
     ?outResultType
@@ -803,6 +827,7 @@ rule <simple_expression>
     <term>
       !inPrefix
       !inPath
+      !inCfg
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -818,6 +843,7 @@ rule <simple_expression>
     <term>
       !inPrefix
       !inPath
+      !inCfg
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -833,6 +859,7 @@ rule <simple_expression>
     <term>
       !inPrefix
       !inPath
+      !inCfg
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -848,6 +875,7 @@ rule <simple_expression>
     <term>
       !inPrefix
       !inPath
+      !inCfg
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -866,6 +894,7 @@ end rule ;
 rule <term>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -873,6 +902,7 @@ rule <term>
   <factor>
     !inPrefix
     !inPath
+    !inCfg
     !inVariableMap
     ?outValue
     ?outResultType
@@ -887,6 +917,7 @@ rule <term>
     <factor>
       !inPrefix
       !inPath
+      !inCfg
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -902,6 +933,7 @@ rule <term>
     <factor>
       !inPrefix
       !inPath
+      !inCfg
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -917,6 +949,7 @@ rule <term>
     <factor>
       !inPrefix
       !inPath
+      !inCfg
       !inVariableMap
       ?rightExpression
       ?rightType
@@ -935,6 +968,7 @@ end rule ;
 rule <factor>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -943,6 +977,7 @@ rule <factor>
   <expression>
     !inPrefix
     !inPath
+    !inCfg
     !inVariableMap
     ?outValue
     ?outResultType
@@ -959,6 +994,7 @@ end rule ;
 rule <factor>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -969,6 +1005,7 @@ rule <factor>
   <factor>
     !inPrefix
     !inPath
+    !inCfg
     !inVariableMap
     ?expression
     ?operandType
@@ -990,6 +1027,7 @@ end rule ;
 rule <factor>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -1000,6 +1038,7 @@ rule <factor>
   <factor>
     !inPrefix
     !inPath
+    !inCfg
     !inVariableMap
     ?value
     ?operandType
@@ -1021,6 +1060,7 @@ end rule ;
 rule <factor>
   ??@string unused inPrefix
   ??@string unused inPath
+  ??@systemConfig unused inCfg
   ??@goilTemplateVariableMap unused inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -1043,6 +1083,7 @@ end rule ;
 rule <factor>
   ??@string unused inPrefix
   ??@string unused inPath
+  ??@systemConfig unused inCfg
   ??@goilTemplateVariableMap unused inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -1065,6 +1106,7 @@ end rule ;
 rule <factor>
   ??@string unused inPrefix
   ??@string unused inPath
+  ??@systemConfig unused inCfg
   ??@goilTemplateVariableMap unused inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -1088,6 +1130,7 @@ end rule ;
 rule <factor>
   ??@string unused inPrefix
   ??@string unused inPath
+  ??@systemConfig unused inCfg
   ??@goilTemplateVariableMap unused inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -1111,6 +1154,7 @@ end rule ;
 rule <factor>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -1122,6 +1166,7 @@ rule <factor>
   <expression>
     !inPrefix
     !inPath
+    !inCfg
     !inVariableMap
     ?expressionValue
     ?expressionType
@@ -1139,6 +1184,7 @@ rule <factor>
       <expression>
         !inPrefix
         !inPath
+        !inCfg
         !inVariableMap
         ?expression
         ?resultType
@@ -1195,6 +1241,7 @@ end routine ;
 rule <factor>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
@@ -1220,6 +1267,7 @@ rule <factor>
       <expression>
         !inPrefix
         !inPath
+        !inCfg
         !inVariableMap
         ?expression
         ?resultType
@@ -1231,8 +1279,14 @@ rule <factor>
     $)$ ;
   #--- Check arguments
     @objectlist actualArgumentObjectList [emptyList] ;
-    const @typelist formalParameterList := [f formalParameterTypeList] ;
-    if [formalParameterList length] != [actualArgumentList length] then
+    # The functions a template may call have an implicit first argument which is
+    # the inCfg (ie an object embedding all the system configuration and allow the
+    # function to retrieve the informations. So it is remove from the parameter
+    # list before checking the actual parameter list against the formal parameter list.
+    @typelist completeFormalParameterList := [f formalParameterTypeList];
+    [!?completeFormalParameterList popFirst ?*];
+    const @typelist formalParameterList := completeFormalParameterList ;
+    if ([formalParameterList length] - 1) != [actualArgumentList length] then
       error functionOrVariableName: "this function is invoked with "
       . [[actualArgumentList length] string]
       . " parameter" . if [actualArgumentList length] > 1 then "s" else "" end
@@ -1242,6 +1296,7 @@ rule <factor>
       -> outValue, outResultType ;
     else
       @uint idx := 1 ;
+      # 
       foreach formalParameterList prefixedby formal_, actualArgumentList prefixedby actual_ do
         switch actual_mType
         when boolType :

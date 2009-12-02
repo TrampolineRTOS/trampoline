@@ -19,6 +19,7 @@
 
 semantics goil_template_test :
   import semantics goil_template_invocation in "goil_template_invocation.ggs" ;
+  import semantics system_config in "system_config.ggs" ;
   import grammar goil_template_grammar in "goil_template_grammar.gGrammar" ;
   import option goil_options in "goil_options.gOption" ;
 
@@ -111,6 +112,7 @@ routine testTemplate
     grammar goil_template_grammar on templateSourceString
       !"code"
       !""
+      ![@systemConfig new !""]
       !sampleMap
       !?resutingString
     ;

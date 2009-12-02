@@ -18,6 +18,7 @@
 #---------------------------------------------------------------------------*
 
 semantics goil_template_invocation :
+import semantics system_config in "system_config.ggs";
 import semantics goil_template_semantics in "goil_template_semantics.ggs" ;
 import grammar goil_template_grammar in "goil_template_grammar.gGrammar" ;
 import option goil_options in "goil_options.gOption" ;
@@ -190,6 +191,7 @@ routine goilTemplateInvocation
   ??@lstring                 inTemplateName
   ??@string                  inPrefix
   ??@string                  inPath
+  ??@systemConfig            inCfg
   ??@goilTemplateVariableMap inTemplateVariableMap
   ?!@string                  ioResultingString
 :
@@ -204,7 +206,7 @@ routine goilTemplateInvocation
       if [targetDir length] == 0 then
         error inTemplateName:"the '--target' (or '-t') option is required for generating code" ;
       elsif not [templateDir . "/" . inPrefix directoryExists] then
-        error inTemplateName: "internal. no ". inPrefix . "template found";
+        error inTemplateName: "internal. no '". templateDir . "/" . inPrefix . "' template found";
 #      elsif not [templateDir . "/" . targetDir directoryExists] then
 #        error inTemplateName:"the '--target' (or '-t') option value is '" . templateDir
 #        . "', so the path formed with '--goil-templates' option is '"
@@ -218,7 +220,7 @@ routine goilTemplateInvocation
           pathList += !fullTemplatePath ;
           found := [fullTemplatePath fileExists] ;
           if found then
-            grammar goil_template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inTemplateVariableMap !?ioResultingString ;
+            grammar goil_template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inCfg !inTemplateVariableMap !?ioResultingString ;
           end if ;
         end if ;
         @string targetTemplatePartialPath := targetDir ;
@@ -229,11 +231,19 @@ routine goilTemplateInvocation
           pathList += !fullTemplatePath ;
           found := [fullTemplatePath fileExists] ;
           if found then
-            grammar goil_template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inTemplateVariableMap !?ioResultingString ;
+            grammar goil_template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inCfg !inTemplateVariableMap !?ioResultingString ;
           else
             targetTemplatePartialPath := [targetTemplatePartialPath stringByDeletingLastPathComponent] ;
           end if ;
         end loop ;
+        if not found then
+          const @string fullTemplatePath := templateDir . "/" . inPrefix . "/" . inTemplateName . ".goilTemplate" ;
+          pathList += !fullTemplatePath ;
+          found := [fullTemplatePath fileExists] ;
+          if found then
+            grammar goil_template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inCfg !inTemplateVariableMap !?ioResultingString ;
+          end if;
+        end if;
         if not found then
           @string m := "cannot find a valid path for the '" . inTemplateName . "' template; I have tried:" ;
           foreach pathList do
