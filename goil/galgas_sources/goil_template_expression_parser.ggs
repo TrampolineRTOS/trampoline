@@ -1284,7 +1284,11 @@ rule <factor>
     # function to retrieve the informations. So it is remove from the parameter
     # list before checking the actual parameter list against the formal parameter list.
     @typelist completeFormalParameterList := [f formalParameterTypeList];
-    [!?completeFormalParameterList popFirst ?*];
+    @type firstParamType;
+    [!?completeFormalParameterList popFirst ?firstParamType];
+    if firstParamType != `@systemConfig then
+      error functionOrVariableName:"Internal error, this function does not have a @systemConfig as first argument";
+    end if ;
     const @typelist formalParameterList := completeFormalParameterList ;
     if ([formalParameterList length] - 1) != [actualArgumentList length] then
       error functionOrVariableName: "this function is invoked with "
@@ -1296,7 +1300,6 @@ rule <factor>
       -> outValue, outResultType ;
     else
       @uint idx := 1 ;
-      # 
       foreach formalParameterList prefixedby formal_, actualArgumentList prefixedby actual_ do
         switch actual_mType
         when boolType :
@@ -1322,7 +1325,7 @@ rule <factor>
       outResultType := [@goilTemplateType unsignedType] ;
       outValue := [@goilTemplateValue new !0L !"" ![@goilTemplateFieldMapList emptyList]] ;
       if [@uint errorCount] == 0 then
-        const @object result := [f invoke !actualArgumentObjectList ![functionOrVariableName location]] ;
+        const @object result := [f invoke ![@objectlist listWithValue ![inCfg object]] . actualArgumentObjectList ![functionOrVariableName location]] ;
         if [result objectStaticType] == `@uint64 then
           outResultType := [@goilTemplateType unsignedType] ;
           outValue.mUnsigned64Value := (cast result if == @uint64 else error functionOrVariableName) ;

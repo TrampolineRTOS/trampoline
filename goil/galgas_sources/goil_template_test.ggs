@@ -26,12 +26,13 @@ semantics goil_template_test :
 #------------------------------------------------------------------------------*
 
 function testFunction
+  ??@systemConfig inCfg
   ??@string inArg1
   ??@uint64 inArg2
   ??@bool inArg3
   ->@string outResult
 :
-  outResult := "{" . inArg1 . "} " . [inArg2 string] . " " . [inArg3 ocString] ;
+  outResult := "[". [inCfg version]. "] {" . inArg1 . "} " . [inArg2 string] . " " . [inArg3 ocString] ;
 end function ;
 
 #------------------------------------------------------------------------------*
@@ -112,7 +113,7 @@ routine testTemplate
     grammar goil_template_grammar on templateSourceString
       !"code"
       !""
-      ![@systemConfig new !""]
+      ![@systemConfig new !"Version 1"]
       !sampleMap
       !?resutingString
     ;
