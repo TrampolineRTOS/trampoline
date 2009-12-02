@@ -27,6 +27,7 @@ import semantics goil_template_invocation in "goil_template_invocation.ggs" ;
 nonterminal <goil_template_start_symbol>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inTemplateVariableMap
   ?!@string ioResultingString
 ;
@@ -34,6 +35,7 @@ nonterminal <goil_template_start_symbol>
 nonterminal <template_instruction>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ?!@goilTemplateVariableMap ioTemplateVariableMap
   ?!@string ioResultingString
 label parse
@@ -42,6 +44,7 @@ label parse
 nonterminal <expression>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inTemplateVariableMap
   !@goilTemplateValue outExpression
   !@goilTemplateType outResultType
@@ -51,6 +54,7 @@ label parse
 nonterminal  <template_instruction_list>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inTemplateVariableMap
   ?!@string ioResultingString
 label parseAndResetTemplateString
@@ -62,6 +66,7 @@ label parse
 rule <template_instruction>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ?!@goilTemplateVariableMap ioTemplateVariableMap
   ?!@string ioResultingString
 :
@@ -71,6 +76,7 @@ rule <template_instruction>
   <expression>
     !inPrefix
     !inPath
+    !inCfg
     !ioTemplateVariableMap
     ?expression
     ?resultType
@@ -87,6 +93,7 @@ end rule ;
 rule <template_instruction>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ?!@goilTemplateVariableMap ioTemplateVariableMap
   ?!@string ioResultingString
 :
@@ -96,6 +103,7 @@ rule <template_instruction>
     !templateName
     !inPrefix
     !inPath
+    !inCfg
     !ioTemplateVariableMap
     !?ioResultingString
   ;
@@ -106,6 +114,7 @@ end rule ;
 rule <template_instruction>
   ??@string unused inPrefix
   ??@string unused inPath
+  ??@systemConfig unused inCfg
   ?!@goilTemplateVariableMap ioTemplateVariableMap
   ?!@string ioResultingString
 :
@@ -181,6 +190,7 @@ end rule ;
 rule <template_instruction>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ?!@goilTemplateVariableMap ioTemplateVariableMap
   ?!@string ioResultingString
 :
@@ -194,6 +204,7 @@ rule <template_instruction>
       <expression>
         !inPrefix
         !inPath
+        !inCfg
         !ioTemplateVariableMap
         ?expression
         ?expressionType
@@ -208,6 +219,7 @@ rule <template_instruction>
         <template_instruction_list>
           !inPrefix
           !inPath
+          !inCfg
           !ioTemplateVariableMap
           !?ioResultingString
         ;
@@ -231,6 +243,7 @@ rule <template_instruction>
       <template_instruction_list>
         !inPrefix
         !inPath
+        !inCfg
         !ioTemplateVariableMap
         !?ioResultingString
       ;
@@ -248,6 +261,7 @@ end rule ;
 rule  <template_instruction_list>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inTemplateVariableMap
   ?!@string ioResultingString
 :
@@ -258,6 +272,7 @@ rule  <template_instruction_list>
     <template_instruction>
       !inPrefix
       !inPath
+      !inCfg
       !?templateVariableMap
       !?ioResultingString
     ;
@@ -277,12 +292,14 @@ end rule ;
 rule  <goil_template_start_symbol>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ??@goilTemplateVariableMap inTemplateVariableMap
   ?!@string ioResultingString
 :
   <template_instruction_list>
     !inPrefix
     !inPath
+    !inCfg
     !inTemplateVariableMap
     !?ioResultingString
   ;
@@ -293,6 +310,7 @@ end rule ;
 rule <template_instruction>
   ??@string inPrefix
   ??@string inPath
+  ??@systemConfig inCfg
   ?!@goilTemplateVariableMap ioTemplateVariableMap
   ?!@string ioResultingString
 :
@@ -305,6 +323,7 @@ rule <template_instruction>
     <expression>
       !inPrefix
       !inPath
+      !inCfg
       !ioTemplateVariableMap
       ?enumeratedValue
       ?expressionType
@@ -335,6 +354,7 @@ rule <template_instruction>
       <template_instruction_list>
         !inPrefix
         !inPath
+        !inCfg
         !ioTemplateVariableMap
         !?ioResultingString
       ;
@@ -361,6 +381,7 @@ rule <template_instruction>
     <template_instruction_list>
       !inPrefix
       !inPath
+      !inCfg
       !templateVariableMap
       !?ioResultingString
     ;
@@ -373,6 +394,7 @@ rule <template_instruction>
         <template_instruction_list>
           !inPrefix
           !inPath
+          !inCfg
           !ioTemplateVariableMap
           !?ioResultingString
         ;
@@ -391,6 +413,7 @@ rule <template_instruction>
       <template_instruction_list>
         !inPrefix
         !inPath
+        !inCfg
         !ioTemplateVariableMap
         !?ioResultingString
       ;

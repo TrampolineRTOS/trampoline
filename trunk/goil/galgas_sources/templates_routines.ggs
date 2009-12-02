@@ -6,11 +6,13 @@ function goil_template
   ??@string name
   ->@string result
 :
+  @systemConfig cfg := [@systemConfig new !"tadam !"];
   result := "";
   goilTemplateInvocation
     ![@lstring new !name !here]
     !prefix
     !"templates"
+    !cfg
     ![@goilTemplateVariableMap emptyMap]
     !?result;
 end function;

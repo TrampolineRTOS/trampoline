@@ -411,6 +411,7 @@ routine generate_memmap_new
   ??@root_obj   cpu
 :
   @string cc := compiler[![[cpu os] memmap]];
+#  @string cc := "gcc";
   if cc != "" then
     @string mm := goil_template[!cc !"MemMap.h"];
     message mm;
