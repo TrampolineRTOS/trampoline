@@ -1290,7 +1290,7 @@ rule <factor>
       error functionOrVariableName:"Internal error, this function does not have a @systemConfig as first argument";
     end if ;
     const @typelist formalParameterList := completeFormalParameterList ;
-    if ([formalParameterList length] - 1) != [actualArgumentList length] then
+    if [formalParameterList length] != [actualArgumentList length] then
       error functionOrVariableName: "this function is invoked with "
       . [[actualArgumentList length] string]
       . " parameter" . if [actualArgumentList length] > 1 then "s" else "" end

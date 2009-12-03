@@ -29,7 +29,7 @@ semantics memory_mapping :
 import semantics goil_routines         in "goil_routines.ggs" ;
 import semantics goil_types_root       in "goil_types_root.ggs" ;
 import semantics goil_env_verification in "goil_env_verification.ggs" ;
-import semantics templates_routines    in "templates_routines.ggs";
+import semantics template_routines     in "template_routines.ggs";
 
 import option goil_options in "goil_options.gOption" ;
 
@@ -408,12 +408,12 @@ routine generate_memmap
 end routine;
 
 routine generate_memmap_new
-  ??@root_obj   cpu
+  ??@goilTemplateVariableMap cfg
 :
-  @string cc := compiler[![[cpu os] memmap]];
+  @lstring cc := [cfg compilerKind];
 #  @string cc := "gcc";
-  if cc != "" then
-    @string mm := goil_template[!cc !"MemMap.h"];
+  if [cc string] != "" then
+    @string mm := goil_template[!"compiler/".[cc string] !cfg !"MemMap.h"];
     message mm;
   end if;
 end routine;

@@ -1,0 +1,51 @@
+#
+# @file tasks_config.ggs
+#
+# @section File description
+#
+# This file contains the routines which add the tasks list
+# to the system configuration
+#
+# @section Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline is protected by the french intellectual property law.
+#
+# goil is distributed under the GNU Public Licence V2
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the
+# Free Software Foundation.
+#
+# This program is distributed in the hope it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics tasks_config:
+
+import semantics system_config in "system_config.ggs";
+import semantics goil_template_invocation in "goil_template_invocation.ggs";
+
+routine setTasksList ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
+  @goilTemplateFieldMapList taskList [emptyList];
+  foreach [cpu tasks] do
+    @goilTemplateFieldMap fieldMap [emptyMap];
+    addStringFieldValue !?fieldMap ![@lstring new !"name" !here] ![key string];
+    taskList += !fieldMap;
+  end foreach;
+  addListValue !?cfg ![@lstring new !"TASKS" !here] !taskList;    
+end routine;
+
+end semantics;
+

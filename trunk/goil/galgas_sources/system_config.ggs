@@ -34,10 +34,28 @@
 # $URL$
 #
 
-semantics system_config :
+semantics system_config:
+
+import semantics goil_types_root in "goil_types_root.ggs";
+import semantics goil_template_semantics in "goil_template_semantics.ggs" ;
 
 class @systemConfig {
-  @string version;
+  @string  version      feature setter;
+  @lstring compilerKind feature setter;
+  @goilTemplateFieldMapList tasks feature setter;
 }
 
+routine setCompilerKind ??@root_obj cpu ?!@systemConfig cfg:
+  cast [[cpu os] memmap]:
+  when == @memmap_true mm do [!?cfg setCompilerKind ![mm compiler]];
+  else end cast;
+end routine;
+
+function emptySystemConfig ->@systemConfig cfg:
+  cfg := [@systemConfig new
+    !"1.0"
+    !empty_lstring[]
+    ![@goilTemplateFieldMapList emptyList]
+  ];
+end function;
 end semantics;

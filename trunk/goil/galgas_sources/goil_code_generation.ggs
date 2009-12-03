@@ -41,6 +41,8 @@ import semantics it_table_generation in "it_table_generation.ggs";
 import semantics trace_description in "trace_description.ggs";
 import semantics goil_env_verification in "goil_env_verification.ggs";
 import semantics config_type in "config_type.ggs";
+import semantics system_config in "system_config.ggs";
+import semantics tasks_config in "tasks_config.ggs";
 
 import semantics cfg_types in "cfg_types.ggs";
 import grammar cfg_grammar in "cfg_grammar.gGrammar";
@@ -2042,8 +2044,12 @@ routine generate_all
           generate_memmap
             !cpu;
 
+#          @goilTemplateVariableMap sysCfg [emptyMap];
+#          #setCompilerKind !cpu !?sysCfg;
+#          setTasksList !cpu !?sysCfg;
+#          
 #          generate_memmap_new
-#            !cpu;
+#            !sysCfg;
 
           generate_compiler
             !cpu;
