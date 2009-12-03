@@ -71,7 +71,6 @@ IMPLEMENTATION trampoline {
 		PRIORITY = 1;
 		ACTIVATION = 1;
 		SCHEDULE = FULL;
-        ACCESSING_APPLICATION = app3;
 		RESOURCE = Resource1;
 	};
 	TASK t2 {
@@ -88,6 +87,7 @@ IMPLEMENTATION trampoline {
 		ACTIVATION = 1;
 		SCHEDULE = FULL;
 		EVENT = Event3;
+        ACCESSING_APPLICATION = app1;
 	};		
 	COUNTER Software_Counter1{
 		MAXALLOWEDVALUE = 100;

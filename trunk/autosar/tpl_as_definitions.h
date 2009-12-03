@@ -121,18 +121,18 @@
 #define OBJECT_RESOURCE       2
 
 /**
- * @def OBJECT_COUNTER
- * 
- * Identifier of a counter object
- */
-#define OBJECT_COUNTER        3
-
-/**
  * @def OBJECT_SCHEDULETABLE
  * 
  * Identifier of a schedule table object
  */
-#define OBJECT_SCHEDULETABLE  4
+#define OBJECT_SCHEDULETABLE  3
+
+/**
+ * @def OBJECT_COUNTER
+ * 
+ * Identifier of a counter object
+ */
+#define OBJECT_COUNTER        4
 
 /**
  * @def OBJECT_KIND_COUNT

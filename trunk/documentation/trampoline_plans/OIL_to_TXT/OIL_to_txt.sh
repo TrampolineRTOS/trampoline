@@ -13,7 +13,7 @@ for first_path in "GOIL" "functional"
 do
 	echo "${first_path} tests sequences"
 	
-	PAT="../../../trampoline-trunk/check/$first_path/"
+	PAT="../../../check/$first_path/"
 
 	for name in `cat ${PAT}${first_path}_testSequences.txt`
 	do
