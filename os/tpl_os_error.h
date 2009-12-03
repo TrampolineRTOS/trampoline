@@ -1426,11 +1426,11 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #   define CHECK_ACCESS_RIGHTS_TASK_ID(obj_id,result)							\
 	if( result == (tpl_status)E_OK )											\
 	{																			\
-		CONST(u8, AUTOMATIC) bit_shift = ((tpl_kern.running_id << 1) & 0x7);	\
-		CONST(u8, AUTOMATIC) byte_idx = tpl_kern.running_id >> 2;				\
+		CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);	\
+		CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;				\
 		extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
 		CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =		\
-			tpl_app_table[tpl_stat_proc_table[obj_id]->app_id];					\
+			tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];					\
 		if ( (((app_access->access_vec[OBJECT_TASK][byte_idx]) &				\
 			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )				\
 		{																		\
@@ -1466,15 +1466,12 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #   define CHECK_ACCESS_RIGHTS_ALARM_ID(obj_id,result)							\
 	if( result == (tpl_status)E_OK )											\
 	{																			\
-		CONST(u8, AUTOMATIC) bit_shift = ((tpl_kern.running_id << 1) & 0x7);	\
-		CONST(u8, AUTOMATIC) byte_idx = tpl_kern.running_id >> 2;				\
+		CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);	\
+		CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;				\
 		extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
-		extern CONSTP2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) tpl_alarm_table[ALARM_COUNT]; \
-		P2CONST(tpl_time_obj_static, AUTOMATIC, OS_CONST) alr =					\
-			tpl_alarm_table[obj_id]->stat_part;									\
-		CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =		\
-			tpl_app_table[alr->app_id];											\
-		if ( (((app_access->access_vec[OBJECT_TASK][byte_idx]) &				\
+        CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =		\
+            tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];	\
+		if ( (((app_access->access_vec[OBJECT_ALARM][byte_idx]) &				\
 			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )				\
 		{																		\
 			result = E_OS_ACCESS;												\
@@ -1509,13 +1506,12 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #   define CHECK_ACCESS_RIGHTS_RESOURCE_ID(obj_id,result)						\
 	if( result == (tpl_status)E_OK )											\
 	{																			\
-		CONST(u8, AUTOMATIC) bit_shift = ((tpl_kern.running_id << 1) & 0x7);	\
-		CONST(u8, AUTOMATIC) byte_idx = tpl_kern.running_id >> 2;				\
-		extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
-		extern CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) tpl_resource_table[RESOURCE_COUNT]; \
-		CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =		\
-			tpl_app_table[tpl_resource_table[obj_id]->app_id];					\
-		if ( (((app_access->access_vec[OBJECT_TASK][byte_idx]) &				\
+		CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);	\
+        CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;				\
+        extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
+        CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =		\
+            tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];	\
+		if ( (((app_access->access_vec[OBJECT_RESOURCE][byte_idx]) &			\
 			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )				\
 		{																		\
 			result = E_OS_ACCESS;												\
@@ -1550,13 +1546,12 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #   define CHECK_ACCESS_RIGHTS_COUNTER_ID(obj_id,result)						\
 	if( result == (tpl_status)E_OK )											\
 	{																			\
-		CONST(u8, AUTOMATIC) bit_shift = ((tpl_kern.running_id << 1) & 0x7);	\
-		CONST(u8, AUTOMATIC) byte_idx = tpl_kern.running_id >> 2;				\
-		extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
-		extern CONSTP2VAR(tpl_counter, OS_VAR, OS_APPL_DATA) tpl_counter_table[COUNTER_COUNT]; \
-		CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =		\
-			tpl_app_table[tpl_counter_table[obj_id]->app_id];					\
-		if ( (((app_access->access_vec[OBJECT_TASK][byte_idx]) &				\
+		CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);	\
+        CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;				\
+        extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
+        CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =		\
+            tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];	\
+		if ( (((app_access->access_vec[OBJECT_COUNTER][byte_idx]) &				\
 			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )				\
 		{																		\
 			result = E_OS_ACCESS;												\
@@ -1591,14 +1586,12 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #   define CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(obj_id,result)					\
 	if( result == (tpl_status)E_OK )											\
 	{																			\
-		CONST(u8, AUTOMATIC) bit_shift = ((tpl_kern.running_id << 1) & 0x7);	\
-		CONST(u8, AUTOMATIC) byte_idx = tpl_kern.running_id >> 2;				\
-		extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
-		P2CONST(tpl_time_obj_static, AUTOMATIC, OS_CONST) st =					\
-			tpl_schedtable_table[obj_id]->b_desc.stat_part;						\
-		CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =		\
-			tpl_app_table[st->app_id];											\
-		if ( (((app_access->access_vec[OBJECT_TASK][byte_idx]) &				\
+		CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);	\
+        CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;				\
+        extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
+        CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =		\
+            tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];	\
+		if ( (((app_access->access_vec[OBJECT_SCHEDULETABLE][byte_idx]) &				\
 			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )				\
 		{																		\
 			result = E_OS_ACCESS;												\

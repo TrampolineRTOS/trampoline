@@ -245,16 +245,16 @@ The incrementation of the counter on Unix System is a random bit. Sometimes, it 
 \section{Tests automatisation...}
 \subsection{...from `functional` directory}
 	In order to make all the tests and to be able to tell to the user if they've been executed correctly, we have created a shell script. This shell script build and execute all the test sequences and compare the results (saved in a file) to the expected ones (an other file). The shell script is below. The names of the test sequences are in `testSequences.txt`. The "clean" case deletes all the files that have been created to generated the executable file and the embUnit library (because it is OS dependent).
-	\lstinputlisting[language=sh,firstline=1]{../../trampoline-trunk/check/tests.sh}
+	\lstinputlisting[language=sh,firstline=1]{../../check/tests.sh}
 	
 \appendix
 \section{Test sequence example : alarms\_s11} \label{annexe_testsequenceexample}
 
-\lstinputlisting[language=C,firstline=1]{../../trampoline-trunk/check/functional/alarms_s11/alarms_s11.oil}
-\lstinputlisting[language=C,firstline=1]{../../trampoline-trunk/check/functional/alarms_s11/alarms_s11.c}
-\lstinputlisting[language=C,firstline=1]{../../trampoline-trunk/check/functional/alarms_s11/task1_instance.c}
-\lstinputlisting[language=C,firstline=1]{../../trampoline-trunk/check/functional/alarms_s11/task2_instance.c}
-\lstinputlisting[language=C,firstline=1]{../../trampoline-trunk/check/functional/alarms_s11/task3_instance.c}
+\lstinputlisting[language=C,firstline=1]{../../check/functional/alarms_s11/alarms_s11.oil}
+\lstinputlisting[language=C,firstline=1]{../../check/functional/alarms_s11/alarms_s11.c}
+\lstinputlisting[language=C,firstline=1]{../../check/functional/alarms_s11/task1_instance.c}
+\lstinputlisting[language=C,firstline=1]{../../check/functional/alarms_s11/task2_instance.c}
+\lstinputlisting[language=C,firstline=1]{../../check/functional/alarms_s11/task3_instance.c}
 	
 	
 	

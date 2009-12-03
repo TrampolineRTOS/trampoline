@@ -3488,7 +3488,7 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 	t1		& SetEvent(t3, Event3)							& E\_OK							& 12 \\ \hline
 	t3		& WaitEvent(Event2)								& E\_OK							& \\ \hline
 	t1		& GetEvent(t2, \&EventMaskType)					& E\_OS\_ACCESS					& 13 \\ \hline
-	t1		& GetEvent(t2, \&EventMaskType)					& E\_OK, Event=Event3				& 14 \\ \hline
+	t1		& GetEvent(t3, \&EventMaskType)					& E\_OK, Event=Event3				& 14 \\ \hline
 	
 	t1		& GetResource(Resource2)						& E\_OS\_ACCESS					& 7 \\ \hline
 	t1		& GetResource(Resource1)						& E\_OK							& 8 \\ \hline
