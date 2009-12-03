@@ -408,14 +408,14 @@ routine generate_memmap
 end routine;
 
 routine generate_memmap_new
-  ??@goilTemplateVariableMap cfg
+  ??@goilTemplateVariableMap unused cfg
 :
-  @lstring cc := [cfg compilerKind];
+#  @lstring cc := [cfg compilerKind];
 #  @string cc := "gcc";
-  if [cc string] != "" then
-    @string mm := goil_template[!"compiler/".[cc string] !cfg !"MemMap.h"];
-    message mm;
-  end if;
+#  if [cc string] != "" then
+#    @string mm := goil_template[!"compiler/".[cc string] !cfg !"MemMap.h"];
+#    message mm;
+#  end if;
 end routine;
 
 routine generate_compiler
