@@ -47,15 +47,15 @@ CPU test {
         STACKSIZE = 256;
     };
 
-	COUNTER generalCounter {
+	COUNTER SystemCounter {
 		TICKSPERBASE = 10;
 		MAXALLOWEDVALUE = 1000;
 		MINCYCLE = 1;
-		SOURCE = it_timer_1;
+		SOURCE = TIMER2_OVF_vect;
 	};
   
 	ALARM periodicAl {
-		COUNTER=generalCounter;
+		COUNTER= SystemCounter;
 		ACTION = ACTIVATETASK {
 			TASK = periodicTask;
 		};

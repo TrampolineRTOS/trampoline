@@ -123,6 +123,8 @@ routine generate_it_table
               else
                 error [it_id location]: "Internal error, this should be an integer";
               end cast;
+            else
+              error src: "The SOURCE (".[src string].")specified for COUNTER ".[key string]." cannot be found in target.cfg";
             end if;
           end foreach;
         end foreach;
