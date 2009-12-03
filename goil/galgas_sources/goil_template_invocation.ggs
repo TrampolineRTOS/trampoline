@@ -28,6 +28,7 @@ import option goil_options in "goil_options.gOption" ;
 once allowedFunctions -> @stringset outAllowedFunctionSet :
   outAllowedFunctionSet := [@stringset emptySet] ;
   outAllowedFunctionSet += !"testFunction" ;
+  outAllowedFunctionSet += !"tasks" ;
 end once ;
 
 #------------------------------------------------------------------------------*

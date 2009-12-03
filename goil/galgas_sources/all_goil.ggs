@@ -33,7 +33,8 @@ project all_goil :
   grammar   "goil_template_grammar.gGrammar"      : makefile, xcode_tool;
   semantics "goil_template_invocation.ggs"        : makefile, xcode_tool;
   semantics "goil_template_test.ggs"              : makefile, xcode_tool;
-  semantics "templates_routines.ggs"              : makefile, xcode_tool;
+  semantics "template_routines.ggs"               : makefile, xcode_tool;
+  semantics "template_functions.ggs"              : makefile, xcode_tool;
 
 
 
@@ -114,6 +115,7 @@ project all_goil :
   # Code generation
   #
   semantics "system_config.ggs"            : makefile, xcode_tool;
+  semantics "tasks_config.ggs"             : makefile, xcode_tool;
   semantics "config_type.ggs"              : makefile, xcode_tool;
   semantics "goil_code_generation.ggs"     : makefile, xcode_tool;
   semantics "goil_proc_generation.ggs"     : makefile, xcode_tool;

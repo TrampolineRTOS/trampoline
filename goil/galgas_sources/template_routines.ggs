@@ -1,19 +1,19 @@
-semantics templates_routines :
+semantics template_routines :
 import semantics goil_template_invocation in "goil_template_invocation.ggs";
 
 function goil_template
   ??@string prefix
+  ??@goilTemplateVariableMap cfg
   ??@string name
   ->@string result
 :
-  @systemConfig cfg := [@systemConfig new !"tadam !"];
   result := "";
   goilTemplateInvocation
     ![@lstring new !name !here]
     !prefix
     !"templates"
+    !emptySystemConfig[]
     !cfg
-    ![@goilTemplateVariableMap emptyMap]
     !?result;
 end function;
 end semantics;
