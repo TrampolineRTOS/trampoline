@@ -1,6 +1,6 @@
 /* Running the following example:
  *just call goil a first time using the command line:
- *goil --target=avr -g --templates=../../goil/templates/ firstAVR.oil
+ *goil --target=avr -g -i --templates=../../goil/templates/ firstAVR.oil
  *(COMPILER, LINKER and ASSEMBLER in OS section may be adapted to your 
  * specific install of avr cross-compiler)
  *
@@ -74,10 +74,10 @@ CPU test {
         STACKSIZE = 256;
     };
 
-//    ISR boutonISR {
-//        CATEGORY = 2;
-//        PRIORITY = 20;
-//        STACKSIZE = 256;
-//        TRAP = INT7_vect;
-//    };
+    ISR boutonISR {
+        CATEGORY = 2;
+        PRIORITY = 20;
+        STACKSIZE = 256;
+        SOURCE = INT7_vect;
+    };
 };

@@ -1,0 +1,18 @@
+AVR sample project for AVR (AT90CAN128, but it should not be difficult to target 
+To build the example, you can use makefile or an AVR Studio project.
+
+[Makefile]
+* you should adapt your OIL file to your specific installation of avr-gcc (COMPILER, LINKER and ASSEMBLER keys in the CPU/OS section).
+* Then build oil related generated .c and .h files and the Makefile:
+goil --target=avr -g -i --templates=../../goil/templates/ firstAVR.oil
+* Finally:
+make
+Both a .elf and a .hex files are generated.
+
+[AVR Studio]
+
+Go to the AVRStudio directory.
+* run the 'runGoil.bat' command file to generate .c and .h files related to the .oil file (you should select the oil file in this directory). 
+NOTE: This command file SHOULD be called each time that the .oil file is updated.
+* open the AVR Studio project file and compile. That's all.
+(The only specific thing in the project settings is related to include directories.

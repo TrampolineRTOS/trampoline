@@ -21,7 +21,7 @@ avr_context $EXEC_INTEGER_CONTEXT$;
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-ISR ($EXEC_NAME$_vect)
+ISR ($IT_SOURCE$)
 {
-  tpl_central_interrupt_handler(isr_id_of_$EXEC_NAME$);
+  tpl_central_interrupt_handler($EXEC_NAME$_id);
 }
