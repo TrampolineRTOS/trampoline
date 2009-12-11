@@ -55,12 +55,12 @@ routine generate_target_avr
   @uint stack_size ;
   additional_int_key_required !"STACKSIZE" !others !name ?stack_size ;
   doReplace !?result !"$STACK_SIZE$" ![stack_size string] ;
-  cast exe :
+  cast exe:
   when == @isr_obj do
       #object is an isr.
       @string trap ;
-      additional_string_key_required !"TRAP" !others !name ?trap ;
-      doReplace !?result !"$TRAP$" !trap;
+      additional_string_key_required !"SOURCE" !others !name ?trap ;
+      doReplace !?result !"$IT_SOURCE$" !trap;
   else
   end cast ;
 end routine ;
@@ -77,6 +77,7 @@ routine generate_isr_avr
     @string tmp := template_string[!"code" !"isr_list_specific"];
     #then, replace the interruptHandler name.
     doReplace !?tmp !"$EXEC_NAME$" ![isr_name string] ;
+    #doReplace !?tmp !"$IT_SOURCE$" ![[isr source] string] ;
     result .= tmp;
   end foreach ;
   doReplace !?code !"$ISR_LIST$" !result ;
@@ -96,7 +97,6 @@ routine generate_counter_avr
         result .= tmp;
     end cast ;
   end foreach ;
-
   doReplace !?code !"$COUNTER_LIST$" !result ;
 end routine ;
 

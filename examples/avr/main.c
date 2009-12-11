@@ -2,10 +2,10 @@
 #include "tpl_os_generated_configuration.h"
 #include <avr/io.h>
 
-//ISR(boutonISR)
-//{
-//	PORTA ^= 0x20;
-//}
+ISR(boutonISR)
+{
+	PORTA ^= 0x20;
+}
 
 //remove trampoline def of ISR..
 #undef ISR
