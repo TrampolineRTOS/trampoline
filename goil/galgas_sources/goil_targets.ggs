@@ -9,6 +9,7 @@ import semantics goil_target_v850e in "goil_target_v850e.ggs";
 import semantics goil_target_h8300h in "goil_target_h8300h.ggs";
 import semantics goil_target_arm7 in "goil_target_arm7.ggs";
 import semantics goil_target_avr in "goil_target_avr.ggs";
+import semantics goil_target_cortex_m3 in "goil_target_cortex_m3.ggs";
 import semantics goil_target_ppc in "goil_target_ppc.ggs";
 
 import semantics goil_routines in "goil_routines.ggs";
@@ -106,6 +107,9 @@ routine generate_context_and_stack
       generate_target_arm7  !name !idents !exe !?context_and_stack;
     elsif target == "avr" then
       generate_target_avr  !name !idents !exe !?context_and_stack;
+    elsif target == "cortex-m3" then
+      generate_target_cortex_m3  !name !idents !exe !?context_and_stack;
+
     else 
       error here : "unknown target: ".target;
     end if;
@@ -141,6 +145,8 @@ routine generate_isr_specific
       generate_isr_arm7  !isrs !?code;
     elsif target == "avr" then
       generate_isr_avr  !isrs !?code;
+    elsif target == "cortex-m3" then
+      generate_isr_cortex_m3  !isrs !?code;
     else 
       error here : "unknown target: ".target;
     end if;
@@ -171,6 +177,8 @@ routine generate_counter_for_target
     generate_counter_arm7 !counters !?code;
   elsif target == "avr" then
     generate_counter_avr !counters !?code;
+  elsif target == "cortex-m3" then
+    generate_counter_cortex_m3 !counters !?code;
   else 
     error here : "unknown target: ".target;
   end if;

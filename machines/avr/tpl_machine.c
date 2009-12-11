@@ -99,24 +99,20 @@ FUNC(void, OS_CODE) tpl_init_context(
 	*pointer=0x00;
 }
 
-volatile static unsigned char tpl_locking_depth = 0;
-
 void tpl_get_task_lock(void)
 {
 	cli();
-	tpl_locking_depth++;
 }
 
 void tpl_release_task_lock(void)
 {
-    if (tpl_locking_depth > 0) tpl_locking_depth--;
-    if (tpl_locking_depth == 0) sei();
+    sei();
 }
 
 /*
  * tpl_init_machine 
  */
-void tpl_init_tick_timer();
+//void tpl_init_tick_timer();
 void tpl_init_machine(void)
 {
 //	#ifndef NO_ALARM

@@ -129,18 +129,19 @@ project all_goil :
   #
   # Target specific code generation
   #
-  semantics "goil_targets.ggs"       : makefile, xcode_tool;
-  semantics "goil_target_c166.ggs"   : makefile, xcode_tool;
-  semantics "goil_target_libpcl.ggs" : makefile, xcode_tool;
-  semantics "goil_target_hcs12.ggs"  : makefile, xcode_tool;
-  semantics "goil_target_ppc.ggs"    : makefile, xcode_tool;
-  semantics "goil_target_v850e.ggs"  : makefile, xcode_tool;
-  semantics "goil_target_h8300h.ggs" : makefile, xcode_tool;
-  semantics "goil_target_arm7.ggs"   : makefile, xcode_tool;
-  semantics "goil_target_avr.ggs"    : makefile, xcode_tool;
-  semantics "goil_target_posix.ggs"  : makefile, xcode_tool;  
+  semantics "goil_targets.ggs"          : makefile, xcode_tool;
+  semantics "goil_target_c166.ggs"      : makefile, xcode_tool;
+  semantics "goil_target_libpcl.ggs"    : makefile, xcode_tool;
+  semantics "goil_target_hcs12.ggs"     : makefile, xcode_tool;
+  semantics "goil_target_ppc.ggs"       : makefile, xcode_tool;
+  semantics "goil_target_v850e.ggs"     : makefile, xcode_tool;
+  semantics "goil_target_h8300h.ggs"    : makefile, xcode_tool;
+  semantics "goil_target_arm7.ggs"      : makefile, xcode_tool;
+  semantics "goil_target_avr.ggs"       : makefile, xcode_tool;
+  semantics "goil_target_posix.ggs"     : makefile, xcode_tool;  
   semantics "goil_target_posix_vp2.ggs" : makefile, xcode_tool ;  
-
+  semantics "goil_target_cortex_m3.ggs" : makefile, xcode_tool;
+  
   grammar "goil_grammar.gGrammar"            : makefile, xcode_tool;
   grammar "goil_file_level_include.gGrammar" : makefile, xcode_tool;
   grammar "goil_cpu_level_include.gGrammar"  : makefile, xcode_tool;
