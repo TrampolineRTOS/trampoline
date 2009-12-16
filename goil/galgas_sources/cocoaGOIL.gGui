@@ -20,7 +20,7 @@ gui cocoaGOIL "cocoa" :
 with option "goil_options.gOption" ;
 
 with lexique "goil_lexique.gLexique" {
-  fileExtension : "goil" ;
+  fileExtension : "oil" ;
   title: "Source" ;
   blockComment : "//" ;
 }
