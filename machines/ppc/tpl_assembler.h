@@ -47,7 +47,7 @@
     #define TPL_LOW(sym)  %lo(sym)
     #define TPL_EXTERN    .extern
     #define CODE_ACCESS_RIGHT ,"ax"
-    #define VAR_ACCESS_RIGHT ,"rw"
+    #define VAR_ACCESS_RIGHT ,"aw"
   #else
     #ifdef __GNUC__
       #define r0 0
@@ -86,7 +86,7 @@
       #define TPL_LOW(sym)  sym@l
       #define TPL_EXTERN    .extern
       #define CODE_ACCESS_RIGHT ,"ax"
-      #define VAR_ACCESS_RIGHT ,"rw"
+      #define VAR_ACCESS_RIGHT ,"aw"
     #else
       #error "Unknown compiler"
     #endif
