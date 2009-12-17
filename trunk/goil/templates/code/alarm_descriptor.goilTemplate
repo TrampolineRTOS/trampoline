@@ -1,0 +1,105 @@
+/*-----------------------------------------------------------------------------
+ * Alarm % !NAME % descriptor
+ *
+ * This alarm does %
+if ACTION == "activateTask" then
+  %the activation of task % !TASK
+elsif ACTION == "setEvent" then
+  %a set of event % !EVENT % to task % !TASK
+elsif ACTION == "callback" then
+  %a callback of function % !FUNCTION %_callback%
+end if
+%
+ */
+ 
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+%
+if ACTION == "activateTask" then
+%
+CONST(tpl_task_activation_action, OS_CONST) % !NAME %_action = {
+  {
+    /* action function  */  tpl_action_activate_task
+  },
+  /* task id            */  % !TASK %_id
+};
+%
+elsif ACTION == "setEvent" then
+%
+CONST(tpl_setevent_action, OS_CONST) % !NAME %_action = {
+  {
+    /* action function  */    tpl_action_setevent
+  },
+  /* task id              */  % !TASK %_id,
+  /* event mask           */  % !EVENT %_mask
+};
+%
+elsif ACTION == "callback" then
+%
+CONST(tpl_callback_action, OS_CONST) % !NAME %_action = {
+  {
+    /* action function  */    tpl_action_callback
+  },
+  /* callback function    */  % !FUNCTION %_callback
+};
+%
+elsif ACTION == "incrementCounter" then
+%
+CONST(tpl_increment_counter_action, OS_CONST) % !NAME %_action = {
+  {
+  /* action function      */      tpl_action_increment_counter
+  },
+  /* counter descriptor ptr   */  &% !COUNTER %_counter_desc
+};
+%
+end if
+%
+
+CONST(tpl_alarm_static, OS_CONST) % !NAME %_static = {
+  {
+    /* pointer to counter           */  &% !COUNTER %_counter_desc,
+    /* pointer to the expiration    */  tpl_raise_alarm
+#if (WITH_TRACE == YES)
+    /* id of the alarm for tracing  */  , % !NAME %_id
+#endif
+#ifdef WITH_OSAPPLICATION
+    /* OS application id            */  , %
+if AUTOSAR then
+  if SCALABILITYCLASS >= 3 then
+    !APPLICATION%_id,%
+  end if
+end if
+%
+#endif
+  },
+  /* action of the alarm  */  (tpl_action *)&% !NAME %_action
+};
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+VAR(tpl_time_obj, OS_VAR) % !NAME %_dynamic = {
+    /* pointer to the static part   */  (tpl_time_obj_static *)&% !NAME %_static,
+    /* next alarm                   */  NULL,
+    /* prev alarm                   */  NULL,%
+if AUTOSTART then
+%
+    /* cycle                        */  % !CYCLETIME %,
+    /* date                         */  % !ALARMTIME %,
+    /* State of the alarm           */  ALARM_AUTOSTART%
+else
+%
+    /* cycle                        */  0,
+    /* date                         */  0,
+    /* State of the alarm           */  ALARM_SLEEP%
+end if
+%
+};
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
