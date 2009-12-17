@@ -1,10 +1,10 @@
 #include "simtec_driver_adapter.h"
 
 #ifdef SIMTEC_DEFAULT_DRIVERS
-#include "horloge.h"
-#include "timer.h"
-#include "interruption.h"
-#include "memoire.h"
+#include "default_drivers/horloge.h"
+#include "default_drivers/timer.h"
+#include "default_drivers/interruption.h"
+#include "default_drivers/memoire.h"
 
 /*
  * System timer registers

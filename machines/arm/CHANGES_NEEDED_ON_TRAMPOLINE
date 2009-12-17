@@ -1,9 +1,0 @@
-* core services (after dispatch in system calls) does not return anything in the prototypes. Actually, we need to know if a context switch is required or not
-
-* changes needed on GOIL (see in simtec directory and Make-rules template)
-
-* There is some values we need to use in assembler files (NEED_CONTEXT_SWITCH value, OS_SYSCALL_COUNT, size of some types, ...)
-
-* locking depth may be redondant with autosar one
-
-* OS393 : GOIL shall generate a macro for converting counters ticks to physical time
