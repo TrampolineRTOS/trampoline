@@ -78,7 +78,14 @@ FUNC(void, OS_CODE) tpl_release_task_lock (void)
  */
 void tpl_enable_interrupts(void)
 {
-    /* TODO */
+  /* unlock is scheduled to next switch back to task */
+  __asm__
+  (
+  "mrs r0, spsr ;"
+  "bic r0, r0, #0b11000000 ;"
+  "msr spsr, r0 ;"
+  : : : "r0" /* clobbered register */
+  );
 }
 
 /**
@@ -86,7 +93,16 @@ void tpl_enable_interrupts(void)
  */
 void tpl_disable_interrupts(void)
 {
-	/*TODO */
+  __asm__
+  (
+  "mrs r0, cpsr ;"
+  "orr r0, r0, #0b11000000 ;"
+  "msr cpsr, r0 ;"
+  "mrs r0, spsr ;" /* interrupts remain locked in user space */
+  "orr r0, r0, #0b11000000 ;"
+  "msr spsr, r0"
+  : : : "r0" /* clobbered register */
+  );
 }
 
 /*
@@ -132,100 +148,6 @@ FUNC(u8, OS_CODE) tpl_check_stack_footprint (
 	/*to do*/
 	tmp=0;
 	return tmp;
-}
-
-FUNC(void, OS_CODE) tpl_enable_all_interrupts_service (void)
-{
-  /* lock is scheduled to next switch back to task */
-	__asm__ ("mrs r0, spsr ;"
-			     "bic r0, r0, #0b11000000 ;"
-					 "msr spsr, r0 ;" : : : "r0");
-	
-	#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    tpl_disable_all_isr_lock_monitor (tpl_running_obj);
-	#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
-}
-
-FUNC(void, OS_CODE) tpl_disable_all_interrupts_service (void)
-{
-	__asm__ ("mrs r0, cpsr ;"
-			     "orr r0, r0, #0b11000000 ;"
-					 "msr cpsr, r0 ;"
-					 "mrs r0, spsr ;" /* interrupts remained locked in user space */
-					 "orr r0, r0, #0b11000000 ;"
-					 "msr spsr, r0" : : : "r0");
-	
-	#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    tpl_start_all_isr_lock_monitor (tpl_running_obj);
-	#endif /*WITH_AUTOSAR_TIMING_PROTECTION */	
-}
-
-FUNC(void, OS_CODE) tpl_resume_all_interrupts_service(void)
-{
-    tpl_locking_depth--;
-    
-    if (tpl_locking_depth == 0)
-    {
-			__asm__ ("mrs r0, spsr ;"
-					     "bic r0, r0, #0b11000000 ;"
-							 "msr spsr, r0 ;" : : : "r0");
-	
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-        tpl_disable_all_isr_lock_monitor (tpl_running_obj);
-#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
-    }
-}
-
-FUNC(void, OS_CODE) tpl_suspend_all_interrupts_service(void)
-{
-	__asm__ ("mrs r0, cpsr ;"
-			     "orr r0, r0, #0b11000000 ;"
-					 "msr cpsr, r0 ;"
-					 "mrs r0, spsr ;" /* interrupts remained locked in user space */
-					 "orr r0, r0, #0b11000000 ;"
-					 "msr spsr, r0" : : : "r0");
-   
-    tpl_locking_depth++;
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    if (tpl_locking_depth == 1)
-    {
-      tpl_start_all_isr_lock_monitor (tpl_running_obj);
-    }
-#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
-}
-
-FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void)
-{
-    tpl_locking_depth--;
-    
-    if (tpl_locking_depth == 0)
-    {
-			__asm__ ("mrs r0, spsr ;"
-					     "bic r0, r0, #0b10000000 ;"
-							 "msr spsr, r0 ;" : : : "r0");
-
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-        tpl_disable_os_isr_lock_monitor (tpl_running_obj);
-#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
-    }
-}
-
-FUNC(void, OS_CODE) tpl_suspend_os_interrupts_service(void)
-{
-	__asm__ ("mrs r0, cpsr ;"
-			     "orr r0, r0, #0b10000000 ;"
-					 "msr cpsr, r0 ;"
-					 "mrs r0, spsr ;" /* interrupts remained locked in user space */
-					 "orr r0, r0, #0b10000000 ;"
-					 "msr spsr, r0" : : : "r0");
-    
-    tpl_locking_depth++;
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    if (tpl_locking_depth == 1)
-    {
-      tpl_start_os_isr_lock_monitor (tpl_running_obj); 
-    }
-#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
 
 #define OS_STOP_SEC_CODE

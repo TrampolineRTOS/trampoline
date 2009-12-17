@@ -117,6 +117,11 @@ typedef struct TPL_STACK tpl_stack;
  */
 #define IDLE_STACK {NULL,0}
 
+/**
+ * Defines the entry point of the idle task
+ */
+#define IDLE_ENTRY tpl_sleep
+
 #define DISABLE_FIQ() __asm__ __volatile__ ("mrs r0, cpsr ;" \
                                             "orr r0, #0b01000000 ;" \
                                             "msr cpsr_c, r0" \

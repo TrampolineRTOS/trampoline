@@ -1,5 +1,5 @@
 /**
- * @file simtec_clock_gen.h
+ * @file simtec_driver_adapter.h
  *
  * @section descr File description
  *
@@ -28,7 +28,8 @@
 #define SIMTEC_DRIVER_ADAPTER_H
 
 #ifdef SIMTEC_DEFAULT_DRIVERS
-#include "interruption.h"
+#include "default_drivers/miro_types.h"
+#include "default_drivers/interruption.h"
 #define SYSTEM_TIMER_INT_SOURCE INTERRUPTION_TIMER_SYSTEME
 #endif
 
