@@ -102,19 +102,19 @@ end foreach
       *(.rdata)
       *(.rodata)
       *(.osApiConst)
-    }
-    
 /* Sections for const of tasks and ISR */
 %
 for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
   for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
     foreach PROCESSES do
-%    .% !PROCESSKIND %_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE % : { *(.% !PROCESSKIND %_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %) }
+%      *(.% !PROCESSKIND %_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
 %
     end foreach
   end for
 end for
 %    
+    }
+    
     .ctors : {}
     .dtors : {}
     extab : {}
@@ -136,14 +136,14 @@ foreach PROCESSES do
 %
   for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
     for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
-%      .% !PROCESSKIND %_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE % : { *(.% !PROCESSKIND %_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %) }
+%      *(.% !PROCESSKIND %_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
 %
     end for
   end for
 %/* Uninitialized variables section of % !PROCESSKIND % % !NAME % */
 %  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
     for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
-%      .% !PROCESSKIND %_% !NAME %_noInit_SEC_VAR% !SECTION_KIND !DATA_SIZE % : { *(.% !PROCESSKIND %_% !NAME %_noInit_SEC_VAR% !SECTION_KIND !DATA_SIZE %) }
+%       *(.% !PROCESSKIND %_% !NAME %_noInit_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
 %
     end for
   end for
