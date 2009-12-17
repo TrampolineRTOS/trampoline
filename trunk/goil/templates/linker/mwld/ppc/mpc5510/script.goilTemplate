@@ -131,7 +131,7 @@ end for
 %
 foreach PROCESSES do
 %    .% !PROCESSKIND %_% !NAME %_SEC_VAR ALIGN(16) : {
-      __SEG_START_% !PROCESSKIND %_% !NAME %_VAR_RGN = .
+      __SEG_START_% !PROCESSKIND %_% !NAME %_VAR_RGN = .;
 /* Initialized variables section of % !PROCESSKIND % % !NAME % */
 %
   for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
