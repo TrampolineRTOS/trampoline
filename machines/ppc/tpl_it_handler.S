@@ -33,7 +33,7 @@
 #include "tpl_assembler.h"
 
 TPL_EXTERN  tpl_kern
-TPL_EXTERN  tpl_it_table
+TPL_EXTERN  tpl_it_vector
 
 TPL_EXTERN  tpl_save_context
 TPL_EXTERN  tpl_load_context
@@ -133,8 +133,8 @@ tpl_it_handler:
   /*
    * Get a pointer to the it table
    */
-  lis   r11,TPL_HIG(tpl_it_table)
-  ori   r11,r11,TPL_LOW(tpl_it_table)
+  lis   r11,TPL_HIG(tpl_it_vector)
+  ori   r11,r11,TPL_LOW(tpl_it_vector)
   /*
    * convert the it id to an offset. Each entry of the tpl_it_vector
    * uses 2 x 4 bytes words on a 32 bits PowerPC. The first word
