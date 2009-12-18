@@ -135,7 +135,7 @@ routine generate_it_table
         end if;
   
         @string its := "CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[".[it_count string]."] = {\n";
-        foreach tbl do its .= "  { ".fct.", (void *)".param." }";
+        foreach tbl do its .= "  { (CONST(tpl_it_handler, AUTOMATIC)) ".fct.", (void *)".param." }";
         between        its .= ",\n";
         after          its .= "\n";
         end foreach;

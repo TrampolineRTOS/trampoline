@@ -81,11 +81,20 @@ rule <template_instruction>
     ?expression
     ?resultType
   ;
-  if resultType != [@goilTemplateType stringType] then
-    error here : "only a string expression can be emitted (it has "
-    . [resultType messageGoilTemplateType] . " type" ;
-  end if ;
-  ioResultingString .= [expression mStringValue] ;
+  switch resultType 
+  when stringType:
+    ioResultingString .= [expression mStringValue];
+  when unsignedType:
+    ioResultingString .= [[expression mUnsigned64Value] string];
+  when boolType:
+    if [expression mUnsigned64Value] == 0L then
+      ioResultingString .= "false";
+    else
+      ioResultingString .= "true";
+    end if;
+  when listType :
+    error here : "a list expression cannot be emitted";
+  end switch;    
 end rule ;
 
 #---------------------------------------------------------------------------*
@@ -328,6 +337,8 @@ rule <template_instruction>
       ?enumeratedValue
       ?expressionType
     ;
+    
+#    log enumeratedValue;
     if expressionType != [@goilTemplateType listType] then
       error here:"only a list can be enumerated" ;
     elsif shortestListLentgh > [[enumeratedValue mMapListValue] length] then
@@ -371,13 +382,23 @@ rule <template_instruction>
     foreach enumerationList do
       const @goilTemplateFieldMap fieldMap := [[mEnumeratedValue mMapListValue] mMapAtIndex !idx] ;
       foreach fieldMap do
+        @lstring varName := [@lstring new !mPrefix . [key string] ![key location]];
+        if [templateVariableMap hasKey ![varName string]] then
+          [!?templateVariableMap removeKey !varName ?* ?*];
+        end if;
         [!?templateVariableMap insertKey
           ![@lstring new !mPrefix . [key string] ![key location]]
           !mType
-          ![@goilTemplateValue new !mUnsigned64Value !mStringValue ![@goilTemplateFieldMapList emptyList]]
+          ![@goilTemplateValue new !mUnsigned64Value !mStringValue !mListValue]
         ] ;
       end foreach ;
     end foreach ;
+
+    if [templateVariableMap hasKey !"INDEX"] then
+      [!?templateVariableMap removeKey ![@lstring new !"INDEX" !here] ?* ?*];
+    end if;
+    addUnsignedValue !?templateVariableMap ![@lstring new !"INDEX" !here] ![idx uint64];
+
     <template_instruction_list>
       !inPrefix
       !inPath
@@ -424,6 +445,91 @@ rule <template_instruction>
 #---
   $end$ ;
   $foreach$ ;
+end rule ;
+
+#---------------------------------------------------------------------------*
+
+rule <template_instruction>
+  ??@string inPrefix
+  ??@string inPath
+  ??@systemConfig inCfg
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@string ioResultingString
+:
+  $for$ ; $identifier$ ? @lstring variableName ;
+  if [ioTemplateVariableMap hasKey ![variableName string]] then
+    [!?ioTemplateVariableMap removeKey !variableName ?* ?*];
+  end if;
+  $in$ ;
+  @goilTemplateExpressionList enumerationList [emptyList] ;
+  repeat
+    @goilTemplateValue enumeratedValue ;
+    @goilTemplateType expressionType ;
+    <expression>
+      !inPrefix
+      !inPath
+      !inCfg
+      !ioTemplateVariableMap
+      ?enumeratedValue
+      ?expressionType
+    ;
+    if expressionType != [@goilTemplateType boolType] &
+       expressionType != [@goilTemplateType unsignedType] &
+       expressionType != [@goilTemplateType stringType] then
+       error here:"only a bool, integer or string can be enumerated" ;
+    end if ;
+    enumerationList += !enumeratedValue !expressionType ;
+  while
+    $,$ ;
+  end repeat ;
+#--- Do block
+  $do$ ;
+  @uint idx := 0 ;
+  parse loop [enumerationList length]
+  while [enumerationList length] > 0 do
+    @goilTemplateVariableMap templateVariableMap := ioTemplateVariableMap ;
+    @goilTemplateValue value;
+    @goilTemplateType type;
+    [!?enumerationList popFirst ?value ?type];
+    [!?templateVariableMap insertKey
+      !variableName
+      !type
+      !value];
+      
+    if [templateVariableMap hasKey !"INDEX"] then
+      [!?templateVariableMap removeKey ![@lstring new !"INDEX" !here] ?* ?*];
+    end if;
+    addUnsignedValue !?templateVariableMap ![@lstring new !"INDEX" !here] ![idx uint64];
+      
+    <template_instruction_list>
+      !inPrefix
+      !inPath
+      !inCfg
+      !templateVariableMap
+      !?ioResultingString
+    ;
+    idx ++ ;
+    select
+    or
+      $between$ ;
+      parse 
+      when [enumerationList length] > 0 :
+        <template_instruction_list>
+          !inPrefix
+          !inPath
+          !inCfg
+          !ioTemplateVariableMap
+          !?ioResultingString
+        ;
+      else
+        <template_instruction_list> parseAndResetTemplateString ;
+      end parse ;
+    end select ;
+  end parse ;
+  @lstring s := [@lstring retrieveAndResetTemplateString]  ; # Value not used
+#---
+  $end$ ;
+  $for$ ;
 end rule ;
 
 #---------------------------------------------------------------------------*

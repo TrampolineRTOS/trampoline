@@ -61,8 +61,8 @@ routine generate_mp
           @string app_name ;
           [app_for_obj get !key ?app_name] ;
           if not [known_osapp hasKey !app_name] then
-            ext .= "extern void __SEG_START_APP_".app_name."_VAR_RGN;\n" ;
-            ext .= "extern void __SEG_END_APP_".app_name."_VAR_RGN;\n" ;
+            ext .= "extern void *__SEG_START_APP_".app_name."_VAR_RGN;\n" ;
+            ext .= "extern void *__SEG_END_APP_".app_name."_VAR_RGN;\n" ;
             doReplace !?desc !"$APP_NAME$" !app_name;
             known_osapp += !app_name ;
           end if ;
@@ -78,8 +78,8 @@ routine generate_mp
           @string app_name ;
           [app_for_obj get !key ?app_name] ;
           if not [known_osapp hasKey !app_name] then
-            ext .= "extern void __SEG_START_APP_".app_name."_VAR_RGN;\n" ;
-            ext .= "extern void __SEG_END_APP_".app_name."_VAR_RGN;\n" ;
+            ext .= "extern void *__SEG_START_APP_".app_name."_VAR_RGN;\n" ;
+            ext .= "extern void *__SEG_END_APP_".app_name."_VAR_RGN;\n" ;
             known_osapp += !app_name ;
           end if ;
         end if ;
@@ -134,6 +134,24 @@ routine generate_mp
     doReplace !?implementation !"$MEMORY_PROTECTION$" !tpl_mp;
   end if;
 end routine ;
+
+routine generate_link_script_new
+  ??@root_obj cpu
+  ??@goilTemplateVariableMap cfg
+:
+  @string linker := linker[![[cpu os] memmap]];
+  if linker != "" then
+    @string linkerScript := goil_template[!linker !cfg !"script"];
+    @string scriptFile := project_name[]."/".link_script_name[![[cpu os] memmap]];
+    @uint error_count := [@uint errorCount];
+    if error_count == 0 then
+      if [option .verbose_output value] then
+          message "creating " . scriptFile . "\n";
+      end if;
+      [linkerScript makeDirectoryAndWriteToFile !scriptFile];
+    end if;
+  end if;  
+end routine;
 
 routine generate_link_script
   ??@root_obj cpu
@@ -230,7 +248,7 @@ routine generate_memmap
       doReplace !?code_sec_tpl !"$SUBKIND$" !"";
       doReplace !?code_sec_tpl !"$SIZE$" !"";
       doReplace !?code_sec_tpl !"$TYPE$" !"CODE";
-      doReplace !?code_sec_tpl !"$SECTION_KIND$" !"text";
+      doReplace !?code_sec_tpl !"$SECTION_KIND$" !"code";
       result .= code_sec_tpl;
       # generate the variables sections
       @string var_sec_tpl := [named_sec stringByReplacingStringByString !"$KIND$" !"VAR"];
@@ -246,7 +264,7 @@ routine generate_memmap
       # generate the constants sections
       @string const_sec_tpl := [named_sec stringByReplacingStringByString !"$KIND$" !"CONST"];
       doReplace !?const_sec_tpl !"$TYPE$" !"DATA";
-      doReplace !?const_sec_tpl !"$SECTION_KIND$" !"rodata";
+      doReplace !?const_sec_tpl !"$SECTION_KIND$" !"const";
       const_sec_tpl := [const_sec_tpl stringByReplacingStringByString !"$SUBKIND$" !""];
       foreach data_size (@string size) do
         @string partial_result := [const_sec_tpl stringByReplacingStringByString !"$SIZE$" !size];
@@ -408,14 +426,24 @@ routine generate_memmap
 end routine;
 
 routine generate_memmap_new
-  ??@goilTemplateVariableMap unused cfg
+  ??@root_obj cpu
+  ??@goilTemplateVariableMap cfg
 :
 #  @lstring cc := [cfg compilerKind];
-#  @string cc := "gcc";
-#  if [cc string] != "" then
-#    @string mm := goil_template[!"compiler/".[cc string] !cfg !"MemMap.h"];
+  @string cc := compiler[![[cpu os] memmap]];
+  if cc != "" then
+    @string mm := goil_template[!cc !cfg !"MemMap.h"];
 #    message mm;
-#  end if;
+    @string mm_file := project_name[]."/MemMap.h";
+    if [@uint errorCount] == 0 then
+      if [option .verbose_output value] then
+          message "creating " . mm_file . "\n";
+      end if;
+      [mm makeDirectoryAndWriteToFile !mm_file];
+    end if;
+  else
+#    warning here: "no compiler specified. MemMap.h will not be generated";
+  end if;
 end routine;
 
 routine generate_compiler

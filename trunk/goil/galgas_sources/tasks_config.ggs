@@ -36,16 +36,637 @@ semantics tasks_config:
 
 import semantics system_config in "system_config.ggs";
 import semantics goil_template_invocation in "goil_template_invocation.ggs";
+import option goil_options in "goil_options.gOption";
 
-routine setTasksList ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
-  @goilTemplateFieldMapList taskList [emptyList];
+routine setAppRelatedAttributes
+  ?!@goilTemplateFieldMap fieldMap
+  ??@root_obj cpu
+  ??@string_map appForObj
+  ??@lstring objName
+:
+  if [option goil_options.autosar_on value] then
+    if [appForObj count] > 0 then
+      @bool trustedApp := false;
+      @string appName;
+      [appForObj get !objName ?appName];
+      addStringFieldValue !?fieldMap ![@lstring new !"APPLICATION" !here] !appName;
+      # look if the OS Application is trusted
+      @app_obj app;
+#      @app_map apps := [cpu applis];
+#      log apps;
+      [[cpu applis] get ![@lstring new !appName !here] ?app];
+      cast [app trusted] :
+      when == @app_trusted_true do trustedApp := true;
+      else end cast;
+      addBoolFieldValue !?fieldMap ![@lstring new !"TRUSTED" !here] !trustedApp;
+    end if;
+  end if;
+end routine;
+  
+#
+# compute a task list usable for templates
+#
+routine computeTaskList
+  ??@root_obj cpu
+  ??@prio_map actualPriorities
+  ??@string_map appForObj
+  ?!@goilTemplateFieldMapList taskList
+:
+  @tasks_by_type sTasks [emptySortedList];
+  # sort tasks according to type (basic or extended)
   foreach [cpu tasks] do
+    if [[task events] length] > 0 then
+      sTasks += !0 ![key string];
+    else
+      sTasks += !1 ![key string];
+    end if;
+  end foreach;
+  
+  foreach sTasks do
+    @task_obj task;
+    @lstring taskName := [@lstring new !name !here];
+    [[cpu tasks] get !taskName ?task];
     @goilTemplateFieldMap fieldMap [emptyMap];
-    addStringFieldValue !?fieldMap ![@lstring new !"name" !here] ![key string];
+    addStringFieldValue !?fieldMap ![@lstring new !"NAME" !here] !name;
+    addStringFieldValue !?fieldMap ![@lstring new !"PROCESSKIND" !here] !"Task";
+    addBoolFieldValue !?fieldMap ![@lstring new !"EXTENDEDTASK" !here] !(type == 0);
+    addBoolFieldValue !?fieldMap ![@lstring new !"NONPREEMPTABLE" !here] ![[task schedule] string] == "NON";
+    @uint actualPrio;
+    @uint activation;
+    [actualPriorities get !taskName ?actualPrio ?activation];
+    addUnsignedFieldValue !?fieldMap ![@lstring new !"PRIORITY" !here] ![actualPrio uint64];
+    addUnsignedFieldValue !?fieldMap ![@lstring new !"ACTIVATION" !here] ![activation uint64];
+    
+    cast [task autostart]:
+    when == @task_autostart_true do 
+      addBoolFieldValue !?fieldMap ![@lstring new !"AUTOSTART" !here] !true;
+    when == @task_autostart_false do
+      addBoolFieldValue !?fieldMap ![@lstring new !"AUTOSTART" !here] !false;
+    else
+      error [[task autostart] location]: "internal error, AUTOSTART type is undefined";
+    end cast;
+    if [[task schedule] string] == "FULL" then
+      @bool internalFound := false;
+      foreach [task resources] (@lstring resourceName) do
+        if not internalFound then
+          @resource_obj resource;
+          [[cpu resources] get !resourceName ?resource];
+          cast [resource property]:
+          when == @resource_property_internal_obj do
+            internalFound := true;
+            addStringFieldValue !?fieldMap ![@lstring new !"INTERNALRESOURCE" !here] ![resourceName string];
+            addBoolFieldValue !?fieldMap ![@lstring new !"USEINTERNALRESOURCE" !here] !true;
+          else end cast;
+        end if;
+      end foreach;
+      if not internalFound then
+        addStringFieldValue !?fieldMap ![@lstring new !"INTERNALRESOURCE" !here] !"";
+        addBoolFieldValue !?fieldMap ![@lstring new !"USEINTERNALRESOURCE" !here] !false;
+      end if;
+    else
+      addStringFieldValue !?fieldMap ![@lstring new !"INTERNALRESOURCE" !here] !"";
+      addBoolFieldValue !?fieldMap ![@lstring new !"USEINTERNALRESOURCE" !here] !false;
+    end if;
+    
+    @goilTemplateFieldMapList resourceList [emptyList];
+    foreach [task resources] (@lstring resourceName) do
+      @resource_obj resource;
+      [[cpu resources] get !resourceName ?resource];
+      cast [resource property]:
+      when == @resource_property_internal_obj do
+      else
+        @goilTemplateFieldMap resourceFieldMap [emptyMap];
+        addStringFieldValue !?resourceFieldMap ![@lstring new !"RESOURCENAME" !here] ![resourceName string];
+        resourceList += !resourceFieldMap;
+      end cast;
+    end foreach;
+    addListFieldValue !?fieldMap ![@lstring new !"RESOURCES" !here] !resourceList;
+
+    setAppRelatedAttributes !?fieldMap !cpu !appForObj !taskName;  
+
     taskList += !fieldMap;
   end foreach;
+end routine;
+
+#
+# compute an ISR list usable for templates
+#
+routine computeISRList
+  ??@root_obj cpu
+  ??@prio_map actualPriorities
+  ??@string_map appForObj
+  ??@uint64 isrCategory
+  ?!@goilTemplateFieldMapList isrList
+:
+  foreach [cpu isrs] do
+    cast [isr category]:
+    when == @uint64_class category do
+      if [category value] == isrCategory then
+        @goilTemplateFieldMap fieldMap [emptyMap];
+        addStringFieldValue !?fieldMap ![@lstring new !"NAME" !here] ![key string];
+        addStringFieldValue !?fieldMap ![@lstring new !"PROCESSKIND" !here] !"ISR";
+        addBoolFieldValue   !?fieldMap ![@lstring new !"EXTENDEDTASK" !here] !false;
+        @uint actualPrio;
+        @uint activation;
+        [actualPriorities get !key ?actualPrio ?activation];
+        addUnsignedFieldValue !?fieldMap ![@lstring new !"PRIORITY" !here] ![actualPrio uint64];
+        addUnsignedFieldValue !?fieldMap ![@lstring new !"ACTIVATION" !here] ![activation uint64];
+
+        @goilTemplateFieldMapList resourceList [emptyList];
+        foreach [isr resources] (@lstring resourceName) do
+          @resource_obj resource;
+          [[cpu resources] get !resourceName ?resource];
+          cast [resource property]:
+          when == @resource_property_internal_obj do
+          else
+            @goilTemplateFieldMap resourceFieldMap [emptyMap];
+            addStringFieldValue !?resourceFieldMap ![@lstring new !"RESOURCENAME" !here] ![resourceName string];
+            resourceList += !resourceFieldMap;
+          end cast;
+        end foreach;
+        addListFieldValue !?fieldMap ![@lstring new !"RESOURCES" !here] !resourceList;
+
+        setAppRelatedAttributes !?fieldMap !cpu !appForObj !key;  
+
+        isrList += !fieldMap;
+      end if;
+    else end cast;
+  end foreach;
+end routine;
+
+#
+# Set up the tasks list for templates
+#
+routine setTasksList
+  ??@root_obj cpu
+  ??@prio_map actualPriorities
+  ??@string_map appForObj
+  ?!@goilTemplateVariableMap cfg
+:
+  @goilTemplateFieldMapList taskList [emptyList];
+  computeTaskList !cpu !actualPriorities !appForObj !?taskList;
   addListValue !?cfg ![@lstring new !"TASKS" !here] !taskList;    
 end routine;
 
+#
+# Set up the ISR1 list for templates
+#
+routine setISRs1List
+  ??@root_obj cpu
+  ??@prio_map actualPriorities
+  ??@string_map appForObj
+  ?!@goilTemplateVariableMap cfg
+:
+  @goilTemplateFieldMapList isrList [emptyList];
+  computeISRList !cpu !actualPriorities !appForObj !1L !?isrList;
+  addListValue !?cfg ![@lstring new !"ISRS1" !here] !isrList;    
+end routine;
+
+#
+# Set up the ISR2 list for templates
+#
+routine setISRs2List
+  ??@root_obj cpu
+  ??@prio_map actualPriorities
+  ??@string_map appForObj
+  ?!@goilTemplateVariableMap cfg
+:
+  @goilTemplateFieldMapList isrList [emptyList];
+  computeISRList !cpu !actualPriorities !appForObj !2L !?isrList;
+  addListValue !?cfg ![@lstring new !"ISRS2" !here] !isrList;    
+end routine;
+
+#
+# Set up the processes list (extended tasks, basic tasks and ISRs 2) for templates
+#
+routine setProcessesList
+  ??@root_obj cpu
+  ??@prio_map actualPriorities
+  ??@string_map appForObj
+  ?!@goilTemplateVariableMap cfg
+:
+  @goilTemplateFieldMapList processesList [emptyList];
+  computeTaskList !cpu !actualPriorities !appForObj !?processesList;
+  computeISRList !cpu !actualPriorities !appForObj !2L !?processesList;
+  addListValue !?cfg !lstringWith[!"PROCESSES"] !processesList;
+end routine;
+
+#
+# set up the counters list for templates
+#
+routine setCountersList
+  ??@root_obj cpu
+  ??@string_map appForObj
+  ?!@goilTemplateVariableMap cfg
+:
+  @goilTemplateFieldMapList countersList [emptyList];
+  foreach [cpu counters] do
+    @goilTemplateFieldMap fieldMap [emptyMap];
+    addStringFieldValue !?fieldMap !lstringWith[!"NAME"] ![key string];
+    addUnsignedFieldValue !?fieldMap !lstringWith[!"MAXALLOWEDVALUE"] !maxAllowedValue[!counter];
+    addUnsignedFieldValue !?fieldMap !lstringWith[!"MINCYCLE"] !minCycle[!counter];
+    addUnsignedFieldValue !?fieldMap !lstringWith[!"TICKSPERBASE"] !ticksPerBase[!counter];
+    @string type := "HARDWARE_COUNTER";
+    cast [counter type]:
+    when == @software_counter do type := "SOFTWARE_COUNTER";
+    else end cast;
+    addStringFieldValue !?fieldMap !lstringWith[!"TYPE"] !type;
+
+    if [key string] != "SystemCounter" then
+      setAppRelatedAttributes !?fieldMap !cpu !appForObj !key;
+    end if;
+
+    countersList += !fieldMap;
+  end foreach;
+  addListValue !?cfg !lstringWith[!"COUNTERS"] !countersList;
+end routine;
+
+#
+# set up the events list for templates
+#
+routine setEventsList
+  ??@root_obj cpu
+  ?!@goilTemplateVariableMap cfg
+:
+  @goilTemplateFieldMapList eventsList [emptyList];
+  foreach [cpu events] do
+    @goilTemplateFieldMap fieldMap [emptyMap];
+    addStringFieldValue !?fieldMap ![@lstring new !"NAME" !here] ![key string];
+    eventsList += !fieldMap;
+  end foreach;
+  addListValue !?cfg ![@lstring new !"EVENTS" !here] !eventsList;
+end routine;
+
+#
+# set up the alarms list for templates
+#
+routine setAlarmsList
+  ??@root_obj cpu
+  ??@string_map appForObj
+  ?!@goilTemplateVariableMap cfg
+:
+  @goilTemplateFieldMapList alarmsList [emptyList];
+  foreach [cpu alarms] do
+    @goilTemplateFieldMap fieldMap [emptyMap];
+    addStringFieldValue !?fieldMap !lstringWith[!"NAME"] ![key string];
+    addStringFieldValue !?fieldMap !lstringWith[!"COUNTER"] ![[alarm counter_name] string];
+
+    cast [alarm action_params]:
+    when == @setevent_action setEvent do
+      addStringFieldValue !?fieldMap !lstringWith[!"ACTION"] !"setEvent";
+      addStringFieldValue !?fieldMap !lstringWith[!"TASK"] ![[setEvent task_name] string];
+      addStringFieldValue !?fieldMap !lstringWith[!"EVENT"] ![[setEvent event_name] string];
+    when == @activatetask_action activateTask do
+      addStringFieldValue !?fieldMap !lstringWith[!"ACTION"] !"activateTask";
+      addStringFieldValue !?fieldMap !lstringWith[!"TASK"] ![[activateTask task_name] string];
+    when == @callback_action callback do
+      addStringFieldValue !?fieldMap !lstringWith[!"ACTION"] !"callback";
+      addStringFieldValue !?fieldMap !lstringWith[!"FUNCTION"] ![[callback function_name] string];
+    when == @incrementcounter_action incrementCounter do
+      addStringFieldValue !?fieldMap !lstringWith[!"ACTION"] !"incrementCounter";
+      addStringFieldValue !?fieldMap !lstringWith[!"COUNTER"] ![[incrementCounter counter_name] string];
+    else end cast;
+
+    cast [alarm autostart_params]:
+    when == @alarm_autostart_true autostart do
+      addBoolFieldValue !?fieldMap !lstringWith[!"AUTOSTART"] !true;
+      addUnsignedFieldValue !?fieldMap !lstringWith[!"ALARMTIME"] ![[autostart alarm_time] uint64];
+      addUnsignedFieldValue !?fieldMap !lstringWith[!"CYCLETIME"] ![[autostart cycle_time] uint64];
+      @goilTemplateFieldMapList appmodesList [emptyList];
+      foreach [autostart app_modes] (@string appMode) do
+        @goilTemplateFieldMap appModeFields [emptyMap];
+        addStringFieldValue !?appModeFields !lstringWith[!"APPMODE"] !appMode;
+        appmodesList += !appModeFields;
+      end foreach;
+      addListFieldValue !?fieldMap !lstringWith[!"APPMODES"] !appmodesList;
+    when == @autostart_false do
+      addBoolFieldValue !?fieldMap !lstringWith[!"AUTOSTART"] !false;
+    when == @autostart_void do
+      addBoolFieldValue !?fieldMap !lstringWith[!"AUTOSTART"] !false;
+    else end cast;
+    
+    setAppRelatedAttributes !?fieldMap !cpu !appForObj !key;
+    
+    alarmsList += !fieldMap;
+  end foreach;
+  addListValue !?cfg ![@lstring new !"ALARMS" !here] !alarmsList;
+end routine;
+
+#
+# set up the resources list for templates
+#
+routine setResourcesList
+  ??@root_obj cpu
+  ??@prio_map resourcesPrio
+  ??@string_map appForObj
+  ?!@goilTemplateVariableMap cfg
+:
+  @goilTemplateFieldMapList regularList [emptyList];
+  @goilTemplateFieldMapList internalList [emptyList];
+  foreach [cpu resources] do
+    @goilTemplateFieldMap fieldMap [emptyMap];
+    addStringFieldValue !?fieldMap ![@lstring new !"NAME" !here] ![key string];
+    @uint priority;
+    @string usage;
+    [resourcesPrio get !key ?priority ?*];
+    addUnsignedFieldValue !?fieldMap ![@lstring new !"PRIORITY" !here] ![priority uint64];
+
+    @goilTemplateFieldMapList taskUsage [emptyList];
+    foreach [cpu tasks] prefixedBy t_ do
+      if isInLstringlist[![t_task resources] !key] then
+        @goilTemplateFieldMap usage [emptyMap];
+        addStringFieldValue !?usage ![@lstring new !"NAME" !here] ![t_key string];
+        taskUsage += !usage;
+      end if;
+    end foreach;
+    
+    addListFieldValue !?fieldMap ![@lstring new !"TASKUSAGE" !here] !taskUsage;
+    
+    @goilTemplateFieldMapList isrUsage [emptyList];
+    foreach [cpu isrs] prefixedBy i_ do
+      if isInLstringlist[![i_isr resources] !key] then
+        @goilTemplateFieldMap usage [emptyMap];
+        addStringFieldValue !?usage ![@lstring new !"NAME" !here] ![i_key string];
+        isrUsage += !usage;
+      end if;
+    end foreach;
+
+    addListFieldValue !?fieldMap ![@lstring new !"ISRUSAGE" !here] !isrUsage;
+    
+    setAppRelatedAttributes !?fieldMap !cpu !appForObj !key;  
+
+
+    cast [resource property]:
+    when == @resource_property_standard_obj do
+      regularList += !fieldMap;
+    when == @resource_property_linked_obj do
+      regularList += !fieldMap;
+    when == @resource_property_internal_obj do
+      internalList += !fieldMap;
+    else
+      error [[resource property] location] : "internal error, RESOURCEPROPERTY type is undefined";
+    end cast;
+  end foreach;
+  addListValue !?cfg ![@lstring new !"REGULARRESOURCES" !here] !regularList;
+  addListValue !?cfg ![@lstring new !"INTERNALRESOURCES" !here] !internalList;
+end routine;
+
+#
+# set up the messages list
+#
+routine setMessagesList
+  ??@root_obj cpu
+  ??@string_map appForObj
+  ?!@goilTemplateVariableMap cfg
+:
+  @goilTemplateFieldMapList messagesList [emptyList];
+  foreach [cpu messages] do
+    @goilTemplateFieldMap fieldMap [emptyMap];
+    addStringFieldValue !?fieldMap !lstringWith[!"NAME"] ![key string];
+    messagesList += !fieldMap;
+  end foreach;
+  addListValue !?cfg !lstringWith[!"MESSAGES"] !messagesList;
+end routine;
+
+#
+# set up the schedule tables list
+#
+routine setScheduletablesList
+  ??@root_obj cpu
+  ??@string_map appForObj
+  ?!@goilTemplateVariableMap cfg
+:
+  @goilTemplateFieldMapList scheduletablesList [emptyList];
+  foreach [cpu scheduletables] do
+    @goilTemplateFieldMap fieldMap [emptyMap];
+    addStringFieldValue !?fieldMap !lstringWith[!"NAME"] ![key string];
+    addStringFieldValue !?fieldMap !lstringWith[!"COUNTER"] ![[st counter] string];
+    
+    @bool periodic := false;
+    cast [st periodic]:
+    when == @bool_class p do periodic := [p value];
+    else end cast;
+    addBoolFieldValue !?fieldMap !lstringWith[!"PERIODIC"] !periodic;
+    
+    @uint64 length := 0L;
+    cast [st length]:
+    when == @uint64_class len do length := [len value];
+    else error key: "internal, wrong type for LENGTH attribute";
+    end cast;
+    addUnsignedFieldValue !?fieldMap !lstringWith[!"LENGTH"] !length;
+
+    # add the finalize action (and expiry point if needed) to the
+    # schedule table.
+    @expiry_point_list expiryPoints := [st exp_points];
+    @expiry_point_obj lastPoint;
+    @uint64 lastOffset;
+    [!?expiryPoints popGreatest ?lastOffset ?lastPoint];
+    if lastOffset == length then
+      # add the finalize action to the last expiry point
+      @action_list actions := [lastPoint actions];
+      actions += !10 ![@finalize_st_action new !here];
+      [!?lastPoint setActions !actions];
+    else
+      # add a new expiry point for the finalize action
+      @action_list finalizeExpiryPointActions [emptySortedList];
+      finalizeExpiryPointActions += !10 ![@finalize_st_action new !here];
+      @expiry_point_obj finalizeExpiryPoint :=
+        [@expiry_point_obj new
+          ![@lstring new !"" !here]
+          ![@uint64_class new !here !length]
+          ![@lstring new !"finalize" !here]
+          ![@adjustable_void new !empty_lstring[] !here] 
+          !finalizeExpiryPointActions
+        ];
+      expiryPoints += !length !finalizeExpiryPoint;
+    end if;
+    expiryPoints += !lastOffset !lastPoint;
+    
+    # set up the expry points list
+    @goilTemplateFieldMapList expiryPointsList [emptyList];
+    @uint64 previousOffset := 0L;
+    foreach expiryPoints do
+      @goilTemplateFieldMap fieldMap [emptyMap];
+      addUnsignedFieldValue !?fieldMap !lstringWith[!"ABSOLUTEOFFSET"] !off;
+      addUnsignedFieldValue !?fieldMap !lstringWith[!"RELATIVEOFFSET"] !off-previousOffset;
+      addUnsignedFieldValue !?fieldMap !lstringWith[!"ACTIONCOUNT"] ![[[point actions] length] uint64];
+      
+      expiryPointsList += !fieldMap;
+    end foreach;
+    addListFieldValue !?fieldMap !lstringWith[!"EXPIRYPOINTS"] !expiryPointsList;
+    
+    setAppRelatedAttributes !?fieldMap !cpu !appForObj !key;  
+
+    scheduletablesList += !fieldMap;
+  end foreach;
+  addListValue !?cfg !lstringWith[!"SCHEDULETABLES"] !scheduletablesList;  
+end routine;
+
+#
+# set up the OS applications and trusted functions list
+#
+routine setOsapplicationsList
+  ??@root_obj cpu
+  ??@string_map appForObj
+  ?!@goilTemplateVariableMap cfg
+:
+  @goilTemplateFieldMapList osapplicationsList [emptyList];
+  @stringset trustedFunctionSet [emptySet];
+  foreach [cpu applis] do
+    @goilTemplateFieldMap fieldMap [emptyMap];
+    addStringFieldValue !?fieldMap !lstringWith[!"NAME"] ![key string];
+    osapplicationsList += !fieldMap;
+    cast [app trusted]:
+    when == @app_trusted_true t do
+      foreach [t trusted_fcts] (@string trustedFunctionName) do
+        trustedFunctionSet += !trustedFunctionName;
+      end foreach;
+    else end cast;
+  end foreach;
+  addListValue !?cfg !lstringWith[!"OSAPPLICATIONS"] !osapplicationsList;
+  
+  @goilTemplateFieldMapList trustedfunctionsList [emptyList];
+  foreach trustedFunctionSet (@string trustedFunctionName) do
+    @goilTemplateFieldMap fieldMap [emptyMap];
+    addStringFieldValue !?fieldMap !lstringWith[!"NAME"] !trustedFunctionName;
+    trustedfunctionsList += !fieldMap;
+  end foreach;
+  addListValue !?cfg !lstringWith[!"TRUSTEDFUNCTIONS"] !osapplicationsList;
+end routine;
+
+#
+# set up the processes count:
+# TASKCOUNT, BASICTASKCOUNT, EXTENDEDTASKCOUNT, PROCESSCOUNT,
+# ISR1COUNT, ISR2COUNT and ISRCOUNT
+#  
+routine setProcessCount
+  ??@root_obj cpu
+  ?!@goilTemplateVariableMap cfg
+:
+  @uint64 taskCount := [[[cpu tasks] count] uint64];
+  @uint64 isrCount := [[[cpu isrs] count] uint64];
+  @uint64 extendedCount := 0L;
+  foreach [cpu tasks] do
+    if [[task events] length] > 0 then
+      extendedCount++;
+    end if;
+  end foreach;
+  @uint64 isr2Count := 0L;
+  foreach [cpu isrs] do
+    cast [isr category]:
+    when == @uint64_class cat do
+      if [cat value] == 2L then
+        isr2Count++;
+      end if;
+    else
+      error key: "missing CATEGORY attribute";
+    end cast;
+  end foreach;
+  addUnsignedValue !?cfg ![@lstring new !"TASKCOUNT" !here] !taskCount;
+  addUnsignedValue !?cfg ![@lstring new !"EXTENDEDTASKCOUNT" !here] !extendedCount;
+  addUnsignedValue !?cfg ![@lstring new !"BASICTASKCOUNT" !here] !taskCount - extendedCount;
+  addUnsignedValue !?cfg ![@lstring new !"PROCESSCOUNT" !here] !taskCount + isr2Count;
+  addUnsignedValue !?cfg ![@lstring new !"ISRCOUNT" !here] !isrCount;
+  addUnsignedValue !?cfg ![@lstring new !"ISR2COUNT" !here] !isr2Count;
+  addUnsignedValue !?cfg ![@lstring new !"ISR1COUNT" !here] !isrCount - isr2Count;
+end routine;
+
+#
+# set up the RESOURCECOUNT, REGULARRESOURCECOUNT and INTERNALRESOURCECOUNT
+#
+routine setResourceCount ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
+  addUnsignedValue !?cfg ![@lstring new !"RESOURCECOUNT" !here] ![[[cpu resources] count] uint64];
+  @uint64 regularCount := 0L;
+  @uint64 internalCount := 0L;
+  foreach [cpu resources] do
+    cast [resource property]:
+    when == @resource_property_standard_obj do
+      regularCount++;
+    when == @resource_property_linked_obj do
+      regularCount++;
+    when == @resource_property_internal_obj do
+      internalCount++;
+    else
+      error [[resource property] location] : "internal error, RESOURCEPROPERTY type is undefined";
+    end cast;
+  end foreach;
+  addUnsignedValue !?cfg ![@lstring new !"REGULARRESOURCECOUNT" !here] !regularCount;
+  addUnsignedValue !?cfg ![@lstring new !"INTERNALRESOURCECOUNT" !here] !internalCount;
+end routine;
+
+#
+# set up the USECOM flag. USECOM is true if there is a COM object
+# or if at least one object related to communication is declared
+#
+routine setUseCom ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
+  @bool usecom := false;
+  if [[cpu com] usecom] then
+    usecom := true;
+  else
+    usecom := [[cpu messages] count] > 0    |
+              [[cpu net_messages] count] > 0;
+  end if;
+  addBoolValue !?cfg ![@lstring new !"USECOM" !here] !usecom;  
+end routine;
+
+#
+# set up the SCALABILITYCLASS flag (1, 2, 3 or 4)
+# and USETIMINGPROTECTION flag (true or false)
+#
+routine setScalabilityClass ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
+  if [option goil_options.autosar_on value] then
+  
+    @bool useTimingProtection := false;
+    @bool useProtectionHook := false;
+  
+    # by default, we are in SC1
+    @uint64 sc := 1L;
+    @string setSC := [[[cpu os] scalabilityclass] string];
+    if setSC == "" | setSC == "AUTO" then
+
+      # if protectionhook is set or
+      # at least one task or ISR uses timing protection then
+      # we are in sc2
+
+
+      foreach [cpu tasks] do
+        cast [task timing_prot]:
+        when == @timing_prot_task do useTimingProtection := true;
+        else end cast;
+      end foreach;
+      
+      foreach [cpu isrs] do
+        cast [isr timing_prot]:
+        when == @timing_prot_isr do useTimingProtection := true;
+        else end cast;
+      end foreach;
+      
+      cast [[cpu os] protectionhook]:
+      when == @bool_class ph do
+        useProtectionHook := [ph value];
+      else end cast;
+      
+      if useTimingProtection | useProtectionHook then
+        sc := 2L;
+      end if;
+      
+      # Then check the memory protection and the availability
+      # of an OS Application to see if the scalability class
+      # must be increase by 2
+
+      if memory_protection_on[![cpu os]] | [[cpu applis] count] > 0 then
+        sc := sc + 2L;
+      end if;
+      
+    else
+      sc := [[setSC decimalUnsignedNumber] uint64];
+    end if;
+    addUnsignedValue !?cfg !lstringWith[!"SCALABILITYCLASS"] !sc;  
+    addBoolValue !?cfg !lstringWith[!"USETIMINGPROTECTION"] !useTimingProtection;  
+    addBoolValue !?cfg !lstringWith[!"USEPROTECTIONHOOK"] !useProtectionHook;  
+    addBoolValue !?cfg !lstringWith[!"USEMEMORYPROTECTION"] !memory_protection_on[![cpu os]];  
+  end if;
+end routine;
+ 
 end semantics;
 
