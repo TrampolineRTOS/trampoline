@@ -61,7 +61,7 @@
  */
 #include "tpl_os_error.h"
 
-#ifdef WITH_COM
+#if WITH_COM == YES
 /*
  * Inclusion of the header for communication related API services
  */

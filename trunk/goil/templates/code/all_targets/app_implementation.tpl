@@ -13,7 +13,7 @@
 #include "tpl_os_definitions.h"
 
 /*#ifndef WITH_AUTOSAR*/
-#ifndef WITH_NOCOM
+#if WITH_COM == YES
 #include "tpl_com_notification.h"
 #include "tpl_com_mo.h"
 #include "tpl_com_internal.h"

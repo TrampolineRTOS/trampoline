@@ -49,6 +49,7 @@ TPL_EXTERN  tpl_set_process_mp
   .global tpl_sc_handler
   .global tpl_enter_kernel
   .global tpl_leave_kernel
+  .global tpl_reentrancy_counter
   
   .data
   .align  4
@@ -65,7 +66,7 @@ tpl_kernel_stack_bottom:
  * hook routines
  */
   .align  4
-tpl_reentrency_counter:
+tpl_reentrancy_counter:
   .long   0
 
   .text
@@ -79,26 +80,30 @@ tpl_reentrency_counter:
  * - it saves registers on the kernel stack
  */
 tpl_enter_kernel:
+
+#if WITH_MEMORY_PROTECTION == YES
   /*
+   * Switch to kernel mem protection scheme
+   */
+  subi  r1,r1,4
+  mflr  r11
+  stw   r11,0(r1)       /* save lr on the current stack */
+  bl    tpl_kernel_mp   /* disable memory protection    */
+  lwz   r11,0(r1)       /* restore lr                   */
+  mtlr  r11
+#endif
+  
    * Check the reentrency counter value and inc it
    * if the value is 0 before the inc, then we switch to
    * the system stack.
    */
-  lis   r11,TPL_HIG(tpl_reentrency_counter)
-  ori   r11,r11,TPL_LOW(tpl_reentrency_counter)
+  lis   r11,TPL_HIG(tpl_reentrancy_counter)
+  ori   r11,r11,TPL_LOW(tpl_reentrancy_counter)
   lwz   r12,0(r11)    /*  get the value of the counter */
   cmpwi r12,0
   addi  r12,r12,1
   stw   r12,0(r11)
   bne   no_stack_change
-  
-#if WITH_MEMORY_PROTECTION == YES
-  /*
-   * Switch to kernel mem protection scheme
-   */
-  
-  bl   tpl_kernel_mp   /* disable memory protection    */
-#endif
   
   /*
    * Switch to the kernel stack
@@ -150,8 +155,8 @@ tpl_leave_kernel:
    * The reentrency counter is decremented. If it reaches
    * 0, the process stack is restored
    */
-  lis   r11,TPL_HIG(tpl_reentrency_counter)
-  ori   r11,r11,TPL_LOW(tpl_reentrency_counter)
+  lis   r11,TPL_HIG(tpl_reentrancy_counter)
+  ori   r11,r11,TPL_LOW(tpl_reentrancy_counter)
   lwz   r12,0(r11)    /*  get the value of the counter */
   subi  r12,r12,1
   stw   r12,0(r11)
@@ -167,7 +172,12 @@ tpl_leave_kernel:
   /*
    * Switch to user mem protection scheme
    */
-  bl    tpl_user_mp                 /*  Enable the memory protection  */
+  subi  r1,r1,4
+  mflr  r11
+  stw   r11,0(r1)   /* save lr on the current stack  */
+  bl    tpl_user_mp /* Enable the memory protection  */
+  lwz   r11,0(r1)   /* restore lr                    */
+  mtlr  r11
 #endif
   
 no_stack_restore:

@@ -106,16 +106,19 @@
  * STACK region access right
  */
 #define stack_rgn_access  0x03618861E
-  
-  .text
+
+#if WITH_MEMORY_PROTECTION == YES
+
+TPL_EXTERN tpl_mp_table
+TPL_EXTERN tpl_kern
+TPL_EXTERN tpl_reentrancy_counter
+
   .global tpl_kernel_mp
   .global tpl_user_mp
   .global tpl_set_process_mp
-  .section ".osCode" CODE_ACCESS_RIGHT
-
-TPL_EXTERN tpl_mp_table
-
-TPL_EXTERN tpl_kern
+  
+  .text
+  .section .osCode CODE_ACCESS_RIGHT
 
 /**
  * Disable memory protection. This function is called when
@@ -140,7 +143,7 @@ tpl_kernel_mp:
   /*
    * Disable memory protection
    */
-  stw   r12,MPU_CESR(r12)
+  stw   r11,MPU_CESR(r12)
   /*
    * That's all
    */
@@ -161,6 +164,17 @@ tpl_kernel_mp:
  * Uses r11 only
  */
 tpl_user_mp:
+  /*
+   * First check the reentrancy counter
+   * Do not switch to user memory protection
+   * if the reentrancy counter is greater than 0
+   */
+  lis   r11,TPL_HIG(tpl_reentrancy_counter)
+  ori   r11,r11,TPL_LOW(tpl_reentrancy_counter)
+  lwz   r12,0(r11)    /*  get the value of the counter */
+  cmpwi r12,0
+  bnelr /* returns if not zero */
+  
   /*
    * get the running process dynamic descriptor
    * pointer from the kernel stack.
@@ -279,5 +293,7 @@ tpl_set_process_mp:
 
 finished:
   blr
+
+#endif
 
 /* End of file tpl_memory_protection.s */

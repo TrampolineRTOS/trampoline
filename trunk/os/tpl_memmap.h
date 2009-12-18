@@ -22,10 +22,14 @@
  * $URL$
  */
 
-#include "tpl_config_def.h"
+#include "tpl_app_objects.h"
+
+#if WITH_MEMMAP != YES && WITH_MEMMAP != NO
+  #error "Wrong configuration of the OS, WITH_MEMMAP should be YES or NO"
+#endif
 
 #if WITH_MEMMAP == YES
-#include "MemMap.h"
+  #include "MemMap.h"
 #endif
 
 /* End of file tpl_memmap.h */
