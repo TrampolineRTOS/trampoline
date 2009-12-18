@@ -253,21 +253,21 @@ function compiler
   ->@string   cc
 :
   cast os_memmap :
-  when == @memmap_true s do cc := [[s compiler] string];
-  else cc := "";
-  end cast;
-  if cc != "" then
+  when == @memmap_true s do
+    cc := [[s compiler] string];
     cc := "compiler/".cc;
     @string rtd := root_templates_directory[];
     if rtd != "" then
       @string path := rtd."/".cc;
       if not [path directoryExists] then
+        warning here: "no compiler found at path: ".path;
         cc := "";
       end if;
     else
       cc := "";
     end if;
-  end if;
+  else cc := "";
+  end cast;
 end function;
 
 #

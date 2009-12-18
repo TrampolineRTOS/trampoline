@@ -1,4 +1,4 @@
-program goil_program "version 2.0b31" :
+program goil_program "version 2.0b34" :
   import grammar goil_grammar in "goil_grammar.gGrammar" ;
   import semantics goil_template_test in "goil_template_test.ggs" ; # Added by PM
  # import semantics xml_types in "xml_types.ggs";

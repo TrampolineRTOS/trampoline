@@ -43,10 +43,13 @@ list @goilTemplateTypeList {
 
 #------------------------------------------------------------------------------*
 
+list @goilTemplateFieldMapList;
+
 map @goilTemplateFieldMap {
   @goilTemplateType mType ;
   @uint64 mUnsigned64Value ;
   @string mStringValue ;
+  @goilTemplateFieldMapList mListValue;
   insert insertKey error message "a template field named '%K' is already declared in %L" ;
   search searchKey error message "there is no template field named '%K'" ;
 }
@@ -76,6 +79,7 @@ map @goilTemplateVariableMap {
   @goilTemplateValue mValue ;
   insert insertKey error message "a template variable named '%K' is already declared in %L" ;
   search searchKey error message "there is no template variable named '%K'" ;
+  remove removeKey error message "there is no template variable named '%K'" ;
 }
 
 #------------------------------------------------------------------------------*

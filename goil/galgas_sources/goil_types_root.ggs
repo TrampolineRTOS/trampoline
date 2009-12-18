@@ -11,6 +11,7 @@ import semantics goil_types_app in "goil_types_app.ggs" ;
 import semantics goil_types_networkmessage in "goil_types_networkmessage.ggs" ;
 
 class @root_obj {
+    @lstring           name;
     @os_obj            os             feature setter;
     @com               com ;
     @task_map          tasks          feature setter;
@@ -29,6 +30,7 @@ function void_root_obj
   ->@root_obj cpu
 :
   cpu := [@root_obj new
+    !empty_lstring[]
     !void_os_obj[]
     !void_com_obj[]
     ![@task_map          emptyMap]

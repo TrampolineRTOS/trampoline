@@ -157,6 +157,7 @@ routine generate_apps
 
     generate_vector !vec ?init ?count ;
     if count > 0 then
+      vectors .= "/* vector ".vec." */\n";
       vectors .= "u8 ".[app_name string]."_procs_access[".[count string]."] = {".init."};\n" ;
       doReplace !?tpl !"$PROC_ACCESS$" ![app_name string]."_procs_access" ;
     else
@@ -179,6 +180,7 @@ routine generate_apps
 
     generate_vector !vec ?init ?count ;
     if count > 0 then
+      vectors .= "/* vector ".vec." */\n";
       vectors .= "u8 ".[app_name string]."_alarms_access[".[count string]."] = {".init."};\n" ;
       doReplace !?tpl !"$ALARM_ACCESS$" ![app_name string]."_alarms_access" ;
     else
@@ -206,6 +208,7 @@ routine generate_apps
 
     generate_vector !vec ?init ?count ;
     if count > 0 then
+      vectors .= "/* vector ".vec." */\n";
       vectors .= "u8 ".[app_name string]."_rezs_access[".[count string]."] = {".init."};\n" ;
       doReplace !?tpl !"$REZ_ACCESS$" ![app_name string]."_rezs_access" ;
     else
@@ -228,6 +231,7 @@ routine generate_apps
 
     generate_vector !vec ?init ?count ;
     if count > 0 then
+      vectors .= "/* vector ".vec." */\n";
       vectors .= "u8 ".[app_name string]."_sts_access[".[count string]."] = {".init."};\n" ;
       doReplace !?tpl !"$ST_ACCESS$" ![app_name string]."_sts_access" ;
     else
@@ -250,6 +254,7 @@ routine generate_apps
 
     generate_vector !vec ?init ?count ;
     if count > 0 then
+      vectors .= "/* vector ".vec." */\n";
       vectors .= "u8 ".[app_name string]."_cnts_access[".[count string]."] = {".init."};\n" ;
       doReplace !?tpl !"$CNT_ACCESS$" ![app_name string]."_cnts_access" ;
     else

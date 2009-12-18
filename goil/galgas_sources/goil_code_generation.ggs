@@ -43,6 +43,7 @@ import semantics goil_env_verification in "goil_env_verification.ggs";
 import semantics config_type in "config_type.ggs";
 import semantics system_config in "system_config.ggs";
 import semantics tasks_config in "tasks_config.ggs";
+import semantics template_routines     in "template_routines.ggs";
 
 import semantics cfg_types in "cfg_types.ggs";
 import grammar cfg_grammar in "cfg_grammar.gGrammar";
@@ -158,9 +159,7 @@ end routine;
 #--------------------------------------------------------------------
 routine generate_flags
     ??@os_config os_gen_cfg
-    ?@os_obj     os
-    ?@task_map   tasks
-    ?@isr_map    isrs
+    ??@root_obj   cpu
     ?!@string    obj_header
 :
     @string flags := "";
@@ -169,81 +168,92 @@ routine generate_flags
     flags .= "#define    TARGET_ARCH    ARCH_".[arch[] uppercaseString]."\n";
 
     # Check the STATUS field
-    if [[os status] string] == "extended" then
+    if [[[cpu os] status] string] == "extended" then
         flags .= "#define    OS_EXTENDED\n";
     end if;
 
     # Check the STARTUPHOOK field
-    @basic_type startuphook := [os startuphook];
+    @basic_type startuphook := [[cpu os] startuphook];
     cast startuphook :
     when == @bool_class b do
         if [b value] then flags .= "#define    WITH_STARTUP_HOOK\n"; end if;
     else end cast;
     
     # Check the SHUTDOWNHOOK field
-    @basic_type shutdownhook := [os shutdownhook];
+    @basic_type shutdownhook := [[cpu os] shutdownhook];
     cast shutdownhook :
     when == @bool_class b do
         if [b value] then flags .= "#define    WITH_SHUTDOWN_HOOK\n"; end if;
     else end cast;
     
     # Check the ERRORHOOK field
-    @basic_type errorhook := [os errorhook];
+    @basic_type errorhook := [[cpu os] errorhook];
     cast errorhook :
     when == @bool_class b do
         if [b value] then flags .= "#define    WITH_ERROR_HOOK\n"; end if;
     else end cast;
     
     # Check the PRETASKHOOK field
-    @basic_type pretaskhook := [os pretaskhook];
+    @basic_type pretaskhook := [[cpu os] pretaskhook];
     cast pretaskhook :
     when == @bool_class b do
         if [b value] then flags .= "#define    WITH_PRE_TASK_HOOK\n"; end if;
     else end cast;
     
     # Check the POSTTASKHOOK field
-    @basic_type posttaskhook := [os posttaskhook];
+    @basic_type posttaskhook := [[cpu os] posttaskhook];
     cast posttaskhook :
     when == @bool_class b do
         if [b value] then flags .= "#define    WITH_POST_TASK_HOOK\n"; end if;
     else end cast;
     
     # Check the USEGETSERVICEID field
-    @basic_type usegetserviceid := [os usegetserviceid];
+    @basic_type usegetserviceid := [[cpu os] usegetserviceid];
     cast usegetserviceid :
     when == @bool_class b do
         if [b value] then flags .= "#define    WITH_USEGETSERVICEID\n"; end if;
     else end cast;
     
     # Check the USEPARAMETERACCESS field
-    @basic_type useparameteraccess := [os useparameteraccess];
+    @basic_type useparameteraccess := [[cpu os] useparameteraccess];
     cast useparameteraccess :
     when == @bool_class b do
         if [b value] then flags .= "#define    WITH_USEPARAMETERACCESS\n"; end if;
     else end cast;
     
     # Check the USERESSCHEDULER field
-    @basic_type useresscheduler := [os useresscheduler];
+    @basic_type useresscheduler := [[cpu os] useresscheduler];
     cast useresscheduler :
     when == @bool_class b do
         if [b value] then flags .= "#define    WITH_USERESSCHEDULER\n"; end if;
     else end cast;
+    
+    # Generate the WITH_COM flag
+    @bool usecom := false;
+    if [[cpu com] usecom] then
+      usecom := true;
+    else
+      usecom := [[cpu messages] count] > 0    |
+                [[cpu net_messages] count] > 0;
+    end if;
+    flags .= bool_define[!"WITH_COM" !usecom];
+
 
     # Check the SYSTEM_CALL field
-    cast [os systemcall] :
+    cast [[cpu os] systemcall] :
     when == @bool_class b do
         if [b value] then flags .= "#define    WITH_SYSTEM_CALL\n"; end if;
     else end cast;
 
     # Check the MEMORY_PROTECTION field
-    flags .= bool_class_define[!"WITH_MEMORY_PROTECTION" !memory_protection[!os] !false];
+    flags .= bool_class_define[!"WITH_MEMORY_PROTECTION" !memory_protection[![cpu os]] !false];
 
     # WITH_MEMMAP flag
-    flags .= bool_define[!"WITH_MEMMAP" !memory_mapping[!os]];
-    flags .= bool_define[!"WITH_COMPILER_SETTINGS" !memory_mapping[!os]];
+    flags .= bool_define[!"WITH_MEMMAP" !memory_mapping[![cpu os]]];
+    flags .= bool_define[!"WITH_COMPILER_SETTINGS" !(compiler[![[cpu os] memmap]] != "")];
 
     # Output the TRAMPOLINE_BASE_PATH if it has been set in the OIL file
-    @lstring tpl_base_path := [os tpl_base_path];
+    @lstring tpl_base_path := [[cpu os] tpl_base_path];
     if [tpl_base_path string] != "" then
       flags .= "#define    TRAMPOLINE_BASE_PATH \"".[tpl_base_path string]."\"\n";
     else
@@ -255,12 +265,12 @@ routine generate_flags
 
         flags .= "#define    WITH_AUTOSAR\n";
 
-        cast [os protectionhook] :
+        cast [[cpu os] protectionhook] :
         when == @bool_class b do
             if [b value] then flags .= "#define    WITH_PROTECTION_HOOK\n"; end if;
         else end cast;
 
-        cast [os stackmonitoring] :
+        cast [[cpu os] stackmonitoring] :
         when == @bool_class b do
             if [b value] then flags .= "#define    WITH_STACK_MONITORING\n"; end if;
         else end cast;
@@ -271,7 +281,7 @@ routine generate_flags
         # set. Otherwise, it is not set
         @bool use_tp := false;
 
-        foreach tasks (* @task_obj task) do
+        foreach [cpu tasks] (* @task_obj task) do
             cast [task timing_prot] :
             when == @void_timing_prot do
             else
@@ -279,7 +289,7 @@ routine generate_flags
             end cast;
         end foreach;
 
-        foreach isrs (* @isr_obj isr) do
+        foreach [cpu isrs] (* @isr_obj isr) do
             cast [isr timing_prot] :
             when == @void_timing_prot do
             else
@@ -295,14 +305,14 @@ routine generate_flags
 
     # trace flags
     @string tr;
-    [[os trace] generate_c ?tr];
+    [[[cpu os] trace] generate_c ?tr];
     flags .= tr;
 
     # with_it_table
     flags .= bool_define[!"WITH_IT_TABLE"![os_gen_cfg with_it_table]];
 
     # Output the boolean free flags
-    foreach [os others] (@lstring key @basic_type f_obj) do
+    foreach [[cpu os] others] (@lstring key @basic_type f_obj) do
         cast f_obj :
         when == @bool_class b do
             if [b value] then
@@ -739,10 +749,9 @@ end routine;
 #--------------------------------------------------------------------
 routine compute_actual_task_priority
     ?@task_map  tasks
-    !@prio_map  prio_for_task
+    ?!@prio_map  prio_for_task
     !@uint      max_prio
 :
-    prio_for_task := [@prio_map emptyMap];
     @objs_by_prio tl [emptySortedList];
 
     #
@@ -802,11 +811,10 @@ end routine;
 #--------------------------------------------------------------------
 routine compute_actual_isr_priority
     ?@isr_map   isrs
-    !@prio_map  prio_for_isr
+    ?!@prio_map  prio_for_isr
     ?@uint      floor
     !@uint      max_prio
 :
-    prio_for_isr := [@prio_map emptyMap];
     @objs_by_prio il [emptySortedList];
 
     if [isrs count] != 0 then
@@ -871,9 +879,8 @@ end routine;
 routine compute_rez_priority
     ?@resource_map rez
     ?@task_map     tasks
-    ?@prio_map     prio_for_task
     ?@isr_map      isrs
-    ?@prio_map     prio_for_isr
+    ?@prio_map     prio_for_process
     !@prio_map     prio_for_rez
     !@string_map   comments
     
@@ -901,7 +908,7 @@ routine compute_rez_priority
             if owned then
                 @uint prio;
                 @uint act;
-                [prio_for_task get !tn ?prio ?act];
+                [prio_for_process get !tn ?prio ?act];
                 if prio > rez_prio then
                     rez_prio := prio;
                 end if;
@@ -916,7 +923,7 @@ routine compute_rez_priority
             if owned then
                 @uint prio;
                 @uint act;
-                [prio_for_isr get !isn ?prio ?act];
+                [prio_for_process get !isn ?prio ?act];
                 if prio > rez_prio then
                     rez_prio := prio;
                 end if;
@@ -940,7 +947,7 @@ routine compute_rez_priority
             if owned then
                 @uint prio;
                 @uint act;
-                [prio_for_task get !tn ?prio ?act];
+                [prio_for_process get !tn ?prio ?act];
                 if prio == rez_prio then
                     rez_act := rez_act - act;
                 end if;
@@ -953,7 +960,7 @@ routine compute_rez_priority
             if owned then
                 @uint prio;
                 @uint act;
-                [prio_for_isr get !isn ?prio ?act];
+                [prio_for_process get !isn ?prio ?act];
                 if prio == rez_prio then
                     rez_act := rez_act - act;
                 end if;
@@ -971,8 +978,7 @@ end routine;
 # Compute the number of entry in the fifo for each priority level
 #--------------------------------------------------------------------
 routine compute_ready_list
-    ?@prio_map  prio_for_task
-    ?@prio_map  prio_for_isr
+    ?@prio_map  prio_for_process
     ?@prio_map  prio_for_rez
     ?@uint      max_task_prio
     ?@uint      max_prio
@@ -990,10 +996,7 @@ routine compute_ready_list
     while prio <= max_prio do
         # look for objects with the same priority
         @uint fifosize := 0;
-        foreach prio_for_task (@lstring n @uint p @uint a) do
-            if p == prio then fifosize := fifosize + a; end if;
-        end foreach;
-        foreach prio_for_isr (@lstring n @uint p @uint a) do
+        foreach prio_for_process (@lstring n @uint p @uint a) do
             if p == prio then fifosize := fifosize + a; end if;
         end foreach;
         foreach prio_for_rez (@lstring n @uint p @uint a) do
@@ -1508,6 +1511,13 @@ routine generate_resources
     doReplace !?implementation !"$RESOURCES$" !resources_result; 
 end routine;
 
+routine computeEvents
+  ??@root_obj cpu
+  !@task_mask maskForEvent
+:
+  maskForEvent := [@task_mask emptyMap];
+end routine;
+
 #--------------------------------------------------------------------
 # Events generation
 #--------------------------------------------------------------------
@@ -1857,16 +1867,15 @@ routine generate_all
 
           @uint max_task_prio;
           @uint max_prio;
-          @prio_map tasks_actual_prio;
+          @prio_map actual_prio [emptyMap];
           compute_actual_task_priority
               ![cpu tasks]
-              ?tasks_actual_prio
+              !?actual_prio
               ?max_task_prio;
 
-          @prio_map isrs_actual_prio;
           compute_actual_isr_priority
               ![cpu isrs]
-              ?isrs_actual_prio
+              !?actual_prio
               !max_task_prio
               ?max_prio;
 
@@ -1875,16 +1884,14 @@ routine generate_all
           compute_rez_priority 
               ![cpu resources]
               ![cpu tasks]
-              !tasks_actual_prio
               ![cpu isrs] 
-              !isrs_actual_prio
+              !actual_prio
               ?rez_actual_prio
               ?rez_comments;
 
           @prio_list ready_list;
           compute_ready_list
-              !tasks_actual_prio
-              !isrs_actual_prio
+              !actual_prio
               !rez_actual_prio
               !max_task_prio
               !max_prio
@@ -1897,9 +1904,7 @@ routine generate_all
 
           generate_flags
               !generated_conf
-              ![cpu os]
-              ![cpu tasks]
-              ![cpu isrs]
+              !cpu
               !?obj_header;
 
           [[cpu com] generate !?obj_header];
@@ -1929,7 +1934,7 @@ routine generate_all
               ![cpu tasks]
               ![cpu applis]
               ![cpu resources]
-              !tasks_actual_prio
+              !actual_prio
               !app_for_obj
               !?header
               !?obj_header
@@ -1940,7 +1945,7 @@ routine generate_all
               ![cpu isrs]
               ![cpu applis]
               ![cpu resources]
-              !isrs_actual_prio
+              !actual_prio
               !app_for_obj
               !?header
               !?obj_header
@@ -2038,18 +2043,48 @@ routine generate_all
               !cpu
               !?implementation;
 
-          generate_link_script
-              !cpu;
+#          generate_link_script
+#              !cpu;
               
-          generate_memmap
-            !cpu;
+#          generate_memmap
+#            !cpu;
 
-#          @goilTemplateVariableMap sysCfg [emptyMap];
-#          #setCompilerKind !cpu !?sysCfg;
-#          setTasksList !cpu !?sysCfg;
+          @goilTemplateVariableMap sysCfg [emptyMap];
+          #setCompilerKind !cpu !?sysCfg;
+          addStringValue !?sysCfg ![@lstring new !"OILFILENAME" !here] ![[@string stringWithSourceFilePath] lastPathComponent];
+          addStringValue !?sysCfg ![@lstring new !"CPUNAME" !here] ![[cpu name] string];
+          addStringValue !?sysCfg ![@lstring new !"TIMESTAMP" !here] ![@string stringWithCurrentDateTime];
+          addStringValue !?sysCfg ![@lstring new !"LINKSCRIPTNAME" !here] !link_script_name[![[cpu os] memmap]];
+          setProcessesList !cpu !actual_prio !app_for_obj !?sysCfg;
+          setTasksList !cpu !actual_prio !app_for_obj !?sysCfg;
+          setISRs1List !cpu !actual_prio !app_for_obj !?sysCfg;
+          setISRs2List !cpu !actual_prio !app_for_obj !?sysCfg;
+          setCountersList !cpu !app_for_obj !?sysCfg;
+          setEventsList !cpu !?sysCfg;
+          setAlarmsList !cpu !app_for_obj !?sysCfg;
+          setResourcesList !cpu !rez_actual_prio  !app_for_obj !?sysCfg;
+          setMessagesList !cpu !app_for_obj !?sysCfg;
+          setScheduletablesList !cpu !app_for_obj !?sysCfg;
+          setOsapplicationsList !cpu !app_for_obj !?sysCfg;
+          setProcessCount !cpu !?sysCfg;
+          
+          addBoolValue !?sysCfg ![@lstring new !"AUTOSAR" !here] ![option goil_options.autosar_on value];
+          setUseCom !cpu !?sysCfg;
+          setScalabilityClass !cpu !?sysCfg;
 #          
-#          generate_memmap_new
-#            !sysCfg;
+#          @string appConfigC := computeTemplate[!"code" !sysCfg !"tpl_app_config.c"];
+#          @string appConfigH := computeTemplate[!"code" !sysCfg !"tpl_app_config.h"];
+##          
+##          message appConfigH;
+#          message appConfigC;
+##          
+          generate_memmap_new
+            !cpu
+            !sysCfg;
+
+          generate_link_script_new
+            !cpu
+            !sysCfg;
 
           generate_compiler
             !cpu;

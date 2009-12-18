@@ -103,6 +103,7 @@ routine addBoolFieldValue
     ![@goilTemplateType boolType]
     !if inValue then 1L else 0L end
     !""
+    ![@goilTemplateFieldMapList emptyList]
   ] ;
 end routine ;
 
@@ -118,6 +119,7 @@ routine addUnsignedFieldValue
     ![@goilTemplateType unsignedType]
     !inValue
     !""
+    ![@goilTemplateFieldMapList emptyList]
   ] ;
 end routine ;
 
@@ -132,6 +134,23 @@ routine addStringFieldValue
     !inVariableName
     ![@goilTemplateType stringType]
     !0L
+    !inValue
+    ![@goilTemplateFieldMapList emptyList]
+  ] ;
+end routine ;
+
+#------------------------------------------------------------------------------*
+
+routine addListFieldValue
+  ?!@goilTemplateFieldMap ioTemplateFieldMap
+  ??@lstring inVariableName
+  ??@goilTemplateFieldMapList inValue
+:
+  [!?ioTemplateFieldMap insertKey
+    !inVariableName
+    ![@goilTemplateType listType]
+    !0L
+    !""
     !inValue
   ] ;
 end routine ;
@@ -185,7 +204,15 @@ routine displayTemplateVariableMap
   end foreach ;
 end routine ;
 
-
+routine displayPathList
+  ??@stringlist pathList
+:
+  message " -----------------------------------------\n";
+  foreach pathList do
+    message " - '" . mValue . "'\n" ;
+  end foreach ;
+  message " -----------------------------------------\n";
+end routine;
 #------------------------------------------------------------------------------*
 
 routine goilTemplateInvocation
@@ -197,11 +224,11 @@ routine goilTemplateInvocation
   ?!@string                  ioResultingString
 :
   if [@uint errorCount] == 0 then
-    const @string templateDir := [option goil_options.goil_template_dir value] ;
+    const @string templateDir := root_templates_directory[] ;
     if [templateDir length] == 0 then
-      error inTemplateName:"the '--goil-templates' option is required for generating code" ;
+      error inTemplateName:"the '--goil-templates' option or the environment variable GOIL_TEMPLATES is required for generating code" ;
     elsif not [templateDir directoryExists] then
-      error inTemplateName:"the '--goil-templates' option value is '" . templateDir . "', but is not a valid directory path" ;
+      error inTemplateName:"the template path '" . templateDir . "' exists but is not a valid directory path" ;
     else
       const @string targetDir := [option goil_options.target_platform value] ;
       if [targetDir length] == 0 then
@@ -221,6 +248,7 @@ routine goilTemplateInvocation
           pathList += !fullTemplatePath ;
           found := [fullTemplatePath fileExists] ;
           if found then
+            #displayPathList !pathList;
             grammar goil_template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inCfg !inTemplateVariableMap !?ioResultingString ;
           end if ;
         end if ;
@@ -232,6 +260,7 @@ routine goilTemplateInvocation
           pathList += !fullTemplatePath ;
           found := [fullTemplatePath fileExists] ;
           if found then
+            #displayPathList !pathList;
             grammar goil_template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inCfg !inTemplateVariableMap !?ioResultingString ;
           else
             targetTemplatePartialPath := [targetTemplatePartialPath stringByDeletingLastPathComponent] ;
@@ -242,6 +271,7 @@ routine goilTemplateInvocation
           pathList += !fullTemplatePath ;
           found := [fullTemplatePath fileExists] ;
           if found then
+            #displayPathList !pathList;
             grammar goil_template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inCfg !inTemplateVariableMap !?ioResultingString ;
           end if;
         end if;

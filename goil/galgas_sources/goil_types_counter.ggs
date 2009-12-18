@@ -63,4 +63,28 @@ sortedlist @counter_by_source {
   source >
 }
 
+function maxAllowedValue ??@counter_obj counter ->@uint64 value :
+  value := 0L;
+  cast [counter max_allowed_value]:
+  when == @uint32_class max do value := [[max value] uint64];
+  else error [[counter max_allowed_value] location] : "internal, wrong type for MAXALLOWEDVALUE";
+  end cast; 
+end function;
+
+function minCycle ??@counter_obj counter ->@uint64 value :
+  value := 0L;
+  cast [counter min_cycle]:
+  when == @uint32_class min do value := [[min value] uint64];
+  else error [[counter min_cycle] location] : "internal, wrong type for MINCYCLE";
+  end cast; 
+end function;
+
+function ticksPerBase ??@counter_obj counter ->@uint64 value :
+  value := 0L;
+  cast [counter ticks_per_base]:
+  when == @uint32_class ticks do value := [[ticks value] uint64];
+  else error [[counter ticks_per_base] location] : "internal, wrong type for TICKSPERBASE";
+  end cast; 
+end function;
+
 end semantics;

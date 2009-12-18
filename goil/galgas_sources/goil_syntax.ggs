@@ -230,7 +230,7 @@ rule <application_definition>
     @app_map           applis          := [file applis];
 
     $CPU$;
-    $idf$ ?*;
+    $idf$ ?@lstring cpuName;
     ${$;
     <object_definition_list>
         !?os
@@ -251,6 +251,7 @@ rule <application_definition>
     $;$;
 
     file := [@root_obj new
+        !cpuName
         !os
         !com
         !tasks

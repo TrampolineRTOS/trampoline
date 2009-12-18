@@ -16,4 +16,21 @@ function goil_template
     !cfg
     !?result;
 end function;
+
+function computeTemplate
+  ??@string prefix
+  ??@goilTemplateVariableMap cfg
+  ??@string name
+  ->@string result
+:
+  result := "";
+  goilTemplateInvocation
+    ![@lstring new !name !here]
+    !prefix
+    !"templates"
+    !emptySystemConfig[]
+    !cfg
+    !?result;
+end function;
+
 end semantics;

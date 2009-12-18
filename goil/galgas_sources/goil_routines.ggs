@@ -72,13 +72,13 @@ function root_templates_directory
   else
     tpl_dir := [@string stringWithEnvironmentVariableOrEmpty !"GOIL_TEMPLATES"] ;
   end if ;
+  tpl_dir := [tpl_dir unixPathWithNativePath] ;
 end function;
 
 function templates_directory ?@string prefix -> @string temp_dir :
     temp_dir := root_templates_directory[];
     if temp_dir != "" then
         temp_dir := add_path_component[!temp_dir !prefix]; 
-        temp_dir := [temp_dir unixPathWithNativePath] ;
         # check the path is an absolute one
         if [temp_dir characterAtIndex !0] != '/' then
             @string curdir := [@string stringWithCurrentDirectory] ;
@@ -387,6 +387,19 @@ routine is_in_lstringlist
   end foreach ;
 end routine ;
 
+function isInLstringlist
+  ?@lstringlist l
+  ?@lstring     e
+  ->@bool       p
+:
+  p := false ;
+  foreach l (@lstring s) do
+    if [s string] == [e string] then
+      p := true ;
+    end if ;
+  end foreach ;
+end function ;
+
 routine add_lstring_unique
   ?!@lstringlist l
   ?@lstring e
@@ -425,6 +438,10 @@ routine add_makefile_flag_if_not_empty
     receiver .= flag_name . "=". flag_value . "\n" ;
   end if ;
 end routine;
+
+function lstringWith ?@string s ->@lstring r:
+  r := [@lstring new !s !here];
+end function;
 
 end semantics ;
 # vim:ft=ggs:ts=4:sw=4
