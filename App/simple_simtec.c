@@ -58,7 +58,7 @@ ISR(it2)
   ActivateTask (t4);
   TRACE(5);
   trap_func ();
-  TerminateISR2 ();
+  TerminateISR ();
   trap_func ();
 }
 
@@ -66,7 +66,7 @@ ISR(it1)
 {
   TRACE(4);
   trap_func ();
-  TerminateISR2 ();
+  TerminateISR ();
   trap_func ();
 }
 
