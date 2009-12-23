@@ -43,11 +43,11 @@ void tpl_init_machine()
 
   simtec_disable_all_devices ();
 
-  /*simtec_setup_heartbeat_timer_1ms ();*/
+  simtec_setup_heartbeat_timer_1ms ();
 
   tpl_init_machine_generic ();
 
-  /*simtec_heartbeat_timer_start ();*/
+  simtec_heartbeat_timer_start ();
 }
 
 void tpl_shutdown ()
