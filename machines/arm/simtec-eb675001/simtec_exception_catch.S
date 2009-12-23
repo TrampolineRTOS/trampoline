@@ -1,9 +1,10 @@
 /**
- * @file tpl_machine_simtec_eb675001_asm.s
+ * @file simtec_exception_catch.S
  *
  * @section descr File description
  *
- * Low level part of SIMTEC-EB675001 platform
+ * ARM exceptions catching. Default behavior has been choosen to
+ * help debugging.
  *
  * @section copyright Copyright
  *
@@ -45,60 +46,60 @@ bootstrap_stack_bottom:
  * pfabord, undef) */
 .global faulty_instruction
 faulty_instruction:
-	.word 0
+    .word 0
 
 /* contains the CPSR value at the time of the fault (abord, pfabord, undef) */
 .global saved_psr
 saved_psr:
-	.word 0
+    .word 0
 
 /* contains the stack pointer at the time of the fault */
 .global interrupted_stack_pointer
 interrupted_stack_pointer:
-	.word 0
+    .word 0
 
 .text
 .align 2
 
 /* this macro locks interrupts before hanging down in a loop */
 .macro lock_interrupts
-	stmfd sp!, {r0}
-	mrs r0, cpsr
-	orr r0, #(CPSR_FIQ_LOCKED | CPSR_IRQ_LOCKED)
-	msr cpsr_c, r0
-	ldmfd sp!, {r0}
+    stmfd sp!, {r0}
+    mrs r0, cpsr
+    orr r0, #(CPSR_FIQ_LOCKED | CPSR_IRQ_LOCKED)
+    msr cpsr_c, r0
+    ldmfd sp!, {r0}
 .endm
 
 /* this macro decodes some informations about an exception (abort, undef) */
 .macro decode_exception exception_type
-	stmfd sp!, {r0, r1, r2}
+    stmfd sp!, {r0, r1, r2}
 
-	/* get the faulty PC */
+    /* get the faulty PC */
 .if (\exception_type == data_abort)
-	sub r0, lr, #8
+    sub r0, lr, #8
 .else
   sub r0, lr, #4
 .endif
-	ldr r1, =faulty_instruction
-	str r0, [r1]
+    ldr r1, =faulty_instruction
+    str r0, [r1]
 
-	/* get the faulty CPSR */
-	mrs r0, spsr
-	ldr r1, =saved_psr
-	str r0, [r1]
+    /* get the faulty CPSR */
+    mrs r0, spsr
+    ldr r1, =saved_psr
+    str r0, [r1]
 
   /* get stack pointer from faulty mode */
-	mrs r0, cpsr /* save current mode */
-	mrs r1, spsr
-	and r1, r1, #0x1f
+    mrs r0, cpsr /* save current mode */
+    mrs r1, spsr
+    and r1, r1, #0x1f
   bic r2, r0, #0x1f
-	orr r2, r2, r1
-	msr cpsr, r2
-	ldr r1, =interrupted_stack_pointer
-	str sp, [r1]
-	msr cpsr, r0
+    orr r2, r2, r1
+    msr cpsr, r2
+    ldr r1, =interrupted_stack_pointer
+    str sp, [r1]
+    msr cpsr, r0
 
-	ldmfd sp!, {r0, r1, r2}
+    ldmfd sp!, {r0, r1, r2}
 .endm
 
 .global primary_undefined_instruction_handler
@@ -128,46 +129,5 @@ primary_unused_handler:
 /* FIQ not defined in this port version */
 .global tpl_primary_fiq_handler
 tpl_primary_fiq_handler:
-	subs pc, lr, #4
+    subs pc, lr, #4
 
-.global tpl_arm_bootstrap_entry
-tpl_arm_bootstrap_entry:
-	/* setup IRQ mode initial stack pointer */
-	msr cpsr_c, #(CPSR_IRQ_MODE | CPSR_IRQ_LOCKED | CPSR_FIQ_LOCKED)
-	ldr sp, =irq_stack_bottom
- 	
-	/* setup FIQ mode initial stack pointer */
-  msr cpsr_c, #(CPSR_FIQ_MODE | CPSR_IRQ_LOCKED | CPSR_FIQ_LOCKED)
-	ldr sp, =fiq_stack_bottom
- 	
-	/* setup service (syscall) mode initial stack pointer */
-  msr cpsr_c, #(CPSR_SVC_MODE | CPSR_IRQ_LOCKED | CPSR_FIQ_LOCKED)
-	ldr sp, =svc_stack_bottom
-
-  msr cpsr_c, #(CPSR_ABT_MODE | CPSR_IRQ_LOCKED | CPSR_FIQ_LOCKED)
-	ldr sp, =abt_stack_bottom
-
-  msr cpsr_c, #(CPSR_UND_MODE | CPSR_IRQ_LOCKED | CPSR_FIQ_LOCKED)
-	ldr sp, =und_stack_bottom
- 	
- 	/* setup user mode initial stack pointer */
-	msr cpsr_c, #(CPSR_SYS_MODE | CPSR_IRQ_LOCKED | CPSR_FIQ_LOCKED)
-	ldr sp, =usr_stack_bottom
-
-	/* jump to high level bootstrap part */
-	b tpl_arm_bootstrap_stage2
-
-/* We want tpl_sleep not to use stack. Writing in assembler make us able to
- * prevent this. */
-.global tpl_sleep
-tpl_sleep:
-  /* halts CPU */
-#ifdef DISABLED_FOR_DEBUG_FACILITY 
-  ldr r0, =0xB8000004
-  mov r1, #0x3C
-  mov r2, #4
-  str r1, [r0]
-  str r2, [r0]
-#endif
-  /* falls into infinite loop */
-	b .

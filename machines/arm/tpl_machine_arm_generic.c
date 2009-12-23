@@ -23,10 +23,14 @@
  * $URL$
  */
 #include "tpl_machine.h"
+#include "tpl_machine_interface.h"
 #include "tpl_machine_arm_generic.h"
 #include "tpl_os_application_def.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os_kernel.h"
+#ifdef WITH_AUTOSAR
+#include "tpl_as_definitions.h"
+#endif
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -36,7 +40,15 @@
  */
 VAR (arm_context, OS_VAR) idle_task_context;
 
+/**
+ * lock depth counter
+ */
 static volatile VAR (u32, OS_VAR) tpl_locking_depth;
+
+/**
+ * Kernel entry counter
+ */
+volatile VAR (u32, OS_VAR) nested_kernel_entrance_counter;
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -44,23 +56,23 @@ static volatile VAR (u32, OS_VAR) tpl_locking_depth;
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-extern FUNC(void, OS_CODE) tpl_init_machine_low_level (void);
 extern FUNC(void, OS_CODE) tpl_sleep (void);
+STATIC FUNC(void, OS_CODE) tpl_call_missingend(void);
+STATIC FUNC(void, OS_CODE) tpl_call_terminateISR(void);
 
-/* FIXME: follow the way proposed by JLB to catch abnormally exits of tasks */
-FUNC(void, OS_CODE) tpl_catch_missing_terminate (void)
+FUNC (void, OS_CODE) tpl_init_machine_generic (void)
 {
-  /* hangs here */
-  DISABLE_IRQ();
-  DISABLE_FIQ();
-  while (1);
+         tpl_locking_depth = 0;
+         nested_kernel_entrance_counter = 0;
 }
 
 /*
- * As kernel mode is non-interruptible, these function does nothing */
+ * As kernel mode is non-interruptible, these function does nothing
+ */
 FUNC(void, OS_CODE) tpl_get_task_lock (void)
 {
 }
+
 FUNC(void, OS_CODE) tpl_release_task_lock (void)
 {
 }
@@ -104,34 +116,64 @@ void tpl_disable_interrupts(void)
 FUNC(void, OS_CODE) tpl_init_context(
     CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
 {
-	struct ARM_CONTEXT *core_context;
-	const tpl_proc_static *the_proc;
+  struct ARM_CONTEXT *core_context;
+  const tpl_proc_static *the_proc;
 
-	/* initialize shortcuts */	
-	the_proc = tpl_stat_proc_table[proc_id];
-	core_context = the_proc->context;
-	
-	/* setup entry point */
-	core_context->r[armreg_pc] = (u32)(the_proc->entry);
-	/* setup initial stack pointer */
-	core_context->r[armreg_sp] = ((u32)the_proc->stack.stack_zone)
-	               + the_proc->stack.stack_size;
-	/* tasks run privileged at user level, FIXME: has to be choosen in
-   * sub-architecture part */
-	core_context->psr = 0x1f;
+  /* initialize shortcuts */
+  the_proc = tpl_stat_proc_table[proc_id];
+  core_context = the_proc->context;
 
-  /* if the task's main function returns without calling
-   * TerminateTask, catch it into tpl_catch_missing_terminate */
-  core_context->r[armreg_lr] = (u32)(tpl_catch_missing_terminate);
+  /* setup entry point */
+  core_context->r[armreg_pc] = (u32)(the_proc->entry);
+  /* setup initial stack pointer */
+  core_context->r[armreg_sp] = ((u32)the_proc->stack.stack_zone)
+      + the_proc->stack.stack_size;
+  /* task runs at a defined processor mode */
+  core_context->psr = USER_TASKS_ARM_MODE; /* macro defined into subarch part */
 
-  /* TODO initialize stack footprint */
+  /*
+   * set the return address of the task/isr. This is usefull in case the
+   * user forgets to call TerminateTask/TerminateISR
+   * MISRA RULE 1,45,85 VIOLATION: the function pointer is used and stored
+   * in a 32bits variable, but as the Os is dependant on the target,
+   * the behaviour is controled
+   *
+   * TODO: follow ppc port code
+   */
+  core_context->r[armreg_lr] = (IS_ROUTINE == the_proc->type) ?
+                (u32)(tpl_call_terminateISR) :
+                (u32)(tpl_call_missingend); /*  lr  */
+
+  /* TODO: initialize stack footprint */
 }
 
-FUNC (void, OS_CODE) tpl_init_machine_generic (void)
+STATIC FUNC(void, OS_CODE) tpl_call_missingend(void)
 {
-	 tpl_locking_depth = 0;
-	 tpl_init_machine_low_level ();
+
+/* FIXME: reactivate this if required by AUTOSAR
+#ifdef WITH_AUTOSAR
+    CALL_ERROR_HOOK(E_OS_MISSINGEND);
+#endif
+*/
+
+    /**
+     * FIXME: make default behavior more gently if not in development
+     */
+    DISABLE_FIQ();
+    DISABLE_IRQ();
+    while (1);
 }
+
+STATIC FUNC(void, OS_CODE) tpl_call_terminateISR(void)
+{
+      /**
+       * FIXME: make default behavior more gently if not in development
+       */
+      DISABLE_FIQ();
+      DISABLE_IRQ();
+      while (1);
+}
+
 
 FUNC(u8, OS_CODE) tpl_check_stack_footprint (
     CONST(tpl_proc_id, OS_APPL_DATA) proc_id)

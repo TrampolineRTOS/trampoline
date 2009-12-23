@@ -28,6 +28,7 @@
 
 #include "tpl_os_std_types.h"
 #include "tpl_os_internal_types.h"
+#include "tpl_os_custom_types.h"
 
 /**
  * ARM internal registers symbolic names
@@ -128,18 +129,21 @@ typedef struct TPL_STACK tpl_stack;
                                             : \
                                             : \
                                             : "r0")
+
 #define ENABLE_FIQ()  __asm__ __volatile__ ("mrs r0, cpsr ;" \
                                             "bic r0, #0b01000000 ;" \
                                             "msr cpsr_c, r0" \
                                             : \
                                             : \
                                             : "r0")
+
 #define DISABLE_IRQ() __asm__ __volatile__ ("mrs r0, cpsr ;" \
                                             "orr r0, #0b10000000 ;" \
                                             "msr cpsr_c, r0" \
                                             : \
                                             : \
                                             : "r0")
+
 #define ENABLE_IRQ()  __asm__ __volatile__ ("mrs r0, cpsr ;" \
                                             "bic r0, #0b10000000 ;" \
                                             "msr cpsr_c, r0" \

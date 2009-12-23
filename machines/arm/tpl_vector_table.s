@@ -29,9 +29,7 @@
  
 .align 2
 
-/* TODO: remove this */
-.global Vec_reset
-  
+
 Vec_reset:                 b tpl_arm_bootstrap_entry
 Vec_undefinedInstruction:  b primary_undefined_instruction_handler
 Vec_softwareInterrupt:     b tpl_primary_syscall_handler

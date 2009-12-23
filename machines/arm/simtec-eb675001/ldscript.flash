@@ -35,9 +35,6 @@ MEMORY {
    rom   (r)   : ORIGIN = 0xC8000000, LENGTH = 4M
 }
 
-/* Le point d'entrée du programme est situé à l'étiquette Vec_reset */
-ENTRY(Vec_reset)
-
 SECTIONS {
 
    /* contains all non-volatile and immutable data
@@ -69,14 +66,14 @@ SECTIONS {
    } > dram
 
    /* stack of bootstrap needs to be in SRAM which does not need to be configured
-	  * to work.
-		*/
-	 bootstrap_stack (NOLOAD) : {
-      *(bootstrap_stack)
-	 } > sram
+    * to work.
+    */
+   bootstrap_stack (NOLOAD) : {
+       *(bootstrap_stack)
+   } > sram
 	
-   dram_overflow = 0xC2000000;
-	 remap_overflow = 0x08000000;
-	 sram_overflow = 0x50000000 + 32K;
+    dram_overflow = 0xC2000000;
+    remap_overflow = 0x08000000;
+    sram_overflow = 0x50000000 + 32K;
 }
 

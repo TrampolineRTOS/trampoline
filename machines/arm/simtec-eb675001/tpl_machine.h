@@ -27,6 +27,14 @@
 
 #include "../tpl_machine_arm_generic.h"
 
+/**
+ * Gives the ARM processor mode the normal user tasks
+ * will run into. The value can be :
+ * - 0x10 : unprivileged
+ * - 0x1F : privileged
+ */
+#define USER_TASKS_ARM_MODE 0x1F
+
 typedef struct ARM_CONTEXT *tpl_context;
 
 extern struct ARM_CONTEXT idle_task_context;

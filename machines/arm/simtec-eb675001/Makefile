@@ -29,11 +29,18 @@
 #kernel OS architecture dependant files
 
 SOURCES += tpl_machine_arm_generic.c \
-tpl_machine_arm_generic_asm.S \
+tpl_irq.S \
+tpl_system_call.S \
+tpl_system_stacks.s \
 tpl_vector_table.s \
-tpl_invoque.s \
-tpl_machine_simtec_eb675001_asm.s \
-tpl_machine_simtec_eb675001.c \
+tpl_invoque.S \
+simtec_tpl_sleep.S \
+simtec_exception_catch.S \
+simtec_bootstrap_stage1.S \
+simtec_bootstrap_stage2.c \
+simtec_idle.c \
+simtec_tpl_stubs.c \
+simtec_irq.c \
 simtec_driver_adapter.c
 
 TEMP_SOURCE_DIRS += $(MACHINE_PATH)/..
