@@ -57,47 +57,6 @@ saved_psr:
 interrupted_stack_pointer:
 	.word 0
 
-/* stacks are placed just after BSS segment as we don't need to initialize 
- * them */
-.section stacks
-.align 2
-
-.global irq_stack_top
-irq_stack_top:
-.space 4096 * 4
-.global irq_stack_bottom
-irq_stack_bottom:
-
-.global fiq_stack_top
-fiq_stack_top:
-.space 1024 * 4
-.global fiq_stack_bottom
-fiq_stack_bottom:
-
-.global svc_stack_top
-svc_stack_top:
-.space 4096 * 4
-.global svc_stack_bottom
-svc_stack_bottom:
-
-.global abt_stack_top
-abt_stack_top:
-.space 256 * 4
-.global abt_stack_bottom
-abt_stack_bottom:
-
-.global und_stack_top
-und_stack_top:
-.space 256 * 4
-.global und_stack_bottom
-und_stack_bottom:
-
-.global usr_stack_top
-usr_stack_top:
-.space 4096 * 4
-.global usr_stack_bottom
-usr_stack_bottom:
-
 .text
 .align 2
 

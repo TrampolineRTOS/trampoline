@@ -75,12 +75,12 @@ void tpl_arm_bootstrap_stage2 ()
   /*
    * initialіze memory segments
    */
-  /* BSS should be zeroed */
+  /* BSS section should be zeroed */
   u16 *ptr_bss = &debut_bss;
   while((int)ptr_bss < (int)&fin_bss)
     *ptr_bss ++ = 0;
 
-  /* DATA initial values copied from ROM */
+  /* DATA section initial values copied from ROM */
   u16 *data_src, *data_dst;
   data_src = &fin_rom;
   data_dst = &debut_data;
@@ -92,7 +92,7 @@ void tpl_arm_bootstrap_stage2 ()
    */
   main ();
   
-  /* ends in a loop, as we should not return from reset */
+  /* ends in a loop, as we should not return from "reset call" */
   while (1);
 }
 
@@ -102,11 +102,11 @@ void tpl_init_machine()
 
   simtec_disable_all_devices ();
    
-  simtec_setup_heartbeat_timer_1ms ();
+  /*simtec_setup_heartbeat_timer_1ms ();*/
 
   tpl_init_machine_generic ();
 
-  simtec_heartbeat_timer_start ();
+  /*simtec_heartbeat_timer_start ();*/
 }
 
 extern CONSTP2CONST(u16, AUTOMATIC, OS_APPL_DATA)
@@ -140,6 +140,7 @@ void tpl_arm_subarch_irq_handler ()
 
 void tpl_set_watchdog (tpl_time delay, tpl_watchdog_expire_function function)
 {
+  /* TODO: use simtec driver adapter abstraction */
   /*timer 's parameter initialisation*/
   Timer_set_valeur_initiale (TIMER_0, 0);
   Timer_set_valeur_finale (TIMER_0, (UInt16) delay);
@@ -156,12 +157,14 @@ void tpl_set_watchdog (tpl_time delay, tpl_watchdog_expire_function function)
   
 void tpl_cancel_watchdog ()
 {
+  /* TODO: use simtec driver adapter abstraction */
   Timer_desactiver_interruptions (TIMER_0);
   Timer_arreter (TIMER_0);
 }
 
 tpl_time tpl_get_local_current_date ()
 {
+  /* TODO: use simtec driver adapter abstraction */
   tpl_time tmp;
   return tmp;
 }

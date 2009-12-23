@@ -76,6 +76,7 @@ TASK(t3)
 	trap_func ();
 	TerminateTask ();
 	trap_func ();
+  TRACE(13);
 }
 
 TASK(t2)
@@ -84,9 +85,10 @@ TASK(t2)
 	trap_func ();
 	ActivateTask (t3);
 	trap_func ();
-  TRACE(2);
+  TRACE(4);
 	TerminateTask ();
 	trap_func ();
+  TRACE(12);
 }
 
 TASK(t1)
@@ -95,9 +97,10 @@ TASK(t1)
 	trap_func ();
 	ActivateTask (t2);
 	trap_func ();
-  TRACE(1);
+  TRACE(5);
   TerminateTask();
 	trap_func ();
+  TRACE(11);
 }
 
 

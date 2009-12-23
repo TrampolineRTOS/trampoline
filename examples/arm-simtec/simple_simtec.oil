@@ -13,21 +13,21 @@ IMPLEMENTATION trampoline {
 CPU test {
 
     OS config {
-        SYSTEM_CALL = TRUE;
-        STATUS = EXTENDED;
-        ERRORHOOK = TRUE;
-        PRETASKHOOK = TRUE;
-        APP_SRC = "simple_simtec.c";
-        TRAMPOLINE_BASE_PATH = "..";
+    SYSTEM_CALL = TRUE;
+    STATUS = EXTENDED;
+    ERRORHOOK = TRUE;
+    PRETASKHOOK = TRUE;
+    APP_SRC = "simple_simtec.c";
+    TRAMPOLINE_BASE_PATH = "../..";
 	COMPILER = "arm-none-eabi-gcc";
 	LINKER = "arm-none-eabi-ld";
 	ASSEMBLER = "arm-none-eabi-as";
-        CFLAGS  = "-g";
-        CFLAGS  = "-Wall -pedantic -Wformat -std=c99";
-        CFLAGS  = "-Wmissing-field-initializers";
+    CFLAGS  = "-g";
+    CFLAGS  = "-Wall -pedantic -Wformat -std=c99";
+    CFLAGS  = "-Wmissing-field-initializers";
 	CFLAGS  = "-DSIMTEC_DEFAULT_DRIVERS"; // activate default SIMTEC drivers, change this to use your own ones
-        ASFLAGS = "";
-        LDFLAGS = "-g --script=../machines/arm/simtec-eb675001/ldscript.bdi2000 -L ../machines/arm/simtec-eb675001/default_drivers -lsimtec-dfltdrv -Map trampoline_memory.map";
+    ASFLAGS = "-g";
+    LDFLAGS = "-g --script=../../machines/arm/simtec-eb675001/ldscript.bdi2000 -L ../../machines/arm/simtec-eb675001/default_drivers -lsimtec-dfltdrv -Map trampoline_memory.map";
 	PROTECTIONHOOK = FALSE;
 	SCALABILITYCLASS = AUTO;
 	STACKMONITORING = FALSE;
