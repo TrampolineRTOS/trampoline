@@ -1,5 +1,5 @@
 /**
- * @file tpl_machine_simtec_eb675001.c
+ * @file simtec_tpl_stubs.c
  *
  * @section descr File description
  *
@@ -27,17 +27,28 @@
 #include "tpl_machine_interface.h"
 #include "tpl_os_custom_types.h"
 #include "tpl_os_definitions.h"
+#include "tpl_os_kernel.h"
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 #include "tpl_as_timing_protec.h"
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 #ifdef WITH_AUTOSAR
 #include "tpl_as_isr_kernel.h"
-#include "tpl_os_kernel.h"
 #endif /* WITH_AUTOSAR */
 
 /* TODO: use MemMap.h */
 
-struct ARM_CONTEXT idle_task_context;
+void tpl_init_machine()
+{
+  simtec_int_ctrl_setup_defaults ();
+
+  simtec_disable_all_devices ();
+
+  /*simtec_setup_heartbeat_timer_1ms ();*/
+
+  tpl_init_machine_generic ();
+
+  /*simtec_heartbeat_timer_start ();*/
+}
 
 void tpl_shutdown ()
 {
@@ -52,88 +63,6 @@ void tpl_shutdown ()
   simtec_system_standby ();
 
   while (1);
-}
-
-/* These external variables represent symbols defined in
- * ldscript file. They are used to know where each section
- * has been located */
-extern u16 debut_bss;
-extern u16 fin_bss;
-extern u16 debut_rom;
-extern u16 fin_rom;
-extern u16 debut_data;
-extern u16 fin_data;
-extern int main (void);
-
-/* this function should not return as
- * it is called straight after reset
- */
-void tpl_arm_bootstrap_stage2 ()
-{
-  simtec_memory_setup_defaults ();
-
-  /*
-   * initialіze memory segments
-   */
-  /* BSS section should be zeroed */
-  u16 *ptr_bss = &debut_bss;
-  while((int)ptr_bss < (int)&fin_bss)
-    *ptr_bss ++ = 0;
-
-  /* DATA section initial values copied from ROM */
-  u16 *data_src, *data_dst;
-  data_src = &fin_rom;
-  data_dst = &debut_data;
-  while (data_dst != &fin_data)
-    *data_dst++ = *data_src++;  
-
-  /*
-   * start application (which may start Trampoline via StartOS)
-   */
-  main ();
-  
-  /* ends in a loop, as we should not return from "reset call" */
-  while (1);
-}
-
-void tpl_init_machine()
-{
-  simtec_int_ctrl_setup_defaults ();
-
-  simtec_disable_all_devices ();
-   
-  /*simtec_setup_heartbeat_timer_1ms ();*/
-
-  tpl_init_machine_generic ();
-
-  /*simtec_heartbeat_timer_start ();*/
-}
-
-extern CONSTP2CONST(u16, AUTOMATIC, OS_APPL_DATA)
-  simtec_isr_by_src[32];
-
-void tpl_arm_subarch_irq_handler ()
-{
-  u32 interrupt_source;
-  u16 isr_id;
-
-  interrupt_source = simtec_get_interrupt_source (); 
-  switch (interrupt_source)
-  {
-    case SYSTEM_TIMER_INT_SOURCE:
-      simtec_heartbeat_timer_ack ();
-      /* TODO: call counter heartbeat */
-      /* TODO: increment local time (watchdogs) */
-      break;
-#ifndef NO_ISR
-    default:
-      isr_id = simtec_isr_by_src[interrupt_source];
-      tpl_central_interrupt_handler(isr_id);
-#endif /* !defined NO_ISR */
-  }
-
-  /* acknoledge interrupt */
-  simtec_acknoledge_current_irq_level ();
 }
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION

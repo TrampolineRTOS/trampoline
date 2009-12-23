@@ -1,9 +1,9 @@
 /**
- * @file tpl_asm_macros.h
+ * @file simtec_idle.c
  *
  * @section descr File description
  *
- * Macros to be used in preprocessed assembler source files.
+ * SIMTEC platform specific routines and variables
  *
  * @section copyright Copyright
  *
@@ -18,22 +18,11 @@
  * @section infos File informations
  *
  * $Date$
- * $Rev $
+ * $Rev$
  * $Author$
  * $URL$
  */
-#ifndef TPL_ASM_MACROS_H
-#define TPL_ASM_MACROS_H
 
-/**
- * This instruction is used to load a tpl_proc_id typed variable
- */
-#define LDR_PROC_ID ldr
+#include "tpl_machine.h"
 
-/*
- * This instruction is used to store a tpl_proc_id typed variable
- */
-#define STR_PROC_ID str
-
-#endif /* TPL_ASM_MACROS_H */
-
+struct ARM_CONTEXT idle_task_context;
