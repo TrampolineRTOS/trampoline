@@ -32,19 +32,11 @@
 #include "tpl_memmap.h"
 
 /**
- * FIXME: find a way (more elegant) to provide the size of
- * this structure to assembly part of the code
- */
-CONST (int, OS_VAR) tpl_proc_static_size = sizeof (tpl_proc_static);
-
-/**
  * Context for the idle task
  */
 VAR (arm_context, OS_VAR) idle_task_context;
 
-/* FIXME : should be static (private)
- * TODO: should this variable be shared with get_task_lock etc... ? */
-volatile VAR (u32, OS_VAR) tpl_locking_depth;
+static volatile VAR (u32, OS_VAR) tpl_locking_depth;
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
