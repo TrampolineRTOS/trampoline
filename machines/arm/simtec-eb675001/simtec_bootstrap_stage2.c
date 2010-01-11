@@ -27,11 +27,6 @@
 
 /* TODO: use MemMap.h */
 
-const char *main_args[2] = {
-    "trampoline",
-    "simtec-eb675001"
-};
-
 /* These external variables represent symbols defined in
  * ldscript file. They are used to know where each section
  * has been located */
@@ -42,7 +37,7 @@ extern u16 fin_rom;
 extern u16 debut_data;
 extern u16 fin_data;
 
-extern int main (int argc, char **argv);
+extern int main ();
 
 /* this function should not return as
  * it is called straight after reset
@@ -69,7 +64,7 @@ void tpl_arm_bootstrap_stage2 ()
   /*
    * start application (which may start Trampoline via StartOS)
    */
-  main (1, main_args);
+  main ();
 
   /* ends in a loop, as we should not return from "reset call" */
   while (1);

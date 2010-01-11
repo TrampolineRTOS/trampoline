@@ -29,7 +29,7 @@
 #include "tpl_as_isr_kernel.h"
 #endif /* WITH_AUTOSAR */
 
-extern CONSTP2CONST(u16, AUTOMATIC, OS_APPL_DATA)
+extern CONST(u16, OS_APPL_DATA)
   simtec_isr_by_src[32];
 
 void tpl_arm_subarch_irq_handler ()
