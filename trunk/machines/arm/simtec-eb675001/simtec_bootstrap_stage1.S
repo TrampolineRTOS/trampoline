@@ -30,6 +30,7 @@
 
 .global tpl_arm_bootstrap_entry
 tpl_arm_bootstrap_entry:
+tpl_arm_bootstrap_stage1:
   /* setup IRQ mode initial stack pointer */
   msr cpsr_c, #(CPSR_IRQ_MODE | CPSR_IRQ_LOCKED | CPSR_FIQ_LOCKED)
     ldr sp, =irq_stack_bottom

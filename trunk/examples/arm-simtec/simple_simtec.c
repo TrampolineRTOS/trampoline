@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "tpl_os.h"
 #include "tpl_os_generated_configuration.h"
+#include "uart.h"
 
 #define TRACE(val) flags[count++] = val
 
@@ -32,13 +33,10 @@ void PostTaskHook(void)
 
 void StartupHook(void)
 {
+
 }
 
 void ShutdownHook(StatusType error)
-{
-}
-
-void trap_func(void)
 {
 
 }
@@ -46,60 +44,54 @@ void trap_func(void)
 TASK(t4)
 {
   TRACE(6);
-	trap_func ();
-	TerminateTask ();
-	trap_func ();
+  TerminateTask ();
 }
 
 ISR(it2)
 {
   TRACE(5);
-  trap_func ();
   ActivateTask (t4);
   TRACE(5);
-  trap_func ();
   TerminateISR ();
-  trap_func ();
 }
 
 ISR(it1)
 {
   TRACE(4);
-  trap_func ();
   TerminateISR ();
-  trap_func ();
 }
 
 TASK(t3)
 {
   TRACE(3);
-	trap_func ();
-	TerminateTask ();
-	trap_func ();
+  UART_envoyer_chaine ("T3: I begin and I will terminate\r\n");
+  TerminateTask ();
+  UART_envoyer_chaine ("T3: I should never have print this\r\n");
   TRACE(13);
 }
 
 TASK(t2)
 {
   TRACE(2);
-	trap_func ();
-	ActivateTask (t3);
-	trap_func ();
+  UART_envoyer_chaine ("T2: I begin and activate T3\r\n");
+  ActivateTask (t3);
   TRACE(4);
-	TerminateTask ();
-	trap_func ();
+  UART_envoyer_chaine ("T2: I have activated T3 and I will terminate\r\n");
+  TerminateTask ();
+  UART_envoyer_chaine ("T2: I should never have print this\r\n");
   TRACE(12);
 }
 
 TASK(t1)
 {
+  UART_initialiser();
   TRACE(1);
-	trap_func ();
-	ActivateTask (t2);
-	trap_func ();
+  UART_envoyer_chaine ("T1: I begin and activate T2\r\n");
+  ActivateTask (t2);
   TRACE(5);
+  UART_envoyer_chaine ("T1: I have activated T2 and U will terminate\r\n");
   TerminateTask();
-	trap_func ();
+  UART_envoyer_chaine ("T1: I should never have print this\r\n");
   TRACE(11);
 }
 

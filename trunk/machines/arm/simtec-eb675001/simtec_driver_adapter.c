@@ -61,6 +61,7 @@ void simtec_disable_all_devices ()
 void simtec_setup_heartbeat_timer_1ms ()
 {
 #ifdef SIMTEC_DEFAULT_DRIVERS
+  TMOVFR = 1;  /* prevently acknoledge system timer IRQ (useful after soft reboot) */
   TMEN = 0;
   Interruption_set_priorite (INTERRUPTION_TIMER_SYSTEME, 7);
   TMRLR = 0xFFFF - 3687;

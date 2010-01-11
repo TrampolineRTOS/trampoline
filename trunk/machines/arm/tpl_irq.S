@@ -41,8 +41,10 @@ tpl_primary_irq_handler:
      *
      *         |---------------------------|
      *         | task's return address     |
-     * SP+18-> |---------------------------|
+     * SP+24-> |---------------------------|
      *         | ip (r12)                  |
+     * SP+18-> |---------------------------|
+     *         | r11                       |
      * SP+14-> |---------------------------|
      *         | r9                        |
      * SP+10-> |---------------------------|
@@ -64,29 +66,42 @@ tpl_primary_irq_handler:
     /* fix LR to make it point on task's return address */
     sub lr, lr, #4
     /* store caller-saved registers */
-    stmfd sp!, {r0-r3,r9,ip,lr}
+    stmfd sp!, {r0-r3,r9,r11,ip,lr}
     /* manage reentrance of kernel */
     ldr r1, =nested_kernel_entrance_counter
     ldr r2, [r1]
     add r2, r2, #1
     str r2, [r1]
 
+    /* reset tpl_kern variables */
+    ldr r1, =tpl_kern
+    mov r2, #NO_NEED_SWITCH
+    strb r2, [r1, #TPL_KERN_OFFSET_NEED_SWITCH]
+
+    /************************
+     * IRQ processing stage *
+     ************************/
     bl tpl_arm_subarch_irq_handler
 
+    /***************************************************
+     * on the way to exit IRQ routine (with or without *
+     * context switch)                                 *
+     ***************************************************/
+    /* then, do we need to switch context ? */
     ldr r2, =tpl_kern
     ldrb r2, [r2, #TPL_KERN_OFFSET_NEED_SWITCH]
     cmp r2, #NO_NEED_SWITCH
     beq irq_no_context_switch
 
 context_switch_irq:
-  /* load the tpl_kern base address */
+    /* load the tpl_kern base address */
     ldr r0, =tpl_kern
 
     /*
      * SAVES OLD CONTEXT
      */
 
-  /* do we need to save the context ? if not, jump to load */
+    /* do we need to save the context ? if not, jump to load */
     ldrb r2, [r0, #TPL_KERN_OFFSET_NEED_SWITCH]
     tst r2, #NEED_SAVE
     beq skip_save_context_irq
@@ -103,9 +118,10 @@ context_switch_irq:
     /* save ABI's caller-saved registers, those which are saved into
      * kernel_enter macro
      */
-    ldmfd sp!, {r4-r7,r9,ip,lr} /* /!\ r0-r3 <=> r4-r7 */
+    ldmfd sp!, {r4-r7,r9,r11,ip,lr} /* /!\ r0-r3 <=> r4-r7 */
     stmia r2, {r4-r7}
     str r9, [r2, #(9*4)]
+    str r11, [r2, #(11*4)]
     str ip, [r2, #(12*4)]
     str lr, [r2, #(15*4)]
 
@@ -113,7 +129,7 @@ context_switch_irq:
 
     /* only executed if context saving step has not been done */
 skip_save_context_irq:
-    add sp, sp, #(7 * 4)
+    add sp, sp, #(8 * 4) /* skip saved register frame (8 = r0-r3 + r9 + r11 + r12 + r14) */
 
 load_context_irq:
 
@@ -135,11 +151,11 @@ load_context_irq:
      * is useful for the following ldmia instruction
      */
 
-    ldr r14, [r0, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context bloc */
+    ldr r14, [r0, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context block */
 
     ldr r14, [r14]                   /* jump to context bloc (from static descriptor) */
 
-    ldr r0, [r14, #(16 * 4)]
+    ldr r0, [r14, #(16 * 4)]        /* restore SPSR register from context block */
     msr spsr, r0
 
     /* finish load and get back to running task */
@@ -165,7 +181,7 @@ irq_no_context_switch:
     str r2, [r3]
 
     /* restore caller-saved registers */
-    ldmfd sp!, {r0-r3,r9,ip,lr}
+    ldmfd sp!, {r0-r3,r9,r11,ip,lr}
 
     /* return to interrupted task */
     movs pc,lr

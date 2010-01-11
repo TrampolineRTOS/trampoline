@@ -35,10 +35,10 @@ WITH_MEMORY_PROTECTION = false
 
 #CFLAGS: flags used for the compilation process
 # it should be declared as CFLAGS in the OS section of the .oil file (many times allowed).
-CFLAGS   = -g -Wall -pedantic -Wformat -std=c99 -Wmissing-field-initializers -DSIMTEC_DEFAULT_DRIVERS
+CFLAGS   = -g -Wall -pedantic -Wformat -std=c99 -Wmissing-field-initializers -DSIMTEC_DEFAULT_DRIVERS -I userdrivers -I ../../machines/arm/simtec-eb675001/default_drivers
 #LDLAGS: flags used for the link process
 # it should be declared as LDFLAGS in the OS section of the .oil file (many times allowed).
-LDFLAGS  = -g --script=../../machines/arm/simtec-eb675001/ldscript.bdi2000 -L ../../machines/arm/simtec-eb675001/default_drivers -lsimtec-dfltdrv -Map trampoline_memory.map
+LDFLAGS  = -g --script=../../machines/arm/simtec-eb675001/ldscript.bdi2000 -L ../../machines/arm/simtec-eb675001/default_drivers -lsimtec-dfltdrv-dbg -Map trampoline_memory.map -L userdrivers -lsimtec-userdrivers-dbg
 ifeq ($(strip $(WITH_LINKSCRIPT)),true)
 LDFLAGS += -T $(basename $(OIL_FILE))/ -Wl,-Map,$(basename $(OIL_FILE)).map
 endif

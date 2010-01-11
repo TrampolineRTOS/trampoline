@@ -29,12 +29,11 @@
  
 .align 2
 
-
-Vec_reset:                 b tpl_arm_bootstrap_entry
-Vec_undefinedInstruction:  b primary_undefined_instruction_handler
-Vec_softwareInterrupt:     b tpl_primary_syscall_handler
-Vec_prefetchAbort:         b primary_prefetch_abort_handler
-Vec_dataAbort:             b primary_data_abort_handler
-Vec_unused:                b primary_unused_handler
-Vec_interruptRequest:      b tpl_primary_irq_handler
-Vec_fastInterruptRequest:  b tpl_primary_fiq_handler
+Vec_reset:                 ldr pc, =tpl_arm_bootstrap_entry
+Vec_undefinedInstruction:  ldr pc, =primary_undefined_instruction_handler
+Vec_softwareInterrupt:     ldr pc, =tpl_primary_syscall_handler
+Vec_prefetchAbort:         ldr pc, =primary_prefetch_abort_handler
+Vec_dataAbort:             ldr pc, =primary_data_abort_handler
+Vec_unused:                .word   0xB8A06F60   /* Magic number */
+Vec_interruptRequest:      ldr pc, =tpl_primary_irq_handler
+Vec_fastInterruptRequest:  ldr pc, =tpl_primary_fiq_handler
