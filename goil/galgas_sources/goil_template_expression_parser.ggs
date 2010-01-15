@@ -1326,13 +1326,13 @@ rule <factor>
       outValue := [@goilTemplateValue new !0L !"" ![@goilTemplateFieldMapList emptyList]] ;
       if [@uint errorCount] == 0 then
         const @object result := [f invoke ![@objectlist listWithValue ![inCfg object]] . actualArgumentObjectList ![functionOrVariableName location]] ;
-        if [result objectStaticType] == `@uint64 then
+        if [result objectDynamicType] == `@uint64 then
           outResultType := [@goilTemplateType unsignedType] ;
           outValue.mUnsigned64Value := (cast result if == @uint64 else error functionOrVariableName) ;
-        elsif [result objectStaticType] == `@bool then
+        elsif [result objectDynamicType] == `@bool then
           outResultType := [@goilTemplateType boolType] ;
           outValue.mUnsigned64Value := [(cast result if == @bool else error functionOrVariableName) uint64] ;
-        elsif [result objectStaticType] == `@string then
+        elsif [result objectDynamicType] == `@string then
           outResultType := [@goilTemplateType stringType] ;
           outValue.mStringValue := (cast result if == @string else error functionOrVariableName) ;
         else
