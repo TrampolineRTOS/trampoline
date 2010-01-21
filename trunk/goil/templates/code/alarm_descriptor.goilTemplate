@@ -11,50 +11,12 @@ elsif ACTION == "callback" then
 end if
 %
  */
- 
-#define OS_START_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
 
 %
-if ACTION == "activateTask" then
-%
-CONST(tpl_task_activation_action, OS_CONST) % !NAME %_action = {
-  {
-    /* action function  */  tpl_action_activate_task
-  },
-  /* task id            */  % !TASK %_id
-};
-%
-elsif ACTION == "setEvent" then
-%
-CONST(tpl_setevent_action, OS_CONST) % !NAME %_action = {
-  {
-    /* action function  */    tpl_action_setevent
-  },
-  /* task id              */  % !TASK %_id,
-  /* event mask           */  % !EVENT %_mask
-};
-%
-elsif ACTION == "callback" then
-%
-CONST(tpl_callback_action, OS_CONST) % !NAME %_action = {
-  {
-    /* action function  */    tpl_action_callback
-  },
-  /* callback function    */  % !FUNCTION %_callback
-};
-%
-elsif ACTION == "incrementCounter" then
-%
-CONST(tpl_increment_counter_action, OS_CONST) % !NAME %_action = {
-  {
-  /* action function      */      tpl_action_increment_counter
-  },
-  /* counter descriptor ptr   */  &% !COUNTER %_counter_desc
-};
-%
-end if
-%
+template action_descriptor
+% 
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 
 CONST(tpl_alarm_static, OS_CONST) % !NAME %_static = {
   {
@@ -67,7 +29,7 @@ CONST(tpl_alarm_static, OS_CONST) % !NAME %_static = {
     /* OS application id            */  , %
 if AUTOSAR then
   if SCALABILITYCLASS >= 3 then
-    !APPLICATION%_id,%
+    !APPLICATION%_id%
   end if
 end if
 %
@@ -82,7 +44,7 @@ end if
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-VAR(tpl_time_obj, OS_VAR) % !NAME %_dynamic = {
+VAR(tpl_time_obj, OS_VAR) % !NAME %_alarm_desc = {
     /* pointer to the static part   */  (tpl_time_obj_static *)&% !NAME %_static,
     /* next alarm                   */  NULL,
     /* prev alarm                   */  NULL,%

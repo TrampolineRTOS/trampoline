@@ -64,15 +64,31 @@ SECTIONS
   /*
    * code and consts of the processes of the applications
    */
- apptext ALIGN(16) : { /* MPC5510 MPU requires 16 bytes alignment */
+  apptext ALIGN(16) : { /* MPC5510 MPU requires 16 bytes alignment */
     __SEG_START_APP_CODE_CONST_RGN = .;
     *(.osApiConst)  /* API constants    */
     *(.rodata)      /* litteral strings */
     *(.osApiCode)   /* API functions    */
-$USER_CODE$
+    /* Sections for code of tasks and ISR */%
+foreach PROCESSES do
+%
+    *(.% !PROCESSKIND %_% !NAME %Code)
+%
+end foreach
+%
   } > ram
   appconst ALIGN(16) : {
-$USER_CONST$
+    /* Sections for const of tasks and ISR */
+%
+for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+    foreach PROCESSES do
+%      *(.% !PROCESSKIND %_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
+%
+    end foreach
+  end for
+end for
+%    
     . = ALIGN(16);
     __SEG_START_APP_CODE_CONST_RGN = . - 1;
   } > ram
@@ -88,22 +104,43 @@ $USER_CONST$
   /*
    * private data of processes
    */
-  procvars : {
-$PROC_VAR$
+%
+foreach PROCESSES do
+%  .% !PROCESSKIND %_% !NAME %_SEC_VAR ALIGN(16) : {
+    __SEG_START_% !PROCESSKIND %_% !NAME %_VAR_RGN = .;
+/* Initialized variables section of % !PROCESSKIND % % !NAME % */
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
+%    *(.% !PROCESSKIND %_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end for
+  end for
+%    __SEG_END_% !PROCESSKIND %_% !NAME %_VAR_RGN = ALIGN(16) - 1;
   } > ram
+%
+end foreach
+%
 
   /*
    * stack of processes
    */
-  procstack : {
-$PROC_STACK$
+%
+foreach PROCESSES do %
+  /* Section of stack of % !PROCESSKIND % % !NAME %  */
+  .% !PROCESSKIND %_% !NAME %_SEC_STACK ALIGN(16) : {
+    __SEG_START_% !PROCESSKIND %_% !NAME %_STACK_RGN = .;
+    *(.% !PROCESSKIND %_% !NAME %Stack)
+    __SEG_END_% !PROCESSKIND %_% !NAME %_STACK_RGN = ALIGN(16) - 1;
   } > ram
-
+%
+end foreach
+%
   /*
    * os application data
    */
   appvars : {
-$APP_VAR$
+/* $APP_VAR$ */
   } > ram
   
   /*
