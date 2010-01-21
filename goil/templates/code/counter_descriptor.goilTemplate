@@ -26,11 +26,11 @@ end if
 #include "tpl_memmap.h"
 
 VAR(tpl_counter, OS_VAR) % !NAME %_counter_desc = {
-    /* ticks per base       */  % !TICKSPERBASE %,
-    /* max allowed value    */  % !MAXALLOWEDVALUE %,
-    /* minimum cycle        */  % !MINCYCLE %,
-    /* current tick         */  0,
-    /* current date         */  0,%
+  /* ticks per base       */  % !TICKSPERBASE %,
+  /* max allowed value    */  % !MAXALLOWEDVALUE %,
+  /* minimum cycle        */  % !MINCYCLE %,
+  /* current tick         */  0,
+  /* current date         */  0,%
 if AUTOSAR then
 %
     /* type the counter     */  % !TYPE %,%
@@ -41,7 +41,7 @@ end if
 if AUTOSAR then
   if SCALABILITYCLASS >= 3 then
     if NAME == "SystemCounter" then
-      !"INVALID_OSAPPLICATION,"
+      %INVALID_OSAPPLICATION_ID,%
     else
       !APPLICATION%_id,%
     end if

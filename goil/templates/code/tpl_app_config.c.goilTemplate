@@ -25,7 +25,7 @@
  */
 
 #include "tpl_app_config.h"
-#include "tpl_app_definitions.h"
+#include "tpl_app_define.h"
 
 #include "tpl_os_internal_types.h"
 #include "tpl_machine.h"
@@ -68,6 +68,13 @@ if AUTOSAR then
 #include "tpl_as_application.h"
 %
 end if
+
+if USEMEMORYPROTECTION then
+%
+#include "tpl_os_mem_prot.h"
+%
+end if
+
 %
 #define API_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -82,7 +89,7 @@ foreach EVENTS
   do
 %
 /* Event % !NAME % */
-#define % !NAME %_mask
+#define % !NAME %_mask % !MASK %
 CONST(EventMaskType, AUTOMATIC) % !NAME % = % !NAME %_mask;
 %
 end foreach
@@ -114,13 +121,14 @@ foreach PROCESSES do
 CONST(TaskType, AUTOMATIC) % !NAME % = % !NAME %_id;
 %
   else
-    #
-    # ISR ids are only available for AUTOSAR
-    #
-    if AUTOSAR then
 %
 /* ISR % !NAME % identifier */
-#define % !NAME %_id % !INDEX %
+#define % !NAME %_id % !INDEX 
+    if AUTOSAR then
+    #
+    # ISR ids constants are only available for AUTOSAR
+    #
+%
 CONST(ISRType, AUTOMATIC) % !NAME % = % !NAME %_id;
 %
     end if
@@ -160,11 +168,25 @@ CONST(CounterType, AUTOMATIC) % !NAME % = % !NAME %_id;
 end if
 
 if USECOM then
-  foreach MESSAGES
+  foreach RECEIVEMESSAGES
     before
 %
 /*=============================================================================
- * Declaration of messages IDs
+ * Declaration of receive messages IDs
+ */
+%
+    do
+%
+/* Message % !NAME % identifier */
+#define % !NAME %_id % !INDEX %
+CONST(MessageIdentifier, AUTOMATIC) % !NAME % = % !NAME %_id;
+%
+  end foreach
+  foreach SENDMESSAGES
+    before
+%
+/*=============================================================================
+ * Declaration of send messages IDs
  */
 %
     do
@@ -236,7 +258,28 @@ foreach REGULARRESOURCES
   do
     template resource_descriptor
 end foreach
+%
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA)
+tpl_resource_table[RESOURCE_COUNT] = {%
+foreach REGULARRESOURCES
+  before %
+  %
+  do
+    %&% !NAME %_rez_desc%
+  between
+    %,
+  % 
+  after %,%
+end foreach
+%
+  &res_sched_rez_desc  
+};
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 
+%
 foreach INTERNALRESOURCES
   before
 %
@@ -258,6 +301,31 @@ foreach COUNTERS
   do
     template counter_descriptor
 end foreach
+
+template counter_call
+
+if AUTOSAR then
+  foreach COUNTERS
+    before
+%
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+CONSTP2VAR(tpl_counter, OS_VAR, OS_APPL_DATA)
+tpl_counter_table[COUNTER_COUNT] = {
+%
+    do
+      %  &% !NAME %_counter_desc%
+    between
+      %,
+%
+    after
+%
+};
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+  end foreach
+end if
 
 foreach TASKS
   before
@@ -281,40 +349,96 @@ foreach ISRS2
     template isr_descriptor
 end foreach
 
-%
-#if WITH_IT_TABLE == YES
-#define OS_START_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
-$IT_TABLE$
-#define OS_STOP_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
-#endif
+template if exists interrupt_table
 
+%
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 /*=============================================================================
  * Definition and initialization of process tables (tasks and isrs)
  */
-$PROC_STATIC_TABLE$
+CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)
+tpl_stat_proc_table[TASK_COUNT+ISR_COUNT+1] = {
+%
+foreach TASKS do
+    %  &% !NAME %_task_stat_desc,
+%
+end foreach
+foreach ISRS2 do
+    %  &% !NAME %_isr_stat_desc,
+%
+end foreach
+%  &idle_task_static
+};
 
-$PROC_DYNAMIC_TABLE$
+CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)
+tpl_dyn_proc_table[TASK_COUNT+ISR_COUNT+1] = {
+%
+foreach TASKS do
+    %  &% !NAME %_task_desc,
+%
+end foreach
+foreach ISRS2 do
+    %  &% !NAME %_isr_desc,
+%
+end foreach
+%  &idle_task
+};
+%
+foreach EXTENDEDTASKS
+  before %
+CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA)
+tpl_task_events_table[EXTENDED_TASK_COUNT] = {
+%
+  do %  &% !NAME %_task_evts%
+  between %,
+%
+  after
+%
+};
+%
+end foreach
+foreach ISRS2
+  before
+%
+CONSTP2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA)
+tpl_isr_stat_table[ISR_COUNT] = {
+%
+  do
+    %  &% !NAME %_isr_helper%
+  between
+    %,
+%
+  after
+    %
+};
+%
+end foreach
+template isr_list_specific
 
-#if EXTENDED_TASK_COUNT > 0
-$TASK_EVENTS_TABLE$
-#endif
-
-#if ISR_COUNT > 0
-$ISR_HELPER_TABLE$
-
-#ifdef WITH_AUTOSAR
-$ISR_ENABLE_TABLE$
-#endif
-
-#endif
-
+%
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
+
 %
+if AUTOSAR then
+  foreach ISRS2
+    before
+%
+VAR(tpl_isr2_enable_state, OS_VAR)
+tpl_isr2_enable_table[ISR_COUNT] = {
+%
+    do
+      %  ENABLED%
+    between
+      %,
+%
+    after
+      %
+};
+%
+  end foreach
+end if
 foreach ALARMS
   before
 %
@@ -325,19 +449,87 @@ foreach ALARMS
   do
     template alarm_descriptor
 end foreach
-
-%/*=============================================================================
+foreach ALARMS
+  before
+    %
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+CONSTP2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)
+  tpl_alarm_table[ALARM_COUNT] = {
+%
+  do
+    %  &% !NAME %_alarm_desc%
+  between
+    %,
+%
+  after
+    %
+};
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+end foreach
+%
+/*=============================================================================
  * Declaration of flags functions
  */
-$FLAGSFUNCTIONS$
-
-/*=============================================================================
- * Definition and initialization of Messages related structures
- */
-$NETWORKMESSAGES$
-$MESSAGES$
+/* $FLAGSFUNCTIONS$ */
 
 %
+foreach RECEIVEMESSAGES
+  before
+%
+/*=============================================================================
+ * Definition and initialization of Receive Messages related structures
+ */
+%
+  do
+    template receive_message_descriptor
+end foreach
+
+foreach RECEIVEMESSAGES
+  before
+%
+/*=============================================================================
+ * Definition and initialization of the receive messages table
+ */
+CONSTP2CONST(tpl_base_receiving_mo, AUTOMATIC, OS_CONST)
+tpl_receive_message_table[RECEIVE_MESSAGE_COUNT] = {
+%
+  do %  (tpl_base_receiving_mo*)&% !NAME %_message%
+  between %,    
+%
+  after %
+};%
+end foreach
+
+foreach SENDMESSAGES
+  before
+%
+/*=============================================================================
+ * Definition and initialization of Send Messages related structures
+ */
+%
+  do
+    template send_message_descriptor
+end foreach
+
+foreach SENDMESSAGES
+  before
+%
+/*=============================================================================
+ * Definition and initialization of the send messages table
+ */
+CONSTP2CONST(tpl_base_sending_mo, AUTOMATIC, OS_CONST)
+tpl_send_message_table[SEND_MESSAGE_COUNT] = {
+%
+  do %  (tpl_base_sending_mo*)&% !NAME %_message%
+  between %,    
+%
+  after %
+};%
+end foreach
+
 if AUTOSAR then
   foreach SCHEDULETABLES
     before
@@ -349,42 +541,148 @@ if AUTOSAR then
 %
     do
       template scheduletable_descriptor
-end foreach
+  end foreach
+  foreach SCHEDULETABLES
+    before %
+CONSTP2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA)
+tpl_schedtable_table[% ![SCHEDULETABLES length] %] = {
+%
+    do %  &% !NAME %_st_dyn%
+    between %,
+%
+    after %
+};
+%
+  end foreach
+  foreach OSAPPLICATIONS
+    before
 %
 /*=============================================================================
  * Declaration of OS applications related defines and structures
  */
-$OSAPPLICATIONS$
-
+%
+    do
+    template application_descriptor
+  end foreach
+  
+  foreach OSAPPLICATIONS
+    before %
+CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT] = {
+%
+    do %  &% !NAME %_app_access%
+    between %,
+%
+    after %
+};
+%
+  end foreach
+  
+  foreach TRUSTEDFUNCTIONS
+    before
+%
 /*=============================================================================
  * Declaration of Trusted Functions table
  */
-$TRUSTED_FCTS$
-
-$TRUSTED_TABLE$
-
 %
+    do %FUNC(void, OS_APPL_CODE) TRUSTED_% !NAME %(
+  CONST(TrustedFunctionIndexType, AUTOMATIC) idx,
+  CONST(TrustedFunctionParameterRefType, AUTOMATIC) params);
+%
+  end foreach
+  foreach TRUSTEDFUNCTIONS
+    before %
+CONST(tpl_trusted_fct, OS_APPL_CODE)
+  tpl_trusted_fct_table[TRUSTED_FCT_COUNT] = {
+%
+    do %  TRUSTED_% !NAME
+    between %,
+%
+    after %
+};
+%
+  end foreach
 end if
-%
-%
+
 if USEMEMORYPROTECTION then
+  foreach TASKS do
+    template memory_region_descriptor
+  end foreach
+  foreach ISRS2 do
+    template memory_region_descriptor
+  end foreach
+  
 %
-$MEMORY_PROTECTION$
+CONSTP2CONST(tpl_mem_prot_desc, AUTOMATIC, OS_CONST) tpl_mp_table[TASK_COUNT+ISR_COUNT+1] = {
 %
+  foreach PROCESSES
+    do %  &% !NAME %_mp_desc,
+%
+  end foreach
+%  NULL /* for idle task */
+};
+% 
 end if
 %
 /*=============================================================================
  * Definition and initialization of Ready List structures
  */
-$READY_LIST$
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 
-$PROC_NAMES$
+%
+foreach READYLIST do
+  %VAR(tpl_proc_id, OS_VAR) tpl_priority_% !INDEX %_fifo[% !SIZE %];
+%
+end foreach
+%
+VAR(tpl_fifo_state, OS_VAR) tpl_fifo_rw[% ![READYLIST length] %] = {
+%
+foreach READYLIST do
+%  { 0 , 0 }%
+  between %,
+%
+end foreach
+%
+};
 
-/*
-#if CRC_LEVEL > 0
-$CRC_TABLE$
-#endif
-*/
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+CONST(tpl_priority_level, OS_CONST) tpl_ready_list[% ![READYLIST length] %] = {
+%
+foreach READYLIST do
+%  { tpl_priority_% !INDEX %_fifo, % !SIZE % }%
+  between %,
+%
+end foreach
+%
+};
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+%
+foreach PROCESSES
+  before
+%
+#define API_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA) proc_name_table[TASK_COUNT + ISR_COUNT] = {
+%
+  do
+    %  "% !NAME %"%
+  between %,
+%
+  after
+%
+};
+#define API_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+end foreach
+%
 /* End of file tpl_app_config.c */
 

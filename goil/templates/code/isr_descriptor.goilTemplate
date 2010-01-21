@@ -10,6 +10,12 @@ FUNC(void, OS_APPL_CODE) % !NAME %_function(void);
 #define APP_% !PROCESSKIND %_% !NAME %_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
+/*-----------------------------------------------------------------------------
+ * Target specific structures
+ */
+%
+template process_specific
+%
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 #define OS_START_SEC_VAR_UNSPECIFIED
@@ -41,13 +47,13 @@ end foreach
  * Static descriptor of ISR % !NAME %
  */
 CONST(tpl_proc_static, OS_CONST) % !NAME %_isr_stat_desc = {
-    /* context                  */  % !NAME %_CONTEXT,
-    /* stack                    */  % !NAME %_STACK,
-    /* entry point (function)   */  % !NAME %_function,
-    /* internal ressource       */  NULL,
-    /* ISR id                   */  % !NAME %_id,
+  /* context                  */  % !NAME %_CONTEXT,
+  /* stack                    */  % !NAME %_STACK,
+  /* entry point (function)   */  % !NAME %_function,
+  /* internal ressource       */  NULL,
+  /* ISR id                   */  % !NAME %_id,
 #ifdef WITH_OSAPPLICATION
-    /* OS application id        */  %
+  /* OS application id        */  %
 if AUTOSAR then
   if SCALABILITYCLASS >= 3 then
     !APPLICATION%_id,%
@@ -55,12 +61,12 @@ if AUTOSAR then
 end if
 %
 #endif
-    /* task base priority       */  % !PRIORITY %,
-    /* max activation count     */  % !ACTIVATION %,
-    /* task type                */  IS_ROUTINE,
+  /* task base priority       */  % !PRIORITY %,
+  /* max activation count     */  % !ACTIVATION %,
+  /* task type                */  IS_ROUTINE,
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    /* pointer to the timing
-       protection descriptor    */  $TIMING_PROT_REF$
+  /* pointer to the timing
+     protection descriptor    */  $TIMING_PROT_REF$
 #endif
 };
 
@@ -80,9 +86,9 @@ tpl_isr_static % !NAME %_isr_helper = {
  * Dynamic descriptor of ISR % !NAME %
  */
 VAR(tpl_proc, OS_VAR) % !NAME %_isr_desc = {
-    /* resources                      */  NULL,
+  /* resources                      */  NULL,
 #if WITH_MEMORY_PROTECTION == YES
-    /* if > 0 the process is trusted  */  %
+  /* if > 0 the process is trusted  */  %
 if AUTOSAR then
   if SCALABILITYCLASS > 2 then
     if TRUSTED then !1 else !0 end if
@@ -92,11 +98,11 @@ else
 end if
 %,    
 #endif /* WITH_MEMORY_PROTECTION */
-    /* activate count                 */  0,
-    /* ISR priority                   */  % !PRIORITY %,
-    /* ISR state                      */  SUSPENDED,
+  /* activate count                 */  0,
+  /* ISR priority                   */  % !PRIORITY %,
+  /* ISR state                      */  SUSPENDED,
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    /* activation allowed             */  ,TRUE
+  /* activation allowed             */  ,TRUE
 #endif
 };
 #define OS_STOP_SEC_VAR_UNSPECIFIED

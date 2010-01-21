@@ -208,6 +208,32 @@ foreach PROCESSES do
 #endif
 
 /*
+ * Stack section
+ */
+#ifdef APP_% !PROCESSKIND %_% !NAME %_START_SEC_STACK
+  #undef APP_% !PROCESSKIND %_% !NAME %_START_SEC_STACK
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a new % !NAME % % !PROCESSKIND % stack section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION_NAME
+    #define CURRENT_LINKER_DATA_SECTION_NAME __attribute__ ((section (".% !PROCESSKIND %_% !NAME %Stack")))
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef APP_% !PROCESSKIND %_% !NAME %_STOP_SEC_STACK
+  #undef APP_% !PROCESSKIND %_% !NAME %_STOP_SEC_STACK
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+    #undef CURRENT_LINKER_DATA_SECTION_NAME
+    #define CURRENT_LINKER_DATA_SECTION_NAME
+  #else
+    #error "No section started"
+  #endif
+#endif
+
+/*
  * Variables sections
  */
 %
@@ -255,7 +281,7 @@ foreach PROCESSES do
   #else
     #undef MEMMAP_ERROR
     #undef CURRENT_LINKER_DATA_SECTION_NAME
-    #define CURRENT_LINKER_DATA_SECTION_NAME __attribute__ ((section (".% !PROCESSKIND %_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %")))
+    #define CURRENT_LINKER_DATA_SECTION_NAME __attribute__ ((section (".% !PROCESSKIND %_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %")))
     #define CURRENT_LINKER_DATA_SECTION
   #endif
 #endif

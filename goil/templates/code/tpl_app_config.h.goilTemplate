@@ -28,8 +28,13 @@
 #ifndef TPL_APP_CONFIG_H
 #define TPL_APP_CONFIG_H
 
-#include "tpl_app_objects.h"
-
+#include "tpl_app_define.h"
+#include "tpl_compiler.h"
+%
+if [COUNTERS length] > 0 then
+%#include "tpl_os_internal_types.h"%
+end if
+%
 /*=============================================================================
  * proc_name_table is an array of strings containing the name of the
  * processes. It may be used by the application for debugging purpose
@@ -66,7 +71,6 @@ extern CONST(tpl_tick, OS_CONST) OSMINCYCLE;
 /*=============================================================================
  * Declaration of flags macros
  */
-$FLAGSMACROS$ 
 
 #endif
 

@@ -10,6 +10,12 @@ FUNC(void, OS_APPL_CODE) % !NAME %_function(void);
 #define APP_% !PROCESSKIND %_% !NAME %_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
+/*-----------------------------------------------------------------------------
+ * Target specific structures
+ */
+%
+template process_specific
+%
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 #define OS_START_SEC_VAR_UNSPECIFIED
@@ -33,7 +39,7 @@ if [RESOURCES length] > 0 then
  * %
 foreach RESOURCES do
  !RESOURCENAME
-between !", "
+between %, %
 end foreach
 %
  */
@@ -42,10 +48,10 @@ end foreach
  * Static descriptor of task % !NAME %
  */
 CONST(tpl_proc_static, OS_CONST) % !NAME %_task_stat_desc = {
-    /* context                  */  % !NAME %_CONTEXT,
-    /* stack                    */  % !NAME %_STACK,
-    /* entry point (function)   */  % !NAME %_function,
-    /* internal ressource       */  %
+  /* context                  */  % !NAME %_CONTEXT,
+  /* stack                    */  % !NAME %_STACK,
+  /* entry point (function)   */  % !NAME %_function,
+  /* internal ressource       */  %
 if USEINTERNALRESOURCE then
   %&%!INTERNALRESOURCE%_rez_desc,%
 elsif NONPREEMPTABLE then
@@ -54,9 +60,9 @@ else
   %NULL,%
 end if
 %
-    /* task id                  */  % !NAME %_id,
+  /* task id                  */  % !NAME %_id,
 #ifdef WITH_OSAPPLICATION
-    /* OS application id        */  %
+  /* OS application id        */  %
 if AUTOSAR then
   if SCALABILITYCLASS >= 3 then
     !APPLICATION%_id,%
@@ -64,9 +70,9 @@ if AUTOSAR then
 end if
 %
 #endif
-    /* task base priority       */  % !PRIORITY %,
-    /* max activation count     */  % !ACTIVATION %,
-    /* task type                */  TASK_%
+  /* task base priority       */  % !PRIORITY %,
+  /* max activation count     */  % !ACTIVATION %,
+  /* task type                */  TASK_%
 if EXTENDEDTASK then
   %EXTENDED,%
 else
@@ -74,8 +80,8 @@ else
 end if
 %
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
-    /* pointer to the timing
-       protection descriptor    */  $TIMING_PROT_REF$
+  /* pointer to the timing
+     protection descriptor    */  $TIMING_PROT_REF$
 #endif
 };
 
@@ -89,9 +95,9 @@ end if
  * Dynamic descriptor of task % !NAME %
  */
 VAR(tpl_proc, OS_VAR) % !NAME %_task_desc = {
-    /* resources                      */  NULL,
+  /* resources                      */  NULL,
 #if WITH_MEMORY_PROTECTION == YES
-    /* if > 0 the process is trusted  */  %
+  /* if > 0 the process is trusted  */  %
 if AUTOSAR then
   if SCALABILITYCLASS > 2 then
     if TRUSTED then !1 else !0 end if
@@ -101,9 +107,9 @@ else
 end if
 %,    
 #endif /* WITH_MEMORY_PROTECTION */
-    /* activate count                 */  0,
-    /* task priority                  */  % !PRIORITY %,
-    /* task state                     */  %
+  /* activate count                 */  0,
+  /* task priority                  */  % !PRIORITY %,
+  /* task state                     */  %
 if AUTOSTART then
   %AUTOSTART%
 else
