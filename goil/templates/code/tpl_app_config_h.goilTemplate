@@ -28,7 +28,7 @@
 #ifndef TPL_APP_CONFIG_H
 #define TPL_APP_CONFIG_H
 
-#include "tpl_app_define.h"
+#include "tpl_app_objects.h"
 #include "tpl_compiler.h"
 %
 if [COUNTERS length] > 0 then
