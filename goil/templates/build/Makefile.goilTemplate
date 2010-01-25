@@ -91,7 +91,7 @@ end foreach
 %
 %
 if USELINKSCRIPT then
-%LDFLAGS += -T $(basename $(OIL_FILE))/% !LINKSCRIPT % -Map $(basename $(OIL_FILE)).map%
+%LDFLAGS += -T % !PROJECT %/% !LINKSCRIPT % -Map % !PROJECT %.map%
 end if
 %
 # ASFLAGS: flags used for the assembly process (if required)

@@ -1,0 +1,56 @@
+Goil run on % !TIMESTAMP%
+Generated files are:
+%
+
+!PROJECT %/tpl_app_config.c
+%
+write to PROJECT."/tpl_app_config.c":
+  template tpl_app_config_c in code
+end write
+
+!PROJECT %/tpl_app_config.h
+%
+write to PROJECT."/tpl_app_config.h":
+  template tpl_app_config_h in code
+end write
+
+!PROJECT %/tpl_app_define.h
+%
+write to PROJECT."/tpl_app_define.h":
+  template tpl_app_define_h in code
+end write
+
+if exists COMPILER then
+!PROJECT %/MemMap.h
+%
+  write to PROJECT."/MemMap.h":
+    template MemMap_h in compiler
+  end write
+!PROJECT %/Compiler.h
+%
+  write to PROJECT."/Compiler.h":
+    template Compiler_h in compiler
+  end write
+!PROJECT %/Compiler_Cfg.h
+%
+  write to PROJECT."/Compiler_Cfg.h":
+    template Compiler_Cfg_h in compiler
+  end write
+end if
+
+if exists LINKER then
+!PROJECT %/% !LINKSCRIPT%
+%
+  write to PROJECT."/".LINKSCRIPT:
+    template script in linker
+  end write
+end if
+
+if USEBUILDFILE then
+%Makefile
+%
+  write to "Makefile":
+    template Makefile in build
+  end write
+end if
+  
