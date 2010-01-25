@@ -15,7 +15,7 @@ VAR(tpl_stack_word, OS_APPL_DATA) % !NAME %_stack_zone[% !STACKSIZE %/sizeof(tpl
 #define OS_START_SEC_VAR_NOINIT_32BIT
 #include "tpl_memmap.h"
 VAR(ppc_integer_context, OS_VAR) % !NAME %_int_context;%
-if exists GENERATEFLOAT default (false) & exists USEFLOAT default(false) then
+if exists GENERATEFLOAT default (false) & exists USEFLOAT default (false) then
   if USEFLOAT then %
 VAR(ppc_float_context, OS_VAR) % !NAME %_fp_context;
 #define % !NAME %_CONTEXT { &% !NAME %_int_context, &% !NAME %_fp_context }%
