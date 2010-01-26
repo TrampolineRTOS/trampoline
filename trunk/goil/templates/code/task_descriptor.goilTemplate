@@ -65,7 +65,11 @@ end if
   /* OS application id        */  %
 if AUTOSAR then
   if SCALABILITYCLASS >= 3 then
-    !APPLICATION%_id,%
+    if exists APPLICATION then
+      !APPLICATION%_id,%
+    else
+      %INVALID_OSAPPLICATION_ID,%
+    end if
   end if
 end if
 %
@@ -100,7 +104,7 @@ VAR(tpl_proc, OS_VAR) % !NAME %_task_desc = {
   /* if > 0 the process is trusted  */  %
 if AUTOSAR then
   if SCALABILITYCLASS > 2 then
-    if TRUSTED then !1 else !0 end if
+    if exists TRUSTED default (false) then !1 else !0 end if
   end if
 else
   !0
