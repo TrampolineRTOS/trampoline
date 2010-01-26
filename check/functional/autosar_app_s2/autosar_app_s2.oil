@@ -58,6 +58,7 @@ CPU test {
      CFLAGS  = "-Wmissing-field-initializers";
      LDFLAGS = "-L../../lib -lembUnit";
      SHUTDOWNHOOK = TRUE;
+     SCALABILITYCLASS = SC3;
   };
 
   APPMODE std {};
