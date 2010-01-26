@@ -1,4 +1,8 @@
-/*
+%
+if not exists STACKSIZE then
+  error NAME "STACKSIZE attribute not defined for ".PROCESSKIND." ".NAME
+else
+%/*
  * % !PROCESSKIND % % !NAME % stack
  */
 #define APP_% !PROCESSKIND %_% !NAME %_START_SEC_STACK
@@ -27,4 +31,5 @@ else %
 end if %
 #define OS_STOP_SEC_VAR_NOINIT_32BIT
 #include "tpl_memmap.h"
+%end if
 
