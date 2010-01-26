@@ -1,4 +1,8 @@
-/*
+%
+if not exists STACKSIZE then
+  error NAME "STACKSIZE attribute not defined for ".PROCESSKIND." ".NAME
+else
+%/*
  * % !PROCESSKIND % % !NAME % stack
  */
 #define APP_% !PROCESSKIND %_% !NAME %_START_SEC_STACK
@@ -26,3 +30,4 @@ struct TPL_CONTEXT % !NAME %_context;
 
 #define % !NAME %_CONTEXT &% !NAME %_context
 
+%end if
