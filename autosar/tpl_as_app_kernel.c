@@ -31,6 +31,7 @@
 #include "tpl_os_task_kernel.h"
 #include "tpl_os_alarm_kernel.h"
 #include "tpl_os_rez_kernel.h"
+#include "tpl_os_definitions.h"
 #include "tpl_machine_interface.h"
 #include "tpl_as_counter_kernel.h"
 #include "tpl_as_st_kernel.h"
@@ -63,7 +64,7 @@ static CONST(tpl_generic_id, AUTOMATIC) tpl_obj_count_table[5] = {
 FUNC(tpl_app_id, OS_CODE) tpl_get_application_id_service(void)
 {
   VAR(StatusType, AUTOMATIC) result_status = E_OK;
-  VAR(tpl_app_id, AUTOMATIC) result = INVALID_OSAPPLICATION;
+  VAR(tpl_app_id, AUTOMATIC) result = INVALID_OSAPPLICATION_ID;
 
   /*  lock the kernel    */
   LOCK_KERNEL()
@@ -99,7 +100,7 @@ FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
   ObjectTypeType  obj_type,
   tpl_generic_id  obj_id)
 {
-  VAR(tpl_app_id, AUTOMATIC) result = INVALID_OSAPPLICATION;
+  VAR(tpl_app_id, AUTOMATIC) result = INVALID_OSAPPLICATION_ID;
   VAR(StatusType, AUTOMATIC) result_status = E_OK;		
 	
   /*  lock the kernel  */
@@ -167,7 +168,7 @@ FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
 		  break;
 		  
 		default:
-		  result = INVALID_OSAPPLICATION;		  
+		  result = INVALID_OSAPPLICATION_ID;		  
 	  }
 #endif
 

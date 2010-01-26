@@ -2,21 +2,21 @@ Goil run on % !TIMESTAMP%
 Generated files are:
 %
 
-!PROJECT %/tpl_os_generated_configuration.c
+!PROJECT %/tpl_app_config.c
 %
-write to PROJECT."/tpl_os_generated_configuration.c":
+write to PROJECT."/tpl_app_config.c":
   template tpl_app_config_c in code
 end write
 
-!PROJECT %/tpl_os_generated_configuration.h
+!PROJECT %/tpl_app_config.h
 %
-write to PROJECT."/tpl_os_generated_configuration.h":
+write to PROJECT."/tpl_app_config.h":
   template tpl_app_config_h in code
 end write
 
-!PROJECT %/tpl_app_objects.h
+!PROJECT %/tpl_app_define.h
 %
-write to PROJECT."/tpl_app_objects.h":
+write to PROJECT."/tpl_app_define.h":
   template tpl_app_define_h in code
 end write
 

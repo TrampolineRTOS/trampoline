@@ -354,6 +354,8 @@ rule <free_field> ?!@ident_map ids:
         <boolean> ?value;
         val := [@bool_class new ![idf location] ![value bool]];
     end select;
+#    log idf;
+#    log val;
     [!?ids put !idf !val]; 
 end rule;
 

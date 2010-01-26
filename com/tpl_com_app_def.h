@@ -28,7 +28,7 @@
 #ifndef TPL_COM_APP_DEF_H
 #define TPL_COM_APP_DEF_H
 
-#include "tpl_app_objects.h"
+#include "tpl_app_define.h"
 
 #ifndef SEND_MESSAGE_COUNT
 	#define SEND_MESSAGE_COUNT 0

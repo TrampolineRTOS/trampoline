@@ -18,7 +18,7 @@ class @app_obj extends @oil_obj {
     @ident_map   tasks ;
     @ident_map   isrs ;
     @ident_map   alarms ;
-    @ident_map   schedtables ;
+    @ident_map   scheduletables ;
     @ident_map   counters ;
     @ident_map   resources ;
     @ident_map   messages ;

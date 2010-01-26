@@ -58,4 +58,5 @@ function emptySystemConfig ->@systemConfig cfg:
     ![@goilTemplateFieldMapList emptyList]
   ];
 end function;
+
 end semantics;

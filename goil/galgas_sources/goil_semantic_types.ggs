@@ -52,11 +52,18 @@ class @event_obj extends @oil_obj {
 
 map @event_map {
     @event_obj event ;
-    insert put error message "Event %K is already defined in %L" ;
-    search get error message "Event %K is not defined" ;
-    remove del error message "Event %K is not defined" ;
+    insert put error message "Put in event_map: event %K is already defined in %L" ;
+    search get error message "Get in event_map: event %K is not defined" ;
+    remove del error message "Del in event_map: event %K is not defined" ;
 }
 
+map @eventMaskMap {
+  @uint64 mask;
+  insert put error message "Event mask %K is already defined in %L" ;
+  search get error message "Get in @eventMaskMap: Event mask %K is not defined" ;
+  remove del error message "Del in @eventMaskMap: Event mask %K is not defined" ;
+}
+  
 map @event_usage_map {
     @uint count ;
     insert insert_count error message "Key %K is already there" ;
@@ -177,6 +184,7 @@ map @message_map {
 }
 
 abstract class @filter_prop_obj {
+    @location location;
     abstract method generate
         ?@lstring    name
         ?!@string    res ;
@@ -657,7 +665,6 @@ class @rui_mess_prop extends @mess_prop_obj {
 class @rqi_mess_prop extends @mess_prop_obj {
     @lstring sendingmessage ;
     @filter_prop_obj filter ;
-    @basic_type initialvalue ;
     @luint64 queuesize ;
     override method s_mess !@lstring sd : sd := sendingmessage ; end method ;
     override method generate
@@ -748,7 +755,6 @@ class @rqe_mess_prop extends @mess_prop_obj {
     @luint64 queuesize ;
     @filter_prop_obj filter ;
     @link_obj link ;
-    @basic_type initialvalue ;
     override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
     override method generate
         ?@lstring        unused name 

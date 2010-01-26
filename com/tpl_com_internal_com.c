@@ -20,7 +20,7 @@
 #include "tpl_com_definitions.h"
 #include "tpl_com_notification.h"
 
-#ifdef WITH_COM
+#if WITH_COM == YES
 /**
  * @def INVALID_MESSAGE
  *

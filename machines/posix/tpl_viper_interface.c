@@ -25,7 +25,7 @@
 #include <sys/mman.h>
 #include <semaphore.h>
 
-#include "tpl_app_objects.h"
+#include "tpl_app_define.h"
 
 /*
  * Data used to communicate with viper

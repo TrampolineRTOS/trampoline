@@ -84,7 +84,7 @@ CONST(tpl_proc_static, OS_CONST) idle_task_static = {
   /* internal resource    */  NULL,
   /* id is IDLE_TASK_ID   */  IDLE_TASK_ID,
 #ifdef WITH_OSAPPLICATION
-  /* OS application id    */  INVALID_OSAPPLICATION,
+  /* OS application id    */  INVALID_OSAPPLICATION_ID,
 #endif
   /* base priority is 0   */  0,
   /* max activate count   */  1,

@@ -42,9 +42,9 @@ class @com extends @oil_obj {
 
     @string res := "" ;
 
-    if usecom then
-      res := "#define WITH_COM\n" ;
-    end if ;
+#    if usecom then
+#      res := "#define WITH_COM\n" ;
+#    end if ;
       
     cast timebase :
     when == @void do

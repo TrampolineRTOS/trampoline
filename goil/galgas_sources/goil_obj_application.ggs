@@ -96,7 +96,7 @@ rule <app_attributes>
     @ident_map   tasks := [app tasks] ;
     @ident_map   isrs := [app isrs] ;
     @ident_map   alarms := [app alarms] ;
-    @ident_map   schedtables := [app schedtables] ;
+    @ident_map   schedtables := [app scheduletables] ;
     @ident_map   counters := [app counters] ;
     @ident_map   resources := [app resources] ;
     @ident_map   messages := [app messages] ;

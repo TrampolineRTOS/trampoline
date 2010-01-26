@@ -78,7 +78,7 @@ routine apps_well_formed
       object_exists ![tasks allKeys] ![[app tasks] keyList] !"Task" ;
       object_exists ![isrs allKeys] ![[app isrs] keyList] !"ISR" ;
       object_exists ![alarms allKeys] ![[app alarms] keyList] !"Alarm" ;
-      object_exists ![schedtables allKeys] ![[app schedtables] keyList] !"Schedule Table" ;
+      object_exists ![schedtables allKeys] ![[app scheduletables] keyList] !"Schedule Table" ;
       object_exists ![counters allKeys] ![[app counters] keyList] !"Counter" ;
       object_exists ![resources allKeys] ![[app resources] keyList] !"Resource" ;
 #    object_exists ![messages allKeys] ![[app messages] allKeys] !"Message" !key ;
@@ -96,7 +96,7 @@ routine apps_well_formed
       object_exists !all_apps ![alarm acc_apps] !"Application" ;
     end foreach ;
     foreach schedtables do
-      object_exists !all_apps ![st acc_apps] !"Application" ;
+      object_exists !all_apps ![scheduletable acc_apps] !"Application" ;
     end foreach ;
     foreach counters do
       object_exists !all_apps ![counter acc_apps] !"Application" ;
@@ -114,7 +114,7 @@ routine apps_well_formed
       foreach [app tasks] do object_in_one !?objects !key !"TASK" ; end foreach ;
       foreach [app isrs] do object_in_one !?objects !key !"ISR" ; end foreach ;
       foreach [app alarms] do object_in_one !?objects !key !"ALARM" ; end foreach ;
-      foreach [app schedtables] do object_in_one !?objects !key !"SCHEDULETABLE" ; end foreach ;
+      foreach [app scheduletables] do object_in_one !?objects !key !"SCHEDULETABLE" ; end foreach ;
       foreach [app counters] do object_in_one !?objects !key !"COUNTER" ; end foreach ;
       foreach [app resources] do object_in_one !?objects !key !"RESOURCE" ; end foreach ;
     end foreach ;
@@ -129,12 +129,12 @@ routine apps_well_formed
     @stringset all_cnts_in_app   [emptySet] ;
     @stringset all_rezs_in_app   [emptySet] ;
     foreach apps do
-      all_tasks_in_app  := all_tasks_in_app  | [[app tasks]       allKeys] ;
-      all_isrs_in_app   := all_isrs_in_app   | [[app isrs]        allKeys] ;
-      all_alarms_in_app := all_alarms_in_app | [[app alarms]      allKeys] ;
-      all_sts_in_app    := all_sts_in_app    | [[app schedtables] allKeys] ;
-      all_cnts_in_app   := all_cnts_in_app   | [[app counters]    allKeys] ;
-      all_rezs_in_app   := all_rezs_in_app   | [[app resources]   allKeys] ;
+      all_tasks_in_app  := all_tasks_in_app  | [[app tasks]          allKeys] ;
+      all_isrs_in_app   := all_isrs_in_app   | [[app isrs]           allKeys] ;
+      all_alarms_in_app := all_alarms_in_app | [[app alarms]         allKeys] ;
+      all_sts_in_app    := all_sts_in_app    | [[app scheduletables] allKeys] ;
+      all_cnts_in_app   := all_cnts_in_app   | [[app counters]       allKeys] ;
+      all_rezs_in_app   := all_rezs_in_app   | [[app resources]      allKeys] ;
     end foreach ;
 
     # tasks
@@ -288,7 +288,7 @@ routine apps_well_formed
            foreach [app counters] (@lstring counter_name2 @basic_type counter) do
              if ( [counter_name2 string] == [[sched counter] string]) then
                 # ... and verify if the schedule table is in the same application of the task
-                foreach [app schedtables] (@lstring sched_name2 @basic_type sched) do
+                foreach [app scheduletables] (@lstring sched_name2 @basic_type sched) do
                    if ( [sched_name2 string] == [sched_name string]) then
                       right_app := true;
                    end if;
@@ -325,7 +325,7 @@ routine apps_well_formed
                  foreach [app tasks] (@lstring task_name2 @basic_type task) do
                    if ( [task_name2 string] == [[sea task_name] string]) then
                       # ... and verify if the schedule table is in the same application of the task
-                      foreach [app schedtables] (@lstring sched_name2 @basic_type sched) do
+                      foreach [app scheduletables] (@lstring sched_name2 @basic_type sched) do
                          if ( [sched_name2 string] == [sched_name string]) then
                             right_app := true;
                          end if;
@@ -351,7 +351,7 @@ routine apps_well_formed
                  foreach [app tasks] (@lstring task_name2 @basic_type task) do
                    if ( [task_name2 string] == [[ata task_name] string]) then
                       # ... and verify if the schedule table is in the same application of the task
-                      foreach [app schedtables] (@lstring sched_name2 @basic_type sched) do
+                      foreach [app scheduletables] (@lstring sched_name2 @basic_type sched) do
                          if ( [sched_name2 string] == [sched_name string]) then
                             right_app := true;
                          end if;

@@ -144,6 +144,7 @@ class @incrementcounter_action extends @action_obj {
 }
 
 class @finalize_st_action extends @action_obj {
+  @lstring scheduleTableName;
   override method generate
     ?@lstring    unused name
     ?@string     unused err

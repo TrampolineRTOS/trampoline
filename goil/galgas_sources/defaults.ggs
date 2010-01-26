@@ -39,7 +39,9 @@ routine check_custom_field
     if not [others hasKey ![field string]] then
         # No attribute defined, copy the default
         cast f_def :
-        when == @uint32_type f do [!?others put !field ![f def_val]] ;
+        when == @uint32_type f do
+          @uint64_class val := [@uint64_class new ![f loc] ![[[f def_val] value] uint64]];
+          [!?others put !field !val] ;
         when == @sint32_type f do [!?others put !field ![f def_val]] ;
         when == @uint64_type f do [!?others put !field ![f def_val]] ;
         when == @sint64_type f do [!?others put !field ![f def_val]] ;

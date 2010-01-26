@@ -154,32 +154,32 @@ FUNC(void, OS_CODE) tpl_adjust_next_expiry_point(
  * the offset of the next expiry point.
  */
 FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
-    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) st)
+  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) st)
 {
-    /*  Get the TPL_SCHEDTABLE_STATIC structure                             */
-    /* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
+  /*  Get the TPL_SCHEDTABLE_STATIC structure                             */
+  /*  MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
       tpl_schedtable_static*. This cast behaves correctly because st is a
       tpl_schedtable */
-    P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA) schedtable =
-        (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))st->stat_part;
+  P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA) schedtable =
+    (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))st->stat_part;
 	
-    /*  Get the current index                                               */
-    /* MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
+  /*  Get the current index                                               */
+  /*  MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
       tpl_schedtable*. This cast behaves correctly because the first member
       of tpl_schedula_table is a tpl_time_obj */
-    VAR(tpl_expiry_count, AUTOMATIC)  index =
-        ((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index;
+  VAR(tpl_expiry_count, AUTOMATIC)  index =
+    ((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index;
 	VAR(tpl_expiry_count, AUTOMATIC)  index_temp = index;
 	
-    /*  Get the current expiry point                                        */
-    P2VAR(tpl_expiry_point, AUTOMATIC, OS_APPL_DATA) current_ep =
-	(schedtable->expiry)[index];
+  /*  Get the current expiry point                                        */
+  P2VAR(tpl_expiry_point, AUTOMATIC, OS_APPL_DATA) current_ep =
+  	(schedtable->expiry)[index];
 	
-    /*  Process the current expiry point                                    */
-    VAR(tpl_status, AUTOMATIC)              need_resched = NO_SPECIAL_CODE;
+  /*  Process the current expiry point                                    */
+  VAR(tpl_status, AUTOMATIC)              need_resched = NO_SPECIAL_CODE;
 
-    P2VAR(tpl_action, AUTOMATIC, OS_APPL_DATA)  action_desc;
-    VAR(tpl_action_count, AUTOMATIC)  i;
+  P2CONST(tpl_action, AUTOMATIC, OS_APPL_DATA)  action_desc;
+  VAR(tpl_action_count, AUTOMATIC)  i;
 	
 	VAR(tpl_expiry_count, AUTOMATIC) abs_deviation = ( ~(((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->deviation - 1 ) );
 	
@@ -250,7 +250,7 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
 					
 	}	
 		
-    return need_resched;
+  return need_resched;
 }
 
 /*

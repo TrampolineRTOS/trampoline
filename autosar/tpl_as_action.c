@@ -82,10 +82,10 @@ FUNC(tpl_status, OS_CODE) tpl_action_finalize_schedule_table(
 	P2VAR(tpl_expiry_point, AUTOMATIC, OS_APPL_DATA) next_ep;
 		
 	/*  Process the current expiry point                                    */
-    VAR(tpl_status, AUTOMATIC) need_resched = NO_SPECIAL_CODE;
+  VAR(tpl_status, AUTOMATIC) need_resched = NO_SPECIAL_CODE;
 		
-	P2VAR(tpl_action, AUTOMATIC, OS_APPL_DATA)  action_desc;
-    VAR(tpl_action_count, AUTOMATIC)  i;
+	P2CONST(tpl_action, AUTOMATIC, OS_APPL_DATA)  action_desc;
+  VAR(tpl_action_count, AUTOMATIC)  i;
 	
 	VAR(tpl_tick, AUTOMATIC) before;
 	

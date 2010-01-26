@@ -95,18 +95,18 @@ struct TPL_SCHEDTABLE_SYNC {
  * period of the schedule table.
  */
 struct TPL_EXPIRY_POINT {
-    VAR(tpl_tick, TYPEDEF)                    offset;     /**< offset of the actions recalculated
+    VAR(tpl_tick, TYPEDEF)                     offset;     /**< offset of the actions recalculated
                                                                for synchronization                */
-    VAR(tpl_tick, TYPEDEF)                    sync_offset;/**< offset of the actions from the
+    VAR(tpl_tick, TYPEDEF)                     sync_offset;/**< offset of the actions from the
                                                                start time of the schedule table   */
-    VAR(tpl_action_count, TYPEDEF)            count;      /**< number of actions associated with
+    VAR(tpl_action_count, TYPEDEF)             count;      /**< number of actions associated with
                                                                the expiry point                   */
-    P2VAR(tpl_action, TYPEDEF, OS_APPL_DATA) *actions;    /**< pointer to an array of actions to
+    P2CONST(tpl_action, TYPEDEF, OS_APPL_DATA) *actions;    /**< pointer to an array of actions to
                                                                be done at that offset.            */
-    VAR(tpl_tick, TYPEDEF)                    max_advance;/**< maximum advance deviation from
+    VAR(tpl_tick, TYPEDEF)                     max_advance;/**< maximum advance deviation from
                                                                initial offset of expiry point
                                                                after synchronization              */
-    VAR(tpl_tick, TYPEDEF)                    max_retard; /**< maximum delay deviation from
+    VAR(tpl_tick, TYPEDEF)                     max_retard; /**< maximum delay deviation from
                                                                initial offset of expiry point
                                                                after synchronization              */
 };
@@ -161,20 +161,20 @@ typedef struct TPL_SCHEDULE_TABLE tpl_schedule_table;
  * @see #TPL_TIME_OBJ_STATIC
  */
 struct TPL_SCHEDTABLE_STATIC {
-    VAR(tpl_time_obj_static, TYPEDEF)               b_desc;     /**< common part of all objects that
+    VAR(tpl_time_obj_static, TYPEDEF)                b_desc;     /**< common part of all objects that
                                                                      derive from tpl_time_obj.          */
-    P2VAR(tpl_expiry_point, TYPEDEF, OS_APPL_DATA) *expiry;     /**< pointer to an array of expiry
+    P2VAR(tpl_expiry_point, TYPEDEF, OS_APPL_DATA)   *expiry;     /**< pointer to an array of expiry
                                                                      points                             */
-    VAR(tpl_expiry_count, TYPEDEF)                  count;      /**< number of expiry points in the
+    VAR(tpl_expiry_count, TYPEDEF)                   count;      /**< number of expiry points in the
                                                                      schedule table                     */
-    VAR(tpl_sync_strategy, TYPEDEF)                 sync_strat; /**< schedule table synchronization
+    VAR(tpl_sync_strategy, TYPEDEF)                  sync_strat; /**< schedule table synchronization
                                                                      strategy.
                                                                      @see #tpl_sync_strategy            */
-    VAR(tpl_bool, TYPEDEF)                          periodic;   /**< TRUE if the schedule table is a
+    VAR(tpl_bool, TYPEDEF)                           periodic;   /**< TRUE if the schedule table is a
                                                                      periodic schedule table, FALSE
                                                                      otherwise                          */
-    VAR(tpl_tick, TYPEDEF)                          length;     /**< length of the  schedule table      */
-    VAR(tpl_tick, TYPEDEF)                          precision;  /**< minimum deviation to be
+    VAR(tpl_tick, TYPEDEF)                           length;     /**< length of the  schedule table      */
+    VAR(tpl_tick, TYPEDEF)                           precision;  /**< minimum deviation to be
                                                                      synchronized                       */
 };
 

@@ -31,6 +31,8 @@
 #include "tpl_as_application.h"
 #include "tpl_as_app_kernel.h"
 
+CONST(ApplicationType, OS_APPL_CONST) INVALID_OSAPPLICATION = INVALID_OSAPPLICATION_ID;
+
 /**
  *  Get the application ID to which the current process belongs to
  *
