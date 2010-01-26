@@ -203,6 +203,13 @@ class @os_obj extends @oil_obj {
   @ident_map   others             feature setter;
 }
 
+function applicationName ??@os_obj os -> @lstring name:
+  name := [os app_name];
+  if [name string] == "" then
+    name := lstringWith[!"trampoline"];
+  end if;
+end function;
+
 function memory_protection
   ?@os_obj      os
   ->@basic_type mp
@@ -256,7 +263,7 @@ function compiler
   when == @memmap_true s do
     cc := [[s compiler] string];
     cc := "compiler/".cc;
-    @string rtd := root_templates_directory[];
+    @string rtd := rootTemplatesDirectory[];
     if rtd != "" then
       @string path := rtd."/".cc;
       if not [path directoryExists] then
@@ -290,7 +297,7 @@ function linker
   end cast;
   if lk != "" then
     lk := "linker/".lk;
-    @string rtd := root_templates_directory[];
+    @string rtd := rootTemplatesDirectory[];
     if rtd != "" then
       @string path := rtd."/".lk;
       if not [path directoryExists] then

@@ -508,6 +508,18 @@
     FUNC(void, OS_APPL_CODE) name##_function(void)
 
 /**
+ * @def DeclareConterConstants
+ *
+ * Macro used to declare all the constants of a counter at once
+ *
+ * @param counter_id    the name of the counter
+ */
+#define DeclareCounterConstants(counter_id) \
+extern CONST(TickType, OS_CONST) OSTICKSPERBASE_##counter_id; \
+extern CONST(TickType, OS_CONST) OSMAXALLOWEDVALUE_##counter_id; \
+extern CONST(TickType, OS_CONST) OSMINCYCLE_##counter_id
+
+/**
  * @def ALARMCALLBACK
  *
  * Macro used to define an alarm callback function
@@ -615,17 +627,6 @@
  * @see #tpl_counter_kind
  */
 #define SOFTWARE_COUNTER    1
-
-#if (AUTOSAR_SC == 3) || (AUTOSAR_SC == 4)
-/**
- *  @def INVALID_OSAPPLICATION
- *
- *  No OS Application is running
- *
- *  @see  #tpl_app_id
- */
-#define INVALID_OSAPPLICATION   APP_COUNT
-#endif
 
 #endif
 

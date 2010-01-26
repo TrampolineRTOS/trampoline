@@ -219,12 +219,12 @@ routine generate_apps
 # Schedule tables
     vec := "" ;
     foreach sts do
-      if [[app schedtables] hasKey ![key string]] then
+      if [[app scheduletables] hasKey ![key string]] then
         vec .= "11" ;
       else
         vec .= "0" ;
         @bool found ;
-        is_in_lstringlist ![st acc_apps] !app_name ?* ?found ;
+        is_in_lstringlist ![scheduletable acc_apps] !app_name ?* ?found ;
         if found then vec .= "1" ; else vec .= "0" ; end if ;
       end if ;
     end foreach ;
@@ -312,14 +312,14 @@ routine generate_apps
     end if ;
 
     table := "" ;
-    foreach [app schedtables]
-    before  table := "tpl_schedtable_id ".[app_name string]."_st_own [".[[[app schedtables] count] string]."] = {" ;
+    foreach [app scheduletables]
+    before  table := "tpl_schedtable_id ".[app_name string]."_st_own [".[[[app scheduletables] count] string]."] = {" ;
     do      table .= [key string]."_id" ;
     between table .= "," ;
     after   table .= "};\n" ;
     end foreach ;
     ownership_vec .= table ;
-    doReplace !?tpl !"$ST_COUNT$" ![[[app schedtables] count] string] ;
+    doReplace !?tpl !"$ST_COUNT$" ![[[app scheduletables] count] string] ;
     if table != "" then
       doReplace !?tpl !"$ST_OWNERSHIP$" ![app_name string]."_st_own" ;
     else 

@@ -27,11 +27,11 @@ DEBUG_PATH = $(TPL_BASE_PATH)/debug
 MACHINE_PATH = $(TPL_BASE_PATH)/machines
 
 ifdef ARCH
-ARCH_PATH = $(MACHINE_PATH)/$(ARCH)
+ARCH_PATH = $(MACHINE_PATH)/$(strip $(ARCH))
 ifdef CHIP
-CHIP_PATH = $(ARCH_PATH)/$(CHIP)
+CHIP_PATH = $(ARCH_PATH)/$(strip $(CHIP))
 ifdef BOARD
-BOARD_PATH = $(CHIP_PATH)/$(BOARD)
+BOARD_PATH = $(CHIP_PATH)/$(strip $(BOARD))
 endif
 endif
 endif
@@ -88,7 +88,7 @@ endif
 # Goil related variables.
 #############################################################################
 OIL_OUTPUT_PATH = $(basename $(OIL_FILE))
-OIL_GENERATED_C_FILE = tpl_os_generated_configuration.c
+OIL_GENERATED_C_FILE = tpl_app_config.c
 SOURCES += $(OIL_GENERATED_C_FILE)
 ifdef GOIL_TEMPLATE_PATH 
 	GOIL_TEMPLATE_STR = --templates=$(GOIL_TEMPLATE_PATH)

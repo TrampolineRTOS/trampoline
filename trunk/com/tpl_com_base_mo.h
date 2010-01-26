@@ -118,13 +118,13 @@ typedef struct TPL_DATA_RECEIVING_MO tpl_data_receiving_mo;
 /*!
  *  Table of sending message objects pointers
  */
-extern CONSTP2VAR(tpl_base_sending_mo, AUTOMATIC, OS_APPL_DATA)
+extern CONSTP2CONST(tpl_base_sending_mo, AUTOMATIC, OS_CONST)
   tpl_send_message_table[];
 
 /*!
  *  Table of receiving message objects pointers
  */
-extern CONSTP2VAR(tpl_base_receiving_mo, AUTOMATIC, OS_APPL_DATA)
+extern CONSTP2CONST(tpl_base_receiving_mo, AUTOMATIC, OS_CONST)
   tpl_receive_message_table[];
 
 #endif

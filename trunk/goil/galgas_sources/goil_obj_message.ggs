@@ -339,7 +339,7 @@ rule <sse_attributes>
     @bool has_net_message := false ;
     @lstring net_message := [@lstring new !"" !here] ;
     @bool has_filter := false ;
-    @filter_prop_obj filter := [@void_filter new] ;
+    @filter_prop_obj filter := [@void_filter new !here] ;
     @bool has_net_order_callout := false ;
     @lstring net_order_callout := [@lstring new !"" !here] ;
     @bool has_cpu_order_callout := false ;
@@ -579,7 +579,7 @@ rule <rui_attributes>
     @bool has_sending_message := false ;
     @lstring sending_message := [@lstring new !"" !here] ;
     @bool has_filter := false ;
-    @filter_prop_obj filter := [@void_filter new] ;
+    @filter_prop_obj filter := [@void_filter new !here] ;
     @bool has_initial_value := false ;
     @basic_type initial_value := [@void new !here] ;
 
@@ -622,12 +622,9 @@ rule <rqi_attributes>
     @bool has_sending_message := false ;
     @lstring sending_message := [@lstring new !"" !here] ;
     @bool has_filter := false ;
-    @filter_prop_obj filter := [@void_filter new] ;
+    @filter_prop_obj filter := [@void_filter new !here] ;
     @bool has_queue_size := false ;
     @luint64 queue_size := [@luint64 new !0L !here] ;
-    @bool has_initial_value := false ;
-    @basic_type initial_value := [@void new !here] ;
-
     ${$ ;
     repeat
     while
@@ -649,11 +646,8 @@ rule <rqi_attributes>
         <queuesize> ?queue_size ;
         has_queue_size := true ;
     while
-        if has_initial_value
-        then error here : "INITIALVALUE subattribute already defined" ;
-        end if ;
-        <initialvalue> ?initial_value ;
-        has_initial_value := true ;
+        warning here: "INITIALVALUE subattribute ignore for queued messages";
+        <initialvalue> ?* ;
     end repeat ;
     $}$ ;
     if not has_sending_message
@@ -666,7 +660,6 @@ rule <rqi_attributes>
         !here
         !sending_message
         !filter
-        !initial_value
         !queue_size
     ] ;
 end rule ;
@@ -677,7 +670,7 @@ rule <rue_attributes>
     @bool has_cdatatype := false;
     @lstring cdatatype := [@lstring new !"" !here] ;
     @bool has_filter := false ;
-    @filter_prop_obj filter := [@void_filter new] ;
+    @filter_prop_obj filter := [@void_filter new !here] ;
     @bool has_initial_value := false ;
     @basic_type initial_value := [@void new !here] ;
     @link_obj link := [@void_link new !here] ;
@@ -734,12 +727,10 @@ rule <rqe_attributes>
     @bool has_cdatatype := false;
     @lstring cdatatype := [@lstring new !"" !here] ;
     @bool has_filter := false ;
-    @filter_prop_obj filter := [@void_filter new] ;
+    @filter_prop_obj filter := [@void_filter new !here] ;
     @bool has_queue_size := false ;
     @luint64 queue_size := [@luint64 new !0L !here] ;
     @link_obj link := [@void_link new !here] ;
-    @bool has_initial_value := false ;
-    @basic_type initial_value := [@void new !here] ;
 
     ${$ ;
     repeat
@@ -768,11 +759,8 @@ rule <rqe_attributes>
         end cast ;
         <link> ?link ;
     while
-        if has_initial_value
-        then error here : "INITIALVALUE subattribute already defined" ;
-        end if ;
-        <initialvalue> ?initial_value ;
-        has_initial_value := true ;
+        warning here: "INITIALVALUE subattribute ignore for queued messages";
+        <initialvalue> ?* ;
     end repeat ;
     $}$ ;
 
@@ -794,7 +782,6 @@ rule <rqe_attributes>
         !queue_size
         !filter
         !link
-        !initial_value
     ] ;
 
 end rule ;
@@ -913,62 +900,69 @@ rule <filter>
     $FILTER$ ;
     $=$ ;
     select
+        filter := [@always_filter new !here] ;
         $ALWAYS$ ;
-        filter := [@always_filter new] ;
     or
+        filter := [@never_filter new !here] ;
         $NEVER$ ;
-        filter := [@never_filter new] ;
     or
         @luint64 mask ;
         @luint64 x ;
+        @location filterLocation := here;
         $MASKEDNEWEQUALSX$ ;  <mask_x_attribute> ?mask ?x ;
-        filter := [@maskednewequalsx_filter new !mask !x] ;
+        filter := [@maskednewequalsx_filter new !filterLocation !mask !x] ;
     or
         @luint64 mask ;
         @luint64 x ;
+        @location filterLocation := here;
         $MASKEDNEWDIFFERSX$ ; <mask_x_attribute> ?mask ?x ;
-        filter := [@maskednewdiffersx_filter new !mask !x] ;
+        filter := [@maskednewdiffersx_filter new !filterLocation !mask !x] ;
     or
+        filter := [@newisequal_filter new !here] ;
         $NEWISEQUAL$ ;
-        filter := [@newisequal_filter new] ;
     or
+        filter := [@newisdifferent_filter new !here] ;
         $NEWISDIFFERENT$ ;
-        filter := [@newisdifferent_filter new] ;
     or
         @luint64 mask ;
+        @location filterLocation := here;
         $MASKEDNEWEQUALSMASKEDOLD$ ;  <mask_attribute> ?mask ;
-        filter := [@maskednewequalsmaskedold_filter new !mask] ;
+        filter := [@maskednewequalsmaskedold_filter new !filterLocation !mask] ;
     or
         @luint64 mask ;
+        @location filterLocation := here;
         $MASKEDNEWDIFFERSMASKEDOLD$ ; <mask_attribute> ?mask ;
-        filter := [@maskednewdiffersmaskedold_filter new !mask] ;
+        filter := [@maskednewdiffersmaskedold_filter new !filterLocation !mask] ;
     or
         @luint64 min ;
         @luint64 max ;
+        @location filterLocation := here;
         $NEWISWITHIN$ ;  <min_max_attribute> ?min ?max ;
-        filter := [@newiswithin new !min !max] ;
+        filter := [@newiswithin new !filterLocation !min !max] ;
     or
         @luint64 min ;
         @luint64 max ;
+        @location filterLocation := here;
         $NEWISOUTSIDE$ ; <min_max_attribute> ?min ?max ;
-        filter := [@newisoutside new !min !max] ;
+        filter := [@newisoutside new !filterLocation !min !max] ;
     or
+        filter := [@newisgreater_filter new !here] ;
         $NEWISGREATER$ ;
-        filter := [@newisgreater_filter new] ;
     or
+        filter := [@newislessorequal_filter new !here] ;
         $NEWISLESSOREQUAL$ ;
-        filter := [@newislessorequal_filter new] ;
     or
+        filter := [@newisless_filter new !here] ;
         $NEWISLESS$ ;
-        filter := [@newisless_filter new] ;
     or
+        filter := [@newisgreaterorequal_filter new !here] ;
         $NEWISGREATEROREQUAL$ ;
-        filter := [@newisgreaterorequal_filter new] ;
     or
         @luint64 period ;
         @luint64 offset ;
+        @location filterLocation := here;
         $ONEEVERYN$ ;    <period_offset_attribute> ?period ?offset;
-        filter := [@oneeveryn_filter new !period !offset] ;
+        filter := [@oneeveryn_filter new !filterLocation !period !offset] ;
     end select ;
     <description> ?* ; $;$ ;
 end rule ;

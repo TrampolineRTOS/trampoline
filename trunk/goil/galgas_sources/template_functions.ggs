@@ -39,4 +39,29 @@ function tasks ??@systemConfig cfg ->@goilTemplateFieldMapList tasks:
   tasks := [cfg tasks];
 end function;
 
+function trueFalse ??@bool inBool ->@string result:
+  if inBool then
+    result := "true";
+  else
+    result := "false";
+  end if;
+end function;
+
+function yesNo ??@bool inBool ->@string result:
+  if inBool then
+    result := "YES";
+  else
+    result := "NO";
+  end if;
+end function;
+
+function TRUEFALSE ??@bool inBool ->@string result:
+  if inBool then
+    result := "TRUE";
+  else
+    result := "FALSE";
+  end if;
+end function;
+
+
 end semantics;

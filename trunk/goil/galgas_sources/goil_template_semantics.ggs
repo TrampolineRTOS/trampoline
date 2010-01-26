@@ -75,8 +75,8 @@ struct @goilTemplateValue {
 #------------------------------------------------------------------------------*
 
 map @goilTemplateVariableMap {
-  @goilTemplateType mType ;
-  @goilTemplateValue mValue ;
+  @goilTemplateType mType feature setter;
+  @goilTemplateValue mValue feature setter;
   insert insertKey error message "a template variable named '%K' is already declared in %L" ;
   search searchKey error message "there is no template variable named '%K'" ;
   remove removeKey error message "there is no template variable named '%K'" ;

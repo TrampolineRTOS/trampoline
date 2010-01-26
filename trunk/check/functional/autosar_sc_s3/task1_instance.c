@@ -38,7 +38,9 @@
 #include "Os.h"
 
 DeclareCounter(Hardware_Counter);
+DeclareCounterConstants(Hardware_Counter);
 DeclareCounter(Software_Counter);
+DeclareCounterConstants(Software_Counter);
 DeclareCounter(INVALID_COUNTER);
 
 /*test case:test the reaction of the system called with 

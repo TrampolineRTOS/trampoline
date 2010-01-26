@@ -12,9 +12,11 @@ function goil_template
     ![@lstring new !name !here]
     !prefix
     !"templates"
-    !emptySystemConfig[]
+    !rootTemplatesDirectory[]
+    !true
     !cfg
-    !?result;
+    !?result
+    ?*;
 end function;
 
 function computeTemplate
@@ -28,9 +30,11 @@ function computeTemplate
     ![@lstring new !name !here]
     !prefix
     !"templates"
-    !emptySystemConfig[]
+    !rootTemplatesDirectory[]
+    !true
     !cfg
-    !?result;
+    !?result
+    ?*;
 end function;
 
 end semantics;

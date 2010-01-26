@@ -41,6 +41,7 @@ DeclareAlarm(Alarm1);
 DeclareAlarm(INVALID_ALARM);
 DeclareApplication(app1);
 DeclareApplication(app2);
+DeclareApplication(INVALID_OSAPPLICATION);
 DeclareCounter(Software_Counter);
 DeclareCounter(SystemCounter);
 DeclareCounter(INVALID_COUNTER);

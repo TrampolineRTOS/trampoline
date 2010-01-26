@@ -70,13 +70,13 @@ CONST(tpl_resource_id, AUTOMATIC) INVALID_RESOURCE = (tpl_resource_id)(-1);
  * @see #RES_SCHEDULER
  */
 VAR(tpl_resource, OS_VAR) res_sched_rez_desc = {
-  RES_SCHEDULER_PRIORITY, /*  ceiling priority                            */
-  0,                      /*  owner_prev_priority                         */
-  INVALID_TASK_ID,        /*  owner                                       */
+  RES_SCHEDULER_PRIORITY,   /*  ceiling priority                            */
+  0,                        /*  owner_prev_priority                         */
+  INVALID_TASK_ID,          /*  owner                                       */
 #ifdef WITH_OSAPPLICATION
-  INVALID_OSAPPLICATION,  /*  OS Application id                           */
+  INVALID_OSAPPLICATION_ID, /*  OS Application id                           */
 #endif    
-  NULL                    /*  next_res                                    */
+  NULL                      /*  next_res                                    */
 };
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED

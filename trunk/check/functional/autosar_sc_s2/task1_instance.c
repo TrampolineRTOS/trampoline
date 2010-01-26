@@ -39,6 +39,7 @@
 
 DeclareAlarm(Alarm1);
 DeclareCounter(Hardware_Counter);
+DeclareCounterConstants(Hardware_Counter);
 DeclareEvent(Event1);
 DeclareTask(t1);
 

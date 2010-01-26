@@ -85,8 +85,8 @@ class @adjustable_true extends @adjustable_obj {
   @basic_type  max_retard;
   @basic_type  max_advance;
   override method generate ?!@string res:
-    doReplace !?res !"$MAX_RETARD$" ![uint64_or_error[!max_retard !"MAX_RETARD"] string];
-    doReplace !?res !"$MAX_ADVANCE$" ![uint64_or_error[!max_advance !"MAX_ADVANCE"] string];
+    doReplace !?res !"$MAX_RETARD$" ![uint64OrError[!max_retard !"MAX_RETARD"] string];
+    doReplace !?res !"$MAX_ADVANCE$" ![uint64OrError[!max_advance !"MAX_ADVANCE"] string];
   end method;
 }
 
@@ -195,12 +195,12 @@ class @scheduletable_obj extends @oil_obj {
       if last_offset == [len value] then
         # add the finalize action to the last expiry point
         @action_list acts := [last_point actions];
-        acts += !10 ![@finalize_st_action new !here];
+        acts += !10 ![@finalize_st_action new !here !name];
         [!?last_point setActions !acts];
       else
         # add a new expiry point for the finalize action
         @action_list finalize_ep_actions [emptySortedList];
-        finalize_ep_actions += !10 ![@finalize_st_action new !here];
+        finalize_ep_actions += !10 ![@finalize_st_action new !here !name];
         @expiry_point_obj finalize_ep :=
           [@expiry_point_obj new
             ![@lstring new !"" !here]
@@ -300,7 +300,7 @@ class @scheduletable_obj extends @oil_obj {
 }
 
 map @scheduletable_map {
-    @scheduletable_obj st;
+    @scheduletable_obj scheduletable;
     insert put error message "Schedule table %K is already defined in %L";
     search get error message "Schedule table %K is unkown";
     remove del error message "Schedule table %K is unkown";

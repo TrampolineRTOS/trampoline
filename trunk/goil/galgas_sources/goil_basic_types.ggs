@@ -27,7 +27,6 @@ semantics goil_basic_types :
 
 abstract class @basic_type {
   @location location ;
-
   method string !@string s :
     s := "" ;
   end method ;
@@ -70,7 +69,7 @@ class @uint64_class    extends @basic_type {
   end method ;
 }
 
-function uint64_or_error
+function uint64OrError
   ?@basic_type t
   ?@string     att
   ->@uint64    v
@@ -80,6 +79,20 @@ function uint64_or_error
   when == @uint64_class ui do
     v := [ui value];
   else
+    error [t location]: "Internal error, ".att." has a wrong datatype";
+  end cast;
+end function;
+
+function luint64OrError
+  ?@basic_type t
+  ?@string     att
+  ->@luint64    v
+:
+  cast t:
+  when == @uint64_class ui do
+    v := [@luint64 new ![ui value] ![ui location]];
+  else
+    v := [@luint64 new !0L !here];
     error [t location]: "Internal error, ".att." has a wrong datatype";
   end cast;
 end function;
@@ -206,10 +219,16 @@ map @ident_map {
     search get error message "Identifier %K is not defined" ;
 }
 
-map @string_map {
+map @stringMap {
     @string value ;
-    insert put error message "%K is duplicated in %L";
+    insert put error message "stringmap key %K is duplicated in %L";
     search get error message "stringmap key %K is not defined" ;
+}
+
+map @lstringMap {
+    @lstring value ;
+    insert put error message "lstringmap key %K is duplicated in %L";
+    search get error message "lstringmap key %K is not defined" ;
 }
 
 #
@@ -370,7 +389,7 @@ routine set_bool
   end cast ;
 end routine ;
 
-function get_bool
+function getBool
   ??@basic_type t
   ??@bool       def
   ->@bool       b

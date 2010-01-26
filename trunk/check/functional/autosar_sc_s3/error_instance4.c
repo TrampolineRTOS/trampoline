@@ -38,6 +38,7 @@
 #include "Os.h"
 
 DeclareCounter(Software_Counter);
+DeclareCounterConstants(Software_Counter);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/

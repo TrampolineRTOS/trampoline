@@ -32,6 +32,15 @@
 #include "tpl_os_internal_types.h"
 
 /**
+ *  @def INVALID_OSAPPLICATION
+ *
+ *  No OS Application is running
+ *
+ *  @see  #tpl_app_id
+ */
+#define INVALID_OSAPPLICATION_ID   APP_COUNT
+
+/**
  *  @struct TPL_APP_ACCESS
  *
  *  Data structure used to store the access vector of an OS Application

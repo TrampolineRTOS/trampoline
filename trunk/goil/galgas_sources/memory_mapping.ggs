@@ -38,7 +38,7 @@ import option goil_options in "goil_options.gOption" ;
 #
 routine generate_mp
   ??@root_obj   cpu
-  ??@string_map app_for_obj
+  ??@stringMap  app_for_obj
   ?!@string     unused header
   ?!@string     implementation
   ?!@string     unused obj_header
@@ -124,7 +124,7 @@ routine generate_mp
     end foreach;
     mp_table .= "  NULL\n};" ;
 
-    @string directory := project_name[];
+    @string directory := projectName[];
 
     doReplace !?tpl_mp !"$APPLICATION$" !directory ;
     doReplace !?tpl_mp !"$LINKER_SYM$"  !ext ;
@@ -142,7 +142,7 @@ routine generate_link_script_new
   @string linker := linker[![[cpu os] memmap]];
   if linker != "" then
     @string linkerScript := goil_template[!linker !cfg !"script"];
-    @string scriptFile := project_name[]."/".link_script_name[![[cpu os] memmap]];
+    @string scriptFile := projectName[]."/".link_script_name[![[cpu os] memmap]];
     @uint error_count := [@uint errorCount];
     if error_count == 0 then
       if [option .verbose_output value] then
@@ -207,7 +207,7 @@ routine generate_link_script
     doReplace !?script !"$APP_VAR$"    !app_vars;
 
     
-    @string script_file := project_name[]."/".link_script_name[![[cpu os] memmap]];
+    @string script_file := projectName[]."/".link_script_name[![[cpu os] memmap]];
     @uint error_count := [@uint errorCount];
     if error_count == 0 then
       if [option .verbose_output value] then
@@ -413,7 +413,7 @@ routine generate_memmap
     @string api_tpl := template_string_if_exist[!cc !"api_section"];
     doReplace !?mm !"$API_MEMMAP$" !api_tpl;
     
-    @string mm_file := project_name[]."/MemMap.h";
+    @string mm_file := projectName[]."/MemMap.h";
     if [@uint errorCount] == 0 then
       if [option .verbose_output value] then
           message "creating " . mm_file . "\n";
@@ -434,7 +434,7 @@ routine generate_memmap_new
   if cc != "" then
     @string mm := goil_template[!cc !cfg !"MemMap.h"];
 #    message mm;
-    @string mm_file := project_name[]."/MemMap.h";
+    @string mm_file := projectName[]."/MemMap.h";
     if [@uint errorCount] == 0 then
       if [option .verbose_output value] then
           message "creating " . mm_file . "\n";
@@ -453,8 +453,8 @@ routine generate_compiler
   if cc != "" then
     @string comp := template_string_if_exist[!cc !"Compiler.h"];
     @string comp_cfg := template_string_if_exist[!cc !"Compiler_Cfg.h"];
-    @string comp_file := project_name[]."/Compiler.h";
-    @string comp_cfg_file := project_name[]."/Compiler_Cfg.h";
+    @string comp_file := projectName[]."/Compiler.h";
+    @string comp_cfg_file := projectName[]."/Compiler_Cfg.h";
 
     if [@uint errorCount] == 0 then
       if [option .verbose_output value] then

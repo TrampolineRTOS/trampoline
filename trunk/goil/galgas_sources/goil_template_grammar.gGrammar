@@ -28,8 +28,8 @@ grammar goil_template_grammar "LL1" :
   root <goil_template_start_symbol>
     ??@string inPrefix
     ??@string inPath
-    ??@systemConfig inCfg
-    ??@goilTemplateVariableMap inTemplateVariableMap
+    ??@string inTemplateDirectory
+    ?@goilTemplateVariableMap inTemplateVariableMap
     ?!@string ioResultingString
   ;
 end grammar ;

@@ -26,7 +26,7 @@
 #ifndef TPL_COMPILER_H
 #define TPL_COMPILER_H
 
-#include "tpl_app_objects.h"
+#include "tpl_app_define.h"
 
 #if WITH_COMPILER_SETTINGS == YES
 

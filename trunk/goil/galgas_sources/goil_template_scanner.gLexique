@@ -50,22 +50,37 @@ list goilTemplateKeyWordList error message "the '%K' keyword" style keywordsStyl
   "before",
   "between",
   "block",
+  "default",
   "do",
   "else",
   "elsif",
+  "emptylist",
   "end",
+  "error",
+  "exists",
+  "false",
   "for",
   "foreach",
-  "no",
+  "from",
+  "here",
   "if",
   "in",
+  "let",
+  "loop",
   "mod",
+  "no",
   "not",
+  "or",
   "prefixedby",
   "template",
+  "templateresult",
   "then",
+  "to",
+  "true",
   "yes",
-  "while";
+  "warning",
+  "while",
+  "write";
 
 rule 'a'->'z' |  'A'->'Z' :
   repeat
@@ -149,7 +164,7 @@ list galgasDelimitorsList error message "the '%K' delimitor" style delimitersSty
   "[",     "]",   "+=",     "?!",     "!?",
   "/",    "!=",   ">=",      "&",
   "{",     "}",   "+>",     "-=",
-  "^",    ">>",    "~",     "<-" ;
+  "^",    ">>",    "~",     "<-";
 
 rule list galgasDelimitorsList ;
 

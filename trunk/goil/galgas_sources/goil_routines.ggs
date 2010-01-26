@@ -3,7 +3,7 @@ semantics goil_routines :
 import option goil_options in "goil_options.gOption" ;
 import semantics goil_basic_types in "goil_basic_types.ggs" ;
 
-function project_name -> @string directory
+function projectName -> @string directory
 :
   directory := [[@string stringWithSourceFilePath] stringByDeletingPathExtension];
   if [option goil_options.project_dir value] != "" then
@@ -64,19 +64,25 @@ function add_path_component
   end if;
 end function;
 
-function root_templates_directory
-  ->@string tpl_dir
+function rootTemplatesDirectory
+  ->@string templateDirectory
 :
   if [option goil_options.template_dir value] != "" then
-    tpl_dir := [option goil_options.template_dir value] ;
+    templateDirectory := [option goil_options.template_dir value];
   else
-    tpl_dir := [@string stringWithEnvironmentVariableOrEmpty !"GOIL_TEMPLATES"] ;
-  end if ;
-  tpl_dir := [tpl_dir unixPathWithNativePath] ;
+    templateDirectory := [@string stringWithEnvironmentVariableOrEmpty !"GOIL_TEMPLATES"];
+  end if;
+  templateDirectory := [templateDirectory unixPathWithNativePath];
+  templateDirectory := [templateDirectory stringByStandardizingPath];
+  if [templateDirectory characterAtIndex !0] != '/' then
+    @string currentDirectory := [@string stringWithCurrentDirectory];
+    templateDirectory := currentDirectory . "/" . templateDirectory;
+    templateDirectory := [templateDirectory stringByStandardizingPath];
+  end if;
 end function;
 
 function templates_directory ?@string prefix -> @string temp_dir :
-    temp_dir := root_templates_directory[];
+    temp_dir := rootTemplatesDirectory[];
     if temp_dir != "" then
         temp_dir := add_path_component[!temp_dir !prefix]; 
         # check the path is an absolute one
@@ -442,6 +448,51 @@ end routine;
 function lstringWith ?@string s ->@lstring r:
   r := [@lstring new !s !here];
 end function;
+
+function stripString ?@string s ->@string r:
+  if [s length] > 0 then
+    @uint first := 0;
+    @uint last := [s length];
+    # look for the first character which is not a space
+    @bool finished := false;
+    loop [s length]:
+    while not finished do
+      if [s characterAtIndex !first] == ' ' then
+        first++;
+        if first == [s length] then finished := true; end if;
+      else finished := true; end if; 
+    end loop;
+    # look for the last character which is not a space
+    finished := false;
+    loop [s length]:
+    while not finished do
+      if [s characterAtIndex !last - 1] == ' ' then
+        last--;
+        if last == 0 then finished := true; end if;
+      else finished := true; end if; 
+    end loop;
+    # build the tripped string
+    if first < last then
+      r := [s subString !first !last - first];
+    else
+      r := "";
+    end if;
+  else
+    r := "";
+  end if;
+end function;
+
+routine errorNoFileFound
+  ??@stringlist searchedPaths
+  ??@string    kind
+  ??@lstring    file
+:
+  @string m := "cannot find a valid path for the '" . file . "' " . kind . " file. I have tried:";
+  foreach searchedPaths do
+    m .= "\n  - '" . mValue . "'";
+  end foreach;
+  error file: m;
+end routine;
 
 end semantics ;
 # vim:ft=ggs:ts=4:sw=4

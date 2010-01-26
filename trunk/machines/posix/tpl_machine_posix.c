@@ -8,7 +8,7 @@
  */
 
 #include "tpl_machine.h"
-#include "tpl_os_generated_configuration.h"
+#include "tpl_app_config.h"
 #include "tpl_os_internal_types.h"
 #include "tpl_viper_interface.h"
 #include "tpl_os_it_kernel.h"

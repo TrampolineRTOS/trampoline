@@ -113,7 +113,7 @@ routine testTemplate
     grammar goil_template_grammar on templateSourceString
       !"code"
       !""
-      !emptySystemConfig[]
+      !""
       !sampleMap
       !?resutingString
     ;

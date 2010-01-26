@@ -36,7 +36,7 @@
 
 #include "embUnit.h"
 #include "Os.h"
-#include "tpl_os_generated_configuration.h" /*for OSMAXALLOWEDVALUE_Counter1...*/
+#include "tpl_app_config.h" /*for OSMAXALLOWEDVALUE_Counter1...*/
 
 DeclareAlarm(Alarm1);
 DeclareCounter(Software_Counter);

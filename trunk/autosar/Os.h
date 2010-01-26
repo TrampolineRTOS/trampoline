@@ -49,12 +49,16 @@
 #include "tpl_as_schedtable.h"
 #include "tpl_as_stack_monitor.h"
 #include "tpl_as_timing_protec.h"
+
+#if AUTOSAR_SC == 3 || AUTOSAR_SC == 4
 #include "tpl_as_application.h"
 #include "tpl_as_trusted_fct.h"
 #endif
 
+#endif
+
 /* Configuration includes */
-#include "tpl_os_generated_configuration.h"
+/*#include "tpl_os_generated_configuration.h"*/
 
 /* Common Published Information */
 #define OS_VENDOR_ID         48
