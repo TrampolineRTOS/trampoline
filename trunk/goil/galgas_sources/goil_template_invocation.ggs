@@ -87,6 +87,16 @@ end routine;
 
 #------------------------------------------------------------------------------*
 
+routine addLStringValue
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ??@string inVariableName
+  ??@lstring inValue
+:
+  addStringValue !?ioTemplateVariableMap ![@lstring new !inVariableName ![inValue location]] ![inValue string];
+end routine;
+
+#------------------------------------------------------------------------------*
+
 routine addListValue
   ?!@goilTemplateVariableMap ioTemplateVariableMap
   ??@lstring inVariableName
@@ -208,6 +218,11 @@ function fullPrefix
     @goilTemplateType type;
     @goilTemplateValue value;
     [vars searchKey !lstringWith[!"LINKER"] ?type ?value];
+    stringPrefix .= "/" . [value mStringValue];
+  elsif stringPrefix == "assembler" then
+    @goilTemplateType type;
+    @goilTemplateValue value;
+    [vars searchKey !lstringWith[!"ASSEMBLER"] ?type ?value];
     stringPrefix .= "/" . [value mStringValue];
   end if;
   full := stringPrefix;

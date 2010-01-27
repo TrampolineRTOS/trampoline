@@ -1368,7 +1368,11 @@ routine setMemoryMapping ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
     @lstring compiler := [trueMemmap compiler];
     if [compiler string] != "" then
       useCompilerSettings := true;
-      addStringValue !?cfg ![@lstring new !"COMPILER" ![compiler location]] ![compiler string];
+      addLStringValue !?cfg !"COMPILER" !compiler;
+    end if;
+    @lstring assembler := [trueMemmap assembler];
+    if [assembler string] != "" then
+      addLStringValue !?cfg !"ASSEMBLER" !assembler;
     end if;
     cast [trueMemmap linker]:
     when == @no_linker do
