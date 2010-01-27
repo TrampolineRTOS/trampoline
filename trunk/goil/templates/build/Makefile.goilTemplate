@@ -187,7 +187,7 @@ DOXYGEN = doxygen
 #############################################################################
 # TARGET SPECIFIC STUFF
 #############################################################################
-% template Makefile_specific
+% template if exists Makefile_specific
 %
 #############################################################################
 # call Trampoline makefile rules.

@@ -16,9 +16,9 @@ class @isr_obj extends @oil_obj {
     @timing_prot timing_prot ;
     @ident_map   other_fields;
 
-    method get_activation !@uint out_act :  
-        out_act := 1 ;  
-    end method ;
+#    method get_activation !@uint out_act :  
+#        out_act := 1 ;  
+#    end method ;
 }
 
 map @isr_map {

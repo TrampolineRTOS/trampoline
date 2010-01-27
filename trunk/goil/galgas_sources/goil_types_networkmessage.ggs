@@ -5,13 +5,13 @@ import semantics goil_routines in "goil_routines.ggs" ;
 
 abstract class @base_netprop {
   @location loc ;
-  abstract method generate !@string res ;
+#  abstract method generate !@string res ;
 }
 
 class @void_netprop extends @base_netprop {
-  override method generate !@string res :
-    res := "" ;
-  end method ;
+#  override method generate !@string res :
+#    res := "" ;
+#  end method ;
 }
 
 class @static_netprop extends @base_netprop {
@@ -21,9 +21,9 @@ class @static_netprop extends @base_netprop {
   @lstring data_interpretation ;
   @luint64 initial_value ;
   @lstring direction ;
-  override method generate !@string res :
-    res := template_string[!"code" ![direction string]."_nm"];
-  end method ;
+#  override method generate !@string res :
+#    res := template_string[!"code" ![direction string]."_nm"];
+#  end method ;
 }
 
 class @dynamic_netprop extends @base_netprop {
@@ -32,30 +32,30 @@ class @dynamic_netprop extends @base_netprop {
   @lsint   bit_position ;
   @luint64 initial_value ;
   @lstring direction ;
-  override method generate !@string res :
-    res := "" ;
-  end method ;
+#  override method generate !@string res :
+#    res := "" ;
+#  end method ;
 }
 
 class @zero_netprop extends @base_netprop {
   @lstring direction ; # not part of OSEK COM
-  override method generate !@string res :
-    res := template_string[!"code" ![direction string]."_nm"];
-  end method ;
+#  override method generate !@string res :
+#    res := template_string[!"code" ![direction string]."_nm"];
+#  end method ;
 }
 
 class @netmess_obj extends @oil_obj {
   @lstring      ipdu ;
   @base_netprop netprop ;
-  method generate ?@lstring name ?@string ctype ?@string inval !@string res :
-    [netprop generate ?res] ;
-    doReplace !?res !"$NAME$" ![name string] ;
-    doReplace !?res !"$CTYPE$" !ctype ;
-    if inval != "" then
-      inval := " = ".inval ;
-    end if ;
-    doReplace !?res !"$INITIALVALUE$" !inval ;
-  end method ;
+#  method generate ?@lstring name ?@string ctype ?@string inval !@string res :
+#    [netprop generate ?res] ;
+#    doReplace !?res !"$NAME$" ![name string] ;
+#    doReplace !?res !"$CTYPE$" !ctype ;
+#    if inval != "" then
+#      inval := " = ".inval ;
+#    end if ;
+#    doReplace !?res !"$INITIALVALUE$" !inval ;
+#  end method ;
 }
 
 map @netmess_map {

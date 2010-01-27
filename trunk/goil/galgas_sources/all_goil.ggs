@@ -32,7 +32,6 @@ project all_goil :
   syntax    "goil_template_parser.ggs"            : makefile, xcode_tool;
   grammar   "goil_template_grammar.gGrammar"      : makefile, xcode_tool;
   semantics "goil_template_invocation.ggs"        : makefile, xcode_tool;
-  semantics "goil_template_test.ggs"              : makefile, xcode_tool;
   semantics "template_routines.ggs"               : makefile, xcode_tool;
   semantics "template_functions.ggs"              : makefile, xcode_tool;
 
@@ -113,32 +112,12 @@ project all_goil :
   # Code generation
   #
   semantics "system_config.ggs"            : makefile, xcode_tool;
-  semantics "tasks_config.ggs"             : makefile, xcode_tool;
   semantics "config_type.ggs"              : makefile, xcode_tool;
   semantics "goil_code_generation.ggs"     : makefile, xcode_tool;
-  semantics "goil_proc_generation.ggs"     : makefile, xcode_tool;
-  semantics "memory_mapping.ggs"           : makefile, xcode_tool;
-  semantics "goil_app_generation.ggs"      : makefile, xcode_tool;
-  semantics "goil_code_msg_gen.ggs"        : makefile, xcode_tool;
-  semantics "goil_code_schedtable_gen.ggs" : makefile, xcode_tool;
-  semantics "it_table_generation.ggs"      : makefile, xcode_tool;
-  semantics "trace_description.ggs"        : makefile, xcode_tool;
-  #semantics "goil_orti_gen.ggs";
-  #
-  # Target specific code generation
-  #
-  semantics "goil_targets.ggs"          : makefile, xcode_tool;
-  semantics "goil_target_c166.ggs"      : makefile, xcode_tool;
-  semantics "goil_target_libpcl.ggs"    : makefile, xcode_tool;
-  semantics "goil_target_hcs12.ggs"     : makefile, xcode_tool;
-  semantics "goil_target_ppc.ggs"       : makefile, xcode_tool;
-  semantics "goil_target_v850e.ggs"     : makefile, xcode_tool;
-  semantics "goil_target_h8300h.ggs"    : makefile, xcode_tool;
-  semantics "goil_target_arm7.ggs"      : makefile, xcode_tool;
-  semantics "goil_target_avr.ggs"       : makefile, xcode_tool;
-  semantics "goil_target_posix.ggs"     : makefile, xcode_tool;  
-  semantics "goil_target_posix_vp2.ggs" : makefile, xcode_tool ;  
-  semantics "goil_target_cortex_m3.ggs" : makefile, xcode_tool;
+#  semantics "goil_proc_generation.ggs"     : makefile, xcode_tool;
+#  semantics "goil_app_generation.ggs"      : makefile, xcode_tool;
+#  semantics "goil_code_msg_gen.ggs"        : makefile, xcode_tool;
+#  semantics "goil_code_schedtable_gen.ggs" : makefile, xcode_tool;
   
   grammar "goil_grammar.gGrammar"            : makefile, xcode_tool;
   grammar "goil_file_level_include.gGrammar" : makefile, xcode_tool;

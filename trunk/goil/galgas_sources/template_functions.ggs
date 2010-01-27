@@ -35,10 +35,6 @@ semantics template_functions:
 
 import semantics system_config in "system_config.ggs";
 
-function tasks ??@systemConfig cfg ->@goilTemplateFieldMapList tasks:
-  tasks := [cfg tasks];
-end function;
-
 function trueFalse ??@bool inBool ->@string result:
   if inBool then
     result := "true";

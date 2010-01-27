@@ -53,4 +53,11 @@ if USEBUILDFILE then
     template Makefile in build
   end write
 end if
-  
+
+if USETRACE then
+!PROJECT%.desc
+%
+  write to PROJECT.".desc":
+    template trace_description in log
+  end write
+end if

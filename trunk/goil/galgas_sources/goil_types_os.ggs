@@ -29,39 +29,39 @@ import semantics goil_routines in "goil_routines.ggs";
 
 abstract class @trace_method {
   @location loc;
-  abstract method generate_c !@string res;
+#  abstract method generate_c !@string res;
 }
 
 class @trace_void extends @trace_method {
-  override method generate_c !@string res :
-    res := "#error \"TRACE_METHOD is not defined\"\n";
-  end method;
+#  override method generate_c !@string res :
+#    res := "#error \"TRACE_METHOD is not defined\"\n";
+#  end method;
 }
 
 class @trace_file extends @trace_method {
   @lstring name;
-  override method generate_c !@string res :
-    res := "#define    TRACE_FILE             \"".[name string]."\"\n";
-  end method;
+#  override method generate_c !@string res :
+#    res := "#define    TRACE_FILE             \"".[name string]."\"\n";
+#  end method;
 }
 
 class @trace {
   @location loc;
-  method generate_c !@string res :
-    res := "#define    WITH_TRACE             NO\n";
-  end method;
-  method generate_make !@string res :
-    res := "WITH_TRACE = false\n";
-  end method;
+#  method generate_c !@string res :
+#    res := "#define    WITH_TRACE             NO\n";
+#  end method;
+#  method generate_make !@string res :
+#    res := "WITH_TRACE = false\n";
+#  end method;
 }
 
 class @trace_off extends @trace {
-  override method generate_c !@string res :
-    res := "#define    WITH_TRACE             NO\n";
-  end method;
-  override method generate_make !@string res :
-    res := "WITH_TRACE = false\n";
-  end method;
+#  override method generate_c !@string res :
+#    res := "#define    WITH_TRACE             NO\n";
+#  end method;
+#  override method generate_make !@string res :
+#    res := "WITH_TRACE = false\n";
+#  end method;
 }
 
 class @trace_on extends @trace {
@@ -73,21 +73,21 @@ class @trace_on extends @trace {
   @basic_type   trace_alarm;
   @basic_type   trace_user_event;
   @basic_type   desc;
-  override method generate_c !@string res :
-    res := "#define    WITH_TRACE             YES\n";
-    res .= bool_class_define[!"TRACE_TASK" !trace_task !true];
-    res .= bool_class_define[!"TRACE_ISR" !trace_isr !true];
-    res .= bool_class_define[!"TRACE_RES" !trace_resource !true];
-    res .= bool_class_define[!"TRACE_ALARM" !trace_alarm !true];
-    res .= bool_class_define[!"TRACE_U_EVENT" !trace_user_event !true];
-    res .= "#define    TRACE_FORMAT()         tpl_trace_format_".[form string]."();\n";
-    @string m;
-    [meth generate_c ?m];
-    res .= m;
-  end method;
-  override method generate_make !@string res :
-    res := "WITH_TRACE = true\n";
-  end method;
+#  override method generate_c !@string res :
+#    res := "#define    WITH_TRACE             YES\n";
+#    res .= bool_class_define[!"TRACE_TASK" !trace_task !true];
+#    res .= bool_class_define[!"TRACE_ISR" !trace_isr !true];
+#    res .= bool_class_define[!"TRACE_RES" !trace_resource !true];
+#    res .= bool_class_define[!"TRACE_ALARM" !trace_alarm !true];
+#    res .= bool_class_define[!"TRACE_U_EVENT" !trace_user_event !true];
+#    res .= "#define    TRACE_FORMAT()         tpl_trace_format_".[form string]."();\n";
+#    @string m;
+#    [meth generate_c ?m];
+#    res .= m;
+#  end method;
+#  override method generate_make !@string res :
+#    res := "WITH_TRACE = true\n";
+#  end method;
 }
 
 #
