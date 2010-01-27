@@ -139,6 +139,7 @@ class @memmap_false extends @basic_type {}
 
 class @memmap_true extends @basic_type {
   @lstring    compiler;
+  @lstring    assembler;
   @basic_type linker;
   @basic_type memory_prot;
 }

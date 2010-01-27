@@ -176,6 +176,7 @@ rule <os>
       $TRUE$; 
       @basic_type lk := void_obj[];
       @lstring cc := empty_lstring[];
+      @lstring as := empty_lstring[];
       @basic_type mp := void_obj[];      
       select 
         ${$;
@@ -194,13 +195,16 @@ rule <os>
           @lstring c;
           $COMPILER$; $=$; $idf$ ?c; set_lstring_if_empty !?cc !c !"COMPILER"; $;$;
         while
+          @lstring a;
+          $ASSEMBLER$; $=$; $idf$ ?a; set_lstring_if_empty !?as !a !"ASSEMBLER"; $;$;
+        while
           @lbool p;
           $MEMORY_PROTECTION$; $=$; <boolean> ?p; set_bool !?mp !p !"MEMORY_PROTECTION"; $;$;
         end repeat;
         $}$;
       or
       end select;
-      set_memmap !?memmap ![@memmap_true new !here !cc !lk !mp] !"MEMMAP";
+      set_memmap !?memmap ![@memmap_true new !here !cc !as !lk !mp] !"MEMMAP";
     end select;
     <description> ?*; $;$;
   while

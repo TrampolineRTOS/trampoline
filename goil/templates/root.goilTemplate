@@ -20,30 +20,40 @@ write to PROJECT."/tpl_app_define.h":
   template tpl_app_define_h in code
 end write
 
-if exists COMPILER then
-!PROJECT %/MemMap.h
+if USEMEMORYMAPPING then
+  if exists COMPILER then
+    !PROJECT %/MemMap.h
 %
-  write to PROJECT."/MemMap.h":
-    template MemMap_h in compiler
-  end write
-!PROJECT %/Compiler.h
+    write to PROJECT."/MemMap.h":
+      template MemMap_h in compiler
+    end write
+    !PROJECT %/Compiler.h
 %
-  write to PROJECT."/Compiler.h":
-    template Compiler_h in compiler
-  end write
-!PROJECT %/Compiler_Cfg.h
+    write to PROJECT."/Compiler.h":
+      template Compiler_h in compiler
+    end write
+    !PROJECT %/Compiler_Cfg.h
 %
-  write to PROJECT."/Compiler_Cfg.h":
-    template Compiler_Cfg_h in compiler
-  end write
-end if
+    write to PROJECT."/Compiler_Cfg.h":
+      template Compiler_Cfg_h in compiler
+    end write
+  end if
 
-if exists LINKER then
-!PROJECT %/% !LINKSCRIPT%
+  if exists LINKER then
+    !PROJECT %/% !LINKSCRIPT%
 %
-  write to PROJECT."/".LINKSCRIPT:
-    template script in linker
-  end write
+    write to PROJECT."/".LINKSCRIPT:
+      template script in linker
+    end write
+  end if
+
+  if exists ASSEMBLER then
+    !PROJECT %/AsMemMap.h
+%
+    write to PROJECT."/AsMemMap.h":
+      template AsMemMap_h in assembler
+    end write
+  end if
 end if
 
 if USEBUILDFILE then
