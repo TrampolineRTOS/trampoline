@@ -80,7 +80,28 @@ if USESTACKMONITORING then %
 end if
 %
 #define AUTOSAR_SC              % !SCALABILITYCLASS %
-#define WITH_TRACE              % !yesNo(USETRACE) %
+#define WITH_TRACE              % !yesNo(USETRACE)
+if USETRACE then
+  if TRACETASK then %
+#define TRACE_TASK%
+  end if
+  if TRACEISR then %
+#define TRACE_ISR%
+  end if
+  if TRACERESOURCE then %
+#define TRACE_RES%
+  end if
+  if TRACEALARM then %
+#define TRACE_ALARM%
+  end if
+  if TRACEUSEREVENT then %
+#define TRACE_U_EVENT%
+  end if %
+#define TRACE_FORMAT()          tpl_trace_format_% !TRACEFORMAT %();
+#define TRACE_FILE              "%! TRACEFILE %"
+%
+end if
+%
 #define WITH_IT_TABLE           % !yesNo(USEINTERRUPTTABLE)%
 #define WITH_COM                % !yesNo(USECOM)
 if USECOM then%

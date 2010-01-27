@@ -38,42 +38,42 @@ class @com extends @oil_obj {
   @lstring     status ;
   @lstringlist uses ;
 
-  method generate ?!@string h :
-
-    @string res := "" ;
-
-#    if usecom then
-#      res := "#define WITH_COM\n" ;
+#  method generate ?!@string h :
+#
+#    @string res := "" ;
+#
+##    if usecom then
+##      res := "#define WITH_COM\n" ;
+##    end if ;
+#      
+#    cast timebase :
+#    when == @void do
+#      res .= "#define TPL_COMTIMEBASE 0.001\n" ;
+#    when == @float_class f do
+#      @string val ;
+#      [f string ?val] ;
+#      res .= "#define TPL_COMTIMEBASE ".val."\n" ;
+#    else
+#      error [timebase location] : "Internal error, wrong datatype" ;
+#    end cast ;
+#
+#    bool_flag !?res !errorhook !"WITH_COM_ERROR_HOOK" ;
+#    bool_flag !?res !usegetserviceid !"WITH_COM_USEGETSERVICEID" ;
+#    bool_flag !?res !useparameteraccess !"WITH_COM_USEPARAMETERACCESS" ;
+#    bool_flag !?res !startcomextension !"WITH_COM_STARTCOMEXTENSION" ;
+#
+#    if [status string] == "extended" then
+#      res .= "#define COM_EXTENDED\n";#    YES\n" ;
+#    else
+#      if [status string] == "standard" | [status string] == "" then
+##        res .= "#define COM_EXTENDED    NO\n" ;
+#      else
+#        error status : "Internal error, wrong datatype" ;
+#      end if ;
 #    end if ;
-      
-    cast timebase :
-    when == @void do
-      res .= "#define TPL_COMTIMEBASE 0.001\n" ;
-    when == @float_class f do
-      @string val ;
-      [f string ?val] ;
-      res .= "#define TPL_COMTIMEBASE ".val."\n" ;
-    else
-      error [timebase location] : "Internal error, wrong datatype" ;
-    end cast ;
-
-    bool_flag !?res !errorhook !"WITH_COM_ERROR_HOOK" ;
-    bool_flag !?res !usegetserviceid !"WITH_COM_USEGETSERVICEID" ;
-    bool_flag !?res !useparameteraccess !"WITH_COM_USEPARAMETERACCESS" ;
-    bool_flag !?res !startcomextension !"WITH_COM_STARTCOMEXTENSION" ;
-
-    if [status string] == "extended" then
-      res .= "#define COM_EXTENDED\n";#    YES\n" ;
-    else
-      if [status string] == "standard" | [status string] == "" then
-#        res .= "#define COM_EXTENDED    NO\n" ;
-      else
-        error status : "Internal error, wrong datatype" ;
-      end if ;
-    end if ;
-
-    doReplace !?h !"$COM_CONFIG_FLAGS$" !res ;
-  end method ;
+#
+#    doReplace !?h !"$COM_CONFIG_FLAGS$" !res ;
+#  end method ;
 }
 
 function void_com_obj

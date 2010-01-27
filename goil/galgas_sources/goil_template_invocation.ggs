@@ -18,7 +18,7 @@
 #---------------------------------------------------------------------------*
 
 semantics goil_template_invocation :
-import semantics system_config in "system_config.ggs";
+import semantics goil_routines in "goil_routines.ggs";
 import semantics goil_template_semantics in "goil_template_semantics.ggs";
 import grammar goil_template_grammar in "goil_template_grammar.gGrammar";
 import option goil_options in "goil_options.gOption";
