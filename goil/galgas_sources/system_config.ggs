@@ -1576,7 +1576,6 @@ routine setScalabilityClass ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
       end if;
       
     else
-      message setSC . "\n";
       if setSC == "sc1" then
         # The user asks for scalability class 1
         # we check if other objects need a greater scalability class

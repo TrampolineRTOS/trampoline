@@ -10,7 +10,7 @@ option goil_options :
 #@uint   corrected_bits    : '\0', "crc"               -> "Generate correcting code" default 0 ;
 
 #--- Added by PM for new templates
-@bool run_goil_template_test : '\0', "run-goil-template-test" -> "Runs and displays a GOIL template for template testing purpose";
+@bool generate_log : 'l', "logfile" -> "generate a goil.log file containing the a log of the compilation";
 end option ;
 
 # vim:ft=ggs:ts=4:sw=4
