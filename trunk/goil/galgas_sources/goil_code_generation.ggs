@@ -801,8 +801,10 @@ routine generate_all
           #log sysCfg;
           
           @string goilLog := computeTemplate[!"" !sysCfg !"root"];
-          [goilLog writeToFile !"goil.log"];
-
+          if [option goil_options.generate_log value] then
+            [goilLog writeToFile !"goil.log"];
+          end if;
+          
           # write the result to files
           @string directory := projectName[];
           
@@ -818,7 +820,6 @@ routine generate_all
               end if;
               [types makeDirectoryAndWriteToFile !types_file];
 
-#              generate_description !cpu;
           end if;
       else
           message "No target platform given, compiling aborted\n";

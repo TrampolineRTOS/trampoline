@@ -114,10 +114,6 @@ project all_goil :
   semantics "system_config.ggs"            : makefile, xcode_tool;
   semantics "config_type.ggs"              : makefile, xcode_tool;
   semantics "goil_code_generation.ggs"     : makefile, xcode_tool;
-#  semantics "goil_proc_generation.ggs"     : makefile, xcode_tool;
-#  semantics "goil_app_generation.ggs"      : makefile, xcode_tool;
-#  semantics "goil_code_msg_gen.ggs"        : makefile, xcode_tool;
-#  semantics "goil_code_schedtable_gen.ggs" : makefile, xcode_tool;
   
   grammar "goil_grammar.gGrammar"            : makefile, xcode_tool;
   grammar "goil_file_level_include.gGrammar" : makefile, xcode_tool;
