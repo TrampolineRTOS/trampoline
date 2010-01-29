@@ -37,7 +37,7 @@
 #include "embUnit.h"
 #include "tpl_os.h"
 
-DeclareResource(Resource1);
+DeclareResource(source1);
 DeclareResource(Resource2);
 
 /*test case:test the reaction of the system called with 
@@ -52,7 +52,7 @@ static void test_t2_instance(void)
 	SCHEDULING_CHECK_AND_EQUAL_INT(19 , E_OS_ACCESS, result_inst_1);
 	
 	SCHEDULING_CHECK_INIT(20);
-	result_inst_2 = ReleaseResource(Resource1);
+	result_inst_2 = ReleaseResource(source1);
 	SCHEDULING_CHECK_AND_EQUAL_INT(20 , E_OS_ACCESS, result_inst_2);
 	
 	SCHEDULING_CHECK_INIT(21);

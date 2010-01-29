@@ -22,12 +22,13 @@
  * $Author$
  * $URL$
  */
-
-/* this section is used in linker configuration to
- * place the vector table at the right place */
-.section .vectbl
  
+.section .vectbl, "ax"
+.code 32
 .align 2
+
+/* Useful for olimex_lpc_e2294 */
+.global Vec_reset
 
 Vec_reset:                 ldr pc, =tpl_arm_bootstrap_entry
 Vec_undefinedInstruction:  ldr pc, =primary_undefined_instruction_handler
@@ -37,3 +38,7 @@ Vec_dataAbort:             ldr pc, =primary_data_abort_handler
 Vec_unused:                .word   0xB8A06F60   /* Magic number */
 Vec_interruptRequest:      ldr pc, =tpl_primary_irq_handler
 Vec_fastInterruptRequest:  ldr pc, =tpl_primary_fiq_handler
+
+.ltorg
+
+/* End of file tpl_vector_table.s */

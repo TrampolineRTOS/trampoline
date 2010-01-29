@@ -31,7 +31,7 @@
 SOURCES += tpl_machine_arm_generic.c \
 tpl_irq.S \
 tpl_system_call.S \
-tpl_system_stacks.s \
+tpl_stacks.S \
 tpl_vector_table.s \
 tpl_invoque.S \
 simtec_tpl_sleep.S \

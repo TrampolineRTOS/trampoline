@@ -70,7 +70,7 @@ IMPLEMENTATION trampoline {
         PRIORITY = 1;
         ACTIVATION = 1;
         SCHEDULE = FULL;
-		RESOURCE = Resource1;
+		RESOURCE = source1;
 		RESOURCE = Resource2;
 		RESOURCE = Resource3;
 		RESOURCE = Resource4;
@@ -86,7 +86,7 @@ IMPLEMENTATION trampoline {
 		RESOURCE = ResourceA;
     };
 	
-	RESOURCE Resource1{
+	RESOURCE source1{
 		RESOURCEPROPERTY = STANDARD;
 	};
 

@@ -18,7 +18,7 @@ CPU test {
     ERRORHOOK = TRUE;
     PRETASKHOOK = TRUE;
     APP_SRC = "simple_simtec.c";
-    TRAMPOLINE_BASE_PATH = "../..";
+    TRAMPOLINE_BASE_PATH = "../../..";
 	COMPILER = "arm-none-eabi-gcc";
 	LINKER = "arm-none-eabi-ld";
 	ASSEMBLER = "arm-none-eabi-as";

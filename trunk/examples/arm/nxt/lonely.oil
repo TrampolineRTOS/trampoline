@@ -1,0 +1,72 @@
+OIL_VERSION = "2.5" : "test" ;
+
+IMPLEMENTATION trampoline {
+    TASK {
+        UINT32 STACKSIZE = 500 ;
+        UINT32 PRIORITY = 1 ;
+    } ;
+    ISR {
+        UINT32 STACKSIZE = 500 ;
+    } ;
+};
+
+CPU test {
+
+    OS config {
+        STATUS = EXTENDED;
+        ERRORHOOK = FALSE;
+        PRETASKHOOK = FALSE;
+        APP_SRC = "lonely.c"; 
+        APP_NAME = "lonely_exe";
+        TRAMPOLINE_BASE_PATH = "../../..";
+        // CFLAGS  = "-g -Wall -pedantic -Wformat -std=c99 -mcpu=arm7tdmi-s -Wmissing-field-initializers "; 
+        //TODO : Check if all the options are useful
+        CFLAGS = "-g -c -ffreestanding -fsigned-char -mcpu=arm7tdmi -Os -Winline -Wall -Werror-implicit-function-declaration --param max-inline-insns-single=1000 -ffunction-sections -fdata-sections -std=gnu99"; //-MD ";
+        ASFLAGS = "-g -mcpu=arm7tdmi-s --fatal-warnings ";
+        LDFLAGS = "-g --cref --allow-multiple-definition --gc-sections";
+        SYSTEM_CALL = TRUE;
+        
+        COMPILER = "arm-elf-gcc";
+        ASSEMBLER = "arm-elf-as";
+        LINKER = "arm-elf-ld";
+        MEMMAP = TRUE{
+          COMPILER = gcc;
+          LINKER = gnu_ld { SCRIPT = "script.ld"; };
+          ASSEMBLER = gnu_as;
+          MEMORY_PROTECTION = FALSE;
+        };
+    } ;
+
+    APPMODE std {
+    };
+
+    TASK task1 {
+        PRIORITY = 1;
+        AUTOSTART = TRUE { APPMODE = std; };
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };   
+    
+    TASK task5 {
+        PRIORITY = 2;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+    
+    COUNTER SystemCounter {
+        SOURCE = it_timer1;
+    };
+	
+	ALARM Alarm1{
+		COUNTER = SystemCounter;
+		ACTION = ACTIVATETASK {
+			TASK = task5;
+		};
+        AUTOSTART = TRUE {
+            ALARMTIME = 2000;
+            CYCLETIME = 1000; //each 1000 ms.
+            APPMODE = std;
+		};
+	};
+};

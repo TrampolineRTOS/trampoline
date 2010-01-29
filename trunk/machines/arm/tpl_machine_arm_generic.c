@@ -24,7 +24,6 @@
  */
 #include "tpl_machine.h"
 #include "tpl_machine_interface.h"
-#include "tpl_machine_arm_generic.h"
 #include "tpl_os_application_def.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os_kernel.h"
@@ -41,11 +40,6 @@
 VAR (arm_context, OS_VAR) idle_task_context;
 
 /**
- * lock depth counter
- */
-static volatile VAR (u32, OS_VAR) tpl_locking_depth;
-
-/**
  * Kernel entry counter
  */
 volatile VAR (u32, OS_VAR) nested_kernel_entrance_counter;
@@ -56,13 +50,11 @@ volatile VAR (u32, OS_VAR) nested_kernel_entrance_counter;
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-extern FUNC(void, OS_CODE) tpl_sleep (void);
 STATIC FUNC(void, OS_CODE) tpl_call_missingend(void);
 STATIC FUNC(void, OS_CODE) tpl_call_terminateISR(void);
 
 FUNC (void, OS_CODE) tpl_init_machine_generic (void)
 {
-         tpl_locking_depth = 0;
          nested_kernel_entrance_counter = 0;
 }
 
@@ -88,8 +80,9 @@ void tpl_enable_interrupts(void)
   "mrs r0, spsr ;"
   "bic r0, r0, #0b11000000 ;"
   "msr spsr, r0 ;"
-  : : : "r0" /* clobbered register */
+  : : : "r0" // clobbered register
   );
+
 }
 
 /**
@@ -97,16 +90,18 @@ void tpl_enable_interrupts(void)
  */
 void tpl_disable_interrupts(void)
 {
+
   __asm__
   (
   "mrs r0, cpsr ;"
   "orr r0, r0, #0b11000000 ;"
   "msr cpsr, r0 ;"
-  "mrs r0, spsr ;" /* interrupts remain locked in user space */
+  "mrs r0, spsr ;" // interrupts remain locked in user space
   "orr r0, r0, #0b11000000 ;"
   "msr spsr, r0"
-  : : : "r0" /* clobbered register */
+  : : : "r0" // clobbered register
   );
+     
 }
 
 /*
@@ -187,3 +182,4 @@ FUNC(u8, OS_CODE) tpl_check_stack_footprint (
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
+/* End of file tpl_machine_arm_generic.c */

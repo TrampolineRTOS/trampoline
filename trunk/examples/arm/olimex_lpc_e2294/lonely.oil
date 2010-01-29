@@ -1,0 +1,78 @@
+OIL_VERSION = "2.5" : "test" ;
+
+IMPLEMENTATION trampoline {
+    TASK {
+        UINT32 STACKSIZE = 500 ;
+        UINT32 PRIORITY = 1 ;
+    } ;
+    ISR {
+        UINT32 STACKSIZE = 500 ;
+    } ;
+};
+
+CPU test {
+
+    OS config {
+        STATUS = EXTENDED;
+        ERRORHOOK = FALSE;
+        PRETASKHOOK = FALSE;
+        APP_SRC = "lonely.c";
+        APP_NAME = "lonely_exe";
+        TRAMPOLINE_BASE_PATH = "../../..";
+        CFLAGS  = "-g -Wall -pedantic -Wformat -std=c99 -mcpu=arm7tdmi-s -Wmissing-field-initializers"; 
+        //ASFLAGS = "-g -mcpu=arm7tdmi-s";
+        //LDFLAGS = "-g"; // -T /Users/florent/Documents/olimex_trunk/machines/arm/olimex_lpc_e2294/olimex_lpce2294_external_ram.ld";
+        
+        /* FLAGS for debug ? */
+        //CFLAGS = "-mcpu=arm7tdmi-s -c -DXTR_CLASS=0 -Wall -Wreturn-type -Wformat -Wsign-compare -Wpointer-arith -Wparentheses -Wcast-align -Wcast-qual -fverbose-asm -Wstrict-prototypes -Wbad-function-cast -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -O2 -fomit-frame-pointer -foptimize-register-move"; //-Wimplicit-function-declaration -Wmissing-declarations
+        ASFLAGS = "-mcpu=arm7tdmi-s --fatal-warnings -g"; 
+        LDFLAGS = " -g --fatal-warnings --warn-common  --no-undefined "; //-nostartfiles
+        
+        COMPILER = "arm-elf-gcc";
+        ASSEMBLER = "arm-elf-as";
+        LINKER = "arm-elf-ld";
+        SYSTEM_CALL = TRUE;
+        MEMMAP = TRUE{
+          COMPILER = gcc;
+          LINKER = gnu_ld { SCRIPT = "script.ld"; };
+          ASSEMBLER = gnu_as;
+          MEMORY_PROTECTION = FALSE;
+        };
+    } ;
+
+    APPMODE std {
+    };
+
+    TASK task1 {
+        PRIORITY = 1;
+        AUTOSTART = TRUE { APPMODE = std; };
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        USEFLOAT = FALSE;
+    };   
+    
+    TASK task2 {
+        PRIORITY = 1;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+    
+    TASK task3 {
+        PRIORITY = 3;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+
+    TASK task4 {
+        PRIORITY = 1;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+    
+    COUNTER SystemCounter {
+        SOURCE = it_timer_1;
+    };
+};

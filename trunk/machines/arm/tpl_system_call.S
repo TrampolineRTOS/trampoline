@@ -25,8 +25,8 @@
 
 #include "../tpl_asm_definitions.h"
 
-.text
-.align 2
+#define OS_START_SEC_CODE
+#include "tpl_as_memmap.h"
 
 /* Main system call handler
  *
@@ -41,7 +41,7 @@
  */
 .global tpl_primary_syscall_handler
 tpl_primary_syscall_handler:
-
+    
    /**********************
     * KERNEL ENTER STAGE *
     **********************
@@ -79,7 +79,7 @@ tpl_primary_syscall_handler:
      * save the SPSR on the stack. */
     mrs r1, spsr
     stmfd sp!, {r1}
-
+    
     /* manage reentrance of kernel */
     ldr r1, =nested_kernel_entrance_counter
     ldr r2, [r1]
@@ -230,3 +230,13 @@ swi_no_context_switch_exit:
     ldmfd sp!, {r0-r2,lr}
 
     movs pc, lr
+
+#define OS_STOP_SEC_CODE
+#include "tpl_as_memmap.h"
+
+#define OS_START_LTORG
+#include "tpl_as_memmap.h"
+#define OS_STOP_LTORG
+#include "tpl_as_memmap.h"
+
+/* End of file tpl_system_call.S */
