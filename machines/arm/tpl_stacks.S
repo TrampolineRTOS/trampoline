@@ -1,5 +1,5 @@
 /**
- * @file tpl_system_stacks.s
+ * @file tpl_stacks.s
  *
  * @section descr File description
  *
@@ -27,16 +27,17 @@
  * Stacks are placed just after BSS segment as we don't need to initialize
  * them. See into ldscript file.
  */
-.section stacks
+#include "tpl_stacks_size.h"
 
-.align 2
+#define OS_START_SEC_STACKS
+#include "tpl_as_memmap.h"
 
 /*
  * IRQ mode stack
  */
 .global irq_stack_top
 irq_stack_top:
-.space 4096 * 4
+.space IRQ_STACK_SIZE
 .global irq_stack_bottom
 irq_stack_bottom:
 
@@ -45,7 +46,7 @@ irq_stack_bottom:
  */
 .global fiq_stack_top
 fiq_stack_top:
-.space 1024 * 4
+.space FIQ_STACK_SIZE
 .global fiq_stack_bottom
 fiq_stack_bottom:
 
@@ -54,7 +55,7 @@ fiq_stack_bottom:
  */
 .global svc_stack_top
 svc_stack_top:
-.space 4096 * 4
+.space SVC_STACK_SIZE
 .global svc_stack_bottom
 svc_stack_bottom:
 
@@ -63,7 +64,7 @@ svc_stack_bottom:
  */
 .global abt_stack_top
 abt_stack_top:
-.space 256 * 4
+.space ABT_STACK_SIZE
 .global abt_stack_bottom
 abt_stack_bottom:
 
@@ -72,7 +73,7 @@ abt_stack_bottom:
  */
 .global und_stack_top
 und_stack_top:
-.space 256 * 4
+.space UND_STACK_SIZE
 .global und_stack_bottom
 und_stack_bottom:
 
@@ -81,6 +82,16 @@ und_stack_bottom:
  */
 .global usr_stack_top
 usr_stack_top:
-.space 4096 * 4
+.space USR_STACK_SIZE
 .global usr_stack_bottom
 usr_stack_bottom:
+
+#define OS_STOP_SEC_STACKS
+#include "tpl_as_memmap.h"
+
+#define OS_START_LTORG
+#include "tpl_as_memmap.h"
+#define OS_STOP_LTORG
+#include "tpl_as_memmap.h"
+
+/* End of file tpl_stacks.h */

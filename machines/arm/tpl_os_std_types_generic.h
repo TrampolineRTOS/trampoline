@@ -70,3 +70,6 @@ typedef unsigned long   u32;
 typedef signed long     s32;
 
 #endif /* TPL_OS_STD_TYPES_GENERIC_H */
+
+/* End of file tpl_os_std_generic.h */
+

@@ -35,9 +35,7 @@ CFLAGS   = $CFLAGS$
 #LDLAGS: flags used for the link process
 # it should be declared as LDFLAGS in the OS section of the .oil file (many times allowed).
 LDFLAGS  = $LDFLAGS$
-ifeq ($(strip $(WITH_LINKSCRIPT)),true)
-LDFLAGS += -T $(basename $(OIL_FILE))/$SCRIPT_FILE$ -Wl,-Map,$(basename $(OIL_FILE)).map
-endif
+
 #ASFLAGS: flags used for the assembly process (if required)
 # it should be declared as AS_FLAGS in the OS section of the .oil file (many times allowed).
 ASFLAGS  = $ASFLAGS$
@@ -65,11 +63,20 @@ CC=$COMPILER$
 # it should be declared as LINKER in the OS section of the .oil file.
 # default is 'gcc'
 LD=$LINKER$
+##
+ifeq ($(strip $(WITH_LINKSCRIPT)),true)
+  ifeq ($(CC),$(LD))
+    LDFLAGS += -T $(basename $(OIL_FILE))/$SCRIPT_FILE$ -Wl,-Map,$(basename $(OIL_FILE)).map
+  else
+    LDFLAGS += -T $(basename $(OIL_FILE))/$SCRIPT_FILE$ -Map $(basename $(OIL_FILE)).map
+  endif
+endif
 
 #program used to link files during compilation process.
 # it should be declared as ASSEMBER in the OS section of the .oil file.
 # default is 'as'
 AS=$ASSEMBLER$
+
 
 #############################################################################
 # TRAMPOLINE CONFIGURATION

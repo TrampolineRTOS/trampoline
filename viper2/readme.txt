@@ -10,6 +10,6 @@ Starting Viper2 :
 
 * Compile Viper2 and Trampoline by "python viper2.py -g -c" (Viper2 check AUTOMATICALLY the python version, modify the include/library path of python in the makefile and make the libraries for Trampoline and Viper2 with "make all")
 
-* Launch Viper2 by "python viper2.py"
+* Launch Viper2 by "python viper2.py" or by "python viper2.py -v" if you want the verbose mode 
 
 * Clean Viper2 (before a commit for example) by "python viper2.py --clean"

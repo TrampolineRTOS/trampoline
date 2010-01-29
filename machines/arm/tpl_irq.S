@@ -25,8 +25,9 @@
 
 #include "../tpl_asm_definitions.h"
 
-.text
-.align 2
+
+#define OS_START_SEC_CODE
+#include "tpl_as_memmap.h"
 
 /*
  * First stage category 2 interrupt handler (which means only IRQ on
@@ -185,3 +186,14 @@ irq_no_context_switch:
 
     /* return to interrupted task */
     movs pc,lr
+
+
+#define OS_STOP_SEC_CODE
+#include "tpl_as_memmap.h"
+
+#define OS_START_LTORG
+#include "tpl_as_memmap.h"
+#define OS_STOP_LTORG
+#include "tpl_as_memmap.h"
+
+/* End of file tpl_irq.S */

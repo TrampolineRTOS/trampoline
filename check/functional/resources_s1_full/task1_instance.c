@@ -37,7 +37,7 @@
 #include "embUnit.h"
 #include "tpl_os.h"
 
-DeclareResource(Resource1);
+DeclareResource(source1);
 DeclareResource(Resource2);
 DeclareResource(Resource3);
 DeclareResource(Resource4);
@@ -66,7 +66,7 @@ static void test_t1_instance(void)
 	SCHEDULING_CHECK_AND_EQUAL_INT(3 , E_OS_ID, result_inst_2);
 	
 	SCHEDULING_CHECK_INIT(4);
-	result_inst_3 = GetResource(Resource1);
+	result_inst_3 = GetResource(source1);
 	SCHEDULING_CHECK_AND_EQUAL_INT(4 , E_OK, result_inst_3);
 	
 	SCHEDULING_CHECK_INIT(5);
@@ -106,7 +106,7 @@ static void test_t1_instance(void)
 	SCHEDULING_CHECK_AND_EQUAL_INT(13 , E_OK, result_inst_12);
 	
 	SCHEDULING_CHECK_INIT(14);
-	result_inst_13 = ReleaseResource(Resource1);
+	result_inst_13 = ReleaseResource(source1);
 	SCHEDULING_CHECK_AND_EQUAL_INT(14 , E_OS_NOFUNC, result_inst_13);
 	
 	SCHEDULING_CHECK_INIT(15);
@@ -114,11 +114,11 @@ static void test_t1_instance(void)
 	SCHEDULING_CHECK_AND_EQUAL_INT(15 , E_OK, result_inst_14);
 	
 	SCHEDULING_CHECK_INIT(16);
-	result_inst_15 = GetResource(Resource1);
+	result_inst_15 = GetResource(source1);
 	SCHEDULING_CHECK_AND_EQUAL_INT(16 , E_OS_ACCESS, result_inst_15);
 	
 	SCHEDULING_CHECK_INIT(17);
-	result_inst_17 = ReleaseResource(Resource1);
+	result_inst_17 = ReleaseResource(source1);
 	SCHEDULING_CHECK_AND_EQUAL_INT(17 , E_OK, result_inst_17);
 	
 	SCHEDULING_CHECK_INIT(18);
@@ -131,7 +131,7 @@ static void test_t1_instance(void)
 	SCHEDULING_CHECK_AND_EQUAL_INT(22 , E_OS_ID, result_inst_18);
 	
 	SCHEDULING_CHECK_INIT(23);
-	result_inst_19 = ReleaseResource(Resource1);
+	result_inst_19 = ReleaseResource(source1);
 	SCHEDULING_CHECK_AND_EQUAL_INT(23 , E_OS_NOFUNC, result_inst_19);
 	
 	SCHEDULING_CHECK_INIT(24);

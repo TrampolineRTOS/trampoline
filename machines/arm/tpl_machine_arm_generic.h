@@ -151,7 +151,6 @@ typedef struct TPL_STACK tpl_stack;
                                             : \
                                             : "r0")
 
-extern void tpl_init_machine_generic (void);
-
 #endif /* TPL_MACHINE_ARM_GENERIC_H */
 
+/* End of file tpl_machine_arm_generic.h */

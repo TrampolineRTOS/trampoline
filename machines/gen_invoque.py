@@ -89,6 +89,7 @@ def main(argv):
                     scall = subs.substitute(SYSCALLNAME=service,SYSCALLFCT=fct)
                     result = result + scall
 
+            result = result + open("invoque.end.tpl").read()
             result = result + "/* End of file tpl_invoque." + extension + " */\n"
             
             try:

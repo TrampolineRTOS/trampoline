@@ -56,3 +56,5 @@
 #define CPSR_FIQ_LOCKED 0b01000000
 
 #endif /* TPL_ASM_DEFINITIONS_H */
+
+/* Enf of file tpl_asm_definitions.h */

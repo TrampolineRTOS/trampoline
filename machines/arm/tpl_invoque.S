@@ -1,5 +1,5 @@
 /**
- * @file tpl_invoque.S
+ * @file tpl_invoque.s
  *
  * @section descr File description
  *
@@ -32,9 +32,9 @@
 #error "This file should not be part of your project since WITH_SYSTEM_CALL is not defined"
 #endif
 
-  .text
-/*  .section ".COMMON_CODE" */
 
+#define OS_START_SEC_CODE
+#include "tpl_as_memmap.h"
 .global ActivateTask
 ActivateTask:
   mov r3, #OSServiceId_ActivateTask
@@ -197,4 +197,12 @@ TerminateISR:
   swi #OSServiceId_TerminateISR
   mov pc, lr
 
-  /* End of file tpl_invoque.S */
+  
+#define OS_STOP_SEC_CODE
+#include "tpl_as_memmap.h"
+
+#define OS_START_LTORG
+#include "tpl_as_memmap.h"
+#define OS_STOP_LTORG
+#include "tpl_as_memmap.h"
+/* End of file tpl_invoque.s */

@@ -1,0 +1,43 @@
+%
+if USEINTERRUPTTABLE then
+  loop ENTRY from 0 to ITSOURCESLENGTH - 1
+    before
+%
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[% !ITSOURCESLENGTH %] = {
+%
+    do
+      let entryFound := false
+      foreach INTERRUPTSOURCES prefixedby interrupt_ do
+        if ENTRY == interrupt_NUMBER then
+          # check first for counters
+          foreach HARDWARECOUNTERS prefixedby counter_ do
+            if counter_SOURCE == interrupt_NAME & not entryFound then
+              %  { tpl_tick_% !interrupt_NAME %, (void *)NULL }%
+              let entryFound := true
+            end if
+          end foreach
+          if not entryFound then
+            foreach ISRS2 prefixedby isr2_ do
+              if isr2_SOURCE == interrupt_NAME & not entryFound then
+                %  { tpl_central_interrupt_handler_2, (void*)% !([TASKS length] + INDEX) % }%
+                let entryFound := true
+              end if
+            end foreach
+          end if
+        end if
+      end foreach
+      if not entryFound then
+        %  { tpl_null_it, (void *)NULL }%
+      end if
+   between %,
+%
+    after
+%
+};
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+ end loop
+end if

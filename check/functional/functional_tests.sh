@@ -21,6 +21,7 @@ then
 		rm -rf ./${i}/Make-rules
 		rm -rf ./${i}/Makefile
 		rm -rf ./${i}/${i}_exe
+		rm -rf ./${i}/goil.log
 	done
 
 	#Delete results.log

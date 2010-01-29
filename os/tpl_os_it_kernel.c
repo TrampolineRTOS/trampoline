@@ -43,15 +43,18 @@
 #include "tpl_as_isr_kernel.h"
 #endif
 
-#define OS_START_SEC_CODE
+#define OS_START_SEC_VAR_NOINIT_UNSPECIFIED
 #include "tpl_memmap.h"
-
 volatile VAR(u32, OS_VAR) tpl_locking_depth = 0;
 VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;
 VAR(u32, OS_VAR) tpl_cpt_user_task_lock_All = 0;
 VAR(u32, OS_VAR) tpl_cpt_user_task_lock_OS = 0;
 VAR(u32, OS_VAR) tpl_cpt_os_task_lock = 0;
+#define OS_STOP_SEC_VAR_NOINIT_UNSPECIFIED
+#include "tpl_memmap.h"
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 /**
  * TODO : document this
  * This function reset the status of interrupt lock by user
