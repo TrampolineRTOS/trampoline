@@ -108,7 +108,7 @@ CPU test {
     };
 
     TASK t2 {
-        PRIORITY = 2;
+        PRIORITY = 8;
         AUTOSTART = FALSE ;
         ACTIVATION = 1;
         SCHEDULE = FULL;
@@ -116,7 +116,7 @@ CPU test {
     };
 	
 	TASK t3 {
-        PRIORITY = 2;
+        PRIORITY = 7;
         AUTOSTART = FALSE ;
         ACTIVATION = 1;
         SCHEDULE = FULL;
@@ -124,7 +124,7 @@ CPU test {
     };
 	 	 
 	TASK t4 {
-        PRIORITY = 2;
+        PRIORITY = 6;
         AUTOSTART = FALSE ;
         ACTIVATION = 1;
         SCHEDULE = FULL;
@@ -132,7 +132,7 @@ CPU test {
     }; 
 	
 	TASK t5 {
-        PRIORITY = 2;
+        PRIORITY = 5;
         AUTOSTART = FALSE ;
         ACTIVATION = 1;
         SCHEDULE = FULL;
@@ -140,7 +140,7 @@ CPU test {
     }; 
 	 	 
 	TASK t6 {
-        PRIORITY = 2;
+        PRIORITY = 4;
         AUTOSTART = FALSE ;
         ACTIVATION = 1;
         SCHEDULE = FULL;
@@ -148,7 +148,7 @@ CPU test {
     }; 
 	
 	TASK t7 {
-        PRIORITY = 2;
+        PRIORITY = 3;
         AUTOSTART = FALSE ;
         ACTIVATION = 1;
         SCHEDULE = FULL;

@@ -46,14 +46,14 @@ static void test_t2_instance1(void)
 	StatusType result_inst_1, result_inst_2;
 	StatusType received_char;
 	
-	SCHEDULING_CHECK_INIT(13);
+	SCHEDULING_CHECK_INIT(11);
 	result_inst_1 = ReceiveMessage(rm_maskednewequalsx, &received_char);
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(13,E_OK, result_inst_1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(13,12, (int)received_char);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(11,E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(11,12, (int)received_char);
 	
-	SCHEDULING_CHECK_INIT(14);
+	SCHEDULING_CHECK_INIT(12);
 	result_inst_2 = TerminateTask();
-	SCHEDULING_CHECK_AND_EQUAL_INT(14,E_OK, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(12,E_OK, result_inst_2);
 }
 
 /*create the test suite with all the test cases*/
