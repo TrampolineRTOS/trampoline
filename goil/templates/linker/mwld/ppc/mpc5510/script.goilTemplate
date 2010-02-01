@@ -138,11 +138,14 @@ end for
 
   GROUP : {
     .__uninitialized_intc_handlertable ALIGN(2048) : {}
-    .data   : {
-      *(.osVar)
-      *(.osVarNoInit)
-      *(.data)
-    }
+    .data   : {}
+    .sdata  : {}
+    .sbss   : {}
+    .sdata2 : {}
+    .sbss2  : {}
+    .bss    : {}
+    .osVar (DATA) : { *(.osVar) }
+    .osVarNoInit (BSS) : { *(.osVarNoInit) }
 %
 foreach PROCESSES do
 %    .% !PROCESSKIND %_% !NAME %_SEC_VAR ALIGN(16) : {
@@ -175,12 +178,7 @@ foreach PROCESSES do
     }
 %
 end foreach
-%    .sdata  : {}
-    .sbss   : {}
-    .sdata2 : {}
-    .sbss2  : {}
-    .bss    : {}
-  } > internal_ram
+%  } > internal_ram
 }
 
 /* Freescale CodeWarrior compiler address designations */
