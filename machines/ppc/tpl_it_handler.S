@@ -33,7 +33,7 @@
 #include "tpl_assembler.h"
 
 TPL_EXTERN  tpl_kern
-TPL_EXTERN  tpl_it_vector
+TPL_EXTERN  tpl_it_table
 
 TPL_EXTERN  tpl_save_context
 TPL_EXTERN  tpl_load_context
