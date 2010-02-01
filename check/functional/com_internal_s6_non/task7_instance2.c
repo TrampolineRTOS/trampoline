@@ -46,14 +46,14 @@ static void test_t7_instance2(void)
 	StatusType result_inst_1, result_inst_2;
 	StatusType received_char;
 	
-	SCHEDULING_CHECK_INIT(37);
+	SCHEDULING_CHECK_INIT(45);
 	result_inst_1 = ReceiveMessage(rm_maskednewdiffersmaskedold, &received_char);
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(37,E_OK, result_inst_1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(37,2, (int)received_char);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(45,E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(45,2, (int)received_char);
 	
-	SCHEDULING_CHECK_INIT(38);
+	SCHEDULING_CHECK_INIT(46);
 	result_inst_2 = TerminateTask();
-	SCHEDULING_CHECK_AND_EQUAL_INT(38,E_OK, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(46,E_OK, result_inst_2);
 }
 
 /*create the test suite with all the test cases*/

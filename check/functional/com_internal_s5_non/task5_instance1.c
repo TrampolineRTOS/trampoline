@@ -46,14 +46,14 @@ static void test_t5_instance1(void)
 	StatusType result_inst_1, result_inst_2;
 	StatusType received_char;
 	
-	SCHEDULING_CHECK_INIT(7);
+	SCHEDULING_CHECK_INIT(5);
 	result_inst_1 = ReceiveMessage(rm_newislessorequal, &received_char);
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(7,E_OK, result_inst_1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(7,1, (int)received_char);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(5,E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(5,1, (int)received_char);
 	
-	SCHEDULING_CHECK_INIT(8);
+	SCHEDULING_CHECK_INIT(6);
 	result_inst_2 = TerminateTask();
-	SCHEDULING_CHECK_AND_EQUAL_INT(8,E_OK, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(6,E_OK, result_inst_2);
 }
 
 /*create the test suite with all the test cases*/

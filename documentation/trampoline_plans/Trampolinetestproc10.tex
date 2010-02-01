@@ -1956,10 +1956,10 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 	t1	& \textit{Force scheduling}									& 					& \\ \hline
 	t2	& ReceiveMessage(rm\_always, \& DataRef)						& E\_OK, DataRef=1		& 8 \\ \hline
 	t2	& TerminateTask()											& 					&\\ \hline	
-	t6	& ReceiveMessage(rm\_newisless, \& DataRef)					& E\_OK, DataRef=1		& 20 \\ \hline
-	t6	& TerminateTask()											& 					&\\ \hline
 	t5	& ReceiveMessage(rm\_newislessorequal, \& DataRef)				& E\_OK, DataRef=1		& 19 \\ \hline
 	t5	& TerminateTask()											& 					&\\ \hline
+	t6	& ReceiveMessage(rm\_newisless, \& DataRef)					& E\_OK, DataRef=1		& 20 \\ \hline
+	t6	& TerminateTask()											& 					&\\ \hline
 	
 	t1	& SendMessage(sm, 2)										& E\_OK				& \\ \hline
 	t1	& \textit{Force scheduling}									& 					& \\ \hline
@@ -1995,10 +1995,10 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 	t1	& \textit{Force scheduling}									& 					& \\ \hline
 	t2	& ReceiveMessage(rm\_always, \& DataRef)						& E\_OK, DataRef=0		& 8 \\ \hline
 	t2	& TerminateTask()											& 					&\\ \hline	
-	t6	& ReceiveMessage(rm\_newisless, \& DataRef)					& E\_OK, DataRef=0		& 20 \\ \hline
-	t6	& TerminateTask()											& 					&\\ \hline
 	t5	& ReceiveMessage(rm\_newislessorequal, \& DataRef)				& E\_OK, DataRef=0		& 19 \\ \hline
 	t5	& TerminateTask()											& 					&\\ \hline
+	t6	& ReceiveMessage(rm\_newisless, \& DataRef)					& E\_OK, DataRef=0		& 20 \\ \hline
+	t6	& TerminateTask()											& 					&\\ \hline
 
 	t1	& SendMessage(sm, 1)										& E\_OK				& \\ \hline
 	t1	& \textit{Force scheduling}									& 					& \\ \hline
@@ -2042,21 +2042,21 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 	t1	& \textit{Force scheduling}									& 					& \\ \hline
 	t3	& ReceiveMessage(rm\_maskednewdiffersx, \& DataRef)				& E\_OK, DataRef=3		& 11\\ \hline
 	t3	& TerminateTask()											& 					&\\ \hline	
-	t6	& ReceiveMessage(rm\_maskednewequalsmaskedold, \& DataRef)	& E\_OK, DataRef=3		& 14 \\ \hline
-	t6	& TerminateTask()											& 					&\\ \hline
 	t5	& ReceiveMessage(rm\_newisdifferent, \& DataRef)					& E\_OK, DataRef=3		& 13 \\ \hline
 	t5	& TerminateTask()											& 					&\\ \hline
+	t6	& ReceiveMessage(rm\_maskednewequalsmaskedold, \& DataRef)	& E\_OK, DataRef=3		& 14 \\ \hline
+	t6	& TerminateTask()											& 					&\\ \hline
 	t9	& ReceiveMessage(rm\_newisoutside, \& DataRef)					& E\_OK, DataRef=3		& 17 \\ \hline
 	t9	& TerminateTask()											& 					&\\ \hline
 	
 	t1	& SendMessage(sm, 12)										& E\_OK				&\\ \hline
 	t1	& \textit{Force scheduling}									& 					&\\ \hline
-	t7	& ReceiveMessage(rm\_maskednewdiffersmaskedold, \& DataRef)		& E\_OK, DataRef=12	& 15  \\ \hline
-	t7	& TerminateTask()											& 					&\\ \hline	
 	t2	& ReceiveMessage(rm\_maskednewequalsx, \& DataRef)			& E\_OK, DataRef=12	& 10 \\ \hline
 	t2	& TerminateTask()											& 					&\\ \hline
 	t5	& ReceiveMessage(rm\_newisdifferent, \& DataRef)					& E\_OK, DataRef=12	& 13 \\ \hline
 	t5	& TerminateTask()											& 					&\\ \hline
+	t7	& ReceiveMessage(rm\_maskednewdiffersmaskedold, \& DataRef)		& E\_OK, DataRef=12	& 15  \\ \hline
+	t7	& TerminateTask()											& 					&\\ \hline	
 	t9	& ReceiveMessage(rm\_newisoutside, \& DataRef)					& E\_OK, DataRef=12	& 17 \\ \hline
 	t9	& TerminateTask()											& 					&\\ \hline
 	
@@ -2078,16 +2078,16 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 
 	t1	& SendMessage(sm, 2)										& E\_OK				& \\ \hline
 	t1	& \textit{Force scheduling}									& 					& \\ \hline
-	t7	& ReceiveMessage(rm\_maskednewdiffersmaskedold, \& DataRef)		& E\_OK, DataRef=2		& 15 \\ \hline
-	t7	& TerminateTask()											& 					&\\ \hline	
 	t3	& ReceiveMessage(rm\_maskednewdiffersx, \& DataRef)				& E\_OK, DataRef=2		& 11 \\ \hline
 	t3	& TerminateTask()											& 					&\\ \hline	
-	t6	& ReceiveMessage(rm\_maskednewequalsmaskedold, \& DataRef)	& E\_OK, DataRef=2		& 14 \\ \hline
-	t6	& TerminateTask()											& 					&\\ \hline
-	t5	& ReceiveMessage(rm\_newisdifferent, \& DataRef)					& E\_OK, DataRef=2		& 13 \\ \hline
-	t5	& TerminateTask()											& 					&\\ \hline
 	t4	& ReceiveMessage(rm\_newisequal, \& DataRef)					& E\_OK, DataRef=2		& 12 \\ \hline
 	t4	& TerminateTask()											& 					&\\ \hline
+	t5	& ReceiveMessage(rm\_newisdifferent, \& DataRef)					& E\_OK, DataRef=2		& 13 \\ \hline
+	t5	& TerminateTask()											& 					&\\ \hline
+	t6	& ReceiveMessage(rm\_maskednewequalsmaskedold, \& DataRef)	& E\_OK, DataRef=2		& 14 \\ \hline
+	t6	& TerminateTask()											& 					&\\ \hline
+	t7	& ReceiveMessage(rm\_maskednewdiffersmaskedold, \& DataRef)		& E\_OK, DataRef=2		& 15 \\ \hline
+	t7	& TerminateTask()											& 					&\\ \hline	
 	t9	& ReceiveMessage(rm\_newisoutside, \& DataRef)					& E\_OK, DataRef=2		& 17 \\ \hline
 	t9	& TerminateTask()											& 					&\\ \hline
 	t1	& TerminateTask()											& 					&\\ \hline

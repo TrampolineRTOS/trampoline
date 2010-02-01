@@ -46,14 +46,14 @@ static void test_t4_instance(void)
 	StatusType result_inst_1, result_inst_2;
 	StatusType received_char;
 	
-	SCHEDULING_CHECK_INIT(40);
+	SCHEDULING_CHECK_INIT(34);
 	result_inst_1 = ReceiveMessage(rm_newisequal, &received_char);
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(40,E_OK, result_inst_1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(40,2, (int)received_char);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(34,E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(34,2, (int)received_char);
 	
-	SCHEDULING_CHECK_INIT(41);
+	SCHEDULING_CHECK_INIT(35);
 	result_inst_2 = TerminateTask();
-	SCHEDULING_CHECK_AND_EQUAL_INT(41,E_OK, result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(35,E_OK, result_inst_2);
 	
 	
 }
