@@ -14,14 +14,14 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table[% !ITSOURCESLENGTH %] = {
           # check first for counters
           foreach HARDWARECOUNTERS prefixedby counter_ do
             if counter_SOURCE == interrupt_NAME & not entryFound then
-              %  { tpl_tick_% !interrupt_NAME %, (void *)NULL }%
+              %  { (tpl_it_handler)tpl_tick_% !interrupt_NAME %, (void *)NULL }%
               let entryFound := true
             end if
           end foreach
           if not entryFound then
             foreach ISRS2 prefixedby isr2_ do
               if isr2_SOURCE == interrupt_NAME & not entryFound then
-                %  { tpl_central_interrupt_handler_2, (void*)% !([TASKS length] + INDEX) % }%
+                %  { (tpl_it_handler)tpl_central_interrupt_handler_2, (void*)% !([TASKS length] + INDEX) % }%
                 let entryFound := true
               end if
             end foreach
@@ -29,7 +29,7 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table[% !ITSOURCESLENGTH %] = {
         end if
       end foreach
       if not entryFound then
-        %  { tpl_null_it, (void *)NULL }%
+        %  { (tpl_it_handler)tpl_null_it, (void *)NULL }%
       end if
    between %,
 %

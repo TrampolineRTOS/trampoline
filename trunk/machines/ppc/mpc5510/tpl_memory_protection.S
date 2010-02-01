@@ -24,7 +24,7 @@
  */
 
 /* #include "tpl_memory_protection.h" */
-#include "tpl_app_objects.h"
+#include "tpl_app_define.h"
 #include "tpl_os_kernel_stack.h"
 #include "tpl_assembler.h"
 
