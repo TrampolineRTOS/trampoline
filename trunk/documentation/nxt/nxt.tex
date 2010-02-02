@@ -1,27 +1,29 @@
-\documentclass[10pt]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[english]{}
+%\documentclass[10pt]{article}
+%\usepackage[utf8]{inputenc}
+%\usepackage[english]{}
 
-\usepackage{color} %For interrogation about report or code
-\usepackage{hyperref} %Liens hypertexte du sommaire
-\usepackage{listings}
-\usepackage{moreverb}
-\usepackage{verbatim}
-\usepackage{graphicx} %To include image
+%\usepackage{color} %For interrogation about report or code
+%\usepackage{hyperref} %Liens hypertexte du sommaire
+%\usepackage{listings}
+%\usepackage{moreverb}
+%\usepackage{verbatim}
+%\usepackage{graphicx} %To include image
 
-\title{Trampoline on LEGO MINDSTORMS NXT2 (from zero)}
-\author{Florent PAVIN}
+%\title{Trampoline on LEGO MINDSTORMS NXT2 (from zero)}
+%\author{Florent PAVIN}
 
+%
+%\begin{document}
 
-\begin{document}
+%\maketitle
+%\tableofcontents
 
-\maketitle
-\tableofcontents
+%\newpage
 
-\newpage
+\chapter{Trampoline on NXT}
 
 %%%%%%%%%%%%%%%%%
-\section{Introduction}
+%\section{Introduction}
 This document describes how to get started a Trampoline \footnote{Trampoline is an open source RTOS which, once certified, could be compliant with the OSEK/VDX specification. Currently it is not the case, so while Trampoline has the same API as OSEK/VDX, it is not officially compliant. Trampoline is available under the GNU Lesser General Public License V2 and \textbf{is maintained by gcc-4.0.1}. Trampoline runs on several platforms like POSIX, C166 with Keil compiler, Star12X (courtesy of Geensys), PowerPC, ARM (NXT2 for example)} application on Lego Mindstorms NXT2.\\
 The following steps will be overviewed :
 \begin{itemize}
@@ -110,8 +112,8 @@ You can now compile an application for ARM as described in Annex \ref{compileana
 \section{Nexttool + Lego Drivers} \label{drivers}
 %%%%%%
 \subsection{MAC OS}
-Download and install the Lego Drivers (\href{http://mindstorms.lego.com/en-us/support/files/default.aspx#Driver}{http://mindstorms.lego.com/en-us/supp ort/files/default.aspx
-\#Driver}) and the firmware update (\href{http://mindstorms.lego.com/en-us/support/files/default.aspx#Firmware}{http://mindstorms.leg o.com/en-us/support/files/default.aspx\#Firmware}) for MAC OS. \\
+Download and install the Lego Drivers (\href{http://mindstorms.lego.com/en-us/support/files/default.aspx#Driver}{http://mindstorms.lego.com/en-us/support/files/default.aspx
+\#Driver}) and the firmware update (\href{http://mindstorms.lego.com/en-us/support/files/default.aspx#Firmware}{http://mindstorms.lego.com/en-us/support/files/default.aspx\#Firmware}) for MAC OS. \\
 Download Nexttool (\href{http://bricxcc.sourceforge.net/utilities.html}{http://bricxcc.sourceforge.net/utilities.html}) and a new firmware (\href{http://bricxcc.sourceforge.net/lms_arm_jch.zip}{http://bricxcc.sourceforge.net/lms\_arm\_jch.zip}) and update the firm-ware as explained below :
 \begin{itemize}
 \item Reset the NXT : To go into firmware update mode, press the reset button (at the back of the NXT, upper left corner beneath the USB connector) for more than 5 seconds while the NXT is turned on. The NXT will audibly tick when it is in firmware update mode.
@@ -131,9 +133,9 @@ Follow the instructions in the NXTOSEK website \href{http://lejos-osek.sourcefor
 
 %%%%
 \subsection{Windows}
-Download and install the Lego Drivers (\href{http://mindstorms.lego.com/en-us/support/files/default.aspx#Driver}{http://mindstorms.lego.com/en-us/supp ort/files/default.aspx
+Download and install the Lego Drivers (\href{http://mindstorms.lego.com/en-us/support/files/default.aspx#Driver}{http://mindstorms.lego.com/en-us/support/files/default.aspx
 \#Driver}) for PC. \\
-Download Nexttool (\href{http://bricxcc.sourceforge.net/nexttool.zip}{http://bricxcc.sourceforge.net/nexttool.zip}) and a new fir-mware (\href{http://bricxcc.sourceforge.net/lms_arm_jch.zip}{http://bricxcc.sourceforge.net/lms\_arm\_jch.zip}) and update the firm-ware as explained below :
+Download Nexttool (\href{http://bricxcc.sourceforge.net/nexttool.zip}{http://bricxcc.sourceforge.net/nexttool.zip}) and a new firmware (\href{http://bricxcc.sourceforge.net/lms_arm_jch.zip}{http://bricxcc.sourceforge.net/lms\_arm\_jch.zip}) and update the firm-ware as explained below :
 \begin{itemize}
 \item Reset the NXT : To go into firmware update mode, press the reset button (at the back of the NXT, upper left corner beneath the USB connector) for more than 5 seconds while the NXT is turned on. The NXT will audibly tick when it is in firmware update mode.
 \item Copy an Enhanced NXT firmware (i.e. lms\_arm\_nbcnxc\_107.rfw) to NeXTTool extracted directory.
@@ -151,7 +153,7 @@ Download Nexttool (\href{http://bricxcc.sourceforge.net/nexttool.zip}{http://bri
 You can now upload a program into the NXT as described in the Annex \ref{uploadprogram}.
 
 \newpage
-\appendix
+\chapter{Appendix}
 %%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Launching Trampoline tests} \label{tests}
 To launch the tests you have to compile ViPER \footnote{Virtual Processor Emulator, ViPER is used on Posix system to send interrupts to Trampoline to emulate the timers. It is launched by Trampoline.} first. Go in viper/ and type in a terminal :
@@ -197,25 +199,25 @@ To upload a program in the NXT (the nxt example examples/arm/nxt/lonely\_exe.rxe
 \item Launch Nexttool, select "usb port".
 	\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
    		\centering
-		\includegraphics[width=0.25\textwidth]{pictures/usb_port.jpg}
+		\includegraphics[width=0.25\textwidth]{pictures/usbport.jpg}
 	\end{figure}
 \item Go to "NXT Explorer"
 	\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
    		\centering
-		\includegraphics[width=.7\textwidth]{pictures/nxt_explorer.jpg}
+		\includegraphics[width=.7\textwidth]{pictures/nxtexplorer.jpg}
 	\end{figure}
 \item Click on the "Download selected files to the NXT" and select the lonely\_exe.rxe file.
 \item If program upload was succeeded, you can see the lonely\_exe.rxe file in the files list as below.
 	\begin{center}[h] %  figure placement: here, top, bottom, or page
    		%\centering
-		\includegraphics[width=1\textwidth]{pictures/download_file.jpg}
+		\includegraphics[width=1\textwidth]{pictures/downloadfile.jpg}
 	\end{center}
 \item To execute a program on the NXT, go in "My files"/"Software files".
 \end{itemize}
 
 %%%%
 \subsection{Linux}
-Follow the instructions in the NXTOSEK website \href{http://lejos-osek.sourceforge.net/installation_linux.htm}{http://lejos-osek.sourceforge.n et/installation\_linux.htm}.
+Follow the instructions in the NXTOSEK website \href{http://lejos-osek.sourceforge.net/installation_linux.htm}{http://lejos-osek.sourceforge.net/installation\_linux.htm}.
 
 %%%%
 \subsection{Windows}
@@ -236,5 +238,5 @@ To upload a program in the NXT (the nxt example examples/arm/nxt/lonely\_exe.rxe
 \item To execute a program on the NXT, go in "My files"/"Software files".
 \end{itemize}
 
-\end{document}
+%\end{document}
 
