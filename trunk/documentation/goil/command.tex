@@ -1,0 +1,19 @@
+%!TEX root = ./goil_manual.tex
+
+\chapter{Using Goil}
+
+Goil is the OIL compiler of Trampoline. It parses application configuration OIL files, verify the coherency of the configuration and generates corresponding source code, header and script files.
+
+Goil parses files compliant with the OIL 3.3 specification and handles some extensions for build system configuration and AUTOSAR configuration\footnote{Starting with AUTOSAR v3, the OIL language has been abandoned in favor of a XML description. However, Goil continues to support an OIL description of AUTOSAR objects because OIL is far easier to read.}.
+
+Goil is available for Mac OS X (version 10.4 or greater), Linux 32 and 64 bits and Windows 32 bits as a command line tool. It is also available for Mac OS X as an application that includes an editor with syntax coloring.
+
+\section{Invoking Goil}
+
+Goil is invoked by using the \program{goil} command. the \program{goil} command takes an OIL file as argument and compile it. Here is an example:
+
+\begin{verbatim}
+goil -t=posix test.oil
+\end{verbatim}
+
+ \program{goil} supports many options:

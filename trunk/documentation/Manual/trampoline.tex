@@ -1,27 +1,29 @@
-\documentclass[11pt]{report}
+\documentclass[11pt]{manual}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
 \usepackage{graphicx}
-\usepackage{amssymb}
-\usepackage{epstopdf}
-\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `basename #1 .tif`.png}
+\usepackage{listings}
+\usepackage{color}
+%\usepackage{amssymb}
+\usepackage{makeidx}
+\usepackage{url}
+\usepackage{colortbl}
+\usepackage[table]{xcolor}
 
-\textwidth = 6.5 in
-\textheight = 9 in
-\oddsidemargin = 0.0 in
-\evensidemargin = 0.0 in
-\topmargin = 0.0 in
-\headheight = 0.0 in
-\headsep = 0.0 in
-\parskip = 0.2in
-\parindent = 0.0in
-
-\newtheorem{theorem}{Theorem}
-\newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{definition}{Definition}
-
-\title{\Huge{The Trampoline handbook}}
+\title{The Trampoline handbook}
 \author{Jean-Luc B\'echennec}
+
+\release{2.0}
+\makeindex
+
 \begin{document}
 \maketitle
+~\newpage
+\setcounter{tocdepth}{2}
+\tableofcontents
 
 \chapter{Compiling Trampoline}
 
@@ -39,5 +41,8 @@ Trampoline can be compiled with various options. These options are controlled by
 \item[WITH\_INTERNAL\_EXTERNAL\_COM] is used when a same sending message object does an internal \emph{and} an external communication.
 \item[WITH\_COM\_ERROR\_HOOK] adds the call to the communication error hook when an error occurs in a communication system call.
 \end{description}
+
+\input{tasks}
+\input{ports}
 
  \end{document} 

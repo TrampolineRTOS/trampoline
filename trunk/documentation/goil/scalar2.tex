@@ -1,0 +1,135 @@
+\lineiii{APPNAME}
+{string}
+{name of executable as given in the \member{APP\_NAME} attribute in the OS object} 
+\lineiii{ARCH}
+{string}
+{name of the architecture. This is the first item in the target.} 
+\lineiii{ASSEMBLEREXE}
+{string}
+{name of the assembler executable used. This is the \member{ASSEMBLER} attribute in the OS object. It is set to {\em as} by default. It is used for build dependent templates.} 
+\lineiii{ASSEMBLER}
+{string}
+{name of the assembler used. This is the \member{ASSEMBLER} attribute in the \member{MEMMAP} attribute of the OS object. It is used for assembler dependent templates.} 
+\lineiii{AUTOSAR}
+{boolean}
+{true if Trampoline is compiled with the Autosar extension.} 
+\lineiii{BOARD}
+{string}
+{name of the board. This is the third item (if any) in the target.} 
+\lineiii{CHIP}
+{string}
+{name of the chip. This is the second item (if any) in the target.} 
+\lineiii{COMPILEREXE}
+{string}
+{name of the compiler executable used. This is the \member{COMPILER} attribute in the OS object. It is set to {\em gcc} by default. It is used for build dependent templates. Do not confuse with the \member{COMPILER} data.} 
+\lineiii{COMPILER}
+{string}
+{name of the compiler used. This is the \member{COMPILER} attribute in the \member{MEMMAP} attribute of the OS object. It is used for compiler dependent templates.} 
+\lineiii{CPUNAME}
+{string}
+{name given to the OIL CPU object} 
+\lineiii{EXTENDED}
+{boolean}
+{true if Trampoline is compiled in extended error handling mode.} 
+\lineiii{FILENAME}
+{string}
+{the name of the file which will be written as the result of the computation of the current template.} 
+\lineiii{FILEPATH}
+{string}
+{the full absolute path of the file which will be written as the result of the computation of the current template.} 
+\lineiii{ITSOURCESLENGTH}
+{integer}
+{number of interrupt sources as defined in the \file{target.cfg} file.} 
+\lineiii{LINKEREXE}
+{string}
+{name of the linker executable used. This is the \member{LINKER} attribute in the OS object. It is set to {\em gcc} by default. It is used for build dependent templates. Do not confuse with the \member{LINKER} data.} 
+\lineiii{LINKER}
+{string}
+{name of the linker used. This is the \member{LINKER} attribute in the \member{MEMMAP} attribute of the OS object. It is used for linker dependent templates.} 
+\lineiii{LINKSCRIPT}
+{string}
+{name of the link script file as given in the \member{MEMMAP} attribute of the OS object.} 
+\lineiii{MAXTASKPRIORITY}
+{integer}
+{the highest computed priority among the tasks.} 
+\lineiii{OILFILENAME}
+{string}
+{name of the root OIL source file} 
+\lineiii{PROJECT}
+{string}
+{name of the project. The name of the project is the \programopt{p} (or \longprogramopt{project}) value if it is set or the name of the oil file without the extension.} 
+\lineiii{SCALABILITYCLASS}
+{integer}
+{the Autosar scalability class used by the application. If Autosar is not enabled, \member{SCALABILITYCLASS} is set to 0.} 
+\lineiii{TARGET}
+{string}
+{name of the target. This is the \programopt{t} (or \longprogramopt{target}) option value of goil.} 
+\lineiii{TEMPLATEPATH}
+{string}
+{path to the template root directory. This is the \longprogramopt{templates} option value of goil or the value of the \envvar{GOIL\_TEMPLATES} environment variable.} 
+\lineiii{TIMESTAMP}
+{string}
+{current date} 
+\lineiii{TRAMPOLINEPATH}
+{string}
+{path to the trampoline root directory. This is the \member{TRAMPOLINE\_BASE\_PATH} attribute of the OS object. It defaults to ``..".} 
+\lineiii{USECOMPILERSETTINGS}
+{boolean}
+{true if memory mapping is enabled (Goil generates the \file{Compiler.h} and \file{Compiler_Cfg.h} files and Trampoline includes them).} 
+\lineiii{USEBUILDFILE}
+{boolean}
+{true if a build file is used for the project ie option \programopt{g} or \longprogramopt{generate-makefile} is given.} 
+\lineiii{USECOM}
+{boolean}
+{true if the application uses OSEK COM.} 
+\lineiii{USEERRORHOOK}
+{boolean}
+{true if Trampoline uses the Error Hook.} 
+\lineiii{USEGETSERVICEID}
+{boolean}
+{true if Trampoline uses the service ids access macros.} 
+\lineiii{USEINTERRUPTTABLE}
+{boolean}
+{true if the wrapping of interrupt vector to glue functions used to increment a counter or to activate an ISR2 (for instance) should be generated. The actual code generation is up to the port.} 
+\lineiii{USEMEMORYMAPPING}
+{boolean}
+{true if memory mapping is enabled (Goil generates the \file{MemMap.h} file and Trampoline includes it).} 
+\lineiii{USEMEMORYPROTECTION}
+{boolean}
+{true if Trampoline uses the Memory Protection.} 
+\lineiii{USEOSAPPLICATION}
+{boolean}
+{true if Trampoline uses OS Applications.} 
+\lineiii{USEPARAMETERACCESS}
+{boolean}
+{true if Trampoline uses the parmaters access macros.} 
+\lineiii{USEPOSTTASKHOOK}
+{boolean}
+{true if Trampoline uses the Post-Task Hook.} 
+\lineiii{USEPRETASKHOOK}
+{boolean}
+{true if Trampoline uses the Pre-Task Hook.} 
+\lineiii{USEPROTECTIONHOOK}
+{boolean}
+{true if Trampoline uses the Protection Hook.} 
+\lineiii{USERESSCHEDULER}
+{boolean}
+{true if Trampoline uses the RES_SCHEDULER resource.} 
+\lineiii{USESHUTDOWNHOOK}
+{boolean}
+{true if Trampoline uses the Shutdown Hook.} 
+\lineiii{USESTACKMONITORING}
+{boolean}
+{true if Trampoline uses the Stack Monitoring.} 
+\lineiii{USESTARTUPHOOK}
+{boolean}
+{true if Trampoline uses the Startup Hook.} 
+\lineiii{USESYSTEMCALL}
+{boolean}
+{true if services are called using a System Call (i.e. a software interrupt).} 
+\lineiii{USETIMINGPROTECTION}
+{boolean}
+{true if Trampoline uses Timing Protection.} 
+\lineiii{USETRACE}
+{boolean}
+{true if tracing is enabled.} 
