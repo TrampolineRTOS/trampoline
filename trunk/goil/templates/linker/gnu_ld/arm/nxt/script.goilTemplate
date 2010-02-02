@@ -87,14 +87,14 @@ end foreach
   appconst ALIGN(16) : {
 /* Sections for const of tasks and ISR */
 %
-for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+foreach PROCESSES do
+ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
   for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
-    foreach PROCESSES do
 %      *(.% !PROCESSKIND %_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
 %
-    end foreach
   end for
-end for
+ end for
+end foreach
 %    
     . = ALIGN(16);
     __SEG_STOP_APP_CODE_CONST_RGN = . - 1;
