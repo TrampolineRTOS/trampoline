@@ -101,6 +101,7 @@ STATIC FUNC(void, OS_CODE) tpl_call_missingend(void);
 STATIC FUNC(void, OS_CODE) tpl_call_terminateISR(void);
 extern FUNC(void, OS_CODE) tpl_init_regs(void);
 extern FUNC(void, OS_CODE) tpl_init_interrupts(void);
+extern FUNC(void, OS_CODE) tpl_init_mp(void);
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -270,6 +271,7 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
 
   tpl_init_regs();
   tpl_init_interrupts();
+  tpl_init_mp();
 /*  tpl_init_tick(); */
 }
 

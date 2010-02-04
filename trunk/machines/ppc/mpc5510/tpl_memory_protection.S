@@ -121,6 +121,7 @@ TPL_EXTERN tpl_reentrancy_counter
   .global tpl_kernel_mp
   .global tpl_user_mp
   .global tpl_set_process_mp
+  .global tpl_init_mp
   
   .text
   .section .osCode CODE_ACCESS_RIGHT
@@ -241,7 +242,7 @@ tpl_user_mp:
   /*
    * Enable memory protection
    */
-  stw   r12,MPU_CESR(r12)
+  stw   r11,MPU_CESR(r12)
   /*
    * That's all
    */

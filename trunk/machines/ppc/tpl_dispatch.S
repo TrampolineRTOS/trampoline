@@ -91,6 +91,7 @@ tpl_enter_kernel:
   bl    tpl_kernel_mp   /* disable memory protection    */
   lwz   r11,0(r1)       /* restore lr                   */
   mtlr  r11
+  addi  r1,r1,4
 #endif
   
    * Check the reentrency counter value and inc it
@@ -178,6 +179,7 @@ tpl_leave_kernel:
   bl    tpl_user_mp /* Enable the memory protection  */
   lwz   r11,0(r1)   /* restore lr                    */
   mtlr  r11
+  addi  r1,r1,4
 #endif
   
 no_stack_restore:

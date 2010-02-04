@@ -132,9 +132,10 @@ tpl_it_handler:
 
   /*
    * Get a pointer to the it table
+   * This table is generated an can be found in tpl_app_config.c file
    */
-  lis   r11,TPL_HIG(tpl_it_vector)
-  ori   r11,r11,TPL_LOW(tpl_it_vector)
+  lis   r11,TPL_HIG(tpl_it_table)
+  ori   r11,r11,TPL_LOW(tpl_it_table)
   /*
    * convert the it id to an offset. Each entry of the tpl_it_vector
    * uses 2 x 4 bytes words on a 32 bits PowerPC. The first word

@@ -80,7 +80,7 @@ CONST(tpl_proc_id, AUTOMATIC) INVALID_TASK = INVALID_TASK_ID;
 CONST(tpl_proc_static, OS_CONST) idle_task_static = {
   /* context              */  IDLE_CONTEXT,
   /* stack                */  IDLE_STACK,
-	/* entry point          */	IDLE_ENTRY,
+  /* entry point          */  IDLE_ENTRY,
   /* internal resource    */  NULL,
   /* id is IDLE_TASK_ID   */  IDLE_TASK_ID,
 #ifdef WITH_OSAPPLICATION
@@ -128,7 +128,7 @@ STATIC VAR(tpl_application_mode, OS_VAR) application_mode = OSDEFAULTAPPMODE;
 VAR(tpl_proc, OS_VAR) idle_task = {
   /* resources            */  NULL,
 #if WITH_MEMORY_PROTECTION == YES
-  /* trusted count  */        0,
+  /* trusted count  */        1, /* the idle task is trusted */
 #endif /* WITH_MEMORY_PROTECTION */
   /* activation count     */  0,
   /* priority             */  0,
