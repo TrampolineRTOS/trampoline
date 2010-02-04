@@ -26,14 +26,14 @@ project all_goil :
   #
   # New templates (added by PM)
   #
-  semantics "goil_template_semantics.ggs"         : makefile, xcode_tool;
-  lexique   "goil_template_scanner.gLexique"      : makefile, xcode_tool;
-  syntax    "goil_template_expression_parser.ggs" : makefile, xcode_tool;
-  syntax    "goil_template_parser.ggs"            : makefile, xcode_tool;
-  grammar   "goil_template_grammar.gGrammar"      : makefile, xcode_tool;
-  semantics "goil_template_invocation.ggs"        : makefile, xcode_tool;
-  semantics "template_routines.ggs"               : makefile, xcode_tool;
-  semantics "template_functions.ggs"              : makefile, xcode_tool;
+  semantics "template_semantics.ggs"         : makefile, xcode_tool;
+  lexique   "template_scanner.gLexique"      : makefile, xcode_tool;
+  syntax    "template_expression_parser.ggs" : makefile, xcode_tool;
+  syntax    "template_parser.ggs"            : makefile, xcode_tool;
+  grammar   "template_grammar.gGrammar"      : makefile, xcode_tool;
+  semantics "template_invocation.ggs"        : makefile, xcode_tool;
+  semantics "template_routines.ggs"          : makefile, xcode_tool;
+  semantics "template_functions.ggs"         : makefile, xcode_tool;
 
   lexique   "goil_lexique.gLexique"   : makefile, xcode_tool, xcode_app;
   option    "goil_options.gOption"    : makefile, xcode_tool, xcode_app;

@@ -17,10 +17,10 @@
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-semantics goil_template_invocation :
+semantics template_invocation :
 import semantics goil_routines in "goil_routines.ggs";
-import semantics goil_template_semantics in "goil_template_semantics.ggs";
-import grammar goil_template_grammar in "goil_template_grammar.gGrammar";
+import semantics template_semantics in "template_semantics.ggs";
+import grammar template_grammar in "template_grammar.gGrammar";
 import option goil_options in "goil_options.gOption";
 
 #------------------------------------------------------------------------------*
@@ -451,7 +451,7 @@ routine goilTemplateInvocation
           found := [fullTemplatePath fileExists];
           if found then
             #displayPathList !pathList;
-            grammar goil_template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString;
+            grammar template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString;
           end if;
         end if;
         @string targetTemplatePartialPath := targetDir;
@@ -463,7 +463,7 @@ routine goilTemplateInvocation
           found := [fullTemplatePath fileExists];
           if found then
             #displayPathList !pathList;
-            grammar goil_template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString;
+            grammar template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString;
           else
             targetTemplatePartialPath := [targetTemplatePartialPath stringByDeletingLastPathComponent];
           end if;
@@ -474,7 +474,7 @@ routine goilTemplateInvocation
           found := [fullTemplatePath fileExists];
           if found then
             #displayPathList !pathList;
-            grammar goil_template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString;
+            grammar template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString;
           end if;
         end if;
         if not found then

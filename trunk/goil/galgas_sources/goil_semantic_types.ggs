@@ -19,11 +19,6 @@ map @implementation {
     remove del error message "%K does not exists";
 }
 
-#action generateHeader
-#    ?@lstring version
-#    ?@lstring desc
-#;
-#
 map @os_imp {
     @lstring type ;
     

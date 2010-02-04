@@ -17,12 +17,12 @@
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-syntax goil_template_parser :
-with "goil_template_scanner.gLexique";
+syntax template_parser :
+with "template_scanner.gLexique";
 
-import lexique goil_template_scanner in "goil_template_scanner.gLexique";
+import lexique template_scanner in "template_scanner.gLexique";
 
-import semantics goil_template_invocation in "goil_template_invocation.ggs";
+import semantics template_invocation in "template_invocation.ggs";
 
 nonterminal <goil_template_start_symbol>
   ??@string inPrefix
@@ -128,9 +128,17 @@ rule <template_instruction>
   if [templateVariableMap hasKey !"FILENAME"] then
     [!?templateVariableMap removeKey !lstringWith[!"FILENAME"] ?* ?*];
   end if;
+  if [templateVariableMap hasKey !"FILEPATH"] then
+    [!?templateVariableMap removeKey !lstringWith[!"FILEPATH"] ?* ?*];
+  end if;
+  if [templateVariableMap hasKey !"NATIVEFILEPATH"] then
+    [!?templateVariableMap removeKey !lstringWith[!"NATIVEFILEPATH"] ?* ?*];
+  end if;
   @goilTemplateValue fileName := [@goilTemplateValue new !0L ![[expression mStringValue] lastPathComponent] ![@goilTemplateFieldMapList emptyList]];
+  @goilTemplateValue nativeFilePath := [@goilTemplateValue new !0L ![[expression mStringValue] nativePathWithUnixPath] ![@goilTemplateFieldMapList emptyList]];
   [!?templateVariableMap insertKey !lstringWith[!"FILENAME"] !expressionType !fileName];
   [!?templateVariableMap insertKey !lstringWith[!"FILEPATH"] !expressionType !expression];
+  [!?templateVariableMap insertKey !lstringWith[!"NATIVEFILEPATH"] !expressionType !nativeFilePath];
   @location fileNameLocation := here;
   if expressionType != [@goilTemplateType stringType] then
     error here: "a file name should be of type string";

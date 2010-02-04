@@ -26,7 +26,7 @@ with lexique "goil_lexique.gLexique" {
 }
 
 #--- Added by PM
-with lexique "goil_template_scanner.gLexique" {
+with lexique "template_scanner.gLexique" {
   fileExtension : "goilTemplate" ;
   title: "Template" ;
   blockComment : "#" ;

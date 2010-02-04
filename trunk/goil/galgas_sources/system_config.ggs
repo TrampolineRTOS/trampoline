@@ -37,7 +37,7 @@
 semantics system_config:
 
 import semantics goil_types_root in "goil_types_root.ggs";
-import semantics goil_template_invocation in "goil_template_invocation.ggs";
+import semantics template_invocation in "template_invocation.ggs";
 import semantics goil_env_verification in "goil_env_verification.ggs";
 import option goil_options in "goil_options.gOption";
 
