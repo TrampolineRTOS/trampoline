@@ -55,6 +55,7 @@ FUNC(void,AUTOMATIC) tpl_trigger_sw_it(void);
 
 TASK(iamsolonely)
 {
+    titi = 1;
 	tpl_trigger_sw_it();
 	TerminateTask();
 }
