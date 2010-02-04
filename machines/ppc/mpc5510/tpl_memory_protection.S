@@ -100,12 +100,17 @@
 /*
  * VAR region access right
  */
-#define var_rgn_access  0x03618861E
+#define var_rgn_access  0x0000001E
   
 /*
  * STACK region access right
  */
-#define stack_rgn_access  0x03618861E
+#define stack_rgn_access  0x0000001E
+
+/*
+ * Executable region access right
+ */
+#define exe_rgn_access  0x0000001D
 
 #if WITH_MEMORY_PROTECTION == YES
 
@@ -120,6 +125,45 @@ TPL_EXTERN tpl_reentrancy_counter
   .text
   .section .osCode CODE_ACCESS_RIGHT
 
+/**
+ * tpl_init_mp programs the MP descriptor 0-3 to allow
+ * - Descriptor 0: code and constants. So the access is RX
+ * - Descriptor 1: private data region of a process. So the access is RW
+ * - Descriptor 2: stack of a process. So the access is RW
+ * - Descriptor 3: data of an OS Application. So the access is RW
+ */
+tpl_init_mp:
+  /*
+   * Load the address of MPU
+   */
+  lis   r12,TPL_HIG(MPUBase)
+  ori   r12,r12,TPL_LOW(MPUBase)
+  
+  /*
+   * Set the start address to 0 and the end address to 0xFFFFFFFF
+   */
+  li    r11,0
+  stw   r11,MPU_RGD0_start(r12)
+  subi  r11,r11,1
+  stw   r11,MPU_RGD0_end(r12)
+
+  /*
+   * Load the exe access right in r11
+   */
+  lis   r11,TPL_HIG(exe_rgn_access)
+  ori   r11,r11,TPL_LOW(exe_rgn_access)
+  /*
+   * Store it in the access register or region 0
+   */
+  stw   r11,MPU_RGD0_access(r12)
+  
+  /*
+   * Validate the descriptor
+   */
+  li    r11,1
+  stw   r11,MPU_RGD0_pid(r12)
+  blr
+  
 /**
  * Disable memory protection. This function is called when
  * entering in kernel mode (typically at the start of the it
@@ -237,58 +281,58 @@ tpl_set_process_mp:
   /* get the start address of private data region         */
   lwz     r3,0(r11)
   /* set the start address                                */
-  stw     r3,MPU_RGD0_start(r11)
+  stw     r3,MPU_RGD1_start(r11)
   /* get the end address                                  */
   lwz     r3,4(r11)
   /* set the end address                                  */
-  stw     r3,MPU_RGD0_end(r11)
+  stw     r3,MPU_RGD1_end(r11)
   /* set the access rights                                */
   lis     r3,TPL_HIG(var_rgn_access)
   ori     r3,r3,TPL_LOW(var_rgn_access)
-  stw     r3,MPU_RGD0_access(r11)
-  /* validate the descriptor                              */
-  li      r3,1
-  stw     r3,MPU_RGD0_pid(r11)
-  
-  /*
-   * Configuration for the stack access of the process
-   */
-  /* get the start address of private data region         */
-  lwz     r3,8(r11)
-  /* set the start address                                */
-  stw     r3,MPU_RGD1_start(r11)
-  /* get the end address                                  */
-  lwz     r3,12(r11)
-  /* set the end address                                  */
-  stw     r3,MPU_RGD1_end(r11)
-  /* set the access rights                                */
-  lis     r3,TPL_HIG(stack_rgn_access)
-  ori     r3,r3,TPL_LOW(stack_rgn_access)
   stw     r3,MPU_RGD1_access(r11)
   /* validate the descriptor                              */
   li      r3,1
   stw     r3,MPU_RGD1_pid(r11)
+  
+  /*
+   * Configuration for the stack access of the process
+   */
+  /* get the start address of stack data region           */
+  lwz     r3,8(r11)
+  /* set the start address                                */
+  stw     r3,MPU_RGD2_start(r11)
+  /* get the end address                                  */
+  lwz     r3,12(r11)
+  /* set the end address                                  */
+  stw     r3,MPU_RGD2_end(r11)
+  /* set the access rights                                */
+  lis     r3,TPL_HIG(stack_rgn_access)
+  ori     r3,r3,TPL_LOW(stack_rgn_access)
+  stw     r3,MPU_RGD2_access(r11)
+  /* validate the descriptor                              */
+  li      r3,1
+  stw     r3,MPU_RGD2_pid(r11)
   
 #ifdef WITH_OSAPPLICATION
   /*
    * Configuration for the private var access of the OS Application
    */
 
-  /* get the start address of private data region         */
+  /* get the start address of OS Application data region  */
   lwz     r3,16(r11)
   /* set the start address                                */
-  stw     r3,MPU_RGD2_start(r11)
+  stw     r3,MPU_RGD3_start(r11)
   /* get the end address                                  */
   lwz     r3,20(r11)
   /* set the end address                                  */
-  stw     r3,MPU_RGD2_end(r11)
+  stw     r3,MPU_RGD3_end(r11)
   /* set the access rights                                */
   lis     r3,TPL_HIG(var_rgn_access)
   ori     r3,r3,TPL_LOW(var_rgn_access)
-  stw     r3,MPU_RGD2_access(r11)
+  stw     r3,MPU_RGD3_access(r11)
   /* validate the descriptor                              */
   li      r3,1
-  stw     r3,MPU_RGD2_pid(r11)    
+  stw     r3,MPU_RGD3_pid(r11)    
 #endif
 
 finished:
