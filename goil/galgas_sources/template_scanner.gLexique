@@ -17,7 +17,7 @@
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-template lexique goil_template_scanner :
+template lexique template_scanner :
 
 template "%" ... "%" ;
 

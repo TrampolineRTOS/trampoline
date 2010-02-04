@@ -1,5 +1,5 @@
 semantics template_routines :
-import semantics goil_template_invocation in "goil_template_invocation.ggs";
+import semantics template_invocation in "template_invocation.ggs";
 
 function goil_template
   ??@string prefix

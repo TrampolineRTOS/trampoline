@@ -17,28 +17,28 @@
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-semantics goil_template_semantics :
+semantics template_semantics :
 
 #------------------------------------------------------------------------------*
 
 enum @goilTemplateType {
-  constructor boolType ;
-  constructor unsignedType ;
-  constructor stringType ;
-  constructor listType ;
+  constructor boolType;
+  constructor unsignedType;
+  constructor stringType;
+  constructor listType;
 }{
   reader messageGoilTemplateType :
-    boolType -> "bool" ;
-    unsignedType -> "unsigned" ;
-    stringType -> "string" ;
-    listType -> "list" ;
-  end reader ; 
+    boolType -> "bool";
+    unsignedType -> "unsigned";
+    stringType -> "string";
+    listType -> "list";
+  end reader; 
 }
 
 #------------------------------------------------------------------------------*
 
 list @goilTemplateTypeList {
-  @goilTemplateType mType ;
+  @goilTemplateType mType;
 }
 
 #------------------------------------------------------------------------------*
@@ -46,26 +46,26 @@ list @goilTemplateTypeList {
 list @goilTemplateFieldMapList;
 
 map @goilTemplateFieldMap {
-  @goilTemplateType mType ;
-  @uint64 mUnsigned64Value ;
-  @string mStringValue ;
+  @goilTemplateType mType;
+  @uint64 mUnsigned64Value;
+  @string mStringValue;
   @goilTemplateFieldMapList mListValue;
-  insert insertKey error message "a template field named '%K' is already declared in %L" ;
-  search searchKey error message "there is no template field named '%K'" ;
+  insert insertKey error message "a template field named '%K' is already declared in %L";
+  search searchKey error message "there is no template field named '%K'";
 }
 
 #------------------------------------------------------------------------------*
 
 list @goilTemplateFieldMapList {
-  @goilTemplateFieldMap mMap ;
+  @goilTemplateFieldMap mMap;
 }
 
 #------------------------------------------------------------------------------*
 
 struct @goilTemplateValue {
-  @uint64 mUnsigned64Value ;
-  @string mStringValue ;
-  @goilTemplateFieldMapList mMapListValue ;
+  @uint64 mUnsigned64Value;
+  @string mStringValue;
+  @goilTemplateFieldMapList mMapListValue;
 }
 
 #------------------------------------------------------------------------------*
@@ -77,23 +77,23 @@ struct @goilTemplateValue {
 map @goilTemplateVariableMap {
   @goilTemplateType mType feature setter;
   @goilTemplateValue mValue feature setter;
-  insert insertKey error message "a template variable named '%K' is already declared in %L" ;
-  search searchKey error message "there is no template variable named '%K'" ;
-  remove removeKey error message "there is no template variable named '%K'" ;
+  insert insertKey error message "a template variable named '%K' is already declared in %L";
+  search searchKey error message "there is no template variable named '%K'";
+  remove removeKey error message "there is no template variable named '%K'";
 }
 
 #------------------------------------------------------------------------------*
 
 list @goilTemplateExpressionList {
-  @goilTemplateValue mValue ;
-  @goilTemplateType mType ;
+  @goilTemplateValue mValue;
+  @goilTemplateType mType;
 }
 
 #------------------------------------------------------------------------------*
 
 list @goilTemplateEnumationList {
-  @goilTemplateValue mEnumeratedValue ;
-  @string mPrefix ;
+  @goilTemplateValue mEnumeratedValue;
+  @string mPrefix;
 }
 
 #------------------------------------------------------------------------------*
@@ -106,8 +106,8 @@ function valueWithBool
     ![inValue uint64]
     !""
     ![@goilTemplateFieldMapList emptyList]
-  ] ;
-end function ;
+  ];
+end function;
 
 #------------------------------------------------------------------------------*
 
@@ -119,8 +119,8 @@ function valueWithUnsigned
     !inValue
     !""
     ![@goilTemplateFieldMapList emptyList]
-  ] ;
-end function ;
+  ];
+end function;
 
 #------------------------------------------------------------------------------*
 
@@ -132,9 +132,9 @@ function valueWithString
     !0L
     !inValue
     ![@goilTemplateFieldMapList emptyList]
-  ] ;
-end function ;
+  ];
+end function;
 
 #------------------------------------------------------------------------------*
 
-end semantics ;
+end semantics;

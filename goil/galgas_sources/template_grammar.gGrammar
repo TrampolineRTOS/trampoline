@@ -17,13 +17,13 @@
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-grammar goil_template_grammar "LL1" :
-  with "goil_template_parser.ggs" ;
-  with "goil_template_expression_parser.ggs" ;
+grammar template_grammar "LL1" :
+  with "template_parser.ggs" ;
+  with "template_expression_parser.ggs" ;
 
-  import lexique goil_template_scanner in "goil_template_scanner.gLexique" ;
-  import syntax goil_template_parser in "goil_template_parser.ggs" ;
-  import syntax goil_template_expression_parser in "goil_template_expression_parser.ggs" ;
+  import lexique template_scanner in "template_scanner.gLexique" ;
+  import syntax template_parser in "template_parser.ggs" ;
+  import syntax template_expression_parser in "template_expression_parser.ggs" ;
 
   root <goil_template_start_symbol>
     ??@string inPrefix
