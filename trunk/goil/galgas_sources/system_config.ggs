@@ -1480,13 +1480,8 @@ routine setBuildConfig ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
   setUseInterruptTable !cpu !?cfg;
 end routine;
 
-#
-# set up the USECOM flag and other COM related flags.
-# USECOM is true if there is a COM object or if at least
-# one object related to communication is declared
-#
-routine setUseCom ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
-  @bool useCom := false;
+function useCommunication ??@root_obj cpu ->@bool useCom:
+  useCom := false;
   @com comObject := [cpu com];
   if [comObject usecom] then
     useCom := true;
@@ -1494,10 +1489,19 @@ routine setUseCom ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
     useCom := [[cpu messages] count] > 0    |
               [[cpu net_messages] count] > 0;
   end if;
-  addBoolValue !?cfg ![@lstring new !"USECOM" !here] !useCom;
-  
+end function;
+
+#
+# set up the USECOM flag and other COM related flags.
+# USECOM is true if there is a COM object or if at least
+# one object related to communication is declared
+#
+routine setUseCom ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
+  @bool useCom := useCommunication[!cpu];
+  addBoolValue !?cfg ![@lstring new !"USECOM" !here] !useCom;  
   if useCom then
     @uint64 timeBaseInNanoseconds := 1_000_000L;
+    @com comObject := [cpu com];
     cast [comObject timebase]:
     when == @float_class timeBase do
       timeBaseInNanoseconds := [([timeBase value] * 1_000_000_000.0) uint64];
@@ -1527,15 +1531,16 @@ routine setExtended ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
   addBoolValue !?cfg ![@lstring new !"EXTENDED" ![[[cpu os] status] location]] !extended;  
 end routine;
 
-#
-# set up the SCALABILITYCLASS flag (1, 2, 3 or 4)
-# and USETIMINGPROTECTION flag (true or false)
-#
-routine setScalabilityClass ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
+routine scalabilityClass
+  ??@root_obj cpu
+  !@uint64 sc
+  !@bool useTimingProtection
+  !@bool useProtectionHook
+:
   # if OSEK, we are in SC 0
-  @uint64 sc := 0L;
-  @bool useTimingProtection := false;
-  @bool useProtectionHook := false;
+  sc := 0L;
+  useTimingProtection := false;
+  useProtectionHook := false;
   @bool useOSApplication := false;
   if [option goil_options.autosar_on value] then
     foreach [cpu tasks] do
@@ -1625,6 +1630,17 @@ routine setScalabilityClass ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
       elsif setSC == "sc4" then sc := 4L; end if;
     end if;
   end if;
+end routine;
+
+#
+# set up the SCALABILITYCLASS flag (1, 2, 3 or 4)
+# and USETIMINGPROTECTION flag (true or false)
+#
+routine setScalabilityClass ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
+  @uint64 sc;
+  @bool useTimingProtection;
+  @bool useProtectionHook;
+  scalabilityClass !cpu ?sc ?useTimingProtection ?useProtectionHook;
   addUnsignedValue !?cfg !lstringWith[!"SCALABILITYCLASS"] !sc;  
   addBoolValue !?cfg !lstringWith[!"USETIMINGPROTECTION"] !useTimingProtection;  
   addBoolValue !?cfg !lstringWith[!"USEPROTECTIONHOOK"] !useProtectionHook;  
@@ -1676,6 +1692,18 @@ routine setInterruptSources ??@config targetConfiguration ?!@goilTemplateVariabl
   end if;
 end routine;
 
+
+routine addDirectoryAndFile
+  ?!@goilTemplateFieldMapList fileList
+  ??@string directory
+  ??@string file
+:
+  @goilTemplateFieldMap fieldMap [emptyMap];
+  addStringFieldValue !?fieldMap !lstringWith[!"DIRECTORY"] !directory;
+  addStringFieldValue !?fieldMap !lstringWith[!"FILE"] !file;
+  fileList += !fieldMap;
+end routine;
+
 #
 # Set environment related data
 #
@@ -1688,6 +1716,69 @@ routine setEnvData ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
   addStringValue !?cfg !lstringWith[!"PROJECT"] ![projectName[] lastPathComponent];
   addStringValue !?cfg !lstringWith[!"PROJECTPATH"] !projectName[];
   addBoolValue !?cfg !lstringWith[!"USEBUILDFILE"] ![option goil_options.generate_makefile value];
+  
+  #
+  # Build a list of os, autosar and com files
+  #
+  @goilTemplateFieldMapList fileList [emptyList];
+  addDirectoryAndFile !?fileList !"os" !"tpl_os_alarm_kernel.c";
+  addDirectoryAndFile !?fileList !"os" !"tpl_os_event_kernel.c";
+  addDirectoryAndFile !?fileList !"os" !"tpl_os_it_kernel.c";
+  addDirectoryAndFile !?fileList !"os" !"tpl_os_rez_kernel.c";
+  addDirectoryAndFile !?fileList !"os" !"tpl_os_task_kernel.c";
+  addDirectoryAndFile !?fileList !"os" !"tpl_os_timeobj_kernel.c";
+  addDirectoryAndFile !?fileList !"os" !"tpl_os_kernel.c";
+  addDirectoryAndFile !?fileList !"os" !"tpl_os_action.c";
+  addDirectoryAndFile !?fileList !"os" !"tpl_os_error.c";
+  addDirectoryAndFile !?fileList !"os" !"tpl_os_dispatch_table.c";
+  addDirectoryAndFile !?fileList !"os" !"tpl_os.c";
+  if getBool[![[cpu os] systemcall] !false] then
+    addDirectoryAndFile !?fileList !"os" !"tpl_os_alarm.c";
+    addDirectoryAndFile !?fileList !"os" !"tpl_os_event.c";
+    addDirectoryAndFile !?fileList !"os" !"tpl_os_it.c";
+    addDirectoryAndFile !?fileList !"os" !"tpl_os_rez.c";
+    addDirectoryAndFile !?fileList !"os" !"tpl_os_task.c";
+  end if;
+  cast [[cpu os] trace]:
+  when == @trace_on do
+    addDirectoryAndFile !?fileList !"os" !"tpl_trace.c";
+  else end cast;
+  if useCommunication[!cpu] then
+    addDirectoryAndFile !?fileList !"com" !"tpl_com_app_copy.c";
+    addDirectoryAndFile !?fileList !"com" !"tpl_com_filtering.c";
+    addDirectoryAndFile !?fileList !"com" !"tpl_com_filters.c";
+    addDirectoryAndFile !?fileList !"com" !"tpl_com_internal_com.c";
+    addDirectoryAndFile !?fileList !"com" !"tpl_com_external_com.c";
+    addDirectoryAndFile !?fileList !"com" !"tpl_com_notification.c";
+    addDirectoryAndFile !?fileList !"com" !"tpl_com_queue.c";
+    addDirectoryAndFile !?fileList !"com" !"tpl_com_message_management.c";
+    addDirectoryAndFile !?fileList !"com" !"tpl_com_errorhook.c";
+  end if;
+  if [option goil_options.autosar_on value] then
+    addDirectoryAndFile !?fileList !"autosar" !"tpl_as_counter_kernel.c";
+    addDirectoryAndFile !?fileList !"autosar" !"tpl_as_st_kernel.c";
+    addDirectoryAndFile !?fileList !"autosar" !"tpl_as_isr_kernel.c";
+    addDirectoryAndFile !?fileList !"autosar" !"tpl_as_stack_monitor.c";
+    addDirectoryAndFile !?fileList !"autosar" !"tpl_as_timing_protec.c";
+    addDirectoryAndFile !?fileList !"autosar" !"tpl_as_action.c";
+    addDirectoryAndFile !?fileList !"autosar" !"tpl_as_protec_hook.c";
+    @uint64 sc;
+    scalabilityClass !cpu ?sc ?* ?*;
+    if sc == 3L | sc == 4L then 
+      addDirectoryAndFile !?fileList !"autosar" !"tpl_as_app_kernel.c";
+      addDirectoryAndFile !?fileList !"autosar" !"tpl_as_trusted_fct_kernel.c";
+    end if;
+    if getBool[![[cpu os] systemcall] !false] then
+      addDirectoryAndFile !?fileList !"autosar" !"tpl_as_counter.c";
+      addDirectoryAndFile !?fileList !"autosar" !"tpl_as_isr.c";
+      addDirectoryAndFile !?fileList !"autosar" !"tpl_as_schedtable.c";
+      if sc == 3L | sc == 4L then 
+        addDirectoryAndFile !?fileList !"autosar" !"tpl_as_trusted_fct.c";
+        addDirectoryAndFile !?fileList !"autosar" !"tpl_as_application.c";
+      end if;
+    end if;
+  end if;
+  addListValue !?cfg !lstringWith[!"TRAMPOLINESOURCEFILES"] !fileList;
 end routine;
 
 end semantics;
