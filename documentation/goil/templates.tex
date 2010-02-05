@@ -465,7 +465,7 @@ This list contains the informations about the ready list. Items are sorted by pr
   {the size of the queue for the corresponding priority.}
 \end{longtableiii}
 
-\subsection{The \var{SOURCEFILES}, \var{CFLAGS}, \var{ASFLAGS} and \var{LDFLAGS} lists}
+\subsection{The \var{SOURCEFILES}, \var{CFLAGS}, \var{ASFLAGS}, \var{LDFLAGS} and \var{TRAMPOLINESOURCEFILES} lists}
 
 The \var{SOURCEFILES} list contains the source files as found in attributes \member{APP\_SRC} of the OS object in the OIL file.
 
@@ -502,6 +502,19 @@ The \var{LDFLAGS} list contains the flags for the linker as found in attributes 
   {string}
   {the linker flag.}
 \end{longtableiii}
+
+The \var{TRAMPOLINESOURCEFILES} list contains the trampoline source files used by the application.
+
+\rowcolors{1}{white}{light-gray}
+\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
+  \lineiii{DIRECTORY}
+  {string}
+  {the directory of the source file relative to the Trampoline root directory (\file{os}, \file{com} or \file{autosar}).}
+  \lineiii{FILE}
+  {string}
+  {the source file name.}
+\end{longtableiii}
+
 
 \subsection{The \var{INTERRUPTSOURCES} list}
 
