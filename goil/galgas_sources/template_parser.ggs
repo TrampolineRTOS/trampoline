@@ -131,14 +131,10 @@ rule <template_instruction>
   if [templateVariableMap hasKey !"FILEPATH"] then
     [!?templateVariableMap removeKey !lstringWith[!"FILEPATH"] ?* ?*];
   end if;
-  if [templateVariableMap hasKey !"NATIVEFILEPATH"] then
-    [!?templateVariableMap removeKey !lstringWith[!"NATIVEFILEPATH"] ?* ?*];
-  end if;
   @goilTemplateValue fileName := [@goilTemplateValue new !0L ![[expression mStringValue] lastPathComponent] ![@goilTemplateFieldMapList emptyList]];
   @goilTemplateValue nativeFilePath := [@goilTemplateValue new !0L ![[expression mStringValue] nativePathWithUnixPath] ![@goilTemplateFieldMapList emptyList]];
   [!?templateVariableMap insertKey !lstringWith[!"FILENAME"] !expressionType !fileName];
-  [!?templateVariableMap insertKey !lstringWith[!"FILEPATH"] !expressionType !expression];
-  [!?templateVariableMap insertKey !lstringWith[!"NATIVEFILEPATH"] !expressionType !nativeFilePath];
+  [!?templateVariableMap insertKey !lstringWith[!"FILEPATH"] !expressionType !nativeFilePath];
   @location fileNameLocation := here;
   if expressionType != [@goilTemplateType stringType] then
     error here: "a file name should be of type string";
