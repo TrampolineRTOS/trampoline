@@ -88,8 +88,3 @@ nxt_lcd.c \
 udp.c \
 nxt_spi.c \
 flashprog.c
-
-# For a ld linker, insert gcc and c libraries
-LDFLAGS += -L/usr/local/crossgcc/lib/gcc/arm-elf/4.2.3 -lgcc \
--L/usr/local/crossgcc/arm-elf/lib -lc
-
