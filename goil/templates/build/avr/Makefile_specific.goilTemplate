@@ -1,5 +1,10 @@
 #add the 'hex' rule for avr
-hex: $(EXEC)
- avr-objcopy -j .text -j .data -O ihex $(EXEC) $(EXEC).hex
+hex: % !APPNAME %
+	avr-objcopy -j .text -j .data -O ihex % !APPNAME % % !APPNAME %.hex
 
 EXTRA_FILES_CLEAN += $(EXEC).hex
+%
+write to PROJECT.".aps":
+  template avrStudio_project
+end write
+% 

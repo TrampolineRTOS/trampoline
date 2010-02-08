@@ -1,6 +1,6 @@
 /* Running the following example:
  *just call goil a first time using the command line:
- *goil --target=avr -g -i --templates=../../goil/templates/ firstAVR.oil
+ *goil --target=avr -g --templates=../../goil/templates/ firstAVR.oil
  *(COMPILER, LINKER and ASSEMBLER in OS section may be adapted to your 
  * specific install of avr cross-compiler)
  *
@@ -47,24 +47,24 @@ CPU test {
         STACKSIZE = 256;
     };
 
-	COUNTER SystemCounter {
-		TICKSPERBASE = 10;
-		MAXALLOWEDVALUE = 1000;
-		MINCYCLE = 1;
-		SOURCE = TIMER2_OVF_vect;
-	};
+ COUNTER SystemCounter {
+  TICKSPERBASE = 10;
+  MAXALLOWEDVALUE = 1000;
+  MINCYCLE = 1;
+  SOURCE = TIMER2_OVF_vect;
+ };
   
-	ALARM periodicAl {
-		COUNTER= SystemCounter;
-		ACTION = ACTIVATETASK {
-			TASK = periodicTask;
-		};
-		AUTOSTART = TRUE {
-			ALARMTIME = 1;
-			CYCLETIME = 1;
-			APPMODE = std;
-		};
-	};
+ ALARM periodicAl {
+  COUNTER= SystemCounter;
+  ACTION = ACTIVATETASK {
+   TASK = periodicTask;
+  };
+  AUTOSTART = TRUE {
+   ALARMTIME = 1;
+   CYCLETIME = 1;
+   APPMODE = std;
+  };
+ };
 
     TASK periodicTask {
         PRIORITY = 10;
