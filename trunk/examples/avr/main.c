@@ -1,5 +1,5 @@
 #include "tpl_os.h"
-#include "tpl_os_generated_configuration.h"
+#include "tpl_app_config.h"
 #include <avr/io.h>
 
 ISR(boutonISR)

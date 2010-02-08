@@ -24,7 +24,7 @@
 
 #include "tpl_machine.h"
 #include "tpl_os_application_def.h"   /* NO_ALARM */
-#include "tpl_os_generated_configuration.h"	   /* TASK_COUNT and ISR_COUNT*/
+#include "tpl_app_config.h"	   /* TASK_COUNT and ISR_COUNT*/
 #include "tpl_os_definitions.h" /* IS_ROUTINE  */
 #include "tpl_os_internal_types.h"
 #include "tpl_os_kernel.h" /*tpl_stat_proc_table and tpl_proc_static*/
