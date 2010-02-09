@@ -12,11 +12,17 @@
 #endif
 #include <avr/interrupt.h>
 
-ISR($IT_SOURCE$)
+%foreach HARDWARECOUNTERS do
+%
+ISR(%!SOURCE%)
 {
   tpl_status  need_rescheduling = NO_SPECIAL_CODE;
-$COUNTER_LIST$
 
+%#foreach HARDWARECOUNTERS do
+%
+  need_rescheduling |= tpl_counter_tick(&% !NAME %_counter_desc);
+%#end foreach
+%
   if (need_rescheduling == NEED_RESCHEDULING)
   {
     tpl_schedule_from_running();
@@ -30,9 +36,8 @@ $COUNTER_LIST$
 #endif
   }
 }
-#ifdef WITH_IT_TABLE  
-	#undef WITH_IT_TABLE
-#endif
-#define WITH_IT_TABLE  NO
+
+%end foreach
+%
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

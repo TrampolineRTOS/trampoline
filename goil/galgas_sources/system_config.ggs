@@ -1732,7 +1732,7 @@ routine setEnvData ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
   addDirectoryAndFile !?fileList !"os" !"tpl_os_error.c";
   addDirectoryAndFile !?fileList !"os" !"tpl_os_dispatch_table.c";
   addDirectoryAndFile !?fileList !"os" !"tpl_os.c";
-  if getBool[![[cpu os] systemcall] !false] then
+  if not getBool[![[cpu os] systemcall] !false] then
     addDirectoryAndFile !?fileList !"os" !"tpl_os_alarm.c";
     addDirectoryAndFile !?fileList !"os" !"tpl_os_event.c";
     addDirectoryAndFile !?fileList !"os" !"tpl_os_it.c";
@@ -1768,7 +1768,7 @@ routine setEnvData ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
       addDirectoryAndFile !?fileList !"autosar" !"tpl_as_app_kernel.c";
       addDirectoryAndFile !?fileList !"autosar" !"tpl_as_trusted_fct_kernel.c";
     end if;
-    if getBool[![[cpu os] systemcall] !false] then
+    if not getBool[![[cpu os] systemcall] !false] then
       addDirectoryAndFile !?fileList !"autosar" !"tpl_as_counter.c";
       addDirectoryAndFile !?fileList !"autosar" !"tpl_as_isr.c";
       addDirectoryAndFile !?fileList !"autosar" !"tpl_as_schedtable.c";

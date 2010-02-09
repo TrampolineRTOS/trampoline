@@ -68,7 +68,7 @@ typedef struct TPL_STACK tpl_stack;
  * The size of the stack of the idle task which is also the stack
  * used for machine startup
  */
-#define SIZE_OF_IDLE_STACK  20
+#define SIZE_OF_IDLE_STACK  50
 /**
  * @def IDLE_STACK
  *
