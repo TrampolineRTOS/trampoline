@@ -30,6 +30,7 @@
 #ifdef WITH_AUTOSAR
 #include "tpl_as_definitions.h"
 #endif
+#include "tpl_os_it.h"
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -161,12 +162,12 @@ STATIC FUNC(void, OS_CODE) tpl_call_missingend(void)
 
 STATIC FUNC(void, OS_CODE) tpl_call_terminateISR(void)
 {
-      /**
-       * FIXME: make default behavior more gently if not in development
-       */
-      DISABLE_FIQ();
-      DISABLE_IRQ();
-      while (1);
+    /**
+     * TODO : make it works !! Wrong return code apparently !
+     */
+    
+    TerminateISR();
+
 }
 
 

@@ -56,7 +56,8 @@ CFLAGS += -I$(MACHINE_PATH)/arm/nxt/drivers/ecrobot/c \
 -I$(MACHINE_PATH)/arm/nxt/drivers/ecrobot/bios \
 -I$(MACHINE_PATH)/arm/nxt/drivers/lejos_nxj/src/nxtvm/platform/nxt/ \
 -I$(MACHINE_PATH)/arm/nxt/drivers/lejos_nxj/src/nxtvm/javavm \
--I$(MACHINE_PATH)/arm/nxt/drivers/lejos_nxj/src/nxtvm/
+-I$(MACHINE_PATH)/arm/nxt/drivers/lejos_nxj/src/nxtvm/ \
+-I$(MACHINE_PATH)/arm/nxt/drivers/
 
 # Driver files
 TEMP_SOURCE_DIRS += $(MACHINE_PATH)/arm/nxt/drivers/ecrobot/c
@@ -88,3 +89,7 @@ nxt_lcd.c \
 udp.c \
 nxt_spi.c \
 flashprog.c
+
+TEMP_SOURCE_DIRS += $(MACHINE_PATH)/arm/nxt/drivers
+SOURCES += buttons.c
+

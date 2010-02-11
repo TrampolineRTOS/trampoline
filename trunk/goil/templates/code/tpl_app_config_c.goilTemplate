@@ -413,7 +413,7 @@ tpl_isr_stat_table[ISR_COUNT] = {
 };
 %
 end foreach
-template isr_list_specific
+template if exists isr_list_specific
 
 %
 #define OS_STOP_SEC_CONST_UNSPECIFIED

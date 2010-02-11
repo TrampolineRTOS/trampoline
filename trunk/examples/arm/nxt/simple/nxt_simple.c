@@ -1,6 +1,7 @@
 #include "tpl_os.h"
 #include "nxt_motors.h" // for nxt_motor_set_speed()
 #include "ecrobot_interface.h" // for NXT_PORT_A
+#include "ecrobot_private.h"
 
 #define APP_Task_task1_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -13,7 +14,6 @@ FUNC(int, OS_APPL_CODE) main(void)
 
 #define APP_Task_task1_STOP_SEC_CODE
 #include "tpl_memmap.h"
-
 
 #define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
@@ -67,7 +67,8 @@ TASK(task1)
 
 TASK(task5)
 {   
-    ecrobot_status_monitor("NXT task5!");
+       
+    ecrobot_status_monitor("NXT task5!");   
     
     motor2speed += 5;
     nxt_motor_set_speed(NXT_PORT_B, motor2speed, 1);
@@ -78,3 +79,56 @@ TASK(task5)
 
 #define APP_Task_task5_STOP_SEC_CODE
 #include "tpl_memmap.h"
+
+
+#define APP_ISR_isr_button_start_START_SEC_CODE
+#include "tpl_memmap.h"
+
+ISR(isr_button_start)
+{
+    ecrobot_status_monitor("isr_button_start");
+    
+}
+
+#define APP_ISR_isr_button_start_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+
+#define APP_ISR_isr_button_stop_START_SEC_CODE
+#include "tpl_memmap.h"
+
+ISR(isr_button_stop)
+{
+    ShutdownOS(E_OK);
+}
+
+#define APP_ISR_isr_button_stop_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+
+#define APP_ISR_isr_button_left_START_SEC_CODE
+#include "tpl_memmap.h"
+
+ISR(isr_button_left)
+{
+    ecrobot_status_monitor("isr_button_left"); 
+
+}
+
+#define APP_ISR_isr_button_left_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+
+#define APP_ISR_isr_button_right_START_SEC_CODE
+#include "tpl_memmap.h"
+
+ISR(isr_button_right)
+{
+    ecrobot_status_monitor("isr_button_right");   
+
+}
+
+#define APP_ISR_isr_button_right_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+

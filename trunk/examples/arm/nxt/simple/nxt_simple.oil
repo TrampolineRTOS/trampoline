@@ -70,4 +70,29 @@ CPU test {
             APPMODE = std;
 		};
 	};
+
+   ISR isr_button_start {
+       CATEGORY = 2;
+		PRIORITY = 1;
+		SOURCE = button_start;
+   };
+
+   ISR isr_button_stop {
+       CATEGORY = 2;
+		PRIORITY = 1;
+		SOURCE = button_stop;
+   };
+
+   ISR isr_button_left {
+       CATEGORY = 2;
+		PRIORITY = 1;
+		SOURCE = button_left;
+   };
+
+   ISR isr_button_right {
+       CATEGORY = 2;
+		PRIORITY = 1;
+		SOURCE = button_right;
+   };
+
 };
