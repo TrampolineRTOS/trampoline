@@ -27,30 +27,41 @@
 #include "tpl_os_definitions.h"
 #include "tpl_os_kernel.h"
 #include "flash_loader.h" // for nxt_device_init()
+#include "display.h"
+#include "systick.h"
+#include "nxt_lcd.h"
+#include "nxt_avr.h"
+#include "ecrobot_interface.h"
+#include "buttons.h"
 
 extern void tpl_init_machine_generic (void);
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-void tpl_init_machine()
+void tpl_init_machine(void)
 {
     nxt_device_init();
-    tpl_init_machine_generic ();
+    tpl_init_machine_generic();
+    InitButtons();
 }
 
-void tpl_shutdown ()
+void tpl_shutdown(void)
 {
-    /* FIXME: this is does not conform to AUTOSAR OS specifications, 
-     * should return to main with initial context */
-    DISABLE_FIQ ();
-    DISABLE_IRQ ();
+    /* Enable interrupts because disabled bu ShutdownOS and we
+     need them to shutdown the NXT */
+    ENABLE_FIQ();
+    ENABLE_IRQ();
     
-    /* TODO : fall into very low consumption mode : all
-     * internal CPU clocks are disabled.
-     */
-    
-    while (1);
+    ecrobot_term_bt_connection(); /* shutdown bluetooth connection */
+    display_clear(1);
+    systick_wait_ms(10);
+    nxt_lcd_power_down(); /* reset LCD hardware */
+    systick_wait_ms(10);
+    while(1)
+    {
+        nxt_avr_power_down();
+    }
 }
 
 #define OS_STOP_SEC_CODE

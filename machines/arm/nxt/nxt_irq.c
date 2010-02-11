@@ -29,6 +29,7 @@
 
 #include "AT91SAM7.h"
 #include "tpl_os_it_kernel.h"
+#include "buttons.h" //check_buttons_status()
 
 extern void tpl_tick_it_timer1(void); //extern void systick_isr_C(void);
 extern void nxt_motor_isr_C(void);
@@ -41,7 +42,13 @@ extern void systick_low_priority_C(void);
 extern void udp_isr_C(void);
 extern void i2c_timer_isr_C(void);
 
-extern CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[16];
+extern CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[31];
+
+#define OS_START_SEC_VAR_8BIT
+#include "tpl_memmap.h"
+u8 check_buttons_period = 0;
+#define OS_STOP_SEC_VAR_8BIT
+#include "tpl_memmap.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -64,6 +71,14 @@ FUNC (void, OS_CODE) tpl_arm_subarch_irq_handler (void)
         case 1:
         {
             tpl_tick_it_timer1();
+            check_buttons_period++;
+            if (check_buttons_period == 10)
+            {
+                /* Call check_buttons_status() (via interrupts)
+                 * which will check if buttons are pressed or not. */
+                *AT91C_AIC_ISCR = (1 << AT91C_PERIPHERAL_ID_IRQ0);
+                check_buttons_period = 0;
+            }
             break;
         }
         case 2:
@@ -111,8 +126,14 @@ FUNC (void, OS_CODE) tpl_arm_subarch_irq_handler (void)
             i2c_timer_isr_C();
             break;
         }
+        case 30:
+        {
+            check_buttons_status();
+            break;
+        }
         default:
         {
+            /* TODO : launch VECADDR */
             VAR(tpl_it_handler, AUTOMATIC) isr_vector;
             isr_vector = tpl_it_vector[isr_id].func;
             isr_vector(tpl_it_vector[isr_id].args);
