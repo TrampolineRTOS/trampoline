@@ -25,7 +25,6 @@
 #define BUTTONS_H
 
 extern void check_buttons_status(void);
-extern char dectohex(char bit);
 extern void InitButtons(void);
 
 #endif /* BUTTONS_H */

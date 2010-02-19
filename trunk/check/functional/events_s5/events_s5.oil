@@ -112,7 +112,7 @@ IMPLEMENTATION trampoline {
 		CATEGORY = 2;
 		STACKSIZE = 32768;
 		PRIORITY = 1;
-		SOURCE = SIGTERM;
+		SOURCE = IRQ1;
 	};
 	
 	EVENT Event1 {

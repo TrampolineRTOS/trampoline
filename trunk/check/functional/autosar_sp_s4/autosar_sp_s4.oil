@@ -79,7 +79,7 @@ IMPLEMENTATION trampoline {
 	};
 	ISR isr1 {
 		CATEGORY = 2;
-		SOURCE = SIGTERM;
+		SOURCE = IRQ1;
 		PRIORITY = 1;
 		STACKSIZE = 32768;
 		RESOURCE = Resource1;
@@ -87,7 +87,7 @@ IMPLEMENTATION trampoline {
 	};
 	ISR isr2 {
 		CATEGORY = 2;
-		SOURCE = SIGUSR2;
+		SOURCE = IRQ2;
 		PRIORITY = 2;
 		STACKSIZE = 32768;
 		RESOURCE = Resource1;
@@ -95,7 +95,7 @@ IMPLEMENTATION trampoline {
 	};
 	ISR isr3 {
 		CATEGORY = 2;
-		SOURCE = SIGPIPE;
+		SOURCE = IRQ3;
 		PRIORITY = 3;
 		STACKSIZE = 32768;
 	};

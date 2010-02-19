@@ -45,7 +45,7 @@
 #include "embUnit.h"
 #include "config.h"
 
-#include <signal.h>
+#include <signal.h> /* SIGUSR2 */
 #include <unistd.h>
 #include <assert.h>
 
@@ -56,9 +56,7 @@
  *
  */
 void tpl_send_it1(void){
-	int ipid;
-	ipid = getpid();
-	kill(ipid,SIGTERM);
+	vp_ipc_send_itself_it(&viper, SIGUSR2, 2, false);
 }
 
 /*
@@ -68,9 +66,7 @@ void tpl_send_it1(void){
  *
  */
 void tpl_send_it2(void){
-	int ipid;
-	ipid = getpid();
-	kill(ipid,SIGUSR2);
+	vp_ipc_send_itself_it(&viper, SIGUSR2, 4, false);
 }
 
 /*
@@ -80,9 +76,7 @@ void tpl_send_it2(void){
  *
  */
 void tpl_send_it3(void){
-	int ipid;
-	ipid = getpid();
-	kill(ipid,SIGPIPE);
+	vp_ipc_send_itself_it(&viper, SIGUSR2, 8, false);
 }
 
 /*
@@ -127,10 +121,11 @@ void WaitActivationPeriodicAlarm(AlarmType Alarm){
 	u32 temp, result_inst_;
 	TickType result_inst_tt;
 	result_inst_tt = 0;		
+    
 	do{
 		temp = result_inst_tt;
 		result_inst_ = GetAlarm(Alarm,&result_inst_tt);
-		/* for debug stdimpl_print("periodic alarm : ticks = %u (temp = %u)\n",result_inst_tt,temp); */
+        /* for debug stdimpl_print("periodic alarm : ticks = %lu (temp = %lu)\n",result_inst_tt,temp); */
 	}while( (temp >= result_inst_tt) || (temp==(0)) );
 		
 }
@@ -150,8 +145,8 @@ void WaitActivationOneShotAlarm(AlarmType Alarm){
 	
 	do{
 		GetAlarm(Alarm,&result_inst_tt);
-		/* for debug stdimpl_print("one shot alarm : ticks = %lu\n",result_inst_tt); */
-	}while((SetRelAlarm(Alarm, tpl_alarm_table[Alarm]->stat_part->counter->max_allowed_value , 0) == E_OS_STATE));
+        /* for debug stdimpl_print("one shot alarm : ticks = %lu\n",result_inst_tt); */
+	}while(SetRelAlarm(Alarm, tpl_alarm_table[Alarm]->stat_part->counter->max_allowed_value , 0) == E_OS_STATE);
 	
 	result_inst_ = CancelAlarm(Alarm); /* Cancel the previous alarm usefull only for the test */
 	TEST_ASSERT_EQUAL_INT(E_OK, result_inst_);

@@ -67,15 +67,11 @@ CPU test {
     } ;
 
 	COM config {
-		
 		COMERRORHOOK = FALSE;
 		COMSTATUS = COMEXTENDED;
-
 		COMUSEGETSERVICEID = FALSE;
 		COMUSEPARAMETERACCESS = FALSE;
 		COMSTARTCOMEXTENSION = FALSE;
-
-	
 	};
 	
     APPMODE std {
@@ -89,7 +85,7 @@ CPU test {
         MESSAGE = sm_activatetask;
         MESSAGE = sm_setevent;
         MESSAGE = sm_comcallback;
-		MESSAGE = sm_flag;
+		 MESSAGE = sm_flag;
         MESSAGE = rm_comcallback;
     };
 

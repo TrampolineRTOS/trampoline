@@ -103,13 +103,14 @@ IMPLEMENTATION trampoline {
 	EVENT Event1{
 		MASK = AUTO;
 	};
-	COUNTER Counter1{
+	COUNTER SystemCounter{
+       SOURCE = IRQ0;
 		MAXALLOWEDVALUE = 10;
 		MINCYCLE = 1;
 		TICKSPERBASE = 1;
 	};
 	ALARM Alarm1{
-		COUNTER = Counter1;
+		COUNTER = SystemCounter;
 		ACTION = ACTIVATETASK {
 			TASK = t2;
 		};

@@ -41,7 +41,7 @@ void create_sh_memory(ipc_t *ipc)
   ipc->sh_mem_fd = shm_open(data_file_path, (O_CREAT | O_RDWR | O_EXCL), 0600);
   if(-1 == ipc->sh_mem_fd)
   {
-    fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+    fprintf(stderr, "[%d] %s - pid:%d file:%s\n", __LINE__, __FILE__, ipc->pid,data_file_path);
     perror("shm_open()");
     return;
   }
@@ -75,19 +75,26 @@ printf("(DD) Viper to trampoline %d : tpl_ipc_send_it()\n", ipc->pid);
     perror("viper : sem_wait()");
     return ;
   }
-
+    
   /* Write the interruption ID on the shared memory */
   dev_id_t previous_it = ipc->sh_mem->it_id;
   if ( (previous_it & it_id) && verbose == 1 ){
       fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
-      perror("viper : interrupt identifier already sent by Viper2 but didn't catch by Trampoline");
-      return ;
+      printf("viper : interrupt identifier already sent by Viper2 but didn't catch by Trampoline\n");
+      /* Release semaphore */
+      /* if(0 != sem_post(ipc->it_id_sem))
+      {
+          fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+          perror("viper : sem_post()");
+          return ;
+      }
+      return ; */
+      
   }
   else{
       ipc->sh_mem->it_id |= it_id;
   }
   
-	
   /* Release semaphore */
   if(0 != sem_post(ipc->it_id_sem))
   {
@@ -352,7 +359,7 @@ void tpl_ipc_ready(ipc_t *ipc)
 #ifdef DEBUG
   printf("(DD) Viper to trampoline %d : tpl_ipc_ready()\n", ipc->pid);
 #endif
-
+ 
   if(0 != sem_post(ipc->vp_sem))
   {
     fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
@@ -519,6 +526,37 @@ global_ipc_t *tpl_ipc_create_global_memory(void)
     global_ipc->global_sh_mem->global_time = 0;
     
     return global_ipc;
+}
+
+void tpl_ipc_destroy_global_memory(global_ipc_t *global_ipc)
+{
+#ifdef DEBUG
+    printf("(DD) Viper to trampoline %d : tpl_ipc_destroy_global_memory()\n", global_ipc->pid);
+#endif
+       
+#ifdef DEBUG
+    printf("(DD) Viper to trampoline %d : tpl_ipc_destroy_global_memory - removes global shared memory\n", global_ipc->pid);
+#endif
+    /* Removes shared memory */
+    if(0 != close(global_ipc->global_sh_mem_fd))
+    {
+        fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+        perror("viper : close(global_sh_mem_fd)");
+    }
+    
+    /* Removes semaphore */
+#ifdef DEBUG
+    printf("(DD) Viper to trampoline %d : tpl_ipc_destroy_global_memory - removes semaphore\n", global_ipc->pid);
+#endif
+    if(NULL != global_ipc->global_sem)
+        if(0 != sem_close(global_ipc->global_sem))
+        {
+            fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+            perror("viper : sem_close(global_sem)");
+        }
+        
+    /* Frees global_ipc data structure */
+    free(global_ipc);
 }
 
 void write_global_time(global_ipc_t *global_ipc, time_tt time)

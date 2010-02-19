@@ -79,6 +79,7 @@ IMPLEMENTATION trampoline {
     };
 	
 	COUNTER Hardware_Counter{
+       SOURCE = IRQ0;
 		MAXALLOWEDVALUE = 3;
 		TICKSPERBASE = 2;
 		MINCYCLE = 1;

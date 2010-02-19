@@ -28,6 +28,7 @@
 #include "tpl_os_kernel.h"
 #include "tpl_os_definitions.h"
 #include "tpl_debug.h"
+#include "tpl_trace.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -325,11 +326,13 @@ FUNC(tpl_status, OS_CODE) tpl_counter_tick(
     }
     counter->current_date = date;
     counter->current_tick = 0;
-		  
+  
+    TRACE_COUNTER(counter)
+          
     /*  check if the counter has reached the
         next alarm activation date                  */
     t_obj = counter->next_to;
-
+      
     if ((t_obj != NULL) && (t_obj->date == date))
     {
       /*  the date of the counter has reached
@@ -352,13 +355,14 @@ FUNC(tpl_status, OS_CODE) tpl_counter_tick(
 
 		  /*launch time objects' actions*/
 		  do
-		  {
+		  { 
 			/*  get the next one                        */
-			tpl_time_obj *next_to = t_obj->next_to;
-			expire = t_obj->stat_part->expire;
-			need_resched |=
+            tpl_time_obj *next_to = t_obj->next_to;
+            expire = t_obj->stat_part->expire;
+            need_resched |=
 			(TRAMPOLINE_STATUS_MASK & expire(t_obj));
-			/*  rearm the alarm if needed               */
+            /*  rearm the alarm if needed               */
+              
 			if (t_obj->cycle != 0)
 			{
 			  /*  if the cycle is not 0, the new date
@@ -369,7 +373,8 @@ FUNC(tpl_status, OS_CODE) tpl_counter_tick(
 			  {
 				new_date -= (counter->max_allowed_value + 1);
 			  }
-			  t_obj->date = new_date;
+              t_obj->date = new_date;  
+                
 			  /*  and the alarm is put back in the alarm
 				  queue of the counter it belongs to    */
 			  tpl_insert_time_obj(t_obj);
@@ -377,7 +382,8 @@ FUNC(tpl_status, OS_CODE) tpl_counter_tick(
 			else {
 			  t_obj->state = TIME_OBJ_SLEEP;
 			}
-			t_obj = next_to;
+            t_obj = next_to;
+              
 		  } while (t_obj != NULL);
 
 	  }

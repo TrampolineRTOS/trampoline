@@ -7,3 +7,7 @@ endif
 
 CFLAGS  += -I$(TPL_BASE_PATH)/viper2/ipc
 LDFLAGS += -L$(TPL_BASE_PATH)/viper2/ipc -lvp_ipc
+
+SOURCES += vp_ipc_devices.c
+EXTRA_FILES_CLEAN += vp_ipc_devices.c
+

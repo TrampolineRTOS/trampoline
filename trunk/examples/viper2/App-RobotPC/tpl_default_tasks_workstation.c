@@ -52,7 +52,7 @@ TASK(SendButtons)
 	TerminateTask();
 }
 
-ISR(BPFaster) 
+ISR(ISR2_BPFaster) 
 {
 	GetResource(ResourceVector);
 	direction = 1;
@@ -60,7 +60,7 @@ ISR(BPFaster)
 	ActivateTask(SendButtons);
 }
 
-ISR(BPSlower) 
+ISR(ISR2_BPSlower) 
 {
 	GetResource(ResourceVector);	
 	direction = 2;
@@ -68,7 +68,7 @@ ISR(BPSlower)
 	ActivateTask(SendButtons);
 }
 
-ISR(BPLeft) 
+ISR(ISR2_BPLeft) 
 {
 	GetResource(ResourceVector);
 	direction = 3;
@@ -76,7 +76,7 @@ ISR(BPLeft)
 	ActivateTask(SendButtons);
 }
 
-ISR(BPRight) 
+ISR(ISR2_BPRight) 
 {
 	GetResource(ResourceVector);
 	direction = 4;

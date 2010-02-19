@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $# -ne 1 ] && [ $# -ne 2 ];then
+if [ $# -ne 1 ] && [ $# -ne 2 ] && [ $# -ne 3 ];then
   echo "This script is call by "./viper2.py -g"."
   echo "USAGE : $0 <dir> [NODEP]"
   echo ""
@@ -12,17 +12,24 @@ NODEP=0
 if [ $# -gt 1 ]; then
   if [ $2 == "NODEP" ]; then
     NODEP=1
+    opt=$3
+  else
+    opt=$2
   fi
 fi
 
 cd $1
 if [ $NODEP -eq 1 ];then
-  rm -f trampoline
+  if [ -f Makefile ]; then
+    rm Makefile
+  fi
 fi
-# TODO : check if Makefile already exist instead of doing a GOIL every time
-if ! [ -f Makefile ]
-then
-  goil -i -g -t=posix_vp2 --templates=../../../goil/templates/ *.oil
+
+if ! [ -f Makefile ]; then
+  goil -i -g -t=posix_vp2 --templates=../../../goil/templates/ *.oil $opt 1>&2
 fi
-make NODEP=$NODEP
+
+if [ -f Makefile ]; then
+  make NODEP=$NODEP
+fi
 

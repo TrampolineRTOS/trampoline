@@ -156,13 +156,14 @@ class Scheduler(object):
   
   def createGlobalMemory(self):
     self.__global_mem = ipc.tpl_ipc_create_global_memory()        
-                          
+        
+  def destroyGlobalMemory(self):
+    ipc.tpl_ipc_destroy_global_memory(self.__global_mem)        
+                                                              
   def start(self):
     """
-    If pygame, launch event received
-    Start scheduler : Get Event whose time is passed, call event()
-      Device'method and remove the event from the list.
-    Sleep scheduler the min time to wait.
+    If pygame selected in the config file, update display at 10fps (see Scheduler.withPygame())
+    When terminating (self.__run = false), kill the sorting thread.
     """
     
     """ Init and start sorting thread """
@@ -177,6 +178,9 @@ class Scheduler(object):
        Otherwise : Do nothing
      """
      self._pygameOrNotPygame()
+     
+    """ Kill the sortingThread """ 
+    self.killsortingThread()
          
   def withoutPygame(self):
     pass
@@ -205,16 +209,23 @@ class Scheduler(object):
        
   def kill(self):
     """
-    Stop scheduler
+    Stop scheduler (the loop in scheduler.start())
     """
     self.__run = False
+
+  def killsortingThread(self):  
     """Stop reading thread"""
     if self.__sortingThread:
       self.__sortingThread.kill()
+      # TODO : isAlive useful ???
       if self.__sortingThread.isAlive():
-        print "Waiting sorting thread 1 seconde (it's may be waiting for next event)..."
-        time.sleep(1)
-
+        if (self._verbose == True):
+          print "Waiting sorting thread 0.1 seconde (it's may be waiting for next event)..."
+          threading.Event().wait(0.1)
+        if self.__sortingThread.isAlive():
+          if (self._verbose == True):
+            print "Sorting thread stop not clearly."
+      
   def sortEvent(self):
      """
      Copie event whose time is passed (event.getTime() < time.time()).
@@ -250,18 +261,19 @@ class Scheduler(object):
       event.getDevice().event(event.getTime(), event.getModifiedRegisters())    
      
      """...and send it if needed"""
-     for ecu in config.allEcus:
+     if(self.__run == True): #test
+      for ecu in config.allEcus:
        ecu.launchIt()
                  
      self.__sem.acquire()
      # TODO : Detect if there is at least one event in the list ? otherwise, set ttw to zero ?
-     ttw = self.__events[0].getTime() - self._time
+     self._ttw = self.__events[0].getTime() - self._time
      self.__sem.release()
           
      """ Sleep until next event (better for cpu time consuming) """
      # TODO : it's even may be not useful to wait ttw, we can wait as long as we want because we are already unsynchronised !
-     threading.Event().wait(float(ttw)/1000)
+     threading.Event().wait(float(self._ttw)/1000)
        
-     self._time += ttw
+     self._time += self._ttw
      ipc.write_global_time(self.__global_mem , self._time)
      

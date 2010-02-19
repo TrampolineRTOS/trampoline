@@ -54,9 +54,9 @@ static void test_t1_instance(void)
 	
 	SCHEDULING_CHECK_INIT(1);
 	result_inst_2 = GetAlarmBase(Alarm1, &result_inst_1);
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(1,OSMAXALLOWEDVALUE_Counter1, (int)(result_inst_1.maxallowedvalue));
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(1,OSTICKSPERBASE_Counter1, (int)(result_inst_1.ticksperbase));
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(1,OSMINCYCLE_Counter1, (int)(result_inst_1.mincycle));
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(1,OSMAXALLOWEDVALUE, (int)(result_inst_1.maxallowedvalue));
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(1,OSTICKSPERBASE, (int)(result_inst_1.ticksperbase));
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(1,OSMINCYCLE, (int)(result_inst_1.mincycle));
 	SCHEDULING_CHECK_AND_EQUAL_INT(1,E_OK, result_inst_2);
 	
 	SCHEDULING_CHECK_INIT(2);

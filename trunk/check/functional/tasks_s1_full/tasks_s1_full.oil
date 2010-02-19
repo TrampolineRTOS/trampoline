@@ -58,7 +58,7 @@ IMPLEMENTATION trampoline {
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "tasks_s1_full_exe";
 		CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Werror -Wall -pedantic";
+        CFLAGS  = "-Werror -Wall -pedantic -std=c99";
         CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
@@ -82,7 +82,7 @@ IMPLEMENTATION trampoline {
 		CATEGORY = 2;
 		STACKSIZE = 32768;
 		PRIORITY = 1;
-		SOURCE = SIGTERM;
+		SOURCE = IRQ1;
 	};
 };
 

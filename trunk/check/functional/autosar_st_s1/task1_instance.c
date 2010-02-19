@@ -61,7 +61,7 @@ static void test_t1_instance(void)
 	SCHEDULING_CHECK_AND_EQUAL_INT(5,E_OS_VALUE, result_inst_3);
 	
 	SCHEDULING_CHECK_INIT(6);
-	result_inst_4 = StartScheduleTableRel(sched1, 99); /* > (OSMAXALLOWEDVALUE - InitOffset) */
+	result_inst_4 = StartScheduleTableRel(sched1, 99); /* TODO : > (OSMAXALLOWEDVALUE - InitOffset) */
 	SCHEDULING_CHECK_AND_EQUAL_INT(7,E_OS_VALUE, result_inst_4);
 	
 	SCHEDULING_CHECK_INIT(8);
@@ -100,7 +100,7 @@ static void test_t1_instance(void)
 	SCHEDULING_CHECK_AND_EQUAL_INT(19,E_OS_ID, result_inst_12);
 	
 	SCHEDULING_CHECK_INIT(20);
-	result_inst_13 = StartScheduleTableAbs(sched1, 101); /* > (OSMAXALLOWEDVALUE) */
+	result_inst_13 = StartScheduleTableAbs(sched1, 101); /* TODO : > (OSMAXALLOWEDVALUE) */
 	SCHEDULING_CHECK_AND_EQUAL_INT(21,E_OS_VALUE, result_inst_13);
 	
 	SCHEDULING_CHECK_INIT(22);

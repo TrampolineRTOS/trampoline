@@ -65,15 +65,16 @@ IMPLEMENTATION trampoline {
         ACTIVATION = 1;
         SCHEDULE = FULL;
     };
-	
-	COUNTER Counter1{
-		MAXALLOWEDVALUE = 16;
-		TICKSPERBASE = 10;
-		MINCYCLE = 2;
-	};
+
+	COUNTER SystemCounter{
+	    SOURCE = IRQ0;
+       MAXALLOWEDVALUE = 16;
+		TICKSPERBASE = 1;
+		MINCYCLE = 2; 
+    }; 
 	
 	ALARM Alarm1{
-		COUNTER = Counter1;
+		COUNTER = SystemCounter;
 		ACTION = ACTIVATETASK {
 			TASK = t1;
 		};

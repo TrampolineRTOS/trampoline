@@ -75,17 +75,18 @@ IMPLEMENTATION trampoline {
 		CATEGORY = 2;
 		STACKSIZE = 32768;
 		PRIORITY = 2;
-		SOURCE = SIGTERM;
+		SOURCE = IRQ1;
 	};
 	
-	COUNTER Counter1{
-		MAXALLOWEDVALUE = 16;
-		TICKSPERBASE = 10;
-		MINCYCLE = 1;
-	};
-	
+	COUNTER SystemCounter{
+	    SOURCE = IRQ0;
+       MAXALLOWEDVALUE = 16;
+		TICKSPERBASE = 1;
+		MINCYCLE = 1; 
+    };    
+    
 	ALARM Alarm1{
-		COUNTER = Counter1;
+		COUNTER = SystemCounter;
 		ACTION = ALARMCALLBACK {
 			ALARMCALLBACKNAME = "CallBack1";
 		};
@@ -93,7 +94,7 @@ IMPLEMENTATION trampoline {
 	};
 	
 	ALARM Alarm2{
-		COUNTER = Counter1;
+		COUNTER = SystemCounter;
 		ACTION = ALARMCALLBACK {
 			ALARMCALLBACKNAME = "CallBack2";
 		};

@@ -36,7 +36,10 @@ except:
     commands.getoutput("sed '" + PYTHON_LDFLAGS_line_number + "s/.*/MODULE_ldflags += `" + vers_python + "-config --ldflags" + "` #PYTHON_LDFLAGS/' Makefile > TMPFILE && mv TMPFILE Makefile")
     
 """ Make libraries """
-os.system("make all")
+if "-v" in sys.argv or "--verbose" in sys.argv:
+  os.system("make all")
+else:
+  commands.getoutput("make all -s")
   
 ###############################################################################
 # IMPORT
@@ -53,9 +56,10 @@ import display
 # SIGNAL HANDLER
 ###############################################################################
 def signalHandler(signum, stackFrame):
-  print "\nSignal catch, stop Viper 2..."
+  if(config.scheduler._verbose == True):
+    print "\nSignal catch, stop Viper 2..."
   config.scheduler.kill()
-
+ 
 ###############################################################################
 # MAIN
 ###############################################################################
@@ -74,9 +78,10 @@ if "-h" in sys.argv or "--help" in sys.argv:
 #Clean
 elif "--clean" in sys.argv :
   """ Clean dependencies """
-  os.system("make mrproper")
+  commands.getoutput("make mrproper")
   for ecu in config.allEcus:
-    os.system("cd " + ecu._dir + "; rm -rf build; rm -rf defaultAppWorkstation; rm -rf Make-rules; rm -rf Makefile; rm -rf trampoline; rm -rf target.cfg; rm -rf vp_ipc_devices.h")
+    temp = commands.getoutput("echo '" + ecu._dir + "' | awk -F'/' '{print $4}'")
+    commands.getoutput("cd " + ecu._dir + "; make clean; rm -rf Makefile; rm -rf target.cfg; rm -rf vp_ipc_devices.h; rm -rf vp_ipc_devices.c")
   
   """
   ReSet python paths (lib and include)
@@ -102,29 +107,34 @@ elif "-g" in sys.argv or "--generate" in sys.argv:
     # Don't generate files if config.c hasn't been modified since last generation
     returns = commands.getoutput("if ! [ -f " + ecu.getDir() + "target.cfg ] || [ \"`stat -f \"%m\" config.py`\" -gt \"`stat -f \"%m\" " + ecu.getDir() + "target.cfg`\" ]; then echo 1; else echo 0; fi")
     if (returns == "1"):
-      ecu.generate()
+     ecu.generate()
 
     #Compile
     if "-c" in sys.argv or "--compile" in sys.argv:
       command = ["sh", "./genTpl.sh", ecu.getDir()]
       if "-nodep" in sys.argv or "--nodep" in sys.argv:
         command.append("NODEP")
+      if "-a" in sys.argv or "--autosar" in sys.argv:
+        command.append("-a")
+        
 
       make = subprocess.Popen(command,
 	  stdin=subprocess.PIPE, 
 	  stdout=subprocess.PIPE, 
 	  stderr=subprocess.PIPE)
-
-      print "Compiling trampoline :", ecu.getDir()
+      
+      if "-v" in sys.argv or "--verbose" in sys.argv:
+        print "Compiling trampoline :", ecu.getDir()
 
       make.wait()
       for line in make.stderr:
         error = True
         print line
       
-      if error:
-        print "Error while generating trampoline :", ecu.getDir(),"quit viper2."
-        break
+      if "-v" in sys.argv or "--verbose" in sys.argv:
+        if error:
+          print "Error while generating trampoline :", ecu.getDir(),"quit viper2."
+          break
 
 #Run & kill
 else:
@@ -137,7 +147,7 @@ else:
     # CTRL+C
     signal.signal(signal.SIGINT, signalHandler)
         
-    dispatch_display.start()
+    dispatch_display.start(config.scheduler._verbose)
                 
     # TODO : create memory in Viper2 and let the application use it by a semaphore (in parameter in ecu.start() ?)            
     config.scheduler.createGlobalMemory()
@@ -158,7 +168,12 @@ else:
     """ Kill all ecus """
     for ecu in config.allEcus:
      ecu.kill()
+    
+    """ destroy global memory """
+    config.scheduler.destroyGlobalMemory()
 
     dispatch_display.end()
-
-    print "\nBye,"
+    
+    if(config.scheduler._verbose == True):
+      print "\nBye"
+      

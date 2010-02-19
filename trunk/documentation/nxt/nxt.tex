@@ -35,7 +35,7 @@ This document is explained from a UNIX side. If you are on a Windows system, dow
 
 %%%%%%%%%%%%%%%
 \section{Trampoline}
-To download Trampoline, type in a terminal :
+To download Trampoline, type in a terminal (login:anonymous - password:anonymous) :
 	\begin{verbatim}
 	$svn checkout https://trampoline.rts-software.org/svn/trunk
 	\end{verbatim}
@@ -226,8 +226,8 @@ To upload a program in the NXT (the nxt example examples/arm/nxt/lonely\_exe.rxe
 \item Connect the PC and the NXT by USB cable.
 \item Type the following command in Cygwin (from examples/arm/nxt) :
 	\begin{verbatim}
-	$wine NeXTTool.exe /COM=usb -download=lonely_exe.rxe
-	$wine NeXTTool.exe /COM=usb -listfiles=lonely_exe.rxe
+	$./[NEXTTOOL_PATH]/NeXTTool.exe /COM=usb -download=lonely_exe.rxe
+	$./[NEXTTOOL_PATH]/NeXTTool.exe /COM=usb -listfiles=lonely_exe.rxe
 	\end{verbatim}
 \item If program upload was succeeded, program size could be displayed in Cygwin such as the second line in the below command outputs. 
 	\begin{verbatim}

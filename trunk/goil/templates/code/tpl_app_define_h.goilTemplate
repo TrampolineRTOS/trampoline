@@ -83,19 +83,19 @@ end if
 #define WITH_TRACE              % !yesNo(USETRACE)
 if USETRACE then
   if TRACETASK then %
-#define TRACE_TASK%
+#define TRACE_TASK              YES%
   end if
   if TRACEISR then %
-#define TRACE_ISR%
+#define TRACE_ISR               YES%
   end if
   if TRACERESOURCE then %
-#define TRACE_RES%
+#define TRACE_RES               YES%
   end if
   if TRACEALARM then %
-#define TRACE_ALARM%
+#define TRACE_ALARM             YES%
   end if
   if TRACEUSEREVENT then %
-#define TRACE_U_EVENT%
+#define TRACE_U_EVENT           YES%
   end if %
 #define TRACE_FORMAT()          tpl_trace_format_% !TRACEFORMAT %();
 #define TRACE_FILE              "%! TRACEFILE %"

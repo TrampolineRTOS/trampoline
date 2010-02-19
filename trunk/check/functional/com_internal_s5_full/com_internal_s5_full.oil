@@ -73,27 +73,28 @@ CPU test {
         APP_SRC = "task8_instance1.c";
         APP_SRC = "task8_instance2.c";
         APP_SRC = "task8_instance3.c";
-		TRAMPOLINE_BASE_PATH = "../../..";
+		 TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "com_internal_s5_full_exe";
-		SHUTDOWNHOOK = TRUE;
+		 SHUTDOWNHOOK = TRUE;
 		
-		CFLAGS = "-I../../embUnit";
+		 CFLAGS = "-I../../embUnit";
         CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../../lib -lembUnit";
-        
-
+		 LDFLAGS = "-L../../lib -lembUnit";
+        /* TRACE = TRUE {
+			METHOD = FILE {
+				NAME = "alarm2";
+			};
+			FORMAT = txt;		
+		 };*/
     } ;
 
-	COM config {
-		
+    COM config {
 		COMSTATUS = COMEXTENDED;
 		COMERRORHOOK = FALSE;
 		COMUSEGETSERVICEID = FALSE;
 		COMUSEPARAMETERACCESS = FALSE;
 		COMSTARTCOMEXTENSION = FALSE;
-
-	
 	};
 	
     APPMODE std {
