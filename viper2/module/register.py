@@ -30,7 +30,7 @@ class Register(object):
     """
     self.id = id
 
-  def generate(self, file):
+  def generate(self, header, cfile):
     """
     Generate the header file use to compile trampolin with
 	the same identifiers than viper 2
@@ -38,8 +38,9 @@ class Register(object):
     """
     if not self.generated:
       self.generated = True
-      file.write("#define " + self.name + "_val " + (hex(self.id)) + "\n")
-      file.write("const reg_id_t " + self.name + " = " + self.name + "_val;\n")
+      header.write("#define " + self.name + "_val " + (hex(self.id)) + "\n")
+      header.write("extern const reg_id_t " + self.name + ";\n")
+      cfile.write("const reg_id_t " + self.name + " = " + self.name + "_val;\n")
 
   def setDevice(self, device):
     """

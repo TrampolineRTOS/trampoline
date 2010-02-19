@@ -92,14 +92,21 @@ IMPLEMENTATION trampoline {
         SCHEDULE = FULL;
     };
 	
-	COUNTER Counter1{
+	COUNTER SystemCounter{
+       SOURCE = IRQ0;
 		MAXALLOWEDVALUE = 16;
-		TICKSPERBASE = 10;
+		TICKSPERBASE = 1;
+		MINCYCLE = 1;
+	};
+
+	COUNTER SystemCounter2{
+		MAXALLOWEDVALUE = 16;
+		TICKSPERBASE = 1;
 		MINCYCLE = 1;
 	};
 	
 	ALARM Alarm1{
-		COUNTER = Counter1;
+		COUNTER = SystemCounter;
 		ACTION = SETEVENT {
 			TASK = t1;
 			EVENT = Event1;

@@ -82,4 +82,9 @@ void vp_ipc_wait_vp(ipc_t *ipc);
  */
 void vp_ipc_get_global_shared_memory(global_ipc_t *global_ipc);
 
+/**
+ * TODO : add comments
+ */
+void vp_ipc_send_itself_it(ipc_t *ipc, int signum, dev_id_t it_id, int verbose);
+
 #endif /* __VIPER_H__ */

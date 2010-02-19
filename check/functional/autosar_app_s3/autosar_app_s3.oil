@@ -81,7 +81,7 @@ IMPLEMENTATION trampoline {
 	ISR isr1 {
 		CATEGORY = 2;
 		PRIORITY = 1;
-		SOURCE = SIGTERM;
+		SOURCE = IRQ1;
 		STACKSIZE = 32768;
 	};		
 	COUNTER Software_Counter{

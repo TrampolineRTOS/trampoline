@@ -4,6 +4,7 @@
 #include <fcntl.h> /* O_CREAT */
 #include <unistd.h> /* getpid() */
 #include <sys/mman.h> /* shm_open() mmap() */
+#include <signal.h> /* kill() */
 
 #include "com.h"
 
@@ -127,7 +128,7 @@ int vp_ipc_get_interruption_id(ipc_t *ipc)
     perror("viper : sem_wait()");
     return -1;
   }
-
+    
   it_id = ipc->sh_mem->it_id;
 
   /* We have read the interruption id */
@@ -141,7 +142,7 @@ int vp_ipc_get_interruption_id(ipc_t *ipc)
    * Where local is a copy of the mask given by this function
    */
   ipc->sh_mem->it_id = 0x0;
-  
+    
   /* Release semaphore : ok I read interruption identifier */
   if(-1 == sem_post(ipc->it_id_sem))
   {
@@ -149,32 +150,41 @@ int vp_ipc_get_interruption_id(ipc_t *ipc)
     perror("viper : sem_post()");
     return -1;
   }
-
+    
   return it_id;
 }
 
 void vp_ipc_ready(ipc_t *ipc)
 {
 #ifdef DEBUG
-  printf("(DD) Trampoline %d : vp_ipc_ready()\n", getpid());
+  printf("(DD) Trampoline %d : vp_ipc_ready() - ipc:%d\n", getpid(),(int)ipc);
 #endif
   if(0 != sem_post(ipc->tpl_sem))
   {
     fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
     perror("viper : sem_post(viper)");
   }
+    
+    /*Wait Viper2 initialization*/
+    vp_ipc_wait_vp(ipc);
+       
 }
 
 void vp_ipc_wait_vp(ipc_t *ipc)
 {
 #ifdef DEBUG
-  printf("(DD) Trampoline %d : vp_ipc_wait_vp()\n", getpid());
+  printf("(DD) Trampoline %d : vp_ipc_wait_vp() - ipc:%d\n", getpid(),(int)ipc);
 #endif
+    
   if(0 != sem_wait(ipc->vp_sem))
   {
     fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
     perror("viper : sem_wait(trampoline)");
   }
+    
+#ifdef DEBUG
+    printf("(DD) Trampoline %d : vp_ipc_wait_vp() - received post vp_sem from Viper2 (after initialization)\n", getpid());
+#endif
 }
 
 /**************************/
@@ -268,6 +278,43 @@ void vp_ipc_get_global_shared_memory(global_ipc_t *global_ipc)
     
     /* Create shared memory */
     create_global_sh_memory(global_ipc);
+}
+
+void vp_ipc_send_itself_it(ipc_t *ipc, int signum, dev_id_t it_id, int verbose)
+{
+#ifdef DEBUG
+    printf("(DD) Viper to trampoline %d : vp_ipc_send_itself_it()\n", ipc->pid);
+#endif
+    
+    /* Semaphore : Mutex to access interruption id */ 
+    if(0 != sem_wait(ipc->it_id_sem))
+    {
+        fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+        perror("viper : sem_wait()");
+        return ;
+    }
+    
+    /* Write the interruption ID on the shared memory */
+    dev_id_t previous_it = ipc->sh_mem->it_id;
+    if ( (previous_it & it_id) && verbose == 1 ){
+        fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+        printf("viper : interrupt identifier already sent by Viper2 but didn't catch by Trampoline");
+        /*return ;*/
+    }
+    else{
+        ipc->sh_mem->it_id |= it_id;
+    }
+    
+    /* Release semaphore */
+    if(0 != sem_post(ipc->it_id_sem))
+    {
+        fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+        perror("viper : sem_post()");
+        return ;
+    }
+    
+    /* Signal */
+    kill(ipc->pid, signum);
 }
 
 /**************************/

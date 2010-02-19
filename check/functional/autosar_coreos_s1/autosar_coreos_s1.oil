@@ -81,7 +81,7 @@ CPU test {
     SCHEDULE = FULL;
     EVENT = Event1;
   };
-
+  
   COUNTER Software_Counter{
     MAXALLOWEDVALUE = 10;
     TICKSPERBASE = 1;

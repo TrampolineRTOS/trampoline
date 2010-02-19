@@ -11,53 +11,25 @@
 #		 delete testSequences file and do the loops for each directory (which contains defaultAppWorkstation.oil) #ls -d
 ######
 
-#check target
-parameters=false
-while [ $# -gt 0 ]
-do
-    #echo "paramètres : $1"
-	if [ "`echo $1 | grep -c =`" = "1" ]
-	then
-		#echo "paramètre with ="
-		option=`echo $1 | awk -F"=" '{print $1}'`
-		#echo "option : $option"
-		case "$option" in
-			-t) target=`echo $1 | awk -F"=" '{print $2}'`;
-				echo "Target $target selected";;
-		esac
-	else
-		case "$1" in
-			clean) target="clean";;
-			*) echo "Wrong parameters!";
-			   echo "Waited :";
-			   echo "   -t=[target],";
-			   echo "   clean or";
-			   echo "   NULL (posix target selected)"; exit 1;;
-		esac
-	fi    
-	parameters=true
-    shift
-done
-if [ "$parameters" = "false" ]
+if [ "$1" != "clean" ] && [ "$1" != "" ] 
 then
-	#default target = posix
-	target="posix"
-	echo "Target $target selected"
+	echo "Wrong parameters!"
+	echo "Waited :"
+	echo "   clean or null"
+	exit 1
 fi
-
 
 #GOIL tests
 cd ./GOIL
-./GOIL_tests.sh $target
+./GOIL_tests.sh $1
 
 #functional tests
 cd ../functional
-./functional_tests.sh $target
-
+./functional_tests.sh $1
 
 cd ..
 
-if [ "$target" != "clean" ]
+if [ "$1" != "clean" ]
 then
 	#Compare results
 	echo "Compare results with the expected ones..."

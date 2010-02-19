@@ -1,7 +1,7 @@
 #ifndef __TPL_COM_IPDU_H__
 #define __TPL_COM_IPDU_H__
 
-#include"viper.h"
+#include "viper.h"
 
 /*====================
  *  constantes
@@ -23,7 +23,7 @@
  *
  *  size : 1 byte
  */
-//typedef unsigned char u8; /* in machines/XXXX/tpl_os_std_types.h */
+/* typedef unsigned char u8; // in machines/XXXX/tpl_os_std_types.h */
  
 /**
  *  TODO not here, just for test

@@ -51,7 +51,7 @@ static void test_t1_instance(void)
 	result_inst_1 = SetRelAlarm(Alarm1, 2, 0);
 	SCHEDULING_CHECK_AND_EQUAL_INT(1,E_OK , result_inst_1);	
 	
-	WaitActivationOneShotAlarm(Alarm1);
+    WaitActivationOneShotAlarm(Alarm1);
 	
 	SCHEDULING_CHECK_INIT(7);
 	result_inst_2 = SetRelAlarm(Alarm1, 2, 0);

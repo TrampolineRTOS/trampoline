@@ -23,10 +23,6 @@ CPU test {
         STARTUPHOOK = TRUE;
     } ;
     
-    COUNTER SystemCounter {
-        SOURCE = IRQ1;
-    };
-    
     TASK SendButtons {
         PRIORITY = 1;
         AUTOSTART = FALSE;
@@ -34,28 +30,28 @@ CPU test {
         SCHEDULE = FULL;
     };
     
-    ISR BPFaster {
+    ISR ISR2_BPFaster {
         CATEGORY = 2 ;
 		PRIORITY = 30;
 		SOURCE = IRQ5;
 		RESOURCE = ResourceVector;
     };
     
-    ISR BPSlower {
+    ISR ISR2_BPSlower {
         CATEGORY = 2 ;
 		PRIORITY = 30;
 		SOURCE = IRQ6;
 		RESOURCE = ResourceVector;
     };
     
-    ISR BPLeft {
+    ISR ISR2_BPLeft {
         CATEGORY = 2 ;
 		PRIORITY = 30;
 		SOURCE = IRQ7;
 		RESOURCE = ResourceVector;
     };
     
-    ISR BPRight {
+    ISR ISR2_BPRight {
         CATEGORY = 2 ;
 		PRIORITY = 30;
 		SOURCE = IRQ8;

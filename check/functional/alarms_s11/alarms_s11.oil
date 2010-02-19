@@ -80,13 +80,14 @@ IMPLEMENTATION trampoline {
 		ACTIVATION = 1;
 		SCHEDULE = FULL;
 	};
-	COUNTER Counter1{
-		MAXALLOWEDVALUE = 15;
-		TICKSPERBASE = 10;
+	COUNTER SystemCounter{
+       SOURCE = IRQ0;
+		MAXALLOWEDVALUE = 16;
+		TICKSPERBASE = 1;
 		MINCYCLE = 1;
 	};
 	ALARM Alarm1{
-		COUNTER = Counter1;
+		COUNTER = SystemCounter;
 		ACTION = ACTIVATETASK {
 			TASK = t2;
 		};
@@ -97,7 +98,7 @@ IMPLEMENTATION trampoline {
 		};
 	};
 	ALARM Alarm2{
-		COUNTER = Counter1;
+		COUNTER = SystemCounter;
 		ACTION = ACTIVATETASK {
 			TASK = t3;
 		};

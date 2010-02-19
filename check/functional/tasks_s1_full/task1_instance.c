@@ -48,7 +48,7 @@ static void test_t1_instance(void)
 {
 	StatusType result_inst_2, result_inst_3, result_inst_4, result_inst_5, result_inst_6, result_inst_7, result_inst_8, result_inst_9;
 	TaskStateType result_inst_3_5;
-		
+    
 	SCHEDULING_CHECK_INIT(1);
 	result_inst_2 = ActivateTask(INVALID_TASK);	
 	SCHEDULING_CHECK_AND_EQUAL_INT(1,E_OS_ID, result_inst_2);
@@ -81,8 +81,8 @@ static void test_t1_instance(void)
 	result_inst_9 = ReleaseResource(RES_SCHEDULER);
 	SCHEDULING_CHECK_AND_EQUAL_INT(12,E_OK, result_inst_9);
 	
-	tpl_send_it1();
-	
+    tpl_send_it1();
+    
 	SCHEDULING_CHECK_STEP(17);
 	
 }

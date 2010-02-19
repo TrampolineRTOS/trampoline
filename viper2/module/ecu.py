@@ -125,6 +125,9 @@ class Ecu(object):
     self.__readingThread.setDaemon(True) # Can stop script even if thread is running
     self.__readingThread.start()
     
+    """ Tell Trampoline, Viper2 initialization is done """
+    ipc.tpl_ipc_ready(self.__ipc);
+    
     """ Draw Ecu if Display mode == pygame (here and not in __init__ because devices are not yet created in __init__) """
     from config import dispatch_display
     dispatch_display.ecu(self)
@@ -137,21 +140,27 @@ class Ecu(object):
 
     """ Open header """
     try:
+      cfile = open(self.__dir + "vp_ipc_devices.c", "w")
       header = open(self.__dir + "vp_ipc_devices.h", "w")
       oilFile = open(self.__dir + "target.cfg", "w")
     except IOError:
       print "Can't access to " + self.__dir + "vp_ipc_devices.h"
+      print " or " + self.__dir + "vp_ipc_devices.c"
       print " or " + self.__dir + "target.cfg"
       raise IOError, "You should verify dir \""+ self.__dir + "\" exists and it can be writable"
 
     """ Generate header """
     header.write("#ifndef __VP_DEVICES_H__\n#define __VP_DEVICES_H__\n")
     header.write('\n#include "com.h" /* reg_id_t, dev_id_t */\n')
+    cfile.write("/* vp_ipc_devices.c */\n")
+    cfile.write('\n#include "com.h" /* reg_id_t, dev_id_t */\n')
+    cfile.write('\n#include "vp_ipc_devices.h" /* registers constants */\n')
     oilFile.write("interrupts[32]{\n")
-
+    
     """ Generate device identifier """
     index = 0
     header.write("\n/* Devices */\n")
+    cfile.write("\n/* Devices */\n")
     for name, device in self._devices.iteritems(): 
       index += 1
       header.write("#define " + device.name + "_val ((reg_id_t)" + hex(device.id) +  ") << " + str(self.__offset) + "\n")
@@ -159,21 +168,25 @@ class Ecu(object):
     header.write("\n");
 
     for name, device in self._devices.iteritems():
-      header.write("const reg_id_t " + device.name + " = " + device.name + "_val;\n")
+      header.write("extern const reg_id_t " + device.name + ";\n")
+      cfile.write("const reg_id_t " + device.name + " = " + device.name + "_val;\n")
       oilFile.write("  " + device.irq + " = " + str(device.callbackIndex) + ";\n")
 
     """ Generate register identifier """
     header.write("\n/* Registers */\n")
+    cfile.write("\n/* Registers */\n")
     for name, device in self._devices.iteritems():
-      device.generateRegisters(header)
+      device.generateRegisters(header, cfile)
 
     """ Generate matchless registers identifiers """
     header.write("\n/* Completes registers */\n")
+    cfile.write("\n/* Completes registers */\n")
     for name, device in self._devices.iteritems():
-      device.generate(header)
+      device.generate(header, cfile)
      
     """ Generate footer """
     header.write("\n#endif /* __VP_DEVICES_H__ */\n")
+    cfile.write("\n/* End of file vp_ipc_devices.c */\n")
     oilFile.write("};\n")
 
     header.close()
@@ -209,11 +222,14 @@ class Ecu(object):
     """Stop reading thread"""
     if self.__readingThread:
       self.__readingThread.kill()
+      # TODO : isAlive useful ???
       if self.__readingThread.isAlive():
-        print "Waiting reading thread 1 seconde..."
-        time.sleep(1)
+        if (self.__scheduler._verbose == True):
+          print "Waiting reading thread 0.1 seconde..."
+          threading.Event().wait(0.1)
         if self.__readingThread.isAlive():
-          print "Reading thread stop not clearly."
+          if (self.__scheduler._verbose == True):
+            print "Reading thread stop not clearly."
           
     """ Stop IPC """
     if self.__ipc:
@@ -231,6 +247,7 @@ class Ecu(object):
     @param deviceID device id
     @param registerMask register mask (reg_id_t)
     """
+    
     deviceID = deviceID >> self.__offset
     if deviceID not in self._devices:
       raise IPCError, str(deviceID) + " is not in devices list !" 

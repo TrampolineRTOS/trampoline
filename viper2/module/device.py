@@ -71,7 +71,7 @@ class Device(object):
       """ Add register (reference) to the list """
       self._registers[register.name] = register
 
-  def generate(self, header):
+  def generate(self, header, cfile):
     """
     Generate the header file use to compile trampoline with
         the same identifiers than viper 2
@@ -80,16 +80,17 @@ class Device(object):
 
     """ Generate trampoline header """
     for name, register in self._registers.iteritems():
-      header.write("const reg_id_t " + self.name + "_" + register.name + " = " + self.name + "_val | " + register.name + "_val;\n")
+      header.write("extern const reg_id_t " + self.name + "_" + register.name + ";\n")
+      cfile.write("const reg_id_t " + self.name + "_" + register.name + " = " + self.name + "_val | " + register.name + "_val;\n")
 
-  def generateRegisters(self, header):
+  def generateRegisters(self, header, cfile):
     """
     Generate the header file use to compile trampolin with
         the same identifiers than viper 2
     @param header file descriptor where device have to write its generation
     """
     for name, register in self._registers.iteritems():
-      register.generate(header)
+      register.generate(header, cfile)
 
   def setEcu(self, ecu):
     """

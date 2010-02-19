@@ -5,6 +5,7 @@ import device
 from scheduler import Event
 import time
 from const import *
+from register import Register
 
 ###############################################################################
 # CONSTANTS
@@ -20,7 +21,7 @@ class Timer(device.Device):
   Timer class is a timer which can be one shot (ONE_SHOT) or periodic (AUTO).
   """
 
-  def __init__(self, name, id, signal = device.SIGUSR2, position = None, registers = None, type = ONE_SHOT, delay = 1000):
+  def __init__(self, name, id, signal = device.SIGUSR1, position = None, registers = None, type = ONE_SHOT, delay = 1000):
     """
     Constructor.
     @see Device.__init__()
@@ -31,10 +32,13 @@ class Timer(device.Device):
     self._height = 0
     self._position = position
     
-    device.Device.__init__(self, name, id, signal, registers)
+    enableReg = Register(name + "_ENABLE")
+    self.__enableReg   = enableReg.name
+    
+    device.Device.__init__(self, name, id, signal, [enableReg])
     self.__type  = type
     self.__delay = delay
-    
+        
   def setType(self, type):
     """
     Change type of timer (ONE_SHOT or AUTO)
@@ -51,13 +55,23 @@ class Timer(device.Device):
     """
     Call from Scheduler
     """
-    self.sendIt() 
+    """ If event doesn't come from Trampoline : Motor Sensor """
+    if not modifiedRegisters:
+      if (self.__enable == 1):
+        self.sendIt() 
+
+      """ If event come from Trampoline """
+      """ Get command """
+    elif self._registers[self.__enableReg].id in modifiedRegisters:
+      self.__enable = self._registers[self.__enableReg].read()     
 
   def start(self):
     """
     Call from ecu, at the begining.
     Start periodic timer if selected by the user.
     """
+    self._registers[self.__enableReg].write(0)
+    self.__enable = 0
     if self.__type != ONE_SHOT:
       self._scheduler.addEvent(Event(self, 0, self.__delay))
     else:

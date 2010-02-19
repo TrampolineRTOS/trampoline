@@ -25,6 +25,7 @@
 #ifndef __TPL_TRACE_H__
 #define __TPL_TRACE_H__
 
+#include "tpl_os_types.h"
 #include "tpl_os_kernel.h"
 #include "tpl_os_timeobj_kernel.h"
 
@@ -75,7 +76,7 @@
 /**
 * @def TRACE_TASK_EXECUTE
 */
- #		define TRACE_TASK_EXECUTE(new_executed_task_id) \
+#		define TRACE_TASK_EXECUTE(new_executed_task_id) \
 		tpl_trace_task_execute(new_executed_task_id);
 
 /** 
@@ -214,10 +215,21 @@
 #		define TRACE_ALARM_CANCEL(cancelled_alarm_id)\
 		tpl_trace_alarm_cancel(cancelled_alarm_id);
 
+#	  if (!defined NO_ALARM)
+/**
+ * @def TRACE_COUNTER
+ */
+#       define TRACE_COUNTER(counter_desc)\
+        tpl_trace_counter(counter_desc);
+#	  else
+#       define TRACE_COUNTER(counter_desc)
+#	  endif
+
 #	else
 #		define TRACE_ALARM_SCHEDULED(scheduled_alarm)
 #		define TRACE_ALARM_EXPIRE(expired_alarm)
 #		define TRACE_ALARM_CANCEL(cancelled_alarm_id)
+#       define TRACE_COUNTER(counter_desc)
 #	endif
 
 /**
@@ -266,6 +278,7 @@
 #	define TRACE_ALARM_SCHEDULED(scheduled_alarm)
 #	define TRACE_ALARM_EXPIRE(expired_alarm)
 #	define TRACE_ALARM_CANCEL(cancelled_alarm_id)
+#   define TRACE_COUNTER(counter_desc)
 #	define TRACE_U_EVENT(event_id)
 #endif
 
@@ -433,6 +446,9 @@ FUNC(void, OS_CODE) tpl_trace_alarm_expire(
 
 FUNC(void, OS_CODE) tpl_trace_alarm_cancel(
   VAR(tpl_alarm_id, AUTOMATIC) cancelled_alarm_id);
+
+FUNC(void, OS_CODE) tpl_trace_counter(
+  P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter_desc);
 
 /**
 * trace an user's event

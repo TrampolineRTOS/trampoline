@@ -59,7 +59,7 @@ static void test_isr1_instance(void)
 	TickType TickType_inst_7 = OSMAXALLOWEDVALUE_Hardware_Counter + 1;
 	TickType alarm_increment = 2;
 	EventMaskType EventMaskType_inst_1;
-	
+
 	SCHEDULING_CHECK_INIT(2);
 	result_inst_1 = GetCounterValue(Hardware_Counter, &TickType_inst_1);	
 	SCHEDULING_CHECK_AND_EQUAL_INT(2,E_OK, result_inst_1);

@@ -134,7 +134,7 @@ CPU test {
 		STACKSIZE = 32768;
 		CATEGORY = 2;
 		PRIORITY = 1;
-		SOURCE = SIGTERM;
+		SOURCE = IRQ1;
 	};
 	
 	EVENT Event1{

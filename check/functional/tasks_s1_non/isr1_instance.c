@@ -46,7 +46,7 @@ static void test_isr1_instance(void)
 {
 	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_5;
 	TaskType result_inst_4;
-
+    
 	SCHEDULING_CHECK_INIT(15);
 	result_inst_1 = TerminateTask();
 	SCHEDULING_CHECK_AND_EQUAL_INT(15,E_OS_CALLEVEL , result_inst_1);

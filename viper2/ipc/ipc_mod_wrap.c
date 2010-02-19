@@ -3068,6 +3068,27 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_tpl_ipc_destroy_global_memory(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  global_ipc_t *arg1 = (global_ipc_t *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:tpl_ipc_destroy_global_memory",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_global_ipc_t, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "tpl_ipc_destroy_global_memory" "', argument " "1"" of type '" "global_ipc_t *""'"); 
+  }
+  arg1 = (global_ipc_t *)(argp1);
+  tpl_ipc_destroy_global_memory(arg1);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_write_global_time(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   global_ipc_t *arg1 = (global_ipc_t *) 0 ;
@@ -3311,6 +3332,7 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"tpl_ipc_wait_tpl", _wrap_tpl_ipc_wait_tpl, METH_VARARGS, NULL},
 	 { (char *)"tpl_ipc_pop_fifo", _wrap_tpl_ipc_pop_fifo, METH_VARARGS, NULL},
 	 { (char *)"tpl_ipc_create_global_memory", _wrap_tpl_ipc_create_global_memory, METH_VARARGS, NULL},
+	 { (char *)"tpl_ipc_destroy_global_memory", _wrap_tpl_ipc_destroy_global_memory, METH_VARARGS, NULL},
 	 { (char *)"write_global_time", _wrap_write_global_time, METH_VARARGS, NULL},
 	 { (char *)"modified_reg_t_dev_set", _wrap_modified_reg_t_dev_set, METH_VARARGS, NULL},
 	 { (char *)"modified_reg_t_dev_get", _wrap_modified_reg_t_dev_get, METH_VARARGS, NULL},

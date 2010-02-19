@@ -36,7 +36,7 @@
 
 #include "embUnit.h"
 #include "tpl_os.h"
-#include "tpl_app_config.h" /*for OSMAXALLOWEDVALUE_Counter1...*/
+#include "tpl_app_config.h" /*for OSMAXALLOWEDVALUE ...*/
 
 DeclareTask(t1);
 DeclareAlarm(Alarm1);
@@ -74,9 +74,9 @@ static void test_error_instance(void)
 	
 	SCHEDULING_CHECK_INIT(8);
 	result_inst_5 = GetAlarmBase(Alarm1, &alarm_base);
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(8,OSMAXALLOWEDVALUE_Counter1, (int)(alarm_base.maxallowedvalue));
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(8,OSTICKSPERBASE_Counter1, (int)(alarm_base.ticksperbase));
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(8,OSMINCYCLE_Counter1, (int)(alarm_base.mincycle));
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(8,OSMAXALLOWEDVALUE , (int)(alarm_base.maxallowedvalue));
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(8,OSTICKSPERBASE , (int)(alarm_base.ticksperbase));
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(8,OSMINCYCLE , (int)(alarm_base.mincycle));
 	SCHEDULING_CHECK_AND_EQUAL_INT(8,E_OK , result_inst_5);
 	
 	SCHEDULING_CHECK_INIT(9);

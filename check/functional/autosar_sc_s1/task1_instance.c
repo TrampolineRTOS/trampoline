@@ -137,7 +137,7 @@ static void test_t1_instance(void)
 	SCHEDULING_CHECK_INIT(21);
 	result_inst_19 = IncrementCounter(Software_Counter);	
 	SCHEDULING_CHECK_AND_EQUAL_INT(21,E_OK, result_inst_19);
-	
+	    
 	SCHEDULING_CHECK_INIT(22);
 	result_inst_20 = IncrementCounter(Software_Counter);
 	/*alarm expires*/

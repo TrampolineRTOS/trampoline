@@ -108,31 +108,26 @@ IMPLEMENTATION trampoline {
 		CATEGORY = 2;
 		STACKSIZE = 32768;
 		PRIORITY = 1;
-		SOURCE = SIGTERM;	
+		SOURCE = IRQ1;	
 	};
 
-	COUNTER Counter0{
+	COUNTER SystemCounter{
+       SOURCE = IRQ0;
 		MAXALLOWEDVALUE = 16;
-		TICKSPERBASE = 10;
+		TICKSPERBASE = 1;
 		MINCYCLE = 2;
 	};
 	
 	ALARM Alarm0{
-		COUNTER = Counter0;
+		COUNTER = SystemCounter;
 		ACTION = ACTIVATETASK {
 			TASK = t1;
 		};
 		AUTOSTART = FALSE;
 	};
 
-	COUNTER Counter1{
-		MAXALLOWEDVALUE = 16;
-		TICKSPERBASE = 10;
-		MINCYCLE = 1;
-	};
-	
 	ALARM Alarm1_1{
-		COUNTER = Counter1;
+		COUNTER = SystemCounter;
 		ACTION = ACTIVATETASK {
 			TASK = t1;
 		};
@@ -140,7 +135,7 @@ IMPLEMENTATION trampoline {
 	};
 	
 	ALARM Alarm1_2{
-		COUNTER = Counter1;
+		COUNTER = SystemCounter;
 		ACTION = ACTIVATETASK {
 			TASK = t2;
 		};
@@ -148,7 +143,7 @@ IMPLEMENTATION trampoline {
 	};
 	
 	ALARM Alarm2_1{
-		COUNTER = Counter1;
+		COUNTER = SystemCounter;
 		ACTION = SETEVENT {
 			TASK = t3;
 			EVENT = Event1;
@@ -157,7 +152,7 @@ IMPLEMENTATION trampoline {
 	};
 	
 	ALARM Alarm2_2{
-		COUNTER = Counter1;
+		COUNTER = SystemCounter;
 		ACTION = SETEVENT {
 			TASK = t4;
 			EVENT = Event1;
@@ -166,7 +161,7 @@ IMPLEMENTATION trampoline {
 	};
 	
 	ALARM Alarm3{
-		COUNTER = Counter1;
+		COUNTER = SystemCounter;
 		ACTION = ALARMCALLBACK {
 			ALARMCALLBACKNAME = "CallBackC";
 		};

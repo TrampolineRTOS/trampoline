@@ -86,7 +86,7 @@ IMPLEMENTATION trampoline {
 		CATEGORY = 2;
 		PRIORITY = 1;
 		STACKSIZE = 32768;
-		SOURCE = SIGTERM;	
+		SOURCE = IRQ1;	
 	};
 
 };

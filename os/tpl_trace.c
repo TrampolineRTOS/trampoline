@@ -427,7 +427,6 @@ FUNC(void, OS_CODE) tpl_trace_alarm_expire(
     FORMAT_TRACE()
   }
 }
-#endif
 
 FUNC(void, OS_CODE) tpl_trace_alarm_cancel(
   CONST(tpl_alarm_id, AUTOMATIC)cancelled_alarm_id)
@@ -440,6 +439,34 @@ FUNC(void, OS_CODE) tpl_trace_alarm_cancel(
   EVENT_END()
     FORMAT_TRACE()
 }
+
+#if (!defined NO_ALARM)
+FUNC(void, OS_CODE) tpl_trace_counter(
+    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter_desc)
+{
+    VAR(tpl_counter_id, AUTOMATIC) counter_id;
+    extern CONSTP2VAR(tpl_counter, OS_VAR, OS_APPL_DATA)
+      tpl_counter_table[COUNTER_COUNT];
+    VAR(tpl_task_id, AUTOMATIC) i;
+    
+    for(i = 0 ; i<COUNTER_COUNT ; i++)
+    {
+        if ( tpl_counter_table[i] == counter_desc)
+        {
+            counter_id = i;
+        }
+    }
+    
+    EVENT_BEGIN(TASK_ACTIVATE)
+	EVENT_VALUE(TASK_COUNT + ISR_COUNT + counter_id + 1)
+    EVENT_VALUE(1) /* priority */
+    EVENT_VALUE(SUSPENDED) /* old status */
+	EVENT_END()
+	FORMAT_TRACE()
+}
+#endif /* (!defined NO_ALARM) */
+
+#endif /* WITH_TRACE*/
 
 FUNC(void, OS_CODE) tpl_trace_tpl_init()
 {

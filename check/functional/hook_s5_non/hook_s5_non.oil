@@ -91,17 +91,18 @@ IMPLEMENTATION trampoline {
 		CATEGORY = 2;
 		STACKSIZE = 32768;
 		PRIORITY = 1;
-		SOURCE = SIGTERM;
+		SOURCE = IRQ1;
 	};
 	
-	COUNTER Counter1{
+	COUNTER SystemCounter{
+       SOURCE = IRQ0;
 		MAXALLOWEDVALUE = 16;
-		TICKSPERBASE = 100;
+		TICKSPERBASE = 1;
 		MINCYCLE = 1;
 	};
 	
 	ALARM Alarm1{
-		COUNTER = Counter1;
+		COUNTER = SystemCounter;
 		ACTION = ACTIVATETASK {
 			TASK = t2;
 		};

@@ -56,14 +56,13 @@ IMPLEMENTATION trampoline {
 		APP_SRC = "task2_instance2.c";
 		APP_SRC = "task2_instance3.c";
 		APP_SRC = "task2_instance4.c";
-        TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "autosar_sts_s6_exe";
+       TRAMPOLINE_BASE_PATH = "../../..";
+       APP_NAME = "autosar_sts_s6_exe";
 		CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Werror -Wall -pedantic";
-        CFLAGS  = "-Wmissing-field-initializers";
+       CFLAGS  = "-Werror -Wall -pedantic";
+       CFLAGS  = "-Wmissing-field-initializers";
 		LDFLAGS = "-L../../lib -lembUnit";
 		SHUTDOWNHOOK = TRUE;
-		
 	};
 
     APPMODE std {};

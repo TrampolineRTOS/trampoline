@@ -15,13 +15,21 @@ if [ "$1" = "clean" ]
 then
 	for i in `cat functional_testSequences.txt`
 	do
-		#remove make-rules, makefiles, ${i}/, build/ and exe file
-		rm -rf ./${i}/build
-		rm -rf ./${i}/${i}
-		rm -rf ./${i}/Make-rules
-		rm -rf ./${i}/Makefile
-		rm -rf ./${i}/${i}_exe
-		rm -rf ./${i}/goil.log
+		echo "cleaning $i"
+
+		rm -rf ${i}/${i}.desc
+		
+		cd ../../viper2/
+		
+		#change sequence name in config.py file
+		sed "s/SEQUENCE/${i}/g" config-tests.tmp.py > config.py
+		
+		#clean
+		python2.6 viper2.py --clean
+		
+		#come back to the functional_tests.sh file
+		cd ../check/functional/
+
 	done
 
 	#Delete results.log
@@ -45,8 +53,16 @@ else
 		( cd ../embUnit ; make )
 	fi
 		
+	# Clean Debug flag
+	cd ../../viper2/
+	sed "s/SEQUENCE/tasks_s1_full/g" config-tests.tmp.py > config.py
+	export CFLAGS=
+	python2.6 viper2.py --clean
+	python2.6 viper2.py -g -c
+	cd ../check/functional/
+		
 	# Build and execute all the tests
-	for i in `cat functional_testSequences.txt`
+	for i in `cat functional_testSequences.txt` #tasks_s1_full tasks_s1_non tasks_s2 tasks_s3 tasks_s4 #
 	do
 		#Adding AUTOSAR flag if autosar test sequence
 		if [ "`echo ${i} | grep autosar`" != "" ]
@@ -56,41 +72,24 @@ else
 			autosar_flag=""
 		fi	
 		
-		#Go in the test sequence
-		cd ./${i}
-		
 		#display running test sequence on the standard output for the user and in the log file to better understand failed tests
-		echo "running $i" | tee -a ../functional_results.log 
+		echo "running $i" | tee -a functional_results.log 
 		
-		#remove the executable file in order to know if the make succeed.
-		rm -rf ./${i}_exe
-
-		#check if previous target compiled is the same as the one wanted. If not, clean all and compile
-		if [ -f Make-rules ] && [ "`cat Make-rules | grep GOIL_TARGET | grep -c $1`" = "0" ]
-		then
-			echo "(previous target different than $1 -> Recompilation...)" 
-			rm -rf ./build
-			rm -rf ./${i}
-			rm -rf ./Make-rules
-			rm -rf ./Makefile
-		fi
+		#jump in viper2 directory
+		cd ../../viper2/
 		
-		#if Makefile doesn't exist -> do goil
-		if ! [ -f Makefile ]
-		then
-			goil --target=$1 --templates=../../../goil/templates/ -g ${i}.oil $autosar_flag 2>&1 | tee -a ../functional_results.log
-		fi
+		#change sequence name in config.py file
+		sed "s/SEQUENCE/${i}/g" config-tests.tmp.py > config.py
 		
-		#if goil succeed (Makefile has been created) -> do make and execute file
-		if `test -f Makefile`
-		then
-			make -s
-			./${i}_exe >> ../functional_results.log
-		fi
+		#compile
+		python2.6 viper2.py -g -c -nodep $autosar_flag
 		
-		#Go out of the test sequence
-		cd ..
-	
+		#launch viper2 and Trampoline
+		python2.6 viper2.py >> ../check/functional/functional_results.log
+		
+		#come back to the functional_tests.sh file
+		cd ../check/functional/
+			
 	done
 	echo "Functional tests done."
 

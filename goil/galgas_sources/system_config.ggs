@@ -1328,10 +1328,30 @@ routine setTraceFlag ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
   when == @trace_on traceOn do
     addBoolValue !?cfg ![@lstring new !"USETRACE" ![traceOn loc]] !true;
     addStringValue !?cfg ![@lstring new !"TRACEFORMAT" ![[traceOn form] location]] ![[traceOn form] string];
-    addBoolValue !?cfg ![@lstring new !"TRACETASK" ![[traceOn trace_task] location]] !getBool[![traceOn trace_task] !true];
-    addBoolValue !?cfg ![@lstring new !"TRACEISR" ![[traceOn trace_task] location]] !getBool[![traceOn trace_isr] !true];
-    addBoolValue !?cfg ![@lstring new !"TRACERESOURCE" ![[traceOn trace_task] location]] !getBool[![traceOn trace_resource] !true];
-    addBoolValue !?cfg ![@lstring new !"TRACEALARM" ![[traceOn trace_task] location]] !getBool[![traceOn trace_alarm] !true];
+    #tasks
+    if ([[[cpu tasks] count] uint64] > 0L) then
+      addBoolValue !?cfg ![@lstring new !"TRACETASK" ![[traceOn trace_task] location]] !getBool[![traceOn trace_task] !true];
+    else
+      addBoolValue !?cfg ![@lstring new !"TRACETASK" ![[traceOn trace_task] location]] !getBool[![traceOn trace_task] !false];
+    end if;
+    #isrs
+    if ([[[cpu isrs] count] uint64] > 0L) then
+      addBoolValue !?cfg ![@lstring new !"TRACEISR" ![[traceOn trace_task] location]] !getBool[![traceOn trace_isr] !true];
+    else
+      addBoolValue !?cfg ![@lstring new !"TRACEISR" ![[traceOn trace_task] location]] !getBool[![traceOn trace_isr] !false];
+    end if;
+    #resources
+    if ([[[cpu resources] count] uint64] > 0L) then
+      addBoolValue !?cfg ![@lstring new !"TRACERESOURCE" ![[traceOn trace_task] location]] !getBool[![traceOn trace_resource] !true];
+    else
+      addBoolValue !?cfg ![@lstring new !"TRACERESOURCE" ![[traceOn trace_task] location]] !getBool[![traceOn trace_resource] !false];
+    end if;
+    #alarms
+    if ([[[cpu alarms] count] uint64] > 0L) then
+      addBoolValue !?cfg ![@lstring new !"TRACEALARM" ![[traceOn trace_task] location]] !getBool[![traceOn trace_alarm] !true];
+    else
+      addBoolValue !?cfg ![@lstring new !"TRACEALARM" ![[traceOn trace_task] location]] !getBool[![traceOn trace_alarm] !false];
+    end if;
     addBoolValue !?cfg ![@lstring new !"TRACEUSEREVENT" ![[traceOn trace_task] location]] !getBool[![traceOn trace_user_event] !true];
     cast [traceOn meth]:
     when == @trace_file traceFile do

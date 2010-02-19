@@ -23,6 +23,7 @@
 #include "tpl_os_kernel.h" /* for tpl_running_obj */
 #include "tpl_as_definitions.h"
 #include "tpl_os_task_kernel.h"
+#include "tpl_os_rez_kernel.h"
 #endif /* WITH_AUTOSAR */
 
 #include <assert.h>
@@ -34,6 +35,8 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
+
+#include "../vp_ipc_devices.h"
 
 extern volatile u32 tpl_locking_depth;
 
@@ -209,12 +212,18 @@ void tpl_sleep(void)
 
 void tpl_shutdown(void)
 {
-	/* remove ITs */
-	if (sigprocmask(SIG_BLOCK,&signal_set_all,NULL) == -1)
+    /* TODO : block the handling of signals ? */
+	/*
+     if (sigprocmask(SIG_BLOCK,&signal_set_all,NULL) == -1)
     {
         perror("tpl_shutdown failed");
         exit(-1);
     }
+    */
+    
+    vp_ipc_write_reg(&viper, POWER_POWER_REG, (reg_t)(1));
+    vp_ipc_signal_update(&viper, &global_shared_memory, POWER, POWER_REG);
+            
     exit(0);
 }
 
@@ -310,21 +319,34 @@ void tpl_osek_func_stub( tpl_proc_id task_id )
 {
     tpl_proc_function func = tpl_stat_proc_table[task_id]->entry;
     tpl_proc_type     type = tpl_stat_proc_table[task_id]->type;
-  
+#ifdef WITH_AUTOSAR	
+	/*  init the error to no error  */
+	VAR(StatusType, AUTOMATIC) result = E_OK;
+#endif /* WITH_AUTOSAR */
+    
     /* Avoid signal blocking due to a previous call to tpl_init_context in a OS_ISR2 context. */
 	tpl_release_task_lock();
     
     (*func)();
     
     if (type == IS_ROUTINE) {
-	#ifdef WITH_AUTOSAR	
-	    if (TerminateISR() == E_OS_DISABLEDINT)
-		{
+    #ifdef WITH_AUTOSAR	
+		/* enable interrupts if disabled */
+		if(FALSE!=tpl_get_interrupt_lock_status())  
+	    {
 			tpl_reset_interrupt_lock_status();
-			tpl_enable_all_interrupts_service();	
+			/*tpl_enable_interrupts(); now ?? or wait until TerminateISR reschedule and interrupts enabled returning previous API service call OR by signal_handler.*/
+			result = E_OS_DISABLEDINT;
 		}
-	#endif /* WITH_AUTOSAR*/
-        TerminateISR();
+		/* release resources if held */
+		if( (tpl_kern.running->resources) != NULL ){
+			tpl_release_all_resources(tpl_kern.running_id);
+			result = E_OS_RESOURCE;
+		}
+		
+		PROCESS_ERROR(result);  /* store terminateISR service id before hook ?*/
+    #endif /* WITH_AUTOSAR*/
+		TerminateISR();
     }
     else {
 
@@ -333,10 +355,14 @@ void tpl_osek_func_stub( tpl_proc_id task_id )
 		{                                           
 			/*enable interrupts :*/
 			tpl_reset_interrupt_lock_status();
-			tpl_enable_all_interrupts_service();
+			/*tpl_enable_interrupts(); now ?? or wait until TerminateISR reschedule and interrupts enabled returning previous API service call OR by signal_handler.*/
 		}
-		/*error hook*/
+		/* release resources if held */
+		if( (tpl_kern.running->resources) != NULL ){
+			tpl_release_all_resources(tpl_kern.running_id);
+		}
 		
+		/* error hook*/		
 		PROCESS_ERROR(E_OS_MISSINGEND);
 
 		/*terminate the task :*/
@@ -546,9 +572,16 @@ void tpl_init_machine(void)
     vp_ipc_get_global_shared_memory(&global_shared_memory);
     
     vp_ipc_ready(&viper);
-
+    
+#if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)   
+    /* Initialize Timer depending on the oil file (if alarms or WITH_AUTOSAR && schedultables) */
+    vp_ipc_write_reg(&viper, TIMER0_TIMER0_ENABLE, (reg_t)1);
+    vp_ipc_signal_update(&viper, &global_shared_memory, TIMER0, TIMER0_ENABLE);
+#endif /*(defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */
+    
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
     gettimeofday (&startup_time, NULL);  
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+    
 }
 

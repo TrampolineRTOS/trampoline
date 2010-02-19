@@ -84,7 +84,7 @@ class Display(object):
     else:
       sched._pygameOrNotPygame = sched.withPygame
                   
-  def start(self):
+  def start(self, verbosemode):
     """
     Initialize widget list and store it in scheduler
     Display on the console the display mode used (to the user)
@@ -101,7 +101,8 @@ class Display(object):
       scheduler._widg = self._widget_list
       print "Display mode : Pygame"
     else:
-      print "Display mode : Consol"
+      if(verbosemode == True):
+        print "Display mode : Consol"
       
   def end(self):
     """

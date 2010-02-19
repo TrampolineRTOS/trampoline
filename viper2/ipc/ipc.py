@@ -59,6 +59,7 @@ tpl_ipc_ready = _ipc.tpl_ipc_ready
 tpl_ipc_wait_tpl = _ipc.tpl_ipc_wait_tpl
 tpl_ipc_pop_fifo = _ipc.tpl_ipc_pop_fifo
 tpl_ipc_create_global_memory = _ipc.tpl_ipc_create_global_memory
+tpl_ipc_destroy_global_memory = _ipc.tpl_ipc_destroy_global_memory
 write_global_time = _ipc.write_global_time
 FIFO_SIZE = _ipc.FIFO_SIZE
 REGISTERS_NB = _ipc.REGISTERS_NB
