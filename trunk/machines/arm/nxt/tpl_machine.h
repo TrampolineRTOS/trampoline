@@ -26,6 +26,13 @@
 #define TPL_MACHINE_H
 
 #include "../tpl_machine_arm_generic.h"
+#include "flash_loader.h" // for nxt_device_init()
+#include "display.h"
+#include "systick.h"
+#include "nxt_lcd.h"
+#include "nxt_avr.h"
+#include "ecrobot_interface.h"
+#include "buttons.h"
 
 /**
  * Gives the ARM processor mode the normal user tasks
@@ -38,6 +45,18 @@
 typedef struct ARM_CONTEXT *tpl_context;
 
 extern struct ARM_CONTEXT idle_task_context;
+
+/* interrupts functions */
+extern void systick_isr_C(void);
+extern void nxt_motor_isr_C(void);
+extern void spi_isr_C(void);
+extern void uart_isr_C_0(void);
+extern void uart_isr_C_1(void);
+extern void sound_isr_C(void);
+extern void twi_isr_C(void);
+extern void systick_low_priority_C(void);
+extern void udp_isr_C(void);
+extern void i2c_timer_isr_C(void);
 
 #endif /* TPL_MACHINE_H */
 

@@ -8,7 +8,7 @@ Starting Viper2 :
   - pygame -> "dispatch_display = Display(pygame = True)" or "dispatch_display = Display()" (because pygame is enabled by default)  
   - console -> "dispatch_display = Display(pygame = False)"
 
-* Compile Viper2 and Trampoline by "python viper2.py -g -c" (Viper2 check AUTOMATICALLY the python version, modify the include/library path of python in the makefile and make the libraries for Trampoline and Viper2 with "make all")
+* Compile Viper2 and Trampoline by "python viper2.py -g -c" (Viper2 check AUTOMATICALLY the python version, modify the include/library path of python in the makefile and make the libraries for Trampoline and Viper2 with "make all"),  by "python viper2.py -a" if you want to use AUTOSAR and by "python viper2.py -v" if you want the verbose mode 
 
 * Launch Viper2 by "python viper2.py" or by "python viper2.py -v" if you want the verbose mode 
 
