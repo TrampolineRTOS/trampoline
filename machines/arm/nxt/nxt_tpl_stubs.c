@@ -26,13 +26,6 @@
 #include "tpl_machine_interface.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os_kernel.h"
-#include "flash_loader.h" // for nxt_device_init()
-#include "display.h"
-#include "systick.h"
-#include "nxt_lcd.h"
-#include "nxt_avr.h"
-#include "ecrobot_interface.h"
-#include "buttons.h"
 
 extern void tpl_init_machine_generic (void);
 
