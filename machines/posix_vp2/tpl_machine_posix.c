@@ -20,7 +20,7 @@
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 #ifdef WITH_AUTOSAR
 #include "tpl_as_isr_kernel.h"
-#include "tpl_os_kernel.h" /* for tpl_running_obj */
+#include "tpl_os_kernel.h" /* for tpl_running_obj, tpl_call_terminate_process() */
 #include "tpl_as_definitions.h"
 #include "tpl_os_task_kernel.h"
 #include "tpl_os_rez_kernel.h"
@@ -221,10 +221,13 @@ void tpl_shutdown(void)
     }
     */
     
-    vp_ipc_write_reg(&viper, POWER_POWER_REG, (reg_t)(1));
-    vp_ipc_signal_update(&viper, &global_shared_memory, POWER, POWER_REG);
-            
-    exit(0);
+  vp_ipc_write_reg(&viper, POWER_POWER_REG, (reg_t)(1));
+  vp_ipc_signal_update(&viper, &global_shared_memory, POWER, POWER_REG);
+  
+  /* Close (and unlink) the shared memory
+  close_memories(&viper, &global_shared_memory); */
+  
+  exit(0);
 }
 
 /*
@@ -317,60 +320,25 @@ FUNC(void, OS_CODE) tpl_init_context(
 
 void tpl_osek_func_stub( tpl_proc_id task_id )
 {
-    tpl_proc_function func = tpl_stat_proc_table[task_id]->entry;
-    tpl_proc_type     type = tpl_stat_proc_table[task_id]->type;
-#ifdef WITH_AUTOSAR	
-	/*  init the error to no error  */
-	VAR(StatusType, AUTOMATIC) result = E_OK;
-#endif /* WITH_AUTOSAR */
+  tpl_proc_function func = tpl_stat_proc_table[task_id]->entry;
+  tpl_proc_type     type = tpl_stat_proc_table[task_id]->type;
     
     /* Avoid signal blocking due to a previous call to tpl_init_context in a OS_ISR2 context. */
 	tpl_release_task_lock();
     
-    (*func)();
-    
-    if (type == IS_ROUTINE) {
-    #ifdef WITH_AUTOSAR	
-		/* enable interrupts if disabled */
-		if(FALSE!=tpl_get_interrupt_lock_status())  
-	    {
-			tpl_reset_interrupt_lock_status();
-			/*tpl_enable_interrupts(); now ?? or wait until TerminateISR reschedule and interrupts enabled returning previous API service call OR by signal_handler.*/
-			result = E_OS_DISABLEDINT;
-		}
-		/* release resources if held */
-		if( (tpl_kern.running->resources) != NULL ){
-			tpl_release_all_resources(tpl_kern.running_id);
-			result = E_OS_RESOURCE;
-		}
-		
-		PROCESS_ERROR(result);  /* store terminateISR service id before hook ?*/
-    #endif /* WITH_AUTOSAR*/
-		TerminateISR();
-    }
-    else {
-
-	#ifdef WITH_AUTOSAR
-        if(FALSE!=tpl_get_interrupt_lock_status())  
-		{                                           
-			/*enable interrupts :*/
-			tpl_reset_interrupt_lock_status();
-			/*tpl_enable_interrupts(); now ?? or wait until TerminateISR reschedule and interrupts enabled returning previous API service call OR by signal_handler.*/
-		}
-		/* release resources if held */
-		if( (tpl_kern.running->resources) != NULL ){
-			tpl_release_all_resources(tpl_kern.running_id);
-		}
-		
-		/* error hook*/		
-		PROCESS_ERROR(E_OS_MISSINGEND);
-
-		/*terminate the task :*/
-		tpl_terminate_task_service();
-    #endif /* WITH_AUTOSAR */
-        fprintf(stderr, "[OSEK/VDX Spec. 2.2.3 Sec. 4.7] Ending the task without a call to TerminateTask or ChainTask is strictly forbidden and causes undefined behaviour.\n");
-        exit(1);
-    }
+  (*func)();
+  
+  /* Terminate Task/ISR*/
+  if (type == IS_ROUTINE) {
+    tpl_call_terminate_ISR();
+  }
+  else
+  {
+    tpl_call_terminate_task();
+    fprintf(stderr, "[OSEK/VDX Spec. 2.2.3 Sec. 4.7] Ending the task without a call to TerminateTask or ChainTask is strictly forbidden and causes undefined behaviour.\n");
+    exit(1);
+  }
+  
 }
 
 /**

@@ -113,6 +113,18 @@ extern CONSTP2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA)
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
+/**
+ * Check if interrupts are disabled or not by the user
+ *
+ * @retval  TRUE        interrupts disabled
+ * @retval  FALSE       interrupts enabled
+ */
+FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void);
+
+/**
+ * Check if interrupts are disabled or not by the user
+ */
+FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void);
 
 /**
  * Additional non-standard system service to terminate a category 2 interrupt

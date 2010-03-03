@@ -55,10 +55,6 @@ VAR(u32, OS_VAR) tpl_cpt_os_task_lock = 0;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
-/**
- * TODO : document this
- * This function reset the status of interrupt lock by user
- */
 FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
 {
     VAR(tpl_bool, AUTOMATIC) result;
@@ -75,10 +71,6 @@ FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
     return result;
 }
 
-/**
- * TODO : document this
- * This function reset the status of interrupt lock by user
- */
 FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
 {
 	tpl_user_task_lock = FALSE;

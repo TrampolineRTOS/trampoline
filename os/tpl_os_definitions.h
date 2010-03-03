@@ -183,7 +183,12 @@
  */
 #define E_OS_VALUE      8
 
-/*#ifdef WITH_AUTOSAR*/
+/**
+ * @def E_OS_MISSINGEND
+ *
+ * Tasks terminates without a TerminateTask() or ChainTask() call 
+ */
+#define E_OS_MISSINGEND           18
 
 /**
  * @def E_OS_DISABLEDINT
@@ -191,8 +196,6 @@
  * A service of the OS is called inside an interrupt disable/enable pair 
  */
 #define E_OS_DISABLEDINT          19
-
-/*#endif*/
 
 /**************************************
  * Special result code for Trampoline *

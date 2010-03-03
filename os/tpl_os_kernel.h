@@ -403,6 +403,20 @@ FUNC(void, OS_CODE) tpl_get_internal_resource(
 FUNC(void, OS_CODE) tpl_release_internal_resource(
   CONST(tpl_proc_id, AUTOMATIC) task_id);
 
+/**
+ * If a task is ended without calling TerminateTask() :
+ * enable interrupts if needed ; release resources if used ;
+ * call ErrorHook if enabled by the user ; call TerminateTask()
+ */
+FUNC(void, OS_CODE) tpl_call_terminate_task(void);
+
+/**
+ * Ending an ISR2 : enable interrupts if needed ;
+ * release resources if used ; call ErrorHook if enabled
+ * by the user ; call TerminateISR()
+ */
+FUNC(void, OS_CODE) tpl_call_terminate_ISR(void);
+
 #ifdef WITH_OSAPPLICATION
 FUNC(void, OS_CODE) tpl_remove_proc(
   CONST(tpl_proc_id, AUTOMATIC) proc_id);

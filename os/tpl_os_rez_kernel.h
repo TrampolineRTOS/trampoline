@@ -88,21 +88,27 @@ extern VAR(tpl_resource, OS_VAR) res_sched_rez_desc;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
-
-#ifdef WITH_AUTOSAR
+/**
+ * Release all resources of a process (Task/ISR2)
+ *
+ * @param proc_id process's id
+ */
 FUNC(void, OS_CODE) tpl_release_all_resources(
   CONST(tpl_proc_id, AUTOMATIC) proc_id);
-#endif
 
-/*
+/**
  * Getting a resource.
+ *
+ * see #GetResource
  */
 FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
   CONST(tpl_resource_id, AUTOMATIC) res_id);
 
 
-/*
+/**
  * Releasing a resource
+ *
+ * see #ReleaseResource
  */
 FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
   CONST(tpl_resource_id, AUTOMATIC) res);
