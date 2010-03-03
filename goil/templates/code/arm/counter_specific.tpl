@@ -10,10 +10,6 @@ FUNC(void, OS_CODE) $TICK_FUNC$$IT_SOURCE$()
   tpl_status  need_rescheduling = NO_SPECIAL_CODE;
 $COUNTER_LIST$
 
-  /*NXT operating system timer (PIT)*/
-  extern void systick_isr_C(void);
-  systick_isr_C();
-
   if (need_rescheduling == NEED_RESCHEDULING)
   {
     tpl_schedule_from_running();
