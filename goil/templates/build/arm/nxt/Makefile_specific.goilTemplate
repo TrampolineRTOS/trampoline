@@ -2,5 +2,5 @@
 hex: $(EXEC)
 	@arm-elf-objcopy -O binary $(EXEC)  $(EXEC).rxe
 
-EXTRA_FILES_CLEAN += $(EXEC).rxe  %!PROJECT %.map
+EXTRA_FILES_CLEAN += $(EXEC).rxe
 
