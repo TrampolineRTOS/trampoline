@@ -85,8 +85,6 @@ VAR(tpl_resource, OS_VAR) res_sched_rez_desc = {
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-
-#ifdef WITH_AUTOSAR
 /**
  * @internal
  *
@@ -129,7 +127,6 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
     } while (res != NULL);
   }
 }
-#endif /* WITH_AUTOSAR */
 
 /*
  * Getting a resource.

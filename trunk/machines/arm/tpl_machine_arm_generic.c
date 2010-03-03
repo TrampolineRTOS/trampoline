@@ -51,9 +51,6 @@ volatile VAR (u32, OS_VAR) nested_kernel_entrance_counter;
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-STATIC FUNC(void, OS_CODE) tpl_call_missingend(void);
-STATIC FUNC(void, OS_CODE) tpl_call_terminateISR(void);
-
 FUNC (void, OS_CODE) tpl_init_machine_generic (void)
 {
          nested_kernel_entrance_counter = 0;
@@ -137,39 +134,11 @@ FUNC(void, OS_CODE) tpl_init_context(
    * TODO: follow ppc port code
    */
   core_context->r[armreg_lr] = (IS_ROUTINE == the_proc->type) ?
-                (u32)(tpl_call_terminateISR) :
-                (u32)(tpl_call_missingend); /*  lr  */
+                                (u32)(tpl_call_terminate_ISR) :
+                                (u32)(tpl_call_terminate_task); /*  lr  */
 
   /* TODO: initialize stack footprint */
 }
-
-STATIC FUNC(void, OS_CODE) tpl_call_missingend(void)
-{
-
-/* FIXME: reactivate this if required by AUTOSAR
-#ifdef WITH_AUTOSAR
-    CALL_ERROR_HOOK(E_OS_MISSINGEND);
-#endif
-*/
-
-    /**
-     * FIXME: make default behavior more gently if not in development
-     */
-    DISABLE_FIQ();
-    DISABLE_IRQ();
-    while (1);
-}
-
-STATIC FUNC(void, OS_CODE) tpl_call_terminateISR(void)
-{
-    /**
-     * TODO : make it works !! Wrong return code apparently !
-     */
-    
-    TerminateISR();
-
-}
-
 
 FUNC(u8, OS_CODE) tpl_check_stack_footprint (
     CONST(tpl_proc_id, OS_APPL_DATA) proc_id)

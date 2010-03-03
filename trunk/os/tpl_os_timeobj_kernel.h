@@ -171,6 +171,11 @@ extern VAR(tpl_counter, OS_VAR) SystemCounter_counter_desc;
 #include "tpl_memmap.h"
 
 /**
+ * Set a boolean to TRUE to enable counters in tpl_counter_tick()
+ */
+FUNC(void, OS_CODE) tpl_enable_counters(void);
+
+/**
  * @internal
  *
  * tpl_insert_time_obj inserts a timeobject in the time object queue

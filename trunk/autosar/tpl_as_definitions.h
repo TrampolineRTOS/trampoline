@@ -29,13 +29,6 @@
 #define E_OS_ILLEGAL_ADDRESS      17
 
 /**
- * @def E_OS_MISSINGEND
- *
- * Tasks terminates without a TerminateTask() or ChainTask() call 
- */
-#define E_OS_MISSINGEND           18
-
-/**
  * @def E_OS_STACKFAULT
  *
  * A stack fault detected via stack monitoring by the OS

@@ -37,6 +37,16 @@
 #include "tpl_as_definitions.h"
 #endif
 
+/**
+ * tpl_counters_enabled
+ */
+STATIC VAR(tpl_bool, OS_VAR) tpl_counters_enabled = FALSE;
+
+FUNC(void, OS_CODE) tpl_enable_counters(void)
+{
+    tpl_counters_enabled = TRUE;
+}
+
 /*
  * tpl_insert_time_obj
  * insert a time object in the time object queue of the counter
@@ -313,81 +323,81 @@ FUNC(tpl_status, OS_CODE) tpl_counter_tick(
   VAR(tpl_tick, AUTOMATIC)                      new_date;
   VAR(tpl_status, AUTOMATIC)                    need_resched = NO_SPECIAL_CODE;
 
-  /*  inc the current tick value of the counter     */
-  counter->current_tick++;
-  /*  if tickperbase is reached, the counter is inc */
-  if (counter->current_tick == counter->ticks_per_base)
+  if (tpl_counters_enabled)
   {
-    date = counter->current_date;
-	date++;
-    if (date > counter->max_allowed_value)
+    /*  inc the current tick value of the counter     */
+    counter->current_tick++;
+    /*  if tickperbase is reached, the counter is inc */
+    if (counter->current_tick == counter->ticks_per_base)
     {
-      date = 0;
-    }
-    counter->current_date = date;
-    counter->current_tick = 0;
-  
-    TRACE_COUNTER(counter)
-          
-    /*  check if the counter has reached the
-        next alarm activation date                  */
-    t_obj = counter->next_to;
+      date = counter->current_date;
+      date++;
+      if (date > counter->max_allowed_value)
+      {
+        date = 0;
+      }
+      counter->current_date = date;
+      counter->current_tick = 0;
       
-    if ((t_obj != NULL) && (t_obj->date == date))
-    {
-      /*  the date of the counter has reached
-          the date of the next time obj.
-          extract the time object with this date
-          from the list. (if object from schedule
-	      table has been BOOTSTRAP, don't process
-	      the expiry point(s))								*/
-
-	  real_next_to_temp = tpl_remove_timeobj_set(counter);
-
-	  if( real_next_to_temp != NULL)
-	  {
-		  /* save the "real one" next_to (in case of a schedule table,
-		   if the first time object is a BOOTSTRAP, change the next_to's
-		   counter to the first time object "NO BOOTSTRAP" otherwise, the
-		   time object BOOSTRAP is inserted in the list because of its
-		   cycle (after launching actions below). */
-		  t_obj = real_next_to_temp;
-
-		  /*launch time objects' actions*/
-		  do
-		  { 
-			/*  get the next one                        */
+      TRACE_COUNTER(counter)
+      
+      /*  check if the counter has reached the
+       next alarm activation date                  */
+      t_obj = counter->next_to;
+      
+      if ((t_obj != NULL) && (t_obj->date == date))
+      {
+        /*  the date of the counter has reached
+         the date of the next time obj.
+         extract the time object with this date
+         from the list. (if object from schedule
+         table has been BOOTSTRAP, don't process
+         the expiry point(s))								*/
+        
+        real_next_to_temp = tpl_remove_timeobj_set(counter);
+        
+        if( real_next_to_temp != NULL)
+        {
+          /* save the "real one" next_to (in case of a schedule table,
+           if the first time object is a BOOTSTRAP, change the next_to's
+           counter to the first time object "NO BOOTSTRAP" otherwise, the
+           time object BOOSTRAP is inserted in the list because of its
+           cycle (after launching actions below). */
+          t_obj = real_next_to_temp;
+          
+          /*launch time objects' actions*/
+          do
+          { 
+            /*  get the next one                        */
             tpl_time_obj *next_to = t_obj->next_to;
             expire = t_obj->stat_part->expire;
             need_resched |=
-			(TRAMPOLINE_STATUS_MASK & expire(t_obj));
+            (TRAMPOLINE_STATUS_MASK & expire(t_obj));
             /*  rearm the alarm if needed               */
-              
-			if (t_obj->cycle != 0)
-			{
-			  /*  if the cycle is not 0, the new date
-				  is computed by adding the cycle to
-				  the current date                      */
-			  new_date = t_obj->date + t_obj->cycle;
-			  if (new_date > counter->max_allowed_value)
-			  {
-				new_date -= (counter->max_allowed_value + 1);
-			  }
+            
+            if (t_obj->cycle != 0)
+            {
+              /*  if the cycle is not 0, the new date
+               is computed by adding the cycle to
+               the current date                      */
+              new_date = t_obj->date + t_obj->cycle;
+              if (new_date > counter->max_allowed_value)
+              {
+                new_date -= (counter->max_allowed_value + 1);
+              }
               t_obj->date = new_date;  
-                
-			  /*  and the alarm is put back in the alarm
-				  queue of the counter it belongs to    */
-			  tpl_insert_time_obj(t_obj);
-			}
-			else {
-			  t_obj->state = TIME_OBJ_SLEEP;
-			}
-            t_obj = next_to;
               
-		  } while (t_obj != NULL);
-
-	  }
-		
+              /*  and the alarm is put back in the alarm
+               queue of the counter it belongs to    */
+              tpl_insert_time_obj(t_obj);
+            }
+            else {
+              t_obj->state = TIME_OBJ_SLEEP;
+            }
+            t_obj = next_to;
+          } while (t_obj != NULL);
+        }
+      }
     }
   }
   return need_resched;

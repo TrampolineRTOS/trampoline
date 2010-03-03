@@ -35,6 +35,10 @@
 #include "tpl_machine_interface.h"
 #include "tpl_dow.h"
 #include "tpl_trace.h"
+#include "tpl_os_it.h"
+#include "tpl_os_it_kernel.h"
+#include "tpl_os_rez_kernel.h"
+#include "tpl_os_task.h"
 
 #ifdef WITH_AUTOSAR_STACK_MONITORING
 #include "tpl_as_stack_monitor.h"
@@ -1318,7 +1322,7 @@ FUNC(void, OS_CODE) tpl_start_os_service(
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_StartOS)
 	
-application_mode = mode;
+  application_mode = mode;
 
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
   tpl_init_timing_protection();
@@ -1327,6 +1331,8 @@ application_mode = mode;
   TRACE_TPL_INIT()
 
   tpl_init_os(mode);
+    
+  tpl_enable_counters();
 
   /*  Call the startup hook. According to the spec, it should be called
 	  after the os is initialized and before the scheduler is running     */
@@ -1335,7 +1341,7 @@ application_mode = mode;
   /*  Call tpl_schedule to elect the greatest priority task */
   if(tpl_h_prio != -1)
   {
-	tpl_start_scheduling();
+    tpl_start_scheduling();
 
 #ifndef WITH_SYSTEM_CALL
 	if (tpl_kern.need_switch != NO_NEED_SWITCH)
@@ -1368,6 +1374,49 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
 	
   /*  unlock the kernel */
   UNLOCK_KERNEL()
+}
+
+FUNC(void, OS_CODE) tpl_call_terminate_task(void)
+{
+  if(FALSE!=tpl_get_interrupt_lock_status())  
+  {                                           
+      /*enable interrupts :*/
+      tpl_reset_interrupt_lock_status();
+      /*tpl_enable_interrupts(); now ?? or wait until TerminateISR reschedule and interrupts enabled returning previous API service call OR by signal_handler.*/
+  }
+  /* release resources if held */
+  if( (tpl_kern.running->resources) != NULL ){
+      tpl_release_all_resources(tpl_kern.running_id);
+  }
+  
+  /* error hook*/		
+  PROCESS_ERROR(E_OS_MISSINGEND);
+  
+  /*terminate the task :*/
+  TerminateTask();
+}
+
+FUNC(void, OS_CODE) tpl_call_terminate_ISR(void)
+{
+  /*  init the error to no error  */
+  VAR(StatusType, AUTOMATIC) result = E_OK;
+
+  /* enable interrupts if disabled */
+  if(FALSE!=tpl_get_interrupt_lock_status())  
+  {
+    tpl_reset_interrupt_lock_status();
+    /*tpl_enable_interrupts(); now ?? or wait until TerminateISR reschedule and interrupts enabled returning previous API service call OR by signal_handler.*/
+    result = E_OS_DISABLEDINT;
+  }
+  /* release resources if held */
+  if( (tpl_kern.running->resources) != NULL ){
+    tpl_release_all_resources(tpl_kern.running_id);
+    result = E_OS_RESOURCE;
+  }
+  
+  PROCESS_ERROR(result);  /* store terminateISR service id before hook ?*/
+
+  TerminateISR();
 }
 
 #define OS_STOP_SEC_CODE
