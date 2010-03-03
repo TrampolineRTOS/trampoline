@@ -20,6 +20,7 @@
 
 /* Shared memory */
 #define DATA_FILE_PATH "/viper.data.%d"
+#define GLOBAL_DATA_FILE_PATH "/viper.global.data.%d"
 
 /* Semaphores */
 #define VP_SEM_FILE_PATH	  "/viper.sem.vp.%d" /* Viper handshake */

@@ -31,11 +31,11 @@ void create_sh_memory(ipc_t *ipc)
   /* Variables */
   char data_file_path[FILE_PATH_LEN];
   ipc->sh_mem = NULL;
-
+  
 #ifdef DEBUG
   printf("(DD) Viper to trampoline %d : create_sh_memory()\n", ipc->pid);
 #endif
-
+  
   /* Creates shared memory */
   sprintf(data_file_path, DATA_FILE_PATH, ipc->pid);
   ipc->sh_mem_fd = shm_open(data_file_path, (O_CREAT | O_RDWR | O_EXCL), 0600);
@@ -53,11 +53,11 @@ void create_sh_memory(ipc_t *ipc)
     perror("ftruncate()");
     return;
   }
-
+  
 #ifdef DEBUG
   printf("(DD) Viper to trampoline %d : map_sh_mem()\n", ipc->pid);
 #endif
-
+  
   /* Maps shared memory with size of sh_mem */
   map_sh_mem(ipc);
 }
@@ -232,29 +232,51 @@ void tpl_sem_post_fifo_full_sem(ipc_t *ipc)
 
 void tpl_ipc_destroy_instance(ipc_t *ipc)
 {
+  int unlik_return = 0;
+  int munmap_return = 0;
+  char data_file_path[FILE_PATH_LEN];
+  
 #ifdef DEBUG
   printf("(DD) Viper to trampoline %d : tpl_ipc_destroy_instance()\n", ipc->pid);
 #endif
 
-  /* Kills ipc */
-  if(0 != kill(ipc->pid, SIGKILL))
+  /* post_sem */
+  tpl_ipc_ready(ipc);
+  
+  /* Waits trampoline : memory is closed by Trampoline */
+  tpl_ipc_wait_tpl(ipc);
+  
+  /* Unmap shared memory useful ? */
+  munmap_return = munmap(ipc->sh_mem, sizeof(struct st_sh_mem));
+  if(0 != munmap_return)
   {
     fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
-    fprintf(stderr, "trampoline instance is may not be killed\n");
-    perror("viper : kill() ipc");
-    /** We don't stop viper to try killing other ipc instance */
+    perror("munmap()");
+    return;
   }
-
-/* TODO CLOSE READER WRITER SEMAPHORE BEFORE REMOVE SHARED MEMORY */
+  
+  /* Unlink and Remove shared memory */
+  sprintf(data_file_path, DATA_FILE_PATH, ipc->pid);
 #ifdef DEBUG
-  printf("(DD) Viper to trampoline %d : tpl_ipc_destroy_instance - removes shared memory\n", ipc->pid);
+  printf("(DD) Viper to trampoline %d : tpl_ipc_destroy_instance() - Unlink and Remove shared memory\n",ipc->pid);
 #endif
-  /* Removes shared memory */
-  if(0 != close(ipc->sh_mem_fd))
+  unlik_return = shm_unlink(data_file_path);
+  if(-1 == unlik_return)
   {
     fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
-    perror("viper : close(sh_mem_fd)");
+    perror("shm_unlink()");
+    return;
   }
+  
+  /* Kills ipc useful ?
+   if(0 != kill(ipc->pid, SIGKILL))
+   {
+   fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+   fprintf(stderr, "trampoline instance is may not be killed\n");
+   perror("viper : kill() ipc");
+   // We don't stop viper to try killing other ipc instance
+   }
+   */
 
   /* Removes semaphores */
 #ifdef DEBUG
@@ -458,11 +480,11 @@ void create_global_sh_memory(global_ipc_t *global_ipc)
     global_ipc->global_sh_mem = NULL;
     
 #ifdef DEBUG
-    printf("(DD) Viper to trampoline %d : create_global_memory()\n", global_ipc->pid);
+    printf("(DD) Viper to trampoline %d : create_global_sh_memory()\n", global_ipc->pid);
 #endif
     
     /* Creates shared memory */
-    sprintf(data_file_path, DATA_FILE_PATH, global_ipc->pid);
+    sprintf(data_file_path, GLOBAL_DATA_FILE_PATH, global_ipc->pid);
     global_ipc->global_sh_mem_fd = shm_open(data_file_path, (O_CREAT | O_RDWR | O_EXCL), 0600);
     if(-1 == global_ipc->global_sh_mem_fd)
     {
@@ -518,7 +540,7 @@ global_ipc_t *tpl_ipc_create_global_memory(void)
     if(NULL == global_ipc->global_sh_mem)
     {
         fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
-        perror("viper : create_global_memory()");
+        perror("viper : create_global_sh_memory()");
         return NULL;
     }    
     
@@ -530,33 +552,49 @@ global_ipc_t *tpl_ipc_create_global_memory(void)
 
 void tpl_ipc_destroy_global_memory(global_ipc_t *global_ipc)
 {
+  int munmap_return = 0;
+  int unlik_return = 0;
+  char data_file_path[FILE_PATH_LEN];
+
 #ifdef DEBUG
     printf("(DD) Viper to trampoline %d : tpl_ipc_destroy_global_memory()\n", global_ipc->pid);
 #endif
-       
+  
+  /* Unmap global shared memory useful ? */
+  munmap_return = munmap(global_ipc->global_sh_mem, sizeof(struct st_global_sh_mem));
+  if(0 != munmap_return)
+  {
+    fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+    perror("munmap()");
+    return;
+  }
+  
+  /* Unlink and Remove global shared memory */
+  sprintf(data_file_path, GLOBAL_DATA_FILE_PATH, global_ipc->pid);
 #ifdef DEBUG
-    printf("(DD) Viper to trampoline %d : tpl_ipc_destroy_global_memory - removes global shared memory\n", global_ipc->pid);
+  printf("(DD) Viper to trampoline %d : tpl_ipc_destroy_global_memory() - Unlink and Remove global shared memory\n",global_ipc->pid);
 #endif
-    /* Removes shared memory */
-    if(0 != close(global_ipc->global_sh_mem_fd))
+  unlik_return = shm_unlink(data_file_path);
+  if(-1 == unlik_return)
+  {
+    fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+    perror("shm_unlink()");
+    return;
+  }
+     
+  /* Removes semaphore */
+#ifdef DEBUG
+  printf("(DD) Viper to trampoline %d : tpl_ipc_destroy_global_memory - removes semaphore\n", global_ipc->pid);
+#endif
+  if(NULL != global_ipc->global_sem)
+    if(0 != sem_close(global_ipc->global_sem))
     {
-        fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
-        perror("viper : close(global_sh_mem_fd)");
+      fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+      perror("viper : sem_close(global_sem)");
     }
-    
-    /* Removes semaphore */
-#ifdef DEBUG
-    printf("(DD) Viper to trampoline %d : tpl_ipc_destroy_global_memory - removes semaphore\n", global_ipc->pid);
-#endif
-    if(NULL != global_ipc->global_sem)
-        if(0 != sem_close(global_ipc->global_sem))
-        {
-            fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
-            perror("viper : sem_close(global_sem)");
-        }
         
-    /* Frees global_ipc data structure */
-    free(global_ipc);
+  /* Frees global_ipc data structure */
+  free(global_ipc);
 }
 
 void write_global_time(global_ipc_t *global_ipc, time_tt time)

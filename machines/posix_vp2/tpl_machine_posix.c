@@ -224,8 +224,8 @@ void tpl_shutdown(void)
   vp_ipc_write_reg(&viper, POWER_POWER_REG, (reg_t)(1));
   vp_ipc_signal_update(&viper, &global_shared_memory, POWER, POWER_REG);
   
-  /* Close (and unlink) the shared memory
-  close_memories(&viper, &global_shared_memory); */
+  /* Close (and unlink) the shared memory */
+  close_memories(&viper, &global_shared_memory);
   
   exit(0);
 }

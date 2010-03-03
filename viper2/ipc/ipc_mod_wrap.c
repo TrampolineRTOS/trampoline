@@ -3911,6 +3911,7 @@ SWIGEXPORT void SWIG_init(void) {
   SWIG_Python_SetConstant(d, "REGISTER_MASK",SWIG_From_int((int)(0x0000FFFFFFFF)));
   SWIG_Python_SetConstant(d, "REGISTER_MAX",SWIG_From_int((int)(0x000080000000)));
   SWIG_Python_SetConstant(d, "DATA_FILE_PATH",SWIG_FromCharPtr("/viper.data.%d"));
+  SWIG_Python_SetConstant(d, "GLOBAL_DATA_FILE_PATH",SWIG_FromCharPtr("/viper.global.data.%d"));
   SWIG_Python_SetConstant(d, "VP_SEM_FILE_PATH",SWIG_FromCharPtr("/viper.sem.vp.%d"));
   SWIG_Python_SetConstant(d, "TPL_SEM_FILE_PATH",SWIG_FromCharPtr("/viper.sem.tpl.%d"));
   SWIG_Python_SetConstant(d, "IT_ID_SEM_FILE_PATH",SWIG_FromCharPtr("/viper.sem.it_id.%d"));

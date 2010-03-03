@@ -28,7 +28,7 @@ void create_sh_memory(ipc_t *ipc)
 #ifdef DEBUG
   printf("(DD) Trampoline %d : create_sh_memory()\n", getpid());
 #endif
-
+  
   /* Creates shared memory */
   sprintf(data_file_path, DATA_FILE_PATH, ipc->pid);
   ipc->sh_mem_fd = shm_open(data_file_path, (O_RDWR | O_EXCL), 0600);
@@ -45,6 +45,44 @@ void create_sh_memory(ipc_t *ipc)
 
   /* Map shared memory */
   map_sh_mem(ipc);
+}
+
+void close_memories(ipc_t *ipc, global_ipc_t *global_ipc)
+{
+  int munmap_return = 0;
+  
+#ifdef DEBUG
+  printf("(DD) Trampoline %d : close_memories() unmap memories from instances...\n", getpid());
+#endif  
+  
+  /* Semaphore to wait that viper is almost closed */
+  vp_ipc_wait_vp(ipc); 
+  
+  /* Unmap shared memory useful ? */
+  munmap_return = munmap(ipc->sh_mem, sizeof(struct st_sh_mem));
+  if(0 != munmap_return)
+  {
+    fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+    perror("munmap()");
+    return;
+  }
+
+  /* Unmap global shared memory useful ? */
+  munmap_return = munmap(global_ipc->global_sh_mem, sizeof(struct st_sh_mem));
+  if(0 != munmap_return)
+  {
+    fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+    perror("munmap()");
+    return;
+  }
+  
+  /* Semaphore to post to Viper to say the shared memory is close (and unliked) from here */
+  if(0 != sem_post(ipc->tpl_sem))
+  {
+    fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+    perror("trampoline : sem_post(viper)");
+  }
+  
 }
 
 void vp_ipc_signal_update(ipc_t *ipc, global_ipc_t *global_ipc, dev_id_t dev_id, mask_t mask)
@@ -242,7 +280,7 @@ void create_global_sh_memory(global_ipc_t *global_ipc)
 #endif
     
     /* Creates shared memory */
-    sprintf(data_file_path, DATA_FILE_PATH, global_ipc->pid);
+    sprintf(data_file_path, GLOBAL_DATA_FILE_PATH, global_ipc->pid);
     global_ipc->global_sh_mem_fd = shm_open(data_file_path, (O_RDWR | O_EXCL), 0600);
     if(-1 == global_ipc->global_sh_mem_fd)
     {
