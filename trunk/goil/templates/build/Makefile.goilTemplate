@@ -91,7 +91,8 @@ end foreach
 %
 %
 if USELINKSCRIPT then
-%LDFLAGS += -T % !PROJECT %/% !LINKSCRIPT % -Map % !PROJECT %.map%
+%LDFLAGS += -T % !PROJECT %/% !LINKSCRIPT % -Map % !PROJECT %.map
+EXTRA_FILES_CLEAN += %!PROJECT %.map%
 end if
 %
 # ASFLAGS: flags used for the assembly process (if required)
