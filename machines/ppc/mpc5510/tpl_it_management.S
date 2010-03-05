@@ -68,6 +68,7 @@ tpl_init_interrupts:
   ori   r11,r11,TPL_LOW(INTC_CPR_PRC0)
   li	r12,0x0
   stw   r12,0(r11)
+  blr
   
 
   .global tpl_trigger_sw_it  

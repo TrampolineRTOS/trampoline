@@ -202,7 +202,7 @@ tpl_kernel_mp:
  * this is known by checking the trusted_counter field
  * in the process dynamic descriptor. If is is > 0
  * the the process is trusted. In this case, the memory
- * protection stay unabled.
+ * protection stay disabled.
  *
  * no parameter and no return value
  *
@@ -224,8 +224,10 @@ tpl_user_mp:
    * get the running process dynamic descriptor
    * pointer from the kernel stack.
    */
-  lwz   r11,KS_KERN_PTR(r1)
+  lis   r11,TPL_HIG(tpl_kern)
+  ori   r11,r11,TPL_LOW(tpl_kern)
   lwz   r12,12(r11)
+  /* Get the trusted counter */
   lwz   r11,4(r12)
   cmpwi r11,0
   bgt   trusted_proc
@@ -248,7 +250,7 @@ tpl_user_mp:
    */
 trusted_proc:
     blr
-    
+
 /**
  * Set the memory protection for a process
  *
@@ -282,18 +284,18 @@ tpl_set_process_mp:
   /* get the start address of private data region         */
   lwz     r3,0(r11)
   /* set the start address                                */
-  stw     r3,MPU_RGD1_start(r11)
+  stw     r3,MPU_RGD1_start(r12)
   /* get the end address                                  */
   lwz     r3,4(r11)
   /* set the end address                                  */
-  stw     r3,MPU_RGD1_end(r11)
+  stw     r3,MPU_RGD1_end(r12)
   /* set the access rights                                */
   lis     r3,TPL_HIG(var_rgn_access)
   ori     r3,r3,TPL_LOW(var_rgn_access)
-  stw     r3,MPU_RGD1_access(r11)
+  stw     r3,MPU_RGD1_access(r12)
   /* validate the descriptor                              */
   li      r3,1
-  stw     r3,MPU_RGD1_pid(r11)
+  stw     r3,MPU_RGD1_pid(r12)
   
   /*
    * Configuration for the stack access of the process
@@ -301,18 +303,18 @@ tpl_set_process_mp:
   /* get the start address of stack data region           */
   lwz     r3,8(r11)
   /* set the start address                                */
-  stw     r3,MPU_RGD2_start(r11)
+  stw     r3,MPU_RGD2_start(r12)
   /* get the end address                                  */
   lwz     r3,12(r11)
   /* set the end address                                  */
-  stw     r3,MPU_RGD2_end(r11)
+  stw     r3,MPU_RGD2_end(r12)
   /* set the access rights                                */
   lis     r3,TPL_HIG(stack_rgn_access)
   ori     r3,r3,TPL_LOW(stack_rgn_access)
-  stw     r3,MPU_RGD2_access(r11)
+  stw     r3,MPU_RGD2_access(r12)
   /* validate the descriptor                              */
   li      r3,1
-  stw     r3,MPU_RGD2_pid(r11)
+  stw     r3,MPU_RGD2_pid(r12)
   
 #ifdef WITH_OSAPPLICATION
   /*
@@ -322,18 +324,18 @@ tpl_set_process_mp:
   /* get the start address of OS Application data region  */
   lwz     r3,16(r11)
   /* set the start address                                */
-  stw     r3,MPU_RGD3_start(r11)
+  stw     r3,MPU_RGD3_start(r12)
   /* get the end address                                  */
   lwz     r3,20(r11)
   /* set the end address                                  */
-  stw     r3,MPU_RGD3_end(r11)
+  stw     r3,MPU_RGD3_end(r12)
   /* set the access rights                                */
   lis     r3,TPL_HIG(var_rgn_access)
   ori     r3,r3,TPL_LOW(var_rgn_access)
-  stw     r3,MPU_RGD3_access(r11)
+  stw     r3,MPU_RGD3_access(r12)
   /* validate the descriptor                              */
   li      r3,1
-  stw     r3,MPU_RGD3_pid(r11)    
+  stw     r3,MPU_RGD3_pid(r12)    
 #endif
 
 finished:
