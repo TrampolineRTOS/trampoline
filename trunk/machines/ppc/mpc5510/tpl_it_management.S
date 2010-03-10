@@ -58,11 +58,21 @@ tpl_init_interrupts:
    * setup the software interrupt for testing
    */
   /* first the priority */
-  lis	r11,TPL_HIG(INTC_PSR)
-  ori   r11,r11,TPL_LOW(INTC_PSR)
-  li	r12,0x1
-  slwi  r12,r12,24
-  stw   r12,0(r11)
+  lis	 r11,TPL_HIG(INTC_PSR)
+  ori  r11,r11,TPL_LOW(INTC_PSR)
+  li	 r12,0x1
+  slwi r12,r12,24
+  stw  r12,0(r11)
+
+  /*
+   * setup the IRQ3 interrupt of the GPIO
+   */
+  lis	 r11,TPL_HIG(INTC_PSR)
+  ori  r11,r11,TPL_LOW(INTC_PSR)
+  li	 r12,0x1
+  slwi r12,r12,24
+  stw  r12,56(r11)
+
   /* set the current priority of the core to 0 */
   lis	r11,TPL_HIG(INTC_CPR_PRC0)
   ori   r11,r11,TPL_LOW(INTC_CPR_PRC0)
@@ -70,6 +80,8 @@ tpl_init_interrupts:
   stw   r12,0(r11)
   blr
   
+
+
 
   .global tpl_trigger_sw_it  
 tpl_trigger_sw_it:
