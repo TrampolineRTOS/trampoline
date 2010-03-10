@@ -1,9 +1,19 @@
 #include "tpl_os.h"
+#include "GPIO_driver.h"
 
 #define APP_Task_iamsolonely_START_SEC_CODE
 #include "tpl_memmap.h"
 FUNC(int, OS_APPL_CODE) main(void)
 {
+    SetOutputLine(PORT_C,11);
+    SetInputLine(PORT_A,3);
+    EnableIRQ3();
+
+/*    while (1)
+    {
+      char button = ReadLine(PORT_A,3);
+      WriteLine(PORT_C,11,button);
+    } */
     StartOS(OSDEFAULTAPPMODE);
     return 0;
 }
@@ -56,7 +66,7 @@ FUNC(void,AUTOMATIC) tpl_trigger_sw_it(void);
 TASK(iamsolonely)
 {
     titi = 1;
-	tpl_trigger_sw_it();
+	while(1);
 	TerminateTask();
 }
 #define APP_Task_iamsolonely_STOP_SEC_CODE
