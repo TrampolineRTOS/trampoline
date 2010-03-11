@@ -32,6 +32,7 @@
   .equ INTC_addr, 0xfff48000
   .equ INTC_CPR_PRC0,   INTC_addr +  0x8
   .equ INTC_IACKR_PRC0, INTC_addr + 0x10  /* MPC551x: P0 Interrupt Acknowledge @  */
+  .equ INTC_EOIR_PRC0,  INTC_addr + 0x18
   .equ INTC_SSCIR,      INTC_addr + 0x20
   .equ INTC_PSR,        INTC_addr + 0x40
   .equ spr_IVPR, 63
@@ -79,7 +80,9 @@ tpl_init_interrupts:
   li	r12,0x0
   stw   r12,0(r11)
   blr
-  
+  .type tpl_init_interrupts,@function
+  .size tpl_init_interrupts,$-tpl_init_interrupts
+
 
 
 
@@ -91,7 +94,10 @@ tpl_trigger_sw_it:
   slwi  r12,r12,24
   stw   r12,0(r11)
   blr
-  
+  .type tpl_trigger_sw_it,@function
+  .size tpl_trigger_sw_it,$-tpl_trigger_sw_it
+
+ 
   .global tpl_ack_sw_it
 tpl_ack_sw_it:
   lis	r11,TPL_HIG(INTC_SSCIR)
@@ -100,9 +106,16 @@ tpl_ack_sw_it:
   slwi  r12,r12,24
   stw   r12,0(r11)
   blr
+  .type tpl_ack_sw_it,@function
+  .size tpl_ack_sw_it,$-tpl_ack_sw_it
   
+  .global tpl_ack_irq
+tpl_ack_irq:
+  lis r11,TPL_HIG(INTC_EOIR_PRC0)
+  ori	r11,r11,TPL_LOW(INTC_EOIR_PRC0)
+  li  r12,0
+  stw r12,0(r11)
   blr
-  
-  .type tpl_init_interrupts,@function
-  .size tpl_init_interrupts,$-tpl_init_interrupts
+  .type tpl_ack_irq,@function
+  .size tpl_ack_irq,$-tpl_ack_irq
 

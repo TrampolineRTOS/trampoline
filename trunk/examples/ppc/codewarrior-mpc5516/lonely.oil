@@ -47,7 +47,26 @@ CPU test {
         USEFLOAT = FALSE;
     };
     
+	TASK gogo {
+	    PRIORITY = 6;
+		AUTOSTART = FALSE;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+		USEFLOAT = FALSE;
+	};
+	
+	ALARM rungogo {
+	    AUTOSTART = TRUE {
+		  ALARMTIME = 1;
+		  CYCLETIME = 1;
+		};
+		ACTION = ACTIVATETASK {
+		  TASK = gogo;
+		};
+		COUNTER = SystemCounter;
+	};
+	
     COUNTER SystemCounter {
-        SOURCE = it_timer_1;
+        SOURCE = IRQ3;
     };
 };

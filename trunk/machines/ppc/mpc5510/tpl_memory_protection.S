@@ -109,8 +109,11 @@
 
 /*
  * Executable region access right
+ * Here, the region is rx in User mode
+ * and rxw in supervisor mode
  */
-#define exe_rgn_access  0x0000001D
+/* #define exe_rgn_access  0x0000001D */
+#define exe_rgn_access  0x00000005
 
 #if WITH_MEMORY_PROTECTION == YES
 

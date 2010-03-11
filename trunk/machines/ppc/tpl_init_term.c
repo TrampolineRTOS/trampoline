@@ -102,8 +102,11 @@ STATIC FUNC(void, OS_CODE) tpl_call_terminateISR(void);
 extern FUNC(void, OS_CODE) tpl_init_regs(void);
 extern FUNC(void, OS_CODE) tpl_init_interrupts(void);
 extern FUNC(void, OS_CODE) tpl_init_mp(void);
+extern FUNC(void, OS_CODE) tpl_user_mode(void);
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
+
+#define USER_MODE 0x4000
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -138,7 +141,7 @@ FUNC(void, OS_CODE) tpl_init_context(
 	   from the system call. So it is set to the entry point of the task
 	*/
   ic->srr0 = (unsigned long)proc->entry;
-  ic->srr1 = tpl_msr_start_value | EE_BIT_1;
+  ic->srr1 = tpl_msr_start_value | EE_BIT_1 | USER_MODE;
   /*  The stack pointer is computed by adding the base address of
       the stack to its size and by substracting the space needed
       for the linkage area and 12 bytes that are pushed by the 
@@ -272,6 +275,7 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
   tpl_init_regs();
   tpl_init_interrupts();
   tpl_init_mp();
+/*  tpl_user_mode(); */
 /*  tpl_init_tick(); */
 }
 
