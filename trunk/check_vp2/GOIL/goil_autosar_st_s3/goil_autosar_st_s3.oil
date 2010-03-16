@@ -1,0 +1,175 @@
+/**
+ * @file goil_autosar_st_s3.oil
+ *
+ * @section desc File description
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline Test Suite
+ *
+ * Trampoline Test Suite is copyright (c) IRCCyN 2005-2007
+ * Trampoline Test Suite is protected by the French intellectual property law.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; version 2
+ * of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+
+OIL_VERSION = "2.5" : "goil_autosar_st_s3" ;
+
+IMPLEMENTATION trampoline {
+
+	OS {
+		ENUM [EXTENDED] STATUS;
+	};
+	
+    TASK {
+        UINT32 STACKSIZE = 32768 ;
+        UINT32 [1..10] PRIORITY = 1 ;
+    } ;
+};
+
+ CPU test {
+
+    OS config {
+        STATUS = STANDARD;
+        TRAMPOLINE_BASE_PATH = "../../..";	
+	};
+
+    APPMODE std {};
+
+	TASK t1 {
+		AUTOSTART = TRUE { APPMODE = std ; } ;
+		PRIORITY = 1;
+		ACTIVATION = 1;
+		SCHEDULE = FULL;
+		EVENT = Event1;
+	};
+	COUNTER Software_Counter{
+		MAXALLOWEDVALUE = 10;
+		TICKSPERBASE = 1;
+		MINCYCLE = 4;
+		TYPE = SOFTWARE;
+	};
+	SCHEDULETABLE sched1 {
+		COUNTER = Software_Counter;
+		AUTOSTART = FALSE ;
+		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+		PERIODIC = TRUE;
+		LENGTH = 10;
+		EXPIRY_POINT sched1_ep1 {
+			OFFSET = 0;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
+		};
+	};
+	SCHEDULETABLE sched2 {
+		COUNTER = Software_Counter;
+		AUTOSTART = FALSE ;
+		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+		PERIODIC = TRUE;
+		LENGTH = 6;
+		EXPIRY_POINT sched2_ep1 {
+			OFFSET = 3;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
+		};
+		EXPIRY_POINT sched2_ep2 {
+			OFFSET = 6;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
+		};
+	};
+	SCHEDULETABLE sched3 {
+		COUNTER = Software_Counter;
+		AUTOSTART = FALSE ;
+		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+		PERIODIC = TRUE;
+		LENGTH = 11;
+		EXPIRY_POINT sched3_ep1 {
+			OFFSET = 4;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
+		};
+		EXPIRY_POINT sched3_ep2 {
+			OFFSET = 8;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
+		};
+	};
+	SCHEDULETABLE sched4 {
+		COUNTER = Software_Counter;
+		AUTOSTART = FALSE ;
+		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+		PERIODIC = TRUE;
+		LENGTH = 24;
+		EXPIRY_POINT sched4_ep1 {
+			OFFSET = 10;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
+		};
+		EXPIRY_POINT sched4_ep2 {
+			OFFSET = 20;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
+		};
+	};
+	SCHEDULETABLE sched5 {
+		COUNTER = Software_Counter;
+		AUTOSTART = FALSE ;
+		LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+		PERIODIC = TRUE;
+		LENGTH = 33;
+		EXPIRY_POINT sched5_ep1 {
+			OFFSET = 11;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
+		};
+		EXPIRY_POINT sched5_ep2 {
+			OFFSET = 22;
+			ACTION = ACTIVATETASK {
+				TASK = t1;
+			};
+		};
+	};
+	EVENT Event1{
+		MASK = AUTO;
+	};
+	APPLICATION app {
+		TASK = t1;
+		COUNTER = Software_Counter;
+		SCHEDULETABLE = sched1;
+		SCHEDULETABLE = sched2;
+		SCHEDULETABLE = sched3;
+		SCHEDULETABLE = sched4;
+		SCHEDULETABLE = sched5;
+	};
+	
+};
+
+/* End of file goil_autosar_st_s3.oil */

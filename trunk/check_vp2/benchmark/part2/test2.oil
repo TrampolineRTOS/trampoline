@@ -1,0 +1,171 @@
+OIL_VERSION = "2.5" : "test" ;
+
+IMPLEMENTATION trampoline {
+};
+
+CPU test {
+
+    OS config {
+        STATUS = STANDARD;
+    } ;
+
+    APPMODE std {
+    };
+
+	EVENT EV2 {
+		MASK = AUTO;
+	};
+
+	EVENT EV3 {
+		MASK = AUTO;
+	};
+
+    TASK step1 {
+        PRIORITY = 13;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        USRSTACKSIZE = 256;
+		SYSSTACKSIZE = 64;
+    };
+
+	TASK pool1 {
+        PRIORITY = 12;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+		EVENT = EV3;
+        SCHEDULE = FULL;
+        USRSTACKSIZE = 256;
+		SYSSTACKSIZE = 64;
+    };
+
+	TASK pool2 {
+        PRIORITY = 14;
+        AUTOSTART = FALSE;
+        ACTIVATION = 2;
+        SCHEDULE = FULL;
+        USRSTACKSIZE = 256;
+		SYSSTACKSIZE = 128;
+    };
+
+	TASK pool4 {
+        PRIORITY = 8;
+        AUTOSTART = FALSE;
+        ACTIVATION = 2;
+		EVENT = EV2;
+        SCHEDULE = FULL;
+        USRSTACKSIZE = 256;
+		SYSSTACKSIZE = 128;
+    };
+
+	TASK pool5 {
+        PRIORITY = 7;
+        AUTOSTART = FALSE;
+        ACTIVATION = 2;
+        SCHEDULE = FULL;
+        USRSTACKSIZE = 256;
+		SYSSTACKSIZE = 64;
+    };
+
+    COUNTER compteur {
+      TICKSPERBASE = 1;
+      MAXALLOWEDVALUE = 65535;
+      MINCYCLE = 1;
+    };
+	 
+	
+    ALARM ZeAlarm {
+      COUNTER = compteur;
+      ACTION = ACTIVATETASK {
+        TASK = step1;
+      };
+      AUTOSTART = TRUE {
+        ALARMTIME = 1000;
+        CYCLETIME = 1000;
+        APPMODE = std;
+      };
+    };
+
+	ALARM Alarm1 {
+      COUNTER = compteur;
+	  ACTION = ACTIVATETASK {
+	    TASK = pool1;
+	  }; 
+	  AUTOSTART = FALSE;
+	  
+    };
+
+	ALARM Alarm2 {
+      COUNTER = compteur;
+	  ACTION = ACTIVATETASK {
+	    TASK = pool1;
+	  }; 
+	  AUTOSTART = FALSE;
+    };
+
+	ALARM Alarm3 {
+      COUNTER = compteur;
+	  ACTION = SETEVENT {
+	  	TASK = pool1;
+	    EVENT = EV3;
+	  }; 
+	  AUTOSTART = FALSE;
+    };
+
+	ALARM Alarm4 {
+      COUNTER = compteur;
+	  ACTION = ALARMCALLBACK {
+      ALARMCALLBACKNAME = "testCallBack";
+	  }; 
+	  AUTOSTART = FALSE;
+    };
+
+	ALARM Alarm5 {
+      COUNTER = compteur;
+	  ACTION = ACTIVATETASK {
+	    TASK = pool4;
+	  }; 
+	  AUTOSTART = FALSE;
+    };
+
+	ALARM Alarm6 {
+      COUNTER = compteur;
+	  ACTION = ACTIVATETASK {
+	    TASK = pool5;
+	  }; 
+	  AUTOSTART = FALSE;
+    };
+
+	ALARM Alarm7 {
+      COUNTER = compteur;
+	  AUTOSTART = FALSE;
+	  ACTION = ACTIVATETASK {
+	    TASK = pool2;
+	  };
+    };
+
+	ALARM Alarm8 {
+      COUNTER = compteur;
+	  ACTION = ACTIVATETASK {
+	    TASK = step1;
+	  }; 
+	  AUTOSTART = FALSE;
+    };
+
+	ALARM Alarm9 {
+      COUNTER = compteur;
+	  ACTION = ACTIVATETASK {
+	    TASK = step1;
+	  }; 
+	  AUTOSTART = FALSE;
+    };
+
+	ALARM Alarm10 {
+      COUNTER = compteur;
+	  ACTION = ACTIVATETASK {
+	    TASK = step1;
+	  }; 
+	  AUTOSTART = FALSE;
+    };
+
+};
