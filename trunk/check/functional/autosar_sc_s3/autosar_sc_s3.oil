@@ -1,0 +1,99 @@
+/**
+ * @file autosar_sc_s3.oil
+ *
+ * @section desc File description
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline Test Suite
+ *
+ * Trampoline Test Suite is copyright (c) IRCCyN 2005-2007
+ * Trampoline Test Suite is protected by the French intellectual property law.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; version 2
+ * of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+
+OIL_VERSION = "2.5" : "autosar_sc_s3" ;
+
+IMPLEMENTATION trampoline {
+
+	OS {
+		ENUM [EXTENDED] STATUS;
+	};
+	
+    TASK {
+        UINT32 STACKSIZE = 32768 ;
+        UINT32 [1..10] PRIORITY = 1 ;
+    } ;
+};
+
+ CPU test {
+
+    OS config {
+        STATUS = EXTENDED;
+		APP_SRC = "autosar_sc_s3.c";
+		APP_SRC = "task1_instance.c";
+		APP_SRC = "error_instance1.c";
+		APP_SRC = "error_instance2.c";
+		APP_SRC = "error_instance3.c";
+		APP_SRC = "error_instance4.c";
+		APP_SRC = "error_instance5.c";
+		APP_SRC = "error_instance6.c";
+		APP_SRC = "../config.c";
+        TRAMPOLINE_BASE_PATH = "../../..";
+        APP_NAME = "autosar_sc_s3_exe";
+		CFLAGS = "-I../../embUnit";
+        CFLAGS  = "-Werror -Wall -pedantic";
+        CFLAGS  = "-Wmissing-field-initializers";
+		LDFLAGS = "-L../../lib -lembUnit";
+		SHUTDOWNHOOK = TRUE;
+		ERRORHOOK = TRUE;
+	};
+
+    APPMODE std {};
+
+    TASK t1 {
+        AUTOSTART = TRUE { APPMODE = std ; } ;
+        PRIORITY = 1;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+	
+	COUNTER Hardware_Counter{
+		MAXALLOWEDVALUE = 3;
+		TICKSPERBASE = 2;
+		MINCYCLE = 1;
+		TYPE = HARDWARE {};
+	};
+	
+	COUNTER Software_Counter{
+		MAXALLOWEDVALUE = 3;
+		TICKSPERBASE = 2;
+		MINCYCLE = 1;
+		TYPE = SOFTWARE;
+	};
+		
+};
+
+
+
+/* End of file autosar_sc_s3.oil */
