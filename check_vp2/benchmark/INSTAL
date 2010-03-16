@@ -1,0 +1,28 @@
+How to do Benchmark with c166
+=============================
+
+Prerequisite
+============
+
+You need to install keil uVision3, an evaluation version is available on keil website.
+After open keil project and configure the monitor in keil "Project" "Options for Target" "Debug" "Settings"
+ 
+1. Compilation
+--------------
+
+You need to build the projects part1 and part2 then launch Compilation.bat in c166\
+
+
+2. Create executable file for automatique benchmark
+---------------------------------------------------
+
+Install Dev-C++ available on bloodshed website
+In serial\ build the project serie.dev
+
+
+3. Start Benchmark
+------------------
+
+You just have to put your card in programmation mode and launch the file c166\Start_benchmark.bat
+after the first part put back the card in programmation mode.
+A file benchmark.csv was created in c166\. This file can be open by a spreadsheet
