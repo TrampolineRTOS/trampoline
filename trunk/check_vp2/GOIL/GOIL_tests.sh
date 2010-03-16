@@ -11,6 +11,8 @@
 #		 delete testSequences file and do the loops for each directory (which contains defaultAppWorkstation.oil) #ls -d
 ######
 
+GOILRESULT=`pwd`
+
 if [ "$1" = "clean" ]
 then
 	for i in `cat GOIL_testSequences.txt`
@@ -26,7 +28,7 @@ then
 		python2.6 viper2.py --clean
 		
 		#come back to the functional_tests.sh file
-		cd ../check/GOIL/
+		cd $GOILRESULT
 	done
 
 	#Delete results.log
@@ -79,10 +81,10 @@ else
 		
 		#compile
 		python2.6 viper2.py --clean
-		python2.6 viper2.py -g -c $autosar_flag >> ../check/GOIL/GOIL_results.log 
+		python2.6 viper2.py -g -c $autosar_flag >> ${GOILRESULT}/GOIL_results.log 
 		
 		#come back to the GOIL_tests.sh file
-		cd ../check/GOIL/
+		cd $GOILRESULT
 	
 	done
 	echo "GOIL tests done."

@@ -60,7 +60,7 @@ scheduler = Scheduler(speedCoeff = 1)
 ###############################################################################
 allEcus = [
   Ecu(
-    "../check/functional/SEQUENCE/SEQUENCE_exe",
+    "../check_vp2/functional/SEQUENCE/SEQUENCE_exe",
     scheduler,
     [
       Timer("TIMER0", 0, type = timer.AUTO, delay = 10),
