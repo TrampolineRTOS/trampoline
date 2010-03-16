@@ -11,6 +11,8 @@
 #		 delete testSequences file and do the loops for each directory (which contains ${i}.oil) #ls -d
 ######
 
+FUNCTIONALCHECK=`pwd`
+
 if [ "$1" = "clean" ]
 then
 	for i in `cat functional_testSequences.txt`
@@ -28,7 +30,7 @@ then
 		python2.6 viper2.py --clean
 		
 		#come back to the functional_tests.sh file
-		cd ../check/functional/
+		cd $FUNCTIONALCHECK
 
 	done
 
@@ -59,7 +61,7 @@ else
 	export CFLAGS=
 	python2.6 viper2.py --clean
 	python2.6 viper2.py -g -c
-	cd ../check/functional/
+	cd $FUNCTIONALCHECK
 		
 	# Build and execute all the tests
 	for i in `cat functional_testSequences.txt` #tasks_s1_full tasks_s1_non tasks_s2 tasks_s3 tasks_s4 #
@@ -85,10 +87,10 @@ else
 		python2.6 viper2.py -g -c -nodep $autosar_flag
 		
 		#launch viper2 and Trampoline
-		python2.6 viper2.py >> ../check/functional/functional_results.log
+		python2.6 viper2.py >> ${FUNCTIONALCHECK}/functional_results.log
 		
 		#come back to the functional_tests.sh file
-		cd ../check/functional/
+		cd $FUNCTIONALCHECK
 			
 	done
 	echo "Functional tests done."
