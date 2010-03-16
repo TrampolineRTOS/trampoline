@@ -1,5 +1,0 @@
-Les benchmark sur le C166 marche intégralement.
-
-Les benchmark sur l'avr doit fonctionner sauf que l'on ne voit les printf.
-
-Les benchmark sur le PPC seul les fichiers de caractéristiques (benchmark.h et benchmarkPPC.c) ont été configurés. 
