@@ -1,5 +1,4 @@
 target remote 192.168.5.168:2001
-file /home/jilias/workspace-arm/trampoline/examples/arm-simtec/trampoline
 load
 
 define xipc

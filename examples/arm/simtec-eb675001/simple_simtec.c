@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "tpl_os.h"
-#include "tpl_os_generated_configuration.h"
 #include "uart.h"
 
 #define TRACE(val) flags[count++] = val

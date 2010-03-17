@@ -26,15 +26,14 @@ CPU test {
     CFLAGS  = "-Wall -pedantic -Wformat -std=c99";
     CFLAGS  = "-Wmissing-field-initializers";
 	CFLAGS  = "-DSIMTEC_DEFAULT_DRIVERS"; // activate default SIMTEC drivers, change this to use your own ones
-	CFLAGS  = "-I userdrivers -I ../../machines/arm/simtec-eb675001/default_drivers";
+	CFLAGS  = "-I userdrivers -I ../../../machines/arm/simtec-eb675001/default_drivers";
     ASFLAGS = "-g"; // assembler debug informations
     LDFLAGS = "-g"; // linker debug informations
-    LDFLAGS = "--script=../../machines/arm/simtec-eb675001/ldscript.bdi2000"; // linker configuration script
-    LDFLAGS = "-L ../../machines/arm/simtec-eb675001/default_drivers -lsimtec-dfltdrv-dbg"; // include default SIMTEC drivers
+    LDFLAGS = "--script=../../../machines/arm/simtec-eb675001/ldscript.bdi2000"; // linker configuration script
+    LDFLAGS = "-L ../../../machines/arm/simtec-eb675001/default_drivers -lsimtec-dfltdrv-dbg"; // include default SIMTEC drivers
     LDFLAGS = "-Map trampoline_memory.map"; // linker generates a memory map file
     LDFLAGS = "-L userdrivers -lsimtec-userdrivers-dbg"; // include user SIMTEC drivers (for UART)
-	PROTECTIONHOOK = FALSE;
-	SCALABILITYCLASS = AUTO;
+	PROTECTIONHOOK = FALSE;   
 	STACKMONITORING = FALSE;
     } ;
 
@@ -70,7 +69,7 @@ CPU test {
         ACTIVATION = 1;
         SCHEDULE = FULL;
     };
-
+/*
     ISR it1 {
         SOURCE = TIMER1;
         PRIORITY = 50;
@@ -82,5 +81,5 @@ CPU test {
         PRIORITY = 51;
         CATEGORY = 2;
     };
-      
+      */
 } ;

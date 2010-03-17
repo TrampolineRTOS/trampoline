@@ -6,6 +6,7 @@
 #include "tpl_memmap.h"
 %
 
+if exists INTERRUPTSOURCES then
 foreach INTERRUPTSOURCES prefixedby interrupt_ do
   let counterFct := emptylist
   foreach COUNTERS prefixedby counter_ do
@@ -26,6 +27,16 @@ FUNC(void, OS_CODE) tpl_tick_% ! interrupt_NAME %()
 %
     after %
   
+  check_buttons_period++;
+  if (check_buttons_period == 10)
+  {
+    /* Call check_buttons_status() (via interrupts)
+     * which will check if buttons are pressed or not.
+     */
+     *AT91C_AIC_ISCR = (1 << AT91C_PERIPHERAL_ID_IRQ0);
+     check_buttons_period = 0;
+  }
+
   if (need_rescheduling == NEED_RESCHEDULING)
   {
     tpl_schedule_from_running();
@@ -42,6 +53,9 @@ FUNC(void, OS_CODE) tpl_tick_% ! interrupt_NAME %()
 %
   end foreach
 end foreach
+
+end if
 %
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
+
