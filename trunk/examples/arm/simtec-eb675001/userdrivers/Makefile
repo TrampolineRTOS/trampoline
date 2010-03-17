@@ -3,7 +3,9 @@ AR=arm-none-eabi-ar
 RANLIB=arm-none-eabi-ranlib
 CC=arm-none-eabi-gcc -c
 
-CFLAGS += -mcpu=arm7tdmi -I. -I../../../machines/arm/simtec-eb675001/default_drivers
+TRAMPOLINE_ROOT = ../../../..
+
+CFLAGS += -mcpu=arm7tdmi -I. -I$(TRAMPOLINE_ROOT)/machines/arm/simtec-eb675001/default_drivers
 
 CFLAGS_DEBUG = $(CFLAGS) -g
 ASFLAGS_DEBUG = $(ASFLAGS) -g
