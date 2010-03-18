@@ -1736,7 +1736,7 @@ routine setEnvData ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
   addStringValue !?cfg !lstringWith[!"PROJECT"] ![projectName[] lastPathComponent];
   addStringValue !?cfg !lstringWith[!"PROJECTPATH"] !projectName[];
   addBoolValue !?cfg !lstringWith[!"USEBUILDFILE"] ![option goil_options.generate_makefile value];
-  
+  addBoolValue !?cfg !lstringWith[!"USELOGFILE"] ![option goil_options.generate_log value];
   #
   # Build a list of os, autosar and com files
   #

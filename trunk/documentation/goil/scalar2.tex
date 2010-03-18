@@ -94,6 +94,9 @@
 \lineiii{USEINTERRUPTTABLE}
 {boolean}
 {true if the wrapping of interrupt vector to glue functions used to increment a counter or to activate an ISR2 (for instance) should be generated. The actual code generation is up to the port.} 
+\lineiii{USELOGFILE}
+{boolean}
+{true if goil generates a log file, ie option \programopt{l} or \longprogramopt{logfile} is given.}
 \lineiii{USEMEMORYMAPPING}
 {boolean}
 {true if memory mapping is enabled (Goil generates the \file{MemMap.h} file and Trampoline includes it).} 
