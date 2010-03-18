@@ -173,7 +173,7 @@ function templateFilePath
   loop [components length]:
   while notFound & [components length] > 0 do
     @string targetPath := templateDir.[@string componentsJoinedByString !components !"/"]."/".file;
-    message "Checking ".targetPath."\n";
+#    message "Checking ".targetPath."\n";
     if [targetPath fileExists] then
       notFound := false;
       path := targetPath;

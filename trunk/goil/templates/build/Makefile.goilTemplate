@@ -94,10 +94,10 @@ if USELINKSCRIPT then
 %LDFLAGS += -T % !PROJECT %/% !LINKSCRIPT % -Map % !PROJECT %.map
 EXTRA_FILES_CLEAN += %!PROJECT %.map%
 end if
-if USETRACE%
+if USETRACE then%
 EXTRA_FILES_CLEAN += %!PROJECT %.desc%
 end if
-if USELOGFILE%
+if USELOGFILE then%
 EXTRA_FILES_CLEAN += goil.log%
 end if
 %
