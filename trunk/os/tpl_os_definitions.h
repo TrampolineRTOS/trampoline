@@ -501,9 +501,9 @@
     FUNC(void, OS_APPL_CODE) name##_function(void)
 
 /**
- * @def ISR2
+ * @def ISR
  *
- * Macro used to define (declare) a category 2 interrupt service routine.
+ * Macro used to define (declare) an interrupt service routine.
  *
  * @param name the name (C identifier) of the IRS
  */

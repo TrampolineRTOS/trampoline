@@ -75,11 +75,11 @@ CPU test {
         PRIORITY = 50;
         CATEGORY = 2;
     };
-
+*/
     ISR it2 {
-        SOURCE = SOFTWARE_IRQ;
+        SOURCE = simtec_irq_soft_int;
         PRIORITY = 51;
-        CATEGORY = 2;
+        CATEGORY = 1;
     };
-      */
+      
 } ;
