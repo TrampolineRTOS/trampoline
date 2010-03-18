@@ -3,14 +3,17 @@
 #--- Lib PM directory
 ifdef LIBPM_PATH_ENV_VAR
   LIB_PM_PATH := $(LIBPM_PATH_ENV_VAR)
+  $(info *** LIBPM path:"$(LIB_PM_PATH)" (given by LIBPM_PATH_ENV_VAR environment variable))
 else
   ifeq ($(shell if [ -d ../libpm ] ; then echo 1 ; else echo 0 ; fi), 1) 
     LIB_PM_PATH := ../libpm
+    $(info *** LIBPM path:"$(LIB_PM_PATH)" (libpm found at this path))
   else
     ifeq ($(shell if [ -d ../../libpm ] ; then echo 1 ; else echo 0 ; fi), 1) 
       LIB_PM_PATH := ../../libpm
+      $(info *** LIBPM path:"$(LIB_PM_PATH)" (libpm found at this path))
     else
-      $(error Cannot find libpm: neither ../libpm nor ../../libpm exist)
+      $(error Cannot find libpm: neither ../libpm nor ../../libpm exist, LIBPM_PATH_ENV_VAR environment variable does not exist)
       LIB_PM_PATH :=
     endif
   endif

@@ -94,6 +94,12 @@ if USELINKSCRIPT then
 %LDFLAGS += -T % !PROJECT %/% !LINKSCRIPT % -Map % !PROJECT %.map
 EXTRA_FILES_CLEAN += %!PROJECT %.map%
 end if
+if USETRACE%
+EXTRA_FILES_CLEAN += %!PROJECT %.desc%
+end if
+if USELOGFILE%
+EXTRA_FILES_CLEAN += goil.log%
+end if
 %
 # ASFLAGS: flags used for the assembly process (if required)
 # it should be declared as AS_FLAGS in the OS section of the .oil file

@@ -160,14 +160,32 @@ function template_string
     end if;
 end function;
 
+function templateFilePath
+  ??@string prefix
+  ??@string file
+  ->@string path
+:
+  @stringlist components := [[option goil_options.target_platform value] componentsSeparatedByString !"/"];
+  @string templateDir := templates_directory[!prefix];
+  @bool notFound := true;
+  path := "";
+  
+  loop [components length]:
+  while notFound & [components length] > 0 do
+    @string targetPath := templateDir.[@string componentsJoinedByString !components !"/"]."/".file;
+    message "Checking ".targetPath."\n";
+    if [targetPath fileExists] then
+      notFound := false;
+      path := targetPath;
+    end if;
+    [!?components popLast ?*];
+  end loop;
+end function;
+
 function config_file -> @lstring cfg_file
 :
-    @string template_dir ;
-    template_dir := templates_directory[!"code"];
-    @string cfg := template_dir.arch[]."/target.cfg" ;
-    if not [cfg fileExists] then
-        cfg := "" ;
-    end if ;
+    @string cfg := templateFilePath[!"config" !"target.cfg"];
+    message cfg;
     cfg_file := [@lstring new !cfg !here] ;
 end function ;
 
@@ -248,102 +266,102 @@ routine table_core
     end foreach ;
 end routine ;
 
-routine obj_table
-    ?@string     typename
-    ?@string     varname
-    ?@string     prefix
-    ?@prefix_map p
-    ?@stringset  names
-    !@string     header
-    !@string     implementation
-:
-#    @uint taskCount := [names count] ;
-#    @uint bitCount := [taskCount significantBitCount] ;
-#    @uint correctedBits := [option goil_options.corrected_bits] value ;
-    implementation := "tpl_".typename." *tpl_".varname."_table[".[varname uppercaseString]."_COUNT] = {\n" ;
-    header := "\n" ;
-#    @uint n := 0 ;
-    @string obj_prefix ;
-    @string obj_ids := "" ;
-    prefix !p !prefix ?obj_prefix ;
-    table_core !typename !varname !obj_prefix !names !?header !?implementation ;
-    implementation := implementation . "};\n" ;
+#routine obj_table
+#    ?@string     typename
+#    ?@string     varname
+#    ?@string     prefix
+#    ?@prefix_map p
+#    ?@stringset  names
+#    !@string     header
+#    !@string     implementation
+#:
+##    @uint taskCount := [names count] ;
+##    @uint bitCount := [taskCount significantBitCount] ;
+##    @uint correctedBits := [option goil_options.corrected_bits] value ;
+#    implementation := "tpl_".typename." *tpl_".varname."_table[".[varname uppercaseString]."_COUNT] = {\n" ;
+#    header := "\n" ;
+##    @uint n := 0 ;
+#    @string obj_prefix ;
+#    @string obj_ids := "" ;
+#    prefix !p !prefix ?obj_prefix ;
+#    table_core !typename !varname !obj_prefix !names !?header !?implementation ;
+#    implementation := implementation . "};\n" ;
+#
+#    if [names count] == 0 then implementation := "" ; end if ;
+#
+##    header := header."\n#define ".[varname uppercaseString]."_COUNT ".[[names count] string] ;
+#end routine ;
 
-    if [names count] == 0 then implementation := "" ; end if ;
-
-#    header := header."\n#define ".[varname uppercaseString]."_COUNT ".[[names count] string] ;
-end routine ;
-
-routine additional_int_key_required
-    ?? @string    key
-    ?? @ident_map others
-    ?? @lstring   name
-    !  @uint      result 
-:
-    result := 0 ;
-    if [others hasKey !key] then
-        @basic_type value ;
-        [others get ![@lstring new !key !here] ?value] ;
-        cast value :
-        when == @uint64_class v do
-            result := [[v value] uint] ;
-        when == @uint32_class v do
-            result := [v value] ;
-        when == @void_uint32_class do
-            error name : key." should have a default value" ;
-        when == @auto_uint32_class do
-            error name : key." should not be an auto attribute" ;
-        else
-            error name : key." should be an integer" ;
-        end cast ;
-    else
-        error name : key." not defined" ;
-    end if ;
-end routine;
-
-routine additional_string_key_required
-    ?? @string key
-    ?? @ident_map others
-    ?? @lstring name
-    !  @string result :
-
-    result := "";
-    if [others hasKey !key]
-    then
-        @basic_type value ;
-        [others get ![@lstring new !key !here] ?value] ;
-        cast value :
-        when == @string_class s do
-            result := [s value];
-        else 
-            error name : key." should be a string" ;
-        end cast ;
-    else
-        error name : "no ".key." specified" ;
-    end if ;
-end routine;
-
-routine additional_bool_key_required
-    ?? @string    key
-    ?? @ident_map others
-    ?? @lstring   name
-    !  @bool      result :
-
-    result := false;
-    if [others hasKey !key]
-    then
-        @basic_type value ;
-        [others get ![@lstring new !key !here] ?value] ;
-        cast value :
-        when == @bool_class b do
-            result := [b value];
-        else 
-            error name : key." should be a boolean" ;
-        end cast ;
-    else
-        error name : "no ".key." specified" ;
-    end if ;
-end routine;
+#routine additional_int_key_required
+#    ?? @string    key
+#    ?? @ident_map others
+#    ?? @lstring   name
+#    !  @uint      result 
+#:
+#    result := 0 ;
+#    if [others hasKey !key] then
+#        @basic_type value ;
+#        [others get ![@lstring new !key !here] ?value] ;
+#        cast value :
+#        when == @uint64_class v do
+#            result := [[v value] uint] ;
+#        when == @uint32_class v do
+#            result := [v value] ;
+#        when == @void_uint32_class do
+#            error name : key." should have a default value" ;
+#        when == @auto_uint32_class do
+#            error name : key." should not be an auto attribute" ;
+#        else
+#            error name : key." should be an integer" ;
+#        end cast ;
+#    else
+#        error name : key." not defined" ;
+#    end if ;
+#end routine;
+#
+#routine additional_string_key_required
+#    ?? @string key
+#    ?? @ident_map others
+#    ?? @lstring name
+#    !  @string result :
+#
+#    result := "";
+#    if [others hasKey !key]
+#    then
+#        @basic_type value ;
+#        [others get ![@lstring new !key !here] ?value] ;
+#        cast value :
+#        when == @string_class s do
+#            result := [s value];
+#        else 
+#            error name : key." should be a string" ;
+#        end cast ;
+#    else
+#        error name : "no ".key." specified" ;
+#    end if ;
+#end routine;
+#
+#routine additional_bool_key_required
+#    ?? @string    key
+#    ?? @ident_map others
+#    ?? @lstring   name
+#    !  @bool      result :
+#
+#    result := false;
+#    if [others hasKey !key]
+#    then
+#        @basic_type value ;
+#        [others get ![@lstring new !key !here] ?value] ;
+#        cast value :
+#        when == @bool_class b do
+#            result := [b value];
+#        else 
+#            error name : key." should be a boolean" ;
+#        end cast ;
+#    else
+#        error name : "no ".key." specified" ;
+#    end if ;
+#end routine;
 
 routine add_to_stringset
     ?!@stringset ss

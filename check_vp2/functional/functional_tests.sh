@@ -5,7 +5,6 @@
 # args:
 # (nothing): performs tests
 # clean    : call make clean for each tests folders
-# {goil's target} : if Makefile hasn't been created yet, a 'goil' command is needed with the target name (default=libpcl)
 #
 # TODO : 
 #		 delete testSequences file and do the loops for each directory (which contains ${i}.oil) #ls -d
