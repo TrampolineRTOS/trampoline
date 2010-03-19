@@ -181,7 +181,9 @@ if TEMPLATEPATH != "" then %
 GOIL_TEMPLATE_PATH = % !TEMPLATEPATH end if %
 
 # if there is an interrupt generation, the oil file depends on target.cfg
-OIL_FILE_DEP = % if USEINTERRUPTTABLE then %target.cfg% end if%
+# disabled by default as target.cfg can be provided by the port (can a
+# dependency be optional in a Makefile ?)
+#OIL_FILE_DEP = % if USEINTERRUPTTABLE then %target.cfg% end if%
 
 #############################################################################
 # DOCUMENTATION GENERATION
