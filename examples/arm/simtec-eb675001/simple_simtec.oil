@@ -19,22 +19,15 @@ CPU test {
     PRETASKHOOK = TRUE;
     APP_SRC = "simple_simtec.c";
     TRAMPOLINE_BASE_PATH = "../../..";
-	COMPILER = "arm-none-eabi-gcc";
-	LINKER = "arm-none-eabi-ld";
-	ASSEMBLER = "arm-none-eabi-as";
     CFLAGS  = "-g";
     CFLAGS  = "-Wall -pedantic -Wformat -std=c99";
     CFLAGS  = "-Wmissing-field-initializers";
-	CFLAGS  = "-DSIMTEC_DEFAULT_DRIVERS"; // activate default SIMTEC drivers, change this to use your own ones
-	CFLAGS  = "-I userdrivers -I ../../../machines/arm/simtec-eb675001/default_drivers";
+    CFLAGS  = "-I userdrivers";
     ASFLAGS = "-g"; // assembler debug informations
     LDFLAGS = "-g"; // linker debug informations
-    LDFLAGS = "--script=../../../machines/arm/simtec-eb675001/ldscript.bdi2000"; // linker configuration script
-    LDFLAGS = "-L ../../../machines/arm/simtec-eb675001/default_drivers -lsimtec-dfltdrv-dbg"; // include default SIMTEC drivers
-    LDFLAGS = "-Map trampoline_memory.map"; // linker generates a memory map file
     LDFLAGS = "-L userdrivers -lsimtec-userdrivers-dbg"; // include user SIMTEC drivers (for UART)
-	PROTECTIONHOOK = FALSE;   
-	STACKMONITORING = FALSE;
+    PROTECTIONHOOK = FALSE;
+    STACKMONITORING = FALSE;
     } ;
 
     APPMODE std {
@@ -43,8 +36,8 @@ CPU test {
     TASK t1 {
         PRIORITY = 0;
         AUTOSTART = TRUE {
-				APPMODE = std;
-				};
+        APPMODE = std;
+        };
         ACTIVATION = 1;
         SCHEDULE = FULL;
     }; 
