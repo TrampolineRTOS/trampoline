@@ -1,0 +1,183 @@
+// !$*UTF8*$!
+{
+	256AC3D80F4B6AC300CF3369 /* NXTTrampolineToolsAppDelegate.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {519, 306}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 303}";
+		};
+	};
+	256AC3D90F4B6AC300CF3369 /* NXTTrampolineToolsAppDelegate.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {519, 323}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 358}";
+		};
+	};
+	256AC3F00F4B6AF500CF3369 /* NXTTrampolineTools_Prefix.pch */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {519, 260}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 167}";
+		};
+	};
+	29B97313FDCFA39411CA2CEA /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeExecutable = 6C2AC1241153EE78008047B3 /* NXTTrampolineTools */;
+		activeTarget = 8D1107260486CEB800E47090 /* NXTTrampolineTools */;
+		addToTargets = (
+			8D1107260486CEB800E47090 /* NXTTrampolineTools */,
+		);
+		codeSenseManager = 6C2AC12E1153EE89008047B3 /* Code sense */;
+		executables = (
+			6C2AC1241153EE78008047B3 /* NXTTrampolineTools */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					341,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					301,
+					60,
+					20,
+					48.16259765625,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 290713939;
+			PBXWorkspaceStateSaveDate = 290713939;
+		};
+		perUserProjectItems = {
+			6C2AC1761153F123008047B3 /* PBXTextBookmark */ = 6C2AC1761153F123008047B3 /* PBXTextBookmark */;
+			6C2AC1771153F123008047B3 /* PBXTextBookmark */ = 6C2AC1771153F123008047B3 /* PBXTextBookmark */;
+			6C2AC1791153F123008047B3 /* PBXTextBookmark */ = 6C2AC1791153F123008047B3 /* PBXTextBookmark */;
+			6CEB44A61153F15C0073F566 /* PBXTextBookmark */ = 6CEB44A61153F15C0073F566 /* PBXTextBookmark */;
+		};
+		sourceControlManager = 6C2AC12D1153EE89008047B3 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	6C2AC1241153EE78008047B3 /* NXTTrampolineTools */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = NXTTrampolineTools;
+		savedGlobals = {
+		};
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	6C2AC12D1153EE89008047B3 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	6C2AC12E1153EE89008047B3 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	6C2AC1761153F123008047B3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 256AC3F00F4B6AF500CF3369 /* NXTTrampolineTools_Prefix.pch */;
+		name = "NXTTrampolineTools_Prefix.pch: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 167;
+		vrLoc = 0;
+	};
+	6C2AC1771153F123008047B3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 256AC3D90F4B6AC300CF3369 /* NXTTrampolineToolsAppDelegate.m */;
+		name = "NXTTrampolineToolsAppDelegate.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 358;
+		vrLoc = 0;
+	};
+	6C2AC1791153F123008047B3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 256AC3D80F4B6AC300CF3369 /* NXTTrampolineToolsAppDelegate.h */;
+		name = "NXTTrampolineToolsAppDelegate.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 349;
+		vrLoc = 0;
+	};
+	6CEB44A61153F15C0073F566 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 256AC3D80F4B6AC300CF3369 /* NXTTrampolineToolsAppDelegate.h */;
+		name = "NXTTrampolineToolsAppDelegate.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 303;
+		vrLoc = 0;
+	};
+	8D1107260486CEB800E47090 /* NXTTrampolineTools */ = {
+		activeExec = 0;
+		executables = (
+			6C2AC1241153EE78008047B3 /* NXTTrampolineTools */,
+		);
+	};
+}
