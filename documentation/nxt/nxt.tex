@@ -49,6 +49,8 @@ This will generate the GOIL executable you'll need. You can add the path to your
 	export PATH=[TRAMPOLINE_REPOSITORY]/goil/makefile_[ARCH]/:$PATH
 	\end{verbatim}
 
+You can also do it typing "\$sudo make install goil" (this will copy the goil executable in /usr/local/bin).
+
 You can now use Trampoline on Unix system by executing the tests as described in Annex \ref{tests}.
 
 %%%%%%%%%%%%%%%%
@@ -105,6 +107,12 @@ $ mkdir build-gdb && cd build-gdb
 $ ../gdb-6.6/configure --target=arm-elf --prefix=/usr/local/crossgcc/
 $ make all install 2>&1 | tee make.log
 \end{verbatim}
+
+Add arm-elf tp your path, adding
+\begin{verbatim}
+export PATH=/usr/local/crossgcc/bin:$PATH
+\end{verbatim}
+into $\sim$/.profile
 
 You can now compile an application for ARM as described in Annex \ref{compileanapplication}.
 
@@ -185,9 +193,14 @@ To cross-compile a Trampoline application for ARM ports, you need to set  :
 in your oil file as you can see in examples/arm/nxt/lonely.oil.\\
 And then, compile your application typing in a terminal (from the example in examples/arm/nxt) :
 	\begin{verbatim}
-	$goil -t=arm/nxt --templates=../../../goil/templates -g -i lonely.oil
+	$goil -t=arm/nxt --templates=../../../../goil/templates -g -i lonely.oil
+	\end{verbatim}
+This will generate the Makefile needed, thus type :
+	\begin{verbatim}
 	$make
 	\end{verbatim}
+
+
 Then you need to upload the *.rxe file (see Annex \ref{uploadprogram}- after installing drivers and softwares on your platform (\ref{drivers})
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
