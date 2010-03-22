@@ -20,7 +20,8 @@ class Widget(object):
     self._widget_box	    = {}
     self._widgets			= {}
     self._actual_widget 	= None
-    self._focused_widget    = None
+    self._focused_widget  = 0
+    self._eventpos = {}
     
     pygame.init()
     from config import dispatch_display
@@ -39,6 +40,7 @@ class Widget(object):
     #           -> launch event
     # It will launch the event at the up position unlike now (at down position)
     if (ev.type == MOUSEBUTTONDOWN):
+      self._focused_widget = 0
       for id in self._widget_box:
         if (ev.pos[0] > self._widget_box[id][0][0]):
           if (ev.pos[0] < self._widget_box[id][1][0]):
@@ -47,9 +49,10 @@ class Widget(object):
                 self._focused_widget = id      
                 self._widgets[id].event(ev)
     elif (ev.type == MOUSEBUTTONUP):
-      self._widgets[self._focused_widget].event(ev)
+      if(self._focused_widget != 0):
+        self._widgets[self._focused_widget].event(ev)
     elif (ev.type == KEYDOWN):
-      self._widgets[self._focused_widget].event(ev)
+      """self._widgets[self._focused_widget].event(ev)"""
                     
   def add(self, widg, device, id, box):
     """

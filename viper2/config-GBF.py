@@ -17,6 +17,7 @@ from timer import Timer
 from dac import DAC
 from lcd import LCD
 from bp import BP
+from power import Power
 
 ###############################################################################
 # DISPLAY
@@ -57,6 +58,7 @@ allEcus = [
       LCD("LCD2", 4, position = [360, 120] ),
       BP("BPPlus", 10, position = [360, 240], picture="pictures/BPPlus"),
       BP("BPMinus", 11, position = [460, 240], picture="pictures/BPMinus" ),
+      Power("POWER", 9),
     ]
   )
 ]

@@ -39,6 +39,11 @@ void create_sh_memory(ipc_t *ipc)
   /* Creates shared memory */
   sprintf(data_file_path, DATA_FILE_PATH, ipc->pid);
   ipc->sh_mem_fd = shm_open(data_file_path, (O_CREAT | O_RDWR | O_EXCL), 0600);
+    
+#ifdef DEBUG
+  printf("(DD) Viper to trampoline %d : create_sh_memory() - getdtablesize:%d - fd(sh_memory):%d\n",ipc->pid,getdtablesize(),ipc->sh_mem_fd);
+#endif
+  
   if(-1 == ipc->sh_mem_fd)
   {
     fprintf(stderr, "[%d] %s - pid:%d file:%s\n", __LINE__, __FILE__, ipc->pid,data_file_path);
@@ -80,7 +85,7 @@ printf("(DD) Viper to trampoline %d : tpl_ipc_send_it()\n", ipc->pid);
   dev_id_t previous_it = ipc->sh_mem->it_id;
   if ( (previous_it & it_id) && verbose == 1 ){
       fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
-      printf("viper : interrupt identifier already sent by Viper2 but didn't catch by Trampoline\n");
+      printf("viper : interrupt identifier already sent by Viper2 but didn't catch by Trampoline pid=%d\n",ipc->pid);
       /* Release semaphore */
       /* if(0 != sem_post(ipc->it_id_sem))
       {
@@ -478,7 +483,7 @@ void create_global_sh_memory(global_ipc_t *global_ipc)
     /* Variables */
     char data_file_path[FILE_PATH_LEN];
     global_ipc->global_sh_mem = NULL;
-    
+   
 #ifdef DEBUG
     printf("(DD) Viper to trampoline %d : create_global_sh_memory()\n", global_ipc->pid);
 #endif
@@ -517,7 +522,7 @@ global_ipc_t *tpl_ipc_create_global_memory(void)
 #ifdef DEBUG
     printf("(DD) Viper to trampoline ?? : tpl_ipc_create_global_memory()\n");
 #endif
-    
+   
     global_ipc = (global_ipc_t *)malloc(sizeof(global_ipc_t));
     if(global_ipc == NULL)
     {
