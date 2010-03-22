@@ -1,0 +1,96 @@
+OIL_VERSION = "3" : "test" ;
+
+IMPLEMENTATION trampoline {
+    TASK {
+        UINT32 STACKSIZE = 32768 ;
+        UINT32 PRIORITY = 1 ;
+    } ;
+    ISR {
+        UINT32 STACKSIZE = 32768 ;
+    } ;
+};
+
+CPU test {
+
+    OS config {
+        STATUS = EXTENDED;
+        ERRORHOOK = FALSE;
+        APP_SRC = "StressTesting.c";
+        TRAMPOLINE_BASE_PATH = "../../..";
+        CFLAGS  = "-Wall -Wformat -pedantic -std=c99";
+        CFLAGS  = "-Wmissing-field-initializers -I.";
+        ASFLAGS = "";
+        STARTUPHOOK = TRUE;
+    } ;
+
+    COUNTER SystemCounter {
+        SOURCE = IRQ1;
+    };
+    
+     SCHEDULETABLE sched1 {
+        COUNTER = SystemCounter;
+		AUTOSTART = RELATIVE { OFFSET = 1; APPMODE = std; };
+        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+        PERIODIC = TRUE;
+        LENGTH = 5;
+        EXPIRY_POINT activate_task1 {
+            OFFSET = 0;
+		     ACTION = ACTIVATETASK {
+                TASK = task1;
+            };
+        };
+        EXPIRY_POINT setEvent1_task1 {
+            OFFSET = 1;
+            ACTION = SETEVENT {
+                TASK = task1;
+		      	  EVENT = Event1;
+            };
+        };
+        EXPIRY_POINT setEvent2_task1 {
+            OFFSET = 2;
+            ACTION = SETEVENT {
+                TASK = task1;
+		      	EVENT = Event2;
+            };
+        };
+        EXPIRY_POINT setEvent3_task1 {
+            OFFSET = 3;
+            ACTION = SETEVENT {
+                TASK = task1;
+		      	EVENT = Event3;
+            };
+        };
+        EXPIRY_POINT setEvent4_task1 {
+            OFFSET = 4;
+            ACTION = SETEVENT {
+                TASK = task1;
+		      	EVENT = Event4;
+            };
+        };
+    };
+
+    TASK task1 {
+        PRIORITY = 2;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        EVENT = Event1;
+        EVENT = Event2;
+        EVENT = Event3;
+        EVENT = Event4;
+    };
+    
+
+   TASK task1s {
+        PRIORITY = 3;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+   };
+        
+	EVENT Event1 { MASK = AUTO; };
+	EVENT Event2 { MASK = AUTO; };
+	EVENT Event3 { MASK = AUTO; };
+	EVENT Event4 { MASK = AUTO; };
+
+};
