@@ -183,7 +183,8 @@ class Scheduler(object):
     self.killsortingThread()
          
   def withoutPygame(self):
-    pass
+    """ Do noting but wait 1s no to consume CPU """
+    threading.Event().wait(1)
     
   def withPygame(self):
      """
@@ -246,7 +247,7 @@ class Scheduler(object):
       self.__sem.acquire()
       if (event.getDelay() != 0):
         index = self.__events.index(event)
-        self.__events[index].setTime(self.__events[index].getTime()+(self.__events[index].getDelay()/self.__speedCoeff))
+        self.__events[index].setTime(self.__events[index].getTime()+(self.__events[index].getDelay()*self.__speedCoeff))
         eventtomove = self.__events.pop(index)
         length = len(self.__events)
         i = 0
