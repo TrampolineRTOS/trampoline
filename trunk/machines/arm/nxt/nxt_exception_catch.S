@@ -37,7 +37,7 @@
 .macro lock_interrupts_and_display_info exception_type
     stmfd sp!, {r0}
     mrs r0, cpsr
-    orr r0, #(CPSR_FIQ_LOCKED | CPSR_IRQ_LOCKED)
+    orr r0,r0, #(CPSR_FIQ_LOCKED | CPSR_IRQ_LOCKED)
     msr cpsr_c, r0
     ldmfd sp!, {r0}
     
