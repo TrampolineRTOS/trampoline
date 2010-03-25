@@ -65,7 +65,7 @@ interrupted_stack_pointer:
 .macro lock_interrupts
     stmfd sp!, {r0}
     mrs r0, cpsr
-    orr r0, #(CPSR_FIQ_LOCKED | CPSR_IRQ_LOCKED)
+    orr r0, r0, #(CPSR_FIQ_LOCKED | CPSR_IRQ_LOCKED)
     msr cpsr_c, r0
     ldmfd sp!, {r0}
 .endm
