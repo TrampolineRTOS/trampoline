@@ -8,7 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface NXTTrampolineToolsAppDelegate : NSObject <NSApplicationDelegate> {
+@interface NXTTrampolineToolsAppDelegate : NSObject {
+//<NSApplicationDelegate> {
     NSWindow *window;
 }
 
