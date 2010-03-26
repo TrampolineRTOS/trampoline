@@ -1,0 +1,86 @@
+OIL_VERSION = "2.5" : "test" ;
+
+IMPLEMENTATION trampoline {
+    TASK {
+        UINT32 STACKSIZE = 32768 ;
+        UINT32 PRIORITY = 1 ;
+    } ;
+    ISR {
+        UINT32 STACKSIZE = 32768 ;
+    } ;
+};
+
+CPU test {
+
+    OS config {
+      TRACE = TRUE {
+      METHOD = FILE {
+        NAME = "osap_0_task_4_isr_2_no_autosar_armadeus"; 
+          };  
+      FORMAT = xml;
+      DESCRIPTION = TRUE;
+    };
+        MEMMAP = TRUE {
+          COMPILER = gcc;
+          LINKER = gnu_ld;
+          MEMORY_PROTECTION = TRUE;
+        };
+        SYSTEM_CALL = TRUE;
+        STATUS = EXTENDED;
+        ERRORHOOK = TRUE;
+        PRETASKHOOK = TRUE;
+        APP_SRC = "osap_0_task_4_isr_2_no_autosar_armadeus.c";
+        TRAMPOLINE_BASE_PATH = "../../..";
+        CFLAGS  = "-g";
+        CFLAGS  = "-Wall -pedantic -Wformat -std=c99";
+        ASFLAGS = "-g";
+        LDFLAGS = "-g drivers/libuart.o";
+    } ;
+
+  
+
+    APPMODE std {
+    };
+
+    TASK t1 {
+        PRIORITY = 0;
+        AUTOSTART = TRUE {
+        APPMODE = std;
+        };
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    }; 
+
+    TASK t2 {
+        PRIORITY = 1;
+        AUTOSTART = FALSE ;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+
+    TASK t3 {
+        PRIORITY = 2;
+        AUTOSTART = FALSE ;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+
+    TASK t4 {
+        PRIORITY = 3;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+
+    ISR it1 {
+        SOURCE = TIMER1;
+        PRIORITY = 50;
+        CATEGORY = 2;
+    };
+
+    ISR it2 {
+        SOURCE = SOFTWARE_IRQ;
+        PRIORITY = 51;
+        CATEGORY = 2;
+    };
+} ;
