@@ -22,10 +22,7 @@ semantics template_semantics :
 #------------------------------------------------------------------------------*
 
 enum @goilTemplateType {
-  constructor boolType;
-  constructor unsignedType;
-  constructor stringType;
-  constructor listType;
+  boolType, unsignedType, stringType, listType
 }{
   reader messageGoilTemplateType :
     boolType -> "bool";

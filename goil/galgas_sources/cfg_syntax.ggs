@@ -126,9 +126,6 @@ rule <interrupts>
   @ident_map it_src [emptyMap];
   @luint64 it_count;
   $interrupts$; $[$; $uint$ ?it_count; $]$;
-  if [it_count uint64] > 32L then
-    error it_count: "Interrupt count must be <= 32";
-  end if; 
   @location it_loc := here;
   ${$;
   repeat while
