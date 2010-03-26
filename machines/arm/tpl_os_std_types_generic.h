@@ -69,6 +69,20 @@ typedef unsigned long   u32;
  */
 typedef signed long     s32;
 
+/**
+ * @typedef u64
+ *
+ * 64 bits unsigned integer
+ */
+typedef unsigned long long u64;
+
+/**
+ * @typedef s64
+ *
+ * 64 bits signed integer
+ */
+typedef signed long long u64;
+
 #endif /* TPL_OS_STD_TYPES_GENERIC_H */
 
 /* End of file tpl_os_std_generic.h */

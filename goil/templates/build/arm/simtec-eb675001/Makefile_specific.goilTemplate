@@ -9,6 +9,10 @@ LDFLAGS += --script=%!TRAMPOLINEPATH%/machines/arm/simtec-eb675001/ldscript.bdi2
 # memory map file
 LDFLAGS += -Map trampoline_memory.map
 
+# choose the right instruction set
+ASFLAGS += -mcpu=arm7tdmi
+CFLAGS += -mcpu=arm7tdmi
+
 %
 if COMPILEREXE == "gcc" then
 %# changes default compiler
