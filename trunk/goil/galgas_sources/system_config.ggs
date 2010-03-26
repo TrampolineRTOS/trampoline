@@ -63,7 +63,7 @@ import option goil_options in "goil_options.gOption";
 #end function;
 #
 enum @taskKind {
-  constructor all, basic, extended;
+  all, basic, extended
 }{}  
 
 routine setAppRelatedAttributes
