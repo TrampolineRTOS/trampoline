@@ -55,6 +55,7 @@ You can now use Trampoline on Unix system by executing the tests as described in
 
 %%%%%%%%%%%%%%%%
 \section{GNUARM}
+\subsection{MAC OS}
 Download and unpack the necessary packages: binutils, gcc, newlib and gdb.
 \begin{verbatim}
 $ mkdir ~/crossgcc && cd ~/crossgcc
@@ -116,6 +117,43 @@ into $\sim$/.profile
 
 You can now compile an application for ARM as described in Annex \ref{compileanapplication}.
 
+\subsection{Linux}
+The complete process should take around 1 hour and finish with the message "Build complete !". \\
+Alternatively, you could use a pre-build version of this toolchain (see below).\\
+
+Install the required libraries by running the following command:
+\begin{verbatim}
+$ sudo apt-get install tk-dev ncurses-dev libmpfr-dev texinfo
+\end{verbatim}
+on ubuntu 8.10 only: gcc-4.2 (and dependencies) is also required.\\
+
+Download the script build_arm_toolchain.sh (\href{http://lejos-osek.sourceforge.net/installation_linux_files/build_arm_toolchain.sh}{http://lejos-osek.sourceforge.net/installation_linux_files/build_arm_toolchain.sh}). This script is a modified version of the toolchain build script from the NxOS project. It will:
+\begin{itemize}
+\item download sources of binutils, gcc, newlib and gdb
+\item compile them in place with the right options
+\end{itemize}
+
+Give a look at the script code before execution (safe behaviour), change GCC_BINARY_VERSION to 4.2 if you are under Ubuntu 8.10, and then run it:
+\begin{verbatim}
+$ sh ./build_am_toolchain.sh
+\end{verbatim}
+
+The arm-elf-gcc is now in your path but if you start a new terminal, don't forget to add it typing : 
+\begin{verbatim}
+export PATH=[the_path_to_your_gnuarm_directory]/bin:$PATH
+\end{verbatim}
+
+You can now compile an application for ARM as described in Annex \ref{compileanapplication}.
+
+
+\subsection{Windows}
+\begin{itemize}
+\item Download a GCC-4.0.2 tool chain (\href{http://www.gnuarm.com/bu-2.16.1_gcc-4.0.2-c-c++_nl-1.14.0_gi-6.4.exe}{http://www.gnuarm.com/bu-2.16.1_gcc-4.0.2-c-c++_nl-1.14.0_gi-6.4.exe}).
+\item Install only selected components in the below picture. ARM7(ATMEL AT91SAM7S256) in the NXT is Little Endian and does not have FPU.
+\item Do not check "Install Cygwin DLLs..." because Cygwin was already installed.\\
+\item At the end of the installation, you were asked about adding the tool path to Windows Environment Variables, but it would not be needed.
+\end{itemize}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Nexttool + Lego Drivers} \label{drivers}
 %%%%%%
@@ -137,7 +175,28 @@ To upload a program into the NXT, go to the Annex \ref{uploadprogram}.
 
 %%%%
 \subsection{Linux}
-Follow the instructions in the NXTOSEK website \href{http://lejos-osek.sourceforge.net/installation_linux.htm}{http://lejos-osek.sourceforge.n et/installation\_linux.htm}.
+Note: Nextool binary for Linux seems to fail for firmware upload.\\
+Install required packages:
+\begin{verbatim}
+$sudo apt-get install scons libusb-dev libusb-0.1-4
+\end{verbatim}
+Download the libnxt (\href{http://libnxt.googlecode.com/files/libnxt-0.3.tar.gz}{http://libnxt.googlecode.com/files/libnxt-0.3.tar.gz}) archive and extract it. Go in the new directory and build the project with scons:
+\begin{verbatim}
+$ cd libnxt-0.3/ 
+$ scons
+\end{verbatim}
+
+A program call fwflash is created.\\
+Download John Hansen's Enhanced NXT firmware (\href{http://bricxcc.sourceforge.net/lms_arm_jch.zip}{http://bricxcc.sourceforge.net/lms\_arm\_jch.zip}) (any version numbered 106 or later includes the native-invocation feature) and store the Enhanced NXT firmware (i.e lms\_arm\_nbcnxc\_1xx.rfw) in the directory where fwflash is stored.\\
+Connect the NXT brick to usb and turn it on. Then press the reset button for more than 4s to put it in firmware upload mode (nxt display is cleared but it makes a ticking sound).\\
+Flash the firmware with the following command (it takes some dozen of seconds), where 1xx is replaced by the number of the firmware:
+\begin{verbatim}
+$ sudo ./fwflash lms_arm_nbcnxc_1xx.rfw
+\end{verbatim}
+
+Troubleshooting: After completion of the upload, sometimes NXT display is messed and block : reboot it by a quick push on the reset button or remove the battery. If the NXT makes a ticking sound, it is still in firmware upload mode. If troubles, use and see windows firmware update procedure (and LEGO UserGuide).\\
+
+To upload a program into the NXT, go to the Annex \ref{uploadprogram}.
 
 %%%%
 \subsection{Windows}
@@ -185,28 +244,34 @@ If an error occurs, you can visit Trampoline's forum (\href{http://trampoline.rt
 %%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Cross-Compile an application} \label{compileanapplication}
 To cross-compile a Trampoline application for ARM ports, you need to set  :
-\begin{itemize}
-\item COMPILER = "arm-elf-gcc";
-\item ASSEMBLER = "arm-elf-as";
-\item LINKER = "arm-elf-ld";
-\end{itemize}
-in your oil file as you can see in examples/arm/nxt/lonely.oil.\\
-And then, compile your application typing in a terminal (from the example in examples/arm/nxt) :
+\begin{verbatim}
+COMPILER = "arm-elf-gcc";
+ASSEMBLER = "arm-elf-as";
+LINKER = "arm-elf-ld";
+\end{verbatim}
+in your oil file as you can see in examples/arm/nxt/nxt\_simple.oil.\\
+You also need to add the path to your libgcc and libc as below (X.X.X is your cross-gcc version) :
+\begin{verbatim}
+LDFLAGS = "-L[GNUARM_PATH]/lib/gcc/arm-elf/X.X.X -lgcc";
+LDFLAGS = "-L[GNUARM_PATH]/arm-elf/lib -lc";
+\end{verbatim}
+
+
+
+And then, compile your application typing in a terminal (from the example in examples/arm/nxt/simple) :
 	\begin{verbatim}
-	$goil -t=arm/nxt --templates=../../../../goil/templates -g -i lonely.oil
+	$goil -t=arm/nxt --templates=../../../../goil/templates -g -i nxt_simple.oil
 	\end{verbatim}
 This will generate the Makefile needed, thus type :
 	\begin{verbatim}
 	$make
 	\end{verbatim}
-
-
-Then you need to upload the *.rxe file (see Annex \ref{uploadprogram}- after installing drivers and softwares on your platform (\ref{drivers})
+Then you need to upload the nxt\_simple\_exe.rxe file (see Annex \ref{uploadprogram}- after installing drivers and softwares on your platform (\ref{drivers})
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Upload a program} \label{uploadprogram}
 \subsection{MAC OS}
-To upload a program in the NXT (the nxt example examples/arm/nxt/lonely\_exe.rxe)
+To upload a program in the NXT (the nxt example examples/arm/nxt/simple/nxt\_simple\_exe.rxe)
 \begin{itemize}
 \item Connect the PC and the NXT by USB cable.
 \item Launch Nexttool, select "usb port".
@@ -219,8 +284,8 @@ To upload a program in the NXT (the nxt example examples/arm/nxt/lonely\_exe.rxe
    		\centering
 		\includegraphics[width=.7\textwidth]{pictures/nxtexplorer.jpg}
 	\end{figure}
-\item Click on the "Download selected files to the NXT" and select the lonely\_exe.rxe file.
-\item If program upload was succeeded, you can see the lonely\_exe.rxe file in the files list as below.
+\item Click on the "Download selected files to the NXT" and select the nxt\_simple\_exe.rxe file.
+\item If program upload was succeeded, you can see the nxt\_simple\_exe.rxe file in the files list as below.
 	\begin{center}[h] %  figure placement: here, top, bottom, or page
    		%\centering
 		\includegraphics[width=1\textwidth]{pictures/downloadfile.jpg}
@@ -230,7 +295,34 @@ To upload a program in the NXT (the nxt example examples/arm/nxt/lonely\_exe.rxe
 
 %%%%
 \subsection{Linux}
-Follow the instructions in the NXTOSEK website \href{http://lejos-osek.sourceforge.net/installation_linux.htm}{http://lejos-osek.sourceforge.net/installation\_linux.htm}.
+Required Packages: libusb-0.1-4\\
+Download this executable of John Hansen's NeXTTool (\href{http://bricxcc.sourceforge.net/nexttool.zip}{http://bricxcc.sourceforge.net/nexttool.zip}) (built from bricxcc svn repository, revision 1)\\
+Check the version of NeXTTool, it should be 1.0.1.0:
+\begin{verbatim}
+$ sudo ./[NEXTTOOL_PATH]/NeXTTool
+nexttool version 1.0.1.0 (1.0.1.0)
+Copyright (c) 2006, John Hansen
+Use "NeXTTool -help" for more information.
+\end{verbatim}
+
+To ubload over usb, turn on the NXT, connect it to USB and run the following command (example: nxt\_simple\_exe.rxe) :
+\begin{verbatim}
+$ sudo ./[NEXTTOOL_PATH]/NeXTTool /COM=usb -download=nxt\_simple\_exe.rxe
+\end{verbatim}
+
+Troubleshooting: Test the following command to see if Nexttool is working (set execution right for NeXTTool):
+\begin{verbatim}
+$ sudo ./[NEXTTOOL_PATH]/NeXTTool /COM=usb -versions
+Protocol version = 1.124
+Firmware version = 1.xx
+\end{verbatim}
+
+To ubload over bluetooth, you need to define an alias name in a file 'nxt.dat' as explained in this post: Minsdtorm 2.0 development on linux . Then turn on the NXT and run the following command (example: nxt\_simple\_exe.rxe) :
+\begin{verbatim}
+$ sudo ./[NEXTTOOL_PATH]/NeXTTool /COM=alias_bt -download=nxt\_simple\_exe.rxe
+\end{verbatim}
+
+To execute a program on the NXT, go in "My files"/"Software files".
 
 %%%%
 \subsection{Windows}
