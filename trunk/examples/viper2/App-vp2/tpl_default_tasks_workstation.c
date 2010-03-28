@@ -20,24 +20,24 @@ void PreTaskHook(void)
 {
     TaskType id;
     GetTaskID(&id);
-    printf("[TPL] Avant %d\n",id);
+    printf("[TPL] Before %d\n",id);
 }
 
 void PostTaskHook(void)
 {
     TaskType id;
     GetTaskID(&id);
-    printf("[TPL] Apres %d\n",id);
+    printf("[TPL] After %d\n",id);
 }
 
 void StartupHook(void)
 {
-    printf("[TPL] Ca demarre !\n");
+    printf("[TPL] Startup !\n");
 }
 
 void ShutdownHook(StatusType error)
 {
-    printf("[TPL] Au revoir et a bientot :)\n");
+    printf("[TPL] Shutdown\n");
 }
 
 DeclareTask(init);
@@ -62,17 +62,12 @@ TASK(startMotor)
 
 TASK(motor)
 {
-    int real_speed = (int)vp_ipc_read_reg(&viper, MOTOR0 | MOTOR0_SENSOR);
+    int real_speed = (int)vp_ipc_read_reg(&viper, MOTOR0_MOTOR0_SENSOR);
 
-    printf("[TPL](MOTOR) Motor real speed is : %d\n", real_speed);
+    printf("[TPL](MOTOR) Motor position is : %d\n", real_speed);
     
-    vp_ipc_write_reg(&viper, MOTOR0 | MOTOR0_CONTROL, (reg_t)motor_speed);
+    vp_ipc_write_reg(&viper, MOTOR0_MOTOR0_CONTROL, (reg_t)motor_speed);
     vp_ipc_signal_update(&viper, &global_shared_memory, MOTOR0, MOTOR0_CONTROL);
 
     TerminateTask();
-}
-
-ISR(tick)
-{
-    ActivateTask(motor);
 }

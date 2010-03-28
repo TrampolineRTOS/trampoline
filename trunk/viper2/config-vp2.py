@@ -3,10 +3,8 @@
 ##########
 # You shall modify devices section only
 ###############################################################################
-import device # device.SIGUSR1, device.SIGUSR2 and device.SIGALRM
+#import device # device.SIGUSR1, device.SIGUSR2 and device.SIGALRM
 from ecu import Ecu
-from device import Device
-from register import Register
 from scheduler import Scheduler
 
 ##
@@ -15,6 +13,7 @@ from scheduler import Scheduler
 import timer
 from timer import Timer
 from motor import Motor
+from power import Power
 from display import Display
 
 ###############################################################################
@@ -51,8 +50,9 @@ allEcus = [
     "../examples/viper2/App-vp2/trampoline",
     scheduler,
     [
-      Timer("TIMER0", 7, type = timer.AUTO, delay = 500),
+      Timer("TIMER0", 7, type = timer.AUTO, delay = 200),
       Motor("MOTOR0", 2),
+      Power("POWER", 9)
     ]
   )
 ]
