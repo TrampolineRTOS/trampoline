@@ -1,0 +1,67 @@
+OIL_VERSION = "2.5" : "autosar_mp_s1" ;
+
+/* ----------------------------------------
+ * Depending on your achitecture
+ * TODO : this (included) oil architecture
+ * dependant will be in the templates
+ * directory.
+ ---------------------------------------  */
+#include "../architecture_ppc.oil"
+
+CPU test {
+        
+    OS config {
+        STATUS = STANDARD;
+		 APP_SRC = "autosar_mp_s1.c";
+        TRAMPOLINE_BASE_PATH = "../../../";
+        APP_NAME = "autosar_mp_s1_exe";        
+    } ;
+    
+    APPMODE std {};
+
+    TASK t1_app_nontrusted1 {
+		AUTOSTART = TRUE { APPMODE = std ; } ;
+		PRIORITY = 2;
+		ACTIVATION = 1;
+		SCHEDULE = NON;
+       EVENT = Event1;
+	};
+	TASK t1_app_nontrusted2 {
+		AUTOSTART = FALSE;
+		PRIORITY = 1;
+		ACTIVATION = 1;
+		SCHEDULE = NON;
+	};
+	TASK t1_app_trusted1 {
+		AUTOSTART = TRUE { APPMODE = std ; } ;
+		PRIORITY = 1;
+		ACTIVATION = 1;
+		SCHEDULE = NON;
+       ACCESSING_APPLICATION = app_nontrusted1;
+	};
+	TASK t1_app_trusted2 {
+		AUTOSTART = FALSE;
+		PRIORITY = 1;
+		ACTIVATION = 1;
+		SCHEDULE = NON;
+	};
+	APPLICATION app_nontrusted1 {
+       TRUSTED = FALSE;
+		TASK = t1_app_nontrusted1;
+	};	
+	APPLICATION app_nontrusted2 {
+       TRUSTED = FALSE;
+		TASK = t1_app_nontrusted2;
+	};	
+	APPLICATION app_trusted1 {
+       TRUSTED = TRUE;
+		TASK = t1_app_trusted1;
+	};	
+	APPLICATION app_trusted2 {
+       TRUSTED = TRUE;
+		TASK = t1_app_trusted2;
+	};	
+    EVENT Event1 { MASK = AUTO; };
+    
+};
+

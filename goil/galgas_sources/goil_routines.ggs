@@ -185,7 +185,7 @@ end function;
 function config_file -> @lstring cfg_file
 :
     @string cfg := templateFilePath[!"config" !"target.cfg"];
-    message cfg;
+    #message cfg;
     cfg_file := [@lstring new !cfg !here] ;
 end function ;
 

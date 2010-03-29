@@ -98,7 +98,7 @@ SECTIONS
       *(.init)
       *(.init_vle)
     }
-    .osCode : { *(.EI_handler) *(.SC_handler) *(.osCode) }
+    .osCode : { *(.EI_handler) *(.SC_handler) *(.osCode) *(.appCommonCode) }
     .text : { *(.text) *(.osApiCode) } 
     .text_vle (VLECODE) ALIGN(0x1000): {
       *(.text)
@@ -128,6 +128,17 @@ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
   end for
 end for
 %    
+/* Sections for application const */  
+%
+foreach OSAPPLICATIONS do
+ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+%      *(.OS_APP_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
+%
+  end for
+ end for
+end foreach
+%
     }
     
     .ctors : {}
@@ -176,6 +187,21 @@ foreach PROCESSES do
       * (.% !PROCESSKIND %_% !NAME %Stack)
       __SEG_END_% !PROCESSKIND %_% !NAME %_STACK_RGN = ALIGN(32) - 1;
     }
+%
+end foreach
+% /* os application vars */
+%
+foreach OSAPPLICATIONS do
+%    __SEG_START_OS_APP_% !NAME %_VAR_RGN = .;
+/* Initialized variables section of OS_APP % !NAME % */
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
+%    *(.OS_APP_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end for
+  end for
+%    __SEG_END_OS_APP_% !NAME %_VAR_RGN = ALIGN(16) - 1;
 %
 end foreach
 %  } > internal_ram

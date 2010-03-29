@@ -1,0 +1,32 @@
+/* FLAGS for the LEGO MINDSTORM NXT2.0 */
+
+IMPLEMENTATION trampoline {
+    TASK {
+        UINT32 STACKSIZE = 500 ;
+        UINT32 PRIORITY = 1 ;
+    } ;
+    ISR {
+        UINT32 STACKSIZE = 500 ;
+    } ;
+};
+
+CPU test {
+    OS config {
+        CFLAGS = "-g -c -ffreestanding -fsigned-char -mcpu=arm7tdmi -Winline -Wall -Werror-implicit-function-declaration --param max-inline-insns-single=1000 -fdata-sections -ffunction-sections -std=gnu99"; //-MD ";
+        ASFLAGS = "-g -mcpu=arm7tdmi-s --fatal-warnings ";
+        LDFLAGS = "-g --cref --allow-multiple-definition --gc-sections";
+        LDFLAGS = "-L/usr/local/crossgcc/lib/gcc/arm-elf/4.2.3 -lgcc -L/usr/local/crossgcc/arm-elf/lib -lc";
+        SYSTEM_CALL = TRUE;
+        
+        COMPILER = "arm-elf-gcc";
+        ASSEMBLER = "arm-elf-as";
+        LINKER = "arm-elf-ld";
+        MEMMAP = TRUE{
+          COMPILER = gcc;
+          LINKER = gnu_ld { SCRIPT = "script.ld"; };
+          ASSEMBLER = gnu_as;
+          MEMORY_PROTECTION = TRUE;
+        };   
+    };
+};
+

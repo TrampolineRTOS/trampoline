@@ -52,6 +52,7 @@ __vectors_load_end__ = (LOADADDR(.vectors) + SIZEOF(.vectors));
   . = ALIGN(4);
   ostext : {
     *(.osCode)
+    *(.appCommonCode)
   } > ram
 
   . = ALIGN(4);
@@ -85,6 +86,20 @@ end foreach
 } > ram
   
   appconst ALIGN(16) : {
+/* Sections for application const */  
+%
+foreach OSAPPLICATIONS do
+ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+%      *(.OS_APP_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
+%
+  end for
+ end for
+end foreach
+%
+  } > ram
+  
+  procconst ALIGN(16) : {
 /* Sections for const of tasks and ISR */
 %
 foreach PROCESSES do
@@ -140,7 +155,21 @@ end foreach
    * os application data
    */
   appvars : {
- /* $APP_VARS */
+%
+foreach OSAPPLICATIONS do
+%    __SEG_START_OS_APP_% !NAME %_VAR_RGN = .;
+/* Initialized variables section of OS_APP % !NAME % */
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
+%    *(.OS_APP_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end for
+  end for
+%    __SEG_END_OS_APP_% !NAME %_VAR_RGN = ALIGN(16) - 1;
+%
+end foreach
+% 
   } > ram
 
   /*
@@ -155,7 +184,7 @@ end foreach
 __ramtext_ram_start__ = ADDR(ostext);
 __ramtext_ram_end__   = ADDR(text_garbage) + SIZEOF(text_garbage);
 __ramtext_load_start__ = LOADADDR(ostext); 
-__ramtext_load_end__ = __ramtext_load_start__ + SIZEOF(ostext) + SIZEOF(osconst) + SIZEOF(osvars) + SIZEOF(apptext) + SIZEOF(appconst) + SIZEOF(procvars) + SIZEOF(procstack) + SIZEOF(appvars) + SIZEOF(text_garbage) ;
+__ramtext_load_end__ = __ramtext_load_start__ + SIZEOF(ostext) + SIZEOF(osconst) + SIZEOF(osvars) + SIZEOF(apptext) + SIZEOF(appconst) + SIZEOF(procconst) + SIZEOF(procvars) + SIZEOF(procstack) + SIZEOF(appvars) + SIZEOF(text_garbage) ;
 
 
   .data : {

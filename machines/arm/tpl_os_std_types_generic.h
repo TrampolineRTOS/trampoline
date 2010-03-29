@@ -81,7 +81,7 @@ typedef unsigned long long u64;
  *
  * 64 bits signed integer
  */
-typedef signed long long u64;
+typedef signed long long s64;
 
 #endif /* TPL_OS_STD_TYPES_GENERIC_H */
 

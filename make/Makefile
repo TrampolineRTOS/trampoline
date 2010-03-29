@@ -39,7 +39,10 @@ endif
 #############################################################################
 # Add Trampoline source files.
 #############################################################################
+ifeq ($(strip $(WITH_USEDEBUG)),true)
 include $(DEBUG_PATH)/Makefile
+endif
+
 include $(OS_PATH)/Makefile
 ifeq ($(strip $(AUTOSAR)),true)
   include $(AUTOSAR_PATH)/Makefile
