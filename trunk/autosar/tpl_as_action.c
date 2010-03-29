@@ -32,8 +32,6 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-#include <stdio.h>
-
 /**
  *  action function for action by incrementing counter
  */

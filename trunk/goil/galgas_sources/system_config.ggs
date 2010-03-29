@@ -1473,6 +1473,13 @@ routine setSystemCall ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
 end routine;
 
 #
+# set up the USEDEBUG flag
+#
+routine setDebug ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
+  addBoolValue !?cfg ![@lstring new !"USEDEBUG" ![[[cpu os] debug] location]] !getBool[![[cpu os] debug] !false];
+end routine;
+
+#
 # set up the USEINTERRUPTTABLE flag
 #
 routine setUseInterruptTable ??@root_obj unused cpu ?!@goilTemplateVariableMap cfg:
@@ -1497,6 +1504,7 @@ routine setBuildConfig ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
   setTemplatePath !cpu !?cfg;
   setTrampolinePath !cpu !?cfg;
   setSystemCall !cpu !?cfg;
+  setDebug !cpu !?cfg;
   setUseInterruptTable !cpu !?cfg;
 end routine;
 

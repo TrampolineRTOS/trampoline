@@ -36,8 +36,6 @@
 #include "tpl_machine_interface.h"
 #include "tpl_dow.h"
 
-#include <stdio.h>
-
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 

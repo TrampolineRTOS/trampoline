@@ -16,7 +16,7 @@ foreach INTERRUPTSOURCES prefixedby interrupt_ do
   foreach counterFct
     before
 %
-FUNC(void, OS_CODE) Ack% ! interrupt_NAME %(void);
+FUNC(void, OS_CODE) Ack% ! interrupt_NAME %(void){}
 
 FUNC(void, OS_CODE) tpl_tick_% ! interrupt_NAME %()
 {

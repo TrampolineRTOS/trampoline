@@ -173,9 +173,109 @@ end for
   #endif
 #endif
 
+/*============================================================================
+ * Common library
+ */
+#ifdef APP_COMMON_START_SEC_CODE
+  #undef APP_COMMON_START_SEC_CODE
+  #ifdef CURRENT_LINKER_CODE_SECTION
+    #error "Starting a .appCommonCode section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_CODE_SECTION_NAME
+    #define CURRENT_LINKER_CODE_SECTION_NAME __attribute__ ((section (".appCommonCode")))
+    #define CURRENT_LINKER_CODE_SECTION
+  #endif
+#endif
+
+#ifdef APP_COMMON_STOP_SEC_CODE
+  #undef APP_COMMON_STOP_SEC_CODE
+  #ifdef CURRENT_LINKER_CODE_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_CODE_SECTION
+    #undef CURRENT_LINKER_CODE_SECTION_NAME
+    #define CURRENT_LINKER_CODE_SECTION_NAME
+  #else
+    #error "No section .appCommonCode started"
+  #endif
+#endif
+
 /*=============================================================================
  * Application objects (Tasks and ISRs) Memory mapping
  */
+% 
+foreach OSAPPLICATIONS do
+%
+/*----------------------------------------------------------------------------
+ * Application % !NAME % memory mapping
+ *
+ * Variables sections
+ */
+%
+  for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
+    for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+%
+#ifdef APP_OS_APP_% !NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
+  #undef APP_OS_APP_% !NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a new OS_APP % !NAME % data section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION_NAME
+    #define CURRENT_LINKER_DATA_SECTION_NAME __attribute__ ((section (".OS_APP_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %")))
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef APP_OS_APP_% !NAME %_STOP_SEC_VAR% !SECTION_KIND !DATA_SIZE %
+  #undef APP_OS_APP_% !NAME %_STOP_SEC_VAR% !SECTION_KIND !DATA_SIZE %
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+    #undef CURRENT_LINKER_DATA_SECTION_NAME
+    #define CURRENT_LINKER_DATA_SECTION_NAME
+  #else
+    #error "No section started"
+  #endif
+#endif
+%
+    end for
+  end for
+%
+/*
+ * Const, Calibration, Carto, Configuration data sections
+ */
+%
+  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+    for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+%
+#ifdef APP_OS_APP_% !NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
+  #undef APP_OS_APP_% !NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #error "Starting a new OS_APP % !NAME % data section while a section is already started"
+  #else
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION_NAME
+    #define CURRENT_LINKER_DATA_SECTION_NAME __attribute__ ((section (".OS_APP_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %")))
+    #define CURRENT_LINKER_DATA_SECTION
+  #endif
+#endif
+#ifdef APP_OS_APP_% !NAME %_STOP_SEC% !SECTION_KIND !DATA_SIZE %
+  #undef APP_OS_APP_% !NAME %_STOP_SEC% !SECTION_KIND !DATA_SIZE %
+  #ifdef CURRENT_LINKER_DATA_SECTION
+    #undef MEMMAP_ERROR
+    #undef CURRENT_LINKER_DATA_SECTION
+    #undef CURRENT_LINKER_DATA_SECTION_NAME
+    #define CURRENT_LINKER_DATA_SECTION_NAME
+  #else
+    #error "No section started"
+  #endif
+#endif
+%
+    end for
+  end for
+end foreach
+%
+
 %
 foreach PROCESSES do
 %

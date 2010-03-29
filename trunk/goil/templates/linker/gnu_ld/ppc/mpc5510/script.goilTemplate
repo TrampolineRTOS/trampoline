@@ -32,6 +32,7 @@ SECTIONS
     *(.SC_handler)
     *(.EI_handler)
     *(.osCode)
+    *(.appCommonCode) 
   } > ram
 
   . = ALIGN(4);
@@ -77,7 +78,23 @@ foreach PROCESSES do
 end foreach
 %
   } > ram
+  
   appconst ALIGN(32) : {
+     /* Sections for application const */  
+%
+foreach OSAPPLICATIONS do
+ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+%      *(.OS_APP_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
+%
+  end for
+ end for
+end foreach
+%
+    . = ALIGN(32);
+  } > ram
+
+  procconst ALIGN(32) : {
     /* Sections for const of tasks and ISR */
 %
 foreach PROCESSES do
@@ -90,7 +107,7 @@ foreach PROCESSES do
 end foreach
 %    
     . = ALIGN(32);
-    __SEG_START_APP_CODE_CONST_RGN = . - 1;
+    __SEG_STOP_APP_CODE_CONST_RGN = . - 1;
   } > ram
   
   /*
@@ -139,9 +156,24 @@ end foreach
   /*
    * os application data
    */
-  appvars : {
-/* $APP_VAR$ */
+   appvars : {
+%
+foreach OSAPPLICATIONS do
+%    __SEG_START_OS_APP_% !NAME %_VAR_RGN = .;
+/* Initialized variables section of OS_APP % !NAME % */
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
+%    *(.OS_APP_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end for
+  end for
+%    __SEG_END_OS_APP_% !NAME %_VAR_RGN = ALIGN(16) - 1;
+%
+end foreach
+% 
   } > ram
+
   
   /*
    * garbage

@@ -83,7 +83,7 @@ list objectRefType error message "object reference type '%K'" style keywordsStyl
 list os_attributes error message "os attribute '%K'" style keywordsStyle :
     "STATUS", "EXTENDED", "STARTUPHOOK", "ERRORHOOK", "SHUTDOWNHOOK", "PRETASKHOOK",
     "POSTTASKHOOK", "USEGETSERVICEID", "USEPARAMETERACCESS", "USERESSCHEDULER", "SYSTEM_CALL",
-    "MEMMAP", "MEMORY_PROTECTION", "TRACE";
+    "MEMMAP", "MEMORY_PROTECTION", "TRACE", "DEBUG";
 
 #
 # TRACE attributes

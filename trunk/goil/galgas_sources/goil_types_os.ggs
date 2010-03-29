@@ -190,6 +190,7 @@ class @os_obj extends @oil_obj {
   @basic_type  useparameteraccess feature setter;
   @basic_type  useresscheduler    feature setter;
   @basic_type  systemcall         feature setter;
+  @basic_type  debug              feature setter;
   @basic_type  memmap             feature setter;
   @lstringlist app_src            feature setter;
   @lstring     compiler           feature setter;
@@ -325,6 +326,7 @@ function void_os_obj
     !void_obj
     !void_obj
     !emptyString
+    !void_obj
     !void_obj
     !void_obj
     !void_obj

@@ -63,6 +63,7 @@ rule <os>
   @basic_type  useparameteraccess := [os useparameteraccess] ;
   @basic_type  useresscheduler := [os useresscheduler] ;
   @basic_type  systemcall := [os systemcall] ;
+  @basic_type  debug := [os debug] ;
   @basic_type  memmap := [os memmap] ;
   @lstringlist app_src := [os app_src] ;                  # Makefile
   @lstring     compiler := [os compiler];                 # Makefile
@@ -165,6 +166,11 @@ rule <os>
     @lbool sc ;
     $SYSTEM_CALL$ ; $=$ ; <boolean> ?sc ;
     set_bool !?systemcall !sc !"SYSTEM_CALL" ;
+    <description> ?* ; $;$ ;
+  while
+    @lbool db ;
+    $DEBUG$ ; $=$ ; <boolean> ?db ;
+    set_bool !?debug !db !"DEBUG" ;
     <description> ?* ; $;$ ;
   while
     @basic_type mm ;
@@ -347,6 +353,7 @@ rule <os>
     !useparameteraccess
     !useresscheduler
     !systemcall
+    !debug
     !memmap
     !app_src
     !compiler

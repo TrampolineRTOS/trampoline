@@ -163,8 +163,11 @@ CHIP = % !CHIP end if
 if BOARD != "" then %
 BOARD = % !BOARD end if %
 
-# WITH_USECOM is true if CIM is used
+# WITH_USECOM is true if COM is used
 WITH_USECOM = % !trueFalse(USECOM) %
+
+# WITH_USEDEBUG is true if DEBUG is used
+WITH_USEDEBUG = % !trueFalse(USEDEBUG) %
 
 # WITH_SYSTEM_CALL is true when compiling trampoline
 # with system call support. It is false otherwise

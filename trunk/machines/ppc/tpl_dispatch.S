@@ -94,7 +94,7 @@ tpl_enter_kernel:
   addi  r1,r1,4
 #endif
   
-   * Check the reentrency counter value and inc it
+   /* Check the reentrency counter value and inc it
    * if the value is 0 before the inc, then we switch to
    * the system stack.
    */

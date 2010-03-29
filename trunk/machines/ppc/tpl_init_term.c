@@ -30,6 +30,7 @@
 #include "tpl_os_it.h"
 #include "tpl_os_it_kernel.h"
 #include "tpl_assembler.h"
+#include "tpl_os_error.h"
 
 #define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
@@ -183,7 +184,7 @@ STATIC FUNC(void, OS_CODE) tpl_call_missingend(void)
 /*    VAR(StatusType, AUTOMATIC) result = E_OK; */
 
 #ifdef WITH_AUTOSAR
-    CALL_ERROR_HOOK(E_OS_MISSINGEND);
+    PROCESS_ERROR(E_OS_MISSINGEND);
 #endif
 /*    result = TerminateTask(); */
 }
