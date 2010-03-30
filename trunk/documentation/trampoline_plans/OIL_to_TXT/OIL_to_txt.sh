@@ -18,12 +18,13 @@ do
 	for name in `cat ${PAT}${first_path}_testSequences.txt`
 	do
 			
-		copy=0
 		bracket=1
 		full=0
 		end=0
 		date_oil=0
 		date_file=0
+		appmode_passed=0
+		go_to_copy_the_oil_file=0
 	
 		#if full, do the txt file, otherwise, do nothing
 		if [ "`echo $name | grep -c non`" = "0" ]
@@ -56,10 +57,14 @@ do
 				#copy in the old file the paragraph needed
 				old_IFS=$IFS
 				IFS=$'\n'     # nouveau séparateur de champ, le caractère fin de ligne
+				line_number=0
 				for ligne in $(cat ${PAT}${name}/${name}.oil)
 				do
+					line_number=`expr $line_number + 1`
+					#echo "line_number:$line_number"
+					
 					#if TASK has elapsed, count the { and } and copy until } has one more than {
-					if [ "`echo $copy`" = "2" ]
+					if [ "`echo $go_to_copy_the_oil_file`" = "1" ]
 					then
 						open_bracket_number=`echo $ligne | grep -c "{"`
 						#echo "open_bracket_number=$open_bracket_number"
@@ -86,13 +91,20 @@ do
 							fi
 						fi
 					else
+						if [ "`echo $ligne | grep -c 'APPMODE '`" != "0" ]
+						then
+							appmode_passed=1
+							#echo "APPMODE appears at line:$line_number"
+						fi
+						
 						if [ "`echo $ligne | grep -c 'TASK '`" != "0" ]
 						then
-							copy=`expr $copy + 1`
-							if [ "`echo $copy`" = "2" ]
-							then
+						    #echo "TASK appears at line:$line_number - check if APPMODE appeared before or not. If yes set copy to 2 (or another flag)"
+						    if [ "`echo $appmode_passed`" = "1" ]
+						    then
+						    	go_to_copy_the_oil_file=1
 								echo "$ligne" >> ${file}.txt
-							fi #[ "`echo $copy`" = "2" ]
+							fi #[ "`echo $appmode_passed`" = "1" ]
 						fi #[ "`echo $ligne | grep -c 'TASK '`" != "0" ]
 					fi
 				done

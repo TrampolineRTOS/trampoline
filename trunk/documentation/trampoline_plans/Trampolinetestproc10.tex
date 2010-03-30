@@ -19,7 +19,7 @@
 }
 
 \title{Trampoline (OSEK/VDX OS) Test Procedure - Version 1.0}
-\author{Florent PAVIN ; Jean-Luc BECHENNEC}
+\author{Florent PAVIN}
 
 % INITIALISATION %
 %% LSTLISTING %%
@@ -3706,6 +3706,136 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 	t1 		& TerminateTask()									& E\_OK								& \\ \hline 
 	\end{supertabular}\\
 	
+	
+% AUTOSAR - MEMORY PROTECTION %
+\subsection{AUTOSAR - Memory Protection}
+
+\settowidth{\Li}{t1\_app\_nontrusted1}
+\setlength{\Lii}{\textwidth} \addtolength{\Lii}{-\Li} \addtolength{\Lii}{-\Liii} \addtolength{\Lii}{-\Liiii}
+
+	% TEST SEQUENCE 1 %
+	\textbf{Test Sequence 1 :}
+	\begin{lstlisting}
+	TEST CASES:		       1, 2, 5, 6, 7
+	RETURN STATUS:	  	 EXTENDED
+	SCHEDULING POLICY:   NON-PREEMPTIVE
+	HOOKS:		           ErrorHook
+	\end{lstlisting}
+	\lstinputlisting{./OIL_to_TXT/autosar_mp_s1.txt}
+
+	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline 
+	t1\_app\_nontrusted1	& Read/Write its own OS application datas		& Access allowed									& 5 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write trusted OS application datas		& Call ErrorHook with E\_OS\_PROTECTION\_MEMORY		& 6 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write other non-trusted OS application datas & Call ErrorHook with E\_OS\_PROTECTION\_MEMORY	& 6 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write OS datas from non-truted OS application	& Call ErrorHook with E\_OS\_PROTECTION\_MEMORY	& 1 \\ \hline
+	t1\_app\_nontrusted1	& WaitEvent(Event1)							& E\_OK											& \\ \hline
+	
+	t1\_app\_trusted1		& Read/Write its own OS application datas		& Access allowed									& 7 \\ \hline
+	t1\_app\_trusted1		& Read/Write other trusted OS application datas 	& Access allowed									& 7 \\ \hline
+	t1\_app\_trusted1		& Read/Write non-trusted OS application datas	& Access allowed									& 7 \\ \hline
+	t1\_app\_trusted1		& Read/Write OS datas from truted OS application	& Access allowed									& 2 \\ \hline
+	t1\_app\_trusted1		& SetEvent(t1\_app\_nontrusted1, Event1)		& E\_OK											& \\ \hline
+	
+	t1\_app\_trusted1		& TerminateTask()							& E\_OK											& \\ \hline
+	t1\_app\_nontrusted1	& TerminateTask()							& E\_OK											& \\ \hline
+	\end{supertabular}\\
+
+	% TEST SEQUENCE 2 %
+	\textbf{Test Sequence 2 :}
+	\begin{lstlisting}
+	TEST CASES:		       8, 9
+	RETURN STATUS:	  	 EXTENDED
+	SCHEDULING POLICY:   NON-PREEMPTIVE
+	HOOKS:		           ErrorHook
+	\end{lstlisting}
+	\lstinputlisting{./OIL_to_TXT/autosar_mp_s2.txt}
+
+	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline 
+	t1\_app\_nontrusted1	& Read/Write its own Task/OsIsr datas from non-trusted OS app.	& Access allowed									& \\ \hline
+	t1\_app\_nontrusted1	& Read/Write Task/OsIsr datas in the same non-trusted OS application 	& Call ErrorHook with E\_OS\_PROTECTION\_MEMORY	& 8 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write Task/OsIsr datas in the other non-trusted OS application 	& Call ErrorHook with E\_OS\_PROTECTION\_MEMORY	& 8 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write Task/OsIsr datas in trusted OS application			 & Call ErrorHook with E\_OS\_PROTECTION\_MEMORY	& 8 \\ \hline
+	t1\_app\_nontrusted1	& WaitEvent(Event1)										& E\_OK											& \\ \hline
+	
+	t1\_app\_trusted1		& Read/Write its own Task/OsIsr datas from trusted OS app.		& Access allowed									& \\ \hline
+	t1\_app\_trusted1		& Read/Write Task/OsIsr datas in the same trusted OS application 	& Access allowed									& 9 \\ \hline
+	t1\_app\_trusted1		& Read/Write Task/OsIsr datas in the other trusted OS application 	& Access allowed									& 9 \\ \hline
+	t1\_app\_trusted1		& Read/Write Task/OsIsr datas in non-trusted OS application	 	& Access allowed									& 9 \\ \hline
+	t1\_app\_trusted1		& SetEvent(t1\_app\_nontrusted1, Event1)					& E\_OK											& \\ \hline
+	
+	t1\_app\_trusted1		& TerminateTask()										& E\_OK											& \\ \hline
+	t1\_app\_nontrusted1	& TerminateTask()										& E\_OK											& \\ \hline
+	\end{supertabular}\\
+
+	% TEST SEQUENCE 3 %
+	\textbf{Test Sequence 3 :}
+	\begin{lstlisting}
+	TEST CASES:		       3, 4, 10, 11
+	RETURN STATUS:	  	 EXTENDED
+	SCHEDULING POLICY:   NON-PREEMPTIVE
+	HOOKS:		           ErrorHook
+	\end{lstlisting}
+	\lstinputlisting{./OIL_to_TXT/autosar_mp_s3.txt}
+
+	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline 
+	t1\_app\_nontrusted1	& DisableAllInterrupts()								&												& \\ \hline
+	t1\_app\_nontrusted1	& Read/Write its own Task/OsIsr stack from non-trusted OS app.	& Access allowed								& \\ \hline
+	t1\_app\_nontrusted1	& EnableAllInterrupts()								&												& \\ \hline
+	
+	t1\_app\_nontrusted1	& Read/Write Task/OsIsr stack in the same non-trusted OS application 	& Call ErrorHook with E\_OS\_PROTECTION\_MEMORY		& 10 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write Task/OsIsr stack in the other non-trusted OS application 	& Call ErrorHook with E\_OS\_PROTECTION\_MEMORY		& 10 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write Task/OsIsr stack in trusted OS application			 	& Call ErrorHook with E\_OS\_PROTECTION\_MEMORY		& 10 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write OS stack from non-truted OS application		& Call ErrorHook with E\_OS\_PROTECTION\_MEMORY		& 3 \\ \hline
+	
+	t1\_app\_nontrusted1	& WaitEvent(Event1)									& E\_OK											& \\ \hline
+	
+	t1\_app\_nontrusted1	& DisableAllInterrupts()								&												& \\ \hline
+	t1\_app\_nontrusted1	& Read/Write its own Task/OsIsr stack from trusted OS app.	& Access allowed									& \\ \hline
+	t1\_app\_nontrusted1	& EnableAllInterrupts()								&												& \\ \hline
+	
+	t1\_app\_nontrusted1	& DisableAllInterrupts()								&												& \\ \hline
+	t1\_app\_nontrusted1	& Read/Write Task/OsIsr stack in the same trusted OS application 	& Access allowed								& 11 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write Task/OsIsr stack in the other trusted OS application 	& Access allowed								& 11 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write Task/OsIsr stack in non-trusted OS application	 	& Access allowed								& 11 \\ \hline
+	t1\_app\_nontrusted1	& EnableAllInterrupts()								&												& 11 \\ \hline
+
+	t1\_app\_nontrusted1	& DisableAllInterrupts()								&												& \\ \hline
+	t1\_app\_nontrusted1	& Read/Write OS stack from truted OS application			& Access allowed									& 4 \\ \hline
+	t1\_app\_nontrusted1	& EnableAllInterrupts()								&												& \\ \hline
+
+	t1\_app\_trusted1		& SetEvent(t1\_app\_nontrusted1, Event1)				& E\_OK											& \\ \hline
+	t1\_app\_trusted1		& TerminateTask()									& E\_OK											& \\ \hline
+	t1\_app\_nontrusted1	& TerminateTask()									& E\_OK											& \\ \hline
+	\end{supertabular}\\
+
+	% TEST SEQUENCE 4 %
+	\textbf{Test Sequence 4 :}
+	\begin{lstlisting}
+	TEST CASES:		       12, 13, 14, 16, 15, 17, 18
+	RETURN STATUS:	  	 EXTENDED
+	SCHEDULING POLICY:   NON-PREEMPTIVE
+	HOOKS:		           ErrorHook
+	\end{lstlisting}
+	\lstinputlisting{./OIL_to_TXT/autosar_mp_s4.txt}
+
+	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline 
+	t1\_app\_nontrusted1	& Execute protected code from non-trusted OS application		& Call ErrorHook with E\_OS\_PROTECTION\_MEMORY		& (not tested yet) 14 \\ \hline
+	t1\_app\_nontrusted1	& Execute shared library code from non-trusted OS application 	& Access allowed									& 12 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write access to peripheral from non-trusted OS application 	& Call ErrorHook with E\_OS\_PROTECTION\_MEMORY		& 17 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write access to its assigned peripheral from non-trusted OS application	& Access allowed						& (not tested yet) 16 \\ \hline
+	
+	t1\_app\_nontrusted1	& WaitEvent(Event1)										& E\_OK											& \\ \hline
+	
+	t1\_app\_trusted1		& Execute protected code from trusted OS application			& Access allowed									& (not tested yet) 15 \\ \hline
+	t1\_app\_trusted1		& Execute shared library code from trusted OS application 		& Access allowed									& 13 \\ \hline
+	t1\_app\_trusted1		& Read/Write access to peripheral from trusted OS application 	& Access allowed									& 18 \\ \hline
+	t1\_app\_trusted1		& Read/Write access to its assigned peripheral from trusted OS application	& Access allowed							& (not tested yet) 18 \\ \hline
+	t1\_app\_trusted1		& SetEvent(t1\_app\_nontrusted1, Event1)					& E\_OK											& \\ \hline
+	
+	t1\_app\_trusted1		& TerminateTask()										& E\_OK											& \\ \hline
+	t1\_app\_nontrusted1	& TerminateTask()										& E\_OK											& \\ \hline
+	\end{supertabular}\\
+
 
 % AUTOSAR - TRUSTED FUNCTION %
 %\subsection{AUTOSAR - Trusted function}

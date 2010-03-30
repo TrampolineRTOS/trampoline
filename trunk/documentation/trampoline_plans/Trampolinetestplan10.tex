@@ -19,7 +19,7 @@
 }
 
 \title{Trampoline (OSEK/VDX OS) Test Plan - Version 1.0}
-\author{Florent PAVIN ; Jean-Luc BECHENNEC}
+\author{Florent PAVIN}
 
 % INITIALISATION %
 %% HEAD SUPERTABULAR %%
@@ -51,9 +51,10 @@ This chapter contains the test cases which will be used to test an implementatio
 As we said earlier, this test plan is defined from the OSEK OS version 2.2.3, and to better see the differences between this version and the old one (OSEK Test Plan 2.0), we will explain those differences in each section.\\
 ISR1 does not use an operating system service since after the ISR1 is finished, processing continues exactly at the instruction where the interrupt has occurred, i.e. the interrupt has no influence on task management. Thus, \textbf{ISR can't be tested}.\\
 \textit{Stack Monitoring}, from AUTOSAR OS, is not a functional test. It has to be tested in every target because it's depending on the portage. \textit{Stack Monitoring} OS Requirements (OS067, OS068, OS396) are therfore not included in this report.\\
-Idem for \textit{Memory Protection} OS Requirements (OS026, OS027, OS044, OS081, OS083, OS086, OS087, OS195, OS196, OS198, OS207, OS208, OS209, OS355, OS356).\\
 Idem for \textit{Protecting the Hardware}.\\
 	
+Meanwhile, \textit{Memory Protection} OS Requirements (OS026, OS027, OS044, OS081, OS083, OS086, OS087, OS195, OS196, OS198, OS207, OS208, OS209, OS355, OS356) are tested (see  \ref{memprot}).\\
+
 	%TASK MANAGEMENT %
 	\subsection{Task management}
 	Since Schedule() returns E\_OS\_RESSOURCE from a task or an interrupt when a resource is occupied, test case 33 appears.\\
@@ -937,6 +938,38 @@ events are cleared. Service returns E\_OK  \\ \hline
 	12	& Call ShutdownOS()											& PostTaskHook is not performed (even if PostTaskHook is configured) 		& OS071 \\ \hline
 	\end{supertabular}
 		
+		
+	% AUTOSAR - TRUSTED FUNCTION %
+	\subsection{AUTOSAR - Memory Protection} \label{memprot}
+	OS Requirements : 26, 27, 44, 81, 83, 86, 87, 195, 196, 198, 207, 208, 209, 355, 356.\\
+	Test case 14, 15, 16, 18 (the own peripheral part) are not tested yet.\\
+	
+	\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+  		\centering
+		\includegraphics[width=1\textwidth]{graphics/AUTOSAR_Memory_Protection.pdf}
+	\end{figure}
+	
+	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline
+	1	& Read/Write OS datas from non-trusted OS application 		& The OS shall call the errorhook (if configured) with status E\_OS\_PROTECTION\_MEMORY			& OS198 \\ \hline
+	2	& Read/Write OS datas from trusted OS application 			& Access allowed																		& OS198 \\ \hline
+	3	& Read/Write OS stack from non-trusted OS application 		& The OS shall call the errorhook (if configured) with status E\_OS\_PROTECTION\_MEMORY			& OS198 \\ \hline
+	4	& Read/Write OS stack from trusted OS application 			& Access allowed																		& OS198 \\ \hline
+	5	& Read/Write its own OS application's datas from non-trusted OS application	&  Access allowed															& OS086 \\ \hline
+	6	& Read/Write other OS application's datas from non-trusted OS application	&  The OS shall call the errorhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS026, OS207 \\ \hline
+	7	& Read/Write OS application's datas from trusted OS application			&  Access allowed															& OS026, OS207, OS086  \\ \hline
+	8	& Read/write Task/OsIsr's datas from non-trusted OS application (in the same or other OS application)		& The OS shall call the errorhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS195, OS356 \\ \hline
+	9	& Read/write Task/OsIsr's datas from trusted OS application (in the same or other OS application)			& Access allowed 									& OS087 \\ \hline
+	10	& Read/write Task/OsIsr's stack from non-trusted OS application (in the same or other OS application)		& The OS shall call the errorhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS208, OS355 \\ \hline
+	11	& Read/write Task/OsIsr's stack from trusted OS application (in the same or other OS application)			& Access allowed 									& OS196 \\ \hline
+	12	& Execute sharde library code from non-trusted OS application 		 	& Access allowed 															& OS081 \\ \hline
+	13	& Execute sharde library code from trusted OS application 			 	& Access allowed 															& OS081 \\ \hline
+	14	& Execute protected (an OS application can protect its code section) code from non-trusted OS application 	& The OS shall call the errorhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS027 \\ \hline
+	15	& Execute protected (an OS application can protect its code section) code from trusted OS application 		& Access allowed									& OS027 \\ \hline
+	16 	& Read/Write its own peripherals from non-trusted OS application			& Access allowed															& OS083 \\ \hline
+	17 	& Read/Write other peripherals from non-trusted OS application			& The OS shall call the errorhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS209 \\ \hline
+	18 	& Read/Write peripherals from trusted OS application					& Access allowed															& OS209 \\ \hline
+	\end{supertabular}
+	
 	% AUTOSAR - TRUSTED FUNCTION %
 	%\subsection{AUTOSAR - Trusted function}
 	
@@ -951,6 +984,8 @@ events are cleared. Service returns E\_OK  \\ \hline
 	
 	% AUTOSAR - SYSTEM SCALABILITY %
 	%\subsection{AUTOSAR - System scalability}
+	
+	
 	
 \appendix
 \section{Interrupts Management} \label{interrupts_management}
