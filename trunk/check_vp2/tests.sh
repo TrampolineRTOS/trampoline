@@ -6,8 +6,6 @@
 # (nothing): performs tests
 # clean    : call make clean for each tests folders
 #
-# TODO : 
-#		 delete testSequences file and do the loops for each directory (which contains defaultAppWorkstation.oil) #ls -d
 ######
 
 if [ "$1" != "clean" ] && [ "$1" != "" ] 

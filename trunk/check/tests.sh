@@ -5,10 +5,7 @@
 # args:
 # (nothing): performs tests
 # clean    : call make clean for each tests folders
-# {goil's target} : if Makefile hasn't been created yet, a 'goil' command is needed with the target name (default=posix)
 #
-# TODO : 
-#		 delete testSequences file and do the loops for each directory (which contains defaultAppWorkstation.oil) #ls -d
 ######
 
 #check target

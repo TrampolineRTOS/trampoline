@@ -5,7 +5,6 @@
 # args:
 # (nothing): performs tests
 # clean    : call make clean for each tests folders
-# {goil's target} : if Makefile hasn't been created yet, a 'goil' command is needed with the target name (default=libpcl)
 #
 # TODO : 
 #		 delete testSequences file and do the loops for each directory (which contains ${i}.oil) #ls -d
@@ -18,7 +17,6 @@ then
 		#remove make-rules, makefiles, ${i}/, build/ and exe file
 		rm -rf ./${i}/build
 		rm -rf ./${i}/${i}
-		rm -rf ./${i}/Make-rules
 		rm -rf ./${i}/Makefile
 		rm -rf ./${i}/${i}_exe
 		rm -rf ./${i}/goil.log
@@ -48,48 +46,54 @@ else
 	# Build and execute all the tests
 	for i in `cat functional_testSequences.txt`
 	do
-		#Adding AUTOSAR flag if autosar test sequence
-		if [ "`echo ${i} | grep autosar`" != "" ]
+		if [ "`echo ${i} | grep mp`" == "" ]
 		then
-			autosar_flag="-a"
+		
+			#Adding AUTOSAR flag if autosar test sequence
+			if [ "`echo ${i} | grep autosar`" != "" ]
+			then
+				autosar_flag="-a"
+			else
+				autosar_flag=""
+			fi	
+			
+			#Go in the test sequence
+			cd ./${i}
+			
+			#display running test sequence on the standard output for the user and in the log file to better understand failed tests
+			echo "running $i" | tee -a ../functional_results.log 
+			
+			#remove the executable file in order to know if the make succeed.
+			rm -rf ./${i}_exe
+	
+			#check if previous target compiled is the same as the one wanted. If not, clean all and compile
+			if [ -f Make-rules ] && [ "`cat Make-rules | grep GOIL_TARGET | grep -c $1`" = "0" ]
+			then
+				echo "(previous target different than $1 -> Recompilation...)" 
+				rm -rf ./build
+				rm -rf ./${i}
+				rm -rf ./Make-rules
+				rm -rf ./Makefile
+			fi
+			
+			#if Makefile doesn't exist -> do goil
+			if ! [ -f Makefile ]
+			then
+				goil --target=$1 --templates=../../../goil/templates/ -g ${i}.oil $autosar_flag 2>&1 | tee -a ../functional_results.log
+			fi
+			
+			#if goil succeed (Makefile has been created) -> do make and execute file
+			if `test -f Makefile`
+			then
+				make -s
+				./${i}_exe >> ../functional_results.log
+			fi
+			
+			#Go out of the test sequence
+			cd ..
 		else
-			autosar_flag=""
-		fi	
-		
-		#Go in the test sequence
-		cd ./${i}
-		
-		#display running test sequence on the standard output for the user and in the log file to better understand failed tests
-		echo "running $i" | tee -a ../functional_results.log 
-		
-		#remove the executable file in order to know if the make succeed.
-		rm -rf ./${i}_exe
-
-		#check if previous target compiled is the same as the one wanted. If not, clean all and compile
-		if [ -f Make-rules ] && [ "`cat Make-rules | grep GOIL_TARGET | grep -c $1`" = "0" ]
-		then
-			echo "(previous target different than $1 -> Recompilation...)" 
-			rm -rf ./build
-			rm -rf ./${i}
-			rm -rf ./Make-rules
-			rm -rf ./Makefile
+			echo "$i is not tested because it's a memory protection test"
 		fi
-		
-		#if Makefile doesn't exist -> do goil
-		if ! [ -f Makefile ]
-		then
-			goil --target=$1 --templates=../../../goil/templates/ -g ${i}.oil $autosar_flag 2>&1 | tee -a ../functional_results.log
-		fi
-		
-		#if goil succeed (Makefile has been created) -> do make and execute file
-		if `test -f Makefile`
-		then
-			make -s
-			./${i}_exe >> ../functional_results.log
-		fi
-		
-		#Go out of the test sequence
-		cd ..
 	
 	done
 	echo "Functional tests done."
