@@ -16,18 +16,10 @@ if [ "$1" = "clean" ]
 then
 	for i in `cat GOIL_testSequences.txt`
 	do
-		echo "cleaning $i"
-		
-		cd ../../viper2/
-		
-		#change sequence name in config.py file
-		sed "s/SEQUENCE/${i}/g" config-tests.tmp.py | sed "s/functional/GOIL/g"  > config.py
-		
-		#clean
-		python2.6 viper2.py --clean
-		
-		#come back to the functional_tests.sh file
-		cd $GOILRESULT
+		#remove files built
+		rm -rf ./${i}/target.cfg
+		rm -rf ./${i}/vp_ipc_devices.c
+		rm -rf ./${i}/vp_ipc_devices.h
 	done
 
 	#Delete results.log

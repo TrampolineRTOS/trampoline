@@ -130,3 +130,8 @@ autosar_sp_s3
 autosar_sp_s4
 autosar_sp_s5
 
+autosar_mp_s1
+autosar_mp_s2
+autosar_mp_s3
+autosar_mp_s4
+

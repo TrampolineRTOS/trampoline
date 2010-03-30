@@ -5,7 +5,6 @@
 # args:
 # (nothing): performs tests
 # clean    : call make clean for each tests folders
-# {goil's target} : if Makefile hasn't been created yet, a 'goil' command is needed with the target name (default=libpcl)
 #
 # TODO : 
 #		 delete testSequences file and do the loops for each directory (which contains defaultAppWorkstation.oil) #ls -d
@@ -13,15 +12,6 @@
 
 if [ "$1" = "clean" ]
 then
-#	for i in `cat GOIL_testSequences.txt`
-#	do
-#		#remove make-rules, makefiles, defaultAppWorkstation/, build/, embUnit/*.o and lib/libembUnit.a
-#		rm -rf ./${i}/build
-#		rm -rf ./${i}/${i}
-#		rm -rf ./${i}/Make-rules
-#		rm -rf ./${i}/Makefile
-#		rm -rf ./${i}/${i}
-#	done
 	#Delete results.log
 	rm -rf GOIL_results.log
 	

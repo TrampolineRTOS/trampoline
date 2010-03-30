@@ -1,3 +1,37 @@
+/**
+ * @file autosar_mp_s4/autosar_mp_s4.c
+ *
+ * @section desc File description
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline Test Suite
+ *
+ * Trampoline Test Suite is copyright (c) IRCCyN 2005-2007
+ * Trampoline Test Suite is protected by the French intellectual property law.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; version 2
+ * of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+
 #include "Os.h"
 #include "tpl_app_define.h"
 
@@ -95,7 +129,7 @@ TASK(t1_app_nontrusted1)
   printf("2.t1_app_nontrusted1 - return value from test_common_function=%lu (should be 1)\n",var1_t1_app_nontrusted1);
 #endif
   
-  /* read/write access to peripheral by trusted OS application -> NO (OS209) */
+  /* read/write access to peripheral by non-trusted OS application -> NO (OS209) */
   var1_t1_app_nontrusted1 = *RANDOM_PERIPHERAL_ADRESS;
   *RANDOM_PERIPHERAL_ADRESS = var2_t1_app_nontrusted1;
 #if TARGET_ARCH == ARCH_POSIX
@@ -127,6 +161,8 @@ TASK(t1_app_trusted1)
   printf("4.t1_app_trusted1 \n");
 #endif
   
+  // TODO (currently not supported by Trampoline) OS027
+
   /* OS081 : execute code in common section from all OS application -> YES */
   var1_t1_app_trusted1 = test_common_function(var1_t1_app_trusted1,var2_t1_app_trusted1);
   /* check returned value */
@@ -141,6 +177,8 @@ TASK(t1_app_trusted1)
   printf("6.t1_app_trusted1 - random peripheral adress value = %lu (should be 0)\n",var1_t1_app_trusted1);
 #endif  
   
+  // TODO (currently not supported by Trampoline) OS083 : read/write to their (trusted OS application) assigned peripherals -> YES 
+  
   SetEvent(t1_app_nontrusted1, Event1);
   
 #if TARGET_ARCH == ARCH_POSIX
@@ -153,3 +191,5 @@ TASK(t1_app_trusted1)
 #define APP_Task_t1_app_trusted1_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
+
+/* End of file autosar_mp_s4/autosar_mp_s4.c */

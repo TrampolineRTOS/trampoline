@@ -16,21 +16,15 @@ if [ "$1" = "clean" ]
 then
 	for i in `cat functional_testSequences.txt`
 	do
-		echo "cleaning $i"
-
-		rm -rf ${i}/${i}.desc
-		
-		cd ../../viper2/
-		
-		#change sequence name in config.py file
-		sed "s/SEQUENCE/${i}/g" config-tests.tmp.py > config.py
-		
-		#clean
-		python2.6 viper2.py --clean
-		
-		#come back to the functional_tests.sh file
-		cd $FUNCTIONALCHECK
-
+		#remove make-rules, makefiles, ${i}/, build/ and exe file
+		rm -rf ./${i}/build
+		rm -rf ./${i}/Makefile
+		rm -rf ./${i}/target.cfg
+		rm -rf ./${i}/${i}
+		rm -rf ./${i}/${i}_exe
+		rm -rf ./${i}/vp_ipc_devices.c
+		rm -rf ./${i}/vp_ipc_devices.h
+		#rm -rf ./${i}/goil.log
 	done
 
 	#Delete results.log
