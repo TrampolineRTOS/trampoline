@@ -30,6 +30,7 @@
 .set data_abort, 2
 .set undefined_instruction, 3
 .set unused, 4
+.set fiq, 5
 
 #define OS_START_SEC_VAR
 #include "tpl_as_memmap.h"
@@ -129,7 +130,9 @@ primary_unused_handler:
 /* FIQ not defined in this port version */
 .global tpl_primary_fiq_handler
 tpl_primary_fiq_handler:
-    subs pc, lr, #4
+  lock_interrupts
+  decode_exception fiq
+  b .
 
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"

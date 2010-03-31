@@ -1,0 +1,1 @@
+Go to the documentation in documentation/nxt/nxt_manual.pdf

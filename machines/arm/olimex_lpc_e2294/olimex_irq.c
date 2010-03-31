@@ -23,17 +23,43 @@
  * $URL$
  */
 
-#include "tpl_os_kernel.h"
-#ifdef WITH_AUTOSAR
-#include "tpl_as_isr_kernel.h"
-#endif /* WITH_AUTOSAR */
+#include "tpl_os.h"
+#include "tpl_os_it_kernel.h" //tpl_it_handler
+#include "LPC22XX.h" //VICIRQStatus...
+#include "lcd.h" //LCDSendTxt
+
+extern CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[31];
 
 void tpl_arm_subarch_irq_handler ()
 {
-    /* TODO */ 
-     
-    /* acknoledge interrupt
-    */
+  VAR(u32, AUTOMATIC) isr_id_hex;
+  VAR(u32, AUTOMATIC) isr_id_dec = 0;
+  VAR(u32, AUTOMATIC) i;
+  VAR(tpl_it_handler, AUTOMATIC) isr_vector;
+  
+  /* get interrupt id */
+  isr_id_hex = VICIRQStatus;
+   
+  /* clear interrupt */
+  void (* routine) (void) = (void (*) (void)) VICVectAddr ;
+  routine () ;    
+  
+  /* Convert the interrupt id which is in hexadecimal in decimal */
+  for(i=0; i<31; i++)
+  {
+    if ((isr_id_hex >> i) == 1)
+    {
+      isr_id_dec = i;
+    }
+  }  
+    
+  /* launch interrupt fonction (ISR2, timer...) */
+  isr_vector = tpl_it_vector[isr_id_dec].func;
+  isr_vector(tpl_it_vector[isr_id_dec].args);
+ 
+  /* acknowlege interrupts */
+  VICVectAddr = 0 ;
+    
 }
 
 /* End of file olimex_irq.c */

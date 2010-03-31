@@ -34,14 +34,14 @@ tpl_sleep:
   /*
    * halts OKI CPU
    */
-  ldr r0, =0xB8000004
-  mov r1, #0x3C
-  mov r2, #4
-  str r1, [r0]
-  str r2, [r0]
+  #ldr r0, =0xB8000004
+  #mov r1, #0x3C
+  #mov r2, #4
+  #str r1, [r0]
+  #str r2, [r0]
 #endif
-  /* falls into infinite loop */
-    b .
+  /* falls into infinite loop */ 
+  b .
 
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"

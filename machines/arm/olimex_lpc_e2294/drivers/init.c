@@ -23,21 +23,22 @@
  * $URL:$
  */
 
-#include "LPC22XX.h"
-#include "timer.h"
-#include "lcd.h"
+#include "init.h"
 
 void Init(void)
 {
     
 	/* To enable LCD communication */    
-    PINSEL0 = 0;
+  PINSEL0 = 0;
 	PINSEL1 = 0;
     
-    InitTimer();
+  InitTimer0();
+  InitLCD();
     
-    InitLCD();
+  InitTimer1(); //uses LCD so should be launch after InitLCD
     
+  InitExtInt(); // Use external interrupts on P0.16 and P0.15
+  
 }
 
 /* End of file init.c */

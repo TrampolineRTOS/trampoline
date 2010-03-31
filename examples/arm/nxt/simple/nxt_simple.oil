@@ -74,7 +74,7 @@ CPU test {
           COMPILER = gcc;
           LINKER = gnu_ld { SCRIPT = "script.ld"; };
           ASSEMBLER = gnu_as;
-          MEMORY_PROTECTION = FALSE;
+          MEMORY_PROTECTION = TRUE;
         };
     } ;
 
@@ -136,6 +136,17 @@ CPU test {
        CATEGORY = 2;
 		PRIORITY = 1;
 		SOURCE = button_right;
+   };
+   APPLICATION app {
+       TRUSTED = FALSE;
+		TASK = task1;
+		TASK = task5;
+       ISR = isr_button_start;
+       ISR = isr_button_stop;
+       ISR = isr_button_left;
+       ISR = isr_button_right;
+       ALARM = Alarm1;
+       COUNTER = SystemCounter;
    };
 
 };

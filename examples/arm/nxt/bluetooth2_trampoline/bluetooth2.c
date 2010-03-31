@@ -55,74 +55,21 @@ VAR(s8, AUTOMATIC) buf1 = 0;
 
 char dectohex(char bit)
 {
-    char ret = 48;
-    switch(bit)
-    {
-        case 0:
-            ret = 0x30;
-            break;
-        case 1:
-            ret = 0x31;
-            break;
-        case 2:
-            ret = 0x32;
-            break;
-        case 3:
-            ret = 0x33;
-            break;
-        case 4:
-            ret = 0x34;
-            break;
-        case 5:
-            ret = 0x35;
-            break;
-        case 6:
-            ret = 0x36;
-            break;
-        case 7:
-            ret = 0x37;
-            break;
-        case 8:
-            ret = 0x38;
-            break;
-        case 9:
-            ret = 0x39;
-            break;
-        case 10:
-            ret = 0x41;
-            break;
-        case 11:
-            ret = 0x42;
-            break;
-        case 12:
-            ret = 0x43;
-            break;
-        case 13:
-            ret = 0x44;
-            break;
-        case 14:
-            ret = 0x45;
-            break;
-        case 15:
-            ret = 0x46;
-            break;
-    }
-    return ret;
-    
+  char ret;
+  ret = bit + 0x30;
+  if (bit >= 10) 
+  {
+    ret += 7;
+  }
+  return ret;
 }
 
 void displayHex(u32 addr, int posx, int posy)
 {
     char byte = 0;
     char display [9];
-    //ipc has the form : 0x2XXXYYYY
-    //test : force ipc to ipc = 0xFAE0D6CB;
-    
-    //u32 * p;
-    //p = 0x00207634;
-    // *p = 0x10;
-    
-    
+  
+    // TODO : change this
     byte = ((addr & 0xF0000000) >> 28);
     display[0] = dectohex(byte);
     

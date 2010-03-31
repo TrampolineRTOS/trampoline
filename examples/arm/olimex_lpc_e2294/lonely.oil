@@ -20,13 +20,8 @@ CPU test {
         APP_NAME = "lonely_exe";
         TRAMPOLINE_BASE_PATH = "../../..";
         CFLAGS  = "-g -Wall -pedantic -Wformat -std=c99 -mcpu=arm7tdmi-s -Wmissing-field-initializers"; 
-        //ASFLAGS = "-g -mcpu=arm7tdmi-s";
-        //LDFLAGS = "-g"; // -T /Users/florent/Documents/olimex_trunk/machines/arm/olimex_lpc_e2294/olimex_lpce2294_external_ram.ld";
-        
-        /* FLAGS for debug ? */
-        //CFLAGS = "-mcpu=arm7tdmi-s -c -DXTR_CLASS=0 -Wall -Wreturn-type -Wformat -Wsign-compare -Wpointer-arith -Wparentheses -Wcast-align -Wcast-qual -fverbose-asm -Wstrict-prototypes -Wbad-function-cast -Wno-int-to-pointer-cast -Wno-pointer-to-int-cast -O2 -fomit-frame-pointer -foptimize-register-move"; //-Wimplicit-function-declaration -Wmissing-declarations
         ASFLAGS = "-mcpu=arm7tdmi-s --fatal-warnings -g"; 
-        LDFLAGS = " -g --fatal-warnings --warn-common  --no-undefined "; //-nostartfiles
+        LDFLAGS = " -g --fatal-warnings --warn-common  --no-undefined ";
         
         COMPILER = "arm-elf-gcc";
         ASSEMBLER = "arm-elf-as";
@@ -48,11 +43,10 @@ CPU test {
         AUTOSTART = TRUE { APPMODE = std; };
         ACTIVATION = 1;
         SCHEDULE = FULL;
-        USEFLOAT = FALSE;
     };   
     
     TASK task2 {
-        PRIORITY = 1;
+        PRIORITY = 2;
         AUTOSTART = FALSE;
         ACTIVATION = 1;
         SCHEDULE = FULL;
@@ -65,14 +59,37 @@ CPU test {
         SCHEDULE = FULL;
     };
 
-    TASK task4 {
-        PRIORITY = 1;
-        AUTOSTART = FALSE;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
+    ISR isr_button1 {
+       CATEGORY = 2;
+		PRIORITY = 1;
+		SOURCE = button015;
+    };
+
+    ISR isr_button2 {
+       CATEGORY = 2;
+		PRIORITY = 1;
+		SOURCE = button016;
     };
     
-    COUNTER SystemCounter {
-        SOURCE = it_timer_1;
+    COUNTER SystemCounter { 
+       SOURCE = it_timer1; //see target.cfg
+       MAXALLOWEDVALUE = 2000;
+		TICKSPERBASE = 10;
+		MINCYCLE = 1; 
     };
+    
+    ALARM Alarm1{
+		COUNTER = SystemCounter;
+		ACTION = ACTIVATETASK {
+			TASK = task2;
+		};
+        AUTOSTART = TRUE {
+            ALARMTIME = 200;
+            CYCLETIME = 100; //each 1s.
+            APPMODE = std;
+		};
+	};
+
+
+
 };

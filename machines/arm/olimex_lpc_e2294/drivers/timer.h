@@ -25,7 +25,11 @@
 #ifndef TIMER_H
 #define TIMER_H
 
-void InitTimer(void);
+#include "LPC22XX.h"
+#include "check-lpc2294-timing-settings.h" //for PCLK
+
+void InitTimer0(void);
+void InitTimer1(void);
 void WaitTimer_100us(unsigned long time);
 
 #endif /* TIMER_H */
