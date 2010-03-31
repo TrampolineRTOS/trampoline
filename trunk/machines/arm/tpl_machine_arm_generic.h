@@ -108,15 +108,22 @@ struct TPL_STACK {
  */
 typedef struct TPL_STACK tpl_stack;
 
+extern VAR (arm_context, OS_VAR) idle_task_context;
+
 /** 
  * Defines the context block of the task "idle"
  */
 #define IDLE_CONTEXT &idle_task_context
 
+#define SIZE_OF_IDLE_STACK 200
+
+extern VAR(tpl_stack_word, OS_VAR) idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
+
 /**
  * Defines the stack (void) of the task "idle"
  */
-#define IDLE_STACK {NULL,0}
+#define IDLE_STACK {idle_stack,SIZE_OF_IDLE_STACK}
+
 
 /**
  * Defines the entry point of the idle task

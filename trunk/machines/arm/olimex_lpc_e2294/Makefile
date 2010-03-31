@@ -17,10 +17,10 @@
 #
 # This software is distributed under the Lesser GNU Public Licence
 #
-# $Date:$
-# $Rev:$
-# $Author:$
-# $URL:$
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
 #
 # Warning: This Makefile SHOULD not be called directly.
 #          It is automatically called from the Makefile
@@ -50,5 +50,6 @@ CFLAGS += -I$(MACHINE_PATH)/arm/olimex_lpc_e2294/drivers
 TEMP_SOURCE_DIRS += $(MACHINE_PATH)/arm/olimex_lpc_e2294/drivers
 SOURCES += timer.c \
 lcd.c \
-init.c
+init.c \
+extint.c
 

@@ -34,6 +34,10 @@
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
+/**
+ * Stack for the idle task
+ */
+VAR(tpl_stack_word, OS_VAR) idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
 
 /**
  * Context for the idle task
@@ -44,7 +48,6 @@ VAR (arm_context, OS_VAR) idle_task_context;
  * Kernel entry counter
  */
 volatile VAR (u32, OS_VAR) nested_kernel_entrance_counter;
-
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 

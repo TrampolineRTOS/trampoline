@@ -1,5 +1,5 @@
 /**
- * @file init.h
+ * @file extint.h
  *
  * @section descr File description
  *
@@ -22,28 +22,54 @@
  * $Author:$
  * $URL:$
  */
-#ifndef INIT_H
-#define INIT_H
+
+#ifndef EXTINT_H
+#define EXTINT_H
 
 #include "LPC22XX.h"
-#include "timer.h"
+#include "check-lpc2294-timing-settings.h" //for PCLK
 #include "lcd.h"
-#include "extint.h"
 
 /**
- * Init
  *
- * Initialize the timer, the lcd and
- * the push buttons in external interrupts
+ * InitExtInt
  *
- */
-void Init(void);
-
-/* Here is a list of the Interrupt vectors used :
- * 7 -> EINT0
- * 8 -> EINT2
- * 12 -> TIMER1
  *
  */
+void InitExtInt(void);
 
-#endif /* INIT_H */
+/**
+ *
+ * InitEInt0
+ *
+ *
+ */
+void InitEInt0(void);
+
+/**
+ *
+ * EINT0InterruptServiceRoutine
+ *
+ *
+ */
+void EINT0InterruptServiceRoutine(void);
+
+/**
+ *
+ * InitEInt2
+ *
+ *
+ */
+void InitEInt2(void);
+
+/**
+ *
+ * EINT0InterruptServiceRoutine
+ *
+ *
+ */
+void EINT2InterruptServiceRoutine(void);
+
+#endif /* EXTINT_H */
+
+/* End of file extint.h */
