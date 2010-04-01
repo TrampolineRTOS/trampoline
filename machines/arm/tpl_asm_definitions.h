@@ -48,6 +48,7 @@
 #define CPSR_ABT_MODE 0b10111
 #define CPSR_UND_MODE 0b11011
 #define CPSR_SYS_MODE 0b11111
+#define CPSR_MODE_MASK 0b11111
 
 /*
  * Interrupt masks
