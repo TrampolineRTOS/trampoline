@@ -31,7 +31,7 @@ Of course, other bus masters have more sophisticated access right:
   \lineii{MxPE}
   {The PID Enable bit. Set to 0 in our case}
   \lineii{MxSM}
-  {These 2 bits rules the supervisor mode access control with the following meaning: $00=rwx$, $01=rx$, $10=rw$, $11=$ {\it same as defined by MxUM}. In our case, it is set to $11$.}
+  {These 2 bits rules the supervisor mode access control with the following meaning: $00=rwx$, $01=rx$, $10=rw$, $11=$ {\it same as defined by MxUM}. In our case, it is set to $00$ for code and constants and to $11$ for data.}
   \lineii{MxUM}
   {These 2 bits rules the user mode access control. The first bit means $r$, the second one $w$ and the third one $x$.}
 \end{longtableii}
