@@ -3,7 +3,7 @@
 #
 # Trampoline is copyright (c) IRCCyN 2005+
 # Copyright ESEO for function and data structures documentation and ARM port
-# Trampoline est prot�g� par la loi sur la propri�t� intellectuelle
+# Trampoline is protected by the French intellectual property law.
 #
 # This software is distributed under the Lesser GNU Public Licence
 #
@@ -29,13 +29,13 @@
 #kernel OS architecture dependant files
 
 SOURCES += \
-simtec_tpl_sleep.S \
-simtec_exception_catch.S \
-simtec_bootstrap_stage1.S \
-simtec_bootstrap_stage2.c \
-simtec_idle.c \
-simtec_tpl_stubs.c \
-simtec_irq.c \
-simtec_driver_adapter.c
+apf27_bootstrap_stage1.S \
+apf27_exception_catch.S \
+apf27_mem_prot_asm.S \
+apf27_sleep.S \
+apf27_vectors.S \
+apf27_tpl_stubs.c \
+apf27_bootstrap_stage2.c \
+apf27_mem_prot.c
 
 include $(MACHINE_PATH)/arm/Makefile.generic

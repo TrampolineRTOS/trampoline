@@ -1,9 +1,9 @@
 /**
- * @file tpl_machine_armadeus_apf27_asm.s
+ * @file apf27_exception_catch.S
  *
  * @section descr File description
  *
- * Low level part of ARMADEUS-APF27 platform
+ * Catch of CPU exceptions (abort, undefined, ...)
  *
  * @section copyright Copyright
  *
@@ -24,35 +24,21 @@
  */
 
 #include "../tpl_asm_definitions.h"
-#include "tpl_app_objects.h"
+#include "tpl_os_application_def.h"
 
-/* TODO for prefect and data abort handler with
- * memory protection
+/* TODO: to be added for memory protection 
 #ifdef WITH_AUTOSAR
 #include "../autosar/tpl_as_definitions.h"
 #include "../autosar/tpl_as_protec_hook.h"
 #endif
 */
 
-
 .set prefetch_abort, 1
 .set data_abort, 2
 .set undefined_instruction, 3
 .set unused, 4
 
-
-.set OFFSET_PROC_VAR, 0
-.set OFFSET_PROC_STACK, 4
-.set OFFSET_OSAP_VAR, 8
 .set OFFSET_RUNNING_ID, 16
-
-/* The bootstrap stack needs to be located in internal SRAM because
- * we don't need to configure it to use it */
-.section bootstrap_stack
-.align 2
-bootstrap_stack_top:
-.space 1024 * 4
-bootstrap_stack_bottom:
 
 .section .osVar
 .align 2
@@ -119,8 +105,8 @@ mp_abort_table_entry:
   /* get stack pointer from faulty mode */
 	mrs r0, cpsr /* save current mode */
 	mrs r1, spsr
-	and r1, r1, #PSR_MODE_MASK
-	bic r2, r0, #PSR_MODE_MASK
+	and r1, r1, #CPSR_MODE_MASK
+	bic r2, r0, #CPSR_MODE_MASK
 	orr r2, r2, r1
 	msr cpsr, r2
 	ldr r1, =interrupted_stack_pointer
@@ -136,13 +122,13 @@ primary_undefined_instruction_handler:
   decode_exception undefined_instruction
   b .
 
-.global tpl_arm_subarch_prefetch_abort_handler
-tpl_arm_subarch_prefetch_abort_handler:
-  /*decode_exception prefetch_abort*/  
-  /*b .*/ 
- 
-  /* TODO This code is here just for demo of the
+.global primary_prefetch_abort_handler
+.global tpl_primary_prefetch_abort_handler
+primary_prefetch_abort_handler:
+tpl_primary_prefetch_abort_handler:
+  /* FIXME: This code is here just for demo of the
    * memory protection work */
+
   /* Save registers used by the data abort */
 	stmfd sp!, {r0-r2, lr}
 
@@ -169,12 +155,12 @@ tpl_arm_subarch_prefetch_abort_handler:
 	mov pc,lr
   
 
-.global tpl_arm_subarch_data_abort_handler
-tpl_arm_subarch_data_abort_handler:
+.global primary_data_abort_handler
+.global tpl_primary_data_abort_handler
+primary_data_abort_handler:
+tpl_primary_data_abort_handler:
   
-  /*decode_exception data_abort*/
-  /*b .*/
-    /* TODO This code is here just for demo of the
+  /* FIXME: This code is here just for demo of the
    * memory protection work */
   /* Save registers used by the data abort */
 	stmfd sp!, {r0-r2, lr}
@@ -216,7 +202,7 @@ store_into_mp_abort_table:
   add r2, r2, #(256 * 4)
   cmp r1, r2
  
-  /* If mp_abort_table is full execution is block in infinity loop */ 
+  /* If mp_abort_table is full execution falls into an infinite loop */ 
   beq .
   /* Store information inside the mp_abort_table */
   str r0, [r1]
@@ -234,74 +220,10 @@ primary_unused_handler:
   b .
 
 /* FIQ not defined in this port version */
+.global primary_fiq_handler
 .global tpl_primary_fiq_handler
+primary_fiq_handler:
 tpl_primary_fiq_handler:
 	subs pc, lr, #4
 
-.global tpl_arm_bootstrap_entry
-tpl_arm_bootstrap_entry:
 
-	/* jump to the generic arm bootstrap*/
-	bl tpl_arm_bootstrap_generic
-    
-	/* jump to high level bootstrap part */
-	b tpl_arm_bootstrap_stage2
-
-/* Control register c1
- * Enable align address condrol, 'A' bit
- * Enable MMU, 'M' bit
- */
-.global tpl_enable_memory_protection
-tpl_enable_memory_protection:
-	/* TODO this could be done at initialization */
-	/* Set domain 0 as client - it's only the one used here - */
-	mrc p15, 0, r2, c3, c0, 0
-	mov r2, #0x1					
-	mcr p15, 0, r2, c3, c0, 0
-	
-	/* Flush TLB */
-	mcr p15, 0, r2, c8, c7, 0
-
-	/* Set the A and M bits */
-	mrc p15, 0, r2, c1, c0, 0	
-	orr r2, r2, #0b11
-	mcr p15, 0, r2, c1, c0, 0
-	b pipeline_flush
-
-.global tpl_disable_memory_protection
-tpl_disable_memory_protection:
-	/* Unset the A and M bits */
-	mrc p15, 0, r2, c1, c0, 0
-	bic r2, r2, #0b11
-	mcr p15, 0, r2, c1, c0, 0
-	b pipeline_flush
-
-.global tpl_switch_memory_protection_context
-tpl_switch_memory_protection_context:
-	/* Set the translation table base address */
-	ldr r1, [r0, #OFFSET_RUNNING_ID]	/* get the ID of the running process */
-	
-		/* get the address of the table of all translation table base address*/
-	ldr r2, =ttb_table
-	add r2, r2, r1, LSL #2			/* get the good translation table base address */
-	ldr r2, [r2]
-	mcr p15, 0, r2, c2, c0, 0		/* set the system with this new base address */
-	b pipeline_flush
-
-
-/* Flush pipeline for the next instruction use 
- * the good memory translation path */		
-pipeline_flush:
-	mov pc, lr	
-	
-
-/* We want tpl_sleep not to use stack. Writing in assembler make us able to
- * prevent this. */
-.global tpl_sleep
-tpl_sleep:
-  /* halts CPU */
-#ifdef DISABLED_FOR_DEBUG_FACILITY 
- /* TODO */
-#endif
-  /* falls into infinite loop */
-	b .

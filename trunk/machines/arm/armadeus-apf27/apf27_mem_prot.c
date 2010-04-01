@@ -1,9 +1,9 @@
 /**
- * @file tpl_machine_armadeus_apf27.c
+ * @file apf27_mem_prot.c
  *
  * @section descr File description
  *
- * ARMADEUS platform specific routines and variables
+ * ARMADEUS platform : high level part of memory protection management
  *
  * @section copyright Copyright
  *
@@ -37,252 +37,79 @@
 #endif /* WITH_AUTOSAR */
 
 #ifdef WITH_MEMORY_PROTECTION
-#include "tpl_machine_armadeus_mem_prot.h"
+#include "apf27_mem_prot.h"
 #endif /* WITH_MEMORY_PROTECTION */
 
-
-#define OS_START_SEC_VAR_16BIT
+#define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 
-extern CONSTP2CONST(u16, AUTOMATIC, OS_APPL_DATA)
-	armadeus_isr_by_src[32];
+/* Table of the translation tables base address 
+ * as idle task is not count inside TASK_COUNT : => +1 */
+P2VAR(u32, AUTOMATIC, OS_VAR) ttb_table[TASK_COUNT+ISR_COUNT+1];
 
-#define OS_STOP_SEC_VAR_16BIT
+#define OS_STOP_SEC_VAR_32BIT
 #include "tpl_memmap.h"
+
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
+/*
+ * Memory region for the common part of each translation tables
+ */
+VAR(tpl_mem_region, OS_VAR) code_mem_rgn;
+VAR(tpl_mem_region, OS_VAR) const_mem_rgn;
+VAR(tpl_mem_region, OS_VAR) osvar_mem_rgn;
+VAR(tpl_mem_region, OS_VAR) vector_table_lvl_1_mem_rgn; /* to be redefined */
+VAR(tpl_mem_region, OS_VAR) vector_table_lvl_2_mem_rgn; /* to be redefined */
+VAR(tpl_mem_region, OS_VAR) irq_stack_mem_rgn;
+VAR(tpl_mem_region, OS_VAR) fiq_stack_mem_rgn;
+VAR(tpl_mem_region, OS_VAR) svc_stack_mem_rgn;
+VAR(tpl_mem_region, OS_VAR) abt_stack_mem_rgn;
+VAR(tpl_mem_region, OS_VAR) und_stack_mem_rgn;
+VAR(tpl_mem_region, OS_VAR) usr_stack_mem_rgn;
 
-struct ARM_CONTEXT idle_task_context;
-
+/* 
+ * structure used for hold the current level 1 and 2
+ * translation descriptors
+ */
+VAR(mmu_tbl_desc_pattern, OS_VAR) mp_tbl_desc_pattern;
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-#define OS_START_SEC_CODE
+
+#define OS_START_SEC_CONST_16BIT
 #include "tpl_memmap.h"
 
-extern int main (void);
+CONST(u16, OS_CONST) page_size = PAGE_SIZE; 
 
-FUNC(void, OS_CODE) tpl_shutdown ()
-{
-	/* FIXME: this is does not conform to AUTOSAR OS specifications,
-	 * should return to main with initial context */
-	DISABLE_FIQ ();
-	DISABLE_IRQ ();
-
-	/* fall into very low consumption mode : all
-	 * internal CPU clocks are disabled.
-	 */
-	/* TODO armadeus_system_standby (); */
-
-	while (1);
-}
-#define OS_STOP_SEC_CODE
+#define OS_STOP_SEC_CONST_16BIT
 #include "tpl_memmap.h"
 
-
-/* this function should not return as
- * it is called straight after reset
+/*
+ * table of the memory regions must be set in each translation table
  */
-#define OS_START_SEC_CODE
+#define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-FUNC(void, OS_CODE) tpl_arm_bootstrap_stage2 ()
+CONSTP2VAR(tpl_mem_region, AUTOMATIC, OS_VAR) 
+common_mem_rgn_table[LAST_COMMON_MEM_RGN_TYPE + COUNT_EXEC_STACKS_MODE] =
 {
-	/*TODO armadeus_memory_setup_defaults ();*/
-
-	/*
-	 * initialize memory segments
-	 */
-  	/* BSS should be zeroed */
-	/*u16 *ptr_bss = &start_bss;
-	while((int)ptr_bss < (int)&end_bss)
-		*ptr_bss ++ = 0;*/
-
-	/* DATA initial values copied from ROM */
-//	u16 *data_src, *data_dst;
-//	data_src = &end_rom;
-//	data_dst = &start_data;
-//	while (data_dst != &end_data)
-//		*data_dst++ = *data_src++;
-
-	/*
-	 * start application (which may start Trampoline via StartOS)
-	 */
-	main ();
-
-	/* ends in a loop, as we should not return from reset */
-	while (1);
-}
-#define OS_STOP_SEC_CODE
+  &code_mem_rgn,
+  &const_mem_rgn,
+  &osvar_mem_rgn,
+  &vector_table_lvl_1_mem_rgn,
+  &vector_table_lvl_2_mem_rgn,
+  &irq_stack_mem_rgn,
+  &fiq_stack_mem_rgn,
+  &svc_stack_mem_rgn,
+  &abt_stack_mem_rgn,
+  &und_stack_mem_rgn,
+  &usr_stack_mem_rgn,
+};
+#define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
-
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
-FUNC(void, OS_CODE) tpl_init_machine()
-{
-	/* TODO armadeus_int_ctrl_setup_defaults ();*/
-
-	/* TODO armadeus_disable_all_devices ();*/
-
-	/* TODO armadeus_setup_heartbeat_timer_1ms ();*/
-
-	tpl_init_mp();
-
-	tpl_init_machine_generic ();
-
-	/* TODO armadeus_heartbeat_timer_start ();*/
-}
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
-
-
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
-FUNC(void, OS_CODE) tpl_arm_subarch_irq_handler ()
-{
-	/* TODO */
-//	u32 interrupt_source;
-//	u16 isr_id;
-
-//	interrupt_source = armadeus_get_interrupt_source ();
-//	switch (interrupt_source)
-//	{
-//		case SYSTEM_TIMER_INT_SOURCE:
-//		armadeus_heartbeat_timer_ack ();
-//		/* TODO: call counter heartbeat */
-//		/* TODO: increment local time (watchdogs) */
-//		break;
-//#ifndef NO_ISR
-//		default:
-//		isr_id = armadeus_isr_by_src[interrupt_source];
-//		tpl_central_interrupt_handler(isr_id);
-//#endif /* !defined NO_ISR */
-//	}
-
-	/* acknoledge interrupt */
-//	armadeus_acknoledge_current_irq_level ();
-}
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
-
-#ifdef WITH_AUTOSAR
-
-#define OS_START_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
-VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;
-VAR(u32, OS_VAR) tpl_cpt_user_task_lock = 0;
-//STATIC VAR(u32, OS_VAR) tpl_cpt_os_task_lock = 0;
-
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
-FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
-{
-    /* TODO */
-    VAR(tpl_bool, AUTOMATIC) result;
-
-    /*if( (TRUE == tpl_user_task_lock) || (tpl_cpt_user_task_lock > 0) )
-    {
-        result = TRUE;
-    }
-    else
-    {*/
-        result = FALSE;
-    //}
-
-    return result;
-}
-
-
-FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
-{
-	/* TODO */
-  /*tpl_user_task_lock = FALSE;
-
-  tpl_cpt_user_task_lock = 0;
-
-  tpl_locking_depth = tpl_cpt_os_task_lock;*/
-}
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
-#endif
-
-
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
-
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
-FUNC(void, OS_CODE) tpl_set_watchdog (
-	VAR(tpl_time, AUTOMATIC) delay)
-{
-	/* TODO */
-}
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
-
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
-FUNC(void, OS_CODE) tpl_cancel_watchdog ()
-{
-	/* TODO */
-}
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
-
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
-FUNC(tpl_time, OS_CODE) tpl_get_local_current_date ()
-{
-	/* TODO delete these lines there are juste for debbug */
-	VAR(tpl_time, OS_VAR) current_date;
-	current_date = 0;
-	return current_date;
-	/* TODO */
-}
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
-
-#endif /* defined WITH_AUTOSAR_TIMING_PROTECTION */
-
-#ifdef WITH_AUTOSAR_STACK_MONITORING
-/* FIXME : needs update (tpl_proc_static) */
-
-
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
-/**
- *  Check if one stack overflow have occured.
- *
- *  @param    this_exec_obj    The executable object to monitor
- *
- *  @retval    tmp    If set at one, a stack overflow is detected
- */
-
-/* FIXME : needs update (tpl_proc_static) */
-
-FUNC(tpl_bool, OS_CODE) tpl_check_stack_pointer (
-  	CONST(tpl_proc_id, AUTOMATIC) proc_id)
-{
-	VAR(tpl_bool, OS_VAR) tmp;
-	/* FIXME : needs update (tpl_proc_static)
-	if(this_exec_obj->static_desc->context.core_context->r[sp]<
-		&(this_exec_obj->static_desc->stack))*/
-	tmp=1; /*no overflow detected*/
-	//else tmp=0; /*there is an overflow*/
-	return tmp;
-}
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
-
-#endif /* WITH_AUTOSAR_STACK_MONITORING */
 
 #ifdef WITH_MEMORY_PROTECTION
-
-
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -407,7 +234,7 @@ FUNC(u32*, OS_CODE) armadeus_add_region_in_mmu_tables (
 	P2VAR(u32, OS_VAR, OS_VAR) 	current_tt_rgn_start; /* Start of the current part of the region is treated*/
 	P2VAR(u32, OS_VAR, OS_VAR) 	current_tt_rgn_end; /* End of the current part of the region is treated*/
 
-	P2VAR(u32, OS_VAR, OS_VAR) 	ptb_saved; /* Backup of the current page table baése address */
+	P2VAR(u32, OS_VAR, OS_VAR) 	ptb_saved; /* Backup of the current page table baÃ©se address */
 
 	VAR(u32, OS_VAR) 			mp_l1_page_tbl_base_addr; /* Page table base address used for
 														   * set the current entry*/
@@ -756,7 +583,8 @@ FUNC(void, OS_CODE) armadeus_init_common_mp_descriptor()
   	const_mem_rgn.end = &(__SEG_END_CONST_RGN);
   	osvar_mem_rgn.start = &(__SEG_START_OS_VAR_RGN);
   	osvar_mem_rgn.end = &(__SEG_END_OS_VAR_RGN);
-  	vector_table_lvl_1_mem_rgn.start = &(__SEG_START_VECTOR_TABLE_LVL_1);
+  /* TODO: rebuild other system memory region only if required */
+/*  	vector_table_lvl_1_mem_rgn.start = &(__SEG_START_VECTOR_TABLE_LVL_1);
   	vector_table_lvl_1_mem_rgn.end = &(__SEG_END_VECTOR_TABLE_LVL_1);
   	vector_table_lvl_2_mem_rgn.start = &(__SEG_START_VECTOR_TABLE_LVL_2);
   	vector_table_lvl_2_mem_rgn.end = &(__SEG_END_VECTOR_TABLE_LVL_2);
@@ -771,7 +599,7 @@ FUNC(void, OS_CODE) armadeus_init_common_mp_descriptor()
 	und_stack_mem_rgn.start = &(__SEG_START_UND_STACK_RGN);
 	und_stack_mem_rgn.end = &(__SEG_END_UND_STACK_RGN);
 	usr_stack_mem_rgn.start = &(__SEG_START_USR_STACK_RGN);
-	usr_stack_mem_rgn.end = &(__SEG_END_USR_STACK_RGN);
+	usr_stack_mem_rgn.end = &(__SEG_END_USR_STACK_RGN);*/
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
@@ -786,9 +614,6 @@ FUNC(void, OS_CODE) armadeus_init_common_mp_descriptor()
  */
 FUNC(void, OS_CODE) tpl_init_mp()
 {
-	/* Initialize goil generated memory protection descriptors */
-	tpl_init_mp_descriptors();
-
 	/* Initialize the common memory protection descriptor */
 	armadeus_init_common_mp_descriptor();
 
@@ -799,5 +624,4 @@ FUNC(void, OS_CODE) tpl_init_mp()
 #include "tpl_memmap.h"
 
 #endif /* WITH_MEMORY_PROTECTION */
-
 

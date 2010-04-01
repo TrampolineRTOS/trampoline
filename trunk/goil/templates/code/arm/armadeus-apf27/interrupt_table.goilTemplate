@@ -83,14 +83,20 @@ FUNC(void, OS_CODE) tpl_interrupt_source_% !interrupt_NUMBER %()
   end loop
 %
 
-/* Interrupt table vector */
+/* Interrupt table vector
+ *
+ * Notice that this table shall be placed into a specified
+ * location into memory. That's why we put it in a specific
+ * section.
+ *
+ * We chose a GCC dependant syntax, but who would use another
+ * compiler for Armadeus APF27 ?
+ */
 %
   loop ENTRY from 0 to ITSOURCESLENGTH - 1
     before
 %
-#define OS_START_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
-CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[% !ITSOURCESLENGTH %] __attribute__ ((aligned(32), section ("interrupt_table"))) = {
+tpl_it_vector_entry tpl_it_vector[% !ITSOURCESLENGTH %] __attribute__ ((aligned(4), section ("interrupt_table"))) = {
 %
     do
       let interrupt_source_detected := false # we just need to know if a source number is used, if not, we link with tpl_null_it function
@@ -123,8 +129,6 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[% !ITSOURCESLENGTH %] __attri
     after
 %
 };
-#define OS_STOP_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
 %
   end loop
 %

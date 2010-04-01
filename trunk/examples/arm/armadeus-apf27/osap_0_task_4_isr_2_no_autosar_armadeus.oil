@@ -13,22 +13,21 @@ IMPLEMENTATION trampoline {
 CPU test {
 
     OS config {
-      TRACE = TRUE {
+/*      TRACE = TRUE {
       METHOD = FILE {
         NAME = "osap_0_task_4_isr_2_no_autosar_armadeus"; 
           };  
       FORMAT = xml;
       DESCRIPTION = TRUE;
-    };
+    };*/
         MEMMAP = TRUE {
           COMPILER = gcc;
           LINKER = gnu_ld;
+					ASSEMBLER = gnu_as;
           MEMORY_PROTECTION = TRUE;
         };
         SYSTEM_CALL = TRUE;
         STATUS = EXTENDED;
-        ERRORHOOK = TRUE;
-        PRETASKHOOK = TRUE;
         APP_SRC = "osap_0_task_4_isr_2_no_autosar_armadeus.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         CFLAGS  = "-g";
