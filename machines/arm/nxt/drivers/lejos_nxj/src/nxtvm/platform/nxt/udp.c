@@ -679,8 +679,7 @@ udp_enumerate()
     //display_string("E2");
 }
 
-void
-udp_isr_C(void)
+void udp_isr_C_function(void)
 {
   /* Process interrupts. We mainly use these during the configuration and
    * enumeration stages.

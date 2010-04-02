@@ -31,6 +31,10 @@
 #include "systick.h"
 #include "nxt_lcd.h"
 #include "nxt_avr.h"
+#include "nxt_spi.h"
+#include "udp.h"
+#include "uart.h"
+#include "i2c.h"
 #include "ecrobot_interface.h"
 #include "buttons.h"
 

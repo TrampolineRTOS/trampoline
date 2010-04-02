@@ -59,8 +59,7 @@ static void spi_set_mode(U8 m)
 }
 
 
-void
-spi_isr_C(void)
+void spi_isr_C_function(void)
 {
   if (page == 0)
   {
@@ -99,7 +98,7 @@ spi_isr_C(void)
 
 extern void tpl_primary_irq_handler(void);
 
-void
+void 
 nxt_spi_init(void)
 {
   int i_state = interrupts_get_and_disable();

@@ -4,6 +4,8 @@
 #  include "mytypes.h"
 
 /* Main user interface */
+void uart_isr_C_0_function(void);
+void uart_isr_C_1_function(void);
 int uart_init(U32 u, U32 baudRate, U32 dataBits, U32 stopBits, char parity);
 void uart_close(U32 u);
 int uart_holding(U32 u);

@@ -190,14 +190,12 @@ uart_process_isr(U32 u)
 }
 
 
-void
-uart_isr_C_0(void)
+void uart_isr_C_0_function(void)
 {
   uart_process_isr(0);
 }
 
-void
-uart_isr_C_1(void)
+void uart_isr_C_1_function(void)
 {
   uart_process_isr(1);
 }

@@ -86,8 +86,7 @@ twi_status(void)
  * I/O state. This means that we do not have to test this state at
  * interrupt time.
  */
-void
-twi_isr_C(void)
+void twi_isr_C_function(void)
 {
   U32 status = *AT91C_TWI_SR & twi_mask;
   if (status & AT91C_TWI_RXRDY) {

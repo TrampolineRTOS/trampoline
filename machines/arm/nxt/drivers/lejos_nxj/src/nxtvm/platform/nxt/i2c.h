@@ -5,6 +5,7 @@
 
 #define I2C_N_PORTS 4
 
+void i2c_timer_isr_C_function(void);
 void i2c_disable(int port);
 void i2c_enable(int port);
 

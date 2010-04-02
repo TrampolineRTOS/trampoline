@@ -1,0 +1,21 @@
+
+
+
+\section{Trampoline}
+To download Trampoline, type in a terminal (login:anonymous - password:anonymous) :
+	\begin{verbatim}
+	$svn checkout https://trampoline.rts-software.org/svn/trunk
+	\end{verbatim}
+Download the libpm (\href{http://galgas.rts-software.org/download/}{http://galgas.rts-software.org/download/}) for your achitecture and copy it in trunk/.\\
+To compile GOIL, go in goil/makefile\_[ARCH] depending on your architecture and type in a terminal (you can add -j2 if you have 2 processors) :
+	\begin{verbatim}
+	$make goil
+	\end{verbatim}
+This will generate the GOIL executable you'll need. You can add the path to your GOIL (in $\sim$/.profile), adding :
+	\begin{verbatim}
+	export PATH=[TRAMPOLINE_REPOSITORY]/goil/makefile_[ARCH]/:$PATH
+	\end{verbatim}
+
+You can also do it typing "\$sudo make install goil" (this will copy the goil executable in /usr/local/bin).
+
+You can now use Trampoline on Unix system by executing the tests as described in Annex \ref{tests}.

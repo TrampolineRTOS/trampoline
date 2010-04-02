@@ -161,8 +161,7 @@ static U32 i2c_int_count;
 
 extern void i2c_timer_isr_entry(void);
 
-void
-i2c_timer_isr_C(void)
+void i2c_timer_isr_C_function(void)
 {
   int i;
 

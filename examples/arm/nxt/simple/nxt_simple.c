@@ -3,14 +3,7 @@
  *
  * @section desc File description
  *
- * This application is made of two tasks. The lower priority task1 is autostart.
- * It prints its name to the display, initialize the motorA to 50% of its speed
- * and do an infinit loop. task5 is connected to an alarm which is launched every
- * second. It increases motorB speed by 5% (as the type of the speed parameter 
- * is an 8 bits, once arrived to 256, it will change its sens) and prints its 
- * name to the display. The NXT buttons are connected to ISR2s thus if you press
- * the left, right or "orange" button, each ISR2s will print to the display the 
- * ISR2 name. The stop button shutdowns the Trampoline application.
+ * simple application on the Lego Mindstorm NXT2.0
  *
  * @section copyright Copyright
  *
