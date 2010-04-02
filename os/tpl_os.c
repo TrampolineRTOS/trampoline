@@ -69,6 +69,24 @@ FUNC(void, OS_CODE) ShutdownOS(
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
+
+#define API_START_SEC_CODE
+#include "tpl_memmap.h"
+
+FUNC(void, OS_CODE) CallTerminateTask(void)
+{
+  tpl_call_terminate_task_service(void);
+}
+
+FUNC(void, OS_CODE) CallTerminateISR2(void)
+{
+  tpl_call_terminate_isr2_service(void);
+}
+
+#define API_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+
 #else /* WITH_SYSTEM_CALL */
 
 #define OS_START_SEC_CODE

@@ -197,6 +197,18 @@ TerminateISR:
   swi #OSServiceId_TerminateISR
   mov pc, lr
 
+  .global CallTerminateTask
+CallTerminateTask:
+  mov r3, #OSServiceId_CallTerminateTask
+  swi #OSServiceId_CallTerminateTask
+  mov pc, lr
+
+  .global CallTerminateISR2
+CallTerminateISR2:
+  mov r3, #OSServiceId_CallTerminateISR2
+  swi #OSServiceId_CallTerminateISR2
+  mov pc, lr
+
   
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"

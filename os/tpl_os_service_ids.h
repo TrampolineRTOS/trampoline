@@ -252,11 +252,27 @@
 #define OSServiceId_TerminateISR                26
 
 /**
+ * @def OSServiceId_CallTerminateTask
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #CallTerminateTask
+ */
+#define OSServiceId_CallTerminateTask           27
+
+/**
+ * @def OSServiceId_CallTerminateISR2
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #CallTerminateISR2
+ */
+#define OSServiceId_CallTerminateISR2           28
+
+/**
  * @def OS_SYSCALL_COUNT
  *
  * Number of system calls in the OS
  */
-#define OS_SYSCALL_COUNT                        27
+#define OS_SYSCALL_COUNT                        29
 
 /* TPL_OS_SERVICE_IDS */
 #endif

@@ -26,7 +26,7 @@
 #include "tpl_machine_interface.h"
 #include "tpl_os_application_def.h"
 #include "tpl_os_definitions.h"
-#include "tpl_os_kernel.h"
+#include "tpl_os.h"
 #ifdef WITH_AUTOSAR
 #include "tpl_as_definitions.h"
 #endif
@@ -137,8 +137,8 @@ FUNC(void, OS_CODE) tpl_init_context(
    * TODO: follow ppc port code
    */
   core_context->r[armreg_lr] = (IS_ROUTINE == the_proc->type) ?
-                                (u32)(tpl_call_terminate_ISR) :
-                                (u32)(tpl_call_terminate_task); /*  lr  */
+                                (u32)(CallTerminateISR2) :
+                                (u32)(CallTerminateTask); /*  lr  */
 
   /* TODO: initialize stack footprint */
 }

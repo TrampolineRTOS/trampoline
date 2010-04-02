@@ -135,6 +135,22 @@ FUNC(void, OS_CODE) ShutdownOS(
     CONST(StatusType, AUTOMATIC) error
 );
 
+/**
+ * Call Terminate Task function when no TerminateTask hasn't been called
+ * or when TerminateTask didn't success because of resource hold or
+ * interrupts disabled.
+ *
+ */
+FUNC(void, OS_CODE) CallTerminateTask(void);
+
+
+/**
+ * Call Terminate ISR2 function when TerminateISR didn't success doing it
+ * because of resource hold or interrupts disabled.
+ *
+ */
+FUNC(void, OS_CODE) CallTerminateISR2(void);
+
 #define API_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
