@@ -31,7 +31,7 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-#ifndef NO_ALARM
+#if ALARM_COUNT > 0
 /**
  * Array of all alarms descriptors
  *
@@ -50,9 +50,9 @@ extern CONSTP2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) tpl_alarm_table[ALARM_C
  * @see #TPL_TIME_OBJ_STATIC
  */
 struct TPL_ALARM_STATIC {
-    VAR(tpl_time_obj_static, TYPEDEF)         b_desc;   /**< common part of all objects that
+  VAR(tpl_time_obj_static, TYPEDEF)         b_desc;   /**< common part of all objects that
                                                              derive from tpl_time_obj.          */
-    P2VAR(tpl_action, TYPEDEF, OS_APPL_DATA)  action;   /**< action to be done when the alarm
+  P2VAR(tpl_action, TYPEDEF, OS_APPL_DATA)  action;   /**< action to be done when the alarm
                                                              expires                            */
 };
 

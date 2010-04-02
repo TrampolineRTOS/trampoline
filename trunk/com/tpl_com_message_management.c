@@ -44,7 +44,7 @@ FUNC(StatusType, OS_CODE) GetMessageStatus(
 	/*  init the error to no error                  */
   VAR(StatusType, AUTOMATIC) result = E_OK;
 	
-#ifndef NO_RECEIVE_MESSAGE
+#if RECEIVE_MESSAGE_COUNT > 0
   P2CONST(tpl_data_receiving_mo, AUTOMATIC, OS_CONST)	rmo = NULL;
 	P2CONST(tpl_queue, AUTOMATIC, OS_CONST) queue = NULL;
 #endif
@@ -63,7 +63,7 @@ FUNC(StatusType, OS_CODE) GetMessageStatus(
   CHECK_RECEIVE_MESSAGE_ID_ERROR(mess_id,result)
 
 	
-#ifndef NO_RECEIVE_MESSAGE
+#if RECEIVE_MESSAGE_COUNT > 0
 	IF_NO_EXTENDED_ERROR(result)
 	/*  get the message object from its id			*/          
 	rmo = (tpl_data_receiving_mo *)tpl_receive_message_table[mess_id];
@@ -110,7 +110,7 @@ FUNC(StatusType, OS_CODE) SendMessage(
   /*  init the error to no error                  */
   StatusType result = E_OK;
 
-#ifndef NO_SEND_MESSAGE
+#if SEND_MESSAGE_COUNT > 0
   P2CONST(tpl_base_sending_mo, AUTOMATIC, OS_CONST) smo = NULL;
 #endif
   
@@ -126,7 +126,7 @@ FUNC(StatusType, OS_CODE) SendMessage(
   CHECK_SEND_MESSAGE_ID_ERROR(mess_id,result)
   CHECK_NOT_ZERO_LENGTH_SEND(mess_id,result);
 
-#ifndef NO_SEND_MESSAGE
+#if SEND_MESSAGE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   /*  get the message object from its id          */
   smo = (tpl_base_sending_mo *)tpl_send_message_table[mess_id];
@@ -149,7 +149,7 @@ FUNC(StatusType, OS_CODE) ReceiveMessage(
   /*  init the error to no error                  */
   VAR(StatusType, AUTOMATIC) result = E_OK;
 
-#ifndef NO_RECEIVE_MESSAGE
+#if RECEIVE_MESSAGE_COUNT > 0
   P2CONST(tpl_data_receiving_mo, AUTOMATIC, OS_CONST) rmo = NULL;
 #endif
 
@@ -163,7 +163,7 @@ FUNC(StatusType, OS_CODE) ReceiveMessage(
   /*  Check the error                             */
   CHECK_RECEIVE_MESSAGE_ID_ERROR(mess_id,result)
 
-#ifndef NO_RECEIVE_MESSAGE
+#if RECEIVE_MESSAGE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   /*  get the message object from its id          */
   rmo = (tpl_data_receiving_mo *)tpl_receive_message_table[mess_id];
@@ -185,7 +185,7 @@ FUNC(StatusType, OS_CODE) SendZeroMessage(
   /*  init the error to no error                  */
   VAR(StatusType, AUTOMATIC) result = E_OK;
 
-#ifndef NO_SEND_MESSAGE
+#if SEND_MESSAGE_COUNT > 0
   P2CONST(tpl_base_sending_mo, AUTOMATIC, OS_CONST) smo = NULL;
 #endif
 
@@ -200,7 +200,7 @@ FUNC(StatusType, OS_CODE) SendZeroMessage(
   CHECK_SEND_MESSAGE_ID_ERROR(mess_id,result)
   CHECK_ZERO_LENGTH_SEND(mess_id,result)
   
-#ifndef NO_SEND_MESSAGE
+#if SEND_MESSAGE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   /*  get the message object from its id          */
   smo = (tpl_base_sending_mo *)tpl_send_message_table[mess_id];

@@ -59,7 +59,7 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
 {
   VAR(tpl_status, AUTOMATIC)  result = E_OK;
 
-#ifndef NO_COUNTER
+#if COUNTER_COUNT > 0
   P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = NULL;
   VAR(tpl_status, AUTOMATIC)  need_rescheduling = NO_SPECIAL_CODE;
 #endif
@@ -82,7 +82,7 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
 	
   CHECK_COUNTER_KIND_ERROR(counter_id,result)
 	
-#ifndef NO_COUNTER
+#if COUNTER_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
 
     /*  get the counter descriptor              */
@@ -93,7 +93,7 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
 	
     if (need_rescheduling == NEED_RESCHEDULING) {
       tpl_schedule_from_running();
-#ifndef WITH_SYSTEM_CALL
+#if WITH_SYSTEM_CALL == NO
       if (tpl_kern.need_switch != NO_NEED_SWITCH)
       {
         tpl_switch_context(
@@ -132,7 +132,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_counter_value_service(
 {
   VAR(tpl_status, AUTOMATIC)  result = E_OK;
 
-#ifndef NO_COUNTER
+#if COUNTER_COUNT > 0
   P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = NULL;
 #endif
 
@@ -152,7 +152,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_counter_value_service(
   /* check access right */
   CHECK_ACCESS_RIGHTS_COUNTER_ID(counter_id,result)
 
-#ifndef NO_COUNTER
+#if COUNTER_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
 
     /*  get the counter descriptor              */
@@ -189,7 +189,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_elapsed_counter_value_service(
 {
   VAR(tpl_status, AUTOMATIC)  result = E_OK;
 
-#ifndef NO_COUNTER
+#if COUNTER_COUNT > 0
   P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = NULL;
   VAR(tpl_tick, AUTOMATIC)                    cpt_val;
 #endif
@@ -215,7 +215,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_elapsed_counter_value_service(
       the maxallowedvalue of the counter          */
   CHECK_COUNTER_MAX_ALLOWED_VALUE_ERROR(counter_id, *previous_value, result)
 
-#ifndef NO_COUNTER
+#if COUNTER_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
 
     /*  get the counter descriptor              */

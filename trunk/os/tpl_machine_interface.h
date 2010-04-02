@@ -134,7 +134,7 @@ extern FUNC(void, OS_CODE) tpl_sleep(void);
  */
 extern FUNC(void, OS_CODE) tpl_shutdown(void);
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 /**
  * @internal
  *
@@ -154,7 +154,7 @@ extern FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void);
 
 #endif
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 /**
  * @internal
  *
@@ -192,7 +192,7 @@ extern FUNC(void, OS_CODE) tpl_cancel_watchdog(void);
 extern FUNC(tpl_time, OS_CODE) tpl_get_local_current_date(void);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
-#ifdef WITH_AUTOSAR_STACK_MONITORING
+#if WITH_AUTOSAR_STACK_MONITORING == YES
 /**
  * @internal
  *

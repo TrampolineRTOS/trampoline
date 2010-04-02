@@ -60,7 +60,7 @@ typedef struct TPL_MEM_REGION tpl_mem_region;
 struct TPL_MEM_PROT_DESC {
     VAR(tpl_mem_region, TYPEDEF) proc_var;    /* region of private data */
     VAR(tpl_mem_region, TYPEDEF) proc_stack;  /* region of stack        */
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
     VAR(tpl_mem_region, TYPEDEF) osap_var;    /* region of OS App data  */
 #endif
 };

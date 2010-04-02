@@ -440,7 +440,7 @@ FUNC(void, OS_CODE) tpl_trace_alarm_cancel(
     FORMAT_TRACE()
 }
 
-#if (!defined NO_ALARM)
+#if ALARM_COUNT > 0
 FUNC(void, OS_CODE) tpl_trace_counter(
     P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter_desc)
 {
@@ -464,7 +464,7 @@ FUNC(void, OS_CODE) tpl_trace_counter(
 	EVENT_END()
 	FORMAT_TRACE()
 }
-#endif /* (!defined NO_ALARM) */
+#endif /* ALARM_COUNT */
 
 #endif /* WITH_TRACE*/
 

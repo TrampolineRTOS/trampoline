@@ -363,7 +363,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel_service(
 {
     VAR(tpl_status, AUTOMATIC) result = E_OK;
 
-#ifndef NO_SCHEDTABLE
+#if SCHEDTABLE_COUNT > 0
     P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
     P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) cnt;
     VAR(tpl_tick, AUTOMATIC) date;
@@ -388,7 +388,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_rel_service(
 
 	CHECK_SCHEDTABLE_SYNC_STRATEGY_EQUAL_ERROR(sched_table_id, SCHEDTABLE_IMPLICIT_SYNC, result)
 	
-#ifndef NO_SCHEDTABLE
+#if SCHEDTABLE_COUNT > 0
     IF_NO_EXTENDED_ERROR(result)
 		st = tpl_schedtable_table[sched_table_id];
         /* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
@@ -447,7 +447,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs_service(
 {
     VAR(tpl_status, AUTOMATIC) result = E_OK;
 
-#ifndef NO_SCHEDTABLE
+#if SCHEDTABLE_COUNT > 0
     P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
     P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA) schedtable;
     P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) cnt;
@@ -470,7 +470,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs_service(
 	
     CHECK_SCHEDTABLE_TICK_VALUE(sched_table_id,tick_val,result)
 
-#ifndef NO_SCHEDTABLE
+#if SCHEDTABLE_COUNT > 0
 	IF_NO_EXTENDED_ERROR(result)
 		st = tpl_schedtable_table[sched_table_id];
 		/* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a
@@ -546,7 +546,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_synchron_service(
 {
     VAR(tpl_status, AUTOMATIC) result = E_OK;
 
-#ifndef NO_SCHEDTABLE
+#if SCHEDTABLE_COUNT > 0
     P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
 #endif
 
@@ -565,7 +565,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_synchron_service(
 
 	CHECK_SCHEDTABLE_SYNC_STRATEGY_DIFF_ERROR(sched_table_id, SCHEDTABLE_EXPLICIT_SYNC, result)
 
-#ifndef NO_SCHEDTABLE
+#if SCHEDTABLE_COUNT > 0
 	IF_NO_EXTENDED_ERROR(result)
 		st = tpl_schedtable_table[sched_table_id];
 		
@@ -605,7 +605,7 @@ FUNC(tpl_status, OS_CODE) tpl_stop_schedule_table_service(
 {
     VAR(tpl_status, AUTOMATIC) result = E_OK;
 
-#ifndef NO_SCHEDTABLE
+#if SCHEDTABLE_COUNT > 0
     P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
 #endif
 
@@ -622,7 +622,7 @@ FUNC(tpl_status, OS_CODE) tpl_stop_schedule_table_service(
 	/* check access right */
 	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(sched_table_id,result)
 
-#ifndef NO_SCHEDTABLE
+#if SCHEDTABLE_COUNT > 0
     IF_NO_EXTENDED_ERROR(result)
         st = tpl_schedtable_table[sched_table_id];
 
@@ -669,7 +669,7 @@ FUNC(tpl_status, OS_CODE) tpl_next_schedule_table_service(
 {
     VAR(tpl_status, AUTOMATIC) result = E_OK;
 
-#ifndef NO_SCHEDTABLE
+#if SCHEDTABLE_COUNT > 0
     P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) current_st;
     P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) next_st;
 #endif
@@ -695,7 +695,7 @@ FUNC(tpl_status, OS_CODE) tpl_next_schedule_table_service(
 	
 	CHECK_SCHEDTABLE_TO_STOPPED(next_st_id,result)
 
-#ifndef NO_SCHEDTABLE
+#if SCHEDTABLE_COUNT > 0
     IF_NO_EXTENDED_ERROR(result)
         current_st = tpl_schedtable_table[current_st_id];
         next_st = tpl_schedtable_table[next_st_id];
@@ -745,7 +745,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_schedule_table_status_service(
 {
     VAR(tpl_status, AUTOMATIC)  result = E_OK;
 
-#ifndef NO_SCHEDTABLE
+#if SCHEDTABLE_COUNT > 0
     P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
 #endif
 
@@ -764,7 +764,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_schedule_table_status_service(
 	/* check access right */
 	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(sched_table_id,result)
 
-#ifndef NO_SCHEDTABLE
+#if SCHEDTABLE_COUNT > 0
     IF_NO_EXTENDED_ERROR(result)
         st = tpl_schedtable_table[sched_table_id];
         *status = (st->b_desc.state & ~SCHEDULETABLE_BOOTSTRAP & ~SCHEDULETABLE_ASYNC);
@@ -793,7 +793,7 @@ FUNC(tpl_status, OS_CODE) tpl_sync_schedule_table_service(
 {
     VAR(tpl_status, AUTOMATIC)  result = E_OK;
 
-#ifndef NO_SCHEDTABLE
+#if SCHEDTABLE_COUNT > 0
     P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
 #endif
 
@@ -817,7 +817,7 @@ FUNC(tpl_status, OS_CODE) tpl_sync_schedule_table_service(
 	CHECK_SCHEDTABLE_SYNC_STRATEGY_DIFF_ERROR(sched_table_id, SCHEDTABLE_EXPLICIT_SYNC, result)
 	CHECK_SCHEDTABLE_DIFF_STOPPED_AND_NEXT(sched_table_id, result)
 	
-#ifndef NO_SCHEDTABLE
+#if SCHEDTABLE_COUNT > 0
     IF_NO_EXTENDED_ERROR(result)
 		st = tpl_schedtable_table[sched_table_id];
 	
@@ -855,7 +855,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_schedule_table_async(
 {
     VAR(tpl_status, AUTOMATIC)  result = E_OK;
 
-#ifndef NO_SCHEDTABLE
+#if SCHEDTABLE_COUNT > 0
     P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) st;
     P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA) schedtable;
 #endif
@@ -876,7 +876,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_schedule_table_async(
 
     CHECK_SCHEDTABLE_SYNC_STRATEGY_DIFF_ERROR(sched_table_id, SCHEDTABLE_EXPLICIT_SYNC, result)
 
-#ifndef NO_SCHEDTABLE
+#if SCHEDTABLE_COUNT > 0
     IF_NO_EXTENDED_ERROR(result)
 		st = tpl_schedtable_table[sched_table_id];
         /* MISRA RULE 45 VIOLATION: a tpl_time_obj_static* is cast to a

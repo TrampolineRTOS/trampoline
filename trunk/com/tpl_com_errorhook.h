@@ -49,7 +49,7 @@ FUNC(void, OS_CODE) tpl_call_com_error_hook(
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-#ifdef WITH_COM_ERROR_HOOK
+#if WITH_COM_ERROR_HOOK == YES
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"

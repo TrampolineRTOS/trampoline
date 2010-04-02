@@ -32,7 +32,7 @@
 
 #include "tpl_debug.h"
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 #include "tpl_as_protec_hook.h"
 #endif
 
@@ -60,24 +60,26 @@ CONST(tpl_alarm_id, AUTOMATIC) INVALID_ALARM = (-1);
 FUNC(tpl_status, OS_CODE) tpl_raise_alarm(
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj)
 {
-    VAR(tpl_status, AUTOMATIC) result = E_OK;
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
 
-    /*
-     * A tpl_time_obj_static * is cast to a tpl_alarm_static *
-     * This violate MISRA rule 45. However, since the
-     * first member of tpl_alarm_static is a tpl_time_obj_static
-     * This cast behaves correctly.
-     */
-    /*  Get the alarm descriptor                            */
-    P2VAR(tpl_alarm_static, AUTOMATIC, OS_APPL_DATA) stat_alarm = (tpl_alarm_static *)time_obj->stat_part;
-    /*  Get the action to perform from the alarm descriptor */
-    P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action_desc = stat_alarm->action;
-    
-    TRACE_ALARM_EXPIRE(time_obj)
-    /*  Call the action                                     */
-    result = (action_desc->action)(action_desc) ;
+  /*
+   * A tpl_time_obj_static * is cast to a tpl_alarm_static *
+   * This violate MISRA rule 45. However, since the
+   * first member of tpl_alarm_static is a tpl_time_obj_static
+   * This cast behaves correctly.
+   */
+  /*  Get the alarm descriptor                            */
+  P2VAR(tpl_alarm_static, AUTOMATIC, OS_APPL_DATA) stat_alarm =
+    (tpl_alarm_static *)time_obj->stat_part;
+  /*  Get the action to perform from the alarm descriptor */
+  P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action_desc =
+    stat_alarm->action;
+  
+  TRACE_ALARM_EXPIRE(time_obj)
+  /*  Call the action                                     */
+  result = (action_desc->action)(action_desc) ;
 
-    return result;
+  return result;
 }
 
 
@@ -85,41 +87,41 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
     CONST(tpl_alarm_id, AUTOMATIC)                  alarm_id,
     P2VAR(tpl_alarm_base, AUTOMATIC, OS_APPL_DATA)  info)
 {
-    VAR(tpl_status, AUTOMATIC) result = E_OK;
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
 
-#ifndef NO_ALARM
-    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+#if ALARM_COUNT > 0
+  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
 #endif
 
-    LOCK_KERNEL()
+  LOCK_KERNEL()
 
-	/* check interrupts are not disabled by user    */
-    CHECK_INTERRUPT_LOCK(result)
+/* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
 
-    STORE_SERVICE(OSServiceId_GetAlarmBase)
-    STORE_ALARM_ID(alarm_id)
-    STORE_ALARM_BASE_REF(info)
+  STORE_SERVICE(OSServiceId_GetAlarmBase)
+  STORE_ALARM_ID(alarm_id)
+  STORE_ALARM_BASE_REF(info)
 
-    CHECK_ALARM_ID_ERROR(alarm_id,result)
+  CHECK_ALARM_ID_ERROR(alarm_id,result)
 	
 	/* check access right */
 	CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
 	
-#ifndef NO_ALARM
-    IF_NO_EXTENDED_ERROR(result)
-        alarm = tpl_alarm_table[alarm_id];
+#if ALARM_COUNT > 0
+  IF_NO_EXTENDED_ERROR(result)
+  alarm = tpl_alarm_table[alarm_id];
 
-        info->ticksperbase = alarm->stat_part->counter->ticks_per_base;
-        info->maxallowedvalue = alarm->stat_part->counter->max_allowed_value;
-        info->mincycle = alarm->stat_part->counter->min_cycle;
-    IF_NO_EXTENDED_ERROR_END()
+  info->ticksperbase = alarm->stat_part->counter->ticks_per_base;
+  info->maxallowedvalue = alarm->stat_part->counter->max_allowed_value;
+  info->mincycle = alarm->stat_part->counter->min_cycle;
+  IF_NO_EXTENDED_ERROR_END()
 #endif
 
-    PROCESS_ERROR(result)
+  PROCESS_ERROR(result)
 
-    UNLOCK_KERNEL()
+  UNLOCK_KERNEL()
 
-    return result;
+  return result;
 }
 
 FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
@@ -128,7 +130,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
-#ifndef NO_ALARM
+#if ALARM_COUNT > 0
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
 #endif
 
@@ -146,7 +148,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
   /* check access right */
   CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
 	
-#ifndef NO_ALARM
+#if ALARM_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
     alarm = tpl_alarm_table[alarm_id];
 
@@ -177,68 +179,68 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
 }
 
 FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
-    CONST(tpl_alarm_id, AUTOMATIC)  alarm_id,
-    CONST(tpl_tick, AUTOMATIC)      increment,
-    CONST(tpl_tick, AUTOMATIC)      cycle)
+  CONST(tpl_alarm_id, AUTOMATIC)  alarm_id,
+  CONST(tpl_tick, AUTOMATIC)      increment,
+  CONST(tpl_tick, AUTOMATIC)      cycle)
 {
-    VAR(tpl_status, AUTOMATIC) result = E_OK;
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
 
-#ifndef NO_ALARM
-    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
-    P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) cnt;
-    VAR(tpl_tick, AUTOMATIC) date;
+#if ALARM_COUNT > 0
+  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+  P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) cnt;
+  VAR(tpl_tick, AUTOMATIC) date;
 #endif
 
-    LOCK_KERNEL()
+  LOCK_KERNEL()
 
-	/* check interrupts are not disabled by user    */
-    CHECK_INTERRUPT_LOCK(result)
+/* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
 
-    STORE_SERVICE(OSServiceId_SetRelAlarm)
-    STORE_ALARM_ID(alarm_id)
-    STORE_TICK_1(increment)
-    STORE_TICK_2(cycle)
+  STORE_SERVICE(OSServiceId_SetRelAlarm)
+  STORE_ALARM_ID(alarm_id)
+  STORE_TICK_1(increment)
+  STORE_TICK_2(cycle)
 
-    CHECK_ALARM_ID_ERROR(alarm_id,result)
+  CHECK_ALARM_ID_ERROR(alarm_id,result)
 	
 	/* check access right */
-	CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
+  CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
 	
-    CHECK_ALARM_INCREMENT_ERROR(alarm_id,increment,result)
-    CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
+  CHECK_ALARM_INCREMENT_ERROR(alarm_id,increment,result)
+  CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
 
-#ifndef NO_ALARM
-    IF_NO_EXTENDED_ERROR(result)
-        alarm = tpl_alarm_table[alarm_id];
+#if ALARM_COUNT > 0
+  IF_NO_EXTENDED_ERROR(result)
+  alarm = tpl_alarm_table[alarm_id];
 
-        if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP)
-        {
-            cnt = alarm->stat_part->counter;
-            /*  the alarm is not in use, proceed    */
-            date = cnt->current_date + increment;
-            if (date > cnt->max_allowed_value)
-            {
-                date -= (cnt->max_allowed_value + 1);
-            }
-            alarm->date = date;
-            alarm->cycle = cycle;
-            alarm->state = ALARM_ACTIVE;
-            tpl_insert_time_obj(alarm);
-	    TRACE_ALARM_SCHEDULED(alarm)
-        }
-        else
-        {
-            /*  the alarm is in use, return the proper error code   */
-            result = E_OS_STATE;
-        }
-    IF_NO_EXTENDED_ERROR_END()
+  if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP)
+  {
+    cnt = alarm->stat_part->counter;
+    /*  the alarm is not in use, proceed    */
+    date = cnt->current_date + increment;
+    if (date > cnt->max_allowed_value)
+    {
+        date -= (cnt->max_allowed_value + 1);
+    }
+    alarm->date = date;
+    alarm->cycle = cycle;
+    alarm->state = ALARM_ACTIVE;
+    tpl_insert_time_obj(alarm);
+    TRACE_ALARM_SCHEDULED(alarm)
+  }
+  else
+  {
+    /*  the alarm is in use, return the proper error code   */
+    result = E_OS_STATE;
+  }
+  IF_NO_EXTENDED_ERROR_END()
 #endif
 
-    PROCESS_ERROR(result)
+  PROCESS_ERROR(result)
 
-    UNLOCK_KERNEL()
+  UNLOCK_KERNEL()
 
-    return result;
+  return result;
 }
 
 /*
@@ -247,60 +249,60 @@ FUNC(tpl_status, OS_CODE) tpl_set_rel_alarm_service(
  * See page 64 of the OSEK spec
  */
 FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
-    CONST(tpl_alarm_id, AUTOMATIC)  alarm_id,
-    CONST(tpl_tick, AUTOMATIC)      start,
-    CONST(tpl_tick, AUTOMATIC)      cycle)
+  CONST(tpl_alarm_id, AUTOMATIC)  alarm_id,
+  CONST(tpl_tick, AUTOMATIC)      start,
+  CONST(tpl_tick, AUTOMATIC)      cycle)
 {
-    VAR(tpl_status, AUTOMATIC) result = E_OK;
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
 
-#ifndef NO_ALARM
-    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+#if ALARM_COUNT > 0
+  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
 #endif
 
-    LOCK_KERNEL()
+  LOCK_KERNEL()
 
-	/* check interrupts are not disabled by user    */
-    CHECK_INTERRUPT_LOCK(result)
+  /* check interrupts are not disabled by user    */
+  CHECK_INTERRUPT_LOCK(result)
 
-    STORE_SERVICE(OSServiceId_SetAbsAlarm)
-    STORE_ALARM_ID(alarm_id)
-    STORE_TICK_1(start)
-    STORE_TICK_2(cycle)
+  STORE_SERVICE(OSServiceId_SetAbsAlarm)
+  STORE_ALARM_ID(alarm_id)
+  STORE_TICK_1(start)
+  STORE_TICK_2(cycle)
 
-    CHECK_ALARM_ID_ERROR(alarm_id,result)
+  CHECK_ALARM_ID_ERROR(alarm_id,result)
 	
 	/* check access right */
-	CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
+  CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
 	
-    CHECK_ALARM_INCREMENT_ERROR(alarm_id,start,result)
-    CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
+  CHECK_ALARM_INCREMENT_ERROR(alarm_id,start,result)
+  CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
 
-#ifndef NO_ALARM
-    IF_NO_EXTENDED_ERROR(result)
-    alarm = tpl_alarm_table[alarm_id];
+#if ALARM_COUNT > 0
+  IF_NO_EXTENDED_ERROR(result)
+  alarm = tpl_alarm_table[alarm_id];
 
-    if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP)
-    {
-        /*  the alarm is not in use, proceed    */
-        alarm->date = start;
-        alarm->cycle = cycle;
-        alarm->state = ALARM_ACTIVE;
-        tpl_insert_time_obj(alarm);
-	TRACE_ALARM_SCHEDULED(alarm)
-    }
-    else
-    {
-        /*  the alarm is in use, return the proper error code   */
-        result = E_OS_STATE;
-    }
-    IF_NO_EXTENDED_ERROR_END()
+  if (alarm->state == (tpl_time_obj_state)ALARM_SLEEP)
+  {
+    /*  the alarm is not in use, proceed    */
+    alarm->date = start;
+    alarm->cycle = cycle;
+    alarm->state = ALARM_ACTIVE;
+    tpl_insert_time_obj(alarm);
+    TRACE_ALARM_SCHEDULED(alarm)
+  }
+  else
+  {
+    /*  the alarm is in use, return the proper error code   */
+    result = E_OS_STATE;
+  }
+  IF_NO_EXTENDED_ERROR_END()
 #endif
 
-    PROCESS_ERROR(result)
+  PROCESS_ERROR(result)
 
-    UNLOCK_KERNEL()
+  UNLOCK_KERNEL()
 
-    return result;
+  return result;
 }
 
 /*
@@ -309,49 +311,49 @@ FUNC(tpl_status, OS_CODE) tpl_set_abs_alarm_service(
  * See page 65 of the OSEK spec
  */
 FUNC(tpl_status, OS_CODE) tpl_cancel_alarm_service(
-    CONST(tpl_alarm_id, AUTOMATIC) alarm_id)
+  CONST(tpl_alarm_id, AUTOMATIC) alarm_id)
 {
-    VAR(tpl_status, AUTOMATIC) result = E_OK;
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
 
-#ifndef NO_ALARM
-    P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
+#if ALARM_COUNT > 0
+  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm;
 #endif
 
-    LOCK_KERNEL()
+  LOCK_KERNEL()
 
 	/* check interrupts are not disabled by user    */
-    CHECK_INTERRUPT_LOCK(result)
+  CHECK_INTERRUPT_LOCK(result)
 
-    STORE_SERVICE(OSServiceId_CancelAlarm)
-    STORE_ALARM_ID(alarm_id)
+  STORE_SERVICE(OSServiceId_CancelAlarm)
+  STORE_ALARM_ID(alarm_id)
 
-    CHECK_ALARM_ID_ERROR(alarm_id,result)
+  CHECK_ALARM_ID_ERROR(alarm_id,result)
 	
 	/* check access right */
 	CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
 
-#ifndef NO_ALARM
-    IF_NO_EXTENDED_ERROR(result)
-    alarm = tpl_alarm_table[alarm_id];
+#if ALARM_COUNT > 0
+  IF_NO_EXTENDED_ERROR(result)
+  alarm = tpl_alarm_table[alarm_id];
 
-    if (alarm->state == (tpl_time_obj_state)ALARM_ACTIVE)
-    {
-        tpl_remove_time_obj(alarm);
-	TRACE_ALARM_CANCEL(alarm_id)
-        alarm->state = ALARM_SLEEP;
-    }
-    else
-    {
-        result = E_OS_NOFUNC;
-    }
-    IF_NO_EXTENDED_ERROR_END()
+  if (alarm->state == (tpl_time_obj_state)ALARM_ACTIVE)
+  {
+    tpl_remove_time_obj(alarm);
+    TRACE_ALARM_CANCEL(alarm_id)
+    alarm->state = ALARM_SLEEP;
+  }
+  else
+  {
+    result = E_OS_NOFUNC;
+  }
+  IF_NO_EXTENDED_ERROR_END()
 #endif
 
-    PROCESS_ERROR(result)
+  PROCESS_ERROR(result)
+  
+  UNLOCK_KERNEL()
 
-    UNLOCK_KERNEL()
-
-    return result;
+  return result;
 }
 
 #define OS_STOP_SEC_CODE

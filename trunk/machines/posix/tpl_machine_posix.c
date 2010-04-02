@@ -15,10 +15,10 @@
 #include "tpl_os.h"
 #include "tpl_machine_interface.h"
 #include "tpl_os_application_def.h" /* define NO_ISR if needed. */
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 #include "tpl_as_timing_protec.h"
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 #include "tpl_as_isr_kernel.h"
 #include "tpl_os_kernel.h" /* for tpl_running_obj */
 #include "tpl_as_definitions.h"
@@ -46,7 +46,7 @@ extern volatile u32 tpl_locking_depth;
 extern VAR(tpl_bool, OS_VAR) tpl_user_task_lock;
 extern VAR(tpl_bool, OS_VAR) tpl_cpt_os_task_lock;
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 
 FUNC(void, OS_CODE) tpl_watchdog_callback(void)
 {
@@ -91,7 +91,7 @@ void tpl_cancel_watchdog(void)
 }
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
-#ifdef WITH_AUTOSAR_STACK_MONITORING
+#if WITH_AUTOSAR_STACK_MONITORING == YES
 FUNC(tpl_bool, OS_CODE) tpl_check_stack_pointer(
   CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
@@ -109,13 +109,13 @@ tpl_bool tpl_check_stack_footprint(
  * table which stores the signals used for interrupt
  * handlers.
  */
-#ifndef NO_ISR
+#if ISR_COUNT > 0
 	extern int signal_for_isr_id[ISR_COUNT];
 #endif
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
     const int signal_for_watchdog = SIGALRM;
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-#if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
+#if ((WITH_AUTOSAR == YES) && (SCHEDTABLE_COUNT > 0)) || (ALARM_COUNT > 0)
 	const int signal_for_counters = SIGUSR2;
 #endif
 
@@ -163,10 +163,10 @@ void tpl_disable_interrupts(void)
 void tpl_signal_handler(int sig)
 {
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
     struct itimerval timer;
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-#ifndef NO_ISR
+#if ISR_COUNT > 0
             unsigned int id;
             unsigned char found;
 #endif
@@ -174,7 +174,7 @@ void tpl_signal_handler(int sig)
     tpl_locking_depth++;
     tpl_cpt_os_task_lock++;
 
-#if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
+#if ((WITH_AUTOSAR == YES) && (SCHEDTABLE_COUNT > 0)) || (ALARM_COUNT > 0)
     if (signal_for_counters == sig) 
     {
         tpl_call_counter_tick();
@@ -182,7 +182,7 @@ void tpl_signal_handler(int sig)
     else
     {
 #endif /*(defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
         if (signal_for_watchdog == sig)
         {
             /* disable the interval timer (one shot) */
@@ -197,7 +197,7 @@ void tpl_signal_handler(int sig)
         else
         {
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-#ifndef NO_ISR
+#if ISR_COUNT > 0
             id = 0;
             found = (sig == signal_for_isr_id[id]);
             while( (id < ISR_COUNT) && !found)
@@ -220,11 +220,11 @@ void tpl_signal_handler(int sig)
                 printf("Cowardly exiting!\n");
                 tpl_shutdown();
             }
-#endif /* NO_ISR */
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#endif /* ISR_COUNT > 0 */
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
         }
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-#if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
+#if ((WITH_AUTOSAR == YES) && (SCHEDTABLE_COUNT > 0)) || (ALARM_COUNT > 0)
     }
 #endif /* (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */
 	
@@ -347,7 +347,7 @@ void tpl_osek_func_stub( tpl_proc_id task_id )
 {
     tpl_proc_function func = tpl_stat_proc_table[task_id]->entry;
     tpl_proc_type     type = tpl_stat_proc_table[task_id]->type;
-#ifdef WITH_AUTOSAR	
+#if WITH_AUTOSAR == YES
 	/*  init the error to no error  */
 	VAR(StatusType, AUTOMATIC) result = E_OK;
 #endif /* WITH_AUTOSAR */
@@ -365,7 +365,7 @@ void tpl_osek_func_stub( tpl_proc_id task_id )
 	   and release resources, if needed
 	 */
     if (type == IS_ROUTINE) {
-	#ifdef WITH_AUTOSAR	
+	#if WITH_AUTOSAR == YES
 		/* enable interrupts if disabled */
 		if(FALSE!=tpl_get_interrupt_lock_status())  
 	    {
@@ -380,12 +380,12 @@ void tpl_osek_func_stub( tpl_proc_id task_id )
 		}
 		
 		PROCESS_ERROR(result);  /* store terminateISR service id before hook ?*/
-	#endif /* WITH_AUTOSAR*/
+	#endif /* WITH_AUTOSAR */
 		TerminateISR();
     }
     else {
 
-	#ifdef WITH_AUTOSAR	
+	#if WITH_AUTOSAR == YES
 		/* enable interrupts if disabled */
 		if(FALSE!=tpl_get_interrupt_lock_status())  
 		{                                           
@@ -566,7 +566,7 @@ void quit(int n)
 void tpl_init_machine(void)
 {
     tpl_proc_id proc_id;
-#ifndef NO_ISR
+#if ISR_COUNT > 0
     int id;
 #endif
     struct sigaction sa;
@@ -588,15 +588,15 @@ void tpl_init_machine(void)
     /*
      * init a signal mask to block all signals (aka interrupts)
      */
-#ifndef NO_ISR
+#if ISR_COUNT > 0
     for (id = 0; id < ISR_COUNT; id++) {
         sigaddset(&signal_set,signal_for_isr_id[id]);
     }
 #endif
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
     sigaddset(&signal_set,signal_for_watchdog);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-#if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
+#if ((WITH_AUTOSAR == YES) && (SCHEDTABLE_COUNT > 0)) || (ALARM_COUNT > 0)
     sigaddset(&signal_set,signal_for_counters);
 #endif /*(defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */
 
@@ -610,21 +610,21 @@ void tpl_init_machine(void)
     /*
      * Install the signal handler used to emulate interruptions
      */
-#ifndef NO_ISR
+#if ISR_COUNT > 0
     for (id = 0; id < ISR_COUNT; id++) {
         sigaction(signal_for_isr_id[id],&sa,NULL);
     }
 #endif
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
     sigaction(signal_for_watchdog,&sa,NULL);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-#if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
+#if ((WITH_AUTOSAR == YES) && (SCHEDTABLE_COUNT > 0)) || (ALARM_COUNT > 0)
     sigaction(signal_for_counters,&sa,NULL);
 #endif /*(defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */
 
     tpl_viper_init();
     usleep(1000);
-#if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
+#if ((WITH_AUTOSAR == YES) && (SCHEDTABLE_COUNT > 0)) || (ALARM_COUNT > 0)
     tpl_viper_start_auto_timer(signal_for_counters,10000);  /* 10 ms */
 #endif
 
@@ -636,7 +636,7 @@ void tpl_init_machine(void)
         exit(-1);
     }
 	*/
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
     gettimeofday (&startup_time, NULL);  
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 }

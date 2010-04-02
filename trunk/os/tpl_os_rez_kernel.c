@@ -31,7 +31,7 @@
 #include "tpl_machine_interface.h"
 #include "tpl_trace.h"
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 #include "tpl_as_protec_hook.h"
 #endif
 
@@ -72,8 +72,8 @@ CONST(tpl_resource_id, AUTOMATIC) INVALID_RESOURCE = (tpl_resource_id)(-1);
 VAR(tpl_resource, OS_VAR) res_sched_rez_desc = {
   RES_SCHEDULER_PRIORITY,   /*  ceiling priority                            */
   0,                        /*  owner_prev_priority                         */
-  INVALID_TASK_ID,          /*  owner                                       */
-#ifdef WITH_OSAPPLICATION
+  INVALID_PROC_ID,          /*  owner                                       */
+#if WITH_OSAPPLICATION == YES
   INVALID_OSAPPLICATION_ID, /*  OS Application id                           */
 #endif    
   NULL                      /*  next_res                                    */
@@ -99,7 +99,7 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
   /*  Get the resource pointer of the process */
   P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res =
   tpl_dyn_proc_table[proc_id]->resources;
-#ifdef WITH_TRACE
+#if WITH_TRACE == YES
   VAR(tpl_resource_id, AUTOMATIC) res_id;
 #endif /* WITH_TRACE */
 	
@@ -115,7 +115,7 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
       res->next_res = NULL;
 		
 	  /* find the id of the resource for the trace */
-#ifdef WITH_TRACE
+#if WITH_TRACE == YES
 	  res_id = 0;
 	  while( tpl_resource_table[res_id] != res ){
 		  res_id++;
@@ -141,7 +141,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
   /*  init the error to no error  */
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
-#ifndef NO_RESOURCE
+#if RESOURCE_COUNT > 0
   P2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA) res;
 #endif
   
@@ -159,7 +159,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
   CHECK_ACCESS_RIGHTS_RESOURCE_ID(res_id,result)
   
   IF_NO_EXTENDED_ERROR(result)
-#ifndef NO_RESOURCE
+#if RESOURCE_COUNT > 0
   res = tpl_resource_table[res_id];
 #else
   res = NULL; /* error */
@@ -191,7 +191,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
       TRACE_TASK_CHANGE_PRIORITY(tpl_kern.running_id)
       TRACE_ISR_CHANGE_PRIORITY(tpl_kern.running_id)
     }
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
     tpl_start_resource_monitor(tpl_kern.running_id, res_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   IF_NO_EXTENDED_ERROR_END()
@@ -234,7 +234,7 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
   CHECK_ACCESS_RIGHTS_RESOURCE_ID(res_id,result)
 	
   IF_NO_EXTENDED_ERROR(result)
-  #ifndef NO_RESOURCE
+  #if RESOURCE_COUNT > 0
     res = tpl_resource_table[res_id];
   #else
     res = NULL; /* error */
@@ -267,10 +267,10 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
       res->owner = INVALID_TASK;
       TRACE_RES_RELEASED(res_id)
       tpl_schedule_from_running();
-# ifdef WITH_AUTOSAR_TIMING_PROTECTION
+# if WITH_AUTOSAR_TIMING_PROTECTION == YES
       tpl_stop_resource_monitor(tpl_kern.running_id, res_id);
 # endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-# ifndef WITH_SYSTEM_CALL
+# if WITH_SYSTEM_CALL == NO
       if (tpl_kern.need_switch != NO_NEED_SWITCH)
       {
         tpl_switch_context(

@@ -28,14 +28,6 @@
 
 #include "tpl_os_types.h"
 
-/*
- * Remember (see "The design of Trampoline") :
- * NO_TASK means there is no task defined in the system
- * OS_EXTENDED means extended error checking is done
- * WITH_ERROR_HOOK means an error hook routine is called when
- * an error occurs.
- */
-
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 /**
@@ -49,7 +41,7 @@ FUNC(void, OS_CODE) tpl_call_error_hook(
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-#ifdef WITH_ERROR_HOOK
+#if WITH_ERROR_HOOK == YES
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -63,7 +55,7 @@ extern FUNC(void, OS_CODE) ErrorHook(
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-#endif
+#endif /* WITH_ERROR_HOOK */
 
 #endif /* TPL_OS_ERRORHOOK_H */
 

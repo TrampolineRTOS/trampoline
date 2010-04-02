@@ -40,7 +40,7 @@ extern FUNC(void, OS_CODE) tpl_release_task_lock(void);
 FUNC(void, OS_CODE) tpl_disable_isr2_by_user (
   CONST(tpl_isr_id, AUTOMATIC) isr_id)
 {
-#ifndef NO_ISR
+#if ISR_COUNT > 0
   VAR(tpl_isr_id, AUTOMATIC) actual_id = isr_id - TASK_COUNT;
   
   if (tpl_isr2_enable_table[actual_id] == DISABLED_BY_TIMING_PROTECTION)
@@ -57,7 +57,7 @@ FUNC(void, OS_CODE) tpl_disable_isr2_by_user (
 FUNC(void, OS_CODE) tpl_disable_isr2_by_timing_protection (
   CONST(tpl_isr_id, AUTOMATIC) isr_id)
 {
-#ifndef NO_ISR
+#if ISR_COUNT > 0
   VAR(tpl_isr_id, AUTOMATIC) actual_id = isr_id - TASK_COUNT;
   
   if (tpl_isr2_enable_table[actual_id] == DISABLED_BY_USER)
@@ -75,7 +75,7 @@ FUNC(void, OS_CODE) tpl_disable_isr2_by_timing_protection (
 FUNC(void, OS_CODE) tpl_enable_isr2_by_user (
   CONST(tpl_isr_id, AUTOMATIC) isr_id)
 {
-#ifndef NO_ISR
+#if ISR_COUNT > 0
   VAR(tpl_isr_id, AUTOMATIC) actual_id = isr_id - TASK_COUNT;
   
   if (tpl_isr2_enable_table[actual_id] == DISABLED_BY_USER)
@@ -92,7 +92,7 @@ FUNC(void, OS_CODE) tpl_enable_isr2_by_user (
 FUNC(void, OS_CODE) tpl_enable_isr2_by_timing_protection (
   CONST(tpl_isr_id, AUTOMATIC) isr_id)
 {
-#ifndef NO_ISR
+#if ISR_COUNT > 0
   VAR(tpl_isr_id, AUTOMATIC) actual_id = isr_id - TASK_COUNT;
 
   if (tpl_isr2_enable_table[actual_id] == DISABLED_BY_BOTH)
@@ -111,7 +111,7 @@ FUNC(tpl_bool, OS_CODE) tpl_is_isr2_enabled (
 {
   VAR(tpl_bool, AUTOMATIC) result = FALSE;
 
-#ifndef NO_ISR
+#if ISR_COUNT > 0
   if (tpl_isr2_enable_table[isr_id - TASK_COUNT] == ENABLED)
   {
     result = TRUE;
@@ -174,7 +174,7 @@ FUNC(tpl_status, OS_CODE) tpl_disable_interrupt_source_service(
 
   CHECK_ISR_ID_ERROR(isr_id,result)
 
-#ifndef NO_ISR
+#if ISR_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
     tpl_disable_isr2_by_user(isr_id);
   IF_NO_EXTENDED_ERROR_END()
@@ -195,7 +195,7 @@ FUNC(tpl_status, OS_CODE) tpl_enable_interrupt_source_service(
 
   CHECK_ISR_ID_ERROR(isr_id,result)
 
-#ifndef NO_ISR
+#if ISR_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
     tpl_enable_isr2_by_user(isr_id);
   IF_NO_EXTENDED_ERROR_END()

@@ -183,7 +183,7 @@ STATIC FUNC(void, OS_CODE) tpl_call_missingend(void)
 {
 /*    VAR(StatusType, AUTOMATIC) result = E_OK; */
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
     PROCESS_ERROR(E_OS_MISSINGEND);
 #endif
 /*    result = TerminateTask(); */
@@ -250,7 +250,7 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
   tpl_cpt_user_task_lock = 0;
   tpl_cpt_os_task_lock = 0;
   */
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
   tpl_remaining_watchdog_time = 0;
 #endif
   /* these 3 variables are init right after
@@ -268,7 +268,7 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
 
   INTC.CPR_PRC0.R = 0;*/
 
-#ifdef WITH_OS_DEBUG
+#if WITH_OS_DEBUG == YES
   tpl_init_stack_debug();
   tpl_init_switch_debug();
 #endif

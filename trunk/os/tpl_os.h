@@ -68,7 +68,7 @@
 #include "tpl_com_internal.h"
 #endif
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 /*
  * Inclusion of the header for schedule table related API services
  * Only for AUTOSAR extension

@@ -68,7 +68,7 @@
 
 VAR(tpl_stack_word, OS_VAR) stack_zone_of_IdleTask[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
 VAR(hcs12_context, OS_VAR) idle_task_context;
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 STATIC VAR(tpl_time, OS_VAR) tpl_global_time;
 #endif
 
@@ -122,7 +122,7 @@ FUNC(void, OS_CODE) tpl_init_context(
   ic->x = 0;
   ic->y = 0;
 
-  #ifdef WITH_AUTOSAR_STACK_MONITORING
+  #if WITH_AUTOSAR_STACK_MONITORING == YES
   /* MISRA RULE 1 VIOLATION: cast from integer to pointer type is
     implemenation defined, but this part of OS is implementation specific,
     and the pointer size is controlled */
@@ -171,7 +171,7 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
   tpl_cpt_user_task_lock = 0;
   tpl_cpt_os_task_lock = 0;
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
   tpl_global_time = 0;
 #endif
 
@@ -187,7 +187,7 @@ FUNC(void, OS_CODE) tpl_init_machine(void)
     start address + stack size = end of stack zone */
   /* if Stack Monitoring is enabled, fill the stack with a pattern in
     order to check later if the pattern was erased */
-#ifdef WITH_AUTOSAR_STACK_MONITORING
+#if WITH_AUTOSAR_STACK_MONITORING == YES
   /* MISRA RULE 1 VIOLATION: cast from integer to pointer type is
     implemenation defined, but this part of OS is implementation specific,
     and the pointer size is controlled */
@@ -445,7 +445,7 @@ FUNC(void, OS_CODE) tpl_release_task_lock(void)
   {
     tpl_cpt_task_lock--;
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
     tpl_cpt_os_task_lock--;
 #endif
   }
@@ -474,11 +474,11 @@ FUNC(void, OS_CODE) EnableAllInterrupts(void)
 {
   __asm CLI     ;/* clear the I bit of CCR, re-allows interrupts */
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
   tpl_user_task_lock = FALSE;
 #endif
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
   tpl_stop_all_isr_lock_monitor(tpl_running_obj);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
@@ -502,11 +502,11 @@ FUNC(void, OS_CODE) DisableAllInterrupts(void)
 {
   __asm SEI     ;/* set the I bit of CCR, inhibits interrupts */
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
   tpl_user_task_lock = TRUE;
 #endif
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
   tpl_start_all_isr_lock_monitor(tpl_running_obj);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
@@ -532,14 +532,14 @@ FUNC(void, OS_CODE) ResumeAllInterrupts(void)
   {
     tpl_cpt_task_lock--;
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
     tpl_cpt_user_task_lock--;
 #endif
   }
   if( tpl_cpt_task_lock == 0)
   {
     __asm("CLI");/* re-allows interrupts */
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
   tpl_stop_all_isr_lock_monitor(tpl_running_obj);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
   }
@@ -565,10 +565,10 @@ FUNC(void, OS_CODE) SuspendAllInterrupts(void)
   __asm("SEI");  /* inhibits interrupts */
   tpl_cpt_task_lock++;
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
   tpl_cpt_user_task_lock++;
 #endif
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
   if( tpl_cpt_task_lock == 1)
   {
     tpl_start_all_isr_lock_monitor(tpl_running_obj);
@@ -597,14 +597,14 @@ FUNC(void, OS_CODE) ResumeOSInterrupts(void)
   {
     tpl_cpt_task_lock--;
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
     tpl_cpt_user_task_lock--;
 #endif
   }
   if( tpl_cpt_task_lock == 0)
   {
     __asm("CLI");/* re-allows interrupts */
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
     tpl_stop_os_isr_lock_monitor(tpl_running_obj);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
   }
@@ -630,11 +630,11 @@ FUNC(void, OS_CODE) SuspendOSInterrupts(void)
   __asm("SEI");  /* inhibits interrupts */
   tpl_cpt_task_lock++;
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
     tpl_cpt_user_task_lock--;
 #endif
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
     tpl_start_os_isr_lock_monitor(tpl_running_obj);
 #endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 }
@@ -642,7 +642,7 @@ FUNC(void, OS_CODE) SuspendOSInterrupts(void)
 #include "MemMap.h"
 
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 /*******************************************************************************
 ** Function name: tpl_set_watchdog
 ** Description:
@@ -1006,7 +1006,7 @@ STATIC FUNC(void, OS_CODE) tpl_call_missing_end(void)
     }
     else
     {
-#if defined(WITH_ERROR_HOOK) && defined(WITH_AUTOSAR)
+#if (WITH_ERROR_HOOK == YES) && (WITH_AUTOSAR == YES)
         tpl_call_error_hook(E_OS_MISSINGEND);
 #endif
         result = TerminateTask();

@@ -23,7 +23,7 @@
  */
 
 #include "tpl_os_kernel.h"
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 #include "tpl_as_isr_kernel.h"
 #endif /* WITH_AUTOSAR */
 

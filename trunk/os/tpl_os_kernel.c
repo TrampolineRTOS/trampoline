@@ -40,16 +40,16 @@
 #include "tpl_os_rez_kernel.h"
 #include "tpl_os_task.h"
 
-#ifdef WITH_AUTOSAR_STACK_MONITORING
+#if WITH_AUTOSAR_STACK_MONITORING == YES
 #include "tpl_as_stack_monitor.h"
 #endif
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 #include "tpl_as_st_kernel.h"
 #if AUTOSAR_SC == 3 || AUTOSAR_SC == 4
 #include "tpl_as_app_kernel.h"
 #endif
 #endif
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 #include "tpl_as_protec_hook.h"
 #endif
 
@@ -66,13 +66,22 @@ STATIC /*@null@*/ FUNC(VAR(tpl_proc_id, AUTOMATIC), OS_CODE) tpl_get_proc(void);
 #include "tpl_memmap.h"
 
 /**
+ * @def INVALID_PROC
+ *
+ * This value is used to specify an invalid process (Task or ISR category 2)
+ * It is initialise by INVALID_PROC_ID to initialise other structure
+ * without INVALID_PROC, which is a constant.
+ */
+CONST(tpl_proc_id, AUTOMATIC) INVALID_PROC = INVALID_PROC_ID;
+
+/**
  * @def INVALID_TASK
  *
  * This value is used to specify an invalid #TaskType
  * It is initialise by INVALID_TASK_ID to initialise other structure
  * without INVALID_TASK, which is a constant.
  */
-CONST(tpl_proc_id, AUTOMATIC) INVALID_TASK = INVALID_TASK_ID;
+CONST(tpl_proc_id, AUTOMATIC) INVALID_TASK = INVALID_PROC_ID;
 
 /**
  * @internal
@@ -87,13 +96,13 @@ CONST(tpl_proc_static, OS_CONST) idle_task_static = {
   /* entry point          */  IDLE_ENTRY,
   /* internal resource    */  NULL,
   /* id is IDLE_TASK_ID   */  IDLE_TASK_ID,
-#ifdef WITH_OSAPPLICATION
+#if WITH_OSAPPLICATION == YES
   /* OS application id    */  INVALID_OSAPPLICATION_ID,
 #endif
   /* base priority is 0   */  0,
   /* max activate count   */  1,
   /* type is BASIC        */  TASK_BASIC
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /* no timing protection
    for the idle task :D */  ,NULL
 #endif
@@ -137,7 +146,7 @@ VAR(tpl_proc, OS_VAR) idle_task = {
   /* activation count     */  0,
   /* priority             */  0,
   /* state                */  SUSPENDED
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /* activation_allowed   */  ,TRUE
 #endif
 };
@@ -615,7 +624,7 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
 
 #endif /* WITH_POWEROF2QUEUE */
 
-#ifdef WITH_OSAPPLICATION
+#if WITH_OSAPPLICATION == YES
 /**
  * @internal
  *
@@ -687,7 +696,7 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
   DOW_DO(printrl("tpl_remove_proc - after");)
 }
 
-#endif
+#endif /* WITH_OSAPPLICATION */
 
 /**
  * @internal
@@ -780,7 +789,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
   DOW_ASSERT(tpl_kern.running->state == RUNNING)
   DOW_ASSERT(tpl_h_prio != -1)
 
-#ifdef WITH_AUTOSAR_STACK_MONITORING
+#if WITH_AUTOSAR_STACK_MONITORING == YES
   tpl_check_stack (tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
@@ -802,7 +811,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
     tpl_kern.s_old = tpl_kern.s_running;
 
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
     /*  pause the budget monitor                                  */
     tpl_pause_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
@@ -821,12 +830,12 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
       /*  the object has not be preempted. So its
           descriptor must be initialized                          */
       tpl_init_proc(tpl_kern.running_id);
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
       /*  start the budget monitor for the activated task or isr  */
       tpl_start_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
     }
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
     else
     {
       tpl_continue_budget_monitor(tpl_kern.running_id);
@@ -862,7 +871,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
  */
 FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
 {
-#ifdef WITH_AUTOSAR_STACK_MONITORING
+#if WITH_AUTOSAR_STACK_MONITORING == YES
   tpl_check_stack(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
@@ -870,7 +879,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
    PostTaskHook while the soon descheduled task is running             */
   CALL_POST_TASK_HOOK()
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /*  pause the budget monitoring when a running obj has ended            */
   tpl_stop_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
@@ -908,14 +917,14 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
     /*  the object has not be preempted. So its
         descriptor must be initialized                                  */
     tpl_init_proc(tpl_kern.running_id);
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
     /* start the budget monitor for the activated task or isr           */
     tpl_start_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
   else
   {
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
     tpl_continue_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
@@ -944,7 +953,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
  */
 FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
 {
-#ifdef WITH_AUTOSAR_STACK_MONITORING
+#if WITH_AUTOSAR_STACK_MONITORING == YES
   tpl_check_stack(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
@@ -952,7 +961,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
       PostTaskHook while the soon descheduled task is running     */
   CALL_POST_TASK_HOOK()
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /*  pause the budget monitoring when a task has ended           */
   tpl_pause_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
@@ -980,14 +989,14 @@ FUNC(void, OS_CODE) tpl_schedule_from_waiting(void)
         descriptor must be initialized                            */
     tpl_init_proc(tpl_kern.running_id);
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
     /*  start the budget monitor for the activated task           */
     tpl_start_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
   else
   {
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
     tpl_continue_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
@@ -1025,7 +1034,7 @@ FUNC(void, OS_CODE) tpl_start_scheduling(void)
   /*  the object has not be preempted. So its
    descriptor must be initialized                                  */
   tpl_init_proc(first_proc);
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /* start the budget monitor for the activated task or isr           */
   tpl_start_budget_monitor(first_proc);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
@@ -1067,7 +1076,7 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
   CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task =
     tpl_stat_proc_table[task_id];
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if  WITH_AUTOSAR_TIMING_PROTECTION == YES
   /*  if this is the first activation in the time frame                 */
   if (task->activation_allowed == TRUE)
   {
@@ -1082,7 +1091,7 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
 
         task->state = (tpl_proc_state)READY_AND_NEW;
 
-#ifndef NO_EXTENDED_TASK
+#if EXTENDED_TASK_COUNT > 0
         /*  if the object is an extended task, init the events          */
         if (task_id < EXTENDED_TASK_COUNT)
         {
@@ -1099,12 +1108,12 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
           it will dec this count and if not zero it will be reactivated */
       task->activate_count++;
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
       tpl_start_timeframe(task_id);
 #endif
       result = (tpl_status)E_OK_AND_SCHEDULE;
     }
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
   }
   else
   {
@@ -1129,7 +1138,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
-#ifndef NO_EXTENDED_TASK
+#if EXTENDED_TASK_COUNT > 0
   CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) task =
     tpl_dyn_proc_table[task_id];
   CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA) events =
@@ -1149,7 +1158,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
       /*  anyway check it is in the WAITING state       */
       if (task->state == (tpl_proc_state)WAITING)
       {
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
         if(task->activation_allowed == TRUE)
         {
 #endif
@@ -1159,13 +1168,13 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
           TRACE_TASK_RELEASED(task_id,incoming_event)
           tpl_put_new_proc(task_id);
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
           tpl_start_timeframe(task_id);
 #endif
 
           /*  notify a scheduling needs to be done    */
           result = (tpl_status)E_OK_AND_SCHEDULE;
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
         }
         else
         {
@@ -1221,22 +1230,18 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 {
   VAR(u16, AUTOMATIC) i;
   VAR(tpl_status, AUTOMATIC) result;
-#ifndef NO_ALARM
+#if ALARM_COUNT > 0
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
 #endif
 
-#ifdef WITH_AUTOSAR
-#ifdef NO_ALARM
-#ifndef NO_SCHEDTABLE
+#if (WITH_AUTOSAR == YES) && (ALARM_COUNT == 0) && (SCHEDTABLE_COUNT > 0)
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
-#endif
-#endif
 #endif
 
   /*  Start the idle task */
   result = tpl_activate_task(IDLE_TASK_ID);
   
-#ifndef NO_TASK
+#if TASK_COUNT > 0
   /*  Look for autostart tasks    */
   for (i = 0; i < TASK_COUNT; i++)
   {
@@ -1247,7 +1252,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
     }
   }
 #endif
-#ifndef NO_ALARM
+#if ALARM_COUNT > 0
 
   /*  Look for autostart alarms    */
 
@@ -1263,7 +1268,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
   }
 
 #endif
-#if defined WITH_AUTOSAR && !defined NO_SCHEDTABLE
+#if (WITH_AUTOSAR == YES) && (SCHEDTABLE_COUNT > 0)
   /*  Look for autostart schedule tables  */
 
   for (i = 0; i < SCHEDTABLE_COUNT; i++)
@@ -1324,7 +1329,7 @@ FUNC(void, OS_CODE) tpl_start_os_service(
 	
   application_mode = mode;
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
   tpl_init_timing_protection();
 #endif
 
@@ -1343,7 +1348,7 @@ FUNC(void, OS_CODE) tpl_start_os_service(
   {
     tpl_start_scheduling();
 
-#ifndef WITH_SYSTEM_CALL
+#if WITH_SYSTEM_CALL == NO
 	if (tpl_kern.need_switch != NO_NEED_SWITCH)
 	{
 	  tpl_switch_context(
@@ -1378,14 +1383,14 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
 
 FUNC(void, OS_CODE) tpl_call_terminate_task_service(void)
 {
-  if(FALSE!=tpl_get_interrupt_lock_status())  
+  if (FALSE != tpl_get_interrupt_lock_status())  
   {                                           
       /*enable interrupts :*/
       tpl_reset_interrupt_lock_status();
       /*tpl_enable_interrupts(); now ?? or wait until TerminateISR reschedule and interrupts enabled returning previous API service call OR by signal_handler.*/
   }
   /* release resources if held */
-  if( (tpl_kern.running->resources) != NULL ){
+  if ((tpl_kern.running->resources) != NULL){
       tpl_release_all_resources(tpl_kern.running_id);
   }
   
@@ -1402,7 +1407,7 @@ FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
   VAR(StatusType, AUTOMATIC) result = E_OK;
 
   /* enable interrupts if disabled */
-  if(FALSE!=tpl_get_interrupt_lock_status())  
+  if (FALSE != tpl_get_interrupt_lock_status() )  
   {
     tpl_reset_interrupt_lock_status();
     /*tpl_enable_interrupts(); now ?? or wait until TerminateISR reschedule and interrupts enabled returning previous API service call OR by signal_handler.*/

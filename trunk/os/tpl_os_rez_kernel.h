@@ -28,7 +28,7 @@
 
 #include "tpl_os_internal_types.h"
 
-#ifdef WITH_OSAPPLICATION
+#if WITH_OSAPPLICATION == YES
 #include "tpl_as_app_kernel.h"
 #endif /* WITH_OSAPPLICATION */
 
@@ -49,7 +49,7 @@ struct TPL_RESOURCE {
   VAR(tpl_proc_id, TYPEDEF)
     owner;                  /**<  Id of the owner of the resource or -1
                                   if the resource is not owned                */
-#ifdef WITH_OSAPPLICATION
+#if WITH_OSAPPLICATION == YES
   CONST(tpl_app_id, TYPEDEF)
     app_id;                 /**<  Id of the OS Application which owns the
                                   resource.                                   */
@@ -69,7 +69,7 @@ struct TPL_RESOURCE {
  */
 typedef struct TPL_RESOURCE tpl_resource;
 
-#ifndef NO_RESOURCE
+#if RESOURCE_COUNT > 0
 /**
  * Array of all resources descriptors
  *
@@ -77,7 +77,7 @@ typedef struct TPL_RESOURCE tpl_resource;
  */
 extern CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA)
   tpl_resource_table[RESOURCE_COUNT];
-#endif
+#endif /* RESOURCE_COUNT */
 
 /**
  * The scheduler resource descriptor

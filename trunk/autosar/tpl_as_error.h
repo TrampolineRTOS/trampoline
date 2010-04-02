@@ -41,8 +41,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_CheckObjectAccess_ApplicationID()   \
 		(tpl_service.parameters.id.application_id)
+#endif
 
 /**
  * @def OSError_CheckObjectAccess_ObjectType
@@ -55,8 +57,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_CheckObjectAccess_ObjectType()   \
 		(tpl_service.parameters.param.object_type)
+#endif
 
 /**
  * @def OSError_CheckObjectAccess_ObjectID
@@ -69,8 +73,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_CheckObjectAccess_ObjectID()   \
 		(tpl_service.parameters.param2.object_id)
+#endif
 
 /**
  * @def OSError_CheckObjectOwnership_ObjectType
@@ -83,8 +89,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_CheckObjectOwnership_ObjectType()   \
 		(tpl_service.parameters.param.object_type)
+#endif
 
 /**
  * @def OSError_CheckObjectOwnership_ObjectID
@@ -97,8 +105,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_CheckObjectOwnership_ObjectID()   \
 		(tpl_service.parameters.param2.object_id)
+#endif
 
 /**
  * @def OSError_StartScheduleTableRel_ScheduleTableID
@@ -111,8 +121,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_StartScheduleTableRel_ScheduleTableID()   \
 		(tpl_service.parameters.id.schedtable_id)
+#endif
 
 /**
  * @def OSError_StartScheduleTableRel_value
@@ -125,8 +137,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_StartScheduleTableRel_offset()   \
 	(tpl_service.parameters.param.tick)
+#endif
 
 /**
  * @def OSError_StartScheduleTableAbs_ScheduleTableID
@@ -139,8 +153,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_StartScheduleTableAbs_ScheduleTableID()   \
 	(tpl_service.parameters.id.schedtable_id)
+#endif
 
 /**
  * @def OSError_StartScheduleTableAbs_value
@@ -153,8 +169,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_StartScheduleTableAbs_value()   \
 	(tpl_service.parameters.param.tick)
+#endif
 
 /**
  * @def OSError_StopScheduleTable_ScheduleTableID
@@ -167,8 +185,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_StopScheduleTable_ScheduleTableID()   \
 	(tpl_service.parameters.id.schedtable_id)
+#endif
 
 /**
  * @def OSError_NextScheduleTable_ScheduleTableID
@@ -181,8 +201,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_NextScheduleTable_ScheduleTableID()   \
 	(tpl_service.parameters.id.schedtable_id)
+#endif
 
 /**
  * @def OSError_NextScheduleTable_ScheduleTableID2
@@ -195,22 +217,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_NextScheduleTable_ScheduleTableID2()   \
 	(tpl_service.parameters.param.next_st_id)
-
-/**
- * @def OSError_NextScheduleTable_ScheduleTableID2
- *
- * NextScheduleTable service error parameter
- *
- * Returns the identifier (#ScheduleTableType) of the schedule table which
- * caused the error.
- *
- * @warning this macro does only make sense when used within #ErrorHook
- * function
- */
-#define OSError_NextScheduleTable_ScheduleTableID2()   \
-(tpl_service.parameters.param.next_st_id)
+#endif
 
 /**
  * @def OSError_IncrementCounter_CounterID
@@ -223,8 +233,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_IncrementCounter_CounterID()   \
 	(tpl_service.parameters.id.counter_id)
+#endif
 
 /**
  * @def OSError_GetCounterValue_CounterID
@@ -237,8 +249,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_GetCounterValue_CounterID()   \
 	(tpl_service.parameters.id.counter_id)
+#endif
 
 /**
  * @def OSError_GetCounterValue_value
@@ -251,8 +265,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_GetCounterValue_value()   \
 	(tpl_service.parameters.param.tick_ref)
+#endif
 
 /**
  * @def OSError_GetElapsedCounterValue_CounterID
@@ -265,8 +281,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_GetElapsedCounterValue_CounterID()   \
 	(tpl_service.parameters.id.counter_id)
+#endif
 
 /**
  * @def OSError_GetElapsedCounterValue_previous_value
@@ -279,8 +297,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_GetElapsedCounterValue_previous_value()   \
 	(tpl_service.parameters.param.tick_ref)
+#endif
 
 /**
  * @def OSError_GetElapsedCounterValue_value
@@ -293,8 +313,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_GetElapsedCounterValue_value()   \
 	(tpl_service.parameters.param2.tick_ref)
+#endif
 
 /**
  * @def OSError_GetScheduleTableStatus_ScheduleTableID
@@ -307,8 +329,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_GetScheduleTableStatus_ScheduleTableID()   \
 	(tpl_service.parameters.id.schedtable_id)
+#endif
 
 /**
  * @def OSError_GetScheduleTableStatus_status
@@ -321,8 +345,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_GetScheduleTableStatus_status()   \
 	(tpl_service.parameters.param.st_stat)
+#endif
 
 /**
  * @def OSError_SetScheduleTableAsync_ScheduleTableID
@@ -335,8 +361,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_SetScheduleTableAsync_ScheduleTableID()   \
 	(tpl_service.parameters.id.schedtable_id)
+#endif
 
 /**
  * @def OSError_StartScheduleTableSynchron_ScheduleTableID
@@ -349,8 +377,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_StartScheduleTableSynchron_ScheduleTableID()   \
 	(tpl_service.parameters.id.schedtable_id)
+#endif
 
 /**
  * @def OSError_SyncScheduleTable_ScheduleTableID
@@ -363,8 +393,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_SyncScheduleTable_ScheduleTableID()   \
 	(tpl_service.parameters.id.schedtable_id)
+#endif
 
 /**
  * @def OSError_SyncScheduleTable_value
@@ -377,8 +409,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_SyncScheduleTable_value()   \
 	(tpl_service.parameters.param.tick)
+#endif
 
 /**
  * @def OSError_TerminateApplication_opt
@@ -390,10 +424,10 @@
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEPARAMETERACCESS == YES
 #define OSError_TerminateApplication_opt()   \
 	(tpl_service.parameters.param.opt_termapp)
-
-
+#endif
 
 /**
  * @def STORE_APPLICATION_ID
@@ -405,7 +439,7 @@
  * @see #OSError_CheckObjectAccess_ApplicationID
  * 
  */
-#ifdef WITH_ERROR_HOOK
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_APPLICATION_ID(app_id)   \
 	tpl_service.parameters.id.application_id = (app_id);
 #else
@@ -423,7 +457,7 @@
  * @see #OSError_CheckObjectOwnership_ObjectType
  * 
  */
-#ifdef WITH_ERROR_HOOK
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_OBJECT_TYPE(obj_typ)   \
 	tpl_service.parameters.param.object_type = (obj_typ);
 #else
@@ -441,7 +475,7 @@
  * @see #OSError_CheckObjectOwnership_ObjectID
  * 
  */
-#ifdef WITH_ERROR_HOOK
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_OBJECT_ID(obj_id)   \
 		tpl_service.parameters.param2.object_id = (obj_id);
 #else
@@ -465,7 +499,7 @@
  * @see #OSError_SetScheduleTableAsync_ScheduleTableID
  * 
  */
-#ifdef WITH_ERROR_HOOK
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_SCHEDTABLE_ID(sched_table_id)   \
     tpl_service.parameters.id.schedtable_id = (sched_table_id);
 #else
@@ -482,7 +516,7 @@
  * @see #OSError_NextScheduleTable_ScheduleTableID
  * 
  */
-#ifdef WITH_ERROR_HOOK
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_SCHEDTABLE_ID2(sched_table_id)   \
     tpl_service.parameters.param.next_st_id = (sched_table_id);
 #else
@@ -501,7 +535,7 @@
  * @see #OSError_GetElapsedCounterValue_CounterID
  * 
  */
-#ifdef WITH_ERROR_HOOK
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_COUNTER_ID(cnt_id)   \
     tpl_service.parameters.id.counter_id = (cnt_id);
 #else
@@ -518,7 +552,7 @@
  * @see #OSError_GetScheduleTableStatus_ScheduleStatus
  * 
  */
-#ifdef WITH_ERROR_HOOK
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_ST_STATUS_REF(status)   \
     tpl_service.parameters.param.st_stat = (status);
 #else
@@ -535,7 +569,7 @@
  * @see #OSError_TerminateApplication_opt
  * 
  */
-#ifdef WITH_ERROR_HOOK
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_TERMAPP_OPT(opt)   \
 	tpl_service.parameters.param.opt_termapp = (opt);
 #else
@@ -553,18 +587,17 @@
  * @param result error code to set if check fails
  *
  * @note error code is not set if it do not equals E_OK
- *
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  */
 
-/* No extended error checking (! OS_EXTENDED)  */
-#if !defined(OS_EXTENDED)
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
     /* Does not check the sched_table_id in this case */
 #   define CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)
 #endif
 
-/* NO_SCHEDTABLE and extended error checking (OS_EXTENDED)      */
-#if defined(NO_SCHEDTABLE) && defined(OS_EXTENDED)
+/* No scheduletable and extended error checking (WITH_OS_EXTENDED == YES) */
+#if (SCHEDTABLE_COUNT == 0) && (WITH_OS_EXTENDED == YES)
     /* E_OS_ID is returned in this case  */
 #   define CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)     \
     if (result == (tpl_status)E_OK)                             \
@@ -573,8 +606,8 @@
     }
 #endif
 
-/* !NO_SCHEDTABLE and extended error checking (OS_EXTENDED)     */
-#if !defined(NO_SCHEDTABLE) && defined(OS_EXTENDED)
+/* Any scheduletable and extended error checking (WITH_OS_EXTENDED == YES)  */
+#if (SCHEDTABLE_COUNT > 0) && (WITH_OS_EXTENDED == YES)
     /* E_OK or E_OS_LIMIT   */
 #   define CHECK_SCHEDTABLE_ID_ERROR(sched_table_id,result)         \
     if ((result == (tpl_status)E_OK) &&                             \
@@ -593,26 +626,25 @@
  * @param result error code to set if check fails
  *
  * @note error code is not set if it do not equals E_OK
- *
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  */
 
-/* No extended error checking (! OS_EXTENDED)  */
-#if !defined(OS_EXTENDED)
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
 #   define CHECK_SCHEDTABLE_TO_STOPPED(sched_table_id,result)
-#elif !defined(NO_SCHEDTABLE)
+#elif (SCHEDTABLE_COUNT > 0)
 #   define CHECK_SCHEDTABLE_TO_STOPPED(sched_table_id,result)			\
-	if ((result == (tpl_status)E_OK) &&                                 \
-	(tpl_schedtable_table[sched_table_id]->b_desc.state !=				\
-	SCHEDULETABLE_STOPPED) )											\
-	{                                                                   \
-		result = (tpl_status)E_OS_STATE;                                \
+	if ((result == (tpl_status)E_OK) &&                             \
+	    (tpl_schedtable_table[sched_table_id]->b_desc.state !=      \
+	     SCHEDULETABLE_STOPPED) )                                   \
+	{                                                               \
+		result = (tpl_status)E_OS_STATE;                              \
 	}
 #else
 #   define CHECK_SCHEDTABLE_TO_STOPPED(sched_table_id,result)			\
-	if (result == (tpl_status)E_OK)                                     \
-	{                                                                   \
-		result = (tpl_status)E_OS_ID;                                   \
+	if (result == (tpl_status)E_OK)                                 \
+	{                                                               \
+		result = (tpl_status)E_OS_ID;                                 \
 	}
 #endif
 
@@ -625,28 +657,27 @@
  * @param result error code to set if check fails
  *
  * @note error code is not set if it do not equals E_OK
- *
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  */
 
-/* No extended error checking (! OS_EXTENDED)  */
-#if !defined(OS_EXTENDED)
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
 #   define CHECK_SCHEDTABLE_DIFF_STOPPED_AND_NEXT(sched_table_id,result)
-#elif !defined(NO_SCHEDTABLE)
+#elif (SCHEDTABLE_COUNT > 0)
 #   define CHECK_SCHEDTABLE_DIFF_STOPPED_AND_NEXT(sched_table_id,result)	\
-	if ((result == (tpl_status)E_OK) &&										\
-		( (tpl_schedtable_table[sched_table_id]->b_desc.state ==			\
-		SCHEDULETABLE_STOPPED) ||											\
-		(tpl_schedtable_table[sched_table_id]->b_desc.state ==				\
-		SCHEDULETABLE_NEXT) ) )												\
-	{																		\
-		result = (tpl_status)E_OS_STATE;									\
+	if ((result == (tpl_status)E_OK) &&                                     \
+		  ((tpl_schedtable_table[sched_table_id]->b_desc.state ==             \
+                SCHEDULETABLE_STOPPED) ||                                 \
+      (tpl_schedtable_table[sched_table_id]->b_desc.state ==              \
+                SCHEDULETABLE_NEXT) ) )                                   \
+	{                                                                       \
+		result = (tpl_status)E_OS_STATE;                                      \
 	}
 #else
 #   define CHECK_SCHEDTABLE_DIFF_STOPPED_AND_NEXT(sched_table_id,result)	\
-	if (result == (tpl_status)E_OK)											\
-	{																		\
-		result = (tpl_status)E_OS_ID;										\
+	if (result == (tpl_status)E_OK)                                         \
+	{                                                                       \
+		result = (tpl_status)E_OS_ID;                                         \
 	}
 #endif
 
@@ -661,21 +692,21 @@
  * @param result error code to set if check fails
  *
  * @note error code is not set if it do not equals E_OK
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  * @note sched_table_id should be checked before doing this check
  */
 
-/* No extended error checking (! OS_EXTENDED)  */
-#if !defined(OS_EXTENDED)
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
 #   define CHECK_SCHEDTABLE_OFFSET_VALUE(sched_table_id,offset,result)
-#elif !defined(NO_SCHEDTABLE)
+#elif (SCHEDTABLE_COUNT > 0)
 #   define CHECK_SCHEDTABLE_OFFSET_VALUE(sched_table_id,offset,result)  \
-	if ((result == (tpl_status)E_OK) &&                                 \
+    if ((result == (tpl_status)E_OK) &&                                 \
         ((offset >                                                      \
          (tpl_schedtable_table[sched_table_id]->                        \
-         b_desc.stat_part->counter->max_allowed_value -					\
-		 (((P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))((tpl_schedtable_table[sched_table_id])->b_desc.stat_part))->expiry[0])->offset) ) \
-		 || (offset == (TickType)0)))                                      \
+         b_desc.stat_part->counter->max_allowed_value -                 \
+		 (((P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))((tpl_schedtable_table[sched_table_id])->b_desc.stat_part))->expiry[0])->offset) )     \
+		 || (offset == (TickType)0)))                                       \
     {                                                                   \
         result = (tpl_status)E_OS_VALUE;                                \
     }
@@ -699,14 +730,14 @@
  * @param result error code to set if check fails
  *
  * @note error code is not set if it do not equals E_OK
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  * @note sched_table_id should be checked before doing this check
  */
 
-/* No extended error checking (! OS_EXTENDED)  */
-#if !defined(OS_EXTENDED)
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
 #   define CHECK_SCHEDTABLE_TICK_VALUE(sched_table_id,tick,result)
-#elif !defined(NO_SCHEDTABLE)
+#elif (SCHEDTABLE_COUNT > 0)
 #   define CHECK_SCHEDTABLE_TICK_VALUE(sched_table_id,tick,result)      \
     if ((result == (tpl_status)E_OK) &&                                 \
         ((tick >                                                        \
@@ -734,27 +765,27 @@
  * @param result error code to set if check fails
  *
  * @note error code is not set if it does not equal E_OK
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  * @note sched_table_id should be checked before doing this check
  */
 
-/* No extended error checking (! OS_EXTENDED)  */
-#if !defined(OS_EXTENDED)
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
 #   define CHECK_SCHEDTABLE_VALUE(sched_table_id,value,result)
-#elif !defined(NO_SCHEDTABLE)
-#   define CHECK_SCHEDTABLE_VALUE(sched_table_id,value,result)      \
-	if ( (result == (tpl_status)E_OK) &&                                 \
-		(value >                                                        \
-		(((tpl_schedtable_static *)(tpl_schedtable_table[sched_table_id]-> \
-		b_desc.stat_part))->length)) )                \
-	{                                                                   \
-		result = (tpl_status)E_OS_VALUE;                                \
+#elif (SCHEDTABLE_COUNT > 0)
+#   define CHECK_SCHEDTABLE_VALUE(sched_table_id,value,result)          \
+	if ( (result == (tpl_status)E_OK) &&                                  \
+      (value >                                                          \
+		(((tpl_schedtable_static *)(tpl_schedtable_table[sched_table_id]->  \
+		b_desc.stat_part))->length)) )                                      \
+	{                                                                     \
+		result = (tpl_status)E_OS_VALUE;                                    \
 	}
 #else
-#   define CHECK_SCHEDTABLE_VALUE(sched_table_id,value,result)      \
-	if (result == (tpl_status)E_OK)                                     \
-	{                                                                   \
-		result = (tpl_status)E_OS_ID;                                   \
+#   define CHECK_SCHEDTABLE_VALUE(sched_table_id,value,result)          \
+	if (result == (tpl_status)E_OK)                                       \
+	{                                                                     \
+		result = (tpl_status)E_OS_ID;                                     \
 	}
 #endif
 
@@ -768,18 +799,18 @@
  * @param result error code to set if check fails
  *
  * @note error code is not set if it does not equal E_OK at start
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  * @note sched_table_id should be checked before doing this check
  */
  
-/* No extended error checking (! OS_EXTENDED)  */
-#if !defined(OS_EXTENDED)
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
     /* Does not check the schedule table sync in this case  */
 #   define CHECK_SCHEDTABLE_SYNC(sched_table_id, result)
 #endif
 
-/* NO_SCHEDTABLE and extended error checking (OS_EXTENDED)  */
-#if defined(NO_SCHEDTABLE) && defined(OS_EXTENDED)
+/* No scheduletable and extended error checking (WITH_OS_EXTENDED == YES)  */
+#if (SCHEDTABLE_COUNT == 0) && (WITH_OS_EXTENDED == YES)
     /* E_OS_ID is returned in this case  */
 #   define CHECK_SCHEDTABLE_SYNC(sched_table_id, result)    \
     if (result == (tpl_status)E_OK)                         \
@@ -788,8 +819,8 @@
     }
 #endif
 
-/* !NO_SCHEDTABLE and extended error checking (OS_EXTENDED)             */
-#if !defined(NO_SCHEDTABLE) && defined(OS_EXTENDED)
+/* Any scheduletable and extended error checking (WITH_OS_EXTENDED == YES) */
+#if (SCHEDTABLE_COUNT > 0) && (WITH_OS_EXTENDED == YES)
     /* E_OK or E_OS_ID when the schedule table cannot be synchronized   */
 #   define CHECK_SCHEDTABLE_SYNC(sched_table_id, result)                    \
     if ((result == (tpl_status)E_OK) &&                                     \
@@ -811,18 +842,18 @@
  * @param result error code to set if check fails
  *
  * @note error code is not set if it does not equal E_OK at start
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  * @note sched_table_id should be checked before doing this check
  */
 
-/* No extended error checking (! OS_EXTENDED)  */
-#if !defined(OS_EXTENDED)
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
     /* Does not check the schedule table counters in this case */
 #   define CHECK_SCHEDTABLE_COUNTERS(current_st, next_st, result)
 #endif
 
-/* NO_SCHEDTABLE and extended error checking (OS_EXTENDED)      */
-#if defined(NO_SCHEDTABLE) && defined(OS_EXTENDED)
+/* No schedule table and extended error checking (WITH_OS_EXTENDED == YES)  */
+#if (SCHEDTABLE_COUNT == 0) && (WITH_OS_EXTENDED == YES)
     /* E_OS_ID is returned in this case  */
 #   define CHECK_SCHEDTABLE_COUNTERS(current_st, next_st, result)   \
     if (result == (tpl_status)E_OK)                                 \
@@ -831,8 +862,8 @@
     }
 #endif
 
-/* !NO_SCHEDTABLE and extended error checking (OS_EXTENDED)     */
-#if !defined(NO_SCHEDTABLE) && defined(OS_EXTENDED)
+/* Any scheduletable and extended error checking (WITH_OS_EXTENDED == YES)  */
+#if (SCHEDTABLE_COUNT > 0) && (WITH_OS_EXTENDED == YES)
     /* E_OK or E_OS_ID when counters are different  */
 #   define CHECK_SCHEDTABLE_COUNTERS(current_st, next_st, result)   \
     if ((result == (tpl_status)E_OK) &&                             \
@@ -852,14 +883,14 @@
  * @param result error code to set if check fails
  *
  * @note error code is not set if it does not equal E_OK
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  * @note sched_table_id should be checked before doing this check
  */
 
-/* No extended error checking (! OS_EXTENDED)  */
-#if !defined(OS_EXTENDED)
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
 #   define CHECK_SCHEDTABLE_SYNC_STRATEGY_EQUAL_ERROR(st_id,sync,result)
-#elif !defined(NO_SCHEDTABLE)
+#elif (SCHEDTABLE_COUNT > 0)
 #   define CHECK_SCHEDTABLE_SYNC_STRATEGY_EQUAL_ERROR(st_id,sync,result)        \
     if ( (result == (tpl_status)E_OK) &&										\
 	((((tpl_schedtable_static *)(tpl_schedtable_table[st_id]->					\
@@ -884,14 +915,14 @@
  * @param result error code to set if check fails
  *
  * @note error code is not set if it does not equal E_OK
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  * @note sched_table_id should be checked before doing this check
  */
 
-/* No extended error checking (! OS_EXTENDED)  */
-#if !defined(OS_EXTENDED)
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
 #   define CHECK_SCHEDTABLE_SYNC_STRATEGY_DIFF_ERROR(st_id,sync,result)
-#elif !defined(NO_SCHEDTABLE)
+#elif (SCHEDTABLE_COUNT > 0)
 #   define CHECK_SCHEDTABLE_SYNC_STRATEGY_DIFF_ERROR(st_id,sync,result)            \
 	if ( (result == (tpl_status)E_OK) &&                                      \
 		((((tpl_schedtable_static *)(tpl_schedtable_table[st_id]-> \
@@ -916,19 +947,18 @@
  * @param result error code to set if check fails
  *
  * @note error code is not set if it do not equals E_OK
- *
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  *
  */
 
-/* No extended error checking (! OS_EXTENDED)  */
-#if !defined(OS_EXTENDED)
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
     /* Does not check the sched_table_id in this case */
 #   define CHECK_COUNTER_ID_ERROR(cnt_id,result)
 #endif
 
-/* NO_COUNTER and extended error checking (OS_EXTENDED)      */
-#if defined(NO_COUNTER) && defined(OS_EXTENDED)
+/* No Counter and extended error checking (WITH_OS_EXTENDED == YES)   */
+#if (COUNTER_COUNT == 0) && (WITH_OS_EXTENDED == YES)
     /* E_OS_ID is returned in this case  */
 #   define CHECK_COUNTER_ID_ERROR(cnt_id,result)    \
     if (result == (tpl_status)E_OK)                 \
@@ -937,8 +967,8 @@
     }
 #endif
 
-/* !NO_COUNTER and extended error checking (OS_EXTENDED)     */
-#if !defined(NO_COUNTER) && defined(OS_EXTENDED)
+/* Any Counter and extended error checking (WITH_OS_EXTENDED == YES)  */
+#if (COUNTER_COUNT > 0) && (WITH_OS_EXTENDED == YES)
     /* E_OK or E_OS_LIMIT   */
 #   define CHECK_COUNTER_ID_ERROR(cnt_id,result)        \
     if ((result == (tpl_status)E_OK) &&                 \
@@ -957,19 +987,18 @@
  * @param result error code to set if check fails
  *
  * @note error code is not set if it do not equals E_OK
- *
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  *
  */
 
-/* No extended error checking (! OS_EXTENDED)  */
-#if !defined(OS_EXTENDED)
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
     /* Does not check the sched_table_id in this case */
 #   define CHECK_COUNTER_KIND_ERROR(cnt_id,result)
 #endif
 
-/* NO_COUNTER and extended error checking (OS_EXTENDED)      */
-#if defined(NO_COUNTER) && defined(OS_EXTENDED)
+/* No Counter and extended error checking (WITH_OS_EXTENDED == YES)   */
+#if (COUNTER_COUNT == 0) && (WITH_OS_EXTENDED == YES)
     /* E_OS_ID is returned in this case  */
 #   define CHECK_COUNTER_KIND_ERROR(cnt_id,result)  \
     if (result == (tpl_status)E_OK)                 \
@@ -978,8 +1007,8 @@
     }
 #endif
 
-/* !NO_COUNTER and extended error checking (OS_EXTENDED)     */
-#if !defined(NO_COUNTER) && defined(OS_EXTENDED)
+/* Any Counter and extended error checking (WITH_OS_EXTENDED == YES)  */
+#if (COUNTER_COUNT > 0) && (WITH_OS_EXTENDED == YES)
     /* E_OK or E_OS_LIMIT   */
 #   define CHECK_COUNTER_KIND_ERROR(cnt_id,result)                  \
     if ((result == (tpl_status)E_OK) &&                             \
@@ -999,24 +1028,23 @@
  * @param result    error code to set if check fails
  *
  * @note error code is not set if it does not equal E_OK
- *
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  */
 
-/* No extended error checking (! OS_EXTENDED)                   */
-#if !defined(OS_EXTENDED)
+/* No extended error checking (WITH_OS_EXTENDED == NO)          */
+#if (WITH_OS_EXTENDED == NO)
     /* Does not check the task_id in this case                  */
 #   define CHECK_COUNTER_MAX_ALLOWED_VALUE_ERROR(counter_id,value,result)
 #endif
 
-/* NO_COUNTER and extended error checking (OS_EXTENDED)         */
-#if defined(NO_COUNTER) && defined(OS_EXTENDED)
+/* No Counter and extended error checking (WITH_OS_EXTENDED == YES)   */
+#if (COUNTER_COUNT == 0) && (WITH_OS_EXTENDED == YES)
     /* E_OS_ID is returned in this case  */
 #   define CHECK_COUNTER_MAX_ALLOWED_VALUE_ERROR(counter_id,value,result)
 #endif
 
-/* !NO_COUNTER and extended error checking (OS_EXTENDED)          */
-#if !defined(NO_COUNTER) && defined(OS_EXTENDED)
+/* Any Counter and extended error checking (WITH_OS_EXTENDED == YES)  */
+#if (COUNTER_COUNT > 0) && (WITH_OS_EXTENDED == YES)
     /* E_OK or E_OS_VALUE                                       */
 #   define CHECK_COUNTER_MAX_ALLOWED_VALUE_ERROR(counter_id,value,result)   \
     if ((result == (tpl_status)E_OK) &&                                     \
@@ -1036,20 +1064,18 @@
  * @param isr_id #ISRType (so called isr_id) to check
  * @param result error code variable to set (StatusType)
  *
- * @note this checking is disabled if OS_EXTENDED is not set
- *
- * @note the error code is set only if there was no
- * previous error
+ * @note this checking is disabled if WITH_OS_EXTENDED == NO
+ * @note the error code is set only if there was no previous error
  */
 
-/* No extended error checking (! OS_EXTENDED)  */
-#if !defined(OS_EXTENDED)
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
     /* Does not check the isr_id in this case */
 #   define CHECK_ISR_ID_ERROR(isr_id,result)
 #endif
 
-/* NO_ISR and extended error checking (OS_EXTENDED)        */
-#if defined(NO_ISR) && defined(OS_EXTENDED)
+/* No ISR and extended error checking (WITH_OS_EXTENDED == YES)   */
+#if (ISR_COUNT == 0) && (WITH_OS_EXTENDED == YES)
     /* E_OS_ID is returned in this case  */
 #   define CHECK_ISR_ID_ERROR(isr_id,result)    \
     if (result == (tpl_status)E_OK)             \
@@ -1058,8 +1084,8 @@
     }
 #endif
 
-/* !NO_ISR and extended error checking (OS_EXTENDED)   */
-#if !defined(NO_ISR) && defined(OS_EXTENDED)
+/* Any ISR and extended error checking (WITH_OS_EXTENDED == YES)  */
+#if (ISR_COUNT > 0) && (WITH_OS_EXTENDED == YES)
     /* E_OK or E_OS_ID   */
 #   define CHECK_ISR_ID_ERROR(isr_id,result)                        \
     if  ((result == (tpl_status)E_OK) &&                            \

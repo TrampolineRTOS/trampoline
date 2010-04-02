@@ -29,7 +29,7 @@
 #include "tpl_os_types.h"
 #include "tpl_os_service_ids.h"
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 #include "tpl_os_timeobj_kernel.h"
 #include "tpl_as_application.h"
 #endif
@@ -42,13 +42,12 @@ extern FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void);
 
 /*
  * Remember (see "The design of Trampoline") :
- * NO_TASK means there is no task defined in the system
- * OS_EXTENDED means extended error checking is done
- * WITH_ERROR_HOOK means an error hook routine is called when
+ * WITH_OS_EXTENDED == YES means extended error checking is done
+ * WITH_ERROR_HOOK == YES means an error hook routine is called when
  * an error occurs.
  */
 
-#ifdef WITH_ERROR_HOOK
+#if WITH_ERROR_HOOK == YES
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -70,28 +69,23 @@ extern FUNC(void, OS_CODE) tpl_call_error_hook(CONST(tpl_status, AUTOMATIC) erro
  * @see #tpl_service
  */
 union ID_PARAM_BLOCK {
-    VAR(tpl_task_id, TYPEDEF)       task_id;        /**< used by
-                                                           #ActivateTask,
-                                                           #ChainTask,
-                                                           #GetTaskState,
-                                                           #SetEvent,
-                                                           #GetEvent
-                                                    */
-    P2VAR(tpl_task_id, AUTOMATIC, TYPEDEF)
-                                    task_id_ref;    /**< used by #GetTaskID
-                                                    */
-    VAR(tpl_resource_id, TYPEDEF)   res_id;         /**< used by #GetResource,
-                                                           #ReleaseResource
-                                                    */
-    VAR(tpl_alarm_id, TYPEDEF)      alarm_id;       /**< @todo document this
-                                                    */
-#ifdef WITH_AUTOSAR
-    VAR(tpl_schedtable_id, TYPEDEF) schedtable_id;  /**< @todo document this
-                                                    */
-    VAR(tpl_counter_id, TYPEDEF)    counter_id;     /**< @todo document this
-													*/
-    VAR(tpl_app_id, TYPEDEF)		application_id; /**< @todo document this
-												    */
+  VAR(tpl_task_id, TYPEDEF) task_id;  /**< used by
+                                          #ActivateTask,
+                                          #ChainTask,
+                                          #GetTaskState,
+                                          #SetEvent,
+                                          #GetEvent
+                                       */
+  P2VAR(tpl_task_id, AUTOMATIC, TYPEDEF) task_id_ref; /**< used by #GetTaskID */
+  VAR(tpl_resource_id, TYPEDEF) res_id;   /**< used by #GetResource,
+                                               #ReleaseResource
+                                           */
+  VAR(tpl_alarm_id, TYPEDEF) alarm_id;    /**< @todo document this */
+
+#if WITH_AUTOSAR == YES
+  VAR(tpl_schedtable_id, TYPEDEF) schedtable_id; /**< @todo document this */
+  VAR(tpl_counter_id, TYPEDEF) counter_id; /**< @todo document this */
+  VAR(tpl_app_id, TYPEDEF) application_id; /**< @todo document this */
 #endif
 };
 
@@ -104,49 +98,35 @@ union ID_PARAM_BLOCK {
  * @see #tpl_service
  */
 union PARAM_PARAM_BLOCK {
-    P2VAR(tpl_proc_state, AUTOMATIC, TYPEDEF)
-                                    state;          /**< used by #GetTaskState
-                                                    */
-    VAR(tpl_tick, TYPEDEF)          tick;           /**< used by #SetRelAlarm,
-                                                            #SetAbsAlarm
-                                                    */
-    P2VAR(tpl_tick, AUTOMATIC, TYPEDEF)
-                                    tick_ref;       /**< used by #GetAlarm
-                                                    */
-    P2VAR(tpl_alarm_base, AUTOMATIC, TYPEDEF)
-                                    alarm_base_ref; /**< used by #GetAlarmBase
-                                                    */
-    VAR(tpl_event_mask, TYPEDEF)    mask;           /**< used by #SetEvent,
-                                                            #ClearEvent,
-                                                            #WaitEvent
-                                                    */
-    P2VAR(tpl_event_mask, AUTOMATIC, TYPEDEF)
-                                    mask_ref;       /**< used by #GetEvent
-                                                    */
-#ifdef WITH_AUTOSAR
-    VAR(tpl_schedtable_id, TYPEDEF) next_st_id;     /**< @todo document this
-                                                    */
-    P2VAR(tpl_time_obj_state, AUTOMATIC, TYPEDEF)
-                                    st_stat;        /**< @todo document this
-													*/
-    VAR(ObjectTypeType, TYPEDEF)	object_type;     /**< @todo document this
-													*/
-    VAR(u8, TYPEDEF)				opt_termapp;     /**< @todo document this
-													*/
+  P2VAR(tpl_proc_state, AUTOMATIC, TYPEDEF) state; /**< used by #GetTaskState
+                                                      */
+  VAR(tpl_tick, TYPEDEF) tick;  /**< used by #SetRelAlarm, #SetAbsAlarm */
+  P2VAR(tpl_tick, AUTOMATIC, TYPEDEF) tick_ref; /**< used by #GetAlarm */
+  P2VAR(tpl_alarm_base, AUTOMATIC, TYPEDEF) alarm_base_ref; /**< used by 
+                                                                 #GetAlarmBase
+                                                             */
+  VAR(tpl_event_mask, TYPEDEF) mask; /**< used by #SetEvent,
+                                          #ClearEvent,
+                                          #WaitEvent
+                                      */
+  P2VAR(tpl_event_mask, AUTOMATIC, TYPEDEF) mask_ref; /**< used by #GetEvent */
+#if WITH_AUTOSAR == YES
+  VAR(tpl_schedtable_id, TYPEDEF) next_st_id; /**< @todo document this */
+  P2VAR(tpl_time_obj_state, AUTOMATIC, TYPEDEF) st_stat; /**< @todo document
+                                                              this
+                                                          */
+  VAR(ObjectTypeType, TYPEDEF) object_type; /**< @todo document this */
+  VAR(u8, TYPEDEF) opt_termapp; /**< @todo document this */
 #endif
 };
 
 union PARAM_PARAM_BLOCK_2 {
-  VAR(tpl_tick, TYPEDEF)          tick;             /**< used by #SetRelAlarm,
-                                                         #SetAbsAlarm
-                                                    */
-  P2VAR(tpl_tick, AUTOMATIC, TYPEDEF)
-                                  tick_ref;         /**< used by
-                                                         #GetElapsedCounterValue
-                                                    */
-#ifdef WITH_AUTOSAR
-  VAR(tpl_generic_id, TYPEDEF)	  object_id;        /**< @todo document this
-													*/
+  VAR(tpl_tick, TYPEDEF) tick;  /**< used by #SetRelAlarm, #SetAbsAlarm */
+  P2VAR(tpl_tick, AUTOMATIC, TYPEDEF) tick_ref; /**< used by
+                                                     #GetElapsedCounterValue
+                                                 */
+#if WITH_AUTOSAR == YES
+  VAR(tpl_generic_id, TYPEDEF) object_id;  /**< @todo document this  */
 #endif
 };
 
@@ -156,11 +136,11 @@ union PARAM_PARAM_BLOCK_2 {
  * This structure gathers all parameters for an error hook
  */
 struct PARAM_BLOCK {
-    union ID_PARAM_BLOCK      id;     /**< identifies the OS element
-                                           concerned by the error */
-    union PARAM_PARAM_BLOCK   param;  /**< gives more information about the
-                                           reason of the error    */
-    union PARAM_PARAM_BLOCK_2 param2; /**< more informations      */
+  union ID_PARAM_BLOCK      id;     /**< identifies the OS element
+                                         concerned by the error */
+  union PARAM_PARAM_BLOCK   param;  /**< gives more information about the
+                                         reason of the error    */
+  union PARAM_PARAM_BLOCK_2 param2; /**< more informations      */
 };
 
 /**
@@ -169,10 +149,10 @@ struct PARAM_BLOCK {
  * This structure gathers the os service identifier and its parameters
  */
 struct SERVICE_CALL_DESCRIPTOR {
-    struct PARAM_BLOCK  parameters; /**< information about conditions seen
-                                         when error has been detected */
-    VAR(u8, TYPEDEF)    service_id; /**< identifier of the service which
-                                         raised the error */
+  struct PARAM_BLOCK  parameters; /**< information about conditions seen
+                                       when error has been detected */
+  VAR(u8, TYPEDEF)    service_id; /**< identifier of the service which
+                                       raised the error */
 };
 
 /**
@@ -253,7 +233,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
+#if WITH_USEGETSERVICEID == YES
 #define OSErrorGetServiceId()   (tpl_service.service_id)
+#endif
 
 /**
  * @def OSError_ActivateTask_TaskID
@@ -265,8 +247,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSError_ActivateTask_TaskID()   \
-    (tpl_service.parameters.id.task_id)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_ActivateTask_TaskID() (tpl_service.parameters.id.task_id)
+#endif
 
 /**
  * @def OSError_ChainTask_TaskID
@@ -278,8 +261,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSError_ChainTask_TaskID()      \
-    (tpl_service.parameters.id.task_id)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_ChainTask_TaskID() (tpl_service.parameters.id.task_id)
+#endif
 
 /**
  * @def OSError_GetTaskID_TaskID
@@ -291,8 +275,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSError_GetTaskID_TaskID()             \
-    (tpl_service.parameters.id.task_id_ref)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_GetTaskID_TaskID() (tpl_service.parameters.id.task_id_ref)
+#endif
 
 /**
  * @def OSError_GetTaskState_TaskID
@@ -306,8 +291,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @see #OSError_GetTaskState_State
  */
-#define OSError_GetTaskState_TaskID()   \
-    (tpl_service.parameters.id.task_id)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_GetTaskState_TaskID() (tpl_service.parameters.id.task_id)
+#endif
 
 /**
  * @def OSError_GetTaskState_State
@@ -321,8 +307,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @see #OSError_GetTaskState_TaskID
  */
-#define OSError_GetTaskState_State()    \
-    (tpl_service.parameters.param.state)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_GetTaskState_State() (tpl_service.parameters.param.state)
+#endif
 
 /**
  * @def OSError_GetResource_ResID
@@ -335,8 +322,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSError_GetResource_ResID()     \
-    (tpl_service.parameters.id.res_id)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_GetResource_ResID() (tpl_service.parameters.id.res_id)
+#endif
 
 /**
  * @def OSError_ReleaseResource_ResID
@@ -349,8 +337,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSError_ReleaseResource_ResID() \
-    (tpl_service.parameters.id.res_id)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_ReleaseResource_ResID() (tpl_service.parameters.id.res_id)
+#endif
 
 /**
  * @def OSError_SetEvent_TaskID
@@ -364,8 +353,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @see #OSError_SetEvent_Mask
  */
-#define OSError_SetEvent_TaskID()       \
-    (tpl_service.parameters.id.task_id)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_SetEvent_TaskID() (tpl_service.parameters.id.task_id)
+#endif
 
 /**
  * @def OSError_SetEvent_Mask
@@ -379,8 +369,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @see #OSError_SetEvent_TaskID
  */
-#define OSError_SetEvent_Mask()         \
-    (tpl_service.parameters.param.mask)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_SetEvent_Mask() (tpl_service.parameters.param.mask)
+#endif
 
 /**
  * @def OSError_ClearEvent_Mask
@@ -392,8 +383,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSError_ClearEvent_Mask()       \
-    (tpl_service.parameters.param.mask)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_ClearEvent_Mask() (tpl_service.parameters.param.mask)
+#endif
 
 /**
  * @def OSError_GetEvent_TaskID
@@ -407,8 +399,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @see #OSError_GetEvent_Event
  */
-#define OSError_GetEvent_TaskID()       \
-    (tpl_service.parameters.id.task_id)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_GetEvent_TaskID() (tpl_service.parameters.id.task_id)
+#endif
 
 /**
  * @def OSError_GetEvent_Event
@@ -422,8 +415,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @see #OSError_GetEvent_TaskID
  */
-#define OSError_GetEvent_Event()        \
-    (tpl_service.parameters.param.mask)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_GetEvent_Event() (tpl_service.parameters.param.mask)
+#endif
 
 /**
  * @def OSError_WaitEvent_Mask
@@ -435,8 +429,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSError_WaitEvent_Mask()        \
-    (tpl_service.parameters.param.mask)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_WaitEvent_Mask() (tpl_service.parameters.param.mask)
+#endif
 
 /**
  * @def OSError_GetAlarmBase_AlarmID
@@ -450,8 +445,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @see #OSError_GetAlarmBase_Info
  */
-#define OSError_GetAlarmBase_AlarmID()  \
-    (tpl_service.parameters.id.alarm_id)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_GetAlarmBase_AlarmID() (tpl_service.parameters.id.alarm_id)
+#endif
 
 /**
  * @def OSError_GetAlarmBase_Info
@@ -468,8 +464,10 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @see #AlarmBaseRefType
  * @see #OSError_GetAlarmBase_AlarmID
  */
-#define OSError_GetAlarmBase_Info()     \
-    (tpl_service.parameters.param.alarm_base_ref)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_GetAlarmBase_Info() \
+  (tpl_service.parameters.param.alarm_base_ref)
+#endif
 
 /**
  * @def OSError_GetAlarm_AlarmID
@@ -483,8 +481,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @see OSError_GetAlarm_Tick
  */
-#define OSError_GetAlarm_AlarmID()      \
-    (tpl_service.parameters.id.alarm_id)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_GetAlarm_AlarmID() (tpl_service.parameters.id.alarm_id)
+#endif
 
 /**
  * @def OSError_GetAlarm_Tick
@@ -499,8 +498,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @see OSError_GetAlarm_AlarmID
  */
-#define OSError_GetAlarm_Tick()         \
-    (tpl_service.parameters.param.tick_ref)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_GetAlarm_Tick() (tpl_service.parameters.param.tick_ref)
+#endif
 
 /**
  * @def OSError_SetRelAlarm_AlarmID
@@ -515,8 +515,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @see #OSError_SetRelAlarm_increment
  * @see #OSError_SetRelAlarm_cycle
  */
-#define OSError_SetRelAlarm_AlarmID()   \
-    (tpl_service.parameters.id.alarm_id)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_SetRelAlarm_AlarmID() (tpl_service.parameters.id.alarm_id)
+#endif
 
 /**
  * @def OSError_SetRelAlarm_increment
@@ -532,8 +533,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @see OSError_SetRelAlarm_AlarmID
  * @see OSError_SetRelAlarm_cycle
  */
-#define OSError_SetRelAlarm_increment() \
-    (tpl_service.parameters.param.tick)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_SetRelAlarm_increment() (tpl_service.parameters.param.tick)
+#endif
 
 /**
  * @def OSError_SetRelAlarm_cycle
@@ -548,8 +550,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @see OSError_SetRelAlarm_AlarmID
  * @see #OSError_SetRelAlarm_increment
  */
-#define OSError_SetRelAlarm_cycle()     \
-    (tpl_service.parameters.param2.tick)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_SetRelAlarm_cycle() (tpl_service.parameters.param2.tick)
+#endif
 
 /**
  * @def OSError_SetAbsAlarm_AlarmID
@@ -564,8 +567,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @see OSError_SetAbsAlarm_start
  * @see OSError_SetAbsAlarm_cycle
  */
-#define OSError_SetAbsAlarm_AlarmID()   \
-    (tpl_service.parameters.id.alarm_id)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_SetAbsAlarm_AlarmID() (tpl_service.parameters.id.alarm_id)
+#endif
 
 /**
  * @def OSError_SetAbsAlarm_start
@@ -580,8 +584,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @see OSError_SetAbsAlarm_AlarmID
  * @see OSError_SetAbsAlarm_cycle
  */
-#define OSError_SetAbsAlarm_start()     \
-    (tpl_service.parameters.param.tick)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_SetAbsAlarm_start() (tpl_service.parameters.param.tick)
+#endif
 
 /**
  * @def OSError_SetAbsAlarm_cycle
@@ -596,8 +601,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @see OSError_SetAbsAlarm_AlarmID
  * @see OSError_SetAbsAlarm_start
  */
-#define OSError_SetAbsAlarm_cycle()     \
-    (tpl_service.parameters.param2.tick)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_SetAbsAlarm_cycle() (tpl_service.parameters.param2.tick)
+#endif
 
 /**
  * @def OSError_CancelAlarm_AlarmID
@@ -609,8 +615,9 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @warning this macro does only make sense when used within #ErrorHook
  * function
  */
-#define OSError_CancelAlarm_AlarmID()   \
-    (tpl_service.parameters.id.alarm_id)
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_CancelAlarm_AlarmID() (tpl_service.parameters.id.alarm_id)
+#endif
 
 #endif /* defined WITH_ERROR_HOOK  */
 
@@ -621,7 +628,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @see #OSErrorGetServiceId
  */
-#if defined(WITH_ERROR_HOOK)
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEGETSERVICEID == YES)
 #   define STORE_SERVICE(service)   \
     tpl_service.service_id = (service);
 #else
@@ -642,7 +649,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @see #OSError_GetEvent_TaskID
  *
  */
-#ifdef WITH_ERROR_HOOK
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_TASK_ID(taskid)   \
     tpl_service.parameters.id.task_id = (taskid);
 #else
@@ -659,7 +666,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @see #OSError_GetTaskID_TaskID
  * @see #
  */
-#ifdef WITH_ERROR_HOOK
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_TASK_ID_REF(taskidref)  \
     tpl_service.parameters.id.task_id_ref = (taskidref);
 #else
@@ -675,7 +682,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @see #OSError_GetTaskState_State
  */
-#ifdef WITH_ERROR_HOOK
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_TASK_STATE_REF(state)  \
     tpl_service.parameters.param.state = (state);
 #else
@@ -692,7 +699,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @see #OSError_GetResource_ResID
  * @see #OSError_ReleaseResource_ResID
  */
-#ifdef WITH_ERROR_HOOK
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_RESOURCE_ID(res_id)    \
     tpl_service.parameters.id.res_id = (res_id);
 #else
@@ -712,7 +719,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @see #OSError_SetAbsAlarm_AlarmID
  * @see #OSError_CancelAlarm_AlarmID
  */
-#ifdef WITH_ERROR_HOOK
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_ALARM_ID(alarm_id)     \
     tpl_service.parameters.id.alarm_id = (alarm_id);
 #else
@@ -728,7 +735,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @see #OSError_GetAlarmBase_Info
  */
-#ifdef WITH_ERROR_HOOK
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_ALARM_BASE_REF(ref)     \
     tpl_service.parameters.param.alarm_base_ref = (ref);
 #else
@@ -744,7 +751,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @see #OSError_GetAlarm_Tick
  */
-#ifdef WITH_ERROR_HOOK
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_TICK_REF_1(ref)     \
       tpl_service.parameters.param.tick_ref = (ref);
 #else
@@ -760,7 +767,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @see #OSError_GetAlarm_Tick
  */
-#ifdef WITH_ERROR_HOOK
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_TICK_REF_2(ref)     \
       tpl_service.parameters.param2.tick_ref = (ref);
 #else
@@ -777,7 +784,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @see OSError_SetRelAlarm_increment
  * @see OSError_SetAbsAlarm_start
  */
-#ifdef WITH_ERROR_HOOK
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_TICK_1(t)     \
     tpl_service.parameters.param.tick = (t);
 #else
@@ -794,7 +801,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @see #OSError_SetRelAlarm_cycle
  * @see #OSError_SetAbsAlarm_cycle
  */
-#ifdef WITH_ERROR_HOOK
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_TICK_2(t)     \
     tpl_service.parameters.param2.tick = (t);
 #else
@@ -813,7 +820,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @see #OSError_GetEvent_Event
  * @see #OSError_WaitEvent_Mask
  */
-#ifdef WITH_ERROR_HOOK
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_EVENT_MASK(m)     \
     tpl_service.parameters.param.mask = (m);
 #else
@@ -829,7 +836,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @todo Is this really useful ?
  */
-#ifdef WITH_ERROR_HOOK
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_EVENT_MASK_REF(ref)     \
     tpl_service.parameters.param.mask_ref = (ref);
 #else
@@ -844,7 +851,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @param error the error code variable to check
  */
-#ifdef WITH_ERROR_HOOK
+#if WITH_ERROR_HOOK == YES
 #define PROCESS_ERROR(error)                    \
     if ((OSEK_STATUS_MASK & (error)) != E_OK) { \
         tpl_call_error_hook(error);             \
@@ -859,7 +866,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * This macro locks the kernel when WITH_SYSTEM_CALL is not
  * defined. If WITH_SYSTEM_CALL is defined it does nothing
  */
-#ifdef WITH_SYSTEM_CALL
+#if WITH_SYSTEM_CALL == YES
 #define LOCK_KERNEL()
 #else
 #define LOCK_KERNEL() tpl_get_task_lock();
@@ -871,7 +878,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * This macro unlocks the kernel when WITH_SYSTEM_CALL is not
  * defined. If WITH_SYSTEM_CALL is defined it does nothing
  */
-#ifdef WITH_SYSTEM_CALL
+#if WITH_SYSTEM_CALL == YES
 #define UNLOCK_KERNEL()
 #else
 #define UNLOCK_KERNEL() tpl_release_task_lock();
@@ -883,14 +890,14 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * In conjonction with #END_IF_NO_EXTENDED_ERROR, this macro
  * can be used to enclose a section which should not be executed
  * while there is both :
- * - OS_EXTENDED defined
+ * - WITH_OS_EXTENDED == YES
  * - an error occurred
  *
  * @param result the error code variable to check
  *
  * @see #END_IF_NO_EXTENDED_ERROR
  */
-#ifdef OS_EXTENDED
+#if WITH_OS_EXTENDED == YES
 #   define IF_NO_EXTENDED_ERROR(result) \
     if ((result) == E_OK) {
 #else
@@ -904,7 +911,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @see #IF_NO_EXTENDED_ERROR
  */
-#ifdef OS_EXTENDED
+#if WITH_OS_EXTENDED == YES
 #   define IF_NO_EXTENDED_ERROR_END() \
     }
 #else
@@ -920,30 +927,29 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @param task_id #TaskType (so called task_id) to check
  * @param result error code variable to set (StatusType)
  *
- * @note this checking is disabled if OS_EXTENDED is not set
- *
+ * @note this checking is disabled if WITH_OS_EXTENDED == NO
  * @note the error code is set only if there was no
  * previous error
  */
 
-/* No extended error checking (! OS_EXTENDED)  */
-#if !defined(OS_EXTENDED)
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if WITH_OS_EXTENDED == NO
     /* Does not check the task_id in this case */
 #   define CHECK_TASK_ID_ERROR(task_id,result)
 #endif
 
-/* NO_TASK and extended error checking (OS_EXTENDED)        */
-#if defined(NO_TASK) && defined(OS_EXTENDED)
+/* No Task and extended error checking (WITH_OS_EXTENDED == YES)        */
+#if (TASK_COUNT == 0) && (WITH_OS_EXTENDED == YES)
     /* E_OS_ID is returned in this case  */
-#   define CHECK_TASK_ID_ERROR(task_id,result)                  \
-    if (result == (tpl_status)E_OK)                                         \
-    {                                                           \
-        result = (tpl_status)E_OS_ID;                                       \
+#   define CHECK_TASK_ID_ERROR(task_id,result)  \
+    if (result == (tpl_status)E_OK)             \
+    {                                           \
+        result = (tpl_status)E_OS_ID;           \
     }
 #endif
 
-/* !NO_TASK and extended error checking (OS_EXTENDED)   */
-#if !defined(NO_TASK) && defined(OS_EXTENDED)
+/* Any Task and extended error checking (WITH_OS_EXTENDED == YES)   */
+#if (TASK_COUNT > 0) && (WITH_OS_EXTENDED == YES)
     /* E_OK or E_OS_LIMIT   */
 #   define CHECK_TASK_ID_ERROR(task_id,result)                          \
     if  ((result == (tpl_status)E_OK) &&                                \
@@ -960,16 +966,15 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @param result error code variable to set (#StatusType)
  *
- * @note checking is disabled if OS_EXTENDED is not defined
- *
+ * @note checking is disabled if WITH_OS_EXTENDED == NO
  * @note the error code is set only if there was no previous error
  *
  * @see #tpl_os_state
  */
 
-/*  NO_TASK and extended error checking (OS_EXTENDED).
+/*  No Task and extended error checking (WITH_OS_EXTENDED == YES).
     Since there is no task, there is no task level calling  */
-#if defined(NO_TASK) && defined(OS_EXTENDED)
+#if (TASK_COUNT == 0) && (WITH_OS_EXTENDED == YES)
 #   define CHECK_TASK_CALL_LEVEL_ERROR(result)                          \
     if (result == (tpl_status)E_OK)                                     \
     {                                                                   \
@@ -977,8 +982,8 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
     }
 #endif
 
-/*  !NO_TASK and extended error checking (OS_EXTENDED). */
-#if !defined(NO_TASK) && defined(OS_EXTENDED)
+/*  Any Task and extended error checking (WITH_OS_EXTENDED == YES). */
+#if (TASK_COUNT > 0) && (WITH_OS_EXTENDED == YES)
 #   define CHECK_TASK_CALL_LEVEL_ERROR(result)                          \
     if ((result == (tpl_status)E_OK) &&                                 \
         (tpl_current_os_state() != (tpl_os_state)OS_TASK))              \
@@ -987,8 +992,8 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
     }
 #endif
 
-/*  no extended error checking !(OS_EXTENDED).    */
-#if !defined(OS_EXTENDED)
+/*  no extended error checking (WITH_OS_EXTENDED == NO).    */
+#if WITH_OS_EXTENDED == NO
 #   define CHECK_TASK_CALL_LEVEL_ERROR(result)
 #endif
 
@@ -999,16 +1004,15 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @param result error code variable to set (#StatusType)
  *
- * @note checking is disabled if OS_EXTENDED is not defined
- *
+ * @note checking is disabled if WITH_OS_EXTENDED == NO
  * @note the error code is set only if there was no previous error
  *
  * @see #tpl_os_state
  */
 
-/*  NO_ISR and extended error checking (OS_EXTENDED).
+/*  No ISR and extended error checking (WITH_OS_EXTENDED == YES).
     Since there is no ISR2, there is no ISR2 level calling  */
-#if defined(NO_ISR) && defined(OS_EXTENDED)
+#if (ISR_COUNT == 0) && (WITH_OS_EXTENDED == YES)
 #   define CHECK_ISR2_CALL_LEVEL_ERROR(result)                          \
     if (result == (tpl_status)E_OK)                                     \
     {                                                                   \
@@ -1016,8 +1020,8 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
     }
 #endif
 
-/*  !NO_ISR and extended error checking (OS_EXTENDED). */
-#if !defined(NO_ISR) && defined(OS_EXTENDED)
+/*  Any ISR and extended error checking (WITH_OS_EXTENDED == YES). */
+#if (ISR_COUNT > 0) && (WITH_OS_EXTENDED == YES)
 #   define CHECK_ISR2_CALL_LEVEL_ERROR(result)                          \
     if ((result == (tpl_status)E_OK) &&                                 \
         (tpl_current_os_state() != (tpl_os_state)OS_ISR2))  \
@@ -1026,8 +1030,8 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
     }
 #endif
 
-/*  no extended error checking !(OS_EXTENDED).    */
-#if !defined(OS_EXTENDED)
+/*  no extended error checking (WITH_OS_EXTENDED == NO).    */
+#if WITH_OS_EXTENDED == NO
 #   define CHECK_ISR2_CALL_LEVEL_ERROR(result)
 #endif
 
@@ -1040,9 +1044,10 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @param task_id task identifier (#TaskType) of the task to check
  * @param result error code to set if check fails (#StatusType)
  *
- * @note checking is disabled when OS_EXTENDED is not defined
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disabled when WITH_OS_EXTENDED == NO
  */
-#ifdef OS_EXTENDED
+#if WITH_OS_EXTENDED == YES
 # define CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)            \
   if ((result == (tpl_status)E_OK) &&                             \
       (tpl_stat_proc_table[task_id]->type !=                      \
@@ -1062,9 +1067,10 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @param result error code to set if check fails (#StatusType)
  *
- * @note checking is disabled when OS_EXTENDED is not defined
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disabled when WITH_OS_EXTENDED == NO
  */
-#ifdef OS_EXTENDED
+#if WITH_OS_EXTENDED == YES
 # define CHECK_NOT_EXTENDED_RUNNING_ERROR(result)   \
   if ((result == (tpl_status)E_OK) &&               \
       (tpl_kern.running_id >= EXTENDED_TASK_COUNT)) \
@@ -1084,9 +1090,10 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @param task_id task (#TaskType) to check
  * @param result error code to set if check fails (#StatusType)
  *
- * @note checking is disabled when OS_EXTENDED is not defined
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disabled when WITH_OS_EXTENDED == NO
  */
-#ifdef OS_EXTENDED
+#if WITH_OS_EXTENDED == YES
 # define CHECK_SUSPENDED_TASK_ERROR(task_id,result)                       \
   if ((result == (tpl_status)E_OK) &&                                     \
       (tpl_dyn_proc_table[task_id]->state == (tpl_proc_state)SUSPENDED))  \
@@ -1105,24 +1112,23 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @param result error code (#StatusType) to set if check fails
  *
- * @note error code is not set if it do not equals E_OK
- *
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disabled when WITH_OS_EXTENDED == NO
  */
 
-/*  If NO_TASK, this error cannot happen    */
-#if defined(NO_TASK)
+/*  If no Task, this error cannot happen    */
+#if TASK_COUNT == 0
 # define CHECK_RUNNING_OWNS_REZ_ERROR(result)
 #endif
 
-/*  If !NO_TASK and not extended error checking !(OS_EXTENDED)
+/*  If any Task and not extended error checking (WITH_OS_EXTENDED == NO)
     the occurence is not tested                                 */
-#if !defined(NO_TASK) && !defined(OS_EXTENDED)
+#if (TASK_COUNT > 0) && (WITH_OS_EXTENDED == NO)
 # define CHECK_RUNNING_OWNS_REZ_ERROR(result)
 #endif
 
-/*  If !NO_TASK and extended error checking (OS_EXTENTED)   */
-#if !defined(NO_TASK) && defined(OS_EXTENDED)
+/*  If any Task and extended error checking (WITH_OS_EXTENDED == YES) */
+#if (TASK_COUNT > 0) && (WITH_OS_EXTENDED == YES)
 #   define CHECK_RUNNING_OWNS_REZ_ERROR(result)                     \
     if ((result == (tpl_status)E_OK) &&                             \
         ((tpl_kern.running->resources) != NULL))                    \
@@ -1139,19 +1145,18 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @param alarm_id #AlarmType to check
  * @param result error code to set if check fails
  *
- * @note error code is not set if it do not equals E_OK
- *
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  */
 
-/* No extended error checking (! OS_EXTENDED)  */
-#if !defined(OS_EXTENDED)
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
     /* Does not check the task_id in this case */
 #   define CHECK_ALARM_ID_ERROR(alarm_id,result)
 #endif
 
-/* NO_ALARM and extended error checking (OS_EXTENDED)        */
-#if defined(NO_ALARM) && defined(OS_EXTENDED)
+/* No Alarm and extended error checking (WITH_OS_EXTENDED == YES)   */
+#if (ALARM_COUNT == 0) && (WITH_OS_EXTENDED == YES)
     /* E_OS_ID is returned in this case  */
 #   define CHECK_ALARM_ID_ERROR(alarm_id,result)                \
     if (result == (tpl_status)E_OK)                             \
@@ -1160,8 +1165,8 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
     }
 #endif
 
-/* !NO_ALARM and extended error checking (OS_EXTENDED)   */
-#if !defined(NO_ALARM) && defined(OS_EXTENDED)
+/* Any Alarm and extended error checking (WITH_OS_EXTENDED == YES)  */
+#if (ALARM_COUNT > 0) && (WITH_OS_EXTENDED == YES)
     /* E_OK or E_OS_LIMIT   */
 #   define CHECK_ALARM_ID_ERROR(alarm_id,result)                \
     if ((result == (tpl_status)E_OK) &&                         \
@@ -1181,24 +1186,26 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @param result    error code to set if check fails
  *
  * @note error code is not set if it does not equal E_OK
- *
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  */
 
-/* No extended error checking (! OS_EXTENDED)                   */
-#if !defined(OS_EXTENDED)
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
     /* Does not check the task_id in this case                  */
 #   define CHECK_ALARM_INCREMENT_ERROR(alarm_id,increment,result)
 #endif
 
-/* NO_ALARM and extended error checking (OS_EXTENDED)           */
-#if defined(NO_ALARM) && defined(OS_EXTENDED)
+/* No Alarm and extended error checking (WITH_OS_EXTENDED == YES) */
+#if (ALARM_COUNT == 0) && (WITH_OS_EXTENDED == YES)
     /* E_OS_ID is returned in this case  */
 #   define CHECK_ALARM_INCREMENT_ERROR(alarm_id,increment,result)
 #endif
 
-/* !NO_ALARM and extended error checking (OS_EXTENDED) and WITH_AUTOSAR    */
-#if !defined(NO_ALARM) && defined(OS_EXTENDED) && defined(WITH_AUTOSAR)
+/*
+ * Any Alarm and extended error checking (WITH_OS_EXTENDED == YES) and
+ * AUTOSAR (WITH_AUTOSAR == YES)
+ */
+#if (ALARM_COUNT > 0) && (WITH_OS_EXTENDED == YES) && (WITH_AUTOSAR == YES)
 /* E_OK or E_OS_VALUE   */
 #   define CHECK_ALARM_INCREMENT_ERROR(alarm_id,increment,result)         \
 	if ((result == (tpl_status)E_OK) &&                                     \
@@ -1210,8 +1217,11 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 	}
 #endif
 
-/* !NO_ALARM and extended error checking (OS_EXTENDED)          */
-#if !defined(NO_ALARM) && defined(OS_EXTENDED) && !defined(WITH_AUTOSAR)
+/*
+ * Any Alarm and extended error checking (WITH_OS_EXTENDED == YES) and
+ * no AUTOSAR (WITH_AUTOSAR == NO)
+ */
+#if (ALARM_COUNT > 0) && (WITH_OS_EXTENDED == YES) && (WITH_AUTOSAR == NO)
     /* E_OK or E_OS_VALUE   */
 #   define CHECK_ALARM_INCREMENT_ERROR(alarm_id,increment,result)              \
     if ((result == (tpl_status)E_OK) &&                                        \
@@ -1232,24 +1242,23 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @param result    error code to set if check fails
  *
  * @note error code is not set if it does not equal E_OK
- *
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  */
 
-/* No extended error checking (! OS_EXTENDED)                   */
-#if !defined(OS_EXTENDED)
+/* No extended error checking (WITH_OS_EXTENDED == NO)          */
+#if (WITH_OS_EXTENDED == NO)
     /* Does not check the task_id in this case                  */
 #   define CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
 #endif
 
-/* NO_ALARM and extended error checking (OS_EXTENDED)           */
-#if defined(NO_ALARM) && defined(OS_EXTENDED)
+/* No Alarm and extended error checking (WITH_OS_EXTENDED == YES) */
+#if (ALARM_COUNT == 0) && (WITH_OS_EXTENDED == YES)
     /* E_OS_ID is returned in this case  */
 #   define CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)
 #endif
 
-/* !NO_ALARM and extended error checking (OS_EXTENDED)          */
-#if !defined(NO_ALARM) && defined(OS_EXTENDED)
+/* Any Alarm and extended error checking (WITH_OS_EXTENDED == YES)  */
+#if (ALARM_COUNT > 0) && (WITH_OS_EXTENDED == YES)
     /* E_OK or E_OS_LIMIT   */
 #   define CHECK_ALARM_MIN_CYCLE_ERROR(alarm_id,cycle,result)                 \
     if ((result == (tpl_status)E_OK) && ((cycle) != 0) &&                     \
@@ -1271,19 +1280,18 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @param res_id #ResourceType to check
  * @param result error code to set if check fails
  *
- * @note error code is not set if it do not equals E_OK
- *
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  */
 
-/* No extended error checking (! OS_EXTENDED)  */
-#if !defined(OS_EXTENDED)
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if (WITH_OS_EXTENDED == NO)
     /* Does not check the task_id in this case */
 #   define CHECK_RESOURCE_ID_ERROR(res_id,result)
 #endif
 
-/* NO_RESOURCE and extended error checking (OS_EXTENDED)    */
-#if defined(NO_RESOURCE) && defined(OS_EXTENDED)
+/* No Resource and extended error checking (WITH_OS_EXTENDED == YES)  */
+#if (RESOURCE_COUNT == 0) && (WITH_OS_EXTENDED == YES)
     /* E_OS_ID is returned in this case  */
 #   define CHECK_RESOURCE_ID_ERROR(res_id,result)               \
     if ((result == (tpl_status)E_OK) &&                         \
@@ -1293,8 +1301,8 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
     }
 #endif
 
-/* !NO_TASK and extended error checking (OS_EXTENDED)   */
-#if !defined(NO_RESOURCE) && defined(OS_EXTENDED)
+/* Any Resource and extended error checking (WITH_OS_EXTENDED == YES) */
+#if (RESOURCE_COUNT > 0) && (WITH_OS_EXTENDED == YES)
     /* E_OK or E_OS_LIMIT   */
 #   define CHECK_RESOURCE_ID_ERROR(res_id,result)               \
     if ((result == (tpl_status)E_OK) &&                         \
@@ -1316,12 +1324,11 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @param res the resource (#ResourceType) the task get
  * @param result error code to set if check fails
  *
- * @note error code is not set if it do not equals E_OK
- *
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  */
 
-#ifdef OS_EXTENDED
+#if WITH_OS_EXTENDED == YES
 #   define CHECK_RESOURCE_PRIO_ERROR_ON_GET(res,result)         \
     if ((result == (tpl_status)E_OK) &&                         \
         (((res)->owner != INVALID_TASK) ||                      \
@@ -1342,12 +1349,11 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @param res the resource (#ResourceType) the task releases
  * @param result error code to set if check fails
  *
- * @note error code is not set if it do not equals E_OK
- *
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  */
 
-#ifdef OS_EXTENDED
+#if WITH_OS_EXTENDED == YES
 #   define CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(res,result)     \
     if ((result == (tpl_status)E_OK) &&                         \
         (tpl_kern.s_running->base_priority >   \
@@ -1368,12 +1374,11 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @param res #ResourceType to check
  * @param result error code to set if check fails
  *
- * @note error code is not set if it do not equals E_OK
- *
- * @note checking is disable when OS_EXTENDED is not defined
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  */
 
-#ifdef OS_EXTENDED
+#if WITH_OS_EXTENDED == YES
 #   define CHECK_RESOURCE_ORDER_ON_RELEASE(res,result)              \
     if ((result == (tpl_status)E_OK) &&                             \
          (tpl_kern.running->resources != (res)))                    \
@@ -1414,13 +1419,11 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @param obj_id #ObjectID to check
  * @param result error code variable to set (StatusType)
  *
- * @note this checking is disabled if OS_EXTENDED is not set
- *
- * @note the error code is set only if there was no
- * previous error
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  */
 
-#if !defined(OS_EXTENDED) || !defined(WITH_OSAPPLICATION)
+#if (WITH_OS_EXTENDED == NO) || (WITH_OSAPPLICATION == NO)
 #   define CHECK_ACCESS_RIGHTS_TASK_ID(obj_id,result)
 #else
 #   define CHECK_ACCESS_RIGHTS_TASK_ID(obj_id,result)							\
@@ -1454,13 +1457,11 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @param obj_id #ObjectID to check
  * @param result error code variable to set (StatusType)
  *
- * @note this checking is disabled if OS_EXTENDED is not set
- *
- * @note the error code is set only if there was no
- * previous error
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  */
 
-#if !defined(OS_EXTENDED) || !defined(WITH_OSAPPLICATION) || defined(NO_ALARM)
+#if (WITH_OS_EXTENDED == NO) || (WITH_OSAPPLICATION == NO) || (ALARM_COUNT == 0)
 #   define CHECK_ACCESS_RIGHTS_ALARM_ID(obj_id,result)
 #else
 #   define CHECK_ACCESS_RIGHTS_ALARM_ID(obj_id,result)							\
@@ -1494,13 +1495,11 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @param obj_id #ObjectID to check
  * @param result error code variable to set (StatusType)
  *
- * @note this checking is disabled if OS_EXTENDED is not set
- *
- * @note the error code is set only if there was no
- * previous error
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  */
 
-#if !defined(OS_EXTENDED) || !defined(WITH_OSAPPLICATION)
+#if ((WITH_OS_EXTENDED == NO)) || (WITH_OSAPPLICATION == NO)
 #   define CHECK_ACCESS_RIGHTS_RESOURCE_ID(obj_id,result)
 #else
 #   define CHECK_ACCESS_RIGHTS_RESOURCE_ID(obj_id,result)						\
@@ -1534,13 +1533,11 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @param obj_id #ObjectID to check
  * @param result error code variable to set (StatusType)
  *
- * @note this checking is disabled if OS_EXTENDED is not set
- *
- * @note the error code is set only if there was no
- * previous error
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  */
 
-#if !defined(OS_EXTENDED) || !defined(WITH_OSAPPLICATION) || defined(NO_COUNTER)
+#if ((WITH_OS_EXTENDED == NO)) || (WITH_OSAPPLICATION == NO) || (COUNTER_COUNT == 0)
 #   define CHECK_ACCESS_RIGHTS_COUNTER_ID(obj_id,result)
 #else
 #   define CHECK_ACCESS_RIGHTS_COUNTER_ID(obj_id,result)						\
@@ -1574,13 +1571,11 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @param obj_id #ObjectID to check
  * @param result error code variable to set (StatusType)
  *
- * @note this checking is disabled if OS_EXTENDED is not set
- *
- * @note the error code is set only if there was no
- * previous error
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disable when WITH_OS_EXTENDED == NO
  */
 
-#if !defined(OS_EXTENDED) || !defined(WITH_OSAPPLICATION) ||  defined(NO_SCHEDTABLE)
+#if (WITH_OS_EXTENDED == NO) || (WITH_OSAPPLICATION == NO) || (SCHEDTABLE_COUNT == 0)
 #   define CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(obj_id,result)
 #else
 #   define CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(obj_id,result)					\

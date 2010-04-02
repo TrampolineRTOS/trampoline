@@ -8,7 +8,7 @@
 //gcc uses ISR as a keyword to define an interrupt handler.
 //Osek uses ISR to define an ISR2 :-/
 #ifdef ISR
-	#undef ISR
+ #undef ISR
 #endif
 #include <avr/interrupt.h>
 
@@ -26,7 +26,7 @@ ISR(%!SOURCE%)
   if (need_rescheduling == NEED_RESCHEDULING)
   {
     tpl_schedule_from_running();
-#ifndef WITH_SYSTEM_CALL
+#if WITH_SYSTEM_CALL == NO
     if (tpl_kern.need_switch != NO_NEED_SWITCH) {
       tpl_switch_context_from_it(
         &(tpl_kern.s_old->context),

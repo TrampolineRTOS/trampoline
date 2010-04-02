@@ -109,7 +109,7 @@ void pending_signals(void)
 		stdimpl_print("SIGUSR2 is pending \n");
 }
 */
-#ifndef NO_ALARM
+#if ALARM_COUNT > 0
 
 extern CONSTP2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)
 tpl_alarm_table[ALARM_COUNT];
@@ -158,9 +158,9 @@ void WaitActivationOneShotAlarm(AlarmType Alarm){
 	
 }
 
-#endif /* NO_ALARM */
+#endif /* ALARM_COUNT > 0 */
 
-#if !defined (NO_COUNTER) && defined (WITH_AUTOSAR)
+#if (COUNTER_COUNT > 0) && (WITH_AUTOSAR == YES)
 
 extern CONSTP2VAR(tpl_counter, OS_VAR, OS_APPL_DATA)
 tpl_counter_table[COUNTER_COUNT];
@@ -199,6 +199,6 @@ void WaitCounterDeltaValue(CounterType Counter, TickType delta_value){
 	}while(value_was != value_exp);
 }
 
-#endif /* NO_COUNTER */
+#endif /* COUNTER_COUNT > 0 && WITH_AUTOSAR == YES */
 
 /* End of file config.c */
