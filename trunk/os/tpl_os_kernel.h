@@ -378,7 +378,7 @@ FUNC(void, OS_CODE) tpl_start_os_service(
 
 FUNC(void, OS_CODE) tpl_shutdown_os_service(
     CONST(tpl_status, AUTOMATIC) error);
-    
+
 FUNC(void, OS_CODE) tpl_schedule_from_running(void);
 
 FUNC(void, OS_CODE) tpl_schedule_from_dying(void);
@@ -406,16 +406,17 @@ FUNC(void, OS_CODE) tpl_release_internal_resource(
 /**
  * If a task is ended without calling TerminateTask() :
  * enable interrupts if needed ; release resources if used ;
- * call ErrorHook if enabled by the user ; call TerminateTask()
+ * call ErrorHook if enabled by the user ; call 
+ * tpl_terminate_task_service()
  */
-FUNC(void, OS_CODE) tpl_call_terminate_task(void);
+FUNC(void, OS_CODE) tpl_call_terminate_task_service(void);
 
 /**
  * Ending an ISR2 : enable interrupts if needed ;
  * release resources if used ; call ErrorHook if enabled
- * by the user ; call TerminateISR()
+ * by the user ; call tpl_terminate_isr2_service()
  */
-FUNC(void, OS_CODE) tpl_call_terminate_ISR(void);
+FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void);
 
 #ifdef WITH_OSAPPLICATION
 FUNC(void, OS_CODE) tpl_remove_proc(

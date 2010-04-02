@@ -1376,7 +1376,7 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
   UNLOCK_KERNEL()
 }
 
-FUNC(void, OS_CODE) tpl_call_terminate_task(void)
+FUNC(void, OS_CODE) tpl_call_terminate_task_service(void)
 {
   if(FALSE!=tpl_get_interrupt_lock_status())  
   {                                           
@@ -1393,10 +1393,10 @@ FUNC(void, OS_CODE) tpl_call_terminate_task(void)
   PROCESS_ERROR(E_OS_MISSINGEND);
   
   /*terminate the task :*/
-  TerminateTask();
+  tpl_terminate_task_service();
 }
 
-FUNC(void, OS_CODE) tpl_call_terminate_ISR(void)
+FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
 {
   /*  init the error to no error  */
   VAR(StatusType, AUTOMATIC) result = E_OK;
@@ -1416,7 +1416,7 @@ FUNC(void, OS_CODE) tpl_call_terminate_ISR(void)
   
   PROCESS_ERROR(result);  /* store terminateISR service id before hook ?*/
 
-  TerminateISR();
+  tpl_terminate_isr2_service();
 }
 
 #define OS_STOP_SEC_CODE
