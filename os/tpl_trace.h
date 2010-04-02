@@ -22,8 +22,8 @@
 * $Author: ljunker$
 * $URL: http://trampoline.rts-software.org/svn/trunk/os/tpl_trace.h $
 */
-#ifndef __TPL_TRACE_H__
-#define __TPL_TRACE_H__
+#ifndef TPL_TRACE_H
+#define TPL_TRACE_H
 
 #include "tpl_os_types.h"
 #include "tpl_os_kernel.h"
@@ -215,7 +215,7 @@
 #		define TRACE_ALARM_CANCEL(cancelled_alarm_id)\
 		tpl_trace_alarm_cancel(cancelled_alarm_id);
 
-#	  if (!defined NO_ALARM)
+#	  if (ALARM_COUNT > 0)
 /**
  * @def TRACE_COUNTER
  */
@@ -474,5 +474,5 @@ FUNC(void, OS_CODE) tpl_trace_tpl_terminate();
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-#endif /* __TPL_TRACE_H__ */
+#endif /* TPL_TRACE_H */
 /* End of file tpl_trace.h */

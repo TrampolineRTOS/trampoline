@@ -29,12 +29,12 @@
 #include "tpl_compiler.h"
 #include "tpl_os_internal_types.h"
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 #include "tpl_as_timing_protec.h"
 /* #include "tpl_as_st_kernel.h" */
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
-#ifdef WITH_OSAPPLICATION
+#if WITH_OSAPPLICATION == YES
 #include "tpl_as_app_kernel.h"
 #include "tpl_as_trusted_fct_kernel.h"
 #endif /* WITH_OSAPPLICATION */
@@ -170,7 +170,7 @@ struct TPL_PROC_STATIC {
                               task does not have an internal resource         */
   CONST(tpl_task_id, TYPEDEF)
     id;                 /**<  id of task/isr                                  */
-#ifdef WITH_OSAPPLICATION
+#if WITH_OSAPPLICATION == YES
   CONST(tpl_app_id, TYPEDEF)
     app_id;             /**<  id of the OS application which owns
                               the task/ISR                                    */
@@ -181,7 +181,7 @@ struct TPL_PROC_STATIC {
     max_activate_count; /**<  max activation count of a task/isr              */
   CONST(tpl_proc_type, TYPEDEF)
     type;               /**<  type of the task/isr                            */
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
   P2CONST(tpl_timing_protection, TYPEDEF, OS_APPL_CONST)
     timing_protection;  /**<  timing protection configuration (can be NULL
                               if no timing protection is needed)              */
@@ -216,7 +216,7 @@ struct TPL_PROC {
     priority;           /**< current priority                     */
   VAR(tpl_proc_state, TYPEDEF)
     state;              /**< state (READY, RUNNING, ...)          */
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
   VAR(tpl_bool, TYPEDEF)
     activation_allowed; /**< TRUE is the process may be activated */
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
@@ -337,12 +337,12 @@ extern CONST(tpl_proc_static, OS_VAR) idle_task_static;
 #define IDLE_TASK_ID  (TASK_COUNT+ISR_COUNT)
 
 /*
- * @def INVALID_TASK_ID
+ * @def INVALID_PROC_ID
  *
- * see #INVALID_TASK
+ * @see #INVALID_TASK
  *
  */
-#define INVALID_TASK_ID  -1
+#define INVALID_PROC_ID  -1
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -418,7 +418,7 @@ FUNC(void, OS_CODE) tpl_call_terminate_task_service(void);
  */
 FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void);
 
-#ifdef WITH_OSAPPLICATION
+#if WITH_OSAPPLICATION == YES
 FUNC(void, OS_CODE) tpl_remove_proc(
   CONST(tpl_proc_id, AUTOMATIC) proc_id);
 #endif

@@ -29,6 +29,8 @@
 
 #include "tpl_assembler.h"
 
+  TPL_EXTERN tpl_protection_hook_wrapper
+
   .text
   
   .section .exCriticalInput CODE_ACCESS_RIGHT
@@ -47,10 +49,15 @@ tpl_machine_check:
   .type tpl_machine_check,@function
   .size tpl_machine_check,$-tpl_machine_check
 
+
+/*
+ * tpl_data_storage and tpl_instruction_storage exception handler
+ * are called when a memory protection exception occurs
+ */
   .section .exDataStorage CODE_ACCESS_RIGHT
   .global tpl_data_storage
 tpl_data_storage:
-  b tpl_data_storage
+  b tpl_protection_hook_wrapper
   
   .type tpl_data_storage,@function
   .size tpl_data_storage,$-tpl_data_storage
@@ -58,7 +65,7 @@ tpl_data_storage:
   .section .exInstructionStorage CODE_ACCESS_RIGHT
   .global tpl_instruction_storage
 tpl_instruction_storage:
-  b tpl_instruction_storage
+  b tpl_protection_hook_wrapper
   
   .type tpl_instruction_storage,@function
   .size tpl_instruction_storage,$-tpl_instruction_storage

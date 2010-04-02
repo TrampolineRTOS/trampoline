@@ -30,7 +30,7 @@
 #include "tpl_os_definitions.h"
 #include "tpl_com.h"
 
-#ifdef WITH_COM_ERROR_HOOK
+#if WITH_COM_ERROR_HOOK == YES
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"

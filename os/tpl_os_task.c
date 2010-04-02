@@ -27,7 +27,7 @@
 
 #include "tpl_os_definitions.h"
 
-#ifndef WITH_SYSTEM_CALL
+#if WITH_SYSTEM_CALL == NO
 
 #include "tpl_os_task.h"
 #include "tpl_os_task_kernel.h"
@@ -84,7 +84,7 @@ FUNC(StatusType, OS_CODE) GetTaskState(
 #include "tpl_memmap.h"
 
 #else
-#error "This file should not be part of your project since WITH_SYSTEM_CALL is defined"
+#error "This file should not be part of your project since WITH_SYSTEM_CALL is YES"
 #endif /* WITH_SYSTEM_CALL */
 
 /* End of file tpl_os_task.c */

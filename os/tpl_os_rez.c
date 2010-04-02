@@ -24,12 +24,12 @@
 
 #include "tpl_os_definitions.h"
 
-#ifndef WITH_SYSTEM_CALL
+#if WITH_SYSTEM_CALL == NO
 
 #include "tpl_os_rez.h"
 #include "tpl_os_rez_kernel.h"
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 #include "tpl_as_isr.h"
 #endif
 
@@ -55,7 +55,7 @@ FUNC(StatusType, OS_CODE) ReleaseResource(
 #include "tpl_memmap.h"
 
 #else
-#error "This file should not be part of your project since WITH_SYSTEM_CALL is defined"
+#error "This file should not be part of your project since WITH_SYSTEM_CALL is YES"
 #endif /* WITH_SYSTEM_CALL */
 
 /* End of file tpl_os_rez.c */

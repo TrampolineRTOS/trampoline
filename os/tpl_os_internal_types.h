@@ -48,7 +48,7 @@ typedef tpl_proc_id tpl_task_id ;
  */
 typedef tpl_proc_id tpl_isr_id ;
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 /**
  * @typedef tpl_counter_kind
  *

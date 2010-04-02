@@ -68,7 +68,7 @@ FUNC(void, OS_CODE) tpl_notify_receiving_mos(
   if ((result & NEED_RESCHEDULING) != 0)
   {
     tpl_schedule_from_running();
-#ifndef WITH_SYSTEM_CALL
+#if WITH_SYSTEM_CALL == NO
     if (tpl_kern.need_switch != NO_NEED_SWITCH)
     {
       if (from == FROM_IT_LEVEL)

@@ -44,7 +44,7 @@ typedef u32 tpl_tick;
  */
 typedef P2VAR(u8, TYPEDEF, OS_APPL_DATA) tpl_buffer;
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 /**
  * @internal
  *

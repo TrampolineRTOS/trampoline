@@ -47,11 +47,11 @@ typedef P2FUNC(void, OS_APPL_CODE, tpl_it_handler)(P2CONST(void, OS_APPL_DATA, A
  * Entry of the tpl interrupt vector
  */
 struct TPL_IT_VECTOR_ENTRY {
-    CONST(tpl_it_handler, AUTOMATIC) func;      /**< pointer to the request 
+  CONST(tpl_it_handler, AUTOMATIC) func;      /**< pointer to the request 
                                                     handling function for 
                                                     this interrupt 
                                                 */
-    P2VAR(void, OS_APPL_DATA, AUTOMATIC) args;  /**< pointer to the 
+  P2VAR(void, OS_APPL_DATA, AUTOMATIC) args;  /**< pointer to the 
                                                   arguments the function
                                                 */
 };
@@ -98,7 +98,7 @@ struct TPL_ISR_STATIC {
  */
 typedef struct TPL_ISR_STATIC tpl_isr_static;
 
-#ifndef NO_ISR
+#if ISR_COUNT > 0
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -109,7 +109,7 @@ extern CONSTP2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA)
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-#endif
+#endif /* ISR_COUNT */
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"

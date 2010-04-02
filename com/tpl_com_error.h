@@ -20,7 +20,7 @@
 #include "tpl_com_definitions.h"
 #include "tpl_com_internal.h"
 
-#ifdef WITH_COM_ERROR_HOOK
+#if WITH_COM_ERROR_HOOK == YES
 
 union COM_PARAM_BLOCK {
     COMApplicationModeType  app_mode;
@@ -136,7 +136,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
 /*
  * STORE_COM_SERVICE
  */
-#ifdef WITH_COM_ERROR_HOOK
+#if WITH_COM_ERROR_HOOK == YES
 #   define STORE_COM_SERVICE(service)   \
     tpl_com_service.service_id = (service);
 #else
@@ -146,7 +146,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
 /*
  * STORE_COM_APP_MODE
  */
-#ifdef WITH_COM_ERROR_HOOK
+#if WITH_COM_ERROR_HOOK == YES
 #   define STORE_COM_APP_MODE(app_mode)   \
     tpl_com_service.parameters.id_or_mode.app_mode = (app_mode);
 #else
@@ -156,7 +156,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
 /*
  * STORE_COM_MESSAGE_ID
  */
-#ifdef WITH_COM_ERROR_HOOK
+#if WITH_COM_ERROR_HOOK == YES
 #   define STORE_COM_MESSAGE_ID(mess_id)   \
     tpl_com_service.parameters.id_or_mode.mess_id = (mess_id);
 #else
@@ -166,7 +166,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
 /*
  * STORE_COM_APPLICATION_DATA_REF
  */
-#ifdef WITH_COM_ERROR_HOOK
+#if WITH_COM_ERROR_HOOK == YES
 #   define STORE_COM_APPLICATION_DATA_REF(data_ref1)   \
     tpl_com_service.parameters.data_ref = (tpl_com_data *)(data_ref1);
 #else
@@ -176,7 +176,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
 /*
  * STORE_COM_LENGTH_REF
  */
-#ifdef WITH_COM_ERROR_HOOK
+#if WITH_COM_ERROR_HOOK == YES
 #   define STORE_COM_LENGTH_REF(length_ref)   \
     tpl_com_service.parameters.length_ref = (length_ref);
 #else
@@ -189,7 +189,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
  * an error occured, if the WITH_ERROR_HOOK flag is on and no
  * code at all if the flag is off.
  */
-#ifdef WITH_COM_ERROR_HOOK
+#if WITH_COM_ERROR_HOOK == YES
 #define PROCESS_COM_ERROR(error)        \
     if (error != E_OK) {            \
         tpl_call_com_error_hook(error); \
@@ -204,7 +204,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
  * an error occured in GetMessageStatus, if the WITH_ERROR_HOOK flag is on and no
  * code at all if the flag is off.
  */
-#if defined(WITH_COM_ERROR_HOOK) && defined(COM_EXTENDED)
+#if (WITH_COM_ERROR_HOOK == YES) && (WITH_COM_EXTENDED == YES)
 #define PROCESS_GETMESSAGESTATUS_ERROR(error)		\
 	if (result == E_COM_ID){						\
 			tpl_call_com_error_hook(error);			\
@@ -221,7 +221,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
  */
 
 /* No extended error checking (! COM_EXTENDED)  */
-#if !defined(COM_EXTENDED)
+#if WITH_COM_EXTENDED == NO
     /* Does not check the mess_id in this case */
 #   define CHECK_SEND_MESSAGE_ID_ERROR(mess_id,result)
 #else
@@ -239,7 +239,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
  */
 
 /* No extended error checking (! COM_EXTENDED)  */
-#if !defined(COM_EXTENDED)
+#if WITH_COM_EXTENDED == NO
     /* Does not check the mess_id in this case */
 #   define CHECK_RECEIVE_MESSAGE_ID_ERROR(mess_id,result)
 #else
@@ -256,7 +256,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
  */
 
 /* No extended error checking (! COM_EXTENDED)  */
-#if !defined(COM_EXTENDED)
+#if WITH_COM_EXTENDED == NO
     /* Does not check the mess_id in this case */
 #   define CHECK_NOT_ZERO_LENGTH_SEND(mess_id,result)
 #else
@@ -286,7 +286,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
  */
 
 /* No extended error checking (! COM_EXTENDED)  */
-#if !defined(COM_EXTENDED)
+#if WITH_COM_EXTENDED == NO
     /* Does not check the mess_id in this case */
 #   define CHECK_ZERO_LENGTH_SEND(mess_id,result)
 #else

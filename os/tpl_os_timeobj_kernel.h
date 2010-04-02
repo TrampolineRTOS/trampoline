@@ -27,7 +27,7 @@
 
 #include "tpl_os_internal_types.h"
 
-#ifdef WITH_OSAPPLICATION
+#if WITH_OSAPPLICATION == YES
 #include "tpl_as_app_kernel.h"
 #endif /* WITH_OSAPPLICATION */
 
@@ -74,7 +74,7 @@ struct TPL_TIME_OBJ_STATIC {
     timeobj_id;   /**<  the id of the alarm or schedule table. This id
                         is used for tracing the kernel                        */
 #endif
-#ifdef WITH_OSAPPLICATION
+#if WITH_OSAPPLICATION == YES
   CONST(tpl_app_id, TYPEDEF)
     app_id;       /**< id of the OS application which owns the time object    */
 #endif
@@ -135,11 +135,11 @@ struct TPL_COUNTER {
     current_tick;       /**< current tick value of the counter                */
   VAR(tpl_tick, TYPEDEF)
     current_date;       /**< current value of the counter                     */
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
   CONST(tpl_counter_kind, TYPEDEF)
     kind;               /**< kind (hardware or software) of the counter       */
 #endif
-#ifdef WITH_OSAPPLICATION
+#if WITH_OSAPPLICATION == YES
   CONST(tpl_app_id, TYPEDEF)
     app_id;   /**< id of the OS application which owns the counter            */
 #endif

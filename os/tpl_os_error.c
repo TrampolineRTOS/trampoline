@@ -28,7 +28,7 @@
 #include "tpl_os_internal_types.h"
 #include "tpl_os_definitions.h"
 
-#ifdef WITH_ERROR_HOOK
+#if WITH_ERROR_HOOK == YES
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"

@@ -88,6 +88,6 @@ CONST(tpl_app_access, OS_APPL_CONST) % !NAME %_app_access = {
   % ![RESOURCES length] %,
   % ![SCHEDULETABLES length] %,
   % ![COUNTERS length] %,
-  % if exists RESTART then !RESTART%_id% else %INVALID_TASK_ID% end if%
+  % if exists RESTART then !RESTART%_id% else %INVALID_PROC_ID% end if%
 };
 

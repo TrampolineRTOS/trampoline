@@ -36,10 +36,10 @@ OIL_VERSION = "2.5" : "autosar_sc_s1" ;
 
 IMPLEMENTATION trampoline {
 
-	OS {
-		ENUM [EXTENDED] STATUS;
-	};
-	
+ OS {
+  ENUM [EXTENDED] STATUS;
+ };
+ 
     TASK {
         UINT32 STACKSIZE = 32768 ;
         UINT32 [1..10] PRIORITY = 1 ;
@@ -50,43 +50,44 @@ IMPLEMENTATION trampoline {
 
     OS config {
         STATUS = STANDARD;
-		APP_SRC = "autosar_sc_s1.c";
-		APP_SRC = "task1_instance.c";
-		APP_SRC = "error_instance1.c";
-		APP_SRC = "error_instance2.c";
+  APP_SRC = "autosar_sc_s1.c";
+  APP_SRC = "task1_instance.c";
+  APP_SRC = "error_instance1.c";
+  APP_SRC = "error_instance2.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "autosar_sc_s1_exe";
-		CFLAGS = "-I../../embUnit";
+  CFLAGS = "-I../../embUnit";
         CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../../lib -lembUnit";
-		SHUTDOWNHOOK = TRUE;
-		ERRORHOOK = TRUE;
-		
-	};
+  LDFLAGS = "-L../../lib -lembUnit";
+  SHUTDOWNHOOK = TRUE;
+  ERRORHOOK = TRUE;
+  USEGETSERVICEID = TRUE;
+  USEPARAMETERACCESS = TRUE;
+ };
 
     APPMODE std {};
 
-	TASK t1 {
-		AUTOSTART = TRUE { APPMODE = std ; } ;
-		PRIORITY = 1;
-		ACTIVATION = 1;
-		SCHEDULE = FULL;
-	};
-	COUNTER Software_Counter{
-		MAXALLOWEDVALUE = 3;
-		TICKSPERBASE = 2;
-		MINCYCLE = 1;
-		TYPE = SOFTWARE;
-	};
-	ALARM Alarm1{
-		COUNTER = Software_Counter;
-		ACTION = ACTIVATETASK {
-			TASK = t1;
-		};
-		AUTOSTART = FALSE;
-	};
-	
+ TASK t1 {
+  AUTOSTART = TRUE { APPMODE = std ; } ;
+  PRIORITY = 1;
+  ACTIVATION = 1;
+  SCHEDULE = FULL;
+ };
+ COUNTER Software_Counter{
+  MAXALLOWEDVALUE = 3;
+  TICKSPERBASE = 2;
+  MINCYCLE = 1;
+  TYPE = SOFTWARE;
+ };
+ ALARM Alarm1{
+  COUNTER = Software_Counter;
+  ACTION = ACTIVATETASK {
+   TASK = t1;
+  };
+  AUTOSTART = FALSE;
+ };
+ 
 };
 
 

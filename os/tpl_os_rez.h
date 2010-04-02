@@ -28,7 +28,7 @@
 #include "tpl_os_types.h"
 #include "tpl_os_application_def.h"
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 #include "tpl_as_timing_protec.h"
 #endif
 

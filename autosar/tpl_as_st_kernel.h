@@ -187,7 +187,7 @@ struct TPL_SCHEDTABLE_STATIC {
  */
 typedef struct TPL_SCHEDTABLE_STATIC tpl_schedtable_static;
 
-#ifndef NO_SCHEDTABLE
+#if SCHEDTABLE_COUNT > 0
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -211,7 +211,7 @@ extern CONSTP2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA)
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-#endif /* NO_SCHEDTABLE */
+#endif /* SCHEDTABLE_COUNT > 0 */
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"

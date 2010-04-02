@@ -35,11 +35,11 @@
 #include <assert.h>
 #endif
 
-#ifdef WITH_AUTOSAR_STACK_MONITORING
+#if WITH_AUTOSAR_STACK_MONITORING == YES
 #include "tpl_as_stack_monitor.h"
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 #include "tpl_as_isr_kernel.h"
 #endif
 
@@ -92,7 +92,7 @@ FUNC(void, OS_CODE) tpl_suspend_all_interrupts_service(void)
 
   tpl_cpt_user_task_lock_All++;
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
   if( tpl_locking_depth == 1)
   {
     tpl_start_all_isr_lock_monitor(tpl_kern.running_id);
@@ -117,7 +117,7 @@ FUNC(void, OS_CODE) tpl_resume_all_interrupts_service(void)
 	
 		if( tpl_locking_depth == 0)
 		{
-	#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+	#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 			tpl_stop_all_isr_lock_monitor(tpl_kern.running_id);
 	#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 			tpl_enable_interrupts();
@@ -137,7 +137,7 @@ FUNC(void, OS_CODE) tpl_disable_all_interrupts_service(void)
 
 	  tpl_user_task_lock = TRUE;
 
-	#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+	#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 	  tpl_start_all_isr_lock_monitor(tpl_kern.running_id);
 	#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
   }
@@ -152,7 +152,7 @@ FUNC(void, OS_CODE) tpl_enable_all_interrupts_service(void)
 	{
 		tpl_user_task_lock = FALSE;
 
-	#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+	#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 		tpl_stop_all_isr_lock_monitor(tpl_kern.running_id);
 	#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 
@@ -171,7 +171,7 @@ FUNC(void, OS_CODE) tpl_suspend_os_interrupts_service(void)
 
   tpl_cpt_user_task_lock_OS++;
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
   if( tpl_locking_depth == 1)
   {
     tpl_start_all_isr_lock_monitor(tpl_kern.running_id);
@@ -197,7 +197,7 @@ FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void)
 	
 		if( tpl_locking_depth == 0)
 		{
-	#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+	#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 			tpl_stop_all_isr_lock_monitor(tpl_kern.running_id);
 	#endif /*WITH_AUTOSAR_TIMING_PROTECTION */
 			tpl_enable_interrupts();
@@ -229,7 +229,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
   /*  check the ISR2 does not own a resource  */
   CHECK_RUNNING_OWNS_REZ_ERROR(result)
   
-#ifndef NO_ISR
+#if ISR_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   
   /* the activate count is decreased
@@ -240,7 +240,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
   TRACE_ISR_TERMINATE(tpl_kern.running_id,tpl_kern.running_id)
   tpl_schedule_from_dying();
  
-  #ifndef WITH_SYSTEM_CALL
+  #if WITH_SYSTEM_CALL == NO
 		if (tpl_kern.need_switch != NO_NEED_SWITCH)
 		{
 			tpl_switch_context(NULL, &(tpl_kern.s_running->context));
@@ -266,7 +266,7 @@ FUNC(void, OS_CODE) tpl_null_it(P2CONST(void, OS_APPL_DATA, AUTOMATIC) foo)
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-#ifndef NO_ISR
+#if ISR_COUNT > 0
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -282,7 +282,7 @@ STATIC FUNC(void, OS_CODE) tpl_activate_isr(
       not need to be executed if the first test fails
   */
   if ((isr->activate_count < tpl_stat_proc_table[isr_id]->max_activate_count)
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
       && (tpl_is_isr2_enabled(isr_id))
 #endif
       )
@@ -316,7 +316,7 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
   STATIC VAR(s32, AUTOMATIC) tpl_it_nesting =  0;
   P2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA) isr;
 
-#ifdef WITH_AUTOSAR_STACK_MONITORING
+#if WITH_AUTOSAR_STACK_MONITORING == YES
     tpl_check_stack(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
@@ -324,7 +324,7 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
       ie the id has been counted in the table and there
       is a tpl_isr available
    */
-#ifdef OS_EXTENDED
+#if WITH_OS_EXTENDED == YES
   if ((isr_id >= TASK_COUNT) && (isr_id < (TASK_COUNT + ISR_COUNT)))
   {
 #endif
@@ -336,8 +336,8 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
     {
       if ((isr->next) == NULL)
       {
-		/*  Only one handler for this id. run the handler   */
-		tpl_activate_isr(isr->isr_id);
+        /*  Only one handler for this id. run the handler   */
+        tpl_activate_isr(isr->isr_id);
       }
       else
       {
@@ -347,7 +347,7 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
           if (isr->helper() == TRUE)
           {
             /* activate the handler */
-			tpl_activate_isr(isr->isr_id);
+            tpl_activate_isr(isr->isr_id);
 			
           }
           isr = isr->next;
@@ -361,7 +361,7 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
     {
       tpl_schedule_from_running();
       
-#ifndef WITH_SYSTEM_CALL
+#if WITH_SYSTEM_CALL == NO
       if (tpl_kern.need_switch != NO_NEED_SWITCH)
       {
         tpl_switch_context_from_it(
@@ -371,7 +371,7 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
       }
 #endif
     }
-#ifdef OS_EXTENDED
+#if WITH_OS_EXTENDED == YES
   }
 #endif
 }
@@ -394,6 +394,6 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler_2(P2CONST(void, OS_APPL_DATA, 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-#endif /* NO_ISR */
+#endif /* ISR_COUNT */
 
 /* End of file tpl_os_it_kernel.c */

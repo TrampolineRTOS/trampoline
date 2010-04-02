@@ -118,7 +118,7 @@ FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
 	switch (obj_type) {
 		  
 		case OBJECT_TASK: /*  Same as OBJECT_ISR  */
-#if !(defined(NO_TASK) && defined(NO_ISR))
+#if (TASK_COUNT > 0) || (ISR_COUNT > 0)
 		  if (obj_id < (TASK_COUNT+ISR_COUNT))
 		  {
 			result = tpl_stat_proc_table[obj_id]->app_id;
@@ -127,7 +127,7 @@ FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
 		  break;
 		  
 		case OBJECT_ALARM:
-#ifndef NO_ALARM
+#if ALARM_COUNT > 0
 		  if (obj_id < ALARM_COUNT)
 		  {
 			P2CONST(tpl_time_obj_static, AUTOMATIC, OS_CONST) alr =
@@ -138,7 +138,7 @@ FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
 		  break;
 		  
 		case OBJECT_RESOURCE:
-#if (RESOURCE_COUNT > 1)
+#if RESOURCE_COUNT > 1
 		  /* RES_SCHEDULER id is equal to RESOURCE_COUNT - 1  */
 		  if (obj_id < (RESOURCE_COUNT - 1))
 		  {
@@ -148,7 +148,7 @@ FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
 		  break;
 		  
 		case OBJECT_COUNTER:
-#ifndef NO_COUNTER
+#if COUNTER_COUNT > 0
 		  if (obj_id < COUNTER_COUNT)
 		  {
 			result = tpl_counter_table[obj_id]->app_id;
@@ -157,7 +157,7 @@ FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
 		  break;
 		  
 		case OBJECT_SCHEDULETABLE:
-#ifndef NO_SCHEDTABLE
+#if SCHEDTABLE_COUNT > 0
 		  if (obj_id < SCHEDTABLE_COUNT)
 		  {
 			P2CONST(tpl_time_obj_static, AUTOMATIC, OS_CONST) st =
@@ -273,7 +273,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
 		  {
 			/*  First, remove all alarms belonging
 				to the OS application from the queue            */
-#ifndef NO_ALARM
+#if ALARM_COUNT > 0
 			{
 			  P2CONST(tpl_alarm_id, AUTOMATIC, OS_APPL_CONST) alarms =
 				tpl_app_table[running_app_id]->alarms;
@@ -296,7 +296,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
 #endif
 			/*  Then remove all the schedule tables belonging
 				to the OS application from the queue            */
-#ifndef NO_SCHEDTABLE
+#if SCHEDTABLE_COUNT > 0
 			{
 			  P2CONST(tpl_schedtable_id, AUTOMATIC, OS_APPL_CONST) schedtables =
 				tpl_app_table[running_app_id]->sts;
@@ -320,7 +320,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
 			/*  Then remove all processes belonging to the OS
 				application in the ready list and in the waiting
 				state (the running process called this service)   */
-#if !(defined(NO_TASK) && defined(NO_ISR))
+#if (TASK_COUNT > 0) || (ISR_COUNT > 0)
 			{
 			  P2CONST(tpl_proc_id, AUTOMATIC, OS_APPL_CONST) procs =
 				tpl_app_table[running_app_id]->procs;
@@ -337,7 +337,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
 				tpl_release_all_resources(proc_id);
 				tpl_release_internal_resource(proc_id);
 				/*  reset the task descriptor                     */
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 				tpl_stop_budget_monitor(proc_id);
 				tpl_stop_all_resource_monitor(proc_id);
 				tpl_dyn_proc_table[proc_id]->activation_allowed = TRUE;
@@ -358,7 +358,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
 			  {
 				/*  and let the scheduler do its job                            */
 				tpl_schedule_from_dying();
-# ifndef WITH_SYSTEM_CALL
+# if WITH_SYSTEM_CALL == NO
 				if (tpl_kern.need_switch != NO_NEED_SWITCH)
 				{
 				  tpl_switch_context(NULL, &(tpl_kern.s_running->context));
@@ -374,7 +374,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
 			else
 			{
 			  tpl_schedule_from_dying();
-# ifndef WITH_SYSTEM_CALL
+# if WITH_SYSTEM_CALL == NO
 			  if (tpl_kern.need_switch != NO_NEED_SWITCH)
 			  {
 				tpl_switch_context(NULL, &(tpl_kern.s_running->context));

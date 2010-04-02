@@ -63,6 +63,8 @@ CPU test {
     LDFLAGS = "-L../../lib -lembUnit";
     SHUTDOWNHOOK = TRUE;
     ERRORHOOK = TRUE;
+    USEGETSERVICEID = TRUE;
+    USEPARAMETERACCESS = TRUE;
   };
 
   APPMODE std {};

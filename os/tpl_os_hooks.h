@@ -28,22 +28,13 @@
 
 #include "tpl_os_types.h"
 
-#ifdef WITH_TASK_HOOK
-#   ifndef WITH_POST_TASK_HOOK
-#       define WITH_POST_TASK_HOOK
-#   endif
-#   ifndef WITH_PRE_TASK_HOOK
-#       define WITH_PRE_TASK_HOOK
-#   endif
-#endif
-
 /**
  * @def CALL_POST_TASK_HOOK
  *
  * Generates a call to #PostTaskHook only if WITH_POST_TASK_HOOK
  * (or WITH_TASK_HOOK) is defined
  */
-#ifdef WITH_POST_TASK_HOOK
+#if WITH_POST_TASK_HOOK == YES
 #   define CALL_POST_TASK_HOOK()    \
     PostTaskHook();
 #else
@@ -56,7 +47,7 @@
  * Generates a call to #PreTaskHook only if WITH_PRE_TASK_HOOK
  * (or WITH_TASK_HOOK) is defined
  */
-#ifdef WITH_PRE_TASK_HOOK
+#if WITH_PRE_TASK_HOOK == YES
 #   define CALL_PRE_TASK_HOOK()         \
     PreTaskHook();
 #else
@@ -68,7 +59,7 @@
  *
  * Generates a call to #StartupHook only if WITH_STARTUP_HOOK is defined
  */
-#ifdef WITH_STARTUP_HOOK
+#if WITH_STARTUP_HOOK == YES
 #   define CALL_STARTUP_HOOK()          \
     StartupHook();
 #else
@@ -82,7 +73,7 @@
  *
  * @param error error code (#StatusType) to send to shutdown hook
  */
-#ifdef WITH_SHUTDOWN_HOOK
+#if WITH_SHUTDOWN_HOOK == YES
 #   define CALL_SHUTDOWN_HOOK(error)    \
     ShutdownHook(error);
 #else
@@ -92,28 +83,28 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-#ifdef WITH_PRE_TASK_HOOK
+#if WITH_PRE_TASK_HOOK == YES
 /**
  * Prototype of the pre-task hook routine
  */
 extern FUNC(void, OS_CODE) PreTaskHook(void);
 #endif
 
-#ifdef WITH_POST_TASK_HOOK
+#if WITH_POST_TASK_HOOK == YES
 /**
  * Prototype of the post-task hook routine
  */
 extern FUNC(void, OS_CODE) PostTaskHook(void);
 #endif
 
-#ifdef WITH_STARTUP_HOOK
+#if WITH_STARTUP_HOOK == YES
 /**
  * Prototype of the startup hook routine
  */
 FUNC(void, OS_CODE) StartupHook(void);
 #endif
 
-#ifdef WITH_SHUTDOWN_HOOK
+#if WITH_SHUTDOWN_HOOK == YES
 /**
  * Prototype of the shutdown hook routine
  */

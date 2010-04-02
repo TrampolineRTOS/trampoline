@@ -31,7 +31,7 @@
 #include "tpl_machine_interface.h"
 #include "tpl_trace.h"
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 #include "tpl_as_isr_kernel.h"
 #include "tpl_as_protec_hook.h"
 #endif
@@ -69,13 +69,13 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   /*  checks the task is not in the SUSPENDED state   */
   CHECK_SUSPENDED_TASK_ERROR(task_id,result)
   
-#ifndef NO_EXTENDED_TASK
+#if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   result = tpl_set_event(task_id, event);
   if (result == (tpl_status)E_OK_AND_SCHEDULE)
   {
     tpl_schedule_from_running();
-# ifndef WITH_SYSTEM_CALL
+# if WITH_SYSTEM_CALL == NO
     if (tpl_kern.need_switch != NO_NEED_SWITCH)
     {
       tpl_switch_context(
@@ -117,7 +117,7 @@ FUNC(tpl_status, OS_CODE) tpl_clear_event_service(
   /*  checks the calling task is an extended one  */
   CHECK_NOT_EXTENDED_RUNNING_ERROR(result)
   
-#ifndef NO_EXTENDED_TASK
+#if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
     tpl_task_events_table[tpl_kern.running_id]->evt_set &=
       (tpl_event_mask)(~event);
@@ -159,7 +159,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
   /*  checks the task is not in the SUSPENDED state   */
   CHECK_SUSPENDED_TASK_ERROR(task_id,result)
   
-#ifndef NO_EXTENDED_TASK
+#if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   *event = tpl_task_events_table[task_id]->evt_set;
   IF_NO_EXTENDED_ERROR_END()
@@ -179,7 +179,7 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   CONST(tpl_event_mask, AUTOMATIC) event)
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
-#ifndef NO_EXTENDED_TASK
+#if EXTENDED_TASK_COUNT > 0
   P2VAR(tpl_task_events, AUTOMATIC, OS_VAR) task_events;  
 #endif
  
@@ -198,7 +198,7 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   /*  checks the task does not occupied resource(s)   */
   CHECK_RUNNING_OWNS_REZ_ERROR(result)
   
-#ifndef NO_EXTENDED_TASK
+#if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   task_events = tpl_task_events_table[tpl_kern.running_id];
   /*  all the evt_wait is overidden.  */
@@ -211,7 +211,7 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
     tpl_kern.running->state = WAITING;
     /*  and a rescheduling occurs                           */
     tpl_schedule_from_waiting();
-# ifndef WITH_SYSTEM_CALL
+# if WITH_SYSTEM_CALL == NO
     if (tpl_kern.need_switch != NO_NEED_SWITCH)
     {
       tpl_switch_context(

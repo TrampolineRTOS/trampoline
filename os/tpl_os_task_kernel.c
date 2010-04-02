@@ -33,7 +33,7 @@
 #include "tpl_os_task_kernel.h"
 #include "tpl_trace.h"
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 #include "tpl_as_isr_kernel.h"
 #include "tpl_as_protec_hook.h"
 #endif
@@ -68,13 +68,13 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
   /* check access right */
   CHECK_ACCESS_RIGHTS_TASK_ID(task_id,result)
 	
-#ifndef NO_TASK
+#if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
     result = tpl_activate_task(task_id);
     if (result == (tpl_status)E_OK_AND_SCHEDULE)
     {
       tpl_schedule_from_running();
-# ifndef WITH_SYSTEM_CALL
+# if WITH_SYSTEM_CALL == NO
       if (tpl_kern.need_switch != NO_NEED_SWITCH)
       {
         tpl_switch_context(
@@ -115,7 +115,7 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
   /*  check the task does not own a resource  */
   CHECK_RUNNING_OWNS_REZ_ERROR(result)
 
-#ifndef NO_TASK
+#if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
     /*  the activate count is decreased
      */
@@ -125,7 +125,7 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
      */
     TRACE_TASK_TERMINATE(tpl_kern.running_id,tpl_kern.running_id)
     tpl_schedule_from_dying();
-# ifndef WITH_SYSTEM_CALL
+# if WITH_SYSTEM_CALL == NO
     if (tpl_kern.need_switch != NO_NEED_SWITCH)
     {
       tpl_switch_context(
@@ -172,7 +172,7 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   /* check access right */
   CHECK_ACCESS_RIGHTS_TASK_ID(task_id,result)
 
-#ifndef NO_TASK
+#if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
     /* the activate count is decreased
      */
@@ -187,7 +187,7 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
       /*  and let the scheduler do its job                            */
       TRACE_TASK_TERMINATE(tpl_kern.running_id,tpl_kern.running_id)
       tpl_schedule_from_dying();
-# ifndef WITH_SYSTEM_CALL
+# if WITH_SYSTEM_CALL == NO
       if (tpl_kern.need_switch != NO_NEED_SWITCH)
       {
         tpl_switch_context(NULL, &(tpl_kern.s_running->context));
@@ -230,7 +230,7 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
   /*  Check no resource is held by the calling task   */
   CHECK_RUNNING_OWNS_REZ_ERROR(result)
 
-#ifndef NO_TASK
+#if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
     /*  release the internal resource   */
     tpl_release_internal_resource(tpl_kern.running_id);
@@ -238,7 +238,7 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
     tpl_schedule_from_running();
     /*  get the internal resource       */
     tpl_get_internal_resource(tpl_kern.running_id);
-# ifndef WITH_SYSTEM_CALL
+# if WITH_SYSTEM_CALL == NO
     if (tpl_kern.need_switch != NO_NEED_SWITCH)
     {
       tpl_switch_context(
@@ -316,7 +316,7 @@ FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
   /* check access right */
   CHECK_ACCESS_RIGHTS_TASK_ID(task_id,result)
 
-#ifndef NO_TASK
+#if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
     *state = (tpl_dyn_proc_table[task_id]->state) & 0x3;
   IF_NO_EXTENDED_ERROR_END()

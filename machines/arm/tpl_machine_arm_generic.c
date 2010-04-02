@@ -27,7 +27,7 @@
 #include "tpl_os_application_def.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os.h"
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 #include "tpl_as_definitions.h"
 #endif
 #include "tpl_os_it.h"

@@ -29,9 +29,9 @@
 #include "tpl_os_kernel.h"
 #include "tpl_machine_interface.h"
 
-#ifndef WITH_SYSTEM_CALL
+#if WITH_SYSTEM_CALL == NO
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 #include "tpl_as_timing_protec.h"
 #endif
 

@@ -30,32 +30,5 @@
 
 #include "tpl_app_define.h"
 
-#ifndef SEND_MESSAGE_COUNT
-	#define SEND_MESSAGE_COUNT 0
-#endif
-#if SEND_MESSAGE_COUNT == 0
-/**
- * @def NO_SEND_MESSAGE
- *
- * When this flag is defined, this means there is no sending message object
- * defined in the system.
- */
-	#define NO_SEND_MESSAGE
-#endif
-
-#ifndef RECEIVE_MESSAGE_COUNT
-	#define RECEIVE_MESSAGE_COUNT 0
-#endif
-#if RECEIVE_MESSAGE_COUNT == 0
-/**
- * @def NO_RECEIVE_MESSAGE
- *
- * When this flag is defined, this means there is no sending message object
- * defined in the system.
- */
-	#define NO_RECEIVE_MESSAGE
-#endif
-
-
 /* TPL_COM_APP_DEF_H */
 #endif

@@ -28,8 +28,8 @@
 #include "tpl_os_application_def.h"
 #include "tpl_os_service_ids.h"
 
-#ifndef WITH_SYSTEM_CALL
-#error "This file should not be part of your project since WITH_SYSTEM_CALL is not defined"
+#if WITH_SYSTEM_CALL == NO
+#error "This file should not be part of your project since WITH_SYSTEM_CALL is NO"
 #endif
 
 #include "tpl_assembler.h"

@@ -15,10 +15,10 @@
 #include "tpl_os.h"
 #include "tpl_machine_interface.h"
 #include "tpl_os_application_def.h" /* define NO_ISR if needed. */
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 #include "tpl_as_timing_protec.h"
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 #include "tpl_as_isr_kernel.h"
 #include "tpl_os_kernel.h" /* for tpl_running_obj, tpl_call_terminate_process() */
 #include "tpl_as_definitions.h"
@@ -51,7 +51,7 @@ VAR(struct TPL_CONTEXT, OS_VAR) idle_task_context;
 extern VAR(tpl_bool, OS_VAR) tpl_user_task_lock;
 extern VAR(u32, OS_VAR) tpl_cpt_os_task_lock;
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 VAR(static struct timeval, OS_VAR) startup_time;
 #endif
 
@@ -71,7 +71,7 @@ void quit(int n)
     ShutdownOS(E_OK);  
 }
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 
 FUNC(void, OS_CODE) tpl_watchdog_callback(void)
 {
@@ -116,7 +116,7 @@ void tpl_cancel_watchdog(void)
 }
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
-#ifdef WITH_AUTOSAR_STACK_MONITORING
+#if WITH_AUTOSAR_STACK_MONITORING == YES
 FUNC(tpl_bool, OS_CODE) tpl_check_stack_pointer(
   CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
@@ -248,7 +248,7 @@ void tpl_get_task_lock(void)
     }
     tpl_locking_depth++;
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
     tpl_cpt_os_task_lock++;
 #endif
 }
@@ -262,7 +262,7 @@ void tpl_release_task_lock(void)
 	assert( tpl_locking_depth > 0 );
 	tpl_locking_depth--;
 	
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
     tpl_cpt_os_task_lock--;
 #endif
 
@@ -511,14 +511,14 @@ void tpl_init_machine(void)
     sigemptyset(&signal_set_all);
     sigemptyset(&signal_set_cat1and2);
     sigemptyset(&signal_set_cat2);
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
     sigaddset(&signal_set_all,SIGALRM);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-#if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
+#if ((WITH_AUTOSAR == YES) && (SCHEDTABLE_COUNT > 0)) || (ALARM_COUNT > 0)
     sigaddset(&signal_set_all,SIGUSR1);
     sigaddset(&signal_set_cat1and2,SIGUSR1);
 #endif /*(defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */
-#ifndef NO_ISR
+#if ISR_COUNT > 0
     sigaddset(&signal_set_all,SIGUSR2);
     sigaddset(&signal_set_cat1and2,SIGUSR2);
     sigaddset(&signal_set_cat2,SIGUSR2);
@@ -526,13 +526,13 @@ void tpl_init_machine(void)
     sa.sa_handler = tpl_signal_handler;
     sa.sa_mask = signal_set_all;
     sa.sa_flags = SA_RESTART;
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
     sigaction(SIGALRM,&sa,NULL);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-#if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)
+#if ((WITH_AUTOSAR == YES) && (SCHEDTABLE_COUNT > 0)) || (ALARM_COUNT > 0)
     sigaction(SIGUSR1,&sa,NULL);
 #endif /*(defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */
-#ifndef NO_ISR
+#if ISR_COUNT > 0
     sigaction(SIGUSR2,&sa,NULL);
 #endif
     
@@ -541,13 +541,13 @@ void tpl_init_machine(void)
     
     vp_ipc_ready(&viper);
     
-#if (defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || (!defined NO_ALARM)   
+#if ((WITH_AUTOSAR == YES) && (SCHEDTABLE_COUNT > 0)) || (ALARM_COUNT > 0)
     /* Initialize Timer depending on the oil file (if alarms or WITH_AUTOSAR && schedultables) */
     vp_ipc_write_reg(&viper, TIMER0_TIMER0_ENABLE, (reg_t)1);
     vp_ipc_signal_update(&viper, &global_shared_memory, TIMER0, TIMER0_ENABLE);
 #endif /*(defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */
     
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
     gettimeofday (&startup_time, NULL);  
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
     

@@ -612,7 +612,7 @@ extern CONST(TickType, OS_CONST) OSMINCYCLE_##counter_id
 
 
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 /**
  * @def HARDWARE_COUNTER
  *

@@ -28,10 +28,10 @@
 #include "tpl_os_custom_types.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os_kernel.h"
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 #include "tpl_as_timing_protec.h"
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 #include "tpl_as_isr_kernel.h"
 #endif /* WITH_AUTOSAR */
 
@@ -65,7 +65,7 @@ void tpl_shutdown ()
   while (1);
 }
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 
 void tpl_set_watchdog (tpl_time delay, tpl_watchdog_expire_function function)
 {
@@ -99,7 +99,7 @@ tpl_time tpl_get_local_current_date ()
 }
 #endif /* defined WITH_AUTOSAR_TIMING_PROTECTION */ 
 
-#ifdef WITH_AUTOSAR_STACK_MONITORING
+#if WITH_AUTOSAR_STACK_MONITORING == YES
 
 /* FIXME : needs update (tpl_proc_static) */
 u8 tpl_check_stack_pointer (tpl_exec_common *this_exec_obj)
