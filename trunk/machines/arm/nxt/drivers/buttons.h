@@ -24,8 +24,10 @@
 #ifndef BUTTONS_H
 #define BUTTONS_H
 
-extern void check_buttons_status(void);
-extern void InitButtons(void);
+#include "tpl_os_definitions.h"
+
+ISR(check_buttons_status);
+void InitButtons(void);
 
 #endif /* BUTTONS_H */
 

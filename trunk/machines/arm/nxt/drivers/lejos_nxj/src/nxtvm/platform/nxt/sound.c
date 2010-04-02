@@ -397,7 +397,7 @@ int sound_get_time()
     return 0;
 }
 
-void sound_isr_C()
+void sound_isr_C_function(void)
 {
     if (sample.count > 0)
     {
@@ -443,6 +443,6 @@ void sound_isr_C()
       sample.ptr = (U8 *)silence;
       sample.count = SILENCE_CNT;
       sample.len = 16;
-      sound_isr_C();
+      sound_isr_C_function();
     }
 }

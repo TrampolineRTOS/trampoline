@@ -21,11 +21,15 @@
  * $Author$
  * $URL$
  */
+
 #include "tpl_os.h"
+#include "tpl_os_it_kernel.h" //tpl_central_interrupt_handler_2
+
+#include "AT91SAM7.h"
 #include "ecrobot_interface.h" //ecrobot_status_monitor
 #include "ecrobot_private.h" //ecrobot_get_button_state, ecrobot_poll_nxtstate, ENTER_PRESSED...
-#include "tpl_os_it_kernel.h" //tpl_central_interrupt_handler_2
-#include "AT91SAM7.h"
+
+#include "buttons.h"
 
 extern void tpl_primary_irq_handler(void);
 
@@ -56,7 +60,7 @@ void InitButtons(void)
  * check buttons status every 10ms
  * See nxt_irq.c
  */
-void check_buttons_status(void)
+ISR(check_buttons_status)
 {
     
     /* Read status to confirm interrupt */

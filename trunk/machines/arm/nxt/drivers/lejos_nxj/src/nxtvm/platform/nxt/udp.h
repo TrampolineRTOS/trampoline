@@ -3,7 +3,7 @@
 
 #  include "mytypes.h"
 
-void udp_isr_C(void);
+void udp_isr_C_function(void);
 int udp_init(void);
 void udp_disable(void);
 void udp_enable(int reset);

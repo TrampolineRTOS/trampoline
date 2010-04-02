@@ -3,15 +3,6 @@
  *
  * @section desc File description
  *
- * This application is made of two tasks. The lower priority task1 is autostart.
- * It prints its name to the display, initialize the motorA to 50% of its speed
- * and do an infinit loop. task5 is connected to an alarm which is launched every
- * second. It increases motorB speed by 5% (as the type of the speed parameter 
- * is an 8 bits, once arrived to 256, it will change its sens) and prints its 
- * name to the display. The NXT buttons are connected to ISR2s thus if you press
- * the left, right or "orange" button, each ISR2s will print to the display the 
- * ISR2 name. The stop button shutdowns the Trampoline application.
- *
  * @section copyright Copyright
  *
  * Trampoline is copyright (c) IRCCyN 2005-2007
@@ -59,9 +50,7 @@ CPU test {
         APP_SRC = "nxt_simple.c"; 
         APP_NAME = "nxt_simple_exe";
         TRAMPOLINE_BASE_PATH = "../../../..";
-        // CFLAGS  = "-g -Wall -pedantic -Wformat -std=c99 -mcpu=arm7tdmi-s -Wmissing-field-initializers "; 
-        //TODO : Check if all the options are useful
-        CFLAGS = "-g -c -ffreestanding -fsigned-char -mcpu=arm7tdmi -Os -Winline -Wall -Werror-implicit-function-declaration --param max-inline-insns-single=1000 -ffunction-sections -fdata-sections -std=gnu99"; //-MD ";
+        CFLAGS = "-g -c -ffreestanding -fsigned-char -mcpu=arm7tdmi -Os -Winline -Wall -Werror-implicit-function-declaration --param max-inline-insns-single=1000 -ffunction-sections -fdata-sections -std=gnu99";
         ASFLAGS = "-g -mcpu=arm7tdmi-s --fatal-warnings ";
         LDFLAGS = "-g --cref --allow-multiple-definition --gc-sections";
         LDFLAGS = "-L/usr/local/crossgcc/lib/gcc/arm-elf/4.2.3 -lgcc -L/usr/local/crossgcc/arm-elf/lib -lc";
@@ -96,18 +85,18 @@ CPU test {
     };
     
     COUNTER SystemCounter {
-        SOURCE = it_timer1;
-       MAXALLOWEDVALUE = 2000;
-		TICKSPERBASE = 1;
-		MINCYCLE = 1; 
+      SOURCE = it_timer1;
+      MAXALLOWEDVALUE = 2000;
+      TICKSPERBASE = 1;
+      MINCYCLE = 1; 
     };
-	
-	ALARM Alarm1{
-		COUNTER = SystemCounter;
-		ACTION = ACTIVATETASK {
-			TASK = task5;
-		};
-        AUTOSTART = TRUE {
+
+    ALARM Alarm1{
+      COUNTER = SystemCounter;
+      ACTION = ACTIVATETASK {
+         TASK = task5;
+      };
+      AUTOSTART = TRUE {
             ALARMTIME = 2000;
             CYCLETIME = 1000; //each 1000 ms.
             APPMODE = std;
@@ -137,18 +126,6 @@ CPU test {
 		PRIORITY = 1;
 		SOURCE = button_right;
    };
-   APPLICATION app {
-       TRUSTED = FALSE;
-		TASK = task1;
-		TASK = task5;
-       ISR = isr_button_start;
-       ISR = isr_button_stop;
-       ISR = isr_button_left;
-       ISR = isr_button_right;
-       ALARM = Alarm1;
-       COUNTER = SystemCounter;
-   };
-
 };
 
 /* End of file nxt_simple.oil */

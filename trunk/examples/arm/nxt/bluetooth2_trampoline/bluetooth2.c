@@ -3,10 +3,6 @@
  *
  * @section desc File description
  *
- * This example is for a robot-car, made of 4 wheels (the 2 rear wheels are commanded by 2 motors).
- * Another motor (motorC) set the direction.
- * To turn left, set a motorC speed positive. To turn right, set a motorC speed negative.
- *
  * @section copyright Copyright
  *
  * Trampoline is copyright (c) IRCCyN 2005-2007

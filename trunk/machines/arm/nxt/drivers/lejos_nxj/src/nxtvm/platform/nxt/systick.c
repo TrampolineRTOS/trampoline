@@ -28,8 +28,7 @@ extern void systick_isr_entry(void);
 extern void systick_low_priority_entry(void);
 
 // Systick low priority
-void
-systick_low_priority_C(void)
+void systick_low_priority_C_function(void)
 {
   *AT91C_AIC_ICCR = (1 << LOW_PRIORITY_IRQ);
   nxt_avr_1kHz_update();
@@ -37,8 +36,7 @@ systick_low_priority_C(void)
 }
 
 // Called at 1000Hz
-void
-systick_isr_C(void)
+void systick_isr_C_function(void)
 {
   U32 status;
 

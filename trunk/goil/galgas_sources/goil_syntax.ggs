@@ -137,6 +137,17 @@ rule <start>:
     @implementation imp [emptyMap];
     @void     void_obj := [@void new !here];
     @root_obj cpu := void_root_obj[];
+
+    # includes a config.oil file if it exists
+    @string oilConfigFile := templateFilePath[!"config" !"config.oil"];
+    if oilConfigFile != "" then
+      #message "Including ".oilConfigFile."\n";
+      grammar goil_file_level_include in lstringWith[!oilConfigFile] !?imp !?cpu;
+      #message "I got:\n";
+      #log imp;
+      #log cpu;
+    end if;
+
     <file> !?imp !?cpu;
 
     # log imp;

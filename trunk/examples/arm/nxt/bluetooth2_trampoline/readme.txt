@@ -1,6 +1,5 @@
 THE APPLICATION:
-This application is made of two tasks. The lower priority task1 is autostart.
-It prints its name to the display, initialize the motorA to 50% of its speed and do an infinit loop. task5 is connected to an alarm which is launched every second. It increases motorB speed by 5% (as the type of the speed parameter is an 8 bits, once arrived to 256, it will change its sens) and prints its name to the display. The NXT buttons are connected to ISR2s thus if you press the left, right or "orange" button, each ISR2s will print to the display the ISR2 name. The stop button shutdowns the Trampoline application.
+This example is for a robot-car, made of 4 wheels (the 2 rear wheels are commanded by 2 motors). Another motor (motorC) set the direction. Set an angle to turn (between -50° and 50°). To turn left, set a motorC speed positive. To turn right, set a motorC speed negative. The stop button shutdowns the Trampoline application.
  
 IMPORTANT:
 Even if you don't need alarms, you have to connect the SystemCounter to it_timer1 source. It will check the buttons status every 100ms and you'll be able to connect ISRs (it's temporary).

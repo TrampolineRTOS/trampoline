@@ -8,7 +8,7 @@ void sound_interrupt_enable();
 void sound_interrupt_disable();
 void sound_enable();
 void sound_disable();
-void sound_isr_C();
+void sound_isr_C_function(void);
 
 void sound_freq(U32 freq, U32 ms);
 void sound_freq_vol(U32 freq, U32 ms, int vol);

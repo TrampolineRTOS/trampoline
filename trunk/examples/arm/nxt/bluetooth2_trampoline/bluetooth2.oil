@@ -3,10 +3,6 @@
  *
  * @section desc File description
  *
- * This example is for a robot-car, made of 4 wheels (the 2 rear wheels are commanded by 2 motors).
- * Another motor (motorC) set the direction.
- * To turn left, set a motorC speed positive. To turn right, set a motorC speed negative.
- *
  * @section copyright Copyright
  *
  * Trampoline is copyright (c) IRCCyN 2005-2007
@@ -55,8 +51,6 @@ CPU test {
         APP_SRC = "bluetooth2.c"; 
         APP_NAME = "tpl_bluetooth2";
         TRAMPOLINE_BASE_PATH = "../../../..";
-        // CFLAGS  = "-g -Wall -pedantic -Wformat -std=c99 -mcpu=arm7tdmi-s -Wmissing-field-initializers "; 
-        //TODO : Check if all the options are useful
         CFLAGS = "-g -c -ffreestanding -fsigned-char -mcpu=arm7tdmi -Os -Winline -Wall -Werror-implicit-function-declaration --param max-inline-insns-single=1000 -ffunction-sections -fdata-sections -std=gnu99"; //-MD ";
         ASFLAGS = "-g -mcpu=arm7tdmi-s --fatal-warnings ";
         LDFLAGS = "-g --cref --allow-multiple-definition --gc-sections";

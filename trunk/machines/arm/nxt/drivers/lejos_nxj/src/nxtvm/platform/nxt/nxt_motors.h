@@ -5,6 +5,8 @@
 
 #  define NXT_N_MOTORS 3
 
+void nxt_motor_isr_C_function(void);
+
 int nxt_motor_get_count(U32 n);
 void nxt_motor_set_count(U32 n, int count);
 

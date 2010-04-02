@@ -108,8 +108,7 @@ nxt_motor_quad_decode(struct motor_struct *m, U32 value)
 
 extern void nxt_motor_isr_entry(void);
 
-void
-nxt_motor_isr_C(void)
+void nxt_motor_isr_C_function(void)
 {
   U32 i_state = interrupts_get_and_disable();
 
