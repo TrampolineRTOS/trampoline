@@ -28,20 +28,14 @@
 #
 #kernel OS architecture dependant files
 
-SOURCES += tpl_machine_arm_generic.c \
-tpl_irq.S \
-tpl_system_call.S \
-tpl_stacks.S \
-tpl_vector_table.s \
-tpl_invoque.S \
-olimex_tpl_sleep.S \
+include $(MACHINE_PATH)/arm/Makefile.generic
+
+SOURCES += olimex_tpl_sleep.S \
 olimex_bootstrap_stage1.S \
 olimex_bootstrap_stage2.c \
 olimex_tpl_stubs.c \
 olimex_irq.c \
 olimex_exception_catch.S
-
-TEMP_SOURCE_DIRS += $(MACHINE_PATH)/..
 
 ##########
 # Drivers

@@ -28,21 +28,14 @@
 #
 #kernel OS architecture dependant files
 
-SOURCES += tpl_machine_arm_generic.c \
-tpl_irq.S \
-tpl_system_call.S \
-tpl_stacks.S \
-tpl_invoque.S \
-nxt_tpl_sleep.S \
+include $(MACHINE_PATH)/arm/Makefile.generic
+
+SOURCES += nxt_tpl_sleep.S \
 nxt_tpl_stubs.c \
 nxt_irq.c \
 nxt_exception_catch.S \
-tpl_vector_table.s \
 nxt_bootstrap_stage1.S \
 nxt_exception_catch.c
-
-TEMP_SOURCE_DIRS += $(MACHINE_PATH)/..
-
 
 ########
 # The NXT brick is waited for a specific file header which is in the driver files
