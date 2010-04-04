@@ -75,12 +75,12 @@ FUNC(void, OS_CODE) ShutdownOS(
 
 FUNC(void, OS_CODE) CallTerminateTask(void)
 {
-  tpl_call_terminate_task_service(void);
+  tpl_call_terminate_task_service();
 }
 
 FUNC(void, OS_CODE) CallTerminateISR2(void)
 {
-  tpl_call_terminate_isr2_service(void);
+  tpl_call_terminate_isr2_service();
 }
 
 #define API_STOP_SEC_CODE
