@@ -212,7 +212,7 @@ void send_viper_command(vp_command *i_com)
   }
 }
 
-void tpl_viper_start_one_shot_timer(int sig, useconds_t delay)
+void tpl_viper_start_one_shot_timer(int sig, unsigned long delay)
 {
     vp_command command_to_send;
     
@@ -224,7 +224,7 @@ void tpl_viper_start_one_shot_timer(int sig, useconds_t delay)
     send_viper_command(&command_to_send);
 }
 
-void tpl_viper_start_auto_timer(int sig, useconds_t delay)
+void tpl_viper_start_auto_timer(int sig, unsigned long delay)
 {
     vp_command command_to_send;
     

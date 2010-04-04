@@ -18,14 +18,9 @@
 #define TPL_VIPER_INTERFACE_H
 
 
-#ifndef _XOPEN_SOURCE
-#define _XOPEN_SOURCE 600
-#endif
-#include <unistd.h>
-
 extern void tpl_viper_init(void);
-extern void tpl_viper_start_one_shot_timer(int sig, useconds_t delay);
-extern void tpl_viper_start_auto_timer(int sig, useconds_t delay);
+extern void tpl_viper_start_one_shot_timer(int sig, unsigned long delay);
+extern void tpl_viper_start_auto_timer(int sig, unsigned long delay);
 extern int  tpl_viper_get_motor_pos(int motor);
 extern void tpl_viper_set_motor_csg(int motor, int csg);
 

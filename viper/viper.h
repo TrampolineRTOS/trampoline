@@ -12,7 +12,7 @@
 
 /* define required by Linux. */
 #ifndef _XOPEN_SOURCE
-#define _XOPEN_SOURCE 500
+#define _XOPEN_SOURCE 600
 #endif
 #include <unistd.h>
 #include <sys/types.h>
@@ -31,9 +31,9 @@
 #define AUTO		1
 
 struct VP_TIMER_PARAM {
-	int			type;   /*  ONE_SHOT or AUTO					*/
-	useconds_t  delay;  /*  delay of the timer in microseconds  */
-	int			sig;	/*  signal to send						*/
+	int            type;  /*  ONE_SHOT or AUTO					*/
+	unsigned long  delay; /*  delay of the timer in microseconds  */
+	int            sig;   /*  signal to send						*/
 };
 
 struct VP_EVENT_PARAM {
