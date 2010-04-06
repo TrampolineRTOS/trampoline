@@ -260,7 +260,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
     /* Does not check the mess_id in this case */
 #   define CHECK_NOT_ZERO_LENGTH_SEND(mess_id,result)
 #else
-#ifdef WITH_EXTERNAL_COM
+#if WITH_EXTERNAL_COM == YES
 #   define CHECK_NOT_ZERO_LENGTH_SEND(mess_id,result)   \
     if (result == E_OK &&                               \
         tpl_send_message_table[mess_id]->sender ==      \
@@ -290,7 +290,7 @@ extern tpl_com_service_call_descriptor tpl_com_service;
     /* Does not check the mess_id in this case */
 #   define CHECK_ZERO_LENGTH_SEND(mess_id,result)
 #else
-#ifdef WITH_EXTERNAL_COM
+#if WITH_EXTERNAL_COM == YES
 #   define CHECK_ZERO_LENGTH_SEND(mess_id,result)       \
     if (result == E_OK &&                               \
         tpl_send_message_table[mess_id]->sender !=      \

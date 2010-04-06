@@ -42,7 +42,7 @@
 #include "tpl_os_it_kernel.h"
 
 /* AUTOSAR includes */
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 #include "tpl_as_error.h"
 #include "tpl_as_isr.h"
 #include "tpl_as_protec_hook.h"

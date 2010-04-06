@@ -149,7 +149,7 @@ void WaitActivationOneShotAlarm(AlarmType Alarm){
 	
 }
 
-#endif /* NO_ALARM */
+#endif /* ALARM_COUNT > 0 */
 
 #if (COUNTER_COUNT > 0) && (WITH_AUTOSAR == YES)
 

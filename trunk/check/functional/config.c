@@ -32,13 +32,15 @@
  * $URL$
  */
 
-#ifdef WITH_AUTOSAR
+#include "tpl_app_define.h"
+
+#if WITH_AUTOSAR == YES
 	#include "Os.h"
 #else
 	#include "tpl_os.h"
 #endif
 
-#ifndef NO_ALARM
+#if ALARM_COUNT > 0
 	#include "tpl_os_timeobj_kernel.h"
 #endif
 

@@ -51,7 +51,7 @@ typedef enum
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-#ifdef WITH_PROTECTION_HOOK
+#if WITH_PROTECTION_HOOK == YES
 /**
  * User protection hook callback function.
  *
