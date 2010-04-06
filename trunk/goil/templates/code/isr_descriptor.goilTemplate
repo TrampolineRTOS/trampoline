@@ -17,7 +17,7 @@ FUNC(void, OS_APPL_CODE) % !NAME %_function(void);
 template process_specific
 %
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 %
@@ -52,7 +52,7 @@ CONST(tpl_proc_static, OS_CONST) % !NAME %_isr_stat_desc = {
   /* entry point (function)   */  % !NAME %_function,
   /* internal ressource       */  NULL,
   /* ISR id                   */  % !NAME %_id,
-#ifdef WITH_OSAPPLICATION
+#if WITH_OSAPPLICATION == YES
   /* OS application id        */  %
 if AUTOSAR then
   if SCALABILITYCLASS >= 3 then
@@ -64,7 +64,7 @@ end if
   /* task base priority       */  % !PRIORITY %,
   /* max activation count     */  % !ACTIVATION %,
   /* task type                */  IS_ROUTINE,
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /* pointer to the timing
      protection descriptor    */  $TIMING_PROT_REF$
 #endif
@@ -101,7 +101,7 @@ end if
   /* activate count                 */  0,
   /* ISR priority                   */  % !PRIORITY %,
   /* ISR state                      */  SUSPENDED,
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /* activation allowed             */  ,TRUE
 #endif
 };

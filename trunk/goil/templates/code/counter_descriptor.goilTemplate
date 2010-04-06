@@ -36,7 +36,7 @@ if AUTOSAR then
     /* type the counter     */  % !TYPE %,%
 end if
 %
-#ifdef WITH_OSAPPLICATION
+#if WITH_OSAPPLICATION == YES
     /* OS Application id    */  %
 if AUTOSAR then
   if SCALABILITYCLASS >= 3 then
