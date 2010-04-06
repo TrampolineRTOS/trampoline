@@ -55,7 +55,7 @@ FUNC(void,AUTOMATIC) tpl_trigger_sw_it(void);
 
 TASK(iamsolonely)
 {
-	tpl_trigger_sw_it();
+	//tpl_trigger_sw_it();
 	TerminateTask();
 }
 #define APP_Task_iamsolonely_STOP_SEC_CODE
