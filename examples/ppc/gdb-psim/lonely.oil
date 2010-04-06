@@ -1,3 +1,6 @@
+//export PATH=$PATH:/usr/local/powerpc/bin/
+//first generate Makefile with:
+//goil --generate-makefile --target=ppc/psim --templates=../../../goil/templates/ -i  lonely.oil
 OIL_VERSION = "2.5" : "test" ;
 
 IMPLEMENTATION trampoline {
