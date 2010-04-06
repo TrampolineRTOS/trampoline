@@ -31,7 +31,7 @@
 /******************************************************************************/
 #include "Platform_Types.h"
 
-#ifdef WITH_COMPILE_SETTINGS
+#if WITH_COMPILE_SETTINGS == YES
 #include "Compiler.h"
 #endif
 

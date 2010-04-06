@@ -28,15 +28,15 @@
 #include "tpl_machine_interface.h"
 #include "tpl_os_custom_types.h"
 #include "tpl_os_definitions.h"
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 #include "tpl_as_timing_protec.h"
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 #include "tpl_as_isr_kernel.h"
 #include "tpl_os_kernel.h"
 #endif /* WITH_AUTOSAR */
 
-#ifdef WITH_MEMORY_PROTECTION
+#if WITH_MEMORY_PROTECTION == YES
 #include "apf27_mem_prot.h"
 #endif /* WITH_MEMORY_PROTECTION */
 
@@ -112,7 +112,7 @@ FUNC(void, OS_CODE) tpl_arm_subarch_irq_handler ()
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -157,7 +157,7 @@ FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
 #include "tpl_memmap.h"
 #endif /* defined WITH_AUTOSAR */
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -193,7 +193,7 @@ FUNC(tpl_time, OS_CODE) tpl_get_local_current_date ()
 
 #endif /* defined WITH_AUTOSAR_TIMING_PROTECTION */
 
-#ifdef WITH_AUTOSAR_STACK_MONITORING
+#if WITH_AUTOSAR_STACK_MONITORING == YES
 /* FIXME : needs update (tpl_proc_static) */
 
 #define OS_START_SEC_CODE

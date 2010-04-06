@@ -31,7 +31,7 @@
 #define E_COM_NOMSG     20
 #define E_COM_FILTEREDOUT 21
 
-#ifdef WITH_EXTERNAL_COM
+#if WITH_EXTERNAL_COM == YES
 /*
  * message type
  */

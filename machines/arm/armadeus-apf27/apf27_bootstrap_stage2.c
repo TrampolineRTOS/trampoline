@@ -28,10 +28,10 @@
 #include "tpl_machine_interface.h"
 #include "tpl_os_custom_types.h"
 #include "tpl_os_definitions.h"
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 #include "tpl_as_timing_protec.h"
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 #include "tpl_as_isr_kernel.h"
 #include "tpl_os_kernel.h"
 #endif /* WITH_AUTOSAR */

@@ -212,7 +212,7 @@ FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
 #endif
 
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"

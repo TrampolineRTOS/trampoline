@@ -27,7 +27,7 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-#ifdef WITH_AUTOSAR_STACK_MONITORING
+#if WITH_AUTOSAR_STACK_MONITORING == YES
 FUNC(void, OS_CODE) tpl_check_stack (
   CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {

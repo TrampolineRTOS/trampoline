@@ -22,7 +22,7 @@
 #include "tpl_com_app_def.h"
 #include "tpl_com_errorhook.h" /*added by Florent 090303*/
 
-/*#ifdef COM_EXTENDED*/
+/*#if COM_EXTENDED == YES*/
 #include "tpl_com_internal_com.h"
 /*#endif*/
 

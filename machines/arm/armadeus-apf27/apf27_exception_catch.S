@@ -27,7 +27,7 @@
 #include "tpl_os_application_def.h"
 
 /* TODO: to be added for memory protection 
-#ifdef WITH_AUTOSAR
+#if WITH_AUTOSAR == YES
 #include "../autosar/tpl_as_definitions.h"
 #include "../autosar/tpl_as_protec_hook.h"
 #endif
