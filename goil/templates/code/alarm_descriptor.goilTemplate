@@ -25,7 +25,7 @@ CONST(tpl_alarm_static, OS_CONST) % !NAME %_static = {
 #if (WITH_TRACE == YES)
     /* id of the alarm for tracing  */  , % !NAME %_id
 #endif
-#ifdef WITH_OSAPPLICATION
+#if WITH_OSAPPLICATION == YES
     /* OS application id            */  , %
 if AUTOSAR then
   if SCALABILITYCLASS >= 3 then

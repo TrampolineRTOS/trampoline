@@ -17,7 +17,7 @@ FUNC(void, OS_APPL_CODE) % !NAME %_function(void);
 template process_specific
 %
 
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 %
@@ -61,7 +61,7 @@ else
 end if
 %
   /* task id                  */  % !NAME %_id,
-#ifdef WITH_OSAPPLICATION
+#if WITH_OSAPPLICATION == YES
   /* OS application id        */  %
 if AUTOSAR then
   if SCALABILITYCLASS >= 3 then
@@ -83,7 +83,7 @@ else
   %BASIC,%
 end if
 %
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /* pointer to the timing
      protection descriptor    */  $TIMING_PROT_REF$
 #endif
@@ -120,7 +120,7 @@ else
   %SUSPENDED%
 end if 
 %
-#ifdef WITH_AUTOSAR_TIMING_PROTECTION
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
     /* activation allowed             */  ,TRUE
 #endif
 };
