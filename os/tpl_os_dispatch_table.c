@@ -79,8 +79,6 @@ CONST(tpl_system_call, OS_CONST) tpl_dispatch_table[OS_SYSCALL_COUNT] = {
     (tpl_system_call) tpl_get_active_application_mode_service,
     (tpl_system_call) tpl_start_os_service,
     (tpl_system_call) tpl_shutdown_os_service,
-/* isr services */
-    (tpl_system_call) tpl_terminate_isr2_service,
 /* terminate process services */
     (tpl_system_call) tpl_call_terminate_task_service,
     (tpl_system_call) tpl_call_terminate_isr2_service

@@ -97,16 +97,6 @@ FUNC(void, OS_CODE) ResumeOSInterrupts(void);
  */
 FUNC(void, OS_CODE) SuspendOSInterrupts(void);
 
-
-/**
- * Additional non-standard system service to terminate a category 2 interrupt
- * routine.
- *
- * This service is equivalent to TerminateTask but for ISR2
- */
-FUNC(StatusType, OS_CODE) TerminateISR(void);
-
-
 #define API_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
