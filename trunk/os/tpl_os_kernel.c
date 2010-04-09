@@ -1382,7 +1382,7 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
 }
 
 FUNC(void, OS_CODE) tpl_call_terminate_task_service(void)
-{
+{  
   if (FALSE != tpl_get_interrupt_lock_status())  
   {                                           
       /*enable interrupts :*/
@@ -1399,13 +1399,17 @@ FUNC(void, OS_CODE) tpl_call_terminate_task_service(void)
   
   /*terminate the task :*/
   tpl_terminate_task_service();
+  
 }
 
 FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
 {
   /*  init the error to no error  */
   VAR(StatusType, AUTOMATIC) result = E_OK;
-
+  
+  /*  lock the task structures    */
+  LOCK_KERNEL()
+  
   /* enable interrupts if disabled */
   if (FALSE != tpl_get_interrupt_lock_status() )  
   {
@@ -1422,6 +1426,10 @@ FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
   PROCESS_ERROR(result);  /* store terminateISR service id before hook ?*/
 
   tpl_terminate_isr2_service();
+  
+  /*  unlock the task structures  */
+  UNLOCK_KERNEL()
+  
 }
 
 #define OS_STOP_SEC_CODE

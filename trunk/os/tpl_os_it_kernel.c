@@ -216,13 +216,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
   /*  init the error to no error  */
   VAR(tpl_status, AUTOMATIC) result = E_OK;
   
-  /*  lock the task structures    */
-  LOCK_KERNEL()
-
   CHECK_INTERRUPT_LOCK(result)
-
-  /*  store information for error hook routine    */
-  STORE_SERVICE(OSServiceId_TerminateISR)
   
   /*  check we are at the ISR2 level  */
   CHECK_ISR2_CALL_LEVEL_ERROR(result)
@@ -251,10 +245,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
 #endif
    
   PROCESS_ERROR(result)
-  
-  /*  unlock the task structures  */
-  UNLOCK_KERNEL()
-  
+    
   return result;
 }
 

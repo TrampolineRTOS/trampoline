@@ -345,69 +345,24 @@ FUNC(void, OS_CODE) tpl_init_context(
 
 void tpl_osek_func_stub( tpl_proc_id task_id )
 {
-    tpl_proc_function func = tpl_stat_proc_table[task_id]->entry;
-    tpl_proc_type     type = tpl_stat_proc_table[task_id]->type;
-#if WITH_AUTOSAR == YES
-	/*  init the error to no error  */
-	VAR(StatusType, AUTOMATIC) result = E_OK;
-#endif /* WITH_AUTOSAR */
+  tpl_proc_function func = tpl_stat_proc_table[task_id]->entry;
+  tpl_proc_type     type = tpl_stat_proc_table[task_id]->type;
   
-    /* Avoid signal blocking due to a previous call to tpl_init_context in a OS_ISR2 context. */
+  /* Avoid signal blocking due to a previous call to tpl_init_context in a OS_ISR2 context. */
 	tpl_release_task_lock();
     
-    (*func)();
+  (*func)();
     
-	/* If old process is an ISR2, call TerminateISR2 (in AUTOSAR : enable interrupts and release
-	   resources, calling the errorhook (if configured), if needed).
-	   If old process is a task :
-	   - OSEK : error
-	   - AUTOSAR : terminate the task calling errorhook (if configured) and enable interrupts
-	   and release resources, if needed
-	 */
-    if (type == IS_ROUTINE) {
-	#if WITH_AUTOSAR == YES
-		/* enable interrupts if disabled */
-		if(FALSE!=tpl_get_interrupt_lock_status())  
-	    {
-			tpl_reset_interrupt_lock_status();
-			/*tpl_enable_interrupts(); now ?? or wait until TerminateISR reschedule and interrupts enabled returning previous API service call OR by signal_handler.*/
-			result = E_OS_DISABLEDINT;
-		}
-		/* release resources if held */
-		if( (tpl_kern.running->resources) != NULL ){
-			tpl_release_all_resources(tpl_kern.running_id);
-			result = E_OS_RESOURCE;
-		}
-		
-		PROCESS_ERROR(result);  /* store terminateISR service id before hook ?*/
-	#endif /* WITH_AUTOSAR */
-		TerminateISR();
-    }
-    else {
-
-	#if WITH_AUTOSAR == YES
-		/* enable interrupts if disabled */
-		if(FALSE!=tpl_get_interrupt_lock_status())  
-		{                                           
-			tpl_reset_interrupt_lock_status();
-			/*tpl_enable_interrupts(); now ?? or wait until TerminateISR reschedule and interrupts enabled returning previous API service call OR by signal_handler.*/
-		}
-		/* release resources if held */
-		if( (tpl_kern.running->resources) != NULL ){
-			tpl_release_all_resources(tpl_kern.running_id);
-		}
-		
-		/* error hook*/
-		PROCESS_ERROR(E_OS_MISSINGEND); /* store terminatetask service id before hook ?*/
-
-		/* terminate the task */
-		tpl_terminate_task_service();
-	#endif /* WITH_AUTOSAR */ 
-		
-		/*should never come here because the task has to be terminated by the OS*/
-        fprintf(stderr, "[OSEK/VDX Spec. 2.2.3 Sec. 4.7] Ending the task without a call to TerminateTask or ChainTask is strictly forbidden and causes undefined behaviour.\n");
-        exit(1);
-    }
+  /* Terminate Task/ISR*/
+  if (type == IS_ROUTINE) {
+    CallTerminateISR2();
+  }
+  else
+  {
+    CallTerminateTask();
+    fprintf(stderr, "[OSEK/VDX Spec. 2.2.3 Sec. 4.7] Ending the task without a call to TerminateTask or ChainTask is strictly forbidden and causes undefined behaviour.\n");
+    exit(1);
+  }
 }
 
 /**

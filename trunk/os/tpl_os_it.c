@@ -38,16 +38,6 @@
 #define API_START_SEC_CODE
 #include "tpl_memmap.h"
 
-/*
- * TerminateISR
- *
- * While this function is not part of the OSEK API, it is used
- * to terminate an ISR2 routine
- */
-FUNC(StatusType, OS_CODE) TerminateISR(void)
-{
-    return tpl_terminate_isr2_service();
-}
 
 /*
  * Enable all interrupts

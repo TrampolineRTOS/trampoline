@@ -29,7 +29,7 @@
 #include "tpl_os_service_ids.h"
 
 #if WITH_SYSTEM_CALL == NO
-#error "This file should not be part of your project since WITH_SYSTEM_CALL is NO"
+#error "This file should not be part of your project since WITH_SYSTEM_CALL is not defined"
 #endif
 
 
@@ -189,12 +189,6 @@ tpl_start_os:
 ShutdownOS:
   mov r3, #OSServiceId_ShutdownOS
   swi #OSServiceId_ShutdownOS
-  mov pc, lr
-
-  .global TerminateISR
-TerminateISR:
-  mov r3, #OSServiceId_TerminateISR
-  swi #OSServiceId_TerminateISR
   mov pc, lr
 
   .global CallTerminateTask
