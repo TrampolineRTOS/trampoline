@@ -168,17 +168,51 @@ function templateFilePath
   @stringlist components := [[option goil_options.target_platform value] componentsSeparatedByString !"/"];
   @string templateDir := templates_directory[!prefix];
   @bool notFound := true;
+  @bool notOver := true;
   path := "";
   
-  loop [components length]:
-  while notFound & [components length] > 0 do
-    @string targetPath := templateDir.[@string componentsJoinedByString !components !"/"]."/".file;
+  loop [components length]+1:
+  while notFound & notOver do
+    @string intermediatePath := [@string componentsJoinedByString !components !"/"];
+    if intermediatePath != "" then intermediatePath .= "/"; end if;
+    @string targetPath := templateDir.intermediatePath.file;
 #    message "Checking ".targetPath."\n";
     if [targetPath fileExists] then
       notFound := false;
       path := targetPath;
     end if;
-    [!?components popLast ?*];
+    if [components length] > 0 then
+      [!?components popLast ?*];
+    else
+      notOver := false;
+    end if;
+  end loop;
+end function;
+
+function allTemplateFilePaths
+  ??@string prefix
+  ??@string file
+  ->@stringlist paths
+:
+  @stringlist components := [[option goil_options.target_platform value] componentsSeparatedByString !"/"];
+  @string templateDir := templates_directory[!prefix];
+  @bool notOver := true;
+  paths := [@stringlist emptyList];
+  
+  loop [components length]+1:
+  while notOver do
+    @string intermediatePath := [@string componentsJoinedByString !components !"/"];
+    if intermediatePath != "" then intermediatePath .= "/"; end if;
+    @string targetPath := templateDir.intermediatePath.file;
+#    message "Checking ".targetPath."\n";
+    if [targetPath fileExists] then
+      paths += !targetPath;
+    end if;
+    if [components length] > 0 then
+      [!?components popLast ?*];
+    else
+      notOver := false;
+    end if;
   end loop;
 end function;
 

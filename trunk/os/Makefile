@@ -26,7 +26,7 @@ SOURCES += tpl_os_timeobj_kernel.c
 SOURCES += tpl_os_kernel.c
 SOURCES += tpl_os_action.c
 SOURCES += tpl_os_error.c
-SOURCES += tpl_os_dispatch_table.c
+#SOURCES += tpl_os_dispatch_table.c
 SOURCES += tpl_os.c
 
 ifeq ($(strip $(WITH_SYSTEM_CALL)),false)

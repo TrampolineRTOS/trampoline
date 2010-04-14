@@ -425,7 +425,7 @@ FUNC(tpl_status, OS_CODE) tpl_sync_schedule_table_service(
  * @retval  E_OS_ID     invalid schedule table id, or the schedule table
  *                      is not configured as explicit synchronized
  */
-FUNC(tpl_status, OS_CODE) tpl_set_schedule_table_async(
+FUNC(tpl_status, OS_CODE) tpl_set_schedule_table_async_service(
     VAR(tpl_schedtable_id, AUTOMATIC)   sched_table_id
 );
 

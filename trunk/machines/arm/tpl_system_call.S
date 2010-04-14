@@ -97,7 +97,7 @@ tpl_primary_syscall_handler:
     /* WARNING : r3 should not be altered until here
      * as it is used to give the service identifier while calling swi
      */
-    cmp r3, #OS_SYSCALL_COUNT
+    cmp r3, #SYSCALL_COUNT
     bhs invalid_service_id
 
     /* get the appropriate system call address into R3 */

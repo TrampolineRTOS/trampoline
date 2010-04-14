@@ -100,6 +100,8 @@ rule <template_instruction>
     end if;
   when listType :
     error here : "a list expression cannot be emitted";
+  when structType :
+    error here : "a struct expression cannot be emitted";
   end switch;    
 end rule;
 
@@ -131,8 +133,8 @@ rule <template_instruction>
   if [templateVariableMap hasKey !"FILEPATH"] then
     [!?templateVariableMap removeKey !lstringWith[!"FILEPATH"] ?* ?*];
   end if;
-  @goilTemplateValue fileName := [@goilTemplateValue new !0L ![[expression mStringValue] lastPathComponent] ![@goilTemplateFieldMapList emptyList]];
-  @goilTemplateValue nativeFilePath := [@goilTemplateValue new !0L ![[expression mStringValue] nativePathWithUnixPath] ![@goilTemplateFieldMapList emptyList]];
+  @goilTemplateValue fileName := valueWithString[![[expression mStringValue] lastPathComponent]];
+  @goilTemplateValue nativeFilePath := valueWithString[![[expression mStringValue] nativePathWithUnixPath]];
   [!?templateVariableMap insertKey !lstringWith[!"FILENAME"] !expressionType !fileName];
   [!?templateVariableMap insertKey !lstringWith[!"FILEPATH"] !expressionType !nativeFilePath];
   @location fileNameLocation := here;
@@ -250,7 +252,7 @@ rule <template_instruction>
   [!?ioTemplateVariableMap insertKey
     !columnConstantName
     ![@goilTemplateType stringType]
-    ![@goilTemplateValue new !0L !value ![@goilTemplateFieldMapList emptyList]]
+    !valueWithString[!value]
   ];
 end rule;
 
@@ -498,7 +500,7 @@ rule <template_instruction>
         [!?templateVariableMap insertKey
           ![@lstring new !mPrefix . [key string] ![key location]]
           !mType
-          ![@goilTemplateValue new !mUnsigned64Value !mStringValue !mListValue]
+          ![@goilTemplateValue new !mUnsigned64Value !mStringValue !mListValue !mStructValue]
         ];
       end foreach;
     end foreach;
@@ -808,7 +810,7 @@ rule <template_instruction>
         error variableName: "list type expected";
       else
         @goilTemplateFieldMap fieldMap [emptyMap];
-        [!?fieldMap insertKey ![@lstring new !"NAME" !here] !expressionType !0L ![enumeratedValue mStringValue] ![@goilTemplateFieldMapList emptyList]];
+        [!?fieldMap insertKey ![@lstring new !"NAME" !here] !expressionType !0L ![enumeratedValue mStringValue] ![@goilTemplateFieldMapList emptyList] ![@goilTemplateFieldMap emptyMap]];
         variableValue.mMapListValue += !fieldMap;
         [!?ioTemplateVariableMap setMTypeForKey !variableType ![variableName string]];
         [!?ioTemplateVariableMap setMValueForKey !variableValue ![variableName string]];

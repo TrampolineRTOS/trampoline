@@ -1,0 +1,71 @@
+#
+# Goil system generator
+#
+# Goil is a part of Trampoline project
+# Goil is copyright (c) IRCCyN 2005+
+#
+# This software is distributed under the GNU Public Licence v2
+#
+# api description scanner
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+lexique api_scanner :
+
+style identifierStyle -> "Identifiers:";
+style delimitersStyle -> "Delimiters:";
+style commentStyle -> "Comments:";
+
+@string att_token;
+
+#----------------------- comments -------------------------------
+# They must be defined before delimitors!! 
+# '/' is a delimitor.
+$comment$ error message "a comment" style commentStyle;
+rule "//" :
+  repeat #accept all except 0xA (LF) and 0xD (CR)
+  while '\u0001'->'\u0009' | '\u000B'| '\u000C'| '\u000E' -> '\uFFFD' : 
+  end repeat;
+  drop $comment$;
+end rule;
+
+message unterminated_comment_error : "unterminated comment";
+
+rule "/*" :
+  repeat
+  while ~ "*/" error unterminated_comment_error :
+  end repeat;
+  drop $comment$;
+end rule;
+
+#--------------------- Identifiers --------------------------
+$idf$ !att_token error message "identifier" style identifierStyle;
+
+rule 'a'->'z' | 'A'->'Z' :
+  repeat
+    enterCharacterIntoString !?att_token !*;
+  while 'a'->'z' | 'A'->'Z' | '_' | '0'->'9' :
+  end repeat;
+  send $idf$;
+end rule;
+
+#
+# List of delimiters
+#
+list delimiters error message "'%K' delimiter" style delimitersStyle:
+  ";", "{", "}", "->", "(", ")";
+
+rule list delimiters;
+
+#
+# Eat whitespaces
+#
+rule '\u0001'->' ':
+end rule;
+
+end lexique;
+# vim:ft=ggs:ts=4:sw=4

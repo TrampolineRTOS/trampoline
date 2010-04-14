@@ -28,7 +28,7 @@
 #define TPL_AS_ERROR_H
 
 #include "tpl_os_error.h"
-#include "tpl_as_service_ids.h"
+#include "tpl_service_ids.h"
 
 /**
  * @def OSError_CheckObjectAccess_ApplicationID

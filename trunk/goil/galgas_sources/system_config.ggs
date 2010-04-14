@@ -1569,6 +1569,8 @@ routine scalabilityClass
   sc := 0L;
   useTimingProtection := false;
   useProtectionHook := false;
+  @bool useGlobalTime := false;
+  
   @bool useOSApplication := false;
   if [option goil_options.autosar_on value] then
     foreach [cpu tasks] do
@@ -1583,21 +1585,31 @@ routine scalabilityClass
       else end cast;
     end foreach;
     
+    foreach [cpu scheduletables] do
+      cast [scheduletable ltgt_sync]:
+      when == @ltgt_sync_true do useGlobalTime := true;
+      else end cast;
+    end foreach;
+    
     useOSApplication := [[cpu applis] count] > 0;
       
     cast [[cpu os] protectionhook]:
     when == @bool_class ph do
       useProtectionHook := [ph value];
     else end cast;
+    
+    
+    
     # by default, we are in SC1
     sc := 1L;
     @string setSC := [[[cpu os] scalabilityclass] string];
     if setSC == "" | setSC == "AUTO" then
 
       # if protectionhook is set or
-      # at least one task or ISR uses timing protection then
+      # at least one task or ISR uses timing protection or
+      # if global time sync is used then
       # we are in sc2
-      if useTimingProtection | useProtectionHook then
+      if useTimingProtection | useProtectionHook | useGlobalTime then
         sc := 2L;
       end if;
       

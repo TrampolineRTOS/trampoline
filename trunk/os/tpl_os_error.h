@@ -27,7 +27,7 @@
 #define TPL_OS_ERROR_H
 
 #include "tpl_os_types.h"
-#include "tpl_os_service_ids.h"
+#include "tpl_service_ids.h"
 
 #if WITH_AUTOSAR == YES
 #include "tpl_os_timeobj_kernel.h"

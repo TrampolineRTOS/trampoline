@@ -35,6 +35,13 @@ project all_goil :
   semantics "template_routines.ggs"          : makefile, xcode_tool;
   semantics "template_functions.ggs"         : makefile, xcode_tool;
 
+  #
+  # API configuration file
+  #
+  lexique   "api_scanner.gLexique"  : makefile, xcode_tool;
+  syntax    "api_parser.gSyntax"    : makefile, xcode_tool;
+  grammar   "api_grammar.gGrammar"  : makefile, xcode_tool;
+  
   lexique   "goil_lexique.gLexique"   : makefile, xcode_tool, xcode_app;
   option    "goil_options.gOption"    : makefile, xcode_tool, xcode_app;
   syntax    "goil_syntax.ggs"         : makefile, xcode_tool;

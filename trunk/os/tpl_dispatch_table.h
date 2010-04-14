@@ -1,5 +1,5 @@
 /*
- *  @file tpl_os_dispatch_table.h
+ *  @file tpl_dispatch_table.h
  *
  * @section desc File description
  *
@@ -27,13 +27,11 @@
  * $URL$
  */
 
-#ifndef TPL_OS_DISPATCH_TABLE_H
-#define TPL_OS_DISPATCH_TABLE_H
+#ifndef TPL_DISPATCH_TABLE_H
+#define TPL_DISPATCH_TABLE_H
 
-#include "tpl_os_service_ids.h"
+#include "tpl_service_ids.h"
 #include "tpl_compiler.h"
-
-#define SYSCALL_COUNT   OS_SYSCALL_COUNT
 
 typedef void (* tpl_system_call)(void);
 
@@ -43,7 +41,6 @@ extern CONST(tpl_system_call, OS_CONST) tpl_dispatch_table[SYSCALL_COUNT];
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
-/* TPL_OS_DISPATCH_TABLE_H */
+/* TPL_DISPATCH_TABLE_H */
 #endif
-/* End of file tpl_os_dispatch_table.h */
-
+/* End of file tpl_dispatch_table.h */

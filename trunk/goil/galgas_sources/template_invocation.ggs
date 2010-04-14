@@ -33,175 +33,6 @@ once allowedFunctions -> @stringset outAllowedFunctionSet :
   outAllowedFunctionSet += !"yesNo";
 end once;
 
-#------------------------------------------------------------------------------*
-
-routine addBoolValue
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
-  ??@lstring inVariableName
-  ??@bool inValue
-:
-  [!?ioTemplateVariableMap insertKey
-    !inVariableName
-    ![@goilTemplateType boolType]
-    ![@goilTemplateValue new !if inValue then 1L else 0L end !"" ![@goilTemplateFieldMapList emptyList]]
-  ];
-end routine;
-
-#------------------------------------------------------------------------------*
-
-routine addUnsignedValue
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
-  ??@lstring inVariableName
-  ??@uint64 inValue
-:
-  [!?ioTemplateVariableMap insertKey
-    !inVariableName
-    ![@goilTemplateType unsignedType]
-    ![@goilTemplateValue new !inValue !"" ![@goilTemplateFieldMapList emptyList]]
-  ];
-end routine;
-
-#------------------------------------------------------------------------------*
-
-routine addLUnsignedValue
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
-  ??@string inVariableName
-  ??@luint64 inValue
-:
-  addUnsignedValue !?ioTemplateVariableMap ![@lstring new !inVariableName ![inValue location]] ![inValue uint64];
-end routine;
-
-#------------------------------------------------------------------------------*
-
-routine addStringValue
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
-  ??@lstring inVariableName
-  ??@string inValue
-:
-  [!?ioTemplateVariableMap insertKey
-    !inVariableName
-    ![@goilTemplateType stringType]
-    ![@goilTemplateValue new !0L !inValue ![@goilTemplateFieldMapList emptyList]]
-  ];
-end routine;
-
-#------------------------------------------------------------------------------*
-
-routine addLStringValue
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
-  ??@string inVariableName
-  ??@lstring inValue
-:
-  addStringValue !?ioTemplateVariableMap ![@lstring new !inVariableName ![inValue location]] ![inValue string];
-end routine;
-
-#------------------------------------------------------------------------------*
-
-routine addListValue
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
-  ??@lstring inVariableName
-  ??@goilTemplateFieldMapList inValue
-:
-  [!?ioTemplateVariableMap insertKey
-    !inVariableName
-    ![@goilTemplateType listType]
-    ![@goilTemplateValue new !0L !"" !inValue]
-  ];
-end routine;
-
-#------------------------------------------------------------------------------*
-#                                                                              *
-#  A D D    A    F I E L D    V A L U E                                        *
-#                                                                              *
-#------------------------------------------------------------------------------*
-
-routine addBoolFieldValue
-  ?!@goilTemplateFieldMap ioTemplateFieldMap
-  ??@lstring inVariableName
-  ??@bool inValue
-:
-  [!?ioTemplateFieldMap insertKey
-    !inVariableName
-    ![@goilTemplateType boolType]
-    !if inValue then 1L else 0L end
-    !""
-    ![@goilTemplateFieldMapList emptyList]
-  ];
-end routine;
-
-#------------------------------------------------------------------------------*
-
-routine addUnsignedFieldValue
-  ?!@goilTemplateFieldMap ioTemplateFieldMap
-  ??@lstring inVariableName
-  ??@uint64 inValue
-:
-  [!?ioTemplateFieldMap insertKey
-    !inVariableName
-    ![@goilTemplateType unsignedType]
-    !inValue
-    !""
-    ![@goilTemplateFieldMapList emptyList]
-  ];
-end routine;
-
-#------------------------------------------------------------------------------*
-
-routine addLUnsignedFieldValue
-  ?!@goilTemplateFieldMap ioTemplateFieldMap
-  ??@string inVariableName
-  ??@luint64 inValue
-:
-  addUnsignedFieldValue
-    !?ioTemplateFieldMap
-    ![@lstring new !inVariableName ![inValue location]]
-    ![inValue uint64];
-end routine;
-
-#------------------------------------------------------------------------------*
-
-routine addStringFieldValue
-  ?!@goilTemplateFieldMap ioTemplateFieldMap
-  ??@lstring inVariableName
-  ??@string inValue
-:
-  [!?ioTemplateFieldMap insertKey
-    !inVariableName
-    ![@goilTemplateType stringType]
-    !0L
-    !inValue
-    ![@goilTemplateFieldMapList emptyList]
-  ];
-end routine;
-
-#------------------------------------------------------------------------------*
-
-routine addLStringFieldValue
-  ?!@goilTemplateFieldMap ioTemplateFieldMap
-  ??@string inVariableName
-  ??@lstring inValue
-:
-  addStringFieldValue
-    !?ioTemplateFieldMap
-    ![@lstring new !inVariableName ![inValue location]]
-    ![inValue string];
-end routine;
-
-#------------------------------------------------------------------------------*
-
-routine addListFieldValue
-  ?!@goilTemplateFieldMap ioTemplateFieldMap
-  ??@lstring inVariableName
-  ??@goilTemplateFieldMapList inValue
-:
-  [!?ioTemplateFieldMap insertKey
-    !inVariableName
-    ![@goilTemplateType listType]
-    !0L
-    !""
-    !inValue
-  ];
-end routine;
 
 function fullPrefix
   ??@goilTemplateVariableMap vars
@@ -260,11 +91,13 @@ function displayTypeAndValue
           outResult .= "unsigned: " . [mUnsigned64Value string];
         when stringType :
           outResult .= "string: '" . mStringValue . "'";
-        when listType :
+        when listType, structType :
         end switch;
       between outResult .= ", ";
       end foreach;
     end foreach;
+  when structType:
+    outResult := "";
   end switch;
 end function;
 
