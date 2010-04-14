@@ -27,12 +27,10 @@
  * $URL$
  */
 
-#include "tpl_os_service_ids.h"
+#include "tpl_service_ids.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os_kernel_stack.h"
 #include "tpl_assembler.h"
-
-#define SYSCALL_COUNT   OS_SYSCALL_COUNT
 
 TPL_EXTERN  tpl_dispatch_table
 TPL_EXTERN  tpl_kern

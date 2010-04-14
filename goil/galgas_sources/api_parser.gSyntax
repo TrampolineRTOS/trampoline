@@ -1,0 +1,96 @@
+#
+# Goil system generator
+#
+# Goil is a part of Trampoline project
+# Goil is copyright (c) IRCCyN 2005+
+#
+# This software is distributed under the GNU Public Licence v2
+#
+# api description parser
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax api_parser:
+with "api_scanner.gLexique";
+
+import lexique api_scanner in "api_scanner.gLexique";
+import semantics template_semantics in "template_semantics.ggs";
+
+nonterminal <api_start> ?!@goilTemplateVariableMap cfg;
+nonterminal <api_section> !@goilTemplateFieldMapList outList;
+
+rule <api_start> ?!@goilTemplateVariableMap cfg:
+  # Get the USECOM, AUTOSAR and SCALABILITYCLASS
+  @goilTemplateValue value;
+  [cfg searchKey ![@lstring new !"USECOM" !here] ?* ?value];
+  @bool usecom := ([value mUnsigned64Value] == 1L);
+  [cfg searchKey ![@lstring new !"AUTOSAR" !here] ?* ?value];
+  @bool autosar := ([value mUnsigned64Value] == 1L);
+  [cfg searchKey ![@lstring new !"SCALABILITYCLASS" !here] ?* ?value];
+  @uint64 scalabilityclass := [value mUnsigned64Value];
+
+  @goilTemplateFieldMap api [emptyMap];
+  @goilTemplateFieldMapList usedFiles [emptyList];
+  @goilTemplateFieldMapList usedApi [emptyList];
+  repeat while
+    @lstring sectionName;
+    @goilTemplateFieldMapList section;
+
+    $idf$ ?sectionName;
+    @string sn := [sectionName string];
+    @bool valid :=
+      ((sn == "COM") & usecom) | 
+      ((sn == "ISR" | sn == "COUNTER" | sn == "SCHEDULETABLE") & autosar) |
+      ((sn == "GLOBALTIME") & (scalabilityclass == 2L | scalabilityclass == 4L)) |
+      ((sn == "OSAPPLICATION" | sn == "MEMORYPROTECTION" | sn == "SERVICEPROTECTION" | sn == "TRUSTEDFUNCTION") & (scalabilityclass == 3L | scalabilityclass == 4L)) |
+      (sn == "TASK" | sn == "INTERRUPT" | sn == "RESOURCE" | sn == "EVENT" | sn == "ALARM" | sn == "OS");
+    select
+      $($; $idf$ ?@lstring file; $)$;
+      addLStringFieldValue !?api !sn."FILE" !file;
+      if valid then
+        @goilTemplateFieldMap fileEntry [emptyMap];
+        addLStringFieldValue !?fileEntry !"FILE" !file;
+        usedFiles += !fileEntry;
+      end if;
+    or end select;
+    <api_section> ?section;
+    addListFieldValue !?api !sectionName !section;
+    if valid then 
+      usedApi := usedApi . section;
+    end if;
+  end repeat;
+  addListFieldValue !?api ![@lstring new !"USEDAPI" !here] !usedApi;
+  addListFieldValue !?api ![@lstring new !"USEDFILES" !here] !usedFiles;
+  
+  addStructValue !?cfg ![@lstring new !"APICONFIG" !here] !api;
+end rule;
+
+rule <api_section> !@goilTemplateFieldMapList outList:
+  ${$;
+  outList := [@goilTemplateFieldMapList emptyList];
+  repeat while
+    @lstring realApiFct;
+    $idf$ ?@lstring apiFct;
+    select
+      $($; $idf$ ?realApiFct; $)$;
+    or
+      realApiFct := apiFct;
+    end select;
+    $->$;
+    $idf$ ?@lstring kernelFct;
+    $;$;
+    @goilTemplateFieldMap apiEntry [emptyMap];
+    addLStringFieldValue !?apiEntry !"API" !apiFct;
+    addLStringFieldValue !?apiEntry !"REAL" !realApiFct;
+    addLStringFieldValue !?apiEntry !"KERNEL" !kernelFct;
+    outList += !apiEntry;
+  end repeat;
+  $}$;
+  $;$;
+end rule;
+
+end syntax;

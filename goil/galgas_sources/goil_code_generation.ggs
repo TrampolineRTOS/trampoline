@@ -38,6 +38,7 @@ import semantics template_routines in "template_routines.ggs";
 
 import semantics cfg_types in "cfg_types.ggs";
 import grammar cfg_grammar in "cfg_grammar.gGrammar";
+import grammar api_grammar in "api_grammar.gGrammar";
 
 import option goil_options in "goil_options.gOption";
 
@@ -799,6 +800,16 @@ routine generate_all
           setInterruptSources !cfg !?sysCfg;
           
           #log sysCfg;
+          
+          #
+          # Add the API description
+          #
+          @string apiDescriptionFile := templateFilePath[!"config" !"api.desc"];
+          if apiDescriptionFile != "" then
+            grammar api_grammar in lstringWith[!apiDescriptionFile] !?sysCfg;
+          else
+            error here: "No api.desc file found in config templates";
+          end if;
           
           @string goilLog := computeTemplate[!"" !sysCfg !"root"];
           if [option goil_options.generate_log value] then

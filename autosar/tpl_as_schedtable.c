@@ -66,6 +66,7 @@ FUNC(StatusType, OS_CODE)  StartScheduleTableAbs(
 }
 
 
+#if AUTOSAR_SC == 2 || AUTOSAR_SC == 4
 /*
  * Start a schedule table synchronized with global time
  *
@@ -78,7 +79,7 @@ FUNC(StatusType, OS_CODE)  StartScheduleTableSynchron(
 {
     return tpl_start_schedule_table_synchron_service(sched_table_id);
 }
-
+#endif
 
 /*
  * Stop a schedule table.
@@ -123,6 +124,7 @@ FUNC(StatusType, OS_CODE) GetScheduleTableStatus(
 
 
 
+#if AUTOSAR_SC == 2 || AUTOSAR_SC == 4
 /**
  *  Synchronize a schedule table with global time
  *
@@ -147,8 +149,9 @@ FUNC(StatusType, OS_CODE) SetScheduleTableAsync(
     VAR(ScheduleTableType, AUTOMATIC) sched_table_id
 )
 {
-    return tpl_set_schedule_table_async(sched_table_id);
+    return tpl_set_schedule_table_async_service(sched_table_id);
 }
+#endif
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

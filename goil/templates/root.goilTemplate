@@ -20,6 +20,21 @@ write to PROJECT."/tpl_app_define.h":
   template tpl_app_define_h in code
 end write
 
+!PROJECT %/tpl_service_ids.h
+%
+write to PROJECT."/tpl_service_ids.h":
+  template tpl_service_ids_h in code
+end write
+
+if USESYSTEMCALL then
+  !PROJECT %/tpl_dispatch_table.c
+%
+  write to PROJECT."/tpl_dispatch_table.c":
+    template tpl_dispatch_table_c in code
+  end write
+  template tpl_invoque_s in code
+end if
+
 if USEMEMORYMAPPING then
   if exists COMPILER then
     !PROJECT %/MemMap.h

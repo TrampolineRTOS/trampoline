@@ -92,6 +92,13 @@ nonterminal <factor>
 label parse
 ;
 
+nonterminal <struct_member>
+  ??@goilTemplateFieldMap inValue
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+label parse
+;
+
 #---------------------------------------------------------------------------*
 #                                                                           *
 #   M A T C H    &    O P E R A T O R                                       *
@@ -528,6 +535,8 @@ routine templateMethodInvocation
     else
       error inMethodName: "this template method is not defined" ->outResultValue, outResultType;
     end if;
+  when structType:
+    error inMethodName: "this template method is not defined" ->outResultValue, outResultType;
   end switch;
 end routine;
 
@@ -686,8 +695,10 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] == [rightExpression mUnsigned64Value];
     when unsignedType :
       result := [leftExpression mUnsigned64Value] == [rightExpression mUnsigned64Value];
-    when stringType, listType :
+    when stringType :
       result := [leftExpression mStringValue] == [rightExpression mStringValue];
+    when listType, structType:
+      error here: "lists and struct may not be compared" -> result;
     end switch;
     outResultType := [@goilTemplateType boolType];
     outValue.mUnsigned64Value := if result then 1L else 0L end;
@@ -712,8 +723,10 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] != [rightExpression mUnsigned64Value];
     when unsignedType :
       result := [leftExpression mUnsigned64Value] != [rightExpression mUnsigned64Value];
-    when stringType, listType :
+    when stringType :
       result := [leftExpression mStringValue] != [rightExpression mStringValue];
+    when listType, structType:
+      error here: "lists and struct may not be compared" -> result;
     end switch;
     outResultType := [@goilTemplateType boolType];
     outValue.mUnsigned64Value := if result then 1L else 0L end;
@@ -738,7 +751,7 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] <= [rightExpression mUnsigned64Value];
     when unsignedType :
       result := [leftExpression mUnsigned64Value] <= [rightExpression mUnsigned64Value];
-    when stringType, listType :
+    when stringType, listType, structType :
       result := false;
     end switch;
     outResultType := [@goilTemplateType boolType];
@@ -764,7 +777,7 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] >= [rightExpression mUnsigned64Value];
     when unsignedType :
       result := [leftExpression mUnsigned64Value] >= [rightExpression mUnsigned64Value];
-    when stringType, listType :
+    when stringType, listType, structType :
       result := false;
     end switch;
     outResultType := [@goilTemplateType boolType];
@@ -790,7 +803,7 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] > [rightExpression mUnsigned64Value];
     when unsignedType :
       result := [leftExpression mUnsigned64Value] > [rightExpression mUnsigned64Value];
-    when stringType, listType :
+    when stringType, listType, structType :
       result := false;
     end switch;
     outResultType := [@goilTemplateType boolType];
@@ -816,7 +829,7 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] < [rightExpression mUnsigned64Value];
     when unsignedType :
       result := [leftExpression mUnsigned64Value] < [rightExpression mUnsigned64Value];
-    when stringType, listType :
+    when stringType, listType, structType :
       result := false;
     end switch;
     outResultType := [@goilTemplateType boolType];
@@ -1055,11 +1068,7 @@ rule <factor>
     ?expression
     ?operandType
  ;
-  outValue := [@goilTemplateValue new
-    !1L - [expression mUnsigned64Value]
-    !""
-    ![@goilTemplateFieldMapList emptyList]
-  ];
+  outValue := valueWithUnsigned[!1L - [expression mUnsigned64Value]];
   checkNotOperatorForTemplate !operandType ?outResultType;
 end rule;
 
@@ -1088,11 +1097,7 @@ rule <factor>
     ?value
     ?operandType
  ;
-  outValue := [@goilTemplateValue new
-    !~ [value mUnsigned64Value]
-    !""
-    ![@goilTemplateFieldMapList emptyList]
-  ];
+  outValue := valueWithUnsigned[!~ [value mUnsigned64Value]];
   checkBitComplementOperatorForTemplate !operandType ?outResultType;
 end rule;
 
@@ -1111,11 +1116,7 @@ rule <factor>
   !@goilTemplateType outResultType
 :
   $yes$;
-  outValue := [@goilTemplateValue new
-    !1L
-    !""
-    ![@goilTemplateFieldMapList emptyList]
-  ];
+  outValue := valueWithUnsigned[!1L];
   outResultType := [@goilTemplateType boolType];
 end rule;
 
@@ -1134,11 +1135,7 @@ rule <factor>
   !@goilTemplateType outResultType
 :
   $no$;
-  outValue := [@goilTemplateValue new
-    !0L
-    !""
-    ![@goilTemplateFieldMapList emptyList]
-  ];
+  outValue := valueWithUnsigned[!0L];
   outResultType := [@goilTemplateType boolType];
 end rule;
 
@@ -1158,11 +1155,7 @@ rule <factor>
 :
   @luint64 literalInt;
   $unsigned_literal_integer64$ ?literalInt;
-  outValue := [@goilTemplateValue new
-    ![literalInt uint64]
-    !""
-    ![@goilTemplateFieldMapList emptyList]
-  ];
+  outValue := valueWithUnsigned[![literalInt uint64]];
   outResultType := [@goilTemplateType unsignedType];
 end rule;
 
@@ -1181,11 +1174,7 @@ rule <factor>
   !@goilTemplateType outResultType
 :
   $string$ ?@lstring literalString;
-  outValue := [@goilTemplateValue new
-    !0L
-    ![literalString string]
-    ![@goilTemplateFieldMapList emptyList]
-  ];
+  outValue := valueWithString[![literalString string]];
   outResultType := [@goilTemplateType stringType];
 end rule;
 
@@ -1296,6 +1285,15 @@ rule <factor>
   select
     [inVariableMap searchKey !functionOrVariableName ?outResultType ?outValue];
   or
+    $::$;
+    @goilTemplateType varType;
+    @goilTemplateValue varValue;
+    [inVariableMap searchKey !functionOrVariableName ?varType ?varValue];
+    if varType != [@goilTemplateType structType] then
+      error functionOrVariableName: "'".functionOrVariableName."' is not a struct";
+    end if;
+    <struct_member> ![varValue mStructValue] ?outValue ?outResultType;
+  or
   #--- Search for function name
     @function f;
     if not [@function isFunctionDefined ![functionOrVariableName string]] then
@@ -1352,13 +1350,13 @@ rule <factor>
             typeError !functionOrVariableName !formal_mValue !"string" !idx;
           end if;
           actualArgumentObjectList += ![[actual_mValue mStringValue] object];
-        when listType :
+        when listType, structType :
           typeError !functionOrVariableName !formal_mValue !"string" !idx;
         end switch;
         idx ++;     
       end foreach;
       outResultType := [@goilTemplateType unsignedType];
-      outValue := [@goilTemplateValue new !0L !"" ![@goilTemplateFieldMapList emptyList]];
+      outValue := valueWithUnsigned[!0L];
       if [@uint errorCount] == 0 then
         const @object result := [f invoke !actualArgumentObjectList ![functionOrVariableName location]];
         if [result objectDynamicType] == `@uint64 then
@@ -1410,9 +1408,9 @@ rule <factor>
     outResultType := resultType;
   or
     if [inVariableMap hasKey ![variableName string]] then
-      outValue := [@goilTemplateValue new !1L !"" ![@goilTemplateFieldMapList emptyList]];
+      outValue := valueWithUnsigned[!1L];
     else
-      outValue := [@goilTemplateValue new !0L !"" ![@goilTemplateFieldMapList emptyList]];
+      outValue := valueWithUnsigned[!0L];
     end if;
     outResultType := [@goilTemplateType boolType];
   end select;
@@ -1430,10 +1428,10 @@ rule <factor>
 :
   select
     $true$;
-    outValue := [@goilTemplateValue new !1L !"" ![@goilTemplateFieldMapList emptyList]];
+    outValue := valueWithUnsigned[!1L];
   or
     $false$;
-    outValue := [@goilTemplateValue new !0L !"" ![@goilTemplateFieldMapList emptyList]];
+    outValue := valueWithUnsigned[!0L];
   end select;
   outResultType := [@goilTemplateType boolType];
 end rule;
@@ -1449,8 +1447,34 @@ rule <factor>
   !@goilTemplateType outResultType
 :
   $emptylist$;
-  outValue := [@goilTemplateValue new !0L !"" ![@goilTemplateFieldMapList emptyList]];
+  outValue := [@goilTemplateValue new !0L !"" ![@goilTemplateFieldMapList emptyList] ![@goilTemplateFieldMap emptyMap]];
   outResultType := [@goilTemplateType listType];
+end rule;
+
+#------------------------------------------------------------------------------*
+
+rule <struct_member>
+  ??@goilTemplateFieldMap inValue
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  $identifier$ ?@lstring memberName;
+  @goilTemplateType memberType;
+  @uint64 memberInt;
+  @string memberString;
+  @goilTemplateFieldMapList memberList;
+  @goilTemplateFieldMap memberStruct;
+  [inValue searchKey !memberName ?memberType ?memberInt ?memberString ?memberList ?memberStruct];
+  select
+    if memberType != [@goilTemplateType structType] then
+      error memberName: "'".memberName."' is a not a struct";
+    end if;
+    $::$;
+    <struct_member> !memberStruct ?outValue ?outResultType;
+  or
+    outValue := [@goilTemplateValue new !memberInt !memberString !memberList !memberStruct];
+    outResultType := memberType;
+  end select;
 end rule;
 
 ##------------------------------------------------------------------------------*

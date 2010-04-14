@@ -58,6 +58,12 @@ foreach SOURCEFILES
   after %
 %
 end foreach
+if USESYSTEMCALL then
+%
+SOURCES += tpl_dispatch_table.c
+SOURCES += tpl_invoque.S
+%
+end if
 %
 # Trampoline generation flags
 WITH_TRACE = % ! trueFalse(USETRACE) %

@@ -26,7 +26,7 @@
 #define TPL_ASM_DEFINITIONS_H
 
 #include "tpl_os_definitions.h"
-#include "tpl_os_service_ids.h"
+#include "tpl_service_ids.h"
 
 /*
  * tpl_kern data structure offsets (for use into assembler sources)
