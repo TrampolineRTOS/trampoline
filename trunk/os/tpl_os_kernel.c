@@ -1391,21 +1391,31 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
 
 FUNC(void, OS_CODE) tpl_call_terminate_task_service(void)
 {  
+  /* lock the kernel */
+  LOCK_KERNEL()
+
   if (FALSE != tpl_get_interrupt_lock_status())  
   {                                           
-      /*enable interrupts :*/
-      tpl_reset_interrupt_lock_status();
-      /*tpl_enable_interrupts(); now ?? or wait until TerminateISR reschedule and interrupts enabled returning previous API service call OR by signal_handler.*/
+    /* enable interrupts :*/
+    tpl_reset_interrupt_lock_status();
+    /*
+     * tpl_enable_interrupts(); now ?? or wait until TerminateISR 
+     * reschedule and interrupts enabled returning previous API
+     * service call OR by signal_handler.
+     */
   }
   /* release resources if held */
   if ((tpl_kern.running->resources) != NULL){
       tpl_release_all_resources(tpl_kern.running_id);
   }
   
-  /* error hook*/		
+  /* error hook */		
   PROCESS_ERROR(E_OS_MISSINGEND);
   
-  /*terminate the task :*/
+  /* unlock the kernel */
+  UNLOCK_KERNEL()
+  
+  /* terminate the task : */
   tpl_terminate_task_service();
   
 }
