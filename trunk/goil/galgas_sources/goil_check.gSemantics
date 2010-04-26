@@ -1,0 +1,56 @@
+#
+# @file goil_check.ggs
+#
+# @section File description
+#
+# Various checking routines.
+#
+# @section Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est prot�g� par la loi sur la propri�t� intellectuelle
+#
+# OIL compiler for Trampoline
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics goil_check :
+
+import semantics goil_semantic_types in "goil_semantic_types.gSemantics" ;
+
+routine check_uint32_range
+    ?@uint32_set   set
+    ?@location     loc
+    ?@uint         val
+:
+    cast set :
+    when == @uint32_range r do
+        if val < [r min] | val > [r max] then
+            error loc : "UINT32 not within specified range." ;
+            error [r loc] : "Range was defined here" ;
+        end if ;
+    when == @uint32_list l do
+        @bool not_matched := true ;
+        foreach [l li] (@uint good_val) do
+            if val == good_val then
+                not_matched := false ;
+            end if ;
+        end foreach ;
+        if not_matched then
+            error loc : "UINT32 is not included in specified set." ;
+            error [l loc] : "Set was defined here" ;
+        end if ;
+    else end cast ;
+end routine ;
+
+end semantics ;

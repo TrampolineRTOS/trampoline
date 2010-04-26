@@ -1,0 +1,49 @@
+semantics goil_types_root :
+
+import semantics goil_types_os in "goil_types_os.gSemantics" ;
+import semantics com_type in "com_type.gSemantics" ;
+import semantics goil_semantic_types in "goil_semantic_types.gSemantics" ;
+import semantics goil_types_task in "goil_types_task.gSemantics" ;
+import semantics goil_types_isr in "goil_types_isr.gSemantics" ;
+import semantics goil_types_counter in "goil_types_counter.gSemantics" ;
+import semantics goil_types_scheduletable in "goil_types_scheduletable.gSemantics" ;
+import semantics goil_types_app in "goil_types_app.gSemantics" ;
+import semantics goil_types_networkmessage in "goil_types_networkmessage.gSemantics" ;
+
+class @root_obj {
+    @lstring           name;
+    @os_obj            os             feature setter;
+    @com               com ;
+    @task_map          tasks          feature setter;
+    @counter_map       counters       feature setter;
+    @alarm_map         alarms ;
+    @resource_map      resources      feature setter ;
+    @event_map         events ;
+    @isr_map           isrs           feature setter;
+    @message_map       messages ;
+    @netmess_map       net_messages ;
+    @scheduletable_map scheduletables feature setter;
+    @app_map           applis ;
+}
+
+function void_root_obj
+  ->@root_obj cpu
+:
+  cpu := [@root_obj new
+    !empty_lstring[]
+    !void_os_obj[]
+    !void_com_obj[]
+    ![@task_map          emptyMap]
+    ![@counter_map       emptyMap]
+    ![@alarm_map         emptyMap]
+    ![@resource_map      emptyMap]
+    ![@event_map         emptyMap]
+    ![@isr_map           emptyMap]
+    ![@message_map       emptyMap]
+    ![@netmess_map       emptyMap]
+    ![@scheduletable_map emptyMap]
+    ![@app_map           emptyMap]
+  ];
+end function;
+
+end semantics ;

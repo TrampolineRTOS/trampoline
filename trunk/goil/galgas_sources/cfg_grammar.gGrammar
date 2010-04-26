@@ -18,12 +18,12 @@
 grammar cfg_grammar "LL1" :
 #--- References to syntax components used when source file extension is .gGrammar
 #    Theses constructs are silently parsed when source file extension is .ggs
-    with "cfg_syntax.ggs" ;
+    with "cfg_syntax.gSyntax" ;
 
 #--- References to syntax components used when source file extension is .ggs
 #    Theses constructs are silently parsed when source file extension is .gGrammar
     import lexique cfg_lexique in "cfg_lexique.gLexique" ;
-    import syntax  cfg_syntax  in "cfg_syntax.ggs" ;
+    import syntax  cfg_syntax  in "cfg_syntax.gSyntax" ;
 
     root <cfg_start>
         !@config cfg

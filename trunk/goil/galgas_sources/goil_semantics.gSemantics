@@ -1,0 +1,13 @@
+semantics goil_semantics :
+
+import semantics goil_types_root in "goil_types_root.gSemantics" ;
+import semantics goil_types_os in "goil_types_os.gSemantics" ;
+import semantics goil_semantic_types in "goil_semantic_types.gSemantics" ;
+import semantics defaults in "defaults.gSemantics" ;
+import semantics goil_semantic_verification in "goil_semantic_verification.gSemantics" ;
+import semantics goil_code_generation in "goil_code_generation.gSemantics" ;
+import semantics goil_env_verification in "goil_env_verification.gSemantics" ;
+
+
+end semantics ;
+# vim:ft=ggs:ts=4:sw=4
