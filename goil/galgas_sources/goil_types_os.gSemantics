@@ -1,0 +1,350 @@
+#
+# @file goil_types_os.ggs
+#
+# @section File description
+#
+# Semantic types for os object.
+#
+# @section Copyright
+#
+# Goil OIL compiler for Trampoline
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est protege par la loi sur la propriete intellectuelle
+#
+# This software is distributed under the GNU Public Licence v2
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics goil_types_os :
+
+import semantics goil_basic_types in "goil_basic_types.gSemantics";
+import semantics goil_routines in "goil_routines.gSemantics";
+
+abstract class @trace_method {
+  @location loc;
+#  abstract method generate_c !@string res;
+}
+
+class @trace_void extends @trace_method {
+#  override method generate_c !@string res :
+#    res := "#error \"TRACE_METHOD is not defined\"\n";
+#  end method;
+}
+
+class @trace_file extends @trace_method {
+  @lstring name;
+#  override method generate_c !@string res :
+#    res := "#define    TRACE_FILE             \"".[name string]."\"\n";
+#  end method;
+}
+
+class @trace {
+  @location loc;
+#  method generate_c !@string res :
+#    res := "#define    WITH_TRACE             NO\n";
+#  end method;
+#  method generate_make !@string res :
+#    res := "WITH_TRACE = false\n";
+#  end method;
+}
+
+class @trace_off extends @trace {
+#  override method generate_c !@string res :
+#    res := "#define    WITH_TRACE             NO\n";
+#  end method;
+#  override method generate_make !@string res :
+#    res := "WITH_TRACE = false\n";
+#  end method;
+}
+
+class @trace_on extends @trace {
+  @lstring      form;
+  @trace_method meth;
+  @basic_type   trace_task;
+  @basic_type   trace_isr;
+  @basic_type   trace_resource;
+  @basic_type   trace_alarm;
+  @basic_type   trace_user_event;
+  @basic_type   desc;
+#  override method generate_c !@string res :
+#    res := "#define    WITH_TRACE             YES\n";
+#    res .= bool_class_define[!"TRACE_TASK" !trace_task !true];
+#    res .= bool_class_define[!"TRACE_ISR" !trace_isr !true];
+#    res .= bool_class_define[!"TRACE_RES" !trace_resource !true];
+#    res .= bool_class_define[!"TRACE_ALARM" !trace_alarm !true];
+#    res .= bool_class_define[!"TRACE_U_EVENT" !trace_user_event !true];
+#    res .= "#define    TRACE_FORMAT()         tpl_trace_format_".[form string]."();\n";
+#    @string m;
+#    [meth generate_c ?m];
+#    res .= m;
+#  end method;
+#  override method generate_make !@string res :
+#    res := "WITH_TRACE = true\n";
+#  end method;
+}
+
+#
+# set_method sets it first argument as the second one
+# if it is unset (ie @void). Otherwise
+# it outputs an error.
+#
+# @param  t     The method to set
+# @param  s     The method used as source
+# @param  att   The name of the attribute.
+#               Used in the error message
+#
+routine set_method
+  ?!@trace_method t
+  ?@trace_method  s
+  ?@string        att
+:
+  cast t :
+  when == @trace_void do
+    t := s;
+  else
+    error [s loc] : "Redefinition of ".att;
+    error [t loc] : "was defined here";
+  end cast;
+end routine;
+
+# MemMap
+class @no_linker extends @basic_type {}
+class @yes_linker extends @basic_type {
+  @lstring linker;
+  @lstring script;
+}
+
+routine set_linker
+  ?!@basic_type l
+  ?@basic_type  nl
+  ?@string      att
+:
+  cast l :
+  when == @void do
+    l := nl;
+  else
+    error [nl location] : "Redefinition of ".att;
+    error [l location]  : "was defined here";
+  end cast;
+end routine;    
+
+class @memmap_false extends @basic_type {}
+
+class @memmap_true extends @basic_type {
+  @lstring    compiler;
+  @lstring    assembler;
+  @basic_type linker;
+  @basic_type memory_prot;
+}
+
+function link_script_name
+  ??@basic_type mm
+  ->@string name
+:
+  cast mm :
+  when == @memmap_true m do
+    cast [m linker] :
+    when == @yes_linker l do
+      name := [[l script] string];
+    else
+      name := "";
+    end cast;
+  else
+    #error [mm location] : "No MEMMAP";
+    name := "";
+  end cast;    
+end function;
+
+routine set_memmap
+  ?!@basic_type m
+  ?@basic_type  nm
+  ?@string      att
+:
+  cast m :
+  when == @void do
+    m := nm;
+  else
+    error [nm location] : "Redefinition of ".att;
+    error [m location]  : "was defined here";
+  end cast;
+end routine;
+
+class @os_obj extends @oil_obj {
+  @lstring     status             feature setter;
+  @basic_type  startuphook        feature setter;
+  @basic_type  shutdownhook       feature setter;
+  @basic_type  errorhook          feature setter;
+  @basic_type  pretaskhook        feature setter;
+  @basic_type  posttaskhook       feature setter;
+  @basic_type  protectionhook     feature setter; # AUTOSAR
+  @lstring     scalabilityclass   feature setter; # AUTOSAR
+  @basic_type  stackmonitoring    feature setter; # AUTOSAR
+  @basic_type  usegetserviceid    feature setter;
+  @basic_type  useparameteraccess feature setter;
+  @basic_type  useresscheduler    feature setter;
+  @basic_type  systemcall         feature setter;
+  @basic_type  debug              feature setter;
+  @basic_type  memmap             feature setter;
+  @lstringlist app_src            feature setter;
+  @lstring     compiler           feature setter;
+  @lstring     assembler          feature setter;
+  @lstring     linker             feature setter;
+  @lstringlist cflags             feature setter;
+  @lstringlist asflags            feature setter;
+  @lstringlist ldflags            feature setter;
+  @lstring     app_name           feature setter;
+  @lstring     tpl_base_path      feature setter;
+  @trace       trace              feature setter;
+  @ident_map   others             feature setter;
+}
+
+function applicationName ??@os_obj os -> @lstring name:
+  name := [os app_name];
+  if [name string] == "" then
+    name := lstringWith[!"trampoline"];
+  end if;
+end function;
+
+function memory_protection
+  ?@os_obj      os
+  ->@basic_type mp
+:
+  cast [os memmap]:
+  when == @memmap_true mm do
+    mp := [mm memory_prot];
+  else
+    mp := [@bool_class new !here !false];
+  end cast;
+end function;
+
+function memory_protection_on
+  ?@os_obj os
+  ->@bool  mp
+:
+  cast [os memmap]:
+  when == @memmap_true mm do
+    cast [mm memory_prot] :
+    when == @bool_class b do
+      mp := [b value];
+    else
+      mp := false;
+    end cast;
+  else
+    mp := false;
+  end cast;
+end function;
+
+function memory_mapping
+  ?@os_obj os
+  ->@bool  mm
+:
+  cast [os memmap]:
+  when == @memmap_true do
+    mm := true;
+  else
+    mm := false;
+  end cast;
+end function;
+
+#
+# compiler returns a non empty string if a compiler is specified
+# for memory mapping purpose
+#
+function compiler
+  ??@basic_type os_memmap
+  ->@string   cc
+:
+  cast os_memmap :
+  when == @memmap_true s do
+    cc := [[s compiler] string];
+    cc := "compiler/".cc;
+    @string rtd := rootTemplatesDirectory[];
+    if rtd != "" then
+      @string path := rtd."/".cc;
+      if not [path directoryExists] then
+        warning here: "no compiler found at path: ".path;
+        cc := "";
+      end if;
+    else
+      cc := "";
+    end if;
+  else cc := "";
+  end cast;
+end function;
+
+#
+# linker returns a non empty string if a linker is specified
+# for memory mapping purpose
+#
+function linker
+  ??@basic_type os_memmap
+  ->@string   lk
+:
+  cast os_memmap :
+  when == @memmap_true s do
+    cast [s linker] :
+    when == @no_linker do lk := "";
+    when == @yes_linker l do lk := [[l linker] string];
+    else
+      lk := ""; 
+    end cast;
+  else lk := "";
+  end cast;
+  if lk != "" then
+    lk := "linker/".lk;
+    @string rtd := rootTemplatesDirectory[];
+    if rtd != "" then
+      @string path := rtd."/".lk;
+      if not [path directoryExists] then
+        lk := "";
+      end if;
+    else
+      lk := "";
+    end if;
+  end if;
+end function;
+
+function void_os_obj
+  ->@os_obj os
+:
+  @void    void_obj := [@void new !here];
+  @lstring emptyString := [@lstring new !"" !here];
+  os := [@os_obj new
+    !emptyString
+    !emptyString
+    !void_obj
+    !void_obj
+    !void_obj
+    !void_obj
+    !void_obj
+    !void_obj
+    !emptyString
+    !void_obj
+    !void_obj
+    !void_obj
+    !void_obj
+    !void_obj
+    !void_obj
+    !void_obj                 # memmap
+    ![@lstringlist emptyList] # app_src
+    !emptyString
+    !emptyString
+    !emptyString
+    ![@lstringlist emptyList]
+    ![@lstringlist emptyList]
+    ![@lstringlist emptyList]
+    !emptyString
+    !emptyString
+    ![@trace new !here]
+    ![@ident_map emptyMap]
+  ];
+end function;
+
+end semantics;

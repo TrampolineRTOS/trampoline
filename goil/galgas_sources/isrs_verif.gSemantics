@@ -1,0 +1,62 @@
+##
+# @file isrs_verif.ggs
+#
+# @section File description
+#
+# routines defined in isrs_verif semantics component
+# verify isrs are Ok.
+#
+# @section Copyright
+#
+# Goil OIL compiler - Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline is protected by the french intellectual property law.
+#
+# This software is distributed under the GNU Public Licence V2
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics isrs_verif:
+
+import semantics goil_types_isr in "goil_types_isr.gSemantics";
+
+##
+# @fn isrs_well_formed
+#
+# isrs_well_formed checks each ISR has all the required
+# attributes.
+# Required attributes are:
+# - CATEGORY
+# - PRIORITY
+#
+# @param isrs    the map of ISRs.
+#
+routine isrs_well_formed
+  ??@isr_map isrs
+:
+  foreach isrs (@lstring isr_name @isr_obj isr) do
+
+    cast [isr category]:
+      when == @void do 
+        error isr_name: "CATEGORY attribute undefined for ISR ".[isr_name string];
+      else
+    end cast;
+
+    cast [isr priority]:
+      when == @void do
+        error isr_name: "PRIORITY attribute undefined for ISR ".[isr_name string];
+      else
+    end cast;
+
+  end foreach;
+end routine;
+
+end semantics;
+# End of file isrs_verif.ggs

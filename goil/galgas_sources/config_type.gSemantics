@@ -1,0 +1,187 @@
+#
+# @file goil_code_generation.ggs
+#
+# @section File description
+#
+# The types used to store Trampoline configuration information
+# extracted from the OIL or XML file.
+#
+# @section Copyright
+#
+# Goil. A part of Trampoline
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline is protected by the french intellectual property law.
+#
+# Goil is distributed under the GNU Public Licence V2
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics config_type :
+
+import semantics goil_types_root in "goil_types_root.gSemantics";
+import option goil_options in "goil_options.gOption" ;
+
+class @os_config {
+  @bool with_compilersettings;
+  @bool with_memmap;
+  @bool with_com;
+  @bool with_autosar;
+  @bool with_osapplication;
+  @bool with_timingprotection;
+  @bool with_stackmonitoring;
+  @bool with_memoryprotection;
+  @bool with_systemcall;
+  @bool with_errorhook;
+  @bool with_startuphook;
+  @bool with_shutdownhook;
+  @bool with_pretaskhook;
+  @bool with_postaskhook;
+  @bool with_protectionhook;
+  @bool with_trace;
+  @bool with_it_table;
+  @uint scalability_class;
+
+  method generate !@string res :
+
+    res := "";
+
+    if with_compilersettings
+    then res .= "#define WITH_COMPILER_SETTINGS            YES\n";
+    else res .= "#define WITH_COMPILER_SETTINGS            NO\n";
+    end if;
+
+    if with_memmap
+    then res .= "#define WITH_MEMMAP                       YES\n";
+    else res .= "#define WITH_MEMMAP                       NO\n";
+    end if;
+
+    if with_com
+    then res .= "#define WITH_COM                          YES\n";
+    else res .= "#define WITH_COM                          NO\n";
+    end if;
+
+    if with_autosar
+    then res .= "#define WITH_AUTOSAR                      YES\n";
+    else res .= "#define WITH_AUTOSAR                      NO\n";
+    end if;
+
+    if with_osapplication
+    then res .= "#define WITH_OSAPPLICATION                YES\n";
+    else res .= "#define WITH_OSAPPLICATION                NO\n";
+    end if;
+
+    if with_timingprotection
+    then res .= "#define WITH_AUTOSAR_TIMING_PROTECTION    YES\n";
+    else res .= "#define WITH_AUTOSAR_TIMING_PROTECTION    NO\n";
+    end if;
+
+    if with_stackmonitoring
+    then res .= "#define WITH_AUTOSAR_STACK_MONITORING     YES\n";
+    else res .= "#define WITH_AUTOSAR_STACK_MONITORING     NO\n";
+    end if;
+
+    if with_memoryprotection
+    then res .= "#define WITH_MEMORY_PROTECTION            YES\n";
+    else res .= "#define WITH_MEMORY_PROTECTION            NO\n";
+    end if;
+
+    if with_systemcall
+    then res .= "#define WITH_SYSTEM_CALL                  YES\n";
+    else res .= "#define WITH_SYSTEM_CALL                  NO\n";
+    end if;
+
+    if with_errorhook
+    then res .= "#define WITH_ERROR_HOOK                   YES\n";
+    else res .= "#define WITH_ERROR_HOOK                   NO\n";
+    end if;
+
+    if with_startuphook
+    then res .= "#define WITH_STARTUP_HOOK                 YES\n";
+    else res .= "#define WITH_STARTUP_HOOK                 NO\n";
+    end if;
+
+    if with_shutdownhook
+    then res .= "#define WITH_SHUTDOWN_HOOK                YES\n";
+    else res .= "#define WITH_SHUTDOWN_HOOK                NO\n";
+    end if;
+
+    if with_pretaskhook
+    then res .= "#define WITH_PRE_TASK_HOOK                YES\n";
+    else res .= "#define WITH_PRE_TASK_HOOK                NO\n";
+    end if;
+
+    if with_postaskhook
+    then res .= "#define WITH_POST_TASK_HOOK               YES\n";
+    else res .= "#define WITH_POST_TASK_HOOK               NO\n";
+    end if;
+
+    if with_protectionhook
+    then res .= "#define WITH_PROTECTION_HOOK              YES\n";
+    else res .= "#define WITH_PROTECTION_HOOK              NO\n";
+    end if;
+
+    if with_trace
+    then res .= "#define WITH_TRACE                        YES\n";
+    else res .= "#define WITH_TRACE                        NO\n";
+    end if;
+
+    res .= "#define SCALABILITY_CLASS                 ".[scalability_class string];
+
+  end method;
+}
+
+#
+# compute config initialize a @config object according
+# to the informations contained in the oil file.
+#
+function os_cfg
+  ?@root_obj   cpu
+  ->@os_config cfg
+:
+  # we begin with 
+
+  # IT table
+  @bool itt := [option goil_options.posix_it value];
+  # timing protection
+  @bool tp := false;
+  foreach [cpu tasks] do
+    cast [task timing_prot]:
+    when == @timing_prot_task do tp := true;
+    else end cast;
+  end foreach;
+  foreach [cpu isrs] do
+    cast [isr timing_prot]:
+    when == @timing_prot_isr do tp := true;
+    else end cast;
+  end foreach;
+
+  cfg := [@os_config new
+    !false # with_compilersettings
+    !false # with_memmap
+    !false # with_com
+    !false # with_autosar
+    !false # with_osapplication
+    !tp    # with_timingprotection
+    !false # with_stackmonitoring
+    !false # with_memoryprotection
+    !false # with_systemcall
+    !false # with_errorhook
+    !false # with_startuphook
+    !false # with_shutdownhook
+    !false # with_pretaskhook
+    !false # with_postaskhook
+    !false # with_protectionhook
+    !false # with_trace
+    !itt   # with_it_table
+    !1     # scalability_class
+  ];
+end function;
+
+end semantics;

@@ -1,0 +1,119 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est prot�g� par la loi sur la propri�t� intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL event object parser
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax goil_obj_event :
+#--- Lexique Reference, used when grammar source file extension is .gGrammar
+with "goil_lexique.gLexique";
+
+import lexique goil_lexique in "goil_lexique.gLexique" ;
+import option goil_options in "goil_options.gOption" ;
+import semantics goil_semantics in "goil_semantics.gSemantics" ;
+
+#
+# local nonterminals declaration
+#
+nonterminal <event> 
+ ?!@event_map events ;
+
+nonterminal <event_attributes>
+    ?!@event_mask_obj mask ;
+
+#
+# external nonterminals declaration
+#
+nonterminal <description>
+ !@lstring desc ;
+
+#
+# local rule definition
+#
+rule <event> 
+ ?!@event_map events
+:
+ @event_obj event ;
+ @lstring event_name ;
+ @event_mask_obj mask ;
+ @lstring desc ;
+
+ $EVENT$ ;
+ $idf$ ?event_name ;
+    if [events hasKey ![event_name string]] then
+        [!?events del !event_name ?event] ;
+        mask := [event mask] ;
+        desc := [event desc] ;
+    else
+        mask := [@event_mask_void_obj new !here] ;
+        desc := [@lstring new !"" !here] ;
+        event := [@event_obj new !desc !mask] ;
+    end if ;
+ ${$ ;
+    <event_attributes> !?mask ;
+    $}$ ;
+    <description> ?desc ;
+    $;$ ;
+
+    event := [@event_obj new !desc !mask] ;
+    [!?events put !event_name !event] ;  
+end rule ;
+
+rule <event_attributes>
+    ?!@event_mask_obj mask
+:
+    repeat
+    while
+        $MASK$ ; $=$ ;
+        select
+            $AUTO$ ;
+            cast mask :
+            when == @event_mask_void_obj do
+                mask := [@event_mask_auto_obj new !here] ;
+            else
+                error here : "MASK attribute already defined for this EVENT" ;
+                error [mask location] : "was previously defined here" ;
+            end cast ;
+        or
+            @luint64 mask_value ;
+            $uint_number$ ?mask_value ;
+            cast mask :
+            when == @event_mask_void_obj do
+                mask := [@event_mask_user_obj new !here !mask_value] ;
+                if [mask_value uint64] > [[@uint max] uint64] then
+                  error here : "MASK attribute should be a 32 bits integer" ;
+                else
+                  @uint nbbits := 0 ;
+                  @uint64 pof2 := 1L ;
+                  loop 32 :
+                  while pof2 < [[@uint max] uint64] do
+                    if (pof2 & [mask_value uint64]) != 0L then
+                      nbbits++ ;
+                    end if ;
+                    pof2 := pof2 << 1 ;
+                  end loop ;
+                  if nbbits > 1 then
+                    warning here : "MASK attribute uses more than 1 bit" ;
+                  end if ;
+                end if ;                  
+            else
+                error here : "MASK attribute already defined for this EVENT" ;
+                error [mask location] : "was previously defined here" ;
+            end cast ;
+        end select ;
+        <description> ?* ; $;$ ;
+    end repeat ;
+end rule ;
+
+end syntax ;
+# vim:ft=ggs:ts=4:sw=4

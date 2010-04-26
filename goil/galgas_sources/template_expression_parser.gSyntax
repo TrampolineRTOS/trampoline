@@ -1,0 +1,1525 @@
+#---------------------------------------------------------------------------*
+#                                                                           *
+#  GOIL template expression parser definition                               *
+#                                                                           *
+#  Copyright (C) 2009, ..., 2009 Pierre Molinaro.                           *
+#                                                                           *
+#  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
+#                                                                           *
+#  This program is free software; you can redistribute it and/or modify it  *
+#  under the terms of the GNU General Public License as published by the    *
+#  Free Software Foundation.                                                *
+#                                                                           *
+#  This program is distributed in the hope it will be useful, but WITHOUT   *
+#  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
+#  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
+#   more details.                                                           *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+syntax template_expression_parser :
+with "template_scanner.gLexique";
+
+import lexique template_scanner in "template_scanner.gLexique";
+
+import semantics template_invocation in "template_invocation.gSemantics";
+import semantics template_semantics in "template_semantics.gSemantics";
+import semantics system_config in "system_config.gSemantics";
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#          Rules prototypes                                                    *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+nonterminal <expression>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@goilTemplateVariableMap inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+label parse
+;
+
+nonterminal <relation_term>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@goilTemplateVariableMap inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+label parse
+;
+
+nonterminal <relation_factor>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@goilTemplateVariableMap inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+label parse
+;
+
+nonterminal <simple_expression>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@goilTemplateVariableMap inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+label parse
+;
+
+nonterminal <term>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@goilTemplateVariableMap inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+label parse
+;
+
+nonterminal <factor>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@goilTemplateVariableMap inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+label parse
+;
+
+nonterminal <struct_member>
+  ??@goilTemplateFieldMap inValue
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+label parse
+;
+
+#---------------------------------------------------------------------------*
+#                                                                           *
+#   M A T C H    &    O P E R A T O R                                       *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+routine matchAndOperatorForTemplate
+  ??@goilTemplateType inLeftExpressionType
+  ??@goilTemplateType inRightExpressionType
+  !@goilTemplateType outResultType
+:
+  match inLeftExpressionType :: inRightExpressionType :
+  when boolType :: boolType :
+    outResultType := inLeftExpressionType;
+  when unsignedType :: unsignedType :
+    outResultType := inLeftExpressionType;
+  else
+    error here : "operand type error : (" . [inLeftExpressionType messageGoilTemplateType] .
+           " & " . [inRightExpressionType messageGoilTemplateType] . ") is not valid" 
+           : outResultType;
+  end match;
+end routine;
+
+#---------------------------------------------------------------------------*
+#                                                                           *
+#   M A T C H    |    O P E R A T O R                                       *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+routine matchOrOperatorForTemplate
+  ??@goilTemplateType inLeftExpressionType
+  ??@goilTemplateType inRightExpressionType
+  !@goilTemplateType outResultType
+:
+  match inLeftExpressionType :: inRightExpressionType :
+  when boolType :: boolType :
+    outResultType := inLeftExpressionType;
+  when unsignedType :: unsignedType :
+    outResultType := inLeftExpressionType;
+  else
+    error here : "operand type error : (" . [inLeftExpressionType messageGoilTemplateType] .
+           " | " . [inRightExpressionType messageGoilTemplateType] . ") is not valid" 
+           : outResultType;
+  end match;
+end routine;
+
+#---------------------------------------------------------------------------*
+#                                                                           *
+#   M A T C H    ^    O P E R A T O R                                       *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+routine matchXorOperatorForTemplate
+  ??@goilTemplateType inLeftExpressionType
+  ??@goilTemplateType inRightExpressionType
+  !@goilTemplateType outResultType
+:
+  match inLeftExpressionType :: inRightExpressionType :
+  when boolType :: boolType :
+    outResultType := inLeftExpressionType;
+  when unsignedType :: unsignedType :
+    outResultType := inLeftExpressionType;
+  else
+    error here : "operand type error : (" . [inLeftExpressionType messageGoilTemplateType] .
+           " | " . [inRightExpressionType messageGoilTemplateType] . ") is not valid" 
+           : outResultType;
+  end match;
+end routine;
+
+#---------------------------------------------------------------------------*
+#                                                                           *
+#   C H E C K    N O T    O P E R A T O R                                   *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+routine checkNotOperatorForTemplate
+  ??@goilTemplateType inOperandType
+  !@goilTemplateType outResultType
+:
+  if inOperandType != [@goilTemplateType boolType] then
+    error here : "the 'not' operator is not defined for an "
+    . [inOperandType messageGoilTemplateType] . " type";
+  end if;
+  outResultType := inOperandType;
+end routine;
+
+#---------------------------------------------------------------------------*
+#                                                                           *
+#   C H E C K    ~    O P E R A T O R                                       *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+routine checkBitComplementOperatorForTemplate
+  ??@goilTemplateType inOperandType
+  !@goilTemplateType outResultType
+:
+  outResultType := inOperandType;
+  if inOperandType != [@goilTemplateType unsignedType] then
+    error here : "the ~ operator is not defined for an "
+    . [inOperandType messageGoilTemplateType] . " type";
+  end if;
+end routine;
+
+#---------------------------------------------------------------------------*
+#                                                                           *
+#   C H E C K    ==    !=    C O M P A R I S O N S                          *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+routine comparison_types_checkForTemplate
+  ??@goilTemplateType inLeftExpressionType
+  ??@goilTemplateType inRightExpressionType
+:
+  match inLeftExpressionType :: inRightExpressionType :
+  when boolType     :: boolType :
+  when unsignedType :: unsignedType :
+  when stringType   :: stringType :
+  else
+    error here : "comparison between " . [inLeftExpressionType messageGoilTemplateType] .
+           " and " . [inRightExpressionType messageGoilTemplateType] . " is not valid" ;
+  end match;
+end routine;
+
+#---------------------------------------------------------------------------*
+#                                                                           *
+#   C H E C K    ==    !=    <    <=    >    >=   C O M P A R I S O N S     *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+routine magnitude_comparison_types_checkForTemplate
+  ??@goilTemplateType inLeftExpressionType
+  ??@goilTemplateType inRightExpressionType
+:
+  match inLeftExpressionType :: inRightExpressionType :
+  when boolType      :: boolType :
+  when unsignedType      :: unsignedType :
+  when stringType    :: stringType :
+  else
+    error here : "comparison between " . [inLeftExpressionType messageGoilTemplateType] .
+           " and " . [inRightExpressionType messageGoilTemplateType] . " is not valid" ;
+  end match;
+end routine;
+
+#---------------------------------------------------------------------------*
+#                                                                           *
+#   C H E C K    S H I F T    O P E R A T O R                               *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+routine left_shift_types_checkForTemplate
+  ??@goilTemplateType inLeftExpressionType
+  ??@goilTemplateType inRightExpressionType
+  !@goilTemplateType outResultType
+:
+  match inLeftExpressionType :: inRightExpressionType :
+  when unsignedType    :: unsignedType :
+    outResultType := inLeftExpressionType;
+  else
+    error here : "shift between " . [inLeftExpressionType messageGoilTemplateType]
+      ." and " . [inRightExpressionType messageGoilTemplateType] . " is not valid"
+      : outResultType
+   ;
+  end match;
+end routine;
+
+#---------------------------------------------------------------------------*
+
+routine right_shift_types_checkForTemplate
+  ??@goilTemplateType inLeftExpressionType
+  ??@goilTemplateType inRightExpressionType
+  !@goilTemplateType outResultType
+:
+  match inLeftExpressionType :: inRightExpressionType :
+  when unsignedType    :: unsignedType :
+    outResultType := inLeftExpressionType;
+  else
+    error here : "shift between " . [inLeftExpressionType messageGoilTemplateType]
+      ." and " . [inRightExpressionType messageGoilTemplateType] . " is not valid"
+      : outResultType
+   ;
+  end match;
+end routine;
+
+#---------------------------------------------------------------------------*
+#                                                                           *
+#   C H E C K    A D D I T I O N    O P E R A T O R                         *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+routine addition_types_checkForTemplate
+  ??@goilTemplateType inLeftExpressionType
+  ??@goilTemplateType inRightExpressionType
+  !@goilTemplateType outResultType
+:
+  match inLeftExpressionType :: inRightExpressionType :
+  when unsignedType      :: unsignedType :
+    outResultType := inLeftExpressionType;
+  else
+    error here : "addition between " . [inLeftExpressionType messageGoilTemplateType]
+      ." and " . [inRightExpressionType messageGoilTemplateType] . " is not valid"
+      : outResultType
+   ;
+  end match;
+end routine;
+
+#---------------------------------------------------------------------------*
+#                                                                           *
+#   C H E C K    C O N C A T E N A T I O N    O P E R A T O R               *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+routine concatenation_types_checkForTemplate
+  ??@goilTemplateType inLeftExpressionType
+  ??@goilTemplateType inRightExpressionType
+  !@goilTemplateType outResultType
+:
+  match inLeftExpressionType :: inRightExpressionType :
+  when stringType        :: stringType :
+    outResultType := inLeftExpressionType;
+  else
+    error here : "addition between " . [inLeftExpressionType messageGoilTemplateType]
+      ." and " . [inRightExpressionType messageGoilTemplateType] . " is not valid"
+      : outResultType
+   ;
+  end match;
+end routine;
+
+#---------------------------------------------------------------------------*
+#                                                                           *
+#   C H E C K    S U B S T R A C T I O N    O P E R A T O R                 *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+routine substraction_types_checkForTemplate
+  ??@goilTemplateType inLeftExpressionType
+  ??@goilTemplateType inRightExpressionType
+  !@goilTemplateType outResultType
+:
+  match inLeftExpressionType :: inRightExpressionType :
+  when unsignedType      :: unsignedType :
+    outResultType := inLeftExpressionType;
+  else
+    error here : "substraction between " . [inLeftExpressionType messageGoilTemplateType]
+      ." and " . [inRightExpressionType messageGoilTemplateType] . " is not valid"
+      : outResultType
+   ;
+  end match;
+end routine;
+
+#---------------------------------------------------------------------------*
+#                                                                           *
+#   C H E C K    M U L T I P L Y    O P E R A T O R                         *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+routine multiply_types_checkForTemplate
+  ??@goilTemplateType inLeftExpressionType
+  ??@goilTemplateType inRightExpressionType
+  !@goilTemplateType outResultType
+:
+  match inLeftExpressionType :: inRightExpressionType :
+  when unsignedType      :: unsignedType :
+    outResultType := inLeftExpressionType;
+  else
+    error here : "multiplication between " . [inLeftExpressionType messageGoilTemplateType]
+      ." and " . [inRightExpressionType messageGoilTemplateType] . " is not valid"
+      : outResultType
+   ;
+  end match;
+end routine;
+
+#---------------------------------------------------------------------------*
+#                                                                           *
+#   C H E C K    D I V I D E    O P E R A T O R                             *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+routine divide_types_checkForTemplate
+  ??@goilTemplateType inLeftExpressionType
+  ??@goilTemplateType inRightExpressionType
+  !@goilTemplateType outResultType
+:
+  match inLeftExpressionType :: inRightExpressionType :
+  when unsignedType      :: unsignedType :
+    outResultType := inLeftExpressionType;
+  else
+    error here : "division between " . [inLeftExpressionType messageGoilTemplateType]
+      ." and " . [inRightExpressionType messageGoilTemplateType] . " is not valid"
+      : outResultType
+   ;
+  end match;
+end routine;
+
+#---------------------------------------------------------------------------*
+#                                                                           *
+#   C H E C K    M O D U L O    O P E R A T O R                             *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+routine modulo_types_checkForTemplate
+  ??@goilTemplateType inLeftExpressionType
+  ??@goilTemplateType inRightExpressionType
+  !@goilTemplateType outResultType
+:
+  match inLeftExpressionType :: inRightExpressionType :
+  when unsignedType      :: unsignedType :
+    outResultType := inLeftExpressionType;
+  else
+    error here : "modulo between " . [inLeftExpressionType messageGoilTemplateType]
+      ." and " . [inRightExpressionType messageGoilTemplateType] . " is not valid"
+      : outResultType
+   ;
+  end match;
+end routine;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#  A R G U M E N T    L I S T    S I G N A T U R E                             *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+function argumentListSignature
+  ??@goilTemplateExpressionList inParameterTypeList
+  -> @string outResult
+:
+  outResult := " this method call has ";
+  outResult .= [[inParameterTypeList length] string] . " argument";
+  outResult .= if [inParameterTypeList length] > 0 then "s" else "" end;
+  foreach inParameterTypeList
+  before outResult .= ": ";
+  do outResult .= [mType messageGoilTemplateType];
+  between outResult .= ", ";
+  end foreach;
+end function;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#  C H E C K    I N V O C A T I O N    H A S   N O    A R G U M E N T          *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+routine checkInvocationHasNoArgument
+  ??@goilTemplateType inType
+  ??@lstring inMethodName
+  ??@goilTemplateExpressionList inParameterTypeList
+:
+  if [inParameterTypeList length] > 0 then
+    error inMethodName:"calling '" . inMethodName . "' on a "
+    . [inType messageGoilTemplateType] . " type requires no argument; "
+    . argumentListSignature [!inParameterTypeList];
+  end if;
+end routine;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#  M E T H O D    I N V O C A T I O N                                          *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+routine templateMethodInvocation
+  ??@goilTemplateType inType
+  ??@goilTemplateValue inValue
+  ??@lstring inMethodName
+  ??@goilTemplateExpressionList inParameterTypeList
+  !@goilTemplateType outResultType
+  !@goilTemplateValue outResultValue
+:
+  switch inType
+  when boolType :
+    if [inMethodName string] == "trueOrFalse" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+      outResultType := [@goilTemplateType stringType];
+      outResultValue := valueWithString [
+        ! if [inValue mUnsigned64Value] > 0L then "true" else "false" end
+      ];
+    elsif [inMethodName string] == "yesOrNo" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+      outResultType := [@goilTemplateType stringType];
+      outResultValue := valueWithString [
+        ! if [inValue mUnsigned64Value] > 0L then "yes" else "no" end
+      ];
+    elsif [inMethodName string] == "unsigned" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+      outResultType := [@goilTemplateType unsignedType];
+      outResultValue := inValue;
+    else
+      error inMethodName: "this template method is not defined" : outResultValue, outResultType;
+    end if;
+  when unsignedType :
+    if [inMethodName string] == "string" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+      outResultType := [@goilTemplateType stringType];
+      outResultValue := valueWithString [![[inValue mUnsigned64Value] string]];
+    elsif [inMethodName string] == "hexString" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+      outResultType := [@goilTemplateType stringType];
+      outResultValue := valueWithString [![[inValue mUnsigned64Value] hexString]];
+    else
+      error inMethodName: "this template method is not defined" : outResultValue, outResultType;
+    end if;
+  when stringType :
+    if [inMethodName string] == "HTMLRepresentation" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+      outResultType := [@goilTemplateType stringType];
+      outResultValue := valueWithString [![[inValue mStringValue] HTMLRepresentation]];
+    elsif [inMethodName string] == "identifierRepresentation" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+      outResultType := [@goilTemplateType stringType];
+      outResultValue := valueWithString [![[inValue mStringValue] identifierRepresentation]];
+    elsif [inMethodName string] == "lowercaseString" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+      outResultType := [@goilTemplateType stringType];
+      outResultValue := valueWithString [![[inValue mStringValue] lowercaseString]];
+    elsif [inMethodName string] == "length" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+      outResultType := [@goilTemplateType unsignedType];
+      outResultValue := valueWithUnsigned [![[[inValue mStringValue] length] uint64]];
+    elsif [inMethodName string] == "stringByCapitalizingFirstCharacter" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+      outResultType := [@goilTemplateType stringType];
+      outResultValue := valueWithString [![[inValue mStringValue] stringByCapitalizingFirstCharacter]];
+    elsif [inMethodName string] == "uppercaseString" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+      outResultType := [@goilTemplateType stringType];
+      outResultValue := valueWithString [![[inValue mStringValue] uppercaseString]];
+    else
+      error inMethodName: "this template method is not defined" : outResultValue, outResultType;
+    end if;
+  when listType :
+    if [inMethodName string] == "length" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+      outResultType := [@goilTemplateType unsignedType];
+      outResultValue := valueWithUnsigned [![[[inValue mMapListValue] length] uint64]];
+    else
+      error inMethodName: "this template method is not defined" : outResultValue, outResultType;
+    end if;
+  when structType:
+    error inMethodName: "this template method is not defined" : outResultValue, outResultType;
+  end switch;
+end routine;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#   E X P R E S S I O N                                                        *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+rule <expression>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@goilTemplateVariableMap inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  <relation_term>
+    !inPrefix
+    !inPath
+    !inTemplateDirectory
+    !inVariableMap
+    ?outValue
+    ?outResultType
+ ;
+  repeat
+  while
+    $|$;
+    @goilTemplateValue leftOperand := outValue;
+    @goilTemplateValue rightOperand;
+    @goilTemplateType firstOperandType := outResultType;
+    @goilTemplateType secondOperandType;
+    <relation_term>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !inVariableMap
+      ?rightOperand
+      ?secondOperandType
+   ;
+    outValue->mUnsigned64Value := [leftOperand mUnsigned64Value] | [rightOperand mUnsigned64Value];
+    matchOrOperatorForTemplate
+      !firstOperandType
+      !secondOperandType
+      ?outResultType
+    ;
+  while
+    $^$;
+    @goilTemplateValue leftOperand := outValue;
+    @goilTemplateValue rightOperand;
+    @goilTemplateType firstOperandType := outResultType;
+    @goilTemplateType secondOperandType;
+    <relation_term>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !inVariableMap
+      ?rightOperand
+      ?secondOperandType
+   ;
+    outValue->mUnsigned64Value := [leftOperand mUnsigned64Value] ^ [rightOperand mUnsigned64Value];
+    matchXorOperatorForTemplate
+      !firstOperandType
+      !secondOperandType
+      ?outResultType
+    ;
+  end repeat;
+end rule;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#   R E L A T I O N    T E R M                                                 *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+rule <relation_term>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@goilTemplateVariableMap inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  <relation_factor>
+    !inPrefix
+    !inPath
+    !inTemplateDirectory
+    !inVariableMap
+    ?outValue
+    ?outResultType
+ ;
+  repeat
+  while
+    $&$;
+    @goilTemplateValue leftOperand := outValue;
+    @goilTemplateValue rightOperand;
+    @goilTemplateType firstOperandType := outResultType;
+    @goilTemplateType secondOperandType;
+    <relation_factor>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !inVariableMap
+      ?rightOperand
+      ?secondOperandType
+   ;
+    outValue->mUnsigned64Value := [leftOperand mUnsigned64Value] & [rightOperand mUnsigned64Value];
+    matchAndOperatorForTemplate
+      !firstOperandType
+      !secondOperandType
+      ?outResultType
+   ;
+  end repeat;
+end rule;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#   R E L A T I O N    F A C T O R                                             *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+rule <relation_factor>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@goilTemplateVariableMap inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  <simple_expression>
+    !inPrefix
+    !inPath
+    !inTemplateDirectory
+    !inVariableMap
+    ?outValue
+    ?outResultType
+ ;
+  select
+  or
+    $==$;
+    @goilTemplateValue leftExpression := outValue;
+    @goilTemplateType leftType := outResultType;
+    @goilTemplateValue rightExpression;
+    @goilTemplateType rightType;
+    <simple_expression>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !inVariableMap
+      ?rightExpression
+      ?rightType;
+    comparison_types_checkForTemplate !leftType !rightType;
+    @bool result;
+    switch leftType
+    when boolType :
+      result := [leftExpression mUnsigned64Value] == [rightExpression mUnsigned64Value];
+    when unsignedType :
+      result := [leftExpression mUnsigned64Value] == [rightExpression mUnsigned64Value];
+    when stringType :
+      result := [leftExpression mStringValue] == [rightExpression mStringValue];
+    when listType, structType:
+      error here: "lists and struct may not be compared" : result;
+    end switch;
+    outResultType := [@goilTemplateType boolType];
+    outValue->mUnsigned64Value := if result then 1L else 0L end;
+  or
+    $!=$;
+    @goilTemplateValue leftExpression := outValue;
+    @goilTemplateType leftType := outResultType;
+    @goilTemplateValue rightExpression;
+    @goilTemplateType rightType;
+    <simple_expression>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !inVariableMap
+      ?rightExpression
+      ?rightType
+   ;
+    comparison_types_checkForTemplate !leftType !rightType;
+    @bool result;
+    switch leftType
+    when boolType :
+      result := [leftExpression mUnsigned64Value] != [rightExpression mUnsigned64Value];
+    when unsignedType :
+      result := [leftExpression mUnsigned64Value] != [rightExpression mUnsigned64Value];
+    when stringType :
+      result := [leftExpression mStringValue] != [rightExpression mStringValue];
+    when listType, structType:
+      error here: "lists and struct may not be compared": result;
+    end switch;
+    outResultType := [@goilTemplateType boolType];
+    outValue->mUnsigned64Value := if result then 1L else 0L end;
+  or
+    $<=$;
+    @goilTemplateValue leftExpression := outValue;
+    @goilTemplateType leftType := outResultType;
+    @goilTemplateValue rightExpression;
+    @goilTemplateType rightType;
+    <simple_expression>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !inVariableMap
+      ?rightExpression
+      ?rightType
+   ;
+    magnitude_comparison_types_checkForTemplate !leftType !rightType;
+    @bool result;
+    switch leftType
+    when boolType :
+      result := [leftExpression mUnsigned64Value] <= [rightExpression mUnsigned64Value];
+    when unsignedType :
+      result := [leftExpression mUnsigned64Value] <= [rightExpression mUnsigned64Value];
+    when stringType, listType, structType :
+      result := false;
+    end switch;
+    outResultType := [@goilTemplateType boolType];
+    outValue->mUnsigned64Value := if result then 1L else 0L end;
+  or
+    $>=$;
+    @goilTemplateValue leftExpression := outValue;
+    @goilTemplateType leftType := outResultType;
+    @goilTemplateValue rightExpression;
+    @goilTemplateType rightType;
+    <simple_expression>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !inVariableMap
+      ?rightExpression
+      ?rightType
+   ;
+    magnitude_comparison_types_checkForTemplate !leftType !rightType;
+    @bool result;
+    switch leftType
+    when boolType :
+      result := [leftExpression mUnsigned64Value] >= [rightExpression mUnsigned64Value];
+    when unsignedType :
+      result := [leftExpression mUnsigned64Value] >= [rightExpression mUnsigned64Value];
+    when stringType, listType, structType :
+      result := false;
+    end switch;
+    outResultType := [@goilTemplateType boolType];
+    outValue->mUnsigned64Value := if result then 1L else 0L end;
+  or
+    $>$;
+    @goilTemplateValue leftExpression := outValue;
+    @goilTemplateType leftType := outResultType;
+    @goilTemplateValue rightExpression;
+    @goilTemplateType rightType;
+    <simple_expression>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !inVariableMap
+      ?rightExpression
+      ?rightType
+   ;
+    magnitude_comparison_types_checkForTemplate !leftType !rightType;
+    @bool result;
+    switch leftType
+    when boolType :
+      result := [leftExpression mUnsigned64Value] > [rightExpression mUnsigned64Value];
+    when unsignedType :
+      result := [leftExpression mUnsigned64Value] > [rightExpression mUnsigned64Value];
+    when stringType, listType, structType :
+      result := false;
+    end switch;
+    outResultType := [@goilTemplateType boolType];
+    outValue->mUnsigned64Value := if result then 1L else 0L end;
+  or
+    $<$;
+    @goilTemplateValue leftExpression := outValue;
+    @goilTemplateType leftType := outResultType;
+    @goilTemplateValue rightExpression;
+    @goilTemplateType rightType;
+    <simple_expression>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !inVariableMap
+      ?rightExpression
+      ?rightType
+   ;
+    magnitude_comparison_types_checkForTemplate !leftType !rightType;
+    @bool result;
+    switch leftType
+    when boolType :
+      result := [leftExpression mUnsigned64Value] < [rightExpression mUnsigned64Value];
+    when unsignedType :
+      result := [leftExpression mUnsigned64Value] < [rightExpression mUnsigned64Value];
+    when stringType, listType, structType :
+      result := false;
+    end switch;
+    outResultType := [@goilTemplateType boolType];
+    outValue->mUnsigned64Value := if result then 1L else 0L end;
+  end select;
+end rule;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#   S I M P L E    E X P R E S S I O N                                         *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+rule <simple_expression>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@goilTemplateVariableMap inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  <term>
+    !inPrefix
+    !inPath
+    !inTemplateDirectory
+    !inVariableMap
+    ?outValue
+    ?outResultType
+ ;
+  repeat
+  while 
+    $<<$;
+    @goilTemplateValue leftExpression := outValue;
+    @goilTemplateType leftType := outResultType;
+    @goilTemplateValue rightExpression;
+    @goilTemplateType rightType;
+    <term>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !inVariableMap
+      ?rightExpression
+      ?rightType
+   ;
+    left_shift_types_checkForTemplate !leftType !rightType ?outResultType;
+    outValue->mUnsigned64Value := [leftExpression mUnsigned64Value] << [[rightExpression mUnsigned64Value] uint];
+  while 
+    $>>$;
+    @goilTemplateValue leftExpression := outValue;
+    @goilTemplateType leftType := outResultType;
+    @goilTemplateValue rightExpression;
+    @goilTemplateType rightType;
+    <term>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !inVariableMap
+      ?rightExpression
+      ?rightType
+   ;
+    right_shift_types_checkForTemplate !leftType !rightType ?outResultType;
+    outValue->mUnsigned64Value := [leftExpression mUnsigned64Value] >> [[rightExpression mUnsigned64Value] uint];
+  while 
+    $+$;
+    @goilTemplateValue leftExpression := outValue;
+    @goilTemplateType leftType := outResultType;
+    @goilTemplateValue rightExpression;
+    @goilTemplateType rightType;
+    <term>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !inVariableMap
+      ?rightExpression
+      ?rightType
+    ;
+    addition_types_checkForTemplate !leftType !rightType ?outResultType;
+    outValue->mUnsigned64Value := [leftExpression mUnsigned64Value] + [rightExpression mUnsigned64Value];
+  while 
+    $.$;
+    @goilTemplateValue leftExpression := outValue;
+    @goilTemplateType leftType := outResultType;
+    @goilTemplateValue rightExpression;
+    @goilTemplateType rightType;
+    <term>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !inVariableMap
+      ?rightExpression
+      ?rightType
+    ;
+    concatenation_types_checkForTemplate !leftType !rightType ?outResultType;
+    outValue->mStringValue := [leftExpression mStringValue] . [rightExpression mStringValue];
+  while 
+    $-$;
+    @goilTemplateValue leftExpression := outValue;
+    @goilTemplateType leftType := outResultType;
+    @goilTemplateValue rightExpression;
+    @goilTemplateType rightType;
+    <term>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !inVariableMap
+      ?rightExpression
+      ?rightType
+   ;
+    addition_types_checkForTemplate !leftType !rightType ?outResultType;
+    outValue->mUnsigned64Value := [leftExpression mUnsigned64Value] - [rightExpression mUnsigned64Value];
+  end repeat;
+end rule;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#   T E R M                                                                    *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+rule <term>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@goilTemplateVariableMap inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  <factor>
+    !inPrefix
+    !inPath
+    !inTemplateDirectory
+    !inVariableMap
+    ?outValue
+    ?outResultType
+ ;
+  repeat
+  while 
+    $*$;
+    @goilTemplateValue leftExpression := outValue;
+    @goilTemplateType leftType := outResultType;
+    @goilTemplateValue rightExpression;
+    @goilTemplateType rightType;
+    <factor>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !inVariableMap
+      ?rightExpression
+      ?rightType
+   ;
+    multiply_types_checkForTemplate !leftType !rightType ?outResultType;
+    outValue->mUnsigned64Value := [leftExpression mUnsigned64Value] * [rightExpression mUnsigned64Value];
+  while 
+    $/$;
+    @goilTemplateValue leftExpression := outValue;
+    @goilTemplateType leftType := outResultType;
+    @goilTemplateValue rightExpression;
+    @goilTemplateType rightType;
+    <factor>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !inVariableMap
+      ?rightExpression
+      ?rightType
+   ;
+    divide_types_checkForTemplate !leftType !rightType ?outResultType;
+    outValue->mUnsigned64Value := [leftExpression mUnsigned64Value] / [rightExpression mUnsigned64Value];
+  while 
+    $mod$;
+    @goilTemplateValue leftExpression := outValue;
+    @goilTemplateType leftType := outResultType;
+    @goilTemplateValue rightExpression;
+    @goilTemplateType rightType;
+    <factor>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !inVariableMap
+      ?rightExpression
+      ?rightType
+   ;
+    modulo_types_checkForTemplate !leftType !rightType ?outResultType;
+    outValue->mUnsigned64Value := [leftExpression mUnsigned64Value] mod [rightExpression mUnsigned64Value];
+  end repeat;
+end rule;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#   F A C T O R    :    ( EXPRESSION )                                         *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@goilTemplateVariableMap inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  $($;
+  <expression>
+    !inPrefix
+    !inPath
+    !inTemplateDirectory
+    !inVariableMap
+    ?outValue
+    ?outResultType
+ ;
+  $)$;
+end rule;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#   F A C T O R    :    not FACTOR                                             *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@goilTemplateVariableMap inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  $not$;
+  @goilTemplateValue expression;
+  @goilTemplateType operandType;
+  <factor>
+    !inPrefix
+    !inPath
+    !inTemplateDirectory
+    !inVariableMap
+    ?expression
+    ?operandType
+ ;
+  outValue := valueWithUnsigned[!1L - [expression mUnsigned64Value]];
+  checkNotOperatorForTemplate !operandType ?outResultType;
+end rule;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#   F A C T O R    :    ~ FACTOR                                               *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@goilTemplateVariableMap inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  $~$;
+  @goilTemplateValue value;
+  @goilTemplateType operandType;
+  <factor>
+    !inPrefix
+    !inPath
+    !inTemplateDirectory
+    !inVariableMap
+    ?value
+    ?operandType
+ ;
+  outValue := valueWithUnsigned[!~ [value mUnsigned64Value]];
+  checkBitComplementOperatorForTemplate !operandType ?outResultType;
+end rule;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#   F A C T O R    :    true                                                   *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ??@string unused inPrefix
+  ??@string unused inPath
+  ??@string unused inTemplateDirectory
+  ??@goilTemplateVariableMap unused inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  $yes$;
+  outValue := valueWithUnsigned[!1L];
+  outResultType := [@goilTemplateType boolType];
+end rule;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#   F A C T O R    :    false                                                  *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ??@string unused inPrefix
+  ??@string unused inPath
+  ??@string unused inTemplateDirectory
+  ??@goilTemplateVariableMap unused inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  $no$;
+  outValue := valueWithUnsigned[!0L];
+  outResultType := [@goilTemplateType boolType];
+end rule;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#   F A C T O R    :    a 64-bit unsigned literal integer value                *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ??@string unused inPrefix
+  ??@string unused inPath
+  ??@string unused inTemplateDirectory
+  ??@goilTemplateVariableMap unused inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  @luint64 literalInt;
+  $unsigned_literal_integer64$ ?literalInt;
+  outValue := valueWithUnsigned[![literalInt uint64]];
+  outResultType := [@goilTemplateType unsignedType];
+end rule;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#   F A C T O R    :    a literal string value                                 *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ??@string unused inPrefix
+  ??@string unused inPath
+  ??@string unused inTemplateDirectory
+  ??@goilTemplateVariableMap unused inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  $string$ ?@lstring literalString;
+  outValue := valueWithString[![literalString string]];
+  outResultType := [@goilTemplateType stringType];
+end rule;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#                         F A C T O R                                          *
+#   template method call :   [expression method !... ]                         *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@goilTemplateVariableMap inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  $[$;
+
+  @goilTemplateValue expressionValue;
+  @goilTemplateType expressionType;
+  <expression>
+    !inPrefix
+    !inPath
+    !inTemplateDirectory
+    !inVariableMap
+    ?expressionValue
+    ?expressionType
+ ;
+
+  $identifier$ ? @lstring templateMethodName;
+
+  @goilTemplateExpressionList expressionList [emptyList];
+  select
+  or
+    $:$;
+    repeat
+      @goilTemplateValue expression;
+      @goilTemplateType resultType;
+      <expression>
+        !inPrefix
+        !inPath
+        !inTemplateDirectory
+        !inVariableMap
+        ?expression
+        ?resultType
+     ;
+      expressionList += !expression !resultType;
+    while
+      $,$;
+    end repeat;
+  end select;
+
+  $]$;
+
+  templateMethodInvocation
+    !expressionType
+    !expressionValue
+    !templateMethodName
+    !expressionList
+    ?outResultType
+    ?outValue
+ ;
+end rule;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#                         F A C T O R                                          *
+#   function call        :   function_name (..., ...)                          *
+#   variable             :   variable_name                                     *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+routine typeError
+  ??@lstring inFunctionName
+  ??@type inActualType
+  ??@string inExpectedTypeName
+  ??@uint inParameterIndex
+:
+  @string m := "the function requires the parameter " . [inParameterIndex string]
+  . " to be " . inExpectedTypeName . "; its type is "
+ ;
+  if inActualType == `@bool then
+    m .= "boolean";
+  elsif inActualType == `@uint64 then
+    m .= "unsigned";
+  elsif inActualType == `@string then
+    m .= "string";
+  else
+    m .= "a not allowed type";
+  end if;
+  error inFunctionName : m;
+end routine;
+
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@goilTemplateVariableMap inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+#--- Function call
+  $identifier$ ?@lstring functionOrVariableName;
+  select
+    [inVariableMap searchKey !functionOrVariableName ?outResultType ?outValue];
+  or
+    $::$;
+    @goilTemplateType varType;
+    @goilTemplateValue varValue;
+    [inVariableMap searchKey !functionOrVariableName ?varType ?varValue];
+    if varType != [@goilTemplateType structType] then
+      error functionOrVariableName: "'".functionOrVariableName."' is not a struct";
+    end if;
+    <struct_member> ![varValue mStructValue] ?outValue ?outResultType;
+  or
+  #--- Search for function name
+    @function f;
+    if not [@function isFunctionDefined ![functionOrVariableName string]] then
+      error functionOrVariableName : "there is no '" . functionOrVariableName . "' function defined in GOIL template language" : f;
+    else
+      f := [@function functionWithName ![functionOrVariableName string]];
+    end if;
+  #--- Parse actual arguments
+    @goilTemplateExpressionList actualArgumentList [emptyList];
+    $($;
+    repeat
+      @goilTemplateValue expression;
+      @goilTemplateType resultType;
+      <expression>
+        !inPrefix
+        !inPath
+        !inTemplateDirectory
+        !inVariableMap
+        ?expression
+        ?resultType
+     ;
+      actualArgumentList += !expression !resultType;
+    while
+      $,$;
+    end repeat;
+    $)$;
+  #--- Check arguments
+    @objectlist actualArgumentObjectList [emptyList];
+    const @typelist formalParameterList := [f formalParameterTypeList];
+    if [formalParameterList length] != [actualArgumentList length] then
+      error functionOrVariableName: "this function is invoked with "
+      . [[actualArgumentList length] string]
+      . " parameter" . if [actualArgumentList length] > 1 then "s" else "" end
+      . ", but requires " 
+      . [[formalParameterList length] string]
+      . " parameter" . if [formalParameterList length] > 1 then "s" else "" end
+      : outValue, outResultType;
+    else
+      @uint idx := 1;
+      foreach formalParameterList prefixedby formal_, actualArgumentList prefixedby actual_ do
+        switch actual_mType
+        when boolType :
+          if formal_mValue != `@bool then
+            typeError !functionOrVariableName !formal_mValue !"boolean" !idx;
+          end if;
+          actualArgumentObjectList += ![if [actual_mValue mUnsigned64Value] == 0L then false else true end object];
+        when unsignedType :
+          if formal_mValue != `@uint64 then
+            typeError !functionOrVariableName !formal_mValue !"unsigned" !idx;
+          end if;
+          actualArgumentObjectList += ![[actual_mValue mUnsigned64Value] object];
+        when stringType :
+          if formal_mValue != `@string then
+            typeError !functionOrVariableName !formal_mValue !"string" !idx;
+          end if;
+          actualArgumentObjectList += ![[actual_mValue mStringValue] object];
+        when listType, structType :
+          typeError !functionOrVariableName !formal_mValue !"string" !idx;
+        end switch;
+        idx ++;     
+      end foreach;
+      outResultType := [@goilTemplateType unsignedType];
+      outValue := valueWithUnsigned[!0L];
+      if [@uint errorCount] == 0 then
+        const @object result := [f invoke !actualArgumentObjectList ![functionOrVariableName location]];
+        if [result objectDynamicType] == `@uint64 then
+          outResultType := [@goilTemplateType unsignedType];
+          outValue->mUnsigned64Value := (cast result if == @uint64 else error functionOrVariableName);
+        elsif [result objectDynamicType] == `@bool then
+          outResultType := [@goilTemplateType boolType];
+          outValue->mUnsigned64Value := [(cast result if == @bool else error functionOrVariableName) uint64];
+        elsif [result objectDynamicType] == `@string then
+          outResultType := [@goilTemplateType stringType];
+          outValue->mStringValue := (cast result if == @string else error functionOrVariableName);
+        else
+          error functionOrVariableName : "this function does not return an unsigned, boolean or string value";
+        end if;
+      end if;
+    end if;
+  end select;
+end rule;
+
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@goilTemplateVariableMap inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  $exists$; $identifier$ ?@lstring variableName;
+  select
+    $default$;
+    @goilTemplateValue expression;
+    @goilTemplateType resultType;
+    $($;
+    <expression>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !inVariableMap
+      ?expression
+      ?resultType
+    ;
+    $)$;
+    if [inVariableMap hasKey ![variableName string]] then
+      [inVariableMap searchKey !variableName ?resultType ?expression];
+    end if;
+    outValue := expression;
+    outResultType := resultType;
+  or
+    if [inVariableMap hasKey ![variableName string]] then
+      outValue := valueWithUnsigned[!1L];
+    else
+      outValue := valueWithUnsigned[!0L];
+    end if;
+    outResultType := [@goilTemplateType boolType];
+  end select;
+end rule;
+
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ??@string unused inPrefix
+  ??@string unused inPath
+  ??@string unused inTemplateDirectory
+  ??@goilTemplateVariableMap unused inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  select
+    $true$;
+    outValue := valueWithUnsigned[!1L];
+  or
+    $false$;
+    outValue := valueWithUnsigned[!0L];
+  end select;
+  outResultType := [@goilTemplateType boolType];
+end rule;
+
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ??@string unused inPrefix
+  ??@string unused inPath
+  ??@string unused inTemplateDirectory
+  ??@goilTemplateVariableMap unused inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  $emptylist$;
+  outValue := [@goilTemplateValue new !0L !"" ![@goilTemplateFieldMapList emptyList] ![@goilTemplateFieldMap emptyMap]];
+  outResultType := [@goilTemplateType listType];
+end rule;
+
+#------------------------------------------------------------------------------*
+
+rule <struct_member>
+  ??@goilTemplateFieldMap inValue
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  $identifier$ ?@lstring memberName;
+  @goilTemplateType memberType;
+  @uint64 memberInt;
+  @string memberString;
+  @goilTemplateFieldMapList memberList;
+  @goilTemplateFieldMap memberStruct;
+  [inValue searchKey !memberName ?memberType ?memberInt ?memberString ?memberList ?memberStruct];
+  select
+    if memberType != [@goilTemplateType structType] then
+      error memberName: "'".memberName."' is a not a struct";
+    end if;
+    $::$;
+    <struct_member> !memberStruct ?outValue ?outResultType;
+  or
+    outValue := [@goilTemplateValue new !memberInt !memberString !memberList !memberStruct];
+    outResultType := memberType;
+  end select;
+end rule;
+
+##------------------------------------------------------------------------------*
+#
+#rule <factor>
+#  ??@string inPrefix
+#  ??@string inPath
+#  ??@string inTemplateDirectory
+#  ??@goilTemplateVariableMap inVariableMap
+#  !@goilTemplateValue outValue
+#  !@goilTemplateType outResultType
+#:
+#  @string resultString := "";
+#  $templateresult$;
+#  select
+#    $if$; $exists$;
+#    @bool found;
+#    $identifier$ ? @lstring templateName;
+#    goilTemplateInvocation
+#      !templateName
+#      !inPrefix
+#      !inPath
+#      !inTemplateDirectory
+#      !false
+#      !inVariableMap
+#      !?resultString
+#      ?*
+#    ;
+#  or
+#    $identifier$ ? @lstring templateName;
+#    goilTemplateInvocation
+#      !templateName
+#      !inPrefix
+#      !inPath
+#      !inTemplateDirectory
+#      !true
+#      !inVariableMap
+#      !?resultString
+#      ?*
+#    ;
+#  end select;
+#  outValue := [@goilTemplateValue new !0L !resultString ![@goilTemplateFieldMapList emptyList]];
+#  outResultType := [@goilTemplateType stringType];
+#end rule;
+
+#------------------------------------------------------------------------------*
+
+end syntax;

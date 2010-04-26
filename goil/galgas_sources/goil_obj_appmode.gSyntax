@@ -1,0 +1,51 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est prot�g� par la loi sur la propri�t� intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL counter object parser
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax goil_obj_appmode :
+#--- Lexique Reference, used when grammar source file extension is .gGrammar
+with "goil_lexique.gLexique";
+
+import lexique goil_lexique in "goil_lexique.gLexique" ;
+import option goil_options in "goil_options.gOption" ;
+import semantics goil_semantics in "goil_semantics.gSemantics" ;
+
+nonterminal <appmode> ;
+
+#
+# external rules 
+#
+nonterminal <description>
+    !@lstring desc ;
+nonterminal <free_field>
+    ?!@ident_map ids ;
+
+rule <appmode> :
+    @ident_map others [emptyMap] ;
+
+    $APPMODE$ ;
+    $idf$ ?* ;
+    ${$ ;
+    repeat
+    while
+        <free_field> !?others ; <description> ?* ; $;$ ;
+    end repeat ;
+    $}$ ;
+    <description> ?* ;
+    $;$ ;
+end rule ;
+
+end syntax ;
+# vim:ft=ggs:ts=4:sw=4

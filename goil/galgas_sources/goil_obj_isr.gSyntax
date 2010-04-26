@@ -1,0 +1,201 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est prot�g� par la loi sur la propri�t� intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL isr object parser
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax goil_obj_isr :
+#--- Lexique Reference, used when grammar source file extension is .gGrammar
+with "goil_lexique.gLexique";
+
+import lexique goil_lexique in "goil_lexique.gLexique" ;
+import option goil_options in "goil_options.gOption" ;
+import semantics goil_semantics in "goil_semantics.gSemantics" ;
+import semantics goil_types_timing_prot in "goil_types_timing_prot.gSemantics" ;
+
+#
+# local nonterminals declaration
+#
+nonterminal <isr>
+  ?!@isr_map isrs ;
+
+nonterminal <isr_attributes>
+  ?!@basic_type  category
+  ?!@basic_type  priority
+  ?!@lstringlist resources
+  ?!@lstringlist messages
+  ?!@lstringlist acc_apps
+  ?!@timing_prot timing_prot
+  ?!@ident_map   other_fields ;
+
+#
+# external nonterminals
+#
+nonterminal <description>
+  !@lstring desc ;
+nonterminal <free_field> ?!@ident_map ids ;
+nonterminal <timing_prot_attrs>
+  !@basic_type  exe_budget
+  !@basic_type  exe_time
+  !@basic_type  count_limit
+  !@basic_type  time_frame
+  !@basic_type  os_it_lock
+  !@basic_type  all_it_lock
+  !@rezlock_map rezlocks ;
+
+#
+# isr rules implementation
+#
+rule <isr>
+  ?!@isr_map isrs
+:
+  @lstring     isr_name ;
+  @isr_obj     isr ;
+  @basic_type  category ;
+  @basic_type  priority ;
+  @lstring     desc ;
+  @lstringlist resources ;
+  @lstringlist messages ;
+  @lstringlist acc_apps ;
+  @timing_prot timing_prot ;
+  @ident_map   other_fields ;
+
+  $ISR$ ; $idf$ ?isr_name ;
+  if [isrs hasKey ![isr_name string]] then
+    [!?isrs del !isr_name ?isr] ;
+    category     := [isr category] ;
+    priority     := [isr priority] ;
+    desc         := [isr desc] ;
+    resources    := [isr resources] ;
+    messages     := [isr messages] ;
+    acc_apps     := [isr acc_apps] ;
+    timing_prot  := [isr timing_prot] ;
+    other_fields := [isr other_fields] ;
+  else # isr must also be written in this branch to comply with galgas static verification policy
+    category     := [@void new !here] ;
+    priority     := [@void new !here] ;
+    desc         := [@lstring new !"" !here] ;
+    resources    := [@lstringlist emptyList] ;
+    messages     := [@lstringlist emptyList] ;
+    acc_apps     := [@lstringlist emptyList] ;
+    timing_prot  := [@void_timing_prot new !here] ;
+    other_fields := [@ident_map emptyMap] ;
+    isr := [@isr_obj new !desc !category !priority !resources !messages !acc_apps !timing_prot !other_fields] ;
+  end if ;
+  ${$ ;
+  <isr_attributes> !?category !?priority !?resources !?messages !?acc_apps !?timing_prot !?other_fields;
+  $}$ ;
+  <description> ?desc ;
+  $;$ ;
+
+  isr := [@isr_obj new !desc !category !priority !resources !messages !acc_apps !timing_prot !other_fields] ;
+  [!?isrs put !isr_name !isr] ;
+end rule ;
+
+rule <isr_attributes>
+  ?!@basic_type   category
+  ?!@basic_type   priority
+  ?!@lstringlist  resources
+  ?!@lstringlist  messages
+  ?!@lstringlist  acc_apps
+  ?!@timing_prot  timing_prot
+  ?!@ident_map    other_fields
+:
+  repeat
+  while
+    @luint64 cat ;
+    $CATEGORY$ ; $=$ ; $uint_number$ ?cat ; <description> ?* ; $;$ ;
+    cast category :
+    when == @uint64_class do
+      error here : "ISR category attribute already defined for this ISR" ;
+      error [category location] : "was previously defined here" ;
+    else
+      if ([cat uint64] != 1L) & ([cat uint64] != 2L) then
+        error here : "ISR category should be 1 ou 2" ;
+      end if ;
+      category := [@uint64_class new !here ![cat uint64]] ;
+    end cast ;
+  while
+    @luint64 prio ;
+    $PRIORITY$ ; $=$ ; $uint_number$ ?prio ; <description> ?* ; $;$ ;
+    cast priority :
+    when == @void do
+      priority := [@uint32_class new !here ![[prio uint64] uint]] ;
+    else
+      error here : "PRIORITY already defined for this ISR" ;
+      error [priority location] : "was previouly defined here" ;
+    end cast ;
+  while
+    @lstring rez ;
+    $RESOURCE$ ; $=$ ; $idf$ ?rez ; <description> ?* ; $;$ ;
+    add_lstring_unique !?resources !rez !"RESOURCE" ;
+  while
+    @lstring mess ;
+    $MESSAGE$ ; $=$ ; $idf$ ?mess ; <description> ?* ; $;$ ;
+    add_lstring_unique !?messages !mess !"MESSAGE" ;
+  while
+    if [option goil_options.autosar_on value] == false then
+      error here : "AUTOSAR flag is off, turn it on to use TIMINGPROTECTION attribute in ISR object" ;
+    end if ;
+    $TIMING_PROTECTION$ ; $=$ ;
+    select
+      $FALSE$ ;
+      timing_prot := [@false_timing_prot new !here] ;
+    or
+      $TRUE$ ; ${$ ;
+      @basic_type  exe_budget ;
+      @basic_type  exe_time ;
+      @basic_type  count_limit ;
+      @basic_type  time_frame ;
+      @basic_type  os_it_lock ;
+      @basic_type  all_it_lock ;
+      @rezlock_map rezlocks ;
+      <timing_prot_attrs> ?exe_budget ?exe_time ?count_limit ?time_frame ?os_it_lock ?all_it_lock ?rezlocks ;
+      cast count_limit :
+      when == @void do error here : "COUNTLIMIT not declared" ;
+      else end cast ;
+      cast exe_time :
+      when == @void do error here : "EXECUTIONTIME not declared" ;
+      else end cast ;
+      cast exe_budget :
+      when == @uint64_class eb do
+        error [eb location] : "EXECUTIONBUDGET is not an attribute of isr timing protection";
+      else end cast ;
+
+      timing_prot := [@timing_prot_isr new
+        !here
+        !exe_time
+        !count_limit
+        !time_frame
+        !os_it_lock
+        !all_it_lock
+        !rezlocks] ;
+      $}$ ;
+    end select ;
+    $;$ ;
+  while
+    @lstring app ;
+    $ACCESSING_APPLICATION$ ; $=$ ; $idf$ ?app ; <description> ?* ; $;$ ;
+    add_lstring_unique !?acc_apps !app !"ACCESSING_APPLICATION" ;
+  while
+    @lstring src ;
+    $SOURCE$; $=$; $idf$?src;
+    [!?other_fields put![@lstring new!"SOURCE"!here]![@string_class new![src location]![src string]]];
+    <description>?*; $;$;
+  while
+    <free_field> !?other_fields ; <description> ?* ; $;$ ;
+  end repeat ;
+end rule ;
+
+end syntax ;
+# vim:ft=ggs:ts=4:sw=4

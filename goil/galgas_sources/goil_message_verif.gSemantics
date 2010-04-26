@@ -1,0 +1,201 @@
+semantics goil_message_verif :
+
+import semantics goil_types_networkmessage in "goil_types_networkmessage.gSemantics";
+import semantics goil_semantic_types in "goil_semantic_types.gSemantics";
+
+routine check_net_dir
+  ?@lstring     net
+  ?@netmess_map netm
+  ?@string      exp_dir
+:
+  @netmess_obj nm ;
+  @lstring dir ;
+  [netm get !net ?nm] ;
+  cast [nm netprop]:
+  when == @static_netprop sn do dir := [sn direction] ;
+  when == @dynamic_netprop dn do dir := [dn direction] ;
+  when == @zero_netprop zn do dir := [zn direction] ;
+  else
+    dir := [@lstring new!""!here] ;
+    error [[nm netprop] loc]: "Internal error, unexpected type" ;
+  end cast ;
+  if [dir string] != "" then
+    if [dir string] != exp_dir then
+      error net: "NETWORKMESSAGE does not have the DIRECTION = ".[exp_dir uppercaseString]." attribute" ;
+      error dir: "DIRECTION attribute is defined here" ;
+    end if ;
+  end if ;
+end routine ;
+
+routine check_external_sent
+  ?@lstring     net
+  ?@netmess_map netm
+:
+  # verify the network message exists
+  if not [netm hasKey ![net string]] then
+    error net: "NETWORKMESSAGE ".[net string]." does not exist" ;
+  else
+    check_net_dir !net !netm !"sent" ;
+  end if ;
+end routine ;
+
+routine check_external_received
+  ?@lstring     net
+  ?@netmess_map netm
+:
+  # verify the network message exists
+  if not [netm hasKey ![net string]] then
+    error net: "NETWORKMESSAGE ".[net string]." does not exist" ;
+  else
+    check_net_dir !net !netm !"received" ;
+  end if ;
+end routine ;
+
+routine check_external_link_received
+  ?@link_obj    link
+  ?@message_map messages
+  ?@netmess_map netm
+  ?@location    link_ref
+  ?@uint        depth
+:
+  cast link :
+  when == @true_link tl do
+    if depth == 0 then
+      error [link loc]: "This message is linked from another message." ;
+      error [link loc]: "So it should be linked to a network message." ;
+      error link_ref: "Referencing message is here" ;
+    else
+      @lstring mess := [tl receivemessage] ;
+      # check the message exists
+      if [messages hasKey ![mess string]] then
+        @message_obj lm ;
+        [messages get !mess ?lm] ;
+        cast [lm messageproperty] :
+        when == @rue_mess_prop ue do
+          check_external_link_received ![ue link]!messages!netm![tl loc]!(depth-1) ;
+        when == @rqe_mess_prop qe do
+          check_external_link_received ![qe link]!messages!netm![tl loc]!(depth-1) ;
+        when == @rde_mess_prop de do
+          check_external_link_received ![de link]!messages!netm![tl loc]!(depth-1) ;
+        else
+          error mess: "Linked message has a wrong MESSAGEPROPERTY" ;
+          @location loc := [[lm messageproperty] location] ;
+          error loc: "expected MESSAGEPROPERTY are" ;
+          error loc: "    RECEIVE_UNQUEUED_EXTERNAL," ;
+          error loc: "    RECEIVE_QUEUED_EXTERNAL or" ;
+          error loc: "    RECEIVE_DYNAMIC_EXTERNAL" ;
+        end cast ;
+      else
+        error mess: "Linked message ".[mess string]." does not exist" ;
+      end if ;
+    end if ;
+  when == @false_link fl do
+    @lstring net := [fl networkmessage] ;
+    if not [netm hasKey ![net string]] then
+      error net: "NETWORKMESSAGE ".[net string]." does not exist" ;
+    else
+      check_net_dir !net !netm !"received" ;
+    end if ;
+  else
+    error [link loc]: "Internal error, unexpected type" ;
+  end cast ;
+end routine ;
+
+##
+# @fn messages_well_formed
+#
+# messages_well_formed checks each ISR has all the required
+# attributes and checks also attributes are consistent.
+# Required attribute is :
+# - MESSAGEPROPERTY
+#
+# 
+#
+# @param alarms    the map of alarms.
+#
+routine messages_well_formed
+  ??@message_map messages
+:
+  foreach messages (@lstring message_name @message_obj mess) do
+
+    cast [mess messageproperty] :
+      when == @void_mess_prop do
+        error message_name: "MESSAGEPROPERTY attribute missing for message ".[message_name string];
+      else
+    end cast;
+
+    cast [mess notification] :
+      when == @void_action do
+      else # a notification is declared
+        cast [mess messageproperty]:
+          when == @ssi_mess_prop do
+            error [[mess notification] location]: "NOTIFICATION is not allowed for SEND_STATIC_INTERNAL message";
+          when == @szi_mess_prop do
+            error [[mess notification] location]: "NOTIFICATION is not allowed for SEND_ZERO_INTERNAL message";
+          when == @rzs_mess_prop do
+            error [[mess notification] location]: "NOTIFICATION is not allowed for RECEIVE_ZERO_SENDERS message";
+          else
+        end cast;
+    end cast;
+
+    cast [mess notificationerror] :
+      when == @void_action do
+      else # an error notification is declared
+        cast [mess messageproperty] :
+          when == @ssi_mess_prop do
+            error [[mess notification] location]: "NOTIFICATIONERROR is not allowed for SEND_STATIC_INTERNAL message";
+          when == @szi_mess_prop do
+            error [[mess notification] location]: "NOTIFICATIONERROR is not allowed for SEND_ZERO_INTERNAL message";
+          when == @rzi_mess_prop do
+            error [[mess notification] location]: "NOTIFICATIONERROR is not allowed for RECEIVE_ZERO_INTERNAL message";
+          when == @rui_mess_prop do
+            error [[mess notification] location]: "NOTIFICATIONERROR is not allowed for RECEIVE_UNQUEUED_INTERNAL message";
+          when == @rqi_mess_prop do
+            error [[mess notification] location]: "NOTIFICATIONERROR is not allowed for RECEIVE_QUEUED_INTERNAL message";
+          when == @rzs_mess_prop do
+            error [[mess notification] location]: "NOTIFICATIONERROR is not allowed for RECEIVE_ZERO_SENDERS message";
+          else
+        end cast;
+    end cast;
+  end foreach;
+end routine;
+
+routine networkmessages_exist_and_ok
+  ?@message_map messages
+  ?@netmess_map netm
+:
+
+  # verify all network messages referenced by messages exist and
+  # are of the good type
+  foreach messages do
+    cast [mess messageproperty] :
+    when == @sse_mess_prop sse do
+      check_external_sent ![sse networkmessage] !netm ;
+    when == @sde_mess_prop sde do
+      check_external_sent ![sde networkmessage] !netm ;
+    when == @sze_mess_prop sze do
+      check_external_sent ![sze networkmessage] !netm ;
+    when == @rze_mess_prop rze do
+      check_external_received ![rze networkmessage] !netm ;
+    when == @rue_mess_prop rue do
+      check_external_link_received ![rue link] !messages !netm !here !1 ;
+    when == @rqe_mess_prop rqe do
+      check_external_link_received ![rqe link] !messages !netm !here !1 ;
+    when == @rde_mess_prop rde do
+      check_external_link_received ![rde link] !messages !netm !here !1 ;
+    else end cast ;
+  end foreach ;
+end routine ;
+
+routine networkmessages_well_formed
+  ?@netmess_map netm
+:
+  foreach netm do
+    cast [netmess netprop] :
+    when == @void_netprop do
+      error key: "MESSAGEPROPERTY attribute is missing for NETWORKMESSAGE ".[key string] ;
+    else end cast ; 
+  end foreach ;
+end routine ;
+
+end semantics ;

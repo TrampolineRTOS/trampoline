@@ -1,0 +1,252 @@
+##
+# @file defaults.ggs
+#
+# @section File description
+#
+# routines defined in defaults semantics component
+# set the default value of objects according to the
+# implementation of the OIL file.
+#
+# @section Copyright
+#
+# Goil OIL compiler - Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline is protected by the french intellectual property law.
+#
+# This software is distributed under the GNU Public Licence V2
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics defaults :
+
+import semantics goil_semantic_types in "goil_semantic_types.gSemantics" ;
+import semantics goil_check in "goil_check.gSemantics" ;
+import semantics goil_types_root in "goil_types_root.gSemantics" ;
+import option goil_options in "goil_options.gOption" ;
+
+routine check_custom_field
+    ?!@ident_map others
+    ?@lstring    field
+    ?@imp_type   f_def
+:
+    if not [others hasKey ![field string]] then
+        # No attribute defined, copy the default
+        cast f_def :
+        when == @uint32_type f do
+          @uint64_class val := [@uint64_class new ![f loc] ![[[f def_val] value] uint64]];
+          [!?others put !field !val] ;
+        when == @sint32_type f do [!?others put !field ![f def_val]] ;
+        when == @uint64_type f do [!?others put !field ![f def_val]] ;
+        when == @sint64_type f do [!?others put !field ![f def_val]] ;
+        else end cast ;
+    else
+        # Attribute defined. Check it has the good type
+        # todo
+    end if ;
+    
+end routine ;
+
+routine check_range
+    ?@basic_type var
+    ?@imp_type   def
+:
+    cast var :
+    when == @uint32_class ui do
+        cast def :
+        when == @uint32_type d do
+            check_uint32_range ![d set] ![ui location] ![ui value] ;
+        else
+            error [def loc] : "Internal error" ; 
+        end cast ;
+    else
+        error [var location] : "Internal error" ;
+    end cast ;
+end routine ;
+
+#
+# look for default values for tasks and update task objects
+# according to these default values.
+#
+routine verify_and_set_tasks_defaults
+    ?!@task_map           tasks
+    ?@implementation_spec spec
+:
+    @task_map tp := tasks ;
+
+    foreach tp (@lstring key @task_obj task) do
+        [!?tasks del !key ?*] ;
+        @ident_map others := [task others] ;
+        foreach spec (@lstring field @imp_type f_def) do
+            if    [field string] == "PRIORITY"  then
+                check_range ![task priority] !f_def ;
+            elsif [field string] == "" then
+            elsif [field string] == "" then
+            elsif [field string] == "" then
+            elsif [field string] == "" then
+            elsif [field string] == "" then
+            elsif [field string] == "" then
+            else
+               check_custom_field !?others !field !f_def ;
+            end if ;
+        end foreach ;
+        @task_obj updated_task := [@task_obj new
+            ![task desc]
+            ![task priority]
+            ![task schedule]
+            ![task activation]
+            ![task autostart]
+            ![task resources]
+            ![task events]
+            ![task messages]
+            ![task acc_apps]
+            ![task timing_prot]
+           !others
+        ] ;
+        [!?tasks put !key !updated_task] ;
+    end foreach ;
+end routine ;
+
+#
+# look for default values for isrs and update isr objects
+# according to these default values.
+#
+routine verify_and_set_isrs_defaults
+    ?!@isr_map            isrs
+    ?@implementation_spec spec
+:
+    @isr_map ip := isrs ;
+
+    foreach ip (@lstring key @isr_obj isr) do
+        [!?isrs del !key ?*] ;
+        @ident_map others := [isr other_fields] ;
+        foreach spec (@lstring field @imp_type f_def) do
+            if    [field string] == "PRIORITY"  then
+message "PRIORITY!\n";
+            elsif [field string] == "" then
+            elsif [field string] == "" then
+            elsif [field string] == "" then
+            elsif [field string] == "" then
+            elsif [field string] == "" then
+            elsif [field string] == "" then
+            else
+               check_custom_field !?others !field !f_def ;
+            end if ;
+        end foreach ;
+        @isr_obj updated_isr := [@isr_obj new
+            ![isr desc]
+            ![isr category]
+            ![isr priority]
+            ![isr resources]
+            ![isr messages]
+            ![isr acc_apps]
+            ![isr timing_prot]
+           !others
+        ] ;
+        [!?isrs put !key !updated_isr] ;
+    end foreach ;
+end routine ;
+
+
+##
+# @fn add_system_counter
+#
+# Add the system counter to the counter map.
+# If it already exists only missing fields are added
+#
+routine add_system_counter
+  ?!@root_obj cpu
+:
+  @counter_map counters := [cpu counters];
+  @counter_obj sys_cnt;
+  @lstringlist all_apps := [[cpu applis] keyList];
+  foreach [cpu applis] do
+    all_apps += !key;
+  end foreach;
+
+  if [counters hasKey !"SystemCounter"] then
+    [!?counters del ![@lstring new !"SystemCounter" !here] ?sys_cnt];
+    cast [sys_cnt max_allowed_value]:
+      when == @void do
+        [!?sys_cnt setMax_allowed_value ![@uint32_class new !here !32767]];
+      else
+    end cast;
+    cast [sys_cnt ticks_per_base]:
+      when == @void do
+        [!?sys_cnt setTicks_per_base ![@uint32_class new !here !1]];
+      else
+    end cast;
+    cast [sys_cnt min_cycle]:
+      when == @void do
+        [!?sys_cnt setMin_cycle ![@uint32_class new !here !1]];
+      else
+    end cast;
+    if [[sys_cnt source] string] == "" then
+      error [sys_cnt source] : "SystemCounter has no SOURCE";
+    end if;
+    if [option goil_options.autosar_on value] then
+      # put all OS Applications in the accessing application list
+      if [[sys_cnt acc_apps] length] == 0 then
+        [!?sys_cnt setAcc_apps !all_apps];
+      end if;
+      cast [sys_cnt type]:
+        when == @software_counter sc do
+          error [sc location] : "Incompatible TYPE for SystemCounter";
+        else
+      end cast;
+    end if;
+  else
+    @hardware_counter type := [@hardware_counter new !here ![@void_driver new !here] ![@time_constants emptyList]];
+    sys_cnt := [@counter_obj new
+      ![@lstring new !"Predefined SystemCounter" !here]
+      ![@uint32_class new !here !32767] # max_allowed_value
+      ![@uint32_class new !here !1]     # ticks_per_base
+      ![@uint32_class new !here !1]     # min_cycle
+      ![@lstring new !"" !here]         # source
+      !all_apps                         # acc_apps
+      !type                             # type
+      ![@lstring new !"" !here]         # unit
+    ];
+  end if;
+  # put the object in the map
+  [!?counters put ![@lstring new !"SystemCounter" !here] !sys_cnt];
+  # put back the map in cpu
+  [!?cpu setCounters !counters];
+end routine;
+
+routine set_defaults
+  ??@implementation imp
+  ?!@root_obj       cpu
+:
+  # set task defaults
+  if [imp hasKey !"task"] then
+      @task_map tasks := [cpu tasks];
+      @implementation_spec spec;
+      [imp get ![@lstring new !"task" !here] ?spec];
+      verify_and_set_tasks_defaults !?tasks !spec;
+      [!?cpu setTasks !tasks];
+      tasks := [cpu tasks];
+  end if ;
+
+  # set ISR defaults
+  if [imp hasKey !"isr"] then
+      @isr_map isrs := [cpu isrs];
+      @implementation_spec spec;
+      [imp get ![@lstring new !"isr" !here] ?spec];
+      verify_and_set_isrs_defaults !?isrs !spec;
+      [!?cpu setIsrs !isrs];
+  end if ;
+
+  add_system_counter
+      !?cpu;
+
+end routine;
+
+end semantics ;
+# End of file defaults.ggs
