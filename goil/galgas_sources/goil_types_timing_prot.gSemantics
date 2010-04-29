@@ -102,7 +102,6 @@ class @timing_prot_task extends @timing_prot {
         when == @uint64_class eb do
             result := [result stringByReplacingStringByString !"$EXE_BUDGET$"  ![[eb value]/tpn string]] ;
         else end cast ;
-        result := [result stringByReplacingStringByString !"$COUNT_LIMIT$" !"0"] ;
         cast time_frame :
         when == @uint64_class tf do
             result := [result stringByReplacingStringByString !"$TIME_FRAME$"  ![[tf value]/tpn string]] ;
@@ -141,7 +140,6 @@ class @timing_prot_task extends @timing_prot {
 
 class @timing_prot_isr extends @timing_prot {
     @basic_type exe_time ;
-    @basic_type count_limit ;
     @basic_type time_frame ;
     @basic_type os_it_lock ;
     @basic_type all_it_lock ;
@@ -168,10 +166,6 @@ class @timing_prot_isr extends @timing_prot {
         cast exe_time :
         when == @uint64_class et do
             result := [result stringByReplacingStringByString !"$EXE_BUDGET$"  ![[et value]/tpn string]] ;
-        else end cast ;
-        cast count_limit :
-        when == @uint32_class cl do
-            result := [result stringByReplacingStringByString !"$COUNT_LIMIT$" ![[cl value] string]] ;
         else end cast ;
         cast time_frame :
         when == @uint64_class tf do

@@ -47,7 +47,6 @@ nonterminal <free_field> ?!@ident_map ids ;
 nonterminal <timing_prot_attrs>
   !@basic_type  exe_budget
   !@basic_type  exe_time
-  !@basic_type  count_limit
   !@basic_type  time_frame
   !@basic_type  os_it_lock
   !@basic_type  all_it_lock
@@ -155,15 +154,11 @@ rule <isr_attributes>
       $TRUE$ ; ${$ ;
       @basic_type  exe_budget ;
       @basic_type  exe_time ;
-      @basic_type  count_limit ;
       @basic_type  time_frame ;
       @basic_type  os_it_lock ;
       @basic_type  all_it_lock ;
       @rezlock_map rezlocks ;
-      <timing_prot_attrs> ?exe_budget ?exe_time ?count_limit ?time_frame ?os_it_lock ?all_it_lock ?rezlocks ;
-      cast count_limit :
-      when == @void do error here : "COUNTLIMIT not declared" ;
-      else end cast ;
+      <timing_prot_attrs> ?exe_budget ?exe_time ?time_frame ?os_it_lock ?all_it_lock ?rezlocks ;
       cast exe_time :
       when == @void do error here : "EXECUTIONTIME not declared" ;
       else end cast ;
@@ -175,7 +170,6 @@ rule <isr_attributes>
       timing_prot := [@timing_prot_isr new
         !here
         !exe_time
-        !count_limit
         !time_frame
         !os_it_lock
         !all_it_lock

@@ -939,7 +939,7 @@ events are cleared. Service returns E\_OK  \\ \hline
 	\end{supertabular}
 		
 		
-	% AUTOSAR - TRUSTED FUNCTION %
+	% AUTOSAR - MEMORY PROTECTION %
 	\subsection{AUTOSAR - Memory Protection} \label{memprot}
 	OS Requirements : 26, 27, 44, 81, 83, 86, 87, 195, 196, 198, 207, 208, 209, 355, 356.\\
 	Test case 14, 15, 16, 18 (the own peripheral part) are not tested yet.\\
@@ -950,31 +950,86 @@ events are cleared. Service returns E\_OK  \\ \hline
 	\end{figure}
 	
 	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline
-	1	& Read/Write OS datas from non-trusted OS application 		& The OS shall call the errorhook (if configured) with status E\_OS\_PROTECTION\_MEMORY			& OS198 \\ \hline
+	1	& Read/Write OS datas from non-trusted OS application 		& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY			& OS198 \\ \hline
 	2	& Read/Write OS datas from trusted OS application 			& Access allowed																		& OS198 \\ \hline
-	3	& Read/Write OS stack from non-trusted OS application 		& The OS shall call the errorhook (if configured) with status E\_OS\_PROTECTION\_MEMORY			& OS198 \\ \hline
+	3	& Read/Write OS stack from non-trusted OS application 		& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY			& OS198 \\ \hline
 	4	& Read/Write OS stack from trusted OS application 			& Access allowed																		& OS198 \\ \hline
 	5	& Read/Write its own OS application's datas from non-trusted OS application	&  Access allowed															& OS086 \\ \hline
-	6	& Read/Write other OS application's datas from non-trusted OS application	&  The OS shall call the errorhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS026, OS207 \\ \hline
+	6	& Read/Write other OS application's datas from non-trusted OS application	&  The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS026, OS207 \\ \hline
 	7	& Read/Write OS application's datas from trusted OS application			&  Access allowed															& OS026, OS207, OS086  \\ \hline
-	8	& Read/write Task/OsIsr's datas from non-trusted OS application (in the same or other OS application)		& The OS shall call the errorhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS195, OS356 \\ \hline
+	8	& Read/write Task/OsIsr's datas from non-trusted OS application (in the same or other OS application)		& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS195, OS356 \\ \hline
 	9	& Read/write Task/OsIsr's datas from trusted OS application (in the same or other OS application)			& Access allowed 									& OS087 \\ \hline
-	10	& Read/write Task/OsIsr's stack from non-trusted OS application (in the same or other OS application)		& The OS shall call the errorhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS208, OS355 \\ \hline
+	10	& Read/write Task/OsIsr's stack from non-trusted OS application (in the same or other OS application)		& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS208, OS355 \\ \hline
 	11	& Read/write Task/OsIsr's stack from trusted OS application (in the same or other OS application)			& Access allowed 									& OS196 \\ \hline
 	12	& Execute sharde library code from non-trusted OS application 		 	& Access allowed 															& OS081 \\ \hline
 	13	& Execute sharde library code from trusted OS application 			 	& Access allowed 															& OS081 \\ \hline
-	14	& Execute protected (an OS application can protect its code section) code from non-trusted OS application 	& The OS shall call the errorhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS027 \\ \hline
+	14	& Execute protected (an OS application can protect its code section) code from non-trusted OS application 	& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS027 \\ \hline
 	15	& Execute protected (an OS application can protect its code section) code from trusted OS application 		& Access allowed									& OS027 \\ \hline
 	16 	& Read/Write its own peripherals from non-trusted OS application			& Access allowed															& OS083 \\ \hline
-	17 	& Read/Write other peripherals from non-trusted OS application			& The OS shall call the errorhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS209 \\ \hline
+	17 	& Read/Write other peripherals from non-trusted OS application			& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS209 \\ \hline
 	18 	& Read/Write peripherals from trusted OS application					& Access allowed															& OS209 \\ \hline
 	\end{supertabular}
 	
+	% AUTOSAR - TIMING PROTECTION %
+	\subsection{AUTOSAR - Timing Protection}
+	OS Requirements : (28), (89), (397)\\
+	
+	\subsubsection{Execution Time Budget}
+	OS Requirements : 64, 210, 473, 474\\
+	
+	\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+  		\centering
+		\includegraphics[width=1\textwidth]{graphics/AUTOSAR_Timing_Protection_Execution_Budget.pdf}
+	\end{figure}
+	
+	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline
+	1	& Execution Time of a non-preempted basic task is less than the Execution Budget	& 						& OS473 \\ \hline
+	2	& Execution Time of a non-preempted basic task reaches the Execution Budget	&  The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_TIME	& OS064  \\ \hline
+	3	& Execution Time of a preempted basic task is less than the Execution Budget		& 						&  \\ \hline
+	4	& Execution Time of a preempted basic task reaches the Execution Budget		&  The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_TIME	& OS064 \\ \hline
+	5	& Execution Time of an extended task which has been reset by the activation of the task until WaitEvent API calls	& 			&  \\ \hline
+	6	& Execution Time of an extended task which has been reset by the activation of the task but never comes to the WaitEvent API	& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_TIME		& OS064 \\ \hline
+	7	& Execution Time (restarted by WaitEvent without event set) of a non-preempted extended task is less than the Execution Budget	& 									& OS473 \\ \hline
+	8	& Execution Time (restarted by WaitEvent without event set) of a non-preempted extended task reaches the Execution Budget	&  The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_TIME		& OS064 \\ \hline
+	9	& Execution Time (restarted by WaitEvent without event set) of a preempted basic task is less than the Execution Budget		& 									& OS473  \\ \hline
+	10	& Execution Time (restarted by WaitEvent without event set) of a preempted basic task reaches the Execution Budget			&  The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_TIME		& OS064 \\ \hline
+	11	& Execution Time (restarted by WaitEvent with the event(s) set) of a non-preempted extended task is less than the Execution Budget	& 								&  \\ \hline
+	12	& Execution Time (restarted by WaitEvent with the event(s) set) of a non-preempted extended task reaches the Execution Budget	&  The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_TIME		& OS064 \\ \hline
+	13	& Execution Time of a preempted ISR2 is less than the Execution Budget	& 						& OS474 \\ \hline
+	14	& Execution Time of a preempted ISR2 reaches the Execution Budget		&  The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_TIME 	& OS210 \\ \hline
+	15	& Execution Time of a preempted ISR2 is less than the Execution Budget	& 						&  \\ \hline
+	16	& Execution Time of a preempted ISR2 reaches the Execution Budget		&  The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_TIME	& OS210 \\ \hline
+	\end{supertabular}
+	
+	\subsubsection{Time Frame}
+	OS Requirements : 48, (465), 466, 467, 469, (470), 471, 472\\
+
+	\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+  		\centering
+		\includegraphics[width=1\textwidth]{graphics/AUTOSAR_Timing_Protection_Time_Frame.pdf}
+	\end{figure}
+	
+	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline
+	1	& Basic task inter-arrival time is greater than Time Frame								& 													&  \\ \hline
+	2	& Basic task inter-arrival time is lower than Time Frame (and the task activation is allowed)	&  The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_ARRIVAL 	& OS466 \\ \hline
+	3	& Basic task inter-arrival time is lower than Time Frame (and the task activation is not allowed)	&  The OS shall call the errorhook (if configured) with status E\_OS\_LIMIT 				& OS469 \\ \hline
+	4	& Extended task inter-arrival time is greater than Time Frame. Time from the activation to the first release (task running directly)	& 						& \\ \hline
+	5	& Extended task inter-arrival time is greater than Time Frame. Time from the activation to the first release (task running after a preemption to test the inter-arrival time is well started at the activation and not from the running point)	& & \\ \hline
+	6	& Extended task inter-arrival time is lower than Time Frame. Time from the activation to the first release (task running directly) & The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_ARRIVAL & OS467 \\ \hline
+	7	& Extended task inter-arrival time is greater than Time Frame. Time between two releases.	&													 & OS472 \\ \hline
+	8	& Extended task inter-arrival time is lower than Time Frame. Time between two releases.	& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_ARRIVAL 	& OS467 \\ \hline
+	9	& ISR2 inter-arrival time is greater than Time Frame	(ISR2 running directly)				& 													&  \\ \hline
+	10	& ISR2 inter-arrival time is greater than Time Frame (ISR2 running after a preemption to test the inter-arrival time is well started at the activation and not from the running point)	&  				& OS471 \\ \hline
+	11	& ISR2 inter-arrival time is lower than Time Frame (the ISR2 is not running)				& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_ARRIVAL 	& OS048 \\ \hline
+	12	& Basic task inter-arrival time is lower than Time Frame (the ISR2 is running)				& 													&  \\ \hline
+	\end{supertabular}
+	
+	\subsubsection{Resource Locking and Interrupt Disabling}
+	OS Requirements : (33), (37)\\
+
+	
 	% AUTOSAR - TRUSTED FUNCTION %
 	%\subsection{AUTOSAR - Trusted function}
-	
-	% AUTOSAR - TIMING PROTECTION %
-	%\subsection{AUTOSAR - Timing Protection}
 	
 	% AUTOSAR - PROTECTION ERROR HANDLING %
 	%\subsection{AUTOSAR - Protection error handling}

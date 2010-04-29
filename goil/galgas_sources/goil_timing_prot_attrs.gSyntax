@@ -13,7 +13,6 @@ import semantics goil_types_timing_prot in "goil_types_timing_prot.gSemantics" ;
 nonterminal <timing_prot_attrs>
     !@basic_type  exe_budget
     !@basic_type  exe_time
-    !@basic_type  count_limit
     !@basic_type  time_frame
     !@basic_type  os_it_lock
     !@basic_type  all_it_lock
@@ -22,7 +21,6 @@ nonterminal <timing_prot_attrs>
 rule <timing_prot_attrs>
     !@basic_type  exe_budget
     !@basic_type  exe_time
-    !@basic_type  count_limit
     !@basic_type  time_frame
     !@basic_type  os_it_lock
     !@basic_type  all_it_lock
@@ -30,7 +28,6 @@ rule <timing_prot_attrs>
 :
     exe_budget  := [@void new !here] ;
     exe_time    := [@void new !here] ;
-    count_limit := [@void new !here] ;
     time_frame  := [@void new !here] ;
     os_it_lock  := [@void new !here] ;
     all_it_lock := [@void new !here] ;
@@ -53,15 +50,6 @@ rule <timing_prot_attrs>
         else
             error here : "EXECUTIONTIME already declared" ;
             error [exe_time location] : "was previously declared here" ;
-        end cast ;
-    while
-        @luint64 cl ;
-        $COUNTLIMIT$ ; $=$ ; $uint_number$ ?cl ; $;$ ;
-        cast count_limit :
-        when == @void do count_limit := [@uint32_class new !here ![[cl uint64] uint]] ;
-        else
-            error here : "COUNTLIMIT already declared" ;
-            error [count_limit location] : "was previously declared here" ;
         end cast ;
     while
         @luint64 tf ;
