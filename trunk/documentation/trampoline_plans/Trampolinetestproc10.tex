@@ -1514,7 +1514,7 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 	PreTask-Hook		& GetAlarmBase()					& E\_OK, MAXALLOWEDVALUE=16, TICKSPERBASE=10, MINCYCLE=1							& 13 \\ \hline
 	PreTask-Hook		& GetAlarm()						& E\_OK, Tick=MAXALLOWEDVALUE	& 14 \\ \hline	
 	
-	Idle				& Wait for the alarm					&								&\\ \hline
+	Idle				& \textit{Wait for the alarm}					&								&\\ \hline
 	
 	PostTask-Hook		& GetTaskID()						& E\_OK, TaskID=INVALID\_TASK		& 8 \\ \hline	
 	PostTask-Hook		& GetAlarm()						& E\_OS\_NOFUNC					& \\ \hline	
@@ -1557,7 +1557,7 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline 
 	t1			& SetAbsAlarm(Alarm1, MAXALLOWEDVALUE, MAXALLOWEDVALUE)	& E\_OK							& \\ \hline
 	t1			& WaitEvent(Event1)												& E\_OK							& \\ \hline
-	Idle				& Wait for the alarm											&								&\\ \hline
+	Idle				& \textit{Wait for the alarm}											&								&\\ \hline
 	t1			& SetAbsAlarm(Alarm1, 2, 2)										& E\_OS\_STATE					& \\ \hline
 	Error-Hook		& GetActiveApplicationMode()									& OSDEFAULTAPPMODE			& 1, 5 \\ \hline
 	Error-Hook		& GetTaskID()												& E\_OK, TaskID=t1				& 8 \\ \hline	
@@ -3719,15 +3719,15 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 	TEST CASES:		       1, 2, 5, 6, 7
 	RETURN STATUS:	  	 EXTENDED
 	SCHEDULING POLICY:   NON-PREEMPTIVE
-	HOOKS:		           ErrorHook
+	HOOKS:		           ProtectionHook
 	\end{lstlisting}
 	\lstinputlisting{./OIL_to_TXT/autosar_mp_s1.txt}
 
 	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline 
 	t1\_app\_nontrusted1	& Read/Write its own OS application datas		& Access allowed									& 5 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write trusted OS application datas		& Call ErrorHook with E\_OS\_PROTECTION\_MEMORY		& 6 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write other non-trusted OS application datas & Call ErrorHook with E\_OS\_PROTECTION\_MEMORY	& 6 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write OS datas from non-truted OS application	& Call ErrorHook with E\_OS\_PROTECTION\_MEMORY	& 1 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write trusted OS application datas		& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 6 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write other non-trusted OS application datas & Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& 6 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write OS datas from non-truted OS application	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& 1 \\ \hline
 	t1\_app\_nontrusted1	& WaitEvent(Event1)							& E\_OK											& \\ \hline
 	
 	t1\_app\_trusted1		& Read/Write its own OS application datas		& Access allowed									& 7 \\ \hline
@@ -3746,15 +3746,15 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 	TEST CASES:		       8, 9
 	RETURN STATUS:	  	 EXTENDED
 	SCHEDULING POLICY:   NON-PREEMPTIVE
-	HOOKS:		           ErrorHook
+	HOOKS:		           ProtectionHook
 	\end{lstlisting}
 	\lstinputlisting{./OIL_to_TXT/autosar_mp_s2.txt}
 
 	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline 
 	t1\_app\_nontrusted1	& Read/Write its own Task/OsIsr datas from non-trusted OS app.	& Access allowed									& \\ \hline
-	t1\_app\_nontrusted1	& Read/Write Task/OsIsr datas in the same non-trusted OS application 	& Call ErrorHook with E\_OS\_PROTECTION\_MEMORY	& 8 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write Task/OsIsr datas in the other non-trusted OS application 	& Call ErrorHook with E\_OS\_PROTECTION\_MEMORY	& 8 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write Task/OsIsr datas in trusted OS application			 & Call ErrorHook with E\_OS\_PROTECTION\_MEMORY	& 8 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write Task/OsIsr datas in the same non-trusted OS application 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& 8 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write Task/OsIsr datas in the other non-trusted OS application 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& 8 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write Task/OsIsr datas in trusted OS application			 & Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& 8 \\ \hline
 	t1\_app\_nontrusted1	& WaitEvent(Event1)										& E\_OK											& \\ \hline
 	
 	t1\_app\_trusted1		& Read/Write its own Task/OsIsr datas from trusted OS app.		& Access allowed									& \\ \hline
@@ -3773,7 +3773,7 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 	TEST CASES:		       3, 4, 10, 11
 	RETURN STATUS:	  	 EXTENDED
 	SCHEDULING POLICY:   NON-PREEMPTIVE
-	HOOKS:		           ErrorHook
+	HOOKS:		           ProtectionHook
 	\end{lstlisting}
 	\lstinputlisting{./OIL_to_TXT/autosar_mp_s3.txt}
 
@@ -3782,26 +3782,26 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 	t1\_app\_nontrusted1	& Read/Write its own Task/OsIsr stack from non-trusted OS app.	& Access allowed								& \\ \hline
 	t1\_app\_nontrusted1	& EnableAllInterrupts()								&												& \\ \hline
 	
-	t1\_app\_nontrusted1	& Read/Write Task/OsIsr stack in the same non-trusted OS application 	& Call ErrorHook with E\_OS\_PROTECTION\_MEMORY		& 10 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write Task/OsIsr stack in the other non-trusted OS application 	& Call ErrorHook with E\_OS\_PROTECTION\_MEMORY		& 10 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write Task/OsIsr stack in trusted OS application			 	& Call ErrorHook with E\_OS\_PROTECTION\_MEMORY		& 10 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write OS stack from non-truted OS application		& Call ErrorHook with E\_OS\_PROTECTION\_MEMORY		& 3 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write Task/OsIsr stack in the same non-trusted OS application 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 10 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write Task/OsIsr stack in the other non-trusted OS application 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 10 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write Task/OsIsr stack in trusted OS application			 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 10 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write OS stack from non-truted OS application		& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 3 \\ \hline
 	
 	t1\_app\_nontrusted1	& WaitEvent(Event1)									& E\_OK											& \\ \hline
 	
-	t1\_app\_nontrusted1	& DisableAllInterrupts()								&												& \\ \hline
-	t1\_app\_nontrusted1	& Read/Write its own Task/OsIsr stack from trusted OS app.	& Access allowed									& \\ \hline
-	t1\_app\_nontrusted1	& EnableAllInterrupts()								&												& \\ \hline
+	t1\_app\_trusted1	& DisableAllInterrupts()								&												& \\ \hline
+	t1\_app\_trusted1	& Read/Write its own Task/OsIsr stack from trusted OS app.	& Access allowed									& \\ \hline
+	t1\_app\_trusted1	& EnableAllInterrupts()								&												& \\ \hline
 	
-	t1\_app\_nontrusted1	& DisableAllInterrupts()								&												& \\ \hline
-	t1\_app\_nontrusted1	& Read/Write Task/OsIsr stack in the same trusted OS application 	& Access allowed								& 11 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write Task/OsIsr stack in the other trusted OS application 	& Access allowed								& 11 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write Task/OsIsr stack in non-trusted OS application	 	& Access allowed								& 11 \\ \hline
-	t1\_app\_nontrusted1	& EnableAllInterrupts()								&												& 11 \\ \hline
+	t1\_app\_trusted1	& DisableAllInterrupts()								&												& \\ \hline
+	t1\_app\_trusted1	& Read/Write Task/OsIsr stack in the same trusted OS application 	& Access allowed								& 11 \\ \hline
+	t1\_app\_trusted1	& Read/Write Task/OsIsr stack in the other trusted OS application 	& Access allowed								& 11 \\ \hline
+	t1\_app\_trusted1	& Read/Write Task/OsIsr stack in non-trusted OS application	 	& Access allowed								& 11 \\ \hline
+	t1\_app\_trusted1	& EnableAllInterrupts()								&												& 11 \\ \hline
 
-	t1\_app\_nontrusted1	& DisableAllInterrupts()								&												& \\ \hline
-	t1\_app\_nontrusted1	& Read/Write OS stack from truted OS application			& Access allowed									& 4 \\ \hline
-	t1\_app\_nontrusted1	& EnableAllInterrupts()								&												& \\ \hline
+	t1\_app\_trusted1	& DisableAllInterrupts()								&												& \\ \hline
+	t1\_app\_trusted1	& Read/Write OS stack from truted OS application			& Access allowed									& 4 \\ \hline
+	t1\_app\_trusted1	& EnableAllInterrupts()								&												& \\ \hline
 
 	t1\_app\_trusted1		& SetEvent(t1\_app\_nontrusted1, Event1)				& E\_OK											& \\ \hline
 	t1\_app\_trusted1		& TerminateTask()									& E\_OK											& \\ \hline
@@ -3814,14 +3814,14 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 	TEST CASES:		       12, 13, 14, 16, 15, 17, 18
 	RETURN STATUS:	  	 EXTENDED
 	SCHEDULING POLICY:   NON-PREEMPTIVE
-	HOOKS:		           ErrorHook
+	HOOKS:		           ProtectionHook
 	\end{lstlisting}
 	\lstinputlisting{./OIL_to_TXT/autosar_mp_s4.txt}
 
 	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline 
-	t1\_app\_nontrusted1	& Execute protected code from non-trusted OS application		& Call ErrorHook with E\_OS\_PROTECTION\_MEMORY		& (not tested yet) 14 \\ \hline
+	t1\_app\_nontrusted1	& Execute protected code from non-trusted OS application		& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& (not tested yet) 14 \\ \hline
 	t1\_app\_nontrusted1	& Execute shared library code from non-trusted OS application 	& Access allowed									& 12 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write access to peripheral from non-trusted OS application 	& Call ErrorHook with E\_OS\_PROTECTION\_MEMORY		& 17 \\ \hline
+	t1\_app\_nontrusted1	& Read/Write access to peripheral from non-trusted OS application 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 17 \\ \hline
 	t1\_app\_nontrusted1	& Read/Write access to its assigned peripheral from non-trusted OS application	& Access allowed						& (not tested yet) 16 \\ \hline
 	
 	t1\_app\_nontrusted1	& WaitEvent(Event1)										& E\_OK											& \\ \hline
@@ -3841,8 +3841,260 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 %\subsection{AUTOSAR - Trusted function}
 
 % AUTOSAR - TIMING PROTECTION %
-%\subsection{AUTOSAR - Timing Protection}
+\subsection{AUTOSAR - Timing Protection}
+\subsubsection{Time Execution Budget}
 
+	% TEST SEQUENCE 1 %
+	\textbf{Test Sequence 1 :}
+	\begin{lstlisting}
+	TEST CASES:		       1, 2, 3, 4
+	RETURN STATUS:	  	 EXTENDED
+	SCHEDULING POLICY:   PREEMPTIVE
+	HOOKS:		           ProtectionHook
+	\end{lstlisting}
+	\lstinputlisting{./OIL_to_TXT/autosar_tp_s1.txt}
+
+	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline 
+	idle	& \textit{Wait for the alarm}							& 										& \\ \hline
+	t1	& TerminateTask()							& E\_OK											& 1 \\ \hline
+	idle	& \textit{Wait for the alarm}							& 										& \\ \hline
+	t1	& ActivateTask(t2)							& E\_OK											& \\ \hline
+	t2	& TerminateTask()							& E\_OK											& \\ \hline
+	t1	& TerminateTask()							& E\_OK											& 3 \\ \hline
+	idle	& \textit{Wait for the alarm}							& 										& \\ \hline
+	t1	& StopScheduleTable(sched1)					& E\_OK											& \\ \hline
+	t1	& ActivateTask(t3)							& E\_OK											& \\ \hline
+	t3	& \textit{endless loop to active protection hook}		& 												& 2 \\ \hline
+	ProtectionHook		& Fatalerror					& E\_OS\_PROTECTION\_TIME 						& \\ \hline
+	ProtectionHook		& \textit{return PRO\_TERMINATETASKISR}	& & \\ \hline
+	t1	& ActivateTask(t4)							& E\_OK											& \\ \hline
+	t1	& \textit{endless loop to active protection hook}		& 												& 4 \\ \hline
+	ProtectionHook		& Fatalerror					& E\_OS\_PROTECTION\_TIME 						& \\ \hline
+	ProtectionHook		& \textit{return PRO\_TERMINATETASKISR}	& & \\ \hline
+	t4	& TerminateTask()							& E\_OK											& \\ \hline
+	\end{supertabular}\\
+
+	% TEST SEQUENCE 2 %
+	\textbf{Test Sequence 2 :}
+	\begin{lstlisting}
+	TEST CASES:		       5, 7, 8, 9, 10
+	RETURN STATUS:	  	 EXTENDED
+	SCHEDULING POLICY:   PREEMPTIVE
+	HOOKS:		           ProtectionHook
+	\end{lstlisting}
+	\lstinputlisting{./OIL_to_TXT/autosar_tp_s2.txt}
+
+	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline 
+	t3	& WaitEvent(t1\_event1)							& E\_OK											& 5 \\ \hline
+	t1	& WaitEvent(t1\_event1)							& E\_OK											& \\ \hline
+	idle	& \textit{Wait for the alarm}					& 												& \\ \hline
+	t1	& ClearEvent(t1\_event1)						& E\_OK											& 7 \\ \hline
+	t1	& WaitEvent(t1\_event1)							& E\_OK											& \\ \hline
+	idle	& \textit{Wait for the alarm}					& 												& \\ \hline
+	t1	& ClearEvent(t1\_event1)						& E\_OK											& \\ \hline
+	t1	& ActivateTask(t2)							& E\_OK											& \\ \hline
+	t2	& TerminateTask()							& E\_OK											& 9 \\ \hline
+	t1	& WaitEvent(t1\_event1)							& E\_OK											& \\ \hline
+	idle	& \textit{Wait for the alarm}					& 												& \\ \hline
+	t1	& ClearEvent(t1\_event1)						& E\_OK											& \\ \hline
+	t1	& StopScheduleTable(sched1)					& E\_OK											& \\ \hline
+	t1	& SetEvent(t3,t3\_event1)						& E\_OK											& \\ \hline
+	t3	& ClearEvent(t3 \_event1)						& E\_OK											& \\ \hline
+	t3	& \textit{endless loop to active protection hook}		& 												& 8 \\ \hline
+	ProtectionHook		& Fatalerror					& E\_OS\_PROTECTION\_TIME 						& \\ \hline
+	ProtectionHook		& \textit{return PRO\_TERMINATETASKISR}	& & \\ \hline
+	t1	& ActivateTask(t4)							& E\_OK											& \\ \hline
+	t1	& \textit{endless loop to active protection hook}		& E\_OS\_PROTECTION\_TIME						& 10 \\ \hline
+	ProtectionHook		& \textit{return PRO\_TERMINATETASKISR}	& & \\ \hline
+	t4	& TerminateTask()							& E\_OK											& \\ \hline
+	\end{supertabular}\\
+
+	% TEST SEQUENCE 3 %
+	\textbf{Test Sequence 3 :}
+	\begin{lstlisting}
+	TEST CASES:		       6, 11, 12
+	RETURN STATUS:	  	 EXTENDED
+	SCHEDULING POLICY:   PREEMPTIVE
+	HOOKS:		           ProtectionHook
+	\end{lstlisting}
+	\lstinputlisting{./OIL_to_TXT/autosar_tp_s3.txt}
+
+	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline 
+	t1	& SetEvent(t1,t1\_event1)						& E\_OK											& \\ \hline
+	t1	& WaitEvent(t1\_event1)							& E\_OK											& \\ \hline
+	t1	& ClearEvent(t1\_event1)						& E\_OK											&  \\ \hline
+	t1	& SetEvent(t1,t1\_event1)						& E\_OK											& \\ \hline
+	t1	& WaitEvent(t1\_event1)							& E\_OK											& \\ \hline
+	t1	& ClearEvent(t1\_event1)						& E\_OK											& \\ \hline
+	t1	& SetEvent(t1,t1\_event1)						& E\_OK											& \\ \hline
+	t1	& WaitEvent(t1\_event1)							& E\_OK											& 11 \\ \hline
+	t1	& CleanEvent(t1\_event1)						& E\_OK											& \\ \hline
+	t1	& SetEvent(t1,t1\_event1)						& E\_OK											& \\ \hline
+	t1	& \textit{endless loop to active protection hook}		& 												& 12 \\ \hline
+	ProtectionHook		& Fatalerror					& E\_OS\_PROTECTION\_TIME 						& \\ \hline
+	ProtectionHook		& \textit{return PRO\_TERMINATETASKISR}	& & \\ \hline
+	t2	& \textit{endless loop to active protection hook}		& 												& 6 \\ \hline
+	ProtectionHook		& Fatalerror					& E\_OS\_PROTECTION\_TIME 						& \\ \hline
+	ProtectionHook		& \textit{return PRO\_TERMINATETASKISR}	& & \\ \hline
+	t3	& TerminateTask1()							& E\_OK											& \\ \hline
+	\end{supertabular}\\
+
+	% TEST SEQUENCE 4 %
+	\textbf{Test Sequence 4 :}
+	\begin{lstlisting}
+	TEST CASES:		       13, 14, 15, 16
+	RETURN STATUS:	  	 EXTENDED
+	SCHEDULING POLICY:   PREEMPTIVE
+	HOOKS:		           ProtectionHook
+	\end{lstlisting}
+	\lstinputlisting{./OIL_to_TXT/autosar_tp_s4.txt}
+
+	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline 
+	t1	& \textit{trigger interrupt isr1}					& 												& \\ \hline
+	isr1	& 										& 												& 13 \\ \hline
+	t1	& \textit{trigger interrupt isr1}					& 												& \\ \hline
+	isr1	& \textit{trigger interrupt isr2}					& 												& \\ \hline
+	isr2	& 										& 												& \\ \hline
+	isr1	& 										& 												& 15 \\ \hline
+	t1	& \textit{trigger interrupt isr1}					& 												& \\ \hline
+	isr1	& \textit{trigger interrupt isr2}					& 												& \\ \hline
+	isr2	& \textit{endless loop to active protection hook}		&												& 14 \\ \hline
+	ProtectionHook		& Fatalerror					& E\_OS\_PROTECTION\_TIME 						& \\ \hline
+	ProtectionHook		& \textit{return PRO\_TERMINATETASKISR}	& 										& \\ \hline
+	isr1	& \textit{endless loop to active protection hook}		& 												& 16 \\ \hline
+	ProtectionHook		& Fatalerror					& E\_OS\_PROTECTION\_TIME 						& \\ \hline
+	ProtectionHook		& \textit{return PRO\_TERMINATETASKISR}	& 										& \\ \hline
+	t1	& TerminateTask()							& E\_OK											& \\ \hline
+	\end{supertabular}\\
+	
+\subsubsection{Time Frame}
+
+	% TEST SEQUENCE 5 %
+	\textbf{Test Sequence 5 :}
+	\begin{lstlisting}
+	TEST CASES:		       1, 2
+	RETURN STATUS:	  	 EXTENDED
+	SCHEDULING POLICY:   PREEMPTIVE
+	HOOKS:		           ProtectionHook
+	\end{lstlisting}
+	\lstinputlisting{./OIL_to_TXT/autosar_tp_s5.txt}
+
+	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline 
+	idle	& \textit{Wait for the alarm}					& 												& \\ \hline
+	t1	& TerminateTask()							& E\_OK											& \\ \hline
+	idle	& \textit{Wait for the alarm}							& 										& 1 \\ \hline
+	t1	& CancelAlarm(alarm1)						& E\_OK											& \\ \hline
+	t1	& SetRelAlarm(alarm1, 5, 5)					& E\_OK											& \\ \hline
+	t1	& TerminateTask()							& E\_OK											& \\ \hline
+	idle	& \textit{Wait for the alarm}							& 										& 2 \\ \hline
+	ProtectionHook		& Fatalerror					& E\_OS\_PROTECTION\_ARRIVAL						& \\ \hline
+	ProtectionHook		& \textit{return PRO\_TERMINATETASKISR}	& 										& \\ \hline
+	idle	& \textit{Wait for the alarm}							& 										& \\ \hline
+	t1	& TerminateTask()							& E\_OK											& \\ \hline	
+	\end{supertabular}\\
+
+	% TEST SEQUENCE 6 %
+	\textbf{Test Sequence 6 :}
+	\begin{lstlisting}
+	TEST CASES:		       3
+	RETURN STATUS:	  	 EXTENDED
+	SCHEDULING POLICY:   PREEMPTIVE
+	HOOKS:		           ProtectionHook, ErrorHook
+	\end{lstlisting}
+	\lstinputlisting{./OIL_to_TXT/autosar_tp_s6.txt}
+
+	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline 
+	t1	& \textit{Wait for ever (wait for the alarm)}					& 										& \\ \hline
+	ProtectionHook		& Fatalerror					& E\_OS\_PROTECTION\_ARRIVAL						& \\ \hline
+	ProtectionHook		& \textit{return PRO\_TERMINATETASKISR}	& 										& \\ \hline
+	t1	& \textit{Continue to wait for ever (wait for the alarm)}		& 										& 3 \\ \hline
+	ErrorHook			& error								& E\_OS\_LIMIT							& \\ \hline
+	ErrorHook			& OSErrorGetServiceId()					& OSServiceId\_ActivateTask					& \\ \hline
+	\end{supertabular}\\	
+	
+	% TEST SEQUENCE 7 %
+	\textbf{Test Sequence 7 :}
+	\begin{lstlisting}
+	TEST CASES:		       4, 5, 6
+	RETURN STATUS:	  	 EXTENDED
+	SCHEDULING POLICY:   PREEMPTIVE
+	HOOKS:		           ProtectionHook
+	\end{lstlisting}
+	\lstinputlisting{./OIL_to_TXT/autosar_tp_s7.txt}
+
+	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline 
+	t1	& \textit{Wait Time Frame elapsed}						& 										& \\ \hline
+	t1	& SetEvent(t1,t1\_event1)								& E\_OK									& \\ \hline
+	t1	& WaitEvent(t1\_event1)								& E\_OK									& 4 \\ \hline
+	t1	& TerminateTask()									& E\_OK									& \\ \hline	
+	t2	& SetEvent(t2,t2\_event1)								& E\_OK									& \\ \hline
+	t2	& WaitEvent(t2\_event1)								& E\_OK									& 5 \\ \hline
+	t2	& ActivateTask(t3)									& E\_OK									& \\ \hline
+	t3	& SetEvent(t3,t3\_event1)								& E\_OK									& \\ \hline
+	t3	& WaitEvent(t3\_event1)								& E\_OK									& 6 \\ \hline
+	ProtectionHook		& Fatalerror					& E\_OS\_PROTECTION\_ARRIVAL						& \\ \hline
+	ProtectionHook		& \textit{return PRO\_TERMINATETASKISR}	& 										& \\ \hline
+	t2	& TerminateTask()									& E\_OK									& \\ \hline
+	\end{supertabular}\\	
+	
+	% TEST SEQUENCE 8 %
+	\textbf{Test Sequence 8 :}
+	\begin{lstlisting}
+	TEST CASES:		       7, 8
+	RETURN STATUS:	  	 EXTENDED
+	SCHEDULING POLICY:   PREEMPTIVE
+	HOOKS:		           ProtectionHook
+	\end{lstlisting}
+	\lstinputlisting{./OIL_to_TXT/autosar_tp_s8.txt}
+
+	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline 
+	t1	& \textit{Wait Time Frame elapsed}						& 										& \\ \hline
+	t1	& WaitEvent(t1\_event1)								& E\_OK									& \\ \hline
+	idle	& \textit{Wait for the alarm if has not set t1\_event1 to t1 during previous Time Frame wait}	&				& \\ \hline
+	t1	& ClearEvent(t1\_event1)								& E\_OK									&  \\ \hline
+	t1	& WaitEvent(t1\_event1)								& E\_OK									& \\ \hline
+	idle	& \textit{Wait for the alarm}							& 										& 7 \\ \hline
+	t1	& ClearEvent(t1\_event1)								& E\_OK									&  \\ \hline
+	t1	& CancelAlarm(alarm1)								& E\_OK									& \\ \hline
+	t1	& SetRelAlarm(alarm1, 5, 5)							& E\_OK									& \\ \hline
+	t1	& WaitEvent(t1\_event1)								& E\_OK									& \\ \hline
+	idle	& \textit{Wait for the alarm}							& 										& 8 \\ \hline
+	ProtectionHook		& Fatalerror					& E\_OS\_PROTECTION\_ARRIVAL						& \\ \hline
+	ProtectionHook		& \textit{return PRO\_SHUTDOWN}			& 										& \\ \hline
+	\end{supertabular}\\	
+	
+	% TEST SEQUENCE 9 %
+	\textbf{Test Sequence 9 :}
+	\begin{lstlisting}
+	TEST CASES:		       9, 10, 11, 12
+	RETURN STATUS:	  	 EXTENDED
+	SCHEDULING POLICY:   PREEMPTIVE
+	HOOKS:		           ProtectionHook
+	\end{lstlisting}
+	\lstinputlisting{./OIL_to_TXT/autosar_tp_s9.txt}
+
+	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline 
+	t1	& \textit{trigger interrupt isr1}					& 												& \\ \hline
+	isr1	& 										& 												& \\ \hline
+	t1	& \textit{Wait isr1 Time Frame elapsed}			& 												& \\ \hline
+	t1	& \textit{trigger interrupt isr1}					& 												& 9 \\ \hline
+	isr1	& 										& 												& \\ \hline
+	t1	& \textit{trigger interrupt isr1}					& 												& 11 \\ \hline
+	ProtectionHook		& Fatalerror					& E\_OS\_PROTECTION\_ARRIVAL						& \\ \hline
+	ProtectionHook		& \textit{return PRO\_TERMINATETASKISR}	&										& \\ \hline
+	t1	& \textit{Wait isr1 Time Frame elapsed}			& 												& \\ \hline
+	t1	& \textit{trigger interrupt isr1}					& 												& \\ \hline
+	isr1	& \textit{trigger interrupt isr2}					& 												& \\ \hline
+	isr1	& \textit{trigger interrupt isr1}					& 												& 12 \\ \hline
+	isr1	& \textit{Wait isr2 Time Frame elapsed}			& 												& \\ \hline
+	isr2	& 										& 												& \\ \hline
+	t1	& \textit{trigger interrupt isr2}					& 												& 10 \\ \hline
+	isr2	& 										& 												& \\ \hline
+	t1	& TerminateTask()							& E\_OK											& \\ \hline
+	\end{supertabular}\\	
+
+\subsubsection{Resource Locking and Interrupt Disabling}
+	
 % AUTOSAR - PROTECTION ERROR HANDLING %
 %\subsection{AUTOSAR - Protection error handling}
 

@@ -27,6 +27,8 @@
  */
 #include "tpl_as_protec_hook.h"
 #include "tpl_os_kernel.h"
+#include "tpl_os_rez_kernel.h"
+#include "tpl_os_it_kernel.h"
 #include "tpl_as_app_kernel.h"
 
 #include "tpl_dow.h"

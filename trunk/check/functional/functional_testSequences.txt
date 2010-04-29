@@ -135,3 +135,13 @@ autosar_mp_s2
 autosar_mp_s3
 autosar_mp_s4
 
+autosar_tp_s1
+autosar_tp_s2
+autosar_tp_s3
+autosar_tp_s4
+autosar_tp_s5
+autosar_tp_s6
+autosar_tp_s7
+autosar_tp_s8
+autosar_tp_s9
+

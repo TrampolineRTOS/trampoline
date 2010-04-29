@@ -1,3 +1,37 @@
+/**
+ * @file autosar_tp_s2/autosar_tp_s2.c
+ *
+ * @section desc File description
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline Test Suite
+ *
+ * Trampoline Test Suite is copyright (c) IRCCyN 2005-2007
+ * Trampoline Test Suite is protected by the French intellectual property law.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; version 2
+ * of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+
 
 #include "Os.h"
 #include "embUnit.h"
@@ -15,10 +49,7 @@ TestRef AutosarTPTest_seq2_protection_instance2(void);
 StatusType instance_protection = 0;
 StatusType instance_t1 = 0;
 StatusType instance_t3 = 0;
-ProtectionReturnType protectiontypetoreturn = PRO_IGNORE;
-
-DeclareEvent(Event1);
-DeclareEvent(Event2);
+StatusType Fatalerrorstatus;
 
 int main(void)
 {
@@ -39,6 +70,7 @@ void ErrorHook(StatusType error)
 
 ProtectionReturnType ProtectionHook(StatusType Fatalerror)
 {
+  Fatalerrorstatus = Fatalerror;
 	instance_protection++;
   stdimpl_print("ProtectionHook:%d\n",instance_protection);
 	switch (instance_protection)
@@ -59,8 +91,7 @@ ProtectionReturnType ProtectionHook(StatusType Fatalerror)
 			break;
 		}
 	}
-  
-  return protectiontypetoreturn;
+  return PRO_TERMINATETASKISR;
 	
 }
 
@@ -68,22 +99,11 @@ TASK(t1)
 {
   while(1)
   {
-    if( E_OK != WaitEvent(Event1))
-    {
-      stdimpl_print("t1 : WaitEvent doesn't return E_OK \n");
-    }
-    
-    if( E_OK != ClearEvent(Event1))
-    {
-      stdimpl_print("t1 : ClearEvent doesn't return E_OK \n");
-    }
-    
     instance_t1++;
     switch (instance_t1)
     {
       case 1 :
       {
-        TestRunner_start();
         TestRunner_runTest(AutosarTPTest_seq2_t1_instance1());
         break;
       }
@@ -114,22 +134,13 @@ TASK(t2)
 TASK(t3)
 {
   while(1)
-  {
-    if( E_OK != WaitEvent(Event2))
-    {
-      stdimpl_print("t3 : WaitEvent doesn't return E_OK \n");
-    }
-    
-    if( E_OK != ClearEvent(Event2))
-    {
-      stdimpl_print("t3 : ClearEvent doesn't return E_OK \n");
-    }
-    
+  {    
     instance_t3++;
     switch (instance_t3)
     {
       case 1 :
       {
+        TestRunner_start();
         TestRunner_runTest(AutosarTPTest_seq2_t3_instance());
         break;
       }
@@ -149,3 +160,5 @@ TASK(t4)
   ShutdownOS(E_OK);
 }
 
+
+/* End of file autosar_tp_s2/autosar_tp_s2.c */

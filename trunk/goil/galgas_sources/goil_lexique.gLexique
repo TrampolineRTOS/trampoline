@@ -244,7 +244,6 @@ list application_attrs error message "APPLICATION attribute '%K'" style keywords
 list timing_prot_attribs error message "TIMING_PROTECTION attribute '%K'" style keywordsStyle :
     "EXECUTIONBUDGET",
     "EXECUTIONTIME",
-    "COUNTLIMIT",
     "TIMEFRAME",
     "MAXOSINTERRUPTLOCKTIME",
     "MAXALLINTERRUPTLOCKTIME",
