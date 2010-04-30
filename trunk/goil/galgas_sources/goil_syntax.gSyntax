@@ -43,11 +43,26 @@ import grammar goil_file_level_include in "goil_file_level_include.gGrammar";
 #import grammar cfg_grammar in "cfg_grammar.ggs";
 
 nonterminal <start>;
-nonterminal <file> ?!@implementation imp ?!@root_obj cpu;
-nonterminal <OIL_version> !@lstring version !@lstring desc;
-nonterminal <description> !@lstring desc;
+nonterminal <file>
+  ?!@implementation imp
+  ?!@root_obj cpu
+label check_appli_exist
+  ?!@root_obj cpu_check 
+  !@bool appli_exist
+;
+nonterminal <OIL_version> !@lstring version !@lstring desc
+label parse
+;
+nonterminal <description> !@lstring desc
+label parse
+;
 
-nonterminal <application_definition> ?!@root_obj file;
+nonterminal <application_definition>
+  ?!@root_obj file
+label check_appli_exist
+  ?!@root_obj file_check
+  !@bool appli_exist
+;
 nonterminal <object_definition_list>
     ?!@os_obj            os
     ?!@com               com
@@ -61,14 +76,24 @@ nonterminal <object_definition_list>
     ?!@netmess_map       net_messages
     ?!@scheduletable_map scheduletables
     ?!@app_map           applis
+label check_appli_exist
+    ?!@app_map           applis_check
+    !@bool appli_exist
 ;
-nonterminal <nm>;
+nonterminal <nm>
+label parse
+;
 
-nonterminal <boolean> !@lbool val;
-nonterminal <free_field> ?!@ident_map ids;
+nonterminal <boolean> !@lbool val 
+label parse
+;
+nonterminal <free_field> ?!@ident_map ids 
+label parse
+;
 nonterminal <include_file_level>
     ?!@implementation imp
     ?!@root_obj cpu
+label parse
 ;
 nonterminal <include_cpu_level>
     ?!@os_obj            os
@@ -83,70 +108,114 @@ nonterminal <include_cpu_level>
     ?!@netmess_map       net_messages
     ?!@scheduletable_map scheduletables
     ?!@app_map           applis
+label parse
 ;
 
 #--------------------------------------------------------------------
 # extern nonterminals
 #--------------------------------------------------------------------
-nonterminal <implementation_definition> ?!@implementation imp;
+nonterminal <implementation_definition> ?!@implementation imp
+label parse
+;
 
 nonterminal <os>
-    ?!@os_obj os;
+    ?!@os_obj os
+label parse
+;
 
-nonterminal <appmode>;
+nonterminal <appmode>
+label parse
+;
 nonterminal <task> 
-    ?!@task_map outTask;
+    ?!@task_map outTask
+label parse
+;
 
 nonterminal <counter>
-    ?!@counter_map counters;
+    ?!@counter_map counters
+label parse
+;
 
 nonterminal <alarm>
-    ?!@alarm_map alarms;
+    ?!@alarm_map alarms
+label parse
+;
 
 nonterminal <resource>
-    ?!@resource_map resources;
+    ?!@resource_map resources
+label parse
+;
 
 nonterminal <event> 
-    ?!@event_map events;
+    ?!@event_map events
+label parse
+;
 
 nonterminal <isr>
-    ?!@isr_map isrs;
+    ?!@isr_map isrs
+label parse
+;
 
 nonterminal <mess>
-    ?!@message_map messages;
+    ?!@message_map messages
+label parse
+;
 
 nonterminal <scheduletable>
-    ?!@scheduletable_map stm;
+    ?!@scheduletable_map stm
+label parse
+;
 
 nonterminal <appli>
-    ?!@app_map applis;
+    ?!@app_map applis
+label check_appli_exist
+    ?!@app_map applis_check
+    !@bool appli_exist
+;
 
 nonterminal <networkmess>
-  ?!@netmess_map netmess;
+  ?!@netmess_map netmess
+label parse
+;
 
 nonterminal <com>
-  ?!@com com;
+  ?!@com com
+label parse
+;
 
-nonterminal <ipdu>;
+nonterminal <ipdu>
+label parse
+;
 
 #
 # root
 #
 
 rule <start>:
+  parse do
+    @void     void_obj_check := [@void new !here];
+    @root_obj cpu_check := void_root_obj[];
+    @bool appli_exist := false;
+    
+    <file> check_appli_exist !?cpu_check ?appli_exist;
+    
+  rewind
     @implementation imp [emptyMap];
     @void     void_obj := [@void new !here];
     @root_obj cpu := void_root_obj[];
-
+   
     # includes a config.oil file if it exists
     @string oilConfigFile := templateFilePath[!"config" !"config.oil"];
     if oilConfigFile != "" then
-      #message "Including ".oilConfigFile."\n";
       grammar goil_file_level_include in lstringWith[!oilConfigFile] !?imp !?cpu;
-      #message "I got:\n";
-      #log imp;
-      #log cpu;
-    end if;
+
+      #check if applications exist in oil file and import config_applications.oil (applications of the config.oil objects import previously)
+      if appli_exist == true then
+        @string oilConfigApplicationsFile := templateFilePath[!"config" !"config_applications.oil"];
+        grammar goil_file_level_include in lstringWith[!oilConfigApplicationsFile] !?imp !?cpu;
+      end if;
+            
+   end if;
 
     <file> !?imp !?cpu;
 
@@ -168,6 +237,7 @@ rule <start>:
 #    @netmess_map       net_messages   := [cpu net_messages];
 #    @scheduletable_map scheduletables := [cpu scheduletables];
 #    @app_map           applis         := [cpu applis];
+  end parse ;
 
     set_defaults !imp !?cpu;
     verify_all !?cpu;
@@ -195,7 +265,24 @@ rule <file>
     while
         <application_definition> !?cpu;
     end repeat;
-
+label check_appli_exist
+    ?!@root_obj cpu_check
+    !@bool appli_exist
+:
+    @bool appli_exist_temp := false;
+    
+    repeat
+    while
+        <include_file_level> parse ;
+    while
+        <OIL_version> parse ;
+    while
+        <implementation_definition> parse ;
+    while
+        <application_definition> check_appli_exist !?cpu_check ?appli_exist_temp;
+    end repeat;
+    appli_exist := appli_exist_temp;
+    
 end rule;
 
 #
@@ -276,6 +363,48 @@ rule <application_definition>
         !scheduletables
         !applis
     ];
+
+label check_appli_exist
+    ?!@root_obj file_check
+    !@bool appli_exist
+:
+    @os_obj            os              := [file_check os];
+    @com               com             := [file_check com];
+    @task_map          tasks           := [file_check tasks];
+    @counter_map       counters        := [file_check counters];
+    @alarm_map         alarms          := [file_check alarms];
+    @resource_map      resources       := [file_check resources];
+    @event_map         events          := [file_check events];
+    @isr_map           isrs            := [file_check isrs];
+    @message_map       messages        := [file_check messages];
+    @netmess_map       net_messages    := [file_check net_messages];
+    @scheduletable_map scheduletables  := [file_check scheduletables];
+    @app_map           applis          := [file_check applis];
+    
+    $CPU$;
+    $idf$ ?@lstring cpuName;
+    ${$;
+    <object_definition_list> check_appli_exist !?applis ?appli_exist;
+    $}$;
+    <description> ?*;
+    $;$;
+
+    file_check := [@root_obj new
+        !cpuName
+        !os
+        !com
+        !tasks
+        !counters
+        !alarms
+        !resources
+        !events
+        !isrs
+        !messages
+        !net_messages
+        !scheduletables
+        !applis
+    ];
+
 end rule;
 
 rule <object_definition_list>
@@ -324,6 +453,33 @@ rule <object_definition_list>
         !?applis
    ;
     end repeat;
+
+label check_appli_exist
+    ?!@app_map           applis_check
+    !@bool appli_exist
+:
+   @bool appli_exist_temp := false;
+
+   repeat
+    while <os> parse;
+    while <appmode> parse; <description> parse;
+    while <task> parse;
+    while <counter> parse;
+    while <alarm> parse; <description> parse;
+    while <resource> parse; <description> parse;
+    while <event> parse; <description> parse;
+    while <isr> parse; <description> parse;
+    while <mess> parse; <description> parse;
+    while <networkmess> parse; <description> parse;
+    while <com> parse; <description> parse;
+    while <ipdu> parse; <description> parse;
+    while <nm> parse; <description> parse;
+    while <scheduletable> parse; <description> parse;
+    while <appli> check_appli_exist !?applis_check ?appli_exist_temp; <description> parse;
+    while <include_cpu_level> parse;
+   end repeat;
+   appli_exist := appli_exist_temp;
+    
 end rule;
 
 rule <nm>:

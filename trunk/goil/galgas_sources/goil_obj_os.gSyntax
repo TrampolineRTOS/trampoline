@@ -33,17 +33,25 @@ import semantics goil_types_os in "goil_types_os.gSemantics" ;
 # local rules declaration
 #
 nonterminal <os>
-  ?!@os_obj os ;
+  ?!@os_obj os 
+label parse
+;
 
 #
 # external rules 
 #
 nonterminal <description>
-  !@lstring desc ;
+  !@lstring desc  
+label parse
+;
 nonterminal <free_field>
-  ?!@ident_map ids ;
+  ?!@ident_map ids 
+label parse
+;
 nonterminal <boolean>
-  !@lbool val ;
+  !@lbool val  
+label parse
+;
 #
 # local rules implementation
 #

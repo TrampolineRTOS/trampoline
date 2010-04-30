@@ -24,28 +24,50 @@ import semantics goil_semantics in "goil_semantics.gSemantics" ;
 import semantics com_type in "com_type.gSemantics" ;
 
 nonterminal <com>
-  ?!@com com ;
+  ?!@com com  
+label parse
+;
 nonterminal <comtimebase>
-  ?!@basic_type tb ;
+  ?!@basic_type tb  
+label parse
+;
 nonterminal <comerrorhook>
-  ?!@basic_type eh ;
+  ?!@basic_type eh  
+label parse
+;
 nonterminal <comusegetserviceid>
-  ?!@basic_type ugsid ;
+  ?!@basic_type ugsid  
+label parse
+;
 nonterminal <comuseparameteraccess>
-  ?!@basic_type upa ;
+  ?!@basic_type upa  
+label parse
+;
 nonterminal <comstartcomextension>
-  ?!@basic_type sce ;
+  ?!@basic_type sce  
+label parse
+;
 nonterminal <comappmode>
-  ?!@lstringlist am ;
+  ?!@lstringlist am  
+label parse
+;
 nonterminal <comstatus>
-  ?!@lstring s ;
+  ?!@lstring s  
+label parse
+;
 nonterminal <use>
-  ?!@lstringlist u ;
+  ?!@lstringlist u  
+label parse
+;
 
 # external rules
-nonterminal <boolean> !@lbool val ;
+nonterminal <boolean> !@lbool val  
+label parse
+;
 nonterminal <description>
-    !@lstring desc ;
+    !@lstring desc  
+label parse
+;
 
 rule <com>
   ?!@com com

@@ -68,7 +68,7 @@ COM {
 
 /* ISR2 services, available in AUTOSAR */
 ISR (tpl_as_isr_kernel) {
-  GetISRID                -> tpl_get_isr_id;
+  GetISRID                -> tpl_get_isr_id_service;
 };
 
 /* counter services, available in AUTOSAR */
@@ -101,15 +101,16 @@ OSAPPLICATION (tpl_as_app_kernel) {
 };
 
 /* Memory protection services, available in AUTOSAR SC3 and SC4 */
-MEMORYPROTECTION {
+/*MEMORYPROTECTION {
   CheckISRMemoryAccess  -> tpl_check_isr_memory_access_service;
   CheckTaskMemoryAccess -> tpl_check_task_memory_access_service;
 };
+*/
 
 /* Service protection services, available in AUTOSAR SC3 and SC4 */
 SERVICEPROTECTION {
   CheckObjectAccess     -> tpl_check_object_access_service;
-  CheckObjectOwnership  -> tpl_check_object_ownership_access;
+  CheckObjectOwnership  -> tpl_check_object_ownership_service;
 };
 
 /* Trusted functions services, available in AUTOSAR SC3 and SC4 */

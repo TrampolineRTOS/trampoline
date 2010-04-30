@@ -24,34 +24,62 @@ import semantics goil_semantics in "goil_semantics.gSemantics" ;
 import semantics goil_types_networkmessage in "goil_types_networkmessage.gSemantics";
 
 nonterminal <networkmess>
-  ?!@netmess_map netmess ;
+  ?!@netmess_map netmess  
+label parse
+;
 nonterminal <ipdu_ref>
-  ?!@lstring ipdu;
+  ?!@lstring ipdu 
+label parse
+;
 nonterminal <net_messageproperty>
-  ?!@base_netprop netprop ;
+  ?!@base_netprop netprop  
+label parse
+;
 nonterminal <static_mp>
-  !@base_netprop netprop ;
+  !@base_netprop netprop  
+label parse
+;
 nonterminal <dynamic_mp>
-  !@base_netprop netprop ;
+  !@base_netprop netprop  
+label parse
+;
 nonterminal <sizeinbits>
-  !@luint64 sib ;
+  !@luint64 sib  
+label parse
+;
 nonterminal <maxsizeinbits>
-  !@luint64 msib ;
+  !@luint64 msib  
+label parse
+;
 nonterminal <bitordering>
-  !@lstring bo ;
+  !@lstring bo  
+label parse
+;
 nonterminal <bitposition>
-  !@luint64 bp ;
+  !@luint64 bp  
+label parse
+;
 nonterminal <datainterpretation>
-  !@lstring di ;
+  !@lstring di  
+label parse
+;
 nonterminal <initialvalue>
-  !@basic_type initial_value ;
+  !@basic_type initial_value  
+label parse
+;
 nonterminal <direction>
-  !@lstring dir ;
+  !@lstring dir  
+label parse
+;
 nonterminal <transferproperty>
-    !@lstring transferproperty ;
+    !@lstring transferproperty  
+label parse
+;
 
 nonterminal <description>
-    !@lstring desc ;
+    !@lstring desc  
+label parse
+;
 
 
 rule <networkmess>

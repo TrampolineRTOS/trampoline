@@ -23,25 +23,35 @@ import option goil_options in "goil_options.gOption" ;
 import semantics goil_semantics in "goil_semantics.gSemantics" ;
 
 nonterminal <alarm>
-  ?!@alarm_map alarms ;
+  ?!@alarm_map alarms  
+label parse
+;
 
 nonterminal <alarm_parameters>
   ?!@lstring       counter_name
   ?!@action_obj    alarm_action
   ?!@autostart_obj alarm_autostart
-  ?!@lstringlist   acc_apps ;
+  ?!@lstringlist   acc_apps  
+label parse
+;
 
 nonterminal <alarm_action_params>
-  ?!@action_obj alarm_action ;
+  ?!@action_obj alarm_action  
+label parse
+;
 
 nonterminal <alarm_autostart_params>
-  ?!@autostart_obj alarm_autostart ;
+  ?!@autostart_obj alarm_autostart  
+label parse
+;
 
 #
 # external rules
 #
 nonterminal <description>
-  !@lstring desc ;
+  !@lstring desc  
+label parse
+;
 
 #
 # alarm rules implementation
