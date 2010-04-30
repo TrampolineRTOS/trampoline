@@ -23,109 +23,173 @@ import option goil_options in "goil_options.gOption" ;
 import semantics goil_semantics in "goil_semantics.gSemantics" ;
 
 nonterminal <mess>
-  ?!@message_map messages ;
+  ?!@message_map messages  
+label parse
+;
 
 nonterminal <message_attributes>
   ?!@action_obj    notif
   ?!@action_obj    notif_error
   ?!@lstringlist   acc_apps
   ?!@ident_map     others
-  ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop  
+label parse
+;
 
 nonterminal <message_property>
-  ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop  
+label parse
+;
 
 nonterminal <notification_property>
-  !@action_obj notif ;
+  !@action_obj notif  
+label parse
+;
 
 nonterminal <ssi_attributes>
-  ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop  
+label parse
+;
 
 nonterminal <sse_attributes>
-  ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop  
+label parse
+;
 
 nonterminal <sde_attributes>
-  ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop  
+label parse
+;
 
 nonterminal <sze_attributes>
-  ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop  
+label parse
+;
 
 nonterminal <rzi_attributes>
-  ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop  
+label parse
+;
 
 nonterminal <rze_attributes>
-  ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop  
+label parse
+;
 
 nonterminal <rui_attributes>
-  ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop  
+label parse
+;
 
 nonterminal <rqi_attributes>
-  ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop  
+label parse
+;
 
 nonterminal <rue_attributes>
-  ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop  
+label parse
+;
 
 nonterminal <rqe_attributes>
-  ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop  
+label parse
+;
 
 nonterminal <rde_attributes>
-  ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop  
+label parse
+;
 
 nonterminal <rzs_attributes>
-  ?!@mess_prop_obj mess_prop ;
+  ?!@mess_prop_obj mess_prop  
+label parse
+;
 
 nonterminal <cdatatype>
-  !@lstring cdatatype ;
+  !@lstring cdatatype  
+label parse
+;
 
 nonterminal <transferproperty>
-  !@lstring transferproperty ;
+  !@lstring transferproperty  
+label parse
+;
 
 nonterminal <networkmessage>
-  !@lstring net_message ;
+  !@lstring net_message  
+label parse
+;
 
 nonterminal <filter>
-  !@filter_prop_obj filter ;
+  !@filter_prop_obj filter  
+label parse
+;
 
 nonterminal <mask_x_attribute>
   !@luint64 mask
-  !@luint64 x ;
+  !@luint64 x  
+label parse
+;
 
 nonterminal <mask_attribute>
-  !@luint64 mask ;
+  !@luint64 mask  
+label parse
+;
 
 nonterminal <min_max_attribute>
   !@luint64 min
-  !@luint64 max ;
+  !@luint64 max  
+label parse
+;
 
 nonterminal <period_offset_attribute>
   !@luint64 period
-  !@luint64 offset ;
+  !@luint64 offset  
+label parse
+;
 
 nonterminal <networkordercallout>
-  !@lstring net_order_callout ;
+  !@lstring net_order_callout  
+label parse
+;
 
 nonterminal <cpuordercallout>
-  !@lstring cpu_order_callout ;
+  !@lstring cpu_order_callout  
+label parse
+;
 
 nonterminal <initialvalue>
-  !@basic_type initial_value ;
+  !@basic_type initial_value  
+label parse
+;
 
 nonterminal <sendingmessage>
-  !@lstring sending_message ;
+  !@lstring sending_message  
+label parse
+;
 
 nonterminal <queuesize>
-  !@luint64 queue_size ;
+  !@luint64 queue_size  
+label parse
+;
 
 nonterminal <link>
-  !@link_obj link ;
+  !@link_obj link  
+label parse
+;
 
 #
 # external nonterminals
 #
 nonterminal <description>
-  !@lstring desc ;
+  !@lstring desc  
+label parse
+;
 nonterminal <free_field>
-  ?!@ident_map ids ;
+  ?!@ident_map ids  
+label parse
+;
 
 rule <mess>
   ?!@message_map messages

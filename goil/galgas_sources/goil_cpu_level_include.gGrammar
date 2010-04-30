@@ -55,6 +55,9 @@ grammar goil_cpu_level_include "LL1":
         ?!@netmess_map       net_messages
         ?!@scheduletable_map scheduletables
         ?!@app_map           applis
+    label check_appli_exist
+        ?!@app_map           applis_check
+        !@bool appli_exist
     ;
     unused <OIL_version> ;
     unused <application_definition> ;

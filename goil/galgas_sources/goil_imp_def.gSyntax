@@ -28,33 +28,56 @@ import semantics goil_check in "goil_check.gSemantics" ;
 #
 # Local rules declarations
 #
-nonterminal <implementation_definition> ?!@implementation imp ;
-nonterminal <implementation_spec_list> ?!@implementation imp ;
-nonterminal <implementation_spec> ?!@implementation imp ;
+nonterminal <implementation_definition> ?!@implementation imp 
+label parse
+;
+nonterminal <implementation_spec_list> ?!@implementation imp
+label parse
+;
+nonterminal <implementation_spec> ?!@implementation imp
+label parse
+;
 nonterminal <implementation_list>
     ?@string          obj_kind
     ?!@implementation imp
+label parse
 ;
-nonterminal <impl_attr_def> !@lstring attr_name !@imp_type attr ;
-nonterminal <auto_specifier> !@bool auto ;
-nonterminal <uint32_attribute_name> !@lstring name ;
-nonterminal <attribute_name> !@lstring name ;
-nonterminal <multiple_specifier> !@bool multiple ;
-nonterminal <default_number> !@bool has_default !@luint64 default_number ;
-nonterminal <default_name> !@bool has_default !@lstring default_name ;
+nonterminal <impl_attr_def> !@lstring attr_name !@imp_type attr
+label parse ;
+nonterminal <auto_specifier> !@bool auto 
+label parse;
+nonterminal <uint32_attribute_name> !@lstring name 
+label parse;
+nonterminal <attribute_name> !@lstring name 
+label parse;
+nonterminal <multiple_specifier> !@bool multiple
+label parse ;
+nonterminal <default_number> !@bool has_default !@luint64 default_number 
+label parse;
+nonterminal <default_name> !@bool has_default !@lstring default_name
+label parse ;
 nonterminal <enumeration>
-    !@stringset en ;
+    !@stringset en 
+label parse
+;
 nonterminal <enumerator>
-    ?!@stringset en ;
-nonterminal <impl_parameter_list> ;
-nonterminal <implementation_def> ;
+    ?!@stringset en 
+label parse;
+nonterminal <impl_parameter_list>
+label parse
+;
+nonterminal <implementation_def>
+label parse
+;
 
 
 #
 # Different kind of number set
 #
-nonterminal <uint32_number_set> !@uint32_set set ;
-nonterminal <sint32_number_set> !@sint32_set set ;
+nonterminal <uint32_number_set> !@uint32_set set 
+label parse;
+nonterminal <sint32_number_set> !@sint32_set set
+label parse ;
 nonterminal <uint64_number_set> !@uint64_set set ;
 nonterminal <sint64_number_set> !@sint64_set set ;
 nonterminal <float_number_set>  !@float_set  set ;
@@ -62,8 +85,10 @@ nonterminal <float_number_set>  !@float_set  set ;
 #
 # Different kind of default number
 #
-nonterminal <default_uint32_number> !@uint32_class def ;
-nonterminal <default_sint32_number> !@sint32_class def ;
+nonterminal <default_uint32_number> !@uint32_class def 
+label parse;
+nonterminal <default_sint32_number> !@sint32_class def 
+label parse;
 nonterminal <default_uint64_number> !@uint64_class def ;
 nonterminal <default_sint64_number> !@sint64_class def ;
 nonterminal <default_float_number>  !@float_class  def ;
@@ -71,13 +96,15 @@ nonterminal <default_string>        !@string_class def ;
 nonterminal <default_enum>          !@basic_type   def ;
 nonterminal <default_bool>          !@bool_class   def ;
 
-nonterminal <signed_number> !@sint64 num ;
+nonterminal <signed_number> !@sint64 num 
+label parse;
 
 #
 #
 # External rules
 #
-nonterminal <description> !@lstring desc ;
+nonterminal <description> !@lstring desc
+label parse ;
 
 #
 # implementation definition is the part of OIL files

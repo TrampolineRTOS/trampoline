@@ -25,20 +25,30 @@ import semantics goil_types_app in "goil_types_app.gSemantics" ;
 # external rules 
 #
 nonterminal <description>
-    !@lstring desc ;
+    !@lstring desc  
+label parse
+;
 
 #
 # local rules declaration
 #
 nonterminal <appli>
-    ?!@app_map applis ;
+    ?!@app_map applis
+label check_appli_exist
+    ?!@app_map applis_check
+    !@bool appli_exist
+;
 
 nonterminal <app_attributes>
     ?!@app_obj app
-    ?@lstring  name ;
+    ?@lstring  name 
+label parse
+;
 
 nonterminal <trusted_fcts>
-    !@app_trusted_obj trust_attr;
+    !@app_trusted_obj trust_attr 
+label parse
+;
 
 rule <appli>
     ?!@app_map applis
@@ -49,6 +59,49 @@ rule <appli>
     
 
     $APPLICATION$ ;
+    if [option goil_options.autosar_on value] == false then
+      error here : "AUTOSAR flag is off, turn it on to use APPLICATION objects" ;
+    end if ;
+    $idf$ ?name ;
+
+    if [applis hasKey ![name string]] then
+        [!?applis del !name ?app] ;
+    else
+        app := [@app_obj new
+            ![@lstring new !"" !here]      # description
+            ![@app_trusted_void new !here] # trusted
+            ![@void new !here]             # startuphook
+            ![@void new !here]             # shutdownhook
+            ![@void new !here]             # errorhook
+            ![@void new !here]             # restart
+            ![@ident_map emptyMap]         # tasks
+            ![@ident_map emptyMap]         # isrs
+            ![@ident_map emptyMap]         # alarms
+            ![@ident_map emptyMap]         # schedtables
+            ![@ident_map emptyMap]         # counters
+            ![@ident_map emptyMap]         # resources
+            ![@ident_map emptyMap]         # messages
+        ] ;
+    end if ;
+
+    ${$ ;
+    <app_attributes> !?app !name ;
+    $}$ ;
+    <description> ?desc ;
+    $;$ ;
+
+    [!?applis put !name !app] ;
+
+label check_appli_exist
+    ?!@app_map applis
+    !@bool appli_exist
+:
+    @lstring            name ;
+    @lstring            desc ;
+    @app_obj app;
+    
+    $APPLICATION$ ;
+    appli_exist := true;
     if [option goil_options.autosar_on value] == false then
       error here : "AUTOSAR flag is off, turn it on to use APPLICATION objects" ;
     end if ;

@@ -31,7 +31,9 @@ import option goil_options in "goil_options.gOption" ;
 import semantics goil_semantics in "goil_semantics.gSemantics" ;
 
 nonterminal <counter>
-  ?!@counter_map counters ;
+  ?!@counter_map counters  
+label parse
+;
 
 nonterminal <counter_parameters> 
   ?!@basic_type   max_allowed_value
@@ -40,15 +42,21 @@ nonterminal <counter_parameters>
   ?!@lstring      source
   ?!@lstringlist  acc_apps
   ?!@counter_type type
-  ?!@lstring      unit ;
+  ?!@lstring      unit 
+label parse
+ ;
 
 nonterminal <counter_type_attrs>
-  !@counter_type type ;
+  !@counter_type type 
+label parse
+;
 #
 # external nonterminals
 #
 nonterminal <description>
-  !@lstring desc ;
+  !@lstring desc  
+label parse
+;
 
 #
 # counter rules implementation

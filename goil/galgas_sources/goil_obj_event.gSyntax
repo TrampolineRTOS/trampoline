@@ -26,16 +26,22 @@ import semantics goil_semantics in "goil_semantics.gSemantics" ;
 # local nonterminals declaration
 #
 nonterminal <event> 
- ?!@event_map events ;
+ ?!@event_map events  
+label parse
+;
 
 nonterminal <event_attributes>
-    ?!@event_mask_obj mask ;
+    ?!@event_mask_obj mask  
+label parse
+;
 
 #
 # external nonterminals declaration
 #
 nonterminal <description>
- !@lstring desc ;
+ !@lstring desc  
+label parse
+;
 
 #
 # local rule definition

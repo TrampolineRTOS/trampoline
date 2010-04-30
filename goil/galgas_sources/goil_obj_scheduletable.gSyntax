@@ -27,29 +27,49 @@ import semantics goil_types_action in "goil_types_action.gSemantics";
 import semantics goil_types_scheduletable in "goil_types_scheduletable.gSemantics";
 
 nonterminal <scheduletable>
-  ?!@scheduletable_map stm;
+  ?!@scheduletable_map stm 
+label parse
+;
 nonterminal <scheduletable_parameters>
   ?!@scheduletable_obj st
-  ?@lstring name;
+  ?@lstring name 
+label parse
+;
 nonterminal <st_autostart_rel_params>
-  !@autostart_obj autostart;
+  !@autostart_obj autostart 
+label parse
+;
 nonterminal <st_autostart_abs_params>
-  !@autostart_obj autostart;
+  !@autostart_obj autostart 
+label parse
+;
 nonterminal <st_autostart_sync_params>
-  !@autostart_obj autostart;
+  !@autostart_obj autostart 
+label parse
+;
 nonterminal <ltgt_sync_params>
-  !@ltgt_sync_obj sync;
+  !@ltgt_sync_obj sync 
+label parse
+;
 nonterminal <st_expiry_pt_params>
   ?@lstring          ep_name
-  !@expiry_point_obj epl;
+  !@expiry_point_obj epl 
+label parse
+;
 nonterminal <st_action_params>
-  ?!@action_list actions;
+  ?!@action_list actions 
+label parse
+;
 
 # external non terminal
 nonterminal <description>
-  !@lstring desc;
+  !@lstring desc 
+label parse
+;
 nonterminal <boolean>
-  !@lbool bool;
+  !@lbool bool 
+label parse
+;
 
 rule <scheduletable>
   ?!@scheduletable_map stm

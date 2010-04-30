@@ -46,7 +46,7 @@ else
 	# Build and execute all the tests
 	for i in `cat functional_testSequences.txt`
 	do
-		if [ "`echo ${i} | grep mp`" == "" ] || [ "`echo ${i} | grep tp`" == "" ] 
+		if [ "`echo ${i} | grep mp`" == "" ] && [ "`echo ${i} | grep tp`" == "" ] 
 		then
 		
 			#Adding AUTOSAR flag if autosar test sequence
@@ -92,7 +92,7 @@ else
 			#Go out of the test sequence
 			cd ..
 		else
-			echo "$i is not tested because it's a memoryor timing protection test"
+			echo "$i is not tested because it's a memory or timing protection test"
 		fi
 	
 	done

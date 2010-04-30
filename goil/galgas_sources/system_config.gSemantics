@@ -1069,9 +1069,18 @@ routine setOsapplicationsList
     foreach [application isrs] do
       @goilTemplateFieldMap isrFieldMap [emptyMap];
       addStringFieldValue !?isrFieldMap ![@lstring new !"NAME" ![key location]] ![key string];
-      procList += !isrFieldMap;
+      @isr_obj isr;
+      [[cpu isrs] get !key ?isr];
+      cast [isr category]:
+      when == @uint64_class cat do
+        if [cat value] == 2L then
+          #Only add ISR2 (not ISR1) in PROCESSES list of OSAPPLICATIONS list
+          procList += !isrFieldMap;
+        end if;
+      else end cast;
       isrList += !isrFieldMap;
     end foreach;
+
     addListFieldValue !?fieldMap !lstringWith[!"PROCESSES"] !procList;
     addListFieldValue !?fieldMap !lstringWith[!"TASKS"] !taskList;
     addListFieldValue !?fieldMap !lstringWith[!"ISRS"] !isrList;

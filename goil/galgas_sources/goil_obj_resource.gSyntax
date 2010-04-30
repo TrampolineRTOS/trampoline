@@ -26,16 +26,22 @@ import semantics goil_semantics in "goil_semantics.gSemantics" ;
 # local nonterminals description
 #
 nonterminal <resource> 
-  ?!@resource_map resources ;
+  ?!@resource_map resources  
+label parse
+;
 nonterminal <resource_attributes>
   ?!@resource_property_obj property
-  ?!@lstringlist           acc_apps ;
+  ?!@lstringlist           acc_apps  
+label parse
+;
 
 #
 # external nonterminals
 #
 nonterminal <description>
-  !@lstring desc ;
+  !@lstring desc  
+label parse
+;
 
 #
 # local rules implementation

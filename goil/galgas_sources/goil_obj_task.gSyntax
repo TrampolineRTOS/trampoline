@@ -27,7 +27,9 @@ import semantics goil_types_timing_prot in "goil_types_timing_prot.gSemantics" ;
 # local rules declaration
 #
 nonterminal <task>
-  ?!@task_map tasks ;
+  ?!@task_map tasks  
+label parse
+;
 
 nonterminal <task_attributes>
   ?!@basic_type         priority
@@ -39,25 +41,35 @@ nonterminal <task_attributes>
   ?!@lstringlist        messages
   ?!@lstringlist        acc_apps
   ?!@timing_prot        timing_prot
-  ?!@ident_map          others ;
+  ?!@ident_map          others  
+label parse
+;
 
 nonterminal <task_autostart_params>
-  !@task_autostart_obj task_autostart ;
+  !@task_autostart_obj task_autostart 
+label parse
+;
 
 #
 # external rules 
 #
 nonterminal <description>
-  !@lstring desc ;
+  !@lstring desc  
+label parse
+;
 nonterminal <free_field>
-  ?!@ident_map ids ;
+  ?!@ident_map ids  
+label parse
+;
 nonterminal <timing_prot_attrs>
   !@basic_type  exe_budget
   !@basic_type  exe_time
   !@basic_type  time_frame
   !@basic_type  os_it_lock
   !@basic_type  all_it_lock
-  !@rezlock_map rezlocks ;
+  !@rezlock_map rezlocks  
+label parse
+;
 
 #
 # local rules implementation
