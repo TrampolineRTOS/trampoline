@@ -18,6 +18,13 @@
 #---------------------------------------------------------------------------*
 
 semantics template_invocation :
+#--- Import for GALGAS 2
+import "goil_routines.gSemantics";
+import "template_semantics.gSemantics";
+import "template_grammar.gGrammar";
+import "goil_options.gOption";
+
+#--- Import for GALGAS 1
 import semantics goil_routines in "goil_routines.gSemantics";
 import semantics template_semantics in "template_semantics.gSemantics";
 import grammar template_grammar in "template_grammar.gGrammar";
