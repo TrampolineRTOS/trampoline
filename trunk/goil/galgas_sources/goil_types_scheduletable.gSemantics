@@ -59,7 +59,7 @@ class @ltgt_sync_true extends @ltgt_sync_obj {
 
 sortedlist @action_list {
     @uint       order;
-    @action_obj action;
+    @action_obj actionobj;
 }{
     order <
 }

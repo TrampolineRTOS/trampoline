@@ -409,9 +409,9 @@ end routine;
 
 routine setAction
   ?!@goilTemplateFieldMap fieldMap
-  ??@action_obj action
+  ??@action_obj actionobj
 :
-  cast action:
+  cast actionobj:
   when == @setevent_action setEvent do
     addStringFieldValue !?fieldMap !lstringWith[!"ACTION"] !"setEvent";
     addStringFieldValue !?fieldMap !lstringWith[!"TASK"] ![[setEvent task_name] string];
@@ -882,7 +882,7 @@ routine setScheduletablesList
       @goilTemplateFieldMapList actionsList [emptyList];
       foreach [point actions] do
         @goilTemplateFieldMap fieldMap [emptyMap];
-        setAction !?fieldMap !action;
+        setAction !?fieldMap !actionobj;
         actionsList += !fieldMap;
       end foreach;
       addListFieldValue !?fieldMap !lstringWith[!"ACTIONS"] !actionsList;
