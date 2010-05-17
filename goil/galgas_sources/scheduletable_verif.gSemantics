@@ -257,14 +257,14 @@ routine schedule_tables_tasks_and_events_exist
     foreach [st exp_points] do
       @lstring ep_name := [point name];
       foreach [point actions] do
-        cast action:
+        cast actionobj:
         when == @activatetask_action ata do
           if not [[cpu tasks] hasKey ![[ata task_name] string]] then
-            error [action location]: "TASK attribute of action does not reference an existing task";
+            error [actionobj location]: "TASK attribute of action does not reference an existing task";
           end if;
         when == @setevent_action sea do
           if not [[cpu tasks] hasKey ![[sea task_name] string]] then
-            error [action location]: "TASK attribute of action does not reference an existing task";
+            error [actionobj location]: "TASK attribute of action does not reference an existing task";
           end if;
           @task_obj task_data;
           @lstringlist known_events;
@@ -274,7 +274,7 @@ routine schedule_tables_tasks_and_events_exist
              error [sea event_name]: "An action can't set an Event to a basic task (Task ".[[sea task_name] string]." is a basic task).";         
           end if;
           if not [[cpu events] hasKey ![[sea event_name] string]] then
-            error [action location]: "EVENT attribute of action does not reference an existing event";
+            error [actionobj location]: "EVENT attribute of action does not reference an existing event";
           end if;
         else
           error ep_name: "Internal error, incorrect datatype for ACTION attribute of expiry point ".[ep_name string];

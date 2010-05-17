@@ -317,8 +317,8 @@ routine apps_well_formed
           #else end cast;
           @action_list eps_action;
           eps_action := [eps actions];
-          foreach eps_action (@uint action_name @action_obj action) do
-             cast action :
+          foreach eps_action (@uint action_name @action_obj actionobj) do
+             cast actionobj :
              when == @setevent_action sea do
                # find task's application...
                foreach apps (@lstring app_name @app_obj app) do                        
