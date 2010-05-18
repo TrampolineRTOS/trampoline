@@ -114,6 +114,6 @@ SERVICEPROTECTION {
 };
 
 /* Trusted functions services, available in AUTOSAR SC3 and SC4 */
-TRUSTEDFUNCTION (tpl_as_trusted_fct_kernel) {
+/*TRUSTEDFUNCTION (tpl_as_trusted_fct_kernel) {
   CallTrustedFunction   -> tpl_call_trusted_function_service;
-};
+};*/
