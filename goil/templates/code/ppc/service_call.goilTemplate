@@ -9,5 +9,5 @@
   blr
   
   .type % !REAL %,@function
-  .size % !REAL %,$$-% !REAL %
+  .size % !REAL %,$-% !REAL %
 
