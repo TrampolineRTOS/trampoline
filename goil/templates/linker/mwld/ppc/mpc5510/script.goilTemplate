@@ -130,20 +130,14 @@ end for
 %    
 /* Sections for application const */  
 %
-foreach OSAPPLICATIONS do
-%
-    .OS_APP_% !NAME %_CONST ALIGN(32) : {
-%
- for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
   for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+    foreach OSAPPLICATIONS do
 %      *(.OS_APP_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
 %
+    end foreach
   end for
  end for
-%
-    }
-%
-end foreach
 %
     }
     
@@ -198,7 +192,10 @@ end foreach
 % /* os application vars */
 %
 foreach OSAPPLICATIONS do
-%    __SEG_START_OS_APP_% !NAME %_VAR_RGN = .;
+%
+/* Section of OS Application vars of % !NAME % */
+    .OS_APP_% !NAME %_SEC_ALL_VARS ALIGN(32) : {
+      __SEG_START_OS_APP_% !NAME %_VAR_RGN = .;
 /* Initialized variables section of OS_APP % !NAME % */
 %
   for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
@@ -207,7 +204,9 @@ foreach OSAPPLICATIONS do
 %
     end for
   end for
-%    __SEG_END_OS_APP_% !NAME %_VAR_RGN = ALIGN(16) - 1;
+%
+      __SEG_END_OS_APP_% !NAME %_VAR_RGN = ALIGN(32) - 1;
+    }
 %
 end foreach
 %  } > internal_ram
