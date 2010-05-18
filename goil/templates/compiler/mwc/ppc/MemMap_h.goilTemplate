@@ -238,7 +238,7 @@ foreach OSAPPLICATIONS do
     #error "Starting a new OS_APP % !NAME % data section while a section is already started"
   #else
     #undef MEMMAP_ERROR
-    #pragma section const_type ".OS_APP_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %"
+    #pragma section const_type ".OS_APP_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %" ".OS_APP_% !NAME %_noInit_SEC% !SECTION_KIND !DATA_SIZE %"
     #define CURRENT_LINKER_DATA_SECTION
   #endif
 #endif
