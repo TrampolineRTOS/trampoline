@@ -46,7 +46,9 @@ else
 	# Build and execute all the tests
 	for i in `cat functional_testSequences.txt`
 	do
-		if [ "`echo ${i} | grep mp`" == "" ] && [ "`echo ${i} | grep tp`" == "" ] 
+		withmp="`echo ${i} | grep -c mp`"
+		withtp="`echo ${i} | grep -c tp`"
+		if [ $withmp -ne 1 ] && [ $withtp -ne 1 ] 
 		then
 		
 			#Adding AUTOSAR flag if autosar test sequence
@@ -99,3 +101,5 @@ else
 	echo "Functional tests done."
 
 fi
+
+
