@@ -29,6 +29,16 @@
 
 #include "tpl_os_kernel_stack.h"
 #include "tpl_assembler.h"
+#include "tpl_os_definitions.h"
+#include "tpl_as_definitions.h"
+
+TPL_EXTERN 	tpl_enter_kernel
+TPL_EXTERN 	tpl_leave_kernel
+TPL_EXTERN  tpl_save_context
+TPL_EXTERN  tpl_load_context
+TPL_EXTERN	tpl_call_protection_hook
+TPL_EXTERN	tpl_set_process_mp
+TPL_EXTERN 	tpl_kern
 
   .text
   .section .osCode CODE_ACCESS_RIGHT
