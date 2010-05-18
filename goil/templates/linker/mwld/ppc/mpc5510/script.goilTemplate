@@ -131,12 +131,18 @@ end for
 /* Sections for application const */  
 %
 foreach OSAPPLICATIONS do
+%
+    .OS_APP_% !NAME %_CONST ALIGN(32) : {
+%
  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
   for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
 %      *(.OS_APP_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
 %
   end for
  end for
+%
+    }
+%
 end foreach
 %
     }
