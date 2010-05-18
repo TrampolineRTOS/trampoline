@@ -319,7 +319,7 @@ tpl_set_process_mp:
   li      r3,1
   stw     r3,MPU_RGD2_pid(r12)
   
-#ifdef WITH_OSAPPLICATION
+#if WITH_OSAPPLICATION == YES
   /*
    * Configuration for the private var access of the OS Application
    */
