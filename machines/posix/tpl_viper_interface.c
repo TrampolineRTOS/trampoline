@@ -35,9 +35,11 @@ static char stat_file_path[32];
 static char data_file_path[32];
 static char r_sem_file_path[32];
 static char w_sem_file_path[32];
+static char synchro_sem_file_path[32];
 
 static sem_t *r_com_sem = NULL;
 static sem_t *w_com_sem = NULL;
+static sem_t *synchro_sem = NULL;
 static int sh_mem = -1; /*  Shared memory id  */
 static vp_command *command = NULL;
 static pid_t viper_pid = -1;
@@ -124,6 +126,7 @@ void tpl_viper_init(void)
         sprintf(data_file_path, DATA_FILE_PATH, getpid());
         sprintf(r_sem_file_path, R_SEM_FILE_PATH, getpid());
         sprintf(w_sem_file_path, W_SEM_FILE_PATH, getpid());
+        sprintf(synchro_sem_file_path, SYNCHRO_SEM_FILE_PATH, getpid());
         sprintf(ctrl_file_path, CTRL_FILE_PATH, getpid());
         sprintf(stat_file_path, STAT_FILE_PATH, getpid());
         
@@ -183,17 +186,39 @@ void tpl_viper_init(void)
             perror("viper: unable to create the reading semaphore");
         }
 
+	/*  create the synchro semaphore */
+        synchro_sem = sem_open(synchro_sem_file_path, O_CREAT, 0600, 0);
+            if (synchro_sem == (void *)SEM_FAILED) {
+            perror("viper: unable to create the synchro semaphore");
+        }
+
         /*
          * Fork the viper process
          */
         if ((viper_pid = fork()) == 0) {
             /*  Launch viper    */
+		printf("launch viper:%d\n",viper_pid);
+
             if (execve(viper_exe, viper_args, viper_env) < 0) {
                 printf("%s\n",viper_exe);
                 perror("viper: unable to launch viper");
                 exit(1);
             }
-        }
+    		/* We shall never be here */
+    		perror("viper : why I'm here ?");
+    		exit(-1);
+	}
+	else if (1 != viper_pid)
+	{
+		/* trampoline process waits for viper process */
+		if(0 != sem_wait(synchro_sem))
+ 		{
+    			fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+    			perror("tpl : sem_wait(viper)");
+  		}	
+
+	}
+
     }
     else
     {

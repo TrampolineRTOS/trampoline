@@ -32,9 +32,11 @@
 static char data_file_path[32];
 static char r_sem_file_path[32];
 static char w_sem_file_path[32];
+static char synchro_sem_file_path[32];
 
 static sem_t *r_com_sem = NULL;
 static sem_t *w_com_sem = NULL;
+static sem_t *synchro_sem = NULL;
 static int sh_mem = -1; /*  Shared memory id	*/
 vp_command *command = NULL;
 
@@ -52,6 +54,7 @@ void init_com(void)
     sprintf(data_file_path, DATA_FILE_PATH, osek_app_pid);
     sprintf(r_sem_file_path, R_SEM_FILE_PATH, osek_app_pid);
     sprintf(w_sem_file_path, W_SEM_FILE_PATH, osek_app_pid);
+    sprintf(synchro_sem_file_path, W_SEM_FILE_PATH, osek_app_pid);
     
 	/*  create the shared memory object  */
 	sh_mem = shm_open(data_file_path, O_RDWR, S_IRUSR | S_IWUSR);
@@ -79,6 +82,20 @@ void init_com(void)
 	if (w_com_sem == (void *)SEM_FAILED) {
 		perror("viper: unable to open the reading semaphore");
 	}
+
+	/*  create the synchro semaphore */
+        synchro_sem = sem_open(synchro_sem_file_path, 0);
+        if (synchro_sem == (void *)SEM_FAILED) {
+            perror("viper: unable to create the synchro semaphore");
+        }
+
+	/* viper process tells trampoline process that is ready */
+	if(0 != sem_post(synchro_sem))
+	{
+		fprintf(stderr, "[%d] %s\n", __LINE__, __FILE__);
+		perror("viper : sem_post(synchro_sem)");
+	}
+
 }
 
 void close_com(void)

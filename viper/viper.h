@@ -22,6 +22,7 @@
 #define STAT_FILE_PATH  "/viper.stat.%d"
 #define R_SEM_FILE_PATH "/viper.rsem.%d"
 #define W_SEM_FILE_PATH "/viper.wsem.%d"
+#define SYNCHRO_SEM_FILE_PATH "/viper.wsem.%d"
 
 #define HELLO   0
 #define TIMER   1

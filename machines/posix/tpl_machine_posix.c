@@ -37,6 +37,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
 VAR(tpl_stack_word, OS_VAR) idle_stack_zone[32768/sizeof(tpl_stack_word)] = {0} ;
 VAR(struct TPL_STACK, OS_VAR) idle_task_stack = { idle_stack_zone, 32768} ;
@@ -245,14 +246,16 @@ extern void viper_kill(void);
 
 void tpl_shutdown(void)
 {
-	/* remove ITs */
-	if (sigprocmask(SIG_BLOCK,&signal_set,NULL) == -1)
+
+    /* remove ITs */
+    if (sigprocmask(SIG_BLOCK,&signal_set,NULL) == -1)
     {
         perror("tpl_shutdown failed");
         exit(-1);
     }
-    
+
     viper_kill();
+
     exit(0);
 }
 
@@ -578,7 +581,7 @@ void tpl_init_machine(void)
 #endif /*(defined WITH_AUTOSAR && !defined NO_SCHEDTABLE) || ... */
 
     tpl_viper_init();
-    usleep(1000);
+
 #if ((WITH_AUTOSAR == YES) && (SCHEDTABLE_COUNT > 0)) || (ALARM_COUNT > 0)
     tpl_viper_start_auto_timer(signal_for_counters,10000);  /* 10 ms */
 #endif
