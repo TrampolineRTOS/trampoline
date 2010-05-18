@@ -197,8 +197,6 @@ void tpl_viper_init(void)
          */
         if ((viper_pid = fork()) == 0) {
             /*  Launch viper    */
-		printf("launch viper:%d\n",viper_pid);
-
             if (execve(viper_exe, viper_args, viper_env) < 0) {
                 printf("%s\n",viper_exe);
                 perror("viper: unable to launch viper");
