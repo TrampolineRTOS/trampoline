@@ -39,7 +39,7 @@ if exists ASSEMBLERHEADER default (false) then %
 end if
 %
   .text
-  .section ".osApiCode"
+  .section .osApiCode CODE_ACCESS_RIGHT
 
 %
 foreach APICONFIG::USEDAPI do
