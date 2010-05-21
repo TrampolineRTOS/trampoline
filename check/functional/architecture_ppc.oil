@@ -22,18 +22,10 @@ CPU test {
         LINKER = "powerpc-elf-ld";
         SYSTEM_CALL = TRUE;
         MEMMAP = TRUE {
-          COMPILER = gcc;
-          LINKER = gnu_ld { SCRIPT = "script.ld"; };
-          MEMORY_PROTECTION = TRUE;
-        };
-
-/*      MEMMAP = TRUE {
           COMPILER = mwc;
           LINKER = mwld { SCRIPT = "MPC551x.lcf"; };
           MEMORY_PROTECTION = TRUE;
         };
-*/
-
     };
 };
 
