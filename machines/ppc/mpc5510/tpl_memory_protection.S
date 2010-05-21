@@ -82,6 +82,14 @@
 #define MPU_RGD3_pid    0x43C
 
 /*
+ * MPU Region descriptor 4
+ */
+#define MPU_RGD4_start  0x440
+#define MPU_RGD4_end    0x444
+#define MPU_RGD4_access 0x448
+#define MPU_RGD4_pid    0x44C
+
+/*
  * MPU_CESR value to init/disable memory protection
  * ie: all errors are cleared and the MPU is disabled
  * This is done by writing a 1 on all bits of the MPERR field
@@ -115,11 +123,21 @@
 /* #define exe_rgn_access  0x0000001D */
 #define exe_rgn_access  0x00000005
 
+/*
+ * noall access right
+ * Here, the region is inaccessible in User mode
+ * and rxw in supervisor mode
+ */
+#define noall_rgn_access  0x00000000
+
 #if WITH_MEMORY_PROTECTION == YES
 
 TPL_EXTERN tpl_mp_table
 TPL_EXTERN tpl_kern
 TPL_EXTERN tpl_reentrancy_counter
+
+TPL_EXTERN  __PROGCONST_SECTION_START
+TPL_EXTERN  __PROGCONST_SECTION_STOP
 
   .global tpl_kernel_mp
   .global tpl_user_mp
@@ -144,11 +162,14 @@ tpl_init_mp:
   ori   r12,r12,TPL_LOW(MPUBase)
   
   /*
-   * Set the start address to 0 and the end address to 0xFFFFFFFF
+   * Set the start address to __PROGCONST_SECTION_START
+   * and the end address to __PROGCONST_SECTION_STOP
    */
-  li    r11,0
+  lis   r11,TPL_HIG(__PROGCONST_SECTION_START)
+  ori   r11,r11,TPL_LOW(__PROGCONST_SECTION_START)
   stw   r11,MPU_RGD0_start(r12)
-  subi  r11,r11,1
+  lis   r11,TPL_HIG(__PROGCONST_SECTION_STOP)
+  ori   r11,r11,TPL_LOW(__PROGCONST_SECTION_STOP)
   stw   r11,MPU_RGD0_end(r12)
 
   /*
@@ -166,6 +187,32 @@ tpl_init_mp:
    */
   li    r11,1
   stw   r11,MPU_RGD0_pid(r12)
+  
+  /*
+   * Descriptor 4 is used for no access for user to the whole
+   * memory space and all access for supervisor
+   */
+  li	r11,0
+  stw   r11,MPU_RGD4_start(r12)
+  subi  r11,r11,1
+  stw   r11,MPU_RGD4_end(r12)
+  /*
+   * Load the noall access right in r11
+   */
+  lis   r11,TPL_HIG(noall_rgn_access)
+  ori   r11,r11,TPL_LOW(noall_rgn_access)
+  /*
+   * Store it in the access register or region 0
+   */
+  stw   r11,MPU_RGD4_access(r12)
+  
+  /*
+   * Validate the descriptor
+   */
+  li    r11,1
+  stw   r11,MPU_RGD4_pid(r12)
+  
+  
   blr
   
 /**
