@@ -50,6 +50,18 @@ FUNC(int, OS_CODE) main(void)
 	StartOS(OSDEFAULTAPPMODE);
 	return 0;
 }
+
+FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(StatusType error)
+{
+	if (E_OS_PROTECTION_MEMORY == error)
+	{
+		return PRO_TERMINATEAPPL_RESTART;
+	}
+	else
+	{
+		return PRO_SHUTDOWN;
+	}
+}
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -67,6 +79,7 @@ DeclareTask(t1_app_trusted2);
  */
 #define APP_Task_t1_app_nontrusted1_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
+VAR(u32, OS_APPL_DATA) exe_count = 0;
 VAR(u32, OS_APPL_DATA) var_t1_app_nontrusted1 = 0;
 #define APP_Task_t1_app_nontrusted1_STOP_SEC_VAR_32BIT
 #include "tpl_memmap.h"
@@ -114,28 +127,47 @@ TASK(t1_app_nontrusted1)
    */
   var_t1_app_nontrusted1++; // if just read, the linker discards the variable...
   
-  /* OS195-OS356 : (read/)write other Task/OsIsr from non-trusted OS application -> NO
-   - non-trusted (same) - read
-   - non-trusted (same) - write
-   - non-trusted - read
-   - non-trusted - write
-   - trusted - read
-   - trusted - write
-   */
-  var_t1_app_nontrusted1 = var_t2_app_nontrusted1;
-  // TODO : CALL PROTECTION_HOOK
-  var_t2_app_nontrusted1 = var_t1_app_nontrusted1;
-  // TODO : CALL PROTECTION_HOOK
-  
-  var_t1_app_nontrusted1 = var_t1_app_nontrusted2;
-  // TODO : CALL PROTECTION_HOOK
-  var_t1_app_nontrusted2 = var_t1_app_nontrusted1;
-  // TODO : CALL PROTECTION_HOOK
-  
-  var_t1_app_nontrusted1 = var_t1_app_trusted1;
-  // TODO : CALL PROTECTION_HOOK
-  var_t1_app_trusted1 = var_t1_app_nontrusted1;
-  // TODO : CALL PROTECTION_HOOK
+  switch (exe_count)
+  {
+    /* OS195-OS356 : (read/)write other Task/OsIsr from non-trusted OS application -> NO
+     - non-trusted (same) - read
+     - non-trusted (same) - write
+     - non-trusted - read
+     - non-trusted - write
+     - trusted - read
+     - trusted - write
+     */
+    case 0:
+      exe_count++;
+      /* PROTECTION_HOOK should be called because t1_app_nontrusted1 cannot read var_t2_app_nontrusted1 */
+      var_t1_app_nontrusted1 = var_t2_app_nontrusted1;
+      break;
+    case 1:
+      exe_count++;
+      /* PROTECTION_HOOK should be called because t1_app_nontrusted1 cannot write var_t2_app_nontrusted1 */
+      var_t2_app_nontrusted1 = var_t1_app_nontrusted1;
+      break;
+    case 2:
+      exe_count++;
+      /* PROTECTION_HOOK should be called because t1_app_nontrusted1 cannot read var_t1_app_nontrusted2 */
+      var_t1_app_nontrusted1 = var_t1_app_nontrusted2;
+      break;
+    case 3:
+      exe_count++;
+      /* PROTECTION_HOOK should be called because t1_app_nontrusted1 cannot write var_t1_app_nontrusted2 */
+      var_t1_app_nontrusted2 = var_t1_app_nontrusted1;
+      break;
+    case 4:
+      exe_count++;
+      /* PROTECTION_HOOK should be called because t1_app_nontrusted1 cannot read var_t1_app_trusted1 */
+      var_t1_app_nontrusted1 = var_t1_app_trusted1;
+      break;
+    case 5:
+      exe_count++;
+      /* PROTECTION_HOOK should be called because t1_app_nontrusted1 cannot write var_t1_app_trusted1 */
+      var_t1_app_trusted1 = var_t1_app_nontrusted1;
+      break;
+  }
     
   WaitEvent(Event1);
   

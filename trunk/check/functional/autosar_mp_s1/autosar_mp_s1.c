@@ -50,6 +50,18 @@ FUNC(int, OS_CODE) main(void)
 	StartOS(OSDEFAULTAPPMODE);
 	return 0;
 }
+
+FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(StatusType error)
+{
+	if (E_OS_PROTECTION_MEMORY == error)
+	{
+		return PRO_TERMINATEAPPL_RESTART;
+	}
+	else
+	{
+		return PRO_SHUTDOWN;
+	}
+}
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -59,11 +71,15 @@ VAR(u32, OS_VAR) var_os = 0;
 #define OS_STOP_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 
+#define API_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 DeclareEvent(Event1);
 DeclareTask(t1_app_nontrusted1);
 DeclareTask(t1_app_nontrusted2);
 DeclareTask(t1_app_trusted1);
 DeclareTask(t1_app_trusted2);
+#define API_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 
 /**
  * Vars
@@ -71,6 +87,7 @@ DeclareTask(t1_app_trusted2);
  */
 #define APP_OS_APP_app_nontrusted1_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
+VAR(u32, OS_APPL_DATA) exe_count = 0;
 VAR(u32, OS_APPL_DATA) var_app_nontrusted1 = 0;
 #define APP_OS_APP_app_nontrusted1_STOP_SEC_VAR_32BIT
 #include "tpl_memmap.h"
@@ -125,23 +142,45 @@ TASK(t1_app_nontrusted1)
    - non-trusted - read
    - non-trusted - write
   */
-  var_t1_app_nontrusted1 = var_app_trusted1;
-  // TODO : CALL PROTECTION_HOOK
-  var_app_trusted1 = var_t1_app_nontrusted1;
-  // TODO : CALL PROTECTION_HOOK
-  var_t1_app_nontrusted1 = var_app_nontrusted2;
-  // TODO : CALL PROTECTION_HOOK
-  var_app_nontrusted2 = var_t1_app_nontrusted1;
-  // TODO : CALL PROTECTION_HOOK
   
-  /* OS198 : (read/)write OS's data section from non-trusted OS application -> NO
-   - read
-   - write   
-   */
-  var_app_nontrusted1 = var_os;
-  // TODO : CALL PROTECTION_HOOK
-  var_os = var_app_nontrusted1;
-  // TODO : CALL PROTECTION_HOOK
+  switch (exe_count)
+  {
+  	case 0:
+      exe_count++;
+      /* PROTECTION_HOOK should be called because t1_app_nontrusted1 cannot read var_app_trusted1 */
+      var_t1_app_nontrusted1 = var_app_trusted1;
+      break;
+  	case 1:
+      exe_count++;
+      /* PROTECTION_HOOK should be called because t1_app_nontrusted1 cannot write var_app_trusted1 */
+      var_app_trusted1 = var_t1_app_nontrusted1;
+  	  break;
+  	case 2:
+      exe_count++;
+      /* PROTECTION_HOOK should be called because t1_app_nontrusted1 cannot read var_app_nontrusted2 */
+      var_t1_app_nontrusted1 = var_app_nontrusted2;
+  	  break;
+  	case 3:
+      exe_count++;
+      /* PROTECTION_HOOK should be called because t1_app_nontrusted1 cannot write var_app_nontrusted2 */
+      var_app_nontrusted2 = var_t1_app_nontrusted1;
+  	  break;
+    /* 
+     * OS198 : (read/)write OS's data section from non-trusted OS application -> NO
+     * - read
+     * - write
+     */   
+  	case 4:
+      exe_count++;
+      /* PROTECTION_HOOK should be called because t1_app_nontrusted1 cannot read var_os */
+      var_app_nontrusted1 = var_os;
+  	  break;
+  	case 5:
+      exe_count++;
+      /* PROTECTION_HOOK should be called because t1_app_nontrusted1 cannot write var_os */
+      var_os = var_app_nontrusted1;
+  	  break;
+  }
   
   WaitEvent(Event1);
   

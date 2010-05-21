@@ -46,9 +46,10 @@ CPU test {
         
     OS config {
         STATUS = STANDARD;
-		 APP_SRC = "autosar_mp_s1.c";
+        APP_SRC = "autosar_mp_s1.c";
         TRAMPOLINE_BASE_PATH = "../../../";
-        APP_NAME = "autosar_mp_s1_exe";        
+        APP_NAME = "autosar_mp_s1_exe";
+		PROTECTIONHOOK = TRUE;
     } ;
     
     APPMODE std {};
@@ -82,6 +83,7 @@ CPU test {
 	APPLICATION app_nontrusted1 {
        TRUSTED = FALSE;
 		TASK = t1_app_nontrusted1;
+		HAS_RESTARTTASK = TRUE { RESTARTTASK = t1_app_nontrusted1; };
 	};	
 	APPLICATION app_nontrusted2 {
        TRUSTED = FALSE;
