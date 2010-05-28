@@ -1411,7 +1411,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * the task identifier in parameter
  *
  * This macro is a little different than the service call CheckObjectAccess.
- * (bit_shift+1) because the first bit (bit_shift) is set if th object	
+ * (bit_shift+1) because the first bit (bit_shift) is set if the object	
  * belongs to the OS application and we want to know if the actual
  * task has access right to the application, which is indicates by 
  * the second bit (bit_shift+1).
@@ -1424,22 +1424,28 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  */
 
 #if (WITH_OS_EXTENDED == NO) || (WITH_OSAPPLICATION == NO)
-#   define CHECK_ACCESS_RIGHTS_TASK_ID(obj_id,result)
+# define CHECK_ACCESS_RIGHTS_TASK_ID(obj_id,result)
+#elif (APP_COUNT == 0)
+# define CHECK_ACCESS_RIGHTS_TASK_ID(obj_id,result) \
+  if (result == (tpl_status)E_OK)                   \
+  {                                                 \
+    result = E_OS_ACCESS;                           \
+  }																			
 #else
-#   define CHECK_ACCESS_RIGHTS_TASK_ID(obj_id,result)							\
-	if( result == (tpl_status)E_OK )											\
-	{																			\
-		CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);	\
-		CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;				\
-		extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
-		CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =		\
-			tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];					\
-		if ( (((app_access->access_vec[OBJECT_TASK][byte_idx]) &				\
-			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )				\
-		{																		\
-			result = E_OS_ACCESS;												\
-		}																		\
-	}																			
+# define CHECK_ACCESS_RIGHTS_TASK_ID(obj_id,result)         \
+	if (result == (tpl_status)E_OK)                           \
+	{                                                         \
+    CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7); \
+    CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;            \
+    extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT]; \
+    CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
+      tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
+    if ( (((app_access->access_vec[OBJECT_TASK][byte_idx]) &            \
+      (1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )            \
+    {                                                                   \
+      result = E_OS_ACCESS;                                             \
+    }                                                                   \
+  }																			
 #endif
 
 /**
@@ -1462,21 +1468,27 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  */
 
 #if (WITH_OS_EXTENDED == NO) || (WITH_OSAPPLICATION == NO) || (ALARM_COUNT == 0)
-#   define CHECK_ACCESS_RIGHTS_ALARM_ID(obj_id,result)
+# define CHECK_ACCESS_RIGHTS_ALARM_ID(obj_id,result)
+#elif (APP_COUNT == 0)
+# define CHECK_ACCESS_RIGHTS_ALARM_ID(obj_id,result)  \
+  if (result == (tpl_status)E_OK)                     \
+  {                                                   \
+    result = E_OS_ACCESS;                             \
+  }																			
 #else
-#   define CHECK_ACCESS_RIGHTS_ALARM_ID(obj_id,result)							\
-	if( result == (tpl_status)E_OK )											\
-	{																			\
-		CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);	\
-		CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;				\
+# define CHECK_ACCESS_RIGHTS_ALARM_ID(obj_id,result)        \
+	if (result == (tpl_status)E_OK)                           \
+	{                                                         \
+		CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7); \
+		CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;            \
 		extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
-        CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =		\
-            tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];	\
-		if ( (((app_access->access_vec[OBJECT_ALARM][byte_idx]) &				\
-			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )				\
-		{																		\
-			result = E_OS_ACCESS;												\
-		}																		\
+        CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =   \
+            tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
+		if ( (((app_access->access_vec[OBJECT_ALARM][byte_idx]) &                 \
+			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )                  \
+		{                                                                         \
+			result = E_OS_ACCESS;                                                   \
+		}                                                                         \
 	}																			
 #endif
 
@@ -1500,21 +1512,27 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  */
 
 #if ((WITH_OS_EXTENDED == NO)) || (WITH_OSAPPLICATION == NO)
-#   define CHECK_ACCESS_RIGHTS_RESOURCE_ID(obj_id,result)
+# define CHECK_ACCESS_RIGHTS_RESOURCE_ID(obj_id,result)
+#elif (APP_COUNT == 0)
+# define CHECK_ACCESS_RIGHTS_RESOURCE_ID(obj_id,result) \
+  if (result == (tpl_status)E_OK)                       \
+  {                                                     \
+    result = E_OS_ACCESS;                               \
+  }																			
 #else
-#   define CHECK_ACCESS_RIGHTS_RESOURCE_ID(obj_id,result)						\
-	if( result == (tpl_status)E_OK )											\
-	{																			\
-		CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);	\
-        CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;				\
-        extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
-        CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =		\
-            tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];	\
-		if ( (((app_access->access_vec[OBJECT_RESOURCE][byte_idx]) &			\
-			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )				\
-		{																		\
-			result = E_OS_ACCESS;												\
-		}																		\
+# define CHECK_ACCESS_RIGHTS_RESOURCE_ID(obj_id,result)     \
+	if (result == (tpl_status)E_OK)                           \
+	{                                                         \
+		CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7); \
+        CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;        \
+        extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT]; \
+        CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =   \
+            tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
+		if ( (((app_access->access_vec[OBJECT_RESOURCE][byte_idx]) &              \
+			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )                  \
+		{                                                                         \
+			result = E_OS_ACCESS;                                                   \
+		}                                                                         \
 	}																			
 #endif
 
@@ -1538,21 +1556,27 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  */
 
 #if ((WITH_OS_EXTENDED == NO)) || (WITH_OSAPPLICATION == NO) || (COUNTER_COUNT == 0)
-#   define CHECK_ACCESS_RIGHTS_COUNTER_ID(obj_id,result)
+# define CHECK_ACCESS_RIGHTS_COUNTER_ID(obj_id,result)
+#elif (APP_COUNT == 0)
+# define CHECK_ACCESS_RIGHTS_COUNTER_ID(obj_id,result)  \
+  if( result == (tpl_status)E_OK )                      \
+  {                                                     \
+    result = E_OS_ACCESS;                               \
+  }																			
 #else
-#   define CHECK_ACCESS_RIGHTS_COUNTER_ID(obj_id,result)						\
-	if( result == (tpl_status)E_OK )											\
-	{																			\
-		CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);	\
-        CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;				\
+# define CHECK_ACCESS_RIGHTS_COUNTER_ID(obj_id,result)      \
+	if( result == (tpl_status)E_OK )                          \
+	{                                                         \
+		CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7); \
+        CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;        \
         extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
-        CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =		\
-            tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];	\
-		if ( (((app_access->access_vec[OBJECT_COUNTER][byte_idx]) &				\
-			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )				\
-		{																		\
-			result = E_OS_ACCESS;												\
-		}																		\
+        CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =   \
+            tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
+		if ( (((app_access->access_vec[OBJECT_COUNTER][byte_idx]) &               \
+			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )                  \
+		{                                                                         \
+			result = E_OS_ACCESS;                                                   \
+		}                                                                         \
 	}																			
 #endif
 
@@ -1576,22 +1600,28 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  */
 
 #if (WITH_OS_EXTENDED == NO) || (WITH_OSAPPLICATION == NO) || (SCHEDTABLE_COUNT == 0)
-#   define CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(obj_id,result)
+# define CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(obj_id,result)
+#elif (APP_COUNT == 0)
+# define CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(obj_id,result)  \
+  if(result == (tpl_status)E_OK)                              \
+  {                                                           \
+    result = E_OS_ACCESS;                                     \
+  }																			
 #else
-#   define CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(obj_id,result)					\
-	if( result == (tpl_status)E_OK )											\
-	{																			\
-		CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);	\
-        CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;				\
-        extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
-        CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =		\
-            tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];	\
-		if ( (((app_access->access_vec[OBJECT_SCHEDULETABLE][byte_idx]) &				\
-			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )				\
-		{																		\
-			result = E_OS_ACCESS;												\
-		}																		\
-	}																			
+# define CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(obj_id,result)  \
+  if( result == (tpl_status)E_OK )                            \
+  {                                                           \
+    CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);   \
+    CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;              \
+    extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT]; \
+    CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
+    tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];    \
+    if ( (((app_access->access_vec[OBJECT_SCHEDULETABLE][byte_idx]) &   \
+      (1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )            \
+    {                                                                   \
+      result = E_OS_ACCESS;                                             \
+    }                                                                   \
+  }																			
 #endif
 
 #endif /*TPL_OS_ERROR_H */
