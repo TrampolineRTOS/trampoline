@@ -15,7 +15,9 @@
 \definecolor{seagreen}{RGB}{87,135,159}
 \definecolor{light-gray}{gray}{0.85}
 \definecolor{medium-gray}{gray}{0.5}
-\usepackage[colorlinks=true,linkcolor= seagreen]{hyperref}
+\usepackage[colorlinks=true,linkcolor=seagreen]{hyperref}
+
+\newcommand{\idxconfflag}[1]{#1\index{Configuration macros!#1}\index{#1}}
 
 \title{The Trampoline handbook}
 \author{Jean-Luc B\'echennec}
@@ -29,25 +31,132 @@
 \setcounter{tocdepth}{2}
 \tableofcontents
 
+\part{The Real-Time Operating System}
+
 \chapter{Compiling Trampoline}
 
-\section{Available flags}
+\section{The Configuration Macros}
 
-Trampoline can be compiled with various options. These options are controlled by setting the appropriate flags. The following flags are availables:
-\begin{description}
-\item[OS\_EXTENDED] is used to compile Trampoline with extended error support according to the specification.
-\item[WITH\_ERROR\_HOOK] adds the call to the error hook when an error occurs in an os system call.
-\item[WITH\_PRE\_TASK\_HOOK] adds the call to the pre-task hook function.
-\item[WITH\_POST\_TASH\_HOOK]  adds the call to the post-task hook function.
-\item[WITH\_TASK\_HOOK] is the same as selecting the two previous flags.
-\item[WITH\_STARTUP\_HOOK] adds the call to the startup hook function.
-\item[WITH\_SHUTDOWN\_HOOK] adds the call to the shutdown hook function.
-\item[WITH\_INTERNAL\_EXTERNAL\_COM] is used when a same sending message object does an internal \emph{and} an external communication.
-\item[WITH\_COM\_ERROR\_HOOK] adds the call to the communication error hook when an error occurs in a communication system call.
-\end{description}
+Trampoline can be compiled with various options. These options are controlled by setting the appropriate preprocessor configuration macros%
+\index{Configuration macros}.
+These macros are usually set by goil%
+\index{goil, The oil compiler of Trampoline}
+using the template found in \file{tpl_app_define_h.goilTemplate} file to produce the \file{tpl_app_define.h} file that is included by the files of Trampoline. However, a different generation tool may be used and it should comply to the specification presented in the following tables. When Trampoline is compiled, the coherency and consistency of the configuration macros are checked, by using the preprocessor macros located in the \file{tpl_config_check.h} file, to ensure they correspond to a supported configuration.
+
+3 kinds of configuration macros are used: boolean macros, numerical macros and string macros. Boolean macros may take 2 values: YES or NO. All macros should be defined, Trampoline does not use the \code{\#ifdef} or \code{\#ifndef} scheme\footnote{Except to prevent multiple inclusions of the same header file} to limit the occurrences of unwanted misconfigurations.
+
+\subsection{Error Handling Macros}
+
+Error handling related macros are used to configure what kind of error Trampoline checks and what extra processing is done when an error is encountered. The following macros are available:
+
+\rowcolors{1}{white}{light-gray}
+\begin{longtableiii}{l|l|p{2.9in}}{var}{Macro}{Kind}{Effect}
+  \lineiii{\idxconfflag{WITH_OS_EXTENDED}}
+  {Boolean}
+  {When set to YES, Trampoline system services perform error checking on their arguments. \var{WITH_OS_EXTENDED} is set to YES with a \var{STATUS} = EXTENDED and is set to NO with a \var{STATUS} = BASIC in the oil OS object.}
+  \lineiii{\idxconfflag{WITH_ERROR_HOOK}\label{sec:errorhook}}
+  {Boolean}
+  {When set to YES, the \function{ErrorHook()} function is called if an error occurs. \var{WITH_ERROR_HOOK} is set to YES/NO with a \var{ERRORHOOK} = TRUE/FALSE in the oil OS object.}
+  \lineiii{\idxconfflag{WITH_USEGETSERVICEID}}
+  {Boolean}
+  {When set to YES, Trampoline system services store the id of the current service. This id may be retrieved in the \function{ErrorHook()} function by using the \function{OSErrorGetServiceId()} macro. \var{WITH_USEGETSERVICEID} is set to YES/NO with a \var{USEGETSERVICEID} = TRUE/FALSE in the oil OS object.}
+  \lineiii{\idxconfflag{WITH_USEPARAMETERACCESS}}
+  {Boolean}
+  {When set to YES, Trampoline system services store the arguments of the current service. These arguments may be retrieved in the \function{ErrorHook()} function by using the ad-hoc access macros (see \ref{sec:errorhook}). \var{WITH_USEPARAMETERACCESS} is set to YES/NO with a \var{USEPARAMETERACCESS} = TRUE/FALSE in the oil OS object.}
+\end{longtableiii}
+
+\subsection{Protection Macros}
+
+Protection macros deal with protection facility provided by the Autosar standard. The following Macros are available:
+
+\rowcolors{1}{white}{light-gray}
+\begin{longtableiii}{l|l|p{2.9in}}{var}{Macro}{Kind}{Effect}
+  \lineiii{\idxconfflag{WITH_MEMORY_PROTECTION}}
+  {Boolean}
+  {When set to YES, Trampoline enables the memory protection facility. This is only supported on some ports (MPC5510 and ARM9 at time of writing). Memory protection requires the memory mapping and the use of system call. \var{WITH_MEMORY_PROTECTION} is set to YES/NO with the MEMORY_PROTECTION attribute of MEMMAP object (see \ref{sec:memmap}) set to TRUE/FALSE.}
+  \lineiii{\idxconfflag{WITH_TIMING_PROTECTION}}
+  {Boolean}
+  {When set to YES, Trampoline enables the timing protection facility. \var{WITH_TIMING_PROTECTION} is set to YES if the \var{AUTOSAR_SC} is 2 or 4 (see \ref{sec:autosarsc}) and a least one of the objects specifies a timing protection related attribute in the oil file.}
+  \lineiii{\idxconfflag{WITH_PROTECTION_HOOK}\label{sec:protectionhook}}
+  {Boolean}
+  {When set to YES, Trampoline calls the ProtectionHook() with the appropriate argument when a protection fault occurs. \var{WITH_PROTECTION_HOOK} is set to YES with a \var{PROTECTIONHOOK} = TRUE in the oil OS object.}
+  \lineiii{\idxconfflag{WITH_STACK_MONITORING}}
+  {Boolean}
+  {When set to YES, Trampoline enables the stack monitoring. Each time a context switch occurs, the stack pointer is checked. If the stack pointer is outside the stack zone of the process, a fault occurs. \var{WITH_STACK_MONITORING} is set to YES with a \var{STACKMONITORING} = TRUE in the oil OS object.}
+\end{longtableiii}
+
+\subsection{Hook call macros}
+
+Hook call macros control whether a hook is called or not. The following Macros are available:
+
+\rowcolors{1}{white}{light-gray}
+\begin{longtableiii}{l|l|p{2.9in}}{var}{Macro}{Kind}{Effect}
+  \lineiii{\idxconfflag{WITH_ERROR_HOOK}}
+  {Boolean}
+  {see \ref{sec:errorhook}}
+  \lineiii{\idxconfflag{WITH_PRE_TASK_HOOK}}
+  {Boolean}
+  {When set to YES, each time a task is scheduled, the function PreTaskHook() is called.
+  \var{WITH_PRE_TASK_HOOK} is set to YES/NO with a \var{PRETASKHOOK} = TRUE/FALSE
+  in the oil OS object.}
+  \lineiii{\idxconfflag{WITH_POST_TASK_HOOK}}
+  {Boolean}
+  {When set to YES, each time a task is descheduled, the function PostTaskHook() is called.
+  \var{WITH_POST_TASK_HOOK} is set to YES/NO with a \var{POSTTASKHOOK} = TRUE/FALSE
+  in the oil OS object.}
+  \lineiii{\idxconfflag{WITH_STARTUP_HOOK}}
+  {Boolean}
+  {When set to YES, the function StartupHook() is called within the StartOS service.
+  \var{WITH_STARTUP_HOOK} is set to YES/NO with a \var{STARTUPHOOK} = TRUE/FALSE
+  in the oil OS object.}
+  \lineiii{\idxconfflag{WITH_SHUTDOWN_HOOK}}
+  {Boolean}
+  {When set to YES, the function ShutdownHook() is called within the ShutdownOS service.
+  \var{WITH_SHUTDOWN_HOOK} is set to YES/NO with a \var{SHUTDOWNHOOK} = TRUE/FALSE
+  in the oil OS object.}
+  \lineiii{\idxconfflag{WITH_PROTECTION_HOOK}}
+  {Boolean}
+  {see \ref{sec:protectionhook}}
+\end{longtableiii}
+
+\subsection{Miscellaneous macros}
+
+Here the other available macros:
+
+\rowcolors{1}{white}{light-gray}
+\begin{longtableiii}{l|l|p{2.9in}}{var}{Macro}{Kind}{Effect}
+  \lineiii{\idxconfflag{WITH_USERESSCHEDULER}}
+  {Boolean}
+  {When set to YES, the RES_SCHEDULER resource is used by at least one process. \var{WITH_USERESSCHEDULER} is set to YES/NO with a \var{USERESSCHEDULER} = TRUE/FALSE
+  in the oil OS object.}
+  \lineiii{\idxconfflag{WITH_SYSTEM_CALL}}
+  {Boolean}
+  {When set to YES, services are called by the mean of a system call, also known as a software interrupt (see section \ref{sec:systemcall}).
+  \var{WITH_SYSTEM_CALL} is set to YES/NO according to the target architecture and requires a memory mapping}
+  \lineiii{\idxconfflag{WITH_MEMMAP}}
+  {Boolean}
+  {When set to YES, a memory mapping is used: A MemMap.h files giving the available memory .
+  \var{WITH_POST_TASK_HOOK} is set to YES/NO with a \var{POSTTASKHOOK} = TRUE/FALSE
+  in the oil OS object.}
+  \lineiii{\idxconfflag{WITH_STARTUP_HOOK}}
+  {Boolean}
+  {When set to YES, the function StartupHook() is called within the StartOS service.
+  \var{WITH_STARTUP_HOOK} is set to YES/NO with a \var{STARTUPHOOK} = TRUE/FALSE
+  in the oil OS object.}
+  \lineiii{\idxconfflag{WITH_SHUTDOWN_HOOK}}
+  {Boolean}
+  {When set to YES, the function ShutdownHook() is called within the ShutdownOS service.
+  \var{WITH_SHUTDOWN_HOOK} is set to YES/NO with a \var{SHUTDOWNHOOK} = TRUE/FALSE
+  in the oil OS object.}
+  \lineiii{\idxconfflag{WITH_PROTECTION_HOOK}}
+  {Boolean}
+  {see \ref{sec:protectionhook}}
+\end{longtableiii}
+
 
 \input{tasks}
 \input{ports}
 \input{tp}
 
+\printindex
  \end{document} 
