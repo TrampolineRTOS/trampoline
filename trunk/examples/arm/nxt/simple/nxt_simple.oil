@@ -63,7 +63,7 @@ CPU test {
           COMPILER = gcc;
           LINKER = gnu_ld { SCRIPT = "script.ld"; };
           ASSEMBLER = gnu_as;
-          MEMORY_PROTECTION = TRUE;
+          MEMORY_PROTECTION = FALSE;
         };
     } ;
 

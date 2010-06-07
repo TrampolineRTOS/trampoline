@@ -8,3 +8,10 @@ Whatever ISR you'ld like to add (ISR1 or ISR2) with the name isr_button_start, y
  
 GET STARTED:
 Get started with the documentation in documentation/getstarted/getstarted.pdf
+
+DRIVERS:
+The bluetooth driver has been modified from the Lejos driver. To receive datas from the bluetooth, add an ISR2 with "it_bluetooth" as source in your oil file.
+Because the ISR2 is launched twice per frame (once after the length of the datas and once at the end of the frame), you have to add inyour C file :
+" extern u8 bt_frame[128]; extern boolean bt_frame_received; "
+and in your ISR2 :
+" if(bt_frame_received == TRUE) { //insert your code to analyse datas wich are in bt_frame[] } "
