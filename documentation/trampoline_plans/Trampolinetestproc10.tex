@@ -3724,16 +3724,24 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 	\lstinputlisting{./OIL_to_TXT/autosar_mp_s1.txt}
 
 	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline 
-	t1\_app\_nontrusted1	& Read/Write its own OS application datas		& Access allowed									& 5 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write trusted OS application datas		& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 6 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write other non-trusted OS application datas & Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& 6 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write OS datas from non-truted OS application	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& 1 \\ \hline
+	t1\_app\_nontrusted1	& Read its own OS application datas		& Access allowed										& 5a \\ \hline
+	t1\_app\_nontrusted1	& Write its own OS application datas			& Access allowed										& 5b \\ \hline
+	t1\_app\_nontrusted1	& Read trusted OS application datas		& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 6e \\ \hline
+	t1\_app\_nontrusted1	& Write trusted OS application datas			& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 6f \\ \hline
+	t1\_app\_nontrusted1	& Read other non-trusted OS application datas & Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& 6c \\ \hline
+	t1\_app\_nontrusted1	& Write other non-trusted OS application datas & Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& 6d \\ \hline
+	t1\_app\_nontrusted1	& Read OS datas from non-truted OS application	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& 1a \\ \hline
+	t1\_app\_nontrusted1	& Write OS datas from non-truted OS application	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& 1b \\ \hline
 	t1\_app\_nontrusted1	& WaitEvent(Event1)							& E\_OK											& \\ \hline
 	
-	t1\_app\_trusted1		& Read/Write its own OS application datas		& Access allowed									& 7 \\ \hline
-	t1\_app\_trusted1		& Read/Write other trusted OS application datas 	& Access allowed									& 7 \\ \hline
-	t1\_app\_trusted1		& Read/Write non-trusted OS application datas	& Access allowed									& 7 \\ \hline
-	t1\_app\_trusted1		& Read/Write OS datas from truted OS application	& Access allowed									& 2 \\ \hline
+	t1\_app\_trusted1		& Read its own OS application datas		& Access allowed										& 7a \\ \hline
+	t1\_app\_trusted1		& Write its own OS application datas			& Access allowed										& 7b \\ \hline
+	t1\_app\_trusted1		& Read other trusted OS application datas 	& Access allowed										& 7e \\ \hline
+	t1\_app\_trusted1		& Write other trusted OS application datas 	& Access allowed										& 7f \\ \hline
+	t1\_app\_trusted1		& Read non-trusted OS application datas		& Access allowed										& 7c \\ \hline
+	t1\_app\_trusted1		& Write non-trusted OS application datas		& Access allowed										& 7d \\ \hline
+	t1\_app\_trusted1		& Read OS datas from trusted OS application	& Access allowed										& 2a \\ \hline
+	t1\_app\_trusted1		& Write OS datas from trusted OS application	& Access allowed										& 2b \\ \hline
 	t1\_app\_trusted1		& SetEvent(t1\_app\_nontrusted1, Event1)		& E\_OK											& \\ \hline
 	
 	t1\_app\_trusted1		& TerminateTask()							& E\_OK											& \\ \hline
@@ -3752,15 +3760,21 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 
 	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline 
 	t1\_app\_nontrusted1	& Read/Write its own Task/OsIsr datas from non-trusted OS app.	& Access allowed									& \\ \hline
-	t1\_app\_nontrusted1	& Read/Write Task/OsIsr datas in the same non-trusted OS application 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& 8 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write Task/OsIsr datas in the other non-trusted OS application 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& 8 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write Task/OsIsr datas in trusted OS application			 & Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& 8 \\ \hline
+	t1\_app\_nontrusted1	& Read Task/OsIsr datas in the same non-trusted OS application 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& 8a \\ \hline
+	t1\_app\_nontrusted1	& Write Task/OsIsr datas in the same non-trusted OS application 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& 8b \\ \hline
+	t1\_app\_nontrusted1	& Read Task/OsIsr datas in the other non-trusted OS application 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& 8c \\ \hline
+	t1\_app\_nontrusted1	& Write Task/OsIsr datas in the other non-trusted OS application 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& 8d \\ \hline
+	t1\_app\_nontrusted1	& Read Task/OsIsr datas in trusted OS application				 & Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& 8e \\ \hline
+	t1\_app\_nontrusted1	& Write Task/OsIsr datas in trusted OS application				 & Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& 8f \\ \hline
 	t1\_app\_nontrusted1	& WaitEvent(Event1)										& E\_OK											& \\ \hline
 	
 	t1\_app\_trusted1		& Read/Write its own Task/OsIsr datas from trusted OS app.		& Access allowed									& \\ \hline
-	t1\_app\_trusted1		& Read/Write Task/OsIsr datas in the same trusted OS application 	& Access allowed									& 9 \\ \hline
-	t1\_app\_trusted1		& Read/Write Task/OsIsr datas in the other trusted OS application 	& Access allowed									& 9 \\ \hline
-	t1\_app\_trusted1		& Read/Write Task/OsIsr datas in non-trusted OS application	 	& Access allowed									& 9 \\ \hline
+	t1\_app\_trusted1		& Read Task/OsIsr datas in the same trusted OS application 		& Access allowed									& 9a \\ \hline
+	t1\_app\_trusted1		& Write Task/OsIsr datas in the same trusted OS application 		& Access allowed									& 9b \\ \hline
+	t1\_app\_trusted1		& Read Task/OsIsr datas in the other trusted OS application 		& Access allowed									& 9e \\ \hline
+	t1\_app\_trusted1		& Write Task/OsIsr datas in the other trusted OS application 		& Access allowed									& 9f \\ \hline
+	t1\_app\_trusted1		& Read Task/OsIsr datas in non-trusted OS application	 		& Access allowed									& 9c \\ \hline
+	t1\_app\_trusted1		& Write Task/OsIsr datas in non-trusted OS application	 		& Access allowed									& 9d \\ \hline
 	t1\_app\_trusted1		& SetEvent(t1\_app\_nontrusted1, Event1)					& E\_OK											& \\ \hline
 	
 	t1\_app\_trusted1		& TerminateTask()										& E\_OK											& \\ \hline
@@ -3782,11 +3796,15 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 	t1\_app\_nontrusted1	& Read/Write its own Task/OsIsr stack from non-trusted OS app.	& Access allowed								& \\ \hline
 	t1\_app\_nontrusted1	& EnableAllInterrupts()								&												& \\ \hline
 	
-	t1\_app\_nontrusted1	& Read/Write Task/OsIsr stack in the same non-trusted OS application 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 10 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write Task/OsIsr stack in the other non-trusted OS application 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 10 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write Task/OsIsr stack in trusted OS application			 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 10 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write OS stack from non-truted OS application		& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 3 \\ \hline
-	
+	t1\_app\_nontrusted1	& Read Task/OsIsr stack in the same non-trusted OS application 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 10a \\ \hline
+	t1\_app\_nontrusted1	& Write Task/OsIsr stack in the same non-trusted OS application 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 10b \\ \hline
+	t1\_app\_nontrusted1	& Read Task/OsIsr stack in the other non-trusted OS application 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 10c \\ \hline
+	t1\_app\_nontrusted1	& Write Task/OsIsr stack in the other non-trusted OS application 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 10d \\ \hline
+	t1\_app\_nontrusted1	& Read Task/OsIsr stack in trusted OS application			 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 10e \\ \hline
+	t1\_app\_nontrusted1	& Write Task/OsIsr stack in trusted OS application			 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 10f \\ \hline
+	t1\_app\_nontrusted1	& Read OS stack from non-trusted OS application				& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 3a \\ \hline
+	t1\_app\_nontrusted1	& Write OS stack from non-trusted OS application				& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 3b \\ \hline
+		
 	t1\_app\_nontrusted1	& WaitEvent(Event1)									& E\_OK											& \\ \hline
 	
 	t1\_app\_trusted1	& DisableAllInterrupts()								&												& \\ \hline
@@ -3794,13 +3812,17 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 	t1\_app\_trusted1	& EnableAllInterrupts()								&												& \\ \hline
 	
 	t1\_app\_trusted1	& DisableAllInterrupts()								&												& \\ \hline
-	t1\_app\_trusted1	& Read/Write Task/OsIsr stack in the same trusted OS application 	& Access allowed								& 11 \\ \hline
-	t1\_app\_trusted1	& Read/Write Task/OsIsr stack in the other trusted OS application 	& Access allowed								& 11 \\ \hline
-	t1\_app\_trusted1	& Read/Write Task/OsIsr stack in non-trusted OS application	 	& Access allowed								& 11 \\ \hline
+	t1\_app\_trusted1	& Read Task/OsIsr stack in the same trusted OS application 	& Access allowed									& 11a \\ \hline
+	t1\_app\_trusted1	& Write Task/OsIsr stack in the same trusted OS application 	& Access allowed									& 11b \\ \hline
+	t1\_app\_trusted1	& Read Task/OsIsr stack in the other trusted OS application 	& Access allowed									& 11e \\ \hline
+	t1\_app\_trusted1	& Write Task/OsIsr stack in the other trusted OS application 	& Access allowed									& 11f \\ \hline
+	t1\_app\_trusted1	& Read Task/OsIsr stack in non-trusted OS application	 	& Access allowed									& 11c \\ \hline
+	t1\_app\_trusted1	& Write Task/OsIsr stack in non-trusted OS application	 	& Access allowed									& 11d \\ \hline
 	t1\_app\_trusted1	& EnableAllInterrupts()								&												& 11 \\ \hline
 
 	t1\_app\_trusted1	& DisableAllInterrupts()								&												& \\ \hline
-	t1\_app\_trusted1	& Read/Write OS stack from truted OS application			& Access allowed									& 4 \\ \hline
+	t1\_app\_trusted1	& Read OS stack from truted OS application				& Access allowed									& 4a \\ \hline
+	t1\_app\_trusted1	& Write OS stack from truted OS application				& Access allowed									& 4b \\ \hline
 	t1\_app\_trusted1	& EnableAllInterrupts()								&												& \\ \hline
 
 	t1\_app\_trusted1		& SetEvent(t1\_app\_nontrusted1, Event1)				& E\_OK											& \\ \hline
@@ -3819,17 +3841,21 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 	\lstinputlisting{./OIL_to_TXT/autosar_mp_s4.txt}
 
 	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline 
-	t1\_app\_nontrusted1	& Execute protected code from non-trusted OS application		& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& (not tested yet) 14 \\ \hline
+	t1\_app\_nontrusted1	& Execute protected code from non-trusted OS application		& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY	& (not tested yet) 14 \\ \hline
 	t1\_app\_nontrusted1	& Execute shared library code from non-trusted OS application 	& Access allowed									& 12 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write access to peripheral from non-trusted OS application 	& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 17 \\ \hline
-	t1\_app\_nontrusted1	& Read/Write access to its assigned peripheral from non-trusted OS application	& Access allowed						& (not tested yet) 16 \\ \hline
+	t1\_app\_nontrusted1	& Read access to peripheral from non-trusted OS application 		& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 17c \\ \hline
+	t1\_app\_nontrusted1	& Write access to peripheral from non-trusted OS application 		& Call ProtectionHook with E\_OS\_PROTECTION\_MEMORY		& 17d \\ \hline
+	t1\_app\_nontrusted1	& Read access to its assigned peripheral from non-trusted OS application	& Access allowed						& (not tested yet) 16a \\ \hline
+	t1\_app\_nontrusted1	& Write access to its assigned peripheral from non-trusted OS application	& Access allowed						& (not tested yet) 16b \\ \hline
 	
 	t1\_app\_nontrusted1	& WaitEvent(Event1)										& E\_OK											& \\ \hline
 	
 	t1\_app\_trusted1		& Execute protected code from trusted OS application			& Access allowed									& (not tested yet) 15 \\ \hline
 	t1\_app\_trusted1		& Execute shared library code from trusted OS application 		& Access allowed									& 13 \\ \hline
-	t1\_app\_trusted1		& Read/Write access to peripheral from trusted OS application 	& Access allowed									& 18 \\ \hline
-	t1\_app\_trusted1		& Read/Write access to its assigned peripheral from trusted OS application	& Access allowed							& (not tested yet) 18 \\ \hline
+	t1\_app\_trusted1		& Read access to peripheral from trusted OS application 	& Access allowed									& 18c \\ \hline
+	t1\_app\_trusted1		& Write access to peripheral from trusted OS application 	& Access allowed									& 18d \\ \hline
+	t1\_app\_trusted1		& Read access to its assigned peripheral from trusted OS application	& Access allowed							& (not tested yet) 18a \\ \hline
+	t1\_app\_trusted1		& Write access to its assigned peripheral from trusted OS application	& Access allowed							& (not tested yet) 18b \\ \hline
 	t1\_app\_trusted1		& SetEvent(t1\_app\_nontrusted1, Event1)					& E\_OK											& \\ \hline
 	
 	t1\_app\_trusted1		& TerminateTask()										& E\_OK											& \\ \hline

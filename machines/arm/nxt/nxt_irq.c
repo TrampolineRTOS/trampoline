@@ -43,23 +43,29 @@ u8 check_buttons_period = 0;
 
 FUNC (void, OS_CODE) tpl_arm_subarch_irq_handler (void)
 {
-    /* When the processor reads AIC_IVR (Interrupt Vector Register),
-      the value written into AIC_SVR corresponding to the current
-     interrupt is returned. */
-    VAR(u16, AUTOMATIC) isr_id = *AT91C_AIC_IVR;
-    
-    /* Find Interrupt Peripheral ID */
-    *AT91C_AIC_IVR = 0xFFFFF100;
-    isr_id = *AT91C_AIC_ISR;
-    
-    /* Launch action (timer, ISR2...) */
-    VAR(tpl_it_handler, AUTOMATIC) isr_vector;
-    isr_vector = tpl_it_vector[isr_id].func;
-    isr_vector(tpl_it_vector[isr_id].args);
-    
-    /* Acknowledge interrupt */
-    *AT91C_AIC_EOICR = 0xFFFFF130;
+  /* When the processor reads AIC_IVR (Interrupt Vector Register),
+    the value written into AIC_SVR corresponding to the current
+   interrupt is returned. */
+  VAR(u16, AUTOMATIC) isr_id = *AT91C_AIC_IVR;
+  
+  /* Find Interrupt Peripheral ID */
+  *AT91C_AIC_IVR = 0xFFFFF100;
+  isr_id = *AT91C_AIC_ISR;
+  
+  /* Launch action (timer, ISR2...) */
+  VAR(tpl_it_handler, AUTOMATIC) isr_vector;
+  isr_vector = tpl_it_vector[isr_id].func;
+  isr_vector(tpl_it_vector[isr_id].args);
+
+  /* Acknowledge interrupt */
+  *AT91C_AIC_EOICR = 0xFFFFF130;
 }
+
+FUNC (void, OS_CODE) tpl_arm_subarch_fiq_handler (void)
+{
+  /* TODO */
+}
+
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

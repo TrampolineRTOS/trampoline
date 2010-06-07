@@ -38,3 +38,14 @@ This state is used to flag a process that is ready but has its context unitializ
    \caption{States of a process in Trampoline. AUTOSTART is the initial state of autostart tasks. SUSPENDED is the initial state of both non autostart tasks and ISR category 2.}
    \label{fig:states}
 \end{figure} 
+
+
+\section{The "idle" task}
+
+The "idle" task is launched when no other task is currently running. It keeps the microprocessor doing nothing.\\
+To be able to use specific platform capabilities (to put the microcontroler in stand by mode for example), this task is hardware specific (in \textit{machine/}). The taks is then able to quantify the microprocessor occupation.\\
+GOIL doesn't produce anything about this idle task (unlike application(s) task(s)). The static part of the idle task descriptor is defined in \file{tpl_os_kernel.c} and we're be able to see that :
+\begin{itemize}
+\item the priority is 0
+\item it's a basic task
+\end{itemize}

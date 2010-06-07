@@ -28,13 +28,7 @@
 #
 #kernel OS architecture dependant files
 
-SOURCES += tpl_machine_arm_generic.c \
-tpl_irq.S \
-tpl_system_call.S \
-tpl_stacks.S \
-tpl_vector_table.s \
-tpl_invoque.S \
-armadeus_tpl_sleep.S \
+SOURCES += armadeus_tpl_sleep.S \
 armadeus_bootstrap_stage1.S \
 armadeus_bootstrap_stage2.c \
 armadeus_tpl_stubs.c \

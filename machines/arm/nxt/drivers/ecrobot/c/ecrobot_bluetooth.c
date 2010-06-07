@@ -52,6 +52,7 @@ static volatile U8 bt_status = BT_NO_INIT;
 static volatile U8 handle;
 static U8 sendBuf[BT_BUF_SIZE];
 static U8 receiveBuf[BT_BUF_SIZE];
+extern U8 in_buf[2][128];
 
 /*
  * nxtOSEK Bluetooth API supports only minimum part of LEGO Communication Protocol(LCP).
@@ -270,6 +271,11 @@ static void ecrobot_open_bt_stream(void)
 		
 		bt_set_arm7_cmd(); /* set stream mode */
 		bt_status = BT_STREAM;
+    
+    /* after NXT initialized, ready for caracter (first length) */
+    *AT91C_US1_RPR  = (unsigned int)&(in_buf[0][0]);
+    *AT91C_US1_RCR = 2;    
+    
 	}
 }
 

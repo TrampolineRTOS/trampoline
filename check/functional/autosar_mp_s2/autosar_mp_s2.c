@@ -125,7 +125,7 @@ TASK(t1_app_nontrusted1)
    - read
    - write   
    */
-  var_t1_app_nontrusted1++; // if just read, the linker discards the variable...
+  var_t1_app_nontrusted1++;
   
   switch (exe_count)
   {
@@ -225,7 +225,7 @@ TASK(t1_app_trusted1)
    - read
    - write   
    */
-  var_t1_app_trusted1++; // if just read, the linker discards the variable...
+  var_t1_app_trusted1++;
   
   /* (read/)write other Task/OsIsr from trusted OS application -> YES (OS195-OS356)
    - trusted (same) - read

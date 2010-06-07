@@ -290,10 +290,10 @@ void flash_loader(void)
 void nxt_device_init(void)
 {
 	aic_initialise();
-    interrupts_enable();
-    nxt_avr_init();
+  interrupts_enable();
+  nxt_avr_init();
 	systick_init();
-    i2c_init();
+  i2c_init();
 	nxt_motor_init();
 	sound_init();
 	bt_init();
