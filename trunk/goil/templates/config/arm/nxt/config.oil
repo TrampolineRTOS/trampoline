@@ -55,10 +55,16 @@ CPU config {
 		PRIORITY = 1;
 		SOURCE = uart_isr_C_0;
    };
-   ISR uart_isr_C_1 {
+   /*ISR uart_isr_C_1 {
        CATEGORY = 1;
 		PRIORITY = 1;
 		SOURCE = uart_isr_C_1;
+   };
+   */
+   ISR bt_isr_C {
+       CATEGORY = 1;
+		PRIORITY = 1;
+		SOURCE = it_bluetooth;
    };
    ISR sound_isr_C {
        CATEGORY = 1;

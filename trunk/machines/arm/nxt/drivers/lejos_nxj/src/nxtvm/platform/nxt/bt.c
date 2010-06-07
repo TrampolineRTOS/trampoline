@@ -7,7 +7,10 @@
 #include "display.h"
 #include "systick.h"
 
-static U8 in_buf[2][128];
+#include "interrupts.h"
+#include "tpl_os_internal_types.h"
+
+U8 in_buf[2][128];
 static U8 in_buf_in_ptr, out_buf_ptr;
 static U8 out_buf[2][256];
 
@@ -18,24 +21,105 @@ static int in_buf_idx = 0;
 #define BAUD_RATE 460800
 #define CLOCK_RATE 48054850
 
-	
+#define WAITINGFORLENGTH 0
+#define WAITINGFORFRAME 1
+
+U8 bt_state = WAITINGFORLENGTH;
+U16 bt_length = 0;
+U8 bt_frame[128];
+tpl_bool bt_frame_received = FALSE;
+
+void bt_isr_C_function(void)
+{
+  unsigned int status;
+  status = *AT91C_US1_CSR & *AT91C_US1_IMR;
+        
+  if ( status & AT91C_US_ENDRX){
+    /* Because US1_RCR has been initialized to 2 (when the connection between the buletooth device
+     * were in MSG_OPEN_STREAM state), we just received the length of the frame in in_buf.
+     */
+    
+    switch (bt_state) {
+      case WAITINGFORLENGTH:
+      {
+        bt_length = in_buf[0][0];
+        bt_length |= in_buf[0][1] << 8;
+        
+        *AT91C_US1_RPR = (unsigned int)&(in_buf[0][0]);
+        *AT91C_US1_RCR = bt_length;
+        bt_state = WAITINGFORFRAME;
+        bt_frame_received = FALSE;
+        break;
+      }
+      case WAITINGFORFRAME:
+      {
+        for(int i=0; i<bt_length; i++)
+        {
+          bt_frame[i] = in_buf[0][i]; 
+        }          
+        
+        *AT91C_US1_RPR = (unsigned int)&(in_buf[0][0]);
+        *AT91C_US1_RCR = 2;
+        bt_state = WAITINGFORLENGTH;
+        bt_frame_received = TRUE;
+        
+        break;
+      }
+      default:
+      {
+       break;
+      }
+    }
+    
+    // Disabe ENDRX
+    *AT91C_US1_IDR = AT91C_US_ENDRX;
+    // Enabel ENDRX
+    *AT91C_US1_IER = AT91C_US_ENDRX;
+  }
+    
+  // Reset the satus bit
+  *AT91C_US1_CR = AT91C_US_RSTSTA;
+  
+}
+
+extern void tpl_primary_irq_handler(void);
+
 void bt_init(void)
 {
+  
+  int i_state = interrupts_get_and_disable();
+  
   U8 trash;
   U32 trash2;
   in_buf_in_ptr = out_buf_ptr = 0; 
   in_buf_idx = 0;
   
+  *AT91C_PMC_PCER = (1 << AT91C_PERIPHERAL_ID_PIOA);	/* Need PIO too */
   *AT91C_PMC_PCER = (1 << AT91C_PERIPHERAL_ID_US1); 
   
   *AT91C_PIOA_PDR = BT_RX_PIN | BT_TX_PIN | BT_SCK_PIN | BT_RTS_PIN | BT_CTS_PIN; 
-  *AT91C_PIOA_ASR = BT_RX_PIN | BT_TX_PIN | BT_SCK_PIN | BT_RTS_PIN | BT_CTS_PIN; 
+  *AT91C_PIOA_ASR = BT_RX_PIN | BT_TX_PIN | BT_SCK_PIN | BT_RTS_PIN | BT_CTS_PIN;
+  *AT91C_PIOA_PER   = BT_CS_PIN | BT_RST_PIN; 
+  *AT91C_PIOA_OER   = BT_CS_PIN | BT_RST_PIN; 
+  *AT91C_PIOA_SODR  = BT_CS_PIN | BT_RST_PIN;
+  *AT91C_PIOA_PPUDR = BT_ARM7_CMD_PIN;
+  *AT91C_PIOA_PER   = BT_ARM7_CMD_PIN; 
+  *AT91C_PIOA_CODR  = BT_ARM7_CMD_PIN;
+  *AT91C_PIOA_OER   = BT_ARM7_CMD_PIN; 
+  
+  //aic before
+  aic_mask_off(AT91C_PERIPHERAL_ID_US1);
+  aic_set_vector(AT91C_PERIPHERAL_ID_US1, AIC_INT_LEVEL_ABOVE_NORMAL | AT91C_AIC_SRCTYPE_INT_EDGE_TRIGGERED, (U32) tpl_primary_irq_handler); 
+  aic_clear(AT91C_PERIPHERAL_ID_US1);
+  aic_mask_on(AT91C_PERIPHERAL_ID_US1);
+  
   
   *AT91C_US1_CR   = AT91C_US_RSTSTA;
   *AT91C_US1_CR   = AT91C_US_STTTO;
-  *AT91C_US1_RTOR = 10000; 
+  *AT91C_US1_RTOR = 0; 
   *AT91C_US1_IDR  = AT91C_US_TIMEOUT;
   *AT91C_US1_MR = (AT91C_US_USMODE_HWHSH & ~AT91C_US_SYNC) | AT91C_US_CLKS_CLOCK | AT91C_US_CHRL_8_BITS | AT91C_US_PAR_NONE | AT91C_US_NBSTOP_1_BIT | AT91C_US_OVER;
+  
   *AT91C_US1_BRGR = ((CLOCK_RATE/8/BAUD_RATE) | (((CLOCK_RATE/8) - ((CLOCK_RATE/8/BAUD_RATE) * BAUD_RATE)) / ((BAUD_RATE + 4)/8)) << 16);
   *AT91C_US1_PTCR = (AT91C_PDC_RXTDIS | AT91C_PDC_TXTDIS); 
   *AT91C_US1_RCR  = 0; 
@@ -43,9 +127,6 @@ void bt_init(void)
   *AT91C_US1_RNPR = 0;
   *AT91C_US1_TNPR = 0;
   
-  aic_mask_off(AT91C_PERIPHERAL_ID_US1);
-  aic_clear(AT91C_PERIPHERAL_ID_US1);
-
   trash = *AT91C_US1_RHR;
   trash = *AT91C_US1_CSR;
   
@@ -56,35 +137,14 @@ void bt_init(void)
   *AT91C_US1_CR   = AT91C_US_RXEN | AT91C_US_TXEN; 
   *AT91C_US1_PTCR = (AT91C_PDC_RXTEN | AT91C_PDC_TXTEN); 
   
-  *AT91C_PIOA_PDR = BT_RX_PIN | BT_TX_PIN | BT_SCK_PIN | BT_RTS_PIN | BT_CTS_PIN; 
-  *AT91C_PIOA_ASR = BT_RX_PIN | BT_TX_PIN | BT_SCK_PIN | BT_RTS_PIN | BT_CTS_PIN; 
-  *AT91C_PIOA_PER   = BT_CS_PIN | BT_RST_PIN; 
-  *AT91C_PIOA_OER   = BT_CS_PIN | BT_RST_PIN; 
-  *AT91C_PIOA_SODR  = BT_CS_PIN | BT_RST_PIN;
-  *AT91C_PIOA_PPUDR = BT_ARM7_CMD_PIN;
-  *AT91C_PIOA_PER   = BT_ARM7_CMD_PIN; 
-  *AT91C_PIOA_CODR  = BT_ARM7_CMD_PIN;
-  *AT91C_PIOA_OER   = BT_ARM7_CMD_PIN; 
-  // Configure timer 01 as trigger for ADC, sample every 0.5ms
-  *AT91C_PMC_PCER = (1 << AT91C_PERIPHERAL_ID_TC1); 
-  *AT91C_TC1_CCR = AT91C_TC_CLKDIS;
-  *AT91C_TC1_IDR = ~0;
-  trash2 = *AT91C_TC1_SR;
-  *AT91C_TC1_CMR = AT91C_TC_WAVE | AT91C_TC_WAVESEL_UP_AUTO | AT91C_TC_ACPA_SET | AT91C_TC_ACPC_CLEAR | AT91C_TC_ASWTRG_SET; /* MCLK/2, wave mode 10 */
-  *AT91C_TC1_RC = (CLOCK_FREQUENCY/2)/(2000);
-  *AT91C_TC1_RA = (CLOCK_FREQUENCY/2)/(4000);
-  *AT91C_TC1_CCR = AT91C_TC_CLKEN;
-  *AT91C_TC1_CCR = AT91C_TC_SWTRG;
-
-  *AT91C_PMC_PCER = (1 << AT91C_PERIPHERAL_ID_ADC); 
-  *AT91C_ADC_MR  = 0;
-  *AT91C_ADC_MR |= AT91C_ADC_TRGEN_EN | AT91C_ADC_TRGSEL_TIOA1;
-  *AT91C_ADC_MR |= 0x00003F00;
-  *AT91C_ADC_MR |= 0x00020000;
-  *AT91C_ADC_MR |= 0x09000000;
-  *AT91C_ADC_CHER  = AT91C_ADC_CH6 | AT91C_ADC_CH4; 
-  
+  *AT91C_US1_IER = AT91C_US_ENDRX; //(AT91C_US_RXBRK |  | AT91C_US_OVRE | AT91C_US_FRAME | AT91C_US_RXBUFF | AT91C_US_NACK);
+  *AT91C_US1_IMR = 0x0;
+   
   buf_ptr = &(in_buf[0][0]);
+  
+  if (i_state)
+    interrupts_enable();
+    
 }
 
 void bt_start_ad_converter()

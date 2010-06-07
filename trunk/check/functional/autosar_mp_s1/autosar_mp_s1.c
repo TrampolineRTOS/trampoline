@@ -134,7 +134,8 @@ TASK(t1_app_nontrusted1)
    - read
    - write   
    */
-  var_app_nontrusted1++; /* if just read, the linker discards the variable... */
+  var_t1_app_nontrusted1 = var_app_nontrusted1;
+  var_app_nontrusted1 = var_t1_app_nontrusted1;
   
   /* OS026-OS207 : read/write other OS application's data section from non-trusted OS application -> NO
    - trusted - read
@@ -223,7 +224,8 @@ TASK(t1_app_trusted1)
    - read
    - write   
    */
-  var_app_trusted1++; /* if just read, the linker discards the variable... */
+  var_t1_app_trusted1 = var_app_trusted1;
+  var_app_trusted1 = var_t1_app_trusted1;
   
   /* read/write other OS application's data section from trusted OS application -> YES (OS026-OS207)
    - trusted - read
@@ -233,6 +235,7 @@ TASK(t1_app_trusted1)
    */
   var_t1_app_trusted1 = var_app_trusted2;
   var_app_trusted2 = var_t1_app_trusted1;
+  
   var_t1_app_trusted1 = var_app_nontrusted1;
   var_app_nontrusted1 = var_t1_app_trusted1;
   
@@ -240,8 +243,8 @@ TASK(t1_app_trusted1)
    - read
    - write   
    */
-  var_app_trusted1 = var_os;
-  var_os = var_app_trusted1;
+  var_t1_app_trusted1 = var_os;
+  var_os = var_t1_app_trusted1;
   
   SetEvent(t1_app_nontrusted1, Event1);
   

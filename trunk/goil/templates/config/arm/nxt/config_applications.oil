@@ -39,7 +39,8 @@ CPU config {
     ISR = nxt_motor_isr_C;
     ISR = spi_isr_C;
     ISR = uart_isr_C_0;
-    ISR = uart_isr_C_1;
+    /*ISR = uart_isr_C_1;*/
+    ISR = bt_isr_C;
     ISR = sound_isr_C;
     ISR = twi_isr_C;
     ISR = systick_low_priority_C;

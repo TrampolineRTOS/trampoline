@@ -949,25 +949,79 @@ events are cleared. Service returns E\_OK  \\ \hline
 		\includegraphics[width=1\textwidth]{graphics/AUTOSAR_Memory_Protection.pdf}
 	\end{figure}
 	
+	As you can see above, the test case 1 correspond to two test cases : a Read test case (1a) and a Write test case (1b). Moreover, the test case 7 (and some others) correspond to six test cases as described in the table below.\\
+	
+	\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+  		\centering
+		\includegraphics[width=0.3\textwidth]{graphics/AUTOSAR_Memory_Protection_test_cases.pdf}
+	\end{figure}
+	
+	
 	\begin{supertabular}{|p{\Li}|p{\Lii}|p{\Liii}|p{\Liiii}|} \hline
-	1	& Read/Write OS datas from non-trusted OS application 		& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY			& OS198 \\ \hline
-	2	& Read/Write OS datas from trusted OS application 			& Access allowed																		& OS198 \\ \hline
-	3	& Read/Write OS stack from non-trusted OS application 		& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY			& OS198 \\ \hline
-	4	& Read/Write OS stack from trusted OS application 			& Access allowed																		& OS198 \\ \hline
-	5	& Read/Write its own OS application's datas from non-trusted OS application	&  Access allowed															& OS086 \\ \hline
-	6	& Read/Write other OS application's datas from non-trusted OS application	&  The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS026, OS207 \\ \hline
-	7	& Read/Write OS application's datas from trusted OS application			&  Access allowed															& OS026, OS207, OS086  \\ \hline
-	8	& Read/write Task/OsIsr's datas from non-trusted OS application (in the same or other OS application)		& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS195, OS356 \\ \hline
-	9	& Read/write Task/OsIsr's datas from trusted OS application (in the same or other OS application)			& Access allowed 									& OS087 \\ \hline
-	10	& Read/write Task/OsIsr's stack from non-trusted OS application (in the same or other OS application)		& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS208, OS355 \\ \hline
-	11	& Read/write Task/OsIsr's stack from trusted OS application (in the same or other OS application)			& Access allowed 									& OS196 \\ \hline
+	1a	& Read OS datas from non-trusted OS application 		& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY			& OS198 \\ \hline
+	1b	& Write OS datas from non-trusted OS application 		& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY			& OS198 \\ \hline
+	2a	& Read OS datas from trusted OS application 			& Access allowed																		& OS198 \\ \hline
+	2b	& Write OS datas from trusted OS application 			& Access allowed																		& OS198 \\ \hline
+	3a	& Read OS stack from non-trusted OS application 		& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY			& OS198 \\ \hline
+	3b	& Write OS stack from non-trusted OS application 		& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY			& OS198 \\ \hline
+	4a	& Read OS stack from trusted OS application 			& Access allowed																		& OS198 \\ \hline
+	4b	& Write OS stack from trusted OS application 			& Access allowed																		& OS198 \\ \hline
+	5a	& Read its own OS application's datas from non-trusted OS application	&  Access allowed															& OS086 \\ \hline
+	5b	& Write its own OS application's datas from non-trusted OS application	&  Access allowed															& OS086 \\ \hline
+	
+	6c	& Read non-trusted OS application's datas from non-trusted OS application	&  The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS026 \\ \hline
+	6d	& Write non-trusted OS application's datas from non-trusted OS application	&  The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS207 \\ \hline
+	6e	& Read trusted other OS application's datas from non-trusted OS application	&  The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS026 \\ \hline
+	6f	& Write trusted other OS application's datas from non-trusted OS application	&  The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS207 \\ \hline
+	
+	7a	& Read its own OS application's datas from trusted OS application			&  Access allowed															& According to OS026  \\ \hline
+	7b	& Write its own OS application's datas from trusted OS application			&  Access allowed															& OS086  \\ \hline
+	7c	& Read non-trusted OS application's datas from trusted OS application		&  Access allowed															& According to OS026 \\ \hline
+	7d	& Write non-trusted OS application's datas from trusted OS application		&  Access allowed															& According to OS207 \\ \hline
+	7e	& Read trusted OS application's datas from trusted OS application			&  Access allowed															& According to OS026  \\ \hline
+	7f	& Write trusted OS application's datas from trusted OS application			&  Access allowed															& According to OS207  \\ \hline
+	
+	8a	& Read Task/OsIsr's datas of the same non-trusted OS application			& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS195 \\ \hline
+	8b	& Write Task/OsIsr's datas of the same non-trusted OS application			& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS195 \\ \hline
+	8c	& Read Task/OsIsr's datas of an other non-trusted OS application from non-trusted OS application 		& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS356 \\ \hline
+	8d	& Read Task/OsIsr's datas of an other non-trusted OS application from non-trusted OS application 		& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS356 \\ \hline
+	8e	& Read Task/OsIsr's datas of a trusted OS application from non-trusted OS application 				& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS356 \\ \hline
+	8f	& Write Task/OsIsr's datas of a trusted OS application from non-trusted OS application 				& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS356 \\ \hline
+	
+	9a	& Read Task/OsIsr's datas of the same trusted OS application 				& Access allowed 									& OS087 \\ \hline
+	9b	& Write Task/OsIsr's datas of the same trusted OS application 				& Access allowed 									& OS087 \\ \hline
+	9c	& Read Task/OsIsr's datas of a non-trusted OS application from trusted OS application		& Access allowed 									& OS087 \\ \hline
+	9d	& Write Task/OsIsr's datas of a non-trusted OS application from trusted OS application		& Access allowed 									& OS087 \\ \hline
+	9e	& Read Task/OsIsr's datas of an other trusted OS application from trusted OS application		& Access allowed 									& OS087 \\ \hline
+	9f	& Write Task/OsIsr's datas of an other trusted OS application from trusted OS application		& Access allowed 									& OS087 \\ \hline
+		
+	10a	& Read Task/OsIsr's stack of the same non-trusted OS application 			& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS208 \\ \hline
+	10b	& Write Task/OsIsr's stack of the same non-trusted OS application 			& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS208 \\ \hline
+	10c	& Read Task/OsIsr's stack of an other non-trusted OS application from non-trusted OS application		& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS355 \\ \hline
+	10d	& Write Task/OsIsr's stack of an other non-trusted OS application from non-trusted OS application		& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS355 \\ \hline
+	10e	& Read Task/OsIsr's stack of a trusted OS application from non-trusted OS application				& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS355 \\ \hline
+	10f	& Write Task/OsIsr's stack of a trusted OS application from non-trusted OS application				& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS355 \\ \hline
+	
+	11a	& Read Task/OsIsr's stack of the same trusted OS application 				& Access allowed 									& OS196 \\ \hline
+	11b	& Write Task/OsIsr's stack of the same trusted OS application 				& Access allowed 									& OS196 \\ \hline
+	11c	& Read Task/OsIsr's stack of a non-trusted OS application from trusted OS application		& Access allowed 									& OS196 \\ \hline
+	11d	& Write Task/OsIsr's stack of a non-trusted OS application from trusted OS application		& Access allowed 									& OS196 \\ \hline
+	11e	& Read Task/OsIsr's stack of an other trusted OS application from trusted OS application		& Access allowed 									& OS196 \\ \hline
+	11f	& Write Task/OsIsr's stack of an other trusted OS application from trusted OS application		& Access allowed 									& OS196 \\ \hline
+
 	12	& Execute sharde library code from non-trusted OS application 		 	& Access allowed 															& OS081 \\ \hline
 	13	& Execute sharde library code from trusted OS application 			 	& Access allowed 															& OS081 \\ \hline
 	14	& Execute protected (an OS application can protect its code section) code from non-trusted OS application 	& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS027 \\ \hline
 	15	& Execute protected (an OS application can protect its code section) code from trusted OS application 		& Access allowed									& OS027 \\ \hline
-	16 	& Read/Write its own peripherals from non-trusted OS application			& Access allowed															& OS083 \\ \hline
-	17 	& Read/Write other peripherals from non-trusted OS application			& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& OS209 \\ \hline
-	18 	& Read/Write peripherals from trusted OS application					& Access allowed															& OS209 \\ \hline
+	
+	16a 	& Read its own peripherals from non-trusted OS application				& Access allowed															& OS083 \\ \hline
+	16b 	& Write to its own peripherals from non-trusted OS application				& Access allowed															& OS083 \\ \hline
+	17c 	& Read other peripherals from non-trusted OS application			& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& according to OS083 \\ \hline
+	17d 	& Write to other peripherals from non-trusted OS application			& The OS shall call the protectionhook (if configured) with status E\_OS\_PROTECTION\_MEMORY	& according to OS083 \\ \hline
+	18a 	& Read its own peripherals from trusted OS application					& Access allowed															& OS209 \\ \hline
+	18b 	& Write its own peripherals from trusted OS application					& Access allowed															& OS209 \\ \hline
+	18c 	& Read other peripherals from trusted OS application					& Access allowed															& OS209 \\ \hline
+	18d 	& Write other peripherals from trusted OS application					& Access allowed															& OS209 \\ \hline
 	\end{supertabular}
 	
 	% AUTOSAR - TIMING PROTECTION %

@@ -75,6 +75,19 @@
 #define   BT_RST_PIN  AT91C_PIO_PA11
 #define   BT_ARM7_CMD_PIN  AT91C_PIO_PA27
 
+/**
+ *
+ * bt_isr_C_function
+ *
+ * This function is called after each caracter received by the usart port (bluetooth if configured).
+ * The goal is to call a function (defined by the user) when a frame is received.
+ * This is done in 2 steps : 
+ * - waiting for the number of caracters the frame is composed (this informations is in the first two bytes)
+ * - saving the n caracters and trigerring the user function (via interrupt ?)
+ *
+ */
+void bt_isr_C_function(void);
+
 void bt_init(void);
 void bt_clear_arm7_cmd(void);
 void bt_set_arm7_cmd(void);

@@ -40,18 +40,21 @@
 #endif
 
 #if TARGET_ARCH == ARCH_ARM
-  #define RANDOM_PERIPHERAL_ADRESS AT91C_TC0_RC /* i2c period */
+  #define OWN_PERIPHERAL_ADRESS AT91C_TC0_RC /* i2c period */
+  #define OTHER_PERIPHERAL_ADRESS AT91C_TC0_RC /* i2c period */
 #elif TARGET_ARCH == ARCH_PPC
   VAR(u32, OS_CODE) PITC = 0;
   // TODO : find register to the timer period for example
-  #define RANDOM_PERIPHERAL_ADRESS &PITC /* timer period */
+  #define OWN_PERIPHERAL_ADRESS &PITC /* i2c period */
+  #define OTHER_PERIPHERAL_ADRESS &PITC /* timer period */
 #elif TARGET_ARCH == ARCH_POSIX
   #define OS_START_SEC_VAR_32BIT
   #include "tpl_memmap.h"
   VAR(u32, OS_CODE) var_to_test_peripheral_access = 0;
   #define OS_STOP_SEC_VAR_32BIT
   #include "tpl_memmap.h"
-  #define RANDOM_PERIPHERAL_ADRESS &var_to_test_peripheral_access
+  #define OWN_PERIPHERAL_ADRESS &var_to_test_peripheral_access
+  #define OTHER_PERIPHERAL_ADRESS &var_to_test_peripheral_access
 #endif
 
 /**
@@ -130,13 +133,18 @@ TASK(t1_app_nontrusted1)
 #endif
   
   /* read/write access to peripheral by non-trusted OS application -> NO (OS209) */
-  var1_t1_app_nontrusted1 = *RANDOM_PERIPHERAL_ADRESS;
-  *RANDOM_PERIPHERAL_ADRESS = var2_t1_app_nontrusted1;
+  var1_t1_app_nontrusted1 = *OTHER_PERIPHERAL_ADRESS;
+  *OTHER_PERIPHERAL_ADRESS = var2_t1_app_nontrusted1;
 #if TARGET_ARCH == ARCH_POSIX
-  printf("3.t1_app_nontrusted1 - random peripheral adress value = %lu (should be 0)\n",var1_t1_app_nontrusted1);
+  printf("3.t1_app_nontrusted1 - other peripheral adress value = %lu (should be 0)\n",var1_t1_app_nontrusted1);
 #endif
   
-  // TODO (currently not supported by Trampoline) OS083 : read/write to their (non-trusted OS application) assigned peripherals -> YES 
+  /* OS083 : read/write to their (non-trusted OS application) assigned peripherals -> YES */
+  var1_t1_app_nontrusted1 = *OWN_PERIPHERAL_ADRESS;
+  *OWN_PERIPHERAL_ADRESS = var2_t1_app_nontrusted1;
+#if TARGET_ARCH == ARCH_POSIX
+  printf("3.t1_app_nontrusted1 - own peripheral adress value = %lu (should be 0)\n",var1_t1_app_nontrusted1);
+#endif
   
   WaitEvent(Event1);
   
@@ -171,13 +179,18 @@ TASK(t1_app_trusted1)
 #endif
   
   /* OS209 : read/write access to peripheral by trusted OS application -> YES */
-  var1_t1_app_trusted1 = *RANDOM_PERIPHERAL_ADRESS;
-  *RANDOM_PERIPHERAL_ADRESS = var2_t1_app_trusted1;
+  var1_t1_app_trusted1 = *OTHER_PERIPHERAL_ADRESS;
+  *OTHER_PERIPHERAL_ADRESS = var2_t1_app_trusted1;
 #if TARGET_ARCH == ARCH_POSIX
-  printf("6.t1_app_trusted1 - random peripheral adress value = %lu (should be 0)\n",var1_t1_app_trusted1);
+  printf("6.t1_app_trusted1 - other peripheral adress value = %lu (should be 0)\n",var1_t1_app_trusted1);
 #endif  
   
-  // TODO (currently not supported by Trampoline) OS083 : read/write to their (trusted OS application) assigned peripherals -> YES 
+  /* OS083 : read/write to their (trusted OS application) assigned peripherals -> YES */
+  var1_t1_app_trusted1 = *OWN_PERIPHERAL_ADRESS;
+  *OWN_PERIPHERAL_ADRESS = var2_t1_app_trusted1;
+#if TARGET_ARCH == ARCH_POSIX
+  printf("6.t1_app_trusted1 - own peripheral adress value = %lu (should be 0)\n",var1_t1_app_trusted1);
+#endif  
   
   SetEvent(t1_app_nontrusted1, Event1);
   
