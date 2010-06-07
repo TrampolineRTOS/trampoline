@@ -1,5 +1,5 @@
 /**
- * @file bluetooth2.oil
+ * @file radar.oil
  *
  * @section desc File description
  *
@@ -46,10 +46,9 @@ CPU test {
 
     OS config {
         STATUS = EXTENDED;
-        ERRORHOOK = FALSE;
-        PRETASKHOOK = FALSE;
-        APP_SRC = "bluetooth2.c"; 
-        APP_NAME = "tpl_bluetooth2";
+        SHUTDOWNHOOK = TRUE;
+        APP_SRC = "radar.c"; 
+        APP_NAME = "radar_exe";
         TRAMPOLINE_BASE_PATH = "../../../..";
         CFLAGS = "-g -c -ffreestanding -fsigned-char -mcpu=arm7tdmi -Os -Winline -Wall -Werror-implicit-function-declaration --param max-inline-insns-single=1000 -ffunction-sections -fdata-sections -std=gnu99"; //-MD ";
         ASFLAGS = "-g -mcpu=arm7tdmi-s --fatal-warnings ";
@@ -72,24 +71,26 @@ CPU test {
     };
 
     TASK task_idle {
-        PRIORITY = 1;
+        PRIORITY = 2;
         AUTOSTART = TRUE { APPMODE = std; };
         ACTIVATION = 1;
         SCHEDULE = FULL;
     };   
     
-    TASK task_check_bt {
-        PRIORITY = 2;
-        AUTOSTART = FALSE;
+    TASK task_send_bt {
+        PRIORITY = 1;
+        AUTOSTART = TRUE { APPMODE = std; };
         ACTIVATION = 1;
         SCHEDULE = FULL;
-    };
-     
+        RESOURCE = DisplayResource;
+    };     
+
     TASK task_command_motors {
-        PRIORITY = 3;
+        PRIORITY = 4;
         AUTOSTART = FALSE;
         ACTIVATION = 1;
         SCHEDULE = FULL;
+        RESOURCE = DisplayResource;
     };   
    
     COUNTER SystemCounter {
@@ -99,25 +100,13 @@ CPU test {
 		MINCYCLE = 1; 
     };
 	
-	ALARM Alarm1{
-		COUNTER = SystemCounter;
-		ACTION = ACTIVATETASK {
-			TASK = task_check_bt;
-		};
-        AUTOSTART = TRUE {
-            ALARMTIME = 200;
-            CYCLETIME = 10; //each 100 ms.
-            APPMODE = std;
-		};
-	};
-	
 	ALARM Alarm2{
 		COUNTER = SystemCounter;
 		ACTION = ACTIVATETASK {
 			TASK = task_command_motors;
 		};
         AUTOSTART = TRUE {
-            ALARMTIME = 200;
+            ALARMTIME = 1;
             CYCLETIME = 10; //each 100 ms.
             APPMODE = std;
 		};
@@ -128,6 +117,16 @@ CPU test {
 		PRIORITY = 1;
 		SOURCE = button_stop;
    };
+   ISR isr_bluetooth {
+       CATEGORY = 2;
+		PRIORITY = 1;
+		SOURCE = it_bluetooth;
+   };
+   
+   RESOURCE DisplayResource{
+		RESOURCEPROPERTY = STANDARD;
+	};
+   
 };
 
-/* End of file bluetooth2.oil */
+/* End of file radar.oil */
