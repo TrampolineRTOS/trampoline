@@ -1,0 +1,119 @@
+/**
+ * @file littleTrain2.oil
+ *
+ * @section desc File description
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline is copyright (c) IRCCyN 2005-2007
+ * Trampoline is protected by the French intellectual property law.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; version 2
+ * of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+
+OIL_VERSION = "2.5" : "litteTrain2" ;
+
+IMPLEMENTATION trampoline {
+    TASK {
+        UINT32 STACKSIZE = 500 ;
+        UINT32 PRIORITY = 1 ;
+    } ;
+    ISR {
+        UINT32 STACKSIZE = 500 ;
+    } ;
+};
+
+CPU test {
+
+    OS config {
+        STATUS = EXTENDED;
+        SHUTDOWNHOOK = TRUE;
+        APP_SRC = "littleTrain2.c"; 
+        APP_NAME = "littleTrain2_exe";
+        TRAMPOLINE_BASE_PATH = "../../../..";
+        CFLAGS = "-g -c -ffreestanding -fsigned-char -mcpu=arm7tdmi -Os -Winline -Wall -Werror-implicit-function-declaration --param max-inline-insns-single=1000 -ffunction-sections -fdata-sections -std=gnu99"; //-MD ";
+        ASFLAGS = "-g -mcpu=arm7tdmi-s --fatal-warnings ";
+        LDFLAGS = "-g --cref --allow-multiple-definition --gc-sections";
+        LDFLAGS = "-L/usr/local/crossgcc/lib/gcc/arm-elf/4.2.3 -lgcc -L/usr/local/crossgcc/arm-elf/lib -lc";
+        SYSTEM_CALL = TRUE;
+        
+        COMPILER = "arm-elf-gcc";
+        ASSEMBLER = "arm-elf-as";
+        LINKER = "arm-elf-ld";
+        MEMMAP = TRUE{
+          COMPILER = gcc;
+          LINKER = gnu_ld { SCRIPT = "script.ld"; };
+          ASSEMBLER = gnu_as;
+          MEMORY_PROTECTION = FALSE;
+        };
+    } ;
+
+    APPMODE std {
+    };
+
+    TASK task_idle {
+        PRIORITY = 2;
+        AUTOSTART = TRUE { APPMODE = std; };
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };   
+    
+    TASK task_command_motors {
+        PRIORITY = 4;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };   
+   
+    COUNTER SystemCounter {
+       SOURCE = it_timer1;
+       MAXALLOWEDVALUE = 2000;
+		TICKSPERBASE = 10;
+		MINCYCLE = 1; 
+    };
+	
+	ALARM Alarm2{
+		COUNTER = SystemCounter;
+		ACTION = ACTIVATETASK {
+			TASK = task_command_motors;
+		};
+        AUTOSTART = TRUE {
+            ALARMTIME = 1;
+            CYCLETIME = 10; //each 100 ms.
+            APPMODE = std;
+		};
+	};
+
+   ISR isr_button_stop {
+       CATEGORY = 2;
+		PRIORITY = 1;
+		SOURCE = button_stop;
+   };
+   ISR isr_bluetooth {
+       CATEGORY = 2;
+		PRIORITY = 1;
+		SOURCE = it_bluetooth;
+   };
+      
+};
+
+/* End of file littleTrain2.oil */
