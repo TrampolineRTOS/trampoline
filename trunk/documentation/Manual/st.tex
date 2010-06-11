@@ -1,0 +1,92 @@
+
+
+
+%% HEAD SUPERTABULAR %%
+\rowcolors{1}{light-gray}{white}
+\newlength{\Li}\settowidth{\Li}{\textbf{Decimal}}
+\newlength{\Liii}\settowidth{\Liii}{(bootstrap  )}
+\newlength{\Lii}\settowidth{\Lii}{SCHEDULETABLE\_AUTOSTART }
+\tablefirsthead{ \textbf{Decimal Value} & \textbf{bit 5}  & \textbf{bit 4} & \textbf{bit 3} & \textbf{bit 2} & \textbf{bit 1} & \textbf{bit 0} & \textbf{Meaning} \\ \hline }
+\tablehead{ \rowcolor{white} \rowcolors{1}{light-gray}{white} \textbf{Decimal Value} & \textbf{bit 5}  & \textbf{bit 4} & \textbf{bit 3} & \textbf{bit 2} & \textbf{bit 1} & \textbf{bit 0} & \textbf{Meaning} \\ \hline  }
+\tabletail{ \hline } 
+\tablelasttail{}
+
+
+\chapter{Schedule Table Implementation}
+
+\section{The States of a Schedule Table}
+
+A schedule table always has a defined state. States include those found at page 42 of the AUTOSAR specifications 3.1 and others states used for internal management.
+
+Indeed, \textbf{bit 1} is the "autostart" bit. It's used when autostarted schedule tables have been declared in the OIL file. Goil generates schedule tables with SCHEDULETABLE\_AUTOSTART\_X (X can be RELATIVE, ABSOLUTE or SYNCHRON) state. At startup (in tpl\_init\_os()), the system starts autostarted schedule tables and resets the \textbf{bit 1}.
+
+\textbf{bit 4} is the "bootstrap" bit. It's used when the first expiry point of a schedule table is dated in more than \textbf{OsCounterMaxAllowedValue} ticks from the current date \footnote{As the \textit{$<$offset$>$} parameter of StartScheduleTableRel() cannot be greater than \textbf{OsCounterMaxAllowedValue} minus the \textbf{InitialOffset} of the schedule table (OS276), the first expiry point cannot be in more than \textbf{OsCounterMaxAllowedValue} ticks from the current date. Thus the "bootstrap" bit can set by StartScheduleTableAbs() only.}. It can happen when :
+	\begin{itemize}
+	\item the schedule table start ($<$tick\_val$>$) is after the current date and the first expiry point comes between the current date and $<$tick\_val$>$
+	\item $<$tick\_val$>$ is before the current date and the first expiry point comes after the current date
+	\end{itemize}
+
+The \textbf{bit 5} is the "asynchronous" bit. It tells the system that the schedule table is in asynchronous mode.\\
+
+\begin{center}
+\topcaption{\textcolor{white}{q}States of a schedule table } % Latex is weird, the table goes on the next page without the "\textcolor{white}{q}"
+\begin{supertabular}{p{\Li}|c|c|c|c|c|c|p{\Lii}|} 
+0	& 0	& 0	& 0 	& 0	& 0	& 0	& SCHEDULETABLE\_STOPPED  \\ 
+1	& 0	& 0	& 0 	& 0	& 0	& 1	& SCHEDULETABLE\_RUNNING  \\ 
+5	& 0	& 0	& 0 	& 1	& 0	& 1	& SCHEDULETABLE\_NEXT  \\  
+9	& 0	& 0	& 1 	& 0	& 0	& 1	& SCHEDULETABLE\_WAITING  \\  
+13	& 0	& 0	& 1 	& 1	& 0	& 1	& SCHEDULETABLE\_RUNNING\_AND\_SYNCHRONOUS \\ %\hline \hline
+6	& 0	& 0	& 0 	& 1	& 1	& 0	& SCHEDULETABLE\_AUTOSTART \_ABSOLUTE  \\ 
+10	& 0	& 0	& 1 	& 0	& 1	& 0	& SCHEDULETABLE\_AUTOSTART \_RELATIVE  \\  
+14	& 0	& 0	& 1 	& 1	& 1	& 0	& SCHEDULETABLE\_AUTOSTART \_SYNCHRON  \\  \hline \hline
+16	& 0	& 1	& 0 	& 0	& 0	& 0	& SCHEDULETABLE\_BOOTSTRAP \\ 
+32	& 1	& 0	& 0 	& 0	& 0	& 0	& SCHEDULETABLE\_ASYNC  \\ 
+\end{supertabular} 
+\end{center}
+\label{schedtablestates}
+
+Figure  \ref{fig:STstates} shows how a schedule table goes from state to state.
+
+\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+   \centering
+   \includegraphics[width=6in]{pictures/STstates.pdf}  
+   \caption{States of a schedule table in Trampoline.}
+   \label{fig:STstates}
+\end{figure} 
+	
+\section{Processing a Schedule Table}
+
+Depending on the OIL file, GOIL generates one expiry point more than the number of expiry point delared by the User : the "finalize" expiry point. Indeed, the RUNNING state of a NEXT schedule table should be set at the finalize expiry point, thus, we have to add this expiry point to do it. For a periodic schedule table, the finalize expiry point helps to launch the first expiry point of the next period. The Figure below shows the processing schedule table petri net. \\%different expiry point actions and the one we've added for the finalize expiry point.
+
+As a schedule table is a time object, as an alarm, ...\\
+
+%figure showing that the tpl_process_schedtable() is the main function (launched by each expiry point of a schedule table). It increment the index of the expiry point, launch the action of the  index is incremented
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
