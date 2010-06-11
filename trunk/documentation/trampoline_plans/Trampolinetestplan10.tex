@@ -610,7 +610,7 @@ events are cleared. Service returns E\_OK  \\ \hline
 	32	& Action of a ST results in a SetEvent														& & \\ \hline
 	33	& Action of a ST results in a SetEvent on a basic task.				 							& error : An action can't set an Event to a basic task (Task t1 is a basic task).	& \\ \hline	
 	34	& Action of a ST results in a SetEvent on a suspended task. 										& ErrorHook is launched & \\ \hline	
-	35 	& If single-shot ST, Intial expiry point of a 'nexted' ST shall be launched at Final Expiry point + Final Delay + Initial Expiry point 	& & OS414 \\ \hline
+	35 	& If single-shot ST, Intial expiry point of a 'nexted' ST shall be launched at Final Expiry point + Final Delay + Initial Expiry point (as there's a "finalize" expiry point, this test case as to check when Initial Expiry point is different AND equal to zero.)	& & OS414 \\ \hline
 	36 	& A ST restarts from the begging (offset=0)													& & OS428 \\ \hline
 	37	& If repeating ST, Initial Expiry Point shall be launched at Final Expiry Point + Final Delay + Initial Offset 		& & OS194 \\ \hline
 	38	& If repeating ST, an expiry point can be set to offset=0 and at offset=LENGTH-1						& &  OS002 \\ \hline

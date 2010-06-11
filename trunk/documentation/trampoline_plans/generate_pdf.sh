@@ -20,7 +20,21 @@ then
 	oil=1
 elif [ "$1" = "clean" ] 
 then
-	echo "Cleaning temporary files..."
+	echo "Cleaning temporary TeX files..."
+	#Trash Aux Files
+	rm Trampolinetest*.aux
+	rm Trampolinetest*.blg
+	rm Trampolinetest*.log
+	rm Trampolinetest*.out
+	rm Trampolinetest*.toc
+	
+	rm Trampolinetest*.bbl
+	rm Trampolinetest*.ent
+	rm Trampolinetest*.gz
+	
+elif [ "$1" = "cleanall" ] 
+then
+	echo "Cleaning all temporary files..."
 	#Trash Aux Files
 	rm Trampolinetest*.aux
 	rm Trampolinetest*.blg

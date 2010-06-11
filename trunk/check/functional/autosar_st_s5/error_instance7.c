@@ -45,10 +45,10 @@ static void test_error_instance7(void)
 {
 	StatusType result_inst_1;
 	
-	SCHEDULING_CHECK_INIT(31);
+	SCHEDULING_CHECK_INIT(34);
 	result_inst_1 = OSErrorGetServiceId();
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(31,OSServiceId_StopScheduleTable , result_inst_1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(31, sched2 , OSError_StopScheduleTable_ScheduleTableID());
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(34,OSServiceId_StopScheduleTable , result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(34, sched2 , OSError_StopScheduleTable_ScheduleTableID());
 	
 }
 

@@ -53,6 +53,7 @@ IMPLEMENTATION trampoline {
   APP_SRC = "autosar_st_s5.c";
   APP_SRC = "task1_instance.c";
   APP_SRC = "task2_instance.c";
+  APP_SRC = "task3_instance.c";
   APP_SRC = "error_instance1.c";
   APP_SRC = "error_instance2.c";
   APP_SRC = "error_instance3.c";
@@ -87,6 +88,13 @@ IMPLEMENTATION trampoline {
   ACTIVATION = 1;
   SCHEDULE = FULL;
   EVENT = Event1;
+  EVENT = Event2;
+ };
+ TASK t3 {
+  AUTOSTART = FALSE ;
+  PRIORITY = 2;
+  ACTIVATION = 1;
+  SCHEDULE = FULL;
  };
  COUNTER Software_Counter{
   MAXALLOWEDVALUE = 100;
@@ -128,13 +136,23 @@ IMPLEMENTATION trampoline {
   PERIODIC = FALSE;
   LENGTH = 2;
   EXPIRY_POINT sched3_exp1 {
-  OFFSET = 0;
-   ACTION = ACTIVATETASK {
+   OFFSET = 0;
+   ACTION = SETEVENT {
     TASK = t2;
+    EVENT = Event2;
+   };
+  };
+  EXPIRY_POINT sched3_exp2 {
+   OFFSET = 1;
+   ACTION = ACTIVATETASK {
+    TASK = t3;
    };
   };
  };
  EVENT Event1{
+  MASK = AUTO;
+ };
+ EVENT Event2{
   MASK = AUTO;
  };
  

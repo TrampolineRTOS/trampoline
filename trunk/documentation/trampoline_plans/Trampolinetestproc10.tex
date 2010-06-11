@@ -2572,12 +2572,19 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 	ErrorHook	& OSServiceId\_ NextScheduleTable\_ ScheduleTableID()						& sched\_2											& \\ \hline
 	ErrorHook	& OSServiceId\_ NextScheduleTable\_ ScheduleTableID()						& sched\_3											& \\ \hline
 	
-	t1		& IncrementCounter(Software\_Counter)										& E\_OK												& \\ \hline
+	t1		& IncrementCounter(Software\_Counter)										& E\_OK												& 35 \\ \hline
 	t1		& GetScheduleTableStatus(sched1, \&STStatusType)							& E\_OK, STStatusType = SCHEDULETABLE\_STOPPED		& \\ \hline
 	t1		& GetScheduleTableStatus(sched2, \&STStatusType)							& E\_OK, STStatusType = SCHEDULETABLE\_RUNNING		& \\ \hline
+	
+	%Add sched3 as next of sched2 before finishing. Wait for one period of sched3 to be sure it's ok
+	t1		& NextScheduleTable(sched2 , sched3)										& E\_OK												& \\ \hline
+	
 	t1		& IncrementCounter(Software\_Counter)										& E\_OK												& 35 \\ \hline
+	t2		& WaitEvent(Event2)														& E\_OK												& \\ \hline
 	t2		& TerminateTask()														& 													& \\ \hline
+
 	t1		& GetScheduleTableStatus(sched2, \&STStatusType)							& E\_OK, STStatusType = SCHEDULETABLE\_STOPPED		& \\ \hline
+	t1		& GetScheduleTableStatus(sched3, \&STStatusType)							& E\_OK, STStatusType = SCHEDULETABLE\_RUNNING		& \\ \hline	
 	t1		& StopScheduleTable(sched2)												& E\_OS\_NOFUNC										& 12 \\ \hline
 	ErrorHook	& OSErrorGetServiceId()													& OSServiceId\_ StopScheduleTable						& \\ \hline
 	ErrorHook	& OSServiceId\_ StopScheduleTable\_ ScheduleTableID()						& sched\_2											& \\ \hline
@@ -2585,6 +2592,13 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 	ErrorHook	& OSErrorGetServiceId()													& OSServiceId\_ NextScheduleTable						& \\ \hline
 	ErrorHook	& OSServiceId\_ NextScheduleTable\_ ScheduleTableID()						& sched\_2											& \\ \hline
 	ErrorHook	& OSServiceId\_ NextScheduleTable\_ ScheduleTableID()						& sched\_2											& \\ \hline
+
+	t1		& IncrementCounter(Software\_Counter)										& E\_OK												& \\ \hline
+	t3		& TerminateTask()														& 													& \\ \hline
+	t1		& GetScheduleTableStatus(sched3, \&STStatusType)							& E\_OK, STStatusType = SCHEDULETABLE\_RUNNING		& \\ \hline
+	t1		& IncrementCounter(Software\_Counter)										& E\_OK												& \\ \hline
+	t1		& GetScheduleTableStatus(sched3, \&STStatusType)							& E\_OK, STStatusType = SCHEDULETABLE\_STOPPED		& \\ \hline
+
 
 	t1		& TerminateTask()														& 													& \\ \hline
 	\end{supertabular}\\
