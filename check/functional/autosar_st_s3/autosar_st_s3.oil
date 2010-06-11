@@ -68,104 +68,95 @@ IMPLEMENTATION trampoline {
 
     APPMODE std {};
 
-    TASK t1 {
-        AUTOSTART = TRUE { APPMODE = std ; } ;
-        PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
+  TASK t1 {
+    AUTOSTART = TRUE { APPMODE = std ; } ;
+    PRIORITY = 1;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+  TASK t2 {
+    AUTOSTART = FALSE ;
+    PRIORITY = 2;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    EVENT = Event1;
+  };
+  TASK t3 {
+    AUTOSTART = FALSE ;
+    PRIORITY = 3;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    EVENT = Event1;
+  };
+  TASK t4 {
+    AUTOSTART = FALSE ;
+    PRIORITY = 3;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+  TASK t5 {
+    AUTOSTART = FALSE ;
+    PRIORITY = 4;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+  COUNTER Software_Counter{
+    MAXALLOWEDVALUE = 100;
+    TICKSPERBASE = 1;
+    MINCYCLE = 1;
+    TYPE = SOFTWARE;
+  };
+  SCHEDULETABLE sched1 {
+    COUNTER = Software_Counter;
+    AUTOSTART = FALSE ;
+    LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+    PERIODIC = FALSE;
+    LENGTH = 3;
+    EXPIRY_POINT first_point {
+      OFFSET = 0;
+      ACTION = SETEVENT {
+        TASK = t3;
+        EVENT = Event1;
+      };
+      ACTION = ACTIVATETASK {
+        TASK = t5;
+      };
     };
-	
-	TASK t2 {
-        AUTOSTART = FALSE ;
-        PRIORITY = 2;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-		EVENT = Event1;
+    EXPIRY_POINT second_point {
+      OFFSET = 1;
+      ACTION = SETEVENT {
+        TASK = t3;
+        EVENT = Event1;
+      };
+      ACTION = ACTIVATETASK {
+        TASK = t4;
+      };
     };
-	
-	TASK t3 {
-        AUTOSTART = FALSE ;
-        PRIORITY = 3;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-		EVENT = Event1;
+  };
+  SCHEDULETABLE sched2 {
+    COUNTER = Software_Counter;
+    AUTOSTART = FALSE ;
+    LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
+    PERIODIC = FALSE;
+    LENGTH = 1;
+    EXPIRY_POINT many_things {
+      OFFSET = 1;
+      ACTION = SETEVENT {
+        TASK = t3;
+        EVENT = Event1;
+      };
+      ACTION = SETEVENT {
+        TASK = t2;
+        EVENT = Event1;
+      };
+      ACTION = ACTIVATETASK {
+        TASK = t2;
+      };
     };
-	
-	TASK t4 {
-        AUTOSTART = FALSE ;
-        PRIORITY = 3;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
-	
-	TASK t5 {
-        AUTOSTART = FALSE ;
-        PRIORITY = 4;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
-	
-	COUNTER Software_Counter{
-		MAXALLOWEDVALUE = 100;
-		TICKSPERBASE = 1;
-		MINCYCLE = 1;
-		TYPE = SOFTWARE;
-	};
-	
-    SCHEDULETABLE sched1 {
-        COUNTER = Software_Counter;
-        AUTOSTART = FALSE ;
-        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
-        PERIODIC = FALSE;
-        LENGTH = 3;
-        EXPIRY_POINT first_point {
-            OFFSET = 0;
-            ACTION = SETEVENT {
-                TASK = t3;
-		      	EVENT = Event1;
-            };
-		    ACTION = ACTIVATETASK {
-                TASK = t5;
-            };
-        };
-        EXPIRY_POINT second_point {
-            OFFSET = 1;
-            ACTION = SETEVENT {
-                TASK = t3;
-		      	EVENT = Event1;
-            };
-            ACTION = ACTIVATETASK {
-                TASK = t4;
-            };
-        };
-    };
-	
-    SCHEDULETABLE sched2 {
-        COUNTER = Software_Counter;
-        AUTOSTART = FALSE ;
-        LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION = FALSE ;
-        PERIODIC = FALSE;
-        LENGTH = 1;
-        EXPIRY_POINT many_things {
-            OFFSET = 1;
-            ACTION = SETEVENT {
-                TASK = t3;
-                EVENT = Event1;
-            };
-            ACTION = SETEVENT {
-                TASK = t2;
-                EVENT = Event1;
-            };
-            ACTION = ACTIVATETASK {
-                TASK = t2;
-            };
-        };
-    };
-	
-	EVENT Event1{
-		MASK = AUTO;
-	};
-	
+  };
+  EVENT Event1{
+    MASK = AUTO;
+  };
 };
 
 /* End of file autosar_st_s3.oil */

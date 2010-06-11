@@ -38,20 +38,25 @@
 #include "Os.h"
 
 DeclareEvent(Event1);
+DeclareEvent(Event2);
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
 static void test_t2_instance(void)
 {
-	StatusType result_inst_1, result_inst_2;
+	StatusType result_inst_1, result_inst_2, result_inst_3;
 	
 	SCHEDULING_CHECK_INIT(13);
 	result_inst_1 = WaitEvent(Event1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(27,E_OK, result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(28,E_OK, result_inst_1);
 	
-	SCHEDULING_CHECK_INIT(28);
-	result_inst_2 = TerminateTask();
-	SCHEDULING_CHECK_AND_EQUAL_INT(28,E_OK, result_inst_2);
+  SCHEDULING_CHECK_INIT(29);
+	result_inst_2 = WaitEvent(Event2);
+	SCHEDULING_CHECK_AND_EQUAL_INT(29,E_OK, result_inst_2);
+  
+	SCHEDULING_CHECK_INIT(30);
+	result_inst_3 = TerminateTask();
+	SCHEDULING_CHECK_AND_EQUAL_INT(30,E_OK, result_inst_3);
 		
 }
 

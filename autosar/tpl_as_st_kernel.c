@@ -48,7 +48,6 @@ FUNC(tpl_tick, OS_CODE) tpl_min(
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-
 /**
  * @def INVALID_SCHEDULETABLE
  *
@@ -530,7 +529,7 @@ FUNC(tpl_status, OS_CODE)  tpl_start_schedule_table_abs_service(
 			/* if <tick_val> is after current_date and first expiry point comes between current_date and <tick_val>
 				or if <tick_val> is before current_date and first expiry point comes after current_date
 				so, bootstrap is needed */
-			if ( ( (date > cnt->max_allowed_value) && ((date - cnt->max_allowed_value - 1) > cnt->current_date) ) ||
+			if ( ( (date > cnt->max_allowed_value) && ((date - (cnt->max_allowed_value + 1)) > cnt->current_date) ) ||
 				 ( (tick_val < cnt->current_date) && (date > cnt->current_date) ) )
 			{
 				st->b_desc.state = st->b_desc.state | SCHEDULETABLE_BOOTSTRAP;

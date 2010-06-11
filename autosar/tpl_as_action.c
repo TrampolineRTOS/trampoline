@@ -110,26 +110,32 @@ FUNC(tpl_status, OS_CODE) tpl_action_finalize_schedule_table(
 		/*  reset the state of the current schedule table               */
 		st->state = SCHEDULETABLE_STOPPED;
 		
-		/*  Get the next expiry point                                        */
+    /*  Get the next expiry point                                        */
 		next_ep =
 		((P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))next->b_desc.stat_part)->expiry[0];
 		
 		/* check if expiry point at offset=0 */
 		if (next_ep->offset == 0)
 		{
-			/*launch all the actions of the expiry point*/
+      /*launch all the actions of the expiry point*/
 			for (i = 0; i < next_ep->count; i++)
 			{
 				action_desc = (next_ep->actions)[i];
 				need_resched |= TRAMPOLINE_STATUS_MASK & (action_desc->action)(action_desc);
 			}			
-		}			
-		
-		/*Increment index because the first one has just been launched*/
-		((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index = 1;
-		
-		/*  There is a next schedule table set, start it                */
-		next->b_desc.date = next->b_desc.stat_part->counter->current_date + next_ep->offset;
+
+      /* Increment index because the first one has just been launched */
+      next->index = 1;
+      
+      /* Change next expiry point */
+      next_ep =
+      ((P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))next->b_desc.stat_part)->expiry[1];
+      
+		}	    
+      
+    /*  There is a next schedule table set, start it                */
+    next->b_desc.date = next->b_desc.stat_part->counter->current_date + next_ep->offset;
+    
 		
 		/*  MISRA RULE 45 VIOLATION: a tpl_schedtable* is cast to a
 		 tpl_time_obj*. This cast behaves correctly because the

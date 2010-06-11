@@ -37,6 +37,7 @@
 
 TestRef AutosarSTTest_seq5_t1_instance(void);
 TestRef AutosarSTTest_seq5_t2_instance(void);
+TestRef AutosarSTTest_seq5_t3_instance(void);
 TestRef AutosarSTTest_seq5_error_instance1(void);
 TestRef AutosarSTTest_seq5_error_instance2(void);
 TestRef AutosarSTTest_seq5_error_instance3(void);
@@ -123,5 +124,10 @@ TASK(t1)
 TASK(t2)
 {
 	TestRunner_runTest(AutosarSTTest_seq5_t2_instance());
+}
+
+TASK(t3)
+{
+	TestRunner_runTest(AutosarSTTest_seq5_t3_instance());
 }
 /* End of file autosar_st_s5/autosar_st_s5.c */

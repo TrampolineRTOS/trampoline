@@ -120,9 +120,9 @@ static void test_t1_instance(void)
 	result_inst_16 = NextScheduleTable(sched2, sched3);
 	SCHEDULING_CHECK_AND_EQUAL_INT(23,E_OS_NOFUNC, result_inst_16);
 	
-	SCHEDULING_CHECK_INIT(24);
+  SCHEDULING_CHECK_INIT(24);
 	result_inst_17 = IncrementCounter(Software_Counter);
-	/*offset = 2+offset_sched =0+offset_sched -> check lauch action if action of sched_2 exists at offset=0*/
+	/*offset = 2+offset_sched =0+offset_sched2 -> check lauch action if action of sched_2 exists at offset=0*/
 	SCHEDULING_CHECK_AND_EQUAL_INT(24,E_OK, result_inst_17);
 	
 	SCHEDULING_CHECK_INIT(25);
@@ -135,23 +135,56 @@ static void test_t1_instance(void)
 	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(26, SCHEDULETABLE_RUNNING , ScheduleTableStatusType_inst_4);
 	SCHEDULING_CHECK_AND_EQUAL_INT(26,E_OK, result_inst_19);
 	
-	SCHEDULING_CHECK_INIT(27);
+  /* Add sched3 as next of sched2 before finishing. */
+  SCHEDULING_CHECK_INIT(27);
+	result_inst_17 = NextScheduleTable(sched2, sched3);
+	SCHEDULING_CHECK_AND_EQUAL_INT(27,E_OK, result_inst_17);
+  
+  
+	SCHEDULING_CHECK_INIT(28);
 	result_inst_20 = IncrementCounter(Software_Counter);
-	/*offset = 1+offset_sched -> setevent to t2*/
-	SCHEDULING_CHECK_AND_EQUAL_INT(28,E_OK, result_inst_20);
+	/*offset = 1+offset_sched2 = 0+offset_sched3 -> setevent(Event1,t2) by sched2 -> setevent(Event2,t2) by sched3*/
+	SCHEDULING_CHECK_AND_EQUAL_INT(30,E_OK, result_inst_20);
 	
-	SCHEDULING_CHECK_INIT(29);
+	SCHEDULING_CHECK_INIT(31);
 	result_inst_21 = GetScheduleTableStatus(sched2, &ScheduleTableStatusType_inst_5);
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(29, SCHEDULETABLE_STOPPED , ScheduleTableStatusType_inst_5);
-	SCHEDULING_CHECK_AND_EQUAL_INT(29,E_OK, result_inst_21);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(31, SCHEDULETABLE_STOPPED , ScheduleTableStatusType_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT(31,E_OK, result_inst_21);
 	
-	SCHEDULING_CHECK_INIT(30);
+  SCHEDULING_CHECK_INIT(32);
+	result_inst_21 = GetScheduleTableStatus(sched3, &ScheduleTableStatusType_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(32, SCHEDULETABLE_RUNNING , ScheduleTableStatusType_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT(32,E_OK, result_inst_21);
+  
+	SCHEDULING_CHECK_INIT(33);
 	result_inst_22 = StopScheduleTable(sched2);
-	SCHEDULING_CHECK_AND_EQUAL_INT(31,E_OS_NOFUNC, result_inst_22);
+	SCHEDULING_CHECK_AND_EQUAL_INT(34,E_OS_NOFUNC, result_inst_22);
 	
-	SCHEDULING_CHECK_INIT(32);
+	SCHEDULING_CHECK_INIT(35);
 	result_inst_23 = NextScheduleTable(sched2, sched2);
-	SCHEDULING_CHECK_AND_EQUAL_INT(33,E_OS_NOFUNC, result_inst_23);
+	SCHEDULING_CHECK_AND_EQUAL_INT(36,E_OS_NOFUNC, result_inst_23);
+  
+  /* Wait for one period of sched3 to be sure it's ok. */
+  SCHEDULING_CHECK_INIT(37);
+	result_inst_17 = IncrementCounter(Software_Counter);
+	/*offset = 1+offset_sched3 -> activatetask(t3) */
+	SCHEDULING_CHECK_AND_EQUAL_INT(38,E_OK, result_inst_17);
+  
+	SCHEDULING_CHECK_INIT(39);
+	result_inst_21 = GetScheduleTableStatus(sched3, &ScheduleTableStatusType_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(39, SCHEDULETABLE_RUNNING , ScheduleTableStatusType_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT(39,E_OK, result_inst_21);
+  
+  SCHEDULING_CHECK_INIT(40);
+	result_inst_17 = IncrementCounter(Software_Counter);
+	/*offset = 2+offset_sched3 -> stop schedule table */
+	SCHEDULING_CHECK_AND_EQUAL_INT(40,E_OK, result_inst_17);
+  
+	SCHEDULING_CHECK_INIT(41);
+	result_inst_21 = GetScheduleTableStatus(sched3, &ScheduleTableStatusType_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(41, SCHEDULETABLE_STOPPED , ScheduleTableStatusType_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT(41,E_OK, result_inst_21);
+  
 	
 }
 

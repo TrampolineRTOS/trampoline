@@ -1,5 +1,5 @@
 /**
- * @file autosar_st_s5/error_instance8.c
+ * @file autosar_st_s5/task3_instance.c
  *
  * @section desc File description
  *
@@ -32,36 +32,32 @@
  * $URL$
  */
 
-/*Instance 8 of error*/
+/*Instance of task t3*/
 
 #include "embUnit.h"
 #include "Os.h"
 
-DeclareScheduleTable(sched2);
-
 /*test case:test the reaction of the system called with 
  an activation of a task*/
-static void test_error_instance8(void)
+static void test_t3_instance(void)
 {
 	StatusType result_inst_1;
-	
-	SCHEDULING_CHECK_INIT(36);
-	result_inst_1 = OSErrorGetServiceId();
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(36,OSServiceId_NextScheduleTable , result_inst_1);
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(36, sched2 , OSError_NextScheduleTable_ScheduleTableID());
-	SCHEDULING_CHECK_AND_EQUAL_INT(36, sched2 , OSError_NextScheduleTable_ScheduleTableID2());
-	
+	  
+	SCHEDULING_CHECK_INIT(38);
+	result_inst_1 = TerminateTask();
+	SCHEDULING_CHECK_AND_EQUAL_INT(38,E_OK, result_inst_1);
+		
 }
 
 /*create the test suite with all the test cases*/
-TestRef AutosarSTTest_seq5_error_instance8(void)
+TestRef AutosarSTTest_seq5_t3_instance(void)
 {
 	EMB_UNIT_TESTFIXTURES(fixtures) {
-		new_TestFixture("test_error_instance8",test_error_instance8)
+		new_TestFixture("test_t3_instance",test_t3_instance)
 	};
 	EMB_UNIT_TESTCALLER(AutosarSTTest,"AutosarSTTest_sequence5",NULL,NULL,fixtures);
 	
 	return (TestRef)&AutosarSTTest;
 }
 
-/* End of file autosar_st_s5/error_instance8.c */
+/* End of file autosar_st_s5/task3_instance.c */
