@@ -36,6 +36,7 @@
 #include "tpl_machine_interface.h"
 #include "tpl_dow.h"
 
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -92,12 +93,13 @@ FUNC(void, OS_CODE) tpl_adjust_next_expiry_point(
     ((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->deviation;
 	
   VAR(tpl_tick, AUTOMATIC) adjustment;
-
-	/* if last expiry point */
+  
+  /* if last expiry point */
   if ( last_expiry_point == TRUE )
   {
     /* Get the next expiry point */
     next_ep = (schedtable->expiry)[0];
+    
     /* Adjust it according to deviation */
     if ( deviation <= 0 )
     {
@@ -128,8 +130,10 @@ FUNC(void, OS_CODE) tpl_adjust_next_expiry_point(
   else
   /* if not last expiry point */
   {
+    
     /* Get the next expiry point */
     next_ep = (schedtable->expiry)[index+1];
+    
     /* Adjust it according to deviation */
     if ( deviation <= 0 )
     {
@@ -166,6 +170,12 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
   P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA) schedtable =
     (P2VAR(tpl_schedtable_static, AUTOMATIC, OS_APPL_DATA))st->stat_part;
 	
+  /*  MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
+	 tpl_schedtable*. This cast behaves correctly because the
+	 first member of tpl_schedula_table is a tpl_time_obj            */
+	P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) next =
+  ((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->next;
+  
   /*  Get the current index                                               */
   /*  MISRA RULE 45 VIOLATION: a tpl_time_obj* is cast to a
       tpl_schedtable*. This cast behaves correctly because the first member
@@ -195,69 +205,67 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
 	
   index = ((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index;
 	
+  /*
+   * reset the offset of last expiry point to its default value, because
+   * adjustment for synchronisation of this expiry point has been done
+   */
+  (schedtable->expiry)[index_temp]->sync_offset = (schedtable->expiry)[index_temp]->offset;
+  
   /*if finalize expiry point and if repeating st hasn't got offset at 0 */
-  if (index_temp == (schedtable->count - 1))
+  if ( (index_temp == (schedtable->count - 1)) && ((schedtable->periodic == FALSE) || (next != NULL)))
   {
-    /*
-     * reset the offset of last expiry point to its default value, because
-     * adjustment for synchronisation of this expiry point has already been
-     * done
-     */
-		(schedtable->expiry)[index_temp]->sync_offset =
-      (schedtable->expiry)[index_temp]->offset;
+    /* do nothing */
   }
   else
   {
-    /* change state of the schedule table */
-    if (schedtable->sync_strat != SCHEDTABLE_NO_SYNC)
+    if (index != (u16)(-1))
     {
-      /*
-       * if deviation is less than the configured precision,
-       * the schedule table is considered synchronized
-       * if the schedule table is asynchronous (started or became),
-			 * the schedule table is configured as RUNNING
-       */
-      if ((st->state & SCHEDULETABLE_ASYNC) == SCHEDULETABLE_ASYNC)
+    
+      /* change state of the schedule table */
+      if (schedtable->sync_strat != SCHEDTABLE_NO_SYNC)
       {
-        st->state = SCHEDULETABLE_RUNNING | SCHEDULETABLE_ASYNC;
-      }
-      else
-      {
-        if ( abs_deviation <= (schedtable->precision) )
+        /*
+         * if deviation is less than the configured precision,
+         * the schedule table is considered synchronized
+         * if the schedule table is asynchronous (started or became),
+         * the schedule table is configured as RUNNING
+         */
+        if ((st->state & SCHEDULETABLE_ASYNC) == SCHEDULETABLE_ASYNC)
         {
-          st->state = SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS;
+          st->state = SCHEDULETABLE_RUNNING | SCHEDULETABLE_ASYNC;
         }
         else
         {
-          st->state = SCHEDULETABLE_RUNNING;
+          if ( abs_deviation <= (schedtable->precision) )
+          {
+            st->state = SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS;
+          }
+          else
+          {
+            st->state = SCHEDULETABLE_RUNNING;
+          }
         }
       }
-    }
-    else
-    {
-      st->state = SCHEDULETABLE_RUNNING;
-    }
-						
-    /*
-     * reset the offset of last expiry point to its default value, because
-     * adjustment for synchronisation of this expiry point has been done
-     */
-    (schedtable->expiry)[index_temp]->sync_offset =
-      (schedtable->expiry)[index_temp]->offset;		
-
-    /* adjust next expiry point if EXPLICIT schedule table and not asynchronous */
-    if ((schedtable->sync_strat == SCHEDTABLE_EXPLICIT_SYNC) &&
-        ((st->state & SCHEDULETABLE_ASYNC) != SCHEDULETABLE_ASYNC) &&
-        (abs_deviation > (schedtable->precision)))
-    {
-      tpl_adjust_next_expiry_point(
-        st,
-        index, 
-        ((index_temp == (schedtable->count - 2)) &&
-         (schedtable->periodic == TRUE))
-      );
-    }
+      else
+      {
+        st->state = SCHEDULETABLE_RUNNING;
+      }
+              
+      /* adjust next expiry point if EXPLICIT schedule table and not asynchronous */
+      if ((schedtable->sync_strat == SCHEDTABLE_EXPLICIT_SYNC) &&
+          ((st->state & SCHEDULETABLE_ASYNC) != SCHEDULETABLE_ASYNC) &&
+          (abs_deviation > (schedtable->precision)))
+      {
+        tpl_adjust_next_expiry_point(
+          st,
+          index, 
+          (( (index == (schedtable->count - 2)) ) &&
+           (schedtable->periodic == TRUE))
+        );
+      }
 		
+    }
+    
     /*  Prepare the next expiry point                                       */
     index++;
     /*

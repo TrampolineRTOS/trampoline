@@ -26,17 +26,20 @@ Indeed, \textbf{bit 1} is the "autostart" bit. It's used when autostarted schedu
 	\item $<$tick\_val$>$ is before the current date and the first expiry point comes after the current date
 	\end{itemize}
 
-The Figure \ref{fig:bootstrapexample} below shows the bootstrap for the first item.
+Figure \ref{fig:bootstrapexample} below shows a bootstrap example for the first item.
 
-\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+\begin{figure}[H] %  figure placement: here, top, bottom, or page
    \centering
    \includegraphics[width=6in]{pictures/BootstrapExample.pdf}  
    \caption{Bootstrap example}
    \label{fig:bootstrapexample}
 \end{figure} 
 
-The \textbf{bit 5} is the "asynchronous" bit. It tells the system that the schedule table is in asynchronous mode.\\
+\textbf{bit 5} is the "asynchronous" bit. It tells the system that the schedule table is in asynchronous mode.\\
+Thus, the different states of a schedule table are described in Table \ref{schedtablestates} below.
 
+
+\begin{table}[H]
 \begin{center}
 \topcaption{\textcolor{white}{q}States of a schedule table } % Latex is weird, the table goes on the next page without the "\textcolor{white}{q}"
 \begin{supertabular}{p{\Li}|c|c|c|c|c|c|p{\Lii}|} 
@@ -44,7 +47,7 @@ The \textbf{bit 5} is the "asynchronous" bit. It tells the system that the sched
 1	& 0	& 0	& 0 	& 0	& 0	& 1	& SCHEDULETABLE\_RUNNING  \\ 
 5	& 0	& 0	& 0 	& 1	& 0	& 1	& SCHEDULETABLE\_NEXT  \\  
 9	& 0	& 0	& 1 	& 0	& 0	& 1	& SCHEDULETABLE\_WAITING  \\  
-13	& 0	& 0	& 1 	& 1	& 0	& 1	& SCHEDULETABLE\_RUNNING\_AND\_SYNCHRONOUS \\ %\hline \hline
+13	& 0	& 0	& 1 	& 1	& 0	& 1	& SCHEDULETABLE\_RUNNING\_AND\_SYNCHRONOUS \\ \hline \hline
 6	& 0	& 0	& 0 	& 1	& 1	& 0	& SCHEDULETABLE\_AUTOSTART \_ABSOLUTE  \\ 
 10	& 0	& 0	& 1 	& 0	& 1	& 0	& SCHEDULETABLE\_AUTOSTART \_RELATIVE  \\  
 14	& 0	& 0	& 1 	& 1	& 1	& 0	& SCHEDULETABLE\_AUTOSTART \_SYNCHRON  \\  \hline \hline
@@ -53,10 +56,11 @@ The \textbf{bit 5} is the "asynchronous" bit. It tells the system that the sched
 \end{supertabular} 
 \end{center}
 \label{schedtablestates}
+\end{table}
 
-Figure  \ref{fig:STstates} shows how a schedule table goes from state to state.
+Figure \ref{fig:STstates} shows how a schedule table goes from state to state.
 
-\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+\begin{figure}[H] %  figure placement: here, top, bottom, or page
    \centering
    \includegraphics[width=6in]{pictures/STstates.pdf}  
    \caption{States of a schedule table in Trampoline.}
@@ -65,24 +69,33 @@ Figure  \ref{fig:STstates} shows how a schedule table goes from state to state.
 	
 \section{Processing a Schedule Table}
 
-Depending on the OIL file, GOIL generates one expiry point more than the number of expiry point delared by the User : the "finalize" expiry point. Indeed, the RUNNING state of a NEXT schedule table should be set at the finalize expiry point, thus, we have to add this expiry point to do it. For a periodic schedule table, the finalize expiry point helps to launch the first expiry point of the next period. The Figure below shows the processing schedule table petri net. \\%different expiry point actions and the one we've added for the finalize expiry point.
+GOIL generates one expiry point more than the number of expiry point delared by the User : the "finalize" expiry point (see Figure \ref{fig:bootstrapexample}). Indeed, the RUNNING state of a "nexted" schedule table should be set at the finalize expiry point, thus, this expiry point is inserted to do it. For a periodic schedule table, the finalize expiry point helps to launch the first expiry point of the next period.
 
-As a schedule table is a time object, as an alarm, ...\\
+To process a \textbf{synchronized} schedule table, the schedule table's state has to be updated every expiry point and the next expiry point has to be adjusted according to the schedule table's deviation.
 
-%figure showing that the tpl_process_schedtable() is the main function (launched by each expiry point of a schedule table). It increment the index of the expiry point, launch the action of the  index is incremented
+A schedule table is a time object, like an alarm. \textit{tpl\_processing\_scheduletable()} is called by each expiry point (before activating a task, setting an event or finalizing a schedule table via \textit{tpl\_finalize\_expiry\_point()}) . The state machine of this function is shown in the Figure \ref{fig:STprocessingTplProcess}.
 
+\begin{figure}[H] %  figure placement: here, top, bottom, or page
+   \centering
+   \includegraphics[width=5in]{pictures/STprocessingTplProcess.pdf}  
+   \caption{tpl_process_scheduletable's state machine.}
+   \label{fig:STprocessingTplProcess}
+\end{figure} 
 
+\begin{figure}[H] %  figure placement: here, top, bottom, or page
+   \centering
+   \includegraphics[width=5in]{pictures/STprocessingChangeState.pdf}  
+   \label{fig:STprocessingChangeState}
+\end{figure}
 
+\textit{tpl\_finalize\_expoiry\_point()} state machine is shown in Figure \ref{fig:STprocessingTplFinalize} below.
 
-
-
-
-
-
-
-
-
-
+\begin{figure}[H] %  figure placement: here, top, bottom, or page
+   \centering
+   \includegraphics[width=7in]{pictures/STprocessingTplFinalize.pdf}  
+   \caption{tpl_finalize_expiry_point's state machine.}
+   \label{fig:STprocessingTplFinalize}
+\end{figure} 
 
 
 
