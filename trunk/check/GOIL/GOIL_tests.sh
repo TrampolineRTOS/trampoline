@@ -15,9 +15,6 @@ then
 	#Delete results.log
 	rm -rf GOIL_results.log
 	
-	#Change in results_expected.log the check directory path to 'CHECKPATH'.
-	( cat ./GOIL_results_expected.log | sed -e "s/`pwd | sed 's_\/_\\\/_g'`/CHECKPATH/g" > ./backup.txt ; mv ./backup.txt ./GOIL_results_expected.log )
-	
 	#Delete embUnit's objects and librairy
 	rm -rf ./../embUnit/*.o
 	rm -rf ./../lib/libembUnit.a
@@ -36,9 +33,6 @@ else
 		( cd ../embUnit ; make )
 	fi
 	
-	#Change in results_expected.log 'CHECKPATH' to check directory Path : for goil tests
-	( cat ./GOIL_results_expected.log | sed -e "s/CHECKPATH/`pwd | sed 's_\/_\\\/_g'`/g" > ./backup.txt ; mv ./backup.txt ./GOIL_results_expected.log )
-		
 	# Build and execute all the tests
 	for i in `cat GOIL_testSequences.txt`
 	do
@@ -57,36 +51,16 @@ else
 		#display running test sequence on the standard output for the user and in the log file to better understand failed tests
 		echo "running $i" | tee -a ../GOIL_results.log 
 		
-		#remove the executable file in order to know if the make succeed.
-		#rm -rf ./${i}_exe
-		
-		#check if previous target compiled is the same as the one wanted. If not, clean all and compile
-		#if [ "`cat Make-rules | grep GOIL_TARGET | grep -c $1`" = "0" ]
-		#then
-		#	echo "target changed in ${i}, modifying target compilation by $1" 
-		#	rm -rf ./build
-		#	rm -rf ./${i}
-		#	rm -rf ./Make-rules
-		#	rm -rf ./Makefile
-		#fi
-		
-		#if Makefile doesn't exist -> do goil
-		#if ! [ -f Makefile ]
-		#then
-			goil --target=$1 --templates=../../../goil/templates/ -g ${i}.oil $autosar_flag 2>> ../GOIL_results.log 1>> ../GOIL_results.log
-		#fi
-		
-		#if goil succeed (Makefile has been created) -> do make and execute file
-		#if `test -f Makefile`
-		#then
-		#	make -s
-		#	./${i} >> ../GOIL_results.log
-		#fi
+		goil --target=$1 --templates=../../../goil/templates/ -g ${i}.oil $autosar_flag 2>> ../GOIL_results.log 1>> ../GOIL_results.log
 		
 		#Go out of the test sequence
 		cd ..
 	
 	done
+	
+	#replace pwd by CHECKPATH in GOIL_results.log
+	( cat ./GOIL_results.log | sed -e "s/`pwd | sed 's_\/_\\\/_g'`/CHECKPATH/g" > ./backup.txt ; mv ./backup.txt ./GOIL_results.log )
+	
 	echo "GOIL tests done."
 
 fi
