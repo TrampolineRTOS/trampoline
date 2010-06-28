@@ -26,6 +26,12 @@ import semantics goil_basic_types in "goil_basic_types.gSemantics";
 import semantics goil_types_action in "goil_types_action.gSemantics";
 import semantics goil_types_scheduletable in "goil_types_scheduletable.gSemantics";
 
+import "goil_options.gOption";
+import "goil_semantics.gSemantics";
+import "goil_basic_types.gSemantics";
+import "goil_types_action.gSemantics";
+import "goil_types_scheduletable.gSemantics";
+
 nonterminal <scheduletable>
   ?!@scheduletable_map stm 
 label parse

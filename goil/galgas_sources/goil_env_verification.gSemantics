@@ -28,6 +28,9 @@ semantics goil_env_verification :
 import option goil_options in "goil_options.gOption" ;
 import semantics goil_routines in "goil_routines.gSemantics" ;
 
+import "goil_options.gOption" ;
+import "goil_routines.gSemantics" ;
+
 routine getAbsoluteSourceFilePath
   ?? @string fileName
   !  @string absoluteFilePath

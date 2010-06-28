@@ -42,6 +42,12 @@ import semantics goil_env_verification in "goil_env_verification.gSemantics";
 import option goil_options in "goil_options.gOption";
 
 
+import "goil_types_root.gSemantics";
+import "template_invocation.gSemantics";
+import "goil_env_verification.gSemantics";
+import "goil_options.gOption";
+
+
 #class @systemConfig {
 #  @string  version      feature setter;
 #  @lstring compilerKind feature setter;
@@ -102,9 +108,9 @@ function orderedTaskList
   # sort tasks according to type (basic or extended)
   foreach [cpu tasks] do
     if [[task events] length] > 0 then
-      taskList += !0 ![key string];
+      taskList += !0 ![lkey string];
     else
-      taskList += !1 ![key string];
+      taskList += !1 ![lkey string];
     end if;
   end foreach;
 end function;
@@ -188,11 +194,11 @@ routine computeTaskList
       foreach [task others] do
         cast value:
         when == @bool_class bool do
-          addBoolFieldValue !?fieldMap !key ![bool value];
+          addBoolFieldValue !?fieldMap !lkey ![bool value];
         when == @uint64_class number do
-          addUnsignedFieldValue !?fieldMap !key ![number value];
+          addUnsignedFieldValue !?fieldMap !lkey ![number value];
         when == @string_class str do
-          addStringFieldValue !?fieldMap !key ![str value];
+          addStringFieldValue !?fieldMap !lkey ![str value];
         else end cast;
       end foreach;
 
@@ -218,12 +224,12 @@ routine computeISRList
     when == @uint64_class category do
       if [category value] == isrCategory then
         @goilTemplateFieldMap fieldMap [emptyMap];
-        addStringFieldValue !?fieldMap ![@lstring new !"NAME" !here] ![key string];
+        addStringFieldValue !?fieldMap ![@lstring new !"NAME" !here] ![lkey string];
         addStringFieldValue !?fieldMap ![@lstring new !"PROCESSKIND" !here] !"ISR";
         addBoolFieldValue   !?fieldMap ![@lstring new !"EXTENDEDTASK" !here] !false;
         @uint actualPrio;
         @uint activation;
-        [actualPriorities get !key ?actualPrio ?activation];
+        [actualPriorities get !lkey ?actualPrio ?activation];
         addUnsignedFieldValue !?fieldMap ![@lstring new !"PRIORITY" !here] ![actualPrio uint64];
         addUnsignedFieldValue !?fieldMap ![@lstring new !"ACTIVATION" !here] ![activation uint64];
 
@@ -231,11 +237,11 @@ routine computeISRList
         foreach [isr other_fields] do
           cast value:
           when == @bool_class bool do
-            addBoolFieldValue !?fieldMap !key ![bool value];
+            addBoolFieldValue !?fieldMap !lkey ![bool value];
           when == @uint64_class number do
-            addUnsignedFieldValue !?fieldMap !key ![number value];
+            addUnsignedFieldValue !?fieldMap !lkey ![number value];
           when == @string_class str do
-            addStringFieldValue !?fieldMap !key ![str value];
+            addStringFieldValue !?fieldMap !lkey ![str value];
           else end cast;
         end foreach;
 
@@ -253,7 +259,7 @@ routine computeISRList
         end foreach;
         addListFieldValue !?fieldMap ![@lstring new !"RESOURCES" !here] !resourceList;
 
-        setAppRelatedAttributes !?fieldMap !cpu !appForObj !key;  
+        setAppRelatedAttributes !?fieldMap !cpu !appForObj !lkey;  
 
         isrList += !fieldMap;
       end if;
@@ -359,7 +365,7 @@ routine setCountersList
   @goilTemplateFieldMapList softCountersList [emptyList];
   foreach [cpu counters] do
     @goilTemplateFieldMap fieldMap [emptyMap];
-    addStringFieldValue !?fieldMap !lstringWith[!"NAME"] ![key string];
+    addStringFieldValue !?fieldMap !lstringWith[!"NAME"] ![lkey string];
     addUnsignedFieldValue !?fieldMap !lstringWith[!"MAXALLOWEDVALUE"] !maxAllowedValue[!counter];
     addUnsignedFieldValue !?fieldMap !lstringWith[!"MINCYCLE"] !minCycle[!counter];
     addUnsignedFieldValue !?fieldMap !lstringWith[!"TICKSPERBASE"] !ticksPerBase[!counter];
@@ -371,8 +377,8 @@ routine setCountersList
     end cast;
     addStringFieldValue !?fieldMap !lstringWith[!"TYPE"] !type;
 
-    if [key string] != "SystemCounter" then
-      setAppRelatedAttributes !?fieldMap !cpu !appForObj !key;
+    if [lkey string] != "SystemCounter" then
+      setAppRelatedAttributes !?fieldMap !cpu !appForObj !lkey;
     end if;
 
     countersList += !fieldMap;
@@ -398,9 +404,9 @@ routine setEventsList
   @goilTemplateFieldMapList eventsList [emptyList];
   foreach [cpu events] do
     @goilTemplateFieldMap fieldMap [emptyMap];
-    addStringFieldValue !?fieldMap ![@lstring new !"NAME" !here] ![key string];
+    addStringFieldValue !?fieldMap ![@lstring new !"NAME" !here] ![lkey string];
     @uint64 eventMask;
-    [eventMasks get !key ?eventMask];
+    [eventMasks get !lkey ?eventMask];
     addUnsignedFieldValue !?fieldMap ![@lstring new !"MASK" ![[event mask] location]] !eventMask;
     eventsList += !fieldMap;
   end foreach;
@@ -442,7 +448,7 @@ routine setAlarmsList
   @goilTemplateFieldMapList alarmsList [emptyList];
   foreach [cpu alarms] do
     @goilTemplateFieldMap fieldMap [emptyMap];
-    addStringFieldValue !?fieldMap !lstringWith[!"NAME"] ![key string];
+    addStringFieldValue !?fieldMap !lstringWith[!"NAME"] ![lkey string];
     addStringFieldValue !?fieldMap !lstringWith[!"COUNTER"] ![[alarm counter_name] string];
 
     setAction !?fieldMap ![alarm action_params];
@@ -465,7 +471,7 @@ routine setAlarmsList
       addBoolFieldValue !?fieldMap !lstringWith[!"AUTOSTART"] !false;
     else end cast;
     
-    setAppRelatedAttributes !?fieldMap !cpu !appForObj !key;
+    setAppRelatedAttributes !?fieldMap !cpu !appForObj !lkey;
     
     alarmsList += !fieldMap;
   end foreach;
@@ -485,17 +491,16 @@ routine setResourcesList
   @goilTemplateFieldMapList internalList [emptyList];
   foreach [cpu resources] do
     @goilTemplateFieldMap fieldMap [emptyMap];
-    addStringFieldValue !?fieldMap ![@lstring new !"NAME" !here] ![key string];
+    addStringFieldValue !?fieldMap ![@lstring new !"NAME" !here] ![lkey string];
     @uint priority;
-    @string usage;
-    [resourcesPrio get !key ?priority ?*];
+    [resourcesPrio get !lkey ?priority ?*];
     addUnsignedFieldValue !?fieldMap ![@lstring new !"PRIORITY" !here] ![priority uint64];
 
     @goilTemplateFieldMapList taskUsage [emptyList];
     foreach [cpu tasks] prefixedBy t_ do
-      if isInLstringlist[![t_task resources] !key] then
+      if isInLstringlist[![t_task resources] !lkey] then
         @goilTemplateFieldMap usage [emptyMap];
-        addStringFieldValue !?usage ![@lstring new !"NAME" !here] ![t_key string];
+        addStringFieldValue !?usage ![@lstring new !"NAME" !here] ![t_lkey string];
         taskUsage += !usage;
       end if;
     end foreach;
@@ -504,16 +509,16 @@ routine setResourcesList
     
     @goilTemplateFieldMapList isrUsage [emptyList];
     foreach [cpu isrs] prefixedBy i_ do
-      if isInLstringlist[![i_isr resources] !key] then
+      if isInLstringlist[![i_isr resources] !lkey] then
         @goilTemplateFieldMap usage [emptyMap];
-        addStringFieldValue !?usage ![@lstring new !"NAME" !here] ![i_key string];
+        addStringFieldValue !?usage ![@lstring new !"NAME" !here] ![i_lkey string];
         isrUsage += !usage;
       end if;
     end foreach;
 
     addListFieldValue !?fieldMap ![@lstring new !"ISRUSAGE" !here] !isrUsage;
     
-    setAppRelatedAttributes !?fieldMap !cpu !appForObj !key;  
+    setAppRelatedAttributes !?fieldMap !cpu !appForObj !lkey;  
 
 
     cast [resource property]:
@@ -619,13 +624,13 @@ routine setMessagesList
     cast [mess messageproperty]:
     when == @rzi_mess_prop receiveZeroInternalMessage do
       @lstring sendMessage := [receiveZeroInternalMessage sendingmessage];
-      internalReceiversList += !mess ![sendMessage string] ![sendMessage location] ![key string] ![key location];
+      internalReceiversList += !mess ![sendMessage string] ![sendMessage location] ![lkey string] ![lkey location];
     when == @rui_mess_prop receiveUnqueuedInternalMessage do
       @lstring sendMessage := [receiveUnqueuedInternalMessage sendingmessage];
-      internalReceiversList += !mess ![sendMessage string] ![sendMessage location] ![key string] ![key location];
+      internalReceiversList += !mess ![sendMessage string] ![sendMessage location] ![lkey string] ![lkey location];
     when == @rqi_mess_prop receiveQueuedInternalMessage do
       @lstring sendMessage := [receiveQueuedInternalMessage sendingmessage];
-      internalReceiversList += !mess ![sendMessage string] ![sendMessage location] ![key string] ![key location];
+      internalReceiversList += !mess ![sendMessage string] ![sendMessage location] ![lkey string] ![lkey location];
     else end cast;
   end foreach;
   
@@ -729,12 +734,12 @@ routine setMessagesList
       addStringFieldValue !?fieldMap ![@lstring new !"MESSAGEPROPERTY" ![messageProperty location]] !"SEND_STATIC_INTERNAL";
       addLStringFieldValue !?fieldMap !"CTYPE" ![sendStaticInternalMessage cdatatype];
       @lstring targetMessage;
-      [internalTargets get !key ?targetMessage];
+      [internalTargets get !lkey ?targetMessage];
       addLStringFieldValue !?fieldMap !"TARGET" !targetMessage;
     when == @szi_mess_prop do
       addStringFieldValue !?fieldMap ![@lstring new !"MESSAGEPROPERTY" ![messageProperty location]] !"SEND_ZERO_INTERNAL";
       @lstring targetMessage;
-      [internalTargets get !key ?targetMessage];
+      [internalTargets get !lkey ?targetMessage];
       addLStringFieldValue !?fieldMap !"TARGET" !targetMessage;
 #    when == @sse_mess_prop sendStaticExternalMessage do
 #      addStringFieldValue !?fieldMap ![@lstring new !"MESSAGEPROPERTY" ![messageProperty location]] !"SEND_STATIC_EXTERNAL";
@@ -771,7 +776,7 @@ routine setMessagesList
       okMessage := false;
     end cast;
     if okMessage then
-      addStringFieldValue !?fieldMap !lstringWith[!"NAME"] ![key string];
+      addStringFieldValue !?fieldMap !lstringWith[!"NAME"] ![lkey string];
       messagesList += !fieldMap;
       if isSendMessage then
         sendMessagesList += !fieldMap;
@@ -796,7 +801,7 @@ routine setScheduletablesList
   @goilTemplateFieldMapList scheduletablesList [emptyList];
   foreach [cpu scheduletables] do
     @goilTemplateFieldMap fieldMap [emptyMap];
-    addStringFieldValue !?fieldMap !lstringWith[!"NAME"] ![key string];
+    addStringFieldValue !?fieldMap !lstringWith[!"NAME"] ![lkey string];
     addStringFieldValue !?fieldMap !lstringWith[!"COUNTER"] ![[scheduletable counter] string];
     
     @bool periodic := false;
@@ -829,7 +834,7 @@ routine setScheduletablesList
     when == @sd_autostart_absolute autostartAbsolute do
       scheduletableState := [@lstring new !"SCHEDULETABLE_AUTOSTART_ABSOLUTE" ![autostartAbsolute location]];
       scheduletableDate := [autostartAbsolute value];
-    else error key : "Internal error, unexpected type for AUTOSTART attribute of schedule table ".[key string];
+    else error lkey : "Internal error, unexpected type for AUTOSTART attribute of schedule table ".[lkey string];
     end cast;
     addLStringFieldValue !?fieldMap !"STATE" !scheduletableState;
     addLUnsignedFieldValue !?fieldMap !"DATE" !scheduletableDate;
@@ -839,7 +844,7 @@ routine setScheduletablesList
     when == @uint64_class len do
       length := [len value];
       addUnsignedFieldValue !?fieldMap ![@lstring new !"LENGTH" ![len location]] !length;
-    else error key: "internal, wrong type for LENGTH attribute";
+    else error lkey: "internal, wrong type for LENGTH attribute";
     end cast;
 
     # add the finalize action (and expiry point if needed) to the
@@ -851,12 +856,12 @@ routine setScheduletablesList
     if lastOffset == length then
       # add the finalize action to the last expiry point
       @action_list actions := [lastPoint actions];
-      actions += !10 ![@finalize_st_action new !here !key];
+      actions += !10 ![@finalize_st_action new !here !lkey];
       [!?lastPoint setActions !actions];
     else
       # add a new expiry point for the finalize action
       @action_list finalizeExpiryPointActions [emptySortedList];
-      finalizeExpiryPointActions += !10 ![@finalize_st_action new !here !key];
+      finalizeExpiryPointActions += !10 ![@finalize_st_action new !here !lkey];
       @expiry_point_obj finalizeExpiryPoint :=
         [@expiry_point_obj new
           ![@lstring new !"" !here]
@@ -901,7 +906,7 @@ routine setScheduletablesList
     end foreach;
     addListFieldValue !?fieldMap !lstringWith[!"EXPIRYPOINTS"] !expiryPointsList;
     
-    setAppRelatedAttributes !?fieldMap !cpu !appForObj !key;  
+    setAppRelatedAttributes !?fieldMap !cpu !appForObj !lkey;  
 
     scheduletablesList += !fieldMap;
   end foreach;
@@ -1000,11 +1005,11 @@ routine setOsapplicationsList
     foreach allTaskList do
       @task_obj taskItem;
       [allTasks get !lstringWith[!name] ?taskItem];
-      computeVector !?vector !lstringWith[!name] !applicationName ![[application tasks] keyList] ![taskItem acc_apps];
+      computeVector !?vector !lstringWith[!name] !applicationName ![[application tasks] allKeyList] ![taskItem acc_apps];
     end foreach;
     # Compute the access vector for ISRs
     foreach [cpu isrs] do
-      computeVector !?vector !key !applicationName ![[application isrs] keyList] ![isr acc_apps];
+      computeVector !?vector !lkey !applicationName ![[application isrs] allKeyList] ![isr acc_apps];
     end foreach;
     # IDLE task can access to every OS-Application (for autostarting Schedule table...)
     vector .= "01";
@@ -1016,7 +1021,7 @@ routine setOsapplicationsList
     # Compute the access vector for alarms
     vector := "";
     foreach [cpu alarms] do
-      computeVector !?vector !key !applicationName ![[application alarms] keyList] ![alarm acc_apps];
+      computeVector !?vector !lkey !applicationName ![[application alarms] allKeyList] ![alarm acc_apps];
     end foreach;
     addStringFieldValue !?fieldMap !lstringWith[!"ALARMACCESSVECTOR"] !vector;
     computeBinaryVector !vector ?binaryVector ?numberOfItems;
@@ -1026,7 +1031,7 @@ routine setOsapplicationsList
     # compute the access vector for resources
     vector := "";
     foreach [cpu resources] do
-      computeVector !?vector !key !applicationName ![[application resources] keyList] ![resource acc_apps];
+      computeVector !?vector !lkey !applicationName ![[application resources] allKeyList] ![resource acc_apps];
     end foreach;
     # add the res_scheduler
     vector .= "10" ;
@@ -1039,7 +1044,7 @@ routine setOsapplicationsList
     # compute the access vector for schedule tables
     vector := "";
     foreach [cpu scheduletables] do
-      computeVector !?vector !key !applicationName ![[application scheduletables] keyList] ![scheduletable acc_apps];
+      computeVector !?vector !lkey !applicationName ![[application scheduletables] allKeyList] ![scheduletable acc_apps];
     end foreach;
     addStringFieldValue !?fieldMap !lstringWith[!"SCHEDULETABLEACCESSVECTOR"] !vector;    
     computeBinaryVector !vector ?binaryVector ?numberOfItems;
@@ -1049,7 +1054,7 @@ routine setOsapplicationsList
     # compute the access vector for counters
     vector := "";
     foreach [cpu counters] do
-      computeVector !?vector !key !applicationName ![[application counters] keyList] ![counter acc_apps];
+      computeVector !?vector !lkey !applicationName ![[application counters] allKeyList] ![counter acc_apps];
     end foreach;
     addStringFieldValue !?fieldMap !lstringWith[!"COUNTERACCESSVECTOR"] !vector;
     computeBinaryVector !vector ?binaryVector ?numberOfItems;
@@ -1062,15 +1067,15 @@ routine setOsapplicationsList
     @goilTemplateFieldMapList isrList [emptyList];
     foreach [application tasks] do
       @goilTemplateFieldMap taskFieldMap [emptyMap];
-      addStringFieldValue !?taskFieldMap ![@lstring new !"NAME" ![key location]] ![key string];
+      addStringFieldValue !?taskFieldMap ![@lstring new !"NAME" ![lkey location]] ![lkey string];
       procList += !taskFieldMap;
       taskList += !taskFieldMap;
     end foreach;
     foreach [application isrs] do
       @goilTemplateFieldMap isrFieldMap [emptyMap];
-      addStringFieldValue !?isrFieldMap ![@lstring new !"NAME" ![key location]] ![key string];
+      addStringFieldValue !?isrFieldMap ![@lstring new !"NAME" ![lkey location]] ![lkey string];
       @isr_obj isr;
-      [[cpu isrs] get !key ?isr];
+      [[cpu isrs] get !lkey ?isr];
       cast [isr category]:
       when == @uint64_class cat do
         if [cat value] == 2L then
@@ -1089,7 +1094,7 @@ routine setOsapplicationsList
     @goilTemplateFieldMapList alarmList [emptyList];
     foreach [application alarms] do
       @goilTemplateFieldMap alarmFieldMap [emptyMap];
-      addStringFieldValue !?alarmFieldMap ![@lstring new !"NAME" ![key location]] ![key string];
+      addStringFieldValue !?alarmFieldMap ![@lstring new !"NAME" ![lkey location]] ![lkey string];
       alarmList += !alarmFieldMap;
     end foreach;
     addListFieldValue !?fieldMap !lstringWith[!"ALARMS"] !alarmList;
@@ -1100,11 +1105,11 @@ routine setOsapplicationsList
     @goilTemplateFieldMapList internalResourcesList [emptyList];
     foreach [application resources] do
       @goilTemplateFieldMap resourceFieldMap [emptyMap];
-      addStringFieldValue !?resourceFieldMap ![@lstring new !"NAME" ![key location]] ![key string];
+      addStringFieldValue !?resourceFieldMap ![@lstring new !"NAME" ![lkey location]] ![lkey string];
       resourcesList += !resourceFieldMap;
       @resource_map allResources := [cpu resources];
       @resource_obj resource;
-      [allResources get !key ?resource];
+      [allResources get !lkey ?resource];
       cast [resource property]:
       when == @resource_property_internal_obj do
         internalResourcesList += !resourceFieldMap;
@@ -1120,7 +1125,7 @@ routine setOsapplicationsList
     @goilTemplateFieldMapList scheduletableList [emptyList];
     foreach [application scheduletables] do
       @goilTemplateFieldMap scheduletableFieldMap [emptyMap];
-      addStringFieldValue !?scheduletableFieldMap ![@lstring new !"NAME" ![key location]] ![key string];
+      addStringFieldValue !?scheduletableFieldMap ![@lstring new !"NAME" ![lkey location]] ![lkey string];
       scheduletableList += !scheduletableFieldMap;
     end foreach;
     addListFieldValue !?fieldMap !lstringWith[!"SCHEDULETABLES"] !scheduletableList;
@@ -1129,7 +1134,7 @@ routine setOsapplicationsList
     @goilTemplateFieldMapList counterList [emptyList];
     foreach [application counters] do
       @goilTemplateFieldMap counterFieldMap [emptyMap];
-      addStringFieldValue !?counterFieldMap ![@lstring new !"NAME" ![key location]] ![key string];
+      addStringFieldValue !?counterFieldMap ![@lstring new !"NAME" ![lkey location]] ![lkey string];
       counterList += !counterFieldMap;
     end foreach;
     addListFieldValue !?fieldMap !lstringWith[!"COUNTERS"] !counterList;
@@ -1138,7 +1143,7 @@ routine setOsapplicationsList
     @goilTemplateFieldMapList messageList [emptyList];
     foreach [application messages] do
       @goilTemplateFieldMap messageFieldMap [emptyMap];
-      addStringFieldValue !?messageFieldMap ![@lstring new !"NAME" ![key location]] ![key string];
+      addStringFieldValue !?messageFieldMap ![@lstring new !"NAME" ![lkey location]] ![lkey string];
       messageList += !messageFieldMap;
     end foreach;
     addListFieldValue !?fieldMap !lstringWith[!"MESSAGES"] !messageList;
@@ -1232,7 +1237,7 @@ routine setProcessCount
         isr2Count++;
       end if;
     else
-      error key: "missing CATEGORY attribute";
+      error lkey: "missing CATEGORY attribute";
     end cast;
   end foreach;
   addUnsignedValue !?cfg ![@lstring new !"TASKCOUNT" !here] !taskCount;
@@ -1732,7 +1737,7 @@ routine setInterruptSources ??@config targetConfiguration ?!@goilTemplateVariabl
       @goilTemplateFieldMapList interruptSourcesList [emptyList];
       foreach [interrupts it_sources] do
         @goilTemplateFieldMap fieldMap [emptyMap];
-        addLStringFieldValue !?fieldMap !"NAME" !key;
+        addLStringFieldValue !?fieldMap !"NAME" !lkey;
         addUnsignedFieldValue !?fieldMap ![@lstring new !"NUMBER" ![value location]] !uint64OrError[!value !"interrupt source number"];
         interruptSourcesList += !fieldMap;
       end foreach;

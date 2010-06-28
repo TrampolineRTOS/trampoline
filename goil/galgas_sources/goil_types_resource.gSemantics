@@ -2,6 +2,8 @@ semantics goil_types_resource :
 
 import semantics goil_basic_types in "goil_basic_types.gSemantics" ;
 
+import "goil_basic_types.gSemantics" ;
+
 #
 # Resource classes
 #

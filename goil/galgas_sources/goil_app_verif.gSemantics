@@ -2,6 +2,7 @@ semantics goil_app_verif :
 
 #import semantics goil_semantics in "goil_semantics.ggs" ;
 import semantics goil_types_root     in "goil_types_root.gSemantics";
+import "goil_types_root.gSemantics";
 
 #import semantics goil_types_app in "goil_types_app.ggs" ;
 #import semantics goil_types_task in "goil_types_task.ggs" ;
@@ -75,13 +76,13 @@ routine apps_well_formed
   if [apps count] > 0 then
     # Verify the objects referenced from an application exists
     foreach apps do
-      object_exists ![tasks allKeys] ![[app tasks] keyList] !"Task" ;
-      object_exists ![isrs allKeys] ![[app isrs] keyList] !"ISR" ;
-      object_exists ![alarms allKeys] ![[app alarms] keyList] !"Alarm" ;
-      object_exists ![schedtables allKeys] ![[app scheduletables] keyList] !"Schedule Table" ;
-      object_exists ![counters allKeys] ![[app counters] keyList] !"Counter" ;
-      object_exists ![resources allKeys] ![[app resources] keyList] !"Resource" ;
-#    object_exists ![messages allKeys] ![[app messages] allKeys] !"Message" !key ;
+      object_exists ![tasks allKeys] ![[app tasks] allKeyList] !"Task" ;
+      object_exists ![isrs allKeys] ![[app isrs] allKeyList] !"ISR" ;
+      object_exists ![alarms allKeys] ![[app alarms] allKeyList] !"Alarm" ;
+      object_exists ![schedtables allKeys] ![[app scheduletables] allKeyList] !"Schedule Table" ;
+      object_exists ![counters allKeys] ![[app counters] allKeyList] !"Counter" ;
+      object_exists ![resources allKeys] ![[app resources] allKeyList] !"Resource" ;
+#    object_exists ![messages allKeys] ![[app messages] allKeys] !"Message" !lkey ;
     end foreach ;
 
     # verify accessing applications of each object exist
@@ -111,12 +112,12 @@ routine apps_well_formed
     # verify objects are not in 2 OS Applications
     @lstringlist objects [emptyList] ;
     foreach apps do
-      foreach [app tasks] do object_in_one !?objects !key !"TASK" ; end foreach ;
-      foreach [app isrs] do object_in_one !?objects !key !"ISR" ; end foreach ;
-      foreach [app alarms] do object_in_one !?objects !key !"ALARM" ; end foreach ;
-      foreach [app scheduletables] do object_in_one !?objects !key !"SCHEDULETABLE" ; end foreach ;
-      foreach [app counters] do object_in_one !?objects !key !"COUNTER" ; end foreach ;
-      foreach [app resources] do object_in_one !?objects !key !"RESOURCE" ; end foreach ;
+      foreach [app tasks] do object_in_one !?objects !lkey !"TASK" ; end foreach ;
+      foreach [app isrs] do object_in_one !?objects !lkey !"ISR" ; end foreach ;
+      foreach [app alarms] do object_in_one !?objects !lkey !"ALARM" ; end foreach ;
+      foreach [app scheduletables] do object_in_one !?objects !lkey !"SCHEDULETABLE" ; end foreach ;
+      foreach [app counters] do object_in_one !?objects !lkey !"COUNTER" ; end foreach ;
+      foreach [app resources] do object_in_one !?objects !lkey !"RESOURCE" ; end foreach ;
     end foreach ;
 
     # verify all objects are in an OS Application
@@ -138,29 +139,29 @@ routine apps_well_formed
     end foreach ;
 
     # tasks
-    object_not_in_any ![tasks keyList]       !all_tasks_in_app  !"TASK" ;
+    object_not_in_any ![tasks allKeyList]       !all_tasks_in_app  !"TASK" ;
     # isrs
-    object_not_in_any ![isrs keyList]        !all_isrs_in_app   !"ISR" ;
+    object_not_in_any ![isrs allKeyList]        !all_isrs_in_app   !"ISR" ;
     # alarms
-    object_not_in_any ![alarms keyList]      !all_alarms_in_app !"ALARM" ;
+    object_not_in_any ![alarms allKeyList]      !all_alarms_in_app !"ALARM" ;
     # schedule tables
-    object_not_in_any ![schedtables keyList] !all_sts_in_app    !"SCHEDULETABLE" ;
+    object_not_in_any ![schedtables allKeyList] !all_sts_in_app    !"SCHEDULETABLE" ;
     # counters
     # remove the SystemCounter which does not belong to any app
     @lstringlist counter_keys [emptyList];
     foreach counters do
-      if [key string] != "SystemCounter" then
-        counter_keys += !key;
+      if [lkey string] != "SystemCounter" then
+        counter_keys += !lkey;
       end if;
     end foreach;
     object_not_in_any !counter_keys          !all_cnts_in_app   !"COUNTER" ;
     # resources
-    object_not_in_any ![resources keyList]   !all_rezs_in_app   !"RESOURCE" ;
+    object_not_in_any ![resources allKeyList]   !all_rezs_in_app   !"RESOURCE" ;
 
     #verify than an OS-Application is composed by at least one Task OR Isr2
     foreach apps (@lstring app_name @app_obj app) do
-       #message "There is ".[[[[app tasks] keyList] length] string]." tasks in app ".[app_name string]."\n";
-       if ([[[app tasks] keyList] length] == 0) & ([[[app isrs] keyList] length] == 0) then
+       #message "There is ".[[[[app tasks] allKeyList] length] string]." tasks in app ".[app_name string]."\n";
+       if ([[[app tasks] allKeyList] length] == 0) & ([[[app isrs] allKeyList] length] == 0) then
           error app_name:"OS445 - An application should have at least one Task OR ISR2.";
        end if;
     end foreach;

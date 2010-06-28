@@ -3,6 +3,9 @@ semantics goil_message_verif :
 import semantics goil_types_networkmessage in "goil_types_networkmessage.gSemantics";
 import semantics goil_semantic_types in "goil_semantic_types.gSemantics";
 
+import "goil_types_networkmessage.gSemantics";
+import "goil_semantic_types.gSemantics";
+
 routine check_net_dir
   ?@lstring     net
   ?@netmess_map netm
@@ -193,7 +196,7 @@ routine networkmessages_well_formed
   foreach netm do
     cast [netmess netprop] :
     when == @void_netprop do
-      error key: "MESSAGEPROPERTY attribute is missing for NETWORKMESSAGE ".[key string] ;
+      error lkey: "MESSAGEPROPERTY attribute is missing for NETWORKMESSAGE ". lkey ;
     else end cast ; 
   end foreach ;
 end routine ;

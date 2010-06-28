@@ -3,6 +3,9 @@ semantics goil_routines :
 import option goil_options in "goil_options.gOption" ;
 import semantics goil_basic_types in "goil_basic_types.gSemantics" ;
 
+import "goil_options.gOption" ;
+import "goil_basic_types.gSemantics" ;
+
 function projectName -> @string directory
 :
   directory := [[@string stringWithSourceFilePath] stringByDeletingPathExtension];
@@ -107,7 +110,6 @@ function template_string_if_exist
   ?@string obj
   ->@string tpl
 :
-    @string target_platform ;
     @string targ_tpl := "" ;
 
 # Get the template directory
@@ -327,73 +329,73 @@ end routine ;
 #end routine ;
 
 #routine additional_int_key_required
-#    ?? @string    key
+#    ?? @string    lkey
 #    ?? @ident_map others
 #    ?? @lstring   name
 #    !  @uint      result 
 #:
 #    result := 0 ;
-#    if [others hasKey !key] then
+#    if [others hasKey !lkey] then
 #        @basic_type value ;
-#        [others get ![@lstring new !key !here] ?value] ;
+#        [others get ![@lstring new !lkey !here] ?value] ;
 #        cast value :
 #        when == @uint64_class v do
 #            result := [[v value] uint] ;
 #        when == @uint32_class v do
 #            result := [v value] ;
 #        when == @void_uint32_class do
-#            error name : key." should have a default value" ;
+#            error name : lkey." should have a default value" ;
 #        when == @auto_uint32_class do
-#            error name : key." should not be an auto attribute" ;
+#            error name : lkey." should not be an auto attribute" ;
 #        else
-#            error name : key." should be an integer" ;
+#            error name : lkey." should be an integer" ;
 #        end cast ;
 #    else
-#        error name : key." not defined" ;
+#        error name : lkey." not defined" ;
 #    end if ;
 #end routine;
 #
 #routine additional_string_key_required
-#    ?? @string key
+#    ?? @string lkey
 #    ?? @ident_map others
 #    ?? @lstring name
 #    !  @string result :
 #
 #    result := "";
-#    if [others hasKey !key]
+#    if [others hasKey !lkey]
 #    then
 #        @basic_type value ;
-#        [others get ![@lstring new !key !here] ?value] ;
+#        [others get ![@lstring new !lkey !here] ?value] ;
 #        cast value :
 #        when == @string_class s do
 #            result := [s value];
 #        else 
-#            error name : key." should be a string" ;
+#            error name : lkey." should be a string" ;
 #        end cast ;
 #    else
-#        error name : "no ".key." specified" ;
+#        error name : "no ".lkey." specified" ;
 #    end if ;
 #end routine;
 #
 #routine additional_bool_key_required
-#    ?? @string    key
+#    ?? @string    lkey
 #    ?? @ident_map others
 #    ?? @lstring   name
 #    !  @bool      result :
 #
 #    result := false;
-#    if [others hasKey !key]
+#    if [others hasKey !lkey]
 #    then
 #        @basic_type value ;
-#        [others get ![@lstring new !key !here] ?value] ;
+#        [others get ![@lstring new !lkey !here] ?value] ;
 #        cast value :
 #        when == @bool_class b do
 #            result := [b value];
 #        else 
-#            error name : key." should be a boolean" ;
+#            error name : lkey." should be a boolean" ;
 #        end cast ;
 #    else
-#        error name : "no ".key." specified" ;
+#        error name : "no ".lkey." specified" ;
 #    end if ;
 #end routine;
 
@@ -421,7 +423,7 @@ routine file_in_path
                 full_file_path .= "/" ;
             end if ;
         end if ;
-        full_file_path .= file_name ;
+        full_file_path .= [file_name string] ;
         if ([full_file_path fileExists] & not_found) then
             file_name := [@lstring new !full_file_path !here] ;
             not_found := false ;

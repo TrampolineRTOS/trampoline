@@ -10,6 +10,16 @@ import semantics goil_types_scheduletable in "goil_types_scheduletable.gSemantic
 import semantics goil_types_app in "goil_types_app.gSemantics" ;
 import semantics goil_types_networkmessage in "goil_types_networkmessage.gSemantics" ;
 
+import "goil_types_os.gSemantics" ;
+import "com_type.gSemantics" ;
+import "goil_semantic_types.gSemantics" ;
+import "goil_types_task.gSemantics" ;
+import "goil_types_isr.gSemantics" ;
+import "goil_types_counter.gSemantics" ;
+import "goil_types_scheduletable.gSemantics" ;
+import "goil_types_app.gSemantics" ;
+import "goil_types_networkmessage.gSemantics" ;
+
 class @root_obj {
     @lstring           name;
     @os_obj            os             feature setter;

@@ -18,6 +18,7 @@ syntax api_parser:
 with "api_scanner.gLexique";
 
 import lexique api_scanner in "api_scanner.gLexique";
+import "template_semantics.gSemantics";
 import semantics template_semantics in "template_semantics.gSemantics";
 
 nonterminal <api_start> ?!@goilTemplateVariableMap cfg;

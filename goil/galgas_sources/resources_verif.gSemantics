@@ -27,6 +27,8 @@ semantics resources_verif:
 
 import semantics goil_types_resource in "goil_types_resource.gSemantics";
 
+import "goil_types_resource.gSemantics";
+
 ##
 # @fn resources_well_formed
 #

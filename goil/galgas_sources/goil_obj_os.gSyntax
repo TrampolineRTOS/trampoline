@@ -29,6 +29,10 @@ import option goil_options in "goil_options.gOption" ;
 import semantics goil_semantics in "goil_semantics.gSemantics" ;
 import semantics goil_types_os in "goil_types_os.gSemantics" ;
 
+import "goil_options.gOption" ;
+import "goil_semantics.gSemantics" ;
+import "goil_types_os.gSemantics" ;
+
 #
 # local rules declaration
 #
@@ -181,7 +185,6 @@ rule <os>
     set_bool !?debug !db !"DEBUG" ;
     <description> ?* ; $;$ ;
   while
-    @basic_type mm ;
     $MEMMAP$ ; $=$ ; 
     select
       $FALSE$;

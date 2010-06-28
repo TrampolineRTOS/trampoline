@@ -27,6 +27,8 @@ semantics tasks_verif:
 
 import semantics goil_types_task in "goil_types_task.gSemantics";
 
+import "goil_types_task.gSemantics";
+
 ##
 # @fn tasks_well_formed
 #

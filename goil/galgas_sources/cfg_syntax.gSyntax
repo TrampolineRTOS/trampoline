@@ -21,6 +21,7 @@ with "cfg_lexique.gLexique";
 
 import lexique cfg_lexique in "cfg_lexique.gLexique" ;
 import semantics cfg_types in "cfg_types.gSemantics" ;
+import "cfg_types.gSemantics" ;
 
 nonterminal <cfg_start>
     !@config cfg
@@ -69,20 +70,12 @@ rule <cfg_start>
             ] ;
         end if ;
     while
-        @lstring oil_attr ;
-        @lstring tpl_attr ;
         $task$ ; ${$ ; <cfg_attrs> !?task_attrs ; $}$ ; $;$ ;
     while
-        @lstring oil_attr ;
-        @lstring tpl_attr ;
         $isr$ ; ${$ ; <cfg_attrs> !?isr_attrs ; $}$ ; $;$ ;
     while
-        @lstring oil_attr ;
-        @lstring tpl_attr ;
         $isr_code$ ; ${$ ; <cfg_attrs> !?isr_code_attrs ; $}$ ; $;$ ;
     while
-        @lstring oil_attr ;
-        @lstring tpl_attr ;
         $counter_code$ ; ${$ ; <cfg_attrs> !?counter_code_attrs ; $}$ ; $;$ ;
     while
         <interrupts> !?its;

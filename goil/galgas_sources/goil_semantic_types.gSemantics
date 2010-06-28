@@ -5,6 +5,11 @@ import semantics goil_types_action in "goil_types_action.gSemantics" ;
 import semantics goil_routines in "goil_routines.gSemantics" ;
 #import semantics goil_types_timing_prot in "goil_types_timing_prot.ggs" ;
 
+
+import "goil_basic_types.gSemantics" ;
+import "goil_types_action.gSemantics" ;
+import "goil_routines.gSemantics" ;
+
 map @implementation_spec {
     @imp_type type ;
     insert put error message "%K is duplicated in %L";
@@ -817,11 +822,11 @@ class @nmcallback_action extends @action_obj {
 #    override method generate
 #        ?@lstring    unused name
 #        ?@string     unused err
-#        ?@string     key
+#        ?@string     lkey
 #        ?!@string    unused h_res
 #        ?!@string    i_res :
 #
-#        doReplace !?i_res !key !"NULL_PTR" ;
+#        doReplace !?i_res !lkey !"NULL_PTR" ;
 #    end method ;
 }
 

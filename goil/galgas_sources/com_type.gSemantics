@@ -27,6 +27,9 @@ semantics com_type :
 import semantics goil_basic_types in "goil_basic_types.gSemantics" ;
 import semantics goil_routines in "goil_routines.gSemantics" ;
 
+import "goil_basic_types.gSemantics" ;
+import "goil_routines.gSemantics" ;
+
 class @com extends @oil_obj {
   @bool        usecom ; # true if a COM {} appears un OIL file, false otherwise
   @basic_type  timebase ;

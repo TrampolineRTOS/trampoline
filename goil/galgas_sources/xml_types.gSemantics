@@ -50,10 +50,10 @@ routine internal_logXMLNodes
       ioString .= ":" . [[[[node name] location] column] string] ;
       ioString .= ":" . [[[[node name] location] locationIndex] string] . " {" ;
       foreach [node attributeMap] do
-        ioString .= "'" . key . "' " ;
-        ioString .= [[[key location] line] string] ;
-        ioString .= ":" . [[[key location] column] string] ;
-        ioString .= ":" . [[[key location] locationIndex] string] ;
+        ioString .= "'" . lkey . "' " ;
+        ioString .= [[[lkey location] line] string] ;
+        ioString .= ":" . [[[lkey location] column] string] ;
+        ioString .= ":" . [[[lkey location] locationIndex] string] ;
         ioString .= " -> '" . value . "' " ;
         ioString .= [[[value location] line] string] ;
         ioString .= ":" . [[[value location] column] string] ;
