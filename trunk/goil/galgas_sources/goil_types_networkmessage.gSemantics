@@ -3,6 +3,9 @@ semantics goil_types_networkmessage :
 import semantics goil_basic_types in "goil_basic_types.gSemantics" ;
 import semantics goil_routines in "goil_routines.gSemantics" ;
 
+import "goil_basic_types.gSemantics" ;
+import "goil_routines.gSemantics" ;
+
 abstract class @base_netprop {
   @location loc ;
 #  abstract method generate !@string res ;

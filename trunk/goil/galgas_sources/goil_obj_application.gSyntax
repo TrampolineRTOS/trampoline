@@ -21,6 +21,9 @@ import lexique goil_lexique in "goil_lexique.gLexique" ;
 import option goil_options in "goil_options.gOption" ;
 import semantics goil_types_app in "goil_types_app.gSemantics" ;
 
+import "goil_options.gOption" ;
+import "goil_types_app.gSemantics" ;
+
 #
 # external rules 
 #

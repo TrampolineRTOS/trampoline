@@ -39,7 +39,7 @@ style float_csts -> "Floating Point Constants" ;
 style stringStyle -> "String literals";
 style commentStyle -> "Comments" ;
 
-# -------------------------- identifier or key word --------------------
+# -------------------------- identifier or lkey word --------------------
 # keywords can be written in lower or upper case
 # for identifiers, case is significant
 

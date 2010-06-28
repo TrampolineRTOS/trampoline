@@ -25,7 +25,6 @@ import "template_grammar.gGrammar";
 import "goil_options.gOption";
 
 #--- Import for GALGAS 1
-#semantics template_invocation :
 import semantics goil_routines in "goil_routines.gSemantics";
 import semantics template_semantics in "template_semantics.gSemantics";
 import grammar template_grammar in "template_grammar.gGrammar";
@@ -91,7 +90,7 @@ function displayTypeAndValue
     foreach [inValue mMapListValue] index idx do
       outResult .= "\n  #" . [idx string] . ":";
       foreach mMap do
-        outResult .= "'" . key . "' ";
+        outResult .= "'" . lkey . "' ";
         switch mType
         when boolType :
           outResult .= "bool: " . if mUnsigned64Value == 1L then "yes" else "no" end;
@@ -115,7 +114,7 @@ routine displayTemplateVariableMap
   ??@goilTemplateVariableMap inTemplateVariableMap
 :
   foreach inTemplateVariableMap do
-    message "'" . key . "' " . displayTypeAndValue [!mType !mValue] . "\n";
+    message "'" . lkey . "' " . displayTypeAndValue [!mType !mValue] . "\n";
   end foreach;
 end routine;
 

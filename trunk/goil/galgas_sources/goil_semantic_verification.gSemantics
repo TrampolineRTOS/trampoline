@@ -11,6 +11,17 @@ import semantics goil_types_root     in "goil_types_root.gSemantics";
 import semantics goil_semantic_types in "goil_semantic_types.gSemantics";
 import option goil_options           in "goil_options.gOption";
 
+import "resources_verif.gSemantics";
+import "scheduletable_verif.gSemantics";
+import "tasks_verif.gSemantics";
+import "isrs_verif.gSemantics";
+import "goil_message_verif.gSemantics";
+import "goil_alarm_verif.gSemantics";
+import "goil_app_verif.gSemantics";
+import "goil_types_root.gSemantics";
+import "goil_semantic_types.gSemantics";
+import "goil_options.gOption";
+
 #
 # Per object static verification
 #

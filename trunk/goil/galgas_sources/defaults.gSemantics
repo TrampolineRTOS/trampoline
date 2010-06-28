@@ -31,6 +31,11 @@ import semantics goil_check in "goil_check.gSemantics" ;
 import semantics goil_types_root in "goil_types_root.gSemantics" ;
 import option goil_options in "goil_options.gOption" ;
 
+import "goil_semantic_types.gSemantics" ;
+import "goil_check.gSemantics" ;
+import "goil_types_root.gSemantics" ;
+import "goil_options.gOption" ;
+
 routine check_custom_field
     ?!@ident_map others
     ?@lstring    field
@@ -80,8 +85,8 @@ routine verify_and_set_tasks_defaults
 :
     @task_map tp := tasks ;
 
-    foreach tp (@lstring key @task_obj task) do
-        [!?tasks del !key ?*] ;
+    foreach tp (@lstring lkey @task_obj task) do
+        [!?tasks del !lkey ?*] ;
         @ident_map others := [task others] ;
         foreach spec (@lstring field @imp_type f_def) do
             if    [field string] == "PRIORITY"  then
@@ -109,7 +114,7 @@ routine verify_and_set_tasks_defaults
             ![task timing_prot]
            !others
         ] ;
-        [!?tasks put !key !updated_task] ;
+        [!?tasks put !lkey !updated_task] ;
     end foreach ;
 end routine ;
 
@@ -123,8 +128,8 @@ routine verify_and_set_isrs_defaults
 :
     @isr_map ip := isrs ;
 
-    foreach ip (@lstring key @isr_obj isr) do
-        [!?isrs del !key ?*] ;
+    foreach ip (@lstring lkey @isr_obj isr) do
+        [!?isrs del !lkey ?*] ;
         @ident_map others := [isr other_fields] ;
         foreach spec (@lstring field @imp_type f_def) do
             if    [field string] == "PRIORITY"  then
@@ -149,7 +154,7 @@ message "PRIORITY!\n";
             ![isr timing_prot]
            !others
         ] ;
-        [!?isrs put !key !updated_isr] ;
+        [!?isrs put !lkey !updated_isr] ;
     end foreach ;
 end routine ;
 
@@ -165,9 +170,9 @@ routine add_system_counter
 :
   @counter_map counters := [cpu counters];
   @counter_obj sys_cnt;
-  @lstringlist all_apps := [[cpu applis] keyList];
+  @lstringlist all_apps := [[cpu applis] allKeyList];
   foreach [cpu applis] do
-    all_apps += !key;
+    all_apps += !lkey;
   end foreach;
 
   if [counters hasKey !"SystemCounter"] then

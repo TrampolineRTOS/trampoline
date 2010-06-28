@@ -25,6 +25,11 @@ import semantics goil_semantics in "goil_semantics.gSemantics" ;
 import semantics goil_routines in "goil_routines.gSemantics" ;
 import semantics goil_check in "goil_check.gSemantics" ;
 
+import "goil_options.gOption" ;
+import "goil_semantics.gSemantics" ;
+import "goil_routines.gSemantics" ;
+import "goil_check.gSemantics" ;
+
 #
 # Local rules declarations
 #
@@ -156,7 +161,7 @@ rule <implementation_list>
     ?!@implementation imp
 :
     @implementation_spec spec ;
-    @lstring key := [@lstring new !obj_kind !here] ;
+    @lstring lkey := [@lstring new !obj_kind !here] ;
     if [imp hasKey !obj_kind] then
         [!?imp del ![@lstring new !obj_kind !here] ?spec] ;
     else
@@ -174,7 +179,7 @@ rule <implementation_list>
     end repeat ;
     $}$ ;
 
-    [!?imp put !key !spec] ;
+    [!?imp put !lkey !spec] ;
 end rule ;
 
 rule <impl_attr_def> !@lstring attr_name !@imp_type attr :
@@ -222,9 +227,6 @@ rule <impl_attr_def> !@lstring attr_name !@imp_type attr :
     @sint32_class default_number;
     @lstring      desc ;
 
-    @lstring type ;
-    @bool has_range ;
-    @number_set range ;
     $INT32$  ?* ;
     <auto_specifier>        ?with_auto ;
     <sint32_number_set>     ?set ;

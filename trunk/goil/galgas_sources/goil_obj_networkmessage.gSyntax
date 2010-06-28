@@ -23,6 +23,10 @@ import option goil_options in "goil_options.gOption" ;
 import semantics goil_semantics in "goil_semantics.gSemantics" ;
 import semantics goil_types_networkmessage in "goil_types_networkmessage.gSemantics";
 
+import "goil_options.gOption" ;
+import "goil_semantics.gSemantics" ;
+import "goil_types_networkmessage.gSemantics";
+
 nonterminal <networkmess>
   ?!@netmess_map netmess  
 label parse

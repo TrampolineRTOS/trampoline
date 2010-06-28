@@ -2,6 +2,8 @@ semantics cfg_types :
 
 import semantics goil_basic_types in "goil_basic_types.gSemantics";
 
+import "goil_basic_types.gSemantics";
+
 map @config {
   @basic_type value;
   insert put error message "Key %K is duplicated in %L";

@@ -42,6 +42,22 @@ import grammar api_grammar in "api_grammar.gGrammar";
 
 import option goil_options in "goil_options.gOption";
 
+import "goil_routines.gSemantics";
+import "goil_semantic_types.gSemantics";
+import "goil_types_os.gSemantics";
+import "goil_types_task.gSemantics";
+import "goil_types_app.gSemantics";
+import "goil_env_verification.gSemantics";
+import "config_type.gSemantics";
+import "system_config.gSemantics";
+import "template_routines.gSemantics";
+
+import "cfg_types.gSemantics";
+import "cfg_grammar.gGrammar";
+import "api_grammar.gGrammar";
+
+import "goil_options.gOption";
+
 #--------------------------------------------------------------------
 # Custom type generation
 # This function generates the appropriate type according
@@ -154,10 +170,10 @@ routine generate_types
   # compute the type for the activation count
   # iterate through the tasks to get the max
   @uint max_act := 0;
-  foreach tasks (@lstring key @task_obj task) do
+  foreach tasks (@lstring lkey @task_obj task) do
     cast [task activation] :
     when == @uint32_class ui do if [ui value] > max_act then max_act := [ui value]; end if;
-    else error key : "Internal error, task ".[key string]." has wrong type for the ACTIVATION attribute";
+    else error lkey : "Internal error, task ".[lkey string]." has wrong type for the ACTIVATION attribute";
     end cast;
   end foreach;
   generate_unsigned_type ![max_act uint64] !"Maximum ACTIVATION too high" ?type;
@@ -167,7 +183,7 @@ routine generate_types
   # compute the type for the event mask
   # iterate through the tasks to get the maximum number of events
   @uint max_ev := 0;
-  foreach tasks (@lstring key @task_obj task) do
+  foreach tasks (@lstring lkey @task_obj task) do
     @lstringlist evts := [task events];
     if [evts length] > max_ev then max_ev := [evts length]; end if;
   end foreach;
@@ -332,7 +348,6 @@ routine compute_actual_isr_priority
         #
         foreach isrs (@lstring isr_name @isr_obj isr) do
             @basic_type prio_as_basic;
-            @basic_type act_as_basic;
             @uint prio := 0;
 #            @uint act := 0;
 
@@ -528,35 +543,35 @@ routine compute_app_for_obj
   app_for_obj := [@stringMap emptyMap];
 
   foreach apps do
-    @string app_name := [key string];
+    @string app_name := [lkey string];
     foreach [app tasks] do
-      if not [app_for_obj hasKey ![key string]] then
-        [!?app_for_obj put !key !app_name];
+      if not [app_for_obj hasKey ![lkey string]] then
+        [!?app_for_obj put !lkey !app_name];
       end if;
     end foreach;
     foreach [app isrs] do
-      if not [app_for_obj hasKey ![key string]] then
-        [!?app_for_obj put !key !app_name];
+      if not [app_for_obj hasKey ![lkey string]] then
+        [!?app_for_obj put !lkey !app_name];
       end if;
     end foreach;
     foreach [app alarms] do
-      if not [app_for_obj hasKey ![key string]] then
-        [!?app_for_obj put !key !app_name];
+      if not [app_for_obj hasKey ![lkey string]] then
+        [!?app_for_obj put !lkey !app_name];
       end if;
     end foreach;
     foreach [app scheduletables] do
-      if not [app_for_obj hasKey ![key string]] then
-        [!?app_for_obj put !key !app_name];
+      if not [app_for_obj hasKey ![lkey string]] then
+        [!?app_for_obj put !lkey !app_name];
       end if;
     end foreach;
     foreach [app counters] do
-      if not [app_for_obj hasKey ![key string]] then
-        [!?app_for_obj put !key !app_name];
+      if not [app_for_obj hasKey ![lkey string]] then
+        [!?app_for_obj put !lkey !app_name];
       end if;
     end foreach;
     foreach [app resources] do
-      if not [app_for_obj hasKey ![key string]] then
-        [!?app_for_obj put !key !app_name];
+      if not [app_for_obj hasKey ![lkey string]] then
+        [!?app_for_obj put !lkey !app_name];
       end if;
     end foreach;
   end foreach;
@@ -640,7 +655,7 @@ routine computeEvents
   #
   @sorted_events sortedEvents [emptySortedList];
   foreach evt_usage do
-    sortedEvents += !key !count;
+    sortedEvents += !lkey !count;
   end foreach;
 
   #

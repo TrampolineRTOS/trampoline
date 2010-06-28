@@ -33,6 +33,7 @@
 
 semantics template_functions:
 
+import "system_config.gSemantics";
 import semantics system_config in "system_config.gSemantics";
 
 function trueFalse ??@bool inBool ->@string result:

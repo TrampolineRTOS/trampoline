@@ -3,13 +3,16 @@ semantics goil_types_action :
 import semantics goil_basic_types in "goil_basic_types.gSemantics" ;
 import semantics goil_routines in "goil_routines.gSemantics" ;
 
+import "goil_basic_types.gSemantics" ;
+import "goil_routines.gSemantics" ;
+
 abstract class @action_obj {
     @location location ;
 
 #    abstract method generate
 #        ?@lstring    unused name
 #        ?@string     unused err
-#        ?@string     unused key
+#        ?@string     unused lkey
 #        ?!@string    unused h_res
 #        ?!@string    unused i_res ;
 #
@@ -21,11 +24,11 @@ class @void_action extends @action_obj {
 #    override method generate
 #        ?@lstring    unused name
 #        ?@string     unused err
-#        ?@string     key
+#        ?@string     lkey
 #        ?!@string    unused h_res
 #        ?!@string    i_res :
 #
-#       doReplace !?i_res !key !"NULL_PTR" ;
+#       doReplace !?i_res !lkey !"NULL_PTR" ;
 #    end method ;
 }
 
@@ -36,7 +39,7 @@ class @setevent_action extends @action_obj {
 #    override method generate
 #        ?@lstring    name
 #        ?@string     err
-#        ?@string     key
+#        ?@string     lkey
 #        ?!@string    unused h_res
 #        ?!@string    i_res :
 #
@@ -47,7 +50,7 @@ class @setevent_action extends @action_obj {
 #        doReplace !?res !"$TASK$" ![task_name string]."_id" ;
 #        doReplace !?res !"$EVENT$" ![event_name string]."_mask" ;
 #
-#        doReplace !?i_res !key !"&".[name string]."_notification" ;
+#        doReplace !?i_res !lkey !"&".[name string]."_notification" ;
 #
 #        i_res := res."\n".i_res ;
 #   end method ;
@@ -59,7 +62,7 @@ class @activatetask_action extends @action_obj {
 #    override method generate
 #        ?@lstring    name
 #        ?@string     err
-#        ?@string     key
+#        ?@string     lkey
 #        ?!@string    unused h_res
 #        ?!@string    i_res :
 #
@@ -69,7 +72,7 @@ class @activatetask_action extends @action_obj {
 #        doReplace !?res !"$NOTIFICATION$" ![name string]."_notification" ;
 #        doReplace !?res !"$TASK$" ![task_name string]."_id" ;
 #
-#        doReplace !?i_res !key !"&".[name string]."_notification" ;
+#        doReplace !?i_res !lkey !"&".[name string]."_notification" ;
 #
 #        i_res := res."\n".i_res ;
 #    end method ;
@@ -81,7 +84,7 @@ class @callback_action extends @action_obj {
 #    override method generate
 #        ?@lstring    name
 #        ?@string     err
-#        ?@string     key
+#        ?@string     lkey
 #        ?!@string    unused h_res
 #        ?!@string    i_res :
 #
@@ -91,7 +94,7 @@ class @callback_action extends @action_obj {
 #        doReplace !?res !"$NOTIFICATION$" ![name string]."_notification" ;
 #        doReplace !?res !"$CALLBACK$" ![function_name string]."_callback" ;
 #
-#        doReplace !?i_res !key !"&".[name string]."_notification" ;
+#        doReplace !?i_res !lkey !"&".[name string]."_notification" ;
 #
 #        i_res := res."\n".i_res ;
 #    end method ;
@@ -102,7 +105,7 @@ class @flag_action extends @action_obj {
 #    override method generate
 #        ?@lstring    name
 #        ?@string     err
-#        ?@string     key
+#        ?@string     lkey
 #        ?!@string    unused h_res
 #        ?!@string    i_res :
 #
@@ -112,7 +115,7 @@ class @flag_action extends @action_obj {
 #        doReplace !?res !"$NOTIFICATION$" ![name string]."_notification" ;
 #        doReplace !?res !"$FLAGFUNCTION$" !"tpl_set_flag_".[flag_name string] ;
 #
-#        doReplace !?i_res !key !"&".[name string]."_notification" ;
+#        doReplace !?i_res !lkey !"&".[name string]."_notification" ;
 #
 #        i_res := res."\n".i_res ;
 #    end method ;
@@ -127,7 +130,7 @@ class @incrementcounter_action extends @action_obj {
 #   override method generate
 #        ?@lstring    name
 #        ?@string     err
-#        ?@string     key
+#        ?@string     lkey
 #        ?!@string    unused h_res
 #        ?!@string    i_res :
 #
@@ -137,7 +140,7 @@ class @incrementcounter_action extends @action_obj {
 #        doReplace !?res !"$NOTIFICATION$" ![name string]."_notification" ;
 #        doReplace !?res !"$COUNTER$" ![counter_name string]."_id" ;
 #
-#        doReplace !?i_res !key !"&".[name string]."_notification" ;
+#        doReplace !?i_res !lkey !"&".[name string]."_notification" ;
 #
 #        i_res := res."\n".i_res ;
 #    end method ;
@@ -148,7 +151,7 @@ class @finalize_st_action extends @action_obj {
 #  override method generate
 #    ?@lstring    unused name
 #    ?@string     unused err
-#    ?@string     unused key
+#    ?@string     unused lkey
 #    ?!@string    unused h_res
 #    ?!@string    unused i_res :
 #  end method ;

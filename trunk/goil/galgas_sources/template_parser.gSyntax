@@ -22,6 +22,8 @@ with "template_scanner.gLexique";
 
 import lexique template_scanner in "template_scanner.gLexique";
 
+import "template_invocation.gSemantics";
+
 import semantics template_invocation in "template_invocation.gSemantics";
 
 nonterminal <goil_template_start_symbol>
@@ -63,7 +65,6 @@ nonterminal  <template_instruction_list>
   ??@string inTemplateDirectory
   ?!@goilTemplateVariableMap inTemplateVariableMap
   ?!@string ioResultingString
-label parseAndResetTemplateString
 label parse
 ;
 
@@ -127,6 +128,7 @@ rule <template_instruction>
     ?expression
     ?expressionType
   ;
+#  message "EXPRESSION '" . [expression mStringValue] . "'\n" ;
   if [templateVariableMap hasKey !"FILENAME"] then
     [!?templateVariableMap removeKey !lstringWith[!"FILENAME"] ?* ?*];
   end if;
@@ -201,7 +203,7 @@ rule <template_instruction>
         ;
         ioTemplateVariableMap := [templateVariableMap overriddenMap];
       else
-        <template_instruction_list> parseAndResetTemplateString;
+        <template_instruction_list> parse;
       end parse;
       $end$; $template$;
     or
@@ -343,12 +345,12 @@ rule <template_instruction>
         ;
         ioTemplateVariableMap := [templateVariableMap overriddenMap];
       else
-        <template_instruction_list> parseAndResetTemplateString;
+        <template_instruction_list> parse;
       end parse;
     else
       <expression> parse;
       $then$;
-      <template_instruction_list> parseAndResetTemplateString;
+      <template_instruction_list> parse;
     end parse;
   while
     $elsif$;
@@ -369,7 +371,7 @@ rule <template_instruction>
       ;
       ioTemplateVariableMap := [templateVariableMap overriddenMap];
     else
-      <template_instruction_list> parseAndResetTemplateString;
+      <template_instruction_list> parse;
     end parse;
   end select;
 #---
@@ -386,7 +388,7 @@ rule  <template_instruction_list>
   ?!@goilTemplateVariableMap ioTemplateVariableMap
   ?!@string ioResultingString
 :
-  ioResultingString .= [@lstring retrieveAndResetTemplateString];
+  ioResultingString .= [@string retrieveAndResetTemplateString];
   repeat
   while
     <template_instruction>
@@ -396,15 +398,8 @@ rule  <template_instruction_list>
       !?ioTemplateVariableMap
       !?ioResultingString
     ;
-    ioResultingString .= [@lstring retrieveAndResetTemplateString];
+    ioResultingString .= [@string retrieveAndResetTemplateString];
   end repeat;
-label parseAndResetTemplateString
-:
-  repeat
-  while
-    <template_instruction> parse;
-  end repeat;
-  @lstring s := [@lstring retrieveAndResetTemplateString]; # Value not used
 end rule;
 
 #---------------------------------------------------------------------------*
@@ -481,7 +476,7 @@ rule <template_instruction>
         !?ioResultingString
       ;
     else
-      <template_instruction_list> parseAndResetTemplateString;
+      <template_instruction_list> parse;
     end parse;
   end select;
 #--- Do block
@@ -493,12 +488,12 @@ rule <template_instruction>
     foreach enumerationList do
       const @goilTemplateFieldMap fieldMap := [[mEnumeratedValue mMapListValue] mMapAtIndex !idx];
       foreach fieldMap do
-        @lstring varName := [@lstring new !mPrefix . [key string] ![key location]];
+        @lstring varName := [@lstring new !mPrefix . [lkey string] ![lkey location]];
 #        if [templateVariableMap hasKey ![varName string]] then
 #          [!?templateVariableMap removeKey !varName ?* ?*];
 #        end if;
         [!?templateVariableMap insertKey
-          ![@lstring new !mPrefix . [key string] ![key location]]
+          ![@lstring new !mPrefix . [lkey string] ![lkey location]]
           !mType
           ![@goilTemplateValue new !mUnsigned64Value !mStringValue !mListValue !mStructValue]
         ];
@@ -531,12 +526,12 @@ rule <template_instruction>
           !?ioResultingString
         ;
       else
-        <template_instruction_list> parseAndResetTemplateString;
+        <template_instruction_list> parse;
       end parse;
     end select;
     ioTemplateVariableMap := [templateVariableMap overriddenMap];
   end parse;
-  @lstring s := [@lstring retrieveAndResetTemplateString]; # Value not used
+  @string s := [@string retrieveAndResetTemplateString]; # Value not used
 #--- after block
   select
   or
@@ -551,7 +546,7 @@ rule <template_instruction>
         !?ioResultingString
       ;
     else
-      <template_instruction_list> parseAndResetTemplateString;
+      <template_instruction_list> parse;
     end parse;
   end select;
 #---
@@ -634,12 +629,12 @@ rule <template_instruction>
           !?ioResultingString
         ;
       else
-        <template_instruction_list> parseAndResetTemplateString;
+        <template_instruction_list> parse;
       end parse;
     end select;
     ioTemplateVariableMap := [templateVariableMap overriddenMap];
   end parse;
-  @lstring s := [@lstring retrieveAndResetTemplateString]; # Value not used
+  @string s := [@string retrieveAndResetTemplateString]; # Value not used
 #---
   $end$;
   $for$;
@@ -697,7 +692,7 @@ rule <template_instruction>
         !?ioResultingString
       ;
     else
-      <template_instruction_list> parseAndResetTemplateString;
+      <template_instruction_list> parse;
     end parse;
   end select;
 #--- Do block
@@ -734,12 +729,12 @@ rule <template_instruction>
           !?ioResultingString
         ;
       else
-        <template_instruction_list> parseAndResetTemplateString;
+        <template_instruction_list> parse;
       end parse;
     end select;
     ioTemplateVariableMap := [templateVariableMap overriddenMap];
   end parse;
-  @lstring s := [@lstring retrieveAndResetTemplateString]; # Value not used
+  @string s := [@string retrieveAndResetTemplateString]; # Value not used
 #--- after block
   select
   or
@@ -754,7 +749,7 @@ rule <template_instruction>
         !?ioResultingString
       ;
     else
-      <template_instruction_list> parseAndResetTemplateString;
+      <template_instruction_list> parse;
     end parse;
   end select;
 #---

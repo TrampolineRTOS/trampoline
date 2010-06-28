@@ -181,10 +181,10 @@ rule <element>
     s .= ":" . [[[name location] column] string] ;
     s .= ":" . [[[name location] locationIndex] string] . " {" ;
     foreach attributeMap do
-      s .= "'" . key . "' " ;
-      s .= [[[key location] line] string] ;
-      s .= ":" . [[[key location] column] string] ;
-      s .= ":" . [[[key location] locationIndex] string] ;
+      s .= "'" . lkey . "' " ;
+      s .= [[[lkey location] line] string] ;
+      s .= ":" . [[[lkey location] column] string] ;
+      s .= ":" . [[[lkey location] locationIndex] string] ;
       s .= " -> '" . value . "' " ;
       s .= [[[value location] line] string] ;
       s .= ":" . [[[value location] column] string] ;

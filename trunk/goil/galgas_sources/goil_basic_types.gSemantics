@@ -221,14 +221,14 @@ map @ident_map {
 
 map @stringMap {
     @string value ;
-    insert put error message "stringmap key %K is duplicated in %L";
-    search get error message "stringmap key %K is not defined" ;
+    insert put error message "stringmap lkey %K is duplicated in %L";
+    search get error message "stringmap lkey %K is not defined" ;
 }
 
 map @lstringMap {
     @lstring value ;
-    insert put error message "lstringmap key %K is duplicated in %L";
-    search get error message "lstringmap key %K is not defined" ;
+    insert put error message "lstringmap lkey %K is duplicated in %L";
+    search get error message "lstringmap lkey %K is not defined" ;
 }
 
 #

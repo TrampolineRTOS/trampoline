@@ -2,6 +2,8 @@ semantics goil_types_app :
 
 import semantics goil_basic_types in "goil_basic_types.gSemantics" ;
 
+import "goil_basic_types.gSemantics" ;
+
 abstract class @app_trusted_obj { @location location ; }
 class @app_trusted_void  extends @app_trusted_obj {}
 class @app_trusted_false extends @app_trusted_obj {}

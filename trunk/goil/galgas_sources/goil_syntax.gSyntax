@@ -42,6 +42,17 @@ import grammar goil_cpu_level_include in "goil_cpu_level_include.gGrammar";
 import grammar goil_file_level_include in "goil_file_level_include.gGrammar";
 #import grammar cfg_grammar in "cfg_grammar.ggs";
 
+
+import "goil_semantics.gSemantics";
+import "com_type.gSemantics";
+import "goil_types_app.gSemantics";
+import "goil_types_networkmessage.gSemantics";
+import "cfg_types.gSemantics";
+import "goil_env_verification.gSemantics";
+import "config_type.gSemantics";
+import "goil_cpu_level_include.gGrammar";
+import "goil_file_level_include.gGrammar";
+
 nonterminal <start>;
 nonterminal <file>
   ?!@implementation imp
