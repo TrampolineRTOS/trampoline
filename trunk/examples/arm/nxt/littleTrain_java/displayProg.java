@@ -33,16 +33,15 @@ public class displayProg extends JFrame implements ActionListener{
 	
 	private Container pane;
 	private JButton bpbluetooth, bpUP, bpDOWN, bpLEFT, bpRIGHT;
-	private byte incrementspeed = 1;
-	private byte decrementspeed = -1;
-	private byte incrementdirection = 1;
-	private byte decrementdirection = -1;
-	private byte zero = 0;
     public JTextArea textArea;
     public JTextArea NXTaddrLabel;
     public JTextArea NXTaddrString;
-	byte maxlengthspeed = 14;
-	byte maxlengthdirection = 15;
+	byte maxlengthcommand = 14;
+
+	byte up1 =1;
+    byte down2 =2;
+    byte left3 =3;
+    byte right4 =4;
 	
 	
 	public displayProg(SampleSPPClient spp) {
@@ -110,7 +109,7 @@ public class displayProg extends JFrame implements ActionListener{
 		textArea = new JTextArea();
 		textArea.setBackground(pane.getBackground());
 		textArea.setEditable(false);
-		textArea.setText("Speed: " + "\n" + "Direction: \n" );
+		textArea.setText("Command:" );
 		pane.add(textArea, c);
 		
 		//creating a textArea for the NXT address
@@ -152,31 +151,22 @@ public class displayProg extends JFrame implements ActionListener{
         
 	};
 	
-	public void udpatePanel(byte speed, byte direction)
+	public void udpatePanel(int command)
 	{	
 		//speed
-		String sspeed = "" + speed;
-		String speedtext = "Speed: ";
-		int gapspeed = maxlengthspeed - speedtext.length() - sspeed.length();
-		for(int i=0; i<gapspeed; i++)
+		String scommand = "" + command;
+		String commandtext = "Command: ";
+		int gapcommand = maxlengthcommand - commandtext.length() - scommand.length();
+		for(int i=0; i<gapcommand; i++)
 		{
-			speedtext = speedtext.concat("  ");
+			commandtext = commandtext.concat("  ");
 		}		
-		speedtext = speedtext.concat(sspeed);
+		commandtext = commandtext.concat(scommand);
 
-		//direction
-		String sdirection = "" + direction;
-		String directiontext = "Direction:";
-		int gapdirection = maxlengthdirection - directiontext.length() - sdirection.length();
-		for(int i=0; i<gapdirection; i++)
-		{
-			directiontext = directiontext.concat("  ");
-		}		
-		directiontext = directiontext.concat(sdirection);
-
-		textArea.setText(speedtext + "\n" + directiontext + "\n");
+		textArea.setText(commandtext);
 		
 	}
+ 
 			
 	public void setButtonsEnabled(boolean bool)
 	{
@@ -193,7 +183,7 @@ public class displayProg extends JFrame implements ActionListener{
 	    if (e.getActionCommand() == "up")
 	    {
 	    	try {
-				sppclient.incrementSpeedOrDirection(incrementspeed, zero);
+				sppclient.changeSpeed(up1);
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -206,7 +196,7 @@ public class displayProg extends JFrame implements ActionListener{
 	    else if (e.getActionCommand() == "down")
 	    {
 	    	try {
-				sppclient.incrementSpeedOrDirection(decrementspeed, zero);
+				sppclient.changeSpeed(down2);
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -214,12 +204,12 @@ public class displayProg extends JFrame implements ActionListener{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
+	
 	    }
 	    else if (e.getActionCommand() == "left")
 	    {
 	    	try {
-				sppclient.incrementSpeedOrDirection(zero, decrementdirection);
+				sppclient.changeSpeed(left3);
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -232,7 +222,7 @@ public class displayProg extends JFrame implements ActionListener{
 	    else if (e.getActionCommand() == "right")
 	    {
 	    	try {
-				sppclient.incrementSpeedOrDirection(zero, incrementdirection);
+				sppclient.changeSpeed(right4);
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -240,7 +230,7 @@ public class displayProg extends JFrame implements ActionListener{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-				    	
+			    	
 	    }
 	    else if (e.getActionCommand() == "bluetooth")
 	    {

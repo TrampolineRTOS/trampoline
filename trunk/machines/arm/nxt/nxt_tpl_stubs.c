@@ -26,6 +26,7 @@
 #include "tpl_machine_interface.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os_kernel.h"
+#include "ecrobot_interface.h"
 
 extern void tpl_init_machine_generic (void);
 
@@ -37,6 +38,9 @@ void tpl_init_machine(void)
     nxt_device_init();
     tpl_init_machine_generic();
     InitButtons();
+	ecrobot_set_motor_rev(NXT_PORT_A, 0);
+	ecrobot_set_motor_rev(NXT_PORT_B, 0);
+	ecrobot_set_motor_rev(NXT_PORT_C, 0);
 }
 
 void tpl_shutdown(void)

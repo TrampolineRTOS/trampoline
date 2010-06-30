@@ -36,20 +36,18 @@ public class SampleSPPClient implements DiscoveryListener{
     
     public boolean bluetoothconnection = false;
     
-    private byte[] request = {2, 0, 0, 0};
-    private byte[] temprequest = {2, 0, 0, 0};
-    private byte[] answer = {0, 0, 0, 0};
-	    
-    private byte ispeed = 2;
-    private byte idirection = 2;
-    private byte[] speed = {-80, -60, 0, 60, 80};
-    private byte[] direction = {-40, -30, 0, 30, 40};
+    private byte[] request = {3,0,0,0,0};
+    private byte[] temprequest = {3,0,0,0,0};
+    private byte[] answer = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    private byte counter_receive=0;
+    private byte counter_send=0;
+    private short dx0=0, dx1=0, dx2=0;
+    private short dy0=0, dy1=0, dy2=0;
+    private float dx_done=0, dy_done=0;
+    private short tempshort;
     
-    private short MAX = 4;
-    private short MIN = 0;
-    
-    private String NXTadress = "0016530DF404";
-    private String NXTadress2 = "0016530AF599";
+    private String NXTadress2 = "0016530DF409";
+    private String NXTadress = "0016530AF599";
     
     //object used for waiting
     private Object lock=new Object();
@@ -216,47 +214,24 @@ public class SampleSPPClient implements DiscoveryListener{
     
     }
     
-    public void incrementSpeedOrDirection(byte deltaspeed, byte deltadirection) throws InterruptedException, IOException  
+    public void changeSpeed(byte command) throws InterruptedException, IOException  
     {
-    	//update speed and direction according to parameters (be careful not to send too big values!)
-    	
-    	if ((ispeed + deltaspeed) > MAX)
-    	{
-    		ispeed = (byte)MAX;
-    	}
-    	else if ((ispeed + deltaspeed) < MIN)
-    	{
-    		ispeed = (byte)MIN;
-    	}
-    	else
-    	{
-    		ispeed += deltaspeed;
-    	}    	
-    	
-    	if ((idirection + deltadirection) > MAX)
-    	{
-    		idirection = (byte)MAX;
-    	}
-    	else if ((idirection + deltadirection) < MIN)
-    	{
-    		idirection = (byte)MIN;
-    	}
-    	else
-    	{
-    		idirection += deltadirection;
-    	}    	
+    	//update speed 		
     	
     	semRequestModified.acquire();
-    	request[2] = speed[ispeed];
-    	request[3] = direction[idirection];
+		request[2]=command;
+//		request[3]=30;
+//		request[4]=40;
     	requestModified = true;
     	semRequestModified.release();
-    	
+ //   	os.write(request);
+    	System.out.println("COMMAND : "+request[2]);
+
     	//update speed/direction on the panel
-    	mafenetre.udpatePanel(request[2], request[3]);
+    	mafenetre.udpatePanel(request[2]);
     	    	
     }
-    
+   
     public void writeCommand() throws InterruptedException, IOException {
     	
     	//it takes 150-190ms to send datas (4 bytes in this case)
@@ -268,36 +243,74 @@ public class SampleSPPClient implements DiscoveryListener{
     		requestModified = false;
     		//since request seems not to be changed if we send request, we use an other array
     		temprequest[2] = request[2];
-    		temprequest[3] = request[3];
+//    		temprequest[3] = request[3];
+//    		temprequest[4] = request[4];
     		semRequestModified.release();
     		
     		//send datas
     		os.write(temprequest);
-        	//System.out.println(request[0] + ";" + request[1] + ";" + request[2] + "-" + request[3]);
-    		
+//        	System.out.println("Temprequest Sent");
+//       	System.out.println("Request :"+request[0] + " / " + request[1] + " / " + request[2]+" / "+request[3]+" / "+request[4]+" / "+request[5]);
+//        	System.out.println("temprequest :"+temprequest[0] + " / " + temprequest[1] + " / " + temprequest[2]+" / "+temprequest[3]+" / "+temprequest[4]+" / "+temprequest[5]);
+        	
     	}
     	else
     	{
     		semRequestModified.release();
     		Thread.currentThread();
-			Thread.sleep(10);
+    		Thread.sleep(10);
     	}
     	
     	
     }
-    
+ /*##########################################################################################################################################*/
     public void readCommand() throws InterruptedException, IOException{
     	
-    	//wait for datas (4 bytes only)
+    	//wait for datas (14 bytes only)
     	is.read(answer);
-		     
-        System.out.println("Receive data from NXT1 ans[0]:" + answer[0] + " ans[1]:" + answer[1] + "ans[2]" + answer[2] + " ans[3]:" + answer[3]);
-        // TODO: dispatch datas to other NXT ?
+    	counter_receive ++; 
+    	
+    	dx0 = (short) ((answer[2])*256 + answer[3]);
+    	dy0 = (short) ((answer[4])*256 + answer[5]);
+    	dx1 = (short) ((answer[6])*256 + answer[7]);
+    	dy1 = (short) ((answer[8])*256 + answer[9]);
+    	dx2 = (short) ((answer[10])*256 + answer[11]);
+    	dy2 = (short) ((answer[12])*256 + answer[13]);
+    	    	
+    	System.out.println(answer[0] + " values received:");
+   	    System.out.println("dx0:"+Integer.toHexString((byte)dx0));
+    	System.out.println("dy0:"+Integer.toHexString((byte)dy0));
+        System.out.println("dx1:"+Integer.toHexString((byte)dx1));
+        System.out.println("dy1:"+Integer.toHexString((byte)dy1));
+        System.out.println("dx2:"+Integer.toHexString((byte)dx2));
+        System.out.println("dy2:"+Integer.toHexString((byte)dy2));
+        
+        
+        for(int i=0; i<(answer[0]/2); i++)
+        {
+        	tempshort = (short) ((answer[2*i+2])*256 + answer[2*i+3]);
+        	if ( (i%2) == 1 )
+        	{
+                dy_done += ((float)(tempshort))/100;  
+                System.out.println("dy_done:" + dy_done);
+        	}
+        	else
+        	{
+        		dx_done += ((float)(tempshort))/100;
+        		System.out.println("dx_done:" + dx_done);
+        	}
+        }
+        
+        //System.out.println("dx_done:" + dx_done + " dy_done:" + dy_done);
+        System.out.println("");
+        
+		// TODO: dispatch datas to other NXT ?
         
         os2.write(answer);
-        
-        
+        counter_send ++;
     }
+  
+   /*##########################################################################################################################################*/
     
     //methods of DiscoveryListener
     public void deviceDiscovered(RemoteDevice btDevice, DeviceClass cod) {

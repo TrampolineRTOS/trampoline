@@ -38,13 +38,13 @@ CPU config {
     ISR = systick_isr_C;
     ISR = nxt_motor_isr_C;
     ISR = spi_isr_C;
-    ISR = uart_isr_C_0;
+    /*ISR = uart_isr_C_0;*/
     /*ISR = uart_isr_C_1;*/
     ISR = bt_isr_C;
-    ISR = sound_isr_C;
+    /*ISR = sound_isr_C;*/
     ISR = twi_isr_C;
     ISR = systick_low_priority_C;
-    ISR = udp_isr_C;
+    /*ISR = udp_isr_C;*/
     ISR = i2c_timer_isr_C;
     ISR = check_buttons_status;
   };   

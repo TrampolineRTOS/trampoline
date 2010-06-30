@@ -46,14 +46,13 @@ CPU test {
 
     OS config {
         STATUS = EXTENDED;
-        SHUTDOWNHOOK = TRUE;
         APP_SRC = "littleTrain1.c"; 
         APP_NAME = "littleTrain1_exe";
         TRAMPOLINE_BASE_PATH = "../../../..";
         CFLAGS = "-g -c -ffreestanding -fsigned-char -mcpu=arm7tdmi -Os -Winline -Wall -Werror-implicit-function-declaration --param max-inline-insns-single=1000 -ffunction-sections -fdata-sections -std=gnu99"; //-MD ";
         ASFLAGS = "-g -mcpu=arm7tdmi-s --fatal-warnings ";
         LDFLAGS = "-g --cref --allow-multiple-definition --gc-sections";
-        LDFLAGS = "-L/usr/local/crossgcc/lib/gcc/arm-elf/4.2.3 -lgcc -L/usr/local/crossgcc/arm-elf/lib -lc";
+        LDFLAGS = "-lm -L/usr/local/crossgcc/lib/gcc/arm-elf/4.2.3 -lgcc -L/usr/local/crossgcc/arm-elf/lib -lc";
         SYSTEM_CALL = TRUE;
         
         COMPILER = "arm-elf-gcc";
@@ -71,49 +70,71 @@ CPU test {
     };
 
     TASK task_idle {
-        PRIORITY = 2;
+        PRIORITY = 1;
         AUTOSTART = TRUE { APPMODE = std; };
         ACTIVATION = 1;
         SCHEDULE = FULL;
     };   
     
-    TASK task_command_motors {
-        PRIORITY = 4;
+    TASK Odometry{
+        PRIORITY = 3;
         AUTOSTART = FALSE;
         ACTIVATION = 1;
         SCHEDULE = FULL;
-    };   
+    };
+    
+    TASK Send{
+        PRIORITY = 3;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+   
    
     COUNTER SystemCounter {
        SOURCE = it_timer1;
        MAXALLOWEDVALUE = 2000;
-		TICKSPERBASE = 10;
-		MINCYCLE = 1; 
+       TICKSPERBASE = 10;
+       MINCYCLE = 1; 
     };
-	
-	ALARM Alarm2{
-		COUNTER = SystemCounter;
-		ACTION = ACTIVATETASK {
-			TASK = task_command_motors;
-		};
-        AUTOSTART = TRUE {
-            ALARMTIME = 1;
-            CYCLETIME = 25; //each 250ms.
-            APPMODE = std;
-		};
-	};
-
-   ISR isr_button_stop {
-       CATEGORY = 2;
-		PRIORITY = 1;
-		SOURCE = button_stop;
+ 
+ALARM Alarm2{
+  COUNTER = SystemCounter;
+  ACTION = ACTIVATETASK {
+      TASK = Odometry;
+      };
+  AUTOSTART = TRUE {
+      ALARMTIME = 2;
+      CYCLETIME = 10; //each 100 ms.
+      APPMODE = std;
+      };
+ };
+ 
+ 
+  ALARM Alarm3{
+  COUNTER = SystemCounter;
+  ACTION = ACTIVATETASK {
+      TASK = Send;
+      };
+  AUTOSTART = TRUE {
+      ALARMTIME = 2;
+      CYCLETIME = 30; //each 300 ms.
+      APPMODE = std;
+      };
+ };
+ 
+  ISR isr_button_stop {
+    CATEGORY = 2;
+  PRIORITY = 7;
+  SOURCE = button_stop;
    };
-   ISR isr_bluetooth {
-       CATEGORY = 2;
-		PRIORITY = 1;
-		SOURCE = it_bluetooth;
+   
+  ISR isr_bluetooth {
+    CATEGORY = 2;
+  PRIORITY = 8;
+  SOURCE = it_bluetooth;
    };
-      
+   
 };
 
 /* End of file littleTrain1.oil */

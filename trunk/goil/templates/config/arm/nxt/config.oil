@@ -37,64 +37,67 @@ CPU config {
    
    ISR systick_isr_C {
        CATEGORY = 1;
-		PRIORITY = 1;
-		SOURCE = systick_isr_C;
+  PRIORITY = 1;
+  SOURCE = systick_isr_C;
    };
    ISR nxt_motor_isr_C {
        CATEGORY = 1;
-		PRIORITY = 1;
-		SOURCE = nxt_motor_isr_C;
+  PRIORITY = 1;
+  SOURCE = nxt_motor_isr_C;
    };
    ISR spi_isr_C {
        CATEGORY = 1;
-		PRIORITY = 1;
-		SOURCE = spi_isr_C;
+  PRIORITY = 1;
+  SOURCE = spi_isr_C;
    };
-   ISR uart_isr_C_0 {
-       CATEGORY = 1;
-		PRIORITY = 1;
-		SOURCE = uart_isr_C_0;
-   };
-   /*ISR uart_isr_C_1 {
-       CATEGORY = 1;
-		PRIORITY = 1;
-		SOURCE = uart_isr_C_1;
-   };
-   */
+   
    ISR bt_isr_C {
        CATEGORY = 1;
-		PRIORITY = 1;
-		SOURCE = it_bluetooth;
+  PRIORITY = 1;
+  SOURCE = it_bluetooth;
    };
-   ISR sound_isr_C {
+/*   ISR sound_isr_C {
        CATEGORY = 1;
-		PRIORITY = 1;
-		SOURCE = sound_isr_C;
-   };
-   ISR twi_isr_C {
-       CATEGORY = 1;
-		PRIORITY = 1;
-		SOURCE = twi_isr_C;
-   };
-   ISR systick_low_priority_C {
-       CATEGORY = 1;
-		PRIORITY = 1;
-		SOURCE = systick_low_priority_C;
+  PRIORITY = 1;
+  SOURCE = sound_isr_C;
    };
    ISR udp_isr_C {
        CATEGORY = 1;
-		PRIORITY = 1;
-		SOURCE = udp_isr_C;
+  PRIORITY = 1;
+  SOURCE = udp_isr_C;
+   };
+   
+   ISR uart_isr_C_0 {
+       CATEGORY = 1;
+  PRIORITY = 1;
+  SOURCE = uart_isr_C_0;
+   };
+   */
+   /*ISR uart_isr_C_1 {
+       CATEGORY = 1;
+  PRIORITY = 1;
+  SOURCE = uart_isr_C_1;
+   };
+   */
+   ISR twi_isr_C {
+       CATEGORY = 1;
+  PRIORITY = 1;
+  SOURCE = twi_isr_C;
+   };
+   ISR systick_low_priority_C {
+       CATEGORY = 1;
+  PRIORITY = 1;
+  SOURCE = systick_low_priority_C;
    };
    ISR i2c_timer_isr_C {
        CATEGORY = 1;
-		PRIORITY = 1;
-		SOURCE = i2c_timer_isr_C;
+  PRIORITY = 1;
+  SOURCE = i2c_timer_isr_C;
    };
    ISR check_buttons_status {
        CATEGORY = 1;
-		PRIORITY = 1;
-		SOURCE = check_buttons_status;
+  PRIORITY = 1;
+  SOURCE = check_buttons_status;
    };
    
 };

@@ -295,7 +295,7 @@ void nxt_device_init(void)
 	systick_init();
   i2c_init();
 	nxt_motor_init();
-	sound_init();
+	//sound_init();
 	bt_init();
 	systick_wait_ms(1000); /* wait for LCD to stabilize */
 	display_init(); //need systick_wait_ms()

@@ -72,6 +72,7 @@ typedef enum {
 
 /* NXT servo motor API */
 extern  S32 ecrobot_get_motor_rev(U8 port_id);
+extern void ecrobot_set_motor_rev(U8 port_id, S32 rev);
 extern void ecrobot_set_motor_speed(U8 port_id, S8 speed);
 extern void ecrobot_set_motor_mode_speed(U8 port_id, S32 mode, S8 speed);
 
