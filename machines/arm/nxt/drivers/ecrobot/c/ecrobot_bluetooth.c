@@ -566,7 +566,7 @@ U32 ecrobot_read_bt_packet(U8 *buf, U32 bufLen)
 	{
 		bt_receive(&receiveBuf[0]);
 		len = receiveBuf[0];
-
+		
 		if (len > 0 && len <= bufLen+2)
 		{
 			for(i = 0; i < len; i++)

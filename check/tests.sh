@@ -57,18 +57,18 @@ cd ..
 if [ "$target" != "clean" ]
 then
 	#Compare results
-	echo "Compare results with the expected ones..."
+	echo "Compare results with the expected ones (GOIL and Functional tests)..."
 	if [ `diff functional/functional_results_expected.log functional/functional_results.log | wc -l` -eq 0 ]
 	then
 		echo "Functional tests Succeed!!"
 	else
-		echo "Functional tests Failed! Results are stored in `pwd`/functional/functional_results.log"
+		echo "Functional tests FAILED! Results are stored in `pwd`/functional/functional_results.log"
 	fi
 	if [ `diff GOIL/GOIL_results_expected.log GOIL/GOIL_results.log | wc -l` -eq 0 ]
 	then
 		echo "GOIL tests Succeed!!"
 	else
-		echo "GOIL tests Failed! Results are stored in `pwd`/GOIL/GOIL_results.log"
+		echo "GOIL tests FAILED! Results are stored in `pwd`/GOIL/GOIL_results.log"
 	fi
 fi
 	

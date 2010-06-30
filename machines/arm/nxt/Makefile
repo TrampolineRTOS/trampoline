@@ -66,22 +66,22 @@ SOURCES += flash_loader.c \
 bios_display.c
 
 TEMP_SOURCE_DIRS += $(MACHINE_PATH)/arm/nxt/drivers/lejos_nxj/src/nxtvm/platform/nxt/
-SOURCES += uart.c \
-byte_fifo.c \
+SOURCES += byte_fifo.c \
 aic.c \
 nxt_avr.c \
 i2c.c \
 systick.c \
 nxt_motors.c \
-sound.c \
 bt.c \
 display.c \
 sensors.c \
 twi.c \
 nxt_lcd.c \
-udp.c \
 nxt_spi.c \
-flashprog.c
+flashprog.c \
+#udp.c \
+sound.c \
+uart.c \
 
 TEMP_SOURCE_DIRS += $(MACHINE_PATH)/arm/nxt/drivers
 SOURCES += buttons.c

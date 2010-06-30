@@ -29,6 +29,14 @@ U16 bt_length = 0;
 U8 bt_frame[128];
 tpl_bool bt_frame_received = FALSE;
 
+/* ******************************************************
+ * TODO : Reverse bluetooth driver made by nxtosek.
+ * I thought it should be better to rewrite in bt_frame[]
+ * each frame received but it could generates errors if
+ * the values received frequency in higher than the
+ * value read frequency !!!
+ * **************************************************** */
+
 void bt_isr_C_function(void)
 {
   unsigned int status;
@@ -44,7 +52,6 @@ void bt_isr_C_function(void)
       {
         bt_length = in_buf[0][0];
         bt_length |= in_buf[0][1] << 8;
-        
         *AT91C_US1_RPR = (unsigned int)&(in_buf[0][0]);
         *AT91C_US1_RCR = bt_length;
         bt_state = WAITINGFORFRAME;

@@ -2496,7 +2496,7 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 	t2	& WaitEvent(Event1)														& E\_OK												& \\ \hline
 	t2	& TerminateTask()														& 													& \\ \hline
 
-	t1	& GetScheduleTableStatus(sched1, \&STStatusType)							& E\_OK, STStatusType = SCHEDULETABLE\_STOPPED		& \\ \hline
+	t1	& GetScheduleTableStatus(sched2, \&STStatusType)							& E\_OK, STStatusType = SCHEDULETABLE\_STOPPED		& \\ \hline
 	t1	& TerminateTask()														& 													& \\ \hline
 	\end{supertabular}\\
 		
