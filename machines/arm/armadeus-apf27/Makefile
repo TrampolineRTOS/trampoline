@@ -37,5 +37,3 @@ apf27_vectors.S \
 apf27_tpl_stubs.c \
 apf27_bootstrap_stage2.c \
 apf27_mem_prot.c
-
-include $(MACHINE_PATH)/arm/Makefile.generic
