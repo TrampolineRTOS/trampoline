@@ -28,8 +28,6 @@
 #
 #kernel OS architecture dependant files
 
-include $(MACHINE_PATH)/arm/Makefile.generic
-
 SOURCES += olimex_tpl_sleep.S \
 olimex_bootstrap_stage1.S \
 olimex_bootstrap_stage2.c \

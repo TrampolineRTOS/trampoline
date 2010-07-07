@@ -37,5 +37,3 @@ simtec_idle.c \
 simtec_tpl_stubs.c \
 simtec_irq.c \
 simtec_driver_adapter.c
-
-include $(MACHINE_PATH)/arm/Makefile.generic

@@ -28,8 +28,6 @@
 #
 #kernel OS architecture dependant files
 
-include $(MACHINE_PATH)/arm/Makefile.generic
-
 SOURCES += nxt_tpl_sleep.S \
 nxt_tpl_stubs.c \
 nxt_irq.c \
