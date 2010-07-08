@@ -58,31 +58,25 @@ CPU test {
         SCHEDULE = FULL;
     };
     
-    TASK task3 {
-        PRIORITY = 3;
-        AUTOSTART = FALSE;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
 
     COUNTER SystemCounter {
        SOURCE = it_timer1;
        MAXALLOWEDVALUE = 2000;
-		TICKSPERBASE = 10;
-		MINCYCLE = 1; 
+  TICKSPERBASE = 10;
+  MINCYCLE = 1; 
     };
     
     ALARM Alarm1{
-		COUNTER = SystemCounter;
-		ACTION = ACTIVATETASK {
-			TASK = task2;
-		};
+  COUNTER = SystemCounter;
+  ACTION = ACTIVATETASK {
+   TASK = task2;
+  };
         AUTOSTART = TRUE {
             ALARMTIME = 200;
             CYCLETIME = 100; //each 1s.
             APPMODE = std;
-		};
-	};
+  };
+ };
 
 
 

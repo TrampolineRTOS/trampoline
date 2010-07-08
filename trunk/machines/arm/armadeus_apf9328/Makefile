@@ -31,6 +31,7 @@
 SOURCES += armadeus_tpl_sleep.S \
 armadeus_bootstrap_stage1.S \
 armadeus_bootstrap_stage2.c \
+armadeus-MMU.S\
 armadeus_tpl_stubs.c \
 armadeus_irq.c \
 armadeus_exception_catch.S
