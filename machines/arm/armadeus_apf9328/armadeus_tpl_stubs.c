@@ -32,6 +32,7 @@
 
 void tpl_init_machine()
 {
+	init_mmu();
     tpl_init_machine_generic ();
 }
 

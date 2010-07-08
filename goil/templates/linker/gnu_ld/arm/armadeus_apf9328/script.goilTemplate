@@ -3,15 +3,15 @@ ENTRY (Vec_reset)
 
 MEMORY
 {
-  internal_ram : org = 0x40000000, len = 16k
-  external_ram : org = 0x81000000, len = 1M
+  /*internal_ram : org = 0x40000000, len = 16k*/
+  external_ram : org = 0x08000000, len = 16M
 }
 
 SECTIONS {
   .vectbl : {
     *(.vectbl);
     . = ALIGN(4);
-  } > internal_ram
+  } > external_ram
 }
 
 SECTIONS
