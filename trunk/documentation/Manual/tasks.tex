@@ -1,6 +1,8 @@
+%!TEX root = ./trampoline.tex
+
 \chapter{Processes}
 
-Processes are both Tasks and ISRs category 2. Trampoline category 2 ISRs are like Basic Tasks except the priority level of the interrupt controller is raised to the priority of the ISR while the later is running.
+\strong{Processes} are both Tasks and ISRs category 2. Trampoline category 2 ISRs are like Basic Tasks except the priority level of the interrupt controller is raised to the priority of the ISR while the later is running.
 
 \section{The States of a Process}
 
@@ -40,7 +42,7 @@ This state is used to flag a process that is ready but has its context unitializ
 \end{figure} 
 
 
-\section{The "idle" task}
+\section{The {\em idle} task}
 
 The "idle" task is launched when no other task is currently running. It keeps the microprocessor doing nothing.\\
 To be able to use specific platform capabilities (to put the microcontroler in stand by mode for example), this task is hardware specific (in \textit{machine/}). The taks is then able to quantify the microprocessor occupation.\\

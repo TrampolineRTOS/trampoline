@@ -1,3 +1,4 @@
+%!TEX root = ./trampoline.tex
 
 
 
@@ -5,7 +6,7 @@
 \rowcolors{1}{light-gray}{white}
 \newlength{\Li}\settowidth{\Li}{\textbf{Decimal}}
 \newlength{\Liii}\settowidth{\Liii}{(bootstrap  )}
-\newlength{\Lii}\settowidth{\Lii}{SCHEDULETABLE\_AUTOSTART }
+\newlength{\Lii}\settowidth{\Lii}{SCHEDULETABLE_AUTOSTART }
 \tablefirsthead{ \textbf{Decimal Value} & \textbf{bit 5}  & \textbf{bit 4} & \textbf{bit 3} & \textbf{bit 2} & \textbf{bit 1} & \textbf{bit 0} & \textbf{Meaning} \\ \hline }
 \tablehead{ \rowcolor{white} \rowcolors{1}{light-gray}{white} \textbf{Decimal Value} & \textbf{bit 5}  & \textbf{bit 4} & \textbf{bit 3} & \textbf{bit 2} & \textbf{bit 1} & \textbf{bit 0} & \textbf{Meaning} \\ \hline  }
 \tabletail{ \hline } 
@@ -40,10 +41,10 @@ A schedule table always has a defined state. States include those found at page 
 
 Indeed, \textbf{bit 1} is the "autostart" bit. It's used when autostarted schedule tables have been declared in the OIL file. Goil generates schedule tables with SCHEDULETABLE\_AUTOSTART\_X (X can be RELATIVE, ABSOLUTE or SYNCHRON) state. At startup (in \function{tpl_init_os()}), the system starts autostarted schedule tables and resets the \textbf{bit 1}.
 
-\textbf{bit 4} is the "bootstrap" bit. It's used when the first expiry point of a schedule table is dated in more than \textbf{OsCounterMaxAllowedValue} ticks from the current date \footnote{As the \textit{$<$offset$>$} parameter of StartScheduleTableRel() cannot be greater than \textbf{OsCounterMaxAllowedValue} minus the \textbf{InitialOffset} of the schedule table (OS276), the first expiry point cannot be in more than \textbf{OsCounterMaxAllowedValue} ticks from the current date. Thus the "bootstrap" bit can set by StartScheduleTableAbs() only.}. It can happen when :
+\textbf{bit 4} is the "bootstrap" bit. It's used when the first expiry point of a schedule table is dated in more than \textbf{OsCounterMaxAllowedValue} ticks from the current date\footnote{As the \toreplace{offset} parameter of StartScheduleTableRel() cannot be greater than \textbf{OsCounterMaxAllowedValue} minus the \textbf{InitialOffset} of the schedule table (OS276), the first expiry point cannot be in more than \textbf{OsCounterMaxAllowedValue} ticks from the current date. Thus the "bootstrap" bit can set by StartScheduleTableAbs() only.}. It can happen when :
 	\begin{itemize}
-	\item the schedule table start ($<$tick\_val$>$) is after the current date and the first expiry point comes between the current date and $<$tick\_val$>$
-	\item $<$tick\_val$>$ is before the current date and the first expiry point comes after the current date
+	\item the schedule table start (\toreplace{tick_val}) is after the current date and the first expiry point comes between the current date and \toreplace{tick_val}
+	\item \toreplace{tick_val} is before the current date and the first expiry point comes after the current date
 	\end{itemize}
 
 Figure \ref{fig:bootstrapexample} below shows a bootstrap example for the first item.
@@ -63,16 +64,16 @@ Thus, the different states of a schedule table are described in Table \ref{sched
 \begin{center}
 \topcaption{\textcolor{white}{q}States of a schedule table } % Latex is weird, the table goes on the next page without the "\textcolor{white}{q}"
 \begin{supertabular}{p{\Li}|c|c|c|c|c|c|p{\Lii}|} 
-0	& 0	& 0	& 0 	& 0	& 0	& 0	& SCHEDULETABLE\_STOPPED  \\ 
-1	& 0	& 0	& 0 	& 0	& 0	& 1	& SCHEDULETABLE\_RUNNING  \\ 
-5	& 0	& 0	& 0 	& 1	& 0	& 1	& SCHEDULETABLE\_NEXT  \\  
-9	& 0	& 0	& 1 	& 0	& 0	& 1	& SCHEDULETABLE\_WAITING  \\  
-13	& 0	& 0	& 1 	& 1	& 0	& 1	& SCHEDULETABLE\_RUNNING\_AND\_SYNCHRONOUS \\ \hline \hline
-6	& 0	& 0	& 0 	& 1	& 1	& 0	& SCHEDULETABLE\_AUTOSTART \_ABSOLUTE  \\ 
-10	& 0	& 0	& 1 	& 0	& 1	& 0	& SCHEDULETABLE\_AUTOSTART \_RELATIVE  \\  
-14	& 0	& 0	& 1 	& 1	& 1	& 0	& SCHEDULETABLE\_AUTOSTART \_SYNCHRON  \\  \hline \hline
-16	& 0	& 1	& 0 	& 0	& 0	& 0	& SCHEDULETABLE\_BOOTSTRAP \\ 
-32	& 1	& 0	& 0 	& 0	& 0	& 0	& SCHEDULETABLE\_ASYNC  \\ 
+0	& 0	& 0	& 0 	& 0	& 0	& 0	& SCHEDULETABLE_STOPPED  \\ 
+1	& 0	& 0	& 0 	& 0	& 0	& 1	& SCHEDULETABLE_RUNNING  \\ 
+5	& 0	& 0	& 0 	& 1	& 0	& 1	& SCHEDULETABLE_NEXT  \\  
+9	& 0	& 0	& 1 	& 0	& 0	& 1	& SCHEDULETABLE_WAITING  \\  
+13	& 0	& 0	& 1 	& 1	& 0	& 1	& SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS \\ \hline \hline
+6	& 0	& 0	& 0 	& 1	& 1	& 0	& SCHEDULETABLE_AUTOSTART _ABSOLUTE  \\ 
+10	& 0	& 0	& 1 	& 0	& 1	& 0	& SCHEDULETABLE_AUTOSTART _RELATIVE  \\  
+14	& 0	& 0	& 1 	& 1	& 1	& 0	& SCHEDULETABLE_AUTOSTART _SYNCHRON  \\  \hline \hline
+16	& 0	& 1	& 0 	& 0	& 0	& 0	& SCHEDULETABLE_BOOTSTRAP \\ 
+32	& 1	& 0	& 0 	& 0	& 0	& 0	& SCHEDULETABLE_ASYNC  \\ 
 \end{supertabular} 
 \end{center}
 \label{schedtablestates}
