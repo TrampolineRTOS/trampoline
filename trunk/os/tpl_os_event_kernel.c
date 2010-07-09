@@ -159,6 +159,9 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
   /*  checks the task is not in the SUSPENDED state   */
   CHECK_SUSPENDED_TASK_ERROR(task_id,result)
   
+  /* check event is in an authorized memory region */
+  CHECK_DATA_LOCATION(event, result);
+  
 #if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   *event = tpl_task_events_table[task_id]->evt_set;

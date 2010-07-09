@@ -110,6 +110,17 @@ typedef u8 tpl_proc_state;
  * the size of this type.
  */
 typedef unsigned int tpl_trusted_count;
+
+#endif
+
+#if WITH_AUTOSAR == YES
+/**
+ * @internal
+ *
+ * Type used to store the id of a Trusted Function
+ * Its size is computed according to the number of Trusted Functions
+ */
+typedef int tpl_tf_id;
 #endif
 
 /**
