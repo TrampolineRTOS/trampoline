@@ -152,6 +152,9 @@ FUNC(tpl_status, OS_CODE) tpl_get_counter_value_service(
   /* check access right */
   CHECK_ACCESS_RIGHTS_COUNTER_ID(counter_id,result)
 
+  /* check value is in an authorized memory region */
+  CHECK_DATA_LOCATION(value, result);
+
 #if COUNTER_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
 
@@ -211,6 +214,10 @@ FUNC(tpl_status, OS_CODE) tpl_get_elapsed_counter_value_service(
   /* check access right */
   CHECK_ACCESS_RIGHTS_COUNTER_ID(counter_id,result)
 	
+  /* check previous_value and value are in an authorized memory region */
+  CHECK_DATA_LOCATION(previous_value, result);
+  CHECK_DATA_LOCATION(value, result);
+
   /*  check the previous value does not exceed
       the maxallowedvalue of the counter          */
   CHECK_COUNTER_MAX_ALLOWED_VALUE_ERROR(counter_id, *previous_value, result)
