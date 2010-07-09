@@ -1,4 +1,4 @@
-%!TEX root = ./goil_manual.tex
+%!TEX root = ./trampoline.tex
 
 \chapter{The Goil templates}
 
@@ -471,7 +471,7 @@ This list contains the informations about the ready list. Items are sorted by pr
   {the size of the queue for the corresponding priority.}
 \end{longtableiii}
 
-\subsection{The \var{SOURCEFILES}, \var{CFLAGS}, \var{ASFLAGS}, \var{LDFLAGS} and \var{TRAMPOLINESOURCEFILES} lists}
+\subsection{The \var{SOURCEFILES}, \var{CFLAGS}, \var{CPPFLAGS}, \var{ASFLAGS}, \var{LDFLAGS} and \var{TRAMPOLINESOURCEFILES} lists}
 
 The \var{SOURCEFILES} list contains the source files as found in attributes \member{APP\_SRC} of the OS object in the OIL file.
 
@@ -489,6 +489,15 @@ The \var{CFLAGS} list contains the flags for the C compiler as found in attribut
   \lineiii{CFLAG}
   {string}
   {the C compiler flag.}
+\end{longtableiii}
+
+The \var{CPPFLAGS} list contains the flags for the C++ compiler as found in attributes \member{CPPFLAGS} of the OS object in the OIL file.
+
+\rowcolors{1}{white}{light-gray}
+\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
+  \lineiii{CPPFLAG}
+  {string}
+  {the C++ compiler flag.}
 \end{longtableiii}
 
 The \var{ASFLAGS} list contains the flags for the assembler as found in attributes \member{ASFLAGS} of the OS object in the OIL file.
@@ -558,7 +567,7 @@ The template interpreter starts in literal text mode. Switching from literal tex
 GTL supports 4 types: \strong{string}, \strong{integer}, \strong{boolean} and \strong{list}. These types have readers %\footnote{All the readers available in the corresponding Galgas types are available}
 to get informations about a variable. A reader is invoke with the following syntax:
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 [expression reader]
 \end{lstlisting}
 
@@ -657,7 +666,7 @@ The following reader is available for list variables:
 
 A second form of \strong{exists} is:
  
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 exists var default (expression)
 \end{lstlisting}
 
@@ -773,13 +782,13 @@ exists var default (expression)
 
 Data assignment instruction. The general form is:
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 let var := expression
 \end{lstlisting}
 
 A second form allows to add a string to a list (only, this should be extended in the future)
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 let var += expression
 \end{lstlisting}
 
@@ -787,7 +796,7 @@ let var += expression
 
 The scope of a variable depends on the location where the variable is assigned the first time. For instance, in the following code:
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 let a := 1
 foreach TASKS do
   let b := INDEX
@@ -803,7 +812,7 @@ Because a is assigned outside the {\bf foreach} loop, it contains the value of t
 
 Conditional execution. The forms are:
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 if expression then ... end if
 if expression then ... else ... end if
 if expression then ... elsif expression then ... end if
@@ -812,7 +821,7 @@ if expression then ... elsif expression then ... else ... end if
 
 The {\em expression} must be boolean. In the following example, the blue text (within the \%) is produced only if the USECOM boolean variable is true:
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 if USECOM then %
 #include "tpl_com.h" %
 end if
@@ -822,12 +831,12 @@ end if
 
 This instruction iterates on the elements of a list. Each element may have many attributes that are available as variables within the {\bf do} section of the foreach loop. The simplest form is the following one
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 foreach expression do ... end foreach
 \end{lstlisting}
 
 In the following example, for each element in the ALARMS list, the text between the {\bf do} and the {\bf end foreach} is produced with the NAME attribute of the current element of the ALARMS list inserted at the specified location. INDEX is not an attribute of the current element. It is generated for each element and ranges from 0 to the number of elements in the list minus 1.
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 foreach ALARMS do
 %
 /* Alarm % !NAME % identifier */
@@ -839,7 +848,7 @@ end foreach
 
 A more general form of the {\tt foreach} instruction is:
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 foreach expression prefixedby string
   before ...
   do ...
@@ -852,7 +861,7 @@ end foreach
 
 In the following example, a table of pointers to alarm descriptors is generated:
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 foreach ALARMS
   before %
 tpl_time_obj *tpl_alarm_table[ALARM_COUNT] = {
@@ -870,7 +879,7 @@ end foreach
 
 The {\bf for} instruction iterates along a literal list of elements.
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 for var in expression, ... , expression do
   ...
 end for
@@ -882,7 +891,7 @@ At each iteration, {\em var} gets the value of the current {\em expression}. As 
 
 The {\bf loop} instruction is the classical integer loop. Its simplest form is:
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 loop var from expression to expression do
   ...
 end loop
@@ -890,7 +899,7 @@ end loop
 
 Like in the foreach instruction, {\bf before},  {\bf between} and  {\bf after} sections may be used:
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 loop var from expression to expression
   before ...
   do ...
@@ -905,7 +914,7 @@ end loop
 
 {\bf !} emits an expression. The form is:
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 ! expression
 \end{lstlisting}
 
@@ -913,7 +922,7 @@ end loop
 
 {\bf ?} stores in a variable a number of spaces equal to the current column in the output. The form is:
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 ? var
 \end{lstlisting}
 
@@ -921,25 +930,25 @@ end loop
 
 The {\bf template} instruction includes the output of another template in the output of the current template. Its simplest form is the following one:
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 template template_file_name
 \end{lstlisting}
 
 If the file {\em template\_file\_name}.goilTemplate does not exist, an error occurs. To include the output of a template without generating an error, use the following form:
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 template if exists template_file_name
 \end{lstlisting}
 
 A third form allows to execute instructions when the included template file is not found:
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 template if exists template_file_name or ... end template
 \end{lstlisting}
 
 At last, it is possible to search templates in a hierarchy (code, linker, compiler, build) different from the current one. For instance to include a template located in the linker hierarchy, use one of the following forms:
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 template template_file_name in hierarchy
 template if exists template_file_name in hierarchy
 template if exists template_file_name in hierarchy or ... end template
@@ -952,7 +961,7 @@ In all cases, the included template inherits from the current variables table bu
 
 The write instruction defines a block where the template processing output is captured to be written to a file. The general form is:
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 write to expression :
   ...
 end write
@@ -962,7 +971,7 @@ Where {\em expression} is a string expression.
 
 In the following example, the result of the \file{script} template is written to the link script file.
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 if exists LINKER then
   write to PROJECT."/".LINKSCRIPT:
     template script in linker
@@ -975,14 +984,14 @@ end if
 
 It can be useful to generate an error or a warning if a data is not defined or if it looks strange. For instance if a target needs a \member{STACKSIZE} for a task or if the \member{STACKSIZE} is too large for a 16bit target. \strong{error} and \strong{warning} have 2 forms:
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 error var expression
 warning var expression
 \end{lstlisting}
 
 and
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 error here expression
 warning here expression
 \end{lstlisting}
@@ -991,7 +1000,7 @@ warning here expression
 
 In the following example an error is generated for each task with not \member{STACKSIZE} attribute in the OIL file:
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 foreach TASKS do
   if not exists STACKSIZE then
     error NAME "STACKSIZE of Task " . NAME . " is not defined"
@@ -1001,7 +1010,7 @@ end foreach
 
 In this second example, an error is generated if a template is not found:
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 template if exists interrupt_wrapping or
   error here "interrupt_wrapping.goilTemplate not found"
 end template
@@ -1013,7 +1022,7 @@ Here are examples of code generation using GTL.
 
 \subsection{Computing the list of process ids}
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 foreach PROCESSES do
   if PROCESSKIND == "Task" then
 %
@@ -1039,7 +1048,7 @@ end foreach
 
 \subsection{Computing an interrupt table}
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 if USEINTERRUPTTABLE then
   loop ENTRY from 0 to ITSOURCESLENGTH - 1
     before
@@ -1090,7 +1099,7 @@ end if
 
 This is the default \file{root.goilTemplate} file
 
-\begin{lstlisting}[frame=single]
+\begin{lstlisting}
 write to PROJECT."/tpl_app_config.c":
   template tpl_app_config_c in code
 end write
