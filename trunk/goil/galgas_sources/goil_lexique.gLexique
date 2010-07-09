@@ -35,7 +35,7 @@ style commentStyle -> "Comments:";
 #
 list makefileKeywords error message "Makefile attribute  '%K'" style keywordsStyle :
     "APP_SRC", "COMPILER", "ASSEMBLER", "LINKER", "SCRIPT",
-    "CFLAGS", "ASFLAGS", "LDFLAGS", "APP_NAME", "TRAMPOLINE_BASE_PATH";
+    "CFLAGS", "CPPFLAGS", "ASFLAGS", "LDFLAGS", "APP_NAME", "TRAMPOLINE_BASE_PATH";
 
 #
 # OIL_VERSION keyword

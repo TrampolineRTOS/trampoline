@@ -994,6 +994,25 @@ routine setOsapplicationsList
     when == @string_class restartTask do
       addStringFieldValue !?fieldMap ![@lstring new !"RESTART" ![restartTask location]] ![restartTask value];
     else end cast ;
+    # add the startup hook
+    @bool hasStartup;
+    cast [application startuphook]:
+    when == @bool_class startup do
+      hasStartup := [startup value];
+    else
+      hasStartup := false;
+    end cast;
+    addBoolFieldValue !?fieldMap ![@lstring new !"HASSTARTUPHOOK" ![[application startuphook] location]] !hasStartup;    
+    # add the shutdown hook
+    @bool hasShutdown;
+    cast [application shutdownhook]:
+    when == @bool_class shutdown do
+      hasShutdown := [shutdown value];
+    else
+      hasShutdown := false;
+    end cast;
+    addBoolFieldValue !?fieldMap ![@lstring new !"HASSHUTDOWNHOOK" ![[application shutdownhook] location]] !hasShutdown;
+    
     ##
     ## Compute the access vectors
     ##
@@ -1079,7 +1098,7 @@ routine setOsapplicationsList
       cast [isr category]:
       when == @uint64_class cat do
         if [cat value] == 2L then
-          #Only add ISR2 (not ISR1) in PROCESSES list of OSAPPLICATIONS list
+          # Only add ISR2 (not ISR1) in PROCESSES list of OSAPPLICATIONS list
           procList += !isrFieldMap;
         end if;
       else end cast;
@@ -1301,6 +1320,21 @@ routine setCFlagsList ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
 end routine;
 
 #
+# set up the CPPFLAGS list
+#
+routine setCPPFlagsList ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
+  @goilTemplateFieldMapList cppFlagsList [emptyList];
+  foreach [[cpu os] cppflags] (@lstring cppFlag) do
+    if stripString[![cppFlag string]] != "" then
+      @goilTemplateFieldMap cppFlagFieldMap [emptyMap];
+      addStringFieldValue !?cppFlagFieldMap ![@lstring new !"CPPFLAG" ![cppFlag location]] ![cppFlag string];
+      cppFlagsList += !cppFlagFieldMap;
+    end if;
+  end foreach;
+  addListValue !?cfg !lstringWith[!"CPPFLAGS"] !cppFlagsList;
+end routine;
+
+#
 # set up the ASFLAGS list
 #
 routine setAsFlagsList ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
@@ -1506,6 +1540,7 @@ end routine;
 routine setBuildConfig ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
   setSourceFileList !cpu !?cfg;
   setCFlagsList !cpu !?cfg;
+  setCPPFlagsList !cpu !?cfg;
   setAsFlagsList !cpu !?cfg;
   setLdFlagsList !cpu !?cfg;
   setTraceFlag !cpu !?cfg;

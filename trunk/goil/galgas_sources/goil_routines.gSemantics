@@ -206,7 +206,7 @@ function allTemplateFilePaths
     @string intermediatePath := [@string componentsJoinedByString !components !"/"];
     if intermediatePath != "" then intermediatePath .= "/"; end if;
     @string targetPath := templateDir.intermediatePath.file;
-#    message "Checking ".targetPath."\n";
+    message "Checking ".targetPath."\n";
     if [targetPath fileExists] then
       paths += !targetPath;
     end if;

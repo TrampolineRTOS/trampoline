@@ -82,6 +82,7 @@ rule <os>
   @lstring     assembler := [os assembler];               # Makefile
   @lstring     linker := [os linker];                     # Makefile
   @lstringlist cflags := [os cflags] ;                    # Makefile
+  @lstringlist cppflags := [os cppflags] ;                # Makefile
   @lstringlist asflags := [os asflags] ;                  # Makefile
   @lstringlist ldflags := [os ldflags] ;                  # Makefile
   @lstring     app_name := [os app_name] ;                # Makefile
@@ -235,6 +236,10 @@ rule <os>
     cflags += !flag ;
   while
     @lstring flag ;
+    $CPPFLAGS$ ; $=$ ; $string$ ?flag ; <description> ?* ; $;$ ;
+    cppflags += !flag ;
+  while
+    @lstring flag ;
     $ASFLAGS$ ; $=$ ; $string$ ?flag ; <description> ?* ; $;$ ;
     asflags += !flag ;
   while
@@ -371,6 +376,7 @@ rule <os>
     !assembler
     !linker
     !cflags
+    !cppflags
     !asflags
     !ldflags
     !app_name
