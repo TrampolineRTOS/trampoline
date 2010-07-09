@@ -62,12 +62,14 @@ endif
 ifdef CHIP_PATH
 -include $(CHIP_PATH)/Makefile
 CFLAGS += -I$(CHIP_PATH)
+CPPFLAGS += -I$(CHIP_PATH)
 TEMP_SOURCE_DIRS += $(CHIP_PATH)
 endif
 
 ifdef BOARD_PATH
 -include $(BOARD_PATH)/Makefile
 CFLAGS += -I$(BOARD_PATH)
+CPPFLAGS += -I$(BOARD_PATH)
 TEMP_SOURCE_DIRS += $(BOARD_PATH)
 endif
 
