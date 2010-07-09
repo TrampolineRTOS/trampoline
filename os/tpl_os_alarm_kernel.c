@@ -102,10 +102,13 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_base_service(
   STORE_ALARM_ID(alarm_id)
   STORE_ALARM_BASE_REF(info)
 
-  CHECK_ALARM_ID_ERROR(alarm_id,result)
+  CHECK_ALARM_ID_ERROR(alarm_id, result)
 	
 	/* check access right */
-	CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
+	CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id, result)
+  
+  /* check info is in an authorized memory region */
+  CHECK_DATA_LOCATION(info, result);
 	
 #if ALARM_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
@@ -148,6 +151,9 @@ FUNC(tpl_status, OS_CODE) tpl_get_alarm_service(
   /* check access right */
   CHECK_ACCESS_RIGHTS_ALARM_ID(alarm_id,result)
 	
+  /* check tick is in an authorized memory region */
+  CHECK_DATA_LOCATION(tick, result);
+
 #if ALARM_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
     alarm = tpl_alarm_table[alarm_id];

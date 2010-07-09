@@ -1,5 +1,5 @@
 /**
- * @file tpl_config_def.h
+ * @file tpl_config_check.h
  *
  * @section descr File description
  *
@@ -124,7 +124,13 @@
 #elif WITH_STACK_MONITORING != YES && WITH_STACK_MONITORING != NO
 #error "Misconfiguration of the OS. WITH_STACK_MONITORING is not set to YES or NO"
 #endif
-
+/*
+#ifndef WITH_AUTOSAR_TIMING_PROTECTION
+#error "Misconfiguration of the OS. WITH_AUTOSAR_TIMING_PROTECTION is not defined"
+#elif WITH_AUTOSAR_TIMING_PROTECTION != YES && WITH_AUTOSAR_TIMING_PROTECTION != NO
+#error "Misconfiguration of the OS. WITH_AUTOSAR_TIMING_PROTECTION is not set to YES or NO"
+#endif
+*/
 #ifndef WITH_TRACE
 #error "Misconfiguration of the OS. WITH_TRACE is not defined"
 #elif WITH_TRACE != YES && WITH_TRACE != NO

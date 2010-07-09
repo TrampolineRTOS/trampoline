@@ -184,6 +184,16 @@
 #define E_OS_VALUE      8
 
 /**
+ * @def E_NOT_OK
+ *
+ * This error code means : an error occured
+ *
+ * @warning OSEK error code meanings are not globally defined. Refer to each
+ * standard service definition to know the exact meaning.
+ */
+#define E_NOT_OK        9
+
+/**
  * @def E_OS_MISSINGEND
  *
  * Tasks terminates without a TerminateTask() or ChainTask() call 
@@ -496,9 +506,16 @@
  *
  * @param name the name (C identifier) of the task
  */
+#ifdef __cplusplus
+#define TASK(name)                                              \
+    DeclareTask(name);                                          \
+    extern "C" FUNC(void, OS_APPL_CODE) name##_function(void);  \
+    FUNC(void, OS_APPL_CODE) name##_function(void)
+#else
 #define TASK(name)              \
     DeclareTask(name);          \
     FUNC(void, OS_APPL_CODE) name##_function(void)
+#endif
 
 /**
  * @def ISR
@@ -507,8 +524,15 @@
  *
  * @param name the name (C identifier) of the IRS
  */
-#define ISR(name)               \
-    FUNC(void, OS_APPL_CODE) name##_function(void)
+#ifdef __cplusplus
+#define ISR(name)                                           \
+extern "C" FUNC(void, OS_APPL_CODE) name##_function(void);  \
+FUNC(void, OS_APPL_CODE) name##_function(void)
+#else
+#define ISR(name)                               \
+FUNC(void, OS_APPL_CODE) name##_function(void)
+#endif
+
 
 /**
  * @def DeclareConterConstants
@@ -531,8 +555,14 @@ extern CONST(TickType, OS_CONST) OSMINCYCLE_##counter_id
  *
  * @warning don't be confused with ALARM_CALLBACK
  */
+#ifdef __cplusplus
+#define ALARMCALLBACK(name)               \
+    extern "C" void name##_callback(void) \
+    void name##_callback(void)
+#else
 #define ALARMCALLBACK(name)     \
     void name##_callback(void)
+#endif
 
 /**
  * @def MASK_EXECTYPE

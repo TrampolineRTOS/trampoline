@@ -1624,6 +1624,64 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
   }																			
 #endif
 
+
+/**
+ * @def LOCATION_WITHIN
+ *
+ * This macro expands to 1 if the location (start pointer + size of the
+ * location lays within the memory descriptor
+ *
+ * @param mem_region  the memory region struct
+ * @param loc_ptr     the start address of the location
+ * @param loc_size    the size of the location
+ */
+#define LOCATION_WITHIN(mem_region, loc_ptr) \
+  (((loc_ptr) < mem_region.start) || (((loc_ptr) + (1)) > mem_region.end))
+/**
+ * @def CHECK_DATA_LOCATION
+ * 
+ * This macro checks a data pointer passed to a service is within
+ * the allowed data range (ie within the stack of the process or
+ * within the private data of the process or within the shared data
+ * of the OS Application.
+ *
+ * @param data_ptr  the pointer to be tested
+ * @param result error code variable to set (StatusType)
+ *
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disable when WITH_MEMORY_PROTECTION == NO
+ */
+#if (WITH_MEMORY_PROTECTION == NO)
+# define CHECK_DATA_LOCATION(data_ptr, result)
+#elif (WITH_MEMORY_PROTECTION == YES) && (WITH_AUTOSAR == NO)
+# define CHECK_DATA_LOCATION(data_ptr, result)                      \
+  if (result == (tpl_status)E_OK)                                   \
+  {                                                                 \
+    CONST(tpl_mem_prot_desc, OS_CONST) mp_desc =                    \
+      tpl_mp_table[tpl_kern.running_id];                            \
+    if (LOCATION_WITHIN(mp_desc.proc_var, data_ptr) &&              \
+        LOCATION_WITHIN(mp_desc.proc_stack, data_ptr)               \
+       )                                                            \
+    {                                                               \
+      result = E_OS_PROTECTION_MEMORY;                              \
+    }                                                               \
+  }
+#elif (WITH_MEMORY_PROTECTION == YES) && (WITH_AUTOSAR == YES)
+# define CHECK_DATA_LOCATION(data_ptr, result)                      \
+  if (result == (tpl_status)E_OK)                                   \
+  {                                                                 \
+    CONST(tpl_mem_prot_desc, OS_CONST) mp_desc =                    \
+      tpl_mp_table[tpl_kern.running_id];                            \
+    if (LOCATION_WITHIN(mp_desc.proc_var, data_ptr) &&              \
+        LOCATION_WITHIN(mp_desc.proc_stack, data_ptr) &&            \
+        LOCATION_WITHIN(mp_desc.osap_var, data_ptr)                 \
+       )                                                            \
+    {                                                               \
+      result = E_OS_PROTECTION_MEMORY;                              \
+    }                                                               \
+  }
+#endif
+
 #endif /*TPL_OS_ERROR_H */
 
 /* End of file tpl_os_error.h */

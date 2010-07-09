@@ -28,6 +28,10 @@
 #ifndef TPL_OS_H
 #define TPL_OS_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+  
 #include "tpl_os_definitions.h"
 #include "tpl_os_application_def.h"
 
@@ -153,6 +157,10 @@ FUNC(void, OS_CODE) CallTerminateISR2(void);
 
 #define API_STOP_SEC_CODE
 #include "tpl_memmap.h"
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* TPL_OS_H */
 

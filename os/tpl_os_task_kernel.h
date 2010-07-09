@@ -76,7 +76,7 @@ extern CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA)
  *
  */
 FUNC(tpl_status, OS_CODE) tpl_activate_task_service(
-    CONST(tpl_task_id, AUTOMATIC)   task_id);
+  CONST(tpl_task_id, AUTOMATIC)   task_id);
 
 
 /**
@@ -105,7 +105,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_task_service(void);
  *
  */
 FUNC(tpl_status, OS_CODE) tpl_chain_task_service(
-    CONST(tpl_task_id, AUTOMATIC)   task_id);
+  CONST(tpl_task_id, AUTOMATIC)   task_id);
 
 
 /**
@@ -131,7 +131,7 @@ FUNC(tpl_status, OS_CODE) tpl_schedule_service(void);
  * see paragraph 13.2.3.5 page 53 of OSEK/VDX 2.2.3 spec
  */
 FUNC(tpl_status, OS_CODE) tpl_get_task_id_service(
-    P2VAR(tpl_task_id, AUTOMATIC, OS_APPL_DATA)   task_id);
+  P2VAR(tpl_task_id, AUTOMATIC, OS_APPL_DATA)   task_id);
 
 
 /**
@@ -147,8 +147,8 @@ FUNC(tpl_status, OS_CODE) tpl_get_task_id_service(
  * see paragraph 13.2.3.6 page 53 of OSEK/VDX 2.2.3 spec
  */
 FUNC(tpl_status, OS_CODE) tpl_get_task_state_service(
-    CONST(tpl_task_id, AUTOMATIC)                   task_id,
-    P2VAR(tpl_proc_state, AUTOMATIC, OS_APPL_DATA)  state);
+  CONST(tpl_task_id, AUTOMATIC)                        task_id,
+  CONSTP2VAR(tpl_proc_state, AUTOMATIC, OS_APPL_DATA)  state);
 
 
 #define OS_STOP_SEC_CODE

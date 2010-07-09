@@ -47,7 +47,7 @@ extern CONST(tpl_proc_id, AUTOMATIC) INVALID_TASK;
  * Kernel service for task activation
  */
 FUNC(StatusType, OS_CODE) tpl_activate_task_service(
-  CONST(TaskType, AUTOMATIC) task_id)
+  CONST(tpl_task_id, AUTOMATIC) task_id)
 {
   /*  init the error to no error  */
   VAR(StatusType, AUTOMATIC) result = E_OK;
@@ -148,7 +148,7 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 
 
 FUNC(StatusType, OS_CODE) tpl_chain_task_service(
-  CONST(TaskType, AUTOMATIC) task_id)
+  CONST(tpl_task_id, AUTOMATIC) task_id)
 {
   VAR(StatusType, AUTOMATIC)  result = E_OK;
 
@@ -260,7 +260,7 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 
 
 FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
-  VAR(TaskRefType, AUTOMATIC) task_id)
+  CONSTP2VAR(tpl_task_id, AUTOMATIC, OS_APPL_DATA) task_id)
 {
   VAR(StatusType, AUTOMATIC) result = E_OK;
 	
@@ -272,6 +272,9 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_GetTaskID)
   STORE_TASK_ID_REF(task_id)
+  
+  /* check state is in an authorized memory region */
+  CHECK_DATA_LOCATION(task_id, result);
   
   /*  get the task id from the task descriptor. If the id is not
       within 0 and TASK_COUNT-1, INVALID_TASK is returned         */
@@ -295,8 +298,8 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
 
 
 FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
-  CONST(TaskType, AUTOMATIC)        task_id,
-  VAR(TaskStateRefType, AUTOMATIC)  state)
+  CONST(tpl_task_id, AUTOMATIC)                        task_id,
+  CONSTP2VAR(tpl_proc_state, AUTOMATIC, OS_APPL_DATA)  state)
 {
   VAR(StatusType, AUTOMATIC) result = E_OK;
 
@@ -315,6 +318,9 @@ FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
 
   /* check access right */
   CHECK_ACCESS_RIGHTS_TASK_ID(task_id,result)
+
+  /* check state is in an authorized memory region */
+  CHECK_DATA_LOCATION(state, result);
 
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
