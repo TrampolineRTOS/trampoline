@@ -71,13 +71,27 @@ WITH_MEMMAP = % ! trueFalse(USEMEMORYMAPPING) %
 WITH_LINKSCRIPT = % ! trueFalse(USELINKSCRIPT) %
 WITH_MEMORY_PROTECTION = % ! trueFalse(USEMEMORYPROTECTION) %
 
-# CFLAGS: flags used for the compilation process
-# it should be declared as CFLAGS in the OS section of the .oil file
-# (many times allowed).
 %
 foreach CFLAGS
-  before %CFLAGS = %
+  before %
+# CFLAGS: flags used for the C compilation process
+# it should be declared as CFLAGS in the OS section of the .oil file
+# (many times allowed).
+CFLAGS = %
   do !CFLAG
+  between % %
+  after %
+%
+end foreach
+%
+%
+foreach CPPFLAGS
+  before %
+# CPPFLAGS: flags used for the C++ compilation process
+# it should be declared as CPPFLAGS in the OS section of the .oil file
+# (many times allowed).
+CPPFLAGS = %
+  do !CPPFLAG
   between % %
   after %
 %

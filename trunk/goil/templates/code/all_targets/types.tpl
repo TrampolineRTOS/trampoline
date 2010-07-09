@@ -98,14 +98,6 @@ typedef $OSAPPLICATION_ID_T$ tpl_app_id;
 /**
  * @internal
  *
- * Type used to store the id of a Trusted Function
- * Its size is computed according to the number of Trusted Functions
- */
-typedef $TRUSTED_FCT_ID_T$ tpl_tf_id;
-
-/**
- * @internal
- *
  * Generic type used in OS Application API
  * Its size is computed by doing the max of all object kind
  */
