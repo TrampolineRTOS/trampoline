@@ -12,6 +12,12 @@
 \usepackage{url}
 \usepackage{colortbl}
 \usepackage[table]{xcolor}
+\usepackage{longtable}
+\usepackage{underscore}
+\usepackage{caption}
+
+\renewcommand{\captionlabelfont}{\small \bf}
+\renewcommand{\captionfont}{\small \it}
 
 \definecolor{seagreen}{RGB}{64,100,120}
 \definecolor{darkpink}{RGB}{200,100,120}
@@ -22,13 +28,89 @@
 
 \usepackage{float} %figures
 
+\newcommand{\asfct}[1]{\texttt{#1}}
+\newcommand{\hex}[1]{\texttt{#1$_H$}}
+\newcommand{\reg}[1]{\textit{#1}}
 \newcommand{\idxconfflag}[1]{#1\index{Configuration macros!#1}\index{#1}}
-\newcommand{\toreplace}[1]{$<$#1$>$}
-\newcommand{\figcaption}[1]{\textit{\caption{\small #1}}}
+\newcommand{\toreplace}[1]{{\footnotesize $<$}#1{\footnotesize $>$}}
+\newcommand{\figcaption}[2]{\textit{\caption{\small #1}}\label{#2}}
 \newcommand{\goil}{goil\index{goil, The oil compiler of Trampoline}}
+\newcommand{\sysgen}{system generation tool\index{system generation tool, the tool that takes as an input a description of the system (in OIL or in XML) to generate the corresponding .c and .h files.}}
+\newcommand{\stringlit}[1]{``{#1}''}
+\newcommand{\api}[1]{\cfunction{#1}\index{#1}}
+
+\newenvironment{penum}{
+\begin{enumerate}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{enumerate}}
+
+\lstdefinelanguage{goilTemplate}
+{
+  morekeywords= {
+	  after,
+	  before,
+	  between,
+	  block,
+	  default,
+	  do,
+	  else,
+	  elsif,
+	  emptylist,
+	  end,
+	  error,
+	  exists,
+	  false,
+	  for,
+	  foreach,
+	  from,
+	  here,
+	  let,
+	  loop,
+	  no,
+	  if,
+	  in,
+	  mod,
+	  not,
+	  or,
+	  prefixedby,
+	  template,
+	  then,
+	  to,
+	  true,
+	  yes,
+	  warning,
+	  while,
+	  write,
+	  !,
+	  ?
+	}
+}
+
+\lstset{
+  language=goilTemplate,
+  emph={
+    var,
+    expression,
+    string,
+    instruction_list,
+    template_file_name,
+    reader,
+    hierarchy
+  },
+  emphstyle=\em,
+  moredelim=[s][\color{blue}]{\%}{\%},
+  moredelim=[s]{"}{"},
+  morecomment=[l][\color{medium-gray}\itshape]{\#},
+  basicstyle=\ttfamily\small
+}
+
+
+%\lstset{frame=leftline}
 
 \title{The Trampoline handbook}
-\author{Jean-Luc B\'echennec, Florent Pavin}
+\author{Jean-Luc B\'echennec\\Florent Pavin\\Pierre Molinaro}
 
 \release{2.0}
 \makeindex
@@ -50,6 +132,7 @@
 
 \part{The Goil system generator}
 
+\input{templates.tex}
 
 \printindex
 \bibliographystyle{plain}
