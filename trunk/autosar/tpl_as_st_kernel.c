@@ -803,6 +803,9 @@ FUNC(tpl_status, OS_CODE) tpl_get_schedule_table_status_service(
 	/* check access right */
 	CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(sched_table_id,result)
 
+  /* check status is in an authorized memory region */
+  CHECK_DATA_LOCATION(status, result);
+  
 #if SCHEDTABLE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   st = tpl_schedtable_table[sched_table_id];
