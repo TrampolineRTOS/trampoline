@@ -214,30 +214,22 @@ tpl_sc_handler:
    * did the system call and used to pass the service id.
    * Here, we save lr, cr, r11 and r12. This is not needed
    * in fact since these registers are volatile but we want to start
-   * with a symetrical scheme compared to the interrupt handler
-   * The stack of the caller has the following mapping:
+   * with a symetrical scheme compared to the interrupt handler.
+   * In addition, a 16 bytes space is made on the top of the
+   * process stack to save the SRR0 and SRR1 if the CallTrustedFunction
+   * service is called and to put the linkage area.
+   *
+   * See the tpl_os_process_stack.h file for stack mapping
    * 
-   *          |              |
-   *          +--------------+
-   *  SP-> +0 |      r11     |
-   *          +--------------+
-   *       +4 |      r12     |
-   *          +--------------+
-   *       +8 |      lr      |
-   *          +--------------+
-   *      +12 |      cr      |
-   *          +--------------+
-   *      +16 |      r0      |  r0 is saved by the API function
-   *          +--------------+
    */
-  subi  r1,r1,16
+  subi  r1,r1,PS_FOOTPRINT
 
-  stw   r11,0(r1)
-  stw   r12,4(r1)
+  stw   r11,PS_R11(r1)
+  stw   r12,PS_R12(r1)
   mflr  r11
-  stw   r11,8(r1)
+  stw   r11,PS_LR(r1)
   mfcr  r11
-  stw   r11,12(r1)
+  stw   r11,PS_CR(r1)
   
   /*
    * Does the stuff to enter in kernel
@@ -325,7 +317,7 @@ no_save:
   bl    tpl_load_context
   
   /*
-   * r3 is restored (ie get back the return code
+   * r3 is restored (ie get back the return code)
    */
   lwz   r3,KS_RETURN_CODE(r1)
   
@@ -337,14 +329,14 @@ no_context_switch:
   bl    tpl_leave_kernel
 
   /*  restore the registers before returning                          */
-  lwz   r11,12(r1)
+  lwz   r11,PS_CR(r1)
   mtcr  r11
-  lwz   r11,8(r1)
+  lwz   r11,PS_LR(r1)
   mtlr  r11
-  lwz   r12,4(r1)
-  lwz   r11,0(r1)
+  lwz   r12,PS_R12(r1)
+  lwz   r11,PS_R11(r1)
 
-  addi  r1,r1,16
+  addi  r1,r1,PS_FOOTPRINT
   
 invalid_service_id:
   rfi                                 /* return from interrupt        */
