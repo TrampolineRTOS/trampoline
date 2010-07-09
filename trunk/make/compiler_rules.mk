@@ -31,6 +31,9 @@ $(OBJ_DIR)/%.c.o: $(A_DIR)/%.c Makefile
 $(DEP_DIR)/%.c.d: $(A_DIR)/%.c Makefile $(DEP_DIR) $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE)
 	@$(CC) $(CFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.c.o $(DEP_DIR)/$*.c.d:@ ;print ;}' > $@;
 
+$(DEP_DIR)/%.cpp.d: $(A_DIR)/%.cpp Makefile $(DEP_DIR)
+	@$(CPP) $(CPPFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.c.o $(DEP_DIR)/$*.cpp.d:@ ;print ;}' > $@;
+
 #----------------------------------------------------------------------*
 #### Compilation rules. ASM files.
 #----------------------------------------------------------------------*
@@ -58,32 +61,32 @@ $(DEP_DIR)/%.S.d: $(A_DIR)/%.S Makefile $(DEP_DIR) $(OIL_OUTPUT_PATH)/$(OIL_GENE
 
 $(OBJ_DIR)/%.cpp.o: $(A_DIR)/%.cpp Makefile
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	$(CXX) $(CFLAGS) -c $< -o $@
+	$(CXX) $(CPPFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/%.cc.o: $(A_DIR)/%.cc Makefile
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	$(CXX) $(CFLAGS) -c $< -o $@
+	$(CXX) $(CPPFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/%.cxx.o: $(A_DIR)/%.cxx Makefile
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	$(CXX) $(CFLAGS) -c $< -o $@
+	$(CXX) $(CPPFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/%.C.o: $(A_DIR)/%.C Makefile
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	$(CXX) $(CFLAGS) -c $< -o $@
+	$(CXX) $(CPPFLAGS) -c $< -o $@
 
 # generate dep files for c++ files
 $(DEP_DIR)/%.cpp.d: $(A_DIR)/%.cpp Makefile $(DEP_DIR) $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE)
-	@$(CC) $(CFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.cpp.o $(DEP_DIR)/$*.d:@ ;print ;}' > $@;
+	@$(CC) $(CPPFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.cpp.o $(DEP_DIR)/$*.d:@ ;print ;}' > $@;
 
 $(DEP_DIR)/%.cc.d: $(A_DIR)/%.cc Makefile $(DEP_DIR) $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE)
-	@$(CC) $(CFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.cc.o $(DEP_DIR)/$*.d:@ ;print ;}' > $@;
+	@$(CC) $(CPPFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.cc.o $(DEP_DIR)/$*.d:@ ;print ;}' > $@;
 
 $(DEP_DIR)/%.cxx.d: $(A_DIR)/%.cxx Makefile $(DEP_DIR) $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE)
-	@$(CC) $(CFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.cxx.o $(DEP_DIR)/$*.d:@ ;print ;}' > $@;
+	@$(CC) $(CPPFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.cxx.o $(DEP_DIR)/$*.d:@ ;print ;}' > $@;
 
 $(DEP_DIR)/%.C.d: $(A_DIR)/%.C Makefile $(DEP_DIR) $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE)
-	@$(CC) $(CFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.C.o $(DEP_DIR)/$*.d:@ ;print ;}' > $@;
+	@$(CC) $(CPPFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.C.o $(DEP_DIR)/$*.d:@ ;print ;}' > $@;
 
 #----------------------------------------------------------------------*
 #Call recursively this file, without the first item of TEMP_SOURCE_DIRS *
