@@ -179,7 +179,7 @@ rule <app_attributes>
         $STARTUPHOOK$ ; $=$ ;
         select
             $TRUE$ ; sh := true ;
-   or
+        or
             $FALSE$ ; sh := false ;
         end select ;
         cast startuphook :
