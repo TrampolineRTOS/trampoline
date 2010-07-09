@@ -33,47 +33,48 @@
 /*=============================================================================
  * Configuration flags
  */
-#define TARGET_ARCH                 ARCH_% ![ARCH uppercaseString]%
-#define WITH_OS_EXTENDED            % !yesNo(EXTENDED) %
-#define WITH_STARTUP_HOOK           % !yesNo(USESTARTUPHOOK) %
-#define WITH_SHUTDOWN_HOOK          % !yesNo(USESHUTDOWNHOOK) %
-#define WITH_ERROR_HOOK             % !yesNo(USEERRORHOOK) %
-#define WITH_PRE_TASK_HOOK          % !yesNo(USEPRETASKHOOK) %
-#define WITH_POST_TASK_HOOK         % !yesNo(USEPOSTTASKHOOK) %
-#define WITH_USEGETSERVICEID        % !yesNo(USEGETSERVICEID) %
-#define WITH_USEPARAMETERACCESS     % !yesNo(USEPARAMETERACCESS) %
-#define WITH_USERESSCHEDULER        % !yesNo(USERESSCHEDULER) %
-#define WITH_SYSTEM_CALL            % !yesNo(USESYSTEMCALL) %
-#define WITH_MEMORY_PROTECTION      % !yesNo(USEMEMORYPROTECTION) %
-#define WITH_MEMMAP                 % !yesNo(USEMEMORYMAPPING) %
-#define WITH_COMPILER_SETTINGS      % !yesNo(USECOMPILERSETTINGS) %
-#define TRAMPOLINE_BASE_PATH        "% !TRAMPOLINEPATH %"
-#define WITH_AUTOSAR                % !yesNo(AUTOSAR) %
-#define WITH_PROTECTION_HOOK        % !yesNo(USEPROTECTIONHOOK) %
-#define WITH_STACK_MONITORING       % !yesNo(USESTACKMONITORING) %
-#define AUTOSAR_SC                  % !SCALABILITYCLASS %
-#define WITH_OSAPPLICATION          % !yesNo(SCALABILITYCLASS > 2)%
-#define WITH_TRACE                  % !yesNo(USETRACE)
+#define TARGET_ARCH                    ARCH_% ![ARCH uppercaseString]%
+#define WITH_OS_EXTENDED               % !yesNo(EXTENDED) %
+#define WITH_STARTUP_HOOK              % !yesNo(USESTARTUPHOOK) %
+#define WITH_SHUTDOWN_HOOK             % !yesNo(USESHUTDOWNHOOK) %
+#define WITH_ERROR_HOOK                % !yesNo(USEERRORHOOK) %
+#define WITH_PRE_TASK_HOOK             % !yesNo(USEPRETASKHOOK) %
+#define WITH_POST_TASK_HOOK            % !yesNo(USEPOSTTASKHOOK) %
+#define WITH_USEGETSERVICEID           % !yesNo(USEGETSERVICEID) %
+#define WITH_USEPARAMETERACCESS        % !yesNo(USEPARAMETERACCESS) %
+#define WITH_USERESSCHEDULER           % !yesNo(USERESSCHEDULER) %
+#define WITH_SYSTEM_CALL               % !yesNo(USESYSTEMCALL) %
+#define WITH_MEMORY_PROTECTION         % !yesNo(USEMEMORYPROTECTION) %
+#define WITH_MEMMAP                    % !yesNo(USEMEMORYMAPPING) %
+#define WITH_COMPILER_SETTINGS         % !yesNo(USECOMPILERSETTINGS) %
+#define TRAMPOLINE_BASE_PATH           "% !TRAMPOLINEPATH %"
+#define WITH_AUTOSAR                   % !yesNo(AUTOSAR) %
+#define WITH_PROTECTION_HOOK           % !yesNo(USEPROTECTIONHOOK) %
+#define WITH_STACK_MONITORING          % !yesNo(USESTACKMONITORING) %
+/* #define WITH_AUTOSAR_TIMING_PROTECTION % !yesNo(USESTACKMONITORING) % */
+#define AUTOSAR_SC                     % !SCALABILITYCLASS %
+#define WITH_OSAPPLICATION             % !yesNo(SCALABILITYCLASS > 2)%
+#define WITH_TRACE                     % !yesNo(USETRACE)
 if USETRACE then%
-#define TRACE_TASK                  % !yesNo(TRACETASK) %
-#define TRACE_ISR                   % !yesNo(TRACEISR) %
-#define TRACE_RES                   % !yesNo(TRACERESOURCE) %
-#define TRACE_ALARM                 % !yesNo(TRACEALARM) %
-#define TRACE_U_EVENT               % !yesNo(TRACEUSEREVENT) %
-#define TRACE_FORMAT()              tpl_trace_format_% !TRACEFORMAT %();
-#define TRACE_FILE                  "%! TRACEFILE %"
+#define TRACE_TASK                     % !yesNo(TRACETASK) %
+#define TRACE_ISR                      % !yesNo(TRACEISR) %
+#define TRACE_RES                      % !yesNo(TRACERESOURCE) %
+#define TRACE_ALARM                    % !yesNo(TRACEALARM) %
+#define TRACE_U_EVENT                  % !yesNo(TRACEUSEREVENT) %
+#define TRACE_FORMAT()                 tpl_trace_format_% !TRACEFORMAT %();
+#define TRACE_FILE                     "%! TRACEFILE %"
 %
 end if
 %
-#define WITH_IT_TABLE               % !yesNo(USEINTERRUPTTABLE)%
-#define WITH_COM                    % !yesNo(USECOM)
+#define WITH_IT_TABLE                  % !yesNo(USEINTERRUPTTABLE)%
+#define WITH_COM                       % !yesNo(USECOM)
 if USECOM then%
-#define TPL_COMTIMEBASE             % !COMTIMEBASE %
-#define WITH_COM_ERROR_HOOK         % !yesNo(USECOMERRORHOOK) %
-#define WITH_COM_USEGETSERVICEID    % !yesNo(USECOMGETSERVICEID) %
-#define WITH_COM_USEPARAMETERACCESS % !yesNo(USECOMPARAMETERACCESS) %
-#define WITH_COM_STARTCOMEXTENSION  % !yesNo(USESTARTCOMEXTENSION) %
-#define WITH_COM_EXTENDED           % !yesNo(COMEXTENDED)
+#define TPL_COMTIMEBASE                % !COMTIMEBASE %
+#define WITH_COM_ERROR_HOOK            % !yesNo(USECOMERRORHOOK) %
+#define WITH_COM_USEGETSERVICEID       % !yesNo(USECOMGETSERVICEID) %
+#define WITH_COM_USEPARAMETERACCESS    % !yesNo(USECOMPARAMETERACCESS) %
+#define WITH_COM_STARTCOMEXTENSION     % !yesNo(USESTARTCOMEXTENSION) %
+#define WITH_COM_EXTENDED              % !yesNo(COMEXTENDED)
 end if%
 
 /*=============================================================================
