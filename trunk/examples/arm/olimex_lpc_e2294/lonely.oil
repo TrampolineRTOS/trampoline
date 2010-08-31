@@ -19,8 +19,8 @@ CPU test {
         APP_SRC = "lonely.c";
         APP_NAME = "lonely_exe";
         TRAMPOLINE_BASE_PATH = "../../..";
-        CFLAGS  = "-g -Wall -pedantic -Wformat -std=c99 -mcpu=arm7tdmi-s -Wmissing-field-initializers"; 
-        ASFLAGS = "-mcpu=arm7tdmi-s --fatal-warnings -g"; 
+        CFLAGS  = "-g -Wall -pedantic -Wformat -std=c99 -mcpu=arm7tdmi-s -Wmissing-field-initializers -mfloat-abi=soft"; 
+        ASFLAGS = "-mcpu=arm7tdmi-s --fatal-warnings -g -mfloat-abi=soft"; 
         LDFLAGS = " -g --fatal-warnings --warn-common  --no-undefined ";
         
         COMPILER = "arm-elf-gcc";

@@ -36,6 +36,8 @@ SECTIONS
   . = ALIGN(4);
   text_garbage : {
     *(.text)
+    *(.glue_7)
+    *(.glue_7t)
   } > external_ram
 
   /*
