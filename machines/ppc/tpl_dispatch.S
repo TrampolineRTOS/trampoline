@@ -30,6 +30,7 @@
 #include "tpl_service_ids.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os_kernel_stack.h"
+#include "tpl_os_process_stack.h"
 #include "tpl_assembler.h"
 
 TPL_EXTERN  tpl_dispatch_table
