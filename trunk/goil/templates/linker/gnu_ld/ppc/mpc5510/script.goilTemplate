@@ -43,6 +43,7 @@ SECTIONS
   /*
    * remaining .text (ie no section given)
    */
+  . = ALIGN(4);
   text_garbage : {
     *(.text)
     *(.ctors)
@@ -69,6 +70,7 @@ SECTIONS
     __SEG_START_APP_CODE_CONST_RGN = .;
     *(.osApiConst)  /* API constants    */
     *(.rodata)      /* litteral strings */
+    . = ALIGN(4);
     *(.osApiCode)   /* API functions    */
     /* Sections for code of tasks and ISR */%
 foreach PROCESSES do
