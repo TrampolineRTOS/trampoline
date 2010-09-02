@@ -1636,7 +1636,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @param loc_size    the size of the location
  */
 #define LOCATION_WITHIN(mem_region, loc_ptr) \
-  (((loc_ptr) < mem_region.start) || (((loc_ptr) + (1)) > mem_region.end))
+  (((void *)(loc_ptr) < mem_region.start) || ((void *)((loc_ptr) + (1)) > mem_region.end))
 /**
  * @def CHECK_DATA_LOCATION
  * 
@@ -1657,10 +1657,10 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 # define CHECK_DATA_LOCATION(data_ptr, result)                      \
   if (result == (tpl_status)E_OK)                                   \
   {                                                                 \
-    CONST(tpl_mem_prot_desc, OS_CONST) mp_desc =                    \
+    CONSTP2CONST(tpl_mem_prot_desc, AUTOMATIC, OS_CONST) mp_desc =  \
       tpl_mp_table[tpl_kern.running_id];                            \
-    if (LOCATION_WITHIN(mp_desc.proc_var, data_ptr) &&              \
-        LOCATION_WITHIN(mp_desc.proc_stack, data_ptr)               \
+    if (LOCATION_WITHIN(mp_desc->proc_var, data_ptr) &&             \
+        LOCATION_WITHIN(mp_desc->proc_stack, data_ptr)              \
        )                                                            \
     {                                                               \
       result = E_OS_PROTECTION_MEMORY;                              \
@@ -1670,11 +1670,11 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 # define CHECK_DATA_LOCATION(data_ptr, result)                      \
   if (result == (tpl_status)E_OK)                                   \
   {                                                                 \
-    CONST(tpl_mem_prot_desc, OS_CONST) mp_desc =                    \
+    CONSTP2CONST(tpl_mem_prot_desc, AUTOMATIC, OS_CONST) mp_desc =  \
       tpl_mp_table[tpl_kern.running_id];                            \
-    if (LOCATION_WITHIN(mp_desc.proc_var, data_ptr) &&              \
-        LOCATION_WITHIN(mp_desc.proc_stack, data_ptr) &&            \
-        LOCATION_WITHIN(mp_desc.osap_var, data_ptr)                 \
+    if (LOCATION_WITHIN(mp_desc->proc_var, data_ptr) &&             \
+        LOCATION_WITHIN(mp_desc->proc_stack, data_ptr) &&           \
+        LOCATION_WITHIN(mp_desc->osap_var, data_ptr)                \
        )                                                            \
     {                                                               \
       result = E_OS_PROTECTION_MEMORY;                              \

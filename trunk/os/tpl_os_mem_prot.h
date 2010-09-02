@@ -74,6 +74,9 @@ struct TPL_MEM_PROT_DESC {
  */
 typedef struct TPL_MEM_PROT_DESC tpl_mem_prot_desc;
 
+
+extern CONSTP2CONST(tpl_mem_prot_desc, AUTOMATIC, OS_CONST) tpl_mp_table[];
+
 /* TPL_OS_MEM_PROT_H */
 #endif
 /* End of file tpl_os_mem_prot.h */
