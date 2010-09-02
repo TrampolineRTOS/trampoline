@@ -407,5 +407,70 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
   return result;
 }
 
+#if WITH_MEMORY_PROTECTION == NO
+/**
+ *  Calls the StartupHook of all OS Applications
+ *
+ */
+FUNC(void, OS_CODE) tpl_call_application_startuphooks(void)
+{
+#if APP_COUNT > 0
+  /*
+   * Without memory protection, it is simply function calls
+   */
+  VAR(int, AUTOMATIC) i;
+  
+  for (i=0; i<APP_COUNT; i++)
+  {
+    tpl_application_hook hook = tpl_app_table[i]->startup_hook;
+    if (hook != NULL)
+    {
+      hook();
+    }
+  }
+#endif
+}
+
+/**
+ *  Calls the ShutdownHook of all OS Applications
+ *
+ */
+FUNC(void, OS_CODE) tpl_call_application_shutdownhooks(void)
+{
+#if APP_COUNT > 0
+  /*
+   * Without memory protection, it is simply function calls
+   */
+  VAR(int, AUTOMATIC) i;
+  
+  for (i=0; i<APP_COUNT; i++)
+  {
+    tpl_application_hook hook = tpl_app_table[i]->shutdown_hook;
+    if (hook != NULL)
+    {
+      hook();
+    }
+  }  
+#endif
+}
+#else
+/**
+ * Call a startup hook function then call the NextStartupHook system call
+ */
+FUNC(void, OS_APPL_CODE)tpl_call_startup_hook_and_resume(tpl_application_hook hook)
+{
+  hook();
+  NextStartupHook();
+}
+
+/**
+ * Call a shutdown hook function then call the NextShutdownHook system call
+ */
+FUNC(void, OS_APPL_CODE)tpl_call_shutdown_hook_and_resume(tpl_application_hook hook)
+{
+  hook();
+  NextShutdownHook();
+}
+#endif
 
 /*  End of file tpl_as_app_kernel.c  */

@@ -41,8 +41,8 @@ FUNC(tpl_status, OS_CODE) tpl_call_trusted_function_service(
   CONSTP2VAR(void, AUTOMATIC, OS_APPL_DATA) fct_param)
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
-  
-  #if (TRUSTED_FCT_COUNT > 0)						
+
+#if (TRUSTED_FCT_COUNT > 0)						
 	if (fct_idx < TRUSTED_FCT_COUNT)			
 	{												
 		CONST(tpl_trusted_fct, AUTOMATIC) tf = tpl_trusted_fct_table[fct_idx];
@@ -56,13 +56,13 @@ FUNC(tpl_status, OS_CODE) tpl_call_trusted_function_service(
 	}												
 	else											
 	{												
-  #endif
+#endif
 	
 		result = E_OS_SERVICEID;
 
-  #if (TRUSTED_FCT_COUNT > 0)						
+#if (TRUSTED_FCT_COUNT > 0)						
 	}												
-  #endif
+#endif
 	
   return result;
 }

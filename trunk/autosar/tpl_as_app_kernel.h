@@ -32,13 +32,20 @@
 #include "tpl_os_internal_types.h"
 
 /**
- *  @def INVALID_OSAPPLICATION
+ *  @def INVALID_OSAPPLICATION_ID
  *
  *  No OS Application is running
  *
  *  @see  #tpl_app_id
  */
 #define INVALID_OSAPPLICATION_ID   APP_COUNT
+
+/**
+ * @typedef tpl_application_hook
+ *
+ * This type is used for application startup and shutdown hooks
+ */
+typedef P2FUNC(void, OS_APPL_CODE, tpl_application_hook)(void);
 
 /**
  *  @struct TPL_APP_ACCESS
@@ -48,9 +55,14 @@
  *  that store a bit vector where each bit flags the ownership of access
  *  right of the OS Application
  *  access_vec[0] is the ownership/right for processes (tasks and ISRs)
- *  access_vec[
+ *  access_vec[1] is the ownership/right for alarms
+ *  access_vec[2] is the ownership/right for resources
+ *  access_vec[3] is the ownership/right for counters
+ *  access_vec[4] is the ownership/right for schedule tables
  */
 struct TPL_APP_ACCESS {
+  CONST(tpl_application_hook, TYPEDEF)                    startup_hook;
+  CONST(tpl_application_hook, TYPEDEF)                    shutdown_hook;
   CONSTP2CONST(u8, TYPEDEF, OS_APPL_CONST)                access_vec[5];
   CONSTP2CONST(tpl_proc_id, TYPEDEF, OS_APPL_CONST)       procs;
   CONSTP2CONST(tpl_alarm_id, TYPEDEF, OS_APPL_CONST)      alarms;
@@ -118,6 +130,18 @@ FUNC(u8, OS_CODE) tpl_check_object_access_service(
  *  @retval   E_OS_VALUE    invalid restart_opt (OS459)
  */
 FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt);
+
+/**
+ *  Calls the StartupHook of all OS Applications
+ *
+ */
+FUNC(void, OS_CODE) tpl_call_application_startuphooks(void);
+
+/**
+ *  Calls the ShutdownHook of all OS Applications
+ *
+ */
+FUNC(void, OS_CODE) tpl_call_application_shutdownhooks(void);
 
 /*  TPL_AS_APP_KERNEL_H  */
 #endif
