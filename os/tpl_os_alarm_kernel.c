@@ -36,6 +36,10 @@
 #include "tpl_as_protec_hook.h"
 #endif
 
+#if WITH_MEMORY_PROTECTION == YES
+#include "tpl_os_mem_prot.h"
+#endif
+
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 /**

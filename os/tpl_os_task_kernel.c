@@ -38,6 +38,10 @@
 #include "tpl_as_protec_hook.h"
 #endif
 
+#if WITH_MEMORY_PROTECTION == YES
+#include "tpl_os_mem_prot.h"
+#endif
+
 extern CONST(tpl_proc_id, AUTOMATIC) INVALID_TASK;
 
 #define OS_START_SEC_CODE
