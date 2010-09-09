@@ -13,6 +13,7 @@
 #include <avr/interrupt.h>
 
 %foreach HARDWARECOUNTERS do
+  if SOURCE != "" then
 %
 ISR(%!SOURCE%)
 {
@@ -37,7 +38,8 @@ ISR(%!SOURCE%)
   }
 }
 
-%end foreach
+%end if
+end foreach
 %
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
