@@ -300,11 +300,11 @@ routine computeISRList
           @goilTemplateFieldMap tpFields [emptyMap];
           addUnsignedFieldValue !?tpFields ![@lstring new !"EXECUTIONTIME" ![[tpi exe_time] location]] !uint64OrError[![tpi exe_time] !"EXECUTIONTIME"];
           addUnsignedFieldValue !?tpFields ![@lstring new !"TIMEFRAME" ![[tpi time_frame] location]] !uint64OrError[![tpi time_frame] !"TIMEFRAME"];
-          cast [tpt os_it_lock]:
+          cast [tpi os_it_lock]:
           when == @uint64_class osItLock do
             addUnsignedFieldValue !?tpFields ![@lstring new !"MAXOSINTERRUPTLOCKTIME" ![osItLock location]] ![osItLock value];
           else end cast;
-          cast [tpt all_it_lock]:
+          cast [tpi all_it_lock]:
           when == @uint64_class allItLock do
             addUnsignedFieldValue !?tpFields ![@lstring new !"MAXALLINTERRUPTLOCKTIME" ![allItLock location]] ![allItLock value];
           else end cast;
