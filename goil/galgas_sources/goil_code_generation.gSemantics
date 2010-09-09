@@ -500,10 +500,11 @@ end routine;
 # Compute the number of entry in the fifo for each priority level
 #--------------------------------------------------------------------
 routine compute_ready_list
-    ?@prio_map  prio_for_process
-    ?@prio_map  prio_for_rez
-    ?@uint      max_task_prio
-    ?@uint      max_prio
+    ??@root_obj cpu
+    ??@prio_map  prio_for_process
+    ??@prio_map  prio_for_rez
+    ??@uint      max_task_prio
+    ??@uint      max_prio
     !@prio_list ready_list
 :
     ready_list := [@prio_list emptyList];
@@ -525,9 +526,21 @@ routine compute_ready_list
             if p == prio then fifosize := fifosize + a; end if;
         end foreach;
 
-        # Since any task can get the RES_SCHEDULE resource,
-        # This priority level should have one more entry
-        if prio == max_task_prio then fifosize++; end if;
+        if prio == max_task_prio then
+          # Since any task can get the RES_SCHEDULER resource,
+          # This priority level should have one more entry
+          fifosize++;
+          # And add the tasks used to execute the shutdown and
+          # startup hooks of OS Applications
+          foreach [cpu applis] do
+            cast [app startuphook]:
+            when == @bool_class sh do if [sh value] then fifosize++; end if;
+            else end cast;
+            cast [app shutdownhook]:
+            when == @bool_class sh do if [sh value] then fifosize++; end if;
+            else end cast;
+          end foreach;
+        end if;
 
         ready_list += !fifosize;
         prio++;
@@ -764,6 +777,7 @@ routine generate_all
 
           @prio_list ready_list;
           compute_ready_list
+              !cpu
               !actual_prio
               !rez_actual_prio
               !max_task_prio

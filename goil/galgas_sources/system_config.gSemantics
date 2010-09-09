@@ -96,7 +96,7 @@ routine setAppRelatedAttributes
     end if;
   end if;
 end routine;
-  
+
 #
 # compute an ordered task list (ie extended tasks first, then basic task
 #
@@ -190,6 +190,23 @@ routine computeTaskList
       end foreach;
       addListFieldValue !?fieldMap ![@lstring new !"RESOURCES" !here] !resourceList;
     
+      # Add the timing protection stuff
+      cast [task timing_prot]:
+      when == @timing_prot_task tpt do
+        @goilTemplateFieldMap tpFields [emptyMap];
+        addUnsignedFieldValue !?tpFields ![@lstring new !"EXECUTIONBUDGET" ![[tpt exe_budget] location]] !uint64OrError[![tpt exe_budget] !"EXECUTIONBUDGET"];
+        addUnsignedFieldValue !?tpFields ![@lstring new !"TIMEFRAME" ![[tpt time_frame] location]] !uint64OrError[![tpt time_frame] !"TIMEFRAME"];
+        cast [tpt os_it_lock]:
+        when == @uint64_class osItLock do
+          addUnsignedFieldValue !?tpFields ![@lstring new !"MAXOSINTERRUPTLOCKTIME" ![osItLock location]] ![osItLock value];
+        else end cast;
+        cast [tpt all_it_lock]:
+        when == @uint64_class allItLock do
+          addUnsignedFieldValue !?tpFields ![@lstring new !"MAXALLINTERRUPTLOCKTIME" ![allItLock location]] ![allItLock value];
+        else end cast;
+        addStructFieldValue !?fieldMap ![@lstring new !"TIMINGPROTECTION" ![tpt location]] !tpFields;
+      else end cast;
+            
       # Add the free fields
       foreach [task others] do
         cast value:
@@ -206,6 +223,23 @@ routine computeTaskList
 
       taskList += !fieldMap;
     end if;
+  end foreach;
+end routine;
+
+#
+# compute a list of tasks dedicated to call the OS Applications
+# startup and shutdown hooks
+#
+routine computeWrapperTaskList
+  ??@root_obj cpu
+  ??@uint maxTaskPrio
+  ?!@goilTemplateFieldMapList wrapperList
+:
+  foreach [cpu applis] do
+    cast [app startuphook]:
+    when == @bool_class sh do
+      
+    else end cast;
   end foreach;
 end routine;
 
@@ -261,6 +295,22 @@ routine computeISRList
 
         setAppRelatedAttributes !?fieldMap !cpu !appForObj !lkey;  
 
+        cast [isr timing_prot]:
+        when == @timing_prot_isr tpi do
+          @goilTemplateFieldMap tpFields [emptyMap];
+          addUnsignedFieldValue !?tpFields ![@lstring new !"EXECUTIONTIME" ![[tpi exe_time] location]] !uint64OrError[![tpi exe_time] !"EXECUTIONTIME"];
+          addUnsignedFieldValue !?tpFields ![@lstring new !"TIMEFRAME" ![[tpi time_frame] location]] !uint64OrError[![tpi time_frame] !"TIMEFRAME"];
+          cast [tpt os_it_lock]:
+          when == @uint64_class osItLock do
+            addUnsignedFieldValue !?tpFields ![@lstring new !"MAXOSINTERRUPTLOCKTIME" ![osItLock location]] ![osItLock value];
+          else end cast;
+          cast [tpt all_it_lock]:
+          when == @uint64_class allItLock do
+            addUnsignedFieldValue !?tpFields ![@lstring new !"MAXALLINTERRUPTLOCKTIME" ![allItLock location]] ![allItLock value];
+          else end cast;
+            addStructFieldValue !?fieldMap ![@lstring new !"TIMINGPROTECTION" ![tpi location]] !tpFields;
+        else end cast;
+            
         isrList += !fieldMap;
       end if;
     else end cast;
@@ -1750,6 +1800,26 @@ routine setUseHooks ??@root_obj cpu ?!@goilTemplateVariableMap cfg:
   addBoolValue !?cfg ![@lstring new !"USEPARAMETERACCESS" ![[[cpu os] useparameteraccess] location]] !getBool[![[cpu os] useparameteraccess] !false];
   addBoolValue !?cfg ![@lstring new !"USERESSCHEDULER" ![[[cpu os] useresscheduler] location]] !getBool[![[cpu os] useresscheduler] !false];
   addBoolValue !?cfg ![@lstring new !"USESTACKMONITORING" ![[[cpu os] useresscheduler] location]] !getBool[![[cpu os] stackmonitoring] !false];
+  # OS Application startup hook
+  # true if at least one of the OS Applications use a startup hook
+  @uint64 osapp_startuphook_count := 0L;
+  @uint64 osapp_shutdownhook_count := 0L;
+  foreach [cpu applis] do
+    cast [app startuphook]:
+    when == @bool_class startup do
+      if [startup value] then
+        osapp_startuphook_count++;
+      end if;
+    else end cast;
+    cast [app shutdownhook]:
+    when == @bool_class shutdown do
+      if [shutdown value] then
+        osapp_shutdownhook_count++;
+      end if;
+    else end cast;
+  end foreach;
+  addUnsignedValue !?cfg ![@lstring new !"OSAPPLICATIONSTARTUPHOOK" !here] !osapp_startuphook_count;
+  addUnsignedValue !?cfg ![@lstring new !"OSAPPLICATIONSHUTDOWNHOOK" !here] !osapp_shutdownhook_count;
 end routine;
 
 routine setOsConfig ??@root_obj cpu ?!@goilTemplateVariableMap cfg:

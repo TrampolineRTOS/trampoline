@@ -333,4 +333,21 @@ end routine;
 
 #------------------------------------------------------------------------------*
 
+routine addStructFieldValue
+  ?!@goilTemplateFieldMap ioTemplateFieldMap
+  ??@lstring inVariableName
+  ??@goilTemplateFieldMap inValue
+:
+  [!?ioTemplateFieldMap insertKey
+    !inVariableName
+    ![@goilTemplateType structType]
+    !0L
+    !""
+    ![@goilTemplateFieldMapList emptyList]
+    !inValue
+  ];
+end routine;
+
+#------------------------------------------------------------------------------*
+
 end semantics;
