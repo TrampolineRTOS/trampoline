@@ -122,8 +122,8 @@ rule <timing_prot_attrs>
     end repeat ;
 
     cast time_frame :  when == @void do error here : "TIMEFRAME not declared" ; else end cast ;
-    cast os_it_lock :  when == @void do error here : "MAXOSINTERRUPTLOCKTIME not declared" ; else end cast ;
-    cast all_it_lock : when == @void do error here : "MAXALLINTERRUPTLOCKTIME not declared" ; else end cast ;
+#    cast os_it_lock :  when == @void do error here : "MAXOSINTERRUPTLOCKTIME not declared" ; else end cast ;
+#    cast all_it_lock : when == @void do error here : "MAXALLINTERRUPTLOCKTIME not declared" ; else end cast ;
     
 end rule ;
 
