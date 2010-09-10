@@ -564,11 +564,17 @@ The template interpreter starts in literal text mode. Switching from literal tex
 
 \section{GTL types}
 
-GTL supports 4 types: \strong{string}, \strong{integer}, \strong{boolean} and \strong{list}. These types have readers %\footnote{All the readers available in the corresponding Galgas types are available}
+GTL supports 5 types: \strong{string}, \strong{integer}, \strong{boolean}, \strong{list} and \strong{struct}. The 4 first types have readers %\footnote{All the readers available in the corresponding Galgas types are available}
 to get informations about a variable. A reader is invoke with the following syntax:
 
 \begin{lstlisting}
 [expression reader]
+\end{lstlisting}
+
+A struct is an aggregate of data. The `::' allows to get a member of the struct. For instance one of the member of \var{TIMINGPROTECTION} is \member{TIMEFRAME} so to get \member{TIMEFRAME}, the following syntax is used:
+
+\begin{lstlisting}
+TIMINGPROTECTION::TIMEFRAME
 \end{lstlisting}
 
 \subsection{string readers}
