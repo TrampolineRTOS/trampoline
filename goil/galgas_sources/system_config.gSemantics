@@ -204,6 +204,16 @@ routine computeTaskList
         when == @uint64_class allItLock do
           addUnsignedFieldValue !?tpFields ![@lstring new !"MAXALLINTERRUPTLOCKTIME" ![allItLock location]] ![allItLock value];
         else end cast;
+        
+        @goilTemplateFieldMapList resourcesLockList [emptyList];
+        foreach [tpt rezlocks] do
+          @goilTemplateFieldMap resourceLockFieldMap [emptyMap];
+          addLStringFieldValue !?resourceLockFieldMap !"RESOURCENAME" !lkey;
+          addUnsignedFieldValue !?resourceLockFieldMap ![@lstring new !"LOCKTIME" ![lkey location]] !time;
+          resourcesLockList += !resourceLockFieldMap;
+        end foreach;
+        addListFieldValue !?tpFields ![@lstring new !"RESOURCESLOCK" !here] !resourcesLockList;
+        
         addStructFieldValue !?fieldMap ![@lstring new !"TIMINGPROTECTION" ![tpt location]] !tpFields;
       else end cast;
             
@@ -308,7 +318,16 @@ routine computeISRList
           when == @uint64_class allItLock do
             addUnsignedFieldValue !?tpFields ![@lstring new !"MAXALLINTERRUPTLOCKTIME" ![allItLock location]] ![allItLock value];
           else end cast;
-            addStructFieldValue !?fieldMap ![@lstring new !"TIMINGPROTECTION" ![tpi location]] !tpFields;
+          @goilTemplateFieldMapList resourcesLockList [emptyList];
+          foreach [tpi rezlocks] do
+            @goilTemplateFieldMap resourceLockFieldMap [emptyMap];
+            addLStringFieldValue !?resourceLockFieldMap !"RESOURCENAME" !lkey;
+            addUnsignedFieldValue !?resourceLockFieldMap ![@lstring new !"LOCKTIME" ![lkey location]] !time;
+            resourcesLockList += !resourceLockFieldMap;
+          end foreach;
+          addListFieldValue !?tpFields ![@lstring new !"RESOURCESLOCK" !here] !resourcesLockList;
+     
+          addStructFieldValue !?fieldMap ![@lstring new !"TIMINGPROTECTION" ![tpi location]] !tpFields;
         else end cast;
             
         isrList += !fieldMap;
