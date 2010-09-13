@@ -87,7 +87,47 @@ Each item of these lists has the following attributes:
   \lineiii{RESOURCES}
   {list}
   {The resources used by the process. Each item has the following attribute: \member{NAME}}
+  \lineiii{TIMINGPROTECTION}
+  {struct}
+  {The timing protection attributes. This attribute does not exist if no timing protection is defined for the process. See below for the content of this struct.}
 \end{longtableiii}
+
+The \var{TIMINGPROTECTION} struct has the following sub-attributes:
+
+\rowcolors{1}{white}{light-gray}
+\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
+  \lineiii{EXECUTIONBUDGET}
+  {integer}
+  {The execution budget of a task. This attribute is not defined for an ISR.}
+  \lineiii{EXECUTIONTIME}
+  {integer}
+  {The execution time of an ISR. This attribute is not defined for a Task.}
+  \lineiii{TIMEFRAME}
+  {integer}
+  {The time frame.}
+  \lineiii{MAXOSINTERRUPTLOCKTIME}
+  {integer}
+  {The maximum locking time of OS interrupts.}
+  \lineiii{MAXALLINTERRUPTLOCKTIME}
+  {integer}
+  {The maximum locking time of all interrupts.}
+  \lineiii{RESOURCESLOCK}
+  {list}
+  {The maximum locking time of resources.}
+\end{longtableiii}
+
+Each element of the \var{RESOURCESLOCK} list has the following attributes:
+
+\rowcolors{1}{white}{light-gray}
+\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
+  \lineiii{RESOURCENAME}
+  {string}
+  {The name of the locked resource.}
+  \lineiii{LOCKTIME}
+  {integer}
+  {The maximum locking time of the resource.}
+\end{longtableiii}
+
 
 \subsection{The \var{COUNTERS}, \var{HARDWARECOUNTERS} and \var{SOFTWARECOUNTERS} lists}
 
