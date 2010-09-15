@@ -164,7 +164,7 @@ clean:
 
 
 # generate C file from OIL file, using goil.
-$(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE): $(OIL_FILE) $(OIL_FILE_DEP) Makefile
+$(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE): $(OIL_FILE) $(OIL_FILE_DEP)
 	$(GOIL_COMPILER) --generate-makefile --target=$(TARGET) $(GOIL_TEMPLATE_STR) $(GENITVEC) $(AUTOSAR_GOIL_FLAG) $(OIL_FILE)
 
 #documentation
