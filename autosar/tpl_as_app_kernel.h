@@ -135,7 +135,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt);
  *  Calls the StartupHook of all OS Applications
  *
  */
-FUNC(void, OS_CODE) tpl_call_application_startuphooks(void);
+FUNC(void, OS_CODE) tpl_osapp_startup_hooks(void);
 
 /**
  *  Calls the ShutdownHook of all OS Applications

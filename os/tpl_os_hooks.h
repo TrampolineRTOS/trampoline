@@ -67,6 +67,18 @@
 #endif
 
 /**
+ * @def CALL_OSAPPLICATION_STARTUP_HOOKS
+ *
+ * Generate a call to the startup hooks of OSApplications
+ */
+#if WITH_OSAPPLICATION_STARTUP_HOOK == YES
+#   define CALL_OSAPPLICATION_STARTUP_HOOKS()   \
+    tpl_osapp_startup_hooks();
+#else
+#   define CALL_OSAPPLICATION_STARTUP_HOOKS()
+#endif
+
+/**
  * @def CALL_SHUTDOWN_HOOK
  *
  * Generates a call to #ShutdownHook only if WITH_SHUTDOWN_HOOK is defined
@@ -78,6 +90,18 @@
     ShutdownHook(error);
 #else
 #   define CALL_SHUTDOWN_HOOK(error)
+#endif
+
+/**
+ * @def CALL_OSAPPLICATION_SHUTDOWN_HOOKS
+ *
+ * Generate a call to the startup hooks of OSApplications
+ */
+#if WITH_OSAPPLICATION_SHUTDOWN_HOOK == YES
+#   define CALL_OSAPPLICATION_SHUTDOWN_HOOKS()   \
+    tpl_osapp_shutdown_hooks();
+#else
+#   define CALL_OSAPPLICATION_SHUTDOWN_HOOKS()
 #endif
 
 #define OS_START_SEC_CODE
@@ -101,14 +125,14 @@ extern FUNC(void, OS_CODE) PostTaskHook(void);
 /**
  * Prototype of the startup hook routine
  */
-FUNC(void, OS_CODE) StartupHook(void);
+extern FUNC(void, OS_CODE) StartupHook(void);
 #endif
 
 #if WITH_SHUTDOWN_HOOK == YES
 /**
  * Prototype of the shutdown hook routine
  */
-FUNC(void, OS_CODE) ShutdownHook(VAR(StatusType, AUTOMATIC) error);
+extern FUNC(void, OS_CODE) ShutdownHook(VAR(StatusType, AUTOMATIC) error);
 #endif
 
 #define OS_STOP_SEC_CODE

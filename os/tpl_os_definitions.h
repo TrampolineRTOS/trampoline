@@ -566,14 +566,14 @@
  * @param name the name (C identifier) of the task
  */
 #ifdef __cplusplus
-#define TASK(name)                                              \
-    DeclareTask(name);                                          \
-    extern "C" FUNC(void, OS_APPL_CODE) name##_function(void);  \
-    FUNC(void, OS_APPL_CODE) name##_function(void)
+#define TASK(name)                                          \
+DeclareTask(name);                                          \
+extern "C" FUNC(void, OS_APPL_CODE) name##_function(void);  \
+FUNC(void, OS_APPL_CODE) name##_function(void)
 #else
-#define TASK(name)              \
-    DeclareTask(name);          \
-    FUNC(void, OS_APPL_CODE) name##_function(void)
+#define TASK(name)                             \
+DeclareTask(name);                             \
+FUNC(void, OS_APPL_CODE) name##_function(void)
 #endif
 
 /**

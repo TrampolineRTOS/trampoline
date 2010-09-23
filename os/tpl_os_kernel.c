@@ -1347,23 +1347,33 @@ FUNC(void, OS_CODE) tpl_start_os_service(
     
   tpl_enable_counters();
 
-  /*  Call the startup hook. According to the spec, it should be called
-	  after the os is initialized and before the scheduler is running     */
+  /*
+   * Call the startup hook. According to the spec, it should be called
+	 * after the os is initialized and before the scheduler is running
+   */
   CALL_STARTUP_HOOK()
+  
+  /*
+   * Call the OS Application startup hooks if needed
+   */
+  CALL_OSAPPLICATION_STARTUP_HOOKS()
 
-  /*  Call tpl_schedule to elect the greatest priority task */
+  /* 
+   * Call tpl_start_scheduling to elect the highest priority task
+   * if such a task exists.
+   */
   if(tpl_h_prio != -1)
   {
     tpl_start_scheduling();
 
 #if WITH_SYSTEM_CALL == NO
-	if (tpl_kern.need_switch != NO_NEED_SWITCH)
-	{
-	  tpl_switch_context(
-		&(tpl_kern.s_old->context),
-		&(tpl_kern.s_running->context)
-	  );
-	}
+    if (tpl_kern.need_switch != NO_NEED_SWITCH)
+    {
+      tpl_switch_context(
+        &(tpl_kern.s_old->context),
+        &(tpl_kern.s_running->context)
+      );
+    }
 #endif
   }
 	
@@ -1380,7 +1390,13 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
   /*  store information for error hook routine */
   STORE_SERVICE(OSServiceId_ShutdownOS)
 
+  /*
+   * Call the OS Application shutdown hooks if needed
+   */
+  CALL_OSAPPLICATION_SHUTDOWN_HOOKS()
+  
   CALL_SHUTDOWN_HOOK(error)
+
   TRACE_TPL_TERMINATE()
   /* architecture dependant shutdown. */
   tpl_shutdown();

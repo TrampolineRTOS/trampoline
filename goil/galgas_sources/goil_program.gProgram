@@ -1,4 +1,4 @@
-program goil_program "version 2.0b50 build $Rev$" :
+program goil_program "version 2.0b50 build 1206" :
   import grammar goil_grammar in "goil_grammar.gGrammar" ;
   import "goil_grammar.gGrammar" ;
  # import semantics xml_types in "xml_types.ggs";

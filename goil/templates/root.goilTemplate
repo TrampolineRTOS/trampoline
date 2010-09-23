@@ -71,6 +71,14 @@ if USEMEMORYMAPPING then
   end if
 end if
 
+if OSAPPLICATIONSTARTUPHOOK > 0 | OSAPPLICATIONSHUTDOWNHOOK > 0 then
+  !PROJECT %/tpl_osapplication_hooks.c
+%
+  write to PROJECT."/tpl_osapplication_hooks.c":
+    template osapplication_hooks_c in code
+  end write
+end if
+
 if USEBUILDFILE then
 %Makefile
 %
