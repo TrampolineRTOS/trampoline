@@ -64,6 +64,11 @@ SOURCES += tpl_dispatch_table.c
 SOURCES += tpl_invoque.S
 %
 end if
+if OSAPPLICATIONSTARTUPHOOK > 0 | OSAPPLICATIONSHUTDOWNHOOK > 0 then
+%
+SOURCES += tpl_osapplication_hooks.c
+%
+end if
 %
 # Trampoline generation flags
 WITH_TRACE = % ! trueFalse(USETRACE) %
