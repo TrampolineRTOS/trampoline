@@ -1,0 +1,8 @@
+# memory map file
+LDFLAGS += -Map % !APPNAME %.map
+
+#generate the binary dump to use with uBoot
+bin: % !APPNAME %
+	arm-elf-objcopy -R .comment -O binary  % !APPNAME % % !APPNAME %.bin
+
+EXTRA_FILES_CLEAN += % !APPNAME %.bin % !APPNAME %.map
