@@ -1,7 +1,34 @@
 #include "tpl_machine.h"
 
 %
+
 if USEINTERRUPTTABLE then
+  #check that source is found in target for ISR2
+  foreach ISRS2 prefixedby isr2_ do
+    let source_ok := false
+    foreach INTERRUPTSOURCES prefixedby interrupt_ do
+      if isr2_SOURCE == interrupt_NAME then
+        let source_ok := true
+      end if
+    end foreach
+    if source_ok == false then
+      error isr2_SOURCE "This interrupt source ".isr2_SOURCE." is not present in target.cfg file"
+    end if
+  end foreach
+  #check that source is found in target for ISR2
+  foreach HARDWARECOUNTERS prefixedby counter_ do
+    let source_ok := false
+    foreach INTERRUPTSOURCES prefixedby interrupt_ do
+      if counter_SOURCE == interrupt_NAME then
+        let source_ok := true
+      end if
+    end foreach
+    if source_ok == false & counter_SOURCE != "" then
+      error counter_SOURCE "This interrupt source ".counter_SOURCE." is not present in target.cfg file"
+    end if
+  end foreach
+
+let current_entry := 0
 %
 /* Interrupt functions */
 %
@@ -12,6 +39,7 @@ if USEINTERRUPTTABLE then
 #include "tpl_memmap.h"
 %
     do
+      let current_entry := ENTRY
       let function_generated := false # don't produce function entry twice for one source id
       let source_user_found := false # don't produce function while source is not used
       foreach INTERRUPTSOURCES prefixedby interrupt_ do
@@ -39,6 +67,7 @@ if USEINTERRUPTTABLE then
 FUNC(void, OS_CODE) tpl_interrupt_source_% !interrupt_NUMBER %()
 {
 %
+            template if exists tpl_interrupt_ack in code
             let function_generated := true
           end if              
           # check first for hardware counters (software counters call directly tpl_counter_tick function)
@@ -67,11 +96,10 @@ FUNC(void, OS_CODE) tpl_interrupt_source_% !interrupt_NUMBER %()
           end foreach
         end if
 
-			# Close the function bracket if it has been produced
+   # Close the function bracket if it has been produced
       after
         if function_generated then
-%
-}
+%}
 %     
         end if
       end foreach
@@ -98,24 +126,24 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[% !ITSOURCESLENGTH %] = {
         if ENTRY == interrupt_NUMBER & not interrupt_source_detected then
           foreach HARDWARECOUNTERS prefixedby counter_ do
             if counter_SOURCE == interrupt_NAME then
-		          let interrupt_source_detected := true
+            let interrupt_source_detected := true
             end if
           end foreach
           foreach ISRS1 prefixedby isr1_ do
             if isr1_SOURCE == interrupt_NAME then
-		          let interrupt_source_detected := true
+            let interrupt_source_detected := true
             end if
           end foreach
           foreach ISRS2 prefixedby isr2_ do
             if isr2_SOURCE == interrupt_NAME then
-		          let interrupt_source_detected := true
+            let interrupt_source_detected := true
             end if
           end foreach
         end if
       end foreach
       if not interrupt_source_detected then
         %  { tpl_null_it, (void *)NULL }%
-			else
+   else
         %  { tpl_interrupt_source_% !ENTRY %, (void *)NULL }%
       end if
    between %,

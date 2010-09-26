@@ -20,6 +20,9 @@ VAR(arm_context, OS_VAR) % !NAME %_int_context;
 
 #define OS_STOP_SEC_VAR_NOINIT_32BIT
 #include "tpl_memmap.h"
-
-
-
+%if PROCESSKIND == "ISR" then 
+    if not exists SOURCE then
+       error NAME "SOURCE attribute not defined for ".PROCESSKIND." ".NAME
+    end if
+  end if
+%

@@ -4,14 +4,15 @@ ENTRY (Vec_reset)
 MEMORY
 {
   /*internal_ram : org = 0x40000000, len = 16k*/
-  external_ram : org = 0x08000000, len = 16M
+  it_vect : org = 0x08000000, len = 128 /*64 only?*/
+  external_ram : org = 0x08000080, len = 0xFFFF80 /*16M - 128 for interrupt vector*/
 }
 
 SECTIONS {
   .vectbl : {
     *(.vectbl);
     . = ALIGN(4);
-  } > external_ram
+  } > it_vect
 }
 
 SECTIONS
@@ -23,6 +24,8 @@ SECTIONS
   . = ALIGN(4);
   ostext : {
     *(.osCode)
+    *(.glue_7)  /*interface between binary code in ARM and thumb mode*/
+    *(.glue_7t) /*interface between binary code in ARM and thumb mode*/
   } > external_ram
 
   . = ALIGN(4);
@@ -54,6 +57,7 @@ SECTIONS
     __SEG_START_APP_CODE_CONST_RGN = .;
     *(.osApiConst)  /* API constants    */
     *(.rodata)      /* litteral strings */
+    . = ALIGN(4);
     *(.osApiCode)   /* API functions    */
     /* Sections for code of tasks and ISR */%
 foreach PROCESSES do
