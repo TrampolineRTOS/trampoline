@@ -26,11 +26,22 @@
 #include "tpl_os.h"
 #include "tpl_os_it_kernel.h" //tpl_it_handler
 
-extern CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[31];
+//64 interrupt sources in apf9328
+extern CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[64]; 
+
+#define NIVECSR (unsigned int *)0x00223040
 
 void tpl_arm_subarch_irq_handler ()
 {
-       
+	VAR(tpl_it_handler, AUTOMATIC) isr_vector;
+	VAR(u32, AUTOMATIC) source;
+	
+	/* get interrupt id */
+	source =  (*NIVECSR) >>16;
+
+	/* launch interrupt fonction (ISR2, timer...) */
+	isr_vector = tpl_it_vector[source].func;
+	isr_vector(tpl_it_vector[source].args);
 }
 
-/* End of file olimex_irq.c */
+/* End of file armadeus_irq.c */
