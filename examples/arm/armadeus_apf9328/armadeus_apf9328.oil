@@ -23,7 +23,7 @@ CPU test {
         TRAMPOLINE_BASE_PATH = "../../..";
         CFLAGS  = "-g -Wall -pedantic -Wformat -std=c99 -mcpu=arm9tdmi -Wmissing-field-initializers -mfloat-abi=soft -marm -mno-thumb-interwork"; 
         ASFLAGS = "-g -mcpu=arm9tdmi --fatal-warnings -mfloat-abi=soft"; 
-        LDFLAGS = "-g --fatal-warnings --warn-common  --no-undefined -lm -lc -lgcc -L/usr/local/arm/lib/gcc/arm-elf/4.2.0";
+        LDFLAGS = "-g --fatal-warnings --warn-common  --no-undefined -lm -lc -lgcc -L`arm-elf-gcc -print-libgcc-file-name | sed 's/libgcc.a//g'`";
         
         COMPILER  = "arm-elf-gcc";
         ASSEMBLER = "arm-elf-as";
