@@ -1,8 +1,6 @@
 \documentclass[11pt]{manual}
 \usepackage[utf8]{inputenc}
-\usepackage[footnotesep=15pt,foot=40pt]{geometry}                % See geometry.pdf to learn the layout options. There are lots.
-\geometry{a4paper}                   % ... or a4paper or a5paper or ... 
-%\geometry{landscape}                % Activate for for rotated page geometry
+\usepackage[a4paper,footnotesep=15pt,foot=40pt]{geometry}                % See geometry.pdf to learn the layout options. There are lots.
 %\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
 \usepackage{graphicx}
 \usepackage{listings}
@@ -10,11 +8,13 @@
 %\usepackage{amssymb}
 \usepackage{makeidx}
 \usepackage{url}
+\usepackage{longtable}
 \usepackage{colortbl}
 \usepackage[table]{xcolor}
-\usepackage{longtable}
 \usepackage{underscore}
 \usepackage{caption}
+\usepackage{amsmath}
+\usepackage{datatool}
 
 \renewcommand{\captionlabelfont}{\small \bf}
 \renewcommand{\captionfont}{\small \it}
@@ -24,10 +24,31 @@
 \definecolor{light-gray}{gray}{0.85}
 \definecolor{medium-gray}{gray}{0.5}
 \usepackage[colorlinks=true,linkcolor=seagreen,citecolor=darkpink]{hyperref}
-\usepackage{supertabular} %supertabular
+%\usepackage{supertabular} %supertabular
 
 \usepackage{float} %figures
 
+%
+% Commands for paragraph types
+%
+%\newcommand{\note}[1]{\par\begingroup\hangindent=2em\hangafter=1 Note: #1\par\endgroup}
+
+%
+% Commands for inline formatting of C computing language
+%
+%\newcommand{\ctype}[1]{{\ttfamily #1}}
+%\newcommand{\cdata}[1]{{\ttfamily #1}}
+%\newcommand{\var}[1]{{\ttfamily #1}}
+%\newcommand{\cfunction}[1]{{\ttfamily #1}}
+\newcommand{\cmacro}[1]{{\ttfamily #1}}
+%\newcommand{\constant}[1]{{\ttfamily #1}}
+
+%
+% Commands for other formatting
+%
+%\newcommand{\file}[1]{\ttfamily `#1'}
+
+\newcommand{\ie}{i.e.}
 \newcommand{\asfct}[1]{\texttt{#1}}
 \newcommand{\hex}[1]{\texttt{#1$_H$}}
 \newcommand{\reg}[1]{\textit{#1}}
@@ -35,16 +56,190 @@
 \newcommand{\toreplace}[1]{{\footnotesize $<$}#1{\footnotesize $>$}}
 \newcommand{\figcaption}[2]{\textit{\caption{\small #1}}\label{#2}}
 \newcommand{\goil}{goil\index{goil, The oil compiler of Trampoline}}
+\newcommand{\process}{process\index{process, a task, basic or extended, or an ISR category 2}}
 \newcommand{\sysgen}{system generation tool\index{system generation tool, the tool that takes as an input a description of the system (in OIL or in XML) to generate the corresponding .c and .h files.}}
 \newcommand{\stringlit}[1]{``{#1}''}
 \newcommand{\api}[1]{\cfunction{#1}\index{#1}}
-
+\newcommand{\autosar}{AUTOSAR}
 \newenvironment{penum}{
 \begin{enumerate}
   \setlength{\itemsep}{1pt}
   \setlength{\parskip}{0pt}
   \setlength{\parsep}{0pt}
 }{\end{enumerate}}
+
+%
+% Graphic symbols for scheduling diagrams
+%
+\newcommand{\activate}{\includegraphics[height=9pt]{pictures/activate.pdf}}
+\newcommand{\terminate}{\includegraphics[height=9pt]{pictures/terminate.pdf}}
+
+%
+% states of a task
+%
+\newcommand{\RUNNING}{\constant{RUNNING}\index{RUNNING, state of a task}}
+\newcommand{\READY}{\constant{READY}\index{READY, state of a task}}
+\newcommand{\SUSPENDED}{\constant{SUSPENDED}\index{SUSPENDED, state of a task}}
+\newcommand{\WAITING}{\constant{WAITING}\index{WAITING, state of a task}}
+\newcommand{\AUTOSTART}{\constant{AUTOSTART}\index{AUTOSTART, state of a task}}
+\newcommand{\READYANDNEW}{\constant{READY_AND_NEW}\index{READY_AND_NEW, state of a task}}
+
+%
+% result codes
+%
+\newcommand{\OK}{E\_OK}
+\newcommand{\OSID}{E\_OS\_ID}
+\newcommand{\OSLIMIT}{E\_OS\_LIMIT}
+\newcommand{\OSRESOURCE}{E\_OS\_RESOURCE}
+\newcommand{\OSCALLLEVEL}{E\_OS\_CALLEVEL}
+
+%
+% OIL attribute
+%
+\newcommand{\PRIORITY}{PRIORITY\index{PRIORITY}}
+\newcommand{\SCHEDULE}{SCHEDULE\index{SCHEDULE}}
+
+\newcommand{\servicename}{}
+\newcommand{\servicedescription}{}
+\newcommand{\servicereturn}{}
+\DTLnewdb{argDB}
+\DTLnewdb{resDB}
+\newenvironment{service}[2]{%
+  \subsection{#1}\index{#1}%
+  \renewcommand{\servicename}{#1}%
+  \renewcommand{\servicereturn}{#2}
+  \DTLcleardb{argDB}
+  \DTLcleardb{resDB}
+}{
+ 
+  {\bf Prototype of \servicename\ is:}
+ 
+  {\tt \servicereturn\ \servicename(%
+  \DTLforeach*{argDB}{\argumenttype=type,\argumentname=name}{%
+    \DTLiffirstrow{}{, }\argumenttype\ \argumentname%
+  }%
+  );}
+
+  \DTLifdbempty{argDB}{}{
+    {\bf Arguments of \servicename\ are:}
+  
+    \DTLforeach*{argDB}{\argumenttype=type,\argumentname=name,\argumentdesc=desc}{%
+      \par\begingroup\hangindent=2em\hangafter=1 {\ttfamily\argumentname}\hspace{1em}\argumentdesc.\par\endgroup
+    }
+  }
+  
+  \DTLifdbempty{resDB}{}{
+    {\bf Status codes returned by \servicename:}
+  
+    \DTLforeach*{resDB}{\statusres=value,\statusdesc=desc,\statusstatus=status}{%
+      \par\begingroup\hangindent=2em\hangafter=1 {\ttfamily\statusres}\hspace{1em}\statusdesc\ (\statusstatus).\par\endgroup
+    }
+  }
+}
+
+\newcommand{\argument}[3]{%
+  \DTLnewrow{argDB}
+  \DTLnewdbentry{argDB}{type}{#1}
+  \DTLnewdbentry{argDB}{name}{#2}
+  \DTLnewdbentry{argDB}{desc}{#3}
+}
+
+\newcommand{\resultcode}[2]{%
+  \DTLnewrow{resDB}
+  \DTLnewdbentry{resDB}{value}{#1}
+  \DTLnewdbentry{resDB}{desc}{#2}
+  \DTLnewdbentry{resDB}{status}{extended and standard}
+}
+  
+\newcommand{\resultcodeext}[2]{%
+  \DTLnewrow{resDB}
+  \DTLnewdbentry{resDB}{value}{#1}
+  \DTLnewdbentry{resDB}{desc}{#2}
+  \DTLnewdbentry{resDB}{status}{extended only}
+}
+
+
+% Tables.
+%
+%\newenvironment{tableii}[4]{%
+%  \begin{center}%
+%    \def\lineii##1##2{\csname#2\endcsname{##1}&##2\\}%
+%    \begin{tabular}{#1}{\bfseries #3}&{\bfseries #4} \\* \hline%
+%}{%
+%    \end{tabular}%
+%  \end{center}%
+%}
+%
+%\newenvironment{longtableii}[4]{%
+%  \begin{center}%
+%    \def\lineii##1##2{\csname#2\endcsname{##1}&##2\\}%
+%    \begin{longtable}[c]{#1}{\bfseries #3}&{\bfseries #4} \\* \hline\endhead%
+%}{%
+%    \end{longtable}%
+%  \end{center}%
+%}
+%
+%\newenvironment{tableiii}[5]{%
+%  \begin{center}%
+%    \def\lineiii##1##2##3{\csname#2\endcsname{##1}&##2&##3\\}%
+%    \begin{tabular}{#1}{\bfseries #3}&{\bfseries #4}&{\bfseries #5} \\%
+%      \hline%
+%}{%
+%    \end{tabular}%
+%  \end{center}%
+%}
+%
+%\newenvironment{longtableiii}[5]{%
+%  \begin{center}%
+%    \def\lineiii##1##2##3{\csname#2\endcsname{##1}&##2&##3\\}%
+%    \begin{longtable}[c]{#1}{\bfseries #3}&{\bfseries #4}&{\bfseries #5} \\%
+%      \hline\endhead%
+%}{%
+%    \end{longtable}%
+%  \end{center}%
+%}
+%
+%\newenvironment{tableiv}[6]{%
+%  \begin{center}%
+%    \def\lineiv##1##2##3##4{\csname#2\endcsname{##1}&##2&##3&##4\\}%
+%    \begin{tabular}{#1}{\bfseries #3}&{\bfseries #4}&{\bfseries #5}&{\bfseries #6} \\%
+%      \hline%
+%}{%
+%    \end{tabular}%
+%  \end{center}%
+%}
+%
+%\newenvironment{longtableiv}[6]{%
+%  \begin{center}%
+%    \def\lineiv##1##2##3##4{\csname#2\endcsname{##1}&##2&##3&##4\\}%
+%    \begin{longtable}[c]{#1}{\bfseries #3}&{\bfseries #4}&{\bfseries #5}&{\bfseries #6}%
+%      \\%
+%      \hline\endhead%
+%}{%
+%    \end{longtable}%
+%  \end{center}%
+%}
+%
+%\newenvironment{tablev}[7]{%
+%  \begin{center}%
+%    \def\linev##1##2##3##4##5{\csname#2\endcsname{##1}&##2&##3&##4&##5\\}%
+%    \begin{tabular}{#1}{\bfseries #3}&{\bfseries #4}&{\bfseries #5}&{\bfseries #6}&{\bfseries #7} \\%
+%      \hline%
+%}{%
+%    \end{tabular}%
+%  \end{center}%
+%}
+%
+%\newenvironment{longtablev}[7]{%
+%  \begin{center}%
+%    \def\linev##1##2##3##4##5{\csname#2\endcsname{##1}&##2&##3&##4&##5\\}%
+%    \begin{longtable}[c]{#1}{\bfseries #3}&{\bfseries #4}&{\bfseries #5}&{\bfseries #6}&{\bfseries #7}%
+%      \\%
+%      \hline\endhead%
+%}{%
+%    \end{longtable}%
+%  \end{center}%
+%}
 
 \lstdefinelanguage{goilTemplate}
 {
@@ -112,7 +307,7 @@
 \title{The Trampoline handbook}
 \author{Jean-Luc B\'echennec\\Florent Pavin\\Pierre Molinaro}
 
-\release{2.0}
+%\release{2.0}
 \makeindex
 
 \begin{document}
@@ -122,6 +317,8 @@
 \tableofcontents
 
 \part{The Real-Time Operating System}
+
+Each chapter in this part starts with a presentation of the API and ends with implementation details related to the subject.
 
 \input{tasks}
 \input{osapps}

@@ -1,4 +1,4 @@
-%!TEX root = ./trampoline.tex
+%!TEX root = ./main.tex
 
 
 
@@ -7,10 +7,10 @@
 \newlength{\Li}\settowidth{\Li}{\textbf{Decimal}}
 \newlength{\Liii}\settowidth{\Liii}{(bootstrap  )}
 \newlength{\Lii}\settowidth{\Lii}{SCHEDULETABLE_AUTOSTART }
-\tablefirsthead{ \textbf{Decimal Value} & \textbf{bit 5}  & \textbf{bit 4} & \textbf{bit 3} & \textbf{bit 2} & \textbf{bit 1} & \textbf{bit 0} & \textbf{Meaning} \\ \hline }
-\tablehead{ \rowcolor{white} \rowcolors{1}{light-gray}{white} \textbf{Decimal Value} & \textbf{bit 5}  & \textbf{bit 4} & \textbf{bit 3} & \textbf{bit 2} & \textbf{bit 1} & \textbf{bit 0} & \textbf{Meaning} \\ \hline  }
-\tabletail{ \hline } 
-\tablelasttail{}
+%\tablefirsthead{ \textbf{Decimal Value} & \textbf{bit 5}  & \textbf{bit 4} & \textbf{bit 3} & \textbf{bit 2} & \textbf{bit 1} & \textbf{bit 0} & \textbf{Meaning} \\ \hline }
+%\tablehead{ \rowcolor{white} \rowcolors{1}{light-gray}{white} \textbf{Decimal Value} & \textbf{bit 5}  & \textbf{bit 4} & \textbf{bit 3} & \textbf{bit 2} & \textbf{bit 1} & \textbf{bit 0} & \textbf{Meaning} \\ \hline  }
+%\tabletail{ \hline } 
+%\tablelasttail{}
 
 
 \chapter{Schedule Table Implementation}
@@ -18,10 +18,10 @@
 Here is the files list :
 \begin{itemize}
 \item \file{tpl_as_schedtable.c} contains the API services.
-\item \file{tpl_as_st_kernel.c} contains the kernel API services, \function{tpl_process_schedtable()} and \function{tpl_adjust_next_expiry_point()}
-\item \file{tpl_as_action.c} contains \function{tpl_action_finalize_schedule_table()}
+\item \file{tpl_as_st_kernel.c} contains the kernel API services, \cfunction{tpl_process_schedtable()} and \cfunction{tpl_adjust_next_expiry_point()}
+\item \file{tpl_as_action.c} contains \cfunction{tpl_action_finalize_schedule_table()}
 \item \file{tpl_as_definitions.h} contains the schedule table's states (SCHEDULETABLE\_STOPPED, SCHEDULETABLE\_BOOTSTRAP, SCHEDULETABLE\_AUTOSTART\_ABSOLUTE...)
-\item \file{tpl_os_timeobj_kernel.c} contains \function{tpl_remove_time_obj()} which has been modified for the schedule table object.
+\item \file{tpl_os_timeobj_kernel.c} contains \cfunction{tpl_remove_time_obj()} which has been modified for the schedule table object.
 \end{itemize}
 
 The schedule table class diagram is shown in Figure \ref{fig:STobject} below.
@@ -39,7 +39,7 @@ The schedule table class diagram is shown in Figure \ref{fig:STobject} below.
 
 A schedule table always has a defined state. States include those found at page 42 of the AUTOSAR specifications 3.1 and others states used for internal management.
 
-Indeed, \textbf{bit 1} is the "autostart" bit. It's used when autostarted schedule tables have been declared in the OIL file. Goil generates schedule tables with SCHEDULETABLE\_AUTOSTART\_X (X can be RELATIVE, ABSOLUTE or SYNCHRON) state. At startup (in \function{tpl_init_os()}), the system starts autostarted schedule tables and resets the \textbf{bit 1}.
+Indeed, \textbf{bit 1} is the "autostart" bit. It's used when autostarted schedule tables have been declared in the OIL file. Goil generates schedule tables with SCHEDULETABLE\_AUTOSTART\_X (X can be RELATIVE, ABSOLUTE or SYNCHRON) state. At startup (in \cfunction{tpl_init_os()}), the system starts autostarted schedule tables and resets the \textbf{bit 1}.
 
 \textbf{bit 4} is the "bootstrap" bit. It's used when the first expiry point of a schedule table is dated in more than \textbf{OsCounterMaxAllowedValue} ticks from the current date\footnote{As the \toreplace{offset} parameter of StartScheduleTableRel() cannot be greater than \textbf{OsCounterMaxAllowedValue} minus the \textbf{InitialOffset} of the schedule table (OS276), the first expiry point cannot be in more than \textbf{OsCounterMaxAllowedValue} ticks from the current date. Thus the "bootstrap" bit can set by StartScheduleTableAbs() only.}. It can happen when :
 	\begin{itemize}
@@ -62,19 +62,24 @@ Thus, the different states of a schedule table are described in Table \ref{sched
 
 \begin{table}[H]
 \begin{center}
-\topcaption{\textcolor{white}{q}States of a schedule table } % Latex is weird, the table goes on the next page without the "\textcolor{white}{q}"
-\begin{supertabular}{p{\Li}|c|c|c|c|c|c|p{\Lii}|} 
-0	& 0	& 0	& 0 	& 0	& 0	& 0	& SCHEDULETABLE_STOPPED  \\ 
-1	& 0	& 0	& 0 	& 0	& 0	& 1	& SCHEDULETABLE_RUNNING  \\ 
-5	& 0	& 0	& 0 	& 1	& 0	& 1	& SCHEDULETABLE_NEXT  \\  
-9	& 0	& 0	& 1 	& 0	& 0	& 1	& SCHEDULETABLE_WAITING  \\  
-13	& 0	& 0	& 1 	& 1	& 0	& 1	& SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS \\ \hline \hline
-6	& 0	& 0	& 0 	& 1	& 1	& 0	& SCHEDULETABLE_AUTOSTART _ABSOLUTE  \\ 
-10	& 0	& 0	& 1 	& 0	& 1	& 0	& SCHEDULETABLE_AUTOSTART _RELATIVE  \\  
-14	& 0	& 0	& 1 	& 1	& 1	& 0	& SCHEDULETABLE_AUTOSTART _SYNCHRON  \\  \hline \hline
-16	& 0	& 1	& 0 	& 0	& 0	& 0	& SCHEDULETABLE_BOOTSTRAP \\ 
-32	& 1	& 0	& 0 	& 0	& 0	& 0	& SCHEDULETABLE_ASYNC  \\ 
-\end{supertabular} 
+\caption{\textcolor{white}{q}States of a schedule table } % Latex is weird, the table goes on the next page without the "\textcolor{white}{q}"
+\rowcolors{1}{white}{light-gray}
+\begin{longtable}[c]{l|l|l}
+{\bf State code}&{\bf Binary code}&{\bf Associated constant}\\
+\hline
+0 & 000000 & SCHEDULETABLE_STOPPED \\
+1 & 000001 & SCHEDULETABLE_RUNNING \\
+5 & 000101 & SCHEDULETABLE_NEXT \\
+9 & 001001 & SCHEDULETABLE_WAITING \\
+13 & 001101 & SCHEDULETABLE_RUNNING_AND_SYNCHRONOUS \\
+\hline
+6 & 000110 & SCHEDULETABLE_AUTOSTART_ABSOLUTE \\
+10 & 001010 & SCHEDULETABLE_AUTOSTART_RELATIVE \\
+14 & 001110 & SCHEDULETABLE_AUTOSTART_SYNCHRON \\
+\hline
+16 & 010000 & SCHEDULETABLE_BOOTSTRAP \\
+32 & 100000 & SCHEDULETABLE_ASYNC \\ 
+\end{longtable} 
 \end{center}
 \label{schedtablestates}
 \end{table}
@@ -94,7 +99,7 @@ In the same time of producing the schedule tables expiry points, GOIL adds one e
 
 To process a \textbf{synchronized} schedule table, the schedule table's state has to be updated each expiry point and the next expiry point has to be adjusted according to the schedule table's deviation each epiry point too.
 
-A schedule table is a time object, like an alarm. \function{tpl_processing_scheduletable()} is called by each expiry point (before activating a task, setting an event or finalizing a schedule table via \function{tpl_finalize_expiry_point()}) . The state machine of this function is shown in the Figure \ref{fig:STprocessingTplProcess}.
+A schedule table is a time object, like an alarm. \cfunction{tpl_processing_scheduletable()} is called by each expiry point (before activating a task, setting an event or finalizing a schedule table via \cfunction{tpl_finalize_expiry_point()}) . The state machine of this function is shown in the Figure \ref{fig:STprocessingTplProcess}.
 
 \begin{figure}[H] %  figure placement: here, top, bottom, or page
    \centering
@@ -115,7 +120,7 @@ A schedule table is a time object, like an alarm. \function{tpl_processing_sched
    \label{fig:STprocessingTplAdjust}
 \end{figure}
 
-\function{tpl_finalize_expoiry_point()} state machine is shown in Figure \ref{fig:STprocessingTplFinalize} below.
+\cfunction{tpl_finalize_expoiry_point()} state machine is shown in Figure \ref{fig:STprocessingTplFinalize} below.
 
 \begin{figure}[H] %  figure placement: here, top, bottom, or page
    \centering

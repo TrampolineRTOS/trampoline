@@ -1,0 +1,9 @@
+%!TEX root = ./trampoline.tex
+
+\chapter{OS Applications}
+
+OS Applications are a set of objects managed by Trampoline and sharing common data and access rights.
+
+\section{Execution of the OS Applications startup and shutdown hooks}
+
+These hooks are executed from the kernel but with the access right of a task belonging to the OS Application. The \sysgen\ should choose one of the tasks of the OS Application to be used as context to execute the OS Application startup and shutdown hooks. Execution of an OS Application startup hook is done by the \cfunction{tpl_call_startup_hook_and_resume} function. The argument of this function is a function pointer to the hook. Similarly execution of an OS Application shutdown hook is done by the \cfunction{tpl_call_shutdown_hook_and_resume} function. These functions end by a call to \api{NextStartupHook} and \api{NextShutdownHook} services respectively to cycle through the hooks.

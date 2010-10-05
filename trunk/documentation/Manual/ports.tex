@@ -1,4 +1,4 @@
-%!TEX root = ./trampoline.tex
+%!TEX root = ./main.tex
 
 \chapter{Ports details}
 
@@ -91,7 +91,7 @@ The following registers are saved: \var{lr}, \var{cr}, \var{r11} and \var{r12}. 
 
 \subsubsection{Disabling memory protection}
 
-This part of the dispatch layer is done in the \function{tpl_enter_kernel} function and is assembled only if \var{WITH_MEMORY_PROTECTION} is set to YES. After saving the \var{lr}, the \function{tpl_kernel_mp} function is called and does the actual job. At last \var{lr} is restored.
+This part of the dispatch layer is done in the \cfunction{tpl_enter_kernel} function and is assembled only if \cmacro{WITH_MEMORY_PROTECTION} is set to \YES. After saving the \reg{lr}, the \cfunction{tpl_kernel_mp} function is called and does the actual job. At last \reg{lr} is restored.
 
 \begin{lstlisting}[language=C]
 #if WITH_MEMORY_PROTECTION == YES
@@ -110,7 +110,7 @@ This part of the dispatch layer is done in the \function{tpl_enter_kernel} funct
 
 \subsubsection{Switching to the kernel stack}
 
-Once the dispatch layer has saved the registers it uses and has switched to the kernel memory protection scheme, it switches to the kernel stack. However the kernel stack could used already because a call to a \function{PreTaskHook} or a \function{PostTaskHook} is done on the kernel stack and such a hook may call a service. So the dispatch layer is reentrant. The number of reentrant calls is counted by the \var{tpl_reentrancy_counter}. In addition the process stack pointer (\var{r1}), \var{SRR0} and \var{SRR1} are saved in the kernel stack. The kernel stack mapping is shown in figure \ref{fig:kernelstackmapping}. For a reentrant call, the same frame is build over the current one. The switch to the kernel stack is done as follow:
+Once the dispatch layer has saved the registers it uses and has switched to the kernel memory protection scheme, it switches to the kernel stack. However the kernel stack could used already because a call to a \cfunction{PreTaskHook} or a \cfunction{PostTaskHook} is done on the kernel stack and such a hook may call a service. So the dispatch layer is reentrant. The number of reentrant calls is counted by the \var{tpl_reentrancy_counter}. In addition the process stack pointer (\reg{r1}), \reg{SRR0} and \reg{SRR1} are saved in the kernel stack. The kernel stack mapping is shown in figure \ref{fig:kernelstackmapping}. For a reentrant call, the same frame is build over the current one. The switch to the kernel stack is done as follow:
 
 \begin{lstlisting}[language=C]
   /*
@@ -218,7 +218,7 @@ A context switch is performed in 3 steps. The first one is the context save of t
   lwz   r11,KS_KERN_PTR(r1)   /* get back tpl_kern address         */
 \end{lstlisting}
 
-The second step consists in loading the configuration of memory protection for the process that get the CPU by calling the \cfunction{tpl_set_process_mp} function. This function expects the id of the process in \reg{r3}. Again this id is located in member \var{proc_id} of \var{tpl_kern}. This is done only if \var{WITH_MEMORY_PROTECTION} is \var{YES}. 
+The second step consists in loading the configuration of memory protection for the process that get the CPU by calling the \cfunction{tpl_set_process_mp} function. This function expects the id of the process in \reg{r3}. Again this id is located in member \var{proc_id} of \var{tpl_kern}. This is done only if \cmacro{WITH_MEMORY_PROTECTION} is \YES. 
 
 \begin{lstlisting}[language=C]
 #if WITH_MEMORY_PROTECTION == YES
@@ -326,11 +326,11 @@ The \api{CallTrustedFunction} service is implemented by the \cfunction{tpl_call_
 The id of the trusted function is checked to avoid to call a function at an arbitrary address.
 
 \begin{lstlisting}[language=C]
-  mov   r11,r3               /* save r3 in r11 b/c it will be destroyed    */
-  cmpw  r3,TRUSTED_FCT_COUNT /* check the id of the trusted function       */
-  ori   r3,r0,E_OS_SERVICEID /* E_OS_SERVICEID return code                 */
-  bge   invalid_trusted_fct_id
-  mov   r3,r11               /* restore r3 if the trusted function id ok   */
+mov   r11,r3               /* save r3 in r11 b/c it will be destroyed */
+cmpw  r3,TRUSTED_FCT_COUNT /* check the id of the trusted function    */
+ori   r3,r0,E_OS_SERVICEID /* E_OS_SERVICEID return code              */
+bge   invalid_trusted_fct_id
+mov   r3,r11               /* restore r3 if trusted function id ok    */
 \end{lstlisting}
 
 \subsubsection{Incrementing the trusted counter}
@@ -338,11 +338,11 @@ The id of the trusted function is checked to avoid to call a function at an arbi
 The trusted counter of the process is incremented each time a trusted function is called. When the trusted counter is $>0$, the process is trusted. In such a case, the dispatch layer does not enable memory protection when scheduling the process so it has an unlimited access to the whole addressing space.
 
 \begin{lstlisting}[language=C]
-  lwz   r11,KS_KERN_PTR(r1)   /* get the ptr to tpl_kern                  */
-  lwz   r11,12(r11)           /* get the ptr to the runnning process desc */
-  lwz   r12,4(r11)            /* get trusted_count member                 */
-  addi  r12,r12,1             /* increment it                             */
-  stw   r12,4(r11)            /* put it back in the process desc          */
+  lwz   r11,KS_KERN_PTR(r1) /* get the ptr to tpl_kern                  */
+  lwz   r11,12(r11)         /* get the ptr to the runnning process desc */
+  lwz   r12,4(r11)          /* get trusted_count member                 */
+  addi  r12,r12,1           /* increment it                             */
+  stw   r12,4(r11)          /* put it back in the process desc          */
 \end{lstlisting}
 
 \subsubsection{Building the frame}
@@ -383,7 +383,7 @@ The frame is used to store the calling context of the trusted function and is sh
   \includegraphics[scale=.6]{pictures/TFStack1} 
 \end{minipage}
 \begin{minipage}{0.35\textwidth}
-  \caption{Process stack mapping at the end of \cfunction{tpl_call_trusted_function_service}. \reg{r0}, at the bottom of the stack has been pushed by CallTrustedFunction. \reg{cr} to \reg{r11} has been pushed by the dispatch layer. \reg{SRR0} and \reg{SRR1} are saved here by \cfunction{tpl_call_trusted_function_service} to be able to go back to the calling process. Above, the linkage area allows the trusted function to call functions. Above, a frame that will be used by the dispatch layer to restore an execution context for the trusted function is built.}\label{fig:tfstackmapping}
+  \caption{Process stack mapping at the end of \cfunction{tpl_call_trusted_function_service}. \reg{r0}, at the bottom of the stack has been pushed by \api{CallTrustedFunction}. \reg{cr} to \reg{r11} has been pushed by the dispatch layer. \reg{SRR0} and \reg{SRR1} are saved here by \cfunction{tpl_call_trusted_function_service} to be able to go back to the calling process. Above, the linkage area allows the trusted function to call functions. Above, a frame that will be used by the dispatch layer to restore an execution context for the trusted function is built.}\label{fig:tfstackmapping}
 \end{minipage}
 \end{figure}
 
@@ -430,19 +430,19 @@ When a trusted function finishes, the context of the \api{CallTrustedFunction} m
 First, \cfunction{tpl_exit_trusted_function_service} decrements the trusted counter of the calling process. A particular attention must be given to this point because by building a fake stack frame and calling Explicitly \api{ExitTrustedFunction} to underflow this counter, a process could get a full access to the memory. So the counter is tested before to avoid to go under 0.
 
 \begin{lstlisting}[language=C]
-  lwz   r11,KS_KERN_PTR(r1)   /* get the ptr to tpl_kern */
-  lwz   r11,12(r11)           /* get the ptr to the runnning process desc */
-  lwz   r12,4(r11)            /* get trusted_count member */
+  lwz   r11,KS_KERN_PTR(r1) /* get the ptr to tpl_kern */
+  lwz   r11,12(r11)         /* get the ptr to the runnning process desc */
+  lwz   r12,4(r11)          /* get trusted_count member */
   /*
    * Warning, the trusted counter has to be check (compared to 0) to
    * avoid to decrement it if it is already 0. Without that a process
    * could build an had-hoc stack an call explicitly ExitTrustedFunction
    * to get access to all the memory.
    */
-  cmpwi r12,0                 /* check it is not already at 0 */
-  beq   cracker_in_action     /* uh uh */
-  subi  r12,r12,1             /* decrement it */
-  stw   r12,4(r11)            /* put it back in the process desc */
+  cmpwi r12,0               /* check it is not already at 0 */
+  beq   cracker_in_action   /* uh uh */
+  subi  r12,r12,1           /* decrement it */
+  stw   r12,4(r11)          /* put it back in the process desc */
 \end{lstlisting}
 
 \cfunction{tpl_exit_trusted_function_service} has to remove from the process stack the frame that was built by \cfunction{tpl_call_trusted_function_service}, restore \reg{SRR0} and \reg{SRR1} before returning to the dispatch layer.
@@ -490,44 +490,37 @@ The access control rights register has the following bit usage:
 Bus master 4 is a special case. The 2 bits have the following meaning:
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableii}{p{0.4in}|p{4.8in}}{}{Bit}{Meaning}
-  \lineii{M4RE}
-  {If set to 1, bus master 4 may \strong{read} memory in the region. If 0, no read is allowed}
-  \lineii{M4WE}
-  {If set to 1, bus master 4 may \strong{write} memory in the region. If 0, no write is allowed}
-\end{longtableii}
+\begin{longtable}[c]{l|p{5.15in}}
+{\bf Bit}&{\bf Meaning}\\
+\hline
+\dreg{M4RE} & If set to 1, bus master 4 may {\bf read} memory in the region. If 0, no read is allowed\\
+\dreg{M4WE} & If set to 1, bus master 4 may {\bf write} memory in the region. If 0, no write is allowed\
+\end{longtable}
 
 So in our case, these bits are set to 0.
 
 Of course, other bus masters have more sophisticated access right:
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableii}{p{0.4in}|p{4.8in}}{}{Bit}{Meaning}
-  \lineii{MxPE}
-  {The PID Enable bit. Set to 0 in our case}
-  \lineii{MxSM}
-  {These 2 bits rules the supervisor mode access control with the following meaning: $00=rwx$, $01=rx$, $10=rw$, $11=$ \textit{same as defined by MxUM}. In our case, it is set to $00$ for code and constants and to $11$ for data.}
-  \lineii{MxUM}
-  {These 2 bits rules the user mode access control. The first bit means $r$, the second one $w$ and the third one $x$.}
-\end{longtableii}
+\begin{longtable}[c]{l|p{5.15in}}
+{\bf Bit}&{\bf Meaning}\\
+\hline
+\dreg{MxPE} & The PID Enable bit. Set to 0 in our case\\
+\dreg{MxSM} & These 2 bits rules the supervisor mode access control with the following meaning: $00=rwx$, $01=rx$, $10=rw$, $11=$ \textit{same as defined by \dreg{MxUM}}. In our case, it is set to $00$ for code and constants and to $11$ for data.\\
+\dreg{MxUM} & These 2 bits rules the user mode access control. The first bit means $r$, the second one $w$ and the third one $x$.
+\end{longtable}
 
 Trampoline uses 4 descriptors:
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{0.8in}|p{2in}|p{2.3in}}{}{Descriptor}{Usage}{MxUM value}
-  \lineiii{MPU\_RGD0}
-  {Constants and program\footnote{This region is set to the whole addressing space. This is not definitive and should be improved because reading a peripheral control register should be protected. So an additional descriptor has to be used to allow the kernel (supervisor mode) a complete access on all the memory space and no access at all for applications (user mode).}.}
-  {$rwx=00$ for supervisor mode, $rx=101$ for user mode.}
-  \lineiii{MPU\_RGD1}
-  {Private variables of the process.}
-  {$rw=110$ for supervisor and user mode.}
-  \lineiii{MPU\_RGD2}
-  {Stack of the process.}
-  {$rw=110$ for supervisor and user mode.}
-  \lineiii{MPU\_RGD3}
-  {Variables of the OS Application if OS Applications are used.}
-  {$rw=110$ for supervisor and user mode.}
-\end{longtableiii}
+\begin{longtable}{l|p{1.9in}|p{2.6in}}
+{\bf Descriptor} & {\bf Usage} & {\bf \dreg{MxUM} value}\\
+\hline
+\dreg{MPU_RGD0} & Constants and program\footnote{This region is set to the whole addressing space. This is not definitive and should be improved because reading a peripheral control register should be protected. So an additional descriptor has to be used to allow the kernel (supervisor mode) a complete access on all the memory space and no access at all for applications (user mode).}. & $rwx=00$ for supervisor mode, $rx=101$ for user mode.\\
+\dreg{MPU_RGD1} & Private variables of the process. & $rw=110$ for supervisor and user mode.\\
+\dreg{MPU_RGD2} & Stack of the process. & $rw=110$ for supervisor and user mode.\\
+\dreg{MPU_RGD3} & Variables of the OS Application if OS Applications are used. & $rw=110$ for supervisor and user mode.\\
+\end{longtable}
 
 So values of access control bits should be:
 
@@ -536,12 +529,12 @@ So values of access control bits should be:
 So in hexa:
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableii}{l|l}{}{Kind}{Value}
-  \lineii{Program region access}
-  {$0x00000005$}
-  \lineii{Variable region access}
-  {$0x0000001E$}
-\end{longtableii}
+\begin{longtable}{l|l}
+{\bf Kind} & {\bf Value}\\
+\hline
+Program region access & $0x00000005$\\
+Variable region access & $0x0000001E$\\
+\end{longtable}
 
 \subsubsection{What happen in case of memory protection violation ?}
 

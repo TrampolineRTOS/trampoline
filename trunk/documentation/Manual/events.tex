@@ -1,0 +1,9 @@
+\begin{service}{SetEvent}{StatusType}
+Events of task TaskID are set according to the Mask passed as 2nd argument. This service is non blocking and may be called from a task or an ISR2
+\argument{TaskType}{TaskID}{the id of the task}
+\argument{EventMaskType}{Mask}{the event mask}
+\resultcode{\OK}{No error}
+\resultcodeext{\OSID}{Invalid TaskID}
+%E_OS_ACCESS: TaskID is not an extended task (not able to manage events);
+%E_OS_STATE: Events cannot be set because the target task is in the SUSPENDED state.
+\end{service}
