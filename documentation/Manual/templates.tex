@@ -1,4 +1,4 @@
-%!TEX root = ./trampoline.tex
+%!TEX root = ./main.tex
 
 \chapter{The Goil templates}
 
@@ -31,559 +31,488 @@ Files are produced by a template program located in the \file{root.goilTemplate}
 
 The configuration data are computed by Goil from the OIL source files, from the options on the command line and from the \file{target.cfg} file. They are available as a set of predefined boolean, string, integer or list variables. All these variables are in capital letters.
 
-\warning{Some configuration data are not listed here because they are dependent on the target. For instance, the \member{STACKSIZE} data may be an attribute of each item of a \var{TASKS} list for ppc target but are missing for the c166 target.}
+%\warning{Some configuration data are not listed here because they are dependent on the target. For instance, the \member{STACKSIZE} data may be an attribute of each item of a \var{TASKS} list for ppc target but are missing for the c166 target.}
+
+
+
+
+\warning{Some configuration data are not listed here because they depend on the target. For instance, the \member{STACKSIZE} data may be an attribute of each item of a \var{TASKS} list for ppc target but are missing for the c166 target.}
 
 \subsection{The \var{PROCESSES}, \var{TASKS}, \var{BASICTASKS}, \var{EXTENDEDTASKS}, \var{ISRS1} and \var{ISRS2} lists}
 
 Theses variables are lists where informations about the processes\footnote{In Trampoline, a process is a task or an ISR category 2.} used in the application are stores:
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableii}{p{1.2in}|p{4in}}{var}{List}{Content}
-  \lineii{PROCESSES}
-  {the list of processes. The items are sorted in the following order: extended tasks, then basic tasks, then ISRs category 2.}
-  \lineii{TASKS}
-  {the list of tasks, basic and extended. The items are sorted in the following order: extended tasks, then basic tasks.}
-  \lineii{BASICTASKS}
-  {the list of basic tasks.}
-  \lineii{EXTENDEDTASKS}
-  {the list of extended tasks.}
-  \lineii{ISRS1}
-  {the list of ISR category 1.}
-  \lineii{ISRS2}
-  {the list of ISR category 2.}
-\end{longtableii}
+\begin{longtable}[c]{l|p{4.5in}}
+{\bf List} & {\bf Content}\\
+\hline
+\var{PROCESSES} & the list of processes. The items are sorted in the following order: extended tasks, then basic tasks, then ISRs category 2.\\
+\var{TASKS} & the list of tasks, basic and extended. The items are sorted in the following order: extended tasks, then basic tasks.\\
+\var{BASICTASKS} & the list of basic tasks.\\
+\var{EXTENDEDTASKS} & the list of extended tasks.\\
+\var{ISRS1} & the list of ISR category 1.\\
+\var{ISRS2} & the list of ISR category 2.\\
+\end{longtable}
 
 Each item of these lists has the following attributes:
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
-  \lineiii{NAME}
-  {string}
-  {the name of the process.}
-  \lineiii{PROCESSKIND}
-  {string}
-  {the kind of process: \stringlit{Task} or \stringlit{ISR}.}
-  \lineiii{EXTENDEDTASK}
-  {boolean}
-  {true if the process is an extended task, false otherwise.}
-  \lineiii{NONPREEMPTABLE}
-  {boolean}
-  {true if the process is a non-preemptable task, false otherwise.}
-  \lineiii{PRIORITY}
-  {integer}
-  {the priority of the process.}
-  \lineiii{ACTIVATION}
-  {integer}
-  {the number of activation of a task. 1 for and extended task or an ISR.}
-  \lineiii{AUTOSTART}
-  {boolean}
-  {true if the process is an autostart task, false otherwise.}
-  \lineiii{USEINTERNALRESOURCE}
-  {boolean}
-  {true if the process is a task that uses an internal resource, false otherwise.}
-  \lineiii{INTERNALRESOURCE}
-  {string}
-  {the name of the internal resource if the process is a task that uses an internal resource, empty string otherwise.}
-  \lineiii{RESOURCES}
-  {list}
-  {The resources used by the process. Each item has the following attribute: \member{NAME}}
-  \lineiii{TIMINGPROTECTION}
-  {struct}
-  {The timing protection attributes. This attribute does not exist if no timing protection is defined for the process. See below for the content of this struct.}
-\end{longtableiii}
+\begin{longtable}{>{\mem}l|l|p{3.56in}}
+{\bf Item}&{\bf Type}&{\bf Content}\\
+\hline
+\endhead
+{NAME} & string & the name of the process.\\
+{PROCESSKIND} & string & the kind of process: \stringlit{Task} or \stringlit{ISR}.\\
+{EXTENDEDTASK} & boolean & true if the process is an extended task, false otherwise.\\
+{NONPREEMPTABLE} & boolean & true if the process is a non-preemptable task, false otherwise.\\
+{PRIORITY} & integer & the priority of the process.\\
+{ACTIVATION} & integer & the number of activation of a task. 1 for and extended task or an ISR.\\
+{AUTOSTART} & boolean & true if the process is an autostart task, false otherwise.\\
+{USEINTERNALRESOURCE} & boolean & true if the process is a task that uses an internal resource, false otherwise.\\
+{INTERNALRESOURCE} & string & the name of the internal resource if the process is a task that uses an internal resource, empty string otherwise.\\
+{RESOURCES} & list & The resources used by the process. Each item has the following attribute: \member{NAME}\\
+{TIMINGPROTECTION} & struct & The timing protection attributes. This attribute does not exist if no timing protection is defined for the process. See below for the content of this struct.\\
+\end{longtable}
 
 The \var{TIMINGPROTECTION} struct has the following sub-attributes:
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
-  \lineiii{EXECUTIONBUDGET}
-  {integer}
-  {The execution budget of a task. This attribute is not defined for an ISR.}
-  \lineiii{EXECUTIONTIME}
-  {integer}
-  {The execution time of an ISR. This attribute is not defined for a Task.}
-  \lineiii{TIMEFRAME}
-  {integer}
-  {The time frame.}
-  \lineiii{MAXOSINTERRUPTLOCKTIME}
-  {integer}
-  {The maximum locking time of OS interrupts.}
-  \lineiii{MAXALLINTERRUPTLOCKTIME}
-  {integer}
-  {The maximum locking time of all interrupts.}
-  \lineiii{RESOURCESLOCK}
-  {list}
-  {The maximum locking time of resources.}
-\end{longtableiii}
+\begin{longtable}{l|l|p{3.355in}}
+{\bf Item} & {\bf Type} & {\bf Content}\\
+\hline
+\member{EXECUTIONBUDGET} & integer & The execution budget of a task. This attribute is not defined for an ISR.\\
+\member{EXECUTIONTIME} & integer & The execution time of an ISR. This attribute is not defined for a Task.\\
+\member{TIMEFRAME} & integer & The time frame.\\
+\member{MAXOSINTERRUPTLOCKTIME} & integer & The maximum locking time of OS interrupts.\\
+\member{MAXALLINTERRUPTLOCKTIME} & integer & The maximum locking time of all interrupts.\\
+\member{RESOURCESLOCK} & list & The maximum locking time of resources.\\
+\end{longtable}
 
 Each element of the \var{RESOURCESLOCK} list has the following attributes:
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
-  \lineiii{RESOURCENAME}
-  {string}
-  {The name of the locked resource.}
-  \lineiii{LOCKTIME}
-  {integer}
-  {The maximum locking time of the resource.}
-\end{longtableiii}
-
+\begin{longtable}{l|l|p{4.05in}}
+{\bf Item} & {\bf Type} & {\bf Content}\\
+\hline
+\member{RESOURCENAME} & string & The name of the locked resource.\\
+\member{LOCKTIME} & integer & The maximum locking time of the resource.\\
+\end{longtable}
 
 \subsection{The \var{COUNTERS}, \var{HARDWARECOUNTERS} and \var{SOFTWARECOUNTERS} lists}
 
-This list contains all the informations about the counters used in the application, including the \var{SystemCounter}.
+These list contains all the informations about the counters used in the application, including the \var{SystemCounter}.
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableii}{p{1.5in}|p{3.7in}}{var}{List}{Content}
-  \lineii{COUNTERS}
-  {the list of counters, both hardware and software as long as the \var{SystemCounter}}
-  \lineii{HARDWARECOUNTERS}
-  {the list of hardware counters including the \var{SystemCounter}.}
-  \lineii{SOFTWARECOUNTERS}
-  {the list of software counters.}
-\end{longtableii}
+\begin{longtable}{>{\va}l|p{4.37in}}
+{\bf List} & {\bf Content}\\
+\endhead
+\hline
+{COUNTERS} & the list of counters, both hardware and software as long as the \var{SystemCounter}.\\
+{HARDWARECOUNTERS} & the list of hardware counters including the \var{SystemCounter}.\\
+{SOFTWARECOUNTERS} & the list of software counters.\\
+\end{longtable}
 
 Each item of this list has the following attributes:
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
-  \lineiii{NAME}
-  {string}
-  {the name of the counter.}
-  \lineiii{TYPE}
-  {string}
-  {the type of counter: {\small\stringlit{HARDWARE_COUNTER}} or {\small\stringlit{SOFTWARE_COUNTER}}.}
-  \lineiii{MAXALLOWEDVALUE}
-  {integer}
-  {the maximum allowed value of the counter.}
-  \lineiii{MINCYCLE}
-  {integer}
-  {the minimum cycle value of the counter.}
-  \lineiii{TICKPERBASE}
-  {integer}
-  {the number of ticks needed to increment the counter.}
-  \lineiii{SOURCE}
-  {string}
-  {the interrupt source name of the counter. This can be used to wrap interrupt vector to a counter incrementation function}
-\end{longtableiii}
+\begin{longtable}{l|l|p{3.85in}}
+{\bf Item} & {\bf Type} & {\bf Content}\\
+\hline
+\endhead
+\member{NAME} & string & the name of the counter.\\
+\member{TYPE} & string & the type: \stringlit{HARDWARE_COUNTER} or \stringlit{SOFTWARE_COUNTER}.\\
+\member{MAXALLOWEDVALUE} & integer & the maximum allowed value of the counter.\\
+\member{MINCYCLE} & integer & the minimum cycle value of the counter.\\
+\member{TICKPERBASE} & integer & the number of ticks needed to increment the counter.\\
+\member{SOURCE} & string & the interrupt source name of the counter. This is be used to wrap interrupt vector to a counter incrementation function.\\
+\end{longtable}
 
 \subsection{The \var{EVENTS} list}
 
 This list contains the informations about the events of the application. Each item has the following attributes:
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
-  \lineiii{NAME}
-  {string}
-  {the name of the event.}
-  \lineiii{MASK}
-  {integer}
-  {the mask of the event.}
-\end{longtableiii}
+\begin{longtable}{l|l|p{4.52in}}
+{\bf Item}&{\bf Type}&{\bf Content}\\
+\hline
+\member{NAME} & string & the name of the event.\\
+\member{MASK} & integer & the mask of the event.\\
+\end{longtable}
 
 \subsection{The \var{ALARMS} list}
 
 This list contains the informations about the alarms of the application. Each item has the following attributes:
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
-  \lineiii{NAME}
-  {string}
-  {the name of the alarm.}
-  \lineiii{COUNTER}
-  {string}
-  {the name of the counter that drives the alarm.}
-  \lineiii{ACTION}
-  {string}
-  {the action to be done when the alarm expire. It can take the following values: \stringlit{setEvent}, \stringlit{activateTask} and \stringlit{callback}. The last action is not available in Autosar mode.}
-  \lineiii{TASK}
-  {string}
-  {the name of the task on which the action is performed. This attribute is defined for \stringlit{setEvent} and \stringlit{activateTask} actions only.}
-  \lineiii{EVENT}
-  {string}
-  {the name of the event to set on the target task. This attribute is defined for \stringlit{setEvent} action only.}
-  \lineiii{AUTOSTART}
-  {boolean}
-  {true if the alarm is autostart, false otherwise}
-  \lineiii{ALARMTIME}
-  {integer}
-  {the alarm time of the alarm. This attribute is set if \member{AUTOSTART} is true}
-  \lineiii{CYCLETIME}
-  {integer}
-  {the cycle time of the alarm. This attribute is set if \member{AUTOSTART} is true}
-  \lineiii{APPMODE}
-  {string}
-  {the application mode in which the alarm is autostart. This attribute is set if \member{AUTOSTART} is true}
-\end{longtableiii}
+\begin{longtable}{l|l|p{4.2in}}
+{\bf Item}&{\bf Type}&{\bf Content}\\
+\hline
+\member{NAME} & string & the name of the alarm.\\
+\member{COUNTER} & string & the name of the counter that drives the alarm.\\
+\member{ACTION} & string & the action to be done when the alarm expire. It can take the following values: \stringlit{setEvent}, \stringlit{activateTask} and \stringlit{callback}. The last action is not available in \autosar\ mode.\\
+\member{TASK} & string & the name of the task on which the action is performed. This attribute is defined for \stringlit{setEvent} and \stringlit{activateTask} actions only.\\
+\member{EVENT} & string & the name of the event to set on the target task. This attribute is defined for \stringlit{setEvent} action only.\\
+\member{AUTOSTART} & boolean & true if the alarm is autostart, false otherwise \\
+\member{ALARMTIME} & integer & the alarm time of the alarm. This attribute is set if \member{AUTOSTART} is true.\\
+\member{CYCLETIME} & integer & the cycle time of the alarm. This attribute is set if \member{AUTOSTART} is true.\\
+\member{APPMODE} & string & the application mode in which the alarm is autostart. This attribute is set if \member{AUTOSTART} is true.\\
+\end{longtable}
 
 \subsection{The \var{REGULARRESOURCES} and \var{INTERNALRESOURCES} lists}
 
 These lists contains the informations about the resources of the application.
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableii}{p{1.5in}|p{3.7in}}{var}{List}{Content}
-  \lineii{REGULARRESOURCES}
-  {the list of STANDARD and LINKED resources.}
-  \lineii{INTERNALRESOURCES}
-  {the list of INTERNAL resources.}
-\end{longtableii}
+\begin{longtable}{>{\va}l|p{4.31in}}
+{\bf List}&{\bf Content}\\
+\hline
+\endhead
+{REGULARRESOURCES} & the list of \oilattr{STANDARD} and \oilattr{LINKED} resources.\\
+{INTERNALRESOURCES} & the list of \oilattr{INTERNAL} resources.\\
+\end{longtable}
 
 Each item has the following attributes:
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
-  \lineiii{NAME}
-  {string}
-  {the name of the resource.}
-  \lineiii{PRIORITY}
-  {integer}
-  {the priority of the resource.}
-  \lineiii{TASKUSAGE}
-  {list}
-  {the list of tasks that use the resource. Each item of this list has an attribute \member{NAME} which is the name of the task.}
-  \lineiii{ISRUSAGE}
-  {list}
-  {the list of ISRs that use the resource. Each item of this list has an attribute \member{NAME} which is the name of the ISR.}
-\end{longtableiii}
+\begin{longtable}{>{\mem}l|l|p{4.25in}}
+{\bf Item} & {\bf Type} & {\bf Content}\\
+\hline
+\endhead
+{NAME} & string & the name of the resource.\\
+{PRIORITY} & integer & the priority of the resource.\\
+{TASKUSAGE} & list & the list of tasks that use the resource. Each item of this list has an attribute \member{NAME} which is the name of the task.\\
+{ISRUSAGE} & list & the list of ISRs that use the resource. Each item of this list has an attribute \member{NAME} which is the name of the ISR.\\
+\end{longtable}
 
 \subsection{The \var{MESSAGES}, \var{SENDMESSAGES} and \var{RECEIVEMESSAGES} lists}
 
 These lists contain the informations about the messages of the application.
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableii}{p{1.5in}|p{3.7in}}{var}{List}{Content}
-  \lineii{MESSAGES}
-  {the list of messages, both send and receive message.}
-  \lineii{SENDMESSAGES}
-  {the list of send messages.}
-  \lineii{RECEIVEMESSAGES}
-  {the list of receive messages.}
-\end{longtableii}
+\begin{longtable}{>{\va}l|p{4.44in}}
+{\bf List} & {\bf Content}\\
+\hline\endhead
+MESSAGES & the list of messages, both send and receive message.\\
+SENDMESSAGES & the list of send messages.\\
+RECEIVEMESSAGES & the list of receive messages.\\
+\end{longtable}
 
 Each item has the following attributes
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
-  \lineiii{NAME}
-  {string}
-  {the name of the message.}
-  \lineiii{MESSAGEPROPERTY}
-  {string}
-  {the type of the message. It can be {\small\stringlit{RECEIVE\_ZERO\_INTERNAL}, \stringlit{RECEIVE\_UNQUEUED\_INTERNAL}, \stringlit{RECEIVE\_QUEUED\_INTERNAL}, \stringlit{SEND\_STATIC\_INTERNAL}, \stringlit{SEND\_ZERO\_INTERNAL} or \stringlit{RECEIVE\_ZERO\_SENDERS}}.}
-  \lineiii{NEXT}
-  {string}
-  {the name of the next message in a receive message chain. This attribute is defined for receive messages only.}
-  \lineiii{SOURCE}
-  {string}
-  {the name of the send message which is connected to the receive message. This attribute is defined for receive messages only.}
-  \lineiii{CTYPE}
-  {string}
-  {the C language type of the message. This attribute is not defined for {\small\stringlit{RECEIVE\_ZERO\_INTERNAL}} and  {\small\stringlit{SEND\_ZERO\_INTERNAL}} messages.}
-  \lineiii{INITIALVALUE}
-  {string}
-  {initial value of the receive message. This attribute is defined for {\small\stringlit{RECEIVE\_UNQUEUED\_INTERNAL}} and  {\small\stringlit{RECEIVE\_ZERO\_SENDERS}} messages only.}
-  \lineiii{QUEUESIZE}
-  {integer}
-  {queue size of a receive queued message. This attribute is defined for {\small\stringlit{RECEIVE\_QUEUED\_INTERNAL}} messages only.}
-  \lineiii{TARGET}
-  {string}
-  {target message of a send message. This is the first message in a receive message chain. This attribute is defined for {\small\stringlit{SEND\_STATIC\_INTERNAL}} and {\small\stringlit{SEND\_ZERO\_INTERNAL}} messages only.}
-  \lineiii{FILTER}
-  {string}
-  {the kind of filter to apply. This attribute may take the following values: {\small\stringlit{ALWAYS}, \stringlit{NEVER}, \stringlit{MASKEDNEWEQUALSX}, \stringlit{MASKEDNEWDIFFERSX}, \stringlit{NEWISEQUAL}, \stringlit{NEWISDIFFERENT}, \stringlit{MASKEDNEWEQUALSMASKEDOLD}, \stringlit{MASKEDNEWDIFFERSMASKEDOLD}, \stringlit{NEWISWITHIN}, \stringlit{NEWISOUTSIDE}, \stringlit{NEWISGREATER}, \stringlit{NEWISLESSOREQUAL}, \stringlit{NEWISLESS}, \stringlit{NEWISGREATEROREQUAL}} or {\small\stringlit{ONEEVERYN}}.}
-  \lineiii{MASK}
-  {integer}
-  {Mask of the filter when needed. This attribute is defined for {\small\stringlit{MASKEDNEWEQUALSX}, \stringlit{MASKEDNEWDIFFERSX}, \stringlit{MASKEDNEWEQUALSMASKEDOLD}} and {\small\stringlit{MASKEDNEWDIFFERSMASKEDOLD}} filters only.}
-  \lineiii{X}
-  {integer}
-  {Value of the filter when needed. This attribute is defined for {\small\stringlit{MASKEDNEWEQUALSMASKEDOLD}} and {\small\stringlit{MASKEDNEWDIFFERSX}} filters only.}
-  \lineiii{MIN}
-  {integer}
-  {Minimum value of the filter when needed. This attribute is defined for {\small\stringlit{NEWISWITHIN}} and {\small\stringlit{NEWISOUTSIDE}} filters only.}
-  \lineiii{MAX}
-  {integer}
-  {Maximum value of the filter when needed. This attribute is defined for {\small\stringlit{NEWISWITHIN}} and {\small\stringlit{NEWISOUTSIDE}}}     
-  \lineiii{PERIOD}
-  {integer}
-  {Period of the filter. This attribute is defined for {\small\stringlit{ONEEVERYN}} filter only.}
-  \lineiii{OFFSET}
-  {integer}
-  {Offset of the filter. This attribute is defined for {\small\stringlit{ONEEVERYN}} filter only.}
-  \lineiii{ACTION}
-  {string}
-  {the action (or notification) to be done when the message is delivered. It can take the following values: \stringlit{setEvent} or \stringlit{activateTask}.}
-  \lineiii{TASK}
-  {string}
-  {the name of the task on which the notification is performed. This attribute is defined for \stringlit{setEvent} and \stringlit{activateTask} actions only.}
-  \lineiii{EVENT}
-  {string}
-  {the name of the event to set on the target task. This attribute is defined for \stringlit{setEvent} notification only.}
-\end{longtableiii}
+\begin{longtable}{>{\mem}l|l|p{3.85in}}
+{\bf Item}& {\bf Type} & {\bf Content}\\
+\hline\endhead
+NAME & string & the name of the message.\\
+MESSAGEPROPERTY & string & the type of the message. It can be \stringlit{RECEIVE\_ZERO\_INTERNAL}, \stringlit{RECEIVE\_UNQUEUED\_INTERNAL}, \stringlit{RECEIVE\_QUEUED\_INTERNAL}, \stringlit{SEND\_STATIC\_INTERNAL}, \stringlit{SEND\_ZERO\_INTERNAL} or \stringlit{RECEIVE\_ZERO\_SENDERS}.\\
+{NEXT} & {string} & {the name of the next message in a receive message chain. This attribute is defined for receive messages only.}\\
+{SOURCE} & {string} & {the name of the send message which is connected to the receive message. This attribute is defined for receive messages only.}\\
+{CTYPE} & {string} & {the C language type of the message. This attribute is not defined for \stringlit{RECEIVE\_ZERO\_INTERNAL} and  \stringlit{SEND\_ZERO\_INTERNAL} messages.}\\
+{INITIALVALUE} & {string} & {initial value of the receive message. This attribute is defined for \stringlit{RECEIVE\_UNQUEUED\_INTERNAL} and  \stringlit{RECEIVE\_ZERO\_SENDERS} messages only.}\\
+{QUEUESIZE} & {integer} & {queue size of a receive queued message. This attribute is defined for \stringlit{RECEIVE\_QUEUED\_INTERNAL} messages only.}\\
+{TARGET} & {string} & {target message of a send message. This is the first message in a receive message chain. This attribute is defined for \stringlit{SEND\_STATIC\_INTERNAL} and \stringlit{SEND\_ZERO\_INTERNAL} messages only.}\\
+{FILTER} & {string} & {the kind of filter to apply. This attribute may take the following values: \stringlit{ALWAYS}, \stringlit{NEVER}, \stringlit{MASKEDNEWEQUALSX}, \stringlit{MASKEDNEWDIFFERSX}, \stringlit{NEWISEQUAL}, \stringlit{NEWISDIFFERENT}, \stringlit{MASKEDNEWEQUALSMASKEDOLD}, \stringlit{MASKEDNEWDIFFERSMASKEDOLD}, \stringlit{NEWISWITHIN}, \stringlit{NEWISOUTSIDE}, \stringlit{NEWISGREATER}, \stringlit{NEWISLESSOREQUAL}, \stringlit{NEWISLESS}, \stringlit{NEWISGREATEROREQUAL} or \stringlit{ONEEVERYN}.}\\
+{MASK} & {integer} & {Mask of the filter when needed. This attribute is defined for \stringlit{MASKEDNEWEQUALSX}, \stringlit{MASKEDNEWDIFFERSX}, \stringlit{MASKEDNEWEQUALSMASKEDOLD} and \stringlit{MASKEDNEWDIFFERSMASKEDOLD} filters only.}\\
+{X} & {integer} & {Value of the filter when needed. This attribute is defined for \stringlit{MASKEDNEWEQUALSMASKEDOLD} and \stringlit{MASKEDNEWDIFFERSX} filters only.}\\
+{MIN} & {integer} & {Minimum value of the filter when needed. This attribute is defined for \stringlit{NEWISWITHIN} and \stringlit{NEWISOUTSIDE} filters only.}\\
+{MAX} & {integer} & {Maximum value of the filter when needed. This attribute is defined for \stringlit{NEWISWITHIN} and \stringlit{NEWISOUTSIDE}.}\\
+{PERIOD} & {integer} & {Period of the filter. This attribute is defined for \stringlit{ONEEVERYN} filter only.}\\
+{OFFSET} & {integer} & {Offset of the filter. This attribute is defined for \stringlit{ONEEVERYN} filter only.}\\
+{ACTION} & {string} & {the action (or notification) to be done when the message is delivered. It can take the following values: \stringlit{setEvent} or \stringlit{activateTask}.}\\
+{TASK} & {string} & {the name of the task on which the notification is performed. This attribute is defined for \stringlit{setEvent} and \stringlit{activateTask} actions only.}\\
+{EVENT} & {string} & {the name of the event to set on the target task. This attribute is defined for \stringlit{setEvent} notification only.}\\
+\end{longtable}
 
 \subsection{The \var{SCHEDULETABLES} list}
 
 This list contains the informations about the schedule tables of the application.
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
-  \lineiii{NAME}
-  {string}
-  {the name of the schedule table.}
-  \lineiii{COUNTER}
-  {string}
-  {the name of the counter which drives the schedule table.}
-  \lineiii{PERIODIC}
-  {boolean}
-  {true if the schedule table is a periodic one, false otherwise.}
-  \lineiii{SYNCSTRATEGY}
-  {string}
-  {the synchronization strategy of the schedule table. This attribute may take the following values: {\small\stringlit{SCHEDTABLE_NO_SYNC}, \stringlit{SCHEDTABLE_IMPLICIT_SYNC}} or {\small\stringlit{SCHEDTABLE_EXPLICIT_SYNC}}.}
-  \lineiii{PRECISION}
-  {integer}
-  {the precision of the synchronization. This attribute is define when \member{SYNCSTRATEGY} is {\small\stringlit{SCHEDTABLE_EXPLICIT_SYNC}}.}
-  \lineiii{STATE}
-  {string}
-  {the state of the schedule table. This attribute may take the following values: {\small\stringlit{SCHEDULETABLE_STOPPED}, \stringlit{SCHEDULETABLE_AUTOSTART_SYNCHRON}, \stringlit{SCHEDULETABLE_AUTOSTART_RELATIVE}} or {\small\stringlit{SCHEDULETABLE_AUTOSTART_ABSOLUTE}}.}
-  \lineiii{DATE}
-  {integer}
-  {the start date of the schedule table. This attribute has an actuel value when \member{STATE} is {\small\stringlit{SCHEDULETABLE_AUTOSTART_RELATIVE}} or {\small\stringlit{SCHEDULETABLE_AUTOSTART_ABSOLUTE}}, otherwise it is set to 0.}
-  \lineiii{LENGTH}
-  {integer}
-  {The length of the schedule table.}
-  \lineiii{EXPIRYPOINTS}
-  {list}
-  {The expiry points of the schedule table. See the following table for items attributes.}
-\end{longtableiii}
+\begin{longtable}{>{\mem}l|l|p{3.985in}}
+{\bf Item} & {\bf Type} & {\bf Content}\\
+\hline\endhead
+ {NAME}&
+  {string}&
+  {the name of the schedule table.}\\
+ {COUNTER}&
+  {string}&
+  {the name of the counter which drives the schedule table.}\\
+ {PERIODIC}&
+  {boolean}&
+  {true if the schedule table is a periodic one, false otherwise.}\\
+ {SYNCSTRATEGY}&
+  {string}&
+  {the synchronization strategy of the schedule table. This attribute may take the following values: \stringlit{SCHEDTABLE_NO_SYNC}, \stringlit{SCHEDTABLE_IMPLICIT_SYNC} or \stringlit{SCHEDTABLE_EXPLICIT_SYNC}.}\\
+ {PRECISION}&
+  {integer}&
+  {the precision of the synchronization. This attribute is define when \member{SYNCSTRATEGY} is \stringlit{SCHEDTABLE_EXPLICIT_SYNC}.}\\
+ {STATE}&
+  {string}&
+  {the state of the schedule table. This attribute may take the following values: {\stringlit{SCHEDULETABLE_STOPPED}, \stringlit{SCHEDULETABLE_AUTOSTART_SYNCHRON}, \stringlit{SCHEDULETABLE_AUTOSTART_RELATIVE}} or {\stringlit{SCHEDULETABLE_AUTOSTART_ABSOLUTE}}.}\\
+ {DATE}&
+  {integer}&
+  {the start date of the schedule table. This attribute has an actuel value when \member{STATE} is {\stringlit{SCHEDULETABLE_AUTOSTART_RELATIVE}} or {\stringlit{SCHEDULETABLE_AUTOSTART_ABSOLUTE}}, otherwise it is set to 0.}\\
+ {LENGTH}&
+  {integer}&
+  {The length of the schedule table.}\\
+ {EXPIRYPOINTS}&
+  {list}&
+  {The expiry points of the schedule table. See the following table for items attributes.}\\
+\end{longtable}
 
 Each item of the \member{EXPIRYPOINTS} list has the following attributes:
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
-  \lineiii{ABSOLUTEOFFSET}
-  {integer}
-  {the absolute offset of the expiry points.}
-  \lineiii{RELATIVEOFFSET}
-  {integer}
-  {the relative offset of the expiry points from the previous expiry point.}
-  \lineiii{MAXRETARD}
-  {integer}
-  {maximum retard to keep the schedule table synchronous.}
-  \lineiii{MAXADVANCE}
-  {integer}
-  {maximum advance to keep the schedule table synchronous.}
-  \lineiii{ACTIONS}
-  {list}
-  {the actions to perform on the expiry point. See the following table for items attributes.}
-\end{longtableiii}
+\begin{longtable}{>{\mem}l|l|p{3.91in}}
+{\bf Item}&{\bf Type}&{\bf Content}\\
+\hline\endhead
+ {ABSOLUTEOFFSET}&
+  {integer}&
+  {the absolute offset of the expiry points.}\\
+ {RELATIVEOFFSET}&
+  {integer}&
+  {the relative offset of the expiry points from the previous expiry point.}\\
+ {MAXRETARD}&
+  {integer}&
+  {maximum retard to keep the schedule table synchronous.}\\
+ {MAXADVANCE}&
+  {integer}&
+  {maximum advance to keep the schedule table synchronous.}\\
+ {ACTIONS}&
+  {list}&
+  {the actions to perform on the expiry point. See the following table for items attributes.}\\
+\end{longtable}
 
 Each item of the \member{ACTIONS} list has the following attributes:
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
-  \lineiii{ACTION}
-  {string}
-  {the action to be done when the alarm expire. It can take the following values: \stringlit{setEvent}, \stringlit{activateTask}, \stringlit{incrementCounter} and \stringlit{finalizeScheduleTable}.}
-  \lineiii{TASK}
-  {string}
-  {the name of the task on which the action is performed. This attribute is defined for \stringlit{setEvent} and \stringlit{activateTask} actions only.}
-  \lineiii{EVENT}
-  {string}
-  {the name of the event to set on the target task. This attribute is defined for \stringlit{setEvent} action only.}
-  \lineiii{TARGETCOUNTER}
-  {string}
-  {the name of the counter to increment. This attribute is defined for \stringlit{incrementCounter} action only.}
-\end{longtableiii}
+\begin{longtable}{>{\mem}l|l|p{4.03in}}
+{\bf Item}&{\bf Type}&{\bf Content}\\
+\hline\endhead
+ {ACTION}&
+  {string}&
+  {the action to be done when the alarm expire. It can take the following values: \stringlit{setEvent}, \stringlit{activateTask}, \stringlit{incrementCounter} and \stringlit{finalizeScheduleTable}.}\\
+ {TASK}&
+  {string}&
+  {the name of the task on which the action is performed. This attribute is defined for \stringlit{setEvent} and \stringlit{activateTask} actions only.}\\
+ {EVENT}&
+  {string}&
+  {the name of the event to set on the target task. This attribute is defined for \stringlit{setEvent} action only.}\\
+ {TARGETCOUNTER}&
+  {string}&
+  {the name of the counter to increment. This attribute is defined for \stringlit{incrementCounter} action only.}\\
+\end{longtable}
 
 \subsection{The \var{OSAPPLICATIONS} list}
 
 This list contains the informations about the OS Applications of the application.
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{2.1in}|l|p{2.5in}}{member}{Item}{Type}{Content}
-  \lineiii{NAME}
-  {string}
-  {the name of the OS Application.}
-  \lineiii{RESTART}
-  {string}
-  {the name of the restart task. This attribute is not defined is there is no restart task for the OS Application.}
-  \lineiii{PROCESSACCESSVECTOR}
-  {string}
-  {access right for the processes}
-  \lineiii{PROCESSACCESSITEMS}
-  {string}
-  {access right for the processes as bytes in a table}
-  \lineiii{PROCESSACCESSNUM}
-  {integer}
-  {number of elements in the previous table}
-  \lineiii{ALARMACCESSVECTOR}
-  {string}
-  {access right for the alarms}
-  \lineiii{ALARMACCESSITEMS}
-  {string}
-  {access right for the alarms as bytes in a table}
-  \lineiii{ALARMACCESSNUM}
-  {integer}
-  {number of elements in the previous table}
-  \lineiii{RESOURCEACCESSVECTOR}
-  {string}
-  {access right for the resources}
-  \lineiii{RESOURCEACCESSITEMS}
-  {string}
-  {access right for the resources as bytes in a table}
-  \lineiii{RESOURCEACCESSNUM}
-  {integer}
-  {number of elements in the previous table}
-  \lineiii{SCHEDULETABLEACCESSVECTOR}
-  {string}
-  {access right for the schedule tables}
-  \lineiii{SCHEDULETABLEACCESSITEMS}
-  {string}
-  {access right for the schedule tables as bytes in a table}
-  \lineiii{SCHEDULETABLEACCESSNUM}
-  {integer}
-  {number of elements in the previous table}
-  \lineiii{COUNTERACCESSVECTOR}
-  {string}
-  {access right for the software counters}
-  \lineiii{COUNTERACCESSITEMS}
-  {string}
-  {access right for the software counters as bytes in a table}
-  \lineiii{COUNTERACCESSNUM}
-  {integer}
-  {number of elements in the previous table}
-  \lineiii{PROCESSES}
-  {list}
-  {list of the processes that belong to the OS Application. Each item has an attribute \member{NAME} which is the name of the process.}
-  \lineiii{HASSTARTUPHOOK}
-  {boolean}
-  {true if the OS Application has a startup hook.}
-  \lineiii{HASSHUTDOWNHOOK}
-  {boolean}
-  {true if the OS Application has a shutdown hook.}
-  \lineiii{TASKS}
-  {list}
-  {list of the tasks that belong to the OS Application. Each item has an attribute \member{NAME} which is the name of the task.}
-  \lineiii{ISRS}
-  {list}
-  {list of the ISRs that belong to the OS Application. Each item has an attribute \member{NAME} which is the name of the ISR.}
-  \lineiii{ALARMS}
-  {list}
-  {list of the alarms that belong to the OS Application. Each item has an attribute \member{NAME} which is the name of the alarm.}
-  \lineiii{RESOURCES}
-  {list}
-  {list of the resources that belong to the OS Application. Each item has an attribute \member{NAME} which is the name of the resource.}
-  \lineiii{REGULARRESOURCES}
-  {list}
-  {list of the standard or linked resources that belong to the OS Application. Each item has an attribute \member{NAME} which is the name of the resource.}
-  \lineiii{INTERNALRESOURCES}
-  {list}
-  {list of the internal resources that belong to the OS Application. Each item has an attribute \member{NAME} which is the name of the resource.}
-  \lineiii{SCHEDULETABLES}
-  {list}
-  {list of the schedule tables that belong to the OS Application. Each item has an attribute \member{NAME} which is the name of the schedule table.}
-  \lineiii{COUNTERS}
-  {list}
-  {list of the counters that belong to the OS Application. Each item has an attribute \member{NAME} which is the name of the counter.}
-  \lineiii{MESSAGES}
-  {list}
-  {list of the messages that belong to the OS Application. Each item has an attribute \member{NAME} which is the name of the messages.}
-\end{longtableiii}
+\begin{longtable}{>{\mem}l|l|p{3.135in}}
+{\bf Item}&{\bf Type}&{\bf Content}\\
+\hline\endhead
+ {NAME}&
+  {string}&
+  {the name of the OS Application.}\\
+ {RESTART}&
+  {string}&
+  {the name of the restart task. This attribute is not defined is there is no restart task for the OS Application.}\\
+ {PROCESSACCESSVECTOR}&
+  {string}&
+  {access right for the processes}\\
+ {PROCESSACCESSITEMS}&
+  {string}&
+  {access right for the processes as bytes in a table}\\
+ {PROCESSACCESSNUM}&
+  {integer}&
+  {number of elements in the previous table}\\
+ {ALARMACCESSVECTOR}&
+  {string}&
+  {access right for the alarms}\\
+ {ALARMACCESSITEMS}&
+  {string}&
+  {access right for the alarms as bytes in a table}\\
+ {ALARMACCESSNUM}&
+  {integer}&
+  {number of elements in the previous table}\\
+ {RESOURCEACCESSVECTOR}&
+  {string}&
+  {access right for the resources}\\
+ {RESOURCEACCESSITEMS}&
+  {string}&
+  {access right for the resources as bytes in a table}\\
+ {RESOURCEACCESSNUM}&
+  {integer}&
+  {number of elements in the previous table}\\
+ {SCHEDULETABLEACCESSVECTOR}&
+  {string}&
+  {access right for the schedule tables}\\
+ {SCHEDULETABLEACCESSITEMS}&
+  {string}&
+  {access right for the schedule tables as bytes in a table}\\
+ {SCHEDULETABLEACCESSNUM}&
+  {integer}&
+  {number of elements in the previous table}\\
+ {COUNTERACCESSVECTOR}&
+  {string}&
+  {access right for the software counters}\\
+ {COUNTERACCESSITEMS}&
+  {string}&
+  {access right for the software counters as bytes in a table}\\
+ {COUNTERACCESSNUM}&
+  {integer}&
+  {number of elements in the previous table}\\
+ {PROCESSES}&
+  {list}&
+  {list of the processes that belong to the OS Application. Each item has an attribute \member{NAME} which is the name of the process.}\\
+ {HASSTARTUPHOOK}&
+  {boolean}&
+  {true if the OS Application has a startup hook.}\\
+ {HASSHUTDOWNHOOK}&
+  {boolean}&
+  {true if the OS Application has a shutdown hook.}\\
+ {TASKS}&
+  {list}&
+  {list of the tasks that belong to the OS Application. Each item has an attribute \member{NAME} which is the name of the task.}\\
+ {ISRS}&
+  {list}&
+  {list of the ISRs that belong to the OS Application. Each item has an attribute \member{NAME} which is the name of the ISR.}\\
+ {ALARMS}&
+  {list}&
+  {list of the alarms that belong to the OS Application. Each item has an attribute \member{NAME} which is the name of the alarm.}\\
+ {RESOURCES}&
+  {list}&
+  {list of the resources that belong to the OS Application. Each item has an attribute \member{NAME} which is the name of the resource.}\\
+ {REGULARRESOURCES}&
+  {list}&
+  {list of the standard or linked resources that belong to the OS Application. Each item has an attribute \member{NAME} which is the name of the resource.}\\
+ {INTERNALRESOURCES}&
+  {list}&
+  {list of the internal resources that belong to the OS Application. Each item has an attribute \member{NAME} which is the name of the resource.}\\
+ {SCHEDULETABLES}&
+  {list}&
+  {list of the schedule tables that belong to the OS Application. Each item has an attribute \member{NAME} which is the name of the schedule table.}\\
+ {COUNTERS}&
+  {list}&
+  {list of the counters that belong to the OS Application. Each item has an attribute \member{NAME} which is the name of the counter.}\\
+ {MESSAGES}&
+  {list}&
+  {list of the messages that belong to the OS Application. Each item has an attribute \member{NAME} which is the name of the messages.}\\
+\end{longtable}
 
 \subsection{The \var{TRUSTEDFUNCTIONS} list}
 
 This list contains the informations about the trusted functions of the application. Each item contains one attribute only.
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
-  \lineiii{NAME}
-  {string}
-  {the name of the trusted function.}
-\end{longtableiii}
+\begin{longtable}{>{\mem}l|l|p{4.58in}}
+{\bf Item}&{\bf Type}&{\bf Content}\\
+\hline\endhead
+ {NAME}&
+  {string}&
+  {the name of the trusted function.}\\
+\end{longtable}
 
-\subsection{The \var{READLIST} list}
+\subsection{The \var{READYLIST} list}
 
 This list contains the informations about the ready list. Items are sorted by priority from 0 to the maximum computed priority. The only attribute of each item is the size of the queue.
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
-  \lineiii{SIZE}
-  {integer}
-  {the size of the queue for the corresponding priority.}
-\end{longtableiii}
+\begin{longtable}{>{\mem}l|l|p{4.525in}}
+{\bf Item}&{\bf Type}&{\bf Content}\\
+\hline\endhead
+ {SIZE}&
+  {integer}&
+  {the size of the queue for the corresponding priority.}\\
+\end{longtable}
 
-\subsection{The \var{SOURCEFILES}, \var{CFLAGS}, \var{CPPFLAGS}, \var{ASFLAGS}, \var{LDFLAGS} and \var{TRAMPOLINESOURCEFILES} lists}
+\subsection{The \var{SOURCEFILES}, \var{CFLAGS}, \var{CPPFLAGS}, \var{ASFLAGS}, \var{LDFLAGS} and\\ \var{TRAMPOLINESOURCEFILES} lists}
 
-The \var{SOURCEFILES} list contains the source files as found in attributes \member{APP\_SRC} of the OS object in the OIL file.
-
-\rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
-  \lineiii{FILE}
-  {string}
-  {the source file name.}
-\end{longtableiii}
-
-The \var{CFLAGS} list contains the flags for the C compiler as found in attributes \member{CFLAGS} of the OS object in the OIL file.
+The \var{SOURCEFILES} list contains the source files as found in attributes \oilattr{APP_SRC} of the OS object in the OIL file. Each item in the list has one attribute.
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
-  \lineiii{CFLAG}
-  {string}
-  {the C compiler flag.}
-\end{longtableiii}
+\begin{longtable}{>{\mem}l|l|p{4.6in}}
+{\bf Item}&{\bf Type}&{\bf Content}\\
+\hline\endhead
+ {FILE}&
+  {string}&
+  {the source file name.}\\
+\end{longtable}
 
-The \var{CPPFLAGS} list contains the flags for the C++ compiler as found in attributes \member{CPPFLAGS} of the OS object in the OIL file.
-
-\rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
-  \lineiii{CPPFLAG}
-  {string}
-  {the C++ compiler flag.}
-\end{longtableiii}
-
-The \var{ASFLAGS} list contains the flags for the assembler as found in attributes \member{ASFLAGS} of the OS object in the OIL file.
+The \var{CFLAGS} list contains the flags for the C compiler as found in attributes \oilattr{CFLAGS} of the OS object in the OIL file. Each item in the list has one attribute.
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
-  \lineiii{ASFLAG}
-  {string}
-  {the assembler flag.}
-\end{longtableiii}
+\begin{longtable}{>{\mem}l|l|p{4.575in}}
+{\bf Item}&{\bf Type}&{\bf Content}\\
+\hline\endhead
+ {CFLAG}&
+  {string}&
+  {the C compiler flag.}\\
+\end{longtable}
 
-The \var{LDFLAGS} list contains the flags for the linker as found in attributes \member{LDFLAGS} of the OS object in the OIL file.
-
-\rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
-  \lineiii{LDFLAG}
-  {string}
-  {the linker flag.}
-\end{longtableiii}
-
-The \var{TRAMPOLINESOURCEFILES} list contains the trampoline source files used by the application.
+The \var{CPPFLAGS} list contains the flags for the C++ compiler as found in attributes \oilattr{CPPFLAGS} of the OS object in the OIL file. Each item in the list has one attribute.
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
-  \lineiii{DIRECTORY}
-  {string}
-  {the directory of the source file relative to the Trampoline root directory (\file{os}, \file{com} or \file{autosar}).}
-  \lineiii{FILE}
-  {string}
-  {the source file name.}
-\end{longtableiii}
+\begin{longtable}{>{\mem}l|l|p{4.445in}}
+{\bf Item}&{\bf Type}&{\bf Content}\\
+\hline\endhead
+ {CPPFLAG}&
+  {string}&
+  {the C++ compiler flag.}\\
+\end{longtable}
+
+The \var{ASFLAGS} list contains the flags for the assembler as found in attributes \member{ASFLAGS} of the OS object in the OIL file. Each item in the list has one attribute.
+
+\rowcolors{1}{white}{light-gray}
+\begin{longtable}{>{\mem}l|l|p{4.51in}}
+{\bf Item}&{\bf Type}&{\bf Content}\\
+\hline\endhead
+ {ASFLAG}&
+  {string}&
+  {the assembler flag.}\\
+\end{longtable}
+
+The \var{LDFLAGS} list contains the flags for the linker as found in attributes \member{LDFLAGS} of the OS object in the OIL file. Each item in the list has one attribute.
+
+\rowcolors{1}{white}{light-gray}
+\begin{longtable}{>{\mem}l|l|p{4.51in}}
+{\bf Item}&{\bf Type}&{\bf Content}\\
+\hline\endhead
+ {LDFLAG}&
+  {string}&
+  {the linker flag.}\\
+\end{longtable}
+
+The \var{TRAMPOLINESOURCEFILES} list contains the trampoline source files used by the application. Each item in the list has two attributes.
+
+\rowcolors{1}{white}{light-gray}
+\begin{longtable}{>{\mem}l|l|p{4.31in}}
+{\bf Item}&{\bf Type}&{\bf Content}\\
+\hline\endhead
+ {DIRECTORY}&
+  {string}&
+  {the directory of the source file relative to the Trampoline root directory (\file{os}, \file{com} or \file{autosar}).}\\
+ {FILE}&
+  {string}&
+  {the source file name.}\\
+\end{longtable}
 
 
 \subsection{The \var{INTERRUPTSOURCES} list}
 
-This list is extracted from the \file{target.cfg} file. Each item has the following attribute:
+This list is extracted from the \file{target.cfg} file. Each item has the following attributes:
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Item}{Type}{Content}
-  \lineiii{NAME}
-  {string}
-  {the name of the interrupt source. This is one of the name used in the OIL file as value for the \member{SOURCE} attribute}
-  \lineiii{NUMBER}
-  {string}
-  {the id of the interrupt source.}
-\end{longtableiii}
+\begin{longtable}{>{\mem}l|l|p{4.5in}}
+{\bf Item}&{\bf Type}&{\bf Content}\\
+\hline\endfirsthead
+ {NAME}&
+  {string}&
+  {the name of the interrupt source. This is one of the name used in the OIL file as value for the \oilattr{SOURCE} attribute.}\\
+ {NUMBER}&
+  {string}&
+  {the id of the interrupt source.}\\
+\end{longtable}
 
 
 
@@ -592,9 +521,211 @@ This list is extracted from the \file{target.cfg} file. Each item has the follow
 The following scalar data are defined:
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{1.6in}|l|p{3in}}{member}{Data}{Type}{Content}
-\input{scalar2.tex}
-\end{longtableiii}
+\begin{sortedtable}{>{\va}l|l|p{3.535in}}
+{\bf Data}&{\bf Type}&{\bf Content}
+\sortline{APPNAME}
+{string}
+{name of executable as given in the \oilattr{APP_NAME} attribute in the OS object} 
+\sortline{ARCH}
+{string}
+{name of the architecture. This is the first item in the target.} 
+\sortline{ASSEMBLEREXE}
+{string}
+{name of the assembler executable used. This is the \oilattr{ASSEMBLER} attribute in the OS object. It is set to {\em as} by default. It is used for build dependent templates.} 
+\sortline{ASSEMBLER}
+{string}
+{name of the assembler used. This is the \oilattr{ASSEMBLER} attribute in the \oilattr{MEMMAP} attribute of the OS object. It is used for assembler dependent templates.} 
+\sortline{AUTOSAR}
+{boolean}
+{true if Trampoline is compiled with the Autosar extension.} 
+\sortline{BOARD}
+{string}
+{name of the board. This is the third item (if any) in the target.} 
+\sortline{CHIP}
+{string}
+{name of the chip. This is the second item (if any) in the target.} 
+\sortline{COMPILEREXE}
+{string}
+{name of the compiler executable used. This is the \oilattr{COMPILER} attribute in the OS object. It is set to {\em gcc} by default. It is used for build dependent templates. Do not confuse with the \oilattr{COMPILER} data.} 
+\sortline{COMPILER}
+{string}
+{name of the compiler used. This is the \oilattr{COMPILER} attribute in the \oilattr{MEMMAP} attribute of the OS object. It is used for compiler dependent templates.} 
+\sortline{CPUNAME}
+{string}
+{name given to the OIL CPU object} 
+\sortline{EXTENDED}
+{boolean}
+{true if Trampoline is compiled in extended error handling mode.} 
+\sortline{FILENAME}
+{string}
+{the name of the file which will be written as the result of the computation of the current template.} 
+\sortline{FILEPATH}
+{string}
+{the full absolute path of the file which will be written as the result of the computation of the current template.} 
+\sortline{NATIVEFILEPATH}
+{string}
+{the full absolute path of the file which will be written as the result of the computation of the current template in native OS format.} 
+\sortline{ITSOURCESLENGTH}
+{integer}
+{number of interrupt sources as defined in the \file{target.cfg} file.} 
+\sortline{LINKEREXE}
+{string}
+{name of the linker executable used. This is the \oilattr{LINKER} attribute in the OS object. It is set to {\em gcc} by default. It is used for build dependent templates. Do not confuse with the \oilattr{LINKER} data.} 
+\sortline{LINKER}
+{string}
+{name of the linker used. This is the \oilattr{LINKER} attribute in the \oilattr{MEMMAP} attribute of the OS object. It is used for linker dependent templates.} 
+\sortline{LINKSCRIPT}
+{string}
+{name of the link script file as given in the \oilattr{MEMMAP} attribute of the OS object.} 
+\sortline{MAXTASKPRIORITY}
+{integer}
+{the highest computed priority among the tasks.} 
+\sortline{OILFILENAME}
+{string}
+{name of the root OIL source file} 
+\sortline{PROJECT}
+{string}
+{name of the project. The name of the project is the \programopt{p} (or \longprogramopt{project}) value if it is set or the name of the oil file without the extension.} 
+\sortline{SCALABILITYCLASS}
+{integer}
+{the Autosar scalability class used by the application. If Autosar is not enabled, \oilattr{SCALABILITYCLASS} is set to 0.} 
+\sortline{TARGET}
+{string}
+{name of the target. This is the \programopt{t} (or \longprogramopt{target}) option value of goil.} 
+\sortline{TEMPLATEPATH}
+{string}
+{path to the template root directory. This is the \longprogramopt{templates} option value of goil or the value of the \envvar{GOIL\_TEMPLATES} environment variable.} 
+\sortline{TIMESTAMP}
+{string}
+{current date} 
+\sortline{TRAMPOLINEPATH}
+{string}
+{path to the trampoline root directory. This is the \oilattr{TRAMPOLINE\_BASE\_PATH} attribute of the OS object. It defaults to ``..".} 
+\sortline{USECOMPILERSETTINGS}
+{boolean}
+{true if memory mapping is enabled (Goil generates the \file{Compiler.h} and \file{Compiler_Cfg.h} files and Trampoline includes them).} 
+\sortline{USEBUILDFILE}
+{boolean}
+{true if a build file is used for the project ie option \programopt{g} or \longprogramopt{generate-makefile} is given.} 
+\sortline{USECOM}
+{boolean}
+{true if the application uses OSEK COM.} 
+\sortline{USEERRORHOOK}
+{boolean}
+{true if Trampoline uses the Error Hook.} 
+\sortline{USEGETSERVICEID}
+{boolean}
+{true if Trampoline uses the service ids access macros.} 
+\sortline{USEINTERRUPTTABLE}
+{boolean}
+{true if the wrapping of interrupt vector to glue functions used to increment a counter or to activate an ISR2 (for instance) should be generated. The actual code generation is up to the port.} 
+\sortline{USELOGFILE}
+{boolean}
+{true if goil generates a log file, ie option \programopt{l} or \longprogramopt{logfile} is given.}
+\sortline{USEMEMORYMAPPING}
+{boolean}
+{true if memory mapping is enabled (Goil generates the \file{MemMap.h} file and Trampoline includes it).} 
+\sortline{USEMEMORYPROTECTION}
+{boolean}
+{true if Trampoline uses the Memory Protection.} 
+\sortline{USEOSAPPLICATION}
+{boolean}
+{true if Trampoline uses OS Applications.} 
+\sortline{USEPARAMETERACCESS}
+{boolean}
+{true if Trampoline uses the parmaters access macros.} 
+\sortline{USEPOSTTASKHOOK}
+{boolean}
+{true if Trampoline uses the Post-Task Hook.} 
+\sortline{USEPRETASKHOOK}
+{boolean}
+{true if Trampoline uses the Pre-Task Hook.} 
+\sortline{USEPROTECTIONHOOK}
+{boolean}
+{true if Trampoline uses the Protection Hook.} 
+\sortline{USERESSCHEDULER}
+{boolean}
+{true if Trampoline uses the RES_SCHEDULER resource.} 
+\sortline{USESHUTDOWNHOOK}
+{boolean}
+{true if Trampoline uses the Shutdown Hook.} 
+\sortline{USESTACKMONITORING}
+{boolean}
+{true if Trampoline uses the Stack Monitoring.} 
+\sortline{USESTARTUPHOOK}
+{boolean}
+{true if Trampoline uses the Startup Hook.} 
+\sortline{USESYSTEMCALL}
+{boolean}
+{true if services are called using a System Call (i.e. a software interrupt).} 
+\sortline{USETIMINGPROTECTION}
+{boolean}
+{true if Trampoline uses Timing Protection.} 
+\sortline{USETRACE}
+{boolean}
+{true if tracing is enabled.} 
+\end{sortedtable}
+
+\lstdefinelanguage{goilTemplate}
+{
+  morekeywords= {
+	  after,
+	  before,
+	  between,
+	  block,
+	  default,
+	  do,
+	  else,
+	  elsif,
+	  emptylist,
+	  end,
+	  error,
+	  exists,
+	  false,
+	  for,
+	  foreach,
+	  from,
+	  here,
+	  let,
+	  loop,
+	  no,
+	  if,
+	  in,
+	  mod,
+	  not,
+	  or,
+	  prefixedby,
+	  template,
+	  then,
+	  to,
+	  true,
+	  yes,
+	  warning,
+	  while,
+	  write,
+	  !,
+	  ?
+	}
+}
+
+\lstset{
+  language=goilTemplate,
+  emph={
+    var,
+    expression,
+    string,
+    instruction_list,
+    template_file_name,
+    reader,
+    hierarchy
+  },
+  emphstyle=\em,
+  moredelim=[s][\color{blue}]{\%}{\%},
+  moredelim=[s]{"}{"},
+  morecomment=[l][\color{medium-gray}\itshape]{\#},
+  basicstyle=\ttfamily\small,
+  morekeywords=\bfseries
+}
 
 \section{The Goil template language (or GTL)}
 
@@ -605,15 +736,15 @@ The template interpreter starts in literal text mode. Switching from literal tex
 \section{GTL types}
 
 GTL supports 5 types: \strong{string}, \strong{integer}, \strong{boolean}, \strong{list} and \strong{struct}. The 4 first types have readers %\footnote{All the readers available in the corresponding Galgas types are available}
-to get informations about a variable. A reader is invoke with the following syntax:
+to get informations about a variable. A reader is invokes with the following syntax:
 
-\begin{lstlisting}
+\begin{lstlisting}[language=goilTemplate]
 [expression reader]
 \end{lstlisting}
 
 A struct is an aggregate of data. The `::' allows to get a member of the struct. For instance one of the member of \var{TIMINGPROTECTION} is \member{TIMEFRAME} so to get \member{TIMEFRAME}, the following syntax is used:
 
-\begin{lstlisting}
+\begin{lstlisting}[language=goilTemplate]
 TIMINGPROTECTION::TIMEFRAME
 \end{lstlisting}
 
@@ -622,97 +753,107 @@ TIMINGPROTECTION::TIMEFRAME
 The following readers are available for string variables:
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{2.2in}|l|p{2.4in}}{strong}{Item}{Type}{Meaning}
-  \lineiii{HTMLRepresentation}
-  {string}
-  {this reader returns a representation of the string suitable for an HTML encoded representation. \character{\&} is encoded by \&amp; , \character{"} by \&quot; , \character{<} by \&lt; and \character{>} by \&gt; .}
-  \lineiii{identifierRepresentation}
-  {string}
-  {this reader returns an unique representation of the string conforming to a C identifier. Any Unicode character that is not a latin letter is transformed into its hexadecimal code point value, enclosed by \character{_} characters. This representation is unique: two different strings are transformed into different C identifiers. For example: value3 is transformed to value\_33\_; += is transformed to \_2B\_\_3D;
-An\_Identifier is transformed to An\_5F\_Identifier.}
-  \lineiii{lowercaseString}
-  {string}
-  {this reader returns lowercased representation of the string.}
-  \lineiii{length}
-  {integer}
-  {this reader returns the number of characters in the string}
-  \lineiii{stringByCapitalizingFirstCharacter}
-  {string}
-  {if the string is empty, this reader returns the empty string; otherwise, it returns the string, the first character being replaced with the corresponding upper case character.}
-  \lineiii{uppercaseString}
-  {string}
-  {this reader returns uppercased representation of the receiver}
-\end{longtableiii}
+\begin{longtable}{>{\ttfamily}l|l|p{2.35in}}
+{\bf Item}&{\bf Type}&{\bf Meaning}\\
+\hline\endhead
+ {HTMLRepresentation}&
+  {string}&
+  {this reader returns a representation of the string suitable for an HTML encoded representation. \character{\&} is encoded by \cdata{\&amp;} , \character{"} by \cdata{\&quot;} , \character{<} by \cdata{\&lt;} and \character{>} by \cdata{\&gt;} .}\\
+ {identifierRepresentation}&
+  {string}&
+  {this reader returns an unique representation of the string conforming to a C identifier. Any Unicode character that is not a latin letter is transformed into its hexadecimal code point value, enclosed by \character{_} characters. This representation is unique: two different strings are transformed into different C identifiers. For example: \cdata{value3} is transformed to \cdata{value_33_}; \cdata{+=} is transformed to \cdata{_2B__3D_};
+\cdata{An_Identifier} is transformed to \cdata{An_5F_Identifier}.}\\
+ {lowercaseString}&
+  {string}&
+  {this reader returns lowercased representation of the string.}\\
+ {length}&
+  {integer}&
+  {this reader returns the number of characters in the string}\\
+ {stringByCapitalizingFirstCharacter}&
+  {string}&
+  {if the string is empty, this reader returns the empty string; otherwise, it returns the string, the first character being replaced with the corresponding upper case character.}\\
+ {uppercaseString}&
+  {string}&
+  {this reader returns uppercased representation of the receiver}\\
+\end{longtable}
 
 \subsection{boolean readers}
 
 The following readers are available for boolean variables:
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{2.2in}|l|p{2.4in}}{strong}{Item}{Type}{Meaning}
-  \lineiii{trueOrFalse}
-  {string}
-  {this reader returns \stringlit{true} or \stringlit{false} according to the boolean value}
-  \lineiii{yesOrNo}
-  {string}
-  {this reader returns \stringlit{yes} or \stringlit{no} according to the boolean value}
-  \lineiii{unsigned}
-  {integer}
-  {this reader returns 0 or 1 according to the boolean value}
-\end{longtableiii}
+\begin{longtable}{>{\ttfamily}l|l|p{4.025in}}
+{\bf Item}&{\bf Type}&{\bf Meaning}\\
+\hline\endhead
+ {trueOrFalse}&
+  {string}&
+  {this reader returns \stringlit{true} or \stringlit{false} according to the boolean value}\\
+ {yesOrNo}&
+  {string}&
+  {this reader returns \stringlit{yes} or \stringlit{no} according to the boolean value}\\
+ {unsigned}&
+  {integer}&
+  {this reader returns 0 or 1 according to the boolean value}\\
+\end{longtable}
 
 \subsection{integer readers}
 
 The following readers are available for integer variables:
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{2.2in}|l|p{2.4in}}{strong}{Item}{Type}{Meaning}
-  \lineiii{string}
-  {string}
-  {This reader returns the integer value as a character string.}
-  \lineiii{hexString}
-  {string}
-  {this reader returns an hexadecimal string representation of the integer value.}
-\end{longtableiii}
+\begin{longtable}{>{\ttfamily}l|l|p{4.225in}}
+{\bf Item}&{\bf Type}&{\bf Meaning}\\
+\hline\endhead
+ {string}&
+  {string}&
+  {This reader returns the integer value as a character string.}\\
+ {hexString}&
+  {string}&
+  {this reader returns an hexadecimal string representation of the integer value.}\\
+\end{longtable}
 
 \subsection{list readers}
 
 The following reader is available for list variables:
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{2.2in}|l|p{2.4in}}{strong}{Item}{Type}{Meaning}
-  \lineiii{length}
-  {integer}
-  {this reader returns the number of objects currently in the list.}
-\end{longtableiii}
+\begin{longtable}{>{\ttfamily}l|l|p{4.395in}}
+{\bf Item}&{\bf Type}&{\bf Meaning}\\
+\hline\endhead
+ {length}&
+  {integer}&
+  {this reader returns the number of objects currently in the list.}\\
+\end{longtable}
 
 \section{GTL operators}
 
 \subsection{Unary operators}
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiv}{c|l|l|p{2.4in}}{}{Operator}{Operand Type}{Result Type}{Meaning}
-  \lineiv{+}
-  {integer}
-  {integer}
-  {no operation.}
-  \lineiv{$\sim$}
-  {integer}
-  {integer}
-  {bitwise not.}
-  \lineiv{not}
-  {boolean}
-  {boolean}
-  {boolean not.}
-  \lineiv{exists}
-  {{\em any variable}}
-  {boolean}
-  {true if the variable is defined, false otherwise. But see below}
-\end{longtableiv}
+\begin{longtable}{c|l|l|p{2.56in}}
+{\bf Operator}&{\bf Operand Type}&{\bf Result Type}&{\bf Meaning}\\
+\hline\endhead
+ {+}&
+  {integer}&
+  {integer}&
+  {no operation.}\\
+ {$\sim$}&
+  {integer}&
+  {integer}&
+  {bitwise not.}\\
+ {not}&
+  {boolean}&
+  {boolean}&
+  {boolean not.}\\
+ {exists}&
+  {{\em any variable}}&
+  {boolean}&
+  {true if the variable is defined, false otherwise. But see below}\\
+\end{longtable}
 
-A second form of \strong{exists} is:
+\note{A second form of \cdata{exists} is:}
  
-\begin{lstlisting}
+\begin{lstlisting}[language=goilTemplate]
 exists var default (expression)
 \end{lstlisting}
 
@@ -722,105 +863,109 @@ exists var default (expression)
 \subsection{Binary operators}
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiv}{c|l|l|p{2.27in}}{}{Operator}{Operands Type}{Result Type}{Meaning}
-  \lineiv{+}
-  {integer}
-  {integer}
-  {add.}
-  \lineiv{-}
-  {integer}
-  {integer}
-  {substract.}
-  \lineiv{*}
-  {integer}
-  {integer}
-  {multiply.}
-  \lineiv{/}
-  {integer}
-  {integer}
-  {divide.}
-  \lineiv{\&}
-  {integer}
-  {integer}
-  {Bitwise and.}
-  \lineiv{\&}
-  {boolean}
-  {boolean}
-  {boolean and.}
-  \lineiv{$\mid$}
-  {integer}
-  {integer}
-  {Bitwise or.}
-  \lineiv{$\mid$}
-  {boolean}
-  {boolean}
-  {boolean or.}
-  \lineiv{$\wedge$}
-  {integer}
-  {integer}
-  {Bitwise xor.}
-  \lineiv{$\wedge$}
-  {boolean}
-  {boolean}
-  {boolean xor.}
-  \lineiv{.}
-  {string}
-  {string}
-  {string concatenation.}
-  \lineiv{$<<$}
-  {integer}
-  {integer}
-  {shift left.}
-  \lineiv{$>>$}
-  {integer}
-  {integer}
-  {shift right.}
-  \lineiv{!=}
-  {{\em any}}
-  {boolean}
-  {comparison (different).}
-  \lineiv{==}
-  {{\em any}}
-  {boolean}
-  {comparison (equal).}
-  \lineiv{$<$}
-  {integer {\em or} boolean}
-  {boolean}
-  {comparison (lower than).}
-  \lineiv{$<=$}
-  {integer {\em or} boolean}
-  {boolean}
-  {comparison (lower or equal).}
-  \lineiv{$>$}
-  {integer {\em or} boolean}
-  {boolean}
-  {comparison (greater).}
-  \lineiv{$>=$}
-  {integer {\em or} boolean}
-  {boolean}
-  {comparison (greater or equal).}
-\end{longtableiv}
+\begin{longtable}{>{\ttfamily}c|l|l|p{2.47in}}
+{\bf Operator}&{\bf Operands Type}&{\bf Result Type}&{\bf Meaning}\\
+\hline\endhead
+ {+}&
+  {integer}&
+  {integer}&
+  {add.}\\
+ {-}&
+  {integer}&
+  {integer}&
+  {substract.}\\
+ {*}&
+  {integer}&
+  {integer}&
+  {multiply.}\\
+ {/}&
+  {integer}&
+  {integer}&
+  {divide.}\\
+ {\&}&
+  {integer}&
+  {integer}&
+  {bitwise and.}\\
+ {\&}&
+  {boolean}&
+  {boolean}&
+  {boolean and.}\\
+ {$\mid$}&
+  {integer}&
+  {integer}&
+  {bitwise or.}\\
+ {$\mid$}&
+  {boolean}&
+  {boolean}&
+  {boolean or.}\\
+ {$\wedge$}&
+  {integer}&
+  {integer}&
+  {bitwise xor.}\\
+ {$\wedge$}&
+  {boolean}&
+  {boolean}&
+  {boolean xor.}\\
+ {.}&
+  {string}&
+  {string}&
+  {string concatenation.}\\
+ {$<<$}&
+  {integer}&
+  {integer}&
+  {shift left.}\\
+ {$>>$}&
+  {integer}&
+  {integer}&
+  {shift right.}\\
+ {!=}&
+  {{\em any}}&
+  {boolean}&
+  {comparison (different).}\\
+ {==}&
+  {{\em any}}&
+  {boolean}&
+  {comparison (equal).}\\
+ {$<$}&
+  {integer {\em or} boolean}&
+  {boolean}&
+  {comparison (lower than).}\\
+ {$<=$}&
+  {integer {\em or} boolean}&
+  {boolean}&
+  {comparison (lower or equal).}\\
+ {$>$}&
+  {integer {\em or} boolean}&
+  {boolean}&
+  {comparison (greater).}\\
+ {$>=$}&
+  {integer {\em or} boolean}&
+  {boolean}&
+  {comparison (greater or equal).}\\
+\end{longtable}
 
 \subsection{Constants}
 
 \rowcolors{1}{white}{light-gray}
-\begin{longtableiii}{p{2.2in}|l|p{2.4in}}{strong}{Constant}{Type}{Meaning}
-  \lineiii{emptyList}
-  {list}
-  {this constant is an empty list}
-  \lineiii{true}
-  {boolean}
-  {true boolean}
-  \lineiii{false}
-  {boolean}
-  {false boolean}
-  \lineiii{yes}
-  {boolean}
-  {true boolean}
-  \lineiii{no}
-  {boolean}
-  {false boolean}
-\end{longtableiii}
+\begin{longtable}{>{\ttfamily}l|l|p{4.11in}}
+{\bf Constant}&{\bf Type}&{\bf Meaning}\\
+\hline\endhead
+ {emptyList}&
+  {list}&
+  {this constant is an empty list}\\
+ {true}&
+  {boolean}&
+  {true boolean}\\
+ {false}&
+  {boolean}&
+  {false boolean}\\
+ {yes}&
+  {boolean}&
+  {true boolean}\\
+ {no}&
+  {boolean}&
+  {false boolean}\\
+\end{longtable}
 
 \section{GTL instructions}
 
@@ -851,7 +996,7 @@ end foreach
 !a !b
 \end{lstlisting}
 
-Because a is assigned outside the {\bf foreach} loop, it contains the value of the last INDEX after the \strong{foreach}. Because b is assigned inside the \strong{foreach} loop, it does not exist after the loop anymore and \strong{!b} will trigger and error.
+Because a is assigned outside the {\tt foreach} loop, it contains the value of the last INDEX after the {\tt foreach}. Because b is assigned inside the {\tt foreach} loop, it does not exist after the loop anymore and {\tt!b} will trigger and error.
 
 
 \subsection{The {\em if} instruction}
@@ -865,7 +1010,7 @@ if expression then ... elsif expression then ... end if
 if expression then ... elsif expression then ... else ... end if
 \end{lstlisting}    
 
-The {\em expression} must be boolean. In the following example, the blue text (within the \%) is produced only if the USECOM boolean variable is true:
+The {\em expression} must be boolean. In the following example, the blue text (within the \%) is produced only if the \var{USECOM} boolean variable is true:
 
 \begin{lstlisting}
 if USECOM then %
@@ -881,7 +1026,7 @@ This instruction iterates on the elements of a list. Each element may have many 
 foreach expression do ... end foreach
 \end{lstlisting}
 
-In the following example, for each element in the ALARMS list, the text between the {\bf do} and the {\bf end foreach} is produced with the NAME attribute of the current element of the ALARMS list inserted at the specified location. INDEX is not an attribute of the current element. It is generated for each element and ranges from 0 to the number of elements in the list minus 1.
+In the following example, for each element in the \var{ALARMS} list, the text between the {\tt do} and the {\tt end foreach} is produced with the \var{NAME} attribute of the current element of the \var{ALARMS} list inserted at the specified location. \var{INDEX} is not an attribute of the current element. It is generated for each element and ranges from 0 to the number of elements in the list minus 1.
 \begin{lstlisting}
 foreach ALARMS do
 %
@@ -903,7 +1048,7 @@ foreach expression prefixedby string
 end foreach
 \end{lstlisting}
 
-{\bf prefixedby} is optional and allows to prefix the attribute names by {\em string}. If the list is not empty, the {\bf before} section are executed once before the first execution of the {\bf do} section. The {\bf between} section is executed between the execution of the {\bf do} section.  If the list is not empty, the {\bf after} section is executed once after the last execution of the {\bf do} section.
+{\tt prefixedby} is optional and allows to prefix the attribute names by {\em string}. If the list is not empty, the {\tt before} section are executed once before the first execution of the {\tt do} section. The {\tt between} section is executed between the execution of the {\tt do} section.  If the list is not empty, the {\tt after} section is executed once after the last execution of the {\tt do} section.
 
 In the following example, a table of pointers to alarm descriptors is generated:
 
@@ -931,7 +1076,7 @@ for var in expression, ... , expression do
 end for
 \end{lstlisting}
 
-At each iteration, {\em var} gets the value of the current {\em expression}. As in the {\bf foreach} instruction, INDEX is generated and ranges from 0 to the number of elements in the list minus 1.
+At each iteration, {\em var} gets the value of the current {\em expression}. As in the {\tt foreach} instruction, \var{INDEX} is generated and ranges from 0 to the number of elements in the list minus 1.
 
 \subsection{The {\em loop} instruction}
 
@@ -943,7 +1088,7 @@ loop var from expression to expression do
 end loop
 \end{lstlisting}
 
-Like in the foreach instruction, {\bf before},  {\bf between} and  {\bf after} sections may be used:
+Like in the foreach instruction, {\tt before},  {\tt between} and  {\tt after} sections may be used:
 
 \begin{lstlisting}
 loop var from expression to expression
@@ -958,7 +1103,7 @@ end loop
 \subsection{The {\em !} instruction}
 \label{outputInstruction}
 
-{\bf !} emits an expression. The form is:
+{\tt !} emits an expression. The form is:
 
 \begin{lstlisting}
 ! expression
@@ -966,7 +1111,7 @@ end loop
 
 \subsection{The {\em ?} instruction}
 
-{\bf ?} stores in a variable a number of spaces equal to the current column in the output. The form is:
+{\tt ?} stores in a variable a number of spaces equal to the current column in the output. The form is:
 
 \begin{lstlisting}
 ? var
@@ -974,7 +1119,7 @@ end loop
 
 \subsection{The {\em template} instruction}
 
-The {\bf template} instruction includes the output of another template in the output of the current template. Its simplest form is the following one:
+The {\tt template} instruction includes the output of another template in the output of the current template. Its simplest form is the following one:
 
 \begin{lstlisting}
 template template_file_name
@@ -1054,11 +1199,11 @@ foreach TASKS do
 end foreach
 \end{lstlisting}
 
-In this second example, an error is generated if a template is not found:
+In this second example, a warning is generated if a template is not found:
 
 \begin{lstlisting}
 template if exists interrupt_wrapping or
-  error here "interrupt_wrapping.goilTemplate not found"
+  warning here "interrupt_wrapping.goilTemplate not found"
 end template
 \end{lstlisting}
 
