@@ -1,7 +1,6 @@
 \documentclass[10pt]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[a4paper]{geometry}
-\usepackage{bold-extra}
 \usepackage{fix-cm}
 \usepackage{chngpage}
 \usepackage{graphicx}
@@ -20,6 +19,7 @@
 \usepackage{fancyhdr}
 \usepackage[Bjarne]{fncychap}
 \usepackage{listings}
+\usepackage{bold-extra}
 \definecolor{seagreen}{RGB}{64,100,120}
 \definecolor{darkpink}{RGB}{200,100,120}
 \definecolor{light-gray}{gray}{0.85}
@@ -51,8 +51,34 @@
 %
 \lstset{
   language=C,
-  basicstyle=\ttfamily\small
+  basicstyle=\ttfamily\footnotesize
 }
+
+%
+% OIL language options
+%
+\lstdefinelanguage{OIL}
+{
+  morekeywords= {
+	  RESOURCE, RESOURCEPROPERTY, STANDARD, INTERNAL, LINKED, LINKEDRESOURCE,
+	  TASK, SCHEDULE, FULL, NONE
+	}
+}
+
+\lstset{
+  language=OIL,
+%  emph={
+%    var,
+%    expression,
+%    string,
+%    instruction_list,
+%    template_file_name,
+%    reader,
+%    hierarchy
+%  },
+  emphstyle=\em,
+  moredelim=[s]{"}{"},
+  basicstyle=\ttfamily\small}
 
 %
 % Commands for paragraph types
@@ -67,7 +93,7 @@
 \end{tabular}
 \vspace{2mm}}
 \newcommand{\warning}[1]{%
-\vspace{2mm}\hspace{-14.4mm}
+\vspace{2mm}\hspace{-14.2mm}
 \rowcolors{1}{white}{light-gray}
 \begin{tabular}[b]{m{7mm}|m{\linewidth}}
 \includegraphics[width=7mm]{pictures/warn} & #1\\
@@ -109,6 +135,7 @@
 \newcommand{\stringlit}[1]{{\small\ttfamily "{#1}"}}
 \newcommand{\character}[1]{{\small\ttfamily `{#1}'}}
 \newcommand{\api}[1]{\cfunction{#1}\index{#1}}
+\newcommand{\osek}{OSEK}
 \newcommand{\autosar}{AUTOSAR}
 \newenvironment{penum}{
 \begin{enumerate}
@@ -147,6 +174,7 @@
 \newcommand{\OSLIMIT}{E\_OS\_LIMIT}
 \newcommand{\OSRESOURCE}{E\_OS\_RESOURCE}
 \newcommand{\OSCALLLEVEL}{E\_OS\_CALLEVEL}
+\newcommand{\OSPROTECTIONMEMORY}{E\_OS\_PROTECTION\_MEMORY}
 
 %
 % Scalability class
@@ -232,6 +260,13 @@
   \DTLnewdbentry{resDB}{status}{extended only}
 }
 
+\newcommand{\resultcodeMP}[2]{%
+  \DTLnewrow{resDB}
+  \DTLnewdbentry{resDB}{value}{#1}
+  \DTLnewdbentry{resDB}{desc}{#2}
+  \DTLnewdbentry{resDB}{status}{extended + \autosar\ \SC{3} and \SC{4} only}
+}
+
 %
 % sorted table
 %
@@ -283,6 +318,7 @@ Florent Pavin\\
 
 \part{The Real-Time Operating System}
 \input{tasks}
+\input{resources}
 \input{osapps}
 \input{tp}
 \input{st}
