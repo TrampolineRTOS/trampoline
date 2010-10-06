@@ -247,6 +247,39 @@ Schedule allows to implement cooperative multitasking to insure synchronous resc
 \resultcodeext{\OSCALLLEVEL}{Called outside of a task}
 \end{service}
 
+\begin{service}{GetTaskID}{StatusType}
+\cfunction{\servicename} writes in the \var{TaskID} variable passed as reference the identifier of the task currently \RUNNING. If no task is currently \RUNNING\ because \cfunction{\servicename} was called from an ISR of before Trampoline is started, \constant{INVALID_TASK} is got.
+
+\warning{The argument is a pointer. Do not pass an uninitialized pointer. Proper use of this service supposes a \ctype{TaskType} variable is instantiated, then its address is passed to \cfunction{\servicename} as shown in the example below:}
+
+\begin{lstlisting}[language=C]
+TaskType runningTaskID;
+GetTaskID(&runningTaskID);
+\end{lstlisting}
+
+\resultcode{\OK}{No error.}
+\resultcodeMP{\OSPROTECTIONMEMORY}{The caller does not have access to the addresses of \var{TaskID} reference} 
+\argument{TaskRefType}{TaskID}{Reference to the task.}
+\end{service}
+
+\begin{service}{GetTaskState}{StatusType}
+\cfunction{\servicename} writes in the variable passed as reference in \var{State} the state of the task given in \var{TaskID}.
+
+\warning{The \var{State} argument is a pointer. Do not pass an uninitialized pointer. Proper use of this service supposes a \ctype{TaskState} variable is instantiated, then its address is passed to \cfunction{\servicename} as shown in the example below:}
+
+\begin{lstlisting}[language=C]
+TaskStateType T1State;
+GetTaskState(T1, &T1State);
+\end{lstlisting}
+
+\resultcode{\OK}{No error.}
+\resultcodeext{\OSID}{Invalid TaskID. No task with such an id exists}
+\resultcodeMP{\OSPROTECTIONMEMORY}{The caller does not have access to the addresses of \var{State} reference} 
+\argument{TaskType}{TaskID}{The id of the task.}
+\argument{TaskStateRefType}{State}{Reference to the state.}
+\end{service}
+
+
 %\strong{Processes} are both Tasks and ISRs category 2. Trampoline category 2 ISRs are like Basic Tasks except the priority level of the interrupt controller is raised to the priority of the ISR while the later is running.
 
 \section{Inside Task management}
@@ -304,7 +337,7 @@ Figure \ref{fig:states} show a complete task state automaton for both basic and 
 
 \section{The {\em idle} task}
 
-The {\em idle} task is activated by \api{StartOS}. It is a \BASIC\ task with a priority of 0 (\ie\ the lowest priority in the system, the lowest priority of tasks defined by the user is 1). So when no other task is currently running, the {\em idle} task run.
+The {\em idle} task is activated by \api{StartOS}. It is a \BASIC\ task with a priority of 0 (\ie\ the lowest priority in the system, the lowest priority of tasks defined in the application is 1). So when no other task is currently running, the {\em idle} task run.
 
 To be able to use specific platform capabilities (to put the micro-controller in stand by mode for example), this task calls repetitively a hardware specific function called \cfunction{tpl_sleep} (defined in \textit{machines/}). The tasks is then able to quantify the microprocessor occupation.
 
