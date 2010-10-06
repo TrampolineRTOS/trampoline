@@ -46,8 +46,10 @@
 #define WITH_SYSTEM_CALL                 % !yesNo(USESYSTEMCALL) %
 #define WITH_MEMORY_PROTECTION           % !yesNo(USEMEMORYPROTECTION) %
 #define WITH_MEMMAP                      % !yesNo(USEMEMORYMAPPING) %
-#define WITH_COMPILER_SETTINGS           % !yesNo(USECOMPILERSETTINGS) %
-#define TRAMPOLINE_BASE_PATH             "% !TRAMPOLINEPATH %"
+#define WITH_COMPILER_SETTINGS           % !yesNo(USECOMPILERSETTINGS)
+if exists TRAMPOLINEPATH then%
+#define TRAMPOLINE_BASE_PATH             "% !TRAMPOLINEPATH %"%
+end if%
 #define WITH_AUTOSAR                     % !yesNo(AUTOSAR) %
 #define WITH_PROTECTION_HOOK             % !yesNo(USEPROTECTIONHOOK) %
 #define WITH_STACK_MONITORING            % !yesNo(USESTACKMONITORING) %
