@@ -28,6 +28,7 @@
 #include "tpl_machine_interface.h"
 #include "tpl_os_custom_types.h"
 #include "tpl_os_definitions.h"
+#include "tpl_os_application_def.h"
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
 #include "tpl_as_timing_protec.h"
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
@@ -78,7 +79,9 @@ FUNC(void, OS_CODE) tpl_init_machine()
 
 	/* TODO armadeus_setup_heartbeat_timer_1ms ();*/
 
+#if WITH_MEMORY_PROTECTION == YES
 	tpl_init_mp();
+#endif /* WITH_MEMORY_PROTECTION == YES */
 
 	tpl_init_machine_generic ();
 
@@ -111,51 +114,6 @@ FUNC(void, OS_CODE) tpl_arm_subarch_irq_handler ()
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
-
-#if WITH_AUTOSAR == YES
-
-#define OS_START_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
-VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;
-VAR(u32, OS_VAR) tpl_cpt_user_task_lock = 0;
-//STATIC VAR(u32, OS_VAR) tpl_cpt_os_task_lock = 0;
-
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
-FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
-{
-    /* FIXME: to be implemented */
-    VAR(tpl_bool, AUTOMATIC) result;
-
-    /*if( (TRUE == tpl_user_task_lock) || (tpl_cpt_user_task_lock > 0) )
-    {
-        result = TRUE;
-    }
-    else
-    {*/
-        result = FALSE;
-    //}
-
-    return result;
-}
-
-
-FUNC(void, OS_CODE) tpl_reset_interrupt_lock_status(void)
-{
-    /* FIXME: to be implemented */
-  /*tpl_user_task_lock = FALSE;
-
-  tpl_cpt_user_task_lock = 0;
-
-  tpl_locking_depth = tpl_cpt_os_task_lock;*/
-}
-#define OS_STOP_SEC_CODE
-#include "tpl_memmap.h"
-#endif /* defined WITH_AUTOSAR */
 
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
 

@@ -31,14 +31,14 @@
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
 #include "tpl_as_timing_protec.h"
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-#if WITH_AUTOSAR = YES
+#if WITH_AUTOSAR == YES
 #include "tpl_as_isr_kernel.h"
 #include "tpl_os_kernel.h"
 #endif /* WITH_AUTOSAR */
 
 #if WITH_MEMORY_PROTECTION == YES
+
 #include "apf27_mem_prot.h"
-#endif /* WITH_MEMORY_PROTECTION */
 
 #define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
@@ -107,9 +107,6 @@ common_mem_rgn_table[LAST_COMMON_MEM_RGN_TYPE + COUNT_EXEC_STACKS_MODE] =
 };
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-
-
-#if WITH_MEMORY_PROTECTION == YES
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"

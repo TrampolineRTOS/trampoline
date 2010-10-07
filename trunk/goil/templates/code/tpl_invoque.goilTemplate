@@ -37,6 +37,7 @@ if exists ASSEMBLERHEADER default (false) then %
 #include "tpl_assembler.h"
 %
 end if
+# FIXME: use of MemMap.h would be better than directly define a section
 %
   .text
   .section .osApiCode //CODE_ACCESS_RIGHT

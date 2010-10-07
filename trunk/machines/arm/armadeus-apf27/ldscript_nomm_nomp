@@ -1,0 +1,172 @@
+MEMORY
+{
+		bootrom (rx) : ORIGIN = 0x00000000, LENGTH = 16K /* hard-wired into microcontroller */
+		dram0 (wx)   : ORIGIN = 0xA0000000, LENGTH = 64M
+		dram1 (wx)   : ORIGIN = 0xB0000000, LENGTH = 64M
+		fvram (wx)   : ORIGIN = 0xFFF00000, LENGTH = 979K /* free (unused by system) VRAM memory */
+		vvram (wx)   : ORIGIN = 0xFFFF4C00, LENGTH = 45K  /* vector RAM */
+}
+
+ENTRY (tpl_arm_bootstrap_entry)
+
+SECTIONS
+{
+  /*
+   * code and consts of the operating system (Trampoline).
+   * this section is not accessible from an untrusted process
+   */
+  . = ALIGN(4);
+  text : {
+    *(.text)
+		*(.osApiCode) /* to be removed when then goil template "code/tpl_invoque.goilTemplate" will use MemMap.h */
+	} > dram0
+
+  . = ALIGN(4);
+  const : {
+    *(.rodata)
+  } > dram0
+  
+  /*
+   * vars of the operating system (Trampoline)
+   */
+  . = ALIGN(4);
+  vars : {
+    *(.data)
+		*(.bss)
+    *(.stacks) /* TODO : is it the best place ? */
+  } > dram0
+
+  /*
+   * remaining .text (ie no section given)
+   */
+  . = ALIGN(4);
+  text_garbage : {
+    *(.text*)
+    . = ALIGN(16);
+  } > dram0
+
+__ramtext_ram_start__ = ADDR(text);
+__ramtext_ram_end__   = ADDR(text_garbage) + SIZEOF(text_garbage);
+__ramtext_load_start__ = LOADADDR(text); 
+__ramtext_load_end__ = __ramtext_load_start__ + SIZEOF(text) + SIZEOF(const) + SIZEOF(vars) + SIZEOF(text_garbage) ;
+
+
+  .data : {
+    * (*.data *.data.*)
+    *(.rodata)      /* litteral strings */
+    *(.rodata*)
+    . = ALIGN(16);
+  } > dram0
+ 
+  /*
+   * bss data
+   */
+  .bss ALIGN(16) : {
+    *(.bss)
+    *(.bss*)
+  } > dram0
+  . = ALIGN(16);
+  
+  /*
+   * garbage
+   */
+  garbage : {
+    *(COMMON)
+  } > dram0
+  
+  /* LOADADDR is the same as the ADDR if it is a ram build */
+__data_ram_start__ = ADDR(.data);
+__data_ram_end__   = ADDR(garbage) + SIZEOF(garbage);
+__data_load_start__ = LOADADDR(.data); 
+__data_load_end__ = __data_load_start__ + SIZEOF(.data) + SIZEOF(.bss) + SIZEOF(garbage) ;
+
+/* trash every unused section */
+  .trash (NOLOAD) : {
+    *(.glue_7*)
+    *(.comment) 
+	  *(.ARM.attributes)
+    *(.debug);
+    . = ALIGN(4);
+    *(.debug_srcinfo);
+    . = ALIGN(4);
+    *(.debug_sfnames);
+    . = ALIGN(4);
+    *(.debug_aranges*);
+    . = ALIGN(4);
+    *(.debug_pubnames*);
+    . = ALIGN(4);
+    *(.debug_info*);
+    . = ALIGN(4);
+    *(.debug_abbrev*);
+    . = ALIGN(4);
+    *(.debug_line*);
+    . = ALIGN(4);
+    *(.debug_frame*);
+    . = ALIGN(4);
+    *(.debug_str*);
+    . = ALIGN(4);
+    *(.debug_loc*);
+    . = ALIGN(4);
+    *(.debug_macinfo);
+    . = ALIGN(4);
+    *(.debug_weaknames);
+    . = ALIGN(4);
+    *(.debug_funcnames);
+    . = ALIGN(4);
+    *(.debug_typenames);
+    . = ALIGN(4);
+    *(.debug_varnames);
+    . = ALIGN(4);  
+
+	} > dram0
+
+/*
+  .comment : {
+    *(.glue_7*)
+    *(.comment) 
+  } > dram0
+      
+  debug : {
+    *(.debug);
+    . = ALIGN(4);
+    *(.debug_srcinfo);
+    . = ALIGN(4);
+    *(.debug_sfnames);
+    . = ALIGN(4);
+    *(.debug_aranges*);
+    . = ALIGN(4);
+    *(.debug_pubnames*);
+    . = ALIGN(4);
+    *(.debug_info*);
+    . = ALIGN(4);
+    *(.debug_abbrev*);
+    . = ALIGN(4);
+    *(.debug_line*);
+    . = ALIGN(4);
+    *(.debug_frame*);
+    . = ALIGN(4);
+    *(.debug_str*);
+    . = ALIGN(4);
+    *(.debug_loc*);
+    . = ALIGN(4);
+    *(.debug_macinfo);
+    . = ALIGN(4);
+    *(.debug_weaknames);
+    . = ALIGN(4);
+    *(.debug_funcnames);
+    . = ALIGN(4);
+    *(.debug_typenames);
+    . = ALIGN(4);
+    *(.debug_varnames);
+    . = ALIGN(4);  
+  } > dram0 
+*/
+
+  .interrupt_table : {
+		. += 0xb2f0; /* jump to 0xfffffef0 */
+    KEEP (* (.exception_table))
+		. = 0xb300; /* jump to 0xffffff00 */
+		KEEP (* (.interrupt_table))
+	} > vvram
+}
+

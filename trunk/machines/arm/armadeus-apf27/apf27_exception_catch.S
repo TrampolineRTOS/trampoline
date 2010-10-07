@@ -40,8 +40,10 @@
 
 .set OFFSET_RUNNING_ID, 16
 
-.section .osVar
-.align 2
+#include "../tpl_asm_definitions.h"
+
+#define OS_START_SEC_VAR
+#include "tpl_as_memmap.h"
 
 /* containts the address of the instruction which caused exception (abort,
  * pfabord, undef) */
@@ -71,9 +73,12 @@ mp_abort_table:
 mp_abort_table_entry:
 	.word mp_abort_table
  /*********************************/
- 
-.section .osCode
-.align 2
+
+#define OS_STOP_SEC_VAR
+#include "tpl_as_memmap.h"
+
+#define OS_START_SEC_CODE
+#include "tpl_as_memmap.h"
 
 /* this macro locks interrupts before hanging down in a loop */
 .macro lock_interrupts
@@ -226,4 +231,6 @@ primary_fiq_handler:
 tpl_primary_fiq_handler:
 	subs pc, lr, #4
 
+#define OS_STOP_SEC_CODE
+#include "tpl_as_memmap.h"
 

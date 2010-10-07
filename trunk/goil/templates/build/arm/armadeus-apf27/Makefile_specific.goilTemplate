@@ -1,6 +1,19 @@
 # memory map file
 LDFLAGS += -Map trampoline_memory.map
 
+bin: % !APPNAME %
+	arm-none-eabi-objcopy -R .trash -O binary  % !APPNAME % % !APPNAME %.bin
+
+EXTRA_FILES_CLEAN += % !APPNAME %.bin % !APPNAME %.map
+
+%
+if not USEMEMORYMAPPING then
+%# using default linker script (no memory mapping)
+LDFLAGS += --script=$(MACHINE_PATH)/$(TARGET)/ldscript_nomm_nomp
+%
+end if
+%
+
 # choose the right instruction set
 ASFLAGS += -mcpu=arm926ej-s
 CFLAGS += -mcpu=arm926ej-s
