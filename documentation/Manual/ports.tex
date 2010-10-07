@@ -546,3 +546,55 @@ The Instruction Storage exception is tied to the IVOR~3 vector (VPR offset = 0x0
 
 However, it appears one of these exceptions is raised when the processor is in user mode. The behavior is different in supervisor mode {\em to be completed}.
 
+\section{ARM -- Common conventions}
+
+\subsection{File hierarchy}
+
+\subsection{Common definitions}
+
+\subsection{Stacks}
+
+\subsection{Interrupt management}
+
+\subsubsection{Vector table}
+
+\subsubsection{System call}
+
+\subsubsection{IRQ handling}
+
+\subsubsection{FIQ handling}
+
+\section{ARM -- Armadeus APF27 board}
+
+\subsection{Memory mapping considerations}
+
+This port can be use in one of these three configurations :
+\begin{enumerate}
+\item No memory mapping (and thus no memory protection)
+\item Memory mapping without memory protection
+\item Memory mapping and memory protection
+\end{enumerate}
+
+\section{ARM -- Simtec EB675001 board}
+
+\subsection{Memory map and hardware resources}
+
+Talk about configured memory map (use of DRAM, where the bootstrap would be flashed, \ldots).
+
+Tell which hardware resources are used by the kernel.
+
+\subsection{Bootstrap}
+
+Explain the boot process.
+
+\subsection{Internal kernel drivers}
+
+\subsection{Hardware interrupts handling}
+
+\subsection{Idle task}
+
+\subsection{Exceptions handling}
+
+
+\subsection{Kernel sleep service}
+

@@ -13,22 +13,16 @@ IMPLEMENTATION trampoline {
 CPU test {
 
     OS config {
-/*      TRACE = TRUE {
-      METHOD = FILE {
-        NAME = "osap_0_task_4_isr_2_no_autosar_armadeus"; 
-          };  
-      FORMAT = xml;
-      DESCRIPTION = TRUE;
-    };*/
-        MEMMAP = TRUE {
+				MEMMAP = FALSE;
+/*        MEMMAP = TRUE {
           COMPILER = gcc;
           LINKER = gnu_ld;
 					ASSEMBLER = gnu_as;
-          MEMORY_PROTECTION = TRUE;
-        };
+          MEMORY_PROTECTION = FALSE;
+        };*/
         SYSTEM_CALL = TRUE;
         STATUS = EXTENDED;
-        APP_SRC = "osap_0_task_4_isr_2_no_autosar_armadeus.c";
+        APP_SRC = "app1_noisr_nomm_nomp.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         CFLAGS  = "-g";
         CFLAGS  = "-Wall -pedantic -Wformat -std=c99";
@@ -70,7 +64,7 @@ CPU test {
         ACTIVATION = 1;
         SCHEDULE = FULL;
     };
-
+/*
     ISR it1 {
         SOURCE = TIMER1;
         PRIORITY = 50;
@@ -81,5 +75,5 @@ CPU test {
         SOURCE = SOFTWARE_IRQ;
         PRIORITY = 51;
         CATEGORY = 2;
-    };
+    };*/
 } ;

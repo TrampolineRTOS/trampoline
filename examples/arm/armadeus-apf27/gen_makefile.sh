@@ -1,7 +1,7 @@
 if [ -z $1 ] ; then
-  FILE=osap_0_task_4_isr_2_no_autosar_armadeus.oil
+  FILE=app1_noisr_nomm_nomp.oil
 else
   FILE=$1
 fi
 
-goil --interrupts --generate-makefile --target=arm/armadeus-apf27 --templates=../../../goil/templates $FILE
+goil --autosar --interrupts --generate-makefile --target=arm/armadeus-apf27 --templates=../../../goil/templates $FILE

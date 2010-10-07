@@ -23,10 +23,17 @@
  * $URL$
  */
 
+#include "tpl_os_application_def.h"
+#if WITH_MEMORY_PROTECTION == YES
+
 .set OFFSET_RUNNING_ID, 16
 
 #define OS_START_SEC_CODE
 #include "tpl_as_memmap.h"
+
+.global apf27_init_mem_prot_lowlevel
+apf27_init_mem_prot_lowlevel:
+	mov pc, lr
 
 /* Control register c1
  * Enable align address condrol, 'A' bit
@@ -34,12 +41,10 @@
  */
 .global tpl_enable_memory_protection
 tpl_enable_memory_protection:
-	/* TODO this could be done at initialization */
 	/* Set domain 0 as client - it's only the one used here - */
-	mrc p15, 0, r2, c3, c0, 0
 	mov r2, #0x1					
 	mcr p15, 0, r2, c3, c0, 0
-	
+
 	/* Flush TLB */
 	mcr p15, 0, r2, c8, c7, 0
 
@@ -47,7 +52,9 @@ tpl_enable_memory_protection:
 	mrc p15, 0, r2, c1, c0, 0	
 	orr r2, r2, #0b11
 	mcr p15, 0, r2, c1, c0, 0
-	b pipeline_flush
+	b 1f /* pipeline flush */
+1:
+	mov pc, lr
 
 .global tpl_disable_memory_protection
 tpl_disable_memory_protection:
@@ -55,7 +62,9 @@ tpl_disable_memory_protection:
 	mrc p15, 0, r2, c1, c0, 0
 	bic r2, r2, #0b11
 	mcr p15, 0, r2, c1, c0, 0
-	b pipeline_flush
+	b 1f /* pipeline flush */
+1:
+	mov pc, lr
 
 .global tpl_switch_memory_protection_context
 tpl_switch_memory_protection_context:
@@ -64,17 +73,14 @@ tpl_switch_memory_protection_context:
 	
 		/* get the address of the table of all translation table base address*/
 	ldr r2, =ttb_table
-	add r2, r2, r1, LSL #2			/* get the good translation table base address */
-	ldr r2, [r2]
+	ldr r2, [r2, r1, LSL #2]
 	mcr p15, 0, r2, c2, c0, 0		/* set the system with this new base address */
-	b pipeline_flush
+	b 1f /* pipeline_flush */
+1:
+	mov pc, lr
 
-
-/* Flush pipeline for the next instruction use 
- * the good memory translation path */		
-pipeline_flush:
-	mov pc, lr	
-	
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"
+
+#endif /* WITH_MEMORY_PROTECTION == YES */
 

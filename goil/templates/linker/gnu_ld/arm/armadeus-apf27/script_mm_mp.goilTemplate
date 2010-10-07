@@ -15,7 +15,7 @@ SECTIONS
    * code and consts of the operating system (Trampoline).
    * this section is not accessible from an untrusted process
    */
-  ostext : {
+  ostext : ALIGN(4K) SUBALIGN(4) {
     __SEG_START_CODE_RGN = .;
     __SEG_START_OS_CODE_RGN = .;
     /* standard OS */
@@ -41,7 +41,7 @@ SECTIONS
     __SEG_END_CODE_RGN = .;
   } > dram0 AT> dram0
 
-  osconsts : {
+  osconsts : ALIGN(4K) SUBALIGN(4) {
     __SEG_START_CONST_RGN = .;
     * (COMMON)
     . = ALIGN(4K);
@@ -62,7 +62,7 @@ SECTIONS
   /*
    * variableѕ of the operating system (Trampoline)
    */
-  osvars (NOLOAD) : {
+  osvars (NOLOAD) : ALIGN(4K) SUBALIGN(4) {
     __SEG_START_VAR_RGN = .;
     __SEG_START_OS_VAR_RGN = .;
     *(.osVar)
@@ -78,7 +78,7 @@ SECTIONS
     __SEG_END_VAR_RGN = .;
   } > dram0 AT> dram0
 
-	stacks (NOLOAD) : {
+	stacks (NOLOAD) : ALIGN(4K) SUBALIGN(4) {
 		__SEG_START_OS_STACK_RGN = .;
 		*(.stacks)
 		. = ALIGN(4K);
@@ -91,7 +91,7 @@ SECTIONS
    * In the future, we want to build this with GOIL, at least
    * partialy.
    */
-  mmutable (NOLOAD) : SUBALIGN(4){  
+  mmutable (NOLOAD) : ALIGN(16K) {  
     /* Reserved space for MMU tables */
     __SEG_START_MMU_TABLES_RGN = .;    
     /* Align counter . at the right location for translation table work */  
@@ -148,7 +148,7 @@ end foreach
   /*
    * private data of processes
    */
-  procvars (NOLOAD) : ALIGN(4) SUBALIGN(4K) {
+  procvars (NOLOAD) : ALIGN(4K) SUBALIGN(4K) {
 %
 foreach PROCESSES do
 %    __SEG_START_% !PROCESSKIND %_% !NAME %_VAR_RGN = .;
@@ -167,7 +167,7 @@ end foreach
   /*
    * stack of processes
    */
-  procstack (NOLOAD) : ALIGN(4) SUBALIGN(4K) {
+  procstack (NOLOAD) : ALIGN(4K) SUBALIGN(4K) {
 %
 foreach PROCESSES do %
   /* Section of stack of % !PROCESSKIND % % !NAME %  */
@@ -182,14 +182,8 @@ end foreach
   /*
    * os application data
    */
-  appvars (NOLOAD) : ALIGN(4) SUBALIGN(4K) {
+  appvars (NOLOAD) : ALIGN(4K) SUBALIGN(4K) {
  /* $APP_VARS */
-  } > dram0 AT> dram0
-
-  /*
-   * remaining .text (ie no section given)
-   */
-  text_garbage : ALIGN(4) SUBALIGN(4K) {
   } > dram0 AT> dram0
 
 /* FIXME are these symbols really required ? If not, delete them !
