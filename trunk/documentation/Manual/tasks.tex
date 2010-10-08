@@ -79,12 +79,19 @@ Trampoline provides a \cmacro{TASK} macro to define a task in a C source file. T
 TASK(MyTask)
 {
   /* code of the task */
+  
+  TerminateTask();
 }
 \end{lstlisting}
 
 The code of the task is plain C.
 
-\subsection{Task identifier}
+The task should always end with a call to the \api{TerminateTask} service. See \ref{api:TerminateTask}.
+
+
+\section{Tasks services}
+
+\begin{service}{DeclareTask}{}
 
 Each task has an identifier of type \ctype{TaskType}. This identifier is declared in the OIL file and is used in system calls to refer to a particular task. Before using such an identifier in your program, you have to declare it:
 
@@ -94,10 +101,10 @@ DeclareTask(MyTask);
 
 This makes the \cdata{MyTask} identifier available in the current scope.
 
-\note{When the task has been define above using the macro \cmacro{TASK}, the identifier of the task is already in the scope and \cmacro{DeclareTask} is not needed.}
+\note{ \servicename\ is a C macro. When the task has been define above using the macro \cmacro{TASK}, the identifier of the task is already in the scope and \cmacro{DeclareTask} is not needed.}
 
-
-\section{Tasks services}
+\argument{TaskType}{TaskID}{The id of the task to declare}
+\end{service}
 
 \begin{service}{ActivateTask}{StatusType}
 
@@ -259,7 +266,7 @@ GetTaskID(&runningTaskID);
 
 \resultcode{\OK}{No error.}
 \resultcodeMP{\OSPROTECTIONMEMORY}{The caller does not have access to the addresses of \var{TaskID} reference} 
-\argument{TaskRefType}{TaskID}{Reference to the task.}
+\argument{TaskRefType}{TaskID}{Reference to the task}
 \end{service}
 
 \begin{service}{GetTaskState}{StatusType}

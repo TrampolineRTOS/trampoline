@@ -104,7 +104,7 @@ When a task gets a resource, its priority is raised to the priority of the resou
 
 The priority of a resource is computed by \goil\ according to the priorities of the tasks and ISRs that use the resource.
 
-\section{The {\ttfamily RES_SCHEDULER} resource}
+\section{The {\normalsize\ttfamily RES_SCHEDULER} resource}
 
 Trampoline provides a predefined standard resource called \constant{RES_SCHEDULER}. This resource has a priority $\ge$ to the maximum priority of the tasks but $<$ to the minimum priority of the ISR. When a task gets \constant{RES_SCHEDULER}, it becomes non preemptable. To make \constant{RES_SCHEDULER} available to the application, the \oilattr{USERESCHEDULER} attribute must be set to \TRUE\ within the \oilattr{OS} object in the OIL file. Unlike resources defined by the application, there is no need to declare \constant{RES_SCHEDULER} is used by a task in the OIL file.
 
@@ -112,10 +112,39 @@ Trampoline provides a predefined standard resource called \constant{RES_SCHEDULE
 
 Standard resources are got and released explicitly by tasks and ISRs using the ad-hoc services. Internal resources are got implicitly when the task enters the \RUNNING\ state and released implicitly when the task calls \api{Schedule} or blocks when using \api{WaitEvent}.
 
+\note{At most one internal resource may be used by a task.}
+
 Standard resources are dedicated to the protection of critical sections around the access to a shared data or to a device. Internal resources are used to implement non preemptable tasks within a task group.
 A task group is a set of task that are non preemptable by each other but remain preemptable by higher priority tasks in the application. A task group priority is the priority of its internal resource.
 
 Trampoline provides a predefined internal \constant{RES_SCHEDULER} resource with the same priority. This internal resource is used to implement non preemptable tasks in the whole application as if all the non preemptable tasks belong to an implicit task group. When a task is non preemptable by setting the \oilattr{SCHEDULE} attribute to \constant{NON} in its OIL description, the task is assigned the internal \constant{RES_SCHEDULER} resource.
+
+\section{Nested resources accesses}
+\label{sec:resnested}
+
+Resources may be accessed in a nested way. That is once a resource is got, another one may be got before releasing the first one and so on. However resources must be released in the reverse order they have been got as if they were pushed on a stack. The following example shows the good usage of resources:
+
+\begin{lstlisting}
+TASK(MyTask)
+{
+  GetResource(rez1);
+  ...
+  /* critical section protected by rez1 */
+  ...
+  GetResource(rez2);
+  ...
+  /* critical section protected by rez2 and rez1 */
+  ...
+  ReleseResource(rez2);
+  ...
+  /* more critical section protected by rez1 */
+  ...
+  ReleaseResource(rez1);
+  TerminateTask();
+}
+\end{lstlisting}
+
+
 
 \section{OIL description}
 
@@ -143,3 +172,32 @@ RESOURCE l_res {
 };
 \end{lstlisting}
 
+\warning{Every task and ISR that uses a resource in the C code must declare it in the OIL file. Otherwise \goil\ will compute a wrong priority for the resource and the scheduling of tasks and the execution of ISR will not be as expected.}
+
+\section{Resources services}
+
+\begin{service}{DeclareResource}{}
+\argument{ResourceType}{ResourceID}{The id of the resource}
+\servicename\ declares a resource exists. The result is to make the id of the resource available and allows to use it in services' calls.
+
+\note{\servicename\ is a C macro}
+\end{service}
+
+\begin{service}{GetResource}{StatusType}
+\argument{ResourceType}{ResourceID}{The id of the resource to get}
+\servicename\ enters the critical section protected by the resource. For each call to \servicename, a corresponding call to \api{ReleaseResource} must be made in the control flow of the task or ISR. Nested calls are allowed, see \ref{sec:resnested} for nested resource accesses.
+\resultcode{\OK}{No error}
+\resultcode{\OSID}{Invalide resource id. No resource with such an id exists}
+\resultcodeext{\OSACCESS}{The resource is already taken by a task or an ISR or has a priority lower than the base priority of the calling task or ISR. This should not happen if the application is configured correctly except if the same task or ISR try to get the same resource twice}
+\end{service}
+
+\begin{service}{ReleaseResource}{StatusType}
+\argument{ResourceType}{ResourceID}{the id of the resource}
+\servicename\ leaves the critical section protected by the resource. For each call to \servicename, a corresponding call to \api{GetResource} must have been made in the control flow of the task or ISR. Nested calls are allowed, see \ref{sec:resnested} for nested resource accesses.
+
+\note{This service does a rescheduling}
+
+\resultcode{\OK}{No error}
+\resultcode{\OSID}{Invalide resource id. No resource with such an id exists}
+
+\end{service}
