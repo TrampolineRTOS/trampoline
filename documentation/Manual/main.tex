@@ -32,7 +32,7 @@
 \renewcommand{\captionlabelfont}{\small \bf}
 \renewcommand{\captionfont}{\small \it}
 \setlength{\parindent}{0mm}
-\setlength{\parskip}{1mm}
+\setlength{\parskip}{.5\baselineskip}
 \fancyhead{} % clear all header fields
 \fancyhead[RO,LE]{\thepage}
 \fancyhead[LO,RE]{\nouppercase{\rightmark}}
@@ -86,19 +86,19 @@
 %\newcommand{\note}[1]{\vspace{1mm}\fbox{\begin{minipage}[t]{.1\linewidth}{\bfseries Note:}\end{minipage}%
 %\hfill\begin{minipage}[t]{.885\linewidth}#1\end{minipage}}\vspace{1mm}}
 \newcommand{\note}[1]{%
-\vspace{2mm}\hspace{-12.4mm}
+\hspace{-12.4mm}
 \rowcolors{1}{white}{light-gray}
 \begin{tabular}[b]{m{5mm}|m{\linewidth}}
 \includegraphics[width=6mm,angle=45]{pictures/note} & #1\\
 \end{tabular}
-\vspace{2mm}}
+}
 \newcommand{\warning}[1]{%
-\vspace{2mm}\hspace{-14.2mm}
+\hspace{-14.2mm}
 \rowcolors{1}{white}{light-gray}
 \begin{tabular}[b]{m{7mm}|m{\linewidth}}
 \includegraphics[width=7mm]{pictures/warn} & #1\\
 \end{tabular}
-\vspace{2mm}}
+}
 %
 % Commands for inline formatting of C computing language
 %
@@ -175,7 +175,7 @@
 \newcommand{\OSRESOURCE}{E\_OS\_RESOURCE}
 \newcommand{\OSCALLLEVEL}{E\_OS\_CALLEVEL}
 \newcommand{\OSPROTECTIONMEMORY}{E\_OS\_PROTECTION\_MEMORY}
-
+\newcommand{\OSACCESS}{E\_OS\_ACCESS}
 %
 % Scalability class
 %
@@ -204,25 +204,25 @@
 \DTLnewdb{argDB}
 \DTLnewdb{resDB}
 \newenvironment{service}[2]{%
-  \subsection{#1}\index{#1}%
+  \subsection{#1}\label{api:#1}\index{#1}%
   \renewcommand{\servicename}{#1}%
   \renewcommand{\servicereturn}{#2}
   \DTLcleardb{argDB}
   \DTLcleardb{resDB}
 }{
  
-  \vspace{2mm}
-  {\bf Prototype of \servicename:}
- 
-  {\tt \servicereturn\ \servicename(%
+%  \vspace{1mm}
+  {\bf Prototype of \servicename:}\nopagebreak
+  
+  {\tt\if\servicereturn\empty\relax\else\servicereturn\ \fi}{\tt \servicename(%
   \DTLforeach*{argDB}{\argumenttype=type,\argumentname=name}{%
     \DTLiffirstrow{}{, }\argumenttype\ \argumentname%
   }%
   );}
 
   \DTLifdbempty{argDB}{}{
-    \vspace{2mm}
-    {\bf Arguments of \servicename:}
+%    \vspace{1mm}
+    {\bf Arguments of \servicename:}\nopagebreak
   
     \DTLforeach*{argDB}{\argumenttype=type,\argumentname=name,\argumentdesc=desc}{%
       \par\begingroup\hangindent=2em\hangafter=1 {\ttfamily\argumentname}\hspace{1em}\argumentdesc.\par\endgroup
@@ -230,8 +230,8 @@
   }
   
   \DTLifdbempty{resDB}{}{
-    \vspace{2mm}
-    {\bf Status codes returned by \servicename:}
+%    \vspace{1mm}
+    {\bf Status codes returned by \servicename:}\nopagebreak
   
     \DTLforeach*{resDB}{\statusres=value,\statusdesc=desc,\statusstatus=status}{%
       \par\begingroup\hangindent=2em\hangafter=1 {\ttfamily\statusres}\hspace{1em}\statusdesc\ (\statusstatus).\par\endgroup
@@ -308,6 +308,7 @@
 \vspace{2cm}
 \large
 Jean-Luc Béchennec\\
+Mikaël Briday\\
 Sébastien Faucou\\
 Pierre Molinaro\\
 Florent Pavin\\
