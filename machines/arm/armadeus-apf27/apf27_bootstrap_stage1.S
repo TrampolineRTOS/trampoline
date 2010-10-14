@@ -25,6 +25,16 @@
 
 #include "../tpl_asm_definitions.h"
 
+/* to be able to boot easily with u-boot, according to the linker
+ * script, we place this first instruction at the load address*/
+.section .ubootsupport
+
+b tpl_arm_bootstrap_entry
+
+#if !defined WITH_MEMMAP || !WITH_MEMMAP
+.text
+#endif 
+
 #define OS_START_SEC_VAR
 #include "tpl_as_memmap.h"
 
