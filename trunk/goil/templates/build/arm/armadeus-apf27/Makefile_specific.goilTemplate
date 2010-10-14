@@ -1,8 +1,13 @@
 # memory map file
-LDFLAGS += -Map trampoline_memory.map
+LDFLAGS += -Map % !APPNAME %.map
 
 bin: % !APPNAME %
-	arm-none-eabi-objcopy -R .trash -O binary  % !APPNAME % % !APPNAME %.bin
+	arm-none-eabi-objcopy --strip-all --remove-section=.vectors --output-target=binary  % !APPNAME % % !APPNAME %.bin
+	arm-none-eabi-objcopy --only-section=.vectors --output-target=binary % !APPNAME % % !APPNAME %_vectors.bin
+	echo "****>> Information : you should use u-boot like this :"
+	echo "****>> tftpboot 0xA0000000 192.168.5.20:% !APPNAME %.bin"
+	echo "****>> tftpboot 0xFFFF4C00 192.168.5.20:% !APPNAME %_vectors.bin"
+	echo "****>> go 0xA0000000"
 
 EXTRA_FILES_CLEAN += % !APPNAME %.bin % !APPNAME %.map
 
