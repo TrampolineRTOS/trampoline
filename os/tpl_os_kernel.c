@@ -822,8 +822,8 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
     tpl_kern.running = tpl_dyn_proc_table[tpl_kern.running_id];
     tpl_kern.s_running = tpl_stat_proc_table[tpl_kern.running_id];
 
-      TRACE_ISR_PREEMPT(tpl_kern)
-      TRACE_TASK_PREEMPT(tpl_kern)
+    TRACE_ISR_PREEMPT(tpl_kern)
+    TRACE_TASK_PREEMPT(tpl_kern)
 
     if (tpl_kern.running->state == READY_AND_NEW)
     {
@@ -875,50 +875,60 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
   tpl_check_stack(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
-  /*  a task switch will occur. It is time to call the
-   PostTaskHook while the soon descheduled task is running             */
+  /*
+   * a task switch will occur. It is time to call the
+   * PostTaskHook while the soon descheduled task is running
+   */
   CALL_POST_TASK_HOOK()
 
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
-  /*  pause the budget monitoring when a running obj has ended            */
+  /* pause the budget monitoring when a running obj has ended */
   tpl_stop_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
-  /*  the task loses the CPU because it has been put in the WAITING or
-   in the DYING state, its internal resource is released.              */
+  /*
+   * the task loses the CPU because it has been put in the WAITING or
+   * in the DYING state, its internal resource is released.
+   */
   tpl_release_internal_resource(tpl_kern.running_id);
 
-  /*  and checked to compute its state.                                 */
+  /* and checked to compute its state. */
   if (tpl_kern.running->activate_count > 0)
   {
-    /*  there is at least one instance of the dying running object in
-        the ready list. So it is put in the READY_AND_NEW state. This
-        way when the next instance will be prepared to run it will
-        be initialized.                                                 */
+    /*
+     * there is at least one instance of the dying running object in
+     * the ready list. So it is put in the READY_AND_NEW state. This
+     * way when the next instance will be prepared to run it will
+     * be initialized.
+     */
     tpl_kern.running->state = READY_AND_NEW;
   }
   else
   {
-    /*  there is no instance of the dying running object in the ready
-        list. So it is put in the SUSPENDED state.                      */
+    /*
+     * there is no instance of the dying running object in the ready
+     * list. So it is put in the SUSPENDED state.
+     */
     tpl_kern.running->state = SUSPENDED;
   }
 
-  /*  copy it in old slot of tpl_kern                           */
+  /* copy it in old slot of tpl_kern */
   tpl_kern.old = tpl_kern.running;
   tpl_kern.s_old = tpl_kern.s_running;
-  /*  get the ready task from the ready task list                       */
+  /* get the ready task from the ready task list */
   tpl_kern.running_id = tpl_get_proc();
   tpl_kern.running = tpl_dyn_proc_table[tpl_kern.running_id];
   tpl_kern.s_running = tpl_stat_proc_table[tpl_kern.running_id];
 
   if (tpl_kern.running->state == READY_AND_NEW)
   {
-    /*  the object has not be preempted. So its
-        descriptor must be initialized                                  */
+    /*
+     * the object has not be preempted. So its
+     * descriptor must be initialized
+     */
     tpl_init_proc(tpl_kern.running_id);
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
-    /* start the budget monitor for the activated task or isr           */
+    /* start the budget monitor for the activated task or isr */
     tpl_start_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
@@ -928,16 +938,20 @@ FUNC(void, OS_CODE) tpl_schedule_from_dying(void)
     tpl_continue_budget_monitor(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
-  /*  the inserted task become RUNNING                                  */
+  /* the inserted task become RUNNING */
   TRACE_ISR_RUN(tpl_kern.running_id)
   TRACE_TASK_EXECUTE(tpl_kern.running_id)
   tpl_kern.running->state = RUNNING;
-  /*  If an internal resource is assigned to the task
-      and it is not already taken by it, take it                        */
+  /*
+   * If an internal resource is assigned to the task
+   * and it is not already taken by it, take it
+   */
   tpl_get_internal_resource(tpl_kern.running_id);
 
-  /*  A new task has been elected. It is time to call PreTaskHook while
-      the rescheduled task is running                                   */
+  /*
+   * A new task has been elected. It is time to call PreTaskHook while
+   * the rescheduled task is running
+   */
   CALL_PRE_TASK_HOOK()
 
   tpl_kern.need_switch = NEED_SWITCH;

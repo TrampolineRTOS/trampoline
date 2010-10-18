@@ -84,6 +84,12 @@ extern "C" {
  * Only for AUTOSAR extension
  */
 #include "tpl_as_counter.h"
+  
+/*
+ * Inclusion of the header for Trusted Functions related API services
+ * Only for AUTOSAR extension
+ */
+#include "tpl_as_trusted_fct.h"
 
 /* WITH_AUTOSAR */
 #endif

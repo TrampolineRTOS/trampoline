@@ -28,7 +28,9 @@
  */
 
 #include "tpl_os_kernel_stack.h"
+#include "tpl_os_process_stack.h"
 #include "tpl_assembler.h"
+#include "tpl_os_definitions.h"
 
 TPL_EXTERN  ExitTrustedFunction
 TPL_EXTERN  tpl_trusted_fct_table
@@ -43,11 +45,11 @@ tpl_call_trusted_function_service:
   /*
    * Check the function index is within the allowed range
    */
-  mov   r11,r3
+  mr    r11,r3
   cmpw  r3,TRUSTED_FCT_COUNT
   ori   r3,r0,E_OS_SERVICEID
   bge   invalid_trusted_fct_id
-  mov   r3,r11
+  mr    r3,r11
   /*
    * Increment the trusted counter of the process
    */

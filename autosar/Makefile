@@ -24,7 +24,9 @@ SOURCES += tpl_as_protec_hook.c
 
 ifeq ($(strip $(AUTOSAR_OSAPPLICATIONS)),true)
 SOURCES += tpl_as_app_kernel.c
+ifeq ($(strip $(WITH_MEMORY_PROTECTION)),false)
 SOURCES += tpl_as_trusted_fct_kernel.c
+endif
 endif
 
 ifeq ($(strip $(WITH_SYSTEM_CALL)),false)
