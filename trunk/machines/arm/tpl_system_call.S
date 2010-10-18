@@ -70,7 +70,7 @@ tpl_primary_syscall_handler:
 
     /* We save R0 to R2 here as they may contain system call
      * parameter. We save LR as the task's return address.
-     * R3 is not saved as it is know to never being used as
+     * R3 is not saved as it is known to never being used as
      * system call parameter (and contains system call number).
      */
     stmfd sp!, {r0-r2,lr}
