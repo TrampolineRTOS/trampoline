@@ -1114,8 +1114,13 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
           events->evt_set = events->evt_wait = 0;
         }
 #endif
-
+        result = (tpl_status)E_OK_AND_SCHEDULE;
       }
+      else
+      {
+        result = (tpl_status)E_OK;
+      }
+
       /*  put it in the list                                            */
       tpl_put_new_proc(task_id);
       /*  inc the task activation count. When the task will terminate
@@ -1125,7 +1130,6 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
       tpl_start_timeframe(task_id);
 #endif
-      result = (tpl_status)E_OK_AND_SCHEDULE;
     }
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   }
