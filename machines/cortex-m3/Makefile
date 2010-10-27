@@ -32,5 +32,5 @@
 #
 #kernel OS architecture dependent files
 SOURCES += tpl_machine_cm3.c
-#SOURCES += STM32F10x_GCC_osek.s	
+SOURCES += STM32F10x.s	
 

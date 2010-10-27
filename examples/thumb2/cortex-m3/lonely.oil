@@ -2,11 +2,11 @@ OIL_VERSION = "2.5" : "test" ;
 
 IMPLEMENTATION trampoline {
     TASK {
-        UINT32 STACKSIZE = 500 ;
+        UINT32 STACKSIZE = 50 ;
         UINT32 PRIORITY = 1 ;
     } ;
     ISR {
-        UINT32 STACKSIZE = 500 ;
+        UINT32 STACKSIZE = 50 ;
     } ;
 };
 
@@ -19,9 +19,8 @@ CPU test {
         APP_SRC = "lonely.c";
         APP_NAME = "lonely_exe";
         TRAMPOLINE_BASE_PATH = "../../..";
-        CFLAGS  = "-g -Wall -pedantic -Wformat -std=c99 -mcpu=arm7tdmi-s -Wmissing-field-initializers -mfloat-abi=soft"; 
-        ASFLAGS = "-mcpu=arm7tdmi-s --fatal-warnings -g -mfloat-abi=soft"; 
-        LDFLAGS = " -g --fatal-warnings --warn-common  --no-undefined ";
+        CFLAGS  = "-Wall -Os -g -I. -mcpu=cortex-m3 -mthumb"; 
+        LDFLAGS = "-g --fatal-warnings --warn-common  --no-undefined";
         
         COMPILER = "arm-eabi-gcc";
         ASSEMBLER = "arm-eabi-as";
@@ -58,7 +57,7 @@ CPU test {
         ACTIVATION = 1;
         SCHEDULE = FULL;
     };
-
+/*
     ISR isr_button1 {
        CATEGORY = 2;
   PRIORITY = 1;
@@ -88,8 +87,9 @@ CPU test {
             CYCLETIME = 100; //each 1s.
             APPMODE = std;
   };
- };
 
+ };
+*/
 
 
 };
