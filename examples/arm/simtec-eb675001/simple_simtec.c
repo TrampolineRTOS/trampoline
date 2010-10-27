@@ -51,13 +51,13 @@ ISR(it2)
   TRACE(5);
   ActivateTask (t4);
   TRACE(5);
-  TerminateISR ();
+  CallTerminateISR2 ();
 }
 
 ISR(it1)
 {
   TRACE(4);
-  TerminateISR ();
+  CallTerminateISR2 ();
 }
 
 TASK(t3)
