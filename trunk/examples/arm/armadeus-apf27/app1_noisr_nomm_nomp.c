@@ -3,7 +3,7 @@
 
 FUNC(int, AUTOMATIC) main()
 {
-//		tpl_disable_interrupts ();
+		tpl_disable_interrupts ();
 		serial_init();
 		serial_puts ("bootstrap finished, starting Trampoline...");
 		serial_puts (" GO!\n");

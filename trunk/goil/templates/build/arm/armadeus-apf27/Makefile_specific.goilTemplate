@@ -1,20 +1,15 @@
 # memory map file
-LDFLAGS += -Map % !APPNAME %.map
+LDFLAGS += -Xlinker -Map -Xlinker % !APPNAME %.map
 
 bin: % !APPNAME %
-	arm-none-eabi-objcopy --strip-all --remove-section=.vectors --output-target=binary  % !APPNAME % % !APPNAME %.bin
-	arm-none-eabi-objcopy --only-section=.vectors --output-target=binary % !APPNAME % % !APPNAME %_vectors.bin
-	echo "****>> Information : you should use u-boot like this :"
-	echo "****>> tftpboot 0xA0000000 192.168.5.20:% !APPNAME %.bin"
-	echo "****>> tftpboot 0xFFFF4C00 192.168.5.20:% !APPNAME %_vectors.bin"
-	echo "****>> go 0xA0000000"
+	arm-none-eabi-objcopy --strip-all --output-target=binary  % !APPNAME % % !APPNAME %.bin
 
 EXTRA_FILES_CLEAN += % !APPNAME %.bin % !APPNAME %.map
 
 %
 if not USEMEMORYMAPPING then
 %# using default linker script (no memory mapping)
-LDFLAGS += --script=$(MACHINE_PATH)/$(TARGET)/ldscript_nomm_nomp
+LDFLAGS += -T $(MACHINE_PATH)/$(TARGET)/link_nomm_nomp.ld
 %
 end if
 %
@@ -32,7 +27,7 @@ end if
 
 if LINKEREXE == "gcc" then
 %# changes default linker
-LD = arm-none-eabi-ld
+LD = arm-none-eabi-gcc
 %
 end if
 

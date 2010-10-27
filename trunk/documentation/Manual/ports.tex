@@ -552,6 +552,19 @@ However, it appears one of these exceptions is raised when the processor is in u
 
 \subsection{Common definitions}
 
+\subsection{Bootstraping}
+
+The bootstrap must be made in specific ARM port and must call the \cfunction{main} function. If \cfunction{main} ever returns, the bootstrap code must fall into an infinite loop.
+
+As a reason, many ARM architectures needs early specific and required initializations. This includes steps like memory mapping configuration, DRAM controller configuration, ...
+
+Besides specific initializations, the bootstrap should :
+\begin{itemize}
+\item initialize stack pointer for every ARM exception modes
+\item keep all external interrupts locked (will be unlocked at the first task context loading)
+\item call \cfunction{main} in "system" mode (0x1F)
+\end{itemize}
+
 \subsection{Stacks}
 
 \subsection{Interrupt management}
@@ -583,9 +596,33 @@ Talk about configured memory map (use of DRAM, where the bootstrap would be flas
 
 Tell which hardware resources are used by the kernel.
 
-\subsection{Bootstrap}
+\subsection{Booting}
 
-Explain the boot process.
+There is two way to start Trampoline on APF27 :
+\begin{itemize}
+\item from ELF image (in file usually called \file{trampoline})
+\item from raw binary image (in file usually called \file{trampoline.bin})
+\end{itemize}
+
+\subsubsection{Booting from ELF image}
+
+Load image with your ELF loader (the file is usually named \file{trampoline}). This can be GDB via a JTAG probe for example. Then, just start execution from \cfunction{tpl\_arm\_bootstrap\_entry} entry point. Here are commands you can type in GDB :
+\begin{lstlisting}
+(gdb) load
+(gdb) set $pc=tpl_arm_bootstrap_entry
+(gdb) break main
+(gdb) continue
+\end{lstlisting}
+
+\subsubsection{Booting from raw binary image}
+
+Load image with your binary loader to 0xA0000000 memory address. Then just start execution at this point (0xA0000000).
+
+With u-boot, you can type these commands :
+\begin{lstlisting}
+BIOS> tftpboot 0xA0000000 192.168.5.20:trampoline.bin
+BIOS> go 0xA0000000
+\end{lstlisting}
 
 \subsection{Internal kernel drivers}
 
