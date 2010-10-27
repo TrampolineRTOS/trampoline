@@ -26,7 +26,6 @@
 #include "tpl_machine_interface.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os_kernel.h"
-#include "init.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -34,16 +33,26 @@
 void tpl_init_machine()
 {
     tpl_init_machine_generic ();
-    Init();
+    //Init();
 }
 
 void tpl_shutdown ()
 {
     /* FIXME: this is does not conform to AUTOSAR OS specifications, 
      * should return to main with initial context */
-    DISABLE_FIQ ();
-    DISABLE_IRQ ();
-    
+    //DISABLE_FIQ ();
+    //DISABLE_IRQ ();
+	// remove ITs
+		
+  	// spurious events can wake up processor :
+	__asm__ (" CPSID	I");
+
+	// we need a loop to ensure sleep		 
+	while(1)
+	{    	
+		__asm__ ("   wfi ;"); 	// go to sleep until NMI/HARD FAULT/RESET
+	} 
+	
     /* TODO : fall into very low consumption mode : all
      * internal CPU clocks are disabled.
      */

@@ -12,23 +12,27 @@
 #include "tpl_os_custom_types.h"
 #include "port_macros.h"
 
+
+/**
+ * tpl_stack_word is the basic element of a stack in order to have a proper
+ * data alignement.
+ */
+typedef u32 tpl_stack_word;
+/**
+ * tpl_stack_size is the data type used to store the stack size
+ */
+typedef u16 tpl_stack_size; //limit stack to 64kb
+
+
+
 // Store context in same order as stack frame after interrupt
 // plus space for R4 to R11 gprs
 
 struct CM3_CONTEXT {
-/*	unsigned int psr;
-	unsigned int pc;
-	unsigned int lr;
-	unsigned int r12;
-	unsigned int r3;
-	unsigned int r2;
-	unsigned int r1;
-	unsigned int r0;
-*/
 	unsigned int r4_11[8] ; //grps registers not in stack frame
-//	unsigned int stack_frame[8]; // stak frame after interrupt
-								// R0 R1 R2 R3 R12 LR PC PSR
-	unsigned int * sp;		// PSP stack pointer of task
+	tpl_stack_word * sp;		// PSP stack pointer of task
+							//	point to stak frame after interrupt
+							// R0 R1 R2 R3 R12 LR PC PSR
 
 };
 
@@ -45,15 +49,6 @@ typedef struct TPL_CONTEXT tpl_context;
 extern cm3_context idle_task_context;
 #define IDLE_CONTEXT {&idle_task_context}
 
-/**
- * tpl_stack_word is the basic element of a stack in order to have a proper
- * data alignement.
- */
-typedef u32 tpl_stack_word;
-/**
- * tpl_stack_size is the data type used to store the stack size
- */
-typedef u16 tpl_stack_size; //limit stack to 64kb
 
 struct TPL_STACK {
     tpl_stack_word 		 *stack_zone;

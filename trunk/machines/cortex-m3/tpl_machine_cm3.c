@@ -19,8 +19,6 @@
 #include "tpl_os_generated_configuration.h"	   /* TASK_COUNT and ISR_COUNT*/
 #include "tpl_os_definitions.h" /* IS_ROUTINE  */
 #include "tpl_os_internal_types.h" /*struct tpl_task*/
-#include "STM32_Reg.h"
-#include "STM32_Init.h"
 #include "port_macros.h"
 #include "tpl_os_kernel.h" /*tpl_stat_proc_table and tpl_proc_static*/
 
@@ -35,7 +33,8 @@ void tpl_sleep(void);
 #define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 VAR(tpl_stack_word, OS_VAR)
-idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
+idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)]={0xACDC0000,0xACDC0001,0xACDC0002,0xACDC0003,0xACDC0012,0,(unsigned int) &tpl_sleep, portINITIAL_XPSR};
+//                      									R0		R1	  R2	R3	  R12     LR	return address						PSR
 #define OS_STOP_SEC_VAR_32BIT
 #include "tpl_memmap.h"
 //unsigned int idle_stack_frame [8];
@@ -46,7 +45,7 @@ idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
 
 //cm3_context idle_task_context = { 
 //	.r4_11 = {0xACDC0004,0xACDC0005,0xACDC0006,0xACDC0007,0xACDC0008,0xACDC0009,0xACDC0010,0xACDC0011}, //r4_r11
-//	.sp = idle_stack_frame
+//	.sp = idle_stack
 //	};
 
 
@@ -82,9 +81,9 @@ void tpl_switch_context(tpl_context *old_context, tpl_context *new_context)
 	 // R1 has a pointer to the new context.
 	 // first of all: store the current context in old_context
 
-	__asm__ ("pop {r4-r8,lr} ;"); // clean psr stack from previous C calls  
+	__asm__ ("pop {r4-r6,lr} ;"); // clean msp stack from previous C calls  
 	__asm__ ("pop {r4,lr} ;"); 
-				// now lr is the return address
+				// now context is back and lr is the return address
 
 				// CHECK if there is previous context to save or not 
 	__asm__ ("cbz r0, set_new_context;");			 
@@ -141,7 +140,15 @@ void tpl_switch_context_from_it(tpl_context * old_context, tpl_context * new_con
 	// R0 has a pointer to the old context. It seems to be 0 when no old context has to be saved
 	// R1 has a pointer to the new context.
 
-		// CHECK wether a previous context has to be saved 
+ 	//__asm__ ("pop {r3-r7,lr} ;"); // clean msp stack from previous C calls  
+	//__asm__ ("pop {r3,lr} ;"); 
+	//__asm__ ("pop {r3,lr} ;"); 
+	//__asm__ ("pop {r4,lr} ;"); // clean msp stack from previous C calls  
+	__asm__ ("pop {r4-r6,lr} ;"); 
+	__asm__ ("pop {r4,lr} ;"); 
+	//Now the task context is back 
+
+	// CHECK wether a previous context has to be saved 
 	__asm__ ("cbz r0, set_new_context_from_it ;");
 
 	__asm__ (" ldr r0, [r0] ;"); // r0 now point to old task cm3_context	
@@ -195,7 +202,7 @@ FUNC(void, OS_CODE) tpl_init_context(
     //if (static_desc->type & IS_ROUTINE) objId += TASK_COUNT;
 
 //	ic->r4_11 = {4, 5 , 6,7,8,9,10,11};
-	ic->sp= (unsigned int *) ((unsigned int)(static_desc->stack.stack_zone) + static_desc->stack.stack_size );// - 16*sizeof(unsigned int);
+	ic->sp= (tpl_stack_word *) ((unsigned int)(static_desc->stack.stack_zone) + (static_desc->stack.stack_size ) - sizeof(tpl_stack_word));// - 16*sizeof(unsigned int);
 	*(ic->sp--) =   portINITIAL_XPSR ; //psr
 	*(ic->sp--) =   (unsigned int)(static_desc->entry); // pc
 	*(ic->sp--)  =    0; // lr
@@ -223,12 +230,12 @@ void tpl_disable_interrupts(void)
 /*
  * tpl_init_machine 
  */
-//void tpl_init_tick_timer();
+void tpl_init_tick_timer();
 void tpl_init_machine(void)
 {
-//	#ifndef NO_ALARM
-//		tpl_init_tick_timer();
-//	#endif
+	#ifndef NO_ALARM
+		tpl_init_tick_timer();
+	#endif
 }
 
 void tpl_get_task_lock(void)

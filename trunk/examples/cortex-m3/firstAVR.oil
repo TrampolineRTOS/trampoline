@@ -18,10 +18,11 @@ CPU test {
         STATUS = STANDARD;
         TRAMPOLINE_BASE_PATH = "../..";
         APP_NAME = "firstAVR_bin";
-        APP_SRC = "main.c";
+        APP_SRC = "firstAVR_main.c";
        // APP_SRC = "STM32_Init.c";
         CFLAGS  = "-Wall -Os -g -I. -mcpu=cortex-m3 -mthumb"; 
         LDFLAGS = "-Wall -Os -g -I. -mcpu=cortex-m3 -mthumb";
+        LDFLAGS = "-T ./Cortex_M.ld";
         ASFLAGS = "-Wall -Os -g -I. -mcpu=cortex-m3 -mthumb -c";
         COMPILER  = "/usr/local/armCortex/bin/arm-eabi-gcc";
         LINKER    = "/usr/local/armCortex/bin/arm-eabi-gcc";

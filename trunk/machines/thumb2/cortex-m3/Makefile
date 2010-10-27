@@ -28,20 +28,13 @@
 #
 #kernel OS architecture dependant files
 
-SOURCES += olimex_tpl_sleep.S \
-olimex_bootstrap_stage1.S \
-olimex_bootstrap_stage2.c \
-olimex_tpl_stubs.c \
-olimex_irq.c \
-olimex_exception_catch.S
+SOURCES += cm3_tpl_sleep.S \
+cm3_tpl_stubs.c \
+STM32F10x_GCC.s\
+Startup_GCC.s\
+#cm3_irq.c \
+#cm3_exception_catch.S
 
 ##########
 # Drivers
 ########
-CFLAGS += -I$(MACHINE_PATH)/arm/olimex_lpc_e2294/drivers
-TEMP_SOURCE_DIRS += $(MACHINE_PATH)/arm/olimex_lpc_e2294/drivers
-SOURCES += timer.c \
-lcd.c \
-init.c \
-extint.c
-
