@@ -684,4 +684,3 @@ CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA) proc_name_table[TASK_COUNT + ISR_COU
 end foreach
 %
 /* End of file tpl_app_config.c */
-

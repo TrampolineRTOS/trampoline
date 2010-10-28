@@ -27,6 +27,17 @@ template process_specific
 #include "tpl_memmap.h"
 #endif
 
+/*
+%
+if exists TIMINGPROTECTION then
+% * EXECUTIONBUDGET = % !TIMINGPROTECTION::EXECUTIONBUDGET %, TIMEFRAME = % !TIMINGPROTECTION::TIMEFRAME %
+ * MAXOSINTERRUPTLOCKTIME = % !TIMINGPROTECTION::MAXOSINTERRUPTLOCKTIME %, MAXALLINTERRUPTLOCKTIME = % !TIMINGPROTECTION::MAXALLINTERRUPTLOCKTIME %
+%
+else
+%  No timing protection
+%
+end if
+% */
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -120,9 +131,6 @@ else
   %SUSPENDED%
 end if 
 %
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
-    /* activation allowed             */  ,TRUE
-#endif
 };
 %
 if EXTENDEDTASK then
