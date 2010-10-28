@@ -99,13 +99,13 @@ end foreach
   /*
    * bss data
    */
+   /*
    .=ALIGN(16);
   .bss  : {
     *(.bss)
     *(COMMON)
   } > ram
-
-  . = ALIGN(16);
+  */
 
   /*
    * private data of processes
@@ -305,7 +305,7 @@ end foreach
   } >ram AT>rom
 
  
- /* .bss :
+  .bss :
   {
   	__cs3_region_start_bss = .;
      *(.shbss)  
@@ -316,7 +316,7 @@ end foreach
     _end = .;
     __end = .;
   } >ram AT>rom
-*/
+
   .heap :
   {
     *(.heap)
@@ -334,7 +334,7 @@ end foreach
   __cs3_region_init_ram_size = (_edata - __cs3_region_start_ram);
   __cs3_region_init_size_ram = __cs3_region_init_ram_size;
   __cs3_region_zero_ram_size = (_end - _edata);
-/*  __cs3_region_zero_size_ram = __cs3_region_zero_ram_size;*/
+  __cs3_region_zero_size_ram = __cs3_region_zero_ram_size;
   __cs3_region_size_ram = LENGTH(ram);
   __cs3_region_zero_ram_loadaddr = LOADADDR (.bss);
   __cs3_region_num = 1;
