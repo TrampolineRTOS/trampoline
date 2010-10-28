@@ -94,3 +94,5 @@ if USETRACE then
     template trace_description in log
   end write
 end if
+
+template if exists custom_files in config

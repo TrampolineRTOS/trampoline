@@ -41,7 +41,7 @@ tpl_sleep:
   #str r2, [r0]
 #endif
   /* falls into infinite loop */ 
-  b .
+  B .
 
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"

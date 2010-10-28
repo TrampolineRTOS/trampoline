@@ -127,7 +127,7 @@ FUNC(void, OS_CODE) tpl_init_context(
   core_context->r[armreg_sp] = ((u32)the_proc->stack.stack_zone)
       + the_proc->stack.stack_size;
   /* task runs at a defined processor mode */
-  core_context->psr = USER_TASKS_ARM_MODE; /* macro defined into subarch part */
+  core_context->sp = USER_TASKS_ARM_MODE; /* macro defined into subarch part */
 
   /*
    * set the return address of the task/isr. This is usefull in case the

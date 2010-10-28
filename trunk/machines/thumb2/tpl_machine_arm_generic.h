@@ -76,8 +76,8 @@ typedef enum
  * ARM core registers
  */
 struct ARM_CONTEXT {
-  u32 r[16];
-  u32 psr;
+  u32 r[8];
+  u32 sp;
 };
 
 /**
