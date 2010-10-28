@@ -66,19 +66,19 @@ tpl_primary_syscall_handler:
      * ISR cat. 1) to prevent any preemption while in kernel
      * mode.
      */
-    msr cpsr_c, #(CPSR_IRQ_LOCKED | CPSR_SVC_MODE)
+    //msr cpsr_c, #(CPSR_IRQ_LOCKED | CPSR_SVC_MODE)
 
     /* We save R0 to R2 here as they may contain system call
      * parameter. We save LR as the task's return address.
      * R3 is not saved as it is known to never being used as
      * system call parameter (and contains system call number).
      */
-    stmfd sp!, {r0-r2,lr}
+    //stmfd sp!, {r0-r2,lr}
 
     /* System calls should be reentrant, so we have to
      * save the SPSR on the stack. */
-    mrs r1, spsr
-    stmfd sp!, {r1}
+    //mrs r1, spsr
+    //stmfd sp!, {r1}
     
     /* manage reentrance of kernel */
     ldr r1, =nested_kernel_entrance_counter
