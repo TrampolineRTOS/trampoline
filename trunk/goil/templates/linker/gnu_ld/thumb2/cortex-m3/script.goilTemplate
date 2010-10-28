@@ -3,8 +3,8 @@ ENTRY (Startup)
 
 MEMORY
 {
-  rom   : org = 0x40000000, len = 32K
-  ram   : org = 0x81000000, len = 200K
+  rom (rx)  : org = 0x40000000, len = 32K
+  ram (rw)  : org = 0x81000000, len = 200K
 }
 
 
@@ -302,7 +302,7 @@ end foreach
     *(.ram)
     . = ALIGN (8);
     _edata = .;
-  } >ram AT>rom
+  } >ram /*AT>rom*/
 
  
   .bss :
@@ -315,7 +315,7 @@ end foreach
     . = ALIGN (8);
     _end = .;
     __end = .;
-  } >ram AT>rom
+  } >ram /*AT>rom*/
 
   .heap :
   {
