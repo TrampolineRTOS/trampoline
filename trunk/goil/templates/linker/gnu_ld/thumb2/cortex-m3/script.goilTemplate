@@ -1,14 +1,23 @@
-ENTRY (Vec_reset)
+ENTRY (Startup)
 /* SEARCH_DIR(.) */
 
 MEMORY
 {
- /* internal_ram : org = 0x40000000, len = 16k
-  external_ram : org = 0x81000000, len = 1M */
-  /*rom   : org = 0x08000000, len = 32K
-  ram   : org = 0x20000000, len = 20K*/
   rom   : org = 0x40000000, len = 32K
-  ram   : org = 0x81000000, len = 20K}
+  ram   : org = 0x81000000, len = 200K
+}
+
+
+EXTERN(__cs3_reset_cortex_m)
+EXTERN(__cs3_interrupt_vector_cortex_m)
+EXTERN(__cs3_start_c main __cs3_stack __cs3_stack_size __cs3_heap_end)
+
+PROVIDE(__cs3_stack = __cs3_region_start_ram + __cs3_region_size_ram);
+PROVIDE(__cs3_stack_size = __cs3_region_start_ram + __cs3_region_size_ram - _end);
+PROVIDE(__cs3_heap_start = _end);
+PROVIDE(__cs3_heap_end = __cs3_region_start_ram + __cs3_region_size_ram);
+
+
 
 SECTIONS {
   .vectbl : {
@@ -49,13 +58,14 @@ SECTIONS
   . = ALIGN(4);
   osvars : {
     *(.osVar)
-   /* *(.stacks) *//* TODO : is it the best place ? */
+    *(.stacks) /* TODO : is it the best place ? */
   } > ram
 
   /*
    * code and consts of the processes of the applications
    */
-  apptext ALIGN(16) : { /* MPC5510 MPU requires 16 bytes alignment */
+    .=ALIGN(16);
+  apptext : { 
     __SEG_START_APP_CODE_CONST_RGN = .;
     *(.osApiConst)  /* API constants    */
     *(.rodata)      /* litteral strings */
@@ -69,7 +79,8 @@ end foreach
 %
   } > rom
   
-  appconst ALIGN(16) : {
+  .=ALIGN(16);
+  appconst  : {
 /* Sections for const of tasks and ISR */
 %
 foreach PROCESSES do
@@ -88,10 +99,12 @@ end foreach
   /*
    * bss data
    */
-  .bss ALIGN(16) : {
+   .=ALIGN(16);
+  .bss  : {
     *(.bss)
     *(COMMON)
   } > ram
+
   . = ALIGN(16);
 
   /*
@@ -148,6 +161,7 @@ end foreach
     *(.comment) 
   } > ram
   
+  . = ALIGN(4);
   debug : {
     *(.debug);
     . = ALIGN(4);
@@ -183,5 +197,154 @@ end foreach
     . = ALIGN(4);  
   } > ram
 
-}
+/*}*/
 
+/* Allocation des sections */
+/*SECTIONS*/
+/*{*/
+	/* Text = code executable */
+  .text :
+  {
+    CREATE_OBJECT_SYMBOLS
+    __cs3_region_start_rom = .;
+    *(.cs3.region-head.rom)
+    __cs3_interrupt_vector = __cs3_interrupt_vector_cortex_m;
+    *(.cs3.interrupt_vector)
+    /* Make sure we pulled in an interrupt vector.  */
+    ASSERT (. != __cs3_interrupt_vector_cortex_m, "No interrupt vector");
+    *(.rom)
+    *(.rom.b)
+
+    __cs3_reset = __cs3_reset_cortex_m;
+    *(.cs3.reset)
+    /* Make sure we pulled in some reset code.  */
+    ASSERT (. != __cs3_reset, "No reset code");
+
+    *(.text .text.* .gnu.linkonce.t.*)
+    /* *(.plt)
+    *(.gnu.warning)
+    *(.glue_7t) *(.glue_7) *(.vfp11_veneer)	*/
+
+    *(.rodata .rodata.* .gnu.linkonce.r.*)
+
+    /* *(.ARM.extab* .gnu.linkonce.armextab.*)
+    *(.gcc_except_table)
+    *(.eh_frame_hdr)
+    *(.eh_frame) */
+
+    . = ALIGN(4);
+    KEEP(*(.init))
+
+    . = ALIGN(4);
+    __preinit_array_start = .;
+    KEEP (*(.preinit_array))
+    __preinit_array_end = .;
+
+    . = ALIGN(4);
+    __init_array_start = .;
+    KEEP (*(SORT(.init_array.*)))
+    KEEP (*(.init_array))
+    __init_array_end = .;
+
+    . = ALIGN(0x4);
+    KEEP (*crtbegin.o(.ctors))
+    KEEP (*(EXCLUDE_FILE (*crtend.o) .ctors))
+    KEEP (*(SORT(.ctors.*)))
+    KEEP (*crtend.o(.ctors))
+
+    . = ALIGN(4);
+    KEEP(*(.fini))
+
+    . = ALIGN(4);
+    __fini_array_start = .;
+    KEEP (*(.fini_array))
+    KEEP (*(SORT(.fini_array.*)))
+    __fini_array_end = .;
+
+    KEEP (*crtbegin.o(.dtors))
+    KEEP (*(EXCLUDE_FILE (*crtend.o) .dtors))
+    KEEP (*(SORT(.dtors.*)))
+    KEEP (*crtend.o(.dtors))
+
+    . = ALIGN(4);
+    __cs3_regions = .;
+    LONG (0)
+    LONG (__cs3_region_init_ram)
+    LONG (__cs3_region_start_ram)
+    LONG (__cs3_region_init_size_ram)
+    LONG (__cs3_region_zero_size_ram)
+  } >rom
+
+  /* .ARM.exidx is sorted, so has to go in its own output section.  */
+  __exidx_start = .;
+  .ARM.exidx :
+  {
+    *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+  } >rom
+  __exidx_end = .;
+   .text.align :
+  {
+    . = ALIGN(8);
+    _etext = .;
+  } >rom	
+  __cs3_region_size_rom = LENGTH(rom);
+  __cs3_region_num = 1;
+
+  .data :
+  {
+    __cs3_region_start_ram = .;
+	__cs3_region_start_data = .;
+    *(.cs3.region-head.ram)
+    /*KEEP(*(.jcr))
+    *(.got.plt) *(.got)
+    *(.shdata)*/
+    *(.data .data.* .gnu.linkonce.d.*)
+    *(.ram)
+    . = ALIGN (8);
+    _edata = .;
+  } >ram AT>rom
+
+ 
+ /* .bss :
+  {
+  	__cs3_region_start_bss = .;
+     *(.shbss)  
+    *(.bss .bss.* .gnu.linkonce.b.*)
+    *(COMMON)
+    *(.ram.b)
+    . = ALIGN (8);
+    _end = .;
+    __end = .;
+  } >ram AT>rom
+*/
+  .heap :
+  {
+    *(.heap)
+  } >ram
+
+  /*. = ALIGN (8);*/
+/*  .stack (__cs3_stack - __cs3_stack_size) :*/
+  .stack :
+  {
+    *(.stack)
+  } >ram
+  
+  __cs3_region_init_ram_loadaddr = LOADADDR (.data);
+  __cs3_region_init_ram = __cs3_region_init_ram_loadaddr;
+  __cs3_region_init_ram_size = (_edata - __cs3_region_start_ram);
+  __cs3_region_init_size_ram = __cs3_region_init_ram_size;
+  __cs3_region_zero_ram_size = (_end - _edata);
+/*  __cs3_region_zero_size_ram = __cs3_region_zero_ram_size;*/
+  __cs3_region_size_ram = LENGTH(ram);
+  __cs3_region_zero_ram_loadaddr = LOADADDR (.bss);
+  __cs3_region_num = 1;
+
+  .stab 0 (NOLOAD) : { *(.stab) }
+
+  .stabstr 0 (NOLOAD) : { *(.stabstr) }
+
+
+  .note.gnu.arm.ident 0 : { KEEP (*(.note.gnu.arm.ident)) }
+  .ARM.attributes 0 : { KEEP (*(.ARM.attributes)) }
+  /DISCARD/ : { *(.note.GNU-stack) }
+}

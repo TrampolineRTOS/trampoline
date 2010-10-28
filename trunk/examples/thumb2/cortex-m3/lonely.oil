@@ -19,7 +19,9 @@ CPU test {
         APP_SRC = "lonely.c";
         APP_NAME = "lonely_exe";
         TRAMPOLINE_BASE_PATH = "../../..";
-        CFLAGS  = "-Wall -Os -g -I. -mcpu=cortex-m3 -mthumb"; 
+        CFLAGS  = "-g -Wall -pedantic -Wformat -std=c99 -mcpu=cortex-m3 -mthumb -Wmissing-field-initializers -mfloat-abi=soft"; 
+        //ASFLAGS = "-mcpu=cortex-m3 --fatal-warnings -g -mfloat-abi=soft "; 
+        ASFLAGS = "--fatal-warnings -g -mfloat-abi=soft "; 
         LDFLAGS = "-g --fatal-warnings --warn-common  --no-undefined";
         
         COMPILER = "arm-eabi-gcc";
