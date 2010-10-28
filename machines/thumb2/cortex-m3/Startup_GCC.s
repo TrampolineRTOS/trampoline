@@ -18,6 +18,7 @@ Startup:
 	LDR	 	R0, Startup_constants+12
 	MOV		SP, R0
 
+
 /* 
  * Initialisation à des variables initialisées 
  * R0: @Destination, R1: @Source, R2: taille, R3: compteur, R4: temp

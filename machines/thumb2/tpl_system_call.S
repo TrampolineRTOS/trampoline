@@ -23,7 +23,14 @@
  * $URL$
  */
 
-#include "tpl_asm_definitions.h"
+.equ  NO_NEED_SWITCH , 0
+.equ  NEED_SWITCH , 1
+.equ  NEED_SAVE , 2
+
+.include "syscallcount.inc"
+
+.syntax unified
+.include "tpl_asm_definitions.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_as_memmap.h"
@@ -66,19 +73,19 @@ tpl_primary_syscall_handler:
      * ISR cat. 1) to prevent any preemption while in kernel
      * mode.
      */
-    //msr cpsr_c, #(CPSR_IRQ_LOCKED | CPSR_SVC_MODE)
+    /*msr cpsr_c, #(CPSR_IRQ_LOCKED | CPSR_SVC_MODE)*/
 
     /* We save R0 to R2 here as they may contain system call
      * parameter. We save LR as the task's return address.
      * R3 is not saved as it is known to never being used as
      * system call parameter (and contains system call number).
      */
-    //stmfd sp!, {r0-r2,lr}
+    /*stmfd sp!, {r0-r2,lr}*/
 
     /* System calls should be reentrant, so we have to
      * save the SPSR on the stack. */
-    //mrs r1, spsr
-    //stmfd sp!, {r1}
+    /*mrs r1, spsr
+    stmfd sp!, {r1}*/
     
     /* manage reentrance of kernel */
     ldr r1, =nested_kernel_entrance_counter
@@ -102,24 +109,24 @@ tpl_primary_syscall_handler:
 
     /* get the appropriate system call address into R3 */
     ldr r1, =tpl_dispatch_table
-    ldr r3, [r1, r3, LSL #2]
+    /*ldr r3, [r1, r3, LSL #2] TODO */
+	lsl r3,#2
+	ldr r3,[R1,R3]
 
     /* pop registers values from the stack without altering
      * the stack pointer */
-    add sp, sp, #4     /* just jump over SPSR saved value */
-    ldmia sp, {r0-r2}
-    sub sp, sp, #4     /* restore current value of SP */
+	mrs r2,psp
+    ldmia r2, {r0-r2}
+	push {lr}
 
-    /* call the service (blx does not exist on ARM7TDMI, so we split it in
-     * two instructions) */
-    mov lr, pc
-    bx r3
+    /* call the service  */
+    blx r3
 
+	pop {lr}
   /* we save back returned value (r0-r1) into r0-r1 saved values on the stack */
-    add sp, sp, #4
-    stmia sp, {r0-r1}
-    sub sp, sp, #4
-
+	mrs r2,psp
+    stmia r2, {r0-r1}
+ 
     /* check if context switch is needed (requested by system service) */
     ldr r2, =tpl_kern
     ldrb r2, [r2, #TPL_KERN_OFFSET_NEED_SWITCH]
@@ -152,29 +159,15 @@ save_context_swi:
     /* get the context block address */
     ldr r2, [r0, #TPL_KERN_OFFSET_S_OLD] /* get the address of the context bloc */
     ldr r2, [r2]                /* jump to context bloc (from static descriptor) */
-    add r2, r2, #(4 * 4)        /* jump over r0-r3 saving zone */
-    stmia r2, {r4-r14}^
-    sub r2, r2, #(4 * 4)        /* get back to begining of task's saving zone... */
-
-    ldmfd sp!, {r4}          /* as SWI is reentrant, true SPSR is found in the stack */
-    str r4, [r2, #(16 * 4)]
-
-   /* save ABI's caller-saved registers, those which are saved into
-    * kernel_enter macro
-    */
-    ldmfd sp!, {r4-r6} /* r0-r2 <=> r4-r6 */
-    stmia r2, {r4-r6}
-
-    ldmfd sp!, {r4}          /* pop task's return address */
-    str r4, [r2, #(15 * 4)]  /* and store it into task's saving zone */
-
-    /* NB: R3 is not saved as we know its value won't be significant */
+    stmia r2, {r4-r11}
+	mrs r0,psp
+	str r0 ,[r2,#4*8]
+  
     b load_context_swi       /* jump to suite */
 
     /* only executed if context saving step has not been done */
 skip_save_context_swi:
-    add sp, sp, #(5 * 4)
-
+ 
     /*
      * LOADS NEW CONTEXT
      */
@@ -193,24 +186,13 @@ load_context_swi:
      * We use r14 as it will be restored separatly and later, it
      * is useful for the following ldmia instruction
      */
-    ldr lr, [r0, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context bloc */
-    ldr lr, [lr]                   /* jump to context bloc (from static descriptor) */
+    ldr r0, [r0, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context bloc */
+    ldr r0, [r0]                   /* jump to context bloc (from static descriptor) */
 
-    /* loads SPSR*/
-    ldr r0, [lr, #(16 * 4)]
-    msr spsr, r0
+	ldmia r0 , {r4-r11}
+  	ldr r0 , [r0,#(4*8)]
+	msr psp,r0
 
-    /* finish load and get back to running task */
-#if !defined NO_OKI_PIPELINE_BUG
-    ldmia lr, {r0-r14}^
-    b flush_pipeline
-flush_pipeline:
-    ldr lr, [lr, #(15 * 4)]
-
-    movs pc, lr
-#else
-    ldmia lr, {r0-r15}^
-#endif /* defined NO_OKI_PIPELINE_BUG */
 
     /********************************************
      * KERNEL EXIT WITHOUT CONTEXT SWITCH STAGE *
@@ -224,13 +206,8 @@ swi_no_context_switch_exit:
     sub r2, r2, #1
     str r2, [r3]
 
-    /* pops the stack frame (see kernel enter phase) */
-    ldmfd sp!, {r3}
-    msr spsr, r3
-    ldmfd sp!, {r0-r2,lr}
 
-    movs pc, lr
-
+	bx lr
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"
 
