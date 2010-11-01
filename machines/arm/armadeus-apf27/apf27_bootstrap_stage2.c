@@ -45,6 +45,8 @@ extern int main (void);
 /* TODO: replace this by a goil template which generates a declaration in .h */
 extern CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[64];
 
+u8 zeroed_vars_begin;
+u8 zeroed_vars_end;
 
 /* this function should not return as
  * it is called straight after reset
@@ -53,6 +55,7 @@ FUNC(void, OS_CODE) tpl_arm_bootstrap_stage2 ()
 {
 	u32 *target;
 	int i;
+	u8 *zero_vars_ptr;
 
 	/*TODO armadeus_memory_setup_defaults ();*/
 
@@ -72,6 +75,16 @@ FUNC(void, OS_CODE) tpl_arm_bootstrap_stage2 ()
     *target = (u32)tpl_it_vector[i].func;
     target++;
   }
+
+#if !defined WITH_MEMMAP || WITH_MEMMAP == NO
+	zero_vars_ptr = &zeroed_vars_begin;
+  do
+  {
+    *zero_vars_ptr = 0;
+    zero_vars_ptr++;
+  }
+  while (zero_vars_ptr != &zeroed_vars_end);
+#endif /* !defined WITH_MEMMAP || WITH_MEMMAP == NO */
 
 	/*
 	 * initialize memory segments
