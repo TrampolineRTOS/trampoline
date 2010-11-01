@@ -1,5 +1,5 @@
 if [ -z $1 ] ; then
-  FILE=app1_noisr_nomm_nomp.oil
+  FILE=app2_isr_nomm_nomp.oil
 else
   FILE=$1
 fi

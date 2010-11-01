@@ -35,30 +35,6 @@
 tpl_arm_bootstrap_entry:
 tpl_arm_bootstrap_stage1:
 
-/* first, we copy exception table the right location */
-  ldr r0, =vec_excpt_copy_begin
-  ldr r1, =0xFFFFFEF0
-  ldr r2, =vec_excpt_copy_end
-1:
-  cmp r0, r2
-  beq 2f
-  ldr r3, [r0], #4
-  str r3, [r1], #4
-  b 1b
-2:
-
-/* secondly, we copy interrupt table at the right location */
-  ldr r0, =vec_int_copy_begin
-  ldr r1, =0xFFFFFF00
-  ldr r2, =vec_int_copy_end
-3:
-  cmp r0, r2
-  beq 4f
-  ldr r3, [r0], #4
-  str r3, [r1], #4
-  b 3b
-4:
-
   /* setup IRQ mode initial stack pointer */
   msr cpsr_c, #(CPSR_IRQ_MODE | CPSR_IRQ_LOCKED | CPSR_FIQ_LOCKED)
     ldr sp, =irq_stack_bottom

@@ -33,7 +33,7 @@ apf27_bootstrap_stage1.S \
 apf27_exception_catch.S \
 apf27_mem_prot_asm.S \
 apf27_sleep.S \
-apf27_vectors.S \
+apf27_vectors.c \
 apf27_tpl_stubs.c \
 apf27_bootstrap_stage2.c \
 apf27_mem_prot.c

@@ -41,5 +41,8 @@ typedef struct ARM_CONTEXT *tpl_context;
 
 extern struct ARM_CONTEXT idle_task_context;
 
+/* for APF27 port internal use only */
+typedef void (*func_ptr) (void);
+extern CONST(func_ptr, OS_CONST) exception_table[4];
 
 #endif /* TPL_MACHINE_H */
