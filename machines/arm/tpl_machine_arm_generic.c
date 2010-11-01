@@ -133,8 +133,6 @@ FUNC(void, OS_CODE) tpl_init_context(
    * MISRA RULE 1,45,85 VIOLATION: the function pointer is used and stored
    * in a 32bits variable, but as the Os is dependant on the target,
    * the behaviour is controled
-   *
-   * TODO: follow ppc port code
    */
   core_context->r[armreg_lr] = (IS_ROUTINE == the_proc->type) ?
                                 (u32)(CallTerminateISR2) :

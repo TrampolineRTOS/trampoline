@@ -19,12 +19,6 @@ SECTIONS
   .text : ALIGN(4) SUBALIGN(4) {
 	  /* these sections are used to boot from u-boot easily */
  		*(.ubootsupport) 
-		vec_excpt_copy_begin = .;
-		*(.exceptionTable)
-		vec_excpt_copy_end = .;
-		vec_int_copy_begin = .;
-		*(.interrupt_table)
-		vec_int_copy_end = .;
 		/* legacy text section */
     *(.text)
 		*(.osApiCode) /* to be removed when then goil template "code/tpl_invoque.goilTemplate" will use MemMap.h */
