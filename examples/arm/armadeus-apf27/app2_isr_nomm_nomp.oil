@@ -69,6 +69,13 @@ CPU test {
         SCHEDULE = FULL;
     };
 
+		TASK t5 {
+				PRIORITY = 0;
+				AUTOSTART = FALSE;
+				ACTIVATION = 1;
+				SCHEDULE = FULL;
+		};
+
     ISR it1 {
         SOURCE = INT_GPIO;
         PRIORITY = 50;

@@ -1,10 +1,10 @@
 #include "tpl_os.h"
 #include "tpl_app_config.h"
 #include "apf27_switch.h"
+#include "apf27_aitc.h"
 
 FUNC(int, AUTOMATIC) main()
 {
-		tpl_disable_interrupts ();
 		apf27_s1_init ();
 		serial_init();
 		serial_puts ("bootstrap finished, starting Trampoline...");
@@ -33,6 +33,7 @@ TASK(t1)
 TASK(t4)
 {
 	serial_puts ("t4 says hello\n");
+	apf27_aitc_force_source_int (INT_GPT1);
 	TerminateTask ();
 }
 
@@ -51,10 +52,16 @@ TASK(t2)
 	TerminateTask ();
 }
 
+TASK(t5)
+{
+	serial_puts ("t5 starts and ends\n");
+	TerminateTask ();
+}
+
 ISR(it1)
 {
 	serial_puts ("it1 came up\n");
-	ActivateTask (t4);
+	ActivateTask (t5);
 	serial_puts ("it1 ends\n");
 	apf27_s1_ack_int ();
 }
@@ -62,6 +69,5 @@ ISR(it1)
 ISR(it2)
 {
 	serial_puts ("it2 came up\n");
-
 }
 

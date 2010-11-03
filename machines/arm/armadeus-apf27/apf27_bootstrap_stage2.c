@@ -36,17 +36,15 @@
 #include "tpl_as_isr_kernel.h"
 #include "tpl_os_kernel.h"
 #endif /* WITH_AUTOSAR */
+#include "apf27_aitc.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
 extern int main (void);
 
-/* TODO: replace this by a goil template which generates a declaration in .h */
-extern CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[64];
-
-u8 zeroed_vars_begin;
-u8 zeroed_vars_end;
+extern u8 zeroed_vars_begin;
+extern u8 zeroed_vars_end;
 
 /* this function should not return as
  * it is called straight after reset
@@ -67,15 +65,16 @@ FUNC(void, OS_CODE) tpl_arm_bootstrap_stage2 ()
     target++;
 	}
 
-  /* we copy (goil) generated interrupt table to the interrupt
-   vector RAM */
-  target = (u32*)0xFFFFFF00;
-  for (i = 0 ; i < 64 ; i++)
-  {
-    *target = (u32)tpl_it_vector[i].func;
-    target++;
-  }
+	/* initialize interrupt controller */
+	apf27_aitc_init ();
 
+	/*
+	 * initialize memory segments
+	 */
+ /* FIXME: usually, BSS segment is zeroed and DATA segment
+  * gets initial values from ROM. How should we handle this
+	* with memory mapping ?
+	*/
 #if !defined WITH_MEMMAP || WITH_MEMMAP == NO
 	zero_vars_ptr = &zeroed_vars_begin;
   do
@@ -86,14 +85,6 @@ FUNC(void, OS_CODE) tpl_arm_bootstrap_stage2 ()
   while (zero_vars_ptr != &zeroed_vars_end);
 #endif /* !defined WITH_MEMMAP || WITH_MEMMAP == NO */
 
-	/*
-	 * initialize memory segments
-	 */
- /* FIXME: usually, BSS segment is zeroed and DATA segment
-  * gets initial values from ROM. How should we handle this
-	* with memory mapping ?
-	*/
-	
 	/*
 	 * start application (which may start Trampoline via StartOS)
 	 */
