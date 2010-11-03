@@ -36,4 +36,6 @@ apf27_sleep.S \
 apf27_vectors.c \
 apf27_tpl_stubs.c \
 apf27_bootstrap_stage2.c \
+apf27_aitc.c \
+apf27_irq.c \
 apf27_mem_prot.c

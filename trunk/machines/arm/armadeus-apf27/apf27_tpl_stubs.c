@@ -88,30 +88,6 @@ FUNC(void, OS_CODE) tpl_init_machine()
 	/* TODO armadeus_heartbeat_timer_start ();*/
 }
 
-FUNC(void, OS_CODE) tpl_arm_subarch_irq_handler ()
-{
-	/* TODO */
-//	u32 interrupt_source;
-//	u16 isr_id;
-
-//	interrupt_source = armadeus_get_interrupt_source ();
-//	switch (interrupt_source)
-//	{
-//		case SYSTEM_TIMER_INT_SOURCE:
-//		armadeus_heartbeat_timer_ack ();
-//		/* TODO: call counter heartbeat */
-//		/* TODO: increment local time (watchdogs) */
-//		break;
-//#ifndef NO_ISR
-//		default:
-//		isr_id = armadeus_isr_by_src[interrupt_source];
-//		tpl_central_interrupt_handler(isr_id);
-//#endif /* !defined NO_ISR */
-//	}
-
-	/* acknoledge interrupt */
-//	armadeus_acknoledge_current_irq_level ();
-}
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

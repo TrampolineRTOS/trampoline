@@ -109,7 +109,10 @@ void apf27_s1_init ()
 	/* we only configure PORT F, all pins at input (no short circuit risks) 
 	 * and pin PF13 configured as interrupt source
 	 */
-	
+	PTF_SWR = 1;
+	tempo = 6;
+	while (tempo--);
+
   PTF_DDIR &= ~(1 << 13);
   PTF_ICONFA1 |= 1 << 26; // port 13 = interrupt
   PTF_ICONFA2 |= 0;
