@@ -44,11 +44,11 @@ extern void tpl_primary_data_abort_handler (void);
  * at startup to address 0xFFFFFF00
  */
 CONST(func_ptr, OS_CONST) exception_table[4] = {
-	(func_ptr)primary_undefined_instruction_handler,
-	(func_ptr)tpl_primary_syscall_handler,
-	(func_ptr)tpl_primary_prefetch_abort_handler,
-	(func_ptr)tpl_primary_data_abort_handler
-	};
+  (func_ptr)primary_undefined_instruction_handler,
+  (func_ptr)tpl_primary_syscall_handler,
+  (func_ptr)tpl_primary_prefetch_abort_handler,
+  (func_ptr)tpl_primary_data_abort_handler
+  };
 
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED

@@ -56,36 +56,36 @@ extern int main (void);
 
 FUNC(void, OS_CODE) tpl_shutdown ()
 {
-	/* FIXME: this is does not conform to AUTOSAR OS specifications,
-	 * should return to main with initial context */
-	DISABLE_FIQ ();
-	DISABLE_IRQ ();
+  /* FIXME: this is does not conform to AUTOSAR OS specifications,
+   * should return to main with initial context */
+  DISABLE_FIQ ();
+  DISABLE_IRQ ();
 
-	/* fall into very low consumption mode : all
-	 * internal CPU clocks are disabled.
-	 */
-	/* TODO armadeus_system_standby (); */
+  /* fall into very low consumption mode : all
+   * internal CPU clocks are disabled.
+   */
+  /* TODO armadeus_system_standby (); */
 
-	while (1);
+  while (1);
 }
 
 extern void tpl_init_machine_generic (void);
 
 FUNC(void, OS_CODE) tpl_init_machine()
 {
-	/* TODO armadeus_int_ctrl_setup_defaults ();*/
+  /* TODO armadeus_int_ctrl_setup_defaults ();*/
 
-	/* TODO armadeus_disable_all_devices ();*/
+  /* TODO armadeus_disable_all_devices ();*/
 
-	/* TODO armadeus_setup_heartbeat_timer_1ms ();*/
+  /* TODO armadeus_setup_heartbeat_timer_1ms ();*/
 
 #if WITH_MEMORY_PROTECTION == YES
-	tpl_init_mp();
+  tpl_init_mp();
 #endif /* WITH_MEMORY_PROTECTION == YES */
 
-	tpl_init_machine_generic ();
+  tpl_init_machine_generic ();
 
-	/* TODO armadeus_heartbeat_timer_start ();*/
+  /* TODO armadeus_heartbeat_timer_start ();*/
 }
 
 #define OS_STOP_SEC_CODE
@@ -96,9 +96,9 @@ FUNC(void, OS_CODE) tpl_init_machine()
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 FUNC(void, OS_CODE) tpl_set_watchdog (
-	VAR(tpl_time, AUTOMATIC) delay)
+  VAR(tpl_time, AUTOMATIC) delay)
 {
-	/* TODO */
+  /* TODO */
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
@@ -107,7 +107,7 @@ FUNC(void, OS_CODE) tpl_set_watchdog (
 #include "tpl_memmap.h"
 FUNC(void, OS_CODE) tpl_cancel_watchdog ()
 {
-	/* TODO */
+  /* TODO */
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
@@ -116,11 +116,11 @@ FUNC(void, OS_CODE) tpl_cancel_watchdog ()
 #include "tpl_memmap.h"
 FUNC(tpl_time, OS_CODE) tpl_get_local_current_date ()
 {
-	/* TODO delete these lines there are juste for debbug */
-	VAR(tpl_time, OS_VAR) current_date;
-	current_date = 0;
-	return current_date;
-	/* TODO */
+  /* TODO delete these lines there are juste for debbug */
+  VAR(tpl_time, OS_VAR) current_date;
+  current_date = 0;
+  return current_date;
+  /* TODO */
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
@@ -143,15 +143,15 @@ FUNC(tpl_time, OS_CODE) tpl_get_local_current_date ()
 /* FIXME : needs update (tpl_proc_static) */
 
 FUNC(tpl_bool, OS_CODE) tpl_check_stack_pointer (
-  	CONST(tpl_proc_id, AUTOMATIC) proc_id)
+    CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
-	VAR(tpl_bool, OS_VAR) tmp;
-	/* FIXME : needs update (tpl_proc_static)
-	if(this_exec_obj->static_desc->context.core_context->r[sp]<
-		&(this_exec_obj->static_desc->stack))*/
-	tmp=1; /*no overflow detected*/
-	//else tmp=0; /*there is an overflow*/
-	return tmp;
+  VAR(tpl_bool, OS_VAR) tmp;
+  /* FIXME : needs update (tpl_proc_static)
+  if(this_exec_obj->static_desc->context.core_context->r[sp]<
+    &(this_exec_obj->static_desc->stack))*/
+  tmp=1; /*no overflow detected*/
+  //else tmp=0; /*there is an overflow*/
+  return tmp;
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

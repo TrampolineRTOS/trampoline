@@ -2,8 +2,8 @@
 
 typedef volatile struct
 {
-	u32 INTCTL;
-	u32 NIMASK;
+  u32 INTCTL;
+  u32 NIMASK;
   u32 INTENNUM;
   u32 INTDISNUM;
   u32 INTENABLEH;
@@ -32,43 +32,43 @@ extern void tpl_primary_irq_handler (void);
 
 void apf27_aitc_init ()
 {
-	u32 i;
-	u32 *target;
+  u32 i;
+  u32 *target;
 
   /*
-	 * All defaults to 0 :
-	 * - no interrupt mask
-	 * - no special treatment for bus arbitration
-	 * - vectors in high memory
-	 */
-	AITC.INTCTL = 0;
+   * All defaults to 0 :
+   * - no interrupt mask
+   * - no special treatment for bus arbitration
+   * - vectors in high memory
+   */
+  AITC.INTCTL = 0;
   /* no interrupt mask */
-	AITC.NIMASK = -1;
+  AITC.NIMASK = -1;
 
-	/* we enable only interrupt sources that are declared in OIL file,
-	 * more interrupt sources can be enabled later via 
-	 * apf27_aitc_enable_source_int
-	 */
-	for (i = 0 ; i < 64 ; i++)
-	{
-		/* if corresponding vector is not connected to NULL,
-		 * this means that we need this source, so we enable it
-		 */
-		if (tpl_it_vector[i].func != tpl_null_it)
-			AITC.INTENNUM = i;
-	}			
-	
-	/* All interrupts sources are routed to nIRQ (and not FIQ) */
-	AITC.INTTYPEH = 0;
-	AITC.INTTYPEL = 0;
+  /* we enable only interrupt sources that are declared in OIL file,
+   * more interrupt sources can be enabled later via 
+   * apf27_aitc_enable_source_int
+   */
+  for (i = 0 ; i < 64 ; i++)
+  {
+    /* if corresponding vector is not connected to NULL,
+     * this means that we need this source, so we enable it
+     */
+    if (tpl_it_vector[i].func != tpl_null_it)
+      AITC.INTENNUM = i;
+  }      
+  
+  /* All interrupts sources are routed to nIRQ (and not FIQ) */
+  AITC.INTTYPEH = 0;
+  AITC.INTTYPEL = 0;
 
-	/* All interrupts sources gets priority level 0 */
-	for (i = 0 ; i < 8 ; i++)
-		AITC.NIPRIORITY[i] = 0;
+  /* All interrupts sources gets priority level 0 */
+  for (i = 0 ; i < 8 ; i++)
+    AITC.NIPRIORITY[i] = 0;
 
   /* all vectors points on the primary IRQ handler */
-	/* TODO: i.MX vector table would be useful if it would point
-	 * on the right routine */
+  /* TODO: i.MX vector table would be useful if it would point
+   * on the right routine */
   target = (u32*)0xFFFFFF00;
   for (i = 0 ; i < 64 ; i++)
   {
@@ -79,55 +79,55 @@ void apf27_aitc_init ()
 
 void apf27_aitc_set_source_int_level (IMX27_interrupt_source source, u32 level)
 {
-	u32 source_number;
-	u32 reg_num;
-	u32 decal;
+  u32 source_number;
+  u32 reg_num;
+  u32 decal;
 
-	source_number = (u32)source;
-	reg_num = source_number >> 3;
-	decal = source_number & 7;
-	decal = decal << 2;
+  source_number = (u32)source;
+  reg_num = source_number >> 3;
+  decal = source_number & 7;
+  decal = decal << 2;
 
-	AITC.NIPRIORITY[reg_num] = level << decal;
+  AITC.NIPRIORITY[reg_num] = level << decal;
 }
 
 void apf27_aitc_enable_source_int (IMX27_interrupt_source source)
 {
-	u32 source_number;
+  u32 source_number;
 
-	source_number = (u32)source;
+  source_number = (u32)source;
 
-	AITC.INTENNUM = source_number;
+  AITC.INTENNUM = source_number;
 }
 
 void apf27_aitc_disable_source_int (IMX27_interrupt_source source)
 {
-	u32 source_number;
+  u32 source_number;
 
-	source_number = (u32)source;
+  source_number = (u32)source;
 
-	AITC.INTDISNUM = source_number;
+  AITC.INTDISNUM = source_number;
 }
 
 void apf27_aitc_force_source_int (IMX27_interrupt_source source)
 {
-	u32 source_number;
-	u32 reg_num;
-	u32 decal;
+  u32 source_number;
+  u32 reg_num;
+  u32 decal;
 
-	source_number = (u32)source;
-	reg_num = source_number >> 5;
-	decal = source_number & 31;
+  source_number = (u32)source;
+  reg_num = source_number >> 5;
+  decal = source_number & 31;
 
-	if (reg_num == 0)
-		AITC.INTFRCL |= 1 << decal;
-	else
-		AITC.INTFRCH |= 1 << decal;
+  if (reg_num == 0)
+    AITC.INTFRCL |= 1 << decal;
+  else
+    AITC.INTFRCH |= 1 << decal;
 }
 
 IMX27_interrupt_source apf27_aitc_get_source_int (void)
 {
-	return (IMX27_interrupt_source)((AITC.NIVECSR >> 16 )& 0xFFFF);
+  return (IMX27_interrupt_source)((AITC.NIVECSR >> 16 )& 0xFFFF);
 }
 
 #define OS_STOP_SEC_CODE
