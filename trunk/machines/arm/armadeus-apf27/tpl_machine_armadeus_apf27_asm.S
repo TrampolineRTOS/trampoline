@@ -61,17 +61,17 @@ bootstrap_stack_bottom:
  * pfabord, undef) */
 .global faulty_instruction
 faulty_instruction:
-	.word 0
+  .word 0
 
 /* contains the CPSR value at the time of the fault (abord, pfabord, undef) */
 .global saved_psr
 saved_psr:
-	.word 0
+  .word 0
 
 /* contains the stack pointer at the time of the fault */
 .global interrupted_stack_pointer
 interrupted_stack_pointer:
-	.word 0
+  .word 0
 
 /* TODO This code is here just for demo of the
  * memory protection work*/
@@ -83,7 +83,7 @@ mp_abort_table:
 
 .global mp_abort_table_entry
 mp_abort_table_entry:
-	.word mp_abort_table
+  .word mp_abort_table
  /*********************************/
  
 .section .osCode
@@ -91,43 +91,43 @@ mp_abort_table_entry:
 
 /* this macro locks interrupts before hanging down in a loop */
 .macro lock_interrupts
-	stmfd sp!, {r0}
-	mrs r0, cpsr
-	orr r0, r0, #(CPSR_FIQ_LOCKED | CPSR_IRQ_LOCKED)
-	msr cpsr_c, r0
-	ldmfd sp!, {r0}
+  stmfd sp!, {r0}
+  mrs r0, cpsr
+  orr r0, r0, #(CPSR_FIQ_LOCKED | CPSR_IRQ_LOCKED)
+  msr cpsr_c, r0
+  ldmfd sp!, {r0}
 .endm
 
 /* this macro decodes some informations about an exception (abort, undef) */
 .macro decode_exception exception_type
-	stmfd sp!, {r0, r1, r2}
+  stmfd sp!, {r0, r1, r2}
 
-	/* get the faulty PC */
+  /* get the faulty PC */
 .if (\exception_type == data_abort)
-	sub r0, lr, #8
+  sub r0, lr, #8
 .else
   sub r0, lr, #4
 .endif
-	ldr r1, =faulty_instruction
-	str r0, [r1]
+  ldr r1, =faulty_instruction
+  str r0, [r1]
 
-	/* get the faulty CPSR */
-	mrs r0, spsr
-	ldr r1, =saved_psr
-	str r0, [r1]
+  /* get the faulty CPSR */
+  mrs r0, spsr
+  ldr r1, =saved_psr
+  str r0, [r1]
 
   /* get stack pointer from faulty mode */
-	mrs r0, cpsr /* save current mode */
-	mrs r1, spsr
-	and r1, r1, #PSR_MODE_MASK
-	bic r2, r0, #PSR_MODE_MASK
-	orr r2, r2, r1
-	msr cpsr, r2
-	ldr r1, =interrupted_stack_pointer
-	str sp, [r1]
-	msr cpsr, r0
+  mrs r0, cpsr /* save current mode */
+  mrs r1, spsr
+  and r1, r1, #PSR_MODE_MASK
+  bic r2, r0, #PSR_MODE_MASK
+  orr r2, r2, r1
+  msr cpsr, r2
+  ldr r1, =interrupted_stack_pointer
+  str sp, [r1]
+  msr cpsr, r0
 
-	ldmfd sp!, {r0, r1, r2}
+  ldmfd sp!, {r0, r1, r2}
 .endm
 
 .global primary_undefined_instruction_handler
@@ -144,29 +144,29 @@ tpl_arm_subarch_prefetch_abort_handler:
   /* TODO This code is here just for demo of the
    * memory protection work */
   /* Save registers used by the data abort */
-	stmfd sp!, {r0-r2, lr}
+  stmfd sp!, {r0-r2, lr}
 
-	/* Get status code fault from the "Instruction Fault Status Register */
-	mrc p15, 0, r0, c5, c0, 1
-	and r0, r0, #0xF
+  /* Get status code fault from the "Instruction Fault Status Register */
+  mrc p15, 0, r0, c5, c0, 1
+  and r0, r0, #0xF
 
-	/* Set id_bits with the value of current id process*/
-	orr r0, r1, LSL #8
+  /* Set id_bits with the value of current id process*/
+  orr r0, r1, LSL #8
 
-	/* Set flag of prefetch abort */
-	mov r1, #prefetch_abort
-	orr r0, r1, LSL #4
-	bl store_into_mp_abort_table
-	
-	/*  Get the fault address from the Fault Address Register */
-	mrc p15, 0, r0, c6, c0, 0
-	
-	bl store_into_mp_abort_table
-	
-	/*  Restore saved registers */
-	ldmfd sp!, {r0-r2, lr}
-	
-	mov pc,lr
+  /* Set flag of prefetch abort */
+  mov r1, #prefetch_abort
+  orr r0, r1, LSL #4
+  bl store_into_mp_abort_table
+  
+  /*  Get the fault address from the Fault Address Register */
+  mrc p15, 0, r0, c6, c0, 0
+  
+  bl store_into_mp_abort_table
+  
+  /*  Restore saved registers */
+  ldmfd sp!, {r0-r2, lr}
+  
+  mov pc,lr
   
 
 .global tpl_arm_subarch_data_abort_handler
@@ -177,33 +177,33 @@ tpl_arm_subarch_data_abort_handler:
     /* TODO This code is here just for demo of the
    * memory protection work */
   /* Save registers used by the data abort */
-	stmfd sp!, {r0-r2, lr}
-	
-	/* Get the id of the running porcess wich generate prefetch abort */	
-	ldr r2, =tpl_kern
-	ldr r1, [r2, #OFFSET_RUNNING_ID] 
-									  								  
-	/* Get status code fault from the "Instruction Fault Status Register */
-	mrc p15, 0, r0, c5, c0, 0
-	and r0, r0, #0xF
-	
-	/* Set id_bits with the value of current id process*/
-	orr r0, r1, LSL #8
-	
-	/* Set flag of data abort */
-	mov r1, #data_abort
-	orr r0, r1, LSL #4
+  stmfd sp!, {r0-r2, lr}
+  
+  /* Get the id of the running porcess wich generate prefetch abort */  
+  ldr r2, =tpl_kern
+  ldr r1, [r2, #OFFSET_RUNNING_ID] 
+                                      
+  /* Get status code fault from the "Instruction Fault Status Register */
+  mrc p15, 0, r0, c5, c0, 0
+  and r0, r0, #0xF
+  
+  /* Set id_bits with the value of current id process*/
+  orr r0, r1, LSL #8
+  
+  /* Set flag of data abort */
+  mov r1, #data_abort
+  orr r0, r1, LSL #4
 
-	bl store_into_mp_abort_table
-	
-	/*  Get the fault address from the Fault Address Register */
-	mrc p15, 0, r0, c6, c0, 0
-	
-	bl store_into_mp_abort_table
-	
-	/*  Restore saved registers */
-	ldmfd sp!, {r0-r2, lr}
-	mov pc,lr
+  bl store_into_mp_abort_table
+  
+  /*  Get the fault address from the Fault Address Register */
+  mrc p15, 0, r0, c6, c0, 0
+  
+  bl store_into_mp_abort_table
+  
+  /*  Restore saved registers */
+  ldmfd sp!, {r0-r2, lr}
+  mov pc,lr
 
 .global store_into_mp_abort_table
 store_into_mp_abort_table:
@@ -236,16 +236,16 @@ primary_unused_handler:
 /* FIQ not defined in this port version */
 .global tpl_primary_fiq_handler
 tpl_primary_fiq_handler:
-	subs pc, lr, #4
+  subs pc, lr, #4
 
 .global tpl_arm_bootstrap_entry
 tpl_arm_bootstrap_entry:
 
-	/* jump to the generic arm bootstrap*/
-	bl tpl_arm_bootstrap_generic
+  /* jump to the generic arm bootstrap*/
+  bl tpl_arm_bootstrap_generic
     
-	/* jump to high level bootstrap part */
-	b tpl_arm_bootstrap_stage2
+  /* jump to high level bootstrap part */
+  b tpl_arm_bootstrap_stage2
 
 /* Control register c1
  * Enable align address condrol, 'A' bit
@@ -253,47 +253,47 @@ tpl_arm_bootstrap_entry:
  */
 .global tpl_enable_memory_protection
 tpl_enable_memory_protection:
-	/* TODO this could be done at initialization */
-	/* Set domain 0 as client - it's only the one used here - */
-	mrc p15, 0, r2, c3, c0, 0
-	mov r2, #0x1					
-	mcr p15, 0, r2, c3, c0, 0
-	
-	/* Flush TLB */
-	mcr p15, 0, r2, c8, c7, 0
+  /* TODO this could be done at initialization */
+  /* Set domain 0 as client - it's only the one used here - */
+  mrc p15, 0, r2, c3, c0, 0
+  mov r2, #0x1          
+  mcr p15, 0, r2, c3, c0, 0
+  
+  /* Flush TLB */
+  mcr p15, 0, r2, c8, c7, 0
 
-	/* Set the A and M bits */
-	mrc p15, 0, r2, c1, c0, 0	
-	orr r2, r2, #0b11
-	mcr p15, 0, r2, c1, c0, 0
-	b pipeline_flush
+  /* Set the A and M bits */
+  mrc p15, 0, r2, c1, c0, 0  
+  orr r2, r2, #0b11
+  mcr p15, 0, r2, c1, c0, 0
+  b pipeline_flush
 
 .global tpl_disable_memory_protection
 tpl_disable_memory_protection:
-	/* Unset the A and M bits */
-	mrc p15, 0, r2, c1, c0, 0
-	bic r2, r2, #0b11
-	mcr p15, 0, r2, c1, c0, 0
-	b pipeline_flush
+  /* Unset the A and M bits */
+  mrc p15, 0, r2, c1, c0, 0
+  bic r2, r2, #0b11
+  mcr p15, 0, r2, c1, c0, 0
+  b pipeline_flush
 
 .global tpl_switch_memory_protection_context
 tpl_switch_memory_protection_context:
-	/* Set the translation table base address */
-	ldr r1, [r0, #OFFSET_RUNNING_ID]	/* get the ID of the running process */
-	
-		/* get the address of the table of all translation table base address*/
-	ldr r2, =ttb_table
-	add r2, r2, r1, LSL #2			/* get the good translation table base address */
-	ldr r2, [r2]
-	mcr p15, 0, r2, c2, c0, 0		/* set the system with this new base address */
-	b pipeline_flush
+  /* Set the translation table base address */
+  ldr r1, [r0, #OFFSET_RUNNING_ID]  /* get the ID of the running process */
+  
+    /* get the address of the table of all translation table base address*/
+  ldr r2, =ttb_table
+  add r2, r2, r1, LSL #2      /* get the good translation table base address */
+  ldr r2, [r2]
+  mcr p15, 0, r2, c2, c0, 0    /* set the system with this new base address */
+  b pipeline_flush
 
 
 /* Flush pipeline for the next instruction use 
- * the good memory translation path */		
+ * the good memory translation path */    
 pipeline_flush:
-	mov pc, lr	
-	
+  mov pc, lr  
+  
 
 /* We want tpl_sleep not to use stack. Writing in assembler make us able to
  * prevent this. */
@@ -304,4 +304,4 @@ tpl_sleep:
  /* TODO */
 #endif
   /* falls into infinite loop */
-	b .
+  b .

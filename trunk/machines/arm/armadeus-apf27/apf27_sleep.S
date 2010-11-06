@@ -32,7 +32,7 @@
 tpl_sleep:
   /* TODO: bring the CPU to low consumption mode*/
   /* falls into infinite loop */
-	b .
+  b .
 
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"

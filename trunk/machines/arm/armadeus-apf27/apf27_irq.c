@@ -34,12 +34,12 @@
 
 FUNC(void, OS_CODE) tpl_arm_subarch_irq_handler ()
 {
-	VAR(u32, AUTOMATIC) interrupt_source;
-	VAR(tpl_it_handler, AUTOMATIC) isr_vector;
+  VAR(u32, AUTOMATIC) interrupt_source;
+  VAR(tpl_it_handler, AUTOMATIC) isr_vector;
 
-	interrupt_source = (u32)apf27_aitc_get_source_int ();
-	isr_vector = tpl_it_vector[interrupt_source].func;
-	isr_vector(tpl_it_vector[interrupt_source].args);
+  interrupt_source = (u32)apf27_aitc_get_source_int ();
+  isr_vector = tpl_it_vector[interrupt_source].func;
+  isr_vector(tpl_it_vector[interrupt_source].args);
 }
 
 #define OS_START_SEC_CODE

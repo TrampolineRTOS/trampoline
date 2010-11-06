@@ -51,32 +51,32 @@ extern u8 zeroed_vars_end;
  */
 FUNC(void, OS_CODE) tpl_arm_bootstrap_stage2 ()
 {
-	u32 *target;
-	int i;
-	u8 *zero_vars_ptr;
+  u32 *target;
+  int i;
+  u8 *zero_vars_ptr;
 
-	/*TODO armadeus_memory_setup_defaults ();*/
+  /*TODO armadeus_memory_setup_defaults ();*/
 
-	/* we copy exception table to the right place */
-	target = (u32*)0xFFFFFEF0;
-	for (i = 0 ; i < 4 ; i++)
-	{
-		*target = (u32)exception_table[i];
+  /* we copy exception table to the right place */
+  target = (u32*)0xFFFFFEF0;
+  for (i = 0 ; i < 4 ; i++)
+  {
+    *target = (u32)exception_table[i];
     target++;
-	}
+  }
 
-	/* initialize interrupt controller */
-	apf27_aitc_init ();
+  /* initialize interrupt controller */
+  apf27_aitc_init ();
 
-	/*
-	 * initialize memory segments
-	 */
+  /*
+   * initialize memory segments
+   */
  /* FIXME: usually, BSS segment is zeroed and DATA segment
   * gets initial values from ROM. How should we handle this
-	* with memory mapping ?
-	*/
+  * with memory mapping ?
+  */
 #if !defined WITH_MEMMAP || WITH_MEMMAP == NO
-	zero_vars_ptr = &zeroed_vars_begin;
+  zero_vars_ptr = &zeroed_vars_begin;
   do
   {
     *zero_vars_ptr = 0;
@@ -85,13 +85,13 @@ FUNC(void, OS_CODE) tpl_arm_bootstrap_stage2 ()
   while (zero_vars_ptr != &zeroed_vars_end);
 #endif /* !defined WITH_MEMMAP || WITH_MEMMAP == NO */
 
-	/*
-	 * start application (which may start Trampoline via StartOS)
-	 */
-	main ();
+  /*
+   * start application (which may start Trampoline via StartOS)
+   */
+  main ();
 
-	/* ends in a loop, as we should not return from reset */
-	while (1);
+  /* ends in a loop, as we should not return from reset */
+  while (1);
 }
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
