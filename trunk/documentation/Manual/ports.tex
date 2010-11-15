@@ -581,11 +581,17 @@ Besides specific initializations, the bootstrap should :
 
 \subsection{Configuration}
 
+All configuration of port is done in \file{apf27\_config.h}.
+
 \subsubsection{Stacks}
 
-Stacks' size (stack of each exception mode) can be adjusted in the file \file{tpl\_stacks\_size.h}. Remember that the size must be aligned to 4.
+Stacks' size (stack of each exception mode) can be adjusted via the following constants. Remember that the size must be aligned to 4.
 
-\subsection{Memory mapping considerations}
+\subsubsection{CPU caches}
+
+By default, CPU caches are disabled (for real time determinism).
+
+\subsection{Memory mapping}
 
 This port can be use in one of these three configurations :
 \begin{enumerate}
@@ -593,6 +599,32 @@ This port can be use in one of these three configurations :
 \item Memory mapping without memory protection
 \item Memory mapping and memory protection
 \end{enumerate}
+
+\subsection{Memory protection}
+
+To be written...
+
+Some points to explain :
+\begin{itemize}
+\item FCSE mechanism is not used by this port (if someone is interested by this work, she's welcome)
+\item address translation is not used, all VMA equals physical address
+\end{itemize}
+
+\subsubsection{MMU tables generation principle}
+
+To be written...
+
+Some points to explain :
+\begin{itemize}
+\item MMU is not disabled in privileged mode, but all useful memory areas are accessible. Thus, we hope we can find bugs easily in privіleged code.
+\item useful memory areas, except processes and applications ones, are configured as accessible (read and write) in privileged mode. These memory areas are called system areas
+\item some memory areas needs to be accessible by anyone (API, GCC builtin functions, common libraries, ...), they are called common areas (they are read only for unprivileged contexts)
+\item there is one translation table for each process
+\item all translation tables have the same system and common areas
+\item there is one page table set for each process. Page tables are fine page tables. Table entries are tiny page descriptors.
+\item the number of page table in a set depends on the size of the whole trampoline and application memory footprint. Then this information is given by linker via a symbol which is used by the MMU driver.
+\item Page tables are accessed via a macro, as they are allocated by linker (and we cannot know the number of page tables)
+\end{itemize}
 
 \section{ARM -- Simtec EB675001 board}
 

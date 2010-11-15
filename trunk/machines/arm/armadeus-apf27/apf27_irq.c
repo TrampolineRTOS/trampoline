@@ -29,7 +29,7 @@
 #include "tpl_os_kernel.h"
 #include "apf27_aitc.h"
 
-#define OS_STOP_SEC_VAR_UNSPECIFIED
+#define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
 FUNC(void, OS_CODE) tpl_arm_subarch_irq_handler ()
@@ -42,6 +42,6 @@ FUNC(void, OS_CODE) tpl_arm_subarch_irq_handler ()
   isr_vector(tpl_it_vector[interrupt_source].args);
 }
 
-#define OS_START_SEC_CODE
+#define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

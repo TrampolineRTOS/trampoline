@@ -38,7 +38,7 @@
 #endif /* WITH_AUTOSAR */
 
 #if WITH_MEMORY_PROTECTION == YES
-#include "apf27_mem_prot.h"
+#include "arm926_mmu.h"
 #endif /* WITH_MEMORY_PROTECTION */
 
 #define OS_START_SEC_VAR_UNSPECIFIED
@@ -82,6 +82,12 @@ FUNC(void, OS_CODE) tpl_init_machine()
 #if WITH_MEMORY_PROTECTION == YES
   tpl_init_mp();
 #endif /* WITH_MEMORY_PROTECTION == YES */
+
+#if WITH_CPU_CACHE == YES
+	arm926ejs_cache_on ();
+#else
+	arm926ejs_cache_off ();
+#endif /* WITH_CPU_CACHE == YES*/
 
   tpl_init_machine_generic ();
 

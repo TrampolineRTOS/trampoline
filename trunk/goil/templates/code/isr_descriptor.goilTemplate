@@ -86,7 +86,7 @@ end if
 #endif
 };
 
-tpl_isr_static % !NAME %_isr_helper = {
+CONST(tpl_isr_static, OS_CONST) % !NAME %_isr_helper = {
   /* helper */ NULL,
   /* next */   NULL,
   /* id */     % !NAME %_id

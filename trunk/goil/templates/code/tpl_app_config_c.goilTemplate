@@ -566,7 +566,7 @@ tpl_schedtable_table[% ![SCHEDULETABLES length] %] = {
   
   foreach OSAPPLICATIONS
     before %
-CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT] = {
+CONSTP2CONST(tpl_app_access, OS_APPL_CONST, OS_APPL_CONST) tpl_app_table[APP_COUNT] = {
 %
     do %  &% !NAME %_app_access%
     between %,

@@ -35,6 +35,9 @@
 #include "tpl_as_protec_hook.h"
 #include "tpl_machine_interface.h"
 #include "tpl_dow.h"
+#if WITH_MEMORY_PROTECTION == YES
+#include "tpl_os_mem_prot.h"
+#endif /* WITH_MEMORY_PROTECTION == YES */
 
 
 #define OS_START_SEC_CODE
@@ -46,7 +49,7 @@ FUNC(tpl_tick, OS_CODE) tpl_min(
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-#define OS_START_SEC_CODE
+#define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
 /**
@@ -55,6 +58,12 @@ FUNC(tpl_tick, OS_CODE) tpl_min(
  * This value is used to specify an invalid schedule table
  */
 CONST(tpl_schedtable_id, AUTOMATIC) INVALID_SCHEDULETABLE = SCHEDTABLE_COUNT;
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 
 FUNC(tpl_tick, OS_CODE) tpl_min(
    VAR(tpl_tick, AUTOMATIC) var_1,

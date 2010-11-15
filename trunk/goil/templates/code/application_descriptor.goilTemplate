@@ -14,33 +14,33 @@ end if
 if PROCESSACCESSNUM > 0 then
 %
 /* % !PROCESSACCESSVECTOR % */
-u8 % !NAME %_procs_access[% !PROCESSACCESSNUM %] = { % !PROCESSACCESSITEMS % };
+CONST(u8, OS_CONST) % !NAME %_procs_access[% !PROCESSACCESSNUM %] = { % !PROCESSACCESSITEMS % };
 %
 end if
 if ALARMACCESSNUM > 0 then
 %/* % !ALARMACCESSVECTOR % */
-u8 % !NAME %_alarms_access[% !ALARMACCESSNUM %] = { % !ALARMACCESSITEMS % };
+CONST(u8, OS_CONST) % !NAME %_alarms_access[% !ALARMACCESSNUM %] = { % !ALARMACCESSITEMS % };
 %
 end if
 if RESOURCEACCESSNUM > 0 then
 %/* % !RESOURCEACCESSVECTOR % */
-u8 % !NAME %_rezs_access[% !RESOURCEACCESSNUM %] = { % !RESOURCEACCESSITEMS % };
+CONST(u8, OS_CONST) % !NAME %_rezs_access[% !RESOURCEACCESSNUM %] = { % !RESOURCEACCESSITEMS % };
 %
 end if
 if SCHEDULETABLEACCESSNUM > 0 then
 %/* % !SCHEDULETABLEACCESSVECTOR % */
-u8 % !NAME %_sts_access[% !SCHEDULETABLEACCESSNUM %] = { % !SCHEDULETABLEACCESSITEMS % };
+CONST(u8, OS_CONST) % !NAME %_sts_access[% !SCHEDULETABLEACCESSNUM %] = { % !SCHEDULETABLEACCESSITEMS % };
 %
 end if
 if COUNTERACCESSNUM > 0 then
 %/* % !COUNTERACCESSVECTOR % */
-u8 % !NAME %_cnts_access[% !COUNTERACCESSNUM %] = { % !COUNTERACCESSITEMS % };
+CONST(u8, OS_CONST) % !NAME %_cnts_access[% !COUNTERACCESSNUM %] = { % !COUNTERACCESSITEMS % };
 %
 end if
 %
 %
 foreach PROCESSES
-  before %tpl_proc_id % !NAME %_proc_own[% ![PROCESSES length] %] = { %
+  before %CONST(tpl_proc_id, OS_CONST) % !NAME %_proc_own[% ![PROCESSES length] %] = { %
   do !NAME%_id%
   between %, %
   after % };
@@ -48,7 +48,7 @@ foreach PROCESSES
 end foreach
 
 foreach ALARMS
-  before %tpl_alarm_id % !NAME %_alarm_own[% ![ALARMS length] %] = { %
+  before %CONST(tpl_alarm_id, OS_CONST) % !NAME %_alarm_own[% ![ALARMS length] %] = { %
   do !NAME%_id%
   between %, %
   after % };
@@ -56,7 +56,7 @@ foreach ALARMS
 end foreach
 
 foreach REGULARRESOURCES
-  before %tpl_resource_id % !NAME %_rez_own[% ![REGULARRESOURCES length] %] = { %
+  before %CONST(tpl_resource_id, OS_CONST) % !NAME %_rez_own[% ![REGULARRESOURCES length] %] = { %
   do !NAME%_id%
   between %, %
   after % };
@@ -64,7 +64,7 @@ foreach REGULARRESOURCES
 end foreach
 
 foreach SCHEDULETABLES
-  before %tpl_schedtable_id % !NAME %_st_own[% ![SCHEDULETABLES length] %] = { %
+  before %CONST(tpl_schedtable_id, OS_CONST) % !NAME %_st_own[% ![SCHEDULETABLES length] %] = { %
   do !NAME%_id%
   between %, %
   after % };
@@ -72,7 +72,7 @@ foreach SCHEDULETABLES
 end foreach
 
 foreach COUNTERS
-  before %tpl_counter_id % !NAME %_cnt_own[% ![COUNTERS length] %] = { %
+  before %CONST(tpl_counter_id, OS_CONST) % !NAME %_cnt_own[% ![COUNTERS length] %] = { %
   do !NAME%_id%
   between %, %
   after % };
