@@ -29,7 +29,7 @@
  * script, we place this first instruction at a fixed address
  * (which will be the load address)
  */
-.section .ubootsupport
+.section ".ubootsupport", "ax"
 
 .global tpl_arm_bootstrap_entry
 tpl_arm_bootstrap_entry:

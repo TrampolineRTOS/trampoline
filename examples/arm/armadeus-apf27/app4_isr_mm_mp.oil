@@ -1,0 +1,105 @@
+OIL_VERSION = "2.5" : "test" ;
+
+IMPLEMENTATION trampoline {
+    TASK {
+        UINT32 STACKSIZE = 32768 ;
+        UINT32 PRIORITY = 1 ;
+    } ;
+    ISR {
+        UINT32 STACKSIZE = 32768 ;
+    } ;
+};
+
+CPU test {
+
+    OS config {
+      STATUS = EXTENDED;
+      ERRORHOOK = FALSE;
+			MEMMAP = TRUE {
+  			 COMPILER = gcc;
+	  		 LINKER = gnu_ld { SCRIPT = "script.ld"; };
+				 ASSEMBLER = gnu_as;
+		  	 MEMORY_PROTECTION = TRUE;
+		  };
+      SYSTEM_CALL = TRUE;
+      PROTECTIONHOOK = TRUE;
+			SCALABILITYCLASS = SC4;
+			STACKMONITORING = FALSE;
+      APP_SRC = "app4_isr_mm_mp.c";
+			APP_SRC = "uart.c";
+			APP_SRC = "generic.c";
+			APP_SRC = "apf27_switch.c";
+      TRAMPOLINE_BASE_PATH = "../../..";
+      CFLAGS  = "-g";
+      CFLAGS  = "-Wall -pedantic -Wformat -std=c99";
+      ASFLAGS = "-g";
+      LDFLAGS = "-g";
+    } ;
+
+    APPMODE std {
+    };
+
+    TASK t1 {
+        PRIORITY = 0;
+        AUTOSTART = TRUE {
+				APPMODE = std;
+				};
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    }; 
+
+    TASK t2 {
+        PRIORITY = 1;
+        AUTOSTART = FALSE ;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+
+    TASK t3 {
+        PRIORITY = 2;
+        AUTOSTART = FALSE ;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+
+    TASK t4 {
+        PRIORITY = 3;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+    
+    TASK t5 {
+        PRIORITY = 0;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+
+    ISR it1 {
+        SOURCE = INT_GPIO;
+        PRIORITY = 50;
+        CATEGORY = 2;
+    };
+
+    ISR it2 {
+        SOURCE = INT_GPT1;
+        PRIORITY = 51;
+        CATEGORY = 2;
+    };
+   
+   APPLICATION osap1 {
+   		TRUSTED = FALSE;
+	   	TASK = t1;
+	   	TASK = t3;
+   		TASK = t4;
+   		ISR = it1;
+   };
+   
+   APPLICATION osap2 {
+   		TRUSTED = FALSE;
+	   	TASK = t2;
+	   	TASK = t5;
+   		ISR = it2;
+   };
+} ;

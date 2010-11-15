@@ -42,10 +42,10 @@ SECTIONS
   } > dram0
 
   .bss (NOLOAD) : ALIGN(4) SUBALIGN(4) {
-    zeroed_vars_begin = .;
+    common_zeroed_vars_begin = .;
     *(.bss)
     *(.bss*)
-    zeroed_vars_end = .;
+    common_zeroed_vars_end = .;
     *(.COMMON)
     *(.stacks)
   } > dram0

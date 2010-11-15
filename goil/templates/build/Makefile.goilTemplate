@@ -116,8 +116,7 @@ end foreach
 %
 %
 if USELINKSCRIPT then
-%LDFLAGS += -T % !PROJECT %/% !LINKSCRIPT % -Map % !PROJECT %.map
-EXTRA_FILES_CLEAN += %!PROJECT %.map%
+%LDFLAGS += -T % !PROJECT %/% !LINKSCRIPT 
 end if
 if USETRACE then%
 EXTRA_FILES_CLEAN += %!PROJECT %.desc%

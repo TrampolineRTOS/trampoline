@@ -30,17 +30,21 @@
 #include "tpl_debug.h"
 #include "tpl_trace.h"
 
-#define OS_START_SEC_CODE
-#include "tpl_memmap.h"
-
 #if WITH_AUTOSAR == YES
 #include "tpl_as_definitions.h"
 #endif
 
+#define OS_START_SEC_VAR_POWER_ON_INIT_UNSPECIFIED
+#include "tpl_memmap.h"
 /**
  * tpl_counters_enabled
  */
 STATIC VAR(tpl_bool, OS_VAR) tpl_counters_enabled = FALSE;
+#define OS_STOP_SEC_VAR_POWER_ON_INIT_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 
 FUNC(void, OS_CODE) tpl_enable_counters(void)
 {

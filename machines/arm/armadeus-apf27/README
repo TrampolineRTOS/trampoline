@@ -4,6 +4,6 @@ Roadmap :
 - bootstraping      : done
 - context switching : done
 - interrupt support : done, needs improvements
-- memmap support    : updating...
-- memory protection : to be updated
+- memmap support    : done, needs discussions before merging in trunk
+- memory protection : work in progress... MMU tables generation OK, working on runtime
 - trusted functions : to be done

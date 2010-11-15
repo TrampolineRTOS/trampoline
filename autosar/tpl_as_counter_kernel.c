@@ -33,8 +33,12 @@
 #include "tpl_as_error.h"
 #include "tpl_as_isr_kernel.h"
 #include "tpl_as_protec_hook.h"
+#if WITH_MEMORY_PROTECTION == YES
+#include "tpl_os_mem_prot.h"
+#endif /* WITH_MEMORY_PROTECTION == YES */
 
-#define OS_START_SEC_CODE
+
+#define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
 /**
@@ -43,6 +47,12 @@
  * This value is used to specify an invalid counter
  */
 CONST(tpl_counter_id, AUTOMATIC) INVALID_COUNTER = (-1);
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 
 /*
  * Increment a counter.

@@ -1,3 +1,6 @@
+# Initialization of noinit vars segment module
+SOURCES += tpl_init_noinit_var_sections.c
+
 # memory map file
 LDFLAGS += -Xlinker -Map -Xlinker % !APPNAME %.map
 

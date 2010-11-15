@@ -45,11 +45,14 @@
 
 #define OS_START_SEC_VAR_NOINIT_UNSPECIFIED
 #include "tpl_memmap.h"
+/* the following variableѕ should not be initialized at definition,
+ * or Memmap section is not the right one */
 volatile VAR(u32, OS_VAR) tpl_locking_depth = 0;
 VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;
 VAR(u32, OS_VAR) tpl_cpt_user_task_lock_All = 0;
 VAR(u32, OS_VAR) tpl_cpt_user_task_lock_OS = 0;
 VAR(u32, OS_VAR) tpl_cpt_os_task_lock = 0;
+STATIC VAR(s32, OS_VAR) tpl_it_nesting =  0;
 #define OS_STOP_SEC_VAR_NOINIT_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -304,7 +307,6 @@ STATIC FUNC(void, OS_CODE) tpl_activate_isr(
  */
 FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
 {
-  STATIC VAR(s32, AUTOMATIC) tpl_it_nesting =  0;
   P2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA) isr;
 
 #if WITH_AUTOSAR_STACK_MONITORING == YES

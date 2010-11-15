@@ -37,16 +37,25 @@ if exists ASSEMBLERHEADER default (false) then %
 #include "tpl_assembler.h"
 %
 end if
-# FIXME: use of MemMap.h would be better than directly define a section
 %
-  .text
-  .section .osApiCode //CODE_ACCESS_RIGHT
+#if WITH_MEMMAP == NO
+.text
+.code 32
+.align 2
+#endif /* WITH_MEMMAP == NO */
+
+#define API_START_SEC_CODE
+#include "tpl_as_memmap.h"
 
 %
 foreach APICONFIG::USEDAPI do
   template service_call
 end foreach
 %
+
+#define API_STOP_SEC_CODE
+#include "tpl_as_memmap.h"
+
 
 /* End of file tpl_invoque. % !EXTENSION % */
 
