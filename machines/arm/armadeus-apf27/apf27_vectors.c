@@ -36,8 +36,8 @@
 
 extern void primary_undefined_instruction_handler (void);
 extern void tpl_primary_syscall_handler (void);
-extern void tpl_primary_prefetch_abort_handler (void);
-extern void tpl_primary_data_abort_handler (void);
+extern void primary_prefetch_abort_handler (void);
+extern void primary_data_abort_handler (void);
 
 /**
  * this exception vector table is copied by bootstrap
@@ -46,8 +46,8 @@ extern void tpl_primary_data_abort_handler (void);
 CONST(func_ptr, OS_CONST) exception_table[4] = {
   (func_ptr)primary_undefined_instruction_handler,
   (func_ptr)tpl_primary_syscall_handler,
-  (func_ptr)tpl_primary_prefetch_abort_handler,
-  (func_ptr)tpl_primary_data_abort_handler
+  (func_ptr)primary_prefetch_abort_handler,
+  (func_ptr)primary_data_abort_handler
   };
 
 

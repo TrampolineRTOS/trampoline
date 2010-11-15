@@ -7,3 +7,5 @@ Roadmap :
 - memmap support    : done, needs discussions before merging in trunk
 - memory protection : work in progress... MMU tables generation OK, working on runtime
 - trusted functions : to be done
+- counters support  : to be done
+- connect GPT to counters : to be done

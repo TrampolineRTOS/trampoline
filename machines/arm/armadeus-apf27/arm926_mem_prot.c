@@ -86,14 +86,23 @@ FUNC(void, OS_CODE) tpl_init_mp()
 {
   tpl_task_id i;
 
-  MMU_init_tables ();
+  MMU_init ();
 
   for (i = 0 ; i < (TASK_COUNT + ISR_COUNT + 1) ; i++)
   {
     tpl_setup_common_mp (i);
     tpl_setup_self_mp (i);
   }
+
+	MMU_set_current_process (IDLE_TASK_ID);
+	MMU_enable ();
 }
+
+FUNC(void, OS_CODE) tpl_set_process_mp (tpl_task_id this_process)
+{
+	MMU_set_current_process (this_process);
+}
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

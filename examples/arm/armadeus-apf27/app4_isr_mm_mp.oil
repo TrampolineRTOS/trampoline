@@ -15,6 +15,7 @@ CPU test {
     OS config {
       STATUS = EXTENDED;
       ERRORHOOK = FALSE;
+			SHUTDOWNHOOK = TRUE;
 			MEMMAP = TRUE {
   			 COMPILER = gcc;
 	  		 LINKER = gnu_ld { SCRIPT = "script.ld"; };
@@ -40,7 +41,7 @@ CPU test {
     };
 
     TASK t1 {
-        PRIORITY = 0;
+        PRIORITY = 1;
         AUTOSTART = TRUE {
 				APPMODE = std;
 				};
@@ -49,21 +50,21 @@ CPU test {
     }; 
 
     TASK t2 {
-        PRIORITY = 1;
-        AUTOSTART = FALSE ;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
-
-    TASK t3 {
         PRIORITY = 2;
         AUTOSTART = FALSE ;
         ACTIVATION = 1;
         SCHEDULE = FULL;
     };
 
-    TASK t4 {
+    TASK t3 {
         PRIORITY = 3;
+        AUTOSTART = FALSE ;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+
+    TASK t4 {
+        PRIORITY = 4;
         AUTOSTART = FALSE;
         ACTIVATION = 1;
         SCHEDULE = FULL;
@@ -71,7 +72,9 @@ CPU test {
     
     TASK t5 {
         PRIORITY = 0;
-        AUTOSTART = FALSE;
+        AUTOSTART = TRUE {
+				APPMODE = std;
+				};
         ACTIVATION = 1;
         SCHEDULE = FULL;
     };
