@@ -115,11 +115,11 @@ routine check_target
   @string chip_path := arch_path."/".chip[];
   @string board_path := chip_path."/".board[];
   if not [arch_path directoryExists] then
-    warning here: "The directory \'".arch_path."\' does not exist";
+    error here: "Architecture \'".arch_path."\' does not exist";
   elsif not [chip_path directoryExists] then
-    warning here: "The directory \'".chip_path."\' does not exist";
+    error here: "Chip \'".chip_path."\' does not exist";
   elsif not [board_path directoryExists] then
-    warning here: "The directory \'".board_path."\' does not exist";
+    error here: "Board \'".board_path."\' does not exist";
   end if;
 end routine;
 
