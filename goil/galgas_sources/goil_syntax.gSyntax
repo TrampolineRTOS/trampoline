@@ -251,6 +251,8 @@ rule <start>:
   end parse ;
 
     set_defaults !imp !?cpu;
+    @string trampoline_base_path := [[[cpu os] tpl_base_path] string];
+    check_target !trampoline_base_path;
     verify_all !?cpu;
 #    generate_all !cpu;
 
