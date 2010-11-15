@@ -40,4 +40,12 @@ extern CONSTP2CONST(tpl_mem_prot_desc, AUTOMATIC, OS_CONST) tpl_mp_table[TASK_CO
  */
 extern FUNC(void, OS_CODE) tpl_init_mp();
 
+/**
+ * Tells the MMU to switch to current process
+ * memory protection configuration
+ *
+ * @param this_process the new current process
+ */
+extern FUNC(void, OS_CODE) tpl_set_process_mp (tpl_task_id this_process);
+
 #endif /* ARM926_MEM_PROT_H */

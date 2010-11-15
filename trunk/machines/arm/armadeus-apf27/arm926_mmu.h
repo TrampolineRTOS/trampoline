@@ -130,9 +130,12 @@ typedef MMU_second_level_descriptor MMU_fine_page_table[1024];
  * This function clears the MMU tables. It must be called once
  * before any other MMU table setup function.
  *
+ * It also prepares the MMU to be enabled (but you need to setup
+ * MMU tables first).
+ *
  * Note that MMU is not enabled by this function.
  */
-FUNC(void, OS_CODE) MMU_init_tables (void);
+FUNC(void, OS_CODE) MMU_init (void);
 
 /**
  * This function setup MMU tables of a process for board's specific
@@ -201,6 +204,6 @@ FUNC(void, OS_CODE) MMU_disable (void);
 /**
  * Switches the active process in the MMU configuration
  */
-FUNC(void, OS_CODE) MMU_switch_context (tpl_task_id this_process);
+FUNC(void, OS_CODE) MMU_set_current_process (tpl_task_id this_process);
 
 #endif /* ARM926_MMU_H */

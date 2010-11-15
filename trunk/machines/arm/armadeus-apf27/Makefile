@@ -31,7 +31,6 @@
 SOURCES += \
 arm926_mem_prot.c \
 arm926_mmu.c \
-arm926_mmu_asm.S \
 arm926_cpu_cache.c \
 apf27_bootstrap_stage1.S \
 apf27_exception_catch.S \

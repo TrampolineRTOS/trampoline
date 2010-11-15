@@ -180,6 +180,11 @@ skip_save_context_swi:
      */
 load_context_swi:
 
+#if WITH_MEMORY_PROTECTION == YES
+		ldr r0, [r0, #TPL_KERN_OFFSET_RUNNING_ID]
+    bl tpl_set_process_mp
+#endif
+
   /* We updates kernel reentrance counter while registers are freely
    * usable and as we know we won't enter in kernel again (IRQ locked and
    * no SWI can occur) */
@@ -193,6 +198,7 @@ load_context_swi:
      * We use r14 as it will be restored separatly and later, it
      * is useful for the following ldmia instruction
      */
+		ldr r0, =tpl_kern
     ldr lr, [r0, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context bloc */
     ldr lr, [lr]                   /* jump to context bloc (from static descriptor) */
 

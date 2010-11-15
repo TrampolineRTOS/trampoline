@@ -1,5 +1,6 @@
 /*#include <stdio.h>*/
 #include "tpl_os.h"
+#include "tpl_as_protec_hook.h"
 
 #define TRACE_OSAP1(val) flags_osap1[count_osap1++] = val
 #define TRACE_OSAP2(val) flags_osap2[count_osap2++] = val
@@ -103,6 +104,12 @@ VAR(int, AUTOMATIC) var_it2 = 0;
 
 #define APP_COMMON_START_SEC_CODE
 #include "MemMap.h"
+
+FUNC(void, OS_CODE) ShutdownHook(VAR(StatusType, AUTOMATIC) error)
+{
+	serial_puts ("Trampoline has shutdown\n");
+}
+
 FUNC(int, AUTOMATIC) main()
 {
   serial_init();
@@ -111,9 +118,12 @@ FUNC(int, AUTOMATIC) main()
   return 0;
 }
 
-FUNC(void, AUTOMATIC) ProtectionHook(StatusType error)
+FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(StatusType error)
 {
+	serial_puts ("Protection hook");
   TRACE_OSAP1(OSAP1_PRO_HOOK);
+
+	return PRO_TERMINATETASKISR;
 }
 
 FUNC(void, AUTOMATIC) ErrorHook(StatusType error)
@@ -191,7 +201,7 @@ TASK(t1)
 {
   serial_puts("t1 step 1\n");
   TRACE_OSAP1(1);
-  serial_puts("t1 steo 2\n");
+  serial_puts("t1 step 2\n");
   var_t1 = 1; /* Try to write in the own data section's */
   var_t3 = 1; /* Try to write in another taks data section's of the same osap */
   var_t2 = 3; /* Try to write in another task data section's of another osap */

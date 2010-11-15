@@ -1,0 +1,95 @@
+;Register definition for APF27
+;------------------------------
+; François BERJONNEAU
+;
+;
+; name: user defined name of the register
+; type: the type of the register
+;       GPR     general purpose register
+;       CP15    CP15 register
+;       MM      memory mapped register
+;       DMMx    direct memory mapped register with offset
+;               x = 1..4
+;               the base is defined in the configuration file
+;               e.g. DMM1 0x02200000
+; addr: the number, adddress or offset of the register
+; size  the size of the register (8,16 or 32)
+;
+;name           type    addr            size
+;-------------------------------------------
+;
+;
+; CP15 Registers
+;
+;  Register Numbers for 926E:
+;  +-------+-------+-------+-------+
+;  | | | | | | | | | | | | | | | | |
+;  +-+-----+-+-----+-------+-------+
+;  |-|opc_1|-|opc_2|  CRm  |  nbr  |
+;  +-+-----+-+-----+-------+-------+
+;
+;
+id              CP15    0x0000          32      ;ID code
+cache           CP15    0x0100          32      ;Cache type
+tcm             CP15    0x0200          32      ;TCM status
+control         CP15    0x0001          32      ;Control
+ttb             CP15    0x0002          32      ;Translation table base
+dac             CP15    0x0003          32      ;Domain access control
+dfsr            CP15    0x0005          32      ;Data fault status
+ifsr            CP15    0x0105          32      ;Inst fault status
+far             CP15    0x0006          32      ;Fault address
+;
+fcsr            CP15    0x000d          32      ;Fast context switch PID
+context         CP15    0x010d          32      ;Context ID
+;
+;
+;
+;
+;
+; GPIO Registers
+;
+pmask           MM    0x10015600    32      ;Port Interrupt Mask Register
+;
+; Registers GPIO C
+ptc_ddir        MM    0x10015200    32      ;Data Direction Register C
+ptc_ocr1        MM    0x10015204    32      ;Output Configuration Register 1 C
+ptc_ocr2        MM    0x10015208    32      ;Output Configuration Register 2 C
+ptc_iconfa2     MM    0x10015210    32      ;Input Configuration Register A2 C
+ptc_iconfb2     MM    0x10015218    32      ;Input Configuration Register B2 C
+ptc_dr          MM    0x1001521C    32      ;Data Register C
+ptc_gius        MM    0x10015220    32      ;GPIO IN USE Register C
+ptc_icr2        MM    0x1001522C    32      ;Interrupt Configuration Register 2 C
+ptc_imr         MM    0x10015230    32      ;Interrupt Mask Register C
+ptc_gpr         MM    0x10015238    32      ;General Purpose Register C
+ptc_puen        MM    0x10015240    32      ;Pull-Up Enable Register C
+;
+; Registers GPIO F
+ptf_ddir        MM    0x10015500    32      ;Data Direction Register F
+ptf_ocr1        MM    0x10015504    32      ;Output Configuration Register 1 F
+ptf_ocr2        MM    0x10015508    32      ;Output Configuration Register 2 F
+ptf_iconfa2     MM    0x10015510    32      ;Input Configuration Register A2 F
+ptf_iconfb2     MM    0x10015518    32      ;Input Configuration Register B2 F
+ptf_dr          MM    0x1001551C    32      ;Data Register F
+ptf_gius        MM    0x10015520    32      ;GPIO IN USE Register F
+ptf_icr2        MM    0x1001552C    32      ;Interrupt Configuration Register 2 F
+ptf_imr         MM    0x10015530    32      ;Interrupt Mask Register F
+ptf_gpr         MM    0x10015538    32      ;General Purpose Register F
+ptf_puen        MM    0x10015540    32      ;Pull-Up Enable Register F
+;
+;
+; Nand Flash Controler Registers
+nfc_bufsiz              MM    0xD8000E00    16      ;NAND FC Buffer Size Register
+ram_buffer_address      MM    0xD8000E04    16      ;RAM Buffer Address Register
+nand_flash_add          MM    0xD8000E06    16      ;NAND Flash Address Register
+nand_flash_cmd          MM    0xD8000E08    16      ;NAND Flash command Register
+nfc_configuration       MM    0xD8000E0A    16      ;NFC Internal Buffer Lock Control
+ecc_status_result       MM    0xD8000E0C    16      ;Controller Status and Result of Flash Operation
+ecc_rslt_main_area      MM    0xD8000E0E    16      ;ECC Error Position Main Area Data Error x16
+ecc_rslt_spare_area     MM    0xD8000E10    16      ;ECC Error Position Spare Area Data Error x16
+nf_wr_prot              MM    0xD8000E12    16      ;NAND Flash Write Protection
+unlock_start_blk_add    MM    0xD8000E14    16      ;Address to Unlock in Write Protection Mode-Start
+unlock_end_blk_add      MM    0xD8000E16    16      ;Address to Unlock in Write Protection Mode-End
+nand_flash_wr_pr_st     MM    0xD8000E18    16      ;NAND Flash Write Protection Status
+nand_flash_config1      MM    0xD8000E1A    16      ;NAND Flash Operation Configuration1
+nand_flash_config2      MM    0xD8000E1C    16      ;NAND Flash Operation Configuration2
+

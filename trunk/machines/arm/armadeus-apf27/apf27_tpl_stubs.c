@@ -37,6 +37,10 @@
 #include "tpl_os_kernel.h"
 #endif /* WITH_AUTOSAR */
 
+#include "arm926_cpu_cache.h"
+#include "arm926_mem_prot.h"
+#include "arm926_mmu.h"
+
 #if WITH_MEMORY_PROTECTION == YES
 #include "arm926_mmu.h"
 #endif /* WITH_MEMORY_PROTECTION */
@@ -61,6 +65,8 @@ FUNC(void, OS_CODE) tpl_shutdown ()
   DISABLE_FIQ ();
   DISABLE_IRQ ();
 
+	/* disable the MMU, useful for debugging sessions */
+	MMU_disable ();
   /* fall into very low consumption mode : all
    * internal CPU clocks are disabled.
    */
@@ -84,9 +90,9 @@ FUNC(void, OS_CODE) tpl_init_machine()
 #endif /* WITH_MEMORY_PROTECTION == YES */
 
 #if WITH_CPU_CACHE == YES
-	arm926ejs_cache_on ();
+	arm926_cache_on ();
 #else
-	arm926ejs_cache_off ();
+	arm926_cache_off ();
 #endif /* WITH_CPU_CACHE == YES*/
 
   tpl_init_machine_generic ();

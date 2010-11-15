@@ -569,7 +569,21 @@ Besides specific initializations, the bootstrap should :
 
 \subsection{Interrupt management}
 
+Kernel is not interruptible. So hardware interrupt source are disabled entering in kernel (via any case in system call, interrupt request, abort, ...).
+
+But kernel shall be reentrant via system call (because kernel hooks can call some system calls).
+
+\subsubsection{Interrupt and category classification}
+
+All ARM IRQ are category 2 ISR.
+
+All ARM FIQ are category 1 ISR.
+
 \subsubsection{Vector table}
+
+Each ARM exception vector points on a so called "primary" subprogram (like \cfunction{tpl\_primary\_syscall\_handler}).
+
+To be located at address 0x00000000, this vector table is assigned to a specific section named \cfunction{.vectbl}. The linker script uses this section name to output it to address 0x00000000.
 
 \subsubsection{System call}
 
@@ -578,6 +592,23 @@ Besides specific initializations, the bootstrap should :
 \subsubsection{FIQ handling}
 
 \section{ARM -- Armadeus APF27 board}
+
+\subsection{Debugging with Abatron BDI2000 or BDI3000 JTAG probe}
+
+A configuration file is provided in \file{machines/arm/armadeus-apf27/bdi-config}.
+
+To enable JTAG, if your APF27 has a FPGA, you must load the FPGA to wake it up (TO DO : explain how to do this...).
+
+To start a debug session, follow these steps :
+\begin{enumerate}
+\item connects everything together
+\item power up everything
+\item reset the APF27 (S2 on APF27-Dev)
+\item stop u-boot before it loads Linux (if MMU is started, you won't be able to load anything)
+\item telnet your BDI
+\item type \cfunction{reset} command in the BDI shell
+\item start GDB session (\cfunction{target remote ...})
+\end{enumerate}
 
 \subsection{Configuration}
 

@@ -56,7 +56,7 @@ volatile VAR (u32, OS_VAR) nested_kernel_entrance_counter;
 
 FUNC (void, OS_CODE) tpl_init_machine_generic (void)
 {
-         nested_kernel_entrance_counter = 0;
+  nested_kernel_entrance_counter = 0;
 }
 
 /*

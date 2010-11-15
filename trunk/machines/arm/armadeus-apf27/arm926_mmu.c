@@ -125,25 +125,28 @@ extern MMU_translation_table MMU_translation_tables[TASK_COUNT+ISR_COUNT+1];
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-/**
- * Clears all MMU tables
- */
-FUNC(void, OS_CODE) MMU_init_tables (void)
+FUNC(void, OS_CODE) MMU_init (void)
 {
   u32 *zero_ptr;
 	u32 i;
 	u32 page_table_total_entries_count;
 
+	/* clears all translation tables */
   zero_ptr = (u32*)&MMU_translation_tables;
   while ((u8*)zero_ptr != (u8*)&MMU_translation_tables+sizeof(MMU_translation_tables))
     *(zero_ptr++) = 0;
   
+	/* clears all page tables */
 	page_table_total_entries_count  = TASK_COUNT + ISR_COUNT + 1; /* number of processes */
 	page_table_total_entries_count *= (u32)&MMU_page_table_count; /* number of page tables in a process' page table set */
 	page_table_total_entries_count *= 1024;                       /* number of entries in each (fine) page table */
   zero_ptr = (u32*)&MMU_page_tables;
 	for (i = 0 ; i < page_table_total_entries_count ; i++)
     *(zero_ptr++) = 0;
+	
+	/* setup MMU domains (we use only domain 0 as client, others generates domain fault) */
+	__asm__ ("mov r0, #1\n"
+	         "mcr p15, 0, r0, c3, c0, 0");
 }
 
 static FUNC(void, OS_CODE) MMU_set_system_section (tpl_task_id this_process, u32 address)
@@ -223,7 +226,8 @@ static FUNC(void, OS_CODE) MMU_set_tiny_pages_area (tpl_task_id this_process, u8
       /* set the first level descriptor */
       MMU_translation_tables[this_process][TTABLE_INDEX(current_page_address)].raw = fst_lvl_template.raw;
       MMU_translation_tables[this_process][TTABLE_INDEX(current_page_address)].fine.fine_page_table_base_address =
-         (((u32)(PAGE_TABLE_ADDRESS(this_process,page_table_number))) & 0xFFFFF000);
+         ((((u32)(PAGE_TABLE_ADDRESS(this_process,page_table_number))) & 0xFFFFF000) >> 12);
+
       do
       {
         PAGE_TABLE_ENTRY (this_process, page_table_number, current_page_address).raw = scd_lvl_template.raw;
@@ -264,6 +268,36 @@ FUNC(void, OS_CODE) MMU_set_readonly_area (tpl_task_id this_process, u8 *from, u
 FUNC(void, OS_CODE) MMU_set_readwrite_area (tpl_task_id this_process, u8* from, u8 *to)
 {
   MMU_set_tiny_pages_area (this_process, from, to, 3);
+}
+
+FUNC(void, OS_CODE) MMU_enable (void)
+{
+	/* note : we don't have to take care about the following pipelined instructions
+	 * as virtual addresses equals physical addresses */
+	__asm__ ("mrc p15, 0, r1, c1, C0, 0\n"
+	         "orr r1, r1, #1\n"
+					 "mcr p15, 0, r1, c1, C0, 0");
+}
+
+FUNC(void, OS_CODE) MMU_disable (void)
+{
+	/* note : we don't have to take care about the following pipelined instructions
+	 * as virtual addresses equals physical addresses */
+	__asm__ ("mrc p15, 0, r1, c1, C0, 0\n"
+	         "orr r1, r1, #1\n"
+					 "mcr p15, 0, r1, c1, C0, 0");
+}
+
+FUNC(void, OS_CODE) MMU_set_current_process (tpl_task_id this_process)
+{
+  register u32 base_address;
+
+	base_address = (u32)&MMU_translation_tables[this_process];
+
+	__asm__ ("mov r0, %0\n"
+	         "mcr p15, 0, r0, c2, c0, 0"
+					 :
+					 : "r" (base_address));
 }
 
 #define OS_STOP_SEC_CODE

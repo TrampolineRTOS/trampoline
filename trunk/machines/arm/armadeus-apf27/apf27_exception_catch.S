@@ -22,207 +22,191 @@
  * $Author: $
  * $URL: $
  */
-
 #include "../tpl_asm_definitions.h"
 #include "tpl_os_application_def.h"
 
-/* TODO: to be added for memory protection 
-#if WITH_AUTOSAR == YES
-#include "../autosar/tpl_as_definitions.h"
-#include "../autosar/tpl_as_protec_hook.h"
-#endif
-*/
-
-.set prefetch_abort, 1
-.set data_abort, 2
-.set undefined_instruction, 3
-.set unused, 4
-
-.set OFFSET_RUNNING_ID, 16
-
-#include "../tpl_asm_definitions.h"
-
-#define OS_START_SEC_VAR
-#include "tpl_as_memmap.h"
-
-/* containts the address of the instruction which caused exception (abort,
- * pfabord, undef) */
-.global faulty_instruction
-faulty_instruction:
-  .word 0
-
-/* contains the CPSR value at the time of the fault (abord, pfabord, undef) */
-.global saved_psr
-saved_psr:
-  .word 0
-
-/* contains the stack pointer at the time of the fault */
-.global interrupted_stack_pointer
-interrupted_stack_pointer:
-  .word 0
-
-/* TODO This code is here just for demo of the
- * memory protection work*/
-/**********************************/
-/* This table receive abort information */ 
-.global mp_abort_table
-mp_abort_table:
-.space 256 * 4
-
-.global mp_abort_table_entry
-mp_abort_table_entry:
-  .word mp_abort_table
- /*********************************/
-
-#define OS_STOP_SEC_VAR
-#include "tpl_as_memmap.h"
+.global primary_undefined_instruction_handler
+.global primary_prefetch_abort_handler
+.global primary_data_abort_handler
 
 #define OS_START_SEC_CODE
 #include "tpl_as_memmap.h"
 
-/* this macro locks interrupts before hanging down in a loop */
-.macro lock_interrupts
-  stmfd sp!, {r0}
-  mrs r0, cpsr
-  orr r0, r0, #(CPSR_FIQ_LOCKED | CPSR_IRQ_LOCKED)
-  msr cpsr_c, r0
-  ldmfd sp!, {r0}
-.endm
-
-/* this macro decodes some informations about an exception (abort, undef) */
-.macro decode_exception exception_type
-  stmfd sp!, {r0, r1, r2}
-
-  /* get the faulty PC */
-.if (\exception_type == data_abort)
-  sub r0, lr, #8
-.else
-  sub r0, lr, #4
-.endif
-  ldr r1, =faulty_instruction
-  str r0, [r1]
-
-  /* get the faulty CPSR */
-  mrs r0, spsr
-  ldr r1, =saved_psr
-  str r0, [r1]
-
-  /* get stack pointer from faulty mode */
-  mrs r0, cpsr /* save current mode */
-  mrs r1, spsr
-  and r1, r1, #CPSR_MODE_MASK
-  bic r2, r0, #CPSR_MODE_MASK
-  orr r2, r2, r1
-  msr cpsr, r2
-  ldr r1, =interrupted_stack_pointer
-  str sp, [r1]
-  msr cpsr, r0
-
-  ldmfd sp!, {r0, r1, r2}
-.endm
-
-.global primary_undefined_instruction_handler
 primary_undefined_instruction_handler:
-  lock_interrupts
-  decode_exception undefined_instruction
-  b .
+    msr cpsr_c, #(CPSR_IRQ_LOCKED | CPSR_UND_MODE)
+    b any_exception_enter
 
-.global primary_prefetch_abort_handler
-.global tpl_primary_prefetch_abort_handler
-primary_prefetch_abort_handler:
-tpl_primary_prefetch_abort_handler:
-  /* FIXME: This code is here just for demo of the
-   * memory protection work */
-
-  /* Save registers used by the data abort */
-  stmfd sp!, {r0-r2, lr}
-
-  /* Get status code fault from the "Instruction Fault Status Register */
-  mrc p15, 0, r0, c5, c0, 1
-  and r0, r0, #0xF
-
-  /* Set id_bits with the value of current id process*/
-  orr r0, r1, LSL #8
-
-  /* Set flag of prefetch abort */
-  mov r1, #prefetch_abort
-  orr r0, r1, LSL #4
-  bl store_into_mp_abort_table
-  
-  /*  Get the fault address from the Fault Address Register */
-  mrc p15, 0, r0, c6, c0, 0
-  
-  bl store_into_mp_abort_table
-  
-  /*  Restore saved registers */
-  ldmfd sp!, {r0-r2, lr}
-  
-  mov pc,lr
-  
-
-.global primary_data_abort_handler
-.global tpl_primary_data_abort_handler
 primary_data_abort_handler:
-tpl_primary_data_abort_handler:
-  
-  /* FIXME: This code is here just for demo of the
-   * memory protection work */
-  /* Save registers used by the data abort */
-  stmfd sp!, {r0-r2, lr}
-  
-  /* Get the id of the running porcess wich generate prefetch abort */  
-  ldr r2, =tpl_kern
-  ldr r1, [r2, #OFFSET_RUNNING_ID] 
-                                      
-  /* Get status code fault from the "Instruction Fault Status Register */
-  mrc p15, 0, r0, c5, c0, 0
-  and r0, r0, #0xF
-  
-  /* Set id_bits with the value of current id process*/
-  orr r0, r1, LSL #8
-  
-  /* Set flag of data abort */
-  mov r1, #data_abort
-  orr r0, r1, LSL #4
+    msr cpsr_c, #(CPSR_IRQ_LOCKED | CPSR_ABT_MODE)
+    sub lr, lr, #8
+    b any_exception_enter
 
-  bl store_into_mp_abort_table
-  
-  /*  Get the fault address from the Fault Address Register */
-  mrc p15, 0, r0, c6, c0, 0
-  
-  bl store_into_mp_abort_table
-  
-  /*  Restore saved registers */
-  ldmfd sp!, {r0-r2, lr}
-  mov pc,lr
+primary_prefetch_abort_handler:
+    msr cpsr_c, #(CPSR_IRQ_LOCKED | CPSR_ABT_MODE)
+    sub lr, lr, #4
+    b any_exception_enter
 
-.global store_into_mp_abort_table
-store_into_mp_abort_table:
-  /* Load the current mp_abort_table entry address */
-  ldr r2, =mp_abort_table_entry
-  ldr r1, [r2]
- 
-  /* Get the address just after the mp_abort_table */
-  ldr r2, =mp_abort_table
-  add r2, r2, #(256 * 4)
-  cmp r1, r2
- 
-  /* If mp_abort_table is full execution falls into an infinite loop */ 
-  beq .
-  /* Store information inside the mp_abort_table */
-  str r0, [r1]
-  
-  ldr r2, =mp_abort_table_entry
-  add r1, r1, #0x4
-  str r1, [r2]
-  
-  mov pc,lr
+any_exception_enter:
+    /**********************
+     * KERNEL ENTER STAGE *
+     **********************
+     * After this stage, stack looks like this :
+     *
+     *         |---------------------------|
+     *         | task's return address     |
+     * SP+24-> |---------------------------|
+     *         | ip (r12)                  |
+     * SP+18-> |---------------------------|
+     *         | r11                       |
+     * SP+14-> |---------------------------|
+     *         | r9                        |
+     * SP+10-> |---------------------------|
+     *         | r3                        |
+     * SP+C -> |---------------------------|
+     *         | r2                        |
+     * SP+8 -> |---------------------------|
+     *         | r1                        |
+     * SP+4 -> |---------------------------|
+     *         | r0                        |
+     * SP   -> |---------------------------|
+     *
+     * Every caller-saved register is saved here, as the
+     * other ones shall be saved by callee. We don't want
+     * to save every register here as we don't know if
+     * a context switch is actually needed.
+     */
 
-.global primary_unused_handler
-primary_unused_handler:
-  lock_interrupts
-  decode_exception unused
-  b .
+    /* store caller-saved registers */
+    stmfd sp!, {r0-r3,r9,r11,ip,lr}
+    /* manage reentrance of kernel */
+    ldr r1, =nested_kernel_entrance_counter
+    ldr r2, [r1]
+    add r2, r2, #1
+    str r2, [r1]
+
+    /* reset tpl_kern variables */
+    ldr r1, =tpl_kern
+    mov r2, #NO_NEED_SWITCH
+    strb r2, [r1, #TPL_KERN_OFFSET_NEED_SWITCH]
+
+    /******************************
+     * exception processing stage *
+     ******************************/
+
+    mrs r0, cpsr
+    and r0, r0, #0x1F
+    cmp r0, #CPSR_UND_MODE
+    moveq r0, #E_OS_PROTECTION_EXCEPTION
+    movne r0, #E_OS_PROTECTION_MEMORY 
+    bl tpl_call_protection_hook
+
+    /*************************************************
+     * on the way to exit exception (with or without *
+     * context switch)                               *
+     *************************************************/
+    /* then, do we need to switch context ? */
+    ldr r2, =tpl_kern
+    ldrb r2, [r2, #TPL_KERN_OFFSET_NEED_SWITCH]
+    cmp r2, #NO_NEED_SWITCH
+    beq except_no_context_switch
+
+context_switch_exception:
+    /* load the tpl_kern base address */
+    ldr r0, =tpl_kern
+
+    /*
+     * SAVES OLD CONTEXT
+     */
+
+    /* do we need to save the context ? if not, jump to load */
+    ldrb r2, [r0, #TPL_KERN_OFFSET_NEED_SWITCH]
+    tst r2, #NEED_SAVE
+    beq skip_save_context_except
+
+    /* get the context block address */
+    ldr r2, [r0, #TPL_KERN_OFFSET_S_OLD] /* get the address of the context bloc */
+    ldr r2, [r2]                /* jump to context bloc (from static descriptor) */
+    add r2, r2, #(4 * 4)        /* jump over r0-r3 saving zone */
+    stmia r2, {r4-r14}^         /* save callee saved registers (r9 and r12 will be overwritten) */
+    sub r2, r2, #(4 * 4)        /* get back to begining of task's saving zone... */
+    mrs r4, spsr
+    str r4, [r2, #(16 * 4)]
+
+    /* save ABI's caller-saved registers, those which are saved into
+     * kernel_enter macro
+     */
+    ldmfd sp!, {r4-r7,r9,r11,ip,lr} /* /!\ r0-r3 <=> r4-r7 */
+    stmia r2, {r4-r7}
+    str r9, [r2, #(9*4)]
+    str r11, [r2, #(11*4)]
+    str ip, [r2, #(12*4)]
+    str lr, [r2, #(15*4)]
+
+    b load_context_except
+
+    /* only executed if context saving step has not been done */
+skip_save_context_except:
+    add sp, sp, #(8 * 4) /* skip saved register frame (8 = r0-r3 + r9 + r11 + r12 + r14) */
+
+load_context_except:
+
+#if WITH_MEMORY_PROTECTION == YES
+		ldr r0, [r0, #TPL_KERN_OFFSET_RUNNING_ID]
+    bl tpl_set_process_mp
+#endif
+
+  /* We updates kernel reentrance counter while registers are freely
+   * usable and as we know we won't enter in kernel again (IRQ locked and
+   * no SWI can occur) */
+    ldr r3, =nested_kernel_entrance_counter
+    ldr r2, [r3]
+    sub r2, r2, #1
+    str r2, [r3]
+
+    /*
+     * LOADS NEW CONTEXT
+     */
+
+    /* Get the context block address.
+     *
+     * We use r14 as it will be restored separatly and later, it
+     * is useful for the following ldmia instruction
+     */
+    ldr r0, =tpl_kern
+    ldr r14, [r0, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context block */
+
+    ldr r14, [r14]                   /* jump to context bloc (from static descriptor) */
+
+    ldr r0, [r14, #(16 * 4)]        /* restore SPSR register from context block */
+    msr spsr, r0
+
+    /* finish load and get back to running task */
+#if !defined NO_OKI_PIPELINE_BUG
+    ldmia lr, {r0-r14}^
+    b flush_pipeline
+flush_pipeline:
+    ldr lr, [lr, #(15 * 4)]
+
+    movs pc, lr
+#else
+    ldmia lr, {r0-r15}^
+#endif /* defined NO_OKI_PIPELINE_BUG */
+
+    /********************************************
+     * KERNEL EXIT WITHOUT CONTEXT SWITCH STAGE *
+     ********************************************/
+except_no_context_switch:
+    /* manage reentrance of kernel */
+    ldr r3, =nested_kernel_entrance_counter
+    ldr r2, [r3]
+    sub r2, r2, #1
+    str r2, [r3]
+
+    /* restore caller-saved registers */
+    ldmfd sp!, {r0-r3,r9,r11,ip,lr}
+
+    /* return to interrupted task */
+    movs pc,lr
 
 /* FIQ not defined in this port version */
 .global primary_fiq_handler
