@@ -9,6 +9,7 @@ import semantics goil_types_counter in "goil_types_counter.gSemantics" ;
 import semantics goil_types_scheduletable in "goil_types_scheduletable.gSemantics" ;
 import semantics goil_types_app in "goil_types_app.gSemantics" ;
 import semantics goil_types_networkmessage in "goil_types_networkmessage.gSemantics" ;
+import option goil_options in "goil_options.gOption";
 
 import "goil_types_os.gSemantics" ;
 import "com_type.gSemantics" ;
@@ -55,5 +56,119 @@ function void_root_obj
     ![@app_map           emptyMap]
   ];
 end function;
+
+routine scalabilityClass
+  ??@root_obj cpu
+  !@uint64 sc
+  !@bool useTimingProtection
+  !@bool useProtectionHook
+:
+  # if OSEK, we are in SC 0
+  sc := 0L;
+  useTimingProtection := false;
+  useProtectionHook := false;
+  @bool useGlobalTime := false;
+  
+  @bool useOSApplication := false;
+  if [option goil_options.autosar_on value] then
+    foreach [cpu tasks] do
+      cast [task timing_prot]:
+      when == @timing_prot_task do useTimingProtection := true;
+      else end cast;
+    end foreach;
+      
+    foreach [cpu isrs] do
+      cast [isr timing_prot]:
+      when == @timing_prot_isr do useTimingProtection := true;
+      else end cast;
+    end foreach;
+    
+    foreach [cpu scheduletables] do
+      cast [scheduletable ltgt_sync]:
+      when == @ltgt_sync_true do useGlobalTime := true;
+      else end cast;
+    end foreach;
+    
+    useOSApplication := [[cpu applis] count] > 0;
+      
+    cast [[cpu os] protectionhook]:
+    when == @bool_class ph do
+      useProtectionHook := [ph value];
+    else end cast;
+    
+    
+    
+    # by default, we are in SC1
+    sc := 1L;
+    @string setSC := [[[cpu os] scalabilityclass] string];
+    if setSC == "" | setSC == "AUTO" then
+
+      # if protectionhook is set or
+      # at least one task or ISR uses timing protection or
+      # if global time sync is used then
+      # we are in sc2
+      if useTimingProtection | useProtectionHook | useGlobalTime then
+        sc := 2L;
+      end if;
+      
+      # Then check the memory protection and the availability
+      # of an OS Application to see if the scalability class
+      # must be increase by 2
+      if memory_protection_on[![cpu os]] | [[cpu applis] count] > 0 then
+        sc := sc + 2L;
+      end if;
+      
+    else
+      if setSC == "sc1" then
+        # The user asks for scalability class 1
+        # we check if other objects need a greater scalability class
+        if useTimingProtection then
+          if useOSApplication then
+            sc := 4L;
+            warning [[cpu os] scalabilityclass]: "SCALABILITYCLASS set to 4 because Timing Protection and OS Application are used";
+          else
+            sc := 2L;
+            warning [[cpu os] scalabilityclass]: "SCALABILITYCLASS set to 2 because Timing Protection is used";
+          end if;
+        else
+          if useOSApplication then
+            sc := 3L;
+            warning [[cpu os] scalabilityclass]: "SCALABILITYCLASS set to 3 because OS Application is used";
+          else
+            sc := 1L;
+          end if;
+        end if;
+      elsif setSC == "sc2" then
+        if useTimingProtection then
+          if useOSApplication then
+            sc := 4L;
+            warning [[cpu os] scalabilityclass]: "SCALABILITYCLASS set to 4 because Timing Protection and OS Application are used";
+          else
+            sc := 2L;
+          end if;
+        else
+          if useOSApplication then
+            sc := 3L;
+            warning [[cpu os] scalabilityclass]: "SCALABILITYCLASS set to 3 because OS Application is used";
+          else
+            sc := 2L;
+          end if;
+        end if;
+      elsif setSC == "sc3" then
+        if useTimingProtection then
+          if useOSApplication then
+            sc := 4L;
+            warning [[cpu os] scalabilityclass]: "SCALABILITYCLASS set to 4 because Timing Protection and OS Application are used";
+          else
+            sc := 3L;
+          end if;
+        else
+          sc := 3L;
+        end if;
+      elsif setSC == "sc4" then sc := 4L; end if;
+    end if;
+  end if;
+end routine;
+
 
 end semantics ;

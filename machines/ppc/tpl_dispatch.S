@@ -216,9 +216,9 @@ tpl_sc_handler:
    * Here, we save lr, cr, r11 and r12. This is not needed
    * in fact since these registers are volatile but we want to start
    * with a symetrical scheme compared to the interrupt handler.
-   * In addition, a 16 bytes space is made on the top of the
-   * process stack to save the SRR0 and SRR1 if the CallTrustedFunction
-   * service is called and to put the linkage area.
+   * In addition, a 16 bytes space may be allocated on the top of the
+   * process stack to save the SRR0 and SRR1 and to put the linkage area
+   * if the CallTrustedFunction service is called.
    *
    * See the tpl_os_process_stack.h file for stack mapping
    * 

@@ -149,7 +149,7 @@ endif
 # the following fixes old Make-rules which does not
 # define specific CPP command variable
 ifndef CPP
-CPP = $(CC) -E
+CPP = $(CC) -E $(CFLAGS)
 endif
 
 # exe rule -> Link

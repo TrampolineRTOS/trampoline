@@ -73,7 +73,10 @@ routine apps_well_formed
   @resource_map      resources   := [cpu resources];
   @message_map       messages    := [cpu messages];
 
-  if [apps count] > 0 then
+  @uint64 sc;
+  scalabilityClass !cpu ?sc ?* ?*;
+  
+  if sc > 2L then
     # Verify the objects referenced from an application exists
     foreach apps do
       object_exists ![tasks allKeys] ![[app tasks] allKeyList] !"Task" ;

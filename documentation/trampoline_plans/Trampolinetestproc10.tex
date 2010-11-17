@@ -3369,7 +3369,7 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 \subsection{AUTOSAR - OS-Application}
 	
 	\subsubsection{API Service Calls for OS objects}
-	When Trampoline will be able to complain if an Application API service (GetApplicationID()...) is called and no OS-Application has been defined, test sequence 2 will be impossible to test.\\	
+	Goil 2b50 and after emits an error when the scalability class is 2 or 4 and the objects are not all in an OS Application. This renders test sequence 2 obsolete. This test sequence is no longer included in the test suite.\\	
 	CheckTaskMemoryAccess() and CheckISRMemoryAccess()... \\ 
 	
 	% TEST SEQUENCE 1 %
