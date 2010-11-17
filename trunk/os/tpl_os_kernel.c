@@ -784,13 +784,13 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
 {
   VAR(u8, AUTOMATIC) need_switch = NO_NEED_SWITCH;
 
-  /*  the tpl_running_obj is never NULL and is in the state RUNNING  */
+  /*  the running object is never NULL and is in the state RUNNING  */
   DOW_ASSERT(tpl_kern.running != NULL)
   DOW_ASSERT(tpl_kern.running->state == RUNNING)
   DOW_ASSERT(tpl_h_prio != -1)
 
 #if WITH_AUTOSAR_STACK_MONITORING == YES
-  tpl_check_stack (tpl_kern.running_id);
+  tpl_check_stack(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
   if (tpl_h_prio > tpl_kern.running->priority)

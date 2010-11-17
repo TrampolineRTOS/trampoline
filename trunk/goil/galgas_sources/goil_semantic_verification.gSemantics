@@ -305,12 +305,6 @@ routine verify_all
   events_well_formed ![cpu events];
   networkmessages_well_formed ![cpu net_messages];
 
-  # Autosar checking
-
- # if [option goil_options.autosar_on value] then
- #   schedule_tables_well_formed ![cpu scheduletables];
- # end if;
-
   # cross-objects static verification
   @resource_map resources:= [cpu resources];
   resolve_linked_resources !?resources;
@@ -322,7 +316,7 @@ routine verify_all
   counters_of_alarms_defined ![cpu alarms] ![cpu counters];
   networkmessages_exist_and_ok ![cpu messages] ![cpu net_messages];
 
-  # cross-objects Autosar checking
+  # Autosar checking
   if [option goil_options.autosar_on value] then
     schedule_tables_well_formed ![cpu scheduletables] !cpu;
     schedule_tables_counters_exist_and_compatible ![cpu scheduletables] ![cpu counters];

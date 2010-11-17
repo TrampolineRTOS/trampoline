@@ -120,7 +120,6 @@ autosar_sts_s13
 autosar_sts_s14
 
 autosar_app_s1
-autosar_app_s2
 autosar_app_s3
 autosar_app_s4
 
