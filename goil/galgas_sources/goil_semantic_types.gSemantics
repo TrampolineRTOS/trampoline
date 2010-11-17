@@ -1,11 +1,5 @@
 semantics goil_semantic_types :
 
-import semantics goil_basic_types in "goil_basic_types.gSemantics" ;
-import semantics goil_types_action in "goil_types_action.gSemantics" ;
-import semantics goil_routines in "goil_routines.gSemantics" ;
-#import semantics goil_types_timing_prot in "goil_types_timing_prot.ggs" ;
-
-
 import "goil_basic_types.gSemantics" ;
 import "goil_types_action.gSemantics" ;
 import "goil_routines.gSemantics" ;
@@ -111,8 +105,6 @@ abstract class @base_mess extends @oil_obj {
     @lstringlist acc_apps ;
     @ident_map   other_fields;
 }
-
-map @message_map ;
 
 abstract class @mess_prop_obj {
     @location location ;

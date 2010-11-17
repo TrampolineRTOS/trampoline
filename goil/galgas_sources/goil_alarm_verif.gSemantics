@@ -1,9 +1,5 @@
 semantics goil_alarm_verif :
 
-import semantics goil_semantic_types in "goil_semantic_types.gSemantics" ;
-import semantics goil_types_counter in "goil_types_counter.gSemantics" ;
-import option goil_options in "goil_options.gOption" ;
-
 import "goil_semantic_types.gSemantics" ;
 import "goil_types_counter.gSemantics" ;
 import "goil_options.gOption" ;

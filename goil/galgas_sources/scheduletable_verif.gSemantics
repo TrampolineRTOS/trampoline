@@ -1,10 +1,4 @@
 semantics scheduletable_verif:
-
-#import semantics goil_semantic_types in "goil_semantic_types.ggs";
-#import semantics goil_types_scheduletable in "goil_types_scheduletable.ggs";
-#import semantics goil_types_counter in "goil_types_counter.ggs";
-#import semantics goil_types_task in "goil_types_task.ggs";
-import semantics goil_types_root in "goil_types_root.gSemantics";
 import "goil_types_root.gSemantics";
 
 #

@@ -1,8 +1,5 @@
 semantics goil_routines :
 
-import option goil_options in "goil_options.gOption" ;
-import semantics goil_basic_types in "goil_basic_types.gSemantics" ;
-
 import "goil_options.gOption" ;
 import "goil_basic_types.gSemantics" ;
 

@@ -17,9 +17,6 @@
 
 semantics goil_types_scheduletable :
 
-import semantics goil_basic_types in "goil_basic_types.gSemantics";
-import semantics goil_types_action in "goil_types_action.gSemantics";
-
 import "goil_basic_types.gSemantics";
 import "goil_types_action.gSemantics";
 

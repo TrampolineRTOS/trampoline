@@ -15,16 +15,7 @@
 # $URL$
 #
 
-syntax goil_obj_scheduletable :
-#--- Lexique Reference, used when grammar source file extension is .gGrammar
-with "goil_lexique.gLexique";
-
-import lexique goil_lexique in "goil_lexique.gLexique";
-import option goil_options in "goil_options.gOption";
-import semantics goil_semantics in "goil_semantics.gSemantics";
-import semantics goil_basic_types in "goil_basic_types.gSemantics";
-import semantics goil_types_action in "goil_types_action.gSemantics";
-import semantics goil_types_scheduletable in "goil_types_scheduletable.gSemantics";
+syntax goil_obj_scheduletable ("goil_lexique.gLexique"):
 
 import "goil_options.gOption";
 import "goil_semantics.gSemantics";

@@ -17,9 +17,6 @@
 grammar api_grammar "LL1" :
   with "api_parser.gSyntax" ;
 
-  import lexique api_scanner in "api_scanner.gLexique" ;
-  import syntax api_parser in "api_parser.gSyntax" ;
-
   root <api_start> ?!@goilTemplateVariableMap cfg;
 end grammar ;
 

@@ -26,7 +26,6 @@
 
 semantics goil_check :
 
-import semantics goil_semantic_types in "goil_semantic_types.gSemantics" ;
 import "goil_semantic_types.gSemantics" ;
 
 routine check_uint32_range

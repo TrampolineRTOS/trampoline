@@ -14,14 +14,7 @@
 # $URL$
 #
 
-syntax goil_obj_isr :
-#--- Lexique Reference, used when grammar source file extension is .gGrammar
-with "goil_lexique.gLexique";
-
-import lexique goil_lexique in "goil_lexique.gLexique" ;
-import option goil_options in "goil_options.gOption" ;
-import semantics goil_semantics in "goil_semantics.gSemantics" ;
-import semantics goil_types_timing_prot in "goil_types_timing_prot.gSemantics" ;
+syntax goil_obj_isr ("goil_lexique.gLexique") :
 
 import "goil_options.gOption" ;
 import "goil_semantics.gSemantics" ;

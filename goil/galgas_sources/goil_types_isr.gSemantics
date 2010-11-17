@@ -1,8 +1,5 @@
 semantics goil_types_isr :
 
-import semantics goil_basic_types in "goil_basic_types.gSemantics" ;
-import semantics goil_types_timing_prot in "goil_types_timing_prot.gSemantics" ;
-
 import "goil_basic_types.gSemantics" ;
 import "goil_types_timing_prot.gSemantics" ;
 

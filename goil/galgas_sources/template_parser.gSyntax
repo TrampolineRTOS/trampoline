@@ -17,14 +17,9 @@
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-syntax template_parser :
-with "template_scanner.gLexique";
-
-import lexique template_scanner in "template_scanner.gLexique";
+syntax template_parser ("template_scanner.gLexique") :
 
 import "template_invocation.gSemantics";
-
-import semantics template_invocation in "template_invocation.gSemantics";
 
 nonterminal <goil_template_start_symbol>
   ??@string inPrefix

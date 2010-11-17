@@ -41,10 +41,6 @@ list @goilTemplateTypeList {
 
 #------------------------------------------------------------------------------*
 
-list @goilTemplateFieldMapList;
-
-map @goilTemplateFieldMap;
-
 map @goilTemplateFieldMap {
   @goilTemplateType mType;
   @uint64 mUnsigned64Value;

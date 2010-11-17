@@ -17,17 +17,11 @@
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-syntax template_expression_parser :
-with "template_scanner.gLexique";
-
-import lexique template_scanner in "template_scanner.gLexique";
+syntax template_expression_parser ("template_scanner.gLexique"):
 
 import "template_invocation.gSemantics";
 import "template_semantics.gSemantics";
 import "system_config.gSemantics";
-import semantics template_invocation in "template_invocation.gSemantics";
-import semantics template_semantics in "template_semantics.gSemantics";
-import semantics system_config in "system_config.gSemantics";
 
 #------------------------------------------------------------------------------*
 #                                                                              *

@@ -1,8 +1,5 @@
 semantics goil_message_verif :
 
-import semantics goil_types_networkmessage in "goil_types_networkmessage.gSemantics";
-import semantics goil_semantic_types in "goil_semantic_types.gSemantics";
-
 import "goil_types_networkmessage.gSemantics";
 import "goil_semantic_types.gSemantics";
 

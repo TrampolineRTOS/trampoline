@@ -13,13 +13,7 @@
 # $URL$
 #
 
-syntax goil_obj_application :
-#--- Lexique Reference, used when grammar source file extension is .gGrammar
-with "goil_lexique.gLexique";
-
-import lexique goil_lexique in "goil_lexique.gLexique" ;
-import option goil_options in "goil_options.gOption" ;
-import semantics goil_types_app in "goil_types_app.gSemantics" ;
+syntax goil_obj_application ("goil_lexique.gLexique"):
 
 import "goil_options.gOption" ;
 import "goil_types_app.gSemantics" ;

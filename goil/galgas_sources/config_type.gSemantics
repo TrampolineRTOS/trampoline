@@ -25,10 +25,6 @@
 
 semantics config_type :
 
-import semantics goil_types_root in "goil_types_root.gSemantics";
-import option goil_options in "goil_options.gOption" ;
-
-
 import "goil_types_root.gSemantics";
 import "goil_options.gOption" ;
 
