@@ -25,12 +25,6 @@
 #
 
 semantics defaults :
-
-import semantics goil_semantic_types in "goil_semantic_types.gSemantics" ;
-import semantics goil_check in "goil_check.gSemantics" ;
-import semantics goil_types_root in "goil_types_root.gSemantics" ;
-import option goil_options in "goil_options.gOption" ;
-
 import "goil_semantic_types.gSemantics" ;
 import "goil_check.gSemantics" ;
 import "goil_types_root.gSemantics" ;

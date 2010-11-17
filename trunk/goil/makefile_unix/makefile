@@ -1,6 +1,6 @@
 #---------------------------------------------------------------------------*
 #                                                                           *
-#     MAKEFILE for building "goil" 32-bit command line tools for Unix       *
+#    MAKEFILE for building "goil" 32-bit command line tools for Unix     *
 #                                                                           *
 #---------------------------------------------------------------------------*
 
@@ -44,7 +44,7 @@ include ../galgas_sources/GALGAS_OUTPUT/file_list.mke
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-include $(LIB_PM_PATH)/included_makefiles/unix_gcc_tools_32.mke
+include $(LIBPM_PATH)/included_makefiles/unix_gcc_tools_32.mke
 
 #---------------------------------------------------------------------------*
 #                                                                           *
@@ -52,6 +52,6 @@ include $(LIB_PM_PATH)/included_makefiles/unix_gcc_tools_32.mke
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-include $(LIB_PM_PATH)/included_makefiles/generic_makefile.mke
+include $(LIBPM_PATH)/included_makefiles/generic_makefile.mke
 
 #---------------------------------------------------------------------------*

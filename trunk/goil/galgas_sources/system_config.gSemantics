@@ -36,12 +36,6 @@
 
 semantics system_config:
 
-import semantics goil_types_root in "goil_types_root.gSemantics";
-import semantics template_invocation in "template_invocation.gSemantics";
-import semantics goil_env_verification in "goil_env_verification.gSemantics";
-import option goil_options in "goil_options.gOption";
-
-
 import "goil_types_root.gSemantics";
 import "template_invocation.gSemantics";
 import "goil_env_verification.gSemantics";
@@ -242,12 +236,12 @@ end routine;
 #
 routine computeWrapperTaskList
   ??@root_obj cpu
-  ??@uint maxTaskPrio
-  ?!@goilTemplateFieldMapList wrapperList
+  ??@uint unused maxTaskPrio
+  ?!@goilTemplateFieldMapList unused wrapperList
 :
   foreach [cpu applis] do
     cast [app startuphook]:
-    when == @bool_class sh do
+    when == @bool_class do
       
     else end cast;
   end foreach;

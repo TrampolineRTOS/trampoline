@@ -1,16 +1,4 @@
 semantics goil_semantic_verification:
-
-import semantics resources_verif     in "resources_verif.gSemantics";
-import semantics scheduletable_verif in "scheduletable_verif.gSemantics";
-import semantics tasks_verif         in "tasks_verif.gSemantics";
-import semantics isrs_verif          in "isrs_verif.gSemantics";
-import semantics goil_message_verif  in "goil_message_verif.gSemantics";
-import semantics goil_alarm_verif    in "goil_alarm_verif.gSemantics";
-import semantics goil_app_verif      in "goil_app_verif.gSemantics";
-import semantics goil_types_root     in "goil_types_root.gSemantics";
-import semantics goil_semantic_types in "goil_semantic_types.gSemantics";
-import option goil_options           in "goil_options.gOption";
-
 import "resources_verif.gSemantics";
 import "scheduletable_verif.gSemantics";
 import "tasks_verif.gSemantics";

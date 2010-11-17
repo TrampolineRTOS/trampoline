@@ -15,12 +15,8 @@
 # $URL$
 #
 
-syntax cfg_syntax :
-#--- Lexique Reference, used when grammar source file extension is .gGrammar
-with "cfg_lexique.gLexique";
+syntax cfg_syntax ("cfg_lexique.gLexique"):
 
-import lexique cfg_lexique in "cfg_lexique.gLexique" ;
-import semantics cfg_types in "cfg_types.gSemantics" ;
 import "cfg_types.gSemantics" ;
 
 nonterminal <cfg_start>

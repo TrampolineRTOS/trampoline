@@ -20,29 +20,6 @@ grammar goil_grammar "LL1":
     with "goil_obj_application.gSyntax" ;
     with "goil_timing_prot_attrs.gSyntax" ;
 
-#    Theses constructs are silently parsed when source file extension is .gGrammar
-    import lexique goil_lexique            in "goil_lexique.gLexique" ;
-    import option  goil_options            in "goil_options.gOption" ;
-
-    import syntax  goil_syntax             in "goil_syntax.gSyntax" ;
-    import syntax  goil_imp_def            in "goil_imp_def.gSyntax" ;
-
-    import syntax  goil_obj_os             in "goil_obj_os.gSyntax" ;
-    import syntax  goil_obj_task           in "goil_obj_task.gSyntax" ;
-    import syntax  goil_obj_counter        in "goil_obj_counter.gSyntax" ;
-    import syntax  goil_obj_appmode        in "goil_obj_appmode.gSyntax" ;
-    import syntax  goil_obj_alarm          in "goil_obj_alarm.gSyntax" ;
-    import syntax  goil_obj_resource       in "goil_obj_resource.gSyntax" ;
-    import syntax  goil_obj_event          in "goil_obj_event.gSyntax" ;
-    import syntax  goil_obj_isr            in "goil_obj_isr.gSyntax" ;
-    import syntax  goil_obj_message        in "goil_obj_message.gSyntax" ;
-    import syntax  goil_obj_networkmessage in "goil_obj_networkmessage.gSyntax" ;
-    import syntax  goil_obj_com            in "goil_obj_com.gSyntax" ;
-    import syntax  goil_obj_ipdu           in "goil_obj_ipdu.gSyntax" ;
-    import syntax  goil_obj_scheduletable  in "goil_obj_scheduletable.gSyntax" ;
-    import syntax  goil_obj_application    in "goil_obj_application.gSyntax" ;
-    import syntax  goil_timing_prot_attrs  in "goil_timing_prot_attrs.gSyntax" ;
-
     root <start> ;
 
     unused <default_bool>, <default_enum>, <default_float_number> ;

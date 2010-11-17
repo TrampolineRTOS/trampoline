@@ -1,16 +1,5 @@
 semantics goil_types_root :
 
-import semantics goil_types_os in "goil_types_os.gSemantics" ;
-import semantics com_type in "com_type.gSemantics" ;
-import semantics goil_semantic_types in "goil_semantic_types.gSemantics" ;
-import semantics goil_types_task in "goil_types_task.gSemantics" ;
-import semantics goil_types_isr in "goil_types_isr.gSemantics" ;
-import semantics goil_types_counter in "goil_types_counter.gSemantics" ;
-import semantics goil_types_scheduletable in "goil_types_scheduletable.gSemantics" ;
-import semantics goil_types_app in "goil_types_app.gSemantics" ;
-import semantics goil_types_networkmessage in "goil_types_networkmessage.gSemantics" ;
-import option goil_options in "goil_options.gOption";
-
 import "goil_types_os.gSemantics" ;
 import "com_type.gSemantics" ;
 import "goil_semantic_types.gSemantics" ;

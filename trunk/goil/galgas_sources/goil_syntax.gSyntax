@@ -14,34 +14,7 @@
 # $URL$
 #
 
-syntax goil_syntax:
-#--- Lexique Reference, used when grammar source file extension is .gGrammar
-with "goil_lexique.gLexique";
-
-import lexique goil_lexique in "goil_lexique.gLexique";
-#import option goil_options in "goil_options.gOption";
-import semantics goil_semantics in "goil_semantics.gSemantics";
-#import semantics goil_proc_generation in "goil_proc_generation.ggs";
-#import semantics goil_app_generation in "goil_app_generation.ggs";
-#import semantics goil_mp_generation in "goil_mp_generation.ggs";
-import semantics com_type in "com_type.gSemantics";
-import semantics goil_types_app in "goil_types_app.gSemantics";
-import semantics goil_types_networkmessage in "goil_types_networkmessage.gSemantics";
-#import semantics goil_scheduletable_verif in "goil_scheduletable_verif.ggs";
-#import semantics goil_alarm_verif in "goil_alarm_verif.ggs";
-#import semantics goil_app_verif in "goil_app_verif.ggs";
-#import semantics goil_message_verif in "goil_message_verif.ggs";
-import semantics cfg_types in "cfg_types.gSemantics";
-import semantics goil_env_verification in "goil_env_verification.gSemantics";
-#import semantics trace_description in "trace_description.ggs";
-#import semantics it_table_generation in "it_table_generation.ggs";
-import semantics config_type in "config_type.gSemantics";
-
-#import semantics goil_crc_table in "goil_crc_table.ggs";
-import grammar goil_cpu_level_include in "goil_cpu_level_include.gGrammar";
-import grammar goil_file_level_include in "goil_file_level_include.gGrammar";
-#import grammar cfg_grammar in "cfg_grammar.ggs";
-
+syntax goil_syntax("goil_lexique.gLexique"):
 
 import "goil_semantics.gSemantics";
 import "com_type.gSemantics";

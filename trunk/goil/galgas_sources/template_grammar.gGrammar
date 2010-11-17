@@ -21,10 +21,6 @@ grammar template_grammar "LL1" :
   with "template_parser.gSyntax" ;
   with "template_expression_parser.gSyntax" ;
 
-  import lexique template_scanner in "template_scanner.gLexique" ;
-  import syntax template_parser in "template_parser.gSyntax" ;
-  import syntax template_expression_parser in "template_expression_parser.gSyntax" ;
-
   root <goil_template_start_symbol>
     ??@string inPrefix
     ??@string inPath

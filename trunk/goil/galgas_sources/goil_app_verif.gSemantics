@@ -1,12 +1,5 @@
 semantics goil_app_verif :
-
-#import semantics goil_semantics in "goil_semantics.ggs" ;
-import semantics goil_types_root     in "goil_types_root.gSemantics";
 import "goil_types_root.gSemantics";
-
-#import semantics goil_types_app in "goil_types_app.ggs" ;
-#import semantics goil_types_task in "goil_types_task.ggs" ;
-#import semantics goil_types_scheduletable in "goil_types_scheduletable.ggs" ;
 
 routine object_exists
   ?@stringset   def

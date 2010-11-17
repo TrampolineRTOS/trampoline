@@ -26,22 +26,6 @@
 
 semantics goil_code_generation :
 
-import semantics goil_routines in "goil_routines.gSemantics";
-import semantics goil_semantic_types in "goil_semantic_types.gSemantics";
-import semantics goil_types_os in "goil_types_os.gSemantics";
-import semantics goil_types_task in "goil_types_task.gSemantics";
-import semantics goil_types_app in "goil_types_app.gSemantics";
-import semantics goil_env_verification in "goil_env_verification.gSemantics";
-import semantics config_type in "config_type.gSemantics";
-import semantics system_config in "system_config.gSemantics";
-import semantics template_routines in "template_routines.gSemantics";
-
-import semantics cfg_types in "cfg_types.gSemantics";
-import grammar cfg_grammar in "cfg_grammar.gGrammar";
-import grammar api_grammar in "api_grammar.gGrammar";
-
-import option goil_options in "goil_options.gOption";
-
 import "goil_routines.gSemantics";
 import "goil_semantic_types.gSemantics";
 import "goil_types_os.gSemantics";
