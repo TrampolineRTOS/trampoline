@@ -35,6 +35,7 @@ CPU test {
         MEMMAP = TRUE {
           COMPILER = gcc;
           LINKER = gnu_ld { SCRIPT = "script.ld"; };
+          ASSEMBLER = gnu_as;
           MEMORY_PROTECTION = FALSE;
         };
     } ;
