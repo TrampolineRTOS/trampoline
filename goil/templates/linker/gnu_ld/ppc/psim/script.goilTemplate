@@ -38,6 +38,7 @@ SECTIONS
   . = ALIGN(4);
   osconst : {
     *(.osConst)
+    *(.rodata.*)
   } > ram
   
   /*
@@ -70,7 +71,7 @@ SECTIONS
     __SEG_START_APP_CODE_CONST_RGN = .;
     *(.osApiConst)  /* API constants    */
     *(.rodata)      /* litteral strings */
-	. = ALIGN(4);
+ . = ALIGN(4);
     *(.osApiCode)   /* API functions    */
     /* Sections for code of tasks and ISR */%
 foreach PROCESSES do
