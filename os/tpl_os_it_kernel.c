@@ -52,7 +52,11 @@ VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;
 VAR(u32, OS_VAR) tpl_cpt_user_task_lock_All = 0;
 VAR(u32, OS_VAR) tpl_cpt_user_task_lock_OS = 0;
 VAR(u32, OS_VAR) tpl_cpt_os_task_lock = 0;
+
+#if ISR_COUNT > 0
 STATIC VAR(s32, OS_VAR) tpl_it_nesting =  0;
+#endif
+
 #define OS_STOP_SEC_VAR_NOINIT_UNSPECIFIED
 #include "tpl_memmap.h"
 
