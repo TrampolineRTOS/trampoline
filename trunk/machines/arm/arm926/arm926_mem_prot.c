@@ -54,6 +54,7 @@ extern CONSTP2CONST(tpl_mem_prot_desc, AUTOMATIC, OS_CONST) tpl_mp_table[TASK_CO
  */
 static FUNC(void, OS_CODE) tpl_setup_common_mp (tpl_task_id this_process)
 {
+  /* provided by board part of the port */
   MMU_set_board_system_areas (this_process);
  
   /* Trampoline's core private code, constants and variables */ 

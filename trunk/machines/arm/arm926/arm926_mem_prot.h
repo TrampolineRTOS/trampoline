@@ -25,8 +25,6 @@
 #ifndef ARM926_MEM_PROT_H
 #define ARM926_MEM_PROT_H
 
-/* TODO: rename this file to tpl_mem_prot.h ?*/
-
 #include "tpl_os_internal_types.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os_mem_prot.h"
