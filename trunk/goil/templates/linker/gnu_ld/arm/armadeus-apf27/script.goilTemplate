@@ -257,8 +257,8 @@ end foreach
 	 */
 	MMU_page_tables_size =
 		     /* number of processes */           (% ![PROCESSES length] % + 1) *
-		     /* each page table size */          1K *
-				 /* number of page tables needed */  /*(ALIGN (MMU_end_custom_zone - MMU_start_custom_zone, 1M) / 1M)*/1;
+		     /* each page table size */          1K * 4 *
+				 /* number of page tables needed */  (ALIGN (MMU_end_custom_zone - MMU_start_custom_zone, 1M) / 1M);
 	MMU_page_table_count = (ALIGN (MMU_end_custom_zone - MMU_start_custom_zone, 1M) / 1M);
   .MMU_tables (NOLOAD) : ALIGN(16K) {
 		MMU_translation_tables = .;

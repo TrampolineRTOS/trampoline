@@ -85,11 +85,21 @@ tpl_primary_syscall_handler:
     ldr r2, [r1]
     add r2, r2, #1
     str r2, [r1]
+    cmp r2, #1
+    bhi skip_kernel_enter
+
+#if WITH_MEMORY_PROTECTION == YES
+		stmfd sp!, {r3}    /* r3 must not be altered : it contains service's identifier */
+    bl tpl_mp_kernel_enter
+		ldmfd sp!, {r3}
+#endif /* WITH_MEMORY_PROTECTION == YES */
 
     /* reset tpl_kern variables */
     ldr r1, =tpl_kern
     mov r2, #NO_NEED_SWITCH
     strb r2, [r1, #TPL_KERN_OFFSET_NEED_SWITCH]
+
+skip_kernel_enter:
 
    /*********************************
     * SYSTEM CALL DISPATCHING STAGE *
@@ -126,11 +136,11 @@ tpl_primary_syscall_handler:
     cmp r2, #NO_NEED_SWITCH
     beq swi_no_context_switch_exit
 
-    /* do not switch context if nested kernel entrance */
+    /* do not switch context nor do kernel exit if nested kernel entrance */
     ldr r2, =nested_kernel_entrance_counter
     ldr r2, [r2]
     cmp r2, #1
-    bhi swi_no_context_switch_exit
+    bhi swi_skip_kernel_exit
 
    /***************************
     * CONTEXT SWITCHING STAGE *
@@ -173,7 +183,7 @@ save_context_swi:
 
     /* only executed if context saving step has not been done */
 skip_save_context_swi:
-    add sp, sp, #(5 * 4)
+    add sp, sp, #(5 * 4) /* discards kernel enter stack frame */
 
     /*
      * LOADS NEW CONTEXT
@@ -181,8 +191,7 @@ skip_save_context_swi:
 load_context_swi:
 
 #if WITH_MEMORY_PROTECTION == YES
-		ldr r0, [r0, #TPL_KERN_OFFSET_RUNNING_ID]
-    bl tpl_set_process_mp
+		bl tpl_mp_kernel_exit
 #endif
 
   /* We updates kernel reentrance counter while registers are freely
@@ -230,7 +239,9 @@ swi_no_context_switch_exit:
     sub r2, r2, #1
     str r2, [r3]
 
-    /* pops the stack frame (see kernel enter phase) */
+swi_skip_kernel_exit:
+
+    /* pops the kernel enter stack frame */
     ldmfd sp!, {r3}
     msr spsr, r3
     ldmfd sp!, {r0-r2,lr}

@@ -4,8 +4,13 @@ Roadmap :
 - bootstraping      : done
 - context switching : done
 - interrupt support : done, needs improvements
-- memmap support    : done, needs discussions before merging in trunk
-- memory protection : work in progress... MMU tables generation OK, working on runtime
-- trusted functions : to be done
+- memmap support    : done
+- memory protection : done
+- trusted functions : to be done, needs minor improvements
+- trusted OS Applications support : done
 - counters support  : to be done
 - connect GPT to counters : to be done
+
+To be fixed :
+- kernel reentrance via abort exception (an abort exception may come while already in kernel, thus, counter is incremented but we should not do "kernel enter" stage)
+- if TaskType is greater than 8 bits, we must use another LOAD or STORE instruction. Make a goil template to provide the correct instruction via a MACRO
