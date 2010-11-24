@@ -22,7 +22,6 @@
  * $Author: $
  * $URL: $
  */
-#if WITH_MEMORY_PROTECTION == YES
 
 #include "tpl_compiler.h"
 #include "tpl_os_std_types.h"
@@ -37,6 +36,8 @@
 #include "tpl_as_isr_kernel.h"
 #include "tpl_os_kernel.h"
 #endif /* WITH_AUTOSAR */
+
+#if WITH_MEMORY_PROTECTION == YES
 
 #include "arm926_mmu.h"
 

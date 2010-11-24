@@ -14,12 +14,6 @@ CPU test {
 
     OS config {
 				MEMMAP = FALSE;
-/*        MEMMAP = TRUE {
-          COMPILER = gcc;
-          LINKER = gnu_ld;
-					ASSEMBLER = gnu_as;
-          MEMORY_PROTECTION = FALSE;
-        };*/
         SYSTEM_CALL = TRUE;
         STATUS = EXTENDED;
         APP_SRC = "app1_noisr_nomm_nomp.c";

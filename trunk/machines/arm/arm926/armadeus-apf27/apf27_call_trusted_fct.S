@@ -23,15 +23,18 @@
  * $URL: $
  */
 
+#include "tpl_os_application_def.h"
 #include "../tpl_asm_definitions.h"
 
 #define OS_START_SEC_CODE
 #include "tpl_as_memmap.h"
 
+#if WITH_MEMORY_PROTECTION == YES
 .global tpl_call_trusted_function_service
 tpl_call_trusted_function_service:
   /* FIXME: to be done */
   mov pc, lr
+#endif /* WITH_MEMORY_PROTECTION == YES */
 
 .global tpl_exit_trusted_function_service
 tpl_exit_trusted_function_service:
