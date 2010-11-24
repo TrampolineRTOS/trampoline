@@ -30,13 +30,13 @@
 
 .global tpl_call_trusted_function_service
 tpl_call_trusted_function_service:
-	/* FIXME: to be done */
-	mov pc, lr
+  /* FIXME: to be done */
+  mov pc, lr
 
 .global tpl_exit_trusted_function_service
 tpl_exit_trusted_function_service:
-	/* FIXME: to be done */
-	mov pc, lr
+  /* FIXME: to be done */
+  mov pc, lr
 
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"

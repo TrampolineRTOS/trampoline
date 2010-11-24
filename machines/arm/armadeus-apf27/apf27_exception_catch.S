@@ -105,7 +105,7 @@ any_exception_enter:
     bl tpl_call_protection_hook
 
 #if WITH_MEMORY_PROTECTION == YES
-		bl tpl_mp_kernel_exit
+    bl tpl_mp_kernel_exit
 #endif /* WITH_MEMORY_PROTECTION == YES */
 
     /*************************************************
