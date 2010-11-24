@@ -41,7 +41,7 @@ CPU test {
     };
 
     TASK t1 {
-        PRIORITY = 1;
+        PRIORITY = 2;
         AUTOSTART = TRUE {
 				APPMODE = std;
 				};
@@ -50,31 +50,42 @@ CPU test {
     }; 
 
     TASK t2 {
-        PRIORITY = 2;
-        AUTOSTART = FALSE ;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
-
-    TASK t3 {
         PRIORITY = 3;
         AUTOSTART = FALSE ;
         ACTIVATION = 1;
         SCHEDULE = FULL;
     };
 
-    TASK t4 {
+    TASK t3 {
         PRIORITY = 4;
+        AUTOSTART = TRUE {
+        APPMODE = std;
+        };
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+
+    TASK t4 {
+        PRIORITY = 5;
         AUTOSTART = FALSE;
         ACTIVATION = 1;
         SCHEDULE = FULL;
     };
     
     TASK t5 {
-        PRIORITY = 0;
+        PRIORITY = 1;
         AUTOSTART = TRUE {
 				APPMODE = std;
 				};
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+
+    TASK finish_test {
+        PRIORITY = 0;
+        AUTOSTART = TRUE {
+        APPMODE = std;
+        };
         ACTIVATION = 1;
         SCHEDULE = FULL;
     };
@@ -94,15 +105,19 @@ CPU test {
    APPLICATION osap1 {
    		TRUSTED = FALSE;
 	   	TASK = t1;
-	   	TASK = t3;
-   		TASK = t4;
+	   	TASK = t2;
    		ISR = it1;
    };
    
    APPLICATION osap2 {
    		TRUSTED = FALSE;
-	   	TASK = t2;
-	   	TASK = t5;
+	   	TASK = t3;
+   		TASK = t4;
    		ISR = it2;
    };
+	 APPLICATION osap3 {
+	   TRUSTED = TRUE;
+		 TASK = t5;
+     TASK = finish_test;
+	};
 } ;

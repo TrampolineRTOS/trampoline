@@ -11,11 +11,11 @@
  *  you have a properly configured TFTP server and BDI's configuration
  *  point on it.
  * 2) launch decoder like this :
- *  ./decode_mmu_structs <number of processes> <number of page tables in a set> <base MMU tables address - 0xa0000000> < mmu_dump_file
+ *  ./decode_mmu_structs <number of processes> <number of page tables in a set> <base MMU tables address> < mmu_dump_file
  *  where :
  *   - number of processes is : number of tasks + number of ISRs (cat 2.) + 1
  *   - number of page tables in a set : in the file *.map look for MMU_page_table_count, the address given before the name gives the value required here
- *   - base MMU table address : same address as given for the dump, minus 0xa0000000 (written in decimal)
+ *   - base MMU table address : same address as given for the dump (in hexadecimal)
  *  do not forget to give the file via stdin using the "<" operator at the end of command line
  */
 #include <stdio.h>
@@ -172,15 +172,15 @@ void decode_page_table (int process, int page_table_number)
       switch (previous_entry.tiny_page.type)
       {
         case 3:
-          printf ("  [%4d KiB] 0x%08X -> 0x%08X : area with rights %s\n", area_size >> 10, area_start, area_end, 
+          printf ("  [%4d KiB] 0x%08X -> 0x%08X : area with rights %s\n", area_size >> 10, area_start, area_end - 1, 
              AP_DECODE_STRING (previous_entry.tiny_page.access_permission));
           break;
         case 0:
-          printf ("  [%4d KiB] 0x%08X -> 0x%08X : memory hole\n", area_size >> 10, area_start, area_end);
+          printf ("  [%4d KiB] 0x%08X -> 0x%08X : memory hole\n", area_size >> 10, area_start, area_end - 1);
           break;
         default:
           printf ("  error : page type = %d (related to memory area 0x%08X -> 0x%08X, page entry address : 0x%08X)\n", previous_entry.tiny_page.type, 
-             area_start, area_end,
+             area_start, area_end - 1,
              get_page_table_address (process, page_table_number) + 4 * (i - 1));
           exit (1);
       }
@@ -196,15 +196,15 @@ void decode_page_table (int process, int page_table_number)
   switch (previous_entry.tiny_page.type)
   {
     case 3:
-      printf ("  [%-4d KiB] 0x%08X -> 0x%08X : area with rights %s\n", area_size >> 10, area_start, area_end, 
+      printf ("  [%-4d KiB] 0x%08X -> 0x%08X : area with rights %s\n", area_size >> 10, area_start, area_end - 1, 
         AP_DECODE_STRING (previous_entry.tiny_page.access_permission));
       break;
     case 0:
-      printf ("  [%-4d KiB] 0x%08X -> 0x%08X : memory hole\n", area_size >> 10, area_start, area_end);
+      printf ("  [%-4d KiB] 0x%08X -> 0x%08X : memory hole\n", area_size >> 10, area_start, area_end - 1);
       break;
     default:
       printf ("  error : page type = %d (related to memory area 0x%08X -> 0x%08X, page entry address : 0x%08X)\n", previous_entry.tiny_page.type, 
-         area_start, area_end,
+         area_start, area_end - 1,
          get_page_table_address (process, page_table_number) + 4 * (i - 1));
       exit (1);
   }
@@ -264,6 +264,7 @@ void decode_mem_conf (int process)
           current_page_index = PAGE_INDEX(area_start);
           do
           {
+            printf (" ** page table @0x%08X\n", get_page_table_address (process, current_page_index));
             decode_page_table (process, current_page_index);
             current_page_index++;
           }
@@ -323,13 +324,13 @@ int main (int argc, char**argv)
   {
     printf ("Bad number of parameters (%d)\n", argc);
     printf ("Usage : \n");
-    printf ("%s <number_of_processes> <number_of_page_tables> <base_MMU_section_address - a0000000> < mmu_data_dump_file\n", argv[0]);
+    printf ("%s <number_of_processes> <number_of_page_tables> <base_MMU_section_address> < mmu_data_dump_file\n", argv[0]);
     exit (1);
   }
 
-  number_of_processes = atoi (argv[1]);
-  number_of_page_tables = atoi (argv[2]);
-  MMU_data_base_address = atoi (argv[3]) + 0xA0000000;
+  number_of_processes = strtoll (argv[1], NULL, 10);
+  number_of_page_tables = strtoll (argv[2], NULL, 10);
+  MMU_data_base_address = strtoll (argv[3], NULL, 16);
 
   assert (number_of_processes > 1);
   assert (number_of_page_tables > 1);
@@ -345,6 +346,7 @@ int main (int argc, char**argv)
   {
     printf ("--------------------------------------------\n");
     printf ("Begin of memory protection map for process %d\n", i);
+    printf (" ** translation table @0x%08X\n", MMU_data_base_address + 4096 * 4 * i);
     decode_mem_conf (i);
   }
 

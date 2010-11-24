@@ -25,12 +25,11 @@
 #ifndef ARM926_MEM_PROT_H
 #define ARM926_MEM_PROT_H
 
+/* TODO: rename this file to tpl_mem_prot.h ?*/
+
 #include "tpl_os_internal_types.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os_mem_prot.h"
-
-/* FIXME: should be declared somewhere else */
-extern CONSTP2CONST(tpl_mem_prot_desc, AUTOMATIC, OS_CONST) tpl_mp_table[TASK_COUNT+ISR_COUNT+1];
 
 /**
  * This function prepares MMU data ѕtructures in memory
@@ -41,11 +40,15 @@ extern CONSTP2CONST(tpl_mem_prot_desc, AUTOMATIC, OS_CONST) tpl_mp_table[TASK_CO
 extern FUNC(void, OS_CODE) tpl_init_mp();
 
 /**
- * Tells the MMU to switch to current process
- * memory protection configuration
- *
- * @param this_process the new current process
+ * sets memory protection to privileged mode (no memory protection)
  */
-extern FUNC(void, OS_CODE) tpl_set_process_mp (tpl_task_id this_process);
+extern FUNC(void, OS_CODE) tpl_mp_kernel_enter (void);
+
+/**
+ * turn back to memory protection configuration according to the running
+ * process. If it is (or becomes) trusted, MMU is kept disabled (it should
+ * already have been disabled at kernel enter
+ */
+extern FUNC(void, OS_CODE) tpl_mp_kernel_exit (void);
 
 #endif /* ARM926_MEM_PROT_H */

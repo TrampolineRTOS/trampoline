@@ -84,6 +84,10 @@ any_exception_enter:
     add r2, r2, #1
     str r2, [r1]
 
+#if WITH_MEMORY_PROTECTION == YES
+    bl tpl_mp_kernel_enter
+#endif /* WITH_MEMORY_PROTECTION == YES */
+
     /* reset tpl_kern variables */
     ldr r1, =tpl_kern
     mov r2, #NO_NEED_SWITCH
@@ -99,6 +103,10 @@ any_exception_enter:
     moveq r0, #E_OS_PROTECTION_EXCEPTION
     movne r0, #E_OS_PROTECTION_MEMORY 
     bl tpl_call_protection_hook
+
+#if WITH_MEMORY_PROTECTION == YES
+		bl tpl_mp_kernel_exit
+#endif /* WITH_MEMORY_PROTECTION == YES */
 
     /*************************************************
      * on the way to exit exception (with or without *
@@ -149,11 +157,6 @@ skip_save_context_except:
     add sp, sp, #(8 * 4) /* skip saved register frame (8 = r0-r3 + r9 + r11 + r12 + r14) */
 
 load_context_except:
-
-#if WITH_MEMORY_PROTECTION == YES
-		ldr r0, [r0, #TPL_KERN_OFFSET_RUNNING_ID]
-    bl tpl_set_process_mp
-#endif
 
   /* We updates kernel reentrance counter while registers are freely
    * usable and as we know we won't enter in kernel again (IRQ locked and

@@ -227,7 +227,7 @@ static FUNC(void, OS_CODE) MMU_set_tiny_pages_area (tpl_task_id this_process, u8
       MMU_translation_tables[this_process][TTABLE_INDEX(current_page_address)].raw = fst_lvl_template.raw;
       MMU_translation_tables[this_process][TTABLE_INDEX(current_page_address)].fine.fine_page_table_base_address =
          ((((u32)(PAGE_TABLE_ADDRESS(this_process,page_table_number))) & 0xFFFFF000) >> 12);
-
+			
       do
       {
         PAGE_TABLE_ENTRY (this_process, page_table_number, current_page_address).raw = scd_lvl_template.raw;
@@ -275,7 +275,7 @@ FUNC(void, OS_CODE) MMU_enable (void)
 	/* note : we don't have to take care about the following pipelined instructions
 	 * as virtual addresses equals physical addresses */
 	__asm__ ("mrc p15, 0, r1, c1, C0, 0\n"
-	         "orr r1, r1, #1\n"
+	         "orr r1, r1, #0b11\n"
 					 "mcr p15, 0, r1, c1, C0, 0");
 }
 
@@ -284,7 +284,7 @@ FUNC(void, OS_CODE) MMU_disable (void)
 	/* note : we don't have to take care about the following pipelined instructions
 	 * as virtual addresses equals physical addresses */
 	__asm__ ("mrc p15, 0, r1, c1, C0, 0\n"
-	         "orr r1, r1, #1\n"
+	         "bic r1, r1, #0b11\n"
 					 "mcr p15, 0, r1, c1, C0, 0");
 }
 
@@ -294,10 +294,10 @@ FUNC(void, OS_CODE) MMU_set_current_process (tpl_task_id this_process)
 
 	base_address = (u32)&MMU_translation_tables[this_process];
 
-	__asm__ ("mov r0, %0\n"
-	         "mcr p15, 0, r0, c2, c0, 0"
+	__asm__ ("mcr p15, 0, %[ba], c2, c0, 0\n" /* sets translation table base address */
+           "mcr p15, 0, %[z], c8, c7, 0"   /* invalidate TLB */
 					 :
-					 : "r" (base_address));
+					 : [ba]"r" (base_address), [z]"r" (0));
 }
 
 #define OS_STOP_SEC_CODE
