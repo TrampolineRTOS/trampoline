@@ -65,8 +65,10 @@ FUNC(void, OS_CODE) tpl_shutdown ()
   DISABLE_FIQ ();
   DISABLE_IRQ ();
 
+#if WITH_MEMORY_PROTECTION == YES
   /* disable the MMU, useful for debugging sessions */
   MMU_disable ();
+#endif /* WITH_MEMORY_PROTECTION */
   /* fall into very low consumption mode : all
    * internal CPU clocks are disabled.
    */
