@@ -65,8 +65,8 @@ FUNC(void, OS_CODE) tpl_shutdown ()
   DISABLE_FIQ ();
   DISABLE_IRQ ();
 
-	/* disable the MMU, useful for debugging sessions */
-	MMU_disable ();
+  /* disable the MMU, useful for debugging sessions */
+  MMU_disable ();
   /* fall into very low consumption mode : all
    * internal CPU clocks are disabled.
    */
@@ -90,9 +90,9 @@ FUNC(void, OS_CODE) tpl_init_machine()
 #endif /* WITH_MEMORY_PROTECTION == YES */
 
 #if WITH_CPU_CACHE == YES
-	arm926_cache_on ();
+  arm926_cache_on ();
 #else
-	arm926_cache_off ();
+  arm926_cache_off ();
 #endif /* WITH_CPU_CACHE == YES*/
 
   tpl_init_machine_generic ();

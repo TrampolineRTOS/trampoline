@@ -57,13 +57,13 @@ static FUNC(void, OS_CODE) tpl_setup_common_mp (tpl_task_id this_process)
   MMU_set_board_system_areas (this_process);
  
   /* Trampoline's core private code, constants and variables */ 
-	MMU_set_system_area (this_process, &__SEG_START_OS_PRIVATE, &__SEG_END_OS_PRIVATE);
-	
-	/* Shared code and constants */
-	MMU_set_readonly_area (this_process, &__SEG_START_APP_CODE_CONST_RGN, &__SEG_END_APP_CODE_CONST_RGN);
+  MMU_set_system_area (this_process, &__SEG_START_OS_PRIVATE, &__SEG_END_OS_PRIVATE);
+  
+  /* Shared code and constants */
+  MMU_set_readonly_area (this_process, &__SEG_START_APP_CODE_CONST_RGN, &__SEG_END_APP_CODE_CONST_RGN);
 
   /* shared variables (FIXME: a clear policy should be find for external libraries and GCC builtin functions) */
-	MMU_set_readonly_area (this_process, &__SEG_START_COMMON_VARS, &__SEG_END_COMMON_VARS);
+  MMU_set_readonly_area (this_process, &__SEG_START_COMMON_VARS, &__SEG_END_COMMON_VARS);
 }
 
 /**
@@ -73,16 +73,16 @@ static FUNC(void, OS_CODE) tpl_setup_common_mp (tpl_task_id this_process)
 static FUNC(void, OS_CODE) tpl_setup_self_mp (tpl_task_id this_process)
 {
   if (tpl_mp_table[this_process] != NULL) /* idle task does not have any descriptor */
-	{
-		/* variables */
-		MMU_set_readwrite_area (this_process, tpl_mp_table[this_process]->proc_var.start, tpl_mp_table[this_process]->proc_var.end);
-		/* stack */
-		MMU_set_readwrite_area (this_process, tpl_mp_table[this_process]->proc_stack.start, tpl_mp_table[this_process]->proc_stack.end);
+  {
+    /* variables */
+    MMU_set_readwrite_area (this_process, tpl_mp_table[this_process]->proc_var.start, tpl_mp_table[this_process]->proc_var.end);
+    /* stack */
+    MMU_set_readwrite_area (this_process, tpl_mp_table[this_process]->proc_stack.start, tpl_mp_table[this_process]->proc_stack.end);
 #if WITH_AUTOSAR == YES
-		/* variables from OS Application */
-		MMU_set_readwrite_area (this_process, tpl_mp_table[this_process]->osap_var.start, tpl_mp_table[this_process]->osap_var.end);
+    /* variables from OS Application */
+    MMU_set_readwrite_area (this_process, tpl_mp_table[this_process]->osap_var.start, tpl_mp_table[this_process]->osap_var.end);
 #endif /* WITH_AUTOSAR == YES */
-	}
+  }
   else
   {
     /* idle task's memory protection configuration is used to provide kernel (or trusted) memory protection configuration.
@@ -121,18 +121,18 @@ FUNC(void, OS_CODE) tpl_mp_kernel_enter (void)
 
 FUNC(void, OS_CODE) tpl_mp_kernel_exit (void)
 {
-	if (tpl_kern.running->trusted_counter > 0)
-	{
-		tpl_kern.s_running->context->psr |= 0x1F;
+  if (tpl_kern.running->trusted_counter > 0)
+  {
+    tpl_kern.s_running->context->psr |= 0x1F;
     /* provides the trusted mem. prot. conf */
     MMU_set_current_process (IDLE_TASK_ID);
-	}
-	else
-	{
+  }
+  else
+  {
     tpl_kern.s_running->context->psr &= ~0x1F;
     tpl_kern.s_running->context->psr |= 0x10;
     MMU_set_current_process (tpl_kern.running_id);
-	}
+  }
 }
 
 #define OS_STOP_SEC_CODE

@@ -88,7 +88,7 @@ tpl_primary_irq_handler:
     bl tpl_arm_subarch_irq_handler
 
 #if WITH_MEMORY_PROTECTION == YES
-		bl tpl_mp_kernel_exit
+    bl tpl_mp_kernel_exit
 #endif
 
     /***************************************************

@@ -89,9 +89,9 @@ tpl_primary_syscall_handler:
     bhi skip_kernel_enter
 
 #if WITH_MEMORY_PROTECTION == YES
-		stmfd sp!, {r3}    /* r3 must not be altered : it contains service's identifier */
+    stmfd sp!, {r3}    /* r3 must not be altered : it contains service's identifier */
     bl tpl_mp_kernel_enter
-		ldmfd sp!, {r3}
+    ldmfd sp!, {r3}
 #endif /* WITH_MEMORY_PROTECTION == YES */
 
     /* reset tpl_kern variables */
@@ -191,7 +191,7 @@ skip_save_context_swi:
 load_context_swi:
 
 #if WITH_MEMORY_PROTECTION == YES
-		bl tpl_mp_kernel_exit
+    bl tpl_mp_kernel_exit
 #endif
 
   /* We updates kernel reentrance counter while registers are freely
@@ -207,7 +207,7 @@ load_context_swi:
      * We use r14 as it will be restored separatly and later, it
      * is useful for the following ldmia instruction
      */
-		ldr r0, =tpl_kern
+    ldr r0, =tpl_kern
     ldr lr, [r0, #TPL_KERN_OFFSET_S_RUNNING] /* get the address of the context bloc */
     ldr lr, [lr]                   /* jump to context bloc (from static descriptor) */
 

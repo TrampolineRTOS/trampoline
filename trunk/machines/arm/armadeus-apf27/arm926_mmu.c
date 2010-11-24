@@ -128,25 +128,25 @@ extern MMU_translation_table MMU_translation_tables[TASK_COUNT+ISR_COUNT+1];
 FUNC(void, OS_CODE) MMU_init (void)
 {
   u32 *zero_ptr;
-	u32 i;
-	u32 page_table_total_entries_count;
+  u32 i;
+  u32 page_table_total_entries_count;
 
-	/* clears all translation tables */
+  /* clears all translation tables */
   zero_ptr = (u32*)&MMU_translation_tables;
   while ((u8*)zero_ptr != (u8*)&MMU_translation_tables+sizeof(MMU_translation_tables))
     *(zero_ptr++) = 0;
   
-	/* clears all page tables */
-	page_table_total_entries_count  = TASK_COUNT + ISR_COUNT + 1; /* number of processes */
-	page_table_total_entries_count *= (u32)&MMU_page_table_count; /* number of page tables in a process' page table set */
-	page_table_total_entries_count *= 1024;                       /* number of entries in each (fine) page table */
+  /* clears all page tables */
+  page_table_total_entries_count  = TASK_COUNT + ISR_COUNT + 1; /* number of processes */
+  page_table_total_entries_count *= (u32)&MMU_page_table_count; /* number of page tables in a process' page table set */
+  page_table_total_entries_count *= 1024;                       /* number of entries in each (fine) page table */
   zero_ptr = (u32*)&MMU_page_tables;
-	for (i = 0 ; i < page_table_total_entries_count ; i++)
+  for (i = 0 ; i < page_table_total_entries_count ; i++)
     *(zero_ptr++) = 0;
-	
-	/* setup MMU domains (we use only domain 0 as client, others generates domain fault) */
-	__asm__ ("mov r0, #1\n"
-	         "mcr p15, 0, r0, c3, c0, 0");
+  
+  /* setup MMU domains (we use only domain 0 as client, others generates domain fault) */
+  __asm__ ("mov r0, #1\n"
+           "mcr p15, 0, r0, c3, c0, 0");
 }
 
 static FUNC(void, OS_CODE) MMU_set_system_section (tpl_task_id this_process, u32 address)
@@ -211,23 +211,23 @@ FUNC(void, OS_CODE) MMU_set_board_system_areas (tpl_task_id this_process)
 static FUNC(void, OS_CODE) MMU_set_tiny_pages_area (tpl_task_id this_process, u8 *from, u8 *to, u8 this_access_permission)
 {
   u32 ttable_index;          /* variable index in translation table */
-	u32 page_table_number;     /* current page table number in the page table set of the process */
+  u32 page_table_number;     /* current page table number in the page table set of the process */
   u8 *current_page_address;  /* start address of current processed page */
   MMU_first_level_descriptor fst_lvl_template = {.fine = {.type = 3, .must_be_one = 1, .domain = 0}};
   MMU_second_level_descriptor scd_lvl_template = {.tiny_page = {.type = 3, .buffered = 0, .cacheable = 0, .access_permission = this_access_permission}};
 
   if (from != to)
   {
-		page_table_number = ((u32)from - (u32)&MMU_start_custom_zone) >> 20;
+    page_table_number = ((u32)from - (u32)&MMU_start_custom_zone) >> 20;
     current_page_address = from;
-		ttable_index = TTABLE_INDEX(from);
-		do
+    ttable_index = TTABLE_INDEX(from);
+    do
     {
       /* set the first level descriptor */
       MMU_translation_tables[this_process][TTABLE_INDEX(current_page_address)].raw = fst_lvl_template.raw;
       MMU_translation_tables[this_process][TTABLE_INDEX(current_page_address)].fine.fine_page_table_base_address =
          ((((u32)(PAGE_TABLE_ADDRESS(this_process,page_table_number))) & 0xFFFFF000) >> 12);
-			
+      
       do
       {
         PAGE_TABLE_ENTRY (this_process, page_table_number, current_page_address).raw = scd_lvl_template.raw;
@@ -237,11 +237,11 @@ static FUNC(void, OS_CODE) MMU_set_tiny_pages_area (tpl_task_id this_process, u8
         current_page_address += 1024; /* next page starts 1KB after */
       }
       while ((((u32)current_page_address) & 0xFFFFF) &&  /* if it ends at MByte boundary, we must set next ttable entry */
-			       (((u32)current_page_address) < ((u32)to))); 
-			ttable_index++;
-			page_table_number++;
+             (((u32)current_page_address) < ((u32)to))); 
+      ttable_index++;
+      page_table_number++;
     }
-		while (((u32)current_page_address) < ((u32)to));
+    while (((u32)current_page_address) < ((u32)to));
   }
 }
 
@@ -272,32 +272,32 @@ FUNC(void, OS_CODE) MMU_set_readwrite_area (tpl_task_id this_process, u8* from, 
 
 FUNC(void, OS_CODE) MMU_enable (void)
 {
-	/* note : we don't have to take care about the following pipelined instructions
-	 * as virtual addresses equals physical addresses */
-	__asm__ ("mrc p15, 0, r1, c1, C0, 0\n"
-	         "orr r1, r1, #0b11\n"
-					 "mcr p15, 0, r1, c1, C0, 0");
+  /* note : we don't have to take care about the following pipelined instructions
+   * as virtual addresses equals physical addresses */
+  __asm__ ("mrc p15, 0, r1, c1, C0, 0\n"
+           "orr r1, r1, #0b11\n"
+           "mcr p15, 0, r1, c1, C0, 0");
 }
 
 FUNC(void, OS_CODE) MMU_disable (void)
 {
-	/* note : we don't have to take care about the following pipelined instructions
-	 * as virtual addresses equals physical addresses */
-	__asm__ ("mrc p15, 0, r1, c1, C0, 0\n"
-	         "bic r1, r1, #0b11\n"
-					 "mcr p15, 0, r1, c1, C0, 0");
+  /* note : we don't have to take care about the following pipelined instructions
+   * as virtual addresses equals physical addresses */
+  __asm__ ("mrc p15, 0, r1, c1, C0, 0\n"
+           "bic r1, r1, #0b11\n"
+           "mcr p15, 0, r1, c1, C0, 0");
 }
 
 FUNC(void, OS_CODE) MMU_set_current_process (tpl_task_id this_process)
 {
   register u32 base_address;
 
-	base_address = (u32)&MMU_translation_tables[this_process];
+  base_address = (u32)&MMU_translation_tables[this_process];
 
-	__asm__ ("mcr p15, 0, %[ba], c2, c0, 0\n" /* sets translation table base address */
+  __asm__ ("mcr p15, 0, %[ba], c2, c0, 0\n" /* sets translation table base address */
            "mcr p15, 0, %[z], c8, c7, 0"   /* invalidate TLB */
-					 :
-					 : [ba]"r" (base_address), [z]"r" (0));
+           :
+           : [ba]"r" (base_address), [z]"r" (0));
 }
 
 #define OS_STOP_SEC_CODE
