@@ -29,15 +29,12 @@
 #kernel OS architecture dependant files
 
 SOURCES += \
-arm926_mem_prot.c \
-arm926_mmu.c \
-arm926_cpu_cache.c \
 apf27_bootstrap_stage1.S \
-apf27_exception_catch.S \
 apf27_call_trusted_fct.S \
 apf27_sleep.S \
 apf27_vectors.c \
 apf27_tpl_stubs.c \
 apf27_bootstrap_stage2.c \
 apf27_aitc.c \
-apf27_irq.c
+apf27_irq.c \
+apf27_mmu.c

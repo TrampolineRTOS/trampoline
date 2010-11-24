@@ -591,11 +591,44 @@ To be located at address 0x00000000, this vector table is assigned to a specific
 
 \subsubsection{FIQ handling}
 
+\section{ARM -- ARM926 chip support}
+
+\label{arm926mmu}
+
+\subsection{Memory protection}
+
+To be written...
+
+Some points to explain :
+\begin{itemize}
+\item FCSE mechanism is not used by this port (if someone is interested by this work, she's welcome)
+\item address translation is not used, all VMA equals physical address
+\item IDLE task's memory protection configuration is used to provide configuration for trusted applications or kernel
+\end{itemize}
+
+\subsubsection{MMU tables generation principle}
+
+To be written...
+
+Some points to explain :
+\begin{itemize}
+\item MMU is not disabled in privileged mode, but all useful memory areas are accessible. Thus, we hope we can find bugs easily in privileged code.
+\item useful memory areas, except processes and applications ones, are configured as accessible (read and write) in privileged mode. These memory areas are called system areas
+\item some memory areas needs to be accessible by anyone (API, GCC builtin functions, common libraries, ...), they are called common areas (they are read only for unprivileged contexts)
+\item there is one translation table for each process
+\item all translation tables have the same system and common areas
+\item there is one page table set for each process. Page tables are fine page tables. Table entries are tiny page descriptors.
+\item the number of page table in a set depends on the size of the whole trampoline and application memory footprint. Then this information is given by linker via a symbol which is used by the MMU driver.
+\item Page tables are accessed via a macro, as they are allocated by linker (and we cannot know the number of page tables)
+\end{itemize}
+
+\subsection{CPU cache support}
+
 \section{ARM -- Armadeus APF27 board}
 
 \subsection{Debugging with Abatron BDI2000 or BDI3000 JTAG probe}
 
-A configuration file is provided in \file{machines/arm/armadeus-apf27/bdi-config}.
+A configuration file is provided in \file{machines/arm/arm926/armadeus-apf27/bdi-config}.
 
 To enable JTAG, if your APF27 has a FPGA, you must load the FPGA to wake it up (TO DO : explain how to do this...).
 
@@ -633,30 +666,7 @@ This port can be use in one of these three configurations :
 
 \subsection{Memory protection}
 
-To be written...
-
-Some points to explain :
-\begin{itemize}
-\item FCSE mechanism is not used by this port (if someone is interested by this work, she's welcome)
-\item address translation is not used, all VMA equals physical address
-\item IDLE task's memory protection configuration is used to provide configuration for trusted applications or kernel
-\end{itemize}
-
-\subsubsection{MMU tables generation principle}
-
-To be written...
-
-Some points to explain :
-\begin{itemize}
-\item MMU is not disabled in privileged mode, but all useful memory areas are accessible. Thus, we hope we can find bugs easily in privіleged code.
-\item useful memory areas, except processes and applications ones, are configured as accessible (read and write) in privileged mode. These memory areas are called system areas
-\item some memory areas needs to be accessible by anyone (API, GCC builtin functions, common libraries, ...), they are called common areas (they are read only for unprivileged contexts)
-\item there is one translation table for each process
-\item all translation tables have the same system and common areas
-\item there is one page table set for each process. Page tables are fine page tables. Table entries are tiny page descriptors.
-\item the number of page table in a set depends on the size of the whole trampoline and application memory footprint. Then this information is given by linker via a symbol which is used by the MMU driver.
-\item Page tables are accessed via a macro, as they are allocated by linker (and we cannot know the number of page tables)
-\end{itemize}
+Memory protection is based on ARM926 shared code (see~\ref{arm926} page~\pageref{arm926})
 
 \section{ARM -- Simtec EB675001 board}
 

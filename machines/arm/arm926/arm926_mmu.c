@@ -149,7 +149,17 @@ FUNC(void, OS_CODE) MMU_init (void)
            "mcr p15, 0, r0, c3, c0, 0");
 }
 
-static FUNC(void, OS_CODE) MMU_set_system_section (tpl_task_id this_process, u32 address)
+/**
+ * This function allocates a whole section (area of 1MB) with rights for kernel only
+ *
+ * @param this_process process for which the area should be allocated
+ * @param address first address of the area
+ *
+ * @pre address should be aligned to 1MB boundary
+ * @pre size of area is 1MB
+ * @pre area is not already configured (no page configured inside it)
+ */
+FUNC(void, OS_CODE) MMU_set_system_section (tpl_task_id this_process, u32 address)
 {
   MMU_first_level_descriptor value = {
     .section = {
@@ -166,26 +176,6 @@ static FUNC(void, OS_CODE) MMU_set_system_section (tpl_task_id this_process, u32
     
   value.section.section_base_address = address >> 20;
   MMU_translation_tables[this_process][TT_INDEX(address)].raw = value.raw;
-}
-
-FUNC(void, OS_CODE) MMU_set_board_system_areas (tpl_task_id this_process)
-{
-  /* the following sections are for BROM and interlaced reserved areas*/
-  MMU_set_system_section (this_process, 0x00000000);
-  MMU_set_system_section (this_process, 0x00100000);
-  MMU_set_system_section (this_process, 0x00200000);
-  MMU_set_system_section (this_process, 0x00300000);
-  MMU_set_system_section (this_process, 0x00400000);
-  MMU_set_system_section (this_process, 0x00500000);
-  MMU_set_system_section (this_process, 0x00600000);
-  MMU_set_system_section (this_process, 0x00700000);
-  /* so called "internal registers", ie many devices */
-  MMU_set_system_section (this_process, 0x10000000);
-  /* CSI and ATA devices, and many reserved memory space */
-  MMU_set_system_section (this_process, 0x80000000);
-  /* TODO : add EMI and PCMCIA areas */
-  /* reserved area and vector RAM */
-  MMU_set_system_section (this_process, 0xFFF00000);
 }
 
 /**
@@ -208,7 +198,7 @@ FUNC(void, OS_CODE) MMU_set_board_system_areas (tpl_task_id this_process)
  * @pre this_access_permission must equals to 1, 2 or 3
  * @pre any page in this area must not have been setup by this function for this process
  */
-static FUNC(void, OS_CODE) MMU_set_tiny_pages_area (tpl_task_id this_process, u8 *from, u8 *to, u8 this_access_permission)
+FUNC(void, OS_CODE) MMU_set_tiny_pages_area (tpl_task_id this_process, u8 *from, u8 *to, u8 this_access_permission)
 {
   u32 ttable_index;          /* variable index in translation table */
   u32 page_table_number;     /* current page table number in the page table set of the process */

@@ -25,7 +25,6 @@
 #include "tpl_compiler.h"
 #include "arm926_cpu_cache.h"
 
-#if WITH_CPU_CACHE == NO
 FUNC (void, OS_CODE) arm926_cache_off ()
 {
   __asm__ ("MRC p15, 0, r0, c1, c0, 0 \n"
@@ -34,7 +33,7 @@ FUNC (void, OS_CODE) arm926_cache_off ()
            "MCR p15, 0, r0, c1, c0, 0");
 }
 
-#else /* WITH_CPU_CACHE == YES */
+#if WITH_CPU_CACHE == YES
 
 FUNC (void, OS_CODE) arm926_cache_on ()
 {

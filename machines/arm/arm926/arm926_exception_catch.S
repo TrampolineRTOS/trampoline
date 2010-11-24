@@ -1,5 +1,5 @@
 /**
- * @file apf27_exception_catch.S
+ * @file arm926_exception_catch.S
  *
  * @section descr File description
  *
