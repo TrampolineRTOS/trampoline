@@ -45,27 +45,27 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-extern FUNC(void, OS_CODE) MMU_set_system_section (tpl_task_id this_process, u32 address);
-extern FUNC(void, OS_CODE) MMU_set_tiny_pages_area (tpl_task_id this_process, u8 *from, u8 *to, u8 this_access_permission);
+extern FUNC(void, OS_CODE) MMU_set_system_section (tpl_task_id this_process, u32 address, CacheableMemoryArea cacheable);
+extern FUNC(void, OS_CODE) MMU_set_tiny_pages_area (tpl_task_id this_process, u8 *from, u8 *to, u8 this_access_permission, CacheableMemoryArea cacheable);
 
 FUNC(void, OS_CODE) MMU_set_board_system_areas (tpl_task_id this_process)
 {
   /* the following sections are for BROM and interlaced reserved areas*/
-  MMU_set_system_section (this_process, 0x00000000);
-  MMU_set_system_section (this_process, 0x00100000);
-  MMU_set_system_section (this_process, 0x00200000);
-  MMU_set_system_section (this_process, 0x00300000);
-  MMU_set_system_section (this_process, 0x00400000);
-  MMU_set_system_section (this_process, 0x00500000);
-  MMU_set_system_section (this_process, 0x00600000);
-  MMU_set_system_section (this_process, 0x00700000);
+  MMU_set_system_section (this_process, 0x00000000, CACHEABLE);
+  MMU_set_system_section (this_process, 0x00100000, CACHEABLE);
+  MMU_set_system_section (this_process, 0x00200000, CACHEABLE);
+  MMU_set_system_section (this_process, 0x00300000, CACHEABLE);
+  MMU_set_system_section (this_process, 0x00400000, CACHEABLE);
+  MMU_set_system_section (this_process, 0x00500000, CACHEABLE);
+  MMU_set_system_section (this_process, 0x00600000, CACHEABLE);
+  MMU_set_system_section (this_process, 0x00700000, CACHEABLE);
   /* so called "internal registers", ie many devices */
-  MMU_set_system_section (this_process, 0x10000000);
+  MMU_set_system_section (this_process, 0x10000000, NONCACHEABLE);
   /* CSI and ATA devices, and many reserved memory space */
-  MMU_set_system_section (this_process, 0x80000000);
+  MMU_set_system_section (this_process, 0x80000000, NONCACHEABLE);
   /* TODO : add EMI and PCMCIA areas */
   /* reserved area and vector RAM */
-  MMU_set_system_section (this_process, 0xFFF00000);
+  MMU_set_system_section (this_process, 0xFFF00000, CACHEABLE);
 }
 
 #define OS_STOP_SEC_CODE

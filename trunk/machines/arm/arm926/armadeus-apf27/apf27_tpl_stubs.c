@@ -60,8 +60,6 @@ extern int main (void);
 
 FUNC(void, OS_CODE) tpl_shutdown ()
 {
-  /* FIXME: this is does not conform to AUTOSAR OS specifications,
-   * should return to main with initial context */
   DISABLE_FIQ ();
   DISABLE_IRQ ();
 
@@ -69,10 +67,15 @@ FUNC(void, OS_CODE) tpl_shutdown ()
   /* disable the MMU, useful for debugging sessions */
   MMU_disable ();
 #endif /* WITH_MEMORY_PROTECTION */
+#if WITH_CPU_CACHE == YES
+  arm926_cache_off ();
+  arm926_cache_invalidate ();
+#endif /* WITH_CPU_CACHE */
+
   /* fall into very low consumption mode : all
    * internal CPU clocks are disabled.
    */
-  /* TODO armadeus_system_standby (); */
+  __asm__ ("mcr p15,0,r0,c7,c0,4\n");
 
   while (1);
 }
@@ -81,12 +84,6 @@ extern void tpl_init_machine_generic (void);
 
 FUNC(void, OS_CODE) tpl_init_machine()
 {
-  /* TODO armadeus_int_ctrl_setup_defaults ();*/
-
-  /* TODO armadeus_disable_all_devices ();*/
-
-  /* TODO armadeus_setup_heartbeat_timer_1ms ();*/
-
 #if WITH_MEMORY_PROTECTION == YES
   tpl_init_mp();
 #endif /* WITH_MEMORY_PROTECTION == YES */
@@ -98,8 +95,6 @@ FUNC(void, OS_CODE) tpl_init_machine()
 #endif /* WITH_CPU_CACHE == YES*/
 
   tpl_init_machine_generic ();
-
-  /* TODO armadeus_heartbeat_timer_start ();*/
 }
 
 #define OS_STOP_SEC_CODE

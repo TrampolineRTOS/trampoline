@@ -1,7 +1,6 @@
 #include "tpl_os.h"
 #include "tpl_as_protec_hook.h"
 #include "serial.h"
-#include "tpl_os_kernel.h" /* to access to tpl_kern */
 
 #define TRACE_SYS(val) flags_sys[count_sys++] = val
 #define TRACE_OSAP1(val) flags_osap1[count_osap1++] = val
@@ -137,7 +136,7 @@ u32 count_sys = 0;
 
 FUNC(void, OS_CODE) ShutdownHook(VAR(StatusType, AUTOMATIC) error)
 {
-	serial_puts ("Trampoline has shutdown\n");
+  serial_puts ("Trampoline has shutdown\n");
 }
 
 FUNC(int, AUTOMATIC) main()
@@ -150,6 +149,8 @@ FUNC(int, AUTOMATIC) main()
 
 extern CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA) proc_name_table[TASK_COUNT + ISR_COUNT];
 
+extern const TaskType t5;
+
 FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(StatusType error)
 {
   TaskType id;
@@ -157,19 +158,19 @@ FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(StatusType error)
   if (GetTaskID (&id) == E_OK)
   {
     TRACE_SYS(id);
-	  serial_puts ("Protection hook (kill process ");
+    serial_puts ("Protection hook (kill process ");
     serial_puts (proc_name_table[id]);
     serial_puts (")!\n");
   }
   else
     serial_puts ("Error calling GetTaskID, bug in memory protection ?\n");
 
-	return PRO_TERMINATETASKISR;
+  return PRO_TERMINATETASKISR;
 }
 
 FUNC(void, AUTOMATIC) ErrorHook(StatusType error)
 {
-	serial_puts ("Error hook !\n");
+  serial_puts ("Error hook !\n");
   TRACE_SYS(0xFFFFFFFF);
 }
 
@@ -188,7 +189,7 @@ ISR(it2)
 
 TASK(t5)
 {
-	u32 *ptr;
+  u32 *ptr;
 
   serial_puts("t5 starts (from trusted OS Application)\n");
   TRACE_OSAP3(50);
@@ -202,8 +203,8 @@ TASK(t5)
   var_t2 = 5;
   TRACE_OSAP3(53);
   serial_puts("t5 reads to unaligned memory (should raise memory protection exception)\n");
-	ptr = (u32 *)1;
-	var_t5 = *ptr;
+  ptr = (u32 *)1;
+  var_t5 = *ptr;
   TRACE_OSAP3(54);
   TerminateTask ();
   TRACE_OSAP3(55);

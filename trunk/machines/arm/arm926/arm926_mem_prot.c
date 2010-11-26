@@ -59,13 +59,13 @@ static FUNC(void, OS_CODE) tpl_setup_common_mp (tpl_task_id this_process)
   MMU_set_board_system_areas (this_process);
  
   /* Trampoline's core private code, constants and variables */ 
-  MMU_set_system_area (this_process, &__SEG_START_OS_PRIVATE, &__SEG_END_OS_PRIVATE);
+  MMU_set_system_area (this_process, &__SEG_START_OS_PRIVATE, &__SEG_END_OS_PRIVATE, CACHEABLE);
   
   /* Shared code and constants */
-  MMU_set_readonly_area (this_process, &__SEG_START_APP_CODE_CONST_RGN, &__SEG_END_APP_CODE_CONST_RGN);
+  MMU_set_readonly_area (this_process, &__SEG_START_APP_CODE_CONST_RGN, &__SEG_END_APP_CODE_CONST_RGN, CACHEABLE);
 
   /* shared variables (FIXME: a clear policy should be find for external libraries and GCC builtin functions) */
-  MMU_set_readonly_area (this_process, &__SEG_START_COMMON_VARS, &__SEG_END_COMMON_VARS);
+  MMU_set_readonly_area (this_process, &__SEG_START_COMMON_VARS, &__SEG_END_COMMON_VARS, CACHEABLE);
 }
 
 /**
@@ -77,12 +77,12 @@ static FUNC(void, OS_CODE) tpl_setup_self_mp (tpl_task_id this_process)
   if (tpl_mp_table[this_process] != NULL) /* idle task does not have any descriptor */
   {
     /* variables */
-    MMU_set_readwrite_area (this_process, tpl_mp_table[this_process]->proc_var.start, tpl_mp_table[this_process]->proc_var.end);
+    MMU_set_readwrite_area (this_process, tpl_mp_table[this_process]->proc_var.start, tpl_mp_table[this_process]->proc_var.end, CACHEABLE);
     /* stack */
-    MMU_set_readwrite_area (this_process, tpl_mp_table[this_process]->proc_stack.start, tpl_mp_table[this_process]->proc_stack.end);
+    MMU_set_readwrite_area (this_process, tpl_mp_table[this_process]->proc_stack.start, tpl_mp_table[this_process]->proc_stack.end, CACHEABLE);
 #if WITH_AUTOSAR == YES
     /* variables from OS Application */
-    MMU_set_readwrite_area (this_process, tpl_mp_table[this_process]->osap_var.start, tpl_mp_table[this_process]->osap_var.end);
+    MMU_set_readwrite_area (this_process, tpl_mp_table[this_process]->osap_var.start, tpl_mp_table[this_process]->osap_var.end, CACHEABLE);
 #endif /* WITH_AUTOSAR == YES */
   }
   else
@@ -91,7 +91,7 @@ static FUNC(void, OS_CODE) tpl_setup_self_mp (tpl_task_id this_process)
      * In this configuration, everything is accessible except memory holes (where there is nothing to do),
      * this is useful to detect bugs in privileged code
      */
-    MMU_set_system_area (this_process, &MMU_start_custom_zone, &MMU_end_custom_zone);
+    MMU_set_system_area (this_process, &MMU_start_custom_zone, &MMU_end_custom_zone, CACHEABLE);
   }
 }
 

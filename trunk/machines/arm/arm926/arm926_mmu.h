@@ -30,6 +30,14 @@
 #include "tpl_os_mem_prot.h"
 
 /**
+ */
+typedef enum
+{
+  CACHEABLE,
+  NONCACHEABLE
+} CacheableMemoryArea;
+
+/**
  * type must be 1. 
  * See "ARM926EJ-S Technical Reference Manual" for
  * more details.
@@ -135,15 +143,17 @@ typedef MMU_second_level_descriptor MMU_fine_page_table[1024];
  *
  * Note that MMU is not enabled by this function.
  */
-FUNC(void, OS_CODE) MMU_init (void);
+extern FUNC(void, OS_CODE) MMU_init (void);
 
 /**
  * This function setup MMU tables of a process for board's specific
  * system areas
  *
  * @param this_process process id for which the area is configured
+ *
+ * @note this function is given in terminal architecture port (eg armadeus-apf27)
  */
-FUNC(void, OS_CODE) MMU_set_board_system_areas (tpl_task_id this_process);
+extern FUNC(void, OS_CODE) MMU_set_board_system_areas (tpl_task_id this_process);
 
 /**
  * This function setup MMU tables of a process for a system reserved
@@ -152,6 +162,7 @@ FUNC(void, OS_CODE) MMU_set_board_system_areas (tpl_task_id this_process);
  * @param this_process process id for which the area is configured
  * @param from start address of the area
  * @param to address that immediatly follows the area
+ * @param cacheable 1 if section is cacheable, otherwise 0
  *
  * @pre from is aligned to 1KByte
  * @pre to point just after the area
@@ -159,7 +170,7 @@ FUNC(void, OS_CODE) MMU_set_board_system_areas (tpl_task_id this_process);
  * configurations not detected)
  * @pre this_process is a valid process identifier
  */
-FUNC(void, OS_CODE) MMU_set_system_area (tpl_task_id this_process, u8 *from, u8 *to);
+extern FUNC(void, OS_CODE) MMU_set_system_area (tpl_task_id this_process, u8 *from, u8 *to, CacheableMemoryArea cacheable);
 
 /**
  * This function setup MMU tables of a process for a read only area.
@@ -167,6 +178,7 @@ FUNC(void, OS_CODE) MMU_set_system_area (tpl_task_id this_process, u8 *from, u8 
  * @param this_process process id for which the area is configured
  * @param from start address of the area
  * @param to address that immediatly follows the area
+ * @param cacheable 1 if section is cacheable, otherwise 0
  *
  * @pre from is aligned to 1KByte
  * @pre to point just after the area
@@ -174,7 +186,7 @@ FUNC(void, OS_CODE) MMU_set_system_area (tpl_task_id this_process, u8 *from, u8 
  * configurations not detected)
  * @pre this_process is a valid process identifier
  */
-FUNC(void, OS_CODE) MMU_set_readonly_area (tpl_task_id this_process, u8 *from, u8* to);
+extern FUNC(void, OS_CODE) MMU_set_readonly_area (tpl_task_id this_process, u8 *from, u8* to, CacheableMemoryArea cacheable);
 
 /**
  * This function setup MMU tables of a process for its read/write accessible areas.
@@ -182,6 +194,7 @@ FUNC(void, OS_CODE) MMU_set_readonly_area (tpl_task_id this_process, u8 *from, u
  * @param this_process process id for which the area is configured
  * @param from start address of the area
  * @param to address that immediatly follows the area
+ * @param cacheable 1 if section is cacheable, otherwise 0
  *
  * @pre from is aligned to 1KByte
  * @pre to point just after the area
@@ -189,7 +202,7 @@ FUNC(void, OS_CODE) MMU_set_readonly_area (tpl_task_id this_process, u8 *from, u
  * configurations not detected)
  * @pre this_process is a valid process identifier
  */
-FUNC(void, OS_CODE) MMU_set_readwrite_area (tpl_task_id this_process, u8* from, u8 *to);
+extern FUNC(void, OS_CODE) MMU_set_readwrite_area (tpl_task_id this_process, u8* from, u8 *to, CacheableMemoryArea cacheable);
 
 /**
  * Enables the MMU

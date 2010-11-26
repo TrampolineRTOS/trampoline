@@ -1,10 +1,10 @@
 MEMORY
 {
-    bootrom (rx) : ORIGIN = 0x00000000, LENGTH = 16K /* hard-wired into microcontroller */
-    dram0 (wx)   : ORIGIN = 0xA0000000, LENGTH = 64M
-    dram1 (wx)   : ORIGIN = 0xB0000000, LENGTH = 64M
-    fvram (wx)   : ORIGIN = 0xFFF00000, LENGTH = 979K /* free (unused by system) VRAM memory */
-    vvram (wx)   : ORIGIN = 0xFFFF4C00, LENGTH = 45K  /* vector RAM */
+  bootrom (rx) : ORIGIN = 0x00000000, LENGTH = 16K /* hard-wired into microcontroller */
+  dram0 (wx)   : ORIGIN = 0xA0000000, LENGTH = 64M
+  dram1 (wx)   : ORIGIN = 0xB0000000, LENGTH = 64M
+  fvram (wx)   : ORIGIN = 0xFFF00000, LENGTH = 979K /* free (unused by system) VRAM memory */
+  vvram (wx)   : ORIGIN = 0xFFFF4C00, LENGTH = 45K  /* vector RAM */
 }
 
 ENTRY (tpl_arm_bootstrap_entry)
@@ -14,12 +14,12 @@ SECTIONS
   /* "root" vector table cannot be written on iMX27, so we drop this section at load */
   .vectbl (NOLOAD) : {
       *(.vectbl)
-   } > bootrom
+  } > bootrom
   
   /* this section is used to boot from u-boot easily */
   apf27uboot : {
-		MMU_start_custom_zone = .;
-		__SEG_START_OS_PRIVATE = .;
+    MMU_start_custom_zone = .;
+    __SEG_START_OS_PRIVATE = .;
     KEEP(*(.ubootsupport)) 
   } > dram0 AT > dram0
   
@@ -49,9 +49,9 @@ SECTIONS
     *(.stacks) /* TODO : isolate each stack for stack overflow detection */
   } > dram0 AT> dram0
 
-	nothing : {
-		__SEG_END_OS_PRIVATE = .;
-	} > dram0 
+  nothing : {
+    __SEG_END_OS_PRIVATE = .;
+  } > dram0 
 
   /*
    * code and consts of the processes of the applications
@@ -203,8 +203,8 @@ foreach OSAPPLICATIONS do
 %
     end for
   end for
-%    } > dram0 AT> dram0
-    appvars_noinit_% !NAME % (NOLOAD) : SUBALIGN(4) {
+%  } > dram0 AT> dram0
+  appvars_noinit_% !NAME % (NOLOAD) : SUBALIGN(4) {
     /* Uninitialized variables section of OS_APP % !NAME % */
     app_% !NAME %_zeroed_vars_begin = .;
 %
@@ -215,7 +215,7 @@ foreach OSAPPLICATIONS do
 %    app_% !NAME %_zeroed_vars_end = .;
      . = ALIGN(1K);
     __SEG_END_OS_APP_% !NAME %_VAR_RGN = .;
-    } > dram0 AT> dram0
+  } > dram0 AT> dram0
 %
 end foreach
 % 
@@ -228,7 +228,7 @@ end foreach
    * kernel.
    */
   .data : ALIGN(1K) SUBALIGN(4) {
-	  __SEG_START_COMMON_VARS = .;
+    __SEG_START_COMMON_VARS = .;
     *(.data)
     *(.data*)
   } > dram0 AT> dram0
@@ -246,28 +246,28 @@ end foreach
     *(.bss*)
     *(COMMON)
     common_zeroed_vars_end = .;
-		__SEG_END_COMMON_VARS = .;
-		MMU_end_custom_zone = .;
+    __SEG_END_COMMON_VARS = .;
+    MMU_end_custom_zone = .;
   } > dram0 AT> dram0
 %
-	if USEMEMORYPROTECTION then
+  if USEMEMORYPROTECTION then
 %
   /*
-	 * MMU data
-	 */
-	MMU_page_tables_size =
-		     /* number of processes */           (% ![PROCESSES length] % + 1) *
-		     /* each page table size */          1K * 4 *
-				 /* number of page tables needed */  (ALIGN (MMU_end_custom_zone - MMU_start_custom_zone, 1M) / 1M);
-	MMU_page_table_count = (ALIGN (MMU_end_custom_zone - MMU_start_custom_zone, 1M) / 1M);
+   * MMU data
+   */
+  MMU_page_tables_size =
+    /* number of processes */           (% ![PROCESSES length] % + 1) *
+    /* each page table size */          1K * 4 *
+    /* number of page tables needed */  (ALIGN (MMU_end_custom_zone - MMU_start_custom_zone, 1M) / 1M);
+  MMU_page_table_count = (ALIGN (MMU_end_custom_zone - MMU_start_custom_zone, 1M) / 1M);
   .MMU_tables (NOLOAD) : ALIGN(16K) {
-		MMU_translation_tables = .;
-		. += /* number of processes */           (% ![PROCESSES length] % + 1) *
-		     /* each t. table size */            16K;
-		MMU_page_tables = .;
-		. += MMU_page_tables_size;
+    MMU_translation_tables = .;
+    . += /* number of processes */           (% ![PROCESSES length] % + 1) *
+         /* each t. table size */            16K;
+    MMU_page_tables = .;
+    . += MMU_page_tables_size;
   } > dram0 AT> dram0%
-	end if
+  end if
 %
 }
 

@@ -83,6 +83,8 @@ any_exception_enter:
     ldr r2, [r1]
     add r2, r2, #1
     str r2, [r1]
+    cmp r2, #1
+    bhi skip_kernel_enter
 
 #if WITH_MEMORY_PROTECTION == YES
     bl tpl_mp_kernel_enter
@@ -92,6 +94,8 @@ any_exception_enter:
     ldr r1, =tpl_kern
     mov r2, #NO_NEED_SWITCH
     strb r2, [r1, #TPL_KERN_OFFSET_NEED_SWITCH]
+
+skip_kernel_enter:
 
     /******************************
      * exception processing stage *
@@ -117,6 +121,10 @@ any_exception_enter:
     ldrb r2, [r2, #TPL_KERN_OFFSET_NEED_SWITCH]
     cmp r2, #NO_NEED_SWITCH
     beq except_no_context_switch
+    ldr r2, =nested_kernel_entrance_counter
+    ldr r2, [r2]
+    cmp r2, #1
+    bhi except_no_context_switch
 
 context_switch_exception:
     /* load the tpl_kern base address */
