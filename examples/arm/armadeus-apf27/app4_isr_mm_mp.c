@@ -152,10 +152,17 @@ extern CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA) proc_name_table[TASK_COUNT + 
 
 FUNC(ProtectionReturnType, OS_CODE) ProtectionHook(StatusType error)
 {
-  TRACE_SYS(tpl_kern.running_id);
-	serial_puts ("Protection hook (kill process ");
-  serial_puts (proc_name_table[tpl_kern.running_id]);
-  serial_puts (")!\n");
+  TaskType id;
+
+  if (GetTaskID (&id) == E_OK)
+  {
+    TRACE_SYS(id);
+	  serial_puts ("Protection hook (kill process ");
+    serial_puts (proc_name_table[id]);
+    serial_puts (")!\n");
+  }
+  else
+    serial_puts ("Error calling GetTaskID, bug in memory protection ?\n");
 
 	return PRO_TERMINATETASKISR;
 }

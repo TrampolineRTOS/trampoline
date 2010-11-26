@@ -1649,7 +1649,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  * @param result error code variable to set (StatusType)
  *
  * @note error code is not set if it does not equal E_OK
- * @note checking is disable when WITH_MEMORY_PROTECTION == NO
+ * @note checking is disabled when WITH_MEMORY_PROTECTION == NO
  */
 #if (WITH_MEMORY_PROTECTION == NO)
 # define CHECK_DATA_LOCATION(data_ptr, result)
@@ -1659,11 +1659,14 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
   {                                                                 \
     CONSTP2CONST(tpl_mem_prot_desc, AUTOMATIC, OS_CONST) mp_desc =  \
       tpl_mp_table[tpl_kern.running_id];                            \
-    if (LOCATION_WITHIN(mp_desc->proc_var, data_ptr) &&             \
-        LOCATION_WITHIN(mp_desc->proc_stack, data_ptr)              \
-       )                                                            \
+    if (tpl_kern.running_trusted == 0)                              \
     {                                                               \
-      result = E_OS_PROTECTION_MEMORY;                              \
+      if (LOCATION_WITHIN(mp_desc->proc_var, data_ptr) &&           \
+          LOCATION_WITHIN(mp_desc->proc_stack, data_ptr)            \
+         )                                                          \
+      {                                                             \
+        result = E_OS_PROTECTION_MEMORY;                            \
+      }                                                             \
     }                                                               \
   }
 #elif (WITH_MEMORY_PROTECTION == YES) && (WITH_AUTOSAR == YES)
@@ -1672,12 +1675,15 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
   {                                                                 \
     CONSTP2CONST(tpl_mem_prot_desc, AUTOMATIC, OS_CONST) mp_desc =  \
       tpl_mp_table[tpl_kern.running_id];                            \
-    if (LOCATION_WITHIN(mp_desc->proc_var, data_ptr) &&             \
-        LOCATION_WITHIN(mp_desc->proc_stack, data_ptr) &&           \
-        LOCATION_WITHIN(mp_desc->osap_var, data_ptr)                \
-       )                                                            \
+    if (tpl_kern.running_trusted == 0)                              \
     {                                                               \
-      result = E_OS_PROTECTION_MEMORY;                              \
+      if (LOCATION_WITHIN(mp_desc->proc_var, data_ptr) &&           \
+          LOCATION_WITHIN(mp_desc->proc_stack, data_ptr) &&         \
+          LOCATION_WITHIN(mp_desc->osap_var, data_ptr)              \
+         )                                                          \
+      {                                                             \
+        result = E_OS_PROTECTION_MEMORY;                            \
+      }                                                             \
     }                                                               \
   }
 #endif

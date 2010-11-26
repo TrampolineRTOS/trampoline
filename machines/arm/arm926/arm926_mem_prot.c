@@ -111,6 +111,7 @@ FUNC(void, OS_CODE) tpl_init_mp()
    * every mem. prot. conf. leave the kernel have access to
    * all its data and code */
   MMU_set_current_process (IDLE_TASK_ID);
+  tpl_kern.running_trusted = 1;
   MMU_enable ();
 }
 
@@ -119,6 +120,7 @@ FUNC(void, OS_CODE) tpl_mp_kernel_enter (void)
   /* We never disable MMU, we just provide more rights using the
    * idle tasḱ's memory protection configuration */
   MMU_set_current_process (IDLE_TASK_ID);
+  tpl_kern.running_trusted = 1;
 }
 
 FUNC(void, OS_CODE) tpl_mp_kernel_exit (void)
@@ -128,12 +130,14 @@ FUNC(void, OS_CODE) tpl_mp_kernel_exit (void)
     tpl_kern.s_running->context->psr |= 0x1F;
     /* provides the trusted mem. prot. conf */
     MMU_set_current_process (IDLE_TASK_ID);
+    tpl_kern.running_trusted = 1;
   }
   else
   {
     tpl_kern.s_running->context->psr &= ~0x1F;
     tpl_kern.s_running->context->psr |= 0x10;
     MMU_set_current_process (tpl_kern.running_id);
+    tpl_kern.running_trusted = 0;
   }
 }
 
