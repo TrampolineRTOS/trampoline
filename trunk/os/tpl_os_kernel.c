@@ -165,6 +165,9 @@ VAR(tpl_kern_state, OS_VAR) tpl_kern =
   &idle_task,
   IDLE_TASK_ID,
   NO_NEED_SWITCH
+#if WITH_MEMORY_PROTECTION == YES
+  , 1 /* at early system startup, we run in kernel mode, so in trusted mode */
+#endif /* WITH_MEMORY_PROTECTION */
 };
 
 /*  MISRA RULE 27 VIOLATION: These 2 variables are used only in this file
