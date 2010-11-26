@@ -26,6 +26,7 @@
 #define ARM926_CPU_CACHE_H
 
 #include "tpl_os_definitions.h"
+#include "apf27_config.h"
 
 /**
  * Enables the data cache and the instruction cache
@@ -39,8 +40,6 @@ extern FUNC (void, OS_CODE) arm926_cache_off ();
 
 /**
  * Invalidate both data and instruction caches
- *
- * @warning : not implemented yet !
  */
 extern FUNC (void, OS_CODE) arm926_cache_invalidate ();
 

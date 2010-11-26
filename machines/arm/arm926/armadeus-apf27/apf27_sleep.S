@@ -30,7 +30,8 @@
  * prevent this. */
 .global tpl_sleep
 tpl_sleep:
-  /* TODO: bring the CPU to low consumption mode*/
+  /* bring the CPU to low consumption mode */
+  mcr p15,0,r0,c7,c0,4
   /* falls into infinite loop */
   b .
 

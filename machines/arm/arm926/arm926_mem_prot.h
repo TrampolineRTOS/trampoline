@@ -5,6 +5,8 @@
  *
  * Trampoline's memory protection for ARM926
  *
+ * @note this code may be moved to generic ARM port
+ *
  * @section copyright Copyright
  *
  * Trampoline OS

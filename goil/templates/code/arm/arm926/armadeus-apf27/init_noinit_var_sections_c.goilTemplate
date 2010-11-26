@@ -39,7 +39,7 @@ extern u8 % !PROCESSKIND %_% !NAME %_zeroed_vars_end;
    foreach OSAPPLICATIONS do
 %extern u8 app_% !NAME %_zeroed_vars_begin;
 extern u8 app_% !NAME %_zeroed_vars_end;
-%	 end foreach
+%   end foreach
 end if
 %
 
@@ -49,8 +49,8 @@ end if
 STATIC FUNC(void, OS_CODE) fill_with_zeros (u8 *from, u8 *to)
 {
   u8 *zero_vars_ptr;
-	if (from != to)
-	{
+  if (from != to)
+  {
     zero_vars_ptr = from;
     do  
     {
@@ -58,7 +58,7 @@ STATIC FUNC(void, OS_CODE) fill_with_zeros (u8 *from, u8 *to)
       zero_vars_ptr++;
     }
     while (zero_vars_ptr != to);
-	}
+  }
 }
 
 FUNC(void, OS_CODE) tpl_bootstrap_init_noinit_var_sections (void)
@@ -72,7 +72,7 @@ FUNC(void, OS_CODE) tpl_bootstrap_init_noinit_var_sections (void)
 % end foreach
   foreach OSAPPLICATIONS do
 %  fill_with_zeros (&app_% !NAME %_zeroed_vars_begin, &app_% !NAME %_zeroed_vars_end);
-%	end foreach
+%  end foreach
 end if
 %}
 

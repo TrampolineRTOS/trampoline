@@ -25,6 +25,10 @@
 #include "tpl_compiler.h"
 #include "arm926_cpu_cache.h"
 
+#if !defined WITH_CPU_CACHE || ((WITH_CPU_CACHE != YES) && (WITH_CPU_CACHE != NO))
+#error "WITH_CPU_CACHE has not been configured"
+#endif
+
 FUNC (void, OS_CODE) arm926_cache_off ()
 {
   __asm__ ("MRC p15, 0, r0, c1, c0, 0 \n"
