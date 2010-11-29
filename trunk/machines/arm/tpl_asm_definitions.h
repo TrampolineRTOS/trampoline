@@ -31,12 +31,19 @@
 /*
  * tpl_kern data structure offsets (for use into assembler sources)
  */
-#define TPL_KERN_OFFSET_S_OLD 0
-#define TPL_KERN_OFFSET_S_RUNNING 4
-#define TPL_KERN_OFFSET_OLD 8
-#define TPL_KERN_OFFSET_RUNNING 12
-#define TPL_KERN_OFFSET_RUNNING_ID 16
+#define TPL_KERN_OFFSET_S_OLD        0
+#define TPL_KERN_OFFSET_S_RUNNING    4
+#define TPL_KERN_OFFSET_OLD          8
+#define TPL_KERN_OFFSET_RUNNING     12
+#define TPL_KERN_OFFSET_RUNNING_ID  16
 #define TPL_KERN_OFFSET_NEED_SWITCH 20
+
+/**
+ * tpl_proc data structure offsets
+ */
+#if WITH_MEMORY_PROTECTION == YES
+#define TPL_PROC_TRUSTED_COUNT 4
+#endif /* WITH_MEMORY_PROTECTION == YES */
 
 /*
  * ARM modes codes

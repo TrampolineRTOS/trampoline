@@ -3,14 +3,13 @@ This port is currently not working with the trunk version of trampoline. Please 
 Roadmap :
 - bootstraping      : done
 - context switching : done
-- interrupt support : done, needs improvements
+- interrupt support : done, needs improvements, especially about acknoledge
 - memmap support    : done
 - memory protection : done
-- trusted functions : to be done, needs minor improvements
+- trusted functions : done
 - trusted OS Applications support : done
 - counters support  : to be done
 - connect GPT to counters : to be done
 
 To be fixed :
-- kernel reentrance via abort exception (an abort exception may come while already in kernel, thus, counter is incremented but we should not do "kernel enter" stage)
 - if TaskType is greater than 8 bits, we must use another LOAD or STORE instruction. Make a goil template to provide the correct instruction via a MACRO

@@ -30,7 +30,6 @@
 
 SOURCES += \
 apf27_bootstrap_stage1.S \
-apf27_call_trusted_fct.S \
 apf27_sleep.S \
 apf27_vectors.c \
 apf27_tpl_stubs.c \

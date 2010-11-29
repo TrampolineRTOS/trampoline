@@ -1,1 +1,31 @@
-This port is currently not working with the trunk version of trampoline. Please wait while we are importing previous work with an old version of trampoline.
+To try examples, use the provided script to generate Makefile like this :
+./gen_makefile.sh app1_noisr_nomm_nomp.oil
+
+Examples description
+====================
+
+App1
+----
+Simple application example, with some tasks doing simple work.
+
+This application has been done to test context swіtching between tasks.
+
+App2
+----
+Like App1 but with cat2 ISRs.
+
+This application has been written to test using of interrupts.
+
+App3
+----
+Like App2, activating Memory mapping.
+
+This application has been written to test memory mapping (without memory protection)
+
+App4
+----
+Like app3 but with memory protection.
+
+App5
+----
+Testing trusted functions
