@@ -14,24 +14,17 @@ CPU test {
 
     OS config {
 				MEMMAP = FALSE;
-/*        MEMMAP = TRUE {
-          COMPILER = gcc;
-          LINKER = gnu_ld;
-					ASSEMBLER = gnu_as;
-          MEMORY_PROTECTION = FALSE;
-        };*/
         SYSTEM_CALL = TRUE;
         STATUS = EXTENDED;
         APP_SRC = "app2_isr_nomm_nomp.c";
-				APP_SRC = "uart.c";
-				APP_SRC = "generic.c";
-				APP_SRC = "apf27_switch.c";
+				APP_SRC = "driver/uart.c";
+				APP_SRC = "driver/generic.c";
+				APP_SRC = "driver/apf27_switch.c";
         TRAMPOLINE_BASE_PATH = "../../..";
-        CFLAGS  = "-g";
-        CFLAGS  = "-Wall -pedantic -Wformat -std=c99";
+        CFLAGS  = "-g -O0";
+        CFLAGS  = "-Wall -pedantic -Wformat -std=c99 -I driver/";
         ASFLAGS = "-g";
         LDFLAGS = "-g";
-/*				LDFLAGS = "-Ldrivers --start-group -luart --end-group"; */
     } ;
 
   

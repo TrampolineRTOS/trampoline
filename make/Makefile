@@ -118,8 +118,9 @@ endif
 #############################################################################
 # objects and dependancy files.
 #############################################################################
-OBJ      :=  $(SOURCES:%=$(OBJ_DIR)/%.o)
-DEPFILES :=  $(SOURCES:%=$(DEP_DIR)/%.d)
+NODIR_SRC = $(notdir $(SOURCES))
+OBJ      :=  $(NODIR_SRC:%=$(OBJ_DIR)/%.o)
+DEPFILES :=  $(NODIR_SRC:%=$(DEP_DIR)/%.d)
 
 #############################################################################
 # End of configuration: 
@@ -136,7 +137,8 @@ ALL: | $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE) $(EXEC)
 # paths, by including recursively the compiler_rules
 # makefile.
 TEMP_SOURCE_DIRS += $(OS_PATH) $(COM_PATH) $(AUTOSAR_PATH) 
-TEMP_SOURCE_DIRS += $(DEBUG_PATH) $(OIL_OUTPUT_PATH) .
+TEMP_SOURCE_DIRS += $(DEBUG_PATH) $(OIL_OUTPUT_PATH)
+TEMP_SOURCE_DIRS += $(dir $(SOURCES))
 include $(OS_MAKE_PATH)/compiler_rules.mk
 
 # the following fixes old Make-rules which does not 

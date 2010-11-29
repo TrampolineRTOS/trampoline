@@ -17,14 +17,13 @@ CPU test {
         SYSTEM_CALL = TRUE;
         STATUS = EXTENDED;
         APP_SRC = "app1_noisr_nomm_nomp.c";
-				APP_SRC = "uart.c";
-				APP_SRC = "generic.c";
+				APP_SRC = "driver/uart.c";
+				APP_SRC = "driver/generic.c";
         TRAMPOLINE_BASE_PATH = "../../..";
-        CFLAGS  = "-g";
-        CFLAGS  = "-Wall -pedantic -Wformat -std=c99";
+        CFLAGS  = "-g -O0";
+        CFLAGS  = "-Wall -pedantic -Wformat -std=c99 -I driver/";
         ASFLAGS = "-g";
         LDFLAGS = "-g";
-/*				LDFLAGS = "-Ldrivers --start-group -luart --end-group"; */
     } ;
 
   
