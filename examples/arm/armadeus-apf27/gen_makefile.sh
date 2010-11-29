@@ -1,5 +1,5 @@
 if [ -z $1 ] ; then
-  FILE=app4_isr_mm_mp.oil
+  FILE=app5_trusted_fct.oil
 else
   FILE=$1
 fi

@@ -239,6 +239,15 @@ swi_no_context_switch_exit:
     sub r2, r2, #1
     str r2, [r3]
 
+#if WITH_MEMORY_PROTECTION == YES
+    /* in case we enter in trusted function, we must prepare
+     * the memory protection to give all rights to a process
+     * which is initially non-trusted
+     */
+    cmp r2, #0
+    bleq tpl_mp_kernel_exit
+#endif /* WITH_MEMORY_PROTECTION == YES */
+
 swi_skip_kernel_exit:
 
     /* pops the kernel enter stack frame */
