@@ -28,17 +28,15 @@
 
 #include "tpl_config_def.h"
 
-#define IRQ_STACK_SIZE 4096*4
-#define FIQ_STACK_SIZE 1024*4
-#define SVC_STACK_SIZE 4096*4
-#define ABT_STACK_SIZE 256*4
-#define UND_STACK_SIZE 256*4
-#define USR_STACK_SIZE 4096*4
+#define IRQ_STACK_SIZE (1024*4)
+#define FIQ_STACK_SIZE (1024*4)
+#define SVC_STACK_SIZE (4096*4)
+#define ABT_STACK_SIZE (4096*4)
+#define UND_STACK_SIZE (4096*4)
+#define USR_STACK_SIZE (1024*4)
 
 /**
  * Choose wether trampoline uses data and instruction cache or not.
- *
- * @warning cache is not supported yet, so keep it "NO"
  */
 #define WITH_CPU_CACHE NO
 

@@ -200,7 +200,7 @@ TASK(t5)
   var_t5 = count_osap1;
   TRACE_OSAP3(52);
   serial_puts("t5 writes to t2's data\n");
-  var_t2 = 5;
+  var_t2 = 55;
   TRACE_OSAP3(53);
   serial_puts("t5 reads to unaligned memory (should raise memory protection exception)\n");
   ptr = (u32 *)1;
@@ -214,13 +214,20 @@ DeclareTask (t1);
 
 TASK(t4)
 {
+  StatusType result;
+
   TRACE_OSAP2(40);
   var_t4 = 4;
   TRACE_OSAP2(41);
-  ActivateTask(t1);
-  TRACE_OSAP2(42);
+  result = ActivateTask(t1); /* this should work but must return an error */
+  if (result != E_OK)
+    TRACE_OSAP2(42);
+  result = GetTaskID (&var_t2); /* must not change var_t2 value */
+  if (result != E_OK)
+    TRACE_OSAP2(43);
+  TRACE_OSAP2(44);
   TerminateTask ();
-  TRACE_OSAP2(43);
+  TRACE_OSAP2(45);
 }
 
 TASK(t3)

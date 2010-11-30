@@ -95,6 +95,7 @@ tpl_call_trusted_function_service:
 
 .global tpl_exit_trusted_function_service
 tpl_exit_trusted_function_service:
+#if WITH_MEMORY_PROTECTION == YES
 #if TRUSTED_FCT_COUNT > 0
   /* decrement task's trusted counter (only if >0, otherwise this is probably an attack) */
   ldr r3, =tpl_kern
@@ -124,6 +125,10 @@ tpl_exit_trusted_function_service:
   orr r3, r3, #CPSR_SYS_MODE
   msr cpsr, r3
 
+  /* as ExitTrustedFunction is not really a system call, we remove the LR
+   * pushed by the system call wrapper (see in tpl_invoque.s), then we can
+   * see directly what have been pushed by tpl_call_trusted_function_service */
+  add sp, sp, #4
   /* pops process' lr and process' return address (in r3) on process' stack */
   ldmfd sp!, {r2, lr}
 
@@ -150,6 +155,10 @@ cracker_in_action:
   mov r0, #E_OS_SERVICEID
   mov pc, lr
 #endif /* TRUSTED_FCT_COUNT == 0 */
+#else /* WITH_MEMORY_PROTECTION != YES */
+  mov r0, #E_OS_SERVICEID
+  mov pc, lr
+#endif /* WITH_MEMORY_PROTECTION != YES */
 
 #define OS_STOP_SEC_CODE
 #include "tpl_as_memmap.h"
