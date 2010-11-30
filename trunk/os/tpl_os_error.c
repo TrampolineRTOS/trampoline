@@ -62,8 +62,14 @@ FUNC(void, OS_CODE) tpl_call_error_hook(
 
     if (!in_error_hook)
     {
+#if WITH_MEMORY_PROTECTION == YES
+        tpl_kern.running_trusted = 1;
+#endif /* WITH_MEMORY_PROTECTION == YES */
         in_error_hook = TRUE;
         ErrorHook(OSEK_STATUS_MASK & (error));
+#if WITH_MEMORY_PROTECTION == YES
+        tpl_kern.running_trusted = 0;
+#endif /* WITH_MEMORY_PROTECTION == YES */
         in_error_hook = FALSE;
     }
 }

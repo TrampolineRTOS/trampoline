@@ -31,6 +31,13 @@
 #include "tpl_app_define.h"
 #include "tpl_compiler.h"
 %
+if AUTOSAR then
+  if [TRUSTEDFUNCTIONS length] > 0 then
+%#include "tpl_as_trusted_fct.h"
+%
+  end if
+end if
+
 if [COUNTERS length] > 0 then
 %#include "tpl_os_internal_types.h"%
 end if
@@ -67,6 +74,24 @@ end foreach
 extern CONST(tpl_tick, OS_CONST) OSTICKSPERBASE;
 extern CONST(tpl_tick, OS_CONST) OSMAXALLOWEDVALUE;
 extern CONST(tpl_tick, OS_CONST) OSMINCYCLE;
+
+%
+if AUTOSAR then
+  foreach TRUSTEDFUNCTIONS
+    before
+%
+/*=============================================================================
+ * Declaration of Trusted functions IDs
+ */
+%
+    do
+%
+/* Trusted function % !NAME % identifier */
+extern CONST(TrustedFunctionIndexType, AUTOMATIC) % !NAME %;
+%
+  end foreach
+end if
+%
 
 /*=============================================================================
  * Declaration of flags macros

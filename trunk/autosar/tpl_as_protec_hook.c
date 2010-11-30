@@ -48,7 +48,13 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
   VAR(ProtectionReturnType, AUTOMATIC) result;
   VAR(tpl_proc_id, AUTOMATIC) proc_id;
 
+#if WITH_MEMORY_PROTECTION == YES
+        tpl_kern.running_trusted = 1;
+#endif /* WITH_MEMORY_PROTECTION == YES */
   result = ProtectionHook(error);
+#if WITH_MEMORY_PROTECTION == YES
+        tpl_kern.running_trusted = 0;
+#endif /* WITH_MEMORY_PROTECTION == YES */
 
   switch (result)
   {

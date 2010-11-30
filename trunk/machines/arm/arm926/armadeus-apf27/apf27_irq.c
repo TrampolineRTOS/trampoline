@@ -34,12 +34,14 @@
 
 FUNC(void, OS_CODE) tpl_arm_subarch_irq_handler ()
 {
+#if ISR_COUNT > 0
   VAR(u32, AUTOMATIC) interrupt_source;
   VAR(tpl_it_handler, AUTOMATIC) isr_vector;
 
   interrupt_source = (u32)apf27_aitc_get_source_int ();
   isr_vector = tpl_it_vector[interrupt_source].func;
   isr_vector(tpl_it_vector[interrupt_source].args);
+#endif /* ISR_COUNT > 0 */
 }
 
 #define OS_STOP_SEC_CODE

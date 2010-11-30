@@ -28,6 +28,14 @@
 
 #include "tpl_os_types.h"
 
+#if WITH_MEMORY_PROTECTION == YES
+#define SET_RUNNING_TRUSTED   tpl_kern.running_trusted = 1;
+#define RESET_RUNNING_TRUSTED tpl_kern.running_trusted = 0;
+#else /* WITH_MEMORY_PROTECTION != YES */
+#define SET_RUNNING_TRUSTED
+#define RESET_RUNNING_TRUSTED
+#endif /* WITH_MEMORY_PROTECTION != YES */
+
 /**
  * @def CALL_POST_TASK_HOOK
  *
@@ -36,7 +44,9 @@
  */
 #if WITH_POST_TASK_HOOK == YES
 #   define CALL_POST_TASK_HOOK()    \
-    PostTaskHook();
+    SET_RUNNING_TRUSTED \
+    PostTaskHook(); \
+    RESET_RUNNING_TRUSTED
 #else
 #   define CALL_POST_TASK_HOOK()
 #endif
@@ -49,7 +59,9 @@
  */
 #if WITH_PRE_TASK_HOOK == YES
 #   define CALL_PRE_TASK_HOOK()         \
-    PreTaskHook();
+    SET_RUNNING_TRUSTED \
+    PreTaskHook(); \
+    RESET_RUNNING_TRUSTED
 #else
 #   define CALL_PRE_TASK_HOOK()
 #endif
@@ -61,7 +73,9 @@
  */
 #if WITH_STARTUP_HOOK == YES
 #   define CALL_STARTUP_HOOK()          \
-    StartupHook();
+    SET_RUNNING_TRUSTED \
+    StartupHook(); \
+    RESET_RUNNING_TRUSTED
 #else
 #   define CALL_STARTUP_HOOK()
 #endif
@@ -73,7 +87,9 @@
  */
 #if WITH_OSAPPLICATION_STARTUP_HOOK == YES
 #   define CALL_OSAPPLICATION_STARTUP_HOOKS()   \
-    tpl_osapp_startup_hooks();
+    SET_RUNNING_TRUSTED \
+    tpl_osapp_startup_hooks(); \
+    RESET_RUNNING_TRUSTED
 #else
 #   define CALL_OSAPPLICATION_STARTUP_HOOKS()
 #endif
@@ -87,7 +103,9 @@
  */
 #if WITH_SHUTDOWN_HOOK == YES
 #   define CALL_SHUTDOWN_HOOK(error)    \
-    ShutdownHook(error);
+    SET_RUNNING_TRUSTED \
+    ShutdownHook(error); \
+    RESET_RUNNING_TRUSTED
 #else
 #   define CALL_SHUTDOWN_HOOK(error)
 #endif
@@ -99,7 +117,9 @@
  */
 #if WITH_OSAPPLICATION_SHUTDOWN_HOOK == YES
 #   define CALL_OSAPPLICATION_SHUTDOWN_HOOKS()   \
-    tpl_osapp_shutdown_hooks();
+    SET_RUNNING_TRUSTED \
+    tpl_osapp_shutdown_hooks(); \
+    RESET_RUNNING_TRUSTED
 #else
 #   define CALL_OSAPPLICATION_SHUTDOWN_HOOKS()
 #endif

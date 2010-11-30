@@ -243,7 +243,7 @@ typedef struct
   VAR(int, TYPEDEF)                           running_id;
   VAR(u8, TYPEDEF)                            need_switch;
 #if WITH_MEMORY_PROTECTION == YES
-  VAR(u8, TYPEDEF)                            running_trusted; /** This flag is set when memory protection is (or needs to be) disabled */
+  VAR(u8, TYPEDEF)                            running_trusted; /** This flag is set before running a hook or a (transitionnal) trusted process to disable some checkings */
 #endif /* WITH_MEMORY_PROTECTION */
 } tpl_kern_state;
  

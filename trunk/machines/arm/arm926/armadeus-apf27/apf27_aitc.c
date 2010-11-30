@@ -49,6 +49,7 @@ void apf27_aitc_init ()
    * more interrupt sources can be enabled later via 
    * apf27_aitc_enable_source_int
    */
+#if ISR_COUNT > 0
   for (i = 0 ; i < 64 ; i++)
   {
     /* if corresponding vector is not connected to NULL,
@@ -56,7 +57,8 @@ void apf27_aitc_init ()
      */
     if (tpl_it_vector[i].func != tpl_null_it)
       AITC.INTENNUM = i;
-  }      
+  }
+#endif /* ISR_COUNT > 0 */
   
   /* All interrupts sources are routed to nIRQ (and not FIQ) */
   AITC.INTTYPEH = 0;
