@@ -26,6 +26,10 @@
 #define OS_START_SEC_CODE
 #include "tpl_as_memmap.h"
 
+	.section ".text"
+	.align	2
+
+
 /* We want tpl_sleep not to use stack. Writing in assembler make us able to
  * prevent this. */
 .global tpl_sleep

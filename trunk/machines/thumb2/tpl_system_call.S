@@ -46,9 +46,12 @@
  * This exception to EABI conventions is specific to system call
  * mechanism.
  */
-.global tpl_primary_syscall_handler
+/*.global tpl_primary_syscall_handler
 tpl_primary_syscall_handler:
-    
+*/
+	.global SVC_Handler
+    .type   SVC_Handler, %function
+SVC_Handler:    
    /**********************
     * KERNEL ENTER STAGE *
     **********************
