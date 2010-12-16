@@ -260,7 +260,7 @@
             <wLevel>2</wLevel>
             <uThumb>1</uThumb>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>-g</MiscControls>
               <Define></Define>
               <Undefine></Undefine>
               <IncludePath>..\..\..\os;..\..\..\debug;..\..\..\machines\thumb2;..\..\..\machines\thumb2\cortex-m3;.\lonely;.\sys</IncludePath>
@@ -270,7 +270,7 @@
             <bBE>0</bBE>
             <interw>1</interw>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>-g</MiscControls>
               <Define></Define>
               <Undefine></Undefine>
               <IncludePath>.\lonely;..\..\..\os;..\..\..\machines\thumb2;..\..\..\machines\thumb2\cortex-m3;..\..\..\debug;..\..\thumb2</IncludePath>
