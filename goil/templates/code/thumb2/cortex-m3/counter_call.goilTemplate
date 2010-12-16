@@ -4,6 +4,8 @@
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
+
+#include <stm_regs.h>
 %
 
 foreach INTERRUPTSOURCES prefixedby interrupt_ do
@@ -16,7 +18,7 @@ foreach INTERRUPTSOURCES prefixedby interrupt_ do
   foreach counterFct
     before
 %
-FUNC(void, OS_CODE) tpl_tick_% ! interrupt_NAME %()
+void SysTick_Handler(void)
 {
   tpl_status  need_rescheduling = NO_SPECIAL_CODE;
 
