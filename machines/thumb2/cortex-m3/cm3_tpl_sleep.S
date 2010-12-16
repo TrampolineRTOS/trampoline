@@ -33,6 +33,7 @@
 /* We want tpl_sleep not to use stack. Writing in assembler make us able to
  * prevent this. */
 .global tpl_sleep
+.type   tpl_sleep, %function
 tpl_sleep:
 #ifdef DISABLED_FOR_DEBUG_FACILITY /* as the JTAG probe hangs down too */
   /*
