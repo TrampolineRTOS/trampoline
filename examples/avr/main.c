@@ -5,7 +5,6 @@
 ISR(boutonISR)
 {
 	PORTA ^= 0x20;
-	TerminateISR ();
 }
 
 //remove trampoline def of ISR..
