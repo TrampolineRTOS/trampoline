@@ -1,8 +1,9 @@
 %!TEX root = ./main.tex
 
 \chapter{The Goil templates}
+\label{chap:goiltemplates}
 
-Goil includes a template interpreter which is used for file generation. Goil generates the structures needed by trampoline to compile the application and may generate other files like a memory mapping file \file{MemMap.h}, the compiler abstraction files, \file{Compiler.h} and \file{Compiler\_cfg.h} and a linker script depending on which attributes you set in the OIL file. 
+\lettrine{G}oil includes a template interpreter which is used for file generation. Goil generates the structures needed by trampoline to compile the application and may generate other files like a memory mapping file \file{MemMap.h}, the compiler abstraction files, \file{Compiler.h} and \file{Compiler\_cfg.h} and a linker script depending on which attributes you set in the OIL file. 
 
 A template is a file which is located in the default template directory (set with the environment variable \envvar{GOIL\_TEMPLATES} or with the \longprogramopt{templates} option on the command line) or in the directory of your project. Goil starts by looking for a template in the directory of your project, then, if the template is not found, in the default templates directory.
 
@@ -666,68 +667,9 @@ The following scalar data are defined:
 {true if tracing is enabled.} 
 \end{sortedtable}
 
-\lstdefinelanguage{goilTemplate}
-{
-  morekeywords= {
-	  after,
-	  before,
-	  between,
-	  block,
-	  default,
-	  do,
-	  else,
-	  elsif,
-	  emptylist,
-	  end,
-	  error,
-	  exists,
-	  false,
-	  for,
-	  foreach,
-	  from,
-	  here,
-	  let,
-	  loop,
-	  no,
-	  if,
-	  in,
-	  mod,
-	  not,
-	  or,
-	  prefixedby,
-	  template,
-	  then,
-	  to,
-	  true,
-	  yes,
-	  warning,
-	  while,
-	  write,
-	  !,
-	  ?
-	}
-}
-
-\lstset{
-  language=goilTemplate,
-  emph={
-    var,
-    expression,
-    string,
-    instruction_list,
-    template_file_name,
-    reader,
-    hierarchy
-  },
-  emphstyle=\em,
-  moredelim=[s][\color{blue}]{\%}{\%},
-  moredelim=[s]{"}{"},
-  morecomment=[l][\color{medium-gray}\itshape]{\#},
-  basicstyle=\ttfamily\small,
-  morekeywords=\bfseries
-}
 
 \section{The Goil template language (or GTL)}
+\label{sec:goiltemplateslanguage}
 
 A template is a text file with file extension \file{.goilTemplate}. This kind of file mixes literal text with an embedded program. Some instructions (see section \ref{outputInstruction}) in the embedded program outputs text as a result of the program execution and this text is put in place of the instructions. The resulting file is then stored.
 

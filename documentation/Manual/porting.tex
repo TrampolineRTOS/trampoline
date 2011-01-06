@@ -1,0 +1,241 @@
+%!TEX root = ./main.tex
+
+\chapter{Porting Trampoline}
+
+\note{In this chapter {\em arch} is used to designate the instruction set of the target like PowerPC\textsuperscript{®}, ARM\textsuperscript{®} or AVR\textsuperscript{®}; {\em chip} is used to designate the name of an implementation of the architecture like a PowerPC 5516; {\em board} is used to designate the name of a development board that uses the chip. {\em compiler} is used to designate the compiler and {\em linker} is used to designate the linker used to link the project and produced the executable file.}
+
+\section{Adding files to the directory structure}
+
+Doing a port of Trampoline on a new target requires
+
+\begin{pitemize}
+\item data structures
+\item code, some is in C and some is in assembly language of the target
+\item code templates
+\item memory mapping templates (depend on the compiler)
+\item link scripts templates (depend on the linker)
+\end{pitemize}
+
+Data structures declarations and code related to the instruction set are located in the\\ \file{machines/{\em arch}} directory. 
+
+Code templates are located in the \file{goil/templates/code/{\em arch}} directory.
+
+Memory mapping templates are located in the \file{goil/templates/compiler/{\em compiler}/{\em arch}} directory.
+
+Link scripts templates are located in the \file{goil/templates/linker/{\em linker}/{\em arch}} directory.
+
+For instance, if the goal is to port Trampoline to a Freescale\textsuperscript{®} ColdFire\textsuperscript{®} CPU with the gcc compiler and the gnu ld linker, you have to create a directory \file{coldfire} inside the \file{machines} directory, inside the \file{goil/templates/code} directory and inside the\\ \file{goil/templates/code/gnu_ld} directory. For gcc, memory mapping templates are common to all {\em arch} and exist already but, for instance, the Metrowerks\textsuperscript{®} C compiler uses different \#pragma according to the {\em arch}. So memory mapping templates for the Metrowerks C compiler for PowerPC would be located in \file{goil/templates/compiler/mwc/powerpc} and for HCS12 would be located in \file{goil/templates/compiler/mwc/hcs12}
+
+In addition, some code or link scripts may be specific to the {\em chip} or the {\em board}. In this case, create sub-directories in the various {\em arch} directories using the pattern \file{{\em arch}/{\em chip}/{\em board}} to put the corresponding files.
+
+\section{Using a target with goil}
+
+The \programopt{t} or \longprogramopt{target} option of goil selects the target by using a {\tt {\em arch}/{\em chip}/{\em board}} path. Goil will look at the code, compiler and linker templates in the corresponding paths. Goil looks for a template at the deeper path first and goes up until it find it or gives an error when it does not find it. This way, a generic {\em chip} level template may be overridden by a more specific {\em board} level template for instance.
+
+If you use the \programopt{g} or \longprogramopt{generate-makefile} option, goil generates a Makefile that includes the Makefiles that exist along the path.
+
+The link script templates (linker) and the memory mapping templates (compiler) are used only if a project is built using memory mapping. \oilattr{MEMMAP} is a boolean attribute of the OS object in the OIL file. \oilattr{COMPILER} and \oilattr{LINKER} are sub-attributes of \oilattr{MEMMAP} when it is \oilval{TRUE}. For instance, a \oilattr{MEMMAP} using gcc and gnu ld would described like that:
+
+\begin{lstlisting}[language=OIL]
+MEMMAP = TRUE {
+  COMPILER = gcc;
+  LINKER = gnu_ld { SCRIPT = "script.ld"; };
+  ...
+};
+\end{lstlisting}
+
+Using this description and the target option, goil will look for link script templates in\\ \file{goil/templates/gnu_ld/{\em arch}/{\em chip}/{\em board}} path and for memory mapping templates in\\ \file{goil/templates/gcc/{\em arch}/{\em chip}/{\em board}} path.
+
+The \oilattr{SCRIPT} sub-attributes gives the name of the generated link script file.
+
+\section{Target specific code}
+
+\warning{The following informations require you use a software interrupt to call the system services.}
+
+This code should be located in the \file{machines/{\em arch}} directory or in a sub-directory (\file{{\em chip}} or \file{{\em board}}) if you want to implement a feature that rely on a specific chip or board (for instance to put peripheral devices in sleep mode in the \cfunction{tpl_sleep} function). Anyway, you should put the relevant code at the corresponding level. If in the rare instances you may need to use conditional compiling, you may use the C macros \cmacro{TARGET_ARCH}, \cmacro{TARGET_CHIP} and \cmacro{TARGET_BOARD} that contains the {\em arch}, {\em chip} and {\em board} respectively as character strings.  
+
+%Beside the startup code, usually located in a function \cfunction{_start} that call the main function,
+\subsection{Functions called by Trampoline}
+
+The following functions are needed by Trampoline:
+
+\begin{lstlisting}[language=C]
+extern FUNC(void, OS_CODE) tpl_init_context(
+  CONST(tpl_proc_id, AUTOMATIC) proc_id);
+\end{lstlisting}
+
+\cfunction{tpl_init_context} may be written in C. It is called when an activated task runs for the first time. It initializes the context of the task by setting the `at start' values of registers. Setting at least the values of the stack pointer at the beginning of the stack zone of the task and the return address at the entry point of the task code are required.
+
+\begin{lstlisting}[language=C]
+extern FUNC(void, OS_CODE) tpl_init_machine(void);
+\end{lstlisting}
+
+\cfunction{tpl_init_machine} is called at the beginning of \api{StartOS} before calling the \cfunction{StartupHook} and starting the scheduling. \cfunction{tpl_init_machine} should do the hardware related initializations that are needed to run the OS (for instance starting the timer of the \ctype{SystemCounter}).
+
+\begin{lstlisting}[language=C]
+extern FUNC(void, OS_CODE) tpl_sleep(void);
+\end{lstlisting}
+
+\cfunction{tpl_sleep} is called from the idle task. It should implement a loop around an instruction that put the CPU in a waiting for interrupt mode. If the {\em arch} does not have such an instruction, an empty loop may be used.
+
+\warning{\cfunction{tpl_sleep} should never return.} 
+
+\begin{lstlisting}[language=C]
+extern FUNC(void, OS_CODE) tpl_shutdown(void);
+\end{lstlisting}
+
+\cfunction{tpl_shutdown} is called from \api{ShutdownOS}. It should disable all interrupts and put the CPU in sleep mode. If no sleep mode exists, an empty loop may be used.
+
+\warning{\cfunction{tpl_shutdown} should never return.}
+
+\subsection{Service call}
+
+A service call is done by using a software interrupt\footnote{\asfct{swi} on ARM, \asfct{sc} on PowerPC, \asfct{syscall} on Tricore}. So any function executed by the kernel as a result of API function call is handled by the software interrupt vector.
+
+This code is called \cfunction{tpl_sc_handler} and performs the following steps:
+
+\begin{penum}
+\item save registers to be able to work \label{item:savereg}
+\item disable memory protection
+\item switche to kernel stack if needed
+\item call the service \label{item:caltheservice}
+\item perform a context switch if needed and programs the MPU.
+\item switche back to the process stack if needed
+\item enable memory protection
+\item restore registers saved at step \ref{item:savereg}
+\item get back to the process
+\end{penum}
+
+At step \ref{item:caltheservice}, the service identifier is used as an index in the function pointer table where all the services are stored. The function pointer corresponding to the service is read from this table and the service is called.
+
+The identifier of the service is passed to \cfunction{tpl_sc_handler} in one of the following ways:
+\begin{pitemize}
+\item the software interrupt instruction of the target has an argument, the identifier of the service is passed in this argument
+\item the software interrupt instruction of the target does not have an argument or the argument cannot store big enough value, the identifier of the service is passed in a register or on the stack
+\end{pitemize}
+ 
+
+An example for the PowerPC is given in section \ref{sec:ppcport}.
+
+\subsection{Interrupt management}
+
+External interrupt handling should follow the same steps as service call. Of course, step  \ref{item:caltheservice} is a little bit different: instead of using a service id, the interrupt handler uses the interrupt source number. Usually the interrupt source number is got by reading a register of the interrupt controller.
+
+goil provides a dispatch table for interrupts. This table is filled according to the \oilattr{SOURCE} attribute of counters and ISR category 2. This attribute must be set to a symbolic name that is found in the \file{target.cfg} (located in \file{goil/templates/config/{\em arch}/{\em chip}/{\em board}} path). Each entry in the \file{target.cfg} file lists the correspondance between the interrupt source number and the symbolic name.
+
+So at step   \ref{item:caltheservice}, the interrupt handler uses the interrupt source number as an index in the \var{tpl_it_table}, get the corresponding interrupt handling function pointer and calls the function.
+
+\section{Target specific structures}
+
+A file named \file{tpl_machine.h} should exists in the \file{machines/{\em arch}} directory. This file should contain the declarations and definitions of:
+
+\begin{pitemize}
+\item the \ctype{tpl_stack_word} type
+\item the \ctype{tpl_stack_size} type
+\item the \ctype{tpl_context} structure
+\item the \ctype{tpl_stack} structure
+\item the \cmacro{IDLE_ENTRY} macro that should set to \cfunction{tpl_sleep}
+\item the \cmacro{IDLE_STACK} macro
+\item the \cmacro{IDLE_CONTEXT} macro
+\end{pitemize}
+
+The \ctype{tpl_stack_word} type is used to achieved a correct alignment of the stack
+
+The \ctype{tpl_context} context structure contains one of more pointers to structures where all the registers needed for the execution context are stored.
+More than one pointer may be needed because on some architectures, contexts may be split in 2 or 3 parts to store the integer context, the floating point context and the vector context for instance.
+This way a task doing only integer computation needs the integer context only.
+The other pointers are set to NULL and the context switching code does not save or restore contexts for the NULL pointers.
+A \ctype{tpl_context} field is included in the static part of a task descriptor which may be stored in ROM.
+For instance, on an AVR, the context structure is declared as follow:
+
+\begin{lstlisting}[language=C]
+struct TPL_CONTEXT {
+  avr_context *ic;
+};
+typedef struct TPL_CONTEXT tpl_context;
+\end{lstlisting}
+
+and an \ctype{avr_context} is defined as follow:
+
+\begin{lstlisting}[language=C]
+struct AVR_CONTEXT {
+  u8 *sp;
+  u8 regist[33];  // registers: R0-R15,R17-R31,SREG,R16
+};
+typedef struct AVR_CONTEXT avr_context;
+\end{lstlisting}
+
+The \ctype{tpl_stack} stack structure contains one or more pointers to the stack and one or more stack sizes. Some ABI may use more than one stack (an example is the Infineon C166). A \ctype{tpl_stack} field is included in the static part of a task descriptor. The AVR stack structure is as follow:
+
+\begin{lstlisting}[language=C]
+struct TPL_STACK {
+  tpl_stack_word  *stack_zone;
+  tpl_stack_size   stack_size; 
+};
+typedef struct TPL_STACK tpl_stack;
+\end{lstlisting}
+
+The \cmacro{IDLE_STACK} macro should expand to a \ctype{tpl_stack} initialization. This macro is used to initialize the stack in the idle task descriptor. For instance, the AVR \cmacro{IDLE_STACK} and the component it uses are defined like this:
+
+\begin{lstlisting}[language=C]
+#define SIZE_OF_IDLE_STACK  50
+
+extern VAR(tpl_stack_word, OS_VAR)
+  idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
+
+#define IDLE_STACK { idle_stack, SIZE_OF_IDLE_STACK }
+\end{lstlisting}
+
+The \cmacro{IDLE_CONTEXT} should expand to a \ctype{tpl_context} initialization. This macro is used to initialize the context in the idle task descriptor.  For instance, the AVR \cmacro{IDLE_CONTEXT} and the component it uses are defined like this:
+
+\begin{lstlisting}[language=C]
+extern avr_context idle_task_context;
+
+#define IDLE_CONTEXT {&idle_task_context} 
+\end{lstlisting}
+
+\section{Code templates}
+
+See chapter \ref{chap:goiltemplates} for informations about the goil templates and the goil templates language.
+
+Since service API functions perform a system call, they are to be written in assembly language. Instead of writting each of these functions by hand, they are generated by goil using 3 templates. 2 are generic, the 3$^{rd}$ one, \file{service_call.goilTemplate}, is specific.
+
+\file{service_call.goilTemplate} should be located in the \file{goil/templates/code/{\em arch}/} directory
+
+For instance the ppc {\em arch} has the following template:
+
+\begin{lstlisting}[language=goilTemplate]
+  .global % !REAL %
+% !REAL %:
+  subi r1,r1,4                  /* make room in stack        */
+  stw  r0,0(r1)                 /* save r0 on stack          */
+  li   r0,OSServiceId_% !API %  /* load the service id in r0 */
+  sc                            /* system call               */
+  lwz  r0,0(r1)                 /* get back r0               */
+  addi r1,r1,4                  /* free the stack            */
+  blr                           /* returns                   */
+  
+  .type % !REAL %,@function
+  .size % !REAL %,$-% !REAL %
+
+\end{lstlisting}
+
+\var{REAL} and \var{API} are configuration data provided by goil. Both have a value equal to the name of the service (\api{ActivateTask} for instance). \api{StartOS} is a special case where \var{API} have the value \constant{StartOS} and \var{REAL} have the value \constant{tpl_start_os}. This is because \api{StartOS} is the only service that is called before the memory protection is turned on.
+
+For \api{ActivateTask}, the template execution produces the following code:
+
+\begin{lstlisting}[language=C]
+  .global ActivateTask
+ActivateTask:
+  subi r1,r1,4                  /* make room in stack        */
+  stw  r0,0(r1)                 /* save r0 on stack          */
+  li   r0,OSServiceId_ActivateTask  /* load the service id in r0 */
+  sc                            /* system call               */
+  lwz  r0,0(r1)                 /* get back r0               */
+  addi r1,r1,4                  /* free the stack            */
+  blr                           /* returns                   */
+\end{lstlisting}
+
+\section{Structures initialization templates}
+
+These templates are located in \file{goil/templates/code/{\em arch}}.\\ template \file{process_specific.goilTemplate} is used to generate the instantiation of the context and the stack of a process (task or ISR category 2). template \file{counter_call.goilTemplate} is used to wrap a counter interrupt source to the Trampoline function that handle counter incrementation.
