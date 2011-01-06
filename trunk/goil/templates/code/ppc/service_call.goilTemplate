@@ -1,12 +1,12 @@
   .global % !REAL %
 % !REAL %:
-  subi r1,r1,4
-  stw  r0,0(r1)
-  li   r0,OSServiceId_% !API %
-  sc
-  lwz  r0,0(r1)
-  addi r1,r1,4
-  blr
+  subi r1,r1,4                  /* make room in stack        */
+  stw  r0,0(r1)                 /* save r0 on stack          */
+  li   r0,OSServiceId_% !API %  /* load the service id in r0 */
+  sc                            /* system call               */
+  lwz  r0,0(r1)                 /* get back r0               */
+  addi r1,r1,4                  /* free the stack            */
+  blr                           /* returns                   */
   
   .type % !REAL %,@function
   .size % !REAL %,$-% !REAL %
