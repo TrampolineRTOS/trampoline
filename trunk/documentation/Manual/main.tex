@@ -20,6 +20,7 @@
 \usepackage[Bjarne]{fncychap}
 \usepackage{listings}
 \usepackage{bold-extra}
+\usepackage{lettrine}
 \definecolor{seagreen}{RGB}{64,100,120}
 \definecolor{darkpink}{RGB}{200,100,120}
 \definecolor{light-gray}{gray}{0.85}
@@ -61,7 +62,8 @@
 {
   morekeywords= {
 	  RESOURCE, RESOURCEPROPERTY, STANDARD, INTERNAL, LINKED, LINKEDRESOURCE,
-	  TASK, SCHEDULE, FULL, NONE, PRIORITY, EVENT, ISR, CATEGORY
+	  TASK, SCHEDULE, FULL, NONE, PRIORITY, EVENT, ISR, CATEGORY, OS, CPU, MEMMAP,
+	  COMPILER, LINKER, SCRIPT
 	}
 }
 
@@ -80,6 +82,66 @@
   moredelim=[s]{"}{"},
   basicstyle=\ttfamily\small}
 
+\lstdefinelanguage{goilTemplate}
+{
+  morekeywords= {
+	  after,
+	  before,
+	  between,
+	  block,
+	  default,
+	  do,
+	  else,
+	  elsif,
+	  emptylist,
+	  end,
+	  error,
+	  exists,
+	  false,
+	  for,
+	  foreach,
+	  from,
+	  here,
+	  let,
+	  loop,
+	  no,
+	  if,
+	  in,
+	  mod,
+	  not,
+	  or,
+	  prefixedby,
+	  template,
+	  then,
+	  to,
+	  true,
+	  yes,
+	  warning,
+	  while,
+	  write,
+	  !,
+	  ?
+	}
+}
+
+\lstset{
+  language=goilTemplate,
+  emph={
+    var,
+    expression,
+    string,
+    instruction_list,
+    template_file_name,
+    reader,
+    hierarchy
+  },
+  emphstyle=\em,
+  moredelim=[s][\color{blue}]{\%}{\%},
+  moredelim=[s]{"}{"},
+  morecomment=[l][\color{medium-gray}\itshape]{\#},
+  basicstyle=\ttfamily\small,
+  morekeywords=\bfseries
+}
 %
 % Commands for paragraph types
 %
@@ -87,7 +149,7 @@
 %\hfill\begin{minipage}[t]{.885\linewidth}#1\end{minipage}}\vspace{1mm}}
 \newcommand{\note}[1]{%
 \hspace{-12.4mm}
-\rowcolors{1}{white}{light-gray}
+\rowcolors{1}{white}{white}
 \begin{tabular}[b]{m{5mm}|m{\linewidth}}
 \includegraphics[width=6mm,angle=45]{pictures/note} & #1\\
 \end{tabular}
@@ -110,6 +172,7 @@
 \newcommand{\cmacro}[1]{{\small\ttfamily #1}}
 \newcommand{\constant}[1]{{\small\ttfamily #1}}
 \newcommand{\oilattr}[1]{{\small\ttfamily #1}}
+\newcommand{\oilval}[1]{{\small\ttfamily #1}}
 \newcommand{\member}[1]{{\small\ttfamily #1}}
 \newcommand{\mem}{\small\ttfamily}
 
@@ -143,6 +206,12 @@
   \setlength{\parskip}{0pt}
   \setlength{\parsep}{0pt}
 }{\end{enumerate}}
+\newenvironment{pitemize}{
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{itemize}}
 
 %
 % Graphic symbols for scheduling diagrams
@@ -176,6 +245,8 @@
 \newcommand{\OSCALLLEVEL}{E\_OS\_CALLEVEL}
 \newcommand{\OSPROTECTIONMEMORY}{E\_OS\_PROTECTION\_MEMORY}
 \newcommand{\OSACCESS}{E\_OS\_ACCESS}
+\newcommand{\OSSTATE}{E\_OS\_STATE}
+
 %
 % Scalability class
 %
@@ -292,6 +363,9 @@
 %
 % Here we go
 %
+
+%\includeonly{porting}
+
 \title{The Trampoline handbook}
 \author{Jean-Luc B\'echennec\\Florent Pavin\\Pierre Molinaro}
 
@@ -317,18 +391,23 @@ Florent Pavin\\
 \setcounter{tocdepth}{2}
 \tableofcontents
 
+
 \part{The Real-Time Operating System}
-\input{tasks}
-\input{resources}
-\input{osapps}
-\input{tp}
-\input{st}
-\input{com}
-\input{compilation}
-\input{ports}
+\include{tasks}
+\include{resources}
+\include{events}
+\include{osapps}
+\include{tp}
+\include{st}
+\include{com}
+\include{memmapping}
+\include{compilation}
+\include{inside}
+\include{porting}
+\include{ports}
 
 \part{The Goil system generator}
-\input{templates.tex}
+\include{templates}
 
 \printindex
 \bibliographystyle{plain}

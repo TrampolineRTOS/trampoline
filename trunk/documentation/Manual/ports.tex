@@ -3,7 +3,7 @@
 \chapter{Ports details}
 
 \section{PowerPC}
-
+\label{sec:ppcport}
 \subsection{System services} \label{sec:systemservices}
 
 The PowerPC port uses the \asfct{sc} software interrupt to call system services \cite{mpc32bsc}. \asfct{sc} stands for System Call. It saves the current \reg{PC} in \reg{SRR0} register and the current \reg{MSR} in \reg{SRR1} register and jump to the System Call handler.
@@ -170,7 +170,7 @@ The first thing to do is to get the function pointer corresponding to the servic
   mtlr  r11                         /* put it in lr for future use */
 \end{lstlisting}
 
-The second thing to do is to reset the \var{tpl_need_switch} flag that triggers a context switch. This flag (a byte) is located in the \var{tpl_kern} kernel struct. This is done as follow:
+The second thing to do is to reset the \var{need_switch} flag that triggers a context switch. This flag (a byte) is located in the \var{tpl_kern} kernel struct. This is done as follow:
 
 \begin{lstlisting}[language=C]
   lis   r11,TPL_HIG(tpl_kern)
@@ -198,20 +198,20 @@ At last, the service is called:
 
 \subsubsection{Context switch}
 
-The \var{tpl_need_switch} flag that as been possibly modified by the service is now checked to do a context switch if needed.
+The \var{need_switch} flag that as been possibly modified by the service is now checked to do a context switch if needed.
 
 \begin{lstlisting}[language=C]
   lwz   r11,KS_KERN_PTR(r1) /* get back the tpl_kern address */
-  lbz   r12,20(r11)         /* get the tpl_need_switch flag  */
+  lbz   r12,20(r11)         /* get the need_switch flag      */
   andi. r0,r12,NEED_SWITCH  /* check if a switch is needed   */
   beq   no_context_switch
 \end{lstlisting}
 
-A context switch is performed in 3 steps. The first one is the context save of the process that loses the CPU. This step is optional because if the service was a \api{TerminateTask} or a \api{ChainTask}, the context needs not to be saved. This information is in the \var{tpl_need_switch} flag. Before doing the actual context save, the return value of the service must be saved in the proper location of the kernel stack. The \cfunction{tpl_save_context} function will read it from this location and expects a pointer to the context saving area or the process in \reg{r3}. \var{s_old}, the address of the context saving area, is in another member of \var{tpl_kern}. At the end, the \var{tpl_kern} address is reread because \reg{r11} has been destroyed in \cfunction{tpl_save_context}. 
+A context switch is performed in 3 steps. The first one is the context save of the process that loses the CPU. This step is optional because if the service was a \api{TerminateTask} or a \api{ChainTask}, the context needs not to be saved. This information is in the \var{need_switch} flag. Before doing the actual context save, the return value of the service must be saved in the proper location of the kernel stack. The \cfunction{tpl_save_context} function will read it from this location and expects a pointer to the context saving area or the process in \reg{r3}. \var{s_old}, the address of the context saving area, is in another member of \var{tpl_kern}. At the end, the \var{tpl_kern} address is reread because \reg{r11} has been destroyed in \cfunction{tpl_save_context}. 
 
 \begin{lstlisting}[language=C]
   stw   r3,KS_RETURN_CODE(r1) /* save the return value             */
-  andi. r0,r12,NEED_SAVE      /* r12 contains tpl_need_switch      */
+  andi. r0,r12,NEED_SAVE      /* r12 contains need_switch          */
   beq   no_save
   lwz   r3,0(r11)             /* r11 contains the tpl_kern address */
   bl    tpl_save_context      /* and s_old is put into r3          */
@@ -260,8 +260,10 @@ At this stage, the \reg{SRR0} and \reg{SRR1} registers saved in the kernel stack
   cmpwi r12,0
   bne   no_stack_restore
 
-  /*  Restore the execution context of the caller
-      (or the context of the task/isr which just got the CPU)      */
+  /* 
+   * Restore the execution context of the caller
+   * (or the context of the task/isr which just got the CPU)
+   */
   lwz   r1,KS_SP-KS_FOOTPRINT(r1)   /*  Restore the SP and switch
                                         back to the process stack  */
 \end{lstlisting}

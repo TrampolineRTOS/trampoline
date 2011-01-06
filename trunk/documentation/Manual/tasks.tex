@@ -1,8 +1,9 @@
 %!TEX root = ./main.tex
 
 \chapter{Tasks}
+\label{chap:tasks}
 
-A Task is an execution framework for the functions of the application\footnote{The term {\em Application} is also used in \autosar\ to designate a set of object, this manual uses OS Application to name the \autosar\ applications and Application to name the user level software.}. A task is a kind of \process. Tasks are executed concurrently and asynchronously, see \ref{sec:scheduling}. 2 kinds of task exist: basic tasks and extended tasks. A basic task cannot block (\ie\ it cannot use a service that may block) while an extended task can.
+\lettrine{A} task is an execution framework for the functions of the application\footnote{The term {\em Application} is also used in \autosar\ to designate a set of object, this manual uses OS Application to name the \autosar\ applications and Application to name the user level software.}. A task is a kind of \process. Tasks are executed concurrently and asynchronously, see \ref{sec:scheduling}. 2 kinds of task exist: basic tasks and extended tasks. A basic task cannot block (\ie\ it cannot use a service that may block) while an extended task can.
 The tasks and their properties are declared in the OIL file, see \ref{oil:task}. Their functions are defined in a C file.
 
 \section{States a task}
