@@ -384,9 +384,36 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
 
 FUNC(void, OS_CODE) tpl_schedule_from_running(void);
 
-FUNC(void, OS_CODE) tpl_schedule_from_dying(void);
+/**
+ * @internal
+ *
+ * Starts a READY process
+ *
+ * @param proc_id   the identifier of the process
+ */
+FUNC(void, OS_CODE) tpl_start(CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
-FUNC(void, OS_CODE) tpl_schedule_from_waiting(void);
+/**
+ * @internal
+ *
+ * Blocks the running process
+ *
+ */
+FUNC(void, OS_CODE) tpl_block(void);
+
+/**
+ * @internal
+ *
+ * Get the highest priority READY process from the queue
+ */
+FUNC(VAR(tpl_proc_id, AUTOMATIC), OS_CODE) tpl_get_proc(void);
+
+/**
+ * @internal
+ *
+ * Terminate the RUNNING process
+ */
+FUNC(void, OS_CODE) tpl_terminate(void);
 
 FUNC(void, OS_CODE) tpl_init_proc(
   CONST(tpl_proc_id, AUTOMATIC) proc_id);
