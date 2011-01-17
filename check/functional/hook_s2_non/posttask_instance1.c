@@ -55,16 +55,16 @@ static void test_posttask_instance1(void)
 	SCHEDULING_CHECK_INIT(10);
 	result_inst_1 = GetTaskID(&task_id);	
 	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(10,t1 , task_id);
-	SCHEDULING_CHECK_AND_EQUAL_INT(10,E_OK , result_inst_1); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(10,E_OK,result_inst_1); 
 	
 	SCHEDULING_CHECK_INIT(11);
 	result_inst_2 = GetTaskState(task_id, &task_state);
-	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(11,WAITING , task_state);
-	SCHEDULING_CHECK_AND_EQUAL_INT(11,E_OK , result_inst_2);
+	SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(11,RUNNING,task_state);
+	SCHEDULING_CHECK_AND_EQUAL_INT(11,E_OK,result_inst_2);
 	
 	SCHEDULING_CHECK_INIT(12);
 	result_inst_3 = GetEvent(task_id,&event_mask);
-	SCHEDULING_CHECK_AND_EQUAL_INT(12,E_OK , result_inst_3);
+	SCHEDULING_CHECK_AND_EQUAL_INT(12,E_OK,result_inst_3);
 	
 	SCHEDULING_CHECK_INIT(13);
 	result_inst_4 = GetAlarmBase(Alarm1, &alarm_base);
@@ -75,7 +75,7 @@ static void test_posttask_instance1(void)
 	
 	SCHEDULING_CHECK_INIT(14);
 	result_inst_5 = GetAlarm(Alarm1,&tik);
-	SCHEDULING_CHECK_AND_EQUAL_INT(14,E_OK , result_inst_5);
+	SCHEDULING_CHECK_AND_EQUAL_INT(14,E_OK,result_inst_5);
 }
 
 /*create the test suite with all the test cases*/
