@@ -41,7 +41,7 @@ FUNC(tpl_status, OS_CODE) tpl_receive_static_external_unqueued_message(
   size = rum->buffer.size;
   
   /*  reception filtering                                                 */
-  if (tpl_filtering(mo_buf, data, size, rum->base_mo.filter)) {
+  if (tpl_filtering(mo_buf, data, rum->base_mo.filter)) {
     /*  copy the data from the source (data)
         to the message object buffer
     */

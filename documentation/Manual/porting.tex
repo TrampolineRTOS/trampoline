@@ -24,7 +24,7 @@ Memory mapping templates are located in the \file{goil/templates/compiler/{\em c
 
 Link scripts templates are located in the \file{goil/templates/linker/{\em linker}/{\em arch}} directory.
 
-For instance, if the goal is to port Trampoline to a Freescale\textsuperscript{®} ColdFire\textsuperscript{®} CPU with the gcc compiler and the gnu ld linker, you have to create a directory \file{coldfire} inside the \file{machines} directory, inside the \file{goil/templates/code} directory and inside the\\ \file{goil/templates/code/gnu_ld} directory. For gcc, memory mapping templates are common to all {\em arch} and exist already but, for instance, the Metrowerks\textsuperscript{®} C compiler uses different \#pragma according to the {\em arch}. So memory mapping templates for the Metrowerks C compiler for PowerPC would be located in \file{goil/templates/compiler/mwc/powerpc} and for HCS12 would be located in \file{goil/templates/compiler/mwc/hcs12}
+For instance, if the goal is to port Trampoline to a Freescale\textsuperscript{®} ColdFire\textsuperscript{®} CPU with the gcc compiler and the gnu ld linker, you have to create a directory \file{coldfire} inside the \file{machines} directory, inside the \file{goil/templates/code} directory and inside the\\ \file{goil/templates/code/gnu_ld} directory. 
 
 In addition, some code or link scripts may be specific to the {\em chip} or the {\em board}. In this case, create sub-directories in the various {\em arch} directories using the pattern \file{{\em arch}/{\em chip}/{\em board}} to put the corresponding files.
 
@@ -238,11 +238,19 @@ ActivateTask:
 
 \section{Structures initialization templates}
 
-These templates are located in \file{goil/templates/code/{\em arch}}.\\ template \file{process_specific.goilTemplate} is used to generate the instantiation of the context and the stack of a process (task or ISR category 2). template \file{counter_call.goilTemplate} is used to wrap a counter interrupt source to the Trampoline function that handle counter incrementation.
+These templates are located in \file{goil/templates/code/{\em arch}}.
+
+The   template \file{process_specific.goilTemplate} is used to generate the instantiation of the context and the stack of a process (task or ISR category 2). 
+
+The template \file{counter_call.goilTemplate} is used to wrap a counter interrupt source to the Trampoline function that handle counter incrementation.
 
 \section{The memory mapping and the link script templates}
 
 Memory mapping is required with software interrupts because you have to put the interrupt vectors at the good place in memory. Moreover, when you use memory protection, goil generates memory sections for each task and ISR category 2.
+
+The \file{MemMap.h} file that defines the sections is generated from the \file{MemMap_h.goilTemplate}. Files \file{Compiler_h.goilTemplate} and \file{Compiler_Cfg_h.goilTemplate} are used to generate the \file{Compiler.h} and \file{Compiler_Cfg.h} files which define the various \autosar\ macros that assist to the specification of sections in the source files of Trampoline and of the application. These templates are found at the \file{goil/templates/{\em compiler}/{\em arch}/{\em chip}/{\em board}} path.
+
+Usually these templates depend on the {\em compiler} only but, for instance, the Metrowerks\textsuperscript{®} C compiler uses different \#pragma according to the {\em arch}. So memory mapping templates for the Metrowerks C compiler for PowerPC would be located in `\path|goil/templates/compiler/mwc/powerpc|' and for HCS12 would be located in \file{goil/templates/compiler/mwc/hcs12}
 
 To do that a link script template is used. This template is located in the\\ \file{goil/templates/linker/{\em linker}/{\em arch}/{\em chip}/{\em board}} path.
 

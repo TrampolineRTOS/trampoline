@@ -24,78 +24,18 @@
 
 FUNC(tpl_bool, OS_CODE) tpl_filter_always(
   CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
-  CONST(tpl_com_value, AUTOMATIC) old_value,
-  CONST(tpl_com_value, AUTOMATIC) new_value);
+  CONSTP2CONST(void, AUTOMATIC, OS_VAR) old_value,
+  CONSTP2CONST(void, AUTOMATIC, OS_VAR) new_value);
 
 FUNC(tpl_bool, OS_CODE) tpl_filter_never(
   CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
-  CONST(tpl_com_value, AUTOMATIC) old_value,
-  CONST(tpl_com_value, AUTOMATIC) new_value);
-
-FUNC(tpl_bool, OS_CODE) tpl_filter_masked_new_equals_x(
-  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
-  CONST(tpl_com_value, AUTOMATIC) old_value,
-  CONST(tpl_com_value, AUTOMATIC) new_value);
-
-FUNC(tpl_bool, OS_CODE) tpl_filter_masked_new_differs_x(
-  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
-  CONST(tpl_com_value, AUTOMATIC) old_value,
-  CONST(tpl_com_value, AUTOMATIC) new_value);
-
-FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_equal(
-  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
-  CONST(tpl_com_value, AUTOMATIC) old_value,
-  CONST(tpl_com_value, AUTOMATIC) new_value);
-
-FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_different(
-  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
-  CONST(tpl_com_value, AUTOMATIC) old_value,
-  CONST(tpl_com_value, AUTOMATIC) new_value);
-
-FUNC(tpl_bool, OS_CODE) tpl_filter_masked_new_equals_masked_old(
-  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
-  CONST(tpl_com_value, AUTOMATIC) old_value,
-  CONST(tpl_com_value, AUTOMATIC) new_value);
-
-FUNC(tpl_bool, OS_CODE) tpl_filter_masked_new_differs_masked_old(
-  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
-  CONST(tpl_com_value, AUTOMATIC) old_value,
-  CONST(tpl_com_value, AUTOMATIC) new_value);
-
-FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_within(
-  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
-  CONST(tpl_com_value, AUTOMATIC) old_value,
-  CONST(tpl_com_value, AUTOMATIC) new_value);
-
-FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_outside(
-  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
-  CONST(tpl_com_value, AUTOMATIC) old_value,
-  CONST(tpl_com_value, AUTOMATIC) new_value);
-
-FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_greater(
-  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
-  CONST(tpl_com_value, AUTOMATIC) old_value,
-  CONST(tpl_com_value, AUTOMATIC) new_value);
-
-FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_less_or_equal(
-  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
-  CONST(tpl_com_value, AUTOMATIC) old_value,
-  CONST(tpl_com_value, AUTOMATIC) new_value);
-
-FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_less(
-  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
-  CONST(tpl_com_value, AUTOMATIC) old_value,
-  CONST(tpl_com_value, AUTOMATIC) new_value);
-
-FUNC(tpl_bool, OS_CODE) tpl_filter_new_is_greater_or_equal(
-  CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
-  CONST(tpl_com_value, AUTOMATIC) old_value,
-  CONST(tpl_com_value, AUTOMATIC) new_value);
+  CONSTP2CONST(void, AUTOMATIC, OS_VAR) old_value,
+  CONSTP2CONST(void, AUTOMATIC, OS_VAR) new_value);
 
 FUNC(tpl_bool, OS_CODE) tpl_filter_one_every_n(
   CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CODE) fd,
-  CONST(tpl_com_value, AUTOMATIC) old_value,
-  CONST(tpl_com_value, AUTOMATIC) new_value);
+  CONSTP2CONST(void, AUTOMATIC, OS_VAR) old_value,
+  CONSTP2CONST(void, AUTOMATIC, OS_VAR) new_value);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

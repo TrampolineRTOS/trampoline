@@ -28,8 +28,6 @@
  *  It must be stored in RAM.
  */ 
 struct TPL_QUEUE_DYNAMIC {
-    /*! The pointer to the last written element (used for filtering)    */
-    tpl_com_data            *last;
     /*! The current size of the queue                                   */
     tpl_queue_size          size;
     /*! The read index                                                  */
@@ -47,14 +45,16 @@ struct TPL_QUEUE_DYNAMIC {
  *  It can be stored in ROM.
  */ 
 struct TPL_QUEUE_STATIC {
-    /*! pointer to the dynamic descriptor                               */
-    struct TPL_QUEUE_DYNAMIC *dyn_desc;
-    /*! max_size of the queue (number of tpl_com_data elements)         */
-    tpl_queue_size          max_size;
-    /*! size of an element of the queue                                 */
-    tpl_message_size        element_size;
-    /*! pointer to the beginning of the buffer                          */
-    tpl_com_data            *buffer;
+  /*! pointer to the dynamic descriptor                               */
+  struct TPL_QUEUE_DYNAMIC *dyn_desc;
+  /*! max_size of the queue (number of tpl_com_data elements)         */
+  tpl_queue_size          max_size;
+  /*! size of an element of the queue                                 */
+  tpl_message_size        element_size;
+  /*! pointer to the beginning of the buffer                          */
+  tpl_com_data            *buffer;
+  /*! pointer to the last written element (or the init element)       */
+  tpl_com_data            *last;
 };
 
 /*!

@@ -145,12 +145,12 @@ FUNC(tpl_status, OS_CODE) tpl_receive_static_internal_unqueued_message(
   /*  get the destination buffer                                          */
   P2VAR(tpl_com_data, AUTOMATIC, OS_VAR)
   mo_buf = rum->buffer.buffer;
-  /*  get the size of the buffer                                          */
-  VAR(int, AUTOMATIC) size = rum->buffer.size;
   
   /*  reception filtering                                                 */
-  if (tpl_filtering(mo_buf, data, size, rum->base_mo.filter))
+  if (tpl_filtering(mo_buf, data, rum->base_mo.filter))
   {
+    /*  get the size of the buffer                                          */
+    VAR(int, AUTOMATIC) size = rum->buffer.size;
     result =  E_OK;
     /*  copy the data from the source (data)
      to the message object buffer
@@ -173,34 +173,47 @@ FUNC(tpl_status, OS_CODE) tpl_receive_static_internal_queued_message(
   CONSTP2CONST(void, AUTOMATIC, OS_CONST)   rmo,
   P2CONST(tpl_com_data, AUTOMATIC, OS_VAR)  data)
 {
-  /*  destination buffer                                      */
-  P2VAR(tpl_com_data, AUTOMATIC, OS_VAR) dst = NULL;
-  /*  cast the base receiving mo to the correct type of mo    */
-  CONSTP2CONST(tpl_queue, AUTOMATIC, OS_CONST)
-  rq = &(((tpl_internal_receiving_queued_mo *)rmo)->queue);
-  /*  get the dynamic part of the queue                       */
+	VAR(tpl_status, AUTOMATIC) result = E_COM_FILTEREDOUT;
+  /* get the queue */
+  CONSTP2CONST(tpl_queue, AUTOMATIC, OS_CONST) rq =
+    &(((tpl_internal_receiving_queued_mo *)rmo)->queue);
+  /* get the dynamic part of the queue */
   CONSTP2VAR(tpl_queue_dyn, AUTOMATIC, OS_VAR)
-  dq = rq->dyn_desc;
+    dq = rq->dyn_desc;
+  /* get the pointer to the last value */
+  P2VAR(tpl_com_data, AUTOMATIC, OS_VAR) last = rq->last;
   
-  /*  get the buffer to perform the write                     */
-  dst = tpl_queue_element_for_write(rq);
-  if (dst != NULL)
+  /*
+   * filter the message
+   */
+  if (tpl_filtering(last,
+                    data,
+                    ((tpl_internal_receiving_queued_mo *)rmo)->base_mo.filter))
   {
+    /* destination buffer */
+    P2VAR(tpl_com_data, AUTOMATIC, OS_VAR) dst = NULL;
+    result = E_OK;
+    /* get the buffer to perform the write */
+    dst = tpl_queue_element_for_write(rq);
+    if (dst != NULL)
+    {
       int size = rq->element_size;
       while (size > 0)
       {
-          *dst++ = *data++;
-          size--;
+        *last++ = *data;
+        *dst++ = *data++;
+        size--;
       }
       
       /* update the current size of the queue */
       dq->size += rq->element_size;
+    }
+    else
+    {
+      dq->overflow = TRUE;
+    }
   }
-  else
-  {
-    dq->overflow = TRUE;
-  }
-	return E_OK;
+	return result;
 }
 
 #define OS_STOP_SEC_CODE

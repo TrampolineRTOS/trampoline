@@ -30,8 +30,8 @@ struct TPL_FILTER_DESC;
  */
 typedef tpl_bool (*tpl_filter_func)(
   CONSTP2CONST(struct TPL_FILTER_DESC, AUTOMATIC, OS_CODE),
-  CONST(tpl_com_value, AUTOMATIC),
-  CONST(tpl_com_value, AUTOMATIC)
+  CONSTP2CONST(void, AUTOMATIC, OS_VAR),
+  CONSTP2CONST(void, AUTOMATIC, OS_VAR)
 );
 
 /*!
@@ -50,46 +50,6 @@ struct TPL_FILTER_DESC {
 
 typedef struct TPL_FILTER_DESC tpl_filter_desc ;
 typedef tpl_filter_desc tpl_noparam_filter_desc ;
-
-/*
- * Mask used for filtering
- */
-struct TPL_MASK_FILTER_DESC {
-    /*  base filter desc                */
-    tpl_filter_desc     b_desc ;
-    /*  mask                            */
-    tpl_com_value       mask;
-};
-
-typedef struct TPL_MASK_FILTER_DESC tpl_mask_filter_desc;
-
-/*
- * Mask and comparison value used for filtering
- */
-struct TPL_MASK_X_FILTER_DESC {
-    /*  base filter desc                */
-    tpl_filter_desc     b_desc ;
-    /*  mask                            */
-    const tpl_com_value mask;
-    /*  comparison value                */
-    const tpl_com_value x;
-};
-
-typedef struct TPL_MASK_X_FILTER_DESC tpl_mask_x_filter_desc;
-
-/*
- * Interval used for filtering
- */
-struct TPL_INTERVAL_FILTER_DESC {
-    /*  base filter desc                */
-    tpl_filter_desc     b_desc ;
-    /*  minimum value of the interval   */
-    const tpl_com_value min;
-    /*  maximum value of the interval   */
-    const tpl_com_value max;
-};
-
-typedef struct TPL_INTERVAL_FILTER_DESC tpl_interval_filter_desc;
 
 /*
  * Occurence counting used for filtering
@@ -112,7 +72,6 @@ typedef struct TPL_OCCURENCE_FILTER_DESC tpl_occurence_filter_desc;
 FUNC(tpl_bool, OS_CODE) tpl_filtering(
   P2CONST(tpl_com_data, AUTOMATIC, OS_VAR)            old_data,
   P2CONST(tpl_com_data, AUTOMATIC, OS_VAR)            new_data,
-  VAR(tpl_message_size, AUTOMATIC)                    size,
   CONSTP2CONST(tpl_filter_desc, AUTOMATIC, OS_CONST)  filter_desc);
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
