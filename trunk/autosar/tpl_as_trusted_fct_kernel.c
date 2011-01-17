@@ -67,6 +67,10 @@ FUNC(tpl_status, OS_CODE) tpl_call_trusted_function_service(
   return result;
 }
 
+FUNC(void, OS_CODE) tpl_exit_trusted_function_service(void)
+{
+}
+
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 

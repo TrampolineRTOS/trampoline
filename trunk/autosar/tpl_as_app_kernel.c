@@ -253,144 +253,161 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
 	
   LOCK_KERNEL()
 	
-  /* check interrupts are not disabled by user    */
+  /* check interrupts are not disabled by user */
   CHECK_INTERRUPT_LOCK(result)
 	
-  /*  store information for error hook routine    */
+  /* store information for error hook routine */
   STORE_SERVICE(OSServiceId_TerminateApplication)
   STORE_TERMAPP_OPT(opt)
   
 #if APP_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-	  running_app_id = tpl_kern.s_running->app_id;
-	  restart_id = tpl_app_table[running_app_id]->restart;
+  running_app_id = tpl_kern.s_running->app_id;
+  restart_id = tpl_app_table[running_app_id]->restart;
 
-	  DOW_DO(printf("CALLING TerminateApplication");)
+  DOW_DO(printf("CALLING TerminateApplication");)
 	  
-	  if ( (opt == RESTART) || (opt == NO_RESTART) )
-	  {
-		  if (running_app_id < APP_COUNT)
-		  {
-			/*  First, remove all alarms belonging
-				to the OS application from the queue            */
+  if ((opt == RESTART) || (opt == NO_RESTART))
+  {
+    if (running_app_id < APP_COUNT)
+    {
+      /*
+       * First, remove all alarms belonging
+       * to the OS application from the queue
+       */
 #if ALARM_COUNT > 0
-			{
-			  P2CONST(tpl_alarm_id, AUTOMATIC, OS_APPL_CONST) alarms =
-				tpl_app_table[running_app_id]->alarms;
-			  CONST(tpl_alarm_id, AUTOMATIC) alarm_count =
-				tpl_app_table[running_app_id]->alarm_count;
-			  VAR(tpl_alarm_id, AUTOMATIC) i;
-			  for (i = 0; i < alarm_count; i++)
-			  {
-				CONST(tpl_alarm_id, AUTOMATIC) alarm_id = alarms[i];
-				P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm =
-				  tpl_alarm_table[alarm_id];
-				DOW_DO(printf("Removing alarm %d\n",(int)alarm_id);)
-				if (alarm->state == ALARM_ACTIVE)
-				{
-				  tpl_remove_time_obj(alarm);
-				  alarm->state = ALARM_SLEEP;
-				}
-			  }
-			}
+      {
+        P2CONST(tpl_alarm_id, AUTOMATIC, OS_APPL_CONST) alarms =
+        tpl_app_table[running_app_id]->alarms;
+        CONST(tpl_alarm_id, AUTOMATIC) alarm_count =
+        tpl_app_table[running_app_id]->alarm_count;
+        VAR(tpl_alarm_id, AUTOMATIC) i;
+        for (i = 0; i < alarm_count; i++)
+        {
+          CONST(tpl_alarm_id, AUTOMATIC) alarm_id = alarms[i];
+          P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) alarm =
+            tpl_alarm_table[alarm_id];
+          DOW_DO(printf("Removing alarm %d\n",(int)alarm_id);)
+          if (alarm->state == ALARM_ACTIVE)
+          {
+            tpl_remove_time_obj(alarm);
+            alarm->state = ALARM_SLEEP;
+          }
+        }
+      }
 #endif
-			/*  Then remove all the schedule tables belonging
-				to the OS application from the queue            */
+      /*
+       * Then remove all the schedule tables belonging
+       * to the OS application from the queue
+       */
 #if SCHEDTABLE_COUNT > 0
-			{
-			  P2CONST(tpl_schedtable_id, AUTOMATIC, OS_APPL_CONST) schedtables =
-				tpl_app_table[running_app_id]->sts;
-			  CONST(tpl_schedtable_id, AUTOMATIC) schedtable_count =
-				tpl_app_table[running_app_id]->st_count;
-			  VAR(tpl_schedtable_id, AUTOMATIC) i;
-			  for (i = 0; i < schedtable_count; i++)
-			  {
-				CONST(tpl_schedtable_id, AUTOMATIC) schedtable_id = schedtables[i];
-				P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) schedtable =
-				  tpl_schedtable_table[schedtable_id];
-				if (schedtable->b_desc.state != SCHEDULETABLE_STOPPED)
-				{
-				  tpl_remove_time_obj(&(schedtable->b_desc));
-				  schedtable->b_desc.state = SCHEDULETABLE_STOPPED;
-				  schedtable->index = 0;
-				}
-			  }
-			}
+      {
+        P2CONST(tpl_schedtable_id, AUTOMATIC, OS_APPL_CONST) schedtables =
+        tpl_app_table[running_app_id]->sts;
+        CONST(tpl_schedtable_id, AUTOMATIC) schedtable_count =
+        tpl_app_table[running_app_id]->st_count;
+        VAR(tpl_schedtable_id, AUTOMATIC) i;
+        for (i = 0; i < schedtable_count; i++)
+        {
+          CONST(tpl_schedtable_id, AUTOMATIC) schedtable_id = schedtables[i];
+          P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA) schedtable =
+            tpl_schedtable_table[schedtable_id];
+          if (schedtable->b_desc.state != SCHEDULETABLE_STOPPED)
+          {
+            tpl_remove_time_obj(&(schedtable->b_desc));
+            schedtable->b_desc.state = SCHEDULETABLE_STOPPED;
+            schedtable->index = 0;
+          }
+        }
+      }
 #endif
-			/*  Then remove all processes belonging to the OS
-				application in the ready list and in the waiting
-				state (the running process called this service)   */
 #if (TASK_COUNT > 0) || (ISR_COUNT > 0)
-			{
-			  P2CONST(tpl_proc_id, AUTOMATIC, OS_APPL_CONST) procs =
-				tpl_app_table[running_app_id]->procs;
-			  CONST(tpl_proc_id, AUTOMATIC) proc_count =
-				tpl_app_table[running_app_id]->proc_count;
-			  VAR(tpl_proc_id, AUTOMATIC) i;
-			  for (i = 0; i < proc_count; i++)
-			  {
-				CONST(tpl_proc_id, AUTOMATIC) proc_id = procs[i];
-				/*  remove the process from the ready queue       */
-				tpl_remove_proc(proc_id);
-				/*  release the resources, both external
-					and internal, that could be held              */
-				tpl_release_all_resources(proc_id);
-				tpl_release_internal_resource(proc_id);
-				/*  reset the task descriptor                     */
+      /*
+       * Then remove all processes belonging to the OS
+       * application in the ready list and in the waiting
+       * state (the running process called this service)
+       */
+      {
+        P2CONST(tpl_proc_id, AUTOMATIC, OS_APPL_CONST) procs =
+        tpl_app_table[running_app_id]->procs;
+        CONST(tpl_proc_id, AUTOMATIC) proc_count =
+        tpl_app_table[running_app_id]->proc_count;
+        VAR(tpl_proc_id, AUTOMATIC) i;
+        for (i = 0; i < proc_count; i++)
+        {
+          CONST(tpl_proc_id, AUTOMATIC) proc_id = procs[i];
+          /* remove the process from the ready queue */
+          tpl_remove_proc(proc_id);
+          /*
+           * release the resources, both external
+           * and internal, that could be held
+           */
+          tpl_release_all_resources(proc_id);
+          tpl_release_internal_resource(proc_id);
+          /* reset the task descriptor */
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
-				tpl_stop_budget_monitor(proc_id);
-				tpl_stop_all_resource_monitor(proc_id);
-				tpl_dyn_proc_table[proc_id]->activation_allowed = TRUE;
+          tpl_stop_budget_monitor(proc_id);
+          tpl_stop_all_resource_monitor(proc_id);
+          tpl_dyn_proc_table[proc_id]->activation_allowed = TRUE;
 #endif
-				tpl_dyn_proc_table[proc_id]->state = SUSPENDED;
-				tpl_dyn_proc_table[proc_id]->activate_count = 0;
-				tpl_dyn_proc_table[proc_id]->priority =
-				  tpl_stat_proc_table[proc_id]->base_priority;
-			  }
-			}
+          tpl_dyn_proc_table[proc_id]->state = SUSPENDED;
+          tpl_dyn_proc_table[proc_id]->activate_count = 0;
+          tpl_dyn_proc_table[proc_id]->priority =
+            tpl_stat_proc_table[proc_id]->base_priority;
+        }
+      }
 #endif
-		  /* Restart the application if needed  */
-			if ((opt == RESTART) &&
-				(restart_id != INVALID_TASK))
-			{
-			  result = tpl_activate_task(tpl_app_table[running_app_id]->restart);
-			  if (result == E_OK_AND_SCHEDULE) /* Should always be E_OK_AND_SCHEDULE */
-			  {
-				/*  and let the scheduler do its job                            */
-				tpl_schedule_from_dying();
+      /* Restart the application if needed  */
+      if ((RESTART == opt) &&
+          (restart_id != INVALID_TASK))
+      {
+        result = tpl_activate_task(tpl_app_table[running_app_id]->restart);
+        if (E_OK_AND_SCHEDULE == result) /* Should always be E_OK_AND_SCHEDULE */
+        {
+          /* terminate the running task */
+          tpl_terminate();
+          /* start the highest priority task */
+          tpl_start(tpl_get_proc());
+          /* task switching should occur */
+          tpl_kern.need_switch = NEED_SWITCH;
 # if WITH_SYSTEM_CALL == NO
-				if (tpl_kern.need_switch != NO_NEED_SWITCH)
-				{
-				  tpl_switch_context(NULL, &(tpl_kern.s_running->context));
-				}
+          if (tpl_kern.need_switch != NO_NEED_SWITCH)
+          {
+            tpl_switch_context(NULL, &(tpl_kern.s_running->context));
+          }
 # endif
-			  }
-			  else
-			  {
-				/* the activate count is restored since the caller does not terminate */
-				tpl_kern.running->activate_count++;
-			  }
-			}
-			else
-			{
-			  tpl_schedule_from_dying();
+        }
+        else
+        {
+          /* the activate count is restored since the caller does not terminate */
+          tpl_kern.running->activate_count++;
+        }
+      }
+      else
+      {
+        /* terminate the running task */
+        tpl_terminate();
+        /* start the highest priority task */
+        tpl_start(tpl_get_proc());
+        /* task switching should occur */
+        tpl_kern.need_switch = NEED_SWITCH;
 # if WITH_SYSTEM_CALL == NO
-			  if (tpl_kern.need_switch != NO_NEED_SWITCH)
-			  {
-				tpl_switch_context(NULL, &(tpl_kern.s_running->context));
-			  }
+        if (tpl_kern.need_switch != NO_NEED_SWITCH)
+        {
+          tpl_switch_context(NULL, &(tpl_kern.s_running->context));
+        }
 # endif
-			}
-		  }
-		  else
-		  {
-			result = E_OS_CALLEVEL;
-		  }
-	  }
-	  else
-	  {
-		 result = E_OS_VALUE;  
-	  }
+      }
+    }
+    else
+    {
+      result = E_OS_CALLEVEL;
+    }
+  }
+  else
+  {
+   result = E_OS_VALUE;  
+  }
   IF_NO_EXTENDED_ERROR_END()
 #else
   IF_NO_EXTENDED_ERROR(result)
