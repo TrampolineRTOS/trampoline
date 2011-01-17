@@ -624,51 +624,91 @@ sortedlist @receiverReverseSortedList {
   receiverName <
 }
 
+map @filterMap {
+  @lstring filter;
+  @lstring type;
+  insert put error message "filter key %K is duplicated in %L";
+  search get error message "filter key %K is not defined" ;
+}
+
+routine setFilterKind
+  ?!@filterMap container
+  ??@lstring filter
+  ??@lstring type
+:
+  @lstring key := [@lstring new ![filter string]."_".[type string] ![filter location]];
+  if not [container hasKey ![key string]] then
+    [!?container put !key !filter !type];
+  end if;
+end routine;
+
 routine setFilter
   ?!@goilTemplateFieldMap fieldMap
+  ?!@filterMap kindType
+  ?!@filterMap structType
   ??@filter_prop_obj filter
+  ??@lstring ctype
 :
+  @location filterLoc := [filter location];
   cast filter:
   when == @always_filter do
-    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" ![filter location]] !"ALWAYS";
+    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" !filterLoc] !"ALWAYS";
   when == @never_filter do
-    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" ![filter location]] !"NEVER";
+    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" !filterLoc] !"NEVER";
   when == @maskednewequalsx_filter maskedNewEqualsXFilter do
-    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" ![filter location]] !"MASKEDNEWEQUALSX";
+    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" !filterLoc] !"MASKEDNEWEQUALSX";
     addLUnsignedFieldValue !?fieldMap !"MASK" ![maskedNewEqualsXFilter mask];
     addLUnsignedFieldValue !?fieldMap !"X" ![maskedNewEqualsXFilter x];
+    setFilterKind !?kindType ![@lstring new !"MASKEDNEWEQUALSX" !filterLoc] !ctype;
+    setFilterKind !?structType ![@lstring new !"mask_x" !filterLoc] !ctype;
   when == @maskednewdiffersx_filter maskedNewDiffersXFilter do
-    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" ![filter location]] !"MASKEDNEWDIFFERSX";
+    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" !filterLoc] !"MASKEDNEWDIFFERSX";
     addLUnsignedFieldValue !?fieldMap !"MASK" ![maskedNewDiffersXFilter mask];
     addLUnsignedFieldValue !?fieldMap !"X" ![maskedNewDiffersXFilter x];
+    setFilterKind !?kindType ![@lstring new !"MASKEDNEWDIFFERSX" !filterLoc] !ctype;
+    setFilterKind !?structType ![@lstring new !"mask_x" !filterLoc] !ctype;
   when == @newisequal_filter do
-    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" ![filter location]] !"NEWISEQUAL";
+    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" !filterLoc] !"NEWISEQUAL";
+    setFilterKind !?kindType ![@lstring new !"NEWISEQUAL" !filterLoc] !ctype;
   when == @newisdifferent_filter do
-    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" ![filter location]] !"NEWISDIFFERENT";
+    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" !filterLoc] !"NEWISDIFFERENT";
+    setFilterKind !?kindType ![@lstring new !"NEWISDIFFERENT" !filterLoc] !ctype;
   when == @maskednewequalsmaskedold_filter maskedNewEqualsMaskedOldFilter do
-    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" ![filter location]] !"MASKEDNEWEQUALSMASKEDOLD";
+    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" !filterLoc] !"MASKEDNEWEQUALSMASKEDOLD";
     addLUnsignedFieldValue !?fieldMap !"MASK" ![maskedNewEqualsMaskedOldFilter mask];
+    setFilterKind !?kindType ![@lstring new !"MASKEDNEWEQUALSMASKEDOLD" !filterLoc] !ctype;
+    setFilterKind !?structType ![@lstring new !"mask" !filterLoc] !ctype;
   when == @maskednewdiffersmaskedold_filter maskedNewDiffersMaskedOldFilter do
-    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" ![filter location]] !"MASKEDNEWDIFFERSMASKEDOLD";
+    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" !filterLoc] !"MASKEDNEWDIFFERSMASKEDOLD";
     addLUnsignedFieldValue !?fieldMap !"MASK" ![maskedNewDiffersMaskedOldFilter mask];
+    setFilterKind !?kindType ![@lstring new !"MASKEDNEWDIFFERSMASKEDOLD" !filterLoc] !ctype;
+    setFilterKind !?structType ![@lstring new !"mask" !filterLoc] !ctype;
   when == @newiswithin newIsWithinFilter do
-    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" ![filter location]] !"NEWISWITHIN";
+    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" !filterLoc] !"NEWISWITHIN";
     addLUnsignedFieldValue !?fieldMap !"MIN" ![newIsWithinFilter min];
     addLUnsignedFieldValue !?fieldMap !"MAX" ![newIsWithinFilter max];
+    setFilterKind !?kindType ![@lstring new !"NEWISWITHIN" !filterLoc] !ctype;
+    setFilterKind !?structType ![@lstring new !"interval" !filterLoc] !ctype;
   when == @newisoutside newIsOutsideFilter do
-    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" ![filter location]] !"NEWISOUTSIDE";
+    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" !filterLoc] !"NEWISOUTSIDE";
     addLUnsignedFieldValue !?fieldMap !"MIN" ![newIsOutsideFilter min];
     addLUnsignedFieldValue !?fieldMap !"MAX" ![newIsOutsideFilter max];
+    setFilterKind !?kindType ![@lstring new !"NEWISOUTSIDE" !filterLoc] !ctype;
+    setFilterKind !?structType ![@lstring new !"interval" !filterLoc] !ctype;
   when == @newisgreater_filter do
-    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" ![filter location]] !"NEWISGREATER";
+    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" !filterLoc] !"NEWISGREATER";
+    setFilterKind !?kindType ![@lstring new !"NEWISGREATER" !filterLoc] !ctype;
   when == @newislessorequal_filter do
-    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" ![filter location]] !"NEWISLESSOREQUAL";
+    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" !filterLoc] !"NEWISLESSOREQUAL";
+    setFilterKind !?kindType ![@lstring new !"NEWISLESSOREQUAL" !filterLoc] !ctype;
   when == @newisless_filter do
-    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" ![filter location]] !"NEWISLESS";
+    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" !filterLoc] !"NEWISLESS";
+    setFilterKind !?kindType ![@lstring new !"NEWISLESS" !filterLoc] !ctype;
   when == @newisgreaterorequal_filter do
-    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" ![filter location]] !"NEWISGREATEROREQUAL";
+    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" !filterLoc] !"NEWISGREATEROREQUAL";
+    setFilterKind !?kindType ![@lstring new !"NEWISGREATEROREQUAL" !filterLoc] !ctype;
   when == @oneeveryn_filter oneEveryNFilter do
-    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" ![filter location]] !"ONEEVERYN";
+    addStringFieldValue !?fieldMap ![@lstring new !"FILTER" !filterLoc] !"ONEEVERYN";
     addLUnsignedFieldValue !?fieldMap !"PERIOD" ![oneEveryNFilter period];
     addLUnsignedFieldValue !?fieldMap !"OFFSET" ![oneEveryNFilter offset];
   else end cast;
@@ -729,8 +769,13 @@ routine setMessagesList
   @goilTemplateFieldMapList sendMessagesList [emptyList];
   @goilTemplateFieldMapList receiveMessagesList [emptyList];
   
+  @filterMap kindType [emptyMap];
+  @filterMap structType [emptyMap];
+
   # internal receive messages (except the zero senders messages)
-  foreach actualInternalReceiverList do
+  # build a separate list of filter (kind + datatype) used
+  # to generate ad-hoc functions
+  foreach actualInternalReceiverList do  
     @goilTemplateFieldMap fieldMap [emptyMap];
     addStringFieldValue !?fieldMap ![@lstring new !"NAME" !receiverLocation] !receiverName;
     # get the next target
@@ -745,6 +790,7 @@ routine setMessagesList
       addStringFieldValue !?fieldMap ![@lstring new !"MESSAGEPROPERTY" ![messageProperty location]] !"RECEIVE_ZERO_INTERNAL";
       addLStringFieldValue !?fieldMap !"SOURCE" ![receiveZeroInternalMessage sendingmessage];
     when == @rui_mess_prop receiveUnqueuedInternalMessage do
+      @lstring ctype;
       @lstring senderName := [receiveUnqueuedInternalMessage sendingmessage];
       addStringFieldValue !?fieldMap ![@lstring new !"MESSAGEPROPERTY" ![messageProperty location]] !"RECEIVE_UNQUEUED_INTERNAL";
       addLStringFieldValue !?fieldMap !"SOURCE" !senderName;
@@ -752,19 +798,19 @@ routine setMessagesList
       [[cpu messages] get !senderName ?sender];
       cast [sender messageproperty]:
       when == @ssi_mess_prop sendStaticInternalSender do
-        addLStringFieldValue !?fieldMap !"CTYPE" ![sendStaticInternalSender cdatatype];
+        ctype := [sendStaticInternalSender cdatatype];
+        addLStringFieldValue !?fieldMap !"CTYPE" !ctype;
         @basic_type initialValue := [receiveUnqueuedInternalMessage initialvalue];
-        @string initialValueString;
-        [initialValue string ?initialValueString];
-        if initialValueString != "" then
-          addStringFieldValue !?fieldMap ![@lstring new !"INITIALVALUE" ![initialValue location]] !initialValueString;
+        if [initialValue string] != "" then
+          addStringFieldValue !?fieldMap ![@lstring new !"INITIALVALUE" ![initialValue location]] ![initialValue string];
         end if;
       else
-        error [messageProperty location]: "MESSAGEPROPERTY of sender has an incompatible property";
+        error [messageProperty location]: "MESSAGEPROPERTY of sender has an incompatible property" : ctype;
         error senderName: "MESSAGEPROPERTY of sender should be SEND_STATIC_INTERNAL";
       end cast;
-      setFilter !?fieldMap ![receiveUnqueuedInternalMessage filter];
+      setFilter !?fieldMap !?kindType !?structType ![receiveUnqueuedInternalMessage filter] !ctype;
     when == @rqi_mess_prop receiveQueuedInternalMessage do
+      @lstring ctype;
       @lstring senderName := [receiveQueuedInternalMessage sendingmessage];
       addStringFieldValue !?fieldMap ![@lstring new !"MESSAGEPROPERTY" ![messageProperty location]] !"RECEIVE_QUEUED_INTERNAL";
       addLStringFieldValue !?fieldMap !"SOURCE" !senderName;
@@ -773,13 +819,14 @@ routine setMessagesList
       [[cpu messages] get !senderName ?sender];
       cast [sender messageproperty]:
       when == @ssi_mess_prop sendStaticInternalSender do
-        addLStringFieldValue !?fieldMap !"CTYPE" ![sendStaticInternalSender cdatatype];
+        ctype := [sendStaticInternalSender cdatatype];
+        addLStringFieldValue !?fieldMap !"CTYPE" !ctype;
       else
-        error [messageProperty location]: "MESSAGEPROPERTY of sender has an incompatible property";
+        error [messageProperty location]: "MESSAGEPROPERTY of sender has an incompatible property" : ctype;
         error senderName: "MESSAGEPROPERTY of sender should be SEND_STATIC_INTERNAL";
       end cast;
       
-      setFilter !?fieldMap ![receiveQueuedInternalMessage filter];
+      setFilter !?fieldMap !?kindType !?structType ![receiveQueuedInternalMessage filter] !ctype;
     else end cast;
     
     setAction !?fieldMap ![mess notification];
@@ -796,14 +843,22 @@ routine setMessagesList
     when == @ssi_mess_prop sendStaticInternalMessage do
       addStringFieldValue !?fieldMap ![@lstring new !"MESSAGEPROPERTY" ![messageProperty location]] !"SEND_STATIC_INTERNAL";
       addLStringFieldValue !?fieldMap !"CTYPE" ![sendStaticInternalMessage cdatatype];
-      @lstring targetMessage;
-      [internalTargets get !lkey ?targetMessage];
-      addLStringFieldValue !?fieldMap !"TARGET" !targetMessage;
+      if [internalTargets hasKey ![lkey string]] then
+        @lstring targetMessage;
+        [internalTargets get !lkey ?targetMessage];
+        addLStringFieldValue !?fieldMap !"TARGET" !targetMessage;
+      else
+        error lkey : "MESSAGE ".[lkey string]." do not have any receiving message connected";
+      end if;
     when == @szi_mess_prop do
       addStringFieldValue !?fieldMap ![@lstring new !"MESSAGEPROPERTY" ![messageProperty location]] !"SEND_ZERO_INTERNAL";
-      @lstring targetMessage;
-      [internalTargets get !lkey ?targetMessage];
-      addLStringFieldValue !?fieldMap !"TARGET" !targetMessage;
+      if [internalTargets hasKey ![lkey string]] then
+        @lstring targetMessage;
+        [internalTargets get !lkey ?targetMessage];
+        addLStringFieldValue !?fieldMap !"TARGET" !targetMessage;
+      else
+        error lkey : "MESSAGE ".[lkey string]." do not have any receiving message connected";
+      end if;
 #    when == @sse_mess_prop sendStaticExternalMessage do
 #      addStringFieldValue !?fieldMap ![@lstring new !"MESSAGEPROPERTY" ![messageProperty location]] !"SEND_STATIC_EXTERNAL";
 #      sendMessagesList += !fieldMap;
@@ -829,10 +884,8 @@ routine setMessagesList
       addStringFieldValue !?fieldMap ![@lstring new !"MESSAGEPROPERTY" ![messageProperty location]] !"RECEIVE_ZERO_SENDERS";
       addLStringFieldValue !?fieldMap !"CTYPE" ![receiveZeroSendersMessage cdatatype];
       @basic_type initialValue := [receiveZeroSendersMessage initialvalue];
-      @string initialValueString;
-      [initialValue string ?initialValueString];
-      if initialValueString != "" then
-        addStringFieldValue !?fieldMap ![@lstring new !"INITIALVALUE" ![initialValue location]] !initialValueString;
+      if [initialValue string] != "" then
+        addStringFieldValue !?fieldMap ![@lstring new !"INITIALVALUE" ![initialValue location]] ![initialValue string];
       end if;
       isSendMessage := false;
     else
@@ -848,6 +901,29 @@ routine setMessagesList
       end if;
     end if;
   end foreach;
+  
+  # build the filters informations
+  @goilTemplateFieldMapList filterList [emptyList];
+  @goilTemplateFieldMapList structList [emptyList];
+  
+  foreach kindType (@lstring key @lstring filter @lstring type) do
+#    message [filter string]."_".type."\n";
+    @goilTemplateFieldMap fieldMap [emptyMap];
+    addLStringFieldValue !?fieldMap !"FILTER" !filter;
+    addLStringFieldValue !?fieldMap !"CTYPE" !type;
+    filterList += !fieldMap;
+  end foreach;
+
+  foreach structType (@lstring key @lstring structFilter @lstring type) do
+#    message [structFilter string]."_".type."\n";
+    @goilTemplateFieldMap fieldMap [emptyMap];
+    addLStringFieldValue !?fieldMap !"KIND" !structFilter;
+    addLStringFieldValue !?fieldMap !"CTYPE" !type;
+    structList += !fieldMap;
+  end foreach;
+
+  addListValue !?cfg !lstringWith[!"FILTERS"] !filterList;
+  addListValue !?cfg !lstringWith[!"FILTERSTRUCTS"] !structList;
   addListValue !?cfg !lstringWith[!"MESSAGES"] !messagesList;
   addListValue !?cfg !lstringWith[!"SENDMESSAGES"] !sendMessagesList;
   addListValue !?cfg !lstringWith[!"RECEIVEMESSAGES"] !receiveMessagesList;

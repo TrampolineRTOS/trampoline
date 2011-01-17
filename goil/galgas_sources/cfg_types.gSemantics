@@ -18,13 +18,13 @@ map @cfg_attrs {
 
 class @attrs extends @basic_type {
   @cfg_attrs attrs;
-  override method string !@string s : s := ""; end method;
+#  override method string !@string s : s := ""; end method;
 }
 
 class @interrupts extends @basic_type {
   @luint64   it_count;
   @ident_map it_sources;
-  override method string !@string s : s := ""; end method;
+#  override method string !@string s : s := ""; end method;
 }
 
 end semantics;

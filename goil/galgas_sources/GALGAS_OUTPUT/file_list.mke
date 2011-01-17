@@ -23,114 +23,6 @@ SOURCES_DIR += ../galgas_sources/GALGAS_OUTPUT/include-files
 
 SOURCES :=
 
-#--- Files from libpm --------------------
-#---------------------------------------------------------------*
-#                                                               *
-#     This file contains a source file list that is included    *
-#     by every galgas project makefile                          *
-#                                                               *
-#---------------------------------------------------------------*
-
-#--- Files from libpm --------------------
-#--- Command Line Option
-SOURCES += C_CommandLineOption.cpp
-SOURCES += C_BoolCommandLineOption.cpp
-SOURCES += C_UIntCommandLineOption.cpp
-SOURCES += C_StringCommandLineOption.cpp
-SOURCES += C_builtin_CLI_Options.cpp
-SOURCES += C_galgas_CLI_Options.cpp
-SOURCES += F_Analyze_CLI_Options.cpp
-
-#--- BDD
-SOURCES += C_Display_BDD.cpp
-SOURCES += C_BDD.cpp
-SOURCES += C_BDD-find-or-add.cpp
-SOURCES += C_BDD-single-operand-ops.cpp
-SOURCES += C_BDD-and-operation.cpp
-SOURCES += C_BDD_Set1.cpp
-SOURCES += C_BDD_Set2.cpp
-SOURCES += C_BDD_Set3.cpp
-SOURCES += C_BDD_Descriptor.cpp
-
-#--- Files
-SOURCES += C_TextFileWrite.cpp
-SOURCES += C_HTML_FileWrite.cpp
-
-#--- Streams
-SOURCES += AC_OutputStream.cpp
-SOURCES += C_ConsoleOut.cpp
-SOURCES += C_ErrorOut.cpp
-
-#--- Strings
-SOURCES += unicode_character_cpp.cpp
-SOURCES += unicode_string_routines.cpp
-SOURCES += C_String.cpp
-SOURCES += md5.cpp
-
-#--- Time
-SOURCES += C_Timer.cpp
-SOURCES += C_DateTime.cpp
-
-#--- Utilities
-SOURCES += F_main.cpp
-SOURCES += C_PrologueEpilogue.cpp
-SOURCES += C_SharedObject.cpp
-SOURCES += F_DisplayException.cpp
-SOURCES += MF_Assert.cpp
-SOURCES += F_GetPrime.cpp
-SOURCES += MF_MemoryControl.cpp
-SOURCES += cpp-allocation.cpp
-SOURCES += basic-allocation.cpp
-
-#---------------------------------------------------------------*
-#    G A L G A S    2                                           *
-#---------------------------------------------------------------*
-
-SOURCES += C_LocationInSource.cpp
-SOURCES += C_SourceTextInString.cpp
-SOURCES += C_galgas_type_descriptor.cpp
-SOURCES += C_galgas_function_descriptor.cpp
-SOURCES += C_galgas_io.cpp
-SOURCES += C_galgas_class_inspector.cpp
-SOURCES += cObjectArray.cpp
-SOURCES += cCollectionElement.cpp
-SOURCES += capCollectionElement.cpp
-SOURCES += capCollectionElementArray.cpp
-SOURCES += cSortedListElement.cpp
-SOURCES += capSortedListElement.cpp
-SOURCES += cGenericAbstractEnumerator.cpp
-
-SOURCES += AC_GALGAS_root.cpp
-SOURCES += AC_GALGAS_list.cpp
-SOURCES += AC_GALGAS_sortedlist.cpp
-SOURCES += AC_GALGAS_map.cpp
-SOURCES += AC_GALGAS_uniqueMap.cpp
-SOURCES += AC_GALGAS_class.cpp
-SOURCES += acPtr_class.cpp
-SOURCES += cPtr_object.cpp
-
-SOURCES += GALGAS_application.cpp
-SOURCES += GALGAS_binaryset.cpp
-SOURCES += GALGAS_bool.cpp
-SOURCES += GALGAS_char.cpp
-SOURCES += GALGAS_data.cpp
-SOURCES += GALGAS_double.cpp
-SOURCES += GALGAS_filewrapper.cpp
-SOURCES += GALGAS_function.cpp
-SOURCES += GALGAS_location.cpp
-SOURCES += GALGAS_sint.cpp
-SOURCES += GALGAS_sint_36__34_.cpp
-SOURCES += GALGAS_string.cpp
-SOURCES += GALGAS_stringset.cpp
-SOURCES += GALGAS_type.cpp
-SOURCES += GALGAS_object.cpp
-SOURCES += GALGAS_uint.cpp
-SOURCES += GALGAS_uint_36__34_.cpp
-SOURCES += predefined-types.cpp
-SOURCES += scanner_actions.cpp
-SOURCES += C_Compiler.cpp
-SOURCES += C_Lexique.cpp
-
 #---------------------------------------------------------------*
 
 #--- Hand-coded files ---------------------
@@ -205,5 +97,112 @@ SOURCES += cfg_syntax.cpp
 SOURCES += cfg_grammar.cpp
 SOURCES += cfg_types.cpp
 
+
+#---------------------------------------------------------------*
+#                                                               *
+#     Files from LIBPM                                          *
+#                                                               *
+#---------------------------------------------------------------*
+
+#--- Command Line Option
+SOURCES += C_CommandLineOption.cpp
+SOURCES += C_BoolCommandLineOption.cpp
+SOURCES += C_UIntCommandLineOption.cpp
+SOURCES += C_StringCommandLineOption.cpp
+SOURCES += C_builtin_CLI_Options.cpp
+SOURCES += C_galgas_CLI_Options.cpp
+SOURCES += F_Analyze_CLI_Options.cpp
+
+#--- BDD
+SOURCES += C_Display_BDD.cpp
+SOURCES += C_BDD.cpp
+SOURCES += C_BDD-find-or-add.cpp
+SOURCES += C_BDD-single-operand-ops.cpp
+SOURCES += C_BDD-and-operation.cpp
+SOURCES += C_BDD_Set1.cpp
+SOURCES += C_BDD_Set2.cpp
+SOURCES += C_BDD_Set3.cpp
+SOURCES += C_BDD_Descriptor.cpp
+
+#--- Files
+SOURCES += C_TextFileWrite.cpp
+SOURCES += C_HTML_FileWrite.cpp
+
+#--- Streams
+SOURCES += AC_OutputStream.cpp
+SOURCES += C_ConsoleOut.cpp
+SOURCES += C_ErrorOut.cpp
+
+#--- Strings
+SOURCES += unicode_character_cpp.cpp
+SOURCES += unicode_string_routines.cpp
+SOURCES += C_String.cpp
+SOURCES += md5.cpp
+
+#--- Time
+SOURCES += C_Timer.cpp
+SOURCES += C_DateTime.cpp
+
+#--- Utilities
+SOURCES += F_main.cpp
+SOURCES += C_PrologueEpilogue.cpp
+SOURCES += C_SharedObject.cpp
+SOURCES += F_DisplayException.cpp
+SOURCES += MF_Assert.cpp
+SOURCES += F_GetPrime.cpp
+SOURCES += MF_MemoryControl.cpp
+SOURCES += cpp-allocation.cpp
+SOURCES += basic-allocation.cpp
+
+#---------------------------------------------------------------*
+#    G A L G A S    2                                           *
+#---------------------------------------------------------------*
+
+SOURCES += C_Compiler.cpp
+SOURCES += C_Lexique.cpp
+SOURCES += C_LocationInSource.cpp
+SOURCES += C_SourceTextInString.cpp
+SOURCES += C_galgas_type_descriptor.cpp
+SOURCES += C_galgas_function_descriptor.cpp
+SOURCES += C_galgas_io.cpp
+SOURCES += C_galgas_class_inspector.cpp
+SOURCES += cObjectArray.cpp
+SOURCES += cCollectionElement.cpp
+SOURCES += capCollectionElement.cpp
+SOURCES += capCollectionElementArray.cpp
+SOURCES += cSortedListElement.cpp
+SOURCES += capSortedListElement.cpp
+SOURCES += cGenericAbstractEnumerator.cpp
+SOURCES += cIndexingDictionary.cpp
+
+SOURCES += AC_GALGAS_root.cpp
+SOURCES += AC_GALGAS_list.cpp
+SOURCES += AC_GALGAS_sortedlist.cpp
+SOURCES += AC_GALGAS_map.cpp
+SOURCES += AC_GALGAS_uniqueMap.cpp
+SOURCES += AC_GALGAS_class.cpp
+SOURCES += AC_GALGAS_graph.cpp
+SOURCES += acPtr_class.cpp
+SOURCES += cPtr_object.cpp
+
+SOURCES += GALGAS_application.cpp
+SOURCES += GALGAS_binaryset.cpp
+SOURCES += GALGAS_bool.cpp
+SOURCES += GALGAS_char.cpp
+SOURCES += GALGAS_data.cpp
+SOURCES += GALGAS_double.cpp
+SOURCES += GALGAS_filewrapper.cpp
+SOURCES += GALGAS_function.cpp
+SOURCES += GALGAS_location.cpp
+SOURCES += GALGAS_sint.cpp
+SOURCES += GALGAS_sint_36__34_.cpp
+SOURCES += GALGAS_string.cpp
+SOURCES += GALGAS_stringset.cpp
+SOURCES += GALGAS_type.cpp
+SOURCES += GALGAS_object.cpp
+SOURCES += GALGAS_uint.cpp
+SOURCES += GALGAS_uint_36__34_.cpp
+SOURCES += predefined-types.cpp
+SOURCES += scanner_actions.cpp
 
 #---------------------------------------------------------------*

@@ -48,93 +48,93 @@ class @os_config {
   @bool with_it_table;
   @uint scalability_class;
 
-  method generate !@string res :
-
-    res := "";
-
-    if with_compilersettings
-    then res .= "#define WITH_COMPILER_SETTINGS            YES\n";
-    else res .= "#define WITH_COMPILER_SETTINGS            NO\n";
-    end if;
-
-    if with_memmap
-    then res .= "#define WITH_MEMMAP                       YES\n";
-    else res .= "#define WITH_MEMMAP                       NO\n";
-    end if;
-
-    if with_com
-    then res .= "#define WITH_COM                          YES\n";
-    else res .= "#define WITH_COM                          NO\n";
-    end if;
-
-    if with_autosar
-    then res .= "#define WITH_AUTOSAR                      YES\n";
-    else res .= "#define WITH_AUTOSAR                      NO\n";
-    end if;
-
-    if with_osapplication
-    then res .= "#define WITH_OSAPPLICATION                YES\n";
-    else res .= "#define WITH_OSAPPLICATION                NO\n";
-    end if;
-
-    if with_timingprotection
-    then res .= "#define WITH_AUTOSAR_TIMING_PROTECTION    YES\n";
-    else res .= "#define WITH_AUTOSAR_TIMING_PROTECTION    NO\n";
-    end if;
-
-    if with_stackmonitoring
-    then res .= "#define WITH_AUTOSAR_STACK_MONITORING     YES\n";
-    else res .= "#define WITH_AUTOSAR_STACK_MONITORING     NO\n";
-    end if;
-
-    if with_memoryprotection
-    then res .= "#define WITH_MEMORY_PROTECTION            YES\n";
-    else res .= "#define WITH_MEMORY_PROTECTION            NO\n";
-    end if;
-
-    if with_systemcall
-    then res .= "#define WITH_SYSTEM_CALL                  YES\n";
-    else res .= "#define WITH_SYSTEM_CALL                  NO\n";
-    end if;
-
-    if with_errorhook
-    then res .= "#define WITH_ERROR_HOOK                   YES\n";
-    else res .= "#define WITH_ERROR_HOOK                   NO\n";
-    end if;
-
-    if with_startuphook
-    then res .= "#define WITH_STARTUP_HOOK                 YES\n";
-    else res .= "#define WITH_STARTUP_HOOK                 NO\n";
-    end if;
-
-    if with_shutdownhook
-    then res .= "#define WITH_SHUTDOWN_HOOK                YES\n";
-    else res .= "#define WITH_SHUTDOWN_HOOK                NO\n";
-    end if;
-
-    if with_pretaskhook
-    then res .= "#define WITH_PRE_TASK_HOOK                YES\n";
-    else res .= "#define WITH_PRE_TASK_HOOK                NO\n";
-    end if;
-
-    if with_postaskhook
-    then res .= "#define WITH_POST_TASK_HOOK               YES\n";
-    else res .= "#define WITH_POST_TASK_HOOK               NO\n";
-    end if;
-
-    if with_protectionhook
-    then res .= "#define WITH_PROTECTION_HOOK              YES\n";
-    else res .= "#define WITH_PROTECTION_HOOK              NO\n";
-    end if;
-
-    if with_trace
-    then res .= "#define WITH_TRACE                        YES\n";
-    else res .= "#define WITH_TRACE                        NO\n";
-    end if;
-
-    res .= "#define SCALABILITY_CLASS                 ".[scalability_class string];
-
-  end method;
+#  method generate !@string res :
+#
+#    res := "";
+#
+#    if with_compilersettings
+#    then res .= "#define WITH_COMPILER_SETTINGS            YES\n";
+#    else res .= "#define WITH_COMPILER_SETTINGS            NO\n";
+#    end if;
+#
+#    if with_memmap
+#    then res .= "#define WITH_MEMMAP                       YES\n";
+#    else res .= "#define WITH_MEMMAP                       NO\n";
+#    end if;
+#
+#    if with_com
+#    then res .= "#define WITH_COM                          YES\n";
+#    else res .= "#define WITH_COM                          NO\n";
+#    end if;
+#
+#    if with_autosar
+#    then res .= "#define WITH_AUTOSAR                      YES\n";
+#    else res .= "#define WITH_AUTOSAR                      NO\n";
+#    end if;
+#
+#    if with_osapplication
+#    then res .= "#define WITH_OSAPPLICATION                YES\n";
+#    else res .= "#define WITH_OSAPPLICATION                NO\n";
+#    end if;
+#
+#    if with_timingprotection
+#    then res .= "#define WITH_AUTOSAR_TIMING_PROTECTION    YES\n";
+#    else res .= "#define WITH_AUTOSAR_TIMING_PROTECTION    NO\n";
+#    end if;
+#
+#    if with_stackmonitoring
+#    then res .= "#define WITH_AUTOSAR_STACK_MONITORING     YES\n";
+#    else res .= "#define WITH_AUTOSAR_STACK_MONITORING     NO\n";
+#    end if;
+#
+#    if with_memoryprotection
+#    then res .= "#define WITH_MEMORY_PROTECTION            YES\n";
+#    else res .= "#define WITH_MEMORY_PROTECTION            NO\n";
+#    end if;
+#
+#    if with_systemcall
+#    then res .= "#define WITH_SYSTEM_CALL                  YES\n";
+#    else res .= "#define WITH_SYSTEM_CALL                  NO\n";
+#    end if;
+#
+#    if with_errorhook
+#    then res .= "#define WITH_ERROR_HOOK                   YES\n";
+#    else res .= "#define WITH_ERROR_HOOK                   NO\n";
+#    end if;
+#
+#    if with_startuphook
+#    then res .= "#define WITH_STARTUP_HOOK                 YES\n";
+#    else res .= "#define WITH_STARTUP_HOOK                 NO\n";
+#    end if;
+#
+#    if with_shutdownhook
+#    then res .= "#define WITH_SHUTDOWN_HOOK                YES\n";
+#    else res .= "#define WITH_SHUTDOWN_HOOK                NO\n";
+#    end if;
+#
+#    if with_pretaskhook
+#    then res .= "#define WITH_PRE_TASK_HOOK                YES\n";
+#    else res .= "#define WITH_PRE_TASK_HOOK                NO\n";
+#    end if;
+#
+#    if with_postaskhook
+#    then res .= "#define WITH_POST_TASK_HOOK               YES\n";
+#    else res .= "#define WITH_POST_TASK_HOOK               NO\n";
+#    end if;
+#
+#    if with_protectionhook
+#    then res .= "#define WITH_PROTECTION_HOOK              YES\n";
+#    else res .= "#define WITH_PROTECTION_HOOK              NO\n";
+#    end if;
+#
+#    if with_trace
+#    then res .= "#define WITH_TRACE                        YES\n";
+#    else res .= "#define WITH_TRACE                        NO\n";
+#    end if;
+#
+#    res .= "#define SCALABILITY_CLASS                 ".[scalability_class string];
+#
+#  end method;
 }
 
 #

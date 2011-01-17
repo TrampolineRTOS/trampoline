@@ -27,19 +27,24 @@ semantics goil_basic_types :
 
 abstract class @basic_type {
   @location location ;
-  method string !@string s :
-    s := "" ;
-  end method ;
+#  method string !@string s :
+#    s := "" ;
+#  end method ;
 }
+
+reader @basic_type string -> @string result:
+  result := "";
+end reader;
 
 class @void extends @basic_type {}
 
 class @uint32_class    extends @basic_type {
   @uint   value ;
-  override method string !@string s :
-    s := [value string] ;
-  end method ;
 }
+
+override reader @uint32_class string -> @string result:
+  result := [value string] ;
+end reader;
 
 function uint32_or_error
   ?@basic_type t
@@ -57,17 +62,21 @@ end function;
 
 class @sint32_class    extends @basic_type {
   @sint   value ;
-  override method string !@string s :
-    s := [value string] ;
-  end method ;
 }
+
+override reader @sint32_class string -> @string result:
+  result := [value string] ;
+end reader;
+
 
 class @uint64_class    extends @basic_type {
   @uint64 value ;
-  override method string !@string s :
-    s := [value string] ;
-  end method ;
 }
+
+override reader @uint64_class string -> @string result:
+  result := [value string] ;
+end reader;
+
 
 function uint64OrError
   ?@basic_type t
@@ -99,35 +108,45 @@ end function;
 
 class @sint64_class    extends @basic_type {
   @sint64 value ;
-  override method string !@string s :
-    s := [value string] ;
-  end method ;
 }
+override reader @sint64_class string -> @string result:
+  result := [value string] ;
+end reader;
+
 
 class @float_class     extends @basic_type {
   @double value ;
-  override method string !@string s :
-    s := "" ;
-  end method ;
 }
+
+override reader @float_class string -> @string result:
+  result := [value string] ;
+end reader;
+
 
 class @string_class    extends @basic_type {
   @string value ;
-  override method string !@string s :
-    s := value ;
-  end method ;
 }
+
+override reader @string_class string -> @string result:
+  result := value ;
+end reader;
+
 
 class @bool_class      extends @basic_type {
   @bool   value ;
-  override method string !@string s :
-    if value then
-      s := "true" ;
-    else
-      s := "false" ;
-    end if ;
-  end method ;
+#  override method string !@string s :
+#    if value then
+#      s := "true" ;
+#    else
+#      s := "false" ;
+#    end if ;
+#  end method ;
 }
+
+override reader @bool_class string -> @string result:
+  result := [value cString] ;
+end reader;
+
 
 class @void_uint32_class extends @uint32_class {}
 class @void_sint32_class extends @sint32_class {}
@@ -231,17 +250,7 @@ map @lstringMap {
     search get error message "lstringmap lkey %K is not defined" ;
 }
 
-#
-# Map to store string constants used
-# for code generation
-#
-map @prefix_map {
-    @string prefix ;
-    @string tag_to_rep ;
-    insert add error message "prefix %K duplicated %L" ;
-    insert insert_prefix error message "prefix %K duplicated %L" ;
-    search prefix error message "prefix %K is not defined" ;
-}
+
 
 map @stringset_map {
     @stringset ids ;
@@ -473,13 +482,13 @@ routine bool_flag
   end cast ;
 end routine ;
 
-routine p_bt
-  ??@basic_type bt
-:
-  @string res;
-  [bt string ?res];
-  message [[bt location] locationString].": ".res."\n";
-end routine;
+#routine p_bt
+#  ??@basic_type bt
+#:
+#  @string res;
+#  [bt string ?res];
+#  message [[bt location] locationString].": ".res."\n";
+#end routine;
 
 function luint64_value
   ??@uint64_class c

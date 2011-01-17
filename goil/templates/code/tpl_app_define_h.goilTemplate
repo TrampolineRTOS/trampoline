@@ -33,7 +33,9 @@
 /*=============================================================================
  * Configuration flags
  */
-#define TARGET_ARCH                      ARCH_% ![ARCH uppercaseString]%
+#define TARGET_ARCH                      "% !ARCH %"
+#define TARGET_CHIP                      "% !CHIP %"
+#define TARGET_BOARD                     "% !BOARD %"
 #define WITH_OS_EXTENDED                 % !yesNo(EXTENDED) %
 #define WITH_STARTUP_HOOK                % !yesNo(USESTARTUPHOOK) %
 #define WITH_SHUTDOWN_HOOK               % !yesNo(USESHUTDOWNHOOK) %

@@ -1,23 +1,23 @@
 grammar goil_cpu_level_include "LL1":
 #--- References to syntax components used when source file extension is .gGrammar
 #    Theses constructs are silently parsed when source file extension is .ggs
-    with "goil_syntax.ggs" ;
+    with "goil_syntax.gSyntax" ;
 
-    with "goil_obj_os.ggs" ;
-    with "goil_obj_task.ggs" ;
-    with "goil_obj_counter.ggs" ;
-    with "goil_obj_appmode.ggs" ;
-    with "goil_obj_alarm.ggs" ;
-    with "goil_obj_resource.ggs" ;
-    with "goil_obj_event.ggs" ;
-    with "goil_obj_isr.ggs" ;
-    with "goil_obj_message.ggs" ;
-    with "goil_obj_networkmessage.ggs" ;
-    with "goil_obj_com.ggs" ;
-    with "goil_obj_ipdu.ggs" ;
-    with "goil_obj_scheduletable.ggs" ;
-    with "goil_obj_application.ggs" ;
-    with "goil_timing_prot_attrs.ggs" ;
+    with "goil_obj_os.gSyntax" ;
+    with "goil_obj_task.gSyntax" ;
+    with "goil_obj_counter.gSyntax" ;
+    with "goil_obj_appmode.gSyntax" ;
+    with "goil_obj_alarm.gSyntax" ;
+    with "goil_obj_resource.gSyntax" ;
+    with "goil_obj_event.gSyntax" ;
+    with "goil_obj_isr.gSyntax" ;
+    with "goil_obj_message.gSyntax" ;
+    with "goil_obj_networkmessage.gSyntax" ;
+    with "goil_obj_com.gSyntax" ;
+    with "goil_obj_ipdu.gSyntax" ;
+    with "goil_obj_scheduletable.gSyntax" ;
+    with "goil_obj_application.gSyntax" ;
+    with "goil_timing_prot_attrs.gSyntax" ;
 
     root <object_definition_list>
         ?!@os_obj            os

@@ -39,38 +39,38 @@ end routine ;
 
 abstract class @timing_prot {
     @location   location ;
-    abstract method generate
-        ?@config       cfg
-        !@string       result
-        !@string       table_name
-        ?@string       name
-        ?@resource_map rez ;
+#    abstract method generate
+#        ?@config       cfg
+#        !@string       result
+#        !@string       table_name
+#        ?@string       name
+#        ?@resource_map rez ;
 }
 
 class @void_timing_prot extends @timing_prot {
-    override method generate
-        ?@config       unused cfg
-        !@string              result
-        !@string              st_name
-        ?@string       unused name
-        ?@resource_map unused rez
-    :
-        result := "" ;
-        st_name := "NULL" ;
-    end method ;
+#    override method generate
+#        ?@config       unused cfg
+#        !@string              result
+#        !@string              st_name
+#        ?@string       unused name
+#        ?@resource_map unused rez
+#    :
+#        result := "" ;
+#        st_name := "NULL" ;
+#    end method ;
 }
 
 class @false_timing_prot extends @timing_prot {
-    override method generate
-        ?@config       unused cfg
-        !@string              result
-        !@string              st_name
-        ?@string       unused name
-        ?@resource_map unused rez
-    :
-        result := "" ;
-        st_name := "NULL" ;
-    end method ;
+#    override method generate
+#        ?@config       unused cfg
+#        !@string              result
+#        !@string              st_name
+#        ?@string       unused name
+#        ?@resource_map unused rez
+#    :
+#        result := "" ;
+#        st_name := "NULL" ;
+#    end method ;
 }
 
 class @timing_prot_task extends @timing_prot {
@@ -80,62 +80,62 @@ class @timing_prot_task extends @timing_prot {
     @basic_type all_it_lock ;
     @rezlock_map rezlocks ;
 
-    override method generate
-        ?@config       cfg
-        !@string       result
-        !@string       st_name
-        ?@string       name
-        ?@resource_map rez
-  :
-        @uint64 tpn := 1L ;
-        if [cfg hasKey !"wd_ticks_per_ns"] then
-            @basic_type val ;
-            [cfg get ![@lstring new !"wd_ticks_per_ns" !here] ?val] ;
-            cast val :
-            when == @uint64_class ui do tpn := [ui value] ;
-            else end cast ;
-        end if ;
-
-        result := template_string[!"code" !"timing_protection"];
-
-        cast exe_budget :
-        when == @uint64_class eb do
-            result := [result stringByReplacingStringByString !"$EXE_BUDGET$"  ![[eb value]/tpn string]] ;
-        else end cast ;
-        cast time_frame :
-        when == @uint64_class tf do
-            result := [result stringByReplacingStringByString !"$TIME_FRAME$"  ![[tf value]/tpn string]] ;
-        else end cast ;
-        cast os_it_lock :
-        when == @uint64_class oil do
-            result := [result stringByReplacingStringByString !"$OS_IT_LOCK$"  ![[oil value]/tpn string]] ;
-        else end cast ;
-        cast all_it_lock :
-        when == @uint64_class ail do
-            result := [result stringByReplacingStringByString !"$ALL_IT_LOCK$" ![[ail value]/tpn string]] ;
-        else end cast ;
-        
-        st_name := "task_".name."_timing_prot" ;
-        result := [result stringByReplacingStringByString !"$TIMING_PROT$" !st_name] ;
-
-        @string table_name := "task_".name."_rez_lock_time" ;       
-        @string table := "" ;
-        gen_rez_table !rezlocks !rez !tpn ?table ;
-        
-        if [rez count] > 0 then
-            table := "tpl_time ".table_name."[".[[rez count] string]."] = {\n".table."};" ;
-        end if ;
-
-        result := [result stringByReplacingStringByString !"$LOCK_TIME_TABLE$" !table] ;
-
-        if [rez count] > 0 then
-            result := [result stringByReplacingStringByString !"$REZ_LOCK_TIME$" !table_name] ;
-        else
-            result := [result stringByReplacingStringByString !"$REZ_LOCK_TIME$" !"NULL"] ;
-        end if ;
-
-        st_name := "&".st_name ;
-   end method ;
+#    override method generate
+#        ?@config       cfg
+#        !@string       result
+#        !@string       st_name
+#        ?@string       name
+#        ?@resource_map rez
+#  :
+#        @uint64 tpn := 1L ;
+#        if [cfg hasKey !"wd_ticks_per_ns"] then
+#            @basic_type val ;
+#            [cfg get ![@lstring new !"wd_ticks_per_ns" !here] ?val] ;
+#            cast val :
+#            when == @uint64_class ui do tpn := [ui value] ;
+#            else end cast ;
+#        end if ;
+#
+#        result := template_string[!"code" !"timing_protection"];
+#
+#        cast exe_budget :
+#        when == @uint64_class eb do
+#            result := [result stringByReplacingStringByString !"$EXE_BUDGET$"  ![[eb value]/tpn string]] ;
+#        else end cast ;
+#        cast time_frame :
+#        when == @uint64_class tf do
+#            result := [result stringByReplacingStringByString !"$TIME_FRAME$"  ![[tf value]/tpn string]] ;
+#        else end cast ;
+#        cast os_it_lock :
+#        when == @uint64_class oil do
+#            result := [result stringByReplacingStringByString !"$OS_IT_LOCK$"  ![[oil value]/tpn string]] ;
+#        else end cast ;
+#        cast all_it_lock :
+#        when == @uint64_class ail do
+#            result := [result stringByReplacingStringByString !"$ALL_IT_LOCK$" ![[ail value]/tpn string]] ;
+#        else end cast ;
+#        
+#        st_name := "task_".name."_timing_prot" ;
+#        result := [result stringByReplacingStringByString !"$TIMING_PROT$" !st_name] ;
+#
+#        @string table_name := "task_".name."_rez_lock_time" ;       
+#        @string table := "" ;
+#        gen_rez_table !rezlocks !rez !tpn ?table ;
+#        
+#        if [rez count] > 0 then
+#            table := "tpl_time ".table_name."[".[[rez count] string]."] = {\n".table."};" ;
+#        end if ;
+#
+#        result := [result stringByReplacingStringByString !"$LOCK_TIME_TABLE$" !table] ;
+#
+#        if [rez count] > 0 then
+#            result := [result stringByReplacingStringByString !"$REZ_LOCK_TIME$" !table_name] ;
+#        else
+#            result := [result stringByReplacingStringByString !"$REZ_LOCK_TIME$" !"NULL"] ;
+#        end if ;
+#
+#        st_name := "&".st_name ;
+#   end method ;
 }
 
 class @timing_prot_isr extends @timing_prot {
@@ -145,62 +145,62 @@ class @timing_prot_isr extends @timing_prot {
     @basic_type all_it_lock ;
     @rezlock_map rezlocks ;
 
-    override method generate
-        ?@config       cfg
-        !@string       result
-        !@string       st_name
-        ?@string       name
-        ?@resource_map rez
-  :
-        @uint64 tpn := 1L ;
-        if [cfg hasKey !"wd_ticks_per_ns"] then
-            @basic_type val ;
-            [cfg get ![@lstring new !"wd_ticks_per_ns" !here] ?val] ;
-            cast val :
-            when == @uint64_class ui do tpn := [ui value] ;
-            else end cast ;
-        end if ;
-
-        result := template_string[!"code" !"timing_protection"];
-
-        cast exe_time :
-        when == @uint64_class et do
-            result := [result stringByReplacingStringByString !"$EXE_BUDGET$"  ![[et value]/tpn string]] ;
-        else end cast ;
-        cast time_frame :
-        when == @uint64_class tf do
-            result := [result stringByReplacingStringByString !"$TIME_FRAME$"  ![[tf value]/tpn string]] ;
-        else end cast ;
-        cast os_it_lock :
-        when == @uint64_class oil do
-            result := [result stringByReplacingStringByString !"$OS_IT_LOCK$"  ![[oil value]/tpn string]] ;
-        else end cast ;
-        cast all_it_lock :
-        when == @uint64_class ail do
-            result := [result stringByReplacingStringByString !"$ALL_IT_LOCK$" ![[ail value]/tpn string]] ;
-        else end cast ;
-        
-        st_name := "isr_".name."_timing_prot" ;
-        result := [result stringByReplacingStringByString !"$TIMING_PROT$" !st_name] ;
-
-        @string table_name := "isr_".name."_rez_lock_time" ;       
-        @string table := "";
-        gen_rez_table !rezlocks !rez !tpn ?table ;
-        
-        if [rez count] > 0 then
-            table := "tpl_time ".table_name."[".[[rez count] string]."] = {\n".table."};" ;
-        end if ;
-
-        result := [result stringByReplacingStringByString !"$LOCK_TIME_TABLE$" !table] ;
-
-        if [rez count] > 0 then
-            result := [result stringByReplacingStringByString !"$REZ_LOCK_TIME$" !table_name] ;
-        else
-            result := [result stringByReplacingStringByString !"$REZ_LOCK_TIME$" !"NULL"] ;
-        end if ;
-
-        st_name := "&".st_name ;
-   end method ;
+#    override method generate
+#        ?@config       cfg
+#        !@string       result
+#        !@string       st_name
+#        ?@string       name
+#        ?@resource_map rez
+#  :
+#        @uint64 tpn := 1L ;
+#        if [cfg hasKey !"wd_ticks_per_ns"] then
+#            @basic_type val ;
+#            [cfg get ![@lstring new !"wd_ticks_per_ns" !here] ?val] ;
+#            cast val :
+#            when == @uint64_class ui do tpn := [ui value] ;
+#            else end cast ;
+#        end if ;
+#
+#        result := template_string[!"code" !"timing_protection"];
+#
+#        cast exe_time :
+#        when == @uint64_class et do
+#            result := [result stringByReplacingStringByString !"$EXE_BUDGET$"  ![[et value]/tpn string]] ;
+#        else end cast ;
+#        cast time_frame :
+#        when == @uint64_class tf do
+#            result := [result stringByReplacingStringByString !"$TIME_FRAME$"  ![[tf value]/tpn string]] ;
+#        else end cast ;
+#        cast os_it_lock :
+#        when == @uint64_class oil do
+#            result := [result stringByReplacingStringByString !"$OS_IT_LOCK$"  ![[oil value]/tpn string]] ;
+#        else end cast ;
+#        cast all_it_lock :
+#        when == @uint64_class ail do
+#            result := [result stringByReplacingStringByString !"$ALL_IT_LOCK$" ![[ail value]/tpn string]] ;
+#        else end cast ;
+#        
+#        st_name := "isr_".name."_timing_prot" ;
+#        result := [result stringByReplacingStringByString !"$TIMING_PROT$" !st_name] ;
+#
+#        @string table_name := "isr_".name."_rez_lock_time" ;       
+#        @string table := "";
+#        gen_rez_table !rezlocks !rez !tpn ?table ;
+#        
+#        if [rez count] > 0 then
+#            table := "tpl_time ".table_name."[".[[rez count] string]."] = {\n".table."};" ;
+#        end if ;
+#
+#        result := [result stringByReplacingStringByString !"$LOCK_TIME_TABLE$" !table] ;
+#
+#        if [rez count] > 0 then
+#            result := [result stringByReplacingStringByString !"$REZ_LOCK_TIME$" !table_name] ;
+#        else
+#            result := [result stringByReplacingStringByString !"$REZ_LOCK_TIME$" !"NULL"] ;
+#        end if ;
+#
+#        st_name := "&".st_name ;
+#   end method ;
 }
 
 end semantics ;
