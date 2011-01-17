@@ -143,7 +143,12 @@ FUNC(void, OS_CODE) tpl_watchdog_expiration(void)
 
   if(NEED_RESCHEDULING == need_resched)
   {
-    tpl_schedule_from_dying();
+    /* terminate the running task */
+    tpl_terminate();
+    /* start the highest priority task */
+    tpl_start(tpl_get_proc());
+    /* task switching should occur */
+    tpl_kern.need_switch = NEED_SWITCH;
   }
 }
 

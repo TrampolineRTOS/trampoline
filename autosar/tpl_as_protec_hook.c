@@ -71,7 +71,14 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
         tpl_release_all_resources(proc_id);
         tpl_release_internal_resource(proc_id);
         tpl_reset_interrupt_lock_status();
-        tpl_schedule_from_dying();
+        tpl_kern.running->activate_count--;
+
+        /* terminate the running task */
+        tpl_terminate();
+        /* start the highest priority task */
+        tpl_start(tpl_get_proc());
+        /* task switching should occur */
+        tpl_kern.need_switch = NEED_SWITCH;
       }
       else
       {
