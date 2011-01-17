@@ -57,6 +57,7 @@
 #define USER_EVENT 17
 #define TPL_INIT 18
 #define TPL_TERMINATE 19
+#define COUNTER_INC 20
 
 /* define the alarm actions */
 
@@ -82,14 +83,14 @@
 /** 
 * @def TRACE_TASK_PREEMPT
 */
-#		define TRACE_TASK_PREEMPT(kernel_stat)\
-		tpl_trace_task_preempt(kernel_stat);
+#		define TRACE_TASK_PREEMPT(preempted_task_id)\
+		tpl_trace_task_preempt(preempted_task_id);
 	
 /**
 * @def TRACE_TASK_TERMINATE
 */
-#		define TRACE_TASK_TERMINATE(dying_task_id, chained_task_id)\
-		tpl_trace_task_terminate(dying_task_id, chained_task_id);
+#		define TRACE_TASK_TERMINATE(dying_task_id)\
+		tpl_trace_task_terminate(dying_task_id);
 	
 /**
 * @def TRACE_TASK_ACTIVATE
@@ -117,8 +118,8 @@
 
 #	else
 #		define TRACE_TASK_EXECUTE(new_executed_task_id)
-#		define TRACE_TASK_PREEMPT(kernel_stat)
-#		define TRACE_TASK_TERMINATE(dying_task_id, chained_task_id)
+#		define TRACE_TASK_PREEMPT(prempted_task_id)
+#		define TRACE_TASK_TERMINATE(dying_task_id)
 #		define TRACE_TASK_ACTIVATE(task_id)
 #		define TRACE_TASK_WAIT(waiting_task_id)
 #		define TRACE_TASK_RELEASED(released_task_id,event_id)
@@ -161,14 +162,14 @@
 /**
 * @def TRACE_ISR_PREEMPT
 */
-#		define TRACE_ISR_PREEMPT(kernel_stat)\
-		tpl_trace_isr_preempt(kernel_stat);
+#		define TRACE_ISR_PREEMPT(prempted_isr_id)\
+		tpl_trace_isr_preempt(prempted_isr_id);
 
 /**
 * @def TRACE_ISR_TERMINATE
 */
-#		define TRACE_ISR_TERMINATE(dying_isr_id, chained_isr_id)\
-		tpl_trace_isr_terminate(dying_isr_id, chained_isr_id);
+#		define TRACE_ISR_TERMINATE(dying_isr_id)\
+		tpl_trace_isr_terminate(dying_isr_id);
 
 /**
 * @def TRACE_ISR_ACTIVATE
@@ -184,8 +185,8 @@
 
  #	else
 #		define TRACE_ISR_RUN(running_isr_id)
-#		define TRACE_ISR_PREEMPT(kernel_stat)
-#		define TRACE_ISR_TERMINATE(dying_isr_id, chained_isr_id)
+#		define TRACE_ISR_PREEMPT(prempted_isr_id)
+#		define TRACE_ISR_TERMINATE(dying_isr_id)
 #		define TRACE_ISR_ACTIVATE(isr_id)
 #		define TRACE_ISR_CHANGE_PRIORITY(priority_changing_isr_id)
 
@@ -262,15 +263,15 @@
 #	define TRACE_TPL_INIT()
 #	define TRACE_TPL_TERMINATE()
 #	define TRACE_TASK_EXECUTE(new_executed_task_id)
-#	define TRACE_TASK_PREEMPT(kernel_stat)
-#	define TRACE_TASK_TERMINATE(dying_task_id, chained_task_id)
+#	define TRACE_TASK_PREEMPT(prempted_task_id)
+#	define TRACE_TASK_TERMINATE(dying_task_id)
 #	define TRACE_TASK_ACTIVATE(task_id)
 #	define TRACE_TASK_WAIT(waiting_task_id)
 #	define TRACE_TASK_RELEASED(released_task_id,event_id)
 #	define TRACE_TASK_CHANGE_PRIORITY(priority_changing_task_id)
 #	define TRACE_ISR_RUN(running_isr_id)
-#	define TRACE_ISR_PREEMPT(kernel_stat)
-#	define TRACE_ISR_TERMINATE(dying_isr_id, chained_isr_id)
+#	define TRACE_ISR_PREEMPT(prempted_isr_id)
+#	define TRACE_ISR_TERMINATE(dying_isr_id)
 #	define TRACE_ISR_ACTIVATE(isr_id)
 #	define TRACE_ISR_CHANGE_PRIORITY(priority_changing_isr_id)
 #	define TRACE_RES_GET(res_id, locking_entity_id)
@@ -293,28 +294,26 @@
 */
 
 FUNC(void, OS_CODE) tpl_trace_task_execute(
-  VAR(TaskType, AUTOMATIC) new_executed_task_id);
+  CONST(TaskType, AUTOMATIC) new_executed_task_id);
 
 /**
 * trace the preemption of a task
 *
-* @param kernel_task	structure containing kernel informations about the preemption
+* @param prempted_task_id	id of the preempted task
 */
 
 FUNC(void, OS_CODE) tpl_trace_task_preempt(
-  VAR(tpl_kern_state, OS_VAR) kernel_stat);
+  CONST(TaskType, AUTOMATIC) prempted_task_id);
 
 /**
 * trace the termination of a task
 *
 * @param dying_task_id	identifier of the task which terminates
 *
-* @param chained_task_id identifier of the task which is chained, if there's one. Else, same identifier as the dying_task_id
 */
 
 FUNC(void, OS_CODE) tpl_trace_task_terminate(
-  VAR(TaskType, AUTOMATIC) dying_task_id, VAR(TaskType, AUTOMATIC)
-chained_task_id);
+  CONST(TaskType, AUTOMATIC) dying_task_id);
 
 /**
 * trace the activation of a task
@@ -323,7 +322,7 @@ chained_task_id);
 */
 
 FUNC(void, OS_CODE) tpl_trace_task_activate(
-  VAR(TaskType, AUTOMATIC) task_id);
+  CONST(TaskType, AUTOMATIC) task_id);
   
 /**
 * trace the switch to wait state of a task
@@ -332,7 +331,7 @@ FUNC(void, OS_CODE) tpl_trace_task_activate(
 */
 
 FUNC(void, OS_CODE) tpl_trace_task_wait(
-  VAR(TaskType, AUTOMATIC) waiting_task_id);
+  CONST(TaskType, AUTOMATIC) waiting_task_id);
 
 /**
 * trace the release of a waiting task
@@ -343,8 +342,8 @@ FUNC(void, OS_CODE) tpl_trace_task_wait(
 */
 
 FUNC(void, OS_CODE) tpl_trace_task_released(
-  VAR(TaskType, AUTOMATIC) released_task_id, VAR(tpl_event_mask, AUTOMATIC)
-event_id);
+  CONST(TaskType, AUTOMATIC) released_task_id,
+  CONST(tpl_event_mask, AUTOMATIC) event_id);
 
 /**
 * trace the priority change of a task
@@ -353,7 +352,7 @@ event_id);
 */
 
 FUNC(void, OS_CODE) tpl_trace_task_change_priority(
-  VAR(TaskType, AUTOMATIC) priority_changing_task_id);
+  CONST(TaskType, AUTOMATIC) priority_changing_task_id);
 
 /**
 * trace the lock of a resource by an entity
@@ -364,7 +363,7 @@ FUNC(void, OS_CODE) tpl_trace_task_change_priority(
 */
 
 FUNC(void, OS_CODE) tpl_trace_res_get(
-  VAR(tpl_resource_id, AUTOMATIC) res_id, VAR(TaskType, AUTOMATIC) task_id);
+  CONST(tpl_resource_id, AUTOMATIC) res_id, CONST(TaskType, AUTOMATIC) task_id);
 
 /**
 * trace the release of a resource
@@ -373,7 +372,7 @@ FUNC(void, OS_CODE) tpl_trace_res_get(
 */
 
 FUNC(void, OS_CODE) tpl_trace_res_released(
-  VAR(tpl_resource_id, AUTOMATIC) res_id);
+  CONST(tpl_resource_id, AUTOMATIC) res_id);
 
 /**
 * trace the execution of an ISR
@@ -382,16 +381,16 @@ FUNC(void, OS_CODE) tpl_trace_res_released(
 */
 
 FUNC(void, OS_CODE) tpl_trace_isr_run(
-  VAR(tpl_isr_id, AUTOMATIC) running_isr_id);
+  CONST(tpl_isr_id, AUTOMATIC) running_isr_id);
   
 /**
 * trace the preemption of an ISR
 *
-* @param kernel_task	structure containing kernel informations about the preemption
+* @param prempted_isr_id	id of the preempted ISR
 */
 
 FUNC(void, OS_CODE) tpl_trace_isr_preempt(
-  VAR(tpl_kern_state, OS_VAR) kernel_stat);
+  CONST(tpl_isr_id, OS_VAR) prempted_isr_id);
 
 /**
 * trace the termination of an ISR
@@ -400,7 +399,7 @@ FUNC(void, OS_CODE) tpl_trace_isr_preempt(
 */
 
 FUNC(void, OS_CODE) tpl_trace_isr_terminate(
-  VAR(tpl_isr_id, AUTOMATIC) dying_isr_id, VAR(tpl_isr_id, AUTOMATIC) chained_isr_id);
+  CONST(tpl_isr_id, AUTOMATIC) dying_isr_id);
 
 /**
 * trace the activation of an ISR
@@ -409,7 +408,7 @@ FUNC(void, OS_CODE) tpl_trace_isr_terminate(
 */
 
 FUNC(void, OS_CODE) tpl_trace_isr_activate(
-  VAR(tpl_isr_id, AUTOMATIC) isr_id);
+  CONST(tpl_isr_id, AUTOMATIC) isr_id);
 
 /**
 * trace the change of priority of an ISR
@@ -418,7 +417,7 @@ FUNC(void, OS_CODE) tpl_trace_isr_activate(
 */
 
 FUNC(void, OS_CODE) tpl_trace_isr_change_priority(
-  VAR(tpl_isr_id, AUTOMATIC) priority_changing_isr_id);
+  CONST(tpl_isr_id, AUTOMATIC) priority_changing_isr_id);
 
 /**
 * trace the programmation of an alarm
@@ -427,7 +426,7 @@ FUNC(void, OS_CODE) tpl_trace_isr_change_priority(
 */
 
 FUNC(void, OS_CODE) tpl_trace_alarm_scheduled(
-  P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)scheduled_alarm);
+  CONSTP2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)scheduled_alarm);
 
 /**
 * trace the expiration of an alarm
@@ -436,7 +435,7 @@ FUNC(void, OS_CODE) tpl_trace_alarm_scheduled(
 */
 
 FUNC(void, OS_CODE) tpl_trace_alarm_expire(
-  P2VAR(tpl_time_obj,AUTOMATIC,OS_APPL_DATA) expired_alarm);
+  CONSTP2VAR(tpl_time_obj,AUTOMATIC,OS_APPL_DATA) expired_alarm);
 
 /**
 * trace the cancellation of an alarm
@@ -445,10 +444,10 @@ FUNC(void, OS_CODE) tpl_trace_alarm_expire(
 */
 
 FUNC(void, OS_CODE) tpl_trace_alarm_cancel(
-  VAR(tpl_alarm_id, AUTOMATIC) cancelled_alarm_id);
+  CONST(tpl_alarm_id, AUTOMATIC) cancelled_alarm_id);
 
 FUNC(void, OS_CODE) tpl_trace_counter(
-  P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter_desc);
+  CONSTP2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter_desc);
 
 /**
 * trace an user's event

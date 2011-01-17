@@ -45,8 +45,10 @@
 
 #define OS_START_SEC_VAR_NOINIT_UNSPECIFIED
 #include "tpl_memmap.h"
-/* the following variableѕ should not be initialized at definition,
- * or Memmap section is not the right one */
+/*
+ * the following variableѕ should not be initialized at definition,
+ * or Memmap section is not the right one
+ */
 volatile VAR(u32, OS_VAR) tpl_locking_depth = 0;
 VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;
 VAR(u32, OS_VAR) tpl_cpt_user_task_lock_All = 0;
@@ -66,7 +68,9 @@ FUNC(tpl_bool, OS_CODE) tpl_get_interrupt_lock_status(void)
 {
     VAR(tpl_bool, AUTOMATIC) result;
 	
-    if( (TRUE == tpl_user_task_lock) || (tpl_cpt_user_task_lock_OS > 0) || (tpl_cpt_user_task_lock_All > 0) )
+    if ((TRUE == tpl_user_task_lock) ||
+        (tpl_cpt_user_task_lock_OS > 0) ||
+        (tpl_cpt_user_task_lock_All > 0))
     {
         result = TRUE;
     }
@@ -138,7 +142,8 @@ FUNC(void, OS_CODE) tpl_resume_all_interrupts_service(void)
  */
 FUNC(void, OS_CODE) tpl_disable_all_interrupts_service(void)
 {
-  if( (tpl_cpt_user_task_lock_All == 0) && (tpl_cpt_user_task_lock_OS == 0) )
+  if ((0 == tpl_cpt_user_task_lock_All) &&
+      (0 == tpl_cpt_user_task_lock_OS))
   {
 	  tpl_disable_interrupts();
 
@@ -155,7 +160,7 @@ FUNC(void, OS_CODE) tpl_disable_all_interrupts_service(void)
  */
 FUNC(void, OS_CODE) tpl_enable_all_interrupts_service(void)
 {
-	if( tpl_user_task_lock != FALSE )
+	if (tpl_user_task_lock != FALSE)
 	{
 		tpl_user_task_lock = FALSE;
 
@@ -179,7 +184,7 @@ FUNC(void, OS_CODE) tpl_suspend_os_interrupts_service(void)
   tpl_cpt_user_task_lock_OS++;
 
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
-  if( tpl_locking_depth == 1)
+  if (1 == tpl_locking_depth)
   {
     tpl_start_all_isr_lock_monitor(tpl_kern.running_id);
   }
@@ -193,16 +198,16 @@ FUNC(void, OS_CODE) tpl_suspend_os_interrupts_service(void)
 FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void)
 {
   #if defined(__unix__) || defined(__APPLE__)
-	assert( tpl_locking_depth >= 0 );
+	assert(tpl_locking_depth >= 0);
   #endif
     
-	if( tpl_cpt_user_task_lock_OS != 0 )
+	if (tpl_cpt_user_task_lock_OS != 0)
 	{	
 		tpl_locking_depth--;
 	
 		tpl_cpt_user_task_lock_OS--;
 	
-		if( tpl_locking_depth == 0)
+		if (0 == tpl_locking_depth)
 		{
 	#if WITH_AUTOSAR_TIMING_PROTECTION == YES
 			tpl_stop_all_isr_lock_monitor(tpl_kern.running_id);
@@ -220,32 +225,34 @@ FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void)
  */
 FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
 {
-  /*  init the error to no error  */
+  /* init the error to no error */
   VAR(tpl_status, AUTOMATIC) result = E_OK;
   
   CHECK_INTERRUPT_LOCK(result)
   
-  /*  check we are at the ISR2 level  */
+  /* check we are at the ISR2 level */
   CHECK_ISR2_CALL_LEVEL_ERROR(result)
-  /*  check the ISR2 does not own a resource  */
+  /* check the ISR2 does not own a resource */
   CHECK_RUNNING_OWNS_REZ_ERROR(result)
   
 #if ISR_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   
-  /* the activate count is decreased
-   */
+  /* the activate count is decreased */
   tpl_kern.running->activate_count--;
     
-  /*  and let the scheduler do its job  */
-  TRACE_ISR_TERMINATE(tpl_kern.running_id,tpl_kern.running_id)
-  tpl_schedule_from_dying();
- 
+  /* terminate the running ISR */
+  tpl_terminate();
+  /* start the highest priority process */
+  tpl_start(tpl_get_proc());
+  /* process switching should occur */
+  tpl_kern.need_switch = NEED_SWITCH;
+  
   #if WITH_SYSTEM_CALL == NO
-		if (tpl_kern.need_switch != NO_NEED_SWITCH)
-		{
-			tpl_switch_context(NULL, &(tpl_kern.s_running->context));
-		}
+  if (tpl_kern.need_switch != NO_NEED_SWITCH)
+  {
+    tpl_switch_context(NULL, &(tpl_kern.s_running->context));
+  }
   #endif
 	
   IF_NO_EXTENDED_ERROR_END()
@@ -276,9 +283,10 @@ STATIC FUNC(void, OS_CODE) tpl_activate_isr(
 {
   CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA) isr =
     tpl_dyn_proc_table[isr_id];
-  /*  MISRA RULE 33 VIOLATION: the right statement does
-      not need to be executed if the first test fails
-  */
+  /*
+   * MISRA RULE 33 VIOLATION: the right statement does
+   * not need to be executed if the first test fails
+   */
   if ((isr->activate_count < tpl_stat_proc_table[isr_id]->max_activate_count)
 #if WITH_AUTOSAR == YES
       && (tpl_is_isr2_enabled(isr_id))
@@ -287,17 +295,19 @@ STATIC FUNC(void, OS_CODE) tpl_activate_isr(
   {
     if (isr->activate_count == 0)
     {
-      /*  check the isr is in the SUSPENDED state before moving it        */
+      /* check the isr is in the SUSPENDED state before moving it */
       if (isr->state == (tpl_proc_state)SUSPENDED)
       {
         isr->state = (tpl_proc_state)READY_AND_NEW;
       }
     }
-    /*  put it in the list  */
+    /* put it in the list */
     TRACE_ISR_ACTIVATE(isr_id);
     tpl_put_new_proc(isr_id);
-    /*  inc the isr activation count. When the isr will terminate
-        it will dec this count and if not zero it will be reactivated   */
+    /*
+     * inc the isr activation count. When the isr will terminate
+     * it will dec this count and if not zero it will be reactivated
+     */
     isr->activate_count++;
   }
 }
@@ -317,9 +327,10 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
     tpl_check_stack(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
-  /*  Is there a handler for this id ?
-      ie the id has been counted in the table and there
-      is a tpl_isr available
+  /*
+   * Is there a handler for this id ?
+   * ie the id has been counted in the table and there
+   * is a tpl_isr available
    */
 #if WITH_OS_EXTENDED == YES
   if ((isr_id >= TASK_COUNT) && (isr_id < (TASK_COUNT + ISR_COUNT)))
@@ -333,12 +344,12 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
     {
       if ((isr->next) == NULL)
       {
-        /*  Only one handler for this id. run the handler   */
+        /* Only one handler for this id. run the handler */
         tpl_activate_isr(isr->isr_id);
       }
       else
       {
-        /*  look for the handler    */
+        /* look for the handler */
         while (isr != NULL)
         {
           if (isr->helper() == TRUE)

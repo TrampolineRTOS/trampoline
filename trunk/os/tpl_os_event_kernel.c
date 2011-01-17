@@ -208,16 +208,17 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
 #if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   task_events = tpl_task_events_table[tpl_kern.running_id];
-  /*  all the evt_wait is overidden.  */
+  /* all the evt_wait is overidden. */
   task_events->evt_wait = event;
-  /*  check one of the event to wait is not already set       */
+  /* check one of the event to wait is not already set */
   if ((task_events->evt_set & event) == 0)
   {
-    /*  no one is set, the task goes in the WAITING state   */
-    TRACE_TASK_WAIT(tpl_kern.running_id)
-    tpl_kern.running->state = WAITING;
-    /*  and a rescheduling occurs                           */
-    tpl_schedule_from_waiting();
+    /* No event is set, the task blocks */
+    tpl_block();
+    /* Start the highest priority task */
+    tpl_start(tpl_get_proc());
+    /* Task switching should occur */
+    tpl_kern.need_switch = NEED_SWITCH | NEED_SAVE;
 # if WITH_SYSTEM_CALL == NO
     if (tpl_kern.need_switch != NO_NEED_SWITCH)
     {

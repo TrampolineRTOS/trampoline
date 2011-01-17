@@ -102,33 +102,31 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
 
 FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 {
-  /*  init the error to no error  */
+  /* init the error to no error */
   VAR(StatusType, AUTOMATIC) result = E_OK;
 
-  /*  lock the kernel    */
+  /* lock the kernel */
   LOCK_KERNEL()
-
-  /* check interrupts are not disabled by user    */
-  CHECK_INTERRUPT_LOCK(result)
-
-  /*  store information for error hook routine    */
+  /* store information for error hook routine */
   STORE_SERVICE(OSServiceId_TerminateTask)
-
-  /*  check we are at the task level  */
+  /* check interrupts are not disabled by user */
+  CHECK_INTERRUPT_LOCK(result)
+  /* check we are at the task level */
   CHECK_TASK_CALL_LEVEL_ERROR(result)
-  /*  check the task does not own a resource  */
+  /* check the task does not own a resource */
   CHECK_RUNNING_OWNS_REZ_ERROR(result)
 
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-    /*  the activate count is decreased
-     */
+    /* the activate count is decreased */
     tpl_kern.running->activate_count--;
 
-    /*  and let the scheduler do its job
-     */
-    TRACE_TASK_TERMINATE(tpl_kern.running_id,tpl_kern.running_id)
-    tpl_schedule_from_dying();
+    /* terminate the running task */
+    tpl_terminate();
+    /* start the highest priority process */
+    tpl_start(tpl_get_proc());
+    /* task switching should occur */
+    tpl_kern.need_switch = NEED_SWITCH;
 # if WITH_SYSTEM_CALL == NO
     if (tpl_kern.need_switch != NO_NEED_SWITCH)
     {
@@ -178,19 +176,20 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
 
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-    /* the activate count is decreased
-     */
+    /* the activate count is decreased */
     tpl_kern.running->activate_count--;
 
-    /* activate the chained task
-     */
+    /* activate the chained task */
     result = tpl_activate_task(task_id);
 
     if (result == E_OK_AND_SCHEDULE)
     {
-      /*  and let the scheduler do its job                            */
-      TRACE_TASK_TERMINATE(tpl_kern.running_id,tpl_kern.running_id)
-      tpl_schedule_from_dying();
+      /* terminate the running task */
+      tpl_terminate();
+      /* start the highest priority task */
+      tpl_start(tpl_get_proc());
+      /* task switching should occur */
+      tpl_kern.need_switch = NEED_SWITCH;
 # if WITH_SYSTEM_CALL == NO
       if (tpl_kern.need_switch != NO_NEED_SWITCH)
       {
