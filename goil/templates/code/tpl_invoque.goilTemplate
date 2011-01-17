@@ -57,5 +57,5 @@ end foreach
 #include "tpl_as_memmap.h"
 
 
-/* End of file tpl_invoque. % !EXTENSION % */
+/* End of file tpl_invoque.% !EXTENSION % */
 

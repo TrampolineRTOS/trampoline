@@ -1,8 +1,8 @@
   .global % !REAL %
 % !REAL %:
-  push {lr}
+  stmfd sp!,{lr}
   mov r3,#OSServiceId_% !API %
   swi #OSServiceId_% !API %
-  pop {lr}
+  ldmfd sp!,{lr}
   mov pc,lr
 
