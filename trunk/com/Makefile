@@ -20,5 +20,9 @@ SOURCES += tpl_com_internal_com.c
 SOURCES += tpl_com_external_com.c
 SOURCES += tpl_com_notification.c
 SOURCES += tpl_com_queue.c
-SOURCES += tpl_com_message_management.c
 SOURCES += tpl_com_errorhook.c
+SOURCES += tpl_com_message_kernel.c
+
+ifeq ($(strip $(WITH_SYSTEM_CALL)),false)
+SOURCES += tpl_com_message_management.c
+endif

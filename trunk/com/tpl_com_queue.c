@@ -18,9 +18,6 @@
 #include "tpl_com_definitions.h"
 #include "tpl_com_queue.h"
 
-#define MAX(x,y) (((x)>(y))?(x):(y))
-#define MIN(x,y) (((x)>(y))?(y):(x))
-
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 /*!
@@ -62,7 +59,7 @@ FUNC(tpl_com_data, OS_CODE) *tpl_queue_element_for_read(
   
   /*  check the queue is not empty    */
   if (dq->size > 0) {
-      /*  compute the pointer where the read would occur */
+    /*  compute the pointer where the read would occur */
     return queue->buffer + dq->index;
   }
   else {
@@ -80,6 +77,7 @@ FUNC(void, OS_CODE) tpl_write_queue(
   CONSTP2VAR(tpl_queue_dyn, AUTOMATIC, OS_VAR)  dq = queue->dyn_desc;
   VAR(tpl_message_size, AUTOMATIC)              size = queue->element_size;
   CONST(u32, AUTOMATIC)                         offset = dq->index + dq->size;
+  P2VAR(tpl_com_data, AUTOMATIC, OS_VAR)        last = queue->last;
   P2VAR(tpl_com_data, AUTOMATIC, OS_VAR)        p;
   
   /*  check the queue is not full                             */
@@ -90,8 +88,8 @@ FUNC(void, OS_CODE) tpl_write_queue(
       (offset - queue->max_size));
     /*  copy the data. remember the last data written
         to the queue (used for filtering)                   */
-    dq->last = p;
     while (size-- > 0) {
+      *last++ = *data;
       *p++ = *data++;
     }
     /*  inc the queue size                                  */
