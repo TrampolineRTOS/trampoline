@@ -1501,7 +1501,7 @@ Since no API service calls are allowed in callback routine, test sequence 10 app
 	t1			& WaitEvent(Event1)						& E\_OK							& \\ \hline
 	
 	PostTask-Hook		& GetTaskID()						& E\_OK, TaskID=t1				& 8 \\ \hline	
-	PostTask-Hook		& GetTaskState()					& E\_OK, TaskState=WAITING			& 9 \\ \hline	
+	PostTask-Hook		& GetTaskState()					& E\_OK, TaskState=RUNNING			& 9 \\ \hline	
 	PostTask-Hook		& GetEvent()						& E\_OK, EventMask=0x0				& 12 \\ \hline	
 	PostTask-Hook		& GetAlarmBase()					& E\_OK, MAXALLOWEDVALUE=16, TICKSPERBASE=10, MINCYCLE=1							& 13 \\ \hline
 	PostTask-Hook		& GetAlarm()						& E\_OK, Tick=MAXALLOWEDVALUE	& 14 \\ \hline	
