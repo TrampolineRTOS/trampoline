@@ -51,17 +51,17 @@ OS (tpl_os_kernel) {
 };
 
 /* com services */
-COM {
-  StartCOM                  -> tpl_start_com_service;
+COM (tpl_com_message_kernel) {
+/*  StartCOM                  -> tpl_start_com_service;
   StopCOM                   -> tpl_stop_com_service;
   GetCOMApplicationMode     -> tpl_get_com_application_mode_service;
   InitMessage               -> tpl_init_message_service;
   StartPeriodic             -> tpl_start_periodic_service;
-  StopPeriodic              -> tpl_stop_periodic_service;
+  StopPeriodic              -> tpl_stop_periodic_service; */
   SendMessage               -> tpl_send_message_service;
   ReceiveMessage            -> tpl_receive_message_service;
-  SendDynamicMessage        -> tpl_send_dynamic_message_service;
-  ReceiveDynamicMessage     -> tpl_receive_dynamic_message_service;
+/*  SendDynamicMessage        -> tpl_send_dynamic_message_service;
+  ReceiveDynamicMessage     -> tpl_receive_dynamic_message_service; */
   SendZeroMessage           -> tpl_send_zero_message_service;
   GetMessageStatus          -> tpl_get_message_status_service;
 };

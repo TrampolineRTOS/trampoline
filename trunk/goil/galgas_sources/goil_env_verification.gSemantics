@@ -39,7 +39,10 @@ routine getAbsoluteSourceFilePath
       sourceFilePath := ".";
     end if;
   end if;
+#  message "FILENAME :".fileName."\n";
+#  message "SOURCE FILE PATH: ".sourceFilePath."\n";
   absoluteFilePath := [fileName absolutePathFromPath !sourceFilePath];
+#  message "ABSOLUTE FILE PATH: ".absoluteFilePath."\n";
 end routine;
 
 #This routine checks that a file exists. If not, a Warning is generated.

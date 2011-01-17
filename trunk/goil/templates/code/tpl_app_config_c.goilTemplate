@@ -475,6 +475,32 @@ end foreach
 /* $FLAGSFUNCTIONS$ */
 
 %
+foreach FILTERSTRUCTS
+  before
+%
+/*=============================================================================
+ * Declaration of the custom filter descriptors
+ * filter descriptors are generated according to the type
+ * used for the corresponding message object
+ */
+%
+  do
+    template filter_desc_struct
+end foreach
+
+foreach FILTERS
+  before
+%
+/*=============================================================================
+ * Definitions of the custom filter functions
+ * filter functions are generated according to the type
+ * used for the corresponding message object
+ */
+%
+  do
+    template filter_function
+end foreach
+
 foreach RECEIVEMESSAGES
   before
 %
@@ -492,6 +518,9 @@ foreach RECEIVEMESSAGES
 /*=============================================================================
  * Definition and initialization of the receive messages table
  */
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
 CONSTP2CONST(tpl_base_receiving_mo, AUTOMATIC, OS_CONST)
 tpl_receive_message_table[RECEIVE_MESSAGE_COUNT] = {
 %
@@ -499,7 +528,11 @@ tpl_receive_message_table[RECEIVE_MESSAGE_COUNT] = {
   between %,    
 %
   after %
-};%
+};
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+%
 end foreach
 
 foreach SENDMESSAGES
@@ -519,6 +552,9 @@ foreach SENDMESSAGES
 /*=============================================================================
  * Definition and initialization of the send messages table
  */
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
 CONSTP2CONST(tpl_base_sending_mo, AUTOMATIC, OS_CONST)
 tpl_send_message_table[SEND_MESSAGE_COUNT] = {
 %
@@ -526,7 +562,11 @@ tpl_send_message_table[SEND_MESSAGE_COUNT] = {
   between %,    
 %
   after %
-};%
+};
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+%
 end foreach
 
 if AUTOSAR then
@@ -543,6 +583,9 @@ if AUTOSAR then
   end foreach
   foreach SCHEDULETABLES
     before %
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
 CONSTP2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA)
 tpl_schedtable_table[% ![SCHEDULETABLES length] %] = {
 %
@@ -551,6 +594,9 @@ tpl_schedtable_table[% ![SCHEDULETABLES length] %] = {
 %
     after %
 };
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 %
   end foreach
   foreach OSAPPLICATIONS
@@ -566,6 +612,9 @@ tpl_schedtable_table[% ![SCHEDULETABLES length] %] = {
   
   foreach OSAPPLICATIONS
     before %
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
 CONSTP2CONST(tpl_app_access, OS_APPL_CONST, OS_APPL_CONST) tpl_app_table[APP_COUNT] = {
 %
     do %  &% !NAME %_app_access%
@@ -573,6 +622,9 @@ CONSTP2CONST(tpl_app_access, OS_APPL_CONST, OS_APPL_CONST) tpl_app_table[APP_COU
 %
     after %
 };
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 %
   end foreach
   
@@ -582,14 +634,26 @@ CONSTP2CONST(tpl_app_access, OS_APPL_CONST, OS_APPL_CONST) tpl_app_table[APP_COU
 /*=============================================================================
  * Declaration of Trusted Functions table
  */
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
 %
-    do %FUNC(void, OS_APPL_CODE) TRUSTED_% !NAME %(
+    do %
+
+FUNC(void, OS_APPL_CODE) TRUSTED_% !NAME %(
   CONST(TrustedFunctionIndexType, AUTOMATIC) idx,
   CONST(TrustedFunctionParameterRefType, AUTOMATIC) params);
+%
+  after
+%
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
 %
   end foreach
   foreach TRUSTEDFUNCTIONS
     before %
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
 CONST(tpl_trusted_fct, OS_APPL_CODE)
   tpl_trusted_fct_table[TRUSTED_FCT_COUNT] = {
 %
@@ -598,6 +662,9 @@ CONST(tpl_trusted_fct, OS_APPL_CODE)
 %
     after %
 };
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 %
   end foreach
 end if
@@ -611,6 +678,9 @@ if USEMEMORYPROTECTION then
   end foreach
   
 %
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
 CONSTP2CONST(tpl_mem_prot_desc, AUTOMATIC, OS_CONST) tpl_mp_table[TASK_COUNT+ISR_COUNT+1] = {
 %
   foreach PROCESSES
@@ -619,6 +689,9 @@ CONSTP2CONST(tpl_mem_prot_desc, AUTOMATIC, OS_CONST) tpl_mp_table[TASK_COUNT+ISR
   end foreach
 %  NULL /* for idle task */
 };
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 % 
 end if
 %

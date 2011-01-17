@@ -231,18 +231,18 @@ function extra_config_file -> @lstring cfg_file
     cfg_file := [@lstring new !cfg !here] ;
 end function ;
 
-routine prefix ?@prefix_map p ?@string key !@string val :
-    @lstring lkey := [@lstring new !key !here] ;
-    [p prefix !lkey ?val ?*] ;
-end routine ;
+#routine prefix ?@prefix_map p ?@string key !@string val :
+#    @lstring lkey := [@lstring new !key !here] ;
+#    [p prefix !lkey ?val ?*] ;
+#end routine ;
 
-routine performReplace ?@prefix_map p ?@string key ?@string name ?!@string res :
-    @lstring lkey := [@lstring new !key !here] ;
-    @string prefix ;
-    @string tag_to_rep ;
-    [p prefix !lkey ?prefix ?tag_to_rep] ;
-    res := [res stringByReplacingStringByString !tag_to_rep !prefix.name] ;
-end routine ;
+#routine performReplace ?@prefix_map p ?@string key ?@string name ?!@string res :
+#    @lstring lkey := [@lstring new !key !here] ;
+#    @string prefix ;
+#    @string tag_to_rep ;
+#    [p prefix !lkey ?prefix ?tag_to_rep] ;
+#    res := [res stringByReplacingStringByString !tag_to_rep !prefix.name] ;
+#end routine ;
 
 routine doReplace ?!@string s ?@string o ?@string n :
   s := [s stringByReplacingStringByString !o !n] ;
@@ -256,13 +256,13 @@ routine do_replace_default ?!@string s ?@string o ?@string n ?@string d:
   end if;
 end routine ;
 
-routine replace_no_prefix ?@prefix_map p ?@string key ?@string name ?!@string res :
-    @lstring lkey := [@lstring new !key !here] ;
-#    @string prefix ;
-    @string tag_to_rep ;
-    [p prefix !lkey ?* ?tag_to_rep] ;
-    res := [res stringByReplacingStringByString !tag_to_rep !name] ;
-end routine ;
+#routine replace_no_prefix ?@prefix_map p ?@string key ?@string name ?!@string res :
+#    @lstring lkey := [@lstring new !key !here] ;
+##    @string prefix ;
+#    @string tag_to_rep ;
+#    [p prefix !lkey ?* ?tag_to_rep] ;
+#    res := [res stringByReplacingStringByString !tag_to_rep !name] ;
+#end routine ;
 
 #--- Declaration added by Ibrahim
 #extern routine computeRedundantCode

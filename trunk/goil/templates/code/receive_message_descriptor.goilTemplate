@@ -3,6 +3,11 @@
 # First the action (ie notification) of the message is built
 # if it exists of course
 #
+%
+/*-----------------------------------------------------------------------------
+ * Action of message % !NAME %
+ */
+%
 if exists ACTION then
   template action_descriptor
 end if
@@ -15,19 +20,32 @@ if MESSAGEPROPERTY == "RECEIVE_ZERO_INTERNAL" then
 /*-----------------------------------------------------------------------------
  * Static internal receiving zero length message object % !NAME %
  */
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 
 CONST(tpl_internal_receiving_zero_mo, OS_CONST) % !NAME %_message = {
     /* notification struct pointer  */  % if exists ACTION then %(tpl_action *)&% !NAME %_action,% else %NULL,% end if %
     /* next mo                      */  % if exists NEXT then %(tpl_base_receiving_mo *)&% !NEXT %_message% else %NULL% end if %
 };
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 %
 elsif MESSAGEPROPERTY == "RECEIVE_UNQUEUED_INTERNAL" then
 %
 /*-----------------------------------------------------------------------------
  * Static internal receiving unqueued message object % !NAME %
  */
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 
-% !CTYPE % % !NAME %_buffer% if exists INITIALVALUE then % = % !INITIALVALUE  end if %;
+VAR(% !CTYPE %, OS_VAR) % !NAME %_buffer% if exists INITIALVALUE then % = % !INITIALVALUE  end if %;
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 
 CONST(tpl_internal_receiving_unqueued_mo, OS_CONST) % !NAME %_message = {
   { /* data receiving mo struct   */
@@ -37,13 +55,16 @@ CONST(tpl_internal_receiving_unqueued_mo, OS_CONST) % !NAME %_message = {
     },
     /*  receiving function      */  (tpl_receiving_func)tpl_receive_static_internal_unqueued_message,
     /*  copy function           */  (tpl_data_copy_func)tpl_copy_from_unqueued,
-    /*  filter pointer          */  % if exists FILTER then % (tpl_filter_desc *)&% !NAME %_filter% else %NULL% end if%
+    /*  filter pointer          */  % if exists FILTER then %(tpl_filter_desc *)&% !NAME %_filter% else %NULL% end if%
   },
   { /* buffer struct    */
     /*  buffer  */  (tpl_com_data *)&% !NAME %_buffer,
     /*  size    */  sizeof(% !CTYPE %)
   }
 };
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 %
 elsif MESSAGEPROPERTY == "RECEIVE_QUEUED_INTERNAL" then
 %
@@ -51,14 +72,23 @@ elsif MESSAGEPROPERTY == "RECEIVE_QUEUED_INTERNAL" then
  * Static internal receiving queued message object % !NAME %
  */
  
-% !CTYPE % % !NAME %_buffer[% !QUEUESIZE %];
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
 
-tpl_queue_dyn % !NAME %_dyn_queue = {
-  /*  pointer to the last written element */  NULL,
+VAR(% !CTYPE %, OS_VAR) % !NAME %_buffer[% !QUEUESIZE %];
+VAR(% !CTYPE %, OS_VAR) % !NAME %_last% if exists INITIALVALUE then % = % !INITIALVALUE  end if %;
+
+VAR(tpl_queue_dyn, OS_VAR) % !NAME %_dyn_queue = {
   /*  current size of the queue           */  0,
   /*  read index                          */  0,
   /*  overflow flag                       */  FALSE
 };
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 
 CONST(tpl_internal_receiving_queued_mo, OS_CONST) % !NAME %_message = {
   { /* data receiving mo struct   */
@@ -68,14 +98,18 @@ CONST(tpl_internal_receiving_queued_mo, OS_CONST) % !NAME %_message = {
     },
     /*  receiving function      */  (tpl_receiving_func)tpl_receive_static_internal_queued_message,
     /*  copy function           */  (tpl_data_copy_func)tpl_copy_from_queued,
-    /*  filter pointer          */  % if exists FILTER then % (tpl_filter_desc *)&% !NAME %_filter% else %NULL% end if%
+    /*  filter pointer          */  % if exists FILTER then %(tpl_filter_desc *)&% !NAME %_filter% else %NULL% end if%
   },
   { /*  queue structure   */
     /*  pointer to the dynamic descriptor   */  &% !NAME %_dyn_queue,
     /*  max size of the queue               */  % !QUEUESIZE %*sizeof(% !CTYPE %),
     /*  element size of the queue           */  sizeof(% !CTYPE %),
-    /*  pointer to the buffer               */  (tpl_com_data *)% !NAME %_buffer
+    /*  pointer to the buffer               */  (tpl_com_data *)% !NAME %_buffer,
+    /*  pointer to the last written value   */  (tpl_com_data *)&% !NAME %_last
   }
 };
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 %
 end if

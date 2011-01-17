@@ -1,6 +1,8 @@
-/*
+/*-----------------------------------------------------------------------------
  * % !FILTER % filter of message object % !NAME %
  */
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 %
 if    FILTER == "ALWAYS" then %
 tpl_noparam_filter_desc % !NAME %_filter = {
@@ -12,86 +14,40 @@ tpl_noparam_filter_desc % !NAME %_filter = {
     /*  filtering function          */  tpl_filter_never
 };
 %
-elsif FILTER == "MASKEDNEWEQUALSX" then%
-tpl_mask_x_filter_desc % !NAME %_filter = {
+elsif FILTER == "MASKEDNEWEQUALSX" | FILTER == "MASKEDNEWDIFFERSX" then%
+tpl_mask_x_filter_% !CTYPE %_desc % !NAME %_filter = {
     {
-    /*  filtering function          */  tpl_filter_masked_new_equals_x
+    /*  filtering function          */  % ![FILTER lowercaseString]%_% !CTYPE %
     },
     /*  mask                        */  % !MASK %,
     /*  comparison value            */  % !X %
 };
 %
-elsif FILTER == "MASKEDNEWDIFFERSX" then%
-tpl_mask_x_filter_desc % !NAME %_filter = {
-    {
-    /*  filtering function          */  tpl_filter_masked_new_differs_x
-    },
-    /*  mask                        */  % !MASK %,
-    /*  comparison value            */  % !X %
-};
-%
-elsif FILTER == "NEWISEQUAL" then%
+elsif FILTER == "NEWISEQUAL" |
+      FILTER == "NEWISDIFFERENT" |
+      FILTER == "NEWISGREATER" |
+      FILTER == "NEWISLESSOREQUAL" |
+      FILTER == "NEWISLESS" |
+      FILTER == "NEWISGREATEROREQUAL" then%
 tpl_noparam_filter_desc % !NAME %_filter = {
-    /*  filtering function          */  tpl_filter_new_is_equal
+    /*  filtering function          */  % ![FILTER lowercaseString]%_% !CTYPE %
 };
 %
-elsif FILTER == "NEWISDIFFERENT" then%
-tpl_noparam_filter_desc % !NAME %_filter = {
-    /*  filtering function          */  tpl_filter_new_is_different
-};
-%
-elsif FILTER == "MASKEDNEWEQUALSMASKEDOLD" then%
-tpl_mask_filter_desc % !NAME %_filter = {
+elsif FILTER == "MASKEDNEWEQUALSMASKEDOLD" | FILTER == "MASKEDNEWDIFFERSMASKEDOLD" then%
+tpl_mask_filter_% !CTYPE %_desc % !NAME %_filter = {
     {
-    /*  filtering function          */  tpl_filter_masked_new_equals_masked_old
+    /*  filtering function          */  % ![FILTER lowercaseString]%_% !CTYPE %
     },
     /*  mask                        */  % !MASK %
 };
 %
-elsif FILTER == "MASKEDNEWDIFFERSMASKEDOLD" then%
-tpl_mask_filter_desc % !NAME %_filter = {
+elsif FILTER == "NEWISWITHIN" | FILTER == "NEWISOUTSIDE" then%
+tpl_interval_filter_% !CTYPE %_desc % !NAME %_filter = {
     {
-    /*  filtering function          */  tpl_filter_masked_new_differs_masked_old
-    },
-    /*  mask                        */  % !MASK %
-};
-%
-elsif FILTER == "NEWISWITHIN" then%
-tpl_interval_filter_desc % !NAME %_filter = {
-    {
-    /*  filtering function          */  tpl_filter_new_is_within
+    /*  filtering function          */  % ![FILTER lowercaseString]%_% !CTYPE %
     },
     /*  min                         */  % !MIN %,
     /*  max                         */  % !MAX %
-};
-%
-elsif FILTER == "NEWISOUTSIDE" then%
-tpl_interval_filter_desc % !NAME %_filter = {
-    {
-    /*  filtering function          */  tpl_filter_new_is_outside
-    },
-    /*  min                         */  % !MIN %,
-    /*  max                         */  % !MAX %
-};
-%
-elsif FILTER == "NEWISGREATER" then%
-tpl_noparam_filter_desc % !NAME %_filter = {
-    /*  filtering function          */  tpl_filter_new_is_greater
-};
-%
-elsif FILTER == "NEWISLESSOREQUAL" then%
-tpl_noparam_filter_desc % !NAME %_filter = {
-    /*  filtering function          */  tpl_filter_new_is_less_or_equal
-};
-%
-elsif FILTER == "NEWISLESS" then%
-tpl_noparam_filter_desc % !NAME %_filter = {
-    /*  filtering function          */  tpl_filter_new_is_less
-};
-%
-elsif FILTER == "NEWISGREATEROREQUAL" then%
-tpl_noparam_filter_desc % !NAME %_filter = {
-    /*  filtering function          */  tpl_filter_new_is_greater_or_equal
 };
 %
 elsif FILTER == "ONEEVERYN" then%
@@ -107,3 +63,6 @@ tpl_occurence_filter_desc % !NAME %_filter = {
 };
 %
 end if
+%
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"

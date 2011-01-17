@@ -1,3 +1,5 @@
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 %
 if MESSAGEPROPERTY == "SEND_STATIC_INTERNAL" then
 %
@@ -24,3 +26,7 @@ CONST(tpl_internal_sending_zero_mo, OS_CONST) % !NAME %_message = {
 };
 %
 end if
+%
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
