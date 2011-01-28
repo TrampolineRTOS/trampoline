@@ -31,6 +31,7 @@
 #include "tpl_os_it_kernel.h"
 #include "tpl_assembler.h"
 #include "tpl_os_error.h"
+#include "tpl_os.h"
 
 #define OS_START_SEC_VAR_32BIT
 #include "tpl_memmap.h"
@@ -98,8 +99,6 @@ VAR(ppc_integer_context, OS_VAR) idle_task_context = {
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
-STATIC FUNC(void, OS_CODE) tpl_call_missingend(void);
-STATIC FUNC(void, OS_CODE) tpl_call_terminateISR(void);
 extern FUNC(void, OS_CODE) tpl_init_regs(void);
 extern FUNC(void, OS_CODE) tpl_init_interrupts(void);
 #if WITH_MEMORY_PROTECTION == YES
@@ -171,43 +170,11 @@ FUNC(void, OS_CODE) tpl_init_context(
    * the behaviour is controled
    */   
   *stack++ = (IS_ROUTINE == proc->type) ?
-                (u32)(tpl_call_terminateISR) :
-                (u32)(tpl_call_missingend); /*  lr  */
+                (u32)(CallTerminateISR2) :
+                (u32)(CallTerminateTask); /*  lr  */
 
   *stack++ = 0; /*  cr  */
   *stack++ = 0; /*  r0  */
-}
-
-/**
- * TODO: document this
- */
-STATIC FUNC(void, OS_CODE) tpl_call_missingend(void)
-{
-/*    VAR(StatusType, AUTOMATIC) result = E_OK; */
-
-#if WITH_AUTOSAR == YES
-    PROCESS_ERROR(E_OS_MISSINGEND);
-#endif
-/*    result = TerminateTask(); */
-}
-
-/**
- * TODO: document this
- */
-STATIC FUNC(void, OS_CODE) tpl_call_terminateISR(void)
-{
-/*    VAR(StatusType, AUTOMATIC) result = E_OK; */
-/*    VAR(uint8, AUTOMATIC) current_prio = 0; */
-
-/*    asm("  wrteei  0"); */
-
-/* MISRA RULE 43 VIOLATION: conversion uint32 to uint8, but PRI field is only
-   4 bits, so the converted number fits in 8bits */
-/*    current_prio = INTC.CPR_PRC0.B.PRI; */
-
-/*    tpl_keep_prio[current_prio] = TRUE;
-
-    result = TerminateISR(); */
 }
 
 /**
