@@ -112,15 +112,34 @@ routine check_target
   @string machines_path;
   getAbsoluteSourceFilePath !trampoline_path ?machines_path;
   machines_path .= "/machines";
-  @string arch_path := machines_path."/".arch[];
-  @string chip_path := arch_path."/".chip[];
-  @string board_path := chip_path."/".board[];
-  if not [arch_path directoryExists] then
-    error here: "Architecture \'".arch_path."\' does not exist";
-  elsif not [chip_path directoryExists] then
-    error here: "Chip \'".chip_path."\' does not exist";
-  elsif not [board_path directoryExists] then
-    error here: "Board \'".board_path."\' does not exist";
+  
+  @string arch := arch[];
+  if arch != "" then
+    @string arch_path := machines_path."/".arch[];
+#    message "ARCH path: ".arch_path."\n";
+    if not [arch_path directoryExists] then
+      error here: "Architecture \'".arch_path."\' does not exist";
+    else
+      @string chip := chip[];
+      if chip != "" then
+        @string chip_path := arch_path."/".chip[];
+#        message "CHIP path: ".chip_path."\n";
+        if not [chip_path directoryExists] then
+          error here: "Chip \'".chip_path."\' does not exist";
+        else
+          @string board := board[];
+          if board != "" then
+            @string board_path := chip_path."/".board[];
+#            message "BOARD path: ".board_path."\n";
+            if not [board_path directoryExists] then
+              error here: "Board \'".board_path."\' does not exist";
+            end if;
+          end if;
+        end if;
+      end if;
+    end if;
+  else
+    error here: "A target should be defined";
   end if;
 end routine;
 

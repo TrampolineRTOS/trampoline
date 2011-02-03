@@ -46,11 +46,11 @@ FUNC(tpl_status, OS_CODE) tpl_call_trusted_function_service(
 	if (fct_idx < TRUSTED_FCT_COUNT)			
 	{												
 		CONST(tpl_trusted_fct, AUTOMATIC) tf = tpl_trusted_fct_table[fct_idx];
-#if WITH_MEMORY_PROTECTION == YES
+#if WITH_OSAPPLICATION == YES
 		tpl_kern.running->trusted_counter++;
 #endif
 		tf(fct_idx, fct_param);						
-#if WITH_MEMORY_PROTECTION == YES
+#if WITH_OSAPPLICATION == YES
 		tpl_kern.running->trusted_counter--;
 #endif
 	}												

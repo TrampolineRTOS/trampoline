@@ -99,7 +99,7 @@ typedef u8 tpl_status;
  */
 typedef u8 tpl_proc_state;
 
-#if WITH_MEMORY_PROTECTION == YES
+#if WITH_OSAPPLICATION == YES
 /**
  * @internal
  *

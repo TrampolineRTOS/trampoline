@@ -57,10 +57,10 @@ IMPLEMENTATION trampoline {
   APP_SRC = "error_instance1.c";
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "autosar_app_s1_exe";
-  CFLAGS = "-I../../embUnit";
+  CFLAGS = "-g -I../../embUnit";
         CFLAGS  = "-Werror -Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
-  LDFLAGS = "-L../../lib -lembUnit";
+  LDFLAGS = "-g -L../../lib -lembUnit";
   SHUTDOWNHOOK = TRUE;
   ERRORHOOK = TRUE;
   USEGETSERVICEID = TRUE;
@@ -121,6 +121,7 @@ IMPLEMENTATION trampoline {
  };
  APPLICATION app2 {
   TASK = t2;
+  TRUSTED = TRUE;
  }; 
 };
 

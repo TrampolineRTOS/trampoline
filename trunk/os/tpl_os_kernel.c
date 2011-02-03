@@ -127,9 +127,9 @@ STATIC VAR(tpl_application_mode, OS_VAR) application_mode = OSDEFAULTAPPMODE;
  */
 VAR(tpl_proc, OS_VAR) idle_task = {
   /* resources            */  NULL,
-#if WITH_MEMORY_PROTECTION == YES
+#if WITH_OSAPPLICATION == YES
   /* trusted count  */        1, /* the idle task is trusted */
-#endif /* WITH_MEMORY_PROTECTION */
+#endif /* WITH_OSAPPLICATION */
   /* activation count     */  0,
   /* priority             */  0,
   /* state                */  SUSPENDED
@@ -1338,6 +1338,18 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
 {
   /*  lock the kernel    */
   LOCK_KERNEL()
+  
+  /*
+   * Requirement OS054, page 65 of AUTOSAR_SWS_OS.pdf document
+   *
+   * Check if the caller belongs to a Trusted OS Application
+   * This is done only if the OS is compiled in AUTOSAR SC3 or SC4
+   * (otherwise OS Applications do not exist)
+   */
+#if WITH_OSAPPLICATION == YES
+  if (tpl_kern.running->trusted_counter > 0)
+  {
+#endif
 	
   /*  store information for error hook routine */
   STORE_SERVICE(OSServiceId_ShutdownOS)
@@ -1352,7 +1364,11 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
   TRACE_TPL_TERMINATE()
   /* architecture dependant shutdown. */
   tpl_shutdown();
-	
+
+#if WITH_OSAPPLICATION == YES
+  }
+#endif
+            
   /*  unlock the kernel */
   UNLOCK_KERNEL()
 }
