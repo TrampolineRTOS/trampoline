@@ -521,6 +521,7 @@ rule <include_file_level>
     select
         $g_string$ ?file_name;
         file_in_path !?file_name;
+#        message [file_name string]."\n";
     or
         $string$ ?file_name;
     end select;

@@ -138,6 +138,7 @@ IMPLEMENTATION trampoline {
   COUNTER = Software_Counter1;
   SCHEDULETABLE = sched1;
   SCHEDULETABLE = sched2;
+  TRUSTED = TRUE;
  };
 };
 

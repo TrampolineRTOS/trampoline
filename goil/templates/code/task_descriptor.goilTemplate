@@ -111,7 +111,7 @@ end if
  */
 VAR(tpl_proc, OS_VAR) % !NAME %_task_desc = {
   /* resources                      */  NULL,
-#if WITH_MEMORY_PROTECTION == YES
+#if WITH_OSAPPLICATION == YES
   /* if > 0 the process is trusted  */  %
 if AUTOSAR then
   if SCALABILITYCLASS > 2 then
@@ -121,7 +121,7 @@ else
   !0
 end if
 %,    
-#endif /* WITH_MEMORY_PROTECTION */
+#endif /* WITH_OSAPPLICATION */
   /* activate count                 */  0,
   /* task priority                  */  % !PRIORITY %,
   /* task state                     */  %

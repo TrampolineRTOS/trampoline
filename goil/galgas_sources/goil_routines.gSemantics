@@ -421,9 +421,13 @@ routine file_in_path
             end if ;
         end if ;
         full_file_path .= [file_name string] ;
+        message "searching '".[file_name string]."' in ".full_file_path."... ";
         if ([full_file_path fileExists] & not_found) then
             file_name := [@lstring new !full_file_path !here] ;
             not_found := false ;
+            message "found\n";
+        else
+            message "not found\n";
         end if ;
     end foreach ;
 end routine ;

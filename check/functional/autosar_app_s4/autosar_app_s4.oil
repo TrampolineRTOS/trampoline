@@ -186,6 +186,7 @@ IMPLEMENTATION trampoline {
  };
  APPLICATION app3 {
   TASK = t3;
+  TRUSTED = TRUE;
  };
  EVENT Event2{
   MASK = 2;

@@ -254,6 +254,11 @@ tpl_kernel_mp:
  * the the process is trusted. In this case, the memory
  * protection stay disabled.
  *
+ * This is done only if WITH_OSAPPLICATION is YES
+ * because a call to a trusted function may only occur when
+ * a trusted OS Application that declares trusted function(s)
+ * is available
+ *
  * no parameter and no return value
  *
  * Uses r11 only
@@ -277,10 +282,14 @@ tpl_user_mp:
   lis   r11,TPL_HIG(tpl_kern)
   ori   r11,r11,TPL_LOW(tpl_kern)
   lwz   r12,12(r11)
+  
+#if WITH_OSAPPLICATION == YES
   /* Get the trusted counter */
   lwz   r11,4(r12)
   cmpwi r11,0
   bgt   trusted_proc
+#endif
+
   /*
    *  Load the user mode value
    */

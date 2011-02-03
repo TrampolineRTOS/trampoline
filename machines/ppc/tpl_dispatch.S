@@ -238,7 +238,7 @@ tpl_sc_handler:
   bl    tpl_enter_kernel
 
   /*
-   * Then get the pointer to the service that is called
+   * Then get the pointer to the service which is called
    */  
   slwi  r0,r0,2                              /* compute the offset     */
   lis   r11,TPL_HIG(tpl_dispatch_table)      /* load the ptr to the    */

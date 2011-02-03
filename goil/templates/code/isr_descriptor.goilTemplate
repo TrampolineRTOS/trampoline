@@ -103,7 +103,7 @@ CONST(tpl_isr_static, OS_CONST) % !NAME %_isr_helper = {
  */
 VAR(tpl_proc, OS_VAR) % !NAME %_isr_desc = {
   /* resources                      */  NULL,
-#if WITH_MEMORY_PROTECTION == YES
+#if WITH_OSAPPLICATION == YES
   /* if > 0 the process is trusted  */  %
 if AUTOSAR then
   if SCALABILITYCLASS > 2 then
@@ -113,7 +113,7 @@ else
   !0
 end if
 %,    
-#endif /* WITH_MEMORY_PROTECTION */
+#endif /* WITH_OSAPPLICATION */
   /* activate count                 */  0,
   /* ISR priority                   */  % !PRIORITY %,
   /* ISR state                      */  SUSPENDED,
