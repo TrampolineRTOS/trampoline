@@ -47,7 +47,7 @@
  */
 FUNC(StatusType, OS_CODE) IncrementCounter(VAR(CounterType, AUTOMATIC) counter_id)
 {
-    return OSEK_STATUS_MASK & tpl_increment_counter_service(counter_id);
+    return tpl_increment_counter_service(counter_id);
 }
 
 

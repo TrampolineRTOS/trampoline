@@ -123,7 +123,7 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
   /*  unlock the task structures                  */
   UNLOCK_KERNEL()
 
-  return result;
+  return (OSEK_STATUS_MASK & result);
 }
 
 
