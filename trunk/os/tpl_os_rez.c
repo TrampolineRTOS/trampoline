@@ -48,7 +48,7 @@ FUNC(StatusType, OS_CODE) GetResource(
 FUNC(StatusType, OS_CODE) ReleaseResource(
     CONST(ResourceType, AUTOMATIC) res_id)
 {
-    return OSEK_STATUS_MASK & tpl_release_resource_service(res_id);
+    return tpl_release_resource_service(res_id);
 }
 
 #define API_STOP_SEC_CODE

@@ -287,7 +287,7 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
 
   UNLOCK_KERNEL()
 
-  return result;
+  return (OSEK_STATUS_MASK & result);
 }
 
 #define OS_STOP_SEC_CODE

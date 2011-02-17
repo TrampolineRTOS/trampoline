@@ -113,6 +113,18 @@
 #error "Misconfiguration of the OS. WITH_AUTOSAR is not set to YES or NO"
 #endif
 
+#ifndef AUTOSAR_SC
+#error "Misconfiguration of the OS. AUTOSAR_SC is not defined"
+#elif AUTOSAR_SC != 0 && AUTOSAR_SC != 1 && AUTOSAR_SC != 2 && AUTOSAR_SC != 3 && AUTOSAR_SC != 4
+#error "Misconfiguration of the OS. AUTOSAR_SC is not set to 0, 1, 2 or 4"
+#endif
+
+#ifndef WITH_OSAPPLICATION
+#error "Misconfiguration of the OS. WITH_OSAPPLICATION is not defined"
+#elif WITH_OSAPPLICATION != YES && WITH_OSAPPLICATION != NO
+#error "Misconfiguration of the OS. WITH_OSAPPLICATION is not set to YES or NO"
+#endif
+
 #ifndef WITH_PROTECTION_HOOK
 #error "Misconfiguration of the OS. WITH_PROTECTION_HOOK is not defined"
 #elif WITH_PROTECTION_HOOK != YES && WITH_PROTECTION_HOOK != NO

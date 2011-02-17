@@ -96,7 +96,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   
   UNLOCK_KERNEL()
   
-  return result;
+  return  (OSEK_STATUS_MASK & result);
 }
 
 
@@ -236,7 +236,7 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   
   UNLOCK_KERNEL()
   
-  return result;
+  return  (OSEK_STATUS_MASK & result);
 }
 
 #define OS_STOP_SEC_CODE
