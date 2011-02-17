@@ -43,26 +43,26 @@
 FUNC(StatusType, OS_CODE) ActivateTask(
     CONST(TaskType, AUTOMATIC) task_id)
 {
-    return OSEK_STATUS_MASK & tpl_activate_task_service(task_id);
+    return tpl_activate_task_service(task_id);
 }
 
 
 FUNC(StatusType, OS_CODE) TerminateTask(void)
 {
-    return OSEK_STATUS_MASK & tpl_terminate_task_service();
+    return tpl_terminate_task_service();
 }
 
 
 FUNC(StatusType, OS_CODE) ChainTask(
     CONST(TaskType, AUTOMATIC) task_id)
 {
-    return OSEK_STATUS_MASK & tpl_chain_task_service(task_id);
+    return tpl_chain_task_service(task_id);
 }
 
 
 FUNC(StatusType, OS_CODE) Schedule(void)
 {
-    return OSEK_STATUS_MASK & tpl_schedule_service();
+    return tpl_schedule_service();
 }
 
 

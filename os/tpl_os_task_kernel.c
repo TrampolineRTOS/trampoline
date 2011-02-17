@@ -96,7 +96,7 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
   /*  unlock the kernel  */
   UNLOCK_KERNEL()
 	
-  return result;
+  return (OSEK_STATUS_MASK & result);
 }
 
 
@@ -145,7 +145,7 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
   /*  unlock the kernel  */
   UNLOCK_KERNEL()
 
-  return result;
+  return (OSEK_STATUS_MASK & result);
 }
 
 
@@ -211,7 +211,7 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   /*  unlock the task structures  */
   UNLOCK_KERNEL()
 
-  return result;
+  return (OSEK_STATUS_MASK & result);
 }
 
 
@@ -258,7 +258,7 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
   /*  unlock the task structures  */
   UNLOCK_KERNEL()
 
-  return result;
+  return (OSEK_STATUS_MASK & result);
 }
 
 
