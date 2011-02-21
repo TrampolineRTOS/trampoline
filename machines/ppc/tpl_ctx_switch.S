@@ -155,7 +155,7 @@ tpl_save_context:
     stw     r0,GPR1(r11)
     
     lwz     r0,KS_RETURN_CODE(r1)       /* get back r3 and save it  */
-    stw     r3,GPR3(r11)
+    stw     r0,GPR3(r11)
     
     mfxer   r0                          /* save the xer             */
     stw     r0,XER(r11)
