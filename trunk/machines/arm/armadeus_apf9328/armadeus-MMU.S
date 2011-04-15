@@ -29,11 +29,16 @@ MMU_SECTION	= 0x02
 TTBit	 = 0x10
 Domain	 = 0x1e0
 FullAccess	= 0xc00
+CACHE_CONF = 0xc
 
 MMU_TABLE	= 0x08000000 + 0x01000000 -0x4000 
 
 #define MMU_MAP(x,cache) mov r2,#Section|TTBit|(cache) ; orr	r2,r2,#Domain|FullAccess ; orr	r2,r2,#(x)<<20 ; str	r2,[r12,#(x)*4]
 
+.global readstate
+readstate:
+  mrc	p15,0,r0,c1,c0,0
+  mov pc,lr
  
 .global init_mmu
 init_mmu:
@@ -95,7 +100,7 @@ Assignation nouvelle région avec un seul niveau
 
 add	r0,r12,INDEX d'entrée dans la TLB de 4 en 4 
 
-mov	r2,#MMU_SECTION|TTBit
+mov	r2,#MMU_SECTION|TTBit|CACHE_CONF
 orr	r2,r2,#Domain|FullAccess
 orr	r2,r2,ADRESSE de base de la page en multiple de 0x00100000
 str	r2,[r0]
@@ -117,7 +122,15 @@ str	r2,[r0],#4
 add	r2,r2,#0x00100000
 bne	init_tlb1
 
-	
+
+// change the 0x08000000 adresse range to be cacheable
+add	r0,r12,#512
+
+mov	r2,#MMU_SECTION|TTBit|CACHE_CONF
+orr	r2,r2,#Domain|FullAccess
+orr	r2,r2,#0x08000000
+str	r2,[r0]
+
 	
 	
 /* init domains*/
@@ -126,8 +139,18 @@ mcr	p15,0,r0,c3,c0,0
 
 ldr	r12,=AFTER_REMAP
 mrc	p15,0,r0,c1,c0,0
+// data cache and MMU on
 orr	r0,r0,#5	
-orr	r0,r0,#1<<12	
+// MMU on only
+// orr	r0,r0,#1	
+// data cache on only
+//orr	r0,r0,#4	
+
+orr	r0,r0,#1<<12	// ICache enabled
+orr	r0,r0,#1<<31	// 
+orr	r0,r0,#1<<30	// These two select asynchronous clicking mode
+orr	r0,r0,#1<<1	  // Fault checking enabled
+orr r0,r0,#1<<14  // Round Robin DCache replacement policy
 mcr	p15,0,r0,c1,c0,0
 #bx	r12
 nop

@@ -30,10 +30,12 @@
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
+void init_mmu(void);
+
 void tpl_init_machine()
 {
 	init_mmu();
-    tpl_init_machine_generic ();
+  tpl_init_machine_generic ();
 }
 
 void tpl_shutdown ()
