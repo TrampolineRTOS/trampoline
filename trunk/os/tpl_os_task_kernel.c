@@ -236,11 +236,11 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
     /*  release the internal resource   */
-    tpl_release_internal_resource(tpl_kern.running_id);
+    tpl_release_internal_resource((tpl_proc_id)tpl_kern.running_id);
     /*  does the rescheduling           */
     tpl_schedule_from_running();
     /*  get the internal resource       */
-    tpl_get_internal_resource(tpl_kern.running_id);
+    tpl_get_internal_resource((tpl_proc_id)tpl_kern.running_id);
 # if WITH_SYSTEM_CALL == NO
     if (tpl_kern.need_switch != NO_NEED_SWITCH)
     {
@@ -284,7 +284,7 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
   IF_NO_EXTENDED_ERROR(result)
 	if (tpl_kern.running_id >= 0 && tpl_kern.running_id < TASK_COUNT)
 	{
-		*task_id = tpl_kern.running_id;
+		*task_id = (tpl_proc_id)tpl_kern.running_id;
 	}
 	else
 	{

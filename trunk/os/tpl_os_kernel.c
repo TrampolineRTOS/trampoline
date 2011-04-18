@@ -785,8 +785,8 @@ FUNC(void, OS_CODE) tpl_preempt(void)
    */
   CALL_POST_TASK_HOOK()
   
-  TRACE_ISR_PREEMPT(tpl_kern.running_id)
-  TRACE_TASK_PREEMPT(tpl_kern.running_id)
+  TRACE_ISR_PREEMPT((tpl_proc_id)tpl_kern.running_id)
+  TRACE_TASK_PREEMPT((tpl_proc_id)tpl_kern.running_id)
   
   /* The current running task becomes READY */
   tpl_kern.running->state = (tpl_proc_state)READY;
@@ -796,7 +796,7 @@ FUNC(void, OS_CODE) tpl_preempt(void)
    * are put at the head of the set while newly activated processes
    * are put at the end of the set. So we have to distinguish them
    */
-  tpl_put_preempted_proc(tpl_kern.running_id);
+  tpl_put_preempted_proc((tpl_proc_id)tpl_kern.running_id);
 
   /* copy it in old slot of tpl_kern */
   tpl_kern.old = tpl_kern.running;
@@ -804,7 +804,7 @@ FUNC(void, OS_CODE) tpl_preempt(void)
 
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /*  pause the budget monitor */
-  tpl_pause_budget_monitor(tpl_kern.running_id);
+  tpl_pause_budget_monitor((tpl_proc_id)tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 }
 
@@ -815,7 +815,7 @@ FUNC(void, OS_CODE) tpl_preempt(void)
  */
 FUNC(void, OS_CODE) tpl_start(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
-  tpl_kern.running_id = proc_id;
+  tpl_kern.running_id = (u32)proc_id;
   tpl_kern.running = tpl_dyn_proc_table[proc_id];
   tpl_kern.s_running = tpl_stat_proc_table[proc_id];
   
@@ -825,28 +825,28 @@ FUNC(void, OS_CODE) tpl_start(CONST(tpl_proc_id, AUTOMATIC) proc_id)
      * the object has not be preempted. So its
      * descriptor must be initialized
      */
-    tpl_init_proc(tpl_kern.running_id);
+    tpl_init_proc((tpl_proc_id)tpl_kern.running_id);
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
     /* start the budget monitor for the activated task or isr */
-    tpl_start_budget_monitor(tpl_kern.running_id);
+    tpl_start_budget_monitor((tpl_proc_id)tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   else
   {
-    tpl_continue_budget_monitor(tpl_kern.running_id);
+    tpl_continue_budget_monitor((tpl_proc_id)tpl_kern.running_id);
   }
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   
   /* the inserted task become RUNNING */
-  TRACE_TASK_EXECUTE(tpl_kern.running_id)
-  TRACE_ISR_RUN(tpl_kern.running_id)
+  TRACE_TASK_EXECUTE((tpl_proc_id)tpl_kern.running_id)
+  TRACE_ISR_RUN((tpl_proc_id)tpl_kern.running_id)
   tpl_kern.running->state = RUNNING;
   /*
    * If an internal resource is assigned to the task
    * and it is not already taken by it, take it
    */
-  tpl_get_internal_resource(tpl_kern.running_id);
+  tpl_get_internal_resource((tpl_proc_id)tpl_kern.running_id);
   
   /*
    * A new task has been started. It is time to call
@@ -871,7 +871,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
   DOW_ASSERT(tpl_h_prio != -1)
 
 #if WITH_AUTOSAR_STACK_MONITORING == YES
-  tpl_check_stack(tpl_kern.running_id);
+  tpl_check_stack((tpl_proc_id)tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
   if (tpl_h_prio > tpl_kern.running->priority)
@@ -898,7 +898,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
 FUNC(void, OS_CODE) tpl_terminate(void)
 {
 #if WITH_AUTOSAR_STACK_MONITORING == YES
-  tpl_check_stack(tpl_kern.running_id);
+  tpl_check_stack((tpl_proc_id)tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
   
   /*
@@ -909,14 +909,14 @@ FUNC(void, OS_CODE) tpl_terminate(void)
   
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /* pause the budget monitoring when a running obj has ended */
-  tpl_stop_budget_monitor(tpl_kern.running_id);
+  tpl_stop_budget_monitor((tpl_proc_id)tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   
   /*
    * the task loses the CPU because it has been put in the WAITING or
    * in the DYING state, its internal resource is released.
    */
-  tpl_release_internal_resource(tpl_kern.running_id);
+  tpl_release_internal_resource((tpl_proc_id)tpl_kern.running_id);
   
   /* and checked to compute its state. */
   if (tpl_kern.running->activate_count > 0)
@@ -965,7 +965,7 @@ FUNC(void, OS_CODE) tpl_terminate(void)
 FUNC(void, OS_CODE) tpl_block(void)
 {
 #if WITH_AUTOSAR_STACK_MONITORING == YES
-  tpl_check_stack(tpl_kern.running_id);
+  tpl_check_stack((tpl_proc_id)tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
   
   /*
@@ -975,16 +975,16 @@ FUNC(void, OS_CODE) tpl_block(void)
   CALL_POST_TASK_HOOK()
   
   /* the task goes in the WAITING state */
-  TRACE_TASK_WAIT(tpl_kern.running_id)
+  TRACE_TASK_WAIT((tpl_proc_id)tpl_kern.running_id)
   tpl_kern.running->state = WAITING;
   
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /* pause the budget monitoring when a task has ended */
-  tpl_pause_budget_monitor(tpl_kern.running_id);
+  tpl_pause_budget_monitor((tpl_proc_id)tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   
   /* The internal resource is released. */
-  tpl_release_internal_resource(tpl_kern.running_id);
+  tpl_release_internal_resource((tpl_proc_id)tpl_kern.running_id);
   
   /* copy it in old slot of tpl_kern */
   tpl_kern.old = tpl_kern.running;
@@ -1390,7 +1390,7 @@ FUNC(void, OS_CODE) tpl_call_terminate_task_service(void)
   }
   /* release resources if held */
   if ((tpl_kern.running->resources) != NULL){
-      tpl_release_all_resources(tpl_kern.running_id);
+      tpl_release_all_resources((tpl_proc_id)tpl_kern.running_id);
   }
   
   /* error hook */		
@@ -1421,7 +1421,7 @@ FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
   }
   /* release resources if held */
   if( (tpl_kern.running->resources) != NULL ){
-    tpl_release_all_resources(tpl_kern.running_id);
+    tpl_release_all_resources((tpl_proc_id)tpl_kern.running_id);
     result = E_OS_RESOURCE;
   }
   
