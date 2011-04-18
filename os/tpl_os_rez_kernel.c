@@ -173,8 +173,8 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
   
   IF_NO_EXTENDED_ERROR(result)
     /*  set the owner of the resource to the calling task     */
-    res->owner = tpl_kern.running_id;
-    TRACE_RES_GET(res_id, tpl_kern.running_id)
+    res->owner = (tpl_proc_id)tpl_kern.running_id;
+    TRACE_RES_GET(res_id, (tpl_proc_id)tpl_kern.running_id)
     /*  add the ressource at the beginning of the
         resource list stored in the task descriptor              */
     res->next_res = tpl_kern.running->resources;
@@ -188,11 +188,11 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
           if the ceiling priority is greater than the current priority of
           the task  */
       tpl_kern.running->priority = res->ceiling_priority;
-      TRACE_TASK_CHANGE_PRIORITY(tpl_kern.running_id)
-      TRACE_ISR_CHANGE_PRIORITY(tpl_kern.running_id)
+      TRACE_TASK_CHANGE_PRIORITY((tpl_proc_id)tpl_kern.running_id)
+      TRACE_ISR_CHANGE_PRIORITY((tpl_proc_id)tpl_kern.running_id)
     }
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
-    tpl_start_resource_monitor(tpl_kern.running_id, res_id);
+    tpl_start_resource_monitor((tpl_proc_id)tpl_kern.running_id, res_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   IF_NO_EXTENDED_ERROR_END()
   
@@ -258,8 +258,8 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
     IF_NO_EXTENDED_ERROR(result)
         /*  get the saved priority  */      
       tpl_kern.running->priority = res->owner_prev_priority;
-      TRACE_TASK_CHANGE_PRIORITY(tpl_kern.running_id)
-      TRACE_ISR_CHANGE_PRIORITY(tpl_kern.running_id)
+      TRACE_TASK_CHANGE_PRIORITY((tpl_proc_id)tpl_kern.running_id)
+      TRACE_ISR_CHANGE_PRIORITY((tpl_proc_id)tpl_kern.running_id)
       /*  remove the resource from the resource list  */
       tpl_kern.running->resources = res->next_res;
       res->next_res = NULL;
@@ -268,7 +268,7 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
       TRACE_RES_RELEASED(res_id)
       tpl_schedule_from_running();
 # if WITH_AUTOSAR_TIMING_PROTECTION == YES
-      tpl_stop_resource_monitor(tpl_kern.running_id, res_id);
+      tpl_stop_resource_monitor((tpl_proc_id)tpl_kern.running_id, res_id);
 # endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 # if WITH_SYSTEM_CALL == NO
       if (tpl_kern.need_switch != NO_NEED_SWITCH)
