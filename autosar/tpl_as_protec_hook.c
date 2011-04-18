@@ -65,7 +65,7 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
        * the running OS-Application is forcibly terminated by the Operating
        * System.
        */
-      proc_id = tpl_kern.running_id;
+      proc_id = (tpl_proc_id)tpl_kern.running_id;
       if (proc_id != INVALID_PROC)
       {
         tpl_release_all_resources(proc_id);

@@ -151,7 +151,7 @@ FUNC(tpl_isr_id, OS_CODE) tpl_get_isr_id_service(void)
   if ((tpl_kern.running_id >= TASK_COUNT) &&
       tpl_kern.running_id < (ISR_COUNT+TASK_COUNT))
   {
-    result = tpl_kern.running_id;
+    result = (tpl_proc_id)tpl_kern.running_id;
   }
 	
   PROCESS_ERROR(result_status)
