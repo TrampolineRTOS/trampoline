@@ -85,15 +85,6 @@ end foreach
   } > external_ram
   
   /*
-   * bss data
-   */
-  .bss ALIGN(16) : {
-    *(.bss)
-    *(COMMON)
-  } > external_ram
-  . = ALIGN(16);
-
-  /*
    * private data of processes
    */
   procvars : {
@@ -142,7 +133,16 @@ end foreach
   data_garbage : {
     *(.data)
   } > external_ram
-  
+
+   /*
+   * bss data
+   */
+  .bss ALIGN(16) : {
+    *(.bss)
+    *(COMMON)
+  } > external_ram
+  . = ALIGN(16);
+
   .comment : {
     *(.comment) 
   } > external_ram
