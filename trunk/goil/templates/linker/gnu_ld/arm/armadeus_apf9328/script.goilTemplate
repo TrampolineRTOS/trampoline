@@ -44,16 +44,21 @@ SECTIONS
   /*
    * vars of the operating system (Trampoline)
    */
-  . = ALIGN(4);
-  osvars : {
+  osvarsnoinit (NOLOAD) : ALIGN(4) SUBALIGN(4) {
+    kernel_zeroed_vars_begin = .;
+    *(.osVarNoInit)
+    kernel_zeroed_vars_end = .;
+  } > external_ram
+  
+  osvars : ALIGN(4) SUBALIGN(4) {
     *(.osVar)
-    *(.stacks) /* TODO : is it the best place ? */
+    *(.stacks) /* TODO : isolate each stack for stack overflow detection */
   } > external_ram
 
   /*
    * code and consts of the processes of the applications
    */
-  apptext ALIGN(16) : { /* MPC5510 MPU requires 16 bytes alignment */
+  apptext ALIGN(16) : {
     __SEG_START_APP_CODE_CONST_RGN = .;
     *(.osApiConst)  /* API constants    */
     *(.rodata)      /* litteral strings */
@@ -87,24 +92,33 @@ end foreach
   /*
    * private data of processes
    */
-  procvars : {
 %
 foreach PROCESSES do
-%    __SEG_START_% !PROCESSKIND %_% !NAME %_VAR_RGN = .;
+%    procvars_% !PROCESSKIND %_% !NAME % : ALIGN(1K) SUBALIGN(4)  {
+    __SEG_START_% !PROCESSKIND %_% !NAME %_VAR_RGN = .;
 /* Initialized variables section of % !PROCESSKIND % % !NAME % */
 %
   for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
-    for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
+    for SECTION_KIND in "_POWER_ON_INIT_","_FAST_","_" do
 %    *(.% !PROCESSKIND %_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
 %
     end for
   end for
-%    __SEG_END_% !PROCESSKIND %_% !NAME %_VAR_RGN = ALIGN(16) - 1;
+%  } > external_ram
+    procvars_noinit_% !PROCESSKIND %_% !NAME % (NOLOAD) : SUBALIGN(4) {
+      % !PROCESSKIND %_% !NAME %_zeroed_vars_begin = .;
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do   
+%      *(.% !PROCESSKIND %_% !NAME %_SEC_VAR_NOINIT_% !DATA_SIZE %)
+%
+  end for %
+    %!PROCESSKIND %_% !NAME %_zeroed_vars_end = .;
+    __SEG_END_% !PROCESSKIND %_% !NAME %_VAR_RGN = ALIGN(16) - 1;
+  } > external_ram
+    
 %
 end foreach
 %  
-  } > external_ram
-
   /*
    * stack of processes
    */
@@ -138,8 +152,10 @@ end foreach
    * bss data
    */
   .bss ALIGN(16) : {
+    common_zeroed_vars_begin = .;
     *(.bss)
     *(COMMON)
+    common_zeroed_vars_end = .;
   } > external_ram
   . = ALIGN(16);
 

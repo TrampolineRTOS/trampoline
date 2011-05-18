@@ -1,0 +1,11 @@
+%  !PROJECT %/tpl_init_noinit_var_sections.c
+%
+write to PROJECT."/tpl_init_noinit_var_sections.c":
+  template init_noinit_var_sections_c in code
+end write
+  !PROJECT %/tpl_init_noinit_var_sections.h
+%
+write to PROJECT."/tpl_init_noinit_var_sections.h":
+  template init_noinit_var_sections_h in code
+end write
+
