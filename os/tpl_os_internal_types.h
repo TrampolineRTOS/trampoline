@@ -121,6 +121,8 @@ typedef unsigned int tpl_trusted_count;
  * Its size is computed according to the number of Trusted Functions
  */
 typedef int tpl_tf_id;
+
+typedef u8 tpl_access;
 #endif
 
 /**
