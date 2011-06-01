@@ -1,0 +1,104 @@
+#
+# @file xml_to_goil.ggs
+#
+# @section File description
+#
+# This file contains routine to transform an xml tree to
+# goil internal data.
+#
+# @section Copyright
+#
+# Goil OIL compiler for Trampoline
+#
+# Goil is copyright (c) IRCCyN 2005+
+# Goil is protected by the french law of intellectual property
+#
+# This software is distributed under the GNU Public Licence V2
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics xml_to_goil:
+
+import semantics xml_types in "xml_types.ggs";
+import semantics goil_types_root in "goil_types_root.ggs";
+import semantics xml_utils in "xml_utils.ggs";
+import semantics xml_containers in "xml_containers.ggs";
+
+routine parse_os
+  ??@xmlNodeList os_elems
+  ?!@root_obj    cpu
+:
+  foreach os_elems do
+    if is_elem(!node!"CONTAINERS") then
+      message "CONTAINERS trouve\n";
+      @xmlNodeList nl := [node nodeList];
+      foreach nl do
+        if is_elem(!node!"CONTAINER") then
+          message "CONTAINER trouve\n";
+          parse_container ![node nodeList] !?cpu;
+        end if;
+      end foreach;
+    end if;
+  end foreach;
+end routine;
+
+function transform_xml_to_goil
+  ??@xmlNodeList nodes
+  ->@root_obj    cpu
+:
+  cpu := void_root_obj();
+
+  if [nodes length] == 0 then
+    error here: "Empty epc file";
+  else
+    @bool root_found := false;
+    foreach nodes
+    while root_found == false
+    do
+      if is_elem(!node!"AUTOSAR") then
+        @xmlNodeList nl := [node nodeList];
+        foreach nl do
+          if is_elem(!node!"TOP-LEVEL-PACKAGES") then
+            @xmlNodeList nl := [node nodeList];
+            foreach nl do
+              if is_elem(!node!"AR-PACKAGE") then
+                @xmlNodeList nl := [node nodeList];
+                foreach nl do
+                  if is_elem(!node!"ELEMENTS") then
+                    @xmlNodeList nl := [node nodeList];
+                    foreach nl do
+                      if is_elem(!node!"MODULE-CONFIGURATION") then
+                        @xmlNode module := node;
+                        @xmlNodeList nl := [node nodeList];
+                        foreach nl do
+                          if is_elem(!node!"SHORT-NAME") then
+                            @xmlNodeList nl := [node nodeList];
+                            @xmlNode module_name;
+                            [nl first ?module_name];
+                            if is_text(!module_name!"Os_Configuration") then
+                              parse_os ![module nodeList] !?cpu;
+                              root_found := true;
+                            end if;
+                          end if;
+                        end foreach;
+                      end if;
+                    end foreach;
+                  end if;
+                end foreach;
+              end if;
+            end foreach;
+          end if;
+        end foreach;
+      end if;
+    end foreach;
+  end if;
+end function;
+
+end semantics;
+# End of file xml_to_goil.ggs

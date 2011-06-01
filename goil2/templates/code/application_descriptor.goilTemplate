@@ -1,0 +1,93 @@
+/*-----------------------------------------------------------------------------
+ * OS Application % !NAME %
+ */
+%
+if PROCESSACCESSNUM > 0 then
+%
+/* % !PROCESSACCESSVECTOR % */
+u8 % !NAME %_procs_access[% !PROCESSACCESSNUM %] = { % !PROCESSACCESSITEMS % };
+%
+end if
+if ALARMACCESSNUM > 0 then
+%/* % !ALARMACCESSVECTOR % */
+u8 % !NAME %_alarms_access[% !ALARMACCESSNUM %] = { % !ALARMACCESSITEMS % };
+%
+end if
+if RESOURCEACCESSNUM > 0 then
+%/* % !RESOURCEACCESSVECTOR % */
+u8 % !NAME %_rezs_access[% !RESOURCEACCESSNUM %] = { % !RESOURCEACCESSITEMS % };
+%
+end if
+if SCHEDULETABLEACCESSNUM > 0 then
+%/* % !SCHEDULETABLEACCESSVECTOR % */
+u8 % !NAME %_sts_access[% !SCHEDULETABLEACCESSNUM %] = { % !SCHEDULETABLEACCESSITEMS % };
+%
+end if
+if COUNTERACCESSNUM > 0 then
+%/* % !COUNTERACCESSVECTOR % */
+u8 % !NAME %_cnts_access[% !COUNTERACCESSNUM %] = { % !COUNTERACCESSITEMS % };
+%
+end if
+%
+%
+foreach PROCESSES
+  before %tpl_proc_id % !NAME %_proc_own[% ![PROCESSES length] %] = { %
+  do !NAME%_id%
+  between %, %
+  after % };
+%
+end foreach
+
+foreach ALARMS
+  before %tpl_alarm_id % !NAME %_alarm_own[% ![ALARMS length] %] = { %
+  do !NAME%_id%
+  between %, %
+  after % };
+%
+end foreach
+
+foreach REGULARRESOURCES
+  before %tpl_resource_id % !NAME %_rez_own[% ![REGULARRESOURCES length] %] = { %
+  do !NAME%_id%
+  between %, %
+  after % };
+%
+end foreach
+
+foreach SCHEDULETABLES
+  before %tpl_schedtable_id % !NAME %_st_own[% ![SCHEDULETABLES length] %] = { %
+  do !NAME%_id%
+  between %, %
+  after % };
+%
+end foreach
+
+foreach COUNTERS
+  before %tpl_counter_id % !NAME %_cnt_own[% ![COUNTERS length] %] = { %
+  do !NAME%_id%
+  between %, %
+  after % };
+%
+end foreach
+%
+CONST(tpl_app_access, OS_APPL_CONST) % !NAME %_app_access = {
+  {
+    % if PROCESSACCESSNUM > 0 then !NAME %_procs_access% else %NULL% end if %,
+    % if ALARMACCESSNUM > 0 then !NAME %_alarms_access% else %NULL% end if %,
+    % if RESOURCEACCESSNUM > 0 then !NAME %_rezs_access% else %NULL% end if %,
+    % if SCHEDULETABLEACCESSNUM > 0 then !NAME %_sts_access% else %NULL% end if %,
+    % if COUNTERACCESSNUM > 0 then !NAME %_cnts_access% else %NULL% end if %
+  },
+  % if [PROCESSES length] > 0 then !NAME %_proc_own% else %NULL% end if %,
+  % if [ALARMS length] > 0 then !NAME %_alarm_own% else %NULL% end if %,
+  % if [RESOURCES length] > 0 then !NAME %_rez_own% else %NULL% end if %,
+  % if [SCHEDULETABLES length] > 0 then !NAME %_st_own% else %NULL% end if %,
+  % if [COUNTERS length] > 0 then !NAME %_cnt_own% else %NULL% end if %,
+  % ![PROCESSES length] %,
+  % ![ALARMS length] %,
+  % ![RESOURCES length] %,
+  % ![SCHEDULETABLES length] %,
+  % ![COUNTERS length] %,
+  % if exists RESTART then !RESTART%_id% else %INVALID_PROC_ID% end if%
+};
+

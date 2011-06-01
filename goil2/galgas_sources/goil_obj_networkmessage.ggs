@@ -1,0 +1,325 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est prot�g� par la loi sur la propri�t� intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL task object parser
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax goil_obj_networkmessage :
+#--- Lexique Reference, used when grammar source file extension is .gGrammar
+with "goil_lexique.gLexique";
+
+import lexique goil_lexique in "goil_lexique.gLexique" ;
+import option goil_options in "goil_options.gOption" ;
+import semantics goil_semantics in "goil_semantics.ggs" ;
+import semantics goil_types_networkmessage in "goil_types_networkmessage.ggs";
+
+nonterminal <networkmess>
+  ?!@netmess_map netmess ;
+nonterminal <ipdu_ref>
+  ?!@lstring ipdu;
+nonterminal <net_messageproperty>
+  ?!@base_netprop netprop ;
+nonterminal <static_mp>
+  !@base_netprop netprop ;
+nonterminal <dynamic_mp>
+  !@base_netprop netprop ;
+nonterminal <sizeinbits>
+  !@luint64 sib ;
+nonterminal <maxsizeinbits>
+  !@luint64 msib ;
+nonterminal <bitordering>
+  !@lstring bo ;
+nonterminal <bitposition>
+  !@luint64 bp ;
+nonterminal <datainterpretation>
+  !@lstring di ;
+nonterminal <initialvalue>
+  !@basic_type initial_value ;
+nonterminal <direction>
+  !@lstring dir ;
+nonterminal <transferproperty>
+    !@lstring transferproperty ;
+
+nonterminal <description>
+    !@lstring desc ;
+
+
+rule <networkmess>
+  ?!@netmess_map netmess
+:
+  @netmess_obj nm ;
+  @lstring name ;
+  $NETWORKMESSAGE$ ;
+  $idf$ ?name ;
+  # check the network message exists to get it
+  if [netmess hasKey ![name string]] then
+    [!?netmess del !name ?nm];
+  else
+    nm := [@netmess_obj new
+      ![@lstring new !"" !here]
+      ![@lstring new !"" !here]
+      ![@void_netprop new !here]
+    ];
+  end if ;
+
+  @lstring ipdu := [nm ipdu] ;
+  @base_netprop netprop := [nm netprop] ;
+  ${$ ;
+  repeat
+  while <ipdu_ref> !?ipdu ;
+  while <net_messageproperty> !?netprop ;
+  end repeat ;
+  $}$ ;
+  <description> ?* ; $;$ ;
+
+  nm := [@netmess_obj new
+    ![@lstring new !"" !here]
+    !ipdu
+    !netprop
+  ];
+
+  [!?netmess put !name !nm] ;
+end rule ;
+
+rule <ipdu_ref>
+  ?!@lstring ipdu
+:
+  @lstring ip ;
+  $IPDU$ ; $=$ ; $idf$ ?ip ;
+  if [ipdu string] != "" then
+    error here: "IPDU is already defined for this network message" ;
+    error ipdu: "wad defined here" ;
+  else
+    ipdu := ip;
+  end if ;
+  <description> ?* ; $;$ ;
+end rule ;
+
+rule <net_messageproperty>
+  ?!@base_netprop netprop
+:
+  @base_netprop nn;
+  $MESSAGEPROPERTY$ ; $=$ ;
+  select
+    $STATIC$ ; <static_mp> ?nn ;
+  or
+    $DYNAMIC$ ; <dynamic_mp> ?nn ;
+  or
+    $ZERO$ ;
+    # Normally a Zero network message does not have
+    # sub properties. Since whe do not use IPDU in this
+    # temporary implementation, we need a direction
+    # in network messages. It will be removed when the
+    # implementation will be fully compliant
+    ${$ ; 
+    @lstring dir ;
+    <direction> ?dir ;
+    nn := [@zero_netprop new !here !dir] ;
+    $}$ ;
+  end select ;
+  cast netprop :
+  when == @void_netprop do
+    netprop := nn;
+  else
+    error here: "MESSAGEPROPERTY is already defined" ;
+    error [netprop loc]: "was defined here" ;
+  end cast ;
+  <description> ?* ; $;$ ;
+end rule ;
+
+rule <static_mp>
+  !@base_netprop netprop
+:
+  @lsint sizeinbits := [@lsint new !-1S !here] ;    # not set
+  @lstring bitordering := [@lstring new !"" !here] ;
+  @lsint bitposition := [@lsint new !-1S !here] ;
+  @lstring datainterpretation := [@lstring new !"" !here] ;
+  @basic_type initialvalue := [@void new !here] ; 
+  @lstring direction := [@lstring new !"" !here] ;
+
+  @location where := here ;
+  ${$ ;
+  repeat
+  while
+    @luint64 sib ;
+    <sizeinbits> ?sib ;
+    if [sizeinbits sint] == -1S then
+      sizeinbits := [@lsint new ![[sib uint64] sint] !here] ;
+    else
+      error sib: "SIZEINBITS is already defined" ;
+      error sizeinbits: "was defined here" ;
+    end if ;
+
+  while
+    @lstring bo ;
+    <bitordering> ?bo ;
+    if [bitordering string] == "" then
+      bitordering := bo ;
+    else
+      error bo: "BITORDERING is already defined" ;
+      error bitordering: "was define here" ;
+    end if ;
+
+  while
+    @luint64 bp ;
+    <bitposition> ?bp ;
+    if [bitposition sint] == -1S then
+      bitposition := [@lsint new ![[bp uint64] sint] !here] ;
+    else
+      error bp: "BITPOSITION is already defined" ;
+      error bitposition: "was defined here" ;
+    end if ;
+
+  while
+    @lstring di ;
+    <datainterpretation> ?di ;
+    if [datainterpretation string] == "" then
+      datainterpretation := di ;
+    else
+      error di: "DATAINTERPRETATION is already defined" ;
+      error datainterpretation: "was define here" ;
+    end if ;
+
+  while
+    @basic_type iv ;
+    <initialvalue> ?iv ;
+    cast initialvalue:
+    when == @void do initialvalue := iv ;
+    else
+      error [iv location]: "INITIALVALUE already defined" ;
+      error [initialvalue location]: "was defined here" ;
+    end cast ;
+
+  while
+    @lstring dir ;
+    <direction> ?dir ;
+    if [direction string] == "" then
+      direction := dir ;
+    else
+      error dir: "DIRECTION is already defined" ;
+      error direction: "was define here" ;
+    end if ;
+
+  end repeat ;
+  $}$ ;
+
+  # check useful attributes are filled
+  if [direction string] == "" then
+    error here: "DIRECTION attribute is missing" ;
+  end if ;
+
+  @luint64 iv ;
+  cast initialvalue :
+  when == @uint64_class ui do
+    iv := [@luint64 new ![ui value] ![ui location]] ;
+  else
+    iv := [@luint64 new !0L !here] ;
+  end cast ;
+
+  netprop := [@static_netprop new
+    !where
+    !sizeinbits
+    !bitordering
+    !bitposition
+    !datainterpretation
+    !iv
+    !direction
+  ] ;
+ 
+end rule ;
+
+rule <dynamic_mp>
+  !@base_netprop netprop
+:
+    error here: "DYNAMIC network messages are not supported" ;
+    ${$ ;
+    repeat
+    while <maxsizeinbits> ?* ;
+    while <bitordering> ?* ;
+    while <bitposition> ?* ;
+    while <initialvalue> ?* ;
+    while <direction> ?* ;
+    end repeat ;
+    $}$ ;
+    netprop := [@void_netprop new !here] ;
+end rule ;
+
+rule <sizeinbits>
+  !@luint64 sib
+:
+    $SIZEINBITS$ ;
+    $=$ ;
+    $uint_number$ ?sib ;
+    <description> ?* ; $;$ ;
+end rule ;
+
+rule <maxsizeinbits>
+  !@luint64 msib
+:
+    $MAXSIZEINBITS$ ;
+    $=$ ;
+    $uint_number$ ?msib ;
+    <description> ?* ; $;$ ;
+end rule ;
+
+rule <bitordering>
+  !@lstring bo
+:
+    $BITORDERING$ ;
+    $=$ ;
+    select
+        $BIGENDIAN$ ; bo := [@lstring new !"big" !here] ;
+    or
+        $LITTLEENDIAN$ ;  bo := [@lstring new !"little" !here] ;
+    end select ;
+    <description> ?* ; $;$ ;
+end rule ;
+
+rule <bitposition>
+  !@luint64 bp
+:
+    $BITPOSITION$ ;
+    $=$ ;
+    $uint_number$ ?bp ;
+    <description> ?* ; $;$ ;
+end rule ;
+
+rule <datainterpretation>
+  !@lstring di
+:
+    $DATAINTERPRETATION$ ;
+    $=$ ;
+    select
+        $UNSIGNEDINTEGER$ ; di := [@lstring new !"unsignedinteger" !here] ;
+    or
+        $BYTEARRAY$ ; di := [@lstring new !"bytearray" !here] ;
+    end select ;
+    <description> ?* ; $;$ ;
+end rule ;
+
+rule <direction>
+  !@lstring dir
+:
+    $DIRECTION$ ;
+    $=$ ;
+    select
+        $SENT$ ; dir := [@lstring new !"sent" !here] ;
+        select <transferproperty> ?* ; or end select ;
+    or
+        $RECEIVED$ ; dir := [@lstring new !"received" !here] ;
+    end select ;
+    <description> ?* ; $;$ ;
+end rule;
+
+end syntax ;
+# vim:ft=ggs:ts=4:sw=4

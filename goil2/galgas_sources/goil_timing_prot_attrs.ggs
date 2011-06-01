@@ -1,0 +1,138 @@
+syntax goil_timing_prot_attrs :
+#--- Lexique Reference, used when grammar source file extension is .gGrammar
+with "goil_lexique.gLexique";
+
+import lexique goil_lexique in "goil_lexique.gLexique" ;
+import option goil_options in "goil_options.gOption" ;
+#import semantics goil_semantics in "goil_semantics.ggs" ;
+import semantics goil_types_timing_prot in "goil_types_timing_prot.ggs" ;
+
+#
+# local rules declarations
+#
+nonterminal <timing_prot_attrs>
+    !@basic_type  exe_budget
+    !@basic_type  exe_time
+    !@basic_type  count_limit
+    !@basic_type  time_frame
+    !@basic_type  os_it_lock
+    !@basic_type  all_it_lock
+    !@rezlock_map rezlocks ;
+
+rule <timing_prot_attrs>
+    !@basic_type  exe_budget
+    !@basic_type  exe_time
+    !@basic_type  count_limit
+    !@basic_type  time_frame
+    !@basic_type  os_it_lock
+    !@basic_type  all_it_lock
+    !@rezlock_map rezlocks
+:
+    exe_budget  := [@void new !here] ;
+    exe_time    := [@void new !here] ;
+    count_limit := [@void new !here] ;
+    time_frame  := [@void new !here] ;
+    os_it_lock  := [@void new !here] ;
+    all_it_lock := [@void new !here] ;
+    rezlocks    := [@rezlock_map emptyMap] ;
+    repeat
+    while
+        @luint64 eb ;
+        $EXECUTIONBUDGET$ ; $=$ ; $uint_number$ ?eb ; $;$ ;
+        cast exe_budget :
+        when == @void do exe_budget := [@uint64_class new !here ![eb uint64]] ;
+        else
+            error here : "EXECUTIONBUDGET already declared" ;
+            error [exe_budget location] : "was previously declared here" ;
+        end cast ;
+    while
+        @luint64 et ;
+        $EXECUTIONTIME$ ; $=$ ; $uint_number$ ?et ; $;$ ;
+        cast exe_time :
+        when == @void do exe_time := [@uint64_class new !here ![et uint64]] ;
+        else
+            error here : "EXECUTIONTIME already declared" ;
+            error [exe_time location] : "was previously declared here" ;
+        end cast ;
+    while
+        @luint64 cl ;
+        $COUNTLIMIT$ ; $=$ ; $uint_number$ ?cl ; $;$ ;
+        cast count_limit :
+        when == @void do count_limit := [@uint32_class new !here ![[cl uint64] uint]] ;
+        else
+            error here : "COUNTLIMIT already declared" ;
+            error [count_limit location] : "was previously declared here" ;
+        end cast ;
+    while
+        @luint64 tf ;
+        $TIMEFRAME$ ; $=$ ; $uint_number$ ?tf ; $;$ ;
+        cast time_frame :
+        when == @void do time_frame := [@uint64_class new !here ![tf uint64]] ;
+        else
+            error here : "TIMEFRAME already declared" ;
+            error [time_frame location] : "was previously declared here" ;
+        end cast ;
+    while
+        @luint64 moilt ;
+        $MAXOSINTERRUPTLOCKTIME$ ; $=$ ; $uint_number$ ?moilt ; $;$ ;
+        cast os_it_lock :
+        when == @void do os_it_lock := [@uint64_class new !here ![moilt uint64]] ;
+        else
+            error here : "MAXOSINTERRUPTLOCKTIME already declared" ;
+            error [os_it_lock location] : "was previously declared here" ;
+        end cast ;
+    while
+        @luint64 maitl ;
+        $MAXALLINTERRUPTLOCKTIME$ ; $=$ ; $uint_number$ ?maitl ; $;$ ;
+        cast all_it_lock :
+        when == @void do all_it_lock := [@uint64_class new !here ![maitl uint64]] ;
+        else
+            error here : "MAXALLINTERRUPTLOCKTIME already declared" ;
+            error [all_it_lock location] : "was previously declared here" ;
+        end cast ;
+    while
+        $LOCKINGTIME$ ; $=$ ; $RESOURCELOCK$ ; ${$ ;
+        @lstring rez := [@lstring new !"" !here] ;
+        @basic_type lock := [@void new !here] ;
+        repeat
+        while
+            @lstring r ;
+            $RESOURCE$ ; $=$ ; $idf$ ?r ; $;$ ;
+            if [rez string] != "" then
+                error here : "RESOURCE already declared" ;
+                error rez : "was previously declared here" ;
+            else
+                rez := r ;
+            end if ;
+        while
+            @luint64 mrlt ;
+            $MAXRESOURCELOCKTIME$ ; $=$ ; $uint_number$ ?mrlt ; $;$ ;
+            cast lock :
+            when == @void do lock := [@uint64_class new !here ![mrlt uint64]] ;
+            else
+                error here : "MAXRESOURCELOCKTIME already declared" ;
+                error [lock location] : "was previously declared here" ;
+            end cast ;
+        end repeat ;
+        if [rez string] == "" then
+            error here : "No RESOURCE declared for LOCKINGTIME" ;
+        end if ;
+
+        @uint64 l := 0L ;
+        cast lock :
+        when == @uint64_class lu do l := [lu value] ;
+        else
+            error here : "No MAXRESOURCELOCKTIME declared for LOCKINGTIME" ;
+        end cast ;
+        [!?rezlocks put !rez !l] ;
+        $}$ ; $;$ ;
+    end repeat ;
+
+    cast time_frame :  when == @void do error here : "TIMEFRAME not declared" ; else end cast ;
+    cast os_it_lock :  when == @void do error here : "MAXOSINTERRUPTLOCKTIME not declared" ; else end cast ;
+    cast all_it_lock : when == @void do error here : "MAXALLINTERRUPTLOCKTIME not declared" ; else end cast ;
+    
+end rule ;
+
+
+end syntax ;

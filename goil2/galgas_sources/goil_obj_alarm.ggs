@@ -1,0 +1,230 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est prot�g� par la loi sur la propri�t� intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL alarm object parser
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax goil_obj_alarm :
+#--- Lexique Reference, used when grammar source file extension is .gGrammar
+with "goil_lexique.gLexique";
+
+import lexique goil_lexique in "goil_lexique.gLexique" ;
+import option goil_options in "goil_options.gOption" ;
+import semantics goil_semantics in "goil_semantics.ggs" ;
+
+nonterminal <alarm>
+  ?!@alarm_map alarms ;
+
+nonterminal <alarm_parameters>
+  ?!@lstring       counter_name
+  ?!@action_obj    alarm_action
+  ?!@autostart_obj alarm_autostart
+  ?!@lstringlist   acc_apps ;
+
+nonterminal <alarm_action_params>
+  ?!@action_obj alarm_action ;
+
+nonterminal <alarm_autostart_params>
+  ?!@autostart_obj alarm_autostart ;
+
+#
+# external rules
+#
+nonterminal <description>
+  !@lstring desc ;
+
+#
+# alarm rules implementation
+#
+rule <alarm>
+  ?!@alarm_map alarms
+:
+  @lstring       alarm_name ;
+  @alarm_obj     alarm ;
+  @action_obj    alarm_action ;
+  @autostart_obj alarm_autostart ;
+  @lstring       counter_name ;
+  @lstringlist   acc_apps ;
+  @lstring       desc ;
+
+  $ALARM$ ;
+  $idf$ ?alarm_name ;
+  if [alarms hasKey ![alarm_name string]] then
+    [!?alarms del !alarm_name ?alarm] ;
+    alarm_action := [alarm action_params] ;
+    alarm_autostart := [alarm autostart_params] ;
+    counter_name := [alarm counter_name] ;
+    acc_apps := [alarm acc_apps] ;
+    desc := [alarm desc] ;
+  else
+    alarm_action := [@void_action new !here] ;
+    alarm_autostart := [@autostart_void new !here] ;
+    counter_name := [@lstring new !"" !here] ;
+    acc_apps := [@lstringlist emptyList] ;
+    desc := [@lstring new !"" !here] ;
+    alarm := [@alarm_obj new !desc !counter_name !alarm_action !alarm_autostart !acc_apps] ;    
+  end if ;
+
+  ${$ ;
+  <alarm_parameters> !?counter_name !?alarm_action !?alarm_autostart !?acc_apps ;
+  $}$ ;
+  <description> ?desc ;
+  $;$ ;
+
+  alarm := [@alarm_obj new !desc !counter_name !alarm_action !alarm_autostart !acc_apps] ;
+  [!?alarms put !alarm_name !alarm] ;
+end rule ;
+
+rule <alarm_parameters>
+  ?!@lstring       counter_name
+  ?!@action_obj    alarm_action
+  ?!@autostart_obj alarm_autostart
+  ?!@lstringlist   acc_apps 
+:
+  repeat
+  while
+    if [counter_name string] != "" then
+      error here : "COUNTER attribute already defined for this alarm" ;
+      error [counter_name location] : "was previously defined here" ;
+    end if ;
+    $COUNTER$ ;   $=$ ; $idf$ ?counter_name ; <description> ?* ; $;$;
+  while
+    cast alarm_action :
+    when == @void_action do
+    else 
+      error here : "ACTION attribute already defined for this alarm" ;
+      error [alarm_action location] : "was previously defined here" ;
+    end cast ;
+    $ACTION$ ;    $=$ ; <alarm_action_params> !?alarm_action ; <description> ?* ; $;$;
+  while
+    cast alarm_autostart :
+    when == @autostart_void do
+    else 
+      error here : "AUTOSTART attribute already defined for this alarm" ;
+      error [alarm_autostart location] : "was previously defined here" ;
+    end cast ;
+    $AUTOSTART$ ;  $=$ ;
+    select
+      $TRUE$ ;
+      ${$ ;
+      <alarm_autostart_params> !?alarm_autostart ;
+      $}$ ;
+    or
+      $FALSE$ ; alarm_autostart := [@autostart_false new !here] ;
+    end select ;
+    <description> ?* ; $;$;
+  while
+    @lstring app ;
+    $ACCESSING_APPLICATION$ ; $=$ ; $idf$ ?app ; <description> ?* ; $;$ ;
+    add_lstring_unique !?acc_apps !app !"ACCESSING_APPLICATION" ;
+  while
+    $idf$ ?* ; $=$ ; select $idf$ ?* ; or $uint_number$ ?* ; end select ;
+  end repeat ;
+end rule ;
+
+rule <alarm_action_params>
+  ?!@action_obj alarm_action :
+
+  select
+    @lstring task_name := [@lstring new !"" !here] ;
+    @lstring event_name := [@lstring new !"" !here] ;
+    $SETEVENT$ ; ${$ ;
+    repeat
+    while
+      if [task_name string] != "" then
+        error here : "TASK attribute already defined for this alarm action" ;
+        error [task_name location] : "was previously defined here" ;
+      end if ;
+      $TASK$ ;
+      $=$ ;
+      $idf$ ?task_name ;
+      <description> ?* ; $;$ ;
+    while
+      if [event_name string] != "" then
+        error here : "EVENT attribute already defined for this alarm action" ;
+        error [event_name location] : "was previously defined here" ;
+      end if ;
+      $EVENT$ ;
+      $=$ ;
+      $idf$ ?event_name ;
+      <description> ?* ; $;$ ;
+    end repeat ;
+    alarm_action := [@setevent_action new !here !task_name !event_name] ;
+  or
+    @lstring task_name ;
+    $ACTIVATETASK$ ; ${$ ;
+    $TASK$ ; $=$ ; $idf$ ?task_name ;
+    <description> ?* ; $;$ ;
+    alarm_action := [@activatetask_action new !here !task_name] ;
+  or
+    if [option goil_options.autosar_on value] then
+      error here : "AUTOSAR flag is on. AUTOSAR spec does not allow alarm callback" ;
+    end if ;
+    @lstring function_name ;
+    $ALARMCALLBACK$ ; ${$ ;
+    $ALARMCALLBACKNAME$ ; $=$ ; $string$ ?function_name ;
+    <description> ?* ; $;$ ;
+    alarm_action := [@callback_action new !here !function_name] ;
+  or
+    if [option goil_options.autosar_on value] == false then
+      error here : "AUTOSAR flag is off. Turn it on to allow an INCREMENTCOUNTER action in alarm" ;
+    end if ;
+    @lstring counter_name ;
+    $INCREMENTCOUNTER$ ; ${$ ;
+    $COUNTER$ ; $=$ ; $idf$ ?counter_name ;
+    <description> ?* ; $;$ ;
+    alarm_action := [@incrementcounter_action new !here !counter_name] ;
+  end select ;
+  $}$ ;        
+end rule;
+
+rule <alarm_autostart_params>
+  ?!@autostart_obj alarm_autostart
+:
+  @bool alarm_time_known := false ;
+  @bool cycle_time_known := false ;
+  
+  @luint64 alarm_time := [@luint64 new !0L !here] ;
+  @luint64 cycle_time := [@luint64 new !0L !here] ;
+  @lstring app_mode := [@lstring new !"" !here] ;
+  @stringset app_modes := [@stringset emptySet] ;
+
+  repeat
+  while
+    if alarm_time_known then
+      error here : "ALARMTIME attribute already defined for this alarm autostart" ;
+      error [alarm_time location] : "was previously defined here" ;
+    end if ;
+    $ALARMTIME$ ; $=$ ; $uint_number$ ?alarm_time ; <description> ?* ; $;$ ;
+    alarm_time_known := true ;
+  while
+    if cycle_time_known then
+      error here : "CYCLETIME attribute already defined for this alarm autostart" ;
+      error [cycle_time location] : "was previously defined here" ;
+    end if ;
+    $CYCLETIME$ ; $=$ ; $uint_number$ ?cycle_time ; <description> ?* ; $;$ ;
+    cycle_time_known := true ;
+  while
+    $APPMODE$ ; $=$ ; $idf$ ?app_mode ; <description> ?* ; $;$ ;
+    app_modes += ![app_mode string];
+  end repeat ;
+
+  # signal an error when the ALARMTIME parameter is missing
+  if not alarm_time_known then
+    error here : "ALARMTIME attribute is missing" ;
+  end if ;
+  alarm_autostart := [@alarm_autostart_true new !here !alarm_time !cycle_time !app_modes] ;
+end rule;
+
+end syntax ;
+# vim:ft=ggs:ts=4:sw=4

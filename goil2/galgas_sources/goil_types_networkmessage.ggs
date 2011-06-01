@@ -1,0 +1,68 @@
+semantics goil_types_networkmessage :
+
+import semantics goil_basic_types in "goil_basic_types.ggs" ;
+import semantics goil_routines in "goil_routines.ggs" ;
+
+abstract class @base_netprop {
+  @location loc ;
+#  abstract method generate !@string res ;
+}
+
+class @void_netprop extends @base_netprop {
+#  override method generate !@string res :
+#    res := "" ;
+#  end method ;
+}
+
+class @static_netprop extends @base_netprop {
+  @lsint   size_in_bits ;
+  @lstring bit_ordering ;
+  @lsint   bit_position ;
+  @lstring data_interpretation ;
+  @luint64 initial_value ;
+  @lstring direction ;
+#  override method generate !@string res :
+#    res := template_string[!"code" ![direction string]."_nm"];
+#  end method ;
+}
+
+class @dynamic_netprop extends @base_netprop {
+  @lsint   max_size_in_bits ;
+  @lstring bit_ordering ;
+  @lsint   bit_position ;
+  @luint64 initial_value ;
+  @lstring direction ;
+#  override method generate !@string res :
+#    res := "" ;
+#  end method ;
+}
+
+class @zero_netprop extends @base_netprop {
+  @lstring direction ; # not part of OSEK COM
+#  override method generate !@string res :
+#    res := template_string[!"code" ![direction string]."_nm"];
+#  end method ;
+}
+
+class @netmess_obj extends @oil_obj {
+  @lstring      ipdu ;
+  @base_netprop netprop ;
+#  method generate ?@lstring name ?@string ctype ?@string inval !@string res :
+#    [netprop generate ?res] ;
+#    doReplace !?res !"$NAME$" ![name string] ;
+#    doReplace !?res !"$CTYPE$" !ctype ;
+#    if inval != "" then
+#      inval := " = ".inval ;
+#    end if ;
+#    doReplace !?res !"$INITIALVALUE$" !inval ;
+#  end method ;
+}
+
+map @netmess_map {
+    @netmess_obj netmess ;
+    insert put error message "Network message %K is already defined in %L" ;
+    search get error message "Network message %K is unkown" ;
+    remove del error message "Netmork message %K is unkown" ;
+}
+
+end semantics ;

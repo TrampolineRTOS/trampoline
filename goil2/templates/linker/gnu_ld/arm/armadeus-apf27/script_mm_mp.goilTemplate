@@ -1,0 +1,217 @@
+MEMORY
+{
+    bootrom (rx) : ORIGIN = 0x00000000, LENGTH = 16K /* hard-wired into microcontroller */
+    dram0 (wx)   : ORIGIN = 0xA0000000, LENGTH = 64M
+    dram1 (wx)   : ORIGIN = 0xB0000000, LENGTH = 64M
+    fvram (wx)   : ORIGIN = 0xFFF00000, LENGTH = 979K /* free (unused by system) VRAM memory */
+    vvram (wx)   : ORIGIN = 0xFFFF4C00, LENGTH = 45K  /* vector RAM */
+}
+
+ENTRY (tpl_arm_bootstrap_entry)
+
+SECTIONS
+{
+  /*
+   * code and consts of the operating system (Trampoline).
+   * this section is not accessible from an untrusted process
+   */
+  ostext : {
+    __SEG_START_CODE_RGN = .;
+    __SEG_START_OS_CODE_RGN = .;
+    /* standard OS */
+    *(.osCode)
+		/* GCC special sections are put here */
+    *(.text*) /* thus any external code can be accessible by OS or trusted applications */
+    . = ALIGN(4K);
+    __SEG_END_OS_CODE_RGN = .;
+    __SEG_START_OTHER_CODE_RGN = .;
+    
+    /* com module */
+    __seg_start_tpl_com_code_rgn = .;
+    build/obj/tpl_com*(.text)
+    __seg_end_tpl_com_code_rgn = .;
+    
+    /* debug module */
+    __seg_start_tpl_debug_code_rgn = .;
+    build/obj/tpl_debug*(.text)
+    __seg_end_tpl_debug_code_rgn = .;
+    . = ALIGN(4K);  
+    __SEG_END_OTHER_CODE_RGN = .;
+    . = ALIGN(4K);  
+    __SEG_END_CODE_RGN = .;
+  } > dram0 AT> dram0
+
+  osconsts : {
+    __SEG_START_CONST_RGN = .;
+    * (COMMON)
+    . = ALIGN(4K);
+    __SEG_START_OS_CONST_RGN = .;
+    *(.osConst)
+		/* GCC special sections are put here
+		 * thus any external code can be used by OS or trusted applications */
+		 */
+    *(.glue_7*)
+    *(.comment) 
+		*(.rodata)
+		*(.rodata*)
+    . = ALIGN(4K);
+    __SEG_END_OS_CONST_RGN = .;
+    __SEG_END_CONST_RGN = .;
+  } > dram0 AT> dram0
+  
+  /*
+   * variableѕ of the operating system (Trampoline)
+   */
+  osvars (NOLOAD) : {
+    __SEG_START_VAR_RGN = .;
+    __SEG_START_OS_VAR_RGN = .;
+    *(.osVar)
+		/* gcc special sections are put here
+		 * thus any external code can be used by OS or trusted applications */
+    *(COMMON)
+    *(.bss)
+    *(.bss*)
+		*(.data)
+		*(.data*)
+    . = ALIGN(4K);
+    __SEG_END_OS_VAR_RGN = .;
+    __SEG_END_VAR_RGN = .;
+  } > dram0 AT> dram0
+
+	stacks (NOLOAD) : {
+		__SEG_START_OS_STACK_RGN = .;
+		*(.stacks)
+		. = ALIGN(4K);
+		__SEG_END_OS_STACK_RGN = .;
+	} > dram0 AT> dram0
+
+  /*
+   * Reserves location of MMU tables. MMU table is built
+   * at system startup.
+   * In the future, we want to build this with GOIL, at least
+   * partialy.
+   */
+  mmutable (NOLOAD) : SUBALIGN(4){  
+    /* Reserved space for MMU tables */
+    __SEG_START_MMU_TABLES_RGN = .;    
+    /* Align counter . at the right location for translation table work */  
+    . = ALIGN(16K);
+    __SEG_START_MMU_TT_RGN = .;
+
+    /* reserved space for tt */
+    . = . + 1M;
+    __SEG_END_MMU_TT_RGN = .;
+    
+    /* Align counter . at the right location for coarse page table work */
+    . = ALIGN(1K); /* Is not necessary how is yet align on 16K */
+    __SEG_START_MMU_PT_RGN = .;
+        
+    /* reserved space for pt */
+    . = . + 1M;
+    __SEG_END_MMU_PT_RGN = .;
+
+    __SEG_END_MMU_TABLES_RGN = .;      
+  }  > dram0 AT> dram0
+
+
+  /*
+   * code and consts of the processes of the applications
+   */
+  apptext : ALIGN(4K) SUBALIGN(4K) {
+    __SEG_START_APP_CODE_CONST_RGN = .;
+    *(.osApiConst)  /* API constants    */
+    *(.osApiCode)   /* API functions    */
+    /* Sections for code of tasks and ISR */%
+foreach PROCESSES do
+%
+    *(.% !PROCESSKIND %_% !NAME %Code)
+%
+end foreach
+%
+  } > dram0 AT> dram0
+  
+  appconst : ALIGN(4K) SUBALIGN(4K) {
+%
+foreach PROCESSES do
+ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+%      *(.% !PROCESSKIND %_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
+%
+  end for
+ end for
+end foreach
+%    
+    . = ALIGN(4);
+    __SEG_STOP_APP_CODE_CONST_RGN = . - 1;
+  } > dram0 AT> dram0
+
+  /*
+   * private data of processes
+   */
+  procvars (NOLOAD) : ALIGN(4) SUBALIGN(4K) {
+%
+foreach PROCESSES do
+%    __SEG_START_% !PROCESSKIND %_% !NAME %_VAR_RGN = .;
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
+%    *(.% !PROCESSKIND %_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end for
+  end for
+%    __SEG_END_% !PROCESSKIND %_% !NAME %_VAR_RGN = ALIGN(4K) - 1;
+%
+end foreach
+%  } > dram0 AT> dram0
+
+  /*
+   * stack of processes
+   */
+  procstack (NOLOAD) : ALIGN(4) SUBALIGN(4K) {
+%
+foreach PROCESSES do %
+  /* Section of stack of % !PROCESSKIND % % !NAME %  */
+    __SEG_START_% !PROCESSKIND %_% !NAME %_STACK_RGN = .;
+    *(.% !PROCESSKIND %_% !NAME %Stack)
+    __SEG_END_% !PROCESSKIND %_% !NAME %_STACK_RGN = ALIGN(4K) - 1;
+%
+end foreach
+%
+  } > dram0 AT> dram0
+
+  /*
+   * os application data
+   */
+  appvars (NOLOAD) : ALIGN(4) SUBALIGN(4K) {
+ /* $APP_VARS */
+  } > dram0 AT> dram0
+
+  /*
+   * remaining .text (ie no section given)
+   */
+  text_garbage : ALIGN(4) SUBALIGN(4K) {
+  } > dram0 AT> dram0
+
+/* FIXME are these symbols really required ? If not, delete them !
+__ramtext_ram_start__ = ADDR(ostext);
+__ramtext_ram_end__   = ADDR(text_garbage) + SIZEOF(text_garbage);
+__ramtext_load_start__ = LOADADDR(ostext); 
+__ramtext_load_end__ = __ramtext_load_start__ + SIZEOF(ostext) + SIZEOF(osconst) + SIZEOF(osvars) + SIZEOF(apptext) + SIZEOF(appconst) + SIZEOF(procvars) + SIZEOF(procstack) + SIZEOF(appvars) + SIZEOF(text_garbage) ;
+*/
+
+  /* LOADADDR is the same as the ADDR if it is a ram build */
+/* FIXME are these symbols really required ? If not, delete them !
+__data_ram_start__ = ADDR(.data);
+__data_ram_end__   = ADDR(garbage) + SIZEOF(garbage);
+__data_load_start__ = LOADADDR(.data); 
+__data_load_end__ = __data_load_start__ + SIZEOF(.data) + SIZEOF(.bss) + SIZEOF(garbage) ;
+*/
+
+  .interrupt_table : {
+    . = 0xB2F0;                   /* not used */
+    KEEP (* (.exceptiontable))
+    . = 0xB300;
+    KEEP (* (.interrupt_table))
+  } > vvram
+}
+

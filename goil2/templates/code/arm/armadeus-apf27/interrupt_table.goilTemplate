@@ -1,0 +1,138 @@
+#include "tpl_machine.h"
+
+%
+if USEINTERRUPTTABLE then
+%
+/* Interrupt functions */
+%
+  loop ENTRY from 0 to ITSOURCESLENGTH - 1
+    before 
+%
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+%
+    do
+      let function_generated := false # don't produce function entry twice for one source id
+      let source_user_found := false # don't produce function while source is not used
+      foreach INTERRUPTSOURCES prefixedby interrupt_ do
+        if ENTRY == interrupt_NUMBER then
+          if not function_generated then
+            foreach HARDWARECOUNTERS prefixedby counter_ do
+              if counter_SOURCE == interrupt_NAME then
+                let source_user_found := true
+              end if
+            end foreach
+            foreach ISRS1 prefixedby isr1_ do
+              if isr1_SOURCE == interrupt_NAME then
+                let source_user_found := true
+              end if
+            end foreach
+            foreach ISRS2 prefixedby isr2_ do
+              if isr2_SOURCE == interrupt_NAME then
+                let source_user_found := true
+              end if
+            end foreach
+          end if
+
+          if (not function_generated) & source_user_found then
+%
+FUNC(void, OS_CODE) tpl_interrupt_source_% !interrupt_NUMBER %()
+{
+%
+            let function_generated := true
+          end if              
+          # check first for hardware counters (software counters call directly tpl_counter_tick function)
+          foreach HARDWARECOUNTERS prefixedby counter_ do
+            if counter_SOURCE == interrupt_NAME then
+%
+  tpl_tick_% !interrupt_NAME %();
+%  
+            end if
+          end foreach
+          # then check for ISR category 2
+          foreach ISRS2 prefixedby isr2_ do
+            if isr2_SOURCE == interrupt_NAME then
+%
+  tpl_central_interrupt_handler(% !([TASKS length] + INDEX) %); 
+%    
+            end if
+          end foreach
+          # finally check for ISR category 1
+          foreach ISRS1 prefixedby isr1_ do
+            if isr1_SOURCE == interrupt_NAME then
+%
+  % !isr1_NAME %_function (); 
+%
+            end if
+          end foreach
+        end if
+
+			# Close the function bracket if it has been produced
+      after
+        if function_generated then
+%
+}
+%     
+        end if
+      end foreach
+    after
+%
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+%
+  end loop
+%
+
+/* Interrupt table vector
+ *
+ * Notice that this table shall be placed into a specified
+ * location into memory. That's why we put it in a specific
+ * section.
+ *
+ * We chose a GCC dependant syntax, but who would use another
+ * compiler for Armadeus APF27 ?
+ */
+%
+  loop ENTRY from 0 to ITSOURCESLENGTH - 1
+    before
+%
+tpl_it_vector_entry tpl_it_vector[% !ITSOURCESLENGTH %] __attribute__ ((aligned(4), section ("interrupt_table"))) = {
+%
+    do
+      let interrupt_source_detected := false # we just need to know if a source number is used, if not, we link with tpl_null_it function
+      foreach INTERRUPTSOURCES prefixedby interrupt_ do
+        if ENTRY == interrupt_NUMBER & not interrupt_source_detected then
+          foreach HARDWARECOUNTERS prefixedby counter_ do
+            if counter_SOURCE == interrupt_NAME then
+		          let interrupt_source_detected := true
+            end if
+          end foreach
+          foreach ISRS1 prefixedby isr1_ do
+            if isr1_SOURCE == interrupt_NAME then
+		          let interrupt_source_detected := true
+            end if
+          end foreach
+          foreach ISRS2 prefixedby isr2_ do
+            if isr2_SOURCE == interrupt_NAME then
+		          let interrupt_source_detected := true
+            end if
+          end foreach
+        end if
+      end foreach
+      if not interrupt_source_detected then
+        %  { tpl_null_it, (void *)NULL }%
+			else
+        %  { tpl_interrupt_source_% !ENTRY %, (void *)NULL }%
+      end if
+   between %,
+%
+    after
+%
+};
+%
+  end loop
+%
+%
+end if
+
+# vim:ft=goil_templates

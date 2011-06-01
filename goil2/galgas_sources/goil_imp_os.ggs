@@ -1,0 +1,28 @@
+syntax goil_imp_os :
+
+import lexique goil_lexique in "goil_lexique.gLexique" ;
+import option goil_options in "goil_options.gOption" ;
+import semantics goil_semantics in "goil_semantics.ggs" ;
+
+nonterminal <imp_def_os> ;
+nonterminal <imp_def_status> ;
+
+
+rule <imp_def_os>
+:
+    repeat
+    while <imp_def_status> ;
+    end repeat ;
+end rule ;
+
+rule <imp_def_status>
+:
+    $ENUM$ ?* ;
+    select
+        $[$ ;
+        $]$ ;
+    or
+    end select ;
+end rule ;
+
+end syntax ;

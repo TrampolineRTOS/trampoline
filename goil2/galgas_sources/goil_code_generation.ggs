@@ -1,0 +1,833 @@
+#
+# @file goil_code_generation.ggs
+#
+# @section File description
+#
+# This file wraps user application configuration header.
+# This wrapped file is typically
+# generated from an OIL source.
+#
+# @section Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline is protected by the french intellectual property law.
+#
+# This software is distributed under the GNU Public Licence V2
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics goil_code_generation :
+
+import semantics goil_routines in "goil_routines.ggs";
+import semantics goil_semantic_types in "goil_semantic_types.ggs";
+import semantics goil_types_os in "goil_types_os.ggs";
+import semantics goil_types_task in "goil_types_task.ggs";
+import semantics goil_types_app in "goil_types_app.ggs";
+import semantics goil_env_verification in "goil_env_verification.ggs";
+import semantics config_type in "config_type.ggs";
+import semantics system_config in "system_config.ggs";
+import semantics template_routines in "template_routines.ggs";
+
+import semantics cfg_types in "cfg_types.ggs";
+import grammar cfg_grammar in "cfg_grammar.gGrammar";
+
+import option goil_options in "goil_options.gOption";
+
+#--------------------------------------------------------------------
+# Custom type generation
+# This function generates the appropriate type according
+# to the number of objects
+#--------------------------------------------------------------------
+routine generate_signed_type
+  ?@uint64 count
+  ?@string err
+  !@string type
+:
+  # compute the max for each size
+  @uint64 max_s8  := 1L << 7;
+  @uint64 max_s16 := 1L << 15;
+  @uint64 max_s32 := 1L << 31;
+  
+  if count < max_s8 then
+    type := "s8";
+  else
+    if count < max_s16 then
+      type := "s16";
+    else
+      if count < max_s32 then
+        type := "s32";
+      else
+        type := "";
+        error here : err;
+      end if;
+    end if;
+  end if;
+end routine;
+
+routine generate_unsigned_type
+  ?@uint64 count
+  ?@string err
+  !@string type
+:
+  # compute the max for each size
+  @uint64 max_u8  := 1L << 8;
+  @uint64 max_u16 := 1L << 16;
+  @uint64 max_u32 := 1L << 32;
+
+  if count < max_u8 then
+    type := "u8";
+  else
+    if count < max_u16 then
+      type := "u16";
+    else
+      if count < max_u32 then
+        type := "u32";
+      else
+        type := "";
+        error here : err;
+      end if;
+    end if;
+  end if;
+end routine;
+
+routine generate_mask_type
+  ?@uint64 count
+  ?@string err
+  !@string type
+:
+  # compute the max for each size
+  @uint64 max_u8  := 8L;
+  @uint64 max_u16 := 16L;
+  @uint64 max_u32 := 32L;
+
+  if count <= max_u8 then
+    type := "u8";
+  else
+    if count <= max_u16 then
+      type := "u16";
+    else
+      if count <= max_u32 then
+        type := "u32";
+      else
+        type := "";
+        error here : err;
+      end if;
+    end if;
+  end if;
+end routine;
+
+routine generate_types
+  ?@task_map          tasks
+  ?@isr_map           isrs
+  ?@alarm_map         alarms
+  ?@counter_map       counters
+  ?@resource_map      resources
+  ?@scheduletable_map schedtables
+  ?@app_map           apps
+  ?@uint              max_priority
+  ?!@string           types
+:
+  @string type;
+  @uint64 max := 0L;
+  @uint64 c;
+
+  # compute the type for tpl_proc_id
+  c := [[tasks count] uint64]+[[isrs count] uint64];
+  if c > max then max := c; end if;
+  generate_signed_type !c !"Too many processes (tasks and ISRs)" ?type;
+  types := [types stringByReplacingStringByString !"$PROC_ID_T$" !type];
+
+  # compute the type for tpl_priority
+  generate_signed_type ![max_priority uint64] !"Maximum priority too high" ?type;
+  #message "tpl_priority:         ".type."\n";
+  types := [types stringByReplacingStringByString !"$PRIORITY_T$" !type];
+
+  # compute the type for the activation count
+  # iterate through the tasks to get the max
+  @uint max_act := 0;
+  foreach tasks (@lstring key @task_obj task) do
+    cast [task activation] :
+    when == @uint32_class ui do if [ui value] > max_act then max_act := [ui value]; end if;
+    else error key : "Internal error, task ".[key string]." has wrong type for the ACTIVATION attribute";
+    end cast;
+  end foreach;
+  generate_unsigned_type ![max_act uint64] !"Maximum ACTIVATION too high" ?type;
+  #message "tpl_activate_counter: ".type."\n";
+  types := [types stringByReplacingStringByString !"$ACTIVATION_T$" !type];
+
+  # compute the type for the event mask
+  # iterate through the tasks to get the maximum number of events
+  @uint max_ev := 0;
+  foreach tasks (@lstring key @task_obj task) do
+    @lstringlist evts := [task events];
+    if [evts length] > max_ev then max_ev := [evts length]; end if;
+  end foreach;
+  generate_mask_type ![max_ev uint64] !"Too much events" ?type;
+  types := [types stringByReplacingStringByString !"$EVENTMASK_T$" !type];
+
+  # compute the type for tpl_alarm_id
+  c := [[alarms count] uint64];
+  if c > max then max := c; end if;
+  generate_unsigned_type !c !"too many alarms" ?type;
+  #message "tpl_alarm_id:         ".type."\n";
+  types := [types stringByReplacingStringByString !"$ALARM_ID_T$" !type];
+
+  # compute the type for tpl_resource_id
+  c := [[resources count] uint64];
+  if c > max then max := c; end if;
+  generate_unsigned_type !c !"too many resources" ?type;
+  #message "tpl_resource_id:      ".type."\n";
+  types := [types stringByReplacingStringByString !"$RESOURCE_ID_T$" !type];
+
+  # compute the type for tpl_counter_id
+  c := [[counters count] uint64];
+  if c > max then max := c; end if;
+  generate_unsigned_type !c !"too many counters" ?type;
+  #message "tpl_counter_id:       ".type."\n";
+  types := [types stringByReplacingStringByString !"$COUNTER_ID_T$" !type];
+
+  # compute the type for tpl_schedtable_id
+  c := [[schedtables count] uint64];
+  if c > max then max := c; end if;
+  generate_unsigned_type !c !"too many schedule tables" ?type;
+  #message "tpl_schedtable_id:           ".type."\n";
+  types := [types stringByReplacingStringByString !"$SCHEDTABLE_ID_T$" !type];
+
+  # compute the type for tpl_timeobj_id as the max of the number of
+  # alarms and schedule tables
+  if [alarms count] > [schedtables count] then
+    c := [[alarms count] uint64];
+  else
+    c := [[schedtables count] uint64];
+  end if;
+  if c > max then max := c; end if;
+  generate_unsigned_type !c !"too many time objects" ?type;
+  types := [types stringByReplacingStringByString !"$TIMEOBJ_ID_T$" !type];
+
+  # compute the type for tpl_app_id
+  generate_unsigned_type ![[apps count] uint64]+1L !"too many OS applications" ?type;
+  #message "tpl_app_id:           ".type."\n";
+  doReplace !?types !"$OSAPPLICATION_ID_T$" !type;
+
+  # compute the type for tpl_tf_id (trusted function index)
+  @stringset tfs [emptySet];
+
+  foreach apps do
+    cast [app trusted] :
+    when == @app_trusted_true t do
+      foreach [t trusted_fcts] (@string s) do
+        tfs += !s;
+      end foreach;
+    else end cast;
+  end foreach;
+
+  generate_unsigned_type ![[tfs count] uint64] !"Too many Trusted Functions" ?type;
+  doReplace !?types !"$TRUSTED_FCT_ID_T$" !type;
+
+  # compute the type for tpl_generic_id
+  generate_unsigned_type !max !"too many objects" ?type;
+  #message "tpl_generic_id:           ".type."\n";
+  doReplace !?types !"$GENERIC_ID_T$" !type;
+
+end routine;
+
+#--------------------------------------------------------------------
+routine generate_timing_prot
+    ?@task_map     tasks
+    ?@resource_map rez
+    ?!@string obj_header
+:
+    @uint max_sched_wd := [rez count] + 4 * [tasks count];
+
+    obj_header := [obj_header stringByReplacingStringByString !"$MAX_WATCH_DOG$" ![max_sched_wd string]];
+end routine;
+
+#--------------------------------------------------------------------
+# Actual Task priority computation
+#--------------------------------------------------------------------
+routine compute_actual_task_priority
+    ?@task_map  tasks
+    ?!@prio_map  prio_for_task
+    !@uint      max_prio
+:
+    @objs_by_prio tl [emptySortedList];
+
+    #
+    # fill the sorted list
+    # This list is sorted from the lower priority task
+    # to the higher priority task
+    #
+    foreach tasks (@lstring task_name @task_obj task) do
+        @basic_type prio_as_basic;
+        @basic_type act_as_basic;
+        @uint prio := 0;
+        @uint act := 0;
+        prio_as_basic := [task priority];
+        act_as_basic := [task activation];
+
+        cast prio_as_basic :
+        when == @uint32_class ui do prio := [ui value];
+        else error [prio_as_basic location] : "TASK PRIORITY attribute undefined";
+        end cast;
+
+        cast act_as_basic :
+        when == @uint32_class ui do act := [ui value];
+        else error [act_as_basic location] : "TASK ACTIVATION attribute undefined";
+        end cast;
+
+        tl += !prio !act !task_name;
+    end foreach;
+
+    #
+    # Get the minimum priority
+    #
+    @uint actual_prio := 1;
+    @uint cur_rel_prio := 0;
+    if [tl length] > 0 then
+        [tl smallest ?cur_rel_prio ?* ?*];
+    end if;
+
+    #
+    # Compute the actual priority of the tasks starting from 1
+    #
+    foreach tl (@uint relative_prio @uint act @lstring tn) do
+#        message "Prio = ".[relative_prio string].", nom = ".[tn string]."\n";
+        if (relative_prio > cur_rel_prio) then
+            cur_rel_prio := relative_prio;
+            actual_prio ++;
+        end if;
+#        message "Actual prio = ".[actual_prio string].", nom = ".[tn string]."\n";
+        [!?prio_for_task put !tn !actual_prio !act];
+    end foreach;
+
+    max_prio := actual_prio;
+
+end routine;
+
+#--------------------------------------------------------------------
+# Actual ISR2 priority computation
+#--------------------------------------------------------------------
+routine compute_actual_isr_priority
+    ?@isr_map   isrs
+    ?!@prio_map  prio_for_isr
+    ?@uint      floor
+    !@uint      max_prio
+:
+    @objs_by_prio il [emptySortedList];
+
+    if [isrs count] != 0 then
+        #
+        # fill the sorted list
+        # This list is sorted from the lower priority isr
+        # to the higher priority isr
+        #
+        foreach isrs (@lstring isr_name @isr_obj isr) do
+            @basic_type prio_as_basic;
+            @basic_type act_as_basic;
+            @uint prio := 0;
+#            @uint act := 0;
+
+            prio_as_basic := [isr priority];
+#            [isr get_activation ?act];
+
+            cast prio_as_basic :
+            when == @uint32_class ui do prio := [ui value];
+            else error [prio_as_basic location] : "ISR PRIORITY attribute undefined";
+            end cast;
+
+    #        cast act_as_basic :
+    #        when == @uint32_class ui do act := [ui value];
+    #        else error [act_as_basic location] : "ISR ACTIVATION attribute undefined";
+    #        end cast;
+
+            il += !prio !1 !isr_name;
+        end foreach;
+
+        #
+        # Get the minimum priority
+        #
+        @uint actual_prio := floor + 1;
+        @uint cur_rel_prio := 0;
+        if [il length] > 0 then
+            [il smallest ?cur_rel_prio ?* ?*];
+        end if;
+
+        #
+        # Compute the actual priority of the isrs starting from floor + 1
+        #
+        foreach il (@uint relative_prio @uint a @lstring isn) do
+#            message "Prio = ".[relative_prio string].", nom = ".[isn string]."\n";
+            if (relative_prio > cur_rel_prio) then
+                cur_rel_prio := relative_prio;
+                actual_prio ++;
+            end if;
+#            message "Actual prio = ".[actual_prio string].", nom = ".[isn string]."\n";
+            [!?prio_for_isr put !isn !actual_prio !a];
+        end foreach;
+
+        max_prio := actual_prio;
+    else
+        max_prio := floor;
+    end if;
+end routine;
+
+#--------------------------------------------------------------------
+# Resource priority computation
+#--------------------------------------------------------------------
+routine compute_rez_priority
+    ?@resource_map rez
+    ?@task_map     tasks
+    ?@isr_map      isrs
+    ?@prio_map     prio_for_process
+    !@prio_map     prio_for_rez
+    !@stringMap   comments
+    
+:
+    prio_for_rez := [@prio_map emptyMap];
+    comments := [@stringMap emptyMap];
+
+    #
+    # for each resource, start at a 0 priority.
+    # iterate through the tasks and the isrs.
+    # if the current task or isr may own the resource, and if
+    # the priority of the current task/isr is greater than the
+    # current computed priority for the resource, set the current
+    # computed priority to that priority
+    #
+
+    foreach rez (@lstring rez_name ...) do
+        @uint rez_prio := 0;
+        @uint rez_act := 0;
+        @string rez_comment := "";
+        foreach tasks (@lstring tn @task_obj t) do
+            @lstringlist owned_rez := [t resources];
+            @bool owned;
+            is_in_lstringlist !owned_rez !rez_name ?* ?owned;
+            if owned then
+                @uint prio;
+                @uint act;
+                [prio_for_process get !tn ?prio ?act];
+                if prio > rez_prio then
+                    rez_prio := prio;
+                end if;
+                rez_act := rez_act + act;
+                rez_comment .= " used by task ".[tn string]." (".[prio string].")\n";
+            end if;
+        end foreach;
+        foreach isrs (@lstring isn @isr_obj i) do
+            @lstringlist owned_rez := [i resources];
+            @bool owned;
+            is_in_lstringlist !owned_rez !rez_name ?* ?owned;
+            if owned then
+                @uint prio;
+                @uint act;
+                [prio_for_process get !isn ?prio ?act];
+                if prio > rez_prio then
+                    rez_prio := prio;
+                end if;
+                rez_act := rez_act + act;
+                rez_comment .= " used by isr ".[isn string]." (".[prio string].")\n";
+            end if;
+        end foreach;
+
+        if rez_comment == "" then
+            rez_comment := " none\n";
+        end if;
+
+        #
+        # The higher priority task/isr that may own a resource had its activation
+        # count added but it should not be. So substract it
+        #
+        foreach tasks (@lstring tn @task_obj t) do
+            @lstringlist owned_rez := [t resources];
+            @bool owned;
+            is_in_lstringlist !owned_rez !rez_name ?* ?owned;
+            if owned then
+                @uint prio;
+                @uint act;
+                [prio_for_process get !tn ?prio ?act];
+                if prio == rez_prio then
+                    rez_act := rez_act - act;
+                end if;
+            end if;
+        end foreach;
+        foreach isrs (@lstring isn @isr_obj i) do
+            @lstringlist owned_rez := [i resources];
+            @bool owned;
+            is_in_lstringlist !owned_rez !rez_name ?* ?owned;
+            if owned then
+                @uint prio;
+                @uint act;
+                [prio_for_process get !isn ?prio ?act];
+                if prio == rez_prio then
+                    rez_act := rez_act - act;
+                end if;
+            end if;
+        end foreach;
+
+        [!?prio_for_rez put !rez_name !rez_prio !rez_act];
+        [!?comments put !rez_name !rez_comment];
+#        message "Rez = ".[rez_name string]." prio = ".[rez_prio string]."\n";
+#        message rez_comment;
+    end foreach;
+end routine;
+
+#--------------------------------------------------------------------
+# Compute the number of entry in the fifo for each priority level
+#--------------------------------------------------------------------
+routine compute_ready_list
+    ?@prio_map  prio_for_process
+    ?@prio_map  prio_for_rez
+    ?@uint      max_task_prio
+    ?@uint      max_prio
+    !@prio_list ready_list
+:
+    ready_list := [@prio_list emptyList];
+
+    # put in the list the fifo for the idle task
+    ready_list += !1;
+
+    # begin at priority 1
+    @uint prio := 1;
+
+    loop max_prio :
+    while prio <= max_prio do
+        # look for objects with the same priority
+        @uint fifosize := 0;
+        foreach prio_for_process (@lstring n @uint p @uint a) do
+            if p == prio then fifosize := fifosize + a; end if;
+        end foreach;
+        foreach prio_for_rez (@lstring n @uint p @uint a) do
+            if p == prio then fifosize := fifosize + a; end if;
+        end foreach;
+
+        # Since any task can get the RES_SCHEDULE resource,
+        # This priority level should have one more entry
+        if prio == max_task_prio then fifosize++; end if;
+
+        ready_list += !fifosize;
+        prio++;
+    end loop;
+
+#    log ready_list;
+end routine;
+
+routine compute_app_for_obj
+  ?@app_map    apps
+  !@stringMap app_for_obj
+:
+  app_for_obj := [@stringMap emptyMap];
+
+  foreach apps do
+    @string app_name := [key string];
+    foreach [app tasks] do
+      if not [app_for_obj hasKey ![key string]] then
+        [!?app_for_obj put !key !app_name];
+      end if;
+    end foreach;
+    foreach [app isrs] do
+      if not [app_for_obj hasKey ![key string]] then
+        [!?app_for_obj put !key !app_name];
+      end if;
+    end foreach;
+    foreach [app alarms] do
+      if not [app_for_obj hasKey ![key string]] then
+        [!?app_for_obj put !key !app_name];
+      end if;
+    end foreach;
+    foreach [app scheduletables] do
+      if not [app_for_obj hasKey ![key string]] then
+        [!?app_for_obj put !key !app_name];
+      end if;
+    end foreach;
+    foreach [app counters] do
+      if not [app_for_obj hasKey ![key string]] then
+        [!?app_for_obj put !key !app_name];
+      end if;
+    end foreach;
+    foreach [app resources] do
+      if not [app_for_obj hasKey ![key string]] then
+        [!?app_for_obj put !key !app_name];
+      end if;
+    end foreach;
+  end foreach;
+#  [!?app_for_obj put ![@lstring new !"SystemCounter" !here] !"INVALID_OSAPPLICATION"];
+
+end routine;
+
+
+routine computeEvents
+  ??@root_obj cpu
+  !@eventMaskMap eventMasks
+:
+  eventMasks := [@eventMaskMap emptyMap];
+  @task_mask maskForTask := [@task_mask emptyMap];
+  #
+  # Iterate through the tasks to get the events used.
+  # A or is done with the user masks of user events
+  # and the result is stored in the task_mask map.
+  # event conflicts are detected when building this Or
+  # Auto events are looked up and for each auto event
+  # the number of referencing tasks is computed and
+  # stored in the evt_usage map.
+  # In addition, a reverse mapping allowing to get all
+  # the task referencing an event is built and stored
+  # in the tasks_for_event map.
+  #
+  @event_usage_map evt_usage [emptyMap];
+  @stringset_map tasksForEvent [emptyMap]; 
+
+  foreach [cpu tasks] (@lstring taskName @task_obj task) do
+    @lstringlist events_used;
+    events_used := [task events];
+    @uint64 event_mask := 0L;
+    foreach events_used (@lstring evt_name) do
+      @event_obj event;
+      [[cpu events] get !evt_name ?event];
+      @event_mask_obj mask_obj;
+      mask_obj := [event mask];
+      cast mask_obj :
+      when == @event_mask_user_obj emu do
+        if (event_mask & [[emu mask] uint64]) == 0L then
+          event_mask := event_mask | [[emu mask] uint64];
+        else
+          error [emu mask] : "MASK of event ".[evt_name string]." conflicts with previous declarations";
+        end if;
+      when == @event_mask_auto_obj do
+        @uint count;
+        if [evt_usage hasKey ![evt_name string]] then
+          [!?evt_usage delete !evt_name ?count];
+          count++;
+        else
+          count := 1;
+        end if;
+        [!?evt_usage insert_count !evt_name !count];
+      else
+      end cast;
+      @stringset refTasks [emptySet];
+      if [tasksForEvent hasKey ![evt_name string]] then
+        [!?tasksForEvent delete !evt_name ?refTasks];
+      end if;
+      refTasks += ![taskName string];
+      [!?tasksForEvent add !evt_name !refTasks];
+    end foreach;
+    [!?maskForTask insert_mask !taskName !event_mask];
+  end foreach;
+
+  #
+  # Output the user events
+  #
+  foreach [cpu events] (@lstring eventName @event_obj event) do
+    @event_mask_obj eventMask := [event mask];
+    cast eventMask :
+    when == @event_mask_user_obj emu do
+      [!?eventMasks put !eventName ![[emu mask] uint64]];
+    else end cast;
+  end foreach;
+
+  #
+  # Sort the auto events by reference count
+  # in a sorted list
+  #
+  @sorted_events sortedEvents [emptySortedList];
+  foreach evt_usage do
+    sortedEvents += !key !count;
+  end foreach;
+
+  #
+  # Compute the mask for auto events
+  #
+  # iterate through the events to compute the mask
+  #
+
+  foreach sortedEvents do
+    if [tasksForEvent hasKey ![event_name string]] then
+      @stringset tasks;
+      [tasksForEvent get !event_name ?tasks];
+      @uint64 mask := 0L;
+      foreach tasks (@string t) do
+        @uint64 tm;
+        [maskForTask get_mask ![@lstring new !t !here] ?tm];
+        mask := mask | tm;
+      end foreach;
+      # 0 are available slots in the mask.
+      # look for the first available slot starting from bit 0
+      @uint64 bit := 1L;
+      loop 32 :
+      while (bit < [[@uint max] uint64]) & ((bit & ~mask) == 0L) do
+        bit := bit << 1; 
+      end loop;
+      if bit > [[@uint max] uint64] then
+        error event_name : "All event mask bits are already use, event ".[event_name string]." can't be created";
+      end if;
+      # message "found ".[bit string]."\n";
+      # update the task mask of the corresponding tasks
+      foreach tasks (@string t) do
+        @uint64 tm;
+        [!?maskForTask del_mask ![@lstring new !t !here] ?tm];
+        tm := bit | tm;
+        [!?maskForTask insert_mask ![@lstring new !t !here] !tm];
+      end foreach;
+     
+      [!?eventMasks put !event_name !bit];
+#      @string result := tpl_event;
+#      doReplace !?result !"$EVENT$" ![event_name string]."_mask";
+#      doReplace !?result !"$EVENT_NAME$" ![event_name string];
+#      doReplace !?result !"$EVENT_MASK$" ![bit string];
+#      imp_result .= result."\n";
+
+    end if;
+  end foreach;
+end routine;
+
+##
+# @fn generate_all
+#
+# routine generate_all does the generation of all the system.
+# 
+# @param cpu the root object got from the parsing
+# 
+routine generate_all
+  ??@root_obj cpu
+:
+  # code generation
+#  @string timestamp := [@string stringWithCurrentDateTime];
+
+  @string temp_dir := templates_directory[!"code"];
+
+  if temp_dir != "" then
+      @string target := [option goil_options.target_platform value];
+      if target != "" then
+
+          @string types := template_string[!"code" !"types"];
+
+          @config cfg [emptyMap];
+          @lstring cfg_file := config_file[];
+          if [cfg_file string] != "" then
+              grammar cfg_grammar in cfg_file ?cfg;
+          end if;
+
+          @lstring extra_cfg_file := extra_config_file[];
+          if [extra_cfg_file string] != "" then
+              grammar cfg_grammar in extra_cfg_file ?cfg;
+          end if;
+
+          @os_config generated_conf := os_cfg[!cpu];
+
+          @uint max_task_prio;
+          @uint max_prio;
+          @prio_map actual_prio [emptyMap];
+          compute_actual_task_priority
+              ![cpu tasks]
+              !?actual_prio
+              ?max_task_prio;
+
+          compute_actual_isr_priority
+              ![cpu isrs]
+              !?actual_prio
+              !max_task_prio
+              ?max_prio;
+
+          @prio_map rez_actual_prio;
+          @stringMap rez_comments;
+          compute_rez_priority 
+              ![cpu resources]
+              ![cpu tasks]
+              ![cpu isrs] 
+              !actual_prio
+              ?rez_actual_prio
+              ?rez_comments;
+
+          @prio_list ready_list;
+          compute_ready_list
+              !actual_prio
+              !rez_actual_prio
+              !max_task_prio
+              !max_prio
+              ?ready_list;
+
+          @stringMap app_for_obj;
+          compute_app_for_obj
+              ![cpu applis]
+              ?app_for_obj;
+
+
+          generate_types
+              ![cpu tasks]
+              ![cpu isrs]
+              ![cpu alarms]
+              ![cpu counters]
+              ![cpu resources]
+              ![cpu scheduletables]
+              ![cpu applis]
+              !max_prio
+              !?types;
+            
+          @eventMaskMap eventMasks;
+          computeEvents !cpu ?eventMasks;
+
+          @goilTemplateVariableMap sysCfg [emptyMap];
+          
+          setEnvData !cpu !?sysCfg;
+          setProcessesList !cpu !actual_prio !app_for_obj !?sysCfg;
+          setBasicTasksList !cpu !actual_prio !app_for_obj !?sysCfg;
+          setExtendedTasksList !cpu !actual_prio !app_for_obj !?sysCfg;
+          setTasksList !cpu !actual_prio !app_for_obj !?sysCfg;
+          setISRs1List !cpu !actual_prio !app_for_obj !?sysCfg;
+          setISRs2List !cpu !actual_prio !app_for_obj !?sysCfg;
+          setCountersList !cpu !app_for_obj !?sysCfg;
+          setEventsList !cpu !eventMasks !?sysCfg;
+          setAlarmsList !cpu !app_for_obj !?sysCfg;
+          setResourcesList !cpu !rez_actual_prio  !app_for_obj !?sysCfg;
+          setMessagesList !cpu !app_for_obj !?sysCfg;
+          setScheduletablesList !cpu !app_for_obj !?sysCfg;
+          setOsapplicationsList !cpu !app_for_obj !?sysCfg;
+          setProcessCount !cpu !?sysCfg;
+          setBuildConfig !cpu !?sysCfg;
+          setReadyList !cpu !ready_list !?sysCfg;         
+          addBoolValue !?sysCfg ![@lstring new !"AUTOSAR" !here] ![option goil_options.autosar_on value];
+          addUnsignedValue !?sysCfg !lstringWith[!"MAXTASKPRIORITY"] ![max_task_prio uint64];
+          setOsConfig !cpu !?sysCfg;
+          setInterruptSources !cfg !?sysCfg;
+          
+          #log sysCfg;
+          
+          @string goilLog := computeTemplate[!"" !sysCfg !"root"];
+          if [option goil_options.generate_log value] then
+            [goilLog writeToFile !"goil.log"];
+          end if;
+          
+          # write the result to files
+          @string directory := projectName[];
+          
+          @string types_file := "tpl_app_custom_types.h";
+
+          @uint error_count := [@uint errorCount];
+
+          types_file := directory . "/" . types_file;
+
+          if error_count == 0 then
+              if [option .verbose_output value] then
+                  message "creating " . types_file . "\n";
+              end if;
+              [types makeDirectoryAndWriteToFile !types_file];
+
+          end if;
+      else
+          message "No target platform given, compiling aborted\n";
+      end if;
+  else
+      message "No template directory defined, compiling aborted\n";
+  end if;
+end routine;
+
+end semantics;
+# vim:ft=ggs:ts=4:sw=4

@@ -1,0 +1,143 @@
+OIL_VERSION = "2.5" : "test" ;
+
+IMPLEMENTATION trampoline {
+};
+
+CPU test {
+    APPMODE std {
+        default_stack_size = 17;
+    };
+    
+    APPMODE debug {
+        defaut_stack_size = 24;
+    };
+
+    TASK MyTask1 {
+        STACKSIZE = 30 ;
+        USEFLOAT = TRUE ;
+        ACTIVATION = 1 ;
+        AUTOSTART = TRUE { APPMODE = all; } ;
+        EVENT = emergency ;
+        EVENT = notUsed ;
+    };
+    
+    TASK MyTask1 {
+        PRIORITY = 17 ;
+    };
+    
+    TASK MyTask2 {
+        PRIORITY = 10 ;
+        STACKSIZE = 40 ;
+        SCHEDULE = FULL;
+        ACTIVATION = 20;
+        AUTOSTART = TRUE
+        {
+            APPMODE=std;
+	    };
+        AUTOSTART = FALSE;
+        RESOURCE = res1;
+        RESOURCE = res2;
+        RESOURCE = res3;
+        RESOURCE = notDefined;
+        EVENT = event1;
+        EVENT = notDefined;
+        EVENT = emergency ;
+    };
+    
+    COUNTER general_counter {
+        TICKSPERBASE = 20;
+        MAXALLOWEDVALUE = 2048;
+        MINCYCLE = 34;
+    };
+    
+    ALARM wake_task_a {
+        COUNTER = general_counter;
+        ACTION = SETEVENT {
+            TASK = MyTask1;
+            EVENT = event1;
+        };
+        AUTOSTART = FALSE;
+    };
+    
+    ALARM wake_task_b {
+        COUNTER = timer_b;
+        ACTION = ACTIVATETASK {
+            TASK = task_b;
+        };
+        AUTOSTART = TRUE {
+            ALARMTIME = 50;
+            CYCLETIME = 100;
+            APPMODE = std;
+            APPMODE = debug;
+        };
+    };
+    
+    ALARM Run_CallBack_C {
+        COUNTER = general_counter;
+        ACTION = ALARMCALLBACK {
+            ALARMCALLBACKNAME = "CallBackC";
+        };
+        AUTOSTART = FALSE;
+    };
+    
+    RESOURCE res1 {
+        RESOURCEPROPERTY = STANDARD;
+    };
+
+    RESOURCE res2 {
+        RESOURCEPROPERTY = LINKED {
+            LINKEDRESOURCE = res1;
+        };
+    };
+
+    RESOURCE res3 {
+        RESOURCEPROPERTY = LINKED {
+            LINKEDRESOURCE = res2;
+        };
+    };
+    
+    RESOURCE res4 {
+        RESOURCEPROPERTY = INTERNAL;
+    };
+
+    RESOURCE res5 {
+        RESOURCEPROPERTY = LINKED {
+            LINKEDRESOURCE = res4;
+        };
+    };
+
+    RESOURCE res6 {
+        RESOURCEPROPERTY = LINKED {
+            LINKEDRESOURCE = res7;
+        };
+    };
+
+    RESOURCE res7 {
+        RESOURCEPROPERTY = LINKED {
+            LINKEDRESOURCE = res6;
+        };
+    };
+    
+    EVENT emergency {
+        MASK = AUTO;
+    };
+    
+    EVENT event1 {
+        MASK = 1;
+    };
+   
+    EVENT event1bis {
+        MASK = 1 ;
+    };
+
+    EVENT notUsed {
+        MASK = AUTO;
+    };
+ 
+    ISR timerInterrupt {
+       CATEGORY = 2;
+       RESOURCE = res1;
+       MESSAGE = msg1;
+       STACKSIZE = 40 ;
+    };
+};

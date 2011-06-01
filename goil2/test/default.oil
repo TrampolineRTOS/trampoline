@@ -1,0 +1,168 @@
+OIL_VERSION = "2.5" : "Default system for Trampoline" ;
+
+IMPLEMENTATION trampoline {
+} ;
+
+#include <toto>
+#include <titi>
+
+CPU default {
+    APPMODE std { default_stack_size = 17 ; } ;
+    APPMODE dbg { default_stack_size = 24 ; } ;
+    
+    TASK t1 {
+        PRIORITY = 1 ;
+        AUTOSTART = TRUE { APPMODE = std ; } ;
+        ACTIVATION = 10 ;
+        STACKSIZE = 32768 ;
+        USRSTACKSIZE = 32768 ;
+        SYSSTACKSIZE = 32768 ;
+        SCHEDULE = FULL ;
+        RESOURCE = resource1 ;
+        RESOURCE = resource2 ;
+    } ;
+    
+    TASK t2 {
+        PRIORITY = 2 ;
+        AUTOSTART = FALSE ;
+        ACTIVATION = 11 ;
+        STACKSIZE = 32768 ;
+        USRSTACKSIZE = 32768 ;
+        SYSSTACKSIZE = 32768 ;
+        SCHEDULE = FULL ;
+        RESOURCE = resource1 ;
+        RESOURCE = int_res ;
+    } ;
+
+    TASK t3 {
+        PRIORITY = 3 ;
+        AUTOSTART = FALSE ;
+        ACTIVATION = 1 ;
+        STACKSIZE = 32768 ;
+        USRSTACKSIZE = 32768 ;
+        SYSSTACKSIZE = 32768 ;
+        SCHEDULE = NON ;
+        EVENT = evt1 ;
+        EVENT = evt2 ;
+        RESOURCE = resource2 ;
+    } ;
+    
+    ISR sig_usr1 {
+        CATEGORY = 2 ;
+        STACKSIZE = 40 ;
+        USRSTACKSIZE = 40 ;
+        SYSSTACKSIZE = 40 ;
+        PRIORITY = 40 ;
+		TRAP = 32 ;
+        SIGNAL = SIGUSR1 ;
+    } ;
+    
+    RESOURCE resource1 {
+        RESOURCEPROPERTY = STANDARD ;
+    } ;
+    
+    RESOURCE resource2 {
+        RESOURCEPROPERTY = STANDARD ;
+    } ;
+    
+    RESOURCE int_res {
+        RESOURCEPROPERTY = INTERNAL ;
+    } ;
+    
+    COUNTER cnt1 {
+        TICKSPERBASE = 100 ;
+        MAXALLOWEDVALUE = 1000 ;
+        MINCYCLE = 2 ;
+    } ;
+    
+    COUNTER cnt2 {
+        TICKSPERBASE = 300 ;
+        MAXALLOWEDVALUE = 1000 ;
+        MINCYCLE = 2 ;
+    } ;
+    
+#include "add_on.oil"
+
+    EVENT evt1 {
+        MASK = AUTO ;
+    } ;
+    
+    EVENT evt2 {
+        MASK = 1 ;
+    } ;
+    
+    ALARM alr1 {
+        COUNTER = cnt1 ;
+        ACTION = ACTIVATETASK {
+            TASK = t1 ;
+        } ;
+        AUTOSTART = FALSE ;
+    } ;
+    
+    ALARM alr2 {
+        COUNTER = cnt1 ;
+        ACTION = SETEVENT {
+            TASK = t3 ;
+            EVENT = evt1 ;
+        } ;
+        AUTOSTART = FALSE ;
+    } ;
+    
+    ALARM alr3 {
+        COUNTER = cnt2 ;
+        ACTION = ALARMCALLBACK {
+            ALARMCALLBACKNAME = "damned" ;
+        } ;
+        AUTOSTART = FALSE ;
+    } ;
+    
+    ALARM alr4 {
+        COUNTER = cnt1 ;
+        ACTION = ALARMCALLBACK {
+            ALARMCALLBACKNAME = "damned" ;
+        } ;
+        AUTOSTART = FALSE ;
+    } ;
+    
+    MESSAGE ms {
+        MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
+            CDATATYPE = "unsigned char" ;
+        } ;
+    } ;
+	
+    MESSAGE mr {
+	    MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+		    SENDINGMESSAGE = ms ;
+            FILTER = ALWAYS ;
+        } ;
+	} ;
+	
+    MESSAGE mr2 {
+	    MESSAGEPROPERTY = RECEIVE_QUEUED_INTERNAL {
+		    SENDINGMESSAGE = ms ;
+            QUEUESIZE = 10 ;
+        } ;
+	} ;
+	
+    MESSAGE zms {
+	    MESSAGEPROPERTY = SEND_ZERO_INTERNAL ;
+	} ;
+
+    MESSAGE zmr {
+	    MESSAGEPROPERTY = RECEIVE_ZERO_INTERNAL {
+		    SENDINGMESSAGE = zms ;
+		} ;
+        NOTIFICATION = ACTIVATETASK {
+            TASK = t3 ;
+        } ;
+	} ;
+    MESSAGE zmr2 {
+        MESSAGEPROPERTY = RECEIVE_ZERO_INTERNAL {
+            SENDINGMESSAGE = zms ;
+        } ;
+        NOTIFICATION = ACTIVATETASK {
+            TASK = t1 ;
+        } ;
+	} ;
+
+} ;

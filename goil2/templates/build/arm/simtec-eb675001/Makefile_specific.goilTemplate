@@ -1,0 +1,33 @@
+# Use default drivers
+CFLAGS += -DSIMTEC_DEFAULT_DRIVERS
+CFLAGS += -I ../../../machines/arm/simtec-eb675001/default_drivers
+LDFLAGS += -L ../../../machines/arm/simtec-eb675001/default_drivers -lsimtec-dfltdrv-dbg
+
+# linker script
+LDFLAGS += --script=%!TRAMPOLINEPATH%/machines/arm/simtec-eb675001/ldscript.bdi2000
+
+# memory map file
+LDFLAGS += -Map trampoline_memory.map
+
+# choose the right instruction set
+ASFLAGS += -mcpu=arm7tdmi
+CFLAGS += -mcpu=arm7tdmi
+
+%
+if COMPILEREXE == "gcc" then
+%# changes default compiler
+CC = arm-none-eabi-gcc
+%
+end if
+
+if LINKEREXE == "gcc" then
+%# changes default linker
+LD = arm-none-eabi-ld
+%
+end if
+
+if ASSEMBLEREXE == "as" then
+%# changes default assembler
+AS = arm-none-eabi-as
+%
+end if

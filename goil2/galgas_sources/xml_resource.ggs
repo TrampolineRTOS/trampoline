@@ -1,0 +1,79 @@
+#
+# @file xml_resource.ggs
+#
+# @section File description
+#
+# This file contains routine to parse a resource container.
+#
+# @section Copyright
+#
+# Goil OIL compiler for Trampoline
+#
+# Goil is copyright (c) IRCCyN 2005+
+# Goil is protected by the french law of intellectual property
+#
+# This software is distributed under the GNU Public Licence V2
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics xml_resource:
+
+import semantics xml_types in "xml_types.ggs";
+import semantics goil_types_root in "goil_types_root.ggs";
+import semantics xml_utils in "xml_utils.ggs";
+
+routine parse_resource
+  ??@lstring     name
+  ??@xmlNodeList cont_elems
+  ?!@root_obj    cpu
+:
+  @resource_obj r := default_resource_obj();
+  @lstringlist  acc_apps := [r acc_apps];
+# get the level 0 attributes
+  @xmlNode node := elem_named(!cont_elems!"PARAMETER-VALUES");
+  if is_not_void(!node) then
+    @xmlNodeList params := [node nodeList];
+    @bool linked_res_found := false;
+    @location linked_res_loc := here;
+    @lstring linked_res_ref := empty_lstring();
+    foreach params do
+      if    is_param(!node!"OsResourceProperty") then
+        @lstring prop := lstring_param(!node);
+        @string p := [prop string];
+        if    p == "INTERNAL" then
+          [!?r setProperty ![@resource_property_internal_obj new ![prop location]]];
+        elsif p == "STANDARD" then
+          [!?r setProperty ![@resource_property_standard_obj new ![prop location]]];
+        elsif p == "LINKED" then
+          linked_res_found := true;
+          linked_res_loc := [prop location];
+        end if;
+      elsif is_param(!node!"OsResourceAccessingApplication") then
+        @lstring aa := lstring_param(!node);
+        add_lstring_unique !?acc_apps !aa !"OsResourceAccessingApplication";
+      elsif is_param(!node!"OsResourceLinkedResourceRef") then
+        linked_res_ref := lstring_param(!node);
+      end if; 
+    end foreach;
+    if linked_res_found then
+      if [linked_res_ref string] != "" then
+        [!?r setProperty ![@resource_property_linked_obj new !linked_res_loc !linked_res_ref]];
+      else
+        error linked_res_loc: "No OsResourceLinkedResourceRef found";
+      end if;
+    end if;
+  else
+    error name : "Resource does not have a PARAMETER-VALUES element";
+  end if;
+  @resource_map rm := [cpu resources];
+  [!?rm put !name !r];
+  [!?cpu setResources !rm];
+end routine;
+
+end semantics;

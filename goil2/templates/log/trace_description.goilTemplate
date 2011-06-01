@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<app name="% !PROJECT %">
+  <tasks>%
+foreach TASKS do %
+    <task name="% !NAME %" id="% !INDEX %"/>%
+end foreach
+%
+  </tasks>
+  <isrs>%
+foreach ISRS2 do %
+    <isr name="% !NAME %" id="% !INDEX+[TASKS length] %"/>%
+end foreach
+%
+  </isrs>
+  <resources>%
+foreach REGULARRESOURCES do %
+    <resource name="% !NAME %" id="% !INDEX %"/>%
+end foreach
+%
+  </resources>
+  <alarms>%
+foreach ALARMS do %
+    <alarm name="% !NAME %" id="% !INDEX %"/>%
+end foreach
+%
+  </alarms>
+</app>
+

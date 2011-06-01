@@ -1,0 +1,67 @@
+/*-----------------------------------------------------------------------------
+ * Alarm % !NAME % descriptor
+ *
+ * This alarm does %
+if ACTION == "activateTask" then
+  %the activation of task % !TASK
+elsif ACTION == "setEvent" then
+  %a set of event % !EVENT % to task % !TASK
+elsif ACTION == "callback" then
+  %a callback of function % !FUNCTION %_callback%
+end if
+%
+ */
+
+%
+template action_descriptor
+% 
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+CONST(tpl_alarm_static, OS_CONST) % !NAME %_static = {
+  {
+    /* pointer to counter           */  &% !COUNTER %_counter_desc,
+    /* pointer to the expiration    */  tpl_raise_alarm
+#if (WITH_TRACE == YES)
+    /* id of the alarm for tracing  */  , % !NAME %_id
+#endif
+#if WITH_OSAPPLICATION == YES
+    /* OS application id            */  , %
+if AUTOSAR then
+  if SCALABILITYCLASS >= 3 then
+    !APPLICATION%_id%
+  end if
+end if
+%
+#endif
+  },
+  /* action of the alarm  */  (tpl_action *)&% !NAME %_action
+};
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+VAR(tpl_time_obj, OS_VAR) % !NAME %_alarm_desc = {
+    /* pointer to the static part   */  (tpl_time_obj_static *)&% !NAME %_static,
+    /* next alarm                   */  NULL,
+    /* prev alarm                   */  NULL,%
+if AUTOSTART then
+%
+    /* cycle                        */  % !CYCLETIME %,
+    /* date                         */  % !ALARMTIME %,
+    /* State of the alarm           */  ALARM_AUTOSTART%
+else
+%
+    /* cycle                        */  0,
+    /* date                         */  0,
+    /* State of the alarm           */  ALARM_SLEEP%
+end if
+%
+};
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
