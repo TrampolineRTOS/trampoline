@@ -1,0 +1,98 @@
+#
+# @file com_types.ggs
+#
+# @section File description
+#
+# Semantic types for com object.
+#
+# @section Copyright
+#
+# Goil OIL compiler for Trampoline
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est protege par la loi sur la propriete intellectuelle
+#
+# This software is distributed under the GNU Public Licence v2
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics com_type :
+
+import semantics goil_basic_types in "goil_basic_types.ggs" ;
+import semantics goil_routines in "goil_routines.ggs" ;
+
+class @com extends @oil_obj {
+  @bool        usecom ; # true if a COM {} appears un OIL file, false otherwise
+  @basic_type  timebase ;
+  @basic_type  errorhook ;
+  @basic_type  usegetserviceid ;
+  @basic_type  useparameteraccess ;
+  @basic_type  startcomextension ;
+  @lstringlist appmodes ;
+  @lstring     status ;
+  @lstringlist uses ;
+
+#  method generate ?!@string h :
+#
+#    @string res := "" ;
+#
+##    if usecom then
+##      res := "#define WITH_COM\n" ;
+##    end if ;
+#      
+#    cast timebase :
+#    when == @void do
+#      res .= "#define TPL_COMTIMEBASE 0.001\n" ;
+#    when == @float_class f do
+#      @string val ;
+#      [f string ?val] ;
+#      res .= "#define TPL_COMTIMEBASE ".val."\n" ;
+#    else
+#      error [timebase location] : "Internal error, wrong datatype" ;
+#    end cast ;
+#
+#    bool_flag !?res !errorhook !"WITH_COM_ERROR_HOOK" ;
+#    bool_flag !?res !usegetserviceid !"WITH_COM_USEGETSERVICEID" ;
+#    bool_flag !?res !useparameteraccess !"WITH_COM_USEPARAMETERACCESS" ;
+#    bool_flag !?res !startcomextension !"WITH_COM_STARTCOMEXTENSION" ;
+#
+#    if [status string] == "extended" then
+#      res .= "#define COM_EXTENDED\n";#    YES\n" ;
+#    else
+#      if [status string] == "standard" | [status string] == "" then
+##        res .= "#define COM_EXTENDED    NO\n" ;
+#      else
+#        error status : "Internal error, wrong datatype" ;
+#      end if ;
+#    end if ;
+#
+#    doReplace !?h !"$COM_CONFIG_FLAGS$" !res ;
+#  end method ;
+}
+
+function void_com_obj
+  ->@com com
+:
+  @void    void_obj := [@void new !here];
+  @lstring emptyString := [@lstring new !"" !here];
+  com := [@com new
+    !emptyString
+    !false
+    !void_obj
+    !void_obj
+    !void_obj
+    !void_obj
+    !void_obj
+    ![@lstringlist emptyList]
+    !emptyString
+    ![@lstringlist emptyList]
+  ];
+end function;
+
+end semantics ;

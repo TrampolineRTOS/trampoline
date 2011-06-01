@@ -1,0 +1,135 @@
+#---------------------------------------------------------------------------*
+#                                                                           *
+#  Types for GOIL templates                                                 *
+#                                                                           *
+#  Copyright (C) 2009, ..., 2009 Pierre Molinaro.                           *
+#                                                                           *
+#  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
+#                                                                           *
+#  This program is free software; you can redistribute it and/or modify it  *
+#  under the terms of the GNU General Public License as published by the    *
+#  Free Software Foundation.                                                *
+#                                                                           *
+#  This program is distributed in the hope it will be useful, but WITHOUT   *
+#  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
+#  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
+#   more details.                                                           *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+semantics template_semantics :
+
+#------------------------------------------------------------------------------*
+
+enum @goilTemplateType {
+  boolType, unsignedType, stringType, listType
+}{
+  reader messageGoilTemplateType :
+    boolType -> "bool";
+    unsignedType -> "unsigned";
+    stringType -> "string";
+    listType -> "list";
+  end reader; 
+}
+
+#------------------------------------------------------------------------------*
+
+list @goilTemplateTypeList {
+  @goilTemplateType mType;
+}
+
+#------------------------------------------------------------------------------*
+
+map @goilTemplateFieldMap {
+  @goilTemplateType mType;
+  @uint64 mUnsigned64Value;
+  @string mStringValue;
+  @goilTemplateFieldMapList mListValue;
+  insert insertKey error message "a template field named '%K' is already declared in %L";
+  search searchKey error message "there is no template field named '%K'";
+}
+
+#------------------------------------------------------------------------------*
+
+list @goilTemplateFieldMapList {
+  @goilTemplateFieldMap mMap;
+}
+
+#------------------------------------------------------------------------------*
+
+struct @goilTemplateValue {
+  @uint64 mUnsigned64Value;
+  @string mStringValue;
+  @goilTemplateFieldMapList mMapListValue;
+}
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#  T E M P L A T E    V A R I A B L E    M A P                                 *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+map @goilTemplateVariableMap {
+  @goilTemplateType mType feature setter;
+  @goilTemplateValue mValue feature setter;
+  insert insertKey error message "a template variable named '%K' is already declared in %L";
+  search searchKey error message "there is no template variable named '%K'";
+  remove removeKey error message "there is no template variable named '%K'";
+}
+
+#------------------------------------------------------------------------------*
+
+list @goilTemplateExpressionList {
+  @goilTemplateValue mValue;
+  @goilTemplateType mType;
+}
+
+#------------------------------------------------------------------------------*
+
+list @goilTemplateEnumationList {
+  @goilTemplateValue mEnumeratedValue;
+  @string mPrefix;
+}
+
+#------------------------------------------------------------------------------*
+
+function valueWithBool
+  ??@bool inValue
+  ->@goilTemplateValue outValue
+:
+  outValue := [@goilTemplateValue new
+    ![inValue uint64]
+    !""
+    ![@goilTemplateFieldMapList emptyList]
+  ];
+end function;
+
+#------------------------------------------------------------------------------*
+
+function valueWithUnsigned
+  ??@uint64 inValue
+  ->@goilTemplateValue outValue
+:
+  outValue := [@goilTemplateValue new
+    !inValue
+    !""
+    ![@goilTemplateFieldMapList emptyList]
+  ];
+end function;
+
+#------------------------------------------------------------------------------*
+
+function valueWithString
+  ??@string inValue
+  ->@goilTemplateValue outValue
+:
+  outValue := [@goilTemplateValue new
+    !0L
+    !inValue
+    ![@goilTemplateFieldMapList emptyList]
+  ];
+end function;
+
+#------------------------------------------------------------------------------*
+
+end semantics;

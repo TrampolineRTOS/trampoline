@@ -1,0 +1,37 @@
+#---------------------------------------------------------------------------*
+#                                                                           *
+#  Cocoa component for GOIL                                                 *
+#                                                                           *
+#  Copyright (C) 2008 Pierre Molinaro.                                      *
+#  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
+#                                                                           *
+#  This program is free software; you can redistribute it and/or modify it  *
+#  under the terms of the GNU General Public License as published by the    *
+#  Free Software Foundation.                                                *
+#                                                                           *
+#  This program is distributed in the hope it will be useful, but WITHOUT   *
+#  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
+#  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
+#   more details.                                                           *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+gui cocoaGOIL "cocoa" :
+with option "goil_options.gOption" ;
+
+with lexique "goil_lexique.gLexique" {
+  fileExtension : "oil" ;
+  title: "Source" ;
+  blockComment : "//" ;
+}
+
+#--- Added by PM
+with lexique "template_scanner.gLexique" {
+  fileExtension : "goilTemplate" ;
+  title: "Template" ;
+  blockComment : "#" ;
+}
+
+end gui ;
+
+#--------------------------------------------------------------------------------*

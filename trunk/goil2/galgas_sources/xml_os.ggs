@@ -1,0 +1,118 @@
+#
+# @file xml_task.ggs
+#
+# @section File description
+#
+# This file contains routine to parse an os container.
+#
+# @section Copyright
+#
+# Goil OIL compiler for Trampoline
+#
+# Goil is copyright (c) IRCCyN 2005+
+# Goil is protected by the french law of intellectual property
+#
+# This software is distributed under the GNU Public Licence V2
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics xml_os:
+
+import semantics xml_types in "xml_types.ggs";
+import semantics goil_types_root in "goil_types_root.ggs";
+import semantics xml_utils in "xml_utils.ggs";
+
+routine parse_oshooks
+  ??@xmlNodeList hooks
+  ?!@root_obj cpu
+:
+  foreach hooks do
+    if is_elem(!node!"PARAMETER-VALUES") then
+      @xmlNodeList params := [node nodeList];
+      @os_obj os := [cpu os];
+      foreach params do
+        if    is_param(!node!"OsErrorHook") then
+          [!?os setErrorhook !bool_class_param(!node)];
+          p_bt ![os errorhook];
+        elsif is_param(!node!"OsPostTaskHook") then
+          [!?os setPosttaskhook !bool_class_param(!node)];
+          p_bt ![os posttaskhook];
+        elsif is_param(!node!"OsPreTaskHook") then
+          [!?os setPretaskhook !bool_class_param(!node)];
+          p_bt ![os pretaskhook];
+        elsif is_param(!node!"OsProtectionHook") then
+          [!?os setProtectionhook !bool_class_param(!node)];
+          p_bt ![os protectionhook];
+        elsif is_param(!node!"OsShutdownHook") then
+          [!?os setShutdownhook !bool_class_param(!node)];
+          p_bt ![os shutdownhook];
+        elsif is_param(!node!"OsStartupHook") then
+          [!?os setStartuphook !bool_class_param(!node)];
+          p_bt ![os startuphook];
+        end if;
+      end foreach;
+      [!?cpu setOs !os];
+    end if;
+  end foreach;
+end routine;
+
+routine parse_os_subcontainer
+  ??@xmlNodeList cont_elems
+  ?!@root_obj    cpu
+:
+  foreach cont_elems do
+    @lstring elem_name := long_name(!node);
+    if [elem_name string] == "OsHooks" then
+      message "OsHooks trouve\n";
+      parse_oshooks !cont_elems !?cpu;
+    end if;
+  end foreach;
+end routine;
+
+routine parse_osos
+  ??@xmlNodeList osos
+  ?!@root_obj cpu
+:
+  foreach osos do
+    if is_elem(!node!"PARAMETER-VALUES") then
+      message "*** PARAMETER-VALUES trouve\n";
+      @xmlNodeList params := [node nodeList];
+      @os_obj os := [cpu os];
+      foreach params do
+        if    is_param(!node!"OsScalabilityClass") then
+          [!?os setScalabilityclass !lstring_param(!node)];
+          message [[os scalabilityclass] string]."\n";
+        elsif is_param(!node!"OsStatus") then
+          [!?os setStatus !lstring_param(!node)];
+          message [[os status] string]."\n";
+        elsif is_param(!node!"OsStackMonitoring") then
+          [!?os setStackmonitoring !bool_class_param(!node)];
+          p_bt ![os stackmonitoring];
+        elsif is_param(!node!"OsUseGetServiceId") then
+          [!?os setUsegetserviceid !bool_class_param(!node)];
+          p_bt ![os usegetserviceid];
+        elsif is_param(!node!"OsUseParameterAccess") then
+          [!?os setUseparameteraccess !bool_class_param(!node)];
+          p_bt ![os useparameteraccess];
+        elsif is_param(!node!"OsUseResScheduler") then
+          [!?os setUseresscheduler !bool_class_param(!node)];
+          p_bt ![os useresscheduler];
+        end if; 
+      end foreach;
+      [!?cpu setOs !os];
+    elsif is_elem(!node!"SUB-CONTAINERS") then
+      @xmlNodeList nl := [node nodeList];
+      foreach nl do
+        parse_os_subcontainer ![node nodeList] !?cpu;
+      end foreach;
+    end if;
+  end foreach;
+end routine;
+
+end semantics;

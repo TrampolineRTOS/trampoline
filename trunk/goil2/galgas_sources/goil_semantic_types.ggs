@@ -1,0 +1,829 @@
+semantics goil_semantic_types :
+
+import semantics goil_basic_types in "goil_basic_types.ggs" ;
+import semantics goil_types_action in "goil_types_action.ggs" ;
+import semantics goil_routines in "goil_routines.ggs" ;
+#import semantics goil_types_timing_prot in "goil_types_timing_prot.ggs" ;
+
+#map @implementation_spec {
+#    @imp_type type ;
+#    insert put error message "%K is duplicated in %L";
+#    search get error message "%K does not exists";
+#    remove del error message "%K does not exists";
+#}
+#
+#map @implementation {
+#    @implementation_spec spec ;
+#    insert put error message "%K is duplicated in %L";
+#    search get error message "%K does not exists";
+#    remove del error message "%K does not exists";
+#}
+#
+#map @os_imp {
+#    @lstring type ;
+#    
+#}
+
+#
+# Event classes
+#
+abstract class @event_mask_obj {
+    @location location ;
+}
+
+class @event_mask_void_obj extends @event_mask_obj {
+}
+
+class @event_mask_user_obj extends @event_mask_obj {
+  @luint64 mask ;
+}
+
+class @event_mask_auto_obj extends @event_mask_obj {
+}
+
+class @event_obj extends @oil_obj {
+  @event_mask_obj mask ;
+}
+
+map @event_map {
+    @event_obj event ;
+    insert put error message "Put in event_map: event %K is already defined in %L" ;
+    search get error message "Get in event_map: event %K is not defined" ;
+    remove del error message "Del in event_map: event %K is not defined" ;
+}
+
+map @eventMaskMap {
+  @uint64 mask;
+  insert put error message "Event mask %K is already defined in %L" ;
+  search get error message "Get in @eventMaskMap: Event mask %K is not defined" ;
+  remove del error message "Del in @eventMaskMap: Event mask %K is not defined" ;
+}
+  
+map @event_usage_map {
+    @uint count ;
+    insert insert_count error message "Key %K is already there" ;
+    search get_count error message "Key %K is not there" ;
+    remove delete error message "Key %K cannot be deleted" ;
+}
+
+sortedlist @sorted_events {
+  @lstring event_name ;
+  @uint    count ;
+}{
+  count >
+}
+
+#
+# Alarm classes
+#
+class @alarm_autostart_true extends @autostart_obj {
+    @luint64   alarm_time ;
+    @luint64   cycle_time ;
+    @stringset app_modes ;
+}
+
+class @alarm_obj extends @oil_obj {
+    @lstring        counter_name ;
+    @action_obj     action_params ;
+    @autostart_obj  autostart_params ;
+    @lstringlist    acc_apps ;
+}
+
+map @alarm_map {
+    @alarm_obj  alarm ;
+    insert put error message "Alarm %K is duplicated in %L";
+    search get error message "Alarm %K is not defined" ;
+    remove del error message "Alarm %K is not defined" ;
+}
+
+#
+# Message classes
+#
+
+abstract class @base_mess extends @oil_obj {
+    @action_obj  notification ;
+    @action_obj  notificationerror ;
+    @lstringlist acc_apps ;
+    @identifierMap   other_fields;
+}
+
+map @message_map ;
+
+abstract class @mess_prop_obj {
+    @location location ;
+#    abstract method s_mess !@lstring sd ;
+#    abstract method generate
+##        ?@prefix_map     p
+#        ?@lstring        name 
+#        ?@base_mess      mess
+#        ?@message_map    messages
+#        ?@ident_list_map dests
+#        !@string         h_res
+#        !@string         i_res ;
+#    method generate_notif
+##        ?@prefix_map p
+#        ?@lstring    name
+#        ?@base_mess  mess 
+#        ?!@string    h_res
+#        ?!@string    i_res :
+#
+#        @action_obj notif ;
+#
+#        # get the notification
+#        notif := [mess notification] ;
+#        [notif generate !name !"" !"$NOTIFICATION_PTR$" !?h_res !?i_res] ;
+#
+#        # get the error notification
+#        notif := [mess notificationerror] ;
+#        [notif generate !name !"_error" !"$NOTIFICATION_PTR$" !?h_res !?i_res] ;
+#    end method ;
+#
+#    method generate_dest_list
+##        ?@prefix_map     p
+#        ?@lstring        name
+#        ?@lstring        sendingmessage
+#        ?@ident_list_map dests
+#        ?!@string        res :
+#    
+#        @string next_mo ;
+#        @ident_list dest_list;
+#        @bool notfound := true ;
+#        @bool nextone := false ;
+#        [dests get !sendingmessage ?dest_list] ;
+#
+#        foreach dest_list (@lstring obj) while notfound do
+##            message [obj string]."\n" ;
+#            if nextone then
+#                doReplace !?res !"$TARGET_PTR$" !"&".[obj string]."_message" ;
+#                notfound := false ;
+#            end if ;
+#            if [obj string] == [name string] then
+#                nextone := true ;
+#            end if ; 
+#        end foreach ;
+#        if notfound then
+#            doReplace !?res !"$TARGET_PTR$" !"NULL_PTR" ;
+#        end if ;
+#    end method ;
+}
+
+class @message_obj extends @base_mess {
+    @mess_prop_obj messageproperty ;
+}
+
+map @message_map {
+    @message_obj mess ;
+    insert put error message "Message %K is duplicated in %L" ;
+    search get error message "Message %K does not exist" ;
+    remove del error message "Message %K does not exist" ;
+}
+
+abstract class @filter_prop_obj {
+    @location location;
+#    abstract method generate
+#        ?@lstring    name
+#        ?!@string    res ;
+#    method base_generate
+#        ?@lstring    name
+#        ?!@string    res :
+#
+#        doReplace !?res !"$MESSAGE_NAME$" ![name string] ;
+#        doReplace !?res !"$FILTER$" ![name string]."_filter" ;
+#        doReplace !?res !"$FILTER_PTR$" !"&".[name string]."_filter" ;
+#    end method ;        
+}
+
+class @void_filter extends @filter_prop_obj {
+#    override method generate
+#        ?@lstring    name
+#        ?!@string    res :
+#
+#        doReplace !?res !"$FILTER_PTR$" !"NULL_PTR" ;
+#        [self base_generate !name !?res] ;
+#   end method ;
+}
+
+class @always_filter extends @filter_prop_obj {
+#    override method generate
+#        ?@lstring    name
+#        ?!@string    res :
+#
+#        @string f_res := template_string[!"code" !"filter_noparam"];
+#        res := f_res . res ;
+#        [self base_generate !name !?res] ;
+#        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_always" ;
+#        doReplace !?res !"$FILTER_KIND$" !"Always" ;
+#    end method ;
+}
+
+class @never_filter extends @filter_prop_obj {
+#    override method generate
+#        ?@lstring    name
+#        ?!@string    res :
+#
+#        @string f_res := template_string[!"code" !"filter_noparam"];
+#        res := f_res . res ;
+#        [self base_generate !name !?res] ;
+#        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_never" ;
+#        doReplace !?res !"$FILTER_KIND$" !"Never" ;
+#    end method ;
+}
+
+class @maskednewequalsx_filter extends @filter_prop_obj {
+    @luint64 mask ;
+    @luint64 x ;
+#    override method generate
+#        ?@lstring    name
+#        ?!@string    res :
+#
+#        @string f_res := template_string[!"code" !"filter_mask_x"];
+#        res := f_res . res ;
+#        [self base_generate !name !?res] ;
+#        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_masked_new_equals_x" ;
+#        doReplace !?res !"$FILTER_KIND$" !"Masked New Equals X" ;
+#        doReplace !?res !"$MASK$" ![[mask uint64] string] ;
+#        doReplace !?res !"$X$" ![[x uint64] string] ;
+#    end method ;
+}
+
+class @maskednewdiffersx_filter extends @filter_prop_obj {
+    @luint64 mask ;
+    @luint64 x ;
+#    override method generate
+#        ?@lstring    name
+#        ?!@string    res :
+#
+#        @string f_res := template_string[!"code" !"filter_mask_x"];
+#        res := f_res . res ;
+#        [self base_generate !name !?res] ;
+#        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_masked_new_differs_x" ;
+#        doReplace !?res !"$FILTER_KIND$" !"Masked New Differs X" ;
+#        doReplace !?res !"$MASK$" ![[mask uint64] string] ;
+#        doReplace !?res !"$X$" ![[x uint64] string] ;
+#    end method ;
+}
+
+class @newisequal_filter extends @filter_prop_obj {
+#    override method generate
+#        ?@lstring    name
+#        ?!@string    res :
+#
+#        @string f_res := template_string[!"code" !"filter_noparam"];
+#        res := f_res . res ;
+#        [self base_generate !name !?res] ;
+#        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_new_is_equal" ;
+#        doReplace !?res !"$FILTER_KIND$" !"New is Equal" ;
+#    end method ;
+}
+
+class @newisdifferent_filter extends @filter_prop_obj {
+#    override method generate
+#        ?@lstring    name
+#        ?!@string    res :
+#
+#        @string f_res := template_string[!"code" !"filter_noparam"];
+#        res := f_res . res ;
+#        [self base_generate !name !?res] ;
+#        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_new_is_different" ;
+#        doReplace !?res !"$FILTER_KIND$" !"New is Different" ;
+#    end method ;
+}
+
+class @maskednewequalsmaskedold_filter extends @filter_prop_obj {
+    @luint64 mask ;
+#    override method generate
+#        ?@lstring    name
+#        ?!@string    res :
+#
+#        @string f_res := template_string[!"code" !"filter_mask"];
+#        res := f_res . res ;
+#        [self base_generate !name !?res] ;
+#        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_masked_new_equals_masked_old" ;
+#        doReplace !?res !"$FILTER_KIND$" !"Masked New Equals Masked Old" ;
+#        doReplace !?res !"$MASK$" ![[mask uint64] string] ;
+#    end method ;
+}
+
+class @maskednewdiffersmaskedold_filter extends @filter_prop_obj {
+    @luint64 mask ;
+#    override method generate
+#        ?@lstring    name
+#        ?!@string    res :
+#
+#        @string f_res := template_string[!"code" !"filter_mask"];
+#        res := f_res . res ;
+#        [self base_generate !name !?res] ;
+#        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_masked_new_differs_masked_old" ;
+#        doReplace !?res !"$FILTER_KIND$" !"Masked New Differs Masked Old" ;
+#        doReplace !?res !"$MASK$" ![[mask uint64] string] ;
+#    end method ;
+}
+
+class @newiswithin extends @filter_prop_obj {
+    @luint64 min ;
+    @luint64 max ;
+#    override method generate
+#        ?@lstring    name
+#        ?!@string    res :
+#
+#        @string f_res := template_string[!"code" !"filter_interval"];
+#        res := f_res . res ;
+#        [self base_generate !name !?res] ;
+#        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_new_is_within" ;
+#        doReplace !?res !"$FILTER_KIND$" !"New is Within" ;
+#        doReplace !?res !"$MIN$" ![[min uint64] string] ;
+#        doReplace !?res !"$MAX$" ![[max uint64] string] ;
+#    end method ;
+}
+
+class @newisoutside extends @filter_prop_obj {
+    @luint64 min ;
+    @luint64 max ;
+#    override method generate
+#        ?@lstring    name
+#        ?!@string    res :
+#
+#        @string f_res := template_string[!"code" !"filter_interval"];
+#        res := f_res . res ;
+#        [self base_generate !name !?res] ;
+#        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_new_is_outside" ;
+#        doReplace !?res !"$FILTER_KIND$" !"New is Outside" ;
+#        doReplace !?res !"$MIN$" ![[min uint64] string] ;
+#        doReplace !?res !"$MAX$" ![[max uint64] string] ;
+#    end method ;
+}
+
+class @newisgreater_filter extends @filter_prop_obj {
+#    override method generate
+#        ?@lstring    name
+#        ?!@string    res :
+#
+#        @string f_res := template_string[!"code" !"filter_noparam"];
+#        res := f_res . res ;
+#        [self base_generate !name !?res] ;
+#        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_new_is_greater" ;
+#        doReplace !?res !"$FILTER_KIND$" !"New is Greater" ;
+#    end method ;
+}
+
+class @newislessorequal_filter extends @filter_prop_obj {
+#    override method generate
+#        ?@lstring    name
+#        ?!@string    res :
+#
+#        @string f_res := template_string[!"code" !"filter_noparam"];
+#        res := f_res . res ;
+#        [self base_generate !name !?res] ;
+#        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_new_is_less_or_equal" ;
+#        doReplace !?res !"$FILTER_KIND$" !"New is Less or Equal" ;
+#    end method ;
+}
+
+class @newisless_filter extends @filter_prop_obj {
+#    override method generate
+#        ?@lstring    name
+#        ?!@string    res :
+#
+#        @string f_res := template_string[!"code" !"filter_noparam"];
+#        res := f_res . res ;
+#        [self base_generate !name !?res] ;
+#        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_new_is_less" ;
+#        doReplace !?res !"$FILTER_KIND$" !"New is Less" ;
+#    end method ;
+}
+
+class @newisgreaterorequal_filter extends @filter_prop_obj {
+#    override method generate
+#        ?@lstring    name
+#        ?!@string    res :
+#
+#        @string f_res := template_string[!"code" !"filter_noparam"];
+#        res := f_res . res ;
+#        [self base_generate !name !?res] ;
+#        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_new_is_greater_or_equal" ;
+#        doReplace !?res !"$FILTER_KIND$" !"New is Greater or Equal" ;
+#    end method ;
+}
+
+class @oneeveryn_filter extends @filter_prop_obj {
+    @luint64 period ;
+    @luint64 offset ;
+#    override method generate
+#        ?@lstring    name
+#        ?!@string    res :
+#
+#        @string f_res := template_string[!"code" !"filter_occurence"];
+#        res := f_res . res ;
+#        [self base_generate !name !?res] ;
+#        doReplace !?res !"$FILTERING_FUNC$" !"tpl_filter_one_every_n" ;
+#        doReplace !?res !"$FILTER_KIND$" !"One Every N" ;
+#        doReplace !?res !"$PERIOD$" ![[period uint64] string] ;
+#        doReplace !?res !"$OFFSET$" ![[offset uint64] string] ;
+#  #doReplace !?res !"$INITIALVALUE$" !"$INITIALVALUE$"-"$PERIOD$" ;
+#    end method ;
+}
+
+abstract class @link_obj { @location loc ; }
+
+class @void_mess_prop extends @mess_prop_obj {
+#    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+#    override method generate
+#        ?@lstring        unused name 
+#        ?@base_mess      unused mess
+#        ?@message_map    unused messages
+#        ?@ident_list_map unused dests
+#        !@string         h_res
+#        !@string         i_res :
+#
+#        h_res := "" ;
+#        i_res := "" ;
+#    end method ;
+}
+
+class @ssi_mess_prop extends @mess_prop_obj {
+    @lstring cdatatype ;
+#    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+#    override method generate
+#        ?@lstring        name 
+#        ?@base_mess      unused mess
+#        ?@message_map    unused messages
+#        ?@ident_list_map dests
+#        !@string         h_res
+#        !@string         i_res :
+#
+#        h_res := "" ;
+#        i_res := template_string[!"code" !"message_ssi"];
+#        doReplace !?i_res !"$MESSAGE_NAME$" ![name string] ;
+#        doReplace !?i_res !"$MESSAGE$" ![name string]."_message" ;
+#        if [dests hasKey ![name string]] then
+#            @ident_list d_mess_list ;
+#            [dests get !name ?d_mess_list] ;
+#            @lstring target ;
+#            [d_mess_list first ?target] ;
+#            doReplace !?i_res !"$TARGET$" ![target string]."_message" ;
+#        end if ;
+#    end method ;
+}
+
+class @sse_mess_prop extends @mess_prop_obj {
+    @lstring         cdatatype ;
+    @lstring         tranferproperty ;
+    @filter_prop_obj filter ;
+    @lstring         networkordercallout ;
+    @lstring         cpuordercallout ;
+    @basic_type      initialvalue ;
+    @lstring         networkmessage ;
+#    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+#    override method generate
+#        ?@lstring        name 
+#        ?@base_mess      unused mess
+#        ?@message_map    unused messages
+#        ?@ident_list_map unused dests
+#        !@string         h_res
+#        !@string         i_res :
+#
+#        h_res := "" ;
+#        i_res := template_string[!"code" !"message_sse"];
+#        doReplace !?i_res !"$MESSAGE_NAME$" ![name string] ;
+#        doReplace !?i_res !"$MESSAGE$" ![name string]."_message" ;
+#        doReplace !?i_res !"$NETWORKMESSAGE$" ![networkmessage string]."_net_message" ;
+#        doReplace !?i_res !"$BUFFER$"  ![name string]."_buffer" ;
+#        if [tranferproperty string] != "triggered" then
+#          warning tranferproperty: "Only TRIGGERED transfer property is supported in this version" ;
+#        end if ;
+#        doReplace !?i_res !"$CTYPE$" ![cdatatype string] ;
+#        @string iv ;
+##added by Florent 090313 - we have to initialise occ to (INITIALVALUE - PERIOD + 1)
+##   @lsint64 init ;
+##   init := initialvalue - period + 1 ;
+##
+#        [initialvalue string ?iv] ;
+#        if iv != "" then iv := " = ".iv ; end if ;
+#        doReplace !?i_res !"$INITIALVALUE$" !iv ;
+#    end method ;
+}
+
+class @sde_mess_prop extends @mess_prop_obj {
+    @lstring tranferproperty ;
+    @lstring networkordercallout ;
+    @lstring cpuordercallout ;
+    @basic_type initialvalue ;
+    @lstring networkmessage ;
+#    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+#    override method generate
+#        ?@lstring        unused name 
+#        ?@base_mess      unused mess
+#        ?@message_map    unused messages
+#        ?@ident_list_map unused dests
+#        !@string         h_res
+#        !@string         i_res :
+#
+#        h_res := "" ;
+#        i_res := "" ;
+#    end method ;
+}
+
+class @szi_mess_prop extends @mess_prop_obj {
+#    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+#    override method generate
+#        ?@lstring        name 
+#        ?@base_mess      unused mess
+#        ?@message_map    unused messages
+#        ?@ident_list_map dests
+#        !@string         h_res
+#        !@string         i_res :
+#
+#        h_res := "" ;
+#        i_res := template_string[!"code" !"message_szi"];
+#        doReplace !?i_res !"$MESSAGE_NAME$" ![name string] ;
+#        doReplace !?i_res !"$MESSAGE$" ![name string]."_message" ;
+#        if [dests hasKey ![name string]] then
+#            @ident_list d_mess_list ;
+#            [dests get !name ?d_mess_list] ;
+#            @lstring target ;
+#            [d_mess_list first ?target] ;
+#            doReplace !?i_res !"$TARGET$" ![target string]."_message" ;
+#        end if ;
+#    end method ;
+}
+
+class @sze_mess_prop extends @mess_prop_obj {
+    @lstring networkordercallout ;
+    @lstring cpuordercallout ;
+    @lstring networkmessage ;
+#    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+#    override method generate
+#        ?@lstring        name 
+#        ?@base_mess      unused mess
+#        ?@message_map    unused messages
+#        ?@ident_list_map unused dests
+#        !@string         h_res
+#        !@string         i_res :
+#
+#        h_res := "" ;
+#        i_res := template_string[!"code" !"message_sze"];
+#        doReplace !?i_res !"$MESSAGE_NAME$" ![name string] ;
+#        doReplace !?i_res !"$MESSAGE$" ![name string]."_message" ;
+#        doReplace !?i_res !"$NETWORKMESSAGE$" ![networkmessage string]."_net_message" ;
+#    end method ;
+}
+
+class @rzi_mess_prop extends @mess_prop_obj {
+    @lstring sendingmessage ;
+#    override method s_mess !@lstring sd : sd := sendingmessage ; end method ;
+#    override method generate
+#        ?@lstring        name 
+#        ?@base_mess      mess
+#        ?@message_map    unused messages
+#        ?@ident_list_map dests
+#        !@string         h_res
+#        !@string         i_res :
+#
+#        h_res := "" ;
+#        i_res := template_string[!"code" !"message_rzi"];
+#        doReplace !?i_res !"$MESSAGE_NAME$" ![name string] ;
+#        doReplace !?i_res !"$MESSAGE$" ![name string]."_message" ;
+#
+#        # Add the notification structures if any
+#        [self generate_notif !name !mess !?h_res !?i_res] ;
+#
+#        # Add the destination message chaining
+#        [self generate_dest_list !name !sendingmessage !dests !?i_res] ;
+#
+#    end method ;
+}
+
+class @rze_mess_prop extends @mess_prop_obj {
+    @lstring networkordercallout ;
+    @lstring cpuordercallout ;
+    @lstring networkmessage ;
+#    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+#    override method generate
+#        ?@lstring        unused name 
+#        ?@base_mess      unused mess
+#        ?@message_map    unused messages
+#        ?@ident_list_map unused dests
+#        !@string         h_res
+#        !@string         i_res :
+#
+#        h_res := "" ;
+#        i_res := "" ;
+#    end method ;
+}
+
+class @rui_mess_prop extends @mess_prop_obj {
+    @lstring sendingmessage ;
+    @filter_prop_obj filter ;
+    @basic_type initialvalue ;
+#    override method s_mess !@lstring sd : sd := sendingmessage ; end method ;
+#    override method generate
+#        ?@lstring        name 
+#        ?@base_mess      mess
+#        ?@message_map    messages
+#        ?@ident_list_map dests
+#        !@string         h_res
+#        !@string         i_res :
+#
+#        h_res := "" ;
+#        i_res := template_string[!"code" !"message_rui"];
+#        doReplace !?i_res !"$MESSAGE_NAME$" ![name string] ;
+#        doReplace !?i_res !"$MESSAGE$" ![name string]."_message" ;
+#        doReplace !?i_res !"$BUFFER$"  ![name string]."_buffer" ;
+#
+#        # Add the filter structures if any
+#        [filter generate !name !?i_res] ;
+#
+#        # Add the notification structures if any
+#        [self generate_notif !name !mess !?h_res !?i_res] ;
+#
+#        # Add the destination message chaining
+#        [self generate_dest_list !name !sendingmessage !dests !?i_res] ;
+#
+#        # Add the size of the source message object
+#        @message_obj sender ;
+#        [messages get !sendingmessage ?sender] ;
+#        @mess_prop_obj prop := [sender messageproperty] ;
+#        cast prop :
+#        when == @ssi_mess_prop ssi do
+#            doReplace !?i_res !"$CTYPE$" ![[ssi cdatatype] string] ;
+#            doReplace !?i_res !"$SIZE$" !"sizeof(".[[ssi cdatatype] string].")";
+#            @string iv ;
+#            [initialvalue string ?iv] ;
+#            if iv != "" then iv := " = ".iv ; end if ;
+#            doReplace !?i_res !"$INITIALVALUE$" !iv ;
+#        else
+#            error here : "Incompatible sending message object" ;
+#        end cast ;
+#    end method ;
+}
+
+class @rqi_mess_prop extends @mess_prop_obj {
+    @lstring sendingmessage ;
+    @filter_prop_obj filter ;
+    @luint64 queuesize ;
+#    override method s_mess !@lstring sd : sd := sendingmessage ; end method ;
+#    override method generate
+#        ?@lstring        name 
+#        ?@base_mess      mess
+#        ?@message_map    messages
+#        ?@ident_list_map dests
+#        !@string         h_res
+#        !@string         i_res :
+#
+#        h_res := "" ;
+#        i_res := template_string[!"code" !"message_rqi"];
+#        doReplace !?i_res !"$MESSAGE_NAME$" ![name string] ;
+#        doReplace !?i_res !"$MESSAGE$" ![name string]."_message" ;
+#        doReplace !?i_res !"$BUFFER$"  ![name string]."_buffer" ;
+#
+#       # Add the filter structures if any
+#        [filter generate !name !?i_res] ;
+#
+#        # Add the notification structures if any
+#        [self generate_notif !name !mess !?h_res !?i_res] ;
+#
+#        # Add the destination message chaining
+#        [self generate_dest_list !name !sendingmessage !dests !?i_res] ;
+#
+#        # Add the size of the source message object
+#        @message_obj sender ;
+#        [messages get !sendingmessage ?sender] ;
+#        @mess_prop_obj prop := [sender messageproperty] ;
+#        cast prop :
+#        when == @ssi_mess_prop ssi do
+#            doReplace !?i_res !"$CTYPE$" ![[ssi cdatatype] string] ;
+#        else
+#            error here : "Incompatible sending message object" ;
+#        end cast ;
+#
+#        # Add the size of the queue
+#        doReplace !?i_res !"$QUEUE_SIZE$"  ![[queuesize uint64] string] ;
+#
+#        # Add the dynamic queue
+#        doReplace !?i_res !"$DYN_QUEUE$"  ![name string]."_dyn_queue" ;
+#
+#    end method ;
+}
+
+class @rue_mess_prop extends @mess_prop_obj {
+    @lstring cdatatype ;
+    @filter_prop_obj filter ;
+    @link_obj link ;
+    @basic_type initialvalue ;
+#    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+#    override method generate
+#        ?@lstring        name 
+#        ?@base_mess      mess
+#        ?@message_map    unused messages
+#        ?@ident_list_map unused dests
+#        !@string         h_res
+#        !@string         i_res :
+#
+#        h_res := "" ;
+#        i_res := template_string[!"code" !"message_rue"];
+#        doReplace !?i_res !"$MESSAGE_NAME$" ![name string] ;
+#        doReplace !?i_res !"$MESSAGE$" ![name string]."_message" ;
+#        doReplace !?i_res !"$BUFFER$"  ![name string]."_buffer" ;
+#
+#        # Add the filter structures if any
+#        [filter generate !name !?i_res] ;
+#
+#        # Add the notification structures if any
+#        [self generate_notif !name !mess !?h_res !?i_res] ;
+#
+#        # Add the destination message chaining
+#        #[self generate_dest_list !p !name !sendingmessage !dests !?i_res] ;
+#
+#        # Add the size and the C type of the message object
+#        doReplace !?i_res !"$CTYPE$" ![cdatatype string] ;
+#        doReplace !?i_res !"$SIZE$" !"sizeof(".[cdatatype string].")" ;
+#        @string iv ;
+#        [initialvalue string ?iv] ;
+#        if iv != "" then iv := " = ".iv ; end if ;
+#        doReplace !?i_res !"$INITIALVALUE$" !iv ;
+#        doReplace !?i_res !"$TARGET_PTR$" !"NULL_PTR" ;
+#    end method ;
+}
+
+class @rqe_mess_prop extends @mess_prop_obj {
+    @lstring cdatatype ;
+    @luint64 queuesize ;
+    @filter_prop_obj filter ;
+    @link_obj link ;
+#    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+#    override method generate
+#        ?@lstring        unused name 
+#        ?@base_mess      unused mess
+#        ?@message_map    unused messages
+#        ?@ident_list_map unused dests
+#        !@string         h_res
+#        !@string         i_res :
+#
+#        h_res := "" ;
+#        i_res := "" ;
+#    end method ;
+}
+
+class @rde_mess_prop extends @mess_prop_obj {
+    @link_obj link ;
+    @basic_type initialvalue ;
+#    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+#    override method generate
+#        ?@lstring        unused name 
+#        ?@base_mess      unused mess
+#        ?@message_map    unused messages
+#        ?@ident_list_map unused dests
+#        !@string         h_res
+#        !@string         i_res :
+#
+#        h_res := "" ;
+#        i_res := "" ;
+#    end method ;
+}
+
+class @rzs_mess_prop extends @mess_prop_obj {
+    @lstring cdatatype ;
+    @basic_type initialvalue ;
+#    override method s_mess !@lstring sd : sd := [@lstring new !"" !here] ; end method ;
+#    override method generate
+#        ?@lstring        unused name 
+#        ?@base_mess      unused mess
+#        ?@message_map    unused messages
+#        ?@ident_list_map unused dests
+#        !@string         h_res
+#        !@string         i_res :
+#
+#        h_res := "" ;
+#        i_res := "" ;
+#    end method ;
+}
+
+#
+# Link attribute management
+#
+class @void_link extends @link_obj {}
+
+class @true_link extends @link_obj {
+    @lstring receivemessage ;
+}
+
+class @false_link extends @link_obj {
+  @lstring networkmessage ;
+}
+
+class @nmcallback_action extends @action_obj {
+    @lstring function_name ;
+    @luint64 ipdu ;
+#    override method generate
+#        ?@lstring    unused name
+#        ?@string     unused err
+#        ?@string     key
+#        ?!@string    unused h_res
+#        ?!@string    i_res :
+#
+#        doReplace !?i_res !key !"NULL_PTR" ;
+#    end method ;
+}
+
+end semantics ;
+# vim:ft=ggs:ts=4:sw=4

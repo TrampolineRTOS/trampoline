@@ -1,0 +1,152 @@
+#
+# @file all_goil.ggs
+#
+# @section File description
+#
+# This file compile all the galgas sources of Goil.
+#
+# @section Copyright
+#
+# Goil OIL compiler for Trampoline
+#
+# Goil is copyright (c) IRCCyN 2005+
+# Goil is protected by the french law of intellectual property
+#
+# This software is distributed under the GNU Public Licence V2
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+project all_goil -> "goil" :
+
+  feature "makefile_macosx" ;
+  feature "makefile_macosx_intel" ;
+  feature "makefile_macosx_ppc" ;
+  feature "makefile_macosx_universal" ;
+  feature "makefile_unix" ;
+  feature "makefile_i386_linux_on_macosx" ;
+  feature "makefile_mingw_on_macosx" ;
+  feature "makefile_msys_on_win32" ;
+  feature "project_xcode" ;
+  feature "xcode_arch:i386" ;
+  #
+  # New templates (added by PM)
+  #
+  semantics "template_semantics.gSemantics";
+  lexique   "template_scanner.gLexique";
+  syntax    "template_expression_parser.gSyntax";
+  syntax    "template_parser.gSyntax";
+  grammar   "template_grammar.gGrammar";
+  semantics "template_invocation.gSemantics";
+  semantics "template_routines.gSemantics";
+  semantics "template_functions.gSemantics";
+
+  lexique   "goil_lexique.gLexique";
+  option    "goil_options.gOption";
+  syntax    "goil_syntax.gSyntax";
+  syntax    "implementation_parser.gSyntax";
+  semantics "implementation_types.gSemantics";
+  semantics "goil_semantics.gSemantics";
+  semantics "goil_basic_types.gSemantics";
+  #semantics "goil_semantic_types.ggs" : makefile, xcode_tool;
+  #semantics "goil_imp_def.ggs"        : makefile, xcode_tool;
+  semantics "goil_routines.gSemantics";
+  semantics "systemConfig.gSemantics";
+  #semantics "goil_check.ggs"          : makefile, xcode_tool;
+  
+
+  #
+  # XML parsing for AUTOSAR 3+
+  #
+#  lexique   "xml_parsing_lexique.ggs"  : makefile, xcode_tool, xcode_app;
+#  syntax    "xml_parsing_syntax.ggs"   : makefile, xcode_tool;
+#  grammar   "xml_parsing_grammar.ggs"  : makefile, xcode_tool;  
+#  semantics "xml_types.ggs"            : makefile, xcode_tool;
+#  semantics "xml_to_goil.ggs"          : makefile, xcode_tool;
+#  semantics "xml_utils.ggs"            : makefile, xcode_tool;
+#  semantics "xml_os.ggs"               : makefile, xcode_tool;
+#  semantics "xml_resource.ggs"         : makefile, xcode_tool;
+#  semantics "xml_schedtable.ggs"       : makefile, xcode_tool;
+#  semantics "xml_task.ggs"             : makefile, xcode_tool;
+#  semantics "xml_containers.ggs"       : makefile, xcode_tool;
+  #
+  # Post-processing and verification
+  #
+  semantics "defaults.gSemantics";
+  semantics "semantic_verification.gSemantics";
+#  semantics "scheduletable_verif.ggs"        : makefile, xcode_tool;
+#  semantics "goil_alarm_verif.ggs"           : makefile, xcode_tool;
+#  semantics "isrs_verif.ggs"                 : makefile, xcode_tool;
+#  semantics "tasks_verif.ggs"                : makefile, xcode_tool;
+#  semantics "resources_verif.ggs"            : makefile, xcode_tool;
+#  semantics "goil_app_verif.ggs"             : makefile, xcode_tool;
+#  semantics "goil_env_verification.ggs"      : makefile, xcode_tool;
+#  semantics "goil_message_verif.ggs"         : makefile, xcode_tool;
+  
+  #
+  # Datatypes
+  #
+#  semantics "goil_types_os.ggs"             : makefile, xcode_tool;
+#  semantics "goil_types_scheduletable.ggs"  : makefile, xcode_tool;
+#  semantics "goil_types_app.ggs"            : makefile, xcode_tool;
+#  semantics "goil_types_action.ggs"         : makefile, xcode_tool;
+  semantics "goil_types_root.gSemantics";
+#  semantics "goil_types_timing_prot.ggs"    : makefile, xcode_tool;
+#  semantics "goil_types_resource.ggs"       : makefile, xcode_tool;
+#  semantics "goil_types_isr.ggs"            : makefile, xcode_tool;
+#  semantics "goil_types_task.ggs"           : makefile, xcode_tool;
+#  semantics "goil_types_counter.ggs"        : makefile, xcode_tool;
+#  semantics "goil_types_networkmessage.ggs" : makefile, xcode_tool;
+#  semantics "com_type.ggs"                  : makefile, xcode_tool;
+  
+  #
+  # Objects of the application definition
+  #
+#  semantics "goil_obj_os.ggs"             : makefile, xcode_tool;
+#  semantics "goil_obj_task.ggs"           : makefile, xcode_tool;
+#  semantics "goil_obj_counter.ggs"        : makefile, xcode_tool;
+#  semantics "goil_obj_appmode.ggs"        : makefile, xcode_tool;
+#  semantics "goil_obj_alarm.ggs"          : makefile, xcode_tool;
+#  semantics "goil_obj_resource.ggs"       : makefile, xcode_tool;
+#  semantics "goil_obj_event.ggs"          : makefile, xcode_tool;
+#  semantics "goil_obj_isr.ggs"            : makefile, xcode_tool;
+#  semantics "goil_obj_message.ggs"        : makefile, xcode_tool;
+#  semantics "goil_obj_networkmessage.ggs" : makefile, xcode_tool;
+#  semantics "goil_obj_com.ggs"            : makefile, xcode_tool;
+#  semantics "goil_obj_ipdu.ggs"           : makefile, xcode_tool;
+#  semantics "goil_obj_scheduletable.ggs"  : makefile, xcode_tool;
+#  semantics "goil_obj_application.ggs"    : makefile, xcode_tool;
+#  semantics "goil_timing_prot_attrs.ggs"  : makefile, xcode_tool;
+  #
+  # Code generation
+  #
+#  semantics "system_config.ggs"            : makefile, xcode_tool;
+#  semantics "config_type.ggs"              : makefile, xcode_tool;
+#  semantics "goil_code_generation.ggs"     : makefile, xcode_tool;
+  
+  grammar "goil_grammar.gGrammar";
+  grammar "goil_file_level_include.gGrammar";
+  grammar "goil_cpu_level_include.gGrammar";
+  program "goil_program.gProgram";
+  
+  #
+  # Parsing of config file
+  #
+#  lexique   "cfg_lexique.gLexique" : makefile, xcode_tool;
+#  syntax    "cfg_syntax.ggs"       : makefile, xcode_tool;
+#  grammar   "cfg_grammar.gGrammar" : makefile, xcode_tool;
+#  semantics "cfg_types.ggs"        : makefile, xcode_tool;
+  
+  #
+  # Cocoa GOIL
+  #
+  gui "cocoaGOIL.gGui";
+  
+end project;
+# vim:ft=ggs:ts=4:sw=4
+

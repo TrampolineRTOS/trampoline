@@ -1,0 +1,33 @@
+%
+if not exists STACKSIZE then
+  error NAME "STACKSIZE attribute not defined for ".PROCESSKIND." ".NAME
+else
+%/*
+ * % !PROCESSKIND % % !NAME % stack
+ */
+#define APP_% !PROCESSKIND %_% !NAME %_START_SEC_STACK
+#include "tpl_memmap.h"
+tpl_stack_word % !NAME %_stack_zone[% !STACKSIZE %/sizeof(tpl_stack_word)];
+#define APP_% !PROCESSKIND %_% !NAME %_STOP_SEC_STACK
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+struct TPL_STACK % !NAME %_stack = {% !NAME %_stack_zone, % !STACKSIZE %};
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#define % !NAME %_STACK &% !NAME %_stack
+
+/*
+ * % !PROCESSKIND % % !NAME % context
+ */
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+struct TPL_CONTEXT % !NAME %_context;
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#define % !NAME %_CONTEXT &% !NAME %_context
+
+%end if

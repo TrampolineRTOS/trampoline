@@ -1,0 +1,145 @@
+#
+# Galgas OIL compile aka goil
+#
+# goil is part of Trampoline
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline is protected by the French intellectual property law
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# config files syntax for targets description
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+syntax cfg_syntax :
+#--- Lexique Reference, used when grammar source file extension is .gGrammar
+with "cfg_lexique.gLexique";
+
+import lexique cfg_lexique in "cfg_lexique.gLexique" ;
+import semantics cfg_types in "cfg_types.ggs" ;
+
+nonterminal <cfg_start>
+    !@config cfg
+;
+
+nonterminal <cfg_attrs>
+    ?!@cfg_attrs attrs
+;
+
+nonterminal <interrupts>
+    ?!@basic_type its
+;
+
+rule <cfg_start>
+    !@config cfg
+:
+    cfg := [@config emptyMap] ;
+
+    @cfg_attrs  task_attrs [emptyMap] ;
+    @cfg_attrs  isr_attrs [emptyMap] ;
+    @cfg_attrs  isr_code_attrs [emptyMap] ;
+    @cfg_attrs  counter_code_attrs [emptyMap] ;
+    @basic_type its := [@void new !here]; 
+
+    repeat
+    while
+        @luint64 tpn ;
+        $tp_ns_per_counter_tick$ ; $=$ ; $uint$ ?tpn ; $;$ ;
+        if [cfg hasKey !"wd_ticks_per_ns"] then
+            error here : "Redefinition of tp_ns_per_counter_tick" ;
+        else
+            [!?cfg put
+                ![@lstring new !"wd_ticks_per_ns" !here]
+                ![@uint64_class new ![tpn location] ![tpn uint64]]
+            ] ;
+        end if ;
+    while
+        @luint64 s_align ;
+        $stack_alignment$ ; $=$ ; $uint$ ?s_align ; $;$ ;
+        if [cfg hasKey ! "stack_align"] then
+            error here : "Redefinition of stack_alignment" ;
+        else
+            [!?cfg put
+                ![@lstring new !"stack_align" !here]
+                ![@uint64_class new ![s_align location] ![s_align uint64]]
+            ] ;
+        end if ;
+    while
+        @lstring oil_attr ;
+        @lstring tpl_attr ;
+        $task$ ; ${$ ; <cfg_attrs> !?task_attrs ; $}$ ; $;$ ;
+    while
+        @lstring oil_attr ;
+        @lstring tpl_attr ;
+        $isr$ ; ${$ ; <cfg_attrs> !?isr_attrs ; $}$ ; $;$ ;
+    while
+        @lstring oil_attr ;
+        @lstring tpl_attr ;
+        $isr_code$ ; ${$ ; <cfg_attrs> !?isr_code_attrs ; $}$ ; $;$ ;
+    while
+        @lstring oil_attr ;
+        @lstring tpl_attr ;
+        $counter_code$ ; ${$ ; <cfg_attrs> !?counter_code_attrs ; $}$ ; $;$ ;
+    while
+        <interrupts> !?its;
+    end repeat ;
+
+    [!?cfg put
+        ![@lstring new !"task_attrs" !here]
+        ![@attrs new !here !task_attrs]
+    ] ;
+    [!?cfg put
+        ![@lstring new !"isr_attrs" !here]
+        ![@attrs new !here !isr_attrs]
+    ] ;
+    [!?cfg put
+        ![@lstring new !"isr_code_attrs" !here]
+        ![@attrs new !here !isr_code_attrs]
+    ] ;
+    [!?cfg put
+        ![@lstring new !"counter_code_attrs" !here]
+        ![@attrs new !here !counter_code_attrs]
+    ] ;
+    [!?cfg put![@lstring new!"it_sources"!here]!its];
+end rule ;
+
+
+rule <cfg_attrs>
+    ?!@cfg_attrs attrs
+:
+    repeat
+    while
+        @lstring oil_attr ;
+        @lstring tpl_attr ;
+        $idf$ ?oil_attr ; $=$ ; $idf$ ?tpl_attr ; $;$ ;
+        [!?attrs put !oil_attr !tpl_attr] ;
+    end repeat ;
+end rule ;
+
+rule <interrupts>
+  ?!@basic_type its
+:
+  @ident_map it_src [emptyMap];
+  @luint64 it_count;
+  $interrupts$; $[$; $uint$ ?it_count; $]$;
+  @location it_loc := here;
+  ${$;
+  repeat while
+    @lstring src;
+    @luint64 id;
+    $idf$ ?src; $=$; $uint$ ?id; $;$;
+    if [id uint64] >= [it_count uint64] then
+      error id: "Interrupt id out of range";
+      error it_count: "Range was defined here";
+    end if;
+    [!?it_src put!src![@uint64_class new![id location]![id uint64]]];
+  end repeat;
+  $}$; $;$;
+  its := [@interrupts new !it_loc !it_count !it_src];
+end rule;
+
+end syntax ;

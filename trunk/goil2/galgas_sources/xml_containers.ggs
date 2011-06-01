@@ -1,0 +1,61 @@
+#
+# @file xml_containers.ggs
+#
+# @section File description
+#
+# This file contains routine to parse epc containers.
+#
+# @section Copyright
+#
+# Goil OIL compiler for Trampoline
+#
+# Goil is copyright (c) IRCCyN 2005+
+# Goil is protected by the french law of intellectual property
+#
+# This software is distributed under the GNU Public Licence V2
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics xml_containers:
+
+import semantics xml_os         in "xml_os.ggs";
+import semantics xml_resource   in "xml_resource.ggs";
+import semantics xml_schedtable in "xml_schedtable.ggs";
+import semantics xml_task       in "xml_task.ggs";
+
+routine parse_container
+  ??@xmlNodeList cont_elems
+  ?!@root_obj    cpu
+:
+  @lstring emptyString := [@lstring new !"" !here];
+  @lstring elem := emptyString;
+  @lstring name := emptyString;
+  foreach cont_elems do
+    @lstring lelem := long_name(!node);
+    @lstring lname := short_name(!node);
+    if [lelem string] != "" then
+      elem := lelem;
+    end if;
+    if [lname string] != "" then
+      name := lname;
+    end if;
+  end foreach;
+
+  if    [elem string] == "OsOS" then
+    parse_osos !cont_elems !?cpu;
+  elsif [elem string] == "OsResource" then
+    parse_resource !name !cont_elems !?cpu;
+  elsif [elem string] == "OsScheduleTable" then
+    parse_schedtable !name !cont_elems !?cpu;
+  elsif [elem string] == "OsTask" then
+    parse_task !name !cont_elems !?cpu;
+ end if;
+end routine;
+
+end semantics;

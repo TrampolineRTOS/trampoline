@@ -1,0 +1,287 @@
+semantics scheduletable_verif:
+
+#import semantics goil_semantic_types in "goil_semantic_types.ggs";
+#import semantics goil_types_scheduletable in "goil_types_scheduletable.ggs";
+#import semantics goil_types_counter in "goil_types_counter.ggs";
+#import semantics goil_types_task in "goil_types_task.ggs";
+import semantics goil_types_root in "goil_types_root.ggs";
+
+#
+# Autosar schedule tables verification
+#
+routine schedule_tables_well_formed
+  ??@scheduletable_map sts
+  ??@root_obj cpu
+:
+  foreach sts (@lstring stname @scheduletable_obj st) do
+    #check signgle-shot or repeating
+    @bool perio := getBool[![st periodic] !false];
+    # Check LENGTH is a number
+    @uint64 len := uint64OrError[![st length] !"LENGTH"];
+      
+    # Check precision in the range [0 ; Duration]
+    cast [st ltgt_sync]:      
+    when == @ltgt_sync_true sync do
+       if perio == false then
+           error [[st periodic] location]: "A synchronized schedule table shall be repeating otherwise, synchronisation can't be done.";
+       end if;
+       @uint64 prec := uint64OrError[![sync precision] !"PRECISION"];
+       if ( prec > ( len + 1L ) ) then
+          error [[sync precision] location]: "OS438 - An explicit schedule table shall have a precision in the range 0 to duration.";
+       end if;
+    else end cast; 
+    
+    # Check the schedule table has not a length equal to 0
+    if len == 0L then
+      error [[st length] location]: "The LENGTH attribute should not be 0";
+    end if;
+
+    @expiry_point_list eps:= [st exp_points];
+    
+    # Check if at least one expiry point exist in the schedule table 
+    @uint exp_pt_number := [eps length];
+    if ( exp_pt_number == 0) then
+      error stname: "OS401 - no EXPIRY_POINT found for SCHEDULETABLE ".[stname string];
+    end if;
+  
+    # Check each expiry point has at least one action
+    foreach eps do
+      if [[point actions] length] == 0 then
+        error [point name]: "OS407 - no ACTION found for EXPIRY_POINT ".[[point name] string];
+      end if;
+    end foreach;
+        
+    @uint64 previous_offset := 0L ;
+    @uint64 first_delay := 0L;
+    @uint64 first_maxret :=0L;
+    @uint64 first_maxadv :=0L;
+    @uint64 last_delay := 0L;
+    @bool first_time := true;
+    @uint64 previous_delay := 0L ;
+    @uint64 maxret := 0L;
+    @uint64 maxadv := 0L;
+    @uint i := 0;
+    
+    #check counter value
+    #foreach [st counter] (@lstring counter_name @counter_obj counter) do
+    #message "counter = ".[st counter]."\n"; 
+  
+    # Check the expiry points are < (if repeating) or <= (if one shot)
+    # the duration of the schedule table
+    @counter_map counters := [cpu counters];
+    if [counters hasKey ![[st counter] string]] then
+      @counter_obj cnt;
+      [counters getCounter ![st counter] ?cnt];
+      @uint64 mav := [uint32_or_error[![cnt max_allowed_value] !"MAXALLOWEDVALUE"] uint64];
+      @uint64 mc := [uint32_or_error[![cnt min_cycle] !"MINCYCLE"] uint64];
+  
+      @bool first_ep := true;
+      @uint64 previous_offset := 0L ;
+      foreach eps do
+        # i : actual expiry point
+        i := i + 1;
+ 
+        # Check the offset of each expiry point is not beyond the LENGTH of
+        # the schedule table
+        @uint64 offset := uint64OrError[![point offset] !"OS442 - OFFSET"];
+        @location off_loc := [[point offset] location];
+        if offset > len then
+           error off_loc: "OFFSET of expiry point is greater than the LENGTH of the Schedule Table ".[stname string];
+        end if;
+        
+        # check if MaxRetard and MaxAdvance are in the right range.
+        #   MaxRetard > [previous_delay - MINCYCLE]
+        #   MaxAdvance < [duration - offset] OS437 ??? MaxAdvance < [duration - previous_delay]
+        previous_delay := offset - previous_offset;
+        if (previous_offset == 0L) then
+            first_delay := offset;
+        end if;   
+ 
+        @location adj_loc := [[point adjust] location];
+        cast [point adjust]:
+          when == @adjustable_true adj do
+            maxret := uint64OrError[![adj max_retard] !"MAX_RETARD"];
+            maxadv := uint64OrError[![adj max_advance] !"MAX_ADVANCE"];
+            
+            # save the first offset and the first maxretard to check at the end if it's ok (depends on the last expiry point)
+            if (previous_offset == 0L) then
+               first_maxret := maxret;
+               first_maxadv := maxadv;
+            else
+               if ( maxret > (previous_delay - mc) ) then
+                 error adj_loc: "OS436 - In expiry point at offset = ".[offset string].", MaxRetard (".[maxret string].") should be inferior to the previous delay (".[previous_delay string].") minus MINCYCLE of the counter (".[mc string].").";
+               end if;   
+               if ( maxadv > (len - previous_delay) ) then
+                 error adj_loc: "OS437 - In expiry point at offset = ".[offset string].", MaxAdvance (".[maxadv string].") should be inferior to duration (".[len string].") minus the previous delay(".[previous_delay string].").";
+               end if;
+            end if;
+            
+        else end cast;
+ 
+        # check the first offset is either 0 or in the range [OsMinCycle .. OsMaxaAllowedValue]
+        # check the delay between expiry points is in the range [OsMinCycle .. OsMaxaAllowedValue]
+        if (offset - previous_offset) < mc then
+          if first_ep then
+            if offset != 0L then
+              error off_loc: "OS443 - OFFSET of first expiry point is lower than MINCYCLE of the driving counter and not equal to 0.";
+            end if;
+          else
+            error off_loc: "OS408 - Delay between expiry point number ".[(i-1) string]." and ".[i string]." is lower than MINCYCLE of the driving counter";
+          end if;
+        end if;
+        if (offset - previous_offset) > mav then
+          if first_ep then
+              error off_loc: "OS443 - OFFSET of first expiry point is greater than MAXALLOWEDVALUE of the driving counter";
+          else
+              error off_loc: "OS408 - Delay between expiry point number ".[(i-1) string]." and ".[i string]." is greater than MAXALLOWEDVALUE of the driving counter";
+   end if;
+        end if;
+        first_ep := false;
+        previous_offset := offset;
+
+        if (i == exp_pt_number) then
+           # if adjustable set :
+           #   - check the first expiry point (maxretard are allowed in repeating st only because synchronization can be done in repeating st only)
+           cast [point adjust]:
+           when == @adjustable_true do
+               last_delay := len - previous_offset + first_delay;
+               if ( first_maxret > (last_delay - mc) ) then
+                   error stname: "OS436 - In first expiry point, MaxRetard (".[first_maxret string].") should be inferior to the previous delay (".[last_delay string].") minus MINCYCLE of the counter (".[mc string].").";
+               end if;
+               if ( first_maxadv > (len - first_delay) ) then
+                   error stname: "OS437 - In first expiry point, MaxAdvance (".[first_maxadv string].") should be inferior to duration (".[len string].") minus the first delay(".[first_delay string].").";
+               end if;  
+           else end cast;
+
+           @uint64 final_delay := len - previous_offset;
+           # check the final delay  :
+           #    - single-shot ST : 0 or in the range [OsMinCycle .. OsMaxaAllowedValue]
+           #    - repeating ST : in the range [OsMinCycle .. OsMaxaAllowedValue]
+           if ( final_delay == 0L ) then
+              if perio then
+                 error off_loc: "OS427 - Final delay can be equal to 0 only for single-shot schedule table and ".[stname string]." is a repeating one";
+              end if;
+           else
+              if ( (final_delay < mc) | (final_delay > mav) ) then
+                  error off_loc: "OS444 - Final delay should be within MINCYCLE and MAXALLOWEDVALUE of the driving counter";
+              end if;  
+           end if;     
+        end if;
+                    
+      end foreach;
+          
+      # If Implicit Synchronisation, LENGTH should be equal to OSMAXALLOWEDVALUE + 1 (OS429)
+      # @ltgt_sync_obj synchro := [st ltgt_sync];
+      cast [st ltgt_sync] :
+      when == @ltgt_sync_true sst do
+        if ([[sst strategy] string] == "IMPLICIT") then
+          cast [st autostart] :
+          when == @sd_autostart_relative do
+            error [[st autostart] location]: "OS430 - An IMPLICIT schedule table should be started in Absolute mode only";
+          when == @sd_autostart_synchron do
+            error [[st autostart] location]: "OS430 - An IMPLICIT schedule table should be started in Absolute mode only";
+          else end cast;
+             
+          if (len != (mav + 1L)) then
+            error [[st length] location]: "OS429 - An IMPLICIT schedule table should have a duration equal to OSMAXALLOWEDVALUE + 1 (".[(mav +1L) string].") of its counter.";
+          end if; 
+        end if;
+        if ([[sst strategy] string] == "EXPLICIT") then
+          if (len > (mav + 1L)) then
+            error [[st length] location]: "OS431 - An EXPLICIT schedule table shouldn't have a duration greater than OSMAXALLOWEVALUE + 1 (".[(mav+1L) string].") of its counter.";
+          end if; 
+        end if;
+      else end cast ;
+    
+      #Check good offset/start of autostart schedule table (because if out of range, API service call StartScheduleTableRel/StartScheduleTableRel
+      # can't return value in autostart)
+      cast [st autostart]:
+      when == @sd_autostart_relative relative_data do
+        if ( [[relative_data offset] uint64] == 0L ) then
+          error stname: "OS332 - ".[stname string]." autostart's offset is equal to 0.";
+        elsif ( [[relative_data offset] uint64] > ( mav - first_delay) ) then
+          error stname: "OS276 - ".[stname string]." autostart's offset is greater than MAXALLOWEDVALUE of the driving counter minus the Initial Offset.";
+        end if;
+      when == @sd_autostart_absolute absolute_data do
+        if ( [[absolute_data value] uint64] > mav )  then
+          error stname: "OS349 - ".[stname string]." autostart's offset is greater than MAXALLOWEDVALUE of the driving counter.";
+        end if;
+      else end cast;
+    end if;
+    
+  end foreach;
+end routine;
+
+routine schedule_tables_counters_exist_and_compatible
+  ??@scheduletable_map sts
+  ??@counter_map       cnts
+:
+  foreach sts (@lstring stname @scheduletable_obj st) do
+    @lstring cnt:= [st counter];
+
+    if not ([cnts hasKey ![cnt string]]) & ([cnt string] != "SystemCounter") then
+      error cnt: "OS409 - Counter is not defined in ".[stname string]." !";
+    else
+      @uint64 len:= 0L;
+      @location loc:= here;
+      cast [st length]:
+      when == @uint64_class ui do len:= [ui value]; loc:= [ui location];
+      else error here: "Internal error, incorrect datatype for LENGTH attribute of schedule table ".[stname string];
+      end cast;
+
+      # check the length of te schedule table is not
+      # greater than the max allowed value of the counter
+      @counter_obj cpt;
+      [cnts getCounter !cnt ?cpt];
+      @uint64 max:= 0L;
+
+      cast [cpt max_allowed_value]:
+        when == @uint32_class ui do
+          max:= [[ui value] uint64];
+        else
+          error here: "Internal error, incorrect datatype for MAXALLOWEDVALUE attribute of counter ".[cnt string];
+      end cast;
+    end if;
+  end foreach;
+end routine;
+
+routine schedule_tables_tasks_and_events_exist
+  ??@root_obj cpu
+  ?@task_map  tasks
+
+#scheduletable_map sts
+
+#  ??@event_map         events
+:
+  foreach [cpu scheduletables] (@lstring stname @scheduletable_obj st) do
+    foreach [st exp_points] do
+      @lstring ep_name := [point name];
+      foreach [point actions] do
+        cast action:
+        when == @activatetask_action ata do
+          if not [[cpu tasks] hasKey ![[ata task_name] string]] then
+            error [action location]: "TASK attribute of action does not reference an existing task";
+          end if;
+        when == @setevent_action sea do
+          if not [[cpu tasks] hasKey ![[sea task_name] string]] then
+            error [action location]: "TASK attribute of action does not reference an existing task";
+          end if;
+          @task_obj task_data;
+          @lstringlist known_events;
+          [tasks get ![sea task_name] ?task_data];
+          known_events:= [task_data events];
+          if ([known_events length] == 0) then
+             error [sea event_name]: "An action can't set an Event to a basic task (Task ".[[sea task_name] string]." is a basic task).";         
+          end if;
+          if not [[cpu events] hasKey ![[sea event_name] string]] then
+            error [action location]: "EVENT attribute of action does not reference an existing event";
+          end if;
+        else
+          error ep_name: "Internal error, incorrect datatype for ACTION attribute of expiry point ".[ep_name string];
+        end cast;
+      end foreach;
+    end foreach;
+  end foreach;
+end routine;
+
+end semantics;
