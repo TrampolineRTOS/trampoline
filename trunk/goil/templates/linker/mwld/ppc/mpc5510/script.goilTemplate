@@ -100,11 +100,11 @@ SECTIONS
     }
     .osCode ALIGN(32) : {
       __PROGCONST_SECTION_START = .;
-	  *(.EI_handler)
-	  *(.SC_handler)
-	  *(.osCode)
-	  *(.appCommonCode)
-	}
+   *(.EI_handler)
+   *(.SC_handler)
+   *(.osCode)
+   *(.appCommonCode)
+ }
     .text : { *(.text) *(.osApiCode) } 
     .text_vle (VLECODE) ALIGN(0x1000): {
       *(.text)
@@ -151,9 +151,9 @@ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
     .dtors : {}
     extab : {}
     extabindex : {}
-	
-	__PROGCONST_SECTION_STOP = ALIGN(32) - 1 ;
-	
+ 
+ __PROGCONST_SECTION_STOP = ALIGN(32) - 1 ;
+ 
   } > internal_flash
 
   GROUP : {

@@ -64,12 +64,9 @@ SECTIONS
   /*
    * code and consts of the processes of the applications
    */
-    .=ALIGN(16);
+  . = ALIGN(16);
   apptext : { 
     __SEG_START_APP_CODE_CONST_RGN = .;
-    *(.osApiConst)  /* API constants    */
-    *(.rodata)      /* litteral strings */
-    *(.osApiCode)   /* API functions    */
     /* Sections for code of tasks and ISR */%
 foreach PROCESSES do
 %
@@ -77,6 +74,9 @@ foreach PROCESSES do
 %
 end foreach
 %
+    *(.osApiCode)   /* API functions    */
+    *(.osApiConst)  /* API constants    */
+    *(.rodata)      /* litteral strings */
   } > rom
   
   .=ALIGN(16);
@@ -202,7 +202,7 @@ end foreach
 /* Allocation des sections */
 /*SECTIONS*/
 /*{*/
-	/* Text = code executable */
+ /* Text = code executable */
   .text :
   {
     CREATE_OBJECT_SYMBOLS
@@ -223,7 +223,7 @@ end foreach
     *(.text .text.* .gnu.linkonce.t.*)
     /* *(.plt)
     *(.gnu.warning)
-    *(.glue_7t) *(.glue_7) *(.vfp11_veneer)	*/
+    *(.glue_7t) *(.glue_7) *(.vfp11_veneer) */
 
     *(.rodata .rodata.* .gnu.linkonce.r.*)
 
@@ -286,14 +286,14 @@ end foreach
   {
     . = ALIGN(8);
     _etext = .;
-  } >rom	
+  } >rom 
   __cs3_region_size_rom = LENGTH(rom);
   __cs3_region_num = 1;
 
   .data :
   {
     __cs3_region_start_ram = .;
-	__cs3_region_start_data = .;
+ __cs3_region_start_data = .;
     *(.cs3.region-head.ram)
     /*KEEP(*(.jcr))
     *(.got.plt) *(.got)
@@ -307,7 +307,7 @@ end foreach
  
   .bss :
   {
-  	__cs3_region_start_bss = .;
+   __cs3_region_start_bss = .;
      *(.shbss)  
     *(.bss .bss.* .gnu.linkonce.b.*)
     *(COMMON)

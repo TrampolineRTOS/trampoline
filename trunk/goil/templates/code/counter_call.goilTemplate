@@ -4,7 +4,7 @@
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
-FUNC(void, OS_CODE) tpl_call_counter_tick()
+FUNC(tpl_bool, OS_CODE) tpl_call_counter_tick()
 {
   tpl_status  need_rescheduling = NO_SPECIAL_CODE;
 
@@ -26,6 +26,7 @@ end foreach
     }
 #endif
   }
+  return TRUE;
 }
 
 #define OS_STOP_SEC_CODE

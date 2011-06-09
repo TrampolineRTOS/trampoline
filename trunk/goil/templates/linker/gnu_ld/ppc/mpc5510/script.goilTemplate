@@ -23,6 +23,9 @@ MEMORY
 
 SECTIONS
 {
+  .vector_external_interrupt : { *(.EI_vector) } > external_interrupt
+  .vector_system_call :        { *(.SC_vector) } > system_call
+
   /*
    * code and consts of the operating system (Trampoline).
    * this section is not accessible from an untrusted process
@@ -66,7 +69,9 @@ SECTIONS
   /*
    * code and consts of the processes of the applications
    */
-  apptext ALIGN(32) : { /* MPC5510 MPU requires 32 bytes alignment */
+  . = ALIGN(32);
+  apptext : { /* MPC5510 MPU requires 32 bytes alignment */
+    __PROGCONST_SECTION_START = .;
     __SEG_START_APP_CODE_CONST_RGN = .;
     *(.osApiConst)  /* API constants    */
     *(.rodata)      /* litteral strings */
@@ -81,7 +86,7 @@ end foreach
 %
   } > ram
   
-  appconst ALIGN(32) : {
+  appconst : {
      /* Sections for application const */  
 %
 foreach OSAPPLICATIONS do
@@ -96,7 +101,7 @@ end foreach
     . = ALIGN(32);
   } > ram
 
-  procconst ALIGN(32) : {
+  procconst : {
     /* Sections for const of tasks and ISR */
 %
 foreach PROCESSES do
@@ -110,12 +115,13 @@ end foreach
 %    
     . = ALIGN(32);
     __SEG_STOP_APP_CODE_CONST_RGN = . - 1;
+    __PROGCONST_SECTION_STOP = . - 1;
   } > ram
   
   /*
    * bss data
    */
-  bss_data ALIGN(32) : {
+  bss_data : {
     *(.bss) *(.sbss)  /* *(.sbss2) */
   } > ram
   . = ALIGN(32);
@@ -125,7 +131,8 @@ end foreach
    */
 %
 foreach PROCESSES do
-%  .% !PROCESSKIND %_% !NAME %_SEC_VAR ALIGN(32) : {
+%  .% !PROCESSKIND %_% !NAME %_SEC_VAR : {
+    . = ALIGN(32);
     __SEG_START_% !PROCESSKIND %_% !NAME %_VAR_RGN = .;
 /* Initialized variables section of % !PROCESSKIND % % !NAME % */
 %
@@ -196,9 +203,6 @@ end foreach
   relocatable : {
     *(.rela.*)
   } > ram
-
- .vector_external_interrupt : { *(.EI_vector) } > external_interrupt
-  .vector_system_call :        { *(.SC_vector) } > system_call
 
 }
 

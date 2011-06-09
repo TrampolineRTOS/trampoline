@@ -24,5 +24,6 @@ VAR(arm_context, OS_VAR) % !NAME %_int_context;
     if not exists SOURCE then
        error NAME "SOURCE attribute not defined for ".PROCESSKIND." ".NAME
     end if
+    ! CAPCOMFLAG
   end if
 %

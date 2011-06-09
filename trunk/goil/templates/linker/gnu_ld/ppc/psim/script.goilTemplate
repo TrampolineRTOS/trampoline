@@ -23,6 +23,10 @@ MEMORY
 
 SECTIONS
 {
+  .vector_external_interrupt : { *(.EI_vector) } > external_interrupt
+  .vector_system_call :        { *(.SC_vector) } > system_call
+
+
   /*
    * code and consts of the operating system (Trampoline).
    * this section is not accessible from an untrusted process
@@ -67,11 +71,12 @@ SECTIONS
   /*
    * code and consts of the processes of the applications
    */
-  apptext ALIGN(4) : {
+  . = ALIGN(4);
+  apptext : {
     __SEG_START_APP_CODE_CONST_RGN = .;
     *(.osApiConst)  /* API constants    */
     *(.rodata)      /* litteral strings */
- . = ALIGN(4);
+   . = ALIGN(4);
     *(.osApiCode)   /* API functions    */
     /* Sections for code of tasks and ISR */%
 foreach PROCESSES do
@@ -82,7 +87,8 @@ end foreach
 %
   } > ram
   
-  appconst ALIGN(4) : {
+  . = ALIGN(4);
+  appconst : {
      /* Sections for application const */  
 %
 foreach OSAPPLICATIONS do
@@ -97,7 +103,8 @@ end foreach
     . = ALIGN(4);
   } > ram
 
-  procconst ALIGN(4) : {
+  . = ALIGN(4);
+  procconst : {
     /* Sections for const of tasks and ISR */
 %
 foreach PROCESSES do
@@ -197,9 +204,6 @@ end foreach
   relocatable : {
     *(.rela.*)
   } > ram
-
- .vector_external_interrupt : { *(.EI_vector) } > external_interrupt
-  .vector_system_call :        { *(.SC_vector) } > system_call
 
 }
 
