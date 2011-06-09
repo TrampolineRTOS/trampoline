@@ -5,7 +5,10 @@ MEMORY
 {
   /*internal_ram : org = 0x40000000, len = 16k*/
   it_vect : org = 0x08000000, len = 128 /*64 only?*/
-  external_ram : org = 0x08000080, len = 0xFFFF80 /*16M - 128 for interrupt vector*/
+  external_ram : org = 0x08000080, len = 0x20000 /*16M - 128 for interrupt vector*/
+  stack_ram : org = 0x08020000, len = 0x20000
+/*  it_vect : org = 0x08000000, len = 128 *//*64 only?*/
+/*  external_ram : org = 0x08000080, len = 0xFFFF80 *//*16M - 128 for interrupt vector*/
 }
 
 SECTIONS {
@@ -31,6 +34,7 @@ SECTIONS
   . = ALIGN(4);
   osconst : {
     *(.osConst)
+    *(.rodata.*)
   } > external_ram
   
   /*
@@ -197,6 +201,10 @@ end foreach
     *(.debug_varnames);
     . = ALIGN(4);  
   } > external_ram
+
+  stacks : {
+    *(.stacks) /* TODO : is it the best place ? */
+  } > stack_ram
 
 }
 
