@@ -1,0 +1,117 @@
+semantics systemConfig :
+
+import "implementation_types.gSemantics";
+
+import "goil_types_root.gSemantics";
+import "template_invocation.gSemantics";
+import "goil_options.gOption";
+
+method @object_t set ??@lstring name ?!@goilTemplateFieldMap unused result
+:
+  error here: "Attribute: ".name.", Internal error";
+end method;
+
+# build a template boolean
+# the name of the attribute in the system configuration is the same
+# the content of the attribute (if it exists) is a struct with the same
+# name suffixed by _S
+override method @boolAttribute set ??@lstring name ?!@goilTemplateFieldMap result:
+  addBoolFieldValue !?result !name !value;
+  @goilTemplateFieldMap subAttrs := [subAttributes fieldMap];
+  if [subAttrs count] > 0 then
+    @lstring structName := [@lstring new ![name string]."_S" ![name location]];
+    addStructFieldValue !?result !structName !subAttrs;
+  end if;
+end method;
+
+# build a template enum
+# the name of the attribute in the system configuration is the same
+# the content of the attribute (if it exists) is a struct with the same
+# name suffixed by _S
+override method @enumAttribute set ??@lstring name ?!@goilTemplateFieldMap result:
+  addStringFieldValue !?result !name !value;
+  @goilTemplateFieldMap subAttrs := [subAttributes fieldMap];
+  if [subAttrs count] > 0 then
+    @lstring structName := [@lstring new ![name string]."_S" ![name location]];
+    addStructFieldValue !?result !structName !subAttrs;
+  end if;
+end method;
+
+override method @stringAttribute set ??@lstring name ?!@goilTemplateFieldMap result:
+  addStringFieldValue !?result !name !value;
+end method;
+
+override method @string_class set ??@lstring name ?!@goilTemplateFieldMap result:
+  addStringFieldValue !?result !name !value;
+end method;
+
+override method @multipleAttribute set ??@lstring name ?!@goilTemplateFieldMap result:
+  @goilTemplateFieldMapList multiple [emptyList];
+  foreach items do
+    @goilTemplateFieldMap multipleItem [emptyMap];
+    [item set ![@lstring new !"VALUE" ![item location]] !?multipleItem];
+    multiple += !multipleItem;
+  end foreach;
+  addListFieldValue !?result !name !multiple;
+end method;
+
+override method @uint32_class set ??@lstring name ?!@goilTemplateFieldMap result:
+  addUnsignedFieldValue !?result !name ![value uint64];
+end method;
+
+reader @objectAttributes fieldMap
+  ->@goilTemplateFieldMap result
+:
+  result := [@goilTemplateFieldMap emptyMap];
+  foreach objectParams do
+    [value set !lkey !?result];
+  end foreach;
+end reader;
+
+reader @applicationDefinition templateData
+  ??@implementation imp
+  ->@goilTemplateVariableMap cfg
+:
+  cfg := [@goilTemplateVariableMap emptyMap];
+
+#  log objects;
+  #
+  # First setup the general configuration data
+  #
+  addStringValue !?cfg !lstringWith[!"OILFILENAME"] ![[@string stringWithSourceFilePath] lastPathComponent];
+  addLStringValue !?cfg !"CPUNAME" !name;
+  addLStringValue !?cfg !"CPUDESCRIPTION" !description;
+  addLStringValue !?cfg !"OILVERSION" !version;
+  addLStringValue !?cfg !"OILDESCRIPTION" !versionDescription;
+  addStringValue !?cfg !lstringWith[!"TIMESTAMP"] ![@string stringWithCurrentDateTime];
+  addStringValue !?cfg !lstringWith[!"PROJECT"] ![projectName[] lastPathComponent];
+
+  foreach objects do
+    message [lkey string]."\n";
+    # Check if the object is multiple or not. If not, attributes
+    # are stored in a struct otherwise instances are stored in a map.
+    @implementationObject implementationObject;
+    [[imp imp] get !lkey ?implementationObject];
+    if [[implementationObject multiple] bool] then
+#      message "*** multiple\n";
+      @goilTemplateFieldMapList objs [emptyList];
+      foreach [objectsOfKind objects] do
+        @goilTemplateFieldMap attrs := [attributes fieldMap];
+        objs += !attrs;
+      end foreach;
+      addListValue !?cfg !lkey !objs;
+    else
+#      message "*** single\n";
+      if [[objectsOfKind objects] count] == 1 then
+        @goilTemplateFieldMap attrs [emptyMap];
+        foreach [objectsOfKind objects] do
+          attrs := [attributes fieldMap];
+        end foreach;
+        addStructValue !?cfg !lkey !attrs;
+      end if;
+    end if;
+  end foreach;
+#  log cfg;
+end reader;
+
+end semantics;

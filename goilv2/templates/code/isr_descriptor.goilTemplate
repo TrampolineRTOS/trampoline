@@ -1,0 +1,126 @@
+/*-----------------------------------------------------------------------------
+ * ISR % !NAME % descriptor
+ */
+#define APP_% !PROCESSKIND %_% !NAME %_START_SEC_CODE
+#include "tpl_memmap.h"
+/*
+ * ISR % !NAME % function prototype
+ */
+FUNC(void, OS_APPL_CODE) % !NAME %_function(void);
+#define APP_% !PROCESSKIND %_% !NAME %_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+/*-----------------------------------------------------------------------------
+ * Target specific structures
+ */
+%
+template process_specific
+%
+
+/*
+%
+if exists TIMINGPROTECTION then
+% * EXECUTIONTIME = % !TIMINGPROTECTION::EXECUTIONTIME %, TIMEFRAME = % !TIMINGPROTECTION::TIMEFRAME %
+ * MAXOSINTERRUPTLOCKTIME = % !TIMINGPROTECTION::MAXOSINTERRUPTLOCKTIME %, MAXALLINTERRUPTLOCKTIME = % !TIMINGPROTECTION::MAXALLINTERRUPTLOCKTIME %
+%
+  foreach TIMINGPROTECTION::RESOURCESLOCK do
+% * RESOURCENAME = % !RESOURCENAME %, LOCKTIME = % !LOCKTIME %
+%
+  end foreach
+else
+%  No timing protection
+%
+end if
+% */
+
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+# *TODO
+%
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+#endif
+
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+%
+if [RESOURCES length] > 0 then
+%/*
+ * Resources used by ISR % !NAME %
+ *
+ * %
+foreach RESOURCES do
+ !RESOURCENAME
+between !", "
+end foreach
+%
+ */
+%end if%
+/*
+ * Static descriptor of ISR % !NAME %
+ */
+CONST(tpl_proc_static, OS_CONST) % !NAME %_isr_stat_desc = {
+  /* context                  */  % !NAME %_CONTEXT,
+  /* stack                    */  % !NAME %_STACK,
+  /* entry point (function)   */  % !NAME %_function,
+  /* internal ressource       */  NULL,
+  /* ISR id                   */  % !NAME %_id,
+#if WITH_OSAPPLICATION == YES
+  /* OS application id        */  %
+if AUTOSAR then
+  if SCALABILITYCLASS >= 3 then
+    !APPLICATION%_id,%
+  end if
+end if
+%
+#endif
+  /* task base priority       */  % !PRIORITY %,
+  /* max activation count     */  % !ACTIVATION %,
+  /* task type                */  IS_ROUTINE,
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
+  /* pointer to the timing
+     protection descriptor    */  $TIMING_PROT_REF$
+#endif
+};
+
+CONST(tpl_isr_static, OS_CONST) % !NAME %_isr_helper = {
+  /* helper */ NULL,
+  /* next */   NULL,
+  /* id */     % !NAME %_id
+};
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+/*
+ * Dynamic descriptor of ISR % !NAME %
+ */
+VAR(tpl_proc, OS_VAR) % !NAME %_isr_desc = {
+  /* resources                      */  NULL,
+#if WITH_OSAPPLICATION == YES
+  /* if > 0 the process is trusted  */  %
+if AUTOSAR then
+  if SCALABILITYCLASS > 2 then
+    if TRUSTED then !1 else !0 end if
+  end if
+else
+  !0
+end if
+%,    
+#endif /* WITH_OSAPPLICATION */
+  /* activate count                 */  0,
+  /* ISR priority                   */  % !PRIORITY %,
+  /* ISR state                      */  SUSPENDED,
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
+  /* activation allowed             */  ,TRUE
+#endif
+};
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+

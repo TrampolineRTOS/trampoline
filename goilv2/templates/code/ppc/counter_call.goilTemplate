@@ -1,0 +1,49 @@
+#include "tpl_os_kernel.h"          /* tpl_schedule */
+#include "tpl_os_timeobj_kernel.h"  /* tpl_counter_tick */
+#include "tpl_machine_interface.h"  /* tpl_switch_context_from_it */
+
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+%
+
+foreach INTERRUPTSOURCES prefixedby interrupt_ do
+  let counterFct := emptylist
+  foreach HARDWARECOUNTERS prefixedby counter_ do
+    if counter_SOURCE == interrupt_NAME then
+      let counterFct += counter_NAME
+    end if
+  end foreach
+  foreach counterFct
+    before
+%
+FUNC(void, OS_CODE) Ack% ! interrupt_NAME %(void){}
+
+FUNC(void, OS_CODE) tpl_tick_% ! interrupt_NAME %()
+{
+  tpl_status  need_rescheduling = NO_SPECIAL_CODE;
+
+%
+    do
+      %  need_rescheduling |= tpl_counter_tick(&% !NAME %_counter_desc);
+%
+    after %
+  Ack% ! interrupt_NAME %();
+  if (need_rescheduling == NEED_RESCHEDULING)
+  {
+    tpl_schedule_from_running();
+#if WITH_SYSTEM_CALL == NO
+    if (tpl_kern.need_switch != NO_NEED_SWITCH) {
+      tpl_switch_context_from_it(
+        &(tpl_kern.s_old->context),
+        &(tpl_kern.s_running->context)
+      );
+    }
+#endif
+  }
+}
+%
+  end foreach
+end foreach
+%
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"

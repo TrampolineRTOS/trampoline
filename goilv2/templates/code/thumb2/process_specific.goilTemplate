@@ -1,0 +1,29 @@
+/*
+ * % !PROCESSKIND % % !NAME % stack
+ */
+#define APP_% !PROCESSKIND %_% !NAME %_START_SEC_STACK
+#include "tpl_memmap.h"
+VAR(tpl_stack_word, OS_APPL_DATA) % !NAME %_stack_zone[% !STACKSIZE %/sizeof(tpl_stack_word)];
+#define APP_% !PROCESSKIND %_% !NAME %_STOP_SEC_STACK
+#include "tpl_memmap.h"
+
+#define % !NAME %_STACK {% !NAME %_stack_zone, % !STACKSIZE %}
+
+/*
+ * % !PROCESSKIND % % !NAME % context
+ */
+#define OS_START_SEC_VAR_NOINIT_32BIT
+#include "tpl_memmap.h"
+VAR(arm_context, OS_VAR) % !NAME %_int_context;
+
+#define % !NAME %_CONTEXT &% !NAME %_int_context
+
+#define OS_STOP_SEC_VAR_NOINIT_32BIT
+#include "tpl_memmap.h"
+%if PROCESSKIND == "ISR" then 
+    if not exists SOURCE then
+       error NAME "SOURCE attribute not defined for ".PROCESSKIND." ".NAME
+    end if
+    ! CAPCOMFLAG
+  end if
+%

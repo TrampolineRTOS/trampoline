@@ -1,0 +1,104 @@
+/*-----------------------------------------------------------------------------
+ * OS Application % !NAME %
+ */
+%
+if HASSTARTUPHOOK then %
+FUNC(void, OS_APPL_CODE) StartupHook_% !NAME %();
+%
+end if
+if HASSHUTDOWNHOOK then %
+FUNC(void, OS_APPL_CODE) ShutdownHook_% !NAME %();
+%
+end if
+
+if PROCESSACCESSNUM > 0 then
+%
+/* % !PROCESSACCESSVECTOR % */
+CONST(u8, OS_CONST) % !NAME %_procs_access[% !PROCESSACCESSNUM %] = { % !PROCESSACCESSITEMS % };
+%
+end if
+if ALARMACCESSNUM > 0 then
+%/* % !ALARMACCESSVECTOR % */
+CONST(u8, OS_CONST) % !NAME %_alarms_access[% !ALARMACCESSNUM %] = { % !ALARMACCESSITEMS % };
+%
+end if
+if RESOURCEACCESSNUM > 0 then
+%/* % !RESOURCEACCESSVECTOR % */
+CONST(u8, OS_CONST) % !NAME %_rezs_access[% !RESOURCEACCESSNUM %] = { % !RESOURCEACCESSITEMS % };
+%
+end if
+if SCHEDULETABLEACCESSNUM > 0 then
+%/* % !SCHEDULETABLEACCESSVECTOR % */
+CONST(u8, OS_CONST) % !NAME %_sts_access[% !SCHEDULETABLEACCESSNUM %] = { % !SCHEDULETABLEACCESSITEMS % };
+%
+end if
+if COUNTERACCESSNUM > 0 then
+%/* % !COUNTERACCESSVECTOR % */
+CONST(u8, OS_CONST) % !NAME %_cnts_access[% !COUNTERACCESSNUM %] = { % !COUNTERACCESSITEMS % };
+%
+end if
+%
+%
+foreach PROCESSES
+  before %CONST(tpl_proc_id, OS_CONST) % !NAME %_proc_own[% ![PROCESSES length] %] = { %
+  do !NAME%_id%
+  between %, %
+  after % };
+%
+end foreach
+
+foreach ALARMS
+  before %CONST(tpl_alarm_id, OS_CONST) % !NAME %_alarm_own[% ![ALARMS length] %] = { %
+  do !NAME%_id%
+  between %, %
+  after % };
+%
+end foreach
+
+foreach REGULARRESOURCES
+  before %CONST(tpl_resource_id, OS_CONST) % !NAME %_rez_own[% ![REGULARRESOURCES length] %] = { %
+  do !NAME%_id%
+  between %, %
+  after % };
+%
+end foreach
+
+foreach SCHEDULETABLES
+  before %CONST(tpl_schedtable_id, OS_CONST) % !NAME %_st_own[% ![SCHEDULETABLES length] %] = { %
+  do !NAME%_id%
+  between %, %
+  after % };
+%
+end foreach
+
+foreach COUNTERS
+  before %CONST(tpl_counter_id, OS_CONST) % !NAME %_cnt_own[% ![COUNTERS length] %] = { %
+  do !NAME%_id%
+  between %, %
+  after % };
+%
+end foreach
+%
+CONST(tpl_app_access, OS_APPL_CONST) % !NAME %_app_access = {
+  % if HASSTARTUPHOOK then %StartupHook_% !NAME else %NULL% end if%,
+  % if HASSHUTDOWNHOOK then %ShutdownHook_% !NAME else %NULL% end if%,
+  {
+    % if PROCESSACCESSNUM > 0 then !NAME %_procs_access% else %NULL% end if %,
+    % if ALARMACCESSNUM > 0 then !NAME %_alarms_access% else %NULL% end if %,
+    % if RESOURCEACCESSNUM > 0 then !NAME %_rezs_access% else %NULL% end if %,
+    % if SCHEDULETABLEACCESSNUM > 0 then !NAME %_sts_access% else %NULL% end if %,
+    % if COUNTERACCESSNUM > 0 then !NAME %_cnts_access% else %NULL% end if %
+  },
+  % if [PROCESSES length] > 0 then !NAME %_proc_own% else %NULL% end if %,
+  % if [ALARMS length] > 0 then !NAME %_alarm_own% else %NULL% end if %,
+  % if [RESOURCES length] > 0 then !NAME %_rez_own% else %NULL% end if %,
+  % if [SCHEDULETABLES length] > 0 then !NAME %_st_own% else %NULL% end if %,
+  % if [COUNTERS length] > 0 then !NAME %_cnt_own% else %NULL% end if %,
+  % ![PROCESSES length] %,
+  % ![ALARMS length] %,
+  % ![RESOURCES length] %,
+  % ![SCHEDULETABLES length] %,
+  % ![COUNTERS length] %,
+  % if exists RESTART then !RESTART%_id% else %INVALID_PROC_ID% end if%
+};
+

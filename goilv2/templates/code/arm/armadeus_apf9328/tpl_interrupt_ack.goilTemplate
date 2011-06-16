@@ -1,0 +1,16 @@
+%
+  if current_entry == 13 then
+%  unsigned int *isr_c=(unsigned int *)0x0021C234;
+  *isr_c = 0xFFFFFFFF; //does not take into account source.
+%
+  elsif current_entry == 59 then
+%  unsigned int *tstat1=(unsigned int *)0x00202014;
+  *tstat1 &= ~0x1;%
+  elsif current_entry == 58 then
+%  unsigned int *tstat2=(unsigned int *)0x00203014;
+  *tstat2 &= ~0x1;%
+  else
+%  #error "don't know how to acknowledge interrupt, please fill ${GOIL_TEMPLATE}/code/arm/armadeus_apf9328/tpl_interrupt_ack.goilTemplate"
+%
+  end if
+%

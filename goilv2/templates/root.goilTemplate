@@ -1,0 +1,163 @@
+%
+# @file root.goilTemplate
+#
+# @section desc File description
+#
+# Root template file for goil
+# 
+# @section copyright Copyright
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN
+# Trampoline is protected by the French intellectual property law.
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# @section infos File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+# 
+
+#
+# Check configuration is ok
+#
+if not exists OS then
+  error here "No OS object defined in your OIL files. Unable to generate a system"
+end if
+
+# Check the OIL version conforms to declarations
+if OILVERSION == "2.5" then
+  # OSEK 2.2.3 description. AUTOSAR objects are not allowed
+  if exists OS::SCALABILITYCLASS then
+    error OS::SCALABILITYCLASS "SCALABILITYCLASS is not allowed in OS in OIL 2.5"
+  end if
+end if
+
+# Compute the lists of basic and extended tasks
+let BASICTASK := emptyList
+let EXTENDEDTASK := emptyList
+foreach aTask in TASK do
+  if not exists aTask::EVENT then
+    let BASICTASK += aTask
+  else
+    let EXTENDEDTASK += aTask
+  end if
+end foreach
+
+# compute the list of processes
+let PROCESS := emptyList
+foreach aTask in EXTENDEDTASK do
+  let PROCESS += aTask
+end foreach
+foreach aTask in BASICTASK do
+  let PROCESS += aTask
+end foreach
+
+#
+# Compute some configuration flags to ease the template coding
+#
+
+# Compute the USECOM flag
+let USECOM := exists COM | exists MESSAGE | exists NETWORKMESSAGE
+
+# Compute the USEMEMORYPROTECTION flag
+let USEMEMORYPROTECTION := NO
+if OS::MEMMAP then
+  let USEMEMORYPROTECTION := OS::MEMMAP::MEMORY_PROTECTION
+end if
+
+%
+Goil run on % !TIMESTAMP%
+Generated files are:
+%
+
+!PROJECT %/tpl_app_config.c
+%
+write to PROJECT."/tpl_app_config.c":
+  template tpl_app_config_c in code
+end write
+
+!PROJECT %/tpl_app_config.h
+%
+write to PROJECT."/tpl_app_config.h":
+  template tpl_app_config_h in code
+end write
+
+!PROJECT %/tpl_app_define.h
+%
+write to PROJECT."/tpl_app_define.h":
+  template tpl_app_define_h in code
+end write
+
+!PROJECT %/tpl_service_ids.h
+%
+write to PROJECT."/tpl_service_ids.h":
+  template tpl_service_ids_h in code
+end write
+
+if OS::SYSTEM_CALL then
+  !PROJECT %/tpl_dispatch_table.c
+%
+  write to PROJECT."/tpl_dispatch_table.c":
+    template tpl_dispatch_table_c in code
+  end write
+  template tpl_invoque_s in code
+end if
+
+if OS::MEMMAP then
+  if exists COMPILER then
+    !PROJECT %/MemMap.h
+%
+    write to PROJECT."/MemMap.h":
+      template MemMap_h in compiler
+    end write
+    !PROJECT %/Compiler.h
+%
+    write to PROJECT."/Compiler.h":
+      template Compiler_h in compiler
+    end write
+    !PROJECT %/Compiler_Cfg.h
+%
+    write to PROJECT."/Compiler_Cfg.h":
+      template Compiler_Cfg_h in compiler
+    end write
+  end if
+
+  if exists LINKER then
+    !PROJECT %/% !LINKSCRIPT%
+%
+    write to PROJECT."/".LINKSCRIPT:
+      template script in linker
+    end write
+  end if
+
+  if exists ASSEMBLER then
+    !PROJECT %/AsMemMap.h
+%
+    write to PROJECT."/AsMemMap.h":
+      template AsMemMap_h in assembler
+    end write
+  end if
+end if
+
+if OS::BUILD then
+%Makefile
+%
+  write to "Makefile":
+    template Makefile in build
+  end write
+end if
+
+if OS::TRACE then
+!PROJECT%.desc
+%
+  write to PROJECT.".desc":
+    template trace_description in log
+  end write
+end if
+
+template if exists custom_files in config

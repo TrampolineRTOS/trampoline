@@ -1,0 +1,87 @@
+/*-----------------------------------------------------------------------------
+ * Schedule table % !NAME % descriptor
+ */
+
+/*
+ * Expiry points of schedule table % !NAME % 
+ */
+%
+foreach EXPIRYPOINTS do
+  let SCHEDULETABLENAME := NAME
+  foreach ACTIONS do
+    let NAME := SCHEDULETABLENAME . "_" . [ABSOLUTEOFFSET string] . "_" . [INDEX string]
+    # action_descriptor uses current NAME to name the action
+    # since NAME is the name of the schedule table and since we have to compute
+    # a different name for each schedule table action, we have to change NAME
+    # So it is save in SCHEDULETABLENAME and restaured.
+    template action_descriptor
+  end foreach
+  let NAME := SCHEDULETABLENAME
+  foreach ACTIONS
+    before %P2CONST(tpl_action, AUTOMATIC, OS_CONST) % !NAME %_% !ABSOLUTEOFFSET %[% ![ACTIONS length] %] = {
+%
+    do %  (tpl_action *)&% !NAME %_% !ABSOLUTEOFFSET %_% !INDEX %_action%
+    between %,
+%
+    after %
+};
+
+%
+  end foreach
+%
+tpl_expiry_point % !NAME %_% !ABSOLUTEOFFSET %_expirypoint = {
+  /*  offset from previous expiry point   */  % !RELATIVEOFFSET %,
+  /*  sync_offset                         */  % !RELATIVEOFFSET %,
+  /*  number of actions for the expiry pt */  % ![ACTIONS length] %,
+  /*  pointer to the actions array        */  % !NAME %_% !ABSOLUTEOFFSET %,
+  /*  maximum advance deviation           */  % !MAXADVANCE %,
+  /*  maximum retard deviation            */  % !MAXRETARD %
+};
+%
+end foreach
+foreach EXPIRYPOINTS
+  before %
+P2VAR(tpl_expiry_point, AUTOMATIC, OS_CONST) % !NAME %_expiry_table[% ![EXPIRYPOINTS length] %] = {
+%
+  do %  &% !NAME %_% !ABSOLUTEOFFSET %_expirypoint%
+  between %,
+%
+  after %
+};
+%
+end foreach
+%
+
+tpl_schedtable_static % !NAME %_st_stat = {
+  { /* static time object part */
+    /* counter            */  &% !COUNTER %_counter_desc,
+    /* expire function    */  tpl_process_schedtable
+#if (WITH_TRACE == YES)
+    /* id of the table for tracing  */  , % !NAME %_id
+#endif
+%
+if USEOSAPPLICATION then %
+    /* OS application id  */  , % !APPLICATION %_id%
+end if 
+%  },
+  /* expiry points        */  % !NAME %_expiry_table,
+  /* expiry points count  */  % ![EXPIRYPOINTS length] %,
+  /* sync strategy        */  % !SYNCSTRATEGY %,
+  /* periodic             */  % ![trueFalse(PERIODIC) uppercaseString] %,
+  /* length               */  % !LENGTH %,
+  /* precision            */  % !PRECISION %
+};
+
+tpl_schedule_table % !NAME %_st_dyn = {
+  { /* dynamic time object part */
+    /* ptr to the static part   */  (tpl_time_obj_static *)&% !NAME %_st_stat,
+    /* next time object         */  NULL,
+    /* prev time object         */  NULL,
+    /* cycle                    */  0,
+    /* date                     */  % !DATE %,
+    /* state of the time object */  % !STATE %
+  },
+  /* next schedule table   */  NULL,
+  /* current expiry point  */  0,
+  /* deviation             */  0    
+};

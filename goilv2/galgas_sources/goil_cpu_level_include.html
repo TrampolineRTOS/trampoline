@@ -1,0 +1,230 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>
+'goil_cpu_level_include' grammar</title><style type="text/css">body {
+  font-family: Helvetica, sans-serif ;
+  font-size: small ;
+}
+
+h1 {
+  text-align: center ;
+}
+
+a.header_link {
+  border: 1px solid #999999 ;
+  padding: 4px ;
+  background-color: #FFFFCC ;
+  font-weight: bold ;
+}
+
+a:visited, a:link, a:active{
+  color: blue ;
+  text-decoration: underline ;
+}
+
+a:hover {
+  color:green ;
+  background-color: #FFFF00 ;
+  text-decoration: none ;
+}
+
+table.title {
+  width: 100% ;
+  border: 1px solid #666666 ;
+  background-color: yellow ;
+  font-weight: bold ;
+  text-align: center ;
+}
+
+table.result {
+  border: 2px solid #666666 ;
+  border-collapse: collapse ;
+}
+
+td.result_title {
+  font-weight: bold ;
+  text-align: center ;
+  border-top: 2px solid #666666 ;
+}
+
+tr.result_line {
+  background-color: #EEEEEE ;
+  border-top: 1px solid #999999 ;
+}
+td.result_line {
+  border-right: 1px solid #999999 ;
+}
+
+span.error {
+  font-weight: bold ;
+  color: red ;
+}
+
+span.warning {
+  font-weight: bold ;
+  color: #FF9966 ;
+}
+
+span.success {
+  font-weight: bold ;
+  color: green ;
+}
+
+span.list {
+  display: block ;
+  line-height: 100% ;
+}
+
+span.galgas_structure {
+  display: block ;
+}
+
+span.within_galgas_structure {
+  display: block ;
+  padding-left: 1em ;
+  margin-left: 1em ;
+  border-left: 1px dotted black ;
+}
+
+span.galgas_keyword {
+  display: block ;
+  font-weight: bold ;
+  color: blue ;
+}
+
+span.galgas_terminal {
+}
+
+span.galgas_nonterminal {
+}
+</style></head><body><div>
+<h1>'goil_cpu_level_include' grammar</h1><p><a class="header_link" href="#pure_bnf">Pure BNF productions</a></p><p><a class="header_link" href="#vocabulary">Vocabulary</a></p><p><a class="header_link" href="#identical_productions">Identical productions</a></p><p><a class="header_link" href="#useful_symbols">Useful symbols</a></p><p><a class="header_link" href="#empty_strings">Empty string derivations</a></p><p><a class="header_link" href="#first_sets">First sets</a></p><p><a class="header_link" href="#follow_by_empty">Follow by empty</a></p><p><a class="header_link" href="#grammar">Grammar analysis</a></p><table class="title"><tr><td>
+Original grammar
+</td></tr></table>
+<p>The original grammar has 12 productions.</p><table class="result"><tr><td class="result_title" colspan="2">RULES FROM 'goil_syntax' component</td></tr><tr class="result_line"><td class="result_line">rule <code>&lt;start&gt;</code><br>file '/Users/jlb/Develop/tmp/trunk/goilv2/galgas_sources/goil_syntax.gSyntax'<br>line 39</td><td><code><span class="galgas_nonterminal">&lt;OIL_version&gt;; </span><span class="galgas_nonterminal">&lt;file&gt;; </span></code></td></tr><tr class="result_line"><td class="result_line">rule <code>&lt;file&gt;</code><br>file '/Users/jlb/Develop/tmp/trunk/goilv2/galgas_sources/goil_syntax.gSyntax'<br>line 90</td><td><code><span class="galgas_structure"><span class="galgas_keyword">repeat </span><span class="within_galgas_structure"></span><span class="galgas_keyword">while </span><span class="within_galgas_structure"><span class="galgas_nonterminal">&lt;include_file_level&gt;; </span></span><span class="galgas_keyword">while </span><span class="within_galgas_structure"><span class="galgas_nonterminal">&lt;implementation_definition&gt;; </span></span><span class="galgas_keyword">while </span><span class="within_galgas_structure"><span class="galgas_nonterminal">&lt;application_definition&gt;; </span></span><span class="galgas_keyword">end repeat;</span></span></code></td></tr><tr class="result_line"><td class="result_line">rule <code>&lt;sign&gt;</code><br>file '/Users/jlb/Develop/tmp/trunk/goilv2/galgas_sources/goil_syntax.gSyntax'<br>line 98</td><td><code><span class="galgas_structure"><span class="galgas_keyword">select </span><span class="within_galgas_structure"><span class="galgas_terminal">$-$; </span></span><span class="galgas_keyword">or </span><span class="within_galgas_structure"><span class="galgas_terminal">$+$; </span></span><span class="galgas_keyword">or </span><span class="within_galgas_structure"></span><span class="galgas_keyword">end select;</span></span></code></td></tr><tr class="result_line"><td class="result_line">rule <code>&lt;description&gt;</code><br>file '/Users/jlb/Develop/tmp/trunk/goilv2/galgas_sources/goil_syntax.gSyntax'<br>line 112</td><td><code><span class="galgas_structure"><span class="galgas_keyword">select </span><span class="within_galgas_structure"></span><span class="galgas_keyword">or </span><span class="within_galgas_structure"><span class="galgas_terminal">$:$; </span><span class="galgas_terminal">$string$; </span></span><span class="galgas_keyword">end select;</span></span></code></td></tr><tr class="result_line"><td class="result_line">rule <code>&lt;OIL_version&gt;</code><br>file '/Users/jlb/Develop/tmp/trunk/goilv2/galgas_sources/goil_syntax.gSyntax'<br>line 123</td><td><code><span class="galgas_terminal">$OIL_VERSION$; </span><span class="galgas_terminal">$=$; </span><span class="galgas_terminal">$string$; </span><span class="galgas_nonterminal">&lt;description&gt;; </span><span class="galgas_terminal">$;$; </span></code></td></tr><tr class="result_line"><td class="result_line">rule <code>&lt;application_definition&gt;</code><br>file '/Users/jlb/Develop/tmp/trunk/goilv2/galgas_sources/goil_syntax.gSyntax'<br>line 130</td><td><code><span class="galgas_terminal">$CPU$; </span><span class="galgas_terminal">$idf$; </span><span class="galgas_terminal">${$; </span><span class="galgas_nonterminal">&lt;object_definition_list&gt;; </span><span class="galgas_terminal">$}$; </span><span class="galgas_nonterminal">&lt;description&gt;; </span><span class="galgas_terminal">$;$; </span></code></td></tr><tr class="result_line"><td class="result_line">rule <code>&lt;object_definition_list&gt;</code><br>file '/Users/jlb/Develop/tmp/trunk/goilv2/galgas_sources/goil_syntax.gSyntax'<br>line 139</td><td><code><span class="galgas_structure"><span class="galgas_keyword">repeat </span><span class="within_galgas_structure"></span><span class="galgas_keyword">while </span><span class="within_galgas_structure"><span class="galgas_terminal">$idf$; </span><span class="galgas_terminal">$idf$; </span><span class="galgas_terminal">${$; </span><span class="galgas_nonterminal">&lt;oil_declaration_list&gt;; </span><span class="galgas_terminal">$}$; </span><span class="galgas_nonterminal">&lt;description&gt;; </span><span class="galgas_terminal">$;$; </span></span><span class="galgas_keyword">while </span><span class="within_galgas_structure"><span class="galgas_nonterminal">&lt;include_cpu_level&gt;; </span></span><span class="galgas_keyword">end repeat;</span></span></code></td></tr><tr class="result_line"><td class="result_line">rule <code>&lt;boolean&gt;</code><br>file '/Users/jlb/Develop/tmp/trunk/goilv2/galgas_sources/goil_syntax.gSyntax'<br>line 181</td><td><code><span class="galgas_structure"><span class="galgas_keyword">select </span><span class="within_galgas_structure"><span class="galgas_terminal">$TRUE$; </span></span><span class="galgas_keyword">or </span><span class="within_galgas_structure"><span class="galgas_terminal">$FALSE$; </span></span><span class="galgas_keyword">end select;</span></span></code></td></tr><tr class="result_line"><td class="result_line">rule <code>&lt;oil_declaration_list&gt;</code><br>file '/Users/jlb/Develop/tmp/trunk/goilv2/galgas_sources/goil_syntax.gSyntax'<br>line 191</td><td><code><span class="galgas_structure"><span class="galgas_keyword">repeat </span><span class="within_galgas_structure"></span><span class="galgas_keyword">while </span><span class="within_galgas_structure"><span class="galgas_nonterminal">&lt;oil_declaration&gt;; </span></span><span class="galgas_keyword">end repeat;</span></span></code></td></tr><tr class="result_line"><td class="result_line">rule <code>&lt;oil_declaration&gt;</code><br>file '/Users/jlb/Develop/tmp/trunk/goilv2/galgas_sources/goil_syntax.gSyntax'<br>line 201</td><td><code><span class="galgas_terminal">$idf$; </span><span class="galgas_terminal">$=$; </span><span class="galgas_structure"><span class="galgas_keyword">select </span><span class="within_galgas_structure"><span class="galgas_terminal">$idf$; </span><span class="galgas_structure"><span class="galgas_keyword">select </span><span class="within_galgas_structure"><span class="galgas_terminal">${$; </span><span class="galgas_nonterminal">&lt;oil_declaration_list&gt;; </span><span class="galgas_terminal">$}$; </span></span><span class="galgas_keyword">or </span><span class="within_galgas_structure"></span><span class="galgas_keyword">end select;</span></span></span><span class="galgas_keyword">or </span><span class="within_galgas_structure"><span class="galgas_nonterminal">&lt;sign&gt;; </span><span class="galgas_structure"><span class="galgas_keyword">select </span><span class="within_galgas_structure"><span class="galgas_terminal">$uint_number$; </span></span><span class="galgas_keyword">or </span><span class="within_galgas_structure"><span class="galgas_terminal">$float_number$; </span></span><span class="galgas_keyword">end select;</span></span></span><span class="galgas_keyword">or </span><span class="within_galgas_structure"><span class="galgas_nonterminal">&lt;boolean&gt;; </span><span class="galgas_structure"><span class="galgas_keyword">select </span><span class="within_galgas_structure"><span class="galgas_terminal">${$; </span><span class="galgas_nonterminal">&lt;oil_declaration_list&gt;; </span><span class="galgas_terminal">$}$; </span></span><span class="galgas_keyword">or </span><span class="within_galgas_structure"></span><span class="galgas_keyword">end select;</span></span></span><span class="galgas_keyword">or </span><span class="within_galgas_structure"><span class="galgas_terminal">$string$; </span></span><span class="galgas_keyword">end select;</span></span><span class="galgas_terminal">$;$; </span></code></td></tr><tr class="result_line"><td class="result_line">rule <code>&lt;include_file_level&gt;</code><br>file '/Users/jlb/Develop/tmp/trunk/goilv2/galgas_sources/goil_syntax.gSyntax'<br>line 327</td><td><code><span class="galgas_terminal">$include$; </span><span class="galgas_structure"><span class="galgas_keyword">select </span><span class="within_galgas_structure"><span class="galgas_terminal">$g_string$; </span></span><span class="galgas_keyword">or </span><span class="within_galgas_structure"><span class="galgas_terminal">$string$; </span></span><span class="galgas_keyword">end select;</span></span></code></td></tr><tr class="result_line"><td class="result_line">rule <code>&lt;include_cpu_level&gt;</code><br>file '/Users/jlb/Develop/tmp/trunk/goilv2/galgas_sources/goil_syntax.gSyntax'<br>line 339</td><td><code><span class="galgas_terminal">$include$; </span><span class="galgas_structure"><span class="galgas_keyword">select </span><span class="within_galgas_structure"><span class="galgas_terminal">$g_string$; </span></span><span class="galgas_keyword">or </span><span class="within_galgas_structure"><span class="galgas_terminal">$string$; </span></span><span class="galgas_keyword">end select;</span></span></code></td></tr></table><p></p><table class="title"><tr><td>
+  Pure BNF productions list
+</td></tr></table>
+<p><a name="pure_bnf"></a>Listing of the 43 BNF productions :</p>
+<table class="result"><tr class="result_line"><td class="result_line"><a name="pure_bnf_0">0</a></td><td class="result_line">rule <code>&lt;start&gt;</code><br>file 'goil_syntax'<br>line 39</td><td><code>&lt;OIL_version&gt;<br>&lt;file&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_1">1</a></td><td class="result_line">rule <code>&lt;file&gt;</code><br>file 'goil_syntax'<br>line 90</td><td><code>&lt;select_goil_5F_syntax_0&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_2">2</a></td><td class="result_line">rule <code>&lt;sign&gt;</code><br>file 'goil_syntax'<br>line 98</td><td><code>&lt;select_goil_5F_syntax_1&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_3">3</a></td><td class="result_line">rule <code>&lt;description&gt;</code><br>file 'goil_syntax'<br>line 112</td><td><code>&lt;select_goil_5F_syntax_2&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_4">4</a></td><td class="result_line">rule <code>&lt;OIL_version&gt;</code><br>file 'goil_syntax'<br>line 123</td><td><code>$OIL_VERSION$<br>$=$<br>$string$<br>&lt;description&gt;<br>$;$</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_5">5</a></td><td class="result_line">rule <code>&lt;application_definition&gt;</code><br>file 'goil_syntax'<br>line 130</td><td><code>$CPU$<br>$idf$<br>${$<br>&lt;object_definition_list&gt;<br>$}$<br>&lt;description&gt;<br>$;$</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_6">6</a></td><td class="result_line">rule <code>&lt;object_definition_list&gt;</code><br>file 'goil_syntax'<br>line 139</td><td><code>&lt;select_goil_5F_syntax_3&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_7">7</a></td><td class="result_line">rule <code>&lt;boolean&gt;</code><br>file 'goil_syntax'<br>line 181</td><td><code>&lt;select_goil_5F_syntax_4&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_8">8</a></td><td class="result_line">rule <code>&lt;oil_declaration_list&gt;</code><br>file 'goil_syntax'<br>line 191</td><td><code>&lt;select_goil_5F_syntax_5&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_9">9</a></td><td class="result_line">rule <code>&lt;oil_declaration&gt;</code><br>file 'goil_syntax'<br>line 201</td><td><code>$idf$<br>$=$<br>&lt;select_goil_5F_syntax_6&gt;<br>$;$</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_10">10</a></td><td class="result_line">rule <code>&lt;include_file_level&gt;</code><br>file 'goil_syntax'<br>line 327</td><td><code>$include$<br>&lt;select_goil_5F_syntax_10&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_11">11</a></td><td class="result_line">rule <code>&lt;include_cpu_level&gt;</code><br>file 'goil_syntax'<br>line 339</td><td><code>$include$<br>&lt;select_goil_5F_syntax_11&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_12">12</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_0&gt;</code><br>file 'goil_syntax'<br>line 92</td><td><code></code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_13">13</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_0&gt;</code><br>file 'goil_syntax'<br>line 92</td><td><code>&lt;include_file_level&gt;<br>&lt;select_goil_5F_syntax_0&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_14">14</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_0&gt;</code><br>file 'goil_syntax'<br>line 92</td><td><code>&lt;implementation_definition&gt;<br>&lt;select_goil_5F_syntax_0&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_15">15</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_0&gt;</code><br>file 'goil_syntax'<br>line 92</td><td><code>&lt;application_definition&gt;<br>&lt;select_goil_5F_syntax_0&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_16">16</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_1&gt;</code><br>file 'goil_syntax'<br>line 101</td><td><code>$-$</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_17">17</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_1&gt;</code><br>file 'goil_syntax'<br>line 101</td><td><code>$+$</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_18">18</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_1&gt;</code><br>file 'goil_syntax'<br>line 101</td><td><code></code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_19">19</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_2&gt;</code><br>file 'goil_syntax'<br>line 114</td><td><code></code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_20">20</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_2&gt;</code><br>file 'goil_syntax'<br>line 114</td><td><code>$:$<br>$string$</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_21">21</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_3&gt;</code><br>file 'goil_syntax'<br>line 141</td><td><code></code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_22">22</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_3&gt;</code><br>file 'goil_syntax'<br>line 141</td><td><code>$idf$<br>$idf$<br>${$<br>&lt;oil_declaration_list&gt;<br>$}$<br>&lt;description&gt;<br>$;$<br>&lt;select_goil_5F_syntax_3&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_23">23</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_3&gt;</code><br>file 'goil_syntax'<br>line 141</td><td><code>&lt;include_cpu_level&gt;<br>&lt;select_goil_5F_syntax_3&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_24">24</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_4&gt;</code><br>file 'goil_syntax'<br>line 183</td><td><code>$TRUE$</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_25">25</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_4&gt;</code><br>file 'goil_syntax'<br>line 183</td><td><code>$FALSE$</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_26">26</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_5&gt;</code><br>file 'goil_syntax'<br>line 196</td><td><code></code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_27">27</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_5&gt;</code><br>file 'goil_syntax'<br>line 196</td><td><code>&lt;oil_declaration&gt;<br>&lt;select_goil_5F_syntax_5&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_28">28</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_6&gt;</code><br>file 'goil_syntax'<br>line 222</td><td><code>$idf$<br>&lt;select_goil_5F_syntax_7&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_29">29</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_6&gt;</code><br>file 'goil_syntax'<br>line 222</td><td><code>&lt;sign&gt;<br>&lt;select_goil_5F_syntax_8&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_30">30</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_6&gt;</code><br>file 'goil_syntax'<br>line 222</td><td><code>&lt;boolean&gt;<br>&lt;select_goil_5F_syntax_9&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_31">31</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_6&gt;</code><br>file 'goil_syntax'<br>line 222</td><td><code>$string$</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_32">32</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_7&gt;</code><br>file 'goil_syntax'<br>line 243</td><td><code>${$<br>&lt;oil_declaration_list&gt;<br>$}$</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_33">33</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_7&gt;</code><br>file 'goil_syntax'<br>line 243</td><td><code></code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_34">34</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_8&gt;</code><br>file 'goil_syntax'<br>line 258</td><td><code>$uint_number$</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_35">35</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_8&gt;</code><br>file 'goil_syntax'<br>line 258</td><td><code>$float_number$</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_36">36</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_9&gt;</code><br>file 'goil_syntax'<br>line 286</td><td><code>${$<br>&lt;oil_declaration_list&gt;<br>$}$</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_37">37</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_9&gt;</code><br>file 'goil_syntax'<br>line 286</td><td><code></code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_38">38</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_10&gt;</code><br>file 'goil_syntax'<br>line 331</td><td><code>$g_string$</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_39">39</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_10&gt;</code><br>file 'goil_syntax'<br>line 331</td><td><code>$string$</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_40">40</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_11&gt;</code><br>file 'goil_syntax'<br>line 343</td><td><code>$g_string$</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_41">41</a></td><td class="result_line">rule <code>&lt;select_goil_5F_syntax_11&gt;</code><br>file 'goil_syntax'<br>line 343</td><td><code>$string$</code></td></tr><tr class="result_line"><td class="result_line"><a name="pure_bnf_42">42</a></td><td class="result_line">rule <code>&lt;&gt;</code><br>(added production)</td><td><code>&lt;object_definition_list&gt;</code></td></tr></table><p><a name="vocabulary"></a></p><table class="result"><tr><td class="result_title"colspan="2">Vocabulary</td></tr>
+<tr class="result_line"><td class="result_line">0</td><td><code>$-$</code></td></tr>
+<tr class="result_line"><td class="result_line">1</td><td><code>$+$</code></td></tr>
+<tr class="result_line"><td class="result_line">2</td><td><code>$:$</code></td></tr>
+<tr class="result_line"><td class="result_line">3</td><td><code>$string$</code></td></tr>
+<tr class="result_line"><td class="result_line">4</td><td><code>$OIL_VERSION$</code></td></tr>
+<tr class="result_line"><td class="result_line">5</td><td><code>$=$</code></td></tr>
+<tr class="result_line"><td class="result_line">6</td><td><code>$;$</code></td></tr>
+<tr class="result_line"><td class="result_line">7</td><td><code>$CPU$</code></td></tr>
+<tr class="result_line"><td class="result_line">8</td><td><code>$idf$</code></td></tr>
+<tr class="result_line"><td class="result_line">9</td><td><code>${$</code></td></tr>
+<tr class="result_line"><td class="result_line">10</td><td><code>$}$</code></td></tr>
+<tr class="result_line"><td class="result_line">11</td><td><code>$TRUE$</code></td></tr>
+<tr class="result_line"><td class="result_line">12</td><td><code>$FALSE$</code></td></tr>
+<tr class="result_line"><td class="result_line">13</td><td><code>$uint_number$</code></td></tr>
+<tr class="result_line"><td class="result_line">14</td><td><code>$float_number$</code></td></tr>
+<tr class="result_line"><td class="result_line">15</td><td><code>$include$</code></td></tr>
+<tr class="result_line"><td class="result_line">16</td><td><code>$g_string$</code></td></tr>
+<tr class="result_line"><td class="result_line">17</td><td><code>$$</code></td></tr>
+<tr class="result_line"><td class="result_line">18</td><td><code>&lt;implementation_definition&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">19</td><td><code>&lt;start&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">20</td><td><code>&lt;file&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">21</td><td><code>&lt;sign&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">22</td><td><code>&lt;description&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">23</td><td><code>&lt;OIL_version&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">24</td><td><code>&lt;application_definition&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">25</td><td><code>&lt;object_definition_list&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">26</td><td><code>&lt;boolean&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">27</td><td><code>&lt;oil_declaration_list&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">28</td><td><code>&lt;oil_declaration&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">29</td><td><code>&lt;include_file_level&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">30</td><td><code>&lt;include_cpu_level&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">31</td><td><code>&lt;select_goil_5F_syntax_0&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">32</td><td><code>&lt;select_goil_5F_syntax_1&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">33</td><td><code>&lt;select_goil_5F_syntax_2&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">34</td><td><code>&lt;select_goil_5F_syntax_3&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">35</td><td><code>&lt;select_goil_5F_syntax_4&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">36</td><td><code>&lt;select_goil_5F_syntax_5&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">37</td><td><code>&lt;select_goil_5F_syntax_6&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">38</td><td><code>&lt;select_goil_5F_syntax_7&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">39</td><td><code>&lt;select_goil_5F_syntax_8&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">40</td><td><code>&lt;select_goil_5F_syntax_9&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">41</td><td><code>&lt;select_goil_5F_syntax_10&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">42</td><td><code>&lt;select_goil_5F_syntax_11&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">43</td><td><code>&lt;&gt;</code></td></tr>
+</table><p><a name="identical_productions"></a></p><table class="title"><tr><td>
+Step 2 : searching for identical productions
+</td></tr></table>
+<p><span class="success">Ok : all productions are different.
+</span></p>For information :
+<ul><li>17 terminal symbols, numbered from 0 to 16 ;</li>
+<li> the 'empty string' symbol '$$' is numbered 17 ;</li>
+<li>26 nonterminal symbols in the pure BNF grammar, numbered from 18 to 43 ;</li>
+<li>whole vocabulary : 44 elements, 6 bits for BDDs.</li>
+</ul>
+<table class="title"><tr><td>
+Useful terminal and nonterminal symbols
+</td></tr></table>
+<p><a name="useful_symbols"></a>Calculus completed in 9 iterations.
+</p><p><span class="success">All terminal and nonterminal symbols are useful.
+
+</span></p><table class="title"><tr><td>
+Searching for nonterminal symbols deriving in empty string
+</td></tr></table>
+<p><a name="empty_strings"></a>7 nonterminal symbols have a empty production :
+</p><table class="result"><tr class="result_line"><td class="result_line">0</td><td><code>&lt;select_goil_5F_syntax_0&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">1</td><td><code>&lt;select_goil_5F_syntax_1&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">2</td><td><code>&lt;select_goil_5F_syntax_2&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">3</td><td><code>&lt;select_goil_5F_syntax_3&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">4</td><td><code>&lt;select_goil_5F_syntax_5&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">5</td><td><code>&lt;select_goil_5F_syntax_7&gt;</code></td></tr>
+<tr class="result_line"><td class="result_line">6</td><td><code>&lt;select_goil_5F_syntax_9&gt;</code></td></tr>
+</table><p>Nonterminal symbols deriving indirectly in empty string : calculus in 3 iterations.
+</p><p>6 nonterminal symbol(s) in addition to those deriving directly to the empty string :
+</p><table class="result"><tr class="result_line"><td class="result_line">0</td><td><code>&lt;file&gt;</code></td></tr><tr class="result_line"><td class="result_line">1</td><td><code>&lt;sign&gt;</code></td></tr><tr class="result_line"><td class="result_line">2</td><td><code>&lt;description&gt;</code></td></tr><tr class="result_line"><td class="result_line">3</td><td><code>&lt;object_definition_list&gt;</code></td></tr><tr class="result_line"><td class="result_line">4</td><td><code>&lt;oil_declaration_list&gt;</code></td></tr><tr class="result_line"><td class="result_line">5</td><td><code>&lt;&gt;</code></td></tr></table><p><a name="first_sets"></a></p><table class="title"><tr><td>
+FIRST set
+</td></tr></table>
+<p>Calculus completed in 4 iterations, 57 values ;
+'$$' means the nonterminal can be derived to empty string (see step 4).
+</p><table class="result"><tr class="result_line"><td class="result_line"><code>&lt;implementation_definition&gt;</code></td><td><code></code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;start&gt;</code></td><td><code> $OIL_VERSION$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;file&gt;</code></td><td><code> $CPU$ $include$ $$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;sign&gt;</code></td><td><code> $-$ $+$ $$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;description&gt;</code></td><td><code> $:$ $$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;OIL_version&gt;</code></td><td><code> $OIL_VERSION$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;application_definition&gt;</code></td><td><code> $CPU$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;object_definition_list&gt;</code></td><td><code> $idf$ $include$ $$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;boolean&gt;</code></td><td><code> $TRUE$ $FALSE$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;oil_declaration_list&gt;</code></td><td><code> $idf$ $$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;oil_declaration&gt;</code></td><td><code> $idf$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;include_file_level&gt;</code></td><td><code> $include$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;include_cpu_level&gt;</code></td><td><code> $include$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_0&gt;</code></td><td><code> $CPU$ $include$ $$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_1&gt;</code></td><td><code> $-$ $+$ $$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_2&gt;</code></td><td><code> $:$ $$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_3&gt;</code></td><td><code> $idf$ $include$ $$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_4&gt;</code></td><td><code> $TRUE$ $FALSE$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_5&gt;</code></td><td><code> $idf$ $$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_6&gt;</code></td><td><code> $-$ $+$ $string$ $idf$ $TRUE$ $FALSE$ $uint_number$ $float_number$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_7&gt;</code></td><td><code> ${$ $$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_8&gt;</code></td><td><code> $uint_number$ $float_number$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_9&gt;</code></td><td><code> ${$ $$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_10&gt;</code></td><td><code> $string$ $g_string$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_11&gt;</code></td><td><code> $string$ $g_string$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;&gt;</code></td><td><code> $idf$ $include$ $$</code></td></tr></table><p>Every useful nonterminal should either have a non empty FIRST, either be derived to empty string, either both. In any way having none: it is an error.</p><p><span class="success">All FIRST are correct.
+
+</span></p><table class="title"><tr><td>
+Nonterminal symbol set followed by empty string
+</td></tr></table>
+<p><a name="follow_by_empty"></a>Calculus completed in 3 iterations.
+</p><p>4 nonterminal symbols (including the start symbol) can be followed by the empty string.
+</p><table class="result"><tr class="result_line"><td class="result_line"><code>&lt;object_definition_list&gt;</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;include_cpu_level&gt;</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_3&gt;</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_11&gt;</code></td></tr></table><p></p><table class="title"><tr><td>
+Computing the FOLLOW sets
+</td></tr></table>
+<p>Calculus completed in 5 iterations, 86 values ;
+'$$' means the nonterminal symbol can be followed by empty string (see step 6) ;
+
+the followings of terminal symbols are given for information.
+</p><table class="result"><tr class="result_line"><td class="result_line"><code>$-$</code></td><td><code> $uint_number$ $float_number$</code></td></tr><tr class="result_line"><td class="result_line"><code>$+$</code></td><td><code> $uint_number$ $float_number$</code></td></tr><tr class="result_line"><td class="result_line"><code>$:$</code></td><td><code> $string$</code></td></tr><tr class="result_line"><td class="result_line"><code>$string$</code></td><td><code> $:$ $;$ $CPU$ $idf$ $}$ $include$</code></td></tr><tr class="result_line"><td class="result_line"><code>$OIL_VERSION$</code></td><td><code> $=$</code></td></tr><tr class="result_line"><td class="result_line"><code>$=$</code></td><td><code> $-$ $+$ $string$ $idf$ $TRUE$ $FALSE$ $uint_number$ $float_number$</code></td></tr><tr class="result_line"><td class="result_line"><code>$;$</code></td><td><code> $CPU$ $idf$ $}$ $include$</code></td></tr><tr class="result_line"><td class="result_line"><code>$CPU$</code></td><td><code> $idf$</code></td></tr><tr class="result_line"><td class="result_line"><code>$idf$</code></td><td><code> $=$ $;$ $idf$ ${$</code></td></tr><tr class="result_line"><td class="result_line"><code>${$</code></td><td><code> $idf$ $}$ $include$</code></td></tr><tr class="result_line"><td class="result_line"><code>$}$</code></td><td><code> $:$ $;$</code></td></tr><tr class="result_line"><td class="result_line"><code>$TRUE$</code></td><td><code> $;$ ${$</code></td></tr><tr class="result_line"><td class="result_line"><code>$FALSE$</code></td><td><code> $;$ ${$</code></td></tr><tr class="result_line"><td class="result_line"><code>$uint_number$</code></td><td><code> $;$</code></td></tr><tr class="result_line"><td class="result_line"><code>$float_number$</code></td><td><code> $;$</code></td></tr><tr class="result_line"><td class="result_line"><code>$include$</code></td><td><code> $string$ $g_string$</code></td></tr><tr class="result_line"><td class="result_line"><code>$g_string$</code></td><td><code> $CPU$ $idf$ $}$ $include$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;implementation_definition&gt;</code></td><td><code> $CPU$ $include$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;start&gt;</code></td><td><code></code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;file&gt;</code></td><td><code></code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;sign&gt;</code></td><td><code> $uint_number$ $float_number$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;description&gt;</code></td><td><code> $;$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;OIL_version&gt;</code></td><td><code> $CPU$ $include$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;application_definition&gt;</code></td><td><code> $CPU$ $include$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;object_definition_list&gt;</code></td><td><code> $}$ $$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;boolean&gt;</code></td><td><code> $;$ ${$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;oil_declaration_list&gt;</code></td><td><code> $}$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;oil_declaration&gt;</code></td><td><code> $idf$ $}$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;include_file_level&gt;</code></td><td><code> $CPU$ $include$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;include_cpu_level&gt;</code></td><td><code> $idf$ $}$ $include$ $$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_0&gt;</code></td><td><code></code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_1&gt;</code></td><td><code> $uint_number$ $float_number$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_2&gt;</code></td><td><code> $;$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_3&gt;</code></td><td><code> $}$ $$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_4&gt;</code></td><td><code> $;$ ${$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_5&gt;</code></td><td><code> $}$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_6&gt;</code></td><td><code> $;$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_7&gt;</code></td><td><code> $;$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_8&gt;</code></td><td><code> $;$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_9&gt;</code></td><td><code> $;$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_10&gt;</code></td><td><code> $CPU$ $include$</code></td></tr><tr class="result_line"><td class="result_line"><code>&lt;select_goil_5F_syntax_11&gt;</code></td><td><code> $idf$ $}$ $include$ $$</code></td></tr></table><p>Every useful nonterminal symbol should: either have a non empty FOLLOW, either can be followed by the empty string, either both. In no way none of them : it is an error.</p><p><span class="success">All FOLLOW are correct.</span></p><a name="grammar"></a><table class="title"><tr><td>
+Checking LL(1) condition
+</td></tr></table>
+<p>The FIRST of a production is :
+ if the production is empty, the FOLLOW of the left nonterminal symbol ;
+ if the production is not empty (e.g. g -&gt; x) :
+         -- the FIRST of x, and
+         -- if x est a nonterminal symbol deriving in the empty string, union the FOLLOW of x.
+
+Only are listed the nonterminal having more than one production (see step 2
+for inPureBNFproductions numbering) :
+
+</p><table class="result"><tr><td class="result_title" colspan="2"><code>&lt;select_goil_5F_syntax_0&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_12">12</a></td><td><code></code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_13">13</a></td><td><code>$include$ </code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_14">14</a></td><td><code></code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_15">15</a></td><td><code>$CPU$ </code></td></tr>
+<tr><td class="result_title" colspan="2"><code>&lt;select_goil_5F_syntax_1&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_16">16</a></td><td><code>$-$ </code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_17">17</a></td><td><code>$+$ </code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_18">18</a></td><td><code>$uint_number$ $float_number$ </code></td></tr>
+<tr><td class="result_title" colspan="2"><code>&lt;select_goil_5F_syntax_2&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_19">19</a></td><td><code>$;$ </code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_20">20</a></td><td><code>$:$ </code></td></tr>
+<tr><td class="result_title" colspan="2"><code>&lt;select_goil_5F_syntax_3&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_21">21</a></td><td><code>$}$ $$ </code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_22">22</a></td><td><code>$idf$ </code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_23">23</a></td><td><code>$include$ </code></td></tr>
+<tr><td class="result_title" colspan="2"><code>&lt;select_goil_5F_syntax_4&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_24">24</a></td><td><code>$TRUE$ </code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_25">25</a></td><td><code>$FALSE$ </code></td></tr>
+<tr><td class="result_title" colspan="2"><code>&lt;select_goil_5F_syntax_5&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_26">26</a></td><td><code>$}$ </code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_27">27</a></td><td><code>$idf$ </code></td></tr>
+<tr><td class="result_title" colspan="2"><code>&lt;select_goil_5F_syntax_6&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_28">28</a></td><td><code>$idf$ </code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_29">29</a></td><td><code>$-$ $+$ $uint_number$ $float_number$ </code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_30">30</a></td><td><code>$TRUE$ $FALSE$ </code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_31">31</a></td><td><code>$string$ </code></td></tr>
+<tr><td class="result_title" colspan="2"><code>&lt;select_goil_5F_syntax_7&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_32">32</a></td><td><code>${$ </code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_33">33</a></td><td><code>$;$ </code></td></tr>
+<tr><td class="result_title" colspan="2"><code>&lt;select_goil_5F_syntax_8&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_34">34</a></td><td><code>$uint_number$ </code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_35">35</a></td><td><code>$float_number$ </code></td></tr>
+<tr><td class="result_title" colspan="2"><code>&lt;select_goil_5F_syntax_9&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_36">36</a></td><td><code>${$ </code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_37">37</a></td><td><code>$;$ </code></td></tr>
+<tr><td class="result_title" colspan="2"><code>&lt;select_goil_5F_syntax_10&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_38">38</a></td><td><code>$g_string$ </code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_39">39</a></td><td><code>$string$ </code></td></tr>
+<tr><td class="result_title" colspan="2"><code>&lt;select_goil_5F_syntax_11&gt;</code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_40">40</a></td><td><code>$g_string$ </code></td></tr><tr class="result_line"><td class="result_line"><a href="#pure_bnf_41">41</a></td><td><code>$string$ </code></td></tr>
+</table><p><span class="success">No conflict : the grammar is LL (1).
+</span></p><table class="title"><tr><td>
+OK (no error, no warning)
+</td></tr></table>
+</div></body></html>

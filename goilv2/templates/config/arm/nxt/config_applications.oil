@@ -1,0 +1,54 @@
+/**
+ * @file config_applications.oil
+ *
+ * @section desc File description
+ *
+ * Here are the ISR1 declarations for the Lego Mindstorm NXT drivers (spi, motors, sound...).
+ * They are linked to a source in the target.cfg file.
+ *
+ * @section copyright Copyright
+ *
+ * Trampoline is copyright (c) IRCCyN 2005-2007
+ * Trampoline is protected by the French intellectual property law.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; version 2
+ * of the License.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @section infos File informations
+ *
+ * $Date$
+ * $Rev$
+ * $Author$
+ * $URL$
+ */
+
+CPU config {
+  APPLICATION appli_isr1 {
+    ISR = systick_isr_C;
+    ISR = nxt_motor_isr_C;
+    ISR = spi_isr_C;
+    /*ISR = uart_isr_C_0;*/
+    /*ISR = uart_isr_C_1;*/
+    ISR = bt_isr_C;
+    /*ISR = sound_isr_C;*/
+    ISR = twi_isr_C;
+    ISR = systick_low_priority_C;
+    /*ISR = udp_isr_C;*/
+    ISR = i2c_timer_isr_C;
+    ISR = check_buttons_status;
+  };   
+};
+
+/* End of file config_applications.oil */
+
