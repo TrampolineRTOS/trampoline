@@ -1,0 +1,273 @@
+MEMORY
+{
+  bootrom (rx) : ORIGIN = 0x00000000, LENGTH = 16K /* hard-wired into microcontroller */
+  dram0 (wx)   : ORIGIN = 0xA0000000, LENGTH = 64M
+  dram1 (wx)   : ORIGIN = 0xB0000000, LENGTH = 64M
+  fvram (wx)   : ORIGIN = 0xFFF00000, LENGTH = 979K /* free (unused by system) VRAM memory */
+  vvram (wx)   : ORIGIN = 0xFFFF4C00, LENGTH = 45K  /* vector RAM */
+}
+
+ENTRY (tpl_arm_bootstrap_entry)
+
+SECTIONS
+{
+  /* "root" vector table cannot be written on iMX27, so we drop this section at load */
+  .vectbl (NOLOAD) : {
+      *(.vectbl)
+  } > bootrom
+  
+  /* this section is used to boot from u-boot easily */
+  apf27uboot : {
+    MMU_start_custom_zone = .;
+    __SEG_START_OS_PRIVATE = .;
+    KEEP(*(.ubootsupport)) 
+  } > dram0 AT > dram0
+  
+  /*
+   * code and consts of the operating system (Trampoline).
+   * this section is not accessible from an untrusted process
+   */
+  ostext : ALIGN(4) SUBALIGN(4) {
+    *(.osCode)
+  } > dram0 AT> dram0
+
+  osconst : ALIGN(4) SUBALIGN(4) {
+    *(.osConst)
+  } > dram0 AT> dram0
+  
+  /*
+   * variableѕ of the operating system (Trampoline)
+   */
+  osvarsnoinit (NOLOAD) : ALIGN(4) SUBALIGN(4) {
+    kernel_zeroed_vars_begin = .;
+    *(.osVarNoInit)
+    kernel_zeroed_vars_end = .;
+  } > dram0 AT> dram0
+  
+  osvars : ALIGN(4) SUBALIGN(4) {
+    *(.osVar)
+    *(.stacks) /* TODO : isolate each stack for stack overflow detection */
+  } > dram0 AT> dram0
+
+  nothing : {
+    __SEG_END_OS_PRIVATE = .;
+  } > dram0 
+
+  /*
+   * code and consts of the processes of the applications
+   */
+  apptext : ALIGN(1K) SUBALIGN(4) {
+    __SEG_START_APP_CODE_CONST_RGN = .;
+    *(.osApiConst)  /* API constants    */
+    *(.osApiCode)   /* API functions    */
+    /* Sections for code of tasks and ISR */%
+foreach PROCESSES do
+%
+    *(.% !PROCESSKIND %_% !NAME %Code)
+%
+end foreach
+%
+  } > dram0 AT> dram0
+  
+  /*
+   * non-AUTOSAR standard code section. May come from external
+   * libraries or libgcc. We put this inside common shared code. 
+   */
+  .text : ALIGN(4) SUBALIGN(4) {
+    *(.text*)
+    *(.ARM.eidx)
+    *(.glue_7*)
+    *(.comment)
+  } > dram0 AT> dram0
+  
+   /* the following seems to fix an obscure problem. Thanks to
+   * Freddie Chopin (see at
+   * http://www.codesourcery.com/archives/arm-gnu/msg03703.html )
+   */
+  . = ALIGN(4);
+  __exidx_start = .;
+  PROVIDE(__exidx_start = __exidx_start);
+
+  .ARM.exidx :
+  {
+    *(.ARM.exidx* .gnu.linkonce.armexidx.*);
+  } > dram0 AT > dram0 /* index entries for section unwinding */
+
+  . = ALIGN(4);
+  __exidx_end = .;
+  PROVIDE(__exidx_end = __exidx_end);
+  
+  /*
+   * non-AUTOSAR standard const section. May come from external
+   * libraries or libgcc. We put this inside common shared code. 
+   */
+  .rodata : ALIGN(4) SUBALIGN(4) { 
+    *(.rodata)      /* litteral strings */
+    *(.rodata*)
+  } > dram0 AT> dram0
+  
+  /*
+   * constants of AUTOSAR OS applications 
+   */
+  appconst : ALIGN(4) SUBALIGN(4) {
+     /* Sections for application const */  
+%
+foreach OSAPPLICATIONS do
+ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+%      *(.OS_APP_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
+%
+  end for
+ end for
+end foreach
+%
+  } > dram0 AT > dram0
+
+  /*
+   * constants of processes
+   */
+  procconst : ALIGN(4) SUBALIGN(4) {
+    /* Sections for const of tasks and ISR */
+%
+foreach PROCESSES do
+ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+%      *(.% !PROCESSKIND %_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
+%
+  end for
+ end for
+end foreach
+%    
+    . = ALIGN(1K);
+    __SEG_END_APP_CODE_CONST_RGN = .;
+  } > dram0 AT > dram0
+
+  /*
+   * private initialized data of processes
+   */ 
+%
+foreach PROCESSES do
+%    procvars_% !PROCESSKIND %_% !NAME % : ALIGN(1K) SUBALIGN(4) {
+    __SEG_START_% !PROCESSKIND %_% !NAME %_VAR_RGN = .;
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    for SECTION_KIND in "_POWER_ON_INIT_","_FAST_","_" do
+%    *(.% !PROCESSKIND %_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end for
+  end for
+%    } > dram0 AT> dram0
+    procvars_noinit_% !PROCESSKIND %_% !NAME % (NOLOAD) : SUBALIGN(4) {
+      % !PROCESSKIND %_% !NAME %_zeroed_vars_begin = .;
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do   
+%      *(.% !PROCESSKIND %_% !NAME %_SEC_VAR_NOINIT_% !DATA_SIZE %)
+%
+  end for %
+    %!PROCESSKIND %_% !NAME %_zeroed_vars_end = .;
+    . = ALIGN (1K);
+    __SEG_END_% !PROCESSKIND %_% !NAME %_VAR_RGN = .;
+    } > dram0 AT> dram0
+    
+%
+end foreach
+%
+  /*
+   * stack of processes
+   */
+  procstack (NOLOAD) : ALIGN(1K) {
+%
+foreach PROCESSES do %
+  /* Section of stack of % !PROCESSKIND % % !NAME %  */
+    __SEG_START_% !PROCESSKIND %_% !NAME %_STACK_RGN = .;
+    *(.% !PROCESSKIND %_% !NAME %Stack)
+    . = ALIGN(1K);
+    __SEG_END_% !PROCESSKIND %_% !NAME %_STACK_RGN = .;
+%
+end foreach
+%
+  } > dram0 AT> dram0
+
+  /*
+   * os application data
+   */
+%
+foreach OSAPPLICATIONS do
+%    appvars_% !NAME % : ALIGN(1K) SUBALIGN(4) {
+    __SEG_START_OS_APP_% !NAME %_VAR_RGN = .;
+    /* Initialized variables section of OS_APP % !NAME % */
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    for SECTION_KIND in "_POWER_ON_INIT_","_FAST_","_" do
+%    *(.OS_APP_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end for
+  end for
+%  } > dram0 AT> dram0
+  appvars_noinit_% !NAME % (NOLOAD) : SUBALIGN(4) {
+    /* Uninitialized variables section of OS_APP % !NAME % */
+    app_% !NAME %_zeroed_vars_begin = .;
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do 
+%    *(.OS_APP_% !NAME %_SEC_VAR_NOINIT_% !DATA_SIZE %)
+%
+  end for
+%    app_% !NAME %_zeroed_vars_end = .;
+     . = ALIGN(1K);
+    __SEG_END_OS_APP_% !NAME %_VAR_RGN = .;
+  } > dram0 AT> dram0
+%
+end foreach
+% 
+  
+  /*
+   * non-AUTOSAR standard data section. May come from external
+   * libraries or libgcc.
+   * FIXME : As this could be used by any application, where
+   * whould we put this ? Now, this code is only accessible from
+   * kernel.
+   */
+  .data : ALIGN(1K) SUBALIGN(4) {
+    __SEG_START_COMMON_VARS = .;
+    *(.data)
+    *(.data*)
+  } > dram0 AT> dram0
+  
+  /*
+   * non-AUTOSAR standard bss section. May come from external
+   * libraries or libgcc.
+   * FIXME : As this could be used by any application, where
+   * whould we put this ? Now, this code is only accessible from
+   * kernel.
+   */
+  .bss (NOLOAD) : ALIGN(4) SUBALIGN(4) {
+    common_zeroed_vars_begin = .;
+    *(.bss)
+    *(.bss*)
+    *(COMMON)
+    common_zeroed_vars_end = .;
+    __SEG_END_COMMON_VARS = .;
+    MMU_end_custom_zone = .;
+  } > dram0 AT> dram0
+%
+  if USEMEMORYPROTECTION then
+%
+  /*
+   * MMU data
+   */
+  MMU_page_tables_size =
+    /* number of processes */           (% ![PROCESSES length] % + 1) *
+    /* each page table size */          1K * 4 *
+    /* number of page tables needed */  (ALIGN (MMU_end_custom_zone - MMU_start_custom_zone, 1M) / 1M);
+  MMU_page_table_count = (ALIGN (MMU_end_custom_zone - MMU_start_custom_zone, 1M) / 1M);
+  .MMU_tables (NOLOAD) : ALIGN(16K) {
+    MMU_translation_tables = .;
+    . += /* number of processes */           (% ![PROCESSES length] % + 1) *
+         /* each t. table size */            16K;
+    MMU_page_tables = .;
+    . += MMU_page_tables_size;
+  } > dram0 AT> dram0%
+  end if
+%
+}
+

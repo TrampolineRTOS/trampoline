@@ -1,0 +1,208 @@
+ENTRY(_start)
+
+MEMORY
+{
+  system_reset        (ax) : ORIGIN = 0x100,  LENGTH = 0x100
+  machine_check       (ax) : ORIGIN = 0x200,  LENGTH = 0x100
+  data_storage        (ax) : ORIGIN = 0x300,  LENGTH = 0x100
+  instruction_storage (ax) : ORIGIN = 0x400,  LENGTH = 0x100
+  external_interrupt  (ax) : ORIGIN = 0x500,  LENGTH = 0x100
+  alignment           (ax) : ORIGIN = 0x600,  LENGTH = 0x100
+  program             (ax) : ORIGIN = 0x700,  LENGTH = 0x100
+  fp_unavailable      (ax) : ORIGIN = 0x800,  LENGTH = 0x100
+  decrementer         (ax) : ORIGIN = 0x900,  LENGTH = 0x100
+  reserved_A00        (ax) : ORIGIN = 0xA00,  LENGTH = 0x100
+  reserved_B00        (ax) : ORIGIN = 0xB00,  LENGTH = 0x100
+  system_call         (ax) : ORIGIN = 0xC00,  LENGTH = 0x100
+  trace               (ax) : ORIGIN = 0xD00,  LENGTH = 0x100
+  fp_assist           (ax) : ORIGIN = 0xE00,  LENGTH = 0x100
+  
+  ram                (wax) : ORIGIN = 0x3000, LENGTH = 16M
+                            /* 16 Mo of Volatile memory*/
+}
+
+SECTIONS
+{
+  .vector_external_interrupt : { *(.EI_vector) } > external_interrupt
+  .vector_system_call :        { *(.SC_vector) } > system_call
+
+  /*
+   * code and consts of the operating system (Trampoline).
+   * this section is not accessible from an untrusted process
+   */
+  . = ALIGN(4);
+  ostext : {
+    *(.SC_handler)
+    *(.EI_handler)
+    *(.osCode)
+    *(.appCommonCode) 
+  } > ram
+
+  . = ALIGN(4);
+  osconst : {
+    *(.osConst)
+  } > ram
+  
+  /*
+   * remaining .text (ie no section given)
+   */
+  . = ALIGN(4);
+  text_garbage : {
+    *(.text)
+    *(.ctors)
+    *(.dtors)
+
+  } > ram
+
+  other_garbage : {
+    *(.init)
+    *(.fini)
+  } > ram
+  
+  /*
+   * vars of the operating system (Trampoline)
+   */
+  osvars : {
+    *(.osVar)
+  } > ram
+
+  /*
+   * code and consts of the processes of the applications
+   */
+  . = ALIGN(32);
+  apptext : { /* MPC5510 MPU requires 32 bytes alignment */
+    __PROGCONST_SECTION_START = .;
+    __SEG_START_APP_CODE_CONST_RGN = .;
+    *(.osApiConst)  /* API constants    */
+    *(.rodata)      /* litteral strings */
+    . = ALIGN(4);
+    *(.osApiCode)   /* API functions    */
+    /* Sections for code of tasks and ISR */%
+foreach PROCESSES do
+%
+    *(.% !PROCESSKIND %_% !NAME %Code)
+%
+end foreach
+%
+  } > ram
+  
+  appconst : {
+     /* Sections for application const */  
+%
+foreach OSAPPLICATIONS do
+ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+%      *(.OS_APP_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
+%
+  end for
+ end for
+end foreach
+%
+    . = ALIGN(32);
+  } > ram
+
+  procconst : {
+    /* Sections for const of tasks and ISR */
+%
+foreach PROCESSES do
+ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+%      *(.% !PROCESSKIND %_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
+%
+  end for
+ end for
+end foreach
+%    
+    . = ALIGN(32);
+    __SEG_STOP_APP_CODE_CONST_RGN = . - 1;
+    __PROGCONST_SECTION_STOP = . - 1;
+  } > ram
+  
+  /*
+   * bss data
+   */
+  bss_data : {
+    *(.bss) *(.sbss)  /* *(.sbss2) */
+  } > ram
+  . = ALIGN(32);
+
+  /*
+   * private data of processes
+   */
+%
+foreach PROCESSES do
+%  .% !PROCESSKIND %_% !NAME %_SEC_VAR : {
+    . = ALIGN(32);
+    __SEG_START_% !PROCESSKIND %_% !NAME %_VAR_RGN = .;
+/* Initialized variables section of % !PROCESSKIND % % !NAME % */
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
+%    *(.% !PROCESSKIND %_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end for
+  end for
+%    __SEG_END_% !PROCESSKIND %_% !NAME %_VAR_RGN = ALIGN(32) - 1;
+  } > ram
+%
+end foreach
+%
+
+  /*
+   * stack of processes
+   */
+%
+foreach PROCESSES do %
+  /* Section of stack of % !PROCESSKIND % % !NAME %  */
+  .% !PROCESSKIND %_% !NAME %_SEC_STACK ALIGN(32) : {
+    __SEG_START_% !PROCESSKIND %_% !NAME %_STACK_RGN = .;
+    *(.% !PROCESSKIND %_% !NAME %Stack)
+    __SEG_END_% !PROCESSKIND %_% !NAME %_STACK_RGN = ALIGN(32) - 1;
+  } > ram
+%
+end foreach
+%
+  /*
+   * os application data
+   */
+   appvars : {
+%
+foreach OSAPPLICATIONS do
+%    __SEG_START_OS_APP_% !NAME %_VAR_RGN = .;
+/* Initialized variables section of OS_APP % !NAME % */
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
+%    *(.OS_APP_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end for
+  end for
+%    __SEG_END_OS_APP_% !NAME %_VAR_RGN = ALIGN(16) - 1;
+%
+end foreach
+% 
+  } > ram
+
+  
+  /*
+   * garbage
+   */
+  data_garbage : {
+    *(.data)
+    *(.sdata)
+    *(.sdata2)
+    *(.got)
+    *(.got1)
+    *(.got2)
+    *(.fixup)
+    *(.gcc_except_table)
+    *(.eh_frame)
+    *(.jcr)
+  } > ram
+  .comment :        { *(.comment)        } > ram
+  relocatable : {
+    *(.rela.*)
+  } > ram
+
+}
+

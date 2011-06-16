@@ -1,0 +1,12 @@
+# Initialization of noinit vars segment module
+SOURCES += tpl_init_noinit_var_sections.c
+
+# memory map file
+LDFLAGS += -Map % !APPNAME %.map
+
+OBJCOPY = $(subst gcc,objcopy,$(CC))
+#generate the binary dump to use with uBoot
+bin: % !APPNAME %
+	$(OBJCOPY) -R .comment -R .bss -O binary  % !APPNAME % % !APPNAME %.bin
+
+EXTRA_FILES_CLEAN += % !APPNAME %.bin % !APPNAME %.map

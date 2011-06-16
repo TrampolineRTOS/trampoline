@@ -1,0 +1,219 @@
+#
+# Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline est protege par la loi sur la propriete intellectuelle
+#
+# This software is distributed under the Lesser GNU Public Licence
+#
+# GOIL lexer
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+lexique goil_lexique :
+
+#
+# Styles for Galgas GOIL
+#
+
+style keywordsStyle -> "Keywords:";
+style identifierStyle -> "Identifiers:";
+style delimitersStyle -> "Delimiters:";
+style stringStyle -> "String literals:";
+style pathStyle -> "Path String:";
+style integerStyle -> "Integer Literals:";
+style floatStyle -> "Floating Point Literals:";
+style commandStyle -> "Commands:";
+style commentStyle -> "Comments:";
+
+#
+# OIL_VERSION keyword
+#
+list oilVersion error message "OIL version" style keywordsStyle :
+  "OIL_VERSION";
+#
+# List of OIL definitions
+#
+list oilDefinitions error message "OIL implementation definition" style keywordsStyle :
+  "IMPLEMENTATION", "CPU";
+
+#
+# List of datatypes
+#
+list dataTypes error message "type '%K'" style keywordsStyle :
+  "UINT32", "INT32", "UINT64", "INT64", "FLOAT", "ENUM", "STRING", "BOOLEAN", "IDENTIFIER";
+
+#
+# Miscellaneous specifiers
+#
+list miscSpecifiers error message "specifier '%K'" style keywordsStyle :
+  "WITH_AUTO", "NO_DEFAULT", "AUTO";
+
+#
+# Booleans
+#
+list boolean error message "boolean '%K'" style keywordsStyle :
+  "FALSE", "TRUE";
+
+#----------------------- comments -------------------------------
+# They must be defined before delimitors!! 
+# '/' is a delimitor.
+$comment$ error message "a comment" style commentStyle;
+rule "//" :
+  repeat #accept all except 0xA (LF) and 0xD (CR)
+  while '\u0001'->'\u0009' | '\u000B'| '\u000C'| '\u000E' -> '\uFFFD' : 
+  end repeat;
+  drop $comment$;
+end rule;
+
+message unterminated_comment_error : "unterminated comment";
+
+rule "/*" :
+  repeat
+  while ~ "*/" error unterminated_comment_error :
+  end repeat;
+  drop $comment$;
+end rule;
+
+@string att_token;
+
+#--------------------- Identifiers --------------------------
+$idf$ !att_token error message "identifier" style identifierStyle;
+
+rule 'a'->'z' | 'A'->'Z' :
+  repeat
+    enterCharacterIntoString !?att_token !*;
+  while 'a'->'z' | 'A'->'Z' | '_' | '0'->'9' :
+  end repeat;
+  send search att_token in oilVersion
+    default search att_token in oilDefinitions
+    default search att_token in dataTypes
+    default search att_token in miscSpecifiers
+#    default search att_token in objectRefType
+    default search att_token in boolean
+    default $idf$;
+end rule;
+
+#
+# List of delimiters in OIL
+#
+list OILDelimiters error message "'%K' delimiter" style delimitersStyle:
+  ";", ":", "=", "{", "}", "..", "[", "]", ",", ".", "+", "-";
+
+rule list OILDelimiters;
+
+#
+# Eat whitespaces
+#
+rule '\u0001'->' ':
+end rule;
+
+#
+# As usual the literals
+#
+message internalError : "internal error";
+message decimalNumberTooLarge : "decimal number too large";
+message unterminatedLitteralString : "Unterminated literal string"; 
+message unableToConvertToDouble : "Unable to convert the string to double";
+
+@string a_string;
+
+$string$ !a_string error message "literal string" style stringStyle;
+
+rule '"' :
+  repeat
+  while '\u0020'->'\u0021' | '\u0023' -> '\uFFFD' :
+    enterCharacterIntoString !?a_string !* ;
+  end repeat;
+  select
+    when '"' :
+      send $string$;
+    default
+      error unterminatedLitteralString;
+  end select;
+end rule;
+
+$g_string$ !a_string error message "in search path" style pathStyle;
+
+rule '<' :
+  repeat
+  while '\u0020'->'\u003D' | '\u003F' -> '\uFFFD' :
+    enterCharacterIntoString !?a_string !* ;
+  end repeat;
+  select
+    when '>' :
+      send $g_string$;
+    default
+      error unterminatedLitteralString;
+  end select;
+end rule;
+
+@uint64 integerNumber;
+@double floatNumber;
+@string number;
+
+$uint_number$ !integerNumber error message "literal unsigned 64 bits integer" style integerStyle;
+$float_number$ !floatNumber error message "literal float" style floatStyle; 
+$set_start_uint_number$ !integerNumber error message "literal unsigned 64 bits integer" style integerStyle;
+
+
+#
+# Unsigned literal number. This rule scans hexadecimal integers
+# 
+rule "0x" | "0X" :
+  repeat
+  while '0'->'9' | 'a'->'f' | 'A'->'F':
+    enterHexDigitIntoUInt64 !* !?integerNumber error decimalNumberTooLarge, internalError;
+  end repeat;
+  send $uint_number$;
+end rule;
+
+#
+# Unsigned literal number. This rule scans decimal integers
+# 
+rule '0'->'9':
+  repeat
+    enterCharacterIntoString !?number !* ;
+    enterDigitIntoUInt64 !* !?integerNumber error decimalNumberTooLarge, internalError;
+  while '0'->'9' :
+  end repeat;
+  select
+    when '.' :
+      select
+        when '.' :
+          send $set_start_uint_number$;
+        default
+          repeat
+            enterCharacterIntoString !?number !* ;
+          while '0'->'9' :
+          end repeat;
+          convertStringToDouble !number !?floatNumber error unableToConvertToDouble;
+          send $float_number$;
+      end select;
+      default
+        send $uint_number$;
+  end select;
+end rule;
+
+#
+# Include mechanism
+#
+list commands error message "command '%K'" style keywordsStyle :
+    "include";
+
+$command$ !att_token error message "command"style commandStyle;
+
+rule '#':
+  repeat
+  while 'a'->'z' | 'A'->'Z' :
+    enterCharacterIntoString !?att_token !* ;
+  end repeat;
+  send search att_token in commands default $command$;
+end rule;
+
+end lexique;
+# vim:ft=ggs:ts=4:sw=4

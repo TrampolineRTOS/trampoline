@@ -1,0 +1,87 @@
+##
+# @file defaults.ggs
+#
+# @section File description
+#
+# routines defined in defaults semantics component
+# set the default value of objects according to the
+# implementation of the OIL file.
+#
+# @section Copyright
+#
+# Goil OIL compiler - Trampoline OS
+#
+# Trampoline is copyright (c) IRCCyN 2005+
+# Trampoline is protected by the french intellectual property law.
+#
+# This software is distributed under the GNU Public Licence V2
+#
+# @section File informations
+#
+# $Date$
+# $Rev$
+# $Author$
+# $URL$
+#
+
+semantics defaults :
+
+import "goil_semantics.gSemantics" ;
+import "implementation_types.gSemantics";
+
+##
+# @fn add_system_counter
+#
+# Add the system counter to the counter map.
+# If it already exists only missing fields are added
+#
+routine addSystemCounter
+  ?!@objectsMap objects
+:
+  @objectAttributes systemCounterObj := objectForKindAndName[!objects !"COUNTER" !"SystemCounter"];
+  @identifierMap systemCounter := [systemCounterObj objectParams];
+  setSTRINGAttributeIfVoid !?systemCounter !"DESCRIPTION" !here !"Predefined SystemCounter";
+  setUINT32AttributeIfVoid !?systemCounter !"MAXALLOWEDVALUE" !here !32768;
+  setUINT32AttributeIfVoid !?systemCounter !"TICKSPERBASE" !here !1;
+  setUINT32AttributeIfVoid !?systemCounter !"MINCYCLE" !here !1;
+  setENUMAttributeIfVoid !?systemCounter !"TYPE" !here !"HARDWARE" !emptyObject[];
+  
+  @objectKind applications := objectsForKind[!objects !"APPLICATION"];
+  @identifierList accessingApplications [emptyList];
+  foreach [[applications objects] allKeyList] do
+    accessingApplications += ![@string_class new ![mValue location] ![mValue string]];
+  end foreach;
+  setMULTIPLEAttributeIfVoid !?systemCounter !"ACCESSING_APPLICATION" !here !accessingApplications;
+
+  [!?systemCounterObj setObjectParams !systemCounter];
+  setObjectForKindAndName !?objects !"COUNTER" !"SystemCounter" !systemCounterObj;
+end routine;
+
+routine setDefaults
+  ??@implementation imp
+  ?!@applicationDefinition application
+:
+  @objectsMap objects := [application objects];
+  
+  addSystemCounter
+      !?objects;
+
+# set defaults for objects
+  foreach [objects allKeyList] (@lstring objectKind) do
+    with !?objects get !objectKind do
+      @objectKindMap objOfKind := [objectsOfKind objects];
+      foreach [objOfKind allKeyList] (@lstring objectName) do
+        with !?objOfKind get !objectName do
+          @implementationObject impObject := [imp impObject ![objectKind string]];
+          setDefaultsForType ![impObject attributes] !?attributes;
+        end with;
+      end foreach;
+      [!?objectsOfKind setObjects !objOfKind];
+    end with;
+  end foreach;
+
+  [!?application setObjects !objects];
+end routine;
+  
+end semantics ;
+# End of file defaults.ggs

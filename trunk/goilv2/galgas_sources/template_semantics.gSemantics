@@ -1,0 +1,377 @@
+#---------------------------------------------------------------------------*
+#                                                                           *
+#  Types for GOIL templates                                                 *
+#                                                                           *
+#  Copyright (C) 2009, ..., 2009 Pierre Molinaro.                           *
+#                                                                           *
+#  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
+#                                                                           *
+#  This program is free software; you can redistribute it and/or modify it  *
+#  under the terms of the GNU General Public License as published by the    *
+#  Free Software Foundation.                                                *
+#                                                                           *
+#  This program is distributed in the hope it will be useful, but WITHOUT   *
+#  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
+#  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
+#   more details.                                                           *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+semantics template_semantics :
+
+#------------------------------------------------------------------------------*
+
+enum @goilTemplateType {
+  boolType, unsignedType, stringType, listType, structType, unconstructedType
+}{
+  reader messageGoilTemplateType :
+    boolType -> "bool";
+    unsignedType -> "unsigned";
+    stringType -> "string";
+    listType -> "list";
+    structType -> "struct";
+    unconstructedType -> "unconstructed type";
+  end reader; 
+}
+
+#------------------------------------------------------------------------------*
+
+list @goilTemplateTypeList {
+  @goilTemplateType mType;
+}
+
+#------------------------------------------------------------------------------*
+
+map @goilTemplateFieldMap {
+  @goilTemplateType mType;
+  @uint64 mUnsigned64Value;
+  @string mStringValue;
+  @goilTemplateFieldMapList mListValue;
+  @goilTemplateFieldMap mStructValue;
+  insert insertKey error message "a template field named '%K' is already declared in %L";
+  search searchKey error message "there is no template field named '%K'";
+}
+
+#------------------------------------------------------------------------------*
+
+list @goilTemplateFieldMapList {
+  @goilTemplateFieldMap mMap;
+}
+
+#------------------------------------------------------------------------------*
+
+struct @goilTemplateValue {
+  @uint64 mUnsigned64Value;
+  @string mStringValue;
+  @goilTemplateFieldMapList mMapListValue;
+  @goilTemplateFieldMap mStructValue;
+}
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#  T E M P L A T E    V A R I A B L E    M A P                                 *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+map @goilTemplateVariableMap {
+  @goilTemplateType mType feature setter;
+  @goilTemplateValue mValue feature setter;
+  insert insertKey error message "a template variable named '%K' is already declared in %L";
+  search searchKey error message "there is no template variable named '%K'";
+  remove removeKey error message "there is no template variable named '%K'";
+}
+
+#------------------------------------------------------------------------------*
+
+list @goilTemplateExpressionList {
+  @goilTemplateValue mValue;
+  @goilTemplateType mType;
+}
+
+#------------------------------------------------------------------------------*
+
+list @goilTemplateEnumationList {
+  @goilTemplateValue mEnumeratedValue;
+  @string mPrefix;
+}
+
+#------------------------------------------------------------------------------*
+
+function valueWithBool
+  ??@bool inValue
+  ->@goilTemplateValue outValue
+:
+  outValue := [@goilTemplateValue new
+    ![inValue uint64]
+    !""
+    ![@goilTemplateFieldMapList emptyList]
+    ![@goilTemplateFieldMap emptyMap]
+  ];
+end function;
+
+#------------------------------------------------------------------------------*
+
+function valueWithUnsigned
+  ??@uint64 inValue
+  ->@goilTemplateValue outValue
+:
+  outValue := [@goilTemplateValue new
+    !inValue
+    !""
+    ![@goilTemplateFieldMapList emptyList]
+    ![@goilTemplateFieldMap emptyMap]
+  ];
+end function;
+
+#------------------------------------------------------------------------------*
+
+function valueWithString
+  ??@string inValue
+  ->@goilTemplateValue outValue
+:
+  outValue := [@goilTemplateValue new
+    !0L
+    !inValue
+    ![@goilTemplateFieldMapList emptyList]
+    ![@goilTemplateFieldMap emptyMap]
+  ];
+end function;
+
+#------------------------------------------------------------------------------*
+
+function valueWithStruct
+  ??@goilTemplateFieldMap inValue
+  ->@goilTemplateValue outValue
+:
+  outValue := [@goilTemplateValue new
+    !0L
+    !""
+    ![@goilTemplateFieldMapList emptyList]
+    !inValue
+  ];
+end function;
+
+#------------------------------------------------------------------------------*
+
+function valueWithVoid
+  ->@goilTemplateValue outValue
+:
+  outValue := [@goilTemplateValue new
+    !0L
+    !""
+    ![@goilTemplateFieldMapList emptyList]
+    ![@goilTemplateFieldMap emptyMap]
+  ];
+end function;
+
+#------------------------------------------------------------------------------*
+
+routine addBoolValue
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ??@lstring inVariableName
+  ??@bool inValue
+:
+  [!?ioTemplateVariableMap insertKey
+    !inVariableName
+    ![@goilTemplateType boolType]
+    !valueWithBool[!inValue]
+#    [@goilTemplateValue new !if inValue then 1L else 0L end !"" ![@goilTemplateFieldMapList emptyList]]
+  ];
+end routine;
+
+#------------------------------------------------------------------------------*
+
+routine addUnsignedValue
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ??@lstring inVariableName
+  ??@uint64 inValue
+:
+  [!?ioTemplateVariableMap insertKey
+    !inVariableName
+    ![@goilTemplateType unsignedType]
+    !valueWithUnsigned[!inValue]
+    #[@goilTemplateValue new !inValue !"" ![@goilTemplateFieldMapList emptyList]]
+  ];
+end routine;
+
+#------------------------------------------------------------------------------*
+
+routine addLUnsignedValue
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ??@string inVariableName
+  ??@luint64 inValue
+:
+  addUnsignedValue !?ioTemplateVariableMap ![@lstring new !inVariableName ![inValue location]] ![inValue uint64];
+end routine;
+
+#------------------------------------------------------------------------------*
+
+routine addStringValue
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ??@lstring inVariableName
+  ??@string inValue
+:
+  [!?ioTemplateVariableMap insertKey
+    !inVariableName
+    ![@goilTemplateType stringType]
+    !valueWithString[!inValue]
+    #[@goilTemplateValue new !0L !inValue ![@goilTemplateFieldMapList emptyList]]
+  ];
+end routine;
+
+#------------------------------------------------------------------------------*
+
+routine addLStringValue
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ??@string inVariableName
+  ??@lstring inValue
+:
+  addStringValue !?ioTemplateVariableMap ![@lstring new !inVariableName ![inValue location]] ![inValue string];
+end routine;
+
+#------------------------------------------------------------------------------*
+
+routine addListValue
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ??@lstring inVariableName
+  ??@goilTemplateFieldMapList inValue
+:
+  [!?ioTemplateVariableMap insertKey
+    !inVariableName
+    ![@goilTemplateType listType]
+    ![@goilTemplateValue new !0L !"" !inValue ![@goilTemplateFieldMap emptyMap]]
+  ];
+end routine;
+
+#------------------------------------------------------------------------------*
+
+routine addStructValue
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ??@lstring inVariableName
+  ??@goilTemplateFieldMap inValue
+:
+  [!?ioTemplateVariableMap insertKey
+    !inVariableName
+    ![@goilTemplateType structType]
+    ![@goilTemplateValue new !0L !"" ![@goilTemplateFieldMapList emptyList] !inValue]
+  ];
+end routine;
+
+#------------------------------------------------------------------------------*
+#                                                                              *
+#  A D D    A    F I E L D    V A L U E                                        *
+#                                                                              *
+#------------------------------------------------------------------------------*
+
+routine addBoolFieldValue
+  ?!@goilTemplateFieldMap ioTemplateFieldMap
+  ??@lstring inVariableName
+  ??@bool inValue
+:
+  [!?ioTemplateFieldMap insertKey
+    !inVariableName
+    ![@goilTemplateType boolType]
+    !if inValue then 1L else 0L end
+    !""
+    ![@goilTemplateFieldMapList emptyList]
+    ![@goilTemplateFieldMap emptyMap]
+  ];
+end routine;
+
+#------------------------------------------------------------------------------*
+
+routine addUnsignedFieldValue
+  ?!@goilTemplateFieldMap ioTemplateFieldMap
+  ??@lstring inVariableName
+  ??@uint64 inValue
+:
+  [!?ioTemplateFieldMap insertKey
+    !inVariableName
+    ![@goilTemplateType unsignedType]
+    !inValue
+    !""
+    ![@goilTemplateFieldMapList emptyList]
+    ![@goilTemplateFieldMap emptyMap]
+  ];
+end routine;
+
+#------------------------------------------------------------------------------*
+
+routine addLUnsignedFieldValue
+  ?!@goilTemplateFieldMap ioTemplateFieldMap
+  ??@string inVariableName
+  ??@luint64 inValue
+:
+  addUnsignedFieldValue
+    !?ioTemplateFieldMap
+    ![@lstring new !inVariableName ![inValue location]]
+    ![inValue uint64];
+end routine;
+
+#------------------------------------------------------------------------------*
+
+routine addStringFieldValue
+  ?!@goilTemplateFieldMap ioTemplateFieldMap
+  ??@lstring inVariableName
+  ??@string inValue
+:
+  [!?ioTemplateFieldMap insertKey
+    !inVariableName
+    ![@goilTemplateType stringType]
+    !0L
+    !inValue
+    ![@goilTemplateFieldMapList emptyList]
+    ![@goilTemplateFieldMap emptyMap]
+  ];
+end routine;
+
+#------------------------------------------------------------------------------*
+
+routine addLStringFieldValue
+  ?!@goilTemplateFieldMap ioTemplateFieldMap
+  ??@string inVariableName
+  ??@lstring inValue
+:
+  addStringFieldValue
+    !?ioTemplateFieldMap
+    ![@lstring new !inVariableName ![inValue location]]
+    ![inValue string];
+end routine;
+
+#------------------------------------------------------------------------------*
+
+routine addListFieldValue
+  ?!@goilTemplateFieldMap ioTemplateFieldMap
+  ??@lstring inVariableName
+  ??@goilTemplateFieldMapList inValue
+:
+  [!?ioTemplateFieldMap insertKey
+    !inVariableName
+    ![@goilTemplateType listType]
+    !0L
+    !""
+    !inValue
+    ![@goilTemplateFieldMap emptyMap]
+  ];
+end routine;
+
+#------------------------------------------------------------------------------*
+
+routine addStructFieldValue
+  ?!@goilTemplateFieldMap ioTemplateFieldMap
+  ??@lstring inVariableName
+  ??@goilTemplateFieldMap inValue
+:
+  [!?ioTemplateFieldMap insertKey
+    !inVariableName
+    ![@goilTemplateType structType]
+    !0L
+    !""
+    ![@goilTemplateFieldMapList emptyList]
+    !inValue
+  ];
+end routine;
+
+#------------------------------------------------------------------------------*
+
+end semantics;

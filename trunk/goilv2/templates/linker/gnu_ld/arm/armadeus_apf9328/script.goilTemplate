@@ -1,0 +1,210 @@
+ENTRY (Vec_reset)
+/* SEARCH_DIR(.) */
+
+MEMORY
+{
+  /*internal_ram : org = 0x40000000, len = 16k*/
+  it_vect : org = 0x08000000, len = 128 /*64 only?*/
+  external_ram : org = 0x08000080, len = 0x20000 /*16M - 128 for interrupt vector*/
+  stack_ram : org = 0x08020000, len = 0x20000
+/*  it_vect : org = 0x08000000, len = 128 *//*64 only?*/
+/*  external_ram : org = 0x08000080, len = 0xFFFF80 *//*16M - 128 for interrupt vector*/
+}
+
+SECTIONS {
+  .vectbl : {
+    *(.vectbl);
+    . = ALIGN(4);
+  } > it_vect
+}
+
+SECTIONS
+{
+  /*
+   * code and consts of the operating system (Trampoline).
+   * this section is not accessible from an untrusted process
+   */
+  . = ALIGN(4);
+  ostext : {
+    *(.osCode)
+    *(.glue_7)  /*interface between binary code in ARM and thumb mode*/
+    *(.glue_7t) /*interface between binary code in ARM and thumb mode*/
+  } > external_ram
+
+  . = ALIGN(4);
+  osconst : {
+    *(.osConst)
+    *(.rodata.*)
+  } > external_ram
+  
+  /*
+   * remaining .text (ie no section given)
+   */
+  . = ALIGN(4);
+  text_garbage : {
+    *(.text)
+  } > external_ram
+
+  /*
+   * vars of the operating system (Trampoline)
+   */
+  osvarsnoinit (NOLOAD) : ALIGN(4) SUBALIGN(4) {
+    kernel_zeroed_vars_begin = .;
+    *(.osVarNoInit)
+    kernel_zeroed_vars_end = .;
+  } > external_ram
+  
+  osvars : ALIGN(4) SUBALIGN(4) {
+    *(.osVar)
+    *(.stacks) /* TODO : isolate each stack for stack overflow detection */
+  } > external_ram
+
+  /*
+   * code and consts of the processes of the applications
+   */
+  apptext ALIGN(16) : {
+    __SEG_START_APP_CODE_CONST_RGN = .;
+    *(.osApiConst)  /* API constants    */
+    *(.rodata)      /* litteral strings */
+    . = ALIGN(4);
+    *(.osApiCode)   /* API functions    */
+    /* Sections for code of tasks and ISR */%
+foreach PROCESSES do
+%
+    *(.% !PROCESSKIND %_% !NAME %Code)
+%
+end foreach
+%
+  } > external_ram
+  
+  appconst ALIGN(16) : {
+/* Sections for const of tasks and ISR */
+%
+foreach PROCESSES do
+ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+  for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
+%      *(.% !PROCESSKIND %_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
+%
+  end for
+ end for
+end foreach
+%    
+    . = ALIGN(16);
+    __SEG_STOP_APP_CODE_CONST_RGN = . - 1;
+  } > external_ram
+  
+  /*
+   * private data of processes
+   */
+%
+foreach PROCESSES do
+%    procvars_% !PROCESSKIND %_% !NAME % : ALIGN(1K) SUBALIGN(4)  {
+    __SEG_START_% !PROCESSKIND %_% !NAME %_VAR_RGN = .;
+/* Initialized variables section of % !PROCESSKIND % % !NAME % */
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
+    for SECTION_KIND in "_POWER_ON_INIT_","_FAST_","_" do
+%    *(.% !PROCESSKIND %_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%
+    end for
+  end for
+%  } > external_ram
+    procvars_noinit_% !PROCESSKIND %_% !NAME % (NOLOAD) : SUBALIGN(4) {
+      % !PROCESSKIND %_% !NAME %_zeroed_vars_begin = .;
+%
+  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do   
+%      *(.% !PROCESSKIND %_% !NAME %_SEC_VAR_NOINIT_% !DATA_SIZE %)
+%
+  end for %
+    %!PROCESSKIND %_% !NAME %_zeroed_vars_end = .;
+    __SEG_END_% !PROCESSKIND %_% !NAME %_VAR_RGN = ALIGN(16) - 1;
+  } > external_ram
+    
+%
+end foreach
+%  
+  /*
+   * stack of processes
+   */
+  procstack : {
+%
+foreach PROCESSES do %
+  /* Section of stack of % !PROCESSKIND % % !NAME %  */
+    __SEG_START_% !PROCESSKIND %_% !NAME %_STACK_RGN = .;
+    *(.% !PROCESSKIND %_% !NAME %Stack)
+    __SEG_END_% !PROCESSKIND %_% !NAME %_STACK_RGN = ALIGN(16) - 1;
+%
+end foreach
+%
+  } >external_ram
+
+  /*
+   * os application data
+   */
+  appvars : {
+/* $APP_VAR$ */
+  } > external_ram
+  
+  /*
+   * garbage
+   */
+  data_garbage : {
+    *(.data)
+  } > external_ram
+
+   /*
+   * bss data
+   */
+  .bss ALIGN(16) : {
+    common_zeroed_vars_begin = .;
+    *(.bss)
+    *(COMMON)
+    common_zeroed_vars_end = .;
+  } > external_ram
+  . = ALIGN(16);
+
+  .comment : {
+    *(.comment) 
+  } > external_ram
+  
+  debug : {
+    *(.debug);
+    . = ALIGN(4);
+    *(.debug_srcinfo);
+    . = ALIGN(4);
+    *(.debug_sfnames);
+    . = ALIGN(4);
+    *(.debug_aranges*);
+    . = ALIGN(4);
+    *(.debug_pubnames*);
+    . = ALIGN(4);
+    *(.debug_info*);
+    . = ALIGN(4);
+    *(.debug_abbrev*);
+    . = ALIGN(4);
+    *(.debug_line*);
+    . = ALIGN(4);
+    *(.debug_frame*);
+    . = ALIGN(4);
+    *(.debug_str*);
+    . = ALIGN(4);
+    *(.debug_loc*);
+    . = ALIGN(4);
+    *(.debug_macinfo);
+    . = ALIGN(4);
+    *(.debug_weaknames);
+    . = ALIGN(4);
+    *(.debug_funcnames);
+    . = ALIGN(4);
+    *(.debug_typenames);
+    . = ALIGN(4);
+    *(.debug_varnames);
+    . = ALIGN(4);  
+  } > external_ram
+
+  stacks : {
+    *(.stacks) /* TODO : is it the best place ? */
+  } > stack_ram
+
+}
+

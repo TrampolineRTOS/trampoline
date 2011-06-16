@@ -1,0 +1,41 @@
+# Initialization of noinit vars segment module
+SOURCES += tpl_init_noinit_var_sections.c
+
+# memory map file
+LDFLAGS += -Xlinker -Map -Xlinker % !APPNAME %.map
+
+bin: % !APPNAME %
+	arm-none-eabi-objcopy --strip-all --output-target=binary  % !APPNAME % % !APPNAME %.bin
+
+EXTRA_FILES_CLEAN += % !APPNAME %.bin % !APPNAME %.map
+
+%
+if not USEMEMORYMAPPING then
+%# using default linker script (no memory mapping)
+LDFLAGS += -T $(MACHINE_PATH)/$(TARGET)/link_nomm_nomp.ld
+%
+end if
+%
+
+# choose the right instruction set
+ASFLAGS += -mcpu=arm926ej-s
+CFLAGS += -mcpu=arm926ej-s
+
+%
+if COMPILEREXE == "gcc" then
+%# changes default compiler
+CC = arm-none-eabi-gcc
+%
+end if
+
+if LINKEREXE == "gcc" then
+%# changes default linker
+LD = arm-none-eabi-gcc
+%
+end if
+
+if ASSEMBLEREXE == "as" then
+%# changes default assembler
+AS = arm-none-eabi-as
+%
+end if
