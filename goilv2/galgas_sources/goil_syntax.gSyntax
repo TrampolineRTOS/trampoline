@@ -77,7 +77,7 @@ rule <start>:
     setDefaults !imp !?application;
   end if;
 
-#  log objects;
+#  log application;
   if [@uint errorCount] == 0 then
     verifyAll !imp !application;
   end if;
@@ -297,6 +297,27 @@ rule <oil_declaration>
     @lstring literalString;
     $string$ ?literalString;
     val := [@stringAttribute new ![literalString location] ![literalString string]];
+  or
+    # AUTO
+    $AUTO$;
+    # Check the attribute is allowed to have AUTO value
+    if [type autoAllowed] then
+      message "*** AUTO\n";
+      switch [type type]
+      when uint32Number: 
+        val := [@auto_uint32_class new !here !0];
+      when uint64Number:
+        val := [@auto_uint64_class new !here !0L];
+      when floatNumber:
+        val := [@auto_float_class new !here !0.0];
+      when string:
+        val := [@auto_string_class new !here !""];
+      when enumeration, sint32Number, sint64Number, boolean, identifier, objectType, void:
+        error here: "type unsupported in AUTO": val;
+      end switch;
+    else
+      error here : "AUTO is not allowed": val;
+    end if;
   end select;
   $;$;
 #    log idf;

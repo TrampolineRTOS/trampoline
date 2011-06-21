@@ -63,8 +63,8 @@ routine setDefaults
 :
   @objectsMap objects := [application objects];
   
-  addSystemCounter
-      !?objects;
+#  addSystemCounter
+#      !?objects;
 
 # set defaults for objects
   foreach [objects allKeyList] (@lstring objectKind) do

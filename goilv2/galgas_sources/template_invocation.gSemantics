@@ -93,6 +93,7 @@ function displayTypeAndValue
         when stringType :
           outResult .= "string: '" . mStringValue . "'";
         when listType, structType :
+        when enumType :
         when unconstructedType:
           error here: "internal error, unconstructed type found";
         end switch;
@@ -100,6 +101,8 @@ function displayTypeAndValue
       end foreach;
     end foreach;
   when structType:
+    outResult := "";
+  when enumType:
     outResult := "";
   when unconstructedType:
     error here: "internal error, unconstructed type found" : outResult;

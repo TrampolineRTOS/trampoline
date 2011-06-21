@@ -22,7 +22,7 @@ semantics template_semantics :
 #------------------------------------------------------------------------------*
 
 enum @goilTemplateType {
-  boolType, unsignedType, stringType, listType, structType, unconstructedType
+  boolType, unsignedType, stringType, listType, structType, enumType, unconstructedType
 }{
   reader messageGoilTemplateType :
     boolType -> "bool";
@@ -30,7 +30,8 @@ enum @goilTemplateType {
     stringType -> "string";
     listType -> "list";
     structType -> "struct";
-    unconstructedType -> "unconstructed type";
+    enumType -> "enum";
+    unconstructedType -> "unconstructed";
   end reader; 
 }
 
@@ -50,6 +51,7 @@ map @goilTemplateFieldMap {
   @goilTemplateFieldMap mStructValue;
   insert insertKey error message "a template field named '%K' is already declared in %L";
   search searchKey error message "there is no template field named '%K'";
+  remove removeKey error message "there is no template field named '%K' to delete";
 }
 
 #------------------------------------------------------------------------------*
@@ -373,5 +375,65 @@ routine addStructFieldValue
 end routine;
 
 #------------------------------------------------------------------------------*
+
+routine addEnumFieldValue
+  ?!@goilTemplateFieldMap ioTemplateFieldMap
+  ??@lstring inVariableName
+  ??@string inValue
+:
+  [!?ioTemplateFieldMap insertKey
+    !inVariableName
+    ![@goilTemplateType enumType]
+    !0L
+    !inValue
+    ![@goilTemplateFieldMapList emptyList]
+    ![@goilTemplateFieldMap emptyMap]
+  ];
+end routine;
+
+#------------------------------------------------------------------------------*
+
+routine searchField
+  ?@lstringlist variable
+  ??@goilTemplateFieldMap inTemplateFieldMap
+  !@goilTemplateType variableType
+  !@goilTemplateValue variableValue
+:
+  @lstring field;
+  [!?variable popFirst ?field];
+  @uint64 unsigned;
+  @string string;
+  @goilTemplateFieldMapList fmList;
+  @goilTemplateFieldMap fmStruct;
+  [inTemplateFieldMap searchKey !field ?variableType ?unsigned ?string ?fmList ?fmStruct];
+  if [variable length] > 0 then
+    if variableType == [@goilTemplateType structType] then
+      searchField !variable !fmStruct ?variableType ?variableValue;
+    else
+      error field: "struct variable expected": variableValue;
+    end if;
+  else
+    variableValue := [@goilTemplateValue new !unsigned !string !fmList !fmStruct];
+  end if;
+end routine;
+
+routine searchVariable
+  ?@lstringlist variable
+  ??@goilTemplateVariableMap inTemplateVariableMap
+  !@goilTemplateType variableType
+  !@goilTemplateValue variableValue
+:
+  @lstring primary;
+  [!?variable popFirst ?primary];
+  [inTemplateVariableMap searchKey !primary ?variableType ?variableValue];
+  if [variable length] > 0 then
+    if variableType == [@goilTemplateType structType] then
+      searchField !variable ![variableValue mStructValue] ?variableType ?variableValue;
+    else
+      error primary: "struct variable expected";
+    end if;
+  end if;
+end routine;
+
 
 end semantics;
