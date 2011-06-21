@@ -41,26 +41,26 @@ routine verifyAllAttributes
     @implementationObject impObj := [imp impObject ![lkey string]];
     message "*** implementation object = ".lkey."\n";
     foreach [objectsOfKind objects] prefixedBy obj_ do
-      foreach [impObj attributes] do
-        if [[obj_attributes objectParams] hasKey ![lkey string]] then
+      foreach [impObj attributes] prefixedBy imp_ do
+        if [[obj_attributes objectParams] hasKey ![imp_lkey string]] then
           # the parameter is defined in the object
           # get it to see if it is set to AUTO
           @object_t value;
-          [[obj_attributes objectParams] get !lkey ?value];
+          [[obj_attributes objectParams] get !imp_lkey ?value];
           cast value:
           when == @auto do
             # check the implementation definition param allows AUTO
-            if not attributeAllowsAuto[!type] then
+            if not attributeAllowsAuto[!imp_type] then
               error [value location]:"AUTO value is not allowed for the ".[lkey string]." attribute";
             end if;
           else end cast;
         else
           # the parameter is not defined in the object
-          if not attributeAllowsAuto[!type] & not [type multiple] then
-            error lkey:"attribute ".[lkey string]." is not defined and is not AUTO";
+          if not attributeAllowsAuto[!imp_type] & not [imp_type multiple] then
+            error obj_lkey:"In ".lkey." ".obj_lkey.", attribute ".[imp_lkey string]." is not defined and is not AUTO";
           end if;
         end if;
-        cast type:
+        cast imp_type:
         when == @impAutoDefaultType do
         else end cast;
       end foreach;

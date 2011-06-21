@@ -287,6 +287,7 @@ class @auto_uint32_class extends @uint32_class {}
 class @auto_sint32_class extends @sint32_class {}
 class @auto_uint64_class extends @uint64_class {}
 class @auto_sint64_class extends @sint64_class {}
+class @auto_float_class extends @float_class {}
 class @auto_string_class extends @string_class {}
 class @auto_bool_t   extends @bool_t   {}
 

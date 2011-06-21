@@ -59,6 +59,18 @@ override method @uint32_class set ??@lstring name ?!@goilTemplateFieldMap result
   addUnsignedFieldValue !?result !name ![value uint64];
 end method;
 
+override method @uint64_class set ??@lstring name ?!@goilTemplateFieldMap result:
+  addUnsignedFieldValue !?result !name !value;
+end method;
+
+override method @auto_uint32_class set ??@lstring name ?!@goilTemplateFieldMap result:
+  addEnumFieldValue !?result !name !"AUTO";
+end method;
+
+override method @auto_uint64_class set ??@lstring name ?!@goilTemplateFieldMap result:
+  addEnumFieldValue !?result !name !"AUTO";
+end method;
+
 reader @objectAttributes fieldMap
   ->@goilTemplateFieldMap result
 :

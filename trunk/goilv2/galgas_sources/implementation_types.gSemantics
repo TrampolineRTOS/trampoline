@@ -568,6 +568,10 @@ class @impType {
 #  end method;
 }
 
+reader @impType autoAllowed -> @bool result:
+  result := false;
+end reader;
+
 class @impVoid extends @impType {
 #  override method checkAndSet ?!@object_t unused value:
 #  end method;
@@ -584,6 +588,10 @@ class @impAutoDefaultType extends @impType {
 #  end method;
 #
 }
+
+override reader @impAutoDefaultType autoAllowed -> @bool result:
+  result := withAuto;
+end reader;
 
 method @impAutoDefaultType setDefault ?!@objectAttributes attributes:
   if not [[attributes objectParams] hasKey ![name string]] then

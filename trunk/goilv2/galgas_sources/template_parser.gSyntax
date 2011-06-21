@@ -38,6 +38,22 @@ nonterminal <template_instruction>
 label parse
 ;
 
+nonterminal <sorting_order>
+  !@lsint order
+label parse
+;
+
+nonterminal <struct_path>
+  ?!@lstringlist path
+label parse
+;
+
+nonterminal <variable>
+  ?@goilTemplateVariableMap inTemplateVariableMap
+  !@lstringlist path
+label parse
+;
+
 nonterminal <variable_or_here>
   ??@goilTemplateVariableMap inTemplateVariableMap
   !@location outWhere
@@ -84,7 +100,7 @@ rule <template_instruction>
     ?resultType
   ;
   switch resultType 
-  when stringType:
+  when stringType, enumType:
     ioResultingString .= [expression mStringValue];
   when unsignedType:
     ioResultingString .= [[expression mUnsigned64Value] string];
@@ -427,7 +443,7 @@ rule <template_instruction>
   ?!@string ioResultingString
 :
   $foreach$; $identifier$ ? @lstring variableName; $in$;
-  @uint listLentgh [max];
+  @uint listLentgh;
 #  @goilTemplateEnumationList enumerationList [emptyList];
   @goilTemplateValue enumeratedValue;
   @goilTemplateType expressionType;
@@ -443,6 +459,7 @@ rule <template_instruction>
 #    log enumeratedValue;
   if expressionType != [@goilTemplateType listType] then
     error here:"only a list can be enumerated";
+    listLentgh := 0;
   else
     listLentgh := [[enumeratedValue mMapListValue] length]; 
   end if;
@@ -768,6 +785,9 @@ routine setVariableAlongPath
     setVariableAlongPath !path !?subType !?subValue !expressionType !enumeratedValue;
     variableType := [@goilTemplateType structType];
     @goilTemplateFieldMap items := [variableValue mStructValue];
+    if [items hasKey ![pathItem string]] then
+      [!?items removeKey !pathItem ?* ?* ?* ?* ?*];
+    end if;
     [!?items insertKey
       !pathItem
       !subType
@@ -794,11 +814,16 @@ routine setVariableInPath
   @goilTemplateType variableType [unconstructedType];
   [!?path popFirst ?rootVariable];
   if [ioTemplateVariableMap hasKey ![rootVariable string]] then
-    [!?ioTemplateVariableMap removeKey !rootVariable ?variableType ?variableValue];
+    [ioTemplateVariableMap searchKey !rootVariable ?variableType ?variableValue];
   end if;
   setVariableAlongPath !path !?variableType !?variableValue !expressionType !enumeratedValue;
   if variableType != [@goilTemplateType unconstructedType] then
-    [!?ioTemplateVariableMap insertKey !rootVariable !variableType !variableValue];
+    if [ioTemplateVariableMap hasKey ![rootVariable string]] then
+      [!?ioTemplateVariableMap setMTypeForKey !variableType ![rootVariable string]];
+      [!?ioTemplateVariableMap setMValueForKey !variableValue ![rootVariable string]];
+    else
+      [!?ioTemplateVariableMap insertKey !rootVariable !variableType !variableValue];
+    end if;
   end if;
 end routine;
 
@@ -821,6 +846,7 @@ rule <template_instruction>
 :
   @lstringlist path [emptyList];
   $let$; $identifier$ ?@lstring variableName;
+  
   path += !variableName;
   <struct_path> !?path;
   @goilTemplateValue enumeratedValue;
@@ -972,6 +998,231 @@ rule <template_instruction>
 end rule;
 
 #---------------------------------------------------------------------------*
+routine printVariable
+  ?@uint indent
+  ??@goilTemplateType variableType
+  ??@uint64 unsignedValue
+  ??@string stringValue
+  ??@goilTemplateFieldMapList listValue
+  ??@goilTemplateFieldMap structValue
+:
+  indent := indent + 4;
+  @string offset := [@string stringWithSequenceOfCharacters !' ' !indent];
+  switch variableType
+  when boolType:
+    if unsignedValue == 1L then
+      message offset."true\n";
+    else
+      message offset."false\n";
+    end if;
+  when unsignedType:
+    message offset.unsignedValue."\n";
+  when stringType:
+    message offset."\"".stringValue."\"\n";
+  when enumType:
+    message offset.stringValue."\n";
+  when listType:
+    foreach listValue index idx do
+      message offset."item at ".idx.":\n";
+      printVariable !indent ![@goilTemplateType structType] !0L !"" ![@goilTemplateFieldMapList emptyList] !mMap;
+    end foreach;
+  when structType:
+    foreach structValue do
+      message offset.lkey.":\n";
+      printVariable !indent !mType !mUnsigned64Value !mStringValue !mListValue !mStructValue;
+    end foreach;
+  when unconstructedType:
+    error here: "internal error, unconstrcuted type";
+  end switch;
+end routine;
 
+rule <template_instruction>
+  ??@string unused inPrefix
+  ??@string unused inPath
+  ??@string unused inTemplateDirectory
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@string unused ioResultingString
+:
+  $display$; $identifier$ ?@lstring variableName;
+  @goilTemplateType variableType;
+  @goilTemplateValue variableValue;
+  [ioTemplateVariableMap searchKey !variableName ?variableType ?variableValue];
+  message [variableName string]." (".[[variableName location] locationString].") : ".[variableType messageGoilTemplateType]."\n";
+  printVariable
+    !0
+    !variableType
+    ![variableValue mUnsigned64Value]
+    ![variableValue mStringValue]
+    ![variableValue mMapListValue]
+    ![variableValue mStructValue];
+end rule;
+
+#---------------------------------------------------------------------------*
+
+list @sortingKeyList {
+  @lstring key;
+  @lsint order;
+}
+
+function structCompare
+  ??@goilTemplateFieldMap s1
+  ??@goilTemplateFieldMap s2
+  ?@sortingKeyList fieldList
+  ->@sint result
+:
+  if [fieldList length] > 0 then
+    @lstring field;
+    @lsint order;
+    [!?fieldList popFirst ?field ?order];
+    @goilTemplateType s1Type;
+    @uint64 s1Value;
+    [s1 searchKey !field ?s1Type ?s1Value ?* ?* ?*];
+    @goilTemplateType s2Type;
+    @uint64 s2Value;
+    [s2 searchKey !field ?s2Type ?s2Value ?* ?* ?*];
+    if s1Type == s2Type & s1Type == [@goilTemplateType unsignedType] then
+#      message "Compare ".s1Value." and ".s2Value." ";
+      if s1Value < s2Value then
+#        message "<\n";
+        result := -1s * [order sint];
+      else
+        if s1Value > s2Value then
+#          message ">\n";
+          result := 1s  * [order sint];
+        else
+#          message "=\n";
+          result := structCompare[!s1 !s2 !fieldList];
+        end if;
+      end if;
+    else
+      error field: "unsigned sort key required": result;
+    end if;
+  else
+    result := 0s;
+  end if;
+end function;
+
+routine swap
+  ?!@goilTemplateFieldMapList t
+  ??@uint index1
+  ??@uint index2
+:
+#  message "SWAP ".index1." and ".index2."\n";
+  @goilTemplateFieldMap temp := [t mMapAtIndex !index1];
+  [!?t setMMapAtIndex ![t mMapAtIndex !index2] !index1];
+  [!?t setMMapAtIndex !temp !index2];
+end routine;
+
+routine partition
+  ?!@goilTemplateFieldMapList t
+  ?@uint min
+  ?@uint max
+  ??@sortingKeyList fieldList
+  ?!@uint pivotIndex
+: 
+  @goilTemplateFieldMap pivot := [t mMapAtIndex !pivotIndex];
+  swap !?t !pivotIndex !max;
+  @uint storeIndex := min;
+  @uint i := min;
+  loop max - min:
+  while i < max do
+    if structCompare[![t mMapAtIndex !i] !pivot !fieldList] == -1s then
+      swap !?t !i !storeIndex;
+      storeIndex++;
+    end if;
+    i++;
+  end loop;
+  swap !?t !storeIndex !max;
+  pivotIndex := storeIndex;
+end routine;
+
+routine quickSort
+  ?!@goilTemplateFieldMapList t
+  ??@uint min
+  ??@uint max
+  ??@sortingKeyList fieldList
+:
+#  message "SORT from ".min." to ".max."\n";
+  if min < max then
+    @uint pivotIndex := (max + min) / 2;
+#    message "PIVOT = ".pivotIndex."\n";
+    partition !?t !min !max !fieldList !?pivotIndex;
+    quickSort !?t !min !pivotIndex !fieldList;
+    quickSort !?t !pivotIndex+1 !max !fieldList;
+  end if;
+end routine;
+
+rule <sorting_order>
+  !@lsint order
+:
+  select
+    $>$; 
+    order := [@lsint new !-1s !here];
+  or
+    $<$;
+    order := [@lsint new !1s !here];
+  end select;
+end rule;
+
+rule <template_instruction>
+  ??@string unused inPrefix
+  ??@string unused inPath
+  ??@string unused inTemplateDirectory
+  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@string unused ioResultingString
+:
+  $sort$; $identifier$ ?@lstring variableName;
+  @goilTemplateType variableType;
+  @goilTemplateValue variableValue;
+  [ioTemplateVariableMap searchKey !variableName ?variableType ?variableValue];
+  $by$;
+  @sortingKeyList keys [emptyList];
+  @lsint firstOrder;
+  $identifier$ ?@lstring firstKey; <sorting_order> ?firstOrder;
+  keys += !firstKey !firstOrder;
+  repeat while
+    @lsint nextOrder;
+    $,$; $identifier$ ?@lstring nextKey; <sorting_order> ?nextOrder;
+    keys += !nextKey !nextOrder;
+  end repeat;
+
+  if variableType == [@goilTemplateType listType] then
+    #log keys;
+    @goilTemplateFieldMapList variable := [variableValue mMapListValue];
+    quickSort !?variable !0 ![variable length]-1 !keys;
+    variableValue := [@goilTemplateValue new !0L !"" !variable ![@goilTemplateFieldMap emptyMap]];
+    #log variable;
+    [!?ioTemplateVariableMap setMTypeForKey !variableType ![variableName string]];
+    [!?ioTemplateVariableMap setMValueForKey !variableValue ![variableName string]];
+  else
+    error variableName: "list type expected";
+  end if;
+end rule;
+
+#---------------------------------------------------------------------------*
+
+rule <variable>
+  ?@goilTemplateVariableMap inTemplateVariableMap
+  !@lstringlist path
+:
+  path := [@lstringlist emptyList];
+  $identifier$ ?@lstring variableName;
+  path += !variableName;
+  @goilTemplateValue variableValue;
+  @goilTemplateType variableType;
+  [inTemplateVariableMap searchKey !variableName ?variableType ?variableValue];
+  @goilTemplateFieldMap structValue := [variableValue mStructValue];
+  repeat
+  while
+    if variableType != [@goilTemplateType structType] then
+      error here: [variableName string]." is not a struct";
+    end if;
+    $::$; $identifier$ ?variableName;
+    path += !variableName;
+    [structValue searchKey !variableName ?variableType ?* ?* ?* ?structValue];
+  end repeat;
+end rule;
+
+#---------------------------------------------------------------------------*
 
 end syntax;

@@ -96,6 +96,12 @@ nonterminal <struct_member>
 label parse
 ;
 
+nonterminal <variable>
+  ?@goilTemplateVariableMap inTemplateVariableMap
+  !@lstringlist path
+label parse
+;
+
 #---------------------------------------------------------------------------*
 #                                                                           *
 #   M A T C H    &    O P E R A T O R                                       *
@@ -213,6 +219,7 @@ routine comparison_types_checkForTemplate
   when boolType     :: boolType :
   when unsignedType :: unsignedType :
   when stringType   :: stringType :
+  when enumType     :: enumType :
   else
     error here : "comparison between " . [inLeftExpressionType messageGoilTemplateType] .
            " and " . [inRightExpressionType messageGoilTemplateType] . " is not valid" ;
@@ -532,7 +539,7 @@ routine templateMethodInvocation
     else
       error inMethodName: "this template method is not defined" : outResultValue, outResultType;
     end if;
-  when structType:
+  when enumType, structType:
     error inMethodName: "this template method is not defined" : outResultValue, outResultType;
   when unconstructedType:
     error here: "internal error, unconstructed type found": outResultValue, outResultType;
@@ -696,6 +703,8 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] == [rightExpression mUnsigned64Value];
     when stringType :
       result := [leftExpression mStringValue] == [rightExpression mStringValue];
+    when enumType :
+      result := [leftExpression mStringValue] == [rightExpression mStringValue];
     when listType, structType:
       error here: "lists and struct may not be compared" : result;
     when unconstructedType:
@@ -726,6 +735,8 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] != [rightExpression mUnsigned64Value];
     when stringType :
       result := [leftExpression mStringValue] != [rightExpression mStringValue];
+    when enumType :
+      result := [leftExpression mStringValue] != [rightExpression mStringValue];
     when listType, structType:
       error here: "lists and struct may not be compared": result;
     when unconstructedType:
@@ -754,7 +765,7 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] <= [rightExpression mUnsigned64Value];
     when unsignedType :
       result := [leftExpression mUnsigned64Value] <= [rightExpression mUnsigned64Value];
-    when stringType, listType, structType :
+    when stringType, enumType, listType, structType :
       result := false;
     when unconstructedType:
       error here: "internal error, unconstructed type found" : result;
@@ -782,7 +793,7 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] >= [rightExpression mUnsigned64Value];
     when unsignedType :
       result := [leftExpression mUnsigned64Value] >= [rightExpression mUnsigned64Value];
-    when stringType, listType, structType :
+    when stringType, enumType, listType, structType :
       result := false;
     when unconstructedType:
       error here: "internal error, unconstructed type found" : result;
@@ -810,7 +821,7 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] > [rightExpression mUnsigned64Value];
     when unsignedType :
       result := [leftExpression mUnsigned64Value] > [rightExpression mUnsigned64Value];
-    when stringType, listType, structType :
+    when stringType, enumType, listType, structType :
       result := false;
     when unconstructedType:
       error here: "internal error, unconstructed type found" : result;
@@ -838,7 +849,7 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] < [rightExpression mUnsigned64Value];
     when unsignedType :
       result := [leftExpression mUnsigned64Value] < [rightExpression mUnsigned64Value];
-    when stringType, listType, structType :
+    when stringType, enumType, listType, structType :
       result := false;
     when unconstructedType:
       error here: "internal error, unconstructed type found" : result;
@@ -1360,6 +1371,10 @@ rule <factor>
           if formal_mValue != `@string then
             typeError !functionOrVariableName !formal_mValue !"string" !idx;
           end if;
+        when enumType :
+          if formal_mValue != `@string then
+            typeError !functionOrVariableName !formal_mValue !"enum" !idx;
+          end if;
           actualArgumentObjectList += ![[actual_mValue mStringValue] object];
         when listType, structType :
           typeError !functionOrVariableName !formal_mValue !"string" !idx;
@@ -1399,6 +1414,7 @@ rule <factor>
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
 :
+  @bool varExists := true;
   $exists$;
   @lstring variableName;
   @goilTemplateType variableType := [@goilTemplateType unconstructedType];
@@ -1406,7 +1422,6 @@ rule <factor>
   $identifier$ ?variableName;
   
   @goilTemplateFieldMap structFields [emptyMap];
-  outValue := valueWithUnsigned[!1L];
 
   if [inVariableMap hasKey ![variableName string]] then
     [inVariableMap searchKey !variableName ?variableType ?variableValue];
@@ -1414,23 +1429,25 @@ rule <factor>
       structFields := [variableValue mStructValue];
     end if;
   else
-    outValue := valueWithUnsigned[!0L];
+    varExists := false;
   end if;
-
-  outResultType := [@goilTemplateType boolType];
 
   repeat 
   while
     if variableType != [@goilTemplateType structType] then
       error here: [variableName string]." is not a struct";
-      outValue := valueWithUnsigned[!0L];
+      varExists := false;
     else
     end if;
     $::$; $identifier$ ?variableName;
     if [structFields hasKey ![variableName string]] then
-      [structFields searchKey !variableName ?variableType ?* ?* ?* ?structFields];
+      @uint64 intValue;
+      @string stringValue;
+      @goilTemplateFieldMapList listValue;
+      [structFields searchKey !variableName ?variableType ?intValue ?stringValue ?listValue ?structFields];
+      variableValue := [@goilTemplateValue new !intValue !stringValue !listValue !structFields];
     else
-      outValue := valueWithUnsigned[!0L];
+      varExists := false;
     end if;
   end repeat;  
   select
@@ -1447,8 +1464,40 @@ rule <factor>
       ?resultType
     ;
     $)$;
+    if varExists then
+      outResultType := variableType;
+      outValue := variableValue;
+    else
+      outResultType := resultType;
+      outValue := expression;
+    end if;
   or
+    outResultType := [@goilTemplateType boolType];
+    if varExists then
+      outValue := valueWithUnsigned[!1L];
+    else
+      outValue := valueWithUnsigned[!0L];
+    end if;
   end select;
+end rule;
+
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ??@string unused inPrefix
+  ??@string unused inPath
+  ??@string unused inTemplateDirectory
+  ??@goilTemplateVariableMap inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  @lstringlist variableName;
+  $typeof$; <variable> !inVariableMap ?variableName;
+  @goilTemplateType variableType;
+  @goilTemplateValue variableValue;
+  searchVariable !variableName !inVariableMap ?variableType ?variableValue;
+  outResultType := [@goilTemplateType enumType];
+  outValue := valueWithString[![variableType messageGoilTemplateType]];
 end rule;
 
 #------------------------------------------------------------------------------*
@@ -1469,6 +1518,21 @@ rule <factor>
     outValue := valueWithUnsigned[!0L];
   end select;
   outResultType := [@goilTemplateType boolType];
+end rule;
+
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ??@string unused inPrefix
+  ??@string unused inPath
+  ??@string unused inTemplateDirectory
+  ??@goilTemplateVariableMap unused inVariableMap
+  !@goilTemplateValue outValue
+  !@goilTemplateType outResultType
+:
+  $@$; $identifier$ ?@lstring enumValue;
+  outValue := valueWithString[![enumValue string]];
+  outResultType := [@goilTemplateType enumType];
 end rule;
 
 #------------------------------------------------------------------------------*
