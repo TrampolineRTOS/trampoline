@@ -33,9 +33,9 @@ nonterminal <expression>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ??@goilTemplateVariableMap inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 label parse
 ;
 
@@ -43,9 +43,9 @@ nonterminal <relation_term>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ??@goilTemplateVariableMap inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 label parse
 ;
 
@@ -53,9 +53,9 @@ nonterminal <relation_factor>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ??@goilTemplateVariableMap inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 label parse
 ;
 
@@ -63,9 +63,9 @@ nonterminal <simple_expression>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ??@goilTemplateVariableMap inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 label parse
 ;
 
@@ -73,9 +73,9 @@ nonterminal <term>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ??@goilTemplateVariableMap inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 label parse
 ;
 
@@ -83,22 +83,18 @@ nonterminal <factor>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ??@goilTemplateVariableMap inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
-label parse
-;
-
-nonterminal <struct_member>
-  ??@goilTemplateFieldMap inValue
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 label parse
 ;
 
 nonterminal <variable>
-  ?@goilTemplateVariableMap inTemplateVariableMap
-  !@lstringlist path
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@TfieldMap inVariableMap
+  !@TvarPath path
 label parse
 ;
 
@@ -109,9 +105,9 @@ label parse
 #---------------------------------------------------------------------------*
 
 routine matchAndOperatorForTemplate
-  ??@goilTemplateType inLeftExpressionType
-  ??@goilTemplateType inRightExpressionType
-  !@goilTemplateType outResultType
+  ??@Ttype inLeftExpressionType
+  ??@Ttype inRightExpressionType
+  !@Ttype outResultType
 :
   match inLeftExpressionType :: inRightExpressionType :
   when boolType :: boolType :
@@ -132,9 +128,9 @@ end routine;
 #---------------------------------------------------------------------------*
 
 routine matchOrOperatorForTemplate
-  ??@goilTemplateType inLeftExpressionType
-  ??@goilTemplateType inRightExpressionType
-  !@goilTemplateType outResultType
+  ??@Ttype inLeftExpressionType
+  ??@Ttype inRightExpressionType
+  !@Ttype outResultType
 :
   match inLeftExpressionType :: inRightExpressionType :
   when boolType :: boolType :
@@ -155,9 +151,9 @@ end routine;
 #---------------------------------------------------------------------------*
 
 routine matchXorOperatorForTemplate
-  ??@goilTemplateType inLeftExpressionType
-  ??@goilTemplateType inRightExpressionType
-  !@goilTemplateType outResultType
+  ??@Ttype inLeftExpressionType
+  ??@Ttype inRightExpressionType
+  !@Ttype outResultType
 :
   match inLeftExpressionType :: inRightExpressionType :
   when boolType :: boolType :
@@ -178,10 +174,10 @@ end routine;
 #---------------------------------------------------------------------------*
 
 routine checkNotOperatorForTemplate
-  ??@goilTemplateType inOperandType
-  !@goilTemplateType outResultType
+  ??@Ttype inOperandType
+  !@Ttype outResultType
 :
-  if inOperandType != [@goilTemplateType boolType] then
+  if inOperandType != [@Ttype boolType] then
     error here : "the 'not' operator is not defined for an "
     . [inOperandType messageGoilTemplateType] . " type";
   end if;
@@ -195,11 +191,11 @@ end routine;
 #---------------------------------------------------------------------------*
 
 routine checkBitComplementOperatorForTemplate
-  ??@goilTemplateType inOperandType
-  !@goilTemplateType outResultType
+  ??@Ttype inOperandType
+  !@Ttype outResultType
 :
   outResultType := inOperandType;
-  if inOperandType != [@goilTemplateType unsignedType] then
+  if inOperandType != [@Ttype unsignedType] then
     error here : "the ~ operator is not defined for an "
     . [inOperandType messageGoilTemplateType] . " type";
   end if;
@@ -212,8 +208,8 @@ end routine;
 #---------------------------------------------------------------------------*
 
 routine comparison_types_checkForTemplate
-  ??@goilTemplateType inLeftExpressionType
-  ??@goilTemplateType inRightExpressionType
+  ??@Ttype inLeftExpressionType
+  ??@Ttype inRightExpressionType
 :
   match inLeftExpressionType :: inRightExpressionType :
   when boolType     :: boolType :
@@ -233,8 +229,8 @@ end routine;
 #---------------------------------------------------------------------------*
 
 routine magnitude_comparison_types_checkForTemplate
-  ??@goilTemplateType inLeftExpressionType
-  ??@goilTemplateType inRightExpressionType
+  ??@Ttype inLeftExpressionType
+  ??@Ttype inRightExpressionType
 :
   match inLeftExpressionType :: inRightExpressionType :
   when boolType      :: boolType :
@@ -253,9 +249,9 @@ end routine;
 #---------------------------------------------------------------------------*
 
 routine left_shift_types_checkForTemplate
-  ??@goilTemplateType inLeftExpressionType
-  ??@goilTemplateType inRightExpressionType
-  !@goilTemplateType outResultType
+  ??@Ttype inLeftExpressionType
+  ??@Ttype inRightExpressionType
+  !@Ttype outResultType
 :
   match inLeftExpressionType :: inRightExpressionType :
   when unsignedType    :: unsignedType :
@@ -271,9 +267,9 @@ end routine;
 #---------------------------------------------------------------------------*
 
 routine right_shift_types_checkForTemplate
-  ??@goilTemplateType inLeftExpressionType
-  ??@goilTemplateType inRightExpressionType
-  !@goilTemplateType outResultType
+  ??@Ttype inLeftExpressionType
+  ??@Ttype inRightExpressionType
+  !@Ttype outResultType
 :
   match inLeftExpressionType :: inRightExpressionType :
   when unsignedType    :: unsignedType :
@@ -293,9 +289,9 @@ end routine;
 #---------------------------------------------------------------------------*
 
 routine addition_types_checkForTemplate
-  ??@goilTemplateType inLeftExpressionType
-  ??@goilTemplateType inRightExpressionType
-  !@goilTemplateType outResultType
+  ??@Ttype inLeftExpressionType
+  ??@Ttype inRightExpressionType
+  !@Ttype outResultType
 :
   match inLeftExpressionType :: inRightExpressionType :
   when unsignedType      :: unsignedType :
@@ -315,9 +311,9 @@ end routine;
 #---------------------------------------------------------------------------*
 
 routine concatenation_types_checkForTemplate
-  ??@goilTemplateType inLeftExpressionType
-  ??@goilTemplateType inRightExpressionType
-  !@goilTemplateType outResultType
+  ??@Ttype inLeftExpressionType
+  ??@Ttype inRightExpressionType
+  !@Ttype outResultType
 :
   match inLeftExpressionType :: inRightExpressionType :
   when stringType        :: stringType :
@@ -337,9 +333,9 @@ end routine;
 #---------------------------------------------------------------------------*
 
 routine substraction_types_checkForTemplate
-  ??@goilTemplateType inLeftExpressionType
-  ??@goilTemplateType inRightExpressionType
-  !@goilTemplateType outResultType
+  ??@Ttype inLeftExpressionType
+  ??@Ttype inRightExpressionType
+  !@Ttype outResultType
 :
   match inLeftExpressionType :: inRightExpressionType :
   when unsignedType      :: unsignedType :
@@ -359,9 +355,9 @@ end routine;
 #---------------------------------------------------------------------------*
 
 routine multiply_types_checkForTemplate
-  ??@goilTemplateType inLeftExpressionType
-  ??@goilTemplateType inRightExpressionType
-  !@goilTemplateType outResultType
+  ??@Ttype inLeftExpressionType
+  ??@Ttype inRightExpressionType
+  !@Ttype outResultType
 :
   match inLeftExpressionType :: inRightExpressionType :
   when unsignedType      :: unsignedType :
@@ -381,9 +377,9 @@ end routine;
 #---------------------------------------------------------------------------*
 
 routine divide_types_checkForTemplate
-  ??@goilTemplateType inLeftExpressionType
-  ??@goilTemplateType inRightExpressionType
-  !@goilTemplateType outResultType
+  ??@Ttype inLeftExpressionType
+  ??@Ttype inRightExpressionType
+  !@Ttype outResultType
 :
   match inLeftExpressionType :: inRightExpressionType :
   when unsignedType      :: unsignedType :
@@ -403,9 +399,9 @@ end routine;
 #---------------------------------------------------------------------------*
 
 routine modulo_types_checkForTemplate
-  ??@goilTemplateType inLeftExpressionType
-  ??@goilTemplateType inRightExpressionType
-  !@goilTemplateType outResultType
+  ??@Ttype inLeftExpressionType
+  ??@Ttype inRightExpressionType
+  !@Ttype outResultType
 :
   match inLeftExpressionType :: inRightExpressionType :
   when unsignedType      :: unsignedType :
@@ -425,7 +421,7 @@ end routine;
 #------------------------------------------------------------------------------*
 
 function argumentListSignature
-  ??@goilTemplateExpressionList inParameterTypeList
+  ??@TexpressionList inParameterTypeList
   -> @string outResult
 :
   outResult := " this method call has ";
@@ -445,9 +441,9 @@ end function;
 #------------------------------------------------------------------------------*
 
 routine checkInvocationHasNoArgument
-  ??@goilTemplateType inType
+  ??@Ttype inType
   ??@lstring inMethodName
-  ??@goilTemplateExpressionList inParameterTypeList
+  ??@TexpressionList inParameterTypeList
 :
   if [inParameterTypeList length] > 0 then
     error inMethodName:"calling '" . inMethodName . "' on a "
@@ -463,30 +459,30 @@ end routine;
 #------------------------------------------------------------------------------*
 
 routine templateMethodInvocation
-  ??@goilTemplateType inType
-  ??@goilTemplateValue inValue
+  ??@Ttype inType
+  ??@Tvalue inValue
   ??@lstring inMethodName
-  ??@goilTemplateExpressionList inParameterTypeList
-  !@goilTemplateType outResultType
-  !@goilTemplateValue outResultValue
+  ??@TexpressionList inParameterTypeList
+  !@Ttype outResultType
+  !@Tvalue outResultValue
 :
   switch inType
   when boolType :
     if [inMethodName string] == "trueOrFalse" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@goilTemplateType stringType];
+      outResultType := [@Ttype stringType];
       outResultValue := valueWithString [
         ! if [inValue mUnsigned64Value] > 0L then "true" else "false" end
       ];
     elsif [inMethodName string] == "yesOrNo" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@goilTemplateType stringType];
+      outResultType := [@Ttype stringType];
       outResultValue := valueWithString [
         ! if [inValue mUnsigned64Value] > 0L then "yes" else "no" end
       ];
     elsif [inMethodName string] == "unsigned" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@goilTemplateType unsignedType];
+      outResultType := [@Ttype unsignedType];
       outResultValue := inValue;
     else
       error inMethodName: "this template method is not defined" : outResultValue, outResultType;
@@ -494,11 +490,11 @@ routine templateMethodInvocation
   when unsignedType :
     if [inMethodName string] == "string" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@goilTemplateType stringType];
+      outResultType := [@Ttype stringType];
       outResultValue := valueWithString [![[inValue mUnsigned64Value] string]];
     elsif [inMethodName string] == "hexString" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@goilTemplateType stringType];
+      outResultType := [@Ttype stringType];
       outResultValue := valueWithString [![[inValue mUnsigned64Value] hexString]];
     else
       error inMethodName: "this template method is not defined" : outResultValue, outResultType;
@@ -506,27 +502,27 @@ routine templateMethodInvocation
   when stringType :
     if [inMethodName string] == "HTMLRepresentation" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@goilTemplateType stringType];
+      outResultType := [@Ttype stringType];
       outResultValue := valueWithString [![[inValue mStringValue] HTMLRepresentation]];
     elsif [inMethodName string] == "identifierRepresentation" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@goilTemplateType stringType];
+      outResultType := [@Ttype stringType];
       outResultValue := valueWithString [![[inValue mStringValue] identifierRepresentation]];
     elsif [inMethodName string] == "lowercaseString" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@goilTemplateType stringType];
+      outResultType := [@Ttype stringType];
       outResultValue := valueWithString [![[inValue mStringValue] lowercaseString]];
     elsif [inMethodName string] == "length" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@goilTemplateType unsignedType];
+      outResultType := [@Ttype unsignedType];
       outResultValue := valueWithUnsigned [![[[inValue mStringValue] length] uint64]];
     elsif [inMethodName string] == "stringByCapitalizingFirstCharacter" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@goilTemplateType stringType];
+      outResultType := [@Ttype stringType];
       outResultValue := valueWithString [![[inValue mStringValue] stringByCapitalizingFirstCharacter]];
     elsif [inMethodName string] == "uppercaseString" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@goilTemplateType stringType];
+      outResultType := [@Ttype stringType];
       outResultValue := valueWithString [![[inValue mStringValue] uppercaseString]];
     else
       error inMethodName: "this template method is not defined" : outResultValue, outResultType;
@@ -534,12 +530,12 @@ routine templateMethodInvocation
   when listType :
     if [inMethodName string] == "length" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@goilTemplateType unsignedType];
+      outResultType := [@Ttype unsignedType];
       outResultValue := valueWithUnsigned [![[[inValue mMapListValue] length] uint64]];
     else
       error inMethodName: "this template method is not defined" : outResultValue, outResultType;
     end if;
-  when enumType, structType:
+  when enumType, structType, mapType:
     error inMethodName: "this template method is not defined" : outResultValue, outResultType;
   when unconstructedType:
     error here: "internal error, unconstructed type found": outResultValue, outResultType;
@@ -556,9 +552,9 @@ rule <expression>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ??@goilTemplateVariableMap inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 :
   <relation_term>
     !inPrefix
@@ -571,10 +567,10 @@ rule <expression>
   repeat
   while
     $|$;
-    @goilTemplateValue leftOperand := outValue;
-    @goilTemplateValue rightOperand;
-    @goilTemplateType firstOperandType := outResultType;
-    @goilTemplateType secondOperandType;
+    @Tvalue leftOperand := outValue;
+    @Tvalue rightOperand;
+    @Ttype firstOperandType := outResultType;
+    @Ttype secondOperandType;
     <relation_term>
       !inPrefix
       !inPath
@@ -591,10 +587,10 @@ rule <expression>
     ;
   while
     $^$;
-    @goilTemplateValue leftOperand := outValue;
-    @goilTemplateValue rightOperand;
-    @goilTemplateType firstOperandType := outResultType;
-    @goilTemplateType secondOperandType;
+    @Tvalue leftOperand := outValue;
+    @Tvalue rightOperand;
+    @Ttype firstOperandType := outResultType;
+    @Ttype secondOperandType;
     <relation_term>
       !inPrefix
       !inPath
@@ -622,9 +618,9 @@ rule <relation_term>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ??@goilTemplateVariableMap inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 :
   <relation_factor>
     !inPrefix
@@ -637,10 +633,10 @@ rule <relation_term>
   repeat
   while
     $&$;
-    @goilTemplateValue leftOperand := outValue;
-    @goilTemplateValue rightOperand;
-    @goilTemplateType firstOperandType := outResultType;
-    @goilTemplateType secondOperandType;
+    @Tvalue leftOperand := outValue;
+    @Tvalue rightOperand;
+    @Ttype firstOperandType := outResultType;
+    @Ttype secondOperandType;
     <relation_factor>
       !inPrefix
       !inPath
@@ -668,9 +664,9 @@ rule <relation_factor>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ??@goilTemplateVariableMap inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 :
   <simple_expression>
     !inPrefix
@@ -683,10 +679,10 @@ rule <relation_factor>
   select
   or
     $==$;
-    @goilTemplateValue leftExpression := outValue;
-    @goilTemplateType leftType := outResultType;
-    @goilTemplateValue rightExpression;
-    @goilTemplateType rightType;
+    @Tvalue leftExpression := outValue;
+    @Ttype leftType := outResultType;
+    @Tvalue rightExpression;
+    @Ttype rightType;
     <simple_expression>
       !inPrefix
       !inPath
@@ -705,19 +701,19 @@ rule <relation_factor>
       result := [leftExpression mStringValue] == [rightExpression mStringValue];
     when enumType :
       result := [leftExpression mStringValue] == [rightExpression mStringValue];
-    when listType, structType:
-      error here: "lists and struct may not be compared" : result;
+    when listType, structType, mapType:
+      error here: "lists, structs and maps may not be compared" : result;
     when unconstructedType:
       error here: "internal error, unconstructed type found" : result;
     end switch;
-    outResultType := [@goilTemplateType boolType];
+    outResultType := [@Ttype boolType];
     outValue->mUnsigned64Value := if result then 1L else 0L end;
   or
     $!=$;
-    @goilTemplateValue leftExpression := outValue;
-    @goilTemplateType leftType := outResultType;
-    @goilTemplateValue rightExpression;
-    @goilTemplateType rightType;
+    @Tvalue leftExpression := outValue;
+    @Ttype leftType := outResultType;
+    @Tvalue rightExpression;
+    @Ttype rightType;
     <simple_expression>
       !inPrefix
       !inPath
@@ -737,19 +733,19 @@ rule <relation_factor>
       result := [leftExpression mStringValue] != [rightExpression mStringValue];
     when enumType :
       result := [leftExpression mStringValue] != [rightExpression mStringValue];
-    when listType, structType:
-      error here: "lists and struct may not be compared": result;
+    when listType, structType, mapType:
+      error here: "lists, structs and maps may not be compared": result;
     when unconstructedType:
       error here: "internal error, unconstructed type found" : result;
     end switch;
-    outResultType := [@goilTemplateType boolType];
+    outResultType := [@Ttype boolType];
     outValue->mUnsigned64Value := if result then 1L else 0L end;
   or
     $<=$;
-    @goilTemplateValue leftExpression := outValue;
-    @goilTemplateType leftType := outResultType;
-    @goilTemplateValue rightExpression;
-    @goilTemplateType rightType;
+    @Tvalue leftExpression := outValue;
+    @Ttype leftType := outResultType;
+    @Tvalue rightExpression;
+    @Ttype rightType;
     <simple_expression>
       !inPrefix
       !inPath
@@ -765,19 +761,19 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] <= [rightExpression mUnsigned64Value];
     when unsignedType :
       result := [leftExpression mUnsigned64Value] <= [rightExpression mUnsigned64Value];
-    when stringType, enumType, listType, structType :
+    when stringType, enumType, listType, structType, mapType :
       result := false;
     when unconstructedType:
       error here: "internal error, unconstructed type found" : result;
     end switch;
-    outResultType := [@goilTemplateType boolType];
+    outResultType := [@Ttype boolType];
     outValue->mUnsigned64Value := if result then 1L else 0L end;
   or
     $>=$;
-    @goilTemplateValue leftExpression := outValue;
-    @goilTemplateType leftType := outResultType;
-    @goilTemplateValue rightExpression;
-    @goilTemplateType rightType;
+    @Tvalue leftExpression := outValue;
+    @Ttype leftType := outResultType;
+    @Tvalue rightExpression;
+    @Ttype rightType;
     <simple_expression>
       !inPrefix
       !inPath
@@ -793,19 +789,19 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] >= [rightExpression mUnsigned64Value];
     when unsignedType :
       result := [leftExpression mUnsigned64Value] >= [rightExpression mUnsigned64Value];
-    when stringType, enumType, listType, structType :
+    when stringType, enumType, listType, structType, mapType :
       result := false;
     when unconstructedType:
       error here: "internal error, unconstructed type found" : result;
     end switch;
-    outResultType := [@goilTemplateType boolType];
+    outResultType := [@Ttype boolType];
     outValue->mUnsigned64Value := if result then 1L else 0L end;
   or
     $>$;
-    @goilTemplateValue leftExpression := outValue;
-    @goilTemplateType leftType := outResultType;
-    @goilTemplateValue rightExpression;
-    @goilTemplateType rightType;
+    @Tvalue leftExpression := outValue;
+    @Ttype leftType := outResultType;
+    @Tvalue rightExpression;
+    @Ttype rightType;
     <simple_expression>
       !inPrefix
       !inPath
@@ -821,19 +817,19 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] > [rightExpression mUnsigned64Value];
     when unsignedType :
       result := [leftExpression mUnsigned64Value] > [rightExpression mUnsigned64Value];
-    when stringType, enumType, listType, structType :
+    when stringType, enumType, listType, structType, mapType :
       result := false;
     when unconstructedType:
       error here: "internal error, unconstructed type found" : result;
     end switch;
-    outResultType := [@goilTemplateType boolType];
+    outResultType := [@Ttype boolType];
     outValue->mUnsigned64Value := if result then 1L else 0L end;
   or
     $<$;
-    @goilTemplateValue leftExpression := outValue;
-    @goilTemplateType leftType := outResultType;
-    @goilTemplateValue rightExpression;
-    @goilTemplateType rightType;
+    @Tvalue leftExpression := outValue;
+    @Ttype leftType := outResultType;
+    @Tvalue rightExpression;
+    @Ttype rightType;
     <simple_expression>
       !inPrefix
       !inPath
@@ -849,12 +845,12 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] < [rightExpression mUnsigned64Value];
     when unsignedType :
       result := [leftExpression mUnsigned64Value] < [rightExpression mUnsigned64Value];
-    when stringType, enumType, listType, structType :
+    when stringType, enumType, listType, structType, mapType :
       result := false;
     when unconstructedType:
       error here: "internal error, unconstructed type found" : result;
     end switch;
-    outResultType := [@goilTemplateType boolType];
+    outResultType := [@Ttype boolType];
     outValue->mUnsigned64Value := if result then 1L else 0L end;
   end select;
 end rule;
@@ -869,9 +865,9 @@ rule <simple_expression>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ??@goilTemplateVariableMap inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 :
   <term>
     !inPrefix
@@ -884,10 +880,10 @@ rule <simple_expression>
   repeat
   while 
     $<<$;
-    @goilTemplateValue leftExpression := outValue;
-    @goilTemplateType leftType := outResultType;
-    @goilTemplateValue rightExpression;
-    @goilTemplateType rightType;
+    @Tvalue leftExpression := outValue;
+    @Ttype leftType := outResultType;
+    @Tvalue rightExpression;
+    @Ttype rightType;
     <term>
       !inPrefix
       !inPath
@@ -900,10 +896,10 @@ rule <simple_expression>
     outValue->mUnsigned64Value := [leftExpression mUnsigned64Value] << [[rightExpression mUnsigned64Value] uint];
   while 
     $>>$;
-    @goilTemplateValue leftExpression := outValue;
-    @goilTemplateType leftType := outResultType;
-    @goilTemplateValue rightExpression;
-    @goilTemplateType rightType;
+    @Tvalue leftExpression := outValue;
+    @Ttype leftType := outResultType;
+    @Tvalue rightExpression;
+    @Ttype rightType;
     <term>
       !inPrefix
       !inPath
@@ -916,10 +912,10 @@ rule <simple_expression>
     outValue->mUnsigned64Value := [leftExpression mUnsigned64Value] >> [[rightExpression mUnsigned64Value] uint];
   while 
     $+$;
-    @goilTemplateValue leftExpression := outValue;
-    @goilTemplateType leftType := outResultType;
-    @goilTemplateValue rightExpression;
-    @goilTemplateType rightType;
+    @Tvalue leftExpression := outValue;
+    @Ttype leftType := outResultType;
+    @Tvalue rightExpression;
+    @Ttype rightType;
     <term>
       !inPrefix
       !inPath
@@ -932,10 +928,10 @@ rule <simple_expression>
     outValue->mUnsigned64Value := [leftExpression mUnsigned64Value] + [rightExpression mUnsigned64Value];
   while 
     $.$;
-    @goilTemplateValue leftExpression := outValue;
-    @goilTemplateType leftType := outResultType;
-    @goilTemplateValue rightExpression;
-    @goilTemplateType rightType;
+    @Tvalue leftExpression := outValue;
+    @Ttype leftType := outResultType;
+    @Tvalue rightExpression;
+    @Ttype rightType;
     <term>
       !inPrefix
       !inPath
@@ -948,10 +944,10 @@ rule <simple_expression>
     outValue->mStringValue := [leftExpression mStringValue] . [rightExpression mStringValue];
   while 
     $-$;
-    @goilTemplateValue leftExpression := outValue;
-    @goilTemplateType leftType := outResultType;
-    @goilTemplateValue rightExpression;
-    @goilTemplateType rightType;
+    @Tvalue leftExpression := outValue;
+    @Ttype leftType := outResultType;
+    @Tvalue rightExpression;
+    @Ttype rightType;
     <term>
       !inPrefix
       !inPath
@@ -975,9 +971,9 @@ rule <term>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ??@goilTemplateVariableMap inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 :
   <factor>
     !inPrefix
@@ -990,10 +986,10 @@ rule <term>
   repeat
   while 
     $*$;
-    @goilTemplateValue leftExpression := outValue;
-    @goilTemplateType leftType := outResultType;
-    @goilTemplateValue rightExpression;
-    @goilTemplateType rightType;
+    @Tvalue leftExpression := outValue;
+    @Ttype leftType := outResultType;
+    @Tvalue rightExpression;
+    @Ttype rightType;
     <factor>
       !inPrefix
       !inPath
@@ -1006,10 +1002,10 @@ rule <term>
     outValue->mUnsigned64Value := [leftExpression mUnsigned64Value] * [rightExpression mUnsigned64Value];
   while 
     $/$;
-    @goilTemplateValue leftExpression := outValue;
-    @goilTemplateType leftType := outResultType;
-    @goilTemplateValue rightExpression;
-    @goilTemplateType rightType;
+    @Tvalue leftExpression := outValue;
+    @Ttype leftType := outResultType;
+    @Tvalue rightExpression;
+    @Ttype rightType;
     <factor>
       !inPrefix
       !inPath
@@ -1022,10 +1018,10 @@ rule <term>
     outValue->mUnsigned64Value := [leftExpression mUnsigned64Value] / [rightExpression mUnsigned64Value];
   while 
     $mod$;
-    @goilTemplateValue leftExpression := outValue;
-    @goilTemplateType leftType := outResultType;
-    @goilTemplateValue rightExpression;
-    @goilTemplateType rightType;
+    @Tvalue leftExpression := outValue;
+    @Ttype leftType := outResultType;
+    @Tvalue rightExpression;
+    @Ttype rightType;
     <factor>
       !inPrefix
       !inPath
@@ -1049,9 +1045,9 @@ rule <factor>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ??@goilTemplateVariableMap inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 :
   $($;
   <expression>
@@ -1075,13 +1071,13 @@ rule <factor>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ??@goilTemplateVariableMap inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 :
   $not$;
-  @goilTemplateValue expression;
-  @goilTemplateType operandType;
+  @Tvalue expression;
+  @Ttype operandType;
   <factor>
     !inPrefix
     !inPath
@@ -1104,13 +1100,13 @@ rule <factor>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ??@goilTemplateVariableMap inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 :
   $~$;
-  @goilTemplateValue value;
-  @goilTemplateType operandType;
+  @Tvalue value;
+  @Ttype operandType;
   <factor>
     !inPrefix
     !inPath
@@ -1133,13 +1129,13 @@ rule <factor>
   ??@string unused inPrefix
   ??@string unused inPath
   ??@string unused inTemplateDirectory
-  ??@goilTemplateVariableMap unused inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap unused inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 :
   $yes$;
   outValue := valueWithUnsigned[!1L];
-  outResultType := [@goilTemplateType boolType];
+  outResultType := [@Ttype boolType];
 end rule;
 
 #------------------------------------------------------------------------------*
@@ -1152,13 +1148,13 @@ rule <factor>
   ??@string unused inPrefix
   ??@string unused inPath
   ??@string unused inTemplateDirectory
-  ??@goilTemplateVariableMap unused inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap unused inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 :
   $no$;
   outValue := valueWithUnsigned[!0L];
-  outResultType := [@goilTemplateType boolType];
+  outResultType := [@Ttype boolType];
 end rule;
 
 #------------------------------------------------------------------------------*
@@ -1171,14 +1167,14 @@ rule <factor>
   ??@string unused inPrefix
   ??@string unused inPath
   ??@string unused inTemplateDirectory
-  ??@goilTemplateVariableMap unused inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap unused inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 :
   @luint64 literalInt;
   $unsigned_literal_integer64$ ?literalInt;
   outValue := valueWithUnsigned[![literalInt uint64]];
-  outResultType := [@goilTemplateType unsignedType];
+  outResultType := [@Ttype unsignedType];
 end rule;
 
 #------------------------------------------------------------------------------*
@@ -1191,13 +1187,13 @@ rule <factor>
   ??@string unused inPrefix
   ??@string unused inPath
   ??@string unused inTemplateDirectory
-  ??@goilTemplateVariableMap unused inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap unused inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 :
   $string$ ?@lstring literalString;
   outValue := valueWithString[![literalString string]];
-  outResultType := [@goilTemplateType stringType];
+  outResultType := [@Ttype stringType];
 end rule;
 
 #------------------------------------------------------------------------------*
@@ -1211,14 +1207,14 @@ rule <factor>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ??@goilTemplateVariableMap inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 :
   $[$;
 
-  @goilTemplateValue expressionValue;
-  @goilTemplateType expressionType;
+  @Tvalue expressionValue;
+  @Ttype expressionType;
   <expression>
     !inPrefix
     !inPath
@@ -1230,13 +1226,13 @@ rule <factor>
 
   $identifier$ ? @lstring templateMethodName;
 
-  @goilTemplateExpressionList expressionList [emptyList];
+  @TexpressionList expressionList [emptyList];
   select
   or
     $:$;
     repeat
-      @goilTemplateValue expression;
-      @goilTemplateType resultType;
+      @Tvalue expression;
+      @Ttype resultType;
       <expression>
         !inPrefix
         !inPath
@@ -1298,24 +1294,17 @@ rule <factor>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ??@goilTemplateVariableMap inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 :
-#--- Function call
-  $identifier$ ?@lstring functionOrVariableName;
+  @TvarPath path;
+  <variable> !inPrefix !inPath !inTemplateDirectory !inVariableMap ?path;
   select
-    [inVariableMap searchKey !functionOrVariableName ?outResultType ?outValue];
+    searchField !path !inVariableMap ?outResultType ?outValue ?*;
   or
-    $::$;
-    @goilTemplateType varType;
-    @goilTemplateValue varValue;
-    [inVariableMap searchKey !functionOrVariableName ?varType ?varValue];
-    if varType != [@goilTemplateType structType] then
-      error functionOrVariableName: "'".functionOrVariableName."' is not a struct";
-    end if;
-    <struct_member> ![varValue mStructValue] ?outValue ?outResultType;
-  or
+    @lstring functionOrVariableName;
+    [path first ?functionOrVariableName ?*];
   #--- Search for function name
     @function f;
     if not [@function isFunctionDefined ![functionOrVariableName string]] then
@@ -1324,11 +1313,11 @@ rule <factor>
       f := [@function functionWithName ![functionOrVariableName string]];
     end if;
   #--- Parse actual arguments
-    @goilTemplateExpressionList actualArgumentList [emptyList];
+    @TexpressionList actualArgumentList [emptyList];
     $($;
     repeat
-      @goilTemplateValue expression;
-      @goilTemplateType resultType;
+      @Tvalue expression;
+      @Ttype resultType;
       <expression>
         !inPrefix
         !inPath
@@ -1376,25 +1365,25 @@ rule <factor>
             typeError !functionOrVariableName !formal_mValue !"enum" !idx;
           end if;
           actualArgumentObjectList += ![[actual_mValue mStringValue] object];
-        when listType, structType :
+        when listType, structType, mapType :
           typeError !functionOrVariableName !formal_mValue !"string" !idx;
         when unconstructedType:
           error here: "internal error, unconstructed type found";
         end switch;
         idx ++;     
       end foreach;
-      outResultType := [@goilTemplateType unsignedType];
+      outResultType := [@Ttype unsignedType];
       outValue := valueWithUnsigned[!0L];
       if [@uint errorCount] == 0 then
         const @object result := [f invoke !actualArgumentObjectList ![functionOrVariableName location]];
         if [result objectDynamicType] == `@uint64 then
-          outResultType := [@goilTemplateType unsignedType];
+          outResultType := [@Ttype unsignedType];
           outValue->mUnsigned64Value := (cast result if == @uint64 else error functionOrVariableName);
         elsif [result objectDynamicType] == `@bool then
-          outResultType := [@goilTemplateType boolType];
+          outResultType := [@Ttype boolType];
           outValue->mUnsigned64Value := [(cast result if == @bool else error functionOrVariableName) uint64];
         elsif [result objectDynamicType] == `@string then
-          outResultType := [@goilTemplateType stringType];
+          outResultType := [@Ttype stringType];
           outValue->mStringValue := (cast result if == @string else error functionOrVariableName);
         else
           error functionOrVariableName : "this function does not return an unsigned, boolean or string value";
@@ -1410,50 +1399,23 @@ rule <factor>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ??@goilTemplateVariableMap inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 :
-  @bool varExists := true;
-  $exists$;
-  @lstring variableName;
-  @goilTemplateType variableType := [@goilTemplateType unconstructedType];
-  @goilTemplateValue variableValue := valueWithVoid[];
-  $identifier$ ?variableName;
-  
-  @goilTemplateFieldMap structFields [emptyMap];
+  @TvarPath path;
+  $exists$; <variable> !inPrefix !inPath !inTemplateDirectory !inVariableMap ?path;
 
-  if [inVariableMap hasKey ![variableName string]] then
-    [inVariableMap searchKey !variableName ?variableType ?variableValue];
-    if variableType == [@goilTemplateType structType] then
-      structFields := [variableValue mStructValue];
-    end if;
-  else
-    varExists := false;
-  end if;
+  @Ttype variableType;
+  @Tvalue variableValue;
+  @bool varExists;
 
-  repeat 
-  while
-    if variableType != [@goilTemplateType structType] then
-      error here: [variableName string]." is not a struct";
-      varExists := false;
-    else
-    end if;
-    $::$; $identifier$ ?variableName;
-    if [structFields hasKey ![variableName string]] then
-      @uint64 intValue;
-      @string stringValue;
-      @goilTemplateFieldMapList listValue;
-      [structFields searchKey !variableName ?variableType ?intValue ?stringValue ?listValue ?structFields];
-      variableValue := [@goilTemplateValue new !intValue !stringValue !listValue !structFields];
-    else
-      varExists := false;
-    end if;
-  end repeat;  
+  searchFieldIfExists !path !inVariableMap ?variableType ?variableValue ?varExists;
+
   select
     $default$;
-    @goilTemplateValue expression;
-    @goilTemplateType resultType;
+    @Tvalue expression;
+    @Ttype resultType;
     $($;
     <expression>
       !inPrefix
@@ -1472,7 +1434,7 @@ rule <factor>
       outValue := expression;
     end if;
   or
-    outResultType := [@goilTemplateType boolType];
+    outResultType := [@Ttype boolType];
     if varExists then
       outValue := valueWithUnsigned[!1L];
     else
@@ -1484,19 +1446,19 @@ end rule;
 #------------------------------------------------------------------------------*
 
 rule <factor>
-  ??@string unused inPrefix
-  ??@string unused inPath
-  ??@string unused inTemplateDirectory
-  ??@goilTemplateVariableMap inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@string inPrefix
+  ??@string  inPath
+  ??@string  inTemplateDirectory
+  ??@TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 :
-  @lstringlist variableName;
-  $typeof$; <variable> !inVariableMap ?variableName;
-  @goilTemplateType variableType;
-  @goilTemplateValue variableValue;
-  searchVariable !variableName !inVariableMap ?variableType ?variableValue;
-  outResultType := [@goilTemplateType enumType];
+  @TvarPath variableName;
+  $typeof$; <variable> !inPrefix !inPath !inTemplateDirectory !inVariableMap ?variableName;
+  @Ttype variableType;
+  @Tvalue variableValue;
+  searchField !variableName !inVariableMap ?variableType ?variableValue ?*;
+  outResultType := [@Ttype enumType];
   outValue := valueWithString[![variableType messageGoilTemplateType]];
 end rule;
 
@@ -1506,9 +1468,9 @@ rule <factor>
   ??@string unused inPrefix
   ??@string unused inPath
   ??@string unused inTemplateDirectory
-  ??@goilTemplateVariableMap unused inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap unused inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 :
   select
     $true$;
@@ -1517,7 +1479,7 @@ rule <factor>
     $false$;
     outValue := valueWithUnsigned[!0L];
   end select;
-  outResultType := [@goilTemplateType boolType];
+  outResultType := [@Ttype boolType];
 end rule;
 
 #------------------------------------------------------------------------------*
@@ -1526,13 +1488,13 @@ rule <factor>
   ??@string unused inPrefix
   ??@string unused inPath
   ??@string unused inTemplateDirectory
-  ??@goilTemplateVariableMap unused inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap unused inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 :
   $@$; $identifier$ ?@lstring enumValue;
   outValue := valueWithString[![enumValue string]];
-  outResultType := [@goilTemplateType enumType];
+  outResultType := [@Ttype enumType];
 end rule;
 
 #------------------------------------------------------------------------------*
@@ -1541,39 +1503,13 @@ rule <factor>
   ??@string unused inPrefix
   ??@string unused inPath
   ??@string unused inTemplateDirectory
-  ??@goilTemplateVariableMap unused inVariableMap
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
+  ??@TfieldMap unused inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
 :
   $emptylist$;
-  outValue := [@goilTemplateValue new !0L !"" ![@goilTemplateFieldMapList emptyList] ![@goilTemplateFieldMap emptyMap]];
-  outResultType := [@goilTemplateType listType];
-end rule;
-
-#------------------------------------------------------------------------------*
-
-rule <struct_member>
-  ??@goilTemplateFieldMap inValue
-  !@goilTemplateValue outValue
-  !@goilTemplateType outResultType
-:
-  $identifier$ ?@lstring memberName;
-  @goilTemplateType memberType;
-  @uint64 memberInt;
-  @string memberString;
-  @goilTemplateFieldMapList memberList;
-  @goilTemplateFieldMap memberStruct;
-  [inValue searchKey !memberName ?memberType ?memberInt ?memberString ?memberList ?memberStruct];
-  select
-    if memberType != [@goilTemplateType structType] then
-      error memberName: "'".memberName."' is a not a struct";
-    end if;
-    $::$;
-    <struct_member> !memberStruct ?outValue ?outResultType;
-  or
-    outValue := [@goilTemplateValue new !memberInt !memberString !memberList !memberStruct];
-    outResultType := memberType;
-  end select;
+  outValue := [@Tvalue new !0L !"" ![@TfieldMapList emptyList] ![@TfieldMap emptyMap]];
+  outResultType := [@Ttype listType];
 end rule;
 
 ##------------------------------------------------------------------------------*
@@ -1582,9 +1518,9 @@ end rule;
 #  ??@string inPrefix
 #  ??@string inPath
 #  ??@string inTemplateDirectory
-#  ??@goilTemplateVariableMap inVariableMap
-#  !@goilTemplateValue outValue
-#  !@goilTemplateType outResultType
+#  ??@TfieldMap inVariableMap
+#  !@Tvalue outValue
+#  !@Ttype outResultType
 #:
 #  @string resultString := "";
 #  $templateresult$;
@@ -1615,10 +1551,8 @@ end rule;
 #      ?*
 #    ;
 #  end select;
-#  outValue := [@goilTemplateValue new !0L !resultString ![@goilTemplateFieldMapList emptyList]];
-#  outResultType := [@goilTemplateType stringType];
+#  outValue := [@Tvalue new !0L !resultString ![@TfieldMapList emptyList]];
+#  outResultType := [@Ttype stringType];
 #end rule;
-
-#------------------------------------------------------------------------------*
 
 end syntax;

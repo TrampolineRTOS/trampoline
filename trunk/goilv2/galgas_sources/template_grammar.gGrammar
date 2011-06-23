@@ -25,7 +25,7 @@ grammar template_grammar "LL1" :
     ??@string inPrefix
     ??@string inPath
     ??@string inTemplateDirectory
-    ?@goilTemplateVariableMap inTemplateVariableMap
+    ?@TfieldMap inTemplateVariableMap
     ?!@string ioResultingString
   ;
 end grammar ;

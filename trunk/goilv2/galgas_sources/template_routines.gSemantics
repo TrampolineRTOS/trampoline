@@ -3,7 +3,7 @@ import "template_invocation.gSemantics";
 
 function goil_template
   ??@string prefix
-  ??@goilTemplateVariableMap cfg
+  ??@TfieldMap cfg
   ??@string name
   ->@string result
 :
@@ -21,7 +21,7 @@ end function;
 
 function computeTemplate
   ??@string prefix
-  ??@goilTemplateVariableMap cfg
+  ??@TfieldMap cfg
   ??@string name
   ->@string result
 :

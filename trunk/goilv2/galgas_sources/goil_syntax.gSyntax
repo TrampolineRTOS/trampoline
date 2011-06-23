@@ -82,7 +82,7 @@ rule <start>:
     verifyAll !imp !application;
   end if;
   if [@uint errorCount] == 0 then
-    @goilTemplateVariableMap templateData := [application templateData !imp];
+    @TfieldMap templateData := [application templateData !imp];
     generate_all !templateData;
   end if;
 end rule;

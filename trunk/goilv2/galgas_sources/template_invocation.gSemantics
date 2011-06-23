@@ -36,24 +36,24 @@ end once;
 
 
 function fullPrefix
-  ??@goilTemplateVariableMap vars
+  ??@TfieldMap vars
   ??@lstring prefix
   ->@string full
 :
   @string stringPrefix := [prefix string];
   if stringPrefix == "compiler" then
-    @goilTemplateType type;
-    @goilTemplateValue value;
+    @Ttype type;
+    @Tvalue value;
     [vars searchKey !lstringWith[!"COMPILER"] ?type ?value];
     stringPrefix .= "/" . [value mStringValue];
   elsif stringPrefix == "linker" then
-    @goilTemplateType type;
-    @goilTemplateValue value;
+    @Ttype type;
+    @Tvalue value;
     [vars searchKey !lstringWith[!"LINKER"] ?type ?value];
     stringPrefix .= "/" . [value mStringValue];
   elsif stringPrefix == "assembler" then
-    @goilTemplateType type;
-    @goilTemplateValue value;
+    @Ttype type;
+    @Tvalue value;
     [vars searchKey !lstringWith[!"ASSEMBLER"] ?type ?value];
     stringPrefix .= "/" . [value mStringValue];
   end if;
@@ -68,8 +68,8 @@ end function;
 #------------------------------------------------------------------------------*
 
 function displayTypeAndValue
-  ??@goilTemplateType inType
-  ??@goilTemplateValue inValue
+  ??@Ttype inType
+  ??@Tvalue inValue
   -> @string outResult
 :
   switch inType
@@ -87,12 +87,12 @@ function displayTypeAndValue
         outResult .= "'" . lkey . "' ";
         switch mType
         when boolType :
-          outResult .= "bool: " . if mUnsigned64Value == 1L then "yes" else "no" end;
+          outResult .= "bool: " . if [mValue mUnsigned64Value] == 1L then "yes" else "no" end;
         when unsignedType :
-          outResult .= "unsigned: " . [mUnsigned64Value string];
+          outResult .= "unsigned: " . [[mValue mUnsigned64Value] string];
         when stringType :
-          outResult .= "string: '" . mStringValue . "'";
-        when listType, structType :
+          outResult .= "string: '" . [mValue mStringValue] . "'";
+        when listType, structType, mapType :
         when enumType :
         when unconstructedType:
           error here: "internal error, unconstructed type found";
@@ -100,7 +100,7 @@ function displayTypeAndValue
       between outResult .= ", ";
       end foreach;
     end foreach;
-  when structType:
+  when structType, mapType:
     outResult := "";
   when enumType:
     outResult := "";
@@ -112,7 +112,7 @@ end function;
 #------------------------------------------------------------------------------*
 
 routine displayTemplateVariableMap
-  ??@goilTemplateVariableMap inTemplateVariableMap
+  ??@TfieldMap inTemplateVariableMap
 :
   foreach inTemplateVariableMap do
     message "'" . lkey . "' " . displayTypeAndValue [!mType !mValue] . "\n";
@@ -244,14 +244,14 @@ end routine;
 #------------------------------------------------------------------------------*
 
 routine goilTemplateInvocation
-  ??@lstring                 inTemplateName
-  ??@string                  inPrefix
-  ??@string                  inPath
-  ??@string                  inTemplateDirectory
-  ??@bool                    inErrorIfNotFound
-  ??@goilTemplateVariableMap inTemplateVariableMap
-  ?!@string                  ioResultingString
-  !@bool                     outNoErrorOccured
+  ??@lstring   inTemplateName
+  ??@string    inPrefix
+  ??@string    inPath
+  ??@string    inTemplateDirectory
+  ??@bool      inErrorIfNotFound
+  ??@TfieldMap inTemplateVariableMap
+  ?!@string    ioResultingString
+  !@bool       outNoErrorOccured
 :
   outNoErrorOccured := true;
   if [@uint errorCount] == 0 then
