@@ -25,7 +25,7 @@ nonterminal <goil_template_start_symbol>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ?@goilTemplateVariableMap inTemplateVariableMap
+  ?@TfieldMap inTemplateVariableMap
   ?!@string ioResultingString
 ;
 
@@ -33,7 +33,7 @@ nonterminal <template_instruction>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@TfieldMap ioTemplateVariableMap
   ?!@string ioResultingString
 label parse
 ;
@@ -43,19 +43,25 @@ nonterminal <sorting_order>
 label parse
 ;
 
-nonterminal <struct_path>
-  ?!@lstringlist path
-label parse
-;
+#nonterminal <struct_path>
+#  ?!@lstringlist path
+#label parse
+#;
 
 nonterminal <variable>
-  ?@goilTemplateVariableMap inTemplateVariableMap
-  !@lstringlist path
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@TfieldMap inVariableMap
+  !@TvarPath path
 label parse
 ;
 
 nonterminal <variable_or_here>
-  ??@goilTemplateVariableMap inTemplateVariableMap
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@TfieldMap inTemplateVariableMap
   !@location outWhere
 label parse
 ;
@@ -64,9 +70,9 @@ nonterminal <expression>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ??@goilTemplateVariableMap inTemplateVariableMap
-  !@goilTemplateValue outExpression
-  !@goilTemplateType outResultType
+  ??@TfieldMap inTemplateVariableMap
+  !@Tvalue outExpression
+  !@Ttype outResultType
 label parse
 ;
 
@@ -74,7 +80,7 @@ nonterminal  <template_instruction_list>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ?!@goilTemplateVariableMap inTemplateVariableMap
+  ?!@TfieldMap inTemplateVariableMap
   ?!@string ioResultingString
 label parse
 ;
@@ -85,12 +91,12 @@ rule <template_instruction>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@TfieldMap ioTemplateVariableMap
   ?!@string ioResultingString
 :
   $!$;
-  @goilTemplateValue expression;
-  @goilTemplateType resultType;
+  @Tvalue expression;
+  @Ttype resultType;
   <expression>
     !inPrefix
     !inPath
@@ -112,6 +118,8 @@ rule <template_instruction>
     end if;
   when listType :
     error here : "a list expression cannot be emitted";
+  when mapType :
+    error here : "a map expression cannot be emitted";
   when structType :
     error here : "a struct expression cannot be emitted";
   when unconstructedType:
@@ -125,14 +133,14 @@ rule <template_instruction>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@TfieldMap ioTemplateVariableMap
   ?!@string unused ioResultingString
 :
   @bool fileNameOk := true;
   $write$; $to$;
-  @goilTemplateValue expression;
-  @goilTemplateType expressionType;
-  @goilTemplateVariableMap templateVariableMap := ioTemplateVariableMap;
+  @Tvalue expression;
+  @Ttype expressionType;
+  @TfieldMap templateVariableMap := ioTemplateVariableMap;
   <expression>
     !inPrefix
     !inPath
@@ -148,12 +156,12 @@ rule <template_instruction>
   if [templateVariableMap hasKey !"FILEPATH"] then
     [!?templateVariableMap removeKey !lstringWith[!"FILEPATH"] ?* ?*];
   end if;
-  @goilTemplateValue fileName := valueWithString[![[expression mStringValue] lastPathComponent]];
-  @goilTemplateValue nativeFilePath := valueWithString[![[expression mStringValue] nativePathWithUnixPath]];
+  @Tvalue fileName := valueWithString[![[expression mStringValue] lastPathComponent]];
+  @Tvalue nativeFilePath := valueWithString[![[expression mStringValue] nativePathWithUnixPath]];
   [!?templateVariableMap insertKey !lstringWith[!"FILENAME"] !expressionType !fileName];
   [!?templateVariableMap insertKey !lstringWith[!"FILEPATH"] !expressionType !nativeFilePath];
   @location fileNameLocation := here;
-  if expressionType != [@goilTemplateType stringType] then
+  if expressionType != [@Ttype stringType] then
     error here: "a file name should be of type string";
     fileNameOk := false;    
   end if;
@@ -178,7 +186,7 @@ rule <template_instruction>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@TfieldMap ioTemplateVariableMap
   ?!@string ioResultingString
 :
   @string nextPrefix := inPrefix;
@@ -206,7 +214,7 @@ rule <template_instruction>
       $or$;
       #log found;
       parse when not found:
-        @goilTemplateVariableMap templateVariableMap [mapWithMapToOverride !ioTemplateVariableMap];
+        @TfieldMap templateVariableMap [mapWithMapToOverride !ioTemplateVariableMap];
         <template_instruction_list>
           !nextPrefix
           !inPath
@@ -247,7 +255,7 @@ rule <template_instruction>
   ??@string unused inPrefix
   ??@string unused inPath
   ??@string unused inTemplateDirectory
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@TfieldMap ioTemplateVariableMap
   ?!@string ioResultingString
 :
   $?$;
@@ -266,7 +274,7 @@ rule <template_instruction>
   end loop;
   [!?ioTemplateVariableMap insertKey
     !columnConstantName
-    ![@goilTemplateType stringType]
+    ![@Ttype stringType]
     !valueWithString[!value]
   ];
 end rule;
@@ -276,13 +284,13 @@ end rule;
 #rule <template_instruction>
 #  ?!@typeVariablesMap ioTemplateVariableMap
 #  ??@EXsemanticContext inSemanticContext
-#  ??@goilTemplateVariableMap inComponentSemanticsEntitiesMap
+#  ??@TfieldMap inComponentSemanticsEntitiesMap
 #  ??@M_optionComponents inOptionsComponentsMapForUse
 #  ?!@templateInstructionList ioResultingInstructionList
 #:
 #  $block$;
-#  @goilTemplateValue expression;
-#  @goilTemplateType resultType;
+#  @Tvalue expression;
+#  @Ttype resultType;
 #  <expression>
 #    !inComponentSemanticsEntitiesMap
 #    !inSemanticContext
@@ -323,7 +331,7 @@ rule <template_instruction>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@TfieldMap ioTemplateVariableMap
   ?!@string ioResultingString
 :
   $if$;
@@ -331,8 +339,8 @@ rule <template_instruction>
   repeat
     parse
     when not currentCondition :
-      @goilTemplateValue expression;
-      @goilTemplateType expressionType;
+      @Tvalue expression;
+      @Ttype expressionType;
       <expression>
         !inPrefix
         !inPath
@@ -341,14 +349,14 @@ rule <template_instruction>
         ?expression
         ?expressionType
       ;
-      if expressionType != [@goilTemplateType boolType] then
+      if expressionType != [@Ttype boolType] then
         error here:"the operand of the 'not' operator should be boolean";
       end if;
       currentCondition := [expression mUnsigned64Value] == 1L;
       $then$;
       parse
       when currentCondition :
-        @goilTemplateVariableMap templateVariableMap [mapWithMapToOverride !ioTemplateVariableMap];
+        @TfieldMap templateVariableMap [mapWithMapToOverride !ioTemplateVariableMap];
         <template_instruction_list>
           !inPrefix
           !inPath
@@ -374,7 +382,7 @@ rule <template_instruction>
     $else$;
     parse
     when not currentCondition :
-      @goilTemplateVariableMap templateVariableMap [mapWithMapToOverride !ioTemplateVariableMap];
+      @TfieldMap templateVariableMap [mapWithMapToOverride !ioTemplateVariableMap];
       <template_instruction_list>
         !inPrefix
         !inPath
@@ -398,7 +406,7 @@ rule  <template_instruction_list>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@TfieldMap ioTemplateVariableMap
   ?!@string ioResultingString
 :
   ioResultingString .= [@string retrieveAndResetTemplateString];
@@ -421,7 +429,7 @@ rule  <goil_template_start_symbol>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ?@goilTemplateVariableMap inTemplateVariableMap
+  ?@TfieldMap inTemplateVariableMap
   ?!@string ioResultingString
 :
   <template_instruction_list>
@@ -439,14 +447,14 @@ rule <template_instruction>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@TfieldMap ioTemplateVariableMap
   ?!@string ioResultingString
 :
   $foreach$; $identifier$ ? @lstring variableName; $in$;
   @uint listLentgh;
 #  @goilTemplateEnumationList enumerationList [emptyList];
-  @goilTemplateValue enumeratedValue;
-  @goilTemplateType expressionType;
+  @Tvalue enumeratedValue;
+  @Ttype expressionType;
   <expression>
     !inPrefix
     !inPath
@@ -457,7 +465,7 @@ rule <template_instruction>
   ;
     
 #    log enumeratedValue;
-  if expressionType != [@goilTemplateType listType] then
+  if expressionType != [@Ttype listType] then
     error here:"only a list can be enumerated";
     listLentgh := 0;
   else
@@ -495,9 +503,9 @@ rule <template_instruction>
   @uint idx := 0;
   parse loop listLentgh
   while idx < listLentgh do
-    @goilTemplateVariableMap templateVariableMap [mapWithMapToOverride !ioTemplateVariableMap];
+    @TfieldMap templateVariableMap [mapWithMapToOverride !ioTemplateVariableMap];
 #    foreach enumerationList do
-    const @goilTemplateFieldMap fieldMap := [[enumeratedValue mMapListValue] mMapAtIndex !idx];
+    const @TfieldMap fieldMap := [[enumeratedValue mMapListValue] mMapAtIndex !idx];
 #    foreach fieldMap do
     @lstring varName := [@lstring new !foreachPrefix . [variableName string] ![variableName location]];
 #        if [templateVariableMap hasKey ![varName string]] then
@@ -505,8 +513,8 @@ rule <template_instruction>
 #        end if;
     [!?templateVariableMap insertKey
       !varName
-      ![@goilTemplateType structType]
-      ![@goilTemplateValue new !0L !"" ![@goilTemplateFieldMapList emptyList] !fieldMap]
+      ![@Ttype structType]
+      ![@Tvalue new !0L !"" ![@TfieldMapList emptyList] !fieldMap]
     ];
 #      end foreach;
 #    end foreach;
@@ -571,7 +579,7 @@ rule <template_instruction>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@TfieldMap ioTemplateVariableMap
   ?!@string ioResultingString
 :
   $for$; $identifier$ ? @lstring variableName;
@@ -579,10 +587,10 @@ rule <template_instruction>
 #    [!?ioTemplateVariableMap removeKey !variableName ?* ?*];
 #  end if;
   $in$;
-  @goilTemplateExpressionList enumerationList [emptyList];
+  @TexpressionList enumerationList [emptyList];
   repeat
-    @goilTemplateValue enumeratedValue;
-    @goilTemplateType expressionType;
+    @Tvalue enumeratedValue;
+    @Ttype expressionType;
     <expression>
       !inPrefix
       !inPath
@@ -591,9 +599,9 @@ rule <template_instruction>
       ?enumeratedValue
       ?expressionType
     ;
-    if expressionType != [@goilTemplateType boolType] &
-       expressionType != [@goilTemplateType unsignedType] &
-       expressionType != [@goilTemplateType stringType] then
+    if expressionType != [@Ttype boolType] &
+       expressionType != [@Ttype unsignedType] &
+       expressionType != [@Ttype stringType] then
        error here:"only a bool, integer or string can be enumerated";
     end if;
     enumerationList += !enumeratedValue !expressionType;
@@ -605,9 +613,9 @@ rule <template_instruction>
   @uint idx := 0;
   parse loop [enumerationList length]
   while [enumerationList length] > 0 do
-    @goilTemplateVariableMap templateVariableMap [mapWithMapToOverride !ioTemplateVariableMap];
-    @goilTemplateValue value;
-    @goilTemplateType type;
+    @TfieldMap templateVariableMap [mapWithMapToOverride !ioTemplateVariableMap];
+    @Tvalue value;
+    @Ttype type;
     [!?enumerationList popFirst ?value ?type];
     [!?templateVariableMap insertKey
       !variableName
@@ -657,13 +665,13 @@ rule <template_instruction>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@TfieldMap ioTemplateVariableMap
   ?!@string ioResultingString
 :
   $loop$; $identifier$ ? @lstring variableName;
   $from$;
-  @goilTemplateValue startValue;
-  @goilTemplateType startType;
+  @Tvalue startValue;
+  @Ttype startType;
   <expression>
     !inPrefix
     !inPath
@@ -672,12 +680,12 @@ rule <template_instruction>
     ?startValue
     ?startType
   ;
-  if startType != [@goilTemplateType unsignedType] then
+  if startType != [@Ttype unsignedType] then
     error here:"loop start value should be an integer";
   end if;
   $to$;
-  @goilTemplateValue endValue;
-  @goilTemplateType endType;
+  @Tvalue endValue;
+  @Ttype endType;
   <expression>
     !inPrefix
     !inPath
@@ -686,7 +694,7 @@ rule <template_instruction>
     ?endValue
     ?endType
   ;
-  if endType != [@goilTemplateType unsignedType] then
+  if endType != [@Ttype unsignedType] then
     error here:"loop end value should be an integer";
   end if;
 #--- Before block
@@ -713,7 +721,7 @@ rule <template_instruction>
   @uint idx := start;
   parse loop stop - start + 1
   while idx <= stop do
-    @goilTemplateVariableMap templateVariableMap [mapWithMapToOverride !ioTemplateVariableMap];
+    @TfieldMap templateVariableMap [mapWithMapToOverride !ioTemplateVariableMap];
 #    if [templateVariableMap hasKey ![variableName string]] then
 #      [!?templateVariableMap removeKey !variableName ?* ?*];
 #    end if;
@@ -770,87 +778,202 @@ end rule;
 
 #---------------------------------------------------------------------------*
 
-routine setVariableAlongPath
-  ?@lstringlist path
-  ?!@goilTemplateType variableType
-  ?!@goilTemplateValue variableValue
-  ??@goilTemplateType expressionType
-  ??@goilTemplateValue enumeratedValue
-:
-  if [path length] > 0 then
-    @lstring pathItem;
-    [!?path popFirst ?pathItem];
-    @goilTemplateType subType [unconstructedType];
-    @goilTemplateValue subValue := valueWithVoid[];
-    setVariableAlongPath !path !?subType !?subValue !expressionType !enumeratedValue;
-    variableType := [@goilTemplateType structType];
-    @goilTemplateFieldMap items := [variableValue mStructValue];
-    if [items hasKey ![pathItem string]] then
-      [!?items removeKey !pathItem ?* ?* ?* ?* ?*];
-    end if;
-    [!?items insertKey
-      !pathItem
-      !subType
-      ![subValue mUnsigned64Value]
-      ![subValue mStringValue]
-      ![subValue mMapListValue]
-      ![subValue mStructValue]
-    ];
-    variableValue := valueWithStruct[!items];
-  else
-    variableType := expressionType;
-    variableValue := enumeratedValue;
-  end if;  
-end routine;
+#routine setFieldAlongPath
+#  ?@TvarPath path
+#  ?!@Ttype variableType
+#  ?!@Tvalue variableValue
+#  ??@Ttype expressionType
+#  ??@Tvalue enumeratedValue
+#:
+#  if [path length] > 0 then
+#    @lstring pathItem;
+#    @lstring key;
+#    [!?path popFirst ?pathItem ?key];
+#    
+#    @Ttype subType [unconstructedType];
+#    @Tvalue subValue := valueWithVoid[];
+#    
+#    if variableType == [@Ttype structType] then
+#      if [[variableValue mStructValue] hasKey ![pathItem string]] then
+#        [[variableValue mStructValue] searchKey ![pathItem string] ?subType ?subValue];
+#      end if;
+#    end if; 
+#    
+#    @Ttype currentType := subType;
+#    @Tvalue currentValue := subValue;
+#    if [key string] != "" & currentType == [@Ttype mapType] then
+#      if [currentValue hasKey ![key string]] then
+#        [currentValue searchKey !key ?subType ?subValue];
+#      end if;
+#    end if;
+#    
+#    setFieldAlongPath !path !?subType !?subValue !expressionType !enumeratedValue;
+#    
+#    # if key is not empty then the subType / subValue 
+#    # is added to the m
+#    if [key string] != "" then
+#      
+#    
+#    variableType := [@Ttype structType];
+#    @TfieldMap items := [variableValue mStructValue];
+#    if [items hasKey ![pathItem string]] then
+#      [!?items removeKey !pathItem ?* ?*];
+#    end if;
+#    [!?items insertKey
+#      !pathItem
+#      !subType
+#      !subValue
+#    ];
+#    variableValue := valueWithStruct[!items];
+#  else
+#    variableType := expressionType;
+#    variableValue := enumeratedValue;
+#  end if;  
+#end routine;
 
 routine setVariableInPath
-  ?@lstringlist path
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
-  ??@goilTemplateType expressionType
-  ??@goilTemplateValue enumeratedValue
+  ?@TvarPath path
+  ?!@TfieldMap ioFieldMap
+  ??@Ttype expressionType
+  ??@Tvalue enumeratedValue
 :
-  @lstring rootVariable;
-  @goilTemplateValue variableValue := valueWithVoid[];
-  @goilTemplateType variableType [unconstructedType];
-  [!?path popFirst ?rootVariable];
-  if [ioTemplateVariableMap hasKey ![rootVariable string]] then
-    [ioTemplateVariableMap searchKey !rootVariable ?variableType ?variableValue];
-  end if;
-  setVariableAlongPath !path !?variableType !?variableValue !expressionType !enumeratedValue;
-  if variableType != [@goilTemplateType unconstructedType] then
-    if [ioTemplateVariableMap hasKey ![rootVariable string]] then
-      [!?ioTemplateVariableMap setMTypeForKey !variableType ![rootVariable string]];
-      [!?ioTemplateVariableMap setMValueForKey !variableValue ![rootVariable string]];
+  # get the name and the key of the variable
+  @lstring varName;
+  @lstring key;
+  [!?path popFirst ?varName ?key];
+  
+  if [ioFieldMap hasKey ![varName string]] then
+    @Ttype fieldType;
+    @Tvalue fieldValue;
+    [ioFieldMap searchKey !varName ?fieldType ?fieldValue];
+    if fieldType == [@Ttype mapType] then
+      # then referenced field is a map
+      if [key string] != "" then
+        # a key has been defined for the map,
+        @TfieldMap items := [fieldValue mStructValue];
+        if [items hasKey ![key string]] then
+          if [path length] == 0 then
+            [!?items setMTypeForKey !expressionType ![key string]];
+            [!?items setMValueForKey !enumeratedValue ![key string]];
+          else
+            @Ttype itemType;
+            @Tvalue itemValue;
+            [items searchKey !key ?itemType ?itemValue];
+            @TfieldMap nextFieldMap := [itemValue mStructValue];
+            setVariableInPath !path !?nextFieldMap !expressionType !enumeratedValue;
+            itemValue->mStructValue := nextFieldMap;
+            itemType := [@Ttype structType];
+            [!?items setMTypeForKey !itemType ![key string]];
+            [!?items setMValueForKey !itemValue ![key string]];
+          end if;
+        else
+          if [path length] == 0 then
+            [!?items insertKey !key !expressionType !enumeratedValue];
+          else
+            @TfieldMap nextFieldMap [emptyMap];
+            setVariableInPath !path !?nextFieldMap !expressionType !enumeratedValue;
+            [!?items insertKey !key ![@Ttype structType] !valueWithStruct[!nextFieldMap]];
+          end if;
+        end if;
+      else # no key has been defined, the type is changed to
+        if [path length] == 0 then
+          # the actual type
+          [!?ioFieldMap setMTypeForKey !expressionType ![varName string]];
+          [!?ioFieldMap setMValueForKey !enumeratedValue ![varName string]];
+        else
+          # a struct type
+          @TfieldMap nextFieldMap [emptyMap];
+          setVariableInPath !path !?nextFieldMap !expressionType !enumeratedValue;
+          [!?ioFieldMap setMTypeForKey ![@Ttype structType] ![varName string]];
+          [!?ioFieldMap setMValueForKey !valueWithStruct[!nextFieldMap] ![varName string]];
+        end if;
+      end if;
+    elsif fieldType == [@Ttype structType] then
+      if [path length] == 0 then
+        # the type is changed to the actual type
+        [!?ioFieldMap setMTypeForKey !expressionType ![varName string]];
+        [!?ioFieldMap setMValueForKey !enumeratedValue ![varName string]];
+      else
+        # the existing struct is got
+        @TfieldMap nextFieldMap := [fieldValue mStructValue];
+        setVariableInPath !path !?nextFieldMap !expressionType !enumeratedValue;
+        # and updated
+        fieldValue->mStructValue := nextFieldMap;
+        [!?ioFieldMap setMValueForKey !fieldValue ![varName string]];
+      end if;
     else
-      [!?ioTemplateVariableMap insertKey !rootVariable !variableType !variableValue];
+      if [key string] == "" then
+        if [path length] == 0 then
+          # the type is changed to the actual type
+          [!?ioFieldMap setMTypeForKey !expressionType ![varName string]];
+          [!?ioFieldMap setMValueForKey !enumeratedValue ![varName string]];
+        else
+          @TfieldMap nextFieldMap [emptyMap];
+          setVariableInPath !path !?nextFieldMap !expressionType !enumeratedValue;
+          [!?ioFieldMap setMTypeForKey ![@Ttype structType] ![varName string]];
+          [!?ioFieldMap setMValueForKey !valueWithStruct[!nextFieldMap] ![varName string]];
+        end if;
+      else
+        # create a map
+        @TfieldMap newMap [emptyMap];
+        if [path length] == 0 then
+          [!?newMap insertKey !key !expressionType !enumeratedValue];
+        else
+          @TfieldMap nextFieldMap [emptyMap];
+          setVariableInPath !path !?nextFieldMap !expressionType !enumeratedValue;
+          [!?newMap insertKey !key ![@Ttype structType] !valueWithStruct[!nextFieldMap]];
+        end if;
+        [!?ioFieldMap setMTypeForKey ![@Ttype mapType] ![varName string]];
+        [!?ioFieldMap setMValueForKey !valueWithMap[!newMap] ![varName string]];
+      end if;
+    end if;
+  else
+    # The variable does not exist
+    if [path length] == 0 then
+      if [key string] == "" then
+        [!?ioFieldMap insertKey !varName !expressionType !enumeratedValue];
+      else
+        @TfieldMap newMap [emptyMap];
+        [!?newMap insertKey !key !expressionType !enumeratedValue];
+        [!?ioFieldMap insertKey !varName ![@Ttype mapType] !valueWithMap[!newMap]];
+      end if;
+    else
+      if [key string] == "" then
+        @TfieldMap nextFieldMap [emptyMap];
+        setVariableInPath !path !?nextFieldMap !expressionType !enumeratedValue;
+        [!?ioFieldMap insertKey !varName ![@Ttype structType] !valueWithStruct[!nextFieldMap]];
+      else
+        @TfieldMap newMap [emptyMap];
+        @TfieldMap nextFieldMap [emptyMap];
+        setVariableInPath !path !?nextFieldMap !expressionType !enumeratedValue;
+        [!?newMap insertKey !key ![@Ttype structType] !valueWithStruct[!nextFieldMap]];
+        [!?ioFieldMap insertKey !varName ![@Ttype mapType] !valueWithMap[!newMap]];
+      end if;
     end if;
   end if;
 end routine;
 
-rule <struct_path>
-  ?!@lstringlist path
-:
-  select
-    $::$; $identifier$ ?@lstring pathElement;
-    path += !pathElement;
-    <struct_path> !?path;
-  or end select;
-end rule;
+#rule <struct_path>
+#  ?!@lstringlist path
+#:
+#  select
+#    $::$; $identifier$ ?@lstring pathElement;
+#    path += !pathElement;
+#    <struct_path> !?path;
+#  or end select;
+#end rule;
 
 rule <template_instruction>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@TfieldMap ioTemplateVariableMap
   ?!@string unused ioResultingString
 :
-  @lstringlist path [emptyList];
-  $let$; $identifier$ ?@lstring variableName;
-  
-  path += !variableName;
-  <struct_path> !?path;
-  @goilTemplateValue enumeratedValue;
-  @goilTemplateType expressionType;
+  @TvarPath path;
+  $let$; <variable> !inPrefix !inPath !inTemplateDirectory !ioTemplateVariableMap ?path;
+  @Tvalue enumeratedValue;
+  @Ttype expressionType;
   select
     $:=$;
     <expression>
@@ -878,34 +1001,40 @@ rule <template_instruction>
       ?enumeratedValue
       ?expressionType
     ;
-    if expressionType != [@goilTemplateType stringType] then
-      if expressionType != [@goilTemplateType structType] then
+    if expressionType != [@Ttype stringType] then
+      if expressionType != [@Ttype structType] then
         error here: "string or struct type expected";
       else
         # struct type
-        @goilTemplateValue variableValue;
-        @goilTemplateType variableType;
-        [ioTemplateVariableMap searchKey !variableName ?variableType ?variableValue];
-        if variableType != [@goilTemplateType listType] then
-          error variableName: "list type expected";
+        @Tvalue variableValue;
+        @Ttype variableType;
+        searchField !path !ioTemplateVariableMap ?variableType ?variableValue ?*;
+        if variableType != [@Ttype listType] then
+          @lstring last;
+          [path last ?last ?*];
+          error last: "list type expected";
         else
           variableValue->mMapListValue += ![enumeratedValue mStructValue];
-          [!?ioTemplateVariableMap setMTypeForKey !variableType ![variableName string]];
-          [!?ioTemplateVariableMap setMValueForKey !variableValue ![variableName string]];
+          setVariableInPath !path !?ioTemplateVariableMap !variableType !variableValue;
+#          [!?ioTemplateVariableMap setMTypeForKey !variableType ![variableName string]];
+#          [!?ioTemplateVariableMap setMValueForKey !variableValue ![variableName string]];
         end if;
       end if;
     else
-      @goilTemplateValue variableValue;
-      @goilTemplateType variableType;
-      [ioTemplateVariableMap searchKey !variableName ?variableType ?variableValue];
-      if variableType != [@goilTemplateType listType] then
-        error variableName: "list type expected";
+      @Tvalue variableValue;
+      @Ttype variableType;
+      searchField !path !ioTemplateVariableMap ?variableType ?variableValue ?*;
+      if variableType != [@Ttype listType] then
+        @lstring last;
+        [path last ?last ?*];
+        error last: "list type expected";
       else
-        @goilTemplateFieldMap fieldMap [emptyMap];
-        [!?fieldMap insertKey ![@lstring new !"NAME" !here] !expressionType !0L ![enumeratedValue mStringValue] ![@goilTemplateFieldMapList emptyList] ![@goilTemplateFieldMap emptyMap]];
+        @TfieldMap fieldMap [emptyMap];
+        [!?fieldMap insertKey ![@lstring new !"NAME" !here] !expressionType !enumeratedValue];
         variableValue->mMapListValue += !fieldMap;
-        [!?ioTemplateVariableMap setMTypeForKey !variableType ![variableName string]];
-        [!?ioTemplateVariableMap setMValueForKey !variableValue ![variableName string]];
+        setVariableInPath !path !?ioTemplateVariableMap !variableType !variableValue;
+#        [!?ioTemplateVariableMap setMTypeForKey !variableType ![variableName string]];
+#        [!?ioTemplateVariableMap setMValueForKey !variableValue ![variableName string]];
       end if;
     end if;
   end select;
@@ -914,28 +1043,21 @@ end rule;
 #---------------------------------------------------------------------------*
 
 rule <variable_or_here>
-  ??@goilTemplateVariableMap inTemplateVariableMap
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@TfieldMap inTemplateVariableMap
   !@location outWhere
 :
   select
     $here$;
     outWhere := here;
   or
-    $identifier$ ?@lstring variableName;
-    outWhere := [inTemplateVariableMap locationForKey ![variableName string]];
-    @goilTemplateValue variableValue;
-    @goilTemplateType variableType;
-    [inTemplateVariableMap searchKey !variableName ?variableType ?variableValue];
-    @goilTemplateFieldMap structValue := [variableValue mStructValue];
-    repeat
-    while
-      if variableType != [@goilTemplateType structType] then
-        error here: [variableName string]." is not a struct";
-      end if;
-      $::$; $identifier$ ?variableName;
-      outWhere := [structValue locationForKey ![variableName string]];
-      [structValue searchKey !variableName ?variableType ?* ?* ?* ?structValue];
-    end repeat;
+    @TvarPath path;
+    <variable> !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap ?path;
+    @Tvalue variableValue;
+    @Ttype variableType;
+    searchField !path !inTemplateVariableMap ?variableType ?variableValue ?outWhere;
   end select;
 end rule;
 
@@ -945,14 +1067,14 @@ rule <template_instruction>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@TfieldMap ioTemplateVariableMap
   ?!@string unused ioResultingString
 :
   $error$;
   @location where;
-  <variable_or_here> !ioTemplateVariableMap ?where;
-  @goilTemplateValue enumeratedValue;
-  @goilTemplateType expressionType;
+  <variable_or_here> !inPrefix !inPath !inTemplateDirectory !ioTemplateVariableMap ?where;
+  @Tvalue enumeratedValue;
+  @Ttype expressionType;
   <expression>
     !inPrefix
     !inPath
@@ -961,7 +1083,7 @@ rule <template_instruction>
     ?enumeratedValue
     ?expressionType
   ;
-  if expressionType != [@goilTemplateType stringType] then
+  if expressionType != [@Ttype stringType] then
     error here: "error message should by a string expression";
   else
     error where: [enumeratedValue mStringValue];
@@ -974,14 +1096,14 @@ rule <template_instruction>
   ??@string inPrefix
   ??@string inPath
   ??@string inTemplateDirectory
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@TfieldMap ioTemplateVariableMap
   ?!@string unused ioResultingString
 :
   $warning$;
   @location where;
-  <variable_or_here> !ioTemplateVariableMap ?where;
-  @goilTemplateValue enumeratedValue;
-  @goilTemplateType expressionType;
+  <variable_or_here>  !inPrefix !inPath !inTemplateDirectory !ioTemplateVariableMap ?where;
+  @Tvalue enumeratedValue;
+  @Ttype expressionType;
   <expression>
     !inPrefix
     !inPath
@@ -990,7 +1112,7 @@ rule <template_instruction>
     ?enumeratedValue
     ?expressionType
   ;
-  if expressionType != [@goilTemplateType stringType] then
+  if expressionType != [@Ttype stringType] then
     error here: "error message should by a string expression";
   else
     warning where: [enumeratedValue mStringValue];
@@ -1000,36 +1122,38 @@ end rule;
 #---------------------------------------------------------------------------*
 routine printVariable
   ?@uint indent
-  ??@goilTemplateType variableType
-  ??@uint64 unsignedValue
-  ??@string stringValue
-  ??@goilTemplateFieldMapList listValue
-  ??@goilTemplateFieldMap structValue
+  ??@Ttype variableType
+  ??@Tvalue variableValue
 :
   indent := indent + 4;
   @string offset := [@string stringWithSequenceOfCharacters !' ' !indent];
   switch variableType
   when boolType:
-    if unsignedValue == 1L then
+    if [variableValue mUnsigned64Value] == 1L then
       message offset."true\n";
     else
       message offset."false\n";
     end if;
   when unsignedType:
-    message offset.unsignedValue."\n";
+    message offset.[variableValue mUnsigned64Value]."\n";
   when stringType:
-    message offset."\"".stringValue."\"\n";
+    message offset."\"".[variableValue mStringValue]."\"\n";
   when enumType:
-    message offset.stringValue."\n";
+    message offset.[variableValue mStringValue]."\n";
   when listType:
-    foreach listValue index idx do
+    foreach [variableValue mMapListValue] index idx do
       message offset."item at ".idx.":\n";
-      printVariable !indent ![@goilTemplateType structType] !0L !"" ![@goilTemplateFieldMapList emptyList] !mMap;
+      printVariable !indent ![@Ttype structType] ![@Tvalue new !0L !"" ![@TfieldMapList emptyList] !mMap];
+    end foreach;
+  when mapType:
+    foreach [variableValue mStructValue] do
+      message offset.lkey.":\n";
+      printVariable !indent !mType !mValue;
     end foreach;
   when structType:
-    foreach structValue do
+    foreach [variableValue mStructValue] do
       message offset.lkey.":\n";
-      printVariable !indent !mType !mUnsigned64Value !mStringValue !mListValue !mStructValue;
+      printVariable !indent !mType !mValue;
     end foreach;
   when unconstructedType:
     error here: "internal error, unconstrcuted type";
@@ -1040,21 +1164,15 @@ rule <template_instruction>
   ??@string unused inPrefix
   ??@string unused inPath
   ??@string unused inTemplateDirectory
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@TfieldMap ioTemplateVariableMap
   ?!@string unused ioResultingString
 :
   $display$; $identifier$ ?@lstring variableName;
-  @goilTemplateType variableType;
-  @goilTemplateValue variableValue;
+  @Ttype variableType;
+  @Tvalue variableValue;
   [ioTemplateVariableMap searchKey !variableName ?variableType ?variableValue];
   message [variableName string]." (".[[variableName location] locationString].") : ".[variableType messageGoilTemplateType]."\n";
-  printVariable
-    !0
-    !variableType
-    ![variableValue mUnsigned64Value]
-    ![variableValue mStringValue]
-    ![variableValue mMapListValue]
-    ![variableValue mStructValue];
+  printVariable !0 !variableType !variableValue;
 end rule;
 
 #---------------------------------------------------------------------------*
@@ -1065,8 +1183,8 @@ list @sortingKeyList {
 }
 
 function structCompare
-  ??@goilTemplateFieldMap s1
-  ??@goilTemplateFieldMap s2
+  ??@TfieldMap s1
+  ??@TfieldMap s2
   ?@sortingKeyList fieldList
   ->@sint result
 :
@@ -1074,19 +1192,19 @@ function structCompare
     @lstring field;
     @lsint order;
     [!?fieldList popFirst ?field ?order];
-    @goilTemplateType s1Type;
-    @uint64 s1Value;
-    [s1 searchKey !field ?s1Type ?s1Value ?* ?* ?*];
-    @goilTemplateType s2Type;
-    @uint64 s2Value;
-    [s2 searchKey !field ?s2Type ?s2Value ?* ?* ?*];
-    if s1Type == s2Type & s1Type == [@goilTemplateType unsignedType] then
+    @Ttype s1Type;
+    @Tvalue s1Value;
+    [s1 searchKey !field ?s1Type ?s1Value];
+    @Ttype s2Type;
+    @Tvalue s2Value;
+    [s2 searchKey !field ?s2Type ?s2Value];
+    if s1Type == s2Type & s1Type == [@Ttype unsignedType] then
 #      message "Compare ".s1Value." and ".s2Value." ";
-      if s1Value < s2Value then
+      if [s1Value mUnsigned64Value] < [s2Value mUnsigned64Value] then
 #        message "<\n";
         result := -1s * [order sint];
       else
-        if s1Value > s2Value then
+        if [s1Value mUnsigned64Value] > [s2Value mUnsigned64Value] then
 #          message ">\n";
           result := 1s  * [order sint];
         else
@@ -1103,24 +1221,24 @@ function structCompare
 end function;
 
 routine swap
-  ?!@goilTemplateFieldMapList t
+  ?!@TfieldMapList t
   ??@uint index1
   ??@uint index2
 :
 #  message "SWAP ".index1." and ".index2."\n";
-  @goilTemplateFieldMap temp := [t mMapAtIndex !index1];
+  @TfieldMap temp := [t mMapAtIndex !index1];
   [!?t setMMapAtIndex ![t mMapAtIndex !index2] !index1];
   [!?t setMMapAtIndex !temp !index2];
 end routine;
 
 routine partition
-  ?!@goilTemplateFieldMapList t
+  ?!@TfieldMapList t
   ?@uint min
   ?@uint max
   ??@sortingKeyList fieldList
   ?!@uint pivotIndex
 : 
-  @goilTemplateFieldMap pivot := [t mMapAtIndex !pivotIndex];
+  @TfieldMap pivot := [t mMapAtIndex !pivotIndex];
   swap !?t !pivotIndex !max;
   @uint storeIndex := min;
   @uint i := min;
@@ -1137,7 +1255,7 @@ routine partition
 end routine;
 
 routine quickSort
-  ?!@goilTemplateFieldMapList t
+  ?!@TfieldMapList t
   ??@uint min
   ??@uint max
   ??@sortingKeyList fieldList
@@ -1168,12 +1286,12 @@ rule <template_instruction>
   ??@string unused inPrefix
   ??@string unused inPath
   ??@string unused inTemplateDirectory
-  ?!@goilTemplateVariableMap ioTemplateVariableMap
+  ?!@TfieldMap ioTemplateVariableMap
   ?!@string unused ioResultingString
 :
   $sort$; $identifier$ ?@lstring variableName;
-  @goilTemplateType variableType;
-  @goilTemplateValue variableValue;
+  @Ttype variableType;
+  @Tvalue variableValue;
   [ioTemplateVariableMap searchKey !variableName ?variableType ?variableValue];
   $by$;
   @sortingKeyList keys [emptyList];
@@ -1186,11 +1304,11 @@ rule <template_instruction>
     keys += !nextKey !nextOrder;
   end repeat;
 
-  if variableType == [@goilTemplateType listType] then
+  if variableType == [@Ttype listType] then
     #log keys;
-    @goilTemplateFieldMapList variable := [variableValue mMapListValue];
+    @TfieldMapList variable := [variableValue mMapListValue];
     quickSort !?variable !0 ![variable length]-1 !keys;
-    variableValue := [@goilTemplateValue new !0L !"" !variable ![@goilTemplateFieldMap emptyMap]];
+    variableValue := [@Tvalue new !0L !"" !variable ![@TfieldMap emptyMap]];
     #log variable;
     [!?ioTemplateVariableMap setMTypeForKey !variableType ![variableName string]];
     [!?ioTemplateVariableMap setMValueForKey !variableValue ![variableName string]];
@@ -1202,24 +1320,47 @@ end rule;
 #---------------------------------------------------------------------------*
 
 rule <variable>
-  ?@goilTemplateVariableMap inTemplateVariableMap
-  !@lstringlist path
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@TfieldMap inVariableMap
+  !@TvarPath path
 :
-  path := [@lstringlist emptyList];
+  path := [@TvarPath emptyList];
   $identifier$ ?@lstring variableName;
-  path += !variableName;
-  @goilTemplateValue variableValue;
-  @goilTemplateType variableType;
-  [inTemplateVariableMap searchKey !variableName ?variableType ?variableValue];
-  @goilTemplateFieldMap structValue := [variableValue mStructValue];
+  @lstring key := emptyLString[];
+  select
+    @Tvalue keyValue;
+    @Ttype keyType;
+    $[$;
+    <expression> !inPrefix !inPath !inTemplateDirectory !inVariableMap ?keyValue ?keyType;
+    switch keyType
+    when stringType:
+      key := [@lstring new ![keyValue mStringValue] !here];
+    when boolType, unsignedType, listType, mapType, structType, enumType, unconstructedType:
+      error here: "map key must be a string": key;
+    end switch;
+    $]$;
+  or end select;
+  path += !variableName !key;
   repeat
   while
-    if variableType != [@goilTemplateType structType] then
-      error here: [variableName string]." is not a struct";
-    end if;
     $::$; $identifier$ ?variableName;
-    path += !variableName;
-    [structValue searchKey !variableName ?variableType ?* ?* ?* ?structValue];
+    key := emptyLString[];
+    select
+      @Tvalue keyValue;
+      @Ttype keyType;
+      $[$;
+      <expression> !inPrefix !inPath !inTemplateDirectory !inVariableMap ?keyValue ?keyType;
+      switch keyType
+      when stringType:
+        key := [@lstring new ![keyValue mStringValue] !here];
+      when boolType, unsignedType, listType, mapType, structType, enumType, unconstructedType:
+        error here: "map key must be a string": key;
+      end switch;
+      $]$;
+    or end select;
+    path += !variableName !key;
   end repeat;
 end rule;
 

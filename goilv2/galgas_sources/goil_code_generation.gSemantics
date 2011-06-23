@@ -709,7 +709,7 @@ end routine;
 # @param cpu the root object got from the parsing
 # 
 routine generate_all
-  ??@goilTemplateVariableMap cfg
+  ??@TfieldMap cfg
 :
   # code generation
 #  @string timestamp := [@string stringWithCurrentDateTime];

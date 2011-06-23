@@ -6,7 +6,7 @@ import "goil_types_root.gSemantics";
 import "template_invocation.gSemantics";
 import "goil_options.gOption";
 
-method @object_t set ??@lstring name ?!@goilTemplateFieldMap unused result
+method @object_t set ??@lstring name ?!@TfieldMap unused result
 :
   error here: "Attribute: ".name.", Internal error";
 end method;
@@ -15,12 +15,12 @@ end method;
 # the name of the attribute in the system configuration is the same
 # the content of the attribute (if it exists) is a struct with the same
 # name suffixed by _S
-override method @boolAttribute set ??@lstring name ?!@goilTemplateFieldMap result:
-  addBoolFieldValue !?result !name !value;
-  @goilTemplateFieldMap subAttrs := [subAttributes fieldMap];
+override method @boolAttribute set ??@lstring name ?!@TfieldMap result:
+  addBoolValue !?result !name !value;
+  @TfieldMap subAttrs := [subAttributes fieldMap];
   if [subAttrs count] > 0 then
     @lstring structName := [@lstring new ![name string]."_S" ![name location]];
-    addStructFieldValue !?result !structName !subAttrs;
+    addStructValue !?result !structName !subAttrs;
   end if;
 end method;
 
@@ -28,53 +28,53 @@ end method;
 # the name of the attribute in the system configuration is the same
 # the content of the attribute (if it exists) is a struct with the same
 # name suffixed by _S
-override method @enumAttribute set ??@lstring name ?!@goilTemplateFieldMap result:
-  addStringFieldValue !?result !name !value;
-  @goilTemplateFieldMap subAttrs := [subAttributes fieldMap];
+override method @enumAttribute set ??@lstring name ?!@TfieldMap result:
+  addStringValue !?result !name !value;
+  @TfieldMap subAttrs := [subAttributes fieldMap];
   if [subAttrs count] > 0 then
     @lstring structName := [@lstring new ![name string]."_S" ![name location]];
-    addStructFieldValue !?result !structName !subAttrs;
+    addStructValue !?result !structName !subAttrs;
   end if;
 end method;
 
-override method @stringAttribute set ??@lstring name ?!@goilTemplateFieldMap result:
-  addStringFieldValue !?result !name !value;
+override method @stringAttribute set ??@lstring name ?!@TfieldMap result:
+  addStringValue !?result !name !value;
 end method;
 
-override method @string_class set ??@lstring name ?!@goilTemplateFieldMap result:
-  addStringFieldValue !?result !name !value;
+override method @string_class set ??@lstring name ?!@TfieldMap result:
+  addStringValue !?result !name !value;
 end method;
 
-override method @multipleAttribute set ??@lstring name ?!@goilTemplateFieldMap result:
-  @goilTemplateFieldMapList multiple [emptyList];
+override method @multipleAttribute set ??@lstring name ?!@TfieldMap result:
+  @TfieldMapList multiple [emptyList];
   foreach items do
-    @goilTemplateFieldMap multipleItem [emptyMap];
+    @TfieldMap multipleItem [emptyMap];
     [item set ![@lstring new !"VALUE" ![item location]] !?multipleItem];
     multiple += !multipleItem;
   end foreach;
-  addListFieldValue !?result !name !multiple;
+  addListValue !?result !name !multiple;
 end method;
 
-override method @uint32_class set ??@lstring name ?!@goilTemplateFieldMap result:
-  addUnsignedFieldValue !?result !name ![value uint64];
+override method @uint32_class set ??@lstring name ?!@TfieldMap result:
+  addUnsignedValue !?result !name ![value uint64];
 end method;
 
-override method @uint64_class set ??@lstring name ?!@goilTemplateFieldMap result:
-  addUnsignedFieldValue !?result !name !value;
+override method @uint64_class set ??@lstring name ?!@TfieldMap result:
+  addUnsignedValue !?result !name !value;
 end method;
 
-override method @auto_uint32_class set ??@lstring name ?!@goilTemplateFieldMap result:
-  addEnumFieldValue !?result !name !"AUTO";
+override method @auto_uint32_class set ??@lstring name ?!@TfieldMap result:
+  addEnumValue !?result !name !"AUTO";
 end method;
 
-override method @auto_uint64_class set ??@lstring name ?!@goilTemplateFieldMap result:
-  addEnumFieldValue !?result !name !"AUTO";
+override method @auto_uint64_class set ??@lstring name ?!@TfieldMap result:
+  addEnumValue !?result !name !"AUTO";
 end method;
 
 reader @objectAttributes fieldMap
-  ->@goilTemplateFieldMap result
+  ->@TfieldMap result
 :
-  result := [@goilTemplateFieldMap emptyMap];
+  result := [@TfieldMap emptyMap];
   foreach objectParams do
     [value set !lkey !?result];
   end foreach;
@@ -82,9 +82,9 @@ end reader;
 
 reader @applicationDefinition templateData
   ??@implementation imp
-  ->@goilTemplateVariableMap cfg
+  ->@TfieldMap cfg
 :
-  cfg := [@goilTemplateVariableMap emptyMap];
+  cfg := [@TfieldMap emptyMap];
 
 #  log objects;
   #
@@ -106,16 +106,16 @@ reader @applicationDefinition templateData
     [[imp imp] get !lkey ?implementationObject];
     if [[implementationObject multiple] bool] then
 #      message "*** multiple\n";
-      @goilTemplateFieldMapList objs [emptyList];
+      @TfieldMapList objs [emptyList];
       foreach [objectsOfKind objects] do
-        @goilTemplateFieldMap attrs := [attributes fieldMap];
+        @TfieldMap attrs := [attributes fieldMap];
         objs += !attrs;
       end foreach;
       addListValue !?cfg !lkey !objs;
     else
 #      message "*** single\n";
       if [[objectsOfKind objects] count] == 1 then
-        @goilTemplateFieldMap attrs [emptyMap];
+        @TfieldMap attrs [emptyMap];
         foreach [objectsOfKind objects] do
           attrs := [attributes fieldMap];
         end foreach;
