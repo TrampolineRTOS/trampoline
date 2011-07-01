@@ -33,16 +33,20 @@
  * service ids
  */
 %
-foreach APICONFIG::USEDAPI do
+let system_call_count := 0
+foreach api_set in APICONFIG do
+  foreach api in api_set::ENTRY do
+    let system_call_count := system_call_count + 1
 %
 /**
- * @def OSServiceId_% !API %
+ * @def OSServiceId_% !api::API %
  *
  * @see #SERVICE_CALL_DESCRIPTOR
- * @see #% !API %
+ * @see #% !api::API %
  */
-#define OSServiceId_% !API %    % !INDEX %
+#define OSServiceId_% !api::API %    % !INDEX %
 %
+  end foreach
 end foreach
 %
 /**
@@ -50,7 +54,7 @@ end foreach
  *
  * Number of system calls
  */
-#define SYSCALL_COUNT    % ![APICONFIG::USEDAPI length] %
+#define SYSCALL_COUNT    % !system_call_count %
 
 #endif
 

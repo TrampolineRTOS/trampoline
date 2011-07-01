@@ -194,7 +194,9 @@ function checkNewTypeWithinPreviousType
       when == @impRangedType newRanged do
         result := checkRanged[!previousRanged !newRanged];
       else end cast;
-    else end cast;          
+    else
+      result := true;
+    end cast;          
   end if;
 end function;
 
@@ -210,7 +212,12 @@ rule <implementation_list>
     if [objectAttributes hasKey ![attributeName string]] then
       @impType previousType;
       [objectAttributes get !attributeName ?previousType];
+      
+      message "*** New definition ".[attributeName string]."\n";
+      
       if checkNewTypeWithinPreviousType[!attributeName !previousType !type] then
+        message "*** OK ".[attributeName string]."\n";
+        log type;
         [!?objectAttributes del !attributeName ?*];
         [!?objectAttributes put !attributeName !type];
       end if;
@@ -245,8 +252,26 @@ rule <implementation_type>
   or
     $IDENTIFIER$;  <type_options> ?attributeName ?type ![@dataType identifier];
   or
+    $STRUCT$; <struct_options> ?attributeName ?type;
+  or
     @lstring typeName; $idf$ ?typeName; <objref_option> ?attributeName ?type !typeName;
   end select;
+end rule;
+
+rule <struct_options>
+  !@lstring name
+  !@impType options
+:
+  @implementationObjectMap structAttributes [emptyMap];
+  select 
+    <implementation_list> !?structAttributes;
+  or end select;
+  <identifier_or_attribute> ?name;
+  @bool multiple;
+  <multiple> ?multiple;
+  @lstring description;
+  <description> ?description;
+  options := [@impStructType new !here ![@dataType structType] !name !multiple !description !structAttributes];
 end rule;
 
 rule <objref_option>

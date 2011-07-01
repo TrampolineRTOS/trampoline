@@ -58,12 +58,12 @@ extern CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA)
 /*=============================================================================
  * Declaration of Counters constants
  */%
-foreach COUNTERS do
-  if NAME != "SystemCounter" then
+foreach counter in COUNTERS do
+  if counter::NAME != "SystemCounter" then
 %
-extern CONST(tpl_tick, OS_CONST) OSTICKSPERBASE_% !NAME %;
-extern CONST(tpl_tick, OS_CONST) OSMAXALLOWEDVALUE_% !NAME %;
-extern CONST(tpl_tick, OS_CONST) OSMINCYCLE_% !NAME %;
+extern CONST(tpl_tick, OS_CONST) OSTICKSPERBASE_% !counter::NAME %;
+extern CONST(tpl_tick, OS_CONST) OSMAXALLOWEDVALUE_% !counter::NAME %;
+extern CONST(tpl_tick, OS_CONST) OSMINCYCLE_% !counter::NAME %;
 %
   end if
 end foreach
@@ -77,7 +77,7 @@ extern CONST(tpl_tick, OS_CONST) OSMINCYCLE;
 
 %
 if AUTOSAR then
-  foreach TRUSTEDFUNCTIONS
+  foreach trusted_function in TRUSTEDFUNCTIONS
     before
 %
 /*=============================================================================

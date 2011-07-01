@@ -36,7 +36,6 @@ nonterminal <expression>
   ??@TfieldMap inVariableMap
   !@Tvalue outValue
   !@Ttype outResultType
-label parse
 ;
 
 nonterminal <relation_term>
@@ -46,7 +45,6 @@ nonterminal <relation_term>
   ??@TfieldMap inVariableMap
   !@Tvalue outValue
   !@Ttype outResultType
-label parse
 ;
 
 nonterminal <relation_factor>
@@ -56,7 +54,6 @@ nonterminal <relation_factor>
   ??@TfieldMap inVariableMap
   !@Tvalue outValue
   !@Ttype outResultType
-label parse
 ;
 
 nonterminal <simple_expression>
@@ -66,7 +63,6 @@ nonterminal <simple_expression>
   ??@TfieldMap inVariableMap
   !@Tvalue outValue
   !@Ttype outResultType
-label parse
 ;
 
 nonterminal <term>
@@ -76,7 +72,6 @@ nonterminal <term>
   ??@TfieldMap inVariableMap
   !@Tvalue outValue
   !@Ttype outResultType
-label parse
 ;
 
 nonterminal <factor>
@@ -86,7 +81,6 @@ nonterminal <factor>
   ??@TfieldMap inVariableMap
   !@Tvalue outValue
   !@Ttype outResultType
-label parse
 ;
 
 nonterminal <variable>
@@ -95,7 +89,6 @@ nonterminal <variable>
   ??@string inTemplateDirectory
   ??@TfieldMap inVariableMap
   !@TvarPath path
-label parse
 ;
 
 #---------------------------------------------------------------------------*
@@ -452,6 +445,21 @@ routine checkInvocationHasNoArgument
   end if;
 end routine;
 
+routine checkInvocationHasOneArgument
+  ??@Ttype inType
+  ??@lstring inMethodName
+  ??@TexpressionList inParameterTypeList
+  ??@Ttype inExpectedType
+:
+  @Ttype parameterType;
+  [inParameterTypeList first ?* ?parameterType];
+  if [inParameterTypeList length] != 1 | parameterType != inExpectedType then
+    error inMethodName:"calling '" . inMethodName . "' on a "
+    . [inType messageGoilTemplateType] . " type requires one unsigned argument; "
+    . argumentListSignature [!inParameterTypeList];
+  end if;  
+end routine;
+
 #------------------------------------------------------------------------------*
 #                                                                              *
 #  M E T H O D    I N V O C A T I O N                                          *
@@ -485,7 +493,7 @@ routine templateMethodInvocation
       outResultType := [@Ttype unsignedType];
       outResultValue := inValue;
     else
-      error inMethodName: "this template method is not defined" : outResultValue, outResultType;
+      error inMethodName: "the ".inMethodName." template method is not defined" : outResultValue, outResultType;
     end if;
   when unsignedType :
     if [inMethodName string] == "string" then
@@ -496,8 +504,27 @@ routine templateMethodInvocation
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
       outResultType := [@Ttype stringType];
       outResultValue := valueWithString [![[inValue mUnsigned64Value] hexString]];
+    elsif [inMethodName string] == "numberOfBytes" | [inMethodName string] == "signedNumberOfBytes" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+      outResultType := [@Ttype unsignedType];
+      @uint64 value := [inValue mUnsigned64Value];
+      # compute the number of bytes needed
+      @uint numberOfBytes := 1;
+      if [inMethodName string] == "signedNumberOfBytes" then
+        value := value * 2;
+      end if;
+      @uint count := 0;
+      loop 4:
+      while count < 4 do
+        @uint64 maxValue := (1L << (numberOfBytes * 8)) - 1L;
+        if maxValue < value then
+          numberOfBytes := numberOfBytes * 2;
+        end if;
+        count++;
+      end loop;
+      outResultValue := valueWithUnsigned [![numberOfBytes uint64]];
     else
-      error inMethodName: "this template method is not defined" : outResultValue, outResultType;
+      error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
     end if;
   when stringType :
     if [inMethodName string] == "HTMLRepresentation" then
@@ -524,19 +551,41 @@ routine templateMethodInvocation
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
       outResultType := [@Ttype stringType];
       outResultValue := valueWithString [![[inValue mStringValue] uppercaseString]];
+    elsif [inMethodName string] == "unsigned" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+      outResultType := [@Ttype unsignedType];
+      outResultValue := valueWithUnsigned [![[[inValue mStringValue] decimalUnsignedNumber] uint64]];
+    elsif [inMethodName string] == "leftSubString" then
+      checkInvocationHasOneArgument !inType !inMethodName !inParameterTypeList ![@Ttype unsignedType];
+      @Tvalue parameter;
+      [inParameterTypeList first ?parameter ?*];
+      outResultType := [@Ttype stringType];
+      outResultValue := valueWithString [![[inValue mStringValue] leftSubString ![[parameter mUnsigned64Value] uint]]];
+    elsif [inMethodName string] == "rightSubString" then
+      checkInvocationHasOneArgument !inType !inMethodName !inParameterTypeList ![@Ttype unsignedType];
+      @Tvalue parameter;
+      [inParameterTypeList first ?parameter ?*];
+      outResultType := [@Ttype stringType];
+      outResultValue := valueWithString [![[inValue mStringValue] rightSubString ![[parameter mUnsigned64Value] uint]]];
     else
-      error inMethodName: "this template method is not defined" : outResultValue, outResultType;
+      error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
     end if;
   when listType :
     if [inMethodName string] == "length" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
       outResultType := [@Ttype unsignedType];
       outResultValue := valueWithUnsigned [![[[inValue mMapListValue] length] uint64]];
+    elsif [inMethodName string] == "first" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+      outResultType := [@Ttype structType];
+      @TfieldMap firstElement;
+      [[inValue mMapListValue] first ?firstElement];
+      outResultValue := valueWithStruct [!firstElement];
     else
-      error inMethodName: "this template method is not defined" : outResultValue, outResultType;
+      error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
     end if;
   when enumType, structType, mapType:
-    error inMethodName: "this template method is not defined" : outResultValue, outResultType;
+      error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
   when unconstructedType:
     error here: "internal error, unconstructed type found": outResultValue, outResultType;
   end switch;
@@ -1304,7 +1353,7 @@ rule <factor>
     searchField !path !inVariableMap ?outResultType ?outValue ?*;
   or
     @lstring functionOrVariableName;
-    [path first ?functionOrVariableName ?*];
+    [path first ?functionOrVariableName ?* ?*];
   #--- Search for function name
     @function f;
     if not [@function isFunctionDefined ![functionOrVariableName string]] then
@@ -1510,6 +1559,68 @@ rule <factor>
   $emptylist$;
   outValue := [@Tvalue new !0L !"" ![@TfieldMapList emptyList] ![@TfieldMap emptyMap]];
   outResultType := [@Ttype listType];
+end rule;
+
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ??@string unused inPrefix
+  ??@string unused inPath
+  ??@string unused inTemplateDirectory
+  ??@TfieldMap unused inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
+:
+  $emptymap$;
+  outValue := [@Tvalue new !0L !"" ![@TfieldMapList emptyList] ![@TfieldMap emptyMap]];
+  outResultType := [@Ttype mapType];
+end rule;
+
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
+:
+  $mapof$;
+  @TvarPath path;
+  <variable> !inPrefix !inPath !inTemplateDirectory !inVariableMap ?path;
+  $by$;
+  $identifier$ ?@lstring key;
+  
+  @Ttype variableType;
+  @Tvalue variableValue;
+  @location where;
+  searchField !path !inVariableMap ?variableType ?variableValue ?where;
+  if variableType != [@Ttype listType] then
+    error where: "list expected": outValue, outResultType;
+  else
+    # get the elements of the list to build a map, each key being
+    # one of the field of the elements of the list
+    @TfieldMap resultMap [emptyMap];
+    foreach [variableValue mMapListValue] do
+      if [mMap hasKey ![key string]] then
+        # the specified key is found, get it and check it is a string
+        @Ttype keyType;
+        @Tvalue keyValue;
+        [mMap searchKey !key ?keyType ?keyValue];
+        if keyType == [@Ttype stringType] then
+          @lstring keyVal := [@lstring new ![keyValue mStringValue] ![mMap locationForKey ![key string]]];
+          [!?resultMap insertKey !keyVal ![@Ttype structType] !valueWithMap[!mMap]];
+        else
+          error [mMap locationForKey ![key string]]: "the list element specified key is not a string";
+        end if;
+      else
+        error here: "the list element has not the specified key";
+      end if;
+    end foreach;
+    outResultType := [@Ttype mapType];
+    outValue := valueWithMap[!resultMap];
+  end if;
 end rule;
 
 ##------------------------------------------------------------------------------*

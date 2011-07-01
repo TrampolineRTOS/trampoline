@@ -79,7 +79,7 @@ end function;
 
 class @boolAttribute extends @object_t {
   @bool value;
-  @objectAttributes subAttributes;
+  @objectAttributes subAttributes feature setter;
 }
 
 function boolAttributeOrError
@@ -263,6 +263,11 @@ function stringAttributeOrError
     error [attribute location]: "Internal error ".attributeName." has a wrong datatype";
   end cast;
 end function;
+
+class @structAttribute extends @object_t {
+  @objectAttributes subAttributes;
+}
+
 
 class @bool_t extends @object_t {
   @bool   value;

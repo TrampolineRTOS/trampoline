@@ -218,7 +218,7 @@ rule <oil_declaration>
     error idf: [idf string]." is not declared in the IMPLEMENTATION";
   end if;
   select
-    # Type is identifier, enum or object reference
+    # Type is identifier, enum, struct or object reference
     @lstring value;
     $idf$ ?value;
     @implementationObjectMap subTypes [emptyMap];
@@ -236,7 +236,7 @@ rule <oil_declaration>
     when identifier:
     when objectType:
 #    when taskType, counterType, alarmType, resourceType, eventType, isrType, messageType, networkmessageType, ipduType, appmodeType:
-    when void, uint32Number, sint32Number, uint64Number, sint64Number, floatNumber, string, boolean:
+    when void, uint32Number, sint32Number, uint64Number, sint64Number, floatNumber, string, structType, boolean:
       error idf: [idf string]." is not an ENUM nor and IDENTIFIER nor an object reference";
     end switch;
     select
@@ -302,7 +302,7 @@ rule <oil_declaration>
     $AUTO$;
     # Check the attribute is allowed to have AUTO value
     if [type autoAllowed] then
-      message "*** AUTO\n";
+#      message "*** AUTO\n";
       switch [type type]
       when uint32Number: 
         val := [@auto_uint32_class new !here !0];
@@ -312,12 +312,28 @@ rule <oil_declaration>
         val := [@auto_float_class new !here !0.0];
       when string:
         val := [@auto_string_class new !here !""];
-      when enumeration, sint32Number, sint64Number, boolean, identifier, objectType, void:
+      when enumeration, sint32Number, sint64Number, boolean, identifier, objectType, structType, void:
         error here: "type unsupported in AUTO": val;
       end switch;
     else
       error here : "AUTO is not allowed": val;
     end if;
+  or
+    @implementationObjectMap subTypes [emptyMap];
+    @objectAttributes subAttributes := emptyObject[];    
+    # STRUCT
+    if [type type] != [@dataType structType] then
+      error idf: [[type type] oilType]." expected, got a STRUCT";
+    else
+      cast type:
+      when == @impStructType structType do
+        subTypes := [structType structAttributes];
+      else end cast;      
+    end if;
+    ${$;
+      <oil_declaration_list> !subTypes !?subAttributes;
+    $}$;
+    val := [@structAttribute new !here !subAttributes];
   end select;
   $;$;
 #    log idf;

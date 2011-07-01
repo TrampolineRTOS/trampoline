@@ -22,47 +22,540 @@
 # $URL$
 # 
 
+#let B["toto"] := 4
+#let B["titi"] := 5
 #
+#let C := B["titi"]
+#
+#display B
+#display C
+#
+#let A::B::C["hola"]::D := 3
+#let A::B::C["toto"] := 4
+#let A::B::E := "coucou"
+#
+#display A
+
+#------------------------------------------------------------------------------*
 # Check configuration is ok
 #
 if not exists OS then
-  error here "No OS object defined in your OIL files. Unable to generate a system"
+  error here : "No OS object defined in your OIL files. Unable to generate a system"
 end if
 
+#------------------------------------------------------------------------------*
 # Check the OIL version conforms to declarations
 if OILVERSION == "2.5" then
   # OSEK 2.2.3 description. AUTOSAR objects are not allowed
   if exists OS::SCALABILITYCLASS then
-    error OS::SCALABILITYCLASS "SCALABILITYCLASS is not allowed in OS in OIL 2.5"
+    error OS::SCALABILITYCLASS : "SCALABILITYCLASS is not allowed in OS in OIL 2.5"
   end if
 end if
 
-# Compute the lists of basic and extended tasks
-let BASICTASK := emptyList
-let EXTENDEDTASK := emptyList
-foreach aTask in TASK do
-  if not exists aTask::EVENT then
-    let BASICTASK += aTask
+#------------------------------------------------------------------------------*
+# Compute the AUTOSAR flag
+#
+# AUTOSAR is true if OIL_VERSION is 3.1
+# 
+let AUTOSAR := OILVERSION == "3.1"
+
+#------------------------------------------------------------------------------*
+# build an empty list when the list does not exist. This simplify
+# further processing because existence test is not necessary
+#
+let TASK := exists TASK default (emptyList)
+let ISR := exists ISR default (emptyList)
+let EVENT := exists EVENT default (emptyList)
+let COUNTER := exists COUNTER default (emptyList)
+let ALARM := exists ALARM default (emptyList)
+let RESOURCE := exists RESOURCE default (emptyList)
+let MESSAGE := exists MESSAGE default (emptyList)
+let APPLICATION := exists APPLICATION default (emptyList)
+let SCHEDULETABLE := exists SCHEDULETABLE default (emptyList)
+
+#------------------------------------------------------------------------------*
+# Add informations to tasks
+# Offset the priority by one because priority 0 is used
+# for the idle task of Trampoline and priorities start
+# at 0 in OIL
+# Compute the max priority of tasks
+# Add an attribute USEINTERNALRESOURCE is the task
+# has an internal resource
+#
+let task_max_priority := 0
+let TASKS := emptyList
+foreach task in TASK do
+
+  let task::PRIORITY := task::PRIORITY + 1
+
+  if task::PRIORITY > task_max_priority then
+    let task_max_priority := task::PRIORITY
+  end if
+
+  let task::USEINTERNALRESOURCE := false
+  let internal_found := false
+  if exists task::RESOURCE then
+    let internal_name := ""
+    foreach owned_resource in task::RESOURCE do
+      foreach resource in RESOURCE do
+        if resource::NAME == owned_resource::VALUE & resource::RESOURCEPROPERTY == "INTERNAL" then
+          if internal_found then
+            error owned_resource : "No more than one internal resource may be assigned to a task"
+          else
+            let internal_found := true
+            let internal_name := owned_resource::VALUE
+          end if
+        end if
+      end foreach
+    end foreach
+    let task::USEINTERNALRESOURCE := internal_found
+    let task::INTERNALRESOURCE := internal_name
+  end if
+  if task::SCHEDULE == "NON" then
+    let task::NONPREEMPTABLE := true
+    if internal_found then
+      error internal_name : "Internal resource cannot be assigned"
+      error task::SCHEDULE : "to a non-preemptable task"
+    end if
   else
-    let EXTENDEDTASK += aTask
+    let task::NONPREEMPTABLE := false
+  end if
+  let task::KIND := "Task"
+  let TASKS += task
+end foreach
+
+#------------------------------------------------------------------------------*
+# build the ISR list and adjust the priority according to the
+# maximum priority of tasks
+#
+let ISRS := emptyList
+foreach isr in ISR do
+  let isr::PRIORITY := isr::PRIORITY + task_max_priority + 1
+  let isr::KIND := "ISR"
+  let ISRS += isr
+end foreach
+
+#------------------------------------------------------------------------------*
+# Add informations to resources
+# Add the list of tasks which use a resource
+# Compute and add the priority to each resource
+#
+let RESOURCES := emptyList
+foreach resource in RESOURCE do
+  let task_that_use := emptyList
+  let isr_that_use := emptyList
+  let resource_priority := 0
+  foreach task in TASKS do
+    if exists task::RESOURCE then
+      foreach used_resource in task::RESOURCE do
+        if used_resource::VALUE == resource::NAME then
+          let task_that_use += task::NAME
+          if task::PRIORITY > resource_priority then
+            let resource_priority := task::PRIORITY
+          end if
+        end if
+      end foreach
+    end if
+  end foreach
+  foreach isr in ISRS do
+    if exists isr::RESOURCE then
+      foreach used_resource in isr::RESOURCE do
+        if used_resource::VALUE == resource::NAME then
+          let isr_that_use += isr::NAME
+          if isr::PRIORITY > resource_priority then
+            let resource_priority := isr::PRIORITY
+          end if
+        end if
+      end foreach
+    end if
+  end foreach
+  let resource::TASKUSAGE := task_that_use
+  let resource::ISRUSAGE := isr_that_use
+  let resource::PRIORITY := resource_priority
+  let RESOURCES += resource
+end foreach
+ 
+#------------------------------------------------------------------------------*
+# Compute a list of priority objects (ISR category 2, Tasks and resources)
+# PRIORITY is made dense
+# to compute the ready list attributes
+#
+let PRIORITIZED := emptyList
+foreach task in TASKS do
+  let PRIORITIZED += task
+end foreach
+foreach isr in ISRS do
+  let PRIORITIZED += isr
+end foreach
+foreach resource in RESOURCES do
+  let resource::KIND := "Resource"
+  let PRIORITIZED += resource
+end foreach
+
+#------------------------------------------------------------------------------*
+# Pack the priorities, compute the ready list attributes
+#
+sort PRIORITIZED by PRIORITY <
+
+let PRIO2 := emptyList
+let priority := 0
+let previous_prio := 0
+
+let READYLIST := emptyList
+#------------------------------------------------------------------------------*
+# for the idle task
+#
+let ready_slot::SIZE := 1
+
+foreach obj in PRIORITIZED do
+  if obj::PRIORITY > previous_prio then
+    let READYLIST += ready_slot
+    let ready_slot::SIZE := 0
+    let previous_prio := obj::PRIORITY
+    let priority := priority + 1
+  end if
+  let size := 1
+  if obj::KIND == "Task" then
+    let size := obj::ACTIVATION
+  end if
+  let ready_slot::SIZE := ready_slot::SIZE + size
+  let obj::PRIORITY := priority
+  let PRIO2 += obj
+end foreach
+let READYLIST += ready_slot
+let MAXPRIORITY := priority
+
+#------------------------------------------------------------------------------*
+# Compute the lists of basic and extended tasks and the RES_SCHEDULER priority
+#
+let OS::RESSCHEDULERPRIORITY := 0
+let highest_priority_task_uses_resource := false
+let BASICTASKS := emptyList
+let EXTENDEDTASKS := emptyList
+let TASKS := emptyList
+foreach aTask in PRIO2 do
+  if aTask::KIND == "Task" then
+    if not exists aTask::EVENT then
+      let BASICTASKS += aTask
+    else
+      let EXTENDEDTASKS += aTask
+    end if
+    if aTask::PRIORITY > OS::RESSCHEDULERPRIORITY then
+      let OS::RESSCHEDULERPRIORITY := aTask::PRIORITY
+      let highest_priority_task_uses_resource := exists aTask::RESOURCE
+    end if
   end if
 end foreach
 
-# compute the list of processes
-let PROCESS := emptyList
-foreach aTask in EXTENDEDTASK do
-  let PROCESS += aTask
+# if the OS uses RES_SCHEDULER then the priority slot of RES_SCHEDULER is
+# increased by one provided the highest priority task does not use a resource
+if OS::USERESSCHEDULER & not highest_priority_task_uses_resource then
+  let READYLIST[OS::RESSCHEDULERPRIORITY]::SIZE := READYLIST[OS::RESSCHEDULERPRIORITY]::SIZE + 1
+end if
+
+#------------------------------------------------------------------------------*
+# Compute the lists of ISR1 and ISR2
+#
+let ISRS1 := emptyList
+foreach isr in ISRS do
+  if isr::CATEGORY == 1 then
+    let ISRS1 += isr
+  end if
 end foreach
-foreach aTask in BASICTASK do
-  let PROCESS += aTask
+
+let ISRS2 := emptyList
+foreach isr in PRIO2 do
+  if isr::KIND == "ISR" then
+    if isr::CATEGORY == 2 then
+      let ISRS2 += isr
+    end if
+  end if
+end foreach
+
+#------------------------------------------------------------------------------*
+# compute the list of PROCESSES, TASKS
+#
+let PROCESSES := emptyList
+let TASKS := emptyList
+foreach task in EXTENDEDTASKS do
+  let PROCESSES += task
+  let TASKS += task
+end foreach
+foreach task in BASICTASKS do
+  let PROCESSES += task
+  let TASKS += task
+end foreach
+foreach isr in ISRS2 do
+  let PROCESSES += isr
+end foreach
+
+#------------------------------------------------------------------------------*
+# compute the list of REGULARRESOURCES and INTERNALRESOURCES
+#
+let REGULARRESOURCES := emptyList
+let INTERNALRESOURCES := emptyList
+foreach resource in RESOURCES do
+  if resource::RESOURCEPROPERTY == "INTERNAL" then
+    let INTERNALRESOURCES += resource
+  else
+    if resource::RESOURCEPROPERTY == "STANDARD" then
+      let REGULARRESOURCES += resource
+    end if
+  end if
+end foreach
+
+#------------------------------------------------------------------------------*
+# compute the list of HARDWARECOUNTERS and SOFTWARECOUNTERS
+#
+let COUNTERS := COUNTER
+let HARDWARECOUNTERS := emptyList
+let SOFTWARECOUNTERS := emptyList
+foreach counter in COUNTERS do
+  if counter::TYPE == "HARDWARE" then
+    let HARDWARECOUNTERS += counter
+  else
+    if counter::TYPE == "SOFTWARE" then
+      let SOFTWARECOUNTERS += counter
+    end if
+  end if
+end foreach
+
+#------------------------------------------------------------------------------*
+# compute the events masks
+#
+# First user defined events are put in a separate list
+# Same for AUTO events
+#
+let USEREVENTS := emptyList
+let AUTOEVENTS := emptyList
+foreach event in EVENT do
+  if typeof event::MASK == @unsigned then
+    let USEREVENTS += event
+  else
+    let AUTOEVENTS += event
+  end if
 end foreach
 
 #
+# Compute a map of tasks list keyed by the vents
+#
+let tasks_for_event := mapOf EVENT by NAME
+foreach task in EXTENDEDTASKS do
+  foreach event in task::EVENT do
+    if exists tasks_for_event[event::VALUE] then
+      let tasks_for_event[event::VALUE]::task_list += task::NAME
+    else
+      error event::VALUE : "unknown event"
+    end if
+  end foreach
+end foreach
+
+display tasks_for_event
+#
+# Second user defined events are compared to detect colisions
+# and are checked to detect if it uses more than one bit or no bit
+# at all.
+#
+foreach event in USEREVENTS prefixedby sel_ do
+
+  #
+  # a MASK with 0 is an error
+  #
+  if sel_event::MASK == 0 then
+    error sel_event::MASK : "0 is not allowed in MASK"
+  end if
+  
+  #
+  # Warn if a MASK has more than one bit
+  #
+  let more_than_one_bit := false
+  loop bit from 0 to 63 do
+    let mask := 1 << bit
+    let masked_evt := sel_event::MASK & mask
+    if masked_evt != 0 & masked_evt != sel_event::MASK then
+      let more_than_one_bit := true
+    end if
+  end loop
+  if more_than_one_bit then
+    warning sel_event::MASK : "Event ".sel_event::NAME." uses more than one bit"
+  end if
+  
+  #
+  # Having 2 mask with common bits is an error
+  #
+  foreach event in USEREVENTS do
+    if sel_INDEX != INDEX then
+      if (sel_event::MASK & event::MASK) != 0 then
+        error sel_event::MASK : "event ".sel_event::NAME." MASK conflicts"
+        error event::MASK : "with MASK of event ".event::NAME
+      end if
+    end if
+  end foreach
+  
+end foreach
+
+#
+# Third user defined events are processed.
+#
+let EVENTS := emptyList
+let mask_for_task := emptyMap
+let task_for_event := emptyMap
+
+foreach task in EXTENDEDTASKS do
+  foreach event in task::EVENT do
+    
+  end foreach
+end foreach
+
+let event_mask := 0
+foreach event in USEREVENTS do
+  let event_mask := event_mask | event::MASK
+  let EVENTS += event
+end foreach
+
+warning here : "Event MASK = ".[event_mask string]
+
+#
+# Fourth, AUTO events are put in the holes
+# of the event mask. This is done 
+#
+let first_bit := 0
+foreach event in AUTOEVENTS do
+  let bit_not_found := true
+  display first_bit
+  loop bit from first_bit to 63 do
+    if first_bit > 63 then warning here : "ANORMAL" end if
+    if bit_not_found then
+      let mask := 1 << bit
+      if (mask & event_mask) == 0 then
+        # bit found
+        let bit_not_found := false
+        let first_bit := bit + 1
+        let event_mask := event_mask | mask
+        let event::MASK := mask
+        let EVENTS += event
+      end if
+    end if
+  end loop
+  if bit_not_found then
+    error event::NAME : "Unable to compute the MASK, the event mask is full"
+  end if
+end foreach
+
+let ALLEVENTSMASK := event_mask
+
+#------------------------------------------------------------------------------*
+# Compute the Alarms
+#
+let counterMap := mapOf COUNTERS by NAME
+let ALARMS := ALARM
+foreach alarm in ALARMS do
+  if alarm::AUTOSTART then
+    # verify an AUTOSTART alarm is compatible with the counter
+    let counter := counterMap[alarm::COUNTER]
+    if alarm::AUTOSTART_S::CYCLETIME < counter::MINCYCLE then
+      error alarm::AUTOSTART_S::CYCLETIME : "CYCLETIME is lower than MINCYCLE"
+      error counter::MINCYCLE : "as declared there"
+    end if
+  end if
+end foreach
+
+#------------------------------------------------------------------------------*
+# Compute the list of destination messages. This allow
+# to sort the messages according to the dependency and to
+# build the destination messages linked list
+#
+let receiver := emptyMap
+foreach message in MESSAGE do
+  if message::MESSAGEPROPERTY == "RECEIVE_ZERO_INTERNAL" |
+     message::MESSAGEPROPERTY == "RECEIVE_UNQUEUED_INTERNAL" |
+     message::MESSAGEPROPERTY == "RECEIVE_QUEUED_INTERNAL"
+  then
+    let sender := message::MESSAGEPROPERTY_S::SENDINGMESSAGE
+    let receiver[sender] += message
+  end if
+end foreach
+
+# Compute the SENDMESSAGES list
+let SENDMESSAGES := emptyList
+foreach message in MESSAGE do
+  if message::MESSAGEPROPERTY == "SEND_ZERO_INTERNAL" |
+     message::MESSAGEPROPERTY == "SEND_STATIC_INTERNAL"
+  then
+    # the target message if the first message in the linked
+    # list of destination messages
+    let target_message := [receiver[message::NAME] first]
+    let message::TARGET := target_message::NAME
+    let SENDMESSAGES += message
+  end if
+end foreach
+
+# Compute the RECEIVEMESSAGES list
+let sender := mapOf SENDMESSAGES by NAME
+let RECEIVEMESSAGES := emptyList
+foreach receive_message_list in receiver do
+  let next_message := ""
+  foreach receive_message in receive_message_list do
+    if next_message != "" then
+      let receive_message::NEXT := next_message
+    end if
+    # build the link of receive messages having the same sender
+    let next_message := receive_message::NAME
+    # get some attributes od the connected sending message
+    if receive_message::MESSAGEPROPERTY == "RECEIVE_UNQUEUED_INTERNAL" |
+       receive_message::MESSAGEPROPERTY == "RECEIVE_QUEUED_INTERNAL"
+    then
+      let send_message_name := receive_message::MESSAGEPROPERTY_S::SENDINGMESSAGE
+      # Check the compatibility of the sending message
+      let send_message := send[send_message_name]
+      if send_message::MESSAGEPROPERTY == "SEND_STATIC_INTERNAL" then
+        let receive_message::CDATATYPE := send_message::MESSAGEPROPERTY_S::CDATATYPE
+      else
+        error send_message_name : "MESSAGEPROPERTY of sender should be SEND_STATIC_INTERNAL"
+      end if
+    end if
+    let RECEIVEMESSAGES += receive_message
+  end foreach
+end foreach
+
+# Compute the MESSAGES list
+let MESSAGES := emptyList
+foreach rm in RECEIVEMESSAGES do
+  let MESSAGES += rm
+end foreach
+foreach sm in SENDMESSAGES do
+  let MESSAGES += sm
+end foreach
+
+
+# Gather the informations on used filters
+let FILTERS := emptyList
+
+
+
+#
+
+#------------------------------------------------------------------------------*
+# Compute the filters
+#
+let FILTERSTRUCTS := emptyList
+
+#------------------------------------------------------------------------------*
+# Compute the SCHEDULETABLES
+#
+let SCHEDULETABLES := SCHEDULETABLE
+
+#------------------------------------------------------------------------------*
+# Compute the APPLICATIONS
+#
+let APPLICATIONS := APPLICATION
+
+#------------------------------------------------------------------------------*
 # Compute some configuration flags to ease the template coding
 #
 
 # Compute the USECOM flag
-let USECOM := exists COM | exists MESSAGE | exists NETWORKMESSAGE
+let USECOM := exists COM | [MESSAGE length] > 0 | exists NETWORKMESSAGE
 
 # Compute the USEMEMORYPROTECTION flag
 let USEMEMORYPROTECTION := NO
@@ -70,10 +563,103 @@ if OS::MEMMAP then
   let USEMEMORYPROTECTION := OS::MEMMAP::MEMORY_PROTECTION
 end if
 
+# Compute the OS::TIMINGPROTECTION
+let OS::TIMINGPROTECTION := false
+if AUTOSAR then
+  foreach task in TASKS do
+    let OS::TIMINGPROTECTION := OS::TIMINGPROTECTION | task::TIMING_PROTECTION
+  end foreach
+  foreach isr in ISRS2 do
+    let OS::TIMINGPROTECTION := OS::TIMINGPROTECTION |  isr::TIMING_PROTECTION
+  end foreach
+end if
+
+# Compute the OS::GLOBALTIME
+let OS::GLOBALTIME := false
+if AUTOSAR then
+  foreach st in SCHEDULETABLES do
+    let OS::GLOBALTIME := OS::GLOBALTIME | st::LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION
+  end foreach
+end if
+
+# Compute the OS:OSAPPLICATIONSTARTUPHOOK and OS:OSAPPLICATIONSHUTDOWNHOOK
+let OS::APPLICATIONSTARTUPHOOK := 0
+let OS::APPLICATIONSHUTDOWNHOOK := 0
+foreach application in APPLICATIONS do
+  let OS::OSAPPLICATIONSTARTUPHOOK := OS::OSAPPLICATIONSTARTUPHOOK + [application::STARTUPHOOK unsigned]
+  let OS::OSAPPLICATIONSHUTDOWNHOOK :=  OS::OSAPPLICATIONSHUTDOWNHOOK + [application::SHUTDOWNHOOK unsigned]
+end foreach
+
+#------------------------------------------------------------------------------*
+# Compute the OS::SCALABILITYCLASS
+# If this attribute does not exists, we are in OSEK
+let OS::SCALABILITYCLASS := exists OS::SCALABILITYCLASS default ("SC0")
+let sc := 0
+if typeOf OS::SCALABILITYCLASS == @enum then
+  # SCALABILITYCLASS is set to AUTO
+  # Compute the SCALABILITYCLASS according to other objects
+  let sc := 1
+  # if protectionhook is set or at least one task or ISR uses
+  # timing protection or if global time sync is used then  we are in sc2
+  if OS::PROTECTIONHOOK | OS::TIMINGPROTECTION | OS::GLOBALTIME then
+    let sc := 2
+  end if
+  # Then check the memory protection and the availability of an OS Application
+  # to see if the scalability class must be increase by 2
+  if USEMEMORYPROTECTION | exists APPLICATIONS then
+    let sc := sc + 2
+  end if
+else
+  # SCALABILITYCLASS is set SCx, check it is compatible with what is specified
+  let sc := [[OS::SCALABILITYCLASS rightSubString: 1] unsigned]
+  if sc == 1 then
+    if OS::TIMINGPROTECTION then
+      if exists APPLICATIONS then
+        warning OS::SCALABILITYCLASS : "SCALABILITYCLASS set to 4 because Timing Protection and OS Applications are used"
+        let sc := 4
+      else
+        warning OS::SCALABILITYCLASS : "SCALABILITYCLASS set to 2 because Timing Protection is used"
+        let sc := 2
+      end if
+    else
+      if exists APPLICATIONS then
+        warning OS::SCALABILITYCLASS: "SCALABILITYCLASS set to 3 because OS Applications are used"
+        let sc := 3
+      end if
+    end if
+  elsif sc == 2 then
+    if OS::TIMINGPROTECTION then
+      if exists APPLICATIONS then
+        warning OS::SCALABILITYCLASS : "SCALABILITYCLASS set to 4 because Timing Protection and OS Applications are used"
+        let sc := 4
+      end if
+    else
+      if exists APPLICATIONS then
+        warning OS::SCALABILITYCLASS: "SCALABILITYCLASS set to 3 because OS Applications are used"
+        let sc := 3
+      end if
+    end if
+  elsif sc == 3 then
+    if OS::TIMINGPROTECTION then
+      if exists APPLICATIONS then
+        warning OS::SCALABILITYCLASS : "SCALABILITYCLASS set to 4 because Timing Protection and OS Applications are used"
+        let sc := 4
+      end if
+    end if
+  end if
+end if
+let OS::SCALABILITYCLASS := sc
+
 %
 Goil run on % !TIMESTAMP%
 Generated files are:
 %
+
+!PROJECT %/tpl_app_custom_types.h
+%
+write to PROJECT."/tpl_app_custom_types.h":
+  template tpl_app_custom_types_h in code
+end write
 
 !PROJECT %/tpl_app_config.c
 %

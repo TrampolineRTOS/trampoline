@@ -6,6 +6,11 @@ IMPLEMENTATION trampoline {
     STRING TARGET;
   };
   
+  APICONFIG [] {
+    STRUCT { STRING API; STRING KERNEL; } ENTRY[];
+    STRING FILE;
+  };
+  
   OS {
     /* Standard OIL attributes */
     ENUM [STANDARD, EXTENDED] STATUS;
@@ -24,6 +29,8 @@ IMPLEMENTATION trampoline {
     /* Extra Trampoline attributes */
     BOOLEAN SYSTEM_CALL = FALSE;
     BOOLEAN DEBUG = FALSE;
+    BOOLEAN INTERRUPTTABLE = FALSE;
+    BOOLEAN PACKED_DATA = FALSE;
     BOOLEAN [
       TRUE {
         ENUM [
@@ -90,9 +97,10 @@ IMPLEMENTATION trampoline {
   };
 
   COUNTER [] {
-    UINT32 MINCYCLE;
-    UINT32 MAXALLOWEDVALUE;
-    UINT32 TICKSPERBASE;
+    UINT32 MINCYCLE = 1;
+    UINT32 MAXALLOWEDVALUE = 32768;
+    UINT32 TICKSPERBASE = 1;
+    ENUM [ HARDWARE, SOFTWARE ] TYPE = HARDWARE;
   };
 
   ALARM [] {
@@ -380,5 +388,10 @@ IMPLEMENTATION trampoline {
   NM { };
 };
 
+CPU defaultObjects {
+  COUNTER SystemCounter {
+    TYPE = HARDWARE;
+  } : "Predefined System Counter";
+};
 
-
+#include "api.oil"

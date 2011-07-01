@@ -1,21 +1,21 @@
 /*-----------------------------------------------------------------------------
- * Counter % !NAME % descriptor
+ * Counter % !counter::NAME % descriptor
  */
 
 #define API_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 %
-if NAME == "SystemCounter" then
+if counter::NAME == "SystemCounter" then
 %
-CONST(tpl_tick, OS_CONST) OSTICKSPERBASE = % !TICKSPERBASE %;
-CONST(tpl_tick, OS_CONST) OSMAXALLOWEDVALUE = % !MAXALLOWEDVALUE %;
-CONST(tpl_tick, OS_CONST) OSMINCYCLE = % !MINCYCLE %;
+CONST(tpl_tick, OS_CONST) OSTICKSPERBASE = % !counter::TICKSPERBASE %;
+CONST(tpl_tick, OS_CONST) OSMAXALLOWEDVALUE = % !counter::MAXALLOWEDVALUE %;
+CONST(tpl_tick, OS_CONST) OSMINCYCLE = % !counter::MINCYCLE %;
 %
 else
 %
-CONST(tpl_tick, OS_CONST) OSTICKSPERBASE_% !NAME % = % !TICKSPERBASE %;
-CONST(tpl_tick, OS_CONST) OSMAXALLOWEDVALUE_% !NAME % = % !MAXALLOWEDVALUE %;
-CONST(tpl_tick, OS_CONST) OSMINCYCLE_% !NAME % = % !MINCYCLE %;
+CONST(tpl_tick, OS_CONST) OSTICKSPERBASE_% !counter::NAME % = % !counter::TICKSPERBASE %;
+CONST(tpl_tick, OS_CONST) OSMAXALLOWEDVALUE_% !counter::NAME % = % !counter::MAXALLOWEDVALUE %;
+CONST(tpl_tick, OS_CONST) OSMINCYCLE_% !counter::NAME % = % !counter::MINCYCLE %;
 %
 end if
 %
@@ -25,25 +25,25 @@ end if
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-VAR(tpl_counter, OS_VAR) % !NAME %_counter_desc = {
-  /* ticks per base       */  % !TICKSPERBASE %,
-  /* max allowed value    */  % !MAXALLOWEDVALUE %,
-  /* minimum cycle        */  % !MINCYCLE %,
+VAR(tpl_counter, OS_VAR) % !counter::NAME %_counter_desc = {
+  /* ticks per base       */  % !counter::TICKSPERBASE %,
+  /* max allowed value    */  % !counter::MAXALLOWEDVALUE %,
+  /* minimum cycle        */  % !counter::MINCYCLE %,
   /* current tick         */  0,
   /* current date         */  0,%
 if AUTOSAR then
 %
-    /* type the counter     */  % !TYPE %,%
+    /* type the counter     */  % !counter::TYPE %,%
 end if
 %
 #if WITH_OSAPPLICATION == YES
     /* OS Application id    */  %
 if AUTOSAR then
   if SCALABILITYCLASS >= 3 then
-    if NAME == "SystemCounter" then
+    if counter::NAME == "SystemCounter" then
       %INVALID_OSAPPLICATION_ID,%
     else
-      !APPLICATION%_id,%
+      !counter::APPLICATION%_id,%
     end if
   end if
 end if

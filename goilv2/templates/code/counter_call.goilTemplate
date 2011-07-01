@@ -9,8 +9,8 @@ FUNC(tpl_bool, OS_CODE) tpl_call_counter_tick()
   tpl_status  need_rescheduling = NO_SPECIAL_CODE;
 
 %
-foreach HARDWARECOUNTERS do
-%  need_rescheduling |= tpl_counter_tick(&% !NAME %_counter_desc);
+foreach counter in HARDWARECOUNTERS do
+%  need_rescheduling |= tpl_counter_tick(&% !counter::NAME %_counter_desc);
 %
 end foreach
 %

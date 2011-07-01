@@ -3,11 +3,11 @@ option goil_options :
 @string target_platform   : 't', "target" -> "Specifies target platform (avr, h8300h, libpcl, posix, posix_vp2, v850e, arm, c166, hcs12, ppc or cortex-m3)";
 @string project_dir       : 'p', "project" -> "Specifies project directory (by default, the project directory is the name of the oil file, without the .oil extension)";
 @string template_dir      : '\0', "templates" -> "Specifies template directory (used by goil for code generation)";
-@bool   autosar_on        : 'a',  "autosar" -> "Parse Autosar objects and attributes";
-@bool   posix_it          : 'i', "interrupts" -> "Generate an interrupt table";
+#@bool   autosar_on        : 'a',  "autosar" -> "Parse Autosar objects and attributes";
+#@bool   posix_it          : 'i', "interrupts" -> "Generate an interrupt table";
 @bool   warnMultiple      : '\0', "warn-multiple" -> "Emit a warning if an object not defined for the first time in the implementation does not have the same multiple attribute as in the first definition";
 #@bool   orti_on           : '\0', "orti"              -> "Generate an ORTI file" ;
-@bool   generate_makefile : 'g', "generate-makefile" -> "Generate a Makefile from OS extra attributes";
+#@bool   generate_makefile : 'g', "generate-makefile" -> "Generate a Makefile from OS extra attributes";
 #@uint   corrected_bits    : '\0', "crc"               -> "Generate correcting code" default 0 ;
 
 #--- Added by PM for new templates
