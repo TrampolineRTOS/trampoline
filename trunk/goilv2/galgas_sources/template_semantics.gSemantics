@@ -31,17 +31,20 @@ enum @Ttype {
   enumType,
   unconstructedType
 }{
-  reader messageGoilTemplateType :
-    boolType -> "bool";
-    unsignedType -> "unsigned";
-    stringType -> "string";
-    listType -> "list";
-    mapType -> "map";
-    structType -> "struct";
-    enumType -> "enum";
-    unconstructedType -> "unconstructed";
-  end reader; 
 }
+
+reader @Ttype messageGoilTemplateType -> @string outResult :
+  switch selfcopy
+    when boolType : outResult := "bool";
+    when unsignedType : outResult := "unsigned";
+    when stringType : outResult := "string";
+    when listType : outResult := "list";
+    when mapType : outResult := "map";
+    when structType : outResult := "struct";
+    when enumType : outResult := "enum";
+    when unconstructedType : outResult := "unconstructed";
+  end switch;
+end reader;
 
 #------------------------------------------------------------------------------*
 

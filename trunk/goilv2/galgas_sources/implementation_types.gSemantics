@@ -42,21 +42,24 @@ enum @dataType {
   objectType,
   structType
 }{
-  reader oilType:
-    void -> "VOID";
-    uint32Number -> "UINT32";
-    sint32Number -> "INT32";
-    uint64Number -> "UINT64";
-    sint64Number -> "INT64";
-    floatNumber -> "FLOAT";
-    string -> "STRING";
-    enumeration -> "ENUM";
-    boolean -> "BOOLEAN";
-    identifier -> "IDENTIFIER";
-    objectType -> "OBJECT_TYPE";
-    structType -> "STRUCT";
-  end reader;
 }
+
+reader @dataType oilType -> @string outResult :
+  switch selfcopy
+    when void : outResult := "VOID";
+    when uint32Number : outResult := "UINT32";
+    when sint32Number : outResult := "INT32";
+    when uint64Number : outResult := "UINT64";
+    when sint64Number : outResult := "INT64";
+    when floatNumber : outResult := "FLOAT";
+    when string : outResult := "STRING";
+    when enumeration : outResult := "ENUM";
+    when boolean : outResult := "BOOLEAN";
+    when identifier : outResult := "IDENTIFIER";
+    when objectType : outResult := "OBJECT_TYPE";
+    when structType : outResult := "STRUCT";
+  end switch;
+end reader;
 
 list @uint32List { @location location; @uint value; }
 list @uint64List { @location location; @uint64 value; }
