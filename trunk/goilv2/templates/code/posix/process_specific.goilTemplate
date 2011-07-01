@@ -1,33 +1,28 @@
-%
-if not exists STACKSIZE then
-  error NAME "STACKSIZE attribute not defined for ".PROCESSKIND." ".NAME
-else
-%/*
- * % !PROCESSKIND % % !NAME % stack
+/*
+ * % !proc::KIND % % !proc::NAME % stack
  */
-#define APP_% !PROCESSKIND %_% !NAME %_START_SEC_STACK
+#define APP_% !proc::KIND %_% !proc::NAME %_START_SEC_STACK
 #include "tpl_memmap.h"
-tpl_stack_word % !NAME %_stack_zone[% !STACKSIZE %/sizeof(tpl_stack_word)];
-#define APP_% !PROCESSKIND %_% !NAME %_STOP_SEC_STACK
+tpl_stack_word % !proc::NAME %_stack_zone[% !proc::STACKSIZE %/sizeof(tpl_stack_word)];
+#define APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_STACK
 #include "tpl_memmap.h"
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-struct TPL_STACK % !NAME %_stack = {% !NAME %_stack_zone, % !STACKSIZE %};
+struct TPL_STACK % !proc::NAME %_stack = {% !proc::NAME %_stack_zone, % !proc::STACKSIZE %};
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
-#define % !NAME %_STACK &% !NAME %_stack
+#define % !proc::NAME %_STACK &% !proc::NAME %_stack
 
 /*
- * % !PROCESSKIND % % !NAME % context
+ * % !proc::KIND % % !proc::NAME % context
  */
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-struct TPL_CONTEXT % !NAME %_context;
+struct TPL_CONTEXT % !proc::NAME %_context;
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-#define % !NAME %_CONTEXT &% !NAME %_context
+#define % !proc::NAME %_CONTEXT &% !proc::NAME %_context
 
-%end if

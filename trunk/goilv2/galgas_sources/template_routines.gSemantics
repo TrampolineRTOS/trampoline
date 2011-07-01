@@ -8,7 +8,7 @@ function goil_template
   ->@string result
 :
   result := "";
-  goilTemplateInvocation
+  templateInvocation
     ![@lstring new !name !here]
     !prefix
     !"templates"
@@ -26,7 +26,7 @@ function computeTemplate
   ->@string result
 :
   result := "";
-  goilTemplateInvocation
+  templateInvocation
     ![@lstring new !name !here]
     !prefix
     !"templates"

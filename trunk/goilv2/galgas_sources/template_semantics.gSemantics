@@ -283,7 +283,25 @@ end routine;
 list @TvarPath {
   @lstring item;
   @lstring key;
+  @lsint idx;
 }
+
+#------------------------------------------------------------------------------*
+
+routine printPath
+  ??@TvarPath path
+:
+  foreach path do
+    message [item string];
+    if [key string] != "" then
+      message "[\"".key."\"]";
+    end if;
+    if [idx sint] != -1s then
+      message "[".[idx string]."]";
+    end if;
+  between message "::";
+  end foreach;
+end routine;
 
 #------------------------------------------------------------------------------*
 
@@ -296,12 +314,23 @@ routine searchField
 :
   @lstring field;
   @lstring key;
-  [!?variable popFirst ?field ?key];
+  @lsint idx;
+  variableLocation := here;
+  [!?variable popFirst ?field ?key ?idx];
   [inTemplateFieldMap searchKey !field ?variableType ?variableValue];
-  variableLocation := [inTemplateFieldMap locationForKey ![field string]];
+  if [inTemplateFieldMap hasKey ![field string]] then
+    variableLocation := [inTemplateFieldMap locationForKey ![field string]];
+  end if;
   if [key string] != "" & variableType == [@Ttype mapType] then
-    [[variableValue mStructValue] searchKey !key ?variableType ?variableValue];
-    variableLocation := [[variableValue mStructValue] locationForKey ![key string]];
+    @TfieldMap mapMap := [variableValue mStructValue];
+    [mapMap searchKey !key ?variableType ?variableValue];
+    if [mapMap hasKey ![key string]] then
+      variableLocation := [mapMap locationForKey ![key string]];
+    end if;
+  elsif [idx sint] != -1s & variableType == [@Ttype listType] then
+    @TfieldMapList mapList := [variableValue mMapListValue];
+    variableValue->mStructValue := [mapList mMapAtIndex ![idx uint]];
+    variableType := [@Ttype structType];
   end if;
   if [variable length] > 0 then
     if variableType == [@Ttype structType] then
@@ -324,13 +353,23 @@ routine searchFieldIfExists
 :
   @lstring field;
   @lstring key;
-  [!?variable popFirst ?field ?key];
+  @lsint idx;
+  [!?variable popFirst ?field ?key ?idx];
   
   if [inTemplateFieldMap hasKey ![field string]] then
     [inTemplateFieldMap searchKey !field ?variableType ?variableValue];
     if [key string] != "" & variableType == [@Ttype mapType] then
       if [[variableValue mStructValue] hasKey ![key string]] then
         [[variableValue mStructValue] searchKey !key ?variableType ?variableValue];
+        found := true;
+      else
+        found := false;
+      end if;
+    elsif [idx sint] != -1s & variableType == [@Ttype listType] then
+      if [idx uint] < [[variableValue mMapListValue] length] then
+        @TfieldMapList mapList := [variableValue mMapListValue];
+        variableValue->mStructValue := [mapList mMapAtIndex ![idx uint]];
+        variableType := [@Ttype structType];
         found := true;
       else
         found := false;

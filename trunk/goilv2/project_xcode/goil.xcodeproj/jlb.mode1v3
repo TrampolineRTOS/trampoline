@@ -272,12 +272,12 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>7</integer>
+									<integer>9</integer>
 									<integer>6</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 0}, {186, 591}}</string>
+							<string>{{0, 0}, {186, 561}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -289,14 +289,14 @@
 					<key>GeometryConfiguration</key>
 					<dict>
 						<key>Frame</key>
-						<string>{{0, 0}, {203, 609}}</string>
+						<string>{{0, 0}, {203, 579}}</string>
 						<key>GroupTreeTableConfiguration</key>
 						<array>
 							<string>MainColumn</string>
 							<real>186</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>166 128 927 650 0 0 1280 778 </string>
+						<string>405 558 1194 620 0 0 1920 1178 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -312,7 +312,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>oil_source.icns</string>
+								<string>goil_types_root.h</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -320,7 +320,15 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>oil_source.icns</string>
+										<string>goil_types_root.h</string>
+										<key>_historyCapacity</key>
+										<integer>0</integer>
+										<key>bookmark</key>
+										<string>6C6808DF13B79D02003FFB51</string>
+										<key>history</key>
+										<array>
+											<string>6C6808C013B4D0BC003FFB51</string>
+										</array>
 									</dict>
 									<key>SplitCount</key>
 									<string>1</string>
@@ -331,14 +339,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {719, 446}}</string>
+								<string>{{0, 0}, {986, 405}}</string>
 								<key>RubberWindowFrame</key>
-								<string>166 128 927 650 0 0 1280 778 </string>
+								<string>405 558 1194 620 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>446pt</string>
+							<string>405pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -351,18 +359,18 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 451}, {719, 158}}</string>
+								<string>{{0, 410}, {986, 169}}</string>
 								<key>RubberWindowFrame</key>
-								<string>166 128 927 650 0 0 1280 778 </string>
+								<string>405 558 1194 620 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>158pt</string>
+							<string>169pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
-					<string>719pt</string>
+					<string>986pt</string>
 				</dict>
 			</array>
 			<key>Name</key>
@@ -377,9 +385,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>6C78CADE13A9FA97006112E5</string>
+				<string>6C6808C213B4D0BC003FFB51</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>6C78CADF13A9FA97006112E5</string>
+				<string>6C6808C313B4D0BC003FFB51</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -517,12 +525,11 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>1CD10A99069EF8BA00B06720</string>
 		<string>6C07DF1813A1FFCB00ACF423</string>
 		<string>/Users/jlb/Develop/tmp/trunk/goilv2/project_xcode/goil.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>166 128 927 650 0 0 1280 778 </string>
+	<string>405 558 1194 620 0 0 1920 1178 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -543,23 +550,25 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string></string>
+								<string>goil_types_root.h</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {500, 218}}</string>
+								<string>{{0, 0}, {1071, 337}}</string>
 								<key>RubberWindowFrame</key>
-								<string>147 167 500 500 0 0 1280 778 </string>
+								<string>175 559 1071 619 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>218pt</string>
+							<string>337pt</string>
 						</dict>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -574,9 +583,9 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 223}, {500, 236}}</string>
+								<string>{{0, 342}, {1071, 236}}</string>
 								<key>RubberWindowFrame</key>
-								<string>147 167 500 500 0 0 1280 778 </string>
+								<string>175 559 1071 619 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXBuildResultsModule</string>
@@ -585,7 +594,7 @@
 						</dict>
 					</array>
 					<key>Proportion</key>
-					<string>459pt</string>
+					<string>578pt</string>
 				</dict>
 			</array>
 			<key>Name</key>
@@ -599,7 +608,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>6C07DF1813A1FFCB00ACF423</string>
-				<string>6C78CAE013A9FA97006112E5</string>
+				<string>6C6808C413B4D0BC003FFB51</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -608,11 +617,11 @@
 			<key>WindowContentMinSize</key>
 			<string>486 300</string>
 			<key>WindowString</key>
-			<string>147 167 500 500 0 0 1280 778 </string>
+			<string>175 559 1071 619 0 0 1920 1178 </string>
 			<key>WindowToolGUID</key>
 			<string>6C07DF1813A1FFCB00ACF423</string>
 			<key>WindowToolIsVisible</key>
-			<false/>
+			<true/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>

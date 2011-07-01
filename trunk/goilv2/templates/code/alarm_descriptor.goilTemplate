@@ -1,13 +1,13 @@
 /*-----------------------------------------------------------------------------
- * Alarm % !NAME % descriptor
+ * Alarm % !alarm::NAME % descriptor
  *
  * This alarm does %
-if ACTION == "activateTask" then
-  %the activation of task % !TASK
-elsif ACTION == "setEvent" then
-  %a set of event % !EVENT % to task % !TASK
-elsif ACTION == "callback" then
-  %a callback of function % !FUNCTION %_callback%
+if alarm::ACTION == "ACTIVATETASK" then
+  %the activation of task % !alarm::ACTION_S::TASK
+elsif alarm::ACTION == "SETEVENT" then
+  %a set of event % !alarm::ACTION_S::EVENT % to task % !alarm::ACTION_S::TASK
+elsif alarm::ACTION == "ALARMCALLBACK" then
+  %a callback of function % !alarm::ACTION_S::ALARMCALLBACKNAME %_callback%
 end if
 %
  */
@@ -18,12 +18,12 @@ template action_descriptor
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
-CONST(tpl_alarm_static, OS_CONST) % !NAME %_static = {
+CONST(tpl_alarm_static, OS_CONST) % !alarm::NAME %_static = {
   {
-    /* pointer to counter           */  &% !COUNTER %_counter_desc,
+    /* pointer to counter           */  &% !alarm::COUNTER %_counter_desc,
     /* pointer to the expiration    */  tpl_raise_alarm
 #if (WITH_TRACE == YES)
-    /* id of the alarm for tracing  */  , % !NAME %_id
+    /* id of the alarm for tracing  */  , % !alarm::NAME %_id
 #endif
 #if WITH_OSAPPLICATION == YES
     /* OS application id            */  , %
@@ -35,7 +35,7 @@ end if
 %
 #endif
   },
-  /* action of the alarm  */  (tpl_action *)&% !NAME %_action
+  /* action of the alarm  */  (tpl_action *)&% !alarm::NAME %_action
 };
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED
@@ -44,14 +44,14 @@ end if
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-VAR(tpl_time_obj, OS_VAR) % !NAME %_alarm_desc = {
-    /* pointer to the static part   */  (tpl_time_obj_static *)&% !NAME %_static,
+VAR(tpl_time_obj, OS_VAR) % !alarm::NAME %_alarm_desc = {
+    /* pointer to the static part   */  (tpl_time_obj_static *)&% !alarm::NAME %_static,
     /* next alarm                   */  NULL,
     /* prev alarm                   */  NULL,%
-if AUTOSTART then
+if alarm::AUTOSTART then
 %
-    /* cycle                        */  % !CYCLETIME %,
-    /* date                         */  % !ALARMTIME %,
+    /* cycle                        */  % !alarm::AUTOSTART_S::CYCLETIME %,
+    /* date                         */  % !alarm::AUTOSTART_S::ALARMTIME %,
     /* State of the alarm           */  ALARM_AUTOSTART%
 else
 %

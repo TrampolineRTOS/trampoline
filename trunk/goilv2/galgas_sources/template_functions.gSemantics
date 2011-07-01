@@ -59,5 +59,4 @@ function TRUEFALSE ??@bool inBool ->@string result:
   end if;
 end function;
 
-
 end semantics;

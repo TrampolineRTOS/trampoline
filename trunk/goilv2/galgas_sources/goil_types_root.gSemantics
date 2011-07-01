@@ -25,7 +25,7 @@ map @objectsMap {
 
 class @applicationDefinition {
   @lstring name feature setter;
-  @lstring description feature setter;
+  @lstring cpuDescription feature setter;
   @lstring version feature setter;
   @lstring versionDescription feature setter;
   @objectsMap objects feature setter;

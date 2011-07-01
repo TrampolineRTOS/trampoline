@@ -2,54 +2,54 @@
 #include "tpl_memmap.h"
 
 %
-if ACTION == "activateTask" then
+if alarm::ACTION == "ACTIVATETASK" then
 %
-CONST(tpl_task_activation_action, OS_CONST) % !NAME %_action = {
+CONST(tpl_task_activation_action, OS_CONST) % !alarm::NAME %_action = {
   {
     /* action function  */  tpl_action_activate_task
   },
-  /* task id            */  % !TASK %_id
+  /* task id            */  % !alarm::ACTION_S::TASK %_id
 };
 %
-elsif ACTION == "setEvent" then
+elsif alarm::ACTION == "SETEVENT" then
 %
-CONST(tpl_setevent_action, OS_CONST) % !NAME %_action = {
+CONST(tpl_setevent_action, OS_CONST) % !alarm::NAME %_action = {
   {
     /* action function  */    tpl_action_setevent
   },
-  /* task id              */  % !TASK %_id,
-  /* event mask           */  % !EVENT %_mask
+  /* task id              */  % !alarm::ACTION_S::TASK %_id,
+  /* event mask           */  % !alarm::ACTION_S::EVENT %_mask
 };
 %
-elsif ACTION == "callback" then
+elsif alarm::ACTION == "ALARMCALLBACK" then
 %
-FUNC(void, OS_APPL_CODE) % !FUNCTION %_callback(void);
+FUNC(void, OS_APPL_CODE) % !alarm::ACTION_S::ALARMCALLBACKNAME %_callback(void);
 
-CONST(tpl_callback_action, OS_CONST) % !NAME %_action = {
+CONST(tpl_callback_action, OS_CONST) % !alarm::ACTION_S::NAME %_action = {
   {
     /* action function  */    tpl_action_callback
   },
-  /* callback function    */  % !FUNCTION %_callback
+  /* callback function    */  % !alarm::ACTION_S::ALARMCALLBACKNAME %_callback
 };
 %
-elsif ACTION == "incrementCounter" then
+elsif alarm::ACTION == "INCREMENTCOUNTER" then
 %
-CONST(tpl_increment_counter_action, OS_CONST) % !NAME %_action = {
+CONST(tpl_increment_counter_action, OS_CONST) % !alarm::NAME %_action = {
   {
   /* action function      */      tpl_action_increment_counter
   },
-  /* counter descriptor ptr   */  &% !TARGETCOUNTER %_counter_desc
+  /* counter descriptor ptr   */  &% !alarm::ACTION_S::COUNTER %_counter_desc
 };
 %
-elsif ACTION == "finalizeScheduletable" then
+elsif alarm::ACTION == "FINALIZESCHEDULETABLE" then
 %
-tpl_schedule_table % !SCHEDULETABLENAME %_st_dyn;
+tpl_schedule_table % !alarm::ACTION_S::SCHEDULETABLE %_st_dyn;
 
-tpl_finalize_schedule_table_action % !NAME %_action = {
+tpl_finalize_schedule_table_action % !alarm::NAME %_action = {
   {
     /*  notification function */  tpl_action_finalize_schedule_table
   },
-  /*  Schedule table descriptor pointer */  &% !SCHEDULETABLENAME %_st_dyn
+  /*  Schedule table descriptor pointer */  &% !alarm::ACTION_S::SCHEDULETABLE %_st_dyn
 };
 %
 end if

@@ -5,27 +5,29 @@
 #
 %
 /*-----------------------------------------------------------------------------
- * Action of message % !NAME %
+ * Action of message % !message::NAME %
  */
 %
-if exists ACTION then
+if exists message::ACTION then
+  let action := message::ACTION
   template action_descriptor
 end if
-if exists FILTER then
+if exists message::FILTER then
+  let filter := message::FILTER
   template filter_descriptor
 end if
 
-if MESSAGEPROPERTY == "RECEIVE_ZERO_INTERNAL" then
+if message::MESSAGEPROPERTY == "RECEIVE_ZERO_INTERNAL" then
 %
 /*-----------------------------------------------------------------------------
- * Static internal receiving zero length message object % !NAME %
+ * Static internal receiving zero length message object % !message::NAME %
  */
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
-CONST(tpl_internal_receiving_zero_mo, OS_CONST) % !NAME %_message = {
-    /* notification struct pointer  */  % if exists ACTION then %(tpl_action *)&% !NAME %_action,% else %NULL,% end if %
-    /* next mo                      */  % if exists NEXT then %(tpl_base_receiving_mo *)&% !NEXT %_message% else %NULL% end if %
+CONST(tpl_internal_receiving_zero_mo, OS_CONST) % !message::NAME %_message = {
+    /* notification struct pointer  */  % if exists message::ACTION then %(tpl_action *)&% !message::NAME %_action,% else %NULL,% end if %
+    /* next mo                      */  % if exists message::NEXT then %(tpl_base_receiving_mo *)&% !message::NEXT %_message% else %NULL% end if %
 };
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED
@@ -34,12 +36,12 @@ CONST(tpl_internal_receiving_zero_mo, OS_CONST) % !NAME %_message = {
 elsif MESSAGEPROPERTY == "RECEIVE_UNQUEUED_INTERNAL" then
 %
 /*-----------------------------------------------------------------------------
- * Static internal receiving unqueued message object % !NAME %
+ * Static internal receiving unqueued message object % !message::NAME %
  */
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-VAR(% !CTYPE %, OS_VAR) % !NAME %_buffer% if exists INITIALVALUE then % = % !INITIALVALUE  end if %;
+VAR(% !message::CTYPE %, OS_VAR) % !message::NAME %_buffer% if exists message::INITIALVALUE then % = % !message::INITIALVALUE  end if %;
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"

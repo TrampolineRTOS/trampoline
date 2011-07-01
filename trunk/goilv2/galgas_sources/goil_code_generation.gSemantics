@@ -720,7 +720,7 @@ routine generate_all
       @string target := [option goil_options.target_platform value];
       if target != "" then
 
-          @string types := template_string[!"code" !"types"];
+#          @string types := template_string[!"code" !"types"];
 
 #          @config cfg [emptyMap];
 #          @lstring cfg_file := config_file[];
@@ -830,21 +830,21 @@ routine generate_all
           end if;
           
           # write the result to files
-          @string directory := projectName[];
-          
-          @string types_file := "tpl_app_custom_types.h";
-
-          @uint error_count := [@uint errorCount];
-
-          types_file := directory . "/" . types_file;
-
-          if error_count == 0 then
-              if [option .verbose_output value] then
-                  message "creating " . types_file . "\n";
-              end if;
-              [types makeDirectoryAndWriteToFile !types_file];
-
-          end if;
+#          @string directory := projectName[];
+#          
+#          @string types_file := "tpl_app_custom_types.h";
+#
+#          @uint error_count := [@uint errorCount];
+#
+#          types_file := directory . "/" . types_file;
+#
+#          if error_count == 0 then
+#              if [option .verbose_output value] then
+#                  message "creating " . types_file . "\n";
+#              end if;
+#              [types makeDirectoryAndWriteToFile !types_file];
+#
+#          end if;
       else
           message "No target platform given, compiling aborted\n";
       end if;

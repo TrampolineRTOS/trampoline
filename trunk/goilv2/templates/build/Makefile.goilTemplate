@@ -42,7 +42,7 @@
 # Name of the generated executable
 # it should be declared as APP_NAME in the OS section of the .oil file.
 # if not, it defaults to 'trampoline'
-EXEC = % !APPNAME %
+EXEC = % !OS::BUILD_S::APP_NAME %
 
 # Name of the source OIL file
 OIL_FILE = % !OILFILENAME %
@@ -51,77 +51,83 @@ OIL_FILE = % !OILFILENAME %
 # it should be declared as APP_SRC in the OS section of the .oil file
 # (many times allowed).
 %
-foreach SOURCEFILES
+foreach src in OS::BUILD_S::APP_SRC
   before %SOURCES = %
-  do !FILE
+  do !src::VALUE
   between % %
   after %
 %
 end foreach
-if USESYSTEMCALL then
+if OS::SYSTEM_CALL then
 %
 SOURCES += tpl_dispatch_table.c
 SOURCES += tpl_invoque.S
 %
 end if
-if OSAPPLICATIONSTARTUPHOOK > 0 | OSAPPLICATIONSHUTDOWNHOOK > 0 then
+if OS::APPLICATIONSTARTUPHOOK > 0 | OS::APPLICATIONSHUTDOWNHOOK > 0 then
 %
 SOURCES += tpl_osapplication_hooks.c
 %
 end if
 %
 # Trampoline generation flags
-WITH_TRACE = % ! trueFalse(USETRACE) %
-WITH_MEMMAP = % ! trueFalse(USEMEMORYMAPPING) %
-WITH_LINKSCRIPT = % ! trueFalse(USELINKSCRIPT) %
+WITH_TRACE = % ! trueFalse(OS::TRACE) %
+WITH_MEMMAP = % ! trueFalse(OS::MEMMAP) %
+WITH_LINKSCRIPT = % ! trueFalse(exists OS::MEMMAP_S::LINKER) %
 WITH_MEMORY_PROTECTION = % ! trueFalse(USEMEMORYPROTECTION) %
 
 %
-foreach CFLAGS
-  before %
+if exists OS::BUILD_S::CFLAGS then
+  foreach flag in OS::BUILD_S::CFLAGS
+    before %
 # CFLAGS: flags used for the C compilation process
 # it should be declared as CFLAGS in the OS section of the .oil file
 # (many times allowed).
 CFLAGS = %
-  do !CFLAG
-  between % %
-  after %
+    do !flag::VALUE
+    between % %
+    after %
 %
-end foreach
+  end foreach
+end if
 %
 %
-foreach CPPFLAGS
-  before %
+if exists OS::BUILD_S::CPPFLAGS then
+  foreach flag in OS::BUILD_S::CPPFLAGS
+    before %
 # CPPFLAGS: flags used for the C++ compilation process
 # it should be declared as CPPFLAGS in the OS section of the .oil file
 # (many times allowed).
 CPPFLAGS = %
-  do !CPPFLAG
-  between % %
-  after %
-%
-end foreach
+    do !flag::VALUE
+    between % %
+    after %
+  %
+  end foreach
+end if
 %
 # LDFLAGS: flags used for the link process
 # it should be declared as LDFLAGS in the OS section of the .oil file
 # (many times allowed).
 %
-foreach LDFLAGS
-  before %LDFLAGS = %
-  do !LDFLAG
-  between % %
-  after %
+if exists OS::BUILD_S::LDFLAGS then
+  foreach flag in OS::BUILD_S::LDFLAGS
+    before %LDFLAGS = %
+    do !flag::VALUE
+    between % %
+    after %
 %
-end foreach
-%
-%
-if USELINKSCRIPT then
-%LDFLAGS += -T % !PROJECT %/% !LINKSCRIPT 
+  end foreach
 end if
-if USETRACE then%
-EXTRA_FILES_CLEAN += %!PROJECT %.desc%
+%
+%
+if exists OS::MEMMAP_S::LINKER then
+%LDFLAGS += -T % !OS::BUILD_S::PROJECT %/% !OS::MEMMAP_S::LINKER::SCRIPT 
 end if
-if USELOGFILE then%
+if OS::TRACE then%
+EXTRA_FILES_CLEAN += %!OS::BUILD_S::PROJECT %.desc%
+end if
+if LOGFILE then%
 EXTRA_FILES_CLEAN += goil.log%
 end if
 %
@@ -129,13 +135,15 @@ end if
 # it should be declared as AS_FLAGS in the OS section of the .oil file
 # (many times allowed).
 %
-foreach ASFLAGS
-  before %ASFLAGS = %
-  do !ASFLAG
-  between % %
-  after %
+if exists OS::BUILD_S::ASFLAGS then
+  foreach flag in OS::BUILD_S::ASFLAGS
+    before %ASFLAGS = %
+    do !flag::VALUE
+    between % %
+    after %
 %
-end foreach
+  end foreach
+end if
 %
 # Default build directory
 BUILD_DIR = build
@@ -143,30 +151,29 @@ BUILD_DIR = build
 # Autosar extension
 # If 'true', Autosar extension are compiled in (schedule tables, ...)
 AUTOSAR = % ! trueFalse(AUTOSAR) %
-AUTOSAR_SC = % !SCALABILITYCLASS %
-AUTOSAR_OSAPPLICATIONS = % !trueFalse(SCALABILITYCLASS == 3 | SCALABILITYCLASS == 4) %
+AUTOSAR_SC = % !OS::SCALABILITYCLASS %
+AUTOSAR_OSAPPLICATIONS = % !trueFalse(OS::SCALABILITYCLASS == 3 | OS::SCALABILITYCLASS == 4) %
 
 # Interrupt vector generation
-GENITVEC = % if USEINTERRUPTTABLE then %-i% end if%
+GENITVEC = % if OS::INTERRUPTTABLE then %-i% end if%
 
 #############################################################################
 # COMPILER CONFIGURATION
 #############################################################################
-
 # Program used to compile files.
 # it should be declared as COMPILER in the OS section of the .oil file.
 # default is 'gcc'
-CC = % !COMPILEREXE %
+CC = % !OS::BUILD_S::COMPILER %
 
 # Program used to link files during compilation process.
 # it should be declared as LINKER in the OS section of the .oil file.
 # default is 'gcc'
-LD = % !LINKEREXE %
+LD = % !OS::BUILD_S::LINKER %
 
 # Program used to link files during compilation process.
 # it should be declared as ASSEMBLER in the OS section of the .oil file.
 # default is 'as'
-AS = % !ASSEMBLEREXE %
+AS = % !OS::BUILD_S::ASSEMBLER %
 
 #############################################################################
 # TRAMPOLINE CONFIGURATION
@@ -175,7 +182,7 @@ AS = % !ASSEMBLEREXE %
 # Trampoline root path to source code.
 # it should be declared as TRAMPOLINE_BASE_PATH
 # in the OS section of the .oil file.
-TPL_BASE_PATH = % !TRAMPOLINEPATH %
+TPL_BASE_PATH = % !OS::BUILD_S::TRAMPOLINE_BASE_PATH %
 
 # Target is given in goil command line when generating the Makefile. 
 # If you update the target here, it will be taken into account, and 
@@ -191,11 +198,11 @@ BOARD = % !BOARD end if %
 WITH_USECOM = % !trueFalse(USECOM) %
 
 # WITH_USEDEBUG is true if DEBUG is used
-WITH_USEDEBUG = % !trueFalse(USEDEBUG) %
+WITH_USEDEBUG = % !trueFalse(OS::DEBUG) %
 
 # WITH_SYSTEM_CALL is true when compiling trampoline
 # with system call support. It is false otherwise
-WITH_SYSTEM_CALL = % !trueFalse(USESYSTEMCALL) %
+WITH_SYSTEM_CALL = % !trueFalse(OS::SYSTEM_CALL) %
 
 #############################################################################
 # OIL COMPILER CONFIGURATION
@@ -204,13 +211,13 @@ WITH_SYSTEM_CALL = % !trueFalse(USESYSTEMCALL) %
 # If the GOIL_TEMPLATE_PATH is commented, the default template path is used
 # (it can be saved in the .profile file).
 GOIL_COMPILER = goil%
-if TEMPLATEPATH != "" then %
+if exists TEMPLATEPATH then %
 GOIL_TEMPLATE_PATH = % !TEMPLATEPATH end if %
 
 # if there is an interrupt generation, the oil file depends on target.cfg
 # disabled by default as target.cfg can be provided by the port (can a
 # dependency be optional in a Makefile ?)
-#OIL_FILE_DEP = % if USEINTERRUPTTABLE then %target.cfg% end if%
+#OIL_FILE_DEP = % if OS::INTERRUPTTABLE then %target.cfg% end if%
 
 #############################################################################
 # DOCUMENTATION GENERATION

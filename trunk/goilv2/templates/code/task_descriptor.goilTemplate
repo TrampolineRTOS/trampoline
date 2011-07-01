@@ -1,19 +1,20 @@
 /*-----------------------------------------------------------------------------
- * Task % !NAME % descriptor
+ * Task % !task::NAME % descriptor
  */
-#define APP_% !PROCESSKIND %_% !NAME %_START_SEC_CODE
+#define APP_% !task::KIND %_% !task::NAME %_START_SEC_CODE
 #include "tpl_memmap.h"
 /*
- * Task % !NAME % function prototype
+ * Task % !task::NAME % function prototype
  */
-FUNC(void, OS_APPL_CODE) % !NAME %_function(void);
-#define APP_% !PROCESSKIND %_% !NAME %_STOP_SEC_CODE
+FUNC(void, OS_APPL_CODE) % !task::NAME %_function(void);
+#define APP_Task_% !task::NAME %_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
 /*-----------------------------------------------------------------------------
  * Target specific structures
  */
 %
+let proc := task
 template process_specific
 %
 
@@ -43,35 +44,35 @@ end if
 #include "tpl_memmap.h"
 
 %
-if [RESOURCES length] > 0 then
+if exists task::RESOURCE then
 %/*
- * Resources used by task % !NAME %
+ * Resources used by task % !task::NAME %
  *
  * %
-foreach RESOURCES do
- !RESOURCENAME
+foreach resource in task::RESOURCE do
+ !resource::VALUE
 between %, %
 end foreach
 %
  */
 %end if%
 /*
- * Static descriptor of task % !NAME %
+ * Static descriptor of task % !task::NAME %
  */
-CONST(tpl_proc_static, OS_CONST) % !NAME %_task_stat_desc = {
-  /* context                  */  % !NAME %_CONTEXT,
-  /* stack                    */  % !NAME %_STACK,
-  /* entry point (function)   */  % !NAME %_function,
+CONST(tpl_proc_static, OS_CONST) % !task::NAME %_task_stat_desc = {
+  /* context                  */  % !task::NAME %_CONTEXT,
+  /* stack                    */  % !task::NAME %_STACK,
+  /* entry point (function)   */  % !task::NAME %_function,
   /* internal ressource       */  %
-if USEINTERNALRESOURCE then
-  %&%!INTERNALRESOURCE%_rez_desc,%
-elsif NONPREEMPTABLE then
+if task::USEINTERNALRESOURCE then
+  %&%!task::INTERNALRESOURCE%_rez_desc,%
+elsif task::NONPREEMPTABLE then
   %&INTERNAL_RES_SCHEDULER,%
 else
   %NULL,%
 end if
 %
-  /* task id                  */  % !NAME %_id,
+  /* task id                  */  % !task::NAME %_id,
 #if WITH_OSAPPLICATION == YES
   /* OS application id        */  %
 if AUTOSAR then
@@ -85,10 +86,10 @@ if AUTOSAR then
 end if
 %
 #endif
-  /* task base priority       */  % !PRIORITY %,
-  /* max activation count     */  % !ACTIVATION %,
+  /* task base priority       */  % !task::PRIORITY %,
+  /* max activation count     */  % !task::ACTIVATION %,
   /* task type                */  TASK_%
-if EXTENDEDTASK then
+if exists task::EVENT then
   %EXTENDED,%
 else
   %BASIC,%
@@ -107,15 +108,15 @@ end if
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 /*
- * Dynamic descriptor of task % !NAME %
+ * Dynamic descriptor of task % !task::NAME %
  */
-VAR(tpl_proc, OS_VAR) % !NAME %_task_desc = {
+VAR(tpl_proc, OS_VAR) % !task::NAME %_task_desc = {
   /* resources                      */  NULL,
 #if WITH_OSAPPLICATION == YES
   /* if > 0 the process is trusted  */  %
 if AUTOSAR then
   if SCALABILITYCLASS > 2 then
-    if exists TRUSTED default (false) then !1 else !0 end if
+    if exists task::TRUSTED default (false) then !1 else !0 end if
   end if
 else
   !0
@@ -123,9 +124,9 @@ end if
 %,    
 #endif /* WITH_OSAPPLICATION */
   /* activate count                 */  0,
-  /* task priority                  */  % !PRIORITY %,
+  /* task priority                  */  % !task::PRIORITY %,
   /* task state                     */  %
-if AUTOSTART then
+if task::AUTOSTART then
   %AUTOSTART%
 else
   %SUSPENDED%
@@ -133,12 +134,12 @@ end if
 %
 };
 %
-if EXTENDEDTASK then
+if exists task::EVENT then
 %
 /*
- * Event structure of task % !NAME %
+ * Event structure of task % !task::NAME %
  */
-VAR(tpl_task_events, OS_VAR) % !NAME %_task_evts = {
+VAR(tpl_task_events, OS_VAR) % !task::NAME %_task_evts = {
   /* event set  */ 0,
   /* event wait */ 0
 };

@@ -39,7 +39,8 @@ enum @dataType {
   enumeration,
   boolean,
   identifier,
-  objectType
+  objectType,
+  structType
 }{
   reader oilType:
     void -> "VOID";
@@ -53,6 +54,7 @@ enum @dataType {
     boolean -> "BOOLEAN";
     identifier -> "IDENTIFIER";
     objectType -> "OBJECT_TYPE";
+    structType -> "STRUCT";
   end reader;
 }
 
@@ -568,6 +570,10 @@ class @impType {
 #  end method;
 }
 
+class @impStructType extends @impType {
+  @implementationObjectMap structAttributes; # struct attributes
+}
+
 reader @impType autoAllowed -> @bool result:
   result := false;
 end reader;
@@ -662,29 +668,55 @@ class @impRangedType extends @impAutoDefaultType {
 class @impBoolType extends @impAutoDefaultType {
   @implementationObjectMap trueSubAttributes;
   @implementationObjectMap falseSubAttributes;
-
-#  override method setDefault ?!@objectAttributes attributes:
-#    if not [[attributes objectParams] hasKey ![name string]] then
-#      cast defaultValue:
-#      when == @void do
-#      when == @auto do
-#      when == @bool_t b do
-#        @implementationObjectMap subImpAttributes;
-#        if [b value] then
-#          subImpAttributes := trueSubAttributes;
-#        else
-#          subImpAttributes := falseSubAttributes;
-#        end if;
-#        @objectAttributes subAttributes := emptyObject[];
-#        setDefaultsForType !subImpAttributes !?subAttributes;
-#        @boolAttribute defaults := [@boolAttribute new ![b location] ![b value] !subAttributes];
-#        @identifierMap attr := [attributes objectParams];
-#        [!?attr put !name !defaults];
-#        [!?attributes setObjectParams !attr];
-#      else end cast;
-#    end if;
-#  end method;
 }
+
+override method @impBoolType setDefault ?!@objectAttributes attributes:
+#  if not [[attributes objectParams] hasKey ![name string]] then
+    cast defaultValue:
+    when == @void do
+    when == @auto do
+    when == @boolAttribute b do
+#      message "*** ".name." : ".[[b value] cString]."\n";
+      if [[attributes objectParams] hasKey ![name string]] then
+        # the value has been set by the user, get the default subvalues
+        # corresponding to the value set
+        @identifierMap userAttributes := [attributes objectParams];
+        @object_t value;
+        [userAttributes get !name ?value];
+        cast value:
+        when == @boolAttribute boolValue do
+          @implementationObjectMap subImpAttributes;
+          if [boolValue value] then
+            subImpAttributes := trueSubAttributes;
+          else
+            subImpAttributes := falseSubAttributes;
+          end if;
+          @objectAttributes subAttributes := [boolValue subAttributes];
+          setDefaultsForType !subImpAttributes !?subAttributes;
+          # update the attribute
+          @boolAttribute bv := boolValue;
+          [!?bv setSubAttributes !subAttributes];
+          [!?userAttributes setValueForKey !bv ![name string]];
+          [!?attributes setObjectParams !userAttributes];
+        else end cast;
+      else
+        @implementationObjectMap subImpAttributes;
+        if [b value] then
+          subImpAttributes := trueSubAttributes;
+        else
+          subImpAttributes := falseSubAttributes;
+        end if;
+        @objectAttributes subAttributes := emptyObject[];
+        setDefaultsForType !subImpAttributes !?subAttributes;
+        @boolAttribute defaults := [@boolAttribute new ![b location] ![b value] !subAttributes];
+        @identifierMap attr := [attributes objectParams];
+        [!?attr put !name !defaults];
+        [!?attributes setObjectParams !attr];
+      end if;
+    else end cast;
+#  end if;
+end method;
+
 
 class @impEnumType extends @impAutoDefaultType {
   @enumValues valuesMap;

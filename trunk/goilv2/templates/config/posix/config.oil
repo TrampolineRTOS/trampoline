@@ -1,7 +1,25 @@
 IMPLEMENTATION posix {
+  OS {
+    BOOLEAN [
+      TRUE {
+        STRING APP_SRC[];
+        STRING CFLAGS[];
+        STRING ASFLAGS[];
+        STRING LDFLAGS[];
+        STRING APP_NAME = "trampoline";
+        STRING TRAMPOLINE_BASE_PATH = "..";
+        STRING COMPILER = "gcc";
+        STRING ASSEMBLER = "gcc";
+        STRING LINKER = "gcc";
+      },
+      FALSE
+    ] BUILD = FALSE;
+  };
+  
   TASK {
     UINT32 STACKSIZE = 32768;
   };
+  
   ISR {
     UINT32 STACKSIZE = 32768;
     ENUM [SIGTERM, SIGQUIT] SOURCE; 

@@ -36,51 +36,55 @@
 #define TARGET_ARCH                      "% !ARCH %"
 #define TARGET_CHIP                      "% !CHIP %"
 #define TARGET_BOARD                     "% !BOARD %"
-#define WITH_OS_EXTENDED                 % !yesNo(EXTENDED) %
-#define WITH_STARTUP_HOOK                % !yesNo(USESTARTUPHOOK) %
-#define WITH_SHUTDOWN_HOOK               % !yesNo(USESHUTDOWNHOOK) %
-#define WITH_ERROR_HOOK                  % !yesNo(USEERRORHOOK) %
-#define WITH_PRE_TASK_HOOK               % !yesNo(USEPRETASKHOOK) %
-#define WITH_POST_TASK_HOOK              % !yesNo(USEPOSTTASKHOOK) %
-#define WITH_USEGETSERVICEID             % !yesNo(USEGETSERVICEID) %
-#define WITH_USEPARAMETERACCESS          % !yesNo(USEPARAMETERACCESS) %
-#define WITH_USERESSCHEDULER             % !yesNo(USERESSCHEDULER) %
-#define WITH_SYSTEM_CALL                 % !yesNo(USESYSTEMCALL) %
+#define WITH_OS_EXTENDED                 % !yesNo(OS::STATUS == "EXTENDED") %
+#define WITH_STARTUP_HOOK                % !yesNo(OS::STARTUPHOOK) %
+#define WITH_SHUTDOWN_HOOK               % !yesNo(OS::SHUTDOWNHOOK) %
+#define WITH_ERROR_HOOK                  % !yesNo(OS::ERRORHOOK) %
+#define WITH_PRE_TASK_HOOK               % !yesNo(OS::PRETASKHOOK) %
+#define WITH_POST_TASK_HOOK              % !yesNo(OS::POSTTASKHOOK) %
+#define WITH_USEGETSERVICEID             % !yesNo(OS::USEGETSERVICEID) %
+#define WITH_USEPARAMETERACCESS          % !yesNo(OS::USEPARAMETERACCESS) %
+#define WITH_USERESSCHEDULER             % !yesNo(OS::USERESSCHEDULER) %
+#define WITH_SYSTEM_CALL                 % !yesNo(OS::SYSTEM_CALL) %
 #define WITH_MEMORY_PROTECTION           % !yesNo(USEMEMORYPROTECTION) %
-#define WITH_MEMMAP                      % !yesNo(USEMEMORYMAPPING) %
-#define WITH_COMPILER_SETTINGS           % !yesNo(USECOMPILERSETTINGS)
-if exists TRAMPOLINEPATH then%
+#define WITH_MEMMAP                      % !yesNo(OS::MEMMAP) %
+#define WITH_COMPILER_SETTINGS           % !yesNo(OS::MEMMAP)
+if exists OS::BUILD_S::TRAMPOLINEPATH then%
 #define TRAMPOLINE_BASE_PATH             "% !TRAMPOLINEPATH %"%
 end if%
 #define WITH_AUTOSAR                     % !yesNo(AUTOSAR) %
-#define WITH_PROTECTION_HOOK             % !yesNo(USEPROTECTIONHOOK) %
-#define WITH_STACK_MONITORING            % !yesNo(USESTACKMONITORING) %
-/* #define WITH_AUTOSAR_TIMING_PROTECTION % !yesNo(USESTACKMONITORING) % */
-#define AUTOSAR_SC                       % !SCALABILITYCLASS %
-#define WITH_OSAPPLICATION               % !yesNo(SCALABILITYCLASS > 2)%
-#define WITH_OSAPPLICATION_STARTUP_HOOK  % !yesNo(OSAPPLICATIONSTARTUPHOOK > 0) %
-#define WITH_OSAPPLICATION_SHUTDOWN_HOOK % !yesNo(OSAPPLICATIONSHUTDOWNHOOK > 0) %
-#define WITH_TRACE                       % !yesNo(USETRACE)
-if USETRACE then%
-#define TRACE_TASK                       % !yesNo(TRACETASK) %
-#define TRACE_ISR                        % !yesNo(TRACEISR) %
-#define TRACE_RES                        % !yesNo(TRACERESOURCE) %
-#define TRACE_ALARM                      % !yesNo(TRACEALARM) %
-#define TRACE_U_EVENT                    % !yesNo(TRACEUSEREVENT) %
-#define TRACE_FORMAT()                   tpl_trace_format_% !TRACEFORMAT %();
-#define TRACE_FILE                       "%! TRACEFILE %"
-%
+#define WITH_PROTECTION_HOOK             % !yesNo(OS::PROTECTIONHOOK) %
+#define WITH_STACK_MONITORING            % !yesNo(OS::STACKMONITORING) %
+/* #define WITH_AUTOSAR_TIMING_PROTECTION % !yesNo(OS::STACKMONITORING) % */
+#define AUTOSAR_SC                       % !OS::SCALABILITYCLASS %
+#define WITH_OSAPPLICATION               % !yesNo(OS::SCALABILITYCLASS > 2)%
+#define WITH_OSAPPLICATION_STARTUP_HOOK  % !yesNo(OS::APPLICATIONSTARTUPHOOK > 0) %
+#define WITH_OSAPPLICATION_SHUTDOWN_HOOK % !yesNo(OS::APPLICATIONSHUTDOWNHOOK > 0) %
+#define WITH_TRACE                       % !yesNo(OS::TRACE)
+if OS::TRACE then%
+#define TRACE_TASK                       % !yesNo(OS::TRACE_S::TRACE_TASK) %
+#define TRACE_ISR                        % !yesNo(OS::TRACE_S::TRACE_ISR) %
+#define TRACE_RES                        % !yesNo(OS::TRACE_S::TRACE_RESOURCE) %
+#define TRACE_ALARM                      % !yesNo(OS::TRACE_S::TRACE_ALARM) %
+#define TRACE_U_EVENT                    % !yesNo(OS::TRACE_S::TRACE_USER) %
+#define TRACE_FORMAT()                   tpl_trace_format_% !OS::TRACE_S::FORMAT %();%
+  if exists OS::TRACE_S::METHOD then%
+#define TRACE_METHOD                     % !OS::TRACE_S::METHOD
+    if OS::TRACE_S::METHOD == "FILE" then%
+#define TRACE_FILE                       "%! OS::TRACE_S::METHOD_S::NAME %"%
+    end if
+  end if
 end if
 %
-#define WITH_IT_TABLE                    % !yesNo(USEINTERRUPTTABLE)%
+#define WITH_IT_TABLE                    % !yesNo(OS::INTERRUPTTABLE)%
 #define WITH_COM                         % !yesNo(USECOM)
 if USECOM then%
-#define TPL_COMTIMEBASE                  % !COMTIMEBASE %
-#define WITH_COM_ERROR_HOOK              % !yesNo(USECOMERRORHOOK) %
-#define WITH_COM_USEGETSERVICEID         % !yesNo(USECOMGETSERVICEID) %
-#define WITH_COM_USEPARAMETERACCESS      % !yesNo(USECOMPARAMETERACCESS) %
-#define WITH_COM_STARTCOMEXTENSION       % !yesNo(USESTARTCOMEXTENSION) %
-#define WITH_COM_EXTENDED                % !yesNo(COMEXTENDED)
+#define TPL_COMTIMEBASE                  % !(exists COM::COMTIMEBASE default ("0.001")) %
+#define WITH_COM_ERROR_HOOK              % !yesNo(exists COM::COMERROKHOOK default (false)) %
+#define WITH_COM_USEGETSERVICEID         % !yesNo(exists COM::COMUSEGETSERVICEID default (false)) %
+#define WITH_COM_USEPARAMETERACCESS      % !yesNo(exists COM::COMUSEPARAMETERACCESS default (false)) %
+#define WITH_COM_STARTCOMEXTENSION       % !yesNo(exists COM::COMSTARTCOMEXTENSION default (false)) %
+#define WITH_COM_EXTENDED                % !yesNo((exists COM::COMSTATUS default ("COMSTANDARD")) == "COMEXTENDED")
 end if%
 
 /*=============================================================================
@@ -163,7 +167,7 @@ end if
 /*-----------------------------------------------------------------------------
  * Priority of RES_SCHEDULER
  */
-#define RES_SCHEDULER_PRIORITY % !MAXTASKPRIORITY %
+#define RES_SCHEDULER_PRIORITY % !OS::RESSCHEDULERPRIORITY %
 
 #endif
 

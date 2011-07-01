@@ -45,7 +45,7 @@ list oilDefinitions error message "OIL implementation definition" style keywords
 # List of datatypes
 #
 list dataTypes error message "type '%K'" style keywordsStyle :
-  "UINT32", "INT32", "UINT64", "INT64", "FLOAT", "ENUM", "STRING", "BOOLEAN", "IDENTIFIER";
+  "UINT32", "INT32", "UINT64", "INT64", "FLOAT", "ENUM", "STRING", "BOOLEAN", "IDENTIFIER", "STRUCT";
 
 #
 # Miscellaneous specifiers

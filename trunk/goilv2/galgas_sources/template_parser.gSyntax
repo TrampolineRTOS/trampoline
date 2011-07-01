@@ -35,18 +35,15 @@ nonterminal <template_instruction>
   ??@string inTemplateDirectory
   ?!@TfieldMap ioTemplateVariableMap
   ?!@string ioResultingString
-label parse
 ;
 
 nonterminal <sorting_order>
   !@lsint order
-label parse
 ;
 
 #nonterminal <struct_path>
 #  ?!@lstringlist path
-#label parse
-#;
+##;
 
 nonterminal <variable>
   ??@string inPrefix
@@ -54,7 +51,6 @@ nonterminal <variable>
   ??@string inTemplateDirectory
   ??@TfieldMap inVariableMap
   !@TvarPath path
-label parse
 ;
 
 nonterminal <variable_or_here>
@@ -63,7 +59,6 @@ nonterminal <variable_or_here>
   ??@string inTemplateDirectory
   ??@TfieldMap inTemplateVariableMap
   !@location outWhere
-label parse
 ;
 
 nonterminal <expression>
@@ -73,7 +68,6 @@ nonterminal <expression>
   ??@TfieldMap inTemplateVariableMap
   !@Tvalue outExpression
   !@Ttype outResultType
-label parse
 ;
 
 nonterminal  <template_instruction_list>
@@ -82,7 +76,6 @@ nonterminal  <template_instruction_list>
   ??@string inTemplateDirectory
   ?!@TfieldMap inTemplateVariableMap
   ?!@string ioResultingString
-label parse
 ;
 
 #---------------------------------------------------------------------------*
@@ -200,7 +193,7 @@ rule <template_instruction>
       nextPrefix := fullPrefix[!ioTemplateVariableMap !prefix];
     or
     end select;
-    goilTemplateInvocation
+    templateInvocation
       !templateName
       !nextPrefix
       !inPath
@@ -236,7 +229,7 @@ rule <template_instruction>
       nextPrefix := fullPrefix[!ioTemplateVariableMap !prefix];
     or
     end select;
-    goilTemplateInvocation
+    templateInvocation
       !templateName
       !nextPrefix
       !inPath
@@ -451,8 +444,6 @@ rule <template_instruction>
   ?!@string ioResultingString
 :
   $foreach$; $identifier$ ? @lstring variableName; $in$;
-  @uint listLentgh;
-#  @goilTemplateEnumationList enumerationList [emptyList];
   @Tvalue enumeratedValue;
   @Ttype expressionType;
   <expression>
@@ -464,13 +455,19 @@ rule <template_instruction>
     ?expressionType
   ;
     
-#    log enumeratedValue;
-  if expressionType != [@Ttype listType] then
-    error here:"only a list can be enumerated";
-    listLentgh := 0;
-  else
-    listLentgh := [[enumeratedValue mMapListValue] length]; 
-  end if;
+  @uint listLength := 0;
+  @lstringlist keyList;
+  switch expressionType
+  when listType:
+    listLength := [[enumeratedValue mMapListValue] length];
+    keyList := [@lstringlist emptyList];
+  when mapType:
+    listLength := [[enumeratedValue mStructValue] count];
+    keyList := [[enumeratedValue mStructValue] allKeyList];
+  when boolType, enumType, unsignedType, stringType, structType, unconstructedType:
+    error here:"only a list or a map can be enumerated": keyList;
+  end switch;
+
   @string foreachPrefix;
   select
     foreachPrefix := "";
@@ -479,14 +476,13 @@ rule <template_instruction>
     $identifier$ ? @lstring prefixString;
     foreachPrefix := [prefixString string];
   end select;
-#  enumerationList += !enumeratedValue !foreachPrefix;
 
 #--- before block
   select
   or
     $before$;
     parse
-    when listLentgh > 0 :
+    when listLength > 0 :
       <template_instruction_list>
         !inPrefix
         !inPath
@@ -501,27 +497,23 @@ rule <template_instruction>
 #--- Do block
   $do$;
   @uint idx := 0;
-  parse loop listLentgh
-  while idx < listLentgh do
+  parse loop listLength
+  while idx < listLength do
     @TfieldMap templateVariableMap [mapWithMapToOverride !ioTemplateVariableMap];
-#    foreach enumerationList do
-    const @TfieldMap fieldMap := [[enumeratedValue mMapListValue] mMapAtIndex !idx];
-#    foreach fieldMap do
+    @Ttype itemType;
+    @Tvalue itemValue;
+    if expressionType == [@Ttype mapType] then
+      @lstring keyOfItem := [keyList mValueAtIndex !idx];
+      [[enumeratedValue mStructValue] searchKey !keyOfItem ?itemType ?itemValue];
+      addLStringValue !?templateVariableMap !"KEY" !keyOfItem;
+    else
+      const @TfieldMap fieldMap := [[enumeratedValue mMapListValue] mMapAtIndex !idx];
+      itemType := [@Ttype structType];
+      itemValue := [@Tvalue new !0L !"" ![@TfieldMapList emptyList] !fieldMap];
+    end if;
     @lstring varName := [@lstring new !foreachPrefix . [variableName string] ![variableName location]];
-#        if [templateVariableMap hasKey ![varName string]] then
-#          [!?templateVariableMap removeKey !varName ?* ?*];
-#        end if;
-    [!?templateVariableMap insertKey
-      !varName
-      ![@Ttype structType]
-      ![@Tvalue new !0L !"" ![@TfieldMapList emptyList] !fieldMap]
-    ];
-#      end foreach;
-#    end foreach;
+    [!?templateVariableMap insertKey !varName !itemType !itemValue];
 
-#    if [templateVariableMap hasKey !"INDEX"] then
-#      [!?templateVariableMap removeKey ![@lstring new !"INDEX" !here] ?* ?*];
-#    end if;
     addUnsignedValue !?templateVariableMap ![@lstring new !foreachPrefix."INDEX" !here] ![idx uint64];
 
     <template_instruction_list>
@@ -536,7 +528,7 @@ rule <template_instruction>
     or
       $between$;
       parse 
-      when idx < listLentgh :
+      when idx < listLength :
         <template_instruction_list>
           !inPrefix
           !inPath
@@ -556,7 +548,7 @@ rule <template_instruction>
   or
     $after$;
     parse
-    when listLentgh > 0 :
+    when listLength > 0 :
       <template_instruction_list>
         !inPrefix
         !inPath
@@ -840,7 +832,8 @@ routine setVariableInPath
   # get the name and the key of the variable
   @lstring varName;
   @lstring key;
-  [!?path popFirst ?varName ?key];
+  @lsint idx;
+  [!?path popFirst ?varName ?key ?idx];
   
   if [ioFieldMap hasKey ![varName string]] then
     @Ttype fieldType;
@@ -875,7 +868,47 @@ routine setVariableInPath
             [!?items insertKey !key ![@Ttype structType] !valueWithStruct[!nextFieldMap]];
           end if;
         end if;
+        fieldValue->mStructValue := items;
+        [!?ioFieldMap setMTypeForKey !fieldType ![varName string]];
+        [!?ioFieldMap setMValueForKey !fieldValue ![varName string]];
       else # no key has been defined, the type is changed to
+        if [path length] == 0 then
+          # the actual type
+          [!?ioFieldMap setMTypeForKey !expressionType ![varName string]];
+          [!?ioFieldMap setMValueForKey !enumeratedValue ![varName string]];
+        else
+          # a struct type
+          @TfieldMap nextFieldMap [emptyMap];
+          setVariableInPath !path !?nextFieldMap !expressionType !enumeratedValue;
+          [!?ioFieldMap setMTypeForKey ![@Ttype structType] ![varName string]];
+          [!?ioFieldMap setMValueForKey !valueWithStruct[!nextFieldMap] ![varName string]];
+        end if;
+      end if;
+    elsif fieldType == [@Ttype listType] then
+      # then referenced field is a list
+      if [idx sint] != -1s then
+        if [path length] == 0 then
+          if expressionType == [@Ttype structType] then
+            # ok, trying to put a struct in a list item
+            @TfieldMapList theList := [fieldValue mMapListValue];
+            [!?theList setMMapAtIndex ![enumeratedValue mStructValue] ![idx uint]];
+            fieldValue->mMapListValue := theList;
+          else
+            # it is an error to put something else than a struct in a list item
+            error varName: "struct expression expected";
+          end if;
+        else
+          # an item of the list is referenced, get it
+          @TfieldMapList theList := [fieldValue mMapListValue];
+          @TfieldMap nextFieldMap := [theList mMapAtIndex ![idx uint]];
+          setVariableInPath !path !?nextFieldMap !expressionType !enumeratedValue;
+          [!?theList setMMapAtIndex !nextFieldMap ![idx uint]];
+          fieldValue->mMapListValue := theList;
+        end if;
+        [!?ioFieldMap setMTypeForKey !fieldType ![varName string]];
+        [!?ioFieldMap setMValueForKey !fieldValue ![varName string]];
+      else
+        # this is the whole list
         if [path length] == 0 then
           # the actual type
           [!?ioFieldMap setMTypeForKey !expressionType ![varName string]];
@@ -903,15 +936,20 @@ routine setVariableInPath
       end if;
     else
       if [key string] == "" then
-        if [path length] == 0 then
-          # the type is changed to the actual type
-          [!?ioFieldMap setMTypeForKey !expressionType ![varName string]];
-          [!?ioFieldMap setMValueForKey !enumeratedValue ![varName string]];
+        if [idx sint] == -1s then
+          if [path length] == 0 then
+            # the type is changed to the actual type
+            [!?ioFieldMap setMTypeForKey !expressionType ![varName string]];
+            [!?ioFieldMap setMValueForKey !enumeratedValue ![varName string]];
+          else
+            @TfieldMap nextFieldMap [emptyMap];
+            setVariableInPath !path !?nextFieldMap !expressionType !enumeratedValue;
+            [!?ioFieldMap setMTypeForKey ![@Ttype structType] ![varName string]];
+            [!?ioFieldMap setMValueForKey !valueWithStruct[!nextFieldMap] ![varName string]];
+          end if;
         else
-          @TfieldMap nextFieldMap [emptyMap];
-          setVariableInPath !path !?nextFieldMap !expressionType !enumeratedValue;
-          [!?ioFieldMap setMTypeForKey ![@Ttype structType] ![varName string]];
-          [!?ioFieldMap setMValueForKey !valueWithStruct[!nextFieldMap] ![varName string]];
+          # it is an error to set an item of a list it the list does not exist
+          error varName: "A list must exist before setting one of its item";
         end if;
       else
         # create a map
@@ -931,7 +969,12 @@ routine setVariableInPath
     # The variable does not exist
     if [path length] == 0 then
       if [key string] == "" then
-        [!?ioFieldMap insertKey !varName !expressionType !enumeratedValue];
+        if [idx sint] == -1s then
+          [!?ioFieldMap insertKey !varName !expressionType !enumeratedValue];
+        else
+          # it is an error to set an item of a list it the list does not exist
+          error varName: "A list must exist before setting one of its item";
+        end if;
       else
         @TfieldMap newMap [emptyMap];
         [!?newMap insertKey !key !expressionType !enumeratedValue];
@@ -939,9 +982,14 @@ routine setVariableInPath
       end if;
     else
       if [key string] == "" then
-        @TfieldMap nextFieldMap [emptyMap];
-        setVariableInPath !path !?nextFieldMap !expressionType !enumeratedValue;
-        [!?ioFieldMap insertKey !varName ![@Ttype structType] !valueWithStruct[!nextFieldMap]];
+        if [idx sint] == -1s then
+          @TfieldMap nextFieldMap [emptyMap];
+          setVariableInPath !path !?nextFieldMap !expressionType !enumeratedValue;
+          [!?ioFieldMap insertKey !varName ![@Ttype structType] !valueWithStruct[!nextFieldMap]];
+        else
+          # it is an error to set an item of a list it the list does not exist
+          error varName: "A list must exist before setting one of its item";
+        end if;
       else
         @TfieldMap newMap [emptyMap];
         @TfieldMap nextFieldMap [emptyMap];
@@ -1008,34 +1056,26 @@ rule <template_instruction>
         # struct type
         @Tvalue variableValue;
         @Ttype variableType;
-        searchField !path !ioTemplateVariableMap ?variableType ?variableValue ?*;
-        if variableType != [@Ttype listType] then
-          @lstring last;
-          [path last ?last ?*];
-          error last: "list type expected";
-        else
-          variableValue->mMapListValue += ![enumeratedValue mStructValue];
-          setVariableInPath !path !?ioTemplateVariableMap !variableType !variableValue;
-#          [!?ioTemplateVariableMap setMTypeForKey !variableType ![variableName string]];
-#          [!?ioTemplateVariableMap setMValueForKey !variableValue ![variableName string]];
+        @bool found;
+        searchFieldIfExists !path !ioTemplateVariableMap ?variableType ?variableValue ?found;
+        variableValue->mMapListValue += ![enumeratedValue mStructValue];
+        if not found then 
+          variableType := [@Ttype listType];
         end if;
+        setVariableInPath !path !?ioTemplateVariableMap !variableType !variableValue;
       end if;
     else
       @Tvalue variableValue;
       @Ttype variableType;
-      searchField !path !ioTemplateVariableMap ?variableType ?variableValue ?*;
-      if variableType != [@Ttype listType] then
-        @lstring last;
-        [path last ?last ?*];
-        error last: "list type expected";
-      else
-        @TfieldMap fieldMap [emptyMap];
-        [!?fieldMap insertKey ![@lstring new !"NAME" !here] !expressionType !enumeratedValue];
-        variableValue->mMapListValue += !fieldMap;
-        setVariableInPath !path !?ioTemplateVariableMap !variableType !variableValue;
-#        [!?ioTemplateVariableMap setMTypeForKey !variableType ![variableName string]];
-#        [!?ioTemplateVariableMap setMValueForKey !variableValue ![variableName string]];
+      @bool found;
+      searchFieldIfExists !path !ioTemplateVariableMap ?variableType ?variableValue ?found;
+      @TfieldMap fieldMap [emptyMap];
+      [!?fieldMap insertKey ![@lstring new !"NAME" !here] !expressionType !enumeratedValue];
+      variableValue->mMapListValue += !fieldMap;
+      if not found then
+        variableType := [@Ttype listType];
       end if;
+      setVariableInPath !path !?ioTemplateVariableMap !variableType !variableValue;
     end if;
   end select;
 end rule;
@@ -1075,6 +1115,7 @@ rule <template_instruction>
   <variable_or_here> !inPrefix !inPath !inTemplateDirectory !ioTemplateVariableMap ?where;
   @Tvalue enumeratedValue;
   @Ttype expressionType;
+  $:$;
   <expression>
     !inPrefix
     !inPath
@@ -1104,6 +1145,7 @@ rule <template_instruction>
   <variable_or_here>  !inPrefix !inPath !inTemplateDirectory !ioTemplateVariableMap ?where;
   @Tvalue enumeratedValue;
   @Ttype expressionType;
+  $:$;
   <expression>
     !inPrefix
     !inPath
@@ -1161,17 +1203,20 @@ routine printVariable
 end routine;
 
 rule <template_instruction>
-  ??@string unused inPrefix
-  ??@string unused inPath
-  ??@string unused inTemplateDirectory
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
   ?!@TfieldMap ioTemplateVariableMap
   ?!@string unused ioResultingString
 :
-  $display$; $identifier$ ?@lstring variableName;
+  @TvarPath path;
+  $display$; <variable> !inPrefix !inPath !inTemplateDirectory !ioTemplateVariableMap ?path;
   @Ttype variableType;
   @Tvalue variableValue;
-  [ioTemplateVariableMap searchKey !variableName ?variableType ?variableValue];
-  message [variableName string]." (".[[variableName location] locationString].") : ".[variableType messageGoilTemplateType]."\n";
+  @location loc;
+  searchField !path !ioTemplateVariableMap ?variableType ?variableValue ?loc;
+  printPath !path;
+  message " (".[loc locationString].") : ".[variableType messageGoilTemplateType]."\n";
   printVariable !0 !variableType !variableValue;
 end rule;
 
@@ -1329,6 +1374,7 @@ rule <variable>
   path := [@TvarPath emptyList];
   $identifier$ ?@lstring variableName;
   @lstring key := emptyLString[];
+  @lsint idx := [@lsint new !-1s !here];
   select
     @Tvalue keyValue;
     @Ttype keyType;
@@ -1337,16 +1383,19 @@ rule <variable>
     switch keyType
     when stringType:
       key := [@lstring new ![keyValue mStringValue] !here];
-    when boolType, unsignedType, listType, mapType, structType, enumType, unconstructedType:
-      error here: "map key must be a string": key;
+    when unsignedType:
+      idx := [@lsint new ![[keyValue mUnsigned64Value] sint] !here];
+    when boolType, listType, mapType, structType, enumType, unconstructedType:
+      error here: "map key must be a string, list index must be an unsigned integer";
     end switch;
     $]$;
   or end select;
-  path += !variableName !key;
+  path += !variableName !key !idx;
   repeat
   while
     $::$; $identifier$ ?variableName;
     key := emptyLString[];
+    idx := [@lsint new !-1s !here];
     select
       @Tvalue keyValue;
       @Ttype keyType;
@@ -1355,12 +1404,14 @@ rule <variable>
       switch keyType
       when stringType:
         key := [@lstring new ![keyValue mStringValue] !here];
-      when boolType, unsignedType, listType, mapType, structType, enumType, unconstructedType:
-        error here: "map key must be a string": key;
+      when unsignedType:
+        idx := [@lsint new ![[keyValue mUnsigned64Value] sint] !here];
+      when boolType, listType, mapType, structType, enumType, unconstructedType:
+        error here: "map key must be a string, list index must be an unsigned integer";
       end switch;
       $]$;
     or end select;
-    path += !variableName !key;
+    path += !variableName !key !idx;
   end repeat;
 end rule;
 

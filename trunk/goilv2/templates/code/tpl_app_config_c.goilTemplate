@@ -78,7 +78,7 @@ end if
 #define API_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 %
-foreach event in EVENT
+foreach event in EVENTS
   before
 %
 /*=============================================================================
@@ -102,9 +102,9 @@ foreach resource in REGULARRESOURCES
 %
   do
 %
-/* Resource % !NAME % */
-#define % !NAME %_id % !INDEX %
-CONST(ResourceType, AUTOMATIC) % !NAME % = % !NAME %_id;
+/* Resource % !resource::NAME % */
+#define % !resource::NAME %_id % !INDEX %
+CONST(ResourceType, AUTOMATIC) % !resource::NAME % = % !resource::NAME %_id;
 %
 end foreach
 %
@@ -112,23 +112,23 @@ end foreach
  * Declaration of processes IDs
  */
 %
-foreach proc in PROCESS do
-  if proc::PROCESSKIND == "Task" then
+foreach proc in PROCESSES do
+  if proc::KIND == "Task" then
 %
-/* Task % !NAME % identifier */
-#define % !NAME %_id % !INDEX %
-CONST(TaskType, AUTOMATIC) % !NAME % = % !NAME %_id;
+/* Task % !proc::NAME % identifier */
+#define % !proc::NAME %_id % !INDEX %
+CONST(TaskType, AUTOMATIC) % !proc::NAME % = % !proc::NAME %_id;
 %
   else
 %
-/* ISR % !NAME % identifier */
-#define % !NAME %_id % !INDEX 
+/* ISR % !proc::NAME % identifier */
+#define % !proc::NAME %_id % !INDEX 
     if AUTOSAR then
     #
     # ISR ids constants are only available for AUTOSAR
     #
 %
-CONST(ISRType, AUTOMATIC) % !NAME % = % !NAME %_id;
+CONST(ISRType, AUTOMATIC) % !proc::NAME % = % !proc::NAME %_id;
 %
     end if
   end if
@@ -143,14 +143,14 @@ foreach alarm in ALARM
 %
   do
 %
-/* Alarm % !NAME % identifier */
-#define % !NAME %_id % !INDEX %
-CONST(AlarmType, AUTOMATIC) % !NAME % = % !NAME %_id;
+/* Alarm % !alarm::NAME % identifier */
+#define % !alarm::NAME %_id % !INDEX %
+CONST(AlarmType, AUTOMATIC) % !alarm::NAME % = % !alarm::NAME %_id;
 %
 end foreach
 
 if AUTOSAR then
-  foreach counter in COUNTER
+  foreach counter in COUNTERS
     before
 %
 /*=============================================================================
@@ -167,7 +167,7 @@ CONST(CounterType, AUTOMATIC) % !NAME % = % !NAME %_id;
 end if
 
 if USECOM then
-  foreach RECEIVEMESSAGES
+  foreach message in RECEIVEMESSAGES
     before
 %
 /*=============================================================================
@@ -176,12 +176,12 @@ if USECOM then
 %
     do
 %
-/* Message % !NAME % identifier */
-#define % !NAME %_id % !INDEX %
-CONST(MessageIdentifier, AUTOMATIC) % !NAME % = % !NAME %_id;
+/* Message % !message::NAME % identifier */
+#define % !message::NAME %_id % !INDEX %
+CONST(MessageIdentifier, AUTOMATIC) % !message::NAME % = % !message::NAME %_id;
 %
   end foreach
-  foreach SENDMESSAGES
+  foreach message in SENDMESSAGES
     before
 %
 /*=============================================================================
@@ -190,15 +190,15 @@ CONST(MessageIdentifier, AUTOMATIC) % !NAME % = % !NAME %_id;
 %
     do
 %
-/* Message % !NAME % identifier */
-#define % !NAME %_id % !INDEX %
-CONST(MessageIdentifier, AUTOMATIC) % !NAME % = % !NAME %_id;
+/* Message % !message::NAME % identifier */
+#define % !message::NAME %_id % !INDEX %
+CONST(MessageIdentifier, AUTOMATIC) % !message::NAME % = % !message::NAME %_id;
 %
   end foreach
 end if
 
 if AUTOSAR then
-  foreach SCHEDULETABLES
+  foreach st in SCHEDULETABLES
     before
 %
 /*=============================================================================
@@ -213,7 +213,7 @@ CONST(ScheduleTableType, AUTOMATIC) % !NAME % = % !NAME %_id;
 %
   end foreach
 
-  foreach OSAPPLICATIONS
+  foreach app in OSAPPLICATIONS
     before
 %
 /*=============================================================================
@@ -228,7 +228,7 @@ CONST(ApplicationType, OS_APPL_CONST) % !NAME % = % !NAME %_id;
 %
   end foreach
 
-  foreach TRUSTEDFUNCTIONS
+  foreach tf in TRUSTEDFUNCTIONS
     before
 %
 /*=============================================================================
@@ -247,7 +247,7 @@ end if
 #define API_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 %
-foreach REGULARRESOURCES
+foreach resource in REGULARRESOURCES
   before
 %
 /*=============================================================================
@@ -262,7 +262,7 @@ end foreach
 #include "tpl_memmap.h"
 CONSTP2VAR(tpl_resource, AUTOMATIC, OS_APPL_DATA)
 tpl_resource_table[RESOURCE_COUNT] = {%
-foreach REGULARRESOURCES
+foreach resource in REGULARRESOURCES
   before %
   %
   do
@@ -279,7 +279,7 @@ end foreach
 #include "tpl_memmap.h"
 
 %
-foreach INTERNALRESOURCES
+foreach resource in INTERNALRESOURCES
   before
 %
 /*=============================================================================
@@ -290,7 +290,7 @@ foreach INTERNALRESOURCES
     template internal_resource_descriptor
 end foreach
 
-foreach COUNTERS
+foreach counter in COUNTERS
   before
 %
 /*=============================================================================
@@ -304,7 +304,7 @@ end foreach
 template counter_call
 
 if AUTOSAR then
-  foreach COUNTERS
+  foreach cnt in COUNTERS
     before
 %
 #define OS_START_SEC_CONST_UNSPECIFIED
@@ -326,7 +326,7 @@ tpl_counter_table[COUNTER_COUNT] = {
   end foreach
 end if
 
-foreach TASKS
+foreach task in TASKS
   before
 %
 /*=============================================================================
@@ -337,7 +337,7 @@ foreach TASKS
     template task_descriptor
 end foreach
 
-foreach ISRS2
+foreach isr in ISRS2
   before
 %
 /*=============================================================================
@@ -359,12 +359,8 @@ template if exists interrupt_table
 CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)
 tpl_stat_proc_table[TASK_COUNT+ISR_COUNT+1] = {
 %
-foreach TASKS do
-    %  &% !NAME %_task_stat_desc,
-%
-end foreach
-foreach ISRS2 do
-    %  &% !NAME %_isr_stat_desc,
+foreach proc in PROCESSES do
+    %  &% !proc::NAME %_% ![proc::KIND lowercaseString] %_stat_desc,
 %
 end foreach
 %  &idle_task_static
@@ -373,23 +369,19 @@ end foreach
 CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)
 tpl_dyn_proc_table[TASK_COUNT+ISR_COUNT+1] = {
 %
-foreach TASKS do
-    %  &% !NAME %_task_desc,
-%
-end foreach
-foreach ISRS2 do
-    %  &% !NAME %_isr_desc,
+foreach proc in PROCESSES do
+    %  &% !proc::NAME %_% ![proc::KIND lowercaseString] %_desc,
 %
 end foreach
 %  &idle_task
 };
 %
-foreach EXTENDEDTASKS
+foreach task in EXTENDEDTASKS
   before %
 CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA)
 tpl_task_events_table[EXTENDED_TASK_COUNT] = {
 %
-  do %  &% !NAME %_task_evts%
+  do %  &% !task::NAME %_task_evts%
   between %,
 %
   after
@@ -397,14 +389,14 @@ tpl_task_events_table[EXTENDED_TASK_COUNT] = {
 };
 %
 end foreach
-foreach ISRS2
+foreach isr in ISRS2
   before
 %
 CONSTP2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA)
 tpl_isr_stat_table[ISR_COUNT] = {
 %
   do
-    %  &% !NAME %_isr_helper%
+    %  &% !isr::NAME %_isr_helper%
   between
     %,
 %
@@ -421,7 +413,7 @@ template if exists isr_list_specific
 
 %
 if AUTOSAR then
-  foreach ISRS2
+  foreach isr in ISRS2
     before
 %
 VAR(tpl_isr2_enable_state, OS_VAR)
@@ -438,7 +430,7 @@ tpl_isr2_enable_table[ISR_COUNT] = {
 %
   end foreach
 end if
-foreach ALARMS
+foreach alarm in ALARMS
   before
 %
 /*=============================================================================
@@ -448,7 +440,7 @@ foreach ALARMS
   do
     template alarm_descriptor
 end foreach
-foreach ALARMS
+foreach alarm in ALARMS
   before
     %
 #define OS_START_SEC_CONST_UNSPECIFIED
@@ -457,7 +449,7 @@ CONSTP2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)
   tpl_alarm_table[ALARM_COUNT] = {
 %
   do
-    %  &% !NAME %_alarm_desc%
+    %  &% !alarm::NAME %_alarm_desc%
   between
     %,
 %
@@ -475,7 +467,7 @@ end foreach
 /* $FLAGSFUNCTIONS$ */
 
 %
-foreach FILTERSTRUCTS
+foreach filter in FILTERSTRUCTS
   before
 %
 /*=============================================================================
@@ -488,7 +480,7 @@ foreach FILTERSTRUCTS
     template filter_desc_struct
 end foreach
 
-foreach FILTERS
+foreach filter in FILTERS
   before
 %
 /*=============================================================================
@@ -501,7 +493,7 @@ foreach FILTERS
     template filter_function
 end foreach
 
-foreach RECEIVEMESSAGES
+foreach message in RECEIVEMESSAGES
   before
 %
 /*=============================================================================
@@ -512,7 +504,7 @@ foreach RECEIVEMESSAGES
     template receive_message_descriptor
 end foreach
 
-foreach RECEIVEMESSAGES
+foreach message in RECEIVEMESSAGES
   before
 %
 /*=============================================================================
@@ -524,7 +516,7 @@ foreach RECEIVEMESSAGES
 CONSTP2CONST(tpl_base_receiving_mo, AUTOMATIC, OS_CONST)
 tpl_receive_message_table[RECEIVE_MESSAGE_COUNT] = {
 %
-  do %  (tpl_base_receiving_mo*)&% !NAME %_message%
+  do %  (tpl_base_receiving_mo*)&% !message::NAME %_message%
   between %,    
 %
   after %
@@ -535,7 +527,7 @@ tpl_receive_message_table[RECEIVE_MESSAGE_COUNT] = {
 %
 end foreach
 
-foreach SENDMESSAGES
+foreach message in SENDMESSAGES
   before
 %
 /*=============================================================================
@@ -546,7 +538,7 @@ foreach SENDMESSAGES
     template send_message_descriptor
 end foreach
 
-foreach SENDMESSAGES
+foreach message in SENDMESSAGES
   before
 %
 /*=============================================================================
@@ -558,7 +550,7 @@ foreach SENDMESSAGES
 CONSTP2CONST(tpl_base_sending_mo, AUTOMATIC, OS_CONST)
 tpl_send_message_table[SEND_MESSAGE_COUNT] = {
 %
-  do %  (tpl_base_sending_mo*)&% !NAME %_message%
+  do %  (tpl_base_sending_mo*)&% !message::NAME %_message%
   between %,    
 %
   after %
@@ -570,7 +562,7 @@ tpl_send_message_table[SEND_MESSAGE_COUNT] = {
 end foreach
 
 if AUTOSAR then
-  foreach SCHEDULETABLES
+  foreach st in SCHEDULETABLES
     before
 %
 /*=============================================================================
@@ -581,7 +573,7 @@ if AUTOSAR then
     do
       template scheduletable_descriptor
   end foreach
-  foreach SCHEDULETABLES
+  foreach st in SCHEDULETABLES
     before %
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -599,7 +591,7 @@ tpl_schedtable_table[% ![SCHEDULETABLES length] %] = {
 #include "tpl_memmap.h"
 %
   end foreach
-  foreach OSAPPLICATIONS
+  foreach app in OSAPPLICATIONS
     before
 %
 /*=============================================================================
@@ -610,7 +602,7 @@ tpl_schedtable_table[% ![SCHEDULETABLES length] %] = {
     template application_descriptor
   end foreach
   
-  foreach OSAPPLICATIONS
+  foreach app in OSAPPLICATIONS
     before %
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -628,7 +620,7 @@ CONSTP2CONST(tpl_app_access, OS_APPL_CONST, OS_APPL_CONST) tpl_app_table[APP_COU
 %
   end foreach
   
-  foreach TRUSTEDFUNCTIONS
+  foreach tf in TRUSTEDFUNCTIONS
     before
 %
 /*=============================================================================
@@ -649,7 +641,7 @@ FUNC(void, OS_APPL_CODE) TRUSTED_% !NAME %(
 #include "tpl_memmap.h"
 %
   end foreach
-  foreach TRUSTEDFUNCTIONS
+  foreach tf in TRUSTEDFUNCTIONS
     before %
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -670,10 +662,10 @@ CONST(tpl_trusted_fct, OS_APPL_CODE)
 end if
 
 if USEMEMORYPROTECTION then
-  foreach TASKS do
+  foreach task in TASKS do
     template memory_region_descriptor
   end foreach
-  foreach ISRS2 do
+  foreach isr in ISRS2 do
     template memory_region_descriptor
   end foreach
   
@@ -683,7 +675,7 @@ if USEMEMORYPROTECTION then
 
 CONSTP2CONST(tpl_mem_prot_desc, AUTOMATIC, OS_CONST) tpl_mp_table[TASK_COUNT+ISR_COUNT+1] = {
 %
-  foreach PROCESSES
+  foreach proc in PROCESSES
     do %  &% !NAME %_mp_desc,
 %
   end foreach
@@ -702,14 +694,14 @@ end if
 #include "tpl_memmap.h"
 
 %
-foreach READYLIST do
-  %VAR(tpl_proc_id, OS_VAR) tpl_priority_% !INDEX %_fifo[% !SIZE %];
+foreach slot in READYLIST do
+  %VAR(tpl_proc_id, OS_VAR) tpl_priority_% !INDEX %_fifo[% !slot::SIZE %];
 %
 end foreach
 %
 VAR(tpl_fifo_state, OS_VAR) tpl_fifo_rw[% ![READYLIST length] %] = {
 %
-foreach READYLIST do
+foreach slot in READYLIST do
 %  { 0 , 0 }%
   between %,
 %
@@ -725,8 +717,8 @@ end foreach
 
 CONST(tpl_priority_level, OS_CONST) tpl_ready_list[% ![READYLIST length] %] = {
 %
-foreach READYLIST do
-%  { tpl_priority_% !INDEX %_fifo, % !SIZE % }%
+foreach slot in READYLIST do
+%  { tpl_priority_% !INDEX %_fifo, % !slot::SIZE % }%
   between %,
 %
 end foreach
@@ -737,7 +729,7 @@ end foreach
 #include "tpl_memmap.h"
 
 %
-foreach PROCESSES
+foreach proc in PROCESSES
   before
 %
 #define API_START_SEC_CONST_UNSPECIFIED
@@ -745,7 +737,7 @@ foreach PROCESSES
 CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA) proc_name_table[TASK_COUNT + ISR_COUNT] = {
 %
   do
-    %  "% !NAME %"%
+    %  "% !proc::NAME %"%
   between %,
 %
   after

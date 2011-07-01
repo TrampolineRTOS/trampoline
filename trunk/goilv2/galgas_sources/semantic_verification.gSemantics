@@ -39,7 +39,7 @@ routine verifyAllAttributes
 :
   foreach objects do
     @implementationObject impObj := [imp impObject ![lkey string]];
-    message "*** implementation object = ".lkey."\n";
+#    message "*** implementation object = ".lkey."\n";
     foreach [objectsOfKind objects] prefixedBy obj_ do
       foreach [impObj attributes] prefixedBy imp_ do
         if [[obj_attributes objectParams] hasKey ![imp_lkey string]] then
