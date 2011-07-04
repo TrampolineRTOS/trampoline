@@ -1,0 +1,7 @@
+CPU api {
+  APICONFIG api_definition {
+    FILE = "tpl_os_alarm_kernel";
+    ENTRY = { API = "GetAlarmBase"; KERNEL = "tpl_get_alarm_base_service"; };
+    ENTRY = { API = "GetAlarm";     KERNEL = "tpl_get_alarm_service"; };
+  };
+};

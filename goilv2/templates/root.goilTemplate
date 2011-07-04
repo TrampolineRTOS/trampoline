@@ -337,7 +337,7 @@ foreach event in EVENT do
 end foreach
 
 #
-# Compute a map of tasks list keyed by the vents
+# Compute a map of tasks list keyed by the event names
 #
 let tasks_for_event := mapOf EVENT by NAME
 foreach task in EXTENDEDTASKS do
@@ -350,7 +350,6 @@ foreach task in EXTENDEDTASKS do
   end foreach
 end foreach
 
-display tasks_for_event
 #
 # Second user defined events are compared to detect colisions
 # and are checked to detect if it uses more than one bit or no bit
@@ -381,13 +380,26 @@ foreach event in USEREVENTS prefixedby sel_ do
   end if
   
   #
-  # Having 2 mask with common bits is an error
+  # Having 2 mask with common bits is an error if the events are
+  # used by the same task
   #
   foreach event in USEREVENTS do
     if sel_INDEX != INDEX then
       if (sel_event::MASK & event::MASK) != 0 then
-        error sel_event::MASK : "event ".sel_event::NAME." MASK conflicts"
-        error event::MASK : "with MASK of event ".event::NAME
+        let in_conflict := false
+        let sel_tasks := tasks_for_event[sel_event::NAME]
+        let tasks := tasks_for_event[event::NAME]
+        foreach sel_task in sel_tasks do
+          foreach task in tasks do
+            if sel_task::VALUE == task::VALUE then
+              let in_conflict := true
+            end if
+          end foreach
+        end foreach
+        if in_conflict then
+          error sel_event::MASK : "event ".sel_event::NAME." MASK conflicts"
+          error event::MASK : "with MASK of event ".event::NAME
+        end if
       end if
     end if
   end foreach
@@ -395,43 +407,63 @@ foreach event in USEREVENTS prefixedby sel_ do
 end foreach
 
 #
+# Build the mask_for_task map to compute the bits occupied
+# by user events and after allocate bits to AUTO events
+#
+let mask_for_task := emptyMap
+foreach task in EXTENDEDTASKS do
+  let mask := 0
+  foreach event in task::EVENT do
+    let event_mask := tasks_for_event[event::VALUE]::MASK
+    if typeof event_mask == @unsigned then
+      let mask := mask | event_mask
+    end if
+  end foreach
+  let mask_for_task[task::NAME] := mask
+end foreach
+
+#
 # Third user defined events are processed.
 #
-let EVENTS := emptyList
-let mask_for_task := emptyMap
-let task_for_event := emptyMap
+let EVENTS := USEREVENTS
 
-foreach task in EXTENDEDTASKS do
-  foreach event in task::EVENT do
-    
-  end foreach
+#
+# build a data structure to sort events by the number of tasks
+# that reference them. This is to allocate the bits for 
+# events that are used by the greatest number of tasks first
+#
+let events_by_ref := emptyList
+foreach event in AUTOEVENTS do
+  let ref := 0
+  if exists tasks_for_event[event::NAME] then
+    let ref := [tasks_for_event[event::NAME]::task_list length]
+  end if
+  let event::REF := ref
+  let events_by_ref += event
 end foreach
 
-let event_mask := 0
-foreach event in USEREVENTS do
-  let event_mask := event_mask | event::MASK
-  let EVENTS += event
-end foreach
-
-warning here : "Event MASK = ".[event_mask string]
+sort events_by_ref by REF >
 
 #
 # Fourth, AUTO events are put in the holes
-# of the event mask. This is done 
+# of the event mask. 
 #
-let first_bit := 0
-foreach event in AUTOEVENTS do
+foreach event in events_by_ref do
+  # Compute the available bits for the task using the event by doing a or
+  let using_tasks := tasks_for_event[event::NAME]::task_list
+  let tasks_mask := 0
+  foreach task in using_tasks do
+    let tasks_mask := tasks_mask | mask_for_task[task::NAME]
+  end foreach
+  # find the first available bit
+  let mask := 0
   let bit_not_found := true
-  display first_bit
-  loop bit from first_bit to 63 do
-    if first_bit > 63 then warning here : "ANORMAL" end if
+  loop bit from 0 to 63 do
     if bit_not_found then
       let mask := 1 << bit
-      if (mask & event_mask) == 0 then
+      if (mask & tasks_mask) == 0 then
         # bit found
         let bit_not_found := false
-        let first_bit := bit + 1
-        let event_mask := event_mask | mask
         let event::MASK := mask
         let EVENTS += event
       end if
@@ -440,9 +472,18 @@ foreach event in AUTOEVENTS do
   if bit_not_found then
     error event::NAME : "Unable to compute the MASK, the event mask is full"
   end if
+  # update the mask of tasks
+  foreach task in using_tasks do
+    let mask_for_task[task::NAME] := mask_for_task[task::NAME] | mask
+  end foreach
 end foreach
 
-let ALLEVENTSMASK := event_mask
+let ALLEVENTSMASK := 0
+foreach mask in mask_for_task do
+  if mask > ALLEVENTSMASK then
+    let ALLEVENTSMASK := mask
+  end if
+end foreach
 
 #------------------------------------------------------------------------------*
 # Compute the Alarms
