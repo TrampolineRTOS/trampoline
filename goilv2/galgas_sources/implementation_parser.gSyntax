@@ -213,11 +213,11 @@ rule <implementation_list>
       @impType previousType;
       [objectAttributes get !attributeName ?previousType];
       
-      message "*** New definition ".[attributeName string]."\n";
+      #message "*** New definition ".[attributeName string]."\n";
       
       if checkNewTypeWithinPreviousType[!attributeName !previousType !type] then
-        message "*** OK ".[attributeName string]."\n";
-        log type;
+        #message "*** OK ".[attributeName string]."\n";
+        #log type;
         [!?objectAttributes del !attributeName ?*];
         [!?objectAttributes put !attributeName !type];
       end if;
