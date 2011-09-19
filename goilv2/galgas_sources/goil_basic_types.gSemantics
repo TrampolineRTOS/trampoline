@@ -265,6 +265,7 @@ function stringAttributeOrError
 end function;
 
 class @structAttribute extends @object_t {
+  @lstring structName;
   @objectAttributes subAttributes;
 }
 
@@ -288,13 +289,13 @@ class @void_float_class  extends @float_class  {}
 class @void_string_class extends @string_class {}
 class @void_bool_t   extends @bool_t   {}
 
-class @auto_uint32_class extends @uint32_class {}
-class @auto_sint32_class extends @sint32_class {}
-class @auto_uint64_class extends @uint64_class {}
-class @auto_sint64_class extends @sint64_class {}
-class @auto_float_class extends @float_class {}
-class @auto_string_class extends @string_class {}
-class @auto_bool_t   extends @bool_t   {}
+#class @auto_uint32_class extends @uint32_class {}
+#class @auto_sint32_class extends @sint32_class {}
+#class @auto_uint64_class extends @uint64_class {}
+#class @auto_sint64_class extends @sint64_class {}
+#class @auto_float_class extends @float_class {}
+#class @auto_string_class extends @string_class {}
+#class @auto_bool_t   extends @bool_t   {}
 
 #
 # Types used for implementation specific type declaration

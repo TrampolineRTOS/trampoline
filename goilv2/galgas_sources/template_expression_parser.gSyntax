@@ -311,6 +311,8 @@ routine concatenation_types_checkForTemplate
   match inLeftExpressionType :: inRightExpressionType :
   when stringType        :: stringType :
     outResultType := inLeftExpressionType;
+  when listType :: listType :
+    outResultType := inLeftExpressionType;
   else
     error here : "addition between " . [inLeftExpressionType messageGoilTemplateType]
       ." and " . [inRightExpressionType messageGoilTemplateType] . " is not valid"
@@ -445,17 +447,18 @@ routine checkInvocationHasNoArgument
   end if;
 end routine;
 
-routine checkInvocationHasOneArgument
+routine checkInvocationHasArguments
   ??@Ttype inType
   ??@lstring inMethodName
   ??@TexpressionList inParameterTypeList
   ??@Ttype inExpectedType
+  ??@uint argsNumber
 :
   @Ttype parameterType;
   [inParameterTypeList first ?* ?parameterType];
-  if [inParameterTypeList length] != 1 | parameterType != inExpectedType then
+  if [inParameterTypeList length] != argsNumber | parameterType != inExpectedType then
     error inMethodName:"calling '" . inMethodName . "' on a "
-    . [inType messageGoilTemplateType] . " type requires one unsigned argument; "
+    . [inType messageGoilTemplateType] . " type requires ".argsNumber." unsigned argument(s); "
     . argumentListSignature [!inParameterTypeList];
   end if;  
 end routine;
@@ -556,20 +559,34 @@ routine templateMethodInvocation
       outResultType := [@Ttype unsignedType];
       outResultValue := valueWithUnsigned [![[[inValue mStringValue] decimalUnsignedNumber] uint64]];
     elsif [inMethodName string] == "leftSubString" then
-      checkInvocationHasOneArgument !inType !inMethodName !inParameterTypeList ![@Ttype unsignedType];
+      checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype unsignedType] !1;
       @Tvalue parameter;
       [inParameterTypeList first ?parameter ?*];
       outResultType := [@Ttype stringType];
       outResultValue := valueWithString [![[inValue mStringValue] leftSubString ![[parameter mUnsigned64Value] uint]]];
     elsif [inMethodName string] == "rightSubString" then
-      checkInvocationHasOneArgument !inType !inMethodName !inParameterTypeList ![@Ttype unsignedType];
+      checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype unsignedType] !1;
       @Tvalue parameter;
       [inParameterTypeList first ?parameter ?*];
       outResultType := [@Ttype stringType];
       outResultValue := valueWithString [![[inValue mStringValue] rightSubString ![[parameter mUnsigned64Value] uint]]];
+    elsif [inMethodName string] == "subString" then
+      checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype unsignedType] !2;
+      @Tvalue start := [inParameterTypeList mValueAtIndex !0];
+      @Tvalue length := [inParameterTypeList mValueAtIndex !1];
+#      log start;
+#      log length;
+      outResultType := [@Ttype stringType];
+      outResultValue := valueWithString [![[inValue mStringValue] subString ![[start mUnsigned64Value] uint] ![[length mUnsigned64Value] uint]]];
+    elsif [inMethodName string] == "reversedString" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+      outResultType := [@Ttype stringType];
+      outResultValue := valueWithString [![[inValue mStringValue] reversedString]];
     else
       error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
     end if;
+  when floatType:
+      error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
   when listType :
     if [inMethodName string] == "length" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
@@ -581,12 +598,18 @@ routine templateMethodInvocation
       @TfieldMap firstElement;
       [[inValue mMapListValue] first ?firstElement];
       outResultValue := valueWithStruct [!firstElement];
+    elsif [inMethodName string] == "last" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+      outResultType := [@Ttype structType];
+      @TfieldMap lastElement;
+      [[inValue mMapListValue] last ?lastElement];
+      outResultValue := valueWithStruct [!lastElement];
     else
       error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
     end if;
   when enumType, structType, mapType:
       error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
-  when unconstructedType:
+  when unconstructedType, functionType:
     error here: "internal error, unconstructed type found": outResultValue, outResultType;
   end switch;
 end routine;
@@ -746,13 +769,15 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] == [rightExpression mUnsigned64Value];
     when unsignedType :
       result := [leftExpression mUnsigned64Value] == [rightExpression mUnsigned64Value];
+    when floatType :
+      result := [leftExpression mFloatValue] == [rightExpression mFloatValue];
     when stringType :
       result := [leftExpression mStringValue] == [rightExpression mStringValue];
     when enumType :
       result := [leftExpression mStringValue] == [rightExpression mStringValue];
     when listType, structType, mapType:
       error here: "lists, structs and maps may not be compared" : result;
-    when unconstructedType:
+    when unconstructedType, functionType:
       error here: "internal error, unconstructed type found" : result;
     end switch;
     outResultType := [@Ttype boolType];
@@ -778,13 +803,15 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] != [rightExpression mUnsigned64Value];
     when unsignedType :
       result := [leftExpression mUnsigned64Value] != [rightExpression mUnsigned64Value];
+    when floatType :
+      result := [leftExpression mFloatValue] != [rightExpression mFloatValue];
     when stringType :
       result := [leftExpression mStringValue] != [rightExpression mStringValue];
     when enumType :
       result := [leftExpression mStringValue] != [rightExpression mStringValue];
     when listType, structType, mapType:
       error here: "lists, structs and maps may not be compared": result;
-    when unconstructedType:
+    when unconstructedType, functionType:
       error here: "internal error, unconstructed type found" : result;
     end switch;
     outResultType := [@Ttype boolType];
@@ -810,9 +837,11 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] <= [rightExpression mUnsigned64Value];
     when unsignedType :
       result := [leftExpression mUnsigned64Value] <= [rightExpression mUnsigned64Value];
+    when floatType :
+      result := [leftExpression mFloatValue] <= [rightExpression mFloatValue];
     when stringType, enumType, listType, structType, mapType :
       result := false;
-    when unconstructedType:
+    when unconstructedType, functionType:
       error here: "internal error, unconstructed type found" : result;
     end switch;
     outResultType := [@Ttype boolType];
@@ -838,9 +867,11 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] >= [rightExpression mUnsigned64Value];
     when unsignedType :
       result := [leftExpression mUnsigned64Value] >= [rightExpression mUnsigned64Value];
+    when floatType :
+      result := [leftExpression mFloatValue] >= [rightExpression mFloatValue];
     when stringType, enumType, listType, structType, mapType :
       result := false;
-    when unconstructedType:
+    when unconstructedType, functionType:
       error here: "internal error, unconstructed type found" : result;
     end switch;
     outResultType := [@Ttype boolType];
@@ -866,9 +897,11 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] > [rightExpression mUnsigned64Value];
     when unsignedType :
       result := [leftExpression mUnsigned64Value] > [rightExpression mUnsigned64Value];
+    when floatType :
+      result := [leftExpression mFloatValue] > [rightExpression mFloatValue];
     when stringType, enumType, listType, structType, mapType :
       result := false;
-    when unconstructedType:
+    when unconstructedType, functionType:
       error here: "internal error, unconstructed type found" : result;
     end switch;
     outResultType := [@Ttype boolType];
@@ -894,9 +927,11 @@ rule <relation_factor>
       result := [leftExpression mUnsigned64Value] < [rightExpression mUnsigned64Value];
     when unsignedType :
       result := [leftExpression mUnsigned64Value] < [rightExpression mUnsigned64Value];
+    when floatType :
+      result := [leftExpression mFloatValue] < [rightExpression mFloatValue];
     when stringType, enumType, listType, structType, mapType :
       result := false;
-    when unconstructedType:
+    when unconstructedType, functionType:
       error here: "internal error, unconstructed type found" : result;
     end switch;
     outResultType := [@Ttype boolType];
@@ -990,7 +1025,11 @@ rule <simple_expression>
       ?rightType
     ;
     concatenation_types_checkForTemplate !leftType !rightType ?outResultType;
-    outValue->mStringValue := [leftExpression mStringValue] . [rightExpression mStringValue];
+    if outResultType == [@Ttype stringType] then
+      outValue->mStringValue := [leftExpression mStringValue] . [rightExpression mStringValue];
+    elsif outResultType == [@Ttype listType] then
+      outValue->mMapListValue := [leftExpression mMapListValue] . [rightExpression mMapListValue];
+    end if;
   while 
     $-$;
     @Tvalue leftExpression := outValue;
@@ -1081,6 +1120,9 @@ rule <term>
    ;
     modulo_types_checkForTemplate !leftType !rightType ?outResultType;
     outValue->mUnsigned64Value := [leftExpression mUnsigned64Value] mod [rightExpression mUnsigned64Value];
+#    log leftExpression;
+#    log rightExpression;
+#    log outValue;
   end repeat;
 end rule;
 
@@ -1354,13 +1396,7 @@ rule <factor>
   or
     @lstring functionOrVariableName;
     [path first ?functionOrVariableName ?* ?*];
-  #--- Search for function name
-    @function f;
-    if not [@function isFunctionDefined ![functionOrVariableName string]] then
-      error functionOrVariableName : "there is no '" . functionOrVariableName . "' function defined in GOIL template language" : f;
-    else
-      f := [@function functionWithName ![functionOrVariableName string]];
-    end if;
+#    message "FUNCTION ".[functionOrVariableName string]." ";
   #--- Parse actual arguments
     @TexpressionList actualArgumentList [emptyList];
     $($;
@@ -1380,65 +1416,98 @@ rule <factor>
       $,$;
     end repeat;
     $)$;
-  #--- Check arguments
-    @objectlist actualArgumentObjectList [emptyList];
-    const @typelist formalParameterList := [f formalParameterTypeList];
-    if [formalParameterList length] != [actualArgumentList length] then
-      error functionOrVariableName: "this function is invoked with "
-      . [[actualArgumentList length] string]
-      . " parameter" . if [actualArgumentList length] > 1 then "s" else "" end
-      . ", but requires " 
-      . [[formalParameterList length] string]
-      . " parameter" . if [formalParameterList length] > 1 then "s" else "" end
-      : outValue, outResultType;
+  #--- Search for function name
+  #--- function can be a built in function or a defined function
+    if not [@function isFunctionDefined ![functionOrVariableName string]] then
+      #--- the function is not built in, search the function
+#      message "NOT BUILT IN\n";
+      @Tvalue fct;
+      @Ttype type;
+      [inVariableMap searchKey !functionOrVariableName ?type ?fct];
+      if [actualArgumentList length] != [[[fct mFunctionValue] args] length] then
+        error here : "incorrect number of arguments" : outValue, outResultType;
+      else
+        # set up a variable map for local variables of the function
+        @TfieldMap locals [emptyMap];
+        # search arguments values and add them to the locals
+        foreach actualArgumentList prefixedby actual_ , [[fct mFunctionValue] args] prefixedby expected_ do
+          [!?locals insertKey !expected_mValue !actual_mType !actual_mValue];
+        end foreach;
+        @string result := "";
+#        message "calling ".[[fct mFunctionValue] name]."\n";
+        grammar template_grammar on [[fct mFunctionValue] content] !inPrefix !inPath !inTemplateDirectory !locals !?result ?outValue ?outResultType;
+      end if;
+#      error functionOrVariableName : "there is no '" . functionOrVariableName . "' function defined in GOIL template language" : f;
     else
-      @uint idx := 1;
-      foreach formalParameterList prefixedby formal_, actualArgumentList prefixedby actual_ do
-        switch actual_mType
-        when boolType :
-          if formal_mValue != `@bool then
-            typeError !functionOrVariableName !formal_mValue !"boolean" !idx;
-          end if;
-          actualArgumentObjectList += ![if [actual_mValue mUnsigned64Value] == 0L then false else true end object];
-        when unsignedType :
-          if formal_mValue != `@uint64 then
-            typeError !functionOrVariableName !formal_mValue !"unsigned" !idx;
-          end if;
-          actualArgumentObjectList += ![[actual_mValue mUnsigned64Value] object];
-        when stringType :
-          if formal_mValue != `@string then
+#      message "BUILT IN\n";
+      @function f;
+      f := [@function functionWithName ![functionOrVariableName string]];
+      #--- Check arguments
+      @objectlist actualArgumentObjectList [emptyList];
+      const @typelist formalParameterList := [f formalParameterTypeList];
+      if [formalParameterList length] != [actualArgumentList length] then
+        error functionOrVariableName: "this function is invoked with "
+        . [[actualArgumentList length] string]
+        . " parameter" . if [actualArgumentList length] > 1 then "s" else "" end
+        . ", but requires " 
+        . [[formalParameterList length] string]
+        . " parameter" . if [formalParameterList length] > 1 then "s" else "" end
+        : outValue, outResultType;
+      else
+        @uint idx := 1;
+        foreach formalParameterList prefixedby formal_, actualArgumentList prefixedby actual_ do
+          switch actual_mType
+          when boolType :
+            if formal_mValue != `@bool then
+              typeError !functionOrVariableName !formal_mValue !"boolean" !idx;
+            end if;
+            actualArgumentObjectList += ![if [actual_mValue mUnsigned64Value] == 0L then false else true end object];
+          when unsignedType :
+            if formal_mValue != `@uint64 then
+              typeError !functionOrVariableName !formal_mValue !"unsigned" !idx;
+            end if;
+            actualArgumentObjectList += ![[actual_mValue mUnsigned64Value] object];
+          when floatType :
+            if formal_mValue != `@double then
+              typeError !functionOrVariableName !formal_mValue !"float" !idx;
+            end if;
+            actualArgumentObjectList += ![[actual_mValue mFloatValue] object];
+          when stringType :
+            if formal_mValue != `@string then
+              typeError !functionOrVariableName !formal_mValue !"string" !idx;
+            end if;
+          when enumType :
+            if formal_mValue != `@string then
+              typeError !functionOrVariableName !formal_mValue !"enum" !idx;
+            end if;
+            actualArgumentObjectList += ![[actual_mValue mStringValue] object];
+          when listType, structType, mapType :
             typeError !functionOrVariableName !formal_mValue !"string" !idx;
+          when unconstructedType, functionType:
+            error here: "internal error, unconstructed type found";
+          end switch;
+          idx ++;     
+        end foreach;
+        outResultType := [@Ttype unsignedType];
+        outValue := valueWithUnsigned[!0L];
+        if [@uint errorCount] == 0 then
+          const @object result := [f invoke !actualArgumentObjectList ![functionOrVariableName location]];
+          if [result objectDynamicType] == `@uint64 then
+            outResultType := [@Ttype unsignedType];
+            outValue->mUnsigned64Value := (cast result if == @uint64 else error functionOrVariableName);
+          elsif [result objectDynamicType] == `@bool then
+            outResultType := [@Ttype boolType];
+            outValue->mUnsigned64Value := [(cast result if == @bool else error functionOrVariableName) uint64];
+          elsif [result objectDynamicType] == `@string then
+            outResultType := [@Ttype stringType];
+            outValue->mStringValue := (cast result if == @string else error functionOrVariableName);
+          else
+            error functionOrVariableName : "this function does not return an unsigned, boolean or string value";
           end if;
-        when enumType :
-          if formal_mValue != `@string then
-            typeError !functionOrVariableName !formal_mValue !"enum" !idx;
-          end if;
-          actualArgumentObjectList += ![[actual_mValue mStringValue] object];
-        when listType, structType, mapType :
-          typeError !functionOrVariableName !formal_mValue !"string" !idx;
-        when unconstructedType:
-          error here: "internal error, unconstructed type found";
-        end switch;
-        idx ++;     
-      end foreach;
-      outResultType := [@Ttype unsignedType];
-      outValue := valueWithUnsigned[!0L];
-      if [@uint errorCount] == 0 then
-        const @object result := [f invoke !actualArgumentObjectList ![functionOrVariableName location]];
-        if [result objectDynamicType] == `@uint64 then
-          outResultType := [@Ttype unsignedType];
-          outValue->mUnsigned64Value := (cast result if == @uint64 else error functionOrVariableName);
-        elsif [result objectDynamicType] == `@bool then
-          outResultType := [@Ttype boolType];
-          outValue->mUnsigned64Value := [(cast result if == @bool else error functionOrVariableName) uint64];
-        elsif [result objectDynamicType] == `@string then
-          outResultType := [@Ttype stringType];
-          outValue->mStringValue := (cast result if == @string else error functionOrVariableName);
-        else
-          error functionOrVariableName : "this function does not return an unsigned, boolean or string value";
         end if;
       end if;
     end if;
+#    message "END OF FUNCTION\n";
   end select;
 end rule;
 
@@ -1557,7 +1626,7 @@ rule <factor>
   !@Ttype outResultType
 :
   $emptylist$;
-  outValue := [@Tvalue new !0L !"" ![@TfieldMapList emptyList] ![@TfieldMap emptyMap]];
+  outValue := [@Tvalue new !0L !0.0 !"" ![@TfieldMapList emptyList] ![@TfieldMap emptyMap] !dummyFunction[]];
   outResultType := [@Ttype listType];
 end rule;
 
@@ -1572,7 +1641,7 @@ rule <factor>
   !@Ttype outResultType
 :
   $emptymap$;
-  outValue := [@Tvalue new !0L !"" ![@TfieldMapList emptyList] ![@TfieldMap emptyMap]];
+  outValue := [@Tvalue new !0L !0.0 !"" ![@TfieldMapList emptyList] ![@TfieldMap emptyMap] !dummyFunction[]];
   outResultType := [@Ttype mapType];
 end rule;
 
@@ -1587,22 +1656,20 @@ rule <factor>
   !@Ttype outResultType
 :
   $mapof$;
-  @TvarPath path;
-  <variable> !inPrefix !inPath !inTemplateDirectory !inVariableMap ?path;
+  @Tvalue expValue;
+  @Ttype expType;
+  <expression> !inPrefix !inPath !inTemplateDirectory !inVariableMap ?expValue ?expType;
+  @location where := here;
   $by$;
   $identifier$ ?@lstring key;
   
-  @Ttype variableType;
-  @Tvalue variableValue;
-  @location where;
-  searchField !path !inVariableMap ?variableType ?variableValue ?where;
-  if variableType != [@Ttype listType] then
+  if expType != [@Ttype listType] then
     error where: "list expected": outValue, outResultType;
   else
     # get the elements of the list to build a map, each key being
     # one of the field of the elements of the list
     @TfieldMap resultMap [emptyMap];
-    foreach [variableValue mMapListValue] do
+    foreach [expValue mMapListValue] do
       if [mMap hasKey ![key string]] then
         # the specified key is found, get it and check it is a string
         @Ttype keyType;
@@ -1620,6 +1687,39 @@ rule <factor>
     end foreach;
     outResultType := [@Ttype mapType];
     outValue := valueWithMap[!resultMap];
+  end if;
+end rule;
+
+#------------------------------------------------------------------------------*
+
+rule <factor>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ??@TfieldMap inVariableMap
+  !@Tvalue outValue
+  !@Ttype outResultType
+:
+  $listof$;
+  @TvarPath path;
+  <variable> !inPrefix !inPath !inTemplateDirectory !inVariableMap ?path;
+#  $by$;
+#  $identifier$ ?@lstring key;
+  
+  @Ttype variableType;
+  @Tvalue variableValue;
+  @location where;
+  searchField !path !inVariableMap ?variableType ?variableValue ?where;
+  if variableType != [@Ttype mapType] then
+    error where: "map expected": outValue, outResultType;
+  else
+    @TfieldMapList resultList [emptyList];
+    foreach [variableValue mStructValue] do
+      
+      resultList += ![mValue mStructValue];
+    end foreach;
+    outResultType := [@Ttype listType];
+    outValue := valueWithList[!resultList];
   end if;
 end rule;
 

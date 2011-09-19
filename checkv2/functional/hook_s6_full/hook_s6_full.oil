@@ -32,65 +32,61 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "hook_s6" ;
+OIL_VERSION = "2.5" : "hook_s6";
 
 IMPLEMENTATION trampoline {
-	
-    TASK {
-        UINT32 STACKSIZE = 32768 ;
-        UINT32 [1..10] PRIORITY = 1 ;
-    } ;
+  TASK {
+    UINT32 STACKSIZE = 32768;
+    UINT32 [1..10] PRIORITY = 1;
+  };
 };
 
- CPU test {
-
-    OS config {
-        STATUS = EXTENDED;
-		APP_SRC = "../config.c";
-		APP_SRC = "hook_s6.c";
-		APP_SRC = "task1_instance.c";
-		APP_SRC = "isr1_instance.c";
-		APP_SRC = "isr2_instance.c";
-		APP_SRC = "error_instance.c";
-		APP_SRC = "posttask_instance3.c";
-        TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "hook_s6_full_exe";
-		CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Werror -Wall -pedantic";
-        CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../../lib -lembUnit";
-		SHUTDOWNHOOK = TRUE;
-		STARTUPHOOK = TRUE;
-		ERRORHOOK = TRUE;
-		POSTTASKHOOK = TRUE;
-    } ;
-
-    APPMODE std {};
-
-    TASK t1 {
-        AUTOSTART = TRUE { APPMODE = std ; } ;
-        PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
+CPU test {
+  OS config {
+    STATUS = EXTENDED;
+    BUILD = TRUE {
+      APP_SRC = "../config.c";
+      APP_SRC = "hook_s6.c";
+      APP_SRC = "task1_instance.c";
+      APP_SRC = "isr1_instance.c";
+      APP_SRC = "isr2_instance.c";
+      APP_SRC = "error_instance.c";
+      APP_SRC = "posttask_instance3.c";
+      TRAMPOLINE_BASE_PATH = "../../..";
+      APP_NAME = "hook_s6_full_exe";
+      CFLAGS = "-I../../embUnit";
+      CFLAGS  = "-Werror -Wall -pedantic";
+      CFLAGS  = "-Wmissing-field-initializers";
+      LDFLAGS = "-L../../lib -lembUnit";
     };
-	
-	ISR isr1{
-		CATEGORY = 2;
-		STACKSIZE = 32768;
-		PRIORITY = 1;
-		SOURCE = SIGTERM;
-	};
+    SHUTDOWNHOOK = TRUE;
+    STARTUPHOOK = TRUE;
+    ERRORHOOK = TRUE;
+    POSTTASKHOOK = TRUE;
+  };
 
-	ISR isr2{
-		CATEGORY = 2;
-		STACKSIZE = 32768;
-		PRIORITY = 2;
-		SOURCE = SIGUSR2;
-	};
-	
+  APPMODE std {};
 
+  TASK t1 {
+    AUTOSTART = TRUE { APPMODE = std; };
+    PRIORITY = 1;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+ 
+  ISR isr1 {
+    CATEGORY = 2;
+    STACKSIZE = 32768;
+    PRIORITY = 1;
+    SOURCE = SIGTERM;
+  };
+
+  ISR isr2{
+    CATEGORY = 2;
+    STACKSIZE = 32768;
+    PRIORITY = 2;
+    SOURCE = SIGUSR2;
+  };
 };
-
-
 
 /* End of file hook_s6_full.oil */

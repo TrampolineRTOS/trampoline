@@ -31,7 +31,7 @@
 #include "tpl_os_timeobj_kernel.h"
 
 
-#ifndef NO_COUNTER
+#if COUNTER_COUNT > 0
 /*  MISRA RULE 27 VIOLATION: This object is not declared as external
  in a header file because it is only used in this file but declared
  in the configuration file

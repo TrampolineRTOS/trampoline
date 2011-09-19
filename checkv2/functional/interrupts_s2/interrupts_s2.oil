@@ -32,72 +32,65 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "interrupts_s2" ;
+OIL_VERSION = "2.5" : "interrupts_s2";
 
 IMPLEMENTATION trampoline {
-
-	OS {
-		ENUM [EXTENDED] STATUS;
-	};
-	
-    TASK {
-        UINT32 STACKSIZE = 32768 ;
-        UINT32 [1..10] PRIORITY = 1 ;
-    } ;
+  TASK {
+    UINT32 STACKSIZE = 32768;
+    UINT32 [1..10] PRIORITY = 1;
+  };
 };
 
- CPU test {
-
-    OS config {
-        STATUS = STANDARD;
-		APP_SRC = "interrupts_s2.c";
-		APP_SRC = "task1_instance.c";
-		APP_SRC = "task2_instance.c";
-		APP_SRC = "isr1_instance.c";
-		APP_SRC = "isr2_instance.c";
-		APP_SRC = "../config.c";
-        TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "interrupts_s2_exe";
-		CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Werror -Wall -pedantic";
-        CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../../lib -lembUnit";
-		SHUTDOWNHOOK = TRUE;
-    } ;
-
-    APPMODE std {};
-
-    TASK t1 {
-        AUTOSTART = TRUE { APPMODE = std ; } ;
-        PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
+CPU test {
+  OS config {
+    STATUS = STANDARD;
+    BUILD = TRUE {
+      APP_SRC = "interrupts_s2.c";
+      APP_SRC = "task1_instance.c";
+      APP_SRC = "task2_instance.c";
+      APP_SRC = "isr1_instance.c";
+      APP_SRC = "isr2_instance.c";
+      APP_SRC = "../config.c";
+      TRAMPOLINE_BASE_PATH = "../../..";
+      APP_NAME = "interrupts_s2_exe";
+      CFLAGS = "-I../../embUnit";
+      CFLAGS  = "-Werror -Wall -pedantic";
+      CFLAGS  = "-Wmissing-field-initializers";
+      LDFLAGS = "-L../../lib -lembUnit";
     };
-	
-	TASK t2 {
-        AUTOSTART = FALSE;
-        PRIORITY = 2;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-    };
-	
+    SHUTDOWNHOOK = TRUE;
+  };
 
-	ISR isr1 {
-		CATEGORY = 2;
-		STACKSIZE = 32768;
-		PRIORITY = 1;
-		SOURCE = SIGTERM;
-	};
-	
-	ISR isr2 {
-		CATEGORY = 2;
-		STACKSIZE = 32768;
-		PRIORITY = 2;
-		SOURCE = SIGUSR2;
-	};
+  APPMODE std {};
 
+  TASK t1 {
+    AUTOSTART = TRUE { APPMODE = std; };
+    PRIORITY = 1;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+  };
+ 
+  TASK t2 {
+    AUTOSTART = FALSE;
+    PRIORITY = 2;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+  };
+ 
+
+  ISR isr1 {
+    CATEGORY = 2;
+    STACKSIZE = 32768;
+    PRIORITY = 1;
+    SOURCE = SIGTERM;
+  };
+ 
+  ISR isr2 {
+    CATEGORY = 2;
+    STACKSIZE = 32768;
+    PRIORITY = 2;
+    SOURCE = SIGUSR2;
+  };
 };
-
-
 
 /* End of file interrupts_s2.oil */

@@ -27,6 +27,8 @@ grammar template_grammar "LL1" :
     ??@string inTemplateDirectory
     ?@TfieldMap inTemplateVariableMap
     ?!@string ioResultingString
+    !@Tvalue returnedValue
+    !@Ttype returnedType
   ;
 end grammar ;
 

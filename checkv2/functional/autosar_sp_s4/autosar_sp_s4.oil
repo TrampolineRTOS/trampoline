@@ -32,80 +32,80 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "autosar_sp_s4" ;
+OIL_VERSION = "3.1" : "autosar_sp_s4";
 
 IMPLEMENTATION trampoline {
 
-	OS {
-		ENUM [EXTENDED] STATUS;
-	};
-	
-    TASK {
-        UINT32 STACKSIZE = 32768 ;
-        UINT32 [1..10] PRIORITY = 1 ;
-    } ;
+  OS {
+    ENUM [EXTENDED] STATUS;
+  };
+ 
+  TASK {
+    UINT32 STACKSIZE = 32768;
+    UINT32 [1..10] PRIORITY = 1;
+  };
 };
 
- CPU test {
+CPU test {
+  OS config {
+    STATUS = EXTENDED;
+    BUILD = TRUE {
+      APP_SRC = "autosar_sp_s4.c";
+      APP_SRC = "task1_instance.c";
+      APP_SRC = "isr1_instance1.c";
+      APP_SRC = "isr1_instance2.c";
+      APP_SRC = "isr2_instance.c";
+      APP_SRC = "isr3_instance.c";
+      APP_SRC = "error_instance1.c";
+      APP_SRC = "error_instance2.c";
+      APP_SRC = "../config.c";
+      TRAMPOLINE_BASE_PATH = "../../..";
+      APP_NAME = "autosar_sp_s4_exe";
+      CFLAGS = "-I../../embUnit";
+      CFLAGS  = "-Werror -Wall -pedantic";
+      CFLAGS  = "-Wmissing-field-initializers";
+      LDFLAGS = "-L../../lib -lembUnit";
+    };
+    SHUTDOWNHOOK = TRUE;
+    ERRORHOOK = TRUE;
+  };
 
-    OS config {
-        STATUS = EXTENDED;
-		APP_SRC = "autosar_sp_s4.c";
-		APP_SRC = "task1_instance.c";
-		APP_SRC = "isr1_instance1.c";
-		APP_SRC = "isr1_instance2.c";
-		APP_SRC = "isr2_instance.c";
-		APP_SRC = "isr3_instance.c";
-		APP_SRC = "error_instance1.c";
-		APP_SRC = "error_instance2.c";
-		APP_SRC = "../config.c";
-        TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "autosar_sp_s4_exe";
-		CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Werror -Wall -pedantic";
-        CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../../lib -lembUnit";
-		SHUTDOWNHOOK = TRUE;
-		ERRORHOOK = TRUE;
-	};
+  APPMODE std {};
 
-    APPMODE std {};
-
-	TASK t1 {
-		AUTOSTART =  TRUE { APPMODE = std ; } ;
-		PRIORITY = 1;
-		ACTIVATION = 1;
-		SCHEDULE = FULL;
-	};
-	ISR isr1 {
-		CATEGORY = 2;
-		SOURCE = SIGTERM;
-		PRIORITY = 1;
-		STACKSIZE = 32768;
-		RESOURCE = Resource1;
-		RESOURCE = Resource2;
-	};
-	ISR isr2 {
-		CATEGORY = 2;
-		SOURCE = SIGUSR2;
-		PRIORITY = 2;
-		STACKSIZE = 32768;
-		RESOURCE = Resource1;
-		RESOURCE = Resource2;
-	};
-	ISR isr3 {
-		CATEGORY = 2;
-		SOURCE = SIGPIPE;
-		PRIORITY = 3;
-		STACKSIZE = 32768;
-	};
-	RESOURCE Resource1{
-		RESOURCEPROPERTY = STANDARD;
-	};
-	RESOURCE Resource2{
-		RESOURCEPROPERTY = STANDARD;
-	};
-	
+  TASK t1 {
+    AUTOSTART =  TRUE { APPMODE = std; };
+    PRIORITY = 1;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+  ISR isr1 {
+    CATEGORY = 2;
+    SOURCE = SIGTERM;
+    PRIORITY = 1;
+    STACKSIZE = 32768;
+    RESOURCE = Resource1;
+    RESOURCE = Resource2;
+  };
+  ISR isr2 {
+    CATEGORY = 2;
+    SOURCE = SIGUSR2;
+    PRIORITY = 2;
+    STACKSIZE = 32768;
+    RESOURCE = Resource1;
+    RESOURCE = Resource2;
+  };
+  ISR isr3 {
+    CATEGORY = 2;
+    SOURCE = SIGPIPE;
+    PRIORITY = 3;
+    STACKSIZE = 32768;
+  };
+  RESOURCE Resource1 {
+    RESOURCEPROPERTY = STANDARD;
+  };
+  RESOURCE Resource2 {
+    RESOURCEPROPERTY = STANDARD;
+  };
 };
 
 /* End of file autosar_sp_s4.oil */

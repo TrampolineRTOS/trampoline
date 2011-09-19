@@ -53,9 +53,9 @@ if exists OS::BUILD_S::TRAMPOLINEPATH then%
 #define TRAMPOLINE_BASE_PATH             "% !TRAMPOLINEPATH %"%
 end if%
 #define WITH_AUTOSAR                     % !yesNo(AUTOSAR) %
-#define WITH_PROTECTION_HOOK             % !yesNo(OS::PROTECTIONHOOK) %
-#define WITH_STACK_MONITORING            % !yesNo(OS::STACKMONITORING) %
-/* #define WITH_AUTOSAR_TIMING_PROTECTION % !yesNo(OS::STACKMONITORING) % */
+#define WITH_PROTECTION_HOOK             % !yesNo(exists OS::PROTECTIONHOOK default(false)) %
+#define WITH_STACK_MONITORING            % !yesNo(exists OS::STACKMONITORING default(false)) %
+/* #define WITH_AUTOSAR_TIMING_PROTECTION % !yesNo(exists OS::STACKMONITORING default(false)) % */
 #define AUTOSAR_SC                       % !OS::SCALABILITYCLASS %
 #define WITH_OSAPPLICATION               % !yesNo(OS::SCALABILITYCLASS > 2)%
 #define WITH_OSAPPLICATION_STARTUP_HOOK  % !yesNo(OS::APPLICATIONSTARTUPHOOK > 0) %
@@ -80,7 +80,7 @@ end if
 #define WITH_COM                         % !yesNo(USECOM)
 if USECOM then%
 #define TPL_COMTIMEBASE                  % !(exists COM::COMTIMEBASE default ("0.001")) %
-#define WITH_COM_ERROR_HOOK              % !yesNo(exists COM::COMERROKHOOK default (false)) %
+#define WITH_COM_ERROR_HOOK              % !yesNo(exists COM::COMERRORHOOK default (false)) %
 #define WITH_COM_USEGETSERVICEID         % !yesNo(exists COM::COMUSEGETSERVICEID default (false)) %
 #define WITH_COM_USEPARAMETERACCESS      % !yesNo(exists COM::COMUSEPARAMETERACCESS default (false)) %
 #define WITH_COM_STARTCOMEXTENSION       % !yesNo(exists COM::COMSTARTCOMEXTENSION default (false)) %
@@ -153,7 +153,7 @@ if AUTOSAR then
 /*-----------------------------------------------------------------------------
  * Number of OS Applications
  */
-#define APP_COUNT              % ![OSAPPLICATIONS length] %
+#define APP_COUNT              % ![APPLICATIONS length] %
 
 /*-----------------------------------------------------------------------------
  * Number of trusted functions

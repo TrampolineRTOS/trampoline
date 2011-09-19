@@ -1,26 +1,108 @@
+%
+#
+# Compute missing informations about the schedule table
+#
+# Sort the expiry point according to their offset
+# and add the finalize action
+#
+let eps := st::EXPIRY_POINT
+sort eps by OFFSET <
+let ep := [eps last]
+let finalize::VALUE := "FINALIZESCHEDULETABLE"
+let finalize::VALUE_S::SCHEDULETABLE := st::NAME
+if ep::OFFSET == st::LENGTH then
+  # an expiry point exists at the end of the schedule table
+  # add the finalize action in this expiry point
+  let ep::ACTION += finalize
+  let eps[[eps length] - 1] := ep
+else
+  let new_ep::OFFSET := st::LENGTH
+  let new_ep::ACTION += finalize
+  let eps += new_ep
+end if
+let st::EXPIRY_POINT := eps
+
+#
+# Compute the relative offset of expiry points
+#
+let previous_offset := 0
+loop expiry_index from 0 to [st::EXPIRY_POINT length] - 1 do
+  let st::EXPIRY_POINT[expiry_index]::RELATIVE_OFFSET := st::EXPIRY_POINT[expiry_index]::OFFSET - previous_offset
+  let previous_offset := st::EXPIRY_POINT[expiry_index]::OFFSET
+end loop
+
+#
+# Compute the date of the first expiry point if the schedule table is AUTOSTART
+#
+let date := 0
+let state
+if    st::AUTOSTART == "NONE" then
+  let state := "SCHEDULETABLE_STOPPED"
+elsif st::AUTOSTART == "ABSOLUTE" then
+  let state := "SCHEDULETABLE_AUTOSTART_ABSOLUTE"
+  let date := st::AUTOSTART_S::START
+elsif st::AUTOSTART == "RELATIVE" then
+  let state := "SCHEDULETABLE_AUTOSTART_RELATIVE"
+  let date := st::AUTOSTART_S::OFFSET
+elsif st::AUTOSTART == "SYNCHRON" then
+  let state := "SCHEDULETABLE_AUTOSTART_SYNCHRON"
+end if
+let st::DATE := date
+let st::STATE := state
+
+#
+# put before activate task actions and after set event actions
+#
+loop expiry_index from 0 to [st::EXPIRY_POINT length] - 1 do
+  let set_event := emptyList
+  let activate_task := emptyList
+  let finalize := emptyList
+  foreach action in st::EXPIRY_POINT[expiry_index]::ACTION do
+    if    action::VALUE == "SETEVENT" then
+      let set_event += action
+    elsif action::VALUE == "ACTIVATETASK" then
+      let activate_task += action
+    elsif action::VALUE == "FINALIZESCHEDULETABLE" then
+      let finalize += action
+    end if
+  end foreach
+  let actions := emptyList
+  foreach action in activate_task do
+    let actions += action
+  end foreach
+  foreach action in set_event do
+    let actions += action
+  end foreach
+  foreach action in finalize do
+    let actions += action
+  end foreach
+  let st::EXPIRY_POINT[expiry_index]::ACTION := actions
+end loop
+
+%
 /*-----------------------------------------------------------------------------
- * Schedule table % !NAME % descriptor
+ * Schedule table % !st::NAME % descriptor
  */
 
 /*
- * Expiry points of schedule table % !NAME % 
+ * Expiry points of schedule table % !st::NAME % 
  */
 %
-foreach EXPIRYPOINTS do
-  let SCHEDULETABLENAME := NAME
-  foreach ACTIONS do
-    let NAME := SCHEDULETABLENAME . "_" . [ABSOLUTEOFFSET string] . "_" . [INDEX string]
+foreach ep in st::EXPIRY_POINT do
+  foreach act in ep::ACTION do
+    let action_name := st::NAME . "_" . [ep::OFFSET string] . "_" . [INDEX string]
+    let action := act::VALUE
+    let action_s := act::VALUE_S
     # action_descriptor uses current NAME to name the action
     # since NAME is the name of the schedule table and since we have to compute
     # a different name for each schedule table action, we have to change NAME
     # So it is save in SCHEDULETABLENAME and restaured.
     template action_descriptor
   end foreach
-  let NAME := SCHEDULETABLENAME
-  foreach ACTIONS
-    before %P2CONST(tpl_action, AUTOMATIC, OS_CONST) % !NAME %_% !ABSOLUTEOFFSET %[% ![ACTIONS length] %] = {
+  foreach action in ep::ACTION
+    before %P2CONST(tpl_action, AUTOMATIC, OS_CONST) % !st::NAME %_% !ep::OFFSET %[% ![ep::ACTION length] %] = {
 %
-    do %  (tpl_action *)&% !NAME %_% !ABSOLUTEOFFSET %_% !INDEX %_action%
+    do %  (tpl_action *)&% !st::NAME %_% !ep::OFFSET %_% !INDEX %_action%
     between %,
 %
     after %
@@ -29,21 +111,21 @@ foreach EXPIRYPOINTS do
 %
   end foreach
 %
-tpl_expiry_point % !NAME %_% !ABSOLUTEOFFSET %_expirypoint = {
-  /*  offset from previous expiry point   */  % !RELATIVEOFFSET %,
-  /*  sync_offset                         */  % !RELATIVEOFFSET %,
-  /*  number of actions for the expiry pt */  % ![ACTIONS length] %,
-  /*  pointer to the actions array        */  % !NAME %_% !ABSOLUTEOFFSET %,
-  /*  maximum advance deviation           */  % !MAXADVANCE %,
-  /*  maximum retard deviation            */  % !MAXRETARD %
+tpl_expiry_point % !st::NAME %_% !ep::OFFSET %_expirypoint = {
+  /*  offset from previous expiry point   */  % !ep::RELATIVE_OFFSET %,
+  /*  sync_offset                         */  % !ep::RELATIVE_OFFSET %,
+  /*  number of actions for the expiry pt */  % ![ep::ACTION length] %,
+  /*  pointer to the actions array        */  % !st::NAME %_% !ep::OFFSET %,
+  /*  maximum advance deviation           */  % !exists ep::ADJUSTABLE_S::MAX_ADVANCE default(0) %,
+  /*  maximum retard deviation            */  % !exists ep::ADJUSTABLE_S::MAX_RETARD default(0) %
 };
 %
 end foreach
-foreach EXPIRYPOINTS
+foreach ep in st::EXPIRY_POINT
   before %
-P2VAR(tpl_expiry_point, AUTOMATIC, OS_CONST) % !NAME %_expiry_table[% ![EXPIRYPOINTS length] %] = {
+P2VAR(tpl_expiry_point, AUTOMATIC, OS_CONST) % !st::NAME %_expiry_table[% ![st::EXPIRY_POINT length] %] = {
 %
-  do %  &% !NAME %_% !ABSOLUTEOFFSET %_expirypoint%
+  do %  &% !st::NAME %_% !ep::OFFSET %_expirypoint%
   between %,
 %
   after %
@@ -52,34 +134,34 @@ P2VAR(tpl_expiry_point, AUTOMATIC, OS_CONST) % !NAME %_expiry_table[% ![EXPIRYPO
 end foreach
 %
 
-tpl_schedtable_static % !NAME %_st_stat = {
+tpl_schedtable_static % !st::NAME %_st_stat = {
   { /* static time object part */
-    /* counter            */  &% !COUNTER %_counter_desc,
+    /* counter            */  &% !st::COUNTER %_counter_desc,
     /* expire function    */  tpl_process_schedtable
 #if (WITH_TRACE == YES)
-    /* id of the table for tracing  */  , % !NAME %_id
+    /* id of the table for tracing  */  , % !st::NAME %_id
 #endif
 %
-if USEOSAPPLICATION then %
-    /* OS application id  */  , % !APPLICATION %_id%
+if OS::SCALABILITYCLASS >= 3 then %
+    /* OS application id  */  , % !st::APPLICATION %_id%
 end if 
 %  },
-  /* expiry points        */  % !NAME %_expiry_table,
-  /* expiry points count  */  % ![EXPIRYPOINTS length] %,
-  /* sync strategy        */  % !SYNCSTRATEGY %,
-  /* periodic             */  % ![trueFalse(PERIODIC) uppercaseString] %,
-  /* length               */  % !LENGTH %,
-  /* precision            */  % !PRECISION %
+  /* expiry points        */  % !st::NAME %_expiry_table,
+  /* expiry points count  */  % ![st::EXPIRY_POINT length] %,
+  /* sync strategy        */  SCHEDTABLE_% !exists st::LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION_S::SYNC_STRATEGY default("NO") %_SYNC,
+  /* periodic             */  % ![[st::PERIODIC trueOrFalse] uppercaseString] %,
+  /* length               */  % !st::LENGTH %,
+  /* precision            */  % !exists st::LOCAL_TO_GLOBAL_TIME_SYNCHRONIZATION_S::PRECISION default(0) %
 };
 
-tpl_schedule_table % !NAME %_st_dyn = {
+tpl_schedule_table % !st::NAME %_st_dyn = {
   { /* dynamic time object part */
-    /* ptr to the static part   */  (tpl_time_obj_static *)&% !NAME %_st_stat,
+    /* ptr to the static part   */  (tpl_time_obj_static *)&% !st::NAME %_st_stat,
     /* next time object         */  NULL,
     /* prev time object         */  NULL,
     /* cycle                    */  0,
-    /* date                     */  % !DATE %,
-    /* state of the time object */  % !STATE %
+    /* date                     */  % !st::DATE %,
+    /* state of the time object */  % !st::STATE %
   },
   /* next schedule table   */  NULL,
   /* current expiry point  */  0,

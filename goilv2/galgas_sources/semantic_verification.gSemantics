@@ -12,6 +12,203 @@ import "implementation_types.gSemantics";
 #import semantics goil_semantic_types in "goil_semantic_types.ggs";
 #import option goil_options           in "goil_options.gOption";
 
+#---------------------------------------------------------------------------*
+# Check all objects attributes are defines
+#
+method @implementation verifyApplication
+  ??@applicationDefinition appDef
+:
+  foreach imp prefixedby imp_ do
+    if [[appDef objects] hasKey ![imp_lkey string]] then
+      @objectKind obj;
+      [[appDef objects] get !imp_lkey ?obj];
+      [imp_object verifyApplication !obj];
+    end if;
+  end foreach;
+end method;
+
+#---------------------------------------------------------------------------*
+method @implementationObject verifyApplication
+  ??@objectKind objectsOfKind
+:
+  foreach [objectsOfKind objects] prefixedby obj_ do
+    foreach attributes do
+      [type verifyApplication !obj_attributes];
+    end foreach;
+  end foreach;
+end method;
+
+#---------------------------------------------------------------------------*
+method @impType verifyApplication
+  ??@objectAttributes attrs
+:
+  foreach [attrs objectParams] do
+    if [lkey string] == [name string] then
+      [selfcopy verifyMultipleType !value];
+    end if;
+  end foreach;
+end method;
+
+#---------------------------------------------------------------------------*
+method @impType verifyType
+  ??@object_t attr
+:
+  error [attr location]: "Internal error, a generic type should not be instantiated";
+end method;
+
+#---------------------------------------------------------------------------*
+method @impType verifyMultipleType
+  ??@object_t attr
+:
+  cast attr:
+  when == @multipleAttribute ma do
+    foreach [ma items] do
+      [selfcopy verifyType !item];
+    end foreach;
+  else
+    [selfcopy verifyType !attr];
+  end cast;
+end method;
+
+#---------------------------------------------------------------------------*
+override method @impStructType verifyType
+  ??@object_t attr
+:
+  cast attr:
+  when == @structAttribute sa do
+    foreach structAttributes do
+      if [[[sa subAttributes] objectParams] hasKey ![lkey string]] then
+        @object_t subAttr;
+        [[[sa subAttributes] objectParams] get !lkey ?subAttr];
+        [type verifyMultipleType !subAttr];
+      end if;
+    end foreach;
+  else
+    error [attr location] : "STRUCT expected";
+  end cast;
+end method;
+
+#---------------------------------------------------------------------------*
+override method @refType verifyType
+  ??@object_t attr
+:
+  cast attr:
+  when == @string_class do
+  else 
+    error [attr location] : "object reference expected";
+  end cast;
+end method;
+
+#---------------------------------------------------------------------------*
+override method @impBoolType verifyType
+  ??@object_t attr
+:
+  cast attr:
+  when == @boolAttribute b do
+    if [b value] then
+      foreach trueSubAttributes do
+        if [[[b subAttributes] objectParams] hasKey ![lkey string]] then
+          @object_t subAttrs;
+          [[[b subAttributes] objectParams] get !lkey ?subAttrs];
+          [type verifyMultipleType !subAttrs];
+        end if;
+      end foreach;
+    else
+      foreach falseSubAttributes do
+        if [[[b subAttributes] objectParams] hasKey ![lkey string]] then
+          @object_t subAttrs;
+          [[[b subAttributes] objectParams] get !lkey ?subAttrs];
+          [type verifyMultipleType !subAttrs];
+        end if;
+      end foreach;
+    end if;
+  else 
+    error [attr location] : "BOOLEAN expected";
+  end cast;
+end method;
+
+#---------------------------------------------------------------------------*
+override method @impEnumType verifyType
+  ??@object_t attr
+:
+  cast attr:
+  when == @enumAttribute e do
+    if [valuesMap hasKey ![e value]] then
+      @implementationObjectMap validVal;
+      [valuesMap get !lstringWith[![e value]] ?validVal];
+      foreach validVal do
+        if [[[e subAttributes] objectParams] hasKey ![lkey string]] then
+          @object_t subAttrs;
+          [[[e subAttributes] objectParams] get !lkey ?subAttrs];
+          [type verifyMultipleType !subAttrs];
+        end if;
+      end foreach;
+    else
+      error [e location] : [e value]." is not a valid enum value";
+    end if;
+  else 
+    message "**** @impEnumType ****\n";
+    error [attr location] : "ENUM expected";
+  end cast;
+end method;
+
+#---------------------------------------------------------------------------*
+# may be a _TYPE or a STRING 
+override method @impAutoDefaultType verifyType
+  ??@object_t attr
+:
+  cast attr:
+  when == @stringAttribute do
+    if type != [@dataType string] then
+      error [attr location] : [type oilType]." expected";
+    end if; 
+  when == @string_class do
+    if type != [@dataType identifier] then
+      error [attr location] : [type oilType]." expected";
+    end if;
+  else 
+#    message "*** @impAutoDefaultType ***\n";
+    error [attr location] : [type oilType]." expected";
+  end cast;
+end method;
+
+#---------------------------------------------------------------------------*
+# may be a UINT32, INT32, UINT64, INT64 or FLOAT 
+override method @impRangedType verifyType
+  ??@object_t attr
+:
+  cast attr:
+  when == @uint32_class do
+    if type != [@dataType uint32Number] then
+      error [attr location] : [type oilType]." expected";
+    end if;
+  when == @sint32_class do
+    if type != [@dataType sint32Number] then
+      error [attr location] : [type oilType]." expected";
+    end if;
+  when == @uint64_class do
+    if type != [@dataType uint64Number] then
+      error [attr location] : [type oilType]." expected";
+    end if;
+  when == @sint64_class do
+    if type != [@dataType sint64Number] then
+      error [attr location] : [type oilType]." expected";
+    end if;
+  when == @float_class do
+    if type != [@dataType floatNumber] then
+      error [attr location] : [type oilType]." expected";
+    end if;
+  when == @auto do
+    if withAuto == false then
+      error [attr location] : "AUTO is not allowed for ".name." attribute";
+    end if;
+  else
+#    message "*** @impRangedType ***\n";
+    error [attr location] : [type oilType]." expected";
+  end cast;
+end method;
+
+#---------------------------------------------------------------------------*
 
 function attributeAllowsAuto
   ??@impType  type
@@ -381,7 +578,7 @@ routine verifyAll
   ??@applicationDefinition application
 :
   verifyAllAttributes !imp ![application objects];
-
+  [imp verifyApplication !application];
 #  tasks_well_formed !objectsForKind[!objects !"TASK"];
 #  counters_well_formed ![cpu counters];
 #  alarms_well_formed ![cpu alarms];

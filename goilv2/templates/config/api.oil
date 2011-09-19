@@ -1,7 +1,69 @@
 CPU api {
-  APICONFIG api_definition {
+  APICONFIG alarms {
     FILE = "tpl_os_alarm_kernel";
-    ENTRY = { API = "GetAlarmBase"; KERNEL = "tpl_get_alarm_base_service"; };
-    ENTRY = { API = "GetAlarm";     KERNEL = "tpl_get_alarm_service"; };
+    ENTRY GetAlarmBase { API = GetAlarmBase; KERNEL = tpl_get_alarm_base_service; };
+    ENTRY GetAlarm     { API = GetAlarm;     KERNEL = tpl_get_alarm_service;      };
+    ENTRY SetRelAlarm  { API = SetRelAlarm;  KERNEL = tpl_set_rel_alarm_service;  };
+    ENTRY SetAbsAlarm  { API = SetAbsAlarm;  KERNEL = tpl_set_abs_alarm_service;  };
+    ENTRY CancelAlarm  { API = CancelAlarm;  KERNEL = tpl_cancel_alarm_service;   };
+  };
+  /* tasks services */
+  APICONFIG tasks {
+    FILE = "tpl_os_task_kernel";
+    ENTRY ActivateTask  { API = ActivateTask;  KERNEL = tpl_activate_task_service;  };
+    ENTRY TerminateTask { API = TerminateTask; KERNEL = tpl_terminate_task_service; };
+    ENTRY ChainTask     { API = ChainTask;     KERNEL = tpl_chain_task_service;     };
+    ENTRY Schedule      { API = Schedule;      KERNEL = tpl_schedule_service;       };
+    ENTRY GetTaskID     { API = GetTaskID;     KERNEL = tpl_get_task_id_service;    };
+    ENTRY GetTaskState  { API = GetTaskState;  KERNEL = tpl_get_task_state_service; };
+  };
+  /* interrupts services */
+  APICONFIG interrupts {
+    FILE = "tpl_os_it_kernel";
+    ENTRY EnableAllInterrupts  { API = EnableAllInterrupts;  KERNEL = tpl_enable_all_interrupts_service;  };
+    ENTRY DisableAllInterrupts { API = DisableAllInterrupts; KERNEL = tpl_disable_all_interrupts_service; };
+    ENTRY ResumeAllInterrupts  { API = ResumeAllInterrupts;  KERNEL = tpl_resume_all_interrupts_service;  };
+    ENTRY SuspendAllInterrupts { API = SuspendAllInterrupts; KERNEL = tpl_suspend_all_interrupts_service; };
+    ENTRY ResumeOSInterrupts   { API = ResumeOSInterrupts;   KERNEL = tpl_resume_os_interrupts_service;   };
+    ENTRY SuspendOSInterrupts  { API = SuspendOSInterrupts;  KERNEL = tpl_suspend_os_interrupts_service;  };
+  };
+  /* resources services */
+  APICONFIG resources {
+    FILE = "tpl_os_rez_kernel";
+    ENTRY GetResource     { API = GetResource;     KERNEL = tpl_get_resource_service;     };
+    ENTRY ReleaseResource { API = ReleaseResource; KERNEL = tpl_release_resource_service; };
+  };
+  /* events services */
+  APICONFIG events {
+    FILE = "tpl_os_event_kernel";
+    ENTRY SetEvent   { API = SetEvent;   KERNEL = tpl_set_event_service;   };
+    ENTRY ClearEvent { API = ClearEvent; KERNEL = tpl_clear_event_service; };
+    ENTRY GetEvent   { API = GetEvent;   KERNEL = tpl_get_event_service;   };
+    ENTRY WaitEvent  { API = WaitEvent;  KERNEL = tpl_wait_event_service;  };
+  };
+  /* os services */
+  APICONFIG os {
+    FILE = "tpl_os_kernel";
+    ENTRY GetActiveApplicationMode { API = GetActiveApplicationMode;       KERNEL = tpl_get_active_application_mode_service; };
+    ENTRY StartOS                  { API = StartOS; ACTUAL = tpl_start_os; KERNEL = tpl_start_os_service;                    };
+    ENTRY ShutdownOS               { API = ShutdownOS;                     KERNEL = tpl_shutdown_os_service;                 };
+    ENTRY CallTerminateTask        { API = CallTerminateTask;              KERNEL = tpl_call_terminate_task_service;         };
+    ENTRY CallTerminateISR2        { API = CallTerminateISR2;              KERNEL = tpl_call_terminate_isr2_service;         };
+  };
+  /* com services */
+  APICONFIG com {
+    FILE = "tpl_com_message_kernel";
+/*  StartCOM                  -> tpl_start_com_service;
+  StopCOM                   -> tpl_stop_com_service;
+  GetCOMApplicationMode     -> tpl_get_com_application_mode_service;
+  InitMessage               -> tpl_init_message_service;
+  StartPeriodic             -> tpl_start_periodic_service;
+  StopPeriodic              -> tpl_stop_periodic_service; */
+    ENTRY SendMessage      { API = SendMessage;      KERNEL = tpl_send_message_service;       };
+    ENTRY ReceiveMessage   { API = ReceiveMessage;   KERNEL = tpl_receive_message_service;    };
+/*  SendDynamicMessage        -> tpl_send_dynamic_message_service;
+  ReceiveDynamicMessage     -> tpl_receive_dynamic_message_service; */
+    ENTRY SendZeroMessage  { API = SendZeroMessage;  KERNEL = tpl_send_zero_message_service;  };
+    ENTRY GetMessageStatus { API = GetMessageStatus; KERNEL = tpl_get_message_status_service; };
   };
 };

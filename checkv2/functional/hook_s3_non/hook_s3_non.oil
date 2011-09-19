@@ -32,66 +32,63 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "hook_s3" ;
+OIL_VERSION = "2.5" : "hook_s3";
 
 IMPLEMENTATION trampoline {
-	
-    TASK {
-        UINT32 STACKSIZE = 32768 ;
-        UINT32 [1..10] PRIORITY = 1 ;
-    } ;
+  TASK {
+    UINT32 STACKSIZE = 32768;
+    UINT32 [1..10] PRIORITY = 1;
+  };
 };
 
- CPU test {
-
-    OS config {
-        STATUS = EXTENDED;
-		APP_SRC = "../config.c";
-		APP_SRC = "hook_s3.c";
-		APP_SRC = "error_instance.c";
-		APP_SRC = "task1_instance.c";
-        TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "hook_s3_non_exe";
-		CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Werror -Wall -pedantic";
-        CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../../lib -lembUnit";
-		SHUTDOWNHOOK = TRUE;
-		STARTUPHOOK = TRUE;
-		ERRORHOOK = TRUE;
-    } ;
-
-    APPMODE std {};
-
-    TASK t1 {
-        AUTOSTART = TRUE { APPMODE = std ; } ;
-        PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-		EVENT = Event1;
+CPU test {
+  OS config {
+    STATUS = EXTENDED;
+    BUILD = TRUE {
+      APP_SRC = "../config.c";
+      APP_SRC = "hook_s3.c";
+      APP_SRC = "error_instance.c";
+      APP_SRC = "task1_instance.c";
+      TRAMPOLINE_BASE_PATH = "../../..";
+      APP_NAME = "hook_s3_non_exe";
+      CFLAGS = "-I../../embUnit";
+      CFLAGS  = "-Werror -Wall -pedantic";
+      CFLAGS  = "-Wmissing-field-initializers";
+      LDFLAGS = "-L../../lib -lembUnit";
     };
-	
-	COUNTER Counter1{
-		MAXALLOWEDVALUE = 16;
-		TICKSPERBASE = 10;
-		MINCYCLE = 1;
-	};
-	
-	ALARM Alarm1{
-		COUNTER = Counter1;
-		ACTION = SETEVENT {
-			TASK = t1;
-			EVENT = Event1;
-		};
-		AUTOSTART = FALSE;
-	};
-	
-	EVENT Event1{
-		MASK = AUTO;
-	};
+    SHUTDOWNHOOK = TRUE;
+    STARTUPHOOK = TRUE;
+    ERRORHOOK = TRUE;
+  };
 
+  APPMODE std {};
+
+  TASK t1 {
+    AUTOSTART = TRUE { APPMODE = std; };
+    PRIORITY = 1;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+    EVENT = Event1;
+  };
+ 
+  COUNTER Counter1 {
+    MAXALLOWEDVALUE = 16;
+    TICKSPERBASE = 10;
+    MINCYCLE = 1;
+  };
+ 
+  ALARM Alarm1 {
+    COUNTER = Counter1;
+    ACTION = SETEVENT {
+      TASK = t1;
+      EVENT = Event1;
+    };
+    AUTOSTART = FALSE;
+  };
+ 
+  EVENT Event1 {
+    MASK = AUTO;
+  };
 };
-
-
 
 /* End of file hook_s3_non.oil */

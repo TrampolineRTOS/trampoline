@@ -33,13 +33,13 @@ VAR(tpl_counter, OS_VAR) % !counter::NAME %_counter_desc = {
   /* current date         */  0,%
 if AUTOSAR then
 %
-    /* type the counter     */  % !counter::TYPE %,%
+    /* type the counter     */  % !counter::TYPE %_COUNTER,%
 end if
 %
 #if WITH_OSAPPLICATION == YES
     /* OS Application id    */  %
 if AUTOSAR then
-  if SCALABILITYCLASS >= 3 then
+  if OS::SCALABILITYCLASS >= 3 then
     if counter::NAME == "SystemCounter" then
       %INVALID_OSAPPLICATION_ID,%
     else

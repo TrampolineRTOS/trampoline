@@ -159,9 +159,9 @@ if AUTOSAR then
 %
     do
 %
-/* Counter % !NAME % identifier */
-#define % !NAME %_id % !INDEX %
-CONST(CounterType, AUTOMATIC) % !NAME % = % !NAME %_id;
+/* Counter % !counter::NAME % identifier */
+#define % !counter::NAME %_id % !INDEX %
+CONST(CounterType, AUTOMATIC) % !counter::NAME % = % !counter::NAME %_id;
 %
   end foreach
 end if
@@ -207,13 +207,13 @@ if AUTOSAR then
 %
     do
 %
-/* Schedule table % !NAME % identifier */
-#define % !NAME %_id % !INDEX %
-CONST(ScheduleTableType, AUTOMATIC) % !NAME % = % !NAME %_id;
+/* Schedule table % !st::NAME % identifier */
+#define % !st::NAME %_id % !INDEX %
+CONST(ScheduleTableType, AUTOMATIC) % !st::NAME % = % !st::NAME %_id;
 %
   end foreach
 
-  foreach app in OSAPPLICATIONS
+  foreach app in APPLICATIONS
     before
 %
 /*=============================================================================
@@ -222,9 +222,9 @@ CONST(ScheduleTableType, AUTOMATIC) % !NAME % = % !NAME %_id;
 %
     do
 %
-/* OS Application % !NAME % identifier */
-#define % !NAME %_id % !INDEX %
-CONST(ApplicationType, OS_APPL_CONST) % !NAME % = % !NAME %_id;
+/* OS Application % !app::NAME % identifier */
+#define % !app::NAME %_id % !INDEX %
+CONST(ApplicationType, OS_APPL_CONST) % !app::NAME % = % !app::NAME %_id;
 %
   end foreach
 
@@ -266,7 +266,7 @@ foreach resource in REGULARRESOURCES
   before %
   %
   do
-    %&% !NAME %_rez_desc%
+    %&% !resource::NAME %_rez_desc%
   between
     %,
   % 
@@ -304,7 +304,7 @@ end foreach
 template counter_call
 
 if AUTOSAR then
-  foreach cnt in COUNTERS
+  foreach counter in COUNTERS
     before
 %
 #define OS_START_SEC_CONST_UNSPECIFIED
@@ -313,7 +313,7 @@ CONSTP2VAR(tpl_counter, OS_VAR, OS_APPL_DATA)
 tpl_counter_table[COUNTER_COUNT] = {
 %
     do
-      %  &% !NAME %_counter_desc%
+      %  &% !counter::NAME %_counter_desc%
     between
       %,
 %
@@ -581,7 +581,7 @@ if AUTOSAR then
 CONSTP2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA)
 tpl_schedtable_table[% ![SCHEDULETABLES length] %] = {
 %
-    do %  &% !NAME %_st_dyn%
+    do %  &% !st::NAME %_st_dyn%
     between %,
 %
     after %
@@ -591,7 +591,7 @@ tpl_schedtable_table[% ![SCHEDULETABLES length] %] = {
 #include "tpl_memmap.h"
 %
   end foreach
-  foreach app in OSAPPLICATIONS
+  foreach app in APPLICATIONS
     before
 %
 /*=============================================================================
@@ -602,14 +602,14 @@ tpl_schedtable_table[% ![SCHEDULETABLES length] %] = {
     template application_descriptor
   end foreach
   
-  foreach app in OSAPPLICATIONS
+  foreach app in APPLICATIONS
     before %
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
 CONSTP2CONST(tpl_app_access, OS_APPL_CONST, OS_APPL_CONST) tpl_app_table[APP_COUNT] = {
 %
-    do %  &% !NAME %_app_access%
+    do %  &% !app::NAME %_app_access%
     between %,
 %
     after %
@@ -631,7 +631,7 @@ CONSTP2CONST(tpl_app_access, OS_APPL_CONST, OS_APPL_CONST) tpl_app_table[APP_COU
 %
     do %
 
-FUNC(void, OS_APPL_CODE) TRUSTED_% !NAME %(
+FUNC(void, OS_APPL_CODE) TRUSTED_% !tf::NAME %(
   CONST(TrustedFunctionIndexType, AUTOMATIC) idx,
   CONST(TrustedFunctionParameterRefType, AUTOMATIC) params);
 %
@@ -649,7 +649,7 @@ FUNC(void, OS_APPL_CODE) TRUSTED_% !NAME %(
 CONST(tpl_trusted_fct, OS_APPL_CODE)
   tpl_trusted_fct_table[TRUSTED_FCT_COUNT] = {
 %
-    do %  TRUSTED_% !NAME
+    do %  TRUSTED_% !tf::NAME
     between %,
 %
     after %

@@ -105,7 +105,7 @@ typedef u% ![[SCHEDULETABLES length] numberOfBytes] * 8 % tpl_schedtable_id;
  * Type used to store the id of an OS Application
  * Its size is computed according to the number of OS Applications
  */
-typedef u% ![[APPLICATIONS length] numberOfBytes] * 8 % tpl_app_id;
+typedef u% ![[APPLICATION length] numberOfBytes] * 8 % tpl_app_id;
 
 /**
  * @internal

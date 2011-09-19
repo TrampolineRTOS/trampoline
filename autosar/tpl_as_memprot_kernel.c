@@ -113,11 +113,11 @@ FUNC(tpl_access, OS_CODE) tpl_check_isr_memory_access(
  *
  * @param  size     Size of memory area 
  *
- * @retval if the isr_id is valid, the access right of
- *         the specified memory region (OS267)
+ * @retval if the task_id is valid, the access right of
+ *         the specified memory region (OS269)
  * @retval if the memory region overlaps zone where a right is different, the
- *         less favorable right win (OS313)
- * @retval if the isr_id is not valid, no access is returned (OS268)
+ *         less favorable right win (OS314)
+ * @retval if the task_id is not valid, no access is returned (OS270)
  */
 FUNC(tpl_access, OS_CODE) tpl_check_task_memory_access(
   CONST(tpl_task_id, AUTOMATIC)              task_id,

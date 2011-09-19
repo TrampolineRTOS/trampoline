@@ -73,11 +73,11 @@ override method @uint64_class set ??@lstring name ?!@TfieldMap result:
   addUnsignedValue !?result !name !value;
 end method;
 
-override method @auto_uint32_class set ??@lstring name ?!@TfieldMap result:
-  addEnumValue !?result !name !"AUTO";
+override method @float_class set ??@lstring name ?!@TfieldMap result:
+  addFloatValue !?result !name !value;
 end method;
 
-override method @auto_uint64_class set ??@lstring name ?!@TfieldMap result:
+override method @auto set ??@lstring name ?!@TfieldMap result:
   addEnumValue !?result !name !"AUTO";
 end method;
 
@@ -108,6 +108,7 @@ reader @applicationDefinition templateData
   addStringValue !?cfg !lstringWith[!"TIMESTAMP"] ![@string stringWithCurrentDateTime];
   addStringValue !?cfg !lstringWith[!"PROJECT"] ![projectName[] lastPathComponent];
   addStringValue !?cfg !lstringWith[!"TARGET"] ![option goil_options.target_platform value];
+  addStringValue !?cfg !lstringWith[!"TEMPLATEPATH"] ![option goil_options.template_dir value];
   addStringValue !?cfg !lstringWith[!"ARCH"] !arch[];
   addStringValue !?cfg !lstringWith[!"CHIP"] !chip[];
   addStringValue !?cfg !lstringWith[!"BOARD"] !board[];

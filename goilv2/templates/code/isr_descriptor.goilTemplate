@@ -72,8 +72,8 @@ CONST(tpl_proc_static, OS_CONST) % !isr::NAME %_isr_stat_desc = {
 #if WITH_OSAPPLICATION == YES
   /* OS application id        */  %
 if AUTOSAR then
-  if SCALABILITYCLASS >= 3 then
-    !APPLICATION%_id,%
+  if OS::SCALABILITYCLASS >= 3 then
+    !isr::APPLICATION%_id,%
   end if
 end if
 %
@@ -107,8 +107,8 @@ VAR(tpl_proc, OS_VAR) % !isr::NAME %_isr_desc = {
 #if WITH_OSAPPLICATION == YES
   /* if > 0 the process is trusted  */  %
 if AUTOSAR then
-  if SCALABILITYCLASS > 2 then
-    if TRUSTED then !1 else !0 end if
+  if OS::SCALABILITYCLASS > 2 then
+    if isr::TRUSTED then !1 else !0 end if
   end if
 else
   !0
