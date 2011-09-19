@@ -32,81 +32,76 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "goil_autosar_alarm_s1" ;
+OIL_VERSION = "3.1" : "goil_autosar_alarm_s1";
 
 IMPLEMENTATION trampoline {
-
-	OS {
-		ENUM [EXTENDED] STATUS;
-	};
-	
-    TASK {
-        UINT32 STACKSIZE = 32768 ;
-        UINT32 [1..10] PRIORITY = 1 ;
-    } ;
+  TASK {
+    UINT32 STACKSIZE = 32768;
+    UINT32 [1..10] PRIORITY = 1;
+  };
 };
 
- CPU test {
+CPU test {
+  OS config {
+    STATUS = STANDARD;
+    BUILD = TRUE {
+      TRAMPOLINE_BASE_PATH = "../../..";
+    };
+  };
 
-    OS config {
-        STATUS = STANDARD;
-        TRAMPOLINE_BASE_PATH = "../../..";	
-	};
+  APPMODE std {};
 
-    APPMODE std {};
-
-	TASK t1 {
-		AUTOSTART = TRUE { APPMODE = std ; } ;
-		PRIORITY = 2;
-		ACTIVATION = 1;
-		SCHEDULE = FULL;
-	};
-	TASK t2 {
-		AUTOSTART = FALSE ;
-		PRIORITY = 1;
-		ACTIVATION = 1;
-		SCHEDULE = FULL;
-		EVENT = Event1;
-	};
-	COUNTER Hardware_Counter{
-		MAXALLOWEDVALUE = 10;
-		TICKSPERBASE = 1;
-		MINCYCLE = 1;
-		TYPE = HARDWARE {};
-	};
-	COUNTER Software_Counter{
-		MAXALLOWEDVALUE = 10;
-		TICKSPERBASE = 1;
-		MINCYCLE = 1;
-		TYPE = SOFTWARE;
-	};
-	ALARM Alarm_SetEvent_basictask{
-		COUNTER = Software_Counter;
-		ACTION = SETEVENT {
-			TASK = t1;
-			EVENT = Event1;
-		};
-		AUTOSTART = FALSE;
-	};
-	ALARM Alarm_IncrementCounter{
-		COUNTER = Software_Counter;
-		ACTION = INCREMENTCOUNTER {
-			COUNTER = Hardware_Counter;
-		};
-		AUTOSTART = FALSE;
-	};
-	APPLICATION app {
-		TASK = t1;
-		TASK = t2;
-		COUNTER = Software_Counter;
-		COUNTER = Hardware_Counter;
-		ALARM = Alarm_SetEvent_basictask;
-		ALARM = Alarm_IncrementCounter;
-	};
-	EVENT Event1 {
-		MASK = AUTO;
-	};
-	
+  TASK t1 {
+    AUTOSTART = TRUE { APPMODE = std; };
+    PRIORITY = 2;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+  TASK t2 {
+    AUTOSTART = FALSE;
+    PRIORITY = 1;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    EVENT = Event1;
+  };
+  COUNTER Hardware_Counter{
+    MAXALLOWEDVALUE = 10;
+    TICKSPERBASE = 1;
+    MINCYCLE = 1;
+    TYPE = HARDWARE {};
+  };
+  COUNTER Software_Counter{
+    MAXALLOWEDVALUE = 10;
+    TICKSPERBASE = 1;
+    MINCYCLE = 1;
+    TYPE = SOFTWARE;
+  };
+  ALARM Alarm_SetEvent_basictask{
+    COUNTER = Software_Counter;
+    ACTION = SETEVENT {
+      TASK = t1;
+      EVENT = Event1;
+    };
+    AUTOSTART = FALSE;
+  };
+  ALARM Alarm_IncrementCounter{
+    COUNTER = Software_Counter;
+    ACTION = INCREMENTCOUNTER {
+      COUNTER = Hardware_Counter;
+    };
+    AUTOSTART = FALSE;
+  };
+  APPLICATION app {
+    TASK = t1;
+    TASK = t2;
+    COUNTER = Software_Counter;
+    COUNTER = Hardware_Counter;
+    ALARM = Alarm_SetEvent_basictask;
+    ALARM = Alarm_IncrementCounter;
+  };
+  EVENT Event1 {
+    MASK = AUTO;
+  };
 };
 
 

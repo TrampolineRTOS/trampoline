@@ -1,11 +1,14 @@
 running goil_events_s1
-CHECKPATH/goil_events_s1/goil_events_s1.oil:112:29: warning: MASK attribute uses more than 1 bit
-CHECKPATH/goil_events_s1/goil_events_s1.oil:139:28: error: MASK of event Task2_Event2 conflicts with previous declarations
-CHECKPATH/goil_events_s1/goil_events_s1.oil:66:22: error: All event mask bits are already use, event Task1_Event9 can't be created
-1 warning, 2 errors.
+CHECKPATH/goil_events_s1/goil_events_s1.oil:113:27: warning: Event Task1_Event8 uses more than one bit
+CHECKPATH/goil_events_s1/goil_events_s1.oil:139:27: error: event Task2_Event1 MASK conflicts
+CHECKPATH/goil_events_s1/goil_events_s1.oil:140:27: error: with MASK of event Task2_Event2
+CHECKPATH/goil_events_s1/goil_events_s1.oil:140:27: error: event Task2_Event2 MASK conflicts
+CHECKPATH/goil_events_s1/goil_events_s1.oil:139:27: error: with MASK of event Task2_Event1
+CHECKPATH/goil_events_s1/goil_events_s1.oil:123:28: error: Event Task1_Event18 uses more than 32 bits
+1 warning, 5 errors.
 running goil_autosar_alarm_s1
-CHECKPATH/goil_autosar_alarm_s1/goil_autosar_alarm_s1.oil:94:29: error: OS285 - It is impossible to increment a hardware counter (Hardware_Counter is not a software counter).
-CHECKPATH/goil_autosar_alarm_s1/goil_autosar_alarm_s1.oil:87:17: error: An alarm can't set an Event to a basic task (Task t1 is a basic task).
+CHECKPATH/goil_autosar_alarm_s1/goil_autosar_alarm_s1.oil:90:13: error: OS285 - It is impossible to increment a hardware counter (Hardware_Counter is not a software counter).
+CHECKPATH/goil_autosar_alarm_s1/goil_autosar_alarm_s1.oil:82:10: error: An alarm can't set an Event to a basic task (Task t1 is a basic task).
 No warning, 2 errors.
 running goil_autosar_st_s1
 CHECKPATH/goil_autosar_st_s1/goil_autosar_st_s1.oil:87:18: error: PERIODIC attribute already defined for Schedule Table sched2

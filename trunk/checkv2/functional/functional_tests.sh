@@ -52,12 +52,12 @@ else
 		then
 		
 			#Adding AUTOSAR flag if autosar test sequence
-			if [ "`echo ${i} | grep autosar`" != "" ]
-			then
-				autosar_flag="-a"
-			else
-				autosar_flag=""
-			fi	
+#			if [ "`echo ${i} | grep autosar`" != "" ]
+#			then
+#				autosar_flag="-a"
+#			else
+#				autosar_flag=""
+#			fi	
 			
 			#Go in the test sequence
 			cd ./${i}
@@ -81,7 +81,7 @@ else
 			#if Makefile doesn't exist -> do goil
 			if ! [ -f Makefile ]
 			then
-				goil --target=$1 --templates=../../../goil/templates/ -g ${i}.oil $autosar_flag 2>&1 | tee -a ../functional_results.log
+				goil --target=$1 --templates=../../../goilv2/templates/ ${i}.oil 2>&1 | tee -a ../functional_results.log
 			fi
 			
 			#if goil succeed (Makefile has been created) -> do make and execute file

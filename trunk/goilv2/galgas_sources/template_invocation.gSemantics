@@ -77,6 +77,8 @@ function displayTypeAndValue
     outResult := "bool: " . if [inValue mUnsigned64Value] == 1L then "yes" else "no" end;
   when unsignedType :
     outResult := "unsigned: " . [[inValue mUnsigned64Value] string];
+  when floatType :
+    outResult := "float: " . [[inValue mFloatValue] string];
   when stringType :
     outResult := "string: '" . [inValue mStringValue] . "'";
   when listType :
@@ -90,11 +92,13 @@ function displayTypeAndValue
           outResult .= "bool: " . if [mValue mUnsigned64Value] == 1L then "yes" else "no" end;
         when unsignedType :
           outResult .= "unsigned: " . [[mValue mUnsigned64Value] string];
+        when floatType :
+          outResult .= "float: " . [[mValue mFloatValue] string];
         when stringType :
           outResult .= "string: '" . [mValue mStringValue] . "'";
         when listType, structType, mapType :
         when enumType :
-        when unconstructedType:
+        when unconstructedType, functionType:
           error here: "internal error, unconstructed type found";
         end switch;
       between outResult .= ", ";
@@ -104,7 +108,7 @@ function displayTypeAndValue
     outResult := "";
   when enumType:
     outResult := "";
-  when unconstructedType:
+  when unconstructedType, functionType:
     error here: "internal error, unconstructed type found" : outResult;
   end switch;
 end function;
@@ -292,7 +296,7 @@ routine templateInvocation
           found := [fullTemplatePath fileExists];
           if found then
             #displayPathList !pathList;
-            grammar template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString;
+            grammar template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString ?* ?*;
           end if;
         end if;
         @string targetTemplatePartialPath := targetDir;
@@ -304,7 +308,7 @@ routine templateInvocation
           found := [fullTemplatePath fileExists];
           if found then
             #displayPathList !pathList;
-            grammar template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString;
+            grammar template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString ?* ?*;
           else
             targetTemplatePartialPath := [targetTemplatePartialPath stringByDeletingLastPathComponent];
           end if;
@@ -315,7 +319,7 @@ routine templateInvocation
           found := [fullTemplatePath fileExists];
           if found then
             #displayPathList !pathList;
-            grammar template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString;
+            grammar template_grammar in [@lstring new !fullTemplatePath !here] !inPrefix !inPath !inTemplateDirectory !inTemplateVariableMap !?ioResultingString ?* ?*;
           end if;
         end if;
         if not found then

@@ -32,152 +32,150 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "alarms_s9" ;
+OIL_VERSION = "2.5" : "alarms_s9";
 
 IMPLEMENTATION trampoline {
-	
-    TASK {
-        UINT32 STACKSIZE = 32768 ;
-        UINT32 [1..10] PRIORITY = 1 ;
-    } ;
+  TASK {
+    UINT32 STACKSIZE = 32768;
+    UINT32 [1..10] PRIORITY = 1;
+  };
 };
 
- CPU test {
-
-    OS config {
-        STATUS = EXTENDED;
-		APP_SRC = "alarms_s9.c";
-		APP_SRC = "task1_instance.c";
-		APP_SRC = "task2_instance.c";
-		APP_SRC = "task3_instance.c";
-		APP_SRC = "task4_instance.c";
-		APP_SRC = "task5_instance.c";
-		APP_SRC = "isr1_instance.c";
-		APP_SRC = "callback_instance1.c";
-		APP_SRC = "callback_instance2.c";
-		APP_SRC = "../config.c";
-        TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "alarms_s9_full_exe";
-		CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Werror -Wall -pedantic";
-        CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../../lib -lembUnit";
-		SHUTDOWNHOOK = TRUE;
-    } ;
-
-    APPMODE std {};
-
-    TASK t1 {
-        AUTOSTART = FALSE ;
-        PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
+CPU test {
+  OS config {
+    STATUS = EXTENDED;
+    BUILD = TRUE {
+      APP_SRC = "alarms_s9.c";
+      APP_SRC = "task1_instance.c";
+      APP_SRC = "task2_instance.c";
+      APP_SRC = "task3_instance.c";
+      APP_SRC = "task4_instance.c";
+      APP_SRC = "task5_instance.c";
+      APP_SRC = "isr1_instance.c";
+      APP_SRC = "callback_instance1.c";
+      APP_SRC = "callback_instance2.c";
+      APP_SRC = "../config.c";
+      TRAMPOLINE_BASE_PATH = "../../..";
+      APP_NAME = "alarms_s9_full_exe";
+      CFLAGS = "-I../../embUnit";
+      CFLAGS  = "-Werror -Wall -pedantic";
+      CFLAGS  = "-Wmissing-field-initializers";
+      LDFLAGS = "-L../../lib -lembUnit";
     };
-	
-    TASK t2 {
-        AUTOSTART = FALSE ;
-        PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
-	
-    TASK t3 {
-        AUTOSTART = FALSE ;
-        PRIORITY = 4;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-		EVENT = Event1;
-    };
-	
-    TASK t4 {
-        AUTOSTART = FALSE ;
-        PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-		EVENT = Event1;
-    };
-	
-    TASK t5 {
-        AUTOSTART =TRUE { APPMODE = std ; };
-        PRIORITY = 2;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
+    SHUTDOWNHOOK = TRUE;
+  };
 
-	ISR isr1{
-		CATEGORY = 2;
-		STACKSIZE = 32768;
-		PRIORITY = 1;
-		SOURCE = SIGTERM;	
-	};
+  APPMODE std {};
 
-	COUNTER Counter0{
-		MAXALLOWEDVALUE = 16;
-		TICKSPERBASE = 10;
-		MINCYCLE = 2;
-	};
-	
-	ALARM Alarm0{
-		COUNTER = Counter0;
-		ACTION = ACTIVATETASK {
-			TASK = t1;
-		};
-		AUTOSTART = FALSE;
-	};
+  TASK t1 {
+    AUTOSTART = FALSE;
+    PRIORITY = 1;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+ 
+  TASK t2 {
+    AUTOSTART = FALSE;
+    PRIORITY = 1;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+ 
+  TASK t3 {
+    AUTOSTART = FALSE;
+    PRIORITY = 4;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    EVENT = Event1;
+  };
+ 
+  TASK t4 {
+    AUTOSTART = FALSE;
+    PRIORITY = 1;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    EVENT = Event1;
+  };
+ 
+  TASK t5 {
+    AUTOSTART = TRUE { APPMODE = std; };
+    PRIORITY = 2;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
 
-	COUNTER Counter1{
-		MAXALLOWEDVALUE = 16;
-		TICKSPERBASE = 10;
-		MINCYCLE = 1;
-	};
-	
-	ALARM Alarm1_1{
-		COUNTER = Counter1;
-		ACTION = ACTIVATETASK {
-			TASK = t1;
-		};
-		AUTOSTART = FALSE;
-	};
-	
-	ALARM Alarm1_2{
-		COUNTER = Counter1;
-		ACTION = ACTIVATETASK {
-			TASK = t2;
-		};
-		AUTOSTART = FALSE;
-	};
-	
-	ALARM Alarm2_1{
-		COUNTER = Counter1;
-		ACTION = SETEVENT {
-			TASK = t3;
-			EVENT = Event1;
-		};
-		AUTOSTART = FALSE;
-	};
-	
-	ALARM Alarm2_2{
-		COUNTER = Counter1;
-		ACTION = SETEVENT {
-			TASK = t4;
-			EVENT = Event1;
-		};
-		AUTOSTART = FALSE;
-	};
-	
-	ALARM Alarm3{
-		COUNTER = Counter1;
-		ACTION = ALARMCALLBACK {
-			ALARMCALLBACKNAME = "CallBackC";
-		};
-		AUTOSTART = FALSE;
-	};
+  ISR isr1 {
+    CATEGORY = 2;
+    STACKSIZE = 32768;
+    PRIORITY = 1;
+    SOURCE = SIGTERM; 
+  };
 
-	EVENT Event1{
-		MASK =AUTO;
-	};
+  COUNTER Counter0 {
+    MAXALLOWEDVALUE = 16;
+    TICKSPERBASE = 10;
+    MINCYCLE = 2;
+  };
+ 
+  ALARM Alarm0 {
+    COUNTER = Counter0;
+    ACTION = ACTIVATETASK {
+      TASK = t1;
+    };
+    AUTOSTART = FALSE;
+  };
+
+  COUNTER Counter1 {
+    MAXALLOWEDVALUE = 16;
+    TICKSPERBASE = 10;
+    MINCYCLE = 1;
+  };
+ 
+  ALARM Alarm1_1 {
+    COUNTER = Counter1;
+    ACTION = ACTIVATETASK {
+      TASK = t1;
+    };
+    AUTOSTART = FALSE;
+  };
+ 
+  ALARM Alarm1_2 {
+    COUNTER = Counter1;
+    ACTION = ACTIVATETASK {
+      TASK = t2;
+    };
+    AUTOSTART = FALSE;
+  };
+ 
+  ALARM Alarm2_1 {
+    COUNTER = Counter1;
+    ACTION = SETEVENT {
+      TASK = t3;
+      EVENT = Event1;
+    };
+    AUTOSTART = FALSE;
+  };
+ 
+  ALARM Alarm2_2 {
+    COUNTER = Counter1;
+    ACTION = SETEVENT {
+      TASK = t4;
+      EVENT = Event1;
+    };
+    AUTOSTART = FALSE;
+  };
+ 
+  ALARM Alarm3 {
+    COUNTER = Counter1;
+    ACTION = ALARMCALLBACK {
+      ALARMCALLBACKNAME = "CallBackC";
+    };
+    AUTOSTART = FALSE;
+  };
+
+  EVENT Event1 {
+    MASK = AUTO;
+  };
 };
-
-
 
 /* End of file alarms_s9_full.oil */

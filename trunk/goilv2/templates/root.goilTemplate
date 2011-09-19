@@ -109,7 +109,9 @@ foreach task in TASK do
       end foreach
     end foreach
     let task::USEINTERNALRESOURCE := internal_found
-    let task::INTERNALRESOURCE := internal_name
+    if internal_found then
+      let task::INTERNALRESOURCE := internal_name
+    end if
   end if
   if task::SCHEDULE == "NON" then
     let task::NONPREEMPTABLE := true
@@ -174,7 +176,7 @@ foreach resource in RESOURCE do
   let resource::PRIORITY := resource_priority
   let RESOURCES += resource
 end foreach
- 
+
 #------------------------------------------------------------------------------*
 # Compute a list of priority objects (ISR category 2, Tasks and resources)
 # PRIORITY is made dense
@@ -226,24 +228,28 @@ let READYLIST += ready_slot
 let MAXPRIORITY := priority
 
 #------------------------------------------------------------------------------*
-# Compute the lists of basic and extended tasks and the RES_SCHEDULER priority
+# Compute the lists of basic and extended tasks, the list of RESOURCES
+# and the RES_SCHEDULER priority
 #
 let OS::RESSCHEDULERPRIORITY := 0
 let highest_priority_task_uses_resource := false
 let BASICTASKS := emptyList
 let EXTENDEDTASKS := emptyList
 let TASKS := emptyList
-foreach aTask in PRIO2 do
-  if aTask::KIND == "Task" then
-    if not exists aTask::EVENT then
-      let BASICTASKS += aTask
+let RESOURCES := emptyList
+foreach obj in PRIO2 do
+  if obj::KIND == "Task" then
+    if not exists obj::EVENT then
+      let BASICTASKS += obj
     else
-      let EXTENDEDTASKS += aTask
+      let EXTENDEDTASKS += obj
     end if
-    if aTask::PRIORITY > OS::RESSCHEDULERPRIORITY then
-      let OS::RESSCHEDULERPRIORITY := aTask::PRIORITY
-      let highest_priority_task_uses_resource := exists aTask::RESOURCE
+    if obj::PRIORITY > OS::RESSCHEDULERPRIORITY then
+      let OS::RESSCHEDULERPRIORITY := obj::PRIORITY
+      let highest_priority_task_uses_resource := exists obj::RESOURCE
     end if
+  elsif obj::KIND == "Resource" then
+    let RESOURCES += obj
   end if
 end foreach
 
@@ -290,33 +296,21 @@ foreach isr in ISRS2 do
 end foreach
 
 #------------------------------------------------------------------------------*
-# compute the list of REGULARRESOURCES and INTERNALRESOURCES
-#
-let REGULARRESOURCES := emptyList
-let INTERNALRESOURCES := emptyList
-foreach resource in RESOURCES do
-  if resource::RESOURCEPROPERTY == "INTERNAL" then
-    let INTERNALRESOURCES += resource
-  else
-    if resource::RESOURCEPROPERTY == "STANDARD" then
-      let REGULARRESOURCES += resource
-    end if
-  end if
-end foreach
-
-#------------------------------------------------------------------------------*
 # compute the list of HARDWARECOUNTERS and SOFTWARECOUNTERS
 #
 let COUNTERS := COUNTER
+
 let HARDWARECOUNTERS := emptyList
 let SOFTWARECOUNTERS := emptyList
 foreach counter in COUNTERS do
-  if counter::TYPE == "HARDWARE" then
-    let HARDWARECOUNTERS += counter
-  else
-    if counter::TYPE == "SOFTWARE" then
+  if exists counter::TYPE then
+    if    counter::TYPE == "HARDWARE" then
+      let HARDWARECOUNTERS += counter
+    elsif counter::TYPE == "SOFTWARE" then
       let SOFTWARECOUNTERS += counter
     end if
+  else
+    let HARDWARECOUNTERS += counter
   end if
 end foreach
 
@@ -389,8 +383,8 @@ foreach event in USEREVENTS prefixedby sel_ do
         let in_conflict := false
         let sel_tasks := tasks_for_event[sel_event::NAME]
         let tasks := tasks_for_event[event::NAME]
-        foreach sel_task in sel_tasks do
-          foreach task in tasks do
+        foreach sel_task in sel_tasks::task_list do
+          foreach task in tasks::task_list do
             if sel_task::VALUE == task::VALUE then
               let in_conflict := true
             end if
@@ -453,7 +447,7 @@ foreach event in events_by_ref do
   let using_tasks := tasks_for_event[event::NAME]::task_list
   let tasks_mask := 0
   foreach task in using_tasks do
-    let tasks_mask := tasks_mask | mask_for_task[task::NAME]
+    let tasks_mask := tasks_mask | mask_for_task[task::VALUE]
   end foreach
   # find the first available bit
   let mask := 0
@@ -474,7 +468,7 @@ foreach event in events_by_ref do
   end if
   # update the mask of tasks
   foreach task in using_tasks do
-    let mask_for_task[task::NAME] := mask_for_task[task::NAME] | mask
+    let mask_for_task[task::VALUE] := mask_for_task[task::VALUE] | mask
   end foreach
 end foreach
 
@@ -486,17 +480,38 @@ foreach mask in mask_for_task do
 end foreach
 
 #------------------------------------------------------------------------------*
+# Check no event mask needs more than 32 bits
+foreach event in EVENTS do
+  if event::MASK >= 1 << 32 then
+    error event::MASK : "Event ".event::NAME." uses more than 32 bits"
+  end if
+end foreach
+
+#------------------------------------------------------------------------------*
 # Compute the Alarms
 #
 let counterMap := mapOf COUNTERS by NAME
+let taskMap := mapOf TASKS by NAME
 let ALARMS := ALARM
 foreach alarm in ALARMS do
   if alarm::AUTOSTART then
     # verify an AUTOSTART alarm is compatible with the counter
     let counter := counterMap[alarm::COUNTER]
-    if alarm::AUTOSTART_S::CYCLETIME < counter::MINCYCLE then
+    if alarm::AUTOSTART_S::CYCLETIME < counter::MINCYCLE & alarm::AUTOSTART_S::CYCLETIME != 0 then
       error alarm::AUTOSTART_S::CYCLETIME : "CYCLETIME is lower than MINCYCLE"
       error counter::MINCYCLE : "as declared there"
+    end if
+  end if
+  # verify the alarm action is compatible with the target
+  if exists alarm::ACTION then
+    if alarm::ACTION == "INCREMENTCOUNTER" then
+      if counterMap[alarm::ACTION_S::COUNTER]::TYPE != "SOFTWARE" then
+        error alarm::ACTION_S::COUNTER : "OS285 - It is impossible to increment a hardware counter (".alarm::ACTION_S::COUNTER." is not a software counter)." 
+      end if
+    elsif alarm::ACTION == "SETEVENT" then
+      if not exists taskMap[alarm::ACTION_S::TASK]::EVENT then
+        error alarm::ACTION_S::TASK : "An alarm can't set an Event to a basic task (Task ".alarm::ACTION_S::TASK." is a basic task)."
+      end if
     end if
   end if
 end foreach
@@ -525,7 +540,7 @@ foreach message in MESSAGE do
   then
     # the target message if the first message in the linked
     # list of destination messages
-    let target_message := [receiver[message::NAME] first]
+    let target_message := [receiver[message::NAME] last]
     let message::TARGET := target_message::NAME
     let SENDMESSAGES += message
   end if
@@ -548,13 +563,15 @@ foreach receive_message_list in receiver do
     then
       let send_message_name := receive_message::MESSAGEPROPERTY_S::SENDINGMESSAGE
       # Check the compatibility of the sending message
-      let send_message := send[send_message_name]
+      let send_message := sender[send_message_name]
       if send_message::MESSAGEPROPERTY == "SEND_STATIC_INTERNAL" then
-        let receive_message::CDATATYPE := send_message::MESSAGEPROPERTY_S::CDATATYPE
+#        warning here : "OK"
+        let receive_message::MESSAGEPROPERTY_S::CDATATYPE := send_message::MESSAGEPROPERTY_S::CDATATYPE
       else
         error send_message_name : "MESSAGEPROPERTY of sender should be SEND_STATIC_INTERNAL"
       end if
     end if
+#    display receive_message
     let RECEIVEMESSAGES += receive_message
   end foreach
 end foreach
@@ -569,17 +586,39 @@ foreach sm in SENDMESSAGES do
 end foreach
 
 
-# Gather the informations on used filters
-let FILTERS := emptyList
-
-
-
-#
-
 #------------------------------------------------------------------------------*
 # Compute the filters
 #
-let FILTERSTRUCTS := emptyList
+# Gather the informations on used filters
+#
+let FILTERS := emptyMap
+let FILTERSTRUCTS := emptyMap
+foreach message in RECEIVEMESSAGES do
+  if exists message::MESSAGEPROPERTY_S::FILTER then
+    let filter::NAME := message::MESSAGEPROPERTY_S::FILTER
+    let filter::CDATATYPE := message::MESSAGEPROPERTY_S::CDATATYPE
+    let filterKey := filter::NAME . "_" . filter::CDATATYPE
+    let structKey
+    if    filter::NAME == "MASKEDNEWEQUALSX" |
+          filter::NAME == "MASKEDNEWDIFFERSX" then
+       let structKey := "mask_x_" . filter::CDATATYPE
+       let filter::KIND := "mask_x"
+    elsif filter::NAME == "MASKEDNEWEQUALSMASKEDOLD" |
+          filter::NAME == "MASKEDNEWDIFFERSMASKEDOLD" then
+       let structKey := "mask_" . filter::CDATATYPE
+       let filter::KIND := "mask"
+    elsif filter::NAME == "NEWISWITHIN" |
+          filter::NAME == "NEWISOUTSIDE" then
+       let filter::KIND := "interval"
+       let structKey := "interval_" . filter::CDATATYPE
+    end if
+    if typeof structKey == @string then
+      let FILTERSTRUCTS[structKey] := filter
+    end if
+    let FILTERS[filterKey] := filter
+  end if
+end foreach
+
 
 #------------------------------------------------------------------------------*
 # Compute the SCHEDULETABLES
@@ -587,10 +626,10 @@ let FILTERSTRUCTS := emptyList
 let SCHEDULETABLES := SCHEDULETABLE
 
 #------------------------------------------------------------------------------*
-# Compute the APPLICATIONS
+# Compute the TRUSTEDFUNCTIONS
 #
-let APPLICATIONS := APPLICATION
-
+let TRUSTEDFUNCTIONS := emptyList
+ 
 #------------------------------------------------------------------------------*
 # Compute some configuration flags to ease the template coding
 #
@@ -626,36 +665,37 @@ end if
 # Compute the OS:OSAPPLICATIONSTARTUPHOOK and OS:OSAPPLICATIONSHUTDOWNHOOK
 let OS::APPLICATIONSTARTUPHOOK := 0
 let OS::APPLICATIONSHUTDOWNHOOK := 0
-foreach application in APPLICATIONS do
-  let OS::OSAPPLICATIONSTARTUPHOOK := OS::OSAPPLICATIONSTARTUPHOOK + [application::STARTUPHOOK unsigned]
-  let OS::OSAPPLICATIONSHUTDOWNHOOK :=  OS::OSAPPLICATIONSHUTDOWNHOOK + [application::SHUTDOWNHOOK unsigned]
+foreach application in APPLICATION do
+  let OS::APPLICATIONSTARTUPHOOK := OS::APPLICATIONSTARTUPHOOK + [application::STARTUPHOOK unsigned]
+  let OS::APPLICATIONSHUTDOWNHOOK :=  OS::APPLICATIONSHUTDOWNHOOK + [application::SHUTDOWNHOOK unsigned]
 end foreach
 
 #------------------------------------------------------------------------------*
 # Compute the OS::SCALABILITYCLASS
 # If this attribute does not exists, we are in OSEK
-let OS::SCALABILITYCLASS := exists OS::SCALABILITYCLASS default ("SC0")
 let sc := 0
-if typeOf OS::SCALABILITYCLASS == @enum then
-  # SCALABILITYCLASS is set to AUTO
-  # Compute the SCALABILITYCLASS according to other objects
-  let sc := 1
-  # if protectionhook is set or at least one task or ISR uses
-  # timing protection or if global time sync is used then  we are in sc2
-  if OS::PROTECTIONHOOK | OS::TIMINGPROTECTION | OS::GLOBALTIME then
-    let sc := 2
-  end if
-  # Then check the memory protection and the availability of an OS Application
-  # to see if the scalability class must be increase by 2
-  if USEMEMORYPROTECTION | exists APPLICATIONS then
-    let sc := sc + 2
+if not exists OS::SCALABILITYCLASS then
+  if AUTOSAR then
+    # SCALABILITYCLASS is set to AUTO
+    # Compute the SCALABILITYCLASS according to other objects
+    let sc := 1
+    # if protectionhook is set or at least one task or ISR uses
+    # timing protection or if global time sync is used then  we are in sc2
+    if OS::PROTECTIONHOOK | OS::TIMINGPROTECTION | OS::GLOBALTIME then
+      let sc := 2
+    end if
+    # Then check the memory protection and the availability of an OS Application
+    # to see if the scalability class must be increase by 2
+    if USEMEMORYPROTECTION | [APPLICATION length] > 0 then
+      let sc := sc + 2
+    end if
   end if
 else
   # SCALABILITYCLASS is set SCx, check it is compatible with what is specified
   let sc := [[OS::SCALABILITYCLASS rightSubString: 1] unsigned]
   if sc == 1 then
     if OS::TIMINGPROTECTION then
-      if exists APPLICATIONS then
+      if [APPLICATION length] > 0 then
         warning OS::SCALABILITYCLASS : "SCALABILITYCLASS set to 4 because Timing Protection and OS Applications are used"
         let sc := 4
       else
@@ -663,26 +703,26 @@ else
         let sc := 2
       end if
     else
-      if exists APPLICATIONS then
+      if [APPLICATION length] > 0  then
         warning OS::SCALABILITYCLASS: "SCALABILITYCLASS set to 3 because OS Applications are used"
         let sc := 3
       end if
     end if
   elsif sc == 2 then
     if OS::TIMINGPROTECTION then
-      if exists APPLICATIONS then
+      if [APPLICATION length] > 0  then
         warning OS::SCALABILITYCLASS : "SCALABILITYCLASS set to 4 because Timing Protection and OS Applications are used"
         let sc := 4
       end if
     else
-      if exists APPLICATIONS then
+      if [APPLICATION length] > 0  then
         warning OS::SCALABILITYCLASS: "SCALABILITYCLASS set to 3 because OS Applications are used"
         let sc := 3
       end if
     end if
   elsif sc == 3 then
     if OS::TIMINGPROTECTION then
-      if exists APPLICATIONS then
+      if [APPLICATION length] > 0  then
         warning OS::SCALABILITYCLASS : "SCALABILITYCLASS set to 4 because Timing Protection and OS Applications are used"
         let sc := 4
       end if
@@ -690,6 +730,355 @@ else
   end if
 end if
 let OS::SCALABILITYCLASS := sc
+
+let APPLICATIONS := emptyList
+
+if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
+#------------------------------------------------------------------------------*
+# Compute the APPLICATIONS and add an APPLICATION attribute to each object
+#
+# First verify each object belong to one and only one application
+#
+  let task_map := emptyMap
+  let isr_map := emptyMap
+  let counter_map := emptyMap
+  let alarm_map := emptyMap
+  let resource_map := emptyMap
+  let message_map := emptyMap
+  let scheduletable_map := emptyMap
+  foreach app in APPLICATION do
+    # Gather all tasks referenced in all Applications
+    foreach task in exists app::TASK default (emptyList) do
+      let task_map[task::VALUE] += app::NAME
+    end foreach
+    # Gather all isrs referenced in all Applications
+    foreach isr in exists app::ISR default (emptyList) do
+      let isr_map[isr::VALUE] += app::NAME
+    end foreach
+    # Gather all counters referenced in all Applications
+    foreach counter in exists app::COUNTER default (emptyList) do
+      let counter_map[counter::VALUE] += app::NAME
+    end foreach
+    # add the SystemCounter
+    let counter_map["SystemCounter"] := emptyList
+    # Gather all alarms referenced in all Applications
+    foreach alarm in exists app::ALARM default (emptyList) do
+      let alarm_map[alarm::VALUE] += app::NAME
+    end foreach
+    # Gather all resources referenced in all Applications
+    foreach resource in exists app::RESOURCE default (emptyList) do
+      let resource_map[resource::VALUE] += app::NAME
+    end foreach
+    # Gather all messages referenced in all Applications
+    foreach message in exists app::MESSAGE default (emptyList) do
+      let message_map[message::VALUE] += app::NAME
+    end foreach
+    # Gather all scheduletables referenced in all Applications
+    foreach scheduletable in exists app::SCHEDULETABLE default (emptyList) do
+      let scheduletable_map[scheduletable::VALUE] += app::NAME
+    end foreach
+  end foreach
+  
+  # if the lists have more than one app then an object belongs to more than
+  # one application
+  foreach task in task_map do
+    if [task length] > 1 then 
+      error KEY : "TASK ".KEY." belong to more than one Application"
+      foreach app in task do
+        error app::NAME : "It belongs to APPLICATION ".app::NAME
+      end foreach
+    end if
+  end foreach
+  
+  foreach isr in isr_map do
+    if [isr length] > 1 then 
+      error KEY : "ISR ".KEY." belong to more than one Application"
+      foreach app in isr do
+        error app::NAME : "It belongs to APPLICATION ".app::NAME
+      end foreach
+    end if
+  end foreach
+  
+  foreach counter in counter_map do
+    if [counter length] > 1 then 
+      error KEY : "COUNTER ".KEY." belong to more than one Application"
+      foreach app in counter do
+        error app::NAME : "It belongs to APPLICATION ".app::NAME
+      end foreach
+    end if
+  end foreach
+  
+  foreach alarm in alarm_map do
+    if [alarm length] > 1 then 
+      error KEY : "ALARM ".KEY." belong to more than one Application"
+      foreach app in task do
+        error app::NAME : "It belongs to APPLICATION ".app::NAME
+      end foreach
+    end if
+  end foreach
+  
+  foreach resource in resource_map do
+    if [resource length] > 1 then 
+      error KEY : "RESOURCE ".KEY." belong to more than one Application"
+      foreach app in resource do
+        error app::NAME : "It belongs to APPLICATION ".app::NAME
+      end foreach
+    end if
+  end foreach
+  
+  foreach message in message_map do
+    if [message length] > 1 then 
+      error KEY : "MESSAGE ".KEY." belong to more than one Application"
+      foreach app in message do
+        error app::NAME : "It belongs to APPLICATION ".app::NAME
+      end foreach
+    end if
+  end foreach
+  
+  foreach scheduletable in scheduletable_map do
+    if [scheduletable length] > 1 then 
+      error KEY : "SCHEDULETABLE ".KEY." belong to more than one Application"
+      foreach app in scheduletable do
+        error app::NAME : "It belongs to APPLICATION ".app::NAME
+      end foreach
+    end if
+  end foreach
+  
+  # Check all tasks belong to an Application and add the APPLICATION attribute
+  let app_map := mapof APPLICATION by NAME 
+  let task_with_app := emptyList
+  foreach task in TASKS do
+    if not exists task_map[task::NAME] then
+      error task::NAME : "TASK ".task::NAME." does not belong to any Application"
+    else
+      let app := [task_map[task::NAME] first]
+      let task::APPLICATION := app::VALUE
+      let task::TRUSTED := app_map[app::VALUE]::TRUSTED
+      let task_with_app += task
+    end if
+  end foreach
+  let TASKS := task_with_app
+    
+  let isr_with_app := emptyList
+  foreach isr in ISRS2 do
+    if not exists isr_map[isr::NAME] then
+      error isr::NAME : "ISR ".isr::NAME." does not belong to any Application"
+    else
+      let app := [isr_map[isr::NAME] first]
+      let isr::APPLICATION := app::VALUE
+      let isr::TRUSTED := app_map[app::VALUE]::TRUSTED
+      let isr_with_app += isr
+    end if
+  end foreach
+  let ISRS2 := isr_with_app
+  
+  let counter_with_app := emptyList
+  foreach counter in COUNTERS do
+    if counter::NAME == "SystemCounter" then
+      let counter_with_app += counter
+    else
+      if not exists counter_map[counter::NAME] then
+        error counter::NAME : "COUNTER ".counter::NAME." does not belong to any Application"
+      elsif [counter_map[counter::NAME] length] > 0 then
+        let app := [counter_map[counter::NAME] first]
+        let counter::APPLICATION := app::VALUE
+        let counter_with_app += counter
+      end if
+    end if
+  end foreach
+  let COUNTERS := counter_with_app
+  
+  let alarm_with_app := emptyList
+  foreach alarm in ALARMS do
+    if not exists alarm_map[alarm::NAME] then
+      error alarm::NAME : "ALARM ".alarm::NAME." does not belong to any Application"
+    else
+      let app := [alarm_map[alarm::NAME] first]
+      let alarm::APPLICATION := app::VALUE
+      let alarm_with_app += alarm
+    end if
+  end foreach
+  let ALARMS := alarm_with_app
+  
+  let rez_with_app := emptyList
+  foreach resource in RESOURCES do
+    if not exists resource_map[resource::NAME] then
+      error resource::NAME : "Resource ".resource::NAME." does not belong to any Application"
+    else
+      let app := [resource_map[resource::NAME] first]
+      let resource::APPLICATION := app::VALUE
+      let rez_with_app += resource
+    end if
+  end foreach
+  let RESOURCES := rez_with_app
+  
+  let mess_with_app := emptyList
+  foreach message in MESSAGES do
+    if not exists message_map[message::NAME] then
+      error message::NAME : "Message ".message::NAME." does not belong to any Application"
+    else
+      let app := [message_map[message::NAME] first]
+      let message::APPLICATION := app::VALUE
+      let mess_with_app += resource
+    end if
+  end foreach
+  let MESSAGES := mess_with_app
+  
+  let st_with_app := emptyList
+  foreach scheduletable in SCHEDULETABLES do
+    if not exists scheduletable_map[scheduletable::NAME] then
+      error scheduletable::NAME : "Schedule Table ".scheduletable::NAME." does not belong to any Application"
+    else
+      let app := [scheduletable_map[scheduletable::NAME] first]
+      let scheduletable::APPLICATION := app::VALUE
+      let st_with_app += scheduletable
+    end if
+  end foreach
+  let SCHEDULETABLES := st_with_app
+
+#------------------------------------------------------------------------------*
+# function to compute the vectors
+  function computeVector (app, proc, owned_proc) {
+    let vector := ""
+    if exists owned_proc[proc::NAME] then
+      let vector := "11"
+    else
+      let vector := "0"
+      let acc_app := exists proc::ACCESSING_APPLICATION default (emptyList)
+      let acc_app_map := mapof (exists proc::ACCESSING_APPLICATION default (emptyList)) by VALUE
+      if exists acc_app_map[app::NAME] then
+        let vector := vector . "1"
+      else
+        let vector := vector . "0"
+      end if
+    end if
+    return vector
+  }
+ 
+  function computeBinaryVectorSize(vector) {
+    let size := [vector length] / 8
+    if [vector length] mod 8 != 0 then let size := size + 1 end if
+    return size
+  }
+  
+  function computeBinaryVector(vector, size) {
+    let start := 0
+    let binary_vector := emptyList
+    loop i from 1 to size do
+      let byte := [[vector subString: start, 8] reversedString]
+      let val := 0
+      loop bit from 0 to [byte length] - 1 do
+        let val := val << 1
+        if [byte subString: bit, 1] == "1" then
+          let val := val + 1
+        end if
+      end loop
+      let binary_vector += [val string]
+      let start := start + 8
+    end loop
+    return binary_vector
+  }
+
+#------------------------------------------------------------------------------*
+# add the computed attributes
+  foreach app in APPLICATION do
+    if not exists app::TASK then let app::TASK := emptyList end if
+    if not exists app::ISR then let app::ISR := emptyList end if
+    if not exists app::ALARM then let app::ALARM := emptyList end if
+    if not exists app::RESOURCE then let app::RESOURCE := emptyList end if
+    if not exists app::SCHEDULETABLE then let app::SCHEDULETABLE := emptyList end if
+    if not exists app::COUNTER then let app::COUNTER := emptyList end if
+
+    # vectors for process access
+    let process_of_app := app::TASK . app::ISR
+#    display app::TASK
+#    display app::ISR
+#    display process_of_app
+    let app::PROCESS := process_of_app
+    let owned_proc := mapOf process_of_app by VALUE
+    let vector := ""
+    foreach proc in PROCESSES do
+      let vector := vector . computeVector(app, proc, owned_proc)
+    end foreach
+    let vector := vector . "01" # for idle task
+    let app::PROCESSACCESSVECTOR := vector
+    let size := computeBinaryVectorSize(vector)
+    let app::PROCESSACCESSNUM := size
+    let app::PROCESSACCESSITEMS := computeBinaryVector(vector, size)
+
+    # vectors for ALARMS access
+    let owned_alarms := mapOf app::ALARM by VALUE
+    let vector := ""
+    foreach alarm in ALARMS do
+      let vector := vector . computeVector(app, alarm, owned_alarms)
+    end foreach
+    let app::ALARMACCESSVECTOR := vector
+    let size := computeBinaryVectorSize(vector)
+    let app::ALARMACCESSNUM := size
+    let app::ALARMACCESSITEMS := computeBinaryVector(vector, size)
+
+    # vectors for RESOURCES access
+    let owned_resources := mapOf app::RESOURCE by VALUE
+    let vector := ""
+    foreach rez in RESOURCES do
+      if rez::RESOURCEPROPERTY == "STANDARD" then
+        let vector := vector . computeVector(app, rez, owned_resources)
+      end if
+    end foreach
+    let vector := vector . "10" # add the RES_SCHEDULER
+    let app::RESOURCEACCESSVECTOR := vector
+    let size := computeBinaryVectorSize(vector)
+    let app::RESOURCEACCESSNUM := size
+    let app::RESOURCEACCESSITEMS := computeBinaryVector(vector, size)
+
+    # vectors for SCHEDULETABLES access
+    let owned_scheduletables := mapOf app::SCHEDULETABLE by VALUE
+    let vector := ""
+    foreach scheduletable in SCHEDULETABLES do
+      let vector := vector . computeVector(app, scheduletable, owned_scheduletables)
+    end foreach
+    let app::SCHEDULETABLEACCESSVECTOR := vector
+    let size := computeBinaryVectorSize(vector)
+    let app::SCHEDULETABLEACCESSNUM := size
+    let app::SCHEDULETABLEACCESSITEMS := computeBinaryVector(vector, size)
+
+    # vectors for COUNTERS access
+    let owned_counters := mapOf app::COUNTER by VALUE
+    let vector := ""
+    foreach counter in COUNTERS do
+      if counter::NAME == "SystemCounter" then
+        let acc_app := emptyList
+        let counter::ACCESSING_APPLICATION += app::NAME
+      end if
+      let vector := vector . computeVector(app, counter, owned_counters)
+    end foreach
+    let app::COUNTERACCESSVECTOR := vector
+    let size := computeBinaryVectorSize(vector)
+    let app::COUNTERACCESSNUM := size
+    let app::COUNTERACCESSITEMS := computeBinaryVector(vector, size)
+
+    let APPLICATIONS += app
+  end foreach
+#let APPLICATIONS := APPLICATION
+
+end if
+
+#display APPLICATIONS
+
+#------------------------------------------------------------------------------*
+# compute the list of REGULARRESOURCES and INTERNALRESOURCES
+#
+let REGULARRESOURCES := emptyList
+let INTERNALRESOURCES := emptyList
+foreach resource in RESOURCES do
+  if resource::RESOURCEPROPERTY == "INTERNAL" then
+    let INTERNALRESOURCES += resource
+  else
+    if resource::RESOURCEPROPERTY == "STANDARD" then
+      let REGULARRESOURCES += resource
+    end if
+  end if
+end foreach
 
 %
 Goil run on % !TIMESTAMP%

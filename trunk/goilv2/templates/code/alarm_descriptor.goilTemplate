@@ -13,6 +13,9 @@ end if
  */
 
 %
+let action := alarm::ACTION
+let action_s := alarm::ACTION_S
+let action_name := alarm::NAME
 template action_descriptor
 % 
 #define OS_START_SEC_CONST_UNSPECIFIED
@@ -28,8 +31,8 @@ CONST(tpl_alarm_static, OS_CONST) % !alarm::NAME %_static = {
 #if WITH_OSAPPLICATION == YES
     /* OS application id            */  , %
 if AUTOSAR then
-  if SCALABILITYCLASS >= 3 then
-    !APPLICATION%_id%
+  if OS::SCALABILITYCLASS >= 3 then
+    !alarm::APPLICATION%_id%
   end if
 end if
 %

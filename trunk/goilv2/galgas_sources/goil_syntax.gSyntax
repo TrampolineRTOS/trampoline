@@ -52,10 +52,17 @@ rule <start>:
   # files are stored from the deepest to the shallowest and we should go from the
   # shallowest to the deepest.
   foreach \down configFiles (@string file) do
-    message file . "\n";
+#    message file . "\n";
     grammar goil_file_level_include in lstringWith[!file] !?imp !?application;
   end foreach;
 
+  # then look for config files suffixed by the OIL version
+  @stringlist configVersionFiles := allTemplateFilePaths[!"config" !"config".version.".oil"];
+  foreach \down configVersionFiles (@string file) do
+#    message file . "\n";
+    grammar goil_file_level_include in lstringWith[!file] !?imp !?application;
+  end foreach;
+  
 #  log imp;
   # includes a config.oil file if it exists
   @string oilConfigFile := templateFilePath[!"config" !"config.oil"];
@@ -77,6 +84,7 @@ rule <start>:
     setDefaults !imp !?application;
   end if;
 
+#  log imp;
 #  log application;
   if [@uint errorCount] == 0 then
     verifyAll !imp !application;
@@ -205,7 +213,6 @@ rule <oil_declaration>
   @lstring idf;
   @object_t val;
   $idf$ ?idf;
-  $=$;
   #
   # Get the type if the identifier
   #
@@ -218,107 +225,111 @@ rule <oil_declaration>
     error idf: [idf string]." is not declared in the IMPLEMENTATION";
   end if;
   select
-    # Type is identifier, enum, struct or object reference
-    @lstring value;
-    $idf$ ?value;
-    @implementationObjectMap subTypes [emptyMap];
-    @objectAttributes subAttributes := emptyObject[];    
-    switch [type type]
-    when enumeration:
-      cast type:
-      when == @impEnumType enumType do
-        if [[enumType valuesMap] hasKey ![value string]] then
-          [[enumType valuesMap] get !value ?subTypes];
-        else
-          error value: [value string]." ENUM value undeclared. One of the following values are expected: ".valueList[![enumType valuesMap]];
-        end if;
-      else end cast;
-    when identifier:
-    when objectType:
-#    when taskType, counterType, alarmType, resourceType, eventType, isrType, messageType, networkmessageType, ipduType, appmodeType:
-    when void, uint32Number, sint32Number, uint64Number, sint64Number, floatNumber, string, structType, boolean:
-      error idf: [idf string]." is not an ENUM nor and IDENTIFIER nor an object reference";
-    end switch;
+    $=$;
     select
-      ${$;
-      <oil_declaration_list> !subTypes !?subAttributes;
-      $}$;
-    or end select; 
-    if [type type] == [@dataType enumeration] then
-      val := [@enumAttribute new ![value location] ![value string] !subAttributes];
-    else
-      val := [@string_class new  ![value location] ![value string]];
-    end if;
-  or
-    # Type is int of float
-    @bool sign;
-    <sign> ?sign;
-    select 
-      # Type is int
-      @luint64 value;
-      $uint_number$ ?value;
-      val := checkAndGetIntegerNumber[![type type] !value !sign];
+      # Type is identifier, enum, struct or object reference
+      @lstring value;
+      $idf$ ?value;
+      @implementationObjectMap subTypes [emptyMap];
+      @objectAttributes subAttributes := emptyObject[];    
+      switch [type type]
+      when enumeration:
+        cast type:
+        when == @impEnumType enumType do
+          if [[enumType valuesMap] hasKey ![value string]] then
+            [[enumType valuesMap] get !value ?subTypes];
+          else
+            error value: [value string]." ENUM value undeclared. One of the following values are expected: ".valueList[![enumType valuesMap]];
+          end if;
+        else end cast;
+      when identifier:
+      when objectType:
+      when void, uint32Number, sint32Number, uint64Number, sint64Number, floatNumber, string, structType, boolean:
+        error idf: [idf string]." is not an ENUM nor and IDENTIFIER nor an object reference";
+      end switch;
+      select
+        ${$;
+        <oil_declaration_list> !subTypes !?subAttributes;
+        $}$;
+      or end select; 
+      if [type type] == [@dataType enumeration] then
+        val := [@enumAttribute new ![value location] ![value string] !subAttributes];
+      else
+        val := [@string_class new  ![value location] ![value string]];
+      end if;
     or
-      # Type is float
-      @ldouble value;
-      $float_number$ ?value;
-      val := checkAndGetFloatNumber[![type type] !value !sign];
+      # Type is int of float
+      @bool sign;
+      <sign> ?sign;
+      select 
+        # Type is int
+        @luint64 value;
+        $uint_number$ ?value;
+        val := checkAndGetIntegerNumber[![type type] !value !sign];
+      or
+        # Type is float
+        @ldouble value;
+        $float_number$ ?value;
+        val := checkAndGetFloatNumber[![type type] !value !sign];
+      end select;
+    or
+      # Type is bool
+      @lbool value;
+      <boolean> ?value;
+      @implementationObjectMap subTypes [emptyMap];
+      @objectAttributes subAttributes := emptyObject[];    
+      if [type type] != [@dataType boolean] then
+        error idf: [[type type] oilType]." expected, got a BOOLEAN";
+      else
+        cast type:
+        when == @impBoolType boolType do
+          if [value bool] then
+            subTypes := [boolType trueSubAttributes];
+          else
+            subTypes := [boolType falseSubAttributes];
+          end if;
+        else end cast;      
+      end if;
+      select
+        ${$;
+        if [subTypes count] == 0 then
+          error value: stringLBool[!value] . " value of " . [idf string]. " has no sub-attribute";
+        end if;
+        <oil_declaration_list> !subTypes !?subAttributes;
+        $}$;
+      or end select;
+  
+      val := [@boolAttribute new ![idf location] ![value bool] !subAttributes];
+    or
+      # Type is string
+      @lstring literalString;
+      $string$ ?literalString;
+      val := [@stringAttribute new ![literalString location] ![literalString string]];
+    or
+      # AUTO
+      $AUTO$;
+      # Check the attribute is allowed to have AUTO value
+      if [type autoAllowed] then
+          val := [@auto new !here];
+  #      message "*** AUTO\n";
+#        switch [type type]
+#        when uint32Number: 
+#          val := [@auto_uint32_class new !here !0];
+#        when uint64Number:
+#          val := [@auto_uint64_class new !here !0L];
+#        when floatNumber:
+#          val := [@auto_float_class new !here !0.0];
+#        when string:
+#          val := [@auto_string_class new !here !""];
+#        when enumeration, sint32Number, sint64Number, boolean, identifier, objectType, structType, void:
+#          error here: "type unsupported in AUTO": val;
+#        end switch;
+      else
+        error here : "AUTO is not allowed": val;
+      end if;
     end select;
   or
-    # Type is bool
-    @lbool value;
-    <boolean> ?value;
-    @implementationObjectMap subTypes [emptyMap];
-    @objectAttributes subAttributes := emptyObject[];    
-    if [type type] != [@dataType boolean] then
-      error idf: [[type type] oilType]." expected, got a BOOLEAN";
-    else
-      cast type:
-      when == @impBoolType boolType do
-        if [value bool] then
-          subTypes := [boolType trueSubAttributes];
-        else
-          subTypes := [boolType falseSubAttributes];
-        end if;
-      else end cast;      
-    end if;
-    select
-      ${$;
-      if [subTypes count] == 0 then
-        error value: stringLBool[!value] . " value of " . [idf string]. " has no sub-attribute";
-      end if;
-      <oil_declaration_list> !subTypes !?subAttributes;
-      $}$;
-    or end select;
-
-    val := [@boolAttribute new ![idf location] ![value bool] !subAttributes];
-  or
-    # Type is string
-    @lstring literalString;
-    $string$ ?literalString;
-    val := [@stringAttribute new ![literalString location] ![literalString string]];
-  or
-    # AUTO
-    $AUTO$;
-    # Check the attribute is allowed to have AUTO value
-    if [type autoAllowed] then
-#      message "*** AUTO\n";
-      switch [type type]
-      when uint32Number: 
-        val := [@auto_uint32_class new !here !0];
-      when uint64Number:
-        val := [@auto_uint64_class new !here !0L];
-      when floatNumber:
-        val := [@auto_float_class new !here !0.0];
-      when string:
-        val := [@auto_string_class new !here !""];
-      when enumeration, sint32Number, sint64Number, boolean, identifier, objectType, structType, void:
-        error here: "type unsupported in AUTO": val;
-      end switch;
-    else
-      error here : "AUTO is not allowed": val;
-    end if;
-  or
+    $idf$ ?@lstring name;
     @implementationObjectMap subTypes [emptyMap];
     @objectAttributes subAttributes := emptyObject[];    
     # STRUCT
@@ -333,7 +344,7 @@ rule <oil_declaration>
     ${$;
       <oil_declaration_list> !subTypes !?subAttributes;
     $}$;
-    val := [@structAttribute new !here !subAttributes];
+    val := [@structAttribute new !here !name !subAttributes];
   end select;
   $;$;
 #    log idf;

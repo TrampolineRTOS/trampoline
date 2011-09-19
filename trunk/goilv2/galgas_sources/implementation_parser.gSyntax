@@ -306,7 +306,7 @@ rule <string_options>
   select
     @lstring stringValue;
     $=$; $string$ ?stringValue;
-    defaultValue := [@string_class new ![stringValue location] ![stringValue string]];
+    defaultValue := [@stringAttribute new ![stringValue location] ![stringValue string]];
   or
     defaultValue:= [@void new !here];
   end select;
@@ -391,7 +391,7 @@ rule <enum_options>
     select
       @lstring stringValue;
       $idf$ ?stringValue;
-      defaultValue := [@string_class new ![stringValue location] ![stringValue string]];
+      defaultValue := [@enumAttribute new ![stringValue location] ![stringValue string] ![@objectAttributes new ![@identifierMap emptyMap]]];
     or
       $AUTO$;
       defaultValue := [@auto new !here];
@@ -440,12 +440,29 @@ rule <type_options>
   !@impType options
   ??@dataType type
 :
+  @bool withAuto;
+  <with_auto> ?withAuto;
   <identifier_or_attribute> ?name;
   @bool multiple;
   <multiple> ?multiple;
+  @object_t defaultValue;
+  select
+    $=$;
+    select
+      @lstring ident;
+      <identifier_or_attribute> ?ident;
+      defaultValue := [@stringAttribute new !here ![ident string]];
+    or
+      $NO_DEFAULT$; defaultValue := [@void new !here];
+    or
+      $AUTO$; defaultValue := [@auto new !here];
+    end select;
+  or
+    defaultValue := [@void new !here];
+  end select;
   @lstring description;
   <description> ?description;
-  options := [@impType new !here !type !name !multiple !description];
+  options := [@impAutoDefaultType new !here !type !name !multiple !description !withAuto !defaultValue];
 end rule;
 
 rule <with_auto>

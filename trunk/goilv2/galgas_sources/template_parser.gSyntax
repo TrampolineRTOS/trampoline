@@ -27,6 +27,8 @@ nonterminal <goil_template_start_symbol>
   ??@string inTemplateDirectory
   ?@TfieldMap inTemplateVariableMap
   ?!@string ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
 ;
 
 nonterminal <template_instruction>
@@ -35,6 +37,8 @@ nonterminal <template_instruction>
   ??@string inTemplateDirectory
   ?!@TfieldMap ioTemplateVariableMap
   ?!@string ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
 ;
 
 nonterminal <sorting_order>
@@ -76,6 +80,8 @@ nonterminal  <template_instruction_list>
   ??@string inTemplateDirectory
   ?!@TfieldMap inTemplateVariableMap
   ?!@string ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
 ;
 
 #---------------------------------------------------------------------------*
@@ -86,6 +92,8 @@ rule <template_instruction>
   ??@string inTemplateDirectory
   ?!@TfieldMap ioTemplateVariableMap
   ?!@string ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
 :
   $!$;
   @Tvalue expression;
@@ -103,6 +111,8 @@ rule <template_instruction>
     ioResultingString .= [expression mStringValue];
   when unsignedType:
     ioResultingString .= [[expression mUnsigned64Value] string];
+  when floatType:
+    ioResultingString .= [[expression mFloatValue] string];
   when boolType:
     if [expression mUnsigned64Value] == 0L then
       ioResultingString .= "false";
@@ -115,9 +125,12 @@ rule <template_instruction>
     error here : "a map expression cannot be emitted";
   when structType :
     error here : "a struct expression cannot be emitted";
-  when unconstructedType:
+  when unconstructedType, functionType:
     error here: "internal error, unconstructed type found";
-  end switch;    
+  end switch; 
+  
+  returnedValue := valueWithVoid[];   
+  returnedType := [@Ttype unconstructedType];   
 end rule;
 
 #---------------------------------------------------------------------------*
@@ -128,6 +141,8 @@ rule <template_instruction>
   ??@string inTemplateDirectory
   ?!@TfieldMap ioTemplateVariableMap
   ?!@string unused ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
 :
   @bool fileNameOk := true;
   $write$; $to$;
@@ -166,11 +181,15 @@ rule <template_instruction>
     !inTemplateDirectory
     !?templateVariableMap
     !?writeBlockResult
+    ?*
+    ?*
   ;
   if fileNameOk & [@uint errorCount] == 0 then
     [writeBlockResult makeDirectoryAndWriteToFile ![expression mStringValue]];
   end if;
   $end$; $write$; 
+  returnedValue := valueWithVoid[];   
+  returnedType := [@Ttype unconstructedType];   
 end rule;
 
 #---------------------------------------------------------------------------*
@@ -181,6 +200,8 @@ rule <template_instruction>
   ??@string inTemplateDirectory
   ?!@TfieldMap ioTemplateVariableMap
   ?!@string ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
 :
   @string nextPrefix := inPrefix;
   $template$;
@@ -214,6 +235,8 @@ rule <template_instruction>
           !inTemplateDirectory
           !?templateVariableMap
           !?ioResultingString
+          ?*
+          ?*
         ;
         ioTemplateVariableMap := [templateVariableMap overriddenMap];
       else
@@ -240,6 +263,8 @@ rule <template_instruction>
       ?*
     ;
   end select;
+  returnedValue := valueWithVoid[];   
+  returnedType := [@Ttype unconstructedType];   
 end rule;
 
 #---------------------------------------------------------------------------*
@@ -250,6 +275,8 @@ rule <template_instruction>
   ??@string unused inTemplateDirectory
   ?!@TfieldMap ioTemplateVariableMap
   ?!@string ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
 :
   $?$;
   $identifier$ ? @lstring columnConstantName;
@@ -270,8 +297,132 @@ rule <template_instruction>
     ![@Ttype stringType]
     !valueWithString[!value]
   ];
+  returnedValue := valueWithVoid[];   
+  returnedType := [@Ttype unconstructedType];   
 end rule;
 
+#---------------------------------------------------------------------------*
+
+rule <template_instruction>
+  ??@string unused inPrefix
+  ??@string unused inPath
+  ??@string unused inTemplateDirectory
+  ?!@TfieldMap ioTemplateVariableMap
+  ?!@string unused ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
+:
+  $function$;  
+  $identifier$ ?@lstring fctName;
+  @lstringlist args [emptyList];
+  $($;
+  select
+    @lstring arg;
+    $identifier$ ?arg;
+    args += !arg;
+    repeat while $,$; $identifier$ ?arg; args += !arg; end repeat;
+  or end select;
+  $)$;
+  $functionContent$ ?@lstring content;
+  content := [@lstring new !"%".[content string]."%" ![content location]];
+  @Tfunction fct := [@Tfunction new !fctName !args ![content string]];
+  [!?ioTemplateVariableMap insertKey
+    !fctName
+    ![@Ttype functionType]
+    ![@Tvalue new !0L !0.0 !"" ![@TfieldMapList emptyList] ![@TfieldMap emptyMap] !fct]
+  ];
+  returnedValue := valueWithVoid[];   
+  returnedType := [@Ttype unconstructedType];   
+end rule;
+
+#---------------------------------------------------------------------------*
+
+rule <template_instruction>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ?!@TfieldMap ioTemplateVariableMap
+  ?!@string unused ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
+:
+  $call$;  
+  $identifier$ ?@lstring fctName;
+  @TexpressionList args [emptyList];
+  $($;
+  select
+    @Ttype type;
+    @Tvalue value;
+    <expression>
+      !inPrefix
+      !inPath
+      !inTemplateDirectory
+      !ioTemplateVariableMap
+      ?value
+      ?type;
+    args += !value !type;
+    repeat while
+      $,$;
+      @Ttype type;
+      @Tvalue value;
+      <expression>
+        !inPrefix
+        !inPath
+        !inTemplateDirectory
+        !ioTemplateVariableMap
+        ?value
+        ?type;
+      args += !value !type;
+    end repeat;
+  or
+  end select;
+  $)$;
+
+  @Ttype type;
+  @Tvalue value;
+  [ioTemplateVariableMap searchKey
+    !fctName
+    ?type
+    ?value
+  ];
+  
+  if [args length] != [[[value mFunctionValue] args] length] then
+    error here : "incorrect number of arguments";
+  else
+    # set up a variable map for local variables of the function
+    @TfieldMap locals [emptyMap];
+    # search arguments values and add them to the locals
+    foreach args prefixedby actual_ , [[value mFunctionValue] args] prefixedby expected_ do
+      [!?locals insertKey !expected_mValue !actual_mType !actual_mValue];
+    end foreach;
+    @string result := "";
+#    message "calling ".[[value mFunctionValue] name]."\n";
+    grammar template_grammar on [[value mFunctionValue] content] !inPrefix !inPath !inTemplateDirectory !locals !?result ?* ?*;
+  end if;  
+  returnedValue := valueWithVoid[];   
+  returnedType := [@Ttype unconstructedType];   
+end rule;
+
+#---------------------------------------------------------------------------*
+
+rule <template_instruction>
+  ??@string inPrefix
+  ??@string inPath
+  ??@string inTemplateDirectory
+  ?!@TfieldMap ioTemplateVariableMap
+  ?!@string unused ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
+:
+  $return$;
+  <expression> 
+    !inPrefix
+    !inPath
+    !inTemplateDirectory
+    !ioTemplateVariableMap
+    ?returnedValue
+    ?returnedType;
+end rule;
 #---------------------------------------------------------------------------*
 
 #rule <template_instruction>
@@ -326,6 +477,8 @@ rule <template_instruction>
   ??@string inTemplateDirectory
   ?!@TfieldMap ioTemplateVariableMap
   ?!@string ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
 :
   $if$;
   @bool currentCondition := false;
@@ -356,6 +509,8 @@ rule <template_instruction>
           !inTemplateDirectory
           !?templateVariableMap
           !?ioResultingString
+          ?*
+          ?*
         ;
         ioTemplateVariableMap := [templateVariableMap overriddenMap];
       else
@@ -382,6 +537,8 @@ rule <template_instruction>
         !inTemplateDirectory
         !?templateVariableMap
         !?ioResultingString
+        ?*
+        ?*
       ;
       ioTemplateVariableMap := [templateVariableMap overriddenMap];
     else
@@ -391,6 +548,8 @@ rule <template_instruction>
 #---
   $end$;
   $if$;
+  returnedValue := valueWithVoid[];   
+  returnedType := [@Ttype unconstructedType];   
 end rule;
 
 #---------------------------------------------------------------------------*
@@ -401,8 +560,12 @@ rule  <template_instruction_list>
   ??@string inTemplateDirectory
   ?!@TfieldMap ioTemplateVariableMap
   ?!@string ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
 :
   ioResultingString .= [@string retrieveAndResetTemplateString];
+  @Tvalue value := valueWithVoid[];   
+  @Ttype type := [@Ttype unconstructedType];   
   repeat
   while
     <template_instruction>
@@ -411,9 +574,13 @@ rule  <template_instruction_list>
       !inTemplateDirectory
       !?ioTemplateVariableMap
       !?ioResultingString
+      ?value
+      ?type
     ;
     ioResultingString .= [@string retrieveAndResetTemplateString];
   end repeat;
+  returnedValue := value;   
+  returnedType := type;   
 end rule;
 
 #---------------------------------------------------------------------------*
@@ -424,6 +591,8 @@ rule  <goil_template_start_symbol>
   ??@string inTemplateDirectory
   ?@TfieldMap inTemplateVariableMap
   ?!@string ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
 :
   <template_instruction_list>
     !inPrefix
@@ -431,6 +600,8 @@ rule  <goil_template_start_symbol>
     !inTemplateDirectory
     !?inTemplateVariableMap
     !?ioResultingString
+    ?returnedValue
+    ?returnedType
   ;
 end rule;
 
@@ -442,6 +613,8 @@ rule <template_instruction>
   ??@string inTemplateDirectory
   ?!@TfieldMap ioTemplateVariableMap
   ?!@string ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
 :
   $foreach$; $identifier$ ? @lstring variableName; $in$;
   @Tvalue enumeratedValue;
@@ -464,7 +637,7 @@ rule <template_instruction>
   when mapType:
     listLength := [[enumeratedValue mStructValue] count];
     keyList := [[enumeratedValue mStructValue] allKeyList];
-  when boolType, enumType, unsignedType, stringType, structType, unconstructedType:
+  when boolType, enumType, unsignedType, floatType, stringType, structType, unconstructedType, functionType:
     error here:"only a list or a map can be enumerated": keyList;
   end switch;
 
@@ -489,6 +662,8 @@ rule <template_instruction>
         !inTemplateDirectory
         !?ioTemplateVariableMap
         !?ioResultingString
+        ?*
+        ?*
       ;
     else
       <template_instruction_list> parse;
@@ -509,7 +684,7 @@ rule <template_instruction>
     else
       const @TfieldMap fieldMap := [[enumeratedValue mMapListValue] mMapAtIndex !idx];
       itemType := [@Ttype structType];
-      itemValue := [@Tvalue new !0L !"" ![@TfieldMapList emptyList] !fieldMap];
+      itemValue := [@Tvalue new !0L !0.0 !"" ![@TfieldMapList emptyList] !fieldMap !dummyFunction[]];
     end if;
     @lstring varName := [@lstring new !foreachPrefix . [variableName string] ![variableName location]];
     [!?templateVariableMap insertKey !varName !itemType !itemValue];
@@ -522,6 +697,8 @@ rule <template_instruction>
       !inTemplateDirectory
       !?templateVariableMap
       !?ioResultingString
+      ?*
+      ?*
     ;
     idx ++;
     select
@@ -535,6 +712,8 @@ rule <template_instruction>
           !inTemplateDirectory
           !?templateVariableMap
           !?ioResultingString
+          ?*
+          ?*
         ;
       else
         <template_instruction_list> parse;
@@ -555,6 +734,8 @@ rule <template_instruction>
         !inTemplateDirectory
         !?ioTemplateVariableMap
         !?ioResultingString
+        ?*
+        ?*
       ;
     else
       <template_instruction_list> parse;
@@ -563,6 +744,8 @@ rule <template_instruction>
 #---
   $end$;
   $foreach$;
+  returnedValue := valueWithVoid[];   
+  returnedType := [@Ttype unconstructedType];   
 end rule;
 
 #---------------------------------------------------------------------------*
@@ -573,6 +756,8 @@ rule <template_instruction>
   ??@string inTemplateDirectory
   ?!@TfieldMap ioTemplateVariableMap
   ?!@string ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
 :
   $for$; $identifier$ ? @lstring variableName;
 #  if [ioTemplateVariableMap hasKey ![variableName string]] then
@@ -625,6 +810,8 @@ rule <template_instruction>
       !inTemplateDirectory
       !?templateVariableMap
       !?ioResultingString
+      ?*
+      ?*
     ;
     idx ++;
     select
@@ -638,6 +825,8 @@ rule <template_instruction>
           !inTemplateDirectory
           !?templateVariableMap
           !?ioResultingString
+          ?*
+          ?*
         ;
       else
         <template_instruction_list> parse;
@@ -649,6 +838,8 @@ rule <template_instruction>
 #---
   $end$;
   $for$;
+  returnedValue := valueWithVoid[];   
+  returnedType := [@Ttype unconstructedType];   
 end rule;
 
 #---------------------------------------------------------------------------*
@@ -659,6 +850,8 @@ rule <template_instruction>
   ??@string inTemplateDirectory
   ?!@TfieldMap ioTemplateVariableMap
   ?!@string ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
 :
   $loop$; $identifier$ ? @lstring variableName;
   $from$;
@@ -701,6 +894,8 @@ rule <template_instruction>
         !inTemplateDirectory
         !?ioTemplateVariableMap
         !?ioResultingString
+        ?*
+        ?*
       ;
     else
       <template_instruction_list> parse;
@@ -711,7 +906,16 @@ rule <template_instruction>
   @uint start := [[startValue mUnsigned64Value] uint];
   @uint stop := [[endValue mUnsigned64Value] uint];
   @uint idx := start;
-  parse loop stop - start + 1
+#  log start;
+#  log stop;
+  
+  @uint num;
+  if start > stop then
+    num := 0;
+  else
+    num := stop - start + 1;
+  end if;
+  parse loop num
   while idx <= stop do
     @TfieldMap templateVariableMap [mapWithMapToOverride !ioTemplateVariableMap];
 #    if [templateVariableMap hasKey ![variableName string]] then
@@ -725,6 +929,8 @@ rule <template_instruction>
       !inTemplateDirectory
       !?templateVariableMap
       !?ioResultingString
+      ?*
+      ?*
     ;
     idx ++;
     select
@@ -738,6 +944,8 @@ rule <template_instruction>
           !inTemplateDirectory
           !?templateVariableMap
           !?ioResultingString
+          ?*
+          ?*
         ;
       else
         <template_instruction_list> parse;
@@ -758,6 +966,8 @@ rule <template_instruction>
         !inTemplateDirectory
         !?ioTemplateVariableMap
         !?ioResultingString
+        ?*
+        ?*
       ;
     else
       <template_instruction_list> parse;
@@ -766,6 +976,8 @@ rule <template_instruction>
 #---
   $end$;
   $loop$;
+  returnedValue := valueWithVoid[];   
+  returnedType := [@Ttype unconstructedType];   
 end rule;
 
 #---------------------------------------------------------------------------*
@@ -1017,6 +1229,8 @@ rule <template_instruction>
   ??@string inTemplateDirectory
   ?!@TfieldMap ioTemplateVariableMap
   ?!@string unused ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
 :
   @TvarPath path;
   $let$; <variable> !inPrefix !inPath !inTemplateDirectory !ioTemplateVariableMap ?path;
@@ -1070,14 +1284,21 @@ rule <template_instruction>
       @bool found;
       searchFieldIfExists !path !ioTemplateVariableMap ?variableType ?variableValue ?found;
       @TfieldMap fieldMap [emptyMap];
-      [!?fieldMap insertKey ![@lstring new !"NAME" !here] !expressionType !enumeratedValue];
+      [!?fieldMap insertKey ![@lstring new !"VALUE" !here] !expressionType !enumeratedValue];
       variableValue->mMapListValue += !fieldMap;
       if not found then
         variableType := [@Ttype listType];
       end if;
       setVariableInPath !path !?ioTemplateVariableMap !variableType !variableValue;
     end if;
+  or
+    # define a variable as unconstructed
+    expressionType := [@Ttype unconstructedType];
+    enumeratedValue := valueWithVoid[];
+    setVariableInPath !path !?ioTemplateVariableMap !expressionType !enumeratedValue;
   end select;
+  returnedValue := valueWithVoid[];   
+  returnedType := [@Ttype unconstructedType];   
 end rule;
 
 #---------------------------------------------------------------------------*
@@ -1109,6 +1330,8 @@ rule <template_instruction>
   ??@string inTemplateDirectory
   ?!@TfieldMap ioTemplateVariableMap
   ?!@string unused ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
 :
   $error$;
   @location where;
@@ -1129,6 +1352,8 @@ rule <template_instruction>
   else
     error where: [enumeratedValue mStringValue];
   end if;
+  returnedValue := valueWithVoid[];   
+  returnedType := [@Ttype unconstructedType];   
 end rule;
 
 #---------------------------------------------------------------------------*
@@ -1139,6 +1364,8 @@ rule <template_instruction>
   ??@string inTemplateDirectory
   ?!@TfieldMap ioTemplateVariableMap
   ?!@string unused ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
 :
   $warning$;
   @location where;
@@ -1159,6 +1386,8 @@ rule <template_instruction>
   else
     warning where: [enumeratedValue mStringValue];
   end if;
+  returnedValue := valueWithVoid[];   
+  returnedType := [@Ttype unconstructedType];   
 end rule;
 
 #---------------------------------------------------------------------------*
@@ -1178,6 +1407,8 @@ routine printVariable
     end if;
   when unsignedType:
     message offset.[variableValue mUnsigned64Value]."\n";
+  when floatType:
+    message offset.[variableValue mFloatValue]."\n";
   when stringType:
     message offset."\"".[variableValue mStringValue]."\"\n";
   when enumType:
@@ -1185,7 +1416,7 @@ routine printVariable
   when listType:
     foreach [variableValue mMapListValue] index idx do
       message offset."item at ".idx.":\n";
-      printVariable !indent ![@Ttype structType] ![@Tvalue new !0L !"" ![@TfieldMapList emptyList] !mMap];
+      printVariable !indent ![@Ttype structType] ![@Tvalue new !0L !0.0 !"" ![@TfieldMapList emptyList] !mMap !dummyFunction[]];
     end foreach;
   when mapType:
     foreach [variableValue mStructValue] do
@@ -1197,8 +1428,7 @@ routine printVariable
       message offset.lkey.":\n";
       printVariable !indent !mType !mValue;
     end foreach;
-  when unconstructedType:
-    error here: "internal error, unconstrcuted type";
+  when unconstructedType, functionType:
   end switch;
 end routine;
 
@@ -1208,6 +1438,8 @@ rule <template_instruction>
   ??@string inTemplateDirectory
   ?!@TfieldMap ioTemplateVariableMap
   ?!@string unused ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
 :
   @TvarPath path;
   $display$; <variable> !inPrefix !inPath !inTemplateDirectory !ioTemplateVariableMap ?path;
@@ -1218,6 +1450,8 @@ rule <template_instruction>
   printPath !path;
   message " (".[loc locationString].") : ".[variableType messageGoilTemplateType]."\n";
   printVariable !0 !variableType !variableValue;
+  returnedValue := valueWithVoid[];   
+  returnedType := [@Ttype unconstructedType];   
 end rule;
 
 #---------------------------------------------------------------------------*
@@ -1333,6 +1567,8 @@ rule <template_instruction>
   ??@string unused inTemplateDirectory
   ?!@TfieldMap ioTemplateVariableMap
   ?!@string unused ioResultingString
+  !@Tvalue returnedValue
+  !@Ttype returnedType
 :
   $sort$; $identifier$ ?@lstring variableName;
   @Ttype variableType;
@@ -1352,14 +1588,18 @@ rule <template_instruction>
   if variableType == [@Ttype listType] then
     #log keys;
     @TfieldMapList variable := [variableValue mMapListValue];
-    quickSort !?variable !0 ![variable length]-1 !keys;
-    variableValue := [@Tvalue new !0L !"" !variable ![@TfieldMap emptyMap]];
-    #log variable;
-    [!?ioTemplateVariableMap setMTypeForKey !variableType ![variableName string]];
-    [!?ioTemplateVariableMap setMValueForKey !variableValue ![variableName string]];
+    if [variable length] > 0 then
+      quickSort !?variable !0 ![variable length]-1 !keys;
+      variableValue := [@Tvalue new !0L !0.0 !"" !variable ![@TfieldMap emptyMap] !dummyFunction[]];
+      #log variable;
+      [!?ioTemplateVariableMap setMTypeForKey !variableType ![variableName string]];
+      [!?ioTemplateVariableMap setMValueForKey !variableValue ![variableName string]];
+    end if;
   else
     error variableName: "list type expected";
   end if;
+  returnedValue := valueWithVoid[];   
+  returnedType := [@Ttype unconstructedType];   
 end rule;
 
 #---------------------------------------------------------------------------*
@@ -1385,7 +1625,7 @@ rule <variable>
       key := [@lstring new ![keyValue mStringValue] !here];
     when unsignedType:
       idx := [@lsint new ![[keyValue mUnsigned64Value] sint] !here];
-    when boolType, listType, mapType, structType, enumType, unconstructedType:
+    when boolType, floatType, listType, mapType, structType, enumType, unconstructedType, functionType:
       error here: "map key must be a string, list index must be an unsigned integer";
     end switch;
     $]$;
@@ -1406,7 +1646,7 @@ rule <variable>
         key := [@lstring new ![keyValue mStringValue] !here];
       when unsignedType:
         idx := [@lsint new ![[keyValue mUnsigned64Value] sint] !here];
-      when boolType, listType, mapType, structType, enumType, unconstructedType:
+      when boolType, floatType, listType, mapType, structType, enumType, unconstructedType, functionType:
         error here: "map key must be a string, list index must be an unsigned integer";
       end switch;
       $]$;

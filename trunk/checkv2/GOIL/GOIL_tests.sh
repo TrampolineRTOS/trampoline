@@ -37,21 +37,13 @@ else
 	for i in `cat GOIL_testSequences.txt`
 	do
 	
-		#Adding AUTOSAR flag if autosar test sequence
-		if [ "`echo ${i} | grep autosar`" != "" ]
-		then
-			autosar_flag="-a"
-		else
-			autosar_flag=""
-		fi	
-		
 		#Go in the test sequence
 		cd ./${i}
 		
 		#display running test sequence on the standard output for the user and in the log file to better understand failed tests
 		echo "running $i" | tee -a ../GOIL_results.log 
 		
-		goil --target=$1 --templates=../../../goil/templates/ -g ${i}.oil $autosar_flag 2>> ../GOIL_results.log 1>> ../GOIL_results.log
+		goil --target=$1 --templates=../../../goilv2/templates/ ${i}.oil 2>> ../GOIL_results.log 1>> ../GOIL_results.log
 		
 		#Go out of the test sequence
 		cd ..

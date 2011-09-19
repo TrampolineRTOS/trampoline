@@ -32,170 +32,163 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "com_internal_s4" ;
+OIL_VERSION = "2.5" : "com_internal_s4";
 
 IMPLEMENTATION trampoline {
-    TASK {
-        UINT32 STACKSIZE = 32768 ;
-        UINT32 PRIORITY = 1 ;
-    } ;
-    ISR {
-        UINT32 STACKSIZE = 32768 ;
-    } ;
+  TASK {
+    UINT32 STACKSIZE = 32768;
+    UINT32 PRIORITY = 1;
+  };
+  ISR {
+    UINT32 STACKSIZE = 32768;
+  };
 };
 
 CPU test {
-
-    OS config {
-        STATUS = EXTENDED;
-        APP_SRC = "com_internal_s4.c";
-        APP_SRC = "task1_instance.c";
-        APP_SRC = "task2_instance.c";
-        APP_SRC = "task3_instance.c";
-        APP_SRC = "task4_instance.c";
-        APP_SRC = "comcallback_instance.c";
-        APP_SRC = "../config.c";
-        TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "com_internal_s4_exe";
-		SHUTDOWNHOOK = TRUE;
-		
-		CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Werror -Wall -pedantic";
-        CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../../lib -lembUnit";
-
-    } ;
-
-	COM config {
-		
-		COMERRORHOOK = FALSE;
-		COMSTATUS = COMEXTENDED;
-
-		COMUSEGETSERVICEID = FALSE;
-		COMUSEPARAMETERACCESS = FALSE;
-		COMSTARTCOMEXTENSION = FALSE;
-
-	
-	};
-	
-    APPMODE std {
+  OS config {
+    STATUS = EXTENDED;
+    SHUTDOWNHOOK = TRUE;
+    BUILD = TRUE {
+      APP_SRC = "com_internal_s4.c";
+      APP_SRC = "task1_instance.c";
+      APP_SRC = "task2_instance.c";
+      APP_SRC = "task3_instance.c";
+      APP_SRC = "task4_instance.c";
+      APP_SRC = "comcallback_instance.c";
+      APP_SRC = "../config.c";
+      TRAMPOLINE_BASE_PATH = "../../..";
+      APP_NAME = "com_internal_s4_exe";  
+      CFLAGS = "-I../../embUnit";
+      CFLAGS  = "-Werror -Wall -pedantic";
+      CFLAGS  = "-Wmissing-field-initializers";
+      LDFLAGS = "-L../../lib -lembUnit";
     };
+  };
 
-    TASK t1 {
-        PRIORITY = 1;
-        AUTOSTART = TRUE { APPMODE = std ; } ;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-        MESSAGE = sm_activatetask;
-        MESSAGE = sm_setevent;
-        MESSAGE = sm_comcallback;
-		MESSAGE = sm_flag;
-        MESSAGE = rm_comcallback;
-    };
+  COM config {
+    COMERRORHOOK = FALSE;
+    COMSTATUS = COMEXTENDED;
+    COMUSEGETSERVICEID = FALSE;
+    COMUSEPARAMETERACCESS = FALSE;
+    COMSTARTCOMEXTENSION = FALSE;
+  };
+ 
+  APPMODE std {
+  };
 
-    TASK t2 {
-        PRIORITY = 2;
-        AUTOSTART = FALSE ;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-        MESSAGE = rm_activatetask;
+  TASK t1 {
+    PRIORITY = 1;
+    AUTOSTART = TRUE { APPMODE = std; };
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+    MESSAGE = sm_activatetask;
+    MESSAGE = sm_setevent;
+    MESSAGE = sm_comcallback;
+    MESSAGE = sm_flag;
+    MESSAGE = rm_comcallback;
+  };
+
+  TASK t2 {
+    PRIORITY = 2;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+    MESSAGE = rm_activatetask;
+  };
+ 
+  TASK t3 {
+    PRIORITY = 2;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+    MESSAGE = rm_setevent;
+    EVENT = Event1;
+  };
+ 
+  TASK t4 {
+    PRIORITY = 1;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+    MESSAGE = rm_flag;
+  };
+ 
+  MESSAGE sm_activatetask {
+    MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
+      CDATATYPE = "u8";
     };
-	
-	TASK t3 {
-        PRIORITY = 2;
-        AUTOSTART = FALSE ;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-        MESSAGE = rm_setevent;
-		EVENT = Event1;
-    };
-	
-	TASK t4 {
-        PRIORITY = 1;
-        AUTOSTART = FALSE ;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-        MESSAGE = rm_flag;
-    };
-	
-    MESSAGE sm_activatetask {
-        MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
-            CDATATYPE = "u8" ;
-        };
-		NOTIFICATION = NONE;
-    };
+    NOTIFICATION = NONE;
+  };
     
-    MESSAGE rm_activatetask {
-        MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
-            SENDINGMESSAGE = sm_activatetask;
-            INITIALVALUE = "0";
-			FILTER = ALWAYS;
-        };
-        NOTIFICATION = ACTIVATETASK {
-            TASK = t2;
-        };
+  MESSAGE rm_activatetask {
+    MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+      SENDINGMESSAGE = sm_activatetask;
+      INITIALVALUE = 0;
+      FILTER = ALWAYS;
     };
-	
-	MESSAGE sm_setevent {
-        MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
-            CDATATYPE = "u8" ;
-        };
-		NOTIFICATION = NONE;
+    NOTIFICATION = ACTIVATETASK {
+      TASK = t2;
     };
+  };
+ 
+  MESSAGE sm_setevent {
+    MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
+      CDATATYPE = "u8";
+    };
+    NOTIFICATION = NONE;
+  };
     
-    MESSAGE rm_setevent {
-        MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
-            SENDINGMESSAGE = sm_setevent;
-            INITIALVALUE = "0";
-			FILTER = ALWAYS;
-        };
-        NOTIFICATION = SETEVENT {
-            TASK = t3;
-			EVENT = Event1;
-        };
+  MESSAGE rm_setevent {
+    MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+      SENDINGMESSAGE = sm_setevent;
+      INITIALVALUE = 0;
+      FILTER = ALWAYS;
     };
-	
-	MESSAGE sm_comcallback {
-        MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
-            CDATATYPE = "u8" ;
-        };
-		NOTIFICATION = NONE;
+    NOTIFICATION = SETEVENT {
+      TASK = t3;
+      EVENT = Event1;
     };
+  };
+ 
+  MESSAGE sm_comcallback {
+    MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
+      CDATATYPE = "u8";
+    };
+    NOTIFICATION = NONE;
+  };
     
-    MESSAGE rm_comcallback {
-        MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
-            SENDINGMESSAGE = sm_comcallback;
-            INITIALVALUE = "0";
-			FILTER = ALWAYS;
-        };
-        NOTIFICATION = COMCALLBACK {
-            COMCALLBACKNAME = "ComCallBack";
-        };
+  MESSAGE rm_comcallback {
+    MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+      SENDINGMESSAGE = sm_comcallback;
+      INITIALVALUE = 0;
+      FILTER = ALWAYS;
     };
+    NOTIFICATION = COMCALLBACK {
+      CALLBACKROUTINENAME = "ComCallBack";
+    };
+  };
 
-	MESSAGE sm_flag {
-        MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
-            CDATATYPE = "u8" ;
-        };
-		NOTIFICATION = NONE;
+  MESSAGE sm_flag {
+    MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
+      CDATATYPE = "u8";
     };
+    NOTIFICATION = NONE;
+  };
     
-    MESSAGE rm_flag {
-        MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
-            SENDINGMESSAGE = sm_flag;
-            INITIALVALUE = "0";
-			FILTER = ALWAYS;
-        };
-        NOTIFICATION = FLAG {
-            FLAGNAME = "flagnam";
-        };
+  MESSAGE rm_flag {
+    MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+      SENDINGMESSAGE = sm_flag;
+      INITIALVALUE = 0;
+      FILTER = ALWAYS;
     };
+    NOTIFICATION = FLAG {
+      FLAGNAME = "flagnam";
+    };
+  };
 
-	
-	EVENT Event1{
-		MASK = AUTO;
-	};
-	
+  EVENT Event1{
+    MASK = AUTO;
+  };
 };
 
 /* End of file com_internal_s4.oil */

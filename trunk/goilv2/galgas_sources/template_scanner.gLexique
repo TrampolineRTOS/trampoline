@@ -19,31 +19,33 @@
 
 template lexique template_scanner :
 
-template "%" ... "%" ;
+template "%" ... "%";
 
-replace "\\%" -> "%" ;
+replace "\\%" -> "%";
 
-replace "\\n" -> "\n" ;
+replace "\\n" -> "\n";
 
-replace "\\\\" -> "\\" ;
+replace "\\\\" -> "\\";
 
-@string identifierString ;
-@uint64 uint64value ;
-@string tokenString ;
+@string identifierString;
+@uint64 uint64value;
+@string tokenString;
+@string functionContent;
 
-style keywordsStyle -> "Keywords" ;
-style delimitersStyle -> "Delimiters" ;
-style nonTerminalStyle -> "Non Terminal Symbols" ;
-style integerStyle -> "Integer Constants" ;
-style float_csts -> "Floating Point Constants" ;
+style keywordsStyle -> "Keywords";
+style delimitersStyle -> "Delimiters";
+style nonTerminalStyle -> "Non Terminal Symbols";
+style integerStyle -> "Integer Constants";
+style float_csts -> "Floating Point Constants";
 style stringStyle -> "String literals";
-style commentStyle -> "Comments" ;
+style commentStyle -> "Comments";
 
 # -------------------------- identifier or lkey word --------------------
 # keywords can be written in lower or upper case
 # for identifiers, case is significant
 
-$identifier$ ! tokenString error message "an identifier" ;
+$identifier$ ! tokenString error message "an identifier";
+$functionContent$ ! functionContent error message "a function definition";
 
 list goilTemplateKeyWordList error message "the '%K' keyword" style keywordsStyle :
   "after",
@@ -51,6 +53,7 @@ list goilTemplateKeyWordList error message "the '%K' keyword" style keywordsStyl
   "between",
   "block",
   "by",
+  "call",
   "default",
   "display",
   "do",
@@ -65,10 +68,12 @@ list goilTemplateKeyWordList error message "the '%K' keyword" style keywordsStyl
   "for",
   "foreach",
   "from",
+  "function",
   "here",
   "if",
   "in",
   "list",
+  "listof",
   "let",
   "loop",
   "mapof",
@@ -77,6 +82,7 @@ list goilTemplateKeyWordList error message "the '%K' keyword" style keywordsStyl
   "not",
   "or",
   "prefixedby",
+  "return",
   "sort",
   "template",
 #  "templateresult",
@@ -89,78 +95,92 @@ list goilTemplateKeyWordList error message "the '%K' keyword" style keywordsStyl
   "while",
   "write";
 
+message unterminatedFunction : "unterminated function definition";
+
+rule '{' :
+  repeat while '\u0001' -> '\u007C' | '\u007E' -> '\uFFFD' :
+    enterCharacterIntoString !?functionContent !*;
+  end repeat;
+  select
+    when '}':
+      send $functionContent$;
+    default
+      error unterminatedFunction;
+  end select;  
+end rule;
+
 rule 'a'->'z' |  'A'->'Z' :
   repeat
-    enterCharacterIntoString !?identifierString !toLower (!*) ;
-    enterCharacterIntoString !?tokenString !* ;
+    enterCharacterIntoString !?identifierString !toLower (!*);
+    enterCharacterIntoString !?tokenString !*;
   while 'a'->'z' | 'A'->'Z' | '_' | '0'->'9' :
-  end repeat ;
-  send search identifierString in goilTemplateKeyWordList default $identifier$ ;
-end rule ;
+  end repeat;
+  send search identifierString in goilTemplateKeyWordList default $identifier$;
+end rule;
 
 #------------------------------- Integer, floating Point Constant ------------------
-@double floatValue ;
-$literal_double$ !floatValue !tokenString error message "a float number" style float_csts ;
-$unsigned_literal_integer64$ ! uint64value error message "a 64-bit unsigned decimal number" style integerStyle ;
+@double floatValue;
+$literal_double$ !floatValue !tokenString error message "a float number" style float_csts;
+$unsigned_literal_integer64$ ! uint64value error message "a 64-bit unsigned decimal number" style integerStyle;
 
-message decimalNumberTooLarge : "decimal number too large" ;
-message floatNumberConversionError : "invalid float number" ;
-message internalError : "internal error" ;
+message decimalNumberTooLarge : "decimal number too large";
+message floatNumberConversionError : "invalid float number";
+message internalError : "internal error";
 
 rule '0'->'9' :
-  enterCharacterIntoString !?tokenString !* ;
+  enterCharacterIntoString !?tokenString !*;
   repeat
   while '0'->'9' :
-    enterCharacterIntoString !?tokenString !* ;
+    enterCharacterIntoString !?tokenString !*;
   while '_' :
-  end repeat ;
+  end repeat;
   select
   when '.' :
-    enterCharacterIntoString !?tokenString !'.' ;
+    enterCharacterIntoString !?tokenString !'.';
     repeat
     while '0'->'9' :
-      enterCharacterIntoString !?tokenString !* ;
+      enterCharacterIntoString !?tokenString !*;
     while '_' :
-    end repeat ;
-    convertStringToDouble !tokenString !?floatValue error floatNumberConversionError ;
-    send $literal_double$ ;
+    end repeat;
+    convertStringToDouble !tokenString !?floatValue error floatNumberConversionError;
+    send $literal_double$;
   default
-    convertDecimalStringIntoUInt64 !tokenString !?uint64value error decimalNumberTooLarge, internalError ;
-    send $unsigned_literal_integer64$ ;
-  end select ;
-end rule ;
+    convertDecimalStringIntoUInt64 !tokenString !?uint64value error decimalNumberTooLarge, internalError;
+    send $unsigned_literal_integer64$;
+  end select;
+end rule;
 
 
 #------------------------------- Floating point Number ------------------
-$.$ error message "the '.' delimitor" style delimitersStyle ;
-$.=$ error message "the '.=' delimitor" style delimitersStyle ;
-$...$ error message "the '...' delimitor" style delimitersStyle ;
+$.$ error message "the '.' delimitor" style delimitersStyle;
+$.=$ error message "the '.=' delimitor" style delimitersStyle;
+$...$ error message "the '...' delimitor" style delimitersStyle;
 
 #--- Floating Point constant begining with a dot
 rule '.' :
   select
   when '0'->'9' :
-    enterCharacterIntoString !?tokenString !'0' ;
-    enterCharacterIntoString !?tokenString !'.' ;
-    enterCharacterIntoString !?tokenString !* ;
+    enterCharacterIntoString !?tokenString !'0';
+    enterCharacterIntoString !?tokenString !'.';
+    enterCharacterIntoString !?tokenString !*;
     repeat
     while '0'->'9' :
-      enterCharacterIntoString !?tokenString !* ;
+      enterCharacterIntoString !?tokenString !*;
     while '_' :
-    end repeat ;
-    convertStringToDouble !tokenString !?floatValue error floatNumberConversionError ;
-    send $literal_double$ ;
+    end repeat;
+    convertStringToDouble !tokenString !?floatValue error floatNumberConversionError;
+    send $literal_double$;
   default
     select
     when ".." :
-      send $...$ ;
+      send $...$;
     when "=" :
-      send $.=$ ;
+      send $.=$;
     default
-      send $.$ ;
-    end select ;
-  end select ;
-end rule ;
+      send $.$;
+    end select;
+  end select;
+end rule;
 
 # ----------------------------- Delimitors ---------------------------------------
 list galgasDelimitorsList error message "the '%K' delimitor" style delimitersStyle :
@@ -174,24 +194,24 @@ list galgasDelimitorsList error message "the '%K' delimitor" style delimitersSty
   "^",    ">>",    "~",     "<-",
   "@";
 
-rule list galgasDelimitorsList ;
+rule list galgasDelimitorsList;
 
 
 # --------- Special delimitors / non terminal symbol --------------------------
-$<$ error message "the '<' delimitor" style delimitersStyle ;
-$<=$ error message "the '<=' delimitor" style delimitersStyle ;
-$<<$ error message "the '<<' delimitor" style delimitersStyle ;
+$<$ error message "the '<' delimitor" style delimitersStyle;
+$<=$ error message "the '<=' delimitor" style delimitersStyle;
+$<<$ error message "the '<<' delimitor" style delimitersStyle;
 
 rule '<' :
   select
   when '=' :
-    send $<=$ ;
+    send $<=$;
   when '<' :
-    send $<<$ ;
+    send $<<$;
   default
-    send $<$ ;
-  end select ;
-end rule ;
+    send $<$;
+  end select;
+end rule;
 
 # ------------------------------------ String ----------------------------
 
@@ -204,7 +224,7 @@ $string$ !a_string error message "literal string" style stringStyle;
 rule '"' :
     repeat
     while '\u0020'->'\u0021' | '\u0023' -> '\uFFFD' :
-        enterCharacterIntoString !?a_string !* ;
+        enterCharacterIntoString !?a_string !*;
     end repeat;
     select
         when '"' :
@@ -215,16 +235,16 @@ rule '"' :
 end rule;
 
 # ------------------------------------ Comment ----------------------------
-$comment$ error message "a comment" style commentStyle ;
+$comment$ error message "a comment" style commentStyle;
 rule '#' :
   repeat
   while '\u0001' -> '\u0009' | '\u000B' | '\u000C' | '\u000E' -> '\uFFFD' :
-  end repeat ;
-  drop $comment$ ;
-end rule ;
+  end repeat;
+  drop $comment$;
+end rule;
 
 # --------------------- separators -----------------------------------------
 rule '\u0001' -> ' ' :
-end rule ;
+end rule;
 
-end lexique ;
+end lexique;

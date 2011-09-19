@@ -84,7 +84,7 @@ CFLAGS += -I$(OS_PATH) -I$(COM_PATH) -I$(DEBUG_PATH)
 # Autosar specific Configuration
 #############################################################################
 ifeq ($(strip $(AUTOSAR)),true)
-  AUTOSAR_GOIL_FLAG = --autosar
+#  AUTOSAR_GOIL_FLAG = --autosar
   AUTOSAR_DEP = AUTOSAR
   CFLAGS += -I$(AUTOSAR_PATH)
   CPPFLAGS += -I$(AUTOSAR_PATH)
@@ -167,7 +167,7 @@ clean:
 
 # generate C file from OIL file, using goil.
 $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE): $(OIL_FILE) $(OIL_FILE_DEP)
-	$(GOIL_COMPILER) --generate-makefile --target=$(TARGET) $(GOIL_TEMPLATE_STR) $(GENITVEC) $(AUTOSAR_GOIL_FLAG) $(OIL_FILE)
+	$(GOIL_COMPILER) --target=$(TARGET) $(GOIL_TEMPLATE_STR) $(GENITVEC) $(AUTOSAR_GOIL_FLAG) $(OIL_FILE)
 
 #documentation
 doc: doc-dev doc-user

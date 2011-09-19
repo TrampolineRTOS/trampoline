@@ -24,27 +24,31 @@ semantics template_semantics :
 enum @Ttype {
   boolType,
   unsignedType,
+  floatType,
   stringType,
   listType,
   mapType,
   structType,
   enumType,
+  functionType,
   unconstructedType
-}{
-}
+}{}
 
-reader @Ttype messageGoilTemplateType -> @string outResult :
+reader @Ttype messageGoilTemplateType -> @string result:
   switch selfcopy
-    when boolType : outResult := "bool";
-    when unsignedType : outResult := "unsigned";
-    when stringType : outResult := "string";
-    when listType : outResult := "list";
-    when mapType : outResult := "map";
-    when structType : outResult := "struct";
-    when enumType : outResult := "enum";
-    when unconstructedType : outResult := "unconstructed";
+  when boolType : result := "bool";
+  when unsignedType : result := "unsigned";
+  when floatType : result := "float";
+  when stringType : result := "string";
+  when listType : result := "list";
+  when mapType : result := "map";
+  when structType : result := "struct";
+  when enumType : result := "enum";
+  when functionType : result := "function";
+  when unconstructedType : result := "unconstructed";
   end switch;
-end reader;
+end reader; 
+
 
 #------------------------------------------------------------------------------*
 
@@ -64,17 +68,31 @@ map @TfieldMap {
 
 #------------------------------------------------------------------------------*
 
+struct @Tfunction {
+  @lstring name;
+  @lstringlist args;
+  @string content;
+}
+
+function dummyFunction -> @Tfunction fct:
+  fct := [@Tfunction new ![@lstring new !"" !here] ![@lstringlist emptyList] !""];
+end function;
+
+#------------------------------------------------------------------------------*
+
 list @TfieldMapList {
-  @TfieldMap mMap;
+  @TfieldMap mMap feature setter;
 }
 
 #------------------------------------------------------------------------------*
 
 struct @Tvalue {
   @uint64 mUnsigned64Value;
+  @double mFloatValue;
   @string mStringValue;
   @TfieldMapList mMapListValue;
   @TfieldMap mStructValue;
+  @Tfunction mFunctionValue;
 }
 
 #------------------------------------------------------------------------------*
@@ -99,9 +117,11 @@ function valueWithBool
 :
   outValue := [@Tvalue new
     ![inValue uint64]
+    !0.0
     !""
     ![@TfieldMapList emptyList]
     ![@TfieldMap emptyMap]
+    !dummyFunction[]
   ];
 end function;
 
@@ -113,9 +133,27 @@ function valueWithUnsigned
 :
   outValue := [@Tvalue new
     !inValue
+    !0.0
     !""
     ![@TfieldMapList emptyList]
     ![@TfieldMap emptyMap]
+    !dummyFunction[]
+  ];
+end function;
+
+#------------------------------------------------------------------------------*
+
+function valueWithFloat
+  ??@double inValue
+  ->@Tvalue outValue
+:
+  outValue := [@Tvalue new
+    !0L
+    !inValue
+    !""
+    ![@TfieldMapList emptyList]
+    ![@TfieldMap emptyMap]
+    !dummyFunction[]
   ];
 end function;
 
@@ -127,9 +165,11 @@ function valueWithString
 :
   outValue := [@Tvalue new
     !0L
+    !0.0
     !inValue
     ![@TfieldMapList emptyList]
     ![@TfieldMap emptyMap]
+    !dummyFunction[]
   ];
 end function;
 
@@ -141,9 +181,11 @@ function valueWithStruct
 :
   outValue := [@Tvalue new
     !0L
+    !0.0
     !""
     ![@TfieldMapList emptyList]
     !inValue
+    !dummyFunction[]
   ];
 end function;
 
@@ -155,9 +197,27 @@ function valueWithMap
 :
   outValue := [@Tvalue new
     !0L
+    !0.0
     !""
     ![@TfieldMapList emptyList]
     !inValue
+    !dummyFunction[]
+  ];
+end function;
+
+#------------------------------------------------------------------------------*
+
+function valueWithList
+  ??@TfieldMapList inValue
+  ->@Tvalue outValue
+:
+  outValue := [@Tvalue new
+    !0L
+    !0.0
+    !""
+    !inValue
+    ![@TfieldMap emptyMap]
+    !dummyFunction[]
   ];
 end function;
 
@@ -168,9 +228,11 @@ function valueWithVoid
 :
   outValue := [@Tvalue new
     !0L
+    !0.0
     !""
     ![@TfieldMapList emptyList]
     ![@TfieldMap emptyMap]
+    !dummyFunction[]
   ];
 end function;
 
@@ -199,6 +261,21 @@ routine addUnsignedValue
     !inVariableName
     ![@Ttype unsignedType]
     !valueWithUnsigned[!inValue]
+    #[@goilTemplateValue new !inValue !"" ![@goilTemplateFieldMapList emptyList]]
+  ];
+end routine;
+
+#------------------------------------------------------------------------------*
+
+routine addFloatValue
+  ?!@TfieldMap ioTemplateVariableMap
+  ??@lstring inVariableName
+  ??@double inValue
+:
+  [!?ioTemplateVariableMap insertKey
+    !inVariableName
+    ![@Ttype floatType]
+    !valueWithFloat[!inValue]
     #[@goilTemplateValue new !inValue !"" ![@goilTemplateFieldMapList emptyList]]
   ];
 end routine;
@@ -248,7 +325,7 @@ routine addListValue
   [!?ioTemplateVariableMap insertKey
     !inVariableName
     ![@Ttype listType]
-    ![@Tvalue new !0L !"" !inValue ![@TfieldMap emptyMap]]
+    ![@Tvalue new !0L !0.0 !"" !inValue ![@TfieldMap emptyMap] !dummyFunction[]]
   ];
 end routine;
 
@@ -262,7 +339,7 @@ routine addStructValue
   [!?ioTemplateVariableMap insertKey
     !inVariableName
     ![@Ttype structType]
-    ![@Tvalue new !0L !"" ![@TfieldMapList emptyList] !inValue]
+    ![@Tvalue new !0L !0.0 !"" ![@TfieldMapList emptyList] !inValue !dummyFunction[]]
   ];
 end routine;
 

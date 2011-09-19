@@ -32,253 +32,245 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "com_internal_s6" ;
+OIL_VERSION = "2.5" : "com_internal_s6";
 
 IMPLEMENTATION trampoline {
-    TASK {
-        UINT32 STACKSIZE = 32768 ;
-        UINT32 PRIORITY = 1 ;
-    } ;
-    ISR {
-        UINT32 STACKSIZE = 32768 ;
-    } ;
+  TASK {
+    UINT32 STACKSIZE = 32768;
+    UINT32 PRIORITY = 1;
+  };
+  ISR {
+    UINT32 STACKSIZE = 32768;
+  };
 };
 
 CPU test {
+  OS config {
+    STATUS = EXTENDED;
+    SHUTDOWNHOOK = TRUE;
+    BUILD = TRUE {
+      APP_SRC = "com_internal_s6.c";
+      APP_SRC = "task1_instance.c";
+      APP_SRC = "task2_instance1.c";
+      APP_SRC = "task2_instance2.c";
+      APP_SRC = "task2_instance3.c";
+      APP_SRC = "task3_instance1.c";
+      APP_SRC = "task3_instance2.c";
+      APP_SRC = "task4_instance.c";
+      APP_SRC = "task5_instance1.c";
+      APP_SRC = "task5_instance2.c";
+      APP_SRC = "task5_instance3.c";
+      APP_SRC = "task5_instance4.c";
+      APP_SRC = "task6_instance1.c";
+      APP_SRC = "task6_instance2.c";
+      APP_SRC = "task7_instance1.c";
+      APP_SRC = "task7_instance2.c";
+      APP_SRC = "task8_instance1.c";
+      APP_SRC = "task8_instance2.c";
+      APP_SRC = "task9_instance1.c";
+      APP_SRC = "task9_instance2.c";
+      APP_SRC = "task9_instance3.c";
+      TRAMPOLINE_BASE_PATH = "../../..";
+      APP_NAME = "com_internal_s6_non_exe";
+      CFLAGS = "-I../../embUnit";
+      CFLAGS  = "-Werror -Wall -pedantic";
+      CFLAGS  = "-Wmissing-field-initializers";
+      LDFLAGS = "-L../../lib -lembUnit";
+    };
+  };
 
-    OS config {
-        STATUS = EXTENDED;
-        APP_SRC = "com_internal_s6.c";
-        APP_SRC = "task1_instance.c";
-        APP_SRC = "task2_instance1.c";
-        APP_SRC = "task2_instance2.c";
-        APP_SRC = "task2_instance3.c";
-        APP_SRC = "task3_instance1.c";
-        APP_SRC = "task3_instance2.c";
-        APP_SRC = "task4_instance.c";
-        APP_SRC = "task5_instance1.c";
-        APP_SRC = "task5_instance2.c";
-        APP_SRC = "task5_instance3.c";
-        APP_SRC = "task5_instance4.c";
-        APP_SRC = "task6_instance1.c";
-        APP_SRC = "task6_instance2.c";
-        APP_SRC = "task7_instance1.c";
-        APP_SRC = "task7_instance2.c";
-        APP_SRC = "task8_instance1.c";
-        APP_SRC = "task8_instance2.c";
-        APP_SRC = "task9_instance1.c";
-        APP_SRC = "task9_instance2.c";
-        APP_SRC = "task9_instance3.c";
-        TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "com_internal_s6_non_exe";
-		SHUTDOWNHOOK = TRUE;
-		
-		CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Werror -Wall -pedantic";
-        CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../../lib -lembUnit";
-        
+  COM config {
+    COMSTATUS = COMEXTENDED;
+    COMERRORHOOK = FALSE;
+    COMUSEGETSERVICEID = FALSE;
+    COMUSEPARAMETERACCESS = FALSE;
+    COMSTARTCOMEXTENSION = FALSE;
+  };
+ 
+  APPMODE std {
+  };
 
-    } ;
-
-	COM config {
-		
-		COMSTATUS = COMEXTENDED;
-		COMERRORHOOK = FALSE;
-		COMUSEGETSERVICEID = FALSE;
-		COMUSEPARAMETERACCESS = FALSE;
-		COMSTARTCOMEXTENSION = FALSE;
-
-	
-	};
-	
-    APPMODE std {
+  TASK t1 {
+    PRIORITY = 1;
+    AUTOSTART = TRUE { APPMODE = std; };
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+    MESSAGE = sm;
+  };
+ 
+  TASK t2 {
+    PRIORITY = 9;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+    MESSAGE = rm_maskednewequalsx;
+  };     
+  
+  TASK t3 {
+    PRIORITY = 8;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+    MESSAGE = rm_maskednewdiffersx;
+  };
+   
+  TASK t4 {
+    PRIORITY = 7;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+    MESSAGE = rm_newisequal;
+  }; 
+   
+  TASK t5 {
+    PRIORITY = 6;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+    MESSAGE = rm_newisdifferent;
+  }; 
+    
+  TASK t6 {
+    PRIORITY = 5;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+    MESSAGE = rm_maskednewequalsmaskedold;
+  }; 
+ 
+  TASK t7 {
+    PRIORITY = 4;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+    MESSAGE = rm_maskednewdiffersmaskedold;
+  }; 
+    
+  TASK t8 {
+    PRIORITY = 3;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+    MESSAGE = rm_newiswithin;
+  }; 
+ 
+  TASK t9 {
+    PRIORITY = 2;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+    MESSAGE = rm_newisoutside;
+  }; 
+ 
+  MESSAGE sm {
+    MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
+      CDATATYPE = "u8";
     };
-
-    TASK t1 {
-        PRIORITY = 1;
-        AUTOSTART = TRUE { APPMODE = std ; } ;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-        MESSAGE = sm;
+  };
+ 
+  MESSAGE rm_maskednewequalsx {
+    MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+      SENDINGMESSAGE = sm;
+      INITIALVALUE = 0;
+      FILTER = MASKEDNEWEQUALSX {
+        MASK = 4;
+        X = 4;
+      };
     };
-	
-	TASK t2 {
-        PRIORITY = 9;
-        AUTOSTART = FALSE ;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-        MESSAGE = rm_maskednewequalsx;
-    };     
-	 
-	TASK t3 {
-        PRIORITY = 8;
-        AUTOSTART = FALSE ;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-        MESSAGE = rm_maskednewdiffersx;
+    NOTIFICATION = ACTIVATETASK {
+      TASK = t2;
     };
-  	
-	TASK t4 {
-        PRIORITY = 7;
-        AUTOSTART = FALSE ;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-        MESSAGE = rm_newisequal;
-    }; 
-  	
-	TASK t5 {
-        PRIORITY = 6;
-        AUTOSTART = FALSE ;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-        MESSAGE = rm_newisdifferent;
-    }; 
-	 	 
-	TASK t6 {
-        PRIORITY = 5;
-        AUTOSTART = FALSE ;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-        MESSAGE = rm_maskednewequalsmaskedold;
-    }; 
-	
-	TASK t7 {
-        PRIORITY = 4;
-        AUTOSTART = FALSE ;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-        MESSAGE = rm_maskednewdiffersmaskedold;
-    }; 
-	 	 
-	TASK t8 {
-        PRIORITY = 3;
-        AUTOSTART = FALSE ;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-        MESSAGE = rm_newiswithin;
-    }; 
-	
-	TASK t9 {
-        PRIORITY = 2;
-        AUTOSTART = FALSE ;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-        MESSAGE = rm_newisoutside;
-    }; 
-	
-    MESSAGE sm {
-        MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
-            CDATATYPE = "u8" ;
-        };
+  };
+ 
+  MESSAGE rm_maskednewdiffersx {
+    MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+      SENDINGMESSAGE = sm;
+      INITIALVALUE = 0;
+      FILTER = MASKEDNEWDIFFERSX {
+        MASK = 4;
+        X = 4;
+      };
     };
-	
-	MESSAGE rm_maskednewequalsx {
-        MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
-            SENDINGMESSAGE = sm;
-            INITIALVALUE = "0";
-			FILTER = MASKEDNEWEQUALSX {
-				MASK = 4;
-				X = 4;
-			};
-        };
-        NOTIFICATION = ACTIVATETASK {
-			TASK = t2;
-		};
+    NOTIFICATION = ACTIVATETASK {
+      TASK = t3;
     };
-	
-	MESSAGE rm_maskednewdiffersx {
-        MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
-            SENDINGMESSAGE = sm;
-            INITIALVALUE = "0";
-			FILTER = MASKEDNEWDIFFERSX {
-				MASK = 4;
-				X = 4;
-			};
-        };
-        NOTIFICATION = ACTIVATETASK {
-			TASK = t3;
-		};
+  };
+ 
+  MESSAGE rm_newisequal {
+    MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+      SENDINGMESSAGE = sm;
+      INITIALVALUE = 2;
+      FILTER = NEWISEQUAL;
     };
-	
-	MESSAGE rm_newisequal {
-        MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
-            SENDINGMESSAGE = sm;
-            INITIALVALUE = "2";
-			FILTER = NEWISEQUAL;
-		};
-        NOTIFICATION = ACTIVATETASK {
-			TASK = t4;
-		};
+    NOTIFICATION = ACTIVATETASK {
+      TASK = t4;
     };
-	
-	MESSAGE rm_newisdifferent {
-        MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
-            SENDINGMESSAGE = sm;
-            INITIALVALUE = "2";
-			FILTER = NEWISDIFFERENT;
-        };
-        NOTIFICATION = ACTIVATETASK {
-			TASK = t5;
-		};
-    };	
-	
-	MESSAGE rm_maskednewequalsmaskedold {
-        MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
-            SENDINGMESSAGE = sm;
-            INITIALVALUE = "0";
-			FILTER = MASKEDNEWEQUALSMASKEDOLD {
-				MASK = 4;
-			};
-        };
-        NOTIFICATION = ACTIVATETASK {
-			TASK = t6;
-		};
+  };
+ 
+  MESSAGE rm_newisdifferent {
+    MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+      SENDINGMESSAGE = sm;
+      INITIALVALUE = 2;
+      FILTER = NEWISDIFFERENT;
     };
-	
-	MESSAGE rm_maskednewdiffersmaskedold {
-        MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
-            SENDINGMESSAGE = sm;
-            INITIALVALUE = "0";
-			FILTER = MASKEDNEWDIFFERSMASKEDOLD {
-				MASK = 4;
-			};
-        };
-        NOTIFICATION = ACTIVATETASK {
-			TASK = t7;
-		};
+    NOTIFICATION = ACTIVATETASK {
+      TASK = t5;
     };
-	
-	MESSAGE rm_newiswithin {
-        MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
-            SENDINGMESSAGE = sm;
-            INITIALVALUE = "0";
-			FILTER = NEWISWITHIN {
-				MIN = 5;
-				MAX = 10;
-			};
-        };
-        NOTIFICATION = ACTIVATETASK {
-			TASK = t8;
-		};
+  }; 
+ 
+  MESSAGE rm_maskednewequalsmaskedold {
+    MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+      SENDINGMESSAGE = sm;
+      INITIALVALUE = 0;
+      FILTER = MASKEDNEWEQUALSMASKEDOLD {
+        MASK = 4;
+      };
     };
-	
-	MESSAGE rm_newisoutside {
-        MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
-            SENDINGMESSAGE = sm;
-            INITIALVALUE = "0";
-			FILTER = NEWISOUTSIDE {
-				MIN = 5;
-				MAX = 10;
-			};
-        };
-        NOTIFICATION = ACTIVATETASK {
-			TASK = t9;
-		};
-    };	
-
-	
-
+    NOTIFICATION = ACTIVATETASK {
+      TASK = t6;
+    };
+  };
+ 
+  MESSAGE rm_maskednewdiffersmaskedold {
+    MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+      SENDINGMESSAGE = sm;
+      INITIALVALUE = 0;
+      FILTER = MASKEDNEWDIFFERSMASKEDOLD {
+        MASK = 4;
+      };
+    };
+    NOTIFICATION = ACTIVATETASK {
+      TASK = t7;
+    };
+  };
+ 
+  MESSAGE rm_newiswithin {
+    MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+      SENDINGMESSAGE = sm;
+      INITIALVALUE = 0;
+      FILTER = NEWISWITHIN {
+        MIN = 5;
+        MAX = 10;
+      };
+    };
+    NOTIFICATION = ACTIVATETASK {
+      TASK = t8;
+    };
+  };
+ 
+  MESSAGE rm_newisoutside {
+    MESSAGEPROPERTY = RECEIVE_UNQUEUED_INTERNAL {
+      SENDINGMESSAGE = sm;
+      INITIALVALUE = 0;
+      FILTER = NEWISOUTSIDE {
+        MIN = 5;
+        MAX = 10;
+      };
+    };
+    NOTIFICATION = ACTIVATETASK {
+      TASK = t9;
+    };
+  }; 
 };
 
 /* End of file com_internal_s6_non.oil */

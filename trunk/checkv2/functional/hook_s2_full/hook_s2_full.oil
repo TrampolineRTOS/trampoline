@@ -32,87 +32,84 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "hook_s2" ;
+OIL_VERSION = "2.5" : "hook_s2";
 
 IMPLEMENTATION trampoline {
-	
-    TASK {
-        UINT32 STACKSIZE = 32768 ;
-        UINT32 [1..10] PRIORITY = 1 ;
-    } ;
+  TASK {
+    UINT32 STACKSIZE = 32768;
+    UINT32 [1..10] PRIORITY = 1;
+  };
 };
 
- CPU test {
-
-    OS config {
-        STATUS = EXTENDED;
-		APP_SRC = "../config.c";
-		APP_SRC = "hook_s2.c";
-		APP_SRC = "error_instance1.c";
-		APP_SRC = "error_instance2.c";
-		APP_SRC = "error_instance3.c";
-		APP_SRC = "error_instance4.c";
-		APP_SRC = "error_instance5.c";
-		APP_SRC = "error_instance6.c";
-		APP_SRC = "posttask_instance1.c";
-		APP_SRC = "posttask_instance2.c";
-		APP_SRC = "posttask_instance3.c";
-		APP_SRC = "pretask_instance1.c";
-		APP_SRC = "pretask_instance2.c";
-		APP_SRC = "pretask_instance3.c";
-		APP_SRC = "pretask_instance4.c";
-		APP_SRC = "task1_instance.c";
-		APP_SRC = "task2_instance.c";
-        TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "hook_s2_full_exe";
-		CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Werror -Wall -pedantic";
-        CFLAGS  = "-Wmissing-field-initializers -g";
-		LDFLAGS = "-L../../lib -lembUnit -g";
-		SHUTDOWNHOOK = TRUE;
-		ERRORHOOK = TRUE;
-		PRETASKHOOK = TRUE;
-		POSTTASKHOOK = TRUE;
-    } ;
-
-    APPMODE std {};
-
-    TASK t1 {
-        AUTOSTART = TRUE { APPMODE = std ; } ;
-        PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-		EVENT = Event1;
+CPU test {
+  OS config {
+    STATUS = EXTENDED;
+    BUILD = TRUE {
+      APP_SRC = "../config.c";
+      APP_SRC = "hook_s2.c";
+      APP_SRC = "error_instance1.c";
+      APP_SRC = "error_instance2.c";
+      APP_SRC = "error_instance3.c";
+      APP_SRC = "error_instance4.c";
+      APP_SRC = "error_instance5.c";
+      APP_SRC = "error_instance6.c";
+      APP_SRC = "posttask_instance1.c";
+      APP_SRC = "posttask_instance2.c";
+      APP_SRC = "posttask_instance3.c";
+      APP_SRC = "pretask_instance1.c";
+      APP_SRC = "pretask_instance2.c";
+      APP_SRC = "pretask_instance3.c";
+      APP_SRC = "pretask_instance4.c";
+      APP_SRC = "task1_instance.c";
+      APP_SRC = "task2_instance.c";
+      TRAMPOLINE_BASE_PATH = "../../..";
+      APP_NAME = "hook_s2_full_exe";
+      CFLAGS = "-I../../embUnit";
+      CFLAGS  = "-Werror -Wall -pedantic";
+      CFLAGS  = "-Wmissing-field-initializers -g";
+      LDFLAGS = "-L../../lib -lembUnit -g";
     };
-	
-    TASK t2 {
-        AUTOSTART = FALSE ;
-        PRIORITY = 2;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
-	
-	COUNTER Counter1{
-		MAXALLOWEDVALUE = 16;
-		TICKSPERBASE = 10;
-		MINCYCLE = 1;
-	};
-	
-	ALARM Alarm1{
-		COUNTER = Counter1;
-		ACTION = SETEVENT {
-			TASK = t1;
-			EVENT = Event1;
-		};
-		AUTOSTART = FALSE;
-	};
-	
-	EVENT Event1{
-		MASK = AUTO;
-	};
+    SHUTDOWNHOOK = TRUE;
+    ERRORHOOK = TRUE;
+    PRETASKHOOK = TRUE;
+    POSTTASKHOOK = TRUE;
+  };
 
+  APPMODE std {};
+
+  TASK t1 {
+    AUTOSTART = TRUE { APPMODE = std; };
+    PRIORITY = 1;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    EVENT = Event1;
+  };
+ 
+  TASK t2 {
+    AUTOSTART = FALSE;
+    PRIORITY = 2;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+ 
+  COUNTER Counter1 {
+    MAXALLOWEDVALUE = 16;
+    TICKSPERBASE = 10;
+    MINCYCLE = 1;
+  };
+ 
+  ALARM Alarm1 {
+    COUNTER = Counter1;
+    ACTION = SETEVENT {
+      TASK = t1;
+      EVENT = Event1;
+    };
+    AUTOSTART = FALSE;
+  };
+ 
+  EVENT Event1 {
+    MASK = AUTO;
+  };
 };
-
-
 
 /* End of file hook_s2_full.oil */

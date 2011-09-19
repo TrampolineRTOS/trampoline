@@ -32,83 +32,79 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "autosar_sc_s5" ;
+OIL_VERSION = "3.1" : "autosar_sc_s5";
 
 IMPLEMENTATION trampoline {
-
-	OS {
-		ENUM [EXTENDED] STATUS;
-	};
-	
-    TASK {
-        UINT32 STACKSIZE = 32768 ;
-        UINT32 [1..10] PRIORITY = 1 ;
-    } ;
+  OS {
+    ENUM [EXTENDED] STATUS;
+  };
+  TASK {
+    UINT32 STACKSIZE = 32768;
+    UINT32 [1..10] PRIORITY = 1;
+  };
 };
 
- CPU test {
-
-    OS config {
-        STATUS = EXTENDED;
-		APP_SRC = "../config.c";
-		APP_SRC = "autosar_sc_s5.c";
-		APP_SRC = "task1_instance.c";
-		APP_SRC = "isr1_instance.c";
-        TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "autosar_sc_s5_exe";
-		CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Werror -Wall -pedantic";
-        CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../../lib -lembUnit";
-		SHUTDOWNHOOK = TRUE;
-	};
-
-    APPMODE std {};
-
-    TASK t1 {
-        AUTOSTART = TRUE { APPMODE = std ; } ;
-        PRIORITY = 1;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-		EVENT = Event1;
+CPU test {
+  OS config {
+    STATUS = EXTENDED;
+    BUILD = TRUE {
+      APP_SRC = "../config.c";
+      APP_SRC = "autosar_sc_s5.c";
+      APP_SRC = "task1_instance.c";
+      APP_SRC = "isr1_instance.c";
+      TRAMPOLINE_BASE_PATH = "../../..";
+      APP_NAME = "autosar_sc_s5_exe";
+      CFLAGS = "-I../../embUnit";
+      CFLAGS  = "-Werror -Wall -pedantic";
+      CFLAGS  = "-Wmissing-field-initializers";
+      LDFLAGS = "-L../../lib -lembUnit";
     };
-	
-	ISR isr1 {
-		CATEGORY = 2;
-		STACKSIZE = 32768;
-		PRIORITY = 1;
-		SOURCE = SIGTERM;
-	};
-	
-	COUNTER Hardware_Counter{
-		MAXALLOWEDVALUE = 3;
-		TICKSPERBASE = 2;
-		MINCYCLE = 1;
-		TYPE = HARDWARE {};
-	};
-	
-	COUNTER Software_Counter{
-		MAXALLOWEDVALUE = 3;
-		TICKSPERBASE = 2;
-		MINCYCLE = 1;
-		TYPE = SOFTWARE;
-	};
-	
-	ALARM Alarm1{
-		COUNTER = Hardware_Counter;
-		ACTION = SETEVENT {
-			TASK = t1;
-			EVENT = Event1;
-		};
-		AUTOSTART = FALSE;
-	};
-	
-	EVENT Event1 {
-		MASK = AUTO;
-	};
-	
+    SHUTDOWNHOOK = TRUE;
+   };
+
+  APPMODE std {};
+
+  TASK t1 {
+    AUTOSTART = TRUE { APPMODE = std; };
+    PRIORITY = 1;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+    EVENT = Event1;
+  };
+ 
+  ISR isr1 {
+    CATEGORY = 2;
+    STACKSIZE = 32768;
+    PRIORITY = 1;
+    SOURCE = SIGTERM;
+  };
+ 
+  COUNTER Hardware_Counter {
+    MAXALLOWEDVALUE = 3;
+    TICKSPERBASE = 2;
+    MINCYCLE = 1;
+    TYPE = HARDWARE {};
+  };
+ 
+  COUNTER Software_Counter {
+    MAXALLOWEDVALUE = 3;
+    TICKSPERBASE = 2;
+    MINCYCLE = 1;
+    TYPE = SOFTWARE;
+  };
+ 
+  ALARM Alarm1 {
+    COUNTER = Hardware_Counter;
+    ACTION = SETEVENT {
+      TASK = t1;
+      EVENT = Event1;
+    };
+    AUTOSTART = FALSE;
+  };
+ 
+  EVENT Event1 {
+    MASK = AUTO;
+  };
 };
-
-
 
 /* End of file autosar_sc_s5.oil */

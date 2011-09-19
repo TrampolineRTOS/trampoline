@@ -41,23 +41,22 @@ enum @dataType {
   identifier,
   objectType,
   structType
-}{
-}
+}{}
 
-reader @dataType oilType -> @string outResult :
+reader @dataType oilType -> @string result:
   switch selfcopy
-    when void : outResult := "VOID";
-    when uint32Number : outResult := "UINT32";
-    when sint32Number : outResult := "INT32";
-    when uint64Number : outResult := "UINT64";
-    when sint64Number : outResult := "INT64";
-    when floatNumber : outResult := "FLOAT";
-    when string : outResult := "STRING";
-    when enumeration : outResult := "ENUM";
-    when boolean : outResult := "BOOLEAN";
-    when identifier : outResult := "IDENTIFIER";
-    when objectType : outResult := "OBJECT_TYPE";
-    when structType : outResult := "STRUCT";
+  when void : result := "VOID";
+  when uint32Number : result := "UINT32";
+  when sint32Number : result := "INT32";
+  when uint64Number : result := "UINT64";
+  when sint64Number : result := "INT64";
+  when floatNumber : result := "FLOAT";
+  when string : result := "STRING";
+  when enumeration : result := "ENUM";
+  when boolean : result := "BOOLEAN";
+  when identifier : result := "IDENTIFIER";
+  when objectType : result := "OBJECT_TYPE";
+  when structType : result := "STRUCT";
   end switch;
 end reader;
 
@@ -608,6 +607,7 @@ method @impAutoDefaultType setDefault ?!@objectAttributes attributes:
     when == @void do
     when == @auto do
     else
+#      message "******* setObjectParams ******\n";
       @identifierMap attr := [attributes objectParams];
       [!?attr put !name !defaultValue];
       [!?attributes setObjectParams !attr];
@@ -724,6 +724,8 @@ end method;
 class @impEnumType extends @impAutoDefaultType {
   @enumValues valuesMap;
 }
+
+
 
 #
 # verifyEnum verifies an enum has a default value equal

@@ -32,84 +32,82 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "com_internal_s2" ;
+OIL_VERSION = "2.5" : "com_internal_s2";
 
 IMPLEMENTATION trampoline {
-    TASK {
-        UINT32 STACKSIZE = 32768 ;
-        UINT32 PRIORITY = 1 ;
-    } ;
-    ISR {
-        UINT32 STACKSIZE = 32768 ;
-    } ;
+  TASK {
+    UINT32 STACKSIZE = 32768;
+    UINT32 PRIORITY = 1;
+  };
+  ISR {
+    UINT32 STACKSIZE = 32768;
+  };
 };
 
 CPU test {
-
-    OS config {
-        STATUS = EXTENDED;
-        APP_SRC = "com_internal_s2.c";
-        APP_SRC = "task1_instance.c";
-        APP_SRC = "task2_instance.c";
-		APP_SRC = "comerror_instance1.c";
-		APP_SRC = "comerror_instance2.c";
-		APP_SRC = "comerror_instance3.c";
-		APP_SRC = "comerror_instance4.c";
-		APP_SRC = "comerror_instance5.c";
-        APP_SRC = "../config.c";
-        TRAMPOLINE_BASE_PATH = "../../..";
-        APP_NAME = "com_internal_s2_non_exe";
-		SHUTDOWNHOOK = TRUE;
-		
-		CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Werror -Wall -pedantic";
-        CFLAGS  = "-Wmissing-field-initializers";
-		LDFLAGS = "-L../../lib -lembUnit";
-
-    } ;
-
-	COM config {
-		COMSTATUS = COMEXTENDED;
-		COMERRORHOOK = TRUE;
-		COMUSEGETSERVICEID = FALSE;
-		COMUSEPARAMETERACCESS = FALSE;
-		COMSTARTCOMEXTENSION = FALSE;
-	};
-	
-    APPMODE std {
+  OS config {
+    STATUS = EXTENDED;
+    SHUTDOWNHOOK = TRUE;
+    BUILD = TRUE {
+      APP_SRC = "com_internal_s2.c";
+      APP_SRC = "task1_instance.c";
+      APP_SRC = "task2_instance.c";
+      APP_SRC = "comerror_instance1.c";
+      APP_SRC = "comerror_instance2.c";
+      APP_SRC = "comerror_instance3.c";
+      APP_SRC = "comerror_instance4.c";
+      APP_SRC = "comerror_instance5.c";
+      APP_SRC = "../config.c";
+      TRAMPOLINE_BASE_PATH = "../../..";
+      APP_NAME = "com_internal_s2_non_exe";
+      CFLAGS = "-I../../embUnit";
+      CFLAGS  = "-Werror -Wall -pedantic";
+      CFLAGS  = "-Wmissing-field-initializers";
+      LDFLAGS = "-L../../lib -lembUnit";
     };
+  };
 
-    TASK t1 {
-        PRIORITY = 1;
-        AUTOSTART = TRUE { APPMODE = std ; } ;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-        MESSAGE = sm;
-    };
+  COM config {
+    COMSTATUS = COMEXTENDED;
+    COMERRORHOOK = TRUE;
+    COMUSEGETSERVICEID = FALSE;
+    COMUSEPARAMETERACCESS = FALSE;
+    COMSTARTCOMEXTENSION = FALSE;
+  };
+ 
+  APPMODE std {
+  };
 
-    TASK t2 {
-        PRIORITY = 2;
-        AUTOSTART = FALSE ;
-        ACTIVATION = 1;
-        SCHEDULE = NON;
-        MESSAGE = rm;
-    };
+  TASK t1 {
+    PRIORITY = 1;
+    AUTOSTART = TRUE { APPMODE = std; };
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+    MESSAGE = sm;
+  };
+
+  TASK t2 {
+    PRIORITY = 2;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = NON;
+    MESSAGE = rm;
+  };
         
-    MESSAGE sm {
-        MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
-            CDATATYPE = "u8" ;
-        };
-		NOTIFICATION = NONE;
+  MESSAGE sm {
+    MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
+      CDATATYPE = "u8";
     };
+    NOTIFICATION = NONE;
+  };
     
-    MESSAGE rm {
-        MESSAGEPROPERTY = RECEIVE_QUEUED_INTERNAL {
-            SENDINGMESSAGE = sm;
-			QUEUESIZE = 3;
-        };
-		NOTIFICATION = NONE;
+  MESSAGE rm {
+    MESSAGEPROPERTY = RECEIVE_QUEUED_INTERNAL {
+      SENDINGMESSAGE = sm;
+      QUEUESIZE = 3;
     };
-	
+    NOTIFICATION = NONE;
+  }; 
 };
 
 /* End of file com_internal_s2_non.oil */

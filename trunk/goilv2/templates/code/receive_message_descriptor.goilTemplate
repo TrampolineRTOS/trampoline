@@ -8,14 +8,28 @@
  * Action of message % !message::NAME %
  */
 %
-if exists message::ACTION then
-  let action := message::ACTION
+let action := message::NOTIFICATION
+if action != "NONE" then
+  let action_s := message::NOTIFICATION_S
+  let action_name := message::NAME
   template action_descriptor
 end if
-if exists message::FILTER then
-  let filter := message::FILTER
-  template filter_descriptor
+
+let filter := "ALWAYS"
+let prop := 0
+let filter_s := 0
+if exists message::MESSAGEPROPERTY_S::FILTER then
+  let prop := message::MESSAGEPROPERTY_S
+  let filter := message::MESSAGEPROPERTY_S::FILTER
+  let filter_s := 0
+  if exists message::MESSAGEPROPERTY_S::FILTER_S then
+    let filter_s := message::MESSAGEPROPERTY_S::FILTER_S
+  end if
 end if
+template filter_descriptor
+
+#display message::NAME
+#if exists filter then display filter end if
 
 if message::MESSAGEPROPERTY == "RECEIVE_ZERO_INTERNAL" then
 %
@@ -26,14 +40,14 @@ if message::MESSAGEPROPERTY == "RECEIVE_ZERO_INTERNAL" then
 #include "tpl_memmap.h"
 
 CONST(tpl_internal_receiving_zero_mo, OS_CONST) % !message::NAME %_message = {
-    /* notification struct pointer  */  % if exists message::ACTION then %(tpl_action *)&% !message::NAME %_action,% else %NULL,% end if %
+    /* notification struct pointer  */  % if action != "NONE" then %(tpl_action *)&% !message::NAME %_action,% else %NULL,% end if %
     /* next mo                      */  % if exists message::NEXT then %(tpl_base_receiving_mo *)&% !message::NEXT %_message% else %NULL% end if %
 };
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 %
-elsif MESSAGEPROPERTY == "RECEIVE_UNQUEUED_INTERNAL" then
+elsif message::MESSAGEPROPERTY == "RECEIVE_UNQUEUED_INTERNAL" then
 %
 /*-----------------------------------------------------------------------------
  * Static internal receiving unqueued message object % !message::NAME %
@@ -41,7 +55,7 @@ elsif MESSAGEPROPERTY == "RECEIVE_UNQUEUED_INTERNAL" then
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-VAR(% !message::CTYPE %, OS_VAR) % !message::NAME %_buffer% if exists message::INITIALVALUE then % = % !message::INITIALVALUE  end if %;
+VAR(% !message::MESSAGEPROPERTY_S::CDATATYPE %, OS_VAR) % !message::NAME %_buffer% if exists message::MESSAGEPROPERTY_S::INITIALVALUE then % = % !message::MESSAGEPROPERTY_S::INITIALVALUE  end if %;
 
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -49,38 +63,38 @@ VAR(% !message::CTYPE %, OS_VAR) % !message::NAME %_buffer% if exists message::I
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
-CONST(tpl_internal_receiving_unqueued_mo, OS_CONST) % !NAME %_message = {
+CONST(tpl_internal_receiving_unqueued_mo, OS_CONST) % !message::NAME %_message = {
   { /* data receiving mo struct   */
     { /* base receiving mo struct */
-      /* notification pointer     */  % if exists ACTION then %(tpl_action *)&% !NAME %_action,% else %NULL,% end if %
-      /*  next receiving mo       */  % if exists NEXT then %(tpl_base_receiving_mo *)&% !NEXT %_message% else %NULL% end if %
+      /* notification pointer     */  % if action != "NONE" then %(tpl_action *)&% !message::NAME %_action,% else %NULL,% end if %
+      /*  next receiving mo       */  % if exists message::NEXT then %(tpl_base_receiving_mo *)&% !message::NEXT %_message% else %NULL% end if %
     },
     /*  receiving function      */  (tpl_receiving_func)tpl_receive_static_internal_unqueued_message,
     /*  copy function           */  (tpl_data_copy_func)tpl_copy_from_unqueued,
-    /*  filter pointer          */  % if exists FILTER then %(tpl_filter_desc *)&% !NAME %_filter% else %NULL% end if%
+    /*  filter pointer          */  (tpl_filter_desc *)&% !message::NAME %_filter
   },
   { /* buffer struct    */
-    /*  buffer  */  (tpl_com_data *)&% !NAME %_buffer,
-    /*  size    */  sizeof(% !CTYPE %)
+    /*  buffer  */  (tpl_com_data *)&% !message::NAME %_buffer,
+    /*  size    */  sizeof(% !message::MESSAGEPROPERTY_S::CDATATYPE %)
   }
 };
 
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 %
-elsif MESSAGEPROPERTY == "RECEIVE_QUEUED_INTERNAL" then
+elsif message::MESSAGEPROPERTY == "RECEIVE_QUEUED_INTERNAL" then
 %
 /*-----------------------------------------------------------------------------
- * Static internal receiving queued message object % !NAME %
+ * Static internal receiving queued message object % !message::NAME %
  */
  
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-VAR(% !CTYPE %, OS_VAR) % !NAME %_buffer[% !QUEUESIZE %];
-VAR(% !CTYPE %, OS_VAR) % !NAME %_last% if exists INITIALVALUE then % = % !INITIALVALUE  end if %;
+VAR(% !message::MESSAGEPROPERTY_S::CDATATYPE %, OS_VAR) % !message::NAME %_buffer[% !message::MESSAGEPROPERTY_S::QUEUESIZE %];
+VAR(% !message::MESSAGEPROPERTY_S::CDATATYPE %, OS_VAR) % !message::NAME %_last% if exists message::MESSAGEPROPERTY_S::INITIALVALUE then % = % !message::MESSAGEPROPERTY_S::INITIALVALUE  end if %;
 
-VAR(tpl_queue_dyn, OS_VAR) % !NAME %_dyn_queue = {
+VAR(tpl_queue_dyn, OS_VAR) % !message::NAME %_dyn_queue = {
   /*  current size of the queue           */  0,
   /*  read index                          */  0,
   /*  overflow flag                       */  FALSE
@@ -92,22 +106,22 @@ VAR(tpl_queue_dyn, OS_VAR) % !NAME %_dyn_queue = {
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
-CONST(tpl_internal_receiving_queued_mo, OS_CONST) % !NAME %_message = {
+CONST(tpl_internal_receiving_queued_mo, OS_CONST) % !message::NAME %_message = {
   { /* data receiving mo struct   */
     { /* base receiving mo struct */
-      /* notification pointer     */  % if exists ACTION then %(tpl_action *)&% !NAME %_action,% else %NULL,% end if %
-      /* next receiving mo        */  % if exists NEXT then %(tpl_base_receiving_mo *)&% !NEXT %_message% else %NULL% end if %
+      /* notification pointer     */  % if action != "NONE" then %(tpl_action *)&% !message::NAME %_action,% else %NULL,% end if %
+      /* next receiving mo        */  % if exists message::NEXT then %(tpl_base_receiving_mo *)&% !message::NEXT %_message% else %NULL% end if %
     },
     /*  receiving function      */  (tpl_receiving_func)tpl_receive_static_internal_queued_message,
     /*  copy function           */  (tpl_data_copy_func)tpl_copy_from_queued,
-    /*  filter pointer          */  % if exists FILTER then %(tpl_filter_desc *)&% !NAME %_filter% else %NULL% end if%
+    /*  filter pointer          */  (tpl_filter_desc *)&% !message::NAME %_filter
   },
   { /*  queue structure   */
-    /*  pointer to the dynamic descriptor   */  &% !NAME %_dyn_queue,
-    /*  max size of the queue               */  % !QUEUESIZE %*sizeof(% !CTYPE %),
-    /*  element size of the queue           */  sizeof(% !CTYPE %),
-    /*  pointer to the buffer               */  (tpl_com_data *)% !NAME %_buffer,
-    /*  pointer to the last written value   */  (tpl_com_data *)&% !NAME %_last
+    /*  pointer to the dynamic descriptor   */  &% !message::NAME %_dyn_queue,
+    /*  max size of the queue               */  % !message::MESSAGEPROPERTY_S::QUEUESIZE %*sizeof(% !message::MESSAGEPROPERTY_S::CDATATYPE %),
+    /*  element size of the queue           */  sizeof(% !message::MESSAGEPROPERTY_S::CDATATYPE %),
+    /*  pointer to the buffer               */  (tpl_com_data *)% !message::NAME %_buffer,
+    /*  pointer to the last written value   */  (tpl_com_data *)&% !message::NAME %_last
   }
 };
 
