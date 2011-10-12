@@ -24,12 +24,10 @@ import "goil_semantics.gSemantics" ;
 #
 nonterminal <event> 
  ?!@event_map events  
-label parse
 ;
 
 nonterminal <event_attributes>
     ?!@event_mask_obj mask  
-label parse
 ;
 
 #
@@ -37,7 +35,6 @@ label parse
 #
 nonterminal <description>
  !@lstring desc  
-label parse
 ;
 
 #

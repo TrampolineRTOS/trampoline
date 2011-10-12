@@ -23,15 +23,17 @@ semantics template_semantics :
 
 enum @goilTemplateType {
   boolType, unsignedType, stringType, listType, structType
-}{
-  reader messageGoilTemplateType :
-    boolType -> "bool";
-    unsignedType -> "unsigned";
-    stringType -> "string";
-    listType -> "list";
-    structType -> "struct";
-  end reader; 
-}
+}{}
+
+reader @goilTemplateType messageGoilTemplateType ->@string result :
+  switch selfcopy
+  when boolType:     result := "bool";
+  when unsignedType: result := "unsigned";
+  when stringType:   result := "string";
+  when listType:     result := "list";
+  when structType:   result := "struct";
+  end switch;
+end reader;
 
 #------------------------------------------------------------------------------*
 

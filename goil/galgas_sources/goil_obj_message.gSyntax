@@ -21,7 +21,6 @@ import "goil_semantics.gSemantics" ;
 
 nonterminal <mess>
   ?!@message_map messages  
-label parse
 ;
 
 nonterminal <message_attributes>
@@ -30,150 +29,121 @@ nonterminal <message_attributes>
   ?!@lstringlist   acc_apps
   ?!@ident_map     others
   ?!@mess_prop_obj mess_prop  
-label parse
 ;
 
 nonterminal <message_property>
   ?!@mess_prop_obj mess_prop  
-label parse
 ;
 
 nonterminal <notification_property>
   !@action_obj notif  
-label parse
 ;
 
 nonterminal <ssi_attributes>
   ?!@mess_prop_obj mess_prop  
-label parse
 ;
 
 nonterminal <sse_attributes>
   ?!@mess_prop_obj mess_prop  
-label parse
 ;
 
 nonterminal <sde_attributes>
   ?!@mess_prop_obj mess_prop  
-label parse
 ;
 
 nonterminal <sze_attributes>
   ?!@mess_prop_obj mess_prop  
-label parse
 ;
 
 nonterminal <rzi_attributes>
   ?!@mess_prop_obj mess_prop  
-label parse
 ;
 
 nonterminal <rze_attributes>
   ?!@mess_prop_obj mess_prop  
-label parse
 ;
 
 nonterminal <rui_attributes>
   ?!@mess_prop_obj mess_prop  
-label parse
 ;
 
 nonterminal <rqi_attributes>
   ?!@mess_prop_obj mess_prop  
-label parse
 ;
 
 nonterminal <rue_attributes>
   ?!@mess_prop_obj mess_prop  
-label parse
 ;
 
 nonterminal <rqe_attributes>
   ?!@mess_prop_obj mess_prop  
-label parse
 ;
 
 nonterminal <rde_attributes>
   ?!@mess_prop_obj mess_prop  
-label parse
 ;
 
 nonterminal <rzs_attributes>
   ?!@mess_prop_obj mess_prop  
-label parse
 ;
 
 nonterminal <cdatatype>
   !@lstring cdatatype  
-label parse
 ;
 
 nonterminal <transferproperty>
   !@lstring transferproperty  
-label parse
 ;
 
 nonterminal <networkmessage>
   !@lstring net_message  
-label parse
 ;
 
 nonterminal <filter>
   !@filter_prop_obj filter  
-label parse
 ;
 
 nonterminal <mask_x_attribute>
   !@luint64 mask
   !@luint64 x  
-label parse
 ;
 
 nonterminal <mask_attribute>
   !@luint64 mask  
-label parse
 ;
 
 nonterminal <min_max_attribute>
   !@luint64 min
   !@luint64 max  
-label parse
 ;
 
 nonterminal <period_offset_attribute>
   !@luint64 period
   !@luint64 offset  
-label parse
 ;
 
 nonterminal <networkordercallout>
   !@lstring net_order_callout  
-label parse
 ;
 
 nonterminal <cpuordercallout>
   !@lstring cpu_order_callout  
-label parse
 ;
 
 nonterminal <initialvalue>
   !@basic_type initial_value  
-label parse
 ;
 
 nonterminal <sendingmessage>
   !@lstring sending_message  
-label parse
 ;
 
 nonterminal <queuesize>
   !@luint64 queue_size  
-label parse
 ;
 
 nonterminal <link>
   !@link_obj link  
-label parse
 ;
 
 #
@@ -181,11 +151,9 @@ label parse
 #
 nonterminal <description>
   !@lstring desc  
-label parse
 ;
 nonterminal <free_field>
   ?!@ident_map ids  
-label parse
 ;
 
 rule <mess>

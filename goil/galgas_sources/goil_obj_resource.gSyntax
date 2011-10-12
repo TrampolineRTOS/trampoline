@@ -24,12 +24,10 @@ import "goil_semantics.gSemantics" ;
 #
 nonterminal <resource> 
   ?!@resource_map resources  
-label parse
 ;
 nonterminal <resource_attributes>
   ?!@resource_property_obj property
   ?!@lstringlist           acc_apps  
-label parse
 ;
 
 #
@@ -37,7 +35,6 @@ label parse
 #
 nonterminal <description>
   !@lstring desc  
-label parse
 ;
 
 #

@@ -25,7 +25,6 @@ import "goil_types_timing_prot.gSemantics" ;
 #
 nonterminal <isr>
   ?!@isr_map isrs  
-label parse
 ;
 
 nonterminal <isr_attributes>
@@ -36,7 +35,6 @@ nonterminal <isr_attributes>
   ?!@lstringlist acc_apps
   ?!@timing_prot timing_prot
   ?!@ident_map   other_fields  
-label parse
 ;
 
 #
@@ -44,10 +42,8 @@ label parse
 #
 nonterminal <description>
   !@lstring desc  
-label parse
 ;
 nonterminal <free_field> ?!@ident_map ids  
-label parse
 ;
 nonterminal <timing_prot_attrs>
   !@basic_type  exe_budget
@@ -56,7 +52,6 @@ nonterminal <timing_prot_attrs>
   !@basic_type  os_it_lock
   !@basic_type  all_it_lock
   !@rezlock_map rezlocks  
-label parse
 ;
 
 #

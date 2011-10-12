@@ -23,7 +23,6 @@ import "goil_types_app.gSemantics" ;
 #
 nonterminal <description>
     !@lstring desc  
-label parse
 ;
 
 #
@@ -39,12 +38,10 @@ label check_appli_exist
 nonterminal <app_attributes>
     ?!@app_obj app
     ?@lstring  name 
-label parse
 ;
 
 nonterminal <trusted_fcts>
     !@app_trusted_obj trust_attr 
-label parse
 ;
 
 rule <appli>
