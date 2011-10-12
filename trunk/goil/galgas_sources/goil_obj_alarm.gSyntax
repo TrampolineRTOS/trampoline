@@ -21,7 +21,6 @@ import "goil_semantics.gSemantics" ;
 
 nonterminal <alarm>
   ?!@alarm_map alarms  
-label parse
 ;
 
 nonterminal <alarm_parameters>
@@ -29,17 +28,14 @@ nonterminal <alarm_parameters>
   ?!@action_obj    alarm_action
   ?!@autostart_obj alarm_autostart
   ?!@lstringlist   acc_apps  
-label parse
 ;
 
 nonterminal <alarm_action_params>
   ?!@action_obj alarm_action  
-label parse
 ;
 
 nonterminal <alarm_autostart_params>
   ?!@autostart_obj alarm_autostart  
-label parse
 ;
 
 #
@@ -47,7 +43,6 @@ label parse
 #
 nonterminal <description>
   !@lstring desc  
-label parse
 ;
 
 #

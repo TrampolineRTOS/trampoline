@@ -77,14 +77,16 @@ if AUTOSAR then
 end if
 %
 #endif
-  /* task base priority       */  % !PRIORITY %,
-  /* max activation count     */  % !ACTIVATION %,
-  /* task type                */  IS_ROUTINE,
+  /* ISR base priority       */  % !PRIORITY %,
+%#  /* CPU Priority            */  % !PRIORITY - MAXTASKPRIORITY %,
+%  /* max activation count    */  % !ACTIVATION %,
+  /* ISR type                */  IS_ROUTINE,
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /* pointer to the timing
      protection descriptor    */  $TIMING_PROT_REF$
 #endif
 };
+
 
 CONST(tpl_isr_static, OS_CONST) % !NAME %_isr_helper = {
   /* helper */ NULL,

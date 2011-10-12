@@ -35,10 +35,8 @@ label check_appli_exist
   !@bool appli_exist
 ;
 nonterminal <OIL_version> !@lstring version !@lstring desc
-label parse
 ;
 nonterminal <description> !@lstring desc
-label parse
 ;
 
 nonterminal <application_definition>
@@ -65,19 +63,15 @@ label check_appli_exist
     !@bool appli_exist
 ;
 nonterminal <nm>
-label parse
 ;
 
 nonterminal <boolean> !@lbool val 
-label parse
 ;
 nonterminal <free_field> ?!@ident_map ids 
-label parse
 ;
 nonterminal <include_file_level>
     ?!@implementation imp
     ?!@root_obj cpu
-label parse
 ;
 nonterminal <include_cpu_level>
     ?!@os_obj            os
@@ -92,62 +86,50 @@ nonterminal <include_cpu_level>
     ?!@netmess_map       net_messages
     ?!@scheduletable_map scheduletables
     ?!@app_map           applis
-label parse
 ;
 
 #--------------------------------------------------------------------
 # extern nonterminals
 #--------------------------------------------------------------------
 nonterminal <implementation_definition> ?!@implementation imp
-label parse
 ;
 
 nonterminal <os>
     ?!@os_obj os
-label parse
 ;
 
 nonterminal <appmode>
-label parse
 ;
 nonterminal <task> 
     ?!@task_map outTask
-label parse
 ;
 
 nonterminal <counter>
     ?!@counter_map counters
-label parse
 ;
 
 nonterminal <alarm>
     ?!@alarm_map alarms
-label parse
 ;
 
 nonterminal <resource>
     ?!@resource_map resources
-label parse
 ;
 
 nonterminal <event> 
     ?!@event_map events
-label parse
 ;
 
 nonterminal <isr>
     ?!@isr_map isrs
-label parse
 ;
 
 nonterminal <mess>
     ?!@message_map messages
-label parse
 ;
 
 nonterminal <scheduletable>
     ?!@scheduletable_map stm
-label parse
 ;
 
 nonterminal <appli>
@@ -159,16 +141,13 @@ label check_appli_exist
 
 nonterminal <networkmess>
   ?!@netmess_map netmess
-label parse
 ;
 
 nonterminal <com>
   ?!@com com
-label parse
 ;
 
 nonterminal <ipdu>
-label parse
 ;
 
 #

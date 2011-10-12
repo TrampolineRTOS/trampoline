@@ -20,60 +20,43 @@ import "goil_options.gOption" ;
 import "goil_semantics.gSemantics" ;
 
 nonterminal <ipdu>  
-label parse
 ;
 nonterminal <ipduproperty>  
-label parse
 ;
 nonterminal <transmissionmode>  
-label parse
 ;
 nonterminal <timeperiod>  
-label parse
 ;
 nonterminal <timeoffset>  
-label parse
 ;
 nonterminal <minimumdelaytime>  
-label parse
 ;
 nonterminal <timeout>  
-label parse
 ;
 nonterminal <firsttimeout>  
-label parse
 ;
 nonterminal <ipducallout>  
-label parse
 ;
 nonterminal <layerused>  
-label parse
 ;
 
 nonterminal <sent_attributes>  
-label parse
 ;
 nonterminal <received_attributes>  
-label parse
 ;
 nonterminal <direct_attributes>  
-label parse
 ;
 nonterminal <periodic_attributes>  
-label parse
 ;
 nonterminal <mixed_attributes>  
-label parse
 ;
 
 # external nonterminals
 nonterminal <sizeinbits>
   !@luint64 sib  
-label parse
 ;
 nonterminal <description>
     !@lstring desc  
-label parse
 ;
 
 rule <ipdu> :

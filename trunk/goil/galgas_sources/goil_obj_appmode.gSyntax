@@ -20,7 +20,6 @@ import "goil_options.gOption" ;
 import "goil_semantics.gSemantics" ;
 
 nonterminal <appmode> 
-label parse
 ;
 
 #
@@ -28,11 +27,9 @@ label parse
 #
 nonterminal <description>
     !@lstring desc  
-label parse
 ;
 nonterminal <free_field>
     ?!@ident_map ids  
-label parse
 ;
 
 rule <appmode> :

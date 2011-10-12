@@ -1,6 +1,8 @@
 #---------------------------------------------------------------------------*
 #                                                                           *
-#    MAKEFILE for building "goil" 32-bit command line tools for Unix     *
+#    MAKEFILE for building "goil" command line tools for Unix    *
+#                                                                           *
+# 32-bit build on a 32-bit system, 64-bit build on a 64-bit system          *
 #                                                                           *
 #---------------------------------------------------------------------------*
 
@@ -24,6 +26,14 @@ DEBUG_OBJECTS_DIR := debug_objects
 
 #---------------------------------------------------------------------------*
 #                                                                           *
+#                  Install directory (for "install" goal)                   *
+#                                                                           *
+#---------------------------------------------------------------------------*
+
+INSTALL_DIR := /usr/local/bin
+
+#---------------------------------------------------------------------------*
+#                                                                           *
 #                         Linker Options for Unix                           *
 #                                                                           *
 #---------------------------------------------------------------------------*
@@ -36,7 +46,7 @@ PLATFORM_LINKER_OPTIONS :=
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-include ../galgas_sources/GALGAS_OUTPUT/file_list.mke
+include ../galgas_sources/GALGAS_OUTPUT/file_list.mak
 
 #---------------------------------------------------------------------------*
 #                                                                           *
@@ -44,7 +54,7 @@ include ../galgas_sources/GALGAS_OUTPUT/file_list.mke
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-include $(LIBPM_PATH)/included_makefiles/unix_gcc_tools_32.mke
+include $(LIBPM_DIRECTORY_PATH)/included_makefiles/unix_gcc_tools.mak
 
 #---------------------------------------------------------------------------*
 #                                                                           *
@@ -52,6 +62,6 @@ include $(LIBPM_PATH)/included_makefiles/unix_gcc_tools_32.mke
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-include $(LIBPM_PATH)/included_makefiles/generic_makefile.mke
+include $(LIBPM_DIRECTORY_PATH)/included_makefiles/generic_makefile.mak
 
 #---------------------------------------------------------------------------*

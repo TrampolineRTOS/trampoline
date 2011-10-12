@@ -36,7 +36,6 @@ nonterminal <expression>
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
-label parse
 ;
 
 nonterminal <relation_term>
@@ -46,7 +45,6 @@ nonterminal <relation_term>
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
-label parse
 ;
 
 nonterminal <relation_factor>
@@ -56,7 +54,6 @@ nonterminal <relation_factor>
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
-label parse
 ;
 
 nonterminal <simple_expression>
@@ -66,7 +63,6 @@ nonterminal <simple_expression>
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
-label parse
 ;
 
 nonterminal <term>
@@ -76,7 +72,6 @@ nonterminal <term>
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
-label parse
 ;
 
 nonterminal <factor>
@@ -86,14 +81,12 @@ nonterminal <factor>
   ??@goilTemplateVariableMap inVariableMap
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
-label parse
 ;
 
 nonterminal <struct_member>
   ??@goilTemplateFieldMap inValue
   !@goilTemplateValue outValue
   !@goilTemplateType outResultType
-label parse
 ;
 
 #---------------------------------------------------------------------------*

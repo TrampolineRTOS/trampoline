@@ -13,7 +13,6 @@ nonterminal <timing_prot_attrs>
     !@basic_type  os_it_lock
     !@basic_type  all_it_lock
     !@rezlock_map rezlocks  
-label parse
 ;
 
 rule <timing_prot_attrs>

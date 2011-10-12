@@ -36,7 +36,7 @@ PLATFORM_LINKER_OPTIONS := -lcomdlg32
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-include ../galgas_sources/GALGAS_OUTPUT/file_list.mke
+include ../galgas_sources/GALGAS_OUTPUT/file_list.mak
 
 #---------------------------------------------------------------------------*
 #                                                                           *
@@ -44,7 +44,7 @@ include ../galgas_sources/GALGAS_OUTPUT/file_list.mke
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-include $(LIBPM_PATH)/included_makefiles/mingw_on_macosx_gcc_tools_32.mke
+include $(LIBPM_DIRECTORY_PATH)/included_makefiles/mingw_on_macosx_gcc_tools_32.mak
 
 #---------------------------------------------------------------------------*
 #                                                                           *
@@ -52,6 +52,6 @@ include $(LIBPM_PATH)/included_makefiles/mingw_on_macosx_gcc_tools_32.mke
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-include $(LIBPM_PATH)/included_makefiles/generic_makefile.mke
+include $(LIBPM_DIRECTORY_PATH)/included_makefiles/generic_makefile.mak
 
 #---------------------------------------------------------------------------*

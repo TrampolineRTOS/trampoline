@@ -30,24 +30,19 @@ import "goil_types_os.gSemantics" ;
 # local rules declaration
 #
 nonterminal <os>
-  ?!@os_obj os 
-label parse
-;
+  ?!@os_obj os;
 
 #
 # external rules 
 #
 nonterminal <description>
-  !@lstring desc  
-label parse
+  !@lstring desc
 ;
 nonterminal <free_field>
-  ?!@ident_map ids 
-label parse
+  ?!@ident_map ids
 ;
 nonterminal <boolean>
-  !@lbool val  
-label parse
+  !@lbool val
 ;
 #
 # local rules implementation
