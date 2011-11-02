@@ -42,6 +42,7 @@ IMPLEMENTATION trampoline_common {
       TRUE {
         STRING APP_SRC[];
         STRING CFLAGS[];
+        STRING CPPFLAGS[];
         STRING ASFLAGS[];
         STRING LDFLAGS[];
         STRING APP_NAME = "trampoline";
