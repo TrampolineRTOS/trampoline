@@ -22,6 +22,8 @@
 
 #if WITH_COM_ERROR_HOOK == YES
 
+#include "tpl_service_ids.h"
+
 union COM_PARAM_BLOCK {
     COMApplicationModeType  app_mode;
     COMShutdownModeType     shut_mode;
@@ -42,24 +44,6 @@ struct COM_SERVICE_CALL_DESCRIPTOR {
 typedef struct COM_SERVICE_CALL_DESCRIPTOR tpl_com_service_call_descriptor;
 
 extern tpl_com_service_call_descriptor tpl_com_service;
-
-/*
- * Services ids
- */
-#define COMServiceId_StartCOM               128
-#define COMServiceId_StopCOM                129
-#define COMServiceId_GetCOMApplicationMode  130
-#define COMServiceId_InitMessage            131
-#define COMServiceId_StartPeriodic          132
-#define COMServiceId_StopPeriodic           133
-#define COMServiceId_SendMessage            134
-#define COMServiceId_ReceiveMessage         135
-#define COMServiceId_SendDynamicMessage     136
-#define COMServiceId_ReceiveDynamicMessage  137
-#define COMServiceId_SendZeroMessage        138
-#define COMServiceId_ReceiveZeroMessage     139
-#define COMServiceId_GetMessageStatus       140
-#define COMServiceId_StartCOMExtension      141
 
 /*
  * macros to access the service id and its parameters from hook routine
