@@ -4,6 +4,7 @@ IMPLEMENTATION posix {
       TRUE {
         STRING APP_SRC[];
         STRING CFLAGS[];
+        STRING CPPFLAGS[];
         STRING ASFLAGS[];
         STRING LDFLAGS[];
         STRING APP_NAME = "trampoline";

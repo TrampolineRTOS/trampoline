@@ -55,50 +55,64 @@ CPU test {
     APPMODE std {};
 
     TASK t1_app_nontrusted1 {
-		AUTOSTART = TRUE { APPMODE = std ; } ;
-		PRIORITY = 2;
-		ACTIVATION = 1;
-		SCHEDULE = NON;
+  AUTOSTART = TRUE { APPMODE = std ; } ;
+  PRIORITY = 2;
+  ACTIVATION = 1;
+  SCHEDULE = NON;
        EVENT = Event1;
-	};
-	TASK t1_app_nontrusted2 {
-		AUTOSTART = FALSE;
-		PRIORITY = 1;
-		ACTIVATION = 1;
-		SCHEDULE = NON;
-	};
-	TASK t1_app_trusted1 {
-		AUTOSTART = TRUE { APPMODE = std ; } ;
-		PRIORITY = 1;
-		ACTIVATION = 1;
-		SCHEDULE = NON;
+ };
+ TASK t1_app_nontrusted2 {
+  AUTOSTART = FALSE;
+  PRIORITY = 1;
+  ACTIVATION = 1;
+  SCHEDULE = NON;
+ };
+ TASK t1_app_trusted1 {
+  AUTOSTART = TRUE { APPMODE = std ; } ;
+  PRIORITY = 1;
+  ACTIVATION = 1;
+  SCHEDULE = NON;
        ACCESSING_APPLICATION = app_nontrusted1;
-	};
-	TASK t1_app_trusted2 {
-		AUTOSTART = FALSE;
-		PRIORITY = 1;
-		ACTIVATION = 1;
-		SCHEDULE = NON;
-	};
-	APPLICATION app_nontrusted1 {
+ };
+ TASK t1_app_trusted2 {
+  AUTOSTART = FALSE;
+  PRIORITY = 1;
+  ACTIVATION = 1;
+  SCHEDULE = NON;
+ };
+ APPLICATION app_nontrusted1 {
        TRUSTED = FALSE;
 		TASK = t1_app_nontrusted1;
 		HAS_RESTARTTASK = TRUE { RESTARTTASK = t1_app_nontrusted1; };
 	};	
 	APPLICATION app_nontrusted2 {
        TRUSTED = FALSE;
-		TASK = t1_app_nontrusted2;
-	};	
-	APPLICATION app_trusted1 {
+  TASK = t1_app_nontrusted2;
+ }; 
+ APPLICATION app_trusted1 {
        TRUSTED = TRUE;
-		TASK = t1_app_trusted1;
-	};	
-	APPLICATION app_trusted2 {
+  TASK = t1_app_trusted1;
+ }; 
+ APPLICATION app_trusted2 {
        TRUSTED = TRUE;
-		TASK = t1_app_trusted2;
-	};	
+  TASK = t1_app_trusted2;
+ }; 
     EVENT Event1 { MASK = AUTO; };
-    
+      APPLICATION appli_isr1 {
+    ISR = systick_isr_C;
+    ISR = nxt_motor_isr_C;
+    ISR = spi_isr_C;
+    ISR = uart_isr_C_0;
+    ISR = uart_isr_C_1;
+    ISR = sound_isr_C;
+    ISR = twi_isr_C;
+    ISR = systick_low_priority_C;
+    ISR = udp_isr_C;
+    ISR = i2c_timer_isr_C;
+    ISR = check_buttons_status;
+  };   
+
+
 };
 
 

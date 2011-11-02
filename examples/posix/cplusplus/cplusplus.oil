@@ -15,14 +15,16 @@ CPU test {
     OS config {
         STATUS = EXTENDED;
         ERRORHOOK = FALSE;
-        APP_SRC = "cplusplus.cpp";
-        TRAMPOLINE_BASE_PATH = "../../..";
-        CFLAGS  = "-g";
-        CFLAGS  = "-Wall -Wformat -Werror -pedantic -std=c99";
-        CFLAGS  = "-Wmissing-field-initializers"; 
-        CPPFLAGS  = "-Wall -Wformat -Werror -pedantic";
-        ASFLAGS = "";
-        LINKER = "g++";
+        BUILD = TRUE {
+          APP_SRC = "cplusplus.cpp";
+          TRAMPOLINE_BASE_PATH = "../../..";
+          CFLAGS  = "-g";
+          CFLAGS  = "-Wall -Wformat -Werror -pedantic -std=c99";
+          CFLAGS  = "-Wmissing-field-initializers"; 
+          CPPFLAGS = "-Wall -Wformat -Werror -pedantic";
+          ASFLAGS = "";
+          LINKER = "g++";
+        };
     } ;
 
     TASK periodic {
