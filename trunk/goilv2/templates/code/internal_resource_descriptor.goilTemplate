@@ -9,7 +9,7 @@ before
  * Tasks which use this resource :
  * %
 do
-  !task::NAME
+  !task::VALUE
 between
 %
  * %
