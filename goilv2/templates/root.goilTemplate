@@ -36,6 +36,19 @@
 #
 #display A
 
+
+if exists ACCELEROMETER then
+  let accel_port := emptyMap
+  foreach accel in ACCELEROMETER do
+    if exists accel_port[accel::PORT] then
+      error accel::PORT : "PORT already used by"
+      error accel_port[accel::PORT]::NAME : "ACCELEROMETER ".accel_port[accel::PORT]::NAME
+    else
+      let accel_port[accel::PORT] := accel
+    end if
+  end foreach
+end if
+
 #------------------------------------------------------------------------------*
 # Check configuration is ok
 #
@@ -430,7 +443,9 @@ let events_by_ref := emptyList
 foreach event in AUTOEVENTS do
   let ref := 0
   if exists tasks_for_event[event::NAME] then
-    let ref := [tasks_for_event[event::NAME]::task_list length]
+    if exists tasks_for_event[event::NAME]::task_list then
+      let ref := [tasks_for_event[event::NAME]::task_list length]
+    end if
   end if
   let event::REF := ref
   let events_by_ref += event
@@ -444,7 +459,7 @@ sort events_by_ref by REF >
 #
 foreach event in events_by_ref do
   # Compute the available bits for the task using the event by doing a or
-  let using_tasks := tasks_for_event[event::NAME]::task_list
+  let using_tasks := exists tasks_for_event[event::NAME]::task_list default (emptyList)
   let tasks_mask := 0
   foreach task in using_tasks do
     let tasks_mask := tasks_mask | mask_for_task[task::VALUE]
