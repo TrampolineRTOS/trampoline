@@ -44,6 +44,17 @@ foreach APICONFIG::USEDAPI do
 #define OSServiceId_% !API %    % !INDEX %
 %
 end foreach
+foreach APICONFIG::USEDAPI do
+%
+/**
+ * @def COMServiceId_% !API %
+ *
+ * @see #SERVICE_CALL_DESCRIPTOR
+ * @see #% !API %
+ */
+#define COMServiceId_% !API %    % !INDEX %
+%
+end foreach
 %
 /**
  * @def SYSCALL_COUNT
