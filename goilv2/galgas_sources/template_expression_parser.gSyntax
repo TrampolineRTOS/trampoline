@@ -582,6 +582,19 @@ routine templateMethodInvocation
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
       outResultType := [@Ttype stringType];
       outResultValue := valueWithString [![[inValue mStringValue] reversedString]];
+    elsif [inMethodName string] == "componentsSeparatedByString" then
+      checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype stringType] !1;
+      @Tvalue separator;
+      [inParameterTypeList first ?separator ?*];
+      @stringlist stringlist := [[inValue mStringValue] componentsSeparatedByString ![separator mStringValue]];
+      @TfieldMapList result [emptyList];
+      foreach stringlist do
+        @TfieldMap item [emptyMap];
+        addStringValue !?item !lstringWith[!"VALUE"] !mValue;
+        result += !item;
+      end foreach;
+      outResultType := [@Ttype listType];
+      outResultValue := valueWithList[!result];
     else
       error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
     end if;
