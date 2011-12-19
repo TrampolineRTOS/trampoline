@@ -25,6 +25,11 @@
 
 extern int main (void);
 
+//zone dedicated for .bss -> should be zeroed in startup.
+//get addreses from the linker script.
+extern unsigned char *common_zeroed_vars_begin;
+extern unsigned char *common_zeroed_vars_end;
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -55,7 +60,7 @@ void tpl_arm_bootstrap_stage2 ()
      * initialіze memory segments
      */
     /* BSS section should be zeroed */
-    //fill_with_zeros (&common_zeroed_vars_begin, &common_zeroed_vars_end);
+    fill_with_zeros (&common_zeroed_vars_begin, &common_zeroed_vars_end);
 	
     /* DATA section initial values copied from ROM 
       */
