@@ -114,8 +114,10 @@ end foreach
    * bss data
    */
   .bss ALIGN(16) : {
+    common_zeroed_vars_begin = . ;
     *(.bss)
     *(COMMON)
+    common_zeroed_vars_end = . ;
   } > external_ram
   . = ALIGN(16);
 
