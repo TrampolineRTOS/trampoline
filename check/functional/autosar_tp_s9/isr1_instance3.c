@@ -45,16 +45,19 @@ void tpl_send_it2(void);
  an activation of a task*/
 static void test_isr1_instance3(void)
 {
-   
+
+    tpl_time now;
+
   SCHEDULING_CHECK_STEP(8);
   tpl_send_it2();
   
-  tpl_send_it1(); /* As isr1 is runnig, event if we call isr1 before the end of Time Frame,
+  tpl_send_it1(); /* As isr1 is runnig, even if we call isr1 before the end of Time Frame,
    the call should be ignored and no Protection Hook should appear.*/
   
   SCHEDULING_CHECK_STEP(9);
   /* Wait isr2 Time Frame elapsed */
-		
+    now = tpl_get_local_current_date();
+    while(tpl_get_local_current_date() - now < 4);
 }
 
 /*create the test suite with all the test cases*/

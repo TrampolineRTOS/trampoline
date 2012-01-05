@@ -45,6 +45,7 @@ DeclareTask(t1);
  an activation of a task*/
 static void test_t1_instance2(void)
 {
+  tpl_time now;
 	StatusType result_inst_1, result_inst_2, result_inst_3;
   
   SCHEDULING_CHECK_INIT(5);
@@ -58,6 +59,11 @@ static void test_t1_instance2(void)
   SCHEDULING_CHECK_INIT(7);
 	result_inst_3 = SetEvent(t1, t1_event1);
 	SCHEDULING_CHECK_AND_EQUAL_INT(7,E_OK, result_inst_3);
+
+    /* Wait end of t1 time frame */
+  now = tpl_get_local_current_date();
+  
+  while (tpl_get_local_current_date() - now < 2);
 		
 }
 

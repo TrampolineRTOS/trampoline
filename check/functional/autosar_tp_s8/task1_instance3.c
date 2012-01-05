@@ -37,6 +37,7 @@
 
 #include "embUnit.h"
 #include "Os.h"
+#include "Config.h"
 
 DeclareEvent(t1_event1);
 
@@ -49,7 +50,8 @@ static void test_t1_instance3(void)
   SCHEDULING_CHECK_INIT(8);
 	result_inst_1 = WaitEvent(t1_event1);
   /* --> ProtectionHook - Never Get Here */ 
-	SCHEDULING_CHECK_AND_EQUAL_INT(8,E_OK, result_inst_1);
+    stdimpl_print("Should not be there\n");
+	SCHEDULING_CHECK_AND_EQUAL_INT(9,E_OK, result_inst_1);
     
 }
 

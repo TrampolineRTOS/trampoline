@@ -44,18 +44,22 @@ void tpl_send_it1(void);
  an activation of a task*/
 static void test_t1_instance(void)
 {
-	StatusType result_inst_1;
+	tpl_time now;
   
   SCHEDULING_CHECK_STEP(1);
   
 	tpl_send_it1();
   
   SCHEDULING_CHECK_STEP(3);
-  
+ 
+  now = tpl_get_local_current_date();
+  while (tpl_get_local_current_date() - now < 2);
   tpl_send_it1();
   
   SCHEDULING_CHECK_STEP(7);
-  
+    
+  now = tpl_get_local_current_date();
+  while (tpl_get_local_current_date() - now < 2);
   tpl_send_it1();
   
   SCHEDULING_CHECK_STEP(13);

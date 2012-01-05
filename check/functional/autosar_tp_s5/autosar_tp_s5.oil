@@ -32,7 +32,7 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "autosar_st_s5" ;
+OIL_VERSION = "2.5" : "autosar_tp_s5" ;
 
 IMPLEMENTATION trampoline {
 
@@ -58,7 +58,7 @@ IMPLEMENTATION trampoline {
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "autosar_tp_s5_exe";
         CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Wall -pedantic -g";
         CFLAGS  = "-Wmissing-field-initializers";
         LDFLAGS = "-L../../lib -lembUnit";
         SHUTDOWNHOOK = TRUE;
@@ -76,13 +76,13 @@ IMPLEMENTATION trampoline {
   ACTIVATION = 1;
   SCHEDULE = FULL;
   TIMING_PROTECTION = TRUE {
-    EXECUTIONBUDGET = 1;
-    TIMEFRAME = 1; /* inferior than alarm first period (20*10ms) and superior than alarm second period (5*10ms) */
+    EXECUTIONBUDGET = 100;
+    TIMEFRAME = 10; /* in ms, inferior than alarm first period (20*10ms) and superior than alarm second period (5*10ms) */
     MAXOSINTERRUPTLOCKTIME = 1;
     MAXALLINTERRUPTLOCKTIME = 1;
   };
  };
- COUNTER Hardware_Counter{
+ COUNTER Hardware_Counter{ /* Tick : 10 ms */
   MAXALLOWEDVALUE = 21;
   TICKSPERBASE = 1;
   MINCYCLE = 1;

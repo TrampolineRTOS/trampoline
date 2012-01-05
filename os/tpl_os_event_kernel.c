@@ -186,10 +186,7 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   CONST(tpl_event_mask, AUTOMATIC) event)
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
-#if EXTENDED_TASK_COUNT > 0
-  P2VAR(tpl_task_events, AUTOMATIC, OS_VAR) task_events;  
-#endif
- 
+
   LOCK_KERNEL()
 
   /* check interrupts are not disabled by user    */
@@ -207,28 +204,12 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   
 #if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-  task_events = tpl_task_events_table[tpl_kern.running_id];
+  
   /* all the evt_wait is overidden. */
-  task_events->evt_wait = event;
-  /* check one of the event to wait is not already set */
-  if ((task_events->evt_set & event) == 0)
-  {
-    /* No event is set, the task blocks */
-    tpl_block();
-    /* Start the highest priority task */
-    tpl_start(tpl_get_proc());
-    /* Task switching should occur */
-    tpl_kern.need_switch = NEED_SWITCH | NEED_SAVE;
-# if WITH_SYSTEM_CALL == NO
-    if (tpl_kern.need_switch != NO_NEED_SWITCH)
-    {
-      tpl_switch_context(
-        &(tpl_kern.s_old->context),
-        &(tpl_kern.s_running->context)
-      );
-    }
-# endif  
-  }
+  tpl_task_events_table[tpl_kern.running_id]->evt_wait = event;
+  /* block the task if needed */
+  tpl_block();
+
   IF_NO_EXTENDED_ERROR_END()
 #endif
 

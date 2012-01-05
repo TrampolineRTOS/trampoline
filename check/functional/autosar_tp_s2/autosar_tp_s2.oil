@@ -32,7 +32,7 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "autosar_st_s1" ;
+OIL_VERSION = "2.5" : "autosar_tp_s2" ;
 
 IMPLEMENTATION trampoline {
 
@@ -80,7 +80,7 @@ IMPLEMENTATION trampoline {
   ACTIVATION = 1;
   SCHEDULE = FULL;
   TIMING_PROTECTION = TRUE {
-    EXECUTIONBUDGET = 10000; /* long enough to let the task execute itself plus t2 (to test a task preempted and finishing before the Execution budget) */
+    EXECUTIONBUDGET = 50; /* long enough to let the task execute itself plus t2 (to test a task preempted and finishing before the Execution budget) */
     TIMEFRAME = 1;
     MAXOSINTERRUPTLOCKTIME = 1;
     MAXALLINTERRUPTLOCKTIME = 1;
@@ -99,7 +99,7 @@ IMPLEMENTATION trampoline {
   ACTIVATION = 1;
   SCHEDULE = FULL;
   TIMING_PROTECTION = TRUE {
-    EXECUTIONBUDGET = 10000;
+    EXECUTIONBUDGET = 25;
     TIMEFRAME = 1;
     MAXOSINTERRUPTLOCKTIME = 1;
     MAXALLINTERRUPTLOCKTIME = 1;

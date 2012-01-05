@@ -32,7 +32,7 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "autosar_st_s4" ;
+OIL_VERSION = "2.5" : "autosar_tp_s4" ;
 
 IMPLEMENTATION trampoline {
 
@@ -67,7 +67,7 @@ IMPLEMENTATION trampoline {
         TRAMPOLINE_BASE_PATH = "../../..";
         APP_NAME = "autosar_tp_s4_exe";
         CFLAGS = "-I../../embUnit";
-        CFLAGS  = "-Wall -pedantic";
+        CFLAGS  = "-Wall -pedantic -g";
         CFLAGS  = "-Wmissing-field-initializers";
         LDFLAGS = "-L../../lib -lembUnit";
         SHUTDOWNHOOK = TRUE;
@@ -91,7 +91,7 @@ IMPLEMENTATION trampoline {
    SOURCE = SIGTERM;
    TIMING_PROTECTION = TRUE {
      TIMEFRAME = 1;
-     EXECUTIONTIME = 1000;
+     EXECUTIONTIME = 10;
      MAXOSINTERRUPTLOCKTIME = 1;
      MAXALLINTERRUPTLOCKTIME = 1;
    };
@@ -102,7 +102,7 @@ IMPLEMENTATION trampoline {
    SOURCE = SIGUSR2;
    TIMING_PROTECTION = TRUE {
      TIMEFRAME = 1;
-     EXECUTIONTIME = 1000;
+     EXECUTIONTIME = 10;
      MAXOSINTERRUPTLOCKTIME = 1;
      MAXALLINTERRUPTLOCKTIME = 1;
    };

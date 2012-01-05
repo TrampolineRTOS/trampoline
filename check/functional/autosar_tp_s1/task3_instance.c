@@ -37,14 +37,14 @@
 
 #include "embUnit.h"
 #include "Os.h"
+#include <sys/time.h>
 
 /*test case:test the reaction of the system called with 
  an activation of a task*/
 static void test_t3_instance(void)
 {
-	
+
   SCHEDULING_CHECK_STEP(7);
-  
   while(1); /* --> ProtectionHook */
 		
 }

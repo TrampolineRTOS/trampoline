@@ -45,8 +45,8 @@ extern StatusType Fatalerrorstatus;
 static void test_protection_instance2(void)
 {
   
-  SCHEDULING_CHECK_INIT(10);
-  SCHEDULING_CHECK_AND_EQUAL_INT(10, E_OS_PROTECTION_TIME, Fatalerrorstatus);
+  SCHEDULING_CHECK_INIT(15);
+  SCHEDULING_CHECK_AND_EQUAL_INT(15, E_OS_PROTECTION_TIME, Fatalerrorstatus);
   
 }
 

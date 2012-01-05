@@ -44,7 +44,6 @@ static void test_t1_instance3(void)
 {
 
   /* --> ProtectionHook */
-  
   SCHEDULING_CHECK_STEP(6);
 		  
 }

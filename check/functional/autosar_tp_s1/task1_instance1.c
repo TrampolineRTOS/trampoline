@@ -44,9 +44,9 @@ static void test_t1_instance1(void)
 {
 	StatusType result_inst_1;
 		
-  SCHEDULING_CHECK_INIT(1);
+    SCHEDULING_CHECK_INIT(1);
 	result_inst_1 = TerminateTask();
-	SCHEDULING_CHECK_AND_EQUAL_INT(1,E_OK, result_inst_1);
+    SCHEDULING_CHECK_AND_EQUAL_INT(1,E_OK, result_inst_1);
 		
 }
 

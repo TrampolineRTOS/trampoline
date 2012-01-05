@@ -44,7 +44,6 @@ static void test_t4_instance(void)
 {
   
   SCHEDULING_CHECK_STEP(11);
-		
 }
 
 /*create the test suite with all the test cases*/

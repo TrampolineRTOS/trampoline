@@ -44,14 +44,13 @@ extern StatusType errorstatus;
  an activation of a task*/
 static void test_error_instance(void)
 {
-  /* --> ProtectionHook */
   
   StatusType result_inst_1;
   
-	SCHEDULING_CHECK_INIT(3);
+	SCHEDULING_CHECK_INIT(2);
 	result_inst_1 = OSErrorGetServiceId();
-  SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(3, E_OS_LIMIT, errorstatus);
-	SCHEDULING_CHECK_AND_EQUAL_INT(3,OSServiceId_ActivateTask, result_inst_1);
+    SCHEDULING_CHECK_AND_EQUAL_INT_FIRST(2, E_OS_LIMIT, errorstatus);
+	SCHEDULING_CHECK_AND_EQUAL_INT(2,OSServiceId_ActivateTask, result_inst_1);
   
 }
 

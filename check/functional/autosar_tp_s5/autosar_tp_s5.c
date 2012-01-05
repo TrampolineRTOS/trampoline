@@ -66,6 +66,7 @@ void ErrorHook(StatusType error)
 ProtectionReturnType ProtectionHook(StatusType Fatalerror)
 {
   Fatalerrorstatus = Fatalerror;
+
   TestRunner_runTest(AutosarTPTest_seq5_protection_instance());
 	return PRO_TERMINATETASKISR;
 }

@@ -82,7 +82,7 @@ typedef u8 tpl_os_state;
 #define OS_ISR2     3
 
 /**
- * @def OS_INKNOWN
+ * @def OS_UNKNOWN
  *
  * The state is unknown. This should not happen.
  */
@@ -182,9 +182,14 @@ struct TPL_PROC_STATIC {
   CONST(tpl_proc_type, TYPEDEF)
     type;               /**<  type of the task/isr                            */
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
-  P2CONST(tpl_timing_protection, TYPEDEF, OS_APPL_CONST)
-    timing_protection;  /**<  timing protection configuration (can be NULL
-                              if no timing protection is needed)              */
+  CONST(tpl_time, TYPEDEF) 
+    executionbudget ;   /**<  execution budget                                */
+  CONST(tpl_time, TYPEDEF)
+    timeframe ;         /**<  length of the time frame                        */
+  CONSTP2VAR(tpl_timing_protection, TYPEDEF, OS_APPL_CONST)
+    timing_protection;  /**<  dynamic variables needed to handle
+                              the timing protection. Set to NULL if
+                              the proc is not supervised by the mechanism     */
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 };
 
@@ -216,10 +221,6 @@ struct TPL_PROC {
     priority;           /**< current priority                     */
   VAR(tpl_proc_state, TYPEDEF)
     state;              /**< state (READY, RUNNING, ...)          */
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
-  VAR(tpl_bool, TYPEDEF)
-    activation_allowed; /**< TRUE is the process may be activated */
-#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 };
 
 /**
