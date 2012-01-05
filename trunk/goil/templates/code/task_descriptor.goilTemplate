@@ -17,27 +17,20 @@ FUNC(void, OS_APPL_CODE) % !NAME %_function(void);
 template process_specific
 %
 
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
+%if exists TIMINGPROTECTION then% 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-%
-# *TODO
-%
+VAR (tpl_timing_protection, OS_VAR) %!NAME%_tp_descriptor =
+{
+  /* last activation date */  0,
+  /* first instance flag  */ TRUE,
+  /* watchdogs            */ {{TRUE, 0, %!TIMINGPROTECTION::EXECUTIONBUDGET%}, {FALSE, 0, 0}, {FALSE, 0, 0}, {FALSE, 0, 0}}
+};
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-#endif
+%end if%
 
-/*
-%
-if exists TIMINGPROTECTION then
-% * EXECUTIONBUDGET = % !TIMINGPROTECTION::EXECUTIONBUDGET %, TIMEFRAME = % !TIMINGPROTECTION::TIMEFRAME %
- * MAXOSINTERRUPTLOCKTIME = % !TIMINGPROTECTION::MAXOSINTERRUPTLOCKTIME %, MAXALLINTERRUPTLOCKTIME = % !TIMINGPROTECTION::MAXALLINTERRUPTLOCKTIME %
-%
-else
-%  No timing protection
-%
-end if
-% */
+
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -92,11 +85,20 @@ if EXTENDEDTASK then
   %EXTENDED,%
 else
   %BASIC,%
-end if
-%
+end if%
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
+%if exists TIMINGPROTECTION then% 
+  /* task execution budget   */ % !TIMINGPROTECTION::EXECUTIONBUDGET %,
+  /* task time frame         */ % !TIMINGPROTECTION::TIMEFRAME %,
   /* pointer to the timing
-     protection descriptor    */  $TIMING_PROT_REF$
+     protection descriptor   */ &% !NAME%_tp_descriptor
+%else%
+  /* budget not monitored    */ 0,
+  /* time frame not 
+     monitored               */ 0,
+  /* no timing
+     protection descriptor   */  NULL
+%end if%
 #endif
 };
 

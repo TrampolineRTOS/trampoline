@@ -47,11 +47,12 @@ DeclareTask(t3);
 static void test_t2_instance(void)
 {
 	StatusType result_inst_1, result_inst_2, result_inst_3;
-	
+    
   SCHEDULING_CHECK_INIT(5);
 	result_inst_1 = SetEvent(t2, t2_event1);
 	SCHEDULING_CHECK_AND_EQUAL_INT(5,E_OK, result_inst_1);
-  
+
+
   SCHEDULING_CHECK_INIT(6);
 	result_inst_2 = WaitEvent(t2_event1);
 	SCHEDULING_CHECK_AND_EQUAL_INT(6,E_OK, result_inst_2);

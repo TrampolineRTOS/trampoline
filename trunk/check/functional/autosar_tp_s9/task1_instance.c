@@ -45,12 +45,15 @@ void tpl_send_it2(void);
  an activation of a task*/
 static void test_t1_instance(void)
 {
- 
+  tpl_time now;
+
   SCHEDULING_CHECK_STEP(1);
   tpl_send_it1(); /* Start inter-arrival time */ 
   
   SCHEDULING_CHECK_STEP(3);
   /* Wait isr1 Time Frame elapsed */
+  now = tpl_get_local_current_date();
+  while(tpl_get_local_current_date() - now < 4);
   tpl_send_it1();
   
   SCHEDULING_CHECK_STEP(5);
@@ -59,6 +62,8 @@ static void test_t1_instance(void)
   
   SCHEDULING_CHECK_STEP(7);
   /* Wait isr1 Time Frame elapsed */
+  now = tpl_get_local_current_date();
+  while(tpl_get_local_current_date() - now < 4);
   tpl_send_it1();
   
   SCHEDULING_CHECK_STEP(11);

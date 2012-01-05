@@ -15,23 +15,12 @@ then
 	#Delete results.log
 	rm -rf GOIL_results.log
 	
-	#Delete embUnit's objects and librairy
-	rm -rf ./../embUnit/*.o
-	rm -rf ./../lib/libembUnit.a
-	
 else
 
 	echo "Begin GOIL test procedure..."
 
 	## Create an empty file
 	> GOIL_results.log
-	
-	# Make embUnit if needed
-	if ! `test -f ../lib/libembUnit.a`
-	then
-		echo "Make embunit"
-		( cd ../embUnit ; make )
-	fi
 	
 	# Build and execute all the tests
 	for i in `cat GOIL_testSequences.txt`

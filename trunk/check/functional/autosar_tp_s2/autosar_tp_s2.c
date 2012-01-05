@@ -72,7 +72,6 @@ ProtectionReturnType ProtectionHook(StatusType Fatalerror)
 {
   Fatalerrorstatus = Fatalerror;
 	instance_protection++;
-  stdimpl_print("ProtectionHook:%d\n",instance_protection);
 	switch (instance_protection)
 	{
 		case 1 :

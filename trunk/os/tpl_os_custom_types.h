@@ -44,18 +44,6 @@ typedef u32 tpl_tick;
  */
 typedef P2VAR(u8, TYPEDEF, OS_APPL_DATA) tpl_buffer;
 
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
-/**
- * @internal
- *
- * Used to index the scheduled_watchdog array.
- *
- * @see #tpl_timing_protection
- */
-typedef u8 tpl_scheduled_watchdog_id;
-
-#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-
 /**
  * Time data (duration or date) used in timing protection. The unit is system
  * dependant (see #tpl_get_local_current_date)).

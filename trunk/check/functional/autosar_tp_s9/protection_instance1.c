@@ -37,6 +37,7 @@
 
 #include "embUnit.h"
 #include "Os.h"
+#include "Config.h"
 
 extern StatusType Fatalerrorstatus;
 

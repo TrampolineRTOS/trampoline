@@ -60,7 +60,7 @@ static void test_t1_instance2(void)
   SCHEDULING_CHECK_AND_EQUAL_INT(6,E_OK, result_inst_3);
 	
   SCHEDULING_CHECK_INIT(7);
-	result_inst_4 = SetRelAlarm(alarm1, 5, 5);
+	result_inst_4 = SetRelAlarm(alarm1, 5, 0);
   SCHEDULING_CHECK_AND_EQUAL_INT(7,E_OK, result_inst_4);
 		
 }

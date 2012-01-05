@@ -32,7 +32,7 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "autosar_st_s8" ;
+OIL_VERSION = "2.5" : "autosar_tp_s8" ;
 
 IMPLEMENTATION trampoline {
 
@@ -76,15 +76,15 @@ IMPLEMENTATION trampoline {
   ACTIVATION = 1;
   SCHEDULE = FULL;
   TIMING_PROTECTION = TRUE {
-    EXECUTIONBUDGET = 1;
-    TIMEFRAME = 100; /* inferior than alarm first period (20*10ms) and superior than alarm second period (5*10ms) */
+    EXECUTIONBUDGET = 100;
+    TIMEFRAME = 10; /* inferior than alarm first period (20 tick) and superior than alarm second period (5 tick) */
     MAXOSINTERRUPTLOCKTIME = 1;
     MAXALLINTERRUPTLOCKTIME = 1;
   };
   EVENT = t1_event1;
  };
- COUNTER Hardware_Counter{
-  MAXALLOWEDVALUE = 21;
+ COUNTER Hardware_Counter{ /* 1 tick is 10 ms */
+  MAXALLOWEDVALUE = 255;
   TICKSPERBASE = 1;
   MINCYCLE = 1;
   TYPE = HARDWARE {};
@@ -96,7 +96,7 @@ IMPLEMENTATION trampoline {
     EVENT = t1_event1;
   };
   AUTOSTART = TRUE {
-    ALARMTIME = 1;
+    ALARMTIME = 20;
     CYCLETIME = 20;
     APPMODE = std;
   };

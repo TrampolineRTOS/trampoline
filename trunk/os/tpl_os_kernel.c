@@ -91,7 +91,7 @@ CONST(tpl_proc_static, OS_CONST) idle_task_static = {
   /* type is BASIC        */  TASK_BASIC
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /* no timing protection for the idle task :D */
-                              ,NULL
+                              ,0, 0, NULL
 #endif
 };
 
@@ -133,9 +133,6 @@ VAR(tpl_proc, OS_VAR) idle_task = {
   /* activation count     */  0,
   /* priority             */  0,
   /* state                */  SUSPENDED
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
-  /* activation_allowed   */  ,TRUE
-#endif
 };
 
 /**
@@ -791,6 +788,11 @@ FUNC(void, OS_CODE) tpl_preempt(void)
   /* The current running task becomes READY */
   tpl_kern.running->state = (tpl_proc_state)READY;
   
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
+  /* cancel the watchdog and update the budget                  */
+  tpl_tp_on_preempt(tpl_kern.running_id);
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+
   /*
    * put the running task in the ready task list. preempted processes
    * are put at the head of the set while newly activated processes
@@ -801,11 +803,6 @@ FUNC(void, OS_CODE) tpl_preempt(void)
   /* copy it in old slot of tpl_kern */
   tpl_kern.old = tpl_kern.running;
   tpl_kern.s_old = tpl_kern.s_running;
-
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
-  /*  pause the budget monitor */
-  tpl_pause_budget_monitor((tpl_proc_id)tpl_kern.running_id);
-#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 }
 
 /**
@@ -826,22 +823,18 @@ FUNC(void, OS_CODE) tpl_start(CONST(tpl_proc_id, AUTOMATIC) proc_id)
      * descriptor must be initialized
      */
     tpl_init_proc((tpl_proc_id)tpl_kern.running_id);
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
-    /* start the budget monitor for the activated task or isr */
-    tpl_start_budget_monitor((tpl_proc_id)tpl_kern.running_id);
-#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
-  else
-  {
-    tpl_continue_budget_monitor((tpl_proc_id)tpl_kern.running_id);
-  }
-#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   
   /* the inserted task become RUNNING */
   TRACE_TASK_EXECUTE((tpl_proc_id)tpl_kern.running_id)
   TRACE_ISR_RUN((tpl_proc_id)tpl_kern.running_id)
   tpl_kern.running->state = RUNNING;
+
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
+  /*  start the budget watchdog  */
+  tpl_tp_on_start(tpl_kern.running_id);
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+  
   /*
    * If an internal resource is assigned to the task
    * and it is not already taken by it, take it
@@ -907,11 +900,6 @@ FUNC(void, OS_CODE) tpl_terminate(void)
    */
   CALL_POST_TASK_HOOK()
   
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
-  /* pause the budget monitoring when a running obj has ended */
-  tpl_stop_budget_monitor((tpl_proc_id)tpl_kern.running_id);
-#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-  
   /*
    * the task loses the CPU because it has been put in the WAITING or
    * in the DYING state, its internal resource is released.
@@ -949,47 +937,94 @@ FUNC(void, OS_CODE) tpl_terminate(void)
     tpl_kern.running->state = SUSPENDED;
   }
   
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
+  /* notify the timing protection service */ 
+  tpl_tp_on_terminate_or_wait(tpl_kern.running_id);
+  tpl_tp_reset_watchdogs(tpl_kern.running_id);
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+  
   /* copy it in old slot of tpl_kern */
   tpl_kern.old = tpl_kern.running;
   tpl_kern.s_old = tpl_kern.s_running;
 }
 
+#if EXTENDED_TASK_COUNT > 0
 /**
  * @internal
  *
- * Blocks the running process
+ * Blocks the running process if needed
  *
  * This function is called by the OSEK/VDX WaitEvent
  *
  */
 FUNC(void, OS_CODE) tpl_block(void)
 {
-#if WITH_AUTOSAR_STACK_MONITORING == YES
-  tpl_check_stack((tpl_proc_id)tpl_kern.running_id);
-#endif /* WITH_AUTOSAR_STACK_MONITORING */
-  
-  /*
-   * a task switch will occur. It is time to call the
-   * PostTaskHook while the soon descheduled task is RUNNING
-   */
-  CALL_POST_TASK_HOOK()
-  
-  /* the task goes in the WAITING state */
-  TRACE_TASK_WAIT((tpl_proc_id)tpl_kern.running_id)
-  tpl_kern.running->state = WAITING;
+  /* event mask of the caller */
+  P2VAR(tpl_task_events, AUTOMATIC, OS_VAR) task_events = tpl_task_events_table[tpl_kern.running_id];  
   
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
-  /* pause the budget monitoring when a task has ended */
-  tpl_pause_budget_monitor((tpl_proc_id)tpl_kern.running_id);
-#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+  /* reset the execution budget */
+  tpl_tp_on_terminate_or_wait(tpl_kern.running_id);
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION  == YES */
   
-  /* The internal resource is released. */
-  tpl_release_internal_resource((tpl_proc_id)tpl_kern.running_id);
-  
-  /* copy it in old slot of tpl_kern */
-  tpl_kern.old = tpl_kern.running;
-  tpl_kern.s_old = tpl_kern.s_running;
+  /* check one of the event to wait is not already set */
+  if ((task_events->evt_set & task_events->evt_wait) == 0)
+  {
+    /* No event is set, the task blocks */
+
+#if WITH_AUTOSAR_STACK_MONITORING == YES
+    tpl_check_stack((tpl_proc_id)tpl_kern.running_id);
+#endif /* WITH_AUTOSAR_STACK_MONITORING == YES */
+    
+    /*
+     * a task switch will occur. It is time to call the
+     * PostTaskHook while the soon descheduled task is RUNNING
+     */
+    CALL_POST_TASK_HOOK()
+    
+    /* the task goes in the WAITING state */
+    TRACE_TASK_WAIT((tpl_proc_id)tpl_kern.running_id)
+    tpl_kern.running->state = WAITING;
+    
+    /* The internal resource is released. */
+    tpl_release_internal_resource((tpl_proc_id)tpl_kern.running_id);
+    
+    /* copy it in old slot of tpl_kern */
+    tpl_kern.old = tpl_kern.running;
+    tpl_kern.s_old = tpl_kern.s_running;
+    
+    /* Start the highest priority task */
+    tpl_start(tpl_get_proc());
+    /* Task switching should occur */
+    tpl_kern.need_switch = NEED_SWITCH | NEED_SAVE;
+# if WITH_SYSTEM_CALL == NO
+    if (tpl_kern.need_switch != NO_NEED_SWITCH)
+    {
+      tpl_switch_context(
+        &(tpl_kern.s_old->context),
+        &(tpl_kern.s_running->context)
+      );
+    }
+# endif /* WITH_SYSTEM_CALL == NO */
+  }
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
+  else
+  {
+    if (FALSE == tpl_tp_on_activate_or_release(tpl_kern.running_id))
+    {
+      result = (tpl_status)E_OS_PROTECTION_ARRIVAL;
+      tpl_call_protection_hook(E_OS_PROTECTION_ARRIVAL);
+    }
+    else
+    {
+      tpl_tp_on_start(tpl_kern.running_id);
+    }    
+  }
+  /* reset the execution budget */
+  tpl_tp_on_terminate_or_wait(tpl_kern.running_id);
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION == YES */
 }
+#endif
 
 /**
  * @internal
@@ -1024,13 +1059,14 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
   CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task =
     tpl_stat_proc_table[task_id];
 
-#if  WITH_AUTOSAR_TIMING_PROTECTION == YES
-  /*  if this is the first activation in the time frame                 */
-  if (task->activation_allowed == TRUE)
+  if (task->activate_count < s_task->max_activate_count)
   {
-#endif
-    if (task->activate_count < s_task->max_activate_count)
+#if  WITH_AUTOSAR_TIMING_PROTECTION == YES
+    /* a new instance is about to be activated: we need the agreement
+     of the timing protection mechanism                                */
+    if (tpl_tp_on_activate_or_release(task_id) == TRUE)
     {
+#endif  /* WITH_AUTOSAR_TIMING_PROTECTION */
       if (task->activate_count == 0)
       {
         /*  the initialization is postponed to the time it will
@@ -1062,17 +1098,19 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
       task->activate_count++;
 
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
-      tpl_start_timeframe(task_id);
-#endif
     }
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
+    else /* timing protection forbids the activation of the instance   */
+    {
+      /*  OS466: If an attempt is made to activate a task before the 
+       end of an OsTaskTimeFrame then the Operating System module 
+       shall not perform the activation AND 
+       shall call the ProtectionHook() with E_OS_PROTECTION_ARRIVAL. */
+      
+      result = (tpl_status)E_OS_PROTECTION_ARRIVAL;
+      tpl_call_protection_hook(E_OS_PROTECTION_ARRIVAL);
+    }
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   }
-  else
-  {
-    result = (tpl_status)E_OS_PROTECTION_TIME;
-    tpl_call_protection_hook(E_OS_PROTECTION_TIME);
-  }
-#endif
   return result;
 }
 
@@ -1111,29 +1149,31 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
       if (task->state == (tpl_proc_state)WAITING)
       {
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
-        if(task->activation_allowed == TRUE)
+        /* a new instance is about to be activated: we need the agreement
+         of the timing protection mechanism                                */
+        if (tpl_tp_on_activate_or_release(task_id) == TRUE)
         {
-#endif
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
           /*  set the state to READY  */
           task->state = (tpl_proc_state)READY;
           /*  put the task in the READY list          */
           TRACE_TASK_RELEASED(task_id,incoming_event)
           tpl_put_new_proc(task_id);
 
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
-          tpl_start_timeframe(task_id);
-#endif
-
           /*  notify a scheduling needs to be done    */
           result = (tpl_status)E_OK_AND_SCHEDULE;
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
         }
-        else
+        else /* timing protection forbids the activation of the instance   */
         {
-          tpl_call_protection_hook(E_OS_PROTECTION_TIME);
-          result = (tpl_status)E_OS_PROTECTION_TIME;
+          /* OS467: If an attempt is made to release a task before the 
+           end of an OsTaskTimeFrame then the Operating System module
+           shall not perform the release AND
+           shall call the ProtectionHook() with E_OS_PROTECTION_ARRIVAL. */
+          result = (tpl_status)E_OS_PROTECTION_ARRIVAL;
+          tpl_call_protection_hook(E_OS_PROTECTION_ARRIVAL);
         }
-#endif
+#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
       }
     }
   }
@@ -1181,7 +1221,7 @@ FUNC(void, OS_CODE) tpl_init_proc(
 FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 {
   VAR(u16, AUTOMATIC) i;
-  VAR(tpl_status, AUTOMATIC) result;
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
 #if ALARM_COUNT > 0
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) auto_time_obj;
 #endif
@@ -1230,14 +1270,14 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
     if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_RELATIVE)
     {
       auto_time_obj->state = SCHEDULETABLE_STOPPED;
-      tpl_start_schedule_table_rel_service(i, auto_time_obj->date);
+      result = tpl_start_schedule_table_rel_service(i, auto_time_obj->date);
     }
     else
     {
       if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_ABSOLUTE)
       {
         auto_time_obj->state = SCHEDULETABLE_STOPPED;
-        tpl_start_schedule_table_abs_service(i, auto_time_obj->date);
+        result = tpl_start_schedule_table_abs_service(i, auto_time_obj->date);
       }
 #if AUTOSAR_SC == 2 || AUTOSAR_SC == 4
       else
@@ -1245,7 +1285,7 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
         if (auto_time_obj->state == (tpl_time_obj_state)SCHEDULETABLE_AUTOSTART_SYNCHRON)
         {
           auto_time_obj->state = SCHEDULETABLE_STOPPED;
-          tpl_start_schedule_table_synchron_service(i);
+          result = tpl_start_schedule_table_synchron_service(i);
         }
       }
 #endif
@@ -1288,10 +1328,6 @@ FUNC(void, OS_CODE) tpl_start_os_service(
   STORE_SERVICE(OSServiceId_StartOS)
 	
   application_mode = mode;
-
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
-  tpl_init_timing_protection();
-#endif
 
   TRACE_TPL_INIT()
 

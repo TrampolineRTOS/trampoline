@@ -45,10 +45,10 @@ DeclareTask(t2);
 static void test_t1_instance2(void)
 {
 	StatusType result_inst_1, result_inst_2;
-	
-  SCHEDULING_CHECK_INIT(2);
+
+    SCHEDULING_CHECK_INIT(2);
 	result_inst_1 = ActivateTask(t2);
-  SCHEDULING_CHECK_AND_EQUAL_INT(3,E_OK, result_inst_1);
+    SCHEDULING_CHECK_AND_EQUAL_INT(3,E_OK, result_inst_1);
 	
 	SCHEDULING_CHECK_INIT(4);
 	result_inst_2 = TerminateTask();

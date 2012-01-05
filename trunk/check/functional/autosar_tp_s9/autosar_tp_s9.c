@@ -71,7 +71,7 @@ ProtectionReturnType ProtectionHook(StatusType Fatalerror)
 {
   Fatalerrorstatus = Fatalerror;
 	TestRunner_runTest(AutosarTPTest_seq9_protection_instance());
-	return PRO_TERMINATETASKISR;
+	return PRO_IGNORE;
 }
 
 TASK(t1)

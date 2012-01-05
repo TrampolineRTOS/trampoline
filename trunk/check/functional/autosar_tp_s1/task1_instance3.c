@@ -47,20 +47,20 @@ DeclareTask(t4);
 static void test_t1_instance3(void)
 {
 	StatusType result_inst_1, result_inst_2, result_inst_3;
-	
-  SCHEDULING_CHECK_INIT(5);
+
+    SCHEDULING_CHECK_INIT(5);
 	result_inst_1 = StopScheduleTable(sched1);
-  SCHEDULING_CHECK_AND_EQUAL_INT(5,E_OK, result_inst_1);
+    SCHEDULING_CHECK_AND_EQUAL_INT(5,E_OK, result_inst_1);
 	
-  SCHEDULING_CHECK_INIT(6);
+    SCHEDULING_CHECK_INIT(6);
 	result_inst_2 = ActivateTask(t3);
-  SCHEDULING_CHECK_AND_EQUAL_INT(8,E_OK, result_inst_2);
+    SCHEDULING_CHECK_AND_EQUAL_INT(8,E_OK, result_inst_2);
 	
-  SCHEDULING_CHECK_INIT(9);
+    SCHEDULING_CHECK_INIT(9);
 	result_inst_3 = ActivateTask(t4);
-  SCHEDULING_CHECK_AND_EQUAL_INT(9,E_OK, result_inst_3);
+    SCHEDULING_CHECK_AND_EQUAL_INT(9,E_OK, result_inst_3);
 	
-  while(1); /* --> Protection Hook */
+    while(1); /* --> Protection Hook */
   
 }
 

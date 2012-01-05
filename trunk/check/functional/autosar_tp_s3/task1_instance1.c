@@ -45,23 +45,35 @@ DeclareTask(t1);
  an activation of a task*/
 static void test_t1_instance1(void)
 {
-	StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4;
+  StatusType result_inst_1, result_inst_2, result_inst_3, result_inst_4;
   
+  tpl_time now;
+    
   SCHEDULING_CHECK_INIT(1);
-	result_inst_1 = SetEvent(t1, t1_event1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(1,E_OK, result_inst_1);
-  
+  result_inst_1 = SetEvent(t1, t1_event1);
+  SCHEDULING_CHECK_AND_EQUAL_INT(1,E_OK, result_inst_1);
+
+  /* Wait end of t1 time frame */
+  now = tpl_get_local_current_date();
+    
+  while (tpl_get_local_current_date() - now < 2);
+    
   SCHEDULING_CHECK_INIT(2);
-	result_inst_2 = WaitEvent(t1_event1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(2,E_OK, result_inst_2);
+  result_inst_2 = WaitEvent(t1_event1);
+  SCHEDULING_CHECK_AND_EQUAL_INT(2,E_OK, result_inst_2);
   
   SCHEDULING_CHECK_INIT(3);
-	result_inst_3 = ClearEvent(t1_event1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(3,E_OK, result_inst_3);
+  result_inst_3 = ClearEvent(t1_event1);
+  SCHEDULING_CHECK_AND_EQUAL_INT(3,E_OK, result_inst_3);
 		
   SCHEDULING_CHECK_INIT(4);
-	result_inst_4 = SetEvent(t1, t1_event1);
-	SCHEDULING_CHECK_AND_EQUAL_INT(4,E_OK, result_inst_4);
+  result_inst_4 = SetEvent(t1, t1_event1);
+  SCHEDULING_CHECK_AND_EQUAL_INT(4,E_OK, result_inst_4);
+    
+  /* Wait end of t1 time frame */
+  now = tpl_get_local_current_date();
+  
+  while (tpl_get_local_current_date() - now < 2);
 		
 }
 

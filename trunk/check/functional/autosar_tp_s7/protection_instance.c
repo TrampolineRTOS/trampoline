@@ -38,6 +38,8 @@
 #include "embUnit.h"
 #include "Os.h"
 
+#include "config.h"
+
 extern StatusType Fatalerrorstatus;
 
 /*test case:test the reaction of the system called with 

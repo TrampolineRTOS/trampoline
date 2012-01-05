@@ -32,7 +32,7 @@
  * $URL$
  */
 
-OIL_VERSION = "2.5" : "autosar_st_s6" ;
+OIL_VERSION = "2.5" : "autosar_tp_s6" ;
 
 IMPLEMENTATION trampoline {
 
@@ -75,8 +75,8 @@ IMPLEMENTATION trampoline {
   ACTIVATION = 2;
   SCHEDULE = FULL;
   TIMING_PROTECTION = TRUE {
-    EXECUTIONBUDGET = 1;
-    TIMEFRAME = 100; /* superior than alarm period (20*10ms) */
+    EXECUTIONBUDGET = 500;
+    TIMEFRAME = 500; /* in ms, superior than alarm period (20*10ms) */
     MAXOSINTERRUPTLOCKTIME = 1;
     MAXALLINTERRUPTLOCKTIME = 1;
   };

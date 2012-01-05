@@ -32,6 +32,7 @@ project all_goil -> "goil" :
   feature "makefile_macosx_universal" ;
   feature "makefile_unix" ;
   feature "makefile_i386_linux_on_macosx" ;
+  feature "makefile_x86_64_linux_on_macosx";
   feature "makefile_mingw_on_macosx" ;
   feature "makefile_msys_on_win32" ;
   feature "project_xcode" ;

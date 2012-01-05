@@ -26,8 +26,8 @@ then
 	rm -rf functional_results.log
 	
 	#Delete embUnit's objects and librairy
-	rm -rf ./../embUnit/*.o
-	rm -rf ./../lib/libembUnit.a
+        rm -rf ./../embUnit/*.o
+        rm -rf ./../lib/libembUnit.a
 	
 else
 
@@ -40,7 +40,7 @@ else
 	if ! `test -f ../lib/libembUnit.a`
 	then
 		echo "Make embunit"
-		( cd ../embUnit ; make )
+                ( cd ../embUnit ; make CC=/usr/local/bin/gcc )
 	fi
 		
 	# Build and execute all the tests
