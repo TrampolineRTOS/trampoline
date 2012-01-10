@@ -82,11 +82,12 @@ end if
   /* max activation count     */  % !ACTIVATION %,
   /* task type                */  TASK_%
 if EXTENDEDTASK then
-  %EXTENDED,%
+  %EXTENDED%
 else
-  %BASIC,%
+  %BASIC%
 end if%
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
+  ,
 %if exists TIMINGPROTECTION then% 
   /* task execution budget   */ % !TIMINGPROTECTION::EXECUTIONBUDGET %,
   /* task time frame         */ % !TIMINGPROTECTION::TIMEFRAME %,

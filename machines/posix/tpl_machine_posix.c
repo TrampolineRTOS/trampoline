@@ -49,45 +49,46 @@ extern VAR(tpl_bool, OS_VAR) tpl_cpt_os_task_lock;
 
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
 
-FUNC(void, OS_CODE) tpl_watchdog_callback(void)
-{
-}
-
 static struct timeval startup_time;
 
+/* Time in tenth of milliseconds since system startup */
 tpl_time tpl_get_local_current_date ()
 {
     struct timeval time;
     tpl_time result;
   
     gettimeofday (&time, NULL);
-    result = ((time.tv_sec - startup_time.tv_sec) % 2000) * (1000 * 1000) + 
-        (time.tv_usec - startup_time.tv_usec);
+    result = 
+      (time.tv_sec - startup_time.tv_sec) * 100
+    + (time.tv_usec - startup_time.tv_usec) / 10000;
   
     return result;
 }
 
+/* Sets a watchdog to expire in tenth of millisec */
 void tpl_set_watchdog (tpl_time delay)
 {
     struct itimerval timer;
-  
-    /* configure and start the timer */
-    timer.it_value.tv_sec = delay / (1000 * 1000);
-    timer.it_value.tv_usec = delay % (1000 * 1000);
-    timer.it_interval.tv_sec = delay / (1000 * 1000);
-    timer.it_interval.tv_usec = delay % (1000 * 1000);
-    setitimer (ITIMER_REAL, &timer, NULL);
+    tpl_time offset;
+     
+    offset = delay - tpl_get_local_current_date();
+    
+        /* configure and start the timer */
+        timer.it_interval.tv_sec = 0;
+        timer.it_interval.tv_usec = 0;
+        timer.it_value.tv_sec = offset / 100;
+        timer.it_value.tv_usec = (offset % 100)  * 10000;
+        setitimer (ITIMER_REAL, &timer, NULL);
 }
 
 void tpl_cancel_watchdog(void)
 {
     struct itimerval timer;
   
-    /* disable the timer */
+    timer.it_interval.tv_sec = 0;
+    timer.it_interval.tv_usec = 0;
     timer.it_value.tv_sec = 0;
     timer.it_value.tv_usec = 0;
-    timer.it_interval.tv_sec = 1;
-    timer.it_interval.tv_usec = 0;
     setitimer (ITIMER_REAL, &timer, NULL);
 }
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
@@ -163,10 +164,7 @@ void tpl_disable_interrupts(void)
  */
 void tpl_signal_handler(int sig)
 {
-
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
-    struct itimerval timer;
-#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+    
 #if ISR_COUNT > 0
             unsigned int id;
             unsigned char found;
@@ -186,13 +184,6 @@ void tpl_signal_handler(int sig)
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
         if (signal_for_watchdog == sig)
         {
-            /* disable the interval timer (one shot) */
-            timer.it_value.tv_sec = 0;
-            timer.it_value.tv_usec = 0;
-            timer.it_interval.tv_sec = 1;
-            timer.it_interval.tv_usec = 0;
-            setitimer (ITIMER_REAL, &timer, NULL);
-      
            tpl_watchdog_expiration();
         }
         else
@@ -239,7 +230,7 @@ void tpl_signal_handler(int sig)
  */
 void tpl_sleep(void)
 {
-    while (1) sleep(10); 
+    while(1) pause(); 
 }
 
 extern void viper_kill(void);

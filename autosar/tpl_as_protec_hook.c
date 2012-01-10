@@ -31,6 +31,9 @@
 #include "tpl_os_it_kernel.h"
 #include "tpl_as_app_kernel.h"
 
+#include "tpl_machine_interface.h"
+#include "tpl_trace.h"
+
 #include "tpl_dow.h"
 
 #define OS_START_SEC_CONST_UNSPECIFIED
@@ -56,6 +59,15 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
         tpl_kern.running_trusted = 0;
 #endif /* WITH_MEMORY_PROTECTION == YES */
 
+  /* OS506: If the ProtectionHook() is called with E_OS_PROTECTION_ARRIVAL 
+   * the only valid return values are PRO_IGNORE or PRO_SHUTDOWN. 
+   * Returning other values will result in a call to ShutdownOS().
+   */
+  if ((E_OS_PROTECTION_ARRIVAL == error)  && !((PRO_IGNORE == result) || (PRO_SHUTDOWN == result)))
+  {
+    tpl_shutdown_os_service(error);
+  }
+  
   switch (result)
   {
     case PRO_TERMINATETASKISR:
@@ -69,7 +81,6 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
       if (proc_id != INVALID_PROC)
       {
         tpl_release_all_resources(proc_id);
-        tpl_release_internal_resource(proc_id);
         tpl_reset_interrupt_lock_status();
         tpl_kern.running->activate_count--;
 
@@ -79,6 +90,15 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
         tpl_start(tpl_get_proc());
         /* task switching should occur */
         tpl_kern.need_switch = NEED_SWITCH;
+# if WITH_SYSTEM_CALL == NO
+        if (tpl_kern.need_switch != NO_NEED_SWITCH)
+        {
+          tpl_switch_context(
+            NULL,
+            &(tpl_kern.s_running->context)
+          );
+        }
+# endif
       }
       else
       {

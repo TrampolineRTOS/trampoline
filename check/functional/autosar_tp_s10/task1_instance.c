@@ -41,9 +41,7 @@
 /*test case:test the reaction of the system called with 
  an activation of a task*/
 static void test_t1_instance(void)
-{
-	StatusType result_inst_1;
-		
+{		
   SCHEDULING_CHECK_STEP(1);
   
 	while(1); /* Wait for the alarm --> ProtectionHook, then wait for the budget timeout --> ProtectionHook */
