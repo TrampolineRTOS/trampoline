@@ -18,9 +18,12 @@ SOURCES += tpl_as_counter_kernel.c
 SOURCES += tpl_as_st_kernel.c
 SOURCES += tpl_as_isr_kernel.c
 SOURCES += tpl_as_stack_monitor.c
-SOURCES += tpl_as_timing_protec.c
 SOURCES += tpl_as_action.c
 SOURCES += tpl_as_protec_hook.c
+
+ifeq ($(strip $(AUTOSAR_TIMING_PROCTECTION)),true)
+SOURCES += tpl_as_timing_protec.c
+endif
 
 ifeq ($(strip $(WITH_MEMORY_PROTECTION)), true)
 SOURCES += tpl_as_memprot_kernel.c

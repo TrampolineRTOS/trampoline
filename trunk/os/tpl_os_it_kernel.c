@@ -43,6 +43,12 @@
 #include "tpl_as_isr_kernel.h"
 #endif
 
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
+#include "tpl_as_protec_hook.h"
+#include "tpl_as_timing_protec.h"
+#endif
+
+
 #define OS_START_SEC_VAR_NOINIT_UNSPECIFIED
 #include "tpl_memmap.h"
 /*
@@ -266,22 +272,37 @@ STATIC FUNC(void, OS_CODE) tpl_activate_isr(
 #endif
       )
   {
-    if (isr->activate_count == 0)
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
+    /* a new instance is about to be activated: we need the agreement
+       of the timing protection mechanism                                */
+    if (TRUE == tpl_tp_on_activate_or_release(isr_id)) 
     {
-      /* check the isr is in the SUSPENDED state before moving it */
-      if (isr->state == (tpl_proc_state)SUSPENDED)
+#endif
+      if (isr->activate_count == 0)
       {
-        isr->state = (tpl_proc_state)READY_AND_NEW;
+        /*  check the isr is in the SUSPENDED state before moving it        */
+        if (isr->state == (tpl_proc_state)SUSPENDED)
+        {
+          isr->state = (tpl_proc_state)READY_AND_NEW;
+        }
       }
+      /*  put it in the list  */
+      TRACE_ISR_ACTIVATE(isr_id);
+      tpl_put_new_proc(isr_id);
+      /*  inc the isr activation count. When the isr will terminate
+          it will dec this count and if not zero it will be reactivated   */
+      isr->activate_count++;
+#if WITH_AUTOSAR_TIMING_PROTECTION == YES
     }
-    /* put it in the list */
-    TRACE_ISR_ACTIVATE(isr_id);
-    tpl_put_new_proc(isr_id);
-    /*
-     * inc the isr activation count. When the isr will terminate
-     * it will dec this count and if not zero it will be reactivated
-     */
-    isr->activate_count++;
+    else /* timing protection forbids the activation of the instance   */
+    {
+      /*  OS466: If an attempt is made to activate a task before the 
+          end of an OsTaskTimeFrame then the Operating System module 
+          shall not perform the activation AND 
+          shall call the ProtectionHook() with E_OS_PROTECTION_ARRIVAL. */
+      tpl_call_protection_hook(E_OS_PROTECTION_ARRIVAL);
+    }
+#endif
   }
 }
 

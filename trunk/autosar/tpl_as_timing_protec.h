@@ -45,22 +45,55 @@
 #include "tpl_os_custom_types.h"
 #include "tpl_os_definitions.h"
 
-/**
- * @internal
- *
- * This is the watchdog type.
- *
- * @see #tpl_watchdog
- */
-typedef enum
+ 
+struct TPL_TP_WATCHDOG 
 {
-  EXEC_BUDGET,      /**< watchdog for an execution budget   */
-  TIME_FRAME,       /**< watchdog for a count limit         */
-  ALL_INT_LOCK,     /**< watchdog for all interrupts lock   */
-  OS_INT_LOCK,      /**< watchdog for ISR2 lock             */
-  REZ_LOCK          /**< watchdog for a resource lock (see resource field
-                         in #tpl_watchdog to know which resource is implied */
-} tpl_watchdog_type;
+    VAR(tpl_bool, TYPEDEF) is_active;        /* flag set when the watchdog is active */
+    VAR(tpl_time, TYPEDEF) start_date;      /* last start date of this watchdog     */
+    VAR(tpl_time, TYPEDEF) remaining;       /* remaining budget of this watchdog    */
+};
+
+typedef struct TPL_TP_WATCHDOG tpl_tp_watchdog;
+
+/**
+ * @def NB_WATCHDOGS_PER_PROC
+ *
+ * Number of watchdogs per proc: 4
+ * 0 is EXECUTIONBUDGET
+ * 1 is RESOURCELOCK
+ * 2 is ALLINTERRUPTLOCK
+ * 3 is OSINTERRUPTLOCK
+ */
+#define NB_WATCHDOGS_PER_PROC 4
+
+/**
+ * @def EXECUTIONBUDGET
+ *
+ * Id of the EXECUTIONBUDGET watchdog
+ */
+#define EXECUTIONBUDGET       0
+
+/**
+ * @def RESOURCELOCK
+ *
+ * Id of the RESOURCELOCK watchdog
+ */
+
+#define RESOURCELOCK          1
+
+/**
+ * @def ALLINTERRUPTLOCK
+ *
+ * Id of the ALLINTERRUPTLOCK watchdog
+ */
+#define ALLINTERRUPTLOCK      2
+
+/**
+ * @def OSINTERRUPTLOCK
+ *
+ * Id of the OSINTERRUPTLOCK watchdog
+ */
+#define OSINTERRUPTLOCK       3
 
 /**
  * @internal
@@ -74,73 +107,18 @@ typedef enum
  * @see #tpl_timing_protection
  * @see #tpl_exec_static
  */
+
 struct TPL_TIMING_PROTECTION
 {
-    VAR(tpl_time, TYPEDEF)                  execution_budget;   /**< maximum duration the task
-                                                                     can be active within a
-                                                                     timeframe or maximum isr
-                                                                     execution time since last
-                                                                     activation */
-    VAR(tpl_time, TYPEDEF)                  timeframe;          /**< configured timeframe for this
-                                                                     timing protection */
-    P2VAR(tpl_time, TYPEDEF, OS_APPL_DATA)  resource_lock_time; /**< array where timing protection
-                                                                     is specified (or not) for
-                                                                     each resource (zero if no
-                                                                     timing protection) */
-    VAR(tpl_time, TYPEDEF)                  os_interrupt_lock_time;
-    VAR(tpl_time, TYPEDEF)                  all_interrupt_lock_time;
+    VAR(tpl_time, TYPEDEF) last_activation;             /* date of the last successfull activation */
+    VAR(tpl_bool, TYPEDEF) first_instance;              /* initialized to TRUE to change
+                                                           the behavior of the timeframe watchdog
+                                                           for the first instance of a task */
+    VAR(tpl_tp_watchdog, TYPEDEF) watchdogs[NB_WATCHDOGS_PER_PROC]; 
+                                                        /* set of watchdogs of this task */
 };
 
-/**
- * @internal
- *
- * this is an alias for the type #TPL_TIMING_PROTECTION
- *
- * @see #TPL_TIMING_PROTECTION
- */
 typedef struct TPL_TIMING_PROTECTION tpl_timing_protection;
-
-/* Forward declaration  */
-struct TPL_EXEC_COMMON;
-
-/**
- * @internal
- *
- * This describes a watchdog associated informations. Attributes
- * here describe what to do when the watchdog raises.
- */
-struct TPL_WATCHDOG
-{
-  VAR(tpl_proc_id, TYPEDEF)                             proc_id;              /**< the executable object implied  */
-  struct P2VAR(TPL_WATCHDOG, AUTOMATIC, OS_VAR_NOINIT)  next;                 /**< the next watchdog
-                                                                                   in the list                    */
-  struct P2VAR(TPL_WATCHDOG, AUTOMATIC, OS_VAR_NOINIT)  previous;             /**< the previous watchdog
-                                                                                   in the list                    */
-  VAR(tpl_time, TYPEDEF)                                scheduled_date;       /**< absolute scheduled
-                                                                                   date in tpl_time
-                                                                                   unit (useful to
-                                                                                   compute relative
-                                                                                   delays)                        */
-  VAR(tpl_time, TYPEDEF)                                start_date;           /**< absolute scheduled
-                                                                                   date in tpl_time
-                                                                                   unit (useful to
-                                                                                   compute relative
-                                                                                   delays)                        */
-  VAR(tpl_time, TYPEDEF)                                time_left;            /**< remaining time of execution
-                                                                                   for the conecerned object      */
-  VAR(tpl_watchdog_type, TYPEDEF)                       type;                 /**< the watchdog type              */
-  VAR(tpl_resource_id, TYPEDEF)                         resource;             /**< the resource implied if any    */
-};
-
-/**
- * @internal
- *
- * this is an alias for #TPL_WATCHDOG structure
- *
- * @see #TPL_WATCHDOG
- */
-typedef struct TPL_WATCHDOG tpl_watchdog;
-
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -150,23 +128,24 @@ typedef struct TPL_WATCHDOG tpl_watchdog;
  *
  * This function is called when a watchdog is expired
  */
-extern FUNC(void, OS_CODE) tpl_watchdog_expiration(void);
+extern FUNC(tpl_bool, OS_CODE) tpl_watchdog_expiration(void);
 
 /**
- * @internal
+ * Function used to initialize the activity flags of the watchdog
+ * of the timing protection service. Must be called when an instance is 
+ * terminated.
  *
- * Call this function to initialize the timing protection module.
- * This is a prerequisite to all other functions in this module.
+ * @param this_exec_obj: id of the concerned proc
  */
-extern FUNC(void, OS_CODE) tpl_init_timing_protection(void);
-
+extern FUNC(tpl_bool, OS_CODE) tpl_tp_reset_watchdogs (
+        CONST(tpl_proc_id, AUTOMATIC) proc_id);
 /**
  * Function used to start the measure of a time frame for a task/isr2
  *
  * @param this_exec_obj: object owner of the time frame to start
  *
  */
-extern FUNC(void, OS_CODE) tpl_start_timeframe(
+extern FUNC(tpl_bool, OS_CODE) tpl_tp_on_activate_or_release(
   CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 /**
@@ -175,7 +154,7 @@ extern FUNC(void, OS_CODE) tpl_start_timeframe(
  * @param this_exec_obj: object owner of the time frame to stop
  *
  */
-extern FUNC(void, OS_CODE) tpl_stop_timeframe(
+extern FUNC(tpl_bool, OS_CODE) tpl_tp_on_terminate_or_wait(
   CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 /**
@@ -191,7 +170,7 @@ extern FUNC(void, OS_CODE) tpl_stop_timeframe(
  * @see #tpl_pause_budget_monitor
  * @see #tpl_continue_budget_monitor
  */
-extern FUNC(void, OS_CODE) tpl_start_budget_monitor (
+extern FUNC(tpl_bool, OS_CODE) tpl_tp_on_start (
   CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 /**
@@ -207,112 +186,9 @@ extern FUNC(void, OS_CODE) tpl_start_budget_monitor (
  * @see #tpl_start_budget_monitor
  * @see #tpl_continue_budget_monitor
  */
-extern FUNC(void, OS_CODE) tpl_pause_budget_monitor(
+extern FUNC(tpl_bool, OS_CODE) tpl_tp_on_preempt(
   CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
-/**
- * @internal
- *
- * Function to be called when a task is given back the processor (opposite
- * of preemption)
- *
- * @pre all interrupts should be disabled during this function execution
- *
- * @param this_exec_obj the task to monitor
- *
- * @see #tpl_start_budget_monitor
- * @see #tpl_pause_budget_monitor
- */
-extern FUNC(void, OS_CODE) tpl_continue_budget_monitor(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id);
-
-/**
- * @internal
- *
- */
-extern FUNC(void, OS_CODE) tpl_stop_budget_monitor(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id);
-
-/**
- * @internal
- *
- * function called when a resource is got.
- *
- * @param proc_id the executable object that get the resource
- * @param rez_id the resource got
- *
- * @pre all interrupts should be disabled during this function execution
- */
-extern FUNC(void, OS_CODE) tpl_start_resource_monitor(
-  CONST(tpl_proc_id, AUTOMATIC)     proc_id,
-  CONST(tpl_resource_id, AUTOMATIC) rez_id);
-
-/**
- * @internal
- *
- * function called when a resource is released.
- *
- * @param proc_id the executable object that released the resource
- * @param rez_id the resource released
- *
- * @pre all interrupts should be disabled during this function execution
- */
-extern FUNC(void, OS_CODE) tpl_stop_resource_monitor(
-  CONST(tpl_proc_id, AUTOMATIC)     proc_id,
-  CONST(tpl_resource_id, AUTOMATIC) rez_id);
-
-#ifdef WITH_OSAPPLICATION
-/**
- * @internal
- *
- * function called when an OS Application is killed
- *
- * @param proc_id the executable object that released all the resources
- *
- * @pre all interrupts should be disabled during this function execution
- */
-extern FUNC(void, OS_CODE) tpl_stop_all_resource_monitor(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id);
-#endif
-
-/**
- * @internal
- *
- * function called when all interrupts are locked by a task or ISR
- *
- * @param this_exec_obj the executable object which locked interrupts
- */
-extern FUNC(void, OS_CODE) tpl_start_all_isr_lock_monitor(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id);
-/**
- * @internal
- *
- * function called when all interrupts are unlocked by a task or ISR
- *
- * @param this_exec_obj the executable object which unlocked interrupts
- */
-extern FUNC(void, OS_CODE) tpl_stop_all_isr_lock_monitor(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id);
-
-/**
- * @internal
- *
- * function called when ISR are locked by a task or ISR
- *
- * @param this_exec_obj the executable object which locked ISRs
- */
-extern FUNC(void, OS_CODE) tpl_start_os_isr_lock_monitor(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id);
-
-/**
- * @internal
- *
- * function called when ISRs are unlocked by a task or ISR
- *
- * @param this_exec_obj the executable object which locked ISRs
- */
-extern FUNC(void, OS_CODE) tpl_stop_os_isr_lock_monitor(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

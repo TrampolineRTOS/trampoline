@@ -64,6 +64,7 @@ IMPLEMENTATION trampoline {
         CFLAGS = "-I../../embUnit";
         CFLAGS  = "-Wall -pedantic";
         CFLAGS  = "-Wmissing-field-initializers";
+        CFLAGS   = "-g";
         LDFLAGS = "-L../../lib -lembUnit";
         SHUTDOWNHOOK = TRUE;
         ERRORHOOK = TRUE;
@@ -80,12 +81,13 @@ IMPLEMENTATION trampoline {
   ACTIVATION = 1;
   SCHEDULE = FULL;
   TIMING_PROTECTION = TRUE {
-    EXECUTIONBUDGET = 10000; /* long enough to let the task execute itself plus t2 (to test a task preempted and finishing before the Execution budget) */
-    TIMEFRAME = 1;
+    EXECUTIONBUDGET = 5; /* long enough to let the task execute itself plus t2 (to test a task preempted and finishing before the Execution budget) */
+    TIMEFRAME = 5; /* equal to activation rate */
     MAXOSINTERRUPTLOCKTIME = 1;
     MAXALLINTERRUPTLOCKTIME = 1;
   };
  };
+ 
  TASK t2 {
   AUTOSTART = FALSE;
   PRIORITY = 3;
@@ -98,8 +100,8 @@ IMPLEMENTATION trampoline {
   ACTIVATION = 1;
   SCHEDULE = FULL;
   TIMING_PROTECTION = TRUE {
-    EXECUTIONBUDGET = 10000;
-    TIMEFRAME = 1;
+    EXECUTIONBUDGET = 10;
+    TIMEFRAME = 10;
     MAXOSINTERRUPTLOCKTIME = 1;
     MAXALLINTERRUPTLOCKTIME = 1;
   };

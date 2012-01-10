@@ -17,31 +17,18 @@ FUNC(void, OS_APPL_CODE) % !NAME %_function(void);
 template process_specific
 %
 
-/*
-%
-if exists TIMINGPROTECTION then
-% * EXECUTIONTIME = % !TIMINGPROTECTION::EXECUTIONTIME %, TIMEFRAME = % !TIMINGPROTECTION::TIMEFRAME %
- * MAXOSINTERRUPTLOCKTIME = % !TIMINGPROTECTION::MAXOSINTERRUPTLOCKTIME %, MAXALLINTERRUPTLOCKTIME = % !TIMINGPROTECTION::MAXALLINTERRUPTLOCKTIME %
-%
-  foreach TIMINGPROTECTION::RESOURCESLOCK do
-% * RESOURCENAME = % !RESOURCENAME %, LOCKTIME = % !LOCKTIME %
-%
-  end foreach
-else
-%  No timing protection
-%
-end if
-% */
-
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
+%if exists TIMINGPROTECTION then% 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-%
-# *TODO
-%
+VAR (tpl_timing_protection, OS_VAR) %!NAME%_tp_descriptor =
+{
+  /* last activation date */  0,
+  /* first instance flag  */ TRUE,
+  /* watchdogs            */ {{TRUE,0,%!TIMINGPROTECTION::EXECUTIONTIME%},{FALSE,0,0},{FALSE,0,0},{FALSE,0,0}}
+};
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-#endif
+%end if%
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -78,12 +65,22 @@ end if
 %
 #endif
   /* ISR base priority       */  % !PRIORITY %,
-%#  /* CPU Priority            */  % !PRIORITY - MAXTASKPRIORITY %,
-%  /* max activation count    */  % !ACTIVATION %,
-  /* ISR type                */  IS_ROUTINE,
+  /* max activation count    */  % !ACTIVATION %,
+  /* ISR type                */  IS_ROUTINE
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
+  ,
+%if exists TIMINGPROTECTION then% 
+  /* ISR execution budget    */ % !TIMINGPROTECTION::EXECUTIONTIME%,
+  /* ISR time frame          */ % !TIMINGPROTECTION::TIMEFRAME %,
   /* pointer to the timing
-     protection descriptor    */  $TIMING_PROT_REF$
+     protection descriptor   */ &% !NAME%_tp_descriptor
+%else%
+  /* budget not monitored    */ 0,
+  /* time frame not 
+     monitored               */ 0,
+  /* no timing
+     protection descriptor   */  NULL
+%end if%
 #endif
 };
 
@@ -110,6 +107,8 @@ VAR(tpl_proc, OS_VAR) % !NAME %_isr_desc = {
 if AUTOSAR then
   if SCALABILITYCLASS > 2 then
     if TRUSTED then !1 else !0 end if
+  else
+    !0
   end if
 else
   !0
@@ -118,10 +117,7 @@ end if
 #endif /* WITH_OSAPPLICATION */
   /* activate count                 */  0,
   /* ISR priority                   */  % !PRIORITY %,
-  /* ISR state                      */  SUSPENDED,
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
-  /* activation allowed             */  ,TRUE
-#endif
+  /* ISR state                      */  SUSPENDED
 };
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"

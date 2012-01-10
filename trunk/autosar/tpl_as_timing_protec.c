@@ -1,5 +1,5 @@
 /**
- * @file tpl_as_timing_protec.c
+ * @file tpl_as_timing_protec_alt.c
  *
  * @internal
  *
@@ -24,7 +24,16 @@
  * $Rev$
  * $Author$
  * $URL$
+*/
+
+/*
+ * We assume that the local time is "infinite". 
+ * If the underlying timer is cyclic, the implementation of
+ * tpl_get_local_current_time handles overflow.
+ * If the time is coded on 32 bits and the time unit is 1 ms, 
+ * the maximal lifetime of the system is 49 days.
  */
+
 #include "tpl_as_timing_protec.h"
 #include "tpl_dow.h"
 #include "tpl_as_isr_kernel.h"
@@ -32,779 +41,268 @@
 #include "tpl_machine_interface.h"
 #include "tpl_as_protec_hook.h"
 
+#include <assert.h>
+#include <stdio.h>
+
 #ifdef WITH_AUTOSAR_TIMING_PROTECTION
 
 #define OS_START_SEC_VAR_NOINIT_UNSPECIFIED
 #include "tpl_memmap.h"
 
-#ifndef NO_TASK
-STATIC VAR(tpl_watchdog, OS_VAR_NOINIT) tpl_watchdog_task_timeframe[TASK_COUNT];
-STATIC VAR(tpl_watchdog, OS_VAR_NOINIT) tpl_watchdog_task_budget_monitor[TASK_COUNT];
-#endif
-#ifndef NO_ISR
-STATIC VAR(tpl_watchdog, OS_VAR_NOINIT) tpl_watchdog_isr_timeframe[ISR_COUNT];
-STATIC VAR(tpl_watchdog, OS_VAR_NOINIT) tpl_watchdog_isr_budget_monitor[ISR_COUNT];
-#endif
-STATIC VAR(tpl_watchdog, OS_VAR_NOINIT) tpl_watchdog_all_isr_lock_monitor;
-STATIC VAR(tpl_watchdog, OS_VAR_NOINIT) tpl_watchdog_os_isr_lock_monitor;
-#ifndef NO_RESOURCE
-STATIC VAR(tpl_watchdog, OS_VAR_NOINIT) tpl_watchdog_resource_monitor[RESOURCE_COUNT];
-#endif
-STATIC P2VAR(tpl_watchdog, OS_VAR_NOINIT, OS_VAR_NOINIT) tpl_earliest_watchdog;
+VAR(unsigned int, OS_VAR) tpl_tp_watchdog_id;
+VAR(tpl_proc_id, OS_VAR) tpl_tp_watchdog_owner;
 
 #define OS_STOP_SEC_VAR_NOINIT_UNSPECIFIED
 #include "tpl_memmap.h"
 
-
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
-
-STATIC FUNC(void, OS_CODE) tpl_schedule_watchdog(
-  P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) watchdog);
-
-STATIC FUNC(void, OS_CODE) tpl_unschedule_watchdog(
-  P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) watchdog);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-
-
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-/**
- * This function is called when a watchdog expires. It computes
- * the action for all watchdog which have the same scheduled_date
- *
- */
-FUNC(void, OS_CODE) tpl_watchdog_expiration(void)
+void tpl_tp_set_watchdog_id(unsigned int id)
 {
-  VAR(tpl_status, AUTOMATIC)  need_resched = NO_SPECIAL_CODE;
-  VAR(tpl_time, AUTOMATIC) current_date;
-  P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) watchdog;
-
-  /* get the local current date */
-  current_date = tpl_get_local_current_date();
-
-  /* the watchdog which has just expired is the first in the list */
-  watchdog = tpl_earliest_watchdog;
-
-  /* while the next watchdog has the same scheduled_date,
-     it means that it is also expiring now */
-  while( (watchdog != NULL) && (watchdog->scheduled_date <= current_date) )
-  {
-
-      /* the action to perform is dependent on the type of the watchdog */
-      switch(watchdog->type)
-      {
-        /* inter-arrival rate measurement */
-        case TIME_FRAME:
-          /* the inter-arrival time has finished,
-           * so the object can be activated again
-           */
-          tpl_dyn_proc_table[watchdog->proc_id]->activation_allowed = TRUE;
-          need_resched = NO_SPECIAL_CODE;
-          break;
-
-        case EXEC_BUDGET:
-          /* the corresponding object has exceeds its execution budget */
-          tpl_call_protection_hook(E_OS_PROTECTION_TIME);
-          need_resched = NEED_RESCHEDULING;
-          break;
-
-        case REZ_LOCK:
-          /* the correspondong object has blocked a resource for to long */
-          tpl_call_protection_hook(E_OS_PROTECTION_LOCKED);
-          need_resched = NO_SPECIAL_CODE;
-          break;
-
-        case ALL_INT_LOCK:
-          /* the correspondong object has blocked interrupts for to long */
-          tpl_call_protection_hook(E_OS_PROTECTION_LOCKED);
-          need_resched = NO_SPECIAL_CODE;
-          break;
-
-        case OS_INT_LOCK:
-          /* the correspondong object has blocked OS interrupts for to long */
-          tpl_call_protection_hook(E_OS_PROTECTION_LOCKED);
-          need_resched = NO_SPECIAL_CODE;
-          break;
-        default:
-          need_resched = NO_SPECIAL_CODE;
-          break;
-      }
-
-      /* remove the expired watchdog from the list and loop
-         if there are pending watchdogs on the same date */
-      tpl_unschedule_watchdog(watchdog);
-      watchdog = tpl_earliest_watchdog;
-  }
-
-  if(NEED_RESCHEDULING == need_resched)
-  {
-    /* terminate the running task */
-    tpl_terminate();
-    /* start the highest priority task */
-    tpl_start(tpl_get_proc());
-    /* task switching should occur */
-    tpl_kern.need_switch = NEED_SWITCH;
-  }
+    /* Id shall be between 0 and 3. Let's check this */
+    assert(0 <= id && id <= 3);
+    tpl_tp_watchdog_id = id;
+    tpl_tp_watchdog_owner = tpl_kern.running_id;
+    return ;
 }
 
+unsigned int tpl_tp_get_watchdog_id()
+{
+    /* tpl_tp_watchdog_id shall be between 0 and 3. Let's check this */
+    assert(0 <= tpl_tp_watchdog_id && tpl_tp_watchdog_id <= 3);
+    return tpl_tp_watchdog_id;
+}
 
 /**
- * Function used to start the measure of a time frame for a task/isr2
+ * Reset the activity flag of the watchdogs of a proc. This
+ * function must be called every time an instance of a task enters 
+ * the RUNNING state for the first time.
+ */
+FUNC(tpl_bool, OS_CODE) tpl_tp_reset_watchdogs (
+        CONST(tpl_proc_id, AUTOMATIC) proc_id)
+{
+    VAR(tpl_bool, AUTOMATIC) result = TRUE;
+    CONSTP2VAR(tpl_timing_protection, AUTOMATIC, OS_APPL_DATA) tp =
+        tpl_stat_proc_table[proc_id]->timing_protection;
+
+    if(tp != NULL)
+    {
+        tp->watchdogs[EXECUTIONBUDGET].is_active    = TRUE;
+        tp->watchdogs[RESOURCELOCK].is_active       = FALSE;
+        tp->watchdogs[ALLINTERRUPTLOCK].is_active   = FALSE;
+        tp->watchdogs[OSINTERRUPTLOCK].is_active    = FALSE;
+    }
+    return result;
+}
+
+/**
+ * OS465: The Operating System module shall limit the inter-arrival 
+ * time of tasks to one per OsTaskTimeFrame
  *
- * @param proc_id: object owner of the time frame to start
+ * OS469: The Operating System module shall start an OsTaskTimeFrame 
+ * when a task is activated successfully.
+ *
+ * OS472: The Operating System module shall start an OsTaskTimeFrame 
+ * when a task is released successfully.
  *
  */
-FUNC(void, OS_CODE) tpl_start_timeframe (
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
+FUNC(tpl_bool, OS_CODE) tpl_tp_on_activate_or_release (
+        CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
-  P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) watchdog;
-  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) proc =
+  VAR(tpl_bool, AUTOMATIC) result = TRUE;
+  VAR(tpl_time, AUTOMATIC) now;
+  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_proc =
     tpl_stat_proc_table[proc_id];
-  VAR(tpl_time, AUTOMATIC) date;
-  VAR(tpl_time, AUTOMATIC) timeframe;
+  CONSTP2VAR(tpl_timing_protection, AUTOMATIC, OS_APPL_DATA) tp =
+    tpl_stat_proc_table[proc_id]->timing_protection;
 
-#if !defined(NO_TASK) || !defined(NO_ISR)
-  /* check if timing protection os configured for this object */
-  if (proc->timing_protection != NULL)
-  {
-    /* get a free watchdog from the watchdog table,
-     * as there can be only one time frame per task or isr,
-     * the watchdog is always free
-     */
-    if (proc->type != IS_ROUTINE)
-    {
-#ifndef NO_TASK
-      watchdog = &tpl_watchdog_task_timeframe[proc_id];
-#endif
-    }
-    else
-    {
-#ifndef NO_ISR
-      watchdog = &tpl_watchdog_isr_timeframe[proc_id - TASK_COUNT];
-#endif
-    }
-
-    /* set the type of the watchdog */
-    watchdog->type = TIME_FRAME;
-
-    /* set the object which sets the watchdog */
-    watchdog->proc_id = proc_id;
-
-    /* set the start date of the watchdog */
-    date = tpl_get_local_current_date();
-    watchdog->start_date = date;
-
-    /* calculate the expiration date of the watchdog */
-    timeframe = proc->timing_protection->timeframe;
-    watchdog->scheduled_date = date + timeframe;
-
-    watchdog->time_left = timeframe;
-
-    tpl_dyn_proc_table[proc_id]->activation_allowed = FALSE;
-
-    /* insert new watchdog in the list */
-    tpl_schedule_watchdog(watchdog);
-  }
-#endif
-}
-
-
-/**
- * Function used to stop the measure of a time frame for a task/isr2
- *
- * @param proc_id: object owner of the time frame to stop
- *
- */
-FUNC(void, OS_CODE) tpl_stop_timeframe(
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
-{
-  P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) watchdog;
-  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) proc =
-    tpl_stat_proc_table[proc_id];
-
-#if !defined(NO_TASK) || !defined(NO_ISR)
-  /* check if timing protection os configured for this object */
-  if (proc->timing_protection != NULL)
-  {
-    /* select the corresponding watchdog */
-    if (proc->type != IS_ROUTINE)
-    {
-#ifndef NO_TASK
-      watchdog = &tpl_watchdog_task_timeframe[proc_id];
-#endif
-    }
-    else
-    {
-#ifndef NO_ISR
-      watchdog = &tpl_watchdog_isr_timeframe[proc_id - TASK_COUNT];
-#endif
-    }
-    /* remove the watchdog from the queue */
-    tpl_unschedule_watchdog(watchdog);
-  }
-#endif
-}
-
-
-/**
- * Function used to initialized the timing protection kernel
- *
- */
-FUNC(void, OS_CODE) tpl_init_timing_protection(void)
-{
-  tpl_earliest_watchdog = NULL;
-
-}
-
-
-/**
- * Function used to monitor execution budget of a task/isr2
- *
- * @param proc_id: object owner of the execution budget to start
- *
- */
-FUNC(void, OS_CODE) tpl_start_budget_monitor (
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
-{
-  P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) watchdog;
-  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) proc =
-    tpl_stat_proc_table[proc_id];
-  VAR(tpl_time, AUTOMATIC) date;
-  VAR(tpl_time, AUTOMATIC) executionbudget;
-
-#if !defined(NO_TASK) || !defined(NO_ISR)
-  if (proc->timing_protection != NULL)
-  {
-    /* select the corresponding watchdog */
-    if (proc->type != IS_ROUTINE)
-    {
-#ifndef NO_TASK
-      watchdog = &tpl_watchdog_task_budget_monitor[proc_id];
-#endif
-    }
-    else
-    {
-#ifndef NO_ISR
-      watchdog = &tpl_watchdog_isr_budget_monitor[proc_id - TASK_COUNT];
-#endif
-    }
-
-    /* set the watchdog parameters */
-    watchdog->type = EXEC_BUDGET;
-
-    watchdog->proc_id = proc_id;
-
-    /* calculate the watchdog expiration date */
-    date = tpl_get_local_current_date();
-    executionbudget = proc->timing_protection->execution_budget;
-    watchdog->scheduled_date = date + executionbudget;
-
-    /* insert the watchdog in the queue */
-    tpl_schedule_watchdog(watchdog);
-  }
-#endif
-}
-
-
-/**
- * Function used to stop a budget monitor watchdog
- *
- * @param proc_id: object owner of the execution budget to stop
- *
- */
-FUNC(void, OS_CODE) tpl_stop_budget_monitor (
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
-{
-  P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) watchdog;
-  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) proc =
-  tpl_stat_proc_table[proc_id];
-
-#if !defined(NO_TASK) || !defined(NO_ISR)
-  if(proc->timing_protection!=NULL)
-  {
-    /* select the corresponding watchdog */
-    if(proc->type != IS_ROUTINE)
-    {
-#ifndef NO_TASK
-      watchdog = &tpl_watchdog_task_budget_monitor[proc_id];
-#endif
-    }
-    else
-    {
-#ifndef NO_ISR
-      watchdog = &tpl_watchdog_isr_budget_monitor[proc_id - TASK_COUNT];
-#endif
-    }
-
-    /* remove the watchdog from the queue */
-    tpl_unschedule_watchdog(watchdog);
-  }
-#endif
-}
-
-
-/**
- * Function used to pause a budget monitor watchdog
- *
- * @param proc_id: object owner of the execution budget to pause
- *
- */
-FUNC(void, OS_CODE) tpl_pause_budget_monitor (
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
-{
-  P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) watchdog;
-  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) proc =
-    tpl_stat_proc_table[proc_id];
-
-#if !defined(NO_TASK) || !defined(NO_ISR)
-  if(proc->timing_protection != NULL)
-  {
-      /* select the corresponding watchdog */
-      if(proc->type != IS_ROUTINE)
-      {
-#ifndef NO_TASK
-          watchdog = &tpl_watchdog_task_budget_monitor[proc_id];
-#endif
-      }
-      else
-      {
-#ifndef NO_ISR
-          watchdog = &tpl_watchdog_isr_budget_monitor[proc_id - TASK_COUNT];
-#endif
-      }
-
-      /* calculate the remaining time */
-      watchdog->time_left = (watchdog->scheduled_date) - (watchdog->start_date);
-
-      /* remove the watchdog from the queue */
-      tpl_unschedule_watchdog(watchdog);
-  }
-#endif
-}
-
-
-/**
- * Function used to continue a budget monitor watchdog previously paused
- *
- * @param proc_id: object owner of the execution budget to continue
- *
- */
-FUNC(void, OS_CODE) tpl_continue_budget_monitor (
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
-{
-  P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) watchdog;
-  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) proc =
-    tpl_stat_proc_table[proc_id];
-  VAR(tpl_time, AUTOMATIC) date;
-
-#if !defined(NO_TASK) || !defined(NO_ISR)
-  if(proc->timing_protection != NULL)
-  {
-    /* select the corresponding watchdog */
-    if(proc->type != IS_ROUTINE)
-    {
-#ifndef NO_TASK
-      watchdog = &tpl_watchdog_task_budget_monitor[proc_id];
-#endif
-    }
-    else
-    {
-#ifndef NO_ISR
-      watchdog = &tpl_watchdog_isr_budget_monitor[proc_id - TASK_COUNT];
-#endif
-    }
-
-    /* set the watchodg parameters */
-    watchdog->type=EXEC_BUDGET;
-    watchdog->proc_id = proc_id;
-
-    /* calculate the scheduled date */
-    date = tpl_get_local_current_date();
-    watchdog->start_date = date;
-    watchdog->scheduled_date = date + watchdog->time_left;
-
-    /* insert the watchdog */
-    tpl_schedule_watchdog(watchdog);
-  }
-#endif
-}
-
-
-/**
- * Function used to start a resource locking monitor for a task/isr2
- *
- * @param proc_id: owner of the watchdog to start
- *
- * @param rez_id: resource the owner os blocking
- *
- */
-FUNC(void, OS_CODE) tpl_start_resource_monitor (
-  CONST(tpl_proc_id, AUTOMATIC) proc_id,
-  CONST(tpl_resource_id, AUTOMATIC) rez_id)
-{
-  P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) watchdog;
-  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) proc =
-    tpl_stat_proc_table[proc_id];
-  VAR(tpl_time, AUTOMATIC)  resource_lock_time;
-  VAR(tpl_time, AUTOMATIC)  date;
-
-#ifndef NO_RESOURCE
-  if ((proc->timing_protection != NULL) &&
-      (proc->timing_protection->resource_lock_time!= NULL))
-  {
-    resource_lock_time = proc->timing_protection->resource_lock_time[rez_id];
-
-    /*  if resource lock time is null, it means there is no
-        timing protection for this resource                   */
-    if (resource_lock_time > 0)
-    {
-      /* select the corresponding watchdog */
-      watchdog = &tpl_watchdog_resource_monitor[rez_id];
-
-      /* set the watchdog parameters */
-      watchdog->type = REZ_LOCK;
-      watchdog->proc_id = proc_id;
-
-      watchdog->resource = rez_id;
-
-      /* calculate the scheduled date */
-      date = tpl_get_local_current_date();
-      watchdog->start_date = date;
-      watchdog->scheduled_date = date + resource_lock_time;
-
-      /* insert the watchdog */
-      tpl_schedule_watchdog(watchdog);
-    }
-  }
-#endif
-}
-
-
-/**
- * Function used to stop a resource locking monitor for a task/isr2
- *
- * @param proc_id: owner of the watchdog to stop
- *
- * @param rez_id: resource the owner os blocking
- *
- */
-FUNC(void, OS_CODE) tpl_stop_resource_monitor (
-  CONST(tpl_proc_id, AUTOMATIC) proc_id,
-  CONST(tpl_resource_id, AUTOMATIC) rez_id)
-{
-  P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) watchdog;
-  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) proc =
-    tpl_stat_proc_table[proc_id];
-  VAR(tpl_time, AUTOMATIC) resource_lock_time;
-
-#ifndef NO_RESOURCE
-  if ((proc->timing_protection != NULL) &&
-      (proc->timing_protection->resource_lock_time != NULL))
-  {
-    resource_lock_time = proc->timing_protection->resource_lock_time[rez_id];
-
-    /* if reousrce lock time is null, it means there is no timing protection for this resource */
-    if(resource_lock_time >0)
-    {
-      /* select the corresponding watchdog */
-      watchdog = &tpl_watchdog_resource_monitor[rez_id];
-
-      /* remove the watchdog */
-      tpl_unschedule_watchdog(watchdog);
-    }
-  }
-#endif
-}
-
-
-#ifdef WITH_OSAPPLICATION
-/**
- * Function used to stop all resource locking monitor for a task/isr2
- *
- * @param proc_id: owner of the watchdog to stop
- *
- */
-FUNC(void, OS_CODE) tpl_stop_all_resource_monitor (
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
-{
-  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) proc =
-    tpl_stat_proc_table[proc_id];
-  
-#ifndef NO_RESOURCE
-  if ((proc->timing_protection != NULL) &&
-      (proc->timing_protection->resource_lock_time != NULL))
-  {
-    VAR(tpl_resource_id, AUTOMATIC) rez_id;
+   /* printf("TPL_TP : %s(proc %u @ %u)\n", __FUNCTION__, proc_id, (unsigned int)tpl_get_local_current_date()); */
     
-    for (rez_id = 0; rez_id < RESOURCE_COUNT; rez_id++)
+    if(tp != NULL)
     {
-      VAR(tpl_time, AUTOMATIC) resource_lock_time =
-        proc->timing_protection->resource_lock_time[rez_id];
-      
-      /*  if resource lock time is null, it means there is
-          no timing protection for this resource            */
-      if (resource_lock_time >0)
-      {
-        P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) watchdog;
-        /* select the corresponding watchdog */
-        watchdog = &tpl_watchdog_resource_monitor[rez_id];
+        now = tpl_get_local_current_date();
         
-        /* remove the watchdog */
-        tpl_unschedule_watchdog(watchdog);
-      }
+        /* Activation is allowed if the current timeframe is finished
+         OR  this is the first activation request */
+        if( ((now - tp->last_activation) > s_proc->timeframe) ||
+            (tp->first_instance == TRUE) )
+        {
+            /* mark the starting date of a new timeframe */
+            tp->last_activation = now;
+            
+            /* reset the first_instance flag */
+            tp->first_instance = FALSE;
+        }
+        else
+        {
+            result = FALSE;
+        }
     }
-  }
-#endif
-}
-#endif
-
-/**
- * Function used to start an isr locking monitor for a task/isr2
- *
- * @param proc_id: owner of the watchdog to start
- *
- */
-FUNC(void, OS_CODE) tpl_start_all_isr_lock_monitor (
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
-{
-  P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) watchdog;
-  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) proc =
-    tpl_stat_proc_table[proc_id];
-  VAR(tpl_time, AUTOMATIC) int_lock_time;
-  VAR(tpl_time, AUTOMATIC) date;
-
-  if ((proc->timing_protection != NULL) &&
-      (proc->timing_protection->all_interrupt_lock_time > 0) )
-  {
-    /* select the corresponding watchdog */
-    watchdog = &tpl_watchdog_all_isr_lock_monitor;
-
-    /* set the watchdog parameters */
-    watchdog->type = ALL_INT_LOCK;
-    watchdog->proc_id = proc_id;
-
-    /* calculate the scheduled date */
-    date = tpl_get_local_current_date();
-    watchdog->start_date = date;
-    int_lock_time = proc->timing_protection->all_interrupt_lock_time;
-    watchdog->scheduled_date = date + int_lock_time;
-
-    /* insert the watchdog */
-    tpl_schedule_watchdog(watchdog);
-  }
+  return result;
 }
 
-
 /**
- * Function used to stop an isr locking monitor for a task/isr2
- *
- * @param this_exec_obj: owner of the watchdog to stop
- *
+ * OS473: The Operating System module shall reset a task's
+ * OsTaskExecutionBudget on a transition to the SUSPENDED or 
+ * WAITING states.
  */
-FUNC(void, OS_CODE) tpl_stop_all_isr_lock_monitor (
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
+FUNC(tpl_bool, OS_CODE) tpl_tp_on_terminate_or_wait(
+        CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
-  P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) watchdog;
-  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) proc =
-    tpl_stat_proc_table[proc_id];
 
-  if ((proc->timing_protection != NULL) &&
-      (proc->timing_protection->all_interrupt_lock_time > 0) )
-  {
-    /* select the corresponding watchdog */
-    watchdog = &tpl_watchdog_all_isr_lock_monitor;
+    CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_proc =
+      tpl_stat_proc_table[proc_id];
+    CONSTP2VAR(tpl_timing_protection, AUTOMATIC, OS_APPL_DATA) tp =
+      tpl_stat_proc_table[proc_id]->timing_protection;
 
-    /* remove the watchdog */
-    tpl_unschedule_watchdog(watchdog);
-  }
-}
-
-
-/**
- * Function used to start an isr2 locking monitor for a task/isr2
- *
- * @param this_exec_obj: owner of the watchdog to start
- *
- */
-FUNC(void, OS_CODE) tpl_start_os_isr_lock_monitor (
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
-{
-  P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) watchdog;
-  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) proc =
-    tpl_stat_proc_table[proc_id];
-  VAR(tpl_time, AUTOMATIC) int_lock_time;
-  VAR(tpl_time, AUTOMATIC) date;
-
-
-  if ((proc->timing_protection != NULL) &&
-      (proc->timing_protection->os_interrupt_lock_time > 0) )
-  {
-    /* select the corresponding watchdog */
-    watchdog = &tpl_watchdog_os_isr_lock_monitor;
-
-    /* set the watchdog parameters */
-    watchdog->type = OS_INT_LOCK;
-    watchdog->proc_id = proc_id;
-
-    /* calculate the scheduled date */
-    date = tpl_get_local_current_date();
-    watchdog->start_date = date;
-    int_lock_time = proc->timing_protection->os_interrupt_lock_time;
-    watchdog->scheduled_date = date + int_lock_time;
-
-    /* insert the watchdog */
-    tpl_schedule_watchdog(watchdog);
-  }
-}
-
-
-/**
- * Function used to stop an isr2 locking monitor for a task/isr2
- *
- * @param this_exec_obj: owner of the watchdog to stop
- *
- */
-FUNC(void, OS_CODE) tpl_stop_os_isr_lock_monitor (
-  CONST(tpl_proc_id, AUTOMATIC) proc_id)
-{
-  P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) watchdog;
-  CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA) proc =
-    tpl_stat_proc_table[proc_id];
-
-  if ((proc->timing_protection != NULL) &&
-      (proc->timing_protection->os_interrupt_lock_time > 0) )
-  {
-    /* select the corresponding watchdog */
-    watchdog = &tpl_watchdog_os_isr_lock_monitor;
-
-    /* remove the watcdhog */
-    tpl_unschedule_watchdog(watchdog);
-  }
-}
-
-
-/**
- * Function used to insert a watchdog in the watchdog chained list
- *
- * @param watchdog: watchdog to be inserted
- *
- */
-STATIC FUNC(void, OS_CODE) tpl_schedule_watchdog(
-  P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) watchdog)
-{
-  P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) next_watchdog;
-  P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) previous_watchdog;
-  VAR(tpl_time, AUTOMATIC) current_date;
-  VAR(tpl_time, AUTOMATIC) date;
-
-  /* initializes the previous and next watchdog,
-     beginning from the first watchdog in the queue */
-  next_watchdog = tpl_earliest_watchdog;
-  previous_watchdog = NULL;
-
-  /* if the watchdog has to be the first */
-  if ((tpl_earliest_watchdog == NULL) ||
-      ((watchdog->scheduled_date) < (tpl_earliest_watchdog->scheduled_date)))
-  {
-    /* insert the watchdog before the earliest */
-    watchdog->next = tpl_earliest_watchdog;
-    watchdog->previous = NULL;
-    tpl_earliest_watchdog = watchdog;
-    if (watchdog->next != NULL)
+  /* printf("TPL_TP : %s(proc %u @ %u)\n", __FUNCTION__, proc_id,  (unsigned int)tpl_get_local_current_date()); */
+    
+    if(tp != NULL)
     {
-      watchdog->next->previous = watchdog;
+        /* *LOCK watchdogs shall be inactive, therefore, the active watchdog 
+         * shall be EXECUTIONBUDGET. Let's check this 
+         */
+        assert(tpl_tp_get_watchdog_id() == EXECUTIONBUDGET);
+
+        /* If the watchdog is active, cancel it */ 
+        if(tp->watchdogs[EXECUTIONBUDGET].is_active == TRUE)
+        {
+            tpl_cancel_watchdog();
+        }
+        /* and we reset the EXECUTIONBUDGET watchdog data for the next instance */
+        tp->watchdogs[EXECUTIONBUDGET].remaining = s_proc->executionbudget;        
     }
-
-    current_date = tpl_get_local_current_date();
-    date = (watchdog->scheduled_date) - current_date;
-
-    tpl_cancel_watchdog();
-    tpl_set_watchdog(date);
-  }
-  /* else the watchdog has to be inserted in the middle
-     or at the end of the queue */
-  else
-  {
-    /* continue until the watchdog scheduled date is lower than the current */
-    while ((next_watchdog!=NULL) && 
-           ((watchdog->scheduled_date) >= (next_watchdog->scheduled_date)))
-    {
-      previous_watchdog = next_watchdog;
-      next_watchdog=next_watchdog->next;
-    }
-
-    /* then insert the wqtchdog between the next and the previous */
-    watchdog->next = next_watchdog;
-    watchdog->previous = previous_watchdog;
-
-    previous_watchdog->next = watchdog;
-    if (next_watchdog != NULL )
-    {
-      next_watchdog->previous = watchdog;
-    }
-  }
+    return TRUE;
 }
 
+/** 
+ * The task is started: its active watchdogs shall be started too
+ */
+FUNC(tpl_bool, OS_CODE) tpl_tp_on_start(
+        CONST(tpl_proc_id, AUTOMATIC) proc_id)
+{
+    VAR(tpl_time, AUTOMATIC) now;
+    CONSTP2VAR(tpl_timing_protection, AUTOMATIC, OS_APPL_DATA)           
+        tp = tpl_stat_proc_table[proc_id]->timing_protection;
+    VAR(unsigned char, AUTOMATIC) min_id = 0;
+    VAR(unsigned char, AUTOMATIC) c = 0;
+
+    if(tp != NULL)
+    {
+        now = tpl_get_local_current_date();
+   /* printf("TPL_TP : %s(proc %u @ %u)\n", __FUNCTION__, proc_id,  (unsigned int)now); */
+
+        /* 
+         * 1/ Updates the start date of active watchdogs
+         * 2/ Finds the one with the shortest remaining time
+         */
+        for(c = 0; c < NB_WATCHDOGS_PER_PROC; c++)
+        {
+            if (tp->watchdogs[c].is_active == TRUE)
+            {
+                tp->watchdogs[c].start_date = now;
+                if(tp->watchdogs[c].remaining < tp->watchdogs[min_id].remaining)
+                {
+                    min_id = c;
+                }
+            }
+        }
+        
+        /* Set an expiry point when the shortest remaining budget will reach 0 */
+    /* printf("TPL_TP : %s(proc %u @ %u): set expiry point @%d (watchid : %u, remaining : %d)\n", __FUNCTION__, proc_id,  (unsigned int)now, now + tp->watchdogs[min_id].remaining, min_id, tp->watchdogs[min_id].remaining); */
+        tpl_tp_set_watchdog_id(min_id);
+
+        tpl_set_watchdog(now + tp->watchdogs[min_id].remaining);
+    }
+    return TRUE;
+}
 
 /**
- * Function used to remove a watchdog from the watchdog chained list
- *
- * @param watchdog: watchdog to be removed
- *
+ * The task is stopped: its active watchdogs shall be stopped too
  */
-STATIC FUNC(void, OS_CODE) tpl_unschedule_watchdog(
-  P2VAR(tpl_watchdog, AUTOMATIC, OS_VAR_NOINIT) watchdog)
+FUNC(tpl_bool, OS_CODE) tpl_tp_on_preempt(
+        CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
-  VAR(tpl_time, AUTOMATIC) current_date;
-  VAR(tpl_time, AUTOMATIC) date;
-
-  /* if the watchdog to remove is the first one */
-  if (watchdog == tpl_earliest_watchdog)
-  {
-    if (watchdog->next != NULL)
+    VAR(tpl_time, AUTOMATIC) now;
+    CONSTP2VAR(tpl_timing_protection, AUTOMATIC, OS_APPL_DATA)  
+        tp = tpl_stat_proc_table[proc_id]->timing_protection;
+    VAR(unsigned int, AUTOMATIC) c;
+    /* printf("TPL_TP : %s(proc %u @ %u)\n", __FUNCTION__, proc_id, (unsigned int)tpl_get_local_current_date()); */
+    if(tp != NULL)
     {
-      watchdog->next->previous = NULL;
+        now = tpl_get_local_current_date();
 
-      /*  if the new first watchdog has a different expiration date,
-          we have to start it                                           */
-      tpl_earliest_watchdog = watchdog->next;
-
-      if ((tpl_earliest_watchdog->scheduled_date) > (watchdog->scheduled_date))
-      {
-        /* calculate time until the next watchdog expiration */
-        current_date = tpl_get_local_current_date();
-        date = (tpl_earliest_watchdog->scheduled_date) - current_date;
-
-        /* start the next watchdog timer */
+        /* First, we cancel the expiry point */
         tpl_cancel_watchdog();
-        tpl_set_watchdog(date);
-      }
-    }
-    else
-    {
-      /*  if the next watchdog is null, the queue is now empty,
-          we do not have to start another watchdog                    */
-      tpl_earliest_watchdog = NULL;
 
-      tpl_cancel_watchdog();
+        /* Then we update the remaining budgets of active watchdogs */
+        for(c = 0; c < NB_WATCHDOGS_PER_PROC; c++)
+        {
+            if(tp->watchdogs[c].is_active == TRUE)
+            {
+                tp->watchdogs[c].remaining -= now - tp->watchdogs[c].start_date;
+            }
+        }
     }
-  }
-  else
-  {
-    /* if the watchdog is not the first, we just remove it from the queue */
-    if (watchdog->next != NULL)
-    {
-      watchdog->next->previous = watchdog->previous;
-    }
-    watchdog->previous->next = watchdog->next;
-  }
+    return TRUE;
 }
 
+/**
+ * OS064: If a task's OsTaskExecutionBudget is reached then the Operating System
+ * module shall call the ProtectionHook() with E_OS_PROTECTION_TIME.
+ * 
+ * OS210: If a Category 2 ISRs OsIsrExecutionBudget is reached then the Operating
+ * System module shall call the ProtectionHook() with E_OS_PROTECTION_TIME.
+ *
+ * OS033: If a Task/Category 2 ISR holds an OSEK Resource and exceeds the
+ * Os[Task|Isr]ResourceLockBudget, the Operating System module shall call the 
+ * ProtectionHook() with E_OS_PROTECTION_LOCKED.
+ *
+ * OS037: If a Task/Category 2 ISR disables interrupts 
+ * (via Suspend/Disable|All/OS|Interrupts()) and exceeds the configured 
+ * Os[Task|Isr][All|OS]InterruptLockBudget, the Operating System module shall call 
+ * the ProtectionHook() with E_OS_PROTECTION_LOCKED.
+ */
+FUNC(tpl_bool, OS_CODE) tpl_watchdog_expiration(void)
+{
+    CONSTP2VAR(tpl_timing_protection, AUTOMATIC, OS_APPL_DATA)  
+        tp = tpl_stat_proc_table[tpl_tp_watchdog_owner]->timing_protection;
+    VAR(unsigned int, AUTOMATIC) error_code = E_OS_PROTECTION_LOCKED;
+    VAR(unsigned int, AUTOMATIC) cpt = 0;
+    VAR(tpl_bool, AUTOMATIC) at_least_one = FALSE;
+
+    /* printf("TPL_TP : %s(void)\n", __FUNCTION__); */
+
+    /* check if at least one watchdog was active and 
+     * set the active flag to false for the proc that has caused the error */
+    for(cpt=0; cpt<NB_WATCHDOGS_PER_PROC; cpt++)
+    {
+        if(tp->watchdogs[cpt].is_active == TRUE)
+        {
+            at_least_one = TRUE;
+        }
+        tp->watchdogs[cpt].is_active = FALSE;
+    }
+
+    /* if at least one watchdog was active, process the error */
+    if (at_least_one == TRUE)
+    {
+        /* change the error code from E_OS_PROTECTION_LOCKED to E_OS_PROTECTION_TIME if needed */
+        if (tpl_tp_get_watchdog_id() == EXECUTIONBUDGET)
+        {
+            error_code = E_OS_PROTECTION_TIME;
+        }
+        tpl_call_protection_hook(error_code);
+    }
+    return TRUE;
+}
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

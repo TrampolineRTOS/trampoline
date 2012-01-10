@@ -1012,7 +1012,6 @@ FUNC(void, OS_CODE) tpl_block(void)
   {
     if (FALSE == tpl_tp_on_activate_or_release(tpl_kern.running_id))
     {
-      result = (tpl_status)E_OS_PROTECTION_ARRIVAL;
       tpl_call_protection_hook(E_OS_PROTECTION_ARRIVAL);
     }
     else
@@ -1020,8 +1019,6 @@ FUNC(void, OS_CODE) tpl_block(void)
       tpl_tp_on_start(tpl_kern.running_id);
     }    
   }
-  /* reset the execution budget */
-  tpl_tp_on_terminate_or_wait(tpl_kern.running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION == YES */
 }
 #endif

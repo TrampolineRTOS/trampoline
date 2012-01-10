@@ -361,3 +361,33 @@ OK (7 tests)
 running autosar_sp_s5
 .................
 OK (17 tests)
+running autosar_tp_s1
+........
+OK (8 tests)
+running autosar_tp_s2
+........
+OK (8 tests)
+running autosar_tp_s3
+.......
+OK (7 tests)
+running autosar_tp_s4
+........
+OK (8 tests)
+running autosar_tp_s5
+...
+OK (3 tests)
+running autosar_tp_s6
+..
+OK (2 tests)
+running autosar_tp_s7
+....
+OK (4 tests)
+running autosar_tp_s8
+....
+OK (4 tests)
+running autosar_tp_s9
+.......
+OK (7 tests)
+running autosar_tp_s10
+...
+OK (3 tests)
