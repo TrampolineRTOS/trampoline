@@ -169,6 +169,18 @@ LD = % !LINKEREXE %
 # default is 'as'
 AS = % !ASSEMBLEREXE %
 
+# gcc 4.6 warns unused but set variables. Unfortunately
+# this pattern is mandatory to implement the OSEK API.
+# gcc 4.6 also requires to use -lrt to communicate with viper
+ifeq "${CC}" "gcc"
+    GCCVERSION = $(shell gcc -dumpversion)
+    ifeq "${GCCVERSION}" "4.6"
+        CFLAGS+=-Wno-unused-but-set-variable
+    endif
+    LDFLAGS+=-lrt -pthread
+endif
+
+
 #############################################################################
 # TRAMPOLINE CONFIGURATION
 #############################################################################
