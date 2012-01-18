@@ -40,7 +40,7 @@ else
 	if ! `test -f ../lib/libembUnit.a`
 	then
 		echo "Make embunit"
-                ( cd ../embUnit ; make CC=/usr/local/bin/gcc )
+                ( cd ../embUnit ; make )
 	fi
 		
 	# Build and execute all the tests
