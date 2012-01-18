@@ -37,7 +37,7 @@
 
 #include "embUnit.h"
 #include "Os.h"
-#include "Config.h"
+#include "config.h"
 
 DeclareEvent(t1_event1);
 
