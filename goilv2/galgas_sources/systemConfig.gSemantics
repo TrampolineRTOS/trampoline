@@ -69,8 +69,16 @@ override method @uint32_class set ??@lstring name ?!@TfieldMap result:
   addUnsignedValue !?result !name ![value uint64];
 end method;
 
+override method @sint32_class set ??@lstring name ?!@TfieldMap result:
+  addSignedValue !?result !name ![value sint64];
+end method;
+
 override method @uint64_class set ??@lstring name ?!@TfieldMap result:
   addUnsignedValue !?result !name !value;
+end method;
+
+override method @sint64_class set ??@lstring name ?!@TfieldMap result:
+  addSignedValue !?result !name !value;
 end method;
 
 override method @float_class set ??@lstring name ?!@TfieldMap result:
