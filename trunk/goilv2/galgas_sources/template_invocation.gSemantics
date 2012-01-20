@@ -74,9 +74,9 @@ function displayTypeAndValue
 :
   switch inType
   when boolType :
-    outResult := "bool: " . if [inValue mUnsigned64Value] == 1L then "yes" else "no" end;
-  when unsignedType :
-    outResult := "unsigned: " . [[inValue mUnsigned64Value] string];
+    outResult := "bool: " . if [inValue mInt64Value] == 1LS then "yes" else "no" end;
+  when intType :
+    outResult := "unsigned: " . [[inValue mInt64Value] string];
   when floatType :
     outResult := "float: " . [[inValue mFloatValue] string];
   when stringType :
@@ -89,9 +89,9 @@ function displayTypeAndValue
         outResult .= "'" . lkey . "' ";
         switch mType
         when boolType :
-          outResult .= "bool: " . if [mValue mUnsigned64Value] == 1L then "yes" else "no" end;
-        when unsignedType :
-          outResult .= "unsigned: " . [[mValue mUnsigned64Value] string];
+          outResult .= "bool: " . if [mValue mInt64Value] == 1LS then "yes" else "no" end;
+        when intType :
+          outResult .= "unsigned: " . [[mValue mInt64Value] string];
         when floatType :
           outResult .= "float: " . [[mValue mFloatValue] string];
         when stringType :

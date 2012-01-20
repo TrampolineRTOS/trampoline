@@ -105,7 +105,7 @@ routine matchAndOperatorForTemplate
   match inLeftExpressionType :: inRightExpressionType :
   when boolType :: boolType :
     outResultType := inLeftExpressionType;
-  when unsignedType :: unsignedType :
+  when intType :: intType :
     outResultType := inLeftExpressionType;
   else
     error here : "operand type error : (" . [inLeftExpressionType messageGoilTemplateType] .
@@ -128,7 +128,7 @@ routine matchOrOperatorForTemplate
   match inLeftExpressionType :: inRightExpressionType :
   when boolType :: boolType :
     outResultType := inLeftExpressionType;
-  when unsignedType :: unsignedType :
+  when intType :: intType :
     outResultType := inLeftExpressionType;
   else
     error here : "operand type error : (" . [inLeftExpressionType messageGoilTemplateType] .
@@ -151,7 +151,7 @@ routine matchXorOperatorForTemplate
   match inLeftExpressionType :: inRightExpressionType :
   when boolType :: boolType :
     outResultType := inLeftExpressionType;
-  when unsignedType :: unsignedType :
+  when intType :: intType :
     outResultType := inLeftExpressionType;
   else
     error here : "operand type error : (" . [inLeftExpressionType messageGoilTemplateType] .
@@ -188,7 +188,7 @@ routine checkBitComplementOperatorForTemplate
   !@Ttype outResultType
 :
   outResultType := inOperandType;
-  if inOperandType != [@Ttype unsignedType] then
+  if inOperandType != [@Ttype intType] then
     error here : "the ~ operator is not defined for an "
     . [inOperandType messageGoilTemplateType] . " type";
   end if;
@@ -206,7 +206,7 @@ routine comparison_types_checkForTemplate
 :
   match inLeftExpressionType :: inRightExpressionType :
   when boolType     :: boolType :
-  when unsignedType :: unsignedType :
+  when intType      :: intType :
   when stringType   :: stringType :
   when enumType     :: enumType :
   else
@@ -227,7 +227,7 @@ routine magnitude_comparison_types_checkForTemplate
 :
   match inLeftExpressionType :: inRightExpressionType :
   when boolType      :: boolType :
-  when unsignedType      :: unsignedType :
+  when intType       :: intType :
   when stringType    :: stringType :
   else
     error here : "comparison between " . [inLeftExpressionType messageGoilTemplateType] .
@@ -247,7 +247,7 @@ routine left_shift_types_checkForTemplate
   !@Ttype outResultType
 :
   match inLeftExpressionType :: inRightExpressionType :
-  when unsignedType    :: unsignedType :
+  when intType    :: intType :
     outResultType := inLeftExpressionType;
   else
     error here : "shift between " . [inLeftExpressionType messageGoilTemplateType]
@@ -265,7 +265,7 @@ routine right_shift_types_checkForTemplate
   !@Ttype outResultType
 :
   match inLeftExpressionType :: inRightExpressionType :
-  when unsignedType    :: unsignedType :
+  when intType    :: intType :
     outResultType := inLeftExpressionType;
   else
     error here : "shift between " . [inLeftExpressionType messageGoilTemplateType]
@@ -287,7 +287,7 @@ routine addition_types_checkForTemplate
   !@Ttype outResultType
 :
   match inLeftExpressionType :: inRightExpressionType :
-  when unsignedType      :: unsignedType :
+  when intType      :: intType :
     outResultType := inLeftExpressionType;
   else
     error here : "addition between " . [inLeftExpressionType messageGoilTemplateType]
@@ -333,7 +333,7 @@ routine substraction_types_checkForTemplate
   !@Ttype outResultType
 :
   match inLeftExpressionType :: inRightExpressionType :
-  when unsignedType      :: unsignedType :
+  when intType      :: intType :
     outResultType := inLeftExpressionType;
   else
     error here : "substraction between " . [inLeftExpressionType messageGoilTemplateType]
@@ -355,7 +355,7 @@ routine multiply_types_checkForTemplate
   !@Ttype outResultType
 :
   match inLeftExpressionType :: inRightExpressionType :
-  when unsignedType      :: unsignedType :
+  when intType      :: intType :
     outResultType := inLeftExpressionType;
   else
     error here : "multiplication between " . [inLeftExpressionType messageGoilTemplateType]
@@ -377,7 +377,7 @@ routine divide_types_checkForTemplate
   !@Ttype outResultType
 :
   match inLeftExpressionType :: inRightExpressionType :
-  when unsignedType      :: unsignedType :
+  when intType      :: intType :
     outResultType := inLeftExpressionType;
   else
     error here : "division between " . [inLeftExpressionType messageGoilTemplateType]
@@ -399,7 +399,7 @@ routine modulo_types_checkForTemplate
   !@Ttype outResultType
 :
   match inLeftExpressionType :: inRightExpressionType :
-  when unsignedType      :: unsignedType :
+  when intType      :: intType :
     outResultType := inLeftExpressionType;
   else
     error here : "modulo between " . [inLeftExpressionType messageGoilTemplateType]
@@ -483,34 +483,34 @@ routine templateMethodInvocation
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
       outResultType := [@Ttype stringType];
       outResultValue := valueWithString [
-        ! if [inValue mUnsigned64Value] > 0L then "true" else "false" end
+        ! if [inValue mInt64Value] > 0LS then "true" else "false" end
       ];
     elsif [inMethodName string] == "yesOrNo" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
       outResultType := [@Ttype stringType];
       outResultValue := valueWithString [
-        ! if [inValue mUnsigned64Value] > 0L then "yes" else "no" end
+        ! if [inValue mInt64Value] > 0LS then "yes" else "no" end
       ];
     elsif [inMethodName string] == "unsigned" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype unsignedType];
+      outResultType := [@Ttype intType];
       outResultValue := inValue;
     else
       error inMethodName: "the ".inMethodName." template method is not defined" : outResultValue, outResultType;
     end if;
-  when unsignedType :
+  when intType :
     if [inMethodName string] == "string" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
       outResultType := [@Ttype stringType];
-      outResultValue := valueWithString [![[inValue mUnsigned64Value] string]];
+      outResultValue := valueWithString [![[inValue mInt64Value] string]];
     elsif [inMethodName string] == "hexString" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
       outResultType := [@Ttype stringType];
-      outResultValue := valueWithString [![[inValue mUnsigned64Value] hexString]];
+      outResultValue := valueWithString [![[[inValue mInt64Value] uint64] hexString]];
     elsif [inMethodName string] == "numberOfBytes" | [inMethodName string] == "signedNumberOfBytes" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype unsignedType];
-      @uint64 value := [inValue mUnsigned64Value];
+      outResultType := [@Ttype intType];
+      @sint64 value := [inValue mInt64Value];
       # compute the number of bytes needed
       @uint numberOfBytes := 1;
       if [inMethodName string] == "signedNumberOfBytes" then
@@ -519,7 +519,7 @@ routine templateMethodInvocation
       @uint count := 0;
       loop 4:
       while count < 4 do
-        @uint64 maxValue := (1L << (numberOfBytes * 8)) - 1L;
+        @sint64 maxValue := (1LS << (numberOfBytes * 8)) - 1LS;
         if maxValue < value then
           numberOfBytes := numberOfBytes * 2;
         end if;
@@ -544,7 +544,7 @@ routine templateMethodInvocation
       outResultValue := valueWithString [![[inValue mStringValue] lowercaseString]];
     elsif [inMethodName string] == "length" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype unsignedType];
+      outResultType := [@Ttype intType];
       outResultValue := valueWithUnsigned [![[[inValue mStringValue] length] uint64]];
     elsif [inMethodName string] == "stringByCapitalizingFirstCharacter" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
@@ -556,28 +556,28 @@ routine templateMethodInvocation
       outResultValue := valueWithString [![[inValue mStringValue] uppercaseString]];
     elsif [inMethodName string] == "unsigned" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype unsignedType];
+      outResultType := [@Ttype intType];
       outResultValue := valueWithUnsigned [![[[inValue mStringValue] decimalUnsignedNumber] uint64]];
     elsif [inMethodName string] == "leftSubString" then
-      checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype unsignedType] !1;
+      checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype intType] !1;
       @Tvalue parameter;
       [inParameterTypeList first ?parameter ?*];
       outResultType := [@Ttype stringType];
-      outResultValue := valueWithString [![[inValue mStringValue] leftSubString ![[parameter mUnsigned64Value] uint]]];
+      outResultValue := valueWithString [![[inValue mStringValue] leftSubString ![[parameter mInt64Value] uint]]];
     elsif [inMethodName string] == "rightSubString" then
-      checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype unsignedType] !1;
+      checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype intType] !1;
       @Tvalue parameter;
       [inParameterTypeList first ?parameter ?*];
       outResultType := [@Ttype stringType];
-      outResultValue := valueWithString [![[inValue mStringValue] rightSubString ![[parameter mUnsigned64Value] uint]]];
+      outResultValue := valueWithString [![[inValue mStringValue] rightSubString ![[parameter mInt64Value] uint]]];
     elsif [inMethodName string] == "subString" then
-      checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype unsignedType] !2;
+      checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype intType] !2;
       @Tvalue start := [inParameterTypeList mValueAtIndex !0];
       @Tvalue length := [inParameterTypeList mValueAtIndex !1];
 #      log start;
 #      log length;
       outResultType := [@Ttype stringType];
-      outResultValue := valueWithString [![[inValue mStringValue] subString ![[start mUnsigned64Value] uint] ![[length mUnsigned64Value] uint]]];
+      outResultValue := valueWithString [![[inValue mStringValue] subString ![[start mInt64Value] uint] ![[length mInt64Value] uint]]];
     elsif [inMethodName string] == "reversedString" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
       outResultType := [@Ttype stringType];
@@ -603,7 +603,7 @@ routine templateMethodInvocation
   when listType :
     if [inMethodName string] == "length" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype unsignedType];
+      outResultType := [@Ttype intType];
       outResultValue := valueWithUnsigned [![[[inValue mMapListValue] length] uint64]];
     elsif [inMethodName string] == "first" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
@@ -664,7 +664,7 @@ rule <expression>
       ?rightOperand
       ?secondOperandType
    ;
-    outValue->mUnsigned64Value := [leftOperand mUnsigned64Value] | [rightOperand mUnsigned64Value];
+    outValue->mInt64Value := [leftOperand mInt64Value] | [rightOperand mInt64Value];
     matchOrOperatorForTemplate
       !firstOperandType
       !secondOperandType
@@ -684,7 +684,7 @@ rule <expression>
       ?rightOperand
       ?secondOperandType
    ;
-    outValue->mUnsigned64Value := [leftOperand mUnsigned64Value] ^ [rightOperand mUnsigned64Value];
+    outValue->mInt64Value := [leftOperand mInt64Value] ^ [rightOperand mInt64Value];
     matchXorOperatorForTemplate
       !firstOperandType
       !secondOperandType
@@ -730,7 +730,7 @@ rule <relation_term>
       ?rightOperand
       ?secondOperandType
    ;
-    outValue->mUnsigned64Value := [leftOperand mUnsigned64Value] & [rightOperand mUnsigned64Value];
+    outValue->mInt64Value := [leftOperand mInt64Value] & [rightOperand mInt64Value];
     matchAndOperatorForTemplate
       !firstOperandType
       !secondOperandType
@@ -779,9 +779,9 @@ rule <relation_factor>
     @bool result;
     switch leftType
     when boolType :
-      result := [leftExpression mUnsigned64Value] == [rightExpression mUnsigned64Value];
-    when unsignedType :
-      result := [leftExpression mUnsigned64Value] == [rightExpression mUnsigned64Value];
+      result := [leftExpression mInt64Value] == [rightExpression mInt64Value];
+    when intType :
+      result := [leftExpression mInt64Value] == [rightExpression mInt64Value];
     when floatType :
       result := [leftExpression mFloatValue] == [rightExpression mFloatValue];
     when stringType :
@@ -794,7 +794,7 @@ rule <relation_factor>
       error here: "internal error, unconstructed type found" : result;
     end switch;
     outResultType := [@Ttype boolType];
-    outValue->mUnsigned64Value := if result then 1L else 0L end;
+    outValue-> mInt64Value := if result then 1LS else 0LS end;
   or
     $!=$;
     @Tvalue leftExpression := outValue;
@@ -813,9 +813,9 @@ rule <relation_factor>
     @bool result;
     switch leftType
     when boolType :
-      result := [leftExpression mUnsigned64Value] != [rightExpression mUnsigned64Value];
-    when unsignedType :
-      result := [leftExpression mUnsigned64Value] != [rightExpression mUnsigned64Value];
+      result := [leftExpression mInt64Value] != [rightExpression mInt64Value];
+    when intType :
+      result := [leftExpression mInt64Value] != [rightExpression mInt64Value];
     when floatType :
       result := [leftExpression mFloatValue] != [rightExpression mFloatValue];
     when stringType :
@@ -828,7 +828,7 @@ rule <relation_factor>
       error here: "internal error, unconstructed type found" : result;
     end switch;
     outResultType := [@Ttype boolType];
-    outValue->mUnsigned64Value := if result then 1L else 0L end;
+    outValue-> mInt64Value := if result then 1LS else 0LS end;
   or
     $<=$;
     @Tvalue leftExpression := outValue;
@@ -847,9 +847,9 @@ rule <relation_factor>
     @bool result;
     switch leftType
     when boolType :
-      result := [leftExpression mUnsigned64Value] <= [rightExpression mUnsigned64Value];
-    when unsignedType :
-      result := [leftExpression mUnsigned64Value] <= [rightExpression mUnsigned64Value];
+      result := [leftExpression mInt64Value] <= [rightExpression mInt64Value];
+    when intType :
+      result := [leftExpression mInt64Value] <= [rightExpression mInt64Value];
     when floatType :
       result := [leftExpression mFloatValue] <= [rightExpression mFloatValue];
     when stringType, enumType, listType, structType, mapType :
@@ -858,7 +858,7 @@ rule <relation_factor>
       error here: "internal error, unconstructed type found" : result;
     end switch;
     outResultType := [@Ttype boolType];
-    outValue->mUnsigned64Value := if result then 1L else 0L end;
+    outValue-> mInt64Value := if result then 1LS else 0LS end;
   or
     $>=$;
     @Tvalue leftExpression := outValue;
@@ -877,9 +877,9 @@ rule <relation_factor>
     @bool result;
     switch leftType
     when boolType :
-      result := [leftExpression mUnsigned64Value] >= [rightExpression mUnsigned64Value];
-    when unsignedType :
-      result := [leftExpression mUnsigned64Value] >= [rightExpression mUnsigned64Value];
+      result := [leftExpression mInt64Value] >= [rightExpression mInt64Value];
+    when intType :
+      result := [leftExpression mInt64Value] >= [rightExpression mInt64Value];
     when floatType :
       result := [leftExpression mFloatValue] >= [rightExpression mFloatValue];
     when stringType, enumType, listType, structType, mapType :
@@ -888,7 +888,7 @@ rule <relation_factor>
       error here: "internal error, unconstructed type found" : result;
     end switch;
     outResultType := [@Ttype boolType];
-    outValue->mUnsigned64Value := if result then 1L else 0L end;
+    outValue-> mInt64Value := if result then 1LS else 0LS end;
   or
     $>$;
     @Tvalue leftExpression := outValue;
@@ -907,9 +907,9 @@ rule <relation_factor>
     @bool result;
     switch leftType
     when boolType :
-      result := [leftExpression mUnsigned64Value] > [rightExpression mUnsigned64Value];
-    when unsignedType :
-      result := [leftExpression mUnsigned64Value] > [rightExpression mUnsigned64Value];
+      result := [leftExpression mInt64Value] > [rightExpression mInt64Value];
+    when intType :
+      result := [leftExpression mInt64Value] > [rightExpression mInt64Value];
     when floatType :
       result := [leftExpression mFloatValue] > [rightExpression mFloatValue];
     when stringType, enumType, listType, structType, mapType :
@@ -918,7 +918,7 @@ rule <relation_factor>
       error here: "internal error, unconstructed type found" : result;
     end switch;
     outResultType := [@Ttype boolType];
-    outValue->mUnsigned64Value := if result then 1L else 0L end;
+    outValue-> mInt64Value := if result then 1LS else 0LS end;
   or
     $<$;
     @Tvalue leftExpression := outValue;
@@ -937,9 +937,9 @@ rule <relation_factor>
     @bool result;
     switch leftType
     when boolType :
-      result := [leftExpression mUnsigned64Value] < [rightExpression mUnsigned64Value];
-    when unsignedType :
-      result := [leftExpression mUnsigned64Value] < [rightExpression mUnsigned64Value];
+      result := [leftExpression mInt64Value] < [rightExpression mInt64Value];
+    when intType :
+      result := [leftExpression mInt64Value] < [rightExpression mInt64Value];
     when floatType :
       result := [leftExpression mFloatValue] < [rightExpression mFloatValue];
     when stringType, enumType, listType, structType, mapType :
@@ -948,7 +948,7 @@ rule <relation_factor>
       error here: "internal error, unconstructed type found" : result;
     end switch;
     outResultType := [@Ttype boolType];
-    outValue->mUnsigned64Value := if result then 1L else 0L end;
+    outValue-> mInt64Value := if result then 1LS else 0LS end;
   end select;
 end rule;
 
@@ -990,7 +990,7 @@ rule <simple_expression>
       ?rightType
    ;
     left_shift_types_checkForTemplate !leftType !rightType ?outResultType;
-    outValue->mUnsigned64Value := [leftExpression mUnsigned64Value] << [[rightExpression mUnsigned64Value] uint];
+    outValue-> mInt64Value := [leftExpression mInt64Value] << [[rightExpression mInt64Value] uint];
   while 
     $>>$;
     @Tvalue leftExpression := outValue;
@@ -1006,7 +1006,7 @@ rule <simple_expression>
       ?rightType
    ;
     right_shift_types_checkForTemplate !leftType !rightType ?outResultType;
-    outValue->mUnsigned64Value := [leftExpression mUnsigned64Value] >> [[rightExpression mUnsigned64Value] uint];
+    outValue-> mInt64Value := [leftExpression mInt64Value] >> [[rightExpression mInt64Value] uint];
   while 
     $+$;
     @Tvalue leftExpression := outValue;
@@ -1022,7 +1022,7 @@ rule <simple_expression>
       ?rightType
     ;
     addition_types_checkForTemplate !leftType !rightType ?outResultType;
-    outValue->mUnsigned64Value := [leftExpression mUnsigned64Value] + [rightExpression mUnsigned64Value];
+    outValue-> mInt64Value := [leftExpression mInt64Value] + [rightExpression mInt64Value];
   while 
     $.$;
     @Tvalue leftExpression := outValue;
@@ -1058,7 +1058,7 @@ rule <simple_expression>
       ?rightType
    ;
     addition_types_checkForTemplate !leftType !rightType ?outResultType;
-    outValue->mUnsigned64Value := [leftExpression mUnsigned64Value] - [rightExpression mUnsigned64Value];
+    outValue-> mInt64Value := [leftExpression mInt64Value] - [rightExpression mInt64Value];
   end repeat;
 end rule;
 
@@ -1100,7 +1100,7 @@ rule <term>
       ?rightType
    ;
     multiply_types_checkForTemplate !leftType !rightType ?outResultType;
-    outValue->mUnsigned64Value := [leftExpression mUnsigned64Value] * [rightExpression mUnsigned64Value];
+    outValue-> mInt64Value := [leftExpression mInt64Value] * [rightExpression mInt64Value];
   while 
     $/$;
     @Tvalue leftExpression := outValue;
@@ -1116,7 +1116,7 @@ rule <term>
       ?rightType
    ;
     divide_types_checkForTemplate !leftType !rightType ?outResultType;
-    outValue->mUnsigned64Value := [leftExpression mUnsigned64Value] / [rightExpression mUnsigned64Value];
+    outValue-> mInt64Value := [leftExpression mInt64Value] / [rightExpression mInt64Value];
   while 
     $mod$;
     @Tvalue leftExpression := outValue;
@@ -1132,7 +1132,7 @@ rule <term>
       ?rightType
    ;
     modulo_types_checkForTemplate !leftType !rightType ?outResultType;
-    outValue->mUnsigned64Value := [leftExpression mUnsigned64Value] mod [rightExpression mUnsigned64Value];
+    outValue-> mInt64Value := [leftExpression mInt64Value] mod [rightExpression mInt64Value];
 #    log leftExpression;
 #    log rightExpression;
 #    log outValue;
@@ -1190,7 +1190,7 @@ rule <factor>
     ?expression
     ?operandType
  ;
-  outValue := valueWithUnsigned[!1L - [expression mUnsigned64Value]];
+  outValue := valueWithUnsigned[!1L - [expression mInt64Value]];
   checkNotOperatorForTemplate !operandType ?outResultType;
 end rule;
 
@@ -1219,7 +1219,7 @@ rule <factor>
     ?value
     ?operandType
  ;
-  outValue := valueWithUnsigned[!~ [value mUnsigned64Value]];
+  outValue := valueWithSigned[!~ [value mInt64Value]];
   checkBitComplementOperatorForTemplate !operandType ?outResultType;
 end rule;
 
@@ -1275,10 +1275,10 @@ rule <factor>
   !@Tvalue outValue
   !@Ttype outResultType
 :
-  @luint64 literalInt;
-  $unsigned_literal_integer64$ ?literalInt;
-  outValue := valueWithUnsigned[![literalInt uint64]];
-  outResultType := [@Ttype unsignedType];
+  @lsint64 literalInt;
+  $signed_literal_integer64$ ?literalInt;
+  outValue := valueWithSigned[![literalInt sint64]];
+  outResultType := [@Ttype intType];
 end rule;
 
 #------------------------------------------------------------------------------*
@@ -1474,12 +1474,12 @@ rule <factor>
             if formal_mValue != `@bool then
               typeError !functionOrVariableName !formal_mValue !"boolean" !idx;
             end if;
-            actualArgumentObjectList += ![if [actual_mValue mUnsigned64Value] == 0L then false else true end object];
-          when unsignedType :
-            if formal_mValue != `@uint64 then
+            actualArgumentObjectList += ![if [actual_mValue mInt64Value] == 0LS then false else true end object];
+          when intType :
+            if formal_mValue != `@sint64 then
               typeError !functionOrVariableName !formal_mValue !"unsigned" !idx;
             end if;
-            actualArgumentObjectList += ![[actual_mValue mUnsigned64Value] object];
+            actualArgumentObjectList += ![[actual_mValue mInt64Value] object];
           when floatType :
             if formal_mValue != `@double then
               typeError !functionOrVariableName !formal_mValue !"float" !idx;
@@ -1501,16 +1501,16 @@ rule <factor>
           end switch;
           idx ++;     
         end foreach;
-        outResultType := [@Ttype unsignedType];
-        outValue := valueWithUnsigned[!0L];
+        outResultType := [@Ttype intType];
+        outValue := valueWithSigned[!0LS];
         if [@uint errorCount] == 0 then
           const @object result := [f invoke !actualArgumentObjectList ![functionOrVariableName location]];
-          if [result objectDynamicType] == `@uint64 then
-            outResultType := [@Ttype unsignedType];
-            outValue->mUnsigned64Value := (cast result if == @uint64 else error functionOrVariableName);
+          if [result objectDynamicType] == `@sint64 then
+            outResultType := [@Ttype intType];
+            outValue->mInt64Value := (cast result if == @sint64 else error functionOrVariableName);
           elsif [result objectDynamicType] == `@bool then
             outResultType := [@Ttype boolType];
-            outValue->mUnsigned64Value := [(cast result if == @bool else error functionOrVariableName) uint64];
+            outValue->mInt64Value := [(cast result if == @bool else error functionOrVariableName) sint64];
           elsif [result objectDynamicType] == `@string then
             outResultType := [@Ttype stringType];
             outValue->mStringValue := (cast result if == @string else error functionOrVariableName);
@@ -1639,7 +1639,7 @@ rule <factor>
   !@Ttype outResultType
 :
   $emptylist$;
-  outValue := [@Tvalue new !0L !0.0 !"" ![@TfieldMapList emptyList] ![@TfieldMap emptyMap] !dummyFunction[]];
+  outValue := [@Tvalue new !0LS !0.0 !"" ![@TfieldMapList emptyList] ![@TfieldMap emptyMap] !dummyFunction[]];
   outResultType := [@Ttype listType];
 end rule;
 
@@ -1654,7 +1654,7 @@ rule <factor>
   !@Ttype outResultType
 :
   $emptymap$;
-  outValue := [@Tvalue new !0L !0.0 !"" ![@TfieldMapList emptyList] ![@TfieldMap emptyMap] !dummyFunction[]];
+  outValue := [@Tvalue new !0LS !0.0 !"" ![@TfieldMapList emptyList] ![@TfieldMap emptyMap] !dummyFunction[]];
   outResultType := [@Ttype mapType];
 end rule;
 

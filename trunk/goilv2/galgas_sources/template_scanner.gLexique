@@ -28,7 +28,7 @@ replace "\\n" -> "\n";
 replace "\\\\" -> "\\";
 
 @string identifierString;
-@uint64 uint64value;
+@sint64 sint64value;
 @string tokenString;
 @string functionContent;
 
@@ -121,11 +121,40 @@ end rule;
 #------------------------------- Integer, floating Point Constant ------------------
 @double floatValue;
 $literal_double$ !floatValue !tokenString error message "a float number" style float_csts;
-$unsigned_literal_integer64$ ! uint64value error message "a 64-bit unsigned decimal number" style integerStyle;
+$signed_literal_integer64$ ! sint64value error message "a 64-bit signed decimal number" style integerStyle;
 
 message decimalNumberTooLarge : "decimal number too large";
 message floatNumberConversionError : "invalid float number";
 message internalError : "internal error";
+
+rule '-' :
+  select
+  when '0'->'9':
+    enterCharacterIntoString !?tokenString !'-';
+    enterCharacterIntoString !?tokenString !*;
+    repeat
+    while '0'->'9' :
+      enterCharacterIntoString !?tokenString !*;
+    while '_' :
+    end repeat;
+    select
+    when '.' :
+      enterCharacterIntoString !?tokenString !'.';
+      repeat
+      while '0'->'9' :
+        enterCharacterIntoString !?tokenString !*;
+      while '_' :
+      end repeat;
+      convertStringToDouble !tokenString !?floatValue error floatNumberConversionError;
+      send $literal_double$;
+    default
+      convertDecimalStringIntoSInt64 !tokenString !?sint64value error decimalNumberTooLarge, internalError;
+      send $signed_literal_integer64$;
+    end select;
+  default
+    send $-$;
+  end select;
+end rule;
 
 rule '0'->'9' :
   enterCharacterIntoString !?tokenString !*;
@@ -145,8 +174,8 @@ rule '0'->'9' :
     convertStringToDouble !tokenString !?floatValue error floatNumberConversionError;
     send $literal_double$;
   default
-    convertDecimalStringIntoUInt64 !tokenString !?uint64value error decimalNumberTooLarge, internalError;
-    send $unsigned_literal_integer64$;
+    convertDecimalStringIntoSInt64 !tokenString !?sint64value error decimalNumberTooLarge, internalError;
+    send $signed_literal_integer64$;
   end select;
 end rule;
 

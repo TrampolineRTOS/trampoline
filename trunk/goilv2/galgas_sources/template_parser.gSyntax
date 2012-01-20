@@ -109,12 +109,12 @@ rule <template_instruction>
   switch resultType 
   when stringType, enumType:
     ioResultingString .= [expression mStringValue];
-  when unsignedType:
-    ioResultingString .= [[expression mUnsigned64Value] string];
+  when intType:
+    ioResultingString .= [[expression mInt64Value] string];
   when floatType:
     ioResultingString .= [[expression mFloatValue] string];
   when boolType:
-    if [expression mUnsigned64Value] == 0L then
+    if [expression mInt64Value] == 0LS then
       ioResultingString .= "false";
     else
       ioResultingString .= "true";
@@ -329,7 +329,7 @@ rule <template_instruction>
   [!?ioTemplateVariableMap insertKey
     !fctName
     ![@Ttype functionType]
-    ![@Tvalue new !0L !0.0 !"" ![@TfieldMapList emptyList] ![@TfieldMap emptyMap] !fct]
+    ![@Tvalue new !0LS !0.0 !"" ![@TfieldMapList emptyList] ![@TfieldMap emptyMap] !fct]
   ];
   returnedValue := valueWithVoid[];   
   returnedType := [@Ttype unconstructedType];   
@@ -498,7 +498,7 @@ rule <template_instruction>
       if expressionType != [@Ttype boolType] then
         error here:"the operand of the 'not' operator should be boolean";
       end if;
-      currentCondition := [expression mUnsigned64Value] == 1L;
+      currentCondition := [expression mInt64Value] == 1LS;
       $then$;
       parse
       when currentCondition :
@@ -637,7 +637,7 @@ rule <template_instruction>
   when mapType:
     listLength := [[enumeratedValue mStructValue] count];
     keyList := [[enumeratedValue mStructValue] allKeyList];
-  when boolType, enumType, unsignedType, floatType, stringType, structType, unconstructedType, functionType:
+  when boolType, enumType, intType, floatType, stringType, structType, unconstructedType, functionType:
     error here:"only a list or a map can be enumerated": keyList;
   end switch;
 
@@ -684,7 +684,7 @@ rule <template_instruction>
     else
       const @TfieldMap fieldMap := [[enumeratedValue mMapListValue] mMapAtIndex !idx];
       itemType := [@Ttype structType];
-      itemValue := [@Tvalue new !0L !0.0 !"" ![@TfieldMapList emptyList] !fieldMap !dummyFunction[]];
+      itemValue := [@Tvalue new !0LS !0.0 !"" ![@TfieldMapList emptyList] !fieldMap !dummyFunction[]];
     end if;
     @lstring varName := [@lstring new !foreachPrefix . [variableName string] ![variableName location]];
     [!?templateVariableMap insertKey !varName !itemType !itemValue];
@@ -777,7 +777,7 @@ rule <template_instruction>
       ?expressionType
     ;
     if expressionType != [@Ttype boolType] &
-       expressionType != [@Ttype unsignedType] &
+       expressionType != [@Ttype intType] &
        expressionType != [@Ttype stringType] then
        error here:"only a bool, integer or string can be enumerated";
     end if;
@@ -865,7 +865,7 @@ rule <template_instruction>
     ?startValue
     ?startType
   ;
-  if startType != [@Ttype unsignedType] then
+  if startType != [@Ttype intType] then
     error here:"loop start value should be an integer";
   end if;
   $to$;
@@ -879,7 +879,7 @@ rule <template_instruction>
     ?endValue
     ?endType
   ;
-  if endType != [@Ttype unsignedType] then
+  if endType != [@Ttype intType] then
     error here:"loop end value should be an integer";
   end if;
 #--- Before block
@@ -887,7 +887,7 @@ rule <template_instruction>
   or
     $before$;
     parse
-    when [endValue mUnsigned64Value] >= [startValue mUnsigned64Value] :
+    when [endValue mInt64Value] >= [startValue mInt64Value] :
       <template_instruction_list>
         !inPrefix
         !inPath
@@ -903,8 +903,8 @@ rule <template_instruction>
   end select;
 #--- Do block
   $do$;
-  @uint start := [[startValue mUnsigned64Value] uint];
-  @uint stop := [[endValue mUnsigned64Value] uint];
+  @uint start := [[startValue mInt64Value] uint];
+  @uint stop := [[endValue mInt64Value] uint];
   @uint idx := start;
 #  log start;
 #  log stop;
@@ -1400,13 +1400,13 @@ routine printVariable
   @string offset := [@string stringWithSequenceOfCharacters !' ' !indent];
   switch variableType
   when boolType:
-    if [variableValue mUnsigned64Value] == 1L then
+    if [variableValue mInt64Value] == 1LS then
       message offset."true\n";
     else
       message offset."false\n";
     end if;
-  when unsignedType:
-    message offset.[variableValue mUnsigned64Value]."\n";
+  when intType:
+    message offset.[variableValue mInt64Value]."\n";
   when floatType:
     message offset.[variableValue mFloatValue]."\n";
   when stringType:
@@ -1416,7 +1416,7 @@ routine printVariable
   when listType:
     foreach [variableValue mMapListValue] index idx do
       message offset."item at ".idx.":\n";
-      printVariable !indent ![@Ttype structType] ![@Tvalue new !0L !0.0 !"" ![@TfieldMapList emptyList] !mMap !dummyFunction[]];
+      printVariable !indent ![@Ttype structType] ![@Tvalue new !0LS !0.0 !"" ![@TfieldMapList emptyList] !mMap !dummyFunction[]];
     end foreach;
   when mapType:
     foreach [variableValue mStructValue] do
@@ -1477,13 +1477,13 @@ function structCompare
     @Ttype s2Type;
     @Tvalue s2Value;
     [s2 searchKey !field ?s2Type ?s2Value];
-    if s1Type == s2Type & s1Type == [@Ttype unsignedType] then
+    if s1Type == s2Type & s1Type == [@Ttype intType] then
 #      message "Compare ".s1Value." and ".s2Value." ";
-      if [s1Value mUnsigned64Value] < [s2Value mUnsigned64Value] then
+      if [s1Value mInt64Value] < [s2Value mInt64Value] then
 #        message "<\n";
         result := -1s * [order sint];
       else
-        if [s1Value mUnsigned64Value] > [s2Value mUnsigned64Value] then
+        if [s1Value mInt64Value] > [s2Value mInt64Value] then
 #          message ">\n";
           result := 1s  * [order sint];
         else
@@ -1590,7 +1590,7 @@ rule <template_instruction>
     @TfieldMapList variable := [variableValue mMapListValue];
     if [variable length] > 0 then
       quickSort !?variable !0 ![variable length]-1 !keys;
-      variableValue := [@Tvalue new !0L !0.0 !"" !variable ![@TfieldMap emptyMap] !dummyFunction[]];
+      variableValue := [@Tvalue new !0LS !0.0 !"" !variable ![@TfieldMap emptyMap] !dummyFunction[]];
       #log variable;
       [!?ioTemplateVariableMap setMTypeForKey !variableType ![variableName string]];
       [!?ioTemplateVariableMap setMValueForKey !variableValue ![variableName string]];
@@ -1623,8 +1623,8 @@ rule <variable>
     switch keyType
     when stringType:
       key := [@lstring new ![keyValue mStringValue] !here];
-    when unsignedType:
-      idx := [@lsint new ![[keyValue mUnsigned64Value] sint] !here];
+    when intType:
+      idx := [@lsint new ![[keyValue mInt64Value] sint] !here];
     when boolType, floatType, listType, mapType, structType, enumType, unconstructedType, functionType:
       error here: "map key must be a string, list index must be an unsigned integer";
     end switch;
@@ -1644,8 +1644,8 @@ rule <variable>
       switch keyType
       when stringType:
         key := [@lstring new ![keyValue mStringValue] !here];
-      when unsignedType:
-        idx := [@lsint new ![[keyValue mUnsigned64Value] sint] !here];
+      when intType:
+        idx := [@lsint new ![[keyValue mInt64Value] sint] !here];
       when boolType, floatType, listType, mapType, structType, enumType, unconstructedType, functionType:
         error here: "map key must be a string, list index must be an unsigned integer";
       end switch;
