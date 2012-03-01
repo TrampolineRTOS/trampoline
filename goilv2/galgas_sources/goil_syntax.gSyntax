@@ -92,6 +92,8 @@ rule <start>:
   end if;
   if [@uint errorCount] == 0 then
     @TfieldMap templateData := [application templateData !imp];
+    addStringValue !?templateData !lstringWith[!"PROJECT"] ![projectName[] lastPathComponent];
+
     generate_all !templateData;
   end if;
 end rule;
