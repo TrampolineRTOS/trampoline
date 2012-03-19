@@ -34,34 +34,19 @@
  */
 %
 let system_call_count := 0
-foreach api_set in APICONFIG do
-  if api_set::NAME != "com" then
-    foreach api in api_set::ENTRY do
+foreach api_sec in USEDAPI do
+  foreach api in api_sec::ENTRY do
 %
 /**
- * @def OSServiceId_% !api::API %
+ * @def % !api_sec::ID_PREFIX %ServiceId_% !api::API %
  *
  * @see #SERVICE_CALL_DESCRIPTOR
  * @see #% !api::API %
  */
-#define OSServiceId_% !api::API %    % !system_call_count %
+#define % !api_sec::ID_PREFIX %ServiceId_% !api::API %    % !system_call_count %
 %
-      let system_call_count := system_call_count + 1
-    end foreach
-  else
-    foreach api in api_set::ENTRY do
-%
-/**
- * @def COMServiceId_% !api::API %
- *
- * @see #SERVICE_CALL_DESCRIPTOR
- * @see #% !api::API %
- */
-#define COMServiceId_% !api::API %    % !system_call_count %
-%
-      let system_call_count := system_call_count + 1
-    end foreach
-  end if
+    let system_call_count := system_call_count + 1
+  end foreach
 end foreach
 %
 /**

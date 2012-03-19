@@ -1,8 +1,7 @@
-  .global % !REAL %
-% !REAL %:
+  .global % !exists api_func::ACTUAL default ( api_func::API ) %
+% !exists api_func::ACTUAL default ( api_func::API ) %:
   stmfd sp!,{lr}
-  mov r3,#OSServiceId_% !API %
-  swi #OSServiceId_% !API %
+  mov r3,#% !api_sec::ID_PREFIX %ServiceId_% !api_func::API %
+  swi #% !api_sec::ID_PREFIX %ServiceId_% !api_func::API %
   ldmfd sp!,{lr}
   mov pc,lr
-

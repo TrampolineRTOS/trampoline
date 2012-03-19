@@ -48,8 +48,10 @@ template if exists std_as_code_dir
 #include "tpl_as_memmap.h"
 
 %
-foreach APICONFIG::USEDAPI do
-  template service_call
+foreach api_sec in USEDAPI do
+  foreach api_func in api_sec::ENTRY do
+    template service_call
+  end foreach
 end foreach
 %
 

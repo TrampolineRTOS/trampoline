@@ -122,10 +122,10 @@ end if
 %
 %
 if exists OS::MEMMAP_S::LINKER then
-%LDFLAGS += -T % !OS::BUILD_S::PROJECT %/% !OS::MEMMAP_S::LINKER::SCRIPT 
+%LDFLAGS += -T % !PROJECT %/% !OS::MEMMAP_S::LINKER_S::SCRIPT 
 end if
 if OS::TRACE then%
-EXTRA_FILES_CLEAN += %!OS::BUILD_S::PROJECT %.desc%
+EXTRA_FILES_CLEAN += %!PROJECT %.desc%
 end if
 if LOGFILE then%
 EXTRA_FILES_CLEAN += goil.log%

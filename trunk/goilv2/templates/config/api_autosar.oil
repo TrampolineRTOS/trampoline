@@ -1,6 +1,7 @@
 CPU api_autosar {
   /* counters services */
   APICONFIG counters {
+    ID_PREFIX = OS;
     FILE = "tpl_as_counter_kernel";
     ENTRY IncrementCounter       { API = IncrementCounter;       KERNEL = tpl_increment_counter_service;         };
     ENTRY GetCounterValue        { API = GetCounterValue;        KERNEL = tpl_get_counter_value_service;         };
@@ -8,6 +9,7 @@ CPU api_autosar {
   };
   /* schedule tables services */
   APICONFIG scheduletables {
+    ID_PREFIX = OS;
     FILE = "tpl_as_st_kernel";
     ENTRY StartScheduleTableRel  { API = StartScheduleTableRel;  KERNEL = tpl_start_schedule_table_rel_service;  };
     ENTRY StartScheduleTableAbs  { API = StartScheduleTableAbs;  KERNEL = tpl_start_schedule_table_abs_service;  };
@@ -17,6 +19,7 @@ CPU api_autosar {
   };
   /* global time services */
   APICONFIG globaltime {
+    ID_PREFIX = OS;
     FILE = "tpl_as_gt_kernel";
     ENTRY StartScheduleTableSynchron { API = StartScheduleTableSynchron; KERNEL = tpl_start_schedule_table_synchron_service; };
     ENTRY SyncScheduleTable          { API = SyncScheduleTable;          KERNEL = tpl_sync_schedule_table_service;           };
@@ -24,11 +27,13 @@ CPU api_autosar {
   };
   /* isr services */
   APICONFIG isrs {
+    ID_PREFIX = OS;
     FILE = "tpl_as_isr_kernel";
     ENTRY GetISRID { API = GetISRID;  KERNEL = tpl_get_isr_id_service; };
   };
   /* application services */
   APICONFIG applications {
+    ID_PREFIX = OS;
     FILE = "tpl_as_app_kernel";
     ENTRY GetApplicationID     { API = GetApplicationID;     KERNEL = tpl_get_application_id_service;     };
     ENTRY TerminateApplication { API = TerminateApplication; KERNEL = tpl_terminate_application_service;  };

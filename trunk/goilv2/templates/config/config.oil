@@ -7,6 +7,7 @@ IMPLEMENTATION trampoline_common {
       IDENTIFIER KERNEL;
     } ENTRY[];
     STRING FILE;
+    IDENTIFIER ID_PREFIX;
   };
   
   OS {
@@ -34,7 +35,7 @@ IMPLEMENTATION trampoline_common {
         ] LINKER;
         ENUM [gcc, ghs, mwc] COMPILER;
         ENUM [gnu_as] ASSEMBLER;
-        BOOLEAN MEMRORY_PROTECTION = FALSE;
+        BOOLEAN MEMORY_PROTECTION = FALSE;
       },
       FALSE
     ] MEMMAP = FALSE;

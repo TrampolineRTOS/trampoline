@@ -469,21 +469,29 @@ routine searchFieldIfExists
   
   if [inTemplateFieldMap hasKey ![field string]] then
     [inTemplateFieldMap searchKey !field ?variableType ?variableValue];
-    if [key string] != "" & variableType == [@Ttype mapType] then
-      if [[variableValue mStructValue] hasKey ![key string]] then
-        [[variableValue mStructValue] searchKey !key ?variableType ?variableValue];
-        found := true;
+    if [key string] != "" then
+      if variableType == [@Ttype mapType] then
+        if [[variableValue mStructValue] hasKey ![key string]] then
+          [[variableValue mStructValue] searchKey !key ?variableType ?variableValue];
+          found := true;
+        else
+          found := false;
+        end if;
       else
-        found := false;
+        error key : "a key is only used in a map": found;
       end if;
-    elsif [idx sint] != -1s & variableType == [@Ttype listType] then
-      if [idx uint] < [[variableValue mMapListValue] length] then
-        @TfieldMapList mapList := [variableValue mMapListValue];
-        variableValue->mStructValue := [mapList mMapAtIndex ![idx uint]];
-        variableType := [@Ttype structType];
-        found := true;
+    elsif [idx sint] != -1s then
+      if variableType == [@Ttype listType] then
+        if [idx uint] < [[variableValue mMapListValue] length] then
+          @TfieldMapList mapList := [variableValue mMapListValue];
+          variableValue->mStructValue := [mapList mMapAtIndex ![idx uint]];
+          variableType := [@Ttype structType];
+          found := true;
+        else
+          found := false;
+        end if;
       else
-        found := false;
+        error idx : "an index is only used in a list": found;
       end if;
     else
       found := true;

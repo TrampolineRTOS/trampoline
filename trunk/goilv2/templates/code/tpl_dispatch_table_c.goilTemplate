@@ -26,9 +26,9 @@
 
 #include "tpl_dispatch_table.h"
 %
-foreach APICONFIG::USEDFILES do
+foreach api_sec in APICONFIG do
 %
-#include "% !FILE %.h"%
+#include "% !api_sec::FILE %.h"%
 end foreach
 %
 
@@ -37,11 +37,17 @@ end foreach
 CONST(tpl_system_call, OS_CONST) tpl_dispatch_table[SYSCALL_COUNT] = {
 /* os services */
 %
-foreach APICONFIG::USEDAPI do
-%    (tpl_system_call) % !KERNEL 
-between %,
+
+foreach api_sec in USEDAPI do
+  foreach api_func in api_sec::ENTRY do
+%    (tpl_system_call) % !api_func::KERNEL 
+  between %,
+%
+  end foreach
+  between %,
 %
 end foreach
+
 %
 };
 #define OS_STOP_SEC_CONST_UNSPECIFIED
