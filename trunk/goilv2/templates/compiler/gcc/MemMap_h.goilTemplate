@@ -248,19 +248,19 @@ foreach app in APPLICATIONS do
   for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
     for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
 %
-#ifdef APP_OS_APP_% !NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
-  #undef APP_OS_APP_% !NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
+#ifdef APP_OS_APP_% !app::NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
+  #undef APP_OS_APP_% !app::NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
   #ifdef CURRENT_LINKER_DATA_SECTION
-    #error "Starting a new OS_APP % !NAME % data section while a section is already started"
+    #error "Starting a new OS_APP % !app::NAME % data section while a section is already started"
   #else
     #undef MEMMAP_ERROR
     #undef CURRENT_LINKER_DATA_SECTION_NAME
-    #define CURRENT_LINKER_DATA_SECTION_NAME __attribute__ ((section (".OS_APP_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %")))
+    #define CURRENT_LINKER_DATA_SECTION_NAME __attribute__ ((section (".OS_APP_% !app::NAME %_SEC% !SECTION_KIND !DATA_SIZE %")))
     #define CURRENT_LINKER_DATA_SECTION
   #endif
 #endif
-#ifdef APP_OS_APP_% !NAME %_STOP_SEC% !SECTION_KIND !DATA_SIZE %
-  #undef APP_OS_APP_% !NAME %_STOP_SEC% !SECTION_KIND !DATA_SIZE %
+#ifdef APP_OS_APP_% !app::NAME %_STOP_SEC% !SECTION_KIND !DATA_SIZE %
+  #undef APP_OS_APP_% !app::NAME %_STOP_SEC% !SECTION_KIND !DATA_SIZE %
   #ifdef CURRENT_LINKER_DATA_SECTION
     #undef MEMMAP_ERROR
     #undef CURRENT_LINKER_DATA_SECTION
