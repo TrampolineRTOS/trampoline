@@ -33,29 +33,52 @@
  * $URL$
  */
 
+
+
 CPU config {
-   
-   ISR systick_isr_C {
-       CATEGORY = 1;
-  PRIORITY = 1;
-  SOURCE = systick_isr_C;
-   };
-   ISR nxt_motor_isr_C {
-       CATEGORY = 1;
-  PRIORITY = 1;
-  SOURCE = nxt_motor_isr_C;
-   };
-   ISR spi_isr_C {
-       CATEGORY = 1;
-  PRIORITY = 1;
-  SOURCE = spi_isr_C;
-   };
-   
-   ISR bt_isr_C {
-       CATEGORY = 1;
-  PRIORITY = 1;
-  SOURCE = it_bluetooth;
-   };
+
+  INTERRUPT_COUNT nxt_interrupt_count {
+    IT_TABLE_SIZE = 31;
+  };
+  
+  INTERRUPT it_timer1              { ID = 1; };
+  INTERRUPT systick_isr_C          { ID = 1; };
+  INTERRUPT nxt_motor_isr_C        { ID = 2; };
+  INTERRUPT spi_isr_C              { ID = 5; };
+  INTERRUPT uart_isr_C_0           { ID = 6; };
+  INTERRUPT uart_isr_C_1           { ID = 7; };
+  INTERRUPT it_bluetooth           { ID = 7; };
+  INTERRUPT sound_isr_C            { ID = 8; };
+  INTERRUPT twi_isr_C              { ID = 9; };
+  INTERRUPT systick_low_priority_C { ID = 10; };
+  INTERRUPT udp_isr_C              { ID = 11; };
+  INTERRUPT i2c_timer_isr_C        { ID = 12; };
+  INTERRUPT button_start           { ID = 15; };
+  INTERRUPT button_left            { ID = 16; };
+  INTERRUPT button_right           { ID = 17; };
+  INTERRUPT button_stop            { ID = 18; };
+  INTERRUPT check_buttons_status   { ID = 30; };
+
+  ISR systick_isr_C {
+    CATEGORY = 1;
+    PRIORITY = 1;
+    SOURCE = systick_isr_C;
+  };
+  ISR nxt_motor_isr_C {
+    CATEGORY = 1;
+    PRIORITY = 1;
+    SOURCE = nxt_motor_isr_C;
+  };
+  ISR spi_isr_C {
+    CATEGORY = 1;
+    PRIORITY = 1;
+    SOURCE = spi_isr_C;
+  }; 
+  ISR bt_isr_C {
+    CATEGORY = 1;
+    PRIORITY = 1;
+    SOURCE = it_bluetooth;
+  };
 /*   ISR sound_isr_C {
        CATEGORY = 1;
   PRIORITY = 1;
@@ -79,27 +102,26 @@ CPU config {
   SOURCE = uart_isr_C_1;
    };
    */
-   ISR twi_isr_C {
-       CATEGORY = 1;
-  PRIORITY = 1;
-  SOURCE = twi_isr_C;
-   };
-   ISR systick_low_priority_C {
-       CATEGORY = 1;
-  PRIORITY = 1;
-  SOURCE = systick_low_priority_C;
-   };
-   ISR i2c_timer_isr_C {
-       CATEGORY = 1;
-  PRIORITY = 1;
-  SOURCE = i2c_timer_isr_C;
-   };
-   ISR check_buttons_status {
-       CATEGORY = 1;
-  PRIORITY = 1;
-  SOURCE = check_buttons_status;
-   };
-   
+  ISR twi_isr_C {
+    CATEGORY = 1;
+    PRIORITY = 1;
+    SOURCE = twi_isr_C;
+  };
+  ISR systick_low_priority_C {
+    CATEGORY = 1;
+    PRIORITY = 1;
+    SOURCE = systick_low_priority_C;
+  };
+  ISR i2c_timer_isr_C {
+    CATEGORY = 1;
+    PRIORITY = 1;
+    SOURCE = i2c_timer_isr_C;
+  };
+  ISR check_buttons_status {
+    CATEGORY = 1;
+    PRIORITY = 1;
+    SOURCE = check_buttons_status;
+  }; 
 };
 
 /* End of file config.oil */

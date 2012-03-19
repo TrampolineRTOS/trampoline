@@ -655,7 +655,7 @@ let USECOM := exists COM | [MESSAGE length] > 0 | exists NETWORKMESSAGE
 # Compute the USEMEMORYPROTECTION flag
 let USEMEMORYPROTECTION := NO
 if OS::MEMMAP then
-  let USEMEMORYPROTECTION := OS::MEMMAP::MEMORY_PROTECTION
+  let USEMEMORYPROTECTION := OS::MEMMAP_S::MEMORY_PROTECTION
 end if
 
 # Compute the OS::TIMINGPROTECTION
@@ -1095,6 +1095,16 @@ foreach resource in RESOURCES do
   end if
 end foreach
 
+#------------------------------------------------------------------------------*
+# compute the USEDAPI list
+#
+let USEDAPI := emptyList
+foreach api_sec in APICONFIG do
+  if api_sec::ID_PREFIX != "COM" | USECOM == true then
+    let USEDAPI += api_sec
+  end if
+end foreach
+
 %
 Goil run on % !TIMESTAMP%
 Generated files are:
@@ -1140,7 +1150,8 @@ if OS::SYSTEM_CALL then
 end if
 
 if OS::MEMMAP then
-  if exists COMPILER then
+  if exists OS::MEMMAP_S::COMPILER then
+    let COMPILER := OS::MEMMAP_S::COMPILER
     !PROJECT %/MemMap.h
 %
     write to PROJECT."/MemMap.h":
@@ -1158,15 +1169,17 @@ if OS::MEMMAP then
     end write
   end if
 
-  if exists LINKER then
-    !PROJECT %/% !LINKSCRIPT%
+  if exists OS::MEMMAP_S::LINKER then
+    let LINKER := OS::MEMMAP_S::LINKER
+    !PROJECT %/% !OS::MEMMAP_S::LINKER_S::SCRIPT%
 %
-    write to PROJECT."/".LINKSCRIPT:
+    write to PROJECT."/".OS::MEMMAP_S::LINKER_S::SCRIPT:
       template script in linker
     end write
   end if
 
-  if exists ASSEMBLER then
+  if exists OS::MEMMAP_S::ASSEMBLER then
+    let ASSEMBLER := OS::MEMMAP_S::ASSEMBLER
     !PROJECT %/AsMemMap.h
 %
     write to PROJECT."/AsMemMap.h":
@@ -1192,3 +1205,19 @@ if OS::TRACE then
 end if
 
 template if exists custom_files in config
+
+#display SENSOR
+#
+#let portmap := emptyMap
+#foreach sensor in SENSOR do
+#  let key := sensor::PORT
+#  if not exists portmap[key] then
+#    let portmap[key] := sensor::NAME
+#  else
+#    error sensor::PORT : "Only one sensor per port"
+#    display portmap
+#  end if
+#end foreach
+
+display PROJECT
+  
