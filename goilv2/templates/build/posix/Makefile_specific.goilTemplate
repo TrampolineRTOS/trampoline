@@ -4,4 +4,15 @@ ifeq ($(strip $(OS)),Linux)
  LDFLAGS += -lrt
 endif
 
+# gcc 4.6 warns unused but set variables. Unfortunately
+# this pattern is mandatory to implement the OSEK API.
+# gcc 4.6 also requires to use -lrt to communicate with viper on Linux
+COMPILER_EXE = $(shell basename ${CC})
+ifeq "${COMPILER_EXE}" "gcc"
+    GCCVERSION = $(shell ${CC} -dumpversion | cut -f 1-2 -d .)
+    ifeq "${GCCVERSION}" "4.6"
+        CFLAGS+=-Wno-unused-but-set-variable
+    endif
+endif
+
 CFLAGS += -I$(TPL_BASE_PATH)/viper
