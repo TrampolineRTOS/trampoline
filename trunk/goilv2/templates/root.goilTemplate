@@ -336,7 +336,7 @@ end foreach
 let USEREVENTS := emptyList
 let AUTOEVENTS := emptyList
 foreach event in EVENT do
-  if typeof event::MASK == @unsigned then
+  if typeof event::MASK == @int then
     let USEREVENTS += event
   else
     let AUTOEVENTS += event
@@ -422,13 +422,14 @@ foreach task in EXTENDEDTASKS do
   let mask := 0
   foreach event in task::EVENT do
     let event_mask := tasks_for_event[event::VALUE]::MASK
-    if typeof event_mask == @unsigned then
+    if typeof event_mask == @int then
       let mask := mask | event_mask
     end if
   end foreach
   let mask_for_task[task::NAME] := mask
 end foreach
 
+#display mask_for_task
 #
 # Third user defined events are processed.
 #
@@ -1219,5 +1220,5 @@ template if exists custom_files in config
 #  end if
 #end foreach
 
-display PROJECT
+#display PROJECT
   
