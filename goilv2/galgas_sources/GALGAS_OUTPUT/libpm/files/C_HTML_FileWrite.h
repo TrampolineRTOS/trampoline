@@ -40,15 +40,11 @@ class C_String ;
 class C_HTML_FileWrite : public C_TextFileWrite {
 //--- Constructor : if inFileName is the empty string, no file is opened.
 //    Otherwise, it tries to open the file for writing;
-//    outSuccessfullyOpened is returned true is inFileName is empty or if file is successfully opened
-//    outSuccessfullyOpened is returned false is inFileName is not empty and file cannot be successfully opened
 //    The destructor will close the file (is successfully opened)
   public : C_HTML_FileWrite (const C_String & inFileName,
                              const C_String & inWindowTitle,
                              const C_String & inCSSFileName,
-                             const C_String & inCSSContents
-                             COMMA_MAC_OS_CREATOR_FORMAL_ARGUMENT,
-                             bool & outOk) ;
+                             const C_String & inCSSContents) ;
 
 //--- Destructor
   public : virtual ~C_HTML_FileWrite (void) ;

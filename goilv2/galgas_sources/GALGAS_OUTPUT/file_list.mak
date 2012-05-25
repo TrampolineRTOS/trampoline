@@ -79,14 +79,19 @@ SOURCES += C_BDD_Set3.cpp
 SOURCES += C_BDD_Descriptor.cpp
 
 #--- Files
+SOURCES += C_FileManager.cpp
+SOURCES += AC_FileHandleForWriting.cpp
+SOURCES += AC_FileHandle.cpp
 SOURCES += C_TextFileWrite.cpp
 SOURCES += C_HTML_FileWrite.cpp
+SOURCES += C_BinaryFileWrite.cpp
 
 #--- Streams
 SOURCES += AC_OutputStream.cpp
 SOURCES += C_ColoredConsole.cpp
 SOURCES += C_ConsoleOut.cpp
 SOURCES += C_ErrorOut.cpp
+SOURCES += C_TCPSocketOut.cpp
 
 #--- Strings
 SOURCES += unicode_character_cpp.cpp
@@ -102,6 +107,7 @@ SOURCES += C_DateTime.cpp
 SOURCES += F_main.cpp
 SOURCES += C_PrologueEpilogue.cpp
 SOURCES += C_SharedObject.cpp
+SOURCES += C_Data.cpp
 SOURCES += F_DisplayException.cpp
 SOURCES += MF_Assert.cpp
 SOURCES += F_GetPrime.cpp
@@ -129,6 +135,7 @@ SOURCES += capCollectionElementArray.cpp
 SOURCES += cSortedListElement.cpp
 SOURCES += capSortedListElement.cpp
 SOURCES += cGenericAbstractEnumerator.cpp
+SOURCES += cEnumerator_range.cpp
 SOURCES += cIndexingDictionary.cpp
 
 SOURCES += AC_GALGAS_root.cpp

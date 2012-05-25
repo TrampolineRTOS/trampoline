@@ -106,7 +106,7 @@ class AC_GALGAS_sortedlist : public AC_GALGAS_root {
                                          COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Compare
-  public : VIRTUAL_IN_DEBUG typeComparisonResult objectCompare (const AC_GALGAS_sortedlist & inOperand) const ;
+  public : typeComparisonResult objectCompare (const AC_GALGAS_sortedlist & inOperand) const ;
 
 //--------------------------------- Readers
   public : VIRTUAL_IN_DEBUG GALGAS_uint reader_length (LOCATION_ARGS) const ;

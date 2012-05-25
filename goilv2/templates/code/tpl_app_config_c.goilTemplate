@@ -74,6 +74,9 @@ if USEMEMORYPROTECTION then
 %
 end if
 
+# application mode inclusion
+template if exists appmode
+
 %
 #define API_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"

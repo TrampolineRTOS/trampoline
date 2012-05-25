@@ -747,7 +747,7 @@ end routine;
 
 
 map @implementationMap {
-  @implementationObject object ;
+  @implementationObject obj ;
   insert put error message "%K is duplicated in %L";
   search get error message "%K does not exists";
   remove del error message "%K does not exists";
@@ -793,7 +793,7 @@ end method;
 method @implementation checkObjectReferences
 :
   foreach imp do
-    foreach [object attributes] do
+    foreach [obj attributes] do
       [type checkAttributeReferences !selfcopy];
     end foreach;
   end foreach;

@@ -2,7 +2,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 2003, ..., 2010 Pierre Molinaro.                           *
+//  Copyright (C) 2003, ..., 2012 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //                                                                           *
@@ -33,12 +33,20 @@
 @class OC_GGS_TextSyntaxColoring ;
 @class PMTabBarView ;
 @class OC_GGS_SourceScrollView ;
-@class OC_GGS_BuildTask ;
+@class OC_GGS_BuildTaskProxy ;
+@class OC_GGS_TextDisplayDescriptor ;
 
 //---------------------------------------------------------------------------*
 
-@interface OC_GGS_Document : NSDocument <NSTextViewDelegate, NSSplitViewDelegate, NSWindowDelegate> {
+@interface OC_GGS_Document : NSDocument
+#if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_5
+  <NSTextViewDelegate, NSSplitViewDelegate, NSWindowDelegate>
+#endif
+{
 
+  @private NSArrayController * mIssueArrayController ;
+//  @private NSArray * mIssueArray ; // Bound to 'content' of mIssueArrayController
+  
   @private IBOutlet NSSplitView * mIssueSplitView ;
 
   @private IBOutlet NSView * mSourceHostView ;
@@ -46,6 +54,9 @@
   @private IBOutlet NSPopUpButton * mEntryListPopUpButton ;
   
   @private IBOutlet NSButton * mCurrentLineButton ;
+
+  @private IBOutlet NSTextView * mRawOutputTextView ;
+  @private NSData * mRawOutputString ;
 
   @private IBOutlet NSTableView * mIssueTableView ;
   @private IBOutlet NSTableColumn * mIssueTableViewColumn ;
@@ -55,7 +66,7 @@
   @private IBOutlet NSTextField * mSourceEncodingTextField ;
   @private NSStringEncoding mFileEncoding ;
 
-  @private OC_GGS_BuildTask * mBuildTask ;
+  @private OC_GGS_BuildTaskProxy * mBuildTask ;
 //---  
   @private OC_GGS_TextSyntaxColoring * mSourceTextWithSyntaxColoring ;
   @private NSArrayController * mSourceDisplayArrayController ;
@@ -72,15 +83,28 @@
   @private IBOutlet NSSplitView * mDetailedIssueSplitView ;
 
 //--- Build, stop button
+  @private IBOutlet NSButton * mLiveCompilationCheckbox ;
   @private IBOutlet NSButton * mStartBuildButton ;
   @private IBOutlet NSProgressIndicator * mBuildProgressIndicator ;
   @private IBOutlet NSButton * mStopBuildButton ;
   @private IBOutlet NSTextField * mErrorCountTextField ;
   @private IBOutlet NSTextField * mWarningCountTextField ;
+
+//--- Contextual help message
+  @private IBOutlet NSTextView * mContextualHelpTextView ;
+  @private IBOutlet NSScrollView * mContextualHelpScrollView ;
 }
+
+@property(assign, atomic) NSArray * mIssueArray ;
+
+- (void) setDocumentIssueArray: (NSArray *) issueArray ;
+- (NSArray *) documentIssueArray ;
+
+- (OC_GGS_TextDisplayDescriptor *) findOrAddNewTabForFile: (NSString *) inDocumentPath ;
 
 - (IBAction) collapseDetailledMessageAction: (id) inSender ;
 - (IBAction) collapseIssuesAction: (id) inSender ;
+- (IBAction) collapseContextualHelpAction: (id) inSender ;
 
 - (IBAction) actionGotoLine: (id) inSender ;
 
@@ -101,9 +125,16 @@
 
 - (OC_GGS_TextSyntaxColoring *) textSyntaxColoring ;
 
+- (NSPopUpButton *) entryListPopUpButton ;
+
 - (void) displayIssueDetailedMessage: (NSString *) inDetailledMessage ;
 
 - (void) triggerLiveCompilation ;
 
 - (BOOL) buildTaskIsRunning ;
+
+- (void) setContextualHelpMessage: (NSString *) inMessage ;
+- (BOOL) isContextualHelpTextViewCollapsed ;
+
+- (void) setRawOutputString: (NSAttributedString *) inString ;
 @end

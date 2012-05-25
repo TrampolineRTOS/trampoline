@@ -29,14 +29,22 @@
  * @warning This data type must be signed
  * because -1 is used for INVALID_TASK and INVALID_ISR
  */
-typedef s% ![[PROCESSES length] + 1 signedNumberOfBytes] * 8 % tpl_proc_id;
+typedef s% ! [[PROCESSES length] + 1 signedNumberOfBytes] * 8 % tpl_proc_id;
+
+/**
+ * tpl_appmode_mask is used for AUTOSTART objects.
+ *
+ * Each bit in the mask corresponds to an application mode. The size of the mask
+ * is computed according to the number of application modes.
+ */
+typedef u% ! [1 << [APPMODE length] - 1 numberOfBytes] * 8 % tpl_appmode_mask;
 
 /**
  * tpl_priority represents a task's or a resource's priority.
  *
  * @warning This type must be signed.
  */
-typedef s% ![MAXPRIORITY signedNumberOfBytes] * 8% tpl_priority;
+typedef s% ! [MAXPRIORITY signedNumberOfBytes] * 8 % tpl_priority;
 
 /**
  * tpl_activate_counter is used to count

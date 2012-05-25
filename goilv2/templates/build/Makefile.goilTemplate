@@ -51,7 +51,7 @@ OIL_FILE = % !OILFILENAME %
 # it should be declared as APP_SRC in the OS section of the .oil file
 # (many times allowed).
 %
-foreach src in exists OS::BUILD_S::APP_SRC default (emptyList)
+foreach src in exists OS::BUILD_S::APP_SRC default (emptylist)
   before %SOURCES = %
   do !src::VALUE
   between % %

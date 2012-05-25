@@ -15,8 +15,10 @@
   @private BOOL mIsDirty ;
   @private NSTrackingArea * mTrackingArea ;
   @private SEL mRemoveAction ;
+  @private NSString * mFilePath ;
 }
 
+- (void) setFilePathForDragOperation: (NSString *) inFilePath ;
 - (void) setDisplayRemoveImage: (BOOL) inDisplay ;
 - (void) setRemoveAction: (SEL) inRemoveAction ;
 

@@ -13,6 +13,8 @@
 #import "OC_GGS_TextSyntaxColoring.h"
 #import "OC_GGS_TextDisplayDescriptor.h"
 #import "OC_Token.h"
+#import "OC_GGS_Document.h"
+#import "OC_GGS_PreferencesController.h"
 
 //---------------------------------------------------------------------------*
 
@@ -176,6 +178,30 @@
 
 //---------------------------------------------------------------------------*
 
+#pragma mark Source Indexing
+
+//---------------------------------------------------------------------------*
+
+- (void) selectAllTokenCharacters: (id) inSender  {
+  const NSRange r = [[inSender representedObject] rangeValue] ;
+  [mDisplayDescriptor setSelectionRangeAndMakeItVisible:r] ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) indexingMenuAction: (id) inSender {
+  NSString * descriptor = [inSender representedObject] ;
+  // NSLog (@"descriptor '%@'", descriptor) ;
+  NSArray * components = [descriptor componentsSeparatedByString:@":"] ;
+  const NSUInteger tokenLocation = [[components objectAtIndex:2] integerValue] ;
+  const NSUInteger tokenLength = [[components objectAtIndex:3] integerValue] ;
+  NSString * filePath = [components objectAtIndex:4] ;
+  OC_GGS_TextDisplayDescriptor * tdd = [mDisplayDescriptor.document findOrAddNewTabForFile:filePath] ;
+  [tdd setSelectionRangeAndMakeItVisible:NSMakeRange (tokenLocation, tokenLength)] ;
+}
+
+//---------------------------------------------------------------------------*
+
 #pragma mark mouse Down (for source indexing)
 
 //---------------------------------------------------------------------------*
@@ -188,7 +214,7 @@
     const NSRange r = [self selectionRangeForProposedRange:selectedRange granularity:NSSelectByWord] ;
     [self setSelectedRange:r] ;
     OC_GGS_TextSyntaxColoring * dsc = [mDisplayDescriptor textSyntaxColoring] ;
-    NSMenu * menu = [dsc indexMenuForRange:r] ;
+    NSMenu * menu = [dsc indexMenuForRange:r textDisplayDescriptor:mDisplayDescriptor] ;
     [NSMenu
       popUpContextMenu:menu
       withEvent:inEvent

@@ -4,7 +4,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 1997, ..., 2009 Pierre Molinaro.                           *
+//  Copyright (C) 1997, ..., 2012 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //                                                                           *
@@ -42,23 +42,16 @@
 static const PMUInt32 K_EXCEPTION_STRING_SIZE = 2000 ;
 
 //---------------------------------------------------------------------------*
-//                                                                           *
-//                         assert_routine                                    *
-//                                                                           *
-//---------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-   void assert_routine (const bool inExpression,
-                        const char * const inMessageString,
-                        const PMSInt64 inParameter1,
-                        const PMSInt64 inParameter2
-                        COMMA_LOCATION_ARGS) {
-    if (! inExpression) {
-      char exceptionMessage [K_EXCEPTION_STRING_SIZE] ;
-      snprintf (exceptionMessage, K_EXCEPTION_STRING_SIZE - 1, inMessageString, inParameter1, inParameter2) ;
-      printf ("*** Assertion failed at line %d of file '%s': %s\n", IN_SOURCE_LINE, IN_SOURCE_FILE, exceptionMessage) ;
-      exit (1) ;
-    }
+  void runtime_error_routine (const char * const inMessage,
+                              const PMSInt64 inParameter1,
+                              const PMSInt64 inParameter2
+                              COMMA_LOCATION_ARGS) {
+    char exceptionMessage [K_EXCEPTION_STRING_SIZE] ;
+    snprintf (exceptionMessage, K_EXCEPTION_STRING_SIZE - 1, inMessage, inParameter1, inParameter2) ;
+    printf ("*** Assertion failed at line %d of file '%s': %s\n", IN_SOURCE_LINE, IN_SOURCE_FILE, exceptionMessage) ;
+    exit (1) ;
   }
 #endif
 

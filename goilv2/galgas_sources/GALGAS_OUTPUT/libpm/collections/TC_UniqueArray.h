@@ -8,7 +8,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 1997, ..., 2011 Pierre Molinaro.                           *
+//  Copyright (C) 1997, ..., 2012 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //                                                                           *
@@ -84,6 +84,9 @@ template <typename TYPE> class TC_UniqueArray {
 //--- Get Count
   public : inline PMSInt32 count (void) const { return mCount ; }
 
+//--- Set Count To zero
+  public : void setCountToZero (void) ;
+
 //--- Get allocated capacity
   public : inline PMSInt32 capacity (void) const { return mCapacity ; }
 
@@ -91,9 +94,14 @@ template <typename TYPE> class TC_UniqueArray {
   public : void makeRoom (const PMSInt32 inNewCapacity) ;
   public : void makeRoomUsingSwap (const PMSInt32 inNewCapacity) ;
 
-//--- Remove all objects (no deallocation)
-  public : inline void removeAllObjects (void) { mCount = 0 ; }
-
+//--- Allocation with provided data
+  public : void setDataFromPointer (TYPE * & ioDataPtr,
+                                    const PMSInt32 inDataLength) ;
+  
+//--- Append data
+  public : void appendDataFromPointer (const TYPE * inDataPtr,
+                                       const PMSInt32 inDataLength) ;
+  
 //--- Get buffer pointer
   public : const TYPE * bufferPointer (void) const { return mArray ; }
 
@@ -326,9 +334,10 @@ mCapacity (0) {
 //---------------------------------------------------------------------------*
 
 template <typename TYPE>
-TC_UniqueArray <TYPE>::
-TC_UniqueArray (const PMSInt32 inCapacity, const TYPE & inValue COMMA_LOCATION_ARGS) :
-mArray ((TYPE *) NULL),
+TC_UniqueArray <TYPE>::TC_UniqueArray (const PMSInt32 inCapacity,
+                                       const TYPE & inValue
+                                       COMMA_LOCATION_ARGS) :
+mArray (NULL),
 mCount (0),
 mCapacity (0) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -346,6 +355,32 @@ mCapacity (0) {
 
 //---------------------------------------------------------------------------*
 //                                                                           *
+//   Allocation Constructor                                                  *
+//                                                                           *
+//---------------------------------------------------------------------------*
+
+template <typename TYPE>
+void TC_UniqueArray <TYPE>::setDataFromPointer (TYPE * & ioDataPtr,
+                                                const PMSInt32 inDataLength) {
+  macroMyDeleteArray (mArray) ;
+  mArray = ioDataPtr ;
+  mCount = inDataLength ;
+  mCapacity = inDataLength ;
+  ioDataPtr = NULL ;
+}
+
+//---------------------------------------------------------------------------*
+
+template <typename TYPE>
+void TC_UniqueArray <TYPE>::appendDataFromPointer (const TYPE * inDataPtr,
+                                                   const PMSInt32 inDataLength) {
+  for (PMSInt32 i=0 ; i<inDataLength ; i++) {
+    addObject (inDataPtr [i]) ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+//                                                                           *
 //   Destructor                                                              *
 //                                                                           *
 //---------------------------------------------------------------------------*
@@ -353,6 +388,17 @@ mCapacity (0) {
 template <typename TYPE>
 TC_UniqueArray <TYPE>::~TC_UniqueArray (void) {
   macroMyDeleteArray (mArray) ;
+}
+
+//---------------------------------------------------------------------------*
+//                                                                           *
+//   Destructor                                                              *
+//                                                                           *
+//---------------------------------------------------------------------------*
+
+template <typename TYPE>
+void TC_UniqueArray <TYPE>::setCountToZero (void) {
+  mCount = 0 ;
 }
 
 //---------------------------------------------------------------------------*

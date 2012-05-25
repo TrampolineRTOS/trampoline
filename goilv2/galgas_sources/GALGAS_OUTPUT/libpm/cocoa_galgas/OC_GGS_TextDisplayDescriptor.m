@@ -1,4 +1,4 @@
-//
+  //
 //  OC_GGS_TextDisplayDescriptor.m
 //  galgas-developer
 //
@@ -16,6 +16,18 @@
 #import "OC_GGS_RulerViewForTextView.h"
 #import "OC_GGS_PreferencesController.h"
 #import "OC_GGS_Scroller.h"
+#import "OC_GGS_ContextualHelpTask.h"
+#import "PMCocoaCallsDebug.h"
+#import "PMIssueDescriptor.h"
+
+//---------------------------------------------------------------------------*
+
+#include <netdb.h>
+#include <netinet/in.h>
+
+//---------------------------------------------------------------------------*
+
+//#define DEBUG_MESSAGES
 
 //---------------------------------------------------------------------------*
 
@@ -29,6 +41,9 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
 //---------------------------------------------------------------------------*
 
 - (void) refreshShowInvisibleCharacters {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
   const BOOL show = [[NSUserDefaults standardUserDefaults] boolForKey:@"PMShowInvisibleCharacters"] ;
   [mTextView.layoutManager setShowsInvisibleCharacters:show] ;
   [mTextView setNeedsDisplay:YES] ;
@@ -44,8 +59,12 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
 
 - (OC_GGS_TextDisplayDescriptor *) initWithDelegateForSyntaxColoring: (OC_GGS_TextSyntaxColoring *) inDelegateForSyntaxColoring
                                    document: (OC_GGS_Document *) inDocument  {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
   self = [self init] ;
   if (self) {
+    mPreviousBuildTasks = [NSMutableSet new] ;
     mDocument = inDocument ;
     [self setSyntaxColoringDelegate:inDelegateForSyntaxColoring] ;
     mTextView = [[OC_GGS_TextView alloc] initWithFrame:NSMakeRect (0.0, 0.0, 10.0, 10.0)] ;
@@ -54,6 +73,13 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
     mTextView.usesFindPanel = YES ;
     mTextView.grammarCheckingEnabled = NO ;
     mTextView.allowsUndo = YES ;
+    mTextView.automaticQuoteSubstitutionEnabled = NO ;
+    mTextView.smartInsertDeleteEnabled = NO ;
+    if ([mTextView respondsToSelector:@selector(setAutomaticTextReplacementEnabled:)]) {
+      // NSLog (@"AVANT %d", mTextView.isAutomaticTextReplacementEnabled) ;
+      [mTextView setValue:[NSNumber numberWithBool:NO] forKey:@"automaticTextReplacementEnabled"] ;
+      // NSLog (@"APRES %d", mTextView.isAutomaticTextReplacementEnabled) ;
+    }
   //---
     if ([mTextView respondsToSelector:@selector (setUsesFindBar:)]) {
       [mTextView setValue:[NSNumber numberWithBool:YES] forKey:@"usesFindBar"] ;
@@ -82,7 +108,6 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
       context:NULL
     ] ;
     [self refreshShowInvisibleCharacters] ;
-    [self setIssueArray:inDelegateForSyntaxColoring.issueArray] ;
   //---
     [[NSNotificationCenter defaultCenter]
       addObserver:self
@@ -90,6 +115,17 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
       name: NSTextStorageDidProcessEditingNotification
       object:mTextSyntaxColoring.textStorage
     ] ;
+  //--- Set selection
+    NSString * key = [NSString stringWithFormat:@"SELECTION:%@:%@", mDocument.fileURL.path, mTextSyntaxColoring.document.fileURL.path] ;
+    NSString * selectionRangeString = [[NSUserDefaults standardUserDefaults] objectForKey:key] ;
+    // NSLog (@"READ '%@' -> %@", key, selectionRangeString) ;
+    const NSRange selectionRange = NSRangeFromString (selectionRangeString) ;
+    const NSUInteger sourceTextLength = mTextSyntaxColoring.textStorage.length ;
+    if (NSMaxRange (selectionRange) <= sourceTextLength) {
+      [self setSelectionRangeAndMakeItVisible:selectionRange] ;
+    }
+  //--- Set issues
+    [self setTextDisplayIssueArray:mDocument.documentIssueArray] ;
   }
   return self ;
 }
@@ -97,6 +133,9 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
 //---------------------------------------------------------------------------*
 
 - (void) setSyntaxColoringDelegate: (OC_GGS_TextSyntaxColoring *) inDelegate {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
   if (mTextSyntaxColoring != inDelegate) {
     [mTextSyntaxColoring performSelector:@selector (removeTextDisplayDescriptor:) withObject:self] ;
     mTextSyntaxColoring = inDelegate ;
@@ -131,7 +170,13 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
 //---------------------------------------------------------------------------*
 
 - (NSURL *) sourceURL {
-  return mTextSyntaxColoring.sourceURL ;
+  return mTextSyntaxColoring.document.fileURL ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (OC_GGS_Document *) document {
+  return mDocument ;
 }
 
 //---------------------------------------------------------------------------*
@@ -169,6 +214,9 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
 //---------------------------------------------------------------------------*
 
 - (void) gotoLine: (NSUInteger) inLine {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
 //--- Find index
   NSUInteger currentLine = 0 ;
   NSString * sourceString = [[mTextView textStorage] string] ;
@@ -195,6 +243,9 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
 //---------------------------------------------------------------------------*
 
 - (void) commentSelection {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
   const NSRange newRange = [mTextSyntaxColoring commentRange:mTextView.selectedRange] ;
   mTextView.selectedRange = newRange ;
 }
@@ -202,6 +253,9 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
 //---------------------------------------------------------------------------*
 
 - (void) uncommentSelection {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
   const NSRange newRange = [mTextSyntaxColoring uncommentRange:mTextView.selectedRange] ;
   mTextView.selectedRange = newRange ;
 }
@@ -226,6 +280,9 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
 //---------------------------------------------------------------------------*
 
 - (NSAttributedString *) shiftLeftAttributedString {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
   NSDictionary * attributeDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
     [mTextView font], NSFontAttributeName,
     nil
@@ -236,6 +293,9 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
 //---------------------------------------------------------------------------*
 
 - (void) shiftRightRange: (NSValue *) inRangeValue {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
   NSAttributedString * spaceString = [self shiftLeftAttributedString] ;
   const NSRange selectedRange = [inRangeValue rangeValue] ;
   //NSLog (@"selectedRange [%d, %d]", selectedRange.location, selectedRange.length) ;
@@ -267,6 +327,9 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
 //---------------------------------------------------------------------------*
 
 - (void) shiftRightAction {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
   const NSRange selectedRange = [mTextView selectedRange] ;
   [self shiftRightRange:[NSValue valueWithRange:selectedRange]] ;
 }
@@ -274,6 +337,9 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
 //---------------------------------------------------------------------------*
 
 - (void) shiftLeftRange: (NSValue *) inRangeValue {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
 //--- Get range to be examined
   const NSRange initialSelectedRange = [inRangeValue rangeValue] ;
 //--- Block comment string
@@ -336,6 +402,9 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
 //---------------------------------------------------------------------------*
 
 - (void) shiftLeftAction {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
   const NSRange selectedRange = [mTextView selectedRange] ;
   [self shiftLeftRange:[NSValue valueWithRange:selectedRange]] ;
 }
@@ -347,9 +416,156 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
 //---------------------------------------------------------------------------*
 
 - (void) actionInsertTextMacro: (NSMenuItem *) inSender {
-  // NSLog (@"sender %@, tag %d", inSender, [inSender tag]) ;
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
   NSString * macroString = [mTextSyntaxColoring.tokenizer textMacroContentAtIndex:[inSender tag]] ;
   [mTextView insertText:macroString] ;
+}
+
+//---------------------------------------------------------------------------*
+
+#pragma mark Contextual Help
+
+//---------------------------------------------------------------------------*
+
+- (void) purgePreviousContextualHelpTasks {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
+  // const NSUInteger n = mPreviousBuildTasks.count ;
+  NSMutableString * s = [NSMutableString new] ;
+  NSArray * allTasks = [mPreviousBuildTasks allObjects] ;
+  [mPreviousBuildTasks removeAllObjects] ;
+  for (NSUInteger idx = 0 ; idx < allTasks.count ; idx ++) {
+    if (! [[allTasks objectAtIndex:idx] isCompleted]) {
+      [mPreviousBuildTasks addObject:[allTasks objectAtIndex:idx]] ;
+      [s appendString:[[allTasks objectAtIndex:idx] runningStatus]] ;
+    }  
+  }
+  // NSLog (@"CONTEXT TASKS : %lu -> %lu%@", n, mPreviousBuildTasks.count, s) ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) performContextualHelpAtRange: (NSRange) inRange {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
+  [mDocument setContextualHelpMessage:@"Looking for Help…"] ;
+//---
+  if (nil != mContextualHelpTask) {
+    [mContextualHelpTask terminate] ;
+    [mPreviousBuildTasks addObject:mContextualHelpTask] ;
+    mContextualHelpTask = nil ;
+  }
+  [self purgePreviousContextualHelpTasks] ;
+//---
+  mContextualHelpTask = [[OC_GGS_ContextualHelpTask alloc]
+    initWithDocument:mDocument
+    range:inRange
+    proxy:self
+    index:mTaskIndex
+  ] ;
+  mTaskIndex ++ ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) noteBuildTaskTermination: (OC_GGS_ContextualHelpTask *) inBuildTask {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
+  if (mContextualHelpTask == inBuildTask) {
+    mContextualHelpTask = nil ;
+  }else{
+    [mPreviousBuildTasks addObject:inBuildTask] ;
+  }
+  [self purgePreviousContextualHelpTasks] ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) noteSocketData: (NSData *) inData {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
+  NSString * message = [[NSString alloc] initWithData:inData encoding:NSUTF8StringEncoding] ;
+  [mDocument setContextualHelpMessage:message] ;
+}
+
+//---------------------------------------------------------------------------*
+
+#pragma mark Entry Pop up
+
+//---------------------------------------------------------------------------*
+
+- (void) populatePopUpButton {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
+  NSMenu * menu = [self menuForEntryPopUpButton] ;
+  NSPopUpButton * entryListPopUpButton = [self.document entryListPopUpButton] ;
+  [entryListPopUpButton setAutoenablesItems:NO] ;
+
+  const NSUInteger n = [menu numberOfItems] ;
+  if (n == 0) {
+    [menu
+      addItemWithTitle:@"No entry"
+      action:NULL
+      keyEquivalent:@""
+    ] ;
+    [[menu itemAtIndex:0] setEnabled:NO] ;
+    [entryListPopUpButton setEnabled:NO] ;
+  }else{
+    for (NSUInteger i=0 ; i<n ; i++) {
+      NSMenuItem * item = [menu itemAtIndex:i] ;
+      [item setTarget:self] ;
+      [item setAction:@selector (gotoEntry:)] ;
+    }
+    [entryListPopUpButton setEnabled:YES] ;
+  }
+  [entryListPopUpButton setMenu:menu] ;
+  // NSLog (@"entryListPopUpButton %@", entryListPopUpButton) ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) gotoEntry: (id) inSender {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s, TAG %ld", __PRETTY_FUNCTION__, [inSender tag]) ;
+  #endif
+  const NSRange range = {[inSender tag], 0} ;
+  [mTextView setSelectedRange:range] ;
+  [mTextView scrollRangeToVisible:range] ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) selectEntryPopUp {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
+  const NSUInteger selectionStart = self.textSelectionStart ;
+  NSPopUpButton * entryListPopUpButton = [self.document entryListPopUpButton] ;
+  NSArray * menuItemArray = [entryListPopUpButton itemArray] ;
+  if ([entryListPopUpButton isEnabled]) {
+    NSInteger idx = NSNotFound ;
+    NSInteger i ;
+    const NSInteger n = [menuItemArray count] ;
+    for (i=n-1 ; (i>=0) && (idx == NSNotFound) ; i--) {
+      NSMenuItem * item = [menuItemArray objectAtIndex:i HERE] ;
+      const NSUInteger startPoint = [item tag] ;
+      if (selectionStart >= startPoint) {
+        idx = i ;
+      }
+    }
+    if (idx == NSNotFound) {
+      [entryListPopUpButton selectItemAtIndex:0] ;
+    }else{
+      [entryListPopUpButton selectItemAtIndex:idx] ;
+    }
+  }
 }
 
 //---------------------------------------------------------------------------*
@@ -359,39 +575,50 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
 //---------------------------------------------------------------------------*
 
 - (NSUndoManager *) undoManagerForTextView: (NSTextView *) inTextView { // Delegate Method
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
   return mTextSyntaxColoring.undoManager ;
 }
 
 //---------------------------------------------------------------------------*
 
 - (void) textViewDidChangeSelection:(NSNotification *) inNotification { // Delegate Method
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
   [self willChangeValueForKey:@"textSelectionStart"] ;
   mTextSelectionStart = mTextView.selectedRange.location ;
   [self  didChangeValueForKey:@"textSelectionStart"] ;
   [mRulerView setNeedsDisplay:YES] ;
+  [self populatePopUpButton] ;
+  if (! [mDocument isContextualHelpTextViewCollapsed]) {
+    [self performContextualHelpAtRange:mTextView.selectedRange] ;
+  }
+//---
+  NSString * key = [NSString stringWithFormat:@"SELECTION:%@:%@", mDocument.fileURL.path, mTextSyntaxColoring.document.fileURL.path] ;
+  [[NSUserDefaults standardUserDefaults]
+    setObject:NSStringFromRange (mTextView.selectedRange)
+    forKey:key
+  ] ;
+  // NSLog (@"WRITE '%@' -> %@", key, NSStringFromRange (mTextView.selectedRange)) ;
 }
 
 //---------------------------------------------------------------------------*
 
-/*- (NSMenu *) textView:(NSTextView *)view
-             menu:(NSMenu *)menu
-             forEvent:(NSEvent *)event
-             atIndex:(NSUInteger) inCharacterIndex { // Delegate Method
-  const NSRange selectedRange = {inCharacterIndex, 0} ;
-  const NSRange r = [mTextView selectionRangeForProposedRange:selectedRange granularity:NSSelectByWord] ;
-  [mTextView setSelectedRange:r] ;
-  return [mTextSyntaxColoring indexMenuForRange:r] ;
-}*/
-
-//---------------------------------------------------------------------------*
-
 - (void) noteUndoManagerCheckPointNotification {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
   [mDocument triggerDocumentEditedStatusUpdate] ;
 }
 
 //---------------------------------------------------------------------------*
 
 - (void) myProcessEditing: (NSNotification *) inNotification {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
   [mDocument triggerLiveCompilation] ;
 }
 
@@ -401,26 +628,58 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
 
 //---------------------------------------------------------------------------*
 
-- (void) setIssueArray: (NSArray *) inIssueArray {
-  mIssueArray = inIssueArray ;
-  [mTextView setIssueArray:inIssueArray] ;
+- (void) setTextDisplayIssueArray: (NSArray *) inIssueArray {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s, '%@', enter %lu issues", __PRETTY_FUNCTION__, mTextSyntaxColoring.sourceURL, inIssueArray.count) ;
+  #endif
+  NSMutableArray * filteredArray = [NSMutableArray new] ;
+  for (PMIssueDescriptor * issue in inIssueArray) {
+    // NSLog (@"  TEST with '%@' : %@", issue.issueURL, [issue.issueURL isEqual:mTextSyntaxColoring.sourceURL] ? @"yes" : @"no") ;
+    if ([issue.issueURL isEqual:mTextSyntaxColoring.document.fileURL]) {
+      const NSRange lineRange = [mTextSyntaxColoring rangeForLine:issue.issueLine] ;
+      [filteredArray
+        addObject:[[PMErrorOrWarningDescriptor alloc]
+          initWithMessage:issue.issueMessage
+          location:lineRange.location + issue.issueColumn - 1
+          isError:issue.errorKind
+          originalIssue:issue
+        ]
+      ] ;
+      // NSLog (@"%c", [mSourceTextStorage.string characterAtIndex:lineRange.location + issue.issueColumn - 1 HERE]) ;
+    }
+  }
+  mIssueArray = filteredArray ;
+  [mTextView setIssueArray:filteredArray] ;
 }
 
 //---------------------------------------------------------------------------*
 
 - (BOOL) makeVisibleIssue: (PMIssueDescriptor *) inOriginalIssue {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
+  // NSLog (@"mIssueArray %lu", mIssueArray.count) ;
   BOOL found = NO ;
   for (NSUInteger i=0 ; (i<mIssueArray.count) && ! found ; i++) {
     PMErrorOrWarningDescriptor * issue = [mIssueArray objectAtIndex:i] ;
     found = issue.originalIssue == inOriginalIssue ;
     if (found) {
-      [mTextView scrollRangeToVisible:NSMakeRange (issue.location, 0)] ;
-      [mTextView setSelectedRange:NSMakeRange (issue.location, 0)] ;
-      [mTextView.window makeFirstResponder:mTextView] ;
+      [self setSelectionRangeAndMakeItVisible:NSMakeRange (issue.location, 0)] ;
     }
   }
 //---
   return found ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) setSelectionRangeAndMakeItVisible: (NSRange) inRange {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
+  [mTextView scrollRangeToVisible:inRange] ;
+  [mTextView setSelectedRange:inRange] ;
+  [mTextView.window makeFirstResponder:mTextView] ;
 }
 
 //---------------------------------------------------------------------------*

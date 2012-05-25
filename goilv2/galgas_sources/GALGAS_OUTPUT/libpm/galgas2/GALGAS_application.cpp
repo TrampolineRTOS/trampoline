@@ -65,7 +65,7 @@ typeComparisonResult GALGAS_application::objectCompare (const GALGAS_application
 
 void GALGAS_application::description (C_String & ioString,
                                       const PMSInt32 /* inIndentation */) const {
-  ioString << "<@bool:not built>" ;
+  ioString << "<@application:not built>" ;
 }
 
 //---------------------------------------------------------------------------*

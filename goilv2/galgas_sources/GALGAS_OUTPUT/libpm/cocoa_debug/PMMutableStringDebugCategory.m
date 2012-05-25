@@ -11,7 +11,7 @@
 //---------------------------------------------------------------------------*
 
 - (void) appendString: (NSString *) inString LOCATION_ARGS {
-  if (inString == nil) {
+  if (nil == inString) {
     NSLog (@"appendString: argument is nil in:%s:%d", IN_SOURCE_FILE, IN_SOURCE_LINE) ;
   }
   [self appendString:inString] ; // DO NOT ADD 'HERE' !!!

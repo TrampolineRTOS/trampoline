@@ -109,6 +109,15 @@ typedef tpl_application_mode AppModeType;
  * pages 66+ of OSEK/VDX 2.2.2 spec
  */
 
+/**
+ * Declare an application mode
+ *
+ * This macro declares an application mode exists.
+ *
+ * @param appmode_id the application mode identifier (provide a C identifier here)
+ */
+#define DeclareApplicationMode(appmode_id) extern CONST(AppModeType, OS_CONST) appmode_id
+
 #define API_START_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -162,6 +171,17 @@ FUNC(void, OS_CODE) CallTerminateTask(void);
 FUNC(void, OS_CODE) CallTerminateISR2(void);
 
 #define API_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+/*=============================================================================
+ * Declaration of the OSDEFAULTAPPMODE constant
+ */
+extern CONST(tpl_application_mode, OS_CONST) OSDEFAULTAPPMODE;
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
 #ifdef __cplusplus

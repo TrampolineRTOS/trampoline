@@ -28,7 +28,7 @@ DEBUG_OBJECTS_DIR := debug_objects
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-PLATFORM_LINKER_OPTIONS := -lcomdlg32
+PLATFORM_LINKER_OPTIONS := -lcomdlg32 -lws2_32
 
 #---------------------------------------------------------------------------*
 #                                                                           *

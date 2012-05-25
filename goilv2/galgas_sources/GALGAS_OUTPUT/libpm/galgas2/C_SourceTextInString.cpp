@@ -67,7 +67,7 @@ getLineForLocation (const C_LocationInSource & inLocation) const {
   PMSInt32 index = 0 ;
   PMSInt32 currentLine = 1 ;
   if (sourceTextLength > 0) {
-    while (currentLine < inLocation.mLineNumber) {
+    while (currentLine < inLocation.lineNumber ()) {
       if (UNICODE_VALUE (mSourceString.readCharOrNul (index COMMA_HERE)) == '\n') {
         currentLine ++ ;
       }

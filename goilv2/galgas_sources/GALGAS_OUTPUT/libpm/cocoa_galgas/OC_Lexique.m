@@ -234,18 +234,17 @@
 //---------------------------------------------------------------------------*
 
 - (void) buildPopupMenuItemArrayWithStyleArray:(NSArray *) inTokenArray {
-  NSMenu * menu = [[[NSMenu alloc] initWithTitle:@""]  autorelease] ;
+  NSMenu * menu = [[NSMenu alloc] initWithTitle:@""] ;
   const UInt16 ** popUpListData = [self popupListData] ;
-  if (popUpListData != NULL) {
+  if (NULL != popUpListData) {
     const NSUInteger tokenCount = [inTokenArray count] ;
-    NSUInteger i ;
-    for (i=0 ; i<tokenCount ; i++) {
-      OC_Token * token = [inTokenArray objectAtIndex:i HERE] ;
+    for (NSUInteger tokenIndex=0 ; tokenIndex<tokenCount ; tokenIndex++) {
+      OC_Token * token = [inTokenArray objectAtIndex:tokenIndex HERE] ;
       const NSUInteger terminal = [token tokenCode] ;
       // printf ("terminal %u\n", terminal) ;
       BOOL found = NO ;
-      UInt32 idx = 0 ;
-      UInt32 labelLength = 0 ;
+      NSUInteger idx = 0 ;
+      NSUInteger labelLength = 0 ;
       const UInt16 * p = popUpListData [idx] ;
       while ((p != NULL) && ! found) {
         if (*p == terminal) {
@@ -254,7 +253,7 @@
           labelLength = 0 ;
           while ((*p != 0) && found) {
             labelLength ++ ;
-            found = ((i+labelLength) < tokenCount) && ([[inTokenArray objectAtIndex:i+labelLength HERE] tokenCode] == *p) ;
+            found = ((tokenIndex+labelLength) < tokenCount) && ([[inTokenArray objectAtIndex:tokenIndex+labelLength HERE] tokenCode] == *p) ;
             p ++ ;
           }
         }
@@ -262,12 +261,9 @@
         p = popUpListData [idx] ;
       }
       if (found) {
-        // NSLog (@"[mSourceString length] %u", [mSourceString length]) ;
         NSMutableString * title = [NSMutableString new] ;
-        UInt32 k ;
-        for (k=0 ; k<=labelLength ; k++) {
-          const NSRange range = [[inTokenArray objectAtIndex:i+k HERE] range] ;
-          // NSLog (@"Range for i=%u, k=%u : [%u, %u]", i, k, range.location, range.length) ;
+        for (NSUInteger k=0 ; k<=labelLength ; k++) {
+          const NSRange range = [[inTokenArray objectAtIndex:tokenIndex+k HERE] range] ;
           [title appendString:@" "] ;
           [title appendString:[mSourceString substringWithRange:range]] ;
         }
@@ -276,8 +272,9 @@
           action:NULL
           keyEquivalent:@""
         ] ;
-        [item setTag:[[inTokenArray objectAtIndex:i HERE] range].location] ;
+        [item setTag:[[inTokenArray objectAtIndex:tokenIndex HERE] range].location] ;
         [menu addItem:item] ;
+        tokenIndex += labelLength - 1 ;
       }
     }
   }

@@ -59,7 +59,11 @@ extern OC_GGS_PreferencesController * gCocoaGalgasPreferencesController ;
 
 //---------------------------------------------------------------------------*
 
-@interface OC_GGS_PreferencesController : NSObject <NSWindowDelegate> {
+@interface OC_GGS_PreferencesController : NSObject
+#if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_5
+  <NSWindowDelegate>
+#endif
+{
 //--- Text Macros Menu
   @private IBOutlet NSMenu * mTextMacroMenu ;
 

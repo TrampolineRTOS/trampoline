@@ -36,9 +36,8 @@ template <typename TYPE> class TC_Array ;
 //                                                                           *
 //---------------------------------------------------------------------------*
 
-template <typename TYPE>
-void swap (TC_Array <TYPE> & ioOperand1,
-           TC_Array <TYPE> & ioOperand2) ;
+template <typename TYPE> void swap (TC_Array <TYPE> & ioOperand1,
+                                    TC_Array <TYPE> & ioOperand2) ;
 
 //---------------------------------------------------------------------------*
 //                                                                           *

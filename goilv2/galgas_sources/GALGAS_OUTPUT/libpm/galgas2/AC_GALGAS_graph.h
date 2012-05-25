@@ -89,7 +89,7 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
                                                   COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
-  public : VIRTUAL_IN_DEBUG typeComparisonResult objectCompare (const AC_GALGAS_graph & inOperand) const ;
+  public : typeComparisonResult objectCompare (const AC_GALGAS_graph & inOperand) const ;
 
 //--- introspection
   public : virtual const C_galgas_type_descriptor * staticTypeDescriptor (void) const = 0 ;

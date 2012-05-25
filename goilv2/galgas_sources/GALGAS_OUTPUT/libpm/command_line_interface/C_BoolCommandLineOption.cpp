@@ -72,10 +72,9 @@ setBoolOptionForCommandChar (const char inCommandChar,
 
 //---------------------------------------------------------------------------*
 
-void C_BoolCommandLineOption::
-setBoolOptionForCommandString (const char * inCommandString,
-                               bool & outFound,
-                               bool & outCocoaOutput) {
+void C_BoolCommandLineOption::setBoolOptionForCommandString (const char * inCommandString,
+                                                             bool & outFound,
+                                                             bool & outCocoaOutput) {
   outFound = strcmp (inCommandString, "cocoa") == 0 ;
   if (outFound) {
     outCocoaOutput = true ;
@@ -147,9 +146,7 @@ printBoolOptions (const PMUInt32 inDisplayLength) {
 
 //---------------------------------------------------------------------------*
 
-void C_BoolCommandLineOption::
-getBoolOptionNameList (TC_UniqueArray <C_String> & outArray) {
-  outArray.removeAllObjects () ;
+void C_BoolCommandLineOption::getBoolOptionNameList (TC_UniqueArray <C_String> & outArray) {
   C_BoolCommandLineOption * p = gFirst ;
   while (p != NULL) {
     outArray.addObject (p->mDomainName) ;

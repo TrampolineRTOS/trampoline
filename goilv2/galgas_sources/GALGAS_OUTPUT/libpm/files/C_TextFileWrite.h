@@ -30,6 +30,7 @@
 
 #include "strings/C_String.h"
 #include "streams/AC_OutputStream.h"
+#include "files/AC_FileHandleForWriting.h"
 
 //---------------------------------------------------------------------------*
 
@@ -41,15 +42,11 @@ const PMSInt32 kFileBufferSize = 10000 ;
 
 //---------------------------------------------------------------------------*
 
-class C_TextFileWrite : public AC_OutputStream {
+class C_TextFileWrite : public AC_OutputStream, public AC_FileHandleForWriting {
 //--- Constructor : if inFileName is the empty string, no file is opened.
 //    Otherwise, it tries to open the file for writing;
-//    outSuccessfullyOpened is returned true is inFileName is empty or if file is successfully opened
-//    outSuccessfullyOpened is returned false is inFileName is not empty and file cannot be successfully opened
 //    The destructor will close the file (is successfully opened)
-  public : C_TextFileWrite (const C_String & inFileName
-                            COMMA_MAC_OS_CREATOR_FORMAL_ARGUMENT,
-                            bool & outSuccessfullyOpened) ;
+  public : C_TextFileWrite (const C_String & inFileName) ;
 
 //--- Destructor closes the file
   public : virtual ~C_TextFileWrite (void) ;
@@ -59,16 +56,11 @@ class C_TextFileWrite : public AC_OutputStream {
   private : C_TextFileWrite & operator = (C_TextFileWrite &) ;
   
 //--- General stream methods
-  protected : virtual void
-  performActualCharArrayOutput (const char * inCharArray,
-                                const PMSInt32 inArrayCount) ;
+  protected : virtual void performActualCharArrayOutput (const char * inCharArray,
+                                                         const PMSInt32 inArrayCount) ;
 
-  protected : virtual void
-  performActualUnicodeArrayOutput (const utf32 * inCharArray,
-                                   const PMSInt32 inArrayCount) ;
-
-//--- Get file name
-  public : C_String getFileName (void) const { return mFileName ; }
+  protected : virtual void performActualUnicodeArrayOutput (const utf32 * inCharArray,
+                                                            const PMSInt32 inArrayCount) ;
 
 //--- Flush print
   public : virtual void flush (void) ;
@@ -77,8 +69,6 @@ class C_TextFileWrite : public AC_OutputStream {
   public : virtual bool close (void) ;
 
 //--- Private attributes
-  private : C_String mFileName ;
-  private : FILE * mFilePtr ;
   private : PMSInt32 mBufferLength ;
   private : char mBuffer [kFileBufferSize + 1] ;
 } ;

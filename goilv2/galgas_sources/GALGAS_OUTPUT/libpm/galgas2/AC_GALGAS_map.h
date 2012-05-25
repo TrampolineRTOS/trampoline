@@ -158,7 +158,7 @@ class AC_GALGAS_map : public AC_GALGAS_root {
                                               const PMSInt32 inIndentation) const ;
 
 //--------------------------------- Comparison
-  public : VIRTUAL_IN_DEBUG typeComparisonResult objectCompare (const AC_GALGAS_map & inOperand) const ;
+  public : typeComparisonResult objectCompare (const AC_GALGAS_map & inOperand) const ;
 
 //--------------------------------- Internal methods for enumeration
   protected : VIRTUAL_IN_DEBUG void populateEnumerationArray (capCollectionElementArray & inEnumerationArray,

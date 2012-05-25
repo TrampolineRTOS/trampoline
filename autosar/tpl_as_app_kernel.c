@@ -243,7 +243,7 @@ FUNC(u8, OS_CODE) tpl_check_object_access_service(
  *  @retval   E_OS_CALLEVEL wrong context (OS288)
  *  @retval   E_OS_VALUE    invalid restart_opt (OS459)
  */
-FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
+FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 restart_opt)
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 #if APP_COUNT > 0
@@ -258,7 +258,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
 	
   /* store information for error hook routine */
   STORE_SERVICE(OSServiceId_TerminateApplication)
-  STORE_TERMAPP_OPT(opt)
+  STORE_TERMAPP_OPT(restart_opt)
   
 #if APP_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
@@ -267,7 +267,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
 
   DOW_DO(printf("CALLING TerminateApplication");)
 	  
-  if ((opt == RESTART) || (opt == NO_RESTART))
+  if ((restart_opt == RESTART) || (restart_opt == NO_RESTART))
   {
     if (running_app_id < APP_COUNT)
     {
@@ -358,7 +358,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt)
       }
 #endif
       /* Restart the application if needed  */
-      if ((RESTART == opt) &&
+      if ((RESTART == restart_opt) &&
           (restart_id != INVALID_TASK))
       {
         result = tpl_activate_task(tpl_app_table[running_app_id]->restart);

@@ -38,7 +38,7 @@
 
 
 if exists ACCELEROMETER then
-  let accel_port := emptyMap
+  let accel_port := emptymap
   foreach accel in ACCELEROMETER do
     if exists accel_port[accel::PORT] then
       error accel::PORT : "PORT already used by"
@@ -76,15 +76,15 @@ let AUTOSAR := OILVERSION == "3.1"
 # build an empty list when the list does not exist. This simplify
 # further processing because existence test is not necessary
 #
-let TASK := exists TASK default (emptyList)
-let ISR := exists ISR default (emptyList)
-let EVENT := exists EVENT default (emptyList)
-let COUNTER := exists COUNTER default (emptyList)
-let ALARM := exists ALARM default (emptyList)
-let RESOURCE := exists RESOURCE default (emptyList)
-let MESSAGE := exists MESSAGE default (emptyList)
-let APPLICATION := exists APPLICATION default (emptyList)
-let SCHEDULETABLE := exists SCHEDULETABLE default (emptyList)
+let TASK := exists TASK default (emptylist)
+let ISR := exists ISR default (emptylist)
+let EVENT := exists EVENT default (emptylist)
+let COUNTER := exists COUNTER default (emptylist)
+let ALARM := exists ALARM default (emptylist)
+let RESOURCE := exists RESOURCE default (emptylist)
+let MESSAGE := exists MESSAGE default (emptylist)
+let APPLICATION := exists APPLICATION default (emptylist)
+let SCHEDULETABLE := exists SCHEDULETABLE default (emptylist)
 
 #------------------------------------------------------------------------------*
 # Add informations to tasks
@@ -96,7 +96,7 @@ let SCHEDULETABLE := exists SCHEDULETABLE default (emptyList)
 # has an internal resource
 #
 let task_max_priority := 0
-let TASKS := emptyList
+let TASKS := emptylist
 foreach task in TASK do
 
   let task::PRIORITY := task::PRIORITY + 1
@@ -143,7 +143,7 @@ end foreach
 # build the ISR list and adjust the priority according to the
 # maximum priority of tasks
 #
-let ISRS := emptyList
+let ISRS := emptylist
 foreach isr in ISR do
   let isr::PRIORITY := isr::PRIORITY + task_max_priority + 1
   let isr::KIND := "ISR"
@@ -155,10 +155,10 @@ end foreach
 # Add the list of tasks which use a resource
 # Compute and add the priority to each resource
 #
-let RESOURCES := emptyList
+let RESOURCES := emptylist
 foreach resource in RESOURCE do
-  let task_that_use := emptyList
-  let isr_that_use := emptyList
+  let task_that_use := emptylist
+  let isr_that_use := emptylist
   let resource_priority := 0
   foreach task in TASKS do
     if exists task::RESOURCE then
@@ -195,7 +195,7 @@ end foreach
 # PRIORITY is made dense
 # to compute the ready list attributes
 #
-let PRIORITIZED := emptyList
+let PRIORITIZED := emptylist
 foreach task in TASKS do
   let PRIORITIZED += task
 end foreach
@@ -212,11 +212,11 @@ end foreach
 #
 sort PRIORITIZED by PRIORITY <
 
-let PRIO2 := emptyList
+let PRIO2 := emptylist
 let priority := 0
 let previous_prio := 0
 
-let READYLIST := emptyList
+let READYLIST := emptylist
 #------------------------------------------------------------------------------*
 # for the idle task
 #
@@ -246,10 +246,10 @@ let MAXPRIORITY := priority
 #
 let OS::RESSCHEDULERPRIORITY := 0
 let highest_priority_task_uses_resource := false
-let BASICTASKS := emptyList
-let EXTENDEDTASKS := emptyList
-let TASKS := emptyList
-let RESOURCES := emptyList
+let BASICTASKS := emptylist
+let EXTENDEDTASKS := emptylist
+let TASKS := emptylist
+let RESOURCES := emptylist
 foreach obj in PRIO2 do
   if obj::KIND == "Task" then
     if not exists obj::EVENT then
@@ -275,14 +275,14 @@ end if
 #------------------------------------------------------------------------------*
 # Compute the lists of ISR1 and ISR2
 #
-let ISRS1 := emptyList
+let ISRS1 := emptylist
 foreach isr in ISRS do
   if isr::CATEGORY == 1 then
     let ISRS1 += isr
   end if
 end foreach
 
-let ISRS2 := emptyList
+let ISRS2 := emptylist
 foreach isr in PRIO2 do
   if isr::KIND == "ISR" then
     if isr::CATEGORY == 2 then
@@ -294,8 +294,8 @@ end foreach
 #------------------------------------------------------------------------------*
 # compute the list of PROCESSES, TASKS
 #
-let PROCESSES := emptyList
-let TASKS := emptyList
+let PROCESSES := emptylist
+let TASKS := emptylist
 foreach task in EXTENDEDTASKS do
   let PROCESSES += task
   let TASKS += task
@@ -313,8 +313,8 @@ end foreach
 #
 let COUNTERS := COUNTER
 
-let HARDWARECOUNTERS := emptyList
-let SOFTWARECOUNTERS := emptyList
+let HARDWARECOUNTERS := emptylist
+let SOFTWARECOUNTERS := emptylist
 foreach counter in COUNTERS do
   if exists counter::TYPE then
     if    counter::TYPE == "HARDWARE" then
@@ -333,8 +333,8 @@ end foreach
 # First user defined events are put in a separate list
 # Same for AUTO events
 #
-let USEREVENTS := emptyList
-let AUTOEVENTS := emptyList
+let USEREVENTS := emptylist
+let AUTOEVENTS := emptylist
 foreach event in EVENT do
   if typeof event::MASK == @int then
     let USEREVENTS += event
@@ -346,7 +346,7 @@ end foreach
 #
 # Compute a map of tasks list keyed by the event names
 #
-let tasks_for_event := mapOf EVENT by NAME
+let tasks_for_event := mapof EVENT by NAME
 foreach task in EXTENDEDTASKS do
   foreach event in task::EVENT do
     if exists tasks_for_event[event::VALUE] then
@@ -417,7 +417,7 @@ end foreach
 # Build the mask_for_task map to compute the bits occupied
 # by user events and after allocate bits to AUTO events
 #
-let mask_for_task := emptyMap
+let mask_for_task := emptymap
 foreach task in EXTENDEDTASKS do
   let mask := 0
   foreach event in task::EVENT do
@@ -440,7 +440,7 @@ let EVENTS := USEREVENTS
 # that reference them. This is to allocate the bits for 
 # events that are used by the greatest number of tasks first
 #
-let events_by_ref := emptyList
+let events_by_ref := emptylist
 foreach event in AUTOEVENTS do
   let ref := 0
   if exists tasks_for_event[event::NAME] then
@@ -460,7 +460,7 @@ sort events_by_ref by REF >
 #
 foreach event in events_by_ref do
   # Compute the available bits for the task using the event by doing a or
-  let using_tasks := exists tasks_for_event[event::NAME]::task_list default (emptyList)
+  let using_tasks := exists tasks_for_event[event::NAME]::task_list default (emptylist)
   let tasks_mask := 0
   foreach task in using_tasks do
     let tasks_mask := tasks_mask | mask_for_task[task::VALUE]
@@ -506,8 +506,8 @@ end foreach
 #------------------------------------------------------------------------------*
 # Compute the Alarms
 #
-let counterMap := mapOf COUNTERS by NAME
-let taskMap := mapOf TASKS by NAME
+let counterMap := mapof COUNTERS by NAME
+let taskMap := mapof TASKS by NAME
 let ALARMS := ALARM
 foreach alarm in ALARMS do
   if alarm::AUTOSTART then
@@ -537,7 +537,7 @@ end foreach
 # to sort the messages according to the dependency and to
 # build the destination messages linked list
 #
-let receiver := emptyMap
+let receiver := emptymap
 foreach message in MESSAGE do
   if message::MESSAGEPROPERTY == "RECEIVE_ZERO_INTERNAL" |
      message::MESSAGEPROPERTY == "RECEIVE_UNQUEUED_INTERNAL" |
@@ -549,7 +549,7 @@ foreach message in MESSAGE do
 end foreach
 
 # Compute the SENDMESSAGES list
-let SENDMESSAGES := emptyList
+let SENDMESSAGES := emptylist
 foreach message in MESSAGE do
   if message::MESSAGEPROPERTY == "SEND_ZERO_INTERNAL" |
      message::MESSAGEPROPERTY == "SEND_STATIC_INTERNAL"
@@ -563,8 +563,8 @@ foreach message in MESSAGE do
 end foreach
 
 # Compute the RECEIVEMESSAGES list
-let sender := mapOf SENDMESSAGES by NAME
-let RECEIVEMESSAGES := emptyList
+let sender := mapof SENDMESSAGES by NAME
+let RECEIVEMESSAGES := emptylist
 foreach receive_message_list in receiver do
   let next_message := ""
   foreach receive_message in receive_message_list do
@@ -593,7 +593,7 @@ foreach receive_message_list in receiver do
 end foreach
 
 # Compute the MESSAGES list
-let MESSAGES := emptyList
+let MESSAGES := emptylist
 foreach rm in RECEIVEMESSAGES do
   let MESSAGES += rm
 end foreach
@@ -607,8 +607,8 @@ end foreach
 #
 # Gather the informations on used filters
 #
-let FILTERS := emptyMap
-let FILTERSTRUCTS := emptyMap
+let FILTERS := emptymap
+let FILTERSTRUCTS := emptymap
 foreach message in RECEIVEMESSAGES do
   if exists message::MESSAGEPROPERTY_S::FILTER then
     let filter::NAME := message::MESSAGEPROPERTY_S::FILTER
@@ -644,7 +644,7 @@ let SCHEDULETABLES := SCHEDULETABLE
 #------------------------------------------------------------------------------*
 # Compute the TRUSTEDFUNCTIONS
 #
-let TRUSTEDFUNCTIONS := emptyList
+let TRUSTEDFUNCTIONS := emptylist
  
 #------------------------------------------------------------------------------*
 # Compute some configuration flags to ease the template coding
@@ -654,7 +654,7 @@ let TRUSTEDFUNCTIONS := emptyList
 let USECOM := exists COM | [MESSAGE length] > 0 | exists NETWORKMESSAGE
 
 # Compute the USEMEMORYPROTECTION flag
-let USEMEMORYPROTECTION := NO
+let USEMEMORYPROTECTION := no
 if OS::MEMMAP then
   let USEMEMORYPROTECTION := OS::MEMMAP_S::MEMORY_PROTECTION
 end if
@@ -747,7 +747,7 @@ else
 end if
 let OS::SCALABILITYCLASS := sc
 
-let APPLICATIONS := emptyList
+let APPLICATIONS := emptylist
 
 if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
 #------------------------------------------------------------------------------*
@@ -755,42 +755,42 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
 #
 # First verify each object belong to one and only one application
 #
-  let task_map := emptyMap
-  let isr_map := emptyMap
-  let counter_map := emptyMap
-  let alarm_map := emptyMap
-  let resource_map := emptyMap
-  let message_map := emptyMap
-  let scheduletable_map := emptyMap
+  let task_map := emptymap
+  let isr_map := emptymap
+  let counter_map := emptymap
+  let alarm_map := emptymap
+  let resource_map := emptymap
+  let message_map := emptymap
+  let scheduletable_map := emptymap
   foreach app in APPLICATION do
     # Gather all tasks referenced in all Applications
-    foreach task in exists app::TASK default (emptyList) do
+    foreach task in exists app::TASK default (emptylist) do
       let task_map[task::VALUE] += app::NAME
     end foreach
     # Gather all isrs referenced in all Applications
-    foreach isr in exists app::ISR default (emptyList) do
+    foreach isr in exists app::ISR default (emptylist) do
       let isr_map[isr::VALUE] += app::NAME
     end foreach
     # Gather all counters referenced in all Applications
-    foreach counter in exists app::COUNTER default (emptyList) do
+    foreach counter in exists app::COUNTER default (emptylist) do
       let counter_map[counter::VALUE] += app::NAME
     end foreach
     # add the SystemCounter
-    let counter_map["SystemCounter"] := emptyList
+    let counter_map["SystemCounter"] := emptylist
     # Gather all alarms referenced in all Applications
-    foreach alarm in exists app::ALARM default (emptyList) do
+    foreach alarm in exists app::ALARM default (emptylist) do
       let alarm_map[alarm::VALUE] += app::NAME
     end foreach
     # Gather all resources referenced in all Applications
-    foreach resource in exists app::RESOURCE default (emptyList) do
+    foreach resource in exists app::RESOURCE default (emptylist) do
       let resource_map[resource::VALUE] += app::NAME
     end foreach
     # Gather all messages referenced in all Applications
-    foreach message in exists app::MESSAGE default (emptyList) do
+    foreach message in exists app::MESSAGE default (emptylist) do
       let message_map[message::VALUE] += app::NAME
     end foreach
     # Gather all scheduletables referenced in all Applications
-    foreach scheduletable in exists app::SCHEDULETABLE default (emptyList) do
+    foreach scheduletable in exists app::SCHEDULETABLE default (emptylist) do
       let scheduletable_map[scheduletable::VALUE] += app::NAME
     end foreach
   end foreach
@@ -862,7 +862,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
   
   # Check all tasks belong to an Application and add the APPLICATION attribute
   let app_map := mapof APPLICATION by NAME 
-  let task_with_app := emptyList
+  let task_with_app := emptylist
   foreach task in TASKS do
     if not exists task_map[task::NAME] then
       error task::NAME : "TASK ".task::NAME." does not belong to any Application"
@@ -875,7 +875,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
   end foreach
   let TASKS := task_with_app
     
-  let isr_with_app := emptyList
+  let isr_with_app := emptylist
   foreach isr in ISRS2 do
     if not exists isr_map[isr::NAME] then
       error isr::NAME : "ISR ".isr::NAME." does not belong to any Application"
@@ -888,7 +888,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
   end foreach
   let ISRS2 := isr_with_app
   
-  let counter_with_app := emptyList
+  let counter_with_app := emptylist
   foreach counter in COUNTERS do
     if counter::NAME == "SystemCounter" then
       let counter_with_app += counter
@@ -904,7 +904,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
   end foreach
   let COUNTERS := counter_with_app
   
-  let alarm_with_app := emptyList
+  let alarm_with_app := emptylist
   foreach alarm in ALARMS do
     if not exists alarm_map[alarm::NAME] then
       error alarm::NAME : "ALARM ".alarm::NAME." does not belong to any Application"
@@ -916,7 +916,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
   end foreach
   let ALARMS := alarm_with_app
   
-  let rez_with_app := emptyList
+  let rez_with_app := emptylist
   foreach resource in RESOURCES do
     if not exists resource_map[resource::NAME] then
       error resource::NAME : "Resource ".resource::NAME." does not belong to any Application"
@@ -928,7 +928,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
   end foreach
   let RESOURCES := rez_with_app
   
-  let mess_with_app := emptyList
+  let mess_with_app := emptylist
   foreach message in MESSAGES do
     if not exists message_map[message::NAME] then
       error message::NAME : "Message ".message::NAME." does not belong to any Application"
@@ -940,7 +940,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
   end foreach
   let MESSAGES := mess_with_app
   
-  let st_with_app := emptyList
+  let st_with_app := emptylist
   foreach scheduletable in SCHEDULETABLES do
     if not exists scheduletable_map[scheduletable::NAME] then
       error scheduletable::NAME : "Schedule Table ".scheduletable::NAME." does not belong to any Application"
@@ -960,8 +960,8 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
       let vector := "11"
     else
       let vector := "0"
-      let acc_app := exists proc::ACCESSING_APPLICATION default (emptyList)
-      let acc_app_map := mapof (exists proc::ACCESSING_APPLICATION default (emptyList)) by VALUE
+      let acc_app := exists proc::ACCESSING_APPLICATION default (emptylist)
+      let acc_app_map := mapof (exists proc::ACCESSING_APPLICATION default (emptylist)) by VALUE
       if exists acc_app_map[app::NAME] then
         let vector := vector . "1"
       else
@@ -979,7 +979,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
   
   function computeBinaryVector(vector, size) {
     let start := 0
-    let binary_vector := emptyList
+    let binary_vector := emptylist
     loop i from 1 to size do
       let byte := [[vector subString: start, 8] reversedString]
       let val := 0
@@ -998,12 +998,12 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
 #------------------------------------------------------------------------------*
 # add the computed attributes
   foreach app in APPLICATION do
-    if not exists app::TASK then let app::TASK := emptyList end if
-    if not exists app::ISR then let app::ISR := emptyList end if
-    if not exists app::ALARM then let app::ALARM := emptyList end if
-    if not exists app::RESOURCE then let app::RESOURCE := emptyList end if
-    if not exists app::SCHEDULETABLE then let app::SCHEDULETABLE := emptyList end if
-    if not exists app::COUNTER then let app::COUNTER := emptyList end if
+    if not exists app::TASK then let app::TASK := emptylist end if
+    if not exists app::ISR then let app::ISR := emptylist end if
+    if not exists app::ALARM then let app::ALARM := emptylist end if
+    if not exists app::RESOURCE then let app::RESOURCE := emptylist end if
+    if not exists app::SCHEDULETABLE then let app::SCHEDULETABLE := emptylist end if
+    if not exists app::COUNTER then let app::COUNTER := emptylist end if
 
     # vectors for process access
     let process_of_app := app::TASK . app::ISR
@@ -1011,7 +1011,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
 #    display app::ISR
 #    display process_of_app
     let app::PROCESS := process_of_app
-    let owned_proc := mapOf process_of_app by VALUE
+    let owned_proc := mapof process_of_app by VALUE
     let vector := ""
     foreach proc in PROCESSES do
       let vector := vector . computeVector(app, proc, owned_proc)
@@ -1023,7 +1023,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     let app::PROCESSACCESSITEMS := computeBinaryVector(vector, size)
 
     # vectors for ALARMS access
-    let owned_alarms := mapOf app::ALARM by VALUE
+    let owned_alarms := mapof app::ALARM by VALUE
     let vector := ""
     foreach alarm in ALARMS do
       let vector := vector . computeVector(app, alarm, owned_alarms)
@@ -1034,7 +1034,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     let app::ALARMACCESSITEMS := computeBinaryVector(vector, size)
 
     # vectors for RESOURCES access
-    let owned_resources := mapOf app::RESOURCE by VALUE
+    let owned_resources := mapof app::RESOURCE by VALUE
     let vector := ""
     foreach rez in RESOURCES do
       if rez::RESOURCEPROPERTY == "STANDARD" then
@@ -1048,7 +1048,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     let app::RESOURCEACCESSITEMS := computeBinaryVector(vector, size)
 
     # vectors for SCHEDULETABLES access
-    let owned_scheduletables := mapOf app::SCHEDULETABLE by VALUE
+    let owned_scheduletables := mapof app::SCHEDULETABLE by VALUE
     let vector := ""
     foreach scheduletable in SCHEDULETABLES do
       let vector := vector . computeVector(app, scheduletable, owned_scheduletables)
@@ -1059,11 +1059,11 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     let app::SCHEDULETABLEACCESSITEMS := computeBinaryVector(vector, size)
 
     # vectors for COUNTERS access
-    let owned_counters := mapOf app::COUNTER by VALUE
+    let owned_counters := mapof app::COUNTER by VALUE
     let vector := ""
     foreach counter in COUNTERS do
       if counter::NAME == "SystemCounter" then
-        let acc_app := emptyList
+        let acc_app := emptylist
         let counter::ACCESSING_APPLICATION += app::NAME
       end if
       let vector := vector . computeVector(app, counter, owned_counters)
@@ -1084,8 +1084,8 @@ end if
 #------------------------------------------------------------------------------*
 # compute the list of REGULARRESOURCES and INTERNALRESOURCES
 #
-let REGULARRESOURCES := emptyList
-let INTERNALRESOURCES := emptyList
+let REGULARRESOURCES := emptylist
+let INTERNALRESOURCES := emptylist
 foreach resource in RESOURCES do
   if resource::RESOURCEPROPERTY == "INTERNAL" then
     let INTERNALRESOURCES += resource
@@ -1099,7 +1099,7 @@ end foreach
 #------------------------------------------------------------------------------*
 # compute the USEDAPI list
 #
-let USEDAPI := emptyList
+let USEDAPI := emptylist
 foreach api_sec in APICONFIG do
   if api_sec::ID_PREFIX != "COM" | USECOM == true then
     let USEDAPI += api_sec
@@ -1209,7 +1209,7 @@ template if exists custom_files in config
 
 #display SENSOR
 #
-#let portmap := emptyMap
+#let portmap := emptymap
 #foreach sensor in SENSOR do
 #  let key := sensor::PORT
 #  if not exists portmap[key] then
