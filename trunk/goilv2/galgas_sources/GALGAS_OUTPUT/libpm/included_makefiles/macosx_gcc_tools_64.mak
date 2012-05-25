@@ -6,6 +6,9 @@
 
 LEOPARD_SDK := $(shell file /Developer/SDKs/MacOSX10.5.sdk | awk '/directory$$/ { print $$2; }')
 
+#--- For XCode 4.3
+SNOW_LEOPARD_SDK := $(shell file /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk | awk '/directory$$/ { print $$2; }')
+
 #---------------------------------------------------------------*
 
 ifeq ($(LEOPARD_SDK), directory)
@@ -16,12 +19,20 @@ ifeq ($(LEOPARD_SDK), directory)
   COMPILATION_MESSAGE := 64-Bit Compiling for Mac OS X (Leopard)
   LINKING_MESSAGE := 64-Bit Linking (Leopard)
 else
-  COMPILER_TOOL := gcc -m64
-  LINKER_TOOL   := g++ -m64
-  STRIP_TOOL    := strip -A -n -r -u
-  SUDO_TOOL     := sudo
-  COMPILATION_MESSAGE := 64-Bit Compiling for Mac OS X
-  LINKING_MESSAGE := 64-Bit Linking
+  ifeq ($(SNOW_LEOPARD_SDK), directory)
+    COMPILER_TOOL := gcc -m64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk
+    LINKER_TOOL := g++ -m64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.5
+    STRIP_TOOL    := strip -A -n -r -u
+    COMPILATION_MESSAGE := 64-Bit Compiling for Mac OS X Snow Leopard
+    LINKING_MESSAGE := 64-Bit Linking for Mac OS X Snow Leopard
+  else
+    COMPILER_TOOL := gcc -m64
+    LINKER_TOOL   := g++ -m64
+    STRIP_TOOL    := strip -A -n -r -u
+    SUDO_TOOL     := sudo
+    COMPILATION_MESSAGE := 64-Bit Compiling for Mac OS X
+    LINKING_MESSAGE := 64-Bit Linking for Mac OS X
+  endif
 endif
 
 #---------------------------------------------------------------*

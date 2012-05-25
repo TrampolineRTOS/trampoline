@@ -2,14 +2,6 @@
 //                                                                           *
 //  GALGAS Command Line Interface Options                                    *
 //                                                                           *
-// -l, --lexical-analysis-only: Perform only lexical analysis on input files *
-// -p, --parse-only: Parse only input files                                  *
-// -v, --verbose: Verbose Output                                             *
-// -r, --log-file-read: Log every file read                                  *
-// -n, --no-file-generation: Do not generate any file                        *
-// -W, --Werror: Treat warnings as errors                                    *
-// --note-file-access: Print a message for every file access                 *
-//                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
 //  Copyright (C) 2006, ..., 2011 Pierre Molinaro.                           *
@@ -38,6 +30,7 @@
 
 #include "command_line_interface/C_BoolCommandLineOption.h"
 #include "command_line_interface/C_UIntCommandLineOption.h"
+#include "command_line_interface/C_StringCommandLineOption.h"
 
 //---------------------------------------------------------------------------*
 
@@ -50,14 +43,6 @@ extern C_BoolCommandLineOption gOption_galgas_5F_cli_5F_options_outputConcreteSy
 //---------------------------------------------------------------------------*
 
 extern C_BoolCommandLineOption gOption_galgas_5F_cli_5F_options_noteFileAccess ;
-
-//---------------------------------------------------------------------------*
-
-extern C_BoolCommandLineOption gOption_galgas_5F_cli_5F_options_lexical_5F_analysis_5F_only ;
-
-//---------------------------------------------------------------------------*
-
-extern C_BoolCommandLineOption gOption_galgas_5F_cli_5F_options_parse_5F_only ;
 
 //---------------------------------------------------------------------------*
 
@@ -82,6 +67,34 @@ extern C_UIntCommandLineOption gOption_galgas_5F_cli_5F_options_max_5F_errors ;
 //---------------------------------------------------------------------------*
 
 extern C_UIntCommandLineOption gOption_galgas_5F_cli_5F_options_max_5F_warnings ;
+
+//---------------------------------------------------------------------------*
+
+extern C_StringCommandLineOption gOption_generic_5F_cli_5F_options_mode ;
+
+//---------------------------------------------------------------------------*
+
+void setExecutionMode (C_String & outErrorMessage) ;
+
+bool executionModeIsNormal (void) ;
+
+bool executionModeIsLexicalAnalysisOnly (void) ;
+
+bool executionModeIsSyntaxAnalysisOnly (void) ;
+
+bool executionModeIsIndexing (void) ;
+
+bool executionModeIsContextHelp (void) ;
+
+PMUInt32 contextHelpStartLocation (void) ;
+
+PMUInt32 contextHelpEndLocation (void) ;
+
+void setCurrentCompiledFilePath (const C_String & inPath) ;
+
+bool isCurrentCompiledFilePath (const C_String & inPath) ;
+
+void sendToTCPSocket (const C_String & inString) ;
 
 //---------------------------------------------------------------------------*
 

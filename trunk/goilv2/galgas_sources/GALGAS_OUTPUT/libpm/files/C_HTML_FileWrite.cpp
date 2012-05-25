@@ -5,7 +5,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 2003, ..., 2010 Pierre Molinaro.                           *
+//  Copyright (C) 2003, ..., 2011 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //                                                                           *
@@ -34,14 +34,11 @@
 
 //---------------------------------------------------------------------------*
 
-C_HTML_FileWrite::
-C_HTML_FileWrite (const C_String & inFileName,
-                  const C_String & inWindowTitle,
-                  const C_String & inCSSFileName,
-                  const C_String & inCSSContents
-                  COMMA_MAC_OS_CREATOR_FORMAL_ARGUMENT,
-                  bool & outOk) :
-C_TextFileWrite (inFileName COMMA_MAC_OS_CREATOR_FORMAL_ARGUMENT_NAME, outOk) {
+C_HTML_FileWrite::C_HTML_FileWrite (const C_String & inFileName,
+                                    const C_String & inWindowTitle,
+                                    const C_String & inCSSFileName,
+                                    const C_String & inCSSContents) :
+C_TextFileWrite (inFileName) {
   outputRawData ("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">\n"
                  "<html>"
                  "<head>\n"
@@ -84,8 +81,7 @@ C_HTML_FileWrite::~C_HTML_FileWrite (void) {
 //  Write a character string into the file WITHOUT any translation           *
 //---------------------------------------------------------------------------*
 
-void C_HTML_FileWrite::
-outputRawData (const char * in_Cstring) {
+void C_HTML_FileWrite::outputRawData (const char * in_Cstring) {
   inherited::performActualCharArrayOutput (in_Cstring, (PMSInt32) (strlen (in_Cstring) & PMUINT32_MAX)) ;
 }
 
@@ -94,8 +90,7 @@ outputRawData (const char * in_Cstring) {
 //  Performs HTML character translation (i.e. '<' --> '&lt;', ...)           *
 //---------------------------------------------------------------------------*
 
-void C_HTML_FileWrite::
-performActualCharArrayOutput (const char * inCharArray, const PMSInt32 inArrayCount) {
+void C_HTML_FileWrite::performActualCharArrayOutput (const char * inCharArray, const PMSInt32 inArrayCount) {
   for (PMSInt32 i=0 ; i<inArrayCount ; i++) {
     const char c = inCharArray [i] ;
     switch (c) {
@@ -119,9 +114,8 @@ performActualCharArrayOutput (const char * inCharArray, const PMSInt32 inArrayCo
 //                 Comments as a table                                       *
 //---------------------------------------------------------------------------*
 
-void C_HTML_FileWrite::
-appendCppTitleComment (const C_String & inCommentString,
-                       const C_String & inTableStyleClass) {
+void C_HTML_FileWrite::appendCppTitleComment (const C_String & inCommentString,
+                                              const C_String & inTableStyleClass) {
   outputRawData ("<table") ;
   if (inTableStyleClass.length () > 0) {
     outputRawData (" class=\"") ;

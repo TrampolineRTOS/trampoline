@@ -41,11 +41,18 @@
  an activation of a isr*/
 static void test_isr1_instance1(void)
 {
-	StatusType result_inst_1;
+  /*
+   * (jlb) previous version was plainly wrong. GetActiveApplicationMode
+   * does not return a StatusType but the application mode. By
+   * chance both E_OK and OSDEFAULTAPPMODE was O. So the comparison
+   * was true. This has changed since Trampoline allows more than one
+   * application mode. OSDEFAULTAPPMODE has no longer the zero value.
+   */
+	AppModeType result_inst_1;
 	
 	SCHEDULING_CHECK_INIT(6);
 	result_inst_1 = GetActiveApplicationMode();
-	SCHEDULING_CHECK_AND_EQUAL_INT(6,E_OK , result_inst_1);
+	SCHEDULING_CHECK_AND_EQUAL_INT(6, OSDEFAULTAPPMODE , result_inst_1);
 	
 }
 

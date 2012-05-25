@@ -22,7 +22,7 @@ method @implementation verifyApplication
     if [[appDef objects] hasKey ![imp_lkey string]] then
       @objectKind obj;
       [[appDef objects] get !imp_lkey ?obj];
-      [imp_object verifyApplication !obj];
+      [imp_obj verifyApplication !obj];
     end if;
   end foreach;
 end method;

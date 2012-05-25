@@ -41,11 +41,18 @@
 an activation of a task*/
 static void test_shutdown_instance(void)
 {
-	StatusType result_inst_1;
+  /*
+   * (jlb) previous version was plainly wrong. GetActiveApplicationMode
+   * does not return a StatusType but the application mode. By
+   * chance both E_OK and OSDEFAULTAPPMODE was O. So the comparison
+   * was true. This has changed since Trampoline allows more than one
+   * application mode. OSDEFAULTAPPMODE has no longer the zero value.
+   */
+	AppModeType result_inst_1;
 	
 	SCHEDULING_CHECK_INIT(2);
 	result_inst_1 = GetActiveApplicationMode();
-	SCHEDULING_CHECK_AND_EQUAL_INT(2,E_OK , result_inst_1); 
+	SCHEDULING_CHECK_AND_EQUAL_INT(2, OSDEFAULTAPPMODE, result_inst_1); 
 
 }
 

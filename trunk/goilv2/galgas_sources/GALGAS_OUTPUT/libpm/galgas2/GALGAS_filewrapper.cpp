@@ -413,7 +413,9 @@ GALGAS_data GALGAS_filewrapper::reader_binaryFileContentsAtPath (const GALGAS_st
       }else{
         const PMUInt8 * sourcePtr = (const PMUInt8 *) file->mContents ;
         const PMUInt32 sourceLength = file->mFileLength ;
-        result = GALGAS_data (sourcePtr, sourceLength) ;
+        C_Data data ;
+        data.appendDataFromPointer (sourcePtr, sourceLength) ;
+        result = GALGAS_data (data) ;
       }
     }
   }

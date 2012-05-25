@@ -5,7 +5,7 @@
 #---------------------------------------------------------------*
 
 MINGW_TOOL_PATH := /usr/local/i386-mingw32-4.3.0/bin
-COMPILER_TOOL := $(MINGW_TOOL_PATH)/i386-mingw32-gcc -m32 -D_WIN32_WINDOWS=0x410
+COMPILER_TOOL := $(MINGW_TOOL_PATH)/i386-mingw32-gcc -m32 -D_WIN32_WINNT=0x501
 LINKER_TOOL   := $(MINGW_TOOL_PATH)/i386-mingw32-g++ -m32 --enable-auto-import
 STRIP_TOOL    := $(MINGW_TOOL_PATH)/i386-mingw32-strip --strip-all
 

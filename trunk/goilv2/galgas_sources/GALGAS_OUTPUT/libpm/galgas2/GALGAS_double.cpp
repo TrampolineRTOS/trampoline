@@ -4,7 +4,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 2002, ..., 2010 Pierre Molinaro.                           *
+//  Copyright (C) 2002, ..., 2012 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //                                                                           *
@@ -80,6 +80,67 @@ GALGAS_double GALGAS_double::reader_sqrt (C_Compiler * inCompiler
     }else{
       result = GALGAS_double (sqrt (mDoubleValue)) ;
     }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------*
+
+GALGAS_double GALGAS_double::reader_log_32_ (C_Compiler * inCompiler
+                                             COMMA_LOCATION_ARGS) const {
+  GALGAS_double result ;
+  if (isValid ()) {
+    if (mDoubleValue <= 0.0) {
+      C_String s ;
+      s << "Cannot compute log2 of a null or negative @double" ;
+      inCompiler->onTheFlyRunTimeError (s COMMA_THERE) ;
+    }else{
+      result = GALGAS_double (log2 (mDoubleValue)) ;
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------*
+
+GALGAS_double GALGAS_double::reader_log_31__30_ (C_Compiler * inCompiler
+                                                 COMMA_LOCATION_ARGS) const {
+  GALGAS_double result ;
+  if (isValid ()) {
+    if (mDoubleValue <= 0.0) {
+      C_String s ;
+      s << "Cannot compute log10 of a null or negative @double" ;
+      inCompiler->onTheFlyRunTimeError (s COMMA_THERE) ;
+    }else{
+      result = GALGAS_double (log10 (mDoubleValue)) ;
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------*
+
+GALGAS_double GALGAS_double::reader_logn (C_Compiler * inCompiler
+                                                 COMMA_LOCATION_ARGS) const {
+  GALGAS_double result ;
+  if (isValid ()) {
+    if (mDoubleValue <= 0.0) {
+      C_String s ;
+      s << "Cannot compute logn of a null or negative @double" ;
+      inCompiler->onTheFlyRunTimeError (s COMMA_THERE) ;
+    }else{
+      result = GALGAS_double (::log (mDoubleValue)) ;
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------*
+
+GALGAS_double GALGAS_double::reader_exp (UNUSED_LOCATION_ARGS) const {
+  GALGAS_double result ;
+  if (isValid ()) {
+    result = GALGAS_double (::exp (mDoubleValue)) ;
   }
   return result ;
 }

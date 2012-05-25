@@ -4,7 +4,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 1996, ..., 2010 Pierre Molinaro.                           *
+//  Copyright (C) 1996, ..., 2011 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
@@ -30,18 +30,48 @@
 #include "utilities/M_machine.h"
 
 //---------------------------------------------------------------------------*
+
+class C_SourceTextInString ;
+class C_String ;
+
+//---------------------------------------------------------------------------*
 //                                                                           *
 //                 Class for referencing a location in source text           *
 //                                                                           *
 //---------------------------------------------------------------------------*
 
 class C_LocationInSource {
-  public : PMSInt32 mIndex ;
-  public : PMSInt32 mLineNumber ;
-  public : PMSInt32 mColumnNumber ;
-  
+  private : PMSInt32 mIndex ;
+  private : PMSInt32 mLineNumber ;
+  private : PMSInt32 mColumnNumber ;
+  private : const C_SourceTextInString * mSourceText ;
+
+//---  
   public : C_LocationInSource (void) ;
-  public : C_LocationInSource (const PMSInt32 inIndex, const PMSInt32 inLine, const PMSInt32 inColumn) ;
+  public : virtual ~C_LocationInSource (void) ;
+
+  public : C_LocationInSource (const C_LocationInSource & inObject) ;
+
+  public : C_LocationInSource & operator = (const C_LocationInSource & inObject) ;
+
+  public : C_LocationInSource (const C_SourceTextInString * inSourceText,
+                               const PMSInt32 inIndex,
+                               const PMSInt32 inLine,
+                               const PMSInt32 inColumn) ;
+
+  public : void gotoNextLocation (const bool inPreviousCharWasEndOfLine) ;
+
+  public : void resetLocation (void) ;
+
+  public : void resetWithSourceText (const C_SourceTextInString * inSourceText) ;
+
+  public : inline PMSInt32 index (void) const { return mIndex ; }
+
+  public : inline PMSInt32 lineNumber (void) const { return mLineNumber ; }
+
+  public : inline PMSInt32 columnNumber (void) const { return mColumnNumber ; }
+
+  public : C_String sourceFilePath (void) const ;
 } ;
 
 //---------------------------------------------------------------------------*

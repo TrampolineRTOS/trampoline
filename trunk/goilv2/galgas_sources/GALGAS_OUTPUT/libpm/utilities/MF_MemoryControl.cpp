@@ -573,7 +573,9 @@
       gCreatedPointersCount ++ ;
   //    MF_Assert (gCreatedPointersCount != 69068, "gCreatedPointersCount == %lld", gCreatedPointersCount, 0) ;
       executerInsertionRecursiveDansArbreEquilibre (gPointersTreeRoot[HashCode(inPointer)], inPointer, existeDeja, pointeurNouvelElement, ioExtension);
-      assert_routine (!existeDeja, "(detectee par " __FILE__ ") Le pointeur existe deja", 0, 0, IN_SOURCE_FILE, IN_SOURCE_LINE) ;
+      if (existeDeja) {
+        runtime_error_routine ("(detectee par " __FILE__ ") Le pointeur existe deja", 0, 0, IN_SOURCE_FILE, IN_SOURCE_LINE) ;
+      }
       pointeurNouvelElement->mSourceFileName = IN_SOURCE_FILE ;
       pointeurNouvelElement->champNumeroLigneSource = IN_SOURCE_LINE ;
       pointeurNouvelElement->champNatureObjet = inAllocation ;
@@ -632,26 +634,31 @@
     CelementArbreBinaireEquilibrePointeur * pointerToDelete = (CelementArbreBinaireEquilibrePointeur *) NULL ;
     suppressionRecursiveDansArbreBinaireEquilibre (gPointersTreeRoot [HashCode (inPointer)],
                                                    inPointer, pointerToDelete, h);
-    assert_routine (pointerToDelete != NULL, "(" __FILE__ ") Pointer (0x%X) is unknown", (PMSInt) inPointer, 0 COMMA_THERE) ;
+    if (pointerToDelete == NULL) {
+      runtime_error_routine ("(" __FILE__ ") Pointer (0x%X) is unknown", (PMSInt) inPointer, 0 COMMA_THERE) ;
+    }
     if (NULL != pointerToDelete) {
       const PMSInt32 numeroLigneSource = pointerToDelete->champNumeroLigneSource ;
       const char * nomFichierSource = pointerToDelete->mSourceFileName ;
       // printf ("------- %p %d\n", pointerToDelete, pointerToDelete->champNatureObjet) ;
       switch (natureAllocation) {
       case kAllocatedByMacroMyNew :
-        assert_routine (pointerToDelete->champNatureObjet == kAllocatedByMacroMyNew,
-          "(" __FILE__ ") Appel de 'macroMyDelete' sur un pointeur declare dans '%s' ligne %d qui n'a pas ete alloue par 'macroMyNew'", 
-          (PMSInt) nomFichierSource, numeroLigneSource, IN_SOURCE_FILE, IN_SOURCE_LINE) ; 
+        if (pointerToDelete->champNatureObjet != kAllocatedByMacroMyNew) {
+          runtime_error_routine ("(" __FILE__ ") Appel de 'macroMyDelete' sur un pointeur declare dans '%s' ligne %d qui n'a pas ete alloue par 'macroMyNew'", 
+                                 (PMSInt) nomFichierSource, numeroLigneSource, IN_SOURCE_FILE, IN_SOURCE_LINE) ; 
+        }
         break ;
       case kAllocatedByMacroMyNewArray :
-        assert_routine (pointerToDelete->champNatureObjet == kAllocatedByMacroMyNewArray,
-          "(" __FILE__ ") Appel de 'macroMyDeleteArray' sur un pointeur declare dans '%s' ligne %d qui n'a pas ete alloue par 'macroMyNewArray'", 
-          (PMSInt) nomFichierSource, numeroLigneSource, IN_SOURCE_FILE, IN_SOURCE_LINE) ;
+        if (pointerToDelete->champNatureObjet != kAllocatedByMacroMyNewArray) {
+          runtime_error_routine ("(" __FILE__ ") Appel de 'macroMyDeleteArray' sur un pointeur declare dans '%s' ligne %d qui n'a pas ete alloue par 'macroMyNewArray'", 
+                                 (PMSInt) nomFichierSource, numeroLigneSource, IN_SOURCE_FILE, IN_SOURCE_LINE) ;
+        }
         break ;
       case kAllocatedByMacroMyNewPODArray :
-        assert_routine (pointerToDelete->champNatureObjet == kAllocatedByMacroMyNewPODArray,
-          "(" __FILE__ ") Appel de 'macroMyDeletePODArray' sur un pointeur declare dans '%s' ligne %d qui n'a pas ete alloue par 'macroMyNewPODArray'", 
-          (PMSInt) nomFichierSource, numeroLigneSource, IN_SOURCE_FILE, IN_SOURCE_LINE) ;
+        if (pointerToDelete->champNatureObjet != kAllocatedByMacroMyNewPODArray) {
+          runtime_error_routine ("(" __FILE__ ") Appel de 'macroMyDeletePODArray' sur un pointeur declare dans '%s' ligne %d qui n'a pas ete alloue par 'macroMyNewPODArray'", 
+                                 (PMSInt) nomFichierSource, numeroLigneSource, IN_SOURCE_FILE, IN_SOURCE_LINE) ;
+        }
         break ;
       default : // Alloue hors macro
         break ;
@@ -671,7 +678,7 @@
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void routineVoidPointer (const void * inPointer COMMA_LOCATION_ARGS) {
     if (inPointer != NULL) {
-      assert_routine (false, "pointer (%p) not NULL", (PMSInt) inPointer, 0 COMMA_THERE) ;
+      runtime_error_routine ("pointer (%p) not NULL", (PMSInt) inPointer, 0 COMMA_THERE) ;
     }
   }
 #endif
@@ -684,17 +691,20 @@
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void routineValidPointer (const void * inPointer COMMA_LOCATION_ARGS) {
-    assert_routine (inPointer != NULL, "(detected by " __FILE__ ") NULL pointer", 0, 0 COMMA_THERE) ;
+    if (inPointer == NULL) {
+      runtime_error_routine ("(detected by " __FILE__ ") NULL pointer", 0, 0 COMMA_THERE) ;
+    }
     CelementArbreBinaireEquilibrePointeur * p = rechercherPointeur (inPointer) ;
-    assert_routine (p != NULL, "(detected by " __FILE__ ") unknown (%p) pointer", (PMSInt) inPointer, 0 COMMA_THERE) ;
+    if (p == NULL) {
+      runtime_error_routine ("(detected by " __FILE__ ") unknown (%p) pointer", (PMSInt) inPointer, 0 COMMA_THERE) ;
+    }
   }
 #endif
 
 //---------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  void CelementArbreBinaireEquilibrePointeur::
-  affichageRecursif (void) const {
+  void CelementArbreBinaireEquilibrePointeur::affichageRecursif (void) const {
   //--- Branche inf
     if (mInfPtr != NULL) {
       mInfPtr->affichageRecursif () ;

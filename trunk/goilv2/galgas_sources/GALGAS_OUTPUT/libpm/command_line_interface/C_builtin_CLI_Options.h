@@ -7,7 +7,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 2003, ..., 2011 Pierre Molinaro.                           *
+//  Copyright (C) 2003, ..., 2012 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //                                                                           *
@@ -40,10 +40,6 @@ extern C_BoolCommandLineOption gOption_generic_5F_cli_5F_options_display_5F_help
 //---------------------------------------------------------------------------*
 
 extern C_BoolCommandLineOption gOption_generic_5F_cli_5F_options_display_5F_version ;
-
-//---------------------------------------------------------------------------*
-
-extern C_BoolCommandLineOption gOption_generic_5F_cli_5F_options_xml ;
 
 //---------------------------------------------------------------------------*
 

@@ -32,6 +32,7 @@
 #include "collections/TC_Array.h"
 #include "utilities/M_machine.h"
 #include "streams/C_ConsoleOut.h"
+#include "utilities/C_Data.h"
 #include "utilities/TF_Swap.h"
 #include "time/C_DateTime.h"
 
@@ -52,26 +53,6 @@
 #ifdef UNIX_TOOL
   #include <sys/types.h>
   #include <sys/stat.h>
-#endif
-
-//---------------------------------------------------------------------------*
-
-#ifdef TARGET_API_MAC_CARBON
-  #define MAC_OS_CREATOR_FORMAL_ARGUMENT_NAME       inCreator
-  #define COMMA_MAC_OS_CREATOR_FORMAL_ARGUMENT_NAME , MAC_OS_CREATOR_FORMAL_ARGUMENT_NAME
-  #define MAC_OS_CREATOR_FORMAL_ARGUMENT            const PMSInt32 MAC_OS_CREATOR_FORMAL_ARGUMENT_NAME
-  #define COMMA_MAC_OS_CREATOR_FORMAL_ARGUMENT      , MAC_OS_CREATOR_FORMAL_ARGUMENT
-  #define COMMA_CODE_WARRIOR_CREATOR                , 'CWIE'
-  #define COMMA_TEACH_TEXT_CREATOR                  , 'ttxt'
-  #define COMMA_SAFARI_CREATOR                      , 'sfri'
-#else
-  #define MAC_OS_CREATOR_FORMAL_ARGUMENT_NAME
-  #define COMMA_MAC_OS_CREATOR_FORMAL_ARGUMENT_NAME
-  #define MAC_OS_CREATOR_FORMAL_ARGUMENT
-  #define COMMA_MAC_OS_CREATOR_FORMAL_ARGUMENT
-  #define COMMA_CODE_WARRIOR_CREATOR
-  #define COMMA_TEACH_TEXT_CREATOR
-  #define COMMA_SAFARI_CREATOR
 #endif
 
 //---------------------------------------------------------------------------*
@@ -277,98 +258,23 @@ class C_String : public AC_OutputStream {
 //--- Return reversed string
   public : C_String reversedString (void) const ;
 
+//--- Return unsigned integer value
+  public : PMUInt32 unsignedIntegerValue (void) const ;
+
 //--- Get current column index (starting from 0)
   public : static C_String stringWithRepeatedCharacter (const utf32 inRepeatedCharacter, const PMUInt32 inCount) ;
-
-//--- Conversion to and from native path
-  public : C_String unixPathWithNativePath (void) const ;
-  public : C_String nativePathWithUnixPath (void) const ;
 
 //--- Standardizing Path
 //    - first, convert Windows Path to Unix Path (on windows only)
 //    - Reduce empty components and references to the current directory (that is, the sequences "//" and "/./") to single path separators
   public : C_String stringByStandardizingPath (void) const ;
 
-//--- Current directory (returns always an Unux path)
-  public : static C_String currentDirectory (void) ;
-  
-  public : bool makeDirectoryIfDoesNotExist (void) const ;
-
-  public : static C_String stringWithContentOfFile (const C_String & inFilePath) ;
-
-  public : static C_String stringWithContentOfFile (const C_String & inFilePath,
-                                                    PMTextFileEncoding & outTextFileEncoding,
-                                                    bool & outOK) ;
-
-  public : bool writeToFile (const C_String & inFilePath
-                             COMMA_MAC_OS_CREATOR_FORMAL_ARGUMENT
-                             COMMA_LOCATION_ARGS) const ;
-
-  public : bool writeToExecutableFile (const C_String & inFilePath
-                                       COMMA_MAC_OS_CREATOR_FORMAL_ARGUMENT
-                                       COMMA_LOCATION_ARGS) const ;
-
-  public : bool writeBinaryData (const TC_UniqueArray <PMUInt8> & inBinaryData) const ;
-
-  public : C_DateTime fileModificationTime (void) const ;
-
-  public : bool fileExists (void) const ;
-
-  public : bool directoryExists (void) const ;
-
-  public : bool binaryDataWithContentOfFile (TC_UniqueArray <PMUInt8> & outBinaryData) const ;
-
-  public : PMSInt32 filePosixPermissions (void) const ;
-
-  public : PMSInt32 setFilePosixPermissions (const PMSInt32 inNewFilePosixPermissions) const ;
-
-
-//--- Testing for absolute path (not empty and begins with '/')
-  public : bool isAbsolutePath (void) const ;
-
-//--- If receiver is an absolute path, returns it
-//    Otherwise, prepend current directory
-  public : C_String absolutePathFromCurrentDirectory (void) const ;
-
-//--- If receiver is an absolute path, returns it
-//    Otherwise, prepend path argument
-//    if path argument it self is relative, current directory is prepended
-  public : C_String absolutePathFromPath (const C_String & inPath) const ;
-
-//--- Return the relative path of the receiver from inPath 
-  public : C_String relativePathFromPath (const C_String & inPath) const ;
-
-//--- Find file in directory
-  public : C_String findFileInDirectory (const C_String & inFileName,
-                                         const TC_UniqueArray <C_String> & inDirectoriesToExclude) const ;
-
-//--- Find all files in directory and subdirectories that respond to a given extension
-//    Initial directory is got from receiver value. If it is not a directory, this method does nothing.
-//    Found files are appended to outFoundFilePathes.
-  public : void findAllFilesInDirectoryFromExtension (const C_String & inExtension,
-                                                      TC_UniqueArray <C_String> & outFoundFilePathes) const ;
-
-//--- Delete file (returns NULL on success, or a string describing the error)
-  public : const char * deleteFile (void) const ;
-  
-//--- Remove directory (returns NULL on success, or a string describing the error)
-  public : const char * removeDirectory (void) const ;
-
-//---------------- Symbolic links --------------
-  public : bool isSymbolicLink (void) const ;
-
-  public : C_String stringWithSymbolicLinkContents (bool & outOk) const ;
-
-  public : bool makeSymbolicLinkWithPath (const C_String & inPath) const ;
-
 //---------------- Virtual output stream methods --------------
-  protected : virtual void
-  performActualCharArrayOutput (const char * inCharArray,
-                                const PMSInt32 inArrayCount) ;
+  protected : virtual void performActualCharArrayOutput (const char * inCharArray,
+                                                         const PMSInt32 inArrayCount) ;
 
-  protected : virtual void
-  performActualUnicodeArrayOutput (const utf32 * inCharArray,
-                                   const PMSInt32 inArrayCount) ;
+  protected : virtual void performActualUnicodeArrayOutput (const utf32 * inCharArray,
+                                                            const PMSInt32 inArrayCount) ;
 
 //--- Private (internal) methods
   private : void insulateEmbeddedString (const PMSInt32 inNewCapacity) ;
@@ -377,8 +283,8 @@ class C_String : public AC_OutputStream {
     private : void checkString (LOCATION_ARGS) const ;
   #endif
 
-  public : static bool parseUTF8 (const PMUInt8 * inCString,
-                                  const PMSInt32 inLength,
+  public : static bool parseUTF8 (const C_Data & inDataString,
+                                  const PMSInt32 inOffset,
                                   C_String & outString) ;
 
 //---------------- Private attributes -------------

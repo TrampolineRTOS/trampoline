@@ -83,7 +83,9 @@ class C_SharedObject {
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroValidSharedObject(OBJECT,TYPE) { \
     macroValidPointer (OBJECT) ; \
-    MF_Assert (dynamic_cast <TYPE *> (OBJECT) != NULL, "'"#OBJECT"' is not an instance of '"#TYPE" *'", 0, 0) ; \
+    if (dynamic_cast <TYPE *> (OBJECT) == NULL) { \
+      MF_RunTimeError ("'"#OBJECT"' is not an instance of '"#TYPE" *'", 0, 0) ; \
+    } \
   }
 #else
   #define macroValidSharedObject(OBJECT,TYPE)
@@ -96,7 +98,9 @@ class C_SharedObject {
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroValidSharedObjectThere(OBJECT,TYPE) { \
     macroValidPointerThere (OBJECT) ; \
-    MF_AssertThere (dynamic_cast <TYPE *> (OBJECT) != NULL, "'"#OBJECT"' is not an instance of '"#TYPE" *'", 0, 0) ; \
+    if (dynamic_cast <TYPE *> (OBJECT) == NULL) { \
+      MF_RunTimeErrorThere ("'"#OBJECT"' is not an instance of '"#TYPE" *'", 0, 0) ; \
+    } \
   }
 #else
   #define macroValidSharedObjectThere(OBJECT,TYPE)

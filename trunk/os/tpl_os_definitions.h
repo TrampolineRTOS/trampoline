@@ -405,14 +405,14 @@
  ************************************/
 
 /**
- * @def OSDEFAULTAPPMODE
+ * @def NOAPPMODE
  *
- * Default application mode, always a valid parameter to StartOS.
+ * Constant to initialize the application_mode.
  *
  * @see #StartOS
  * @see #AppModeType
  */
-#define OSDEFAULTAPPMODE    0
+#define NOAPPMODE (-1)
 
 /*********************************
  * Task flags for the type field *

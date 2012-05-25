@@ -41,9 +41,8 @@ static C_PrologueEpilogue * gPrologueEpilogueActionList = NULL ;
 
 //---------------------------------------------------------------------------*
 
-C_PrologueEpilogue::
-C_PrologueEpilogue (void (* inPrologueAction) (void),
-                    void (* inEpilogueAction) (void)) :
+C_PrologueEpilogue::C_PrologueEpilogue (void (* inPrologueAction) (void),
+                                        void (* inEpilogueAction) (void)) :
 mNextObjectLink (gPrologueEpilogueActionList),
 mPrologueAction (inPrologueAction),
 mEpilogueAction (inEpilogueAction) {

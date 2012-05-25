@@ -7,7 +7,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 2003, ..., 2011 Pierre Molinaro.                           *
+//  Copyright (C) 2003, ..., 2012 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //                                                                           *
@@ -56,7 +56,7 @@ gOption_generic_5F_cli_5F_options_display_5F_version ("generic_cli_options",
                                                               "asktosaveonclose",
                                                               '\0',
                                                               "ask-to-save-on-close",
-                                                              "Ask to Save Output on Close (Win32SIOUX and Mac Carbon Only)") ;
+                                                              "Ask to Save Output on Close (Win32SIOUX)") ;
 #endif
 
 //---------------------------------------------------------------------------*
@@ -91,13 +91,5 @@ gOption_generic_5F_cli_5F_options_display_5F_version ("generic_cli_options",
                                                  "no-color",
                                                  "Do not issue colored messages") ;
 #endif
-
-//---------------------------------------------------------------------------*
-
-C_BoolCommandLineOption gOption_generic_5F_cli_5F_options_xml ("galgas_cli_options",
-                                         "xml",
-                                         0,
-                                         "xml",
-                                         "output in XML") ;
 
 //---------------------------------------------------------------------------*

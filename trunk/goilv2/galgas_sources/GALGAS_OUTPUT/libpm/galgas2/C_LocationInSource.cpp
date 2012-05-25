@@ -4,7 +4,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 1996, ..., 2010 Pierre Molinaro.                           *
+//  Copyright (C) 1996, ..., 2011 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
@@ -23,23 +23,96 @@
 //---------------------------------------------------------------------------*
 
 #include "galgas2/C_LocationInSource.h"
+#include "galgas2/C_SourceTextInString.h"
+#include "strings/C_String.h"
 
 //---------------------------------------------------------------------------*
 
 C_LocationInSource::C_LocationInSource (void) :
 mIndex (0),
-mLineNumber (0),
-mColumnNumber (0) {
+mLineNumber (1),
+mColumnNumber (1),
+mSourceText () {
 }
 
 //---------------------------------------------------------------------------*
 
-C_LocationInSource::C_LocationInSource (const PMSInt32 inIndex,
+C_LocationInSource::C_LocationInSource (const C_SourceTextInString * inSourceText,
+                                        const PMSInt32 inIndex,
                                         const PMSInt32 inLine,
                                         const PMSInt32 inColumn) :
 mIndex (inIndex),
 mLineNumber (inLine),
-mColumnNumber (inColumn) {
+mColumnNumber (inColumn),
+mSourceText (NULL) {
+  macroAssignSharedObject (mSourceText, inSourceText) ;
+}
+
+//---------------------------------------------------------------------------*
+
+C_LocationInSource::C_LocationInSource (const C_LocationInSource & inObject) :
+mIndex (inObject.mIndex),
+mLineNumber (inObject.mLineNumber),
+mColumnNumber (inObject.mColumnNumber),
+mSourceText (NULL) {
+  macroAssignSharedObject (mSourceText, inObject.mSourceText) ;
+}
+
+//---------------------------------------------------------------------------*
+
+C_LocationInSource & C_LocationInSource::operator = (const C_LocationInSource & inObject) {
+  if (this != & inObject) {
+    mIndex = inObject.mIndex ;
+    mLineNumber = inObject.mLineNumber ;
+    mColumnNumber = inObject.mColumnNumber ;
+    macroAssignSharedObject (mSourceText, inObject.mSourceText) ;
+  }
+  return *this ;
+}
+
+//---------------------------------------------------------------------------*
+
+void C_LocationInSource::gotoNextLocation (const bool inPreviousCharWasEndOfLine) {
+  mIndex ++ ;
+  if (inPreviousCharWasEndOfLine) {
+    mLineNumber ++ ;
+    mColumnNumber = 1 ;
+  }else{
+    mColumnNumber ++ ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+void C_LocationInSource::resetLocation (void) {
+  mIndex = 0 ;
+  mLineNumber = 1 ;
+  mColumnNumber = 1 ;
+}
+
+//---------------------------------------------------------------------------*
+
+void C_LocationInSource::resetWithSourceText (const C_SourceTextInString * inSourceText) {
+  mIndex = 0 ;
+  mLineNumber = 1 ;
+  mColumnNumber = 1 ;
+  macroAssignSharedObject (mSourceText, inSourceText) ;
+}
+
+//---------------------------------------------------------------------------*
+
+C_String C_LocationInSource::sourceFilePath (void) const {
+  C_String result ;
+  if (NULL != mSourceText) {
+    result = mSourceText->sourceFilePath () ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------*
+
+C_LocationInSource::~C_LocationInSource (void) {
+  macroDetachSharedObject (mSourceText) ;
 }
 
 //---------------------------------------------------------------------------*

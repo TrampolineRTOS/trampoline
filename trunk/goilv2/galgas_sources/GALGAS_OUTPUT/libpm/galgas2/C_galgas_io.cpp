@@ -24,7 +24,6 @@
 //---------------------------------------------------------------------------*
 
 #include "galgas2/C_galgas_io.h"
-#include "files/C_TextFileWrite.h"
 #include "streams/C_ConsoleOut.h"
 #include "streams/C_ErrorOut.h"
 #include "collections/TC_LinkedList.h"
@@ -182,8 +181,8 @@ errorOrWarningLocationString (const C_LocationInSource & inErrorLocation,
     macroValidSharedObject (inSourceTextPtr, const C_SourceTextInString) ;
     const C_String textLine = inSourceTextPtr->getLineForLocation (inErrorLocation) ;
     result << inSourceTextPtr->sourceFilePath ()
-           << ":" << cStringWithSigned (inErrorLocation.mLineNumber)
-           << ":" << cStringWithSigned (inErrorLocation.mColumnNumber) << ": " ;
+           << ":" << cStringWithSigned (inErrorLocation.lineNumber ())
+           << ":" << cStringWithSigned (inErrorLocation.columnNumber ()) << ": " ;
   }
   return result ;
 }
@@ -201,7 +200,7 @@ void constructErrorOrWarningLocationMessage (C_String & ioMessage,
     if (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
       ioMessage << "\n" << textLine << "\n" ;
     //--- Point out column error
-      for (PMSInt32 i=1 ; i<inErrorLocation.mColumnNumber ; i++) {
+      for (PMSInt32 i=1 ; i<inErrorLocation.columnNumber () ; i++) {
         ioMessage << "-" ;
       }
       ioMessage << "^\n" ;
@@ -215,11 +214,10 @@ void constructErrorOrWarningLocationMessage (C_String & ioMessage,
 //                                                                           *
 //---------------------------------------------------------------------------*
 
-void 
-signalLexicalWarning (const C_SourceTextInString * inSourceTextPtr,
-                      const C_LocationInSource & inWarningLocation,
-                      const C_String & inLexicalWarningMessage
-                      COMMA_LOCATION_ARGS) {
+void signalLexicalWarning (const C_SourceTextInString * inSourceTextPtr,
+                           const C_LocationInSource & inWarningLocation,
+                           const C_String & inLexicalWarningMessage
+                           COMMA_LOCATION_ARGS) {
 //--- Increment warning count
   mTotalWarningCount ++ ;
 //--- Construct location warning message
@@ -241,11 +239,10 @@ signalLexicalWarning (const C_SourceTextInString * inSourceTextPtr,
 //                                                                           *
 //---------------------------------------------------------------------------*
 
-void 
-signalLexicalError (const C_SourceTextInString * inSourceTextPtr,
-                    const C_LocationInSource & inErrorLocation,
-                    const C_String & inLexicalErrorMessage
-                    COMMA_LOCATION_ARGS) {
+void signalLexicalError (const C_SourceTextInString * inSourceTextPtr,
+                         const C_LocationInSource & inErrorLocation,
+                         const C_String & inLexicalErrorMessage
+                         COMMA_LOCATION_ARGS) {
 //--- Increment error count
   mErrorTotalCount ++ ;
 //--- Construct parsing error message
@@ -421,11 +418,10 @@ void signalCastError (const C_SourceTextInString * inSourceTextPtr,
 
 //---------------------------------------------------------------------------*
 
-void 
-signalSemanticWarning (const C_SourceTextInString * inSourceTextPtr,
-                       const C_LocationInSource & inWarningLocation,
-                       const C_String & inWarningMessage
-                       COMMA_LOCATION_ARGS) {
+void signalSemanticWarning (const C_SourceTextInString * inSourceTextPtr,
+                            const C_LocationInSource & inWarningLocation,
+                            const C_String & inWarningMessage
+                            COMMA_LOCATION_ARGS) {
 //--- Increment warning count
   mTotalWarningCount ++ ;
 //--- Construct location error message
@@ -521,7 +517,7 @@ static const utf32 COCOA_MESSAGE_ID = TO_UNICODE (1) ;
 static const utf32 COCOA_REWRITE_SUCCESS_ID = TO_UNICODE (2) ;
 static const utf32 COCOA_WARNING_ID = TO_UNICODE (3) ;
 static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
-static const utf32 COCOA_FILE_CREATION_SUCCESS_ID = TO_UNICODE (5) ;
+//static const utf32 COCOA_FILE_CREATION_SUCCESS_ID = TO_UNICODE (5) ;
 
 //---------------------------------------------------------------------------*
 //                                                                           *
@@ -533,51 +529,55 @@ void ggs_printError (const C_SourceTextInString * inSourceTextPtr,
                      const C_LocationInSource & inErrorLocation,
                      const C_String & inMessage
                      COMMA_LOCATION_ARGS) {
-  if (gOption_generic_5F_cli_5F_options_xml.mValue) {
-    co << "<error\n" ;
+//--- XML message
+  if (executionModeIsNormal ()) {
+    C_String XMLstring ;
+    XMLstring << "<error\n" ;
     if (inSourceTextPtr != NULL) {
       macroValidSharedObject (inSourceTextPtr, const C_SourceTextInString) ;
-      co << "  file=\"" << inSourceTextPtr->sourceFilePath () << "\"\n"
-            "  line=\"" << cStringWithUnsigned (inErrorLocation.mLineNumber) << "\"\n"
-            "  column=\"" << cStringWithUnsigned (inErrorLocation.mColumnNumber) << "\"\n"
+      XMLstring << "  file=\"" << inSourceTextPtr->sourceFilePath () << "\"\n"
+                   "  line=\"" << cStringWithUnsigned (inErrorLocation.lineNumber ()) << "\"\n"
+                   "  column=\"" << cStringWithUnsigned (inErrorLocation.columnNumber ()) << "\"\n"
     //     << "  endColumn=" << cStringWithUnsigned (inSourceEndColumn) << "\n"
       ;
     }
     #ifndef DO_NOT_GENERATE_CHECKINGS
       if (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
-        co << "  sourceFile=\"" << C_String (IN_SOURCE_FILE).lastPathComponent () << "\"\n"
-           << "  sourceLine=\"" << cStringWithSigned (IN_SOURCE_LINE) << "\"\n" ;
+        XMLstring << "  sourceFile=\"" << C_String (IN_SOURCE_FILE).lastPathComponent () << "\"\n"
+                     "  sourceLine=\"" << cStringWithSigned (IN_SOURCE_LINE) << "\"\n" ;
       }
     #endif
-    co << "  message=\"" << inMessage.XMLEscapedString () << "\"\n"
-       << "/>\n" ;
-  }else{
-    C_String errorMessage ;
-    constructErrorOrWarningLocationMessage (errorMessage, inErrorLocation, inSourceTextPtr) ;
-    #ifndef DO_NOT_GENERATE_CHECKINGS
-      if (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
-        errorMessage << "[Raised from file '" << C_String (IN_SOURCE_FILE).lastPathComponent ()
-                     << "' at line " << cStringWithSigned (IN_SOURCE_LINE) << "]\n" ;
-      }
-    #endif
-    errorMessage << inMessage ;
-  //--- Append source string
-    if (inSourceTextPtr != NULL) {
-      macroValidSharedObject (inSourceTextPtr, const C_SourceTextInString) ;
-      inSourceTextPtr->appendSourceContents (errorMessage) ;
-    }
-    if (cocoaOutput ()) {
-      co.appendUnicodeCharacter (COCOA_ERROR_ID COMMA_HERE) ;
-      co << errorMessage ;
-      co.appendUnicodeCharacter (COCOA_MESSAGE_ID COMMA_HERE) ;
-    }else{
-      co.setForeColor (kRedForeColor) ;
-      co.setTextAttribute (kBoldTextAttribute) ;
-      co << errorMessage ;
-      co.setTextAttribute (kAllAttributesOff) ;
-    }
+    XMLstring << "  message=\"" << inMessage.XMLEscapedString () << "\"\n"
+                 "/>\n" ;
+    sendToTCPSocket (XMLstring) ;
   }
-  co.flush () ;
+//---
+  C_String errorMessage ;
+  constructErrorOrWarningLocationMessage (errorMessage, inErrorLocation, inSourceTextPtr) ;
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    if (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
+      errorMessage << "[Raised from file '" << C_String (IN_SOURCE_FILE).lastPathComponent ()
+                   << "' at line " << cStringWithSigned (IN_SOURCE_LINE) << "]\n" ;
+    }
+  #endif
+  errorMessage << inMessage ;
+//--- Append source string
+  if (inSourceTextPtr != NULL) {
+    macroValidSharedObject (inSourceTextPtr, const C_SourceTextInString) ;
+    inSourceTextPtr->appendSourceContents (errorMessage) ;
+  }
+  if (cocoaOutput ()) {
+    co.appendUnicodeCharacter (COCOA_ERROR_ID COMMA_HERE) ;
+    co << errorMessage ;
+    co.appendUnicodeCharacter (COCOA_MESSAGE_ID COMMA_HERE) ;
+    co.flush () ;
+  }else{
+    co.setForeColor (kRedForeColor) ;
+    co.setTextAttribute (kBoldTextAttribute) ;
+    co << errorMessage ;
+    co.setTextAttribute (kAllAttributesOff) ;
+    co.flush () ;
+  }
 }
 
 //---------------------------------------------------------------------------*
@@ -590,51 +590,55 @@ void ggs_printWarning (const C_SourceTextInString * inSourceTextPtr,
                        const C_LocationInSource & inWarningLocation,
                        const C_String & inMessage
                        COMMA_LOCATION_ARGS) {
-  if (gOption_generic_5F_cli_5F_options_xml.mValue) {
-    co << "<warning\n" ;
+//--- XML message
+  if (executionModeIsNormal ()) {
+    C_String XMLstring ;
+    XMLstring << "<warning\n" ;
     if (inSourceTextPtr != NULL) {
       macroValidSharedObject (inSourceTextPtr, const C_SourceTextInString) ;
-      co << "  file=\"" << inSourceTextPtr->sourceFilePath () << "\"\n"
-            "  line=\"" << cStringWithUnsigned (inWarningLocation.mLineNumber) << "\"\n"
-            "  column=\"" << cStringWithUnsigned (inWarningLocation.mColumnNumber) << "\"\n"
+      XMLstring << "  file=\"" << inSourceTextPtr->sourceFilePath () << "\"\n"
+                   "  line=\"" << cStringWithUnsigned (inWarningLocation.lineNumber ()) << "\"\n"
+                   "  column=\"" << cStringWithUnsigned (inWarningLocation.columnNumber ()) << "\"\n"
     //     << "  endColumn=" << cStringWithUnsigned (inSourceEndColumn) << "\n"
       ;
     }
     #ifndef DO_NOT_GENERATE_CHECKINGS
       if (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
-        co << "  sourceFile=\"" << C_String (IN_SOURCE_FILE).lastPathComponent () << "\"\n"
-           << "  sourceLine=\"" << cStringWithSigned (IN_SOURCE_LINE) << "\"\n" ;
+        XMLstring << "  sourceFile=\"" << C_String (IN_SOURCE_FILE).lastPathComponent () << "\"\n"
+                     "  sourceLine=\"" << cStringWithSigned (IN_SOURCE_LINE) << "\"\n" ;
       }
     #endif
-    co << "  message=\"" << inMessage.XMLEscapedString () << "\"\n"
-       << "/>\n" ;
-  }else{
-    C_String warningMessage ;
-    constructErrorOrWarningLocationMessage (warningMessage, inWarningLocation, inSourceTextPtr) ;
-    #ifndef DO_NOT_GENERATE_CHECKINGS
-      if (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
-        warningMessage << "[Raised from file '" << C_String (IN_SOURCE_FILE).lastPathComponent ()
-                       << "' at line " << cStringWithSigned (IN_SOURCE_LINE) << "]\n" ;
-      }
-    #endif
-    warningMessage << inMessage ;
-  //--- Append source string
-    if (inSourceTextPtr != NULL) {
-      macroValidSharedObject (inSourceTextPtr, const C_SourceTextInString) ;
-      inSourceTextPtr->appendSourceContents (warningMessage) ;
-    }
-    if (cocoaOutput ()) {
-      co.appendUnicodeCharacter (COCOA_WARNING_ID COMMA_HERE) ;
-      co << warningMessage ;
-      co.appendUnicodeCharacter (COCOA_MESSAGE_ID COMMA_HERE) ;
-    }else{
-      co.setForeColor (kYellowForeColor) ;
-      co.setTextAttribute (kBoldTextAttribute) ;
-      co << warningMessage ;
-      co.setTextAttribute (kAllAttributesOff) ;
-    }
+    XMLstring << "  message=\"" << inMessage.XMLEscapedString () << "\"\n"
+                 "/>\n" ;
+    sendToTCPSocket (XMLstring) ;
   }
-  co.flush () ;
+//---
+  C_String warningMessage ;
+  constructErrorOrWarningLocationMessage (warningMessage, inWarningLocation, inSourceTextPtr) ;
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    if (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
+      warningMessage << "[Raised from file '" << C_String (IN_SOURCE_FILE).lastPathComponent ()
+                     << "' at line " << cStringWithSigned (IN_SOURCE_LINE) << "]\n" ;
+    }
+  #endif
+  warningMessage << inMessage ;
+//--- Append source string
+  if (inSourceTextPtr != NULL) {
+    macroValidSharedObject (inSourceTextPtr, const C_SourceTextInString) ;
+    inSourceTextPtr->appendSourceContents (warningMessage) ;
+  }
+  if (cocoaOutput ()) {
+    co.appendUnicodeCharacter (COCOA_WARNING_ID COMMA_HERE) ;
+    co << warningMessage ;
+    co.appendUnicodeCharacter (COCOA_MESSAGE_ID COMMA_HERE) ;
+    co.flush () ;
+  }else{
+    co.setForeColor (kYellowForeColor) ;
+    co.setTextAttribute (kBoldTextAttribute) ;
+    co << warningMessage ;
+    co.setTextAttribute (kAllAttributesOff) ;
+    co.flush () ;
+  }
 }
 
 //---------------------------------------------------------------------------*
@@ -645,29 +649,33 @@ void ggs_printWarning (const C_SourceTextInString * inSourceTextPtr,
 
 void ggs_printFileOperationSuccess (const C_String & inMessage
                                     COMMA_LOCATION_ARGS) {
-  if (gOption_generic_5F_cli_5F_options_xml.mValue) {
-    co << "<fileOperation\n" ;
+//--- XML message
+  if (executionModeIsNormal ()) {
+    C_String XMLstring ;
+    XMLstring << "<fileOperation\n" ;
     #ifndef DO_NOT_GENERATE_CHECKINGS
       if (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
-        co << "  sourceFile=\"" << C_String (IN_SOURCE_FILE).lastPathComponent () << "\"\n"
-           << "  sourceLine=" << cStringWithSigned (IN_SOURCE_LINE) << "\n" ;
+        XMLstring << "  sourceFile=\"" << C_String (IN_SOURCE_FILE).lastPathComponent () << "\"\n"
+                     "  sourceLine=" << cStringWithSigned (IN_SOURCE_LINE) << "\n" ;
       }
     #endif
-    co << "  message=\"" << inMessage.XMLEscapedString () << "\"\n"
-       << "/>\n" ;
-  }else{
-    if (cocoaOutput ()) {
-      co.appendUnicodeCharacter (COCOA_REWRITE_SUCCESS_ID COMMA_HERE) ;
-      co << inMessage;
-      co.appendUnicodeCharacter (COCOA_MESSAGE_ID COMMA_HERE) ;
-    }else{
-      co.setForeColor (kBlueForeColor) ;
-      co.setTextAttribute (kBoldTextAttribute) ;
-      co << inMessage ;
-      co.setTextAttribute (kAllAttributesOff) ;
-    }
+    XMLstring << "  message=\"" << inMessage.XMLEscapedString () << "\"\n"
+                 "/>\n" ;
+    sendToTCPSocket (XMLstring) ;
   }
-  co.flush () ;
+//---
+  if (cocoaOutput ()) {
+    co.appendUnicodeCharacter (COCOA_REWRITE_SUCCESS_ID COMMA_HERE) ;
+    co << inMessage;
+    co.appendUnicodeCharacter (COCOA_MESSAGE_ID COMMA_HERE) ;
+    co.flush () ;
+  }else{
+    co.setForeColor (kBlueForeColor) ;
+    co.setTextAttribute (kBoldTextAttribute) ;
+    co << inMessage ;
+    co.setTextAttribute (kAllAttributesOff) ;
+    co.flush () ;
+  }
 }
 
 //---------------------------------------------------------------------------*
@@ -678,37 +686,15 @@ void ggs_printFileOperationSuccess (const C_String & inMessage
 
 void ggs_printMessage (const C_String & inMessage
                        COMMA_LOCATION_ARGS) {
-  if (gOption_generic_5F_cli_5F_options_xml.mValue) {
-    co << "<message\n" ;
-    #ifndef DO_NOT_GENERATE_CHECKINGS
-      if (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
-        co << "  sourceFile=\"" << C_String (IN_SOURCE_FILE).lastPathComponent () << "\"\n"
-           << "  sourceLine=" << cStringWithSigned (IN_SOURCE_LINE) << "\n" ;
-      }
-    #endif
-    co << "  message=\"" << inMessage.XMLEscapedString () << "\"\n"
-       << "/>\n" ;
-  }else{
-    co << inMessage ;
-  }
+  C_String message = inMessage ;
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    if (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
+      message << "[Displayed from file '" << C_String (IN_SOURCE_FILE).lastPathComponent ()
+              << "' at line " << cStringWithSigned (IN_SOURCE_LINE) << "]\n" ;
+    }
+  #endif
+  co << message ;
   co.flush () ;
-}
-
-//---------------------------------------------------------------------------*
-
-void writeXMLHeader (void) {
-  if (gOption_generic_5F_cli_5F_options_xml.mValue) {
-    co << "<?xml version=\"1.0\"?>\n"
-          "<galgas>\n" ;
-  }
-}
-
-//---------------------------------------------------------------------------*
-
-void writeXMLEpilogue (void) {
-  if (gOption_generic_5F_cli_5F_options_xml.mValue) {
-    co << "</galgas>\n" ;
-  }
 }
 
 //---------------------------------------------------------------------------*

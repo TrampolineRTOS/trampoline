@@ -4,7 +4,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 1999, ..., 2010 Pierre Molinaro.                           *
+//  Copyright (C) 1999, ..., 2012 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
@@ -539,10 +539,10 @@ static void parcoursBDDinterneParNoeud (const PMUInt32 inValue,
   if ((node != 0) && ! isNodeMarkedThenMark (inValue COMMA_HERE)) {
     parcoursBDDinterneParNoeud (extractElse (node), inTraversing) ;
     parcoursBDDinterneParNoeud (extractThen (node), inTraversing) ;
-    inTraversing.action (inValue & ~1,
+    inTraversing.action (inValue & ~1U,
                          extractVar (node COMMA_HERE),
                          extractElse (node),
-                         extractThen (node) & ~1,
+                         extractThen (node) & ~1U,
                          extractThen (node) & 1) ;
   }
 }
@@ -639,7 +639,7 @@ action (const bool tableauDesValeurs [],
 
 void C_BDD::buildValueArray (TC_UniqueArray <PMUInt64> & outValuesArray,
                               const PMUInt16 inBDDvariablesCount) const {
-  outValuesArray.removeAllObjects () ;
+  outValuesArray.setCountToZero () ;
   C_build_values_array builder (& outValuesArray) ;
   bool * tableauDesValeurs = NULL ;
   macroMyNewArray (tableauDesValeurs, bool, inBDDvariablesCount) ;
@@ -688,7 +688,7 @@ action (const bool tableauDesValeurs [],
 void C_BDD::
 buildLittleEndianStringValueArray (TC_UniqueArray <C_String> & outValuesArray,
                                    const PMUInt16 inBDDvariablesCount) const {
-  outValuesArray.removeAllObjects () ;
+  outValuesArray.setCountToZero () ;
   cLittleEndianStringValueBuilder builder (& outValuesArray) ;
   bool * tableauDesValeurs = NULL ;
   macroMyNewArray (tableauDesValeurs, bool, inBDDvariablesCount) ;
@@ -731,7 +731,7 @@ action (const bool tableauDesValeurs [],
 void C_BDD::
 buildBigEndianStringValueArray (TC_UniqueArray <C_String> & outValuesArray,
                                 const PMUInt16 inBDDvariablesCount) const {
-  outValuesArray.removeAllObjects () ;
+  outValuesArray.setCountToZero () ;
   cBuildBigEndianStringValueArray builder (& outValuesArray) ;
   bool * tableauDesValeurs = NULL ;
   macroMyNewArray (tableauDesValeurs, bool, inBDDvariablesCount) ;
@@ -1126,7 +1126,7 @@ void C_BDD::
 getBoolArray (TC_UniqueArray <bool> & outArray,
               const PMUInt32 inMaxValues,
               const PMUInt16 inBitSize) const {
-  outArray.removeAllObjects () ;
+  outArray.setCountToZero () ;
   outArray.makeRoom ((PMSInt32) inMaxValues) ;
   outArray.addObjects ((PMSInt32) inMaxValues, false) ;
   cBuildArrayForSet s (outArray) ;
@@ -1358,7 +1358,7 @@ getArray2 (TC_UniqueArray <TC_UniqueArray <PMSInt32> > & outArray,
            const PMUInt32 inMaxValueCount,
            const PMUInt16 inBitSize1,
            const PMUInt16 inBitSize2) const {
-  outArray.removeAllObjects () ;
+  outArray.setCountToZero () ;
   outArray.makeRoomUsingSwap ((PMSInt32) inMaxValueCount) ;
   for (PMUInt32 i=0 ; i<inMaxValueCount ; i++) {
     outArray.addDefaultObjectUsingSwap () ;

@@ -38,10 +38,6 @@
   #include <stdio.h>
 #endif
 
-#ifdef TARGET_API_MAC_CARBON
-  #include <string.h>
-#endif
-
 //---------------------------------------------------------------------------*
 
 #ifndef MACHINE_IS_DEFINED
@@ -73,50 +69,6 @@
   void F_default_display_exception (const M_STD_NAMESPACE exception & inException) {
     co.flush () ;
     ce << "\n*** Exception: " << inException.what () << " ***\n" ;
-  }
-#endif
-
-//---------------------------------------------------------------------------*
-//                                                                           *
-//     'F_default_display_exception' for MAC OS                              *
-//                                                                           *
-//---------------------------------------------------------------------------*
-
-#ifdef TARGET_API_MAC_CARBON
-  void F_default_display_exception (const M_STD_NAMESPACE exception & inException) {
-    Str255 explanaition = "\p" ;
-    const char * message = inException.what () ;
-    PMUInt32 length = strlen (message) ;
-    if (length > 255) {
-      length = 255 ;
-    }
-    for (PMUInt32 i=0 ; i<length ; i++) {
-      explanaition [i+1] = (PMUInt8) message [i] ;
-    }
-    explanaition [0] = (PMUInt8) length ;
-    PMSInt16 itemHit ; // Not used
-    ::StandardAlert (kAlertStopAlert, // Alert type
-                     "\pC++ Exception.", // Primary message
-                     explanaition, // No explaination
-                     NULL, // Default Parameters
-                     & itemHit) ;
-  }
-#endif
-
-//---------------------------------------------------------------------------*
-//                                                                           *
-//     'F_default_display_unknown_exception' for MAC OS Carbon               *
-//                                                                           *
-//---------------------------------------------------------------------------*
-
-#ifdef TARGET_API_MAC_CARBON
-  void F_default_display_unknown_exception (void) {
-    PMSInt16 itemHit ;
-    ::StandardAlert (kAlertStopAlert, // Alert type
-                     "\pUnknown Exception.", // Primary message
-                     "\pAn unknown C++ exception has been raised.", // Explaination message
-                     NULL, // Default Parameters
-                     & itemHit) ;
   }
 #endif
 

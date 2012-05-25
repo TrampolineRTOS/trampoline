@@ -111,7 +111,7 @@ end rule;
 
 rule 'a'->'z' |  'A'->'Z' :
   repeat
-    enterCharacterIntoString !?identifierString !toLower (!*);
+    enterCharacterIntoString !?identifierString !*;
     enterCharacterIntoString !?tokenString !*;
   while 'a'->'z' | 'A'->'Z' | '_' | '0'->'9' :
   end repeat;

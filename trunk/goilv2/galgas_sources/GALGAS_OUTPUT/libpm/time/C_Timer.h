@@ -37,8 +37,6 @@
 
 #ifdef COMPILE_FOR_WIN32
   #include <time.h>
-#elif TARGET_API_MAC_CARBON
-  #include <time.h>
 #else // Unix
   #include <sys/time.h>
   #define LIBPM_USES_TIMEVAL_STRUCT

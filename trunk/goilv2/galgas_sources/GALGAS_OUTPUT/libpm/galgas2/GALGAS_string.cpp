@@ -30,6 +30,7 @@
 #include "command_line_interface/F_Analyze_CLI_Options.h"
 #include "strings/unicode_character_cpp.h"
 #include "galgas2/C_galgas_io.h"
+#include "files/C_FileManager.h"
 
 //---------------------------------------------------------------------------*
 
@@ -118,7 +119,7 @@ GALGAS_lstring GALGAS_string::reader_nowhere (LOCATION_ARGS) const {
 GALGAS_bool GALGAS_string::reader_fileExists (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (isValid ()) {
-    result = GALGAS_bool (mString.fileExists ()) ;
+    result = GALGAS_bool (C_FileManager::fileExistsAtPath (mString)) ;
   }
   return result ;
 }
@@ -128,7 +129,7 @@ GALGAS_bool GALGAS_string::reader_fileExists (UNUSED_LOCATION_ARGS) const {
 GALGAS_bool GALGAS_string::reader_directoryExists (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (isValid ()) {
-    result = GALGAS_bool (mString.directoryExists ()) ;
+    result = GALGAS_bool (C_FileManager::directoryExists (mString)) ;
   }
   return result ;
 }
@@ -139,6 +140,16 @@ GALGAS_uint GALGAS_string::reader_length (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
     result = GALGAS_uint ((PMUInt32) mString.length ()) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------*
+
+GALGAS_range GALGAS_string::reader_range (UNUSED_LOCATION_ARGS) const {
+  GALGAS_range result ;
+  if (isValid ()) {
+    result = GALGAS_range (GALGAS_uint (0), GALGAS_uint ((PMUInt32) mString.length ())) ;
   }
   return result ;
 }
@@ -260,7 +271,7 @@ GALGAS_string GALGAS_string::reader_relativePathFromPath (const GALGAS_string & 
                                                             COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_string result ;
   if (isValid () && inReferencePath.isValid ()) {
-    result = GALGAS_string (mString.relativePathFromPath (inReferencePath.mString)) ;
+    result = GALGAS_string (C_FileManager::relativePathFromPath (mString, inReferencePath.mString)) ;
   }
   return result ;
 }
@@ -494,13 +505,13 @@ void GALGAS_string::description (C_String & ioString,
 //---------------------------------------------------------------------------*
 
 GALGAS_string GALGAS_string::reader_unixPathWithNativePath (UNUSED_LOCATION_ARGS) const {
-  return GALGAS_string (mString.unixPathWithNativePath ()) ;
+  return GALGAS_string (C_FileManager::unixPathWithNativePath (mString)) ;
 }
 
 //---------------------------------------------------------------------------*
 
 GALGAS_string GALGAS_string::reader_nativePathWithUnixPath (UNUSED_LOCATION_ARGS) const {
-  return GALGAS_string (mString.nativePathWithUnixPath ()) ;
+  return GALGAS_string (C_FileManager::nativePathWithUnixPath (mString)) ;
 }
 
 //---------------------------------------------------------------------------*
@@ -531,7 +542,7 @@ static void recursiveSearchForRegularFiles (const C_String & inUnixStartPath,
                                             const bool inRecursiveSearch,
                                             const C_String & inRelativePath,
                                             GALGAS_stringlist & ioResult) {
-  const C_String nativeStartPath = inUnixStartPath.nativePathWithUnixPath () ;
+  const C_String nativeStartPath = C_FileManager::nativePathWithUnixPath (inUnixStartPath) ;
   DIR * dir = ::opendir (nativeStartPath.cString (HERE)) ;
   if (dir != NULL) {
     struct dirent  * current = readdir (dir) ;
@@ -539,14 +550,14 @@ static void recursiveSearchForRegularFiles (const C_String & inUnixStartPath,
       if (current->d_name [0] != '.') {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
-        if (name.directoryExists ()) {
+        if (C_FileManager::directoryExists (name)) {
           if (inRecursiveSearch) {
             recursiveSearchForRegularFiles (name,
                                             inRecursiveSearch,
                                             inRelativePath + current->d_name + "/",
                                             ioResult) ;
           }
-        }else if (name.fileExists ()) {
+        }else if (C_FileManager::fileExistsAtPath (name)) {
           const C_String relativePath = inRelativePath + current->d_name ;
           ioResult.addAssign_operation (GALGAS_string (relativePath) COMMA_HERE) ;
         }
@@ -579,7 +590,7 @@ recursiveSearchForHiddenFiles (const C_String & inUnixStartPath,
                                 const bool inRecursiveSearch,
                                 const C_String & inRelativePath,
                                 GALGAS_stringlist & ioResult) {
-  const C_String nativeStartPath = inUnixStartPath.nativePathWithUnixPath () ;
+  const C_String nativeStartPath = C_FileManager::nativePathWithUnixPath (inUnixStartPath) ;
   DIR * dir = ::opendir (nativeStartPath.cString (HERE)) ;
   if (dir != NULL) {
     struct dirent  * current = readdir (dir) ;
@@ -587,14 +598,14 @@ recursiveSearchForHiddenFiles (const C_String & inUnixStartPath,
       if ((strlen (current->d_name) > 1) && (current->d_name [0] == '.') && (strcmp (current->d_name, "..") != 0)) {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
-        if (name.directoryExists ()) {
+        if (C_FileManager::directoryExists (name)) {
           if (inRecursiveSearch) {
             recursiveSearchForHiddenFiles (name,
                                            inRecursiveSearch,
                                            inRelativePath + current->d_name + "/",
                                            ioResult) ;
           }
-        }else if (name.fileExists ()) {
+        }else if (C_FileManager::fileExistsAtPath (name)) {
           const C_String relativePath = inRelativePath + current->d_name ;
           ioResult.addAssign_operation (GALGAS_string (relativePath) COMMA_HERE) ;
         }
@@ -627,7 +638,7 @@ recursiveSearchForDirectories (const C_String & inUnixStartPath,
                                const bool inRecursiveSearch,
                                const C_String & inRelativePath,
                                GALGAS_stringlist & ioResult) {
-  const C_String nativeStartPath = inUnixStartPath.nativePathWithUnixPath () ;
+  const C_String nativeStartPath = C_FileManager::nativePathWithUnixPath (inUnixStartPath) ;
   DIR * dir = ::opendir (nativeStartPath.cString (HERE)) ;
   if (dir != NULL) {
     struct dirent  * current = readdir (dir) ;
@@ -635,7 +646,7 @@ recursiveSearchForDirectories (const C_String & inUnixStartPath,
       if (current->d_name [0] != '.') {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
-        if (name.directoryExists ()) {
+        if (C_FileManager::directoryExists (name)) {
           const C_String relativePath = inRelativePath + current->d_name ;
           ioResult.addAssign_operation (GALGAS_string (relativePath) COMMA_HERE) ;
           if (inRecursiveSearch) {
@@ -659,7 +670,7 @@ GALGAS_stringlist GALGAS_string::reader_directories (const GALGAS_bool & inRecur
   GALGAS_stringlist result ;
   if (inRecursiveSearch.isValid ()) {
     result = GALGAS_stringlist::constructor_emptyList (THERE) ;
-    if (mString.directoryExists ()) {
+    if (C_FileManager::directoryExists (mString)) {
       recursiveSearchForDirectories (mString,
                                      inRecursiveSearch.boolValue (),
                                      "",
@@ -677,7 +688,7 @@ recursiveSearchForRegularFiles (const C_String & inUnixStartPath,
                                 const bool inRecursiveSearch,
                                 const C_String & inRelativePath,
                                 GALGAS_stringlist & ioResult) {
-  const C_String nativeStartPath = inUnixStartPath.nativePathWithUnixPath () ;
+  const C_String nativeStartPath = C_FileManager::nativePathWithUnixPath (inUnixStartPath) ;
   DIR * dir = ::opendir (nativeStartPath.cString (HERE)) ;
   if (dir != NULL) {
     struct dirent  * current = readdir (dir) ;
@@ -685,7 +696,7 @@ recursiveSearchForRegularFiles (const C_String & inUnixStartPath,
       if (current->d_name [0] != '.') {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
-        if (name.directoryExists ()) {
+        if (C_FileManager::directoryExists (name)) {
           if (inRecursiveSearch) {
             recursiveSearchForRegularFiles (name,
                                             inExtensionList,
@@ -693,7 +704,7 @@ recursiveSearchForRegularFiles (const C_String & inUnixStartPath,
                                             inRelativePath + current->d_name + "/",
                                             ioResult) ;
           }
-        }else if (name.fileExists ()) {
+        }else if (C_FileManager::fileExistsAtPath (name)) {
           const C_String extension = name.pathExtension () ;
           bool extensionFound = false ;
           cEnumerator_stringlist currentExtension (inExtensionList, kEnumeration_up) ;
@@ -721,7 +732,7 @@ GALGAS_stringlist GALGAS_string::reader_regularFilesWithExtensions (const GALGAS
   GALGAS_stringlist result ;
   if ((inRecursiveSearch.isValid ()) && (inExtensionList.isValid ())) {
     result = GALGAS_stringlist::constructor_emptyList (THERE) ;
-    if (mString.directoryExists ()) {
+    if (C_FileManager::directoryExists (mString)) {
       recursiveSearchForRegularFiles (mString,
                                       inExtensionList,
                                       inRecursiveSearch.boolValue (),
@@ -740,7 +751,7 @@ recursiveSearchForDirectories (const C_String & inUnixStartPath,
                                const bool inRecursiveSearch,
                                const C_String & inRelativePath,
                                GALGAS_stringlist & ioResult) {
-  const C_String nativeStartPath = inUnixStartPath.nativePathWithUnixPath () ;
+  const C_String nativeStartPath = C_FileManager::nativePathWithUnixPath (inUnixStartPath) ;
   DIR * dir = ::opendir (nativeStartPath.cString (HERE)) ;
   if (dir != NULL) {
     struct dirent  * current = readdir (dir) ;
@@ -748,7 +759,7 @@ recursiveSearchForDirectories (const C_String & inUnixStartPath,
       if (current->d_name [0] != '.') {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
-        if (name.directoryExists ()) {
+        if (C_FileManager::directoryExists (name)) {
         //--- Look for extension
           const C_String extension = name.pathExtension () ;
           bool extensionFound = false ;
@@ -785,7 +796,7 @@ GALGAS_stringlist GALGAS_string::reader_directoriesWithExtensions (const GALGAS_
   GALGAS_stringlist result ;
   if ((inRecursiveSearch.isValid ()) && (inExtensionList.isValid ())) {
     result = GALGAS_stringlist::constructor_emptyList (THERE) ;
-    if (mString.directoryExists ()) {
+    if (C_FileManager::directoryExists (mString)) {
       recursiveSearchForDirectories (mString,
                                      inExtensionList,
                                      inRecursiveSearch.boolValue (),
@@ -834,8 +845,8 @@ GALGAS_string GALGAS_string::constructor_stringWithContentsOfFile (const GALGAS_
   GALGAS_string result ;
   if (inFilePath.isValid ()) {
     inCompiler->logFileRead (inFilePath.mString) ;
-    if (inFilePath.mString.fileExists ()) {
-      result = GALGAS_string (C_String::stringWithContentOfFile (inFilePath.mString)) ;
+    if (C_FileManager::fileExistsAtPath (inFilePath.mString)) {
+      result = GALGAS_string (C_FileManager::stringWithContentOfFile (inFilePath.mString)) ;
     }else{
       C_String message ;
       message << "cannot read '" << inFilePath.mString << "' file (does not exist)" ;
@@ -860,7 +871,7 @@ GALGAS_string GALGAS_string::constructor_stringWithVersionString (UNUSED_LOCATIO
 //---------------------------------------------------------------------------*
 
 GALGAS_string GALGAS_string::constructor_stringWithCurrentDirectory (UNUSED_LOCATION_ARGS) {
-  return GALGAS_string (C_String::currentDirectory ()) ;
+  return GALGAS_string (C_FileManager::currentDirectory ()) ;
 }
 
 //---------------------------------------------------------------------------*
@@ -957,17 +968,17 @@ void GALGAS_string::class_method_deleteFile (GALGAS_string inFilePath,
                                              C_Compiler * inCompiler
                                              COMMA_LOCATION_ARGS) {
   if (inFilePath.isValid ()) {
-    if (! inCompiler->mPerformGeneration) {
+    if (! C_Compiler::performGeneration ()) {
       ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to delete '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
     }else if (inFilePath.mString.length () == 0) {
       inCompiler->onTheFlyRunTimeError ("cannot perform file delete: file name is an empty string" COMMA_THERE) ;
     }else{
-      const char * errorMessage = inFilePath.mString.deleteFile () ;
-      if (errorMessage == NULL) {
+      const C_String errorMessage = C_FileManager::deleteFile (inFilePath.mString) ;
+      if (errorMessage.length () == 0) {
         ggs_printFileOperationSuccess (C_String ("Deleted '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
       }else{
         C_String message ;
-        message << "cannot perform file delete: " << errorMessage ;
+        message << "cannot perform delete '" << inFilePath.mString << "' file: " << errorMessage ;
         inCompiler->onTheFlyRunTimeError (message COMMA_THERE) ;
       }
     }
@@ -979,7 +990,7 @@ void GALGAS_string::class_method_deleteFile (GALGAS_string inFilePath,
 void GALGAS_string::class_method_deleteFileIfExists (GALGAS_string inFilePath,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) {
-  if ((inFilePath.isValid ()) && inFilePath.mString.fileExists ()) {
+  if ((inFilePath.isValid ()) && C_FileManager::fileExistsAtPath (inFilePath.mString)) {
     class_method_deleteFile (inFilePath, inCompiler COMMA_THERE) ;
   }
 }
@@ -990,13 +1001,13 @@ void GALGAS_string::class_method_removeEmptyDirectory (GALGAS_string inDirectory
                                                        C_Compiler * inCompiler
                                                        COMMA_LOCATION_ARGS) {
   if (inDirectoryPath.isValid ()) {
-    if (! inCompiler->mPerformGeneration) {
+    if (! C_Compiler::performGeneration ()) {
       ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to remove directory '") + inDirectoryPath.mString + "'.\n" COMMA_THERE) ;
     }else if (inDirectoryPath.mString.length () == 0) {
       inCompiler->onTheFlyRunTimeError ("cannot perform directory removing: directory path is an empty string" COMMA_THERE) ;
     }else{
-      const char * errorMessage = inDirectoryPath.mString.removeDirectory () ;
-      if (errorMessage != NULL) {
+      const C_String errorMessage = C_FileManager::removeDirectory (inDirectoryPath.mString) ;
+      if (errorMessage.length () > 0) {
         C_String message ;
         message << "cannot perform directory removing: " << errorMessage ;
         inCompiler->onTheFlyRunTimeError (message COMMA_THERE) ;
@@ -1007,29 +1018,28 @@ void GALGAS_string::class_method_removeEmptyDirectory (GALGAS_string inDirectory
 
 //---------------------------------------------------------------------------*
 
-static const char *
-recursiveRemoveDirectory (const C_String & inUnixDirectoryPath) {
-  const char * result = NULL ;
-  const C_String nativeStartPath = inUnixDirectoryPath.nativePathWithUnixPath () ;
+static C_String recursiveRemoveDirectory (const C_String & inUnixDirectoryPath) {
+  C_String result ;
+  const C_String nativeStartPath = C_FileManager::nativePathWithUnixPath (inUnixDirectoryPath) ;
   DIR * dir = ::opendir (nativeStartPath.cString (HERE)) ;
   if (dir != NULL) {
     struct dirent  * current = readdir (dir) ;
-    while ((current != NULL) && (NULL == result)) {
+    while ((current != NULL) && (result.length () == 0)) {
       if ((strcmp (current->d_name, ".") != 0) && (strcmp (current->d_name, "..") != 0)) {
         C_String name = nativeStartPath ;
         name << "/" << current->d_name ;
-        if (name.directoryExists ()) {
+        if (C_FileManager::directoryExists (name)) {
           recursiveRemoveDirectory (name) ;
-        }else if (name.fileExists ()) {
-          result = name.deleteFile () ;
+        }else if (C_FileManager::fileExistsAtPath (name)) {
+          result = C_FileManager::deleteFile (name) ;
         }
       }
       current = readdir (dir) ;
     }
   }
   closedir (dir) ;
-  if (NULL == result) {
-    result = inUnixDirectoryPath.removeDirectory () ;
+  if (result.length () == 0) {
+    result = C_FileManager::removeDirectory (inUnixDirectoryPath) ;
   }
   return result ;
 }
@@ -1040,13 +1050,13 @@ void GALGAS_string::class_method_removeDirectoryRecursively (GALGAS_string inDir
                                                              C_Compiler * inCompiler
                                                              COMMA_LOCATION_ARGS) {
   if (inDirectoryPath.isValid ()) {
-    if (! inCompiler->mPerformGeneration) {
+    if (! C_Compiler::performGeneration ()) {
       ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to remove directory '") + inDirectoryPath.mString + "'.\n" COMMA_THERE) ;
     }else if (inDirectoryPath.mString.length () == 0) {
       inCompiler->onTheFlyRunTimeError ("cannot perform directory removing: directory path is an empty string" COMMA_THERE) ;
     }else{
-      const char * errorMessage = recursiveRemoveDirectory (inDirectoryPath.mString) ;
-      if (errorMessage != NULL) {
+      C_String errorMessage = recursiveRemoveDirectory (inDirectoryPath.mString) ;
+      if (errorMessage.length () > 0) {
         C_String message ;
         message << "cannot perform directory removing: " << errorMessage ;
         inCompiler->onTheFlyRunTimeError (message COMMA_THERE) ;
@@ -1091,7 +1101,7 @@ void GALGAS_string::class_method_generateFile (GALGAS_string inStartPath,
 
 void GALGAS_string::method_makeDirectory (C_Compiler * inCompiler
                                           COMMA_LOCATION_ARGS) const {
-  const bool ok = mString.makeDirectoryIfDoesNotExist () ;
+  const bool ok = C_FileManager::makeDirectoryIfDoesNotExist (mString) ;
   if (! ok) {
     C_String message ;
     message << "cannot create '" << mString << "' directory" ;
@@ -1108,7 +1118,7 @@ method_makeDirectoryAndWriteToFile (GALGAS_string inFilePath,
   if (inFilePath.isValid ()) {
   //--- Make directory
     const C_String directory = inFilePath.mString.stringByDeletingLastPathComponent () ;
-    bool ok = directory.makeDirectoryIfDoesNotExist () ;
+    bool ok = C_FileManager::makeDirectoryIfDoesNotExist (directory) ;
     if (! ok) {
       C_String message ;
       message << "cannot create '" << directory << "' directory" ;
@@ -1125,11 +1135,10 @@ void GALGAS_string::method_writeToFile (GALGAS_string inFilePath,
                                         C_Compiler * inCompiler
                                         COMMA_LOCATION_ARGS) const {
   if (inFilePath.isValid ()) {
-//    inCompiler->addDependancyOutputFilePath (inFilePath.mString) ;
-    if (inCompiler->mPerformGeneration) {
-      const bool fileAlreadyExists = inFilePath.mString.fileExists () ;
+    if (C_Compiler::performGeneration ()) {
+      const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (inFilePath.mString) ;
       const bool verboseOptionOn = gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue ;
-      const bool ok = mString.writeToFile (inFilePath.mString COMMA_TEACH_TEXT_CREATOR COMMA_THERE) ;
+      const bool ok = C_FileManager::writeStringToFile (mString, inFilePath.mString) ;
       if (ok && verboseOptionOn && fileAlreadyExists) {
         ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
       }else if (ok && verboseOptionOn && ! fileAlreadyExists) {
@@ -1153,24 +1162,24 @@ void GALGAS_string::method_writeToFileWhenDifferentContents (GALGAS_string inFil
                                                              COMMA_LOCATION_ARGS) const {
   if (inFilePath.isValid ()) {
     bool needToWrite = true ;
-    const bool fileAlreadyExists = inFilePath.mString.fileExists () ;
+    const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (inFilePath.mString) ;
     if (fileAlreadyExists) {
       inCompiler->logFileRead (inFilePath.mString) ;
-      const C_String readContents = C_String::stringWithContentOfFile (inFilePath.mString) ;
+      const C_String readContents = C_FileManager::stringWithContentOfFile (inFilePath.mString) ;
       needToWrite = mString.compare (readContents) != 0 ;
     }
     outFileWritten = GALGAS_bool (needToWrite) ;
     if (needToWrite) {
-      if (inCompiler->mPerformGeneration) {
+      if (C_Compiler::performGeneration ()) {
         const bool verboseOptionOn = gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue ;
-        bool ok = inFilePath.mString.stringByDeletingLastPathComponent ().makeDirectoryIfDoesNotExist () ;
+        bool ok = C_FileManager::makeDirectoryIfDoesNotExist (inFilePath.mString.stringByDeletingLastPathComponent ()) ;
         if (! ok) {
           C_String message ;
           message << "cannot create '" << inFilePath.mString << "' directory" ;
           inCompiler->onTheFlyRunTimeError (message COMMA_THERE) ;
           outFileWritten.drop () ;
         }else{
-          ok = mString.writeToFile (inFilePath.mString COMMA_TEACH_TEXT_CREATOR COMMA_THERE) ;
+          ok = C_FileManager::writeStringToFile (mString, inFilePath.mString) ;
           if (ok && verboseOptionOn && fileAlreadyExists) {
             ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
           }else if (ok && verboseOptionOn && ! fileAlreadyExists) {
@@ -1196,10 +1205,10 @@ void GALGAS_string::method_writeToExecutableFile (GALGAS_string inFilePath,
                                                   COMMA_LOCATION_ARGS) const {
   if (inFilePath.isValid ()) {
  //   inCompiler->addDependancyOutputFilePath (inFilePath.mString) ;
-    const bool fileAlreadyExists = inFilePath.mString.fileExists () ;
-    if (inCompiler->mPerformGeneration) {
+    const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (inFilePath.mString) ;
+    if (C_Compiler::performGeneration ()) {
       const bool verboseOptionOn = gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue ;
-      const bool ok = mString.writeToExecutableFile (inFilePath.mString COMMA_TEACH_TEXT_CREATOR COMMA_THERE) ;
+      const bool ok = C_FileManager::writeStringToExecutableFile (mString, inFilePath.mString) ;
       if (ok && verboseOptionOn && fileAlreadyExists) {
         ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
       }else if (ok && verboseOptionOn && ! fileAlreadyExists) {
@@ -1222,26 +1231,25 @@ void GALGAS_string::method_writeToExecutableFileWhenDifferentContents (GALGAS_st
                                                                        C_Compiler * inCompiler
                                                                        COMMA_LOCATION_ARGS) const {
   if (inFilePath.isValid ()) {
-//    inCompiler->addDependancyOutputFilePath (inFilePath.mString) ;
     bool needToWrite = true ;
-    const bool fileAlreadyExists = inFilePath.mString.fileExists () ;
+    const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (inFilePath.mString) ;
     if (fileAlreadyExists) {
       inCompiler->logFileRead (inFilePath.mString) ;
-      const C_String readContents = C_String::stringWithContentOfFile (inFilePath.mString) ;
+      const C_String readContents = C_FileManager::stringWithContentOfFile (inFilePath.mString) ;
       needToWrite = mString.compare (readContents) != 0 ;
     }
     outFileWritten = GALGAS_bool (needToWrite) ;
     if (needToWrite) {
-      if (inCompiler->mPerformGeneration) {
+      if (C_Compiler::performGeneration ()) {
         const bool verboseOptionOn = gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue ;
-        bool ok = inFilePath.mString.stringByDeletingLastPathComponent ().makeDirectoryIfDoesNotExist () ;
+        bool ok = C_FileManager::makeDirectoryIfDoesNotExist (inFilePath.mString.stringByDeletingLastPathComponent ()) ;
         if (! ok) {
           C_String message ;
           message << "cannot create '" << inFilePath.mString << "' directory" ;
           inCompiler->onTheFlyRunTimeError (message COMMA_THERE) ;
           outFileWritten.drop () ;
         }else{
-          ok = mString.writeToExecutableFile (inFilePath.mString COMMA_TEACH_TEXT_CREATOR COMMA_THERE) ;
+          ok = C_FileManager::writeStringToExecutableFile (mString, inFilePath.mString) ;
           if (ok && verboseOptionOn && fileAlreadyExists) {
             ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
           }else if (ok && verboseOptionOn && ! fileAlreadyExists) {
@@ -1446,7 +1454,7 @@ AC_OutputStream & operator << (AC_OutputStream & inStream,
 GALGAS_bool GALGAS_string::reader_isSymbolicLink (UNUSED_LOCATION_ARGS) const {
   GALGAS_bool result ;
   if (isValid ()) {
-    result = GALGAS_bool (mString.isSymbolicLink ()) ;
+    result = GALGAS_bool (C_FileManager::isSymbolicLink (mString)) ;
   }
   return result ;
 }
@@ -1459,7 +1467,7 @@ GALGAS_string GALGAS_string::constructor_stringWithSymbolicLinkContents (const G
   GALGAS_string result ;
   if (inSymbolicLink.isValid ()) {
     bool ok = false ;
-    const C_String r = inSymbolicLink.mString.stringWithSymbolicLinkContents (ok) ;
+    const C_String r = C_FileManager::stringWithSymbolicLinkContents (inSymbolicLink.mString, ok) ;
     if (ok) {
       result = GALGAS_string (r) ;
     }else{
@@ -1477,7 +1485,7 @@ void GALGAS_string::method_makeSymbolicLinkWithPath (GALGAS_string inPath,
                                                      C_Compiler * inCompiler
                                                      COMMA_LOCATION_ARGS) const {
   if (isValid () && inPath.isValid ()) {
-    const bool ok = mString.makeSymbolicLinkWithPath (inPath.mString) ;
+    const bool ok = C_FileManager::makeSymbolicLinkWithPath (inPath.mString, mString) ;
     if (! ok) {
         C_String s ;
         s << "'@string makeSymbolicLinkWithPath' error; cannot make a symbolic link with receiver's value '"
@@ -1509,7 +1517,8 @@ void GALGAS_string::method_makeSymbolicLinkWithPath (GALGAS_string inPath,
                                   HANDLE g_hChildStd_IN_Rd,
                                   const char * /* inCommandLine */) {
   //--- Create a child process that uses the previously created pipes for STDIN and STDOUT.
-     TCHAR szCmdline [] = TEXT ("child") ;
+     TCHAR szCmdline [] = TEXT ("dir") ;
+     TCHAR application [] = TEXT ("c:\\windows\\system32\\command.com") ;
   //--- Set up members of the PROCESS_INFORMATION structure. 
      PROCESS_INFORMATION piProcInfo ; 
      ZeroMemory (& piProcInfo, sizeof (PROCESS_INFORMATION)) ;
@@ -1523,7 +1532,7 @@ void GALGAS_string::method_makeSymbolicLinkWithPath (GALGAS_string inPath,
      siStartInfo.dwFlags |= STARTF_USESTDHANDLES ;
   //-- Create the child process. 
      const bool bSuccess = 0 != CreateProcess (
-       NULL, 
+       application,   // Application 
        szCmdline,     // command line 
        NULL,          // process security attributes 
        NULL,          // primary thread security attributes 
@@ -1540,6 +1549,9 @@ void GALGAS_string::method_makeSymbolicLinkWithPath (GALGAS_string inPath,
      // of the child process, for example. 
        CloseHandle (piProcInfo.hProcess) ;
        CloseHandle (piProcInfo.hThread) ;
+     }else{ // CreateProcess Error
+       DWORD error = GetLastError () ;
+       printf ("'CreateProcess' error: %ld\n", error) ;
      }
    //---
      return bSuccess ;
@@ -1593,19 +1605,18 @@ void GALGAS_string::method_makeSymbolicLinkWithPath (GALGAS_string inPath,
       if (! ok) {
         inCompiler->onTheFlyRunTimeError (errorMessage COMMA_THERE) ;
       }else{
-        TC_UniqueArray <PMUInt8> response ;
+        C_Data response ;
         bool loop = true ;
         while (loop) {
           const size_t kBufferSize = 1000 ;
           PMUInt8 buffer [kBufferSize] ;
           DWORD readLength = 0 ;
           loop = ReadFile (g_hChildStd_OUT_Rd, buffer, kBufferSize, & readLength, NULL) ;
-          for (size_t i=0 ; i<readLength ; i++) {
-            response.addObject (buffer [i]) ;
-          }
+          loop = readLength > 0 ;
+          response.appendDataFromPointer (buffer, readLength) ;
         }
         C_String s ;
-        C_String::parseUTF8 (response.bufferPointer (), response.count (), s) ;
+        C_String::parseUTF8 (response, 0, s) ;
         result = GALGAS_string (s) ;
       }
       CloseHandle (g_hChildStd_IN_Wr) ;
@@ -1625,20 +1636,19 @@ void GALGAS_string::method_makeSymbolicLinkWithPath (GALGAS_string inPath,
     GALGAS_string result ;
     if (isValid ()) {
       FILE * f = popen (mString.cString (HERE), "r") ;
-      TC_UniqueArray <PMUInt8> response ;
+      C_Data response ;
       bool loop = true ;
       while (loop) {
         const size_t kBufferSize = 1000 ;
         PMUInt8 buffer [kBufferSize] ;
-        const size_t readLength = fread (buffer, 1, kBufferSize-1, f) ;
+        const size_t readLength = fread (buffer, 1, kBufferSize, f) ;
         loop = readLength > 0 ;
-        for (size_t i=0 ; i<readLength ; i++) {
-          response.addObject (buffer [i]) ;
-        }
+        response.appendDataFromPointer (buffer, (PMSInt32) readLength) ;
       }
       pclose (f) ;
       C_String s ;
-      C_String::parseUTF8 (response.bufferPointer (), response.count (), s) ;
+      response.appendByte ('\0') ;
+      C_String::parseUTF8 (response, 0, s) ;
       result = GALGAS_string (s) ;
     }
     return result ;

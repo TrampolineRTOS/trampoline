@@ -68,8 +68,11 @@
       initWithFrame:NSMakeRect (X, 0.0, width + 0.5, self.bounds.size.height)
     ] ;
     [mButtonArray addObject:button] ;
-    [button setTitle:displayDescriptor.sourceURL.lastPathComponent] ;
-    [button setToolTip:displayDescriptor.sourceURL.absoluteString] ;
+    [button setTitle:displayDescriptor.sourceURL.path.lastPathComponent] ;
+    [button setToolTip:displayDescriptor.sourceURL.path] ;
+    if (idx > 0) {
+      [button setFilePathForDragOperation:displayDescriptor.sourceURL.path] ;
+    }
     [button setBezelStyle:NSSmallSquareBezelStyle] ;
     [button setButtonType:NSPushOnPushOffButton] ;
     [button setState:(selectionIndex == idx) ? NSOnState : NSOffState] ;
@@ -97,7 +100,10 @@
 //---------------------------------------------------------------------------*
 
 - (void) removeTabAction: (PMButtonWithRemove *) inSender {
-  [mTarget performSelector:mRemoveSourceTabAction withObject:inSender] ;
+  [mTarget
+    performSelector:mRemoveSourceTabAction
+    withObject:[mObservedArray objectAtIndex:inSender.tag HERE]
+  ] ;
 }
 
 //---------------------------------------------------------------------------*

@@ -29,10 +29,6 @@
 #include "strings/unicode_character_cpp.h"
 
 //---------------------------------------------------------------------------*
-//                                                                           *
-//       Constructors                                                        *
-//                                                                           *
-//---------------------------------------------------------------------------*
 
 GALGAS_uint::GALGAS_uint (void) :
 mIsValid (false),
@@ -46,6 +42,16 @@ mIsValid (true),
 mUIntValue (inValue) {
   if (traceIsEnabled ()) {
     appendTrace ("uint", true, cStringWithUnsigned (inValue)) ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+GALGAS_uint::GALGAS_uint (const bool inValid, const PMUInt32 inValue) :
+mIsValid (inValid),
+mUIntValue (inValue) {
+  if (traceIsEnabled ()) {
+    appendTrace ("uint", inValid, cStringWithUnsigned (inValue)) ;
   }
 }
 
@@ -163,6 +169,19 @@ typeComparisonResult GALGAS_uint::objectCompare (const GALGAS_uint & inOperand) 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Readers
 #endif
+
+//---------------------------------------------------------------------------*
+
+GALGAS_bool GALGAS_uint::reader_isInRange (const GALGAS_range & inRange
+                                           COMMA_UNUSED_LOCATION_ARGS) const {
+  GALGAS_bool result ;
+  if (isValid () && inRange.isValid ()) {
+    const PMUInt32 start = inRange.mAttribute_start.uintValue () ;
+    const PMUInt32 end = start + inRange.mAttribute_length.uintValue () ;
+    result = GALGAS_bool ((mUIntValue >= start) && (mUIntValue < end)) ;
+  }
+  return result ;
+}
 
 //---------------------------------------------------------------------------*
 

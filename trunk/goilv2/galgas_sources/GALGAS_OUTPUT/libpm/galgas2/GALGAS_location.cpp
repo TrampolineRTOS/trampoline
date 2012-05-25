@@ -112,9 +112,9 @@ GALGAS_bool GALGAS_location::reader_isNowhere (UNUSED_LOCATION_ARGS) const {
 typeComparisonResult GALGAS_location::objectCompare (const GALGAS_location & inOperand) const {
   typeComparisonResult result = kOperandNotValid ;
   if (isValid () && inOperand.isValid ()) {
-    PMSInt32 r = mStartLocationInSource.mIndex - inOperand.mStartLocationInSource.mIndex ;
+    PMSInt32 r = mStartLocationInSource.index () - inOperand.mStartLocationInSource.index () ;
     if (r == 0) {
-      r = mEndLocationInSource.mIndex - inOperand.mEndLocationInSource.mIndex ;
+      r = mEndLocationInSource.index () - inOperand.mEndLocationInSource.index () ;
     }
     if (r == 0) {
       if ((NULL != mSourceText) && (NULL != inOperand.mSourceText)) {
@@ -147,8 +147,8 @@ void GALGAS_location::description (C_String & ioString,
     }else{
       ioString << "'" << mSourceText->sourceFilePath () << "'" ;
     }
-    ioString << ":" << cStringWithSigned (mStartLocationInSource.mLineNumber)
-             << ":" << cStringWithSigned (mStartLocationInSource.mColumnNumber) ;
+    ioString << ":" << cStringWithSigned (mStartLocationInSource.lineNumber ())
+             << ":" << cStringWithSigned (mStartLocationInSource.columnNumber ()) ;
   }else{
     ioString << "not built" ;
   }
@@ -166,8 +166,8 @@ GALGAS_string GALGAS_location::reader_locationString (C_Compiler * inCompiler
     }else{
       C_String s ;
       s << "file '" << mSourceText->sourceFilePath ()
-        << "', line " << cStringWithSigned (mEndLocationInSource.mLineNumber)
-        << ":" << cStringWithSigned (mEndLocationInSource.mColumnNumber) ;  
+        << "', line " << cStringWithSigned (mEndLocationInSource.lineNumber ())
+        << ":" << cStringWithSigned (mEndLocationInSource.columnNumber ()) ;  
       result = GALGAS_string (s) ;
     }
   }
@@ -183,7 +183,7 @@ GALGAS_uint GALGAS_location::reader_locationIndex (C_Compiler * inCompiler
     if (NULL == mSourceText) {
       inCompiler->onTheFlyRunTimeError ("'locationIndex' reader cannot be called on a nowhere @location object" COMMA_THERE) ;
     }else{
-      result = GALGAS_uint ((PMUInt32) mEndLocationInSource.mIndex) ;
+      result = GALGAS_uint ((PMUInt32) mEndLocationInSource.index ()) ;
     }
   }
   return result ;
@@ -198,7 +198,7 @@ GALGAS_uint GALGAS_location::reader_column (C_Compiler * inCompiler
     if (NULL == mSourceText) {
       inCompiler->onTheFlyRunTimeError ("'column' reader cannot be called on a nowhere @location object" COMMA_THERE) ;
     }else{
-      result = GALGAS_uint ((PMUInt32) mEndLocationInSource.mColumnNumber) ;
+      result = GALGAS_uint ((PMUInt32) mEndLocationInSource.columnNumber ()) ;
     }
   }
   return result ;
@@ -213,7 +213,7 @@ GALGAS_uint GALGAS_location::reader_line (C_Compiler * inCompiler
     if (NULL == mSourceText) {
       inCompiler->onTheFlyRunTimeError ("'line' reader cannot be called on a nowhere @location object" COMMA_THERE) ;
     }else{
-      result = GALGAS_uint ((PMUInt32) mEndLocationInSource.mLineNumber) ;
+      result = GALGAS_uint ((PMUInt32) mEndLocationInSource.lineNumber ()) ;
     }
   }
   return result ;

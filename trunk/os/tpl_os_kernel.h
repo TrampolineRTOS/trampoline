@@ -372,10 +372,10 @@ extern CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)
 /**
  * Kernel functions
  */
-FUNC(VAR(tpl_os_state, AUTOMATIC), OS_CODE) tpl_current_os_state(void);
+FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(void);
 
 FUNC(tpl_application_mode, OS_CODE) tpl_get_active_application_mode_service(
-    void);
+  void);
 
 FUNC(void, OS_CODE) tpl_start_os_service(
     CONST(tpl_application_mode, AUTOMATIC) mode);

@@ -31,18 +31,34 @@
 #include "utilities/M_SourceLocation.h"
 
 //---------------------------------------------------------------------------*
+
+#ifndef DO_NOT_GENERATE_CHECKINGS
+  void runtime_error_routine (const char * const inMessage,
+                              const PMSInt64 inParameter1,
+                              const PMSInt64 inParameter2
+                              COMMA_LOCATION_ARGS) __attribute__ ((__noreturn__)) ;
+  #define MF_RunTimeError(message,par1,par2) { runtime_error_routine (message, par1, par2 COMMA_HERE) ; }
+  #define MF_RunTimeErrorThere(message,par1,par2) { runtime_error_routine (message, par1, par2 COMMA_THERE) ; }
+#else
+  #define MF_RunTimeError(message,par1,par2) {}
+  #define MF_RunTimeErrorThere(message,par1,par2) {}
+#endif
+
+//---------------------------------------------------------------------------*
 //                                                                           *
 //            Macro 'MF_Assert'  definition                                  *
 //                                                                           *
 //---------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  void assert_routine (const bool inExpression,
-                       const char * const inMessage,
-                       const PMSInt64 inParameter1,
-                       const PMSInt64 inParameter2 COMMA_LOCATION_ARGS) ;
-  #define MF_Assert(exp,message,par1,par2) { assert_routine (exp, message, par1, par2 COMMA_HERE) ; }
-  #define MF_AssertThere(exp,message,par1,par2) { assert_routine (exp, message, par1, par2 COMMA_THERE) ; }
+  #define MF_Assert(exp,message,par1,par2) \
+    if (! (exp)) { \
+      runtime_error_routine (message, par1, par2 COMMA_HERE) ; \
+    }
+  #define MF_AssertThere(exp,message,par1,par2) \
+    if (! (exp)) { \
+      runtime_error_routine (message, par1, par2 COMMA_THERE) ; \
+    }
 #else
   #define MF_Assert(exp,message,par1,par2) {}
   #define MF_AssertThere(exp,message,par1,par2) {}

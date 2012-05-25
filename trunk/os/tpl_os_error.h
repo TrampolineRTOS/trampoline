@@ -80,8 +80,12 @@ union ID_PARAM_BLOCK {
   VAR(tpl_resource_id, TYPEDEF) res_id;   /**< used by #GetResource,
                                                #ReleaseResource
                                            */
-  VAR(tpl_alarm_id, TYPEDEF) alarm_id;    /**< @todo document this */
-
+  VAR(tpl_alarm_id, TYPEDEF) alarm_id;    /**< used by #SetRelAlarm, #SetAbsAlarm,
+                                               #CancelAlarm, #GetAlarm and
+                                               #GetAlarmBase
+                                           */
+  VAR(tpl_application_mode, TYPEDEF) mode; /**< used by StartOS */
+  
 #if WITH_AUTOSAR == YES
   VAR(tpl_schedtable_id, TYPEDEF) schedtable_id; /**< @todo document this */
   VAR(tpl_counter_id, TYPEDEF) counter_id; /**< @todo document this */
@@ -195,6 +199,7 @@ typedef struct SERVICE_CALL_DESCRIPTOR tpl_service_call_desc;
  * - #OSError_SetAbsAlarm_start
  * - #OSError_SetAbsAlarm_cycle
  * - #OSError_CancelAlarm_AlarmID
+ * - #OSError_StartOS_Mode
  *
  * Within OS services, these macros should be used to modify this variable :
  * - #STORE_SERVICE
@@ -210,6 +215,7 @@ typedef struct SERVICE_CALL_DESCRIPTOR tpl_service_call_desc;
  * - #STORE_TICK_2
  * - #STORE_EVENT_MASK
  * - #STORE_EVENT_MASK_REF
+ * - #STORE_MODE
  */
 
 #define OS_START_SEC_VAR_UNSPECIFIED
@@ -619,6 +625,20 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #define OSError_CancelAlarm_AlarmID() (tpl_service.parameters.id.alarm_id)
 #endif
 
+/**
+ * @def OSError_StartOS_Mode
+ *
+ * StartOS service error parameter
+ *
+ * Returns the identifier (#AppModeType) of the application mode
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_StartOS_Mode() (tpl_service.parameters.id.mode)
+#endif
+
 #endif /* defined WITH_ERROR_HOOK  */
 
 /**
@@ -834,13 +854,27 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
  *
  * @param ref type is #EventMaskRefType
  *
- * @todo Is this really useful ?
  */
 #if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
 #   define STORE_EVENT_MASK_REF(ref)     \
     tpl_service.parameters.param.mask_ref = (ref);
 #else
 #   define STORE_EVENT_MASK_REF(ref)
+#endif
+
+/**
+ * @def STORE_MODE
+ *
+ * Stores an application mode into service error variable
+ *
+ * @param mode type is #AppModeType
+ *
+ */
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES)
+#   define STORE_MODE(mode)     \
+    tpl_service.parameters.id.mode = (mode);
+#else
+#   define STORE_MODE(mode)
 #endif
 
 /**
@@ -1273,6 +1307,26 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #endif
 
 /**
+ * @def CHECK_OS_NOT_STARTED
+ *
+ * Checks if the operating system is not started already.
+ *
+ * @param result error code to set if check fails
+ *
+ * @note error code is not set if it does not equal E_OK
+ */
+#if (WITH_OS_EXTENDED == YES)
+#  define CHECK_OS_NOT_STARTED(result)       \
+    if ((result == (tpl_status)E_OK) &&      \
+        (tpl_current_os_state() != OS_INIT)) \
+    {                                        \
+       result = (tpl_status)E_OS_STATE;      \
+    }
+#else
+#  define CHECK_OS_NOT_STARTED(result)
+#endif
+
+/**
  * @def CHECK_RESOURCE_ID_ERROR
  *
  * Checks if the resouce identifier (#ResourceType) is valid.
@@ -1287,7 +1341,7 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 /* No extended error checking (WITH_OS_EXTENDED == NO)  */
 #if (WITH_OS_EXTENDED == NO)
     /* Does not check the task_id in this case */
-#   define CHECK_RESOURCE_ID_ERROR(res_id,result)
+#  define CHECK_RESOURCE_ID_ERROR(res_id,result)
 #endif
 
 /* No Resource and extended error checking (WITH_OS_EXTENDED == YES)  */

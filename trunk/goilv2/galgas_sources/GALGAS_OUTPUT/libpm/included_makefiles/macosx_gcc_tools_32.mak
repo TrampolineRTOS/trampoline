@@ -12,6 +12,9 @@
 GCC_VERSION := $(shell gcc --version | awk '/(GCC)/ { print $$3; }')
 TIGER_SDK := $(shell file /Developer/SDKs/MacOSX10.4u.sdk | awk '/directory$$/ { print $$2; }')
 
+#--- For XCode 4.3
+SNOW_LEOPARD_SDK := $(shell file /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk | awk '/directory$$/ { print $$2; }')
+
 #---------------------------------------------------------------*
 
 ifeq ($(GCC_VERSION), 3.3)
@@ -26,10 +29,17 @@ else
     COMPILATION_MESSAGE := 32-Bit Compiling for Mac OS X Tiger
     LINKING_MESSAGE := 32-Bit Linking for Mac OS X Tiger
   else
-    COMPILER_TOOL := gcc -m32
-    LINKER_TOOL := g++ -m32
-    COMPILATION_MESSAGE := 32-Bit Compiling for Mac OS X with native SDK
-    LINKING_MESSAGE := 32-Bit Linking for Mac OS X with native SDK
+    ifeq ($(SNOW_LEOPARD_SDK), directory)
+      COMPILER_TOOL := gcc -m32 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk
+      LINKER_TOOL := g++ -m32 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.6.sdk -mmacosx-version-min=10.4
+      COMPILATION_MESSAGE := 32-Bit Compiling for Mac OS X Snow Leopard
+      LINKING_MESSAGE := 32-Bit Linking for Mac OS X Snow Leopard
+    else
+      COMPILER_TOOL := gcc -m32
+      LINKER_TOOL := g++ -m32
+      COMPILATION_MESSAGE := 32-Bit Compiling for Mac OS X with native SDK
+      LINKING_MESSAGE := 32-Bit Linking for Mac OS X with native SDK
+    endif
   endif
 endif
 

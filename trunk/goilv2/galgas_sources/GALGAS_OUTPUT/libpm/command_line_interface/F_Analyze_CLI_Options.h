@@ -37,21 +37,20 @@
 //                                                                           *
 //---------------------------------------------------------------------------*
 
-void
-F_Analyze_CLI_Options (const int argv,
-                       const char * argc [],
-                       const char * inVersionString,
-                       TC_UniqueArray <C_String> & outSourceFileArray,
-                       const char * inExtensions [],
-                       const char * inHelpMessages []) ;
-
-//---------------------------------------------------------------------------*
-
-bool cocoaOutput (void) ;
+void F_Analyze_CLI_Options (const int argv,
+                            const char * argc [],
+                            const char * inVersionString,
+                            TC_UniqueArray <C_String> & outSourceFileArray,
+                            const char * inExtensions [],
+                            const char * inHelpMessages []) ;
 
 //---------------------------------------------------------------------------*
 
 const char * compilerVersionString (void) ;
+
+//---------------------------------------------------------------------------*
+
+bool cocoaOutput (void) ;
 
 //---------------------------------------------------------------------------*
 

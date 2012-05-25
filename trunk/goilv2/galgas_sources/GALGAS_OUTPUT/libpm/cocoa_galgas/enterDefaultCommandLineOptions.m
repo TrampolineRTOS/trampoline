@@ -34,26 +34,6 @@ void enterDefaultCommandLineOptions (NSMutableArray * ioBoolOptionArray,
 
   option = [[OC_GGS_CommandLineOption alloc]
     initWithDomainName:@"galgas_cli_options"
-    identifier:@"lexical_analysis_only"
-    commandChar:0
-    commandString:@"lexical-analysis-only"
-    comment:@"Perform only lexical analysis on input files"
-    defaultValue:@""
-  ] ;
-  [ioBoolOptionArray addObject:option] ;
-
-  option = [[OC_GGS_CommandLineOption alloc]
-    initWithDomainName:@"galgas_cli_options"
-    identifier:@"parse_only"
-    commandChar:0
-    commandString:@"parse-only"
-    comment:@"Parse only input files"
-    defaultValue:@""
-  ] ;
-  [ioBoolOptionArray addObject:option] ;
-
-  option = [[OC_GGS_CommandLineOption alloc]
-    initWithDomainName:@"galgas_cli_options"
     identifier:@"verbose_output"
     commandChar:'v'
     commandString:@"verbose"

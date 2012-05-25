@@ -43,6 +43,7 @@ class C_galgas_type_descriptor ;
 class capCollectionElement ;
 class cCollectionElement ;
 class cSharedList ;
+class GALGAS_range ;
 
 //---------------------------------------------------------------------------*
 //                                                                           *
@@ -84,10 +85,11 @@ class AC_GALGAS_list : public AC_GALGAS_root {
                                                               const typeEnumerationOrder inEnumerationOrder) const ;
 
 //--------------------------------- Comparison
-  public : VIRTUAL_IN_DEBUG typeComparisonResult objectCompare (const AC_GALGAS_list & inOperand) const ;
+  public : typeComparisonResult objectCompare (const AC_GALGAS_list & inOperand) const ;
 
 //--- Readers
   public : VIRTUAL_IN_DEBUG GALGAS_uint reader_length (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_range reader_range (LOCATION_ARGS) const ;
 
 //--- Description
   public : VIRTUAL_IN_DEBUG void description (C_String & ioString,
@@ -122,8 +124,7 @@ class AC_GALGAS_list : public AC_GALGAS_root {
   protected : VIRTUAL_IN_DEBUG void appendList (const AC_GALGAS_list & inList) ;
 
   protected : VIRTUAL_IN_DEBUG void subListWithRange (AC_GALGAS_list & outList,
-                                                      const GALGAS_uint & inIndex,
-                                                      const GALGAS_uint & inLength,
+                                                      const GALGAS_range & inRange,
                                                       C_Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) const ;
 
@@ -231,7 +232,7 @@ class AC_GALGAS_listmap : public AC_GALGAS_root {
                                                      const typeEnumerationOrder inEnumerationOrder) const ;
 
 //--------------------------------- Comparison
-  public : VIRTUAL_IN_DEBUG typeComparisonResult objectCompare (const AC_GALGAS_listmap & inOperand) const ;
+  public : typeComparisonResult objectCompare (const AC_GALGAS_listmap & inOperand) const ;
 
 //--------------------------------- Insulate
   private : VIRTUAL_IN_DEBUG void insulateListMap (LOCATION_ARGS) ;

@@ -230,10 +230,6 @@ void ggs_printFileOperationSuccess (const C_String & inMessage
 void ggs_printMessage (const C_String & inMessage
                        COMMA_LOCATION_ARGS) ;
 
-void writeXMLHeader (void) ;
-
-void writeXMLEpilogue (void) ;
-
 //---------------------------------------------------------------------------*
 
 PMUInt32 checkedLineCount (void) ;

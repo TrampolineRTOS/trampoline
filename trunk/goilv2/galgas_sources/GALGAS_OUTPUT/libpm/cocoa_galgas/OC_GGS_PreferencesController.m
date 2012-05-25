@@ -30,7 +30,6 @@
 #import "OC_Lexique.h"
 #import "PMCocoaCallsDebug.h"
 #import "F_CocoaWrapperForGalgas.h"
-#import "OC_GGS_BuildTask.h"
 
 //---------------------------------------------------------------------------*
 
@@ -125,8 +124,6 @@ OC_GGS_PreferencesController * gCocoaGalgasPreferencesController ;
   NSMutableArray * arguments = [NSMutableArray new] ;
 //--- Add tool path
   [arguments addObject:[self compilerToolPath]] ;
-//--- Add --xml option
- [arguments addObject: @"--xml"] ;
 //--- Add boolean options
   for (NSUInteger i=0 ; i<[mBoolOptionArray count] ; i++) {
     OC_GGS_CommandLineOption * option = [mBoolOptionArray objectAtIndex:i HERE] ;
@@ -1070,8 +1067,7 @@ OC_GGS_PreferencesController * gCocoaGalgasPreferencesController ;
   // NSLog (@"infoDictionary '%@'", infoDictionary) ;
   NSArray * allDocumentTypes = [infoDictionary objectForKey:@"CFBundleDocumentTypes"] ;
   // NSLog (@"allDocumentTypes '%@'", allDocumentTypes) ;
-  unsigned i ;
-  for (i=0 ; i<[allDocumentTypes count] ; i++) {
+  for (NSUInteger i=0 ; i<[allDocumentTypes count] ; i++) {
     NSDictionary * docTypeDict = [allDocumentTypes objectAtIndex:i HERE] ;
     // NSLog (@"docTypeDict '%@'", docTypeDict) ;
     NSArray * documentTypeExtensions = [docTypeDict objectForKey:@"CFBundleTypeExtensions"] ;
@@ -1306,7 +1302,7 @@ OC_GGS_PreferencesController * gCocoaGalgasPreferencesController ;
     }
   }
   if (! canTerminateApplication) {
-    const NSInteger response = NSRunAlertPanel (@"Application cannot terminate while some tasks are running.",
+    const NSInteger response = NSRunAlertPanel (@"Application cannot terminate while build tasks are running.",
                                     @"You can cancel termination, or force tasks to terminate.",
                                     @"Cancel", @"Stop Tasks and Quit", nil) ;
     canTerminateApplication = response == NSAlertAlternateReturn ;

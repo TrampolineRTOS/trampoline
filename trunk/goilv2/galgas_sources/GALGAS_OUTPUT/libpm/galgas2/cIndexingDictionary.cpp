@@ -4,7 +4,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 2010, ..., 2010 Pierre Molinaro.                           *
+//  Copyright (C) 2010, ..., 2012 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //                                                                           *
@@ -25,6 +25,7 @@
 
 #include "galgas2/cIndexingDictionary.h"
 #include "strings/C_String.h"
+#include "files/C_FileManager.h"
 
 //---------------------------------------------------------------------------*
 
@@ -242,7 +243,7 @@ void cIndexingDictionary::generateIndexFile (const C_String & inOutputIndexFileP
   contents << "</dict>" ;
 //--- End of file
   contents << "</plist>" ;
-  contents.writeToFile (inOutputIndexFilePath COMMA_TEACH_TEXT_CREATOR COMMA_HERE) ;
+  C_FileManager::writeStringToFile (contents, inOutputIndexFilePath) ;
 }
 
 //---------------------------------------------------------------------------*

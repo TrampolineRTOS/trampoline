@@ -4,7 +4,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 2009, ..., 2011 Pierre Molinaro.                           *
+//  Copyright (C) 2009, ..., 2012 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //                                                                           *
@@ -25,6 +25,7 @@
 
 #include "command_line_interface/F_Analyze_CLI_Options.h"
 #include "files/C_TextFileWrite.h"
+#include "files/C_FileManager.h"
 #include "galgas2/C_Compiler.h"
 #include "galgas2/C_galgas_io.h"
 #include "galgas2/C_galgas_CLI_Options.h"
@@ -56,6 +57,18 @@ const utf32 C_Compiler::kEndOfSourceLexicalErrorMessage [] = {
 
 //---------------------------------------------------------------------------*
 
+bool C_Compiler::performGeneration (void) {
+  return (! gOption_galgas_5F_cli_5F_options_do_5F_not_5F_generate_5F_any_5F_file.mValue) && executionModeIsNormal () ;
+}
+
+//---------------------------------------------------------------------------*
+
+bool C_Compiler::performLogFileRead (void) {
+  return gOption_galgas_5F_cli_5F_options_log_5F_file_5F_read.mValue ;
+}
+
+//---------------------------------------------------------------------------*
+
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Constructor and destructor
 #endif
@@ -78,15 +91,8 @@ mTemplateString (),
 mTemplateStringLocation (),
 mSourceTextPtr (NULL),
 mCurrentLocation (),
-mLexicalAnalysisOnlyFlag (gOption_galgas_5F_cli_5F_options_lexical_5F_analysis_5F_only.mValue),
-mParseOnlyFlag (gOption_galgas_5F_cli_5F_options_parse_5F_only.mValue),
-mCheckedVariableList (),
-mLogFileRead (gOption_galgas_5F_cli_5F_options_log_5F_file_5F_read.mValue),
-mPerformGeneration (! gOption_galgas_5F_cli_5F_options_do_5F_not_5F_generate_5F_any_5F_file.mValue) {
+mCheckedVariableList () {
   macroAssignSharedObject (mCallerCompiler, inCallerCompiler) ;
-  mCurrentLocation.mIndex = 0 ;
-  mCurrentLocation.mLineNumber = 1 ;
-  mCurrentLocation.mColumnNumber = 1 ;
 }
 
 //---------------------------------------------------------------------------*
@@ -150,13 +156,10 @@ void C_Compiler::resetTemplateString (void) {
 
 //---------------------------------------------------------------------------*
 
-void C_Compiler::
-resetAndLoadSourceFromText (C_SourceTextInString * & ioSourceTextPtr) {
+void C_Compiler::resetAndLoadSourceFromText (C_SourceTextInString * & ioSourceTextPtr) {
   macroAssignSharedObject (mSourceTextPtr, ioSourceTextPtr) ;
   macroValidSharedObject (mSourceTextPtr, C_SourceTextInString) ;
-  mCurrentLocation.mIndex = 0 ;
-  mCurrentLocation.mLineNumber = 1 ;
-  mCurrentLocation.mColumnNumber = 1 ;
+  mCurrentLocation.resetWithSourceText (mSourceTextPtr) ;
 }
 
 //---------------------------------------------------------------------------*
@@ -242,39 +245,29 @@ void C_Compiler::printMessage (const GALGAS_string & inMessage
   if (inMessage.isValid ()) {
     C_String s ;
     s << inMessage.stringValue () ;
-  //--- Add source location information
-    #ifndef DO_NOT_GENERATE_CHECKINGS
-      s << "[Displayed from file '" << IN_SOURCE_FILE << "' at line " << cStringWithSigned (IN_SOURCE_LINE) << "]\n" ;
-    #endif
     ggs_printMessage (s COMMA_THERE) ;
   }
 }
 
 //---------------------------------------------------------------------------*
 
-void C_Compiler::
-printMessage (const C_String & inMessage
-              COMMA_LOCATION_ARGS) {
+void C_Compiler::printMessage (const C_String & inMessage
+                               COMMA_LOCATION_ARGS) {
   C_String s ;
   s << inMessage ;
-//--- Add source location information
-  #ifndef DO_NOT_GENERATE_CHECKINGS
-    s << "[Displayed from file '" << IN_SOURCE_FILE << "' at line " << cStringWithSigned (IN_SOURCE_LINE) << "]\n" ;
-  #endif
   ggs_printMessage (s COMMA_THERE) ;
 }
 
 //---------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark ========= Check And Generate File
+  #pragma mark ========= Log File Read
 #endif
 
 //---------------------------------------------------------------------------*
 
-void C_Compiler::
-logFileRead (const C_String & inFilePath) {
-  if (mLogFileRead) {
+void C_Compiler::logFileRead (const C_String & inFilePath) {
+  if (performLogFileRead ()) {
     printf ("Reading '%s' file.\n", inFilePath.cString (HERE)) ;
   }
 }
@@ -282,7 +275,7 @@ logFileRead (const C_String & inFilePath) {
 //---------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark ========= GALGAS 2 loop variant run time error
+  #pragma mark ========= Loop variant run time error
 #endif
 
 //---------------------------------------------------------------------------*
@@ -556,7 +549,7 @@ generateFileFromPathes (const C_String & inStartPath,
    ? sourceFilePath ().stringByDeletingLastPathComponent ()
    : inStartPath ;
 //--- Search file in directory
-  const C_String fullPathName = startPath.findFileInDirectory (inFileName, inDirectoriesToExclude) ;
+  const C_String fullPathName = C_FileManager::findFileInDirectory (startPath, inFileName, inDirectoriesToExclude) ;
   if (fullPathName.length () == 0) {
     if (veryVerboseOptionOn) {
       C_String message ;
@@ -575,10 +568,10 @@ generateFileFromPathes (const C_String & inStartPath,
       s << "- Note file access: create '" << directory << "' directory if does not exist\n" ;
       printMessage (s COMMA_HERE) ;
     }
-    directory.makeDirectoryIfDoesNotExist () ;
-    if (mPerformGeneration) {
-      bool ok = false ;
-      C_TextFileWrite f (fileName COMMA_CODE_WARRIOR_CREATOR, ok) ;
+    C_FileManager::makeDirectoryIfDoesNotExist (directory) ;
+    if (performGeneration ()) {
+      C_TextFileWrite f (fileName) ;
+      bool ok = f.isOpened () ;
       if (! ok) {
         C_String message ;
         message << "Cannot open '" << fileName << "' file in write mode." ;
@@ -611,7 +604,7 @@ generateFileFromPathes (const C_String & inStartPath,
     C_String secondGeneratedPart ;
     logFileRead (fullPathName) ;
 //    addDependancyOutputFilePath (fullPathName) ;
-    C_String s = C_String::stringWithContentOfFile (fullPathName) ;
+    C_String s = C_FileManager::stringWithContentOfFile (fullPathName) ;
     TC_UniqueArray <C_String> stringArray ;
     s.componentsSeparatedByString (kSTART_OF_USER_ZONE_1, stringArray) ;
     bool ok = stringArray.count () == 2 ;
@@ -651,9 +644,9 @@ generateFileFromPathes (const C_String & inStartPath,
       for (PMSInt32 i=0 ; i<secondUserPart.length () ; i++) {
         incrementPreservedLileCount (UNICODE_VALUE (secondUserPart (i COMMA_HERE)) == '\n') ;
       }
-    }else if (mPerformGeneration) {
-      bool ok = false ;
-      C_TextFileWrite f (fullPathName COMMA_CODE_WARRIOR_CREATOR, ok) ;
+    }else if (performGeneration ()) {
+      C_TextFileWrite f (fullPathName) ;
+      ok = f.isOpened () ;
       if (! ok) {
         C_String message ;
         message << "Cannot open '" << fullPathName << "' file in write mode." ;
@@ -731,10 +724,9 @@ static PMUInt32 gTraceIndex ;
 
 void enableTraceWithPath (const C_String & inFilePath) {
   gTraceIndex = 0 ;
-  bool ok = false ;
   const C_String path = inFilePath + ".trace.txt" ;
-  macroMyNew (gTraceFile, C_TextFileWrite (path COMMA_TEACH_TEXT_CREATOR, ok)) ;
-  if (! ok) {
+  macroMyNew (gTraceFile, C_TextFileWrite (path)) ;
+  if (! gTraceFile->isOpened ()) {
     printf ("**** Error: cannot create trace file at path: '%s'.\n", path.cString (HERE)) ;
     macroMyDelete (gTraceFile) ;
   }

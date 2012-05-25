@@ -162,7 +162,7 @@ typedef struct ALARM_BASE_TYPE tpl_alarm_base;
  *
  * @see #AppModeType
  */
-typedef u8 tpl_application_mode;
+typedef s8 tpl_application_mode;
 
 /**
  * @typedef tpl_callback_func

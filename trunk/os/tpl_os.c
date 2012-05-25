@@ -107,10 +107,16 @@ extern FUNC(void, OS_CODE) tpl_start_os(CONST(AppModeType, AUTOMATIC) mode);
 FUNC(void, OS_CODE) StartOS(
   CONST(AppModeType, AUTOMATIC) mode)
 {
-  tpl_init_machine();  
+  if (tpl_current_os_state() == OS_INIT)
+  {
+    tpl_init_machine();
+  }
   tpl_start_os(mode);
-  /*  tpl_start_os does not return since the idle task will run
-      if no other task is AUTOSTART */
+  /*
+   * tpl_start_os does not return since the idle task will run
+   * if no other task is AUTOSTART except if it is called from
+   * within a task or an ISR of (which is forbidden).
+   */
 }
 
 #define API_STOP_SEC_CODE

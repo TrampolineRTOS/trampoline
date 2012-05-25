@@ -70,6 +70,7 @@ IMPLEMENTATION trampoline_common {
   };
   
   APPMODE [] {
+    BOOLEAN DEFAULT = FALSE;
   };
 
   TASK [] {

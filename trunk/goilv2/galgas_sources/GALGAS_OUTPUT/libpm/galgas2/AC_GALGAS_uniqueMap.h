@@ -136,9 +136,6 @@ class AC_GALGAS_uniqueMapProxy : public AC_GALGAS_root {
   protected : AC_GALGAS_uniqueMapProxy (const AC_GALGAS_uniqueMapProxy & inSource) ;
   protected : AC_GALGAS_uniqueMapProxy & operator = (const AC_GALGAS_uniqueMapProxy & inSource) ;
 
-//--------------------------------- Introspection
-//  public : VIRTUAL_IN_DEBUG const C_galgas_type_descriptor * typeDescriptor (void) const ;
-
 //--------------------------------- Attachment management
   private : VIRTUAL_IN_DEBUG void attachProxyToMapNode (cUniqueMapNode * inMapNode) ;
 
@@ -184,7 +181,7 @@ class AC_GALGAS_uniqueMapProxy : public AC_GALGAS_root {
                                               const PMSInt32 inIndentation) const ;
 
 //--------------------------------- Comparison
-  public : VIRTUAL_IN_DEBUG typeComparisonResult objectCompare (const AC_GALGAS_uniqueMapProxy & inOperand) const ;
+  public : typeComparisonResult objectCompare (const AC_GALGAS_uniqueMapProxy & inOperand) const ;
 
 } ;
 
@@ -221,6 +218,7 @@ class AC_GALGAS_uniqueMap : public AC_GALGAS_root {
   protected : VIRTUAL_IN_DEBUG void performInsert (capCollectionElement & inAttributes,
                                                    C_Compiler * inCompiler,
                                                    const PMUInt32 inInitialState,
+                                                   const char * inInitialStateName,
                                                    const char * inInsertErrorMessage,
                                                    const char * inShadowErrorMessage
                                                    COMMA_LOCATION_ARGS) ;
@@ -277,8 +275,6 @@ class AC_GALGAS_uniqueMap : public AC_GALGAS_root {
 
   public : VIRTUAL_IN_DEBUG GALGAS_lstringlist reader_allKeyList (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_lstringlist reader_allKeyListInEntryOrder (LOCATION_ARGS) const ;
-
   public : VIRTUAL_IN_DEBUG GALGAS_uint reader_count (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG GALGAS_uint reader_unsolvedProxyCount (LOCATION_ARGS) const ;
@@ -293,7 +289,7 @@ class AC_GALGAS_uniqueMap : public AC_GALGAS_root {
                                               const PMSInt32 inIndentation) const ;
 
 //--------------------------------- Comparison
-  public : VIRTUAL_IN_DEBUG typeComparisonResult objectCompare (const AC_GALGAS_uniqueMap & inOperand) const ;
+  public : typeComparisonResult objectCompare (const AC_GALGAS_uniqueMap & inOperand) const ;
 
 //--------------------------------- Internal methods for enumeration
   protected : VIRTUAL_IN_DEBUG void populateEnumerationArray (capCollectionElementArray & inEnumerationArray,
@@ -301,7 +297,7 @@ class AC_GALGAS_uniqueMap : public AC_GALGAS_root {
 
 //--------------------------------- Internal methods for inserting proxy
   protected : VIRTUAL_IN_DEBUG cUniqueMapNode * performInsertProxy (const C_String & inKey
-                                                              COMMA_LOCATION_ARGS) ;
+                                                                    COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Check Map Automatons state
   public : VIRTUAL_IN_DEBUG void checkAutomatonStates (const GALGAS_location & inErrorLocation,
@@ -311,17 +307,17 @@ class AC_GALGAS_uniqueMap : public AC_GALGAS_root {
 
 //--------------------------------- Open override for block
   public : VIRTUAL_IN_DEBUG void openOverride (const cBranchOverrideTransformationDescriptor inBranchBehaviourArray [],
-                                                const PMUInt32 inBranchBehaviourSize,
-                                                const cBranchOverrideCompatibilityDescriptor inBranchCombinationArray [],
-                                                const PMUInt32 inBranchCombinationSize,
-                                                const char * inBlockName,
-                                                C_Compiler * inCompiler
-                                                COMMA_LOCATION_ARGS) ;
+                                               const PMUInt32 inBranchBehaviourSize,
+                                               const cBranchOverrideCompatibilityDescriptor inBranchCombinationArray [],
+                                               const PMUInt32 inBranchCombinationSize,
+                                               const char * inBlockName,
+                                               C_Compiler * inCompiler
+                                               COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Close override for block
   public : VIRTUAL_IN_DEBUG void modifier_closeOverride (const GALGAS_location & inErrorLocation,
-                                                       C_Compiler * inCompiler
-                                                       COMMA_LOCATION_ARGS) ;
+                                                         C_Compiler * inCompiler
+                                                         COMMA_LOCATION_ARGS) ;
 
 //--------------------------------- Branch Handling
   public : VIRTUAL_IN_DEBUG void modifier_openBranch (C_Compiler * inCompiler

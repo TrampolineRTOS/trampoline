@@ -4,7 +4,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 2008, ..., 2011 Pierre Molinaro.                           *
+//  Copyright (C) 2008, ..., 2012 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //                                                                           *
@@ -49,23 +49,22 @@ class cSharedList : public C_SharedObject {
                                              const typeEnumerationOrder inEnumerationOrder) const ;
 
   protected : void readFirst (capCollectionElement & outObjectAttributeArray,
-                           C_Compiler * inCompiler
-                           COMMA_LOCATION_ARGS) ;
+                              C_Compiler * inCompiler
+                              COMMA_LOCATION_ARGS) ;
 
   protected : void readLast (capCollectionElement & outObjectAttributeArray,
-                          C_Compiler * inCompiler
-                          COMMA_LOCATION_ARGS) ;
+                             C_Compiler * inCompiler
+                             COMMA_LOCATION_ARGS) ;
 
   protected : void subListWithRange (cSharedList * & ioSharedList,
-                                  const GALGAS_uint & inIndex,
-                                  const GALGAS_uint & inLength,
-                                  C_Compiler * inCompiler
-                                  COMMA_LOCATION_ARGS) const ;
+                                     const GALGAS_range & inRange,
+                                     C_Compiler * inCompiler
+                                     COMMA_LOCATION_ARGS) const ;
  
   protected : void subListFromIndex (cSharedList * & ioSharedList,
-                                  const GALGAS_uint & inIndex,
-                                  C_Compiler * inCompiler
-                                  COMMA_LOCATION_ARGS) const ;
+                                     const GALGAS_uint & inIndex,
+                                     C_Compiler * inCompiler
+                                     COMMA_LOCATION_ARGS) const ;
 
   protected : void prependAttributeArray (const capCollectionElement & inAttributeArray) ;
 
@@ -235,14 +234,13 @@ void cSharedList::readLast (capCollectionElement & outObjectAttributeArray,
 //---------------------------------------------------------------------------*
 
 void cSharedList::subListWithRange (cSharedList * & ioSharedList,
-                                    const GALGAS_uint & inIndex,
-                                    const GALGAS_uint & inLength,
+                                    const GALGAS_range & inRange,
                                     C_Compiler * inCompiler
                                     COMMA_LOCATION_ARGS) const {
   bool ok = true ;
-  if (inIndex.isValid () && inLength.isValid ()) {
-    const PMUInt32 idx = inIndex.uintValue () ;
-    const PMUInt32 length = inLength.uintValue () ;
+  if (inRange.isValid ()) {
+    const PMUInt32 idx = inRange.mAttribute_start.uintValue () ;
+    const PMUInt32 length = inRange.mAttribute_length.uintValue () ;
     if ((idx + length) > mObjectArray.count ()) {
       C_String s ;
       s << "Cannot get a sub list of range ["
@@ -333,7 +331,7 @@ void cSharedList::populateEnumerationArray (capCollectionElementArray & inEnumer
     break ;
   case kENUMERATION_ENTER_ORDER :
   case kENUMERATION_REVERSE_ENTER_ORDER :
-    MF_Assert (false, "invalid inEnumerationOrder %lld", enumerationOrderValue (inEnumerationOrder), 0) ;
+    MF_RunTimeError ("invalid inEnumerationOrder %lld", enumerationOrderValue (inEnumerationOrder), 0) ;
     break ;
   }
 }
@@ -464,6 +462,16 @@ GALGAS_uint AC_GALGAS_list::reader_length (UNUSED_LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------*
 
+GALGAS_range AC_GALGAS_list::reader_range (UNUSED_LOCATION_ARGS) const {
+  GALGAS_range result ;
+  if (isValid ()) {
+    result = GALGAS_range (GALGAS_uint (0), GALGAS_uint (mSharedList->count ())) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------*
+
 void AC_GALGAS_list::drop (void) {
   macroDetachSharedObject (mSharedList) ;
 }
@@ -539,12 +547,11 @@ void AC_GALGAS_list::readLast (capCollectionElement & outAttributes,
 //---------------------------------------------------------------------------*
 
 void AC_GALGAS_list::subListWithRange (AC_GALGAS_list & outList,
-                                       const GALGAS_uint & inIndex,
-                                       const GALGAS_uint & inLength,
+                                       const GALGAS_range & inRange,
                                        C_Compiler * inCompiler
                                        COMMA_LOCATION_ARGS) const {
   if (isValid ()) {
-    mSharedList->subListWithRange (outList.mSharedList, inIndex, inLength, inCompiler COMMA_THERE) ;
+    mSharedList->subListWithRange (outList.mSharedList, inRange, inCompiler COMMA_THERE) ;
   }else{
     outList.drop () ;
   }
@@ -1266,7 +1273,7 @@ void cSharedListMapRoot::populateEnumerationArray (capCollectionElementArray & i
     break ;
   case kENUMERATION_ENTER_ORDER :
   case kENUMERATION_REVERSE_ENTER_ORDER :
-    MF_Assert (false, "invalid inEnumerationOrder %lld", enumerationOrderValue (inEnumerationOrder), 0) ;
+    MF_RunTimeError ("invalid inEnumerationOrder %lld", enumerationOrderValue (inEnumerationOrder), 0) ;
     break ;
   }
   MF_Assert (mCount == ioEnumerationArray.count (), "mCount (%lld) != ioEnumerationArray.count () (%lld)", mCount, ioEnumerationArray.count ()) ;

@@ -27,6 +27,12 @@
 
 //---------------------------------------------------------------------------*
 
+- (void) setFilePathForDragOperation: (NSString *) inFilePath {
+  mFilePath = inFilePath.copy ;
+}
+
+//---------------------------------------------------------------------------*
+
 #define IMAGE_SIZE (10.0)
 
 //---------------------------------------------------------------------------*
@@ -75,12 +81,12 @@
   if (mMouseWithin) {
     const NSRect r = [self trackingRect] ;
     NSImage * image = [NSImage imageNamed:mMouseDown ? NSImageNameStopProgressFreestandingTemplate : NSImageNameStopProgressTemplate] ;
-    NSImageRep * imageRep = [image
-      bestRepresentationForRect:r
-      context:[NSGraphicsContext currentContext]
-      hints:nil
+    [image
+      drawInRect:r
+      fromRect:NSZeroRect
+      operation:NSCompositeSourceOver
+      fraction:1.0
     ] ;
-    [imageRep drawInRect:r] ;
   }
   if (mIsDirty) {
     [[NSColor blackColor] setFill] ;
@@ -112,11 +118,35 @@
 //---------------------------------------------------------------------------*
 
 - (void) mouseDown:(NSEvent *) inEvent {
-  mMouseDown = YES ;
-  if (mMouseWithin) {
-    [self setNeedsDisplay:YES] ;
-  }else{
-    [super mouseDown:inEvent] ;
+  if ((inEvent.modifierFlags & NSAlternateKeyMask) == 0) {
+    mMouseDown = YES ;
+    if (mMouseWithin) {
+      [self setNeedsDisplay:YES] ;
+    }else{
+      [super mouseDown:inEvent] ;
+    }
+  }else if (mFilePath.length > 0) {
+/*    NSString * dragTypeUTI = @"fr.ec-nantes.fr.COCOA" ;
+    NSPasteboard * pboard = [NSPasteboard pasteboardWithName:NSDragPboard] ;
+    [pboard declareTypes:[NSArray arrayWithObject:dragTypeUTI] owner:self] ;
+    [pboard setData:[mFilePath dataUsingEncoding:NSUTF8StringEncoding] forType:dragTypeUTI] ;
+    NSData * imageData = [self dataWithPDFInsideRect:self.bounds] ;
+    NSImage * image = [[NSImage alloc] initWithData:imageData] ;
+    [self
+       dragImage:image
+       at:NSMakePoint (0.0, self.bounds.size.height)
+       offset:NSMakeSize (0.0, 0.0) // Ignored
+       event:inEvent
+       pasteboard:pboard
+       source:self
+       slideBack:YES
+    ] ;*/
+/*    [self
+       dragFile:mFilePath
+       fromRect:self.bounds
+       slideBack:YES
+       event:inEvent
+    ] ;*/
   }
 }
 
