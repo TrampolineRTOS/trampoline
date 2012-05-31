@@ -15,6 +15,9 @@
 \apiname\ starts the OS in the \argu{AppModeID} Application Mode. First the OS does some initializations, then the Startup Hook, if configured, is called. At last the scheduling is started and the highest priority task runs.
 
 \note{When called from outside a task or an ISR, typically from the \cfunction{main()}, \apiname\ does not returns. When called from a task or an ISR, a case which is forbidden, \apiname\ returns and the Error Hook (if configured) is called.}
+
+\warning{If \argu{AppModeID} does not correspond to any Application Mode, no error occurs but none of the \oilattr{AUTOSTART} objects is started.}
+
 \end{service}
 
 \begin{service}{ShutdownOS}{void}
@@ -105,9 +108,10 @@ At system generation time, an identifier \constant{AppModeID} of type \ctype{App
 Identifiers range from $0$ to $number~of~application~modes - 1$ and are attributed by \goil\ in their order of appearance in the OIL file.
 
 For each \constant{AppModeID}, \goil\ computes a mask: \lstinline[language=OIL]{AppModeMask = 1 << AppModeID}.
-For each task, alarm and schedule table, a table indexed by the object id is computed by \goil. Each element of these tables is the bitwise or of the \constant{AppModeMask} in which the object is \oilattr{AUTOSTART}.
+For each task, alarm and schedule table, a table indexed by the object id is computed by \goil. Each element of these tables is the bitwise or of the \constant{AppModeMask} in which the object is \oilattr{AUTOSTART}. If the is no task, alarm or schedule table defined, the corresponding table is not generated.
 
-\api{StartOS} iterates over the tasks, alarms and schedule tables Application Mode mask tables. It does a bitwise and with the mask stored in the table and the mask computed from the Application Mode. If the result is different from 0, the corresponding object is \oilattr{AUTOSTART}  in this Application Mode and is started.
+
+\api{StartOS} iterates over the tasks, alarms and schedule tables Application Mode mask tables. It does a bitwise and with the mask stored in the table and the mask computed from the Application Mode. If the result is not 0 then the corresponding object is \oilattr{AUTOSTART}  in this Application Mode and is started.
 
 Using the example of section \ref{sec:appmodedec} we have
 
@@ -125,8 +129,22 @@ CONST(tpl_appmode_mask, OS_CONST) tpl_task_app_mode[TASK_COUNT] = {
 };
 
 CONST(tpl_appmode_mask, OS_CONST) tpl_alarm_app_mode[ALARM_COUNT] = {
-  1 /* task trigger_logging : diag */ 
+  1 /* alarm trigger_logging : diag */ 
 };
 \end{lstlisting}
 
-If the is no task, alarm or schedule table defined, the corresponding table is not generated.
+The \ctype{tpl_appmode_mask} type is computed according to the number of Application Modes.
+
+\begin{table}[htbp]
+\caption{Size of \ctype{tpl_appmode_mask} type.}
+\rowcolors{1}{white}{light-gray}
+\begin{longtable}[c]{c|c}
+\bf Number of Application Modes & \bf \ctype{tpl_appmode_mask} type\\
+\hline
+$[ 1, 8]$ & \ctype{u8}\\
+$[ 9, 16]$ & \ctype{u16}\\
+$[ 17, 32]$ & \ctype{u32}\\
+\end{longtable}
+\label{tab:statetrans}
+\end{table}
+
