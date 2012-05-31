@@ -1,0 +1,157 @@
+%
+# First the masks corresponding to each application mode are computed
+# and output. In addition, the default one is got and the unicity of
+# the default on is checked. If only one application exists
+# the default application mode is equal to that application mode.
+# If more than one application mode exist the default application mode
+# is equal to the default one
+
+let default_app_mode := ""
+
+let app_mode_mask := emptymap
+let app_mode_id := emptymap
+let mask := 1
+
+foreach mode in APPMODE do
+  let app_mode_id[mode::NAME] := INDEX
+  let app_mode_mask[mode::NAME] := mask
+  let mask := mask << 1
+  if mode::DEFAULT then
+    let default_app_mode := mode::NAME
+  end if
+end foreach
+
+if [APPMODE length] == 1 then
+  let default_app_mode := APPMODE[0]::NAME
+end if
+
+if default_app_mode == "" & [APPMODE length] > 1 then
+  error CPU : "No default APPMODE provided"
+end if
+
+%
+/*=============================================================================
+ * Application Modes tables for tasks, alarms and schedule tables
+ * Application Modes masks are as follow:
+%
+foreach mode in APPMODE do
+% * % ! mode::NAME % = % ! app_mode_mask[mode::NAME] %
+%
+end foreach
+% */
+%
+
+foreach mode in APPMODE do
+%
+CONST(tpl_application_mode, OS_CONST) % ! mode::NAME % = % ! app_mode_id[mode::NAME] %; /* mask = % ! 1 << app_mode_id[mode::NAME] % */%
+end foreach
+
+if default_app_mode != "" then
+%
+CONST(tpl_application_mode, OS_CONST) OSDEFAULTAPPMODE = % ! app_mode_id[default_app_mode] %;%
+end if
+
+# Second the application mode for task is generated
+
+foreach task in TASKS
+before
+%
+CONST(tpl_appmode_mask, OS_CONST) tpl_task_app_mode[TASK_COUNT] = {
+%
+do
+  let mask := 0
+  let text_mask := emptylist
+  if task::AUTOSTART then
+    foreach mode in task::AUTOSTART_S::APPMODE do
+      let mask := mask | app_mode_mask[mode::VALUE]
+      if app_mode_mask[mode::VALUE] != 0 then
+        let text_mask += mode::VALUE
+      end if
+    end foreach
+  end if
+  %  % ! mask % /* task % ! task::NAME % : % 
+  
+  foreach t_m in text_mask
+  do
+    ! t_m::VALUE
+  between % | %
+  end foreach
+  % */ %
+between
+%,
+%
+after
+%
+};
+%
+end foreach
+
+# Third the application mode for alarm is generated
+
+foreach alarm in ALARMS
+before
+%
+CONST(tpl_appmode_mask, OS_CONST) tpl_alarm_app_mode[ALARM_COUNT] = {
+%
+do
+  let mask := 0
+  let text_mask := emptylist
+  if alarm::AUTOSTART then
+    foreach mode in alarm::AUTOSTART_S::APPMODE do
+      let mask := mask | app_mode_mask[mode::VALUE]
+      if app_mode_mask[mode::VALUE] != 0 then
+        let text_mask += mode::VALUE
+      end if
+    end foreach
+  end if
+  %  % ! mask % /* task % ! alarm::NAME % : % 
+  
+  foreach t_m in text_mask
+  do
+    ! t_m::VALUE
+  between % | %
+  end foreach
+  % */ %
+between
+%,
+%
+after
+%
+};
+%
+end foreach
+
+# Fourth the application mode for schedule tables is generated
+
+foreach scheduletable in SCHEDULETABLES
+before
+%
+CONST(tpl_appmode_mask, OS_CONST) tpl_scheduletable_app_mode[SCHEDTABLE_COUNT] = {
+%
+do
+  let mask := 0
+  let text_mask := emptylist
+  if scheduletable::AUTOSTART != "NONE" then
+    foreach mode in scheduletable::AUTOSTART_S::APPMODE do
+      let mask := mask | app_mode_mask[mode::VALUE]
+      if app_mode_mask[mode::VALUE] != 0 then
+        let text_mask += mode::VALUE
+      end if
+    end foreach
+  end if
+  %  % ! mask % /* task % ! scheduletable::NAME % : % 
+  
+  foreach t_m in text_mask
+  do
+    ! t_m::VALUE
+  between % | %
+  end foreach
+  % */ %
+between
+%,
+%
+after
+%
+};
+%
+end foreach
