@@ -1,7 +1,0 @@
-/* Localized versions of Info.plist keys */
-CFBundleName = "cocoaGoil";
-CFBundleShortVersionString = "1.0.0";
-CFBundleGetInfoString = "Cocoa goil version 1.0.0, Copyright __MyCompanyName__.";
-NSHumanReadableCopyright = "Copyright __MyCompanyName__.";
-LSMinimumSystemVersion = "10.3.9";
-
