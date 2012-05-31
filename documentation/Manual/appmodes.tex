@@ -1,0 +1,132 @@
+%!TEX root = ./main.tex
+
+\chapter{Operating System Execution}
+\label{chap:appmodes}
+
+\lettrine{T}his chapter presents how to start and shutdown the operating system as well as the configuration options and the Application Modes. Application Modes are used to start the operating system in different configurations. Usually, the configuration is read from hardware switches. The current Application Mode is passed to the \api{StartOS} service and cannot be changed once the operating system is started. 
+
+\section{Configuration Options}
+
+\section{System Services}
+
+\begin{service}{StartOS}{void}
+\argument{AppModeType}{AppModeID}{The Application Mode}
+
+\apiname\ starts the OS in the \argu{AppModeID} Application Mode. First the OS does some initializations, then the Startup Hook, if configured, is called. At last the scheduling is started and the highest priority task runs.
+
+\note{When called from outside a task or an ISR, typically from the \cfunction{main()}, \apiname\ does not returns. When called from a task or an ISR, a case which is forbidden, \apiname\ returns and the Error Hook (if configured) is called.}
+\end{service}
+
+\begin{service}{ShutdownOS}{void}
+\argument{StatusType}{Error}{The error that occurred}
+
+\apiname\ shuts down the OS and notify the \argu{Error} error code. If it is configured, the Shutdown Hook is called with \argu{Error} as argument. The behavior may depends on the target platform. On embedded platforms interrupts are disabled and an infinite loop or a \asfct{halt} is executed. On POSIX the application exits.
+
+\end{service}
+
+\section{Application Modes Declarations}
+\label{sec:appmodedec}
+
+Application Mode are used to specify which \oilattr{AUTOSTART} objects (tasks, alarms or schedule tables) are started when \api{StartOS} is called. Application Modes are declared in OIL using the \oilobj{APPMODE} object. \goil\ accepts the \oilattr{DEFAULT} boolean attribute. When \oilval{TRUE}, this attributes specifies the default Application Mode. \oilattr{DEFAULT} is implicitly \oilval{FALSE}.
+
+When only one Application Mode is defined, the constant \constant{OSDEFAULTAPPMODE} is set to this Application Mode. When more than one Application Mode are defined, one and only one of the Application Modes \oilattr{DEFAULT}  attribute must be set to \oilval{TRUE} and the constant \constant{OSDEFAULTAPPMODE} is set to this one.
+
+At most 32 application modes may be declared in the current implementation. We believe it is far enough.
+
+In the following example, 2 Application Modes are declared:
+
+\begin{lstlisting}[language=OIL]
+APPMODE normal { DEFAULT = TRUE; };
+
+APPMODE diag { };
+\end{lstlisting}
+
+Let's consider 2 tasks and one alarm. The first task, {\em command}, is \oilattr{AUTOSTART} in any case, the second one, {\em logging} is not \oilattr{AUTOSTART} and the alarm, {\em trigger_logging}, is \oilattr{AUTOSTART} in Application Mode \constant{diag} only. The goal is to have a periodic task doing some logging when the OS is started in Application Mode \constant{diag}:
+
+\begin{lstlisting}[language=OIL]
+TASK command {
+  AUTOSTART = TRUE {
+    APPMODE = normal;
+    APPMODE = diag;
+  };
+  ...
+};
+
+TASK logging {
+  AUTOSTART = FALSE;
+  ...
+};
+
+ALARM trigger_logging {
+  AUTOSTART = TRUE {
+    APPMODE = diag;
+    ALARMTIME = 10;
+    CYCLETIME = 10;
+  };
+  ACTION = ACTIVATETASK {
+    TASK = logging;
+  };
+  ...
+};
+\end{lstlisting}
+
+If \api{StartOS} is called with argument \constant{normal} or \constant{OSDEFAULTAPPMODE}, the alarm {\em trigger_logging} is not started by \api{StartOS} and task {\em logging} does not run. If \api{StartOS} is called with argument \constant{diag}, the alarm is started and task {\em logging} runs. In both cases task {\em command} is started.
+
+\section{Application Modes Services}
+
+\begin{service}{DeclareApplicationMode}{}
+\argument{AppModeType}{AppModeID}{The Application Mode}
+
+On the C side, each declared Application Mode is available as a constant of type \ctype{AppModeType}. However, before using one of the constants, you have to put it in the current scope with the \servicename\ service\,\footnote{This macro is not part of \cite{OSEKOS223} but has been added for convenience purpose}  as follow:
+
+\begin{lstlisting}[language=C]
+DeclareApplicationMode(normal);
+DeclareApplicationMode(diag);
+\end{lstlisting}
+
+An exception is the constant \constant{OSDEFAULTAPPMODE} which is in the scope as long as file \file{tpl_os.h} is included.
+
+\note{\apiname\ is a C macro}
+\end{service}
+
+\begin{service}{GetActiveApplicationMode}{AppModeType}
+\api{GetActiveApplicationMode} returns the Application Mode that was used to start the OS.
+\begin{lstlisting}[language=C]
+AppModeType currentAppMode;
+currentAppMode = GetActiveApplicationMode();
+\end{lstlisting}
+If \apiname\ is called before the OS is started, \constant{OSNOAPPMODE} is returned.
+
+\end{service}
+
+\section{Implementation}
+
+At system generation time, an identifier \constant{AppModeID} of type \ctype{AppModeType} is attributed to each Application Mode.
+Identifiers range from $0$ to $number~of~application~modes - 1$ and are attributed by \goil\ in their order of appearance in the OIL file.
+
+For each \constant{AppModeID}, \goil\ computes a mask: \lstinline[language=OIL]{AppModeMask = 1 << AppModeID}.
+For each task, alarm and schedule table, a table indexed by the object id is computed by \goil. Each element of these tables is the bitwise or of the \constant{AppModeMask} in which the object is \oilattr{AUTOSTART}.
+
+\api{StartOS} iterates over the tasks, alarms and schedule tables Application Mode mask tables. It does a bitwise and with the mask stored in the table and the mask computed from the Application Mode. If the result is different from 0, the corresponding object is \oilattr{AUTOSTART}  in this Application Mode and is started.
+
+Using the example of section \ref{sec:appmodedec} we have
+
+\begin{lstlisting}[language=C]
+CONST(tpl_application_mode, OS_CONST) diag = 0; /* mask = 1 */
+CONST(tpl_application_mode, OS_CONST) normal = 1; /* mask = 2 */
+\end{lstlisting}
+
+\ctype{AppModeType} is an alias of \ctype{tpl_application_mode}. 
+
+\begin{lstlisting}[language=C]
+CONST(tpl_appmode_mask, OS_CONST) tpl_task_app_mode[TASK_COUNT] = {
+  3 /* task command : normal | diag */ ,
+  0 /* task logging :  */ 
+};
+
+CONST(tpl_appmode_mask, OS_CONST) tpl_alarm_app_mode[ALARM_COUNT] = {
+  1 /* task trigger_logging : diag */ 
+};
+\end{lstlisting}
+
+If the is no task, alarm or schedule table defined, the corresponding table is not generated.
