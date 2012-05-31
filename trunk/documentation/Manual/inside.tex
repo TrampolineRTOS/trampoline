@@ -1,0 +1,19 @@
+%!TEX root = ./main.tex
+
+\chapter{Implementation details}
+
+\section{The \var{tpl_kern} structure}
+
+The \var{tpl_kern} structure gathers informations about the \RUNNING\ process and flags to notify if a context switch and/or a context save are needed. It eases the access to these informations when programming in assembly language. The \var{tpl_kern} structure is an instance of the \ctype{tpl_kern_state} type:
+
+\begin{lstlisting}[language=C]
+typedef struct 
+{
+  P2CONST(tpl_proc_static, TYPEDEF, OS_CONST) s_old;
+  P2CONST(tpl_proc_static, TYPEDEF, OS_CONST) s_running;
+  P2VAR(tpl_proc, TYPEDEF, OS_VAR)            old;
+  P2VAR(tpl_proc, TYPEDEF, OS_VAR)            running;
+  VAR(int, TYPEDEF)                           running_id;
+  VAR(u8, TYPEDEF)                            need_switch;
+} tpl_kern_state;
+\end{lstlisting}

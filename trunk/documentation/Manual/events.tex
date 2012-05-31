@@ -35,7 +35,7 @@ EVENT ev {
 };
 \end{lstlisting}
 
-\note{The literal value should have  only 1 bit set.} 
+\note{The literal value should have  only 1 bit set. Goil emits a warning when this is not the case.} 
 
 Or \oilattr{MASK} may be set to \oilattr{AUTO}. In this case, the \sysgen\ computes the event mask:
 
@@ -49,7 +49,7 @@ EVENT ev {
 \section{Events services}
 
 \begin{service}{SetEvent}{StatusType}
-Events of task TaskID are set according to the Mask passed as $2^{nd}$ argument. This service is non blocking and may be called from a task or an ISR2.
+Events of task \var{TaskID} are set according to the Mask passed as $2^{nd}$ argument. This service is non blocking and may be called from a task or an ISR2.
 
 \note{\servicename\ may do a rescheduling if the target task is unblocked and goes to the \READY\ state.}
 
@@ -63,7 +63,7 @@ Events of task TaskID are set according to the Mask passed as $2^{nd}$ argument.
 
 
 \begin{service}{WaitEvent}{StatusType}
-The calling task waits for event(s) Mask. If one the events are already set, the task continues its execution. If none of the events are set, the task is put in the \WAITING\ state and blocks.
+The calling task waits for event(s) \var{Mask}. If one the events are already set, the task continues its execution. If none of the events are set, the task is put in the \WAITING\ state and blocks.
 
 \note{\servicename\ may do a rescheduling if the calling task blocks.}
 
@@ -73,5 +73,24 @@ The calling task waits for event(s) Mask. If one the events are already set, the
 \resultcodeext{\OSRESOURCE}{The calling task holds a resource}
 \resultcodeext{\OSCALLLEVEL}{The caller is not a task}
 
+\end{service}
 
+\begin{service}{GetEvent}{StatusType}
+Events of task \var{TaskID} are copied in \var{Mask} argument passed as reference.
+
+\note{\servicename\ does not reset the event mask. \api{ClearEvent} should be used to clear, in the event mask, the events that have been processed.}
+
+\warning{The \var{Mask} argument is a pointer. Do not pass an uninitialized pointer. Proper use of this service supposes a \ctype{EventMask} variable is instantiated, then its address is passed to \cfunction{\servicename} as shown in the example below:}
+
+\begin{lstlisting}[language=C]
+EventMaskType myEventMask;
+GetEvent(aTask, &myEventMask);
+\end{lstlisting}
+
+\argument{TaskType}{TaskID}{the id of the task}
+\argument{EventMaskRefType}{Mask}{the reference of the event mask where the \var{TaskID} event mask is copied}
+\resultcode{\OK}{No error}
+\resultcodeext{\OSID}{Invalid TaskID}
+\resultcodeext{\OSACCESS}{The task identified by TaskID is not an extended task (not able to manage events) or, in \autosar, the caller cannot access the task}
+\resultcodeext{\OSSTATE}{The task identified by TaskID is in \SUSPENDED\ state}
 \end{service}

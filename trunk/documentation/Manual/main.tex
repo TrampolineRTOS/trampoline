@@ -165,6 +165,7 @@
 %
 % Commands for inline formatting of C computing language
 %
+\newcommand{\argu}[1]{{\ttfamily #1}}
 \newcommand{\ctype}[1]{{\ttfamily #1}}
 \newcommand{\cdata}[1]{{\ttfamily #1}}
 \newcommand{\var}[1]{{\ttfamily\em #1}}
@@ -172,10 +173,12 @@
 \newcommand{\cfunction}[1]{{\ttfamily #1}}
 \newcommand{\cmacro}[1]{{\small\ttfamily #1}}
 \newcommand{\constant}[1]{{\small\ttfamily #1}}
+\newcommand{\oilobj}[1]{{\small\ttfamily #1}}
 \newcommand{\oilattr}[1]{{\small\ttfamily #1}}
 \newcommand{\oilval}[1]{{\small\ttfamily #1}}
 \newcommand{\member}[1]{{\small\ttfamily #1}}
 \newcommand{\mem}{\small\ttfamily}
+\newcommand{\tool}[1]{{\em #1}}
 
 %
 % Commands for other formatting
@@ -193,14 +196,14 @@
 \newcommand{\idxconfflag}[1]{{\footnotesize\ttfamily #1}\index{Configuration macros!#1}\index{#1}}
 \newcommand{\toreplace}[1]{{\footnotesize $<$}#1{\footnotesize $>$}}
 %\newcommand{\figcaption}[2]{\textit{\caption{\small #1}}\label{#2}}
-\newcommand{\goil}{goil\index{goil, The oil compiler of Trampoline}}
+\newcommand{\goil}{\tool{goil}\index{goil, The oil compiler of Trampoline}}
 \newcommand{\process}{process\index{process, a task, basic or extended, or an ISR category 2}}
 \newcommand{\sysgen}{system generation tool\index{system generation tool, the tool that takes as an input a description of the system (in OIL or in XML) to generate the corresponding .c and .h files.}}
 \newcommand{\stringlit}[1]{{\small\ttfamily "{#1}"}}
 \newcommand{\character}[1]{{\small\ttfamily `{#1}'}}
 \newcommand{\api}[1]{\cfunction{#1}\index{#1}}
 \newcommand{\osek}{OSEK}
-\newcommand{\autosar}{AUTOSAR}
+\newcommand{\autosar}{{\small AUTOSAR}}
 \newenvironment{penum}{
 \begin{enumerate}
   \setlength{\itemsep}{1pt}
@@ -271,6 +274,7 @@
 % environment and commands to describe system services
 %
 \newcommand{\servicename}{}
+\newcommand{\apiname}{}
 \newcommand{\servicedescription}{}
 \newcommand{\servicereturn}{}
 \DTLnewdb{argDB}
@@ -278,6 +282,7 @@
 \newenvironment{service}[2]{%
   \subsection{#1}\label{api:#1}\index{#1}%
   \renewcommand{\servicename}{#1}%
+  \renewcommand{\apiname}{\api{#1}}%
   \renewcommand{\servicereturn}{#2}
   \DTLcleardb{argDB}
   \DTLcleardb{resDB}
@@ -287,10 +292,11 @@
   {\bf Prototype of \servicename:}\nopagebreak
   
   {\tt\if\servicereturn\empty\relax\else\servicereturn\ \fi}{\tt \servicename(%
-  \DTLforeach*{argDB}{\argumenttype=type,\argumentname=name}{%
-    \DTLiffirstrow{}{, }\argumenttype\ \argumentname%
-  }%
-  );}
+  \DTLifdbempty{argDB}{void}{%
+    \DTLforeach*{argDB}{\argumenttype=type,\argumentname=name}{%
+      \DTLiffirstrow{}{, }\argumenttype\ \argumentname%
+    }%
+  });}
 
   \DTLifdbempty{argDB}{}{
 %    \vspace{1mm}
@@ -325,11 +331,25 @@
   \DTLnewdbentry{resDB}{status}{extended and standard}
 }
   
+\newcommand{\resultcodeauto}[2]{%
+  \DTLnewrow{resDB}
+  \DTLnewdbentry{resDB}{value}{#1}
+  \DTLnewdbentry{resDB}{desc}{#2}
+  \DTLnewdbentry{resDB}{status}{\AUTOSAR, extended and standard}
+}
+  
 \newcommand{\resultcodeext}[2]{%
   \DTLnewrow{resDB}
   \DTLnewdbentry{resDB}{value}{#1}
   \DTLnewdbentry{resDB}{desc}{#2}
   \DTLnewdbentry{resDB}{status}{extended only}
+}
+
+\newcommand{\resultcodeautoext}[2]{%
+  \DTLnewrow{resDB}
+  \DTLnewdbentry{resDB}{value}{#1}
+  \DTLnewdbentry{resDB}{desc}{#2}
+  \DTLnewdbentry{resDB}{status}{\AUTOSAR, extended only}
 }
 
 \newcommand{\resultcodeMP}[2]{%
@@ -394,6 +414,7 @@ Florent Pavin\\
 
 
 \part{The Real-Time Operating System}
+\include{appmodes}
 \include{tasks}
 \include{resources}
 \include{events}

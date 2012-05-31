@@ -3,7 +3,7 @@
 \chapter{Tasks}
 \label{chap:tasks}
 
-\lettrine{A} task is an execution framework for the functions of the application\footnote{The term {\em Application} is also used in \autosar\ to designate a set of object, this manual uses OS Application to name the \autosar\ applications and Application to name the user level software.}. A task is a kind of \process. Tasks are executed concurrently and asynchronously, see \ref{sec:scheduling}. 2 kinds of task exist: basic tasks and extended tasks. A basic task cannot block (\ie\ it cannot use a service that may block) while an extended task can.
+\lettrine{A} task is an execution framework for the functions of the application\,\footnote{The term {\em Application} is also used in \autosar\ to designate a set of object, this manual uses OS Application to name the \autosar\ applications and Application to name the user level software.}. A task is a kind of \process. Tasks are executed concurrently and asynchronously, see \ref{sec:scheduling}. 2 kinds of task exist: basic tasks and extended tasks. A basic task cannot block (\ie\ it cannot use a service that may block) while an extended task can.
 The tasks and their properties are declared in the OIL file, see \ref{oil:task}. Their functions are defined in a C file.
 
 \section{States a task}
@@ -34,11 +34,11 @@ A task goes from one state to the other according to various conditions as shown
 \begin{longtable}[c]{l|l|l|p{7cm}}
 \bf transition & \bf former state & \bf new state & \bf description\\
 \hline
-activate & \SUSPENDED & \READY & the task is set in the \READY\ state on one of the following occurrences: services ActivateTask or ChainTask, activation notification coming from an alarm, a schedule table or a message. \\
+activate & \SUSPENDED & \READY & the task is set in the \READY\ state on one of the following occurrences: services \api{ActivateTask} or \api{ChainTask}, activation notification coming from an alarm, a schedule table or a message. \\
 start & \READY & \RUNNING & the task is set to the running state and begin to execute because it has the highest priority in the system and has been elected by the scheduler. \\
-terminate & \RUNNING & \SUSPENDED & the task is set to the \SUSPENDED\ state when it calls the TerminateTask service.\\
+terminate & \RUNNING & \SUSPENDED & the task is set to the \SUSPENDED\ state when it calls the \api{TerminateTask} or \api{ChainTask} service.\\
 preempt & \RUNNING & \READY & the task is set to the \READY\ state when the scheduler starts a higher priority task.\\
-wait & \RUNNING & \WAITING & the task may be set to the \WAITING\ state when it calls the service WaitEvent.\\
+wait & \RUNNING & \WAITING & the task may be set to the \WAITING\ state when it calls the service \api{WaitEvent}.\\
 release & \WAITING & \READY & the task is set to the \READY\ state when it gets one of the  events it is waiting for. \\
 \end{longtable}
 \label{tab:statetrans}
