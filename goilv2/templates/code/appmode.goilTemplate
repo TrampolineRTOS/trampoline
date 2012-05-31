@@ -104,7 +104,7 @@ do
       end if
     end foreach
   end if
-  %  % ! mask % /* task % ! alarm::NAME % : % 
+  %  % ! mask % /* alarm % ! alarm::NAME % : % 
   
   foreach t_m in text_mask
   do
@@ -139,7 +139,7 @@ do
       end if
     end foreach
   end if
-  %  % ! mask % /* task % ! scheduletable::NAME % : % 
+  %  % ! mask % /* schedule table % ! scheduletable::NAME % : % 
   
   foreach t_m in text_mask
   do
