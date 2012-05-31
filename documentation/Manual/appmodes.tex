@@ -108,7 +108,7 @@ At system generation time, an identifier \constant{AppModeID} of type \ctype{App
 Identifiers range from $0$ to $number~of~application~modes - 1$ and are attributed by \goil\ in their order of appearance in the OIL file.
 
 For each \constant{AppModeID}, \goil\ computes a mask: \lstinline[language=OIL]{AppModeMask = 1 << AppModeID}.
-For each task, alarm and schedule table, a table indexed by the object id is computed by \goil. Each element of these tables is the bitwise or of the \constant{AppModeMask} in which the object is \oilattr{AUTOSTART}. If the is no task, alarm or schedule table defined, the corresponding table is not generated.
+For each task, alarm and schedule table, a table indexed by the object id is computed by \goil. Each element of these tables is the bitwise or of the \constant{AppModeMask} in which the object is \oilattr{AUTOSTART}. If there is no task, alarm or schedule table defined, the corresponding table is not generated.
 
 
 \api{StartOS} iterates over the tasks, alarms and schedule tables Application Mode mask tables. It does a bitwise and with the mask stored in the table and the mask computed from the Application Mode. If the result is not 0 then the corresponding object is \oilattr{AUTOSTART}  in this Application Mode and is started.
