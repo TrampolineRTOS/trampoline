@@ -231,6 +231,7 @@ tpl_sc_handler:
   stw   r11,PS_LR(r1)
   mfcr  r11
   stw   r11,PS_CR(r1)
+  stw   r0,PS_R0(r1)
   
   /*
    * Does the stuff to enter in kernel
@@ -330,6 +331,7 @@ no_context_switch:
   bl    tpl_leave_kernel
 
   /*  restore the registers before returning                          */
+  lwz   r0,PS_R0(r1)
   lwz   r11,PS_CR(r1)
   mtcr  r11
   lwz   r11,PS_LR(r1)
