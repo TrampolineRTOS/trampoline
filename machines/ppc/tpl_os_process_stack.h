@@ -70,7 +70,7 @@
  * the linkage area is reserved for the call of a trusted function
  */
 
-#define PS_FOOTPRINT              16
+#define PS_FOOTPRINT              20
 #define PS_TRUSTED_FOOTPRINT_IN   32
 #define PS_TRUSTED_FOOTPRINT_OUT  36
 
@@ -82,6 +82,7 @@
 #define PS_R12                    4
 #define PS_LR                     8
 #define PS_CR                     12
+#define PS_R0                     16
 
 /* TPL_OS_PROCESS_STACK_H */
 #endif 

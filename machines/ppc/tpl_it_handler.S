@@ -30,6 +30,7 @@
 #include "tpl_os_definitions.h"
 #include "tpl_os_application_def.h"
 #include "tpl_os_kernel_stack.h"
+#include "tpl_os_process_stack.h"
 #include "tpl_assembler.h"
 
 TPL_EXTERN  tpl_kern
@@ -83,14 +84,14 @@ tpl_it_handler:
    *      +16 |      r0      |
    *          +--------------+
    */
-  subi  r1,r1,20
-  stw   r11,0(r1)
-  stw   r12,4(r1)
+  subi  r1,r1,PS_FOOTPRINT
+  stw   r11,PS_R11(r1)
+  stw   r12,PS_R12(r1)
   mflr  r11
-  stw   r11,8(r1)
+  stw   r11,PS_LR(r1)
   mfcr  r11
-  stw   r11,12(r1)
-  stw   r0,16(r1)
+  stw   r11,PS_CR(r1)
+  stw   r0,PS_R0(r1)
   
   /*
    * Does the stuff to enter in kernel
@@ -194,15 +195,15 @@ no_context_switch:
   bl    tpl_leave_kernel
 
   /*  restore the registers befor returning                           */
-  lwz   r0,16(r1)
-  lwz   r11,12(r1)
+  lwz   r0,PS_R0(r1)
+  lwz   r11,PS_CR(r1)
   mtcr  r11
-  lwz   r11,8(r1)
+  lwz   r11,PS_LR(r1)
   mtlr  r11
-  lwz   r12,4(r1)
-  lwz   r11,0(r1)
+  lwz   r12,PS_R12(r1)
+  lwz   r11,PS_R11(r1)
   
-  addi  r1,r1,20
+  addi  r1,r1,PS_FOOTPRINT
   
   rfi
 
