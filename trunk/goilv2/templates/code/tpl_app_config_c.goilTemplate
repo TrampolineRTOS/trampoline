@@ -75,17 +75,19 @@ if USEMEMORYPROTECTION then
 end if
 
 # include a user defined types file for messages
-let available_receive_message := false
-foreach mess in MESSAGES do
-  if mess::MESSAGEPROPERTY == "RECEIVE_UNQUEUED_INTERNAL" | mess::MESSAGEPROPERTY == "RECEIVE_QUEUED_INTERNAL" then
-    let available_receive_message := true
-  end if
-end foreach
+if ["tpl_message_cdatatype.h" fileExists] then
+  let available_receive_message := false
+  foreach mess in MESSAGES do
+    if mess::MESSAGEPROPERTY == "RECEIVE_UNQUEUED_INTERNAL" | mess::MESSAGEPROPERTY == "RECEIVE_QUEUED_INTERNAL" then
+      let available_receive_message := true
+    end if
+  end foreach
 
-if available_receive_message then
+  if available_receive_message then
 %
 #include "tpl_message_cdatatype.h"
 %
+  end if
 end if
 
 # application mode inclusion

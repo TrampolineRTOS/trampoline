@@ -538,6 +538,10 @@ routine templateMethodInvocation
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
       outResultType := [@Ttype stringType];
       outResultValue := valueWithString [![[inValue mStringValue] identifierRepresentation]];
+    elsif [inMethodName string] == "fileExists" then
+      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+      outResultType := [@Ttype boolType];
+      outResultValue := valueWithBool [![[inValue mStringValue] fileExists]];
     elsif [inMethodName string] == "lowercaseString" then
       checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
       outResultType := [@Ttype stringType];
