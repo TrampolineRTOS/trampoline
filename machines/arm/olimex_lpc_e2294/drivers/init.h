@@ -25,7 +25,7 @@
 #ifndef INIT_H
 #define INIT_H
 
-#include "LPC22XX.h"
+#include "lpc22xx.h"
 #include "timer.h"
 #include "lcd.h"
 #include "extint.h"

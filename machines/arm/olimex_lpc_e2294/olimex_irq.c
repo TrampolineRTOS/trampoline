@@ -25,7 +25,7 @@
 
 #include "tpl_os.h"
 #include "tpl_os_it_kernel.h" //tpl_it_handler
-#include "LPC22XX.h" //VICIRQStatus...
+#include "lpc22xx.h" //VICIRQStatus...
 
 extern CONST(tpl_it_vector_entry, OS_CONST) tpl_it_vector[31];
 

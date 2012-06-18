@@ -24,6 +24,7 @@
  */
 
 extern int main (void);
+extern void initialize_lpc2200_pll(void);
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -34,7 +35,7 @@ extern int main (void);
 void tpl_arm_bootstrap_stage2 ()
 {
     /* initialisation */
-    
+    initialize_lpc2200_pll();    
     /*
      * initialіze memory segments
      */

@@ -30,6 +30,18 @@
 
 .global tpl_arm_bootstrap_entry
 tpl_arm_bootstrap_entry:
+
+  /* wait for oscillator stability */ 
+  nop
+  nop
+  nop
+  nop
+  nop
+  nop
+  nop
+  nop
+   
+
   /* setup IRQ mode initial stack pointer */
   msr cpsr_c, #(CPSR_IRQ_MODE | CPSR_IRQ_LOCKED | CPSR_FIQ_LOCKED)
     ldr sp, =irq_stack_bottom
@@ -52,6 +64,9 @@ tpl_arm_bootstrap_entry:
   msr cpsr_c, #(CPSR_SYS_MODE | CPSR_IRQ_LOCKED | CPSR_FIQ_LOCKED)
     ldr sp, =usr_stack_bottom
 
+  /* do the PLL init to run at 60MHz */
+  bl initialize_lpc2200_pll
+  
   /* jump to high level bootstrap part */
   b tpl_arm_bootstrap_stage2
 

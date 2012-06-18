@@ -43,5 +43,6 @@ TEMP_SOURCE_DIRS += $(MACHINE_PATH)/arm/olimex_lpc_e2294/drivers
 SOURCES += timer.c \
 lcd.c \
 init.c \
-extint.c
+extint.c \
+initialize-lpc2200-pll.c
 

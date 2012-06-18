@@ -25,7 +25,7 @@
 #ifndef LCD_H
 #define LCD_H
 
-#include "LPC22XX.h"
+#include "lpc22xx.h"
 
 #define		DD_RAM_ADDR   0x00000080	//LCD 1 row
 #define		DD_RAM_ADDR2	0x000000C0	//LCD 2 row
