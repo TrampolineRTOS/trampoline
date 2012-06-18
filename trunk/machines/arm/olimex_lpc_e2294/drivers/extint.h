@@ -26,8 +26,8 @@
 #ifndef EXTINT_H
 #define EXTINT_H
 
-#include "LPC22XX.h"
-#include "check-lpc2294-timing-settings.h" //for PCLK
+#include "lpc22xx.h"
+#include "check-lpc2200-timing-settings.h" //for PCLK
 #include "lcd.h"
 
 /**
