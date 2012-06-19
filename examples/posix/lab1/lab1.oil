@@ -49,42 +49,16 @@ CPU tp1 {
         AUTOSTART = TRUE { APPMODE = std; };
         ACTIVATION = 1;
         SCHEDULE = FULL;
- EVENT = evt_t1;
- EVENT = evt_t2;
- EVENT = evt_t3;
+        EVENT = evt_t1;
+        EVENT = evt_t2;
+        EVENT = evt_t3;
     };
-/*
-    TASK a_task {
-        PRIORITY = 5;
-        AUTOSTART = TRUE { APPMODE = std; };
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
-    };
-*/
-/*
-    TASK task_0 {
-        PRIORITY = 8;
-        AUTOSTART = FALSE;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
- EVENT = evt_0;
-    };
-*/
-/*    TASK task_1 {
-        PRIORITY = 8;
-        AUTOSTART = FALSE;
-        ACTIVATION = 1;
-        SCHEDULE = FULL;
- EVENT = evt_1;
-    };
-*/
-
     EVENT evt_0 {
- MASK = 4;
+      MASK = 4;
     };
 
     EVENT evt_1 {
- MASK = 8;
+      MASK = 8;
     };  
 
     TASK task_t1 {
@@ -106,25 +80,12 @@ CPU tp1 {
         SCHEDULE = FULL;
     };
     EVENT evt_t1 {
- MASK = 2;
+      MASK = 2;
     };
     EVENT evt_t2 {
- MASK = 16;
+      MASK = 16;
     };
     EVENT evt_t3 {
- MASK = 32;
+      MASK = 32;
     };
-    
-    
-    SENSOR accel {
-      PORT = 3;
-      PERIOD = 100;
-      MESSAGE = mess1;
-    };
-    
-    SENSOR toto {
-      PORT = 3;
-      PERIOD = 200;
-      MESSAGE = mess1;
-    };
-} ;
+ } ;
