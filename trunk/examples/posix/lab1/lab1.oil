@@ -1,0 +1,130 @@
+OIL_VERSION = "2.5";
+
+IMPLEMENTATION trampoline {
+
+    /* This fix the default STACKSIZE of tasks */
+    TASK {
+        UINT32 STACKSIZE = 32768 ;
+    } ;
+
+    /* This fix the default STACKSIZE of ISRs */
+    ISR {
+        UINT32 STACKSIZE = 32768 ;
+    } ;
+};
+
+CPU tp1 {
+    /* This is the configuration of the operating system */
+    OS config {
+        /* Standard error checking, may be set to EXTENDED */
+        STATUS = EXTENDED;
+        /*
+         * the C files containing the source code off the application
+         * If you use more than one C file, use many APP_SRC attributes
+         */
+        BUILD = TRUE {
+          APP_SRC = "lab1.c";
+          /* The location of the Trampoline directory */
+          TRAMPOLINE_BASE_PATH = "../../..";
+          /* The name of the executable file */
+          APP_NAME = "elab1";
+        /*
+         * The flags given to the C compiler.
+         * -Wall means "emit all warnings"
+         */
+          CFLAGS = "-Wall";
+        };
+        PRETASKHOOK = TRUE; 
+        POSTTASKHOOK = TRUE;  
+        STARTUPHOOK = TRUE; 
+        SHUTDOWNHOOK = TRUE;
+
+    } ;
+
+    /* A default APPMODE */
+    APPMODE std {
+    };
+    TASK server {
+        PRIORITY = 2;
+        AUTOSTART = TRUE { APPMODE = std; };
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+ EVENT = evt_t1;
+ EVENT = evt_t2;
+ EVENT = evt_t3;
+    };
+/*
+    TASK a_task {
+        PRIORITY = 5;
+        AUTOSTART = TRUE { APPMODE = std; };
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+*/
+/*
+    TASK task_0 {
+        PRIORITY = 8;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+ EVENT = evt_0;
+    };
+*/
+/*    TASK task_1 {
+        PRIORITY = 8;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+ EVENT = evt_1;
+    };
+*/
+
+    EVENT evt_0 {
+ MASK = 4;
+    };
+
+    EVENT evt_1 {
+ MASK = 8;
+    };  
+
+    TASK task_t1 {
+        PRIORITY = 1;
+        AUTOSTART = FALSE;
+        ACTIVATION = 5;
+        SCHEDULE = FULL;
+    };
+    TASK task_t2 {
+        PRIORITY = 1;
+        AUTOSTART = FALSE;
+        ACTIVATION = 5;
+        SCHEDULE = FULL;
+    };
+    TASK task_t3 {
+        PRIORITY = 1;
+        AUTOSTART = FALSE;
+        ACTIVATION = 5;
+        SCHEDULE = FULL;
+    };
+    EVENT evt_t1 {
+ MASK = 2;
+    };
+    EVENT evt_t2 {
+ MASK = 16;
+    };
+    EVENT evt_t3 {
+ MASK = 32;
+    };
+    
+    
+    SENSOR accel {
+      PORT = 3;
+      PERIOD = 100;
+      MESSAGE = mess1;
+    };
+    
+    SENSOR toto {
+      PORT = 3;
+      PERIOD = 200;
+      MESSAGE = mess1;
+    };
+} ;
