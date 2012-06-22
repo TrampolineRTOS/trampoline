@@ -11,6 +11,9 @@
 #include "tpl_memmap.h"
 FUNC(int, OS_APPL_CODE) main(void)
 {            
+    // set io pins for led P1.23
+    IO1DIR |= (1 << 23) ;  // pin P1.23 is an output, everything else is input after reset
+    IO1CLR = 1 << 23;
     StartOS(OSDEFAULTAPPMODE);
     return 0;
 }
@@ -49,16 +52,27 @@ DeclareTask(task1);
 DeclareTask(task2);
 DeclareTask(task3);
 
+#define OS_START_SEC_CODE
+#include "tpl_memmap.h"
+void PreTaskHook()
+{
+  TaskType tid;
+  GetTaskID(&tid);
+}
+#define OS_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
+
 #define APP_Task_task1_START_SEC_CODE
 #include "tpl_memmap.h"
 TASK(task1)
 {
-    LCDSendTxt("1");
+/*    LCDSendTxt("1");
     
     ActivateTask(task3);
     
     LCDSendTxt("3");
-        
+ */       
     TerminateTask();
     
 }
@@ -70,18 +84,16 @@ TASK(task1)
 #include "tpl_memmap.h"
 TASK(task2)
 {
-    if (lcdstate == 0)
-    {
-        IO0SET = 0x00000400 ; //led on
-        lcdstate = 1;
+    static int state = 0;
+    if (state == 0) {
+      state = 1;
+      IO1CLR = 1 << 23;
     }
-    else if (lcdstate == 1)
-    {
-        IO0CLR = 0x00000400 ; //led off
-        lcdstate = 0;
+    else {
+      state = 0;
+      IO1SET = 1 << 23 ;
     }
     TerminateTask();
- 
 }
 #define APP_Task_task2_STOP_SEC_CODE
 #include "tpl_memmap.h"
@@ -91,7 +103,7 @@ TASK(task2)
 #include "tpl_memmap.h"
 TASK(task3)
 {
-  LCDSendTxt("2");
+/*  LCDSendTxt("2");*/
   TerminateTask();    
     
 }
