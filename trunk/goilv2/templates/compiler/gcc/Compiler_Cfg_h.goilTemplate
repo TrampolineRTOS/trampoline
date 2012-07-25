@@ -87,6 +87,19 @@
 #define OS_APPL_CODE                                  AUTOMATIC
 
 /*****************************************************************************/
+/* COM                                                                       */
+/*****************************************************************************/
+#define COM_CODE                                      AUTOMATIC
+#define COM_VAR_NOINIT                                AUTOMATIC
+#define COM_VAR_POWER_ON_INIT                         AUTOMATIC
+#define COM_VAR_FAST                                  AUTOMATIC
+#define COM_VAR                                       AUTOMATIC
+#define COM_CONST                                     AUTOMATIC
+#define COM_APPL_DATA                                 AUTOMATIC
+#define COM_APPL_CONST                                AUTOMATIC
+#define COM_APPL_CODE                                 AUTOMATIC
+
+/*****************************************************************************/
 /* MCU                                                                       */
 /*****************************************************************************/
 #define MCU_CODE                                      AUTOMATIC

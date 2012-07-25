@@ -22,33 +22,6 @@
 # $URL$
 # 
 
-#let B["toto"] := 4
-#let B["titi"] := 5
-#
-#let C := B["titi"]
-#
-#display B
-#display C
-#
-#let A::B::C["hola"]::D := 3
-#let A::B::C["toto"] := 4
-#let A::B::E := "coucou"
-#
-#display A
-
-
-if exists ACCELEROMETER then
-  let accel_port := emptymap
-  foreach accel in ACCELEROMETER do
-    if exists accel_port[accel::PORT] then
-      error accel::PORT : "PORT already used by"
-      error accel_port[accel::PORT]::NAME : "ACCELEROMETER ".accel_port[accel::PORT]::NAME
-    else
-      let accel_port[accel::PORT] := accel
-    end if
-  end foreach
-end if
-
 #------------------------------------------------------------------------------*
 # Check configuration is ok
 #
@@ -552,9 +525,12 @@ end foreach
 let SENDMESSAGES := emptylist
 foreach message in MESSAGE do
   if message::MESSAGEPROPERTY == "SEND_ZERO_INTERNAL" |
-     message::MESSAGEPROPERTY == "SEND_STATIC_INTERNAL"
+     message::MESSAGEPROPERTY == "SEND_STATIC_INTERNAL" |
+     message::MESSAGEPROPERTY == "SEND_ZERO_EXTERNAL" |
+     message::MESSAGEPROPERTY == "SEND_STATIC_EXTERNAL" |
+     message::MESSAGEPROPERTY == "SEND_DYNAMIC_EXTERNAL"
   then
-    # the target message if the first message in the linked
+    # the target message if the last message in the linked
     # list of destination messages
     let target_message := [receiver[message::NAME] last]
     let message::TARGET := target_message::NAME
@@ -580,11 +556,19 @@ foreach receive_message_list in receiver do
       let send_message_name := receive_message::MESSAGEPROPERTY_S::SENDINGMESSAGE
       # Check the compatibility of the sending message
       let send_message := sender[send_message_name]
-      if send_message::MESSAGEPROPERTY == "SEND_STATIC_INTERNAL" then
+      if send_message::MESSAGEPROPERTY == "SEND_STATIC_INTERNAL" | send_message::MESSAGEPROPERTY == "SEND_STATIC_EXTERNAL" then
 #        warning here : "OK"
         let receive_message::MESSAGEPROPERTY_S::CDATATYPE := send_message::MESSAGEPROPERTY_S::CDATATYPE
       else
-        error send_message_name : "MESSAGEPROPERTY of sender should be SEND_STATIC_INTERNAL"
+        error send_message_name : "MESSAGEPROPERTY of sender should be SEND_STATIC_INTERNAL or SEND_STATIC_EXTERNAL"
+      end if
+    elsif receive_message::MESSAGEPROPERTY == "RECEIVE_ZERO_INTERNAL" then
+      let send_message_name := receive_message::MESSAGEPROPERTY_S::SENDINGMESSAGE
+      let send_message := sender[sen_message_name]
+      if send_message::MESSAGEPROPERTY != "SEND_ZERO_INTERNAL" &
+         send_message::MESSAGEPROPERTY != "SEND_ZERO_EXTERNAL"
+      then
+        error send_message_name : "MESSAGEPROPERTY of sender should be SEND_ZERO_INTERNAL or SEND_ZERO_EXTERNAL"
       end if
     end if
 #    display receive_message
@@ -1207,18 +1191,3 @@ end if
 
 template if exists custom_files in config
 
-#display SENSOR
-#
-#let portmap := emptymap
-#foreach sensor in SENSOR do
-#  let key := sensor::PORT
-#  if not exists portmap[key] then
-#    let portmap[key] := sensor::NAME
-#  else
-#    error sensor::PORT : "Only one sensor per port"
-#    display portmap
-#  end if
-#end foreach
-
-#display PROJECT
-  

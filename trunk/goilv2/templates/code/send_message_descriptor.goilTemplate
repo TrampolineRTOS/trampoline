@@ -25,6 +25,8 @@ CONST(tpl_internal_sending_zero_mo, OS_CONST) % !message::NAME %_message = {
   /* pointer to the receiving mo */ (tpl_base_receiving_mo *)&% !message::TARGET %_message
 };
 %
+elsif message::MESSAGEPROPERTY == "SEND_STATIC_EXTERNAL" then
+display message
 end if
 %
 #define OS_STOP_SEC_CONST_UNSPECIFIED

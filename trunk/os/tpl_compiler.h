@@ -62,6 +62,21 @@
 #define OS_APPL_CONST         AUTOMATIC
 #define OS_APPL_CODE          AUTOMATIC
 
+#if WITH_COM == YES
+#define COM_CODE              AUTOMATIC
+#define COM_VAR_NOINIT        AUTOMATIC
+#define COM_VAR_POWER_ON_INIT AUTOMATIC
+#define COM_VAR_FAST          AUTOMATIC
+#define COM_VAR               AUTOMATIC
+#define COM_CONST             AUTOMATIC
+#define COM_APPL_DATA         AUTOMATIC
+#define COM_APPL_CONST        AUTOMATIC
+#define COM_APPL_CODE         AUTOMATIC
+#elif WITH_COM == NO
+#else
+  #error "Configuration error WITH_COM is not defined"
+#endif
+
 #else
   #error "Configuration error WITH_COMPILER_SETTINGS is not defined"
 #endif
