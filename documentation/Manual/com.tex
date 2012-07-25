@@ -1,6 +1,121 @@
-%!TEX root = ./trampoline.tex
+%!TEX root = ./main.tex
 
 \chapter{The communication library}
 
-\section{Internals}
+\lettrine{A}n OSEK/COM compliant library is part of Trampoline.
+This chapter presents the communication configuration and API.
+Implementation details as well as examples of extension are provided at the end of the chapter.
 
+\section{Implementation}
+
+
+\subsection{Sending Message Objects}
+
+In the following paragraphs, acronyms are widely used. Here is the meaning of these acronyms:
+\begin{description}
+\item [MO] Message Object
+\item [SMO] Sending Message Object
+\item [RMO] Receiving Message Object
+\end{description}
+
+\subsubsection{Base Sending Message Object}
+
+The Base SMO is an abstract {\em class} that is the common part of all SMOs.
+Since a SMO may be wired to an IPDU for external communication or a RMO for internal communication, the BSMO type is only a structure with one member: \member{sender}, a function pointer to a function doing the actual work according to the kind of SMO. 
+
+\note{It is easy to extend the communication library by providing a sending function that will manage message sending to a different kind of destination than the standard OSEK/COM one.}
+
+The BSMO is declared as follow:
+
+\begin{lstlisting}[language=C]
+struct TPL_BASE_SENDING_MO {
+    tpl_sending_func    sender; /* pointer to the sending function  */
+};
+
+typedef struct TPL_BASE_SENDING_MO tpl_base_sending_mo;
+\end{lstlisting}
+
+The sending function has the following prototype:
+
+\begin{lstlisting}[language=C]
+typedef tpl_status (*tpl_sending_func)(
+  P2CONST(void, AUTOMATIC, OS_CODE),
+  CONSTP2CONST(tpl_com_data, AUTOMATIC, OS_VAR));
+\end{lstlisting}
+
+The first argument is a pointer to the SMO and the second argument is a pointer to the data to be sent.
+
+\subsubsection{Internal Sending Message Object}
+
+The first concrete {\em subclass} of \ctype{tpl_base_sending_mo} is the \ctype{tpl_internal_sending_mo} structure. This structure adds \member{internal_target}, a pointer to a \ctype{tpl_base_receiving_mo} (see \ref{sec:receivingmo}) which is the first RMO of a chained list of RMOs:
+
+\begin{lstlisting}[language=C]
+struct TPL_INTERNAL_SENDING_MO {
+  /*  common to all sending mo                            */
+  tpl_base_sending_mo             base_mo;
+  /*  pointer to the internal receiving message object    */
+  struct TPL_BASE_RECEIVING_MO    *internal_target;
+};
+\end{lstlisting}
+
+\subsection{Receiving Message Objects}
+
+\subsubsection{Base Receiving Message Object}
+
+The root type is the \ctype{tpl_base_receiving_mo} structure. This structure contains two members, \member{notification} and \member{next_mo}:
+
+\begin{lstlisting}[language=C]
+struct TPL_BASE_RECEIVING_MO {
+   /*! notification structure              */
+   tpl_action                      *notification;
+   /*! message objects chaining            */
+   struct TPL_BASE_RECEIVING_MO    *next_mo;
+};
+\end{lstlisting}
+
+\member{notification} is a pointer to a notification descriptor and is used to perform the notification associated to the receiving message object. \member{next_mo} is a pointer to another RMO which allows to chain RMOs\,\footnote{In OSEK/COM a sending message may have more than one RMO}.
+
+\subsubsection{Data Receiving Message Object}
+
+An abstract {\em subclass} of \ctype{tpl_base_receiving_mo} exists: \ctype{tpl_data_receiving_mo}. This {\em subclass} extends \ctype{tpl_base_receiving_mo} and adds the following data related members:
+
+\begin{lstlisting}[language=C]
+struct TPL_DATA_RECEIVING_MO {
+   /* common part of the receiving message objects */
+   tpl_base_receiving_mo   base_mo;
+   /* pointer to the receiving function            */
+   tpl_receiving_func      receiver;
+   /* pointer to the data copy function            */
+   tpl_data_copy_func      copier;
+   /* filter descriptor                            */
+   tpl_filter_desc         *filter;
+};
+\end{lstlisting}
+
+\member{receiver} is a pointer to a receiving function (ie the function that will copy the data from a source to the destination message object). This function has the following prototype:
+
+\begin{lstlisting}[language=C]
+typedef tpl_status (*tpl_receiving_func)(
+   void *,
+   tpl_com_data *
+);
+\end{lstlisting}
+
+The first argument is a pointer to the RMO and the second one is a pointer to the data to copy in the RMO.
+
+\member{copier} is a pointer to a function that is used to copy the data from the receiving message object to the application. It is called by the \api{ReceiveMessage} system service. This function has the following prototype:
+
+\begin{lstlisting}[language=C]
+typedef tpl_status (*tpl_data_copy_func)(
+   tpl_com_data *,
+   void *
+);
+\end{lstlisting}
+
+The first argument is a pointer to the data to copy from the RMO and the second one is a pointer to the RMO.
+
+
+\member{filter} is a pointer to a filter descriptor.
+
+
+\label{sec:receivingmo}

@@ -89,4 +89,9 @@ typedef u8 tpl_callout_ret;
  */
 typedef u8 tpl_com_srv_id;
 
+/*
+ * tpl_com_callout, a function pointer type for callouts
+ */
+typedef tpl_callout_ret (*tpl_com_callout)(void);
+
 #endif

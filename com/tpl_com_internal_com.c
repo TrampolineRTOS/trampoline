@@ -53,12 +53,9 @@ FUNC(tpl_status, OS_CODE) tpl_send_static_internal_message(
   /*  get the first of the receiving mo                                   */
   P2CONST(tpl_data_receiving_mo, AUTOMATIC, OS_CONST)
   rmo = (tpl_data_receiving_mo *)ismo->internal_target;
-  
-	P2CONST(tpl_base_receiving_mo, AUTOMATIC, OS_CONST) 
-  rmo_notification = (tpl_base_receiving_mo *)ismo->internal_target;
-	
+
   /*  iterate through the receiving mo to copy the data to the receivers  */
-  while ((result == E_OK || result == E_COM_FILTEREDOUT) && (rmo != NULL))
+  while ((result == E_OK) && (rmo != NULL))
   {
     result = rmo->receiver(rmo, data);
   
@@ -69,7 +66,7 @@ FUNC(tpl_status, OS_CODE) tpl_send_static_internal_message(
      */
     if (result == E_OK)
     {
-      tpl_action *notification = rmo_notification->notification;
+      tpl_action *notification = rmo->base_mo.notification;
       if (notification != NULL)
       {
         result_notification |= notification->action(notification);
@@ -79,8 +76,7 @@ FUNC(tpl_status, OS_CODE) tpl_send_static_internal_message(
     {
       result = E_OK;
     }
-    rmo_notification = rmo_notification->next_mo;
-  
+    
     rmo = (tpl_data_receiving_mo *)rmo->base_mo.next_mo;
   }
   
@@ -101,7 +97,7 @@ FUNC(tpl_status, OS_CODE) tpl_send_zero_internal_message(
 {
   /*  cast the base mo to the correct type of mo  */
   CONSTP2CONST(tpl_internal_sending_mo, AUTOMATIC, OS_CONST)
-  ismo = smo;
+    ismo = smo;
 	
 	VAR(tpl_status, AUTOMATIC) result_notification = E_OK;
 

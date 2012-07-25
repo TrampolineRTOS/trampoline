@@ -13,6 +13,9 @@ let app_mode_id := emptymap
 let mask := 1
 
 foreach mode in APPMODE do
+  if mode::NAME == "OSDEFAULTAPPMODE" then
+    error mode::NAME : "OSDEFAULTAPPMODE is a reserved name"
+  end if
   let app_mode_id[mode::NAME] := INDEX
   let app_mode_mask[mode::NAME] := mask
   let mask := mask << 1
@@ -26,7 +29,7 @@ if [APPMODE length] == 1 then
 end if
 
 if default_app_mode == "" & [APPMODE length] > 1 then
-  error CPU : "No default APPMODE provided"
+  error here : "No default APPMODE provided"
 end if
 
 %

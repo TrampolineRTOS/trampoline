@@ -93,32 +93,5 @@ typedef struct TPL_RECEIVING_QUEUED_MO
 typedef struct TPL_RECEIVING_QUEUED_MO
     tpl_internal_receiving_queued_mo;
 
-/**
- *  @typedef    TPL_EXTERNAL_RECEIVING_UNQUEUED_MO
- *
- *  @brief  Structure for external communication unqueued receiving
- *          message objects
- *
- *  External communication unqueued receiving message objects structure
- *  adds members to manage a buffer to store the data of the messages
- *  and a filter descriptor.
- */
-typedef struct TPL_RECEIVING_UNQUEUED_MO
-    tpl_external_receiving_unqueued_mo;
-
-/**
- *  @struct     TPL_EXTERNAL_SENDING_STATIC_MO
- *
- *  Structure for external com static messages
- */
-struct TPL_EXTERNAL_SENDING_STATIC_MO {
-  /*  common to all sending mo                            */
-  tpl_base_sending_mo         base_mo;
-  /*  pointer to the network message                      */
-  tpl_sending_network_message *net_mess;
-};
-
-typedef struct TPL_EXTERNAL_SENDING_STATIC_MO tpl_external_sending_static_mo;
-
 #endif
 /*  TPL_COM_MO_H    */

@@ -17,21 +17,24 @@
 #ifndef __TPL_COM_IPDU_H__
 #define __TPL_COM_IPDU_H__
 
-struct TPL_IDPU_LOCATION {
-    /*  offset in bytes from the start of the IPDU. Since an IPDU is limited
-        to 8 bytes in the current implementation, 3 bits are used for the
-        offset  */
-    unsigned int byte_offset:3;
-    /*  offset in bits from the start of the first byte, 3 bits too */
-    unsigned int bit_offset:3;
-    /*  length in bits of the message   */
-    unsigned int bit_length:6;
-};
+typedef u8  tpl_ipdu_mode;
 
-typedef struct TPL_IDPU_LOCATION tpl_ipdu_location;
+#define IPDU_PERIODIC 1
+#define IPDU_DIRECT   2
+#define IPDU_MIXED    ((IPDU_PERIODIC) | (IPDU_DIRECT))
 
+typedef u32 tpl_ipdu_id;
+
+/*
+ * A tpl_sending_ipdu gathers :
+ * - An id
+ * - A mode
+ * - A 8 bytes buffer pointer
+ */ 
 struct TPL_SENDING_IPDU {
-    
+  CONST(tpl_ipdu_id, TYPEDEF)      id;
+  CONST(tpl_ipdu_mode, TYPEDEF)    mode;
+  CONSTP2VAR(u8, TYPEDEF, COM_VAR) buffer;
 };
 
 typedef struct TPL_SENDING_IPDU tpl_sending_ipdu;

@@ -400,10 +400,6 @@
  */
 #define NEED_SAVE       0x2
 
-/************************************
- * Always existing application mode *
- ************************************/
-
 /**
  * @def NOAPPMODE
  *
