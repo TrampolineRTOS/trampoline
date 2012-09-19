@@ -12,16 +12,16 @@
 #endif
 #include <avr/interrupt.h>
 
-%foreach HARDWARECOUNTERS do
-  if SOURCE != "" then
+%foreach counter in HARDWARECOUNTERS do
+  if counter::SOURCE != "" then
 %
-ISR(%!SOURCE%)
+ISR(%!counter::SOURCE%)
 {
   tpl_status  need_rescheduling = NO_SPECIAL_CODE;
 
 %#foreach HARDWARECOUNTERS do
 %
-  need_rescheduling |= tpl_counter_tick(&% !NAME %_counter_desc);
+  need_rescheduling |= tpl_counter_tick(&% !counter::NAME %_counter_desc);
 %#end foreach
 %
   if (need_rescheduling == NEED_RESCHEDULING)

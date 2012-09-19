@@ -1,10 +1,10 @@
 AVR sample project for AVR (AT90CAN128, but it should not be difficult to target other AVR chips). This port uses gcc only.
-To build the example, you can use makefile or an AVR Studio project.
+To build the example, you can use either a Makefile or an AVR Studio project (Windows only).
 
 [Makefile]
-* you should adapt your OIL file to your specific installation of avr-gcc (COMPILER, LINKER and ASSEMBLER keys in the CPU/OS section).
+* you should adapt your OIL file to your specific installation of avr-gcc (COMPILER, LINKER and ASSEMBLER keys in the CPU/OS/BUILD section).
 * Then build oil related generated .c and .h files and the Makefile:
-goil --target=avr -g --templates=../../goil/templates/ firstAVR.oil
+goil --target=avr --templates=../../goilv2/templates/ firstAVR.oil
 (The generated file .aps is an AVR Studio project for Windows users).
 * and build the project:
 make
@@ -13,9 +13,5 @@ Both a .elf and a .hex files are generated. goil will now be called directly fro
 
 [AVR Studio]
 An AVR studio project is generated directly by goil from the .oil file. So User application source file SHOULD be given in the .oil file (CPU/OS section). The Goil.exe OIL compiler should be in your PATH (in the project directory for instance).
-* run the 'createProject.bat' script file. It will generate both a Makefile and an AVR Studio file.
-* Then use the AVR Studio IDE to edit your project, compile and Run!
-* Each time that the .oil file is updated, DO NOT FORGET to run Goil to update data structures! This should be made with the 'runGoil.bat' script. 
-* NOTE: if you call the 'createProject.bat' script, your project file will be overwritten.
-(The only specific thing in the AVR Studio project settings is related to include directories paths)
+* Each time that the .oil file is updated, DO NOT FORGET to run Goil to update data structures! This should be made with the 'runGoil.bat' script. FIXME: At this date, it re-creates the project (and erase the previous one if any).
 * NOTE: Keys COMPILER, LINKER and ASSEMBLER are NOT used in the AVR Studio project generation (it uses default ones). You should manually update the target in the project configuration window (default is AT90CAN128).
