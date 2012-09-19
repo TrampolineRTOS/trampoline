@@ -139,6 +139,8 @@ extern OC_GGS_PreferencesController * gCocoaGalgasPreferencesController ;
 
 - (IBAction) runActionFromPreferences: (id) inSender ;
 
+- (IBAction) showAllocationWindow: (id) inSender ;
+
 
 - (void) updateSourceTextPreferenceCount ;
 

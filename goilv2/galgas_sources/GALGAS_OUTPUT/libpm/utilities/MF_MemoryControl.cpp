@@ -33,6 +33,10 @@
 #include <stdio.h>
 
 //---------------------------------------------------------------------------*
+
+macroDeclareMutex (gAllocationMutex) ;
+
+//---------------------------------------------------------------------------*
 //                                                                           *
 //         Enum for describing a pointer                                     *
 //                                                                           *
@@ -576,9 +580,11 @@
       if (existeDeja) {
         runtime_error_routine ("(detectee par " __FILE__ ") Le pointeur existe deja", 0, 0, IN_SOURCE_FILE, IN_SOURCE_LINE) ;
       }
-      pointeurNouvelElement->mSourceFileName = IN_SOURCE_FILE ;
-      pointeurNouvelElement->champNumeroLigneSource = IN_SOURCE_LINE ;
-      pointeurNouvelElement->champNatureObjet = inAllocation ;
+      if (NULL != pointeurNouvelElement) {
+        pointeurNouvelElement->mSourceFileName = IN_SOURCE_FILE ;
+        pointeurNouvelElement->champNumeroLigneSource = IN_SOURCE_LINE ;
+        pointeurNouvelElement->champNatureObjet = inAllocation ;
+      }
     }
   }
 #endif

@@ -421,7 +421,7 @@ bool isUnicodeSymbol (const utf32 inUnicodeCharacter) {
     PMSInt32 highIndex = kHTMLtoUnicodeConversionTableSize - 1 ;
     while ((highIndex >= lowIndex) && (UNICODE_VALUE (result) == 0)) {
       const PMSInt32 newIndex = (highIndex + lowIndex) / 2 ;
-      const NSInteger c = [inString compare:kHTMLtoUnicodeCocoaConversionArray [newIndex].mDefinition] ;
+      const NSInteger c = [inString compare:[NSString stringWithCString:kHTMLtoUnicodeCocoaConversionArray [newIndex].mDefinition encoding:NSASCIIStringEncoding]] ;
       if (c > 0) {
         lowIndex = newIndex + 1 ;
       }else if (c < 0) {

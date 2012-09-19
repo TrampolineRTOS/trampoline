@@ -50,17 +50,6 @@ gOption_generic_5F_cli_5F_options_display_5F_version ("generic_cli_options",
 
 //---------------------------------------------------------------------------*
 
-#ifdef SIOUX_IS_IMPLEMENTED
-  C_BoolCommandLineOption
-  gOption_generic_5F_cli_5F_options_options_asktosaveonclose ("generic_cli_options",
-                                                              "asktosaveonclose",
-                                                              '\0',
-                                                              "ask-to-save-on-close",
-                                                              "Ask to Save Output on Close (Win32SIOUX)") ;
-#endif
-
-//---------------------------------------------------------------------------*
-
 #ifdef COMPILE_FOR_WIN32
   C_BoolCommandLineOption
   gOption_generic_5F_cli_5F_options_nodialog ("generic_cli_options",
@@ -68,17 +57,6 @@ gOption_generic_5F_cli_5F_options_display_5F_version ("generic_cli_options",
                                               '\0',
                                               "no-dialog",
                                               "Do Not Display any dialog when no input file (Win32 only)") ;
-#endif
-
-//---------------------------------------------------------------------------*
-
-#ifdef __LP64__
-  C_BoolCommandLineOption
-  gOption_generic_5F_cli_5F_options_enable_5F_allocation_5F_debugging ("generic_cli_options",
-                                                                       "enable_allocation_debugging",
-                                                                       '\0',
-                                                                       "debug-alloc64",
-                                                                       "Enable Allocation Debugging") ;
 #endif
 
 //---------------------------------------------------------------------------*

@@ -8,7 +8,8 @@
 //---------------------------------------------------------------------------*
 
 #import "PMIssueDescriptor.h"
-#import "PMCocoaCallsDebug.h"
+#import "PMDebug.h"
+#import "OC_GGS_RulerViewForBuildOutput.h"
 
 //---------------------------------------------------------------------------*
 
@@ -27,41 +28,24 @@
 
 //---------------------------------------------------------------------------*
 
-- (PMIssueDescriptor *) initWithMessage : (NSString *) inMessage {
-  self = [self init] ;
-  if (self) {
-    mIssueKind = kMessageIssue ;
-    mMessage = inMessage.copy ;
-    [self normalizeMessage] ;
-  }
-  return self ;
-}
-
-//---------------------------------------------------------------------------*
-
-- (PMIssueDescriptor *) initWithFileOperation: (NSString *) inMessage {
-  self = [self init] ;
-  if (self) {
-    mIssueKind = kFileOperationIssue ;
-    mMessage = inMessage.copy ;
-    [self normalizeMessage] ;
-  }
-  return self ;
-}
-
-//---------------------------------------------------------------------------*
-
-- (PMIssueDescriptor *) initWithErrorMessage: (NSString *) inMessage
+- (PMIssueDescriptor *) initWithMessage: (NSString *) inMessage
                         URL: (NSURL *) inURL
                         line: (NSInteger) inLine
-                        column: (NSInteger) inColumn {
+                        column: (NSInteger) inColumn
+                        isError: (BOOL) inIsError
+                        rangeInOutputData: (NSRange) inRangeInOutputData
+                        buildOutputRuler: (OC_GGS_RulerViewForBuildOutput *) inRuler {
   self = [self init] ;
   if (self) {
-    mIssueKind = kErrorIssue ;
+    noteObjectAllocation (self) ;
     mMessage = inMessage.copy ;
     mURL = inURL.copy ;
     mLine = inLine ;
     mColumn = inColumn ;
+    mIsError = inIsError ;
+    mRangeInOutputData = inRangeInOutputData ;
+    mLocationInSourceStringStatus = kLocationInSourceStringNotSolved ;
+    mBuildOutputRuler = inRuler ;
     [self normalizeMessage] ;
   }
   return self ;
@@ -69,20 +53,9 @@
 
 //---------------------------------------------------------------------------*
 
-- (PMIssueDescriptor *) initWithWarningMessage: (NSString *) inMessage
-                        URL: (NSURL *) inURL
-                        line: (NSInteger) inLine
-                        column: (NSInteger) inColumn {
-  self = [self init] ;
-  if (self) {
-    mIssueKind = kWarningIssue ;
-    mMessage = inMessage.copy ;
-    mURL = inURL.copy ;
-    mLine = inLine ;
-    mColumn = inColumn ;
-    [self normalizeMessage] ;
-  }
-  return self ;
+- (void) FINALIZE_OR_DEALLOC {
+  noteObjectDeallocation (self) ;
+  macroSuperFinalize ;
 }
 
 //---------------------------------------------------------------------------*
@@ -99,20 +72,8 @@
 
 //---------------------------------------------------------------------------*
 
-- (enumIssueKind) issueKind {
-  return mIssueKind ;
-}
-
-//---------------------------------------------------------------------------*
-
-- (BOOL) errorOrWarningKind {
-  return (kErrorIssue == mIssueKind) || (kWarningIssue == mIssueKind) ;
-}
-
-//---------------------------------------------------------------------------*
-
-- (BOOL) errorKind {
-  return kErrorIssue == mIssueKind ;
+- (BOOL) isError {
+  return mIsError ;
 }
 
 //---------------------------------------------------------------------------*
@@ -129,15 +90,53 @@
 
 //---------------------------------------------------------------------------*
 
-- (NSColor *) issueColor {
-  NSColor * color = [NSColor blackColor] ;
-  switch (mIssueKind) {
-  case kErrorIssue : color = [NSColor redColor] ; break ;
-  case kWarningIssue : color = [NSColor orangeColor] ; break ;
-  case kFileOperationIssue : color = [NSColor blueColor] ; break ;
-  default : break ;
+- (NSInteger) locationInOutputData {
+  return mRangeInOutputData.location ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (enumLocationInSourceStringStatus) locationInSourceStringStatus {
+  return mLocationInSourceStringStatus ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (NSUInteger) locationInSourceString {
+  return mLocationInSourceString ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) setLocationInSourceString: (NSUInteger) inLocationInSourceString {
+  mLocationInSourceString = inLocationInSourceString ;
+  mLocationInSourceStringStatus = kLocationInSourceStringSolved ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) updateLocationForPreviousRange: (NSRange) inEditedRange
+         changeInLength: (NSInteger) inChangeInLength {
+  if (((NSUInteger) mLocationInSourceString) >= (inEditedRange.location + inEditedRange.length)) {
+    mLocationInSourceString += (NSUInteger) inChangeInLength ;
+  }else if (((NSUInteger) mLocationInSourceString) >= inEditedRange.location) {
+    mLocationInSourceStringStatus = kLocationInSourceStringInvalid ;
+    [mBuildOutputRuler setNeedsDisplay:YES] ;
   }
-  return color ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) detach {
+  mBuildOutputRuler = nil ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) scrollAndSelectErrorMessage {
+  NSTextView * errorMessageTextView = mBuildOutputRuler.scrollView.documentView ;
+  [errorMessageTextView setSelectedRange:mRangeInOutputData] ;
+  [errorMessageTextView scrollRangeToVisible:mRangeInOutputData] ;
 }
 
 //---------------------------------------------------------------------------*

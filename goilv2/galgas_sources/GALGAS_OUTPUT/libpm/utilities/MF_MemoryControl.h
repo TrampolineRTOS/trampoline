@@ -5,9 +5,11 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 1994, ..., 2010 Pierre Molinaro.                           *
+//  Copyright (C) 1994, ..., 2012 Pierre Molinaro.                           *
+//                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
+//                                                                           *
+//  IRCCyN, Institut de Recherche en Communications et Cybern�tique de Nantes*
 //  ECN, Ecole Centrale de Nantes (France)                                   *
 //                                                                           *
 //  This library is free software; you can redistribute it and/or modify it  *
@@ -28,10 +30,15 @@
 //---------------------------------------------------------------------------*
 
 #include "utilities/MF_Assert.h"
+#include "utilities/M_Threads.h"
 
 //---------------------------------------------------------------------------*
 
 #include <stdlib.h>
+
+//---------------------------------------------------------------------------*
+
+macroDeclareExternMutex (gAllocationMutex) ;
 
 //---------------------------------------------------------------------------*
 //                                                                           *
@@ -40,23 +47,143 @@
 //---------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS 
-  #define macroMyNew(inPointer,instanciation) { macroVoidPointer (inPointer) ; prologueForNew () ; inPointer = new instanciation ; registerPointer (inPointer COMMA_HERE) ; }
-  #define macroMyNewArray(inPointer,type,size) { macroVoidPointer (inPointer) ; prologueForNew () ; inPointer = new type [size] ; registerArray (inPointer COMMA_HERE) ; }
-  #define macroMyNewPODArray(inPointer,type,size) { macroVoidPointer (inPointer) ; inPointer = (type *) allocAndRegisterPODArray ((size) * sizeof (type) COMMA_HERE) ; }
-  #define macroMyReallocPODArray(inPointer,type,size) inPointer = (type *) reallocAndRegisterPODArray (inPointer, (size) * sizeof (type) COMMA_HERE) ;
-  #define macroMyNewThere(inPointer,instanciation) { macroVoidPointerThere (inPointer) ; prologueForNew () ; inPointer = new instanciation ; registerPointer (inPointer COMMA_THERE) ; }
-  #define macroMyNewPODArrayThere(inPointer,type,size) { macroValidPointerThere (inPointer) ; inPointer = (type *) allocAndRegisterPODArray ((size) * sizeof (type) COMMA_THERE) ; }
-  #define macroMyReallocPODArrayThere(inPointer,type,size) inPointer = (type *) reallocAndRegisterPODArray (inPointer, (size) * sizeof (type) COMMA_THERE) ;
-  #define macroMyNewArrayThere(inPointer,type,size) { macroVoidPointerThere (inPointer) ; prologueForNew () ; inPointer = new type [size] ; registerArray (inPointer COMMA_THERE) ; }
+  #define macroMyNew(inPointer,instanciation) { \
+    macroMutexLock (gAllocationMutex) ; \
+    macroVoidPointer (inPointer) ; \
+    prologueForNew () ; \
+    inPointer = new instanciation ; \
+    registerPointer (inPointer COMMA_HERE) ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
 #else
-  #define macroMyNew(inPointer,instanciation) inPointer = new instanciation ;
-  #define macroMyNewPODArray(inPointer,type,size) inPointer = (type *) malloc ((size) * sizeof (type)) ;
-  #define macroMyReallocPODArray(inPointer,type,size) inPointer = (type *) realloc (inPointer, (size) * sizeof (type)) ;
-  #define macroMyNewArray(inPointer,type,size) inPointer = new type [size] ;
-  #define macroMyNewThere(inPointer,instanciation) inPointer = new instanciation ;
-  #define macroMyNewPODArrayThere(inPointer,type,size) inPointer = (type *) malloc ((size) * sizeof (type)) ;
-  #define macroMyReallocPODArrayThere(inPointer,type,size) inPointer = (type *) realloc (inPointer, (size) * sizeof (type)) ;
-  #define macroMyNewArrayThere(inPointer,type,size) inPointer = new type [size] ;
+  #define macroMyNew(inPointer,instanciation) { \
+    macroMutexLock (gAllocationMutex) ; \
+    inPointer = new instanciation ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
+#endif
+
+//---------------------------------------------------------------------------*
+
+#ifndef DO_NOT_GENERATE_CHECKINGS 
+  #define macroMyNewArray(inPointer,type,size) { \
+    macroMutexLock (gAllocationMutex) ; \
+    macroVoidPointer (inPointer) ; \
+    prologueForNew () ; \
+    inPointer = new type [size] ; \
+    registerArray (inPointer COMMA_HERE) ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
+#else
+  #define macroMyNewPODArray(inPointer,type,size) { \
+    macroMutexLock (gAllocationMutex) ; \
+    inPointer = (type *) malloc ((size) * sizeof (type)) ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
+#endif
+
+//---------------------------------------------------------------------------*
+
+#ifndef DO_NOT_GENERATE_CHECKINGS 
+  #define macroMyNewPODArray(inPointer,type,size) { \
+    macroMutexLock (gAllocationMutex) ; \
+    macroVoidPointer (inPointer) ; \
+    inPointer = (type *) allocAndRegisterPODArray ((size) * sizeof (type) COMMA_HERE) ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
+#else
+  #define macroMyReallocPODArray(inPointer,type,size) { \
+    macroMutexLock (gAllocationMutex) ; \
+    inPointer = (type *) realloc (inPointer, (size) * sizeof (type)) ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
+#endif
+
+//---------------------------------------------------------------------------*
+
+#ifndef DO_NOT_GENERATE_CHECKINGS 
+  #define macroMyReallocPODArray(inPointer,type,size) { \
+    macroMutexLock (gAllocationMutex) ; \
+    inPointer = (type *) reallocAndRegisterPODArray (inPointer, (size) * sizeof (type) COMMA_HERE) ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
+#else
+  #define macroMyNewArray(inPointer,type,size) { \
+    macroMutexLock (gAllocationMutex) ; \
+    inPointer = new type [size] ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
+#endif
+
+//---------------------------------------------------------------------------*
+
+#ifndef DO_NOT_GENERATE_CHECKINGS 
+  #define macroMyNewThere(inPointer,instanciation) { \
+    macroMutexLock (gAllocationMutex) ; \
+    macroVoidPointerThere (inPointer) ; \
+    prologueForNew () ; \
+    inPointer = new instanciation ; \
+    registerPointer (inPointer COMMA_THERE) ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
+#else
+  #define macroMyNewThere(inPointer,instanciation) { \
+    macroMutexLock (gAllocationMutex) ; \
+    inPointer = new instanciation ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
+#endif
+
+//---------------------------------------------------------------------------*
+
+#ifndef DO_NOT_GENERATE_CHECKINGS 
+  #define macroMyNewPODArrayThere(inPointer,type,size) { \
+    macroMutexLock (gAllocationMutex) ; \
+    macroValidPointerThere (inPointer) ; \
+    inPointer = (type *) allocAndRegisterPODArray ((size) * sizeof (type) COMMA_THERE) ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
+#else
+  #define macroMyNewPODArrayThere(inPointer,type,size) { \
+    macroMutexLock (gAllocationMutex) ; \
+    inPointer = (type *) malloc ((size) * sizeof (type)) ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
+#endif
+
+//---------------------------------------------------------------------------*
+
+#ifndef DO_NOT_GENERATE_CHECKINGS 
+  #define macroMyReallocPODArrayThere(inPointer,type,size) { \
+    macroMutexLock (gAllocationMutex) ; \
+    inPointer = (type *) reallocAndRegisterPODArray (inPointer, (size) * sizeof (type) COMMA_THERE) ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
+#else
+  #define macroMyReallocPODArrayThere(inPointer,type,size) { \
+    macroMutexLock (gAllocationMutex) ; \
+    inPointer = (type *) realloc (inPointer, (size) * sizeof (type)) ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
+#endif
+
+//---------------------------------------------------------------------------*
+
+#ifndef DO_NOT_GENERATE_CHECKINGS 
+  #define macroMyNewArrayThere(inPointer,type,size) { \
+    macroMutexLock (gAllocationMutex) ; \
+    macroVoidPointerThere (inPointer) ; \
+    prologueForNew () ; \
+    inPointer = new type [size] ; \
+    registerArray (inPointer COMMA_THERE) ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
+#else
+  #define macroMyNewArrayThere(inPointer,type,size) { \
+    macroMutexLock (gAllocationMutex) ; \
+    inPointer = new type [size] ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
 #endif
 
 //---------------------------------------------------------------------------*
@@ -66,13 +193,50 @@
 //---------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  #define macroMyDelete(inPointer) { routineFreePointer (inPointer COMMA_HERE) ; delete (inPointer) ; inPointer = NULL ; }
-  #define macroMyDeletePODArray(inPointer) { routineFreePODArrayPointer (inPointer COMMA_HERE) ; inPointer = NULL ; }
-  #define macroMyDeleteArray(inPointer) { routineFreeArrayPointer (inPointer COMMA_HERE) ; delete [] (inPointer) ; inPointer = NULL ; }
+  #define macroMyDelete(inPointer) { \
+    macroMutexLock (gAllocationMutex) ; \
+    routineFreePointer (inPointer COMMA_HERE) ; \
+    delete (inPointer) ; inPointer = NULL ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
 #else
-  #define macroMyDelete(inPointer) { delete (inPointer) ; inPointer = NULL ; }
-  #define macroMyDeletePODArray(inPointer) { free (inPointer) ; inPointer = NULL ; }
-  #define macroMyDeleteArray(inPointer) { delete [] (inPointer) ; inPointer = NULL ; }
+  #define macroMyDelete(inPointer) { \
+    macroMutexLock (gAllocationMutex) ; \
+    delete (inPointer) ; inPointer = NULL ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
+#endif
+
+//---------------------------------------------------------------------------*
+
+#ifndef DO_NOT_GENERATE_CHECKINGS
+  #define macroMyDeletePODArray(inPointer) { \
+    macroMutexLock (gAllocationMutex) ; \
+    routineFreePODArrayPointer (inPointer COMMA_HERE) ; inPointer = NULL ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
+#else
+  #define macroMyDeletePODArray(inPointer) { \
+    macroMutexLock (gAllocationMutex) ; \
+    free (inPointer) ; inPointer = NULL ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
+#endif
+
+//---------------------------------------------------------------------------*
+
+#ifndef DO_NOT_GENERATE_CHECKINGS
+  #define macroMyDeleteArray(inPointer) { \
+    routineFreeArrayPointer (inPointer COMMA_HERE) ; \
+    delete [] (inPointer) ; inPointer = NULL ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
+#else
+  #define macroMyDeleteArray(inPointer) { \
+    macroMutexLock (gAllocationMutex) ; \
+    delete [] (inPointer) ; inPointer = NULL ; \
+    macroMutexUnlock (gAllocationMutex) ; \
+  }
 #endif
 
 //---------------------------------------------------------------------------*
@@ -83,9 +247,15 @@
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroValidPointer(inPointer) routineValidPointer (inPointer COMMA_HERE)
-  #define macroValidPointerThere(inPointer) routineValidPointer (inPointer COMMA_THERE)
 #else
   #define macroValidPointer(inPointer)
+#endif 
+
+//---------------------------------------------------------------------------*
+
+#ifndef DO_NOT_GENERATE_CHECKINGS
+  #define macroValidPointerThere(inPointer) routineValidPointer (inPointer COMMA_THERE)
+#else
   #define macroValidPointerThere(inPointer)
 #endif 
 
@@ -97,9 +267,15 @@
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define macroVoidPointer(inPointer) routineVoidPointer (inPointer COMMA_HERE)
-  #define macroVoidPointerThere(inPointer) routineVoidPointer (inPointer COMMA_THERE)
 #else
   #define macroVoidPointer(inPointer)
+#endif 
+
+//---------------------------------------------------------------------------*
+
+#ifndef DO_NOT_GENERATE_CHECKINGS
+  #define macroVoidPointerThere(inPointer) routineVoidPointer (inPointer COMMA_THERE)
+#else
   #define macroVoidPointerThere(inPointer)
 #endif 
 

@@ -106,6 +106,12 @@ PMSInt32 C_Data::compareWithData (const C_Data & inData) const {
 
 //---------------------------------------------------------------------------*
 
+void C_Data::removeLengthFromStart (const PMUInt32 inLength) {
+  mBinaryData.removeObjectsAtIndex (inLength, 0 COMMA_HERE) ;
+}
+
+//---------------------------------------------------------------------------*
+
 bool C_Data::operator == (const C_Data & inData) const {
   bool equal = length () == inData.length () ;
   for (PMSInt32 i=0 ; (i<length ()) && equal ; i++) {

@@ -97,6 +97,16 @@ GALGAS_uint GALGAS_uint::constructor_valueWithMask (const GALGAS_uint & inLowerI
 
 //---------------------------------------------------------------------------*
 
+GALGAS_uint GALGAS_uint::constructor_compilationMode (UNUSED_LOCATION_ARGS) {
+  #ifdef __LP64__
+    return GALGAS_uint (64) ;
+  #else
+    return GALGAS_uint (32) ;
+  #endif
+}
+
+//---------------------------------------------------------------------------*
+
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Operators
 #endif
@@ -108,7 +118,7 @@ GALGAS_uint GALGAS_uint::constructor_valueWithMask (const GALGAS_uint & inLowerI
 //---------------------------------------------------------------------------*
 
 GALGAS_uint GALGAS_uint::operator_and (const GALGAS_uint & inOperand
-                                           COMMA_UNUSED_LOCATION_ARGS) const {
+                                       COMMA_UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid () && inOperand.isValid ()) {
     result = GALGAS_uint (mUIntValue & inOperand.mUIntValue) ;

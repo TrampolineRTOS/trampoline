@@ -104,7 +104,7 @@ SOURCES += C_Timer.cpp
 SOURCES += C_DateTime.cpp
 
 #--- Utilities
-SOURCES += F_main.cpp
+SOURCES += F_mainForLIBPM.cpp
 SOURCES += C_PrologueEpilogue.cpp
 SOURCES += C_SharedObject.cpp
 SOURCES += C_Data.cpp
@@ -167,5 +167,15 @@ SOURCES += GALGAS_uint.cpp
 SOURCES += GALGAS_uint_36__34_.cpp
 SOURCES += predefined-types.cpp
 SOURCES += scanner_actions.cpp
+
+
+#---------------------------------------------------------------*
+#                                                               *
+#     Command line options                                      *
+#                                                               *
+#---------------------------------------------------------------*
+
+USER_COMMAND_LINE_OPTIONS :=
+USER_COMMAND_LINE_OPTIONS += -DLIBPM_MULTI_THREADING=0
 
 #---------------------------------------------------------------*

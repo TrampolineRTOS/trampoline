@@ -14,7 +14,7 @@
 //---------------------------------------------------------------------------*
 
 - (void) notifyDelegate {
-  [[NSRunLoop currentRunLoop]
+  [[NSRunLoop mainRunLoop]
     performSelector:mDownloadDidEndSelector
     target:mDelegate
     argument:self

@@ -140,7 +140,7 @@ void incrementGeneratedFileCount (void) {
 //---------------------------------------------------------------------------*
 
 PMSInt32 maxErrorCount (void) {
-  PMSInt32 result = (PMSInt32) gOption_galgas_5F_cli_5F_options_max_5F_errors.mValue ;
+  PMSInt32 result = (PMSInt32) gOption_galgas_5F_builtin_5F_options_max_5F_errors.mValue ;
   return (result == 0) ? 100 : result ;
 }
 
@@ -155,7 +155,7 @@ PMSInt32 totalErrorCount (void) {
 //---------------------------------------------------------------------------*
 
 PMSInt32 maxWarningCount (void) {
-  PMSInt32 result = (PMSInt32) gOption_galgas_5F_cli_5F_options_max_5F_warnings.mValue ;
+  PMSInt32 result = (PMSInt32) gOption_galgas_5F_builtin_5F_options_max_5F_warnings.mValue ;
   return (result == 0) ? 100 : result ;
 }
 
@@ -197,7 +197,7 @@ void constructErrorOrWarningLocationMessage (C_String & ioMessage,
     const C_String textLine = inSourceTextPtr->getLineForLocation (inErrorLocation) ;
   //--- Construct message
     ioMessage << errorOrWarningLocationString (inErrorLocation, inSourceTextPtr) ;
-    if (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
+    if (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
       ioMessage << "\n" << textLine << "\n" ;
     //--- Point out column error
       for (PMSInt32 i=1 ; i<inErrorLocation.columnNumber () ; i++) {
@@ -223,7 +223,7 @@ void signalLexicalWarning (const C_SourceTextInString * inSourceTextPtr,
 //--- Construct location warning message
   C_String warningMessage ;
 //--- Add warning
-  warningMessage << (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue ? "lexical " : "")
+  warningMessage << (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ? "lexical " : "")
                  << "warning: " << inLexicalWarningMessage << "\n" ;
 //--- Print
   ggs_printWarning (inSourceTextPtr, inWarningLocation, warningMessage COMMA_THERE) ;
@@ -247,7 +247,7 @@ void signalLexicalError (const C_SourceTextInString * inSourceTextPtr,
   mErrorTotalCount ++ ;
 //--- Construct parsing error message
   C_String errorMessage ;
-  errorMessage << (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue ? "lexical " : "")
+  errorMessage << (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ? "lexical " : "")
                << "error: " << inLexicalErrorMessage << "\n" ;
 //--- Print
   ggs_printError (inSourceTextPtr, inErrorLocation, errorMessage COMMA_THERE) ;
@@ -273,7 +273,7 @@ void signalParsingError (const C_SourceTextInString * inSourceTextPtr,
 //--- Construct location error message
   C_String errorMessage ;
 //--- Construct parsing error message
-  errorMessage << (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue ? "syntax " : "")
+  errorMessage << (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ? "syntax " : "")
                << "error: found " << inFoundTokenMessage <<", accepted:\n" ;  
   for (PMSInt32 i=0 ; i<inAcceptedTokenNames.count () ; i++) {
     errorMessage << "-  " << inAcceptedTokenNames (i COMMA_HERE) << "\n" ;  
@@ -302,26 +302,26 @@ void signalExtractError (const C_SourceTextInString * inSourceTextPtr,
 //--- Construct location error message
   C_String errorMessage ;
 //--- Print extract error
-  errorMessage << (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue ? "semantic " : "")
+  errorMessage << (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ? "semantic " : "")
                << "error: I have found:\n" ;
-  if (! gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
+  if (! gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
     errorMessage << errorOrWarningLocationString (inErrorLocation, inSourceTextPtr)
                  << "error: " ;
   }
   errorMessage << "  - " << inActualFoundClassErrorString <<";\n" ;
-  if (! gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
+  if (! gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
     errorMessage << errorOrWarningLocationString (inErrorLocation, inSourceTextPtr)
                  << "error: " ;
   }
   errorMessage << "I was expected:\n" ;
-  if (! gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
+  if (! gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
     errorMessage << errorOrWarningLocationString (inErrorLocation, inSourceTextPtr)
                  << "error: " ;
   }
   errorMessage << "  - " << inExpectedClassesErrorStringsArray (0 COMMA_HERE) ;
   for (PMSInt32 i=1 ; i<inExpectedClassesErrorStringsArray.count () ; i++) {
     errorMessage << ";\n" ;
-    if (! gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
+    if (! gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
       errorMessage << errorOrWarningLocationString (inErrorLocation, inSourceTextPtr)
                    << "error: " ;
     }
@@ -382,26 +382,26 @@ void signalCastError (const C_SourceTextInString * inSourceTextPtr,
 //--- Print extract error
   C_String errorMessage ;
   expectedClassMessageArray.sortArrayUsingCompareMethod () ;
-  errorMessage << (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue ? "semantic " : "")
+  errorMessage << (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ? "semantic " : "")
                << "error: I have found:\n" ;
-  if (! gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
+  if (! gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
     errorMessage << errorOrWarningLocationString (inErrorLocation, inSourceTextPtr)
                  << "error: " ;
   }
   errorMessage << "  - " << inActualFoundClassErrorString <<";\n" ;
-  if (! gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
+  if (! gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
     errorMessage << errorOrWarningLocationString (inErrorLocation, inSourceTextPtr)
                  << "error: " ;
   }
   errorMessage << "I was expected:\n" ;
-  if (! gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
+  if (! gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
     errorMessage << errorOrWarningLocationString (inErrorLocation, inSourceTextPtr)
                  << "error: " ;
   }
   errorMessage << "  - " << expectedClassMessageArray (0 COMMA_HERE) ;
   for (PMSInt32 i=1 ; i<expectedClassMessageArray.count () ; i++) {
     errorMessage << ";\n" ;
-    if (! gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
+    if (! gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
       errorMessage << errorOrWarningLocationString (inErrorLocation, inSourceTextPtr)
                    << "error: " ;
     }
@@ -427,7 +427,7 @@ void signalSemanticWarning (const C_SourceTextInString * inSourceTextPtr,
 //--- Construct location error message
   C_String warningMessage ;
 //--- Add warning
-  warningMessage << (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue ? "semantic " : "")
+  warningMessage << (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ? "semantic " : "")
                  << "warning: " << inWarningMessage << "\n" ;
 //--- Print
   ggs_printWarning (inSourceTextPtr, inWarningLocation, warningMessage COMMA_THERE) ;
@@ -542,7 +542,7 @@ void ggs_printError (const C_SourceTextInString * inSourceTextPtr,
       ;
     }
     #ifndef DO_NOT_GENERATE_CHECKINGS
-      if (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
+      if (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
         XMLstring << "  sourceFile=\"" << C_String (IN_SOURCE_FILE).lastPathComponent () << "\"\n"
                      "  sourceLine=\"" << cStringWithSigned (IN_SOURCE_LINE) << "\"\n" ;
       }
@@ -555,7 +555,7 @@ void ggs_printError (const C_SourceTextInString * inSourceTextPtr,
   C_String errorMessage ;
   constructErrorOrWarningLocationMessage (errorMessage, inErrorLocation, inSourceTextPtr) ;
   #ifndef DO_NOT_GENERATE_CHECKINGS
-    if (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
+    if (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
       errorMessage << "[Raised from file '" << C_String (IN_SOURCE_FILE).lastPathComponent ()
                    << "' at line " << cStringWithSigned (IN_SOURCE_LINE) << "]\n" ;
     }
@@ -567,8 +567,12 @@ void ggs_printError (const C_SourceTextInString * inSourceTextPtr,
     inSourceTextPtr->appendSourceContents (errorMessage) ;
   }
   if (cocoaOutput ()) {
+    co.setForeColor (kRedForeColor) ;
+    co.setTextAttribute (kBoldTextAttribute) ;
     co.appendUnicodeCharacter (COCOA_ERROR_ID COMMA_HERE) ;
     co << errorMessage ;
+    co.setTextAttribute (kAllAttributesOff) ;
+    co.appendUnicodeCharacter (COCOA_MESSAGE_ID COMMA_HERE) ;
     co.appendUnicodeCharacter (COCOA_MESSAGE_ID COMMA_HERE) ;
     co.flush () ;
   }else{
@@ -603,7 +607,7 @@ void ggs_printWarning (const C_SourceTextInString * inSourceTextPtr,
       ;
     }
     #ifndef DO_NOT_GENERATE_CHECKINGS
-      if (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
+      if (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
         XMLstring << "  sourceFile=\"" << C_String (IN_SOURCE_FILE).lastPathComponent () << "\"\n"
                      "  sourceLine=\"" << cStringWithSigned (IN_SOURCE_LINE) << "\"\n" ;
       }
@@ -616,7 +620,7 @@ void ggs_printWarning (const C_SourceTextInString * inSourceTextPtr,
   C_String warningMessage ;
   constructErrorOrWarningLocationMessage (warningMessage, inWarningLocation, inSourceTextPtr) ;
   #ifndef DO_NOT_GENERATE_CHECKINGS
-    if (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
+    if (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
       warningMessage << "[Raised from file '" << C_String (IN_SOURCE_FILE).lastPathComponent ()
                      << "' at line " << cStringWithSigned (IN_SOURCE_LINE) << "]\n" ;
     }
@@ -628,8 +632,12 @@ void ggs_printWarning (const C_SourceTextInString * inSourceTextPtr,
     inSourceTextPtr->appendSourceContents (warningMessage) ;
   }
   if (cocoaOutput ()) {
+    co.setForeColor (kYellowForeColor) ;
+    co.setTextAttribute (kBoldTextAttribute) ;
     co.appendUnicodeCharacter (COCOA_WARNING_ID COMMA_HERE) ;
     co << warningMessage ;
+    co.setTextAttribute (kAllAttributesOff) ;
+    co.appendUnicodeCharacter (COCOA_MESSAGE_ID COMMA_HERE) ;
     co.appendUnicodeCharacter (COCOA_MESSAGE_ID COMMA_HERE) ;
     co.flush () ;
   }else{
@@ -654,7 +662,7 @@ void ggs_printFileOperationSuccess (const C_String & inMessage
     C_String XMLstring ;
     XMLstring << "<fileOperation\n" ;
     #ifndef DO_NOT_GENERATE_CHECKINGS
-      if (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
+      if (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
         XMLstring << "  sourceFile=\"" << C_String (IN_SOURCE_FILE).lastPathComponent () << "\"\n"
                      "  sourceLine=" << cStringWithSigned (IN_SOURCE_LINE) << "\n" ;
       }
@@ -665,8 +673,12 @@ void ggs_printFileOperationSuccess (const C_String & inMessage
   }
 //---
   if (cocoaOutput ()) {
-    co.appendUnicodeCharacter (COCOA_REWRITE_SUCCESS_ID COMMA_HERE) ;
+    co.setForeColor (kBlueForeColor) ;
+    co.setTextAttribute (kBoldTextAttribute) ;
+//    co.appendUnicodeCharacter (COCOA_REWRITE_SUCCESS_ID COMMA_HERE) ;
     co << inMessage;
+    co.setTextAttribute (kAllAttributesOff) ;
+    co.appendUnicodeCharacter (COCOA_MESSAGE_ID COMMA_HERE) ;
     co.appendUnicodeCharacter (COCOA_MESSAGE_ID COMMA_HERE) ;
     co.flush () ;
   }else{
@@ -688,12 +700,14 @@ void ggs_printMessage (const C_String & inMessage
                        COMMA_LOCATION_ARGS) {
   C_String message = inMessage ;
   #ifndef DO_NOT_GENERATE_CHECKINGS
-    if (gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue) {
+    if (gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue) {
       message << "[Displayed from file '" << C_String (IN_SOURCE_FILE).lastPathComponent ()
               << "' at line " << cStringWithSigned (IN_SOURCE_LINE) << "]\n" ;
     }
   #endif
   co << message ;
+    co.appendUnicodeCharacter (COCOA_MESSAGE_ID COMMA_HERE) ;
+    co.appendUnicodeCharacter (COCOA_MESSAGE_ID COMMA_HERE) ;
   co.flush () ;
 }
 

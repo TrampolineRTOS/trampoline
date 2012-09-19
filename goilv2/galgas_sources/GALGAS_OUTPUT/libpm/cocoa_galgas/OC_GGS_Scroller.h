@@ -8,6 +8,11 @@
 
 #import <AppKit/AppKit.h>
 
-@interface OC_GGS_Scroller : NSScroller
+@interface OC_GGS_Scroller : NSScroller {
+   @private NSArray * mIssueArray ; // Of PMIssueDescriptor
+   @private BOOL mIsSourceTextViewScroller ;
+}
 
+- (void) setIssueArray: (NSArray *) inIssueArray ;
+- (void) setIsSourceTextViewScroller: (BOOL) inIsSourceTextViewScroller ;
 @end

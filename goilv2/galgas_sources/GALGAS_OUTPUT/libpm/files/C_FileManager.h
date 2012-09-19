@@ -42,6 +42,9 @@ class C_FileManager {
 //--- File exists
   public : static bool fileExistsAtPath (const C_String & inFilePath) ;
 
+//--- File exists
+  public : static bool makeFileExecutable (const C_String & inFilePath) ;
+
 //--- Open file for reading
   public : static FILE * openTextFileForReading (const C_String & inFilePath) ;
 
@@ -64,9 +67,12 @@ class C_FileManager {
   public : static bool writeStringToExecutableFile (const C_String & inString,
                                                     const C_String & inFilePath) ;
 
-//--- Write string to file
+//--- Write data to file
   public : static bool writeBinaryDataToFile (const C_Data & inBinaryData,
                                               const C_String & inFilePath) ;
+
+  public : static bool writeBinaryDataToExecutableFile (const C_Data & inBinaryData,
+                                                        const C_String & inFilePath) ;
 
 //--- Delete file (returns an empty string on success, or a string describing the error)
   public : static C_String deleteFile (const C_String & inFilePath) ;

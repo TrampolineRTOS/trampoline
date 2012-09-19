@@ -8,21 +8,41 @@
 //---------------------------------------------------------------------------*
 
 #import "PMButtonWithRemove.h"
+#import "PMTabBarView.h"
+#import "PMDebug.h"
 
 //---------------------------------------------------------------------------*
 
 @implementation PMButtonWithRemove
 
 //---------------------------------------------------------------------------*
+//                                                                           *
+//       I N I T                                                             *
+//                                                                           *
+//---------------------------------------------------------------------------*
 
-- (void) setDisplayRemoveImage: (BOOL) inDisplay {
-  mDisplayRemoveImage = inDisplay ;
+- (id) initWithFrame: (NSRect) inFrame {
+  self = [super initWithFrame:inFrame] ;
+  if (self) {
+    #ifdef DEBUG_MESSAGES
+      NSLog (@"%s", __PRETTY_FUNCTION__) ;
+    #endif
+    noteObjectAllocation (self) ;
+  }
+  return self;
 }
 
 //---------------------------------------------------------------------------*
 
-- (void) setRemoveAction: (SEL) inRemoveAction {
-  mRemoveAction = inRemoveAction ;
+- (void) FINALIZE_OR_DEALLOC {
+  noteObjectDeallocation (self) ;
+  macroSuperFinalize ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) setDisplayRemoveImage: (BOOL) inDisplay {
+  mDisplayRemoveImage = inDisplay ;
 }
 
 //---------------------------------------------------------------------------*
@@ -152,11 +172,11 @@
 
 //---------------------------------------------------------------------------*
 
-- (void) mouseUp:(NSEvent *) inEvent {
+- (void) mouseUp: (NSEvent *) inEvent {
   mMouseDown = NO ;
   if (mMouseWithin) {
     [self setNeedsDisplay:YES] ;
-    [self.target performSelector:mRemoveAction withObject:self] ;
+    [self.target removeTabAction:self] ;
   }else{
     [super mouseUp:inEvent] ;
   }

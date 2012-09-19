@@ -27,15 +27,20 @@
 
 //---------------------------------------------------------------------------*
 //                                                                           *
-//  T E M P L A T E    D E L I M I T E R S     S T R U C T                   *
+//  T E M P L A T E    D E L I M I T E R     C L A S S                       *
 //                                                                           *
 //---------------------------------------------------------------------------*
 
-typedef struct {
-  NSString * mStartString ;
-  NSString * mEndString ;
-  const BOOL mDiscardStartString ;
-} templateDelimiterStructForCocoa ;
+@interface OC_GGS_TemplateDelimiter : NSObject
+
+@property (assign, readonly PROPERTY_COMMA_ATOMIC) NSString * startString ;
+@property (assign, readonly PROPERTY_COMMA_ATOMIC) NSString * endString ;
+@property (assign, readonly PROPERTY_COMMA_ATOMIC) BOOL discardStartString ;
+
+- (id) initWithStartString: (NSString *) inStartString
+       endString: (NSString *) inEndString
+       discardStartString: (BOOL) inDiscardStartString ;
+@end
 
 //---------------------------------------------------------------------------*
 //                                                                           *
@@ -57,18 +62,21 @@ typedef struct {
 
 @interface OC_Lexique : NSObject {
   @protected NSString * mSourceString ;
-  @protected SInt32 mTokenCode ;
+  @protected NSInteger mTokenCode ;
   @protected utf32 mPreviousChar ; 
   @protected utf32 mCurrentChar ; 
   @protected NSUInteger mTokenStartLocation ;
   @protected NSUInteger mCurrentLocation ;
   @protected BOOL mLoop ;
-  @protected SInt32 mMatchedTemplateDelimiterIndex ; //--- Scanner mode for template scanner
-  @protected NSMenu * mMenuForEntryPopUpButton ;
+  @protected NSInteger mMatchedTemplateDelimiterIndex ; //--- Scanner mode for template scanner
   @private NSDictionary * mCustomSyntaxColoringDictionary ;
 }
 
-- (void) searchForReplacementPattern:(NSString * *) inReplacementPatternArray ;
+@property (retain, readonly PROPERTY_COMMA_ATOMIC) NSMenu * menuForEntryPopUpButton ;
+
+- (void) detach ;
+
+- (void) searchForReplacementPattern:(NSArray *) inReplacementPatternArray ;
 
 - (void) advance ;
 
@@ -86,18 +94,17 @@ typedef struct {
 
 - (void) restoreScanningPoint: (scanningPointStructForCocoa *) inScanningPoint ;
 
-- (SInt32) findTemplateDelimiterIndex: (const templateDelimiterStructForCocoa *)  inTemplateDelimiterList
-           listLength: (SInt32) inLength ;
+- (SInt32) findTemplateDelimiterIndex: (NSArray *)  inTemplateDelimiterArray ; // Array of OC_GGS_TemplateDelimiter
 
 - (NSString *) blockComment ;
 
-- (UInt32) styleCount ;
+- (NSUInteger) styleCount ;
 
 - (NSString *) styleIdentifierForStyleIndex: (const NSInteger) inIndex ;
 
-- (NSString *) styleNameForStyleIndex: (const SInt32) inIndex ;
+- (NSString *) styleNameForStyleIndex: (const NSInteger) inIndex ;
 
-- (UInt32) textMacroCount ;
+- (NSUInteger) textMacroCount ;
 
 - (NSString *) textMacroTitleAtIndex: (const NSUInteger) inIndex ;
 
@@ -111,7 +118,7 @@ typedef struct {
 
 - (void) parseLexicalTokenForLexicalColoring ;
 
-- (UInt32) styleIndexForTerminal: (SInt32) inTerminal ;
+- (NSUInteger) styleIndexForTerminal: (NSInteger) inTerminal ;
 
 - (void) tokenizeForSourceString: (NSString *) inSourceString
          tokenArray: (NSMutableArray *) ioTokenArray // Array of OC_Token
@@ -121,8 +128,6 @@ typedef struct {
          lastIndexToRedraw: (NSInteger *) outUpperIndexToRedrawInStyleArray
          eraseRangeStart: (NSInteger *) outEraseRangeStart
          eraseRangeEnd: (NSInteger *) outEraseRangeEnd ;
-
-- (NSMenu *) menuForEntryPopUpButton ;
 
 - (NSString *) indexingDirectory ;
 
@@ -134,15 +139,15 @@ typedef struct {
 //---------------------------------------------------------------------------*
 
 typedef struct {
-  NSString * mEntry ;
+  const char * mEntry ;
   UInt32 mTokenCode ;
 } C_cocoa_lexique_table_entry ;
 
 //---------------------------------------------------------------------------*
 
-SInt32 searchStringInTable (NSString * inSearchedString,
-                            const C_cocoa_lexique_table_entry * inTable,
-                            const UInt32 inTableSize) ;
+NSInteger searchStringInTable (NSString * inSearchedString,
+                               const C_cocoa_lexique_table_entry * inTable,
+                               const NSUInteger inTableSize) ;
 
 //---------------------------------------------------------------------------*
 //                                                                           *

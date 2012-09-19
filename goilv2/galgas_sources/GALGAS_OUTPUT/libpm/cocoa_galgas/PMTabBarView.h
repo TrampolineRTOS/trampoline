@@ -5,18 +5,33 @@
 //  Created by Pierre Molinaro on 25/11/11.
 //  Copyright (c) 2011 IRCCyN. All rights reserved.
 //
+//---------------------------------------------------------------------------*
 
 #import <AppKit/AppKit.h>
 
+//---------------------------------------------------------------------------*
+
+@class OC_GGS_TextDisplayDescriptor ;
+@class PMButtonWithRemove ;
+
+//---------------------------------------------------------------------------*
+
+@protocol PMTabBarViewDelegateProtocol
+  - (void) removeSelectedTabAction: (OC_GGS_TextDisplayDescriptor *) inTextDisplayDescriptor ;
+  - (void) changeSelectedSourceViewAction: (PMButtonWithRemove *) inSender ;
+@end
+
+//---------------------------------------------------------------------------*
+
 @interface PMTabBarView : NSView {
-  @private NSMutableArray * mButtonArray ;
-  @private NSArray * mObservedArray ;
-  @private SEL mChangeSourceTabAction ;
-  @private SEL mRemoveSourceTabAction ;
-  @private id mTarget ;
+  @private NSMutableArray * mButtonArray ; // of PMButtonWithRemove
+  @private NSArray * mObservedArray ; // Of OC_GGS_TextDisplayDescriptor
+  @private id <PMTabBarViewDelegateProtocol> mTarget ;
 }
 
-- (void) setTarget: (id) inTarget ;
-- (void) setRemoveSourceTabAction: (SEL) inAction ;
-- (void) setChangeSourceTabAction: (SEL) inAction ;
+- (void) setTarget: (id <PMTabBarViewDelegateProtocol>) inTarget ;
+- (void) removeTabAction: (PMButtonWithRemove *) inSender ;
+- (void) detach ;
 @end
+
+//---------------------------------------------------------------------------*

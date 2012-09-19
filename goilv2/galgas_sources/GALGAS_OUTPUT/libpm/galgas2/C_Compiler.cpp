@@ -58,13 +58,13 @@ const utf32 C_Compiler::kEndOfSourceLexicalErrorMessage [] = {
 //---------------------------------------------------------------------------*
 
 bool C_Compiler::performGeneration (void) {
-  return (! gOption_galgas_5F_cli_5F_options_do_5F_not_5F_generate_5F_any_5F_file.mValue) && executionModeIsNormal () ;
+  return (! gOption_galgas_5F_builtin_5F_options_do_5F_not_5F_generate_5F_any_5F_file.mValue) && executionModeIsNormal () ;
 }
 
 //---------------------------------------------------------------------------*
 
 bool C_Compiler::performLogFileRead (void) {
-  return gOption_galgas_5F_cli_5F_options_log_5F_file_5F_read.mValue ;
+  return gOption_galgas_5F_builtin_5F_options_log_5F_file_5F_read.mValue ;
 }
 
 //---------------------------------------------------------------------------*
@@ -491,7 +491,7 @@ void C_Compiler::generateFile (const C_String & inLineCommentPrefix,
                                const C_String & inGeneratedZone2,
                                const C_String & inDefaultUserZone2,
                                const C_String & inGeneratedZone3) {
-  generateFileFromPathes (sourceFilePath ().stringByDeletingLastPathComponent (),
+  generateFileWithPatternFromPathes (sourceFilePath ().stringByDeletingLastPathComponent (),
                           inDirectoriesToExclude,
                           inLineCommentPrefix,
                           inFileName,
@@ -510,7 +510,7 @@ void C_Compiler::generateFileInGALGAS_OUTPUT (const C_String & inLineCommentPref
                                               const C_String & inDefaultUserZone2,
                                               const C_String & inGeneratedZone3) {
   const TC_UniqueArray <C_String> directoriesToExclude ;
-  generateFileFromPathes (sourceFilePath ().stringByDeletingLastPathComponent () + "/GALGAS_OUTPUT",
+  generateFileWithPatternFromPathes (sourceFilePath ().stringByDeletingLastPathComponent () + "/GALGAS_OUTPUT",
                           directoriesToExclude,
                           inLineCommentPrefix,
                           inFileName,
@@ -523,17 +523,17 @@ void C_Compiler::generateFileInGALGAS_OUTPUT (const C_String & inLineCommentPref
 //---------------------------------------------------------------------------*
 
 void C_Compiler::
-generateFileFromPathes (const C_String & inStartPath,
-                        const TC_UniqueArray <C_String> & inDirectoriesToExclude,
-                        const C_String & inLineCommentPrefix,
-                        const C_String & inFileName,
-                        const C_String & inDefaultUserZone1,
-                        const C_String & inGeneratedZone2,
-                        const C_String & inDefaultUserZone2,
-                        const C_String & inGeneratedZone3) {
+generateFileWithPatternFromPathes (const C_String & inStartPath,
+                                   const TC_UniqueArray <C_String> & inDirectoriesToExclude,
+                                   const C_String & inLineCommentPrefix,
+                                   const C_String & inFileName,
+                                   const C_String & inDefaultUserZone1,
+                                   const C_String & inGeneratedZone2,
+                                   const C_String & inDefaultUserZone2,
+                                   const C_String & inGeneratedZone3) {
   incrementGeneratedFileCount () ;
 //--- Verbose option ?
-  const bool verboseOptionOn = gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue ;
+  const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
 //--- Very Verbose (?)
   const bool veryVerboseOptionOn = false ;
 //--- User zones
@@ -563,7 +563,7 @@ generateFileFromPathes (const C_String & inStartPath,
     //printf ("inFileName '%s'\n", inFileName.cString (HERE)) ;
     //printf ("fileName '%s'\n", fileName.cString (HERE)) ;
     const C_String directory = fileName.stringByDeletingLastPathComponent () ;
-    if (gOption_galgas_5F_cli_5F_options_noteFileAccess.mValue) {
+    if (gOption_galgas_5F_builtin_5F_options_noteFileAccess.mValue) {
       C_String s ;
       s << "- Note file access: create '" << directory << "' directory if does not exist\n" ;
       printMessage (s COMMA_HERE) ;
@@ -674,6 +674,87 @@ generateFileFromPathes (const C_String & inStartPath,
       }
     }else{
       ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to replace '") + fullPathName + "'.\n" COMMA_HERE) ;
+    }
+  }
+}
+
+
+//---------------------------------------------------------------------------*
+
+void C_Compiler::
+generateFileFromPathes (const C_String & inStartPath,
+                        const TC_UniqueArray <C_String> & inDirectoriesToExclude,
+                        const C_String & inFileName,
+                        const C_String & inContents) {
+  incrementGeneratedFileCount () ;
+//--- Verbose option ?
+  const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
+//--- Very Verbose (?)
+  const bool veryVerboseOptionOn = false ;
+//--- Start path : by default, use source file directory
+  const C_String startPath = (inStartPath.length () == 0)
+   ? sourceFilePath ().stringByDeletingLastPathComponent ()
+   : inStartPath ;
+//--- Search file in directory
+  const C_String fullPathName = C_FileManager::findFileInDirectory (startPath, inFileName, inDirectoriesToExclude) ;
+  if (fullPathName.length () == 0) {
+    if (veryVerboseOptionOn) {
+      C_String message ;
+      message << "File '" << inFileName << "' not found.\n" ;
+      ggs_printMessage (message COMMA_HERE) ;
+    }
+  //--- File does not exist : create it
+    C_String fileName = startPath ;
+    fileName.appendString ("/") ;
+    fileName.appendString (inFileName) ;
+    //printf ("inFileName '%s'\n", inFileName.cString (HERE)) ;
+    //printf ("fileName '%s'\n", fileName.cString (HERE)) ;
+    const C_String directory = fileName.stringByDeletingLastPathComponent () ;
+    if (gOption_galgas_5F_builtin_5F_options_noteFileAccess.mValue) {
+      C_String s ;
+      s << "- Note file access: create '" << directory << "' directory if does not exist\n" ;
+      printMessage (s COMMA_HERE) ;
+    }
+    C_FileManager::makeDirectoryIfDoesNotExist (directory) ;
+    if (performGeneration ()) {
+      C_TextFileWrite f (fileName) ;
+      bool ok = f.isOpened () ;
+      if (! ok) {
+        C_String message ;
+        message << "Cannot open '" << fileName << "' file in write mode." ;
+        onTheFlySemanticError (message COMMA_HERE) ;
+      }
+      f << inContents ;
+      if (verboseOptionOn || veryVerboseOptionOn) {
+        ggs_printFileOperationSuccess (C_String ("Created '") + fileName + "'.\n" COMMA_HERE) ;
+      }
+    }else{
+      ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to create '") + fileName + "'.\n" COMMA_HERE) ;
+    }
+  }else{
+    if (veryVerboseOptionOn) {
+      C_String message ;
+      message << "Found '" << fullPathName << "' file.\n" ;
+      ggs_printMessage (message COMMA_HERE) ;
+    }
+    const C_String previousContents = C_FileManager::stringWithContentOfFile (fullPathName) ;
+    const bool same = previousContents == inContents ;
+    if (! same) {
+      if (performGeneration ()) {
+        C_TextFileWrite f (fullPathName) ;
+        if (! f.isOpened ()) {
+          C_String message ;
+          message << "Cannot open '" << fullPathName << "' file in write mode." ;
+          onTheFlySemanticError (message COMMA_HERE) ;
+        }else{
+          f << inContents ;
+          if (verboseOptionOn || veryVerboseOptionOn) {
+            ggs_printFileOperationSuccess (C_String ("Replaced '") + fullPathName + "'.\n" COMMA_HERE) ;
+          }
+        }
+      }else{
+        ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to replace '") + fullPathName + "'.\n" COMMA_HERE) ;
+      }
     }
   }
 }

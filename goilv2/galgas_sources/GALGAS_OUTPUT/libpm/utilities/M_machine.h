@@ -111,10 +111,10 @@
 //---------------------------------------------------------------------------*
 
 //--- Signed integer max
-#define PMSINT8_MAX       0x7F
-#define PMSINT16_MAX      0x7FFF
-#define PMSINT32_MAX      0x7FFFFFFFL
-#define PMSINT64_MAX      0x7FFFFFFFFFFFFFFFLL
+#define PMSINT8_MAX       ((PMSInt8) 0x7F)
+#define PMSINT16_MAX      ((PMSInt16) 0x7FFF)
+#define PMSINT32_MAX      ((PMSInt32) 0x7FFFFFFFL)
+#define PMSINT64_MAX      ((PMSInt64) 0x7FFFFFFFFFFFFFFFLL)
 
 //--- Signed integer min
 #define PMSINT8_MIN       (~PMSINT8_MAX)
@@ -123,10 +123,10 @@
 #define PMSINT64_MIN      (~PMSINT64_MAX)
 
 //--- Unsigned integer max
-#define PMUINT8_MAX       0xFFU
-#define PMUINT16_MAX      0xFFFFU
-#define PMUINT32_MAX      0xFFFFFFFFUL
-#define PMUINT64_MAX      0xFFFFFFFFFFFFFFFFULL    
+#define PMUINT8_MAX       ((PMUInt8) 0xFFU)
+#define PMUINT16_MAX      ((PMUInt16) 0xFFFFU)
+#define PMUINT32_MAX      ((PMUInt32) 0xFFFFFFFFUL)
+#define PMUINT64_MAX      ((PMUInt64) 0xFFFFFFFFFFFFFFFFULL)  
 
 //---------------------------------------------------------------------------*
 //                                                                           *

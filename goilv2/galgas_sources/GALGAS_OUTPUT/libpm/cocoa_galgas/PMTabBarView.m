@@ -9,13 +9,38 @@
 
 #import "PMTabBarView.h"
 #import "OC_GGS_TextDisplayDescriptor.h"
+#import "OC_GGS_DocumentData.h"
 #import "PMButtonWithRemove.h"
 #import "OC_GGS_TextSyntaxColoring.h"
-#import "PMCocoaCallsDebug.h"
+#import "PMDebug.h"
 
 //---------------------------------------------------------------------------*
 
 @implementation PMTabBarView
+
+//---------------------------------------------------------------------------*
+//                                                                           *
+//       I N I T                                                             *
+//                                                                           *
+//---------------------------------------------------------------------------*
+
+- (id) initWithFrame: (NSRect) inFrame {
+  self = [super initWithFrame:inFrame] ;
+  if (self) {
+    #ifdef DEBUG_MESSAGES
+      NSLog (@"%s", __PRETTY_FUNCTION__) ;
+    #endif
+    noteObjectAllocation (self) ;
+  }
+  return self;
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) FINALIZE_OR_DEALLOC {
+  noteObjectDeallocation (self) ;
+  macroSuperFinalize ;
+}
 
 //---------------------------------------------------------------------------*
 
@@ -25,14 +50,14 @@
 
 //---------------------------------------------------------------------------*
 
-- (void) setRemoveSourceTabAction: (SEL) inAction {
-  mRemoveSourceTabAction = inAction ;
-}
-
-//---------------------------------------------------------------------------*
-
-- (void) setChangeSourceTabAction: (SEL) inAction {
-  mChangeSourceTabAction = inAction ;
+- (void) detach {
+  [mObservedArray
+    removeObserver:self
+    fromObjectsAtIndexes:[[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange (0, mObservedArray.count)]
+    forKeyPath:@"isDirty"
+  ] ;
+  mObservedArray = nil ;
+  mTarget = nil ;
 }
 
 //---------------------------------------------------------------------------*
@@ -42,15 +67,15 @@
   [mObservedArray
     removeObserver:self
     fromObjectsAtIndexes:[[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange (0, mObservedArray.count)]
-    forKeyPath:@"mTextSyntaxColoring.isDirty"
+    forKeyPath:@"isDirty"
   ] ;
 //--- Add Observed for current collection
   NSArray * arrangedObjects = inArrayController.arrangedObjects ;
   mObservedArray = arrangedObjects.copy ;
   [mObservedArray
     addObserver:self
-    toObjectsAtIndexes:[[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange (0, mObservedArray.count)]
-    forKeyPath:@"mTextSyntaxColoring.isDirty"
+    toObjectsAtIndexes: [[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange (0, mObservedArray.count)]
+    forKeyPath:@"isDirty"
     options:0
     context:NULL
   ] ;
@@ -80,7 +105,6 @@
     button.tag = idx ;
     button.target = self ;
     button.action = @selector (changeTabAction:) ;
-    button.removeAction = @selector (removeTabAction:) ;
     [button sizeToFit] ;
     X = NSMaxX (button.frame) + 2.0 ;
     [self addSubview:button] ;
@@ -94,24 +118,21 @@
   for (PMButtonWithRemove * button in mButtonArray) {
     [button setState:(button == inSender) ? NSOnState : NSOffState] ;
   }
-  [mTarget performSelector:mChangeSourceTabAction withObject:inSender] ;
+  [mTarget changeSelectedSourceViewAction:inSender] ;
 }
 
 //---------------------------------------------------------------------------*
 
 - (void) removeTabAction: (PMButtonWithRemove *) inSender {
-  [mTarget
-    performSelector:mRemoveSourceTabAction
-    withObject:[mObservedArray objectAtIndex:inSender.tag HERE]
-  ] ;
+  [mTarget removeSelectedTabAction:[mObservedArray objectAtIndex:(NSUInteger) inSender.tag]] ;
 }
 
 //---------------------------------------------------------------------------*
 
 - (void) dirtyStateDidChange: (OC_GGS_TextDisplayDescriptor *) inObservedObject {
   const NSUInteger idx = [mObservedArray indexOfObject:inObservedObject] ;
-  PMButtonWithRemove * button = [mButtonArray objectAtIndex:idx HERE] ;
-  OC_GGS_TextSyntaxColoring * textSyntaxColoring = inObservedObject.textSyntaxColoring ;
+  PMButtonWithRemove * button = [mButtonArray objectAtIndex:idx] ;
+  OC_GGS_TextSyntaxColoring * textSyntaxColoring = inObservedObject.documentData.textSyntaxColoring ;
   [button setIsDirty:textSyntaxColoring.isDirty] ;
 }
 
@@ -129,12 +150,12 @@
   }else if ([inKeyPath isEqualToString:@"selectionIndex"]) {
     const NSUInteger selectionIndex = ((NSArrayController *) inObject).selectionIndex ;
     if (selectionIndex != NSNotFound) {
-      PMButtonWithRemove * newSelection = [mButtonArray objectAtIndex:selectionIndex HERE] ;
+      PMButtonWithRemove * newSelection = [mButtonArray objectAtIndex:selectionIndex] ;
       for (PMButtonWithRemove * button in mButtonArray) {
         [button setState:(button == newSelection) ? NSOnState : NSOffState] ;
       }
     }
-  }else if ([inKeyPath isEqualToString:@"mTextSyntaxColoring.isDirty"]) {
+  }else if ([inKeyPath isEqualToString:@"isDirty"]) {
     [self dirtyStateDidChange:inObject] ;
   }else if ([inKeyPath isEqualToString:@"arrangedObjects"]) {
     [self buildTabBarWithArrayController:inObject] ;

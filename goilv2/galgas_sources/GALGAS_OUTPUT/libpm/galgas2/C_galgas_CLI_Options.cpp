@@ -33,7 +33,7 @@
 
 //---------------------------------------------------------------------------*
 
-C_BoolCommandLineOption gOption_galgas_5F_cli_5F_options_outputConcreteSyntaxTree ("galgas_cli_options",
+C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_outputConcreteSyntaxTree ("galgas_builtin_options",
                                          "outputConcreteSyntaxTree",
                                          0,
                                          "output-concrete-syntax-tree",
@@ -41,7 +41,7 @@ C_BoolCommandLineOption gOption_galgas_5F_cli_5F_options_outputConcreteSyntaxTre
 
 //---------------------------------------------------------------------------*
 
-C_BoolCommandLineOption gOption_galgas_5F_cli_5F_options_trace ("galgas_cli_options",
+C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_trace ("galgas_builtin_options",
                                          "trace",
                                          0,
                                          "trace",
@@ -49,7 +49,7 @@ C_BoolCommandLineOption gOption_galgas_5F_cli_5F_options_trace ("galgas_cli_opti
 
 //---------------------------------------------------------------------------*
 
-C_BoolCommandLineOption gOption_galgas_5F_cli_5F_options_noteFileAccess ("galgas_cli_options",
+C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_noteFileAccess ("galgas_builtin_options",
                                          "noteFileAccess",
                                          0,
                                          "note-file-access",
@@ -58,7 +58,7 @@ C_BoolCommandLineOption gOption_galgas_5F_cli_5F_options_noteFileAccess ("galgas
 //---------------------------------------------------------------------------*
 
 C_BoolCommandLineOption
-gOption_galgas_5F_cli_5F_options_verbose_5F_output ("galgas_cli_options",
+gOption_galgas_5F_builtin_5F_options_verbose_5F_output ("galgas_builtin_options",
                                                     "verbose_output",
                                                     'v',
                                                     "verbose",
@@ -67,7 +67,7 @@ gOption_galgas_5F_cli_5F_options_verbose_5F_output ("galgas_cli_options",
 //---------------------------------------------------------------------------*
 
 C_BoolCommandLineOption
-gOption_galgas_5F_cli_5F_options_log_5F_file_5F_read ("galgas_cli_options",
+gOption_galgas_5F_builtin_5F_options_log_5F_file_5F_read ("galgas_cli_options",
                                                       "log_file_read",
                                                       '\0',
                                                       "log-file-read",
@@ -76,7 +76,7 @@ gOption_galgas_5F_cli_5F_options_log_5F_file_5F_read ("galgas_cli_options",
 //---------------------------------------------------------------------------*
 
 C_BoolCommandLineOption
-gOption_galgas_5F_cli_5F_options_do_5F_not_5F_generate_5F_any_5F_file ("galgas_cli_options",
+gOption_galgas_5F_builtin_5F_options_do_5F_not_5F_generate_5F_any_5F_file ("galgas_cli_options",
                                                                        "do_not_generate_any_file",
                                                                        '\0',
                                                                        "no-file-generation",
@@ -85,7 +85,7 @@ gOption_galgas_5F_cli_5F_options_do_5F_not_5F_generate_5F_any_5F_file ("galgas_c
 //---------------------------------------------------------------------------*
 
 C_BoolCommandLineOption
-gOption_galgas_5F_cli_5F_options_treat_5F_warnings_5F_as_5F_error ("galgas_cli_options",
+gOption_galgas_5F_builtin_5F_options_treat_5F_warnings_5F_as_5F_error ("galgas_cli_options",
                                                                    "treat_warnings_as_error",
                                                                    '\0',
                                                                    "Werror",
@@ -94,7 +94,7 @@ gOption_galgas_5F_cli_5F_options_treat_5F_warnings_5F_as_5F_error ("galgas_cli_o
 //---------------------------------------------------------------------------*
 
 C_UIntCommandLineOption
-gOption_galgas_5F_cli_5F_options_max_5F_errors ("galgas_cli_options",
+gOption_galgas_5F_builtin_5F_options_max_5F_errors ("galgas_cli_options",
                                                 "max_errors",
                                                 '\0',
                                                 "max-errors",
@@ -104,7 +104,7 @@ gOption_galgas_5F_cli_5F_options_max_5F_errors ("galgas_cli_options",
 //---------------------------------------------------------------------------*
 
 C_UIntCommandLineOption
-gOption_galgas_5F_cli_5F_options_max_5F_warnings ("galgas_cli_options",
+gOption_galgas_5F_builtin_5F_options_max_5F_warnings ("galgas_cli_options",
                                                 "max_warnings",
                                                 '\0',
                                                 "max-warnings",
@@ -113,7 +113,7 @@ gOption_galgas_5F_cli_5F_options_max_5F_warnings ("galgas_cli_options",
 
 //---------------------------------------------------------------------------*
 
-C_StringCommandLineOption gOption_galgas_5F_cli_5F_options_mode ("galgas_cli_options",
+C_StringCommandLineOption gOption_galgas_5F_builtin_5F_options_mode ("galgas_cli_options",
                                          "mode",
                                          0,
                                          "mode",
@@ -131,7 +131,7 @@ static C_String gCurrentlyCompiledBaseFilePath ;
 //---------------------------------------------------------------------------*
 
 void setExecutionMode (C_String & outErrorMessage) {
-  const C_String mode = gOption_galgas_5F_cli_5F_options_mode.mValue ;
+  const C_String mode = gOption_galgas_5F_builtin_5F_options_mode.mValue ;
   if (mode == "lexical-only") {
     gMode = 1 ;
   }else if (mode == "syntax-only") {

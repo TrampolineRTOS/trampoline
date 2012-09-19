@@ -12,22 +12,22 @@
 @interface OC_Token : NSObject {
   @private NSUInteger mTokenCode ;
   @private NSRange mRange ;
-  @private SInt32 mStyle ;
-  @private SInt32 mMatchedTemplateDelimiterIndex ;
+  @private NSInteger mStyle ;
+  @private NSInteger mMatchedTemplateDelimiterIndex ;
 }
 
-- (id) initWithTokenCode: (UInt32) inTokenCode
+- (id) initWithTokenCode: (NSUInteger) inTokenCode
        range: (NSRange) inRange
-       style: (SInt32) inStyle
-       matchedTemplateDelimiterIndex: (SInt32) inMatchedTemplateDelimiterIndex ;
+       style: (NSInteger) inStyle
+       matchedTemplateDelimiterIndex: (NSInteger) inMatchedTemplateDelimiterIndex ;
 
 - (NSUInteger) tokenCode ;
 
 - (NSRange) range ;
 
-- (SInt32) style ;
+- (NSInteger) style ;
 
-- (SInt32) matchedTemplateDelimiterIndex ;
+- (NSInteger) matchedTemplateDelimiterIndex ;
 
 - (void) translateRange: (NSInteger) inTranslation ;
 

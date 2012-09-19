@@ -12,20 +12,23 @@
 //---------------------------------------------------------------------------*
 
 @class OC_GGS_TextDisplayDescriptor ;
+@class OC_GGS_Document ;
 
 //---------------------------------------------------------------------------*
 
 @interface OC_GGS_TextView : NSTextView {
-  @private NSArray * mIssueArray ;
-  @private __weak OC_GGS_TextDisplayDescriptor * mDisplayDescriptor ;
+   @private OC_GGS_Document * mDocumentUsedForDisplaying ;
+   @private OC_GGS_TextDisplayDescriptor * mDisplayDescriptor ;
+   @private NSArray * mIssueArray ; // Of PMIssueDescriptor
 }
 
-- (void) setDisplayDescriptor: (OC_GGS_TextDisplayDescriptor *) inDisplayDescriptor ;
+- (id) initWithFrame:(NSRect)frameRect
+       documentUsedForDisplaying: (OC_GGS_Document *) inDocumentUsedForDisplaying
+       displayDescriptor: (OC_GGS_TextDisplayDescriptor *) inDisplayDescriptor ;
+
+- (void) detachTextView ;
 
 - (void) setIssueArray: (NSArray *) inIssueArray ;
-
-- (NSArray *) issueArray ;
-
 @end
 
 //---------------------------------------------------------------------------*

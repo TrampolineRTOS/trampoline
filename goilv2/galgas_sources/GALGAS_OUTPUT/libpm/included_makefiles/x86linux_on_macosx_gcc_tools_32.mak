@@ -6,7 +6,7 @@
 
 UNIX_TOOL_PREFIX := /usr/local/gcc-4.5.2-for-linux32/bin/i586-pc-linux
 COMPILER_TOOL := $(UNIX_TOOL_PREFIX)-gcc
-LINKER_TOOL   := $(UNIX_TOOL_PREFIX)-g++
+LINKER_TOOL   := $(UNIX_TOOL_PREFIX)-g++ -static-libgcc
 STRIP_TOOL    := $(UNIX_TOOL_PREFIX)-strip --strip-all
 SUDO_TOOL     := sudo
 COMPILATION_MESSAGE := 32-Bit Compiling for Linux

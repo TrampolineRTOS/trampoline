@@ -40,7 +40,7 @@
 
 //---
   @private NSUInteger mReplaceCount ;
- @private IBOutlet NSTextField * mReplacementTextField ;
+  @private IBOutlet NSTextField * mReplacementTextField ;
 }
 
 - (IBAction) addFolderAction: (id) inSender ;

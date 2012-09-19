@@ -11,12 +11,10 @@
 #import "OC_GGS_TextDisplayDescriptor.h"
 #import "OC_Lexique.h"
 #import "OC_Token.h"
-#import "PMCocoaCallsDebug.h"
 #import "OC_GGS_PreferencesController.h"
 #import "PMIssueDescriptor.h"
-#import "PMErrorOrWarningDescriptor.h"
-#import "OC_GGS_BuildTaskProxy.h"
-#import "OC_GGS_Document.h"
+#import "OC_GGS_DocumentData.h"
+#import "PMDebug.h"
 
 //---------------------------------------------------------------------------*
 
@@ -35,6 +33,18 @@
 //---------------------------------------------------------------------------*
 
 @implementation OC_GGS_TextSyntaxColoring
+
+//---------------------------------------------------------------------------*
+
+@synthesize documentData ;
+@synthesize isDirty ;
+
+//---------------------------------------------------------------------------*
+
+- (void) FINALIZE_OR_DEALLOC {
+  noteObjectDeallocation (self) ;
+  macroSuperFinalize ;
+}
 
 //---------------------------------------------------------------------------*
 
@@ -64,9 +74,8 @@
   NSFont * font = [mTemplateTextAttributeDictionary objectForKey:NSFontAttributeName] ;
   double maxAscender = [font ascender] + 4.0 ;
   double maxLeadingMinusDescender = [font leading] - [font descender] ;
-  UInt32 i ;
-  for (i=0 ; i<[mFontAttributesDictionaryArray count] ; i++) {
-    NSDictionary * d = [mFontAttributesDictionaryArray objectAtIndex:i HERE] ;
+  for (NSUInteger i=0 ; i<[mFontAttributesDictionaryArray count] ; i++) {
+    NSDictionary * d = [mFontAttributesDictionaryArray objectAtIndex:i] ;
     font = [d objectForKey:NSFontAttributeName] ;
     maxAscender = fmax (maxAscender, [font ascender] + 4.0) ;
     maxLeadingMinusDescender = fmax (maxLeadingMinusDescender, [font leading] - [font descender]) ;
@@ -80,11 +89,11 @@
     mMaxAscender = maxAscender ;
     mMaxLeadingMinusDescender = maxLeadingMinusDescender ;
   //--- Set new value to default settings
-    NSMutableParagraphStyle * paragraghStyle = [[[NSMutableParagraphStyle alloc] init] autorelease] ;
+    NSMutableParagraphStyle * paragraghStyle = [[NSMutableParagraphStyle alloc] init] ;
     [paragraghStyle setMaximumLineHeight:mMaxAscender + mMaxLeadingMinusDescender] ;
     [paragraghStyle setMinimumLineHeight:mMaxAscender + mMaxLeadingMinusDescender] ;
     if ([mFontAttributesDictionaryArray count] > 0) {
-      NSMutableDictionary * d = [mFontAttributesDictionaryArray objectAtIndex:0 HERE] ;
+      NSMutableDictionary * d = [mFontAttributesDictionaryArray objectAtIndex:0] ;
       [d setObject:paragraghStyle forKey:NSParagraphStyleAttributeName] ;
     }
   }
@@ -98,28 +107,23 @@
 
 //---------------------------------------------------------------------------*
 
-- (NSUInteger) textDisplayDescriptorCount {
-  return mTextDisplayDescriptorSet.count ;
-}
-
-//---------------------------------------------------------------------------*
-
 - (OC_GGS_TextSyntaxColoring *) initWithSourceString: (NSString *) inSource
                                 tokenizer: (OC_Lexique *) inTokenizer
-                                document: (OC_GGS_Document *) inDocument
+                                documentData: (OC_GGS_DocumentData *) inDocumentData
                                 issueArray: (NSArray *) inIssueArray {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   self = [super init] ;
   if (self) {
+    noteObjectAllocation (self) ;
     mTokenizer = inTokenizer ;
-    mDocument = inDocument ;
-    mTextDisplayDescriptorSet = [NSMutableSet new] ;
+    documentData = inDocumentData ;
     mSourceTextStorage = [NSTextStorage new] ;
     mTokenArray = [NSMutableArray new] ;
     mTemplateTextAttributeDictionary = [NSMutableDictionary new] ;
     mUndoManager = [NSUndoManager new] ;
+    mTextDisplayDescriptorSet = [NSMutableSet new] ;
   //---
     [[NSNotificationCenter defaultCenter]
       addObserver:self
@@ -130,16 +134,9 @@
   //---
     [[NSNotificationCenter defaultCenter]
       addObserver:self
-      selector:@selector(myProcessEditing:)
+      selector:@selector(textStorageDidProcessEditingNotification:)
       name: NSTextStorageDidProcessEditingNotification
       object:mSourceTextStorage
-    ] ;
-  //---
-    [mTokenizer
-      addObserver:self
-      forKeyPath:@"menuForEntryPopUpButton"
-      options:0
-      context:NULL
     ] ;
   //--------------------------------------------------- Add foreground color observers
     NSUserDefaultsController * udc = [NSUserDefaultsController sharedUserDefaultsController] ;
@@ -271,39 +268,28 @@
 
 //---------------------------------------------------------------------------*
 
-- (OC_GGS_Document *) document {
+- (void) detach {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  return mDocument ;
+  [[NSNotificationCenter defaultCenter]
+    removeObserver:self
+    name:NSUndoManagerCheckpointNotification
+    object:mUndoManager
+  ] ;
+//---
+  [[NSNotificationCenter defaultCenter]
+    removeObserver:self
+    name: NSTextStorageDidProcessEditingNotification
+    object:mSourceTextStorage
+  ] ;
+//---
+//  NSLog (@"%s:observationInfo %@", __PRETTY_FUNCTION__, (id) self.observationInfo) ;
+  documentData = nil ;
+  [mTokenizer detach] ;
+  mTokenizer = nil ;
 }
 
-//---------------------------------------------------------------------------*
-
-- (void) addTextDisplayDescriptor: (OC_GGS_TextDisplayDescriptor *) inDisplayDescriptor {
-  #ifdef DEBUG_MESSAGES
-    NSLog (@"%s", __PRETTY_FUNCTION__) ;
-  #endif
-  [mTextDisplayDescriptorSet addObject:inDisplayDescriptor] ;
-}
-
-//---------------------------------------------------------------------------*
-
-- (void) removeTextDisplayDescriptor: (OC_GGS_TextDisplayDescriptor *) inDisplayDescriptor {
-  #ifdef DEBUG_MESSAGES
-    NSLog (@"%s", __PRETTY_FUNCTION__) ;
-  #endif
-  [mTextDisplayDescriptorSet removeObject:inDisplayDescriptor] ;
-}
-
-//---------------------------------------------------------------------------*
-
-- (NSTextStorage *) textStorage {
-  #ifdef DEBUG_MESSAGES
-    NSLog (@"%s", __PRETTY_FUNCTION__) ;
-  #endif
-  return mSourceTextStorage ;
-}
 
 //---------------------------------------------------------------------------*
 
@@ -345,15 +331,6 @@
 
 //---------------------------------------------------------------------------*
 
-- (NSMenu *) menuForEntryPopUpButton {
-  #ifdef DEBUG_MESSAGES
-    NSLog (@"%s", __PRETTY_FUNCTION__) ;
-  #endif
-  return mTokenizer.menuForEntryPopUpButton ;
-}
-
-//---------------------------------------------------------------------------*
-
 - (NSArray *) tokenArray {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
@@ -382,7 +359,7 @@
   #endif
   if ((mTokenizer != NULL) && ([mSourceTextStorage length] > 0)) {
     [self refreshRulers] ;
-  //--- Remove observer so that myProcessEditing will not be called at the end of edition
+  //--- Remove observer so that textStorageDidProcessEditingNotification will not be called at the end of edition
     [[NSNotificationCenter defaultCenter]
       removeObserver:self
       name: NSTextStorageDidProcessEditingNotification
@@ -393,12 +370,12 @@
     if (inChangedColorIndex == 0) {
       const NSRange allTextRange = {0, [mSourceTextStorage length]} ;
       [mSourceTextStorage
-        setAttributes:[mFontAttributesDictionaryArray objectAtIndex:0 HERE]
+        setAttributes:[mFontAttributesDictionaryArray objectAtIndex:0]
         range:allTextRange
       ] ;
       for (NSUInteger i=0 ; i<[mTokenArray count] ; i++) {
-        OC_Token * token = [mTokenArray objectAtIndex:i HERE] ;
-        const SInt32 colorIndex = [token style] ;
+        OC_Token * token = [mTokenArray objectAtIndex:i] ;
+        const NSInteger colorIndex = [token style] ;
         const NSRange range = [token range] ;
         if (colorIndex == -2) {
           [mSourceTextStorage
@@ -409,15 +386,15 @@
         
         }else if (colorIndex > 0) {
           [mSourceTextStorage
-            addAttributes:[mFontAttributesDictionaryArray objectAtIndex:colorIndex HERE]
+            addAttributes:[mFontAttributesDictionaryArray objectAtIndex:colorIndex]
             range:range
           ] ;
         }
       }    
     }else{
       for (NSUInteger i=0 ; i<[mTokenArray count] ; i++) {
-        OC_Token * token = [mTokenArray objectAtIndex:i HERE] ;
-        const SInt32 colorIndex = [token style] ;
+        OC_Token * token = [mTokenArray objectAtIndex:i] ;
+        const NSInteger colorIndex = [token style] ;
         if (colorIndex == inChangedColorIndex) {
           const NSRange range = [token range] ;
           #ifdef DEBUG_MESSAGES
@@ -432,7 +409,7 @@
           
           }else if (colorIndex > 0) {
             [mSourceTextStorage
-              addAttributes:[mFontAttributesDictionaryArray objectAtIndex:colorIndex HERE]
+              addAttributes:[mFontAttributesDictionaryArray objectAtIndex:colorIndex]
               range:range
             ] ;
           }
@@ -443,7 +420,7 @@
   //--- Resinstall observer
     [[NSNotificationCenter defaultCenter]
       addObserver:self
-      selector:@selector(myProcessEditing:)
+      selector:@selector(textStorageDidProcessEditingNotification:)
       name: NSTextStorageDidProcessEditingNotification
       object:mSourceTextStorage
     ] ;
@@ -483,35 +460,6 @@
 
 //---------------------------------------------------------------------------*
 
-- (void) setIssueArray: (NSArray *) inIssueArray {
-  #ifdef DEBUG_MESSAGES
-    NSLog (@"%s", __PRETTY_FUNCTION__) ;
-  #endif
-  NSMutableArray * filteredArray = [NSMutableArray new] ;
-  for (PMIssueDescriptor * issue in inIssueArray) {
-    if ([issue.issueURL isEqual:mDocument.fileURL]) {
-      const NSRange lineRange = [self rangeForLine:issue.issueLine] ;
-      [filteredArray
-        addObject:[[PMErrorOrWarningDescriptor alloc]
-          initWithMessage:issue.issueMessage
-          location:lineRange.location + issue.issueColumn - 1
-          isError:issue.errorKind
-          originalIssue:issue
-        ]
-      ] ;
-      // NSLog (@"%c", [mSourceTextStorage.string characterAtIndex:lineRange.location + issue.issueColumn - 1 HERE]) ;
-    }
-  }
-//---
-  mIssueArray = filteredArray ;
-//---
-  for (OC_GGS_TextDisplayDescriptor * textDisplay in mTextDisplayDescriptorSet) {
-    [textDisplay setTextDisplayIssueArray:mIssueArray] ; 
-  }
-}  
-
-//---------------------------------------------------------------------------*
-
 - (void) updateIssuesForEditedRange: (NSRange) inEditedRange
          changeInLength: (NSInteger) inChangeInLength {
   #ifdef DEBUG_MESSAGES
@@ -519,16 +467,20 @@
   #endif
   // NSLog (@"inEditedRange %lu:%lu, inChangeInLength %ld", inEditedRange.location, inEditedRange.length, inChangeInLength) ;
   const NSRange previousRange = {inEditedRange.location, inEditedRange.length - inChangeInLength} ;
-  NSMutableArray * newIssueArray = [NSMutableArray new] ;
-  for (PMErrorOrWarningDescriptor * issue in mIssueArray) {
-    if (! [issue isInRange:previousRange]) {
-      [issue updateLocationForPreviousRange:previousRange changeInLength:inChangeInLength] ;
-      [newIssueArray addObject:issue] ;
-    }
+  for (PMIssueDescriptor * issue in mIssueArray) {
+    [issue updateLocationForPreviousRange:previousRange changeInLength:inChangeInLength] ;
   }
 //---
-  mIssueArray = newIssueArray ;
-//---
+  for (OC_GGS_TextDisplayDescriptor * textDisplay in mTextDisplayDescriptorSet) {
+    [textDisplay setTextDisplayIssueArray:mIssueArray] ; 
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) setIssueArray: (NSArray *) inIssueArray {
+  mIssueArray = inIssueArray.mutableCopy ;
+  // NSLog (@"mIssueArray %@", mIssueArray) ;
   for (OC_GGS_TextDisplayDescriptor * textDisplay in mTextDisplayDescriptorSet) {
     [textDisplay setTextDisplayIssueArray:mIssueArray] ; 
   }
@@ -574,7 +526,7 @@
         NSLog (@"PERFORM REMOVE ATTRIBUTE range [%lu, %lu] text length %lu", eraseRange.location, eraseRange.length, textLength) ;
       #endif
       [mSourceTextStorage
-        setAttributes:[mFontAttributesDictionaryArray objectAtIndex:0 HERE]
+        setAttributes:[mFontAttributesDictionaryArray objectAtIndex:0]
         range:eraseRange
       ] ;
       #ifdef DEBUG_MESSAGES
@@ -586,12 +538,12 @@
      NSLog (@"COLORING from %ld to %ld", firstIndexToRedraw, lastIndexToRedraw) ;
     #endif
     for (NSInteger i=firstIndexToRedraw ; i<=lastIndexToRedraw ; i++) {
-      OC_Token * token = [mTokenArray objectAtIndex:i HERE] ;
+      OC_Token * token = [mTokenArray objectAtIndex:i] ;
       const NSRange range = [token range] ;
       #ifdef DEBUG_MESSAGES
         NSLog (@"PERFORM COLORING '%@' range [%lu, %lu] [mSourceTextStorage length] %lu", [mSourceTextStorage.string substringWithRange:range], range.location, range.length, mSourceTextStorage.string.length) ;
       #endif
-      const int style = [token style] ;
+      const NSInteger style = [token style] ;
       if (style == -1) { // Error
         [mSourceTextStorage
           addAttribute:NSForegroundColorAttributeName
@@ -605,7 +557,7 @@
         ] ;
       }else if (style > 0) {
         [mSourceTextStorage
-          addAttributes:[mFontAttributesDictionaryArray objectAtIndex:style HERE]
+          addAttributes:[mFontAttributesDictionaryArray objectAtIndex:style]
           range:range
         ] ;
       }
@@ -619,16 +571,40 @@
 
 //---------------------------------------------------------------------------*
 
-- (void) myProcessEditing: (NSNotification *) inNotification {
+- (void) textStorageDidProcessEditingNotification: (NSNotification *) inNotification {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
   const NSRange editedRange = mSourceTextStorage.editedRange ;
   const NSInteger changeInLength = mSourceTextStorage.changeInLength ;
-    // NSLog (@"editedRange [%lu, %lu], changeInLength %ld", editedRange.location, editedRange.length, changeInLength) ;
   [self updateSyntaxColoringForEditedRange:editedRange changeInLength:changeInLength] ;
   [self updateIssuesForEditedRange:editedRange changeInLength:changeInLength] ;
-    // NSLog (@"%@", self.textStorage.string) ;
+//---
+  NSMenu * menu = mTokenizer.menuForEntryPopUpButton ;
+  for (OC_GGS_TextDisplayDescriptor * tdd in mTextDisplayDescriptorSet) {
+    [tdd populatePopUpButtonWithMenu:menu] ;
+  }
+//--- If there is no enabled timer, create one
+  if (nil == mTimerForAutosaving) {
+    mTimerForAutosaving = [NSTimer
+      timerWithTimeInterval:5.0
+      target:self
+      selector:@selector (autosaveTimerDidFire:)
+      userInfo:nil
+      repeats:NO
+    ] ;
+    [[NSRunLoop mainRunLoop]
+      addTimer:mTimerForAutosaving
+      forMode:NSDefaultRunLoopMode
+    ] ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) autosaveTimerDidFire: (NSTimer *) inTimer {
+  mTimerForAutosaving = nil ;
+  [documentData save] ;
 }
 
 //---------------------------------------------------------------------------*
@@ -641,7 +617,6 @@
   }
 }
 
-
 //---------------------------------------------------------------------------*
 //                                                                           *
 //           C O M M E N T R A N G E                                         *
@@ -652,11 +627,11 @@
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  [self.textStorage beginEditing] ;
+  [mSourceTextStorage beginEditing] ;
 //---
-  NSAttributedString * blockCommentString = [[[NSAttributedString alloc] initWithString:[mTokenizer blockComment] attributes:nil] autorelease] ;
+  NSAttributedString * blockCommentString = [[NSAttributedString alloc] initWithString:[mTokenizer blockComment] attributes:nil] ;
   //NSLog (@"selectedRange [%d, %d]", selectedRange.location, selectedRange.length) ;
-  NSMutableAttributedString * mutableSourceString = self.textStorage ;
+  NSMutableAttributedString * mutableSourceString = mSourceTextStorage ;
   NSString * sourceString = [mutableSourceString string] ;
   const NSRange lineRange = [sourceString lineRangeForRange:inSelectedRangeValue] ;
   //NSLog (@"lineRange [%d, %d]", lineRange.location, lineRange.length) ;
@@ -671,7 +646,7 @@
     }
   }while ((currentLineRange.location > 0) && (currentLineRange.location >= lineRange.location)) ;
 //---
-  [self.textStorage endEditing] ;
+  [mSourceTextStorage endEditing] ;
 //--- Update selected range
   const NSRange newSelectedRange = NSMakeRange (inSelectedRangeValue.location, inSelectedRangeValue.length + insertedCharsCount) ;
 //--- Register undo
@@ -730,12 +705,12 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
 //---
-  [self.textStorage beginEditing] ;
+  [mSourceTextStorage beginEditing] ;
 //--- Block comment string
   NSString * blockCommentString = [mTokenizer blockComment] ;
   const NSUInteger blockCommentLength = [blockCommentString length] ;
 //--- Get source string
-  NSMutableAttributedString * mutableSourceString = [self textStorage] ;
+  NSMutableAttributedString * mutableSourceString = mSourceTextStorage ;
   NSString * sourceString = [mutableSourceString string] ;
   #ifdef DEBUG_UNCOMMENTRANGE
     NSLog (@"blockCommentString '%@', text length %u", blockCommentString, [sourceString length]) ;
@@ -779,7 +754,7 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
     }
   }while ((currentLineRange.location > 0) && (currentLineRange.location >= lineRange.location)) ;
 //---
-  [self.textStorage endEditing] ;
+  [mSourceTextStorage endEditing] ;
 //--- Register undo
   [mUndoManager 
     registerUndoWithTarget:self
@@ -809,22 +784,10 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
   //NSArray * redoStack = [mUndoManager valueForKey:@"_redoStack"] ;
   //NSLog (@"undoManagerCheckPointNotification: undoStack %lu, redoStack %lu", undoStack.count, redoStack.count) ;
 //---
-  [self willChangeValueForKey:@"isDirty"] ;
-//  mIsDirty = mUndoManager.canUndo || mUndoManager.canRedo ;
-  mIsDirty = (mSavePointUndoStackCount != undoStack.count) ;
-  [self didChangeValueForKey:@"isDirty"] ;
+  isDirty = (mSavePointUndoStackCount != undoStack.count) ;
   for (OC_GGS_TextDisplayDescriptor * textDisplayDescriptor in mTextDisplayDescriptorSet) {
-    [textDisplayDescriptor noteUndoManagerCheckPointNotification] ;
+    textDisplayDescriptor.isDirty = isDirty ;
   }
-}
-
-//---------------------------------------------------------------------------*
-
-- (BOOL) isDirty {
-  #ifdef DEBUG_MESSAGES
-    NSLog (@"%s", __PRETTY_FUNCTION__) ;
-  #endif
-  return mIsDirty ;
 }
 
 //---------------------------------------------------------------------------*
@@ -842,15 +805,6 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
 
 //---------------------------------------------------------------------------*
 
-- (NSArray *) issueArray {
-  #ifdef DEBUG_MESSAGES
-    NSLog (@"%s", __PRETTY_FUNCTION__) ;
-  #endif
-  return mIssueArray.copy ;
-}
-
-//---------------------------------------------------------------------------*
-
 #pragma mark observeValueForKeyPath
 
 //---------------------------------------------------------------------------*
@@ -862,10 +816,7 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s, inKeyPath '%@'", __PRETTY_FUNCTION__, inKeyPath) ;
   #endif
-  if ([inKeyPath isEqualToString:@"menuForEntryPopUpButton"]) {
-    [self willChangeValueForKey:@"menuForEntryPopUpButton"] ;
-    [self  didChangeValueForKey:@"menuForEntryPopUpButton"] ;
-  }else if (mTokenizer != NULL) {
+  if (mTokenizer != NULL) {
     BOOL lineHeightDidChange = NO ;
     NSColor * color = nil ;
     NSMutableDictionary * d = nil ;
@@ -879,7 +830,7 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
       }else{
         color = (NSColor *) [NSUnarchiver unarchiveObjectWithData:data] ;
       }
-      d = [mFontAttributesDictionaryArray objectAtIndex:idx HERE] ;
+      d = [mFontAttributesDictionaryArray objectAtIndex:idx] ;
       [d setObject:color forKey:NSForegroundColorAttributeName] ;
       [self applyTextAttributeForIndex:idx] ;
       break;
@@ -898,7 +849,7 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
       }else{
         color = (NSColor *) [NSUnarchiver unarchiveObjectWithData:data] ;
       }
-      d = [mFontAttributesDictionaryArray objectAtIndex:idx HERE] ;
+      d = [mFontAttributesDictionaryArray objectAtIndex:idx] ;
       [d setObject:color forKey:NSBackgroundColorAttributeName] ;
       [self applyTextAttributeForIndex:idx] ;
       break;
@@ -912,7 +863,7 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
       [self applyTextAttributeForIndex:-2] ;
       break;
     case TAG_FOR_FONT_ATTRIBUTE:
-      d = [mFontAttributesDictionaryArray objectAtIndex:idx HERE] ;
+      d = [mFontAttributesDictionaryArray objectAtIndex:idx] ;
       [d setObject:[NSUnarchiver unarchiveObjectWithData:data] forKey:NSFontAttributeName] ;
       [self computeMaxLineHeight: & lineHeightDidChange] ;
       [self applyTextAttributeForIndex:lineHeightDidChange ? 0 : idx] ;
@@ -945,7 +896,7 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
   NSArray * allDocumentTypes = [infoDictionary objectForKey:@"CFBundleDocumentTypes"] ;
   // NSLog (@"allDocumentTypes '%@'", allDocumentTypes) ;
   for (NSUInteger i=0 ; i<[allDocumentTypes count] ; i++) {
-    NSDictionary * docTypeDict = [allDocumentTypes objectAtIndex:i HERE] ;
+    NSDictionary * docTypeDict = [allDocumentTypes objectAtIndex:i] ;
     // NSLog (@"docTypeDict '%@'", docTypeDict) ;
     NSArray * documentTypeExtensions = [docTypeDict objectForKey:@"CFBundleTypeExtensions"] ;
     // NSLog (@"documentTypeExtensions '%@'", documentTypeExtensions) ;
@@ -961,7 +912,7 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  NSFileManager * fm = [[NSFileManager alloc] init] ;
+  NSFileManager * fm = [NSFileManager new] ;
   NSDictionary * file1_dictionary = [fm attributesOfItemAtPath:inFile1 error:NULL] ;
   NSDate * file1_modificationDate = [file1_dictionary fileModificationDate] ;
   NSDictionary * file2_dictionary = [fm attributesOfItemAtPath:inFile2 error:NULL] ;
@@ -1002,7 +953,7 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
   #endif
   NSMutableArray * result = nil ;
 //--- Source directory
-  NSString * sourceDirectory = mDocument.fileURL.path.stringByDeletingLastPathComponent ;
+  NSString * sourceDirectory = documentData.fileURL.path.stringByDeletingLastPathComponent ;
 //--- index directory
   NSString * indexingDirectory = [mTokenizer indexingDirectory] ;
   if (indexingDirectory.length > 0) {
@@ -1089,10 +1040,9 @@ static NSInteger numericSort (NSString * inOperand1,
 //--- Check if current has atomic selection
   BOOL hasAtomicSelection = YES ;
   BOOL found = NO ;
-  NSRange allTokenCharacterRange = {0, 0} ;
   for (NSUInteger i=0 ; (i<[mTokenArray count]) && ! found ; i++) {
-    OC_Token * token = [mTokenArray objectAtIndex:i HERE] ;
-    allTokenCharacterRange = [token range] ;
+    OC_Token * token = [mTokenArray objectAtIndex:i] ;
+    const NSRange allTokenCharacterRange = [token range] ;
     found = ((allTokenCharacterRange.location + allTokenCharacterRange.length) > inSelectedRange.location)
          && (allTokenCharacterRange.location <= inSelectedRange.location) ;
     if (found) {
@@ -1145,15 +1095,15 @@ static NSInteger numericSort (NSString * inOperand1,
       const NSUInteger kind = [kindObject integerValue] ;
       NSArray * references = [kindDictionary objectForKey:kindObject] ;
       NSString * title = [NSString
-        stringWithFormat:@"%@ (%d item%@)",
-        [indexingTitles objectAtIndex:kind HERE],
+        stringWithFormat:@"%@ (%ld item%@)",
+        [indexingTitles objectAtIndex:kind],
         [references count],
         (([references count] > 1) ? @"s" : @"")
       ] ;
       [menu addItemWithTitle:title action:nil keyEquivalent:@""] ;
       for (NSString * descriptor in references) {
         NSArray * components = [descriptor componentsSeparatedByString:@":"] ;
-        NSString * filePath = [components objectAtIndex:4 HERE] ;
+        NSString * filePath = [components objectAtIndex:4] ;
         title = [NSString stringWithFormat:@"%@, line %@", filePath.lastPathComponent, [components objectAtIndex:1]] ;
         NSMenuItem * item = [menu addItemWithTitle:title action:@selector (indexingMenuAction:) keyEquivalent:@""] ;
         [item setTarget:inTextDisplayDescriptor.textView] ;
@@ -1163,6 +1113,31 @@ static NSInteger numericSort (NSString * inOperand1,
   }
 //---
   return menu ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) addDisplayDescriptor: (OC_GGS_TextDisplayDescriptor *) inDisplayDescriptor {
+  [mTextDisplayDescriptorSet addObject:inDisplayDescriptor] ;
+  [inDisplayDescriptor.textView.layoutManager replaceTextStorage:mSourceTextStorage] ;
+//  NSLog (@"AFTER INSERT mTextDisplayDescriptorSet %@", mTextDisplayDescriptorSet) ;
+  NSMenu * menu = mTokenizer.menuForEntryPopUpButton ;
+  [inDisplayDescriptor populatePopUpButtonWithMenu:menu] ;
+  [inDisplayDescriptor setTextDisplayIssueArray:mIssueArray] ; 
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) removeDisplayDescriptor: (OC_GGS_TextDisplayDescriptor *) inDisplayDescriptor {
+  [mTextDisplayDescriptorSet removeObject:inDisplayDescriptor] ;
+  [mSourceTextStorage removeLayoutManager:inDisplayDescriptor.textView.layoutManager] ;
+//  NSLog (@"AFTER REMOVE mTextDisplayDescriptorSet %@", mTextDisplayDescriptorSet) ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (NSUInteger) displayDescriptorCount {
+  return mTextDisplayDescriptorSet.count ;
 }
 
 //---------------------------------------------------------------------------*

@@ -11,10 +11,14 @@
 @interface PMIssueInRuler : NSObject {
   @private NSRect mBulletRect ;
   @private NSString * mMessage ;
+  @private BOOL mIsError ;
 }
 
 - (PMIssueInRuler *) initWithRect: (NSRect) inRect
-                     message: (NSString *) inMessage ;
+                     message: (NSString *) inMessage
+                     isError: (BOOL) inIsError ;
+
+- (BOOL) isError ;
 
 - (NSRect) rect ;
 

@@ -45,29 +45,6 @@
 
 //---------------------------------------------------------------------------*
 //                                                                           *
-//     64-bit allocation debugging                                           *
-//                                                                           *
-// If the 'allocDebugFor64BitToolEnabled' variable is true, running in debug *
-// mode for 64 bit tool will only use allocated pointers with a mots signi-  *
-// ficant word different than 0. The other ones are lost (never deallocated).*
-//                                                                           *
-// Consequently, a tool may use **more** than 4 GB.                          *
-//                                                                           *
-//---------------------------------------------------------------------------*
-
-#ifndef DO_NOT_GENERATE_CHECKINGS
-  #ifdef __LP64__
-    static bool allocDebugFor64BitToolEnabled = false ;
-    
-    void enableAllocDebugFor64BitTool (void) {
-      allocDebugFor64BitToolEnabled = true ;
-      printf ("*** 64-bit allocation debug mode enabled -- tool may use more than 4 GB ***\n") ;
-    }
-  #endif
-#endif
-
-//---------------------------------------------------------------------------*
-//                                                                           *
 //                   Parametrage de la gestion memoire                       *
 //                                                                           *
 //---------------------------------------------------------------------------*
@@ -157,18 +134,7 @@ void * myAllocRoutine (const size_t inSizeInBytes) {
   #ifdef CALL_MALLOC_DEBUG
     malloc_debug (4) ;
   #endif
-  #if defined (__LP64__) && ! defined (DO_NOT_GENERATE_CHECKINGS)
-    void * ptr = NULL ;
-    if (allocDebugFor64BitToolEnabled) {
-      do{
-        ptr = ::malloc (sizeInBytes) ;
-      }while ((((PMUInt) ptr) >> 32) == 0) ;
-    }else{
-      ptr = ::malloc (sizeInBytes) ;
-    }
-  #else
-    void * ptr = ::malloc (sizeInBytes) ;
-  #endif
+  void * ptr = ::malloc (sizeInBytes) ;
   return  ptr ;
 }
 #endif

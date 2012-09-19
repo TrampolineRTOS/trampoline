@@ -255,7 +255,7 @@ void GALGAS_data::method_writeToFileWhenDifferentContents (GALGAS_string inFileP
     outFileWritten = GALGAS_bool (needToWrite) ;
     if (needToWrite) {
       if (C_Compiler::performGeneration ()) {
-        const bool verboseOptionOn = gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue ;
+        const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
         bool ok = C_FileManager::makeDirectoryIfDoesNotExist (inFilePath.stringValue ().stringByDeletingLastPathComponent ()) ;
         if (! ok) {
           C_String message ;
@@ -295,16 +295,54 @@ void GALGAS_data::method_writeToFile (GALGAS_string inFilePath,
       ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to write '") + filePath + "'.\n" COMMA_HERE) ;
     }else{
       const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (filePath) ;
-      const bool verboseOptionOn = gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue ;
+      const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
       C_FileManager::makeDirectoryIfDoesNotExist (filePath.stringByDeletingLastPathComponent()) ;
       C_BinaryFileWrite binaryFile (filePath) ;
       if (! binaryFile.isOpened ()) {
         C_String s ;
-        s << "'@data writeToFile' : cannot open '" << filePath << "' file in write mode" ;
+        s << "'@data writeToFile': cannot open '" << filePath << "' file in write mode" ;
         inCompiler->onTheFlyRunTimeError (s.cString (HERE) COMMA_THERE) ;
       }else{
         binaryFile.appendData (mData) ;
         const bool ok = binaryFile.close () ;
+        if (ok && verboseOptionOn && fileAlreadyExists) {
+          ggs_printFileOperationSuccess (C_String ("Replaced '") + filePath + "'.\n" COMMA_THERE) ;
+        }else if (ok && verboseOptionOn && ! fileAlreadyExists) {
+          ggs_printFileOperationSuccess (C_String ("Created '") + filePath + "'.\n" COMMA_THERE) ;
+        }else if (! ok) {
+          C_String message ;
+          message << "cannot write '" << filePath << "' file" ;
+          inCompiler->onTheFlyRunTimeError (message COMMA_THERE) ;
+        }
+      }
+    }
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+void GALGAS_data::method_writeToExecutableFile (GALGAS_string inFilePath,
+                                                C_Compiler * inCompiler
+                                                COMMA_LOCATION_ARGS) const {
+  if (inFilePath.isValid ()) {
+    const C_String filePath = inFilePath.stringValue () ;
+    if (filePath.length () == 0) {
+      inCompiler->onTheFlyRunTimeError ("'@data writeToFile' modifier invoked with empty file path argument" COMMA_THERE) ;
+    }else if (! C_Compiler::performGeneration ()) {
+      ggs_printWarning (NULL, C_LocationInSource (), C_String ("Need to write '") + filePath + "'.\n" COMMA_HERE) ;
+    }else{
+      const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (filePath) ;
+      const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
+      C_FileManager::makeDirectoryIfDoesNotExist (filePath.stringByDeletingLastPathComponent()) ;
+      C_BinaryFileWrite binaryFile (filePath) ;
+      if (! binaryFile.isOpened ()) {
+        C_String s ;
+        s << "'@data writeToExecutableFile': cannot open '" << filePath << "' file in write mode" ;
+        inCompiler->onTheFlyRunTimeError (s.cString (HERE) COMMA_THERE) ;
+      }else{
+        binaryFile.appendData (mData) ;
+        const bool ok = binaryFile.close () ;
+        C_FileManager::makeFileExecutable (filePath) ;
         if (ok && verboseOptionOn && fileAlreadyExists) {
           ggs_printFileOperationSuccess (C_String ("Replaced '") + filePath + "'.\n" COMMA_THERE) ;
         }else if (ok && verboseOptionOn && ! fileAlreadyExists) {

@@ -5,3 +5,47 @@
 #endif
 
 //---------------------------------------------------------------------------*
+
+//#define DEBUG_MESSAGES
+
+//---------------------------------------------------------------------------*
+
+#if __has_feature(objc_arc)
+  #define macroSuperFinalize
+#else
+  #define macroSuperFinalize [super finalize]
+#endif
+
+//---------------------------------------------------------------------------*
+
+#if __has_feature(objc_arc)
+  #define FINALIZE_OR_DEALLOC dealloc
+#else
+  #define FINALIZE_OR_DEALLOC finalize
+#endif
+
+//---------------------------------------------------------------------------*
+
+#if __has_feature(objc_arc)
+  #define ARC_BRIDGE __bridge
+#else
+  #define ARC_BRIDGE
+#endif
+
+//---------------------------------------------------------------------------*
+
+#if __clang_major__ == 1
+  #define PROPERTY_COMMA_ATOMIC
+#else
+  #define PROPERTY_COMMA_ATOMIC , atomic
+#endif
+
+//---------------------------------------------------------------------------*
+
+#if __clang_major__ == 1
+  #define PROPERTY_ATOMIC
+#else
+  #define PROPERTY_ATOMIC (atomic)
+#endif
+
+//---------------------------------------------------------------------------*

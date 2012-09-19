@@ -25,6 +25,7 @@
 #include "bdd/C_BDD.h"
 #include "utilities/F_GetPrime.h"
 #include "utilities/C_PrologueEpilogue.h"
+#include "utilities/M_Threads.h"
 #include "strings/C_String.h"
 #include "bdd/C_BDD-node.h"
 #include "time/C_Timer.h"
@@ -249,29 +250,34 @@ static const PMSInt32 kInitialCollisionMapPowerOfTwoSize = 20 ;
 //                                                                           *
 //---------------------------------------------------------------------------*
 
+macroDeclareStaticMutex (semaphore)
+
+//---------------------------------------------------------------------------*
+
 PMUInt32 find_or_add (const PMUInt16 inBoolVar,
                       const PMUInt32 inELSEbranch,
                       const PMUInt32 inTHENbranch
                       COMMA_LOCATION_ARGS) {
   PMUInt32 result = inELSEbranch ;
   if (inELSEbranch != inTHENbranch) {
-  //--- Realloc hash map ?
-    if (0 == gCollisionMapSize) {
-      reallocHashMap (getPrimeGreaterThan (1U << kInitialCollisionMapPowerOfTwoSize)) ;
-    }
-    const PMUInt32 complement = inELSEbranch & 1 ;
-    const PMUInt32 c1 = inTHENbranch ^ complement ;
-    const PMUInt32 c0 = inELSEbranch ^ complement ;
-    const PMUInt64 candidateNode = makeNode (inBoolVar, c1, c0 COMMA_THERE) ;
-    // printf ("candidateNode %llu gCollisionMapSize %u\n", candidateNode, gCollisionMapSize) ;
-    const PMUInt64 hashCode = candidateNode % (PMUInt64) gCollisionMapSize ;
-    PMUInt32 nodeIndex = gCollisionMap [hashCode] ;
-    while ((0 != nodeIndex) && (gNodeArray [nodeIndex] != candidateNode)) {
-      nodeIndex = gAuxiliaryArray [nodeIndex] ;
-    }
-    if (0 == nodeIndex) {
-      nodeIndex = addNewNode (candidateNode) ;
-    }
+    macroMutexLock (semaphore) ;
+      if (0 == gCollisionMapSize) {
+        reallocHashMap (getPrimeGreaterThan (1U << kInitialCollisionMapPowerOfTwoSize)) ;
+      }
+      const PMUInt32 complement = inELSEbranch & 1 ;
+      const PMUInt32 c1 = inTHENbranch ^ complement ;
+      const PMUInt32 c0 = inELSEbranch ^ complement ;
+      const PMUInt64 candidateNode = makeNode (inBoolVar, c1, c0 COMMA_THERE) ;
+      // printf ("candidateNode %llu gCollisionMapSize %u\n", candidateNode, gCollisionMapSize) ;
+      const PMUInt64 hashCode = candidateNode % (PMUInt64) gCollisionMapSize ;
+      PMUInt32 nodeIndex = gCollisionMap [hashCode] ;
+      while ((0 != nodeIndex) && (gNodeArray [nodeIndex] != candidateNode)) {
+        nodeIndex = gAuxiliaryArray [nodeIndex] ;
+      }
+      if (0 == nodeIndex) {
+        nodeIndex = addNewNode (candidateNode) ;
+      }
+    macroMutexUnlock (semaphore) ;
     result = (nodeIndex << 1) | complement ;
   }
   return result ;
