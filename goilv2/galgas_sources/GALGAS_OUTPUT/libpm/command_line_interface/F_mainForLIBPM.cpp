@@ -4,7 +4,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 2002, ..., 2010 Pierre Molinaro.                           *
+//  Copyright (C) 2002, ..., 2012 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //                                                                           *
@@ -24,7 +24,7 @@
 //---------------------------------------------------------------------------*
 
 #include "bdd/C_BDD.h"
-#include "command_line_interface/mainForLIBPM.h"
+#include "command_line_interface/F_mainForLIBPM.h"
 #include "utilities/MF_MemoryControl.h"
 #include "utilities/F_DisplayException.h"
 #include "streams/C_ConsoleOut.h"
@@ -33,6 +33,7 @@
 #include "utilities/cpp-allocation.h"
 #include "utilities/basic-allocation.h"
 #include "utilities/C_PrologueEpilogue.h"
+#include "command_line_interface/F_Analyze_CLI_Options.h"
 
 //---------------------------------------------------------------------------*
 
@@ -157,7 +158,6 @@ int main (int argc, const char * argv []) {
 //---
   if (returnCode == 0) {
     try{
-    //--- Call 'mainForLIBPM' routine
       C_PrologueEpilogue::runPrologueActions () ;
       returnCode = mainForLIBPM (argc, argv) ;
       C_PrologueEpilogue::runEpilogueActions () ;
