@@ -1,2 +1,2 @@
-goil --target=avr -v --templates=../../goil/templates/ firstAVR.oil
+goil --target=avr -v --templates=../../goilv2/templates/ firstAVR.oil
 pause

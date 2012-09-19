@@ -11,7 +11,7 @@
 <ProjectTypeName>AVR GCC</ProjectTypeName>
 </MANAGEMENT>
 <CODE_CREATION>
-<ObjectFile>default\\% !APPNAME %.elf</ObjectFile>
+<ObjectFile>default\\% !OS::BUILD_S::APP_NAME %.elf</ObjectFile>
 <EntryFile>
 </EntryFile>
 <SaveFolder>% !FILEPATH %</SaveFolder>
@@ -79,17 +79,29 @@
 </Debugger>
 <AVRGCCPLUGIN>
 <FILES>
-%foreach TRAMPOLINESOURCEFILES do
-%<SOURCEFILE>% !TRAMPOLINEPATH %\\% !DIRECTORY %\\% !FILE %</SOURCEFILE>
-%end foreach
-%<SOURCEFILE>% !TRAMPOLINEPATH %\\machines\\avr\\avr_switch_context.s</SOURCEFILE>
-<SOURCEFILE>% !TRAMPOLINEPATH %\\machines\\avr\\tpl_machine.c</SOURCEFILE>
-%foreach SOURCEFILES do
-%<SOURCEFILE>% !FILE %</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_alarm_kernel.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_event_kernel.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_it_kernel.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_rez_kernel.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_task_kernel.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_timeobj_kernel.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_kernel.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_action.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_error.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_alarm.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_event.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_it.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_rez.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_task.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\machines\\avr\\avr_switch_context.s</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\machines\\avr\\tpl_machine.c</SOURCEFILE>
+%foreach src in OS::BUILD_S::APP_SRC do
+%<SOURCEFILE>% !src::VALUE %</SOURCEFILE>
 %end foreach
 %<SOURCEFILE>% !PROJECT %\\tpl_app_config.c</SOURCEFILE>
-<OTHERFILE>default\\% !APPNAME %.lss</OTHERFILE>
-<OTHERFILE>default\\% !APPNAME %.map</OTHERFILE>
+<OTHERFILE>default\\% !OS::BUILD_S::APP_NAME %.lss</OTHERFILE>
+<OTHERFILE>default\\% !OS::BUILD_S::APP_NAME %.map</OTHERFILE>
 </FILES>
 <CONFIGS>
 <CONFIG>
@@ -100,16 +112,16 @@
 <HEX>1</HEX>
 <LIST>1</LIST>
 <MAP>1</MAP>
-<OUTPUTFILENAME>% !APPNAME %.elf</OUTPUTFILENAME>
+<OUTPUTFILENAME>% !OS::BUILD_S::APP_NAME %.elf</OUTPUTFILENAME>
 <OUTPUTDIR>default\\</OUTPUTDIR>
 <ISDIRTY>1</ISDIRTY>
 <OPTIONS/>
 <INCDIRS>
 <INCLUDE>.\\</INCLUDE>
-<INCLUDE>% !TRAMPOLINEPATH %\\os\\</INCLUDE>
-<INCLUDE>% !TRAMPOLINEPATH %\\machines\\avr\\</INCLUDE>
-<INCLUDE>% !TRAMPOLINEPATH %\\com\\</INCLUDE>
-<INCLUDE>% !TRAMPOLINEPATH %\\debug\\</INCLUDE>
+<INCLUDE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\</INCLUDE>
+<INCLUDE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\machines\\avr\\</INCLUDE>
+<INCLUDE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\com\\</INCLUDE>
+<INCLUDE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\debug\\</INCLUDE>
 <INCLUDE>% !PROJECT %\\</INCLUDE>
 </INCDIRS>
 <LIBDIRS/>
@@ -127,14 +139,26 @@
 </AVRGCCPLUGIN>
 <ProjectFiles>
 <Files>
-%foreach SOURCEFILES do
-%<Name>% !FILE %</Name>
+%foreach src in OS::BUILD_S::APP_SRC do
+%<Name>% !src::VALUE %</Name>
 %end foreach%
-%foreach TRAMPOLINESOURCEFILES do
-%<Name>% !TRAMPOLINEPATH %\\% !DIRECTORY %\\% !FILE %</Name>
-%end foreach
-%<Name>% !TRAMPOLINEPATH %\\machines\\avr\\avr_switch_context.s</Name>
-<Name>% !TRAMPOLINEPATH %\\machines\\avr\\tpl_machine.c</Name>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_alarm_kernel.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_event_kernel.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_it_kernel.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_rez_kernel.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_task_kernel.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_timeobj_kernel.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_kernel.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_action.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_error.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_alarm.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_event.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_it.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_rez.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_task.c</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\machines\\avr\\avr_switch_context.s</SOURCEFILE>
+<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\machines\\avr\\tpl_machine.c</SOURCEFILE>
 <Name>% !PROJECT %\\tpl_app_config.c</Name>
 </Files>
 </ProjectFiles>
@@ -144,10 +168,10 @@
 </IOView>
 <Files>
 %let id := 0
-foreach SOURCEFILES do
+foreach src in OS::BUILD_S::APP_SRC do
 %<File000% !id %>
 <FileId>000% !id %</FileId>
-<FileName>% !FILE %</FileName>
+<FileName>% !src::VALUE %</FileName>
 <Status>259</Status>
 </File000% !id %>
 %let id := id+1
