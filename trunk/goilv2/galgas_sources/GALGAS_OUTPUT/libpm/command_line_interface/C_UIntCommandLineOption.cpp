@@ -68,7 +68,7 @@ setUIntOptionForCommandChar (const char * inCommandCommandLineOptionString,
   for (PMUInt32 i=2 ; (i<optionLength) && outCommandLineOptionStringIsValid ; i++) {
     outCommandLineOptionStringIsValid = (inCommandCommandLineOptionString [i] >= '0') && (inCommandCommandLineOptionString [i] <= '9') ;
     optionValue *= 10 ;
-    optionValue += inCommandCommandLineOptionString [i] - '0' ;
+    optionValue += (PMUInt32) (inCommandCommandLineOptionString [i] - '0') ;
   }
   outFound = false ;
   C_UIntCommandLineOption * p = gFirst ;

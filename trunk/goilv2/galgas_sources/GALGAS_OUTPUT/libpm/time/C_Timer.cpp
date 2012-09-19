@@ -93,8 +93,8 @@ C_String C_Timer::timeString (void) const {
       timersub (& mEnd, & mStart, & duration) ;
     }
     const PMUInt32 cs = (PMUInt32) (duration.tv_usec / 10000) ;
-    const PMUInt32 secondes = (((PMUInt32) duration.tv_sec) % 60) & PMUINT32_MAX ;
-    const PMUInt32 minutes  = (((PMUInt32) duration.tv_sec) / 60) & PMUINT32_MAX ;
+    const PMUInt32 secondes = (PMUInt32) ((((PMUInt32) duration.tv_sec) % 60) & PMUINT32_MAX) ;
+    const PMUInt32 minutes  = (PMUInt32) ((((PMUInt32) duration.tv_sec) / 60) & PMUINT32_MAX) ;
   #else
     PMUInt32 duration ;
     if (mRunning) {
@@ -132,8 +132,8 @@ AC_OutputStream & operator << (AC_OutputStream & inStream,
       timersub (& inTimer.mEnd, & inTimer.mStart, & duration) ;
     }
     const PMUInt32 cs = (PMUInt32) (duration.tv_usec / 10000) ;
-    const PMUInt32 secondes = (((PMUInt32) duration.tv_sec) % 60) & PMUINT32_MAX ;
-    const PMUInt32 minutes  = (((PMUInt32) duration.tv_sec) / 60) & PMUINT32_MAX ;
+    const PMUInt32 secondes = (PMUInt32) ((((PMUInt32) duration.tv_sec) % 60) & PMUINT32_MAX) ;
+    const PMUInt32 minutes  = (PMUInt32) ((((PMUInt32) duration.tv_sec) / 60) & PMUINT32_MAX) ;
   #else
     PMUInt32 duration ;
     if (inTimer.mRunning) {

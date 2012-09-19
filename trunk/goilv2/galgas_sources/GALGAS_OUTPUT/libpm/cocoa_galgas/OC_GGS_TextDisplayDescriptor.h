@@ -12,11 +12,11 @@
 //---------------------------------------------------------------------------*
 
 @class OC_GGS_TextSyntaxColoring ;
+@class OC_GGS_DocumentData ;
 @class OC_GGS_Document ;
 @class OC_GGS_TextView ;
 @class PMIssueDescriptor ;
 @class OC_GGS_RulerViewForTextView ;
-@class OC_GGS_ContextualHelpTask ;
 
 //---------------------------------------------------------------------------*
 
@@ -26,34 +26,28 @@
 #endif
 {
 
-  @private OC_GGS_TextSyntaxColoring * mTextSyntaxColoring ;
   @private OC_GGS_TextView * mTextView ;
+  @private NSPopUpButton * mEntryListPopUpButton ;
   @private OC_GGS_RulerViewForTextView * mRulerView ;
   @private NSScrollView * mScrollView ;
+  @private NSView * mEnclosingView ;
   @private NSUInteger mTextSelectionStart ;
-  @private OC_GGS_Document * mDocument ;
-  @private NSArray * mIssueArray ;
-  @private OC_GGS_ContextualHelpTask * mContextualHelpTask ;
-  @private NSMutableSet * mPreviousBuildTasks ;
-  @private NSUInteger mTaskIndex ;
+  @private OC_GGS_Document * mDocumentUsedForDisplaying ;
 }
 
-- (OC_GGS_TextDisplayDescriptor *) initWithDelegateForSyntaxColoring: (OC_GGS_TextSyntaxColoring *) inDelegate
-                                   document: (OC_GGS_Document *) inDocument ;
+@property (assign, readonly PROPERTY_COMMA_ATOMIC) OC_GGS_DocumentData * documentData ;
+@property PROPERTY_ATOMIC BOOL isDirty ;
 
-- (void) setSyntaxColoringDelegate: (OC_GGS_TextSyntaxColoring *) inDelegate ;
+- (OC_GGS_TextDisplayDescriptor *) initWithDocumentData: (OC_GGS_DocumentData *) inDocumentData
+                                   displayDocument: (OC_GGS_Document *) inDocumentUsedForDisplaying ;
 
-- (OC_GGS_TextSyntaxColoring *) textSyntaxColoring ;
+- (void) detachTextDisplayDescriptor ;
 
 - (NSURL *) sourceURL ;
 
 - (NSTextView *) textView ;
 
-- (NSScrollView *) scrollView ;
-
-- (OC_GGS_Document *) document ;
-
-- (NSMenu *) menuForEntryPopUpButton ;
+- (NSView *) enclosingView ;
 
 - (NSUInteger) textSelectionStart ;
 
@@ -61,24 +55,16 @@
 
 - (void) selectEntryPopUp ;
 
-- (void) populatePopUpButton ;
+- (void) populatePopUpButtonWithMenu: (NSMenu *) inMenu ;
 
 - (void) commentSelection ;
 - (void) uncommentSelection ;
 - (void) shiftLeftAction ;
 - (void) shiftRightAction ;
 
-- (void) noteUndoManagerCheckPointNotification ;
-
 - (void) setTextDisplayIssueArray: (NSArray *) inIssueArray ; 
 
-- (BOOL) makeVisibleIssue: (PMIssueDescriptor *) inIssue ;
-
 - (void) setSelectionRangeAndMakeItVisible: (NSRange) inRange ;
-
-- (void) noteBuildTaskTermination: (OC_GGS_ContextualHelpTask *) inBuildTask ;
-
-- (void) noteSocketData: (NSData *) inData ;
 @end
 
 //---------------------------------------------------------------------------*

@@ -5,8 +5,11 @@
 //  Created by Pierre Molinaro on 25/11/11.
 //  Copyright (c) 2011 IRCCyN. All rights reserved.
 //
+//---------------------------------------------------------------------------*
 
 #import <AppKit/AppKit.h>
+
+//---------------------------------------------------------------------------*
 
 @interface PMButtonWithRemove : NSButton {
   @private BOOL mMouseWithin ;
@@ -14,13 +17,13 @@
   @private BOOL mDisplayRemoveImage ;
   @private BOOL mIsDirty ;
   @private NSTrackingArea * mTrackingArea ;
-  @private SEL mRemoveAction ;
   @private NSString * mFilePath ;
 }
 
 - (void) setFilePathForDragOperation: (NSString *) inFilePath ;
 - (void) setDisplayRemoveImage: (BOOL) inDisplay ;
-- (void) setRemoveAction: (SEL) inRemoveAction ;
 
 - (void) setIsDirty: (BOOL) inFlag ;
 @end
+
+//---------------------------------------------------------------------------*

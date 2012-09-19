@@ -4,7 +4,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 2009, ..., 2011 Pierre Molinaro.                           *
+//  Copyright (C) 2009, ..., 2012 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //                                                                           *
@@ -214,15 +214,19 @@ class C_Compiler : public C_SharedObject {
                                              const C_String & inDefaultUserZone2,
                                              const C_String & inGeneratedZone3) ;
 
-  public : void
-  generateFileFromPathes (const C_String & inStartPath,
-                          const TC_UniqueArray <C_String> & inDirectoriesToExclude,
-                          const C_String & inLineCommentPrefix,
-                          const C_String & inFileName,
-                          const C_String & inDefaultUserZone1,
-                          const C_String & inGeneratedZone2,
-                          const C_String & inDefaultUserZone2,
-                          const C_String & inGeneratedZone3) ;
+  public : void generateFileWithPatternFromPathes (const C_String & inStartPath,
+                                                   const TC_UniqueArray <C_String> & inDirectoriesToExclude,
+                                                   const C_String & inLineCommentPrefix,
+                                                   const C_String & inFileName,
+                                                   const C_String & inDefaultUserZone1,
+                                                   const C_String & inGeneratedZone2,
+                                                   const C_String & inDefaultUserZone2,
+                                                   const C_String & inGeneratedZone3) ;
+
+  public : void generateFileFromPathes (const C_String & inStartPath,
+                                        const TC_UniqueArray <C_String> & inDirectoriesToExclude,
+                                        const C_String & inFileName,
+                                        const C_String & inContents) ;
 } ;
 
 //---------------------------------------------------------------------------*

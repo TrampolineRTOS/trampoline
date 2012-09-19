@@ -164,7 +164,7 @@ utf32 C_BoolCommandLineOption::getBoolOptionInvocationLetter (const C_String & i
   bool found = false ;
   while ((p != NULL) && not found) {
     found = (inDomainName == p->mDomainName) && (inIdentifier == p->mIdentifier) ;
-    result = TO_UNICODE (p->mCommandChar) ;
+    result = TO_UNICODE ((PMUInt32) p->mCommandChar) ;
     p = p->mNext ;
 }
   return result ;

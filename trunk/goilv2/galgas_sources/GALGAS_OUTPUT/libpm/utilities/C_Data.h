@@ -83,7 +83,11 @@ class C_Data {
   public : void appendByte (const PMUInt8 inByte) ;
 
   public : PMSInt32 compareWithData (const C_Data & inData) const ;
-  
+
+//---
+  public : void removeLengthFromStart (const PMUInt32 inLength) ;
+
+//--- 
   public : bool operator == (const C_Data & inData) const ;
   public : bool operator != (const C_Data & inData) const ;
 } ;

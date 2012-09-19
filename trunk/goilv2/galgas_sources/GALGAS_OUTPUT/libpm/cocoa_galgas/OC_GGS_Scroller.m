@@ -9,12 +9,49 @@
 
 #import "OC_GGS_Scroller.h"
 #import "OC_GGS_TextView.h"
-#import "PMErrorOrWarningDescriptor.h"
-#import "PMCocoaCallsDebug.h"
+#import "PMDebug.h"
+#import "PMIssueDescriptor.h"
 
 //---------------------------------------------------------------------------*
 
 @implementation OC_GGS_Scroller
+
+//---------------------------------------------------------------------------*
+//                                                                           *
+//       I N I T                                                             *
+//                                                                           *
+//---------------------------------------------------------------------------*
+
+- (id) initWithFrame: (NSRect) inFrame {
+  self = [super initWithFrame: (NSRect) inFrame] ;
+  if (self) {
+    #ifdef DEBUG_MESSAGES
+      NSLog (@"%s", __PRETTY_FUNCTION__) ;
+    #endif
+    noteObjectAllocation (self) ;
+  }
+  return self;
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) FINALIZE_OR_DEALLOC {
+  noteObjectDeallocation (self) ;
+  macroSuperFinalize ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) setIsSourceTextViewScroller: (BOOL) inIsSourceTextViewScroller {
+  mIsSourceTextViewScroller = inIsSourceTextViewScroller ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) setIssueArray: (NSArray *) inIssueArray {
+  mIssueArray = inIssueArray.copy ;
+  [self setNeedsDisplay:YES] ;
+}
 
 //---------------------------------------------------------------------------*
 
@@ -29,7 +66,6 @@
   const NSRect textBounds = textView.bounds ;
 //  NSLog (@"textBounds %g, %g, %g, %g", textBounds.origin.x, textBounds.origin.y, textBounds.size.width, textBounds.size.height) ;
   // NSLog (@"textView %@", textView) ;
-  NSArray * issueArray = textView.issueArray ;
   NSLayoutManager * lm = textView.layoutManager ;
   NSString * sourceString = textView.string ;
   const NSUInteger sourceStringLength = sourceString.length ;
@@ -39,9 +75,16 @@
   //--- Error or warning at this line ?
     BOOL hasError = NO ;
     BOOL hasWarning = NO ;
-    for (NSUInteger i=0 ; (i<issueArray.count) && ! hasError ; i++) {
-      PMErrorOrWarningDescriptor * issue = [issueArray objectAtIndex:i HERE] ;
-      if ([issue isInRange:lineRange]) {
+    for (NSUInteger i=0 ; (i<mIssueArray.count) && ! hasError ; i++) {
+      PMIssueDescriptor * issue = [mIssueArray objectAtIndex:i] ;
+      if (! mIsSourceTextViewScroller) {
+        if (NSLocationInRange (issue.locationInOutputData, lineRange)) {
+          hasError = issue.isError ;
+          if (! issue.isError) {
+            hasWarning = YES ;
+          }
+        }
+      }else if (NSLocationInRange (issue.locationInSourceString, lineRange) && (issue.locationInSourceStringStatus == kLocationInSourceStringSolved)) {
         hasError = issue.isError ;
         if (! issue.isError) {
           hasWarning = YES ;

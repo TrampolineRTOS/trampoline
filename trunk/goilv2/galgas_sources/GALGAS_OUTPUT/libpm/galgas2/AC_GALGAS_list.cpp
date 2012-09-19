@@ -25,6 +25,7 @@
 
 #include "predefined-types.h"
 #include "utilities/MF_MemoryControl.h"
+#include "utilities/M_Threads.h"
 #include "galgas2/C_Compiler.h"
 
 //---------------------------------------------------------------------------*
@@ -479,6 +480,7 @@ void AC_GALGAS_list::drop (void) {
 //---------------------------------------------------------------------------*
 
 void AC_GALGAS_list::insulateList (LOCATION_ARGS) {
+  macroMutexLock (gInsulationMutex) ;
   if ((mSharedList != NULL) && (mSharedList->retainCount () > 1)) {
     cSharedList * p = NULL ;
     macroMyNew (p, cSharedList (THERE)) ;
@@ -486,6 +488,7 @@ void AC_GALGAS_list::insulateList (LOCATION_ARGS) {
     macroAssignSharedObject (mSharedList, p) ;
     macroDetachSharedObject (p) ;
   }
+  macroMutexLock (gInsulationMutex) ;
 }
 
 //---------------------------------------------------------------------------*

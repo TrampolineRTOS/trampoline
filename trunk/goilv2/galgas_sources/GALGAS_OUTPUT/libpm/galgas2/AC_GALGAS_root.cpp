@@ -32,6 +32,10 @@
 
 //---------------------------------------------------------------------------*
 
+macroDeclareMutex (gInsulationMutex) ;
+
+//---------------------------------------------------------------------------*
+
 void AC_GALGAS_root::log (const char * inMessage COMMA_LOCATION_ARGS) const {
   C_String s ;
   s << "LOGGING " << inMessage << ": " ;

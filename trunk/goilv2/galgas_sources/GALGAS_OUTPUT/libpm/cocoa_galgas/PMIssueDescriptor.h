@@ -11,52 +11,61 @@
 
 //---------------------------------------------------------------------------*
 
+@class OC_GGS_RulerViewForBuildOutput ;
+
+//---------------------------------------------------------------------------*
+
 typedef enum {
- kFileOperationIssue,
- kMessageIssue,
- kWarningIssue,
- kErrorIssue
-} enumIssueKind ;
+ kLocationInSourceStringNotSolved,
+ kLocationInSourceStringSolved,
+ kLocationInSourceStringInvalid
+} enumLocationInSourceStringStatus ;
 
 //---------------------------------------------------------------------------*
 
 @interface PMIssueDescriptor : NSObject {
-  @private enumIssueKind mIssueKind ;
+  @private BOOL mIsError ;
   @private NSString * mMessage ;
   @private NSURL * mURL ;
   @private NSInteger mLine ;
   @private NSInteger mColumn ;
-
+  @private NSRange mRangeInOutputData ;
+  @private NSInteger mLocationInSourceString ;
+  @private enumLocationInSourceStringStatus mLocationInSourceStringStatus ;
+  @private OC_GGS_RulerViewForBuildOutput * mBuildOutputRuler ;
 }
 
-- (PMIssueDescriptor *) initWithMessage: (NSString *) inMessage ;
-
-- (PMIssueDescriptor *) initWithFileOperation: (NSString *) inMessage ;
-
-- (PMIssueDescriptor *) initWithErrorMessage: (NSString *) inMessage
+- (PMIssueDescriptor *) initWithMessage: (NSString *) inMessage
                         URL: (NSURL *) inURL
                         line: (NSInteger) inLine
-                        column: (NSInteger) inColumn ;
+                        column: (NSInteger) inColumn
+                        isError: (BOOL) inIsError
+                        rangeInOutputData: (NSRange) inRangeInOutputData
+                        buildOutputRuler: (OC_GGS_RulerViewForBuildOutput *) inRuler ;
 
-- (PMIssueDescriptor *) initWithWarningMessage: (NSString *) inMessage
-                        URL: (NSURL *) inURL
-                        line: (NSInteger) inLine
-                        column: (NSInteger) inColumn ;
+- (void) detach ;
 
 - (NSString *) issueMessage ;
 
 - (NSURL *) issueURL ;
 
-- (enumIssueKind) issueKind ;
-
-- (BOOL) errorKind ;
-
-- (BOOL) errorOrWarningKind ;
+- (BOOL) isError ;
 
 - (NSInteger) issueLine ;
 
 - (NSInteger) issueColumn ;
 
+- (NSInteger) locationInOutputData ;
+
+- (enumLocationInSourceStringStatus) locationInSourceStringStatus ;
+
+- (NSUInteger) locationInSourceString ;
+- (void) setLocationInSourceString: (NSUInteger) inLocationInSourceString ;
+
+- (void) updateLocationForPreviousRange: (NSRange) inEditedRange
+         changeInLength: (NSInteger) inChangeInLength ;
+
+- (void) scrollAndSelectErrorMessage ;
 @end
 
 //---------------------------------------------------------------------------*

@@ -26,7 +26,7 @@
 #include "predefined-types.h"
 #include "galgas2/C_galgas_CLI_Options.h"
 #include "galgas2/C_Compiler.h"
-#include "command_line_interface/mainForLIBPM.h"
+#include "command_line_interface/F_mainForLIBPM.h"
 #include "command_line_interface/F_Analyze_CLI_Options.h"
 #include "strings/unicode_character_cpp.h"
 #include "galgas2/C_galgas_io.h"
@@ -1069,13 +1069,34 @@ void GALGAS_string::class_method_removeDirectoryRecursively (GALGAS_string inDir
 
 void GALGAS_string::class_method_generateFile (GALGAS_string inStartPath,
                                                GALGAS_string inFileName,
-                                               GALGAS_string inLineCommentPrefix,
-                                               GALGAS_string inDefaultUserZone1,
-                                               GALGAS_string inGeneratedZone2,
-                                               GALGAS_string inDefaultUserZone2,
-                                               GALGAS_string inGeneratedZone3,
+                                               GALGAS_string inContents,
                                                C_Compiler * inCompiler
                                                COMMA_UNUSED_LOCATION_ARGS) {
+  const bool built = (inStartPath.isValid ())
+    && (inFileName.isValid ())
+    && (inContents.isValid ())
+  ;
+  if (built) {
+    TC_UniqueArray <C_String> directoriesToExclude ;
+    inCompiler->generateFileFromPathes (inStartPath.mString,
+                                        directoriesToExclude,
+                                        inFileName.mString,
+                                        inContents.mString) ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+void GALGAS_string::
+class_method_generateFileWithPattern (GALGAS_string inStartPath,
+                                      GALGAS_string inFileName,
+                                      GALGAS_string inLineCommentPrefix,
+                                      GALGAS_string inDefaultUserZone1,
+                                      GALGAS_string inGeneratedZone2,
+                                      GALGAS_string inDefaultUserZone2,
+                                      GALGAS_string inGeneratedZone3,
+                                      C_Compiler * inCompiler
+                                      COMMA_UNUSED_LOCATION_ARGS) {
   const bool built = (inStartPath.isValid ())
     && (inFileName.isValid ())
     && (inLineCommentPrefix.isValid ())
@@ -1086,7 +1107,7 @@ void GALGAS_string::class_method_generateFile (GALGAS_string inStartPath,
   ;
   if (built) {
     TC_UniqueArray <C_String> directoriesToExclude ;
-    inCompiler->generateFileFromPathes (inStartPath.mString,
+    inCompiler->generateFileWithPatternFromPathes (inStartPath.mString,
                                         directoriesToExclude,
                                         inLineCommentPrefix.mString,
                                         inFileName.mString,
@@ -1137,7 +1158,7 @@ void GALGAS_string::method_writeToFile (GALGAS_string inFilePath,
   if (inFilePath.isValid ()) {
     if (C_Compiler::performGeneration ()) {
       const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (inFilePath.mString) ;
-      const bool verboseOptionOn = gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue ;
+      const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
       const bool ok = C_FileManager::writeStringToFile (mString, inFilePath.mString) ;
       if (ok && verboseOptionOn && fileAlreadyExists) {
         ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
@@ -1171,7 +1192,7 @@ void GALGAS_string::method_writeToFileWhenDifferentContents (GALGAS_string inFil
     outFileWritten = GALGAS_bool (needToWrite) ;
     if (needToWrite) {
       if (C_Compiler::performGeneration ()) {
-        const bool verboseOptionOn = gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue ;
+        const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
         bool ok = C_FileManager::makeDirectoryIfDoesNotExist (inFilePath.mString.stringByDeletingLastPathComponent ()) ;
         if (! ok) {
           C_String message ;
@@ -1207,7 +1228,7 @@ void GALGAS_string::method_writeToExecutableFile (GALGAS_string inFilePath,
  //   inCompiler->addDependancyOutputFilePath (inFilePath.mString) ;
     const bool fileAlreadyExists = C_FileManager::fileExistsAtPath (inFilePath.mString) ;
     if (C_Compiler::performGeneration ()) {
-      const bool verboseOptionOn = gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue ;
+      const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
       const bool ok = C_FileManager::writeStringToExecutableFile (mString, inFilePath.mString) ;
       if (ok && verboseOptionOn && fileAlreadyExists) {
         ggs_printFileOperationSuccess (C_String ("Replaced '") + inFilePath.mString + "'.\n" COMMA_THERE) ;
@@ -1241,7 +1262,7 @@ void GALGAS_string::method_writeToExecutableFileWhenDifferentContents (GALGAS_st
     outFileWritten = GALGAS_bool (needToWrite) ;
     if (needToWrite) {
       if (C_Compiler::performGeneration ()) {
-        const bool verboseOptionOn = gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue ;
+        const bool verboseOptionOn = gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue ;
         bool ok = C_FileManager::makeDirectoryIfDoesNotExist (inFilePath.mString.stringByDeletingLastPathComponent ()) ;
         if (! ok) {
           C_String message ;

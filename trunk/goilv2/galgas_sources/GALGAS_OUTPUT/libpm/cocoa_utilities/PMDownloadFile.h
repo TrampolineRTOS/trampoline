@@ -11,10 +11,14 @@
 
 //---------------------------------------------------------------------------*
 
-@interface PMDownloadFile : NSObject {
+@interface PMDownloadFile : NSObject
+  #if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_6
+    <NSURLDownloadDelegate>
+  #endif
+{
   @protected NSURL * mURL ;
   @protected id mDelegate ;
-  @protected NSURLDownload  * mDownload ;
+  @protected NSURLDownload * mDownload ;
   @protected SEL mDownloadDidEndSelector ;
   @protected NSButton * mCancelButton ;
   @protected NSTextField * mSubTitle ;

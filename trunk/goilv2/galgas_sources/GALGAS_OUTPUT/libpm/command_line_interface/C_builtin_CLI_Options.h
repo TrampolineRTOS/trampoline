@@ -43,20 +43,8 @@ extern C_BoolCommandLineOption gOption_generic_5F_cli_5F_options_display_5F_vers
 
 //---------------------------------------------------------------------------*
 
-#ifdef SIOUX_IS_IMPLEMENTED
-  extern C_BoolCommandLineOption gOption_generic_5F_cli_5F_options_options_asktosaveonclose ;
-#endif
-
-//---------------------------------------------------------------------------*
-
 #ifdef COMPILE_FOR_WIN32
   extern C_BoolCommandLineOption gOption_generic_5F_cli_5F_options_nodialog ;
-#endif
-
-//---------------------------------------------------------------------------*
-
-#ifdef __LP64__
-  extern C_BoolCommandLineOption gOption_generic_5F_cli_5F_options_enable_5F_allocation_5F_debugging ;
 #endif
 
 //---------------------------------------------------------------------------*

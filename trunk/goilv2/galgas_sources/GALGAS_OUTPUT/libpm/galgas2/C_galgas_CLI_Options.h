@@ -34,39 +34,39 @@
 
 //---------------------------------------------------------------------------*
 
-extern C_BoolCommandLineOption gOption_galgas_5F_cli_5F_options_trace ;
+extern C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_trace ;
 
 //---------------------------------------------------------------------------*
 
-extern C_BoolCommandLineOption gOption_galgas_5F_cli_5F_options_outputConcreteSyntaxTree ;
+extern C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_outputConcreteSyntaxTree ;
 
 //---------------------------------------------------------------------------*
 
-extern C_BoolCommandLineOption gOption_galgas_5F_cli_5F_options_noteFileAccess ;
+extern C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_noteFileAccess ;
 
 //---------------------------------------------------------------------------*
 
-extern C_BoolCommandLineOption gOption_galgas_5F_cli_5F_options_verbose_5F_output ;
+extern C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_verbose_5F_output ;
 
 //---------------------------------------------------------------------------*
 
-extern C_BoolCommandLineOption gOption_galgas_5F_cli_5F_options_log_5F_file_5F_read ;
+extern C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_log_5F_file_5F_read ;
 
 //---------------------------------------------------------------------------*
 
-extern C_BoolCommandLineOption gOption_galgas_5F_cli_5F_options_do_5F_not_5F_generate_5F_any_5F_file ;
+extern C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_do_5F_not_5F_generate_5F_any_5F_file ;
 
 //---------------------------------------------------------------------------*
 
-extern C_BoolCommandLineOption gOption_galgas_5F_cli_5F_options_treat_5F_warnings_5F_as_5F_error ;
+extern C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_treat_5F_warnings_5F_as_5F_error ;
 
 //---------------------------------------------------------------------------*
 
-extern C_UIntCommandLineOption gOption_galgas_5F_cli_5F_options_max_5F_errors ;
+extern C_UIntCommandLineOption gOption_galgas_5F_builtin_5F_options_max_5F_errors ;
 
 //---------------------------------------------------------------------------*
 
-extern C_UIntCommandLineOption gOption_galgas_5F_cli_5F_options_max_5F_warnings ;
+extern C_UIntCommandLineOption gOption_galgas_5F_builtin_5F_options_max_5F_warnings ;
 
 //---------------------------------------------------------------------------*
 

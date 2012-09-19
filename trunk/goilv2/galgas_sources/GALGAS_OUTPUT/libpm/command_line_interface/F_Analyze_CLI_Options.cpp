@@ -5,7 +5,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 2001, ..., 2010 Pierre Molinaro.                           *
+//  Copyright (C) 2001, ..., 2012 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //                                                                           *
@@ -30,7 +30,6 @@
 #include "command_line_interface/C_StringCommandLineOption.h"
 #include "command_line_interface/C_builtin_CLI_Options.h"
 #include "streams/C_ConsoleOut.h"
-#include "command_line_interface/mainForLIBPM.h"
 #include "files/C_FileManager.h"
 
 //---------------------------------------------------------------------------*
@@ -127,7 +126,8 @@ static void print_option_list (void) {
 static void print_help (int argv,
                         const char * argc [],
                         const char * inExtensions [],
-                        const char * inHelpMessages []) {
+                        const char * inHelpMessages [],
+                        void print_tool_help_message (void)) {
   #ifdef __LP64__
     co << "Compiled in 64 bits mode" ;
   #else
@@ -377,7 +377,8 @@ void F_Analyze_CLI_Options (const int argv,
                             const char * inVersionString,
                             TC_UniqueArray <C_String> & outSourceFileArray,
                             const char * inExtensions [],
-                            const char * inHelpMessages []) {
+                            const char * inHelpMessages [],
+                            void print_tool_help_message (void)) {
   gCompilerVersionString = inVersionString ;
 //--- Analyze command
   bool errorFound = false ;
@@ -405,7 +406,7 @@ void F_Analyze_CLI_Options (const int argv,
   }
 //--- Print Help ?
   if (gOption_generic_5F_cli_5F_options_display_5F_help.mValue) {
-    print_help (argv, argc, inExtensions, inHelpMessages) ;
+    print_help (argv, argc, inExtensions, inHelpMessages, print_tool_help_message) ;
   }
 //--- WIN32 : if got no file, display file open dialog
   #ifdef COMPILE_FOR_WIN32

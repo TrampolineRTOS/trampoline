@@ -7,6 +7,7 @@
 //
 
 #import "PMDownloadFile.h"
+#import <objc/objc-runtime.h>
 
 //---------------------------------------------------------------------------*
 
@@ -146,7 +147,7 @@
   [mCancelButton setTarget:nil] ;
   [mCancelButton setAction:NULL] ;
   [mCancelButton setEnabled:NO] ;
-  [mDelegate performSelector:mDownloadDidEndSelector withObject:self] ;
+  objc_msgSend (mDelegate, mDownloadDidEndSelector, self) ;
 }
 
 //---------------------------------------------------------------------------*

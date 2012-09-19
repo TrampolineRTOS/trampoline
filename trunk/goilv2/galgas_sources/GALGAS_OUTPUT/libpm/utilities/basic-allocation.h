@@ -40,14 +40,6 @@ void myFreeRoutine (void * inPointer) ;
 
 //---------------------------------------------------------------------------*
 
-#ifndef DO_NOT_GENERATE_CHECKINGS
-  #ifdef __LP64__
-    void enableAllocDebugFor64BitTool (void) ;
-  #endif
-#endif
-
-//---------------------------------------------------------------------------*
-
 void displayAllocatedBlockSizeStats (void) ;
 
 //---------------------------------------------------------------------------*

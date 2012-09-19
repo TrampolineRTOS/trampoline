@@ -100,9 +100,9 @@ static void reallocSingleOperandOperationCache (const PMUInt32 inNewSize) {
       for (PMUInt32 i=0 ; i<gSingleOperandOperationMapSize ; i++) {
         if (gSingleOperandOperationCacheMap [i].mOperand != 0) {
           const PMUInt32 newIndex = gSingleOperandOperationCacheMap [i].mOperand % inNewSize ;
-          gSingleOperandOperationCacheMapUsedEntryCount += newCache [newIndex].mOperand == 0 ;
           newCache [newIndex].mOperand = gSingleOperandOperationCacheMap [i].mOperand ;
           newCache [newIndex].mResult = gSingleOperandOperationCacheMap [i].mResult ;
+          gSingleOperandOperationCacheMapUsedEntryCount += newCache [newIndex].mOperand == 0 ;
         }
       }
       macroMyDeletePODArray (gSingleOperandOperationCacheMap) ;

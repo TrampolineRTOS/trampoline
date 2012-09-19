@@ -132,8 +132,7 @@ static void md5_addsize (unsigned char *M, md5_size index, md5_size oldlen)
 void md5_update (struct md5_ctx *context)
 {
   unsigned char buffer [64]; /* 512 bits */
-  int i;
-  
+  unsigned int i ;
   for (i = 0; context->size - i > 63; i += 64) {
     memcopy (buffer, context->buf + i, 64);
     md5_encode (buffer, context);

@@ -682,6 +682,50 @@ bool C_FileManager::writeBinaryDataToFile (const C_Data & inBinaryData,
 }
 
 //---------------------------------------------------------------------------*
+  
+bool C_FileManager::writeBinaryDataToExecutableFile (const C_Data & inBinaryData,
+                                                     const C_String & inFilePath) {
+  makeDirectoryIfDoesNotExist (inFilePath.stringByDeletingLastPathComponent()) ;
+//---
+  C_BinaryFileWrite binaryFile (inFilePath) ;
+  bool success = binaryFile.isOpened () ;
+  binaryFile.appendData (inBinaryData) ;
+//--- Close file
+  if (success) {
+    success = binaryFile.close () ;
+    #ifndef COMPILE_FOR_WIN32
+      struct stat fileStat ;
+      ::stat (inFilePath.cString (HERE), & fileStat) ;
+      // printf ("FILE MODE 0x%X\n", fileStat.st_mode) ;
+      ::chmod (inFilePath.cString (HERE), fileStat.st_mode | S_IXUSR | S_IXGRP | S_IXOTH) ;
+    #endif
+  }
+//---
+  return success ;
+}
+
+ //---------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Make File Executable
+#endif
+
+//---------------------------------------------------------------------------*
+
+bool C_FileManager::makeFileExecutable (const C_String & inFilePath) {
+  const bool result = fileExistsAtPath (inFilePath) ;
+  #ifndef COMPILE_FOR_WIN32
+    if (result) {
+      struct stat fileStat ;
+      ::stat (inFilePath.cString (HERE), & fileStat) ;
+      // printf ("FILE MODE 0x%X\n", fileStat.st_mode) ;
+      ::chmod (inFilePath.cString (HERE), fileStat.st_mode | S_IXUSR | S_IXGRP | S_IXOTH) ;
+    }
+  #endif
+  return result ;
+}
+
+//---------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Directory Handling

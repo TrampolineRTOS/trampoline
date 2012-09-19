@@ -10,15 +10,14 @@
 
 @class OC_GGS_TextDisplayDescriptor ;
 @class OC_Lexique ;
-@class OC_GGS_Document ;
+@class OC_GGS_DocumentData ;
 
 @interface OC_GGS_TextSyntaxColoring : NSObject {
+  @private NSMutableSet * mTextDisplayDescriptorSet ; // Of OC_GGS_TextDisplayDescriptor
   @private NSTextStorage * mSourceTextStorage ;
-  @private NSMutableSet * mTextDisplayDescriptorSet ; // Set of OC_GGS_TextDisplayDescriptor
   @private OC_Lexique * mTokenizer ;
-  @private OC_GGS_Document * mDocument ;
-  @private BOOL mIsDirty ;
-  @private NSArray * mIssueArray ;
+  @private NSMutableArray * mIssueArray ; // Of PMIssueDescriptor
+  
 
   @private double mMaxAscender ; // Only mMaxAscender is observable
   @private double mMaxLeadingMinusDescender ; // leading - descender (because descender is < 0)
@@ -32,18 +31,26 @@
   @private NSMutableArray * mTokenArray ;
   @private NSMutableArray * mFontAttributesDictionaryArray ; // Array of OC_Token
   @private NSMutableDictionary * mTemplateTextAttributeDictionary ;
+  
+//--- Timer for autosaving
+  @private NSTimer * mTimerForAutosaving ;
 }
+
+@property (readonly PROPERTY_COMMA_ATOMIC) BOOL isDirty ;
+@property (assign, readonly PROPERTY_COMMA_ATOMIC) OC_GGS_DocumentData * documentData ;
 
 - (OC_GGS_TextSyntaxColoring *) initWithSourceString: (NSString *) inSource
                                 tokenizer: (OC_Lexique *) inTokenizer
-                                document: (OC_GGS_Document *) inDocument
+                                documentData: (OC_GGS_DocumentData *) inDocument
                                 issueArray: (NSArray *) inIssueArray ;
 
-- (NSTextStorage *) textStorage ;
+- (void) detach ;
+
+- (void) setIssueArray: (NSArray *) inIssueArray ;
+
 - (NSUndoManager *) undoManager ;
 - (OC_Lexique *) tokenizer ;
-- (OC_GGS_Document *) document ;
-- (NSUInteger) textDisplayDescriptorCount ;
+
 - (NSRange) rangeForLine: (NSInteger) inLineNumber ;
 
 - (NSArray *) buildIndexingDictionaryArray ;
@@ -51,15 +58,11 @@
 - (NSArray *) tokenArray ;
 - (BOOL) selectionByWordSelectsAllCharactersForTokenIndex: (NSUInteger) inTokenIndex ;
 
-- (BOOL) isDirty ;
-
 - (NSString *) sourceString ;
 - (void) replaceSourceStringWithString: (NSString *) inString ;
 
 - (void) updateSyntaxColoringForEditedRange: (NSRange) inEditedRange
          changeInLength: (NSInteger) inChangeInLength ;
-
-- (NSMenu *) menuForEntryPopUpButton ;
 
 - (void) breakUndoCoalescing ;
 
@@ -70,4 +73,10 @@
 
 - (NSMenu *) indexMenuForRange: (NSRange) inSelectedRange
              textDisplayDescriptor: (OC_GGS_TextDisplayDescriptor *) inTextDisplayDescriptor ;
+
+- (NSUInteger) displayDescriptorCount ;
+
+//--- RESERVED to OC_GGS_TextDisplayDescriptor
+- (void) addDisplayDescriptor: (OC_GGS_TextDisplayDescriptor *) inDisplayDescriptor ;
+- (void) removeDisplayDescriptor: (OC_GGS_TextDisplayDescriptor *) inDisplayDescriptor ;
 @end

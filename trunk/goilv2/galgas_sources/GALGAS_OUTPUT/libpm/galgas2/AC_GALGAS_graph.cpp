@@ -1,10 +1,10 @@
 //---------------------------------------------------------------------------*
 //                                                                           *
-//  AC_GALGAS_graph : Base class for GALGAS list                              *
+//  AC_GALGAS_graph : Base class for GALGAS graph                            *
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 2008, ..., 2010 Pierre Molinaro.                           *
+//  Copyright (C) 2008, ..., 2012 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //                                                                           *
@@ -38,6 +38,7 @@ class cGraphNode {
   public : capCollectionElement mAttributes ;
   public : GALGAS_location mDefinitionLocation ;
   public : TC_UniqueArray <GALGAS_location> mReferenceLocationArray ;
+  public : bool mIsDefined ;
 
 //--- Constructors
   public : cGraphNode (const C_String & inKey,
@@ -74,11 +75,10 @@ class cSharedGraph : public C_SharedObject {
   private : cGraphNode * mRoot ;
   public : inline const cGraphNode * root (void) const { return mRoot ; }
   private : PMUInt32 mAllNodeCount ;
-  private : PMUInt32 mDefinedNodeCount ;
   private : TC_UniqueArray <tArcStruct> mArcArray ;
+  private : TC_UniqueArray <cGraphNode *> mNodeArray ;
 
 //--- Count
-  public : inline PMUInt32 definedNodeCount (void) const { return mDefinedNodeCount ; }
   public : inline PMUInt32 allNodeCount (void) const { return mAllNodeCount ; }
 
 //--- Constructor
@@ -116,6 +116,10 @@ class cSharedGraph : public C_SharedObject {
                                          cSharedList * & outUnsortedList,
                                          GALGAS_lstringlist & outUnsortedNodeKeyList) const ;
 
+  public : C_String reader_graphviz (void) const ;
+
+  public : void reader_arcs (GALGAS__32_stringlist & ioList) const ;
+
 //--- No copy
   private : cSharedGraph (const cSharedGraph &) ;
   private : cSharedGraph & operator = (const cSharedGraph &) ;
@@ -127,8 +131,8 @@ cSharedGraph::cSharedGraph (LOCATION_ARGS) :
 C_SharedObject (THERE),
 mRoot (NULL),
 mAllNodeCount (0),
-mDefinedNodeCount (0),
-mArcArray () {
+mArcArray (),
+mNodeArray () {
 }
 
 //---------------------------------------------------------------------------*
@@ -153,7 +157,8 @@ mKey (inNode->mKey),
 mNodeID (inNode->mNodeID),
 mAttributes (inNode->mAttributes),
 mDefinitionLocation (inNode->mDefinitionLocation),
-mReferenceLocationArray () {
+mReferenceLocationArray (),
+mIsDefined (inNode->mIsDefined) {
   if (NULL != inNode->mInfPtr) {
     macroMyNew (mInfPtr, cGraphNode (inNode->mInfPtr)) ;
   }
@@ -172,7 +177,6 @@ void cSharedGraph::copyFrom (const cSharedGraph * inSource) {
   macroUniqueSharedObject (this) ;
   if (NULL != inSource->mRoot) {
     macroMyNew (mRoot, cGraphNode (inSource->mRoot)) ;
-    mDefinedNodeCount = inSource->mDefinedNodeCount ;
     mAllNodeCount = inSource->mAllNodeCount ;
     mArcArray.makeRoom (inSource->mArcArray.count ()) ;
     for (PMSInt32 i=0 ; i<inSource->mArcArray.count () ; i++) {
@@ -186,8 +190,8 @@ void cSharedGraph::copyFrom (const cSharedGraph * inSource) {
 void cSharedGraph::description (C_String & ioString,
                                 const PMSInt32 /* inIndentation */) const {
   ioString << " ("
-           << cStringWithUnsigned (mDefinedNodeCount)
-           << " object" << ((mDefinedNodeCount > 1) ? "s" : "")
+           << cStringWithUnsigned (mAllNodeCount)
+           << " node" << ((mAllNodeCount > 1) ? "s" : "")
            << ")" ;
 }
 
@@ -246,7 +250,7 @@ void AC_GALGAS_graph::description (C_String & ioString,
 PMUInt32 AC_GALGAS_graph::count () const {
   PMUInt32 result = 0 ;
   if (isValid ()) {
-    result = mSharedGraph->definedNodeCount () ;
+    result = mSharedGraph->allNodeCount () ;
   }
   return result ;
 }
@@ -266,6 +270,7 @@ void AC_GALGAS_graph::drop (void) {
 //---------------------------------------------------------------------------*
 
 void AC_GALGAS_graph::insulateGraph (LOCATION_ARGS) {
+  macroMutexLock (gInsulationMutex) ;
   if ((mSharedGraph != NULL) && (mSharedGraph->retainCount () > 1)) {
     cSharedGraph * p = NULL ;
     macroMyNew (p, cSharedGraph (THERE)) ;
@@ -273,6 +278,7 @@ void AC_GALGAS_graph::insulateGraph (LOCATION_ARGS) {
     macroAssignSharedObject (mSharedGraph, p) ;
     macroDetachSharedObject (p) ;
   }
+  macroMutexUnlock (gInsulationMutex) ;
 }
 
 //---------------------------------------------------------------------------*
@@ -284,7 +290,7 @@ void AC_GALGAS_graph::insulateGraph (LOCATION_ARGS) {
 //---------------------------------------------------------------------------*
 
 PMSInt32 cSharedGraph::graphCompare (const cSharedGraph * inOperand) const {
-  PMSInt32 r = ((PMSInt32) definedNodeCount ()) - ((PMSInt32) inOperand->definedNodeCount ()) ;
+  PMSInt32 r = ((PMSInt32) allNodeCount ()) - ((PMSInt32) inOperand->allNodeCount ()) ;
   if (r == 0) {
 
   }
@@ -366,7 +372,8 @@ mKey (inKey),
 mNodeID (inNodeID),
 mAttributes (),
 mDefinitionLocation (),
-mReferenceLocationArray () {
+mReferenceLocationArray (),
+mIsDefined (false) {
 }
 
 //---------------------------------------------------------------------------*
@@ -377,6 +384,7 @@ cGraphNode * cSharedGraph::internalInsert (cGraphNode * & ioRootPtr,
   cGraphNode * matchingEntry = NULL ;
   if (ioRootPtr == NULL) {
     macroMyNew (ioRootPtr, cGraphNode (inKey, mAllNodeCount)) ;
+    mNodeArray.addObject (ioRootPtr) ;
     ioExtension = true ;
     mAllNodeCount ++ ;
     matchingEntry = ioRootPtr ;
@@ -443,7 +451,7 @@ void cSharedGraph::internalAddNode (const GALGAS_lstring & inKey,
   if (node->mAttributes.ptr () == NULL) { // Node exists, but is undefined
     node->mAttributes = inAttributes ;
     node->mDefinitionLocation = inKey.mAttribute_location ;
-    mDefinedNodeCount ++ ;  
+    node->mIsDefined = true ;
   }else{ // Error : node redefinition
     GALGAS_lstring existingKey ;
     existingKey.mAttribute_location = node->mDefinitionLocation ;
@@ -516,15 +524,89 @@ void AC_GALGAS_graph::modifier_addArc (const GALGAS_lstring & inSourceNodeKey,
 //---------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Output graphviz text
+#endif
+
+//---------------------------------------------------------------------------*
+
+C_String cSharedGraph::reader_graphviz (void) const {
+  C_String s ;
+  s << "digraph G {\n" ;
+  for (PMSInt32 i=0 ; i<mArcArray.count () ; i++) {
+    const tArcStruct arc = mArcArray (i COMMA_HERE) ;
+    s << "  \"" << mNodeArray (arc.mSourceNodeID COMMA_HERE)->mKey
+      << "\" -> \"" << mNodeArray (arc.mTargetNodeID COMMA_HERE)->mKey
+      << "\" ;\n" ;
+  }  
+  s << "}\n" ;
+  return s ;
+}
+
+//---------------------------------------------------------------------------*
+
+GALGAS_string AC_GALGAS_graph::reader_graphviz (UNUSED_LOCATION_ARGS) const {
+  GALGAS_string result ;
+  if (isValid ()) {
+    result = GALGAS_string (mSharedGraph->reader_graphviz ()) ;
+  }
+  return result ;
+}
+
+
+//---------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Output arc list
+#endif
+
+//---------------------------------------------------------------------------*
+
+void cSharedGraph::reader_arcs (GALGAS__32_stringlist & ioList) const {
+  for (PMSInt32 i=0 ; i<mArcArray.count () ; i++) {
+    const tArcStruct arc = mArcArray (i COMMA_HERE) ;
+    ioList.addAssign_operation (mNodeArray (arc.mSourceNodeID COMMA_HERE)->mKey,
+                                mNodeArray (arc.mTargetNodeID COMMA_HERE)->mKey
+                                COMMA_HERE) ;
+  }  
+}
+
+//---------------------------------------------------------------------------*
+
+GALGAS__32_stringlist AC_GALGAS_graph::reader_arcs (LOCATION_ARGS) const {
+  GALGAS__32_stringlist result ;
+  if (isValid ()) {
+    result = GALGAS__32_stringlist::constructor_emptyList (THERE) ;
+    mSharedGraph->reader_arcs (result) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
   #pragma mark reader_undefinedNodeCount
 #endif
+
+//---------------------------------------------------------------------------*
+
+static void countUndefinedNodeCount (const cGraphNode * inNode, PMUInt32 & ioCount) {
+  if (NULL != inNode) {
+    countUndefinedNodeCount (inNode->mInfPtr, ioCount) ;
+    if (! inNode->mIsDefined) {
+      ioCount ++ ;
+    }
+    countUndefinedNodeCount (inNode->mSupPtr, ioCount) ;
+  }
+}
 
 //---------------------------------------------------------------------------*
 
 GALGAS_uint AC_GALGAS_graph::reader_undefinedNodeCount (UNUSED_LOCATION_ARGS) const {
   GALGAS_uint result ;
   if (isValid ()) {
-    result = GALGAS_uint (mSharedGraph->allNodeCount () - mSharedGraph->definedNodeCount ()) ;
+    PMUInt32 undefinedNodeCount = 0 ;
+    countUndefinedNodeCount (mSharedGraph->root (), undefinedNodeCount) ;
+    result = GALGAS_uint (undefinedNodeCount) ;
   }
   return result ;
 }
@@ -540,7 +622,7 @@ GALGAS_uint AC_GALGAS_graph::reader_undefinedNodeCount (UNUSED_LOCATION_ARGS) co
 static void buildUndefinedNodeKeyList (const cGraphNode * inNode, GALGAS_stringlist & ioResult) {
   if (NULL != inNode) {
     buildUndefinedNodeKeyList (inNode->mInfPtr, ioResult) ;
-    if (NULL == inNode->mAttributes.ptr ()) {
+    if (! inNode->mIsDefined) {
       ioResult.addAssign_operation (GALGAS_string (inNode->mKey) COMMA_HERE) ;
     }
     buildUndefinedNodeKeyList (inNode->mSupPtr, ioResult) ;
@@ -683,7 +765,8 @@ void AC_GALGAS_graph::internalTopologicalSort (cSharedList * & outSortedList,
   outSortedNodeKeyList.drop () ;
   outUnsortedNodeKeyList.drop () ;
   if (isValid ()) {
-    const PMUInt32 undefinedNodeCount = mSharedGraph->allNodeCount () - mSharedGraph->definedNodeCount () ; 
+    PMUInt32 undefinedNodeCount = 0 ;
+    countUndefinedNodeCount (mSharedGraph->root (), undefinedNodeCount) ;
     if (0 != undefinedNodeCount) {
       C_String s ;
       s << "Cannot apply graph topologicalSort: there " ;

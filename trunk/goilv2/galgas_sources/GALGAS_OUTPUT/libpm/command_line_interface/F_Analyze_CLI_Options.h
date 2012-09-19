@@ -5,7 +5,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 2001, ..., 2009 Pierre Molinaro.                           *
+//  Copyright (C) 2001, ..., 2012 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //                                                                           *
@@ -42,7 +42,8 @@ void F_Analyze_CLI_Options (const int argv,
                             const char * inVersionString,
                             TC_UniqueArray <C_String> & outSourceFileArray,
                             const char * inExtensions [],
-                            const char * inHelpMessages []) ;
+                            const char * inHelpMessages [],
+                            void print_tool_help_message (void)) ;
 
 //---------------------------------------------------------------------------*
 

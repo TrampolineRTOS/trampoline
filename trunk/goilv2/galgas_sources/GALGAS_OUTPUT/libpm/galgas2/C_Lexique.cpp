@@ -164,7 +164,7 @@ mIndexForSecondPassParsing (0) {
   C_SourceTextInString * sourceTextPtr = NULL ;    
   macroMyNew (sourceTextPtr, C_SourceTextInString (inSourceString,
                                                    inStringForError,
-                                                   gOption_galgas_5F_cli_5F_options_verbose_5F_output.mValue
+                                                   gOption_galgas_5F_builtin_5F_options_verbose_5F_output.mValue
                                                    COMMA_HERE)) ;
   resetAndLoadSourceFromText (sourceTextPtr) ;
   mTokenStartLocation.resetWithSourceText (sourceTextPtr) ;
@@ -806,7 +806,7 @@ bool C_Lexique::performTopDownParsing (const PMSInt16 inProductions [],
   performLexicalAnalysis () ;
   if (! executionModeIsLexicalAnalysisOnly ()) {
   //--- Variables for generating syntax tree in a form suitable for graphviz
-    const bool produceSyntaxTree = gOption_galgas_5F_cli_5F_options_outputConcreteSyntaxTree.mValue ;
+    const bool produceSyntaxTree = gOption_galgas_5F_builtin_5F_options_outputConcreteSyntaxTree.mValue ;
     C_String syntaxTreeDescriptionString ;
     TC_Array <PMUInt32> productionUniqueNameStack ;
     PMUInt32 uniqueProductionNameIndex = 0 ;
@@ -1158,7 +1158,7 @@ bool C_Lexique::performBottomUpParsing (const PMSInt16 inActionTable [],
             "  Initial State: S0\n" ;
     }
   //--- Variables for generating syntax tree in a form suitable for graphviz
-    const bool produceSyntaxTree = gOption_galgas_5F_cli_5F_options_outputConcreteSyntaxTree.mValue ;
+    const bool produceSyntaxTree = gOption_galgas_5F_builtin_5F_options_outputConcreteSyntaxTree.mValue ;
     C_String syntaxTreeDescriptionString ;
     TC_Array <C_String> shiftedElementStack ;
     shiftedElementStack.addObject ("TOP") ;

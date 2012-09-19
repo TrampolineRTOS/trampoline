@@ -107,7 +107,7 @@ class C_String : public AC_OutputStream {
   public : C_String & operator = (const char * inSource) ;
 
 //--- Set capacity (does nothing if length >= inCapacity)
-  public : void setCapacity (const PMSInt32 inCapacity) ;
+  public : void setCapacity (const PMUInt32 inCapacity) ;
   
 //--- Suppress 'inLength' characters from 'inLocation' index
   public : void suppress (const PMSInt32 inLocation, const PMSInt32 inLength COMMA_LOCATION_ARGS) ;
@@ -126,7 +126,7 @@ class C_String : public AC_OutputStream {
   public : void releaseString (void) ;
 
 //--- Get dynamic array allocated size
-  public : PMSInt32 capacity (void) const ;
+  public : PMUInt32 capacity (void) const ;
 
 //--- Get current column index (starting from 0)
   public : PMUInt32 currentColumn (void) const ;
@@ -277,7 +277,7 @@ class C_String : public AC_OutputStream {
                                                             const PMSInt32 inArrayCount) ;
 
 //--- Private (internal) methods
-  private : void insulateEmbeddedString (const PMSInt32 inNewCapacity) ;
+  private : void insulateEmbeddedString (const PMUInt32 inNewCapacity) ;
 
   #ifndef DO_NOT_GENERATE_CHECKINGS
     private : void checkString (LOCATION_ARGS) const ;

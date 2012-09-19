@@ -9,34 +9,20 @@
 #import <Foundation/Foundation.h>
 
 @class OC_GGS_Document ;
-@class OC_GGS_BuildTaskProxy ;
 
 @interface OC_GGS_BuildTask : NSObject {
-  @private OC_GGS_BuildTaskProxy * mProxy ;
-  @private NSUInteger mTaskIndex ;
-
   @private NSTask * mTask ;
   @private NSPipe * mPipe ;
-  @private NSSocketPort * mConnectionSocket ;
-  @private NSFileHandle * mConnectionSocketHandle ;
-  @private NSFileHandle * mRemoteSocketHandle ;
 
-  @private NSMutableData * mOutputBufferedData ;  
   @private BOOL mOutputBufferedDataHasBeenTransmitted ;
 
-  @private NSMutableData * mSocketBufferedData ;  
-  @private BOOL mSocketBufferedDataHasBeenTransmitted ;
-
   @private BOOL mTaskCompleted ;
+  
+  @private OC_GGS_Document * mDocument ;
 }
 
-- (id) initWithDocument: (OC_GGS_Document *) inDocument
-       proxy: (OC_GGS_BuildTaskProxy *) inProxy
-       index: (NSUInteger) inIndex ;
+- (id) initWithDocument: (OC_GGS_Document *) inDocument ;
 
 - (void) terminate ;
 
-- (BOOL) isCompleted ;
-
-- (NSString *) runningStatus ;
 @end

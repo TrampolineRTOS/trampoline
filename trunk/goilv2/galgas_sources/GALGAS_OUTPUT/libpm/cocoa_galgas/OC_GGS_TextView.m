@@ -8,42 +8,69 @@
 //---------------------------------------------------------------------------*
 
 #import "OC_GGS_TextView.h"
-#import "PMErrorOrWarningDescriptor.h"
-#import "PMCocoaCallsDebug.h"
-#import "OC_GGS_TextSyntaxColoring.h"
 #import "OC_GGS_TextDisplayDescriptor.h"
+#import "OC_GGS_RulerViewForTextView.h"
+#import "OC_GGS_TextSyntaxColoring.h"
+#import "PMIssueDescriptor.h"
 #import "OC_Token.h"
+#import "OC_GGS_DocumentData.h"
 #import "OC_GGS_Document.h"
 #import "OC_GGS_PreferencesController.h"
+#import "OC_GGS_Scroller.h"
+#import "PMDebug.h"
 
 //---------------------------------------------------------------------------*
 
 @implementation OC_GGS_TextView
 
 //---------------------------------------------------------------------------*
+//                                                                           *
+//       I N I T                                                             *
+//                                                                           *
+//---------------------------------------------------------------------------*
 
-- (void) setDisplayDescriptor: (OC_GGS_TextDisplayDescriptor *) inDisplayDescriptor {
-  mDisplayDescriptor = inDisplayDescriptor ;
+- (id) initWithFrame: (NSRect) inFrame
+       documentUsedForDisplaying: (OC_GGS_Document *) inDocumentUsedForDisplaying
+       displayDescriptor: (OC_GGS_TextDisplayDescriptor *) inDisplayDescriptor {
+  self = [super initWithFrame:inFrame] ;
+  if (self) {
+    #ifdef DEBUG_MESSAGES
+      NSLog (@"%s", __PRETTY_FUNCTION__) ;
+    #endif
+    noteObjectAllocation (self) ;
+    mDocumentUsedForDisplaying = inDocumentUsedForDisplaying ;
+    mDisplayDescriptor = inDisplayDescriptor ;
+  }
+  return self;
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) FINALIZE_OR_DEALLOC {
+  noteObjectDeallocation (self) ;
+  macroSuperFinalize ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) detachTextView {
+  mDocumentUsedForDisplaying = nil ;
+  mDisplayDescriptor = nil ;
 }
 
 //---------------------------------------------------------------------------*
 
 - (void) setIssueArray: (NSArray *) inIssueArray {
-  mIssueArray = inIssueArray.copy ;
 //--- Tell ruler to refresh
   NSScrollView * scrollView = (NSScrollView *) self.superview.superview ;
-  // NSLog (@"scrollView %@", scrollView) ;
-  NSRulerView * ruler = scrollView.verticalRulerView ;
-  // NSLog (@"ruler %@", ruler) ;
-  [ruler setNeedsDisplay:YES] ;
+  OC_GGS_RulerViewForTextView * ruler = (OC_GGS_RulerViewForTextView *) scrollView.verticalRulerView ;
+  [ruler setIssueArray:inIssueArray] ;
+//---
+  OC_GGS_Scroller * scroller = (OC_GGS_Scroller *) scrollView.verticalScroller ;
+  [scroller setIssueArray:inIssueArray] ;
+//---
+  mIssueArray = inIssueArray.copy ;
   [self setNeedsDisplay:YES] ;
-  [scrollView.verticalScroller setNeedsDisplay:YES] ;
-}
-
-//---------------------------------------------------------------------------*
-
-- (NSArray *) issueArray {
-  return mIssueArray ;
 }
 
 //---------------------------------------------------------------------------*
@@ -71,17 +98,19 @@
   NSBezierPath * errorBulletBezierPath = [NSBezierPath bezierPath] ;
   NSBezierPath * warningHiliteBezierPath = [NSBezierPath bezierPath] ;
   NSBezierPath * warningBulletBezierPath = [NSBezierPath bezierPath] ;
-  for (PMErrorOrWarningDescriptor * issue in mIssueArray) {
-    // NSLog (@"lineRange [%u, %u]", lineRange.location, lineRange.length) ;
-    NSRect lineRect = [self.layoutManager lineFragmentUsedRectForGlyphAtIndex:issue.location effectiveRange:NULL] ;
-    lineRect.size.width = self.visibleRect.size.width ;
-    // NSLog (@"r1 {{%g, %g}, {%g, %g}}", r1.origin.x, r1.origin.y, r1.size.width, r1.size.height) ;
-    [issue.isError ? errorHiliteBezierPath : warningHiliteBezierPath appendBezierPathWithRect:lineRect] ;
-    const NSPoint p1 = [self.layoutManager locationForGlyphAtIndex:issue.location] ;
-    const NSPoint p2 = [self.layoutManager locationForGlyphAtIndex:issue.location + 1] ;
-    // NSLog (@"p: %g, %g", p.x, p.y) ;
-    const NSRect r = {{(p1.x + p2.x) / 2.0 - BULLET_SIZE / 2.0, lineRect.origin.y + lineRect.size.height - BULLET_SIZE / 2.0}, {BULLET_SIZE, BULLET_SIZE}} ;
-    [issue.isError ? errorBulletBezierPath : warningBulletBezierPath appendBezierPathWithOvalInRect:r] ;
+  for (PMIssueDescriptor * issue in mIssueArray) {
+    if (issue.locationInSourceStringStatus == kLocationInSourceStringSolved) {
+      // NSLog (@"lineRange [%u, %u]", lineRange.location, lineRange.length) ;
+      NSRect lineRect = [self.layoutManager lineFragmentUsedRectForGlyphAtIndex:issue.locationInSourceString effectiveRange:NULL] ;
+      lineRect.size.width = self.visibleRect.size.width ;
+      // NSLog (@"r1 {{%g, %g}, {%g, %g}}", r1.origin.x, r1.origin.y, r1.size.width, r1.size.height) ;
+      [issue.isError ? errorHiliteBezierPath : warningHiliteBezierPath appendBezierPathWithRect:lineRect] ;
+      const NSPoint p1 = [self.layoutManager locationForGlyphAtIndex:issue.locationInSourceString] ;
+      const NSPoint p2 = [self.layoutManager locationForGlyphAtIndex:issue.locationInSourceString + 1] ;
+      // NSLog (@"p: %g, %g", p.x, p.y) ;
+      const NSRect r = {{(p1.x + p2.x) / 2.0 - BULLET_SIZE / 2.0, lineRect.origin.y + lineRect.size.height - BULLET_SIZE / 2.0}, {BULLET_SIZE, BULLET_SIZE}} ;
+      [issue.isError ? errorBulletBezierPath : warningBulletBezierPath appendBezierPathWithOvalInRect:r] ;
+    }
   }
 //--- Draw warning hilite
   [[self warningHiliteColor] setFill] ;
@@ -146,11 +175,11 @@
   NSRange result = inProposedSelRange ;
   if ((inGranularity == NSSelectByWord) && (inProposedSelRange.length == 0)) {
     // NSLog (@"inProposedSelRange: [%u, %u], granularity: %d", inProposedSelRange.location, inProposedSelRange.length, inGranularity) ;
-    OC_GGS_TextSyntaxColoring * dsc = [mDisplayDescriptor textSyntaxColoring] ;
+    OC_GGS_TextSyntaxColoring * dsc = mDisplayDescriptor.documentData.textSyntaxColoring ;
     NSArray * tokenArray = [dsc tokenArray] ;
     BOOL found = NO ;
     for (NSUInteger i=0 ; (i<[tokenArray count]) && ! found ; i++) {
-      OC_Token * token = [tokenArray objectAtIndex:i HERE] ;
+      OC_Token * token = [tokenArray objectAtIndex:i] ;
       const NSRange range = [token range] ;
       found = ((range.location + range.length) > inProposedSelRange.location) && (range.location <= inProposedSelRange.location) ;
       if (found) {
@@ -193,10 +222,10 @@
   NSString * descriptor = [inSender representedObject] ;
   // NSLog (@"descriptor '%@'", descriptor) ;
   NSArray * components = [descriptor componentsSeparatedByString:@":"] ;
-  const NSUInteger tokenLocation = [[components objectAtIndex:2] integerValue] ;
-  const NSUInteger tokenLength = [[components objectAtIndex:3] integerValue] ;
+  const NSUInteger tokenLocation = (NSUInteger) [[components objectAtIndex:2] integerValue] ;
+  const NSUInteger tokenLength = (NSUInteger) [[components objectAtIndex:3] integerValue] ;
   NSString * filePath = [components objectAtIndex:4] ;
-  OC_GGS_TextDisplayDescriptor * tdd = [mDisplayDescriptor.document findOrAddNewTabForFile:filePath] ;
+  OC_GGS_TextDisplayDescriptor * tdd = [mDocumentUsedForDisplaying findOrAddNewTabForFile:filePath] ;
   [tdd setSelectionRangeAndMakeItVisible:NSMakeRange (tokenLocation, tokenLength)] ;
 }
 
@@ -213,7 +242,7 @@
     const NSRange selectedRange = {characterIndex, 0} ;
     const NSRange r = [self selectionRangeForProposedRange:selectedRange granularity:NSSelectByWord] ;
     [self setSelectedRange:r] ;
-    OC_GGS_TextSyntaxColoring * dsc = [mDisplayDescriptor textSyntaxColoring] ;
+    OC_GGS_TextSyntaxColoring * dsc = mDisplayDescriptor.documentData.textSyntaxColoring ;
     NSMenu * menu = [dsc indexMenuForRange:r textDisplayDescriptor:mDisplayDescriptor] ;
     [NSMenu
       popUpContextMenu:menu

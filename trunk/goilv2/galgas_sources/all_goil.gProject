@@ -27,15 +27,10 @@ project all_goil -> "goil" :
 
 #  feature libpmAtPath : "../galgas_sources/GALGAS_OUTPUT/libpm" ;
   feature "makefile_macosx" ;
-  feature "makefile_macosx_intel" ;
-  feature "makefile_macosx_ppc" ;
-  feature "makefile_macosx_universal" ;
   feature "makefile_unix" ;
   feature "makefile_i386_linux_on_macosx" ;
   feature "makefile_mingw_on_macosx" ;
   feature "makefile_msys_on_win32" ;
-  feature "project_xcode" ;
-  feature "xcode_arch:i386" ;
   #
   # New templates (added by PM)
   #
