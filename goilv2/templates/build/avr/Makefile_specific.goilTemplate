@@ -4,7 +4,10 @@ hex: % !OS::BUILD_S::APP_NAME %
 
 EXTRA_FILES_CLEAN += $(EXEC).hex
 %
-write to PROJECT.".aps":
-  template avrStudio_project
-end write
+let AVRStudioPrj := PROJECT.".aps"
+if not [AVRStudioPrj fileExists] then
+  write to AVRStudioPrj:
+    template avrStudio_project
+  end write
+end if
 % 

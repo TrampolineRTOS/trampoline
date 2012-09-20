@@ -158,10 +158,10 @@ rule <template_instruction>
     ?expressionType
   ;
 #  message "EXPRESSION '" . [expression mStringValue] . "'\n" ;
-  if [templateVariableMap hasKey !"FILENAME"] then
+  if [templateVariableMap hasKeyAtLevel !"FILENAME" !0] then
     [!?templateVariableMap removeKey !lstringWith[!"FILENAME"] ?* ?*];
   end if;
-  if [templateVariableMap hasKey !"FILEPATH"] then
+  if [templateVariableMap hasKeyAtLevel !"FILEPATH" !0] then
     [!?templateVariableMap removeKey !lstringWith[!"FILEPATH"] ?* ?*];
   end if;
   @Tvalue fileName := valueWithString[![[expression mStringValue] lastPathComponent]];
