@@ -22,71 +22,45 @@ A_DIR := $(word 1, $(TEMP_SOURCE_DIRS))
 #----------------------------------------------------------------------*
 #### Compilation rules. C files.
 #----------------------------------------------------------------------*
-$(OBJ_DIR)/%.c.o: $(A_DIR)/%.c Makefile
+$(OBJ_DIR)/%.c.o: $(A_DIR)/%.c $(OIL_OUTPUT_C)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	$(CC) $(CFLAGS) -c $< -o $@
-
-# generate dep files for c files
-# OIL compiler should have made his work (some .c and .h files are generated).
-$(DEP_DIR)/%.c.d: $(A_DIR)/%.c Makefile $(DEP_DIR) $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE)
-	@$(CC) $(CFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.c.o $(DEP_DIR)/$*.c.d:@ ;print ;}' > $@;
-
-$(DEP_DIR)/%.cpp.d: $(A_DIR)/%.cpp Makefile $(DEP_DIR)
-	@$(CPP) $(CPPFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.c.o $(DEP_DIR)/$*.cpp.d:@ ;print ;}' > $@;
+	$(CC) $(genDep) $(CFLAGS) -c $< -o $@
 
 #----------------------------------------------------------------------*
 #### Compilation rules. ASM files.
 #----------------------------------------------------------------------*
-$(OBJ_DIR)/%.s.o: $(A_DIR)/%.s Makefile
+$(OBJ_DIR)/%.s.o: $(A_DIR)/%.s $(OIL_OUTPUT_C)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	$(AS) $(ASFLAGS) $< -o $@
+	$(AS) $(genDep) $(ASFLAGS) $< -o $@
 
-$(OBJ_DIR)/%.S.i: $(A_DIR)/%.S Makefile
+$(OBJ_DIR)/%.S.i: $(A_DIR)/%.S $(OIL_OUTPUT_C)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	$(CPP) $(CPPFLAGS) $< -o $@
+	$(CPP) $(genDep) $(CPPFLAGS) $< -o $@
 
-$(OBJ_DIR)/%.S.o: $(OBJ_DIR)/%.S.i Makefile
+$(OBJ_DIR)/%.S.o: $(OBJ_DIR)/%.S.i $(OIL_OUTPUT_C)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	$(AS) $(ASFLAGS) $< -o $@
-
-# generate dep files for S files (preprocessable assembler files)
-$(DEP_DIR)/%.S.d: $(A_DIR)/%.S Makefile $(DEP_DIR) $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE)
-	@$(CC) $(CPPFLAGS) -MM $< | perl -e 'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.c.o $(DEP_DIR)/$*.c.d:@ ;print ;}' > $@ ;\
-	echo 'build dependancy for $<';
+	$(AS) $< -o $@
 
 #----------------------------------------------------------------------*
 #### Compilation rules. c++ files.
 ## extensions are: .cpp .cc .cxx .C
 #----------------------------------------------------------------------*
 
-$(OBJ_DIR)/%.cpp.o: $(A_DIR)/%.cpp Makefile
+$(OBJ_DIR)/%.cpp.o: $(A_DIR)/%.cpp $(OIL_OUTPUT_C)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	$(CXX) $(CPPFLAGS) -c $< -o $@
+	$(CXX) $(genDep) $(CPPFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/%.cc.o: $(A_DIR)/%.cc Makefile
+$(OBJ_DIR)/%.cc.o: $(A_DIR)/%.cc $(OIL_OUTPUT_C)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	$(CXX) $(CPPFLAGS) -c $< -o $@
+	$(CXX) $(genDep) $(CPPFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/%.cxx.o: $(A_DIR)/%.cxx Makefile
+$(OBJ_DIR)/%.cxx.o: $(A_DIR)/%.cxx $(OIL_OUTPUT_C)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	$(CXX) $(CPPFLAGS) -c $< -o $@
+	$(CXX) $(genDep) $(CPPFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/%.C.o: $(A_DIR)/%.C Makefile
+$(OBJ_DIR)/%.C.o: $(A_DIR)/%.C $(OIL_OUTPUT_C)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	$(CXX) $(CPPFLAGS) -c $< -o $@
-
-# generate dep files for c++ files
-$(DEP_DIR)/%.cpp.d: $(A_DIR)/%.cpp Makefile $(DEP_DIR) $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE)
-	@$(CC) $(CPPFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.cpp.o $(DEP_DIR)/$*.d:@ ;print ;}' > $@;
-
-$(DEP_DIR)/%.cc.d: $(A_DIR)/%.cc Makefile $(DEP_DIR) $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE)
-	@$(CC) $(CPPFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.cc.o $(DEP_DIR)/$*.d:@ ;print ;}' > $@;
-
-$(DEP_DIR)/%.cxx.d: $(A_DIR)/%.cxx Makefile $(DEP_DIR) $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE)
-	@$(CC) $(CPPFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.cxx.o $(DEP_DIR)/$*.d:@ ;print ;}' > $@;
-
-$(DEP_DIR)/%.C.d: $(A_DIR)/%.C Makefile $(DEP_DIR) $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE)
-	@$(CC) $(CPPFLAGS) -MM $< | perl -e  'while(<STDIN>) { s@$*.o:@$(OBJ_DIR)/$*.C.o $(DEP_DIR)/$*.d:@ ;print ;}' > $@;
+	$(CXX) $(genDep) $(CPPFLAGS) -c $< -o $@
 
 #----------------------------------------------------------------------*
 #Call recursively this file, without the first item of TEMP_SOURCE_DIRS *

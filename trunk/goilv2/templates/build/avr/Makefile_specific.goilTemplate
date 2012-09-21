@@ -1,6 +1,8 @@
 #add the 'hex' rule for avr
-hex: % !OS::BUILD_S::APP_NAME %
-	avr-objcopy -j .text -j .data -O ihex % !OS::BUILD_S::APP_NAME % % !OS::BUILD_S::APP_NAME %.hex
+HEX=$(EXEC).hex
+
+$(HEX): $(EXEC)
+	avr-objcopy -j .text -j .data -O ihex $(EXEC) $(EXEC).hex
 
 EXTRA_FILES_CLEAN += $(EXEC).hex
 %
@@ -9,5 +11,4 @@ if not [AVRStudioPrj fileExists] then
   write to AVRStudioPrj:
     template avrStudio_project
   end write
-end if
-% 
+end if% 
