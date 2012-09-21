@@ -13,8 +13,7 @@
 #############################################################################
 # Build paths
 #############################################################################
-OBJ_DIR = $(BUILD_DIR)/obj
-DEP_DIR = $(BUILD_DIR)/dep
+OBJ_DIR = $(BUILD_DIR)
 EXTRA_FILES_MRPROPER += $(BUILD_DIR)/
 
 #############################################################################
@@ -84,13 +83,11 @@ CFLAGS += -I$(OS_PATH) -I$(COM_PATH) -I$(DEBUG_PATH)
 # Autosar specific Configuration
 #############################################################################
 ifeq ($(strip $(AUTOSAR)),true)
-#  AUTOSAR_GOIL_FLAG = --autosar
   AUTOSAR_DEP = AUTOSAR
   CFLAGS += -I$(AUTOSAR_PATH)
   CPPFLAGS += -I$(AUTOSAR_PATH)
   AUTOSAR_MAKE_FLAG = AUTOSAR=true
 else
-  AUTOSAR_GOIL_FLAG =
   AUTOSAR_DEP =
   AUTOSAR_MAKE_FLAG =
 endif
@@ -100,6 +97,7 @@ endif
 #############################################################################
 OIL_OUTPUT_PATH = $(basename $(OIL_FILE))
 OIL_GENERATED_C_FILE = tpl_app_config.c
+OIL_OUTPUT_C = $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE)
 SOURCES += $(OIL_GENERATED_C_FILE)
 ifdef GOIL_TEMPLATE_PATH 
 	GOIL_TEMPLATE_STR = --templates=$(GOIL_TEMPLATE_PATH)
@@ -108,30 +106,24 @@ else #use the default template directory.
 endif
 
 #############################################################################
-# In the end, CFLAGS includes all CPPFLAGS (because it is used 
-# in this way in compiler_rules.mk
-#############################################################################
-
-#CFLAGS += $(CPPFLAGS)
-
-
-#############################################################################
 # objects and dependancy files.
 #############################################################################
 NODIR_SRC = $(notdir $(SOURCES))
 OBJ      :=  $(NODIR_SRC:%=$(OBJ_DIR)/%.o)
-DEPFILES :=  $(NODIR_SRC:%=$(DEP_DIR)/%.d)
 
 #############################################################################
 # End of configuration: 
 # Build rules.
 #############################################################################
 
-# build all, using dependancies: the '|' means that goil SHOULD
-# be generated before all, because the dependancy files require
-# that all source files are present.
 .PHONY: ALL 
-ALL: | $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE) $(EXEC)
+ALL: $(EXEC)
+
+#generate dependancy only works for gcc/llvm..
+genDep=
+ifndef NODEP
+  genDep=-MD -MF $(OBJ_DIR)/$(notdir $<).dep
+endif
 
 # generate compilation and dependancy rules for these
 # paths, by including recursively the compiler_rules
@@ -141,15 +133,7 @@ TEMP_SOURCE_DIRS += $(DEBUG_PATH) $(OIL_OUTPUT_PATH)
 TEMP_SOURCE_DIRS += $(dir $(SOURCES))
 include $(OS_MAKE_PATH)/compiler_rules.mk
 
-# the following fixes old Make-rules which does not 
-# define specific LD variable (linking was previously
-# made with CC command)
-ifndef LD
-LD = $(CC)
-endif
-
-# the following fixes old Make-rules which does not
-# define specific CPP command variable
+#if CPP is not defined..
 ifndef CPP
 CPP = $(CC) -E $(CFLAGS)
 endif
@@ -164,10 +148,9 @@ clean:
 	@rm -rf $(OBJ) *~  $(EXTRA_FILES_CLEAN)
 	@rm -rf $(EXEC) $(DEPFILES) $(BUILD_DIR) $(OIL_OUTPUT_PATH)
 
-
 # generate C file from OIL file, using goil.
-$(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE): $(OIL_FILE) $(OIL_FILE_DEP)
-	$(GOIL_COMPILER) --target=$(TARGET) $(GOIL_TEMPLATE_STR) $(GENITVEC) $(AUTOSAR_GOIL_FLAG) $(OIL_FILE)
+$(OIL_OUTPUT_C): $(OIL_FILE)
+	$(GOIL_COMPILER) --target=$(TARGET) $(GOIL_TEMPLATE_STR) $(GENITVEC) $(OIL_FILE)
 
 #documentation
 doc: doc-dev doc-user
@@ -178,12 +161,8 @@ doc-dev:
 doc-user:
 	$(DOXYGEN) $(TPL_BASE_PATH)/Doxyfile-user
 
-# dependancy directory.
-$(DEP_DIR):
-	@if [ ! -d $(DEP_DIR) ]; then mkdir -p $(DEP_DIR); fi;
+#dependancies.
+$(foreach source,$(SOURCES),$(eval -include $(OBJ_DIR)/${source}.dep))
 
-#TODO: This include implies that dependancies are created...
-#      even if the 'clean' target is called!
-ifndef NODEP
-    -include $(DEPFILES)
-endif
+debug: $(OIL_FILE)
+	echo $(genDep)

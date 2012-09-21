@@ -11,7 +11,7 @@
 #
 # Trampoline OS
 #
-# Trampoline is copyright (c) IRCCyN 2005-2007
+# Trampoline is copyright (c) IRCCyN 2005-2012
 # Trampoline is protected by the French intellectual property law.
 #
 # This software is distributed under the Lesser GNU Public Licence
@@ -31,7 +31,8 @@
 #                 (doxygen and dot required).
 # make clean    : remove everything except the Makefile.
 # 
-# NOTE: dependancies are set by default. To turn off dependancies generation, 
+# NOTE: dependancies are set by default (to recompile the needed files)
+#       if your compiler does not support it (-MF -MD) you can turn it off:
 #       use the NODEP symbol, i.e. : make clean NODEP=1
 #
 
@@ -154,9 +155,6 @@ AUTOSAR = % ! trueFalse(AUTOSAR) %
 AUTOSAR_SC = % !OS::SCALABILITYCLASS %
 AUTOSAR_OSAPPLICATIONS = % !trueFalse(OS::SCALABILITYCLASS == 3 | OS::SCALABILITYCLASS == 4) %
 
-# Interrupt vector generation
-GENITVEC = % if OS::INTERRUPTTABLE then %-i% end if%
-
 #############################################################################
 # COMPILER CONFIGURATION
 #############################################################################
@@ -167,12 +165,12 @@ CC = % !OS::BUILD_S::COMPILER %
 
 # Program used to link files during compilation process.
 # it should be declared as LINKER in the OS section of the .oil file.
-# default is 'gcc'
+# default is 'ld'
 LD = % !OS::BUILD_S::LINKER %
 
 # Program used to link files during compilation process.
 # it should be declared as ASSEMBLER in the OS section of the .oil file.
-# default is 'as'
+# default is 'gcc'
 AS = % !OS::BUILD_S::ASSEMBLER %
 
 #############################################################################
@@ -213,11 +211,6 @@ WITH_SYSTEM_CALL = % !trueFalse(OS::SYSTEM_CALL) %
 GOIL_COMPILER = goil%
 if exists TEMPLATEPATH then %
 GOIL_TEMPLATE_PATH = % !TEMPLATEPATH end if %
-
-# if there is an interrupt generation, the oil file depends on target.cfg
-# disabled by default as target.cfg can be provided by the port (can a
-# dependency be optional in a Makefile ?)
-#OIL_FILE_DEP = % if OS::INTERRUPTTABLE then %target.cfg% end if%
 
 #############################################################################
 # DOCUMENTATION GENERATION
