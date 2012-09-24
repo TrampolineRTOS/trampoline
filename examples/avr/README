@@ -18,11 +18,15 @@ An AVR studio project is generated directly by goil from the .oil file. So User 
 [Linux/Unix]
 For Linux (Debian/Ubuntu) users, you can install avr-gcc:
 $sudo apt-get install avr-lic gcc-avr avrdude
-Then compile the example:
+for Mac OS X, you can use the AVR CrossPack (http://www.obdev.at/products/crosspack/download.html)
+
+Compile the example:
 $goil --target=avr --templates=../../goilv2/templates/ firstAVR.oil
 make:
 $make
 Then, you can flash directly your µC with the command. In this example:
   * c128 is for the AT90CAN128
-  * dragon_jtag is the JTAG programmer (Dragon) on the USB interface.
+  * dragon_jtag is the JTAG programmer (Dragon) on the USB interface. 
+    (jtag2 is for the Atmel JTAG ICE MKII)
+    Type 'avrdude -c toto' to get the full programer list
 $avrdude -p c128 -c dragon_jtag -U flash:w:firstAVR.hex -P usb

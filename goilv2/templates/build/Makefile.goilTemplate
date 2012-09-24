@@ -61,8 +61,8 @@ foreach src in exists OS::BUILD_S::APP_SRC default (emptylist)
 end foreach
 if OS::SYSTEM_CALL then
 %
-SOURCES += tpl_dispatch_table.c
-SOURCES += tpl_invoque.S
+OIL_GENERATED_FILES += tpl_dispatch_table.c
+OIL_GENERATED_FILES += tpl_invoque.S
 %
 end if
 if OS::APPLICATIONSTARTUPHOOK > 0 | OS::APPLICATIONSHUTDOWNHOOK > 0 then

@@ -60,7 +60,7 @@ void tpl_arm_bootstrap_stage2 ()
      * initialіze memory segments
      */
     /* BSS section should be zeroed */
-    fill_with_zeros (&common_zeroed_vars_begin, &common_zeroed_vars_end);
+    fill_with_zeros (common_zeroed_vars_begin, common_zeroed_vars_end);
 	
     /* DATA section initial values copied from ROM 
       */
