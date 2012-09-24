@@ -22,22 +22,22 @@ A_DIR := $(word 1, $(TEMP_SOURCE_DIRS))
 #----------------------------------------------------------------------*
 #### Compilation rules. C files.
 #----------------------------------------------------------------------*
-$(OBJ_DIR)/%.c.o: $(A_DIR)/%.c $(OIL_OUTPUT_C)
+$(OBJ_DIR)/%.c.o: $(A_DIR)/%.c $(OIL_OUTPUTS)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
 	$(CC) $(genDep) $(CFLAGS) -c $< -o $@
 
 #----------------------------------------------------------------------*
 #### Compilation rules. ASM files.
 #----------------------------------------------------------------------*
-$(OBJ_DIR)/%.s.o: $(A_DIR)/%.s $(OIL_OUTPUT_C)
+$(OBJ_DIR)/%.s.o: $(A_DIR)/%.s $(OIL_OUTPUTS)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	$(AS) $(genDep) $(ASFLAGS) $< -o $@
+	$(AS) $(ASFLAGS) $< -o $@
 
-$(OBJ_DIR)/%.S.i: $(A_DIR)/%.S $(OIL_OUTPUT_C)
+$(OBJ_DIR)/%.S.i: $(A_DIR)/%.S $(OIL_OUTPUTS)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	$(CPP) $(genDep) $(CPPFLAGS) $< -o $@
+	$(CPP) $(CPPFLAGS) $< -o $@
 
-$(OBJ_DIR)/%.S.o: $(OBJ_DIR)/%.S.i $(OIL_OUTPUT_C)
+$(OBJ_DIR)/%.S.o: $(OBJ_DIR)/%.S.i $(OIL_OUTPUTS)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
 	$(AS) $< -o $@
 
@@ -46,19 +46,19 @@ $(OBJ_DIR)/%.S.o: $(OBJ_DIR)/%.S.i $(OIL_OUTPUT_C)
 ## extensions are: .cpp .cc .cxx .C
 #----------------------------------------------------------------------*
 
-$(OBJ_DIR)/%.cpp.o: $(A_DIR)/%.cpp $(OIL_OUTPUT_C)
+$(OBJ_DIR)/%.cpp.o: $(A_DIR)/%.cpp $(OIL_OUTPUTS)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
 	$(CXX) $(genDep) $(CPPFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/%.cc.o: $(A_DIR)/%.cc $(OIL_OUTPUT_C)
+$(OBJ_DIR)/%.cc.o: $(A_DIR)/%.cc $(OIL_OUTPUTS)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
 	$(CXX) $(genDep) $(CPPFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/%.cxx.o: $(A_DIR)/%.cxx $(OIL_OUTPUT_C)
+$(OBJ_DIR)/%.cxx.o: $(A_DIR)/%.cxx $(OIL_OUTPUTS)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
 	$(CXX) $(genDep) $(CPPFLAGS) -c $< -o $@
 
-$(OBJ_DIR)/%.C.o: $(A_DIR)/%.C $(OIL_OUTPUT_C)
+$(OBJ_DIR)/%.C.o: $(A_DIR)/%.C $(OIL_OUTPUTS)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
 	$(CXX) $(genDep) $(CPPFLAGS) -c $< -o $@
 

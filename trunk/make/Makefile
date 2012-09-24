@@ -96,9 +96,13 @@ endif
 # Goil related variables.
 #############################################################################
 OIL_OUTPUT_PATH = $(basename $(OIL_FILE))
-OIL_GENERATED_C_FILE = tpl_app_config.c
-OIL_OUTPUT_C = $(OIL_OUTPUT_PATH)/$(OIL_GENERATED_C_FILE)
-SOURCES += $(OIL_GENERATED_C_FILE)
+OIL_GENERATED_FILES += tpl_app_config.c
+OIL_OUTPUTS = $(addprefix $(OIL_OUTPUT_PATH)/,$(OIL_GENERATED_FILES))
+
+FIRST_OIL_OUTPUT =  $(firstword $(OIL_OUTPUTS))
+OTHER_OIL_OUTPUTS = $(filter-out $(FIRST_OIL_OUTPUT), $(OIL_OUTPUTS))
+
+SOURCES += $(OIL_GENERATED_FILES)
 ifdef GOIL_TEMPLATE_PATH 
 	GOIL_TEMPLATE_STR = --templates=$(GOIL_TEMPLATE_PATH)
 else #use the default template directory.
@@ -149,7 +153,8 @@ clean:
 	@rm -rf $(EXEC) $(DEPFILES) $(BUILD_DIR) $(OIL_OUTPUT_PATH)
 
 # generate C file from OIL file, using goil.
-$(OIL_OUTPUT_C): $(OIL_FILE)
+$(OTHER_OIL_OUTPUTS): $(FIRST_OIL_OUTPUT) 
+$(FIRST_OIL_OUTPUT): $(OIL_FILE)
 	$(GOIL_COMPILER) --target=$(TARGET) $(GOIL_TEMPLATE_STR) $(GENITVEC) $(OIL_FILE)
 
 #documentation
@@ -164,5 +169,5 @@ doc-user:
 #dependancies.
 $(foreach source,$(SOURCES),$(eval -include $(OBJ_DIR)/${source}.dep))
 
-debug: $(OIL_FILE)
-	echo $(genDep)
+debug:
+	echo $(OIL_OUTPUTS)
