@@ -12,8 +12,9 @@ method @object_t set ??@lstring name ?!@TfieldMap unused result
 end method;
 
 # build a template struct
-override method @structAttribute set ??@lstring unused name ?!@TfieldMap result:
+override method @structAttribute set ??@lstring name ?!@TfieldMap result:
   @TfieldMap subAttrs := [subAttributes fieldMap];
+  addLStringValue !?result  !"NAME" !name;
   if [subAttrs count] > 0 then
     foreach subAttrs do
       [!?result insertKey !lkey !mType !mValue];

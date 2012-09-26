@@ -155,6 +155,9 @@ AUTOSAR = % ! trueFalse(AUTOSAR) %
 AUTOSAR_SC = % !OS::SCALABILITYCLASS %
 AUTOSAR_OSAPPLICATIONS = % !trueFalse(OS::SCALABILITYCLASS == 3 | OS::SCALABILITYCLASS == 4) %
 
+# Scheduler
+SCHEDULER = % !OS::SCHEDULER%
+
 #############################################################################
 # COMPILER CONFIGURATION
 #############################################################################

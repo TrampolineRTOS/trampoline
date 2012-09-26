@@ -27,6 +27,8 @@ import "goil_code_generation.gSemantics";
 #import semantics goil_env_verification in "goil_env_verification.ggs";
 import "goil_cpu_level_include.gGrammar";
 import "goil_file_level_include.gGrammar";
+import "goil_options.gOption";
+
 
 #--------------------------------------------------------------------
 # extern nonterminals
@@ -47,8 +49,12 @@ rule <start>:
   [!?application setVersion !version]; 
   [!?application setVersionDescription !desc]; 
 
-  # includes the config.oil files
-  @stringlist configFiles := allTemplateFilePaths[!"config" !"config.oil"];
+  @string config_file_name := [option goil_options.config value];
+  if config_file_name == "" then
+    config_file_name := "config";
+  end if;
+  # includes the config files
+  @stringlist configFiles := allTemplateFilePaths[!"config" !config_file_name.".oil"];
 #  log configFiles;
   # files are stored from the deepest to the shallowest and we should go from the
   # shallowest to the deepest.
@@ -58,7 +64,7 @@ rule <start>:
   end foreach;
 
   # then look for config files suffixed by the OIL version
-  @stringlist configVersionFiles := allTemplateFilePaths[!"config" !"config".version.".oil"];
+  @stringlist configVersionFiles := allTemplateFilePaths[!"config" !config_file_name.version.".oil"];
   foreach \down configVersionFiles (@string file) do
 #    message file . "\n";
     grammar goil_file_level_include in lstringWith[!file] !?imp !?application;
