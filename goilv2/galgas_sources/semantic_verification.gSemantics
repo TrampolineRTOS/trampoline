@@ -159,15 +159,15 @@ override method @impAutoDefaultType verifyType
 :
   cast attr:
   when == @stringAttribute do
-    if type != [@dataType string] then
-      error [attr location] : [type oilType]." expected";
+    if type != [@dataType string] & type != [@dataType identifier] then
+      error [attr location] : "string of identifier expected";
     end if; 
   when == @string_class do
     if type != [@dataType identifier] then
       error [attr location] : [type oilType]." expected";
     end if;
   else 
-#    message "*** @impAutoDefaultType ***\n";
+    message "*** @impAutoDefaultType ***\n";
     error [attr location] : [type oilType]." expected";
   end cast;
 end method;

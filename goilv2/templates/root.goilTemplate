@@ -525,10 +525,7 @@ end foreach
 let SENDMESSAGES := emptylist
 foreach message in MESSAGE do
   if message::MESSAGEPROPERTY == "SEND_ZERO_INTERNAL" |
-     message::MESSAGEPROPERTY == "SEND_STATIC_INTERNAL" |
-     message::MESSAGEPROPERTY == "SEND_ZERO_EXTERNAL" |
-     message::MESSAGEPROPERTY == "SEND_STATIC_EXTERNAL" |
-     message::MESSAGEPROPERTY == "SEND_DYNAMIC_EXTERNAL"
+     message::MESSAGEPROPERTY == "SEND_STATIC_INTERNAL"
   then
     # the target message if the last message in the linked
     # list of destination messages
@@ -1107,6 +1104,11 @@ write to PROJECT."/tpl_app_config.c":
   template tpl_app_config_c in code
 end write
 
+#
+# Communication configuration
+#
+template com
+
 !PROJECT %/tpl_app_config.h
 %
 write to PROJECT."/tpl_app_config.h":
@@ -1190,4 +1192,3 @@ if OS::TRACE then
 end if
 
 template if exists custom_files in config
-

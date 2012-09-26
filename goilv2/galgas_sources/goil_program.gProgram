@@ -1,4 +1,4 @@
-program goil_program "version 2.1b1" :
+program goil_program "2.1b2 (goilv2)" :
   import "goil_grammar.gGrammar" ;
  # import semantics xml_types in "xml_types.ggs";
  # import grammar xml_parsing_grammar in "xml_parsing_grammar.ggs" ;
