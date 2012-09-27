@@ -1,0 +1,14 @@
+CPU api_ioc {
+  /* ioc services */
+  APICONFIG ioc {
+    ID_PREFIX = IOC;
+    FILE = "tpl_ioc_kernel";
+    ENTRY IOCSend      { API = IOC_Send;      KERNEL = tpl_ioc_send_queued_service;       };
+    ENTRY IOCReceive   { API = IOC_Receive;   KERNEL = tpl_ioc_receive_queued_service;    };
+    ENTRY IOCEmptyQueue      { API = IOC_EmptyQueue;      KERNEL = tpl_ioc_empty_queue_service;       };
+    ENTRY IOCSend   { API = IOC_Write;   KERNEL = tpl_ioc_send_unqueued_service;    };
+    ENTRY IOCWrite      { API = IOC_Read;      KERNEL = tpl_ioc_receive_unqueued_service;       };
+    ENTRY IOCInitUnqueued   { API = IOCW_InitUnqueued;   KERNEL = tpl_ioc_init_unqueued;    };
+  };
+
+};
