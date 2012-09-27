@@ -1,0 +1,103 @@
+OIL_VERSION = "4.0";
+
+IMPLEMENTATION trampoline {
+
+    /* This fix the default STACKSIZE of tasks */
+    TASK {
+        UINT32 STACKSIZE = 32768 ;
+    } ;
+
+    /* This fix the default STACKSIZE of ISRs */
+    ISR {
+        UINT32 STACKSIZE = 32768 ;
+    } ;
+};
+
+CPU tp1 {
+    /* This is the configuration of the operating system */
+    OS config {
+        /* Standard error checking, may be set to EXTENDED */
+        STATUS = EXTENDED;
+        /*
+         * the C files containing the source code off the application
+         * If you use more than one C file, use many APP_SRC attributes
+         */
+        BUILD = TRUE {
+          APP_SRC = "ioc_s4.c";
+          APP_SRC = "task1_instance.c";
+          APP_SRC = "task2_instance.c"; 
+          /* The location of the Trampoline directory */
+          TRAMPOLINE_BASE_PATH = "../../..";
+          /* The name of the executable file */
+          APP_NAME = "ioc_s4_exe";
+        /*
+         * The flags given to the C compiler.
+         * -Wall means "emit all warnings"
+         */
+          CFLAGS = "-I../../embUnit -I.";
+          /*CFLAGS  = "-Werror -Wall -pedantic";*/
+          CFLAGS  = "-Wall -pedantic";
+          CFLAGS  = "-Wmissing-field-initializers";
+          LDFLAGS = "-L../../lib -lembUnit";
+        };
+        PRETASKHOOK = FALSE; 
+        POSTTASKHOOK = FALSE;  
+        STARTUPHOOK = FALSE; 
+        SHUTDOWNHOOK = TRUE;
+    } ;
+
+    COM config {
+      COMSTATUS = COMEXTENDED;
+      COMERRORHOOK = FALSE;
+      COMUSEGETSERVICEID = FALSE;
+      COMUSEPARAMETERACCESS = FALSE;
+      COMSTARTCOMEXTENSION = FALSE;
+    };
+
+    /* A default APPMODE */
+    APPMODE std {
+    };
+    
+    TASK t1 {
+        PRIORITY = 1;
+        AUTOSTART = TRUE { APPMODE = std; };
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+
+    TASK t2 {
+        PRIORITY = 2;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+    };
+    
+    APPLICATION os_app1{
+      TASK = t1;
+      TASK = t2;
+      IOC = ioc1;
+      HAS_RESTARTTASK = FALSE;
+    };
+    
+    IOC ioc1 {
+      DATATYPENAME u8 {
+        DATATYPEPROPERTY = DATA;
+      };
+      DATATYPENAME TestType2 {
+        DATATYPEPROPERTY = REFERENCE;
+      };
+      SEMANTICS = LAST_IS_BEST {
+        INIT_VALUE_SYMBOL = "AUTO";
+      };
+      RECEIVER RCV {
+        RCV_OSAPPLICATION = os_app1;
+        RECEIVER_PULL_CB = "AUTO";
+        ACTION = NONE;
+      };
+      SENDER SND {
+        SENDER_ID = 0;
+        SND_OSAPPLICATION = os_app1;
+      };
+    };
+     
+ } ;
