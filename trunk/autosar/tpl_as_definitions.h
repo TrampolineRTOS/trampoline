@@ -68,11 +68,60 @@
 #define OBJECT_COUNTER        4
 
 /**
+ * @def OBJECT_IOC
+ *
+ * Identifier of an ioc object
+ */
+#define OBJECT_IOC            5
+
+/**
  * @def OBJECT_KIND_COUNT
  *
  * number of object kind
  */
-#define OBJECT_TYPE_COUNT     5
+#define OBJECT_TYPE_COUNT     6
+
+/**
+ *  @def  ACCESS_READ
+ *
+ *  Return value used by CheckObjectAccess. @see #CheckObjectAccess
+ *  This value is composed by 2 bits : bit0 : access/no access
+ *                                     bit1 : write/read
+ */
+/*#define ACCESS_READ   2*/
+
+/**
+ *  @def  ACCESS_WRITE
+ *
+ *  Return value used by CheckObjectAccess. @see #CheckObjectAccess
+ *  This value is composed by 2 bits : bit0 : access/no access
+ *                                     bit1 : write/read
+ */
+/*#define ACCESS_WRITE  3*/
+
+/**
+ *  @def  ACCESS_READ
+ *
+ *  Return value used by CheckObjectAccess. @see #CheckObjectAccess
+ *
+ */
+#define ACCESS_READ   1
+
+/**
+ *  @def  ACCESS_WRITE
+ *
+ *  Return value used by CheckObjectAccess. @see #CheckObjectAccess
+ *
+ */
+#define ACCESS_WRITE  2
+
+/**
+ *  @def  ACCESS_FULL
+ *
+ *  Return value used by CheckObjectAccess. @see #CheckObjectAccess
+ *
+ */
+#define ACCESS_FULL   3
 
 /**
  *  @def  ACCESS

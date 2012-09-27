@@ -191,7 +191,10 @@
  * @warning OSEK error code meanings are not globally defined. Refer to each
  * standard service definition to know the exact meaning.
  */
+#ifndef E_NOT_OK_DEFINED
+#define E_NOT_OK_DEFINED
 #define E_NOT_OK        9
+#endif
 
 /* Additional AUTOSAR error codes */
 

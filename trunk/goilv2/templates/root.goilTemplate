@@ -43,7 +43,7 @@ end if
 #
 # AUTOSAR is true if OIL_VERSION is 3.1
 # 
-let AUTOSAR := OILVERSION == "3.1"
+let AUTOSAR := (OILVERSION == "3.1"  | OILVERSION == "4.0")
 
 #------------------------------------------------------------------------------*
 # build an empty list when the list does not exist. This simplify
@@ -58,6 +58,23 @@ let RESOURCE := exists RESOURCE default (emptylist)
 let MESSAGE := exists MESSAGE default (emptylist)
 let APPLICATION := exists APPLICATION default (emptylist)
 let SCHEDULETABLE := exists SCHEDULETABLE default (emptylist)
+let IOC := exists IOC default (emptylist)
+
+let ioc_queued_list := emptylist
+let ioc_unqueued_list := emptylist
+let ioc_queued_count := 0
+let ioc_unqueued_count := 0
+foreach ioc in IOC do
+  if ioc::SEMANTICS == "QUEUED" then
+    let ioc_queued_list += ioc
+    let ioc_queued_count := ioc_queued_count + 1
+  elsif ioc::SEMANTICS == "LAST_IS_BEST" then
+    let ioc_unqueued_list += ioc
+    let ioc_unqueued_count := ioc_unqueued_count + 1
+  end if
+end foreach
+let ioc_reordered := ioc_queued_list . ioc_unqueued_list
+let ioc_total_count := ioc_queued_count + ioc_unqueued_count
 
 #------------------------------------------------------------------------------*
 # Add informations to tasks
@@ -985,6 +1002,7 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     if not exists app::RESOURCE then let app::RESOURCE := emptylist end if
     if not exists app::SCHEDULETABLE then let app::SCHEDULETABLE := emptylist end if
     if not exists app::COUNTER then let app::COUNTER := emptylist end if
+    if not exists app::IOC then let app::IOC := emptylist end if
 
     # vectors for process access
     let process_of_app := app::TASK . app::ISR
@@ -1054,6 +1072,42 @@ if AUTOSAR & OS::SCALABILITYCLASS >= 3 then
     let app::COUNTERACCESSNUM := size
     let app::COUNTERACCESSITEMS := computeBinaryVector(vector, size)
 
+    # vectors for IOC access
+    let owned_iocs := mapof app::IOC by VALUE
+    let vector := ""
+    foreach ioc in ioc_reordered do
+      if exists owned_iocs[ioc::NAME] then
+        let ioc_read_access := false
+        foreach receiver in ioc::RECEIVER do
+          if receiver::RCV_OSAPPLICATION == app::NAME then
+           let ioc_read_access := true
+          end if
+        end foreach
+        let ioc_write_access := false
+        foreach sender in ioc::SENDER do
+          if sender::SND_OSAPPLICATION == app::NAME then
+           let ioc_write_access := true
+          end if
+        end foreach
+        if ioc_read_access == true & ioc_write_access == false then
+          let vector := vector . "10"
+          #let vector := vector . "01"
+        elsif ioc_read_access == false & ioc_write_access == true then
+          let vector := vector . "01"
+          #let vector := vector . "11"
+        else
+          let vector := vector . "11"
+          #error here : "error configuration for ioc ". ioc::NAME
+        end if
+      else
+        let vector := vector . "00"
+      end if
+    end foreach
+    let app::IOCACCESSVECTOR := vector
+    let size := computeBinaryVectorSize(vector)
+    let app::IOCACCESSNUM := size
+    let app::IOCACCESSITEMS := computeBinaryVector(vector, size)
+
     let APPLICATIONS += app
   end foreach
 #let APPLICATIONS := APPLICATION
@@ -1113,6 +1167,18 @@ end write
 %
 write to PROJECT."/tpl_app_config.h":
   template tpl_app_config_h in code
+end write
+
+!PROJECT %/tpl_ioc_api_config.c
+%
+write to PROJECT."/tpl_ioc_api_config.c":
+  template tpl_ioc_api_config_c in code
+end write
+
+!PROJECT %/tpl_ioc_api_config.h
+%
+write to PROJECT."/tpl_ioc_api_config.h":
+  template tpl_ioc_api_config_h in code
 end write
 
 !PROJECT %/tpl_app_define.h

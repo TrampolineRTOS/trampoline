@@ -130,6 +130,93 @@ if [SCHEDULETABLES length] > max_id then let max_id := [SCHEDULETABLES length] e
 %
 typedef u% ![max_id numberOfBytes] * 8 % tpl_generic_id;
 
+%
+if [ioc_reordered length] != 0 then
+%/**
+ * @internal
+ *
+ * Type used to store the id of an IocCommunication
+ * Its size is computed by doing the max of all object kind
+ */
+%
+ if [ioc_reordered length] < 256 then
+   %typedef u8 tpl_ioc_id;%
+ elsif [ioc_reordered length] < 65536 then
+   %typedef u16 tpl_ioc_id;%
+ else
+   %typedef u32 tpl_ioc_id;%
+ end if
+ 
+%
+
+/**
+ * @internal
+ *
+ * Type used to store the number of elements of one IocCommunication
+ * Its size is computed by doing the max of all object kind
+ */
+%
+ let max_DataTypeSize := 0
+ foreach ioc in ioc_reordered do
+  let temp := [ioc::DATATYPENAME length]
+  if temp > max_DataTypeSize then
+    let max_DataTypeSize := temp
+  end if
+ end foreach
+
+ if max_DataTypeSize < 256 then
+   %typedef u8 tpl_ioc_size;%
+ elsif max_DataTypeSize < 65536 then
+   %typedef u16 tpl_ioc_size;%
+ else
+   %typedef u32 tpl_ioc_size;%
+ end if
+
+%
+
+/**
+ * @internal
+ *
+ * Type used to store the queue size of an IocCommunication
+ * Its size is computed by doing the max of all object kind
+ */
+%
+
+ let max_QueueSize := 0
+ foreach ioc in ioc_queued_list do
+  let temp := ioc::SEMANTICS_S::BUFFER_LENGTH
+  if temp > max_QueueSize then
+    let max_QueueSize := temp
+  end if
+ end foreach
+
+ if max_QueueSize < 256 then
+   %typedef u8 tpl_ioc_queue_size;%
+ elsif max_QueueSize < 65536 then
+   %typedef u16 tpl_ioc_queue_size;%
+ else
+   %typedef u32 tpl_ioc_queue_size;%
+ end if
+
+end if
+%
+
+/**
+ * All these types are not yet used but must be defined in order to be used by other modules
+ */
+typedef u8 CoreIdType;
+#define OS_CORE_ID_0 0
+#define OS_CORE_ID_MASTER OS_CORE_ID_0
+
+typedef u8 SpinlockIdType;
+#define INVALID_SPINLOCK 0
+
+typedef enum
+{
+  TRYTOGETSPINLOCK_SUCCESS,
+  TRYTOGETSPINLOCK_NOSUCCESS
+} TryToGetSpinlockType;
+
 #endif /* WITH_AUTOSAR */
 
 #endif /* TPL_APP_CUSTOM_TYPES_H */

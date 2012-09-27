@@ -68,7 +68,9 @@ FUNC(tpl_status, OS_CODE) tpl_get_message_status_service(
   
   /*  Check the error                             */
   CHECK_SEND_MESSAGE_ID_ERROR(mess_id,result)
+#if RECEIVE_MESSAGE_COUNT > 0
   CHECK_NOT_ZERO_LENGTH_SEND(mess_id,result);
+#endif
   /*  Check the error                             */
   CHECK_RECEIVE_MESSAGE_ID_ERROR(mess_id,result)
   
@@ -134,8 +136,10 @@ FUNC(tpl_status, OS_CODE) tpl_send_message_service(
   
   /*  Check the error                             */
   CHECK_SEND_MESSAGE_ID_ERROR(mess_id,result)
+#if SEND_MESSAGE_COUNT > 0
   CHECK_NOT_ZERO_LENGTH_SEND(mess_id,result);
-  
+#endif
+	
 #if SEND_MESSAGE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   /*  get the message object from its id          */
@@ -208,8 +212,10 @@ FUNC(tpl_status, OS_CODE) tpl_send_zero_message_service(
   
   /*  Check the error                             */
   CHECK_SEND_MESSAGE_ID_ERROR(mess_id,result)
+#if SEND_MESSAGE_COUNT > 0
   CHECK_ZERO_LENGTH_SEND(mess_id,result)
-  
+#endif
+	
 #if SEND_MESSAGE_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   /*  get the message object from its id          */

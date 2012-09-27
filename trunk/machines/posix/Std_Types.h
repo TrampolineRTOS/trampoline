@@ -32,7 +32,7 @@
 #include "Platform_Types.h"
 
 #if WITH_COMPILER_SETTINGS == YES
-#include "Compiler.h"
+/*#include "Compiler.h"*/
 #endif
 
 /******************************************************************************/
@@ -61,7 +61,10 @@ typedef unsigned char StatusType;   /* OSEK compliance */
 #define E_OK 0x00
 #endif
 
+#ifndef E_NOT_OK_DEFINED
+#define E_NOT_OK_DEFINED
 #define E_NOT_OK 0x01
+#endif
 
 /* Physical state 5V or 3.3V */
 #define STD_HIGH 0x01

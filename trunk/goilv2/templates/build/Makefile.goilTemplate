@@ -65,6 +65,11 @@ OIL_GENERATED_FILES += tpl_dispatch_table.c
 OIL_GENERATED_FILES += tpl_invoque.S
 %
 end if
+if [IOC length] > 0 then
+%
+OIL_GENERATED_FILES += tpl_ioc_api_config.c
+%
+end if
 if OS::APPLICATIONSTARTUPHOOK > 0 | OS::APPLICATIONSHUTDOWNHOOK > 0 then
 %
 SOURCES += tpl_osapplication_hooks.c
@@ -211,7 +216,7 @@ WITH_SYSTEM_CALL = % !trueFalse(OS::SYSTEM_CALL) %
 # Goil OIL compiler tool configuration.
 # If the GOIL_TEMPLATE_PATH is commented, the default template path is used
 # (it can be saved in the .profile file).
-GOIL_COMPILER = goil%
+GOIL_COMPILER = goil2%
 if exists TEMPLATEPATH then %
 GOIL_TEMPLATE_PATH = % !TEMPLATEPATH end if %
 

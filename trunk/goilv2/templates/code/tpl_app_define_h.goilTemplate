@@ -85,8 +85,15 @@ if USECOM then%
 #define WITH_COM_USEPARAMETERACCESS      % !yesNo(exists COM::COMUSEPARAMETERACCESS default (false)) %
 #define WITH_COM_STARTCOMEXTENSION       % !yesNo(exists COM::COMSTARTCOMEXTENSION default (false)) %
 #define WITH_COM_EXTENDED                % !yesNo((exists COM::COMSTATUS default ("COMSTANDARD")) == "COMEXTENDED")
-end if%
-
+end if
+if [ioc_reordered length] > 0 then
+%
+#define WITH_IOC                         YES%
+else
+%
+#define WITH_IOC                         NO%
+end if
+%
 /*=============================================================================
  * Number of objects used by the application
  * These informations are used by Trampoline to avoid to
@@ -160,7 +167,21 @@ if AUTOSAR then
  */
 #define TRUSTED_FCT_COUNT      % ![TRUSTEDFUNCTIONS length] %
 
+/*-----------------------------------------------------------------------------
+ * Number of IOC
+ */
 %
+
+if [ioc_reordered length] > 0 then
+%#define IOC_COUNT % !ioc_total_count %
+#define IOC_QUEUED_COUNT % !ioc_queued_count %
+#define IOC_UNQUEUED_COUNT % !ioc_unqueued_count %
+%else
+%#define IOC_COUNT 0
+#define IOC_QUEUED_COUNT 0
+#define IOC_UNQUEUED_COUNT 0
+%end if
+
 end if 
 %
 
