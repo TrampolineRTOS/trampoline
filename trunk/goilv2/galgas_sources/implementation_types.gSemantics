@@ -606,6 +606,9 @@ method @impAutoDefaultType setDefault ?!@objectAttributes attributes:
     cast defaultValue:
     when == @void do
     when == @auto do
+      @identifierMap attr := [attributes objectParams];
+      [!?attr put !name !defaultValue];
+      [!?attributes setObjectParams !attr];
     else
 #      message "******* setObjectParams ******\n";
       @identifierMap attr := [attributes objectParams];
