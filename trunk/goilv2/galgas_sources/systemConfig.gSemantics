@@ -14,12 +14,13 @@ end method;
 # build a template struct
 override method @structAttribute set ??@lstring name ?!@TfieldMap result:
   @TfieldMap subAttrs := [subAttributes fieldMap];
-  addLStringValue !?result  !"NAME" !name;
-  if [subAttrs count] > 0 then
-    foreach subAttrs do
-      [!?result insertKey !lkey !mType !mValue];
-    end foreach;
-  end if;
+  addLStringValue !?subAttrs !"NAME" !structName;
+  addStructValue !?result !name !subAttrs;
+#  if [subAttrs count] > 0 then
+#    foreach subAttrs do
+#      [!?result insertKey !lkey !mType !mValue];
+#    end foreach;
+#  end if;
 end method;
 
 # build a template boolean
@@ -60,7 +61,18 @@ override method @multipleAttribute set ??@lstring name ?!@TfieldMap result:
   @TfieldMapList multiple [emptyList];
   foreach items do
     @TfieldMap multipleItem [emptyMap];
-    [item set ![@lstring new !"VALUE" ![item location]] !?multipleItem];
+    cast item:
+    when == @structAttribute aStruct do
+      addLStringValue !?multipleItem !"NAME" ![aStruct structName];
+      @TfieldMap subAttrs := [[aStruct subAttributes] fieldMap];
+      if [subAttrs count] > 0 then
+        foreach subAttrs do
+          [!?multipleItem insertKey !lkey !mType !mValue];
+        end foreach;
+      end if;
+    else
+      [item set ![@lstring new !"VALUE" ![item location]] !?multipleItem];
+    end cast;
     multiple += !multipleItem;
   end foreach;
   addListValue !?result !name !multiple;

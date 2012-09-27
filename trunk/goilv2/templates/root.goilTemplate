@@ -1105,9 +1105,9 @@ write to PROJECT."/tpl_app_config.c":
 end write
 
 #
-# Communication configuration
+# Communication configuration (future work)
 #
-template com
+# template com
 
 !PROJECT %/tpl_app_config.h
 %
