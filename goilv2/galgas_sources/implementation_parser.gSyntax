@@ -304,9 +304,17 @@ rule <string_options>
   <multiple> ?multiple;
   @object_t defaultValue;
   select
-    @lstring stringValue;
-    $=$; $string$ ?stringValue;
-    defaultValue := [@stringAttribute new ![stringValue location] ![stringValue string]];
+    $=$;
+    select
+      $string$ ?@lstring stringValue;
+      defaultValue := [@stringAttribute new ![stringValue location] ![stringValue string]];
+    or
+      $AUTO$;
+      defaultValue := [@auto new !here];
+    or
+      $NO_DEFAULT$;
+      defaultValue:= [@void new !here];
+    end select;
   or
     defaultValue:= [@void new !here];
   end select;

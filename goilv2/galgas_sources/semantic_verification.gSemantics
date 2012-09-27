@@ -166,8 +166,10 @@ override method @impAutoDefaultType verifyType
     if type != [@dataType identifier] then
       error [attr location] : [type oilType]." expected";
     end if;
+  when == @auto do
   else 
     message "*** @impAutoDefaultType ***\n";
+    log attr;
     error [attr location] : [type oilType]." expected";
   end cast;
 end method;

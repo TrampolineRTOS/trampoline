@@ -99,7 +99,7 @@ override method @float_class set ??@lstring name ?!@TfieldMap result:
 end method;
 
 override method @auto set ??@lstring name ?!@TfieldMap result:
-  addEnumValue !?result !name !"AUTO";
+  addEnumValue !?result !name !"_auto_";
 end method;
 
 reader @objectAttributes fieldMap
