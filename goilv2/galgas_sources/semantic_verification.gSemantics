@@ -146,6 +146,7 @@ override method @impEnumType verifyType
     else
       error [e location] : [e value]." is not a valid enum value";
     end if;
+  when == @auto do
   else 
     message "**** @impEnumType ****\n";
     error [attr location] : "ENUM expected";
