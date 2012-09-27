@@ -48,6 +48,11 @@ if app::COUNTERACCESSNUM > 0 then
 CONST(u8, OS_CONST) % !app::NAME %_cnts_access[% !app::COUNTERACCESSNUM %] = { % !join(app::COUNTERACCESSITEMS) % };
 %
 end if
+if app::IOCACCESSNUM > 0 then
+%/* % !app::IOCACCESSVECTOR % */
+CONST(u8, OS_CONST) % !app::NAME %_iocs_access[% !app::IOCACCESSNUM %] = { % !join(app::IOCACCESSITEMS) % };
+%
+end if
 %
 %
 foreach proc in app::PROCESS
@@ -98,7 +103,8 @@ CONST(tpl_app_access, OS_APPL_CONST) % !app::NAME %_app_access = {
     % if app::ALARMACCESSNUM > 0 then !app::NAME %_alarms_access% else %NULL% end if %,
     % if app::RESOURCEACCESSNUM > 0 then !app::NAME %_rezs_access% else %NULL% end if %,
     % if app::SCHEDULETABLEACCESSNUM > 0 then !app::NAME %_sts_access% else %NULL% end if %,
-    % if app::COUNTERACCESSNUM > 0 then !app::NAME %_cnts_access% else %NULL% end if %
+    % if app::COUNTERACCESSNUM > 0 then !app::NAME %_cnts_access% else %NULL% end if %,
+    % if app::IOCACCESSNUM > 0 then !app::NAME %_iocs_access% else %NULL% end if %
   },
   % if [app::PROCESS length] > 0 then !app::NAME %_proc_own% else %NULL% end if %,
   % if [app::ALARM length] > 0 then !app::NAME %_alarm_own% else %NULL% end if %,

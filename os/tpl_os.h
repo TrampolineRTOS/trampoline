@@ -94,6 +94,19 @@ extern "C" {
 /* WITH_AUTOSAR */
 #endif
 
+#if WITH_IOC == YES
+	/*
+	 * Inclusion of the header for IOC related API services
+	 * Only for AUTOSAR-IOC extension
+	 */
+#include "tpl_ioc.h"
+	/*
+	 * Inclusion of the header for IOC generated API
+	 * Only for AUTOSAR-IOC extension
+	 */
+#include "tpl_ioc_api_config.h"
+#endif /* WITH_IOC */
+	
 /**
  * @typedef AppModeType
  *

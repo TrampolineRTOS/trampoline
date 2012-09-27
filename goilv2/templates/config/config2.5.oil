@@ -6,5 +6,5 @@ IMPLEMENTATION trampoline_osek {
       ALARMCALLBACK { STRING ALARMCALLBACKNAME; }
    ] ACTION;
   };
-  
+
 };

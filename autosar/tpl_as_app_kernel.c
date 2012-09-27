@@ -48,12 +48,13 @@ extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST)
   tpl_app_table[APP_COUNT];
 #endif
 
-static CONST(tpl_generic_id, AUTOMATIC) tpl_obj_count_table[5] = {
+static CONST(tpl_generic_id, AUTOMATIC) tpl_obj_count_table[6] = {
   TASK_COUNT+ISR_COUNT,
   ALARM_COUNT,
   RESOURCE_COUNT,
   COUNTER_COUNT,
-  SCHEDTABLE_COUNT
+  SCHEDTABLE_COUNT,
+  IOC_COUNT
 };
 
 /**

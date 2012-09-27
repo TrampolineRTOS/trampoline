@@ -21,6 +21,7 @@ EXTRA_FILES_MRPROPER += $(BUILD_DIR)/
 #############################################################################
 OS_PATH = $(TPL_BASE_PATH)/os
 COM_PATH = $(TPL_BASE_PATH)/com
+IOC_PATH = $(TPL_BASE_PATH)/ioc
 AUTOSAR_PATH = $(TPL_BASE_PATH)/autosar
 DEBUG_PATH = $(TPL_BASE_PATH)/debug
 MACHINE_PATH = $(TPL_BASE_PATH)/machines
@@ -49,6 +50,7 @@ endif
 
 ifeq ($(strip $(WITH_USECOM)),true)
 include $(COM_PATH)/Makefile
+include $(IOC_PATH)/Makefile
 endif
 
 ifdef ARCH_PATH
@@ -76,9 +78,9 @@ endif
 
 #add trampoline paths in the include path. 
 CPPFLAGS += -I$(OIL_OUTPUT_PATH) 
-CPPFLAGS += -I$(OS_PATH) -I$(COM_PATH) -I$(DEBUG_PATH)
+CPPFLAGS += -I$(OS_PATH) -I$(COM_PATH) -I$(IOC_PATH) -I$(DEBUG_PATH)
 CFLAGS += -I$(OIL_OUTPUT_PATH)
-CFLAGS += -I$(OS_PATH) -I$(COM_PATH) -I$(DEBUG_PATH)
+CFLAGS += -I$(OS_PATH) -I$(COM_PATH) -I$(IOC_PATH) -I$(DEBUG_PATH)
 #############################################################################
 # Autosar specific Configuration
 #############################################################################
@@ -132,7 +134,7 @@ endif
 # generate compilation and dependancy rules for these
 # paths, by including recursively the compiler_rules
 # makefile.
-TEMP_SOURCE_DIRS += $(OS_PATH) $(COM_PATH) $(AUTOSAR_PATH) 
+TEMP_SOURCE_DIRS += $(OS_PATH) $(COM_PATH) $(IOC_PATH) $(AUTOSAR_PATH) 
 TEMP_SOURCE_DIRS += $(DEBUG_PATH) $(OIL_OUTPUT_PATH)
 TEMP_SOURCE_DIRS += $(dir $(SOURCES))
 include $(OS_MAKE_PATH)/compiler_rules.mk

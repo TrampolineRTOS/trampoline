@@ -91,6 +91,14 @@ union ID_PARAM_BLOCK {
   VAR(tpl_counter_id, TYPEDEF) counter_id; /**< @todo document this */
   VAR(tpl_app_id, TYPEDEF) application_id; /**< @todo document this */
 #endif
+#if WITH_IOC == YES
+	VAR(tpl_ioc_id, TYPEDEF) ioc_id; /**< used by
+									  #IOC_Send
+									  #IOC_Receive
+									  #IOC_Write
+									  #IOC_Read
+									  */
+#endif
 };
 
 /**
@@ -639,6 +647,64 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
 #define OSError_StartOS_Mode() (tpl_service.parameters.id.mode)
 #endif
 
+#if WITH_IOC == YES
+/**
+ * @def OSError_IOC_Send_IocID
+ *
+ * IOC_Send service error parameter
+ *
+ * Returns the identifier (#tpl_ioc_id) of the ioc which caused error
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_IOC_Send_IocID() (tpl_service.parameters.id.ioc_id)
+#endif
+
+/**
+ * @def OSError_IOC_Send_IocID
+ *
+ * IOC_Send service error parameter
+ *
+ * Returns the identifier (#tpl_ioc_id) of the ioc which caused error
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_IOC_Receive_IocID() (tpl_service.parameters.id.ioc_id)
+#endif
+
+/**
+ * @def OSError_IOC_Send_IocID
+ *
+ * IOC_Send service error parameter
+ *
+ * Returns the identifier (#tpl_ioc_id) of the ioc which caused error
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_IOC_Write_IocID() (tpl_service.parameters.id.ioc_id)
+#endif
+
+/**
+ * @def OSError_IOC_Send_IocID
+ *
+ * IOC_Send service error parameter
+ *
+ * Returns the identifier (#tpl_ioc_id) of the ioc which caused error
+ *
+ * @warning this macro does only make sense when used within #ErrorHook
+ * function
+ */
+#if WITH_USEPARAMETERACCESS == YES
+#define OSError_IOC_Read_IocID() (tpl_service.parameters.id.ioc_id)
+#endif
+#endif /* WITH_IOC == YES */
+
 #endif /* defined WITH_ERROR_HOOK  */
 
 /**
@@ -860,6 +926,26 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
     tpl_service.parameters.param.mask_ref = (ref);
 #else
 #   define STORE_EVENT_MASK_REF(ref)
+#endif
+
+/**
+ * @def STORE_IOC_ID
+ *
+ * Stores an ioc identifier into service error variable
+ *
+ * @param ioc_id type is #tpl_ioc_id
+ *
+ * @see #OSError_IOC_Send_IocID
+ * @see #OSError_IOC_Receive_IocID
+ * @see #OSError_IOC_Write_IocID
+ * @see #OSError_IOC_Read_IocID
+ *
+ */
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES) && (WITH_IOC == YES)
+#   define STORE_IOC_ID(iocid)   \
+tpl_service.parameters.id.ioc_id = (iocid);
+#else
+#   define STORE_IOC_ID(iocid)
 #endif
 
 /**
@@ -1741,6 +1827,203 @@ extern VAR(tpl_service_call_desc, OS_VAR) tpl_service;
     }                                                               \
   }
 #endif
+
+#if WITH_IOC == YES
+/**
+ * @def CHECK_IOC_ID_ERROR
+ *
+ * This macro checks for out of range ioc_id error. It
+ * is used in os services which uses ioc_id as parameter.
+ *
+ * @param ioc_id #tpl_ioc_id (so called ioc_id) to check
+ * @param result error code variable to set (StatusType)
+ *
+ * @note this checking is disabled if WITH_OS_EXTENDED == NO
+ * @note the error code is set only if there was no
+ * previous error
+ */
+
+/* No extended error checking (WITH_OS_EXTENDED == NO)  */
+#if WITH_OS_EXTENDED == NO
+/* Does not check the task_id in this case */
+#   define CHECK_IOC_ID_ERROR(ioc_id,result)
+#endif
+
+/* No Task and extended error checking (WITH_OS_EXTENDED == YES)        */
+#if (IOC_COUNT == 0) && (WITH_OS_EXTENDED == YES)
+/* E_OS_ID is returned in this case  */
+#   define CHECK_IOC_ID_ERROR(ioc_id,result)  \
+if (result == (tpl_status)E_OK)             \
+{                                           \
+result = (tpl_status)E_OS_ID;           \
+}
+#endif
+
+/* Any Ioc and extended error checking (WITH_OS_EXTENDED == YES)   */
+#if (IOC_COUNT > 0) && (WITH_OS_EXTENDED == YES)
+/* E_OK or E_OS_LIMIT   */
+#   define CHECK_IOC_ID_ERROR(ioc_id,result)                          \
+if  ((result == (tpl_status)E_OK) &&                                \
+(ioc_id >= (tpl_ioc_id)IOC_COUNT))    \
+{                                                                   \
+result = (tpl_status)E_OS_ID;                                   \
+}
+#endif
+
+
+/**
+ * @def CHECK_ACCESS_WRITE_IOC_ID
+ *
+ * This macro checks if running task is allowed to write to
+ * the ioc identifier in parameter
+ *
+ *
+ * @param obj_id #ObjectID to check
+ * @param result error code variable to set (StatusType)
+ *
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disable when WITH_OS_EXTENDED == NO
+ */
+/*#if (WITH_OS_EXTENDED == NO) || (WITH_IOC == NO)
+# define CHECK_ACCESS_WRITE_IOC_ID(obj_id,result)
+#elif (APP_COUNT == 0)
+# define CHECK_ACCESS_WRITE_IOC_ID(obj_id,result)                       \
+if (result == IOC_E_OK)                                               \
+{                                                                     \
+result = E_OS_ACCESS;                                               \
+}
+#else
+# define CHECK_ACCESS_WRITE_IOC_ID(obj_id,result)                       \
+if (result == IOC_E_OK)                                               \
+{                                                                     \
+CONST(u8, AUTOMATIC) bit_shift = (u8)((obj_id << 1) & 0x7);         \
+CONST(u8, AUTOMATIC) byte_idx = (u8)(obj_id >> 2);                  \
+CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
+tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
+if ( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &             \
+(u8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_WRITE )             \
+{                                                                   \
+result = E_OS_ACCESS;                                             \
+}                                                                   \
+}
+#endif*/
+
+/**
+ * @def CHECK_ACCESS_READ_IOC_ID
+ *
+ * This macro checks if running task is allowed to read rfom
+ * the ioc identifier in parameter
+ *
+ *
+ * @param obj_id #ObjectID to check
+ * @param result error code variable to set (StatusType)
+ *
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disable when WITH_OS_EXTENDED == NO
+ */
+/*#if (WITH_OS_EXTENDED == NO) || (WITH_IOC == NO)
+# define CHECK_ACCESS_READ_IOC_ID(obj_id,result)
+#elif (APP_COUNT == 0)
+# define CHECK_ACCESS_READ_IOC_ID(obj_id,result)                        \
+if (result == IOC_E_OK)                                               \
+{                                                                     \
+result = E_OS_ACCESS;                                               \
+}
+#else
+# define CHECK_ACCESS_READ_IOC_ID(obj_id,result)                        \
+if (result == IOC_E_OK)                                               \
+{                                                                     \
+CONST(u8, AUTOMATIC) bit_shift = (u8)((obj_id << 1) & 0x7);         \
+CONST(u8, AUTOMATIC) byte_idx = (u8)(obj_id >> 2);                  \
+CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
+tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
+if ( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &             \
+(u8)(3 << (bit_shift))) >> (bit_shift)) < ACCESS_READ )               \
+{                                                                   \
+result = E_OS_ACCESS;                                             \
+}                                                                   \
+}
+#endif*/
+
+/**
+ * @def CHECK_ACCESS_WRITE_IOC_ID
+ *
+ * This macro checks if running task is allowed to write to
+ * the ioc identifier in parameter
+ *
+ *
+ * @param obj_id #ObjectID to check
+ * @param result error code variable to set (StatusType)
+ *
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disable when WITH_OS_EXTENDED == NO
+ */
+#if (WITH_OS_EXTENDED == NO) || (WITH_IOC == NO)
+# define CHECK_ACCESS_WRITE_IOC_ID(obj_id,result)
+#elif (APP_COUNT == 0)
+# define CHECK_ACCESS_WRITE_IOC_ID(obj_id,result)                       \
+if (result == IOC_E_OK)                                               \
+{                                                                     \
+result = E_OS_ACCESS;                                               \
+}
+#else
+# define CHECK_ACCESS_WRITE_IOC_ID(obj_id,result)                       \
+if (result == IOC_E_OK)                                               \
+{                                                                     \
+CONST(u8, AUTOMATIC) bit_shift = (u8)((obj_id << 1) & 0x7);         \
+CONST(u8, AUTOMATIC) byte_idx = (u8)(obj_id >> 2);                  \
+CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
+tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
+if (( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &             \
+(u8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_WRITE ) &&     \
+( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &             \
+(u8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_FULL ))       \
+{                                                                   \
+result = E_OS_ACCESS;                                             \
+}                                                                   \
+}
+#endif
+
+/**
+ * @def CHECK_ACCESS_READ_IOC_ID
+ *
+ * This macro checks if running task is allowed to read rfom
+ * the ioc identifier in parameter
+ *
+ *
+ * @param obj_id #ObjectID to check
+ * @param result error code variable to set (StatusType)
+ *
+ * @note error code is not set if it does not equal E_OK
+ * @note checking is disable when WITH_OS_EXTENDED == NO
+ */
+#if (WITH_OS_EXTENDED == NO) || (WITH_IOC == NO)
+# define CHECK_ACCESS_READ_IOC_ID(obj_id,result)
+#elif (APP_COUNT == 0)
+# define CHECK_ACCESS_READ_IOC_ID(obj_id,result)                        \
+if (result == IOC_E_OK)                                               \
+{                                                                     \
+result = E_OS_ACCESS;                                               \
+}
+#else
+# define CHECK_ACCESS_READ_IOC_ID(obj_id,result)                        \
+if (result == IOC_E_OK)                                               \
+{                                                                     \
+CONST(u8, AUTOMATIC) bit_shift = (u8)((obj_id << 1) & 0x7);         \
+CONST(u8, AUTOMATIC) byte_idx = (u8)(obj_id >> 2);                  \
+CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
+tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
+if (( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &             \
+(u8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_READ ) &&     \
+( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &             \
+(u8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_FULL ))       \
+{                                                                   \
+result = E_OS_ACCESS;                                             \
+}                                                                   \
+}
+#endif
+
+#endif /* WITH_IOC == YES */
 
 #endif /*TPL_OS_ERROR_H */
 

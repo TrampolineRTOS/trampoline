@@ -1,0 +1,39 @@
+#include "config3.1.oil"
+
+IMPLEMENTATION trampoline_ioc {
+  IOC [] {
+    STRUCT {
+      ENUM [
+        DATA,
+        REFERENCE
+      ] DATATYPEPROPERTY;
+    } DATATYPENAME [];
+    
+    ENUM [
+      QUEUED {
+        UINT32 BUFFER_LENGTH;
+      },
+      LAST_IS_BEST {
+        STRING WITH_AUTO INIT_VALUE_SYMBOL = "AUTO";
+      }
+    ] SEMANTICS = QUEUED;
+    
+    STRUCT {
+      APPLICATION_TYPE RCV_OSAPPLICATION;
+      STRING WITH_AUTO RECEIVER_PULL_CB = "AUTO";
+      ENUM [
+        NONE,
+        ACTIVATETASK { TASK_TYPE TASK; },
+        SETEVENT {TASK_TYPE TASK; EVENT_TYPE EVENT; }
+      ] ACTION = NONE;
+    } RECEIVER [];
+    
+    STRUCT {
+      UINT32 WITH_AUTO SENDER_ID = AUTO;
+      APPLICATION_TYPE SND_OSAPPLICATION;
+    } SENDER [] ;
+    
+  };
+};
+
+#include "api_ioc.oil"

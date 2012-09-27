@@ -55,6 +55,11 @@
 #include "tpl_as_trusted_fct.h"
 #endif
 
+#if WITH_IOC == YES
+#include "tpl_ioc.h"
+#include "tpl_ioc_api_config.h"
+#endif
+
 #endif
 
 /* Configuration includes */
