@@ -103,7 +103,7 @@ CPU tp1 {
       };
       RECEIVER RCV {
         RCV_OSAPPLICATION = os_app1;
-        RECEIVER_PULL_CB = "AUTO";
+        RECEIVER_PULL_CB = AUTO;
         ACTION = NONE;
       };
       SENDER SND {
@@ -117,11 +117,11 @@ CPU tp1 {
         DATATYPEPROPERTY = REFERENCE;
       };
       SEMANTICS = LAST_IS_BEST {
-        INIT_VALUE_SYMBOL = "AUTO";
+        INIT_VALUE_SYMBOL = AUTO;
       };
       RECEIVER RCV {
         RCV_OSAPPLICATION = os_app1;
-        RECEIVER_PULL_CB = "AUTO";
+        RECEIVER_PULL_CB = AUTO;
         ACTION = NONE;
       };
       SENDER SND {
@@ -139,7 +139,7 @@ CPU tp1 {
       };
       RECEIVER RCV {
         RCV_OSAPPLICATION = os_app1;
-        RECEIVER_PULL_CB = "AUTO";
+        RECEIVER_PULL_CB = AUTO;
         ACTION = NONE;
       };
       SENDER SND {

@@ -91,7 +91,7 @@ CPU tp1 {
       };
       RECEIVER RCV {
         RCV_OSAPPLICATION = os_app1;
-        RECEIVER_PULL_CB = "AUTO";
+        RECEIVER_PULL_CB = AUTO;
         ACTION = NONE;
       };
       SENDER SND {
