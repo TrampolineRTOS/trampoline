@@ -34,6 +34,11 @@ IMPLEMENTATION trampoline_ioc {
     } SENDER [] ;
     
   };
+  
+  APPLICATION [] {
+    IOC_TYPE IOC [];
+  };
+
 };
 
 #include "api_ioc.oil"
