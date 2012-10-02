@@ -91,7 +91,6 @@ IMPLEMENTATION trampoline_autosar {
     COUNTER_TYPE COUNTER [];
     RESOURCE_TYPE RESOURCE [];
     MESSAGE_TYPE MESSAGE [];
-    IOC_TYPE IOC [];
   };
 };
 
