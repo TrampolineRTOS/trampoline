@@ -216,7 +216,7 @@ WITH_SYSTEM_CALL = % !trueFalse(OS::SYSTEM_CALL) %
 # Goil OIL compiler tool configuration.
 # If the GOIL_TEMPLATE_PATH is commented, the default template path is used
 # (it can be saved in the .profile file).
-GOIL_COMPILER = goil2%
+GOIL_COMPILER = goil%
 if exists TEMPLATEPATH then %
 GOIL_TEMPLATE_PATH = % !TEMPLATEPATH end if %
 
