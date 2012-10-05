@@ -788,7 +788,7 @@ CONST(tpl_ioc_queued_mo, OS_CONST) % !ioc::NAME %_mo =
   let iteration_queued := iteration_queued + 1
   elsif ioc::SEMANTICS == "LAST_IS_BEST" then
 %/*-----------------------------------------------------------------------------
- * OsIocCommunication «ioc.shortName» descriptor
+ * OsIocCommunication % !ioc::NAME % descriptor
  */
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -796,12 +796,16 @@ CONST(tpl_ioc_queued_mo, OS_CONST) % !ioc::NAME %_mo =
 %
     let iteration1 := 0
     foreach typeName in ioc::DATATYPENAME do
-      if ioc::SEMANTICS_S::INIT_VALUE_SYMBOL == "AUTO" then 
+      if typeof ioc::SEMANTICS_S::INIT_VALUE_SYMBOL == @enum then if ioc::SEMANTICS_S::INIT_VALUE_SYMBOL == @auto then 
       % %#%CONST(% !typeName::VALUE %, OS_CONST) % !ioc::NAME %_init_buffer_% !iteration1 % = 0;%
+      end if
       else
       %CONST(% !typeName::NAME %, OS_CONST) % !ioc::NAME %_init_buffer_% !iteration1 % = % !ioc::SEMANTICS_S::INIT_VALUE_SYMBOL %;%
-      end if 
+      end if
     let iteration1 := iteration1 + 1
+    between
+    %
+    %
     end foreach
 %
 
@@ -830,8 +834,9 @@ CONST(tpl_ioc_buffer, OS_CONST) % !ioc::NAME %_init_buffer[% !iteration2 %] =
 %
     let iteration3 := 0
     foreach typeName in ioc::DATATYPENAME do
-      if ioc::SEMANTICS_S::INIT_VALUE_SYMBOL == "AUTO" then
+      if typeof ioc::SEMANTICS_S::INIT_VALUE_SYMBOL == @enum then if ioc::SEMANTICS_S::INIT_VALUE_SYMBOL == @auto then
       % NULL_PTR%
+      end if
       else
       % (tpl_ioc_buffer)&% !ioc::NAME %_init_buffer_% !iteration3
       end if
