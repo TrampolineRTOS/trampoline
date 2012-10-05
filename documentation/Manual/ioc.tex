@@ -1,0 +1,117 @@
+%!TEX root = ./main.tex
+
+\chapter{The inter-OS Application Communication Library}
+
+\lettrine{I}nter-OS Application Communication library is an API for communications between OS Application. In the fallowing, Inter-OS-Application Communication will be denoted by IOC.
+This chapter presents the IOC configuration and API
+Implementation details as well as examples of extension are provided at the end of the chapter.
+
+\section{IOC declaration in OIL}
+
+The IOC configuration is performed using OIL. Parameters such as IOC name, the type of manipulated data, the kind of communication (queued or last is best) and informations about sender/receiver are mandatory. The syntax is presented below using tow example.
+
+First, let us consider the case where a task A (as part of OS-Application \textit{os-app1}) sends a data to a task B (as part of OS-Application \textit{os-app2}) using the last is best semantic. Only one data of type u8 is sent. Second, we will consider the same example using the queued semantic (buffer size of 2) but we send an additional data of type \textit{mytype}. This type is defined by user in file \textit{ioc_types.h} at the root of the project directory as:
+
+\begin{lstlisting}[language=C]
+struct mytype {
+  u8	  a;
+  u8	  b,
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=OIL]
+
+/* LAST_IS_BEST semantic */
+
+IOC com_A_to_B_last_is_best {
+  DATATYPENAME u8 {
+    DATATYPEPROPERTY = DATA;
+  };
+  SEMANTICS = LAST_IS_BEST {
+    INIT_VALUE_SYMBOL = AUTO;
+  };
+  RECEIVER rcv {
+    RCV_OSAPPLICATION = os-app2;
+    RECEIVER_PULL_CB = AUTO;
+    ACTION = NONE;
+  };
+  SENDER sender0 {
+    SENDER_ID = 0;
+    SND_OSAPPLICATION = os-app1;
+  };
+}; 
+
+/* QUEUED semantic */
+
+IOC com_A_to_B_queued {
+  DATATYPENAME u8 {
+    DATATYPEPROPERTY = DATA;
+  };
+  DATATYPENAME mytype {
+    DATATYPEPROPERTY = REFERENCE;
+  };
+  SEMANTICS = QUEUED {
+    BUFFER_LENGTH = 2;
+  };
+  RECEIVER rcv {
+    RCV_OSAPPLICATION = os-app2;
+    RECEIVER_PULL_CB = AUTO;
+    ACTION = NONE;
+  };
+  SENDER sender0 {
+    SENDER_ID = 0;
+    SND_OSAPPLICATION = os-app1;
+  };
+}; 
+
+\end{lstlisting}
+
+The DATATYPENAME parameter defines the name of the data type to be transferred. A file named \textit{ioc_types.h} should be created by user in order to defined new types, if any. The associated property specifies if the data is passed to sending functions by reference or by value. It is worth noting that it is possible to specify many DATATYPENAME as illustrated with the second example. In that case, the applicative sending function should have as many parameters as the number of DATATYPE specify in the OIL file. 
+In case of a last is best semantic, the INIT_VALUE_SUMBOL defines the initial data value. It can be set to AUTO is there are no initial value. Otherwise, the INIT_VALUE_SYMBOL has to be defined by user and the function IOC_init() has to be called at the beginning of application. In case of a queued semantic, only a buffer length has to be specified.
+The receiver configuration requires the setting of the target OS-Application, the king of task notification used when the message has arrived (ACTION = ACTIVATETASK, SETEVENT or NONE) and the callback function to call.
+The sender configuration require the sender id, as an integer, and the sender OS-Application. 
+
+\section{Implementation}
+
+The IOC is divided in two set of source files. First, the API (part of the OS) containing kernel function are generic. They can be found in ioc/ directory. Second, specific files for the ioc configuration are generated. The IOC api is very closed to internal communication library and will not be detailed here. Let us now detailed what is generated in \textit{tpl_ioc_api_config.c}.
+
+In case of the last is best communication (example 1), the sending operation is performed by the call of \textit{IocWrite_ioc name} function and the receiving operation, by the call of \textit{IocRead_ioc_name}. In the case of a queued communication, the sending and receiving operations are performed by the call of \textit{IocSend_ioc_name} and \textit{IocReceive_ioc_name} respectively. These functions has to be called directly by users in applicative function. The api transmit the request to the kernel. Let us now illustrated the generated code.
+
+\begin{lstlisting}[language=C]
+
+FUNC(Std_ReturnType, OS_CODE) IocWrite_com_A_to_B_last_is_best(
+  VAR(u8, AUTOMATIC) IN0	/* data to send */
+)
+{
+  VAR(tpl_ioc_message, AUTOMATIC) message[1]; /* only one data */
+  VAR(Std_ReturnType, AUTOMATIC) result;
+
+  /* Fill in the message structure with the data address and its size */
+  message[0].data=(tpl_ioc_data *)&IN0;
+  message[0].length=sizeof(u8);
+  
+  /* Call the kernel function */
+  result = IOC_Write(0, message); 
+  
+  return result;
+}
+
+FUNC(Std_ReturnType, OS_CODE) IocRead_com_A_to_B_last_is_best(
+  P2VAR(u8, AUTOMATIC, OS_APPL_DATA) IN0
+)
+{
+  VAR(tpl_ioc_message, AUTOMATIC) message[1]; /* only one data */
+  VAR(Std_ReturnType, AUTOMATIC) result;
+
+  message[0].data=(tpl_ioc_data *)IN0;
+  message[0].length=sizeof(u8);
+  
+  /* Call the kernel function */
+  result = IOC_Read(0, message);
+  
+  return result;
+}
+
+\end{lstlisting}
+
+The functions in case of the second example would be of the same form.
