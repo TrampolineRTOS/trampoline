@@ -1,16 +1,16 @@
 %!TEX root = ./main.tex
 
-\chapter{The Inter OS-Application Communication Library}
+\chapter{The Inter OS-application Communication Library}
 
-\lettrine{I}nter OS-Application Communication library is an API initially dedicated to communications between OS-Applications for multicore systems. However, it can also be used for communications between tasks from a same OS-Application. In the fallowing, Inter OS-Application Communication will be denoted IOC.
+\lettrine{I}nter OS-application Communication library is an API initially dedicated to communications between tasks from different OS-applications in multicore systems. However, it could also be used for communications between tasks from a same OS-Application. In the fallowing, Inter OS-application Communication will be denoted IOC.
 This chapter presents the IOC configuration and API.
-Implementation details as well as examples of extension are provided.
+Implementation details as well as examples of utilization are provided.
 
 \section{IOC declaration in OIL}
 
 The IOC configuration is performed using OIL. Parameters such as IOC name, the type of manipulated data, the kind of communication (queued or last is best) and informations about sender/receiver are mandatory. The syntax is presented below using tow example.
 
-Let us consider the case where a task A (as part of OS-Application \textit{os-app1}) sends a data to a task B (as part of OS-Application \textit{os-app2}). 
+Let us consider the case where a task A (as part of OS-application \textit{os-app1}) sends a data to a task B (as part of OS-application \textit{os-app2}). 
 In the first case, we consider a last is best semantic communication where only one data of type u8 is sent.
 In the second case, we consider a queued semantic communication where a data of type u8 and a data of type \textit{mytype} (defined by user) are sent. It is worth noting that this type have to be defined by user un the file \textit{ioc_types.h} at the root of the project directory.
 
@@ -72,8 +72,8 @@ IOC com_A_to_B_queued {
 
 The DATATYPENAME parameter defines the name of the data type to be transferred. A file named \textit{ioc_types.h} should be created by user in order to defined new types, if any. The associated property specifies if the data is passed to sending functions by reference or by value. It is worth noting that it is possible to specify many DATATYPENAME as illustrated with the second example. In that case, the applicative sending function should have as many parameters as the number of DATATYPE specify in the OIL file. 
 In case of a last is best semantic, the INIT_VALUE_SUMBOL defines the initial data value. It can be set to AUTO is there are no initial value. Otherwise, the INIT_VALUE_SYMBOL is a string type defined by user and the function \textit{IOC_init()} has to be called at the beginning of application. In case of a queued semantic, only a BUFFER_LENGTH has to be specified.
-The receiver configuration requires the setting of the target OS-Application (RCV_OSAPPLICATION), the king of task notification used when the message has arrived (ACTION = ACTIVATETASK, SETEVENT or NONE) and the callback function to call (Not functional at the moment).
-The sender configuration require the SENDER_ID, as an integer, and the sender OS-Application (SND_OSAPPLICATION). 
+The receiver configuration requires the setting of the target OS-application (RCV_OSAPPLICATION), the king of task notification used when the message has arrived (ACTION = ACTIVATETASK, SETEVENT or NONE) (not functional at the moment) and the callback function to call (not functional at the moment).
+The sender configuration require the SENDER_ID, as an integer, and the sender OS-application (SND_OSAPPLICATION). 
 
 \section{Implementation}
 
@@ -105,10 +105,9 @@ FUNC(Std_ReturnType, OS_CODE) IocRead_com_A_to_B_last_is_best(
   P2VAR(u8, AUTOMATIC, OS_APPL_DATA) IN0
 )
 {
-  VAR(tpl_ioc_message, AUTOMATIC) message[1]; /* one data is sent */
+  VAR(tpl_ioc_message, AUTOMATIC) message[1];
   VAR(Std_ReturnType, AUTOMATIC) result;
 
-  /* only one data implies only one element in the message table */
   message[0].data=(tpl_ioc_data *)IN0;
   message[0].length=sizeof(u8);
   
@@ -121,6 +120,6 @@ FUNC(Std_ReturnType, OS_CODE) IocRead_com_A_to_B_last_is_best(
 \end{lstlisting}
 
 
-In the case of a queued communication, the sending and receiving operations are performed by the call of \textit{IocSend_IocName()} and \textit{IocReceive_IocName()} respectively. Generated functions would be of the same form as for the case last is best.
+In the case of a queued communication, the sending and receiving operations are performed by the call of \textit{IocSend_IocName()} and \textit{IocReceive_IocName()} respectively. Generated functions would be of the same form that in last is best case.
 
-Finally, it is possible that several senders send a same data. In that case, there are several SENDER section in the OIL configuration. In applicative function, user have to call a function of type \textit{IocWrite_IocName_SenderName()}.
+Finally, it is possible that several senders send a same data. In that case, many senders can be defined during the OIL configuration. In the applicative functions, user have to call API functions of type \textit{IocWrite_IocName_SenderName() or IocSend_IocName_SenderName()} when sending a message.
