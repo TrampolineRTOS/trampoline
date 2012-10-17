@@ -1,37 +1,50 @@
 %
-if USEINTERRUPTTABLE then
-  loop ENTRY from 0 to ITSOURCESLENGTH - 1
-    before
+
+# First we check all used interrupt sources exist
+let IT_SOURCES := mapof INTERRUPT by NAME
+foreach counter in HARDWARECOUNTERS do 
+  if not exists IT_SOURCES[counter::SOURCE] then
+    error counter::SOURCE : "Interrupt source ".counter::SOURCE." does not exist"
+  end if
+end foreach
+foreach isr in ISRS2 do
+  if not exists IT_SOURCES[isr::SOURCE] then
+    error isr::SOURCE : "Interrupt source ".isr::SOURCE." does not exist"
+  end if
+end foreach
+
+loop ENTRY from 0 to INTERRUPT_COUNT::IT_TABLE_SIZE - 1
+  before
 %
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table[% !ITSOURCESLENGTH %] = {
+CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table[% !INTERRUPT_COUNT::IT_TABLE_SIZE %] = {
 %
-    do
-      let entryFound := false
-      foreach INTERRUPTSOURCES prefixedby interrupt_ do
-        if ENTRY == interrupt_NUMBER then
-          # check first for counters
-          foreach HARDWARECOUNTERS prefixedby counter_ do
-            if counter_SOURCE == interrupt_NAME & not entryFound then
-              %  { (tpl_it_handler)tpl_tick_% !interrupt_NAME %, (void *)NULL }%
+  do
+    let entryFound := false
+    foreach interrupt in INTERRUPT do
+      if ENTRY == interrupt::ID then
+        # check first for counters
+        foreach counter in HARDWARECOUNTERS do
+          if counter::SOURCE == interrupt::NAME & not entryFound then
+            %  { (tpl_it_handler)tpl_tick_% !interrupt::NAME %, (void *)NULL }%
+            let entryFound := true
+          end if
+        end foreach
+        if not entryFound then
+          foreach isr in ISRS2 do
+            if isr2::SOURCE == interrupt::NAME & not entryFound then
+              %  { (tpl_it_handler)tpl_central_interrupt_handler_2, (void*)% !([TASKS length] + INDEX) % }%
               let entryFound := true
             end if
           end foreach
-          if not entryFound then
-            foreach ISRS2 prefixedby isr2_ do
-              if isr2_SOURCE == interrupt_NAME & not entryFound then
-                %  { (tpl_it_handler)tpl_central_interrupt_handler_2, (void*)% !([TASKS length] + INDEX) % }%
-                let entryFound := true
-              end if
-            end foreach
-          end if
         end if
-      end foreach
-      if not entryFound then
-        %  { (tpl_it_handler)tpl_null_it, (void *)NULL }%
       end if
-   between %,
+    end foreach
+    if not entryFound then
+      %  { (tpl_it_handler)tpl_null_it, (void *)NULL }%
+    end if
+  between %,
 %
     after
 %
@@ -39,5 +52,4 @@ CONST(tpl_it_vector_entry, OS_CONST) tpl_it_table[% !ITSOURCESLENGTH %] = {
 #define OS_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 %
- end loop
-end if
+end loop

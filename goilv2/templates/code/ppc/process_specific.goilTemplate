@@ -1,33 +1,36 @@
 %
-if not exists STACKSIZE then
-  error NAME "STACKSIZE attribute not defined for ".PROCESSKIND." ".NAME
+if not exists proc::STACKSIZE then
+  error proc::NAME : "STACKSIZE attribute not defined for ".proc::KIND." ".proc::NAME
 else
 %/*
- * % !PROCESSKIND % % !NAME % stack
+ * % !proc::KIND % % !proc::NAME % stack
  */
-#define APP_% !PROCESSKIND %_% !NAME %_START_SEC_STACK
+#define APP_% !proc::KIND %_% !proc::NAME %_START_SEC_STACK
 #include "tpl_memmap.h"
-VAR(tpl_stack_word, OS_APPL_DATA) % !NAME %_stack_zone[% !STACKSIZE %/sizeof(tpl_stack_word)];
-#define APP_% !PROCESSKIND %_% !NAME %_STOP_SEC_STACK
+VAR(tpl_stack_word, OS_APPL_DATA) % !proc::NAME %_stack_zone[% !proc::STACKSIZE %/sizeof(tpl_stack_word)];
+#define APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_STACK
 #include "tpl_memmap.h"
 
-#define % !NAME %_STACK {% !NAME %_stack_zone, % !STACKSIZE %}
+#define % !proc::NAME %_STACK {% !proc::NAME %_stack_zone, % !proc::STACKSIZE %}
 
 /*
- * % !PROCESSKIND % % !NAME % context
+ * % !proc::KIND % % !proc::NAME % context
  */
 #define OS_START_SEC_VAR_NOINIT_32BIT
 #include "tpl_memmap.h"
-VAR(ppc_integer_context, OS_VAR) % !NAME %_int_context;%
-if exists GENERATEFLOAT default (false) & exists USEFLOAT default (false) then
+VAR(ppc_integer_context, OS_VAR) % !proc::NAME %_int_context;%
+if not (exists OS::HASFLOAT default (false)) & exists proc::USEFLOAT default (false) then
+  error proc::USEFLOAT : "The ".TARGET." does not support floating point"
+end if
+if exists OS::HASFLOAT default (false) & exists proc::USEFLOAT default (false) then
   if USEFLOAT then %
-VAR(ppc_float_context, OS_VAR) % !NAME %_fp_context;
-#define % !NAME %_CONTEXT { &% !NAME %_int_context, &% !NAME %_fp_context }%
+VAR(ppc_float_context, OS_VAR) % !proc::NAME %_fp_context;
+#define % !proc::NAME %_CONTEXT { &% !proc::NAME %_int_context, &% !proc::NAME %_fp_context }%
   else %
-#define % !NAME %_CONTEXT { &% !NAME %_int_context, NULL }%
+#define % !proc::NAME %_CONTEXT { &% !proc::NAME %_int_context, NULL }%
   end if
 else %
-#define % !NAME %_CONTEXT { &% !NAME %_int_context }%
+#define % !proc::NAME %_CONTEXT { &% !proc::NAME %_int_context }%
 end if %
 #define OS_STOP_SEC_VAR_NOINIT_32BIT
 #include "tpl_memmap.h"

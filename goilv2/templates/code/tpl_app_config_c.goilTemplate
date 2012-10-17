@@ -688,13 +688,9 @@ CONST(tpl_trusted_fct, OS_APPL_CODE)
 end if
 
 if USEMEMORYPROTECTION then
-  foreach task in TASKS do
+  foreach proc in PROCESSES do
     template memory_region_descriptor
-  end foreach
-  foreach isr in ISRS2 do
-    template memory_region_descriptor
-  end foreach
-  
+  end foreach  
 %
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -702,7 +698,7 @@ if USEMEMORYPROTECTION then
 CONSTP2CONST(tpl_mem_prot_desc, AUTOMATIC, OS_CONST) tpl_mp_table[TASK_COUNT+ISR_COUNT+1] = {
 %
   foreach proc in PROCESSES
-    do %  &% !NAME %_mp_desc,
+    do %  &% !proc::NAME %_mp_desc,
 %
   end foreach
 %  NULL /* for idle task */

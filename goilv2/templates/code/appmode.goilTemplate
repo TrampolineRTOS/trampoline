@@ -100,12 +100,14 @@ do
   let mask := 0
   let text_mask := emptylist
   if alarm::AUTOSTART then
-    foreach mode in alarm::AUTOSTART_S::APPMODE do
-      let mask := mask | app_mode_mask[mode::VALUE]
-      if app_mode_mask[mode::VALUE] != 0 then
-        let text_mask += mode::VALUE
-      end if
-    end foreach
+    if exists alarm::AUTOSTART_S::APPMODE then
+      foreach mode in alarm::AUTOSTART_S::APPMODE do
+        let mask := mask | app_mode_mask[mode::VALUE]
+        if app_mode_mask[mode::VALUE] != 0 then
+          let text_mask += mode::VALUE
+        end if
+      end foreach
+    end if
   end if
   %  % ! mask % /* alarm % ! alarm::NAME % : % 
   
