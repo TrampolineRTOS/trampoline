@@ -26,7 +26,7 @@
  * $URL$
  */
 
-#ifndef WITH_SYSTEM_CALL
+#if WITH_SYSTEM_CALL == NO
 
 #include "tpl_as_schedtable.h"
 #include "tpl_as_st_kernel.h"

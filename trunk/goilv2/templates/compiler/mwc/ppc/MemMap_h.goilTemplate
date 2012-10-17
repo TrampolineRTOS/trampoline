@@ -191,10 +191,10 @@ end for
  * Application objects (Tasks and ISRs) Memory mapping
  */
 %
-foreach OSAPPLICATIONS do
+foreach app in APPLICATIONS do
 %
 /*----------------------------------------------------------------------------
- * Application % !NAME % memory mapping
+ * Application % !app::NAME % memory mapping
  *
  * Variables sections
  */
@@ -202,18 +202,18 @@ foreach OSAPPLICATIONS do
   for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
     for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
 %
-#ifdef APP_OS_APP_% !NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
-  #undef APP_OS_APP_% !NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
+#ifdef APP_OS_APP_% !app::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
+  #undef APP_OS_APP_% !app::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
   #ifdef CURRENT_LINKER_DATA_SECTION
-    #error "Starting a new OS_APP % !NAME % data section while a section is already started"
+    #error "Starting a new OS_APP % !app::NAME % data section while a section is already started"
   #else
     #undef MEMMAP_ERROR
-    #pragma section data_type ".OS_APP_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %" ".OS_APP_% !NAME %_noInit_SEC_VAR% !SECTION_KIND !DATA_SIZE %"
+    #pragma section data_type ".OS_APP_% !app::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %" ".OS_APP_% !app::NAME %_noInit_SEC_VAR% !SECTION_KIND !DATA_SIZE %"
     #define CURRENT_LINKER_DATA_SECTION
   #endif
 #endif
-#ifdef APP_OS_APP_% !NAME %_STOP_SEC_VAR% !SECTION_KIND !DATA_SIZE %
-  #undef APP_OS_APP_% !NAME %_STOP_SEC_VAR% !SECTION_KIND !DATA_SIZE %
+#ifdef APP_OS_APP_% !app::NAME %_STOP_SEC_VAR% !SECTION_KIND !DATA_SIZE %
+  #undef APP_OS_APP_% !app::NAME %_STOP_SEC_VAR% !SECTION_KIND !DATA_SIZE %
   #ifdef CURRENT_LINKER_DATA_SECTION
     #undef MEMMAP_ERROR
     #undef CURRENT_LINKER_DATA_SECTION
@@ -232,18 +232,18 @@ foreach OSAPPLICATIONS do
   for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
     for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
 %
-#ifdef APP_OS_APP_% !NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
-  #undef APP_OS_APP_% !NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
+#ifdef APP_OS_APP_% !app::NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
+  #undef APP_OS_APP_% !app::NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
   #ifdef CURRENT_LINKER_DATA_SECTION
-    #error "Starting a new OS_APP % !NAME % data section while a section is already started"
+    #error "Starting a new OS_APP % !app::NAME % data section while a section is already started"
   #else
     #undef MEMMAP_ERROR
-    #pragma section const_type ".OS_APP_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %" ".OS_APP_% !NAME %_noInit_SEC% !SECTION_KIND !DATA_SIZE %"
+    #pragma section const_type ".OS_APP_% !app::NAME %_SEC% !SECTION_KIND !DATA_SIZE %" ".OS_APP_% !app::NAME %_noInit_SEC% !SECTION_KIND !DATA_SIZE %"
     #define CURRENT_LINKER_DATA_SECTION
   #endif
 #endif
-#ifdef APP_OS_APP_% !NAME %_STOP_SEC% !SECTION_KIND !DATA_SIZE %
-  #undef APP_OS_APP_% !NAME %_STOP_SEC% !SECTION_KIND !DATA_SIZE %
+#ifdef APP_OS_APP_% !app::NAME %_STOP_SEC% !SECTION_KIND !DATA_SIZE %
+  #undef APP_OS_APP_% !app::NAME %_STOP_SEC% !SECTION_KIND !DATA_SIZE %
   #ifdef CURRENT_LINKER_DATA_SECTION
     #undef MEMMAP_ERROR
     #undef CURRENT_LINKER_DATA_SECTION
@@ -257,25 +257,25 @@ foreach OSAPPLICATIONS do
 end foreach
 %
 %
-foreach PROCESSES do
+foreach proc in PROCESSES do
 %
 /*-----------------------------------------------------------------------------
- * % !PROCESSKIND % % !NAME % memory mapping to sections
+ * % !proc::KIND % % !proc::NAME % memory mapping to sections
  *
  * Code section
  */
-#ifdef APP_% !PROCESSKIND %_% !NAME %_START_SEC_CODE
-  #undef APP_% !PROCESSKIND %_% !NAME %_START_SEC_CODE
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_CODE
+  #undef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_CODE
   #ifdef CURRENT_LINKER_CODE_SECTION
-    #error "Starting a new % !NAME % % !PROCESSKIND % code section while a section is already started"
+    #error "Starting a new % !proc::NAME % % !proc::KIND % code section while a section is already started"
   #else
     #undef MEMMAP_ERROR
-    #pragma section code_type ".% !PROCESSKIND %_% !NAME %Code"
+    #pragma section code_type ".% !proc::KIND %_% !proc::NAME %Code"
     #define CURRENT_LINKER_CODE_SECTION
   #endif
 #endif
-#ifdef APP_% !PROCESSKIND %_% !NAME %_STOP_SEC_CODE
-  #undef APP_% !PROCESSKIND %_% !NAME %_STOP_SEC_CODE
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_CODE
+  #undef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_CODE
   #ifdef CURRENT_LINKER_CODE_SECTION
     #undef MEMMAP_ERROR
     #undef CURRENT_LINKER_CODE_SECTION
@@ -292,18 +292,18 @@ foreach PROCESSES do
   for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
     for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
 %
-#ifdef APP_% !PROCESSKIND %_% !NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
-  #undef APP_% !PROCESSKIND %_% !NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
+  #undef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_VAR% !SECTION_KIND !DATA_SIZE %
   #ifdef CURRENT_LINKER_DATA_SECTION
-    #error "Starting a new % !PROCESSKIND % % !NAME % data section while a section is already started"
+    #error "Starting a new % !proc::KIND % % !proc::NAME % data section while a section is already started"
   #else
     #undef MEMMAP_ERROR
-    #pragma section data_type ".% !PROCESSKIND %_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %" ".% !PROCESSKIND %_% !NAME %_noInit_SEC_VAR% !SECTION_KIND !DATA_SIZE %"
+    #pragma section data_type ".% !proc::KIND %_% !proc::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %" ".% !proc::KIND %_% !proc::NAME %_noInit_SEC_VAR% !SECTION_KIND !DATA_SIZE %"
     #define CURRENT_LINKER_DATA_SECTION
   #endif
 #endif
-#ifdef APP_% !PROCESSKIND %_% !NAME %_STOP_SEC_VAR% !SECTION_KIND !DATA_SIZE %
-  #undef APP_% !PROCESSKIND %_% !NAME %_STOP_SEC_VAR% !SECTION_KIND !DATA_SIZE %
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_VAR% !SECTION_KIND !DATA_SIZE %
+  #undef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_VAR% !SECTION_KIND !DATA_SIZE %
   #ifdef CURRENT_LINKER_DATA_SECTION
     #undef MEMMAP_ERROR
     #undef CURRENT_LINKER_DATA_SECTION
@@ -320,18 +320,18 @@ foreach PROCESSES do
 /*
  * Stack sections
  */
-#ifdef APP_% !PROCESSKIND %_% !NAME %_START_SEC_STACK
-  #undef APP_% !PROCESSKIND %_% !NAME %_START_SEC_STACK
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_STACK
+  #undef APP_% !proc::KIND %_% !proc::NAME %_START_SEC_STACK
   #ifdef CURRENT_LINKER_DATA_SECTION
-    #error "Starting a new % !PROCESSKIND % % !NAME % stack section while a section is already started"
+    #error "Starting a new % !proc::KIND % % !proc::NAME % stack section while a section is already started"
   #else
     #undef MEMMAP_ERROR
-    #pragma section data_type ".% !PROCESSKIND %_% !NAME %Stack" ".% !PROCESSKIND %_% !NAME %Stack"
+    #pragma section data_type ".% !proc::KIND %_% !proc::NAME %Stack" ".% !proc::KIND %_% !proc::NAME %Stack"
     #define CURRENT_LINKER_DATA_SECTION
   #endif
 #endif
-#ifdef APP_% !PROCESSKIND %_% !NAME %_STOP_SEC_STACK
-  #undef APP_% !PROCESSKIND %_% !NAME %_STOP_SEC_STACK
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_STACK
+  #undef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC_STACK
   #ifdef CURRENT_LINKER_DATA_SECTION
     #undef MEMMAP_ERROR
     #undef CURRENT_LINKER_DATA_SECTION
@@ -348,19 +348,19 @@ foreach PROCESSES do
   for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
     for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
 %
-#ifdef APP_% !PROCESSKIND %_% !NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
-  #undef APP_% !PROCESSKIND %_% !NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
+  #undef APP_% !proc::KIND %_% !proc::NAME %_START_SEC% !SECTION_KIND !DATA_SIZE %
   #ifdef CURRENT_LINKER_DATA_SECTION
-    #error "Starting a new % !PROCESSKIND % % !NAME % data section while a section is already started"
+    #error "Starting a new % !proc::KIND % % !proc::NAME % data section while a section is already started"
   #else
     #undef MEMMAP_ERROR
     #undef CURRENT_LINKER_DATA_SECTION_NAME
-    #pragma section const_type ".% !PROCESSKIND %_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %"
+    #pragma section const_type ".% !proc::KIND %_% !proc::NAME %_SEC% !SECTION_KIND !DATA_SIZE %"
     #define CURRENT_LINKER_DATA_SECTION
   #endif
 #endif
-#ifdef APP_% !PROCESSKIND %_% !NAME %_STOP_SEC% !SECTION_KIND !DATA_SIZE %
-  #undef APP_% !PROCESSKIND %_% !NAME %_STOP_SEC% !SECTION_KIND !DATA_SIZE %
+#ifdef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC% !SECTION_KIND !DATA_SIZE %
+  #undef APP_% !proc::KIND %_% !proc::NAME %_STOP_SEC% !SECTION_KIND !DATA_SIZE %
   #ifdef CURRENT_LINKER_DATA_SECTION
     #undef MEMMAP_ERROR
     #undef CURRENT_LINKER_DATA_SECTION

@@ -1,0 +1,30 @@
+/*
+ * This configuration file adds attributes to some OIL objects
+ */
+IMPLEMENTATION ppc_interrupt {
+  /* For PowerPC, a HASFLOAT attribute is set according to the actual target */
+  OS {
+    BOOLEAN HASFLOAT = FALSE;
+  };
+  /* Add the SOURCE (interrupt source) attribute and the USEFLOAT attribute */
+  ISR [] {
+    INTERRUPT_TYPE SOURCE;
+    BOOLEAN USEFLOAT;
+  };
+  /* Add the USEFLOAT attribute */
+  TASK [] {
+    BOOLEAN USEFLOAT;
+  };
+  /* Add the SOURCE (interrupt source) attribute */
+  COUNTER [] {
+    INTERRUPT_TYPE SOURCE;
+  };
+  /* An interrupt source, the ID is the interrupt ID given by the INTC */
+  INTERRUPT [] { 
+    UINT32 ID;
+  };
+  /* Number of interrupt ID available */
+  INTERRUPT_COUNT {
+    UINT32 IT_TABLE_SIZE;
+  };
+};

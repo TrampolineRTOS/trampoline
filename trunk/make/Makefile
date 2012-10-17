@@ -50,6 +50,9 @@ endif
 
 ifeq ($(strip $(WITH_USECOM)),true)
 include $(COM_PATH)/Makefile
+endif
+
+ifeq ($(strip $(WITH_IOC)), true)
 include $(IOC_PATH)/Makefile
 endif
 

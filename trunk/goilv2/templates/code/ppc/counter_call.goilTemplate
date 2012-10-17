@@ -6,28 +6,28 @@
 #include "tpl_memmap.h"
 %
 
-foreach INTERRUPTSOURCES prefixedby interrupt_ do
+foreach interrupt in INTERRUPT do
   let counterFct := emptylist
-  foreach HARDWARECOUNTERS prefixedby counter_ do
-    if counter_SOURCE == interrupt_NAME then
-      let counterFct += counter_NAME
+  foreach counter in HARDWARECOUNTERS do
+    if counter::SOURCE == interrupt::NAME then
+      let counterFct += counter::NAME
     end if
   end foreach
-  foreach counterFct
+  foreach counter in counterFct
     before
 %
-FUNC(void, OS_CODE) Ack% ! interrupt_NAME %(void){}
+FUNC(void, OS_CODE) Ack% ! interrupt::NAME %(void){}
 
-FUNC(void, OS_CODE) tpl_tick_% ! interrupt_NAME %()
+FUNC(void, OS_CODE) tpl_tick_% ! interrupt::NAME %()
 {
   tpl_status  need_rescheduling = NO_SPECIAL_CODE;
 
 %
     do
-      %  need_rescheduling |= tpl_counter_tick(&% !NAME %_counter_desc);
+      %  need_rescheduling |= tpl_counter_tick(&% !counter::VALUE %_counter_desc);
 %
     after %
-  Ack% ! interrupt_NAME %();
+  Ack% ! interrupt::NAME %();
   if (need_rescheduling == NEED_RESCHEDULING)
   {
     tpl_schedule_from_running();

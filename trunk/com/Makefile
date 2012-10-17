@@ -23,10 +23,10 @@ SOURCES += tpl_com_errorhook.c
 SOURCES += tpl_com_message_kernel.c
 
 # external communication
-#ifeq ($(strip $(WITH_EXTERNAL_COM)),true)
+ifeq ($(strip $(WITH_EXTERNAL_COM)),true)
 SOURCES += tpl_com_external_com.c
 SOURCES += tpl_com_ordering.c
-#endif
+endif
 
 ifeq ($(strip $(WITH_SYSTEM_CALL)),false)
 SOURCES += tpl_com_message_management.c

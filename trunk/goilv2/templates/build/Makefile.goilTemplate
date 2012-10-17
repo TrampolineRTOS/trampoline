@@ -68,11 +68,16 @@ end if
 if [IOC length] > 0 then
 %
 OIL_GENERATED_FILES += tpl_ioc_api_config.c
+WITH_IOC = true
+%
+else
+%
+WITH_IOC = false
 %
 end if
 if OS::APPLICATIONSTARTUPHOOK > 0 | OS::APPLICATIONSHUTDOWNHOOK > 0 then
 %
-SOURCES += tpl_osapplication_hooks.c
+# SOURCES += tpl_osapplication_hooks.c
 %
 end if
 %

@@ -1,5 +1,5 @@
 /**
- * @file % !LINKSCRIPT %
+ * @file % !FILENAME %
  *
  * @section desc File description
  *
@@ -112,9 +112,9 @@ SECTIONS
     }
 
 /* Sections for code of tasks and ISR */%
-foreach PROCESSES do
+foreach proc in PROCESSES do
 %
-    .% !PROCESSKIND %_% !NAME %Code : { *(.% !PROCESSKIND %_% !NAME %Code) }
+    .% !proc::KIND %_% !proc::NAME %Code : { *(.% !proc::KIND %_% !proc::NAME %Code) }
 %
 end foreach
 %
@@ -127,8 +127,8 @@ end foreach
 %
 for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
   for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
-    foreach PROCESSES do
-%      *(.% !PROCESSKIND %_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
+    foreach proc in PROCESSES do
+%      *(.% !proc::KIND %_% !proc::NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
 %
     end foreach
   end for
@@ -138,8 +138,8 @@ end for
 %
 for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
   for SECTION_KIND in "_CONST_","_CALIB_","_CARTO_","_CONFIG_DATA_" do
-    foreach OSAPPLICATIONS do
-%      *(.OS_APP_% !NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
+    foreach app in APPLICATIONS do
+%      *(.OS_APP_% !app::NAME %_SEC% !SECTION_KIND !DATA_SIZE %)
 %
     end foreach
   end for
@@ -167,54 +167,54 @@ for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
     .osVar (DATA) : { *(.osVar) }
     .osVarNoInit (BSS) : { *(.osVarNoInit) }
 %
-foreach PROCESSES do
-%    .% !PROCESSKIND %_% !NAME %_SEC_VAR ALIGN(32) : {
-      __SEG_START_% !PROCESSKIND %_% !NAME %_VAR_RGN = .;
-/* Initialized variables section of % !PROCESSKIND % % !NAME % */
+foreach proc in PROCESSES do
+%    .% !proc::KIND %_% !proc::NAME %_SEC_VAR ALIGN(32) : {
+      __SEG_START_% !proc::KIND %_% !proc::NAME %_VAR_RGN = .;
+/* Initialized variables section of % !proc::KIND % % !proc::NAME % */
 %
   for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
     for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
-%      *(.% !PROCESSKIND %_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%      *(.% !proc::KIND %_% !proc::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
 %
     end for
   end for
-%/* Uninitialized variables section of % !PROCESSKIND % % !NAME % */
+%/* Uninitialized variables section of % !proc::KIND % % !proc::NAME % */
 %  for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
     for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
-%       *(.% !PROCESSKIND %_% !NAME %_noInit_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%       *(.% !proc::KIND %_% !proc::NAME %_noInit_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
 %
     end for
   end for
-%      __SEG_END_% !PROCESSKIND %_% !NAME %_VAR_RGN = ALIGN(32) - 1;
+%      __SEG_END_% !proc::KIND %_% !proc::NAME %_VAR_RGN = ALIGN(32) - 1;
     }
 %
 end foreach
-foreach PROCESSES do
-%/* Section of stack of % !PROCESSKIND % % !NAME %  */
-    .% !PROCESSKIND %_% !NAME %_SEC_STACK ALIGN(32) : {
-      __SEG_START_% !PROCESSKIND %_% !NAME %_STACK_RGN = .;
-      * (.% !PROCESSKIND %_% !NAME %Stack)
-      __SEG_END_% !PROCESSKIND %_% !NAME %_STACK_RGN = ALIGN(32) - 1;
+foreach proc in PROCESSES do
+%/* Section of stack of % !proc::KIND % % !proc::NAME %  */
+    .% !proc::KIND %_% !proc::NAME %_SEC_STACK ALIGN(32) : {
+      __SEG_START_% !proc::KIND %_% !proc::NAME %_STACK_RGN = .;
+      * (.% !proc::KIND %_% !proc::NAME %Stack)
+      __SEG_END_% !proc::KIND %_% !proc::NAME %_STACK_RGN = ALIGN(32) - 1;
     }
 %
 end foreach
 % /* os application vars */
 %
-foreach OSAPPLICATIONS do
+foreach app in APPLICATIONS do
 %
-/* Section of OS Application vars of % !NAME % */
-    .OS_APP_% !NAME %_SEC_ALL_VARS ALIGN(32) : {
-      __SEG_START_OS_APP_% !NAME %_VAR_RGN = .;
-/* Initialized variables section of OS_APP % !NAME % */
+/* Section of OS Application vars of % !app::NAME % */
+    .OS_APP_% !app::NAME %_SEC_ALL_VARS ALIGN(32) : {
+      __SEG_START_OS_APP_% !app::NAME %_VAR_RGN = .;
+/* Initialized variables section of OS_APP % !app::NAME % */
 %
   for DATA_SIZE in "32BIT","16BIT","8BIT","BOOLEAN","UNSPECIFIED" do
     for SECTION_KIND in "_NOINIT_","_POWER_ON_INIT_","_FAST_","_" do
-%    *(.OS_APP_% !NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
+%    *(.OS_APP_% !app::NAME %_SEC_VAR% !SECTION_KIND !DATA_SIZE %)
 %
     end for
   end for
 %
-      __SEG_END_OS_APP_% !NAME %_VAR_RGN = ALIGN(32) - 1;
+      __SEG_END_OS_APP_% !app::NAME %_VAR_RGN = ALIGN(32) - 1;
     }
 %
 end foreach

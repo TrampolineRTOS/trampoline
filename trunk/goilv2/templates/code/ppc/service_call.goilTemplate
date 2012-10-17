@@ -1,6 +1,8 @@
+% let REAL := exists api_func::ACTUAL default ( api_func::API )
+%
   .global % !REAL %
 % !REAL %:
-  li   r0,OSServiceId_% !API %  /* load the service id in r0 */
+  li   r0,% !api_sec::ID_PREFIX %ServiceId_% !api_func::API %  /* load the service id in r0 */
   sc                            /* system call               */
   blr                           /* returns                   */
   
