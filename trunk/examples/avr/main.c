@@ -11,6 +11,7 @@
 ISR(ISRButton) 
 {
 	PORTA ^= 0x20;
+	CallTerminateISR2();	
 }
 
 //remove trampoline definition of ISR..
@@ -20,9 +21,9 @@ ISR(ISRButton)
 
 int main(void)
 {
-	//portA => LEDs
-	PORTA = 0;
-	DDRA  = 0xFF;
+	//portB => LEDs
+	PORTB = 0;
+	DDRB  = 0xFF;
 
 	//timer2 => base for SystemCounter.
 	TCCR2A = 7; //start timer, prescaler 1024
@@ -40,19 +41,19 @@ int main(void)
 }
 TASK(secondTask)
 {
-	PORTA |=2;
+	PORTB |=2;
 	TerminateTask();
 }
 
 TASK(startTask)
 {
-	PORTA |= 1;
+	PORTB |= 1;
 	ChainTask(secondTask);
 }
 
 TASK(periodicTask)
 {
-	PORTA ^= 0x80;
+	PORTB ^= 0x80;
 	TerminateTask();
 }
 
