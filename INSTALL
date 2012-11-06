@@ -1,41 +1,18 @@
 How to run Trampoline on Unix
 =============================
 
-Prerequisite
+Compile goil
 ============
 
-Trampoline on Unix uses libpcl. PCL stands for Portable Coroutine Library.
-This library is seldom installed from the start on Linux and is surely
-not on Mac OS X. The first thing to do is to install libpcl.
+Trampoline includes the source code of Goil.
+Go in goilv2/<makefile_yourplatform> directory.
+For instance if you use Mac OS X, go in goilv2/makefile_macosx,
+if you use Linux, go in goilv2/makefile_unix.
 
-1. Get libpcl
--------------
+build goil :
 
-Go to http://xmailserver.org/libpcl.html to download it
-
-An alternate way, if you run the Debian or Ubuntu distribution is to
-use apt-get. libpcl packages (libpcl1and libpcl1-dev) are in the testing
-packages set.
-
-2. Compile and install it
--------------------------
-
-libpcl follows the usual compiling and installation procedure.
-Gunzip and untar the file: tar xvzf pcl-1.6.tar.gz
-Then run the following commands:
-
-./configure
-make
-make install
-
-Under Linux Ubuntu, I discovered you’ll have to run ldconfig to make
-the library available for the dynamic linker: sudo /sbin/ldconfig
-
-4. Get Goil
------------
-
-Trampoline includes the source code of Goil but it is easier to get the
-binary of Goil. It can be download from Goil 0.92 executables and templates.
+make goil
+ 
 Put goil somewhere and add its path to the PATH environment variable.
 
 How to compile Viper
@@ -51,39 +28,38 @@ Trampoline and act as an interrupt.
 Go to the viper subdirectory, then build Viper:
 make
 
-How to compile the default application
+How to compile the sample application
 ======================================
 
-A default application is located in the App directory of Trampoline. This
-default application uses an alarm and a task. The former activates the later
+A sample application is located in the examples/posix/periodic directory of Trampoline.
+This default application uses an alarm and a task. The former activates the later
 every second. To build this application, you have to call goil a first time:
 
-goil --target=libpcl --generate-makefile --templates=path/to/templates 
-     defaultAppWorkstation.oil
+goil --target=posix --templates=path/to/templates periodic.oil
  
-goil will generate a Makefile and a Make-rules files (and obviously application
+path/to/templates should be the actual path. Use goilv2/templates
+
+goil will generate a Makefile (and obviously application
 related structures). The Makefile should not be modified directly because it
-will be overwritten each time the goil compiler is used. Instead, you can
-use the Make-rules files to set appropriate configuration paths.
+will be overwritten each time the goil compiler is used.
 
 In the OIL file, some compilation information can be given in the OS section. 
-These new keywords are: APP_SRC, CFLAGS, ASFLAGS and LDFLAGS. An example is 
-given in App/defaultAppWorkstation.oil.
+Use BUILD = TRUE attribute with APP_SRC, CFLAGS, ASFLAGS and LDFLAGS
+subattributes. An example is given in examples/posix/periodic/periodic.oil.
 
 Then simply type make. A trampoline executable file is generated.
 
 How to compile an application
 =============================
 
-The best way is to duplicate the App directory (creating, for instance,
-a MyApp directory). In this directory, the tpl_default_tasks_workstation.c
-file contains the C functions of the application, the defaultAppWorkstation.oil
+The best way is to duplicate the example/posix/periodic directory (creating,
+for instance, a MyApp directory). In this directory, the periodic.c
+file contains the C functions of the application, the periodic.oil
 file contains the OIL description.
-Then update the oil file and give source files in the OS section. Then call
-goil explicitely the first time:
+Then update the oil file and give source files in the OS/BUILD section.
+Then call goil explicitely the first time:
 
-goil --target=libpcl --generate-makefile --templates=path/to/templates 
-     defaultAppWorkstation.oil
+goil --target=posix --templates=path/to/templates peirodic.oil
 
 It generate the Makefile. Now, only the 'make' command is necessary when 
 updating the application.
