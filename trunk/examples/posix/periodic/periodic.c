@@ -13,5 +13,7 @@ TASK(my_periodic_task)
     
     occurence++;
     printf("Activation #%d\n",occurence);
+    
+    TerminateTask();
 }
 
