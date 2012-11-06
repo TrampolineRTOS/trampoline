@@ -13,7 +13,7 @@ IMPLEMENTATION trampoline {
     } ;
 };
 
-CPU tp1 {
+CPU server {
     /* This is the configuration of the operating system */
     OS config {
         /* Standard error checking, may be set to EXTENDED */
@@ -23,11 +23,11 @@ CPU tp1 {
          * If you use more than one C file, use many APP_SRC attributes
          */
         BUILD = TRUE {
-          APP_SRC = "lab1.c";
+          APP_SRC = "server.c";
           /* The location of the Trampoline directory */
           TRAMPOLINE_BASE_PATH = "../../..";
           /* The name of the executable file */
-          APP_NAME = "elab1";
+          APP_NAME = "server_exe";
         /*
          * The flags given to the C compiler.
          * -Wall means "emit all warnings"
