@@ -44,10 +44,10 @@
 \begin{itemize}
 \item The terminal is put in raw mode. This means that characters are sent directly to Trampoline without being displayed. Ctrl-C does not work anymore and `q' is used to quit Trampoline. By the way, a return is not automatically inserted when a printf occurs and you should put \texttt{\textbackslash r\textbackslash n} at the end of strings. The terminal is put back in normal mode (cooked mode) when exiting. If a strange behavior occurs, kill the terminal and start another one;\item When `a' key is pressed, software interrupt \texttt{SIGPIPE} is sent to Trampoline;\item When `b' key is pressed, software interrupt \texttt{SIGTRAP} is sent to Trampoline.\end{itemize}
 
-To connect and ISR2 to a signal, you have to specify a \texttt{SOURCE = SIGUSR2} or \texttt{SOURCE = SIGTRAP} in the ISR description in the OIL file and to write the ISR code in the \texttt{lab2.c} file.
+To connect an ISR2 to a signal, you have to specify a \texttt{SOURCE = SIGPIPE} or \texttt{SOURCE = SIGTRAP} in the ISR description in the OIL file and to write the ISR code in the \texttt{lab2.c} file.
 
 \section{First application}
-Using the application of lab2 as a starting point, program an application which does a computation when an interrupt occurs. You will use \texttt{SIGUSR2} and a task named \texttt{t_process}, priority 3 that display ``processing triggered by SIGUSR2" and does an empty for loop 10 millions times. Switch on the Pre and PostTaskHook to print the id of the task that gets and looses the CPU.
+Using the application of lab2 as a starting point, program an application which does a computation when an interrupt occurs. You will use \texttt{SIGPIPE} and a task named \texttt{t_process}, priority 3 that display ``processing triggered by SIGPIPE" and does an empty for loop 10 millions times. Switch on the Pre and PostTaskHook to print the id of the task that gets and looses the CPU.
 
 \begin{ex}If you press 3 or 4 times quickly on key `a', what problem appears ? How to solve it ?
 \end{ex}\begin{ex}
