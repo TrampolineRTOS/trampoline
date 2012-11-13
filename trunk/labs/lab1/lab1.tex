@@ -53,9 +53,10 @@ Edit the lab1.oil and look at the \texttt{TRAMPOLINE_BASE_PATH} attribute (in OS
 lab1 is a very simple application with only 1 task called a_task. a_task starts automatically (\texttt{AUTOSTART = TRUE} in the OIL file). Look at the OIL file and the C source file.
 
 To compile this application, go into the lab1 directory and type:\\
-\unixcl{goil -t=posix --templates=../../goilv2/templates lab1.oil}
+\unixcl{goil -t=posix lab1.oil}
 
-Goil templates are located in \texttt{trampoline/goilv2/templates}. The \texttt{-t} option gives the target system (here we generate the OS level data structures for the posix implementation of Trampoline). The OIL file gives the names of the C source files (with \texttt{APP_SRC} and the name of the executable file (with \texttt{APP_NAME}).
+%Goil templates are located in \texttt{trampoline/goilv2/templates}.
+The \texttt{-t} option gives the target system (here we generate the OS level data structures for the posix implementation of Trampoline). The OIL file gives the names of the C source files (with \texttt{APP_SRC} and the name of the executable file (with \texttt{APP_NAME}).
 
 This generate a Makefile for the application (ie, roughly, a file that explain to the make build system what is needed to build the application). It has to be done only once. If you change something in the OIL file or in your C file, you do not need to rerun the goil compiler by hand because make will run it when needed. Then type:
 
