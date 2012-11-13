@@ -46,9 +46,9 @@
 
 \section{Goal}
 
-To show resources usage, we will use a bad program that allow to corrupt a shared global variable which is not protected for concurrent write. This has been presented in the course. This lab will show different ways to prevent this wrong behavior by using resources (standard and internal) or other solutions (premption and priority).
+To show resources usage, we will use a bad program that allows to corrupt a shared global variable which is not protected against concurrent writes. This has been presented in the course. This lab will show different ways to prevent this wrong behavior by using resources (standard and internal) or other solutions (preemption and priority).
 
-Go into the \texttt{trampoline/labs/lab3} directory. The function needed in Question 8 is in \texttt{lab3.c}.
+Go into the \texttt{trampoline/labs/lab3} directory. The function needed in Question 7 is in \texttt{lab3.c}.
 
 
 \section{Application requirements}
@@ -186,18 +186,18 @@ Is the behavior ok ? Explain.
 \section{Protection with an internal resource}
 An internal resource is automatically taken when the task gets the CPU. Replace the standard resource by an internal resource in the OIL file. Remove the \texttt{GetResource} and \texttt{ReleaseResource} in the C file.
 
-\begin{ex}What happen ? Why ?
+\begin{ex}What happens ? Why ?
 \end{ex}
-Modify the task \texttt{bgTask}: instead of infinite loop, use a \texttt{ChainTask} to the \texttt{bgTask} (ie:the task chains to itself).
+Modify the task \texttt{bgTask}: instead of infinite loop, use a \texttt{ChainTask} to the \texttt{bgTask} (ie: the task chains to itself).
 
 \begin{ex}
-Question 10 What happen ? Explain.
+Question 10 What happens ? Explain.
 \end{ex}
 
-\section{Protection using same priority tasks}
-Keep the version with the \texttt{ChainTask} instead of the infinite loop.Modify the OIL file: remove the resource and change the priorities to insure no taskme be preempted.
+\section{Protection using a single priority level}
+Keep the version with the \texttt{ChainTask} instead of the infinite loop.Modify the OIL file: remove the resource and set the priorities so that no taskcan be preempted.
 \begin{ex}
-What happen ? Why ?
+What happens ? Why ?
 \end{ex}
 
 \end{document}  
