@@ -1,9 +1,0 @@
-  .global % !REAL %
-% !REAL %:
-  li   r0,OSServiceId_% !API %  /* load the service id in r0 */
-  sc                            /* system call               */
-  blr                           /* returns                   */
-  
-  .type % !REAL %,@function
-  .size % !REAL %,$-% !REAL %
-

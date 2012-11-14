@@ -1,6 +1,0 @@
-  .global % !REAL %
-% !REAL %:
-  mov r3,#% !INDEX %
-  svc #% !INDEX %
-  bx  lr
-
