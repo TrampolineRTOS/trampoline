@@ -65,12 +65,17 @@ do
   let mask := 0
   let text_mask := emptylist
   if task::AUTOSTART then
-    foreach mode in task::AUTOSTART_S::APPMODE do
-      let mask := mask | app_mode_mask[mode::VALUE]
-      if app_mode_mask[mode::VALUE] != 0 then
-        let text_mask += mode::VALUE
-      end if
-    end foreach
+    if exists task::AUTOSTART_S::APPMODE then
+      foreach mode in task::AUTOSTART_S::APPMODE do
+        let mask := mask | app_mode_mask[mode::VALUE]
+        if app_mode_mask[mode::VALUE] != 0 then
+          let text_mask += mode::VALUE
+        end if
+      end foreach
+    end if
+    if [text_mask length] == 0 then
+      warning task::AUTOSTART : "Task ".task::NAME." is AUTOSTART but does not declare any APPMODE"
+    end if
   end if
   %  % ! mask % /* task % ! task::NAME % : % 
   
@@ -108,6 +113,9 @@ do
         end if
       end foreach
     end if
+    if [text_mask length] == 0 then
+      warning alarm::AUTOSTART : "Alarm ".alarm::NAME." is AUTOSTART but does not declare any APPMODE"
+    end if
   end if
   %  % ! mask % /* alarm % ! alarm::NAME % : % 
   
@@ -137,12 +145,17 @@ do
   let mask := 0
   let text_mask := emptylist
   if scheduletable::AUTOSTART != "NONE" then
-    foreach mode in scheduletable::AUTOSTART_S::APPMODE do
-      let mask := mask | app_mode_mask[mode::VALUE]
-      if app_mode_mask[mode::VALUE] != 0 then
-        let text_mask += mode::VALUE
-      end if
-    end foreach
+    if exists scheduletable::AUTOSTART_S::APPMODE then
+      foreach mode in scheduletable::AUTOSTART_S::APPMODE do
+        let mask := mask | app_mode_mask[mode::VALUE]
+        if app_mode_mask[mode::VALUE] != 0 then
+          let text_mask += mode::VALUE
+        end if
+      end foreach
+    end if
+    if [text_mask length] == 0 then
+      warning scheduletable::AUTOSTART : "Scedule Table ".scheduletable::NAME." is AUTOSTART but does not declare any APPMODE"
+    end if
   end if
   %  % ! mask % /* schedule table % ! scheduletable::NAME % : % 
   
