@@ -35,15 +35,15 @@
 %
 let system_call_count := 0
 foreach api_sec in USEDAPI do
-  foreach api in api_sec::ENTRY do
+  foreach api in api_sec::SYSCALL do
 %
 /**
- * @def % !api_sec::ID_PREFIX %ServiceId_% !api::API %
+ * @def % !api_sec::ID_PREFIX %ServiceId_% !api::NAME %
  *
  * @see #SERVICE_CALL_DESCRIPTOR
- * @see #% !api::API %
+ * @see #% !api::NAME %
  */
-#define % !api_sec::ID_PREFIX %ServiceId_% !api::API %    % !system_call_count %
+#define % !api_sec::ID_PREFIX %ServiceId_% !api::NAME %    % !system_call_count %
 %
     let system_call_count := system_call_count + 1
   end foreach

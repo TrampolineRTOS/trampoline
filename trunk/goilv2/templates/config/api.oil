@@ -1,63 +1,260 @@
 CPU api {
-  APICONFIG alarms {
+  /* Alarm SYSCALLs */
+  APICONFIG alarm {
     ID_PREFIX = OS;
     FILE = "tpl_os_alarm_kernel";
-    ENTRY GetAlarmBase { API = GetAlarmBase; KERNEL = tpl_get_alarm_base_service; };
-    ENTRY GetAlarm     { API = GetAlarm;     KERNEL = tpl_get_alarm_service;      };
-    ENTRY SetRelAlarm  { API = SetRelAlarm;  KERNEL = tpl_set_rel_alarm_service;  };
-    ENTRY SetAbsAlarm  { API = SetAbsAlarm;  KERNEL = tpl_set_abs_alarm_service;  };
-    ENTRY CancelAlarm  { API = CancelAlarm;  KERNEL = tpl_cancel_alarm_service;   };
+    SYSCALL GetAlarmBase {
+      KERNEL = tpl_get_alarm_base_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:    No error (Standard & Extended)\n"
+          "E_OS_ID: <alarm_id> is invalid (Extended)";
+      ARGUMENT alarm_id { KIND = CONST; TYPE = AlarmType; }
+        : "The identifier of the alarm" ;
+      ARGUMENT info     { KIND = VAR;   TYPE = AlarmBaseRefType; }
+        : "A pointer to the AlarmBaseType data where the informations will be stored" ;
+    } : "Get information about the underlying counter.\nSee page 63 of the OSEK OS 2.2.3 specification.";
+    SYSCALL GetAlarm {
+      KERNEL = tpl_get_alarm_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:        No error (Standard & Extended)\n"
+          "E_OS_NOFUNC: Alarm <alarm_id> is not in use (Standard & Extended)\n"
+          "E_OS_ID:     <alarm_id> is invalid (Extended)";
+      ARGUMENT alarm_id { KIND = CONST; TYPE = AlarmType; }
+        : "The identifier of the alarm" ;
+      ARGUMENT tick     { KIND = VAR;   TYPE = TickRefType; }
+        : "A pointer to the TickType data where the remaining number of ticks before the alarm expire will be stored" ;
+    } : "Get the remaining number of ticks before the alarm expire.\nSee page 63 of the OSEK OS 2.2.3 specification." ;
+    SYSCALL SetRelAlarm {
+      KERNEL = tpl_set_rel_alarm_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:        No error (Standard & Extended)\n"
+          "E_OS_NOFUNC: Alarm <alarm_id> is already in use (Standard & Extended)\n"
+          "E_OS_ID:     <alarm_id> is invalid (Extended)\n"
+          "E_OS_VALUE:  <increment> out of bounds (Extended)\n"
+          "E_OS_VALUE:  <cycle> out of bounds (Extended)";
+      ARGUMENT alarm_id  { KIND = CONST; TYPE = AlarmType; }
+        : "The identifier of the alarm" ;
+      ARGUMENT increment { KIND = CONST; TYPE = TickType; }
+        : "Relative value in ticks.";
+      ARGUMENT cycle     { KIND = CONST; TYPE = TickType; }
+        : "Cycle value in case of a cyclic alarm. In case of a one shot alarm, cycle shall be zero";
+    } : "SetRelAlarm starts alarm <alarm_id>. After <increment> ticks have elapsed, the task assigned"
+        "to the alarm <alarm_id> is activated or the assigned event (only for extended tasks) is set"
+        "or the alarm-callback routine is called.\nSee page 63 of the OSEK OS 2.2.3 specification.";
+    SYSCALL SetAbsAlarm  {
+      KERNEL = tpl_set_abs_alarm_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:        No error (Standard & Extended)\n"
+          "E_OS_NOFUNC: Alarm <alarm_id> is already in use (Standard & Extended)\n"
+          "E_OS_ID:     <alarm_id> is invalid (Extended)\n"
+          "E_OS_VALUE:  <start> out of bounds (Extended)\n"
+          "E_OS_VALUE:  <cycle> out of bounds (Extended)";
+      ARGUMENT alarm_id { KIND = CONST; TYPE = AlarmType; }
+        : "The identifier of the alarm";
+      ARGUMENT start    { KIND = CONST; TYPE = TickType; }
+        : "Absolute value in ticks.";
+      ARGUMENT cycle     { KIND = CONST; TYPE = TickType; }
+        : "Cycle value in case of a cyclic alarm. In case of a one shot alarm, cycle shall be zero";
+    } : "SetAbsAlarm starts alarm <alarm_id>. At <start> ticks, the task assigned"
+        "to the alarm <alarm_id> is activated or the assigned event (only for extended tasks) is set"
+        "or the alarm-callback routine is called.\nSee page 64 of the OSEK OS 2.2.3 specification.";
+    SYSCALL CancelAlarm {
+      KERNEL = tpl_cancel_alarm_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:        No error (Standard & Extended)\n"
+          "E_OS_NOFUNC: Alarm <alarm_id> is not in use (Standard & Extended)\n"
+          "E_OS_ID:     <alarm_id> is invalid (Extended)";
+      ARGUMENT alarm_id { KIND = CONST; TYPE = AlarmType; }
+        : "The identifier of the alarm";
+    } : "CancelAlarm cancels a started alarm.\nSee page 65 of the OSEK OS 2.2.3 specification.";
   };
-  /* tasks services */
-  APICONFIG tasks {
+  /* tasks SYSCALLs */
+  APICONFIG task {
     ID_PREFIX = OS;
     FILE = "tpl_os_task_kernel";
-    ENTRY ActivateTask  { API = ActivateTask;  KERNEL = tpl_activate_task_service;  };
-    ENTRY TerminateTask { API = TerminateTask; KERNEL = tpl_terminate_task_service; };
-    ENTRY ChainTask     { API = ChainTask;     KERNEL = tpl_chain_task_service;     };
-    ENTRY Schedule      { API = Schedule;      KERNEL = tpl_schedule_service;       };
-    ENTRY GetTaskID     { API = GetTaskID;     KERNEL = tpl_get_task_id_service;    };
-    ENTRY GetTaskState  { API = GetTaskState;  KERNEL = tpl_get_task_state_service; };
+    SYSCALL ActivateTask {
+      KERNEL = tpl_activate_task_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:       No error (Standard & Extended)\n"
+          "E_OS_LIMIT: Too many activations of <task_id> (Standard & Extended)\n"
+          "E_OS_ID:    <task_id> is invalid (Extended)";
+      ARGUMENT task_id { KIND = CONST; TYPE = TaskType; }
+        : "The identifier of the task to activate";
+    } : "Activate a task";
+    SYSCALL TerminateTask {
+      KERNEL = tpl_terminate_task_service;
+      RETURN_TYPE = StatusType
+        : "E_OS_RESOURCE: The calling task still occupies a resource (Extended)\n"
+          "E_OS_CALLEVEL: Call at interrupt level (Extended)";
+    } : "Terminate the calling task";
+    SYSCALL ChainTask {
+      KERNEL = tpl_chain_task_service;
+      RETURN_TYPE = StatusType
+        : "E_OS_LIMIT:    Too many activations of <task_id> (Standard & Extended)\n"
+          "E_OS_ID:       <task_id> is invalid (Extended)\n"
+          "E_OS_RESOURCE: The calling task still occupies a resource (Extended)\n"
+          "E_OS_CALLEVEL: Call at interrupt level (Extended)";
+      ARGUMENT task_id { KIND = CONST; TYPE = TaskType; }
+        : "The identifier of the task to chain to";
+    } : "Terminate the calling task and activate task task_id";
+    SYSCALL Schedule {
+      KERNEL = tpl_schedule_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:          No error (Standard & Extended)\n"
+          "E_OS_RESOURCE: The calling task still occupies a resource (Extended)\n"
+          "E_OS_CALLEVEL: Call at interrupt level (Extended)";
+    } : "Call the scheduler";
+    SYSCALL GetTaskID {
+      KERNEL = tpl_get_task_id_service;
+      RETURN_TYPE = StatusType
+        : "E_OK: No error (Standard & Extended)";
+      ARGUMENT task_id { KIND = VAR; TYPE = TaskRefType; }
+        : "A pointer to the var where the identifier of the task will be stored";
+    } : "Get the id of the calling task";
+    SYSCALL GetTaskState {
+      KERNEL = tpl_get_task_state_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:        No error (Standard & Extended)\n"
+          "E_OS_ID:     <alarm_id> is invalid (Extended)";
+      ARGUMENT task_id { KIND = CONST; TYPE = TaskType; }
+        : "The identifier of the task";
+      ARGUMENT state   { KIND = VAR; TYPE = TaskStateRefType; }
+        : "A pointer to the var where the state of the task will be stored";
+    } : "Get the task state of a task";
+    SYSCALL CallTerminateTask {
+      HIDDEN = TRUE;
+      KERNEL = tpl_call_terminate_task_service;
+    } : "Used internally as return address of tasks";
   };
-  /* interrupts services */
-  APICONFIG interrupts {
+  /* interrupts SYSCALLs */
+  APICONFIG interrupt {
     ID_PREFIX = OS;
     FILE = "tpl_os_it_kernel";
-    ENTRY EnableAllInterrupts  { API = EnableAllInterrupts;  KERNEL = tpl_enable_all_interrupts_service;  };
-    ENTRY DisableAllInterrupts { API = DisableAllInterrupts; KERNEL = tpl_disable_all_interrupts_service; };
-    ENTRY ResumeAllInterrupts  { API = ResumeAllInterrupts;  KERNEL = tpl_resume_all_interrupts_service;  };
-    ENTRY SuspendAllInterrupts { API = SuspendAllInterrupts; KERNEL = tpl_suspend_all_interrupts_service; };
-    ENTRY ResumeOSInterrupts   { API = ResumeOSInterrupts;   KERNEL = tpl_resume_os_interrupts_service;   };
-    ENTRY SuspendOSInterrupts  { API = SuspendOSInterrupts;  KERNEL = tpl_suspend_os_interrupts_service;  };
+    SYSCALL EnableAllInterrupts  { KERNEL = tpl_enable_all_interrupts_service;  }
+      : "This service restores the state saved by DisableAllInterrupts.";
+    SYSCALL DisableAllInterrupts { KERNEL = tpl_disable_all_interrupts_service; }
+      : "This service disables all interrupts for which the hardware"
+        "supports disabling. The state before is saved for the"
+        "EnableAllInterrupts call.";
+    SYSCALL ResumeAllInterrupts  { KERNEL = tpl_resume_all_interrupts_service;  }
+      : "This service restores the recognition status of all interrupts"
+        "saved by the SuspendAllInterrupts service.";
+    SYSCALL SuspendAllInterrupts { KERNEL = tpl_suspend_all_interrupts_service; }
+      : "This service saves the recognition status of all interrupts and"
+        "disables all interrupts for which the hardware supports disabling.";
+    SYSCALL ResumeOSInterrupts   { KERNEL = tpl_resume_os_interrupts_service;   }
+      : "This service restores the recognition status of interrupts saved"
+        "by the SuspendOSInterrupts service.";
+    SYSCALL SuspendOSInterrupts  { KERNEL = tpl_suspend_os_interrupts_service;  }
+      : "This service saves the recognition status of interrupts of category 2"
+        "and disables the recognition of these interrupts.";
+    SYSCALL CallTerminateISR2    { KERNEL = tpl_call_terminate_isr2_service;    };
   };
-  /* resources services */
-  APICONFIG resources {
+  /* resources SYSCALLs */
+  APICONFIG resource {
     ID_PREFIX = OS;
     FILE = "tpl_os_rez_kernel";
-    ENTRY GetResource     { API = GetResource;     KERNEL = tpl_get_resource_service;     };
-    ENTRY ReleaseResource { API = ReleaseResource; KERNEL = tpl_release_resource_service; };
+    SYSCALL GetResource {
+      KERNEL = tpl_get_resource_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:    No error (Standard & Extended)\n"
+          "E_OS_ID: <res_id> is invalid (Extended)";
+      ARGUMENT res_id { KIND = CONST; TYPE = ResourceType; }
+        : "The id of the resource to get.";
+    };
+    SYSCALL ReleaseResource {
+      KERNEL = tpl_release_resource_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:        No error (Standard & Extended)\n"
+          "E_OS_ID:     <res_id> is invalid (Extended)\n"
+          "E_OS_ACCESS: Attempt to get a resource which is already occupied by"
+          "any task or ISR, or the statically assigned priority of the calling"
+          "task or interrupt routine is higher than the calculated ceiling priority (Extended)";
+      ARGUMENT res_id { KIND = CONST; TYPE = ResourceType; }
+        : "The id of the resource to release.";
+    };
   };
-  /* events services */
-  APICONFIG events {
+  /* events SYSCALLs */
+  APICONFIG event {
     ID_PREFIX = OS;
     FILE = "tpl_os_event_kernel";
-    ENTRY SetEvent   { API = SetEvent;   KERNEL = tpl_set_event_service;   };
-    ENTRY ClearEvent { API = ClearEvent; KERNEL = tpl_clear_event_service; };
-    ENTRY GetEvent   { API = GetEvent;   KERNEL = tpl_get_event_service;   };
-    ENTRY WaitEvent  { API = WaitEvent;  KERNEL = tpl_wait_event_service;  };
+    SYSCALL SetEvent {
+      KERNEL = tpl_set_event_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:        No error (Standard & Extended)\n"
+          "E_OS_ID:     <task_id> is invalid (Extended)\n"
+          "E_OS_ACCESS: <task_id> task is not an extended task (Extended)\n"
+          "E_OS_STATE:  Events can not be set because <task_id> is in the suspended state (Extended)";
+      ARGUMENT task_id { KIND = CONST; TYPE = TaskType; }
+        : "Reference to the task for which one or several events are to be set.";
+      ARGUMENT event   { KIND = CONST; TYPE = EventMaskType; }
+        : "Mask of the events to be set";
+    } : "The events of task <task_id> are set according to the event mask <event>."
+        "Calling SetEvent causes the task <task_id> to be transferred to the ready state,"
+        "if it was waiting for at least one of the events specified in <event>";
+    SYSCALL ClearEvent {
+      KERNEL = tpl_clear_event_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:          No error (Standard & Extended)\n"
+          "E_OS_ACCESS:   The calling task is not an extended task (Extended)\n"
+          "E_OS_CALLEVEL: Call at interrupt level (Extended)";
+      ARGUMENT event { KIND = CONST; TYPE = EventMaskType; }
+        : "The event mask to clear.";
+    } : "The events of the extended task calling ClearEvent are cleared"
+        "according to the event mask <event>.";
+    SYSCALL GetEvent {
+      KERNEL = tpl_get_event_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:        No error (Standard & Extended)\n"
+          "E_OS_ID:     <task_id> is invalid (Extended)\n"
+          "E_OS_ACCESS: <task_id> task is not an extended task (Extended)\n"
+          "E_OS_STATE:  Events can not be set because <task_id> is in the suspended state (Extended)";
+      ARGUMENT task_id { KIND = CONST; TYPE = TaskType; }
+        : "Task whose event mask is to be returned.";
+      ARGUMENT event   { KIND = CONST; TYPE = EventMaskRefType; }
+        : "Pointer to the data where the event mask is to be stored.";
+    } : "This service returns the current state of all event bits of the task"
+        "<task_id>, not the events that the task is waiting for."
+        "The service may be called from interrupt service routines, task level"
+        "and some hook routines. The current status of the event mask of task"
+        "<task_id> is copied to <event>.";
+    SYSCALL WaitEvent {
+      KERNEL = tpl_wait_event_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:          No error (Standard & Extended)\n"
+          "E_OS_ACCESS:   The calling task is not an extended task (Extended)\n"
+          "E_OS_RESOURCE: The calling task still occupies a resource (Extended)\n"
+          "E_OS_CALLEVEL: Call at interrupt level (Extended)";
+      ARGUMENT event   { KIND = CONST; TYPE = EventMaskType; }
+        : "Mask of the events waited for.";
+    } : "The state of the calling task is set to waiting, unless at least one"
+        "of the events specified in <event> has already been set.";
   };
-  /* os services */
+  /* os SYSCALLs */
   APICONFIG os {
     ID_PREFIX = OS;
-    FILE = "tpl_os_kernel";
-    ENTRY GetActiveApplicationMode { API = GetActiveApplicationMode;       KERNEL = tpl_get_active_application_mode_service; };
-    ENTRY StartOS                  { API = StartOS; ACTUAL = tpl_start_os; KERNEL = tpl_start_os_service;                    };
-    ENTRY ShutdownOS               { API = ShutdownOS;                     KERNEL = tpl_shutdown_os_service;                 };
-    ENTRY CallTerminateTask        { API = CallTerminateTask;              KERNEL = tpl_call_terminate_task_service;         };
-    ENTRY CallTerminateISR2        { API = CallTerminateISR2;              KERNEL = tpl_call_terminate_isr2_service;         };
+    FILE = "tpl_os_os_kernel";
+    SYSCALL GetActiveApplicationMode {
+      KERNEL = tpl_get_active_application_mode_service;
+      RETURN_TYPE = AppModeType
+        : "The active application mode";
+    } : "This service returns the current application mode. It may be used to write mode dependent code.";
+    SYSCALL StartOS {
+      ACTUAL = tpl_start_os;
+      KERNEL = tpl_start_os_service;
+      ARGUMENT mode { KIND = CONST; TYPE = AppModeType; }
+        : "The application mode";
+    } : "The user can call this system service to start the operating system in a specific mode.";
+    SYSCALL ShutdownOS {
+      KERNEL = tpl_shutdown_os_service;
+      ARGUMENT error { KIND = CONST; TYPE = StatusType; }
+        : "The error that occured";
+    } : "The user can call this system service to abort the overall system (e.g. emergency off)."
+        "The operating system also calls this function internally, if it has reached an undefined"
+        "internal state and is no longer ready to run.";
   };
-  /* com services */
-  APICONFIG com {
+  /* com SYSCALLs */
+  APICONFIG message {
     ID_PREFIX = COM;
     FILE = "tpl_com_message_kernel";
 /*  StartCOM                  -> tpl_start_com_service;
@@ -66,11 +263,11 @@ CPU api {
   InitMessage               -> tpl_init_message_service;
   StartPeriodic             -> tpl_start_periodic_service;
   StopPeriodic              -> tpl_stop_periodic_service; */
-    ENTRY SendMessage      { API = SendMessage;      KERNEL = tpl_send_message_service;       };
-    ENTRY ReceiveMessage   { API = ReceiveMessage;   KERNEL = tpl_receive_message_service;    };
+    SYSCALL SendMessage      { KERNEL = tpl_send_message_service;       };
+    SYSCALL ReceiveMessage   { KERNEL = tpl_receive_message_service;    };
 /*  SendDynamicMessage        -> tpl_send_dynamic_message_service;
   ReceiveDynamicMessage     -> tpl_receive_dynamic_message_service; */
-    ENTRY SendZeroMessage  { API = SendZeroMessage;  KERNEL = tpl_send_zero_message_service;  };
-    ENTRY GetMessageStatus { API = GetMessageStatus; KERNEL = tpl_get_message_status_service; };
+    SYSCALL SendZeroMessage  { KERNEL = tpl_send_zero_message_service;  };
+    SYSCALL GetMessageStatus { KERNEL = tpl_get_message_status_service; };
   };
 };
