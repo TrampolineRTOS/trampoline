@@ -56,6 +56,8 @@ function fullPrefix
     @Tvalue value;
     [vars searchKey !lstringWith[!"ASSEMBLER"] ?type ?value];
     stringPrefix .= "/" . [value mStringValue];
+  elsif stringPrefix == "ROOT" then
+    stringPrefix := "";
   end if;
   full := stringPrefix;
 end function;

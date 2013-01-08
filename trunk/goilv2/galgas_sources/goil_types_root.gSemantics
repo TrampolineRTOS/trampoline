@@ -116,67 +116,67 @@ function listInOS
   items := multipleAttributeOrError[!itemsContainer !attributeName];
 end function;
 
-function boolInOS
-  ??@objectsMap objects
-  ??@string attributeName
-  ->@boolAttribute bool
-:
-  @object_t boolContainer;
-  @objectAttributes os := osObject[!objects];
-  [[os objectParams] get !lstringWith[!attributeName] ?boolContainer];
-  cast boolContainer:
-  when == @boolAttribute boolAttr do
-    bool := boolAttr;
-  else
-    bool := [@boolAttribute new ![boolContainer location] !false !emptyObject[]];
-    error [boolContainer location]: "Internal error, ".attributeName." has a wrong datatype";
-  end cast;
-end function;
+#function boolInOS
+#  ??@objectsMap objects
+#  ??@string attributeName
+#  ->@boolAttribute bool
+#:
+#  @object_t boolContainer;
+#  @objectAttributes os := osObject[!objects];
+#  [[os objectParams] get !lstringWith[!attributeName] ?boolContainer];
+#  cast boolContainer:
+#  when == @boolAttribute boolAttr do
+#    bool := boolAttr;
+#  else
+#    bool := [@boolAttribute new ![boolContainer location] !false !emptyObject[]];
+#    error [boolContainer location]: "Internal error, ".attributeName." has a wrong datatype";
+#  end cast;
+#end function;
 
 #
-routine setSTRINGAttributeIfVoid
-  ?!@identifierMap object
-  ??@string name
-  ??@location location
-  ??@string value
-:
-  if not [object hasKey !name] then
-    [!?object put !lstringWith[!name] ![@stringAttribute new !location !value]];
-  end if;
-end routine;
+#routine setSTRINGAttributeIfVoid
+#  ?!@identifierMap object
+#  ??@string name
+#  ??@location location
+#  ??@string value
+#:
+#  if not [object hasKey !name] then
+#    [!?object put !lstringWith[!name] ![@stringAttribute new !location !value]];
+#  end if;
+#end routine;
   
-routine setUINT32AttributeIfVoid
-  ?!@identifierMap object
-  ??@string name
-  ??@location location
-  ??@uint value
-:
-  if not [object hasKey !name] then
-    [!?object put !lstringWith[!name] ![@uint32_class new !location !value]];
-  end if;
-end routine;
+#routine setUINT32AttributeIfVoid
+#  ?!@identifierMap object
+#  ??@string name
+#  ??@location location
+#  ??@uint value
+#:
+#  if not [object hasKey !name] then
+#    [!?object put !lstringWith[!name] ![@uint32_class new !location !value]];
+#  end if;
+#end routine;
 
-routine setENUMAttributeIfVoid
-  ?!@identifierMap object
-  ??@string name
-  ??@location location
-  ??@string value
-  ??@objectAttributes subAttributes
-:
-  if not [object hasKey !name] then
-    [!?object put !lstringWith[!name] ![@enumAttribute new !location !value !subAttributes]];
-  end if;
-end routine;
+#routine setENUMAttributeIfVoid
+#  ?!@identifierMap object
+#  ??@string name
+#  ??@location location
+#  ??@string value
+#  ??@objectAttributes subAttributes
+#:
+#  if not [object hasKey !name] then
+#    [!?object put !lstringWith[!name] ![@enumAttribute new !location !value !subAttributes]];
+#  end if;
+#end routine;
 
-routine setMULTIPLEAttributeIfVoid
-  ?!@identifierMap object
-  ??@string name
-  ??@location location
-  ??@identifierList value
-:
-  if not [object hasKey !name] then
-    [!?object put !lstringWith[!name] ![@multipleAttribute new !location !value]];
-  end if;
-end routine;
+#routine setMULTIPLEAttributeIfVoid
+#  ?!@identifierMap object
+#  ??@string name
+#  ??@location location
+#  ??@identifierList value
+#:
+#  if not [object hasKey !name] then
+#    [!?object put !lstringWith[!name] ![@multipleAttribute new !location !value]];
+#  end if;
+#end routine;
 
 end semantics ;

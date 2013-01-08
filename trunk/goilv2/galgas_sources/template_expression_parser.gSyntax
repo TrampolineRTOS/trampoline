@@ -473,162 +473,222 @@ routine templateMethodInvocation
   ??@Ttype inType
   ??@Tvalue inValue
   ??@lstring inMethodName
-  ??@TexpressionList inParameterTypeList
+  ?@TexpressionList inParameterTypeList
   !@Ttype outResultType
   !@Tvalue outResultValue
 :
-  switch inType
-  when boolType :
-    if [inMethodName string] == "trueOrFalse" then
-      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype stringType];
-      outResultValue := valueWithString [
-        ! if [inValue mInt64Value] > 0LS then "true" else "false" end
-      ];
-    elsif [inMethodName string] == "yesOrNo" then
-      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype stringType];
-      outResultValue := valueWithString [
-        ! if [inValue mInt64Value] > 0LS then "yes" else "no" end
-      ];
-    elsif [inMethodName string] == "unsigned" then
-      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype intType];
-      outResultValue := inValue;
-    else
-      error inMethodName: "the ".inMethodName." template method is not defined" : outResultValue, outResultType;
-    end if;
-  when intType :
-    if [inMethodName string] == "string" then
-      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype stringType];
-      outResultValue := valueWithString [![[inValue mInt64Value] string]];
-    elsif [inMethodName string] == "hexString" then
-      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype stringType];
-      outResultValue := valueWithString [![[[inValue mInt64Value] uint64] hexString]];
-    elsif [inMethodName string] == "numberOfBytes" | [inMethodName string] == "signedNumberOfBytes" then
-      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype intType];
-      @sint64 value := [inValue mInt64Value];
-      # compute the number of bytes needed
-      @uint numberOfBytes := 1;
-      if [inMethodName string] == "signedNumberOfBytes" then
-        value := value * 2;
+  if [inMethodName string] == "description" then
+    checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+    outResultType := [@Ttype stringType];
+    outResultValue := valueWithString[![[inValue mDescription] string] !emptyLString[]];
+  else
+    switch inType
+    when boolType :
+      if [inMethodName string] == "trueOrFalse" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype stringType];
+        outResultValue := valueWithString [
+          ! if [inValue mInt64Value] > 0LS then "true" else "false" end
+          !emptyLString[]
+        ];
+      elsif [inMethodName string] == "yesOrNo" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype stringType];
+        outResultValue := valueWithString [
+          ! if [inValue mInt64Value] > 0LS then "yes" else "no" end
+          !emptyLString[]
+        ];
+      elsif [inMethodName string] == "unsigned" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype intType];
+        outResultValue := inValue;
+      else
+        error inMethodName: "the ".inMethodName." template method is not defined" : outResultValue, outResultType;
       end if;
-      @uint count := 0;
-      loop 4:
-      while count < 4 do
-        @sint64 maxValue := (1LS << (numberOfBytes * 8)) - 1LS;
-        if maxValue < value then
-          numberOfBytes := numberOfBytes * 2;
+    when intType :
+      if [inMethodName string] == "string" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype stringType];
+        outResultValue := valueWithString [![[inValue mInt64Value] string] !emptyLString[]];
+      elsif [inMethodName string] == "hexString" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype stringType];
+        outResultValue := valueWithString [![[[inValue mInt64Value] uint64] hexString] !emptyLString[]];
+      elsif [inMethodName string] == "numberOfBytes" | [inMethodName string] == "signedNumberOfBytes" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype intType];
+        @sint64 value := [inValue mInt64Value];
+        # compute the number of bytes needed
+        @uint numberOfBytes := 1;
+        if [inMethodName string] == "signedNumberOfBytes" then
+          value := value * 2;
         end if;
-        count++;
-      end loop;
-      outResultValue := valueWithUnsigned [![numberOfBytes uint64]];
-    else
-      error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
-    end if;
-  when stringType :
-    if [inMethodName string] == "HTMLRepresentation" then
-      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype stringType];
-      outResultValue := valueWithString [![[inValue mStringValue] HTMLRepresentation]];
-    elsif [inMethodName string] == "identifierRepresentation" then
-      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype stringType];
-      outResultValue := valueWithString [![[inValue mStringValue] identifierRepresentation]];
-    elsif [inMethodName string] == "fileExists" then
-      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype boolType];
-      outResultValue := valueWithBool [![[inValue mStringValue] fileExists]];
-    elsif [inMethodName string] == "lowercaseString" then
-      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype stringType];
-      outResultValue := valueWithString [![[inValue mStringValue] lowercaseString]];
-    elsif [inMethodName string] == "length" then
-      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype intType];
-      outResultValue := valueWithUnsigned [![[[inValue mStringValue] length] uint64]];
-    elsif [inMethodName string] == "stringByCapitalizingFirstCharacter" then
-      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype stringType];
-      outResultValue := valueWithString [![[inValue mStringValue] stringByCapitalizingFirstCharacter]];
-    elsif [inMethodName string] == "uppercaseString" then
-      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype stringType];
-      outResultValue := valueWithString [![[inValue mStringValue] uppercaseString]];
-    elsif [inMethodName string] == "unsigned" then
-      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype intType];
-      outResultValue := valueWithUnsigned [![[[inValue mStringValue] decimalUnsignedNumber] uint64]];
-    elsif [inMethodName string] == "leftSubString" then
-      checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype intType] !1;
-      @Tvalue parameter;
-      [inParameterTypeList first ?parameter ?*];
-      outResultType := [@Ttype stringType];
-      outResultValue := valueWithString [![[inValue mStringValue] leftSubString ![[parameter mInt64Value] uint]]];
-    elsif [inMethodName string] == "rightSubString" then
-      checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype intType] !1;
-      @Tvalue parameter;
-      [inParameterTypeList first ?parameter ?*];
-      outResultType := [@Ttype stringType];
-      outResultValue := valueWithString [![[inValue mStringValue] rightSubString ![[parameter mInt64Value] uint]]];
-    elsif [inMethodName string] == "subString" then
-      checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype intType] !2;
-      @Tvalue start := [inParameterTypeList mValueAtIndex !0];
-      @Tvalue length := [inParameterTypeList mValueAtIndex !1];
-#      log start;
-#      log length;
-      outResultType := [@Ttype stringType];
-      outResultValue := valueWithString [![[inValue mStringValue] subString ![[start mInt64Value] uint] ![[length mInt64Value] uint]]];
-    elsif [inMethodName string] == "reversedString" then
-      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype stringType];
-      outResultValue := valueWithString [![[inValue mStringValue] reversedString]];
-    elsif [inMethodName string] == "componentsSeparatedByString" then
-      checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype stringType] !1;
-      @Tvalue separator;
-      [inParameterTypeList first ?separator ?*];
-      @stringlist stringlist := [[inValue mStringValue] componentsSeparatedByString ![separator mStringValue]];
-      @TfieldMapList result [emptyList];
-      foreach stringlist do
-        @TfieldMap item [emptyMap];
-        addStringValue !?item !lstringWith[!"VALUE"] !mValue;
-        result += !item;
-      end foreach;
-      outResultType := [@Ttype listType];
-      outResultValue := valueWithList[!result];
-    else
-      error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
-    end if;
-  when floatType:
-      error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
-  when listType :
-    if [inMethodName string] == "length" then
-      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype intType];
-      outResultValue := valueWithUnsigned [![[[inValue mMapListValue] length] uint64]];
-    elsif [inMethodName string] == "first" then
-      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype structType];
-      @TfieldMap firstElement;
-      [[inValue mMapListValue] first ?firstElement];
-      outResultValue := valueWithStruct [!firstElement];
-    elsif [inMethodName string] == "last" then
-      checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
-      outResultType := [@Ttype structType];
-      @TfieldMap lastElement;
-      [[inValue mMapListValue] last ?lastElement];
-      outResultValue := valueWithStruct [!lastElement];
-    else
-      error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
-    end if;
-  when enumType, structType, mapType:
-      error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
-  when unconstructedType, functionType:
-    error here: "internal error, unconstructed type found": outResultValue, outResultType;
-  end switch;
+        @uint count := 0;
+        loop 4:
+        while count < 4 do
+          @sint64 maxValue := (1LS << (numberOfBytes * 8)) - 1LS;
+          if maxValue < value then
+            numberOfBytes := numberOfBytes * 2;
+          end if;
+          count++;
+        end loop;
+        outResultValue := valueWithUnsigned [![numberOfBytes uint64] !emptyLString[]];
+      else
+        error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
+      end if;
+    when stringType :
+      if [inMethodName string] == "HTMLRepresentation" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype stringType];
+        outResultValue := valueWithString [![[inValue mStringValue] HTMLRepresentation] !emptyLString[]];
+      elsif [inMethodName string] == "identifierRepresentation" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype stringType];
+        outResultValue := valueWithString [![[inValue mStringValue] identifierRepresentation] !emptyLString[]];
+      elsif [inMethodName string] == "fileExists" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype boolType];
+        outResultValue := valueWithBool [![[inValue mStringValue] fileExists] !emptyLString[]];
+      elsif [inMethodName string] == "lowercaseString" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype stringType];
+        outResultValue := valueWithString [![[inValue mStringValue] lowercaseString] !emptyLString[]];
+      elsif [inMethodName string] == "length" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype intType];
+        outResultValue := valueWithUnsigned [![[[inValue mStringValue] length] uint64] !emptyLString[]];
+      elsif [inMethodName string] == "stringByCapitalizingFirstCharacter" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype stringType];
+        outResultValue := valueWithString [![[inValue mStringValue] stringByCapitalizingFirstCharacter] !emptyLString[]];
+      elsif [inMethodName string] == "uppercaseString" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype stringType];
+        outResultValue := valueWithString [![[inValue mStringValue] uppercaseString] !emptyLString[]];
+      elsif [inMethodName string] == "unsigned" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype intType];
+        outResultValue := valueWithUnsigned [![[[inValue mStringValue] decimalUnsignedNumber] uint64] !emptyLString[]];
+      elsif [inMethodName string] == "leftSubString" then
+        checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype intType] !1;
+        @Tvalue parameter;
+        [inParameterTypeList first ?parameter ?*];
+        outResultType := [@Ttype stringType];
+        outResultValue := valueWithString [![[inValue mStringValue] leftSubString ![[parameter mInt64Value] uint]] !emptyLString[]];
+      elsif [inMethodName string] == "rightSubString" then
+        checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype intType] !1;
+        @Tvalue parameter;
+        [inParameterTypeList first ?parameter ?*];
+        outResultType := [@Ttype stringType];
+        outResultValue := valueWithString [![[inValue mStringValue] rightSubString ![[parameter mInt64Value] uint]] !emptyLString[]];
+      elsif [inMethodName string] == "subString" then
+        checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype intType] !2;
+        @Tvalue start := [inParameterTypeList mValueAtIndex !0];
+        @Tvalue length := [inParameterTypeList mValueAtIndex !1];
+  #      log start;
+  #      log length;
+        outResultType := [@Ttype stringType];
+        outResultValue := valueWithString [![[inValue mStringValue] subString ![[start mInt64Value] uint] ![[length mInt64Value] uint]] !emptyLString[]];
+      elsif [inMethodName string] == "reversedString" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype stringType];
+        outResultValue := valueWithString [![[inValue mStringValue] reversedString] !emptyLString[]];
+      elsif [inMethodName string] == "componentsSeparatedByString" then
+        checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype stringType] !1;
+        @Tvalue separator;
+        [inParameterTypeList first ?separator ?*];
+        @stringlist stringlist := [[inValue mStringValue] componentsSeparatedByString ![separator mStringValue]];
+        @TfieldMapList result [emptyList];
+        foreach stringlist do
+          @TfieldMap item [emptyMap];
+          addStringValue !?item !lstringWith[!"VALUE"] !mValue !emptyLString[];
+          result += !item;
+        end foreach;
+        outResultType := [@Ttype listType];
+        outResultValue := valueWithList[!result !emptyLString[]];
+      elsif [inMethodName string] == "interpretEscape" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype stringType];
+        outResultValue := valueWithString [![[inValue mStringValue] stringByReplacingStringByString !"\\n" !"\n"] !emptyLString[]];
+      elsif [inMethodName string] == "columnPrefixedBy" then
+        checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype stringType] !1;
+        @Tvalue separator;
+        [inParameterTypeList first ?separator ?*];
+        outResultType := [@Ttype stringType];
+        outResultValue := valueWithString [![separator mStringValue].[[inValue mStringValue] stringByReplacingStringByString !"\n" !"\n".[separator mStringValue]] !emptyLString[]];
+      elsif [inMethodName string] == "wrap" then
+        checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype intType] !2;
+#        checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype stringType] !2;
+        @Tvalue width;
+        [!?inParameterTypeList popFirst ?width ?*];
+        @Tvalue shift;
+        [!?inParameterTypeList popFirst ?shift ?*];
+        @string stringshift := [@string stringWithSequenceOfCharacters !' ' ![[shift mInt64Value] uint]];
+        @string result := [inValue mStringValue];
+#        @string result := [[inValue mStringValue] stringByReplacingStringByString !"\n" !" "];
+#        message result;
+#        @string previous := "";
+#        loop [result length]:
+#          previous := result;
+#          result := [result stringByReplacingStringByString !"  " !" "];
+#        while result != previous do
+#        end loop;
+        @stringlist paragraph := [result componentsSeparatedByString !"\n"];
+        @stringlist resultParagraph [emptyList];
+        foreach paragraph prefixedby para_ do
+          @stringlist parts := [para_mValue componentsSeparatedByString !" "];
+          @sint64 linewidth := 0LS;
+          @bool newline := true;
+          result := "";
+          foreach parts prefixedby word_ do
+            if linewidth + [word_mValue length] > [width mInt64Value] then
+              result .= "\n" . stringshift;
+              linewidth := [shift mInt64Value];
+              newline := true;
+            end if;
+            if newline == false then
+              linewidth := linewidth + 1LS;
+              result .= " ";
+            end if;
+            linewidth := linewidth + [word_mValue length];
+            result .= word_mValue;
+            newline := false;
+          end foreach;
+          resultParagraph += !result;
+        end foreach;
+        outResultType := [@Ttype stringType];
+        outResultValue := valueWithString[![@string componentsJoinedByString !resultParagraph !"\n"] !emptyLString[]];
+      else
+        error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
+      end if;
+    when floatType:
+        error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
+    when listType :
+      if [inMethodName string] == "length" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype intType];
+        outResultValue := valueWithUnsigned [![[[inValue mMapListValue] length] uint64] !emptyLString[]];
+      elsif [inMethodName string] == "first" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype structType];
+        @TfieldMap firstElement;
+        [[inValue mMapListValue] first ?firstElement];
+        outResultValue := valueWithStruct [!firstElement !emptyLString[]];
+      elsif [inMethodName string] == "last" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype structType];
+        @TfieldMap lastElement;
+        [[inValue mMapListValue] last ?lastElement];
+        outResultValue := valueWithStruct [!lastElement !emptyLString[]];
+      else
+        error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
+      end if;
+    when enumType, structType, mapType:
+        error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
+    when unconstructedType, functionType:
+      error here: "internal error, unconstructed type found": outResultValue, outResultType;
+    end switch;
+  end if;
 end routine;
 
 #------------------------------------------------------------------------------*
@@ -1194,7 +1254,7 @@ rule <factor>
     ?expression
     ?operandType
  ;
-  outValue := valueWithUnsigned[!1L - [expression mInt64Value]];
+  outValue := valueWithUnsigned[!1L - [expression mInt64Value] !emptyLString[]];
   checkNotOperatorForTemplate !operandType ?outResultType;
 end rule;
 
@@ -1223,7 +1283,7 @@ rule <factor>
     ?value
     ?operandType
  ;
-  outValue := valueWithSigned[!~ [value mInt64Value]];
+  outValue := valueWithSigned[!~ [value mInt64Value] !emptyLString[]];
   checkBitComplementOperatorForTemplate !operandType ?outResultType;
 end rule;
 
@@ -1242,7 +1302,7 @@ rule <factor>
   !@Ttype outResultType
 :
   $yes$;
-  outValue := valueWithUnsigned[!1L];
+  outValue := valueWithUnsigned[!1L !emptyLString[]];
   outResultType := [@Ttype boolType];
 end rule;
 
@@ -1261,7 +1321,7 @@ rule <factor>
   !@Ttype outResultType
 :
   $no$;
-  outValue := valueWithUnsigned[!0L];
+  outValue := valueWithUnsigned[!0L !emptyLString[]];
   outResultType := [@Ttype boolType];
 end rule;
 
@@ -1281,7 +1341,7 @@ rule <factor>
 :
   @lsint64 literalInt;
   $signed_literal_integer64$ ?literalInt;
-  outValue := valueWithSigned[![literalInt sint64]];
+  outValue := valueWithSigned[![literalInt sint64] !emptyLString[]];
   outResultType := [@Ttype intType];
 end rule;
 
@@ -1300,7 +1360,7 @@ rule <factor>
   !@Ttype outResultType
 :
   $string$ ?@lstring literalString;
-  outValue := valueWithString[![literalString string]];
+  outValue := valueWithString[![literalString string] !emptyLString[]];
   outResultType := [@Ttype stringType];
 end rule;
 
@@ -1506,7 +1566,7 @@ rule <factor>
           idx ++;     
         end foreach;
         outResultType := [@Ttype intType];
-        outValue := valueWithSigned[!0LS];
+        outValue := valueWithSigned[!0LS !emptyLString[]];
         if [@uint errorCount] == 0 then
           const @object result := [f invoke !actualArgumentObjectList ![functionOrVariableName location]];
           if [result objectDynamicType] == `@sint64 then
@@ -1571,9 +1631,9 @@ rule <factor>
   or
     outResultType := [@Ttype boolType];
     if varExists then
-      outValue := valueWithUnsigned[!1L];
+      outValue := valueWithUnsigned[!1L !emptyLString[]];
     else
-      outValue := valueWithUnsigned[!0L];
+      outValue := valueWithUnsigned[!0L !emptyLString[]];
     end if;
   end select;
 end rule;
@@ -1594,7 +1654,7 @@ rule <factor>
   @Tvalue variableValue;
   searchField !variableName !inVariableMap ?variableType ?variableValue ?*;
   outResultType := [@Ttype enumType];
-  outValue := valueWithString[![variableType messageGoilTemplateType]];
+  outValue := valueWithString[![variableType messageGoilTemplateType] !emptyLString[]];
 end rule;
 
 #------------------------------------------------------------------------------*
@@ -1609,10 +1669,10 @@ rule <factor>
 :
   select
     $true$;
-    outValue := valueWithUnsigned[!1L];
+    outValue := valueWithUnsigned[!1L !emptyLString[]];
   or
     $false$;
-    outValue := valueWithUnsigned[!0L];
+    outValue := valueWithUnsigned[!0L !emptyLString[]];
   end select;
   outResultType := [@Ttype boolType];
 end rule;
@@ -1628,7 +1688,7 @@ rule <factor>
   !@Ttype outResultType
 :
   $@$; $identifier$ ?@lstring enumValue;
-  outValue := valueWithString[![enumValue string]];
+  outValue := valueWithString[![enumValue string] !emptyLString[]];
   outResultType := [@Ttype enumType];
 end rule;
 
@@ -1643,7 +1703,7 @@ rule <factor>
   !@Ttype outResultType
 :
   $emptylist$;
-  outValue := [@Tvalue new !0LS !0.0 !"" ![@TfieldMapList emptyList] ![@TfieldMap emptyMap] !dummyFunction[]];
+  outValue := [@Tvalue new !0LS !0.0 !"" ![@TfieldMapList emptyList] ![@TfieldMap emptyMap] !dummyFunction[] !emptyLString[]];
   outResultType := [@Ttype listType];
 end rule;
 
@@ -1658,7 +1718,7 @@ rule <factor>
   !@Ttype outResultType
 :
   $emptymap$;
-  outValue := [@Tvalue new !0LS !0.0 !"" ![@TfieldMapList emptyList] ![@TfieldMap emptyMap] !dummyFunction[]];
+  outValue := [@Tvalue new !0LS !0.0 !"" ![@TfieldMapList emptyList] ![@TfieldMap emptyMap] !dummyFunction[] !emptyLString[]];
   outResultType := [@Ttype mapType];
 end rule;
 
@@ -1694,7 +1754,7 @@ rule <factor>
         [mMap searchKey !key ?keyType ?keyValue];
         if keyType == [@Ttype stringType] then
           @lstring keyVal := [@lstring new ![keyValue mStringValue] ![mMap locationForKey ![key string]]];
-          [!?resultMap insertKey !keyVal ![@Ttype structType] !valueWithMap[!mMap]];
+          [!?resultMap insertKey !keyVal ![@Ttype structType] !valueWithMap[!mMap !emptyLString[]]];
         else
           error [mMap locationForKey ![key string]]: "the list element specified key is not a string";
         end if;
@@ -1703,7 +1763,7 @@ rule <factor>
       end if;
     end foreach;
     outResultType := [@Ttype mapType];
-    outValue := valueWithMap[!resultMap];
+    outValue := valueWithMap[!resultMap !emptyLString[]];
   end if;
 end rule;
 
@@ -1736,7 +1796,7 @@ rule <factor>
       resultList += ![mValue mStructValue];
     end foreach;
     outResultType := [@Ttype listType];
-    outValue := valueWithList[!resultList];
+    outValue := valueWithList[!resultList !emptyLString[]];
   end if;
 end rule;
 

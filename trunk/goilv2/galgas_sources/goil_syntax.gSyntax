@@ -130,7 +130,20 @@ rule <description> !@lstring desc:
   select
     desc := lstringWith[!""];
   or
-    $:$; $string$ ?desc;
+    $:$;
+    @lstring partialString;
+    $string$ ?partialString;
+    @string result := [partialString string];
+    repeat
+    while
+      $string$ ?partialString;
+      @string toappend := [partialString string];
+      if [result rightSubString !2] != "\\n" then
+        toappend := " " . toappend;
+      end if; 
+      result .= toappend;
+    end repeat;
+    desc := [@lstring new ![result stringByReplacingStringByString !"\\n" !"\n"] ![partialString location]];
   end select;
 end rule;
 
@@ -175,16 +188,17 @@ rule <object_definition_list> ??@implementation imp ?!@objectsMap objects:
     @objectKindMap objectsKind := [objectsForKind objects];
     if [objectsKind hasKey ![objectName string]] then
       [!?objectsKind del !objectName ?object];
-    else
-      @identifierMap attributes := [object objectParams];
-      [!?attributes put ![@lstring new !"NAME" ![objectName location]] ![@stringAttribute new ![objectName location] ![objectName string]]];
-      [!?object setObjectParams !attributes];
     end if;
     ${$;
     <oil_declaration_list> ![impObjOfKind attributes] !?object ;
     $}$;
-    <description> ?*;
+    <description> ?@lstring oil_desc;
     $;$;
+    @identifierMap attributes := [object objectParams];
+    if not [attributes hasKey !"NAME"] then
+      [!?attributes put ![@lstring new !"NAME" ![objectName location]] ![@stringAttribute new !oil_desc ![objectName location] ![objectName string]]];
+      [!?object setObjectParams !attributes];
+    end if;
     [!?objectsKind put !objectName !object];
     [!?objectsForKind setObjects !objectsKind];
     [!?objects put !objectKind !objectsForKind];
@@ -260,11 +274,12 @@ rule <oil_declaration>
         ${$;
         <oil_declaration_list> !subTypes !?subAttributes;
         $}$;
-      or end select; 
+      or end select;
+      <description> ?@lstring oil_desc;
       if [type type] == [@dataType enumeration] then
-        val := [@enumAttribute new ![value location] ![value string] !subAttributes];
+        val := [@enumAttribute new !oil_desc ![value location] ![value string] !subAttributes];
       else
-        val := [@string_class new  ![value location] ![value string]];
+        val := [@string_class new  !oil_desc ![value location] ![value string]];
       end if;
     or
       # Type is int of float
@@ -274,12 +289,14 @@ rule <oil_declaration>
         # Type is int
         @luint64 value;
         $uint_number$ ?value;
-        val := checkAndGetIntegerNumber[![type type] !value !sign];
+        <description> ?@lstring oil_desc;
+        val := checkAndGetIntegerNumber[!oil_desc ![type type] !value !sign];
       or
         # Type is float
         @ldouble value;
         $float_number$ ?value;
-        val := checkAndGetFloatNumber[![type type] !value !sign];
+        <description> ?@lstring oil_desc;
+        val := checkAndGetFloatNumber[!oil_desc ![type type] !value !sign];
       end select;
     or
       # Type is bool
@@ -307,19 +324,21 @@ rule <oil_declaration>
         <oil_declaration_list> !subTypes !?subAttributes;
         $}$;
       or end select;
-  
-      val := [@boolAttribute new ![idf location] ![value bool] !subAttributes];
+      <description> ?@lstring oil_desc;
+      val := [@boolAttribute new !oil_desc ![idf location] ![value bool] !subAttributes];
     or
       # Type is string
       @lstring literalString;
       $string$ ?literalString;
-      val := [@stringAttribute new ![literalString location] ![literalString string]];
+      <description> ?@lstring oil_desc;
+      val := [@stringAttribute new !oil_desc ![literalString location] ![literalString string]];
     or
       # AUTO
       $AUTO$;
+      <description> ?@lstring oil_desc;
       # Check the attribute is allowed to have AUTO value
       if [type autoAllowed] then
-          val := [@auto new !here];
+          val := [@auto new !oil_desc !here];
   #      message "*** AUTO\n";
 #        switch [type type]
 #        when uint32Number: 
@@ -353,7 +372,8 @@ rule <oil_declaration>
     ${$;
       <oil_declaration_list> !subTypes !?subAttributes;
     $}$;
-    val := [@structAttribute new !here !name !subAttributes];
+    <description> ?@lstring oil_desc;
+    val := [@structAttribute new !oil_desc !here !name !subAttributes];
   end select;
   $;$;
 #    log idf;
@@ -369,10 +389,10 @@ rule <oil_declaration>
       when == @multipleAttribute multiAttribute do
         @identifierList aList := [multiAttribute items];
         aList += !val;
-        val := [@multipleAttribute new ![multiAttribute location] !aList];
+        val := [@multipleAttribute new !emptyLString[] ![multiAttribute location] !aList];
       else end cast;
     else
-      val := [@multipleAttribute new ![val location] ![@identifierList listWithValue !val]];
+      val := [@multipleAttribute new !emptyLString[] ![val location] ![@identifierList listWithValue !val]];
     end if;
   end if;
   if typeOk then

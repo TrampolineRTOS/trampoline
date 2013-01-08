@@ -303,24 +303,27 @@ rule <string_options>
   @bool multiple;
   <multiple> ?multiple;
   @object_t defaultValue;
+  @lstring oil_desc;
   select
     $=$;
     select
       $string$ ?@lstring stringValue;
-      defaultValue := [@stringAttribute new ![stringValue location] ![stringValue string]];
+      <description> ?oil_desc;
+      defaultValue := [@stringAttribute new !oil_desc ![stringValue location] ![stringValue string]];
     or
       $AUTO$;
-      defaultValue := [@auto new !here];
+      <description> ?oil_desc;
+      defaultValue := [@auto new !oil_desc !here];
     or
       $NO_DEFAULT$;
-      defaultValue:= [@void new !here];
+      <description> ?oil_desc;
+      defaultValue:= [@void new !oil_desc !here];
     end select;
   or
-    defaultValue:= [@void new !here];
+    <description> ?oil_desc;
+    defaultValue:= [@void new !oil_desc !here];
   end select;
-  @lstring description;
-  <description> ?description;
-  options := [@impAutoDefaultType new !here ![@dataType string] !name !multiple !description !withAuto !defaultValue];
+  options := [@impAutoDefaultType new !here ![@dataType string] !name !multiple !oil_desc !withAuto !defaultValue];
 end rule;
 
 rule <boolean_options>
@@ -352,16 +355,17 @@ rule <boolean_options>
   @bool multiple;
   <multiple> ?multiple;
   @object_t defaultValue;
+  @lstring oil_desc;
   select
     @lbool boolValue;
     $=$; <boolean> ?boolValue;
-    defaultValue := [@boolAttribute new ![boolValue location] ![boolValue bool] ![@objectAttributes new ![@identifierMap emptyMap]]];
+    <description> ?oil_desc;
+    defaultValue := [@boolAttribute new !oil_desc ![boolValue location] ![boolValue bool] ![@objectAttributes new ![@identifierMap emptyMap]]];
   or
-    defaultValue:= [@void new !here];
+    <description> ?oil_desc;
+    defaultValue:= [@void new !oil_desc !here];
   end select;
-  @lstring description;
-  <description> ?description;
-  options := [@impBoolType new !here ![@dataType boolean] !name !multiple !description !withAuto !defaultValue !trueSubAttributes !falseSubAttributes];
+  options := [@impBoolType new !here ![@dataType boolean] !name !multiple !oil_desc !withAuto !defaultValue !trueSubAttributes !falseSubAttributes];
 end rule;
 
 rule <enum_item>
@@ -393,23 +397,29 @@ rule <enum_options>
   <identifier_or_attribute> ?name;
   @bool multiple;
   <multiple> ?multiple;
-  @object_t defaultValue := [@void new !here];
+  @lstring oil_desc;
+  @object_t defaultValue;
   select
     $=$;
     select
       @lstring stringValue;
       $idf$ ?stringValue;
-      defaultValue := [@enumAttribute new ![stringValue location] ![stringValue string] ![@objectAttributes new ![@identifierMap emptyMap]]];
+      <description> ?oil_desc;
+      defaultValue := [@enumAttribute new !oil_desc ![stringValue location] ![stringValue string] ![@objectAttributes new ![@identifierMap emptyMap]]];
     or
       $AUTO$;
-      defaultValue := [@auto new !here];
+      <description> ?oil_desc;
+      defaultValue := [@auto new !oil_desc !here];
     or
       $NO_DEFAULT$;
+      <description> ?oil_desc;
+      defaultValue := [@void new !oil_desc !here];
     end select;
-  or end select;
-  @lstring description;
-  <description> ?description;
-  options := [@impEnumType new !here ![@dataType enumeration] !name !multiple !description !withAuto !defaultValue !items];
+  or
+    <description> ?oil_desc;
+    defaultValue := [@void new !oil_desc !here];
+  end select;
+  options := [@impEnumType new !here ![@dataType enumeration] !name !multiple !oil_desc !withAuto !defaultValue !items];
   verifyEnum !options;
 end rule;
 
@@ -425,22 +435,27 @@ rule <number_options>
   <identifier_or_attribute> ?name;
   @bool multiple;
   <multiple> ?multiple;
+  @lstring oil_desc;
   @object_t defaultValue;
   select
     $=$;
     select
       <int_or_float> ?defaultValue !type;
+      oil_desc := [defaultValue oil_desc];
     or
-      $NO_DEFAULT$; defaultValue := [@void new !here];
+      $NO_DEFAULT$;
+      <description> ?oil_desc;
+      defaultValue := [@void new !oil_desc !here];
     or
-      $AUTO$; defaultValue := [@auto new !here];
+      $AUTO$;
+      <description> ?oil_desc;
+      defaultValue := [@auto new !oil_desc !here];
     end select;
   or
-    defaultValue := [@void new !here];
+    <description> ?oil_desc;
+    defaultValue := [@void new !oil_desc !here];
   end select;
-  @lstring description;
-  <description> ?description;
-  options := [@impRangedType new !here !type !name !multiple !description !withAuto !defaultValue !range];
+  options := [@impRangedType new !here !type !name !multiple !oil_desc !withAuto !defaultValue !range];
 end rule;
 
 rule <type_options>
@@ -454,23 +469,28 @@ rule <type_options>
   @bool multiple;
   <multiple> ?multiple;
   @object_t defaultValue;
+  @lstring oil_desc;
   select
     $=$;
     select
       @lstring ident;
       <identifier_or_attribute> ?ident;
-      defaultValue := [@stringAttribute new !here ![ident string]];
+      <description> ?oil_desc;
+      defaultValue := [@stringAttribute new !oil_desc !here ![ident string]];
     or
-      $NO_DEFAULT$; defaultValue := [@void new !here];
+      $NO_DEFAULT$;
+      <description> ?oil_desc;
+      defaultValue := [@void new !oil_desc !here];
     or
-      $AUTO$; defaultValue := [@auto new !here];
+      $AUTO$;
+      <description> ?oil_desc;
+      defaultValue := [@auto new !oil_desc !here];
     end select;
   or
-    defaultValue := [@void new !here];
+    <description> ?oil_desc;
+    defaultValue := [@void new !oil_desc !here];
   end select;
-  @lstring description;
-  <description> ?description;
-  options := [@impAutoDefaultType new !here !type !name !multiple !description !withAuto !defaultValue];
+  options := [@impAutoDefaultType new !here !type !name !multiple !oil_desc !withAuto !defaultValue];
 end rule;
 
 rule <with_auto>
@@ -513,11 +533,13 @@ rule <int_or_float>
   select
     @luint64 number;
     $uint_number$ ?number; 
-    num := checkAndGetIntegerNumber[!type !number !signed];
+    <description> ?@lstring oil_desc;
+    num := checkAndGetIntegerNumber[!oil_desc !type !number !signed];
   or
     @ldouble number;
     $float_number$ ?number;
-    num := checkAndGetFloatNumber[!type !number !signed];
+    <description> ?@lstring oil_desc;
+    num := checkAndGetFloatNumber[!oil_desc !type !number !signed];
   end select;  
 end rule;
 
@@ -538,20 +560,20 @@ rule <range_content>
   !@attributeRange range
   ??@dataType type
 :
-  @object_t start := [@void new !here];
-  @object_t stop := [@void new !here];
+  @object_t start := [@void new !emptyLString[] !here];
+  @object_t stop := [@void new !emptyLString[] !here];
   @bool signed;
   <sign> ?signed;
   select
     @luint64 number;
     $set_start_uint_number$ ?number;
-    start := checkAndGetIntegerNumber[!type !number !signed];
+    start := checkAndGetIntegerNumber[!emptyLString[] !type !number !signed];
     <int_or_float> ?stop !type;
     range := buildRange[!type !start !stop];
   or
     @luint64 number;
     $uint_number$ ?number;
-    start := checkAndGetIntegerNumber[!type !number !signed];
+    start := checkAndGetIntegerNumber[!emptyLString[] !type !number !signed];
     select
       $..$; <int_or_float> ?stop !type;
       range := buildRange[!type !start !stop];
@@ -563,7 +585,7 @@ rule <range_content>
   or
     @ldouble number;
     $float_number$ ?number;
-    start := checkAndGetFloatNumber[!type !number !signed];
+    start := checkAndGetFloatNumber[!emptyLString[] !type !number !signed];
     select
       $..$; <int_or_float> ?stop !type;
       range := buildRange[!type !start !stop];
