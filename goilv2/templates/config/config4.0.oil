@@ -1,6 +1,10 @@
 #include "config3.1.oil"
 
-IMPLEMENTATION trampoline_ioc {
+IMPLEMENTATION autosar4 {
+  OS {
+    UINT16 [1..65535] NUMBER_OF_CORES = 1;
+  };
+
   IOC [] {
     STRUCT {
       ENUM [
@@ -37,6 +41,7 @@ IMPLEMENTATION trampoline_ioc {
   
   APPLICATION [] {
     IOC_TYPE IOC [];
+    UINT16 CORE = 0;
   };
 
 };
