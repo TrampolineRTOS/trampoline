@@ -14,8 +14,8 @@ end method;
 # build a template struct
 override method @structAttribute set ??@lstring name ?!@TfieldMap result:
   @TfieldMap subAttrs := [subAttributes fieldMap];
-  addLStringValue !?subAttrs !"NAME" !structName;
-  addStructValue !?result !name !subAttrs;
+  addLStringValue !?subAttrs !"NAME" !structName !oil_desc;
+  addStructValue !?result !name !subAttrs !oil_desc;
 #  if [subAttrs count] > 0 then
 #    foreach subAttrs do
 #      [!?result insertKey !lkey !mType !mValue];
@@ -28,11 +28,11 @@ end method;
 # the content of the attribute (if it exists) is a struct with the same
 # name suffixed by _S
 override method @boolAttribute set ??@lstring name ?!@TfieldMap result:
-  addBoolValue !?result !name !value;
+  addBoolValue !?result !name !value !oil_desc;
   @TfieldMap subAttrs := [subAttributes fieldMap];
   if [subAttrs count] > 0 then
     @lstring structName := [@lstring new ![name string]."_S" ![name location]];
-    addStructValue !?result !structName !subAttrs;
+    addStructValue !?result !structName !subAttrs !oil_desc;
   end if;
 end method;
 
@@ -41,20 +41,20 @@ end method;
 # the content of the attribute (if it exists) is a struct with the same
 # name suffixed by _S
 override method @enumAttribute set ??@lstring name ?!@TfieldMap result:
-  addStringValue !?result !name !value;
+  addStringValue !?result !name !value !oil_desc;
   @TfieldMap subAttrs := [subAttributes fieldMap];
   if [subAttrs count] > 0 then
     @lstring structName := [@lstring new ![name string]."_S" ![name location]];
-    addStructValue !?result !structName !subAttrs;
+    addStructValue !?result !structName !subAttrs !oil_desc;
   end if;
 end method;
 
 override method @stringAttribute set ??@lstring name ?!@TfieldMap result:
-  addStringValue !?result !name !value;
+  addStringValue !?result !name !value !oil_desc;
 end method;
 
 override method @string_class set ??@lstring name ?!@TfieldMap result:
-  addStringValue !?result !name !value;
+  addStringValue !?result !name !value !oil_desc;
 end method;
 
 override method @multipleAttribute set ??@lstring name ?!@TfieldMap result:
@@ -63,7 +63,7 @@ override method @multipleAttribute set ??@lstring name ?!@TfieldMap result:
     @TfieldMap multipleItem [emptyMap];
     cast item:
     when == @structAttribute aStruct do
-      addLStringValue !?multipleItem !"NAME" ![aStruct structName];
+      addLStringValue !?multipleItem !"NAME" ![aStruct structName] ![aStruct oil_desc];;
       @TfieldMap subAttrs := [[aStruct subAttributes] fieldMap];
       if [subAttrs count] > 0 then
         foreach subAttrs do
@@ -75,31 +75,31 @@ override method @multipleAttribute set ??@lstring name ?!@TfieldMap result:
     end cast;
     multiple += !multipleItem;
   end foreach;
-  addListValue !?result !name !multiple;
+  addListValue !?result !name !multiple !oil_desc;
 end method;
 
 override method @uint32_class set ??@lstring name ?!@TfieldMap result:
-  addUnsignedValue !?result !name ![value uint64];
+  addUnsignedValue !?result !name ![value uint64] !oil_desc;
 end method;
 
 override method @sint32_class set ??@lstring name ?!@TfieldMap result:
-  addSignedValue !?result !name ![value sint64];
+  addSignedValue !?result !name ![value sint64] !oil_desc;
 end method;
 
 override method @uint64_class set ??@lstring name ?!@TfieldMap result:
-  addUnsignedValue !?result !name !value;
+  addUnsignedValue !?result !name !value !oil_desc;
 end method;
 
 override method @sint64_class set ??@lstring name ?!@TfieldMap result:
-  addSignedValue !?result !name !value;
+  addSignedValue !?result !name !value !oil_desc;
 end method;
 
 override method @float_class set ??@lstring name ?!@TfieldMap result:
-  addFloatValue !?result !name !value;
+  addFloatValue !?result !name !value !oil_desc;
 end method;
 
 override method @auto set ??@lstring name ?!@TfieldMap result:
-  addEnumValue !?result !name !"auto";
+  addEnumValue !?result !name !"auto" !oil_desc;
 end method;
 
 reader @objectAttributes fieldMap
@@ -121,20 +121,20 @@ reader @applicationDefinition templateData
   #
   # First setup the general configuration data
   #
-  addStringValue !?cfg !lstringWith[!"OILFILENAME"] ![[@string stringWithSourceFilePath] lastPathComponent];
-  addLStringValue !?cfg !"CPUNAME" !name;
-  addLStringValue !?cfg !"CPUDESCRIPTION" !cpuDescription;
-  addLStringValue !?cfg !"OILVERSION" !version;
-  addLStringValue !?cfg !"OILDESCRIPTION" !versionDescription;
-  addStringValue !?cfg !lstringWith[!"TIMESTAMP"] ![@string stringWithCurrentDateTime];
-  addStringValue !?cfg !lstringWith[!"PROJECT"] ![projectName[] lastPathComponent];
-  addStringValue !?cfg !lstringWith[!"TARGET"] ![option goil_options.target_platform value];
-  addStringValue !?cfg !lstringWith[!"TEMPLATEPATH"] ![option goil_options.template_dir value];
-  addStringValue !?cfg !lstringWith[!"ARCH"] !arch[];
-  addStringValue !?cfg !lstringWith[!"CHIP"] !chip[];
-  addStringValue !?cfg !lstringWith[!"BOARD"] !board[];
+  addStringValue !?cfg !lstringWith[!"OILFILENAME"] ![[@string stringWithSourceFilePath] lastPathComponent] !lstringWith[![@string stringWithSourceFilePath]];
+  addLStringValue !?cfg !"CPUNAME" !name !lstringWith[!"name of the CPU object"];
+  addLStringValue !?cfg !"CPUDESCRIPTION" !cpuDescription !lstringWith[!"description of the CPU object"];
+  addLStringValue !?cfg !"OILVERSION" !version !lstringWith[!"OIL version"];
+  addLStringValue !?cfg !"OILDESCRIPTION" !versionDescription !lstringWith[!"OIL version description"];
+  addStringValue !?cfg !lstringWith[!"TIMESTAMP"] ![@string stringWithCurrentDateTime] !lstringWith[!"timestamp of OIL compiling"];
+  addStringValue !?cfg !lstringWith[!"PROJECT"] ![projectName[] lastPathComponent] !lstringWith[!"project name"];
+  addStringValue !?cfg !lstringWith[!"TARGET"] ![option goil_options.target_platform value] !lstringWith[!"target architecture/chip/board"];
+  addStringValue !?cfg !lstringWith[!"TEMPLATEPATH"] ![option goil_options.template_dir value] !lstringWith[!"path of the templates used"];
+  addStringValue !?cfg !lstringWith[!"ARCH"] !arch[] !lstringWith[!"target architecture"];
+  addStringValue !?cfg !lstringWith[!"CHIP"] !chip[] !lstringWith[!"target chip"];
+  addStringValue !?cfg !lstringWith[!"BOARD"] !board[] !lstringWith[!"target board"];
   # Other options of goil
-  addBoolValue !?cfg !lstringWith[!"LOGFILE"] ![option goil_options.generate_log value];
+  addBoolValue !?cfg !lstringWith[!"LOGFILE"] ![option goil_options.generate_log value] !lstringWith[!"Generated a logfile"];
 
   foreach objects do
 #    message [lkey string]."\n";
@@ -143,13 +143,12 @@ reader @applicationDefinition templateData
     @implementationObject implementationObject;
     [[imp imp] get !lkey ?implementationObject];
     if [[implementationObject multiple] bool] then
-#      message "*** multiple\n";
       @TfieldMapList objs [emptyList];
       foreach [objectsOfKind objects] do
         @TfieldMap attrs := [attributes fieldMap];
         objs += !attrs;
       end foreach;
-      addListValue !?cfg !lkey !objs;
+      addListValue !?cfg !lkey !objs !emptyLString[];
     else
 #      message "*** single\n";
       if [[objectsOfKind objects] count] == 1 then
@@ -157,7 +156,7 @@ reader @applicationDefinition templateData
         foreach [objectsOfKind objects] do
           attrs := [attributes fieldMap];
         end foreach;
-        addStructValue !?cfg !lkey !attrs;
+        addStructValue !?cfg !lkey !attrs !emptyLString[];
       end if;
     end if;
   end foreach;

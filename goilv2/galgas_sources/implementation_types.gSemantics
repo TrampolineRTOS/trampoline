@@ -714,7 +714,7 @@ override method @impBoolType setDefault ?!@objectAttributes attributes:
         end if;
         @objectAttributes subAttributes := emptyObject[];
         setDefaultsForType !subImpAttributes !?subAttributes;
-        @boolAttribute defaults := [@boolAttribute new ![b location] ![b value] !subAttributes];
+        @boolAttribute defaults := [@boolAttribute new ![b oil_desc] ![b location] ![b value] !subAttributes];
         @identifierMap attr := [attributes objectParams];
         [!?attr put !name !defaults];
         [!?attributes setObjectParams !attr];
@@ -812,6 +812,7 @@ end method;
 #end method;
 
 function checkAndGetIntegerNumber
+  ??@lstring oil_desc
   ??@dataType type
   ??@luint64 number
   ??@bool signed
@@ -819,30 +820,31 @@ function checkAndGetIntegerNumber
 :
   if signed then
     if type == [@dataType sint32Number] then
-      value := [@sint32_class new ![number location] ![[number uint64] sint] * -1S];
+      value := [@sint32_class new !oil_desc ![number location] ![[number uint64] sint] * -1S];
     elsif type == [@dataType sint64Number] then
-      value := [@sint64_class new ![number location] ![[number uint64] sint64] * -1LS];
+      value := [@sint64_class new !oil_desc ![number location] ![[number uint64] sint64] * -1LS];
     else
-      value := [@void new ![number location]];
+      value := [@void new !oil_desc ![number location]];
       error number: [type oilType]." expected, got a SINT";
     end if;
   else
     if type == [@dataType sint32Number] then
-      value := [@sint32_class new ![number location] ![[number uint64] sint]];
+      value := [@sint32_class new !oil_desc ![number location] ![[number uint64] sint]];
     elsif type == [@dataType sint64Number] then
-      value := [@sint64_class new ![number location] ![[number uint64] sint64]];
+      value := [@sint64_class new !oil_desc ![number location] ![[number uint64] sint64]];
     elsif type == [@dataType uint32Number] then
-      value := [@uint32_class new ![number location] ![[number uint64] uint]];
+      value := [@uint32_class new !oil_desc ![number location] ![[number uint64] uint]];
     elsif type == [@dataType uint64Number] then
-      value := [@uint64_class new ![number location] ![number uint64]];
+      value := [@uint64_class new !oil_desc ![number location] ![number uint64]];
     else
-      value := [@void new ![number location]];
+      value := [@void new !oil_desc ![number location]];
       error number: [type oilType]." expected, got a UINT";
     end if;
   end if;
 end function;
 
 function checkAndGetFloatNumber
+  ??@lstring oil_desc
   ??@dataType type
   ??@ldouble number
   ??@bool signed
@@ -850,16 +852,16 @@ function checkAndGetFloatNumber
 :
   if signed then
     if type == [@dataType floatNumber] then
-      value := [@float_class new ![number location] ![number double] * -1.0];
+      value := [@float_class new !oil_desc ![number location] ![number double] * -1.0];
     else
-      value := [@void new ![number location]];
+      value := [@void new !oil_desc ![number location]];
       error number: [type oilType]." expected, got a FLOAT";
     end if;
   else
     if type == [@dataType floatNumber] then
-      value := [@float_class new ![number location] ![number double]];
+      value := [@float_class new !oil_desc ![number location] ![number double]];
     else
-      value := [@void new ![number location]];
+      value := [@void new !oil_desc ![number location]];
       error number: [type oilType]." expected, got a FLOAT";
     end if;
   end if;

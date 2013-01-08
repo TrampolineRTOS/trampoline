@@ -93,6 +93,7 @@ struct @Tvalue {
   @TfieldMapList mMapListValue;
   @TfieldMap mStructValue;
   @Tfunction mFunctionValue;
+  @lstring mDescription;
 }
 
 #------------------------------------------------------------------------------*
@@ -113,6 +114,7 @@ list @TenumationList {
 
 function valueWithBool
   ??@bool inValue
+  ??@lstring description
   ->@Tvalue outValue
 :
   outValue := [@Tvalue new
@@ -122,6 +124,7 @@ function valueWithBool
     ![@TfieldMapList emptyList]
     ![@TfieldMap emptyMap]
     !dummyFunction[]
+    !description
   ];
 end function;
 
@@ -129,6 +132,7 @@ end function;
 
 function valueWithUnsigned
   ??@uint64 inValue
+  ??@lstring description
   ->@Tvalue outValue
 :
   outValue := [@Tvalue new
@@ -138,6 +142,7 @@ function valueWithUnsigned
     ![@TfieldMapList emptyList]
     ![@TfieldMap emptyMap]
     !dummyFunction[]
+    !description
   ];
 end function;
 
@@ -145,6 +150,7 @@ end function;
 
 function valueWithSigned
   ??@sint64 inValue
+  ??@lstring description
   ->@Tvalue outValue
 :
   outValue := [@Tvalue new
@@ -154,6 +160,7 @@ function valueWithSigned
     ![@TfieldMapList emptyList]
     ![@TfieldMap emptyMap]
     !dummyFunction[]
+    !description
   ];
 end function;
 
@@ -161,6 +168,7 @@ end function;
 
 function valueWithFloat
   ??@double inValue
+  ??@lstring description
   ->@Tvalue outValue
 :
   outValue := [@Tvalue new
@@ -170,6 +178,7 @@ function valueWithFloat
     ![@TfieldMapList emptyList]
     ![@TfieldMap emptyMap]
     !dummyFunction[]
+    !description
   ];
 end function;
 
@@ -177,6 +186,7 @@ end function;
 
 function valueWithString
   ??@string inValue
+  ??@lstring description
   ->@Tvalue outValue
 :
   outValue := [@Tvalue new
@@ -186,6 +196,7 @@ function valueWithString
     ![@TfieldMapList emptyList]
     ![@TfieldMap emptyMap]
     !dummyFunction[]
+    !description
   ];
 end function;
 
@@ -193,6 +204,7 @@ end function;
 
 function valueWithStruct
   ??@TfieldMap inValue
+  ??@lstring description
   ->@Tvalue outValue
 :
   outValue := [@Tvalue new
@@ -202,6 +214,7 @@ function valueWithStruct
     ![@TfieldMapList emptyList]
     !inValue
     !dummyFunction[]
+    !description
   ];
 end function;
 
@@ -209,6 +222,7 @@ end function;
 
 function valueWithMap
   ??@TfieldMap inValue
+  ??@lstring description
   ->@Tvalue outValue
 :
   outValue := [@Tvalue new
@@ -218,6 +232,7 @@ function valueWithMap
     ![@TfieldMapList emptyList]
     !inValue
     !dummyFunction[]
+    !description
   ];
 end function;
 
@@ -225,6 +240,7 @@ end function;
 
 function valueWithList
   ??@TfieldMapList inValue
+  ??@lstring description
   ->@Tvalue outValue
 :
   outValue := [@Tvalue new
@@ -234,6 +250,7 @@ function valueWithList
     !inValue
     ![@TfieldMap emptyMap]
     !dummyFunction[]
+    !description
   ];
 end function;
 
@@ -249,6 +266,7 @@ function valueWithVoid
     ![@TfieldMapList emptyList]
     ![@TfieldMap emptyMap]
     !dummyFunction[]
+    ![@lstring new !"" !here]
   ];
 end function;
 
@@ -258,11 +276,12 @@ routine addBoolValue
   ?!@TfieldMap ioTemplateVariableMap
   ??@lstring inVariableName
   ??@bool inValue
+  ??@lstring description
 :
   [!?ioTemplateVariableMap insertKey
     !inVariableName
     ![@Ttype boolType]
-    !valueWithBool[!inValue]
+    !valueWithBool[!inValue !description]
   ];
 end routine;
 
@@ -272,11 +291,12 @@ routine addUnsignedValue
   ?!@TfieldMap ioTemplateVariableMap
   ??@lstring inVariableName
   ??@uint64 inValue
+  ??@lstring description
 :
   [!?ioTemplateVariableMap insertKey
     !inVariableName
     ![@Ttype intType]
-    !valueWithUnsigned[!inValue]
+    !valueWithUnsigned[!inValue !description]
     #[@goilTemplateValue new !inValue !"" ![@goilTemplateFieldMapList emptyList]]
   ];
 end routine;
@@ -287,11 +307,12 @@ routine addSignedValue
   ?!@TfieldMap ioTemplateVariableMap
   ??@lstring inVariableName
   ??@sint64 inValue
+  ??@lstring description
 :
   [!?ioTemplateVariableMap insertKey
     !inVariableName
     ![@Ttype intType]
-    !valueWithSigned[!inValue]
+    !valueWithSigned[!inValue !description]
     #[@goilTemplateValue new !inValue !"" ![@goilTemplateFieldMapList emptyList]]
   ];
 end routine;
@@ -302,11 +323,12 @@ routine addFloatValue
   ?!@TfieldMap ioTemplateVariableMap
   ??@lstring inVariableName
   ??@double inValue
+  ??@lstring description
 :
   [!?ioTemplateVariableMap insertKey
     !inVariableName
     ![@Ttype floatType]
-    !valueWithFloat[!inValue]
+    !valueWithFloat[!inValue !description]
     #[@goilTemplateValue new !inValue !"" ![@goilTemplateFieldMapList emptyList]]
   ];
 end routine;
@@ -317,8 +339,9 @@ routine addLUnsignedValue
   ?!@TfieldMap ioTemplateVariableMap
   ??@string inVariableName
   ??@luint64 inValue
+  ??@lstring description
 :
-  addUnsignedValue !?ioTemplateVariableMap ![@lstring new !inVariableName ![inValue location]] ![inValue uint64];
+  addUnsignedValue !?ioTemplateVariableMap ![@lstring new !inVariableName ![inValue location]] ![inValue uint64] !description;
 end routine;
 
 #------------------------------------------------------------------------------*
@@ -327,11 +350,12 @@ routine addStringValue
   ?!@TfieldMap ioTemplateVariableMap
   ??@lstring inVariableName
   ??@string inValue
+  ??@lstring description
 :
   [!?ioTemplateVariableMap insertKey
     !inVariableName
     ![@Ttype stringType]
-    !valueWithString[!inValue]
+    !valueWithString[!inValue !description]
     #[@goilTemplateValue new !0L !inValue ![@goilTemplateFieldMapList emptyList]]
   ];
 end routine;
@@ -342,8 +366,9 @@ routine addLStringValue
   ?!@TfieldMap ioTemplateVariableMap
   ??@string inVariableName
   ??@lstring inValue
+  ??@lstring description
 :
-  addStringValue !?ioTemplateVariableMap ![@lstring new !inVariableName ![inValue location]] ![inValue string];
+  addStringValue !?ioTemplateVariableMap ![@lstring new !inVariableName ![inValue location]] ![inValue string] !description;
 end routine;
 
 #------------------------------------------------------------------------------*
@@ -352,11 +377,13 @@ routine addListValue
   ?!@TfieldMap ioTemplateVariableMap
   ??@lstring inVariableName
   ??@TfieldMapList inValue
+  ??@lstring description
 :
   [!?ioTemplateVariableMap insertKey
     !inVariableName
     ![@Ttype listType]
-    ![@Tvalue new !0LS !0.0 !"" !inValue ![@TfieldMap emptyMap] !dummyFunction[]]
+    ![@Tvalue new !0LS !0.0 !"" !inValue ![@TfieldMap emptyMap] !dummyFunction[] !description]
+    
   ];
 end routine;
 
@@ -366,11 +393,12 @@ routine addStructValue
   ?!@TfieldMap ioTemplateVariableMap
   ??@lstring inVariableName
   ??@TfieldMap inValue
+  ??@lstring description
 :
   [!?ioTemplateVariableMap insertKey
     !inVariableName
     ![@Ttype structType]
-    ![@Tvalue new !0LS !0.0 !"" ![@TfieldMapList emptyList] !inValue !dummyFunction[]]
+    ![@Tvalue new !0LS !0.0 !"" ![@TfieldMapList emptyList] !inValue !dummyFunction[] !description]
   ];
 end routine;
 
@@ -380,11 +408,12 @@ routine addEnumValue
   ?!@TfieldMap ioTemplateVariableMap
   ??@lstring inVariableName
   ??@string inValue
+  ??@lstring description
 :
   [!?ioTemplateVariableMap insertKey
     !inVariableName
     ![@Ttype enumType]
-    !valueWithString[!inValue]
+    !valueWithString[!inValue !description]
     #[@goilTemplateValue new !0L !inValue ![@goilTemplateFieldMapList emptyList]]
   ];
 end routine;
