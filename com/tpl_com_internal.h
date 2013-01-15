@@ -41,7 +41,7 @@ typedef tpl_com_srv_id          COMServiceIdType;
 
 /*
  * Start-up services
- */
+
 StatusType StartCOM(COMApplicationModeType);
 StatusType StopCOM(COMShutdownModeType);
 COMApplicationModeType GetCOMApplicationMode(void);
@@ -49,15 +49,15 @@ StatusType InitMessage(MessageIdentifier, ApplicationDataRef);
 StatusType StartPeriodic(void);
 StatusType StopPeriodic(void);
 
-/*
+
  * Notification mechanism support services
- */
+
 FlagValue ReadFlag(void);
 void ResetFlag(void);
 
-/*
+
  * Communication services
- */
+
 StatusType SendMessage(MessageIdentifier, ApplicationDataRef);
 StatusType ReceiveMessage(MessageIdentifier, ApplicationDataRef);
 StatusType SendDynamicMessage(MessageIdentifier, ApplicationDataRef, LengthRef);
@@ -65,6 +65,6 @@ StatusType ReceiveDynamicMessage(MessageIdentifier, ApplicationDataRef, LengthRe
 StatusType SendZeroMessage(MessageIdentifier);
 StatusType GetMessageStatus(MessageIdentifier);
 COMServiceIdType COMErrorGetServiceId(void);
-
+*/
 
 #endif

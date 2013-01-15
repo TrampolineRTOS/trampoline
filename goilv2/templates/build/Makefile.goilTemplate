@@ -64,6 +64,10 @@ if OS::SYSTEM_CALL then
 OIL_GENERATED_FILES += tpl_dispatch_table.c
 OIL_GENERATED_FILES += tpl_invoque.S
 %
+else
+%
+OIL_GENERATED_FILES += tpl_os.c
+%
 end if
 if [IOC length] > 0 then
 %
@@ -241,6 +245,36 @@ DOXYGEN = doxygen
 #############################################################################
 % template if exists Makefile_specific
 %
+
+#############################################################################
+# KERNEL FILE LIST
+#############################################################################
+%
+let KERNEL_MAP := mapof KERNEL by NAME
+foreach file in KERNEL_MAP["osek_kernel"]::FILE do
+%
+SOURCES += % !file::VALUE
+end foreach
+if OS::SCALABILITYCLASS > 0 then
+  foreach file in KERNEL_MAP["autosar_kernel"]::FILE do
+%
+SOURCES += % !file::VALUE
+  end foreach
+end if
+%
+
+#############################################################################
+# SYSTEM CALL FILE LIST
+#############################################################################
+%
+foreach service_set in APIUSED do
+  foreach file in service_set::FILE do
+%
+SOURCES += % !file::VALUE %.c%
+  end foreach
+end foreach
+%
+
 #############################################################################
 # call Trampoline makefile rules.
 #############################################################################

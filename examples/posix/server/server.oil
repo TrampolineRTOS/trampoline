@@ -11,6 +11,7 @@ IMPLEMENTATION trampoline {
     ISR {
         UINT32 STACKSIZE = 32768 ;
     } ;
+    
 };
 
 CPU server {
@@ -52,15 +53,8 @@ CPU server {
         EVENT = evt_t1;
         EVENT = evt_t2;
         EVENT = evt_t3;
+        EVENT = tick;
     };
-    EVENT evt_0 {
-      MASK = 4;
-    };
-
-    EVENT evt_1 {
-      MASK = 8;
-    };  
-
     TASK task_t1 {
         PRIORITY = 1;
         AUTOSTART = FALSE;
@@ -88,4 +82,16 @@ CPU server {
     EVENT evt_t3 {
       MASK = 32;
     };
+    
+    EVENT tick {
+      MASK = AUTO;
+    };
+    
+    ALARM one_second {
+      COUNTER = SystemCounter;
+      ACTION = SETEVENT { TASK = server; EVENT = tick; };
+      AUTOSTART = TRUE { APPMODE = std; ALARMTIME = 100; CYCLETIME = 100; };
+    };
+
+
  } ;

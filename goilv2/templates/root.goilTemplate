@@ -1164,6 +1164,11 @@ Goil run on % !TIMESTAMP%
 Generated files are:
 %
 
+#
+# Generate the system calls
+#
+template api
+
 !PROJECT %/tpl_app_custom_types.h
 %
 write to PROJECT."/tpl_app_custom_types.h":
@@ -1252,14 +1257,6 @@ if OS::MEMMAP then
       template AsMemMap_h in assembler
     end write
   end if
-end if
-
-if OS::BUILD then
-%Makefile
-%
-  write to "Makefile":
-    template Makefile in build
-  end write
 end if
 
 if OS::TRACE then

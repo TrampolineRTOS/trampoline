@@ -7,6 +7,10 @@ int main(void)
     return 0;
 }
 
+DeclareAlarm(one_second);
+
+DeclareTask(stop);
+
 TASK(my_periodic_task)
 {
     static int occurence = 0;
@@ -14,6 +18,11 @@ TASK(my_periodic_task)
     occurence++;
     printf("Activation #%d\n",occurence);
     
-    TerminateTask();
+    printf("error=%d\n",ChainTask(stop));
 }
 
+TASK(stop)
+{
+  CancelAlarm(one_second);
+  TerminateTask();
+}

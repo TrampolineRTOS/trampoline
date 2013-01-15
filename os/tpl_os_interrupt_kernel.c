@@ -29,7 +29,7 @@
 #include "tpl_os_errorhook.h"
 #include "tpl_machine_interface.h"
 #include "tpl_trace.h"
-#include "tpl_os_it_kernel.h"
+#include "tpl_os_interrupt_kernel.h"
 
 #if defined(__unix__) || defined(__APPLE__)
 #include <assert.h>

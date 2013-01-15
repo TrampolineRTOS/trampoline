@@ -35,8 +35,6 @@ void ShutdownHook(StatusType error)
     printf("Bye bye :)\n");
 }
 
-DeclareEvent(evt_0);
-DeclareEvent(evt_1);
 DeclareEvent(evt_t1);
 DeclareTask(task_t1);
 DeclareEvent(evt_t2);
@@ -44,6 +42,7 @@ DeclareTask(task_t2);
 DeclareEvent(evt_t3);
 DeclareTask(task_t3);
 DeclareTask(server);
+DeclareEvent(tick);
 
 TASK(server)
 {
@@ -59,22 +58,25 @@ TASK(server)
       GetEvent(server, &event_got);
       if(event_got & evt_t1 )
       {
-        printf("I executed task t1");
+        printf("I executed task t1\n");
         ClearEvent(evt_t1);
         ActivateTask(task_t1);
       }
       if(event_got & evt_t2 )
       {
-        printf("I executed task t2");
+        printf("I executed task t2\n");
         ClearEvent(evt_t2);
         ActivateTask(task_t2);
       }
       if(event_got & evt_t3 )
       {
-        printf("I executed task t3");
+        printf("I executed task t3\n");
         ClearEvent(evt_t3);
         ActivateTask(task_t3);
       }
+      
+      WaitEvent(tick);
+      ClearEvent(tick);
     }
 }
 

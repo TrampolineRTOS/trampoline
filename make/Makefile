@@ -43,14 +43,14 @@ ifeq ($(strip $(WITH_USEDEBUG)),true)
 include $(DEBUG_PATH)/Makefile
 endif
 
-include $(OS_PATH)/Makefile
-ifeq ($(strip $(AUTOSAR)),true)
-  include $(AUTOSAR_PATH)/Makefile
-endif
+#include $(OS_PATH)/Makefile
+#ifeq ($(strip $(AUTOSAR)),true)
+#  include $(AUTOSAR_PATH)/Makefile
+#endif
 
-ifeq ($(strip $(WITH_USECOM)),true)
-include $(COM_PATH)/Makefile
-endif
+#ifeq ($(strip $(WITH_USECOM)),true)
+#include $(COM_PATH)/Makefile
+#endif
 
 ifeq ($(strip $(WITH_IOC)), true)
 include $(IOC_PATH)/Makefile

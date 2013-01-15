@@ -10,11 +10,17 @@ IMPLEMENTATION trampoline {
     /* This fix the default STACKSIZE of tasks */
     TASK {
         UINT32 STACKSIZE = 32768;
+        STM_TYPE STM;
     };
 
     /* This fix the default STACKSIZE of ISRs */
     ISR {
         UINT32 STACKSIZE = 32768;
+    };
+    
+    STM [] {
+      UINT32 SIZE;
+      UINT32 MAXOBJ;
     };
 };
 
@@ -51,6 +57,16 @@ CPU tp1 {
         AUTOSTART = TRUE { APPMODE = std; };
         ACTIVATION = 1;
         SCHEDULE = FULL;
+        STM = ma_stm;
+    };
+    
+    STM ma_stm {
+       SIZE = 2000;
+       MAXOBJ = 100;
+    };
+    STM ma_2_stm {
+       SIZE = 5600;
+       MAXOBJ = 100;
     };
 };
 /* End of file */
