@@ -11,9 +11,10 @@
 #include "tpl_app_config.h"
 #include "tpl_os_internal_types.h"
 #include "tpl_viper_interface.h"
-#include "tpl_os_it_kernel.h"
-#include "tpl_os.h"
+#include "tpl_os_interrupt_kernel.h"
+#include "tpl_os_definitions.h"
 #include "tpl_machine_interface.h"
+#include "tpl_os.h"
 #include "tpl_os_application_def.h" /* define NO_ISR if needed. */
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
 #include "tpl_as_timing_protec.h"
@@ -23,7 +24,7 @@
 #include "tpl_os_kernel.h" /* for tpl_running_obj */
 #include "tpl_as_definitions.h"
 #include "tpl_os_task_kernel.h"
-#include "tpl_os_rez_kernel.h"
+#include "tpl_os_resource_kernel.h"
 #endif /* WITH_AUTOSAR */
 
 #if defined(__unix__) || defined(__APPLE__)
@@ -46,6 +47,14 @@ VAR(struct TPL_CONTEXT, OS_VAR) idle_task_context;
 extern volatile u32 tpl_locking_depth;
 extern VAR(tpl_bool, OS_VAR) tpl_user_task_lock;
 extern VAR(tpl_bool, OS_VAR) tpl_cpt_os_task_lock;
+
+#if TASK_COUNT > 0
+extern FUNC(void, OS_CODE) CallTerminateTask(void);
+#endif
+
+#if ISR_COUNT > 0
+extern FUNC(void, OS_CODE) CallTerminateISR2(void);
+#endif
 
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
 
@@ -349,13 +358,17 @@ void tpl_osek_func_stub( tpl_proc_id task_id )
     
   /* Terminate Task/ISR*/
   if (type == IS_ROUTINE) {
+#if ISR_COUNT > 0
     CallTerminateISR2();
+#endif
   }
   else
   {
+#if TASK_COUNT > 0
     CallTerminateTask();
     fprintf(stderr, "[OSEK/VDX Spec. 2.2.3 Sec. 4.7] Ending the task without a call to TerminateTask or ChainTask is strictly forbidden and causes undefined behaviour.\n");
     exit(1);
+#endif
   }
 }
 

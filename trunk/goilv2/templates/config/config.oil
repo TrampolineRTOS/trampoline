@@ -1,5 +1,10 @@
 IMPLEMENTATION trampoline_common {
   
+  KERNEL [] {
+    STRING PATH;
+    STRING FILE[];
+  };
+
   APICONFIG [] {
     STRUCT {
       BOOLEAN HIDDEN = FALSE;
@@ -11,7 +16,13 @@ IMPLEMENTATION trampoline_common {
         ENUM [ CONST, VAR ] KIND;
       } ARGUMENT[];
     } SYSCALL[];
-    STRING FILE;
+    STRUCT {
+      IDENTIFIER TYPE;
+      IDENTIFIER STORAGE;
+      STRING VALUE;
+    } CONST[];
+    STRING FILE[];
+    STRING HEADER[];
     IDENTIFIER ID_PREFIX;
   };
   
@@ -396,4 +407,5 @@ CPU defaultObjects {
   } : "Predefined System Counter";
 };
 
+#include "kernel.oil"
 #include "api.oil"

@@ -31,8 +31,20 @@ CPU only_one_periodic_task {
     AUTOSTART = TRUE { APPMODE = std; ALARMTIME = 100; CYCLETIME = 100; };
   };
   
+  ALARM stopper {
+    COUNTER = SystemCounter;
+    ACTION = ACTIVATETASK { TASK = stop; };
+    AUTOSTART = TRUE { APPMODE = std; ALARMTIME = 1000; CYCLETIME = 0; };
+  };
+    
   TASK my_periodic_task {
     PRIORITY = 1;
+    AUTOSTART = FALSE;
+    ACTIVATION = 1;
+    SCHEDULE = FULL;
+  };
+  TASK stop {
+    PRIORITY = 2;
     AUTOSTART = FALSE;
     ACTIVATION = 1;
     SCHEDULE = FULL;

@@ -35,9 +35,9 @@
 #include "tpl_machine_interface.h"
 #include "tpl_dow.h"
 #include "tpl_trace.h"
-#include "tpl_os_it.h"
-#include "tpl_os_it_kernel.h"
-#include "tpl_os_rez_kernel.h"
+#include "tpl_os_interrupt.h"
+#include "tpl_os_interrupt_kernel.h"
+#include "tpl_os_resource_kernel.h"
 #include "tpl_os_task.h"
 
 #if WITH_AUTOSAR_STACK_MONITORING == YES
@@ -100,16 +100,6 @@ CONST(tpl_proc_static, OS_CONST) idle_task_static = {
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-
-/*
- * @internal
- *
- * The Application Mode that was used to start the OS.
- *
- * @see #tpl_start_os_service
- * @see #tpl_shutdown_os_service
- */
-STATIC VAR(tpl_application_mode, OS_VAR) application_mode = NOAPPMODE;
 
 /*
  * idle_task is the task descriptor of the kernel task
@@ -1338,134 +1328,6 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 #endif
 }
 
-FUNC(tpl_application_mode, OS_CODE) tpl_get_active_application_mode_service(
-  void)
-{
-  VAR(tpl_application_mode, AUTOMATIC) app_mode = application_mode;
-  VAR(StatusType, AUTOMATIC) result = E_OK;
-	
-  /*  lock the kernel    */
-  LOCK_KERNEL()
-	
-  /* check interrupts are not disabled by user    */
-  CHECK_INTERRUPT_LOCK(result)
-	
-  /*  store information for error hook routine    */
-  STORE_SERVICE(OSServiceId_GetActiveApplicationMode)
-	
-  app_mode = application_mode;
-	
-  PROCESS_ERROR(result)
-	
-  UNLOCK_KERNEL()
-	
-  return app_mode;
-}
-
-FUNC(void, OS_CODE) tpl_start_os_service(
-  CONST(tpl_application_mode, AUTOMATIC) mode)
-{
-#if (WITH_ERROR_HOOK == YES) || (WITH_OS_EXTENDED == YES)
-  /*  init the error to no error  */
-  VAR(tpl_status, AUTOMATIC) result = E_OK;
-#endif
-  /*  lock the kernel    */
-  LOCK_KERNEL()
-
-  /*  store information for error hook routine    */
-  STORE_SERVICE(OSServiceId_StartOS)
-	STORE_MODE(mode);
-	
-	CHECK_OS_NOT_STARTED(result)
-	
-  IF_NO_EXTENDED_ERROR(result)
-  /* { */
-  application_mode = mode;
-
-  TRACE_TPL_INIT()
-
-  tpl_init_os(mode);
-  
-  tpl_enable_counters();
-
-  /*
-   * Call the startup hook. According to the spec, it should be called
-   * after the os is initialized and before the scheduler is running
-   */
-  CALL_STARTUP_HOOK()
-  
-  /*
-   * Call the OS Application startup hooks if needed
-   */
-  CALL_OSAPPLICATION_STARTUP_HOOKS()
-
-  /* 
-   * Call tpl_start_scheduling to elect the highest priority task
-   * if such a task exists.
-   */
-  if(tpl_h_prio != -1)
-  {
-    tpl_start_scheduling();
-
-#if WITH_SYSTEM_CALL == NO
-    if (tpl_kern.need_switch != NO_NEED_SWITCH)
-    {
-      tpl_switch_context(
-        &(tpl_kern.s_old->context),
-        &(tpl_kern.s_running->context)
-      );
-    }
-#endif
-  }
-  
-  /* } */
-  IF_NO_EXTENDED_ERROR_END()
-	
-  PROCESS_ERROR(result)
-
-  /*  unlock the kernel  */
-  UNLOCK_KERNEL()
-}
-
-FUNC(void, OS_CODE) tpl_shutdown_os_service(
-    CONST(tpl_status, AUTOMATIC) error  /*@unused@*/)
-{
-  /*  lock the kernel    */
-  LOCK_KERNEL()
-  
-  /*
-   * Requirement OS054, page 65 of AUTOSAR_SWS_OS.pdf document
-   *
-   * Check if the caller belongs to a Trusted OS Application
-   * This is done only if the OS is compiled in AUTOSAR SC3 or SC4
-   * (otherwise OS Applications do not exist)
-   */
-#if WITH_OSAPPLICATION == YES
-  if (tpl_kern.running->trusted_counter > 0)
-  {
-#endif
-	
-  /*  store information for error hook routine */
-  STORE_SERVICE(OSServiceId_ShutdownOS)
-
-  /*
-   * Call the OS Application shutdown hooks if needed
-   */
-  CALL_OSAPPLICATION_SHUTDOWN_HOOKS()
-  
-  CALL_SHUTDOWN_HOOK(error)
-
-  TRACE_TPL_TERMINATE()
-  /* architecture dependant shutdown. */
-  tpl_shutdown();
-
-#if WITH_OSAPPLICATION == YES
-  }
-#endif
-            
-  /*  unlock the kernel */
-  UNLOCK_KERNEL()
-}
 
 FUNC(void, OS_CODE) tpl_call_terminate_task_service(void)
 {  
@@ -1510,7 +1372,11 @@ FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
   if (FALSE != tpl_get_interrupt_lock_status() )  
   {
     tpl_reset_interrupt_lock_status();
-    /*tpl_enable_interrupts(); now ?? or wait until TerminateISR reschedule and interrupts enabled returning previous API service call OR by signal_handler.*/
+    /*
+     * tpl_enable_interrupts(); now ?? or wait until TerminateISR
+     * reschedule and interrupts enabled returning previous
+     * API service call OR by signal_handler.
+     */
     result = E_OS_DISABLEDINT;
   }
   /* release resources if held */

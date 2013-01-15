@@ -374,16 +374,9 @@ extern CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)
  */
 FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(void);
 
-FUNC(tpl_application_mode, OS_CODE) tpl_get_active_application_mode_service(
-  void);
-
-FUNC(void, OS_CODE) tpl_start_os_service(
-    CONST(tpl_application_mode, AUTOMATIC) mode);
-
-FUNC(void, OS_CODE) tpl_shutdown_os_service(
-    CONST(tpl_status, AUTOMATIC) error);
-
 FUNC(void, OS_CODE) tpl_schedule_from_running(void);
+
+FUNC(void, OS_CODE) tpl_start_scheduling(void);
 
 /**
  * @internal

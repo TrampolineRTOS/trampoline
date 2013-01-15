@@ -29,9 +29,9 @@
 #define OS_H
 
 /* OSEK includes */
-#include "tpl_os_application_def.h"
+/*#include "tpl_os_application_def.h"*/
 #include "tpl_os.h"
-#include "tpl_os_types.h"
+/*#include "tpl_os_types.h"
 #include "tpl_os_task.h"
 #include "tpl_os_alarm.h"
 #include "tpl_os_definitions.h"
@@ -39,10 +39,10 @@
 #include "tpl_os_event.h"
 #include "tpl_os_it.h"
 #include "tpl_os_rez.h"
-#include "tpl_os_it_kernel.h"
+#include "tpl_os_it_kernel.h"*/
 
 /* AUTOSAR includes */
-#if WITH_AUTOSAR == YES
+/*#if WITH_AUTOSAR == YES
 #include "tpl_as_error.h"
 #include "tpl_as_isr.h"
 #include "tpl_as_protec_hook.h"
@@ -54,13 +54,13 @@
 #include "tpl_as_application.h"
 #include "tpl_as_trusted_fct.h"
 #endif
-
+*/
 #if WITH_IOC == YES
 #include "tpl_ioc.h"
 #include "tpl_ioc_api_config.h"
 #endif
 
-#endif
+/*#endif*/
 
 /* Configuration includes */
 /*#include "tpl_os_generated_configuration.h"*/

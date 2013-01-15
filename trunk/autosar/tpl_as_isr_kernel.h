@@ -28,7 +28,7 @@
 #define TPL_AS_ISR_KERNEL_H
 
 #include "tpl_os_definitions.h"
-#include "tpl_os_it_kernel.h"
+#include "tpl_os_interrupt_kernel.h"
 
 /**
  * @internal

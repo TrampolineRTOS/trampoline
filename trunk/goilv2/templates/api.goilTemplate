@@ -1,0 +1,62 @@
+%
+#
+# Generate the system calls according to the configuration
+#
+let APIMAP := mapof APICONFIG by NAME
+let APIUSED := emptylist
+
+let APIUSED += APIMAP["os"]
+let APIUSED += APIMAP["interrupt"]
+
+#
+# Check and generate system calls
+#
+if [TASKS length] > 0 then
+  let APIUSED += APIMAP["task"]
+end if
+if [RESOURCES length] > 0 | OS::USERESSCHEDULER then
+  let APIUSED += APIMAP["resource"]
+end if
+if [TASKS length] > 0  & [EVENTS length] > 0 then
+  let APIUSED += APIMAP["event"]
+end if
+if [ALARMS length] > 0 then
+  let APIUSED += APIMAP["alarm"]
+end if
+if [MESSAGES length] > 0 then
+  let APIUSED += APIMAP["message"]
+end if
+
+# AUTOSAR
+if OS::SCALABILITYCLASS > 0 then
+  let APIUSED += APIMAP["counter"]
+  let APIUSED += APIMAP["scheduletables"]
+  let APIUSED += APIMAP["isrs"]
+end if
+if OS::SCALABILITYCLASS > 2 then
+  let APIUSED += APIMAP["applications"]
+end if
+if OS::SCALABILITYCLASS == 2 | OS::SCALABILITYCLASS == 4 then
+  let APIUSED += APIMAP["globaltime"]
+end if
+
+!PROJECT %/tpl_os.h
+%
+write to PROJECT."/tpl_os.h":
+  template tpl_os_h in code
+end write
+
+!PROJECT %/tpl_os.c
+%
+write to PROJECT."/tpl_os.c":
+  template tpl_os_c in code
+end write
+
+if OS::BUILD then
+%Makefile
+%
+  write to "Makefile":
+    template Makefile in build
+  end write
+end if
+

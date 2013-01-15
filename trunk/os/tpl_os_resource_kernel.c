@@ -23,7 +23,7 @@
  * $URL$
  */
 
-#include "tpl_os_rez_kernel.h"
+#include "tpl_os_resource_kernel.h"
 #include "tpl_os_definitions.h"
 #include "tpl_os_kernel.h"
 #include "tpl_os_error.h"

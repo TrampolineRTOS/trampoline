@@ -30,7 +30,7 @@
 #include "tpl_os_kernel.h"
 #include "tpl_os_task_kernel.h"
 #include "tpl_os_alarm_kernel.h"
-#include "tpl_os_rez_kernel.h"
+#include "tpl_os_resource_kernel.h"
 #include "tpl_os_definitions.h"
 #include "tpl_machine_interface.h"
 #include "tpl_as_counter_kernel.h"
