@@ -58,10 +58,10 @@ CPU test {
       APP_SRC = "../config.c";
       TRAMPOLINE_BASE_PATH = "../../..";
       APP_NAME = "tasks_s1_full_exe";
-      CFLAGS = "-I../../embUnit";
+      CFLAGS = " -g -I../../embUnit";
       CFLAGS  = "-Werror -Wall -pedantic";
       CFLAGS  = "-Wmissing-field-initializers";
-      LDFLAGS = "-L../../lib -lembUnit";
+      LDFLAGS = "-g -L../../lib -lembUnit";
     };
     SHUTDOWNHOOK = TRUE;
   };

@@ -26,9 +26,11 @@
 
 #include "tpl_dispatch_table.h"
 %
-foreach api_sec in APICONFIG do
+foreach api_sec in APIUSED do
+  foreach file in api_sec::FILE do
 %
-#include "% !api_sec::FILE %.h"%
+#include "% !file::VALUE %.h"%
+  end foreach
 end foreach
 %
 
@@ -38,8 +40,8 @@ CONST(tpl_system_call, OS_CONST) tpl_dispatch_table[SYSCALL_COUNT] = {
 /* os services */
 %
 
-foreach api_sec in USEDAPI do
-  foreach api_func in api_sec::ENTRY do
+foreach api_sec in APIUSED do
+  foreach api_func in api_sec::SYSCALL do
 %    (tpl_system_call) % !api_func::KERNEL 
   between %,
 %

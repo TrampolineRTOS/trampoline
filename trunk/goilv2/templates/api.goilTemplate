@@ -46,10 +46,25 @@ write to PROJECT."/tpl_os.h":
   template tpl_os_h in code
 end write
 
-!PROJECT %/tpl_os.c
+if OS::SYSTEM_CALL then
+  !PROJECT %/tpl_dispatch_table.c
 %
-write to PROJECT."/tpl_os.c":
-  template tpl_os_c in code
+  write to PROJECT."/tpl_dispatch_table.c":
+    template tpl_dispatch_table_c in code
+  end write
+  template tpl_invoque_s in code
+else
+  !PROJECT %/tpl_os.c
+%
+  write to PROJECT."/tpl_os.c":
+    template tpl_os_c in code
+  end write
+end if
+
+!PROJECT %/tpl_service_ids.h
+%
+write to PROJECT."/tpl_service_ids.h":
+  template tpl_service_ids_h in code
 end write
 
 if OS::BUILD then
