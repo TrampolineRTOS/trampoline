@@ -30,7 +30,7 @@
 #if WITH_AUTOSAR == YES
 #include "tpl_as_definitions.h"
 #endif
-#include "tpl_os_it.h"
+#include "tpl_os_interrupt.h"
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
@@ -53,6 +53,24 @@ volatile VAR (u32, OS_VAR) nested_kernel_entrance_counter;
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
+
+/**
+ * Call Terminate Task function when no TerminateTask hasn't been called
+ * or when TerminateTask didn't success because of resource hold or
+ * interrupts disabled.
+ *
+ */
+extern FUNC(void, OS_CODE) CallTerminateTask(void);
+
+
+/**
+ * Call Terminate ISR2 function when TerminateISR didn't success doing it
+ * because of resource hold or interrupts disabled.
+ *
+ */
+extern FUNC(void, OS_CODE) CallTerminateISR2(void);
+
+
 
 FUNC (void, OS_CODE) tpl_init_machine_generic (void)
 {

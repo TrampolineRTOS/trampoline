@@ -16,3 +16,9 @@ IMPLEMENTATION arm_interrupt {
     UINT32 IT_TABLE_SIZE;
   };
 };
+
+CPU arm_interrupt {
+  COUNTER SystemCounter {
+    SOURCE = it_timer1;
+  };
+};

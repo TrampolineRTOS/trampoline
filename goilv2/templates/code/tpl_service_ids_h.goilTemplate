@@ -34,7 +34,7 @@
  */
 %
 let system_call_count := 0
-foreach api_sec in USEDAPI do
+foreach api_sec in APIUSED do
   foreach api in api_sec::SYSCALL do
 %
 /**
