@@ -1,0 +1,68 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\usepackage{hyperref}
+\usepackage{underscore}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{parskip}
+
+\newcommand{\normaltilde}{{\raise.17ex\hbox{$\scriptstyle\mathtt{\sim}$}}}
+\newcommand{\unixcl}[1]{\texttt{\fcolorbox{black}{gray!20}{#1}}}
+\title{Trampoline Install}
+\author{}
+%\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+
+Users are not allowed to do system-wide installations of software on Linux computers of ECN. So before using Trampoline, you have to install it in your home directory.
+
+\section{Trampoline}
+
+\begin{enumerate}
+\item Go in your home directory if you are not already in it: \unixcl{cd}
+\item Download the package from here: \url{http://www.irccyn.ec-nantes.fr/~bechenne/trampoline}
+\item Uncompress it in your home: \unixcl{tar xvzf trampoline.tgz}
+\item Go in the viper\footnote{Viper is a program which allows to emulate interrupts on Unix and which is needed by Trampoline} directory: \unixcl{cd trampoline/viper}
+\item Build viper: \unixcl{make}
+\end{enumerate}
+
+\section{Goil and miscellaneous}
+￼￼￼
+Goil is the OIL compiler.
+
+\begin{enumerate}
+\item Go back in your home: \unixcl{cd}
+\item Create a bin directory in your home: \unixcl{mkdir bin}
+\item Go in the goilv2 makefile directory: \unixcl{cd trampoline/goilv2/makefile-unix}
+\item Build it: \unixcl{make goil}
+\item Put it in bin: \unixcl{mv goil \normaltilde/bin}
+\item Edit your .bashrc in your home\footnote{On another Unix platform, it could be .profile} or create it if it does not exist and add the following lines at the end: \unixcl{export PATH=\$PATH:\normaltilde/bin}. Add the path to Viper too: \unixcl{export VIPER_PATH=\normaltilde/trampoline/viper}. And a last the path of the templates for goil: \unixcl{export GOIL_TEMPLATES=\normaltilde/trampoline/goilv2/templates}.
+\item Update your environment: \unixcl{source \normaltilde/.bashrc}
+\item Test goil is working: \unixcl{goil --version} should print \unixcl{./goil : version 2.1b2 (goilv2)}
+￼￼￼\end{enumerate}
+
+\section{Check everything works}
+
+Trampoline includes a test suite which can be run to check everything works.
+
+\begin{enumerate}
+\item Go to the check directory which is located in the trampoline directory:\\
+￼\unixcl{cd \normaltilde/trampoline/checkv2}
+\item Run the test suite by typing \unixcl{￼./tests.sh}. Each test prints its name. 
+. Then, after a while, \unixcl{Functional tests Succeed} should appear.
+\end{enumerate}
+%\section{}
+%\subsection{}
+
+
+
+\end{document}  
