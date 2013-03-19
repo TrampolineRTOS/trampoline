@@ -16,11 +16,10 @@ CPU test {
     OS config {
         STATUS = EXTENDED;
         ERRORHOOK = FALSE;
-        /* PRETASKHOOK = TRUE; */
         SYSTEM_CALL = TRUE;
         BUILD = TRUE {
-          APP_SRC = "lonely.c";
-          APP_NAME = "lonely_exe";
+          APP_SRC = "lab2.c";
+          APP_NAME = "lab2_exe";
           TRAMPOLINE_BASE_PATH = "../..";
           CFLAGS  = "-g -O3 -Wall -Wno-unused-but-set-variable -pedantic -Wformat -std=c99 -mcpu=arm7tdmi-s -Wmissing-field-initializers"; 
           ASFLAGS = "-mcpu=arm7tdmi-s --fatal-warnings -g"; 
@@ -40,29 +39,36 @@ CPU test {
     APPMODE std {
     };
 
-    TASK blinker {
+    TASK push_observer {
         PRIORITY = 1;
-        AUTOSTART = TRUE { APPMODE = std; };
+        AUTOSTART = FALSE;
         ACTIVATION = 1;
         SCHEDULE = FULL;
-    };   
+    };  
     
     COUNTER SystemCounter { 
+       MAXALLOWEDVALUE = 20;
+       TICKSPERBASE = 1;
+       MINCYCLE = 1; 
+    };
+
+    COUNTER PushObserverCounter { 
        SOURCE = it_timer1;
-       MAXALLOWEDVALUE = 100;
+       MAXALLOWEDVALUE = 20;
        TICKSPERBASE = 10;
        MINCYCLE = 1; 
     };
     
-    ALARM Alarm1{
-      COUNTER = SystemCounter;
+    ALARM Alarm_push_observer {
+      COUNTER = PushObserverCounter;
       ACTION = ACTIVATETASK {
-        TASK = blinker;
+        TASK = push_observer;
       };
       AUTOSTART = TRUE {
-        ALARMTIME = 25;
-        CYCLETIME = 25; //each 1s.
+        ALARMTIME = 1;
+        CYCLETIME = 1;
         APPMODE = std;
       };
     };
+
 };
