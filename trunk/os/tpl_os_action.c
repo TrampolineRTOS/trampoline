@@ -82,6 +82,8 @@ FUNC(tpl_status, OS_CODE) tpl_action_activate_task(
 /**
  *  action function for action by setting event
  */
+#if EVENT_COUNT > 0
+
 FUNC(tpl_status, OS_CODE) tpl_action_setevent(
     P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action)
 {
@@ -110,6 +112,8 @@ FUNC(tpl_status, OS_CODE) tpl_action_setevent(
   return result_action;
 	
 }
+
+#endif
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
