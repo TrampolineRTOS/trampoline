@@ -131,6 +131,11 @@ end if
 #define RESOURCE_COUNT         % ![REGULARRESOURCES length] + 1%
 
 /*-----------------------------------------------------------------------------
+ * Number of events
+ */
+#define EVENT_COUNT            % ![EVENTS length] %
+
+/*-----------------------------------------------------------------------------
  * Number of messages
  */
 #define MESSAGE_COUNT          % ![MESSAGES length] %

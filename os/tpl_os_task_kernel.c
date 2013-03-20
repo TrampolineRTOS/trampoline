@@ -182,7 +182,7 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
     /* activate the chained task */
     result = tpl_activate_task(task_id);
 
-    if (result == E_OK_AND_SCHEDULE)
+    if ((OSEK_STATUS_MASK & result) == E_OK)
     {
       /* terminate the running task */
       tpl_terminate();

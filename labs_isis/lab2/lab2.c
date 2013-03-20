@@ -26,7 +26,8 @@ TASK(push_observer)
     if (state) {
       pushed = 1;
       lcd_init();
-      lcd_print_string("Pressed");
+      lcd_print_string("Pressed ");
+      lcd_print_unsigned(state);
     }
   }
   else {
