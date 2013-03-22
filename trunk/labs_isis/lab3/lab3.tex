@@ -1,0 +1,218 @@
+\documentclass[11pt]{article}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{a4paper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\usepackage{hyperref}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{underscore}
+\usepackage{parskip}
+\usepackage[nosolutionfiles]{answers}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,shapes,snakes,patterns,decorations}
+\usetikzlibrary{shapes.callouts}
+\usetikzlibrary{shadows}
+\usetikzlibrary{calc}
+\usetikzlibrary{positioning}
+\usepackage{adjustbox}
+\usepackage{listings}
+
+\newcommand{\normaltilde}{{\raise.17ex\hbox{$\scriptstyle\mathtt{\sim}$}}}
+\newcommand{\unixcl}[1]{\texttt{\fcolorbox{black}{gray!20}{#1}}}
+
+\Newassociation{sol}{Solution}{ans}
+\newtheorem{ex}{Question}
+
+\lstset{
+  language=C,
+  basicstyle=\ttfamily\footnotesize,
+  commentstyle=\itshape\color{cyan}
+}
+
+\title{Lab \#3\\$\star$\\Shared object access protection}
+\author{}
+%\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+
+{\bf Note:} All the software and documents are stored at \url{http://www.irccyn.ec-nantes.fr/~bechenne/trampoline_isis}
+
+\section{Goal}
+
+To show resources usage, we will use a bad program that allows to corrupt a shared global variable which is not protected against concurrent writes. This has been presented in the course. This lab will show different ways to prevent this wrong behavior by using resources (standard and internal) or other solutions (preemption and priority).
+
+Get the lab3 archive from \url{http://www.irccyn.ec-nantes.fr/~bechenne/trampoline_isis} and put it into the \texttt{trampoline/labs_isis/} directory. The function needed in Question 7 is in \texttt{lab3.c}.
+
+
+\section{Application requirements}
+The application has 3 tasks and 2 \textbf{volatile} global variables: \texttt{val} and \texttt{activationCount} as shown in figure \ref{fig:appdiag}:
+
+\begin{itemize}
+\item a background task called \texttt{bgTask}, active at start (\texttt{AUTOSTART = TRUE}) that never ends. In an infinite loop this task increments then decrements the global variable \texttt{val}. This task has a priority equal to 1.
+
+\item a periodic task called \texttt{periodicTask}, priority 10, that runs every 100ms\footnote{a counter gets a tick every 1ms}. This periodic task increments the global variable \texttt{activationCount} which is initialized to 0 at start. Then if \texttt{activationCount} is odd, \texttt{val} is incremented, otherwise it is decremented.
+
+\item a periodic task \texttt{displayTask}, priority 20, that runs every second and prints on the lcd \texttt{val} and \texttt{activationCount}.
+\end{itemize}
+
+\def\alarm#1#2{
+  \node[alarm](#1) [#2] {};
+  \coordinate (a) at ($(#1.north)$);
+  \coordinate (b) at ($(#1.north east)$);
+  \coordinate (c) at ($(#1.north west)$);
+  \coordinate (d) at ($(#1)$);
+  \draw[thick] ($(a)+(-0.1,0)$) rectangle ($(a)+(0.1,0.1)$);
+  \draw[rotate=-45,thick] ($(b)+(-0.05,0)$) rectangle ($(b)+(0.05,0.1)$);
+  \draw[rotate=45,thick] ($(c)+(-0.05,0)$) rectangle ($(c)+(0.05,0.1)$);
+  \draw ($(d)+(0.3,0)$) -- (d) -- ($(d)+(0,0.3)$);
+  \node [font=\scriptsize,below=0.5mm of #1] {{\em Alarm}}
+}
+
+\def\sharedvar#1#2#3{
+  \node (#1) [#2] {#1};
+  \coordinate (a) at ($(#1.north #3) + (0,0.2)$);
+  \coordinate (b) at ($(#1.south #3) + (0,-0.2)$);
+  \draw[ultra thick] (a) -- (b);
+  \draw ($(a)+(-0.1,0)$) -- ($(a)+(0.1,0)$); 
+  \draw ($(b)+(-0.1,0)$) -- ($(b)+(0.1,0)$) 
+}
+
+\def\varrect#1{
+  \draw ($(#1.south west)$) rectangle ($(#1.north east)$)
+}
+
+\begin{figure}[htbp] %  figure placement: here, top, bottom, or page
+   \centering
+   \begin{tikzpicture}[
+   task/.style={draw,very thick,fill=white,drop shadow={opacity=0.25},text width=2.5cm, text centered, minimum height=1.5cm},
+   alarm/.style={draw,thick,circle,fill=white,drop shadow={opacity=0.25},text width=.5cm}
+   ]
+   \node[task](periodicTask) at (0,0) {periodicTask};
+   \node[task](bgTask) [above=of periodicTask] {bgTask};
+   \node[task](displayTask) [above=of bgTask] {displayTask};
+   \alarm{activateDisplay}{left=20mm of displayTask};
+   \alarm{activatePeriodic}{left=20mm of periodicTask};
+   \sharedvar{val}{left=of bgTask}{east};
+   \sharedvar{activationCount}{right=of periodicTask}{west};
+   \sharedvar{lcd}{right=of displayTask}{west};
+   \varrect{lcd};
+   \draw [thick,<->] (val.east) -- (bgTask.west);
+   \draw [thick,->] (val.north east) -- ++(5mm,0) |- ($(displayTask.south west) + (0,2mm)$);
+   \draw [thick,<->] (val.south east) -- ++(5mm,0) |- ($(periodicTask.north west) + (0,-2mm)$);
+
+   \draw [thick,->] (activateDisplay.east) -- ++(5mm,0) -- ++(0,1.5mm) -- ++(3mm,-3mm) -- ++ (0mm,1.5mm) -- (displayTask);
+   \node at ($(activateDisplay.east) + (6.5mm,-3mm)$) {1s};
+   \node[font=\scriptsize] at ($(activateDisplay.east) + (9mm,3mm)$) {{\em ActivateTask}};
+   \draw [thick,->] (activatePeriodic.east) -- ++(5mm,0) -- ++(0,1.5mm) -- ++(3mm,-3mm) -- ++ (0mm,1.5mm) -- (periodicTask);
+   \node at ($(activatePeriodic.east) + (6.5mm,-3mm)$) {100ms};
+   \node[font=\scriptsize] at ($(activatePeriodic.east) + (9mm,3mm)$) {{\em ActivateTask}};
+   \draw [thick,<->] (activationCount.west) -- (periodicTask);
+   \draw [thick,->] (activationCount.north west) -- ++(-5mm,0) |- ($(displayTask.south east) + (0,2mm)$);
+   \draw [thick,->] (displayTask) -- (lcd);
+   \end{tikzpicture} 
+   \caption{Application diagram}
+   \label{fig:appdiag}
+\end{figure}
+
+\begin{ex}
+Before programming the application, gives the values that should be dis- played for val on the standard output.
+\end{ex}
+
+Describe the application in OIL and program it in C.
+
+\begin{ex}
+Does the behavior correspond to what you expect ? Why ?
+\end{ex}
+
+\section{Global variable protection}
+
+\begin{ex}
+Update the OIL file and the C program to protect the access to the global variable \texttt{val}. Use a resource to do it.
+\end{ex}
+
+The resource priority is automatically computed by goil according to the priorities of the tasks which use it.
+
+\begin{ex}
+What priority will be given to the resource ?
+\end{ex}
+
+The OIL compiler (goil) generates many files in the directory bearing the same name
+as the oil file (less the .oil suffix). Among them 3 are interesting:
+\begin{itemize}
+\item \texttt{tpl_app_define.h}
+\item \texttt{tpl_app_config.h}
+\item \texttt{tpl_app_config.c}
+\end{itemize}
+
+The file \texttt{tpl_app_config.c} contains the tasks' descriptors as long as all other data structures. These structures are commented.
+
+\begin{ex}
+For each task, find the priority computed by goil and the identifier. Is is the same as defined in the OIL file? if not is it aproblem?
+\end{ex}
+
+\begin{ex}
+What is the priority of the resource ? Is it compliant with the PCP rule ?
+\end{ex}
+
+PCP rule requires the task priority is raised to the resource priority when the resource is taken. We will show this behavior by displaying the priority of the currently running task. Since OSEK does not have a function to do that, we use the following function:
+
+\begin{lstlisting}[language=C]
+void displayIdAndCurrentPriority()
+{
+    TaskType id;
+    GetTaskID(&id);
+    if (id >= 0)
+    {
+        tpl_priority prio = tpl_dyn_proc_table[id]->priority;
+        lcd_print_char(':');
+        lcd_print_unsigned(id);
+        lcd_print_char(','); 
+        lcd_print_unsigned(prio);
+    }
+}
+\end{lstlisting}
+
+And you have to add the following line at start of your C file:
+
+\begin{lstlisting}[language=C]
+ #include "tpl_os_task_kernel.h"
+\end{lstlisting}
+
+Call the function from your tasks when the resource is not taken and when it is taken.
+
+\begin{ex}
+Is the behavior ok ? Explain.
+\end{ex}
+
+\section{Protection with an internal resource}
+
+An internal resource is automatically taken when the task gets the CPU. Replace the standard resource by an internal resource in the OIL file. Remove the \texttt{GetResource} and \texttt{ReleaseResource} in the C file.
+
+\begin{ex}
+What happens ? Why ?
+\end{ex}
+
+Modify the task \texttt{bgTask}: instead of infinite loop, use a \texttt{ChainTask} to the \texttt{bgTask} (ie: the task chains to itself).
+
+\begin{ex}
+Question 10 What happens ? Explain.
+\end{ex}
+
+\section{Protection using a single priority level}
+
+Keep the version with the \texttt{ChainTask} instead of the infinite loop.
+Modify the OIL file: remove the resource and set the priorities so that no task
+can be preempted.
+
+\begin{ex}
+What happens ? Why ?
+\end{ex}
+
+\end{document}  
