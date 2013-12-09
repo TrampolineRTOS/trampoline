@@ -25,32 +25,32 @@ end if
 if app::PROCESSACCESSNUM > 0 then
 %
 /* % !app::PROCESSACCESSVECTOR % */
-CONST(u8, OS_CONST) % !app::NAME %_procs_access[% !app::PROCESSACCESSNUM %] = { % !join(app::PROCESSACCESSITEMS) % };
+CONST(uint8, OS_CONST) % !app::NAME %_procs_access[% !app::PROCESSACCESSNUM %] = { % !join(app::PROCESSACCESSITEMS) % };
 %
 end if
 if app::ALARMACCESSNUM > 0 then
 %/* % !app::ALARMACCESSVECTOR % */
-CONST(u8, OS_CONST) % !app::NAME %_alarms_access[% !app::ALARMACCESSNUM %] = { % !join(app::ALARMACCESSITEMS) % };
+CONST(uint8, OS_CONST) % !app::NAME %_alarms_access[% !app::ALARMACCESSNUM %] = { % !join(app::ALARMACCESSITEMS) % };
 %
 end if
 if app::RESOURCEACCESSNUM > 0 then
 %/* % !app::RESOURCEACCESSVECTOR % */
-CONST(u8, OS_CONST) % !app::NAME %_rezs_access[% !app::RESOURCEACCESSNUM %] = { % !join(app::RESOURCEACCESSITEMS) % };
+CONST(uint8, OS_CONST) % !app::NAME %_rezs_access[% !app::RESOURCEACCESSNUM %] = { % !join(app::RESOURCEACCESSITEMS) % };
 %
 end if
 if app::SCHEDULETABLEACCESSNUM > 0 then
 %/* % !app::SCHEDULETABLEACCESSVECTOR % */
-CONST(u8, OS_CONST) % !app::NAME %_sts_access[% !app::SCHEDULETABLEACCESSNUM %] = { % !join(app::SCHEDULETABLEACCESSITEMS) % };
+CONST(uint8, OS_CONST) % !app::NAME %_sts_access[% !app::SCHEDULETABLEACCESSNUM %] = { % !join(app::SCHEDULETABLEACCESSITEMS) % };
 %
 end if
 if app::COUNTERACCESSNUM > 0 then
 %/* % !app::COUNTERACCESSVECTOR % */
-CONST(u8, OS_CONST) % !app::NAME %_cnts_access[% !app::COUNTERACCESSNUM %] = { % !join(app::COUNTERACCESSITEMS) % };
+CONST(uint8, OS_CONST) % !app::NAME %_cnts_access[% !app::COUNTERACCESSNUM %] = { % !join(app::COUNTERACCESSITEMS) % };
 %
 end if
 if app::IOCACCESSNUM > 0 then
 %/* % !app::IOCACCESSVECTOR % */
-CONST(u8, OS_CONST) % !app::NAME %_iocs_access[% !app::IOCACCESSNUM %] = { % !join(app::IOCACCESSITEMS) % };
+CONST(uint8, OS_CONST) % !app::NAME %_iocs_access[% !app::IOCACCESSNUM %] = { % !join(app::IOCACCESSITEMS) % };
 %
 end if
 %

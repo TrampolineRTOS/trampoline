@@ -31,6 +31,10 @@
 #include "tpl_os_custom_types.h"
 #include "tpl_os_application_def.h"
 
+#if NUMBER_OF_CORES > 1
+#include "tpl_os_multicore.h"
+#endif
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -230,9 +234,21 @@ FUNC(tpl_bool, OS_CODE) tpl_check_stack_pointer(
  * @retval 1 no stack overflow detected
  * @retval 0 stack overflow deteted
  */
-FUNC(u8, OS_CODE) tpl_check_stack_footprint(
+FUNC(uint8, OS_CODE) tpl_check_stack_footprint(
   CONST(tpl_proc_id, AUTOMATIC) proc_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
+
+#if NUMBER_OF_CORES > 1
+
+/**
+ * @internal
+ *
+ * This function starts the processing core given in the argument
+ */
+FUNC(void, OS_CODE) tpl_start_core(
+  CONST(CoreIdType, AUTOMATIC) core_id);
+
+#endif
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

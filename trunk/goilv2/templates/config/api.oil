@@ -560,4 +560,64 @@ CPU api {
       VALUE = "INVALID_OSAPPLICATION_ID";
     } : "Invalid OS Application identifier.";
   };
+  
+  /*
+   * AUTOSAR Multicore
+   */
+  APICONFIG multicore {
+    ID_PREFIX = OS;
+    FILE = "tpl_os_multicore_kernel";
+    HEADER = "tpl_os_multicore";
+    SYSCALL GetCoreID {
+      KERNEL = tpl_get_core_id_service;
+      RETURN_TYPE = CoreIdType
+        : "The unique ID of the core running the caller.";
+    } : "GetCoreID returns the id of the core running the caller";
+    SYSCALL StartCore {
+      KERNEL = tpl_start_core_service;
+      ARGUMENT core_id { KIND = CONST; TYPE = CoreIdType; }
+        : "The core to start.";
+      ARGUMENT status { KIND = CONSTP2VAR; TYPE = StatusType; }
+        : "status returned by StartCore.\n"
+          "E_OK:        No Error (standard & extended).\n"
+          "E_OS_ID:     <core_id> is invalid (extended).\n"
+          "E_OS_ACCESS: The function was called after starting the OS (extended).\n"
+          "E_OS_STATE:  The core is already started (extended).";
+    } : "StartCore starts a processing core.";
+    SYSCALL StartNonAutosarCore {
+      KERNEL = tpl_start_non_autosar_core_service;
+      ARGUMENT core_id { KIND = CONST; TYPE = CoreIdType; }
+        : "The core to start.";
+      ARGUMENT status { KIND = CONSTP2VAR; TYPE = StatusType; }
+        : "status returned by StartNonAutosarCore:\n"
+          "E_OK:        No Error (standard & extended).\n"
+          "E_OS_ID:     <core_id> is invalid (extended).\n"
+          "E_OS_STATE:  The core is already started (extended).";
+    } : "StartNonAutosarCore starts a non AUTOSAR processing core.";
+    SYSCALL ShutdownAllCores {
+      KERNEL = tpl_shutdown_all_cores_service;
+      ARGUMENT error { KIND = CONST; TYPE = StatusType; }
+        : "The shutdown error code.";
+    } : "ShutdownAllCores shutdown all the running cores";
+    SYSCALL GetNumberOfActivatedCores {
+      KERNEL = tpl_get_number_of_activated_cores_service;
+      RETURN_TYPE = uint32
+        : "The number of cores activated by the StartCore service.";
+    } : "GetNumberOfActivatedCores returns the number of activated cores"
+        "from 1 to the number of configured cores.";
+    SYSCALL GetCoreStatus {
+      KERNEL = tpl_get_core_status_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:    No error, the core status was successfully written"
+          "in <core_status> (standard & extended).\n"
+          "E_OS_ID: <core_id> is invalid (extended).\n";
+      ARGUMENT core_id { KIND = CONST; TYPE = CoreIdType; }
+        : "The core of which the status is got.";
+      ARGUMENT core_status { KIND = CONSTP2VAR; TYPE = CoreStatusType; }
+        : "Core status returned by GetCoreStatus:\n"
+          "STOPPED_CORE:             The core is not started\n"
+          "STARTED_CORE_AUTOSAR:     The core is started in AUTOSAR.\n"
+          "STARTED_CORE_NON_AUTOSAR: The core is started in non AUTOSAR.";
+    } : "GetCoreStatus allows to get the status of a processing core.";
+  };
 };

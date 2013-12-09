@@ -46,6 +46,11 @@ end if
 let AUTOSAR := (OILVERSION == "3.1"  | OILVERSION == "4.0")
 
 #------------------------------------------------------------------------------*
+# Compute a default OS::NUMBER_OF_CORES if it is not defined
+#
+let OS::NUMBER_OF_CORES := exists OS::NUMBER_OF_CORES default (1)
+
+#------------------------------------------------------------------------------*
 # build an empty list when the list does not exist. This simplify
 # further processing because existence test is not necessary
 #
@@ -78,18 +83,23 @@ let ioc_total_count := ioc_queued_count + ioc_unqueued_count
 
 #------------------------------------------------------------------------------*
 # Add informations to tasks
+# Multiply the priority by 2 to add room for the ressources
 # Offset the priority by one because priority 0 is used
 # for the idle task of Trampoline and priorities start
 # at 0 in OIL
 # Compute the max priority of tasks
-# Add an attribute USEINTERNALRESOURCE is the task
-# has an internal resource
+# Add an attribute USEINTERNALRESOURCE is the task has an internal resource
+# Add a CORE attribute according to the OS Application the task belongs to
 #
+let OS::HASNONPREEMPTABLETASK := false
+let INTERNAL_RESCHEDULER::NAME := "INTERNAL_RES_SCHEDULER"
+let INTERNAL_RESCHEDULER::RESOURCEPROPERTY := "INTERNAL"
+
 let task_max_priority := 0
 let TASKS := emptylist
 foreach task in TASK do
 
-  let task::PRIORITY := task::PRIORITY + 1
+  let task::PRIORITY := 2 * task::PRIORITY + 1
 
   if task::PRIORITY > task_max_priority then
     let task_max_priority := task::PRIORITY
@@ -117,7 +127,12 @@ foreach task in TASK do
     end if
   end if
   if task::SCHEDULE == "NON" then
+    if OS::HASNONPREEMPTABLETASK == false then
+      let OS::HASNONPREEMPTABLETASK := true
+      let RESOURCE += INTERNAL_RESCHEDULER
+    end if
     let task::NONPREEMPTABLE := true
+    let task::RESOURCE += INTERNAL_RESCHEDULER::NAME
     if internal_found then
       error internal_name : "Internal resource cannot be assigned"
       error task::SCHEDULE : "to a non-preemptable task"
@@ -125,6 +140,7 @@ foreach task in TASK do
   else
     let task::NONPREEMPTABLE := false
   end if
+  
   let task::KIND := "Task"
   let TASKS += task
 end foreach
@@ -132,10 +148,11 @@ end foreach
 #------------------------------------------------------------------------------*
 # build the ISR list and adjust the priority according to the
 # maximum priority of tasks
+# Multiply the priority by 2 to add room for the ressources
 #
 let ISRS := emptylist
 foreach isr in ISR do
-  let isr::PRIORITY := isr::PRIORITY + task_max_priority + 1
+  let isr::PRIORITY := 2 * isr::PRIORITY + task_max_priority + 1
   let isr::KIND := "ISR"
   let ISRS += isr
 end foreach
@@ -176,7 +193,7 @@ foreach resource in RESOURCE do
   end foreach
   let resource::TASKUSAGE := task_that_use
   let resource::ISRUSAGE := isr_that_use
-  let resource::PRIORITY := resource_priority
+  let resource::PRIORITY := resource_priority + 1
   let RESOURCES += resource
 end foreach
 
@@ -198,37 +215,65 @@ foreach resource in RESOURCES do
 end foreach
 
 #------------------------------------------------------------------------------*
-# Pack the priorities, compute the ready list attributes
+# Pack the priorities
 #
 sort PRIORITIZED by PRIORITY <
+
+#display PRIORITIZED
 
 let PRIO2 := emptylist
 let priority := 0
 let previous_prio := 0
-
-let READYLIST := emptylist
-#------------------------------------------------------------------------------*
-# for the idle task
-#
-let ready_slot::SIZE := 1
-
 foreach obj in PRIORITIZED do
   if obj::PRIORITY > previous_prio then
-    let READYLIST += ready_slot
-    let ready_slot::SIZE := 0
-    let previous_prio := obj::PRIORITY
     let priority := priority + 1
+    let previous_prio := obj::PRIORITY
   end if
-  let size := 1
-  if obj::KIND == "Task" then
-    let size := obj::ACTIVATION
-  end if
-  let ready_slot::SIZE := ready_slot::SIZE + size
   let obj::PRIORITY := priority
   let PRIO2 += obj
 end foreach
-let READYLIST += ready_slot
-let MAXPRIORITY := priority
+
+# compute the size of the ready list
+# Compute the number of priority levels
+# Compute the maximum number of jobs among the priority levels
+# Compute the maximum number of jobs
+
+let MAX_JOBS_AMONG_PRIORITIES := 0
+let NUMBER_OF_PRIORITIES := 0
+let READY_LIST_SIZE := 0
+let number_of_jobs_in_current_priority := 0
+let previous_prio := 0
+foreach obj in PRIO2 do
+  if obj::PRIORITY != previous_prio then
+    let previous_prio := obj::PRIORITY
+    let NUMBER_OF_PRIORITIES := NUMBER_OF_PRIORITIES + 1
+    if number_of_jobs_in_current_priority > MAX_JOBS_AMONG_PRIORITIES then
+      let MAX_JOBS_AMONG_PRIORITIES := number_of_jobs_in_current_priority
+    end if
+    let number_of_jobs_in_current_priority := 0
+  end if
+  if obj::KIND == "Task" then 
+    let number_of_jobs_in_current_priority := number_of_jobs_in_current_priority + obj::ACTIVATION
+    let READY_LIST_SIZE := READY_LIST_SIZE + obj::ACTIVATION
+  else
+    let number_of_jobs_in_current_priority := number_of_jobs_in_current_priority + 1
+    let READY_LIST_SIZE := READY_LIST_SIZE + 1
+  end if
+end foreach
+
+#------------------------------------------------------------------------------*
+# for the idle task
+#
+let READY_LIST_SIZE := READY_LIST_SIZE + 1
+let NUMBER_OF_PRIORITIES := NUMBER_OF_PRIORITIES + 1
+
+#display MAX_JOBS_AMONG_PRIORITIES
+#display NUMBER_OF_PRIORITIES
+#display READY_LIST_SIZE
+
+#display PRIO2
+
+#let MAXPRIORITY := priority + 1
 
 #------------------------------------------------------------------------------*
 # Compute the lists of basic and extended tasks, the list of RESOURCES
@@ -256,11 +301,9 @@ foreach obj in PRIO2 do
   end if
 end foreach
 
-# if the OS uses RES_SCHEDULER then the priority slot of RES_SCHEDULER is
-# increased by one provided the highest priority task does not use a resource
-if OS::USERESSCHEDULER & not highest_priority_task_uses_resource then
-  let READYLIST[OS::RESSCHEDULERPRIORITY]::SIZE := READYLIST[OS::RESSCHEDULERPRIORITY]::SIZE + 1
-end if
+# increase the RESSCHEDULERPRIORITY by one and have it
+# set between the highest priority task and the lowest ISR priority
+let OS::RESSCHEDULERPRIORITY := OS::RESSCHEDULERPRIORITY + 1
 
 #------------------------------------------------------------------------------*
 # Compute the lists of ISR1 and ISR2
@@ -276,6 +319,11 @@ let ISRS2 := emptylist
 foreach isr in PRIO2 do
   if isr::KIND == "ISR" then
     if isr::CATEGORY == 2 then
+      # if internal rescheduler or rescheduler is used, increase the ISR2
+      # priority by one
+      if OS::USERESSCHEDULER | OS::HASNONPREEMPTABLETASK then
+        let isr::PRIORITY := isr::PRIORITY + 1
+      end if
       let ISRS2 += isr
     end if
   end if
@@ -297,6 +345,46 @@ end foreach
 foreach isr in ISRS2 do
   let PROCESSES += isr
 end foreach
+
+#------------------------------------------------------------------------------*
+# count the number of processes per core to build the size of the
+# ready list (heap) per core
+#
+let CORES := emptymap
+if [APPLICATION length] > 0 then
+  let task_map := mapof TASKS by NAME
+  let isr_map := mapof ISRS2 by NAME
+  foreach app in APPLICATION do
+    let core := [exists app::CORE default (0) string]
+    let CORES[core]::TASKS := emptylist
+    let CORES[core]::ISRS := emptylist
+    foreach task_name in exists app::TASK default (emptylist) do
+      let CORES[core]::TASKS += task_map[task_name::VALUE]
+    end foreach
+    foreach isr_name in exists app::ISR default (emptylist) do
+      let CORES[core]::ISRS += isr_map[isr_name::VALUE]
+    end foreach
+  end foreach
+else
+  let CORES["0"]::TASKS := TASKS
+  let CORES["0"]::ISRS := ISRS
+end if
+
+#------------------------------------------------------------------------------*
+# Build a map giving the CORE for a process name
+#
+let CORE_FOR_PROCESS := emptymap
+if OS::NUMBER_OF_CORES > 1 then
+  foreach app in APPLICATION do
+    let core := exists app::CORE default (0)
+    foreach task in exists app::TASK default (emptylist) do
+      let CORE_FOR_PROCESS[task::VALUE] := core
+    end foreach
+    foreach isr in exists app::ISR default (emptylist) do
+      let CORE_FOR_PROCESS[isr::VALUE] := core
+    end foreach
+  end foreach
+end if
 
 #------------------------------------------------------------------------------*
 # compute the list of HARDWARECOUNTERS and SOFTWARECOUNTERS
@@ -1148,6 +1236,23 @@ foreach resource in RESOURCES do
     end if
   end if
 end foreach
+
+
+#------------------------------------------------------------------------------*
+# compute the size of the key in each element of the ready list
+# the key is the concatenation of the priority and the rank
+# the maximum priority is already computed in MAXPRIORITY
+# the maximum rank is computed from the READYLIST data structure.
+#
+
+#display MAX_JOBS_AMONG_PRIORITIES
+
+let PRIORITY_SHIFT := [MAX_JOBS_AMONG_PRIORITIES numberOfBits]
+let RANK_MASK := (1 << PRIORITY_SHIFT) - 1
+let PRIORITY_MASK := ((1 << [NUMBER_OF_PRIORITIES numberOfBits]) - 1) << PRIORITY_SHIFT
+let KEY_SIZE := [(1 << ([NUMBER_OF_PRIORITIES numberOfBits] +
+                [MAX_JOBS_AMONG_PRIORITIES numberOfBits])) - 1 numberOfBytes]
+
 
 #------------------------------------------------------------------------------*
 # compute the USEDAPI list

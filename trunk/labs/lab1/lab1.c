@@ -35,12 +35,30 @@ void ShutdownHook(StatusType error)
     printf("Bye bye :)\n");
 }
 
+DeclareAlarm(active_a_task);
+DeclareAlarm(delai);
+
 TASK(a_task)
 {
+    static int activations = 0;
+    
     TaskType id;
     GetTaskID(&id);
     
-    printf("I am a task, my id is %d\n",id);
+    activations++;
+    
+    printf("I am a task, my id is %d, #%d\n",id,activations);
+    
+    if (activations == 10) {
+      CancelAlarm(active_a_task);
+      SetRelAlarm(delai,400,0);
+      activations = 0;
+    }
 
 	TerminateTask();
+}
+
+TASK(reveil) {
+  SetRelAlarm(active_a_task,100,100);
+  TerminateTask();
 }

@@ -39,6 +39,12 @@
 #include "tpl_as_trusted_fct_kernel.h"
 #endif /* WITH_OSAPPLICATION */
 
+#if NUMBER_OF_CORES > 1
+#include "tpl_os_multicore.h"
+#endif
+
+#include "tpl_os_multicore_macros.h"
+
 /**
  * @typedef tpl_os_state
  *
@@ -49,7 +55,7 @@
  * - #OS_ISR2 means running a category 2 interrupt service routine
  * - #OS_UNKNOWN means the OS is not in a known state. This should not happen.
  */
-typedef u8 tpl_os_state;
+typedef uint8 tpl_os_state;
 
 /**
  * @def OS_INIT
@@ -117,7 +123,7 @@ typedef u8 tpl_os_state;
  *
  * @see #TPL_EXEC_STATIC
  */
-typedef u8 tpl_proc_type;
+typedef uint8 tpl_proc_type;
 
 /**
  * @typedef tpl_exec_function
@@ -159,37 +165,41 @@ typedef struct {
  */
 struct TPL_PROC_STATIC {
   VAR(tpl_context, TYPEDEF)
-    context;            /**<  context(s) of the task/isr                      */
+    context;            /**<  context(s) of the task/isr                     */
   VAR(tpl_stack, TYPEDEF)
-    stack;              /**<  stack(s) of the  task/isr                       */
+    stack;              /**<  stack(s) of the  task/isr                      */
   CONST(tpl_proc_function, TYPEDEF)
     entry;              /**<  function that is the entry point
-                              of the task/isr                                 */
+                              of the task/isr                                */
   CONSTP2VAR(tpl_internal_resource, TYPEDEF, OS_APPL_DATA)
     internal_resource;  /**<  pointer to an internal resource. NULL if the
-                              task does not have an internal resource         */
+                              task does not have an internal resource        */
   CONST(tpl_task_id, TYPEDEF)
-    id;                 /**<  id of task/isr                                  */
+    id;                 /**<  id of task/isr                                 */
 #if WITH_OSAPPLICATION == YES
   CONST(tpl_app_id, TYPEDEF)
     app_id;             /**<  id of the OS application which owns
                               the task/ISR                                    */
 #endif
+#if NUMBER_OF_CORES > 1
+  CONST(tpl_core_id, TYPEDEF)
+    core_id;            /**<  id of the core the process is assigned to      */
+#endif
   CONST(tpl_priority, TYPEDEF)
-    base_priority;      /**<  base priority of the task/isr                   */
+    base_priority;      /**<  base priority of the task/isr                  */
   CONST(tpl_activate_counter, TYPEDEF)
-    max_activate_count; /**<  max activation count of a task/isr              */
+    max_activate_count; /**<  max activation count of a task/isr             */
   CONST(tpl_proc_type, TYPEDEF)
-    type;               /**<  type of the task/isr                            */
+    type;               /**<  type of the task/isr                           */
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   CONST(tpl_time, TYPEDEF) 
-    executionbudget ;   /**<  execution budget                                */
+    executionbudget ;   /**<  execution budget                               */
   CONST(tpl_time, TYPEDEF)
-    timeframe ;         /**<  length of the time frame                        */
+    timeframe ;         /**<  length of the time frame                       */
   CONSTP2VAR(tpl_timing_protection, TYPEDEF, OS_APPL_CONST)
     timing_protection;  /**<  dynamic variables needed to handle
                               the timing protection. Set to NULL if
-                              the proc is not supervised by the mechanism     */
+                              the proc is not supervised by the mechanism    */
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 };
 
@@ -241,58 +251,41 @@ typedef struct
   P2CONST(tpl_proc_static, TYPEDEF, OS_CONST) s_running;
   P2VAR(tpl_proc, TYPEDEF, OS_VAR)            old;
   P2VAR(tpl_proc, TYPEDEF, OS_VAR)            running;
-  VAR(u32, TYPEDEF)                           running_id;
-  VAR(u8, TYPEDEF)                            need_switch;
+  VAR(uint32, TYPEDEF)                        running_id;
+
+/** 2 bits are used in this field.
+ * bit 0 indicates a context switch is needed after calling a service,
+ * bit 1 indicated the context of the processus that loses the cpu
+ * should be saved.
+ */
+  VAR(uint8, TYPEDEF)                         need_switch;
+
 #if WITH_MEMORY_PROTECTION == YES
-  VAR(u8, TYPEDEF)                            running_trusted; /** This flag is set before running a hook or a (transitionnal) trusted process to disable some checkings */
+  VAR(uint8, TYPEDEF)                         running_trusted; /** This flag is set before running a hook or a (transitionnal) trusted process to disable some checkings */
 #endif /* WITH_MEMORY_PROTECTION */
+  VAR(tpl_priority, TYPEDEF)                  running_priority;
 } tpl_kern_state;
  
 /**
- * @typedef tpl_fifo_state
+ * @typedef tpl_heap_entry
  *
- * This type gathers a read index and a size for fifo management
+ * This type gather a key used to sort the heap and the identifier of
+ * the process
  */
 typedef struct {
-    VAR(u8, TYPEDEF) read;
-    VAR(u8, TYPEDEF) size;
-} tpl_fifo_state;
+  VAR(tpl_priority, TYPEDEF)  key;
+  VAR(tpl_proc_id, TYPEDEF)   id;
+} tpl_heap_entry;
 
-#ifdef WITH_POWEROF2QUEUE
-
-/**
- * @typedef tpl_priority_level
- *
- * This type is a structure used to store the information for a priority
- * level (pointer to a fifo and the mask of the fifo. The mask is used
- * to keep read and write index within the fifo.
- * It is the element of the ready list table.
- */
-typedef struct {
-    P2VAR(tpl_proc_id, TYPEDEF, OS_APPL_DATA) fifo;
-    VAR(u8, AUTOMATIC) mask;
-} tpl_priority_level;
-
-#else /* WITH_POWEROF2QUEUE */
-
-/**
- * @typedef tpl_priority_level
- *
- * This type is a structure used to store the information for a priority
- * level (pointer to a fifo and the size of the fifo.
- * It is the element of the ready list table.
- */
-typedef struct {
-    P2VAR(tpl_proc_id, TYPEDEF, OS_APPL_DATA) fifo;
-    VAR(u8, AUTOMATIC) size;
-} tpl_priority_level;
-
-#endif /* WITH_POWEROF2QUEUE */
 
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
+#if NUMBER_OF_CORES == 1
 extern VAR(tpl_kern_state, OS_VAR) tpl_kern;
+#else
+extern CONSTP2VAR(tpl_kern_state, OS_CONST, OS_VAR) tpl_kern[];
+#endif
 
 /**
  * Currently running executable object id. This "executable object" can be
@@ -348,6 +341,59 @@ extern CONST(tpl_proc_static, OS_VAR) idle_task_static;
  */
 #define INVALID_PROC_ID  -1
 
+/**
+ * @internal
+ *
+ * In monocore implementation tpl_ready_list is a heap with a size
+ * automatically generated by goil from the application description. Each
+ * entry is a key and a proc id. The key is used to sort the heap and is
+ * the concatenation of the priority of the proc and its job rank of
+ * activation.
+ *
+ * In multicore implementation, tpl_ready_list is an array of pointers to
+ * a heap per core. tpl_ready_list is indexed by the core identifier.
+ */
+
+/*
+ * MISRA RULE 27 VIOLATION: These 2 variables are used only in this file
+ * but declared in the configuration file, this is why they do not need
+ * to be declared as external in a header file
+ */
+
+#if NUMBER_OF_CORES > 1
+
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+extern CONSTP2VAR(tpl_heap_entry, OS_CONST, OS_VAR) tpl_ready_list[];
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#else
+
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+extern VAR(tpl_heap_entry, OS_VAR) tpl_ready_list[];
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+#endif
+
+/**
+ * @internal
+ *
+ * In monocore implementation, tpl_tail_for_prio is a variable that stores
+ * the last rank used to store a proc.
+ *
+ * In multicore implementation, tpl_tail_for_prio is an array of such 
+ * a variable.
+ */
+#if NUMBER_OF_CORES > 1
+extern CONSTP2VAR(tpl_rank_count, OS_CONST, OS_VAR)
+  tpl_tail_for_prio[NUMBER_OF_CORES];
+#else
+extern VAR(tpl_rank_count, OS_VAR) tpl_tail_for_prio[];
+#endif
+
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 /**
@@ -372,20 +418,18 @@ extern CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)
 /**
  * Kernel functions
  */
-FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(void);
+FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(CORE_ID_OR_VOID);
 
 FUNC(void, OS_CODE) tpl_schedule_from_running(void);
 
-FUNC(void, OS_CODE) tpl_start_scheduling(void);
+FUNC(void, OS_CODE) tpl_start_scheduling(CORE_ID_OR_VOID);
 
 /**
  * @internal
  *
- * Starts a READY process
- *
- * @param proc_id   the identifier of the process
+ * Starts a highest priority READY process
  */
-FUNC(void, OS_CODE) tpl_start(CONST(tpl_proc_id, AUTOMATIC) proc_id);
+FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID);
 
 /**
  * @internal
@@ -400,7 +444,7 @@ FUNC(void, OS_CODE) tpl_block(void);
  *
  * Get the highest priority READY process from the queue
  */
-FUNC(VAR(tpl_proc_id, AUTOMATIC), OS_CODE) tpl_get_proc(void);
+FUNC(tpl_heap_entry, OS_CODE) tpl_front_proc(void);
 
 /**
  * @internal

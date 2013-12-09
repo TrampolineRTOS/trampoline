@@ -55,14 +55,14 @@
  * the following variableѕ should not be initialized at definition,
  * or Memmap section is not the right one
  */
-volatile VAR(u32, OS_VAR) tpl_locking_depth = 0;
+volatile VAR(uint32, OS_VAR) tpl_locking_depth = 0;
 VAR(tpl_bool, OS_VAR) tpl_user_task_lock = FALSE;
-VAR(u32, OS_VAR) tpl_cpt_user_task_lock_All = 0;
-VAR(u32, OS_VAR) tpl_cpt_user_task_lock_OS = 0;
-VAR(u32, OS_VAR) tpl_cpt_os_task_lock = 0;
+VAR(uint32, OS_VAR) tpl_cpt_user_task_lock_All = 0;
+VAR(uint32, OS_VAR) tpl_cpt_user_task_lock_OS = 0;
+VAR(uint32, OS_VAR) tpl_cpt_os_task_lock = 0;
 
 #if ISR_COUNT > 0
-STATIC VAR(s32, OS_VAR) tpl_it_nesting =  0;
+STATIC VAR(sint32, OS_VAR) tpl_it_nesting =  0;
 #endif
 
 #define OS_STOP_SEC_VAR_NOINIT_UNSPECIFIED
@@ -223,7 +223,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
   /* terminate the running ISR */
   tpl_terminate();
   /* start the highest priority process */
-  tpl_start(tpl_get_proc());
+  tpl_start();
   /* process switching should occur */
   tpl_kern.need_switch = NEED_SWITCH;
   
@@ -313,7 +313,8 @@ STATIC FUNC(void, OS_CODE) tpl_activate_isr(
  * task / interrupt handler, switches to the context of the handler
  * and calls the handler
  */
-FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
+FUNC(void, OS_CODE) tpl_central_interrupt_handler(
+  CONST(uint16, AUTOMATIC) isr_id)
 {
   P2CONST(tpl_isr_static, AUTOMATIC, OS_APPL_DATA) isr;
 
@@ -388,8 +389,8 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) isr_id)
  */
 FUNC(void, OS_CODE) tpl_central_interrupt_handler_2(P2CONST(void, OS_APPL_DATA, AUTOMATIC) isr_id)
 {
-    u32 tmp;
-    tmp = (u32)isr_id;
+    uint32 tmp;
+    tmp = (uint32)isr_id;
     tpl_central_interrupt_handler(tmp);
 }
 

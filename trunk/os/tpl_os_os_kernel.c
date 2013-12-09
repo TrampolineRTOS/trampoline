@@ -46,6 +46,16 @@
  */
 STATIC VAR(tpl_application_mode, OS_VAR) application_mode = NOAPPMODE;
 
+#if NUMBER_OF_CORES > 1
+/**
+ * @internal
+ *
+ * tpl_startos_sync_lock is the lock used in the critical section of
+ * both synchronization barriers of tpl_start_os
+ */
+VAR(tpl_lock, OS_VAR) tpl_startos_sync_lock = UNLOCKED_LOCK;
+#endif
+
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -94,7 +104,20 @@ FUNC(void, OS_CODE) tpl_start_os_service(
 	
   IF_NO_EXTENDED_ERROR(result)
   /* { */
+  
+#if NUMBER_OF_CORES > 1
+  /*
+   * Sync barrier at start of tpl_start_os_service. 
+   */
+  tpl_sync_barrier(tpl_start_count, tpl_startos_sync_lock);
+  /*
+   * Restore the tpl_start_count to prepare the second sync barrier
+   */
+  tpl_start_count = tpl_number_of_activated_cores;
+  application_mode[tpl_get_core_id()] = mode;
+#else
   application_mode = mode;
+#endif
 
   TRACE_TPL_INIT()
 
@@ -112,6 +135,13 @@ FUNC(void, OS_CODE) tpl_start_os_service(
    * Call the OS Application startup hooks if needed
    */
   CALL_OSAPPLICATION_STARTUP_HOOKS()
+
+#if NUMBER_OF_CORES > 1
+  /*
+   * Sync barrier just before starting the scheduling. 
+   */
+  tpl_sync_barrier(tpl_start_count, tpl_startos_sync_lock);
+#endif
 
   /* 
    * Call tpl_start_scheduling to elect the highest priority task

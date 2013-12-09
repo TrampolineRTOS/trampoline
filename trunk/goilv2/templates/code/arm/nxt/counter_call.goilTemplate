@@ -5,7 +5,7 @@
 
 #define OS_START_SEC_VAR_8BIT
 #include "tpl_memmap.h"
-VAR(u8, OS_VAR) check_buttons_period = 0;
+VAR(uint8, OS_VAR) check_buttons_period = 0;
 #define OS_STOP_SEC_VAR_8BIT
 #include "tpl_memmap.h"
 

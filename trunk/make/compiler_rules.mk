@@ -39,7 +39,7 @@ $(OBJ_DIR)/%.S.i: $(A_DIR)/%.S $(OIL_OUTPUTS)
 
 $(OBJ_DIR)/%.S.o: $(OBJ_DIR)/%.S.i $(OIL_OUTPUTS)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	$(AS) $< -o $@
+	$(AS) $(ASFLAGS) $< -o $@
 
 #----------------------------------------------------------------------*
 #### Compilation rules. c++ files.

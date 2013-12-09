@@ -37,12 +37,12 @@
  *
  * Default aliased type is "unsigned long int"
  */
-typedef u32 tpl_tick;
+typedef uint32 tpl_tick;
 
 /**
  * tpl_buffer is a pointer to a chunk of data in memory
  */
-typedef P2VAR(u8, TYPEDEF, OS_APPL_DATA) tpl_buffer;
+typedef P2VAR(uint8, TYPEDEF, OS_APPL_DATA) tpl_buffer;
 
 /**
  * Time data (duration or date) used in timing protection. The unit is system
@@ -50,7 +50,7 @@ typedef P2VAR(u8, TYPEDEF, OS_APPL_DATA) tpl_buffer;
  *
  * @see #tpl_get_local_current_date
  */
-typedef u32 tpl_time;
+typedef uint32 tpl_time;
 
 #endif /* TPL_OS_CUSTOM_TYPES_H */
 

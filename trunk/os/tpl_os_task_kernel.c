@@ -1,5 +1,5 @@
 /**
- * @file tpl_os_task.c
+ * @file tpl_os_task_kernel.c
  *
  * @section desc File description
  *
@@ -124,7 +124,7 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
     /* terminate the running task */
     tpl_terminate();
     /* start the highest priority process */
-    tpl_start(tpl_get_proc());
+    tpl_start();
     /* task switching should occur */
     tpl_kern.need_switch = NEED_SWITCH;
 # if WITH_SYSTEM_CALL == NO
@@ -187,7 +187,7 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
       /* terminate the running task */
       tpl_terminate();
       /* start the highest priority task */
-      tpl_start(tpl_get_proc());
+      tpl_start();
       /* task switching should occur */
       tpl_kern.need_switch = NEED_SWITCH;
 # if WITH_SYSTEM_CALL == NO

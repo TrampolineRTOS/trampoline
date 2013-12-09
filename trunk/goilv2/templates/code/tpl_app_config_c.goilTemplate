@@ -352,6 +352,13 @@ tpl_counter_table[COUNTER_COUNT] = {
   end foreach
 end if
 
+%
+/*=============================================================================
+ * Descriptor(s) of the idle task(s)
+ */
+%
+template idle_task_descriptors
+
 foreach task in TASKS
   before
 %
@@ -389,7 +396,7 @@ foreach proc in PROCESSES do
     %  &% !proc::NAME %_% ![proc::KIND lowercaseString] %_stat_desc,
 %
 end foreach
-%  &idle_task_static
+%  &idle_task_stat_desc
 };
 
 CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)
@@ -399,7 +406,7 @@ foreach proc in PROCESSES do
     %  &% !proc::NAME %_% ![proc::KIND lowercaseString] %_desc,
 %
 end foreach
-%  &idle_task
+%  &idle_task_desc
 };
 %
 foreach task in EXTENDEDTASKS
@@ -923,68 +930,24 @@ end foreach
 
 %
   end if
-%
 
-#define OS_STOP_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
-%
+template heap_readylist
 
-%
-/*=============================================================================
- * Definition and initialization of Ready List structures
- */
-#define OS_START_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
+template tpl_kern
 
-%
-foreach slot in READYLIST do
-  %VAR(tpl_proc_id, OS_VAR) tpl_priority_% !INDEX %_fifo[% !slot::SIZE %];
-%
-end foreach
-%
-VAR(tpl_fifo_state, OS_VAR) tpl_fifo_rw[% ![READYLIST length] %] = {
-%
-foreach slot in READYLIST do
-%  { 0 , 0 }%
-  between %,
-%
-end foreach
-%
-};
-
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-
-#define OS_START_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
-
-CONST(tpl_priority_level, OS_CONST) tpl_ready_list[% ![READYLIST length] %] = {
-%
-foreach slot in READYLIST do
-%  { tpl_priority_% !INDEX %_fifo, % !slot::SIZE % }%
-  between %,
-%
-end foreach
-%
-};
-
-#define OS_STOP_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
-
-%
 foreach proc in PROCESSES
   before
 %
 #define API_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
-CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA) proc_name_table[TASK_COUNT + ISR_COUNT] = {
+CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA) proc_name_table[TASK_COUNT + ISR_COUNT + 1] = {
 %
   do
-    %  "% !proc::NAME %"%
-  between %,
-%
+    %
+  "% !proc::NAME %",%
   after
 %
+  "*idle*"
 };
 #define API_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"

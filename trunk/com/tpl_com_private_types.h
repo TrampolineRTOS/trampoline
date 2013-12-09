@@ -26,6 +26,6 @@ typedef tpl_message_size    tpl_com_size;
 /*!
  *  Used for flags
  */
-typedef u8                  tpl_flag_value;
+typedef uint8                  tpl_flag_value;
 
 #endif

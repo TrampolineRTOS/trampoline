@@ -1,0 +1,13 @@
+
+%
+foreach isr in ISRS2
+  before %CONST(int, OS_CONST) signal_for_isr_id[ISR_COUNT] = {
+%
+  do %  % !isr::SOURCE
+  between %,
+%
+  after %
+};
+%
+end foreach
+%

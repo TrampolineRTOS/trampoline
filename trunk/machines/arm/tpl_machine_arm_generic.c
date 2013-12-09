@@ -51,6 +51,20 @@ volatile VAR (u32, OS_VAR) nested_kernel_entrance_counter;
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
+#define API_START_SEC_CODE
+#include "tpl_memmap.h"
+
+#if TASK_COUNT > 0
+extern FUNC(void, OS_CODE) CallTerminateTask(void);
+#endif
+
+#if ISR_COUNT > 0
+extern FUNC(void, OS_CODE) CallTerminateISR2(void);
+#endif
+
+#define API_STOP_SEC_CODE
+#include "tpl_memmap.h"
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 

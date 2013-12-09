@@ -30,15 +30,24 @@
 #include "tpl_os_errorhook.h"
 #include "tpl_machine_interface.h"
 #include "tpl_trace.h"
+#include "tpl_dow.h"
 
 #if WITH_AUTOSAR == YES
 #include "tpl_as_protec_hook.h"
 #endif
 
-extern CONST(tpl_proc_id, AUTOMATIC) INVALID_TASK;
+#include "tpl_os_multicore_macros.h"
+
+#ifdef WITH_DOW
+#include <stdio.h>
+
+extern CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA) proc_name_table[];
+#endif
 
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
+
+extern CONST(tpl_proc_id, AUTOMATIC) INVALID_TASK;
 
 /**
  * This special resource is used to deny preemption.
@@ -180,14 +189,19 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
     res->next_res = tpl_kern.running->resources;
     tpl_kern.running->resources = res;
     /*  save the current priority of the task in the resource */
-    res->owner_prev_priority = tpl_kern.running->priority;
-  
-    if (tpl_kern.running->priority < res->ceiling_priority)
+    res->owner_prev_priority = tpl_kern.running->priority;  
+
+   DOW_DO(printf("*** GetResource: task %s stores priority %d\n",
+                 proc_name_table[tpl_kern.running_id],
+                 tpl_kern.running->priority));
+    
+    if (ACTUAL_PRIO(tpl_kern.running->priority) < res->ceiling_priority)
     {
+      GET_TAIL_FOR_PRIO
       /*  set the task priority at the ceiling priority of the resource
           if the ceiling priority is greater than the current priority of
           the task  */
-      tpl_kern.running->priority = res->ceiling_priority;
+      tpl_kern.running->priority = DYNAMIC_PRIO(res->ceiling_priority);
       TRACE_TASK_CHANGE_PRIORITY((tpl_proc_id)tpl_kern.running_id)
       TRACE_ISR_CHANGE_PRIORITY((tpl_proc_id)tpl_kern.running_id)
     }
@@ -258,6 +272,11 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
     IF_NO_EXTENDED_ERROR(result)
         /*  get the saved priority  */      
       tpl_kern.running->priority = res->owner_prev_priority;
+      
+      DOW_DO(printf("*** ReleaseResource:task %s takes back priority %d\n",
+                   proc_name_table[tpl_kern.running_id],
+                   tpl_kern.running->priority));
+      
       TRACE_TASK_CHANGE_PRIORITY((tpl_proc_id)tpl_kern.running_id)
       TRACE_ISR_CHANGE_PRIORITY((tpl_proc_id)tpl_kern.running_id)
       /*  remove the resource from the resource list  */

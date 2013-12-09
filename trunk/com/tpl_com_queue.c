@@ -34,7 +34,7 @@ FUNC(tpl_com_data, OS_CODE) *tpl_queue_element_for_write(
   CONSTP2CONST(tpl_queue, AUTOMATIC, OS_CONST) queue)
 {
   CONSTP2CONST(tpl_queue_dyn, AUTOMATIC, OS_VAR) dq = queue->dyn_desc;
-  CONST(u32, AUTOMATIC) offset = dq->index + dq->size;
+  CONST(uint32, AUTOMATIC) offset = dq->index + dq->size;
   
   /*  check the queue is not full */
   if ((queue->max_size - dq->size) >= queue->element_size) {
@@ -76,7 +76,7 @@ FUNC(void, OS_CODE) tpl_write_queue(
 {
   CONSTP2VAR(tpl_queue_dyn, AUTOMATIC, OS_VAR)  dq = queue->dyn_desc;
   VAR(tpl_message_size, AUTOMATIC)              size = queue->element_size;
-  CONST(u32, AUTOMATIC)                         offset = dq->index + dq->size;
+  CONST(uint32, AUTOMATIC)                      offset = dq->index + dq->size;
   P2VAR(tpl_com_data, AUTOMATIC, OS_VAR)        last = queue->last;
   P2VAR(tpl_com_data, AUTOMATIC, OS_VAR)        p;
   

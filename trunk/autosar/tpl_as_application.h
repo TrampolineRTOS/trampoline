@@ -44,7 +44,7 @@
  *  @see  #OBJECT_COUNTER
  *  @see  #OBJECT_SCHEDULETABLE 
  */
-typedef u8  ObjectTypeType;
+typedef uint8  ObjectTypeType;
 
 /**
  *  @typedef  ApplicationType
@@ -58,14 +58,14 @@ typedef tpl_app_id  ApplicationType;
  *
  *  Return type used by CheckObjectAccess. @see #CheckObjectAccess
  */
-typedef u8  ObjectAccessType;
+typedef uint8  ObjectAccessType;
 
 /**
  *  @typedef RestartType
  *
  *  Type used to specifies how TerminateApplication should behave
  */
-typedef u8  RestartType;
+typedef uint8  RestartType;
 
 /**
  *  @typedef ObjectType

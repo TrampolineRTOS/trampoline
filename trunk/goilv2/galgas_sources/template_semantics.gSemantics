@@ -469,8 +469,12 @@ routine searchField
     end if;
   elsif [idx sint] != -1s & variableType == [@Ttype listType] then
     @TfieldMapList mapList := [variableValue mMapListValue];
-    variableValue->mStructValue := [mapList mMapAtIndex ![idx uint]];
-    variableType := [@Ttype structType];
+    if [idx uint] < [mapList length] then
+      variableValue->mStructValue := [mapList mMapAtIndex ![idx uint]];
+      variableType := [@Ttype structType];
+    else
+      error here : "index: ".[idx sint]." >= length:".[mapList length] : variableValue, variableType;
+    end if;
   end if;
   if [variable length] > 0 then
     if variableType == [@Ttype structType] then

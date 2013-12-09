@@ -193,12 +193,12 @@ FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
  *  @retval   NO_ACCESS (OS272) if the application has no access to the object
  *                              or one of the parameters is invalid
  */
-FUNC(u8, OS_CODE) tpl_check_object_access_service(
+FUNC(uint8, OS_CODE) tpl_check_object_access_service(
   tpl_app_id      app_id, 
-  ObjectTypeType  obj_type, /*u8 before*/
+  ObjectTypeType  obj_type, /*uint8 before*/
   tpl_generic_id  obj_id)
 {
-  VAR(u8, AUTOMATIC) result = NO_ACCESS;
+  VAR(uint8, AUTOMATIC) result = NO_ACCESS;
   VAR(StatusType, AUTOMATIC) result_status = E_OK;
 
   LOCK_KERNEL()
@@ -219,8 +219,8 @@ FUNC(u8, OS_CODE) tpl_check_object_access_service(
 		/*  Get the access vector of the corresponding application  */
 		CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =
 		  tpl_app_table[app_id];
-		CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);
-		CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;
+		CONST(uint8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);
+		CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 2;
 		result = ((app_access->access_vec[obj_type][byte_idx]) &
 						(1 << bit_shift)) >> bit_shift;
 	  }
@@ -244,7 +244,7 @@ FUNC(u8, OS_CODE) tpl_check_object_access_service(
  *  @retval   E_OS_CALLEVEL wrong context (OS288)
  *  @retval   E_OS_VALUE    invalid restart_opt (OS459)
  */
-FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 restart_opt)
+FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(uint8 restart_opt)
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 #if APP_COUNT > 0
@@ -368,7 +368,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 restart_opt)
           /* terminate the running task */
           tpl_terminate();
           /* start the highest priority task */
-          tpl_start(tpl_get_proc());
+          tpl_start();
           /* task switching should occur */
           tpl_kern.need_switch = NEED_SWITCH;
 # if WITH_SYSTEM_CALL == NO
@@ -389,7 +389,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 restart_opt)
         /* terminate the running task */
         tpl_terminate();
         /* start the highest priority task */
-        tpl_start(tpl_get_proc());
+        tpl_start();
         /* task switching should occur */
         tpl_kern.need_switch = NEED_SWITCH;
 # if WITH_SYSTEM_CALL == NO

@@ -44,7 +44,12 @@ FUNC(void, OS_CODE) StartOS(
 {
   if (tpl_current_os_state() == OS_INIT)
   {
+    /* Call target specific initialization */
     tpl_init_machine();
+#if WITH_MODULES_INIT == YES
+    /* Call inits for kernel modules. Generated function */
+    tpl_init_modules();
+#endif
   }
   tpl_start_os(mode);
   /*

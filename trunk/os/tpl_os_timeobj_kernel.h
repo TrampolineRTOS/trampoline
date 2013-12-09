@@ -43,7 +43,7 @@ struct TPL_TIME_OBJ;
  * - #ALARM_ACTIVE
  * - #ALARM_AUTOSTART (only before startup)
  */
-typedef u8 tpl_time_obj_state;
+typedef uint8 tpl_time_obj_state;
 
 /**
  * @typedef tpl_expire_func

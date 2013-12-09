@@ -98,7 +98,7 @@ FUNC(void, OS_CODE) tpl_adjust_next_expiry_point(
 	
   P2VAR(tpl_expiry_point, AUTOMATIC, OS_APPL_DATA) next_ep;
 	
-  VAR(s32, AUTOMATIC) deviation =
+  VAR(sint32, AUTOMATIC) deviation =
     ((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->deviation;
 	
   VAR(tpl_tick, AUTOMATIC) adjustment;
@@ -227,7 +227,7 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
   }
   else
   {
-    if (index != (u16)(-1))
+    if (index != (uint16)(-1))
     {
     
       /* change state of the schedule table */

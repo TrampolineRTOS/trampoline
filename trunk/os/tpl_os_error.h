@@ -27,7 +27,10 @@
 #define TPL_OS_ERROR_H
 
 #include "tpl_os_types.h"
+
+#if WITH_USEGETSERVICEID == YES
 #include "tpl_service_ids.h"
+#endif
 
 #if WITH_AUTOSAR == YES
 #include "tpl_os_timeobj_kernel.h"
@@ -99,6 +102,10 @@ union ID_PARAM_BLOCK {
 									  #IOC_Read
 									  */
 #endif
+#if NUMBER_OF_CORES > 1
+  VAR(tpl_core_id, TYPEDEF) core_id; /**< used by StartCore and
+                                          StartNonAutosarCore   */
+#endif
 };
 
 /**
@@ -128,7 +135,7 @@ union PARAM_PARAM_BLOCK {
                                                               this
                                                           */
   VAR(ObjectTypeType, TYPEDEF) object_type; /**< @todo document this */
-  VAR(u8, TYPEDEF) opt_termapp; /**< @todo document this */
+  VAR(uint8, TYPEDEF) opt_termapp; /**< @todo document this */
 #endif
 };
 
@@ -163,7 +170,7 @@ struct PARAM_BLOCK {
 struct SERVICE_CALL_DESCRIPTOR {
   struct PARAM_BLOCK  parameters; /**< information about conditions seen
                                        when error has been detected */
-  VAR(u8, TYPEDEF)    service_id; /**< identifier of the service which
+  VAR(uint8, TYPEDEF) service_id; /**< identifier of the service which
                                        raised the error */
 };
 
@@ -1572,11 +1579,11 @@ tpl_service.parameters.id.ioc_id = (iocid);
     result = E_OS_ACCESS;                           \
   }																			
 #else
-# define CHECK_ACCESS_RIGHTS_TASK_ID(obj_id,result)         \
-	if (result == (tpl_status)E_OK)                           \
-	{                                                         \
-    CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7); \
-    CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;            \
+# define CHECK_ACCESS_RIGHTS_TASK_ID(obj_id,result)            \
+	if (result == (tpl_status)E_OK)                              \
+	{                                                            \
+    CONST(uint8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7); \
+    CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 2;            \
     extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT]; \
     CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
       tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
@@ -1619,8 +1626,8 @@ tpl_service.parameters.id.ioc_id = (iocid);
 # define CHECK_ACCESS_RIGHTS_ALARM_ID(obj_id,result)        \
 	if (result == (tpl_status)E_OK)                           \
 	{                                                         \
-		CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7); \
-		CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;            \
+		CONST(uint8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7); \
+		CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 2;            \
 		extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
         CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =   \
             tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
@@ -1663,8 +1670,8 @@ tpl_service.parameters.id.ioc_id = (iocid);
 # define CHECK_ACCESS_RIGHTS_RESOURCE_ID(obj_id,result)     \
 	if (result == (tpl_status)E_OK)                           \
 	{                                                         \
-		CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7); \
-        CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;        \
+		CONST(uint8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7); \
+        CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 2;        \
         extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT]; \
         CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =   \
             tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
@@ -1707,8 +1714,8 @@ tpl_service.parameters.id.ioc_id = (iocid);
 # define CHECK_ACCESS_RIGHTS_COUNTER_ID(obj_id,result)      \
 	if( result == (tpl_status)E_OK )                          \
 	{                                                         \
-		CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7); \
-        CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;        \
+		CONST(uint8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7); \
+        CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 2;        \
         extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
         CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =   \
             tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
@@ -1751,8 +1758,8 @@ tpl_service.parameters.id.ioc_id = (iocid);
 # define CHECK_ACCESS_RIGHTS_SCHEDULETABLE_ID(obj_id,result)  \
   if( result == (tpl_status)E_OK )                            \
   {                                                           \
-    CONST(u8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);   \
-    CONST(u8, AUTOMATIC) byte_idx = obj_id >> 2;              \
+    CONST(uint8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);   \
+    CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 2;              \
     extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT]; \
     CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
     tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];    \
@@ -1896,12 +1903,12 @@ result = E_OS_ACCESS;                                               \
 # define CHECK_ACCESS_WRITE_IOC_ID(obj_id,result)                       \
 if (result == IOC_E_OK)                                               \
 {                                                                     \
-CONST(u8, AUTOMATIC) bit_shift = (u8)((obj_id << 1) & 0x7);         \
-CONST(u8, AUTOMATIC) byte_idx = (u8)(obj_id >> 2);                  \
+CONST(uint8, AUTOMATIC) bit_shift = (uint8)((obj_id << 1) & 0x7);         \
+CONST(uint8, AUTOMATIC) byte_idx = (uint8)(obj_id >> 2);                  \
 CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
 tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
 if ( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &             \
-(u8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_WRITE )             \
+(uint8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_WRITE )             \
 {                                                                   \
 result = E_OS_ACCESS;                                             \
 }                                                                   \
@@ -1933,12 +1940,12 @@ result = E_OS_ACCESS;                                               \
 # define CHECK_ACCESS_READ_IOC_ID(obj_id,result)                        \
 if (result == IOC_E_OK)                                               \
 {                                                                     \
-CONST(u8, AUTOMATIC) bit_shift = (u8)((obj_id << 1) & 0x7);         \
-CONST(u8, AUTOMATIC) byte_idx = (u8)(obj_id >> 2);                  \
+CONST(uint8, AUTOMATIC) bit_shift = (uint8)((obj_id << 1) & 0x7);         \
+CONST(uint8, AUTOMATIC) byte_idx = (uint8)(obj_id >> 2);                  \
 CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
 tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
 if ( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &             \
-(u8)(3 << (bit_shift))) >> (bit_shift)) < ACCESS_READ )               \
+(uint8)(3 << (bit_shift))) >> (bit_shift)) < ACCESS_READ )               \
 {                                                                   \
 result = E_OS_ACCESS;                                             \
 }                                                                   \
@@ -1970,14 +1977,14 @@ result = E_OS_ACCESS;                                               \
 # define CHECK_ACCESS_WRITE_IOC_ID(obj_id,result)                       \
 if (result == IOC_E_OK)                                               \
 {                                                                     \
-CONST(u8, AUTOMATIC) bit_shift = (u8)((obj_id << 1) & 0x7);         \
-CONST(u8, AUTOMATIC) byte_idx = (u8)(obj_id >> 2);                  \
+CONST(uint8, AUTOMATIC) bit_shift = (uint8)((obj_id << 1) & 0x7);         \
+CONST(uint8, AUTOMATIC) byte_idx = (uint8)(obj_id >> 2);                  \
 CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
 tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
 if (( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &             \
-(u8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_WRITE ) &&     \
+(uint8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_WRITE ) &&     \
 ( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &             \
-(u8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_FULL ))       \
+(uint8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_FULL ))       \
 {                                                                   \
 result = E_OS_ACCESS;                                             \
 }                                                                   \
@@ -2009,14 +2016,14 @@ result = E_OS_ACCESS;                                               \
 # define CHECK_ACCESS_READ_IOC_ID(obj_id,result)                        \
 if (result == IOC_E_OK)                                               \
 {                                                                     \
-CONST(u8, AUTOMATIC) bit_shift = (u8)((obj_id << 1) & 0x7);         \
-CONST(u8, AUTOMATIC) byte_idx = (u8)(obj_id >> 2);                  \
+CONST(uint8, AUTOMATIC) bit_shift = (uint8)((obj_id << 1) & 0x7);         \
+CONST(uint8, AUTOMATIC) byte_idx = (uint8)(obj_id >> 2);                  \
 CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
 tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
 if (( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &             \
-(u8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_READ ) &&     \
+(uint8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_READ ) &&     \
 ( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &             \
-(u8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_FULL ))       \
+(uint8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_FULL ))       \
 {                                                                   \
 result = E_OS_ACCESS;                                             \
 }                                                                   \
