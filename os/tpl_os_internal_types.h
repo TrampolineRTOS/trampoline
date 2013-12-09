@@ -54,7 +54,16 @@ typedef tpl_proc_id tpl_isr_id ;
  *
  * Kind (hardware or software) of a counter
  */
-typedef u8 tpl_counter_kind;
+typedef uint8 tpl_counter_kind;
+#endif
+
+#if NUMBER_OF_CORES > 1
+/**
+ * @typedef tpl_core_id
+ *
+ * core identifier
+ */
+typedef uint16 tpl_core_id;
 #endif
 
 /**
@@ -62,7 +71,7 @@ typedef u8 tpl_counter_kind;
  *
  * Standard bool declaration. Values can be #TRUE or #FALSE.
  */
-typedef u8 tpl_bool;
+typedef uint8 tpl_bool;
 
 /**
  * @typedef tpl_status
@@ -78,7 +87,7 @@ typedef u8 tpl_bool;
  * @see #OSEK_STATUS_MASK
  * @see #StatusType
  */
-typedef u8 tpl_status;
+typedef uint8 tpl_status;
 
 /**
  * @typedef tpl_proc_state
@@ -97,7 +106,7 @@ typedef u8 tpl_status;
  * - #READY_AND_NEW that means a task is in the ready list before running
  *   for the first time and its context needs to be initialized.
  */
-typedef u8 tpl_proc_state;
+typedef uint8 tpl_proc_state;
 
 #if WITH_OSAPPLICATION == YES
 /**
@@ -122,7 +131,7 @@ typedef unsigned int tpl_trusted_count;
  */
 typedef int tpl_tf_id;
 
-typedef u8 tpl_access;
+typedef uint8 tpl_access;
 #endif
 
 /**
@@ -162,7 +171,7 @@ typedef struct ALARM_BASE_TYPE tpl_alarm_base;
  *
  * @see #AppModeType
  */
-typedef s8 tpl_application_mode;
+typedef sint8 tpl_application_mode;
 
 /**
  * @typedef tpl_callback_func

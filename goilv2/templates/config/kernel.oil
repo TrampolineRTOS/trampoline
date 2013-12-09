@@ -5,6 +5,9 @@ CPU kernel {
     FILE = "tpl_os_timeobj_kernel.c";
     FILE = "tpl_os_action.c";
     FILE = "tpl_os_error.c";
+  };
+  KERNEL com_kernel {
+    PATH = "";
     FILE = "tpl_com_app_copy.c";
     FILE = "tpl_com_filtering.c";
     FILE = "tpl_com_filters.c";

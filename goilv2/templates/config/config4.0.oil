@@ -2,7 +2,7 @@
 
 IMPLEMENTATION autosar4 {
   OS {
-    UINT16 [1..65535] NUMBER_OF_CORES = 1;
+    UINT32 [1..65535] NUMBER_OF_CORES = 1;
   };
 
   IOC [] {
@@ -41,9 +41,9 @@ IMPLEMENTATION autosar4 {
   
   APPLICATION [] {
     IOC_TYPE IOC [];
-    UINT16 CORE = 0;
+    UINT32 CORE = 0;
   };
 
 };
 
-#include "api_ioc.oil"
+/*#include "api_ioc.oil"*/

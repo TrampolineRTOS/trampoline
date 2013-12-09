@@ -533,6 +533,21 @@ routine templateMethodInvocation
           count++;
         end loop;
         outResultValue := valueWithUnsigned [![numberOfBytes uint64] !emptyLString[]];
+      elsif [inMethodName string] == "numberOfBits" | [inMethodName string] == "signedNumberOfBits" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype intType];
+        @sint64 value := [inValue mInt64Value];
+        if [inMethodName string] == "signedNumberOfBits" then
+          value := value * 2;
+        end if;
+        # compute the number of bits needed
+        @sint64 numberOfBits := 0LS;
+        loop 64:
+        while value != 0LS do
+          numberOfBits++;
+          value := value >> 1;
+        end loop;
+        outResultValue := valueWithSigned[!numberOfBits !emptyLString[]];
       else
         error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
       end if;
@@ -658,6 +673,21 @@ routine templateMethodInvocation
         end foreach;
         outResultType := [@Ttype stringType];
         outResultValue := valueWithString[![@string componentsJoinedByString !resultParagraph !"\n"] !emptyLString[]];
+      elsif [inMethodName string] == "substringExists" then
+        checkInvocationHasArguments !inType !inMethodName !inParameterTypeList ![@Ttype stringType] !1;
+        [!?inParameterTypeList popFirst ?@Tvalue subString ?*];
+        @uint start := 0;
+        @uint stop := [[inValue mStringValue] length] - [[subString mStringValue] length];
+        @bool exists := false; 
+        loop [[inValue mStringValue] length]:
+        while start <= stop do
+          if [[inValue mStringValue] subString !start ![[subString mStringValue] length]] == [subString mStringValue] then
+            exists := true;
+          end if;
+          start++;
+        end loop;        
+        outResultType := [@Ttype boolType];
+        outResultValue := valueWithBool[!exists !emptyLString[]];
       else
         error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
       end if;
@@ -683,7 +713,15 @@ routine templateMethodInvocation
       else
         error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
       end if;
-    when enumType, structType, mapType:
+    when mapType :
+      if [inMethodName string] == "length" then
+        checkInvocationHasNoArgument !inType !inMethodName !inParameterTypeList;
+        outResultType := [@Ttype intType];
+        outResultValue := valueWithUnsigned [![[[inValue mStructValue] count] uint64] !emptyLString[]];
+      else
+        error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
+      end if;
+    when enumType, structType:
         error inMethodName: "the ".inMethodName." template method is not defined for ".[inType messageGoilTemplateType] : outResultValue, outResultType;
     when unconstructedType, functionType:
       error here: "internal error, unconstructed type found": outResultValue, outResultType;

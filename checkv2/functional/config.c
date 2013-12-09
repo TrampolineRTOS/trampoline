@@ -126,7 +126,7 @@ tpl_alarm_table[ALARM_COUNT];
  */
 void WaitActivationPeriodicAlarm(AlarmType Alarm){
 	
-	u32 temp, result_inst_;
+	uint32 temp, result_inst_;
 	TickType result_inst_tt;
 	result_inst_tt = 0;		
 	do{

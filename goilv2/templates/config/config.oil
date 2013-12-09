@@ -6,6 +6,9 @@ IMPLEMENTATION trampoline_common {
   };
 
   APICONFIG [] {
+    STRING FILE[];
+    STRING HEADER[];
+    IDENTIFIER ID_PREFIX;
     STRUCT {
       BOOLEAN HIDDEN = FALSE;
       IDENTIFIER WITH_AUTO ACTUAL;
@@ -13,7 +16,7 @@ IMPLEMENTATION trampoline_common {
       IDENTIFIER RETURN_TYPE;
       STRUCT {
         IDENTIFIER TYPE;
-        ENUM [ CONST, VAR ] KIND;
+        ENUM [ CONST, VAR, P2VAR, CONSTP2VAR, P2CONST, CONSTP2CONST ] KIND;
       } ARGUMENT[];
     } SYSCALL[];
     STRUCT {
@@ -21,9 +24,6 @@ IMPLEMENTATION trampoline_common {
       IDENTIFIER STORAGE;
       STRING VALUE;
     } CONST[];
-    STRING FILE[];
-    STRING HEADER[];
-    IDENTIFIER ID_PREFIX;
   };
   
   OS {

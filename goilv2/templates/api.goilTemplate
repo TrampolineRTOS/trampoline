@@ -40,11 +40,11 @@ if OS::SCALABILITYCLASS == 2 | OS::SCALABILITYCLASS == 4 then
   let APIUSED += APIMAP["globaltime"]
 end if
 
-!PROJECT %/tpl_os.h
-%
-write to PROJECT."/tpl_os.h":
-  template tpl_os_h in code
-end write
+# Multicore
+if OS::NUMBER_OF_CORES > 1 then
+  let APIUSED += APIMAP["multicore"]
+  warning here : "Adding multicore"
+end if
 
 if OS::SYSTEM_CALL then
   !PROJECT %/tpl_dispatch_table.c
@@ -61,11 +61,19 @@ else
   end write
 end if
 
+!PROJECT %/tpl_os.h
+%
+write to PROJECT."/tpl_os.h":
+  template tpl_os_h in code
+end write
+
+if OS::USEGETSERVICEID | exists COM::COMUSEGETSERVICEID default (false) then
 !PROJECT %/tpl_service_ids.h
 %
 write to PROJECT."/tpl_service_ids.h":
   template tpl_service_ids_h in code
 end write
+end if
 
 if OS::BUILD then
 %Makefile

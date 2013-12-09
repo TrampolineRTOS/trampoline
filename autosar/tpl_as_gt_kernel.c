@@ -91,7 +91,7 @@ FUNC(void, OS_CODE) tpl_sync_sched_table(
   VAR(tpl_tick, AUTOMATIC)  drive_cnt_match;
   VAR(tpl_tick, AUTOMATIC)  position_on_tbl;
   VAR(tpl_tick, AUTOMATIC)  next_ep_offset=0;
-  VAR(s32, AUTOMATIC)  deviation;
+  VAR(sint32, AUTOMATIC)  deviation;
 
   /* get the current date of the counter which drives the schedule table  */
   drive_cnt_now = st->stat_part->counter->current_date;

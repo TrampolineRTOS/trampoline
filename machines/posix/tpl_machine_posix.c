@@ -40,11 +40,12 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-VAR(tpl_stack_word, OS_VAR) idle_stack_zone[32768/sizeof(tpl_stack_word)] = {0} ;
+/*VAR(tpl_stack_word, OS_VAR) idle_stack_zone[32768/sizeof(tpl_stack_word)] = {0} ;
 VAR(struct TPL_STACK, OS_VAR) idle_task_stack = { idle_stack_zone, 32768} ;
 VAR(struct TPL_CONTEXT, OS_VAR) idle_task_context;
+*/
 
-extern volatile u32 tpl_locking_depth;
+extern volatile uint32 tpl_locking_depth;
 extern VAR(tpl_bool, OS_VAR) tpl_user_task_lock;
 extern VAR(tpl_bool, OS_VAR) tpl_cpt_os_task_lock;
 
@@ -235,9 +236,9 @@ void tpl_signal_handler(int sig)
 }
 
 /*
- * tpl_sleep is used by the idle task
+ * idle_function is used by the idle task
  */
-void tpl_sleep(void)
+void idle_function(void)
 {
     while(1) pause(); 
 }

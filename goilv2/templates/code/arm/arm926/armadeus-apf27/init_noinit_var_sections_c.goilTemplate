@@ -27,18 +27,18 @@
 #include "tpl_compiler.h"
 #include "tpl_os_std_types.h"
 
-extern u8 common_zeroed_vars_begin;
-extern u8 common_zeroed_vars_end;
+extern uint8 common_zeroed_vars_begin;
+extern uint8 common_zeroed_vars_end;
 % if USEMEMORYMAPPING then
-%extern u8 kernel_zeroed_vars_begin;
-extern u8 kernel_zeroed_vars_end;
+%extern uint8 kernel_zeroed_vars_begin;
+extern uint8 kernel_zeroed_vars_end;
 %  foreach PROCESSES do
-%extern u8 % !PROCESSKIND %_% !NAME %_zeroed_vars_begin;
-extern u8 % !PROCESSKIND %_% !NAME %_zeroed_vars_end;
+%extern uint8 % !PROCESSKIND %_% !NAME %_zeroed_vars_begin;
+extern uint8 % !PROCESSKIND %_% !NAME %_zeroed_vars_end;
 %  end foreach
    foreach OSAPPLICATIONS do
-%extern u8 app_% !NAME %_zeroed_vars_begin;
-extern u8 app_% !NAME %_zeroed_vars_end;
+%extern uint8 app_% !NAME %_zeroed_vars_begin;
+extern uint8 app_% !NAME %_zeroed_vars_end;
 %   end foreach
 end if
 %
@@ -46,9 +46,9 @@ end if
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-STATIC FUNC(void, OS_CODE) fill_with_zeros (u8 *from, u8 *to)
+STATIC FUNC(void, OS_CODE) fill_with_zeros (uint8 *from, uint8 *to)
 {
-  u8 *zero_vars_ptr;
+  uint8 *zero_vars_ptr;
   if (from != to)
   {
     zero_vars_ptr = from;

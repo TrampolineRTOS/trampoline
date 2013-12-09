@@ -115,7 +115,7 @@ CPU test {
  
   MESSAGE sm_activatetask {
     MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
-      CDATATYPE = "u8";
+      CDATATYPE = "uint8";
     };
     NOTIFICATION = NONE;
   };
@@ -133,7 +133,7 @@ CPU test {
  
   MESSAGE sm_setevent {
     MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
-      CDATATYPE = "u8";
+      CDATATYPE = "uint8";
     };
     NOTIFICATION = NONE;
   };
@@ -152,7 +152,7 @@ CPU test {
  
   MESSAGE sm_comcallback {
     MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
-      CDATATYPE = "u8";
+      CDATATYPE = "uint8";
     };
     NOTIFICATION = NONE;
   };
@@ -170,7 +170,7 @@ CPU test {
 
   MESSAGE sm_flag {
     MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
-      CDATATYPE = "u8";
+      CDATATYPE = "uint8";
     };
     NOTIFICATION = NONE;
   };

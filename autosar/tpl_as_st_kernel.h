@@ -31,7 +31,7 @@
 #include "tpl_os_alarm_kernel.h"
 #include "tpl_as_definitions.h"
 
-typedef VAR(u8, AUTOMATIC)  tpl_schedtable_state;
+typedef VAR(uint8, AUTOMATIC)  tpl_schedtable_state;
 
 /* Synchronization strategies */
 typedef enum
@@ -41,8 +41,8 @@ typedef enum
   SCHEDTABLE_EXPLICIT_SYNC = 2
 } tpl_sync_strategy;
 
-typedef VAR(u16, TYPEDEF) tpl_action_count ;
-typedef VAR(u16, TYPEDEF) tpl_expiry_count ;
+typedef VAR(uint16, TYPEDEF) tpl_action_count ;
+typedef VAR(uint16, TYPEDEF) tpl_expiry_count ;
 
 /**
  *
@@ -127,16 +127,16 @@ typedef struct TPL_EXPIRY_POINT tpl_expiry_point;
  * This structure inherit from the TPL_TIME_OBJ structure
  */
 struct TPL_SCHEDULE_TABLE {
-    VAR(tpl_time_obj, TYPEDEF)                              b_desc;     /**< common part for all
+  VAR(tpl_time_obj, TYPEDEF)                              b_desc;     /**< common part for all
                                                                              objects that derive
                                                                              from tpl_time_obj          */
-    struct P2VAR(TPL_SCHEDULE_TABLE, TYPEDEF, OS_APPL_DATA) next;       /**< next schedule table to
+  struct P2VAR(TPL_SCHEDULE_TABLE, TYPEDEF, OS_APPL_DATA) next;       /**< next schedule table to
                                                                              start                      */
-    VAR(tpl_expiry_count, TYPEDEF)                          index;      /**< next expiry point to
+  VAR(tpl_expiry_count, TYPEDEF)                          index;      /**< next expiry point to
                                                                              process in the schedule
                                                                              table                      */
-	VAR(s32, TYPEDEF)										deviation;	/**< deviation of the schedule
-																			 table from counter synchro */
+	VAR(sint32, TYPEDEF)										deviation;                	/**< deviation of the schedule
+																			                                       table from counter synchro */
 };
 
 /**

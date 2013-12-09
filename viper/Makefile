@@ -42,7 +42,7 @@ OBJ = $(addprefix $(OBJ_DIR)/,$(SRCS:.c=.o))
 ALL: OBJ_DIR_CREATE $(EXE) 
 
 $(EXE): $(OBJ) 
-	$(CC) $(LDFLAGS) -o $@ $(OBJ)
+	$(CC) -o $@ $(OBJ) $(LDFLAGS) 
 
 $(OBJ_DIR)/%.o: %.c 
 	$(CC) -c $(CFLAGS) $< -o $@

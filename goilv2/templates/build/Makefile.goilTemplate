@@ -251,10 +251,20 @@ DOXYGEN = doxygen
 #############################################################################
 %
 let KERNEL_MAP := mapof KERNEL by NAME
+
 foreach file in KERNEL_MAP["osek_kernel"]::FILE do
 %
 SOURCES += % !file::VALUE
 end foreach
+
+if USECOM then
+foreach file in KERNEL_MAP["com_kernel"]::FILE do
+%
+SOURCES += % !file::VALUE
+end foreach
+
+end if
+
 if OS::SCALABILITYCLASS > 0 then
   foreach file in KERNEL_MAP["autosar_kernel"]::FILE do
 %

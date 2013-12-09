@@ -24,12 +24,23 @@
 #include "tpl_os_std_types.h"
 
 /**
+ * tpl_heap_key is the datatype used to store the key of a heap entry.
+ */
+typedef uint% ! KEY_SIZE * 8 % tpl_heap_key;
+
+/**
+ * tpl_rank_count is the datatype used to store the rank of an activation
+ * It is the lower part of a tpl_heap_key
+ */
+typedef uint% ! [RANK_MASK numberOfBytes] * 8% tpl_rank_count;
+
+/**
  * tpl_proc_id is used for task and isrs identifiers.
  *
  * @warning This data type must be signed
  * because -1 is used for INVALID_TASK and INVALID_ISR
  */
-typedef s% ! [[PROCESSES length] + 1 signedNumberOfBytes] * 8 % tpl_proc_id;
+typedef sint% ! [[PROCESSES length] + 1 signedNumberOfBytes] * 8 % tpl_proc_id;
 
 /**
  * tpl_appmode_mask is used for AUTOSTART objects.
@@ -37,14 +48,14 @@ typedef s% ! [[PROCESSES length] + 1 signedNumberOfBytes] * 8 % tpl_proc_id;
  * Each bit in the mask corresponds to an application mode. The size of the mask
  * is computed according to the number of application modes.
  */
-typedef u% ! [1 << [APPMODE length] - 1 numberOfBytes] * 8 % tpl_appmode_mask;
+typedef uint% ! [1 << [APPMODE length] - 1 numberOfBytes] * 8 % tpl_appmode_mask;
 
 /**
  * tpl_priority represents a task's or a resource's priority.
  *
  * @warning This type must be signed.
  */
-typedef s% ! [MAXPRIORITY signedNumberOfBytes] * 8 % tpl_priority;
+typedef sint% !8*KEY_SIZE % tpl_priority;
 
 /**
  * tpl_activate_counter is used to count
@@ -58,29 +69,29 @@ foreach task in BASICTASKS do
   end if
 end foreach
 %
-typedef u% ![max_activation numberOfBytes] * 8% tpl_activate_counter;
+typedef uint% ![max_activation numberOfBytes] * 8% tpl_activate_counter;
 
 /**
  * tpl_event_mask is used for event.
  * An event is a bit vector. According to the maximum number of events
- * defined in the application, it can be u8 (8 events), u16 (16 events) or
- * u32 (32 events).
+ * defined in the application, it can be uint8 (8 events), uint16 (16 events) or
+ * uint32 (32 events).
  */%
 
 %
-typedef u% ![ALLEVENTSMASK numberOfBytes] * 8 % tpl_event_mask;
+typedef uint% ![ALLEVENTSMASK numberOfBytes] * 8 % tpl_event_mask;
 
 /**
  * tpl_alarm_type is used for alarm identifiers.
  */
-typedef u% ![[ALARMS length] numberOfBytes] * 8 % tpl_alarm_id;
+typedef uint% ![[ALARMS length] numberOfBytes] * 8 % tpl_alarm_id;
 
 /**
  * tpl_resource_id is used for resource identifiers.
  *
  * @warning RES_SCHEDULER is set to the higher resource id + 1
  */
-typedef u% ![[REGULARRESOURCES length]  numberOfBytes] * 8 % tpl_resource_id;
+typedef uint% ![[REGULARRESOURCES length]  numberOfBytes] * 8 % tpl_resource_id;
 
 #if (WITH_TRACE == YES)
 /**
@@ -89,7 +100,7 @@ typedef u% ![[REGULARRESOURCES length]  numberOfBytes] * 8 % tpl_resource_id;
  * Type used to store the id of an alarm or a schedule table
  * This is used only for tracing
  */
-typedef u% ![[ALARMS length] + [SCHEDULETABLES length] numberOfBytes] * 8 % tpl_timeobj_id;
+typedef uint% ![[ALARMS length] + [SCHEDULETABLES length] numberOfBytes] * 8 % tpl_timeobj_id;
 #endif
 
 #ifdef WITH_AUTOSAR
@@ -98,14 +109,14 @@ typedef u% ![[ALARMS length] + [SCHEDULETABLES length] numberOfBytes] * 8 % tpl_
  *
  * @todo: document this
  */
-typedef u% ![[SOFTWARECOUNTERS length] numberOfBytes] * 8 % tpl_counter_id;
+typedef uint% ![[SOFTWARECOUNTERS length] numberOfBytes] * 8 % tpl_counter_id;
 
 /**
  * @internal
  *
  * @todo: document this
  */
-typedef u% ![[SCHEDULETABLES length] numberOfBytes] * 8 % tpl_schedtable_id;
+typedef uint% ![[SCHEDULETABLES length] numberOfBytes] * 8 % tpl_schedtable_id;
 
 /**
  * @internal
@@ -113,7 +124,7 @@ typedef u% ![[SCHEDULETABLES length] numberOfBytes] * 8 % tpl_schedtable_id;
  * Type used to store the id of an OS Application
  * Its size is computed according to the number of OS Applications
  */
-typedef u% ![[APPLICATION length] numberOfBytes] * 8 % tpl_app_id;
+typedef uint% ![[APPLICATION length] numberOfBytes] * 8 % tpl_app_id;
 
 /**
  * @internal
@@ -128,7 +139,7 @@ if [RESOURCES length] > max_id then let max_id := [RESOURCES length] end if
 if [SOFTWARECOUNTERS length] > max_id then let max_id := [SOFTWARECOUNTERS length] end if
 if [SCHEDULETABLES length] > max_id then let max_id := [SCHEDULETABLES length] end if
 %
-typedef u% ![max_id numberOfBytes] * 8 % tpl_generic_id;
+typedef uint% ![max_id numberOfBytes] * 8 % tpl_generic_id;
 
 %
 if [ioc_reordered length] != 0 then
@@ -140,11 +151,11 @@ if [ioc_reordered length] != 0 then
  */
 %
  if [ioc_reordered length] < 256 then
-   %typedef u8 tpl_ioc_id;%
+   %typedef uint8 tpl_ioc_id;%
  elsif [ioc_reordered length] < 65536 then
-   %typedef u16 tpl_ioc_id;%
+   %typedef uint16 tpl_ioc_id;%
  else
-   %typedef u32 tpl_ioc_id;%
+   %typedef uint32 tpl_ioc_id;%
  end if
  
 %
@@ -165,11 +176,11 @@ if [ioc_reordered length] != 0 then
  end foreach
 
  if max_DataTypeSize < 256 then
-   %typedef u8 tpl_ioc_size;%
+   %typedef uint8 tpl_ioc_size;%
  elsif max_DataTypeSize < 65536 then
-   %typedef u16 tpl_ioc_size;%
+   %typedef uint16 tpl_ioc_size;%
  else
-   %typedef u32 tpl_ioc_size;%
+   %typedef uint32 tpl_ioc_size;%
  end if
 
 %
@@ -191,11 +202,11 @@ if [ioc_reordered length] != 0 then
  end foreach
 
  if max_QueueSize < 256 then
-   %typedef u8 tpl_ioc_queue_size;%
+   %typedef uint8 tpl_ioc_queue_size;%
  elsif max_QueueSize < 65536 then
-   %typedef u16 tpl_ioc_queue_size;%
+   %typedef uint16 tpl_ioc_queue_size;%
  else
-   %typedef u32 tpl_ioc_queue_size;%
+   %typedef uint32 tpl_ioc_queue_size;%
  end if
 
 end if
@@ -204,11 +215,7 @@ end if
 /**
  * All these types are not yet used but must be defined in order to be used by other modules
  */
-typedef u8 CoreIdType;
-#define OS_CORE_ID_0 0
-#define OS_CORE_ID_MASTER OS_CORE_ID_0
-
-typedef u8 SpinlockIdType;
+typedef uint8 SpinlockIdType;
 #define INVALID_SPINLOCK 0
 
 typedef enum

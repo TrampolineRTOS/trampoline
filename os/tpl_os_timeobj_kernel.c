@@ -84,7 +84,7 @@ FUNC(void, OS_CODE) tpl_insert_time_obj(
     else
     {
         /*  The time object queue is not empty
-            look for the place to insert the alarm                          */
+            look for the place to insert the time object                    */
         while ((current_to != NULL) &&
                (current_to->date <= time_obj->date))
         {

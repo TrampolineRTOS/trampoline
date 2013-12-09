@@ -71,8 +71,13 @@ elsif task::NONPREEMPTABLE then
 else
   %NULL,%
 end if
+if task::NAME == "idle" then
 %
-  /* task id                  */  % !task::NAME %_id,
+  /* task id                  */  IDLE_TASK_ID,%
+else
+%
+  /* task id                  */  % !task::NAME %_id,%
+end if%
 #if WITH_OSAPPLICATION == YES
   /* OS application id        */  %
 if AUTOSAR then
@@ -85,7 +90,11 @@ if AUTOSAR then
   end if
 end if
 %
-#endif
+#endif%
+if OS::NUMBER_OF_CORES > 1 then%
+  /* core id                  */  % !CORE_FOR_PROCESS[task::NAME] %,
+%end if
+%
   /* task base priority       */  % !task::PRIORITY %,
   /* max activation count     */  % !task::ACTIVATION %,
   /* task type                */  TASK_%

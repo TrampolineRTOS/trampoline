@@ -164,7 +164,7 @@ CPU test {
  
   MESSAGE sm {
     MESSAGEPROPERTY = SEND_STATIC_INTERNAL {
-      CDATATYPE = "u8";
+      CDATATYPE = "uint8";
     };
   };
  

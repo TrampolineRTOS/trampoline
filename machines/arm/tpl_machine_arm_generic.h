@@ -157,7 +157,8 @@ extern VAR(tpl_stack_word, OS_VAR) idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stac
                                             : \
                                             : \
                                             : "r0")
-
+                                            
+                                            
 #endif /* TPL_MACHINE_ARM_GENERIC_H */
 
 /* End of file tpl_machine_arm_generic.h */

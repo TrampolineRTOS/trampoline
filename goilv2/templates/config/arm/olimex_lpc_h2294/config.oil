@@ -2,6 +2,6 @@
  * Interrupt sources of the board
  */
 CPU olimex_lpc_h2294 {
-    INTERRUPT_COUNT nb_it {IT_TABLE_SIZE = 31;};
-    INTERRUPT it_timer1 {ID = 5;};
+    INTERRUPT_COUNT nb_it { IT_TABLE_SIZE = 31; };
+    INTERRUPT it_timer1 { ID = 5; };
 };

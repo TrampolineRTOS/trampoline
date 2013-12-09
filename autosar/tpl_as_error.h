@@ -28,7 +28,6 @@
 #define TPL_AS_ERROR_H
 
 #include "tpl_os_error.h"
-#include "tpl_service_ids.h"
 
 /**
  * @def OSError_CheckObjectAccess_ApplicationID
@@ -419,7 +418,7 @@
  *
  * TerminateApplication service error parameter
  *
- * Returns the value (#u8) of the option.
+ * Returns the value (#uint8) of the option.
  *
  * @warning this macro does only make sense when used within #ErrorHook
  * function
@@ -564,7 +563,7 @@
  *
  * Stores the option when terminating an applicaiton
  *
- * @param opt type is #u8
+ * @param opt type is #uint8
  *
  * @see #OSError_TerminateApplication_opt
  * 

@@ -13,12 +13,12 @@
  * tpl_stack_word is the basic element of a stack in order to have a proper
  * data alignement.
  */
-typedef u32 tpl_stack_word;
+typedef uint32 tpl_stack_word;
 
 /**
  * tpl_stack_size is the data type used to store the stack size
  */
-typedef u16 tpl_stack_size;
+typedef uint16 tpl_stack_size;
 
 struct TPL_STACK {
     tpl_stack_word      *stack_zone;
@@ -39,5 +39,6 @@ extern void tpl_sleep(void);
 #define IDLE_CONTEXT    &idle_task_context 
 #define IDLE_ENTRY      tpl_sleep
 #define IDLE_STACK      &idle_task_stack
+#define IDLE_STACK_SIZE 32768
 
 #endif /* TPL_MACHINE_H */

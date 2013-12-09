@@ -64,7 +64,7 @@ typedef P2FUNC(void, OS_APPL_CODE, tpl_application_hook)(void);
 struct TPL_APP_ACCESS {
   CONST(tpl_application_hook, TYPEDEF)                    startup_hook;
   CONST(tpl_application_hook, TYPEDEF)                    shutdown_hook;
-  CONSTP2CONST(u8, TYPEDEF, OS_APPL_CONST)                access_vec[6];
+  CONSTP2CONST(uint8, TYPEDEF, OS_APPL_CONST)             access_vec[6];
   CONSTP2CONST(tpl_proc_id, TYPEDEF, OS_APPL_CONST)       procs;
   CONSTP2CONST(tpl_alarm_id, TYPEDEF, OS_APPL_CONST)      alarms;
   CONSTP2CONST(tpl_resource_id, TYPEDEF, OS_APPL_CONST)   rezs;
@@ -102,7 +102,7 @@ FUNC(tpl_app_id, OS_CODE) tpl_get_application_id_service(void);
  *  @retval   the application ID (OS273) or INVALID_OSAPPLICATION (OS274, OS319)
  */
 FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
-  u8              obj_type,
+  uint8           obj_type,
   tpl_generic_id  obj_id);
 
 /**
@@ -114,9 +114,9 @@ FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
  *
  *  @retval   the application ID (OS273) or INVALID_OSAPPLICATION (OS274, OS319)
  */
-FUNC(u8, OS_CODE) tpl_check_object_access_service(
+FUNC(uint8, OS_CODE) tpl_check_object_access_service(
   tpl_app_id      app_id, 
-  u8              obj_type,
+  uint8           obj_type,
   tpl_generic_id  obj_id);
 
 /**
@@ -130,7 +130,7 @@ FUNC(u8, OS_CODE) tpl_check_object_access_service(
  *  @retval   E_OS_CALLEVEL wrong context (OS288)
  *  @retval   E_OS_VALUE    invalid restart_opt (OS459)
  */
-FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(u8 opt);
+FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(uint8 opt);
 
 /**
  *  Calls the StartupHook of all OS Applications

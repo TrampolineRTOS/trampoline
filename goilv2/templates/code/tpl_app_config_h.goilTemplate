@@ -50,7 +50,7 @@ end if
 #define API_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 extern CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA)
-  proc_name_table[TASK_COUNT + ISR_COUNT];
+  proc_name_table[TASK_COUNT + ISR_COUNT + 1];
 #define API_STOP_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 #endif

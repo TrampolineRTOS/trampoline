@@ -140,7 +140,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void);
  *
  * @param interrupt service routine identifier
  */
-FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(u16, AUTOMATIC) id);
+FUNC(void, OS_CODE) tpl_central_interrupt_handler(CONST(uint16, AUTOMATIC) id);
 
 /**
  * This is the dispatcher of interrupts. It should be called by

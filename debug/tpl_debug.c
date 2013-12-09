@@ -25,7 +25,7 @@
  */
 
 #include "tpl_debug.h"
-#include "tpl_os_rez_kernel.h"
+#include "tpl_os_resource_kernel.h"
 #include <stdio.h>
 
 #define OS_START_SEC_CODE
@@ -45,7 +45,7 @@ FUNC(void, OS_CODE)
          (int)c->current_date);
   
   while (t != NULL) {
-    printf("        date=%d, alr=%d\n",(int)t->date,(int)t);
+    printf("        date=%lu\n",(uint32)(t->date));
     t = t->next_to;
   }
 #endif /* defined WITH_DOW */

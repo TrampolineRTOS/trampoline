@@ -931,7 +931,7 @@ The scope of a variable depends on the location where the variable is assigned t
 
 \begin{lstlisting}
 let a := 1
-foreach TASKS do
+foreach task in TASKS do
   let b := INDEX
   let a := INDEX
 end foreach
@@ -965,7 +965,7 @@ end if
 This instruction iterates on the elements of a list. Each element may have many attributes that are available as variables within the {\bf do} section of the foreach loop. The simplest form is the following one
 
 \begin{lstlisting}
-foreach expression do ... end foreach
+foreach var in expression do ... end foreach
 \end{lstlisting}
 
 In the following example, for each element in the \var{ALARMS} list, the text between the {\tt do} and the {\tt end foreach} is produced with the \var{NAME} attribute of the current element of the \var{ALARMS} list inserted at the specified location. \var{INDEX} is not an attribute of the current element. It is generated for each element and ranges from 0 to the number of elements in the list minus 1.

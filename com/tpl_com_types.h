@@ -37,7 +37,7 @@ typedef unsigned char       tpl_com_data;
 /*
  * tpl_com_count is the type used for the occurence filter
  */
-typedef s8 tpl_com_count;
+typedef sint8 tpl_com_count;
 
 /*
  * tpl_message_id is used to identify messages
@@ -72,22 +72,22 @@ typedef unsigned char tpl_flag_set;
 /*
  * tpl_com_app_mode is the datatype used for COM Application Mode
  */
-typedef u8 tpl_com_app_mode;
+typedef uint8 tpl_com_app_mode;
 
 /*
  * tpl_com_shut_mode is the datatype used for COM Shutdown Mode
  */
-typedef u8 tpl_com_shut_mode;
+typedef uint8 tpl_com_shut_mode;
 
 /*
  * tpl_callout_ret
  */
-typedef u8 tpl_callout_ret;
+typedef uint8 tpl_callout_ret;
 
 /*
  * tpl_com_srv_id
  */
-typedef u8 tpl_com_srv_id;
+typedef uint8 tpl_com_srv_id;
 
 /*
  * tpl_com_callout, a function pointer type for callouts

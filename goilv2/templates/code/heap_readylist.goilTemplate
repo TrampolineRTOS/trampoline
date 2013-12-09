@@ -1,0 +1,49 @@
+/*=============================================================================
+ * Definition and initialization of Ready List structures
+ */
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+#
+# compute the size of the key in each element of the ready list
+# the key is the concatenation of the priority and the rank
+# the maximum priority is already computed in MAXPRIORITY
+# the maximum rank is computed from the READYLIST data structure.
+#
+#display READYLIST
+#display MAX_RANK
+#display KEY_SIZE
+#display PRIORITY_MASK
+#display RANK_MASK
+#display PRIORITY_SHIFT
+
+
+%
+VAR(tpl_heap_entry, OS_VAR) tpl_ready_list[% !READY_LIST_SIZE + 1 %];
+VAR(tpl_rank_count, OS_VAR) tpl_tail_for_prio[% !NUMBER_OF_PRIORITIES%] = {
+%
+loop i from 0 to NUMBER_OF_PRIORITIES - 1
+do
+%  0%
+between %,
+%
+end loop
+%
+};
+%
+
+foreach core in CORES do
+  let core_id := ""
+  if [CORES length] > 1 then
+    let core_id := "_core".KEY
+  end if
+  # compute the size of the heap
+  let heap_size := 1 # for the idle task
+  let heap_size := heap_size + [core::ISRS length] # for the ISRs
+  foreach task in core::TASKS do
+    let heap_size := heap_size + task::ACTIVATION
+  end foreach
+end foreach
+%
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"

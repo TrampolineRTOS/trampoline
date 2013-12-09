@@ -77,10 +77,15 @@ if AUTOSAR then
   end if
 end if
 %
-#endif
-  /* task base priority       */  % !isr::PRIORITY %,
-  /* max activation count     */  1,
-  /* task type                */  IS_ROUTINE,
+#endif%
+if OS::NUMBER_OF_CORES > 1 then%
+  /* core id                  */  % !CORE_FOR_PROCESS[isr::NAME] %,
+%end if
+%
+
+  /* ISR base priority       */  % !isr::PRIORITY %,
+  /* ISR activation count     */  1,
+  /* ISR type                */  IS_ROUTINE,
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /* pointer to the timing
      protection descriptor    */  $TIMING_PROT_REF$
