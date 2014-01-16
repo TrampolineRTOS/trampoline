@@ -129,9 +129,9 @@ class cSharedMapRoot : public C_SharedObject {
                                                                C_Compiler * inCompiler
                                                                COMMA_LOCATION_ARGS) const ;
 
-  protected : VIRTUAL_IN_DEBUG GALGAS_stringset allKeys (LOCATION_ARGS) const ;
+  protected : VIRTUAL_IN_DEBUG GALGAS_stringset keySet (LOCATION_ARGS) const ;
 
-  protected : VIRTUAL_IN_DEBUG GALGAS_lstringlist allKeyList (LOCATION_ARGS) const ;
+  protected : VIRTUAL_IN_DEBUG GALGAS_lstringlist keyList (LOCATION_ARGS) const ;
 
 //--------------------------------- Implementation of reader 'description'
   public : VIRTUAL_IN_DEBUG void description (C_String & ioString,
@@ -595,7 +595,9 @@ void cSharedMapRoot::performInsertOrReplace (const capCollectionElement & inAttr
 void AC_GALGAS_map::performInsertOrReplace (const capCollectionElement & inAttributes) {
   if (isValid ()) {
     insulate (HERE) ;
-    mSharedMap->performInsertOrReplace (inAttributes) ;
+    if (NULL != mSharedMap) {
+      mSharedMap->performInsertOrReplace (inAttributes) ;
+    }
   }
 }
 
@@ -774,21 +776,9 @@ void AC_GALGAS_map::performInsert (const capCollectionElement & inAttributes,
 //--- If all attributes are built, perform insertion
   if (isValid ()) {
     insulate (HERE) ;
-    cMapNode * node = mSharedMap->performInsert (inAttributes, inCompiler, inInsertErrorMessage, inShadowErrorMessage COMMA_THERE) ;
-  //--- Contextual help
-    if ((NULL != node) && executionModeIsContextHelp ()) {
-      cMapElement * p = (cMapElement *) inAttributes.ptr () ;
-      macroValidSharedObject (p, cMapElement) ;
-      const GALGAS_lstring key = p->mAttribute_lkey ;
-      if (isCurrentCompiledFilePath (key.mAttribute_location.startLocation ().sourceFilePath ())) {
-        const PMUInt32 startLocationInSource = key.mAttribute_location.startLocation ().index () ;
-        const PMUInt32 endLocationInSource = key.mAttribute_location.endLocation ().index () ;
-        if ((contextHelpStartLocation () >= startLocationInSource) && (contextHelpEndLocation () <= endLocationInSource)) {
-          C_String s ;
-          node->mAttributes.description (s, 0) ;
-          sendToTCPSocket (s) ;
-        }
-      }
+    /* cMapNode * node = (NULL == mSharedMap) ? NULL : */
+    if (NULL != mSharedMap) {
+      mSharedMap->performInsert (inAttributes, inCompiler, inInsertErrorMessage, inShadowErrorMessage COMMA_THERE) ;
     }
   }
 }
@@ -822,7 +812,7 @@ PMUInt32 AC_GALGAS_map::count (void) const {
 //---------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark Reader "allKeys"
+  #pragma mark Reader "keySet"
 #endif
 
 //---------------------------------------------------------------------------*
@@ -839,7 +829,7 @@ static void enterKeyInStringSet (const cMapNode * inNode,
 
 //---------------------------------------------------------------------------*
 
-GALGAS_stringset cSharedMapRoot::allKeys (LOCATION_ARGS) const {
+GALGAS_stringset cSharedMapRoot::keySet (LOCATION_ARGS) const {
   GALGAS_stringset result = GALGAS_stringset::constructor_emptySet (THERE) ;
   enterKeyInStringSet (mRoot, result) ;
   return result ;
@@ -847,10 +837,10 @@ GALGAS_stringset cSharedMapRoot::allKeys (LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------*
 
-GALGAS_stringset AC_GALGAS_map::reader_allKeys (LOCATION_ARGS) const {
+GALGAS_stringset AC_GALGAS_map::reader_keySet (LOCATION_ARGS) const {
   GALGAS_stringset result ;
   if (isValid ()) {
-    result = mSharedMap->allKeys (THERE) ;
+    result = mSharedMap->keySet (THERE) ;
   }
   return result ;
 }
@@ -858,7 +848,7 @@ GALGAS_stringset AC_GALGAS_map::reader_allKeys (LOCATION_ARGS) const {
 //---------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark Reader "allKeyList"
+  #pragma mark Reader "keyList"
 #endif
 
 //---------------------------------------------------------------------------*
@@ -878,7 +868,7 @@ static void enterKeyInLStringList (cMapNode * inNode,
 
 //---------------------------------------------------------------------------*
 
-GALGAS_lstringlist cSharedMapRoot::allKeyList (LOCATION_ARGS) const {
+GALGAS_lstringlist cSharedMapRoot::keyList (LOCATION_ARGS) const {
   GALGAS_lstringlist result = GALGAS_lstringlist::constructor_emptyList (THERE) ;
   enterKeyInLStringList (mRoot, result) ;
   return result ;
@@ -886,10 +876,10 @@ GALGAS_lstringlist cSharedMapRoot::allKeyList (LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------*
 
-GALGAS_lstringlist AC_GALGAS_map::reader_allKeyList (LOCATION_ARGS) const {
+GALGAS_lstringlist AC_GALGAS_map::reader_keyList (LOCATION_ARGS) const {
   GALGAS_lstringlist result ;
   if (isValid ()) {
-    result = mSharedMap->allKeyList (THERE) ;
+    result = mSharedMap->keyList (THERE) ;
   }
   return result ;
 }
@@ -1093,17 +1083,6 @@ const cCollectionElement * AC_GALGAS_map::performSearch (const GALGAS_lstring & 
   const cCollectionElement * result = NULL ;
   if (isValid () && inKey.isValid ()) {
     const cMapNode * node = mSharedMap->performSearch (inKey, inCompiler, inSearchErrorMessage COMMA_THERE) ;
-  //--- Contextual help
-    if ((NULL != node) && executionModeIsContextHelp () && isCurrentCompiledFilePath (inKey.mAttribute_location.startLocation ().sourceFilePath ())) {
-      const PMUInt32 startLocationInSource = inKey.mAttribute_location.startLocation ().index () ;
-      const PMUInt32 endLocationInSource = inKey.mAttribute_location.endLocation ().index () ;
-      if ((contextHelpStartLocation () >= startLocationInSource) && (contextHelpEndLocation () <= endLocationInSource)) {
-        C_String s ;
-        node->mAttributes.description (s, 0) ;
-        sendToTCPSocket (s) ;
-      }
-    }
-  //---
     if (NULL != node) {
       result = node->mAttributes.ptr () ;
     }
@@ -1186,7 +1165,9 @@ cMapElement * AC_GALGAS_map::searchForReadWriteAttribute (const GALGAS_string & 
   cMapElement * result = NULL ;
   if (isValid ()) {
     insulate (THERE) ;
-    result = (cMapElement *) mSharedMap->searchForReadWriteAttribute (inKey, inCompiler COMMA_THERE) ;
+    if (NULL != mSharedMap) {
+      result = (cMapElement *) mSharedMap->searchForReadWriteAttribute (inKey, inCompiler COMMA_THERE) ;
+    }
   }
   return result ;
 }
@@ -1231,7 +1212,9 @@ cMapElement * AC_GALGAS_map::searchForReadWriteAttribute (const GALGAS_lstring &
   cMapElement * result = NULL ;
   if (isValid ()) {
     insulate (THERE) ;
-    result = mSharedMap->searchForReadWriteAttribute (inKey, inCompiler, inSearchErrorMessage COMMA_THERE) ;
+    if (NULL != mSharedMap) {
+      result = mSharedMap->searchForReadWriteAttribute (inKey, inCompiler, inSearchErrorMessage COMMA_THERE) ;
+    }
   }
   return result ;
 }
@@ -1417,7 +1400,9 @@ void AC_GALGAS_map::performRemove (GALGAS_lstring & inKey,
                                    COMMA_LOCATION_ARGS) {
   if (isValid ()) {
     insulate (THERE) ;
-    mSharedMap->performRemove (inKey, outResult, inCompiler, inRemoveErrorMessage COMMA_THERE) ;
+    if (NULL != mSharedMap) {
+      mSharedMap->performRemove (inKey, outResult, inCompiler, inRemoveErrorMessage COMMA_THERE) ;
+    }
   }
 }
 
@@ -1468,15 +1453,23 @@ typeComparisonResult AC_GALGAS_map::objectCompare (const AC_GALGAS_map & inOpera
 
 //---------------------------------------------------------------------------*
 
-void AC_GALGAS_map::getOverridenMap (AC_GALGAS_map & outMap) const {
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark map overriden map
+#endif
+
+//---------------------------------------------------------------------------*
+
+void AC_GALGAS_map::getOverridenMap (AC_GALGAS_map & outMap,
+                                     C_Compiler * inCompiler
+                                     COMMA_LOCATION_ARGS) const {
+  outMap.drop () ;
   if (isValid ()) {
     if (NULL == mSharedMap->mOverridenMap) {
-      outMap.makeNewEmptyMap (HERE) ;
+ //     outMap.makeNewEmptyMap (HERE) ;
+      inCompiler->onTheFlySemanticError ("reader 'overriddenMap': no overriden map" COMMA_THERE) ;
     }else{
       macroAssignSharedObject (outMap.mSharedMap, mSharedMap->mOverridenMap) ;
     }
-  }else{
-    outMap.drop () ;
   }
 }
 

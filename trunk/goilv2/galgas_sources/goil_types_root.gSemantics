@@ -47,7 +47,7 @@ function osObject
 :
   @objectKind objectsForKind;
   [objects get !lstringWith[!"OS"] ?objectsForKind];
-  @lstringlist names := [[objectsForKind objects] allKeyList];
+  @lstringlist names := [[objectsForKind objects] keyList];
   @lstring name;
   [names first ?name];
   [[objectsForKind objects] get !name ?os];

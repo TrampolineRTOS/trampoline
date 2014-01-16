@@ -23,7 +23,7 @@
 #
 
 
-project all_goil -> "goil" :
+project all_goil (2:1:3) -> "goil" :
 
 #  feature libpmAtPath : "../galgas_sources/GALGAS_OUTPUT/libpm" ;
   feature "makefile_macosx" ;

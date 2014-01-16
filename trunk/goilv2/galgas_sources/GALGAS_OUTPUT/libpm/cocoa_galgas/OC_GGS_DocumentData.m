@@ -17,6 +17,10 @@
 
 //---------------------------------------------------------------------------*
 
+//#define DEBUG_MESSAGES
+
+//---------------------------------------------------------------------------*
+
 static NSMutableDictionary * gDocumentDataDictionary ;
 
 //---------------------------------------------------------------------------*
@@ -32,10 +36,10 @@ static NSMutableDictionary * gDocumentDataDictionary ;
 //    -locationForLineInSource:                                              *
 //---------------------------------------------------------------------------*
 
-- (NSUInteger) locationForLineInSource: (NSInteger) inLine {
+- (NSUInteger) locationForLineInSource: (NSUInteger) inLine {
    NSString * sourceString = mTextSyntaxColoring.sourceString ;
   const NSUInteger sourceStringLength = sourceString.length ;
-  NSInteger lineIndex = 0 ;
+  NSUInteger lineIndex = 0 ;
   NSUInteger idx = 0 ;
   BOOL found = NO ;
   while ((idx < sourceStringLength) && ! found) {
@@ -289,14 +293,23 @@ static NSArray * gIssueArray ;
   }
   OC_GGS_DocumentData * documentData = [gDocumentDataDictionary objectForKey:inDocumentURL] ;
   if (nil == documentData) {
-    documentData = [[OC_GGS_DocumentData alloc]
-      initWithDataFromURL:inDocumentURL
-    ] ;
-    [documentData setIssueArray:gIssueArray] ;
-    [gDocumentDataDictionary setObject:documentData forKey:inDocumentURL] ;
+    NSFileManager * fm = [NSFileManager new] ;
+    if ([fm isReadableFileAtPath:inDocumentURL.path]) {
+      documentData = [[OC_GGS_DocumentData alloc]
+        initWithDataFromURL:inDocumentURL
+      ] ;
+      [documentData setIssueArray:gIssueArray] ;
+      [gDocumentDataDictionary setObject:documentData forKey:inDocumentURL] ;
+    }
   }
   [documentData setCocoaDocument:inDocument] ;
   return documentData ;
+}
+
+//---------------------------------------------------------------------------*
+
++ (OC_GGS_DocumentData *) findDocumentDataForFilePath: (NSString *) inFilePath {
+  return [gDocumentDataDictionary objectForKey:[NSURL fileURLWithPath:inFilePath]] ;
 }
 
 //---------------------------------------------------------------------------*
@@ -325,6 +338,13 @@ static NSArray * gIssueArray ;
 
 - (void) replaceSourceStringWithString: (NSString *) inString {
   [mTextSyntaxColoring replaceSourceStringWithString:inString] ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (void) replaceCharactersInRange: (NSRange) inRange
+         withString: (NSString *) inReplaceString {
+  [mTextSyntaxColoring replaceCharactersInRange:inRange withString:inReplaceString] ;
 }
 
 //---------------------------------------------------------------------------*

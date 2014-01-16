@@ -44,6 +44,12 @@ mUInt64Value (inValue) {
 
 //---------------------------------------------------------------------------*
 
+GALGAS_uint_36__34_ GALGAS_uint_36__34_::constructor_default (UNUSED_LOCATION_ARGS) {
+  return GALGAS_uint_36__34_ (0) ;
+}
+
+//---------------------------------------------------------------------------*
+
 GALGAS_uint_36__34_::GALGAS_uint_36__34_ (void) :
 mIsValid (false),
 mUInt64Value (0) {
@@ -417,7 +423,7 @@ GALGAS_double GALGAS_uint_36__34_::reader_double (UNUSED_LOCATION_ARGS) const {
 
 GALGAS_string GALGAS_uint_36__34_::reader_string (UNUSED_LOCATION_ARGS) const {
   C_String s ;
-  s.appendUnsigned64 (mUInt64Value) ;
+  s.appendUnsigned (mUInt64Value) ;
   return GALGAS_string (s) ;
 }
 
@@ -426,7 +432,7 @@ GALGAS_string GALGAS_uint_36__34_::reader_string (UNUSED_LOCATION_ARGS) const {
 GALGAS_string GALGAS_uint_36__34_::reader_hexString (UNUSED_LOCATION_ARGS) const {
   C_String s ;
   s.appendCString ("0x") ;
-  s.appendUnsigned64inHex (mUInt64Value) ;
+  s.appendUnsignedHex16 (mUInt64Value) ;
   return GALGAS_string (s) ;
 }
 
@@ -434,7 +440,7 @@ GALGAS_string GALGAS_uint_36__34_::reader_hexString (UNUSED_LOCATION_ARGS) const
 
 GALGAS_string GALGAS_uint_36__34_::reader_xString (UNUSED_LOCATION_ARGS) const {
   C_String s ;
-  s.appendUnsigned64inHex (mUInt64Value) ;
+  s.appendUnsignedHex16 (mUInt64Value) ;
   return GALGAS_string (s) ;
 }
 
@@ -444,7 +450,7 @@ void GALGAS_uint_36__34_::description (C_String & ioString,
                                        const PMSInt32 /* inIndentation */) const {
   ioString << "<@uint64:" ;
   if (isValid ()) {
-    ioString.appendUnsigned64 (mUInt64Value) ;
+    ioString.appendUnsigned (mUInt64Value) ;
   }else{
     ioString << "not built" ;
   }

@@ -22,17 +22,17 @@ semantics template_semantics :
 #------------------------------------------------------------------------------*
 
 enum @Ttype {
-  boolType,
-  intType,
-  floatType,
-  stringType,
-  listType,
-  mapType,
-  structType,
-  enumType,
-  functionType,
-  unconstructedType
-}{}
+    boolType,
+    intType,
+    floatType,
+    stringType,
+    listType,
+    mapType,
+    structType,
+    enumType,
+    functionType,
+    unconstructedType
+}
 
 reader @Ttype messageGoilTemplateType -> @string result:
   switch selfcopy

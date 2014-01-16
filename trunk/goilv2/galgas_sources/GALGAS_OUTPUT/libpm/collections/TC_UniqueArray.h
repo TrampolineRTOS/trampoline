@@ -77,9 +77,12 @@ template <typename TYPE> class TC_UniqueArray {
 //--- Virtual Destructor
   public : virtual ~TC_UniqueArray (void) ;
 
-//--- No copy
+//--- No implicit copy
   private : TC_UniqueArray (const TC_UniqueArray <TYPE> &) ;
   private : TC_UniqueArray <TYPE> & operator = (const TC_UniqueArray <TYPE> &) ;
+
+//--- Copy
+  public : void copyTo (TC_UniqueArray <TYPE> & outArray) const ;
 
 //--- Get Count
   public : inline PMSInt32 count (void) const { return mCount ; }
@@ -93,7 +96,7 @@ template <typename TYPE> class TC_UniqueArray {
 //--- Methods for making room
   public : void makeRoom (const PMSInt32 inNewCapacity) ;
   public : void makeRoomUsingSwap (const PMSInt32 inNewCapacity) ;
-
+  
 //--- Allocation with provided data
   public : void setDataFromPointer (TYPE * & ioDataPtr,
                                     const PMSInt32 inDataLength) ;
@@ -137,7 +140,7 @@ template <typename TYPE> class TC_UniqueArray {
 //--- Add objects at the end of the array
   public : void addObject (const TYPE & inValue) ; // inValue is copied
   public : void addObjectIfUnique (const TYPE & inValue) ; // Test is based on == operator, and inValue is copied
-  public : void addObjectInOrderedArray (const TYPE & inValue) ; // Test is based on == operator, and inValue is copied
+  public : void addObjectInOrderedArray (const TYPE & inValue) ; // Test is based on 'compare' method, and inValue is copied
   public : void addObjectUsingSwap (TYPE & ioValue) ;
   public : void addDefaultObjectUsingSwap (void) ;
   public : void addObjects (const PMSInt32 inCount, const TYPE & inValue) ; // inValue is copied
@@ -167,6 +170,10 @@ template <typename TYPE> class TC_UniqueArray {
   public : void insertObjectsUsingExchangeAndClear (const PMSInt32 inObjectCount,
                                                     const PMSInt32 inIndex
                                                     COMMA_LOCATION_ARGS) ;
+
+//--- Find Object (uses == operator for comparing objects)
+//    Returns -1 if not found
+  public : PMSInt32 indexOfFirstObjectEqualTo (const TYPE & inValue) const ;
 
 //--- Remove last object(s)
   public : void removeLastObject (LOCATION_ARGS) ;
@@ -217,39 +224,24 @@ template <typename TYPE> class TC_UniqueArray {
 //  inSortFunction (inOperand1, inOperand2) < 0 means inOperand1 < inOperand2
   public : void
   sortArrayUsingFunction (PMSInt32 (* inSortFunction) (const TYPE & inOperand1,
-                                                     const TYPE & inOperand2)) ;
+                                                       const TYPE & inOperand2)) ;
 
 //--- Sort array with a sort function (does nothing if inSortFunction == NULL)
 //  inSortFunction (inOperand1, inOperand2) < 0 means inOperand1 < inOperand2
   public : void
   reverseSortArrayUsingFunction (PMSInt32 (* inSortFunction) (const TYPE & inOperand1,
-                                                            const TYPE & inOperand2)) ;
+                                                              const TYPE & inOperand2)) ;
 
-//--- Array access (with index checking)
-  #ifndef DO_NOT_GENERATE_CHECKINGS
-    public : TYPE & operator () (const PMSInt32 inIndex
-                                 COMMA_LOCATION_ARGS) ;
-    public : TYPE & operator () (const PMSInt32 inIndex
-                                 COMMA_LOCATION_ARGS) const ;
-    public : TYPE & lastObject (LOCATION_ARGS) ;
-    public : const TYPE & lastObject (LOCATION_ARGS) const ;
-  #endif
+//--- Element access (with index checking)
+  public : const TYPE lastObject (LOCATION_ARGS) const ;
 
-//--- Array access (without index checking)
-  #ifdef DO_NOT_GENERATE_CHECKINGS
-    public : inline TYPE & operator () (const PMSInt32 inIndex) {
-      return mArray [inIndex] ;
-    }
-    public : inline TYPE & operator () (const PMSInt32 inIndex) const {
-      return mArray [inIndex] ;
-    }
-    public : inline TYPE & lastObject (void) {
-      return mArray [mCount-1] ;
-    }
-    public : inline const TYPE & lastObject (void) const {
-      return mArray [mCount-1] ;
-    }
-  #endif
+  public : void setObjectAtIndex (const TYPE & inObject,
+                                  const PMSInt32 inIndex
+                                  COMMA_LOCATION_ARGS) ;
+
+  public : TYPE & operator () (const PMSInt32 inIndex COMMA_LOCATION_ARGS) ;
+
+  public : const TYPE & operator () (const PMSInt32 inIndex COMMA_LOCATION_ARGS) const ;
 
 //--- Private methods
   private : void internalSortArrayUsingOperators (const PMSInt32 inFirst,
@@ -267,12 +259,12 @@ template <typename TYPE> class TC_UniqueArray {
   private : void internalSortArrayUsingFunction (const PMSInt32 inFirst,
                                                  const PMSInt32 inLast,
                                                  PMSInt32 (* inSortFunction) (const TYPE & inOperand1,
-                                                                            const TYPE & inOperand2)) ;
+                                                                              const TYPE & inOperand2)) ;
 
   private : void internalReverseSortArrayUsingFunction (const PMSInt32 inFirst,
                                                         const PMSInt32 inLast,
                                                         PMSInt32 (* inSortFunction) (const TYPE & inOperand1,
-                                                                                   const TYPE & inOperand2)) ;
+                                                                                     const TYPE & inOperand2)) ;
 //--- Index checking
   #ifndef DO_NOT_GENERATE_CHECKINGS
     protected : void checkIndex (const PMSInt32 inIndex COMMA_LOCATION_ARGS) const ;
@@ -399,6 +391,20 @@ TC_UniqueArray <TYPE>::~TC_UniqueArray (void) {
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::setCountToZero (void) {
   mCount = 0 ;
+}
+
+//---------------------------------------------------------------------------*
+//                                                                           *
+//   Method for making room using copy                                       *
+//                                                                           *
+//---------------------------------------------------------------------------*
+
+template <typename TYPE>
+void TC_UniqueArray <TYPE>::copyTo (TC_UniqueArray <TYPE> & outArray) const {
+  outArray.setCountToZero () ;
+  for (PMSInt32 i=0 ; i<mCount ; i++) {
+    outArray.addObject (mArray [i]) ;
+  }
 }
 
 //---------------------------------------------------------------------------*
@@ -830,6 +836,24 @@ removeObjectsAtIndex (const PMSInt32 inCount, const PMSInt32 inStartingIndex COM
 
 //---------------------------------------------------------------------------*
 //                                                                           *
+//   Search Objects                                                          *
+//                                                                           *
+//---------------------------------------------------------------------------*
+
+template <typename TYPE>
+PMSInt32 TC_UniqueArray <TYPE>::
+indexOfFirstObjectEqualTo (const TYPE & inValue) const {
+  PMSInt32 result = -1 ;
+  for (PMSInt32 i=0 ; (i<mCount) && (result < 0) ; i++) {
+    if (mArray [i] == inValue) {
+      result = i ;
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------*
+//                                                                           *
 //   Array Access                                                            *
 //                                                                           *
 //---------------------------------------------------------------------------*
@@ -845,45 +869,45 @@ removeObjectsAtIndex (const PMSInt32 inCount, const PMSInt32 inStartingIndex COM
 
 //---------------------------------------------------------------------------*
 
-#ifndef DO_NOT_GENERATE_CHECKINGS
-  template <typename TYPE>
-  TYPE & TC_UniqueArray <TYPE>::
-  operator () (const PMSInt32 inIndex COMMA_LOCATION_ARGS) {
+template <typename TYPE>
+void TC_UniqueArray <TYPE>::setObjectAtIndex (const TYPE & inObject,
+                                              const PMSInt32 inIndex
+                                              COMMA_LOCATION_ARGS) {
+  #ifndef DO_NOT_GENERATE_CHECKINGS
     checkIndex (inIndex COMMA_THERE) ;
-    return mArray [inIndex] ;
-  }
-#endif
+  #endif
+  mArray [inIndex] = inObject ;
+}
 
 //---------------------------------------------------------------------------*
 
-#ifndef DO_NOT_GENERATE_CHECKINGS
-  template <typename TYPE>
-  TYPE & TC_UniqueArray <TYPE>::
-  operator () (const PMSInt32 inIndex COMMA_LOCATION_ARGS) const {
+template <typename TYPE>
+TYPE & TC_UniqueArray <TYPE>::operator () (const PMSInt32 inIndex COMMA_LOCATION_ARGS) {
+  #ifndef DO_NOT_GENERATE_CHECKINGS
     checkIndex (inIndex COMMA_THERE) ;
-    return mArray [inIndex] ;
-  }
-#endif
+  #endif
+  return mArray [inIndex] ;
+}
 
 //---------------------------------------------------------------------------*
 
-#ifndef DO_NOT_GENERATE_CHECKINGS
-  template <typename TYPE>
-  TYPE & TC_UniqueArray <TYPE>::lastObject (LOCATION_ARGS) {
-    checkIndex (mCount-1 COMMA_THERE) ;
-    return mArray [mCount-1] ;
-  }
-#endif
+template <typename TYPE>
+const TYPE & TC_UniqueArray <TYPE>::operator () (const PMSInt32 inIndex COMMA_LOCATION_ARGS) const {
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    checkIndex (inIndex COMMA_THERE) ;
+  #endif
+  return mArray [inIndex] ;
+}
 
 //---------------------------------------------------------------------------*
 
-#ifndef DO_NOT_GENERATE_CHECKINGS
-  template <typename TYPE>
-  const TYPE & TC_UniqueArray <TYPE>::lastObject (LOCATION_ARGS) const {
+template <typename TYPE>
+const TYPE TC_UniqueArray <TYPE>::lastObject (LOCATION_ARGS) const {
+  #ifndef DO_NOT_GENERATE_CHECKINGS
     checkIndex (mCount-1 COMMA_THERE) ;
-    return mArray [mCount-1] ;
-  }
-#endif
+  #endif
+  return mArray [mCount-1] ;
+}
 
 //---------------------------------------------------------------------------*
 //                                                                           *
@@ -1351,7 +1375,7 @@ countObjectsThatRespondsTrueToFunction (bool (inFunction) (const TYPE & inObject
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
 intersectionWithArray (const TC_UniqueArray <TYPE> & inOperand,
-                   TC_UniqueArray <TYPE> & outResult) const {
+                       TC_UniqueArray <TYPE> & outResult) const {
 //--- Empty destination array
   outResult.clear () ;
   outResult.makeRoom (mCount) ;

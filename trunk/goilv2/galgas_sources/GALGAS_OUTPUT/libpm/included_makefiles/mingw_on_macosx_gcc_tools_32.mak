@@ -4,10 +4,17 @@
 #                                                               *
 #---------------------------------------------------------------*
 
-MINGW_TOOL_PATH := /usr/local/i386-mingw32-4.3.0/bin
-COMPILER_TOOL := $(MINGW_TOOL_PATH)/i386-mingw32-gcc -m32 -D_WIN32_WINNT=0x501
-LINKER_TOOL   := $(MINGW_TOOL_PATH)/i386-mingw32-g++ -m32 --enable-auto-import
-STRIP_TOOL    := $(MINGW_TOOL_PATH)/i386-mingw32-strip --strip-all
+TOOL_CHAIN_ARCHIVE := gcc-4.8.0-qt-4.8.4-for-mingw32
+TOOL_CHAIN_URL := http://crossgcc.rts-software.org/download/gcc-4.8.0-qt-4.8.4-win32/$(TOOL_CHAIN_ARCHIVE).tar.bz2
+TOOL_CHAIN_INSTALL_PATH := /usr/local/$(TOOL_CHAIN_ARCHIVE)
+
+#---------------------------------------------------------------*
+
+MINGW_TOOL_PATH := $(TOOL_CHAIN_INSTALL_PATH)/win32-gcc/bin
+COMPILER_PATH := $(MINGW_TOOL_PATH)/i586-mingw32-gcc
+COMPILER_TOOL := $(COMPILER_PATH) -m32 -D_WIN32_WINNT=0x501
+LINKER_TOOL   := $(MINGW_TOOL_PATH)/i586-mingw32-g++ -m32 --enable-auto-import
+STRIP_TOOL    := $(MINGW_TOOL_PATH)/i586-mingw32-strip --strip-all
 
 SUDO_TOOL     := sudo
 COMPILATION_MESSAGE := 32-Bit Compiling for Win32

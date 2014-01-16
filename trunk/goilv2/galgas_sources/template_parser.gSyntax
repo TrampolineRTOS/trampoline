@@ -415,7 +415,7 @@ rule <template_instruction>
     # set up a variable map for local variables of the function
     @TfieldMap locals [emptyMap];
     # search arguments values and add them to the locals
-    foreach args prefixedby actual_ , [[value mFunctionValue] args] prefixedby expected_ do
+    foreach args : actual_ , [[value mFunctionValue] args] : expected_ do
       [!?locals insertKey !expected_mValue !actual_mType !actual_mValue];
     end foreach;
     @string result := "";
@@ -659,7 +659,7 @@ rule <template_instruction>
     keyList := [@lstringlist emptyList];
   when mapType:
     listLength := [[enumeratedValue mStructValue] count];
-    keyList := [[enumeratedValue mStructValue] allKeyList];
+    keyList := [[enumeratedValue mStructValue] keyList];
   when boolType, enumType, intType, floatType, stringType, structType, unconstructedType, functionType:
     error here:"only a list or a map can be enumerated": keyList;
   end switch;

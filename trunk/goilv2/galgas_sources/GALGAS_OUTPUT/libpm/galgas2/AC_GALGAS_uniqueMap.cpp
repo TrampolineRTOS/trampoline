@@ -4,7 +4,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 2008, ..., 2011 Pierre Molinaro.                           *
+//  Copyright (C) 2008, ..., 2013 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //                                                                           *
@@ -37,6 +37,24 @@
 class cUniqueMapNode ;
 
 //---------------------------------------------------------------------------*
+
+typedef struct {
+  cUniqueMapNode * mSource ;
+  cUniqueMapNode * mTarget ;
+} structDependanceEdge ;
+
+//---------------------------------------------------------------------------*
+
+static bool operator == (const structDependanceEdge & inOperand1,
+                         const structDependanceEdge & inOperand2) {
+  return
+    (inOperand1.mSource == inOperand2.mSource)
+  &&
+    (inOperand1.mTarget == inOperand2.mTarget)
+  ;
+}
+
+//---------------------------------------------------------------------------*
 //                                                                           *
 //  c S h a r e d M a p R o o t                                              *
 //                                                                           *
@@ -45,8 +63,10 @@ class cUniqueMapNode ;
 class cSharedUniqueMapRoot : public C_SharedObject {
 //--------------------------------- Attributes
   private : cUniqueMapNode * mRoot ;
-  private : PMUInt32 mCount ;
+  private : PMUInt32 mNodeCount ;
   protected : cSharedUniqueMapRoot * mOverridenMap ;
+  private : TC_UniqueArray <structDependanceEdge> mDependenceEdges ;
+
 //--- For automaton and block overrides
   public : const cBranchOverrideTransformationDescriptor * mBranchBehaviourArray ;
   public : PMUInt32 mBranchBehaviourArraySize ;
@@ -59,7 +79,7 @@ class cSharedUniqueMapRoot : public C_SharedObject {
   
 //--------------------------------- Accessors
   public : inline const cUniqueMapNode * root (void) const { return mRoot ; }
-  public : inline PMUInt32 count (void) const { return mCount ; }
+  public : inline PMUInt32 count (void) const { return mNodeCount ; }
 
 //--------------------------------- Constructor
   protected : cSharedUniqueMapRoot (LOCATION_ARGS) ;
@@ -70,6 +90,17 @@ class cSharedUniqueMapRoot : public C_SharedObject {
 //--------------------------------- No copy
   private : cSharedUniqueMapRoot (const cSharedUniqueMapRoot &) ;
   private : cSharedUniqueMapRoot & operator = (const cSharedUniqueMapRoot &) ;
+
+//--------------------------------- EnterEdge
+  public : void enterEdge (cUniqueMapNode * inSource,
+                           cUniqueMapNode * inTarget) ;
+
+//--------------------------------- Edge graphviz representation
+  public : VIRTUAL_IN_DEBUG C_String edgeGraphvizRepresentation (void) const ;
+
+//--------------------------------- internalTopologicalSort
+  public : VIRTUAL_IN_DEBUG void internalTopologicalSort (GALGAS_lstringlist & outSortedNodeKeyList,
+                                                          GALGAS_lstringlist & outUnsortedNodeKeyList) const ;
 
 //--------------------------------- Unsolved Proxy Count
   public : VIRTUAL_IN_DEBUG PMUInt32 unsolvedProxyCount (void) const ;
@@ -137,9 +168,10 @@ class cSharedUniqueMapRoot : public C_SharedObject {
   public : VIRTUAL_IN_DEBUG typeComparisonResult mapCompare (const cSharedUniqueMapRoot * inOperand) const ;
 
 //--------------------------------- Internal method for inserting proxy
-  protected : VIRTUAL_IN_DEBUG cUniqueMapNode * performInsertProxy (const C_String & inKey) ;
+  protected : VIRTUAL_IN_DEBUG cUniqueMapNode * performInsertProxy (const C_String & inKey,
+                                                                    const GALGAS_location & inLocation) ;
 
-  protected : VIRTUAL_IN_DEBUG void unsolvedProxyKeyList (GALGAS_stringlist & ioList) const ;
+  protected : VIRTUAL_IN_DEBUG void unsolvedProxyKeyList (GALGAS_lstringlist & ioList) const ;
 
 //--------------------------------- Check Map Automatons state
   public : VIRTUAL_IN_DEBUG void checkAutomatonStates (const GALGAS_location & inErrorLocation,
@@ -217,8 +249,10 @@ class cUniqueMapNode {
   public : cUniqueMapNode * mSupPtr ;
   public : PMSInt32 mBalance ;
   public : const C_String mKey ;
+  public : GALGAS_location mDefinitionLocation ;
   public : capCollectionElement mAttributes ;
   private : cSharedProxy * mProxy ;
+  public : TC_UniqueArray <GALGAS_location> mInvocationLocationArray ;
 //--- For state
   public : PMUInt32 mCurrentState ;
   public : cOverrideStateDescriptor * mStateArray ;
@@ -228,6 +262,11 @@ class cUniqueMapNode {
   public : cUniqueMapNode (const C_String & inKey,
                            const PMUInt32 inInitialState,
                            capCollectionElement & inAttributes) ;
+
+//--- Solved ?
+  public : inline VIRTUAL_IN_DEBUG bool isSolved (void) const {
+    return NULL != mAttributes.ptr () ;
+  }
 
 //--- Destructor
   public : virtual ~ cUniqueMapNode (void) ;
@@ -246,8 +285,9 @@ class cUniqueMapNode {
 cSharedUniqueMapRoot::cSharedUniqueMapRoot (LOCATION_ARGS) :
 C_SharedObject (THERE),
 mRoot (NULL),
-mCount (0),
+mNodeCount (0),
 mOverridenMap (NULL),
+mDependenceEdges (),
 mBranchBehaviourArray (NULL),
 mBranchBehaviourArraySize (0),
 mBranchCombinationArray (NULL),
@@ -274,8 +314,10 @@ mInfPtr (NULL),
 mSupPtr (NULL),
 mBalance (0),
 mKey (inKey),
+mDefinitionLocation (),
 mAttributes (inAttributes),
 mProxy (NULL),
+mInvocationLocationArray (),
 mCurrentState (inInitialState),
 mStateArray (NULL),
 mStateArraySize (0) {
@@ -321,7 +363,7 @@ cUniqueMapNode::~cUniqueMapNode (void) {
   void cSharedUniqueMapRoot::checkMap (LOCATION_ARGS) const {
     PMUInt32 n = 0 ;
     checkNode (mRoot, n) ;
-    MF_AssertThere (n == mCount, "n (%lld) != mCount (%lld)", n, mCount) ;
+    MF_AssertThere (n == mNodeCount, "n (%lld) != mNodeCount (%lld)", n, mNodeCount) ;
   }
 #endif
 
@@ -591,10 +633,11 @@ static cUniqueMapNode * internalInsert (cUniqueMapNode * & ioRootPtr,
           ioExtension = false;
         }
       }
-    }else{ // Error, entry already exists
+    }else{
       matchingEntry = ioRootPtr ;
+      matchingEntry->mInvocationLocationArray.setCountToZero () ;
       ioExtension = false ;
-      outEntryAlreadyExists = NULL != matchingEntry->mAttributes.ptr () ;
+      outEntryAlreadyExists = matchingEntry->isSolved () ;
       if (! outEntryAlreadyExists) {
         matchingEntry->mAttributes = inAttributes ;
       }
@@ -623,7 +666,8 @@ cUniqueMapNode * cSharedUniqueMapRoot::performInsert (capCollectionElement & inA
     cUniqueMapNode * matchingEntry = internalInsert (mRoot, key, inInitialState, inAttributes, entryAlreadyExists, extension) ;
     if (! entryAlreadyExists) {
       result = matchingEntry ;
-      mCount ++ ;
+      matchingEntry->mDefinitionLocation = p->mAttribute_lkey.mAttribute_location ;
+      mNodeCount ++ ;
       const C_String shadowErrorMessage (inShadowErrorMessage) ;
       const PMSInt32 shadowErrorMessageLength = shadowErrorMessage.length () ;
       if (shadowErrorMessageLength > 0) {
@@ -658,32 +702,206 @@ cUniqueMapNode * cSharedUniqueMapRoot::performInsert (capCollectionElement & inA
 void AC_GALGAS_uniqueMap::performInsert (capCollectionElement & inAttributes,
                                          C_Compiler * inCompiler,
                                          const PMUInt32 inInitialState,
-                                         const char * inInitialStateName,
+                                         const char * /* inInitialStateName */,
                                          const char * inInsertErrorMessage,
                                          const char * inShadowErrorMessage
                                          COMMA_LOCATION_ARGS) {
 //--- If all attributes are built, perform insertion
   if (isValid ()) {
-    cUniqueMapNode *  node = mSharedMap->performInsert (inAttributes, inCompiler, inInitialState, inInsertErrorMessage, inShadowErrorMessage COMMA_THERE) ;
-  //--- Contextual help
-    if ((NULL != node) && executionModeIsContextHelp ()) {
-      cMapElement * p = (cMapElement *) inAttributes.ptr () ;
-      macroValidSharedObject (p, cMapElement) ;
-      const GALGAS_lstring key = p->mAttribute_lkey ;
-      if (isCurrentCompiledFilePath (key.mAttribute_location.startLocation ().sourceFilePath ())) {
-        const PMUInt32 startLocationInSource = key.mAttribute_location.startLocation ().index () ;
-        const PMUInt32 endLocationInSource = key.mAttribute_location.endLocation ().index () ;
-        if ((contextHelpStartLocation () >= startLocationInSource) && (contextHelpEndLocation () <= endLocationInSource)) {
-          C_String s ;
-          node->mAttributes.description (s, 0) ;
-          if (NULL != inInitialStateName) {
-            s << "\n""State " << inInitialStateName ;
-          }
-          sendToTCPSocket (s) ;
-        }
+    /* cUniqueMapNode * node = */ mSharedMap->performInsert (inAttributes, inCompiler, inInitialState, inInsertErrorMessage, inShadowErrorMessage COMMA_THERE) ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Modifier enterEdge
+#endif
+
+//---------------------------------------------------------------------------*
+
+void cSharedUniqueMapRoot::enterEdge (cUniqueMapNode * inSource,
+                                      cUniqueMapNode * inTarget) {
+  const structDependanceEdge e = {inSource, inTarget} ;
+  mDependenceEdges.addObjectIfUnique (e) ;
+}
+
+//---------------------------------------------------------------------------*
+
+void AC_GALGAS_uniqueMap::modifier_enterEdge (const GALGAS_lstring & inSource,
+                                              const GALGAS_lstring & inTarget
+                                              COMMA_LOCATION_ARGS) {
+  if (isValid () && inSource.isValid () && inTarget.isValid( )) {
+    cUniqueMapNode * source = mSharedMap->performInsertProxy (inSource.reader_string (THERE).stringValue (), inSource.reader_location (THERE)) ;
+    cUniqueMapNode * target = mSharedMap->performInsertProxy (inTarget.reader_string (THERE).stringValue (), inTarget.reader_location (THERE)) ;
+    mSharedMap->enterEdge (source, target) ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Modifier enterEdge
+#endif
+
+//---------------------------------------------------------------------------*
+
+class cTopologicalSortElement {
+  public : PMUInt32 mDependencyCount ;
+  public : TC_Array <PMSInt32> mDependenceArray ; // Node indexes of nodes after current node
+  public : PMSInt32 mExplorationLink ;
+  public : GALGAS_lstring mKey ;
+
+//--- Constructor
+  public : cTopologicalSortElement (void) ;
+} ;
+
+//---------------------------------------------------------------------------*
+
+cTopologicalSortElement::cTopologicalSortElement (void) :
+mDependencyCount (0),
+mDependenceArray (),
+mExplorationLink (-1),
+mKey () {
+}
+
+//---------------------------------------------------------------------------*
+
+static void enterNodes (const cUniqueMapNode * inNode,
+                        TC_UniqueArray <cTopologicalSortElement> & ioArray,
+                        TC_UniqueArray <const cUniqueMapNode *> & ioNodeArray) {
+  if (NULL != inNode) {
+    enterNodes (inNode->mInfPtr, ioArray, ioNodeArray) ;
+    ioNodeArray.addObject (inNode) ;
+    const PMSInt32 idx = ioArray.count () ;
+    ioArray.addObject (cTopologicalSortElement ()) ;
+    GALGAS_lstring lkey ;
+    lkey.mAttribute_string = inNode->mKey ;
+    lkey.mAttribute_location = inNode->mDefinitionLocation ;
+    ioArray (idx COMMA_HERE).mKey = lkey ;
+    enterNodes (inNode->mSupPtr, ioArray, ioNodeArray) ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+void cSharedUniqueMapRoot::internalTopologicalSort (GALGAS_lstringlist & outSortedNodeKeyList,
+                                                    GALGAS_lstringlist & outUnsortedNodeKeyList) const {
+//--- Enter nodes
+  TC_UniqueArray <const cUniqueMapNode *> nodeArray ;
+  TC_UniqueArray <cTopologicalSortElement> array ;
+  enterNodes (mRoot, array, nodeArray) ;
+//--- Enter arcs
+  for (PMSInt32 i=0 ; i<mDependenceEdges.count () ; i++) {
+    const PMSInt32 sourceNodeID = nodeArray.indexOfFirstObjectEqualTo (mDependenceEdges (i COMMA_HERE).mSource) ;
+    const PMSInt32 targetNodeID = nodeArray.indexOfFirstObjectEqualTo (mDependenceEdges (i COMMA_HERE).mTarget) ;
+    cTopologicalSortElement & source = array (sourceNodeID COMMA_HERE) ;
+    cTopologicalSortElement & target = array (targetNodeID COMMA_HERE) ;
+    source.mDependencyCount ++ ;
+    target.mDependenceArray.addObject (sourceNodeID) ;
+  }
+//--- Make exploration link
+  for (PMSInt32 i=1 ; i<array.count () ; i++) {
+    array (i-1 COMMA_HERE).mExplorationLink = i ;
+  }
+  PMSInt32 root = (mNodeCount > 0) ? 0 : -1 ;
+//--- Display
+ /*  printf ("*** Working array:\n") ;
+    for (PMSInt32 i=0 ; i<array.count () ; i++) {
+      cTopologicalSortElement & entry = array (i COMMA_HERE) ;
+      printf ("#%d '%s' dep %d :", i, entry.mKey.reader_string (HERE).stringValue ().cString (HERE), entry.mDependencyCount) ;
+      for (PMSInt32 j=0 ; j<entry.mDependenceArray.count () ; j++) {
+        printf (" %d", entry.mDependenceArray (j COMMA_HERE)) ;
       }
+      printf ("\n") ;
+    } */
+//--- Loop for accumulating sorted nodes
+  outSortedNodeKeyList = GALGAS_lstringlist::constructor_emptyList (HERE) ;
+  bool loop = true ;
+  while (loop) {
+    loop = false ;
+    PMSInt32 p = root ;
+    root = -1 ;
+    while (p >= 0) {
+      cTopologicalSortElement & entry = array (p COMMA_HERE) ;
+      const PMSInt32 next = entry.mExplorationLink ;
+      if (0 == entry.mDependencyCount) {
+        loop = true ;
+        for (PMSInt32 i=0 ; i<entry.mDependenceArray.count () ; i++) {
+          array (entry.mDependenceArray (i COMMA_HERE) COMMA_HERE).mDependencyCount -- ;
+        }
+        outSortedNodeKeyList.addAssign_operation (entry.mKey COMMA_HERE) ;
+      }else{
+        entry.mExplorationLink = root ;
+        root = p ;
+      }
+      p = next ;
     }
   }
+//--- Add unsorted nodes
+  outUnsortedNodeKeyList = GALGAS_lstringlist::constructor_emptyList (HERE) ;
+  PMSInt32 p = root ;
+  while (p >= 0) {
+    cTopologicalSortElement & entry = array (p COMMA_HERE) ;
+    outUnsortedNodeKeyList.addAssign_operation (entry.mKey COMMA_HERE) ;
+    p = entry.mExplorationLink ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+void AC_GALGAS_uniqueMap::method_topologicalSort (GALGAS_lstringlist & outSortedKeys,
+                                                  GALGAS_lstringlist & outUnsortedKeys,
+                                                  C_Compiler * inCompiler
+                                                  COMMA_LOCATION_ARGS) {
+  outSortedKeys.drop () ;
+  outUnsortedKeys.drop () ;
+  if (isValid ()) {
+    PMUInt32 undefinedNodeCount = mSharedMap->unsolvedProxyCount () ;
+    if (0 != undefinedNodeCount) {
+      C_String s ;
+      s << "Cannot apply graph topologicalSort: there " ;
+      if (undefinedNodeCount > 1) {
+        s << "are " << cStringWithUnsigned (undefinedNodeCount) << " undefined nodes" ;
+      }else{
+        s << "is 1 undefined node" ;
+      }
+      inCompiler->onTheFlyRunTimeError (s COMMA_THERE) ;
+    }else{
+      mSharedMap->internalTopologicalSort (outSortedKeys, outUnsortedKeys) ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Reader edgeGraphvizRepresentation
+#endif
+
+//---------------------------------------------------------------------------*
+
+C_String cSharedUniqueMapRoot::edgeGraphvizRepresentation (void) const {
+  C_String s ;
+  s << "digraph G {\n" ;
+  for (PMSInt32 i=0 ; i<mDependenceEdges.count () ; i++) {
+    const structDependanceEdge edge = mDependenceEdges (i COMMA_HERE) ;
+    s << "  \"" << edge.mSource->mKey
+      << "\" -> \"" << edge.mTarget->mKey
+      << "\" ;\n" ;
+  }  
+  s << "}\n" ;
+  return s ;
+}
+
+//---------------------------------------------------------------------------*
+
+GALGAS_string AC_GALGAS_uniqueMap::reader_edgeGraphvizRepresentation (UNUSED_LOCATION_ARGS) const {
+  GALGAS_string result ;
+  if (isValid ()) {
+    result = GALGAS_string (mSharedMap->edgeGraphvizRepresentation ()) ;
+  }
+  return result ;
 }
 
 //---------------------------------------------------------------------------*
@@ -830,12 +1048,19 @@ GALGAS_uint AC_GALGAS_uniqueMap::reader_unsolvedProxyCount (UNUSED_LOCATION_ARGS
 //---------------------------------------------------------------------------*
 
 static void recursiveUnsolvedKeyList (cUniqueMapNode * inNode,
-                                      GALGAS_stringlist & ioResult) {
+                                      GALGAS_lstringlist & ioResult) {
   if (inNode != NULL) {
     recursiveUnsolvedKeyList (inNode->mInfPtr, ioResult) ;
-    if (inNode->mAttributes.ptr () == NULL) {
-      GALGAS_string s (inNode->mKey) ;
-      ioResult.addAssign_operation (s COMMA_HERE) ;
+    if (! inNode->isSolved ()) {
+      if (inNode->mInvocationLocationArray.count () == 0) {
+        GALGAS_lstring s (inNode->mKey, GALGAS_location::constructor_nowhere (HERE)) ;
+        ioResult.addAssign_operation (s COMMA_HERE) ;
+      }else{
+        for (PMSInt32 i=0 ; i<inNode->mInvocationLocationArray.count () ; i++) {
+          GALGAS_lstring s (inNode->mKey, inNode->mInvocationLocationArray (i COMMA_HERE)) ;
+          ioResult.addAssign_operation (s COMMA_HERE) ;
+        }
+      }
     }
     recursiveUnsolvedKeyList (inNode->mSupPtr, ioResult) ;
   }
@@ -843,15 +1068,15 @@ static void recursiveUnsolvedKeyList (cUniqueMapNode * inNode,
 
 //---------------------------------------------------------------------------*
 
-void cSharedUniqueMapRoot::unsolvedProxyKeyList (GALGAS_stringlist & ioList) const {
-  ioList = GALGAS_stringlist::constructor_emptyList (HERE) ;
+void cSharedUniqueMapRoot::unsolvedProxyKeyList (GALGAS_lstringlist & ioList) const {
+  ioList = GALGAS_lstringlist::constructor_emptyList (HERE) ;
   recursiveUnsolvedKeyList (mRoot, ioList) ;
 }
 
 //---------------------------------------------------------------------------*
 
-GALGAS_stringlist AC_GALGAS_uniqueMap::reader_unsolvedProxyKeyList (UNUSED_LOCATION_ARGS) const {
-  GALGAS_stringlist result ;
+GALGAS_lstringlist AC_GALGAS_uniqueMap::reader_unsolvedProxyList (UNUSED_LOCATION_ARGS) const {
+  GALGAS_lstringlist result ;
   if (isValid ()) {
     mSharedMap->unsolvedProxyKeyList (result) ;
   }
@@ -1121,17 +1346,6 @@ const cCollectionElement * AC_GALGAS_uniqueMap::performSearch (const GALGAS_lstr
         const C_String errorMessage = buildIssueMessage (transition.mIssueMessage, inKey.mAttribute_string.stringValue ()) ;
         inCompiler->semanticErrorAtLocation (loc, errorMessage COMMA_THERE) ;
         } break ;
-      }
-    }
-  //--- Contextual help
-    if ((NULL != node) && executionModeIsContextHelp () && isCurrentCompiledFilePath (inKey.mAttribute_location.startLocation ().sourceFilePath ())) {
-      const PMUInt32 startLocationInSource = inKey.mAttribute_location.startLocation ().index () ;
-      const PMUInt32 endLocationInSource = inKey.mAttribute_location.endLocation ().index () ;
-      if ((contextHelpStartLocation () >= startLocationInSource) && (contextHelpEndLocation () <= endLocationInSource)) {
-        C_String s ;
-        node->mAttributes.description (s, 0) ;
-        s << "\n""State: " << inAutomatonStateNames [node->mCurrentState] ;
-        sendToTCPSocket (s) ;
       }
     }
   }
@@ -1601,7 +1815,7 @@ void cSharedUniqueMapRoot::closeBranch (const GALGAS_location & inErrorLocation,
     }
   //--- Remove all entries of first level
     macroMyDelete (mRoot) ;
-    mCount = 0 ;
+    mNodeCount = 0 ;
     #ifndef DO_NOT_GENERATE_CHECKINGS
       checkMap (HERE) ;
     #endif
@@ -1792,7 +2006,7 @@ static void enterDescendingEnumeration (cUniqueMapNode * inNode,
 void cSharedUniqueMapRoot::populateEnumerationArray (capCollectionElementArray & ioEnumerationArray,
                                                      const typeEnumerationOrder inEnumerationOrder) const {
   // printf ("MAP COUNT %u\n", count ()) ;
-  ioEnumerationArray.setCapacity (mCount) ;
+  ioEnumerationArray.setCapacity (mNodeCount) ;
   switch (enumerationOrderValue (inEnumerationOrder)) {
   case kENUMERATION_UP  :
     enterAscendingEnumeration (mRoot, ioEnumerationArray) ;
@@ -1805,7 +2019,7 @@ void cSharedUniqueMapRoot::populateEnumerationArray (capCollectionElementArray &
     MF_RunTimeError ("invalid inEnumerationOrder %lld", enumerationOrderValue (inEnumerationOrder), 0) ;
     break ;
   }
-  MF_Assert (mCount == ioEnumerationArray.count (), "mCount (%lld) != ioEnumerationArray.count () (%lld)", mCount, ioEnumerationArray.count ()) ;
+  MF_Assert (mNodeCount == ioEnumerationArray.count (), "mNodeCount (%lld) != ioEnumerationArray.count () (%lld)", mNodeCount, ioEnumerationArray.count ()) ;
 }
 
 //---------------------------------------------------------------------------*
@@ -2066,7 +2280,7 @@ void AC_GALGAS_uniqueMapProxy::description (C_String & ioString,
       macroValidPointer (mSharedProxy->mNode) ;
       ioString.appendCLiteralStringConstant (mSharedProxy->mNode->mKey) ;
       ioString << ", "
-               << ((NULL != mSharedProxy->mNode->mAttributes.ptr ()) ? "solved" : "unsolved")
+               << (mSharedProxy->mNode->isSolved () ? "solved" : "unsolved")
                << ")" ;
     }
     break ;
@@ -2102,18 +2316,6 @@ void AC_GALGAS_uniqueMapProxy::internalMakeRegularProxyBySearchingKey (const AC_
       inCompiler->semanticErrorWith_K_message (inKey, nearestKeyArray, inSearchErrorMessage COMMA_THERE) ;
     }
     attachProxyToMapNode (node) ;
-  //--- Contextual help
-    if ((NULL != node) && executionModeIsContextHelp ()) {
-      if (isCurrentCompiledFilePath (inKey.mAttribute_location.startLocation ().sourceFilePath ())) {
-        const PMUInt32 startLocationInSource = inKey.mAttribute_location.startLocation ().index () ;
-        const PMUInt32 endLocationInSource = inKey.mAttribute_location.endLocation ().index () ;
-        if ((contextHelpStartLocation () >= startLocationInSource) && (contextHelpEndLocation () <= endLocationInSource)) {
-          C_String s ;
-          node->mAttributes.description (s, 0) ;
-          sendToTCPSocket (s) ;
-        }
-      }
-    }
   }
 }
 
@@ -2121,18 +2323,22 @@ void AC_GALGAS_uniqueMapProxy::internalMakeRegularProxyBySearchingKey (const AC_
 
 static cUniqueMapNode * internalInsertProxy (cUniqueMapNode * & ioRootPtr,
                                              const C_String & inKey,
+                                             const GALGAS_location & inLocation,
                                              bool & ioExtension) {
   cUniqueMapNode * matchingEntry = NULL ;
   if (ioRootPtr == NULL) {
     capCollectionElement emptyAttributes ;
     macroMyNew (ioRootPtr, cUniqueMapNode (inKey, 0, emptyAttributes)) ;
+    if (inLocation.isValidAndNotNowhere ()) {
+      ioRootPtr->mInvocationLocationArray.addObject (inLocation) ;
+    }
     ioExtension = true ;
     matchingEntry = ioRootPtr ;
   }else{
     macroValidPointer (ioRootPtr) ;
     const PMSInt32 comparaison = ioRootPtr->mKey.compare (inKey) ;
     if (comparaison > 0) {
-      matchingEntry = internalInsertProxy (ioRootPtr->mInfPtr, inKey, ioExtension) ;
+      matchingEntry = internalInsertProxy (ioRootPtr->mInfPtr, inKey, inLocation, ioExtension) ;
       if (ioExtension) {
         ioRootPtr->mBalance ++ ;
         if (ioRootPtr->mBalance == 0) {
@@ -2146,7 +2352,7 @@ static cUniqueMapNode * internalInsertProxy (cUniqueMapNode * & ioRootPtr,
         }
       }
     }else if (comparaison < 0) {
-      matchingEntry = internalInsertProxy (ioRootPtr->mSupPtr, inKey, ioExtension) ;
+      matchingEntry = internalInsertProxy (ioRootPtr->mSupPtr, inKey, inLocation, ioExtension) ;
       if (ioExtension) {
         ioRootPtr->mBalance-- ;
         if (ioRootPtr->mBalance == 0) {
@@ -2161,6 +2367,9 @@ static cUniqueMapNode * internalInsertProxy (cUniqueMapNode * & ioRootPtr,
       }
     }else{ // Ok, entry already exists
       matchingEntry = ioRootPtr ;
+      if (inLocation.isValidAndNotNowhere () && (! ioRootPtr->isSolved ())) {
+        ioRootPtr->mInvocationLocationArray.addObject (inLocation) ;
+      }
       ioExtension = false ;
     }
   }
@@ -2169,30 +2378,49 @@ static cUniqueMapNode * internalInsertProxy (cUniqueMapNode * & ioRootPtr,
 
 //---------------------------------------------------------------------------*
 
-cUniqueMapNode * cSharedUniqueMapRoot::performInsertProxy (const C_String & inKey) {
+cUniqueMapNode * cSharedUniqueMapRoot::performInsertProxy (const C_String & inKey,
+                                                           const GALGAS_location & inLocation) {
   bool extension = false ; // Unused here
-  return internalInsertProxy (mRoot, inKey, extension) ;
+  return internalInsertProxy (mRoot, inKey, inLocation, extension) ;
 }
 
 //---------------------------------------------------------------------------*
 
-cUniqueMapNode * AC_GALGAS_uniqueMap::performInsertProxy (const C_String & inKey
+cUniqueMapNode * AC_GALGAS_uniqueMap::performInsertProxy (const C_String & inKey,
+                                                          const GALGAS_location & inLocation
                                                           COMMA_UNUSED_LOCATION_ARGS) {
   cUniqueMapNode * result = NULL ;
   if (isValid ()) {
-    result = mSharedMap->performInsertProxy (inKey) ;
+    result = mSharedMap->performInsertProxy (inKey, inLocation) ;
   }
   return result ;
 }
 
 //---------------------------------------------------------------------------*
 
-void AC_GALGAS_uniqueMapProxy::internalMakeRegularProxy (AC_GALGAS_uniqueMap & ioMap,
-                                                         const GALGAS_string & inKey
-                                                         COMMA_LOCATION_ARGS) {
+void AC_GALGAS_uniqueMapProxy::internalMakeProxy (AC_GALGAS_uniqueMap & ioMap,
+                                                  const GALGAS_lstring & inKey
+                                                  COMMA_LOCATION_ARGS) {
   drop () ;
   if (inKey.isValid ()) {
-    cUniqueMapNode * node = ioMap.performInsertProxy (inKey.stringValue () COMMA_THERE) ;
+    cUniqueMapNode * node = ioMap.performInsertProxy (inKey.reader_string (THERE).stringValue (),
+                                                      inKey.reader_location (THERE)
+                                                      COMMA_THERE) ;
+    macroValidPointer (node) ;
+    attachProxyToMapNode (node) ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+void AC_GALGAS_uniqueMapProxy::internalMakeProxyFromString (AC_GALGAS_uniqueMap & ioMap,
+                                                            const GALGAS_string & inKey
+                                                            COMMA_LOCATION_ARGS) {
+  drop () ;
+  if (inKey.isValid ()) {
+    cUniqueMapNode * node = ioMap.performInsertProxy (inKey.stringValue (),
+                                                      GALGAS_location ()
+                                                      COMMA_THERE) ;
     macroValidPointer (node) ;
     attachProxyToMapNode (node) ;
   }

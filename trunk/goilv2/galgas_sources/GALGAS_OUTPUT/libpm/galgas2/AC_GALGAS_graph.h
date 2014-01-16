@@ -80,14 +80,22 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
 //--------------------------------- Readers
   public : VIRTUAL_IN_DEBUG GALGAS_uint reader_count (LOCATION_ARGS) const ;
 
+  public : VIRTUAL_IN_DEBUG GALGAS_stringlist reader_keyList (LOCATION_ARGS) const ;
+
   public : VIRTUAL_IN_DEBUG GALGAS_uint reader_undefinedNodeCount (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG GALGAS_stringlist reader_undefinedNodeKeyList (LOCATION_ARGS) const ;
 
 //--------------------------------- Modifiers
-  public : VIRTUAL_IN_DEBUG void modifier_addArc (const GALGAS_lstring & inSourceNodeKey,
-                                                  const GALGAS_lstring & inTargetNodeKey
-                                                  COMMA_LOCATION_ARGS) ;
+  public : VIRTUAL_IN_DEBUG void modifier_addEdge (const GALGAS_lstring & inSourceNodeKey,
+                                                   const GALGAS_lstring & inTargetNodeKey
+                                                   COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void modifier_removeEdgesToNode (const GALGAS_string & inNodeName,
+                                                             C_Compiler * inCompiler
+                                                             COMMA_LOCATION_ARGS) ;
+
+  public : VIRTUAL_IN_DEBUG void modifier_removeEdgesToDominators (LOCATION_ARGS) ;
 
 //--------------------------------- Comparison
   public : typeComparisonResult objectCompare (const AC_GALGAS_graph & inOperand) const ;
@@ -96,10 +104,19 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
   public : virtual const C_galgas_type_descriptor * staticTypeDescriptor (void) const = 0 ;
 
 //--- Description
-  protected : VIRTUAL_IN_DEBUG void description (C_String & ioString,
-                                                 const PMSInt32 inIndentation) const ;
+  public : VIRTUAL_IN_DEBUG void description (C_String & ioString,
+                                              const PMSInt32 inIndentation) const ;
 
 //--- Internal methods for handling graph
+  protected : VIRTUAL_IN_DEBUG void reversedGraphFromGraph (const AC_GALGAS_graph & inGraph
+                                                            COMMA_LOCATION_ARGS) ;
+
+  protected : VIRTUAL_IN_DEBUG void subGraph (AC_GALGAS_graph & outResultingGraph,
+                                              const GALGAS_lstringlist & inStartNodes,
+                                              const GALGAS_stringset & inNodesToExclude,
+                                              C_Compiler * inCompiler
+                                              COMMA_LOCATION_ARGS) const ;
+
   private : VIRTUAL_IN_DEBUG void insulateGraph (LOCATION_ARGS) ;
 
   protected : VIRTUAL_IN_DEBUG void internalAddNode (const GALGAS_lstring & inKey,
@@ -120,9 +137,26 @@ class AC_GALGAS_graph : public AC_GALGAS_root {
                                                              C_Compiler * inCompiler
                                                              COMMA_LOCATION_ARGS) const ;
 
+  protected : VIRTUAL_IN_DEBUG void internalNodesWithNoPredecessor (cSharedList * & outSortedList,
+                                                                    GALGAS_lstringlist & outSortedNodeKeyList
+                                                                    COMMA_LOCATION_ARGS) const ;
+
+  protected : VIRTUAL_IN_DEBUG void internalNodesWithNoSuccessor (cSharedList * & outSortedList,
+                                                                  GALGAS_lstringlist & outSortedNodeKeyList
+                                                                  COMMA_LOCATION_ARGS) const ;
+
+  protected : VIRTUAL_IN_DEBUG void internalDepthFirstTopologicalSort (cSharedList * & outSortedList,
+                                                                       GALGAS_lstringlist & outSortedNodeKeyList,
+                                                                       cSharedList * & outUnsortedList,
+                                                                       GALGAS_lstringlist & outUnsortedNodeKeyList,
+                                                                       C_Compiler * inCompiler
+                                                                       COMMA_LOCATION_ARGS) const ;
+
   public : VIRTUAL_IN_DEBUG GALGAS_string reader_graphviz (UNUSED_LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS__32_stringlist reader_arcs (UNUSED_LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS__32_stringlist reader_edges (UNUSED_LOCATION_ARGS) const ;
+
+  friend class cSharedGraph ;
 } ;
 
 //---------------------------------------------------------------------------*

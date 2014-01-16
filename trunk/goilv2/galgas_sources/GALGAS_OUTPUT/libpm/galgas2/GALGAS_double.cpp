@@ -4,7 +4,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 2002, ..., 2012 Pierre Molinaro.                           *
+//  Copyright (C) 2002, ..., 2013 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //                                                                           *
@@ -43,6 +43,12 @@ mDoubleValue (0.0) {
 
 //---------------------------------------------------------------------------*
 
+GALGAS_double GALGAS_double::constructor_default (UNUSED_LOCATION_ARGS) {
+  return GALGAS_double (0.0) ;
+}
+
+//---------------------------------------------------------------------------*
+
 GALGAS_double::GALGAS_double (const double inValue) :
 mIsValid (true),
 mDoubleValue (inValue) {
@@ -55,6 +61,37 @@ mDoubleValue (inValue) {
 
 GALGAS_double GALGAS_double::constructor_pi (UNUSED_LOCATION_ARGS) {
   return GALGAS_double (PI_CONSTANT) ;
+}
+
+//---------------------------------------------------------------------------*
+
+GALGAS_double GALGAS_double::constructor_doubleWithBinaryImage (const GALGAS_uint_36__34_ & inImage
+                                                                COMMA_UNUSED_LOCATION_ARGS) {
+  GALGAS_double result ;
+  if (inImage.isValid ()) {
+    union {
+      PMUInt64 unsignedIntegerValue ;
+      double   doubleValue ;
+    } ;
+    unsignedIntegerValue = inImage.uint64Value () ;
+    result = GALGAS_double (doubleValue) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------*
+
+GALGAS_uint_36__34_ GALGAS_double::reader_binaryImage (UNUSED_LOCATION_ARGS) const {
+  GALGAS_uint_36__34_ result ;
+  if (isValid ()) {
+    union {
+      PMUInt64 unsignedIntegerValue ;
+      double   doubleValue ;
+    } ;
+    doubleValue = mDoubleValue ;
+    result = GALGAS_uint_36__34_ (unsignedIntegerValue) ;
+  }
+  return result ;
 }
 
 //---------------------------------------------------------------------------*
@@ -236,7 +273,7 @@ GALGAS_uint_36__34_ GALGAS_double::reader_uint_36__34_ (C_Compiler * inCompiler
     s << ") to @uint64" ;
     inCompiler->onTheFlyRunTimeError (s COMMA_THERE) ;
   }else{
-    result = GALGAS_uint_36__34_ (lround (mDoubleValue)) ;
+    result = GALGAS_uint_36__34_ ((PMUInt64) lround (mDoubleValue)) ;
   }
   return result ;
 }

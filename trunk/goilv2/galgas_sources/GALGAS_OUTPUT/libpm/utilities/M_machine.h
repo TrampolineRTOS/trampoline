@@ -99,6 +99,8 @@
     typedef unsigned         int PMUInt32 ;
     typedef           long  long PMSInt64 ;
     typedef unsigned  long  long PMUInt64 ;
+//    typedef           __int128 PMSInt128 ;
+//    typedef   __int128_t PMUInt128 ;
 //---- UNKNOWN COMPILER -----------------------------------------
   #else
     #error "Unknown Compiler"

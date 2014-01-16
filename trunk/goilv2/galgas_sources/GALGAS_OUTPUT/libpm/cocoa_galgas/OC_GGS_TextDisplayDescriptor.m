@@ -14,10 +14,11 @@
 #import "OC_GGS_Document.h"
 #import "OC_GGS_TextView.h"
 #import "OC_GGS_RulerViewForTextView.h"
-#import "OC_GGS_PreferencesController.h"
+#import "OC_GGS_ApplicationDelegate.h"
 #import "OC_GGS_Scroller.h"
 #import "PMIssueDescriptor.h"
 #import "PMDebug.h"
+#import "OC_Token.h"
 
 //---------------------------------------------------------------------------*
 
@@ -30,8 +31,8 @@
 
 //---------------------------------------------------------------------------*
 
-static inline NSInteger imin (const NSInteger a, const NSInteger b) { return a < b ? a : b ; }
-static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a > b ? a : b ; }
+static inline NSUInteger imin (const NSUInteger a, const NSUInteger b) { return a < b ? a : b ; }
+static inline NSUInteger imax (const NSUInteger a, const NSUInteger b) { return a > b ? a : b ; }
 
 //---------------------------------------------------------------------------*
 
@@ -41,6 +42,18 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
 
 @synthesize documentData ;
 @synthesize isDirty ;
+
+//---------------------------------------------------------------------------*
+
+- (NSString *) description {
+  return documentData.fileURL.path ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (NSImage *) imageForClosingInUserInterface {
+  return [NSImage imageNamed:@"closeSourceFile"] ;
+}
 
 //---------------------------------------------------------------------------*
 
@@ -77,19 +90,24 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
       displayDescriptor:self
     ] ;
     mTextView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable ;
-    mTextView.usesFindPanel = YES ;
     [mTextView setGrammarCheckingEnabled:NO] ;
+    [mTextView setContinuousSpellCheckingEnabled:NO] ;
     mTextView.allowsUndo = YES ;
+    [mTextView useAllLigatures:nil] ;
+    [mTextView setAlignment:NSNaturalTextAlignment] ;
     [mTextView setAutomaticQuoteSubstitutionEnabled:NO] ;
     mTextView.smartInsertDeleteEnabled = NO ;
+    [mTextView setAutomaticDashSubstitutionEnabled:NO] ;
+    [mTextView.layoutManager setAllowsNonContiguousLayout:YES] ;
+    [mTextView.layoutManager setUsesFontLeading:YES] ;
     if ([mTextView respondsToSelector:@selector(setAutomaticTextReplacementEnabled:)]) {
-      // NSLog (@"AVANT %d", mTextView.isAutomaticTextReplacementEnabled) ;
       [mTextView setValue:[NSNumber numberWithBool:NO] forKey:@"automaticTextReplacementEnabled"] ;
-      // NSLog (@"APRES %d", mTextView.isAutomaticTextReplacementEnabled) ;
     }
   //---
     if ([mTextView respondsToSelector:@selector (setUsesFindBar:)]) {
       [mTextView setValue:[NSNumber numberWithBool:YES] forKey:@"usesFindBar"] ;
+    }else{
+      mTextView.usesFindPanel = YES ;
     }
   //---
     [mTextView setDelegate:self] ;
@@ -100,7 +118,7 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
     mScrollView.borderType = NSBezelBorder ;
     mRulerView = [OC_GGS_RulerViewForTextView new] ;
     [mScrollView setVerticalRulerView:mRulerView] ;
-    [mScrollView.verticalRulerView setRuleThickness:gCocoaGalgasPreferencesController.ruleThickness] ;
+    [mScrollView.verticalRulerView setRuleThickness:gCocoaApplicationDelegate.ruleThickness] ;
     [mScrollView setRulersVisible:[[NSUserDefaults standardUserDefaults] boolForKey:GGS_show_ruler]] ;
     [mScrollView setHasVerticalRuler:YES] ;
     OC_GGS_Scroller * scroller = [OC_GGS_Scroller new] ;
@@ -134,12 +152,18 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
       modes:[NSArray arrayWithObject:NSDefaultRunLoopMode]
     ] ;
   }
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s:DONE", __PRETTY_FUNCTION__) ;
+  #endif
   return self ;
 }
 
 //---------------------------------------------------------------------------*
 
 - (void) setSelectionAndScrollToVisibleAfterInit {
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+  #endif
   NSString * key = [NSString stringWithFormat:@"SELECTION:%@:%@", mDocumentUsedForDisplaying.fileURL.path, documentData.fileURL.path] ;
   NSString * selectionRangeString = [[NSUserDefaults standardUserDefaults] objectForKey:key] ;
   // NSLog (@"READ '%@' -> %@", key, selectionRangeString) ;
@@ -148,6 +172,9 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
   if (NSMaxRange (selectionRange) <= sourceTextLength) {
     [self setSelectionRangeAndMakeItVisible:selectionRange] ;
   } 
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s:DONE", __PRETTY_FUNCTION__) ;
+  #endif
 }
 
 //---------------------------------------------------------------------------*
@@ -196,6 +223,12 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
 
 - (NSURL *) sourceURL {
   return documentData.fileURL ;
+}
+
+//---------------------------------------------------------------------------*
+
+- (NSString *) title {
+  return documentData.fileURL.lastPathComponent ;
 }
 
 //---------------------------------------------------------------------------*
@@ -286,8 +319,7 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
   const NSUInteger spaceCount = (NSUInteger) [[NSUserDefaults standardUserDefaults] integerForKey:@"PMShiftLeftInsertedSpaceCount"] ;
   //NSLog (@"spaceCount %u", spaceCount) ;
   NSMutableString * s = [[NSMutableString alloc] init] ;
-  NSUInteger i ;
-  for (i=0 ; i<spaceCount ; i++) {
+  for (NSUInteger i=0 ; i<spaceCount ; i++) {
     [s appendString:@" "] ;
   }
   return s ;
@@ -385,16 +417,16 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
       [mutableSourceString replaceCharactersInRange:NSMakeRange (currentLineRange.location, twoSpaceLength) withString:@""] ;
     //--- Examen du nombre de caractères à l'intérieur de la sélection
       const NSInteger withinSelectionCharacterCount = 
-        imin (currentLineRange.location + twoSpaceLength, finalSelectedRange.location + finalSelectedRange.length)
+        (NSInteger) imin (currentLineRange.location + twoSpaceLength, finalSelectedRange.location + finalSelectedRange.length)
       -
-        imax (currentLineRange.location, finalSelectedRange.location) ;
+        (NSInteger) imax (currentLineRange.location, finalSelectedRange.location) ;
       if (withinSelectionCharacterCount > 0) {
-        finalSelectedRange.length -= withinSelectionCharacterCount ;
+        finalSelectedRange.length -= (NSUInteger) withinSelectionCharacterCount ;
       }
     //--- Examen du nombre de caractères avant la sélection
-      const NSInteger beforeSelectionCharacterCount = finalSelectedRange.location - currentLineRange.location ;
+      const NSInteger beforeSelectionCharacterCount = ((NSInteger) finalSelectedRange.location) - (NSInteger) currentLineRange.location ;
       if (beforeSelectionCharacterCount > 0) {
-        finalSelectedRange.location -= imin (twoSpaceLength, beforeSelectionCharacterCount) ;
+        finalSelectedRange.location -= imin (twoSpaceLength, (NSUInteger) beforeSelectionCharacterCount) ;
       }
       #ifdef DEBUG_UNCOMMENTRANGE
         NSLog (@"withinSelectionCharacterCount %d, beforeSelectionCharacterCount %d", withinSelectionCharacterCount, beforeSelectionCharacterCount) ;
@@ -435,7 +467,7 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  NSString * macroString = [documentData.textSyntaxColoring.tokenizer textMacroContentAtIndex:[inSender tag]] ;
+  NSString * macroString = [documentData.textSyntaxColoring.tokenizer textMacroContentAtIndex:(NSUInteger) inSender.tag] ;
   [mTextView insertText:macroString] ;
 }
 
@@ -452,7 +484,7 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
   NSMenu * menu = inMenu.copy ;
   [mEntryListPopUpButton setAutoenablesItems:NO] ;
 
-  const NSUInteger n = [menu numberOfItems] ;
+  const NSInteger n = menu.numberOfItems ;
   if (n == 0) {
     [menu
       addItemWithTitle:@"No entry"
@@ -462,7 +494,7 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
     [[menu itemAtIndex:0] setEnabled:NO] ;
     [mEntryListPopUpButton setEnabled:NO] ;
   }else{
-    for (NSUInteger i=0 ; i<n ; i++) {
+    for (NSInteger i=0 ; i<n ; i++) {
       NSMenuItem * item = [menu itemAtIndex:i] ;
       [item setTarget:self] ;
       [item setAction:@selector (gotoEntry:)] ;
@@ -479,7 +511,7 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s, TAG %ld", __PRETTY_FUNCTION__, [inSender tag]) ;
   #endif
-  const NSRange range = {[inSender tag], 0} ;
+  const NSRange range = {(NSUInteger) [inSender tag], 0} ;
   [mTextView setSelectedRange:range] ;
   [mTextView scrollRangeToVisible:range] ;
 }
@@ -494,11 +526,10 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
   NSArray * menuItemArray = [mEntryListPopUpButton itemArray] ;
   if ([mEntryListPopUpButton isEnabled]) {
     NSInteger idx = NSNotFound ;
-    NSInteger i ;
-    const NSInteger n = [menuItemArray count] ;
-    for (i=n-1 ; (i>=0) && (idx == NSNotFound) ; i--) {
-      NSMenuItem * item = [menuItemArray objectAtIndex:i] ;
-      const NSUInteger startPoint = [item tag] ;
+    const NSInteger n = (NSInteger) menuItemArray.count ;
+    for (NSInteger i=n-1 ; (i>=0) && (idx == NSNotFound) ; i--) {
+      NSMenuItem * item = [menuItemArray objectAtIndex:(NSUInteger) i] ;
+      const NSUInteger startPoint = (NSUInteger) [item tag] ;
       if (selectionStart >= startPoint) {
         idx = i ;
       }
@@ -534,10 +565,6 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
   mTextSelectionStart = mTextView.selectedRange.location ;
   [self  didChangeValueForKey:@"textSelectionStart"] ;
   [mRulerView setNeedsDisplay:YES] ;
-//  [self populatePopUpButton] ;
-/*  if (! [mDocument isContextualHelpTextViewCollapsed]) {
-    [self performContextualHelpAtRange:mTextView.selectedRange] ;
-  }*/
 //---
   NSString * key = [NSString stringWithFormat:@"SELECTION:%@:%@", mDocumentUsedForDisplaying.fileURL.path, documentData.fileURL.path] ;
   [[NSUserDefaults standardUserDefaults]
@@ -563,11 +590,18 @@ static inline NSInteger imax (const NSInteger a, const NSInteger b) { return a >
 
 - (void) setSelectionRangeAndMakeItVisible: (NSRange) inRange {
   #ifdef DEBUG_MESSAGES
-    NSLog (@"%s", __PRETTY_FUNCTION__) ;
+    NSLog (@"%s [%lu, %lu], source length %lu", __PRETTY_FUNCTION__, inRange.location, inRange.length, mTextView.string.length) ;
   #endif
-  [mTextView scrollRangeToVisible:inRange] ;
-  [mTextView setSelectedRange:inRange] ;
+  NSRange range = inRange ;
+  if (NSMaxRange (inRange) >= mTextView.string.length) {
+    range = NSMakeRange (mTextView.string.length, 0) ;
+  }
+  [mTextView setSelectedRange:range] ;
+  [mTextView scrollRangeToVisible:range] ;
   [mTextView.window makeFirstResponder:mTextView] ;
+  #ifdef DEBUG_MESSAGES
+    NSLog (@"%s:DONE", __PRETTY_FUNCTION__) ;
+  #endif
 }
 
 //---------------------------------------------------------------------------*

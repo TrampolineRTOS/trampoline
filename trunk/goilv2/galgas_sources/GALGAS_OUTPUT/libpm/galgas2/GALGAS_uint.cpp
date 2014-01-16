@@ -37,6 +37,12 @@ mUIntValue (0) {
 
 //---------------------------------------------------------------------------*
 
+GALGAS_uint GALGAS_uint::constructor_default (UNUSED_LOCATION_ARGS) {
+  return GALGAS_uint (0) ;
+}
+
+//---------------------------------------------------------------------------*
+
 GALGAS_uint::GALGAS_uint (const PMUInt32 inValue) :
 mIsValid (true),
 mUIntValue (inValue) {
@@ -265,13 +271,33 @@ void GALGAS_uint::description (C_String & ioString,
 //---------------------------------------------------------------------------*
 
 GALGAS_uint GALGAS_uint::reader_significantBitCount (UNUSED_LOCATION_ARGS) const {
-  PMUInt32 v = mUIntValue ;
-  PMUInt32 idx = 0 ;
-  while (v != 0) {
-    idx ++ ;
-    v >>= 1 ;
+  GALGAS_uint result ;
+  if (isValid ()) {
+    PMUInt32 v = mUIntValue ;
+    PMUInt32 idx = 0 ;
+    while (v != 0) {
+      idx ++ ;
+      v >>= 1 ;
+    }
+    result = GALGAS_uint (idx) ;
   }
-  return GALGAS_uint (idx) ;
+  return result ;
+}
+
+//---------------------------------------------------------------------------*
+
+GALGAS_uint GALGAS_uint::reader_oneBitCount (UNUSED_LOCATION_ARGS) const {
+  GALGAS_uint result ;
+  if (isValid ()) {
+    PMUInt32 v = mUIntValue ;
+    PMUInt32 idx = 0 ;
+    while (v != 0) {
+      idx += v & 1 ;
+      v >>= 1 ;
+    }
+    result = GALGAS_uint (idx) ;
+  }
+  return result ;
 }
 
 //---------------------------------------------------------------------------*

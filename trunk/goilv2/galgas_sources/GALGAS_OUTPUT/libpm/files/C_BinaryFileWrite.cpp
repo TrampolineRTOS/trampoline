@@ -74,7 +74,7 @@ C_BinaryFileWrite::~C_BinaryFileWrite (void) {
 
 void C_BinaryFileWrite::appendData (const C_Data & inData) {
   if (NULL != mFilePtr) {
-    ::fwrite (inData.dataPointer (), 1, inData.length (), mFilePtr) ;
+    ::fwrite (inData.dataPointer (), 1, (size_t) inData.length (), mFilePtr) ;
   }
 }
 

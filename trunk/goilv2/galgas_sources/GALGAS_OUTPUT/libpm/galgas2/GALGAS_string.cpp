@@ -52,6 +52,12 @@ mString () {
 
 //---------------------------------------------------------------------------*
 
+GALGAS_string GALGAS_string::constructor_default (UNUSED_LOCATION_ARGS) {
+  return GALGAS_string ("") ;
+}
+
+//---------------------------------------------------------------------------*
+
 GALGAS_string::GALGAS_string (const C_String & inString) :
 mIsValid (true),
 mString (inString) {
@@ -333,7 +339,7 @@ GALGAS_string GALGAS_string::reader_reversedString (UNUSED_LOCATION_ARGS) const 
 //---------------------------------------------------------------------------*
 
 GALGAS_string GALGAS_string::reader_stringByTrimmingWhiteSpaces (UNUSED_LOCATION_ARGS) const {
-  return GALGAS_string (mString.stringByTrimmingWhiteSpaces ()) ;
+  return GALGAS_string (mString.stringByTrimmingSeparators ()) ;
 }
 
 //---------------------------------------------------------------------------*
@@ -366,7 +372,7 @@ GALGAS_string GALGAS_string::reader_stringByLeftPadding (const GALGAS_uint & inP
     const utf32 paddingChar = inPaddingChar.charValue () ;
     const PMSInt32 paddedStringLength = (PMSInt32) inPaddedStringLength.uintValue () ;
     const PMSInt32 paddingLength = paddedStringLength - mString.length () ;
-    C_String s ; s.setCapacity (paddedStringLength) ;
+    C_String s ; s.setCapacity ((PMUInt32) paddedStringLength) ;
     for (PMSInt32 i=0 ; i<paddingLength ; i++) {
       s.appendUnicodeCharacter (paddingChar COMMA_HERE) ;
     }
@@ -386,7 +392,7 @@ GALGAS_string GALGAS_string::reader_stringByRightPadding (const GALGAS_uint & in
     const utf32 paddingChar = inPaddingChar.charValue () ;
     const PMSInt32 paddedStringLength = (PMSInt32) inPaddedStringLength.uintValue () ;
     const PMSInt32 paddingLength = paddedStringLength - mString.length () ;
-    C_String s ; s.setCapacity (paddedStringLength) ;
+    C_String s ; s.setCapacity ((PMUInt32) paddedStringLength) ;
     s << mString ;
     for (PMSInt32 i=0 ; i<paddingLength ; i++) {
       s.appendUnicodeCharacter (paddingChar COMMA_HERE) ;
@@ -406,7 +412,7 @@ GALGAS_string GALGAS_string::reader_stringByLeftAndRightPadding (const GALGAS_ui
     const utf32 paddingChar = inPaddingChar.charValue () ;
     const PMSInt32 paddedStringLength = (PMSInt32) inPaddedStringLength.uintValue () ;
     const PMSInt32 paddingLength = paddedStringLength - mString.length () ;
-    C_String s ; s.setCapacity (paddedStringLength) ;
+    C_String s ; s.setCapacity ((PMUInt32) paddedStringLength) ;
     for (PMSInt32 i=0 ; i<(paddingLength / 2) ; i++) {
       s.appendUnicodeCharacter (paddingChar COMMA_HERE) ;
     }
@@ -475,7 +481,7 @@ GALGAS_char GALGAS_string::reader_characterAtIndex (const GALGAS_uint & inIndex,
                                                       C_Compiler * inCompiler
                                                       COMMA_LOCATION_ARGS) const {
   GALGAS_char result ;
-  if (inIndex.isValid ()) {
+  if (isValid () && inIndex.isValid ()) {
     const PMSInt32 idx = (PMSInt32) inIndex.uintValue () ;
     const PMSInt32 stringLength = mString.length () ;
     if (idx >= stringLength) {
@@ -485,6 +491,17 @@ GALGAS_char GALGAS_string::reader_characterAtIndex (const GALGAS_uint & inIndex,
     }else{
       result = GALGAS_char (mString (idx COMMA_HERE)) ;
     }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------*
+
+GALGAS_bool GALGAS_string::reader_containsCharacter (const GALGAS_char & inCharacter
+                                                     COMMA_UNUSED_LOCATION_ARGS) const {
+  GALGAS_bool result ;
+  if (isValid () && inCharacter.isValid ()) {
+    result = GALGAS_bool (mString.containsCharacter (inCharacter.charValue ())) ;
   }
   return result ;
 }
@@ -1087,16 +1104,15 @@ void GALGAS_string::class_method_generateFile (GALGAS_string inStartPath,
 
 //---------------------------------------------------------------------------*
 
-void GALGAS_string::
-class_method_generateFileWithPattern (GALGAS_string inStartPath,
-                                      GALGAS_string inFileName,
-                                      GALGAS_string inLineCommentPrefix,
-                                      GALGAS_string inDefaultUserZone1,
-                                      GALGAS_string inGeneratedZone2,
-                                      GALGAS_string inDefaultUserZone2,
-                                      GALGAS_string inGeneratedZone3,
-                                      C_Compiler * inCompiler
-                                      COMMA_UNUSED_LOCATION_ARGS) {
+void GALGAS_string::class_method_generateFileWithPattern (GALGAS_string inStartPath,
+                                                          GALGAS_string inFileName,
+                                                          GALGAS_string inLineCommentPrefix,
+                                                          GALGAS_string inDefaultUserZone1,
+                                                          GALGAS_string inGeneratedZone2,
+                                                          GALGAS_string inDefaultUserZone2,
+                                                          GALGAS_string inGeneratedZone3,
+                                                          C_Compiler * inCompiler
+                                                          COMMA_UNUSED_LOCATION_ARGS) {
   const bool built = (inStartPath.isValid ())
     && (inFileName.isValid ())
     && (inLineCommentPrefix.isValid ())
@@ -1302,7 +1318,7 @@ void GALGAS_string::modifier_setCapacity (GALGAS_uint inNewCapacity,
                                           COMMA_LOCATION_ARGS) {
   if (inNewCapacity.isValid ()) {
     if (inNewCapacity.uintValue () <= ((PMUInt32) PMSINT32_MAX)) {
-      mString.setCapacity ((PMSInt32) inNewCapacity.uintValue ()) ; 
+      mString.setCapacity (inNewCapacity.uintValue ()) ; 
     }else{
       C_String message ;
       message << "setCapacity argument value (" ;

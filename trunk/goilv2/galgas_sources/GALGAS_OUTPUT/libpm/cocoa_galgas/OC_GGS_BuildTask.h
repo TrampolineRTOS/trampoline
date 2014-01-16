@@ -21,7 +21,8 @@
   @private OC_GGS_Document * mDocument ;
 }
 
-- (id) initWithDocument: (OC_GGS_Document *) inDocument ;
+- (id) initWithDocument: (OC_GGS_Document *) inDocument
+       filePath: (NSString *) inFilePath ;
 
 - (void) terminate ;
 

@@ -44,7 +44,7 @@ mDescriptor3 (inDescriptor3) {
                                     inDescriptor2.getBDDbitsSize (),
                                     C_BDD::kLowerOrEqual,
                                     inDescriptor2.getMaxValue ()) ;
-  mMask3 &= C_BDD::varCompareConst ((PMUInt16) (inDescriptor1.getBDDbitsSize ()
+  mMask3 &= C_BDD::varCompareConst ((PMUInt32) (inDescriptor1.getBDDbitsSize ()
                                             + inDescriptor2.getBDDbitsSize ()),
                                     inDescriptor3.getBDDbitsSize (),
                                     C_BDD::kLowerOrEqual,
@@ -68,7 +68,7 @@ mDescriptor3 (inDescriptor3) {
                                     inDescriptor2.getBDDbitsSize (),
                                     C_BDD::kLowerOrEqual,
                                     inDescriptor2.getMaxValue ()) ;
-  mMask3 &= C_BDD::varCompareConst ((PMUInt16) (inDescriptor1.getBDDbitsSize ()
+  mMask3 &= C_BDD::varCompareConst ((PMUInt32) (inDescriptor1.getBDDbitsSize ()
                                             + inDescriptor2.getBDDbitsSize ()),
                                     inDescriptor3.getBDDbitsSize (),
                                     C_BDD::kLowerOrEqual,
@@ -110,7 +110,7 @@ initDimension2 (const C_BDD::compareEnum inComparison2,
 void C_BDD_Set3::
 initDimension3 (const C_BDD::compareEnum inComparison3,
                 const PMUInt32 inValue3) {
-  mBDD = C_BDD::varCompareConst ((PMUInt16) (mDescriptor1.getBDDbitsSize ()
+  mBDD = C_BDD::varCompareConst ((PMUInt32) (mDescriptor1.getBDDbitsSize ()
                                          + mDescriptor2.getBDDbitsSize ()),
                                  mDescriptor3.getBDDbitsSize (),
                                  inComparison3,
@@ -128,10 +128,10 @@ void C_BDD_Set3::initDimension1 (const C_BDD_Set1 & inSource) {
 //----------------------------------------------------------------------------*
 
 void C_BDD_Set3::initDimension2 (const C_BDD_Set1 & inSource) {
-  PMUInt16 * tab = NULL ;
-  macroMyNewArray (tab, PMUInt16, mDescriptor2.getBDDbitsSize ()) ;
-  for (PMUInt16 i=0 ; i<mDescriptor2.getBDDbitsSize () ; i++) {
-    tab [i] = (PMUInt16) (i + mDescriptor1.getBDDbitsSize ()) ;
+  PMUInt32 * tab = NULL ;
+  macroMyNewArray (tab, PMUInt32, mDescriptor2.getBDDbitsSize ()) ;
+  for (PMUInt32 i=0 ; i<mDescriptor2.getBDDbitsSize () ; i++) {
+    tab [i] = (PMUInt32) (i + mDescriptor1.getBDDbitsSize ()) ;
   }
   mBDD = inSource.mBDD.substitution (tab, mDescriptor2.getBDDbitsSize () COMMA_HERE) ;
   macroMyDeleteArray (tab) ;
@@ -141,10 +141,10 @@ void C_BDD_Set3::initDimension2 (const C_BDD_Set1 & inSource) {
 //----------------------------------------------------------------------------*
 
 void C_BDD_Set3::initDimension3 (const C_BDD_Set1 & inSource) {
-  PMUInt16 * tab = NULL ;
-  macroMyNewArray (tab, PMUInt16, mDescriptor3.getBDDbitsSize ()) ;
-  for (PMUInt16 i=0 ; i<mDescriptor3.getBDDbitsSize () ; i++) {
-    tab [i] = (PMUInt16) (i + mDescriptor1.getBDDbitsSize () + mDescriptor2.getBDDbitsSize ()) ;
+  PMUInt32 * tab = NULL ;
+  macroMyNewArray (tab, PMUInt32, mDescriptor3.getBDDbitsSize ()) ;
+  for (PMUInt32 i=0 ; i<mDescriptor3.getBDDbitsSize () ; i++) {
+    tab [i] = (PMUInt32) (i + mDescriptor1.getBDDbitsSize () + mDescriptor2.getBDDbitsSize ()) ;
   }
   mBDD = inSource.mBDD.substitution (tab, mDescriptor3.getBDDbitsSize () COMMA_HERE) ;
   macroMyDeleteArray (tab) ;
@@ -191,14 +191,14 @@ C_BDD_Set3 C_BDD_Set3::operator ~ (void) const {
 //----------------------------------------------------------------------------*
 
 void C_BDD_Set3::initDimension13 (const C_BDD_Set2 & inSource) {
-  const PMUInt16 totalSize = (PMUInt16) (mDescriptor1.getBDDbitsSize () + mDescriptor3.getBDDbitsSize ()) ;
-  PMUInt16 * tab = NULL ;
-  macroMyNewArray (tab, PMUInt16, totalSize) ;
-  for (PMUInt16 i=0 ; i<mDescriptor1.getBDDbitsSize () ; i++) {
+  const PMUInt32 totalSize = (PMUInt32) (mDescriptor1.getBDDbitsSize () + mDescriptor3.getBDDbitsSize ()) ;
+  PMUInt32 * tab = NULL ;
+  macroMyNewArray (tab, PMUInt32, totalSize) ;
+  for (PMUInt32 i=0 ; i<mDescriptor1.getBDDbitsSize () ; i++) {
     tab [i] = i ;
   }
-  for (PMUInt16 j=0 ; j<mDescriptor3.getBDDbitsSize () ; j++) {
-    tab [j + mDescriptor1.getBDDbitsSize ()] = (PMUInt16) (j + mDescriptor1.getBDDbitsSize () + mDescriptor2.getBDDbitsSize ()) ;
+  for (PMUInt32 j=0 ; j<mDescriptor3.getBDDbitsSize () ; j++) {
+    tab [j + mDescriptor1.getBDDbitsSize ()] = (PMUInt32) (j + mDescriptor1.getBDDbitsSize () + mDescriptor2.getBDDbitsSize ()) ;
   }
   mBDD = inSource.mBDD.substitution (tab, totalSize COMMA_HERE) ;
   mBDD &= mMask3 ;
@@ -208,14 +208,14 @@ void C_BDD_Set3::initDimension13 (const C_BDD_Set2 & inSource) {
 //----------------------------------------------------------------------------*
 
 void C_BDD_Set3::initDimension32 (const C_BDD_Set2 & inSource) {
-  const PMUInt16 totalSize = (PMUInt16) (mDescriptor3.getBDDbitsSize () + mDescriptor2.getBDDbitsSize ()) ;
-  PMUInt16 * tab = NULL ;
-  macroMyNewArray (tab, PMUInt16, totalSize) ;
-  for (PMUInt16 i=0 ; i<mDescriptor3.getBDDbitsSize () ; i++) {
-    tab [i] = (PMUInt16) (i + mDescriptor1.getBDDbitsSize () + mDescriptor2.getBDDbitsSize ()) ;
+  const PMUInt32 totalSize = (PMUInt32) (mDescriptor3.getBDDbitsSize () + mDescriptor2.getBDDbitsSize ()) ;
+  PMUInt32 * tab = NULL ;
+  macroMyNewArray (tab, PMUInt32, totalSize) ;
+  for (PMUInt32 i=0 ; i<mDescriptor3.getBDDbitsSize () ; i++) {
+    tab [i] = (PMUInt32) (i + mDescriptor1.getBDDbitsSize () + mDescriptor2.getBDDbitsSize ()) ;
   }
-  for (PMUInt16 j=0 ; j<mDescriptor2.getBDDbitsSize () ; j++) {
-    tab [j + mDescriptor3.getBDDbitsSize ()] = (PMUInt16) (j + mDescriptor1.getBDDbitsSize ()) ;
+  for (PMUInt32 j=0 ; j<mDescriptor2.getBDDbitsSize () ; j++) {
+    tab [j + mDescriptor3.getBDDbitsSize ()] = (PMUInt32) (j + mDescriptor1.getBDDbitsSize ()) ;
   }
   mBDD = inSource.mBDD.substitution (tab, totalSize COMMA_HERE) ;
   mBDD &= mMask3 ;
@@ -225,17 +225,17 @@ void C_BDD_Set3::initDimension32 (const C_BDD_Set2 & inSource) {
 //----------------------------------------------------------------------------*
 
 void C_BDD_Set3::initDimension31 (const C_BDD_Set2 & inSource) {
-  const PMUInt16 size1 = mDescriptor1.getBDDbitsSize () ;
-  const PMUInt16 size2 = mDescriptor2.getBDDbitsSize () ;
-  const PMUInt16 size3 = mDescriptor3.getBDDbitsSize () ;
-  const PMUInt16 totalSize = (PMUInt16) (size3 + size1) ;
-  PMUInt16 * tab = NULL ;
-  macroMyNewArray (tab, PMUInt16, totalSize) ;
-  for (PMUInt16 i=0 ; i<size3 ; i++) {
-    tab [i] = (PMUInt16) (i + size1 + size2) ;
+  const PMUInt32 size1 = mDescriptor1.getBDDbitsSize () ;
+  const PMUInt32 size2 = mDescriptor2.getBDDbitsSize () ;
+  const PMUInt32 size3 = mDescriptor3.getBDDbitsSize () ;
+  const PMUInt32 totalSize = (PMUInt32) (size3 + size1) ;
+  PMUInt32 * tab = NULL ;
+  macroMyNewArray (tab, PMUInt32, totalSize) ;
+  for (PMUInt32 i=0 ; i<size3 ; i++) {
+    tab [i] = (PMUInt32) (i + size1 + size2) ;
   }
-  for (PMUInt16 j=0 ; j<size1 ; j++) {
-    tab [j + size3] = (PMUInt16) (j + size3) ;
+  for (PMUInt32 j=0 ; j<size1 ; j++) {
+    tab [j + size3] = (PMUInt32) (j + size3) ;
   }
   mBDD = inSource.mBDD.substitution (tab, totalSize COMMA_HERE) ;
   mBDD &= mMask3 ;
@@ -245,20 +245,20 @@ void C_BDD_Set3::initDimension31 (const C_BDD_Set2 & inSource) {
 //----------------------------------------------------------------------------*
 
 void C_BDD_Set3::swap132 (void) {
-  const PMUInt16 size1 = mDescriptor1.getBDDbitsSize () ;
-  const PMUInt16 size2 = mDescriptor2.getBDDbitsSize () ;
-  const PMUInt16 size3 = mDescriptor3.getBDDbitsSize () ;
-  const PMUInt16 totalSize = (PMUInt16) (size1 + size2 + size3) ;
-  PMUInt16 * tab = NULL ;
-  macroMyNewArray (tab, PMUInt16, totalSize) ;
-  for (PMUInt16 i=0 ; i<size1 ; i++) {
+  const PMUInt32 size1 = mDescriptor1.getBDDbitsSize () ;
+  const PMUInt32 size2 = mDescriptor2.getBDDbitsSize () ;
+  const PMUInt32 size3 = mDescriptor3.getBDDbitsSize () ;
+  const PMUInt32 totalSize = (PMUInt32) (size1 + size2 + size3) ;
+  PMUInt32 * tab = NULL ;
+  macroMyNewArray (tab, PMUInt32, totalSize) ;
+  for (PMUInt32 i=0 ; i<size1 ; i++) {
     tab [i] = i ;
   }
-  for (PMUInt16 j=0 ; j<size2 ; j++) {
-    tab [j + size1] = (PMUInt16) (j + size1 + size3) ;
+  for (PMUInt32 j=0 ; j<size2 ; j++) {
+    tab [j + size1] = (PMUInt32) (j + size1 + size3) ;
   }
-  for (PMUInt16 k=0 ; k<size3 ; k++) {
-    tab [k + size1 + size2] = (PMUInt16) (k + size1) ;
+  for (PMUInt32 k=0 ; k<size3 ; k++) {
+    tab [k + size1 + size2] = (PMUInt32) (k + size1) ;
   }
   mBDD = mBDD.substitution (tab, totalSize COMMA_HERE) ;
   macroMyDeleteArray (tab) ;
@@ -268,20 +268,20 @@ void C_BDD_Set3::swap132 (void) {
 //----------------------------------------------------------------------------*
 
 void C_BDD_Set3::swap231 (void) {
-  const PMUInt16 size1 = mDescriptor1.getBDDbitsSize () ;
-  const PMUInt16 size2 = mDescriptor2.getBDDbitsSize () ;
-  const PMUInt16 size3 = mDescriptor3.getBDDbitsSize () ;
-  const PMUInt16 totalSize = (PMUInt16) (size1 + size2 + size3) ;
-  PMUInt16 * tab = NULL ;
-  macroMyNewArray (tab, PMUInt16, totalSize) ;
-  for (PMUInt16 i=0 ; i<size1 ; i++) {
-    tab [i] = (PMUInt16) (i + size1 + size2) ;
+  const PMUInt32 size1 = mDescriptor1.getBDDbitsSize () ;
+  const PMUInt32 size2 = mDescriptor2.getBDDbitsSize () ;
+  const PMUInt32 size3 = mDescriptor3.getBDDbitsSize () ;
+  const PMUInt32 totalSize = (PMUInt32) (size1 + size2 + size3) ;
+  PMUInt32 * tab = NULL ;
+  macroMyNewArray (tab, PMUInt32, totalSize) ;
+  for (PMUInt32 i=0 ; i<size1 ; i++) {
+    tab [i] = (PMUInt32) (i + size1 + size2) ;
   }
-  for (PMUInt16 j=0 ; j<size2 ; j++) {
+  for (PMUInt32 j=0 ; j<size2 ; j++) {
     tab [j + size1] = j ;
   }
-  for (PMUInt16 k=0 ; k<size3 ; k++) {
-    tab [k + size1 + size2] = (PMUInt16) (k + size2) ;
+  for (PMUInt32 k=0 ; k<size3 ; k++) {
+    tab [k + size1 + size2] = (PMUInt32) (k + size2) ;
   }
   mBDD = mBDD.substitution (tab, totalSize COMMA_HERE) ;
   macroMyDeleteArray (tab) ;
@@ -291,20 +291,20 @@ void C_BDD_Set3::swap231 (void) {
 //----------------------------------------------------------------------------*
 
 void C_BDD_Set3::swap213 (void) {
-  const PMUInt16 size1 = mDescriptor1.getBDDbitsSize () ;
-  const PMUInt16 size2 = mDescriptor2.getBDDbitsSize () ;
-  const PMUInt16 size3 = mDescriptor3.getBDDbitsSize () ;
-  const PMUInt16 totalSize = (PMUInt16) (size1 + size2 + size3) ;
-  PMUInt16 * tab = NULL ;
-  macroMyNewArray (tab, PMUInt16, totalSize) ;
-  for (PMUInt16 i=0 ; i<size1 ; i++) {
-    tab [i] = (PMUInt16) (i + size2) ;
+  const PMUInt32 size1 = mDescriptor1.getBDDbitsSize () ;
+  const PMUInt32 size2 = mDescriptor2.getBDDbitsSize () ;
+  const PMUInt32 size3 = mDescriptor3.getBDDbitsSize () ;
+  const PMUInt32 totalSize = (PMUInt32) (size1 + size2 + size3) ;
+  PMUInt32 * tab = NULL ;
+  macroMyNewArray (tab, PMUInt32, totalSize) ;
+  for (PMUInt32 i=0 ; i<size1 ; i++) {
+    tab [i] = (PMUInt32) (i + size2) ;
   }
-  for (PMUInt16 j=0 ; j<size2 ; j++) {
+  for (PMUInt32 j=0 ; j<size2 ; j++) {
     tab [j + size1] = j ;
   }
-  for (PMUInt16 k=0 ; k<size3 ; k++) {
-    tab [k + size1 + size2] = (PMUInt16) (k + size1 + size2) ;
+  for (PMUInt32 k=0 ; k<size3 ; k++) {
+    tab [k + size1 + size2] = (PMUInt32) (k + size1 + size2) ;
   }
   mBDD = mBDD.substitution (tab, totalSize COMMA_HERE) ;
   macroMyDeleteArray (tab) ;
@@ -314,19 +314,19 @@ void C_BDD_Set3::swap213 (void) {
 //----------------------------------------------------------------------------*
 
 void C_BDD_Set3::swap321 (void) {
-  const PMUInt16 size1 = mDescriptor1.getBDDbitsSize () ;
-  const PMUInt16 size2 = mDescriptor2.getBDDbitsSize () ;
-  const PMUInt16 size3 = mDescriptor3.getBDDbitsSize () ;
-  const PMUInt16 totalSize = (PMUInt16) (size1 + size2 + size3) ;
-  PMUInt16 * tab = NULL ;
-  macroMyNewArray (tab, PMUInt16, totalSize) ;
-  for (PMUInt16 i=0 ; i<size1 ; i++) {
-    tab [i] = (PMUInt16) (i + size1 + size2) ;
+  const PMUInt32 size1 = mDescriptor1.getBDDbitsSize () ;
+  const PMUInt32 size2 = mDescriptor2.getBDDbitsSize () ;
+  const PMUInt32 size3 = mDescriptor3.getBDDbitsSize () ;
+  const PMUInt32 totalSize = (PMUInt32) (size1 + size2 + size3) ;
+  PMUInt32 * tab = NULL ;
+  macroMyNewArray (tab, PMUInt32, totalSize) ;
+  for (PMUInt32 i=0 ; i<size1 ; i++) {
+    tab [i] = (PMUInt32) (i + size1 + size2) ;
   }
-  for (PMUInt16 j=0 ; j<size2 ; j++) {
-    tab [j + size1] = (PMUInt16) (j + size3) ;
+  for (PMUInt32 j=0 ; j<size2 ; j++) {
+    tab [j + size1] = (PMUInt32) (j + size3) ;
   }
-  for (PMUInt16 k=0 ; k<size3 ; k++) {
+  for (PMUInt32 k=0 ; k<size3 ; k++) {
     tab [k + size1 + size2] = k ;
   }
   mBDD = mBDD.substitution (tab, totalSize COMMA_HERE) ;
@@ -337,19 +337,19 @@ void C_BDD_Set3::swap321 (void) {
 //----------------------------------------------------------------------------*
 
 void C_BDD_Set3::swap312 (void) {
-  const PMUInt16 size1 = mDescriptor1.getBDDbitsSize () ;
-  const PMUInt16 size2 = mDescriptor2.getBDDbitsSize () ;
-  const PMUInt16 size3 = mDescriptor3.getBDDbitsSize () ;
-  const PMUInt16 totalSize = (PMUInt16) (size1 + size2 + size3) ;
-  PMUInt16 * tab = NULL ;
-  macroMyNewArray (tab, PMUInt16, totalSize) ;
-  for (PMUInt16 i=0 ; i<size1 ; i++) {
-    tab [i] = (PMUInt16) (i + size3) ;
+  const PMUInt32 size1 = mDescriptor1.getBDDbitsSize () ;
+  const PMUInt32 size2 = mDescriptor2.getBDDbitsSize () ;
+  const PMUInt32 size3 = mDescriptor3.getBDDbitsSize () ;
+  const PMUInt32 totalSize = (PMUInt32) (size1 + size2 + size3) ;
+  PMUInt32 * tab = NULL ;
+  macroMyNewArray (tab, PMUInt32, totalSize) ;
+  for (PMUInt32 i=0 ; i<size1 ; i++) {
+    tab [i] = (PMUInt32) (i + size3) ;
   }
-  for (PMUInt16 j=0 ; j<size2 ; j++) {
-    tab [j + size1] = (PMUInt16) (j + size1 + size3) ;
+  for (PMUInt32 j=0 ; j<size2 ; j++) {
+    tab [j + size1] = (PMUInt32) (j + size1 + size3) ;
   }
-  for (PMUInt16 k=0 ; k<size3 ; k++) {
+  for (PMUInt32 k=0 ; k<size3 ; k++) {
     tab [k + size1 + size2] = k ;
   }
   mBDD = mBDD.substitution (tab, totalSize COMMA_HERE) ;
@@ -361,7 +361,7 @@ void C_BDD_Set3::swap312 (void) {
 
 C_BDD_Set2 C_BDD_Set3::projeterSurAxe12 (void) const {
   C_BDD_Set2 r (mDescriptor1, mDescriptor1) ;
-  r.mBDD = mBDD.existsOnBitsAfterNumber ((PMUInt16) (mDescriptor1.getBDDbitsSize ()
+  r.mBDD = mBDD.existsOnBitsAfterNumber ((PMUInt32) (mDescriptor1.getBDDbitsSize ()
                                                  + mDescriptor2.getBDDbitsSize ())) ;
   return r ;
 }
@@ -377,7 +377,7 @@ C_BDD_Set1 C_BDD_Set3::projeterSurAxe1 (void) const {
 //----------------------------------------------------------------------------*
 
 PMUInt32 C_BDD_Set3::getValuesCount (void) const {
-  return (PMUInt32) (mBDD.valueCount ((PMUInt16) (mDescriptor1.getBDDbitsSize ()
+  return (PMUInt32) (mBDD.valueCount64 ((PMUInt32) (mDescriptor1.getBDDbitsSize ()
                                                   + mDescriptor2.getBDDbitsSize ()
                                                   + mDescriptor3.getBDDbitsSize ())) & PMUINT32_MAX) ;
 }

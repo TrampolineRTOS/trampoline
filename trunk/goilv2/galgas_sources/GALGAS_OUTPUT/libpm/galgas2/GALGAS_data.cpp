@@ -437,13 +437,13 @@ void cCollectionElement_data::description (C_String & ioString, const PMSInt32 i
 
 void GALGAS_data::populateEnumerationArray (capCollectionElementArray & inEnumerationArray,
                                             const typeEnumerationOrder inEnumerationOrder) const {
-  const PMUInt32 count = (PMUInt32) mData.length () ;
-  inEnumerationArray.setCapacity (count) ;
+  const PMSInt32 count = mData.length () ;
+  inEnumerationArray.setCapacity ((PMUInt32) count) ;
   switch (enumerationOrderValue (inEnumerationOrder)) {
   case kENUMERATION_UP:
-    for (PMUInt32 i=0 ; i<count ; i++) {
+    for (PMSInt32 i=0 ; i<count ; i++) {
       cCollectionElement_data * p = NULL ;
-      macroMyNew (p, cCollectionElement_data (GALGAS_uint (mData ((PMSInt32) i COMMA_HERE)) COMMA_HERE)) ;
+      macroMyNew (p, cCollectionElement_data (GALGAS_uint (mData (i COMMA_HERE)) COMMA_HERE)) ;
       capCollectionElement object ;
       object.setPointer (p) ;
       macroDetachSharedObject (p) ;
@@ -451,9 +451,9 @@ void GALGAS_data::populateEnumerationArray (capCollectionElementArray & inEnumer
     }
     break ;
   case kENUMERATION_DOWN:
-    for (PMUInt32 i=0 ; i<count ; i++) {
+    for (PMSInt32 i=0 ; i<count ; i++) {
       cCollectionElement_data * p = NULL ;
-      macroMyNew (p, cCollectionElement_data (GALGAS_uint (mData ((PMSInt32) (mData.length () - i - 1) COMMA_HERE)) COMMA_HERE)) ;
+      macroMyNew (p, cCollectionElement_data (GALGAS_uint (mData (mData.length () - i - 1 COMMA_HERE)) COMMA_HERE)) ;
       capCollectionElement object ;
       object.setPointer (p) ;
       macroDetachSharedObject (p) ;

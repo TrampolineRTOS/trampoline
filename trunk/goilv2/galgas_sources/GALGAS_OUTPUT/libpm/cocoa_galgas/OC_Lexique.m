@@ -63,7 +63,7 @@
 
 //---------------------------------------------------------------------------*
 
-- (id) init {
+- (instancetype) init {
   self = [super init] ;
   if (self) {
     mMatchedTemplateDelimiterIndex = -1 ;
@@ -230,7 +230,7 @@
   BOOL found = NO ;
   
   while ((templateIndex < (SInt32) inTemplateDelimiterArray.count) && ! found) {
-    OC_GGS_TemplateDelimiter * td = [inTemplateDelimiterArray objectAtIndex:templateIndex] ;
+    OC_GGS_TemplateDelimiter * td = [inTemplateDelimiterArray objectAtIndex:(NSUInteger) templateIndex] ;
     found = [self
       testForInputString:td.startString
       advance:td.discardStartString
@@ -265,47 +265,86 @@
 //---------------------------------------------------------------------------*
 
 - (void) buildPopupMenuItemArrayWithStyleArray:(NSArray *) inTokenArray {
+  NSDictionary * defaultAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+    [NSFont systemFontOfSize:11.0], NSFontAttributeName,
+    nil
+  ] ;
+  NSDictionary * specialAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+    [NSFont boldSystemFontOfSize:11.0], NSFontAttributeName,
+    nil
+  ] ;
   NSMenu * menu = [[NSMenu alloc] initWithTitle:@""] ;
   const UInt16 ** popUpListData = [self popupListData] ;
   if (NULL != popUpListData) {
-    const NSUInteger tokenCount = [inTokenArray count] ;
+    const NSUInteger tokenCount = inTokenArray.count ;
     for (NSUInteger tokenIndex=0 ; tokenIndex<tokenCount ; tokenIndex++) {
       OC_Token * token = [inTokenArray objectAtIndex:tokenIndex] ;
-      const NSUInteger terminal = [token tokenCode] ;
+      const NSUInteger terminal = token.tokenCode ;
       // printf ("terminal %u\n", terminal) ;
       BOOL found = NO ;
       NSUInteger idx = 0 ;
       NSUInteger labelLength = 0 ;
       const UInt16 * p = popUpListData [idx] ;
       while ((p != NULL) && ! found) {
+        p++ ; // Pass display flags
         if (*p == terminal) {
           found = YES ;
-          p ++ ;
+          p += 2 ;
           labelLength = 0 ;
           while ((*p != 0) && found) {
             labelLength ++ ;
             found = ((tokenIndex+labelLength) < tokenCount) && ([[inTokenArray objectAtIndex:tokenIndex+labelLength] tokenCode] == *p) ;
-            p ++ ;
+            p += 2 ;
           }
+        }else{
+          idx ++ ;
+          p = popUpListData [idx] ;
         }
-        idx ++ ;
-        p = popUpListData [idx] ;
       }
       if (found) {
+        p = popUpListData [idx] ;
+        const UInt16 displayFlags = *p ;
+        p += 2 ; // Goto display strip description
         NSMutableString * title = [NSMutableString new] ;
+        [title appendString:@" "] ;
         for (NSUInteger k=0 ; k<=labelLength ; k++) {
-          const NSRange range = [[inTokenArray objectAtIndex:tokenIndex+k] range] ;
-          [title appendString:@" "] ;
-          [title appendString:[mSourceString substringWithRange:range]] ;
+          const UInt16 stripDescription = *p ;
+          if (stripDescription != 0xFFFF) {
+            NSRange range = [[inTokenArray objectAtIndex:tokenIndex+k] range] ;
+            if (stripDescription != 0) {
+              const NSUInteger leadingStrip = stripDescription >> 4 ;
+              if (leadingStrip < range.length) {
+                range.location += leadingStrip ;
+                range.length -= leadingStrip ;
+              }else{
+                range.length = 0 ;
+              }
+              const NSUInteger tailStrip = stripDescription & 15 ;
+              if (tailStrip < range.length) {
+                range.length -= tailStrip ;
+              }else{
+                range.length = 0 ;
+              }
+            }
+            if (k > 0) {
+              [title appendString:@" "] ;
+            }
+            [title appendString:[mSourceString substringWithRange:range]] ;
+          }
+          p += 2 ;
         }
         NSMenuItem * item = [[NSMenuItem alloc]
-          initWithTitle:title
+          initWithTitle:@""
           action:NULL
           keyEquivalent:@""
         ] ;
+        [item setAttributedTitle:[[NSAttributedString alloc]
+          initWithString:title
+          attributes:(displayFlags == 0) ? defaultAttributes : specialAttributes]
+        ] ;
         [item setTag:(NSInteger) [[inTokenArray objectAtIndex:tokenIndex] range].location] ;
         [menu addItem:item] ;
-        tokenIndex += labelLength - 1 ;
+        tokenIndex += labelLength ;
       }
     }
   }
@@ -393,7 +432,7 @@
 //---------------------------------------------------------------------------*
 
 - (NSUInteger) styleIndexForTokenCode: (NSInteger) inTokenCode
-           spelling: (NSString *) inSpelling {
+               spelling: (NSString *) inSpelling {
   NSUInteger result = 0 ;
   NSString * customColoringGroupIndex = [[self customSyntaxColoringDictionary] objectForKey:inSpelling] ;
   if (nil != customColoringGroupIndex) {
@@ -487,17 +526,19 @@
               mMatchedTemplateDelimiterIndex) ;
     #endif
     [self parseLexicalTokenForLexicalColoring] ;
-     search = (mTokenStartLocation < mCurrentLocation) && (mCurrentLocation < [mSourceString length]) ;
+    search = (mTokenStartLocation < mCurrentLocation) && (mCurrentLocation < [mSourceString length]) ;
     #ifdef DEBUG_MESSAGES
       NSLog (@"  parseLexicalTokenForLexicalColoring DONE, mCurrentLocation %lu, mTokenStartLocation %lu", mCurrentLocation, mTokenStartLocation) ;
     #endif
     if (mTokenCode < 0) { // Error or template
+      const NSRange range = {mTokenStartLocation, mCurrentLocation - mTokenStartLocation} ;
       OC_Token * token = [[OC_Token alloc]
         initWithTokenCode:0 // No token
-        range:NSMakeRange (mTokenStartLocation, mCurrentLocation - mTokenStartLocation)
+        range:range
         style:mTokenCode // 'Error' (-1) or 'template' (-2) style
         matchedTemplateDelimiterIndex:-1
       ] ;
+      // NSLog (@"range [%ld, %ld] --> '%@'", range.location, range.length, [mSourceString substringWithRange:range]) ;
       #ifdef DEBUG_MESSAGES
         NSLog (@"  error -> insertAtIndex:%ld, range %lu, %lu", * outUpperIndexToRedrawInStyleArray, [token range].location, [token range].length) ;
       #endif

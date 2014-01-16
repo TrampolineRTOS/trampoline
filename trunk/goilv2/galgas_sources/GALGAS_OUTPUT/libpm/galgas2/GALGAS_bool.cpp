@@ -39,6 +39,12 @@ mBoolValue (false) {
 
 //---------------------------------------------------------------------------*
 
+GALGAS_bool GALGAS_bool::constructor_default (UNUSED_LOCATION_ARGS) {
+  return GALGAS_bool (false) ;
+}
+
+//---------------------------------------------------------------------------*
+
 GALGAS_bool::GALGAS_bool (const bool inValue) :
 mIsValid (true),
 mBoolValue (inValue) {

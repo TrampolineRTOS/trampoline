@@ -31,7 +31,7 @@
 
 //---------------------------------------------------------------------*
 
-C_Display_BDD::C_Display_BDD (const PMUInt16 nombreChaines) :
+C_Display_BDD::C_Display_BDD (const PMUInt32 nombreChaines) :
 aNombreChaines (0),
 aTab (),
 aDimensions (NULL) {
@@ -54,11 +54,11 @@ void C_Display_BDD::vider (void) {
 
 //---------------------------------------------------------------------*
 
-void C_Display_BDD::allouer (const PMUInt16 nombreChaines) {
+void C_Display_BDD::allouer (const PMUInt32 nombreChaines) {
   vider () ;
-  aTab.makeRoom (nombreChaines) ;
+  aTab.makeRoom ((PMSInt32) nombreChaines) ;
   macroMyDeleteArray (aDimensions) ;
-  macroMyNewArray (aDimensions, PMUInt16, nombreChaines) ;
+  macroMyNewArray (aDimensions, PMUInt32, nombreChaines) ;
   if (aDimensions != NULL) {
     aNombreChaines = nombreChaines ;
   }else{
@@ -71,7 +71,7 @@ void C_Display_BDD::allouer (const PMUInt16 nombreChaines) {
 
 void C_Display_BDD::defineVariableName (const PMUInt32 indice,
                                         const C_String & chaine,
-                                        const PMUInt16 dimensions) {
+                                        const PMUInt32 dimensions) {
   if (indice < aNombreChaines) {
     aDimensions [indice] = dimensions ;
   //  aTab ((PMSInt32) indice COMMA_HERE) = chaine ;
@@ -81,15 +81,15 @@ void C_Display_BDD::defineVariableName (const PMUInt32 indice,
 
 //---------------------------------------------------------------------*
 
-PMSInt32 C_Display_BDD::longueur (const PMUInt16 indice) const  {
-  return aTab (indice COMMA_HERE).length () ;
+PMSInt32 C_Display_BDD::longueur (const PMUInt32 indice) const  {
+  return aTab ((PMSInt32) indice COMMA_HERE).length () ;
 }
 
 //---------------------------------------------------------------------*
 
-PMUInt16 C_Display_BDD::
-obtenirDimension (const PMUInt16 indice) const {
-  PMUInt16 dim = 1 ;
+PMUInt32 C_Display_BDD::
+obtenirDimension (const PMUInt32 indice) const {
+  PMUInt32 dim = 1 ;
   if (indice < aNombreChaines) {
     dim = aDimensions [indice] ;
   }
@@ -98,10 +98,9 @@ obtenirDimension (const PMUInt16 indice) const {
 
 //---------------------------------------------------------------------*
 
-void C_Display_BDD::
-ecrire (const PMUInt16 indice,
-        AC_OutputStream & inStream) const {
-  inStream << aTab (indice COMMA_HERE) ;
+void C_Display_BDD::ecrire (const PMUInt32 indice,
+                            AC_OutputStream & inStream) const {
+  inStream << aTab ((PMSInt32) indice COMMA_HERE) ;
 }
 
 //---------------------------------------------------------------------*

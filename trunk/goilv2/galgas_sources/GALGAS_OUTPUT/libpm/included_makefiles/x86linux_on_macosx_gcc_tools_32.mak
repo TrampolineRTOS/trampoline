@@ -4,8 +4,15 @@
 #                                                               *
 #---------------------------------------------------------------*
 
-UNIX_TOOL_PREFIX := /usr/local/gcc-4.5.2-for-linux32/bin/i586-pc-linux
-COMPILER_TOOL := $(UNIX_TOOL_PREFIX)-gcc
+TOOL_CHAIN_ARCHIVE := gcc-4.8.0-for-linux32
+TOOL_CHAIN_URL := http://crossgcc.rts-software.org/download/gcc-4.8.0-for-linux32-linux64/$(TOOL_CHAIN_ARCHIVE).tar.bz2
+TOOL_CHAIN_INSTALL_PATH := /usr/local/$(TOOL_CHAIN_ARCHIVE)
+
+#---------------------------------------------------------------*
+
+UNIX_TOOL_PREFIX := $(TOOL_CHAIN_INSTALL_PATH)/bin/i586-pc-linux
+COMPILER_PATH := $(UNIX_TOOL_PREFIX)-gcc
+COMPILER_TOOL := $(COMPILER_PATH)
 LINKER_TOOL   := $(UNIX_TOOL_PREFIX)-g++ -static-libgcc
 STRIP_TOOL    := $(UNIX_TOOL_PREFIX)-strip --strip-all
 SUDO_TOOL     := sudo

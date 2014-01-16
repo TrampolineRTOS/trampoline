@@ -49,14 +49,6 @@ C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_trace ("galgas_buil
 
 //---------------------------------------------------------------------------*
 
-C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_noteFileAccess ("galgas_builtin_options",
-                                         "noteFileAccess",
-                                         0,
-                                         "note-file-access",
-                                         "Print a message for every file access") ;
-
-//---------------------------------------------------------------------------*
-
 C_BoolCommandLineOption
 gOption_galgas_5F_builtin_5F_options_verbose_5F_output ("galgas_builtin_options",
                                                     "verbose_output",
@@ -117,7 +109,7 @@ C_StringCommandLineOption gOption_galgas_5F_builtin_5F_options_mode ("galgas_cli
                                          "mode",
                                          0,
                                          "mode",
-                                         "'lexical', 'syntax' or 'indexing'",
+                                         "'lexical-only' or 'syntax-only'",
                                          "") ;
 
 //---------------------------------------------------------------------------*
@@ -125,42 +117,25 @@ C_StringCommandLineOption gOption_galgas_5F_builtin_5F_options_mode ("galgas_cli
 static PMUInt32 gMode ;
 static PMUInt32 gContextHelpStartLocation ;
 static PMUInt32 gContextHelpEndLocation ;
-static C_TCPSocketOut gOutputSocket ;
 static C_String gCurrentlyCompiledBaseFilePath ;
 
 //---------------------------------------------------------------------------*
 
 void setExecutionMode (C_String & outErrorMessage) {
   const C_String mode = gOption_galgas_5F_builtin_5F_options_mode.mValue ;
-  if (mode == "lexical-only") {
+  if (mode == "") {
+    gMode = 0 ;
+  }else if (mode == "lexical-only") {
     gMode = 1 ;
   }else if (mode == "syntax-only") {
     gMode = 2 ;
   }else if (mode == "indexing") {
     gMode = 3 ;
   }else{
-    TC_UniqueArray <C_String> array ;
-    mode.componentsSeparatedByString (":", array) ;
-    if ((array.count() == 4) && (array (0 COMMA_HERE) == "context-help")) {
-      gMode = 4 ;
-      const PMUInt16 portNumber = (PMUInt16) array (1 COMMA_HERE).unsignedIntegerValue () ;
-      gContextHelpStartLocation = array (2 COMMA_HERE).unsignedIntegerValue () ;
-      gContextHelpEndLocation = gContextHelpStartLocation + array (3 COMMA_HERE).unsignedIntegerValue () ;
-      gOutputSocket.connect (portNumber, "localhost") ;
-    }else if ((array.count() == 2) && (array (0 COMMA_HERE) == "xml-issues-on-port")) {
-      gMode = 0 ;
-      const PMUInt16 portNumber = (PMUInt16) array (1 COMMA_HERE).unsignedIntegerValue () ;
-      gOutputSocket.connect (portNumber, "localhost") ;
-      sendToTCPSocket ("<?xml version=\"1.0\"?>\n" "<galgas>\n") ;
-    }else if (mode.length () > 0) {
-      outErrorMessage << "** Fatal Error: invalid '--mode=" << mode << "' parameter; it should be:\n"
-        "  --mode=                     default mode: perform compilation;\n"
-        "  --mode=xml-issues-on-port:p perform compilation, output issues as XML data on TCP port p;\n"
-        "  --mode=lexical-only         perform only lexical analysis;\n"
-        "  --mode=syntax-only          perform only syntax analysis;\n"
-        "  --mode=context-help:p:n     perform context help at source location n, output context help data on TCP port p;\n"
-        "  --mode=indexing             output indexing files." ;
-    }
+    outErrorMessage << "** Fatal Error: invalid '--mode=" << mode << "' parameter; it should be:\n"
+      "  --mode=                     default mode: perform compilation;\n"
+      "  --mode=lexical-only         perform only lexical analysis;\n"
+      "  --mode=syntax-only          perform only syntax analysis.\n" ;
   }
 }
 
@@ -190,12 +165,6 @@ bool executionModeIsIndexing (void) {
 
 //---------------------------------------------------------------------------*
 
-bool executionModeIsContextHelp (void) {
-  return gMode == 4 ;
-}
-
-//---------------------------------------------------------------------------*
-
 PMUInt32 contextHelpStartLocation (void) {
   return gContextHelpStartLocation ;
 }
@@ -204,13 +173,6 @@ PMUInt32 contextHelpStartLocation (void) {
 
 PMUInt32 contextHelpEndLocation (void) {
   return gContextHelpEndLocation ;
-}
-
-//---------------------------------------------------------------------------*
-
-void sendToTCPSocket (const C_String & inString) {
-  gOutputSocket << inString ;
-  // co << "SEND SOCKET '" << inString << "'\n" ;
 }
 
 //---------------------------------------------------------------------------*
@@ -228,9 +190,6 @@ bool isCurrentCompiledFilePath (const C_String & inPath) {
 //---------------------------------------------------------------------------*
 
 static void epilogueAction (void) {
-  if (executionModeIsNormal ()) {
-    sendToTCPSocket ("</galgas>\n") ;
-  }
   gCurrentlyCompiledBaseFilePath.releaseString () ;
 }
 

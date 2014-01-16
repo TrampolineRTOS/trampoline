@@ -499,7 +499,9 @@ void cSharedSortedListRoot::addObject (capSortedListElement & inAttributes) {
 void AC_GALGAS_sortedlist::addObject (capSortedListElement & inAttributes) {
   if (isValid ()) {
     insulate (HERE) ;
-    mSharedRoot->addObject (inAttributes) ;
+    if (NULL != mSharedRoot) {
+      mSharedRoot->addObject (inAttributes) ;
+    }
   }
 }
 

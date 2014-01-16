@@ -4,7 +4,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 1999, ..., 2010 Pierre Molinaro.                           *
+//  Copyright (C) 1999, ..., 2013 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
@@ -39,7 +39,7 @@
 //---------------------------------------------------------------------*
 
 PMUInt32 C_BDD::getBDDnodeSize (void) {
-  return (sizeof (PMUInt64) + sizeof (PMUInt32)) ;
+  return (PMUInt32) sizeof (cBDDnode) ;
 }
 
 //---------------------------------------------------------------------------*
@@ -49,15 +49,14 @@ PMUInt32 C_BDD::getBDDnodeSize (void) {
 //---------------------------------------------------------------------------*
 
 static PMUInt32 gNodeArraySize = 0 ;
-static PMUInt64 * gNodeArray = NULL ;
-static PMUInt32 * gAuxiliaryArray = NULL ;
+cBDDnode * gNodeArray = NULL ;
 static PMUInt64 * gMarkTable = NULL ;
 static PMUInt32 gCurrentNodeCount = 0 ;
 
 //---------------------------------------------------------------------*
 
 PMUInt32 nodeMapMemoryUsage (void) {
-  return (gNodeArraySize * (PMUInt32) (sizeof (PMUInt32) + sizeof (PMUInt64))) / 1000000 ;
+  return (gNodeArraySize * C_BDD::getBDDnodeSize ()) / 1000000 ;
 }
 
 //---------------------------------------------------------------------*
@@ -87,6 +86,15 @@ PMUInt32 hashMapMemoryUsage (void) {
 
 //---------------------------------------------------------------------*
 
+inline PMUInt64 nodeHashCode (const cBDDnode inNode) {
+  PMUInt64 result = inNode.bothBranches () % (PMUInt64) gCollisionMapSize ;
+  result <<= 32 ;
+  result = (result | inNode.mVariableIndex) % (PMUInt64) gCollisionMapSize ;
+  return result ;
+}
+
+//---------------------------------------------------------------------*
+
 static void reallocHashMap (const PMUInt32 inNewSize) {
   if ((0 < inNewSize) && (inNewSize != gCollisionMapSize)) {
     if (C_BDD::displaysInformationMessages ()) {
@@ -100,8 +108,8 @@ static void reallocHashMap (const PMUInt32 inNewSize) {
       gCollisionMap [i] = 0 ;
     }
     for (PMUInt32 nodeIndex=1 ; nodeIndex<=gCurrentNodeCount ; nodeIndex++) {
-      const PMUInt64 hashCode = gNodeArray [nodeIndex] % (PMUInt64) gCollisionMapSize ;
-      gAuxiliaryArray [nodeIndex] = gCollisionMap [hashCode] ;
+      const PMUInt64 hashCode = nodeHashCode (gNodeArray [nodeIndex]) ;
+      gNodeArray [nodeIndex].mAuxiliary = gCollisionMap [hashCode] ;
       gCollisionMap [hashCode] = nodeIndex ;
     }
   }
@@ -113,22 +121,23 @@ static const PMUInt32 kUniqueMapSizeIncrement = 4194304 ;
 
 //---------------------------------------------------------------------------*
 
-static PMUInt32 addNewNode (const PMUInt64 inNode) {
+static PMUInt32 addNewNode (const cBDDnode inNode) {
   if (gNodeArraySize <= (gCurrentNodeCount + 1)) {
     const PMUInt32 newSize = gNodeArraySize + kUniqueMapSizeIncrement ;
-    if (newSize > (1 << BDD_SPACE_BIT_COUNT)) {
-      printf ("*** BDD package node map saturation: needs more than 1 ** %d nodes\n", BDD_SPACE_BIT_COUNT) ;
+    if (newSize > (1U << 31)) {
+      printf ("*** BDD package node map saturation: needs more than 2 ** 31 nodes\n") ;
       exit (1) ;
     }else  if (C_BDD::displaysInformationMessages ()) {
       printf ("BDD package info: node map reallocated to %u %03u %03u (%u MB)\n",
               newSize / 1000000, (newSize / 1000) % 1000, newSize % 1000,
-              (newSize * (PMUInt32) sizeof (PMUInt64)) / 1000000) ;
+              (newSize * (PMUInt32) sizeof (cBDDnode)) / 1000000) ;
     }
-    macroMyReallocPODArray (gNodeArray, PMUInt64, newSize) ;
-    macroMyReallocPODArray (gAuxiliaryArray, PMUInt32, newSize) ;
+    macroMyReallocPODArray (gNodeArray, cBDDnode, newSize) ;
     macroMyReallocPODArray (gMarkTable, PMUInt64, newSize >> 6) ;
     gNodeArraySize = newSize ;
-    gNodeArray [0] = 0 ;
+    gNodeArray [0].mELSE = 0 ;
+    gNodeArray [0].mTHEN = 0 ;
+    gNodeArray [0].mVariableIndex = 0 ;
   }
   if (gHashMapExpandable && (gCurrentNodeCount > (gCollisionMapSize / 2))) {
     const PMUInt32 newSize = getPrimeGreaterThan (gCollisionMapSize + 1) ;
@@ -161,21 +170,11 @@ static PMUInt32 addNewNode (const PMUInt64 inNode) {
   gCurrentNodeCount ++ ;
   gNodeArray [gCurrentNodeCount] = inNode ;
 //--- Enter in hash map
-  const PMUInt64 hashCode = inNode % (PMUInt64) gCollisionMapSize ;
-  gAuxiliaryArray [gCurrentNodeCount] = gCollisionMap [hashCode] ;
+  const PMUInt64 hashCode = nodeHashCode (inNode) ;
+  gNodeArray [gCurrentNodeCount].mAuxiliary = gCollisionMap [hashCode] ;
   gCollisionMap [hashCode] = gCurrentNodeCount ;
 //---
   return gCurrentNodeCount ;
-}
-
-//---------------------------------------------------------------------------*
-
-PMUInt64 nodeForRoot (const PMUInt32 inRoot
-                      COMMA_LOCATION_ARGS) {
-  const PMUInt32 nodeIndex = inRoot >> 1 ;
-  MF_AssertThere (nodeIndex <= gCurrentNodeCount, "nodeIndex (%lld) should be <= gCurrentNodeCount (%lld)", nodeIndex, gCurrentNodeCount) ;
-  const PMUInt64 result = gNodeArray [nodeIndex] ;
-  return result ;
 }
 
 //------------------------------------------------------------------------*
@@ -183,19 +182,23 @@ PMUInt64 nodeForRoot (const PMUInt32 inRoot
 void C_BDD::unmarkAllExistingBDDnodes (void) {
   MF_Assert ((gNodeArraySize % 64) == 0, "gNodeArraySize (%lld) is not a multiple of 64", gNodeArraySize, 0) ;
   for (PMUInt32 i=0 ; i<(gNodeArraySize >> 6) ; i++) {
-    gMarkTable [i] = 0ULL ;
+    gMarkTable [i] = 0 ;
   }
 }
 
 //------------------------------------------------------------------------*
 
 static bool isNodeMarked (const PMUInt32 inValue COMMA_LOCATION_ARGS) {
-  const PMUInt32 nodeIndex = inValue >> 1 ;
-  MF_AssertThere (nodeIndex > 0, "nodeIndex (%lld) should be > 0", nodeIndex, 0) ;
-  MF_AssertThere (nodeIndex <= gCurrentNodeCount, "nodeIndex (%lld) should be <= gCurrentNodeCount (%lld)", nodeIndex, gCurrentNodeCount) ;
-  const PMUInt64 mask = 1ULL << (nodeIndex & 0x3F) ;
-  const PMUInt32 idx = nodeIndex >> 6 ;
-  return (gMarkTable [idx] & mask) != 0 ;
+  const PMUInt32 nodeIndex = nodeIndexForRoot (inValue COMMA_HERE) ;
+  bool marked = nodeIndex == 0 ;
+  if (! marked) {
+    MF_AssertThere (nodeIndex > 0, "nodeIndex (%lld) should be > 0", nodeIndex, 0) ;
+    MF_AssertThere (nodeIndex <= gCurrentNodeCount, "nodeIndex (%lld) should be <= gCurrentNodeCount (%lld)", nodeIndex, gCurrentNodeCount) ;
+    const PMUInt64 mask = 1ULL << (nodeIndex & 0x3F) ;
+    const PMUInt32 idx = nodeIndex >> 6 ;
+    marked = (gMarkTable [idx] & mask) != 0 ;
+  }
+  return marked ;
 }
 
 //------------------------------------------------------------------------*
@@ -254,10 +257,10 @@ macroDeclareStaticMutex (semaphore)
 
 //---------------------------------------------------------------------------*
 
-PMUInt32 find_or_add (const PMUInt16 inBoolVar,
+PMUInt32 find_or_add (const PMUInt32 inBoolVar,
                       const PMUInt32 inELSEbranch,
                       const PMUInt32 inTHENbranch
-                      COMMA_LOCATION_ARGS) {
+                      COMMA_UNUSED_LOCATION_ARGS) {
   PMUInt32 result = inELSEbranch ;
   if (inELSEbranch != inTHENbranch) {
     macroMutexLock (semaphore) ;
@@ -267,12 +270,14 @@ PMUInt32 find_or_add (const PMUInt16 inBoolVar,
       const PMUInt32 complement = inELSEbranch & 1 ;
       const PMUInt32 c1 = inTHENbranch ^ complement ;
       const PMUInt32 c0 = inELSEbranch ^ complement ;
-      const PMUInt64 candidateNode = makeNode (inBoolVar, c1, c0 COMMA_THERE) ;
+      const cBDDnode candidateNode = cBDDnode (c1, c0, inBoolVar) ;
       // printf ("candidateNode %llu gCollisionMapSize %u\n", candidateNode, gCollisionMapSize) ;
-      const PMUInt64 hashCode = candidateNode % (PMUInt64) gCollisionMapSize ;
+      const PMUInt64 hashCode = nodeHashCode (candidateNode) ;
       PMUInt32 nodeIndex = gCollisionMap [hashCode] ;
-      while ((0 != nodeIndex) && (gNodeArray [nodeIndex] != candidateNode)) {
-        nodeIndex = gAuxiliaryArray [nodeIndex] ;
+      while ((0 != nodeIndex)
+         && ((gNodeArray [nodeIndex].bothBranches () != candidateNode.bothBranches ())
+          || (gNodeArray [nodeIndex].mVariableIndex != candidateNode.mVariableIndex))) {
+        nodeIndex = gNodeArray [nodeIndex].mAuxiliary ;
       }
       if (0 == nodeIndex) {
         nodeIndex = addNewNode (candidateNode) ;
@@ -317,10 +322,12 @@ PMUInt32 C_BDD::getBDDinstancesCount (void) {
 //------------------------------------------------------------------------*
 
 static void recursiveMarkBDDNodes (const PMUInt32 inValue) {
-  const PMUInt64 node = nodeForRoot (inValue COMMA_HERE) ;
-  if ((node != 0) && (! isNodeMarkedThenMark (inValue COMMA_HERE))) {
-    recursiveMarkBDDNodes (extractThen (node)) ;
-    recursiveMarkBDDNodes (extractElse (node)) ;
+  const PMUInt32 nodeIndex = nodeIndexForRoot (inValue COMMA_HERE) ;
+  if ((nodeIndex > 0) && ! isNodeMarkedThenMark (inValue COMMA_HERE)) {
+    if (gNodeArray [nodeIndex].bothBranches () != 0) {
+      recursiveMarkBDDNodes (gNodeArray [nodeIndex].mTHEN) ;
+      recursiveMarkBDDNodes (gNodeArray [nodeIndex].mELSE) ;
+    }
   }
 }
 
@@ -353,7 +360,7 @@ void C_BDD::markAndSweepUnusedNodes (void) {
 //--- Parcourir la table des elements BDD et recycler ceux qui sont inutilises
   PMUInt32 unchangedNodeCount = 0 ;
   if (gNodeArraySize > 0) {
-    gAuxiliaryArray [0] = 0 ;
+    gNodeArray [0].mAuxiliary = 0 ;
     if (gMarkTable [0] == ~ 1LLU) {
       unchangedNodeCount = 63 ;
       for (PMUInt32 i=1 ; (i<(gNodeArraySize >> 6)) && (gMarkTable [i] == ~ 0LLU) ; i++) {
@@ -363,23 +370,23 @@ void C_BDD::markAndSweepUnusedNodes (void) {
   }
   // printf ("********************************************** %u nodes inchanges\n", unchangedNodeCount) ;
   for (PMUInt32 i=1 ; i<=unchangedNodeCount ; i++) {
-    gAuxiliaryArray [i] = i ;
+    gNodeArray [i].mAuxiliary = i ;
   }
   PMUInt32 newNodeCount = unchangedNodeCount ;
   for (PMUInt32 nodeIndex=unchangedNodeCount+1 ; nodeIndex<=gCurrentNodeCount ; nodeIndex++) {
     if (isNodeMarked (nodeIndex << 1 COMMA_HERE)) { // Node is used
-      const PMUInt64 node = gNodeArray [nodeIndex] ;
-      const PMUInt16 var = extractVar (node COMMA_HERE) ;
-      const PMUInt32 thenBranch = extractThen (node) ;
-      const PMUInt32 elseBranch = extractElse (node) ;
-      MF_Assert ((thenBranch >> 1) < nodeIndex, "(thenBranch [%lld] >> 1) < nodeIndex [%lld]", (thenBranch >> 1), nodeIndex) ;
-      MF_Assert ((elseBranch >> 1) < nodeIndex, "(elseBranch [%lld] >> 1) < nodeIndex [%lld]", (elseBranch >> 1), nodeIndex) ;
-      const PMUInt32 newThenBranch = (gAuxiliaryArray [thenBranch >> 1] << 1) | (thenBranch & 1) ;
-      const PMUInt32 newElseBranch = (gAuxiliaryArray [elseBranch >> 1] << 1) | (elseBranch & 1) ;
-      const PMUInt64 newNode = makeNode (var, newThenBranch, newElseBranch COMMA_HERE) ;
+      const PMUInt32 var = gNodeArray [nodeIndex].mVariableIndex ;
+      const PMUInt32 thenBranch = gNodeArray [nodeIndex].mTHEN ;
+      const PMUInt32 elseBranch = gNodeArray [nodeIndex].mELSE ;
+      MF_Assert ((thenBranch >> 1) < nodeIndex, "(thenBranch [%lld] >> 1) < nodeIndex [%lld]", thenBranch >> 1, nodeIndex) ;
+      MF_Assert ((elseBranch >> 1) < nodeIndex, "(elseBranch [%lld] >> 1) < nodeIndex [%lld]", elseBranch >> 1, nodeIndex) ;
+      const PMUInt32 newThenBranch = (gNodeArray [thenBranch >> 1].mAuxiliary << 1) | (thenBranch & 1) ;
+      const PMUInt32 newElseBranch = (gNodeArray [elseBranch >> 1].mAuxiliary << 1) | (elseBranch & 1) ;
       newNodeCount ++ ;
-      gNodeArray [newNodeCount] = newNode ;
-      gAuxiliaryArray [nodeIndex] = newNodeCount ;
+      gNodeArray [newNodeCount].mTHEN = newThenBranch ;
+      gNodeArray [newNodeCount].mELSE = newElseBranch ;
+      gNodeArray [newNodeCount].mVariableIndex = var ;
+      gNodeArray [nodeIndex].mAuxiliary = newNodeCount ;
      // MF_Assert (node == newNode, "node [%lld] == newNode [%lld]", node, newNode) ;
       //if (newNodeCount < 10) {
       //  printf ("index %4u -> %4u, node %16llX -> %16llX\n", nodeIndex, newNodeCount, node, newNode) ;
@@ -392,8 +399,8 @@ void C_BDD::markAndSweepUnusedNodes (void) {
   p = gBDDinstancesListRoot.mPtrToNextBDD ;
   while (p != & gBDDinstancesListRoot) {
     const PMUInt32 previousValue = p->mBDDvalue ;
-    MF_Assert ((gAuxiliaryArray [previousValue >> 1]) <= (previousValue >> 1), "(elseBranch [%lld] >> 1) <= nodeIndex [%lld]", (gAuxiliaryArray [previousValue >> 1]), previousValue >> 1) ;
-    p->mBDDvalue = (gAuxiliaryArray [previousValue >> 1] << 1) | (previousValue & 1) ;
+    MF_Assert ((gNodeArray [previousValue >> 1].mAuxiliary) <= (previousValue >> 1), "(elseBranch [%lld] >> 1) <= nodeIndex [%lld]", (gNodeArray [previousValue >> 1].mAuxiliary), previousValue >> 1) ;
+    p->mBDDvalue = (gNodeArray [previousValue >> 1].mAuxiliary << 1) | (previousValue & 1) ;
     // printf ("root %X -> %X\n", previousValue, p->mBDDvalue) ;
    // MF_Assert (previousValue == p->mBDDvalue, "(previousValue [%lld] >> 1) == p->mBDDvalue [%lld]", previousValue, p->mBDDvalue) ;
     p = p->mPtrToNextBDD ;
@@ -410,8 +417,8 @@ void C_BDD::markAndSweepUnusedNodes (void) {
   }
   if (0 < gCollisionMapSize) {
     for (PMUInt32 nodeIndex=1 ; nodeIndex<=gCurrentNodeCount ; nodeIndex++) {
-      const PMUInt64 hashCode = gNodeArray [nodeIndex] % (PMUInt64) gCollisionMapSize ;
-      gAuxiliaryArray [nodeIndex] = gCollisionMap [hashCode] ;
+      const PMUInt64 hashCode = nodeHashCode (gNodeArray [nodeIndex]) ;
+      gNodeArray [nodeIndex].mAuxiliary = gCollisionMap [hashCode] ;
       gCollisionMap [hashCode] = nodeIndex ;
     }
   }
@@ -447,7 +454,7 @@ mPtrToNextBDD (NULL) {
 
 //---------------------------------------------------------------------*
 
-C_BDD::C_BDD (const PMUInt16 variable,
+C_BDD::C_BDD (const PMUInt32 variable,
               const bool inSign) :
 mBDDvalue (0),
 mPtrToPreviousBDD (NULL),
@@ -466,26 +473,34 @@ mPtrToNextBDD (NULL) {
   initLinks () ;
 }
 
+//---------------------------------------------------------------------------*
+
+macroDeclareStaticMutex (semaphoreLink)
+
 //---------------------------------------------------------------------*
 
 void C_BDD::initLinks (void) {
   mPtrToPreviousBDD = this ;
   mPtrToNextBDD = this ;
-  C_BDD * suivantRacine = gBDDinstancesListRoot.mPtrToNextBDD ;
-  mPtrToPreviousBDD = & gBDDinstancesListRoot ;
-  suivantRacine->mPtrToPreviousBDD = this ;
-  mPtrToNextBDD = suivantRacine ;
-  gBDDinstancesListRoot.mPtrToNextBDD = this ;
+  macroMutexLock (semaphoreLink) ;
+    C_BDD * suivantRacine = gBDDinstancesListRoot.mPtrToNextBDD ;
+    mPtrToPreviousBDD = & gBDDinstancesListRoot ;
+    suivantRacine->mPtrToPreviousBDD = this ;
+    mPtrToNextBDD = suivantRacine ;
+    gBDDinstancesListRoot.mPtrToNextBDD = this ;
+  macroMutexUnlock (semaphoreLink) ;
 }
 
 //---------------------------------------------------------------------*
 
 C_BDD::~C_BDD (void) {
   mBDDvalue = 0 ;
-  C_BDD * suivant = mPtrToNextBDD ;
-  C_BDD * precedent = mPtrToPreviousBDD ;
-  precedent->mPtrToNextBDD = suivant ;
-  suivant->mPtrToPreviousBDD = precedent ;
+  macroMutexLock (semaphoreLink) ;
+    C_BDD * suivant = mPtrToNextBDD ;
+    C_BDD * precedent = mPtrToPreviousBDD ;
+    precedent->mPtrToNextBDD = suivant ;
+    suivant->mPtrToPreviousBDD = precedent ;
+  macroMutexUnlock (semaphoreLink) ;
 }
 
 //---------------------------------------------------------------------*
@@ -504,22 +519,22 @@ C_BDD & C_BDD::operator = (const C_BDD & inSource) {
 //---------------------------------------------------------------------------*
 
 static void internalCheckBDDIsWellFormed (const PMUInt32 inBDD,
-                                          const PMUInt16 inCurrentVar
+                                          const PMUInt32 inCurrentVar
                                           COMMA_LOCATION_ARGS) {
-  const PMUInt64 node = nodeForRoot (inBDD COMMA_HERE) ;
-  if (0 != node) {
-    const PMUInt16 var = extractVar (node COMMA_HERE) ;
+  const PMUInt32 nodeIndex = nodeIndexForRoot (inBDD COMMA_HERE) ;
+  if (0 != gNodeArray [nodeIndex].bothBranches ()) {
+    const PMUInt32 var = gNodeArray [nodeIndex].mVariableIndex ;
     if (var >= inCurrentVar) {
      #ifndef DO_NOT_GENERATE_CHECKINGS
-        printf ("*** ERROR at %s:%d: BDD is not well-formed (var %hu sould be < var %hu) ***\n", IN_SOURCE_FILE, IN_SOURCE_LINE, var, inCurrentVar) ;
+        printf ("*** ERROR at %s:%d: BDD is not well-formed (var %u sould be < var %u) ***\n", IN_SOURCE_FILE, IN_SOURCE_LINE, var, inCurrentVar) ;
       #else
-        printf ("*** ERROR (compile in debug mode for locating the error): BDD is not well-formed (var %hu sould be < var %hu) ***\n", var, inCurrentVar) ;
+        printf ("*** ERROR (compile in debug mode for locating the error): BDD is not well-formed (var %u sould be < var %u) ***\n", var, inCurrentVar) ;
       #endif
       exit (1) ;
     }
     if (! isNodeMarkedThenMark (inBDD COMMA_HERE)) {
-      internalCheckBDDIsWellFormed (extractThen (inBDD), var COMMA_THERE) ;
-      internalCheckBDDIsWellFormed (extractElse (inBDD), var COMMA_THERE) ;
+      internalCheckBDDIsWellFormed (gNodeArray [nodeIndex].mTHEN, var COMMA_HERE) ;
+      internalCheckBDDIsWellFormed (gNodeArray [nodeIndex].mELSE, var COMMA_HERE) ;
     }
   }
 }
@@ -613,7 +628,7 @@ void C_BDD::printBDDpackageOperationsSummary (AC_OutputStream & inStream) {
     PMUInt32 nodeIndex = gCollisionMap [i] ;
     while (0 != nodeIndex) {
       length ++ ;
-      nodeIndex = gAuxiliaryArray [nodeIndex] ;
+      nodeIndex = gNodeArray [nodeIndex].mAuxiliary ;
     }
     if (entrySizeArray.count () > length) {
       entrySizeArray (length COMMA_HERE) ++ ;
@@ -622,16 +637,12 @@ void C_BDD::printBDDpackageOperationsSummary (AC_OutputStream & inStream) {
     }
   }  
   for (PMSInt32 i=0 ; i<entrySizeArray.count () ; i++) {
-    if (entrySizeArray (i COMMA_HERE) > 0) {
+    if ((entrySizeArray (i COMMA_HERE) > 0) && (gCollisionMapSize > 0)) {
       inStream << "  " << cStringWithUnsigned (entrySizeArray (i COMMA_HERE))
                << " entries of size " << cStringWithSigned (i) 
                << " (" << cStringWithUnsigned ((100UL * entrySizeArray (i COMMA_HERE)) / gCollisionMapSize) << "%)\n" ;
     }
   }  
-//---
-//  gAndOperationCache.printStatistics (inStream, "AND") ;
-//  gForAllOperationCache.printStatistics (inStream, "FOR ALL") ;
-//  gITEoperationCache.printStatistics (inStream, "ITE") ;
 }
 
 //---------------------------------------------------------------------------*
@@ -642,7 +653,6 @@ void C_BDD::freeBDDStataStructures (void) {
   C_BDD::markAndSweepUnusedNodes () ;
   if (0 == gCurrentNodeCount) {
     macroMyDeletePODArray (gCollisionMap) ;
-    macroMyDeletePODArray (gAuxiliaryArray) ;
     macroMyDeletePODArray (gMarkTable) ;
     macroMyDeletePODArray (gNodeArray) ;
   }else{

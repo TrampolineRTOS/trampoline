@@ -233,6 +233,8 @@ void C_Lexique::resetForSecondPass (void) {
   mPreviousChar = TO_UNICODE ('\0') ;
   mCurrentTokenPtr = mFirstToken ;
   if (mCurrentTokenPtr != NULL) {
+ //   mStartLocationForHere = mCurrentTokenPtr->mStartLocation ;
+ //   mEndLocationForHere = mCurrentTokenPtr->mEndLocation ;
     mTemplateString << mCurrentTokenPtr->mTemplateStringBeforeToken ;
     mCurrentLocation = mCurrentTokenPtr->mEndLocation ;
   }
@@ -1427,6 +1429,8 @@ void C_Lexique::acceptTerminal (FORMAL_ARG_ACCEPT_TERMINAL COMMA_LOCATION_ARGS) 
     #ifndef DO_NOT_GENERATE_CHECKINGS
       currentTokenCode = mCurrentTokenPtr->mTokenCode ;
     #endif
+    mStartLocationForHere = mCurrentTokenPtr->mStartLocation ;
+    mEndLocationForHere = mCurrentTokenPtr->mEndLocation ;
     mCurrentTokenPtr = mCurrentTokenPtr->mNextToken ;
     if (mCurrentTokenPtr != NULL) {
       mTemplateString << mCurrentTokenPtr->mTemplateStringBeforeToken ;
