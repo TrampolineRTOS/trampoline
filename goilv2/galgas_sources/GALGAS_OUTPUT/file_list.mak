@@ -114,6 +114,9 @@ SOURCES += F_GetPrime.cpp
 SOURCES += MF_MemoryControl.cpp
 SOURCES += cpp-allocation.cpp
 SOURCES += basic-allocation.cpp
+SOURCES += PMUInt128.cpp
+SOURCES += C_UIntSet.cpp
+SOURCES += C_DirectedGraph.cpp
 
 #---------------------------------------------------------------*
 #    G A L G A S    2                                           *

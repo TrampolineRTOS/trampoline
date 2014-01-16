@@ -91,6 +91,8 @@ mTemplateString (),
 mTemplateStringLocation (),
 mSourceTextPtr (NULL),
 mCurrentLocation (),
+mStartLocationForHere (),
+mEndLocationForHere (),
 mCheckedVariableList () {
   macroAssignSharedObject (mCallerCompiler, inCallerCompiler) ;
 }
@@ -170,9 +172,8 @@ void C_Compiler::resetAndLoadSourceFromText (C_SourceTextInString * & ioSourceTe
 
 //---------------------------------------------------------------------------*
 
-void C_Compiler::
-onTheFlySemanticError (const C_String & inErrorMessage
-                       COMMA_LOCATION_ARGS) {
+void C_Compiler::onTheFlySemanticError (const C_String & inErrorMessage
+                                        COMMA_LOCATION_ARGS) {
   signalSemanticError (sourceText (),
                        mCurrentLocation,
                        inErrorMessage
@@ -187,49 +188,12 @@ onTheFlySemanticError (const C_String & inErrorMessage
 
 //---------------------------------------------------------------------------*
 
-void C_Compiler::
-onTheFlySemanticWarning (const C_String & inWarningMessage
-                         COMMA_LOCATION_ARGS) {
+void C_Compiler::onTheFlySemanticWarning (const C_String & inWarningMessage
+                                          COMMA_LOCATION_ARGS) {
   signalSemanticWarning (sourceText (), 
                          mCurrentLocation,
                          inWarningMessage
                          COMMA_THERE) ;
-}
-
-//---------------------------------------------------------------------------*
-
-#ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark ========= Emit an error for on a cast expression failure
-#endif
-
-//---------------------------------------------------------------------------*
-
-void C_Compiler::castInExpressionErrorAtLocation (const GALGAS_location & inErrorLocation
-                                                  COMMA_LOCATION_ARGS) {
-  C_String errorMessage ;
-  errorMessage << "Run-time cast in expression error\n" ;
-  semanticErrorAtLocation (inErrorLocation, errorMessage COMMA_THERE) ;
-}
-
-//---------------------------------------------------------------------------*
-
-#ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark ========= Emit an error for on a cast expression failure
-#endif
-
-//---------------------------------------------------------------------------*
-
-void C_Compiler::extractObjectError (const GALGAS_location & inErrorLocation,
-                                     const char * inTargetTypeName,
-                                     const C_galgas_type_descriptor * inSourceStaticType
-                                     COMMA_LOCATION_ARGS) {
-  C_String errorMessage ;
-  errorMessage << "Run-time error: cannot extract an @"
-               << inTargetTypeName
-              << " object from an embedded object of type @"
-              << inSourceStaticType->mGalgasTypeName
-              << " \n" ;
-  semanticErrorAtLocation (inErrorLocation, errorMessage COMMA_THERE) ;
 }
 
 //---------------------------------------------------------------------------*
@@ -243,9 +207,7 @@ void C_Compiler::extractObjectError (const GALGAS_location & inErrorLocation,
 void C_Compiler::printMessage (const GALGAS_string & inMessage
                                COMMA_LOCATION_ARGS) {
   if (inMessage.isValid ()) {
-    C_String s ;
-    s << inMessage.stringValue () ;
-    ggs_printMessage (s COMMA_THERE) ;
+    ggs_printMessage (inMessage.stringValue () COMMA_THERE) ;
   }
 }
 
@@ -287,13 +249,17 @@ void C_Compiler::loopRunTimeVariantError (LOCATION_ARGS) {
 //---------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark ========= GALGAS 2 here
+  #pragma mark ========= Cast error
 #endif
 
 //---------------------------------------------------------------------------*
 
-GALGAS_location C_Compiler::here (void) const {
-  return GALGAS_location (mCurrentLocation, mCurrentLocation, mSourceTextPtr) ;
+void C_Compiler::castError (const C_String & inTargetTypeName,
+                            const C_galgas_type_descriptor * inObjectDynamicTypeDescriptor
+                            COMMA_LOCATION_ARGS) {
+  C_String m ;
+  m << "cannot cast an @" << inObjectDynamicTypeDescriptor->mGalgasTypeName << " to an @" << inTargetTypeName ;
+  onTheFlyRunTimeError (m COMMA_THERE) ;
 }
 
 //---------------------------------------------------------------------------*
@@ -459,10 +425,21 @@ void C_Compiler::emitSemanticWarning (const GALGAS_location & inWarningLocation,
 
 //---------------------------------------------------------------------------*
 
-void C_Compiler::
-onTheFlyRunTimeError (const C_String & inRunTimeErrorMessage
-                      COMMA_LOCATION_ARGS) {
+void C_Compiler::onTheFlyRunTimeError (const C_String & inRunTimeErrorMessage
+                                       COMMA_LOCATION_ARGS) {
   signalRunTimeError (inRunTimeErrorMessage COMMA_THERE) ;
+}
+
+//---------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark ========= here
+#endif
+
+//---------------------------------------------------------------------------*
+
+GALGAS_location C_Compiler::here (void) const {
+  return GALGAS_location (mStartLocationForHere, mEndLocationForHere, mSourceTextPtr) ;
 }
 
 //---------------------------------------------------------------------------*
@@ -563,11 +540,6 @@ generateFileWithPatternFromPathes (const C_String & inStartPath,
     //printf ("inFileName '%s'\n", inFileName.cString (HERE)) ;
     //printf ("fileName '%s'\n", fileName.cString (HERE)) ;
     const C_String directory = fileName.stringByDeletingLastPathComponent () ;
-    if (gOption_galgas_5F_builtin_5F_options_noteFileAccess.mValue) {
-      C_String s ;
-      s << "- Note file access: create '" << directory << "' directory if does not exist\n" ;
-      printMessage (s COMMA_HERE) ;
-    }
     C_FileManager::makeDirectoryIfDoesNotExist (directory) ;
     if (performGeneration ()) {
       C_TextFileWrite f (fileName) ;
@@ -710,11 +682,6 @@ generateFileFromPathes (const C_String & inStartPath,
     //printf ("inFileName '%s'\n", inFileName.cString (HERE)) ;
     //printf ("fileName '%s'\n", fileName.cString (HERE)) ;
     const C_String directory = fileName.stringByDeletingLastPathComponent () ;
-    if (gOption_galgas_5F_builtin_5F_options_noteFileAccess.mValue) {
-      C_String s ;
-      s << "- Note file access: create '" << directory << "' directory if does not exist\n" ;
-      printMessage (s COMMA_HERE) ;
-    }
     C_FileManager::makeDirectoryIfDoesNotExist (directory) ;
     if (performGeneration ()) {
       C_TextFileWrite f (fileName) ;

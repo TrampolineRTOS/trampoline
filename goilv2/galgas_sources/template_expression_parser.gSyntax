@@ -650,12 +650,12 @@ routine templateMethodInvocation
 #        end loop;
         @stringlist paragraph := [result componentsSeparatedByString !"\n"];
         @stringlist resultParagraph [emptyList];
-        foreach paragraph prefixedby para_ do
+        foreach paragraph : para_ do
           @stringlist parts := [para_mValue componentsSeparatedByString !" "];
           @sint64 linewidth := 0LS;
           @bool newline := true;
           result := "";
-          foreach parts prefixedby word_ do
+          foreach parts : word_ do
             if linewidth + [word_mValue length] > [width mInt64Value] then
               result .= "\n" . stringshift;
               linewidth := [shift mInt64Value];
@@ -1545,7 +1545,7 @@ rule <factor>
         # set up a variable map for local variables of the function
         @TfieldMap locals [emptyMap];
         # search arguments values and add them to the locals
-        foreach actualArgumentList prefixedby actual_ , [[fct mFunctionValue] args] prefixedby expected_ do
+        foreach actualArgumentList : actual_ , [[fct mFunctionValue] args] : expected_ do
           [!?locals insertKey !expected_mValue !actual_mType !actual_mValue];
         end foreach;
         @string result := "";
@@ -1570,7 +1570,7 @@ rule <factor>
         : outValue, outResultType;
       else
         @uint idx := 1;
-        foreach formalParameterList prefixedby formal_, actualArgumentList prefixedby actual_ do
+        foreach formalParameterList : formal_, actualArgumentList : actual_ do
           switch actual_mType
           when boolType :
             if formal_mValue != `@bool then
@@ -1609,13 +1609,16 @@ rule <factor>
           const @object result := [f invoke !actualArgumentObjectList ![functionOrVariableName location]];
           if [result objectDynamicType] == `@sint64 then
             outResultType := [@Ttype intType];
-            outValue->mInt64Value := (cast result if == @sint64 else error functionOrVariableName);
+            outValue->mInt64Value := (cast result : @sint64);
+            # else error functionOrVariableName);
           elsif [result objectDynamicType] == `@bool then
             outResultType := [@Ttype boolType];
-            outValue->mInt64Value := [(cast result if == @bool else error functionOrVariableName) sint64];
+            outValue->mInt64Value := [(cast result : @bool) sint64];
+            # else error functionOrVariableName) sint64];
           elsif [result objectDynamicType] == `@string then
             outResultType := [@Ttype stringType];
-            outValue->mStringValue := (cast result if == @string else error functionOrVariableName);
+            outValue->mStringValue := (cast result : @string);
+            # else error functionOrVariableName);
           else
             error functionOrVariableName : "this function does not return an unsigned, boolean or string value";
           end if;

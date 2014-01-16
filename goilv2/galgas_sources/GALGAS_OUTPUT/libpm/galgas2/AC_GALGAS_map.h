@@ -120,7 +120,9 @@ class AC_GALGAS_map : public AC_GALGAS_root {
                                                                           const char * inSearchErrorMessage
                                                                           COMMA_LOCATION_ARGS) ;
 
-  protected : VIRTUAL_IN_DEBUG void getOverridenMap (AC_GALGAS_map & outMap) const ;
+  protected : VIRTUAL_IN_DEBUG void getOverridenMap (AC_GALGAS_map & outMap,
+                                                     C_Compiler * inCompiler
+                                                     COMMA_LOCATION_ARGS) const ;
 
 //--------------------------------- Remove
   protected : VIRTUAL_IN_DEBUG void performRemove (GALGAS_lstring & inKey,
@@ -144,9 +146,9 @@ class AC_GALGAS_map : public AC_GALGAS_root {
                                                                    C_Compiler * inCompiler
                                                                    COMMA_LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_stringset reader_allKeys (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_stringset reader_keySet (LOCATION_ARGS) const ;
 
-  public : VIRTUAL_IN_DEBUG GALGAS_lstringlist reader_allKeyList (LOCATION_ARGS) const ;
+  public : VIRTUAL_IN_DEBUG GALGAS_lstringlist reader_keyList (LOCATION_ARGS) const ;
 
   public : VIRTUAL_IN_DEBUG GALGAS_uint reader_count (LOCATION_ARGS) const ;
 

@@ -58,14 +58,14 @@ rule <start>:
 #  log configFiles;
   # files are stored from the deepest to the shallowest and we should go from the
   # shallowest to the deepest.
-  foreach \down configFiles (@string file) do
+  foreach > configFiles (@string file) do
 #    message file . "\n";
     grammar goil_file_level_include in lstringWith[!file] !?imp !?application;
   end foreach;
 
   # then look for config files suffixed by the OIL version
   @stringlist configVersionFiles := allTemplateFilePaths[!"config" !config_file_name.version.".oil"];
-  foreach \down configVersionFiles (@string file) do
+  foreach > configVersionFiles (@string file) do
 #    message file . "\n";
     grammar goil_file_level_include in lstringWith[!file] !?imp !?application;
   end foreach;
@@ -257,8 +257,8 @@ rule <oil_declaration>
       @objectAttributes subAttributes := emptyObject[];    
       switch [type type]
       when enumeration:
-        cast type:
-        when == @impEnumType enumType do
+        cast type
+        when == @impEnumType enumType :
           if [[enumType valuesMap] hasKey ![value string]] then
             [[enumType valuesMap] get !value ?subTypes];
           else
@@ -307,8 +307,8 @@ rule <oil_declaration>
       if [type type] != [@dataType boolean] then
         error idf: [[type type] oilType]." expected, got a BOOLEAN";
       else
-        cast type:
-        when == @impBoolType boolType do
+        cast type
+        when == @impBoolType boolType :
           if [value bool] then
             subTypes := [boolType trueSubAttributes];
           else
@@ -364,8 +364,8 @@ rule <oil_declaration>
     if [type type] != [@dataType structType] then
       error idf: [[type type] oilType]." expected, got a STRUCT";
     else
-      cast type:
-      when == @impStructType structType do
+      cast type
+      when == @impStructType structType :
         subTypes := [structType structAttributes];
       else end cast;      
     end if;
@@ -385,8 +385,8 @@ rule <oil_declaration>
       # the multiple identifier has been already encountered
       # get the list
       [!?idfs del !idf ?attributeList];
-      cast attributeList:
-      when == @multipleAttribute multiAttribute do
+      cast attributeList
+      when == @multipleAttribute multiAttribute :
         @identifierList aList := [multiAttribute items];
         aList += !val;
         val := [@multipleAttribute new !emptyLString[] ![multiAttribute location] !aList];

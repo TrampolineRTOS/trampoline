@@ -21,17 +21,12 @@
 //                                                                           *
 //---------------------------------------------------------------------------*
 
-#import "PMTabBarView.h"
-
-//---------------------------------------------------------------------------*
-
 @class OC_GGS_TextView ;
 @class OC_GGS_DelegateForSyntaxColoring ;
 @class OC_Lexique ;
 @class OC_GGS_RulerViewForCompileMessageView ;
 @class OC_GGS_ErrorOrWarningDescriptor ;
 @class OC_GGS_TextSyntaxColoring ;
-@class PMTabBarView ;
 @class OC_GGS_SourceScrollView ;
 @class OC_GGS_BuildTask ;
 @class OC_GGS_TextDisplayDescriptor ;
@@ -40,30 +35,27 @@
 
 //---------------------------------------------------------------------------*
 
-@interface OC_GGS_Document : NSDocument <PMTabBarViewDelegateProtocol
-#if MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_5
-  , NSTextViewDelegate, NSSplitViewDelegate, NSWindowDelegate
-#endif
-> {
-  @private IBOutlet NSSplitView * mIssueSplitView ;
+@interface OC_GGS_Document : NSDocument <NSTextViewDelegate, NSSplitViewDelegate, NSWindowDelegate, NSTableViewDataSource> {
+  @private IBOutlet NSSplitView * mFirstSplitView ;
+  @private IBOutlet NSSplitView * mSecondSplitView ;
 
   @private IBOutlet NSView * mSourceHostView ;
   
   @private IBOutlet NSTextView * mOutputTextView ;
   @private IBOutlet NSScrollView * mOutputScrollView ;
+  @private NSFont * mBuildTextFont ;
 
   @private IBOutlet NSPanel * mUpdateFromFileSystemPanel ;
 
   @private OC_GGS_BuildTask * mBuildTask ;
   @private BOOL mBuildTaskHasBeenAborted ;
   @private NSMutableData * mBufferedOutputData ;
-  @private BOOL mHasSpoken ;
 //---  
   @private NSArrayController * mSourceDisplayArrayController ;
   @private OC_GGS_DocumentData * mDocumentData ;
   @private NSArray * mDisplayDescriptorArray ;
-//---
-  @private IBOutlet PMTabBarView * mTabBarView ;
+  @private IBOutlet NSTableView * mDisplayDescriptorTableView ;
+  @private IBOutlet NSPathControl * mSourceFilePathControl ;
 
 //--- "Goto Line" sheet
   @private IBOutlet NSWindow * mGotoWindow ;
@@ -79,28 +71,63 @@
   @private IBOutlet NSTextField * mWarningCountTextField ;
   @private OC_GGS_RulerViewForBuildOutput * mRulerViewForBuildOutput ;
   @private NSMutableArray * mIssueArray ;
+
+//--- Search view
+  @private IBOutlet NSView * mSearchView ;
+  @private IBOutlet NSButton * mCaseSensitiveSearchCheckbox ;
+  @private IBOutlet NSSearchField * mGlobalSearchTextField ;
+  @private IBOutlet NSTextField * mGlobalReplaceTextField ;
+  @private IBOutlet NSTextField * mOccurenceFoundCountTextField ;
+  @private IBOutlet NSMatrix * mSearchMatrix ;
+  @private IBOutlet NSOutlineView * mResultOutlineView ;
+  @private NSMutableArray * mResultArray ;
+  @private NSUInteger mResultCount ;
+  @private NSTreeController * mFoundEntryTreeController ;
 }
 
 @property (assign PROPERTY_COMMA_ATOMIC) BOOL mBuildTaskIsRunning ;
+
+- (IBAction) openSourceInNewWindowAction: (id) inSender ;
+- (IBAction) moveSourceInNewWindowAction: (id) inSender ;
+- (IBAction) duplicateSourceAction: (id) inSender ;
+- (IBAction) revealInFinderAction: (id) inSender ;
+- (IBAction) closeAction: (id) inSender ;
+- (IBAction) closeOthersAction: (id) inSender ;
+
+- (IBAction) closeSearchAndReplaceView: (id) inSender ;
+- (IBAction) globalFindAction: (id) inSender ;
+- (IBAction) globalReplaceAllAction: (id) inSender ;
+
+- (IBAction) copyFilePath: (id) inSender ;
+- (IBAction) copyFileName: (id) inSender ;
+- (IBAction) copyFileDirectory: (id) inSender ;
+
+- (void) actionOpenFromSelectionInNewWindow: (id) sender ;
+- (void) actionOpenFromSelection: (id) sender ;
+- (IBAction) revealInFinderAction: (id) inSender ;
+
+- (void) updateSearchResultForFile: (NSString *) inFilePath
+         previousRange: (NSRange) inPreviousRange
+         changeInLength: (NSInteger) inChangeInLength ; 
 
 - (OC_GGS_TextDisplayDescriptor *) findOrAddNewTabForFile: (NSString *) inDocumentPath ;
 
 - (IBAction) collapseIssuesAction: (id) inSender ;
 
-- (IBAction) actionGotoLine: (id) inSender ;
+- (IBAction) actionPathControl: (id) inSender ;
 
-- (IBAction) duplicateSelectedSourceViewAction: (id) inSender ;
+- (IBAction) actionGotoLine: (id) inSender ;
 
 - (IBAction) actionComment: (id) sender ;
 - (IBAction) actionUncomment: (id) sender ;
 - (IBAction) actionShiftLeft: (id) sender  ;
 - (IBAction) actionShiftRight: (id) sender ;
 
-- (IBAction) actionBuild: (id) sender ;
+- (IBAction) actionBuildFirst: (id) sender ;
+- (IBAction) actionBuildSelected: (id) sender ;
 - (IBAction) stopBuild: (id) sender ;
 
 - (NSString *) sourceStringForGlobalSearch ;
-- (void) replaceSourceStringWithString: (NSString *) inString ;
 
 - (void) triggerDocumentEditedStatusUpdate ;
 

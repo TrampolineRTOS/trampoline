@@ -4,7 +4,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 2005, ..., 2011 Pierre Molinaro.                           *
+//  Copyright (C) 2005, ..., 2013 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //                                                                           *
@@ -699,7 +699,9 @@ void GALGAS_stringset::modifier_removeKey (GALGAS_string inKey
     #ifndef DO_NOT_GENERATE_CHECKINGS
       checkStringset (HERE) ;
     #endif
-    mSharedRoot->removeKey (inKey.stringValue ()) ;
+    if (NULL != mSharedRoot) {
+      mSharedRoot->removeKey (inKey.stringValue ()) ;
+    }
     #ifndef DO_NOT_GENERATE_CHECKINGS
       checkStringset (THERE) ;
     #endif
@@ -728,24 +730,28 @@ GALGAS_stringset GALGAS_stringset::operator_and (const GALGAS_stringset & inOper
       inOperand2.checkStringset (HERE) ;
     #endif
     result = constructor_emptySet (THERE) ;
-    const PMUInt32 leftCount = mSharedRoot->count () ;
-    TC_UniqueArray <C_String> leftList ((PMSInt32) leftCount COMMA_THERE) ;
-    mSharedRoot->buildOrderedKeyList (leftList) ;
-    const PMUInt32 rightCount = inOperand2.mSharedRoot->count () ;
-    TC_UniqueArray <C_String> rightList ((PMSInt32) rightCount COMMA_THERE) ;
-    inOperand2.mSharedRoot->buildOrderedKeyList (rightList) ;
-    PMUInt32 leftIndex = 0 ;
-    PMUInt32 rightIndex = 0 ;
-    while ((leftIndex < leftCount) && (rightIndex < rightCount)) {
-      const PMSInt32 cmp = leftList ((PMSInt32) leftIndex COMMA_THERE).compare (rightList ((PMSInt32) rightIndex COMMA_THERE)) ;
-      if (cmp < 0) {
-        leftIndex ++ ;
-      }else if (cmp > 0) {
-        rightIndex ++ ;
-      }else{
-        result.addAssign_operation (GALGAS_string (leftList ((PMSInt32) leftIndex COMMA_THERE)) COMMA_HERE) ;
-        leftIndex ++ ;
-        rightIndex ++ ;
+    if (NULL != mSharedRoot) {
+      const PMUInt32 leftCount = mSharedRoot->count () ;
+      TC_UniqueArray <C_String> leftList ((PMSInt32) leftCount COMMA_THERE) ;
+      mSharedRoot->buildOrderedKeyList (leftList) ;
+      const PMUInt32 rightCount = (NULL == inOperand2.mSharedRoot) ? 0 : inOperand2.mSharedRoot->count () ;
+      TC_UniqueArray <C_String> rightList ((PMSInt32) rightCount COMMA_THERE) ;
+      if (NULL != inOperand2.mSharedRoot) {
+        inOperand2.mSharedRoot->buildOrderedKeyList (rightList) ;
+      }
+      PMUInt32 leftIndex = 0 ;
+      PMUInt32 rightIndex = 0 ;
+      while ((leftIndex < leftCount) && (rightIndex < rightCount)) {
+        const PMSInt32 cmp = leftList ((PMSInt32) leftIndex COMMA_THERE).compare (rightList ((PMSInt32) rightIndex COMMA_THERE)) ;
+        if (cmp < 0) {
+          leftIndex ++ ;
+        }else if (cmp > 0) {
+          rightIndex ++ ;
+        }else{
+          result.addAssign_operation (GALGAS_string (leftList ((PMSInt32) leftIndex COMMA_THERE)) COMMA_HERE) ;
+          leftIndex ++ ;
+          rightIndex ++ ;
+        }
       }
     }
     #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -771,9 +777,11 @@ GALGAS_stringset GALGAS_stringset::operator_or (const GALGAS_stringset & inOpera
       inOperand2.checkStringset (HERE) ;
     #endif
     result = *this ;
-    const PMUInt32 rightCount = inOperand2.mSharedRoot->count () ;
+    const PMUInt32 rightCount = (NULL == inOperand2.mSharedRoot) ? 0 : inOperand2.mSharedRoot->count () ;
     TC_UniqueArray <C_String> rightList ((PMSInt32) rightCount COMMA_THERE) ;
-    inOperand2.mSharedRoot->buildOrderedKeyList (rightList) ;
+    if (NULL != inOperand2.mSharedRoot) {
+      inOperand2.mSharedRoot->buildOrderedKeyList (rightList) ;
+    }
     for (PMUInt32 i=0 ; i<rightCount ; i++) {
       result.addAssign_operation (GALGAS_string (rightList ((PMSInt32) i COMMA_THERE)) COMMA_HERE) ;
     }
@@ -801,11 +809,13 @@ GALGAS_stringset GALGAS_stringset::substract_operation (const GALGAS_stringset &
       inOperand2.checkStringset (HERE) ;
     #endif
     result = constructor_emptySet (THERE) ;
-    const PMUInt32 leftCount = mSharedRoot->count () ;
+    const PMUInt32 leftCount = (NULL == mSharedRoot) ? 0 : mSharedRoot->count () ;
     TC_UniqueArray <C_String> leftList ((PMSInt32) leftCount COMMA_THERE) ;
-    mSharedRoot->buildOrderedKeyList (leftList) ;
+    if (NULL != mSharedRoot) {
+      mSharedRoot->buildOrderedKeyList (leftList) ;
+    }
     for (PMUInt32 i=0 ; i<leftCount ; i++) {
-      if (! inOperand2.mSharedRoot->hasKey (leftList ((PMSInt32) i COMMA_HERE))) {
+      if ((NULL != inOperand2.mSharedRoot) && ! inOperand2.mSharedRoot->hasKey (leftList ((PMSInt32) i COMMA_HERE))) {
         result.addAssign_operation (GALGAS_string (leftList ((PMSInt32) i COMMA_HERE)) COMMA_HERE) ;
       }
     }
@@ -1020,6 +1030,25 @@ GALGAS_stringset GALGAS_stringset::constructor_setWithStringList (const GALGAS_s
     cEnumerator_stringlist enumerator (inStringList, kEnumeration_up) ;
     while (enumerator.hasCurrentObject ()) {
       result.addAssign_operation (enumerator.current_mValue (THERE) COMMA_THERE) ;
+      enumerator.gotoNextObject () ;
+    }
+    #ifndef DO_NOT_GENERATE_CHECKINGS
+      result.checkStringset (HERE) ;
+    #endif
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------*
+
+GALGAS_stringset GALGAS_stringset::constructor_setWithLStringList (const GALGAS_lstringlist & inStringList
+                                                                   COMMA_LOCATION_ARGS) {
+  GALGAS_stringset result ;
+  if (inStringList.isValid ()) {
+    result = constructor_emptySet (THERE) ;
+    cEnumerator_lstringlist enumerator (inStringList, kEnumeration_up) ;
+    while (enumerator.hasCurrentObject ()) {
+      result.addAssign_operation (enumerator.current_mValue (THERE).reader_string(THERE) COMMA_THERE) ;
       enumerator.gotoNextObject () ;
     }
     #ifndef DO_NOT_GENERATE_CHECKINGS

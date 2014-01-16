@@ -180,7 +180,7 @@
 
 //---------------------------------------------------------------------------*
 
-- (id) init {
+- (instancetype) init {
   #ifdef DEBUG_MESSAGES
     NSLog (@"PMFontButton <init>") ;
   #endif

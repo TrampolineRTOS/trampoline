@@ -10,7 +10,7 @@
 #import "OC_GGS_BuildTask.h"
 #import "PMIssueDescriptor.h"
 #import "OC_GGS_Document.h"
-#import "OC_GGS_PreferencesController.h"
+#import "OC_GGS_ApplicationDelegate.h"
 #import "PMDebug.h"
 
 //---------------------------------------------------------------------------*
@@ -28,7 +28,8 @@
 
 //---------------------------------------------------------------------------*
 
-- (OC_GGS_BuildTask *) initWithDocument: (OC_GGS_Document *) inDocument {
+- (OC_GGS_BuildTask *) initWithDocument: (OC_GGS_Document *) inDocument
+                       filePath: (NSString *) inFilePath {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
@@ -38,7 +39,7 @@
   //---
     mDocument = inDocument ;
   //---
-    NSArray * commandLineArray = [gCocoaGalgasPreferencesController commandLineItemArray] ;
+    NSArray * commandLineArray = [gCocoaApplicationDelegate commandLineItemArray] ;
   //--- Command line tool does actually exist ? (First argument is not "?")
     if ([[commandLineArray objectAtIndex:0] isEqualToString:@"?"]) {
       NSAlert * alert = [NSAlert alertWithMessageText:@"Error: cannot compile"
@@ -56,7 +57,7 @@
     }else{
       NSMutableArray * arguments = [NSMutableArray new] ;
       [arguments addObjectsFromArray:[commandLineArray subarrayWithRange:NSMakeRange (1, [commandLineArray count]-1)]] ;
-      [arguments addObject:inDocument.fileURL.path] ;
+      [arguments addObject:inFilePath] ;
       [arguments addObject:@"--cocoa"] ;
    //--- Create task
       mTask = [NSTask new] ;

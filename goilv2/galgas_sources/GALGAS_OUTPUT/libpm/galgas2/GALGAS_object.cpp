@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------*
 //                                                                           *
-//  GALGAS_object : Base class for GALGAS object handling                      *
+//  GALGAS_object : Base class for GALGAS object handling                    *
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *

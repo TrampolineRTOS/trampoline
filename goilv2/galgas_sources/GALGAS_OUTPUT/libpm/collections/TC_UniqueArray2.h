@@ -109,7 +109,7 @@ mArray (NULL),
 mCurrentRowCount (0),
 mCurrentColumnCount (0) {
   if ((inRowCount > 0) && (inColumnCount > 0)) {
-    macroMyNewArray (mArray, TYPE, (size_t) inRowCount * inColumnCount) ;
+    macroMyNewArray (mArray, TYPE, (size_t) (inRowCount * inColumnCount)) ;
     mCurrentRowCount = inRowCount ;
     mCurrentColumnCount = inColumnCount ;
   }

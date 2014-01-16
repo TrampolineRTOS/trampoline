@@ -39,10 +39,10 @@ routine setDefaults
 #      !?objects;
 
 # set defaults for objects
-  foreach [objects allKeyList] (@lstring objectKind) do
+  foreach [objects keyList] (@lstring objectKind) do
     with !?objects get !objectKind do
       @objectKindMap objOfKind := [objectsOfKind objects];
-      foreach [objOfKind allKeyList] (@lstring objectName) do
+      foreach [objOfKind keyList] (@lstring objectName) do
         with !?objOfKind get !objectName do
           @implementationObject impObject := [imp impObject ![objectKind string]];
           setDefaultsForType ![impObject attributes] !?attributes;

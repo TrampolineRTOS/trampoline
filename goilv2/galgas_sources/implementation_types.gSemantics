@@ -41,7 +41,7 @@ enum @dataType {
   identifier,
   objectType,
   structType
-}{}
+}
 
 reader @dataType oilType -> @string result:
   switch selfcopy
@@ -173,11 +173,11 @@ class @uint32AttributeSet extends @attributeRange {
 
 override method @uint32AttributeSet enclose !@bool isWithin ??@attributeRange value:
   isWithin := true;
-  cast value:
-  when == @uint32AttributeSet set do
-    foreach [set valueList] prefixedBy new_ do
+  cast value
+  when == @uint32AttributeSet set :
+    foreach [set valueList] : new_ do
       @bool ok := false;
-      foreach valueList prefixedBy prev_ do
+      foreach valueList : prev_ do
         if (new_value == prev_value) then
           ok := true;
         end if;
@@ -215,11 +215,11 @@ class @uint64AttributeSet extends @attributeRange {
 
 override method @uint64AttributeSet enclose !@bool isWithin ??@attributeRange value:
   isWithin := true;
-  cast value:
-  when == @uint64AttributeSet set do
-    foreach [set valueList] prefixedBy new_ do
+  cast value
+  when == @uint64AttributeSet set :
+    foreach [set valueList] : new_ do
       @bool ok := false;
-      foreach valueList prefixedBy prev_ do
+      foreach valueList : prev_ do
         if (new_value == prev_value) then
           ok := true;
         end if;
@@ -257,11 +257,11 @@ class @sint32AttributeSet extends @attributeRange {
 
 override method @sint32AttributeSet enclose !@bool isWithin ??@attributeRange value:
   isWithin := true;
-  cast value:
-  when == @sint32AttributeSet set do
-    foreach [set valueList] prefixedBy new_ do
+  cast value
+  when == @sint32AttributeSet set :
+    foreach [set valueList] : new_ do
       @bool ok := false;
-      foreach valueList prefixedBy prev_ do
+      foreach valueList : prev_ do
         if (new_value == prev_value) then
           ok := true;
         end if;
@@ -299,11 +299,11 @@ class @sint64AttributeSet extends @attributeRange {
 
 override method @sint64AttributeSet enclose !@bool isWithin ??@attributeRange value:
   isWithin := true;
-  cast value:
-  when == @sint64AttributeSet set do
-    foreach [set valueList] prefixedBy new_ do
+  cast value
+  when == @sint64AttributeSet set :
+    foreach [set valueList] : new_ do
       @bool ok := false;
-      foreach valueList prefixedBy prev_ do
+      foreach valueList : prev_ do
         if (new_value == prev_value) then
           ok := true;
         end if;
@@ -341,11 +341,11 @@ class @floatAttributeSet  extends @attributeRange {
 
 override method @floatAttributeSet enclose !@bool isWithin ??@attributeRange value:
   isWithin := true;
-  cast value:
-  when == @floatAttributeSet set do
-    foreach [set valueList] prefixedBy new_ do
+  cast value
+  when == @floatAttributeSet set :
+    foreach [set valueList] : new_ do
       @bool ok := false;
-      foreach valueList prefixedBy prev_ do
+      foreach valueList : prev_ do
         if (new_value == prev_value) then
           ok := true;
         end if;
@@ -377,12 +377,12 @@ class @uint32AttributeMinMax extends @attributeRange {
 
 override method @uint32AttributeMinMax enclose !@bool isWithin ??@attributeRange value:
   isWithin := false;
-  cast value:
-  when == @uint32AttributeMinMax minmax do
+  cast value
+  when == @uint32AttributeMinMax minmax :
     if [minmax min] >= min & [minmax max] <= max then
       isWithin := true;
     end if;
-  when == @uint32AttributeSet set do
+  when == @uint32AttributeSet set :
     isWithin := true;
     foreach [set valueList] do
       if value < min | value > max then
@@ -413,12 +413,12 @@ class @uint64AttributeMinMax extends @attributeRange {
 
 override method @uint64AttributeMinMax enclose !@bool isWithin ??@attributeRange value:
   isWithin := false;
-  cast value:
-  when == @uint64AttributeMinMax minmax do
+  cast value
+  when == @uint64AttributeMinMax minmax :
     if [minmax min] >= min & [minmax max] <= max then
       isWithin := true;
     end if;
-  when == @uint64AttributeSet set do
+  when == @uint64AttributeSet set :
     isWithin := true;
     foreach [set valueList] do
       if value < min | value > max then
@@ -449,12 +449,12 @@ class @sint32AttributeMinMax extends @attributeRange {
 
 override method @sint32AttributeMinMax enclose !@bool isWithin ??@attributeRange value:
   isWithin := false;
-  cast value:
-  when == @sint32AttributeMinMax minmax do
+  cast value
+  when == @sint32AttributeMinMax minmax :
     if [minmax min] >= min & [minmax max] <= max then
       isWithin := true;
     end if;
-  when == @sint32AttributeSet set do
+  when == @sint32AttributeSet set :
     isWithin := true;
     foreach [set valueList] do
       if value < min | value > max then
@@ -485,12 +485,12 @@ class @sint64AttributeMinMax extends @attributeRange {
 
 override method @sint64AttributeMinMax enclose !@bool isWithin ??@attributeRange value:
   isWithin := false;
-  cast value:
-  when == @sint64AttributeMinMax minmax do
+  cast value
+  when == @sint64AttributeMinMax minmax :
     if [minmax min] >= min & [minmax max] <= max then
       isWithin := true;
     end if;
-  when == @sint64AttributeSet set do
+  when == @sint64AttributeSet set :
     isWithin := true;
     foreach [set valueList] do
       if value < min | value > max then
@@ -521,12 +521,12 @@ class @floatAttributeMinMax  extends @attributeRange {
 
 override method @floatAttributeMinMax enclose !@bool isWithin ??@attributeRange value:
   isWithin := false;
-  cast value:
-  when == @floatAttributeMinMax minmax do
+  cast value
+  when == @floatAttributeMinMax minmax :
     if [minmax min] >= min & [minmax max] <= max then
       isWithin := true;
     end if;
-  when == @floatAttributeSet set do
+  when == @floatAttributeSet set :
     isWithin := true;
     foreach [set valueList] do
       if value < min | value > max then
@@ -603,9 +603,9 @@ end reader;
 
 method @impAutoDefaultType setDefault ?!@objectAttributes attributes:
   if not [[attributes objectParams] hasKey ![name string]] then
-    cast defaultValue:
-    when == @void do
-    when == @auto do
+    cast defaultValue
+    when == @void :
+    when == @auto :
       @identifierMap attr := [attributes objectParams];
       [!?attr put !name !defaultValue];
       [!?attributes setObjectParams !attr];
@@ -678,10 +678,10 @@ class @impBoolType extends @impAutoDefaultType {
 
 override method @impBoolType setDefault ?!@objectAttributes attributes:
 #  if not [[attributes objectParams] hasKey ![name string]] then
-    cast defaultValue:
-    when == @void do
-    when == @auto do
-    when == @boolAttribute b do
+    cast defaultValue
+    when == @void :
+    when == @auto :
+    when == @boolAttribute b :
 #      message "*** ".name." : ".[[b value] cString]."\n";
       if [[attributes objectParams] hasKey ![name string]] then
         # the value has been set by the user, get the default subvalues
@@ -689,8 +689,8 @@ override method @impBoolType setDefault ?!@objectAttributes attributes:
         @identifierMap userAttributes := [attributes objectParams];
         @object_t value;
         [userAttributes get !name ?value];
-        cast value:
-        when == @boolAttribute boolValue do
+        cast value
+        when == @boolAttribute boolValue :
           @implementationObjectMap subImpAttributes;
           if [boolValue value] then
             subImpAttributes := trueSubAttributes;
@@ -735,10 +735,10 @@ class @impEnumType extends @impAutoDefaultType {
 # to one of the defined values
 #
 routine verifyEnum ??@impType anEnum:
-  cast anEnum:
-  when == @impEnumType realEnum do
-    cast [realEnum defaultValue]:
-    when == @string_class defaultValue do
+  cast anEnum
+  when == @impEnumType realEnum :
+    cast [realEnum defaultValue]
+    when == @string_class defaultValue :
       if not [[realEnum valuesMap] hasKey ![defaultValue value]] then
         error [defaultValue location]: "Default enum value does not match any enum value";
       end if;
@@ -892,8 +892,8 @@ function boolSubAttributes
   if [[obj attributes] hasKey !attributeName] then
     @impType type;
     [[obj attributes] get !lstringWith[!attributeName] ?type];
-    cast type:
-    when == @impBoolType boolType do
+    cast type
+    when == @impBoolType boolType :
       if boolValue then
         subImplementation := [boolType trueSubAttributes];
       else
@@ -913,8 +913,8 @@ function enumSubAttributes
   if [[obj attributes] hasKey !attributeName] then
     @impType type;
     [[obj attributes] get !lstringWith[!attributeName] ?type];
-    cast type:
-    when == @impEnumType enumType do
+    cast type
+    when == @impEnumType enumType :
       if [[enumType valuesMap] hasKey !enumValue] then
         [[enumType valuesMap] get !lstringWith[!enumValue] ?subImplementation];
       end if;
@@ -1147,8 +1147,8 @@ routine setDefaultsForType
   ?!@objectAttributes objectParams
 :
   foreach impObject do
-    cast type:
-    when >= @impAutoDefaultType defaultType do
+    cast type
+    when >= @impAutoDefaultType defaultType :
       [defaultType setDefault !?objectParams];
     else end cast; 
   end foreach;

@@ -4,7 +4,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 2008, ..., 2012 Pierre Molinaro.                           *
+//  Copyright (C) 2008, ..., 2013 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //                                                                           *
@@ -76,6 +76,16 @@ class cSharedList : public C_SharedObject {
 
   protected : void addObject (const capCollectionElement & inObjectArray) ;
 
+  protected : void addObjectAtIndex (const capCollectionElement & inElementToAdd,
+                                     const PMSInt32 inInsertionIndex,
+                                     C_Compiler * inCompiler
+                                     COMMA_LOCATION_ARGS) ;
+
+  protected : void removeObjectAtIndex (capCollectionElement & outObjectAttributeArray,
+                                        const PMUInt32 inRemoveIndex,
+                                        C_Compiler * inCompiler
+                                        COMMA_LOCATION_ARGS) ;
+
   protected : void removeFirstObject (capCollectionElement & outObjectAttributeArray,
                                    C_Compiler * inCompiler
                                    COMMA_LOCATION_ARGS) ;
@@ -123,6 +133,18 @@ void cSharedList::addObject (const capCollectionElement & inObject) {
   mObjectArray.setCapacity (mObjectArray.count () + 1) ;
   mObjectArray.addObject (inObject) ;
 }
+
+//---------------------------------------------------------------------------*
+
+void cSharedList::addObjectAtIndex (const capCollectionElement & inObject,
+                                    const PMSInt32 inInsertionIndex,
+                                    C_Compiler * inCompiler
+                                    COMMA_LOCATION_ARGS) {
+  macroUniqueSharedObject (this) ;
+  mObjectArray.setCapacity (mObjectArray.count () + 1) ;
+  mObjectArray.addObjectAtIndex (inObject, (PMUInt32) inInsertionIndex, inCompiler COMMA_THERE) ;
+}
+
 
 //---------------------------------------------------------------------------*
 
@@ -182,6 +204,47 @@ cCollectionElement * cSharedList::objectPointerAtIndex (const GALGAS_uint & inIn
 
 //---------------------------------------------------------------------------*
 
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark removeObjectAtIndex
+#endif
+
+//---------------------------------------------------------------------------*
+
+void cSharedList::removeObjectAtIndex (capCollectionElement & outObjectAttributeArray,
+                                       const PMUInt32 inRemoveIndex,
+                                       C_Compiler * inCompiler
+                                       COMMA_LOCATION_ARGS) {
+  macroUniqueSharedObject (this) ;
+  if (mObjectArray.count () <= inRemoveIndex) {
+    C_String message ;
+    message << "'removeAtIndex' with index " << inRemoveIndex << " >= list length (" << mObjectArray.count () << ")" ;
+    inCompiler->onTheFlyRunTimeError (message COMMA_THERE) ;
+  }else{
+    outObjectAttributeArray = mObjectArray.objectAtIndex (inRemoveIndex COMMA_HERE) ;
+    mObjectArray.removeObjectAtIndex (inRemoveIndex) ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+void AC_GALGAS_list::removeObjectAtIndex (capCollectionElement & outAttributes,
+                                          const PMUInt32 inRemoveIndex,
+                                          C_Compiler * inCompiler
+                                          COMMA_LOCATION_ARGS) {
+  if (NULL != mSharedList) {
+    insulateList (HERE) ;
+    mSharedList->removeObjectAtIndex (outAttributes, inRemoveIndex, inCompiler COMMA_THERE) ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark removeFirstObject
+#endif
+
+//---------------------------------------------------------------------------*
+
 void cSharedList::removeFirstObject (capCollectionElement & outObjectAttributeArray,
                                      C_Compiler * inCompiler
                                      COMMA_LOCATION_ARGS) {
@@ -190,9 +253,26 @@ void cSharedList::removeFirstObject (capCollectionElement & outObjectAttributeAr
     inCompiler->onTheFlyRunTimeError ("call 'popFirst' on an empty list" COMMA_THERE) ;
   }else{
     outObjectAttributeArray = mObjectArray.objectAtIndex (0 COMMA_HERE) ;
-    mObjectArray.removeFirstObject () ;
+    mObjectArray.removeObjectAtIndex (0) ;
   }
 }
+
+//---------------------------------------------------------------------------*
+
+void AC_GALGAS_list::removeFirstObject (capCollectionElement & outAttributes,
+                                        C_Compiler * inCompiler
+                                        COMMA_LOCATION_ARGS) {
+  if (NULL != mSharedList) {
+    insulateList (HERE) ;
+    mSharedList->removeFirstObject (outAttributes, inCompiler COMMA_THERE) ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark removeLastObject
+#endif
 
 //---------------------------------------------------------------------------*
 
@@ -204,7 +284,18 @@ void cSharedList::removeLastObject (capCollectionElement & outObjectAttributeArr
     inCompiler->onTheFlyRunTimeError ("call 'popLast' on an empty list" COMMA_THERE) ;
   }else{
     outObjectAttributeArray = mObjectArray.objectAtIndex (mObjectArray.count () - 1 COMMA_HERE) ;
-    mObjectArray.removeLastObject () ;
+    mObjectArray.removeObjectAtIndex (mObjectArray.count () - 1) ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+void AC_GALGAS_list::removeLastObject (capCollectionElement & outAttributes,
+                                       C_Compiler * inCompiler
+                                       COMMA_LOCATION_ARGS) {
+  if (NULL != mSharedList) {
+    insulateList (HERE) ;
+    mSharedList->removeLastObject (outAttributes, inCompiler COMMA_THERE) ;
   }
 }
 
@@ -495,35 +586,20 @@ void AC_GALGAS_list::insulateList (LOCATION_ARGS) {
 
 void AC_GALGAS_list::addObject (const capCollectionElement & inElementToAdd) {
   insulateList (HERE) ;
-  mSharedList->addObject (inElementToAdd) ;
-}
-
-//---------------------------------------------------------------------------*
-
-void AC_GALGAS_list::prependAttributeArray (const capCollectionElement & inElementToPrepend) {
-  insulateList (HERE) ;
-  mSharedList->prependAttributeArray (inElementToPrepend) ;
-}
-
-//---------------------------------------------------------------------------*
-
-void AC_GALGAS_list::removeFirstObject (capCollectionElement & outAttributes,
-                                        C_Compiler * inCompiler
-                                        COMMA_LOCATION_ARGS) {
   if (NULL != mSharedList) {
-    insulateList (HERE) ;
-    mSharedList->removeFirstObject (outAttributes, inCompiler COMMA_THERE) ;
+    mSharedList->addObject (inElementToAdd) ;
   }
 }
 
 //---------------------------------------------------------------------------*
 
-void AC_GALGAS_list::removeLastObject (capCollectionElement & outAttributes,
+void AC_GALGAS_list::addObjectAtIndex (const capCollectionElement & inElementToAdd,
+                                       const PMUInt32 inInsertionIndex,
                                        C_Compiler * inCompiler
                                        COMMA_LOCATION_ARGS) {
+  insulateList (HERE) ;
   if (NULL != mSharedList) {
-    insulateList (HERE) ;
-    mSharedList->removeLastObject (outAttributes, inCompiler COMMA_THERE) ;
+    mSharedList->addObjectAtIndex (inElementToAdd, (PMSInt32) inInsertionIndex, inCompiler COMMA_THERE) ;
   }
 }
 
@@ -602,7 +678,9 @@ cCollectionElement * AC_GALGAS_list::objectPointerAtIndex (const GALGAS_uint & i
   cCollectionElement * result = NULL ;
   if (isValid ()) {
     insulateList (HERE) ;
-    result = mSharedList->objectPointerAtIndex (inIndex, inCompiler COMMA_THERE) ;
+    if (NULL != mSharedList) {
+      result = mSharedList->objectPointerAtIndex (inIndex, inCompiler COMMA_THERE) ;
+    }
   }
   return result ;
 }
@@ -1134,7 +1212,9 @@ void AC_GALGAS_listmap::addObjectInListMap (const GALGAS_string & inKey,
                                             capCollectionElement & inAttributeArray) {
   if (isValid () && inKey.isValid ()) {
     insulateListMap (HERE) ;
-    mSharedListMap->addObjectInListMap (inKey.stringValue (), inAttributeArray) ;
+    if (NULL != mSharedListMap) {
+      mSharedListMap->addObjectInListMap (inKey.stringValue (), inAttributeArray) ;
+    }
   }
 }
 

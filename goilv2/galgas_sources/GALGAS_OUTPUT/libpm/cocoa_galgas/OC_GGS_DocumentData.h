@@ -34,17 +34,19 @@
 + (OC_GGS_DocumentData *) findOrAddDataForDocumentURL: (NSURL *) inDocumentURL
                           forCocoaDocument: (OC_GGS_Document *) inDocument ;
 
++ (OC_GGS_DocumentData *) findDocumentDataForFilePath: (NSString *) inFilePath ;
+
 - (OC_GGS_TextDisplayDescriptor *) newSourceDisplayDescriptorForDocument: (OC_GGS_Document *) inDocumentUsedForDisplaying ;
 
 - (NSString *) sourceString ;
 
 - (OC_GGS_TextSyntaxColoring *) textSyntaxColoring ;
 
-- (void) replaceSourceStringWithString: (NSString *) inString ;
+- (void) replaceCharactersInRange: (NSRange) inRange withString: (NSString *) inReplaceString ;
 
 - (BOOL) performSaveToURL: (NSURL *) inAbsoluteURL ;
 
-- (NSUInteger) locationForLineInSource: (NSInteger) inLine ;
+- (NSUInteger) locationForLineInSource: (NSUInteger) inLine ;
 
 + (void) broadcastIssueArray: (NSArray *) inIssueArray ;
 

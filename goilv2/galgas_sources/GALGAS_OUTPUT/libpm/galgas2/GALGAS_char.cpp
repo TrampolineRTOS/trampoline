@@ -41,6 +41,12 @@ mCharValue (TO_UNICODE (0)) {
 
 //---------------------------------------------------------------------------*
 
+GALGAS_char GALGAS_char::constructor_default (UNUSED_LOCATION_ARGS) {
+  return GALGAS_char (TO_UNICODE (0)) ;
+}
+
+//---------------------------------------------------------------------------*
+
 GALGAS_char::GALGAS_char (const utf32 inValue) :
 AC_GALGAS_root (),
 mIsValid (true),

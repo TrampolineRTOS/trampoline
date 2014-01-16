@@ -165,7 +165,7 @@ void TC_prime_cache2 <RESULT>::reallocCache (const PMSInt32 inCacheSize) {
     mCache = & mDefaultCache ;
     mCacheSize = 1 ;
   }else{
-    const PMSInt32 newCacheSize = getPrimeGreaterThan (inCacheSize) ;
+    const PMSInt32 newCacheSize = (PMSInt32) getPrimeGreaterThan ((PMUInt32) inCacheSize) ;
     if (newCacheSize != mCacheSize) {
       cCacheEntry * newCache = new cCacheEntry [newCacheSize] ;
       if (newCache != NULL) {

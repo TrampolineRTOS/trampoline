@@ -81,20 +81,17 @@ void C_Timer::startTimer (void) {
 
 //---------------------------------------------------------------------------*
 
-C_String C_Timer::timeString (void) const {
-  C_String result ;
+PMUInt32 C_Timer::msFromStart (void) const {
   #ifdef LIBPM_USES_TIMEVAL_STRUCT
-    timeval duration ;
+    timeval t ;
     if (mRunning) {
       timeval now ;
       gettimeofday (& now, NULL) ;
-      timersub (& now, & mStart, & duration) ;
+      timersub (& now, & mStart, & t) ;
     }else{
-      timersub (& mEnd, & mStart, & duration) ;
+      timersub (& mEnd, & mStart, & t) ;
     }
-    const PMUInt32 cs = (PMUInt32) (duration.tv_usec / 10000) ;
-    const PMUInt32 secondes = (PMUInt32) ((((PMUInt32) duration.tv_sec) % 60) & PMUINT32_MAX) ;
-    const PMUInt32 minutes  = (PMUInt32) ((((PMUInt32) duration.tv_sec) / 60) & PMUINT32_MAX) ;
+    const PMUInt32 duration = ((PMUInt32) t.tv_sec) * 1000 + (PMUInt32) (t.tv_usec / 1000) ;
   #else
     PMUInt32 duration ;
     if (mRunning) {
@@ -102,19 +99,28 @@ C_String C_Timer::timeString (void) const {
     }else{
       duration = (PMUInt32) (mEnd - mStart) ;
     }
-    duration /= CLOCKS_PER_SEC / 100 ;
-    const PMUInt32 cs = (PMUInt32) (duration % 100) ;
-    const PMUInt32 secondes = (PMUInt32) ((duration / 100) % 60) ;
-    const PMUInt32 minutes = (PMUInt32) (duration / 6000) ;
+    duration /= CLOCKS_PER_SEC / 1000 ;
   #endif
+  return duration ;
+}
+
+//---------------------------------------------------------------------------*
+
+C_String C_Timer::timeString (void) const {
+  const PMUInt32 d = msFromStart () ;
+  const PMUInt32 ms = d % 1000 ;
+  const PMUInt32 secondes = (d / 1000) % 60 ; // (PMUInt32) ((((PMUInt32) duration.tv_sec) % 60) & PMUINT32_MAX) ;
+  const PMUInt32 minutes  = d / 60000 ; // (PMUInt32) ((((PMUInt32) duration.tv_sec) / 60) & PMUINT32_MAX) ;
+  C_String result ;
   if (minutes > 0) {
     result.appendUnsigned (minutes) ;
     result << " min " ;
   }
   result.appendUnsigned (secondes) ;
   result << " s " ;
-  result.appendUnsigned (cs / 10) ;
-  result.appendUnsigned (cs % 10) ;
+  result.appendUnsigned (ms / 100) ;
+  result.appendUnsigned ((ms / 10) % 10) ;
+  result.appendUnsigned (ms % 10) ;
   return result ;
 }
 

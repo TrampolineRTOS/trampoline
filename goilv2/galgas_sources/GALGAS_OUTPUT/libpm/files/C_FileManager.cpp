@@ -587,7 +587,7 @@ C_String C_FileManager::stringWithContentOfFile (const C_String & inFilePath,
 //--- Assign C string to C_String
   C_String result_string ;
   if (outOk) {
-    result_string.setCapacity (length + 2) ;
+    result_string.setCapacity ((PMUInt32) (length + 2)) ;
   //------------ 1- Search for BOM
     outOk = searchBOMandParse (stringData, length, outTextFileEncoding, result_string) ;
   //------------ 2- Try UTF-32BE, UTF-32LE, UTF-16BE, UTF-16LE, UTF-8 encodings
@@ -1161,7 +1161,7 @@ PMSInt32 C_FileManager::filePosixPermissions (const C_String & inFilePath) {
 PMSInt32 C_FileManager::setFilePosixPermissions (const C_String & inFilePath,
                                                  const PMSInt32 inNewFilePosixPermissions) {
   PMSInt32 newMode = -1 ; // Error Code
-  if ((inNewFilePosixPermissions & 0xFFFFF000) == 0) {
+  if ((inNewFilePosixPermissions & 0xFFFFF000L) == 0) {
     const C_String nativePath = nativePathWithUnixPath (inFilePath) ;
     newMode = ::chmod (nativePath.cString (HERE), (PMUInt16) (inNewFilePosixPermissions & PMUINT16_MAX)) ;
   }

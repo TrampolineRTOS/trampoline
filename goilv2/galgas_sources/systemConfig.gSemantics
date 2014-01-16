@@ -61,8 +61,8 @@ override method @multipleAttribute set ??@lstring name ?!@TfieldMap result:
   @TfieldMapList multiple [emptyList];
   foreach items do
     @TfieldMap multipleItem [emptyMap];
-    cast item:
-    when == @structAttribute aStruct do
+    cast item
+    when == @structAttribute aStruct :
       addLStringValue !?multipleItem !"NAME" ![aStruct structName] ![aStruct oil_desc];;
       @TfieldMap subAttrs := [[aStruct subAttributes] fieldMap];
       if [subAttrs count] > 0 then

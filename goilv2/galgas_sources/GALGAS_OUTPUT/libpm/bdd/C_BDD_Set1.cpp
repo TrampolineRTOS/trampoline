@@ -156,7 +156,7 @@ C_BDD_Set2 C_BDD_Set1::operator * (const C_BDD_Set1 & inOperand) const {
 //----------------------------------------------------------------------------*
 
 PMUInt32 C_BDD_Set1::getValuesCount (void) const {
-  return (PMUInt32) (mBDD.valueCount (mDescriptor.getBDDbitsSize ()) & PMUINT32_MAX) ;
+  return (PMUInt32) (mBDD.valueCount64 (mDescriptor.getBDDbitsSize ()) & PMUINT32_MAX) ;
 }
 
 //---------------------------------------------------------------------------*
@@ -170,7 +170,7 @@ class cBuildArrayForSet1 : public C_bdd_value_traversing {
 
 //--- Methode virtuelle appelee pour chaque valeur
   public : virtual void action (const bool inValuesArray [],
-                                const PMUInt16 inBDDbitsSize) ;
+                                const PMUInt32 inBDDbitsSize) ;
 } ;
   
 //---------------------------------------------------------------------------*
@@ -182,14 +182,13 @@ mArray (outArray) {
 
 //---------------------------------------------------------------------------*
 
-void cBuildArrayForSet1::
-action (const bool inValuesArray [],
-        const PMUInt16 inBDDbitsSize) {
+void cBuildArrayForSet1::action (const bool inValuesArray [],
+                                 const PMUInt32 inBDDbitsSize) {
   PMSInt32 element = 0L ;
-  for (PMSInt32 i=inBDDbitsSize - 1 ; i>=0 ; i--) {
+  for (PMSInt32 i=((PMSInt32) inBDDbitsSize) - 1 ; i>=0 ; i--) {
     element = (element << 1) + inValuesArray [i] ;
   }
-  mArray (element COMMA_HERE) = true ;
+  mArray.setObjectAtIndex (true, element COMMA_HERE) ;
 }
 
 //----------------------------------------------------------------------------*

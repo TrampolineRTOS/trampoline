@@ -28,7 +28,9 @@
 //---------------------------------------------------------------------------*
 
 #include "utilities/M_machine.h"
+#include "utilities/PMUInt128.h"
 #include "collections/TC_UniqueArray.h"
+#include "collections/TC_Array.h"
 
 //---------------------------------------------------------------------------*
 
@@ -52,7 +54,7 @@ class C_BDD {
 //--- Constructors and destructor
   public : C_BDD (void) ; // Get a false BDD
   private : C_BDD (const PMUInt32 inInternalValue) ; // Internal, do not use
-  public : C_BDD (const PMUInt16 inVariable, const bool inSign) ;
+  public : C_BDD (const PMUInt32 inVariable, const bool inSign) ;
   public : virtual ~C_BDD (void) ;
 
 //--- Control copy
@@ -96,136 +98,143 @@ class C_BDD {
   public : static C_BDD ite (const C_BDD & f, const C_BDD & g, const C_BDD & h) ; // ite (f, g, h)
   public : C_BDD operator ~ (void) const ; // get complement
   public : C_BDD getOpposite (void) const ;
-  public : C_BDD bddByLeftShifting (const PMUInt16 inLeftShiftCount) const ;
-  public : C_BDD bddByRightShifting (const PMUInt16 inRightShiftCount) const ;
+  public : C_BDD bddByLeftShifting (const PMUInt32 inLeftShiftCount) const ;
+  public : C_BDD bddByRightShifting (const PMUInt32 inRightShiftCount) const ;
 
 //--- for all and exists
-  public : C_BDD forallOnBitNumber (const PMUInt16 numeroBit) const ;
-  public : C_BDD forallOnBitsAfterNumber (const PMUInt16 numeroBit) const ;
+  public : C_BDD forallOnBitNumber (const PMUInt32 numeroBit) const ;
+  public : C_BDD forallOnBitsAfterNumber (const PMUInt32 numeroBit) const ;
 
-  public : C_BDD existsOnBitNumber (const PMUInt16 numeroBit) const ;
-  public : C_BDD existsOnBitRange (const PMUInt16 inFirstBit, const PMUInt16 inBitCount) const ;
-  public : C_BDD existsOnBitsAfterNumber (const PMUInt16 numeroBit) const ;
+  public : C_BDD existsOnBitNumber (const PMUInt32 numeroBit) const ;
+  public : C_BDD existsOnBitRange (const PMUInt32 inFirstBit, const PMUInt32 inBitCount) const ;
+  public : C_BDD existsOnBitsAfterNumber (const PMUInt32 numeroBit) const ;
 
 //--- Comparison between BDDs
   public : C_BDD compareWithBDD (const compareEnum inComparison, const C_BDD & inOperand) const ;
 
 //--- Build a BDD result of integer comparison
   public : static C_BDD
-  varCompareVar (const PMUInt16 inLeftFirstIndex,
-                 const PMUInt16 inDimension,
+  varCompareVar (const PMUInt32 inLeftFirstIndex,
+                 const PMUInt32 inDimension,
                  const compareEnum inComparison,
-                 const PMUInt16 inRightFirstIndex) ;
+                 const PMUInt32 inRightFirstIndex) ;
 
   public : static
-  C_BDD varCompareConst (const PMUInt16 inFirstIndex,
-                         const PMUInt16 inDimension,
+  C_BDD varCompareConst (const PMUInt32 inFirstIndex,
+                         const PMUInt32 inDimension,
                          const compareEnum inComparison,
                          const PMUInt64 inComparisonConstant) ;
 
   public : static
   C_BDD bddWithConstants (const PMUInt32 inValues [],
-                          const PMUInt16 inBitCount [],
+                          const PMUInt32 inBitCount [],
                           const PMSInt32 inEntryCount) ;
 
 //--- Buil a BDD from a value list. This method sorts value list in ascending order
   public : static C_BDD buildBDDFromValueList (PMUInt64 ioValueList [],
                                                const PMUInt32 inValueCount,
-                                               const PMUInt16 inBitCount) ;
+                                               const PMUInt32 inBitCount) ;
 
 //--- Get BDD values count
-  public : PMUInt64 valueCount (const PMUInt16 inBDDvariablesCount) const ;
+  public : PMUInt64 valueCount64 (const PMUInt32 inVariableCount) const ;
 
-  public : PMUInt64 valueCountUsingCache (const PMUInt16 inBDDvariablesCount,
-                                    TC_UniqueArray <PMUInt64> & ioDirectCacheArray,
-                                    TC_UniqueArray <PMUInt64> & ioComplementCacheArray) const ;
+  public : PMUInt128 valueCount128 (const PMUInt32 inVariableCount) const ;
+
+  public : PMUInt64 valueCount64UsingCache (const PMUInt32 inVariableCount,
+                                            TC_UniqueArray <PMUInt64> & ioDirectCacheArray,
+                                            TC_UniqueArray <PMUInt64> & ioComplementCacheArray) const ;
+
+  public : PMUInt128 valueCount128UsingCache (const PMUInt32 inVariableCount,
+                                              TC_UniqueArray <PMUInt128> & ioDirectCacheArray,
+                                              TC_UniqueArray <PMUInt128> & ioComplementCacheArray) const ;
 
 //--- Return highest bit index + 1 
-  public : PMUInt16 significantVariableCount (void) const ;
+  public : PMUInt32 significantVariableCount (void) const ;
 
 //--- Get nth BDD value
   public : C_BDD getNthBDD (const PMUInt64 inNthBDDvalue,
-                            const PMUInt16 inBDDvariablesCount) const ;
+                            const PMUInt32 inVariableCount) const ;
 
 //--- Get BDD range in 'inOperand' BDD
   public : PMUInt64 getBDDrange (const C_BDD & inOperand,
-                               const PMUInt16 inBDDvariablesCount) const ;
+                               const PMUInt32 inVariableCount) const ;
 
 //--- Get BDD absolute value
-  public : PMUInt64 getBDDabsoluteValue (const PMUInt16 inBDDvariablesCount) const ;
+  public : PMUInt64 getBDDabsoluteValue (const PMUInt32 inVariableCount) const ;
   
 //--- Get BDD nodes count
   public : PMUInt32 getBDDnodesCount (void) const ;
 
 //--- Test if a BDD does contain a value
-  public : bool
-  containsValue (const PMUInt64 inValue,
-                 const PMUInt16 inFirstBit,
-                 const PMUInt16 inBitCount) const ;
+  public : bool containsValue64 (const PMUInt64 inValue,
+                                 const PMUInt32 inFirstBit,
+                                 const PMUInt32 inBitCount) const ;
+
+  public : bool containsValue (const TC_Array <bool> & inValue,
+                               const PMUInt32 inFirstBit,
+                               const PMUInt32 inBitCount) const ;
 
 //------------------------ Updating a relation
-  public : C_BDD
-  updateRelation (const PMUInt16 inRelationBitNeededCount [], 
-                  PMUInt16 * inRelationBitCurrentCount [], 
-                  const PMSInt32 inRelationCardinality) const ;
+  public : C_BDD updateRelation (const PMUInt32 inRelationBitNeededCount [], 
+                                 PMUInt32 * inRelationBitCurrentCount [], 
+                                 const PMSInt32 inRelationCardinality) const ;
 
 //--- Translate BDD bits
-  public : C_BDD translate (const PMUInt16 inBDDvariablesCount,
-                            const PMUInt16 inTranslation) const ;
+  public : C_BDD translate (const PMUInt32 inVariableCount,
+                            const PMUInt32 inTranslation) const ;
 
-  public : void
-  getBoolArray (TC_UniqueArray <bool> & outArray,
-                const PMUInt32 inMaxValues,
-                const PMUInt16 inBitSize) const ;
+  public : void getBoolArray (TC_UniqueArray <bool> & outArray,
+                              const PMUInt32 inMaxValues,
+                              const PMUInt32 inBitSize) const ;
 
 //---- Substituing variables
-  public : C_BDD substitution (const PMUInt16 inSubstitutionArray [],
-                               const PMUInt16 inBDDvariablesCount
+  public : C_BDD substitution (const PMUInt32 inSubstitutionArray [],
+                               const PMUInt32 inVariableCount
                                COMMA_LOCATION_ARGS) const ;
 
-  public : C_BDD exchangeVariables (const PMUInt16 var1, const PMUInt16 var2) const ;
+  public : C_BDD exchangeVariables (const PMUInt32 var1, const PMUInt32 var2) const ;
 
-  public : C_BDD rollDownVariables (const PMUInt16 var1, const PMUInt16 var2) const ;
+  public : C_BDD rollDownVariables (const PMUInt32 var1, const PMUInt32 var2) const ;
 
-  public : C_BDD rollUpVariables (const PMUInt16 var1, const PMUInt16 var2) const ;
+  public : C_BDD rollUpVariables (const PMUInt32 var1, const PMUInt32 var2) const ;
 
 //--- BDD as 2-relations
-  public : C_BDD swap21 (const PMUInt16 inBitSize1,
-                         const PMUInt16 inBitSize2) const ;
+  public : C_BDD swap21 (const PMUInt32 inBitSize1,
+                         const PMUInt32 inBitSize2) const ;
 
   public : C_BDD accessibleStates (const C_BDD & inInitialStateSet,
-                                   const PMUInt16 inBitSize,
+                                   const PMUInt32 inBitSize,
                                    PMSInt32 * outIterationCount) const ;
 
-  public : C_BDD transitiveClosure (const PMUInt16 inBitSize,
+  public : C_BDD transitiveClosure (const PMUInt32 inBitSize,
                                     PMSInt32 * outIterationCount) const ;
 
 //--- BDD as 3-relations
-  public : C_BDD swap132 (const PMUInt16 inBitSize1,
-                          const PMUInt16 inBitSize2,
-                          const PMUInt16 inBitSize3) const ;
+  public : C_BDD swap132 (const PMUInt32 inBitSize1,
+                          const PMUInt32 inBitSize2,
+                          const PMUInt32 inBitSize3) const ;
 
-  public : C_BDD swap213 (const PMUInt16 inBitSize1,
-                          const PMUInt16 inBitSize2,
-                          const PMUInt16 inBitSize3) const ;
+  public : C_BDD swap213 (const PMUInt32 inBitSize1,
+                          const PMUInt32 inBitSize2,
+                          const PMUInt32 inBitSize3) const ;
 
-  public : C_BDD swap231 (const PMUInt16 inBitSize1,
-                          const PMUInt16 inBitSize2,
-                          const PMUInt16 inBitSize3) const ;
+  public : C_BDD swap231 (const PMUInt32 inBitSize1,
+                          const PMUInt32 inBitSize2,
+                          const PMUInt32 inBitSize3) const ;
 
-  public : C_BDD swap312 (const PMUInt16 inBitSize1,
-                          const PMUInt16 inBitSize2,
-                          const PMUInt16 inBitSize3) const ;
+  public : C_BDD swap312 (const PMUInt32 inBitSize1,
+                          const PMUInt32 inBitSize2,
+                          const PMUInt32 inBitSize3) const ;
 
-  public : C_BDD swap321 (const PMUInt16 inBitSize1,
-                          const PMUInt16 inBitSize2,
-                          const PMUInt16 inBitSize3) const ;
+  public : C_BDD swap321 (const PMUInt32 inBitSize1,
+                          const PMUInt32 inBitSize2,
+                          const PMUInt32 inBitSize3) const ;
 
   public : void
   getArray2 (TC_UniqueArray <TC_UniqueArray <PMSInt32> > & outArray,
              const PMUInt32 inMaxValueCount,
-             const PMUInt16 inBitSize1,
-             const PMUInt16 inBitSize2) const ;
+             const PMUInt32 inBitSize1,
+             const PMUInt32 inBitSize2) const ;
 
 
 //--- Printing
@@ -235,19 +244,19 @@ class C_BDD {
                           const PMSInt32 inLeadingSpacesCount) const ;
 
   public : void printBDD (const TC_UniqueArray <C_String> & inVariablesNames,
-                          const PMSInt32 inVariablesCount,
+                          const PMSInt32 inVariableCount,
                           const PMSInt32 inLeadingSpacesCount) const ;
 
   public : void printBDDHeader (const TC_UniqueArray <C_String> & inVariablesNames,
-                                const PMSInt32 inVariablesCount,
+                                const PMSInt32 inVariableCount,
                                 const PMSInt32 inLeadingSpacesCount) const ;
 
   public : void printBDDwithoutHeader (const TC_UniqueArray <C_String> & inVariablesNames,
-                                       const PMSInt32 inVariablesCount,
+                                       const PMSInt32 inVariableCount,
                                        const PMSInt32 inLeadingSpacesCount) const ;
 
   public : void printBDD (AC_OutputStream & inStream,
-                          const PMUInt16 inBDDvariablesCount,
+                          const PMUInt32 inVariableCount,
                           const C_Display_BDD & inVariablesNames) const ;
 
   public : void printBDDnodes (AC_OutputStream & inStream,
@@ -257,14 +266,14 @@ class C_BDD {
                                                              COMMA_LOCATION_ARGS) const ;
 
   public : void buildCompressedLittleEndianStringValueArray (TC_UniqueArray <C_String> & outStringArray,
-                                                             const PMUInt16 inBDDvariablesCount
+                                                             const PMUInt32 inVariableCount
                                                              COMMA_LOCATION_ARGS) const ;
 
   public : void buildCompressedBigEndianStringValueArray (TC_UniqueArray <C_String> & outStringArray
                                                           COMMA_LOCATION_ARGS) const ;
 
   public : void buildCompressedBigEndianStringValueArray (TC_UniqueArray <C_String> & outStringArray,
-                                                          const PMUInt16 inBDDvariablesCount
+                                                          const PMUInt32 inVariableCount
                                                           COMMA_LOCATION_ARGS) const ;
 
 //--- Mark all nodes 
@@ -277,14 +286,17 @@ class C_BDD {
   public :  void checkBDDIsWellFormed (LOCATION_ARGS) ;
 
 //--- Traversing BDD : build an array containing all values
-  public : void buildValueArray (TC_UniqueArray <PMUInt64> & outValuesArray,
-                                  const PMUInt16 inBDDvariablesCount) const ;
+  public : void buildValue64Array (TC_UniqueArray <PMUInt64> & outValuesArray,
+                                   const PMUInt32 inVariableCount) const ;
+
+  public : void buildValueArray (TC_UniqueArray <TC_Array <bool> > & outValuesArray,
+                                  const PMUInt32 inVariableCount) const ;
 
   public : void buildLittleEndianStringValueArray (TC_UniqueArray <C_String> & outStringArray,
-                                                   const PMUInt16 inBDDvariablesCount) const ;
+                                                   const PMUInt32 inVariableCount) const ;
 
   public : void buildBigEndianStringValueArray (TC_UniqueArray <C_String> & outStringArray,
-                                                const PMUInt16 inBDDvariablesCount) const ;
+                                                const PMUInt32 inVariableCount) const ;
 
   public : C_String queryStringValue (LOCATION_ARGS) const ;
 
@@ -294,7 +306,7 @@ class C_BDD {
 
 //--- Traversing BBD (call C_bdd_value_traversing::action method for every value) 
   public : void traverseBDDvalues (C_bdd_value_traversing & inTraversing,
-                                   const PMUInt16 inBDDvariablesCount) const ;
+                                   const PMUInt32 inVariableCount) const ;
 
 //--- Traversing BBD (call C_bdd_node_traversing::action method for every node) 
   public : void traversBDDnodes (C_bdd_node_traversing & inTraversing) const ;
@@ -355,7 +367,7 @@ class C_bdd_value_traversing {
 
 //--- Virtual method called for every value
   public : virtual void action (const bool tableauDesValeurs [],
-                                const PMUInt16 inBDDvariablesCount) = 0 ;
+                                const PMUInt32 inVariableCount) = 0 ;
   
 //--- No instance copy
   private : C_bdd_value_traversing (const C_bdd_value_traversing &) ;
@@ -375,7 +387,7 @@ class C_bdd_node_traversing {
 
 //--- Virtual method called for every node
   public : virtual void action (const PMUInt32 inNodeID,
-                                const PMUInt16 inVariable,
+                                const PMUInt32 inVariable,
                                 const PMUInt32 inBranchIfFalse,
                                 const PMUInt32 inTrueBranchComplement,
                                 const PMUInt32 inBranchIfTrue) = 0 ;

@@ -70,8 +70,8 @@ function multipleAttributeOrError
   ->@identifierList v
 :
   v := [@identifierList emptyList];
-  cast t:
-  when == @multipleAttribute l do
+  cast t
+  when == @multipleAttribute l :
     v := [l items];
   else
     error [t location]: "Internal error, ".att." has a wrong datatype";
@@ -89,8 +89,8 @@ function boolAttributeOrError
   ->@bool      v
 :
   v := false;
-  cast t:
-  when == @boolAttribute attribute do
+  cast t
+  when == @boolAttribute attribute :
     v := [attribute value];
   else
     error [t location]: "Internal error, ".att." has a wrong datatype";
@@ -117,8 +117,8 @@ function uint32_or_error
   ->@uint      v
 :
   v := 0;
-  cast t:
-  when == @uint32_class ui do
+  cast t
+  when == @uint32_class ui :
     v := [ui value];
   else
     error [t location]: att." is not defined";
@@ -131,8 +131,8 @@ function uint32OrError
   ->@uint      v
 :
   v := 0;
-  cast t:
-  when == @uint32_class ui do
+  cast t
+  when == @uint32_class ui :
     v := [ui value];
   else
     error [t location]: att." is not defined";
@@ -152,8 +152,8 @@ function sint32OrError
   ->@sint      v
 :
   v := 0S;
-  cast t:
-  when == @sint32_class ui do
+  cast t
+  when == @sint32_class ui :
     v := [ui value];
   else
     error [t location]: att." is not defined";
@@ -173,8 +173,8 @@ function uint64OrError
   ->@uint64    v
 :
   v := 0L;
-  cast t:
-  when == @uint64_class ui do
+  cast t
+  when == @uint64_class ui :
     v := [ui value];
   else
     error [t location]: "Internal error, ".att." has a wrong datatype";
@@ -186,8 +186,8 @@ function luint64OrError
   ?@string     att
   ->@luint64    v
 :
-  cast t:
-  when == @uint64_class ui do
+  cast t
+  when == @uint64_class ui :
     v := [@luint64 new ![ui value] ![ui location]];
   else
     v := [@luint64 new !0L !here];
@@ -208,8 +208,8 @@ function sint64OrError
   ->@sint64    v
 :
   v := 0LS;
-  cast t:
-  when == @sint64_class ui do
+  cast t
+  when == @sint64_class ui :
     v := [ui value];
   else
     error [t location]: "Internal error, ".att." has a wrong datatype";
@@ -229,8 +229,8 @@ function floatOrError
   ->@double    v
 :
   v := 0.0;
-  cast t:
-  when == @float_class ui do
+  cast t
+  when == @float_class ui :
     v := [ui value];
   else
     error [t location]: "Internal error, ".att." has a wrong datatype";
@@ -257,8 +257,8 @@ function stringAttributeOrError
   ->@lstring result
 :
   result := emptyLString[];
-  cast attribute:
-  when == @stringAttribute attribute do
+  cast attribute
+  when == @stringAttribute attribute :
     result := [@lstring new ![attribute value] ![attribute location]];
   else
     error [attribute location]: "Internal error ".attributeName." has a wrong datatype";

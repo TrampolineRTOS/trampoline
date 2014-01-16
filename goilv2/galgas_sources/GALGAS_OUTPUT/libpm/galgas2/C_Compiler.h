@@ -98,7 +98,9 @@ class C_Compiler : public C_SharedObject {
 //--- 'loop' intruction variant run-time error
   public : void loopRunTimeVariantError (LOCATION_ARGS) ;
 
-//--- Handle 'here' in GALGAS 2
+//--- Handle 'here' in GALGAS
+  protected : C_LocationInSource mStartLocationForHere ; // Set by lexique
+  protected : C_LocationInSource mEndLocationForHere ; // Set by lexique
   public : GALGAS_location here (void) const ;
 
 //--- Source file name
@@ -172,15 +174,10 @@ class C_Compiler : public C_SharedObject {
                                                const GALGAS_location & inExistingKeyLocation
                                                COMMA_LOCATION_ARGS) ;
 
-//--- Emit an error for on a cast expression failure
-  public : void castInExpressionErrorAtLocation (const GALGAS_location & inErrorLocation
-                                                 COMMA_LOCATION_ARGS) ;
-
-//--- Emit an error for on a cast expression failure
-  public : void extractObjectError (const GALGAS_location & inErrorLocation,
-                                    const char * inTargetTypeName,
-                                    const C_galgas_type_descriptor * inSourceStaticType
-                                    COMMA_LOCATION_ARGS) ;
+//--- Cast error
+  public : void castError (const C_String & inTargetTypeName,
+                           const C_galgas_type_descriptor * inObjectDynamicTypeDescriptor
+                           COMMA_LOCATION_ARGS) ;
 
 //--- enterPragma
   private : TC_UniqueArray <C_String> mCheckedVariableList ;

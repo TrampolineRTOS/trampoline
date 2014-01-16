@@ -4,7 +4,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 2008, ..., 2012 Pierre Molinaro.                           *
+//  Copyright (C) 2008, ..., 2013 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //                                                                           *
@@ -26,6 +26,7 @@
 #include "predefined-types.h"
 #include "utilities/MF_MemoryControl.h"
 #include "galgas2/C_Compiler.h"
+#include "utilities/C_DirectedGraph.h"
 
 //---------------------------------------------------------------------------*
 
@@ -60,26 +61,17 @@ cGraphNode::~ cGraphNode (void) {
   macroMyDelete (mInfPtr) ;
   macroMyDelete (mSupPtr) ;
 }
-
-//---------------------------------------------------------------------------*
-
-typedef struct {
-  PMUInt32 mSourceNodeID ;
-  PMUInt32 mTargetNodeID ;
-} tArcStruct ;
-
 //---------------------------------------------------------------------------*
 
 class cSharedGraph : public C_SharedObject {
 //--------------------------------- Attributes
   private : cGraphNode * mRoot ;
   public : inline const cGraphNode * root (void) const { return mRoot ; }
-  private : PMUInt32 mAllNodeCount ;
-  private : TC_UniqueArray <tArcStruct> mArcArray ;
+  private : C_DirectedGraph mDirectedGraph ;
   private : TC_UniqueArray <cGraphNode *> mNodeArray ;
 
 //--- Count
-  public : inline PMUInt32 allNodeCount (void) const { return mAllNodeCount ; }
+  public : inline PMUInt32 allNodeCount (void) const { return (PMUInt32) mNodeArray.count () ; }
 
 //--- Constructor
   public : cSharedGraph (LOCATION_ARGS) ;
@@ -92,6 +84,8 @@ class cSharedGraph : public C_SharedObject {
                              const PMSInt32 inIndentation) const ;
 
   public : void copyFrom (const cSharedGraph * inSource) ;
+
+  public : void copyReversedGraphFrom (const cSharedGraph * inSource) ;
 
   public : PMSInt32 graphCompare (const cSharedGraph * inOperand) const ;
 
@@ -107,18 +101,47 @@ class cSharedGraph : public C_SharedObject {
                                  C_Compiler * inCompiler
                                  COMMA_LOCATION_ARGS) ;
 
-  public : void addArc (const C_String & inSourceNodeKey,
-                        const C_String & inTargetNodeKey,
-                        const GALGAS_location & inTargetNodeLocation) ;
+  public : void addEdge (const C_String & inSourceNodeKey,
+                         const C_String & inTargetNodeKey,
+                         const GALGAS_location & inTargetNodeLocation) ;
+
+  public : void removeEdgesToDominators (LOCATION_ARGS) ;
+
+  public : void removeEdgesToNode (const C_String & inNodeName,
+                                   C_Compiler * inCompiler
+                                   COMMA_LOCATION_ARGS) ;
 
   public : void internalTopologicalSort (cSharedList * & outSortedList,
                                          GALGAS_lstringlist & outSortedNodeKeyList,
                                          cSharedList * & outUnsortedList,
                                          GALGAS_lstringlist & outUnsortedNodeKeyList) const ;
 
+  public : void internalNodesWithNoPredecessor (cSharedList * & outInfoList,
+                                                GALGAS_lstringlist & outNodeKeyList) const ;
+
+  public : void internalNodesWithNoSuccessor (cSharedList * & outInfoList,
+                                              GALGAS_lstringlist & outNodeKeyList) const ;
+
+  public : void internalDepthFirstTopologicalSort (cSharedList * & outSortedList,
+                                                   GALGAS_lstringlist & outSortedNodeKeyList,
+                                                   cSharedList * & outUnsortedList,
+                                                   GALGAS_lstringlist & outUnsortedNodeKeyList) const ;
+
+  public : void subGraph (AC_GALGAS_graph & outResultingGraph,
+                          const GALGAS_lstringlist & inStartNodes,
+                          const GALGAS_stringset & inNodesToExclude,
+                          C_Compiler * inCompiler
+                          COMMA_LOCATION_ARGS) const ;
+
+  public : GALGAS_stringlist keyList (void) const ;
+
   public : C_String reader_graphviz (void) const ;
 
-  public : void reader_arcs (GALGAS__32_stringlist & ioList) const ;
+  public : void edges (GALGAS__32_stringlist & ioList) const ;
+
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    public : void checkGraph (LOCATION_ARGS) const ;
+  #endif
 
 //--- No copy
   private : cSharedGraph (const cSharedGraph &) ;
@@ -130,8 +153,7 @@ class cSharedGraph : public C_SharedObject {
 cSharedGraph::cSharedGraph (LOCATION_ARGS) :
 C_SharedObject (THERE),
 mRoot (NULL),
-mAllNodeCount (0),
-mArcArray (),
+mDirectedGraph (),
 mNodeArray () {
 }
 
@@ -159,15 +181,27 @@ mAttributes (inNode->mAttributes),
 mDefinitionLocation (inNode->mDefinitionLocation),
 mReferenceLocationArray (),
 mIsDefined (inNode->mIsDefined) {
+  mReferenceLocationArray.makeRoom (inNode->mReferenceLocationArray.count ()) ;
+  for (PMSInt32 i=0 ; i<inNode->mReferenceLocationArray.count () ; i++) {
+    mReferenceLocationArray.addObject (inNode->mReferenceLocationArray (i COMMA_HERE)) ;
+  }
   if (NULL != inNode->mInfPtr) {
     macroMyNew (mInfPtr, cGraphNode (inNode->mInfPtr)) ;
   }
   if (NULL != inNode->mSupPtr) {
     macroMyNew (mSupPtr, cGraphNode (inNode->mSupPtr)) ;
   }
-  mReferenceLocationArray.makeRoom (inNode->mReferenceLocationArray.count ()) ;
-  for (PMSInt32 i=0 ; i<inNode->mReferenceLocationArray.count () ; i++) {
-    mReferenceLocationArray.addObject (inNode->mReferenceLocationArray (i COMMA_HERE)) ;
+}
+
+//---------------------------------------------------------------------------*
+
+static void buildNodeArray (cGraphNode * inNode,
+                            TC_UniqueArray <cGraphNode *> & ioNodeArray) {
+  if (NULL != inNode) {
+    MF_Assert (ioNodeArray ((PMSInt32) inNode->mNodeID COMMA_HERE) == NULL, "ioNodeArray (%lld COMMA_HERE) != NULL", inNode->mNodeID, 0) ;
+    ioNodeArray ((PMSInt32) inNode->mNodeID COMMA_HERE) = inNode ;
+    buildNodeArray (inNode->mInfPtr, ioNodeArray) ;
+    buildNodeArray (inNode->mSupPtr, ioNodeArray) ;
   }
 }
 
@@ -177,23 +211,40 @@ void cSharedGraph::copyFrom (const cSharedGraph * inSource) {
   macroUniqueSharedObject (this) ;
   if (NULL != inSource->mRoot) {
     macroMyNew (mRoot, cGraphNode (inSource->mRoot)) ;
-    mAllNodeCount = inSource->mAllNodeCount ;
-    mArcArray.makeRoom (inSource->mArcArray.count ()) ;
-    for (PMSInt32 i=0 ; i<inSource->mArcArray.count () ; i++) {
-      mArcArray (i COMMA_HERE) = inSource->mArcArray (i COMMA_HERE) ;
-    }
+    mNodeArray.addObjects (inSource->mNodeArray.count (), NULL) ;
+    buildNodeArray (mRoot, mNodeArray) ;
+    mDirectedGraph = inSource->mDirectedGraph ;
   }
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    checkGraph (HERE) ;
+  #endif
 }
-
 //---------------------------------------------------------------------------*
 
 void cSharedGraph::description (C_String & ioString,
                                 const PMSInt32 /* inIndentation */) const {
   ioString << " ("
-           << cStringWithUnsigned (mAllNodeCount)
-           << " node" << ((mAllNodeCount > 1) ? "s" : "")
+           << cStringWithUnsigned (mDirectedGraph.nodeCount ())
+           << " node" << ((mDirectedGraph.nodeCount () > 1) ? "s" : "")
+           << ", " << cStringWithUnsigned (mDirectedGraph.edgeCount ())
+           << " edge" << ((mDirectedGraph.edgeCount () > 1) ? "s" : "")
            << ")" ;
 }
+
+//---------------------------------------------------------------------------*
+
+#ifndef DO_NOT_GENERATE_CHECKINGS
+  void cSharedGraph::checkGraph (LOCATION_ARGS) const {
+    TC_UniqueArray <cGraphNode *> nodeArray (mNodeArray.count () COMMA_HERE) ;
+    nodeArray.addObjects (mNodeArray.count (), NULL) ;
+    buildNodeArray (mRoot, nodeArray) ;
+    MF_AssertThere (nodeArray.count() == mNodeArray.count (), "nodeArray.count() == %lld != mNodeArray.count () %lld", nodeArray.count(), mNodeArray.count ()) ;
+    for (PMSInt32 i=0 ; i<nodeArray.count() ; i++) {
+      MF_AssertThere (nodeArray (i COMMA_HERE) == mNodeArray (i COMMA_HERE), "nodeArray.(%lld) != mNodeArray.(%lld)", i, i) ;
+      MF_AssertThere (mDirectedGraph.isNodeDefined ((PMUInt32) i), "! mDirectedGraph.isNodeDefined (i) : %lld != 0", i, 0) ;
+    }
+  }
+#endif
 
 //---------------------------------------------------------------------------*
 //    AC_GALGAS_graph                                                        *
@@ -277,8 +328,188 @@ void AC_GALGAS_graph::insulateGraph (LOCATION_ARGS) {
     p->copyFrom (mSharedGraph) ;
     macroAssignSharedObject (mSharedGraph, p) ;
     macroDetachSharedObject (p) ;
+    #ifndef DO_NOT_GENERATE_CHECKINGS
+      mSharedGraph->checkGraph (HERE) ;
+    #endif
   }
   macroMutexUnlock (gInsulationMutex) ;
+}
+
+//---------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark reader_keyList
+#endif
+
+//---------------------------------------------------------------------------*
+
+GALGAS_stringlist cSharedGraph::keyList (void) const {
+  GALGAS_stringlist result = GALGAS_stringlist::constructor_emptyList (HERE) ;
+  for (PMSInt32 i=0 ; i<mNodeArray.count () ; i++) {
+    result.addAssign_operation (mNodeArray (i COMMA_HERE)->mKey COMMA_HERE) ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------*
+
+GALGAS_stringlist AC_GALGAS_graph::reader_keyList (UNUSED_LOCATION_ARGS) const {
+  GALGAS_stringlist result ;
+  if (isValid ()) {
+    result = mSharedGraph->keyList () ;
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark internalFindNode
+#endif
+
+//---------------------------------------------------------------------------*
+
+static const cGraphNode * findNode (const C_String & inKey,
+                                    const cGraphNode * inNode) {
+  const cGraphNode * result = NULL ;
+  while ((NULL != inNode) && (result == NULL)) {
+    const PMSInt32 r = inKey.compare (inNode->mKey) ;
+    if (r < 0) {
+      inNode = inNode->mInfPtr ;
+    }else if (r > 0) {
+      inNode = inNode->mSupPtr ;
+    }else{
+      result = inNode ;
+    }
+  }
+  return result ;
+}
+
+//---------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark subGraph
+#endif
+
+//---------------------------------------------------------------------------*
+
+void cSharedGraph::subGraph (AC_GALGAS_graph & outResultingGraph,
+                             const GALGAS_lstringlist & inStartNodes,
+                             const GALGAS_stringset & inNodesToExclude,
+                             C_Compiler * inCompiler
+                             COMMA_LOCATION_ARGS) const {
+//--- Build start node set
+  C_UIntSet startNodeSet ;
+  cEnumerator_lstringlist enumerator1 (inStartNodes, kEnumeration_up) ;
+  while (enumerator1.hasCurrentObject ()) {
+    const cGraphNode * nodePtr = findNode (enumerator1.current_mValue (THERE).mAttribute_string.stringValue(), root()) ;
+    if (NULL == nodePtr) {
+      C_String message = "subgraphFromNodes: '" ;
+      message << enumerator1.current_mValue (THERE).mAttribute_string.stringValue() ;
+      message << "' is not a declared node" ;
+      inCompiler->emitSemanticError(enumerator1.current_mValue (THERE).mAttribute_location,
+                                    message
+                                    COMMA_THERE) ;
+    }else{
+      startNodeSet.add (nodePtr->mNodeID) ;
+    }
+    enumerator1.gotoNextObject () ;
+  }
+//--- Build node to exclude set
+  C_UIntSet nodesToExcludeSet ;
+  cEnumerator_stringset enumerator2 (inNodesToExclude, kEnumeration_up) ;
+  while (enumerator2.hasCurrentObject ()) {
+    const cGraphNode * nodePtr = findNode (enumerator2.current_key (THERE).stringValue(), root()) ;
+    if (NULL == nodePtr) {
+      C_String message = "subgraphFromNodes: '" ;
+      message << enumerator2.current_key (THERE).stringValue() ;
+      message << "' is not a declared node, cannot be excluded" ;
+      inCompiler->onTheFlySemanticError(message COMMA_THERE) ;
+    }else{
+      nodesToExcludeSet.add (nodePtr->mNodeID) ;
+    }
+    enumerator2.gotoNextObject () ;
+  }
+//--- Build sub graph
+  const C_DirectedGraph subGraph = mDirectedGraph.subGraphFromNodes (startNodeSet, nodesToExcludeSet) ;
+//--- Enter nodes
+  TC_UniqueArray <PMUInt32> nodeArray ; subGraph.getNodeValueArray (nodeArray) ;
+  for (PMSInt32 i=0 ; i<nodeArray.count () ; i++) {
+    const PMUInt32 nodeIndex = nodeArray (i COMMA_HERE) ;
+    const cGraphNode * nodePtr = mNodeArray ((PMSInt32) nodeIndex COMMA_THERE) ;
+    GALGAS_lstring lkey ;
+    lkey.mAttribute_string = nodePtr->mKey ;
+    lkey.mAttribute_location = nodePtr->mDefinitionLocation ;
+    outResultingGraph.internalAddNode (lkey,
+                                       "subgraphFromNodes Internal error",
+                                       nodePtr->mAttributes,
+                                       inCompiler
+                                       COMMA_THERE) ;
+  }
+//--- Enter edges
+  TC_UniqueArray <cEdge> edgeArray ; subGraph.getEdges (edgeArray) ;
+  for (PMSInt32 i=0 ; i<edgeArray.count () ; i++) {
+    const PMUInt32 sourceNodeIndex = edgeArray (i COMMA_HERE).mSource ;
+    const cGraphNode * sourceNodePtr = mNodeArray ((PMSInt32) sourceNodeIndex COMMA_THERE) ;
+    GALGAS_lstring source ;
+    source.mAttribute_string = sourceNodePtr->mKey ;
+    source.mAttribute_location = sourceNodePtr->mDefinitionLocation ;
+    const PMUInt32 targetNodeIndex = edgeArray (i COMMA_HERE).mTarget ;
+    const cGraphNode * targetNodePtr = mNodeArray ((PMSInt32) targetNodeIndex COMMA_THERE) ;
+    GALGAS_lstring target ;
+    target.mAttribute_string = targetNodePtr->mKey ;
+    target.mAttribute_location = targetNodePtr->mDefinitionLocation ;
+    outResultingGraph.modifier_addEdge (source, target COMMA_THERE) ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+void AC_GALGAS_graph::subGraph (AC_GALGAS_graph & outResultingGraph,
+                                const GALGAS_lstringlist & inStartNodes,
+                                const GALGAS_stringset & inNodesToExclude,
+                                C_Compiler * inCompiler
+                                COMMA_LOCATION_ARGS) const {
+  if (isValid () && inStartNodes.isValid () && inNodesToExclude.isValid ()) {
+    outResultingGraph.makeNewEmptyGraph (THERE) ;
+    mSharedGraph->subGraph (outResultingGraph,
+                            inStartNodes,
+                            inNodesToExclude,
+                            inCompiler
+                            COMMA_THERE) ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Reversed Graph
+#endif
+
+//---------------------------------------------------------------------------*
+
+void cSharedGraph::copyReversedGraphFrom (const cSharedGraph * inSource) {
+  macroUniqueSharedObject (this) ;
+  if (NULL != inSource->mRoot) {
+    macroMyNew (mRoot, cGraphNode (inSource->mRoot)) ;
+    mNodeArray.addObjects (inSource->mNodeArray.count (), NULL) ;
+    buildNodeArray (mRoot, mNodeArray) ;
+    mDirectedGraph = inSource->mDirectedGraph.reversedGraph () ;
+  }
+  #ifndef DO_NOT_GENERATE_CHECKINGS
+    checkGraph (HERE) ;
+  #endif
+}
+
+//---------------------------------------------------------------------------*
+
+void AC_GALGAS_graph::reversedGraphFromGraph (const AC_GALGAS_graph & inGraph
+                                              COMMA_LOCATION_ARGS) {
+  macroDetachSharedObject (mSharedGraph) ;
+  if (inGraph.isValid ()) {
+    macroMyNew (mSharedGraph, cSharedGraph (THERE)) ;
+    mSharedGraph->copyReversedGraphFrom (inGraph.mSharedGraph) ;
+  }
 }
 
 //---------------------------------------------------------------------------*
@@ -292,7 +523,7 @@ void AC_GALGAS_graph::insulateGraph (LOCATION_ARGS) {
 PMSInt32 cSharedGraph::graphCompare (const cSharedGraph * inOperand) const {
   PMSInt32 r = ((PMSInt32) allNodeCount ()) - ((PMSInt32) inOperand->allNodeCount ()) ;
   if (r == 0) {
-
+    // TODO
   }
   return r ;
 }
@@ -383,10 +614,10 @@ cGraphNode * cSharedGraph::internalInsert (cGraphNode * & ioRootPtr,
                                            bool & ioExtension) {
   cGraphNode * matchingEntry = NULL ;
   if (ioRootPtr == NULL) {
-    macroMyNew (ioRootPtr, cGraphNode (inKey, mAllNodeCount)) ;
+    macroMyNew (ioRootPtr, cGraphNode (inKey, (PMUInt32) mNodeArray.count ())) ;
+    mDirectedGraph.addNode ((PMUInt32) mNodeArray.count ()) ;
     mNodeArray.addObject (ioRootPtr) ;
     ioExtension = true ;
-    mAllNodeCount ++ ;
     matchingEntry = ioRootPtr ;
   }else{
     macroValidPointer (ioRootPtr) ;
@@ -469,9 +700,16 @@ void AC_GALGAS_graph::internalAddNode (const GALGAS_lstring & inKey,
                                        COMMA_LOCATION_ARGS) {
   if (isValid () && inKey.isValid () && inAttributes.isValid ()) {
     insulateGraph (THERE) ;
-    mSharedGraph->internalAddNode (inKey, inErrorMessage, inAttributes, inCompiler COMMA_THERE) ;
+    MF_Assert (NULL != mSharedGraph, "mSharedGraph == NULL", 0, 0) ;
+    if (NULL != mSharedGraph) {
+      mSharedGraph->internalAddNode (inKey, inErrorMessage, inAttributes, inCompiler COMMA_THERE) ;
+    }
+    #ifndef DO_NOT_GENERATE_CHECKINGS
+      mSharedGraph->checkGraph (HERE) ;
+    #endif
   }
 }
+
 
 //---------------------------------------------------------------------------*
 
@@ -485,39 +723,53 @@ void AC_GALGAS_graph::modifier_noteNode (const GALGAS_lstring & inKey
                                          COMMA_LOCATION_ARGS) {
   if (isValid () && inKey.isValid ()) {
     insulateGraph (THERE) ;
-    cGraphNode * node = mSharedGraph->findOrAddNodeForKey (inKey.mAttribute_string.stringValue ()) ;
-    node->mReferenceLocationArray.addObject (inKey.mAttribute_location) ;
+    MF_Assert (NULL != mSharedGraph, "mSharedGraph == NULL", 0, 0) ;
+    cGraphNode * node = (NULL == mSharedGraph)
+      ? NULL
+      : mSharedGraph->findOrAddNodeForKey (inKey.mAttribute_string.stringValue ())
+    ;
+    if (NULL != node) {
+      node->mReferenceLocationArray.addObject (inKey.mAttribute_location) ;
+    }
+    #ifndef DO_NOT_GENERATE_CHECKINGS
+      mSharedGraph->checkGraph (HERE) ;
+    #endif
   }
 }
 
 //---------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark Modifier addArc
+  #pragma mark Modifier addEdge
 #endif
 
 //---------------------------------------------------------------------------*
 
-void cSharedGraph::addArc (const C_String & inSourceNodeKey,
-                           const C_String & inTargetNodeKey,
-                           const GALGAS_location & inTargetNodeLocation) {
+void cSharedGraph::addEdge (const C_String & inSourceNodeKey,
+                            const C_String & inTargetNodeKey,
+                            const GALGAS_location & inTargetNodeLocation) {
   cGraphNode * sourceNode = findOrAddNodeForKey (inSourceNodeKey) ;
   cGraphNode * targetNode = findOrAddNodeForKey (inTargetNodeKey) ;
   targetNode->mReferenceLocationArray.addObject (inTargetNodeLocation) ;
-  const tArcStruct arc = {sourceNode->mNodeID, targetNode->mNodeID} ;
-  mArcArray.addObject (arc) ;
+  mDirectedGraph.addEdge (sourceNode->mNodeID, targetNode->mNodeID) ;
 }
 
 //---------------------------------------------------------------------------*
 
-void AC_GALGAS_graph::modifier_addArc (const GALGAS_lstring & inSourceNodeKey,
-                                       const GALGAS_lstring & inTargetNodeKey
-                                       COMMA_UNUSED_LOCATION_ARGS) {
+void AC_GALGAS_graph::modifier_addEdge (const GALGAS_lstring & inSourceNodeKey,
+                                        const GALGAS_lstring & inTargetNodeKey
+                                        COMMA_UNUSED_LOCATION_ARGS) {
   if (isValid () && inSourceNodeKey.isValid () && inTargetNodeKey.isValid ()) {
     insulateGraph (HERE) ;
-    mSharedGraph->addArc (inSourceNodeKey.mAttribute_string.stringValue (),
-                          inTargetNodeKey.mAttribute_string.stringValue (),
-                          inTargetNodeKey.mAttribute_location) ;
+    MF_Assert (NULL != mSharedGraph, "mSharedGraph == NULL", 0, 0) ;
+    if (NULL != mSharedGraph) {
+      mSharedGraph->addEdge (inSourceNodeKey.mAttribute_string.stringValue (),
+                             inTargetNodeKey.mAttribute_string.stringValue (),
+                             inTargetNodeKey.mAttribute_location) ;
+    }
+    #ifndef DO_NOT_GENERATE_CHECKINGS
+      mSharedGraph->checkGraph (HERE) ;
+    #endif
   }
 }
 
@@ -530,16 +782,11 @@ void AC_GALGAS_graph::modifier_addArc (const GALGAS_lstring & inSourceNodeKey,
 //---------------------------------------------------------------------------*
 
 C_String cSharedGraph::reader_graphviz (void) const {
-  C_String s ;
-  s << "digraph G {\n" ;
-  for (PMSInt32 i=0 ; i<mArcArray.count () ; i++) {
-    const tArcStruct arc = mArcArray (i COMMA_HERE) ;
-    s << "  \"" << mNodeArray (arc.mSourceNodeID COMMA_HERE)->mKey
-      << "\" -> \"" << mNodeArray (arc.mTargetNodeID COMMA_HERE)->mKey
-      << "\" ;\n" ;
-  }  
-  s << "}\n" ;
-  return s ;
+  TC_UniqueArray <C_String> nodeNameArray ;
+  for (PMSInt32 i=0 ; i<mNodeArray.count () ; i++) {
+    nodeNameArray.addObject (mNodeArray (i COMMA_HERE)->mKey) ;
+  }
+  return mDirectedGraph.graphvizString (nodeNameArray) ;
 }
 
 //---------------------------------------------------------------------------*
@@ -561,22 +808,23 @@ GALGAS_string AC_GALGAS_graph::reader_graphviz (UNUSED_LOCATION_ARGS) const {
 
 //---------------------------------------------------------------------------*
 
-void cSharedGraph::reader_arcs (GALGAS__32_stringlist & ioList) const {
-  for (PMSInt32 i=0 ; i<mArcArray.count () ; i++) {
-    const tArcStruct arc = mArcArray (i COMMA_HERE) ;
-    ioList.addAssign_operation (mNodeArray (arc.mSourceNodeID COMMA_HERE)->mKey,
-                                mNodeArray (arc.mTargetNodeID COMMA_HERE)->mKey
+void cSharedGraph::edges (GALGAS__32_stringlist & ioList) const {
+  TC_UniqueArray <cEdge> edgeArray ; mDirectedGraph.getEdges (edgeArray) ;
+  for (PMSInt32 i=0 ; i<edgeArray.count () ; i++) {
+    const cEdge edge = edgeArray (i COMMA_HERE) ;
+    ioList.addAssign_operation (mNodeArray ((PMSInt32) edge.mSource COMMA_HERE)->mKey,
+                                mNodeArray ((PMSInt32) edge.mTarget COMMA_HERE)->mKey
                                 COMMA_HERE) ;
   }  
 }
 
 //---------------------------------------------------------------------------*
 
-GALGAS__32_stringlist AC_GALGAS_graph::reader_arcs (LOCATION_ARGS) const {
+GALGAS__32_stringlist AC_GALGAS_graph::reader_edges (LOCATION_ARGS) const {
   GALGAS__32_stringlist result ;
   if (isValid ()) {
     result = GALGAS__32_stringlist::constructor_emptyList (THERE) ;
-    mSharedGraph->reader_arcs (result) ;
+    mSharedGraph->edges (result) ;
   }
   return result ;
 }
@@ -643,46 +891,82 @@ GALGAS_stringlist AC_GALGAS_graph::reader_undefinedNodeKeyList (LOCATION_ARGS) c
 //---------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
-  #pragma mark Topological sort
+  #pragma mark Nodes with no predecessor
 #endif
 
 //---------------------------------------------------------------------------*
 
-class cTopologicalSortEntry {
-  public : capCollectionElement mAttributes ;
-  public : PMUInt32 mDependencyCount ;
-  public : TC_Array <PMUInt32> mDependenceArray ; // Node indexes of nodes after current node
-  public : PMSInt32 mLink ;
-  public : GALGAS_lstring mKey ; // For display only
-
-//--- Constructor
-  public : cTopologicalSortEntry (void) ;
-} ;
-
-//---------------------------------------------------------------------------*
-
-cTopologicalSortEntry::cTopologicalSortEntry (void) :
-mAttributes (),
-mDependencyCount (0),
-mDependenceArray (),
-mLink (-1),
-mKey () {
-}
-
-//---------------------------------------------------------------------------*
-
-static void enterNodes (const cGraphNode * inNode,
-                        TC_UniqueArray <cTopologicalSortEntry> & ioArray) {
-  if (NULL != inNode) {
-    enterNodes (inNode->mInfPtr, ioArray) ;
+void cSharedGraph::internalNodesWithNoPredecessor (cSharedList * & outInfoList,
+                                                   GALGAS_lstringlist & outNodeKeyList) const {
+  TC_UniqueArray <PMUInt32> nodeArray ;
+  mDirectedGraph.getNodesWithNoPredecessor (nodeArray) ;
+//--- Add nodes
+  AC_GALGAS_list::makeNewSharedList (outInfoList COMMA_HERE) ;
+  outNodeKeyList = GALGAS_lstringlist::constructor_emptyList (HERE) ;
+  for (PMSInt32 i=0 ; i<nodeArray.count () ; i++) {
+    const PMUInt32 nodeIndex = nodeArray (i COMMA_HERE) ;
+    const cGraphNode * nodePtr = mNodeArray ((PMSInt32) nodeIndex COMMA_HERE) ;
+    AC_GALGAS_list::insertInSharedList (outInfoList, nodePtr->mAttributes) ;
     GALGAS_lstring lkey ;
-    lkey.mAttribute_location = inNode->mDefinitionLocation ;
-    lkey.mAttribute_string = GALGAS_string (inNode->mKey) ;
-    ioArray ((PMSInt32) inNode->mNodeID COMMA_HERE).mKey = lkey ;
-    ioArray ((PMSInt32) inNode->mNodeID COMMA_HERE).mAttributes = inNode->mAttributes ;
-    enterNodes (inNode->mSupPtr, ioArray) ;
+    lkey.mAttribute_location = nodePtr->mDefinitionLocation ;
+    lkey.mAttribute_string = GALGAS_string (nodePtr->mKey) ;
+    outNodeKeyList.addAssign_operation (lkey COMMA_HERE) ;
   }
 }
+
+//---------------------------------------------------------------------------*
+
+void AC_GALGAS_graph::internalNodesWithNoPredecessor (cSharedList * & outInfoList,
+                                                      GALGAS_lstringlist & outNodeKeyList
+                                                      COMMA_UNUSED_LOCATION_ARGS) const {
+  outNodeKeyList.drop () ;
+  if (isValid ()) {
+    mSharedGraph->internalNodesWithNoPredecessor (outInfoList, outNodeKeyList) ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Nodes with no successor
+#endif
+
+//---------------------------------------------------------------------------*
+
+void cSharedGraph::internalNodesWithNoSuccessor (cSharedList * & outInfoList,
+                                                 GALGAS_lstringlist & outNodeKeyList) const {
+  TC_UniqueArray <PMUInt32> nodeArray ;
+  mDirectedGraph.getNodesWithNoSuccessor (nodeArray) ;
+//--- Add nodes
+  AC_GALGAS_list::makeNewSharedList (outInfoList COMMA_HERE) ;
+  outNodeKeyList = GALGAS_lstringlist::constructor_emptyList (HERE) ;
+  for (PMSInt32 i=0 ; i<nodeArray.count () ; i++) {
+    const PMUInt32 nodeIndex = nodeArray (i COMMA_HERE) ;
+    const cGraphNode * nodePtr = mNodeArray ((PMSInt32) nodeIndex COMMA_HERE) ;
+    AC_GALGAS_list::insertInSharedList (outInfoList, nodePtr->mAttributes) ;
+    GALGAS_lstring lkey ;
+    lkey.mAttribute_location = nodePtr->mDefinitionLocation ;
+    lkey.mAttribute_string = GALGAS_string (nodePtr->mKey) ;
+    outNodeKeyList.addAssign_operation (lkey COMMA_HERE) ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+void AC_GALGAS_graph::internalNodesWithNoSuccessor (cSharedList * & outInfoList,
+                                                      GALGAS_lstringlist & outNodeKeyList
+                                                      COMMA_UNUSED_LOCATION_ARGS) const {
+  outNodeKeyList.drop () ;
+  if (isValid ()) {
+    mSharedGraph->internalNodesWithNoSuccessor (outInfoList, outNodeKeyList) ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Breath First Topological sort
+#endif
 
 //---------------------------------------------------------------------------*
 
@@ -690,67 +974,32 @@ void cSharedGraph::internalTopologicalSort (cSharedList * & outSortedList,
                                             GALGAS_lstringlist & outSortedNodeKeyList,
                                             cSharedList * & outUnsortedList,
                                             GALGAS_lstringlist & outUnsortedNodeKeyList) const {
-  TC_UniqueArray <cTopologicalSortEntry> array ((PMSInt32) mAllNodeCount COMMA_HERE) ;
-  array.addObjects ((PMSInt32) mAllNodeCount, cTopologicalSortEntry ()) ;
-//--- Enter nodes
-  enterNodes (mRoot, array) ;
-//--- Enter arcs
-  for (PMSInt32 i=0 ; i<mArcArray.count () ; i++) {
-    const PMUInt32 sourceNodeID = mArcArray (i COMMA_HERE).mSourceNodeID ;
-    cTopologicalSortEntry & source = array ((PMSInt32) sourceNodeID COMMA_HERE) ;
-    cTopologicalSortEntry & target = array ((PMSInt32) mArcArray (i COMMA_HERE).mTargetNodeID COMMA_HERE) ;
-    source.mDependencyCount ++ ;
-    target.mDependenceArray.addObject (sourceNodeID) ;
-  }
-//--- Make exploration link
-  for (PMSInt32 i=1 ; i<array.count () ; i++) {
-    array (i-1 COMMA_HERE).mLink = i ;
-  }
-  PMSInt32 root = (mAllNodeCount > 0) ? 0 : -1 ;
-//--- Display
-  /* printf ("*** Working array:\n") ;
-    for (PMSInt32 i=0 ; i<array.count () ; i++) {
-      cTopologicalSortEntry & entry = array (i COMMA_HERE) ;
-      printf ("#%d '%s' dep %d :", i, entry.mKey.cString (HERE), entry.mDependencyCount) ;
-      for (PMSInt32 j=0 ; j<entry.mDependenceArray.count () ; j++) {
-        printf (" %d", entry.mDependenceArray (j COMMA_HERE)) ;
-      }
-      printf ("\n") ;
-    } */
-//--- Loop for accumulating sorted nodes
+  TC_UniqueArray <PMUInt32> sortedNodes ;
+  TC_UniqueArray <PMUInt32> unsortedNodes ;
+  mDirectedGraph.topologicalSort (sortedNodes, unsortedNodes) ;
+//--- Add sorted nodes
   AC_GALGAS_list::makeNewSharedList (outSortedList COMMA_HERE) ;
   outSortedNodeKeyList = GALGAS_lstringlist::constructor_emptyList (HERE) ;
-  bool loop = true ;
-  while (loop) {
-    loop = false ;
-    PMSInt32 p = root ;
-    root = -1 ;
-    while (p >= 0) {
-      cTopologicalSortEntry & entry = array (p COMMA_HERE) ;
-      const PMSInt32 next = entry.mLink ;
-      if (0 == entry.mDependencyCount) {
-        loop = true ;
-        for (PMSInt32 i=0 ; i<entry.mDependenceArray.count () ; i++) {
-          array ((PMSInt32) entry.mDependenceArray (i COMMA_HERE) COMMA_HERE).mDependencyCount -- ;
-        }
-        AC_GALGAS_list::insertInSharedList (outSortedList, entry.mAttributes) ;
-        outSortedNodeKeyList.addAssign_operation (entry.mKey COMMA_HERE) ;
-      }else{
-        entry.mLink = root ;
-        root = p ;
-      }
-      p = next ;
-    }
+  for (PMSInt32 i=0 ; i<sortedNodes.count () ; i++) {
+    const PMUInt32 nodeIndex = sortedNodes (i COMMA_HERE) ;
+    const cGraphNode * nodePtr = mNodeArray ((PMSInt32) nodeIndex COMMA_HERE) ;
+    AC_GALGAS_list::insertInSharedList (outSortedList, nodePtr->mAttributes) ;
+    GALGAS_lstring lkey ;
+    lkey.mAttribute_location = nodePtr->mDefinitionLocation ;
+    lkey.mAttribute_string = GALGAS_string (nodePtr->mKey) ;
+    outSortedNodeKeyList.addAssign_operation (lkey COMMA_HERE) ;
   }
 //--- Add unsorted nodes
   AC_GALGAS_list::makeNewSharedList (outUnsortedList COMMA_HERE) ;
   outUnsortedNodeKeyList = GALGAS_lstringlist::constructor_emptyList (HERE) ;
-  PMSInt32 p = root ;
-  while (p >= 0) {
-    cTopologicalSortEntry & entry = array (p COMMA_HERE) ;
-    AC_GALGAS_list::insertInSharedList (outUnsortedList, entry.mAttributes) ;
-    outUnsortedNodeKeyList.addAssign_operation (entry.mKey COMMA_HERE) ;
-    p = entry.mLink ;
+  for (PMSInt32 i=0 ; i<unsortedNodes.count () ; i++) {
+    const PMUInt32 nodeIndex = unsortedNodes (i COMMA_HERE) ;
+    const cGraphNode * nodePtr = mNodeArray ((PMSInt32) nodeIndex COMMA_HERE) ;
+    AC_GALGAS_list::insertInSharedList (outUnsortedList, nodePtr->mAttributes) ;
+    GALGAS_lstring lkey ;
+    lkey.mAttribute_location = nodePtr->mDefinitionLocation ;
+    lkey.mAttribute_string = GALGAS_string (nodePtr->mKey) ;
+    outUnsortedNodeKeyList.addAssign_operation (lkey COMMA_HERE) ;
   }
 }
 
@@ -778,6 +1027,75 @@ void AC_GALGAS_graph::internalTopologicalSort (cSharedList * & outSortedList,
       inCompiler->onTheFlyRunTimeError (s COMMA_THERE) ;
     }else{
       mSharedGraph->internalTopologicalSort (outSortedList, outSortedNodeKeyList, outUnsortedList, outUnsortedNodeKeyList) ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Depth First Topological sort
+#endif
+
+//---------------------------------------------------------------------------*
+
+void cSharedGraph::internalDepthFirstTopologicalSort (cSharedList * & outSortedList,
+                                                      GALGAS_lstringlist & outSortedNodeKeyList,
+                                                      cSharedList * & outUnsortedList,
+                                                      GALGAS_lstringlist & outUnsortedNodeKeyList) const {
+  TC_UniqueArray <PMUInt32> sortedNodes ;
+  TC_UniqueArray <PMUInt32> unsortedNodes ;
+  mDirectedGraph.depthFirstTopologicalSort (sortedNodes, unsortedNodes) ;
+//--- Add sorted nodes
+  AC_GALGAS_list::makeNewSharedList (outSortedList COMMA_HERE) ;
+  outSortedNodeKeyList = GALGAS_lstringlist::constructor_emptyList (HERE) ;
+  for (PMSInt32 i=0 ; i<sortedNodes.count () ; i++) {
+    const PMUInt32 nodeIndex = sortedNodes (i COMMA_HERE) ;
+    const cGraphNode * nodePtr = mNodeArray ((PMSInt32) nodeIndex COMMA_HERE) ;
+    AC_GALGAS_list::insertInSharedList (outSortedList, nodePtr->mAttributes) ;
+    GALGAS_lstring lkey ;
+    lkey.mAttribute_location = nodePtr->mDefinitionLocation ;
+    lkey.mAttribute_string = GALGAS_string (nodePtr->mKey) ;
+    outSortedNodeKeyList.addAssign_operation (lkey COMMA_HERE) ;
+  }
+//--- Add unsorted nodes
+  AC_GALGAS_list::makeNewSharedList (outUnsortedList COMMA_HERE) ;
+  outUnsortedNodeKeyList = GALGAS_lstringlist::constructor_emptyList (HERE) ;
+  for (PMSInt32 i=0 ; i<unsortedNodes.count () ; i++) {
+    const PMUInt32 nodeIndex = unsortedNodes (i COMMA_HERE) ;
+    const cGraphNode * nodePtr = mNodeArray ((PMSInt32) nodeIndex COMMA_HERE) ;
+    AC_GALGAS_list::insertInSharedList (outUnsortedList, nodePtr->mAttributes) ;
+    GALGAS_lstring lkey ;
+    lkey.mAttribute_location = nodePtr->mDefinitionLocation ;
+    lkey.mAttribute_string = GALGAS_string (nodePtr->mKey) ;
+    outUnsortedNodeKeyList.addAssign_operation (lkey COMMA_HERE) ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+void AC_GALGAS_graph::internalDepthFirstTopologicalSort (cSharedList * & outSortedList,
+                                                         GALGAS_lstringlist & outSortedNodeKeyList,
+                                                         cSharedList * & outUnsortedList,
+                                                         GALGAS_lstringlist & outUnsortedNodeKeyList,
+                                                         C_Compiler * inCompiler
+                                                         COMMA_LOCATION_ARGS) const {
+  outSortedNodeKeyList.drop () ;
+  outUnsortedNodeKeyList.drop () ;
+  if (isValid ()) {
+    PMUInt32 undefinedNodeCount = 0 ;
+    countUndefinedNodeCount (mSharedGraph->root (), undefinedNodeCount) ;
+    if (0 != undefinedNodeCount) {
+      C_String s ;
+      s << "Cannot apply graph topologicalSort: there " ;
+      if (undefinedNodeCount > 1) {
+        s << "are " << cStringWithUnsigned (undefinedNodeCount) << " undefined nodes" ;
+      }else{
+        s << "is 1 undefined node" ;
+      }
+      inCompiler->onTheFlyRunTimeError (s COMMA_THERE) ;
+    }else{
+      mSharedGraph->internalDepthFirstTopologicalSort (outSortedList, outSortedNodeKeyList, outUnsortedList, outUnsortedNodeKeyList) ;
     }
   }
 }
@@ -815,6 +1133,79 @@ GALGAS_lstringlist AC_GALGAS_graph::reader_undefinedNodeReferenceList (LOCATION_
     buildUndefinedNodeReferenceList (mSharedGraph->root (), result) ;
   }
   return result ;
+}
+
+//---------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Modifier removeEdgesToNode
+#endif
+
+//---------------------------------------------------------------------------*
+
+void AC_GALGAS_graph::modifier_removeEdgesToNode (const GALGAS_string & inNodeName,
+                                                  C_Compiler * inCompiler
+                                                  COMMA_LOCATION_ARGS) {
+  if (isValid () && inNodeName.isValid ()) {
+    insulateGraph (HERE) ;
+    MF_Assert (NULL != mSharedGraph, "mSharedGraph == NULL", 0, 0) ;
+    if (NULL != mSharedGraph) {
+      mSharedGraph->removeEdgesToNode (inNodeName.stringValue (), inCompiler COMMA_THERE) ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+void cSharedGraph::removeEdgesToNode (const C_String & inNodeName,
+                                      C_Compiler * inCompiler
+                                      COMMA_LOCATION_ARGS) {
+//--- Find node
+  const cGraphNode * node = findNode (inNodeName, mRoot) ;
+  if (NULL == node) {
+    C_String s = "graph removeEdgesToNode: node '" ;
+    s << inNodeName << "' does not exist" ;
+    inCompiler->onTheFlyRunTimeError (s COMMA_THERE) ;
+  }else{
+    const PMUInt32 nodeIndex = node->mNodeID ;
+    mDirectedGraph.removeEdgesToNode (nodeIndex COMMA_HERE) ;
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+#ifdef PRAGMA_MARK_ALLOWED
+  #pragma mark Modifier removeEdgesToDominators
+#endif
+
+//---------------------------------------------------------------------------*
+
+void AC_GALGAS_graph::modifier_removeEdgesToDominators (LOCATION_ARGS) {
+  if (isValid ()) {
+    insulateGraph (HERE) ;
+    MF_Assert (NULL != mSharedGraph, "mSharedGraph == NULL", 0, 0) ;
+    if (NULL != mSharedGraph) {
+      mSharedGraph->removeEdgesToDominators (THERE) ;
+    }
+  }
+}
+
+//---------------------------------------------------------------------------*
+
+void cSharedGraph::removeEdgesToDominators (LOCATION_ARGS) {
+//--- Find start nodes
+  TC_UniqueArray <PMUInt32> startNodes ;
+  mDirectedGraph.getNodesWithNoPredecessor (startNodes) ;
+//--- Add a dummy start node for handling case where there several start nodes
+  const PMUInt32 dummyNodeIndex = mDirectedGraph.unusedNodeIndex () ;
+//--- Add edges from dummy node to start nodes
+  for (PMSInt32 i=0 ; i<startNodes.count () ; i++) {
+    mDirectedGraph.addEdge (dummyNodeIndex, startNodes (i COMMA_HERE)) ;
+  }
+//--- Remove edge to dominator
+  mDirectedGraph.removeEdgesToDominator (THERE) ;
+//--- Remove dummy node
+  mDirectedGraph.removeNode (dummyNodeIndex) ;
 }
 
 //---------------------------------------------------------------------------*

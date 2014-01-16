@@ -186,30 +186,30 @@ void C_BDD::setSingleOperandOperationCacheMaxSize (const PMUInt32 inPowerOfTwo) 
 
 static PMUInt32
 internalForAllOnBitRange (const PMUInt32 inValue,
-                          const PMUInt16 inFirstBit,
-                          const PMUInt16 inBitCount) {
+                          const PMUInt32 inFirstBit,
+                          const PMUInt32 inBitCount) {
   const PMUInt32 complement = inValue & 1 ;
   PMUInt32 result = complement ;
-  const PMUInt64 node = nodeForRoot (inValue COMMA_HERE) ;
-  if (node == 0) {
+  const PMUInt32 nodeIndex = nodeIndexForRoot (inValue COMMA_HERE) ;
+  if (gNodeArray [nodeIndex].bothBranches () == 0) {
     gSingleOperandOperationCacheTrivialOperationCount ++ ;
   }else{
-    const PMUInt16 var = extractVar (node COMMA_HERE) ;
-    if (var >= (PMUInt16) (inFirstBit + inBitCount)) {
+    const PMUInt32 var = gNodeArray [nodeIndex].mVariableIndex ;
+    if (var >= (inFirstBit + inBitCount)) {
       bool cacheSuccess = false ;
       // PMSInt32 hashCode ;
       // const PMUInt32 key = ((PMUInt32) inBitCount) | (((PMUInt32) inFirstBit) << 16) ;
   //    gForAllOperationCache.getCacheEntry (inValue, key, cacheSuccess, hashCode, result) ;
       if (! cacheSuccess) {
         result = find_or_add (var,
-          internalForAllOnBitRange (extractElse (node) ^ complement, inFirstBit, inBitCount),
-          internalForAllOnBitRange (extractThen (node) ^ complement, inFirstBit, inBitCount) COMMA_HERE) ;
+          internalForAllOnBitRange (gNodeArray [nodeIndex].mELSE ^ complement, inFirstBit, inBitCount),
+          internalForAllOnBitRange (gNodeArray [nodeIndex].mTHEN ^ complement, inFirstBit, inBitCount) COMMA_HERE) ;
   //      gForAllOperationCache.writeCacheEntry (inValue, key, hashCode, result) ;
       }
     }else if (var >= inFirstBit) {
       result = internalANDoperation (
-         internalForAllOnBitRange (extractElse (node) ^ complement, inFirstBit, inBitCount),
-         internalForAllOnBitRange (extractThen (node) ^ complement, inFirstBit, inBitCount)) ;
+         internalForAllOnBitRange (gNodeArray [nodeIndex].mELSE ^ complement, inFirstBit, inBitCount),
+         internalForAllOnBitRange (gNodeArray [nodeIndex].mTHEN ^ complement, inFirstBit, inBitCount)) ;
     }else{ // var < numeroBit
       result = inValue ;
       gSingleOperandOperationCacheTrivialOperationCount ++ ;
@@ -222,23 +222,23 @@ internalForAllOnBitRange (const PMUInt32 inValue,
 
 static PMUInt32
 operationQuelqueSoitSurBitSupNumeroInterne (const PMUInt32 inValue,
-                                            const PMUInt16 numeroBit) {
+                                            const PMUInt32 numeroBit) {
   const PMUInt32 complement = inValue & 1 ;
   PMUInt32 result = complement ;
-  const PMUInt64 node = nodeForRoot (inValue COMMA_HERE) ;
-  if (node == 0) {
+  const PMUInt32 nodeIndex = nodeIndexForRoot (inValue COMMA_HERE) ;
+  if (gNodeArray [nodeIndex].bothBranches () == 0) {
     gSingleOperandOperationCacheTrivialOperationCount ++ ;
   }else{
-    const PMUInt16 var = extractVar (node COMMA_HERE) ;
+    const PMUInt32 var = gNodeArray [nodeIndex].mVariableIndex ;
     if (var > numeroBit) {
       if (! searchInSingleOperandOperationCache (inValue, result)) {
         result = internalANDoperation (
-              operationQuelqueSoitSurBitSupNumeroInterne (extractElse (node) ^ complement, numeroBit),
-              operationQuelqueSoitSurBitSupNumeroInterne (extractThen (node) ^ complement, numeroBit)) ;
+              operationQuelqueSoitSurBitSupNumeroInterne (gNodeArray [nodeIndex].mELSE ^ complement, numeroBit),
+              operationQuelqueSoitSurBitSupNumeroInterne (gNodeArray [nodeIndex].mTHEN ^ complement, numeroBit)) ;
         enterInSingleOperandOperationCache (inValue, result) ;
       }
     }else if (var == numeroBit) {
-      result = internalANDoperation (extractElse (node) ^ complement, extractThen (node) ^ complement) ;
+      result = internalANDoperation (gNodeArray [nodeIndex].mELSE ^ complement, gNodeArray [nodeIndex].mTHEN ^ complement) ;
     }else{ // var < numeroBit
       result = inValue ;
       gSingleOperandOperationCacheTrivialOperationCount ++ ;
@@ -249,14 +249,14 @@ operationQuelqueSoitSurBitSupNumeroInterne (const PMUInt32 inValue,
 
 //---------------------------------------------------------------------*
 
-C_BDD C_BDD::forallOnBitNumber (const PMUInt16 numeroBit) const {
+C_BDD C_BDD::forallOnBitNumber (const PMUInt32 numeroBit) const {
   clearSingleOperandOperationCache () ;
   return C_BDD (internalForAllOnBitRange (mBDDvalue, numeroBit, 1)) ;
 }
 
 //---------------------------------------------------------------------*
 
-C_BDD C_BDD::forallOnBitsAfterNumber (const PMUInt16 numeroBit) const {
+C_BDD C_BDD::forallOnBitsAfterNumber (const PMUInt32 numeroBit) const {
   clearSingleOperandOperationCache () ;
   return C_BDD (operationQuelqueSoitSurBitSupNumeroInterne (mBDDvalue, numeroBit)) ;
 }
@@ -269,7 +269,7 @@ C_BDD C_BDD::forallOnBitsAfterNumber (const PMUInt16 numeroBit) const {
 
 //---------------------------------------------------------------------*
 
-C_BDD C_BDD::existsOnBitNumber (const PMUInt16 numeroBit) const {
+C_BDD C_BDD::existsOnBitNumber (const PMUInt32 numeroBit) const {
   clearSingleOperandOperationCache () ;
 //--- ilExiste x : F <=> non (quelquesoit x : non (F))
   return C_BDD (internalForAllOnBitRange (mBDDvalue ^ 1, numeroBit, 1) ^ 1) ;
@@ -278,15 +278,15 @@ C_BDD C_BDD::existsOnBitNumber (const PMUInt16 numeroBit) const {
 //---------------------------------------------------------------------*
 
 C_BDD C_BDD::
-existsOnBitRange (const PMUInt16 inFirstBit,
-                  const PMUInt16 inBitCount) const {
+existsOnBitRange (const PMUInt32 inFirstBit,
+                  const PMUInt32 inBitCount) const {
   clearSingleOperandOperationCache () ;
   return C_BDD (internalForAllOnBitRange (mBDDvalue ^ 1, inFirstBit, inBitCount) ^ 1) ;
 }
 
 //---------------------------------------------------------------------*
 
-C_BDD C_BDD::existsOnBitsAfterNumber (const PMUInt16 numeroBit) const {
+C_BDD C_BDD::existsOnBitsAfterNumber (const PMUInt32 numeroBit) const {
 // ilExiste x : F <=> non (quelquesoit x : non (F))
   clearSingleOperandOperationCache () ;
   return C_BDD (operationQuelqueSoitSurBitSupNumeroInterne (mBDDvalue ^ 1, numeroBit) ^ 1) ;
@@ -301,17 +301,17 @@ C_BDD C_BDD::existsOnBitsAfterNumber (const PMUInt16 numeroBit) const {
 //---------------------------------------------------------------------*
 
 static PMUInt32 internalRecursiveSubstitution (const PMUInt32 inValue,
-                                               const PMUInt16 vecteurSubstitutionBool [],
-                                               const PMUInt16 inNoChangeIndex,
-                                               const PMUInt16 inBDDvariablesCount
+                                               const PMUInt32 vecteurSubstitutionBool [],
+                                               const PMUInt32 inNoChangeIndex,
+                                               const PMUInt32 inBDDvariablesCount
                                                COMMA_LOCATION_ARGS) {
   PMUInt32 result = inValue ;
-  const PMUInt64 node = nodeForRoot (inValue COMMA_HERE) ;
-  if (node == 0) {
+  const PMUInt32 nodeIndex = nodeIndexForRoot (inValue COMMA_HERE) ;
+  if (gNodeArray [nodeIndex].bothBranches () == 0) {
     gSingleOperandOperationCacheTrivialOperationCount ++ ;
   }else{
     const PMUInt32 complement = inValue & 1 ;
-    const PMUInt16 var = extractVar (node COMMA_HERE) ;
+    const PMUInt32 var = gNodeArray [nodeIndex].mVariableIndex ;
     MF_AssertThere (var < inBDDvariablesCount, "var (%lld) < inBDDvariablesCount (%lld)", var, inBDDvariablesCount) ;
     if (var < inNoChangeIndex) {
       result = inValue ;
@@ -319,8 +319,8 @@ static PMUInt32 internalRecursiveSubstitution (const PMUInt32 inValue,
     }else if (! searchInSingleOperandOperationCache (inValue, result)) {
       result = internalITEoperation (
         find_or_add (vecteurSubstitutionBool [var], 1, 0 COMMA_HERE),
-        internalRecursiveSubstitution (extractElse (node) ^ complement, vecteurSubstitutionBool, inNoChangeIndex, inBDDvariablesCount COMMA_THERE),
-        internalRecursiveSubstitution (extractThen (node) ^ complement, vecteurSubstitutionBool, inNoChangeIndex, inBDDvariablesCount COMMA_THERE)
+        internalRecursiveSubstitution (gNodeArray [nodeIndex].mELSE ^ complement, vecteurSubstitutionBool, inNoChangeIndex, inBDDvariablesCount COMMA_THERE),
+        internalRecursiveSubstitution (gNodeArray [nodeIndex].mTHEN ^ complement, vecteurSubstitutionBool, inNoChangeIndex, inBDDvariablesCount COMMA_THERE)
       ) ;
       enterInSingleOperandOperationCache (inValue, result) ;
     }
@@ -330,14 +330,14 @@ static PMUInt32 internalRecursiveSubstitution (const PMUInt32 inValue,
 
 //---------------------------------------------------------------------*
 
-C_BDD C_BDD::substitution (const PMUInt16 inSubstitutionArray [],
-                           const PMUInt16 inBDDvariablesCount
+C_BDD C_BDD::substitution (const PMUInt32 inSubstitutionArray [],
+                           const PMUInt32 inBDDvariablesCount
                            COMMA_LOCATION_ARGS) const {
   clearSingleOperandOperationCache () ;
 //--- Le vecteur subsitution est-il l'identite ?
   bool estIdentite = true ;
-  PMUInt16 noChangeIndex = 0 ;
-  for (PMUInt16 i=0 ; estIdentite && (i<inBDDvariablesCount) ; i++) {
+  PMUInt32 noChangeIndex = 0 ;
+  for (PMUInt32 i=0 ; estIdentite && (i<inBDDvariablesCount) ; i++) {
     estIdentite = inSubstitutionArray [i] == i ;
     noChangeIndex ++ ;
   }
@@ -354,12 +354,12 @@ C_BDD C_BDD::substitution (const PMUInt16 inSubstitutionArray [],
 
 //---------------------------------------------------------------------*
 
-C_BDD C_BDD::translate (const PMUInt16 inBDDvariablesCount,
-                        const PMUInt16 inTranslation) const {
-  PMUInt16 * substitionVector = NULL ;
-  macroMyNewArray (substitionVector, PMUInt16, inBDDvariablesCount) ;
-  for (PMUInt16 i=0 ; i<inBDDvariablesCount ; i++) {
-    substitionVector [i] = (PMUInt16) (i + inTranslation) ;
+C_BDD C_BDD::translate (const PMUInt32 inBDDvariablesCount,
+                        const PMUInt32 inTranslation) const {
+  PMUInt32 * substitionVector = NULL ;
+  macroMyNewArray (substitionVector, PMUInt32, inBDDvariablesCount) ;
+  for (PMUInt32 i=0 ; i<inBDDvariablesCount ; i++) {
+    substitionVector [i] = (PMUInt32) (i + inTranslation) ;
   }
   const PMUInt32 result = internalRecursiveSubstitution (mBDDvalue, substitionVector, 0, inBDDvariablesCount COMMA_HERE) ;
   macroMyDeleteArray (substitionVector) ;
@@ -376,32 +376,32 @@ C_BDD C_BDD::translate (const PMUInt16 inBDDvariablesCount,
 
 static PMUInt32
 internalExchangeVariables (const PMUInt32 inValue,
-                           const PMUInt16 var1,
-                           const PMUInt16 var2) {
+                           const PMUInt32 var1,
+                           const PMUInt32 var2) {
   PMUInt32 result = inValue ;
-  const PMUInt64 node = nodeForRoot (inValue COMMA_HERE) ;
-  if (node != 0) {
+  const PMUInt32 nodeIndex = nodeIndexForRoot (inValue COMMA_HERE) ;
+  if (gNodeArray [nodeIndex].bothBranches () != 0) {
     const PMUInt32 complement = inValue & 1 ;
-    if (extractVar (node COMMA_HERE) > var1) {
+    if (gNodeArray [nodeIndex].mVariableIndex > var1) {
       result = internalITEoperation (
-                     find_or_add (extractVar (node COMMA_HERE), 0, 1 COMMA_HERE),
-                     internalExchangeVariables (extractThen (node) ^ complement, var1, var2),
-                     internalExchangeVariables (extractElse (node) ^ complement, var1, var2)) ;
-    }else if (extractVar (node COMMA_HERE) == var1) {
+                     find_or_add (gNodeArray [nodeIndex].mVariableIndex, 0, 1 COMMA_HERE),
+                     internalExchangeVariables (gNodeArray [nodeIndex].mTHEN ^ complement, var1, var2),
+                     internalExchangeVariables (gNodeArray [nodeIndex].mELSE ^ complement, var1, var2)) ;
+    }else if (gNodeArray [nodeIndex].mVariableIndex == var1) {
       result = internalITEoperation (
                      find_or_add (var2, 0, 1 COMMA_HERE),
-                     internalExchangeVariables (extractThen (node) ^ complement, var1, var2),
-                     internalExchangeVariables (extractElse (node) ^ complement, var1, var2)) ;
-    }else if (extractVar (node COMMA_HERE) > var2) {
+                     internalExchangeVariables (gNodeArray [nodeIndex].mTHEN ^ complement, var1, var2),
+                     internalExchangeVariables (gNodeArray [nodeIndex].mELSE ^ complement, var1, var2)) ;
+    }else if (gNodeArray [nodeIndex].mVariableIndex > var2) {
       result = internalITEoperation (
-                     find_or_add (extractVar (node COMMA_HERE), 0, 1 COMMA_HERE),
-                     internalExchangeVariables (extractThen (node) ^ complement, var1, var2),
-                     internalExchangeVariables (extractElse (node) ^ complement, var1, var2)) ;
-    }else if (extractVar (node COMMA_HERE) == var2) {
+                     find_or_add (gNodeArray [nodeIndex].mVariableIndex, 0, 1 COMMA_HERE),
+                     internalExchangeVariables (gNodeArray [nodeIndex].mTHEN ^ complement, var1, var2),
+                     internalExchangeVariables (gNodeArray [nodeIndex].mELSE ^ complement, var1, var2)) ;
+    }else if (gNodeArray [nodeIndex].mVariableIndex == var2) {
       result = internalITEoperation (
                      find_or_add (var1, 0, 1 COMMA_HERE),
-                     internalExchangeVariables (extractThen (node) ^ complement, var1, var2),
-                     internalExchangeVariables (extractElse (node) ^ complement, var1, var2)) ;
+                     internalExchangeVariables (gNodeArray [nodeIndex].mTHEN ^ complement, var1, var2),
+                     internalExchangeVariables (gNodeArray [nodeIndex].mELSE ^ complement, var1, var2)) ;
     }     
   }
   return result ;
@@ -409,7 +409,7 @@ internalExchangeVariables (const PMUInt32 inValue,
 
 //---------------------------------------------------------------------*
 
-C_BDD C_BDD::exchangeVariables (const PMUInt16 var1, const PMUInt16 var2) const {
+C_BDD C_BDD::exchangeVariables (const PMUInt32 var1, const PMUInt32 var2) const {
   C_BDD result (mBDDvalue) ;
   if (var1 > var2) {
     result.mBDDvalue = internalExchangeVariables (mBDDvalue, var1, var2) ;
@@ -429,27 +429,27 @@ C_BDD C_BDD::exchangeVariables (const PMUInt16 var1, const PMUInt16 var2) const 
 
 static PMUInt32
 internalRollDown (const PMUInt32 inValue,
-                  const PMUInt16 inHighVar,
-                  const PMUInt16 inLowVar) {
+                  const PMUInt32 inHighVar,
+                  const PMUInt32 inLowVar) {
   PMUInt32 result = inValue ;
-  const PMUInt64 node = nodeForRoot (inValue COMMA_HERE) ;
-  if (node != 0) {
+  const PMUInt32 nodeIndex = nodeIndexForRoot (inValue COMMA_HERE) ;
+  if (gNodeArray [nodeIndex].bothBranches () != 0) {
     const PMUInt32 complement = inValue & 1 ;
-    if (extractVar (node COMMA_HERE) > inHighVar) {
+    if (gNodeArray [nodeIndex].mVariableIndex > inHighVar) {
       result = internalITEoperation (
-                     find_or_add (extractVar (node COMMA_HERE), 0, 1 COMMA_HERE),
-                     internalRollDown (extractThen (node) ^ complement, inHighVar, inLowVar),
-                     internalRollDown (extractElse (node) ^ complement, inHighVar, inLowVar)) ;
-    }else if (extractVar (node COMMA_HERE) > inLowVar) {
+                     find_or_add (gNodeArray [nodeIndex].mVariableIndex, 0, 1 COMMA_HERE),
+                     internalRollDown (gNodeArray [nodeIndex].mTHEN ^ complement, inHighVar, inLowVar),
+                     internalRollDown (gNodeArray [nodeIndex].mELSE ^ complement, inHighVar, inLowVar)) ;
+    }else if (gNodeArray [nodeIndex].mVariableIndex > inLowVar) {
       result = internalITEoperation (
-                     find_or_add ((PMUInt16) (extractVar (node COMMA_HERE) - 1), 0, 1 COMMA_HERE),
-                     internalRollDown (extractThen (node) ^ complement, inHighVar, inLowVar),
-                     internalRollDown (extractElse (node) ^ complement, inHighVar, inLowVar)) ;
-    }else if (extractVar (node COMMA_HERE) == inLowVar) {
+                     find_or_add ((PMUInt32) (gNodeArray [nodeIndex].mVariableIndex - 1), 0, 1 COMMA_HERE),
+                     internalRollDown (gNodeArray [nodeIndex].mTHEN ^ complement, inHighVar, inLowVar),
+                     internalRollDown (gNodeArray [nodeIndex].mELSE ^ complement, inHighVar, inLowVar)) ;
+    }else if (gNodeArray [nodeIndex].mVariableIndex == inLowVar) {
       result = internalITEoperation (
                      find_or_add (inHighVar, 0, 1 COMMA_HERE),
-                     internalRollDown (extractThen (node) ^ complement, inHighVar, inLowVar),
-                     internalRollDown (extractElse (node) ^ complement, inHighVar, inLowVar)) ;
+                     internalRollDown (gNodeArray [nodeIndex].mTHEN ^ complement, inHighVar, inLowVar),
+                     internalRollDown (gNodeArray [nodeIndex].mELSE ^ complement, inHighVar, inLowVar)) ;
     }     
   }
   return result ;
@@ -457,7 +457,7 @@ internalRollDown (const PMUInt32 inValue,
 
 //---------------------------------------------------------------------*
 
-C_BDD C_BDD::rollDownVariables (const PMUInt16 var1, const PMUInt16 var2) const {
+C_BDD C_BDD::rollDownVariables (const PMUInt32 var1, const PMUInt32 var2) const {
   C_BDD result (mBDDvalue) ;
   if (var1 > var2) {
     result.mBDDvalue = internalRollDown (mBDDvalue, var1, var2) ;
@@ -475,27 +475,27 @@ C_BDD C_BDD::rollDownVariables (const PMUInt16 var1, const PMUInt16 var2) const 
 
 static PMUInt32
 internalRollUp (const PMUInt32 inValue,
-                const PMUInt16 var1,
-                const PMUInt16 var2) {
+                const PMUInt32 var1,
+                const PMUInt32 var2) {
   PMUInt32 result = inValue ;
-  const PMUInt64 node = nodeForRoot (inValue COMMA_HERE) ;
-  if (node != 0) {
+  const PMUInt32 nodeIndex = nodeIndexForRoot (inValue COMMA_HERE) ;
+  if (gNodeArray [nodeIndex].bothBranches () != 0) {
     const PMUInt32 complement = inValue & 1 ;
-    if (extractVar (node COMMA_HERE) > var1) {
+    if (gNodeArray [nodeIndex].mVariableIndex > var1) {
       result = internalITEoperation (
-                     find_or_add (extractVar (node COMMA_HERE), 0, 1 COMMA_HERE),
-                     internalRollUp (extractThen (node) ^ complement, var1, var2),
-                     internalRollUp (extractElse (node) ^ complement, var1, var2)) ;
-    }else if (extractVar (node COMMA_HERE) == var1) {
+                     find_or_add (gNodeArray [nodeIndex].mVariableIndex, 0, 1 COMMA_HERE),
+                     internalRollUp (gNodeArray [nodeIndex].mTHEN ^ complement, var1, var2),
+                     internalRollUp (gNodeArray [nodeIndex].mELSE ^ complement, var1, var2)) ;
+    }else if (gNodeArray [nodeIndex].mVariableIndex == var1) {
       result = internalITEoperation (
                      find_or_add (var2, 0, 1 COMMA_HERE),
-                     internalRollUp (extractThen (node) ^ complement, var1, var2),
-                     internalRollUp (extractElse (node) ^ complement, var1, var2)) ;
-    }else if (extractVar (node COMMA_HERE) >= var2) {
+                     internalRollUp (gNodeArray [nodeIndex].mTHEN ^ complement, var1, var2),
+                     internalRollUp (gNodeArray [nodeIndex].mELSE ^ complement, var1, var2)) ;
+    }else if (gNodeArray [nodeIndex].mVariableIndex >= var2) {
       result = internalITEoperation (
-                     find_or_add ((PMUInt16) (extractVar (node COMMA_HERE) + 1), 0, 1 COMMA_HERE),
-                     internalRollUp (extractThen (node) ^ complement, var1, var2),
-                     internalRollUp (extractElse (node) ^ complement, var1, var2)) ;
+                     find_or_add ((PMUInt32) (gNodeArray [nodeIndex].mVariableIndex + 1), 0, 1 COMMA_HERE),
+                     internalRollUp (gNodeArray [nodeIndex].mTHEN ^ complement, var1, var2),
+                     internalRollUp (gNodeArray [nodeIndex].mELSE ^ complement, var1, var2)) ;
     }     
   }
   return result ;
@@ -504,7 +504,7 @@ internalRollUp (const PMUInt32 inValue,
 //---------------------------------------------------------------------*
 
 C_BDD C_BDD::
-rollUpVariables (const PMUInt16 var1, const PMUInt16 var2) const {
+rollUpVariables (const PMUInt32 var1, const PMUInt32 var2) const {
   C_BDD result (mBDDvalue) ;
   if (var1 > var2) {
     result.mBDDvalue = internalRollUp (mBDDvalue, var1, var2) ;
@@ -521,16 +521,16 @@ rollUpVariables (const PMUInt16 var1, const PMUInt16 var2) const {
 //---------------------------------------------------------------------*
 
 static PMUInt32 internalLeftShift (const PMUInt32 inValue,
-                                   const PMUInt16 inLeftShiftCount) {
+                                   const PMUInt32 inLeftShiftCount) {
   PMUInt32 result = inValue ;
-  const PMUInt64 node = nodeForRoot (inValue COMMA_HERE) ;
-  if (node == 0) {
+  const PMUInt32 nodeIndex = nodeIndexForRoot (inValue COMMA_HERE) ;
+  if (gNodeArray [nodeIndex].bothBranches () == 0) {
     gSingleOperandOperationCacheTrivialOperationCount ++ ;
   }else if (! searchInSingleOperandOperationCache (inValue, result)) {
     const PMUInt32 complement = inValue & 1 ;
-    result = find_or_add ((PMUInt16) (extractVar (node COMMA_HERE) + inLeftShiftCount),
-                          internalLeftShift (extractElse (node) ^ complement, inLeftShiftCount),
-                          internalLeftShift (extractThen (node) ^ complement, inLeftShiftCount)
+    result = find_or_add (gNodeArray [nodeIndex].mVariableIndex + inLeftShiftCount,
+                          internalLeftShift (gNodeArray [nodeIndex].mELSE ^ complement, inLeftShiftCount),
+                          internalLeftShift (gNodeArray [nodeIndex].mTHEN ^ complement, inLeftShiftCount)
                           COMMA_HERE) ;
     enterInSingleOperandOperationCache (inValue, result) ;
   }
@@ -539,7 +539,7 @@ static PMUInt32 internalLeftShift (const PMUInt32 inValue,
 
 //---------------------------------------------------------------------*
 
-C_BDD C_BDD::bddByLeftShifting (const PMUInt16 inLeftShiftCount) const {
+C_BDD C_BDD::bddByLeftShifting (const PMUInt32 inLeftShiftCount) const {
   clearSingleOperandOperationCache () ;
   C_BDD result ;
   result.mBDDvalue = internalLeftShift (mBDDvalue, inLeftShiftCount) ;
@@ -555,19 +555,19 @@ C_BDD C_BDD::bddByLeftShifting (const PMUInt16 inLeftShiftCount) const {
 //---------------------------------------------------------------------*
 
 static PMUInt32 internalRightShift (const PMUInt32 inValue,
-                                    const PMUInt16 inRightShiftCount) {
+                                    const PMUInt32 inRightShiftCount) {
   PMUInt32 result = inValue ;
-  const PMUInt64 node = nodeForRoot (inValue COMMA_HERE) ;
-  if (node == 0) {
+  const PMUInt32 nodeIndex = nodeIndexForRoot (inValue COMMA_HERE) ;
+  if (gNodeArray [nodeIndex].bothBranches () == 0) {
     gSingleOperandOperationCacheTrivialOperationCount ++ ;
-  }else if (extractVar (node COMMA_HERE) < inRightShiftCount) {
+  }else if (gNodeArray [nodeIndex].mVariableIndex < inRightShiftCount) {
     result = 1 ;
     gSingleOperandOperationCacheTrivialOperationCount ++ ;
   }else if (! searchInSingleOperandOperationCache (inValue, result)) {
     const PMUInt32 complement = inValue & 1 ;
-    result = find_or_add ((PMUInt16) (extractVar (node COMMA_HERE) - inRightShiftCount),
-                          internalRightShift (extractElse (node) ^ complement, inRightShiftCount),
-                          internalRightShift (extractThen (node) ^ complement, inRightShiftCount)
+    result = find_or_add (gNodeArray [nodeIndex].mVariableIndex - inRightShiftCount,
+                          internalRightShift (gNodeArray [nodeIndex].mELSE ^ complement, inRightShiftCount),
+                          internalRightShift (gNodeArray [nodeIndex].mTHEN ^ complement, inRightShiftCount)
                           COMMA_HERE) ;
     enterInSingleOperandOperationCache (inValue, result) ;
   }
@@ -576,7 +576,7 @@ static PMUInt32 internalRightShift (const PMUInt32 inValue,
 
 //---------------------------------------------------------------------*
 
-C_BDD C_BDD::bddByRightShifting (const PMUInt16 inRightShiftCount) const {
+C_BDD C_BDD::bddByRightShifting (const PMUInt32 inRightShiftCount) const {
   clearSingleOperandOperationCache () ;
   C_BDD result ;
   result.mBDDvalue = internalRightShift (mBDDvalue, inRightShiftCount) ;

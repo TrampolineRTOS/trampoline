@@ -64,12 +64,12 @@ macroDeclareMutex (gAllocationMutex) ;
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void
-  supprimerPointeur (const void * PointeurAretirer,
+  unregisterPointer (const void * PointeurAretirer,
                      const enumAllocation natureAllocation COMMA_LOCATION_ARGS) ;
 
-  static void performRegistering (const void * p,
-                                  const enumAllocation inAllocation
-                                  COMMA_LOCATION_ARGS) ;
+  static void registerPointerDescriptor (const void * p,
+                               const enumAllocation inAllocation
+                               COMMA_LOCATION_ARGS) ;
   static void
   display_pointer (const void * adresse,
                    const PMSInt32 numeroCreation, 
@@ -89,7 +89,7 @@ macroDeclareMutex (gAllocationMutex) ;
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void * allocAndRegisterPODArray (const size_t inSize COMMA_LOCATION_ARGS) {
     void * ptr = myAllocRoutine (inSize) ;
-    performRegistering (ptr, kAllocatedByMacroMyNewPODArray COMMA_THERE) ;
+    registerPointerDescriptor (ptr, kAllocatedByMacroMyNewPODArray COMMA_THERE) ;
     gAllocatedPODArrayCount ++ ;
     gExistingPODArrayCount ++ ;
     return ptr ;
@@ -105,8 +105,10 @@ macroDeclareMutex (gAllocationMutex) ;
                                      COMMA_LOCATION_ARGS) {
     if (inPointer != NULL) {
       macroValidPointerThere (inPointer) ;
+      unregisterPointer (inPointer, kAllocatedByMacroMyNewPODArray COMMA_THERE) ;
     }
     void * ptr = realloc (inPointer, inSize) ;
+    registerPointerDescriptor (ptr, kAllocatedByMacroMyNewPODArray COMMA_THERE) ;
     gReallocatedPODArrayCount ++ ;
     if (ptr != inPointer) {
       if (inPointer == NULL) {
@@ -114,9 +116,7 @@ macroDeclareMutex (gAllocationMutex) ;
         gExistingPODArrayCount ++ ;
       }else{
         gPointerChangedOnPODArrayReallocationCount ++ ;
-        supprimerPointeur (inPointer, kAllocatedByMacroMyNewPODArray COMMA_THERE) ;
       }
-      performRegistering (ptr, kAllocatedByMacroMyNewPODArray COMMA_THERE) ;
     }
     return ptr ;
   }
@@ -129,7 +129,7 @@ macroDeclareMutex (gAllocationMutex) ;
     if (inPointer != NULL) {
       gExistingPODArrayCount -- ;
       myFreeRoutine (inPointer) ;
-      supprimerPointeur (inPointer, kAllocatedByMacroMyNewPODArray COMMA_THERE) ;
+      unregisterPointer (inPointer, kAllocatedByMacroMyNewPODArray COMMA_THERE) ;
       #ifdef TRACE_DELETE
         co << "macroMyDeleteStructC -> "
            << inPointer
@@ -158,7 +158,7 @@ macroDeclareMutex (gAllocationMutex) ;
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void routineFreePointer (const void * inPointer COMMA_LOCATION_ARGS) {
     if (inPointer != NULL) {
-      supprimerPointeur (inPointer, kAllocatedByMacroMyNew COMMA_THERE) ;
+      unregisterPointer (inPointer, kAllocatedByMacroMyNew COMMA_THERE) ;
       #ifdef TRACE_DELETE
         co << "macroMyDelete -> "
            << inPointer
@@ -177,7 +177,7 @@ macroDeclareMutex (gAllocationMutex) ;
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void routineFreeArrayPointer (const void * inPointer COMMA_LOCATION_ARGS) {
     if (inPointer != NULL) {
-      supprimerPointeur (inPointer, kAllocatedByMacroMyNewArray COMMA_THERE) ;
+      unregisterPointer (inPointer, kAllocatedByMacroMyNewArray COMMA_THERE) ;
       #ifdef TRACE_DELETE
         co << "macroMyDeleteArray -> "
            << inPointer
@@ -205,14 +205,14 @@ macroDeclareMutex (gAllocationMutex) ;
 //-----------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  class CelementArbreBinaireEquilibrePointeur {
+  class cPointerDescriptor {
     public : const void * champPtr ;
  // pour construire une liste sequentielle des pointeurs
-    public : CelementArbreBinaireEquilibrePointeur * champSuivantDeListeLineaire ;
-    public : void enregistrerDansListeLineaire (CelementArbreBinaireEquilibrePointeur * & racine) ;
+    public : cPointerDescriptor * champSuivantDeListeLineaire ;
+    public : void enregistrerDansListeLineaire (cPointerDescriptor * & racine) ;
   //-- champs pour la table binaire equilibree permettant de retrouver le pointeur par son adresse
-    public : CelementArbreBinaireEquilibrePointeur * mInfPtr ;
-    public : CelementArbreBinaireEquilibrePointeur * mSupPtr ;
+    public : cPointerDescriptor * mInfPtr ;
+    public : cPointerDescriptor * mSupPtr ;
     public : const char * mSourceFileName ; // nom du fichier source dans lequel le pointeur a ete cree
     public : PMSInt32 champNumeroCreation ; // numero d'ordre unique
     public : int champNumeroLigneSource ; // ligne source
@@ -226,7 +226,7 @@ macroDeclareMutex (gAllocationMutex) ;
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static const PMSInt32 TAILLE_TABLE_RACINES = 262145 ;
-  static CelementArbreBinaireEquilibrePointeur * gPointersTreeRoot [TAILLE_TABLE_RACINES] ;
+  static cPointerDescriptor * gPointerDescriptorTreeRoot [TAILLE_TABLE_RACINES] ;
   static PMSInt32 gCreatedPointersCount = 0 ;
   static PMSInt32 gPointersCurrentCount = 0 ;
   static bool gRootInited = false ;
@@ -249,22 +249,22 @@ macroDeclareMutex (gAllocationMutex) ;
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static enumResultatComparaison comparerPointeurs (const void * Pgauche,
                                                     const void * Pdroit) ;
-  static void rotationGauche (CelementArbreBinaireEquilibrePointeur * & A) ;
-  static void rotationDroite (CelementArbreBinaireEquilibrePointeur * & A) ;
-  static void diminutionBrancheSup (CelementArbreBinaireEquilibrePointeur *&A, bool &h) ;
-  static void infBranchDecreased (CelementArbreBinaireEquilibrePointeur *&A, bool &h) ;
-  static void obtenirElementPrecedent (CelementArbreBinaireEquilibrePointeur *&arbreEquilibre,
-         CelementArbreBinaireEquilibrePointeur *&E,
+  static void rotationGauche (cPointerDescriptor * & A) ;
+  static void rotationDroite (cPointerDescriptor * & A) ;
+  static void diminutionBrancheSup (cPointerDescriptor *&A, bool &h) ;
+  static void infBranchDecreased (cPointerDescriptor *&A, bool &h) ;
+  static void obtenirElementPrecedent (cPointerDescriptor *&arbreEquilibre,
+         cPointerDescriptor *&E,
          bool &h) ;
-  static void suppressionRecursiveDansArbreBinaireEquilibre (CelementArbreBinaireEquilibrePointeur *&arbreEquilibre,
+  static void suppressionRecursiveDansArbreBinaireEquilibre (cPointerDescriptor *&arbreEquilibre,
          const void * PointeurAretirer,
-         CelementArbreBinaireEquilibrePointeur *&PointeurElementSupprime,
+         cPointerDescriptor *&PointeurElementSupprime,
          bool &h) ;
   static void executerInsertionRecursiveDansArbreEquilibre (
-         CelementArbreBinaireEquilibrePointeur *&Arbre,
+         cPointerDescriptor *&Arbre,
          const void * NouvelleClef,
          bool & existeDeja,
-         CelementArbreBinaireEquilibrePointeur *&pointeurNouvelElement,
+         cPointerDescriptor *&pointeurNouvelElement,
          bool & ioExtension) ;
 #endif
 
@@ -288,9 +288,9 @@ macroDeclareMutex (gAllocationMutex) ;
 //-----------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  static void rotationGauche (CelementArbreBinaireEquilibrePointeur * & a) {
+  static void rotationGauche (cPointerDescriptor * & a) {
   //--- faire la rotation 
-    CelementArbreBinaireEquilibrePointeur * b = a->mSupPtr;
+    cPointerDescriptor * b = a->mSupPtr;
     a->mSupPtr = b->mInfPtr;
     b->mInfPtr = a;
   //--- recalculer l'equilibrage 
@@ -311,9 +311,9 @@ macroDeclareMutex (gAllocationMutex) ;
 //-----------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  static void rotationDroite (CelementArbreBinaireEquilibrePointeur * & a) {
+  static void rotationDroite (cPointerDescriptor * & a) {
   //-- faire la rotation 
-    CelementArbreBinaireEquilibrePointeur * b = a->mInfPtr;
+    cPointerDescriptor * b = a->mInfPtr;
     a->mInfPtr = b->mSupPtr;
     b->mSupPtr = a;
    //--- recalculer l'equilibrage 
@@ -336,7 +336,7 @@ macroDeclareMutex (gAllocationMutex) ;
 //-----------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  static void diminutionBrancheSup (CelementArbreBinaireEquilibrePointeur * & a, bool & h) {
+  static void diminutionBrancheSup (cPointerDescriptor * & a, bool & h) {
     a->mBalance ++ ;
     switch (a->mBalance) {
     case 0:
@@ -366,7 +366,7 @@ macroDeclareMutex (gAllocationMutex) ;
 //-----------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  static void infBranchDecreased (CelementArbreBinaireEquilibrePointeur * & a, bool & h) {
+  static void infBranchDecreased (cPointerDescriptor * & a, bool & h) {
     a->mBalance -- ;
     switch (a->mBalance) {
     case 0:
@@ -396,8 +396,8 @@ macroDeclareMutex (gAllocationMutex) ;
 //-----------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  static void obtenirElementPrecedent (CelementArbreBinaireEquilibrePointeur * & arbreEquilibre,
-                                       CelementArbreBinaireEquilibrePointeur * & e,
+  static void obtenirElementPrecedent (cPointerDescriptor * & arbreEquilibre,
+                                       cPointerDescriptor * & e,
                                        bool & h) {
     if (arbreEquilibre->mSupPtr == NULL) {
       e = arbreEquilibre;
@@ -416,12 +416,12 @@ macroDeclareMutex (gAllocationMutex) ;
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void suppressionRecursiveDansArbreBinaireEquilibre
-                          (CelementArbreBinaireEquilibrePointeur * & arbreEquilibre,
+                          (cPointerDescriptor * & arbreEquilibre,
                            const void * pointeurAretirer,
-                           CelementArbreBinaireEquilibrePointeur * & pointeurElementSupprime,
+                           cPointerDescriptor * & pointeurElementSupprime,
                            bool & h) {
     if (arbreEquilibre == NULL) {
-      pointeurElementSupprime = (CelementArbreBinaireEquilibrePointeur *) NULL;
+      pointeurElementSupprime = NULL;
     }else{
       switch (comparerPointeurs(pointeurAretirer, arbreEquilibre->champPtr)) {
       case ClefGaucheSup:
@@ -442,19 +442,19 @@ macroDeclareMutex (gAllocationMutex) ;
         pointeurElementSupprime = arbreEquilibre;
         if (pointeurElementSupprime->mInfPtr == NULL) {
           arbreEquilibre = pointeurElementSupprime->mSupPtr;
-          pointeurElementSupprime->mSupPtr = (CelementArbreBinaireEquilibrePointeur *) NULL;
+          pointeurElementSupprime->mSupPtr = NULL;
           h = true;
         }else if (pointeurElementSupprime->mSupPtr == NULL) {
           arbreEquilibre = pointeurElementSupprime->mInfPtr;
-          pointeurElementSupprime->mInfPtr = (CelementArbreBinaireEquilibrePointeur *) NULL;
+          pointeurElementSupprime->mInfPtr = NULL;
           h = true;
         }else{
           obtenirElementPrecedent (pointeurElementSupprime->mInfPtr,
                                    arbreEquilibre, h);
           arbreEquilibre->mSupPtr = pointeurElementSupprime->mSupPtr;
-          pointeurElementSupprime->mSupPtr = (CelementArbreBinaireEquilibrePointeur *) NULL;
+          pointeurElementSupprime->mSupPtr = NULL;
           arbreEquilibre->mInfPtr = pointeurElementSupprime->mInfPtr;
-          pointeurElementSupprime->mInfPtr = (CelementArbreBinaireEquilibrePointeur *) NULL;
+          pointeurElementSupprime->mInfPtr = NULL;
           arbreEquilibre->mBalance = pointeurElementSupprime->mBalance;
           pointeurElementSupprime->mBalance = 0;
           if (h) {
@@ -471,16 +471,16 @@ macroDeclareMutex (gAllocationMutex) ;
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   static void executerInsertionRecursiveDansArbreEquilibre (
-                            CelementArbreBinaireEquilibrePointeur *& ioRoot,
+                            cPointerDescriptor *& ioRoot,
                             const void * nouvelleClef,
                             bool & existeDeja,
-                            CelementArbreBinaireEquilibrePointeur * & pointeurNouvelElement,
+                            cPointerDescriptor * & pointeurNouvelElement,
                             bool & ioExtension) {
     if (ioRoot == NULL) {
-      pointeurNouvelElement = (CelementArbreBinaireEquilibrePointeur *) myAllocRoutine (sizeof (CelementArbreBinaireEquilibrePointeur)) ;
+      pointeurNouvelElement = (cPointerDescriptor *) myAllocRoutine (sizeof (cPointerDescriptor)) ;
       if (pointeurNouvelElement != NULL) {
-        pointeurNouvelElement->mInfPtr = (CelementArbreBinaireEquilibrePointeur *) NULL;
-        pointeurNouvelElement->mSupPtr = (CelementArbreBinaireEquilibrePointeur *) NULL;
+        pointeurNouvelElement->mInfPtr = NULL;
+        pointeurNouvelElement->mSupPtr = NULL;
         pointeurNouvelElement->mBalance = 0;
         pointeurNouvelElement->champPtr = nouvelleClef;
         pointeurNouvelElement->champNumeroCreation = gCreatedPointersCount;
@@ -556,27 +556,25 @@ macroDeclareMutex (gAllocationMutex) ;
 
 //---------------------------------------------------------------------------*
 
-//#include <stdio.h>
-
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  static void performRegistering (const void * inPointer,
-                                  const enumAllocation inAllocation
-                                  COMMA_LOCATION_ARGS) {
+  static void registerPointerDescriptor (const void * inPointer,
+                                         const enumAllocation inAllocation
+                                         COMMA_LOCATION_ARGS) {
     // printf ("*** registering pointer %p\n", p) ;
     if (NULL != inPointer) {
       if (! gRootInited) {
         for (PMSInt32 i=0 ; i<TAILLE_TABLE_RACINES ; i ++) {
-          gPointersTreeRoot [i] = (CelementArbreBinaireEquilibrePointeur *) NULL ;
+          gPointerDescriptorTreeRoot [i] = NULL ;
         }
         gRootInited = true ;
       }
       bool existeDeja = false ;
       bool ioExtension = false ;
-      CelementArbreBinaireEquilibrePointeur * pointeurNouvelElement = NULL ;
+      cPointerDescriptor * pointeurNouvelElement = NULL ;
       gPointersCurrentCount ++ ;
       gCreatedPointersCount ++ ;
   //    MF_Assert (gCreatedPointersCount != 69068, "gCreatedPointersCount == %lld", gCreatedPointersCount, 0) ;
-      executerInsertionRecursiveDansArbreEquilibre (gPointersTreeRoot[HashCode(inPointer)], inPointer, existeDeja, pointeurNouvelElement, ioExtension);
+      executerInsertionRecursiveDansArbreEquilibre (gPointerDescriptorTreeRoot [HashCode(inPointer)], inPointer, existeDeja, pointeurNouvelElement, ioExtension);
       if (existeDeja) {
         runtime_error_routine ("(detectee par " __FILE__ ") Le pointeur existe deja", 0, 0, IN_SOURCE_FILE, IN_SOURCE_LINE) ;
       }
@@ -593,7 +591,7 @@ macroDeclareMutex (gAllocationMutex) ;
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void registerPointer (const void * p COMMA_LOCATION_ARGS) {
-    performRegistering (p, kAllocatedByMacroMyNew COMMA_THERE) ;
+    registerPointerDescriptor (p, kAllocatedByMacroMyNew COMMA_THERE) ;
   }
 #endif
 
@@ -601,17 +599,17 @@ macroDeclareMutex (gAllocationMutex) ;
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   void registerArray (const void * p COMMA_LOCATION_ARGS) {
-    performRegistering (p, kAllocatedByMacroMyNewArray COMMA_THERE) ;
+    registerPointerDescriptor (p, kAllocatedByMacroMyNewArray COMMA_THERE) ;
   }
 #endif
 
 //---------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  static CelementArbreBinaireEquilibrePointeur * rechercherPointeur (const void * inPointer) {
-    CelementArbreBinaireEquilibrePointeur * p = (CelementArbreBinaireEquilibrePointeur *) NULL ;
+  static cPointerDescriptor * searchPointerDescriptor (const void * inPointer) {
+    cPointerDescriptor * p = NULL ;
     if (inPointer != NULL) {
-      p = gPointersTreeRoot[HashCode(inPointer)];
+      p = gPointerDescriptorTreeRoot[HashCode(inPointer)];
       bool PasTrouve = true;
       while (PasTrouve && p != NULL) {
         switch (comparerPointeurs (p->champPtr, inPointer)) {
@@ -634,11 +632,11 @@ macroDeclareMutex (gAllocationMutex) ;
 //---------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  void supprimerPointeur (const void * inPointer,
+  void unregisterPointer (const void * inPointer,
                           const enumAllocation natureAllocation COMMA_LOCATION_ARGS) {
     bool h = false ;
-    CelementArbreBinaireEquilibrePointeur * pointerToDelete = (CelementArbreBinaireEquilibrePointeur *) NULL ;
-    suppressionRecursiveDansArbreBinaireEquilibre (gPointersTreeRoot [HashCode (inPointer)],
+    cPointerDescriptor * pointerToDelete = NULL ;
+    suppressionRecursiveDansArbreBinaireEquilibre (gPointerDescriptorTreeRoot [HashCode (inPointer)],
                                                    inPointer, pointerToDelete, h);
     if (pointerToDelete == NULL) {
       runtime_error_routine ("(" __FILE__ ") Pointer (0x%X) is unknown", (PMSInt) inPointer, 0 COMMA_THERE) ;
@@ -700,7 +698,7 @@ macroDeclareMutex (gAllocationMutex) ;
     if (inPointer == NULL) {
       runtime_error_routine ("(detected by " __FILE__ ") NULL pointer", 0, 0 COMMA_THERE) ;
     }
-    CelementArbreBinaireEquilibrePointeur * p = rechercherPointeur (inPointer) ;
+    cPointerDescriptor * p = searchPointerDescriptor (inPointer) ;
     if (p == NULL) {
       runtime_error_routine ("(detected by " __FILE__ ") unknown (%p) pointer", (PMSInt) inPointer, 0 COMMA_THERE) ;
     }
@@ -710,7 +708,7 @@ macroDeclareMutex (gAllocationMutex) ;
 //---------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  void CelementArbreBinaireEquilibrePointeur::affichageRecursif (void) const {
+  void cPointerDescriptor::affichageRecursif (void) const {
   //--- Branche inf
     if (mInfPtr != NULL) {
       mInfPtr->affichageRecursif () ;
@@ -728,8 +726,8 @@ macroDeclareMutex (gAllocationMutex) ;
 //---------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
-  void CelementArbreBinaireEquilibrePointeur::
-  enregistrerDansListeLineaire (CelementArbreBinaireEquilibrePointeur * & racine) {
+  void cPointerDescriptor::
+  enregistrerDansListeLineaire (cPointerDescriptor * & racine) {
   //--- Branche inf
     if (mInfPtr != NULL) {
       mInfPtr->enregistrerDansListeLineaire (racine) ;
@@ -785,8 +783,8 @@ void displayAllocatedBlocksInfo (void) {
       printf ("  address  |   number   |     kind | source line | source file\n") ;  
     }
     for (PMSInt32 i=0 ; i<TAILLE_TABLE_RACINES ; i++) {
-      if (gPointersTreeRoot [i] != NULL) {
-        gPointersTreeRoot [i]->affichageRecursif () ;
+      if (gPointerDescriptorTreeRoot [i] != NULL) {
+        gPointerDescriptorTreeRoot [i]->affichageRecursif () ;
       }
     }
   #endif

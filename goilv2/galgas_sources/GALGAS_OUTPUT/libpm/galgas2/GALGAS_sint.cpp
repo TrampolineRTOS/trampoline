@@ -35,6 +35,12 @@ mSIntValue (0) {
 
 //---------------------------------------------------------------------------*
 
+GALGAS_sint GALGAS_sint::constructor_default (UNUSED_LOCATION_ARGS) {
+  return GALGAS_sint (0) ;
+}
+
+//---------------------------------------------------------------------------*
+
 GALGAS_sint::GALGAS_sint (const PMSInt32 inValue) :
 mIsValid (true),
 mSIntValue (inValue) {

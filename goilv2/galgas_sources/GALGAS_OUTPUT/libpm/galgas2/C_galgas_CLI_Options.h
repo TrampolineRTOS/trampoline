@@ -42,10 +42,6 @@ extern C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_outputConcre
 
 //---------------------------------------------------------------------------*
 
-extern C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_noteFileAccess ;
-
-//---------------------------------------------------------------------------*
-
 extern C_BoolCommandLineOption gOption_galgas_5F_builtin_5F_options_verbose_5F_output ;
 
 //---------------------------------------------------------------------------*
@@ -84,8 +80,6 @@ bool executionModeIsSyntaxAnalysisOnly (void) ;
 
 bool executionModeIsIndexing (void) ;
 
-bool executionModeIsContextHelp (void) ;
-
 PMUInt32 contextHelpStartLocation (void) ;
 
 PMUInt32 contextHelpEndLocation (void) ;
@@ -93,8 +87,6 @@ PMUInt32 contextHelpEndLocation (void) ;
 void setCurrentCompiledFilePath (const C_String & inPath) ;
 
 bool isCurrentCompiledFilePath (const C_String & inPath) ;
-
-void sendToTCPSocket (const C_String & inString) ;
 
 //---------------------------------------------------------------------------*
 

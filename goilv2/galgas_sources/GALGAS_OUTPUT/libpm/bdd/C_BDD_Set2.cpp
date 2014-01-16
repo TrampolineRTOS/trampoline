@@ -126,11 +126,11 @@ initDimension2 (const C_BDD_Set1 & inSource COMMA_LOCATION_ARGS) {
                   "Invalid BDD set (max value : %ld, expected : %ld)",
                   (PMSInt32) inSource.mDescriptor.getMaxValue (),
                   (PMSInt32) mDescriptor2.getMaxValue ()) ;
-  const PMUInt16 size = mDescriptor2.getBDDbitsSize () ;
-  PMUInt16 * tab = NULL ;
-  macroMyNewArray (tab, PMUInt16, size) ;
-  for (PMUInt16 i=0 ; i<size ; i++) {
-    tab [i] = (PMUInt16) (i + mDescriptor1.getBDDbitsSize ()) ;
+  const PMUInt32 size = mDescriptor2.getBDDbitsSize () ;
+  PMUInt32 * tab = NULL ;
+  macroMyNewArray (tab, PMUInt32, size) ;
+  for (PMUInt32 i=0 ; i<size ; i++) {
+    tab [i] = (PMUInt32) (i + mDescriptor1.getBDDbitsSize ()) ;
   }
   mBDD = inSource.mBDD.substitution (tab, size COMMA_HERE) ;
   macroMyDeleteArray (tab) ;
@@ -203,15 +203,15 @@ C_BDD_Set2 C_BDD_Set2::operator ~ (void) const {
 
 C_BDD_Set2 C_BDD_Set2::getTransposedSet (void) const {
   C_BDD_Set2 r (mDescriptor2, mDescriptor1) ;
-  const PMUInt16 bitSize1 = mDescriptor1.getBDDbitsSize () ;
-  const PMUInt16 bitSize2 = mDescriptor2.getBDDbitsSize () ;
-  const PMUInt16 totalSize = (PMUInt16) (bitSize1 + bitSize2) ;
-  PMUInt16 * tab = NULL ;
-  macroMyNewArray (tab, PMUInt16, totalSize) ;
-  for (PMUInt16 i=0 ; i<bitSize1 ; i++) {
-    tab [i] = (PMUInt16) (i + bitSize2) ;
+  const PMUInt32 bitSize1 = mDescriptor1.getBDDbitsSize () ;
+  const PMUInt32 bitSize2 = mDescriptor2.getBDDbitsSize () ;
+  const PMUInt32 totalSize = (PMUInt32) (bitSize1 + bitSize2) ;
+  PMUInt32 * tab = NULL ;
+  macroMyNewArray (tab, PMUInt32, totalSize) ;
+  for (PMUInt32 i=0 ; i<bitSize1 ; i++) {
+    tab [i] = (PMUInt32) (i + bitSize2) ;
   }
-  for (PMUInt16 j=0 ; j<bitSize2 ; j++) {
+  for (PMUInt32 j=0 ; j<bitSize2 ; j++) {
     tab [j + bitSize1] = j ;
   }
   r.mBDD = mBDD.substitution (tab, totalSize COMMA_HERE) ;
@@ -301,7 +301,7 @@ C_BDD_Set1 C_BDD_Set2::getAccessibility (const C_BDD_Set1 & inInitialValue,
 //----------------------------------------------------------------------------*
 
 PMUInt32 C_BDD_Set2::getValuesCount (void) const {
-  return (PMUInt32) (mBDD.valueCount ((PMUInt16) (mDescriptor1.getBDDbitsSize () + mDescriptor2.getBDDbitsSize ())) & PMUINT32_MAX) ;
+  return (PMUInt32) (mBDD.valueCount64 ((PMUInt32) (mDescriptor1.getBDDbitsSize () + mDescriptor2.getBDDbitsSize ())) & PMUINT32_MAX) ;
 }
 
 //---------------------------------------------------------------------------*
@@ -309,22 +309,22 @@ PMUInt32 C_BDD_Set2::getValuesCount (void) const {
 class cBuildArrayForSet2 : public C_bdd_value_traversing {
 //--- Attributs
   protected : TC_UniqueArray <TC_UniqueArray <PMSInt32> > & mArray ;
-  protected : PMUInt16 mBitsSize1 ;
+  protected : PMUInt32 mBitsSize1 ;
 
 //--- Constructeur
   public : cBuildArrayForSet2 (TC_UniqueArray <TC_UniqueArray <PMSInt32> > & outArray,
-                               const PMUInt16 inBitsSize1) ;
+                               const PMUInt32 inBitsSize1) ;
 
 //--- Methode virtelle appelee pour chaque valeur
   public : virtual void action (const bool inValuesArray [],
-                                const PMUInt16 inBDDbitsSize) ;
+                                const PMUInt32 inBDDbitsSize) ;
 } ;
   
 //---------------------------------------------------------------------------*
 
 cBuildArrayForSet2::
 cBuildArrayForSet2 (TC_UniqueArray <TC_UniqueArray <PMSInt32> > & outArray,
-                    const PMUInt16 inBitsSize1) :
+                    const PMUInt32 inBitsSize1) :
 mArray (outArray),
 mBitsSize1 (inBitsSize1) {
 }
@@ -333,13 +333,13 @@ mBitsSize1 (inBitsSize1) {
 
 void cBuildArrayForSet2::
 action (const bool inValuesArray [],
-        const PMUInt16 inBDDbitsSize) {
+        const PMUInt32 inBDDbitsSize) {
   PMSInt32 index1 = 0L ;
   PMSInt32 index2 = 0L ;
-  for (PMSInt32 i=mBitsSize1 - 1 ; i>=0 ; i--) {
+  for (PMSInt32 i=((PMSInt32) mBitsSize1) - 1 ; i>=0 ; i--) {
     index1 = (index1 << 1) + inValuesArray [i] ;
   }
-  for (PMSInt32 j=inBDDbitsSize - 1 ; j>=mBitsSize1 ; j--) {
+  for (PMSInt32 j=((PMSInt32) inBDDbitsSize) - 1 ; j>=(PMSInt32) mBitsSize1 ; j--) {
     index2 = (index2 << 1) + inValuesArray [j] ;
   }
   mArray (index1 COMMA_HERE).addObject (index2) ;
@@ -356,7 +356,7 @@ void C_BDD_Set2::getArray (TC_UniqueArray <TC_UniqueArray <PMSInt32> > & outArra
     swap (temp, outArray) ;
   }
   cBuildArrayForSet2 s (outArray, mDescriptor1.getBDDbitsSize ()) ;
-  mBDD.traverseBDDvalues (s, (PMUInt16) (mDescriptor1.getBDDbitsSize () + mDescriptor2.getBDDbitsSize ())) ;
+  mBDD.traverseBDDvalues (s, (PMUInt32) (mDescriptor1.getBDDbitsSize () + mDescriptor2.getBDDbitsSize ())) ;
 }
 
 //----------------------------------------------------------------------------*

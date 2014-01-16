@@ -89,7 +89,7 @@ void C_TCPSocketOut::performActualCharArrayOutput (const char * inCharArray,
     ssize_t sentByteCount = 0 ;
     bool ok = true ;
     while (ok && (sentByteCount < inArrayCount)) {
-      ssize_t numbytes = send (mSocket, & inCharArray [sentByteCount], inArrayCount - sentByteCount, 0) ;
+      ssize_t numbytes = send (mSocket, & inCharArray [sentByteCount], (size_t) (inArrayCount - sentByteCount), 0) ;
       sentByteCount += numbytes ;
       ok = numbytes >= 0 ;
     }

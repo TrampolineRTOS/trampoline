@@ -40,8 +40,8 @@
     noteObjectAllocation (self) ;
     mMessage = inMessage.copy ;
     mURL = inURL.copy ;
-    mLine = inLine ;
-    mColumn = inColumn ;
+    mLine = (NSUInteger) inLine ;
+    mColumn = (NSUInteger) inColumn ;
     mIsError = inIsError ;
     mRangeInOutputData = inRangeInOutputData ;
     mLocationInSourceStringStatus = kLocationInSourceStringNotSolved ;
@@ -78,19 +78,19 @@
 
 //---------------------------------------------------------------------------*
 
-- (NSInteger) issueLine {
+- (NSUInteger) issueLine {
   return mLine ;
 }
 
 //---------------------------------------------------------------------------*
 
-- (NSInteger) issueColumn {
+- (NSUInteger) issueColumn {
   return mColumn ;
 }
 
 //---------------------------------------------------------------------------*
 
-- (NSInteger) locationInOutputData {
+- (NSUInteger) locationInOutputData {
   return mRangeInOutputData.location ;
 }
 

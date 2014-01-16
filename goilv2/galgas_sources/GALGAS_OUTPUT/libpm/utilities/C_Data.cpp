@@ -78,21 +78,10 @@ void C_Data::free (void) {
 
 //---------------------------------------------------------------------------*
 
-#ifndef DO_NOT_GENERATE_CHECKINGS
-  PMUInt8 & C_Data::operator () (const PMSInt32 inIndex
-                                 COMMA_LOCATION_ARGS) {
-    return mBinaryData (inIndex COMMA_THERE) ;
-  }
-#endif
-
-//---------------------------------------------------------------------------*
-
-#ifndef DO_NOT_GENERATE_CHECKINGS
-  PMUInt8 & C_Data::operator () (const PMSInt32 inIndex
-                                 COMMA_LOCATION_ARGS) const {
-    return mBinaryData (inIndex COMMA_THERE) ;
-  }
-#endif
+PMUInt8 C_Data::operator () (const PMSInt32 inIndex
+                             COMMA_LOCATION_ARGS) const {
+  return mBinaryData (inIndex COMMA_THERE) ;
+}
 
 //---------------------------------------------------------------------------*
 
@@ -107,7 +96,7 @@ PMSInt32 C_Data::compareWithData (const C_Data & inData) const {
 //---------------------------------------------------------------------------*
 
 void C_Data::removeLengthFromStart (const PMUInt32 inLength) {
-  mBinaryData.removeObjectsAtIndex (inLength, 0 COMMA_HERE) ;
+  mBinaryData.removeObjectsAtIndex ((PMSInt32) inLength, 0 COMMA_HERE) ;
 }
 
 //---------------------------------------------------------------------------*

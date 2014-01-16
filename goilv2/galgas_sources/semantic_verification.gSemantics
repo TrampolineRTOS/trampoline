@@ -18,7 +18,7 @@ import "implementation_types.gSemantics";
 method @implementation verifyApplication
   ??@applicationDefinition appDef
 :
-  foreach imp prefixedby imp_ do
+  foreach imp : imp_ do
     if [[appDef objects] hasKey ![imp_lkey string]] then
       @objectKind obj;
       [[appDef objects] get !imp_lkey ?obj];
@@ -31,7 +31,7 @@ end method;
 method @implementationObject verifyApplication
   ??@objectKind objectsOfKind
 :
-  foreach [objectsOfKind objects] prefixedby obj_ do
+  foreach [objectsOfKind objects] : obj_ do
     foreach attributes do
       [type verifyApplication !obj_attributes];
     end foreach;
@@ -60,8 +60,8 @@ end method;
 method @impType verifyMultipleType
   ??@object_t attr
 :
-  cast attr:
-  when == @multipleAttribute ma do
+  cast attr
+  when == @multipleAttribute ma :
     foreach [ma items] do
       [selfcopy verifyType !item];
     end foreach;
@@ -74,8 +74,8 @@ end method;
 override method @impStructType verifyType
   ??@object_t attr
 :
-  cast attr:
-  when == @structAttribute sa do
+  cast attr
+  when == @structAttribute sa :
     foreach structAttributes do
       if [[[sa subAttributes] objectParams] hasKey ![lkey string]] then
         @object_t subAttr;
@@ -92,8 +92,8 @@ end method;
 override method @refType verifyType
   ??@object_t attr
 :
-  cast attr:
-  when == @string_class do
+  cast attr
+  when == @string_class :
   else 
     error [attr location] : "object reference expected";
   end cast;
@@ -103,8 +103,8 @@ end method;
 override method @impBoolType verifyType
   ??@object_t attr
 :
-  cast attr:
-  when == @boolAttribute b do
+  cast attr
+  when == @boolAttribute b :
     if [b value] then
       foreach trueSubAttributes do
         if [[[b subAttributes] objectParams] hasKey ![lkey string]] then
@@ -131,8 +131,8 @@ end method;
 override method @impEnumType verifyType
   ??@object_t attr
 :
-  cast attr:
-  when == @enumAttribute e do
+  cast attr
+  when == @enumAttribute e :
     if [valuesMap hasKey ![e value]] then
       @implementationObjectMap validVal;
       [valuesMap get !lstringWith[![e value]] ?validVal];
@@ -146,7 +146,7 @@ override method @impEnumType verifyType
     else
       error [e location] : [e value]." is not a valid enum value";
     end if;
-  when == @auto do
+  when == @auto :
   else 
     message "**** @impEnumType ****\n";
     error [attr location] : "ENUM expected";
@@ -158,16 +158,16 @@ end method;
 override method @impAutoDefaultType verifyType
   ??@object_t attr
 :
-  cast attr:
-  when == @stringAttribute do
+  cast attr
+  when == @stringAttribute :
     if type != [@dataType string] & type != [@dataType identifier] then
       error [attr location] : "string of identifier expected";
     end if; 
-  when == @string_class do
+  when == @string_class :
     if type != [@dataType identifier] then
       error [attr location] : [type oilType]." expected";
     end if;
-  when == @auto do
+  when == @auto :
   else 
     message "*** @impAutoDefaultType ***\n";
     log attr;
@@ -180,28 +180,28 @@ end method;
 override method @impRangedType verifyType
   ??@object_t attr
 :
-  cast attr:
-  when == @uint32_class do
+  cast attr
+  when == @uint32_class :
     if type != [@dataType uint32Number] then
       error [attr location] : [type oilType]." expected";
     end if;
-  when == @sint32_class do
+  when == @sint32_class :
     if type != [@dataType sint32Number] then
       error [attr location] : [type oilType]." expected";
     end if;
-  when == @uint64_class do
+  when == @uint64_class :
     if type != [@dataType uint64Number] then
       error [attr location] : [type oilType]." expected";
     end if;
-  when == @sint64_class do
+  when == @sint64_class :
     if type != [@dataType sint64Number] then
       error [attr location] : [type oilType]." expected";
     end if;
-  when == @float_class do
+  when == @float_class :
     if type != [@dataType floatNumber] then
       error [attr location] : [type oilType]." expected";
     end if;
-  when == @auto do
+  when == @auto :
     if withAuto == false then
       error [attr location] : "AUTO is not allowed for ".name." attribute";
     end if;
@@ -218,8 +218,8 @@ function attributeAllowsAuto
   ->@bool     allowsAuto
 :
   allowsAuto := true;
-  cast type:
-  when >= @impAutoDefaultType autoType do
+  cast type
+  when >= @impAutoDefaultType autoType :
     if not [autoType withAuto] then
       # It does not allow AUTO
       allowsAuto := false;
@@ -240,15 +240,15 @@ routine verifyAllAttributes
   foreach objects do
     @implementationObject impObj := [imp impObject ![lkey string]];
 #    message "*** implementation object = ".lkey."\n";
-    foreach [objectsOfKind objects] prefixedBy obj_ do
-      foreach [impObj attributes] prefixedBy imp_ do
+    foreach [objectsOfKind objects] : obj_ do
+      foreach [impObj attributes] : imp_ do
         if [[obj_attributes objectParams] hasKey ![imp_lkey string]] then
           # the parameter is defined in the object
           # get it to see if it is set to AUTO
           @object_t value;
           [[obj_attributes objectParams] get !imp_lkey ?value];
-          cast value:
-          when == @auto do
+          cast value
+          when == @auto :
             # check the implementation definition param allows AUTO
             if not attributeAllowsAuto[!imp_type] then
               error [value location]:"AUTO value is not allowed for the ".[lkey string]." attribute";
@@ -260,8 +260,8 @@ routine verifyAllAttributes
             error obj_lkey:"In ".lkey." ".obj_lkey.", attribute ".[imp_lkey string]." is not defined and is not AUTO";
           end if;
         end if;
-        cast imp_type:
-        when == @impAutoDefaultType do
+        cast imp_type
+        when == @impAutoDefaultType :
         else end cast;
       end foreach;
     end foreach;

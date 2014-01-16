@@ -27,10 +27,10 @@ typedef enum {
   @private BOOL mIsError ;
   @private NSString * mMessage ;
   @private NSURL * mURL ;
-  @private NSInteger mLine ;
-  @private NSInteger mColumn ;
+  @private NSUInteger mLine ;
+  @private NSUInteger mColumn ;
   @private NSRange mRangeInOutputData ;
-  @private NSInteger mLocationInSourceString ;
+  @private NSUInteger mLocationInSourceString ;
   @private enumLocationInSourceStringStatus mLocationInSourceStringStatus ;
   @private OC_GGS_RulerViewForBuildOutput * mBuildOutputRuler ;
 }
@@ -51,11 +51,11 @@ typedef enum {
 
 - (BOOL) isError ;
 
-- (NSInteger) issueLine ;
+- (NSUInteger) issueLine ;
 
-- (NSInteger) issueColumn ;
+- (NSUInteger) issueColumn ;
 
-- (NSInteger) locationInOutputData ;
+- (NSUInteger) locationInOutputData ;
 
 - (enumLocationInSourceStringStatus) locationInSourceStringStatus ;
 

@@ -4,7 +4,7 @@
 //                                                                           *
 //  This file is part of libpm library                                       *
 //                                                                           *
-//  Copyright (C) 1999, ..., 2010 Pierre Molinaro.                           *
+//  Copyright (C) 1999, ..., 2013 Pierre Molinaro.                           *
 //                                                                           *
 //  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
 //  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
@@ -65,6 +65,8 @@ class C_Timer {
   public : void stopTimer (void) ;
 
   public : void startTimer (void) ;
+
+  public : PMUInt32 msFromStart (void) const ;
 
   public : C_String timeString (void) const ;
 

@@ -147,8 +147,8 @@ function checkEnums
   ??@impEnumType newEnum
   ->@bool inside
 :
-  @stringset newValues := [[newEnum valuesMap] allKeys];
-  @stringset previousValues := [[previousEnum valuesMap] allKeys];
+  @stringset newValues := [[newEnum valuesMap] keySet];
+  @stringset previousValues := [[previousEnum valuesMap] keySet];
   inside := (newValues & previousValues) == newValues;
   if not inside then
     error [newEnum location]: "ENUM is not within previous enum declaration";
@@ -183,15 +183,15 @@ function checkNewTypeWithinPreviousType
     error [previousType location]: [name string]." was previouly defined here";
     result := false;
   else
-    cast previousType:
-    when == @impEnumType previousEnum do
-      cast newType:
-      when == @impEnumType newEnum do
+    cast previousType
+    when == @impEnumType previousEnum :
+      cast newType
+      when == @impEnumType newEnum :
         result := checkEnums[!previousEnum !newEnum];
       else end cast;
-    when == @impRangedType previousRanged do
-      cast newType:
-      when == @impRangedType newRanged do
+    when == @impRangedType previousRanged :
+      cast newType
+      when == @impRangedType newRanged :
         result := checkRanged[!previousRanged !newRanged];
       else end cast;
     else

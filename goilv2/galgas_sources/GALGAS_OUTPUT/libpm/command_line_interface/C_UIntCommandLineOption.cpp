@@ -108,7 +108,7 @@ setUIntOptionForCommandString (const char * inCommandCommandLineOptionString,
   for (PMUInt32 i=equalSignIndex+1 ; (i<optionLength) && outCommandLineOptionStringIsValid ; i++) {
     outCommandLineOptionStringIsValid = (inCommandCommandLineOptionString [i] >= '0') && (inCommandCommandLineOptionString [i] <= '9') ;
     optionValue *= 10 ;
-    optionValue += inCommandCommandLineOptionString [i] - '0' ;
+    optionValue += (PMUInt32) (inCommandCommandLineOptionString [i] - '0') ;
   }
 //--- Search option
   outFound = false ;
@@ -200,7 +200,7 @@ utf32 C_UIntCommandLineOption::getUIntOptionInvocationLetter (const C_String & i
   bool found = false ;
   while ((p != NULL) && not found) {
     found = (inDomainName == p->mDomainName) && (inIdentifier == p->mIdentifier) ;
-    result = TO_UNICODE (p->mCommandChar) ;
+    result = TO_UNICODE ((PMUInt32) p->mCommandChar) ;
     p = p->mNext ;
 }
   return result ;
