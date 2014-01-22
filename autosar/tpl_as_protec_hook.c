@@ -93,6 +93,7 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
 # if WITH_SYSTEM_CALL == NO
         if (tpl_kern.need_switch != NO_NEED_SWITCH)
         {
+          tpl_kern.need_switch = NO_NEED_SWITCH;
           tpl_switch_context(
             NULL,
             &(tpl_kern.s_running->context)

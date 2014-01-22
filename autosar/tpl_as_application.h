@@ -14,9 +14,7 @@
  *  Trampoline and its Autosar extension are protected by the
  *  French intellectual property law.
  *
- *  This software is distributed under a dual licencing scheme
- *  1 - The Lesser GNU Public Licence v2
- *  2 - The BSD Licence
+ * This software is distributed under the Lesser GNU Public Licence
  *
  *  @section infos File informations
  *
@@ -73,6 +71,20 @@ typedef uint8  RestartType;
  *  Type used as a generic identifier of objects
  */
 typedef tpl_generic_id ObjectType;
+
+/**
+ *  @typedef ApplicationStateType
+ *  
+ *  Type used to identify the state of an OsApplication
+ */
+typedef uint8 ApplicationStateType;
+
+/**
+ *  @typedef ApplicationStateRefType
+ *  
+ *  Type used to return an ApplicationStateType
+ */
+typedef P2VAR(uint8, TYPEDEF, OS_VAR) ApplicationStateRefType;
 
 /**
  * @def DeclareApplication

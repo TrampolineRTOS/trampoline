@@ -81,6 +81,7 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
 # if WITH_SYSTEM_CALL == NO
       if (tpl_kern.need_switch != NO_NEED_SWITCH)
       {
+        tpl_kern.need_switch = NO_NEED_SWITCH;
         tpl_switch_context(
           &(tpl_kern.s_old->context),
           &(tpl_kern.s_running->context)
@@ -130,6 +131,7 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 # if WITH_SYSTEM_CALL == NO
     if (tpl_kern.need_switch != NO_NEED_SWITCH)
     {
+      tpl_kern.need_switch = NO_NEED_SWITCH;
       tpl_switch_context(
         NULL,
         &(tpl_kern.s_running->context)
@@ -193,6 +195,7 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
 # if WITH_SYSTEM_CALL == NO
       if (tpl_kern.need_switch != NO_NEED_SWITCH)
       {
+        tpl_kern.need_switch = NO_NEED_SWITCH;
         tpl_switch_context(NULL, &(tpl_kern.s_running->context));
       }
 # endif
@@ -244,6 +247,7 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 # if WITH_SYSTEM_CALL == NO
     if (tpl_kern.need_switch != NO_NEED_SWITCH)
     {
+      tpl_kern.need_switch = NO_NEED_SWITCH;
       tpl_switch_context(
         &(tpl_kern.s_old->context),
         &(tpl_kern.s_running->context)

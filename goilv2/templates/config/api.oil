@@ -531,9 +531,28 @@ CPU api {
         : "E_OK:          called from allowed context (OS287).\n"
           "E_OS_CALLEVEL: wrong context (OS288).\n"
           "E_OS_VALUE:    invalid restart_opt (OS459)";
+      ARGUMENT app_id { KIND = CONST; TYPE = ApplicationType; }
+        : "id of the OsApplication to terminate.";
       ARGUMENT restart_opt { KIND = CONST; TYPE = RestartType; }
         : "indicates if the OS Application should be restarted.";
     } : "Terminate an OS Application. All running processes/alarms/schedule tables and ready processes are killed";
+    SYSCALL GetApplicationState {
+      KERNEL = tpl_get_application_state_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:          no errors.\n"
+          "E_OS_CALLEVEL: wrong context (OS288).\n"
+          "E_OS_ID:    Application not valid";
+      ARGUMENT app_id { KIND = CONST; TYPE = ApplicationType; }
+        : "id of the OsApplication for which state is required.";
+      ARGUMENT value { KIND = CONST; TYPE = ApplicationStateRefType; }
+        : "The current state of the applciation.";
+    } : "Returns the current state of an OsApplication";
+    SYSCALL AllowAccess {
+      KERNEL = tpl_allow_access_service;
+      RETURN_TYPE = StatusType
+        : "E_OK:          no errors.\n"
+          "E_OS_STATE: OsAPplication of the aller is in the wrong state.\n";
+    } : "sets the own state of an OsApplication from APPLCIATION_RESTARETING to APPLICATION_ACCESSIBLE";
     SYSCALL CheckObjectAccess {
       KERNEL = tpl_check_object_access_service;
       RETURN_TYPE = ObjectAccessType

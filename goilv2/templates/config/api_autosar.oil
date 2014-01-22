@@ -37,6 +37,8 @@ CPU api_autosar {
     FILE = "tpl_as_app_kernel";
     ENTRY GetApplicationID     { API = GetApplicationID;     KERNEL = tpl_get_application_id_service;     };
     ENTRY TerminateApplication { API = TerminateApplication; KERNEL = tpl_terminate_application_service;  };
+    ENTRY AllowAccess          { API = AllowAccess;          KERNEL = tpl_allow_access_service;           };    
+    ENTRY GetApplicationState  { API = GetApplicationState;  KERNEL = tpl_get_application_state_service;  }; 
     ENTRY CheckObjectAccess    { API = CheckObjectAccess;    KERNEL = tpl_check_object_access_service;    };
     ENTRY CheckObjectOwnership { API = CheckObjectOwnership; KERNEL = tpl_check_object_ownership_service; };
   };

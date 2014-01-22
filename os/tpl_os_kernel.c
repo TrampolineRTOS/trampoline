@@ -308,7 +308,7 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
   GET_CORE_READY_LIST
   GET_TAIL_FOR_PRIO
   
-  VAR(uint32, AUTOMATIC) index = ++(uint32)READY_LIST[0].key;
+  VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST[0].key));
   VAR(tpl_priority, AUTOMATIC) dyn_prio;
   CONST(tpl_priority, AUTOMATIC) prio =
     tpl_stat_proc_table[proc_id]->base_priority;
@@ -343,7 +343,7 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(
   GET_TAIL_FOR_PRIO
   
     
-  VAR(uint32, AUTOMATIC) index = ++(uint32)READY_LIST[0].key;
+  VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST[0].key));
   CONST(tpl_priority, AUTOMATIC) dyn_prio =
     tpl_dyn_proc_table[proc_id]->priority;
 
@@ -437,19 +437,15 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
   DOW_DO(printf("\n**** remove proc %d ****\n",proc_id);)
   DOW_DO(printrl("tpl_remove_proc - before");)
 
-  do
+
+  for (index = 1; index <= size; index++)
   {
-    on_duty = FALSE;
-    
-    for (index = 1; index <= size; index++)
+    if (READY_LIST[index].id == proc_id)
     {
-      if (READY_LIST[index].id == proc_id)
-      {
-         READY_LIST[index] = READY_LIST[size--];
-         tpl_bubble_down(READY_LIST, index TAIL_FOR_PRIO_ARG);
-      }
+       READY_LIST[index] = READY_LIST[size--];
+       tpl_bubble_down(READY_LIST, index TAIL_FOR_PRIO_ARG);
     }
-  } while (on_duty);
+  }
 
   READY_LIST[0].key = size;
 
@@ -791,6 +787,7 @@ FUNC(void, OS_CODE) tpl_block(void)
 # if WITH_SYSTEM_CALL == NO
     if (TPL_KERN_REF.need_switch != NO_NEED_SWITCH)
     {
+      TPL_KERN_REF.need_switch = NO_NEED_SWITCH;
       tpl_switch_context(
         &(TPL_KERN_REF.s_old->context),
         &(TPL_KERN_REF.s_running->context)

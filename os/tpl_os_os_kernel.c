@@ -152,6 +152,7 @@ FUNC(void, OS_CODE) tpl_start_os_service(
 #if WITH_SYSTEM_CALL == NO
   if (tpl_kern.need_switch != NO_NEED_SWITCH)
   {
+    tpl_kern.need_switch = NO_NEED_SWITCH;
     tpl_switch_context(
       &(tpl_kern.s_old->context),
       &(tpl_kern.s_running->context)

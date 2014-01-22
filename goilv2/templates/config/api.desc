@@ -98,6 +98,8 @@ GLOBALTIME {
 OSAPPLICATION (tpl_as_app_kernel) {
   GetApplicationID      -> tpl_get_application_id_service;
   TerminateApplication  -> tpl_terminate_application_service;
+  GetApplicationState   -> tpl_get_application_state_service;
+  AllowAccess           -> tpl_allow_access_service;
 };
 
 /* Memory protection services, available in AUTOSAR SC3 and SC4 */

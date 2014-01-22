@@ -14,11 +14,11 @@ function join(items) {
  */
 %
 if app::STARTUPHOOK then %
-FUNC(void, OS_APPL_CODE) StartupHook_% !app::NAME %();
+FUNC(void, OS_CODE) StartupHook_% !app::NAME %();
 %
 end if
 if app::SHUTDOWNHOOK then %
-FUNC(void, OS_APPL_CODE) ShutdownHook_% !app::NAME %();
+FUNC(void, OS_CODE) ShutdownHook_% !app::NAME %();
 %
 end if
 
@@ -95,7 +95,7 @@ foreach counter in app::COUNTER
 %
 end foreach
 %
-CONST(tpl_app_access, OS_APPL_CONST) % !app::NAME %_app_access = {
+CONST(tpl_app_access, OS_CONST) % !app::NAME %_app_access = {
   % if app::STARTUPHOOK then %StartupHook_% !app::NAME else %NULL% end if%,
   % if app::SHUTDOWNHOOK then %ShutdownHook_% !app::NAME else %NULL% end if%,
   {
@@ -118,4 +118,3 @@ CONST(tpl_app_access, OS_APPL_CONST) % !app::NAME %_app_access = {
   % ![app::COUNTER length] %,
   % if app::HAS_RESTARTTASK then !app::HAS_RESTARTTASK_S::RESTARTTASK%_id% else %INVALID_PROC_ID% end if%
 };
-
