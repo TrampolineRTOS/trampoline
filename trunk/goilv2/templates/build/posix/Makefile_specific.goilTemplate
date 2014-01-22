@@ -1,7 +1,7 @@
 OS = $(shell uname)
 #Linux requires -lrt, while Darwin does not.
 ifeq ($(strip $(OS)),Linux)
- LDFLAGS += -lrt
+ LDFLAGS += -lrt -lpthread
 endif
 
 # gcc 4.6 warns unused but set variables. Unfortunately

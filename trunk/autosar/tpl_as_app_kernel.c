@@ -1,6 +1,6 @@
 /**
  *  @file tpl_as_app_kernel.c
- *  
+ *
  *  @section desc File description
  *
  *  Implementation of Autosar OS Application Kernel
@@ -14,9 +14,7 @@
  *  Trampoline and its Autosar extension are protected by the
  *  French intellectual property law.
  *
- *  This software is distributed under a dual licencing scheme
- *  1 - The Lesser GNU Public Licence v2
- *  2 - The BSD Licence
+ * This software is distributed under the Lesser GNU Public Licence
  *
  *  @section infos File informations
  *
@@ -43,10 +41,9 @@ DeclareTask(INVALID_TASK);
 
 #include "tpl_dow.h"
 
-#if APP_COUNT > 0
-extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST)
-  tpl_app_table[APP_COUNT];
-#endif
+
+#define OS_START_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 
 static CONST(tpl_generic_id, AUTOMATIC) tpl_obj_count_table[6] = {
   TASK_COUNT+ISR_COUNT,
@@ -57,6 +54,10 @@ static CONST(tpl_generic_id, AUTOMATIC) tpl_obj_count_table[6] = {
   IOC_COUNT
 };
 
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
+
+
 /**
  *  Get the application ID to which the current process belongs to
  *
@@ -64,29 +65,31 @@ static CONST(tpl_generic_id, AUTOMATIC) tpl_obj_count_table[6] = {
  */
 FUNC(tpl_app_id, OS_CODE) tpl_get_application_id_service(void)
 {
+  GET_CURRENT_CORE_ID
+  GET_TPL_KERN_FOR_CORE_ID
   VAR(StatusType, AUTOMATIC) result_status = E_OK;
   VAR(tpl_app_id, AUTOMATIC) result = INVALID_OSAPPLICATION_ID;
 
   /*  lock the kernel    */
   LOCK_KERNEL()
-	
+
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result_status)
-	
+
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_GetApplicationID)
-	
+
 #if APP_COUNT > 0
-  result =  tpl_kern.s_running->app_id;
+  result =  TPL_KERN_REF.s_running->app_id;
 #endif
-	
+
   PROCESS_ERROR(result_status)
-	
+
   /*  unlock the kernel  */
   UNLOCK_KERNEL()
-	
+
   return result;
-	
+
 }
 
 /**
@@ -102,82 +105,81 @@ FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
   tpl_generic_id  obj_id)
 {
   VAR(tpl_app_id, AUTOMATIC) result = INVALID_OSAPPLICATION_ID;
-  VAR(StatusType, AUTOMATIC) result_status = E_OK;		
-	
+  VAR(StatusType, AUTOMATIC) result_status = E_OK;
+
   /*  lock the kernel  */
   LOCK_KERNEL()
-	
+
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result_status)
-	
+
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_CheckObjectOwnership)
   STORE_OBJECT_TYPE(obj_type)
   STORE_OBJECT_ID(obj_id)
 
 #if APP_COUNT > 0
-	switch (obj_type) {
-		  
-		case OBJECT_TASK: /*  Same as OBJECT_ISR  */
+  switch (obj_type) {
+
+    case OBJECT_TASK: /*  Same as OBJECT_ISR  */
 #if (TASK_COUNT > 0) || (ISR_COUNT > 0)
-		  if (obj_id < (TASK_COUNT+ISR_COUNT))
-		  {
-			result = tpl_stat_proc_table[obj_id]->app_id;
-		  }
+      if (obj_id < (TASK_COUNT+ISR_COUNT))
+      {
+      result = tpl_stat_proc_table[obj_id]->app_id;
+      }
 #endif
-		  break;
-		  
-		case OBJECT_ALARM:
+      break;
+
+    case OBJECT_ALARM:
 #if ALARM_COUNT > 0
-		  if (obj_id < ALARM_COUNT)
-		  {
-			P2CONST(tpl_time_obj_static, AUTOMATIC, OS_CONST) alr =
-			  tpl_alarm_table[obj_id]->stat_part;
-			result = alr->app_id;
-		  }
+      if (obj_id < ALARM_COUNT)
+      {
+      P2CONST(tpl_time_obj_static, AUTOMATIC, OS_CONST) alr =
+        tpl_alarm_table[obj_id]->stat_part;
+      result = alr->app_id;
+      }
 #endif
-		  break;
-		  
-		case OBJECT_RESOURCE:
+      break;
+
+    case OBJECT_RESOURCE:
 #if RESOURCE_COUNT > 1
-		  /* RES_SCHEDULER id is equal to RESOURCE_COUNT - 1  */
-		  if (obj_id < (RESOURCE_COUNT - 1))
-		  {
-			result = tpl_resource_table[obj_id]->app_id;
-		  }
+      if (obj_id < RESOURCE_COUNT)
+      {
+      result = tpl_resource_table[obj_id]->app_id;
+      }
 #endif
-		  break;
-		  
-		case OBJECT_COUNTER:
+      break;
+
+    case OBJECT_COUNTER:
 #if COUNTER_COUNT > 0
-		  if (obj_id < COUNTER_COUNT)
-		  {
-			result = tpl_counter_table[obj_id]->app_id;
-		  }
+      if (obj_id < COUNTER_COUNT)
+      {
+      result = tpl_counter_table[obj_id]->app_id;
+      }
 #endif
-		  break;
-		  
-		case OBJECT_SCHEDULETABLE:
+      break;
+
+    case OBJECT_SCHEDULETABLE:
 #if SCHEDTABLE_COUNT > 0
-		  if (obj_id < SCHEDTABLE_COUNT)
-		  {
-			P2CONST(tpl_time_obj_static, AUTOMATIC, OS_CONST) st =
-			  tpl_schedtable_table[obj_id]->b_desc.stat_part;
-			result = st->app_id;
-		  }
-#endif      
-		  break;
-		  
-		default:
-		  result = INVALID_OSAPPLICATION_ID;		  
-	  }
+      if (obj_id < SCHEDTABLE_COUNT)
+      {
+      P2CONST(tpl_time_obj_static, AUTOMATIC, OS_CONST) st =
+        tpl_schedtable_table[obj_id]->b_desc.stat_part;
+      result = st->app_id;
+      }
+#endif
+      break;
+
+    default:
+      result = INVALID_OSAPPLICATION_ID;
+    }
 #endif
 
   PROCESS_ERROR(result_status)
-	
+
   /*  unlock the kernel  */
   UNLOCK_KERNEL()
-  
+
   return result;
 }
 
@@ -189,12 +191,12 @@ FUNC(tpl_app_id, OS_CODE) tpl_check_object_ownership_service(
  *  @param    obj_id    the id of the object. @see #tpl_generic_id
  *
  *  @retval   ACCESS (OS271)    if the application has access to the object
- *                              or if the object is Res_scheduler 
+ *                              or if the object is Res_scheduler
  *  @retval   NO_ACCESS (OS272) if the application has no access to the object
  *                              or one of the parameters is invalid
  */
 FUNC(uint8, OS_CODE) tpl_check_object_access_service(
-  tpl_app_id      app_id, 
+  tpl_app_id      app_id,
   ObjectTypeType  obj_type, /*uint8 before*/
   tpl_generic_id  obj_id)
 {
@@ -202,34 +204,34 @@ FUNC(uint8, OS_CODE) tpl_check_object_access_service(
   VAR(StatusType, AUTOMATIC) result_status = E_OK;
 
   LOCK_KERNEL()
-	
+
   /* check interrupts are not disabled by user    */
   CHECK_INTERRUPT_LOCK(result_status)
-	
+
   STORE_SERVICE(OSServiceId_CheckObjectAccess)
   STORE_APPLICATION_ID(app_id)
   STORE_OBJECT_TYPE(obj_type)
   STORE_OBJECT_ID(obj_id)
-	
+
 #if APP_COUNT > 0
-	  if ((app_id < APP_COUNT) &&
-		  (obj_type < OBJECT_TYPE_COUNT) &&
-		  (obj_id < tpl_obj_count_table[obj_type]))
-	  {
-		/*  Get the access vector of the corresponding application  */
-		CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =
-		  tpl_app_table[app_id];
-		CONST(uint8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);
-		CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 2;
-		result = ((app_access->access_vec[obj_type][byte_idx]) &
-						(1 << bit_shift)) >> bit_shift;
-	  }
+    if ((app_id < APP_COUNT) &&
+      (obj_type < OBJECT_TYPE_COUNT) &&
+      (obj_id < tpl_obj_count_table[obj_type]))
+    {
+    /*  Get the access vector of the corresponding application  */
+      CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =
+        tpl_app_table[app_id];
+      CONST(uint8, AUTOMATIC) bit_shift = (uint8)((obj_id << 1) & 0x7);
+      CONST(uint8, AUTOMATIC) byte_idx = (uint8)(obj_id >> 2);
+      result = (uint8)(((app_access->access_vec[obj_type][byte_idx]) &
+         (1 << bit_shift)) >> bit_shift);
+    }
 #endif
-	
+
   PROCESS_ERROR(result_status)
-  
+
   UNLOCK_KERNEL()
-  
+
   return result;
 }
 
@@ -237,6 +239,7 @@ FUNC(uint8, OS_CODE) tpl_check_object_access_service(
  *  Terminate an OS Application. All running processes/alarms/schedule tables
  *  are killed
  *
+ *  @param    app_id    the id of the application
  *  @param    restart_opt   indicates if the OS Application should be restarted.
  *                          @see #RestartType
  *
@@ -244,34 +247,51 @@ FUNC(uint8, OS_CODE) tpl_check_object_access_service(
  *  @retval   E_OS_CALLEVEL wrong context (OS288)
  *  @retval   E_OS_VALUE    invalid restart_opt (OS459)
  */
-FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(uint8 restart_opt)
+FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(
+  tpl_app_id  app_id,
+  uint8          restart_opt)
 {
+  GET_CURRENT_CORE_ID
+  GET_TPL_KERN_FOR_CORE_ID
+
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 #if APP_COUNT > 0
-  VAR(tpl_app_id, AUTOMATIC) running_app_id;
   VAR(tpl_proc_id, AUTOMATIC) restart_id;
 #endif /*APP_COUNT*/
-	
+
   LOCK_KERNEL()
-	
+
   /* check interrupts are not disabled by user */
   CHECK_INTERRUPT_LOCK(result)
-	
+
   /* store information for error hook routine */
   STORE_SERVICE(OSServiceId_TerminateApplication)
   STORE_TERMAPP_OPT(restart_opt)
-  
+
 #if APP_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
-  running_app_id = tpl_kern.s_running->app_id;
-  restart_id = tpl_app_table[running_app_id]->restart;
+  restart_id = tpl_app_table[app_id]->restart;
 
   DOW_DO(printf("CALLING TerminateApplication");)
-	  
+
+
   if ((restart_opt == RESTART) || (restart_opt == NO_RESTART))
   {
-    if (running_app_id < APP_COUNT)
+    if (app_id < APP_COUNT)
     {
+
+      /*
+       * upadte the state of the application
+       */
+      if( restart_opt == RESTART )
+      {
+        tpl_app_dyn_table[app_id].state = APPLICATION_RESTARTING;
+      }
+      else
+      {
+        tpl_app_dyn_table[app_id].state = APPLICATION_TERMINATED;
+      }
+
       /*
        * First, remove all alarms belonging
        * to the OS application from the queue
@@ -279,9 +299,9 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(uint8 restart_opt)
 #if ALARM_COUNT > 0
       {
         P2CONST(tpl_alarm_id, AUTOMATIC, OS_APPL_CONST) alarms =
-        tpl_app_table[running_app_id]->alarms;
+        tpl_app_table[app_id]->alarms;
         CONST(tpl_alarm_id, AUTOMATIC) alarm_count =
-        tpl_app_table[running_app_id]->alarm_count;
+        tpl_app_table[app_id]->alarm_count;
         VAR(tpl_alarm_id, AUTOMATIC) i;
         for (i = 0; i < alarm_count; i++)
         {
@@ -304,9 +324,9 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(uint8 restart_opt)
 #if SCHEDTABLE_COUNT > 0
       {
         P2CONST(tpl_schedtable_id, AUTOMATIC, OS_APPL_CONST) schedtables =
-        tpl_app_table[running_app_id]->sts;
+        tpl_app_table[app_id]->sts;
         CONST(tpl_schedtable_id, AUTOMATIC) schedtable_count =
-        tpl_app_table[running_app_id]->st_count;
+        tpl_app_table[app_id]->st_count;
         VAR(tpl_schedtable_id, AUTOMATIC) i;
         for (i = 0; i < schedtable_count; i++)
         {
@@ -330,9 +350,9 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(uint8 restart_opt)
        */
       {
         P2CONST(tpl_proc_id, AUTOMATIC, OS_APPL_CONST) procs =
-        tpl_app_table[running_app_id]->procs;
+        tpl_app_table[app_id]->procs;
         CONST(tpl_proc_id, AUTOMATIC) proc_count =
-        tpl_app_table[running_app_id]->proc_count;
+        tpl_app_table[app_id]->proc_count;
         VAR(tpl_proc_id, AUTOMATIC) i;
         for (i = 0; i < proc_count; i++)
         {
@@ -354,51 +374,39 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(uint8 restart_opt)
           tpl_dyn_proc_table[proc_id]->state = SUSPENDED;
           tpl_dyn_proc_table[proc_id]->activate_count = 0;
           tpl_dyn_proc_table[proc_id]->priority =
-            tpl_stat_proc_table[proc_id]->base_priority;
+          tpl_stat_proc_table[proc_id]->base_priority;
         }
       }
 #endif
-      /* Restart the application if needed  */
+
+      /* Restart the application and call the restart task if needed  */
       if ((RESTART == restart_opt) &&
           (restart_id != INVALID_TASK))
       {
-        result = tpl_activate_task(tpl_app_table[running_app_id]->restart);
-        if (E_OK_AND_SCHEDULE == result) /* Should always be E_OK_AND_SCHEDULE */
-        {
-          /* terminate the running task */
-          tpl_terminate();
-          /* start the highest priority task */
-          tpl_start();
-          /* task switching should occur */
-          tpl_kern.need_switch = NEED_SWITCH;
-# if WITH_SYSTEM_CALL == NO
-          if (tpl_kern.need_switch != NO_NEED_SWITCH)
-          {
-            tpl_switch_context(NULL, &(tpl_kern.s_running->context));
-          }
-# endif
-        }
-        else
-        {
-          /* the activate count is restored since the caller does not terminate */
-          tpl_kern.running->activate_count++;
-        }
-      }
-      else
+        result = tpl_activate_task(tpl_app_table[app_id]->restart);
+      }  
+
+      /* if running task is part of terminating application, it must be killed */
+      if (TPL_KERN_REF.s_running->app_id == app_id)
       {
-        /* terminate the running task */
+        TPL_KERN_REF.running->activate_count--;
         tpl_terminate();
-        /* start the highest priority task */
-        tpl_start();
-        /* task switching should occur */
-        tpl_kern.need_switch = NEED_SWITCH;
-# if WITH_SYSTEM_CALL == NO
-        if (tpl_kern.need_switch != NO_NEED_SWITCH)
-        {
-          tpl_switch_context(NULL, &(tpl_kern.s_running->context));
-        }
-# endif
+        tpl_start(CORE_ID_OR_NOTHING);
+        TPL_KERN_REF.need_switch = NEED_SWITCH;
       }
+      else if (result == (tpl_status)E_OK_AND_SCHEDULE)
+      {
+        tpl_schedule_from_running();
+      }
+
+# if WITH_SYSTEM_CALL == NO
+      if (TPL_KERN_REF.need_switch != NO_NEED_SWITCH)
+      {
+        TPL_KERN_REF.need_switch = NO_NEED_SWITCH;
+        tpl_switch_context(NULL, &(TPL_KERN_REF.s_running->context));
+      }
+# endif
+
     }
     else
     {
@@ -407,7 +415,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(uint8 restart_opt)
   }
   else
   {
-   result = E_OS_VALUE;  
+   result = E_OS_VALUE;
   }
   IF_NO_EXTENDED_ERROR_END()
 #else
@@ -416,14 +424,125 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(uint8 restart_opt)
   result = E_OS_CALLEVEL;
   IF_NO_EXTENDED_ERROR_END()
 #endif
-	
+
   PROCESS_ERROR(result)
 
   /*  unlock the kernel  */
   UNLOCK_KERNEL()
-  
+
   return result;
 }
+
+
+/**
+ *  Allow other OsApplication to access an OsApplication after restarting
+ *
+ *  @retval   E_OK
+ *  @retval   E_OS_STATE called from an OsApplication which state is not APPLICATION_RESTARTING
+ */
+FUNC(tpl_status, OS_CODE) tpl_allow_access_service(void)
+{
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
+  VAR(tpl_app_id, AUTOMATIC) app_id;
+  VAR(tpl_app_state, AUTOMATIC) app_state;
+
+  LOCK_KERNEL()
+
+  /* check interrupts are not disabled by user */
+  CHECK_INTERRUPT_LOCK(result)
+
+  /* store information for error hook routine */
+  STORE_SERVICE(OSServiceId_AllowAccess)
+
+  IF_NO_EXTENDED_ERROR(result)
+
+  app_id = TPL_KERN_REF.s_running->app_id;
+
+  if (app_id < APP_COUNT)
+  {
+    app_state = tpl_app_dyn_table[app_id].state;
+    if(app_state == APPLICATION_RESTARTING)
+    {
+      tpl_app_dyn_table[app_id].state = APPLICATION_ACCESSIBLE;
+    }
+    else
+    {
+      result = E_OS_STATE;
+    }
+  }
+  else
+  {
+    result = E_OS_VALUE;
+  }
+
+  IF_NO_EXTENDED_ERROR_END()
+
+  PROCESS_ERROR(result)
+
+  /*  unlock the kernel  */
+  UNLOCK_KERNEL()
+
+  return result;
+}
+
+
+/**
+ *  Allow other OsApplication to access an OsApplication after restarting
+ *
+ *  @retval   E_OK
+ *  @retval   E_OS_STATE called from an OsApplication which state is not APPLICATION_RESTARTING
+ */
+FUNC(tpl_status, OS_CODE) tpl_get_application_state_service(
+  VAR(tpl_app_id, AUTOMATIC) app_id,
+  P2VAR(tpl_app_state, AUTOMATIC, OS_VAR) app_state)
+{
+  VAR(tpl_status, AUTOMATIC) result = E_OK;
+
+  LOCK_KERNEL()
+
+  /* check interrupts are not disabled by user */
+  CHECK_INTERRUPT_LOCK(result)
+
+  /* store information for error hook routine */
+  STORE_SERVICE(OSServiceId_GetApplicationState)
+
+  STORE_APPLICATION_ID(app_id)
+
+  IF_NO_EXTENDED_ERROR(result)
+
+  if (app_id < APP_COUNT)
+  {
+    *app_state = tpl_app_dyn_table[app_id].state;
+  }
+  else
+  {
+    result = E_OS_ID;
+  }
+
+  IF_NO_EXTENDED_ERROR_END()
+
+  PROCESS_ERROR(result)
+
+  /*  unlock the kernel  */
+  UNLOCK_KERNEL()
+
+  return result;
+}
+
+
+/**
+ * Starts all OsApplications
+ */
+FUNC(void, OS_CODE) tpl_start_apps(void)
+{
+  VAR(tpl_app_id, AUTOMATIC) i;
+
+  for(i=0; i<APP_COUNT; i++)
+  {
+    tpl_app_dyn_table[i].state = APPLICATION_ACCESSIBLE;
+  }
+}
+
 
 #if 1 == 0
 #if APP_COUNT > 0
@@ -438,7 +557,7 @@ FUNC(void, OS_CODE) tpl_osapp_startup_hooks(void)
    * Without memory protection, it is simply function calls
    */
   VAR(int, AUTOMATIC) i;
-  
+
   for (i=0; i<APP_COUNT; i++)
   {
     tpl_application_hook hook = tpl_app_table[i]->startup_hook;
@@ -459,7 +578,7 @@ FUNC(void, OS_CODE) tpl_osapp_shutdown_hooks(void)
    * Without memory protection, it is simply function calls
    */
   VAR(int, AUTOMATIC) i;
-  
+
   for (i=0; i<APP_COUNT; i++)
   {
     tpl_application_hook hook = tpl_app_table[i]->shutdown_hook;
@@ -467,7 +586,7 @@ FUNC(void, OS_CODE) tpl_osapp_shutdown_hooks(void)
     {
       hook();
     }
-  }  
+  }
 }
 #  endif /* WITH_MEMORY_PROTECTION == NO */
 #endif /* APP_COUNT > 0 */
