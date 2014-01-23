@@ -77,11 +77,11 @@ static void test_t1_instance1(void)
 	SCHEDULING_CHECK_AND_EQUAL_INT(6, E_OK, result_inst_5);
 	
 	SCHEDULING_CHECK_INIT(7);
-	result_inst_6 = TerminateApplication(INVALID_RESTART);
+	result_inst_6 = TerminateApplication(app1, INVALID_RESTART);
 	SCHEDULING_CHECK_AND_EQUAL_INT(8, E_OS_VALUE, result_inst_6);
 	
 	SCHEDULING_CHECK_INIT(9);
-	result_inst_7 = TerminateApplication(RESTART); 
+	result_inst_7 = TerminateApplication(app1, RESTART); 
 	SCHEDULING_CHECK_AND_EQUAL_INT(90, E_OK, result_inst_7);
 	
 			

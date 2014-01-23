@@ -118,7 +118,7 @@ static void test_t1_instance(void)
 	SCHEDULING_CHECK_AND_EQUAL_INT(31, E_OS_DISABLEDINT, result_inst_11);
 	
 	SCHEDULING_CHECK_INIT(32);
-	result_inst_12 = TerminateApplication(NO_RESTART);
+	result_inst_12 = TerminateApplication(app1, NO_RESTART);
 	SCHEDULING_CHECK_AND_EQUAL_INT(33, E_OS_DISABLEDINT, result_inst_12);
 
 	SCHEDULING_CHECK_STEP(34);	
