@@ -69,7 +69,7 @@ static void test_t1_instance2(void)
 	SCHEDULING_CHECK_AND_EQUAL_INT(13, E_OS_NOFUNC, result_inst_3);
 	
 	SCHEDULING_CHECK_INIT(14);
-	result_inst_4 = TerminateApplication(NO_RESTART); 
+	result_inst_4 = TerminateApplication(app1, NO_RESTART); 
 	SCHEDULING_CHECK_AND_EQUAL_INT(140, E_OK, result_inst_4);
 			
 }
