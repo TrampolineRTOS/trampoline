@@ -60,6 +60,6 @@ include $(LIBPM_DIRECTORY_PATH)/included_makefiles/msys_on_win32.mak
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-include $(LIBPM_DIRECTORY_PATH)/included_makefiles/generic_makefile.mak
+include $(LIBPM_DIRECTORY_PATH)/included_makefiles/generic-makefile-wo-download.mak
 
 #---------------------------------------------------------------------------*

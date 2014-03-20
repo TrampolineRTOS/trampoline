@@ -1,42 +1,42 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  Generic String Command Line Interface Option                             *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
-//  Copyright (C) 2009, ..., 2010 Pierre Molinaro.                           *
-//                                                                           *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//                                                                           *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
-//  ECN, Ecole Centrale de Nantes (France)                                   *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
+//  Copyright (C) 2009, ..., 2010 Pierre Molinaro.                             *
+//                                                                             *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//                                                                             *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
+//  ECN, École Centrale de Nantes (France)                                     *
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #include <string.h>
 #include <stdio.h>
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include "command_line_interface/C_StringCommandLineOption.h"
 #include "utilities/C_PrologueEpilogue.h"
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 static C_StringCommandLineOption * gFirst ;
 static C_StringCommandLineOption * gLast ;
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_StringCommandLineOption::C_StringCommandLineOption (const char * inDomainName,
                                                       const char * inIdentifier,
@@ -56,7 +56,7 @@ mDefaultValue (inDefaultValue) {
   gLast = this ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_StringCommandLineOption::
 setStringOptionForCommandChar (const char * inCommandString,
@@ -79,7 +79,7 @@ setStringOptionForCommandChar (const char * inCommandString,
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_StringCommandLineOption::
 setStringOptionForCommandString (const char * inCommandString,
@@ -115,7 +115,7 @@ setStringOptionForCommandString (const char * inCommandString,
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_StringCommandLineOption::
 printUsageOfStringOptions (void) {
@@ -133,7 +133,7 @@ printUsageOfStringOptions (void) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_StringCommandLineOption::printStringOptions (const PMUInt32 inDisplayLength) {
   C_StringCommandLineOption * p = gFirst ;
@@ -171,7 +171,7 @@ void C_StringCommandLineOption::printStringOptions (const PMUInt32 inDisplayLeng
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_StringCommandLineOption::releaseStrings (void) {
   C_StringCommandLineOption * p = gFirst ;
@@ -181,11 +181,11 @@ void C_StringCommandLineOption::releaseStrings (void) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_PrologueEpilogue gReleaseString (NULL, C_StringCommandLineOption::releaseStrings) ;
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_StringCommandLineOption::getStringOptionNameList (TC_UniqueArray <C_String> & outArray) {
   C_StringCommandLineOption * p = gFirst ;
@@ -196,7 +196,7 @@ void C_StringCommandLineOption::getStringOptionNameList (TC_UniqueArray <C_Strin
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 utf32 C_StringCommandLineOption::getStringOptionInvocationLetter (const C_String & inDomainName,
                                                        const C_String & inIdentifier) {
@@ -211,7 +211,7 @@ utf32 C_StringCommandLineOption::getStringOptionInvocationLetter (const C_String
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_String C_StringCommandLineOption::getStringOptionInvocationString (const C_String & inDomainName,
                                                        const C_String & inIdentifier) {
@@ -226,7 +226,7 @@ C_String C_StringCommandLineOption::getStringOptionInvocationString (const C_Str
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_String C_StringCommandLineOption::getStringOptionCommentString (const C_String & inDomainName,
                                                        const C_String & inIdentifier) {
@@ -241,4 +241,4 @@ C_String C_StringCommandLineOption::getStringOptionCommentString (const C_String
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*

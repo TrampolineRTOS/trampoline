@@ -1,49 +1,49 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  Declaration and implementation of the template class                     *
 //  'TC_AVL_TreeForCollision'                                                *
-//                                                                           *
+//                                                                             *
 //  This class implements a generic ordered binary AVL tree for hash map     *
 //  table collision.                                                         *
-//                                                                           *
+//                                                                             *
 //  COPY OF ITS INSTANCES IS FORBIDDEN BY REDEFINITION OF COPY CONSTRUCTOR   *
 //  AND ASSIGNMENT OPERATOR.                                                 *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
 //  Copyright (C) 2001 Pierre Molinaro.                                      *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
 //  ECN, Ecole Centrale de Nantes                                            *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #ifndef TEMPLATE_CLASS_AVLTREE_FOR_COLLISION_RESOLUTION_DEFINED
 #define TEMPLATE_CLASS_AVLTREE_FOR_COLLISION_RESOLUTION_DEFINED
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include <stddef.h>
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include "collections/TF_AVL_Tree.h"
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Class of avl trees                                                  *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 class TC_AVL_TreeForCollision {
@@ -123,33 +123,33 @@ class TC_AVL_TreeForCollision {
                                       const PMSInt32 inIndentation)  ;
 } ;
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Constructor for avl tree                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 TC_AVL_TreeForCollision<INFO>::TC_AVL_TreeForCollision (void) {
   mRoot = (TC_avltree_element *) NULL ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Destructor for avl tree                                             *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 TC_AVL_TreeForCollision<INFO>::~TC_AVL_TreeForCollision (void) {
   delete mRoot ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Search and insert if not found                                      *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 void TC_AVL_TreeForCollision<INFO>::printNodes (TC_avltree_element * inRootPtr,
@@ -167,7 +167,7 @@ void TC_AVL_TreeForCollision<INFO>::printNodes (TC_avltree_element * inRootPtr,
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 INFO * TC_AVL_TreeForCollision<INFO>::search_or_insert (const INFO & inInfo,
@@ -182,11 +182,11 @@ INFO * TC_AVL_TreeForCollision<INFO>::search_or_insert (const INFO & inInfo,
   return result ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Sweep unmarked objects                                              *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 PMUInt32 TC_AVL_TreeForCollision<INFO>::internalRecursiveSweep (TC_avltree_element * inElement) {
@@ -210,7 +210,7 @@ PMUInt32 TC_AVL_TreeForCollision<INFO>::internalRecursiveSweep (TC_avltree_eleme
   return sweepedNodes ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 PMUInt32 TC_AVL_TreeForCollision<INFO>::sweepUnmarkedObjects (void) {
@@ -219,7 +219,7 @@ PMUInt32 TC_AVL_TreeForCollision<INFO>::sweepUnmarkedObjects (void) {
   return internalRecursiveSweep (temporaryRoot) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 void TC_AVL_TreeForCollision<INFO>::internalRecursiveUnmark (TC_avltree_element * inElement) {
@@ -230,18 +230,18 @@ void TC_AVL_TreeForCollision<INFO>::internalRecursiveUnmark (TC_avltree_element 
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 void TC_AVL_TreeForCollision<INFO>::unmarkAllObjects (void) {
   internalRecursiveUnmark (mRoot) ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Tranfert objects in a new map array                                 *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 void TC_AVL_TreeForCollision<INFO>
@@ -261,7 +261,7 @@ void TC_AVL_TreeForCollision<INFO>
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 void TC_AVL_TreeForCollision<INFO>
@@ -271,6 +271,6 @@ void TC_AVL_TreeForCollision<INFO>
   mRoot = (TC_avltree_element *) NULL ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #endif

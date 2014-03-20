@@ -1,39 +1,39 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 // Declaration and implementation of the template class 'TC_UniqueFixedSizeArray'*
-//                                                                           *
+//                                                                             *
 //  It implements a generic fixed size vector.                               *
-//                                                                           *
+//                                                                             *
 //  COPY OF ITS INSTANCES IS NOT ALLOWED.                                    *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
 //  Copyright (C) 1997-2002 Pierre Molinaro.                                 *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
 //  ECN, Ecole Centrale de Nantes                                            *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #ifndef UNIQUE_FIXED_ARRAY_TEMPLATE_CLASS_DEFINED
 #define UNIQUE_FIXED_ARRAY_TEMPLATE_CLASS_DEFINED
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include "MF_Assert.h"
 #include "TF_exchange.h"
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class TYPE, PMSInt32 SIZE> class TC_UniqueFixedSizeArray {
 //--- Destructor  
@@ -72,17 +72,17 @@ template <class TYPE, PMSInt32 SIZE> class TC_UniqueFixedSizeArray {
   private : TYPE mFixedArray [SIZE] ;
 } ;
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //                 Implementation                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class TYPE, PMSInt32 SIZE>
 TC_UniqueFixedSizeArray<TYPE, SIZE>::~TC_UniqueFixedSizeArray (void) {
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS 
   template <class TYPE, PMSInt32 SIZE>
@@ -93,7 +93,7 @@ TC_UniqueFixedSizeArray<TYPE, SIZE>::~TC_UniqueFixedSizeArray (void) {
   }
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   template <class TYPE, PMSInt32 SIZE>
@@ -104,7 +104,7 @@ TC_UniqueFixedSizeArray<TYPE, SIZE>::~TC_UniqueFixedSizeArray (void) {
   }
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class TYPE, PMSInt32 SIZE>
 void TC_UniqueFixedSizeArray <TYPE, SIZE>::exchangeItemAtIndex (const PMSInt32 inIndex,
@@ -124,6 +124,6 @@ void exchange (TC_UniqueFixedSizeArray <TYPE, SIZE> & ioOperand1,
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #endif

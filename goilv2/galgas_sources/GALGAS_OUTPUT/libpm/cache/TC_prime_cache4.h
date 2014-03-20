@@ -1,44 +1,44 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //     C++ template class for implementing a software cache                  *
 //                        (size : a prime integer)                           *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
-//  Copyright (C) 2001, ..., 2005 Pierre Molinaro.                           *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
-//  ECN, Ecole Centrale de Nantes (France)                                   *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
+//  Copyright (C) 2001, ..., 2005 Pierre Molinaro.                             *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
+//  ECN, École Centrale de Nantes (France)                                     *
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #ifndef CLASS_TEMPLATE_PRIME_CACHE4_DEFINED
 #define CLASS_TEMPLATE_PRIME_CACHE4_DEFINED
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include "F_GetPrime.h"
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include <math.h>
 #include <cmath>
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Template for implementing three-operands cache                      *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class RESULT>
 class TC_prime_cache4 {
@@ -132,7 +132,7 @@ class TC_prime_cache4 {
   private : TC_prime_cache4 <RESULT> & operator = (TC_prime_cache4 <RESULT> &) ;
 } ;
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class RESULT>
 TC_prime_cache4 <RESULT>::TC_prime_cache4 (const PMSInt32 inDefaultValueForOperand1,
@@ -152,14 +152,14 @@ cmDefaultValueForOperand1 (inDefaultValueForOperand1) {
   clearAllCacheEntries () ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class RESULT>
 TC_prime_cache4 <RESULT>::~TC_prime_cache4 (void) {
   delete [] mCache ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class RESULT>
 void TC_prime_cache4 <RESULT>::reallocCache (const PMSInt32 inCacheSize) {
@@ -206,7 +206,7 @@ void TC_prime_cache4 <RESULT>::reallocCache (const PMSInt32 inCacheSize) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class RESULT>
 void TC_prime_cache4 <RESULT>::getCacheEntry (const PMSInt32 inOperand1,
@@ -234,7 +234,7 @@ void TC_prime_cache4 <RESULT>::getCacheEntry (const PMSInt32 inOperand1,
   outResult = mCache [outHashCode].mResult ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class RESULT>
 void TC_prime_cache4 <RESULT>::writeCacheEntry (const PMSInt32 inOperand1,
@@ -255,7 +255,7 @@ void TC_prime_cache4 <RESULT>::writeCacheEntry (const PMSInt32 inOperand1,
   mCache [inHashCode].mResult = inResult ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class RESULT>
 void TC_prime_cache4 <RESULT>::clearAllCacheEntries (void) {
@@ -264,6 +264,6 @@ void TC_prime_cache4 <RESULT>::clearAllCacheEntries (void) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #endif

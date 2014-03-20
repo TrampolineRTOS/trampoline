@@ -1,59 +1,59 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //            Template routines for managing AVL trees                       *
-//                                                                           *
+//                                                                             *
 //  References :                                                             *
 //  Niklaus Wirth, "Algorithms + Data Structures = Programs",                *
 //  Prentice-Hall Eds, Series in Automatic Computations,                     *
 //  1976, pages 215-225                                                      *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
 //  Copyright (C) 2001 Pierre Molinaro.                                      *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
-//  ECN, Ecole Centrale de Nantes (France)                                   *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
+//  ECN, École Centrale de Nantes (France)                                     *
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #ifndef AVLTREE_TEMPLATE_ROUTINES_DEFINED
 #define AVLTREE_TEMPLATE_ROUTINES_DEFINED
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //      An ELEMENT class must have the following members :                   *
 //        INFO mInfo                                                         *
 //        ELEMENT * mPtrToInf                                                *
 //        ELEMENT * mPtrToSup                                                *
 //        PMSInt8 mBalance  (can also be declared as PMSInt16 or PMSInt32)         *
-//                                                                           *
+//                                                                             *
 //     An ELEMENT class must have the following constructor :                *
 //        ELEMENT (const INFO & inInfo) ;                                    *
-//                                                                           *
+//                                                                             *
 //     An INFO class must have the following method :                        *
 //        PMSInt32 compare (const INFO & inInfo) ;                             *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #include <stdlib.h>
 #include <stdio.h>
 #include "utilities/M_machine.h"
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Rotate left                                                         *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class ELEMENT>
 inline void rotateLeft (ELEMENT * & ioPtr) {
@@ -73,11 +73,11 @@ inline void rotateLeft (ELEMENT * & ioPtr) {
   ioPtr = ptr ;
 } 
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Rotate right                                                        *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class ELEMENT>
 inline void rotateRight (ELEMENT * & ioPtr) {
@@ -97,11 +97,11 @@ inline void rotateRight (ELEMENT * & ioPtr) {
   ioPtr = ptr ;
 }
  
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Recursive search and insert                                         *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class ELEMENT, class INFO>
 INFO * TF_avltree_search (ELEMENT * ioRootPointer,
@@ -122,11 +122,11 @@ INFO * TF_avltree_search (ELEMENT * ioRootPointer,
   return result ;
 }
  
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Recursive search and insert                                         *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class ELEMENT, class INFO>
 INFO * recursiveSearchOrInsert (ELEMENT * & ioRootPointer,
@@ -192,7 +192,7 @@ INFO * recursiveSearchOrInsert (ELEMENT * & ioRootPointer,
   return result ;
 }
  
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class ELEMENT, class ARG1, class ARG2, class ARG3>
 ELEMENT * recursiveSearchOrInsert3 (ELEMENT * & ioRootPointer,
@@ -262,7 +262,7 @@ ELEMENT * recursiveSearchOrInsert3 (ELEMENT * & ioRootPointer,
   return result ;
 }
  
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class ELEMENT, class INFO, class ARG1, class ARG2, class ARG3>
 INFO * recursiveSearchOrInsertInfo3 (ELEMENT * & ioRootPointer,
@@ -332,11 +332,11 @@ INFO * recursiveSearchOrInsertInfo3 (ELEMENT * & ioRootPointer,
   return result ;
 }
  
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Recursive search and insert                                         *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class ELEMENT>
 void recursiveInsertElementWithInfo (ELEMENT * & ioRootPointer,
@@ -401,7 +401,7 @@ void recursiveInsertElementWithInfo (ELEMENT * & ioRootPointer,
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class ELEMENT>
 void recursiveInsertElement (ELEMENT * & ioRootPointer,
@@ -466,11 +466,11 @@ void recursiveInsertElement (ELEMENT * & ioRootPointer,
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Verify an AVL tree                                                  *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class ELEMENT, class INFO>
 bool recursiveVerifyAVLtree (const ELEMENT * inPointer,
@@ -535,7 +535,7 @@ bool recursiveVerifyAVLtree (const ELEMENT * const inPointer,
   return ok ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class ELEMENT, class INFO>
 bool verifyAVLtree (const ELEMENT * inRootPointer,
@@ -551,6 +551,6 @@ bool verifyAVLtree (const ELEMENT * inRootPointer,
                                  inOutputFile) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #endif

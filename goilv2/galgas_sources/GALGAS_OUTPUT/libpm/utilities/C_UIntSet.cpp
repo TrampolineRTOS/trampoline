@@ -1,44 +1,44 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  C_UIntSet : algorithms on sets of PMUInt32                               *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
-//  Copyright (C) 2013, ..., 2013 Pierre Molinaro.                           *
-//                                                                           *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//                                                                           *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
-//  ECN, Ecole Centrale de Nantes (France)                                   *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
+//  Copyright (C) 2013, ..., 2013 Pierre Molinaro.                             *
+//                                                                             *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//                                                                             *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
+//  ECN, École Centrale de Nantes (France)                                     *
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #include "utilities/C_UIntSet.h"
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_UIntSet::C_UIntSet (void) :
 mDefinition () {
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_UIntSet::C_UIntSet (const PMUInt32 inValue) :
 mDefinition () {
   add (inValue) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_UIntSet::add (const PMUInt32 inNodeIndex) {
   const PMSInt32 idx = (PMSInt32) (inNodeIndex >> 6) ;
@@ -48,7 +48,7 @@ void C_UIntSet::add (const PMUInt32 inNodeIndex) {
   mDefinition (idx COMMA_HERE) |= ((PMUInt64) 1) << (inNodeIndex & 63) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_UIntSet::remove (const PMUInt32 inNodeIndex) {
   const PMSInt32 idx = (PMSInt32) (inNodeIndex >> 6) ;
@@ -60,7 +60,7 @@ void C_UIntSet::remove (const PMUInt32 inNodeIndex) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_UIntSet::getBoolValueArray (TC_UniqueArray <bool> & outBoolValueArray) const {
   outBoolValueArray.setCountToZero () ;
@@ -75,7 +75,7 @@ void C_UIntSet::getBoolValueArray (TC_UniqueArray <bool> & outBoolValueArray) co
   }
 }
   
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_UIntSet::getValueArray (TC_UniqueArray <PMUInt32> & outValueArray) const {
   outValueArray.setCountToZero () ;
@@ -91,7 +91,7 @@ void C_UIntSet::getValueArray (TC_UniqueArray <PMUInt32> & outValueArray) const 
   }
 }
   
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 bool C_UIntSet::contains (const PMUInt32 inNodeIndex) const {
   const PMSInt32 idx = (PMSInt32) (inNodeIndex >> 6) ;
@@ -102,7 +102,7 @@ bool C_UIntSet::contains (const PMUInt32 inNodeIndex) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 PMUInt32 C_UIntSet::firstValueNotIsSet (void) const {
   PMUInt32 result = 0 ;
@@ -117,7 +117,7 @@ PMUInt32 C_UIntSet::firstValueNotIsSet (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 PMUInt32 C_UIntSet::count (void) const {
   PMUInt32 result = 0 ;
@@ -131,7 +131,7 @@ PMUInt32 C_UIntSet::count (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_UIntSet::operator &= (const C_UIntSet & inOther) {
   while (mDefinition.count () > inOther.mDefinition.count ()) {
@@ -145,7 +145,7 @@ void C_UIntSet::operator &= (const C_UIntSet & inOther) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_UIntSet::operator |= (const C_UIntSet & inOther) {
   while (mDefinition.count () < inOther.mDefinition.count ()) {
@@ -156,13 +156,13 @@ void C_UIntSet::operator |= (const C_UIntSet & inOther) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 static inline PMSInt32 minSInt32 (const PMSInt32 inA, const PMSInt32 inB) {
   return (inA < inB) ? inA : inB ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_UIntSet::operator -= (const C_UIntSet & inOther) {
   const PMSInt32 n = minSInt32 (mDefinition.count (), inOther.mDefinition.count ()) ;
@@ -174,7 +174,7 @@ void C_UIntSet::operator -= (const C_UIntSet & inOther) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 bool C_UIntSet::operator == (const C_UIntSet & inOther) const {
   bool result = mDefinition.count () == inOther.mDefinition.count () ;
@@ -184,10 +184,10 @@ bool C_UIntSet::operator == (const C_UIntSet & inOther) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 bool C_UIntSet::operator != (const C_UIntSet & inOther) const {
   return ! (*this == inOther) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*

@@ -1,27 +1,27 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  'C_Lexique' : an abstract lexique class ;                                *
 //  Galgas generated scanner classes inherit from this class.                *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
-//  Copyright (C) 1996, ..., 2011 Pierre Molinaro.                           *
-//                                                                           *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
-//  ECN, Ecole Centrale de Nantes (France)                                   *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
+//  Copyright (C) 1996, ..., 2011 Pierre Molinaro.                             *
+//                                                                             *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
+//  ECN, École Centrale de Nantes (France)                                     *
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #include "galgas2/C_Lexique.h"
 #include "galgas2/predefined-types.h"
@@ -33,14 +33,14 @@
 #include "galgas2/cIndexingDictionary.h"
 #include "files/C_FileManager.h"
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <ctype.h>
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define LINE_AND_SOURCE_FILE , sourceText ()->sourceFilePath ().cString (HERE), lineNumber ()
@@ -48,7 +48,7 @@
   #define LINE_AND_SOURCE_FILE 
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 cTemplateDelimiter::
 cTemplateDelimiter (const utf32 * inStartString,
@@ -65,7 +65,7 @@ mReplacementFunction (inReplacementFunction),
 mDiscardStartString (inDiscardStartString) {
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 cTemplateDelimiter::
 cTemplateDelimiter (const cTemplateDelimiter & inOperand) :
@@ -77,13 +77,13 @@ mReplacementFunction (inOperand.mReplacementFunction),
 mDiscardStartString (inOperand.mDiscardStartString) {
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Constructors, Destructor
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_Lexique::C_Lexique (C_Compiler * inCallerCompiler,
                       const C_String & inDependencyFileExtension,
@@ -139,7 +139,7 @@ mIndexForSecondPassParsing (0) {
   mCurrentChar = (sourceText () == NULL) ? TO_UNICODE ('\0') : sourceText ()->readCharOrNul (0 COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_Lexique::C_Lexique (C_Compiler * inCallerCompiler,
                       const C_String & inSourceString,
@@ -173,7 +173,7 @@ mIndexForSecondPassParsing (0) {
   mCurrentChar = (sourceText () == NULL) ? TO_UNICODE ('\0') : sourceText ()->readCharOrNul (0 COMMA_HERE) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_Lexique::~C_Lexique (void) {
   macroMyDelete (mIndexingDictionary) ;
@@ -186,13 +186,13 @@ C_Lexique::~C_Lexique (void) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Scanner configuration
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::enterTokenFromPointer (cToken * inToken) {
   macroValidPointer (inToken) ;
@@ -225,7 +225,7 @@ void C_Lexique::enterTokenFromPointer (cToken * inToken) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::resetForSecondPass (void) {
   mCurrentLocation.resetWithSourceText (sourceText ()) ;
@@ -240,13 +240,13 @@ void C_Lexique::resetForSecondPass (void) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Template Delimiter Scanning
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 PMSInt32 C_Lexique::findTemplateDelimiterIndex (const cTemplateDelimiter inTemplateDelimiterArray [],
                                                 const PMSInt32 inTemplateDelimiterArrayLength) {
@@ -266,17 +266,17 @@ PMSInt32 C_Lexique::findTemplateDelimiterIndex (const cTemplateDelimiter inTempl
   return templateIndex ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Lexical Analysis
 #endif
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   performLexicalAnalysis                                                  *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::performLexicalAnalysis (void) {
   if (executionModeIsLexicalAnalysisOnly ()) {
@@ -291,11 +291,11 @@ void C_Lexique::performLexicalAnalysis (void) {
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //        Methods for scanning                                               *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::advance (void) {
  // printf ("START ADVANCE\n") ;
@@ -312,7 +312,7 @@ void C_Lexique::advance (void) {
   // printf ("END ADVANCE\n") ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::advance (const PMSInt32 inCount) {
   for (PMSInt32 i=0 ; i<inCount ; i++) {
@@ -320,7 +320,7 @@ void C_Lexique::advance (const PMSInt32 inCount) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 bool C_Lexique::testForInputUTF32CharRange (const utf32 inLowBound,
                                             const utf32 inHighBound) {
@@ -332,7 +332,7 @@ bool C_Lexique::testForInputUTF32CharRange (const utf32 inLowBound,
   return ok ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 bool C_Lexique::testForInputUTF32Char (const utf32 inChar) {
   const bool ok = UNICODE_VALUE (inChar) == UNICODE_VALUE (mCurrentChar) ;
@@ -342,7 +342,7 @@ bool C_Lexique::testForInputUTF32Char (const utf32 inChar) {
   return ok ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 bool C_Lexique::testForCharWithFunction (bool (*inFunction) (const utf32 inUnicodeCharacter)) {
   const bool ok = inFunction (mCurrentChar) ;
@@ -352,7 +352,7 @@ bool C_Lexique::testForCharWithFunction (bool (*inFunction) (const utf32 inUnico
   return ok ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 bool C_Lexique::testForInputUTF32String (const utf32 * inTestCstring,
                                          const PMSInt32 inStringLength,
@@ -372,7 +372,7 @@ bool C_Lexique::testForInputUTF32String (const utf32 * inTestCstring,
   return ok ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 bool C_Lexique::notTestForInputUTF32String (const utf32 * inTestCstring,
                                             const PMSInt32 inStringLength,
@@ -398,7 +398,7 @@ bool C_Lexique::notTestForInputUTF32String (const utf32 * inTestCstring,
   return ok ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::lexicalLog (LOCATION_ARGS) {
   C_String message ;
@@ -408,12 +408,12 @@ void C_Lexique::lexicalLog (LOCATION_ARGS) {
   printMessage (message COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //                     Search in an ordered list                             *
 //          (used for searching into scanner generated tables)               *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 PMSInt16 C_Lexique::searchInList (const C_String & inString,
                                   const C_unicode_lexique_table_entry inTable [],
@@ -440,13 +440,13 @@ PMSInt16 C_Lexique::searchInList (const C_String & inString,
   return code ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Handling an error
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::internalBottomUpParserError (LOCATION_ARGS) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -457,11 +457,11 @@ void C_Lexique::internalBottomUpParserError (LOCATION_ARGS) {
   exit (1) ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //           Lexical error                                                   *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::unknownCharacterLexicalError (LOCATION_ARGS) {
   C_String errorMessage ;
@@ -469,7 +469,7 @@ void C_Lexique::unknownCharacterLexicalError (LOCATION_ARGS) {
   lexicalError (errorMessage COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::lexicalError (const C_String & inLexicalErrorMessage
                               COMMA_LOCATION_ARGS) {
@@ -480,7 +480,7 @@ void C_Lexique::lexicalError (const C_String & inLexicalErrorMessage
   throw C_lexicalErrorException () ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::lexicalErrorAtLocation (const C_String & inLexicalErrorMessage,
                                         const C_LocationInSource & inErrorLocation
@@ -492,11 +492,11 @@ void C_Lexique::lexicalErrorAtLocation (const C_String & inLexicalErrorMessage,
   throw C_lexicalErrorException () ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //                Signaler une erreur syntaxique                             *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::parsingError (const TC_UniqueArray <PMSInt16> & inExpectedTerminalsArray,
                               const PMSInt16 inCurrentTokenCode
@@ -519,13 +519,13 @@ void C_Lexique::parsingError (const TC_UniqueArray <PMSInt16> & inExpectedTermin
                       COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Scanner warning
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::lexicalWarning (const C_String & inLexicalWarningMessage
                                 COMMA_LOCATION_ARGS) {
@@ -535,21 +535,21 @@ void C_Lexique::lexicalWarning (const C_String & inLexicalWarningMessage
                         COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Top-down parsing
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 //#define TRACE_LL1_PARSING
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Test if a terminal symbol can be accepted in current context            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 bool C_Lexique::acceptTerminalForErrorSignaling (const PMSInt16 inTerminal,
                                                  const PMSInt16 inProductions [],
@@ -652,11 +652,11 @@ bool C_Lexique::acceptTerminalForErrorSignaling (const PMSInt16 inTerminal,
   return accept ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Build expected terminals array on syntax error with LL (1) parser       *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::buildExpectedTerminalsArrayOnSyntaxError (const PMSInt16 inErrorProgramCounter,
                                                           const PMSInt32 inErrorStackCount,
@@ -779,11 +779,11 @@ void C_Lexique::buildExpectedTerminalsArrayOnSyntaxError (const PMSInt16 inError
   #endif
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Perform top down parsing (called by LL (1) parser)                      *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 static void indentForParseOnly (const PMSInt32 inIndentation) {
   for (PMSInt32 i=1 ; i<inIndentation ; i++) {
@@ -794,7 +794,7 @@ static void indentForParseOnly (const PMSInt32 inIndentation) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 bool C_Lexique::performTopDownParsing (const PMSInt16 inProductions [],
                                        const cProductionNameDescriptor inProductionNames [],
@@ -1066,18 +1066,18 @@ bool C_Lexique::performTopDownParsing (const PMSInt16 inProductions [],
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Bottom up parsing
 #endif
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Test if a given terminal symbol can be accepted for signaling an error  *
 //          (for bottom-up parsing)                                          *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 static bool acceptExpectedTerminalForBottomUpParsingError (const PMSInt16 inExpectedTerminal,
                                                            const PMSInt16 inExpectedAction,
@@ -1137,15 +1137,15 @@ static bool acceptExpectedTerminalForBottomUpParsingError (const PMSInt16 inExpe
   return accept ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Perform bottom up parsing (called by SLR and LR (1) parsers)            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #define CHECK_NEW_BOTTOM_UP_PARSING_ERROR_HANDLING
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 bool C_Lexique::performBottomUpParsing (const PMSInt16 inActionTable [],
                                         const char * inNonTerminalSymbolNames [],
@@ -1394,17 +1394,17 @@ bool C_Lexique::performBottomUpParsing (const PMSInt16 inActionTable [],
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Second pass methods
 #endif
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //                         Get next production index                         *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 PMSInt16 C_Lexique::nextProductionIndex (void) {
   PMSInt16 result = 0 ;
@@ -1415,11 +1415,11 @@ PMSInt16 C_Lexique::nextProductionIndex (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Accept current token by shifting it                                     *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::acceptTerminal (FORMAL_ARG_ACCEPT_TERMINAL COMMA_LOCATION_ARGS) {
   #ifndef DO_NOT_GENERATE_CHECKINGS
@@ -1452,7 +1452,7 @@ void C_Lexique::acceptTerminal (FORMAL_ARG_ACCEPT_TERMINAL COMMA_LOCATION_ARGS) 
   #endif
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::enterIndexing (const PMUInt32 inIndexingKind) {
   if ((NULL != mIndexingDictionary) && (sourceText ()->sourceFilePath ().length () > 0)) {
@@ -1469,13 +1469,13 @@ void C_Lexique::enterIndexing (const PMUInt32 inIndexingKind) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::enableIndexing (void) {
   macroMyNew (mIndexingDictionary, cIndexingDictionary) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::generateIndexFile (void) {
   if (NULL != mIndexingDictionary) {
@@ -1486,17 +1486,17 @@ void C_Lexique::generateIndexFile (void) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= Handling Parsing context
 #endif
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //Handling parsing context (for parse ... rewind ... end parse ; instruction)*
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 C_parsingContext C_Lexique::parsingContext (void) const {
   C_parsingContext context ;
@@ -1509,7 +1509,7 @@ C_parsingContext C_Lexique::parsingContext (void) const {
   return context ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::setParsingContext (const C_parsingContext & inContext) {
   mIndexForSecondPassParsing = inContext.mParsingArrayIndex ;
@@ -1520,17 +1520,17 @@ void C_Lexique::setParsingContext (const C_parsingContext & inContext) {
   mTemplateString = inContext.mTemplateString ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ========= For Debugging parser
 #endif
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  For Debugging parser                                                     *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::enterProduction (const char * inProductionName,
                                  const char * inLabel,
@@ -1559,7 +1559,7 @@ void C_Lexique::enterProduction (const char * inProductionName,
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::exitProduction (void) {
   if (mDebugIsRunning) {
@@ -1568,7 +1568,7 @@ void C_Lexique::exitProduction (void) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_Lexique::didParseTerminal (const char * inTerminalName,
                                   const C_String & inValue) {
@@ -1586,4 +1586,4 @@ void C_Lexique::didParseTerminal (const char * inTerminalName,
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*

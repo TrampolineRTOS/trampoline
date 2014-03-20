@@ -1,49 +1,49 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   G E N E R I C     A R R A Y                                             *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//-----------------------------------------------------------------------------*
 
 #ifndef GENERIC_ARRAY_IS_DEFINED
 #define GENERIC_ARRAY_IS_DEFINED
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include "collections/TC_UniqueArray.h"
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Template class predeclaration                                           *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE> class TC_Array ;
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   swap function for TC_Array <TYPE> classes                               *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE> void swap (TC_Array <TYPE> & ioOperand1,
                                     TC_Array <TYPE> & ioOperand2) ;
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Template class declaration                                              *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE> class TC_Array : public TC_UniqueArray <TYPE> {
 //--- Default Constructor
@@ -64,22 +64,22 @@ template <typename TYPE> class TC_Array : public TC_UniqueArray <TYPE> {
                            TC_Array <TYPE> & ioOperand2) ;
 } ;
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Default Constructor                                                     *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 TC_Array <TYPE>::TC_Array (void) :
 TC_UniqueArray <TYPE> () {
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Allocation Constructor                                                  *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 TC_Array <TYPE>::
@@ -87,11 +87,11 @@ TC_Array (const int inAllocatedSize COMMA_LOCATION_ARGS) :
 TC_UniqueArray <TYPE> (inAllocatedSize COMMA_THERE) {
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Allocation Constructor                                                  *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 TC_Array <TYPE>::
@@ -99,11 +99,11 @@ TC_Array (const int inAllocatedSize, const TYPE & inValue COMMA_LOCATION_ARGS) :
 TC_UniqueArray <TYPE> (inAllocatedSize, inValue COMMA_THERE) {
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Copy Constructor                                                        *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 TC_Array <TYPE>::TC_Array (const TC_Array <TYPE> & inOperand) :
@@ -118,11 +118,11 @@ TC_UniqueArray <TYPE> () {
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Assignment Operator                                                     *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 TC_Array <TYPE> & TC_Array <TYPE>::operator = (const TC_Array <TYPE> & inOperand) {
@@ -138,11 +138,11 @@ TC_Array <TYPE> & TC_Array <TYPE>::operator = (const TC_Array <TYPE> & inOperand
   return *this ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   swap function for TC_Array <TYPE> classes                               *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void swap (TC_Array <TYPE> & ioOperand1,
@@ -152,6 +152,6 @@ void swap (TC_Array <TYPE> & ioOperand1,
   swap (ioOperand1.mArray, ioOperand2.mArray) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #endif

@@ -1,51 +1,51 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  Declaration and implementation of the template class                     *
 //                   'TC_BlockBinaryTreeForCollision'                        *
-//                                                                           *
+//                                                                             *
 //  This class implements a generic ordered binary AVL tree for hash map     *
 //   collisions.                                                             *
-//                                                                           *
+//                                                                             *
 //  For heap efficiency, element are allocated by blocks.                    *
-//                                                                           *
+//                                                                             *
 //  COPY OF ITS INSTANCES IS FORBIDDEN BY REDEFINITION OF COPY CONSTRUCTOR   *
 //  AND ASSIGNMENT OPERATOR.                                                 *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
 //  Copyright (C) 2001 Pierre Molinaro.                                      *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
 //  ECN, Ecole Centrale de Nantes                                            *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #ifndef TEMPLATE_CLASS_BLOCK_BINARY_TREE_FOR_COLLISION_RESOLUTION_DEFINED
 #define TEMPLATE_CLASS_BLOCK_BINARY_TREE_FOR_COLLISION_RESOLUTION_DEFINED
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 //#include "collections/TF_AVL_Tree.h"
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include <stddef.h>
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Class of avl trees                                                  *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 class TC_BlockBinaryTreeForCollision {
@@ -149,11 +149,11 @@ class TC_BlockBinaryTreeForCollision {
   friend class TC_element ;
 } ;
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Constructor for avl tree                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 void * TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>::TC_element::operator new (const size_t /*inByteSize*/) {
@@ -166,7 +166,7 @@ void * TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>::TC_element::operator ne
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 void TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>::TC_element::operator delete (void * inPtr) {
@@ -186,11 +186,11 @@ void TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>::TC_element::operator dele
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Constructor for avl tree                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 void TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>::allocBlock (void) {
@@ -226,33 +226,33 @@ void TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>::allocBlock (void) {
   smAllocInfo.mCreatedObjectsCount += nbNewObjects ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Constructor for avl tree                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>::TC_BlockBinaryTreeForCollision (void) {
   mRoot = (TC_element *) NULL ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Destructor for avl tree                                             *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>::~TC_BlockBinaryTreeForCollision (void) {
   delete mRoot ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Search and insert if not found                                      *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 INFO * TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>
@@ -279,7 +279,7 @@ INFO * TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>
   return result ;
 }
  
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 INFO * TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>
@@ -288,11 +288,11 @@ INFO * TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>
   return recursiveSearchOrInsert (mRoot, inInfo, outInsertionPerformed) ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Sweep unmarked objects                                              *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 void TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>::
@@ -314,7 +314,7 @@ recursiveInsertElement (TC_element * & ioRootPointer,
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 PMUInt32 TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>
@@ -336,7 +336,7 @@ PMUInt32 TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>
   return sweepedNodes ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 PMUInt32 TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>::sweepUnmarkedObjects (void) {
@@ -345,11 +345,11 @@ PMUInt32 TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>::sweepUnmarkedObjects 
   return internalRecursiveSweep (temporaryRoot) ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Tranfert objects in a new map array                                 *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 void TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>
@@ -366,7 +366,7 @@ void TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 void TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>
@@ -376,7 +376,7 @@ void TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>
   mRoot = (TC_element *) NULL ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 void TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>::internalRecursiveUnmark (TC_element * inElement) {
@@ -387,14 +387,14 @@ void TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>::internalRecursiveUnmark (
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 void TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>::unmarkAllObjects (void) {
   internalRecursiveUnmark (mRoot) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 PMSInt32 TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>::internalMarkedNodeCount (const TC_element * const inElement) const {
@@ -409,13 +409,13 @@ PMSInt32 TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>::internalMarkedNodeCou
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 PMSInt32 TC_BlockBinaryTreeForCollision<INFO, BLOCK_SIZE>::getMarkedNodesCount (void) const {
   return internalMarkedNodeCount (mRoot) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #endif

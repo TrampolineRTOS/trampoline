@@ -1,55 +1,55 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //     BDD package (implementation of ROBDD)                                 *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
-//  Copyright (C) 1999, ..., 2012 Pierre Molinaro.                           *
-//                                                                           *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
-//  ECN, Ecole Centrale de Nantes (France)                                   *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
+//  Copyright (C) 1999, ..., 2012 Pierre Molinaro.                             *
+//                                                                             *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
+//  ECN, École Centrale de Nantes (France)                                     *
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #include "bdd/C_BDD.h"
 #include "bdd/C_Display_BDD.h"
 #include "utilities/TF_sup.h"
 #include "bdd/C_BDD-node.h"
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Display Information Messages
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 static bool gDisplaysInformationMessages ;
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 bool C_BDD::displaysInformationMessages (void) {
   return gDisplaysInformationMessages ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_BDD::setDisplaysInformationMessages (const bool inFlag) {
   gDisplaysInformationMessages = inFlag ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark ITE operation
@@ -64,7 +64,7 @@ PMUInt32 internalITEoperation (const PMUInt32 opf,
                                internalANDoperation (opf ^ 1, oph) ^ 1) ^ 1 ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark BDD operators
@@ -155,7 +155,7 @@ C_BDD C_BDD::operator >= (const C_BDD & inOperand) const {
   return C_BDD (internalANDoperation (mBDDvalue ^ 1, inOperand.mBDDvalue) ^ 1) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Opposite BDD
@@ -181,7 +181,7 @@ C_BDD C_BDD::getOpposite (void) const {
   return C_BDD (internalOpposite (mBDDvalue)) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Compare BDDs
@@ -216,7 +216,7 @@ C_BDD C_BDD::compareWithBDD (const compareEnum inComparison, const C_BDD & inOpe
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Complement BDD
@@ -234,7 +234,7 @@ C_BDD C_BDD::operator ~ (void) const {
   return C_BDD (mBDDvalue ^ 1) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark BDD is complemented
@@ -246,13 +246,13 @@ bool C_BDD::isComplemented (void) const {
   return (mBDDvalue & 1) != 0 ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark BDD with constants
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_BDD C_BDD::bddWithConstants (const PMUInt32 inValues [],
                                const PMUInt32 inBitCount [],
@@ -289,7 +289,7 @@ C_BDD C_BDD::bddWithConstants (const PMUInt32 inValues [],
   return C_BDD (result) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Build BDD from comparison between variables and constant
@@ -372,7 +372,7 @@ C_BDD C_BDD::varCompareConst (const PMUInt32 inFirstIndex,
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Build BDD from comparison between variables
@@ -431,7 +431,7 @@ varCompareVar (const PMUInt32 inLeftFirstIndex,
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Needed Variable Count
@@ -448,7 +448,7 @@ PMUInt32 C_BDD::significantVariableCount (void) const {
   return bitCount ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Test if BDD does contain a value
@@ -586,7 +586,7 @@ bool C_BDD::containsValue (const TC_Array <bool> & inValue,
                                  (PMUInt32) (inFirstBit + inBitCount)) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Traverse BDD values
@@ -660,7 +660,7 @@ void C_BDD::traverseBDDvalues (C_bdd_value_traversing & inTraversing,
   macroMyDeleteArray (tableauDesValeurs) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Build an array of PMUInt64 values
@@ -708,7 +708,7 @@ void C_BDD::buildValue64Array (TC_UniqueArray <PMUInt64> & outValuesArray,
   macroMyDeleteArray (tableauDesValeurs) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Build an array of bool array values
@@ -755,7 +755,7 @@ void C_BDD::buildValueArray (TC_UniqueArray <TC_Array <bool> > & outValuesArray,
   macroMyDeleteArray (tableauDesValeurs) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Build an array of string values
@@ -900,13 +900,13 @@ queryStringValue (LOCATION_ARGS) const {
   return s ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Value Count
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_BDD C_BDD::BDDWithPredicateString (const C_String & inPredicateStringValue
                                      COMMA_LOCATION_ARGS) {
@@ -953,7 +953,7 @@ C_BDD C_BDD::BDDWithPredicateString (const C_String & inPredicateStringValue
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Value Count (64)
@@ -1001,7 +1001,7 @@ PMUInt64 C_BDD::valueCount64 (const PMUInt32 inVariableCount) const {
   return nombreDirect ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Value Count (128)
@@ -1147,7 +1147,7 @@ PMUInt64 C_BDD::valueCount64UsingCache (const PMUInt32 inVariableCount,
   return nombreDirect ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Get i-th value as BDD
@@ -1211,7 +1211,7 @@ C_BDD C_BDD::getNthBDD (const PMUInt64 inNthBDDvalue,
 }
   
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Get i-th value as PMUInt64
@@ -1248,7 +1248,7 @@ PMUInt64 C_BDD::getBDDabsoluteValue (const PMUInt32 inVariableCount) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark BDD range
@@ -1302,7 +1302,7 @@ getBDDrange (const C_BDD & inOperand,
   return rang ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Node Count
@@ -1335,13 +1335,13 @@ PMUInt32 C_BDD::getBDDnodesCount (void) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Boolean array
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 class cBuildArrayForSet : public C_bdd_value_traversing {
 //--- Attributs
@@ -1355,18 +1355,18 @@ class cBuildArrayForSet : public C_bdd_value_traversing {
                                 const PMUInt32 inBDDbitsSize) ;
 } ;
   
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 cBuildArrayForSet::
 cBuildArrayForSet (TC_UniqueArray <bool> & outArray) :
 mArray (outArray) {
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void cBuildArrayForSet::action (const bool inValuesArray [],
                                 const PMUInt32 inBDDbitsSize) {
-  PMSInt32 element = 0L ;
+  PMSInt32 element = 0 ;
   for (PMSInt32 i=((PMSInt32) inBDDbitsSize) - 1 ; i>=0 ; i--) {
     element = (element << 1) + inValuesArray [i] ;
   }
@@ -1386,17 +1386,17 @@ getBoolArray (TC_UniqueArray <bool> & outArray,
   traverseBDDvalues (s, inBitSize) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark BDD as N-relation
 #endif
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   U P D A T E   R E L A T I O N                                           *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 static PMUInt32
 internalRecursiveUpdateRelation (const PMUInt32 inValue,
@@ -1422,7 +1422,7 @@ internalRecursiveUpdateRelation (const PMUInt32 inValue,
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_BDD C_BDD::
 updateRelation (const PMUInt32 inRelationBitNeededCount [], 
@@ -1483,13 +1483,13 @@ updateRelation (const PMUInt32 inRelationBitNeededCount [],
   return C_BDD (result) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark BDD as 2-relation
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_BDD C_BDD::
 swap21 (const PMUInt32 inBitSize1,
@@ -1508,7 +1508,7 @@ swap21 (const PMUInt32 inBitSize1,
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_BDD C_BDD::
 accessibleStates (const C_BDD & inInitialStateSet,
@@ -1536,7 +1536,7 @@ accessibleStates (const C_BDD & inInitialStateSet,
   return accessible ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_BDD C_BDD::
 transitiveClosure (const PMUInt32 inBitSize,
@@ -1562,7 +1562,7 @@ transitiveClosure (const PMUInt32 inBitSize,
   return closure ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 class cBuildArrayForRelation2 : public C_bdd_value_traversing {
 //--- Attributes
@@ -1579,7 +1579,7 @@ class cBuildArrayForRelation2 : public C_bdd_value_traversing {
                                 const PMUInt32 inBDDbitsSize) ;
 } ;
   
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 cBuildArrayForRelation2::
 cBuildArrayForRelation2 (TC_UniqueArray <TC_UniqueArray <PMSInt32> > & outArray,
@@ -1588,13 +1588,12 @@ mArray (outArray),
 mBitsSize1 (inBitsSize1) {
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
-void cBuildArrayForRelation2::
-action (const bool inValuesArray [],
-        const PMUInt32 inBDDbitsSize) {
-  PMSInt32 index1 = 0L ;
-  PMSInt32 index2 = 0L ;
+void cBuildArrayForRelation2::action (const bool inValuesArray [],
+                                      const PMUInt32 inBDDbitsSize) {
+  PMSInt32 index1 = 0 ;
+  PMSInt32 index2 = 0 ;
   for (PMSInt32 i=((PMSInt32) mBitsSize1) - 1 ; i>=0 ; i--) {
     index1 = (index1 << 1) + inValuesArray [i] ;
   }
@@ -1620,7 +1619,7 @@ getArray2 (TC_UniqueArray <TC_UniqueArray <PMSInt32> > & outArray,
   traverseBDDvalues (s, (PMUInt32) (inBitSize1 + inBitSize2)) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark BDD as 3-relation
@@ -1741,7 +1740,7 @@ swap312 (const PMUInt32 inBitSize1,
   return bdd ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Print BDD
@@ -1848,10 +1847,9 @@ void C_BDD::printBDD (AC_OutputStream & inStream,
 
 //---------------------------------------------------------------------*
 
-static void
-printBDDline (const TC_UniqueArray <char> & inDisplayString,
-              const TC_UniqueArray <PMSInt32> & inNameLengthArray,
-              const PMSInt32 inLeadingSpacesCount) {
+static void printBDDline (const TC_UniqueArray <char> & inDisplayString,
+                          const TC_UniqueArray <PMSInt32> & inNameLengthArray,
+                          const PMSInt32 inLeadingSpacesCount) {
   for (PMSInt32 i=0 ; i<inLeadingSpacesCount ; i++) {
     co << " " ;
   }
@@ -2287,7 +2285,7 @@ printBDDnodes (AC_OutputStream & inStream,
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Build BDD from value list

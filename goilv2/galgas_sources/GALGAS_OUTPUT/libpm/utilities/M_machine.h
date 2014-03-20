@@ -1,48 +1,48 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  Collection of macros for determining machine and compiler.               *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
-//  Copyright (C) 1997, ..., 2012 Pierre Molinaro.                           *
-//                                                                           *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//                                                                           *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
-//  ECN, Ecole Centrale de Nantes (France)                                   *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
+//  Copyright (C) 1997, ..., 2012 Pierre Molinaro.                             *
+//                                                                             *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//                                                                             *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
+//  ECN, École Centrale de Nantes (France)                                     *
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #ifndef MACHINE_MACROS_DEFINED
 #define MACHINE_MACROS_DEFINED
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include <stddef.h>
 
-//---------------------------------------------------------------------------*
-//                                                                           *
-//                  P L A T F O R M   D E T E C T I O N                      *
-//                                                                           *
-// * WIN32 is defined when compiling for Microsoft Windows                   *
-// * __APPLE__is defined, but __NEXT_RUNTIME__ is not when compiling for     *
-//   Mac OS X Darwin (command line tools)                                    * 
-// * __APPLE__and __NEXT_RUNTIME__ are both defined when compiling for       *
-//   Mac OS X Cocoa (GUI applications)                                       * 
-// * __MINGW32__ is defined when compiling by MinGW (for Windows)            *
-// * __linux is defined when compiling by GCC (for Linux)                    *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+//                  P L A T F O R M   D E T E C T I O N                        *
+//                                                                             *
+// * WIN32 is defined when compiling for Microsoft Windows                     *
+// * __APPLE__is defined, but __NEXT_RUNTIME__ is not when compiling for       *
+//   Mac OS X Darwin (command line tools)                                      * 
+// * __APPLE__and __NEXT_RUNTIME__ are both defined when compiling for         *
+//   Mac OS X Cocoa (GUI applications)                                         * 
+// * __MINGW32__ is defined when compiling by MinGW (for Windows)              *
+// * __linux is defined when compiling by GCC (for Linux)                      *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #ifdef __MINGW32__
   //--- Compile for Win32
@@ -70,11 +70,11 @@
   #error Undefined platform
 #endif
 
-//---------------------------------------------------------------------------*
-//                                                                           *
-//                  C O M P I L E R   D E T E C T I O N                      *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+//                  C O M P I L E R   D E T E C T I O N                        *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 //---- METROWERKS CODE WARRIOR COMPILER ? -----------------------
   #ifdef __MWERKS__
@@ -106,11 +106,11 @@
     #error "Unknown Compiler"
   #endif
 
-//---------------------------------------------------------------------------*
-//                                                                           *
-// D E F I N E    M I N    A N D    M A X     F O R    I N T    T Y P E S    *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+// D E F I N E    M I N    A N D    M A X     F O R    I N T    T Y P E S      *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 //--- Signed integer max
 #define PMSINT8_MAX       ((PMSInt8) 0x7F)
@@ -130,15 +130,15 @@
 #define PMUINT32_MAX      ((PMUInt32) 0xFFFFFFFFUL)
 #define PMUINT64_MAX      ((PMUInt64) 0xFFFFFFFFFFFFFFFFULL)  
 
-//---------------------------------------------------------------------------*
-//                                                                           *
-// I N T E G E R    T Y P E S ,    3 2    O R    6 4    B I T S              *
-//                                                                           *
-// When building 32-bit tools, PMUInt is a 32-bit unsigned integer,          *
-// PMSInt is a 32-bit signed integer.                                        *
-// When building 64-bit tools, PMUInt is a 64-bit unsigned integer,          *
-// PMSInt is a 64-bit signed integer.                                        *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+// I N T E G E R    T Y P E S ,    3 2    O R    6 4    B I T S                *
+//                                                                             *
+// When building 32-bit tools, PMUInt is a 32-bit unsigned integer,            *
+// PMSInt is a 32-bit signed integer.                                          *
+// When building 64-bit tools, PMUInt is a 64-bit unsigned integer,            *
+// PMSInt is a 64-bit signed integer.                                          *
+//-----------------------------------------------------------------------------*
 
 #ifdef __LP64__
   typedef PMSInt64 PMSInt ;
@@ -154,27 +154,27 @@
   #define PMSINT_MAX (PMSINT32_MAX)
 #endif
 
-//---------------------------------------------------------------------------*
-//                                                                           *
-//             M I N ,    M A X    F U N C T I O N S                         *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+//             M I N ,    M A X    F U N C T I O N S                           *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 static inline PMUInt32 uimin32 (const PMUInt32 inA, const PMUInt32 inB) {
   return (inA < inB) ? inA : inB ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 static inline PMUInt32 uimax32 (const PMUInt32 inA, const PMUInt32 inB) {
   return (inA > inB) ? inA : inB ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
-//                      U T F 3 2    T Y P E                                 *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+//                      U T F 3 2    T Y P E                                   *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   class utf32 {
@@ -194,6 +194,6 @@ static inline PMUInt32 uimax32 (const PMUInt32 inA, const PMUInt32 inB) {
   #define TO_UNICODE(C) (C)
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #endif

@@ -1,36 +1,36 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  Managing a set with BDD                                                  *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
-//  Copyright (C) 2002, ..., 2010 Pierre Molinaro.                           *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
-//  ECN, Ecole Centrale de Nantes (France)                                   *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
+//  Copyright (C) 2002, ..., 2010 Pierre Molinaro.                             *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
+//  ECN, École Centrale de Nantes (France)                                     *
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #include "bdd/C_BDD_Set2.h"
 #include "bdd/C_BDD_Set3.h"
 #include "utilities/MF_Assert.h"
 #include "utilities/TF_Swap.h"
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //                   Implementation des ensembles a 2 dimensions             *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 C_BDD_Set2::
 C_BDD_Set2 (const C_BDD_Descriptor & inDescriptor1,
@@ -46,7 +46,7 @@ mDescriptor2 (inDescriptor2) {
                                     inDescriptor2.getMaxValue ()) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_BDD_Set2::
 C_BDD_Set2 (const C_BDD_Descriptor & inDescriptor1,
@@ -304,7 +304,7 @@ PMUInt32 C_BDD_Set2::getValuesCount (void) const {
   return (PMUInt32) (mBDD.valueCount64 ((PMUInt32) (mDescriptor1.getBDDbitsSize () + mDescriptor2.getBDDbitsSize ())) & PMUINT32_MAX) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 class cBuildArrayForSet2 : public C_bdd_value_traversing {
 //--- Attributs
@@ -320,7 +320,7 @@ class cBuildArrayForSet2 : public C_bdd_value_traversing {
                                 const PMUInt32 inBDDbitsSize) ;
 } ;
   
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 cBuildArrayForSet2::
 cBuildArrayForSet2 (TC_UniqueArray <TC_UniqueArray <PMSInt32> > & outArray,
@@ -329,13 +329,12 @@ mArray (outArray),
 mBitsSize1 (inBitsSize1) {
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
-void cBuildArrayForSet2::
-action (const bool inValuesArray [],
-        const PMUInt32 inBDDbitsSize) {
-  PMSInt32 index1 = 0L ;
-  PMSInt32 index2 = 0L ;
+void cBuildArrayForSet2::action (const bool inValuesArray [],
+                                 const PMUInt32 inBDDbitsSize) {
+  PMSInt32 index1 = 0 ;
+  PMSInt32 index2 = 0 ;
   for (PMSInt32 i=((PMSInt32) mBitsSize1) - 1 ; i>=0 ; i--) {
     index1 = (index1 << 1) + inValuesArray [i] ;
   }

@@ -1,26 +1,26 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //     BDD package (implementation of ROBDD)                                 *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
-//  Copyright (C) 1999, ..., 2013 Pierre Molinaro.                           *
-//                                                                           *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
-//  ECN, Ecole Centrale de Nantes (France)                                   *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
+//  Copyright (C) 1999, ..., 2013 Pierre Molinaro.                             *
+//                                                                             *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
+//  ECN, École Centrale de Nantes (France)                                     *
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #include "bdd/C_BDD.h"
 #include "utilities/F_GetPrime.h"
@@ -30,7 +30,7 @@
 #include "bdd/C_BDD-node.h"
 #include "time/C_Timer.h"
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include <stddef.h>
 #include <string.h>
@@ -42,11 +42,11 @@ PMUInt32 C_BDD::getBDDnodeSize (void) {
   return (PMUInt32) sizeof (cBDDnode) ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  BDD objects unique table                                                 *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 static PMUInt32 gNodeArraySize = 0 ;
 cBDDnode * gNodeArray = NULL ;
@@ -71,7 +71,7 @@ PMUInt32 C_BDD::getExistingNodesCount (void) {
   return gCurrentNodeCount ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 static PMUInt32 * gCollisionMap = NULL ;
 static PMUInt32 gCollisionMapSize = 0 ;
@@ -115,11 +115,11 @@ static void reallocHashMap (const PMUInt32 inNewSize) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 static const PMUInt32 kUniqueMapSizeIncrement = 4194304 ;
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 static PMUInt32 addNewNode (const cBDDnode inNode) {
   if (gNodeArraySize <= (gCurrentNodeCount + 1)) {
@@ -225,7 +225,7 @@ void markNode (const PMUInt32 inValue) {
   gMarkTable [idx] |= mask ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 PMUInt32 C_BDD::getMarkedNodesCount (void) {
   PMUInt32 count = 0 ;
@@ -239,23 +239,23 @@ PMUInt32 C_BDD::getMarkedNodesCount (void) {
   return count ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  BDD objects hash map                                                     *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 static const PMSInt32 kInitialCollisionMapPowerOfTwoSize = 20 ; 
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       BDD unique table implementation                                     *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 macroDeclareStaticMutex (semaphore)
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 PMUInt32 find_or_add (const PMUInt32 inBoolVar,
                       const PMUInt32 inELSEbranch,
@@ -313,7 +313,7 @@ PMUInt32 C_BDD::getBDDinstancesCount (void) {
   return n ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Mark and Sweep
@@ -428,7 +428,7 @@ void C_BDD::markAndSweepUnusedNodes (void) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark BDD constructors, destructor, assignment
@@ -473,7 +473,7 @@ mPtrToNextBDD (NULL) {
   initLinks () ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 macroDeclareStaticMutex (semaphoreLink)
 
@@ -510,13 +510,13 @@ C_BDD & C_BDD::operator = (const C_BDD & inSource) {
   return *this ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Check all BDDs are well-formed
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 static void internalCheckBDDIsWellFormed (const PMUInt32 inBDD,
                                           const PMUInt32 inCurrentVar
@@ -539,7 +539,7 @@ static void internalCheckBDDIsWellFormed (const PMUInt32 inBDD,
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_BDD::checkAllBDDsAreWellFormed (LOCATION_ARGS) {
 //--- Unmark all nodes
@@ -552,7 +552,7 @@ void C_BDD::checkAllBDDsAreWellFormed (LOCATION_ARGS) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_BDD::checkBDDIsWellFormed (LOCATION_ARGS) {
 //--- Unmark all nodes
@@ -561,13 +561,13 @@ void C_BDD::checkBDDIsWellFormed (LOCATION_ARGS) {
   internalCheckBDDIsWellFormed (mBDDvalue, PMUINT16_MAX COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Memory Usage
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 PMUInt32 C_BDD::currentMemoryUsage (void) {
   PMUInt32 result = nodeMapMemoryUsage () ;
@@ -577,23 +577,23 @@ PMUInt32 C_BDD::currentMemoryUsage (void) {
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 static PMUInt32 gMaximumMemoryUsage = PMUINT32_MAX ;
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 PMUInt32 C_BDD::maximumMemoryUsage (void) { // In MB
   return gMaximumMemoryUsage ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_BDD::setMaximumMemoryUsage (const PMUInt32 inMaxMemoryUsage) { // In MB
   gMaximumMemoryUsage = inMaxMemoryUsage ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark BDD Package stats
@@ -645,7 +645,7 @@ void C_BDD::printBDDpackageOperationsSummary (AC_OutputStream & inStream) {
   }  
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_BDD::freeBDDStataStructures (void) {
   releaseANDOperationCache () ;

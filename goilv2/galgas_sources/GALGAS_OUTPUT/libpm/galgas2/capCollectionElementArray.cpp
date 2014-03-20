@@ -1,37 +1,37 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  capCollectionElementArray                                                *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
-//  Copyright (C) 2010, ..., 2013 Pierre Molinaro.                           *
-//                                                                           *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//                                                                           *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
-//  ECN, Ecole Centrale de Nantes (France)                                   *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
+//  Copyright (C) 2010, ..., 2013 Pierre Molinaro.                             *
+//                                                                             *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//                                                                             *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
+//  ECN, École Centrale de Nantes (France)                                     *
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #include "capCollectionElementArray.h"
 #include "utilities/MF_MemoryControl.h"
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include "strings/C_String.h"
 #include "galgas2/C_Compiler.h"
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 capCollectionElementArray::capCollectionElementArray (void) :
 mArray (NULL),
@@ -39,7 +39,7 @@ mCapacity (0),
 mCount (0) {
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 capCollectionElementArray::capCollectionElementArray (const PMUInt32 inCapacity) :
 mArray (NULL),
@@ -48,7 +48,7 @@ mCount (0) {
   setCapacity (inCapacity) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 capCollectionElementArray::capCollectionElementArray (const capCollectionElementArray & inSource) :
 mArray (NULL),
@@ -60,7 +60,7 @@ mCount (0) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 capCollectionElementArray & capCollectionElementArray::operator = (const capCollectionElementArray & inSource) {
   removeAllObjects () ;
@@ -71,13 +71,13 @@ capCollectionElementArray & capCollectionElementArray::operator = (const capColl
   return *this ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 capCollectionElementArray::~capCollectionElementArray (void) {
   macroMyDeleteArray (mArray) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void capCollectionElementArray::setCapacity (const PMUInt32 inNewCapacity) {
   if (inNewCapacity > mCapacity) {
@@ -97,7 +97,7 @@ void capCollectionElementArray::setCapacity (const PMUInt32 inNewCapacity) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void capCollectionElementArray::addObject (const capCollectionElement & inObject) {
   MF_Assert (mCount < mCapacity, "mCount (%lld) >= mCapacity (%lld)", mCount, mCapacity) ;
@@ -105,7 +105,7 @@ void capCollectionElementArray::addObject (const capCollectionElement & inObject
   mCount ++ ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void capCollectionElementArray::addObjectAtIndex (const capCollectionElement & inObject,
                                                   const PMUInt32 inInsertionIndex,
@@ -125,7 +125,7 @@ void capCollectionElementArray::addObjectAtIndex (const capCollectionElement & i
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void capCollectionElementArray::replaceObjectAtIndex (const capCollectionElement & inObject,
                                                       const PMUInt32 inIndex
@@ -134,7 +134,7 @@ void capCollectionElementArray::replaceObjectAtIndex (const capCollectionElement
   mArray [inIndex] = inObject ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS 
   capCollectionElement capCollectionElementArray::objectAtIndex (const PMUInt32 inIndex
@@ -144,7 +144,7 @@ void capCollectionElementArray::replaceObjectAtIndex (const capCollectionElement
   }
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 cCollectionElement * capCollectionElementArray::pointerAtIndex (const PMUInt32 inIndex
                                                                 COMMA_LOCATION_ARGS) {
@@ -153,7 +153,7 @@ cCollectionElement * capCollectionElementArray::pointerAtIndex (const PMUInt32 i
   return mArray [inIndex].ptr () ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 const cCollectionElement * capCollectionElementArray::pointerAtIndexForReadAccess (const PMUInt32 inIndex
                                                                                    COMMA_LOCATION_ARGS) const {
@@ -161,7 +161,7 @@ const cCollectionElement * capCollectionElementArray::pointerAtIndexForReadAcces
   return mArray [inIndex].ptr () ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void capCollectionElementArray::removeObjectAtIndex (const PMUInt32 inIndex) {
   MF_Assert (mCount > inIndex, "mCount (%ld) <= inIndex (%lld)", mCount, inIndex) ;
@@ -172,7 +172,7 @@ void capCollectionElementArray::removeObjectAtIndex (const PMUInt32 inIndex) {
   mArray [mCount].drop () ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void capCollectionElementArray::predendObject (const capCollectionElement & inObject) {
   MF_Assert (mCount < mCapacity, "mCount (%lld) >= mCapacity (%lld)", mCount, mCapacity) ;
@@ -183,7 +183,7 @@ void capCollectionElementArray::predendObject (const capCollectionElement & inOb
   mCount ++ ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void capCollectionElementArray::removeAllObjects (void) {
   for (PMUInt32 i=0 ; i<mCount ; i++) {
@@ -192,7 +192,7 @@ void capCollectionElementArray::removeAllObjects (void) {
   mCount = 0 ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 typeComparisonResult capCollectionElementArray::compareCollectionElementArray (const capCollectionElementArray & inOperand) const {
   typeComparisonResult result = kOperandEqual ;
@@ -208,4 +208,4 @@ typeComparisonResult capCollectionElementArray::compareCollectionElementArray (c
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*

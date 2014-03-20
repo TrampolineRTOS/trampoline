@@ -283,7 +283,7 @@ void showAllocationStatsWindow (void) {
   return [theRecord valueForKey:aTableColumn.identifier] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (NSInteger) numberOfRowsInTableView: (NSTableView *) aTableView {
   return (NSInteger) [mAllocationStatsDataSource count] ;

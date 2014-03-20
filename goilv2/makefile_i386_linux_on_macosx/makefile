@@ -60,6 +60,6 @@ include $(LIBPM_DIRECTORY_PATH)/included_makefiles/x86linux_on_macosx_gcc_tools_
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-include $(LIBPM_DIRECTORY_PATH)/included_makefiles/generic_makefile.mak
+include $(LIBPM_DIRECTORY_PATH)/included_makefiles/generic-makefile.mak
 
 #---------------------------------------------------------------------------*
