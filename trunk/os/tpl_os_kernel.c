@@ -203,14 +203,20 @@ FUNC(int, OS_CODE) tpl_compare_entries(
   CONSTP2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR) second_entry
   TAIL_FOR_PRIO_ARG_DECL)
 {
-  VAR(uint32, AUTOMATIC) first_key = first_entry->key;
-  VAR(uint32, AUTOMATIC) second_key = second_entry->key;
+  VAR(uint32, AUTOMATIC) first_key = first_entry->key & (PRIORITY_MASK | RANK_MASK);
+  VAR(uint32, AUTOMATIC) second_key = second_entry->key & (PRIORITY_MASK | RANK_MASK);
+  VAR(uint32, AUTOMATIC) first_tmp ;
+  VAR(uint32, AUTOMATIC) second_tmp ;
   
-  first_key = (first_key & PRIORITY_MASK) |
-    (((first_key & RANK_MASK) - TAIL_FOR_PRIO[first_key >> PRIORITY_SHIFT]) & RANK_MASK);
-  second_key = (second_key & PRIORITY_MASK) |
-    (((second_key & RANK_MASK) - TAIL_FOR_PRIO[second_key >> PRIORITY_SHIFT]) & RANK_MASK);
-  
+  first_tmp = ((first_key & RANK_MASK) - TAIL_FOR_PRIO[first_key >> PRIORITY_SHIFT]);
+  first_tmp = first_tmp & RANK_MASK;
+  first_key = (first_key & PRIORITY_MASK);
+  first_key = first_key | first_tmp;
+   
+  second_tmp = ((second_key & RANK_MASK) - TAIL_FOR_PRIO[second_key >> PRIORITY_SHIFT]);
+  second_tmp = second_tmp & RANK_MASK;
+  second_key = (second_key & PRIORITY_MASK);
+  second_key = second_key | second_tmp;  
   return (first_key < second_key);
 }
 
