@@ -74,10 +74,10 @@ CPU test {
         STACKSIZE = 256;
     };
 
-//    ISR ISRButton {
-//        CATEGORY = 2;
-//        PRIORITY = 20;
-//        STACKSIZE = 256;
-//        SOURCE = "INT5_vect"; //PIN 4 on Arduino Mega
-//    };
+    ISR ISRButton {
+        CATEGORY = 2;
+        PRIORITY = 20;
+        STACKSIZE = 256;
+        SOURCE = "INT5_vect"; //PIN 4 on Arduino Mega
+    };
 };

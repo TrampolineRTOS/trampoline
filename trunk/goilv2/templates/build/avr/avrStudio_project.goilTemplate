@@ -18,7 +18,7 @@
 </CODE_CREATION>
 <DEBUG_TARGET>
 <CURRENT_TARGET>AVR Simulator</CURRENT_TARGET>
-<CURRENT_PART>AT90CAN128.xml</CURRENT_PART>
+<CURRENT_PART>ATmega2560.xml</CURRENT_PART>
 <BREAKPOINTS>
 </BREAKPOINTS>
 <IO_EXPAND>
@@ -132,7 +132,7 @@
 </CONFIG>
 </CONFIGS>
 <LASTCONFIG>default</LASTCONFIG>
-<USES_WINAVR>1</USES_WINAVR>
+<USES_WINAVR>0</USES_WINAVR>
 <GCC_LOC>C:\\WinAVR\\bin\\avr-gcc.exe</GCC_LOC>
 <MAKE_LOC>C:\\WinAVR\\utils\\bin\\make.exe</MAKE_LOC>
 </AVRGCCPLUGIN>
@@ -141,24 +141,23 @@
 %foreach src in OS::BUILD_S::APP_SRC do
 %<Name>% !src::VALUE %</Name>
 %end foreach%
-<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_alarm_kernel.c</SOURCEFILE>
-<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_event_kernel.c</SOURCEFILE>
-<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_it_kernel.c</SOURCEFILE>
-<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_rez_kernel.c</SOURCEFILE>
-<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_task_kernel.c</SOURCEFILE>
-<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_timeobj_kernel.c</SOURCEFILE>
-<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_kernel.c</SOURCEFILE>
-<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_action.c</SOURCEFILE>
-<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_error.c</SOURCEFILE>
-<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os.c</SOURCEFILE>
-<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_alarm.c</SOURCEFILE>
-<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_event.c</SOURCEFILE>
-<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_it.c</SOURCEFILE>
-<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_rez.c</SOURCEFILE>
-<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_task.c</SOURCEFILE>
-<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\machines\\avr\\avr_switch_context.s</SOURCEFILE>
-<SOURCEFILE>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\machines\\avr\\tpl_machine.c</SOURCEFILE>
+<Name>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_alarm_kernel.c</Name>
+<Name>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_task_kernel.c</Name>
+<Name>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_timeobj_kernel.c</Name>
+<Name>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_action.c</Name>
+<Name>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_error.c</Name>
+<Name>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_kernel.c</Name>
+<Name>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_action.c</Name>
+<Name>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_error.c</Name>
+<Name>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_interrupt_kernel.c</Name>
+<Name>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_os.c</Name>
+<Name>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_os_kernel.c</Name>
+<Name>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_resource_kernel.c</Name>
+<Name>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\os\\tpl_os_kernel.c</Name>
+<Name>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\machines\\avr\\avr_switch_context.s</Name>
+<Name>% !OS::BUILD_S::TRAMPOLINE_BASE_PATH %\\machines\\avr\\tpl_machine.c</Name>
 <Name>% !PROJECT %\\tpl_app_config.c</Name>
+<Name>% !PROJECT %\\tpl_os.c</Name>
 </Files>
 </ProjectFiles>
 <IOView>
