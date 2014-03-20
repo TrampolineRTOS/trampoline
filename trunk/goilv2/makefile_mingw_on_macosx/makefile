@@ -52,6 +52,6 @@ include $(LIBPM_DIRECTORY_PATH)/included_makefiles/mingw_on_macosx_gcc_tools_32.
 #                                                                           *
 #---------------------------------------------------------------------------*
 
-include $(LIBPM_DIRECTORY_PATH)/included_makefiles/generic_makefile.mak
+include $(LIBPM_DIRECTORY_PATH)/included_makefiles/generic-makefile.mak
 
 #---------------------------------------------------------------------------*

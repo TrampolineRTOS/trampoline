@@ -1,43 +1,43 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  Declaration and implementation of the template class 'TC_FixedSizeArray' *
-//                                                                           *
+//                                                                             *
 //  It implements a generic fixed size vector.                               *
-//                                                                           *
+//                                                                             *
 //  COPY OF ITS INSTANCES IS ALLOWED.                                        *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
 //  Copyright (C) 1997-2002 Pierre Molinaro.                                 *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
-//  ECN, Ecole Centrale de Nantes (France)                                   *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
+//  ECN, École Centrale de Nantes (France)                                     *
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #ifndef FIXED_ARRAY_TEMPLATE_CLASS_DEFINED
 #define FIXED_ARRAY_TEMPLATE_CLASS_DEFINED
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include "utilities/MF_Assert.h"
 #include "utilities/TF_Swap.h"
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Predeclarations                                                         *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class TYPE, PMSInt32 SIZE> class TC_FixedSizeArray ;
 
@@ -45,11 +45,11 @@ template <class TYPE, PMSInt32 SIZE>
 void swap (TC_FixedSizeArray <TYPE, SIZE> & ioOperand1,
            TC_FixedSizeArray <TYPE, SIZE> & ioOperand2) ;
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Template class declaration                                              *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class TYPE, PMSInt32 SIZE> class TC_FixedSizeArray {
 //--- Destructor  
@@ -79,17 +79,17 @@ template <class TYPE, PMSInt32 SIZE> class TC_FixedSizeArray {
   private : TYPE mFixedArray [SIZE] ;
 } ;
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //                 Implementation                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class TYPE, PMSInt32 SIZE>
 TC_FixedSizeArray<TYPE, SIZE>::~TC_FixedSizeArray (void) {
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS 
   template <class TYPE, PMSInt32 SIZE>
@@ -100,7 +100,7 @@ TC_FixedSizeArray<TYPE, SIZE>::~TC_FixedSizeArray (void) {
   }
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   template <class TYPE, PMSInt32 SIZE>
@@ -111,7 +111,7 @@ TC_FixedSizeArray<TYPE, SIZE>::~TC_FixedSizeArray (void) {
   }
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class TYPE, PMSInt32 SIZE>
 void TC_FixedSizeArray <TYPE, SIZE>::exchangeItemAtIndex (const PMSInt32 inIndex,
@@ -121,7 +121,7 @@ void TC_FixedSizeArray <TYPE, SIZE>::exchangeItemAtIndex (const PMSInt32 inIndex
   swap (mFixedArray [inIndex], ioItem) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class TYPE, PMSInt32 SIZE>
 void swap (TC_FixedSizeArray <TYPE, SIZE> & ioOperand1,
@@ -131,6 +131,6 @@ void swap (TC_FixedSizeArray <TYPE, SIZE> & ioOperand1,
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #endif

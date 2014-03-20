@@ -5,7 +5,7 @@
 //  Created by Pierre Molinaro on 31/07/12.
 //  Copyright (c) 2012 IRCCyN. All rights reserved.
 //
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #import "OC_GGS_DocumentData.h"
 #import "OC_GGS_Document.h"
@@ -15,26 +15,26 @@
 #import "PMDebug.h"
 #import "PMIssueDescriptor.h"
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 //#define DEBUG_MESSAGES
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 static NSMutableDictionary * gDocumentDataDictionary ;
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 @implementation OC_GGS_DocumentData
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 @synthesize document ;
 @synthesize fileURL ;
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 //    -locationForLineInSource:                                              *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (NSUInteger) locationForLineInSource: (NSUInteger) inLine {
    NSString * sourceString = mTextSyntaxColoring.sourceString ;
@@ -54,9 +54,9 @@ static NSMutableDictionary * gDocumentDataDictionary ;
   return idx ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 //    setIssueArray:                                                         *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) setIssueArray: (NSArray *) inIssueArray {
   mIssueArray = [NSMutableArray new] ;
@@ -70,13 +70,13 @@ static NSMutableDictionary * gDocumentDataDictionary ;
   [mTextSyntaxColoring setIssueArray:mIssueArray] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 //    broadcastIssueArray:                                                   *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 static NSArray * gIssueArray ;
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 + (void) broadcastIssueArray: (NSArray *) inIssueArray {
   gIssueArray = inIssueArray.copy ;
@@ -85,7 +85,7 @@ static NSArray * gIssueArray ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) performCharacterConversion {
   #ifdef DEBUG_MESSAGES
@@ -168,7 +168,7 @@ static NSArray * gIssueArray ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) readDocumentFromFile {
 //--- Try UTF8
@@ -225,7 +225,7 @@ static NSArray * gIssueArray ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (OC_GGS_DocumentData *) initWithDataFromURL: (NSURL *) inDocumentURL {
   self = [super init] ;
@@ -238,14 +238,14 @@ static NSArray * gIssueArray ;
   return self ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) FINALIZE_OR_DEALLOC {
   noteObjectDeallocation (self) ;
   macroSuperFinalize ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) setCocoaDocument: (OC_GGS_Document *) inDocument {
   if (nil != inDocument) {
@@ -253,20 +253,20 @@ static NSArray * gIssueArray ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) detach {
   [mTextSyntaxColoring detach] ;
   mTextSyntaxColoring = nil ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) detachFromCocoaDocument {
   document = nil ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 + (void) cocoaDocumentWillClose: (OC_GGS_DocumentData *) inDocumentData {
   [OC_GGS_DocumentData saveAllDocuments] ;
@@ -284,7 +284,7 @@ static NSArray * gIssueArray ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 + (OC_GGS_DocumentData *) findOrAddDataForDocumentURL: (NSURL *) inDocumentURL
                           forCocoaDocument: (OC_GGS_Document *) inDocument {
@@ -306,13 +306,13 @@ static NSArray * gIssueArray ;
   return documentData ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 + (OC_GGS_DocumentData *) findDocumentDataForFilePath: (NSString *) inFilePath {
   return [gDocumentDataDictionary objectForKey:[NSURL fileURLWithPath:inFilePath]] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (OC_GGS_TextDisplayDescriptor *) newSourceDisplayDescriptorForDocument: (OC_GGS_Document *) inDocumentUsedForDisplaying {
   OC_GGS_TextDisplayDescriptor * tdd = [[OC_GGS_TextDisplayDescriptor alloc]
@@ -322,32 +322,32 @@ static NSArray * gIssueArray ;
   return tdd ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (NSString *) sourceString {
   return mTextSyntaxColoring.sourceString ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (OC_GGS_TextSyntaxColoring *) textSyntaxColoring {
   return mTextSyntaxColoring ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) replaceSourceStringWithString: (NSString *) inString {
   [mTextSyntaxColoring replaceSourceStringWithString:inString] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) replaceCharactersInRange: (NSRange) inRange
          withString: (NSString *) inReplaceString {
   [mTextSyntaxColoring replaceCharactersInRange:inRange withString:inReplaceString] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (BOOL) performSaveToURL: (NSURL *) inAbsoluteURL {
   [mTextSyntaxColoring breakUndoCoalescing] ;
@@ -368,7 +368,7 @@ static NSArray * gIssueArray ;
   return ok ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) save {
   if (mTextSyntaxColoring.isDirty) {
@@ -380,7 +380,7 @@ static NSArray * gIssueArray ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 + (void) saveAllDocuments {
   for (OC_GGS_DocumentData * documentData in gDocumentDataDictionary.allValues) {
@@ -388,8 +388,8 @@ static NSArray * gIssueArray ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 @end
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*

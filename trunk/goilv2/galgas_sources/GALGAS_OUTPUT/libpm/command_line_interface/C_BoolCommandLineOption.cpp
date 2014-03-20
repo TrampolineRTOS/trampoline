@@ -1,42 +1,42 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  Generic Boolean Command Line Interface Option                            *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
-//  Copyright (C) 2009, ..., 2009 Pierre Molinaro.                           *
-//                                                                           *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//                                                                           *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
-//  ECN, Ecole Centrale de Nantes (France)                                   *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
+//  Copyright (C) 2009, ..., 2009 Pierre Molinaro.                             *
+//                                                                             *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//                                                                             *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
+//  ECN, École Centrale de Nantes (France)                                     *
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #include <string.h>
 #include <stdio.h>
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include "command_line_interface/C_BoolCommandLineOption.h"
 #include "strings/C_String.h"
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 static C_BoolCommandLineOption * gFirst ;
 static C_BoolCommandLineOption * gLast ;
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_BoolCommandLineOption::C_BoolCommandLineOption (const char * inDomainName,
                                                   const char * inIdentifier,
@@ -54,7 +54,7 @@ mValue (false) {
   gLast = this ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_BoolCommandLineOption::
 setBoolOptionForCommandChar (const char inCommandChar,
@@ -70,7 +70,7 @@ setBoolOptionForCommandChar (const char inCommandChar,
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_BoolCommandLineOption::setBoolOptionForCommandString (const char * inCommandString,
                                                              bool & outFound,
@@ -89,7 +89,7 @@ void C_BoolCommandLineOption::setBoolOptionForCommandString (const char * inComm
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_BoolCommandLineOption::
 printUsageOfBoolOptions (void) {
@@ -107,7 +107,7 @@ printUsageOfBoolOptions (void) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_BoolCommandLineOption::
 printBoolOptions (const PMUInt32 inDisplayLength) {
@@ -144,7 +144,7 @@ printBoolOptions (const PMUInt32 inDisplayLength) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void C_BoolCommandLineOption::getBoolOptionNameList (TC_UniqueArray <C_String> & outArray) {
   C_BoolCommandLineOption * p = gFirst ;
@@ -155,7 +155,7 @@ void C_BoolCommandLineOption::getBoolOptionNameList (TC_UniqueArray <C_String> &
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 utf32 C_BoolCommandLineOption::getBoolOptionInvocationLetter (const C_String & inDomainName,
                                                        const C_String & inIdentifier) {
@@ -170,7 +170,7 @@ utf32 C_BoolCommandLineOption::getBoolOptionInvocationLetter (const C_String & i
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_String C_BoolCommandLineOption::getBoolOptionInvocationString (const C_String & inDomainName,
                                                        const C_String & inIdentifier) {
@@ -185,7 +185,7 @@ C_String C_BoolCommandLineOption::getBoolOptionInvocationString (const C_String 
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_String C_BoolCommandLineOption::getBoolOptionCommentString (const C_String & inDomainName,
                                                        const C_String & inIdentifier) {
@@ -200,4 +200,4 @@ C_String C_BoolCommandLineOption::getBoolOptionCommentString (const C_String & i
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*

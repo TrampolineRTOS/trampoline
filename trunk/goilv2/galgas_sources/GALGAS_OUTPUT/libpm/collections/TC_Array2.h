@@ -1,54 +1,54 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  T H I S   C L A S S   H A S   N O T   B E E N   T E S T E D              *
-//                                                                           *
-//---------------------------------------------------------------------------*
-//                                                                           *
+//                                                                             *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  Declaration and implementation of the template class 'TC_Array2'         *
-//                                                                           *
+//                                                                             *
 //  It implements a generic two dimensions dynamic sized array.              *
-//                                                                           *
+//                                                                             *
 //  COPY OF ITS INSTANCES IS ALLOWED AND FULLY IMPLEMENTED BY DUPLICATION.   *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
 //  Copyright (C) 1997 Pierre Molinaro.                                      *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
-//  ECN, Ecole Centrale de Nantes (France)                                   *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
+//  ECN, École Centrale de Nantes (France)                                     *
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #ifndef GROW_ARRAY2_TEMPLATE_CLASS_DEFINED
 #define GROW_ARRAY2_TEMPLATE_CLASS_DEFINED
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include "utilities/MF_MemoryControl.h"
 #include "utilities/TF_Swap.h"
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include <stddef.h>
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE> class TC_Array2 ;
 
 template <typename TYPE> void swap (TC_Array2 <TYPE> & ioOperand1,
                                     TC_Array2 <TYPE> & ioOperand2) ;
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE> class TC_Array2 {
   protected : TYPE * mArray ;
@@ -108,11 +108,11 @@ template <typename TYPE> class TC_Array2 {
                               const PMSInt32 inColumnCount COMMA_LOCATION_ARGS) ;
 } ;
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //                         Implementation                                    *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 TC_Array2 <TYPE>::TC_Array2 (void) :
@@ -122,7 +122,7 @@ mCurrentColumnCount (0),
 mCapacity (0) {
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 TC_Array2 <TYPE>::TC_Array2 (TC_Array2 <TYPE> & inSource) :
@@ -133,7 +133,7 @@ mCapacity (0) {
   *this = inSource ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 TC_Array2 <TYPE>::TC_Array2 (const PMSInt32 inRowCount,
@@ -146,7 +146,7 @@ mCapacity (0){
   reallocArray (inRowCount, inColumnCount COMMA_THERE) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 TC_Array2 <TYPE> & TC_Array2 <TYPE>::operator = (TC_Array2 <TYPE> & inSource) {
@@ -171,14 +171,14 @@ TC_Array2 <TYPE> & TC_Array2 <TYPE>::operator = (TC_Array2 <TYPE> & inSource) {
   return * this ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 TC_Array2 <TYPE>::~TC_Array2 (void) {
   vider () ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_Array2<TYPE>::vider (void) {
@@ -188,7 +188,7 @@ void TC_Array2<TYPE>::vider (void) {
   mCapacity = 0 ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_Array2<TYPE>::
@@ -219,7 +219,7 @@ reallocArray (const PMSInt32 inRowCount,
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   template <typename TYPE>
@@ -228,7 +228,7 @@ reallocArray (const PMSInt32 inRowCount,
   }
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   template <typename TYPE>
@@ -237,7 +237,7 @@ reallocArray (const PMSInt32 inRowCount,
   }
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void swap (TC_Array2 <TYPE> & ioOperand1,
@@ -248,6 +248,6 @@ void swap (TC_Array2 <TYPE> & ioOperand1,
   swap (ioOperand1.mCapacity, ioOperand2.mCapacity) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #endif

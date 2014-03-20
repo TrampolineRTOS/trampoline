@@ -1,25 +1,25 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
-//  Copyright (C) 2003, ..., 2013 Pierre Molinaro.                           *
-//                                                                           *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//                                                                           *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
-//  ECN, Ecole Centrale de Nantes (France)                                   *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
+//  Copyright (C) 2003, ..., 2014 Pierre Molinaro.                             *
+//                                                                             *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//                                                                             *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
+//  ECN, École Centrale de Nantes (France)                                     *
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #import "OC_GGS_Document.h"
 #import "OC_GGS_ApplicationDelegate.h"
@@ -36,23 +36,23 @@
 #import "PMDebug.h"
 #import "PMSearchResultDescriptor.h"
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 //#define DEBUG_MESSAGES
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 @implementation OC_GGS_Document
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 @synthesize mBuildTaskIsRunning ;
 
-//---------------------------------------------------------------------------*
-//                                                                           *
-//       I N I T                                                             *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+//       I N I T                                                               *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 - (instancetype) init {
   self = [super init] ;
@@ -85,14 +85,14 @@
   return self;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) FINALIZE_OR_DEALLOC {
   noteObjectDeallocation (self) ;
   macroSuperFinalize ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (NSString *) sourceStringForGlobalSearch {
   #ifdef DEBUG_MESSAGES
@@ -101,15 +101,15 @@
   return mDocumentData.sourceString ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #pragma mark Nib relative Actions
 
-//---------------------------------------------------------------------------*
-//                                                                           *
-//       W I N D O W    N I B    N A M E                                     *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+//       W I N D O W    N I B    N A M E                                       *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 - (NSString *) windowNibName {
   #ifdef DEBUG_MESSAGES
@@ -118,11 +118,11 @@
   return @"OC_GGS_Document" ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
-//       W I N D O W    C O N T R O L L E R    D I D    L O A D    N I B     *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+//       W I N D O W    C O N T R O L L E R    D I D    L O A D    N I B       *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 - (void) windowControllerDidLoadNib: (NSWindowController *) inWindowController {
   #ifdef DEBUG_MESSAGES
@@ -357,7 +357,7 @@
   [searchCell setSearchMenuTemplate:cellMenu];
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) removeWindowController:(NSWindowController *) inWindowController {
   #ifdef DEBUG_MESSAGES
@@ -464,11 +464,11 @@
   [super removeWindowController:inWindowController] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #pragma mark Actions
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 /*- (IBAction) duplicateSelectedSourceViewAction: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -483,7 +483,7 @@
   [mSourceDisplayArrayController setSelectedObjects:[NSArray arrayWithObject:textDisplayDescriptor]] ;
 }*/
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) registerConfigurationInPreferences {
   NSMutableArray * configurationArray = [NSMutableArray new] ;
@@ -499,7 +499,7 @@
   // NSLog (@"Write Prefs '%@' -> %@", key, configurationArray) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) changeSelectedSourceViewAction: (NSButton *) inSender {
   #ifdef DEBUG_MESSAGES
@@ -508,7 +508,7 @@
   [mSourceDisplayArrayController setSelectionIndex:(NSUInteger) inSender.tag] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) actionGotoLine: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -523,7 +523,7 @@
   ] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) collapseIssuesAction: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -532,11 +532,11 @@
   [mFirstSplitView setPosition:0.0 ofDividerAtIndex:0] ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
-//        S H E E T    D I D    E N D    ( G O T O    L I N E )              *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+//        S H E E T    D I D    E N D    ( G O T O    L I N E )                *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 - (void) sheetDidEnd: (NSWindow *) inSheet
          returnCode: (int) inReturnCode
@@ -553,7 +553,7 @@
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) actionComment: (id) sender {
   #ifdef DEBUG_MESSAGES
@@ -563,7 +563,7 @@
   [selectedObject commentSelection] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) actionUncomment: (id) sender {
   #ifdef DEBUG_MESSAGES
@@ -573,7 +573,7 @@
   [selectedObject uncommentSelection] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) actionShiftLeft: (id) sender {
   #ifdef DEBUG_MESSAGES
@@ -583,7 +583,7 @@
   [selectedObject shiftLeftAction] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) actionShiftRight: (id) sender {
   #ifdef DEBUG_MESSAGES
@@ -593,7 +593,7 @@
   [selectedObject shiftRightAction] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (BOOL) validateMenuItem:(NSMenuItem *) item {
   BOOL result = YES ;
@@ -604,7 +604,7 @@
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) saveAllDocuments: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -613,7 +613,7 @@
   [OC_GGS_DocumentData saveAllDocuments] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) displaySourceWithURL: (NSURL *) inURL
          atLine: (NSUInteger) inLine {
@@ -627,7 +627,7 @@
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) actionPathControl: (id) inSender {
   NSArray * cells = mSourceFilePathControl.pathComponentCells ;
@@ -644,7 +644,7 @@
   [ws selectFile:path inFileViewerRootedAtPath:rootPath] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) copyFilePath: (id) inSender {
   OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
@@ -654,7 +654,7 @@
   [pasteboard writeObjects:[NSArray arrayWithObject:filePath]] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) copyFileName: (id) inSender {
   OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
@@ -664,7 +664,7 @@
   [pasteboard writeObjects:[NSArray arrayWithObject:fileName]] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) copyFileDirectory: (id) inSender {
   OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
@@ -674,22 +674,22 @@
   [pasteboard writeObjects:[NSArray arrayWithObject:fileDirectory]] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) actionInsertTextMacro: (NSMenuItem *) inSender {
   OC_GGS_TextDisplayDescriptor * selectedObject = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
   [selectedObject actionInsertTextMacro:inSender] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #pragma mark Document Actions
 
-//---------------------------------------------------------------------------*
-//                                                                           *
-//    P R I N T                                                              *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+//    P R I N T                                                                *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 - (void) printDocument: (id) sender {
   #ifdef DEBUG_MESSAGES
@@ -699,11 +699,11 @@
   [selectedObject.textView print:sender] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #pragma mark Tracking File Document changes
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (NSDate *) sourceFileModificationDateInFileSystem {
   NSURL * fileURL = [self fileURL] ;
@@ -719,7 +719,7 @@
   return date ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) updateFromFileSystem: (id) inUnusedArgument {
   #ifdef DEBUG_MESSAGES
@@ -746,7 +746,7 @@
   [NSApp endSheet:mUpdateFromFileSystemPanel] ;   
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 /*- (void) askForUpdatingFromFileSystem {
   #ifdef DEBUG_MESSAGES
@@ -775,7 +775,7 @@
   ] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) askForUpdatingFromFileSystemAlertEnding:(NSAlert *) inAlert
          returnCode:(int) returnCode
@@ -797,7 +797,7 @@
   [self setFileModificationDate:[self sourceFileModificationDateInFileSystem]] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) windowDidBecomeKey: (NSNotification *) inNotification {
   #ifdef DEBUG_MESSAGES
@@ -812,15 +812,15 @@
 }
 */
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #pragma mark Document Save
 
-//---------------------------------------------------------------------------*
-//                                                                           *
-//    S A V E    D O C U M E N T                                             *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+//    S A V E    D O C U M E N T                                               *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 - (void) saveDocument:(id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -835,11 +835,11 @@
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
-//    W R I T E    T O    F I L E                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+//    W R I T E    T O    F I L E                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 - (BOOL) writeToURL: (NSURL *) inAbsoluteURL
          ofType: (NSString *) inTypeName
@@ -851,11 +851,11 @@
   return [mDocumentData performSaveToURL:inAbsoluteURL] ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
-//  S A V I N G    H F S    T Y P E    A N D    C R E A T O R    C O D E S   *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+//  S A V I N G    H F S    T Y P E    A N D    C R E A T O R    C O D E S     *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 - (NSDictionary *) fileAttributesToWriteToURL:(NSURL *) inDocumentURL
     ofType:(NSString *)documentTypeName
@@ -943,15 +943,15 @@
   return newAttributes;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #pragma mark Document Read
 
-//---------------------------------------------------------------------------*
-//                                                                           *
-//    R E A D    F R O M    F I L E                                          *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+//    R E A D    F R O M    F I L E                                            *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 - (BOOL) readFromURL:(NSURL *) inAbsoluteURL
          ofType:(NSString *) inTypeName
@@ -968,15 +968,15 @@
   return mDocumentData != nil ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #pragma mark Build
 
-//---------------------------------------------------------------------------*
-//                                                                           *
-//    C O M P I L E                                                          *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+//    C O M P I L E                                                            *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 - (IBAction) stopBuild: (id) sender {
   #ifdef DEBUG_MESSAGES
@@ -986,27 +986,31 @@
   [mBuildTask terminate] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) actionBuildSelected: (id) inUnusedSender {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  OC_GGS_TextDisplayDescriptor * tdd = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
-  [self compileFileAtPath:tdd.sourceURL.path] ;
+  if (nil == mBuildTask) {
+    OC_GGS_TextDisplayDescriptor * tdd = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
+    [self compileFileAtPath:tdd.sourceURL.path] ;
+  }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) actionBuildFirst: (id) inUnusedSender {
   #ifdef DEBUG_MESSAGES
     NSLog (@"%s", __PRETTY_FUNCTION__) ;
   #endif
-  OC_GGS_TextDisplayDescriptor * tdd = [mDisplayDescriptorArray objectAtIndex:0] ;
-  [self compileFileAtPath:tdd.sourceURL.path] ;
+  if (nil == mBuildTask) {
+    OC_GGS_TextDisplayDescriptor * tdd = [mDisplayDescriptorArray objectAtIndex:0] ;
+    [self compileFileAtPath:tdd.sourceURL.path] ;
+  }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) compileFileAtPath: (NSString *) inFilePath {
   #ifdef DEBUG_MESSAGES
@@ -1047,7 +1051,7 @@
   [mOutputTextView.textStorage setAttributedString:attributedString] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) enterIssue: (NSString *) inIssueMessage
          isError: (BOOL) inIsError
@@ -1095,14 +1099,12 @@
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
-static const utf32 COCOA_MESSAGE_ID = TO_UNICODE (1) ;
-//static const utf32 COCOA_REWRITE_SUCCESS_ID = TO_UNICODE (2) ;
 static const utf32 COCOA_WARNING_ID = TO_UNICODE (3) ;
 static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) enterOutputData: (NSData *) inData {
   #ifdef DEBUG_MESSAGES
@@ -1185,7 +1187,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   [mOutputTextView scrollRangeToVisible:NSMakeRange (mOutputTextView.textStorage.length, 0)] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) buildCompleted {
   #ifdef DEBUG_MESSAGES
@@ -1218,7 +1220,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   ] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) pmReleaseBuildTask {
   mBuildTask = nil ;
@@ -1233,7 +1235,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }*/
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) appendBuildOutputData: (NSData *) inData {
   #ifdef DEBUG_MESSAGES
@@ -1266,7 +1268,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) triggerDocumentEditedStatusUpdate {
   #ifdef DEBUG_MESSAGES
@@ -1282,11 +1284,11 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   [self updateChangeCount:isEdited ? NSChangeDone : NSChangeCleared] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #pragma mark Click on issue table view
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) clickOnSourceTableView: (id) inSender {
   if (mDisplayDescriptorTableView.clickedColumn == 1) {
@@ -1298,7 +1300,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) openSourceInNewWindowAction: (id) inSender {
   NSError * error = nil ;
@@ -1314,7 +1316,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) moveSourceInNewWindowAction: (id) inSender {
   NSError * error = nil ;
@@ -1331,7 +1333,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) duplicateSourceAction: (id) inSender {
   OC_GGS_TextDisplayDescriptor * d = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
@@ -1343,7 +1345,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   [self registerConfigurationInPreferences] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) revealInFinderAction: (id) inSender {
   OC_GGS_TextDisplayDescriptor * d = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
@@ -1354,14 +1356,14 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) closeAction: (id) inSender {
   OC_GGS_TextDisplayDescriptor * d = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
   [self removeSelectedTabAction:d] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) closeOthersAction: (id) inSender {
   OC_GGS_TextDisplayDescriptor * tdd = [mSourceDisplayArrayController.selectedObjects objectAtIndex:0] ;
@@ -1372,7 +1374,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (OC_GGS_DocumentData *) findOrAddDocumentWithPath: (NSString *) inPath {
   #ifdef DEBUG_MESSAGES
@@ -1388,7 +1390,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   ] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (OC_GGS_TextDisplayDescriptor *) findOrAddNewTabForFile: (NSString *) inDocumentPath {
   #ifdef DEBUG_MESSAGES
@@ -1418,7 +1420,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   return foundSourceText ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) appendTabForFile: (NSString *) inDocumentPath {
   #ifdef DEBUG_MESSAGES
@@ -1436,7 +1438,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) removeSelectedTabAction: (OC_GGS_TextDisplayDescriptor *) inTextDisplayDescriptor {
   #ifdef DEBUG_MESSAGES
@@ -1454,11 +1456,11 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #pragma mark observeValueForKeyPath
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) observeValueForKeyPath:(NSString *) inKeyPath
          ofObject: (id) inObject
@@ -1505,11 +1507,11 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #pragma mark Open Quickly
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (NSString *) fileNameFromSelection {
   #ifdef DEBUG_MESSAGES
@@ -1568,7 +1570,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   return [self.fileURL.path.stringByDeletingLastPathComponent stringByAppendingPathComponent:relativePath] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) actionOpenFromSelectionInNewWindow: (id) sender {
   #ifdef DEBUG_MESSAGES
@@ -1587,7 +1589,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) actionOpenFromSelection: (id) sender {
   #ifdef DEBUG_MESSAGES
@@ -1596,7 +1598,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   [self findOrAddNewTabForFile:self.fileNameFromSelection] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #pragma mark Search and Replace
 
@@ -1618,7 +1620,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   return mSecondSplitView.isVertical ? NSMaxX (priorViewFrame) : NSMaxY (priorViewFrame);
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 // NSPlitView delegate method
 
 - (CGFloat) splitView:(NSSplitView *) inSplitView
@@ -1638,7 +1640,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 // NSPlitView delegate method
 
 - (CGFloat) splitView:(NSSplitView *) inSplitView
@@ -1656,7 +1658,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 // http://stackoverflow.com/questions/17441877/nssplitview-fixed-splitter-on-window-resize
 
@@ -1707,7 +1709,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) showSearchAndReplaceView: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -1721,7 +1723,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   [mGlobalSearchTextField.window makeFirstResponder:mGlobalSearchTextField] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) closeSearchAndReplaceView: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -1734,7 +1736,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   [mSecondSplitView setPosition:position ofDividerAtIndex:0] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) updateOccurrenceFoundTextField {
   #ifdef DEBUG_MESSAGES
@@ -1750,7 +1752,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   [mOccurenceFoundCountTextField display] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) globalFindAction: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -1772,7 +1774,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) findInOpenedFileDirectories {
   #ifdef DEBUG_MESSAGES
@@ -1792,7 +1794,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) recursiveSearchInDirectory: (NSString *) inDirectoryFullPath
          recursive: (BOOL) inRecursive
@@ -1821,7 +1823,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (NSArray *) allTypesOfCurrentApplication {
   #ifdef DEBUG_MESSAGES
@@ -1837,7 +1839,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   return allTypes ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (NSUInteger) searchOptions {
   #ifdef DEBUG_MESSAGES
@@ -1850,7 +1852,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   return searchOptions ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) findInFile: (NSString *) inFilePath {
   #ifdef DEBUG_MESSAGES
@@ -1877,7 +1879,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   [self enterResult:foundEntries forFilePath:inFilePath] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) findInOpenedFiles {
   #ifdef DEBUG_MESSAGES
@@ -1911,7 +1913,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) addFindResult:(NSString *) inSourceFilePath
          sourceString: (NSString *) inSourceString
@@ -1931,7 +1933,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   mResultCount ++ ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) enterResult: (NSMutableArray *) inFoundEntries
          forFilePath:(NSString *) inSourceFilePath {
@@ -1951,7 +1953,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) changeSelectionInSearchResultView {
   #ifdef DEBUG_MESSAGES
@@ -1976,7 +1978,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (void) updateSearchResultForFile: (NSString *) inFilePath
          previousRange: (NSRange) inPreviousRange
@@ -1993,7 +1995,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 } 
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (IBAction) globalReplaceAllAction: (id) inSender {
   #ifdef DEBUG_MESSAGES
@@ -2025,13 +2027,13 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #pragma mark Drag and Drop in source table View
 
 // http://stackoverflow.com/questions/10308008/nstableview-and-drag-and-drop-from-finder
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (BOOL) tableView: (NSTableView *)tv
          writeRowsWithIndexes: (NSIndexSet *) inRowIndexes
@@ -2045,7 +2047,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   return YES;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (NSDragOperation) tableView:(NSTableView*)tv
                     validateDrop:(id <NSDraggingInfo>)info
@@ -2057,7 +2059,7 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   return NSDragOperationEvery ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 - (BOOL) tableView: (NSTableView *)aTableView
          acceptDrop: (id <NSDraggingInfo>)info
@@ -2081,6 +2083,6 @@ static const utf32 COCOA_ERROR_ID   = TO_UNICODE (4) ;
   return YES ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 @end

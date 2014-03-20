@@ -433,17 +433,6 @@
 									<reference key="NSOnImage" ref="950411432"/>
 									<reference key="NSMixedImage" ref="850908681"/>
 								</object>
-								<object class="NSMenuItem" id="926765572">
-									<reference key="NSMenu" ref="361397335"/>
-									<bool key="NSIsDisabled">YES</bool>
-									<bool key="NSIsSeparator">YES</bool>
-									<string key="NSTitle"/>
-									<string key="NSKeyEquiv"/>
-									<int key="NSKeyEquivModMask">1048576</int>
-									<int key="NSMnemonicLoc">2147483647</int>
-									<reference key="NSOnImage" ref="950411432"/>
-									<reference key="NSMixedImage" ref="850908681"/>
-								</object>
 								<object class="NSMenuItem" id="166819767">
 									<reference key="NSMenu" ref="361397335"/>
 									<bool key="NSIsDisabled">YES</bool>
@@ -765,7 +754,6 @@
 							<int key="NSvFlags">274</int>
 							<string key="NSFrame">{{13, 10}, {574, 544}}</string>
 							<reference key="NSSuperview" ref="905348180"/>
-							<reference key="NSNextKeyView" ref="1046506780"/>
 							<array class="NSMutableArray" key="NSTabViewItems">
 								<object class="NSTabViewItem" id="933881169">
 									<object class="NSMutableString" key="NSIdentifier">
@@ -1345,9 +1333,9 @@
 																	<object class="NSTextView" id="971466825">
 																		<reference key="NSNextResponder" ref="567509093"/>
 																		<int key="NSvFlags">2322</int>
-																		<string key="NSFrameSize">{503, 86}</string>
+																		<string key="NSFrameSize">{503, 84}</string>
 																		<reference key="NSSuperview" ref="567509093"/>
-																		<reference key="NSNextKeyView" ref="888513894"/>
+																		<reference key="NSNextKeyView" ref="179892220"/>
 																		<object class="NSTextContainer" key="NSTextContainer" id="621122586">
 																			<object class="NSLayoutManager" key="NSLayoutManager">
 																				<object class="NSTextStorage" key="NSTextStorage">
@@ -1596,11 +1584,10 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 																<int key="NSvFlags">256</int>
 																<string key="NSFrame">{{504, 1}, {15, 82}}</string>
 																<reference key="NSSuperview" ref="24548782"/>
-																<reference key="NSNextKeyView"/>
 																<bool key="NSEnabled">YES</bool>
 																<reference key="NSTarget" ref="24548782"/>
 																<string key="NSAction">_doScroller:</string>
-																<double key="NSPercent">0.95348837209302328</double>
+																<double key="NSPercent">0.97619047619047616</double>
 															</object>
 															<object class="NSScroller" id="179892220">
 																<reference key="NSNextResponder" ref="24548782"/>
@@ -1617,7 +1604,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 														</array>
 														<string key="NSFrame">{{0, 354}, {520, 84}}</string>
 														<reference key="NSSuperview" ref="1032356688"/>
-														<reference key="NSNextKeyView" ref="179892220"/>
+														<reference key="NSNextKeyView" ref="567509093"/>
 														<int key="NSsFlags">133202</int>
 														<reference key="NSVScroller" ref="888513894"/>
 														<reference key="NSHScroller" ref="179892220"/>
@@ -2633,7 +2620,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 							<reference ref="705957381"/>
 							<reference ref="537010065"/>
 							<reference ref="764064012"/>
-							<reference ref="926765572"/>
 							<reference ref="217988613"/>
 							<reference ref="166819767"/>
 							<reference ref="1020190100"/>
@@ -2679,11 +2665,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 					<object class="IBObjectRecord">
 						<int key="objectID">173</int>
 						<reference key="object" ref="764064012"/>
-						<reference key="parent" ref="361397335"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">174</int>
-						<reference key="object" ref="926765572"/>
 						<reference key="parent" ref="361397335"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -3443,7 +3424,6 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 				<string key="171.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="172.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="173.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
-				<string key="174.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="184.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="185.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="187.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3554,6 +3534,371 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 						<string key="minorKey"/>
 					</object>
 				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OC_GGS_ApplicationDelegate</string>
+					<string key="superclassName">NSObject</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="clearSourceDocumentPreferencesEntries:">id</string>
+						<string key="setTextRulerVisible:">id</string>
+						<string key="showAllocationWindow:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="clearSourceDocumentPreferencesEntries:">
+							<string key="name">clearSourceDocumentPreferencesEntries:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="setTextRulerVisible:">
+							<string key="name">setTextRulerVisible:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="showAllocationWindow:">
+							<string key="name">showAllocationWindow:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="mCommandLineOptionScrollView">NSScrollView</string>
+						<string key="mCommandLineOptionTextView">NSTextView</string>
+						<string key="mConvert_CRLF_And_CR_To_LF_AtStartUpButton">NSButton</string>
+						<string key="mConvert_HTAB_To_SPACE_AtStartUpButton">NSButton</string>
+						<string key="mCurrentBuildWindowFontAndSizeSettingsButton">PMFontButton</string>
+						<string key="mEnableCompletionCheckBox">NSButton</string>
+						<string key="mLexicalColoringScrollView">NSScrollView</string>
+						<string key="mLexicalColoringTabView">NSTabView</string>
+						<string key="mNewDocumentAccessoryView">NSView</string>
+						<string key="mNewDocumentTypePopUpButton">NSPopUpButton</string>
+						<string key="mPreferenceWindow">NSWindow</string>
+						<string key="mPreferencesTabView">NSTabView</string>
+						<string key="mSetFontButton">NSButton</string>
+						<string key="mShiftLeftInsertedSpaceTextField">NSTextField</string>
+						<string key="mShowInvisibleCharactersCheckBox">NSButton</string>
+						<string key="mSourcePreferenceStatsTextField">NSTextField</string>
+						<string key="mTextMacroMenu">NSMenu</string>
+						<string key="mToolPopUpButton">NSPopUpButton</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="mCommandLineOptionScrollView">
+							<string key="name">mCommandLineOptionScrollView</string>
+							<string key="candidateClassName">NSScrollView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mCommandLineOptionTextView">
+							<string key="name">mCommandLineOptionTextView</string>
+							<string key="candidateClassName">NSTextView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mConvert_CRLF_And_CR_To_LF_AtStartUpButton">
+							<string key="name">mConvert_CRLF_And_CR_To_LF_AtStartUpButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mConvert_HTAB_To_SPACE_AtStartUpButton">
+							<string key="name">mConvert_HTAB_To_SPACE_AtStartUpButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mCurrentBuildWindowFontAndSizeSettingsButton">
+							<string key="name">mCurrentBuildWindowFontAndSizeSettingsButton</string>
+							<string key="candidateClassName">PMFontButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mEnableCompletionCheckBox">
+							<string key="name">mEnableCompletionCheckBox</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mLexicalColoringScrollView">
+							<string key="name">mLexicalColoringScrollView</string>
+							<string key="candidateClassName">NSScrollView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mLexicalColoringTabView">
+							<string key="name">mLexicalColoringTabView</string>
+							<string key="candidateClassName">NSTabView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mNewDocumentAccessoryView">
+							<string key="name">mNewDocumentAccessoryView</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mNewDocumentTypePopUpButton">
+							<string key="name">mNewDocumentTypePopUpButton</string>
+							<string key="candidateClassName">NSPopUpButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mPreferenceWindow">
+							<string key="name">mPreferenceWindow</string>
+							<string key="candidateClassName">NSWindow</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mPreferencesTabView">
+							<string key="name">mPreferencesTabView</string>
+							<string key="candidateClassName">NSTabView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mSetFontButton">
+							<string key="name">mSetFontButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mShiftLeftInsertedSpaceTextField">
+							<string key="name">mShiftLeftInsertedSpaceTextField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mShowInvisibleCharactersCheckBox">
+							<string key="name">mShowInvisibleCharactersCheckBox</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mSourcePreferenceStatsTextField">
+							<string key="name">mSourcePreferenceStatsTextField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mTextMacroMenu">
+							<string key="name">mTextMacroMenu</string>
+							<string key="candidateClassName">NSMenu</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mToolPopUpButton">
+							<string key="name">mToolPopUpButton</string>
+							<string key="candidateClassName">NSPopUpButton</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/OC_GGS_ApplicationDelegate.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">OC_GGS_Document</string>
+					<string key="superclassName">NSDocument</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="actionBuildFirst:">id</string>
+						<string key="actionBuildSelected:">id</string>
+						<string key="actionComment:">id</string>
+						<string key="actionGotoLine:">id</string>
+						<string key="actionPathControl:">id</string>
+						<string key="actionShiftLeft:">id</string>
+						<string key="actionShiftRight:">id</string>
+						<string key="actionUncomment:">id</string>
+						<string key="closeAction:">id</string>
+						<string key="closeOthersAction:">id</string>
+						<string key="closeSearchAndReplaceView:">id</string>
+						<string key="collapseIssuesAction:">id</string>
+						<string key="copyFileDirectory:">id</string>
+						<string key="copyFileName:">id</string>
+						<string key="copyFilePath:">id</string>
+						<string key="duplicateSourceAction:">id</string>
+						<string key="globalFindAction:">id</string>
+						<string key="globalReplaceAllAction:">id</string>
+						<string key="moveSourceInNewWindowAction:">id</string>
+						<string key="openSourceInNewWindowAction:">id</string>
+						<string key="revealInFinderAction:">id</string>
+						<string key="stopBuild:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="actionBuildFirst:">
+							<string key="name">actionBuildFirst:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="actionBuildSelected:">
+							<string key="name">actionBuildSelected:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="actionComment:">
+							<string key="name">actionComment:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="actionGotoLine:">
+							<string key="name">actionGotoLine:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="actionPathControl:">
+							<string key="name">actionPathControl:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="actionShiftLeft:">
+							<string key="name">actionShiftLeft:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="actionShiftRight:">
+							<string key="name">actionShiftRight:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="actionUncomment:">
+							<string key="name">actionUncomment:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="closeAction:">
+							<string key="name">closeAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="closeOthersAction:">
+							<string key="name">closeOthersAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="closeSearchAndReplaceView:">
+							<string key="name">closeSearchAndReplaceView:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="collapseIssuesAction:">
+							<string key="name">collapseIssuesAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="copyFileDirectory:">
+							<string key="name">copyFileDirectory:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="copyFileName:">
+							<string key="name">copyFileName:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="copyFilePath:">
+							<string key="name">copyFilePath:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="duplicateSourceAction:">
+							<string key="name">duplicateSourceAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="globalFindAction:">
+							<string key="name">globalFindAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="globalReplaceAllAction:">
+							<string key="name">globalReplaceAllAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="moveSourceInNewWindowAction:">
+							<string key="name">moveSourceInNewWindowAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="openSourceInNewWindowAction:">
+							<string key="name">openSourceInNewWindowAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="revealInFinderAction:">
+							<string key="name">revealInFinderAction:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="stopBuild:">
+							<string key="name">stopBuild:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="mBuildProgressIndicator">NSProgressIndicator</string>
+						<string key="mCaseSensitiveSearchCheckbox">NSButton</string>
+						<string key="mDisplayDescriptorTableView">NSTableView</string>
+						<string key="mErrorCountTextField">NSTextField</string>
+						<string key="mFirstSplitView">NSSplitView</string>
+						<string key="mGlobalReplaceTextField">NSTextField</string>
+						<string key="mGlobalSearchTextField">NSSearchField</string>
+						<string key="mGotoLineTextField">NSTextField</string>
+						<string key="mGotoWindow">NSWindow</string>
+						<string key="mOccurenceFoundCountTextField">NSTextField</string>
+						<string key="mOutputScrollView">NSScrollView</string>
+						<string key="mOutputTextView">NSTextView</string>
+						<string key="mResultOutlineView">NSOutlineView</string>
+						<string key="mSearchMatrix">NSMatrix</string>
+						<string key="mSearchView">NSView</string>
+						<string key="mSecondSplitView">NSSplitView</string>
+						<string key="mSourceFilePathControl">NSPathControl</string>
+						<string key="mSourceHostView">NSView</string>
+						<string key="mStartBuildButton">NSButton</string>
+						<string key="mStopBuildButton">NSButton</string>
+						<string key="mUpdateFromFileSystemPanel">NSPanel</string>
+						<string key="mWarningCountTextField">NSTextField</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="mBuildProgressIndicator">
+							<string key="name">mBuildProgressIndicator</string>
+							<string key="candidateClassName">NSProgressIndicator</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mCaseSensitiveSearchCheckbox">
+							<string key="name">mCaseSensitiveSearchCheckbox</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mDisplayDescriptorTableView">
+							<string key="name">mDisplayDescriptorTableView</string>
+							<string key="candidateClassName">NSTableView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mErrorCountTextField">
+							<string key="name">mErrorCountTextField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mFirstSplitView">
+							<string key="name">mFirstSplitView</string>
+							<string key="candidateClassName">NSSplitView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mGlobalReplaceTextField">
+							<string key="name">mGlobalReplaceTextField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mGlobalSearchTextField">
+							<string key="name">mGlobalSearchTextField</string>
+							<string key="candidateClassName">NSSearchField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mGotoLineTextField">
+							<string key="name">mGotoLineTextField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mGotoWindow">
+							<string key="name">mGotoWindow</string>
+							<string key="candidateClassName">NSWindow</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mOccurenceFoundCountTextField">
+							<string key="name">mOccurenceFoundCountTextField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mOutputScrollView">
+							<string key="name">mOutputScrollView</string>
+							<string key="candidateClassName">NSScrollView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mOutputTextView">
+							<string key="name">mOutputTextView</string>
+							<string key="candidateClassName">NSTextView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mResultOutlineView">
+							<string key="name">mResultOutlineView</string>
+							<string key="candidateClassName">NSOutlineView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mSearchMatrix">
+							<string key="name">mSearchMatrix</string>
+							<string key="candidateClassName">NSMatrix</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mSearchView">
+							<string key="name">mSearchView</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mSecondSplitView">
+							<string key="name">mSecondSplitView</string>
+							<string key="candidateClassName">NSSplitView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mSourceFilePathControl">
+							<string key="name">mSourceFilePathControl</string>
+							<string key="candidateClassName">NSPathControl</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mSourceHostView">
+							<string key="name">mSourceHostView</string>
+							<string key="candidateClassName">NSView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mStartBuildButton">
+							<string key="name">mStartBuildButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mStopBuildButton">
+							<string key="name">mStopBuildButton</string>
+							<string key="candidateClassName">NSButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mUpdateFromFileSystemPanel">
+							<string key="name">mUpdateFromFileSystemPanel</string>
+							<string key="candidateClassName">NSPanel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="mWarningCountTextField">
+							<string key="name">mWarningCountTextField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/OC_GGS_Document.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">PMFontButton</string>
+					<string key="superclassName">NSButton</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/PMFontButton.h</string>
+					</object>
+				</object>
 			</array>
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
@@ -3568,7 +3913,7 @@ AAEAAQAAAT0AAwAAAAEAAgAAAVIAAwAAAAEAAQAAAVMAAwAAAAIAAQABAAAAAA</bytes>
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.InterfaceBuilder3</string>
-			<real value="4300" key="NS.object.0"/>
+			<real value="3200" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>

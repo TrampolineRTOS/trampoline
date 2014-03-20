@@ -1,51 +1,51 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  Declaration and implementation of the template class                     *
 //                    'TC_Block_AVL_TreeForCollision'                        *
-//                                                                           *
+//                                                                             *
 //  This class implements a generic ordered binary AVL tree for hash map     *
 //   collisions.                                                             *
-//                                                                           *
+//                                                                             *
 //  For heap efficiency, element are allocated by blocks.                    *
-//                                                                           *
+//                                                                             *
 //  COPY OF ITS INSTANCES IS FORBIDDEN BY REDEFINITION OF COPY CONSTRUCTOR   *
 //  AND ASSIGNMENT OPERATOR.                                                 *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
 //  Copyright (C) 2001 Pierre Molinaro.                                      *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
 //  ECN, Ecole Centrale de Nantes                                            *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #ifndef TEMPLATE_CLASS_BLOCK_AVLTREE_FOR_COLLISION_RESOLUTION_DEFINED
 #define TEMPLATE_CLASS_BLOCK_AVLTREE_FOR_COLLISION_RESOLUTION_DEFINED
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include "collections/TF_AVL_Tree.h"
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include <stddef.h>
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Class of avl trees                                                  *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 class TC_Block_AVL_TreeForCollision {
@@ -152,11 +152,11 @@ class TC_Block_AVL_TreeForCollision {
   friend class TC_blockavltree_element_for_collision ;
 } ;
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Constructor for avl tree                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 void * TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::TC_blockavltree_element_for_collision::operator new (const size_t /*inByteSize*/) {
@@ -169,7 +169,7 @@ void * TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::TC_blockavltree_element_
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 void TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::TC_blockavltree_element_for_collision::operator delete (void * inPtr) {
@@ -189,11 +189,11 @@ void TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::TC_blockavltree_element_fo
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Constructor for avl tree                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 void TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::allocBlock (void) {
@@ -229,44 +229,44 @@ void TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::allocBlock (void) {
   smAllocInfo.mCreatedObjectsCount += nbNewObjects ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Constructor for avl tree                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::TC_Block_AVL_TreeForCollision (void) {
   mRoot = (TC_blockavltree_element_for_collision *) NULL ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Destructor for avl tree                                             *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::~TC_Block_AVL_TreeForCollision (void) {
   delete mRoot ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Get allocated size (in bytes)                                       *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 PMUInt32 TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::getAllocatedSizeInBytes (void) {
   return (PMUInt32) (BLOCK_SIZE * smAllocInfo.mAllocatedBlockCount) ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Search and insert if not found                                      *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 INFO * TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::
@@ -276,11 +276,11 @@ search_or_insert (const INFO & inInfo,
   return recursiveSearchOrInsert (mRoot, inInfo, unused, outInsertionPerformed) ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Search only                                                         *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 INFO * TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::
@@ -288,11 +288,11 @@ search (const INFO & inInfo) {
   return TF_avltree_search (mRoot, inInfo) ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Sweep unmarked objects                                              *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 PMUInt32 TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::internalRecursiveSweep (TC_blockavltree_element_for_collision * inElement) {
@@ -316,7 +316,7 @@ PMUInt32 TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::internalRecursiveSweep
   return sweepedNodes ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 PMUInt32 TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::sweepUnmarkedObjects (void) {
@@ -325,11 +325,11 @@ PMUInt32 TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::sweepUnmarkedObjects (
   return internalRecursiveSweep (temporaryRoot) ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Tranfert objects in a new map array                                 *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 void TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::
@@ -349,7 +349,7 @@ recursiveTransfertElementsInNewMapArray (TC_blockavltree_element_for_collision *
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 void TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::
@@ -359,7 +359,7 @@ transfertElementsInNewMapArray (TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE> 
   mRoot = (TC_blockavltree_element_for_collision *) NULL ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 void TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::
@@ -371,7 +371,7 @@ internalRecursiveUnmark (TC_blockavltree_element_for_collision * inElement) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 void TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::
@@ -379,7 +379,7 @@ unmarkAllObjects (void) {
   internalRecursiveUnmark (mRoot) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 PMSInt32 TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::
@@ -395,7 +395,7 @@ internalMarkedNodeCount (const TC_blockavltree_element_for_collision * const inE
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO, PMSInt32 BLOCK_SIZE>
 PMSInt32 TC_Block_AVL_TreeForCollision<INFO, BLOCK_SIZE>::
@@ -403,6 +403,6 @@ getMarkedNodesCount (void) const {
   return internalMarkedNodeCount (mRoot) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #endif

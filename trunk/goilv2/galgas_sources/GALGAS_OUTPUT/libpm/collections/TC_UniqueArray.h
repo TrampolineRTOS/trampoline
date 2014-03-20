@@ -1,65 +1,65 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //            Declaration and implementation of the template class           *
 //                         'TC_UniqueArray'                                  *
-//                                                                           *
+//                                                                             *
 //  COPY OF ITS INSTANCES IS FORBIDDEN BY REDEFINITION OF COPY CONSTRUCTOR   *
 //  AND ASSIGNMENT OPERATOR.                                                 *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
-//  Copyright (C) 1997, ..., 2012 Pierre Molinaro.                           *
-//                                                                           *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//                                                                           *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
-//  ECN, Ecole Centrale de Nantes (France)                                   *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
+//  Copyright (C) 1997, ..., 2012 Pierre Molinaro.                             *
+//                                                                             *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//                                                                             *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
+//  ECN, École Centrale de Nantes (France)                                     *
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #ifndef UNIQUE_GENERIC_ARRAY_IS_DEFINED
 #define UNIQUE_GENERIC_ARRAY_IS_DEFINED
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include "utilities/MF_Assert.h"
 #include "utilities/M_SourceLocation.h"
 #include "utilities/TF_Swap.h"
 #include "utilities/MF_MemoryControl.h"
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Template class predeclaration                                           *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE> class TC_UniqueArray ;
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   swap function for TC_UniqueArray <TYPE> classes                         *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void swap (TC_UniqueArray <TYPE> & ioOperand1,
            TC_UniqueArray <TYPE> & ioOperand2) ;
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Template class declaration                                              *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE> class TC_UniqueArray {
 //--- Default Constructor
@@ -285,11 +285,11 @@ template <typename TYPE> class TC_UniqueArray {
 
 } ;
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Default Constructor                                                     *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 TC_UniqueArray <TYPE>::TC_UniqueArray (void) :
@@ -298,11 +298,11 @@ mCount (0),
 mCapacity (0) {
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Allocation Constructor                                                  *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 TC_UniqueArray <TYPE>::
@@ -319,11 +319,11 @@ mCapacity (0) {
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Allocation Constructor                                                  *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 TC_UniqueArray <TYPE>::TC_UniqueArray (const PMSInt32 inCapacity,
@@ -345,11 +345,11 @@ mCapacity (0) {
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Allocation Constructor                                                  *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::setDataFromPointer (TYPE * & ioDataPtr,
@@ -361,7 +361,7 @@ void TC_UniqueArray <TYPE>::setDataFromPointer (TYPE * & ioDataPtr,
   ioDataPtr = NULL ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::appendDataFromPointer (const TYPE * inDataPtr,
@@ -371,33 +371,33 @@ void TC_UniqueArray <TYPE>::appendDataFromPointer (const TYPE * inDataPtr,
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Destructor                                                              *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 TC_UniqueArray <TYPE>::~TC_UniqueArray (void) {
   macroMyDeleteArray (mArray) ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Destructor                                                              *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::setCountToZero (void) {
   mCount = 0 ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Method for making room using copy                                       *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::copyTo (TC_UniqueArray <TYPE> & outArray) const {
@@ -407,11 +407,11 @@ void TC_UniqueArray <TYPE>::copyTo (TC_UniqueArray <TYPE> & outArray) const {
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Method for making room using copy                                       *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::makeRoom (const PMSInt32 inNewCapacity) {
@@ -430,11 +430,11 @@ void TC_UniqueArray <TYPE>::makeRoom (const PMSInt32 inNewCapacity) {
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Method for making room using copy                                       *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
@@ -464,11 +464,11 @@ forceObjectAtIndex (const PMSInt32 inIndex,
   mArray [inIndex] = inValue ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Method for making room using swap function                              *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::makeRoomUsingSwap (const PMSInt32 inNewCapacity) {
@@ -487,11 +487,11 @@ void TC_UniqueArray <TYPE>::makeRoomUsingSwap (const PMSInt32 inNewCapacity) {
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Remove all objects and deallocate                                       *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::free (void) {
@@ -500,11 +500,11 @@ void TC_UniqueArray <TYPE>::free (void) {
   mCapacity = 0 ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Add object at the end of the array                                      *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::addObject (const TYPE & inValue) {
@@ -515,11 +515,11 @@ void TC_UniqueArray <TYPE>::addObject (const TYPE & inValue) {
   mCount ++ ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Add object in array, maintaining array sorted                           *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::addObjectInOrderedArray (const TYPE & inValue) {
@@ -559,11 +559,11 @@ void TC_UniqueArray <TYPE>::addObjectInOrderedArray (const TYPE & inValue) {
   #endif
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Add object at the end of the array, if object is not already in array   *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::addObjectIfUnique (const TYPE & inValue) {
@@ -578,11 +578,11 @@ void TC_UniqueArray <TYPE>::addObjectIfUnique (const TYPE & inValue) {
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Add objects at the end of the array                                     *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
@@ -597,11 +597,11 @@ addObjects (const PMSInt32 inCount, const TYPE & inValue) {
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Add object at the end of the array                                      *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::addObjectUsingSwap (TYPE & ioValue) {
@@ -610,11 +610,11 @@ void TC_UniqueArray <TYPE>::addObjectUsingSwap (TYPE & ioValue) {
   mCount ++ ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Add default object at the end of the array                              *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::addDefaultObjectUsingSwap (void) {
@@ -624,11 +624,11 @@ void TC_UniqueArray <TYPE>::addDefaultObjectUsingSwap (void) {
   mCount ++ ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Add objects at the end of the array                                     *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
@@ -642,11 +642,11 @@ addObjectsUsingClear (const PMSInt32 inObjectCount) {
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Add objects at the end of the array from an other array                 *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
@@ -660,11 +660,11 @@ addObjectsFromArray (const TC_UniqueArray <TYPE> &  inObjectArray) {
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Check index before insertion                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   template <typename TYPE>
@@ -675,11 +675,11 @@ addObjectsFromArray (const TC_UniqueArray <TYPE> &  inObjectArray) {
   }
 #endif
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Insert object at index                                                  *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
@@ -695,11 +695,11 @@ insertObjectAtIndex (const TYPE & inValue, const PMSInt32 inIndex COMMA_LOCATION
   mCount ++ ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Insert objects at index                                                 *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
@@ -719,11 +719,11 @@ insertObjectsAtIndex (const PMSInt32 inCount, const TYPE & inValue, const PMSInt
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Insert objects at index using swap                                      *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
@@ -739,11 +739,11 @@ insertObjectUsingSwap (TYPE & ioValue, const PMSInt32 inIndex COMMA_LOCATION_ARG
   mCount ++ ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Insert objects at index using default constructor                       *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
@@ -763,11 +763,11 @@ insertObjectsUsingExchangeAndClear (const PMSInt32 inCount, const PMSInt32 inSta
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   remove last object                                                      *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
@@ -778,11 +778,11 @@ removeLastObject (LOCATION_ARGS) {
   mCount -- ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   remove last objects                                                     *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
@@ -795,11 +795,11 @@ removeLastObjects (const PMSInt32 inCount COMMA_LOCATION_ARGS) {
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   remove object at index (0 <= index < count)                             *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
@@ -813,11 +813,11 @@ removeObjectAtIndex (const PMSInt32 inIndex COMMA_LOCATION_ARGS) {
   mCount -- ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   delete objects from index (0<=index<mCount), ((index+inCount)<=mCount)  *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
@@ -834,11 +834,11 @@ removeObjectsAtIndex (const PMSInt32 inCount, const PMSInt32 inStartingIndex COM
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Search Objects                                                          *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 PMSInt32 TC_UniqueArray <TYPE>::
@@ -852,11 +852,11 @@ indexOfFirstObjectEqualTo (const TYPE & inValue) const {
   return result ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
-//   Array Access                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
+//                                                                             *
+//   Array Access                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   template <typename TYPE>
@@ -867,7 +867,7 @@ indexOfFirstObjectEqualTo (const TYPE & inValue) const {
   }
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::setObjectAtIndex (const TYPE & inObject,
@@ -876,10 +876,12 @@ void TC_UniqueArray <TYPE>::setObjectAtIndex (const TYPE & inObject,
   #ifndef DO_NOT_GENERATE_CHECKINGS
     checkIndex (inIndex COMMA_THERE) ;
   #endif
-  mArray [inIndex] = inObject ;
+  if (NULL != mArray) {
+    mArray [inIndex] = inObject ;
+  }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 TYPE & TC_UniqueArray <TYPE>::operator () (const PMSInt32 inIndex COMMA_LOCATION_ARGS) {
@@ -889,7 +891,7 @@ TYPE & TC_UniqueArray <TYPE>::operator () (const PMSInt32 inIndex COMMA_LOCATION
   return mArray [inIndex] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 const TYPE & TC_UniqueArray <TYPE>::operator () (const PMSInt32 inIndex COMMA_LOCATION_ARGS) const {
@@ -899,7 +901,7 @@ const TYPE & TC_UniqueArray <TYPE>::operator () (const PMSInt32 inIndex COMMA_LO
   return mArray [inIndex] ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 const TYPE TC_UniqueArray <TYPE>::lastObject (LOCATION_ARGS) const {
@@ -909,11 +911,11 @@ const TYPE TC_UniqueArray <TYPE>::lastObject (LOCATION_ARGS) const {
   return mArray [mCount-1] ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Extract sub array                                                       *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
@@ -930,11 +932,11 @@ subArrayUsingFunction (bool (* inFunction) (const TYPE & inObject),
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Sort array with >= and <= operators                                     *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray<TYPE>::
@@ -961,18 +963,18 @@ internalSortArrayUsingOperators (const PMSInt32 inFirst,
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray<TYPE>::sortArrayUsingComparisonOperators (void) {
   internalSortArrayUsingOperators (0, mCount - 1) ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Reverse sort array with >= and <= operators                             *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray<TYPE>::
@@ -999,18 +1001,18 @@ internalReverseSortArrayUsingOperators (const PMSInt32 inFirst,
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray<TYPE>::reverseSortArrayUsingComparisonOperators (void) {
   internalReverseSortArrayUsingOperators (0, mCount - 1) ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Sort array with >= and <= operators                                     *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray<TYPE>::
@@ -1037,18 +1039,18 @@ internalSortArrayUsingCompareMethod (const PMSInt32 inFirst,
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray<TYPE>::sortArrayUsingCompareMethod (void) {
   internalSortArrayUsingCompareMethod (0, mCount - 1) ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Reverse sort array with >= and <= operators                             *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray<TYPE>::
@@ -1075,18 +1077,18 @@ internalReverseSortArrayUsingCompareMethod (const PMSInt32 inFirst,
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray<TYPE>::reverseSortArrayUsingCompareMethod (void) {
   internalReverseSortArrayUsingCompareMethod (0, mCount - 1) ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Sort array with comparison function                                     *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray<TYPE>::
@@ -1117,7 +1119,7 @@ internalSortArrayUsingFunction (const PMSInt32 inFirst,
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray<TYPE>::
@@ -1128,11 +1130,11 @@ sortArrayUsingFunction (PMSInt32 (* inSortFunction) (const TYPE & inOperand1,
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Reverse sort array with comparison function                             *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray<TYPE>::
@@ -1163,7 +1165,7 @@ internalReverseSortArrayUsingFunction (const PMSInt32 inFirst,
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
@@ -1174,11 +1176,11 @@ reverseSortArrayUsingFunction (PMSInt32 (* inSortFunction) (const TYPE & inOpera
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Comparisons (based on == operator on objects)                           *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 bool TC_UniqueArray<TYPE>::
@@ -1190,11 +1192,11 @@ operator == (const TC_UniqueArray <TYPE> & inOperand) const {
   return areEqual ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Remove from an other array (using assignment operator)                  *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
@@ -1221,11 +1223,11 @@ removeObjectsFromArray (const TC_UniqueArray <TYPE> & inArray) {
   mCount = targetIndex ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Remove from an other array (using swap function)                        *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
@@ -1255,11 +1257,11 @@ removeObjectsFromArrayUsingSwapAndClear (const TC_UniqueArray <TYPE> & inArray) 
   mCount = targetIndex ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Remove identical objects (based on == operator)                         *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::removeIdenticalObjects (void) {
@@ -1284,11 +1286,11 @@ void TC_UniqueArray <TYPE>::removeIdenticalObjects (void) {
   mCount -= sourceIndex - targetIndex ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Remove identical objects (based on == operator)                         *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::removeIdenticalObjectsUsingSwapAndClear (void) {
@@ -1316,11 +1318,11 @@ void TC_UniqueArray <TYPE>::removeIdenticalObjectsUsingSwapAndClear (void) {
   mCount -= sourceIndex - targetIndex ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 // Has objects equal to method actual argument value (based on == operator)*
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 bool TC_UniqueArray <TYPE>::
@@ -1332,11 +1334,11 @@ containsObjectEqualTo (const TYPE & inObject) const {
   return hasObject ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 // Count objects equal to method actual argument value (based on == operator)*
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 PMSInt32 TC_UniqueArray <TYPE>::
@@ -1348,11 +1350,11 @@ countObjectsEqualTo (const TYPE & inObject) const {
   return matchCount ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //        Count objects that respond true to function                        *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 PMSInt32 TC_UniqueArray <TYPE>::
@@ -1366,11 +1368,11 @@ countObjectsThatRespondsTrueToFunction (bool (inFunction) (const TYPE & inObject
   return matchCount ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Intersection with an other array                                        *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
@@ -1397,11 +1399,11 @@ intersectionWithArray (const TC_UniqueArray <TYPE> & inOperand,
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Multi Set Intersection with an other array                              *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
@@ -1439,11 +1441,11 @@ multiSetIntersectionWithArray (const TC_UniqueArray <TYPE> & inOperand,
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Union with an other array                                               *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void TC_UniqueArray <TYPE>::
@@ -1470,21 +1472,21 @@ unionWithArray (const TC_UniqueArray <TYPE> & inOperand,
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   Union with an other array                                               *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE> const TYPE * TC_UniqueArray <TYPE>::arrayPointer (void) const {
   return mArray ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   swap function for TC_UniqueArray <TYPE> classes                         *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <typename TYPE>
 void swap (TC_UniqueArray <TYPE> & ioOperand1,
@@ -1494,6 +1496,6 @@ void swap (TC_UniqueArray <TYPE> & ioOperand1,
   swap (ioOperand1.mArray, ioOperand2.mArray) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #endif

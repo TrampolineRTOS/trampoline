@@ -1,45 +1,45 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  Declaration and implementation of the template class                     *
 //                'TC_LinearListForCollision'                                *
-//                                                                           *
+//                                                                             *
 //  This class implements hash table collision resolution with a linear      *
 //  ordered list.                                                            *
-//                                                                           *
+//                                                                             *
 //  COPY OF ITS INSTANCES IS FORBIDDEN BY REDEFINITION OF COPY CONSTRUCTOR   *
 //  AND ASSIGNMENT OPERATOR.                                                 *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
 //  Copyright (C) 2001 Pierre Molinaro.                                      *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
 //  ECN, Ecole Centrale de Nantes                                            *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #ifndef TEMPLATE_CLASS_LINEAR_ORDERED_LIST_FOR_COLLISION_RESOLUTION_DEFINED
 #define TEMPLATE_CLASS_LINEAR_ORDERED_LIST_FOR_COLLISION_RESOLUTION_DEFINED
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include <stddef.h>
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Class of linear list                                                *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 class TC_LinearListForCollision {
@@ -106,22 +106,22 @@ class TC_LinearListForCollision {
                                               const PMUInt32 inNewSize) ;
 } ;
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Constructor for linear list                                         *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 TC_LinearListForCollision<INFO>::TC_LinearListForCollision (void) {
   mRoot = (TC_linearlist_element *) NULL ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Destructor for linear list                                          *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 TC_LinearListForCollision<INFO>::~TC_LinearListForCollision (void) {
@@ -132,11 +132,11 @@ TC_LinearListForCollision<INFO>::~TC_LinearListForCollision (void) {
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Search and insert if not found                                      *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 INFO * TC_LinearListForCollision<INFO>::search_or_insert (const INFO & inInfo,
@@ -169,11 +169,11 @@ INFO * TC_LinearListForCollision<INFO>::search_or_insert (const INFO & inInfo,
   return & (result->mInfo) ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Insert element                                                      *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 bool TC_LinearListForCollision<INFO>::insertElement (TC_linearlist_element * inElement) {
@@ -203,11 +203,11 @@ bool TC_LinearListForCollision<INFO>::insertElement (TC_linearlist_element * inE
   return insertionPerformed ;
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Sweep unmarked objects                                              *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 PMUInt32 TC_LinearListForCollision<INFO>::internalRecursiveSweep (TC_linearlist_element * inElement) {
@@ -226,7 +226,7 @@ PMUInt32 TC_LinearListForCollision<INFO>::internalRecursiveSweep (TC_linearlist_
   return sweepedNodes ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 PMUInt32 TC_LinearListForCollision<INFO>::sweepUnmarkedObjects (void) {
@@ -235,7 +235,7 @@ PMUInt32 TC_LinearListForCollision<INFO>::sweepUnmarkedObjects (void) {
   return internalRecursiveSweep (temporaryRoot) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 void TC_LinearListForCollision<INFO>::unmarkAllObjects (void) {
@@ -246,11 +246,11 @@ void TC_LinearListForCollision<INFO>::unmarkAllObjects (void) {
   }
 }
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //       Tranfert objects in a new map array                                 *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 void TC_LinearListForCollision<INFO>
@@ -265,7 +265,7 @@ void TC_LinearListForCollision<INFO>
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class INFO>
 void TC_LinearListForCollision<INFO>
@@ -275,6 +275,6 @@ void TC_LinearListForCollision<INFO>
   mRoot = (TC_linearlist_element *) NULL ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #endif

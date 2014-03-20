@@ -1,57 +1,57 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  AC_OutputStream : an abstract output stream class                        *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
-//  Copyright (C) 1997, ..., 2009 Pierre Molinaro.                           *
-//                                                                           *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//                                                                           *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
-//  ECN, Ecole Centrale de Nantes (France)                                   *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
+//  Copyright (C) 1997, ..., 2009 Pierre Molinaro.                             *
+//                                                                             *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//                                                                             *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
+//  ECN, École Centrale de Nantes (France)                                     *
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #include "streams/AC_OutputStream.h"
 #include "strings/C_String.h"
 #include "strings/unicode_character_cpp.h"
 #include "strings/unicode_string_routines.h"
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 AC_OutputStream::AC_OutputStream (void) :
 mIndentation (0),
 mStartingLine (true) {
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 AC_OutputStream::~AC_OutputStream (void) {
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::flush (void) {
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::appendCString (const char * inCstring) {
   if (inCstring != NULL) {
@@ -59,7 +59,7 @@ void AC_OutputStream::appendCString (const char * inCstring) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::genericCharArrayOutput (const char * inCharArray, const PMSInt32 inArrayCount) {
   if (mIndentation == 0) {
@@ -77,7 +77,7 @@ void AC_OutputStream::genericCharArrayOutput (const char * inCharArray, const PM
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::genericUnicodeArrayOutput (const utf32 * inCharArray, const PMSInt32 inArrayCount) {
   if (mIndentation == 0) {
@@ -96,58 +96,58 @@ void AC_OutputStream::genericUnicodeArrayOutput (const utf32 * inCharArray, cons
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark << C_String
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::appendString (const C_String inString) {
   genericUnicodeArrayOutput (inString.utf32String (HERE), inString.length ()) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 AC_OutputStream & AC_OutputStream::operator << (const C_String inString) {
   genericUnicodeArrayOutput (inString.utf32String (HERE), inString.length ()) ;
   return *this ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark << char *
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 AC_OutputStream & AC_OutputStream::operator << (const char * inCstring) {
   appendCString (inCstring) ;
   return *this ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::appendCString (const char * inCstring, const PMSInt32 inCount) {
   genericCharArrayOutput (inCstring, inCount) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 AC_OutputStream & AC_OutputStream::operator << (const utf32 * inUTF32String) {
   genericUnicodeArrayOutput (inUTF32String, utf32_strlen (inUTF32String)) ;
   return * this ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::appendUTF32String (const utf32 * inUTF32String) {
   genericUnicodeArrayOutput (inUTF32String, utf32_strlen (inUTF32String)) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::appendUTF32LiteralStringConstant (const C_String & inString) {
   const utf32 * str = inString.utf32String (HERE) ;
@@ -166,26 +166,26 @@ void AC_OutputStream::appendUTF32LiteralStringConstant (const C_String & inStrin
   appendCString ("\n  TO_UNICODE (0)\n}") ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark << char
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendUnicodeCharacter (const utf32 inUnicodeCharacter COMMA_UNUSED_LOCATION_ARGS) {
   genericUnicodeArrayOutput (& inUnicodeCharacter, 1) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark << double
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::appendDouble (const double inValue) {
   char s [40] = "" ;
@@ -193,18 +193,18 @@ void AC_OutputStream::appendDouble (const double inValue) {
   genericCharArrayOutput (s, (PMSInt32) (strlen (s) & PMUINT32_MAX)) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark PMUInt64
 #endif
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  WARNING: in gcc 3.x printf for 64-bit integer crashes!                   *
 //  So we use an auxiliary function printfUINT64 and only 32-bit printing    *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 static void
 printfUINT64 (char ioString [],
@@ -219,7 +219,7 @@ printfUINT64 (char ioString [],
   ioLength ++ ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::appendUnsigned (const PMUInt64 inValue) {
   char s [30] = "" ;
@@ -230,7 +230,7 @@ void AC_OutputStream::appendUnsigned (const PMUInt64 inValue) {
   genericCharArrayOutput (s, length) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 static void
 printfUINT64Hex (char ioString [],
@@ -245,7 +245,7 @@ printfUINT64Hex (char ioString [],
   ioLength ++ ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::appendUnsignedHex16 (const PMUInt64 inValue) {
   int length = 0 ;
@@ -255,13 +255,13 @@ void AC_OutputStream::appendUnsignedHex16 (const PMUInt64 inValue) {
   genericCharArrayOutput (s, length) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark << PMSInt64
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::appendSigned (const PMSInt64 inValue) {
   PMSInt32 length = 0 ;
@@ -282,25 +282,25 @@ void AC_OutputStream::appendSigned (const PMSInt64 inValue) {
   genericCharArrayOutput (s, length) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark Bool
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::appendBool (const bool inValue) {
   appendCString (inValue ? "true" : "false") ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark << PMUInt32
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendUnsignedWithZeroFill (const PMUInt64 inValue, const PMUInt32 inWidth) {
@@ -309,7 +309,7 @@ appendUnsignedWithZeroFill (const PMUInt64 inValue, const PMUInt32 inWidth) {
   appendCString (s) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::appendUnsignedHex (const PMUInt64 inValue) {
   char s [32] = "" ;
@@ -317,7 +317,7 @@ void AC_OutputStream::appendUnsignedHex (const PMUInt64 inValue) {
   genericCharArrayOutput (s, (PMSInt32) (strlen (s) & PMUINT32_MAX)) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::appendUnsignedHex2 (const PMUInt64 inValue) {
   char s [32] = "" ;
@@ -325,7 +325,7 @@ void AC_OutputStream::appendUnsignedHex2 (const PMUInt64 inValue) {
   genericCharArrayOutput (s, (PMSInt32) (strlen (s) & PMUINT32_MAX)) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::appendUnsignedHex4 (const PMUInt64 inValue) {
   char s [32] = "" ;
@@ -333,7 +333,7 @@ void AC_OutputStream::appendUnsignedHex4 (const PMUInt64 inValue) {
   genericCharArrayOutput (s, (PMSInt32) (strlen (s) & PMUINT32_MAX)) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::appendUnsignedHex8 (const PMUInt64 inValue) {
   char s [32] = "" ;
@@ -341,13 +341,13 @@ void AC_OutputStream::appendUnsignedHex8 (const PMUInt64 inValue) {
   genericCharArrayOutput (s, (PMSInt32) (strlen (s) & PMUINT32_MAX)) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark << void *
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::appendPointer (const void * inValue) {
   char s [30] = "" ;
@@ -355,7 +355,7 @@ void AC_OutputStream::appendPointer (const void * inValue) {
   genericCharArrayOutput (s, (PMSInt32) (strlen (s) & PMUINT32_MAX)) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendSpaces (const PMSInt32 inSpaceCount) {
@@ -364,7 +364,7 @@ appendSpaces (const PMSInt32 inSpaceCount) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 writeStringMultiple (const C_String & inString, const PMSInt32 inRepeatCount) {
@@ -373,13 +373,13 @@ writeStringMultiple (const C_String & inString, const PMSInt32 inRepeatCount) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 //                          Comments                                         *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 static const PMSInt32 kCommentMaxLength = 77 ;
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendHyphenLineCommentWithoutExtraBlankLine (const C_String & inLineCommentPrefix) {
@@ -390,7 +390,7 @@ appendHyphenLineCommentWithoutExtraBlankLine (const C_String & inLineCommentPref
   *this << "*\n";
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendTitleComment (const C_String & inLineCommentPrefix,
@@ -402,7 +402,7 @@ appendTitleComment (const C_String & inLineCommentPrefix,
   appendCppHyphenLineComment (inLineCommentPrefix) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendComment (const C_String & inLineCommentPrefix,
@@ -410,7 +410,7 @@ appendComment (const C_String & inLineCommentPrefix,
   *this << inLineCommentPrefix << " " << inCommentString << "\n" ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendCenterJustifiedComment (const C_String & inLineCommentPrefix,
@@ -430,7 +430,7 @@ appendCenterJustifiedComment (const C_String & inLineCommentPrefix,
   *this << "*\n" ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendSpaceLineComment (const C_String & inLineCommentPrefix) {
@@ -441,7 +441,7 @@ appendSpaceLineComment (const C_String & inLineCommentPrefix) {
   *this << "*\n";
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendCppHyphenLineComment (const C_String & inLineCommentPrefix) {
@@ -449,9 +449,9 @@ appendCppHyphenLineComment (const C_String & inLineCommentPrefix) {
   *this << "\n" ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 //                          C Comments                                       *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::append_C_HyphenLineComment (void) {
   *this << "/*" ;
@@ -461,7 +461,7 @@ void AC_OutputStream::append_C_HyphenLineComment (void) {
   *this << "*/\n" ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::append_C_SpaceLineComment (void) {
   *this << "/*" ;
@@ -471,58 +471,58 @@ void AC_OutputStream::append_C_SpaceLineComment (void) {
   *this << "*/\n" ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 //                        C++ Comments                                       *
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendCppHyphenLineCommentWithoutExtraBlankLine (void) {
   appendHyphenLineCommentWithoutExtraBlankLine ("//") ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendCppTitleComment (const C_String & inCommentString) {
   appendTitleComment ("//", inCommentString) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendCppTitleComment (const char * inCommentString) {
   appendTitleComment ("//", inCommentString) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendCppComment (const C_String & inCommentString) {
   appendComment ("//", inCommentString) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendCppCenterJustifiedComment (const C_String & inCommentString) {
   appendCenterJustifiedComment ("//", inCommentString) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendCppSpaceLineComment (void) {
   appendSpaceLineComment ("//") ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendCppHyphenLineComment (void) {
   appendCppHyphenLineComment ("//") ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 static void
 internalWriteCstringConstant (AC_OutputStream & ioStream,
@@ -592,7 +592,7 @@ internalWriteCstringConstant (AC_OutputStream & ioStream,
   ioStream << "\"" ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendCLiteralStringConstant (const C_String & inString) {
@@ -600,7 +600,7 @@ appendCLiteralStringConstant (const C_String & inString) {
 }
 
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendCLiteralStringConstant (const C_String & inString,
@@ -609,7 +609,7 @@ appendCLiteralStringConstant (const C_String & inString,
 }
 
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendCLiteralCharConstant (const utf32 c) {
@@ -662,7 +662,7 @@ appendCLiteralCharConstant (const utf32 c) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void AC_OutputStream::
 appendFileHeaderComment (const C_String & inLineCommentPrefix,
@@ -703,13 +703,13 @@ appendFileHeaderComment (const C_String & inLineCommentPrefix,
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark cStringWithUnsigned
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_String cStringWithUnsigned (const PMUInt64 inValue) {
   C_String result ;
@@ -717,13 +717,13 @@ C_String cStringWithUnsigned (const PMUInt64 inValue) {
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark cHexStringWithUnsigned
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_String cHexStringWithUnsigned (const PMUInt64 inValue) {
   C_String result = "0x" ;
@@ -731,13 +731,13 @@ C_String cHexStringWithUnsigned (const PMUInt64 inValue) {
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark cStringWithSigned
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_String cStringWithSigned (const PMSInt64 inValue) {
   C_String result ;
@@ -745,13 +745,13 @@ C_String cStringWithSigned (const PMSInt64 inValue) {
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark cStringWithCharacter
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_String cStringWithCharacter (const char inValue) {
   C_String result ;
@@ -759,13 +759,13 @@ C_String cStringWithCharacter (const char inValue) {
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark cStringWithUnicodeCharacter
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_String cStringWithUnicodeCharacter (const utf32 inValue) {
   C_String result ;
@@ -773,13 +773,13 @@ C_String cStringWithUnicodeCharacter (const utf32 inValue) {
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark cStringWithPointer
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_String cStringWithPointer (const void * inValue) {
   C_String result ;
@@ -787,13 +787,13 @@ C_String cStringWithPointer (const void * inValue) {
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifdef PRAGMA_MARK_ALLOWED
   #pragma mark cStringWithDouble
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 C_String cStringWithDouble (const double inValue) {
   C_String result ;
@@ -801,4 +801,4 @@ C_String cStringWithDouble (const double inValue) {
   return result ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*

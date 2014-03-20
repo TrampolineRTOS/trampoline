@@ -1,32 +1,32 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  'C_Compiler' : the compiler base class ;                                 *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
-//  Copyright (C) 2009, ..., 2012 Pierre Molinaro.                           *
-//                                                                           *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//                                                                           *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
-//  ECN, Ecole Centrale de Nantes (France)                                   *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
+//  Copyright (C) 2009, ..., 2012 Pierre Molinaro.                             *
+//                                                                             *
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//                                                                             *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
+//  ECN, École Centrale de Nantes (France)                                     *
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #ifndef GALGAS_COMPILER_CLASS_DEFINED
 #define GALGAS_COMPILER_CLASS_DEFINED
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include "collections/TC_UniqueArray.h"
 #include "strings/C_String.h"
@@ -34,11 +34,11 @@
 #include "galgas2/C_LocationInSource.h"
 #include "galgas2/C_SourceTextInString.h"
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include <exception>
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #ifndef DO_NOT_GENERATE_CHECKINGS
   #define ACCEPT_TERMINAL(t) t
@@ -48,18 +48,18 @@
   #define FORMAL_ARG_ACCEPT_TERMINAL
 #endif
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 class GALGAS_location ;
 class GALGAS_string ;
 class GALGAS_lstring ;
 class C_galgas_type_descriptor ;
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //                 Compiler class                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 class C_Compiler : public C_SharedObject {
 //--- Constructor and destructor
@@ -226,28 +226,28 @@ class C_Compiler : public C_SharedObject {
                                         const C_String & inContents) ;
 } ;
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //   T R A C E                                                               *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 void enableTraceWithPath (const C_String & inSourceFilePath) ;
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 bool traceIsEnabled (void) ;
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void appendTrace (const char * inType,
                   const bool inIsBuilt,
                   const C_String & inStringValue) ;
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 void closeTrace (void) ;
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #endif

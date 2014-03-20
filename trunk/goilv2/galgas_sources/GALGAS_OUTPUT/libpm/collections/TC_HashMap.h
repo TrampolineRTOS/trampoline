@@ -1,53 +1,53 @@
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //     C++ template class for implementing a map using hashing               *
-//                                                                           *
+//                                                                             *
 //  Copyright (C) 2001 Pierre Molinaro.                                      *
-//  e-mail : molinaro@irccyn.ec-nantes.fr                                    *
-//  IRCCyN, Institut de Recherche en Communications et Cybernetique de Nantes*
+//  e-mail : pierre.molinaro@irccyn.ec-nantes.fr                               *
+//  IRCCyN, Institut de Recherche en Communications et Cybernétique de Nantes  *
 //  ECN, Ecole Centrale de Nantes                                            *
-//                                                                           *
-//  This file is part of libpm library                                       *
-//                                                                           *
-//  This library is free software; you can redistribute it and/or modify it  *
-//  under the terms of the GNU Lesser General Public License as published    *
-//  by the Free Software Foundation; either version 2 of the License, or     *
-//  (at your option) any later version.                                      *
-//                                                                           *
-//  This program is distributed in the hope it will be useful, but WITHOUT   *
-//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or    *
-//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for *
-//  more details.                                                            *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//  This file is part of libpm library                                         *
+//                                                                             *
+//  This library is free software; you can redistribute it and/or modify it    *
+//  under the terms of the GNU Lesser General Public License as published      *
+//  by the Free Software Foundation; either version 2 of the License, or       *
+//  (at your option) any later version.                                        *
+//                                                                             *
+//  This program is distributed in the hope it will be useful, but WITHOUT     *
+//  ANY WARRANTY; without even the implied warranty of MERCHANDIBILITY or      *
+//  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for   *
+//  more details.                                                              *
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 #ifndef TEMPLATE_CALL_HASH_MAP_DEFINED
 #define TEMPLATE_CALL_HASH_MAP_DEFINED
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #include "utilities/F_GetPrime.h"
 
-//---------------------------------------------------------------------------*
-//                                                                           *
+//-----------------------------------------------------------------------------*
+//                                                                             *
 //  This template can be used in the following way :                         *
 //    - MAP_TYPE is a class that defines the way collisions are handled ;    *
 //    - INFO is a class that defines element information.                    *
-//                                                                           *
+//                                                                             *
 //  Class INFO must define the following public method :                     *
 //                     PMUInt32 getHashCodeForMap (void) const ;               *
 //      this method is used for getting the element hash code.               *
-//                                                                           *
+//                                                                             *
 //  Class MAP_TYPE must defines the following public methods :               *
 //            INFO * search_or_insert (const INFO & inInfo,                  *
 //                                     bool & outInsertionPerformed) ;       *
 //            void sweepUnmarkedObjects (void) ;                             *
-//                                                                           *
+//                                                                             *
 //  For class INFO, you can use a map template class, such as :              *
 //     - TC_LinearListForCollision ;                                         *
 //     - TC_AVL_TreeForCollision ;                                           *
 //     - TC_Block_AVL_TreeForCollision.                                      *
-//                                                                           *
+//                                                                             *
 //  Example :                                                                *
 // //--- Declaration of map type used for collisions resolution              *
 //   typedef TC_AVL_TreeForCollision <myInfoType> cMapType ;                 *
@@ -55,10 +55,10 @@
 //   cMapType::cAllocInfo cMapType::smAllocInfo ;                            *
 // //--- Hash map declaration                                                *
 //   TC_HashMap <cMapType, myInfoType> gMap (66029) ;                        *
-//                                                                           *
+//                                                                             *
 //  See also 'C_VDD.cpp' for an other example.                               *
-//                                                                           *
-//---------------------------------------------------------------------------*
+//                                                                             *
+//-----------------------------------------------------------------------------*
 
 template <class MAP_TYPE, class INFO>
 class TC_HashMap {
@@ -105,7 +105,7 @@ class TC_HashMap {
   private : TC_HashMap <MAP_TYPE, INFO> & operator = (const TC_HashMap <MAP_TYPE, INFO> &) ;
 } ;
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class MAP_TYPE, class INFO>
 TC_HashMap <MAP_TYPE, INFO>
@@ -114,7 +114,7 @@ TC_HashMap <MAP_TYPE, INFO>
   mCurrentEntriesCount = 1 ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class MAP_TYPE, class INFO>
 TC_HashMap<MAP_TYPE, INFO>::~TC_HashMap (void) {
@@ -123,7 +123,7 @@ TC_HashMap<MAP_TYPE, INFO>::~TC_HashMap (void) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class MAP_TYPE, class INFO>
 INFO * TC_HashMap<MAP_TYPE, INFO>::
@@ -134,7 +134,7 @@ search_or_insert (const INFO & inInfo,
   return mMapArray [hashCode].search_or_insert (inInfo, outInsertionPerformed) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class MAP_TYPE, class INFO>
 INFO * TC_HashMap<MAP_TYPE, INFO>::
@@ -144,7 +144,7 @@ search (const INFO & inInfo) {
   return mMapArray [hashCode].search (inInfo) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class MAP_TYPE, class INFO>
 PMUInt32 TC_HashMap<MAP_TYPE, INFO>::sweepUnmarkedObjects (void) {
@@ -155,7 +155,7 @@ PMUInt32 TC_HashMap<MAP_TYPE, INFO>::sweepUnmarkedObjects (void) {
   return sweepedNodes ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class MAP_TYPE, class INFO>
 PMUInt32 TC_HashMap<MAP_TYPE, INFO>
@@ -163,7 +163,7 @@ PMUInt32 TC_HashMap<MAP_TYPE, INFO>
   return ((PMUInt32) mCurrentEntriesCount) * sizeof (MAP_TYPE) ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class MAP_TYPE, class INFO>
 void TC_HashMap<MAP_TYPE, INFO>
@@ -182,7 +182,7 @@ void TC_HashMap<MAP_TYPE, INFO>
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class MAP_TYPE, class INFO>
 void TC_HashMap<MAP_TYPE, INFO>::unmarkAllObjects (void) {
@@ -191,7 +191,7 @@ void TC_HashMap<MAP_TYPE, INFO>::unmarkAllObjects (void) {
   }
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 template <class MAP_TYPE, class INFO>
 PMSInt32 TC_HashMap<MAP_TYPE, INFO>::getMarkedNodesCount (void) const {
@@ -202,6 +202,6 @@ PMSInt32 TC_HashMap<MAP_TYPE, INFO>::getMarkedNodesCount (void) const {
   return count ;
 }
 
-//---------------------------------------------------------------------------*
+//-----------------------------------------------------------------------------*
 
 #endif
