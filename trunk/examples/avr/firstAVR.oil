@@ -19,9 +19,9 @@ CPU test {
             TRAMPOLINE_BASE_PATH = "../..";
             APP_NAME = "AVRTrampolineBin";
             APP_SRC = "main.c";
-            CFLAGS  = "-Wall -Os -g -DF_CPU=8000000 -mmcu=at90can128"; 
-            LDFLAGS = "-Wall -Os -g -DF_CPU=8000000 -mmcu=at90can128";
-            ASFLAGS = "-x assembler-with-cpp -Wall -Os -g -DF_CPU=8000000 -mmcu=at90can128 -c ";
+            CFLAGS  = "-Wall -Os -g -DF_CPU=16000000 -mmcu=atmega2560"; 
+            LDFLAGS = "-Wall -Os -g -DF_CPU=16000000 -mmcu=atmega2560";
+            ASFLAGS = "-x assembler-with-cpp -Wall -Os -g -DF_CPU=16000000 -mmcu=atmega2560 -c ";
             COMPILER  = "avr-gcc";
             LINKER    = "avr-gcc";
             ASSEMBLER = "avr-gcc";
@@ -74,10 +74,10 @@ CPU test {
         STACKSIZE = 256;
     };
 
-    ISR ISRButton {
-        CATEGORY = 2;
-        PRIORITY = 20;
-        STACKSIZE = 256;
-        SOURCE = "INT7_vect";
-    };
+//    ISR ISRButton {
+//        CATEGORY = 2;
+//        PRIORITY = 20;
+//        STACKSIZE = 256;
+//        SOURCE = "INT5_vect"; //PIN 4 on Arduino Mega
+//    };
 };

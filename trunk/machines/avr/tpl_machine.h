@@ -2,7 +2,7 @@
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
- * Trampoline est prot��par la loi sur la propri��intellectuelle
+ * Trampoline est protégé par la loi sur la propriété intellectuelle
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -33,10 +33,6 @@ struct TPL_CONTEXT {
 typedef struct TPL_CONTEXT tpl_context;
 
 
-extern avr_context idle_task_context;
-#define IDLE_CONTEXT {&idle_task_context} 
-
-
 /**
  * tpl_stack_word is the basic element of a stack in order to have a proper
  * data alignement.
@@ -55,12 +51,6 @@ struct TPL_STACK {
 };
 typedef struct TPL_STACK tpl_stack;
 
-/**
- * @def IDLE_ENTRY
- *
- * Entry point of the idle task.
- */
-#define IDLE_ENTRY tpl_sleep
 
 /**
  * @def SIZE_OF_IDLE_TASK
@@ -68,18 +58,6 @@ typedef struct TPL_STACK tpl_stack;
  * The size of the stack of the idle task which is also the stack
  * used for machine startup
  */
-#define SIZE_OF_IDLE_STACK  50
-/**
- * @def IDLE_STACK
- *
- * the idle stack definition
- */
-#define OS_START_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-extern VAR(tpl_stack_word, OS_VAR)
-idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
-#define OS_STOP_SEC_VAR_UNSPECIFIED
-#include "tpl_memmap.h"
-#define IDLE_STACK { idle_stack, SIZE_OF_IDLE_STACK }
+#define IDLE_STACK_SIZE  80
 
 #endif

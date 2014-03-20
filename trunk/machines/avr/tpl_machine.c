@@ -2,7 +2,7 @@
  * Trampoline OS
  *
  * Trampoline is copyright (c) IRCCyN 2005+
- * Trampoline est prot��par la loi sur la propri��intellectuelle
+ * Trampoline est protégé par la loi sur la propriété intellectuelle
  *
  * This software is distributed under the Lesser GNU Public Licence
  *
@@ -29,20 +29,11 @@
 #include "tpl_os_internal_types.h"
 #include "tpl_os_kernel.h" /*tpl_stat_proc_table and tpl_proc_static*/
 
-avr_context idle_task_context;
-
-#define OS_START_SEC_VAR_32BIT
-#include "tpl_memmap.h"
-VAR(tpl_stack_word, OS_VAR)
-idle_stack[SIZE_OF_IDLE_STACK/sizeof(tpl_stack_word)];
-#define OS_STOP_SEC_VAR_32BIT
-#include "tpl_memmap.h"
-
-
 /*
  * tpl_sleep is used by the idle task
  */
-void tpl_sleep(void)
+void idle_function()
+//void tpl_sleep(void)
 {
 	while(1);
 }
@@ -54,6 +45,7 @@ void tpl_shutdown(void)
 	while (1); 
 }
 
+
 /*
  * tpl_init_context initialize a context to prepare a task to run.
  * WARNING: This function MUST NOT modify GPRs!!! (the task in parameter
@@ -61,7 +53,6 @@ void tpl_shutdown(void)
  */
 FUNC(void, OS_CODE) tpl_init_context(
     CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
-//void tpl_init_context(tpl_task *task)
 {
 
     int a=0; /*internal variable, used to put the register R00 to R31 on the tabular*/
@@ -77,13 +68,23 @@ FUNC(void, OS_CODE) tpl_init_context(
 	sp--;
 	*sp=((u16)static_desc->entry>>8);
 	sp--;
+#if defined (__AVR_ATmega2560__)
+	*sp=0; /* Program Counter size is 24 bits on ATMega2560 */
+	sp--;
+#elif defined (__AVR_AT90CAN128__)
+	//Ok. Program Counter size is 16 bits.
+#else
+#warning "The AVR CPU is not known -> Trampoline may crash if the Program Counter size is not OK. Assuming a program counter of 24 bits.".
+	*sp=0; /* Program Counter size assumed to be 24 bits */
+	sp--;
+#endif
 	/* save the stack pointer */ 
 	pointer = (u8*)(&(static_desc->context.ic->sp));
 	*pointer = (u8)((u16)sp & 0xFF);
 	pointer++;
 	*pointer = (u8)((u16)sp >> 8);
 
-  /* initializes system register on the chart (system register at startup time) */
+  /* initializes system register the chart (system register at startup time) */
     for (a=0;a<31;a++)
     {
         pointer++;
@@ -115,18 +116,16 @@ void tpl_release_task_lock(void)
 //void tpl_init_tick_timer();
 void tpl_init_machine(void)
 {
-//	#ifndef NO_ALARM
-//		tpl_init_tick_timer();
-//	#endif
+	tpl_init_context(IDLE_TASK_ID);
 	sei();
 }
 
 void tpl_enable_interrupts(void)
 {
-	cli();
+	sei();
 }
 
 void tpl_disable_interrupts(void)
 {
-	sei();
+	cli();
 }

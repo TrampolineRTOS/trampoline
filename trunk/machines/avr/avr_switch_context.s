@@ -18,7 +18,6 @@
 .global tpl_switch_context_from_it 
 tpl_switch_context:
 tpl_switch_context_from_it:
-
 	/* push r16 and the sreg register on the stack */
 	push r16
 	in   r16, _SFR_IO_ADDR(SREG)
@@ -77,7 +76,7 @@ save_context :
 	movw r28,r24 // mov R24 to Y.
 	ldd  r30,Y+0 // dereference to access the first field
 	ldd  r31,Y+1
-	in   r26, _SFR_IO_ADDR(SPL) //save the Stack pointer into Z
+	in   r26, _SFR_IO_ADDR(SPL) //save the Stack pointer into Z (through X)
 	in   r27, _SFR_IO_ADDR(SPH)
 
 	adiw r26,0x21 // we add 21 to the old stack pointer because we have done 0x21 pushs 
@@ -102,12 +101,13 @@ less1 :
 
 	push r16
 	push r16
-unsave_context : // we have push 2 register on the stack, we have to pop them
+unsave_context : // we have pushed 2 registers on the stack, we have to pop them
+
 	pop r16
 	pop r16
 
 	/* Get the new stack pointer */
-    movw r28,r22 // the adress of the new stack pointeur is in r22,r23
+    movw r28,r22 // the adress of the new stack pointer is in r22,r23
 	// we have to dereference it
 	ldd  r30,Y+0
 	ldd  r31,Y+1
