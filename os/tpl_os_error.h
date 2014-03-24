@@ -1113,7 +1113,8 @@ tpl_service.parameters.id.ioc_id = (iocid);
 #if (TASK_COUNT > 0) && (WITH_OS_EXTENDED == YES)
 #   define CHECK_TASK_CALL_LEVEL_ERROR(result)                          \
     if ((result == (tpl_status)E_OK) &&                                 \
-        (tpl_current_os_state() != (tpl_os_state)OS_TASK))              \
+        (tpl_current_os_state(CORE_ID_OR_NOTHING(core_id)) !=           \
+         (tpl_os_state)OS_TASK))                                        \
     {                                                                   \
         result = (tpl_status)E_OS_CALLEVEL;                             \
     }
@@ -1245,20 +1246,20 @@ tpl_service.parameters.id.ioc_id = (iocid);
 
 /*  If no Task, this error cannot happen    */
 #if TASK_COUNT == 0
-# define CHECK_RUNNING_OWNS_REZ_ERROR(result)
+# define CHECK_RUNNING_OWNS_REZ_ERROR(a_core_id,result)
 #endif
 
 /*  If any Task and not extended error checking (WITH_OS_EXTENDED == NO)
     the occurence is not tested                                 */
 #if (TASK_COUNT > 0) && (WITH_OS_EXTENDED == NO)
-# define CHECK_RUNNING_OWNS_REZ_ERROR(result)
+# define CHECK_RUNNING_OWNS_REZ_ERROR(a_core_id,result)
 #endif
 
 /*  If any Task and extended error checking (WITH_OS_EXTENDED == YES) */
 #if (TASK_COUNT > 0) && (WITH_OS_EXTENDED == YES)
-#   define CHECK_RUNNING_OWNS_REZ_ERROR(result)                     \
+#   define CHECK_RUNNING_OWNS_REZ_ERROR(a_core_id,result)           \
     if ((result == (tpl_status)E_OK) &&                             \
-        ((tpl_kern.running->resources) != NULL))                    \
+        ((TPL_KERN(a_core_id).running->resources) != NULL))         \
     {                                                               \
         result = (tpl_status)E_OS_RESOURCE;                         \
     }
@@ -1409,11 +1410,11 @@ tpl_service.parameters.id.ioc_id = (iocid);
  * @note error code is not set if it does not equal E_OK
  */
 #if (WITH_OS_EXTENDED == YES)
-#  define CHECK_OS_NOT_STARTED(result)       \
-    if ((result == (tpl_status)E_OK) &&      \
-        (tpl_current_os_state() != OS_INIT)) \
-    {                                        \
-       result = (tpl_status)E_OS_STATE;      \
+#  define CHECK_OS_NOT_STARTED(result)                         \
+    if ((result == (tpl_status)E_OK) &&                        \
+        (tpl_current_os_state(CORE_ID_OR_NOTHING(core_id)) != OS_INIT)) \
+    {                                                          \
+       result = (tpl_status)E_OS_STATE;                        \
     }
 #else
 #  define CHECK_OS_NOT_STARTED(result)
@@ -1476,16 +1477,16 @@ tpl_service.parameters.id.ioc_id = (iocid);
  */
 
 #if WITH_OS_EXTENDED == YES
-#   define CHECK_RESOURCE_PRIO_ERROR_ON_GET(res,result)         \
-    if ((result == (tpl_status)E_OK) &&                         \
-        (((res)->owner != INVALID_TASK) ||                      \
-         (tpl_kern.s_running->base_priority >                   \
-          res->ceiling_priority)))                              \
-    {                                                           \
-        result = (tpl_status)E_OS_ACCESS;                       \
+#   define CHECK_RESOURCE_PRIO_ERROR_ON_GET(core_id, res, result) \
+    if ((result == (tpl_status)E_OK) &&                           \
+        (((res)->owner != INVALID_TASK) ||                        \
+         (TPL_KERN(core_id).s_running->base_priority >            \
+          res->ceiling_priority)))                                \
+    {                                                             \
+        result = (tpl_status)E_OS_ACCESS;                         \
     }
 #else
-#   define CHECK_RESOURCE_PRIO_ERROR_ON_GET(res,result)
+#   define CHECK_RESOURCE_PRIO_ERROR_ON_GET(core_id, res, result)
 #endif
 
 /**
@@ -1501,15 +1502,15 @@ tpl_service.parameters.id.ioc_id = (iocid);
  */
 
 #if WITH_OS_EXTENDED == YES
-#   define CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(res,result)     \
-    if ((result == (tpl_status)E_OK) &&                         \
-        (tpl_kern.s_running->base_priority >   \
-         (res)->ceiling_priority))                              \
-    {                                                           \
-        result = (tpl_status)E_OS_ACCESS;                       \
+#   define CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(a_core_id, res, result) \
+    if ((result == (tpl_status)E_OK) &&                                 \
+        (TPL_KERN(a_core_id).s_running->base_priority >                 \
+         (res)->ceiling_priority))                                      \
+    {                                                                   \
+        result = (tpl_status)E_OS_ACCESS;                               \
     }
 #else
-#   define CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(res,result)
+#   define CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(a_core_id, res, result)
 #endif
 
 /**
@@ -1526,14 +1527,14 @@ tpl_service.parameters.id.ioc_id = (iocid);
  */
 
 #if WITH_OS_EXTENDED == YES
-#   define CHECK_RESOURCE_ORDER_ON_RELEASE(res,result)              \
+#   define CHECK_RESOURCE_ORDER_ON_RELEASE(a_core_id, res, result)  \
     if ((result == (tpl_status)E_OK) &&                             \
-         (tpl_kern.running->resources != (res)))                    \
+         (TPL_KERN(a_core_id).running->resources != (res)))         \
     {                                                               \
         result = (tpl_status)E_OS_NOFUNC;                           \
     }
 #else
-#   define CHECK_RESOURCE_ORDER_ON_RELEASE(res,result)
+#   define CHECK_RESOURCE_ORDER_ON_RELEASE(a_core_id, res,result)
 #endif
 
 /**
@@ -1571,22 +1572,22 @@ tpl_service.parameters.id.ioc_id = (iocid);
  */
 
 #if (WITH_OS_EXTENDED == NO) || (WITH_OSAPPLICATION == NO)
-# define CHECK_ACCESS_RIGHTS_TASK_ID(obj_id,result)
+# define CHECK_ACCESS_RIGHTS_TASK_ID(a_core_id, obj_id,result)
 #elif (APP_COUNT == 0)
-# define CHECK_ACCESS_RIGHTS_TASK_ID(obj_id,result) \
-  if (result == (tpl_status)E_OK)                   \
-  {                                                 \
-    result = E_OS_ACCESS;                           \
+# define CHECK_ACCESS_RIGHTS_TASK_ID(a_core_id, obj_id,result) \
+  if (result == (tpl_status)E_OK)                              \
+  {                                                            \
+    result = E_OS_ACCESS;                                      \
   }																			
 #else
-# define CHECK_ACCESS_RIGHTS_TASK_ID(obj_id,result)            \
+# define CHECK_ACCESS_RIGHTS_TASK_ID(a_core_id, obj_id,result) \
 	if (result == (tpl_status)E_OK)                              \
 	{                                                            \
     CONST(uint8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7); \
     CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 2;            \
     extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT]; \
     CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
-      tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
+      tpl_app_table[tpl_stat_proc_table[TPL_KERN(a_core_id).running_id]->app_id];  \
     if ( (((app_access->access_vec[OBJECT_TASK][byte_idx]) &            \
       (1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )            \
     {                                                                   \
@@ -1659,27 +1660,28 @@ tpl_service.parameters.id.ioc_id = (iocid);
  */
 
 #if ((WITH_OS_EXTENDED == NO)) || (WITH_OSAPPLICATION == NO)
-# define CHECK_ACCESS_RIGHTS_RESOURCE_ID(obj_id,result)
+# define CHECK_ACCESS_RIGHTS_RESOURCE_ID(a_core_id, obj_id,result)
 #elif (APP_COUNT == 0)
-# define CHECK_ACCESS_RIGHTS_RESOURCE_ID(obj_id,result) \
+# define CHECK_ACCESS_RIGHTS_RESOURCE_ID(a_core_id, obj_id,result) \
   if (result == (tpl_status)E_OK)                       \
   {                                                     \
     result = E_OS_ACCESS;                               \
   }																			
 #else
-# define CHECK_ACCESS_RIGHTS_RESOURCE_ID(obj_id,result)     \
-	if (result == (tpl_status)E_OK)                           \
-	{                                                         \
-		CONST(uint8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7); \
-        CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 2;        \
-        extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT]; \
-        CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =   \
-            tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
-		if ( (((app_access->access_vec[OBJECT_RESOURCE][byte_idx]) &              \
-			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )                  \
-		{                                                                         \
-			result = E_OS_ACCESS;                                                   \
-		}                                                                         \
+# define CHECK_ACCESS_RIGHTS_RESOURCE_ID(a_core_id, obj_id,result)      \
+  if (result == (tpl_status)E_OK)                                       \
+  {                                                                     \
+    CONST(uint8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);          \
+    CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 2;                     \
+    extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST)       \
+      tpl_app_table[APP_COUNT];                                         \
+    CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
+      tpl_app_table[tpl_stat_proc_table[TPL_KERN(a_core_id).running_id]->app_id];  \
+		if ( (((app_access->access_vec[OBJECT_RESOURCE][byte_idx]) &            \
+			   (1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )             \
+		{                                                                       \
+			result = E_OS_ACCESS;                                                 \
+		}                                                                       \
 	}																			
 #endif
 
@@ -1703,26 +1705,26 @@ tpl_service.parameters.id.ioc_id = (iocid);
  */
 
 #if ((WITH_OS_EXTENDED == NO)) || (WITH_OSAPPLICATION == NO) || (COUNTER_COUNT == 0)
-# define CHECK_ACCESS_RIGHTS_COUNTER_ID(obj_id,result)
+# define CHECK_ACCESS_RIGHTS_COUNTER_ID(a_core_id, obj_id, result)
 #elif (APP_COUNT == 0)
-# define CHECK_ACCESS_RIGHTS_COUNTER_ID(obj_id,result)  \
-  if( result == (tpl_status)E_OK )                      \
-  {                                                     \
-    result = E_OS_ACCESS;                               \
+# define CHECK_ACCESS_RIGHTS_COUNTER_ID(a_core_id, obj_id, result)  \
+  if( result == (tpl_status)E_OK )                                  \
+  {                                                                 \
+    result = E_OS_ACCESS;                                           \
   }																			
 #else
-# define CHECK_ACCESS_RIGHTS_COUNTER_ID(obj_id,result)      \
-	if( result == (tpl_status)E_OK )                          \
-	{                                                         \
-		CONST(uint8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7); \
-        CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 2;        \
-        extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
-        CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =   \
-            tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
-		if ( (((app_access->access_vec[OBJECT_COUNTER][byte_idx]) &               \
-			(1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )                  \
-		{                                                                         \
-			result = E_OS_ACCESS;                                                   \
+# define CHECK_ACCESS_RIGHTS_COUNTER_ID(a_core_id, obj_id, result)  \
+	if( result == (tpl_status)E_OK )                                  \
+	{                                                                 \
+		CONST(uint8, AUTOMATIC) bit_shift = ((obj_id << 1) & 0x7);      \
+    CONST(uint8, AUTOMATIC) byte_idx = obj_id >> 2;                 \
+    extern CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) tpl_app_table[APP_COUNT];	\
+    CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =   \
+      tpl_app_table[tpl_stat_proc_table[TPL_KERN(a_core_id).running_id]->app_id];  \
+		if ( (((app_access->access_vec[OBJECT_COUNTER][byte_idx]) &            \
+			   (1 << (bit_shift+1))) >> (bit_shift+1)) == NO_ACCESS )            \
+		{                                                                      \
+			result = E_OS_ACCESS;                                                \
 		}                                                                         \
 	}																			
 #endif
@@ -2018,14 +2020,14 @@ if (result == IOC_E_OK)                                               \
 {                                                                     \
 CONST(uint8, AUTOMATIC) bit_shift = (uint8)((obj_id << 1) & 0x7);         \
 CONST(uint8, AUTOMATIC) byte_idx = (uint8)(obj_id >> 2);                  \
-CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access = \
-tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];  \
-if (( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &             \
-(uint8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_READ ) &&     \
-( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &             \
-(uint8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_FULL ))       \
-{                                                                   \
-result = E_OS_ACCESS;                                             \
+CONSTP2CONST(tpl_app_access, AUTOMATIC, OS_APPL_CONST) app_access =   \
+  tpl_app_table[tpl_stat_proc_table[tpl_kern.running_id]->app_id];    \
+if (( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &              \
+    (uint8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_READ ) &&    \
+    ( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &              \
+    (uint8)(3 << (bit_shift))) >> (bit_shift)) != ACCESS_FULL ))      \
+{                                                                     \
+    result = E_OS_ACCESS;                                             \
 }                                                                   \
 }
 #endif

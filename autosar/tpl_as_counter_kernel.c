@@ -67,6 +67,8 @@ CONST(tpl_counter_id, AUTOMATIC) INVALID_COUNTER = (-1);
 FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
   VAR(tpl_counter_id, AUTOMATIC) counter_id)
 {
+  GET_CURRENT_CORE_ID(core_id)
+
   VAR(tpl_status, AUTOMATIC)  result = E_OK;
 
 #if COUNTER_COUNT > 0
@@ -85,12 +87,12 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
   STORE_COUNTER_ID(counter_id)
 
   /*  check a counter_id error                    */
-  CHECK_COUNTER_ID_ERROR(counter_id,result)
+  CHECK_COUNTER_ID_ERROR(counter_id, result)
 	
   /* check access right */
-  CHECK_ACCESS_RIGHTS_COUNTER_ID(counter_id,result)
+  CHECK_ACCESS_RIGHTS_COUNTER_ID(core_id, counter_id, result)
 	
-  CHECK_COUNTER_KIND_ERROR(counter_id,result)
+  CHECK_COUNTER_KIND_ERROR(counter_id, result)
 	
 #if COUNTER_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
@@ -141,6 +143,8 @@ FUNC(tpl_status, OS_CODE) tpl_get_counter_value_service(
   VAR(tpl_counter_id, AUTOMATIC)              counter_id,
   P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA)    value)
 {
+  GET_CURRENT_CORE_ID(core_id)
+
   VAR(tpl_status, AUTOMATIC)  result = E_OK;
 
 #if COUNTER_COUNT > 0
@@ -158,10 +162,10 @@ FUNC(tpl_status, OS_CODE) tpl_get_counter_value_service(
   STORE_TICK_REF_1(value)
 
   /*  check a counter_id error                    */
-  CHECK_COUNTER_ID_ERROR(counter_id,result)
+  CHECK_COUNTER_ID_ERROR(counter_id, result)
 	
   /* check access right */
-  CHECK_ACCESS_RIGHTS_COUNTER_ID(counter_id,result)
+  CHECK_ACCESS_RIGHTS_COUNTER_ID(core_id, counter_id, result)
 
   /* check value is in an authorized memory region */
   CHECK_DATA_LOCATION(value, result);
@@ -201,6 +205,8 @@ FUNC(tpl_status, OS_CODE) tpl_get_elapsed_counter_value_service(
   P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA)  previous_value,
   P2VAR(tpl_tick, AUTOMATIC, OS_APPL_DATA)  value)
 {
+  GET_CURRENT_CORE_ID(core_id)
+
   VAR(tpl_status, AUTOMATIC)  result = E_OK;
 
 #if COUNTER_COUNT > 0
@@ -220,10 +226,10 @@ FUNC(tpl_status, OS_CODE) tpl_get_elapsed_counter_value_service(
   STORE_TICK_REF_2(value)
 
   /*  check a counter_id error                    */
-  CHECK_COUNTER_ID_ERROR(counter_id,result)
+  CHECK_COUNTER_ID_ERROR(counter_id, result)
 	
   /* check access right */
-  CHECK_ACCESS_RIGHTS_COUNTER_ID(counter_id,result)
+  CHECK_ACCESS_RIGHTS_COUNTER_ID(core_id, counter_id,result)
 	
   /* check previous_value and value are in an authorized memory region */
   CHECK_DATA_LOCATION(previous_value, result);

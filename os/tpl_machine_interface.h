@@ -31,10 +31,6 @@
 #include "tpl_os_custom_types.h"
 #include "tpl_os_application_def.h"
 
-#if NUMBER_OF_CORES > 1
-#include "tpl_os_multicore.h"
-#endif
-
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -246,6 +242,14 @@ FUNC(uint8, OS_CODE) tpl_check_stack_footprint(
  * This function starts the processing core given in the argument
  */
 FUNC(void, OS_CODE) tpl_start_core(
+  CONST(CoreIdType, AUTOMATIC) core_id);
+
+/**
+ * @internal
+ *
+ * This function starts the processing core given in the argument
+ */
+FUNC(void, OS_CODE) tpl_send_intercore_it(
   CONST(CoreIdType, AUTOMATIC) core_id);
 
 #endif

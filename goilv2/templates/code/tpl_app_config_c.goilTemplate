@@ -652,15 +652,17 @@ CONSTP2CONST(tpl_app_access, OS_APPL_CONST, OS_APPL_CONST) tpl_app_table[APP_COU
 #include "tpl_memmap.h"
 %
   end foreach
-%
 
+  if [APPLICATIONS length] > 0 then %
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 VAR(tpl_app_dyn, OS_VAR) tpl_app_dyn_table[APP_COUNT];
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
-%  
+%
+  end if
+  
   foreach tf in TRUSTEDFUNCTIONS
     before
 %

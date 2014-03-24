@@ -201,22 +201,25 @@ FUNC(void, OS_CODE) printrl(
 FUNC(int, OS_CODE) tpl_compare_entries(
   CONSTP2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR) first_entry,
   CONSTP2CONST(tpl_heap_entry, AUTOMATIC, OS_VAR) second_entry
-  TAIL_FOR_PRIO_ARG_DECL)
+  TAIL_FOR_PRIO_ARG_DECL(tail_for_prio))
 {
   VAR(uint32, AUTOMATIC) first_key = first_entry->key & (PRIORITY_MASK | RANK_MASK);
   VAR(uint32, AUTOMATIC) second_key = second_entry->key & (PRIORITY_MASK | RANK_MASK);
   VAR(uint32, AUTOMATIC) first_tmp ;
   VAR(uint32, AUTOMATIC) second_tmp ;
   
-  first_tmp = ((first_key & RANK_MASK) - TAIL_FOR_PRIO[first_key >> PRIORITY_SHIFT]);
+  first_tmp = ((first_key & RANK_MASK) - 
+    TAIL_FOR_PRIO(tail_for_prio)[first_key >> PRIORITY_SHIFT]);
   first_tmp = first_tmp & RANK_MASK;
   first_key = (first_key & PRIORITY_MASK);
   first_key = first_key | first_tmp;
    
-  second_tmp = ((second_key & RANK_MASK) - TAIL_FOR_PRIO[second_key >> PRIORITY_SHIFT]);
+  second_tmp = ((second_key & RANK_MASK) - 
+    TAIL_FOR_PRIO(tail_for_prio)[second_key >> PRIORITY_SHIFT]);
   second_tmp = second_tmp & RANK_MASK;
   second_key = (second_key & PRIORITY_MASK);
   second_key = second_key | second_tmp;  
+
   return (first_key < second_key);
 }
 
@@ -232,14 +235,14 @@ FUNC(int, OS_CODE) tpl_compare_entries(
 FUNC(void, OS_CODE) tpl_bubble_up(
   CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) heap,
   VAR(uint32, AUTOMATIC)                        index
-  TAIL_FOR_PRIO_ARG_DECL)
+  TAIL_FOR_PRIO_ARG_DECL(tail_for_prio))
 {
   VAR(uint32, AUTOMATIC) father = index >> 1;
 
   while ((index > 1) &&
     (tpl_compare_entries(heap + father,
                          heap + index
-                         TAIL_FOR_PRIO_ARG)))
+                         TAIL_FOR_PRIO_ARG(tail_for_prio))))
   {
     /*
      * if the father key is lower then the index key, swap them
@@ -264,7 +267,7 @@ FUNC(void, OS_CODE) tpl_bubble_up(
 FUNC(void, OS_CODE) tpl_bubble_down(
   CONSTP2VAR(tpl_heap_entry, AUTOMATIC, OS_VAR) heap,
   VAR(uint32, AUTOMATIC)                        index
-  TAIL_FOR_PRIO_ARG_DECL)
+  TAIL_FOR_PRIO_ARG_DECL(tail_for_prio))
 {
   CONST(uint32, AUTOMATIC) size = heap[0].key;
   VAR(uint32, AUTOMATIC) child;
@@ -275,14 +278,14 @@ FUNC(void, OS_CODE) tpl_bubble_down(
     if ((right <= size) &&
       tpl_compare_entries(heap + child,
                           heap + right
-                          TAIL_FOR_PRIO_ARG))
+                          TAIL_FOR_PRIO_ARG(tail_for_prio)))
     {
       /* the right child exists and is greater */
       child = right;
     }
     if (tpl_compare_entries(heap + index,
                             heap + child
-                            TAIL_FOR_PRIO_ARG))
+                            TAIL_FOR_PRIO_ARG(tail_for_prio)))
     {
       /* the father has a key <, swap */
       CONST(tpl_heap_entry, AUTOMATIC) tmp = heap[index];
@@ -310,25 +313,31 @@ FUNC(void, OS_CODE) tpl_bubble_down(
 FUNC(void, OS_CODE) tpl_put_new_proc(
   CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
-  GET_PROC_CORE_ID(proc_id)
-  GET_CORE_READY_LIST
-  GET_TAIL_FOR_PRIO
+  GET_PROC_CORE_ID(proc_id, core_id)
+  GET_CORE_READY_LIST(core_id, ready_list)
+  GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
   
-  VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST[0].key));
+  VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST(ready_list)[0].key));
+
   VAR(tpl_priority, AUTOMATIC) dyn_prio;
   CONST(tpl_priority, AUTOMATIC) prio =
     tpl_stat_proc_table[proc_id]->base_priority;
   /*
    * add the new entry at the end of the ready list
    */
-  dyn_prio = (prio << PRIORITY_SHIFT) | (--TAIL_FOR_PRIO[prio] & RANK_MASK);
+  dyn_prio = (prio << PRIORITY_SHIFT) |
+             (--TAIL_FOR_PRIO(tail_for_prio)[prio] & RANK_MASK);
 
   DOW_DO(printf("put new %s, %d\n",proc_name_table[proc_id],dyn_prio);)
 
-  READY_LIST[index].key = dyn_prio;
-  READY_LIST[index].id = proc_id;
+  READY_LIST(ready_list)[index].key = dyn_prio;
+  READY_LIST(ready_list)[index].id = proc_id;
   
-  tpl_bubble_up(READY_LIST, index TAIL_FOR_PRIO_ARG);
+  tpl_bubble_up(
+    READY_LIST(ready_list),
+    index 
+    TAIL_FOR_PRIO_ARG(tail_for_prio)
+  );
   
   DOW_DO(printrl("put_new_proc");)
 }
@@ -344,12 +353,13 @@ FUNC(void, OS_CODE) tpl_put_new_proc(
 FUNC(void, OS_CODE) tpl_put_preempted_proc(
   CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
-  GET_PROC_CORE_ID(proc_id)
-  GET_CORE_READY_LIST
-  GET_TAIL_FOR_PRIO
+  GET_PROC_CORE_ID(proc_id, core_id)
+  GET_CORE_READY_LIST(core_id, ready_list)
+  GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
   
     
-  VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST[0].key));
+  VAR(uint32, AUTOMATIC) index = (uint32)(++(READY_LIST(ready_list)[0].key));
+
   CONST(tpl_priority, AUTOMATIC) dyn_prio =
     tpl_dyn_proc_table[proc_id]->priority;
 
@@ -357,10 +367,14 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(
   /*
    * add the new entry at the end of the ready list
    */
-  READY_LIST[index].key = dyn_prio;
-  READY_LIST[index].id = proc_id;
+  READY_LIST(ready_list)[index].key = dyn_prio;
+  READY_LIST(ready_list)[index].id = proc_id;
   
-  tpl_bubble_up(READY_LIST, index TAIL_FOR_PRIO_ARG);
+  tpl_bubble_up(
+    READY_LIST(ready_list),
+    index
+    TAIL_FOR_PRIO_ARG(tail_for_prio)
+  );
   
   DOW_DO(printrl("put_preempted_proc"));
 }
@@ -376,47 +390,49 @@ FUNC(void, OS_CODE) tpl_put_preempted_proc(
  * tpl_front_proc returns the proc_id of the highest priority proc in the
  * ready list on the current core
  */
-FUNC(tpl_heap_entry, OS_CODE) tpl_front_proc(void)
+FUNC(tpl_heap_entry, OS_CODE) tpl_front_proc(CORE_ID_OR_VOID(core_id))
 {
-  GET_CURRENT_CORE_ID
-  GET_CORE_READY_LIST
+  GET_CORE_READY_LIST(core_id, ready_list)
 
-  return (READY_LIST[1]);
+  return (READY_LIST(ready_list)[1]);
 }
 
 /*
  * @internal
  *
  * tpl_remove_front_proc removes the highest priority proc from the
- * ready list on the current core and returns the heap_entry
+ * ready list on the specified core and returns the heap_entry
  */
-FUNC(tpl_heap_entry, OS_CODE) tpl_remove_front_proc(void)
+FUNC(tpl_heap_entry, OS_CODE) tpl_remove_front_proc(CORE_ID_OR_VOID(core_id))
 {
-  GET_CURRENT_CORE_ID
-  GET_CORE_READY_LIST
-  GET_TAIL_FOR_PRIO
+  GET_CORE_READY_LIST(core_id, ready_list)
+  GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
 
   /*
    * Get the current size and update it (since the front element will be
    * removed)
    */
-  CONST(uint32, AUTOMATIC) size = READY_LIST[0].key--;
+  CONST(uint32, AUTOMATIC) size = READY_LIST(ready_list)[0].key--;
   VAR(uint32, AUTOMATIC) index = 1;
   
   /*
    * Get the proc_id of the front proc
    */
-  VAR(tpl_heap_entry, AUTOMATIC) proc = READY_LIST[1];
+  VAR(tpl_heap_entry, AUTOMATIC) proc = READY_LIST(ready_list)[1];
   
   /*
    * Put the last element in front
    */
-  READY_LIST[index] = READY_LIST[size];
+  READY_LIST(ready_list)[index] = READY_LIST(ready_list)[size];
   
   /*
    * bubble down to the right place
    */
-  tpl_bubble_down(READY_LIST, index TAIL_FOR_PRIO_ARG);
+  tpl_bubble_down(
+    READY_LIST(ready_list),
+    index
+    TAIL_FOR_PRIO_ARG(tail_for_prio)
+  );
   
   return proc;
 }
@@ -432,13 +448,12 @@ FUNC(tpl_heap_entry, OS_CODE) tpl_remove_front_proc(void)
  */
 FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 {
-  GET_PROC_CORE_ID(proc_id)
-  GET_CORE_READY_LIST
-  GET_TAIL_FOR_PRIO
+  GET_PROC_CORE_ID(proc_id, core_id)
+  GET_CORE_READY_LIST(core_id, ready_list)
+  GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
 
   VAR(uint32, AUTOMATIC) index;
-  VAR(uint32, AUTOMATIC) size = (uint32)READY_LIST[0].key;
-  VAR(tpl_bool, AUTOMATIC) on_duty;
+  VAR(uint32, AUTOMATIC) size = (uint32)READY_LIST(ready_list)[0].key;
   
   DOW_DO(printf("\n**** remove proc %d ****\n",proc_id);)
   DOW_DO(printrl("tpl_remove_proc - before");)
@@ -446,14 +461,18 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
 
   for (index = 1; index <= size; index++)
   {
-    if (READY_LIST[index].id == proc_id)
+    if (READY_LIST(ready_list)[index].id == proc_id)
     {
-       READY_LIST[index] = READY_LIST[size--];
-       tpl_bubble_down(READY_LIST, index TAIL_FOR_PRIO_ARG);
+      READY_LIST(ready_list)[index] = READY_LIST(ready_list)[size--];
+      tpl_bubble_down(
+        READY_LIST(ready_list),
+        index
+        TAIL_FOR_PRIO_ARG(tail_for_prio)
+      );
     }
   }
 
-  READY_LIST[0].key = size;
+  READY_LIST(ready_list)[0].key = size;
 
   DOW_DO(printrl("tpl_remove_proc - after");)
 }
@@ -468,24 +487,24 @@ FUNC(void, OS_CODE) tpl_remove_proc(CONST(tpl_proc_id, AUTOMATIC) proc_id)
  * @see #tpl_os_state
  */
 FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(
-  CORE_ID_OR_VOID)
+  CORE_ID_OR_VOID(core_id))
 {
   VAR(tpl_os_state, OS_APPL_DATA) state = OS_UNKNOWN;
   
-  GET_TPL_KERN_FOR_CORE_ID
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-  if (TPL_KERN_REF.running_id == INVALID_PROC_ID) {
+  if (TPL_KERN_REF(kern).running_id == INVALID_PROC_ID) {
     state = OS_INIT;
   }
-  else if (TPL_KERN_REF.running_id >= (TASK_COUNT + ISR_COUNT))
+  else if (TPL_KERN_REF(kern).running_id >= (TASK_COUNT + ISR_COUNT))
   {
     state = OS_IDLE;
   }
-  else if (TPL_KERN_REF.running_id < TASK_COUNT)
+  else if (TPL_KERN_REF(kern).running_id < TASK_COUNT)
   {
     state = OS_TASK;
   }
-  else if (TPL_KERN_REF.running_id < (TASK_COUNT + ISR_COUNT) )
+  else if (TPL_KERN_REF(kern).running_id < (TASK_COUNT + ISR_COUNT) )
   {
     state = OS_ISR2;
   }
@@ -503,8 +522,8 @@ FUNC(tpl_os_state, OS_CODE) tpl_current_os_state(
 FUNC(void, OS_CODE) tpl_get_internal_resource(
   CONST(tpl_proc_id, AUTOMATIC) task_id)
 {
-  GET_PROC_CORE_ID(task_id)
-  GET_TAIL_FOR_PRIO
+  GET_PROC_CORE_ID(task_id, core_id)
+  GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
 
   CONSTP2VAR(tpl_internal_resource, AUTOMATIC, OS_APPL_DATA) rez =
     tpl_stat_proc_table[task_id]->internal_resource;
@@ -514,7 +533,7 @@ FUNC(void, OS_CODE) tpl_get_internal_resource(
     rez->taken = TRUE;
     rez->owner_prev_priority = tpl_dyn_proc_table[task_id]->priority;
     tpl_dyn_proc_table[task_id]->priority =
-      DYNAMIC_PRIO(rez->ceiling_priority);
+      DYNAMIC_PRIO(rez->ceiling_priority, tail_for_prio);
   }
 }
 
@@ -543,13 +562,13 @@ FUNC(void, OS_CODE) tpl_release_internal_resource(
  *
  * Preempt the running process.
  */
-FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID)
+FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
 {
-  GET_TPL_KERN_FOR_CORE_ID
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   /*  the running object is never NULL and is in the state RUNNING */
-  DOW_ASSERT(TPL_KERN_REF.running != NULL)
-  DOW_ASSERT(TPL_KERN_REF.running->state == RUNNING)
+  DOW_ASSERT(TPL_KERN_REF(kern).running != NULL)
+  DOW_ASSERT(TPL_KERN_REF(kern).running->state == RUNNING)
 
   /*
    * The running task is preempted, so it is time to call the
@@ -557,25 +576,28 @@ FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID)
    */
   CALL_POST_TASK_HOOK()
   
-  TRACE_ISR_PREEMPT((tpl_proc_id)TPL_KERN_REF.running_id)
-  TRACE_TASK_PREEMPT((tpl_proc_id)TPL_KERN_REF.running_id)
+  TRACE_ISR_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
+  TRACE_TASK_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
   
   /* The current running task becomes READY */
-  TPL_KERN_REF.running->state = (tpl_proc_state)READY;
+  TPL_KERN_REF(kern).running->state = (tpl_proc_state)READY;
   
-  DOW_DO(printf("preempt %s\n",proc_name_table[TPL_KERN_REF.running_id]));
+  DOW_DO(printf(
+    "preempt %s\n",
+    proc_name_table[TPL_KERN_REF(kern).running_id])
+  );
   
   /* And put in the ready list */
-  tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF.running_id);
+  tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).running_id);
   
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /* cancel the watchdog and update the budget                  */
-  tpl_tp_on_preempt(TPL_KERN_REF.running_id);
+  tpl_tp_on_preempt(TPL_KERN_REF(kern).running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
   /* copy it in old slot of tpl_kern */
-  TPL_KERN_REF.old = TPL_KERN_REF.running;
-  TPL_KERN_REF.s_old = TPL_KERN_REF.s_running;
+  TPL_KERN_REF(kern).old = TPL_KERN_REF(kern).running;
+  TPL_KERN_REF(kern).s_old = TPL_KERN_REF(kern).s_running;
 }
 
 /**
@@ -583,16 +605,17 @@ FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID)
  *
  * Start the highest priority READY process
  */
-FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID)
+FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
 {
-  GET_TPL_KERN_FOR_CORE_ID
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-  CONST(tpl_heap_entry, AUTOMATIC) proc = tpl_remove_front_proc();
-  TPL_KERN_REF.running_id = (uint32)proc.id;
-  TPL_KERN_REF.running = tpl_dyn_proc_table[proc.id];
-  TPL_KERN_REF.s_running = tpl_stat_proc_table[proc.id];
+  CONST(tpl_heap_entry, AUTOMATIC) proc =
+    tpl_remove_front_proc(CORE_ID_OR_NOTHING(core_id));
+  TPL_KERN_REF(kern).running_id = (uint32)proc.id;
+  TPL_KERN_REF(kern).running = tpl_dyn_proc_table[proc.id];
+  TPL_KERN_REF(kern).s_running = tpl_stat_proc_table[proc.id];
 
-  if (TPL_KERN_REF.running->state == READY_AND_NEW)
+  if (TPL_KERN_REF(kern).running->state == READY_AND_NEW)
   {
     /*
      * the object has not be preempted. So its
@@ -602,25 +625,28 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID)
     tpl_dyn_proc_table[proc.id]->priority = proc.key;
   }
   
-  DOW_DO(printf("start %s, %d\n",proc_name_table[TPL_KERN_REF.running_id],
-                                 tpl_dyn_proc_table[proc.id]->priority));
+  DOW_DO(printf(
+    "start %s, %d\n",
+    proc_name_table[TPL_KERN_REF(kern).running_id],
+    tpl_dyn_proc_table[proc.id]->priority)
+  );
   DOW_DO(printrl("tpl_start - after");)
   
   /* the inserted task become RUNNING */
-  TRACE_TASK_EXECUTE((tpl_proc_id)TPL_KERN_REF.running_id)
-  TRACE_ISR_RUN((tpl_proc_id)TPL_KERN_REF.running_id)
-  TPL_KERN_REF.running->state = RUNNING;
+  TRACE_TASK_EXECUTE((tpl_proc_id)TPL_KERN_REF(kern).running_id)
+  TRACE_ISR_RUN((tpl_proc_id)TPL_KERN_REF(kern).running_id)
+  TPL_KERN_REF(kern).running->state = RUNNING;
 
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /*  start the budget watchdog  */
-  tpl_tp_on_start(TPL_KERN_REF.running_id);
+  tpl_tp_on_start(TPL_KERN_REF(kern).running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   
   /*
    * If an internal resource is assigned to the task
    * and it is not already taken by it, take it
    */
-  tpl_get_internal_resource((tpl_proc_id)TPL_KERN_REF.running_id);
+  tpl_get_internal_resource((tpl_proc_id)TPL_KERN_REF(kern).running_id);
   
   /*
    * A new task has been started. It is time to call
@@ -638,31 +664,30 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID)
  * and ActivateTask services
  *
  */
-FUNC(void, OS_CODE) tpl_schedule_from_running(void)
+FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
 {
-  GET_CURRENT_CORE_ID
-  GET_CORE_READY_LIST
-  GET_TPL_KERN_FOR_CORE_ID
+  GET_CORE_READY_LIST(core_id, ready_list)
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
   
   VAR(uint8, AUTOMATIC) need_switch = NO_NEED_SWITCH;
 
-  DOW_ASSERT((uint32)READY_LIST[1].key > 0)
+  DOW_ASSERT((uint32)READY_LIST(read_list)[1].key > 0)
   
 #if WITH_AUTOSAR_STACK_MONITORING == YES
-  tpl_check_stack((tpl_proc_id)TPL_KERN_REF.running_id);
+  tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
-  if ((READY_LIST[1].key) >
-      (tpl_dyn_proc_table[TPL_KERN_REF.running_id]->priority))
+  if ((READY_LIST(ready_list)[1].key) >
+      (tpl_dyn_proc_table[TPL_KERN_REF(kern).running_id]->priority))
   {
     /* Preempts the RUNNING task */
-    tpl_preempt(CORE_ID_OR_NOTHING);
+    tpl_preempt(CORE_ID_OR_NOTHING(core_id));
     /* Starts the highest priority READY task */
-    tpl_start(CORE_ID_OR_NOTHING);
+    tpl_start(CORE_ID_OR_NOTHING(core_id));
     need_switch = NEED_SWITCH | NEED_SAVE;
   }
 
-  TPL_KERN_REF.need_switch = need_switch;
+  TPL_KERN_REF(kern).need_switch = need_switch;
 }
 
 /**
@@ -676,11 +701,11 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(void)
  */
 FUNC(void, OS_CODE) tpl_terminate(void)
 {
-  GET_CURRENT_CORE_ID
-  GET_TPL_KERN_FOR_CORE_ID
+  GET_CURRENT_CORE_ID(core_id)
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
 #if WITH_AUTOSAR_STACK_MONITORING == YES
-  tpl_check_stack((tpl_proc_id)TPL_KERN_REF.running_id);
+  tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
   
   /*
@@ -693,10 +718,10 @@ FUNC(void, OS_CODE) tpl_terminate(void)
    * the task loses the CPU because it has been put in the WAITING or
    * in the DYING state, its internal resource is released.
    */
-  tpl_release_internal_resource((tpl_proc_id)TPL_KERN_REF.running_id);
+  tpl_release_internal_resource((tpl_proc_id)TPL_KERN_REF(kern).running_id);
   
   /* and checked to compute its state. */
-  if (TPL_KERN_REF.running->activate_count > 0)
+  if (TPL_KERN_REF(kern).running->activate_count > 0)
   {
     /*
      * there is at least one instance of the dying running object in
@@ -704,14 +729,14 @@ FUNC(void, OS_CODE) tpl_terminate(void)
      * way when the next instance will be prepared to run it will
      * be initialized.
      */
-    TPL_KERN_REF.running->state = READY_AND_NEW;
+    TPL_KERN_REF(kern).running->state = READY_AND_NEW;
     
 #if EXTENDED_TASK_COUNT > 0
     /*  if the object is an extended task, init the events          */
-    if (TPL_KERN_REF.running_id < EXTENDED_TASK_COUNT)
+    if (TPL_KERN_REF(kern).running_id < EXTENDED_TASK_COUNT)
     {
       CONSTP2VAR(tpl_task_events, AUTOMATIC, OS_APPL_DATA) events =
-      tpl_task_events_table[TPL_KERN_REF.running_id];
+        tpl_task_events_table[TPL_KERN_REF(kern).running_id];
       events->evt_set = events->evt_wait = 0;
     }
 #endif
@@ -723,18 +748,18 @@ FUNC(void, OS_CODE) tpl_terminate(void)
      * there is no instance of the dying running object in the ready
      * list. So it is put in the SUSPENDED state.
      */
-    TPL_KERN_REF.running->state = SUSPENDED;
+    TPL_KERN_REF(kern).running->state = SUSPENDED;
   }
   
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /* notify the timing protection service */ 
-  tpl_tp_on_terminate_or_wait(TPL_KERN_REF.running_id);
-  tpl_tp_reset_watchdogs(TPL_KERN_REF.running_id);
+  tpl_tp_on_terminate_or_wait(TPL_KERN_REF(kern).running_id);
+  tpl_tp_reset_watchdogs(TPL_KERN_REF(kern).running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   
   /* copy it in old slot of tpl_kern */
-  TPL_KERN_REF.old = TPL_KERN_REF.running;
-  TPL_KERN_REF.s_old = TPL_KERN_REF.s_running;
+  TPL_KERN_REF(kern).old = TPL_KERN_REF(kern).running;
+  TPL_KERN_REF(kern).s_old = TPL_KERN_REF(kern).s_running;
 }
 
 #if EXTENDED_TASK_COUNT > 0
@@ -748,16 +773,16 @@ FUNC(void, OS_CODE) tpl_terminate(void)
  */
 FUNC(void, OS_CODE) tpl_block(void)
 {
-  GET_CURRENT_CORE_ID
-  GET_TPL_KERN_FOR_CORE_ID
+  GET_CURRENT_CORE_ID(core_id)
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   /* event mask of the caller */
   P2VAR(tpl_task_events, AUTOMATIC, OS_VAR) task_events =
-    tpl_task_events_table[TPL_KERN_REF.running_id];  
+    tpl_task_events_table[TPL_KERN_REF(kern).running_id];  
   
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /* reset the execution budget */
-  tpl_tp_on_terminate_or_wait(TPL_KERN_REF.running_id);
+  tpl_tp_on_terminate_or_wait(TPL_KERN_REF(kern).running_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION  == YES */
   
   /* check one of the event to wait is not already set */
@@ -766,7 +791,7 @@ FUNC(void, OS_CODE) tpl_block(void)
     /* No event is set, the task blocks */
 
 #if WITH_AUTOSAR_STACK_MONITORING == YES
-    tpl_check_stack((tpl_proc_id)TPL_KERN_REF.running_id);
+    tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING == YES */
     
     /*
@@ -776,27 +801,27 @@ FUNC(void, OS_CODE) tpl_block(void)
     CALL_POST_TASK_HOOK()
     
     /* the task goes in the WAITING state */
-    TRACE_TASK_WAIT((tpl_proc_id)TPL_KERN_REF.running_id)
-    TPL_KERN_REF.running->state = WAITING;
+    TRACE_TASK_WAIT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
+    TPL_KERN_REF(kern).running->state = WAITING;
     
     /* The internal resource is released. */
-    tpl_release_internal_resource((tpl_proc_id)TPL_KERN_REF.running_id);
+    tpl_release_internal_resource((tpl_proc_id)TPL_KERN_REF(kern).running_id);
     
     /* copy it in old slot of tpl_kern */
-    TPL_KERN_REF.old = TPL_KERN_REF.running;
-    TPL_KERN_REF.s_old = TPL_KERN_REF.s_running;
+    TPL_KERN_REF(kern).old = TPL_KERN_REF(kern).running;
+    TPL_KERN_REF(kern).s_old = TPL_KERN_REF(kern).s_running;
     
     /* Start the highest priority task */
-    tpl_start(CORE_ID_OR_NOTHING);
+    tpl_start(CORE_ID_OR_NOTHING(core_id));
     /* Task switching should occur */
-    TPL_KERN_REF.need_switch = NEED_SWITCH | NEED_SAVE;
+    TPL_KERN_REF(kern).need_switch = NEED_SWITCH | NEED_SAVE;
 # if WITH_SYSTEM_CALL == NO
-    if (TPL_KERN_REF.need_switch != NO_NEED_SWITCH)
+    if (TPL_KERN_REF(kern).need_switch != NO_NEED_SWITCH)
     {
-      TPL_KERN_REF.need_switch = NO_NEED_SWITCH;
+      TPL_KERN_REF(kern).need_switch = NO_NEED_SWITCH;
       tpl_switch_context(
-        &(TPL_KERN_REF.s_old->context),
-        &(TPL_KERN_REF.s_running->context)
+        &(TPL_KERN_REF(kern).s_old->context),
+        &(TPL_KERN_REF(kern).s_running->context)
       );
     }
 # endif /* WITH_SYSTEM_CALL == NO */
@@ -804,13 +829,13 @@ FUNC(void, OS_CODE) tpl_block(void)
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   else
   {
-    if (FALSE == tpl_tp_on_activate_or_release(TPL_KERN_REF.running_id))
+    if (FALSE == tpl_tp_on_activate_or_release(TPL_KERN_REF(kern).running_id))
     {
       tpl_call_protection_hook(E_OS_PROTECTION_ARRIVAL);
     }
     else
     {
-      tpl_tp_on_start(TPL_KERN_REF.running_id);
+      tpl_tp_on_start(TPL_KERN_REF(kern).running_id);
     }    
   }
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION == YES */
@@ -822,12 +847,12 @@ FUNC(void, OS_CODE) tpl_block(void)
  *
  * TODO: document this
  */
-FUNC(void, OS_CODE) tpl_start_scheduling(CORE_ID_OR_VOID)
+FUNC(void, OS_CODE) tpl_start_scheduling(CORE_ID_OR_VOID(core_id))
 {
-  GET_TPL_KERN_FOR_CORE_ID
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-  tpl_start(CORE_ID_OR_NOTHING);
-  TPL_KERN_REF.need_switch = NEED_SWITCH;
+  tpl_start(CORE_ID_OR_NOTHING(core_id));
+  TPL_KERN_REF(kern).need_switch = NEED_SWITCH;
 }
 
 /**
@@ -1091,8 +1116,8 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 
 FUNC(void, OS_CODE) tpl_call_terminate_task_service(void)
 {  
-  GET_CURRENT_CORE_ID
-  GET_TPL_KERN_FOR_CORE_ID
+  GET_CURRENT_CORE_ID(core_id)
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   /* lock the kernel */
   LOCK_KERNEL()
@@ -1108,8 +1133,8 @@ FUNC(void, OS_CODE) tpl_call_terminate_task_service(void)
      */
   }
   /* release resources if held */
-  if ((TPL_KERN_REF.running->resources) != NULL){
-      tpl_release_all_resources((tpl_proc_id)TPL_KERN_REF.running_id);
+  if ((TPL_KERN_REF(kern).running->resources) != NULL){
+      tpl_release_all_resources((tpl_proc_id)TPL_KERN_REF(kern).running_id);
   }
   
   /* error hook */		
@@ -1125,8 +1150,8 @@ FUNC(void, OS_CODE) tpl_call_terminate_task_service(void)
 
 FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
 {
-  GET_CURRENT_CORE_ID
-  GET_TPL_KERN_FOR_CORE_ID
+  GET_CURRENT_CORE_ID(core_id)
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
   /*  init the error to no error  */
   VAR(StatusType, AUTOMATIC) result = E_OK;
@@ -1146,8 +1171,8 @@ FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
     result = E_OS_DISABLEDINT;
   }
   /* release resources if held */
-  if( (TPL_KERN_REF.running->resources) != NULL ){
-    tpl_release_all_resources((tpl_proc_id)TPL_KERN_REF.running_id);
+  if( (TPL_KERN_REF(kern).running->resources) != NULL ){
+    tpl_release_all_resources((tpl_proc_id)TPL_KERN_REF(kern).running_id);
     result = E_OS_RESOURCE;
   }
   

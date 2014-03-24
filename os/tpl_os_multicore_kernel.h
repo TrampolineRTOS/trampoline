@@ -42,6 +42,23 @@ extern VAR(CoreStatusType, OS_APPL_DATA) tpl_core_status[NUMBER_OF_CORES];
 #define OS_STOP_SEC_VAR_8BITS
 #include "tpl_memmap.h"
 
+#define OS_START_SEC_VAR_16BITS
+#include "tpl_memmap.h"
+
+/**
+ * tpl_start_count
+ */
+extern VAR(uint16, OS_APPL_DATA) tpl_start_count;
+
+/**
+ * tpl_number_of_activated_cores
+ */
+extern VAR(uint16, OS_APPL_DATA) tpl_number_of_activated_cores;
+
+  
+#define OS_STOP_SEC_VAR_16BITS
+#include "tpl_memmap.h"
+
 
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
@@ -72,7 +89,7 @@ FUNC(CoreIdType, OS_CODE) tpl_get_core_id_service(void);
  */
 FUNC(void, OS_CODE) tpl_start_core_service(
   CONST(CoreIdType, AUTOMATIC)      core_id,
-  CONSTP2VAR(StatusType, AUTOMATIC) status);
+  CONSTP2VAR(StatusType, AUTOMATIC, OS_APPL_DATA) status);
 
 /**
  * tpl_start_non_autosar_core_service starts a non AUTOSAR processing core.
@@ -88,7 +105,7 @@ FUNC(void, OS_CODE) tpl_start_core_service(
  */
 FUNC(void, OS_CODE) tpl_start_non_autosar_core_service(
   CONST(CoreIdType, AUTOMATIC)      core_id,
-  CONSTP2VAR(StatusType, AUTOMATIC) status);
+  CONSTP2VAR(StatusType, AUTOMATIC, OS_APPL_DATA) status);
 
 /**
  * tpl_shutdown_all_cores_service shutdown all the running cores.
@@ -121,7 +138,17 @@ FUNC(uint32, OS_CODE) tpl_get_number_of_activated_cores_service(void);
  */
 FUNC(StatusType, OS_CODE) tpl_get_core_status_service(
   CONST(CoreIdType, AUTOMATIC)          core_id,
-  CONSTP2VAR(CoreStatusType, AUTOMATIC) status);
+  CONSTP2VAR(CoreStatusType, AUTOMATIC, OS_APPL_DATA) status);
+
+/**
+ * tpl_sync_barrier does a synchronization barrier
+ *
+ * @param   enter_count   the counter used to count the number of cores
+ * @param   lock          the lock used to protect the critical section
+ */
+FUNC(void, OS_CODE) tpl_sync_barrier(
+  CONSTP2VAR(uint16, AUTOMATIC, OS_VAR)   enter_count,
+  CONSTP2VAR(tpl_lock, AUTOMATIC, OS_VAR) lock);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

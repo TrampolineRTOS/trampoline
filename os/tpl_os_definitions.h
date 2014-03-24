@@ -721,6 +721,12 @@ extern CONST(TickType, OS_CONST) OSMINCYCLE_##counter_id
 
 #endif
 
+#if NUMBER_OF_CORES > 1
+
+#define UNLOCKED_LOCK       0
+#define LOCKED_LOCK         1
+
+#endif
 
 #endif /* TPL_OS_DEFINITIONS_H */
 
