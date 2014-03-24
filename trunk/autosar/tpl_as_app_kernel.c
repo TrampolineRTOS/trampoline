@@ -460,7 +460,6 @@ FUNC(tpl_status, OS_CODE) tpl_allow_access_service(void)
 
   IF_NO_EXTENDED_ERROR(result)
 
-#if APP_COUNT > 0
   app_id = TPL_KERN_REF(tpl_kern).s_running->app_id;
 
   if (app_id < APP_COUNT)
@@ -479,9 +478,6 @@ FUNC(tpl_status, OS_CODE) tpl_allow_access_service(void)
   {
     result = E_OS_VALUE;
   }
-#else
-  result = E_OS_VALUE;
-#endif
 
   IF_NO_EXTENDED_ERROR_END()
 
