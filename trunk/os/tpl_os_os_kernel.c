@@ -33,6 +33,10 @@
 #include "tpl_trace.h"
 #include "tpl_os_hooks.h"
 
+#if NUMBER_OF_CORES > 1
+#include "tpl_os_multicore_kernel.h"
+#endif
+
 #define OS_START_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
 
@@ -44,7 +48,11 @@
  * @see #tpl_start_os_service
  * @see #tpl_shutdown_os_service
  */
+#if NUMBER_OF_CORES > 1
+STATIC VAR(tpl_application_mode, OS_VAR) application_mode[NUMBER_OF_CORES];
+#else
 STATIC VAR(tpl_application_mode, OS_VAR) application_mode = NOAPPMODE;
+#endif
 
 #if NUMBER_OF_CORES > 1
 /**
@@ -65,7 +73,7 @@ VAR(tpl_lock, OS_VAR) tpl_startos_sync_lock = UNLOCKED_LOCK;
 FUNC(tpl_application_mode, OS_CODE) tpl_get_active_application_mode_service(
   void)
 {
-  VAR(tpl_application_mode, AUTOMATIC) app_mode = application_mode;
+  VAR(tpl_application_mode, AUTOMATIC) app_mode;
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 	
   /*  lock the kernel    */
@@ -77,7 +85,11 @@ FUNC(tpl_application_mode, OS_CODE) tpl_get_active_application_mode_service(
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_GetActiveApplicationMode)
 	
+#if NUMBER_OF_CORES > 1
+  app_mode = application_mode[tpl_get_core_id()];
+#else
   app_mode = application_mode;
+#endif
 	
   PROCESS_ERROR(result)
 	
@@ -89,6 +101,8 @@ FUNC(tpl_application_mode, OS_CODE) tpl_get_active_application_mode_service(
 FUNC(void, OS_CODE) tpl_start_os_service(
   CONST(tpl_application_mode, AUTOMATIC) mode)
 {
+  GET_CURRENT_CORE_ID(core_id)
+
 #if (WITH_ERROR_HOOK == YES) || (WITH_OS_EXTENDED == YES)
   /*  init the error to no error  */
   VAR(tpl_status, AUTOMATIC) result = E_OK;
@@ -109,12 +123,12 @@ FUNC(void, OS_CODE) tpl_start_os_service(
   /*
    * Sync barrier at start of tpl_start_os_service. 
    */
-  tpl_sync_barrier(tpl_start_count, tpl_startos_sync_lock);
+  tpl_sync_barrier(&tpl_start_count, &tpl_startos_sync_lock);
   /*
    * Restore the tpl_start_count to prepare the second sync barrier
    */
   tpl_start_count = tpl_number_of_activated_cores;
-  application_mode[tpl_get_core_id()] = mode;
+  application_mode[core_id] = mode;
 #else
   application_mode = mode;
 #endif
@@ -140,26 +154,17 @@ FUNC(void, OS_CODE) tpl_start_os_service(
   /*
    * Sync barrier just before starting the scheduling. 
    */
-  tpl_sync_barrier(tpl_start_count, tpl_startos_sync_lock);
+  tpl_sync_barrier(&tpl_start_count, &tpl_startos_sync_lock);
 #endif
 
   /* 
    * Call tpl_start_scheduling to elect the highest priority task
    * if such a task exists.
    */
-  tpl_start_scheduling();
-
-#if WITH_SYSTEM_CALL == NO
-  if (tpl_kern.need_switch != NO_NEED_SWITCH)
-  {
-    tpl_kern.need_switch = NO_NEED_SWITCH;
-    tpl_switch_context(
-      &(tpl_kern.s_old->context),
-      &(tpl_kern.s_running->context)
-    );
-  }
-#endif
+  tpl_start_scheduling(CORE_ID_OR_NOTHING(core_id));
   
+  SWITCH_CONTEXT(core_id)
+
   /* } */
   IF_NO_EXTENDED_ERROR_END()
 	
@@ -172,6 +177,8 @@ FUNC(void, OS_CODE) tpl_start_os_service(
 FUNC(void, OS_CODE) tpl_shutdown_os_service(
   CONST(tpl_status, AUTOMATIC) error  /*@unused@*/)
 {
+  GET_CURRENT_CORE_ID(core_id)
+
   /*  lock the kernel    */
   LOCK_KERNEL()
   
@@ -183,7 +190,7 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
    * (otherwise OS Applications do not exist)
    */
 #if WITH_OSAPPLICATION == YES
-  if (tpl_kern.running->trusted_counter > 0)
+  if (TPL_KERN(core_id).running->trusted_counter > 0)
   {
 #endif
 	
@@ -198,6 +205,7 @@ FUNC(void, OS_CODE) tpl_shutdown_os_service(
   CALL_SHUTDOWN_HOOK(error)
 
   TRACE_TPL_TERMINATE()
+
   /* architecture dependant shutdown. */
   tpl_shutdown();
 

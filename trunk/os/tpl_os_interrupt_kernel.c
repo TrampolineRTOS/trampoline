@@ -204,6 +204,8 @@ FUNC(void, OS_CODE) tpl_resume_os_interrupts_service(void)
  */
 FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
 {
+  GET_CURRENT_CORE_ID(core_id)
+  
   /* init the error to no error */
   VAR(tpl_status, AUTOMATIC) result = E_OK;
   
@@ -212,28 +214,22 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_isr2_service(void)
   /* check we are at the ISR2 level */
   CHECK_ISR2_CALL_LEVEL_ERROR(result)
   /* check the ISR2 does not own a resource */
-  CHECK_RUNNING_OWNS_REZ_ERROR(result)
+  CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
   
 #if ISR_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   
   /* the activate count is decreased */
-  tpl_kern.running->activate_count--;
+  TPL_KERN(core_id).running->activate_count--;
     
   /* terminate the running ISR */
   tpl_terminate();
   /* start the highest priority process */
   tpl_start();
   /* process switching should occur */
-  tpl_kern.need_switch = NEED_SWITCH;
+  TPL_KERN(core_id).need_switch = NEED_SWITCH;
   
-  #if WITH_SYSTEM_CALL == NO
-  if (tpl_kern.need_switch != NO_NEED_SWITCH)
-  {
-    tpl_kern.need_switch = NO_NEED_SWITCH;
-    tpl_switch_context(NULL, &(tpl_kern.s_running->context));
-  }
-  #endif
+  LOCAL_SWITCH_CONTEXT_NOSAVE(a_core_id)
 	
   IF_NO_EXTENDED_ERROR_END()
 #endif

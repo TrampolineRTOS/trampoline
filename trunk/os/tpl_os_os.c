@@ -42,13 +42,22 @@ extern FUNC(void, OS_CODE) tpl_start_os(CONST(AppModeType, AUTOMATIC) mode);
 FUNC(void, OS_CODE) StartOS(
   CONST(AppModeType, AUTOMATIC) mode)
 {
-  if (tpl_current_os_state() == OS_INIT)
+  GET_CURRENT_CORE_ID(core_id)
+  
+  if (tpl_current_os_state(CORE_ID_OR_NOTHING(core_id)) == OS_INIT)
   {
-    /* Call target specific initialization */
-    tpl_init_machine();
+#if NUMBER_OF_CORES > 1
+    if (core_id == OS_CORE_ID_MASTER)
+    {
+#endif
+      /* Call target specific initialization */
+      tpl_init_machine();
 #if WITH_MODULES_INIT == YES
-    /* Call inits for kernel modules. Generated function */
-    tpl_init_modules();
+      /* Call inits for kernel modules. Generated function */
+      tpl_init_modules();
+#endif
+#if NUMBER_OF_CORES > 1
+    }
 #endif
   }
   tpl_start_os(mode);

@@ -64,6 +64,13 @@ typedef uint8 tpl_counter_kind;
  * core identifier
  */
 typedef uint16 tpl_core_id;
+
+/**
+ * @typedef tpl_lock
+ *
+ * lock identifier
+ */
+typedef uint16 tpl_lock;
 #endif
 
 /**

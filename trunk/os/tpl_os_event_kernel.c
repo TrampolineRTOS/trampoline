@@ -52,6 +52,8 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   CONST(tpl_task_id, AUTOMATIC)       task_id,
   CONST(tpl_event_mask, AUTOMATIC)    event)
 {
+  GET_CURRENT_CORE_ID(core_id)
+
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 	
   LOCK_KERNEL()
@@ -66,7 +68,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   CHECK_TASK_ID_ERROR(task_id,result)
 	
   /* check access right */
-  CHECK_ACCESS_RIGHTS_TASK_ID(task_id,result)
+  CHECK_ACCESS_RIGHTS_TASK_ID(core_id, task_id,result)
 
   /*  checks the task is an extended one  */
   CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)
@@ -143,6 +145,8 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
   CONST(tpl_task_id, AUTOMATIC)                       task_id,
   CONSTP2VAR(tpl_event_mask, AUTOMATIC, OS_APPL_DATA) event)
 {
+  GET_CURRENT_CORE_ID(core_id)
+
   VAR(tpl_status, AUTOMATIC) result = E_OK;
   
   LOCK_KERNEL()
@@ -157,7 +161,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
   CHECK_TASK_ID_ERROR(task_id,result)
   	
   /* check access right */
-  CHECK_ACCESS_RIGHTS_TASK_ID(task_id,result)
+  CHECK_ACCESS_RIGHTS_TASK_ID(core_id, task_id, result)
 	
   /*  checks the task is an extended one  */
   CHECK_NOT_EXTENDED_TASK_ERROR(task_id,result)
@@ -186,6 +190,8 @@ FUNC(tpl_status, OS_CODE) tpl_get_event_service(
 FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   CONST(tpl_event_mask, AUTOMATIC) event)
 {
+  GET_CURRENT_CORE_ID(core_id)
+
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
   LOCK_KERNEL()
@@ -201,13 +207,13 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   /*  checks the calling task is an extended one  */
   CHECK_NOT_EXTENDED_RUNNING_ERROR(result)
   /*  checks the task does not occupied resource(s)   */
-  CHECK_RUNNING_OWNS_REZ_ERROR(result)
+  CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
   
 #if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   
   /* all the evt_wait is overidden. */
-  tpl_task_events_table[tpl_kern.running_id]->evt_wait = event;
+  tpl_task_events_table[TPL_KERN(core_id).running_id]->evt_wait = event;
   /* block the task if needed */
   tpl_block();
 

@@ -147,6 +147,9 @@ FUNC(void, OS_CODE) tpl_release_all_resources(
 FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
     CONST(tpl_resource_id, AUTOMATIC) res_id)
 {
+  GET_CURRENT_CORE_ID(core_id)
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
+
   /*  init the error to no error  */
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
@@ -162,10 +165,10 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
   STORE_SERVICE(OSServiceId_GetResource)
   STORE_RESOURCE_ID(res_id)
   
-  CHECK_RESOURCE_ID_ERROR(res_id,result)
+  CHECK_RESOURCE_ID_ERROR(res_id, result)
 	
   /* check access right */
-  CHECK_ACCESS_RIGHTS_RESOURCE_ID(res_id,result)
+  CHECK_ACCESS_RIGHTS_RESOURCE_ID(core_id, res_id, result)
   
   IF_NO_EXTENDED_ERROR(result)
 #if RESOURCE_COUNT > 0
@@ -178,32 +181,34 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
       the resource has a higher priority than the resource
       or the resource is already owned by another task
       By using PCP, this situation should no occur.         */
-  CHECK_RESOURCE_PRIO_ERROR_ON_GET(res,result)
+  CHECK_RESOURCE_PRIO_ERROR_ON_GET(core_id, res, result)
   
   IF_NO_EXTENDED_ERROR(result)
     /*  set the owner of the resource to the calling task     */
-    res->owner = (tpl_proc_id)tpl_kern.running_id;
-    TRACE_RES_GET(res_id, (tpl_proc_id)tpl_kern.running_id)
+    res->owner = (tpl_proc_id)TPL_KERN_REF(kern).running_id;
+    TRACE_RES_GET(res_id, (tpl_proc_id)TPL_KERN_REF(kern).running_id)
     /*  add the ressource at the beginning of the
         resource list stored in the task descriptor              */
-    res->next_res = tpl_kern.running->resources;
-    tpl_kern.running->resources = res;
+    res->next_res = TPL_KERN_REF(kern).running->resources;
+    TPL_KERN_REF(kern).running->resources = res;
     /*  save the current priority of the task in the resource */
-    res->owner_prev_priority = tpl_kern.running->priority;  
+    res->owner_prev_priority = TPL_KERN_REF(kern).running->priority;  
 
    DOW_DO(printf("*** GetResource: task %s stores priority %d\n",
-                 proc_name_table[tpl_kern.running_id],
-                 tpl_kern.running->priority));
+                 proc_name_table[TPL_KERN_REF(kern).running_id],
+                 TPL_KERN_REF(kern).running->priority));
     
-    if (ACTUAL_PRIO(tpl_kern.running->priority) < res->ceiling_priority)
+    if (ACTUAL_PRIO(TPL_KERN_REF(kern).running->priority) <
+        res->ceiling_priority)
     {
-      GET_TAIL_FOR_PRIO
+      GET_TAIL_FOR_PRIO(core_id, tail_for_prio)
       /*  set the task priority at the ceiling priority of the resource
           if the ceiling priority is greater than the current priority of
           the task  */
-      tpl_kern.running->priority = DYNAMIC_PRIO(res->ceiling_priority);
-      TRACE_TASK_CHANGE_PRIORITY((tpl_proc_id)tpl_kern.running_id)
-      TRACE_ISR_CHANGE_PRIORITY((tpl_proc_id)tpl_kern.running_id)
+      TPL_KERN_REF(kern).running->priority =
+        DYNAMIC_PRIO(res->ceiling_priority, tail_for_prio);
+      TRACE_TASK_CHANGE_PRIORITY((tpl_proc_id)TPL_KERN_REF(kern).running_id)
+      TRACE_ISR_CHANGE_PRIORITY((tpl_proc_id)TPL_KERN_REF(kern).running_id)
     }
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
 /*    tpl_start_resource_monitor((tpl_proc_id)tpl_kern.running_id, res_id); */
@@ -229,6 +234,7 @@ FUNC(tpl_status, OS_CODE) tpl_get_resource_service(
 FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
   CONST(tpl_resource_id, AUTOMATIC) res_id)
 {
+  GET_CURRENT_CORE_ID(core_id)
   /*  init the error to no error  */
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 
@@ -242,10 +248,10 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
   STORE_SERVICE(OSServiceId_ReleaseResource)
   STORE_RESOURCE_ID(res_id)
 
-  CHECK_RESOURCE_ID_ERROR(res_id,result)
+  CHECK_RESOURCE_ID_ERROR(res_id, result)
 	
   /* check access right */
-  CHECK_ACCESS_RIGHTS_RESOURCE_ID(res_id,result)
+  CHECK_ACCESS_RIGHTS_RESOURCE_ID(core_id, res_id, result)
 	
   IF_NO_EXTENDED_ERROR(result)
   #if RESOURCE_COUNT > 0
@@ -255,50 +261,42 @@ FUNC(tpl_status, OS_CODE) tpl_release_resource_service(
   #endif
   
 	
-    /*  Return an error if the task that attempt to get
-	 the resource has a higher priority than the resource    */
-    CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(res,result)
+  /* Return an error if the task that attempt to release
+	   the resource has a higher priority than the resource    */
+  CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE(core_id, res,result)
 	
-    /*  the spec requires resources to be released in
-        the reverse order of the getting. if the resource
-        is not owned or not release in the good order.
-        This test has to be done before CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE
-        because CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE assumes the
-        resource is gotten
-    */
-    CHECK_RESOURCE_ORDER_ON_RELEASE(res,result)
-  
+  /* the spec requires resources to be released in
+     the reverse order of the getting. if the resource
+     is not owned or not release in the good order.
+     This test has to be done before CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE
+     because CHECK_RESOURCE_PRIO_ERROR_ON_RELEASE assumes the
+     resource is got
+  */
+  CHECK_RESOURCE_ORDER_ON_RELEASE(core_id, res, result)
 
-    IF_NO_EXTENDED_ERROR(result)
-        /*  get the saved priority  */      
-      tpl_kern.running->priority = res->owner_prev_priority;
+  IF_NO_EXTENDED_ERROR(result)
+    /*  get the saved priority  */      
+    TPL_KERN(core_id).running->priority = res->owner_prev_priority;
       
-      DOW_DO(printf("*** ReleaseResource:task %s takes back priority %d\n",
-                   proc_name_table[tpl_kern.running_id],
-                   tpl_kern.running->priority));
+    DOW_DO(printf("*** ReleaseResource:task %s takes back priority %d\n",
+           proc_name_table[TPL_KERN(core_id).running_id],
+           TPL_KERN(core_id).running->priority));
       
-      TRACE_TASK_CHANGE_PRIORITY((tpl_proc_id)tpl_kern.running_id)
-      TRACE_ISR_CHANGE_PRIORITY((tpl_proc_id)tpl_kern.running_id)
+      TRACE_TASK_CHANGE_PRIORITY((tpl_proc_id)TPL_KERN(core_id).running_id)
+      TRACE_ISR_CHANGE_PRIORITY((tpl_proc_id)TPL_KERN(core_id).running_id)
       /*  remove the resource from the resource list  */
-      tpl_kern.running->resources = res->next_res;
+      TPL_KERN(core_id).running->resources = res->next_res;
       res->next_res = NULL;
       /*  remove the owner    */
       res->owner = INVALID_TASK;
       TRACE_RES_RELEASED(res_id)
-      tpl_schedule_from_running();
+      tpl_schedule_from_running(CORE_ID_OR_NOTHING(core_id));
 # if WITH_AUTOSAR_TIMING_PROTECTION == YES
 /*      tpl_stop_resource_monitor((tpl_proc_id)tpl_kern.running_id, res_id); */
 # endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-# if WITH_SYSTEM_CALL == NO
-      if (tpl_kern.need_switch != NO_NEED_SWITCH)
-      {
-        tpl_kern.need_switch = NO_NEED_SWITCH;
-        tpl_switch_context(
-          &(tpl_kern.s_old->context),
-          &(tpl_kern.s_running->context)
-        );
-      }
-# endif
+
+      LOCAL_SWITCH_CONTEXT(core_id)
+
     IF_NO_EXTENDED_ERROR_END()
 
   IF_NO_EXTENDED_ERROR_END()

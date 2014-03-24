@@ -53,6 +53,8 @@ extern CONST(tpl_proc_id, AUTOMATIC) INVALID_TASK;
 FUNC(StatusType, OS_CODE) tpl_activate_task_service(
   CONST(tpl_task_id, AUTOMATIC) task_id)
 {
+  GET_CURRENT_CORE_ID(core_id)
+  
   /*  init the error to no error  */
   VAR(StatusType, AUTOMATIC) result = E_OK;
 	
@@ -70,25 +72,17 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
   CHECK_TASK_ID_ERROR(task_id,result)
 
   /* check access right */
-  CHECK_ACCESS_RIGHTS_TASK_ID(task_id,result)
+  CHECK_ACCESS_RIGHTS_TASK_ID(core_id, task_id, result)
 	
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
     result = tpl_activate_task(task_id);
     if (result == (tpl_status)E_OK_AND_SCHEDULE)
     {
-      tpl_schedule_from_running();
-# if WITH_SYSTEM_CALL == NO
-      if (tpl_kern.need_switch != NO_NEED_SWITCH)
-      {
-        tpl_kern.need_switch = NO_NEED_SWITCH;
-        tpl_switch_context(
-          &(tpl_kern.s_old->context),
-          &(tpl_kern.s_running->context)
-        );
-      }
-# endif
-	}
+      GET_PROC_CORE_ID(task_id, proc_core_id)  
+      tpl_schedule_from_running(CORE_ID_OR_NOTHING(proc_core_id));
+      SWITCH_CONTEXT(CORE_ID_OR_NOTHING(proc_core_id))
+	  }
   IF_NO_EXTENDED_ERROR_END()
 #endif
 
@@ -103,6 +97,8 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
 
 FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 {
+  GET_CURRENT_CORE_ID(core_id)
+  
   /* init the error to no error */
   VAR(StatusType, AUTOMATIC) result = E_OK;
 
@@ -115,29 +111,22 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
   /* check we are at the task level */
   CHECK_TASK_CALL_LEVEL_ERROR(result)
   /* check the task does not own a resource */
-  CHECK_RUNNING_OWNS_REZ_ERROR(result)
+  CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
 
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
     /* the activate count is decreased */
-    tpl_kern.running->activate_count--;
+    TPL_KERN(core_id).running->activate_count--;
 
     /* terminate the running task */
     tpl_terminate();
     /* start the highest priority process */
-    tpl_start();
+    tpl_start(CORE_ID_OR_NOTHING(core_id));
     /* task switching should occur */
-    tpl_kern.need_switch = NEED_SWITCH;
-# if WITH_SYSTEM_CALL == NO
-    if (tpl_kern.need_switch != NO_NEED_SWITCH)
-    {
-      tpl_kern.need_switch = NO_NEED_SWITCH;
-      tpl_switch_context(
-        NULL,
-        &(tpl_kern.s_running->context)
-      );
-    }
-# endif
+
+    TPL_KERN(core_id).need_switch = NEED_SWITCH;
+    
+    SWITCH_CONTEXT_NOSAVE(CORE_ID_OR_NOTHING(core_id))
 
   IF_NO_EXTENDED_ERROR_END()
 #endif
@@ -154,6 +143,8 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
 FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   CONST(tpl_task_id, AUTOMATIC) task_id)
 {
+  GET_CURRENT_CORE_ID(core_id)
+
   VAR(StatusType, AUTOMATIC)  result = E_OK;
 
   /*  lock the kernel    */
@@ -171,15 +162,15 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   /*  Check a task_id error       */
   CHECK_TASK_ID_ERROR(task_id,result)
   /*  Check no resource is held by the terminating task   */
-  CHECK_RUNNING_OWNS_REZ_ERROR(result)
+  CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
 	
   /* check access right */
-  CHECK_ACCESS_RIGHTS_TASK_ID(task_id,result)
+  CHECK_ACCESS_RIGHTS_TASK_ID(core_id, task_id, result)
 
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
     /* the activate count is decreased */
-    tpl_kern.running->activate_count--;
+    TPL_KERN(core_id).running->activate_count--;
 
     /* activate the chained task */
     result = tpl_activate_task(task_id);
@@ -189,21 +180,17 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
       /* terminate the running task */
       tpl_terminate();
       /* start the highest priority task */
-      tpl_start();
+      tpl_start(CORE_ID_OR_NOTHING(core_id));
       /* task switching should occur */
-      tpl_kern.need_switch = NEED_SWITCH;
-# if WITH_SYSTEM_CALL == NO
-      if (tpl_kern.need_switch != NO_NEED_SWITCH)
-      {
-        tpl_kern.need_switch = NO_NEED_SWITCH;
-        tpl_switch_context(NULL, &(tpl_kern.s_running->context));
-      }
-# endif
+      TPL_KERN(core_id).need_switch = NEED_SWITCH;
+
+      /* local switch context because the task terminates */
+      SWITCH_CONTEXT_NOSAVE(CORE_ID_OR_NOTHING(core_id))
     }
     else
     {
       /* the activate count is restored since the caller does not terminate */
-      tpl_kern.running->activate_count++;
+      TPL_KERN(core_id).running->activate_count++;
     }
 
   IF_NO_EXTENDED_ERROR_END()
@@ -220,6 +207,8 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
 
 FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 {
+  GET_CURRENT_CORE_ID(core_id)
+
   VAR(StatusType, AUTOMATIC) result = E_OK;
 
   /*  lock the task system    */
@@ -234,26 +223,20 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
   /*  Check a call level error    */
   CHECK_TASK_CALL_LEVEL_ERROR(result)
   /*  Check no resource is held by the calling task   */
-  CHECK_RUNNING_OWNS_REZ_ERROR(result)
+  CHECK_RUNNING_OWNS_REZ_ERROR(core_id, result)
 
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
     /*  release the internal resource   */
-    tpl_release_internal_resource((tpl_proc_id)tpl_kern.running_id);
+    tpl_release_internal_resource((tpl_proc_id)TPL_KERN(core_id).running_id);
     /*  does the rescheduling           */
-    tpl_schedule_from_running();
+    tpl_schedule_from_running(CORE_ID_OR_NOTHING(core_id));
     /*  get the internal resource       */
-    tpl_get_internal_resource((tpl_proc_id)tpl_kern.running_id);
-# if WITH_SYSTEM_CALL == NO
-    if (tpl_kern.need_switch != NO_NEED_SWITCH)
-    {
-      tpl_kern.need_switch = NO_NEED_SWITCH;
-      tpl_switch_context(
-        &(tpl_kern.s_old->context),
-        &(tpl_kern.s_running->context)
-      );
-    }
-# endif
+
+    tpl_get_internal_resource((tpl_proc_id)TPL_KERN(core_id).running_id);
+
+    LOCAL_SWITCH_CONTEXT(core_id)
+
   IF_NO_EXTENDED_ERROR_END()
 #endif
 
@@ -269,6 +252,8 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
   CONSTP2VAR(tpl_task_id, AUTOMATIC, OS_APPL_DATA) task_id)
 {
+  GET_CURRENT_CORE_ID(core_id)
+
   VAR(StatusType, AUTOMATIC) result = E_OK;
 	
   LOCK_KERNEL()
@@ -286,9 +271,10 @@ FUNC(StatusType, OS_CODE) tpl_get_task_id_service(
   /*  get the task id from the task descriptor. If the id is not
       within 0 and TASK_COUNT-1, INVALID_TASK is returned         */
   IF_NO_EXTENDED_ERROR(result)
-	if (tpl_kern.running_id >= 0 && tpl_kern.running_id < TASK_COUNT)
+	if (TPL_KERN(core_id).running_id >= 0 &&
+	    TPL_KERN(core_id).running_id < TASK_COUNT)
 	{
-		*task_id = (tpl_proc_id)tpl_kern.running_id;
+		*task_id = (tpl_proc_id)TPL_KERN(core_id).running_id;
 	}
 	else
 	{
@@ -308,6 +294,8 @@ FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
   CONST(tpl_task_id, AUTOMATIC)                        task_id,
   CONSTP2VAR(tpl_proc_state, AUTOMATIC, OS_APPL_DATA)  state)
 {
+  GET_CURRENT_CORE_ID(core_id)
+
   VAR(StatusType, AUTOMATIC) result = E_OK;
 
   LOCK_KERNEL()
@@ -324,7 +312,7 @@ FUNC(StatusType, OS_CODE) tpl_get_task_state_service(
   CHECK_TASK_ID_ERROR(task_id,result)
 
   /* check access right */
-  CHECK_ACCESS_RIGHTS_TASK_ID(task_id,result)
+  CHECK_ACCESS_RIGHTS_TASK_ID(core_id, task_id, result)
 
   /* check state is in an authorized memory region */
   CHECK_DATA_LOCATION(state, result);

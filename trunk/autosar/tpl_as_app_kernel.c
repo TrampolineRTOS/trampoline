@@ -65,8 +65,9 @@ static CONST(tpl_generic_id, AUTOMATIC) tpl_obj_count_table[6] = {
  */
 FUNC(tpl_app_id, OS_CODE) tpl_get_application_id_service(void)
 {
-  GET_CURRENT_CORE_ID
-  GET_TPL_KERN_FOR_CORE_ID
+  GET_CURRENT_CORE_ID(core_id)
+  GET_TPL_KERN_FOR_CORE_ID(core_id, tpl_kern)
+  
   VAR(StatusType, AUTOMATIC) result_status = E_OK;
   VAR(tpl_app_id, AUTOMATIC) result = INVALID_OSAPPLICATION_ID;
 
@@ -80,7 +81,7 @@ FUNC(tpl_app_id, OS_CODE) tpl_get_application_id_service(void)
   STORE_SERVICE(OSServiceId_GetApplicationID)
 
 #if APP_COUNT > 0
-  result =  TPL_KERN_REF.s_running->app_id;
+  result =  TPL_KERN_REF(tpl_kern).s_running->app_id;
 #endif
 
   PROCESS_ERROR(result_status)
@@ -249,10 +250,10 @@ FUNC(uint8, OS_CODE) tpl_check_object_access_service(
  */
 FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(
   tpl_app_id  app_id,
-  uint8          restart_opt)
+  uint8       restart_opt)
 {
-  GET_CURRENT_CORE_ID
-  GET_TPL_KERN_FOR_CORE_ID
+  GET_CURRENT_CORE_ID(core_id)
+  GET_TPL_KERN_FOR_CORE_ID(core_id, tpl_kern)
 
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 #if APP_COUNT > 0
@@ -387,12 +388,12 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(
       }  
 
       /* if running task is part of terminating application, it must be killed */
-      if (TPL_KERN_REF.s_running->app_id == app_id)
+      if (TPL_KERN_REF(tpl_kern).s_running->app_id == app_id)
       {
-        TPL_KERN_REF.running->activate_count--;
+        TPL_KERN_REF(tpl_kern).running->activate_count--;
         tpl_terminate();
-        tpl_start(CORE_ID_OR_NOTHING);
-        TPL_KERN_REF.need_switch = NEED_SWITCH;
+        tpl_start(CORE_ID_OR_NOTHING(core_id));
+        TPL_KERN_REF(tpl_kern).need_switch = NEED_SWITCH;
       }
       else if (result == (tpl_status)E_OK_AND_SCHEDULE)
       {
@@ -400,10 +401,10 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(
       }
 
 # if WITH_SYSTEM_CALL == NO
-      if (TPL_KERN_REF.need_switch != NO_NEED_SWITCH)
+      if (TPL_KERN_REF(tpl_kern).need_switch != NO_NEED_SWITCH)
       {
-        TPL_KERN_REF.need_switch = NO_NEED_SWITCH;
-        tpl_switch_context(NULL, &(TPL_KERN_REF.s_running->context));
+        TPL_KERN_REF(tpl_kern).need_switch = NO_NEED_SWITCH;
+        tpl_switch_context(NULL, &(TPL_KERN_REF(tpl_kern).s_running->context));
       }
 # endif
 
@@ -442,6 +443,9 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(
  */
 FUNC(tpl_status, OS_CODE) tpl_allow_access_service(void)
 {
+  GET_CURRENT_CORE_ID(core_id)
+  GET_TPL_KERN_FOR_CORE_ID(core_id, tpl_kern)
+    
   VAR(tpl_status, AUTOMATIC) result = E_OK;
   VAR(tpl_app_id, AUTOMATIC) app_id;
   VAR(tpl_app_state, AUTOMATIC) app_state;
@@ -456,7 +460,8 @@ FUNC(tpl_status, OS_CODE) tpl_allow_access_service(void)
 
   IF_NO_EXTENDED_ERROR(result)
 
-  app_id = TPL_KERN_REF.s_running->app_id;
+#if APP_COUNT > 0
+  app_id = TPL_KERN_REF(tpl_kern).s_running->app_id;
 
   if (app_id < APP_COUNT)
   {
@@ -474,6 +479,9 @@ FUNC(tpl_status, OS_CODE) tpl_allow_access_service(void)
   {
     result = E_OS_VALUE;
   }
+#else
+  result = E_OS_VALUE;
+#endif
 
   IF_NO_EXTENDED_ERROR_END()
 
