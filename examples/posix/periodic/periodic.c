@@ -9,16 +9,14 @@ int main(void)
 
 DeclareAlarm(one_second);
 
-DeclareTask(stop);
-
 TASK(my_periodic_task)
 {
-    static int occurence = 0;
+  static int occurence = 0;
     
-    occurence++;
-    printf("Activation #%d\n",occurence);
+  occurence++;
+  printf("Activation #%d\n",occurence);
     
-    printf("error=%d\n",ChainTask(stop));
+  TerminateTask();
 }
 
 TASK(stop)
