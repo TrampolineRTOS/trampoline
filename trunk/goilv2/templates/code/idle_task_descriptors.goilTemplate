@@ -25,4 +25,9 @@ if OS::NUMBER_OF_CORES == 1 then
 let task::NAME := "idle"
 template task_descriptor
 else
+loop core from 0 to OS::NUMBER_OF_CORES - 1 do
+let task::NAME := "idle".[core string]
+let CORE_FOR_PROCESS[task::NAME] := "idle".[core string]
+template task_descriptor
+end loop
 end if
