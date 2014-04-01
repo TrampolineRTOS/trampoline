@@ -50,7 +50,7 @@ VAR(uint16, OS_APPL_DATA)
  * The status of cores. The table is indexed by the core identifier
  * that ranges from 0 to NUMBER_OF_CORES - 1
  */
-VAR(CoreStatusType, OS_APPL_DATA) tpl_core_status[NUMBER_OF_CORES];
+extern VAR(CoreStatusType, OS_APPL_DATA) tpl_core_status[NUMBER_OF_CORES];
 
 #define OS_STOP_SEC_VAR_8BITS
 #include "tpl_memmap.h"
