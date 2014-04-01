@@ -1,0 +1,26 @@
+%
+
+# Generate the table of core status
+
+if OS::NUMBER_OF_CORES > 1 then
+%
+/*
+ * Table of core status. Core 0 aka master core is assumed to be already started
+ */
+#define OS_START_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+
+VAR(CoreStatusType, OS_APPL_DATA) tpl_core_status[NUMBER_OF_CORES] = {
+  STARTED_CORE_AUTOSAR,%
+  loop counter from 1 to OS::NUMBER_OF_CORES - 1 do
+%
+  STOPPED_CORE%
+  between %,%
+  end loop
+%
+};
+
+#define OS_STOP_SEC_VAR_UNSPECIFIED
+#include "tpl_memmap.h"
+%
+end if

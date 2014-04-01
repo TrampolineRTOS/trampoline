@@ -945,6 +945,8 @@ template heap_readylist
 
 template tpl_kern
 
+template tpl_core_status
+
 foreach proc in PROCESSES
   before
 %
