@@ -27,6 +27,8 @@
 
 #include "tpl_os_multicore_kernel.h"
 #include "tpl_machine_interface.h"
+#include "tpl_os_definitions.h"
+#include "tpl_os_error.h"
 
 #define OS_START_SEC_VAR_16BITS
 #include "tpl_memmap.h"
@@ -50,7 +52,7 @@ VAR(uint16, OS_APPL_DATA)
  * The status of cores. The table is indexed by the core identifier
  * that ranges from 0 to NUMBER_OF_CORES - 1
  */
-extern VAR(CoreStatusType, OS_APPL_DATA) tpl_core_status[NUMBER_OF_CORES];
+extern VAR(CoreStatusType, OS_VAR) tpl_core_status[NUMBER_OF_CORES];
 
 #define OS_STOP_SEC_VAR_8BITS
 #include "tpl_memmap.h"
@@ -65,8 +67,8 @@ extern VAR(CoreStatusType, OS_APPL_DATA) tpl_core_status[NUMBER_OF_CORES];
  * @param   lock          the lock used to protect the critical section
  */
 FUNC(void, OS_CODE) tpl_sync_barrier(
-  CONSTP2VAR(uint16, AUTOMATIC)   enter_count,
-  CONSTP2VAR(tpl_lock, AUTOMATIC) lock)
+  CONSTP2VAR(uint16, AUTOMATIC, OS_VAR)   enter_count,
+  CONSTP2VAR(tpl_lock, AUTOMATIC, OS_VAR) lock)
 {
   VAR(uint16, AUTOMATIC) count;
   
@@ -110,8 +112,8 @@ FUNC(CoreIdType, OS_CODE) tpl_get_core_id_service(void)
  * AUTOSAR Specification of Operating System V5.0.0 R4.0 Rev 3
  */
 FUNC(void, OS_CODE) tpl_start_core_service(
-  CONST(CoreIdType, AUTOMATIC)      core_id,
-  CONSTP2VAR(StatusType, AUTOMATIC) status)
+  CONST(CoreIdType, AUTOMATIC)                    core_id,
+  CONSTP2VAR(StatusType, AUTOMATIC, OS_APPL_DATA) status)
 {
   VAR(StatusType, AUTOMATIC) result = E_OK;
   
@@ -160,8 +162,8 @@ FUNC(void, OS_CODE) tpl_start_core_service(
  * AUTOSAR Specification of Operating System V5.0.0 R4.0 Rev 3
  */
 FUNC(void, OS_CODE) tpl_start_non_autosar_core_service(
-  CONST(CoreIdType, AUTOMATIC)      core_id,
-  CONSTP2VAR(StatusType, AUTOMATIC) status)
+  CONST(CoreIdType, AUTOMATIC)                    core_id,
+  CONSTP2VAR(StatusType, AUTOMATIC, OS_APPL_DATA) status)
 {
   VAR(StatusType, AUTOMATIC) result = E_OK;
   

@@ -107,7 +107,7 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
     tpl_dispatch_context_switch();
 #endif
     if (TPL_KERN(core_id).need_schedule) {
-      tpl_schedule_from_running();
+      tpl_schedule_from_running(CORE_ID_OR_NOTHING(core_id));
       LOCAL_SWITCH_CONTEXT(core_id)
     }
 

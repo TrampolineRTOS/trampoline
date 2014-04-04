@@ -136,6 +136,8 @@ FUNC(tpl_bool, OS_CODE) tpl_is_isr2_enabled (
  */
 FUNC(tpl_isr_id, OS_CODE) tpl_get_isr_id_service(void)
 {
+  GET_CURRENT_CORE_ID(core_id)
+  
   VAR(StatusType, AUTOMATIC) result_status = E_OK;
   VAR(tpl_isr_id, AUTOMATIC) result = INVALID_ISR;
 
@@ -148,10 +150,10 @@ FUNC(tpl_isr_id, OS_CODE) tpl_get_isr_id_service(void)
   /*  store information for error hook routine    */
   STORE_SERVICE(OSServiceId_GetISRID)
 
-  if ((tpl_kern.running_id >= TASK_COUNT) &&
-      tpl_kern.running_id < (ISR_COUNT+TASK_COUNT))
+  if ((TPL_KERN(core_id).running_id >= TASK_COUNT) &&
+      TPL_KERN(core_id).running_id < (ISR_COUNT+TASK_COUNT))
   {
-    result = (tpl_proc_id)tpl_kern.running_id;
+    result = (tpl_proc_id)TPL_KERN(core_id).running_id;
   }
 	
   PROCESS_ERROR(result_status)

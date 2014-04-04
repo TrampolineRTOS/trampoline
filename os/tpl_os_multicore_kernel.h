@@ -29,6 +29,7 @@
 #define TPL_OS_MULTICORE_KERNEL_H
 
 #include "tpl_os_multicore.h"
+#include "tpl_os_types.h"
 
 #define OS_START_SEC_VAR_8BITS
 #include "tpl_memmap.h"
