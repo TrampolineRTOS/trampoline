@@ -28,7 +28,7 @@
 #ifndef TPL_OS_MULTICORE_H
 #define TPL_OS_MULTICORE_H
 
-#include "tpl_os_std_types.h"
+#include "tpl_os_internal_types.h"
 
 /**
  * @typedef CoreIdType

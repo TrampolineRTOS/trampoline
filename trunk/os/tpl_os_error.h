@@ -971,6 +971,18 @@ tpl_service.parameters.id.ioc_id = (iocid);
 #endif
 
 /**
+ * @def STORE_CORE_ID
+ *
+ * Stores a core identifier
+ */
+#if (WITH_ERROR_HOOK == YES) && (WITH_USEPARAMETERACCESS == YES) && (NUMBER_OF_CORES > 1)
+#  define STORE_CORE_ID(core_id)  \
+   tpl_service.parameters.id.core_id = (core_id);
+#else
+#  define STORE_CORE_ID(core_id)
+#endif
+
+/**
  * @def PROCESS_ERROR
  *
  * This maccro generates the code to call the error hook, when
@@ -2033,6 +2045,21 @@ if (( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &              \
 #endif
 
 #endif /* WITH_IOC == YES */
+
+/**
+ * CHECK_CORE_ID_ERROR
+ *
+ * This macro checks the core_id is within 0 .. NUMBER_OF_CORES - 1
+ */
+#if (WITH_OS_EXTENDED == YES) && (NUMBER_OF_CORES > 1)
+#  define CHECK_CORE_ID_ERROR(a_core_id, a_result)              \
+   if (((a_core_id) >= NUMBER_OF_CORES) && (a_result == E_OK))  \
+   {                                                            \
+     result = E_OS_ID;                                          \
+   }
+#else
+#  define CHECK_CORE_ID_ERROR(a_core_id, a_result)
+#endif
 
 #endif /*TPL_OS_ERROR_H */
 
