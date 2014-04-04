@@ -237,8 +237,8 @@ FUNC(uint32, OS_CODE) tpl_get_number_of_activated_cores_service(void)
  *            E_OS_ID:  <core_id> is invalid (extended).
  */
 FUNC(StatusType, OS_CODE) tpl_get_core_status_service(
-  CONST(CoreIdType, AUTOMATIC)          core_id,
-  CONSTP2VAR(CoreStatusType, AUTOMATIC) status)
+  CONST(CoreIdType, AUTOMATIC)                        core_id,
+  CONSTP2VAR(CoreStatusType, AUTOMATIC, OS_APPL_DATA) status)
 {
   VAR(StatusType, AUTOMATIC) result = E_OK;
   
