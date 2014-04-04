@@ -1205,7 +1205,7 @@ FUNC(void, OS_CODE)tpl_multi_schedule(void)
 
   for (core = 0; core < NUMBER_OF_CORES; core++)
   {
-    if (tpl_kern[core].need_schedule)
+    if (tpl_kern[core]->need_schedule)
     {
       tpl_schedule_from_running(core);
     }
@@ -1224,14 +1224,14 @@ FUNC(void, OS_CODE) tpl_dispatch_context_switch(void)
   VAR(int, AUTOMATIC) core;
   for (core = 0; core < caller_core; core++)
   {
-    if (tpl_kern[core].need_switch != NO_NEED_SWITCH)
+    if (tpl_kern[core]->need_switch != NO_NEED_SWITCH)
     {
       REMOTE_SWITCH_CONTEXT(core);
     }
   }
   for (core = caller_core + 1; core < NUMBER_OF_CORES; core++)
   {
-    if (tpl_kern[core].need_switch != NO_NEED_SWITCH)
+    if (tpl_kern[core]->need_switch != NO_NEED_SWITCH)
     {
       REMOTE_SWITCH_CONTEXT(core);
     }
