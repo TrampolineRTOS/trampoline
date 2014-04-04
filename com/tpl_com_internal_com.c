@@ -45,7 +45,6 @@ FUNC(tpl_status, OS_CODE) tpl_send_static_internal_message(
   CONSTP2CONST(tpl_com_data, AUTOMATIC, OS_VAR) data)
 {
   VAR(tpl_status, AUTOMATIC) result = E_OK;
-	VAR(tpl_status, AUTOMATIC) result_notification = E_OK;
     
   /*  cast the base mo to the correct type of mo                          */
   CONSTP2CONST(tpl_internal_sending_mo, AUTOMATIC, OS_CONST)
@@ -69,7 +68,7 @@ FUNC(tpl_status, OS_CODE) tpl_send_static_internal_message(
       tpl_action *notification = rmo->base_mo.notification;
       if (notification != NULL)
       {
-        result_notification |= notification->action(notification);
+        notification->action(notification);
       }
     }
     else if (result == E_COM_FILTEREDOUT)
@@ -81,7 +80,7 @@ FUNC(tpl_status, OS_CODE) tpl_send_static_internal_message(
   }
   
   /*  notify the receivers    */
-  tpl_notify_receiving_mos(result_notification, FROM_TASK_LEVEL);
+  tpl_notify_receiving_mos(FROM_TASK_LEVEL);
       
   return result;
 }
@@ -98,8 +97,6 @@ FUNC(tpl_status, OS_CODE) tpl_send_zero_internal_message(
   /*  cast the base mo to the correct type of mo  */
   CONSTP2CONST(tpl_internal_sending_mo, AUTOMATIC, OS_CONST)
     ismo = smo;
-	
-	VAR(tpl_status, AUTOMATIC) result_notification = E_OK;
 
 	P2CONST(tpl_base_receiving_mo, AUTOMATIC, OS_CONST)
   rmo_notification = ismo->internal_target;
@@ -113,13 +110,13 @@ FUNC(tpl_status, OS_CODE) tpl_send_zero_internal_message(
 		tpl_action *notification = rmo_notification->notification;
 		if (notification != NULL)
     {
-			result_notification |= notification->action(notification);
+			notification->action(notification);
 		}
 		rmo_notification = rmo_notification->next_mo;
   }
 	
   /*  notify the receivers                        */
-  tpl_notify_receiving_mos(result_notification, FROM_TASK_LEVEL);
+  tpl_notify_receiving_mos(FROM_TASK_LEVEL);
   
   return E_OK;
 }
@@ -182,9 +179,10 @@ FUNC(tpl_status, OS_CODE) tpl_receive_static_internal_queued_message(
   /*
    * filter the message
    */
-  if (tpl_filtering(last,
-                    data,
-                    ((tpl_internal_receiving_queued_mo *)rmo)->base_mo.filter))
+  if (tpl_filtering(
+    last,
+    data,
+    ((tpl_internal_receiving_queued_mo *)rmo)->base_mo.filter))
   {
     /* destination buffer */
     P2VAR(tpl_com_data, AUTOMATIC, OS_VAR) dst = NULL;

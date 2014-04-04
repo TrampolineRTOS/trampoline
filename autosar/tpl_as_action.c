@@ -35,7 +35,7 @@
 /**
  *  action function for action by incrementing counter
  */
-FUNC(tpl_status, OS_CODE) tpl_action_increment_counter(
+FUNC(void, OS_CODE) tpl_action_increment_counter(
     P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action)
 {
     /*
@@ -44,9 +44,7 @@ FUNC(tpl_status, OS_CODE) tpl_action_increment_counter(
      * first member of tpl_increment_counter_action is a tpl_action
      * This cast behaves correctly.
      */
-    return tpl_counter_tick(
-        ((const tpl_increment_counter_action *)action)->counter
-    );
+    tpl_counter_tick(((const tpl_increment_counter_action *)action)->counter);
 }
 
 /**
@@ -55,7 +53,7 @@ FUNC(tpl_status, OS_CODE) tpl_action_increment_counter(
  *  The schedule table is finished                                 
  *  Test whether a schedule table has been nextified or not     
 */
-FUNC(tpl_status, OS_CODE) tpl_action_finalize_schedule_table(
+FUNC(void, OS_CODE) tpl_action_finalize_schedule_table(
 	P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action)
 {
 	/*
@@ -78,9 +76,6 @@ FUNC(tpl_status, OS_CODE) tpl_action_finalize_schedule_table(
 	
 	/* Get the next expiry point */
 	P2VAR(tpl_expiry_point, AUTOMATIC, OS_APPL_DATA) next_ep;
-		
-	/*  Process the current expiry point                                    */
-  VAR(tpl_status, AUTOMATIC) need_resched = NO_SPECIAL_CODE;
 		
 	P2CONST(tpl_action, AUTOMATIC, OS_APPL_DATA)  action_desc;
   VAR(tpl_action_count, AUTOMATIC)  i;
@@ -121,7 +116,7 @@ FUNC(tpl_status, OS_CODE) tpl_action_finalize_schedule_table(
 			for (i = 0; i < next_ep->count; i++)
 			{
 				action_desc = (next_ep->actions)[i];
-				need_resched |= TRAMPOLINE_STATUS_MASK & (action_desc->action)(action_desc);
+				(action_desc->action)(action_desc);
 			}			
 
       /* Increment index because the first one has just been launched */
@@ -152,7 +147,7 @@ FUNC(tpl_status, OS_CODE) tpl_action_finalize_schedule_table(
 			for (i = 0; i < schedtable->expiry[0]->count; i++)
 			{
 				action_desc = (schedtable->expiry[0]->actions)[i];
-				need_resched |= TRAMPOLINE_STATUS_MASK & (action_desc->action)(action_desc);
+				(action_desc->action)(action_desc);
 			}
 						
 			/* reset the offset of the first expiry point too */
@@ -171,8 +166,6 @@ FUNC(tpl_status, OS_CODE) tpl_action_finalize_schedule_table(
 		/*  reset the state of the current schedule table               */
 		st->state = SCHEDULETABLE_STOPPED;
 	}
-
-	return need_resched;
 }
 
 #define OS_STOP_SEC_CODE

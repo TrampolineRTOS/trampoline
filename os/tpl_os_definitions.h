@@ -283,7 +283,9 @@
  *
  * @see #tpl_status
  */
+/*
 #define NO_SPECIAL_CODE         0
+*/
 
 /**
  * @def NEED_RESCHEDULING
@@ -295,7 +297,9 @@
  *
  * @see #tpl_status
  */
+/*
 #define NEED_RESCHEDULING       32
+*/
 
 /**
  * @def E_OK_AND_SCHEDULE
@@ -304,7 +308,9 @@
  *
  * @see #tpl_status
  */
+/*
 #define E_OK_AND_SCHEDULE   ((tpl_status)E_OK | (tpl_status)NEED_RESCHEDULING)
+*/
 
 /**
  * @def OSEK_STATUS_MASK
@@ -315,7 +321,9 @@
  *
  * @see #tpl_status
  */
+/*
 #define OSEK_STATUS_MASK        0x1F
+*/
 
 /**
  * @def TRAMPOLINE_STATUS_MASK
@@ -326,8 +334,9 @@
  *
  * @see #tpl_status
  */
+/*
 #define TRAMPOLINE_STATUS_MASK  0xE0
-
+*/
 
 /************************************
  * Public states of a task or ISR2  *

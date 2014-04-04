@@ -221,14 +221,24 @@ if OS::NUMBER_OF_CORES > 1 then
  */%
   loop id from 0 to OS::NUMBER_OF_CORES - 1 do
 %
-#define OS_CORE_ID_% !id %    % !id
+#define OS_CORE_ID_% ! id %    % ! id
   end loop
 %
-#define OS_CORE_ID_MASTER OS_CORE_ID_0% 
+#define OS_CORE_ID_MASTER OS_CORE_ID_0
+
+/*-----------------------------------------------------------------------------
+ * Idle tasks identifiers
+ */%
+
+  loop id from 0 to OS::NUMBER_OF_CORES - 1 do
+%
+#define IDLE_TASK_% ! id %_ID    TASK_COUNT + ISR_COUNT + % ! id 
+  end loop
+else
+%
+#define IDLE_TASK_ID    TASK_COUNT + ISR_COUNT%
 end if
 %
-
-#endif
 
 /*-----------------------------------------------------------------------------
  * Debugging
@@ -236,6 +246,8 @@ end if
 #define WITH_DEBUG             % !yesNo(OS::DEBUG) %
 
 #include "tpl_config_check.h"
+
+#endif
 
 /* End of file TPL_APP_DEFINE_H */
 

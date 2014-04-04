@@ -22,12 +22,16 @@ let task::KIND := "Task"
 let task::STACKSIZE := "IDLE_STACK_SIZE"
 
 if OS::NUMBER_OF_CORES == 1 then
-let task::NAME := "idle"
+let task::NAME := "IDLE_TASK"
+let task::FUNC := "idle_function"
+let task::ID   := "IDLE_TASK_ID"
 template task_descriptor
 else
 loop core from 0 to OS::NUMBER_OF_CORES - 1 do
-let task::NAME := "idle".[core string]
-let CORE_FOR_PROCESS[task::NAME] := "idle".[core string]
+let task::NAME := "IDLE_TASK_".[core string]
+let task::FUNC := "idle_function"
+let task::ID   := "IDLE_TASK_".[core string]."_ID"
+let CORE_FOR_PROCESS[task::NAME] := core
 template task_descriptor
 end loop
 end if

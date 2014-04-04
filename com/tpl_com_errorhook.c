@@ -64,7 +64,7 @@ FUNC(void, OS_CODE) tpl_call_com_error_hook(
     if (!in_com_error_hook)
     {
         in_com_error_hook = TRUE;
-        COMErrorHook(OSEK_STATUS_MASK & (error));
+        COMErrorHook(error);
         in_com_error_hook = FALSE;
     }
 }

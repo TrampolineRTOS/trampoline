@@ -11,17 +11,18 @@ if OS::NUMBER_OF_CORES == 1 then %
  */
 VAR(tpl_kern_state, OS_VAR) tpl_kern =
 {
-  NULL,                 /* no previous task static descriptor  */
-  &idle_task_stat_desc, /* current task tu run is idle task    */
-  NULL,                 /* no previous task dynamic descriptor */
-  &idle_task_desc,      /* current task tu run is idle task    */
-  INVALID_PROC_ID,      /* idle task has no ID                 */
-  NO_NEED_SWITCH,       /* no context switch needed at start   */
+  NULL,                      /* no previous task static descriptor  */
+  &IDLE_TASK_task_stat_desc, /* current task tu run is idle task    */
+  NULL,                      /* no previous task dynamic descriptor */
+  &IDLE_TASK_task_desc,      /* current task tu run is idle task    */
+  INVALID_PROC_ID,           /* idle task has no ID                 */
+  NO_NEED_SWITCH,            /* no context switch needed at start   */
+  FALSE,                     /* no schedule needed at start         */
 #if WITH_MEMORY_PROTECTION == YES
-  1,                    /* at early system startup, we run in  */
-                        /*  kernel mode, so in trusted mode    */
+  1,                         /* at early system startup, we run in  */
+                             /*  kernel mode, so in trusted mode    */
 #endif /* WITH_MEMORY_PROTECTION */
-  0                     /* priority of idle task is 0          */
+  0                          /* priority of idle task is 0          */
 };
 %
 # In multicore, the tpl_kern variable is an array of pointers
@@ -38,17 +39,18 @@ else%
   loop core_id from 0 to OS::NUMBER_OF_CORES - 1 do%
 VAR(tpl_kern_state, OS_VAR) tpl_kern_% !core_id % =
 {
-  NULL,                 /* no previous task static descriptor  */
-  &idle_% !core_id %_task_stat_desc, /* current task tu run is idle task    */
-  NULL,                 /* no previous task dynamic descriptor */
-  &idle_% !core_id %_task_desc,      /* current task tu run is idle task    */
-  INVALID_PROC_ID,      /* idle task has no ID                 */
-  NO_NEED_SWITCH,       /* no context switch needed at start   */
+  NULL,                                   /* no previous task static descriptor  */
+  &IDLE_TASK_% !core_id %_task_stat_desc, /* current task tu run is idle task    */
+  NULL,                                   /* no previous task dynamic descriptor */
+  &IDLE_TASK_% !core_id %_task_desc,      /* current task tu run is idle task    */
+  INVALID_PROC_ID,                        /* idle task has no ID                 */
+  NO_NEED_SWITCH,                         /* no context switch needed at start   */
+  FALSE,                                  /* no schedule needed at start         */
 #if WITH_MEMORY_PROTECTION == YES
-  1,                    /* at early system startup, we run in  */
-                        /*  kernel mode, so in trusted mode    */
+  1,                                      /* at early system startup, we run in  */
+                                          /*  kernel mode, so in trusted mode    */
 #endif /* WITH_MEMORY_PROTECTION */
-  0                     /* priority of idle task is 0          */
+  0                                       /* priority of idle task is 0          */
 };
 %
   end loop

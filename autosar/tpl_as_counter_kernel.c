@@ -73,7 +73,6 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
 
 #if COUNTER_COUNT > 0
   P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter = NULL;
-  VAR(tpl_status, AUTOMATIC)  need_rescheduling = NO_SPECIAL_CODE;
 #endif
 
   /* check interrupts are not disabled by user    */
@@ -101,21 +100,15 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
     counter = tpl_counter_table[counter_id];
 
     /*  increment the counter                   */
-    need_rescheduling |= tpl_counter_tick(counter);
+    tpl_counter_tick(counter);
 	
-    if (need_rescheduling == NEED_RESCHEDULING) {
-      tpl_schedule_from_running();
-#if WITH_SYSTEM_CALL == NO
-      if (tpl_kern.need_switch != NO_NEED_SWITCH)
-      {
-        tpl_kern.need_switch = NO_NEED_SWITCH;
-        tpl_switch_context(
-          &(tpl_kern.s_old->context),
-          &(tpl_kern.s_running->context)
-        );
-      }
+#if NUMBER_OF_CORES > 1
+    tpl_multi_schedule();
+    tpl_dispatch_context_switch();
 #endif
-      
+    if (TPL_KERN(core_id).need_schedule) {
+      tpl_schedule_from_running();
+      LOCAL_SWITCH_CONTEXT(core_id)
     }
 
   IF_NO_EXTENDED_ERROR_END()
@@ -126,7 +119,7 @@ FUNC(tpl_status, OS_CODE) tpl_increment_counter_service(
   /*  unlock the task structures                  */
   UNLOCK_KERNEL()
 
-  return (OSEK_STATUS_MASK & result);
+  return result;
 }
 
 

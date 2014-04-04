@@ -157,7 +157,7 @@
  *
  * Macro to compute a dynamic priority
  */
-#define DYNAMIC_PRIO(a_prio, a_tail_for_prio)              \
+#define DYNAMIC_PRIO(a_prio, a_tail_for_prio)                \
   (((a_prio) << PRIORITY_SHIFT) |                            \
    (--TAIL_FOR_PRIO(a_tail_for_prio)[a_prio] & RANK_MASK))
 

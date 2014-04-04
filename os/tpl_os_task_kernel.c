@@ -54,6 +54,7 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
   CONST(tpl_task_id, AUTOMATIC) task_id)
 {
   GET_CURRENT_CORE_ID(core_id)
+  GET_PROC_CORE_ID(task_id, proc_core_id)  
   
   /*  init the error to no error  */
   VAR(StatusType, AUTOMATIC) result = E_OK;
@@ -77,9 +78,8 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
     result = tpl_activate_task(task_id);
-    if (result == (tpl_status)E_OK_AND_SCHEDULE)
+    if (TPL_KERN(proc_core_id).need_schedule)
     {
-      GET_PROC_CORE_ID(task_id, proc_core_id)  
       tpl_schedule_from_running(CORE_ID_OR_NOTHING(proc_core_id));
       SWITCH_CONTEXT(CORE_ID_OR_NOTHING(proc_core_id))
 	  }
@@ -91,7 +91,7 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
   /*  unlock the kernel  */
   UNLOCK_KERNEL()
 	
-  return (OSEK_STATUS_MASK & result);
+  return result;
 }
 
 
@@ -136,7 +136,7 @@ FUNC(StatusType, OS_CODE) tpl_terminate_task_service(void)
   /*  unlock the kernel  */
   UNLOCK_KERNEL()
 
-  return (OSEK_STATUS_MASK & result);
+  return result;
 }
 
 
@@ -175,15 +175,33 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
     /* activate the chained task */
     result = tpl_activate_task(task_id);
 
-    if ((OSEK_STATUS_MASK & result) == E_OK)
+    if (result == E_OK)
     {
+      /* 
+       * This first part deals with the case of an activated task
+       * on a remote core
+       */
+      
+      /* get the core id of the newly activated task */
+      GET_PROC_CORE_ID(task_id, activated_task_core_id)
+#if NUMBER_OF_CORES > 1
+      if (activated_task_core_id != core_id)
+      {
+        REMOTE_SWITCH_CONTEXT(activated_task_core_id);
+      }
+#endif
+      
+      /* 
+       * This second part deals with the local rescheduling due to
+       * the termination of the task
+       */
+       
       /* terminate the running task */
       tpl_terminate();
       /* start the highest priority task */
       tpl_start(CORE_ID_OR_NOTHING(core_id));
       /* task switching should occur */
       TPL_KERN(core_id).need_switch = NEED_SWITCH;
-
       /* local switch context because the task terminates */
       SWITCH_CONTEXT_NOSAVE(CORE_ID_OR_NOTHING(core_id))
     }
@@ -201,7 +219,7 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
   /*  unlock the task structures  */
   UNLOCK_KERNEL()
 
-  return (OSEK_STATUS_MASK & result);
+  return result;
 }
 
 
@@ -245,7 +263,7 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
   /*  unlock the task structures  */
   UNLOCK_KERNEL()
 
-  return (OSEK_STATUS_MASK & result);
+  return result;
 }
 
 

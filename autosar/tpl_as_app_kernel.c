@@ -384,20 +384,34 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(
       if ((RESTART == restart_opt) &&
           (restart_id != INVALID_TASK))
       {
-        result = tpl_activate_task(tpl_app_table[app_id]->restart);
+        result = tpl_activate_task(restart_id);
       }  
 
-      /* if running task is part of terminating application, it must be killed */
       if (TPL_KERN_REF(tpl_kern).s_running->app_id == app_id)
       {
+        /* 
+         * if running task is part of terminating application, 
+         * it must be killed. In this case the restart task runs on the same
+         * core so everything happens on the current core.
+         */
         TPL_KERN_REF(tpl_kern).running->activate_count--;
         tpl_terminate();
         tpl_start(CORE_ID_OR_NOTHING(core_id));
         TPL_KERN_REF(tpl_kern).need_switch = NEED_SWITCH;
       }
-      else if (result == (tpl_status)E_OK_AND_SCHEDULE)
+      else if (restart_id != INVALID_TASK)
       {
-        tpl_schedule_from_running();
+        /*
+         * The running task is not part of the terminating application.
+         * So the restart task, if any, may have triggered a rescheduling
+         * on the core it belongs to.
+         */
+        GET_PROC_CORE_ID(restart_id, restart_core_id)
+        
+        if (TPL_KERN(restart_core_id).need_schedule)
+        {
+          tpl_schedule_from_running(CORE_ID_OR_NOTHING(restart_core_id));
+        }
       }
 
 # if WITH_SYSTEM_CALL == NO

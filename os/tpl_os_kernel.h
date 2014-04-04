@@ -261,15 +261,10 @@ typedef struct
  */
   VAR(uint8, TYPEDEF)                         need_switch;
 
-#if NUMBER_OF_CORES > 1
 /**
- * Boolean used to notify a rescheduling on multicore implementation
- * This is needed for cases where multiple activations and/or multiple events
- * are done at the same time. Typically for more than one alarm having the
- * same expiration date and for schedule tables. Unused in monocore.
+ * Boolean used to notify a rescheduling should be done
  */
   VAR(tpl_bool, TYPEDEF)                      need_schedule;
-#endif
 
 #if WITH_MEMORY_PROTECTION == YES
 /**
@@ -323,30 +318,8 @@ extern CONSTP2VAR(tpl_kern_state, OS_CONST, OS_VAR) tpl_kern[];
  */
 extern VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER;
 
-/**
- * Dynamic descriptor of the idle task
- */
-extern VAR(tpl_proc, OS_VAR) idle_task;
-
 #define OS_STOP_SEC_VAR_UNSPECIFIED
 #include "tpl_memmap.h"
-
-#define OS_START_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
-/**
- * Static descriptor of the idle task
- */
-extern CONST(tpl_proc_static, OS_VAR) idle_task_static;
-
-#define OS_STOP_SEC_CONST_UNSPECIFIED
-#include "tpl_memmap.h"
-
-/**
- * @def IDLE_TASK_ID
- *
- * Id of the Idle task
- */
-#define IDLE_TASK_ID  (TASK_COUNT+ISR_COUNT)
 
 /*
  * @def INVALID_PROC_ID
@@ -397,7 +370,12 @@ extern CONST(tpl_proc_static, OS_VAR) idle_task_static;
 
 #else
 /* NUMBER_OF_CORES > 1, Multicore definitions */
-#define REMOTE_SWITCH_CONTEXT(a_core_id) tpl_send_intercore_it(a_core_id);
+#define REMOTE_SWITCH_CONTEXT(a_core_id)                 \
+  if (TPL_KERN(a_core_id).need_switch != NO_NEED_SWITCH) \
+  {                                                      \
+    TPL_KERN(a_core_id).need_switch = NO_NEED_SWITCH;    \
+    tpl_send_intercore_it(a_core_id);                    \
+  }
 
 #if WITH_SYSTEM_CALL == NO
 
@@ -627,6 +605,25 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
     CONST(tpl_task_id, AUTOMATIC)     task_id,
     CONST(tpl_event_mask, AUTOMATIC)  incoming_event);
 
+#if NUMBER_OF_CORES > 1
+/**
+ * @internal
+ * 
+ * tpl_multi_schedule does multiple rescheduling when many tasks could
+ * have been activated on several cores (messages, alarms, schedule tables)
+ */
+FUNC(void, OS_CODE)tpl_multi_schedule(void);
+
+/**
+ * @internal
+ * 
+ * tpl_dispatch_context_switch notify multiple context switch to other cores
+ * It happens when many tasks could have been activated on several cores
+ * (messages, alarms, schedule tables)
+ */
+FUNC(void, OS_CODE) tpl_dispatch_context_switch(void);
+
+#endif /* NUMBER_OF_CORES > 1 */
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

@@ -390,23 +390,41 @@ template if exists interrupt_table
  * Definition and initialization of process tables (tasks and isrs)
  */
 CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)
-tpl_stat_proc_table[TASK_COUNT+ISR_COUNT+1] = {
+tpl_stat_proc_table[TASK_COUNT+ISR_COUNT+% ! OS::NUMBER_OF_CORES %] = {
 %
 foreach proc in PROCESSES do
     %  &% !proc::NAME %_% ![proc::KIND lowercaseString] %_stat_desc,
 %
 end foreach
-%  &idle_task_stat_desc
+if OS::NUMBER_OF_CORES == 1 then
+%  &IDLE_TASK_task_stat_desc%
+else
+  loop core from 0 to OS::NUMBER_OF_CORES - 1 do
+    %  IDLE_TASK_% ! core %_task_stat_desc%
+  between %,
+%
+  end loop
+end if
+%
 };
 
 CONSTP2VAR(tpl_proc, AUTOMATIC, OS_APPL_DATA)
-tpl_dyn_proc_table[TASK_COUNT+ISR_COUNT+1] = {
+tpl_dyn_proc_table[TASK_COUNT+ISR_COUNT+% ! OS::NUMBER_OF_CORES %] = {
 %
 foreach proc in PROCESSES do
     %  &% !proc::NAME %_% ![proc::KIND lowercaseString] %_desc,
 %
 end foreach
-%  &idle_task_desc
+if OS::NUMBER_OF_CORES == 1 then
+%  &IDLE_TASK_task_desc%
+else
+  loop core from 0 to OS::NUMBER_OF_CORES - 1 do
+    %  IDLE_TASK_% ! core %_task_desc%
+  between %,
+%
+  end loop
+end if
+%
 };
 %
 foreach task in EXTENDEDTASKS
