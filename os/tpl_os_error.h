@@ -2052,13 +2052,28 @@ if (( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &              \
  * This macro checks the core_id is within 0 .. NUMBER_OF_CORES - 1
  */
 #if (WITH_OS_EXTENDED == YES) && (NUMBER_OF_CORES > 1)
-#  define CHECK_CORE_ID_ERROR(a_core_id, a_result)              \
-   if (((a_core_id) >= NUMBER_OF_CORES) && (a_result == E_OK))  \
-   {                                                            \
-     result = E_OS_ID;                                          \
+#  define CHECK_CORE_ID_ERROR(a_core_id, a_result)                \
+   if (((a_result) == E_OK) && ((a_core_id) >= NUMBER_OF_CORES))  \
+   {                                                              \
+     result = E_OS_ID;                                            \
    }
 #else
 #  define CHECK_CORE_ID_ERROR(a_core_id, a_result)
+#endif
+
+/**
+ * CHECK_START_CORE_ERROR
+ *
+ * This macro checks the core is not already started
+ */
+#if (WITH_OS_EXTENDED == YES) && (NUMBER_OF_CORES > 1)
+#  define CHECK_START_CORE_ERROR(a_core_id, a_result)                         \
+   if (((a_result) == E_OK) && (tpl_core_status[a_core_id] != STOPPED_CORE))  \
+   {                                                                          \
+     result = E_OS_STATE;                                                     \
+   }
+#else
+#  define CHECK_START_CORE_ERROR(a_core_id, a_result)
 #endif
 
 #endif /*TPL_OS_ERROR_H */
