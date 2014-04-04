@@ -306,7 +306,7 @@ STATIC FUNC(P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA), OS_CODE) tpl_remove_ti
  */
 extern FUNC(void, OS_CODE) printrl(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg);
 
-FUNC(tpl_status, OS_CODE) tpl_counter_tick(
+FUNC(void, OS_CODE) tpl_counter_tick(
   P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter)
 {
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA)  t_obj;
@@ -324,7 +324,6 @@ FUNC(tpl_status, OS_CODE) tpl_counter_tick(
   /* this variable is added because the same name was used twice in this function for
    2 different variables, this behavior was dependent on the compiler */
   VAR(tpl_tick, AUTOMATIC)                      new_date;
-  VAR(tpl_status, AUTOMATIC)                    need_resched = NO_SPECIAL_CODE;
 
   if (tpl_counters_enabled)
   {
@@ -374,8 +373,7 @@ FUNC(tpl_status, OS_CODE) tpl_counter_tick(
             /*  get the next one                        */
             tpl_time_obj *next_to = t_obj->next_to;
             expire = t_obj->stat_part->expire;
-            need_resched |=
-            (TRAMPOLINE_STATUS_MASK & expire(t_obj));
+            expire(t_obj);
             /*  rearm the alarm if needed               */
             
             if (t_obj->cycle != 0)
@@ -403,7 +401,6 @@ FUNC(tpl_status, OS_CODE) tpl_counter_tick(
       }
     }
   }
-  return need_resched;
 }
 
 #define OS_STOP_SEC_CODE

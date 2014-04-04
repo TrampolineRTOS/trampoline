@@ -53,6 +53,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   CONST(tpl_event_mask, AUTOMATIC)    event)
 {
   GET_CURRENT_CORE_ID(core_id)
+  GET_PROC_CORE_ID(task_id, proc_core_id)
 
   VAR(tpl_status, AUTOMATIC) result = E_OK;
 	
@@ -78,19 +79,10 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
 #if EXTENDED_TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
   result = tpl_set_event(task_id, event);
-  if (result == (tpl_status)E_OK_AND_SCHEDULE)
+  if (result == E_OK && TPL_KERN(proc_core_id).need_schedule)
   {
-    tpl_schedule_from_running();
-# if WITH_SYSTEM_CALL == NO
-    if (tpl_kern.need_switch != NO_NEED_SWITCH)
-    {
-      tpl_kern.need_switch = NO_NEED_SWITCH;
-      tpl_switch_context(
-        &(tpl_kern.s_old->context),
-        &(tpl_kern.s_running->context)
-      );
-    }
-# endif
+    tpl_schedule_from_running(CORE_ID_OR_NOTHING(proc_core_id));
+    SWITCH_CONTEXT(CORE_ID_OR_NOTHING(proc_core_id))
   }
   IF_NO_EXTENDED_ERROR_END()
 #endif
@@ -99,7 +91,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_event_service(
   
   UNLOCK_KERNEL()
   
-  return  (OSEK_STATUS_MASK & result);
+  return result;
 }
 
 
@@ -224,7 +216,7 @@ FUNC(tpl_status, OS_CODE) tpl_wait_event_service(
   
   UNLOCK_KERNEL()
   
-  return  (OSEK_STATUS_MASK & result);
+  return result;
 }
 
 #define OS_STOP_SEC_CODE

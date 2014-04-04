@@ -73,7 +73,7 @@ typedef struct TPL_ALARM_STATIC tpl_alarm_static;
  *
  * @param time_obj  The alarm to raise.
  */
-FUNC(tpl_status, OS_CODE) tpl_raise_alarm(
+FUNC(void, OS_CODE) tpl_raise_alarm(
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj);
 
 /**

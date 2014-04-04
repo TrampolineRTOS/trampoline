@@ -169,7 +169,7 @@ FUNC(void, OS_CODE) tpl_adjust_next_expiry_point(
  * and execute the corresponding actions. Then the alarm is updated to match
  * the offset of the next expiry point.
  */
-FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
+FUNC(void, OS_CODE) tpl_process_schedtable(
   P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) st)
 {
   /*  Get the TPL_SCHEDTABLE_STATIC structure                             */
@@ -196,9 +196,6 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
   /*  Get the current expiry point                                        */
   P2VAR(tpl_expiry_point, AUTOMATIC, OS_APPL_DATA) current_ep =
   	(schedtable->expiry)[index];
-	
-  /*  Process the current expiry point                                    */
-  VAR(tpl_status, AUTOMATIC)              need_resched = NO_SPECIAL_CODE;
 
   P2CONST(tpl_action, AUTOMATIC, OS_APPL_DATA)  action_desc;
   VAR(tpl_action_count, AUTOMATIC)  i;
@@ -209,7 +206,7 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
   for (i = 0; i < current_ep->count; i++)
   {
     action_desc = (current_ep->actions)[i];
-    need_resched |= TRAMPOLINE_STATUS_MASK & (action_desc->action)(action_desc);
+    (action_desc->action)(action_desc);
   }
 	
   index = ((P2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA))st)->index;
@@ -290,8 +287,6 @@ FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
     st->cycle = (schedtable->expiry)[index]->sync_offset;
     ((tpl_schedule_table *)st)->index = index;
 	}
-  
-  return need_resched;
 }
 
 /*

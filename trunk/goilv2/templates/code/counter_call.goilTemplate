@@ -6,27 +6,31 @@
 #include "tpl_memmap.h"
 FUNC(tpl_bool, OS_CODE) tpl_call_counter_tick()
 {
-  tpl_status  need_rescheduling = NO_SPECIAL_CODE;
-
 %
 foreach counter in HARDWARECOUNTERS do
-%  need_rescheduling |= tpl_counter_tick(&% !counter::NAME %_counter_desc);
+%  tpl_counter_tick(&% !counter::NAME %_counter_desc);
 %
 end foreach
+if OS::NUMBER_OF_CORES == 1 then
 %
-  if (need_rescheduling == NEED_RESCHEDULING)
+  if (tpl_kern.need_schedule)
   {
     tpl_schedule_from_running();
-#if WITH_SYSTEM_CALL == NO
-    if (tpl_kern.need_switch != NO_NEED_SWITCH) {
-    tpl_kern.need_switch = NO_NEED_SWITCH;
-      tpl_switch_context_from_it(
-        &(tpl_kern.s_old->context),
-        &(tpl_kern.s_running->context)
-      );
-    }
-#endif
+    LOCAL_SWITCH_CONTEXT()
   }
+%
+else
+%
+  GET_CURRENT_CORE_ID(core_id)
+  tpl_multi_schedule();
+  tpl_dispatch_context_switch();
+  if (TPL_KERN(core_id).need_switch != NO_NEED_SWITCH)
+  {
+    LOCAL_SWITCH_CONTEXT()
+  }
+%
+end if
+%
   return TRUE;
 }
 

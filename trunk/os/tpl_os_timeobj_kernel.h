@@ -50,7 +50,7 @@ typedef uint8 tpl_time_obj_state;
  *
  * Prototype for expire functions
  */
-typedef P2FUNC(tpl_status, OS_APPL_CODE, tpl_expire_func)(
+typedef P2FUNC(void, OS_APPL_CODE, tpl_expire_func)(
     P2VAR(struct TPL_TIME_OBJ, AUTOMATIC, OS_APPL_CONST)
 );
 
@@ -212,7 +212,7 @@ FUNC(void, OS_CODE) tpl_remove_time_obj(
  *
  * @param counter    A pointer to the counter
  */
-FUNC(tpl_status, OS_CODE) tpl_counter_tick(
+FUNC(void, OS_CODE) tpl_counter_tick(
     P2VAR(tpl_counter, AUTOMATIC, OS_APPL_DATA) counter);
 
 #define OS_STOP_SEC_CODE

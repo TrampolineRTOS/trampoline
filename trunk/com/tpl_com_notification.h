@@ -46,12 +46,10 @@ tpl_flag_action;
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 
-FUNC(tpl_status, OS_CODE) tpl_action_setflag(
+FUNC(void, OS_CODE) tpl_action_setflag(
   CONSTP2CONST(tpl_action, AUTOMATIC, OS_CONST) action);
 
-FUNC(void, OS_CODE) tpl_notify_receiving_mos(
-  CONST(tpl_status, AUTOMATIC) result,
-  CONST(uint8, AUTOMATIC) from);
+FUNC(void, OS_CODE) tpl_notify_receiving_mos(CONST(uint8, AUTOMATIC) from);
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

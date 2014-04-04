@@ -20,25 +20,16 @@ foreach INTERRUPTSOURCES prefixedby interrupt_ do
 %
 void SysTick_Handler(void)
 {
-  tpl_status  need_rescheduling = NO_SPECIAL_CODE;
-
 %
     do
-      %  need_rescheduling |= tpl_counter_tick(&% !NAME %_counter_desc);
+      %  tpl_counter_tick(&% !NAME %_counter_desc);
 %
     after %
   
-  if (need_rescheduling == NEED_RESCHEDULING)
+  if (tpl_kern.need_schedule)
   {
     tpl_schedule_from_running();
-#if WITH_SYSTEM_CALL == NO
-    if (tpl_kern.need_switch != NO_NEED_SWITCH) {
-      tpl_switch_context_from_it(
-        &(tpl_kern.s_old->context),
-        &(tpl_kern.s_running->context)
-      );
-    }
-#endif
+    LOCAL_SWITCH_CONTEXT()
   }
 }
 %

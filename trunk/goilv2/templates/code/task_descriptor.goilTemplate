@@ -6,7 +6,13 @@
 /*
  * Task % !task::NAME % function prototype
  */
-FUNC(void, OS_APPL_CODE) % !task::NAME %_function(void);
+%
+if exists task::FUNC then%
+FUNC(void, OS_APPL_CODE) % !task::FUNC %(void);%
+else%
+FUNC(void, OS_APPL_CODE) % !task::NAME %_function(void);%
+end if
+%
 #define APP_Task_% !task::NAME %_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
@@ -62,7 +68,13 @@ end foreach
 CONST(tpl_proc_static, OS_CONST) % !task::NAME %_task_stat_desc = {
   /* context                  */  % !task::NAME %_CONTEXT,
   /* stack                    */  % !task::NAME %_STACK,
-  /* entry point (function)   */  % !task::NAME %_function,
+%
+if exists task::FUNC then
+%  /* entry point (function)   */  % !task::FUNC %,%
+else
+%  /* entry point (function)   */  % !task::NAME %_function,%
+end if
+%
   /* internal ressource       */  %
 if task::USEINTERNALRESOURCE then
   %&%!task::INTERNALRESOURCE%_rez_desc,%
@@ -71,9 +83,9 @@ elsif task::NONPREEMPTABLE then
 else
   %NULL,%
 end if
-if task::NAME == "idle" then
+if exists task::ID then
 %
-  /* task id                  */  IDLE_TASK_ID,%
+  /* task id                  */  % !task::ID %,%
 else
 %
   /* task id                  */  % !task::NAME %_id,%

@@ -42,7 +42,7 @@ struct TPL_ACTION;
 **        pointer is considered at far and there is a stack pointer
 **        error during function return in tpl_action_activate_task
 **********************************************************************/
-typedef P2FUNC(tpl_status, OS_APPL_CODE, tpl_action_func)(
+typedef P2FUNC(void, OS_APPL_CODE, tpl_action_func)(
   P2CONST(struct TPL_ACTION, AUTOMATIC, OS_APPL_CONST)
 );
 
@@ -125,13 +125,13 @@ tpl_setevent_action;
 /*
  * Notification functions prototypes
  */
-FUNC(tpl_status, OS_CODE) tpl_action_callback(
+FUNC(void, OS_CODE) tpl_action_callback(
   P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action
 );
-FUNC(tpl_status, OS_CODE) tpl_action_activate_task(
+FUNC(void, OS_CODE) tpl_action_activate_task(
   P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action
 );
-FUNC(tpl_status, OS_CODE) tpl_action_setevent(
+FUNC(void, OS_CODE) tpl_action_setevent(
   P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action
 );
 

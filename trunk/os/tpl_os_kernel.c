@@ -887,6 +887,8 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
 #endif  /* WITH_AUTOSAR_TIMING_PROTECTION */
       if (task->activate_count == 0)
       {
+        GET_PROC_CORE_ID(task_id, core_id)
+
         /*  the initialization is postponed to the time it will
             get the CPU as indicated by READY_AND_NEW state             */
         TRACE_TASK_ACTIVATE(task_id)
@@ -902,12 +904,11 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
           events->evt_set = events->evt_wait = 0;
         }
 #endif
-        result = (tpl_status)E_OK_AND_SCHEDULE;
+        TPL_KERN(core_id).need_schedule = TRUE;
+        /* TODO:        result = (tpl_status)E_OK_AND_SCHEDULE; */
       }
-      else
-      {
-        result = (tpl_status)E_OK;
-      }
+      
+      result = E_OK;
 
       /*  put it in the list                                            */
       tpl_put_new_proc(task_id);
@@ -972,6 +973,7 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
         if (tpl_tp_on_activate_or_release(task_id) == TRUE)
         {
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+          GET_PROC_CORE_ID(task_id, core_id)
           /*  set the state to READY  */
           task->state = (tpl_proc_state)READY;
           /*  put the task in the READY list          */
@@ -979,7 +981,8 @@ FUNC(tpl_status, OS_CODE) tpl_set_event(
           tpl_put_new_proc(task_id);
 
           /*  notify a scheduling needs to be done    */
-          result = (tpl_status)E_OK_AND_SCHEDULE;
+          TPL_KERN(core_id).need_schedule = TRUE;
+/* TODO:           result = (tpl_status)E_OK_AND_SCHEDULE; */
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
         }
         else /* timing protection forbids the activation of the instance   */
@@ -1048,7 +1051,11 @@ FUNC(void, OS_CODE) tpl_init_os(CONST(tpl_application_mode, AUTOMATIC) app_mode)
 #endif
 
   /*  Start the idle task */
+#if NUMBER_OF_CORES == 1
   result = tpl_activate_task(IDLE_TASK_ID);
+#else
+  result = tpl_activate_task(IDLE_TASK_0_ID + tpl_get_core_id());
+#endif
   
 #if TASK_COUNT > 0
   /*  Look for autostart tasks    */
@@ -1184,6 +1191,54 @@ FUNC(void, OS_CODE) tpl_call_terminate_isr2_service(void)
   UNLOCK_KERNEL()
   
 }
+
+#if NUMBER_OF_CORES > 1
+/**
+ * tpl_multi_schedule
+ *
+ * Does as many as rescheduling as indicated by need_schedule member of
+ * tpl_kern structures
+ */
+FUNC(void, OS_CODE)tpl_multi_schedule(void)
+{
+  VAR(int, AUTOMATIC) core;
+
+  for (core = 0; core < NUMBER_OF_CORES; core++)
+  {
+    if (tpl_kern[core].need_schedule)
+    {
+      tpl_schedule_from_running(core);
+    }
+  }
+}
+ 
+/**
+ * tpl_dispatch_context_switch
+ *
+ * Does the context switch notification to other cores. Returns TRUE
+ * if the caller has to switch the context
+ */
+FUNC(void, OS_CODE) tpl_dispatch_context_switch(void)
+{
+  VAR(uint16, AUTOMATIC) caller_core = tpl_get_core_id();
+  VAR(int, AUTOMATIC) core;
+  for (core = 0; core < caller_core; core++)
+  {
+    if (tpl_kern[core].need_switch != NO_NEED_SWITCH)
+    {
+      REMOTE_SWITCH_CONTEXT(core);
+    }
+  }
+  for (core = caller_core + 1; core < NUMBER_OF_CORES; core++)
+  {
+    if (tpl_kern[core].need_switch != NO_NEED_SWITCH)
+    {
+      REMOTE_SWITCH_CONTEXT(core);
+    }
+  }
+}
+
+#endif
 
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"

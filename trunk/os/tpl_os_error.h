@@ -980,7 +980,7 @@ tpl_service.parameters.id.ioc_id = (iocid);
  */
 #if WITH_ERROR_HOOK == YES
 #define PROCESS_ERROR(error)                    \
-    if ((OSEK_STATUS_MASK & (error)) != E_OK) { \
+    if ((error) != E_OK) { \
         tpl_call_error_hook(error);             \
     }
 #else

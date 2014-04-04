@@ -240,7 +240,7 @@ extern CONSTP2VAR(tpl_schedule_table, AUTOMATIC, OS_APPL_DATA)
  * Increment index and store it and store cycle.
  *
  */
-extern FUNC(tpl_status, OS_CODE) tpl_process_schedtable(
+extern FUNC(void, OS_CODE) tpl_process_schedtable(
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) st);
 
 /**

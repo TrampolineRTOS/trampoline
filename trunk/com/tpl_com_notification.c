@@ -29,7 +29,7 @@
 /**
  *  action function for action set flag
  */
-FUNC(tpl_status, OS_CODE) tpl_action_setflag(
+FUNC(void, OS_CODE) tpl_action_setflag(
   CONSTP2CONST(tpl_action, AUTOMATIC, OS_CONST) action)
 {
     /*
@@ -39,8 +39,6 @@ FUNC(tpl_status, OS_CODE) tpl_action_setflag(
      * This cast behaves correctly.
      */
     ((const tpl_flag_action *)action)->setflag();
-    
-    return E_OK;
 }
 
 /*!
@@ -49,40 +47,32 @@ FUNC(tpl_status, OS_CODE) tpl_action_setflag(
  *
  */
 FUNC(void, OS_CODE) tpl_notify_receiving_mos(
-  CONST(tpl_status, AUTOMATIC) result,
   CONST(uint8, AUTOMATIC) from)
 {
-  /*
-     * Walk along the receiving message object chain and call the notification
-     * for each one when the notication exists.
-     */
-	/*
-    while (rmo != NULL) {
-        tpl_action *notification = rmo->notification;
-        if (notification != NULL) {
-            result |= notification->action(notification);
-        }
-        rmo = rmo->next_mo;
-    }*/
+  GET_CURRENT_CORE_ID(core_id)
 	
-  if ((result & NEED_RESCHEDULING) != 0)
+#if NUMBER_OF_CORES > 1
+  tpl_multi_schedule();
+  tpl_dispatch_context_switch();
+#endif
+  if (TPL_KERN(core_id).need_schedule)
   {
     tpl_schedule_from_running();
 #if WITH_SYSTEM_CALL == NO
-    if (tpl_kern.need_switch != NO_NEED_SWITCH)
+    if (TPL_KERN(core_id).need_switch != NO_NEED_SWITCH)
     {
       if (from == FROM_IT_LEVEL)
       {
         tpl_switch_context_from_it(
-          &(tpl_kern.s_old->context),
-          &(tpl_kern.s_running->context)
+          &(TPL_KERN(core_id).s_old->context),
+          &(TPL_KERN(core_id).s_running->context)
         );
       }
       else
       {
         tpl_switch_context(
-          &(tpl_kern.s_old->context),
-          &(tpl_kern.s_running->context)
+          &(TPL_KERN(core_id).s_old->context),
+          &(TPL_KERN(core_id).s_running->context)
         );
       }
     }

@@ -61,11 +61,9 @@ CONST(tpl_alarm_id, AUTOMATIC) INVALID_ALARM = (-1);
  *
  * @param time_obj  The alarm to raise.
  */
-FUNC(tpl_status, OS_CODE) tpl_raise_alarm(
+FUNC(void, OS_CODE) tpl_raise_alarm(
     P2VAR(tpl_time_obj, AUTOMATIC, OS_APPL_DATA) time_obj)
 {
-  VAR(tpl_status, AUTOMATIC) result = E_OK;
-
   /*
    * A tpl_time_obj_static * is cast to a tpl_alarm_static *
    * This violate MISRA rule 45. However, since the
@@ -81,9 +79,7 @@ FUNC(tpl_status, OS_CODE) tpl_raise_alarm(
   
   TRACE_ALARM_EXPIRE(time_obj)
   /*  Call the action                                     */
-  result = (action_desc->action)(action_desc) ;
-
-  return result;
+  (action_desc->action)(action_desc) ;
 }
 
 

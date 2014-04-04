@@ -71,10 +71,10 @@ typedef struct TPL_FINALIZE_SCHEDULE_TABLE_ACTION
 /*
  * Notification function prototype
  */
-FUNC(tpl_status, OS_CODE) tpl_action_increment_counter(
+FUNC(void, OS_CODE) tpl_action_increment_counter(
     P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action);
 
-FUNC(tpl_status, OS_CODE) tpl_action_finalize_schedule_table(
+FUNC(void, OS_CODE) tpl_action_finalize_schedule_table(
 	P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action);
 
 #define OS_STOP_SEC_CODE

@@ -36,8 +36,8 @@
 /**
  *  action function for action call back
  */
-FUNC(tpl_status, OS_CODE) tpl_action_callback(
-    P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action)
+FUNC(void, OS_CODE) tpl_action_callback(
+  P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action)
 {
   /*
    * A tpl_action * is cast to a tpl_callback_action *
@@ -46,15 +46,13 @@ FUNC(tpl_status, OS_CODE) tpl_action_callback(
    * This cast behaves correctly.
    */
   ((P2CONST(tpl_callback_action, AUTOMATIC, OS_APPL_CONST))action)->callback();
-
-  return E_OK;
 }
 
 /**
  *  action function for action by task activation
  */
-FUNC(tpl_status, OS_CODE) tpl_action_activate_task(
-    P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action
+FUNC(void, OS_CODE) tpl_action_activate_task(
+  P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action
 )
 {
   /*
@@ -72,11 +70,12 @@ FUNC(tpl_status, OS_CODE) tpl_action_activate_task(
   STORE_TASK_ID(((P2CONST(tpl_task_activation_action, AUTOMATIC, OS_APPL_CONST))action)->task_id)
 	
   /* call alarm action and save return value to launch error hook if alarm action goes wrong */
-  result_action = tpl_activate_task( ((P2CONST(tpl_task_activation_action, AUTOMATIC, OS_APPL_CONST))action)->task_id);
+  result_action = tpl_activate_task(
+    ((P2CONST(tpl_task_activation_action,
+      AUTOMATIC,
+      OS_APPL_CONST))action)->task_id);
 	
   PROCESS_ERROR(result_action)
-	
-  return result_action;
 }
 
 /**
@@ -84,8 +83,8 @@ FUNC(tpl_status, OS_CODE) tpl_action_activate_task(
  */
 #if EVENT_COUNT > 0
 
-FUNC(tpl_status, OS_CODE) tpl_action_setevent(
-    P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action)
+FUNC(void, OS_CODE) tpl_action_setevent(
+  P2CONST(tpl_action, AUTOMATIC, OS_APPL_CONST) action)
 {
   /*
    * A tpl_action * is cast to a tpl_setevent_action *
@@ -107,10 +106,7 @@ FUNC(tpl_status, OS_CODE) tpl_action_setevent(
       ((P2CONST(tpl_setevent_action, AUTOMATIC, OS_APPL_CONST))action)->mask
   );
 	
-  PROCESS_ERROR(result_action);
-   
-  return result_action;
-	
+  PROCESS_ERROR(result_action);	
 }
 
 #endif
