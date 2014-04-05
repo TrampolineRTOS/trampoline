@@ -16,7 +16,7 @@ CPU test {
     OS config {
         STATUS = STANDARD;
         BUILD = TRUE {
-            TRAMPOLINE_BASE_PATH = "../..";
+            TRAMPOLINE_BASE_PATH = "../../..";
             APP_NAME = "AVRTrampolineBin";
             APP_SRC = "main.c";
             CFLAGS  = "-Wall -Os -g -DF_CPU=16000000 -mmcu=atmega2560"; 

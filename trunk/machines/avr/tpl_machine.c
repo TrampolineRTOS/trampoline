@@ -71,7 +71,9 @@ FUNC(void, OS_CODE) tpl_init_context(
 #if defined (__AVR_ATmega2560__)
 	*sp=0; /* Program Counter size is 24 bits on ATMega2560 */
 	sp--;
-#elif defined (__AVR_AT90CAN128__)
+#elif defined(__AVR_AT90CAN128__) || \
+	  defined(__AVR_ATmega328__)  || \
+	  defined(__AVR_ATmega328P__)
 	//Ok. Program Counter size is 16 bits.
 #else
 #warning "The AVR CPU is not known -> Trampoline may crash if the Program Counter size is not OK. Assuming a program counter of 24 bits.".

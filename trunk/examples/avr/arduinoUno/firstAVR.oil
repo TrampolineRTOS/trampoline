@@ -1,0 +1,67 @@
+/* Running the following example:
+ *just call goil a first time using the command line:
+ *goil --target=avr --templates=../../goilv2/templates/ firstAVR.oil
+ *(COMPILER, LINKER and ASSEMBLER in OS/BUILD section may be adapted to your 
+ * specific install of avr cross-compiler)
+ *
+ *Then a Makefile is generated. Just type:
+ *make
+ *To clean the project, call:
+ *make clean
+ * It will remove all generated files, except the Makefile.
+ */
+OIL_VERSION = "2.5" : "test" ;
+
+CPU test {
+    OS config {
+        STATUS = STANDARD;
+        BUILD = TRUE {
+            TRAMPOLINE_BASE_PATH = "../../..";
+            APP_NAME = "AVRTrampolineBin";
+            APP_SRC = "main.c";
+            CFLAGS  = "-Wall -Os -g -DF_CPU=16000000 -mmcu=atmega328p"; 
+            LDFLAGS = "-Wall -Os -g -DF_CPU=16000000 -mmcu=atmega328p";
+            ASFLAGS = "-x assembler-with-cpp -Wall -Os -g -DF_CPU=16000000 -mmcu=atmega328p -c ";
+            COMPILER  = "avr-gcc";
+            LINKER    = "avr-gcc";
+            ASSEMBLER = "avr-gcc";
+        };
+    };
+    
+    APPMODE std {
+    };
+
+    COUNTER SystemCounter {
+        TICKSPERBASE = 10;
+        MAXALLOWEDVALUE = 1000;
+        MINCYCLE = 1;
+        SOURCE = "TIMER2_OVF_vect";
+    };
+  
+    ALARM periodicAl {
+        COUNTER= SystemCounter;
+        ACTION = ACTIVATETASK {
+            TASK = periodicTask;
+        };
+        AUTOSTART = TRUE {
+            ALARMTIME = 1;
+            CYCLETIME = 1;
+            APPMODE = std;
+        };
+    };
+
+    TASK periodicTask {
+        PRIORITY = 10;
+        AUTOSTART = FALSE;
+        ACTIVATION = 1;
+        SCHEDULE = FULL;
+        STACKSIZE = 256;
+    };
+
+    ISR ISRButton {
+        CATEGORY = 2;
+        PRIORITY = 20;
+        STACKSIZE = 256;
+        SOURCE = "INT0_vect"; //PIN 2 on Arduino Mega (PORTD.2)
+    };
+};
