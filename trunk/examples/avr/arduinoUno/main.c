@@ -22,8 +22,6 @@ ISR(ISRButton)
 	period++;
 	CancelAlarm(periodicAl);
 	SetRelAlarm(periodicAl,period,period);
-	//
-    tpl_terminate_isr2_service();
 }
 
 //remove trampoline definition of ISR..
@@ -53,6 +51,6 @@ int main(void)
 TASK(periodicTask)
 {
 	PORTB ^= (1<<5); //blink Led 13.
-	TerminateTask();
+	TerminateTask(); //required by OSEK, but uneeded for Trampoline.
 }
 
