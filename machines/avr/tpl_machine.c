@@ -28,6 +28,7 @@
 #include "tpl_os_definitions.h" /* IS_ROUTINE  */
 #include "tpl_os_internal_types.h"
 #include "tpl_os_kernel.h" /*tpl_stat_proc_table and tpl_proc_static*/
+#include "tpl_os.h"
 
 /*
  * tpl_sleep is used by the idle task
@@ -54,6 +55,19 @@ void tpl_shutdown(void)
 FUNC(void, OS_CODE) tpl_init_context(
     CONST(tpl_proc_id, OS_APPL_DATA) proc_id)
 {
+	//check PC size (not the same for each AVR :-/)
+#if defined (__AVR_ATmega2560__)
+	#define __PC_USE_24_BITS__
+#elif defined(__AVR_AT90CAN128__) || \
+	  defined(__AVR_ATmega328__)  || \
+	  defined(__AVR_ATmega328P__)
+	#define __PC_USE_16_BITS__
+#else
+	#warning "The AVR CPU is not known -> Trampoline may crash if the Program Counter size is not OK. Assuming a program counter of 16 bits.".
+	#define __PC_USE_16_BITS__
+#endif
+
+
 
     int a=0; /*internal variable, used to put the register R00 to R31 on the tabular*/
 	u8 *pointer;
@@ -62,22 +76,32 @@ FUNC(void, OS_CODE) tpl_init_context(
 	/* Init stack pointer */
 	u8 *sp=(void *)((u16)(static_desc->stack.stack_zone) + static_desc->stack.stack_size - 1);
 
+	//save the last return func call: TerminateTask() or TerminateISR2()
+	if(static_desc->type == IS_ROUTINE) //ISR2. push CallTerminateISR2();
+	{
+		*sp=(u16)CallTerminateISR2;
+		sp--;
+		*sp=((u16)CallTerminateISR2>>8);
+		sp--;
+	} else {  //normal task. push TerminateTask();
+		*sp=(u16)TerminateTask;
+		sp--;
+		*sp=((u16)TerminateTask>>8);
+		sp--;
+	}
+#ifdef __PC_USE_24_BITS__
+	*sp=0;
+	sp--;
+#endif
+	
 	/* put the Program Counter on the stack */
     
     *sp=(u16)static_desc->entry;
 	sp--;
 	*sp=((u16)static_desc->entry>>8);
 	sp--;
-#if defined (__AVR_ATmega2560__)
-	*sp=0; /* Program Counter size is 24 bits on ATMega2560 */
-	sp--;
-#elif defined(__AVR_AT90CAN128__) || \
-	  defined(__AVR_ATmega328__)  || \
-	  defined(__AVR_ATmega328P__)
-	//Ok. Program Counter size is 16 bits.
-#else
-#warning "The AVR CPU is not known -> Trampoline may crash if the Program Counter size is not OK. Assuming a program counter of 24 bits.".
-	*sp=0; /* Program Counter size assumed to be 24 bits */
+#ifdef __PC_USE_24_BITS__
+	*sp=0;
 	sp--;
 #endif
 	/* save the stack pointer */ 
