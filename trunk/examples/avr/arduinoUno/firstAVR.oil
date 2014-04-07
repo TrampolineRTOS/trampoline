@@ -1,6 +1,6 @@
 /* Running the following example:
  *just call goil a first time using the command line:
- *goil --target=avr --templates=../../goilv2/templates/ firstAVR.oil
+ *goil --target=avr --templates=../../../goilv2/templates/ firstAVR.oil
  *(COMPILER, LINKER and ASSEMBLER in OS/BUILD section may be adapted to your 
  * specific install of avr cross-compiler)
  *
