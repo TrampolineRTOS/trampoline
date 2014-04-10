@@ -24,6 +24,7 @@ A_DIR := $(word 1, $(TEMP_SOURCE_DIRS))
 #----------------------------------------------------------------------*
 $(OBJ_DIR)/%.c.o: $(A_DIR)/%.c $(OIL_OUTPUTS)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
+	@echo compiling $<
 	$(CC) $(genDep) $(CFLAGS) -c $< -o $@
 
 #----------------------------------------------------------------------*
@@ -31,14 +32,17 @@ $(OBJ_DIR)/%.c.o: $(A_DIR)/%.c $(OIL_OUTPUTS)
 #----------------------------------------------------------------------*
 $(OBJ_DIR)/%.s.o: $(A_DIR)/%.s $(OIL_OUTPUTS)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
+	@echo assembling $<
 	$(AS) $(ASFLAGS) $< -o $@
 
 $(OBJ_DIR)/%.S.i: $(A_DIR)/%.S $(OIL_OUTPUTS)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	$(CPP) $(CPPFLAGS) $< -o $@
+	@echo assembling $<
+	$(AS) $(ASFLAGS) $< -o $@
 
 $(OBJ_DIR)/%.S.o: $(OBJ_DIR)/%.S.i $(OIL_OUTPUTS)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
+	@echo assembling $<
 	$(AS) $(ASFLAGS) $< -o $@
 
 #----------------------------------------------------------------------*
@@ -48,19 +52,23 @@ $(OBJ_DIR)/%.S.o: $(OBJ_DIR)/%.S.i $(OIL_OUTPUTS)
 
 $(OBJ_DIR)/%.cpp.o: $(A_DIR)/%.cpp $(OIL_OUTPUTS)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	$(CXX) $(genDep) $(CPPFLAGS) -c $< -o $@
+	@echo compiling $<
+	$(CPP) $(genDep) $(CPPFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/%.cc.o: $(A_DIR)/%.cc $(OIL_OUTPUTS)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	$(CXX) $(genDep) $(CPPFLAGS) -c $< -o $@
+	@echo compiling $<
+	$(CPP) $(genDep) $(CPPFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/%.cxx.o: $(A_DIR)/%.cxx $(OIL_OUTPUTS)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	$(CXX) $(genDep) $(CPPFLAGS) -c $< -o $@
+	@echo compiling $<
+	$(CPP) $(genDep) $(CPPFLAGS) -c $< -o $@
 
 $(OBJ_DIR)/%.C.o: $(A_DIR)/%.C $(OIL_OUTPUTS)
 	@if [ ! -d $(OBJ_DIR) ]; then mkdir -p $(OBJ_DIR); fi;
-	$(CXX) $(genDep) $(CPPFLAGS) -c $< -o $@
+	@echo compiling $<
+	$(CPP) $(genDep) $(CPPFLAGS) -c $< -o $@
 
 #----------------------------------------------------------------------*
 #Call recursively this file, without the first item of TEMP_SOURCE_DIRS *

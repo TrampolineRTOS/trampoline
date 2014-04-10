@@ -143,9 +143,9 @@ TEMP_SOURCE_DIRS += $(dir $(SOURCES))
 include $(OS_MAKE_PATH)/compiler_rules.mk
 
 #if CPP is not defined..
-ifndef CPP
-CPP = $(CC) -E $(CFLAGS)
-endif
+#ifndef CPP
+CPP = $(CC)
+#endif
 
 # exe rule -> Link
 $(EXEC): $(OBJ)
