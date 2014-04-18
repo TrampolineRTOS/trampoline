@@ -123,11 +123,8 @@ FUNC(void, OS_CODE) tpl_start_os_service(
   /*
    * Sync barrier at start of tpl_start_os_service. 
    */
-  tpl_sync_barrier(&tpl_start_count, &tpl_startos_sync_lock);
-  /*
-   * Restore the tpl_start_count to prepare the second sync barrier
-   */
-  tpl_start_count = tpl_number_of_activated_cores;
+  tpl_sync_barrier(&tpl_start_count_0, &tpl_startos_sync_lock);
+
   application_mode[core_id] = mode;
 #else
   application_mode = mode;
@@ -154,7 +151,7 @@ FUNC(void, OS_CODE) tpl_start_os_service(
   /*
    * Sync barrier just before starting the scheduling. 
    */
-  tpl_sync_barrier(&tpl_start_count, &tpl_startos_sync_lock);
+  tpl_sync_barrier(&tpl_start_count_1, &tpl_startos_sync_lock);
 #endif
 
   /* 
