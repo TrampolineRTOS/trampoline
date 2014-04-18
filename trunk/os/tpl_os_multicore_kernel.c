@@ -33,14 +33,14 @@
 #define OS_START_SEC_VAR_16BITS
 #include "tpl_memmap.h"
 
-VAR(uint16, OS_APPL_DATA)
+VAR(uint16, OS_VAR)
   tpl_number_of_activated_cores = 1;
 
-VAR(uint16, OS_APPL_DATA)
+VAR(uint16, OS_VAR)
   tpl_number_of_non_autosar_activated_cores = 0;
   
-VAR(uint16, OS_APPL_DATA)
-  tpl_start_count = 1;
+VAR(uint16, OS_VAR) tpl_start_count_0 = 1;
+VAR(uint16, OS_VAR) tpl_start_count_1 = 1;
   
 #define OS_STOP_SEC_VAR_16BITS
 #include "tpl_memmap.h"
@@ -135,7 +135,8 @@ FUNC(void, OS_CODE) tpl_start_core_service(
   IF_NO_EXTENDED_ERROR(result)
     tpl_core_status[core_id] = STARTED_CORE_AUTOSAR;
     tpl_number_of_activated_cores++;
-    tpl_start_count++;
+    tpl_start_count_0++;
+    tpl_start_count_1++;
     tpl_start_core(core_id);
   IF_NO_EXTENDED_ERROR_END()
 

@@ -49,7 +49,8 @@ extern VAR(CoreStatusType, OS_APPL_DATA) tpl_core_status[NUMBER_OF_CORES];
 /**
  * tpl_start_count
  */
-extern VAR(uint16, OS_APPL_DATA) tpl_start_count;
+extern VAR(uint16, OS_APPL_DATA) tpl_start_count_0;
+extern VAR(uint16, OS_APPL_DATA) tpl_start_count_1
 
 /**
  * tpl_number_of_activated_cores
