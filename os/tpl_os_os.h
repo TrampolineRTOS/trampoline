@@ -26,6 +26,10 @@
 #ifndef TPL_OS_OS_H
 #define TPL_OS_OS_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "tpl_app_custom_types.h"
 #include "tpl_os_internal_types.h"
 
