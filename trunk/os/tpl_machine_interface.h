@@ -252,6 +252,24 @@ FUNC(void, OS_CODE) tpl_start_core(
 FUNC(void, OS_CODE) tpl_send_intercore_it(
   CONST(CoreIdType, AUTOMATIC) core_id);
 
+/**
+ * @internal
+ *
+ * tpl_get_lock is used to lock across the multicore emulated target
+ * It uses a posix semaphore
+ */
+FUNC(void, OS_CODE) tpl_get_lock(
+  CONSTP2VAR(tpl_lock, AUTOMATIC, OS_VAR) lock);
+
+/**
+ * @internal
+ *
+ * tpl_release_lock is used to unlock across the multicore emulated target
+ * It uses a posix semaphore
+ */
+FUNC(void, OS_CODE) tpl_release_lock(
+  CONSTP2VAR(tpl_lock, AUTOMATIC, OS_VAR) lock);
+
 #endif
 
 #define OS_STOP_SEC_CODE

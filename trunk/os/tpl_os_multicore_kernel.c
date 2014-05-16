@@ -127,10 +127,10 @@ FUNC(void, OS_CODE) tpl_start_core_service(
   /* Check errors */
   CHECK_CORE_ID_ERROR(core_id, result)
   
-  BEGIN_START_CORE_CRITICAL_SECTION()
+  /* BEGIN_START_CORE_CRITICAL_SECTION() */
   
   CHECK_START_CORE_ERROR(core_id, result)
-  CHECK_START_OS_ERROR(core_id, result)
+  CHECK_OS_NOT_STARTED(tpl_get_core_id(), result)
   
   IF_NO_EXTENDED_ERROR(result)
     tpl_core_status[core_id] = STARTED_CORE_AUTOSAR;
@@ -140,7 +140,7 @@ FUNC(void, OS_CODE) tpl_start_core_service(
     tpl_start_core(core_id);
   IF_NO_EXTENDED_ERROR_END()
 
-  END_START_CORE_CRITICAL_SECTION()
+  /* END_START_CORE_CRITICAL_SECTION() */
 
   PROCESS_ERROR(result)
 	
@@ -268,7 +268,4 @@ FUNC(StatusType, OS_CODE) tpl_get_core_status_service(
 #define OS_STOP_SEC_CODE
 #include "tpl_memmap.h"
 
-/* TPL_OS_MULTICORE_KERNEL_H */
-#endif
-
-/* End of file tpl_os_multicore_kernel.h */
+/* End of file tpl_os_multicore_kernel.c */

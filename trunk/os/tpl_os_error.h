@@ -1422,9 +1422,9 @@ tpl_service.parameters.id.ioc_id = (iocid);
  * @note error code is not set if it does not equal E_OK
  */
 #if (WITH_OS_EXTENDED == YES)
-#  define CHECK_OS_NOT_STARTED(result)                         \
-    if ((result == (tpl_status)E_OK) &&                        \
-        (tpl_current_os_state(CORE_ID_OR_NOTHING(core_id)) != OS_INIT)) \
+#  define CHECK_OS_NOT_STARTED(a_core_id, result)                         \
+    if ((result == (tpl_status)E_OK) &&                                   \
+        (tpl_current_os_state(CORE_ID_OR_NOTHING(a_core_id)) != OS_INIT)) \
     {                                                          \
        result = (tpl_status)E_OS_STATE;                        \
     }
@@ -2075,6 +2075,14 @@ if (( (((app_access->access_vec[OBJECT_IOC][byte_idx]) &              \
 #else
 #  define CHECK_START_CORE_ERROR(a_core_id, a_result)
 #endif
+
+/**
+ * CHECK_START_OS_ERROR
+ *
+ * This macro checks the os is not already started
+ */
+
+
 
 #endif /*TPL_OS_ERROR_H */
 
