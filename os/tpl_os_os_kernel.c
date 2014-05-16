@@ -35,6 +35,8 @@
 
 #if NUMBER_OF_CORES > 1
 #include "tpl_os_multicore_kernel.h"
+
+#define START_OS_SYNC_LOCK_ID   0
 #endif
 
 #define OS_START_SEC_VAR_UNSPECIFIED
@@ -114,7 +116,7 @@ FUNC(void, OS_CODE) tpl_start_os_service(
   STORE_SERVICE(OSServiceId_StartOS)
   STORE_MODE(mode);
 	
-  CHECK_OS_NOT_STARTED(result)
+  CHECK_OS_NOT_STARTED(core_id, result)
 	
   IF_NO_EXTENDED_ERROR(result)
   /* { */

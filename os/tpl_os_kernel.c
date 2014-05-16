@@ -306,7 +306,7 @@ FUNC(void, OS_CODE) tpl_bubble_down(
  * @internal
  *
  * tpl_put_new_proc puts a new proc in a ready list. In a multicore kernel
- * it may be called from a core that does not own the ready list (for
+ * it may be called from a core that not own the ready list (for
  * a partitioned scheduler). So the core_id field of the proc descriptor
  * is used to get the corresponding ready list.
  */
