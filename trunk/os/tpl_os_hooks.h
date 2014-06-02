@@ -43,10 +43,12 @@
  * (or WITH_TASK_HOOK) is defined
  */
 #if WITH_POST_TASK_HOOK == YES
-#   define CALL_POST_TASK_HOOK()    \
-    SET_RUNNING_TRUSTED \
-    PostTaskHook(); \
-    RESET_RUNNING_TRUSTED
+#   define CALL_POST_TASK_HOOK()                        \
+    if (TPL_KERN_REF(kern).running->state == RUNNING) { \
+      SET_RUNNING_TRUSTED                               \
+      PostTaskHook();                                   \
+      RESET_RUNNING_TRUSTED                             \
+    }
 #else
 #   define CALL_POST_TASK_HOOK()
 #endif

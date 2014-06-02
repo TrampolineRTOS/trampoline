@@ -1429,7 +1429,7 @@ tpl_service.parameters.id.ioc_id = (iocid);
        result = (tpl_status)E_OS_STATE;                        \
     }
 #else
-#  define CHECK_OS_NOT_STARTED(result)
+#  define CHECK_OS_NOT_STARTED(core_id, result)
 #endif
 
 /**

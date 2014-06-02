@@ -39,12 +39,14 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <pthread.h>
+#include <errno.h>
 
 VAR(tpl_stack_word, OS_VAR) idle_stack_zone[32768/sizeof(tpl_stack_word)] = {0} ;
 VAR(struct TPL_STACK, OS_VAR) idle_task_stack = { idle_stack_zone, 32768} ;
 VAR(struct TPL_CONTEXT, OS_VAR) idle_task_context;
 
-extern volatile u32 tpl_locking_depth;
+extern volatile uint32 tpl_locking_depth;
 extern VAR(tpl_bool, OS_VAR) tpl_user_task_lock;
 extern VAR(tpl_bool, OS_VAR) tpl_cpt_os_task_lock;
 
@@ -302,6 +304,25 @@ void tpl_release_task_lock(void)
     }
 }
 
+/*
+ * tpl_get_lock is used to lock across the multicore emulated target
+ * It uses a posix semaphore
+ */
+FUNC(void, OS_CODE) tpl_get_lock(
+  CONSTP2VAR(tpl_lock, AUTOMATIC, OS_VAR) lock)
+{
+}
+
+/*
+ * tpl_release_lock is used to unlock across the multicore emulated target
+ * It uses a posix semaphore
+ */
+FUNC(void, OS_CODE) tpl_release_lock(
+  CONSTP2VAR(tpl_lock, AUTOMATIC, OS_VAR) lock)
+{
+}
+
+
 #define OS_START_SEC_CODE
 #include "tpl_memmap.h"
 FUNC(void, OS_CODE) tpl_switch_context(
@@ -384,6 +405,8 @@ VAR(tpl_proc_id,OS_VAR)     new_proc_id;
 #include "tpl_memmap.h"
 FUNC(void, OS_CODE) tpl_create_context_boot(void)
 {
+    GET_CURRENT_CORE_ID(core_id)
+    
     tpl_proc_id context_owner_proc_id;
     
     /*
@@ -401,7 +424,7 @@ FUNC(void, OS_CODE) tpl_create_context_boot(void)
     /* 12 & 13 : context is ready, jump back to the tpl_create_context */
     if( 0 == _setjmp(tpl_stat_proc_table[context_owner_proc_id]->context->initial) ) 
     {
-        _longjmp(tpl_stat_proc_table[IDLE_TASK_ID]->context->current, 1);
+        _longjmp(tpl_stat_proc_table[IDLE_TASK_0_ID]->context->current, 1);
     }
 
     /*printf("About to launch proc#%d\n", context_owner_proc_id);*/
@@ -413,7 +436,7 @@ FUNC(void, OS_CODE) tpl_create_context_boot(void)
     */
     /* We are back for the first dispatch. Let's go */
 /*    tpl_osek_func_stub(context_owner_proc_id); */
-    tpl_osek_func_stub(tpl_kern.running_id);
+    tpl_osek_func_stub(TPL_KERN(core_id).running_id);
 
     /* We should not be there. Let's crash*/
     abort();
@@ -507,7 +530,7 @@ FUNC(void, OS_CODE) tpl_create_context(
      * 7 & 8 : we jump back to the created context.
      * This time, we are no more in signal handling mode
      */
-    if ( 0 == _setjmp(tpl_stat_proc_table[IDLE_TASK_ID]->context->current) )
+    if ( 0 == _setjmp(tpl_stat_proc_table[IDLE_TASK_0_ID]->context->current) )
         _longjmp(tpl_stat_proc_table[new_proc_id]->context->initial,1);
 
     /* 
@@ -604,13 +627,57 @@ void tpl_init_machine(void)
 }
 
 
-#if NUMBER_OF_CORES > 1
 /**
  * Table used to store the correspondance between the core identifier
- * and the pthread.
+ * and the pthread for the core execution thread and for the
+ * viper thread.
  */
-static pthread_t tpl_threads[NUMBER_OF_CORES];
+typedef struct {
+  pthread_t execution_thread;
+  pthread_t viper_thread;
+} tpl_threads_entry;
+ 
+static tpl_threads_entry tpl_threads[NUMBER_OF_CORES];
+static CoreIdType tpl_core_ids[NUMBER_OF_CORES];
 
+extern void main(void);
+extern void *tpl_viper_main(void *arg);
+
+/**
+ * tpl_start_core_function is a wrapper to the main function
+ *
+ * tpl_start_core first create a viper thread that manages
+ * the timers of the core.
+ */
+FUNC(void *, OS_CODE) tpl_start_core_function(
+  P2VAR(void, AUTOMATIC, OS_APPL_DATA) arg)
+{
+  VAR(int, AUTOMATIC) result;
+  CONST(CoreIdType, AUTOMATIC) core_id = *((CoreIdType *)arg);
+  
+  /* Create the viper thread for the core */
+  if ((result = pthread_create(
+                  &tpl_threads[core_id].viper_thread,
+                  NULL,
+                  tpl_viper_main,
+                  arg)))
+  {
+    switch (result)
+    {
+      case EAGAIN:
+        fprintf(stderr,
+                "Unable to create the viper thread for core %d\n",
+                core_id);
+        break;
+      case EINVAL:
+        fprintf(stderr,"Illegal attr\n");
+    }
+  }
+  
+  /* continue with user code */
+  main();
+  return NULL;
+}
 /**
  * tpl_start_core
  *
@@ -620,23 +687,43 @@ static pthread_t tpl_threads[NUMBER_OF_CORES];
 FUNC(void, OS_CODE) tpl_start_core(
   CONST(CoreIdType, AUTOMATIC) core_id)
 {
-  int result = pthread_create(&tpl_threads[core_id], NULL, main, NULL);
+  VAR(int, AUTOMATIC) result;
+  
+  tpl_core_ids[core_id] = core_id;
+  
+  if ((result = pthread_create(
+                  &tpl_threads[core_id].execution_thread,
+                  NULL,
+                  tpl_start_core_function,
+                  &tpl_core_ids[core_id])))
+  {
+    switch (result)
+    {
+      case EAGAIN:
+        fprintf(stderr,
+                "Unable to create the execution thread for core %d\n",
+                core_id);
+        break;
+      case EINVAL:
+        fprintf(stderr,"Illegal attr\n");
+    }
+  }
 }
 
 /**
- * tpl_actual_main
+ * tpl_start_master
  *
  * Actual entry point of an application. Posix being an emulated hardware
- * platform, tpl_actual_main create the first core in the machine (ie
- * the core having the OS_CORE_ID_MASTER (that is OS_CORE_ID_0) core id)
+ * platform, tpl_start_master create the first core in the machine (ie
+ * the core having the OS_CORE_ID_MASTER (that is OS_CORE_ID_0) core id).
  */
-FUNC(void, OS_CODE) tpl_actual_main(void)
+FUNC(void, OS_CODE) tpl_start_master(void)
 {
+  
   tpl_start_core(OS_CORE_ID_MASTER);
   
   while(1) pause();
 }
 
-#endif
 
 /* End of file tpl_machine_posix.c */
