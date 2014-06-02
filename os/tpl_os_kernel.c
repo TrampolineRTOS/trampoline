@@ -566,77 +566,71 @@ FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
 {
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-  /*  the running object is never NULL and is in the state RUNNING */
-  DOW_ASSERT(TPL_KERN_REF(kern).running != NULL)
-  DOW_ASSERT(TPL_KERN_REF(kern).running->state == RUNNING)
+  /*  the elected object is never NULL and is in the state RUNNING */
+/*  DOW_ASSERT(TPL_KERN_REF(kern).running != NULL)
+  DOW_ASSERT(TPL_KERN_REF(kern).running->state == RUNNING) */
 
   /*
-   * The running task is preempted, so it is time to call the
+   * The elected task is preempted, so it is time to call the
    * PostTaskHook while the soon descheduled task is running
    */
   CALL_POST_TASK_HOOK()
   
-  TRACE_ISR_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
-  TRACE_TASK_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
+  TRACE_ISR_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).elected_id)
+  TRACE_TASK_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).elected_id)
   
   /* The current running task becomes READY */
-  TPL_KERN_REF(kern).running->state = (tpl_proc_state)READY;
+  TPL_KERN_REF(kern).elected->state = (tpl_proc_state)READY;
   
   DOW_DO(printf(
     "preempt %s\n",
-    proc_name_table[TPL_KERN_REF(kern).running_id])
+    proc_name_table[TPL_KERN_REF(kern).elected_id])
   );
   
   /* And put in the ready list */
-  tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).running_id);
+  tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
   
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /* cancel the watchdog and update the budget                  */
-  tpl_tp_on_preempt(TPL_KERN_REF(kern).running_id);
+  tpl_tp_on_preempt(TPL_KERN_REF(kern).elected_id);
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
 
-  /* copy it in old slot of tpl_kern */
-  TPL_KERN_REF(kern).old = TPL_KERN_REF(kern).running;
-  TPL_KERN_REF(kern).s_old = TPL_KERN_REF(kern).s_running;
 }
 
 /**
  * @internal
+ * 
+ * The elected task becomes the running task
  *
- * Start the highest priority READY process
+ * @return  the pointer to the context of the task
+ *          that was running before the elected task replace it
  */
-FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
+FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
+  tpl_run_elected(CONST(tpl_bool, AUTOMATIC) save)
 {
+  GET_CURRENT_CORE_ID(core_id)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
-
-  CONST(tpl_heap_entry, AUTOMATIC) proc =
-    tpl_remove_front_proc(CORE_ID_OR_NOTHING(core_id));
-  TPL_KERN_REF(kern).running_id = (uint32)proc.id;
-  TPL_KERN_REF(kern).running = tpl_dyn_proc_table[proc.id];
-  TPL_KERN_REF(kern).s_running = tpl_stat_proc_table[proc.id];
-
-  if (TPL_KERN_REF(kern).running->state == READY_AND_NEW)
-  {
-    /*
-     * the object has not be preempted. So its
-     * descriptor must be initialized
-     */
-    tpl_init_proc(proc.id);
-    tpl_dyn_proc_table[proc.id]->priority = proc.key;
-  }
   
+  CONSTP2CONST(tpl_context, AUTOMATIC, OS_CONST) old_context =
+    save ? &(TPL_KERN_REF(kern).s_running->context) : FALSE;
+  
+  /* copy the elected proc in running slot of tpl_kern */
+  TPL_KERN_REF(kern).running = TPL_KERN_REF(kern).elected;
+  TPL_KERN_REF(kern).s_running = TPL_KERN_REF(kern).s_elected;
+  TPL_KERN_REF(kern).running_id = TPL_KERN_REF(kern).elected_id;
+
   DOW_DO(printf(
     "start %s, %d\n",
     proc_name_table[TPL_KERN_REF(kern).running_id],
-    tpl_dyn_proc_table[proc.id]->priority)
+    TPL_KERN_REF(kern).running->priority)
   );
-  DOW_DO(printrl("tpl_start - after");)
+  DOW_DO(printrl("tpl_run_elected - after");)
   
-  /* the inserted task become RUNNING */
+  /* the elected task become RUNNING */
   TRACE_TASK_EXECUTE((tpl_proc_id)TPL_KERN_REF(kern).running_id)
   TRACE_ISR_RUN((tpl_proc_id)TPL_KERN_REF(kern).running_id)
   TPL_KERN_REF(kern).running->state = RUNNING;
-
+  
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /*  start the budget watchdog  */
   tpl_tp_on_start(TPL_KERN_REF(kern).running_id);
@@ -653,6 +647,34 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
    * PreTaskHook since the rescheduled task is running
    */
   CALL_PRE_TASK_HOOK()
+  
+  return old_context;
+}
+
+/**
+ * @internal
+ *
+ * Start the highest priority READY process
+ */
+FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
+{
+  GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
+
+  CONST(tpl_heap_entry, AUTOMATIC) proc =
+    tpl_remove_front_proc(CORE_ID_OR_NOTHING(core_id));
+  TPL_KERN_REF(kern).elected_id = (uint32)proc.id;
+  TPL_KERN_REF(kern).elected = tpl_dyn_proc_table[proc.id];
+  TPL_KERN_REF(kern).s_elected = tpl_stat_proc_table[proc.id];  
+
+  if (TPL_KERN_REF(kern).elected->state == READY_AND_NEW)
+  {
+    /*
+     * the object has not be preempted. So its
+     * descriptor must be initialized
+     */
+    tpl_init_proc(proc.id);
+    tpl_dyn_proc_table[proc.id]->priority = proc.key;
+  }
 }
 
 /**
@@ -674,11 +696,11 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
   DOW_ASSERT((uint32)READY_LIST(read_list)[1].key > 0)
   
 #if WITH_AUTOSAR_STACK_MONITORING == YES
-  tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
+  tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
 
   if ((READY_LIST(ready_list)[1].key) >
-      (tpl_dyn_proc_table[TPL_KERN_REF(kern).running_id]->priority))
+      (tpl_dyn_proc_table[TPL_KERN_REF(kern).elected_id]->priority))
   {
     /* Preempts the RUNNING task */
     tpl_preempt(CORE_ID_OR_NOTHING(core_id));
@@ -758,8 +780,8 @@ FUNC(void, OS_CODE) tpl_terminate(void)
 #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
   
   /* copy it in old slot of tpl_kern */
-  TPL_KERN_REF(kern).old = TPL_KERN_REF(kern).running;
-  TPL_KERN_REF(kern).s_old = TPL_KERN_REF(kern).s_running;
+/*  TPL_KERN_REF(kern).old = TPL_KERN_REF(kern).running;
+  TPL_KERN_REF(kern).s_old = TPL_KERN_REF(kern).s_running;*/
 }
 
 #if EXTENDED_TASK_COUNT > 0
@@ -808,23 +830,14 @@ FUNC(void, OS_CODE) tpl_block(void)
     tpl_release_internal_resource((tpl_proc_id)TPL_KERN_REF(kern).running_id);
     
     /* copy it in old slot of tpl_kern */
-    TPL_KERN_REF(kern).old = TPL_KERN_REF(kern).running;
-    TPL_KERN_REF(kern).s_old = TPL_KERN_REF(kern).s_running;
+/*    TPL_KERN_REF(kern).old = TPL_KERN_REF(kern).running;
+    TPL_KERN_REF(kern).s_old = TPL_KERN_REF(kern).s_running; */
     
     /* Start the highest priority task */
     tpl_start(CORE_ID_OR_NOTHING(core_id));
     /* Task switching should occur */
     TPL_KERN_REF(kern).need_switch = NEED_SWITCH | NEED_SAVE;
-# if WITH_SYSTEM_CALL == NO
-    if (TPL_KERN_REF(kern).need_switch != NO_NEED_SWITCH)
-    {
-      TPL_KERN_REF(kern).need_switch = NO_NEED_SWITCH;
-      tpl_switch_context(
-        &(TPL_KERN_REF(kern).s_old->context),
-        &(TPL_KERN_REF(kern).s_running->context)
-      );
-    }
-# endif /* WITH_SYSTEM_CALL == NO */
+    LOCAL_SWITCH_CONTEXT(core_id)
   }
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   else

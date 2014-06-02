@@ -247,11 +247,12 @@ typedef struct TPL_PROC tpl_proc;
  */
 typedef struct 
 {
-  P2CONST(tpl_proc_static, TYPEDEF, OS_CONST) s_old;
   P2CONST(tpl_proc_static, TYPEDEF, OS_CONST) s_running;
-  P2VAR(tpl_proc, TYPEDEF, OS_VAR)            old;
+  P2CONST(tpl_proc_static, TYPEDEF, OS_CONST) s_elected;
   P2VAR(tpl_proc, TYPEDEF, OS_VAR)            running;
+  P2VAR(tpl_proc, TYPEDEF, OS_VAR)            elected;
   VAR(uint32, TYPEDEF)                        running_id;
+  VAR(uint32, TYPEDEF)                        elected_id;
 
 /** 
  * 2 bits are used in this field.
@@ -337,24 +338,24 @@ extern VAR(tpl_internal_resource, OS_VAR) INTERNAL_RES_SCHEDULER;
  * In multicore does the intercore interrupt if needed
  */
 #if WITH_SYSTEM_CALL == NO
-#define LOCAL_SWITCH_CONTEXT(a_core_id)                  \
-  if (TPL_KERN(a_core_id).need_switch != NO_NEED_SWITCH) \
-  {                                                      \
-    TPL_KERN(a_core_id).need_switch = NO_NEED_SWITCH;    \
-    tpl_switch_context(                                  \
-      &(TPL_KERN(a_core_id).s_old->context),             \
-      &(TPL_KERN(a_core_id).s_running->context)          \
-    );                                                   \
+#define LOCAL_SWITCH_CONTEXT(a_core_id)                         \
+  if (TPL_KERN(a_core_id).need_switch != NO_NEED_SWITCH)        \
+  {                                                             \
+    TPL_KERN(a_core_id).need_switch = NO_NEED_SWITCH;           \
+    tpl_switch_context(                                         \
+      tpl_run_elected(TRUE),                                    \
+      &(TPL_KERN(a_core_id).s_elected->context)                 \
+    );                                                          \
   }
   
-#define LOCAL_SWITCH_CONTEXT_NOSAVE(a_core_id)           \
-  if (TPL_KERN(a_core_id).need_switch != NO_NEED_SWITCH) \
-  {                                                      \
-    TPL_KERN(a_core_id).need_switch = NO_NEED_SWITCH;    \
-    tpl_switch_context(                                  \
-      NULL,                                              \
-      &(TPL_KERN(a_core_id).s_running->context)          \
-    );                                                   \
+#define LOCAL_SWITCH_CONTEXT_NOSAVE(a_core_id)             \
+  if (TPL_KERN(a_core_id).need_switch != NO_NEED_SWITCH)   \
+  {                                                        \
+    TPL_KERN(a_core_id).need_switch = NO_NEED_SWITCH;      \
+    tpl_switch_context(                                    \
+      tpl_run_elected(FALSE),                              \
+      &(TPL_KERN(a_core_id).s_elected->context)            \
+    );                                                     \
   }
 #else
 #define LOCAL_SWITCH_CONTEXT(a_core_id)
@@ -516,6 +517,17 @@ FUNC(void, OS_CODE) tpl_start_scheduling(CORE_ID_OR_VOID(core_id));
  * Starts a highest priority READY process
  */
 FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id));
+
+/**
+ * @internal
+ * 
+ * The elected task becomes the running task
+ *
+ * @return  the pointer to the static descriptor of the task
+ *          that was running before the elected task replace it
+ */
+FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
+  tpl_run_elected(CONST(tpl_bool, AUTOMATIC) save);
 
 /**
  * @internal

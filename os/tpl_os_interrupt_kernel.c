@@ -361,16 +361,7 @@ FUNC(void, OS_CODE) tpl_central_interrupt_handler(
     {
       tpl_schedule_from_running();
       
-#if WITH_SYSTEM_CALL == NO
-      if (tpl_kern.need_switch != NO_NEED_SWITCH)
-      {
-        tpl_kern.need_switch = NO_NEED_SWITCH;
-        tpl_switch_context_from_it(
-          &(tpl_kern.s_old->context),
-          &(tpl_kern.s_running->context)
-        );
-      }
-#endif
+      LOCAL_SWITCH_CONTEXT(a_core_id)
     }
 #if WITH_OS_EXTENDED == YES
   }

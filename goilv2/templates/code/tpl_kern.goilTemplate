@@ -11,10 +11,11 @@ if OS::NUMBER_OF_CORES == 1 then %
  */
 VAR(tpl_kern_state, OS_VAR) tpl_kern =
 {
-  NULL,                      /* no previous task static descriptor  */
-  &IDLE_TASK_task_stat_desc, /* current task tu run is idle task    */
-  NULL,                      /* no previous task dynamic descriptor */
-  &IDLE_TASK_task_desc,      /* current task tu run is idle task    */
+  NULL,                      /* no running task static descriptor   */
+  &IDLE_TASK_task_stat_desc, /* elected task to run is idle task    */
+  NULL,                      /* no running task dynamic descriptor  */
+  &IDLE_TASK_task_desc,      /* elected task to run is idle task    */
+  INVALID_PROC_ID,           /* no running task so no ID            */
   INVALID_PROC_ID,           /* idle task has no ID                 */
   NO_NEED_SWITCH,            /* no context switch needed at start   */
   FALSE,                     /* no schedule needed at start         */
