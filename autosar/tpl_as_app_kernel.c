@@ -413,15 +413,7 @@ FUNC(tpl_status, OS_CODE) tpl_terminate_application_service(
         }
       }
 
-# if WITH_SYSTEM_CALL == NO
-      if (TPL_KERN_REF(a_tpl_kern).need_switch != NO_NEED_SWITCH)
-      {
-        TPL_KERN_REF(a_tpl_kern).need_switch = NO_NEED_SWITCH;
-        tpl_switch_context(
-          NULL,
-          &(TPL_KERN_REF(a_tpl_kern).s_running->context));
-      }
-# endif
+    LOCAL_SWITCH_CONTEXT_NOSAVE(a_core_id)
 
     }
     else

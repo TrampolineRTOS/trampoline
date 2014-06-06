@@ -23,7 +23,6 @@ VAR(tpl_kern_state, OS_VAR) tpl_kern =
   1,                         /* at early system startup, we run in  */
                              /*  kernel mode, so in trusted mode    */
 #endif /* WITH_MEMORY_PROTECTION */
-  0                          /* priority of idle task is 0          */
 };
 %
 # In multicore, the tpl_kern variable is an array of pointers

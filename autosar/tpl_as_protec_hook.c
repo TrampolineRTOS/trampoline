@@ -47,6 +47,8 @@ extern CONST(tpl_proc_id, AUTOMATIC) INVALID_PROC;
 
 FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
 {
+  GET_CURRENT_CORE_ID(core_id)
+
 #if WITH_PROTECTION_HOOK == YES
   VAR(ProtectionReturnType, AUTOMATIC) result;
   VAR(tpl_proc_id, AUTOMATIC) proc_id;
@@ -89,17 +91,10 @@ FUNC(void, OS_CODE) tpl_call_protection_hook(VAR(tpl_status, AUTOMATIC) error)
         /* start the highest priority task */
         tpl_start(tpl_get_proc());
         /* task switching should occur */
-        tpl_kern.need_switch = NEED_SWITCH;
-# if WITH_SYSTEM_CALL == NO
-        if (tpl_kern.need_switch != NO_NEED_SWITCH)
-        {
-          tpl_kern.need_switch = NO_NEED_SWITCH;
-          tpl_switch_context(
-            NULL,
-            &(tpl_kern.s_running->context)
-          );
-        }
-# endif
+        TPL_KERN(core_id).need_switch = NEED_SWITCH;
+        
+        LOCAL_SWITCH_CONTEXT(core_id)
+        
       }
       else
       {
