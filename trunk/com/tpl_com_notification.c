@@ -64,15 +64,15 @@ FUNC(void, OS_CODE) tpl_notify_receiving_mos(
       if (from == FROM_IT_LEVEL)
       {
         tpl_switch_context_from_it(
-          &(TPL_KERN(core_id).s_old->context),
-          &(TPL_KERN(core_id).s_running->context)
+          &(TPL_KERN(core_id).s_running->context),
+          &(TPL_KERN(core_id).s_elected->context)
         );
       }
       else
       {
         tpl_switch_context(
-          &(TPL_KERN(core_id).s_old->context),
-          &(TPL_KERN(core_id).s_running->context)
+          &(TPL_KERN(core_id).s_running->context),
+          &(TPL_KERN(core_id).s_elected->context)
         );
       }
     }

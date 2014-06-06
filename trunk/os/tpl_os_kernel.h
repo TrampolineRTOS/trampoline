@@ -274,7 +274,7 @@ typedef struct
  */
   VAR(uint8, TYPEDEF)                         running_trusted;
 #endif /* WITH_MEMORY_PROTECTION */
-  VAR(tpl_priority, TYPEDEF)                  running_priority;
+/*  VAR(tpl_priority, TYPEDEF)                  running_priority; */
 } tpl_kern_state;
  
 /**

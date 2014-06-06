@@ -32,6 +32,7 @@
 #include "tpl_os_errorhook.h"
 #include "tpl_os_task_kernel.h"
 #include "tpl_trace.h"
+#include "tpl_dow.h"
 
 #if WITH_AUTOSAR == YES
 #include "tpl_as_isr_kernel.h"
@@ -77,10 +78,14 @@ FUNC(StatusType, OS_CODE) tpl_activate_task_service(
 	
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
+
+    DOW_DO(printf("*S* ActivateTask\n"));
+
     result = tpl_activate_task(task_id);
     if (TPL_KERN(proc_core_id).need_schedule)
     {
       tpl_schedule_from_running(CORE_ID_OR_NOTHING(proc_core_id));
+      DOW_DO(printf("*S* ActivateTask - rescheduling done\n"));
       SWITCH_CONTEXT(CORE_ID_OR_NOTHING(proc_core_id))
 	  }
   IF_NO_EXTENDED_ERROR_END()
@@ -172,6 +177,8 @@ FUNC(StatusType, OS_CODE) tpl_chain_task_service(
     /* the activate count is decreased */
     TPL_KERN(core_id).running->activate_count--;
 
+    DOW_DO(printf("*S* ChainTask\n"));
+    
     /* activate the chained task */
     result = tpl_activate_task(task_id);
 
@@ -245,13 +252,18 @@ FUNC(StatusType, OS_CODE) tpl_schedule_service(void)
 
 #if TASK_COUNT > 0
   IF_NO_EXTENDED_ERROR(result)
+  
+    DOW_DO(printf("*S* Schedule\n"));
     /*  release the internal resource   */
     tpl_release_internal_resource((tpl_proc_id)TPL_KERN(core_id).running_id);
     /*  does the rescheduling           */
     tpl_schedule_from_running(CORE_ID_OR_NOTHING(core_id));
     /*  get the internal resource       */
 
-    tpl_get_internal_resource((tpl_proc_id)TPL_KERN(core_id).running_id);
+    if (TPL_KERN(core_id).running_id == TPL_KERN(core_id).elected_id)
+    {
+      tpl_get_internal_resource((tpl_proc_id)TPL_KERN(core_id).running_id);
+    }
 
     LOCAL_SWITCH_CONTEXT(core_id)
 

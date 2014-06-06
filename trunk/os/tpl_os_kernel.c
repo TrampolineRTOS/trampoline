@@ -160,25 +160,43 @@ extern CONSTP2CONST(char, AUTOMATIC, OS_APPL_DATA) proc_name_table[];
  * so production release is not impacted by MISRA rules violated
  * in this function
  */
-FUNC(void, OS_CODE) printrl(
-  P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
+FUNC(void, OS_CODE) printrl(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
 {
 #if NUMBER_OF_CORES > 1
   /* TODO */
 #else
   uint32 i;
-  printf("%s[%d]", msg, tpl_ready_list[0].key);
+  printf("ready list %s [%d]", msg, tpl_ready_list[0].key);
   for (i = 1; i <= tpl_ready_list[0].key; i++)
   {
-    printf(" {%d/%d,%s(%d)}",
+    printf(" {%d/%d,%s[%d](%d)}",
            (int)(tpl_ready_list[i].key >> PRIORITY_SHIFT),
            (int)(tpl_ready_list[i].key & RANK_MASK),
            proc_name_table[tpl_ready_list[i].id],
-           (int)tpl_ready_list[i].id);
+           (int)tpl_ready_list[i].id,
+           tpl_ready_list[i].key);
   }
   printf("\n");
 #endif  
 }
+
+FUNC(void, OS_CODE) print_kern(P2VAR(char, AUTOMATIC, OS_APPL_DATA) msg)
+{
+#if NUMBER_OF_CORES > 1
+  /* TOFO */
+#else
+  printf("KERN %s running : %s[%ld](%d), elected : %s[%ld](%d)\n",
+    msg,
+    (tpl_kern.running_id == INVALID_TASK) ? "NONE" : proc_name_table[tpl_kern.running_id],
+    tpl_kern.running_id,
+    (tpl_kern.running_id == INVALID_TASK) ? -1 : tpl_kern.running->priority,
+    (tpl_kern.elected_id == INVALID_TASK) ? "NONE" : proc_name_table[tpl_kern.elected_id],
+    tpl_kern.elected_id,
+    (tpl_kern.elected_id == INVALID_TASK) ? -1 : tpl_kern.elected->priority
+  );
+#endif
+}
+
 #endif
 
 /*
@@ -566,6 +584,8 @@ FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
 {
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
+  DOW_DO(print_kern("inside tpl_preempt"));
+
   /*  the elected object is never NULL and is in the state RUNNING */
 /*  DOW_ASSERT(TPL_KERN_REF(kern).running != NULL)
   DOW_ASSERT(TPL_KERN_REF(kern).running->state == RUNNING) */
@@ -612,7 +632,9 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
   
   CONSTP2CONST(tpl_context, AUTOMATIC, OS_CONST) old_context =
-    save ? &(TPL_KERN_REF(kern).s_running->context) : FALSE;
+    save ? &(TPL_KERN_REF(kern).s_running->context) : NULL;
+  
+  DOW_DO(print_kern("before tpl_run_elected"));
   
   /* copy the elected proc in running slot of tpl_kern */
   TPL_KERN_REF(kern).running = TPL_KERN_REF(kern).elected;
@@ -624,7 +646,7 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
     proc_name_table[TPL_KERN_REF(kern).running_id],
     TPL_KERN_REF(kern).running->priority)
   );
-  DOW_DO(printrl("tpl_run_elected - after");)
+  DOW_DO(printrl("tpl_run_elected - after"));
   
   /* the elected task become RUNNING */
   TRACE_TASK_EXECUTE((tpl_proc_id)TPL_KERN_REF(kern).running_id)
@@ -647,6 +669,8 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
    * PreTaskHook since the rescheduled task is running
    */
   CALL_PRE_TASK_HOOK()
+
+  DOW_DO(print_kern("after tpl_run_elected"));
   
   return old_context;
 }
@@ -662,6 +686,21 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
 
   CONST(tpl_heap_entry, AUTOMATIC) proc =
     tpl_remove_front_proc(CORE_ID_OR_NOTHING(core_id));
+    
+  /*
+   * In multicore, start may be called more than one time.
+   * In this case a proc that is elected but not yet running
+   * should be put back in the ready list before the new one
+   * is elected. This has to be done if the running_id is !=
+   * from the elected_id when start is called
+   */
+  if (TPL_KERN_REF(kern).running_id != TPL_KERN_REF(kern).elected_id)
+  {
+    tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).elected_id);  
+  }
+
+  DOW_DO(print_kern("before tpl_start"));
+
   TPL_KERN_REF(kern).elected_id = (uint32)proc.id;
   TPL_KERN_REF(kern).elected = tpl_dyn_proc_table[proc.id];
   TPL_KERN_REF(kern).s_elected = tpl_stat_proc_table[proc.id];  
@@ -672,9 +711,13 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
      * the object has not be preempted. So its
      * descriptor must be initialized
      */
+    DOW_DO(printf("%s is a new proc\n",proc_name_table[proc.id]));
     tpl_init_proc(proc.id);
     tpl_dyn_proc_table[proc.id]->priority = proc.key;
+    TPL_KERN_REF(kern).elected->state = (tpl_proc_state)READY;
   }
+
+  DOW_DO(print_kern("after tpl_start"));
 }
 
 /**
@@ -693,6 +736,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
   
   VAR(uint8, AUTOMATIC) need_switch = NO_NEED_SWITCH;
 
+  DOW_DO(print_kern("before tpl_schedule_from_running"));
   DOW_ASSERT((uint32)READY_LIST(read_list)[1].key > 0)
   
 #if WITH_AUTOSAR_STACK_MONITORING == YES
@@ -710,6 +754,7 @@ FUNC(void, OS_CODE) tpl_schedule_from_running(CORE_ID_OR_VOID(core_id))
   }
 
   TPL_KERN_REF(kern).need_switch = need_switch;
+  DOW_DO(print_kern("after tpl_schedule_from_running"));
 }
 
 /**
@@ -730,6 +775,10 @@ FUNC(void, OS_CODE) tpl_terminate(void)
   tpl_check_stack((tpl_proc_id)TPL_KERN_REF(kern).running_id);
 #endif /* WITH_AUTOSAR_STACK_MONITORING */
   
+  DOW_DO(printf("tpl_terminate %s[%ld]\n",
+    proc_name_table[TPL_KERN_REF(kern).running_id],
+    TPL_KERN_REF(kern).running_id));
+
   /*
    * a task switch will occur. It is time to call the
    * PostTaskHook while the soon descheduled task is RUNNING
@@ -802,6 +851,10 @@ FUNC(void, OS_CODE) tpl_block(void)
   P2VAR(tpl_task_events, AUTOMATIC, OS_VAR) task_events =
     tpl_task_events_table[TPL_KERN_REF(kern).running_id];  
   
+  DOW_DO(printf("tpl_block %s[%ld]\n",
+    proc_name_table[TPL_KERN_REF(kern).running_id],
+    TPL_KERN_REF(kern).running_id));
+
 #if WITH_AUTOSAR_TIMING_PROTECTION == YES
   /* reset the execution budget */
   tpl_tp_on_terminate_or_wait(TPL_KERN_REF(kern).running_id);
@@ -889,6 +942,12 @@ FUNC(tpl_status, OS_CODE) tpl_activate_task(
     tpl_dyn_proc_table[task_id];
   CONSTP2CONST(tpl_proc_static, AUTOMATIC, OS_APPL_DATA)  s_task =
     tpl_stat_proc_table[task_id];
+
+  DOW_DO(printf("tpl_activate_task %s[%d](%d)\n",
+    proc_name_table[task_id],
+    task_id,
+    task->priority
+  ));
 
   if (task->activate_count < s_task->max_activate_count)
   {
