@@ -162,7 +162,7 @@ FUNC(void, OS_CODE) tpl_start_os_service(
    */
   tpl_start_scheduling(CORE_ID_OR_NOTHING(core_id));
   
-  SWITCH_CONTEXT(core_id)
+  SWITCH_CONTEXT_NOSAVE(core_id)
 
   /* } */
   IF_NO_EXTENDED_ERROR_END()
