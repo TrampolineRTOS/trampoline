@@ -584,43 +584,30 @@ FUNC(void, OS_CODE) tpl_preempt(CORE_ID_OR_VOID(core_id))
 {
   GET_TPL_KERN_FOR_CORE_ID(core_id, kern)
 
-  DOW_DO(print_kern("inside tpl_preempt"));
+  if (TPL_KERN_REF(kern).running_id != TPL_KERN_REF(kern).elected_id)
+  {
+    /*
+     * since running and elected are different, the elected proc
+     * is preempted but has not yet run. so it is put
+     * back in the ready list. This occurs only in multicore
+     * It is not a preemption actually so the PostTaskHook is not
+     * called, the trace is not done and the timing protection
+     * is not notified.
+     */
+    DOW_DO(print_kern("inside tpl_preempt"));
 
-  /*  the elected object is never NULL and is in the state RUNNING */
-/*  DOW_ASSERT(TPL_KERN_REF(kern).running != NULL)
-  DOW_ASSERT(TPL_KERN_REF(kern).running->state == RUNNING) */
-
-  /*
-   * The elected task is preempted, so it is time to call the
-   * PostTaskHook while the soon descheduled task is running
-   */
-  CALL_POST_TASK_HOOK()
+    /* The current elected task becomes READY */
+    TPL_KERN_REF(kern).elected->state = (tpl_proc_state)READY;
   
-  TRACE_ISR_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).elected_id)
-  TRACE_TASK_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).elected_id)
-  
-  /* The current running task becomes READY */
-  TPL_KERN_REF(kern).elected->state = (tpl_proc_state)READY;
-  
-  DOW_DO(printf(
-    "preempt %s\n",
-    proc_name_table[TPL_KERN_REF(kern).elected_id])
-  );
-  
-  /* And put in the ready list */
-  tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
-  
-#if WITH_AUTOSAR_TIMING_PROTECTION == YES
-  /* cancel the watchdog and update the budget                  */
-  tpl_tp_on_preempt(TPL_KERN_REF(kern).elected_id);
-#endif /* WITH_AUTOSAR_TIMING_PROTECTION */
-
+    /* And put in the ready list */
+    tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).elected_id);
+  }
 }
 
 /**
  * @internal
  * 
- * The elected task becomes the running task
+ * The elected task becomes the running task, the running proc is preempted
  *
  * @return  the pointer to the context of the task
  *          that was running before the elected task replace it
@@ -636,6 +623,33 @@ FUNC(P2CONST(tpl_context, AUTOMATIC, OS_CONST), OS_CODE)
   
   DOW_DO(print_kern("before tpl_run_elected"));
   
+  if ((save) && (TPL_KERN_REF(kern).running->state != WAITING))
+  {
+    /*
+     * The running task is preempted, so it is time to call the
+     * PostTaskHook while the soon descheduled task is running
+     */
+    CALL_POST_TASK_HOOK()
+  
+    TRACE_ISR_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
+    TRACE_TASK_PREEMPT((tpl_proc_id)TPL_KERN_REF(kern).running_id)
+  
+    DOW_DO(printf(
+      "tpl_run_elected preempt %s\n",
+      proc_name_table[TPL_KERN_REF(kern).running_id])
+    );
+  
+    /* The current running task becomes READY */
+    TPL_KERN_REF(kern).running->state = (tpl_proc_state)READY;
+  
+    /* And put in the ready list */
+    tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).running_id);
+
+  #if WITH_AUTOSAR_TIMING_PROTECTION == YES
+    /* cancel the watchdog and update the budget                  */
+    tpl_tp_on_preempt(TPL_KERN_REF(kern).running_id);
+  #endif /* WITH_AUTOSAR_TIMING_PROTECTION */
+  }
   /* copy the elected proc in running slot of tpl_kern */
   TPL_KERN_REF(kern).running = TPL_KERN_REF(kern).elected;
   TPL_KERN_REF(kern).s_running = TPL_KERN_REF(kern).s_elected;
@@ -687,6 +701,7 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
   CONST(tpl_heap_entry, AUTOMATIC) proc =
     tpl_remove_front_proc(CORE_ID_OR_NOTHING(core_id));
     
+#if NUMBER_OF_CORES > 1
   /*
    * In multicore, start may be called more than one time.
    * In this case a proc that is elected but not yet running
@@ -698,6 +713,7 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
   {
     tpl_put_preempted_proc((tpl_proc_id)TPL_KERN_REF(kern).elected_id);  
   }
+#endif
 
   DOW_DO(print_kern("before tpl_start"));
 
@@ -714,7 +730,9 @@ FUNC(void, OS_CODE) tpl_start(CORE_ID_OR_VOID(core_id))
     DOW_DO(printf("%s is a new proc\n",proc_name_table[proc.id]));
     tpl_init_proc(proc.id);
     tpl_dyn_proc_table[proc.id]->priority = proc.key;
+#if NUMBER_OF_CORES > 1
     TPL_KERN_REF(kern).elected->state = (tpl_proc_state)READY;
+#endif
   }
 
   DOW_DO(print_kern("after tpl_start"));
