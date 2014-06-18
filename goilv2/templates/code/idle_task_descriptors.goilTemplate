@@ -20,6 +20,7 @@ let task::USEINTERNALRESOURCE := false
 let task::NONPREEMPTABLE := false
 let task::KIND := "Task"
 let task::STACKSIZE := "IDLE_STACK_SIZE"
+let task::SECTION := "OS"
 
 if OS::NUMBER_OF_CORES == 1 then
 let task::NAME := "IDLE_TASK"

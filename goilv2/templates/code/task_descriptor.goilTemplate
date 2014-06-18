@@ -1,7 +1,14 @@
 /*-----------------------------------------------------------------------------
  * Task % !task::NAME % descriptor
  */
-#define APP_% !task::KIND %_% !task::NAME %_START_SEC_CODE
+%
+if exists task::SECTION then
+%#define % !task::SECTION %_START_SEC_CODE%
+else
+%#define APP_% !task::KIND %_% !task::NAME %_START_SEC_CODE
+%
+end if
+%
 #include "tpl_memmap.h"
 /*
  * Task % !task::NAME % function prototype
@@ -13,7 +20,14 @@ else%
 FUNC(void, OS_APPL_CODE) % !task::NAME %_function(void);%
 end if
 %
-#define APP_Task_% !task::NAME %_STOP_SEC_CODE
+%
+if exists task::SECTION then
+%#define % !task::SECTION %_START_SEC_CODE%
+else
+%#define APP_% !task::KIND %_% !task::NAME %_START_SEC_CODE
+%
+end if
+%
 #include "tpl_memmap.h"
 
 /*-----------------------------------------------------------------------------
