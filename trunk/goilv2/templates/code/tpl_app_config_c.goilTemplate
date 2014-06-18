@@ -923,12 +923,12 @@ CONST(tpl_ioc_unqueued_mo, OS_CONST) % !ioc::NAME %_mo =
   end if
 end foreach
 
+  if [ioc_queued_list length] != 0 then
 %
 #define OS_START_SEC_CONST_UNSPECIFIED
 #include "tpl_memmap.h"
 
 %
-  if [ioc_queued_list length] != 0 then
 %CONSTP2CONST(tpl_ioc_queued_mo, OS_CONST, OS_CONST) tpl_ioc_queued_table[% !ioc_queued_count %] =
 {
 %
@@ -955,6 +955,9 @@ end foreach
    end foreach
 %
 };
+
+#define OS_STOP_SEC_CONST_UNSPECIFIED
+#include "tpl_memmap.h"
 
 %
   end if
