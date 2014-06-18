@@ -67,7 +67,7 @@ write to PROJECT."/tpl_os.h":
   template tpl_os_h in code
 end write
 
-if OS::USEGETSERVICEID | exists COM::COMUSEGETSERVICEID default (false) then
+if OS::SYSTEM_CALL | OS::USEGETSERVICEID | exists COM::COMUSEGETSERVICEID default (false) then
 !PROJECT %/tpl_service_ids.h
 %
 write to PROJECT."/tpl_service_ids.h":
