@@ -22,9 +22,9 @@ end if
 %
 %
 if exists task::SECTION then
-%#define % !task::SECTION %_START_SEC_CODE%
+%#define % !task::SECTION %_STOP_SEC_CODE%
 else
-%#define APP_% !task::KIND %_% !task::NAME %_START_SEC_CODE
+%#define APP_% !task::KIND %_% !task::NAME %_STOP_SEC_CODE
 %
 end if
 %
